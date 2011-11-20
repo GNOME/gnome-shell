@@ -414,15 +414,13 @@ const IMStatusChooserItem = new Lang.Class({
 });
 
 
-function UserMenuButton() {
-    this._init();
-}
-
-UserMenuButton.prototype = {
-    __proto__: PanelMenu.Button.prototype,
+const UserMenuButton = new Lang.Class({
+    Name: 'UserMenuButton',
+    Extends: PanelMenu.Button,
 
     _init: function() {
-        PanelMenu.Button.prototype._init.call(this, 0.0);
+        this.parent(0.0);
+
         let box = new St.BoxLayout({ name: 'panelUserMenu' });
         this.actor.add_actor(box);
 
@@ -725,4 +723,4 @@ UserMenuButton.prototype = {
             this._session.ShutdownRemote();
         }
     }
-};
+});

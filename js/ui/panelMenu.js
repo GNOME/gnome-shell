@@ -11,11 +11,9 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
-function ButtonBox(params) {
-    this._init.apply(this, arguments);
-};
+const ButtonBox = new Lang.Class({
+    Name: 'ButtonBox',
 
-ButtonBox.prototype = {
     _init: function(params) {
         params = Params.parse(params, { style_class: 'panel-button' }, true);
         this.actor = new Shell.GenericContainer(params);
@@ -92,19 +90,16 @@ ButtonBox.prototype = {
 
         child.allocate(childBox, flags);
     },
-}
+});
 
-function Button(menuAlignment) {
-    this._init(menuAlignment);
-}
-
-Button.prototype = {
-    __proto__: ButtonBox.prototype,
+const Button = new Lang.Class({
+    Name: 'PanelMenuButton',
+    Extends: ButtonBox,
 
     _init: function(menuAlignment) {
-        ButtonBox.prototype._init.call(this, { reactive: true,
-                                               can_focus: true,
-                                               track_hover: true });
+        this.parent({ reactive: true,
+                      can_focus: true,
+                      track_hover: true });
 
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('key-press-event', Lang.bind(this, this._onSourceKeyPress));
@@ -175,7 +170,7 @@ Button.prototype = {
 
         this.emit('destroy');
     }
-};
+});
 Signals.addSignalMethods(Button.prototype);
 
 /* SystemStatusButton:
@@ -184,15 +179,13 @@ Signals.addSignalMethods(Button.prototype);
  * volume, bluetooth...), which is just a PanelMenuButton with an
  * icon and a tooltip
  */
-function SystemStatusButton() {
-    this._init.apply(this, arguments);
-}
-
-SystemStatusButton.prototype = {
-    __proto__: Button.prototype,
+const SystemStatusButton = new Lang.Class({
+    Name: 'SystemStatusButton',
+    Extends: Button,
 
     _init: function(iconName,tooltipText) {
-        Button.prototype._init.call(this, 0.0);
+        this.parent(0.0);
+
         this._iconActor = new St.Icon({ icon_name: iconName,
                                         icon_type: St.IconType.SYMBOLIC,
                                         style_class: 'system-status-icon' });
@@ -219,4 +212,4 @@ SystemStatusButton.prototype = {
             this.tooltip = null;
         }
     }
-};
+});

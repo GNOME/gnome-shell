@@ -17,15 +17,12 @@ const VOLUME_ADJUSTMENT_STEP = 0.05; /* Volume adjustment step in % */
 
 const VOLUME_NOTIFY_ID = 1;
 
-function Indicator() {
-    this._init.apply(this, arguments);
-}
-
-Indicator.prototype = {
-    __proto__: PanelMenu.SystemStatusButton.prototype,
+const Indicator = new Lang.Class({
+    Name: 'VolumeIndicator',
+    Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        PanelMenu.SystemStatusButton.prototype._init.call(this, 'audio-volume-muted', null);
+        this.parent('audio-volume-muted', null);
 
         this._control = new Gvc.MixerControl({ name: 'GNOME Shell Volume Control' });
         this._control.connect('state-changed', Lang.bind(this, this._onControlStateChanged));
@@ -214,4 +211,4 @@ Indicator.prototype = {
         if (property == '_output' && !this._output.is_muted)
             this.setIcon(this._volumeToIcon(this._output.volume));
     }
-};
+});

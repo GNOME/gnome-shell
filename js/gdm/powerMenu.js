@@ -25,15 +25,12 @@ const ConsoleKit = imports.gdm.consoleKit;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-function PowerMenuButton() {
-    this._init();
-}
-
-PowerMenuButton.prototype = {
-    __proto__: PanelMenu.SystemStatusButton.prototype,
+const PowerMenuButton = new Lang.Class({
+    Name: 'PowerMenuButton',
+    Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        PanelMenu.SystemStatusButton.prototype._init.call(this, 'system-shutdown', null);
+        this.parent('system-shutdown', null);
         this._consoleKitManager = new ConsoleKit.ConsoleKitManager();
         this._upClient = new UPowerGlib.Client();
 
@@ -143,4 +140,4 @@ PowerMenuButton.prototype = {
         if (this._haveShutdown)
             this._consoleKitManager.StopRemote();
     }
-};
+});

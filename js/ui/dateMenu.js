@@ -40,12 +40,9 @@ function _onVertSepRepaint (area)
     cr.stroke();
 };
 
-function DateMenuButton() {
-    this._init.apply(this, arguments);
-}
-
-DateMenuButton.prototype = {
-    __proto__: PanelMenu.Button.prototype,
+const DateMenuButton = new Lang.Class({
+    Name: 'DateMenuButton',
+    Extends: PanelMenu.Button,
 
     _init: function(params) {
         params = Params.parse(params, { showEvents: true });
@@ -57,7 +54,7 @@ DateMenuButton.prototype = {
         let menuAlignment = 0.25;
         if (St.Widget.get_default_direction() == St.TextDirection.RTL)
             menuAlignment = 1.0 - menuAlignment;
-        PanelMenu.Button.prototype._init.call(this, menuAlignment);
+        this.parent(menuAlignment);
 
         this._clock = new St.Label();
         this.actor.add_actor(this._clock);
@@ -239,4 +236,4 @@ DateMenuButton.prototype = {
             }
         }
     }
-};
+});

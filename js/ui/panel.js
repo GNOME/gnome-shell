@@ -235,15 +235,12 @@ TextShadower.prototype = {
  * this menu also handles startup notification for it.  So when we
  * have an active startup notification, we switch modes to display that.
  */
-function AppMenuButton() {
-    this._init();
-}
-
-AppMenuButton.prototype = {
-    __proto__: PanelMenu.Button.prototype,
+const AppMenuButton = new Lang.Class({
+    Name: 'AppMenuButton',
+    Extends: PanelMenu.Button,
 
     _init: function() {
-        PanelMenu.Button.prototype._init.call(this, 0.0);
+        this.parent(0.0);
         this._startingApps = [];
 
         this._targetApp = null;
@@ -546,22 +543,19 @@ AppMenuButton.prototype = {
 
         this.emit('changed');
     }
-};
+});
 
 Signals.addSignalMethods(AppMenuButton.prototype);
 
 // Activities button. Because everything else in the top bar is a
 // PanelMenu.Button, it simplifies some things to make this be one too.
 // We just hack it up to not actually have a menu attached to it.
-function ActivitiesButton() {
-    this._init.apply(this, arguments);
-}
-
-ActivitiesButton.prototype = {
-    __proto__: PanelMenu.Button.prototype,
+const ActivitiesButton = new Lang.Class({
+    Name: 'ActivitiesButton',
+    Extends: PanelMenu.Button,
 
     _init: function() {
-        PanelMenu.Button.prototype._init.call(this, 0.0);
+        this.parent(0.0);
 
         let container = new Shell.GenericContainer();
         container.connect('get-preferred-width', Lang.bind(this, this._containerGetPreferredWidth));
@@ -698,7 +692,7 @@ ActivitiesButton.prototype = {
         Mainloop.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = 0;
     }
-};
+})
 
 function PanelCorner(panel, side) {
     this._init(panel, side);

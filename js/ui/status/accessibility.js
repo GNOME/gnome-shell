@@ -40,15 +40,12 @@ const KEY_TEXT_SCALING_FACTOR = 'text-scaling-factor';
 
 const HIGH_CONTRAST_THEME = 'HighContrast';
 
-function ATIndicator() {
-    this._init.apply(this, arguments);
-}
-
-ATIndicator.prototype = {
-    __proto__: PanelMenu.SystemStatusButton.prototype,
+const ATIndicator = new Lang.Class({
+    Name: 'ATIndicator',
+    Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        PanelMenu.SystemStatusButton.prototype._init.call(this, 'preferences-desktop-accessibility', null);
+        this.parent('preferences-desktop-accessibility', null);
 
         let highContrast = this._buildHCItem();
         this.menu.addMenuItem(highContrast);
@@ -172,5 +169,4 @@ ATIndicator.prototype = {
         });
         return widget;
     }
-};
-Signals.addSignalMethods(ATIndicator.prototype);
+});

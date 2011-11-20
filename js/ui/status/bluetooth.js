@@ -23,15 +23,12 @@ const ConnectionState = {
     CONNECTING: 3
 }
 
-function Indicator() {
-    this._init.apply(this, arguments);
-}
-
-Indicator.prototype = {
-    __proto__: PanelMenu.SystemStatusButton.prototype,
+const Indicator = new Lang.Class({
+    Name: 'BTIndicator',
+    Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        PanelMenu.SystemStatusButton.prototype._init.call(this, 'bluetooth-disabled', null);
+        this.parent('bluetooth-disabled', null);
 
         GLib.spawn_command_line_sync ('pkill -f "^bluetooth-applet$"');
         this._applet = new GnomeBluetoothApplet.Applet();
@@ -335,7 +332,7 @@ Indicator.prototype = {
     _cancelRequest: function() {
         this._source.destroy();
     }
-}
+});
 
 function Source() {
     this._init.apply(this, arguments);

@@ -1548,14 +1548,12 @@ NMDeviceWireless.prototype = {
     },
 };
 
-function NMApplet() {
-    this._init.apply(this, arguments);
-}
-NMApplet.prototype = {
-    __proto__: PanelMenu.SystemStatusButton.prototype,
+const NMApplet = new Lang.Class({
+    Name: 'NMApplet',
+    Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        PanelMenu.SystemStatusButton.prototype._init.call(this, 'network-error');
+        this.parent('network-error', null);
 
         this._client = NMClient.Client.new();
 
@@ -2121,7 +2119,7 @@ NMApplet.prototype = {
             this._mobileUpdateId = 0;
         }
     }
-};
+});
 
 function NMMessageTraySource() {
     this._init();
