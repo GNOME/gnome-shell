@@ -408,11 +408,9 @@ Signals.addSignalMethods(FocusGrabber.prototype);
 // the content and the action area of the notification will be cleared.
 // The content area is also always cleared if 'customContent' is false
 // because it might contain the @banner that didn't fit in the banner mode.
-function Notification(source, title, banner, params) {
-    this._init(source, title, banner, params);
-}
+const Notification = new Lang.Class({
+    Name: 'Notification',
 
-Notification.prototype = {
     IMAGE_SIZE: 125,
 
     _init: function(source, title, banner, params) {
@@ -953,14 +951,12 @@ Notification.prototype = {
         this.actor.destroy();
         this.actor._delegate = null;
     }
-};
+});
 Signals.addSignalMethods(Notification.prototype);
 
-function Source(title) {
-    this._init(title);
-}
+const Source = new Lang.Class({
+    Name: 'MessageTraySource',
 
-Source.prototype = {
     ICON_SIZE: 24,
 
     _init: function(title) {
@@ -1142,7 +1138,7 @@ Source.prototype = {
     _lastNotificationRemoved: function() {
         this.destroy();
     }
-};
+});
 Signals.addSignalMethods(Source.prototype);
 
 function SummaryItem(source) {
@@ -2428,15 +2424,12 @@ MessageTray.prototype = {
     }
 };
 
-function SystemNotificationSource() {
-    this._init();
-}
-
-SystemNotificationSource.prototype = {
-    __proto__:  Source.prototype,
+const SystemNotificationSource = new Lang.Class({
+    Name: 'SystemNotificationSource',
+    Extends: Source,
 
     _init: function() {
-        Source.prototype._init.call(this, _("System Information"));
+        this.parent(_("System Information"));
 
         this._setSummaryIcon(this.createNotificationIcon());
     },
@@ -2450,4 +2443,4 @@ SystemNotificationSource.prototype = {
     open: function() {
         this.destroy();
     }
-};
+});

@@ -535,16 +535,13 @@ Keyboard.prototype = {
 };
 DBus.conformExport(Keyboard.prototype, CaribouKeyboardIface);
 
-function KeyboardSource() {
-    this._init.apply(this, arguments);
-}
-
-KeyboardSource.prototype = {
-    __proto__: MessageTray.Source.prototype,
+const KeyboardSource = new Lang.Class({
+    Name: 'KeyboardSource',
+    Extends: MessageTray.Source,
 
     _init: function(keyboard) {
+        this.parent(_("Keyboard"));
         this._keyboard = keyboard;
-        MessageTray.Source.prototype._init.call(this, _("Keyboard"));
 
         this._setSummaryIcon(this.createNotificationIcon());
     },
@@ -555,7 +552,7 @@ KeyboardSource.prototype = {
                              icon_size: this.ICON_SIZE });
     },
 
-     handleSummaryClick: function() {
+    handleSummaryClick: function() {
         let event = Clutter.get_current_event();
         if (event.type() != Clutter.EventType.BUTTON_RELEASE)
             return false;
@@ -567,4 +564,4 @@ KeyboardSource.prototype = {
     open: function() {
         this._keyboard.show();
     }
-};
+});

@@ -45,15 +45,12 @@ WindowAttentionHandler.prototype = {
     }
 };
 
-function Source(app, window) {
-    this._init(app, window);
-}
-
-Source.prototype = {
-    __proto__ : MessageTray.Source.prototype,
+const Source = new Lang.Class({
+    Name: 'WindowAttentionSource',
+    Extends: MessageTray.Source,
 
     _init: function(app, window) {
-        MessageTray.Source.prototype._init.call(this, app.get_name());
+        this.parent(app.get_name());
         this._window = window;
         this._app = app;
         this._setSummaryIcon(this.createNotificationIcon());
@@ -81,4 +78,4 @@ Source.prototype = {
         Main.activateWindow(this._window);
         this.destroy();
     }
-};
+});

@@ -481,15 +481,12 @@ Client.prototype = {
     }
 };
 
-function ChatSource(account, conn, channel, contact, client) {
-    this._init(account, conn, channel, contact, client);
-}
-
-ChatSource.prototype = {
-    __proto__:  MessageTray.Source.prototype,
+const ChatSource = new Lang.Class({
+    Name: 'ChatSource',
+    Extends: MessageTray.Source,
 
     _init: function(account, conn, channel, contact, client) {
-        MessageTray.Source.prototype._init.call(this, contact.get_alias());
+        this.parent(contact.get_alias());
 
         this.isChat = true;
 
@@ -798,17 +795,14 @@ ChatSource.prototype = {
 
         this._shouldAck = false;
     }
-};
+});
 
-function ChatNotification(source) {
-    this._init(source);
-}
-
-ChatNotification.prototype = {
-    __proto__:  MessageTray.Notification.prototype,
+const ChatNotification = new Lang.Class({
+    Name: 'ChatNotification',
+    Extends: MessageTray.Notification,
 
     _init: function(source) {
-        MessageTray.Notification.prototype._init.call(this, source, source.title, null, { customContent: true });
+        this.parent(source, source.title, null, { customContent: true });
         this.setResident(true);
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response',
@@ -1091,17 +1085,14 @@ ChatNotification.prototype = {
             this.source.setChatState(Tp.ChannelChatState.ACTIVE);
         }
     }
-};
+});
 
-function ApproverSource(dispatchOp, text, gicon) {
-    this._init(dispatchOp, text, gicon);
-}
-
-ApproverSource.prototype = {
-    __proto__: MessageTray.Source.prototype,
+const ApproverSource = new Lang.Class({
+    Name: 'ApproverSource',
+    Extends: MessageTray.Source,
 
     _init: function(dispatchOp, text, gicon) {
-        MessageTray.Source.prototype._init.call(this, text);
+        this.parent(text);
 
         this._gicon = gicon;
         this._setSummaryIcon(this.createNotificationIcon());
@@ -1130,23 +1121,19 @@ ApproverSource.prototype = {
                              icon_type: St.IconType.FULLCOLOR,
                              icon_size: this.ICON_SIZE });
     }
-}
+});
 
-function RoomInviteNotification(source, dispatchOp, channel, inviter) {
-    this._init(source, dispatchOp, channel, inviter);
-}
-
-RoomInviteNotification.prototype = {
-    __proto__: MessageTray.Notification.prototype,
+const RoomInviteNotification = new Lang.Class({
+    Name: 'RoomInviteNotification',
+    Extends: MessageTray.Notification,
 
     _init: function(source, dispatchOp, channel, inviter) {
-        MessageTray.Notification.prototype._init.call(this,
-                                                      source,
-                                                      /* translators: argument is a room name like
-                                                       * room@jabber.org for example. */
-                                                      _("Invitation to %s").format(channel.get_identifier()),
-                                                      null,
-                                                      { customContent: true });
+        this.parent(source,
+                    /* translators: argument is a room name like
+                     * room@jabber.org for example. */
+                    _("Invitation to %s").format(channel.get_identifier()),
+                    null,
+                    { customContent: true });
         this.setResident(true);
 
         /* translators: first argument is the name of a contact and the second
@@ -1173,15 +1160,12 @@ RoomInviteNotification.prototype = {
             this.destroy();
         }));
     }
-};
+});
 
 // Audio Video
-function AudioVideoNotification(source, dispatchOp, channel, contact, isVideo) {
-    this._init(source, dispatchOp, channel, contact, isVideo);
-}
-
-AudioVideoNotification.prototype = {
-    __proto__: MessageTray.Notification.prototype,
+const AudioVideoNotification = new Lang.Class({
+    Name: 'AudioVideoNotification',
+    Extends: MessageTray.Notification,
 
     _init: function(source, dispatchOp, channel, contact, isVideo) {
         let title = '';
@@ -1193,11 +1177,7 @@ AudioVideoNotification.prototype = {
              /* translators: argument is a contact name like Alice for example. */
             title = _("Call from %s").format(contact.get_alias());
 
-        MessageTray.Notification.prototype._init.call(this,
-                                                      source,
-                                                      title,
-                                                      null,
-                                                      { customContent: true });
+        this.parent(this, source, title, null, { customContent: true });
         this.setResident(true);
 
         this.addButton('reject', _("Reject"));
@@ -1220,28 +1200,25 @@ AudioVideoNotification.prototype = {
             this.destroy();
         }));
     }
-};
+});
 
 // File Transfer
-function FileTransferNotification(source, dispatchOp, channel, contact) {
-    this._init(source, dispatchOp, channel, contact);
-}
-
-FileTransferNotification.prototype = {
-    __proto__: MessageTray.Notification.prototype,
+const FileTransferNotification = new Lang.Class({
+    Name: 'FileTransferNotification',
+    Extends: MessageTray.Notification,
 
     _init: function(source, dispatchOp, channel, contact) {
-        MessageTray.Notification.prototype._init.call(this,
-                                                      source,
-                                                      /* To translators: The first parameter is
-                                                       * the contact's alias and the second one is the
-                                                       * file name. The string will be something
-                                                       * like: "Alice is sending you test.ogg"
-                                                       */
-                                                      _("%s is sending you %s").format(contact.get_alias(),
-                                                                                       channel.get_filename()),
-                                                      null,
-                                                      { customContent: true });
+        this.parent(this,
+                    source,
+                    /* To translators: The first parameter is
+                     * the contact's alias and the second one is the
+                     * file name. The string will be something
+                     * like: "Alice is sending you test.ogg"
+                     */
+                    _("%s is sending you %s").format(contact.get_alias(),
+                                                     channel.get_filename()),
+                    null,
+                    { customContent: true });
         this.setResident(true);
 
         this.addButton('decline', _("Decline"));
@@ -1263,18 +1240,15 @@ FileTransferNotification.prototype = {
             this.destroy();
         }));
     }
-};
+});
 
 // A notification source that can embed multiple notifications
-function MultiNotificationSource(title, icon) {
-    this._init(title, icon);
-}
-
-MultiNotificationSource.prototype = {
-    __proto__: MessageTray.Source.prototype,
+const MultiNotificationSource = new Lang.Class({
+    Name: 'MultiNotificationSource',
+    Extends: MessageTray.Source,
 
     _init: function(title, icon) {
-        MessageTray.Source.prototype._init.call(this, title);
+        this.parent(title);
 
         this._icon = icon;
         this._setSummaryIcon(this.createNotificationIcon());
@@ -1282,7 +1256,7 @@ MultiNotificationSource.prototype = {
     },
 
     notify: function(notification) {
-        MessageTray.Source.prototype.notify.call(this, notification);
+        this.parent(notification);
 
         this._nbNotifications += 1;
 
@@ -1300,21 +1274,18 @@ MultiNotificationSource.prototype = {
                              icon_type: St.IconType.FULLCOLOR,
                              icon_size: this.ICON_SIZE });
     }
-};
+});
 
 // Subscription request
-function SubscriptionRequestNotification(source, contact) {
-    this._init(source, contact);
-}
-
-SubscriptionRequestNotification.prototype = {
-    __proto__: MessageTray.Notification.prototype,
+const SubscriptionRequestNotification = new Lang.Class({
+    Name: 'SubscriptionRequestNotification',
+    Extends: MessageTray.Notification,
 
     _init: function(source, contact) {
-        MessageTray.Notification.prototype._init.call(this, source,
-            /* To translators: The parameter is the contact's alias */
-            _("%s would like permission to see when you are online").format(contact.get_alias()),
-            null, { customContent: true });
+        this.parent(this, source,
+                    /* To translators: The parameter is the contact's alias */
+                    _("%s would like permission to see when you are online").format(contact.get_alias()),
+                    null, { customContent: true });
 
         this._contact = contact;
         this._connection = contact.get_connection();
@@ -1388,7 +1359,7 @@ SubscriptionRequestNotification.prototype = {
             this._invalidatedId = 0;
         }
 
-        MessageTray.Notification.prototype.destroy.call(this);
+        this.parent();
     },
 
     _subscriptionStatesChangedCb: function(contact, subscribe, publish, msg) {
@@ -1397,12 +1368,7 @@ SubscriptionRequestNotification.prototype = {
         if (publish != Tp.SubscriptionState.ASK)
             this.destroy();
     }
-};
-
-
-function AccountNotification(source, account, connectionError) {
-    this._init(source, account, connectionError);
-}
+});
 
 // Messages from empathy/libempathy/empathy-utils.c
 // create_errors_to_message_hash()
@@ -1457,15 +1423,16 @@ _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_INSECURE)]
 _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_LIMIT_EXCEEDED)]
   = _("The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library");
 
-AccountNotification.prototype = {
-    __proto__: MessageTray.Notification.prototype,
+const AccountNotification = new Lang.Class({
+    Name: 'AccountNotification',
+    Extends: MessageTray.Notification,
 
     _init: function(source, account, connectionError) {
-        MessageTray.Notification.prototype._init.call(this, source,
-            /* translators: argument is the account name, like
-             * name@jabber.org for example. */
-            _("Connection to %s failed").format(account.get_display_name()),
-            null, { customContent: true });
+        this.parent(source,
+                    /* translators: argument is the account name, like
+                     * name@jabber.org for example. */
+                    _("Connection to %s failed").format(account.get_display_name()),
+                    null, { customContent: true });
 
         this._label = new St.Label();
         this.addActor(this._label);
@@ -1541,6 +1508,6 @@ AccountNotification.prototype = {
             this._connectionStatusId = 0;
         }
 
-        MessageTray.Notification.prototype.destroy.call(this);
+        this.parent();
     }
-};
+});

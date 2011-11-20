@@ -239,16 +239,13 @@ ShellMountQuestionDialog.prototype = {
 }
 Signals.addSignalMethods(ShellMountQuestionDialog.prototype);
 
-function ShellMountPasswordSource(message, icon, reaskPassword) {
-    this._init(message, icon, reaskPassword);
-}
-
-ShellMountPasswordSource.prototype = {
-    __proto__: MessageTray.Source.prototype,
+const ShellMountPasswordSource = new Lang.Class({
+    Name: 'ShellMountPasswordSource',
+    Extends: MessageTray.Source,
 
     _init: function(message, icon, reaskPassword) {
         let strings = message.split('\n');
-        MessageTray.Source.prototype._init.call(this, strings[0]);
+        this.parent(strings[0]);
 
         this._notification = new ShellMountPasswordNotification(this, strings, icon, reaskPassword);
 
@@ -256,21 +253,15 @@ ShellMountPasswordSource.prototype = {
         Main.messageTray.add(this);
         this.notify(this._notification);
     },
-}
+});
 Signals.addSignalMethods(ShellMountPasswordSource.prototype);
 
-function ShellMountPasswordNotification(source, strings, icon, reaskPassword) {
-    this._init(source, strings, icon, reaskPassword);
-}
-
-ShellMountPasswordNotification.prototype = {
-    __proto__: MessageTray.Notification.prototype,
+const ShellMountPasswordNotification = new Lang.Class({
+    Name: 'ShellMountPasswordNotification',
+    Extends: MessageTray.Notification,
 
     _init: function(source, strings, icon, reaskPassword) {
-        MessageTray.Notification.prototype._init.call(this, source,
-                                                      strings[0], null,
-                                                      { customContent: true,
-                                                        icon: icon });
+        this.parent(source, strings[0], null, { customContent: true, icon: icon });
 
         // set the notification to transient and urgent, so that it
         // expands out
@@ -305,7 +296,7 @@ ShellMountPasswordNotification.prototype = {
 
         this.source.emit('password-ready', text);
     }
-}
+});
 
 function ShellProcessesDialog(icon) {
     this._init(icon);

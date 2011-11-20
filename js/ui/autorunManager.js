@@ -261,15 +261,12 @@ AutorunManager.prototype = {
     },
 }
 
-function AutorunResidentSource() {
-    this._init();
-}
-
-AutorunResidentSource.prototype = {
-    __proto__: MessageTray.Source.prototype,
+const AutorunResidentSource = new Lang.Class({
+    Name: 'AutorunResidentSource',
+    Extends: MessageTray.Source,
 
     _init: function() {
-        MessageTray.Source.prototype._init.call(this, _("Removable Devices"));
+        this.parent(_("Removable Devices"));
 
         this._mounts = [];
 
@@ -324,19 +321,14 @@ AutorunResidentSource.prototype = {
                               icon_type: St.IconType.FULLCOLOR,
                               icon_size: this.ICON_SIZE });
     }
-}
+});
 
-function AutorunResidentNotification(source) {
-    this._init(source);
-}
-
-AutorunResidentNotification.prototype = {
-    __proto__: MessageTray.Notification.prototype,
+const AutorunResidentNotification = new Lang.Class({
+    Name: 'AutorunResidentNotification',
+    Extends: MessageTray.Notification,
 
     _init: function(source) {
-        MessageTray.Notification.prototype._init.call(this, source,
-                                                      source.title, null,
-                                                      { customContent: true });
+        this.parent(source, source.title, null, { customContent: true });
 
         // set the notification as resident
         this.setResident(true);
@@ -410,7 +402,7 @@ AutorunResidentNotification.prototype = {
 
         return item;
     },
-}
+});
 
 function AutorunTransientDispatcher() {
     this._init();
@@ -509,15 +501,12 @@ AutorunTransientDispatcher.prototype = {
     }
 }
 
-function AutorunTransientSource(mount, apps) {
-    this._init(mount, apps);
-}
-
-AutorunTransientSource.prototype = {
-    __proto__: MessageTray.Source.prototype,
+const AutorunTransientSource = new Lang.Class({
+    Name: 'AutorunTransientSource',
+    Extends: MessageTray.Source,
 
     _init: function(mount, apps) {
-        MessageTray.Source.prototype._init.call(this, mount.get_name());
+        this.parent(mount.get_name());
 
         this.mount = mount;
         this.apps = apps;
@@ -534,19 +523,14 @@ AutorunTransientSource.prototype = {
         return new St.Icon({ gicon: this.mount.get_icon(),
                              icon_size: this.ICON_SIZE });
     }
-}
+});
 
-function AutorunTransientNotification(source) {
-    this._init(source);
-}
-
-AutorunTransientNotification.prototype = {
-    __proto__: MessageTray.Notification.prototype,
+const AutorunTransientNotification = new Lang.Class({
+    Name: 'AutorunTransientNotification',
+    Extends: MessageTray.Notification,
 
     _init: function(source) {
-        MessageTray.Notification.prototype._init.call(this, source,
-                                                      source.title, null,
-                                                      { customContent: true });
+        this.parent(source, source.title, null, { customContent: true });
 
         this._box = new St.BoxLayout({ style_class: 'hotplug-transient-box',
                                        vertical: true });
@@ -621,5 +605,5 @@ AutorunTransientNotification.prototype = {
 
         return button;
     }
-}
+});
 

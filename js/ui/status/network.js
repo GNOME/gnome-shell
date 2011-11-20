@@ -2121,15 +2121,12 @@ const NMApplet = new Lang.Class({
     }
 });
 
-function NMMessageTraySource() {
-    this._init();
-}
-
-NMMessageTraySource.prototype = {
-    __proto__: MessageTray.Source.prototype,
+const NMMessageTraySource = new Lang.Class({
+    Name: 'NMMessageTraySource',
+    Extends: MessageTray.Source,
 
     _init: function() {
-        MessageTray.Source.prototype._init.call(this, _("Network Manager"));
+        this.parent(_("Network Manager"));
 
         let icon = new St.Icon({ icon_name: 'network-transmit-receive',
                                  icon_type: St.IconType.SYMBOLIC,
@@ -2137,4 +2134,4 @@ NMMessageTraySource.prototype = {
                                });
         this._setSummaryIcon(icon);
     }
-};
+});

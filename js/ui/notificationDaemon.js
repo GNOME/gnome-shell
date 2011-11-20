@@ -476,15 +476,12 @@ NotificationDaemon.prototype = {
     }
 };
 
-function Source(title, pid, sender) {
-    this._init(title, pid, sender);
-}
-
-Source.prototype = {
-    __proto__:  MessageTray.Source.prototype,
+const Source = new Lang.Class({
+    Name: 'NotificationDaemonSource',
+    Extends: MessageTray.Source,
 
     _init: function(title, pid, sender) {
-        MessageTray.Source.prototype._init.call(this, title);
+        this.parent(title);
 
         this._pid = pid;
         if (sender)
@@ -606,6 +603,6 @@ Source.prototype = {
             this._nameWatcherId = 0;
         }
 
-        MessageTray.Source.prototype.destroy.call(this);
+        this.parent();
     }
-};
+});
