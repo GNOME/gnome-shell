@@ -6,11 +6,9 @@ const Shell = imports.gi.Shell;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 
-function WindowAttentionHandler() {
-    this._init();
-}
+const WindowAttentionHandler = new Lang.Class({
+    Name: 'WindowAttentionHandler',
 
-WindowAttentionHandler.prototype = {
     _init : function() {
         this._tracker = Shell.WindowTracker.get_default();
         global.display.connect('window-demands-attention', Lang.bind(this, this._onWindowDemandsAttention));
@@ -43,7 +41,7 @@ WindowAttentionHandler.prototype = {
                                                  notification.update(title, banner);
                                              })));
     }
-};
+});
 
 const Source = new Lang.Class({
     Name: 'WindowAttentionSource',

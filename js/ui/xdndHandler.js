@@ -6,11 +6,9 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const DND = imports.ui.dnd;
 
-function XdndHandler() {
-    this._init();
-}
+const XdndHandler = new Lang.Class({
+    Name: 'XdndHandler',
 
-XdndHandler.prototype = {
     _init: function() {
         // Used to display a clone of the cursor window when the
         // window group is hidden (like it happens in the overview)
@@ -125,6 +123,6 @@ XdndHandler.prototype = {
                 pickedActor = pickedActor.get_parent();
         }
     }
-}
+});
 
 Signals.addSignalMethods(XdndHandler.prototype);

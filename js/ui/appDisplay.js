@@ -26,11 +26,9 @@ const MAX_APPLICATION_WORK_MILLIS = 75;
 const MENU_POPUP_TIMEOUT = 600;
 const SCROLL_TIME = 0.1;
 
-function AlphabeticalView() {
-    this._init();
-}
+const AlphabeticalView = new Lang.Class({
+    Name: 'AlphabeticalView',
 
-AlphabeticalView.prototype = {
     _init: function() {
         this._grid = new IconGrid.IconGrid({ xAlign: St.Align.START });
         this._appSystem = Shell.AppSystem.get_default();
@@ -130,13 +128,11 @@ AlphabeticalView.prototype = {
             this._addApp(app);
          }
     }
-};
+});
 
-function ViewByCategories() {
-    this._init();
-}
+const ViewByCategories = new Lang.Class({
+    Name: 'ViewByCategories',
 
-ViewByCategories.prototype = {
     _init: function() {
         this._appSystem = Shell.AppSystem.get_default();
         this.actor = new St.BoxLayout({ style_class: 'all-app' });
@@ -281,16 +277,14 @@ ViewByCategories.prototype = {
                 this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
         }
     }
-};
+});
 
 /* This class represents a display containing a collection of application items.
  * The applications are sorted based on their name.
  */
-function AllAppDisplay() {
-    this._init();
-}
+const AllAppDisplay = new Lang.Class({
+    Name: 'AllAppDisplay',
 
-AllAppDisplay.prototype = {
     _init: function() {
         this._appSystem = Shell.AppSystem.get_default();
         this._appSystem.connect('installed-changed', Lang.bind(this, function() {
@@ -306,7 +300,7 @@ AllAppDisplay.prototype = {
     _redisplay: function() {
         this._appView.refresh();
     }
-};
+});
 
 const AppSearchProvider = new Lang.Class({
     Name: 'AppSearchProvider',
@@ -427,11 +421,9 @@ const AppIcon = new Lang.Class({
     }
 });
 
-function AppWellIcon(app, iconParams, onActivateOverride) {
-    this._init(app, iconParams, onActivateOverride);
-}
+const AppWellIcon = new Lang.Class({
+    Name: 'AppWellIcon',
 
-AppWellIcon.prototype = {
     _init : function(app, iconParams, onActivateOverride) {
         this.app = app;
         this.actor = new St.Button({ style_class: 'app-well-app',
@@ -611,7 +603,7 @@ AppWellIcon.prototype = {
     getDragActorSource: function() {
         return this.icon.icon;
     }
-};
+});
 Signals.addSignalMethods(AppWellIcon.prototype);
 
 const AppIconMenu = new Lang.Class({

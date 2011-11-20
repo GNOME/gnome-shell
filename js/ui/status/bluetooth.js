@@ -353,7 +353,7 @@ const Source = new Lang.Class({
             }
         }));
 
-        MessageTray.Source.prototype.notify.call(this, notification);
+        this.parent(notification);
     },
 
     createNotificationIcon: function() {
@@ -485,7 +485,7 @@ const PinNotification = new Lang.Class({
     },
 
     grabFocus: function(lockTray) {
-        MessageTray.Notification.prototype.grabFocus.call(this, lockTray);
+        this.parent(lockTray);
         global.stage.set_key_focus(this._entry);
     }
 });

@@ -142,11 +142,9 @@ function findAppFromInhibitor(inhibitor) {
     return app;
 }
 
-function ListItem(app, reason) {
-    this._init(app, reason);
-}
+const ListItem = new Lang.Class({
+    Name: 'ListItem',
 
-ListItem.prototype = {
     _init: function(app, reason) {
         this._app = app;
         this._reason = reason;
@@ -192,7 +190,7 @@ ListItem.prototype = {
         this.emit('activate');
         this._app.activate();
     }
-};
+});
 Signals.addSignalMethods(ListItem.prototype);
 
 // The logout timer only shows updates every 10 seconds

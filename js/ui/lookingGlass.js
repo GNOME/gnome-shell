@@ -55,11 +55,9 @@ function _getAutoCompleteGlobalKeywords() {
     return keywords.concat(windowProperties).concat(headerProperties);
 }
 
-function AutoComplete(entry) {
-    this._init(entry);
-}
+const AutoComplete = new Lang.Class({
+    Name: 'AutoComplete',
 
-AutoComplete.prototype = {
     _init: function(entry) {
         this._entry = entry;
         this._entry.connect('key-press-event', Lang.bind(this, this._entryKeyPressEvent));
@@ -118,15 +116,13 @@ AutoComplete.prototype = {
 
         this._entry.clutter_text.insert_text(additionalCompletionText, cursorPos);
     }
-};
+});
 Signals.addSignalMethods(AutoComplete.prototype);
 
 
-function Notebook() {
-    this._init();
-}
+const Notebook = new Lang.Class({
+    Name: 'Notebook',
 
-Notebook.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ vertical: true });
 
@@ -250,7 +246,7 @@ Notebook.prototype = {
 
         this.selectIndex(prevIndex);
     }
-};
+});
 Signals.addSignalMethods(Notebook.prototype);
 
 function objectToString(o) {
@@ -285,11 +281,9 @@ const ObjLink = new Lang.Class({
     }
 });
 
-function Result(command, o, index) {
-    this._init(command, o, index);
-}
+const Result = new Lang.Class({
+    Name: 'Result',
 
-Result.prototype = {
     _init : function(command, o, index) {
         this.index = index;
         this.o = o;
@@ -311,13 +305,11 @@ Result.prototype = {
         padBin.add_actor(line);
         this.actor.add(padBin);
     }
-};
+});
 
-function WindowList() {
-    this._init();
-}
+const WindowList = new Lang.Class({
+    Name: 'WindowList',
 
-WindowList.prototype = {
     _init : function () {
         this.actor = new St.BoxLayout({ name: 'Windows', vertical: true, style: 'spacing: 8px' });
         let tracker = Shell.WindowTracker.get_default();
@@ -358,14 +350,12 @@ WindowList.prototype = {
             }
         }
     }
-};
+});
 Signals.addSignalMethods(WindowList.prototype);
 
-function ObjInspector() {
-    this._init();
-}
+const ObjInspector = new Lang.Class({
+    Name: 'ObjInspector',
 
-ObjInspector.prototype = {
     _init : function () {
         this._obj = null;
         this._previousObj = null;
@@ -465,7 +455,7 @@ ObjInspector.prototype = {
     _onBack: function() {
         this.selectObject(this._previousObj, true);
     }
-};
+});
 
 function addBorderPaintHook(actor) {
     let signalId = actor.connect_after('paint',
@@ -491,11 +481,9 @@ function addBorderPaintHook(actor) {
     return signalId;
 }
 
-function Inspector() {
-    this._init();
-}
+const Inspector = new Lang.Class({
+    Name: 'Inspector',
 
-Inspector.prototype = {
     _init: function() {
         let container = new Shell.GenericContainer({ width: 0,
                                                      height: 0 });
@@ -634,15 +622,13 @@ Inspector.prototype = {
             this._borderPaintId = addBorderPaintHook(this._target);
         }
     }
-};
+});
 
 Signals.addSignalMethods(Inspector.prototype);
 
-function ErrorLog() {
-    this._init();
-}
+const ErrorLog = new Lang.Class({
+    Name: 'ErrorLog',
 
-ErrorLog.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout();
         this.text = new St.Label();
@@ -677,13 +663,11 @@ ErrorLog.prototype = {
         }
         this.text.text = text;
     }
-};
+});
 
-function Memory() {
-    this._init();
-}
+const Memory = new Lang.Class({
+    Name: 'Memory',
 
-Memory.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ vertical: true });
         this._glibc_uordblks = new St.Label();
@@ -728,13 +712,11 @@ Memory.prototype = {
         this._gjs_closure.text = 'gjs_closure: ' + memInfo.gjs_closure;
         this._last_gc_seconds_ago.text = 'last_gc_seconds_ago: ' + memInfo.last_gc_seconds_ago;
     }
-};
+});
 
-function Extensions() {
-    this._init();
-}
+const Extensions = new Lang.Class({
+    Name: 'Extensions',
 
-Extensions.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ vertical: true,
                                         name: 'lookingGlassExtensions' });
@@ -864,13 +846,11 @@ Extensions.prototype = {
 
         return box;
     }
-};
+});
 
-function LookingGlass() {
-    this._init();
-}
+const LookingGlass = new Lang.Class({
+    Name: 'LookingGlass',
 
-LookingGlass.prototype = {
     _init : function() {
         this._borderPaintTarget = null;
         this._borderPaintId = 0;
@@ -1227,5 +1207,5 @@ LookingGlass.prototype = {
                                        })
                                      });
     }
-};
+});
 Signals.addSignalMethods(LookingGlass.prototype);

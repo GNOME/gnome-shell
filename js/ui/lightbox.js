@@ -30,11 +30,9 @@ const Tweener = imports.ui.tweener;
  * @container and will track any changes in its size. You can override
  * this by passing an explicit width and height in @params.
  */
-function Lightbox(container, params) {
-    this._init(container, params);
-}
+const Lightbox = new Lang.Class({
+    Name: 'Lightbox',
 
-Lightbox.prototype = {
     _init : function(container, params) {
         params = Params.parse(params, { inhibitEvents: false,
                                         width: null,
@@ -196,4 +194,4 @@ Lightbox.prototype = {
 
         this.highlight(null);
     }
-};
+});

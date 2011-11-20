@@ -31,11 +31,9 @@ function getTopInvisibleBorder(metaWindow) {
     return outerRect.y - inputRect.y;
 }
 
-function WindowDimmer(actor) {
-    this._init(actor);
-}
+const WindowDimmer = new Lang.Class({
+    Name: 'WindowDimmer',
 
-WindowDimmer.prototype = {
     _init: function(actor) {
         if (Clutter.feature_available(Clutter.FeatureFlags.SHADERS_GLSL)) {
             this._effect = new Clutter.ShaderEffect({ shader_type: Clutter.ShaderType.FRAGMENT_SHADER });
@@ -75,7 +73,7 @@ WindowDimmer.prototype = {
     },
 
     _dimFraction: 0.0
-};
+});
 
 function getWindowDimmer(actor) {
     if (!actor._windowDimmer)
@@ -84,11 +82,9 @@ function getWindowDimmer(actor) {
     return actor._windowDimmer;
 }
 
-function WindowManager() {
-    this._init();
-}
+const WindowManager = new Lang.Class({
+    Name: 'WindowManager',
 
-WindowManager.prototype = {
     _init : function() {
         this._shellwm =  global.window_manager;
 
@@ -627,4 +623,4 @@ WindowManager.prototype = {
         if (!Main.overview.visible)
             this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.DOWN, indexToActivate);
     }
-};
+});

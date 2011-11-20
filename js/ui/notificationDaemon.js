@@ -87,11 +87,9 @@ const rewriteRules = {
     ]
 };
 
-function NotificationDaemon() {
-    this._init();
-}
+const NotificationDaemon = new Lang.Class({
+    Name: 'NotificationDaemon',
 
-NotificationDaemon.prototype = {
     _init: function() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(NotificationDaemonIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/freedesktop/Notifications');
@@ -474,7 +472,7 @@ NotificationDaemon.prototype = {
         if (source)
             source.destroy();
     }
-};
+});
 
 const Source = new Lang.Class({
     Name: 'NotificationDaemonSource',

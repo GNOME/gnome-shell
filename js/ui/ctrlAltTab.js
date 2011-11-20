@@ -22,11 +22,9 @@ const SortGroup = {
     BOTTOM: 2
 };
 
-function CtrlAltTabManager() {
-    this._init();
-}
+const CtrlAltTabManager = new Lang.Class({
+    Name: 'CtrlAltTabManager',
 
-CtrlAltTabManager.prototype = {
     _init: function() {
         this._items = [];
         this._focusManager = St.FocusManager.get_for_stage(global.stage);
@@ -134,17 +132,15 @@ CtrlAltTabManager.prototype = {
                                       }));
         }
     }
-};
+});
 
 function mod(a, b) {
     return (a + b) % b;
 }
 
-function CtrlAltTabPopup() {
-    this._init();
-}
+const CtrlAltTabPopup = new Lang.Class({
+    Name: 'CtrlAltTabPopup',
 
-CtrlAltTabPopup.prototype = {
     _init : function() {
         this.actor = new Shell.GenericContainer({ name: 'ctrlAltTabPopup',
                                                   reactive: true });
@@ -303,7 +299,7 @@ CtrlAltTabPopup.prototype = {
         this._selection = num;
         this._switcher.highlight(num);
     }
-};
+});
 
 const CtrlAltTabSwitcher = new Lang.Class({
     Name: 'CtrlAltTabSwitcher',

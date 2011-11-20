@@ -8,11 +8,9 @@ const Search = imports.ui.search;
 
 const THUMBNAIL_ICON_MARGIN = 2;
 
-function DocInfo(recentInfo) {
-    this._init(recentInfo);
-}
+const DocInfo = new Lang.Class({
+    Name: 'DocInfo',
 
-DocInfo.prototype = {
     _init : function(recentInfo) {
         this.recentInfo = recentInfo;
         // We actually used get_modified() instead of get_visited()
@@ -49,7 +47,7 @@ DocInfo.prototype = {
         }
         return mtype;
     }
-};
+});
 
 var docManagerInstance = null;
 
@@ -62,11 +60,9 @@ function getDocManager() {
 /**
  * DocManager wraps the DocSystem, primarily to expose DocInfo objects.
  */
-function DocManager() {
-    this._init();
-}
+const DocManager = new Lang.Class({
+    Name: 'DocManager',
 
-DocManager.prototype = {
     _init: function() {
         this._docSystem = Shell.DocSystem.get_default();
         this._infosByTimestamp = [];
@@ -135,6 +131,6 @@ DocManager.prototype = {
                 return this._infosByUri[url];
             })), terms);
     }
-};
+});
 
 Signals.addSignalMethods(DocManager.prototype);

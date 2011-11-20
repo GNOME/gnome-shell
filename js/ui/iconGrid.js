@@ -149,11 +149,9 @@ const BaseIcon = new Lang.Class({
     }
 });
 
-function IconGrid(params) {
-    this._init(params);
-}
+const IconGrid = new Lang.Class({
+    Name: 'IconGrid',
 
-IconGrid.prototype = {
     _init: function(params) {
         params = Params.parse(params, { rowLimit: null,
                                         columnLimit: null,
@@ -322,4 +320,4 @@ IconGrid.prototype = {
     visibleItemsCount: function() {
         return this._grid.get_children().length - this._grid.get_n_skip_paint();
     }
-};
+});

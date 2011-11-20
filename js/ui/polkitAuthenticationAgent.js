@@ -335,11 +335,9 @@ const AuthenticationDialog = new Lang.Class({
 });
 Signals.addSignalMethods(AuthenticationDialog.prototype);
 
-function AuthenticationAgent() {
-    this._init();
-}
+const AuthenticationAgent = new Lang.Class({
+    Name: 'AuthenticationAgent',
 
-AuthenticationAgent.prototype = {
     _init: function() {
         this._native = new Shell.PolkitAuthenticationAgent();
         this._native.connect('initiate', Lang.bind(this, this._onInitiate));
@@ -400,7 +398,7 @@ AuthenticationAgent.prototype = {
             this._reallyCompleteRequest(wasDismissed);
         }
     }
-}
+});
 
 function init() {
     let agent = new AuthenticationAgent();

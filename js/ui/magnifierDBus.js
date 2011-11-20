@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Gio = imports.gi.Gio;
+const Lang = imports.lang;
 const Main = imports.ui.main;
 
 const MAG_SERVICE_NAME = 'org.gnome.Magnifier';
@@ -95,11 +96,9 @@ const ZoomRegionIface = <interface name={ZOOM_SERVICE_NAME}>
 // '/org/gnome/Magnifier/ZoomRegion/zoomer1', etc.
 let _zoomRegionInstanceCount = 0;
 
-function ShellMagnifier() {
-    this._init();
-}
+const ShellMagnifier = new Lang.Class({
+    Name: 'ShellMagnifier',
 
-ShellMagnifier.prototype = {
     _init: function() {
         this._zoomers = {};
 
@@ -325,7 +324,7 @@ ShellMagnifier.prototype = {
         // Drop the leading '#'.
         return parseInt(colorString.slice(1), 16);
      }
-};
+});
 
 /**
  * ShellMagnifierZoomRegion:
@@ -333,11 +332,9 @@ ShellMagnifier.prototype = {
  * @zoomerObjectPath:   String that is the path to a DBus ZoomRegion.
  * @zoomRegion:         The actual zoom region associated with the object path.
  */
-function ShellMagnifierZoomRegion(zoomerObjectPath, zoomRegion) {
-    this._init(zoomerObjectPath, zoomRegion);
-}
+const ShellMagnifierZoomRegion = new Lang.Class({
+    Name: 'ShellMagnifierZoomRegion',
 
-ShellMagnifierZoomRegion.prototype = {
     _init: function(zoomerObjectPath, zoomRegion) {
         this._zoomRegion = zoomRegion;
 
@@ -422,4 +419,4 @@ ShellMagnifierZoomRegion.prototype = {
     destroy: function() {
         this._dbusImpl.unexport();
     }
-};
+});

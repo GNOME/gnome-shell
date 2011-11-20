@@ -75,11 +75,9 @@ function HotplugSniffer() {
                                    '/org/gnome/Shell/HotplugSniffer');
 }
 
-function ContentTypeDiscoverer(callback) {
-    this._init(callback);
-}
+const ContentTypeDiscoverer = new Lang.Class({
+    Name: 'ContentTypeDiscoverer',
 
-ContentTypeDiscoverer.prototype = {
     _init: function(callback) {
         this._callback = callback;
     },
@@ -136,13 +134,11 @@ ContentTypeDiscoverer.prototype = {
 
         this._callback(mount, apps, contentTypes);
     }
-}
+});
 
-function AutorunManager() {
-    this._init();
-}
+const AutorunManager = new Lang.Class({
+    Name: 'AutorunManager',
 
-AutorunManager.prototype = {
     _init: function() {
         this._volumeMonitor = Gio.VolumeMonitor.get();
 
@@ -259,7 +255,7 @@ AutorunManager.prototype = {
                 + ': ' + e.toString());
         }
     },
-}
+});
 
 const AutorunResidentSource = new Lang.Class({
     Name: 'AutorunResidentSource',
@@ -404,11 +400,9 @@ const AutorunResidentNotification = new Lang.Class({
     },
 });
 
-function AutorunTransientDispatcher() {
-    this._init();
-}
+const AutorunTransientDispatcher = new Lang.Class({
+    Name: 'AutorunTransientDispatcher',
 
-AutorunTransientDispatcher.prototype = {
     _init: function() {
         this._sources = [];
         this._settings = new Gio.Settings({ schema: SETTINGS_SCHEMA });
@@ -499,7 +493,7 @@ AutorunTransientDispatcher.prototype = {
         // destroy the notification source
         source.destroy();
     }
-}
+});
 
 const AutorunTransientSource = new Lang.Class({
     Name: 'AutorunTransientSource',

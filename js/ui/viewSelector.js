@@ -301,11 +301,9 @@ const SearchTab = new Lang.Class({
 });
 
 
-function ViewSelector() {
-    this._init();
-}
+const ViewSelector = new Lang.Class({
+    Name: 'ViewSelector',
 
-ViewSelector.prototype = {
     _init : function() {
         this.actor = new St.BoxLayout({ name: 'viewSelector',
                                         vertical: true });
@@ -565,5 +563,5 @@ ViewSelector.prototype = {
     removeSearchProvider: function(provider) {
         this._searchTab.removeSearchProvider(provider);
     }
-};
+});
 Signals.addSignalMethods(ViewSelector.prototype);

@@ -56,11 +56,13 @@ function _clamp(value, min, max) {
 }
 
 
-function ScaledPoint(x, y, scaleX, scaleY) {
-    [this.x, this.y, this.scaleX, this.scaleY] = arguments;
-}
+const ScaledPoint = new Lang.Class({
+    Name: 'ScaledPoint',
 
-ScaledPoint.prototype = {
+    _init: function(x, y, scaleX, scaleY) {
+        [this.x, this.y, this.scaleX, this.scaleY] = arguments;
+    },
+
     getPosition : function() {
         return [this.x, this.y];
     },
@@ -86,14 +88,12 @@ ScaledPoint.prototype = {
         return [_interpolate(this.scaleX, other.scaleX, step),
                 _interpolate(this.scaleY, other.scaleY, step)];
     }
-};
+});
 
 
-function WindowClone(realWindow) {
-    this._init(realWindow);
-}
+const WindowClone = new Lang.Class({
+    Name: 'WindowClone',
 
-WindowClone.prototype = {
     _init : function(realWindow) {
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
@@ -418,7 +418,7 @@ WindowClone.prototype = {
 
         this.emit('drag-end');
     }
-};
+});
 Signals.addSignalMethods(WindowClone.prototype);
 
 
@@ -427,11 +427,9 @@ Signals.addSignalMethods(WindowClone.prototype);
  * @parentActor: The actor which will be the parent of all overlay items
  *               such as app icon and window caption
  */
-function WindowOverlay(windowClone, parentActor) {
-    this._init(windowClone, parentActor);
-}
+const WindowOverlay = new Lang.Class({
+    Name: 'WindowOverlay',
 
-WindowOverlay.prototype = {
     _init : function(windowClone, parentActor) {
         let metaWindow = windowClone.metaWindow;
 
@@ -642,7 +640,7 @@ WindowOverlay.prototype = {
 
         this._parentActor.queue_relayout();
     }
-};
+});
 Signals.addSignalMethods(WindowOverlay.prototype);
 
 const WindowPositionFlags = {
@@ -653,11 +651,9 @@ const WindowPositionFlags = {
 /**
  * @metaWorkspace: a #Meta.Workspace, or null
  */
-function Workspace(metaWorkspace, monitorIndex) {
-    this._init(metaWorkspace, monitorIndex);
-}
+const Workspace = new Lang.Class({
+    Name: 'Workspace',
 
-Workspace.prototype = {
     _init : function(metaWorkspace, monitorIndex) {
         // When dragging a window, we use this slot for reserve space.
         this._reservedSlot = null;
@@ -1518,6 +1514,6 @@ Workspace.prototype = {
 
         return false;
     }
-};
+});
 
 Signals.addSignalMethods(Workspace.prototype);

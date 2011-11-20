@@ -66,11 +66,9 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
 </signal>
 </interface>;
 
-function GnomeShell() {
-    this._init();
-}
+const GnomeShell = new Lang.Class({
+    Name: 'GnomeShellDBus',
 
-GnomeShell.prototype = {
     _init: function() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
@@ -230,4 +228,4 @@ GnomeShell.prototype = {
         this._dbusImpl.emit_signal('ExtensionStatusChanged',
                                    GLib.Variant.new('(sis)', [newState.uuid, newState.state, newState.error]));
     }
-};
+});

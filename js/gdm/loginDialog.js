@@ -140,11 +140,9 @@ function _smoothlyResizeActor(actor, width, height) {
     return hold;
 }
 
-function UserListItem(user, reason) {
-    this._init(user, reason);
-}
+const UserListItem = new Lang.Class({
+    Name: 'UserListItem',
 
-UserListItem.prototype = {
     _init: function(user) {
         this.user = user;
         this._userChangedId = this.user.connect('changed',
@@ -273,15 +271,12 @@ UserListItem.prototype = {
                          });
         return hold;
     }
-
-};
+});
 Signals.addSignalMethods(UserListItem.prototype);
 
-function UserList() {
-    this._init.apply(this, arguments);
-}
+const UserList = new Lang.Class({
+    Name: 'UserList',
 
-UserList.prototype = {
     _init: function() {
         this.actor = new St.ScrollView({ style_class: 'login-dialog-user-list-view'});
         this.actor.set_policy(Gtk.PolicyType.NEVER,
@@ -537,14 +532,12 @@ UserList.prototype = {
         item.actor.destroy();
         delete this._items[userName];
     }
-};
+});
 Signals.addSignalMethods(UserList.prototype);
 
-function SessionListItem(id, name) {
-    this._init(id, name);
-}
+const SessionListItem = new Lang.Class({
+    Name: 'SessionListItem',
 
-SessionListItem.prototype = {
     _init: function(id, name) {
         this.id = id;
 
@@ -599,14 +592,12 @@ SessionListItem.prototype = {
     _onClicked: function() {
         this.emit('activate');
     }
-};
+});
 Signals.addSignalMethods(SessionListItem.prototype);
 
-function SessionList() {
-    this._init();
-}
+const SessionList = new Lang.Class({
+    Name: 'SessionList',
 
-SessionList.prototype = {
     _init: function() {
         this.actor = new St.Bin();
 
@@ -737,17 +728,8 @@ SessionList.prototype = {
                          }));
         }
     }
-};
+});
 Signals.addSignalMethods(SessionList.prototype);
-
-function LoginDialog() {
-    if (_loginDialog == null) {
-        this._init();
-        _loginDialog = this;
-    }
-
-    return _loginDialog;
-}
 
 const LoginDialog = new Lang.Class({
     Name: 'LoginDialog',

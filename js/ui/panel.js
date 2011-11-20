@@ -98,11 +98,9 @@ function _unpremultiply(color) {
 };
 
 
-function AnimatedIcon(name, size) {
-    this._init(name, size);
-}
+const AnimatedIcon = new Lang.Class({
+    Name: 'AnimatedIcon',
 
-AnimatedIcon.prototype = {
     _init: function(name, size) {
         this.actor = new St.Bin({ visible: false });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
@@ -139,13 +137,11 @@ AnimatedIcon.prototype = {
         if (this._timeoutId)
             Mainloop.source_remove(this._timeoutId);
     }
-};
+});
 
-function TextShadower() {
-    this._init();
-}
+const TextShadower = new Lang.Class({
+    Name: 'TextShadower',
 
-TextShadower.prototype = {
     _init: function() {
         this.actor = new Shell.GenericContainer();
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
@@ -225,7 +221,7 @@ TextShadower.prototype = {
             child.allocate(childBox, flags);
         }
     }
-};
+});
 
 /**
  * AppMenuButton:
@@ -692,13 +688,11 @@ const ActivitiesButton = new Lang.Class({
         Mainloop.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = 0;
     }
-})
+});
 
-function PanelCorner(panel, side) {
-    this._init(panel, side);
-}
+const PanelCorner = new Lang.Class({
+    Name: 'PanelCorner',
 
-PanelCorner.prototype = {
     _init: function(box, side) {
         this._side = side;
 
@@ -874,14 +868,12 @@ PanelCorner.prototype = {
         this.actor.set_size(cornerRadius, innerBorderWidth + cornerRadius);
         this.actor.set_anchor_point(0, innerBorderWidth);
     }
-};
+});
 
 
-function Panel() {
-    this._init();
-}
+const Panel = new Lang.Class({
+    Name: 'Panel',
 
-Panel.prototype = {
     _init : function() {
         this.actor = new Shell.GenericContainer({ name: 'panel',
                                                   reactive: true });
@@ -1108,5 +1100,4 @@ Panel.prototype = {
         if (box && box._delegate instanceof PanelMenu.ButtonBox)
             box.destroy();
     },
-
-};
+});

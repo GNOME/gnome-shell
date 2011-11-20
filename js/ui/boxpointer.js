@@ -21,11 +21,9 @@ const POPUP_ANIMATION_TIME = 0.15;
  * placed.  The arrow position may be controlled via setArrowOrigin().
  *
  */
-function BoxPointer(side, binProperties) {
-    this._init(side, binProperties);
-}
+const BoxPointer = new Lang.Class({
+    Name: 'BoxPointer',
 
-BoxPointer.prototype = {
     _init: function(arrowSide, binProperties) {
         this._arrowSide = arrowSide;
         this._arrowOrigin = 0;
@@ -452,4 +450,4 @@ BoxPointer.prototype = {
     get opacity() {
         return this.actor.opacity;
     }
-};
+});

@@ -17,11 +17,9 @@ const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 const STARTUP_ANIMATION_TIME = 0.2;
 const KEYBOARD_ANIMATION_TIME = 0.5;
 
-function LayoutManager() {
-    this._init.apply(this, arguments);
-}
+const LayoutManager = new Lang.Class({
+    Name: 'LayoutManager',
 
-LayoutManager.prototype = {
     _init: function () {
         this._rtl = (St.Widget.get_default_direction() == St.TextDirection.RTL);
         this.monitors = [];
@@ -374,7 +372,7 @@ LayoutManager.prototype = {
     findMonitorForActor: function(actor) {
         return this._chrome.findMonitorForActor(actor);
     }
-};
+});
 Signals.addSignalMethods(LayoutManager.prototype);
 
 
@@ -382,11 +380,9 @@ Signals.addSignalMethods(LayoutManager.prototype);
 //
 // This class manages a "hot corner" that can toggle switching to
 // overview.
-function HotCorner() {
-    this._init();
-}
+const HotCorner = new Lang.Class({
+    Name: 'HotCorner',
 
-HotCorner.prototype = {
     _init : function() {
         // We use this flag to mark the case where the user has entered the
         // hot corner and has not left both the hot corner and a surrounding
@@ -548,7 +544,7 @@ HotCorner.prototype = {
             return true;
         return false;
     }
-};
+});
 
 
 // This manages the shell "chrome"; the UI that's visible in the
@@ -561,11 +557,9 @@ const defaultParams = {
     affectsInputRegion: true
 };
 
-function Chrome() {
-    this._init.apply(this, arguments);
-}
+const Chrome = new Lang.Class({
+    Name: 'Chrome',
 
-Chrome.prototype = {
     _init: function(layoutManager) {
         this._layoutManager = layoutManager;
 
@@ -981,4 +975,4 @@ Chrome.prototype = {
 
         return false;
     }
-};
+});

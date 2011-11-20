@@ -357,11 +357,9 @@ const NetworkSecretDialog = new Lang.Class({
     }
 });
 
-function NetworkAgent() {
-    this._init.apply(this, arguments);
-}
+const NetworkAgent = new Lang.Class({
+    Name: 'NetworkAgent',
 
-NetworkAgent.prototype = {
     _init: function() {
         this._native = new Shell.NetworkAgent({ auto_register: true,
                                                 identifier: 'org.gnome.Shell.NetworkAgent' });
@@ -384,4 +382,4 @@ NetworkAgent.prototype = {
         this._dialogs[requestId].close(global.get_current_time());
         this._dialogs[requestId].destroy();
     }
-};
+});

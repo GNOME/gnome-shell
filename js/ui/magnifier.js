@@ -36,11 +36,9 @@ const CROSS_HAIRS_CLIP_KEY      = 'cross-hairs-clip';
 
 let magDBusService = null;
 
-function Magnifier() {
-    this._init();
-}
+const Magnifier = new Lang.Class({
+    Name: 'Magnifier',
 
-Magnifier.prototype = {
     _init: function() {
         // Magnifier is a manager of ZoomRegions.
         this._zoomRegions = [];
@@ -543,14 +541,12 @@ Magnifier.prototype = {
             );
         }
     }
-};
+});
 Signals.addSignalMethods(Magnifier.prototype);
 
-function ZoomRegion(magnifier, mouseSourceActor) {
-    this._init(magnifier, mouseSourceActor);
-}
+const ZoomRegion = new Lang.Class({
+    Name: 'ZoomRegion',
 
-ZoomRegion.prototype = {
     _init: function(magnifier, mouseSourceActor) {
         this._magnifier = magnifier;
 
@@ -1150,13 +1146,11 @@ ZoomRegion.prototype = {
                                                yMagMouse - groupHeight / 2);
         }
     }
-};
+});
 
-function Crosshairs() {
-    this._init();
-}
+const Crosshairs = new Lang.Class({
+    Name: 'Crosshairs',
 
-Crosshairs.prototype = {
     _init: function() {
 
         // Set the group containing the crosshairs to three times the desktop
@@ -1412,4 +1406,4 @@ Crosshairs.prototype = {
         this._vertTopHair.set_position((groupWidth - thickness) / 2, top);
         this._vertBottomHair.set_position((groupWidth - thickness) / 2, bottom);
     }
-};
+});

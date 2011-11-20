@@ -61,11 +61,9 @@ const CaribouKeyboardIface = <interface name='org.gnome.Caribou.Keyboard'>
 <property name='Name' access='read' type='s' />
 </interface>;
 
-function Key() {
-    this._init.apply(this, arguments);
-}
+const Key = new Lang.Class({
+    Name: 'Key',
 
-Key.prototype = {
     _init : function(key) {
         this._key = key;
 
@@ -191,13 +189,12 @@ Key.prototype = {
             this._boxPointer.hide(true);
         }
     }
-};
+});
 
-function Keyboard() {
-    this._init.apply(this, arguments);
-}
+const Keyboard = new Lang.Class({
+    // HACK: we can't set Name, because it collides with Name dbus property
+    // Name: 'Keyboard',
 
-Keyboard.prototype = {
     _init: function () {
         this._impl = Gio.DBusExportedObject.wrapJSObject(CaribouKeyboardIface, this);
         this._impl.export(Gio.DBus.session, '/org/gnome/Caribou/Keyboard');
@@ -532,7 +529,7 @@ Keyboard.prototype = {
     get Name() {
         return 'gnome-shell';
     }
-};
+});
 
 const KeyboardSource = new Lang.Class({
     Name: 'KeyboardSource',

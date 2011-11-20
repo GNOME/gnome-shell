@@ -771,7 +771,7 @@ const PopupSwitchMenuItem = new Lang.Class({
             this.toggle();
         }
 
-        PopupBaseMenuItem.prototype.activate.call(this, event);
+        this.parent(event);
     },
 
     toggle: function() {

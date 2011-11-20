@@ -72,11 +72,9 @@ function makeMessageFromTplEvent(event) {
     };
 }
 
-function Client() {
-    this._init();
-};
+const Client = new Lang.Class({
+    Name: 'Client',
 
-Client.prototype = {
     _init : function() {
         // channel path -> ChatSource
         this._chatSources = {};
@@ -479,7 +477,7 @@ Client.prototype = {
 
         return this._accountSource;
     }
-};
+});
 
 const ChatSource = new Lang.Class({
     Name: 'ChatSource',
@@ -694,7 +692,7 @@ const ChatSource = new Lang.Class({
     },
 
     notify: function() {
-        MessageTray.Source.prototype.notify.call(this, this._notification);
+        this.parent(this._notification);
     },
 
     respond: function(text) {
@@ -1113,7 +1111,7 @@ const ApproverSource = new Lang.Class({
             this._invalidId = 0;
         }
 
-        MessageTray.Source.prototype.destroy.call(this);
+        this.parent();
     },
 
     createNotificationIcon: function() {

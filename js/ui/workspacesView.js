@@ -23,11 +23,9 @@ const MAX_WORKSPACES = 16;
 const CONTROLS_POP_IN_TIME = 0.1;
 
 
-function WorkspacesView(workspaces) {
-    this._init(workspaces);
-}
+const WorkspacesView = new Lang.Class({
+    Name: 'WorkspacesView',
 
-WorkspacesView.prototype = {
     _init: function(workspaces) {
         this.actor = new St.Group({ style_class: 'workspaces-view' });
 
@@ -452,15 +450,13 @@ WorkspacesView.prototype = {
     _getWorkspaceIndexToRemove: function() {
         return global.screen.get_active_workspace_index();
     }
-};
+});
 Signals.addSignalMethods(WorkspacesView.prototype);
 
 
-function WorkspacesDisplay() {
-    this._init();
-}
+const WorkspacesDisplay = new Lang.Class({
+    Name: 'WorkspacesDisplay',
 
-WorkspacesDisplay.prototype = {
     _init: function() {
         this.actor = new Shell.GenericContainer();
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
@@ -852,5 +848,5 @@ WorkspacesDisplay.prototype = {
             break;
         }
     }
-};
+});
 Signals.addSignalMethods(WorkspacesDisplay.prototype);

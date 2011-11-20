@@ -23,11 +23,9 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'ibus-ui-gtk': 'input-method'
 };
 
-function StatusIconDispatcher() {
-    this._init();
-}
+const StatusIconDispatcher = new Lang.Class({
+    Name: 'StatusIconDispatcher',
 
-StatusIconDispatcher.prototype = {
     _init: function() {
         this._traymanager = new Shell.TrayManager();
         this._traymanager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
@@ -61,5 +59,5 @@ StatusIconDispatcher.prototype = {
         else
             this.emit('message-icon-removed', icon);
     }
-};
+});
 Signals.addSignalMethods(StatusIconDispatcher.prototype);

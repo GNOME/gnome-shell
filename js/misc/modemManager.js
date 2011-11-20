@@ -54,11 +54,9 @@ function _getProvidersTable() {
     return _providersTable = providers;
 }
 
-function ModemGsm() {
-    this._init.apply(this, arguments);
-}
+const ModemGsm = new Lang.Class({
+    Name: 'ModemGsm',
 
-ModemGsm.prototype = {
     _init: function(path) {
         this._proxy = new ModemGsmNetworkProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
 
@@ -156,14 +154,12 @@ ModemGsm.prototype = {
 
         return name3 || name2 || null;
     }
-}
+});
 Signals.addSignalMethods(ModemGsm.prototype);
 
-function ModemCdma() {
-    this._init.apply(this, arguments);
-}
+const ModemCdma = new Lang.Class({
+    Name: 'ModemCdma',
 
-ModemCdma.prototype = {
     _init: function(path) {
         this._proxy = new ModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
 
@@ -231,5 +227,5 @@ ModemCdma.prototype = {
 
         return null;
     }
-};
+});
 Signals.addSignalMethods(ModemCdma.prototype);

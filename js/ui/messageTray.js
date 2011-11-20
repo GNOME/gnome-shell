@@ -83,11 +83,9 @@ function _fixMarkup(text, allowMarkup) {
     return GLib.markup_escape_text(text, -1);
 }
 
-function URLHighlighter(text, lineWrap, allowMarkup) {
-    this._init(text, lineWrap, allowMarkup);
-}
+const URLHighlighter = new Lang.Class({
+    Name: 'URLHighlighter',
 
-URLHighlighter.prototype = {
     _init: function(text, lineWrap, allowMarkup) {
         if (!text)
             text = '';
@@ -211,13 +209,11 @@ URLHighlighter.prototype = {
         }
         return -1;
     }
-};
+});
 
-function FocusGrabber() {
-    this._init();
-}
+const FocusGrabber = new Lang.Class({
+    Name: 'FocusGrabber',
 
-FocusGrabber.prototype = {
     _init: function() {
         this.actor = null;
 
@@ -351,7 +347,7 @@ FocusGrabber.prototype = {
             this._togglingFocusGrabMode = false;
         }
     }
-}
+});
 Signals.addSignalMethods(FocusGrabber.prototype);
 
 // Notification:
@@ -1141,11 +1137,9 @@ const Source = new Lang.Class({
 });
 Signals.addSignalMethods(Source.prototype);
 
-function SummaryItem(source) {
-    this._init(source);
-}
+const SummaryItem = new Lang.Class({
+    Name: 'SummaryItem',
 
-SummaryItem.prototype = {
     _init: function(source) {
         this.source = source;
         this.source.connect('notification-added', Lang.bind(this, this._notificationAddedToSource));
@@ -1336,14 +1330,12 @@ SummaryItem.prototype = {
         if (this.notificationStack.get_children().length > 0)
             this.notificationStack.get_children()[0]._delegate.setIconVisible(true);
     }
-};
+});
 Signals.addSignalMethods(SummaryItem.prototype);
 
-function MessageTray() {
-    this._init();
-}
+const MessageTray = new Lang.Class({
+    Name: 'MessageTray',
 
-MessageTray.prototype = {
     _init: function() {
         this._presence = new GnomeSession.Presence(Lang.bind(this, function(proxy, error) {
             this._onStatusChanged(proxy.status);
@@ -2422,7 +2414,7 @@ MessageTray.prototype = {
         if (this._clickedSummaryItem)
             this._updateState();
     }
-};
+});
 
 const SystemNotificationSource = new Lang.Class({
     Name: 'SystemNotificationSource',

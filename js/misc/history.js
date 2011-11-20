@@ -7,11 +7,9 @@ const Params = imports.misc.params;
 
 const DEFAULT_LIMIT = 512;
 
-function HistoryManager(params) {
-    this._init(params);
-}
+const HistoryManager = new Lang.Class({
+    Name: 'HistoryManager',
 
-HistoryManager.prototype = {
     _init: function(params) {
         params = Params.parse(params, { gsettingsKey: null,
                                         limit: DEFAULT_LIMIT,
@@ -111,5 +109,5 @@ HistoryManager.prototype = {
         if (this._key)
             global.settings.set_strv(this._key, this._history);
     }
-};
+});
 Signals.addSignalMethods(HistoryManager.prototype);

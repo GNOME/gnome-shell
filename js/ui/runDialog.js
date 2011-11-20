@@ -30,11 +30,9 @@ const EXEC_ARG_KEY = 'exec-arg';
 
 const DIALOG_GROW_TIME = 0.1;
 
-function CommandCompleter() {
-    this._init();
-}
+const CommandCompleter = new Lang.Class({
+    Name: 'CommandCompleter',
 
-CommandCompleter.prototype = {
     _init : function() {
         this._changedCount = 0;
         this._paths = GLib.getenv('PATH').split(':');
@@ -162,7 +160,7 @@ CommandCompleter.prototype = {
             return common.substr(text.length);
         return common;
     }
-};
+});
 
 const RunDialog = new Lang.Class({
     Name: 'RunDialog',

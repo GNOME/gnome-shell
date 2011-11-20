@@ -46,11 +46,9 @@ const SwipeScrollResult = {
     CLICK: 2
 };
 
-function ShellInfo() {
-    this._init();
-}
+const ShellInfo = new Lang.Class({
+    Name: 'ShellInfo',
 
-ShellInfo.prototype = {
     _init: function() {
         this._source = null;
         this._undoCallback = null;
@@ -95,13 +93,11 @@ ShellInfo.prototype = {
 
         this._source.notify(notification);
     }
-};
+});
 
-function Overview() {
-    this._init.apply(this, arguments);
-}
+const Overview = new Lang.Class({
+    Name: 'Overview',
 
-Overview.prototype = {
     _init : function(params) {
         params = Params.parse(params, { isDummy: false });
 
@@ -811,5 +807,5 @@ Overview.prototype = {
             this._needsFakePointerEvent = false;
         }
     }
-};
+});
 Signals.addSignalMethods(Overview.prototype);

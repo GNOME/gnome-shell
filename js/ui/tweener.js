@@ -202,11 +202,9 @@ function registerSpecialPropertySplitter(name, splitFunction, parameters) {
 // time updates; even better is to pay attention to the vertical
 // vblank and sync to that when possible.)
 //
-function ClutterFrameTicker() {
-    this._init();
-}
+const ClutterFrameTicker = new Lang.Class({
+    Name: 'ClutterFrameTicker',
 
-ClutterFrameTicker.prototype = {
     FRAME_RATE : 60,
 
     _init : function() {
@@ -261,6 +259,6 @@ ClutterFrameTicker.prototype = {
         this._startTime = -1;
         global.end_work();
     }
-};
+});
 
 Signals.addSignalMethods(ClutterFrameTicker.prototype);

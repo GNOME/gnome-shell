@@ -242,11 +242,9 @@ const SearchProvider = new Lang.Class({
 });
 Signals.addSignalMethods(SearchProvider.prototype);
 
-function OpenSearchSystem() {
-    this._init();
-}
+const OpenSearchSystem = new Lang.Class({
+    Name: 'OpenSearchSystem',
 
-OpenSearchSystem.prototype = {
     _init: function() {
         this._providers = [];
         global.settings.connect('changed::' + DISABLED_OPEN_SEARCH_PROVIDERS_KEY, Lang.bind(this, this._refresh));
@@ -334,14 +332,12 @@ OpenSearchSystem.prototype = {
             }
         }));
     }
-}
+});
 Signals.addSignalMethods(OpenSearchSystem.prototype);
 
-function SearchSystem() {
-    this._init();
-}
+const SearchSystem = new Lang.Class({
+    Name: 'SearchSystem',
 
-SearchSystem.prototype = {
     _init: function() {
         this._providers = [];
         this.reset();
@@ -429,5 +425,5 @@ SearchSystem.prototype = {
         this._previousResults = results;
         this.emit('search-completed', results);
     },
-};
+});
 Signals.addSignalMethods(SearchSystem.prototype);

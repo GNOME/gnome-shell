@@ -50,11 +50,9 @@ function _setLabelsForMessage(dialog, message) {
 
 /* -------------------------------------------------------- */
 
-function ListItem(app) {
-    this._init(app);
-}
+const ListItem = new Lang.Class({
+    Name: 'ListItem',
 
-ListItem.prototype = {
     _init: function(app) {
         this._app = app;
 
@@ -86,14 +84,12 @@ ListItem.prototype = {
         this.emit('activate');
         this._app.activate();
     }
-};
+});
 Signals.addSignalMethods(ListItem.prototype);
 
-function ShellMountOperation(source, params) {
-    this._init(source, params);
-}
+const ShellMountOperation = new Lang.Class({
+    Name: 'ShellMountOperation',
 
-ShellMountOperation.prototype = {
     _init: function(source, params) {
         params = Params.parse(params, { reaskPassword: false });
 
@@ -190,7 +186,7 @@ ShellMountOperation.prototype = {
 
         this._processesDialog.update(message, processes, choices);
     },
-}
+});
 
 const ShellMountQuestionDialog = new Lang.Class({
     Name: 'ShellMountQuestionDialog',

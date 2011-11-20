@@ -43,11 +43,9 @@ function primaryModifier(mask) {
     return primary;
 }
 
-function AltTabPopup() {
-    this._init();
-}
+const AltTabPopup = new Lang.Class({
+    Name: 'AltTabPopup',
 
-AltTabPopup.prototype = {
     _init : function() {
         this.actor = new Shell.GenericContainer({ name: 'altTabPopup',
                                                   reactive: true,
@@ -540,7 +538,7 @@ AltTabPopup.prototype = {
                            onComplete: Lang.bind(this, function () { this.thumbnailsVisible = true; })
                          });
     }
-};
+});
 
 const SwitcherList = new Lang.Class({
     Name: 'SwitcherList',
@@ -853,11 +851,9 @@ const SwitcherList = new Lang.Class({
 
 Signals.addSignalMethods(SwitcherList.prototype);
 
-function AppIcon(app) {
-    this._init(app);
-}
+const AppIcon = new Lang.Class({
+    Name: 'AppIcon',
 
-AppIcon.prototype = {
     _init: function(app) {
         this.app = app;
         this.actor = new St.BoxLayout({ style_class: 'alt-tab-app',
@@ -875,7 +871,7 @@ AppIcon.prototype = {
         this._iconBin.set_size(size, size);
         this._iconBin.child = this.icon;
     }
-};
+});
 
 const AppSwitcher = new Lang.Class({
     Name: 'AppSwitcher',

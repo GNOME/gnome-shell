@@ -120,11 +120,9 @@ const PlaceDeviceInfo = new Lang.Class({
     }
 });
 
-function PlacesManager() {
-    this._init();
-}
+const PlacesManager = new Lang.Class({
+    Name: 'PlacesManager',
 
-PlacesManager.prototype = {
     _init: function() {
         this._defaultPlaces = [];
         this._mounts = [];
@@ -355,7 +353,7 @@ PlacesManager.prototype = {
     _removeById: function(sourceArray, id) {
         sourceArray.splice(this._lookupIndexById(sourceArray, id), 1);
     }
-};
+});
 Signals.addSignalMethods(PlacesManager.prototype);
 
 const PlaceSearchProvider = new Lang.Class({

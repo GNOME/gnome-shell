@@ -64,11 +64,9 @@ function ConsoleKitManager() {
     return self;
 }
 
-function AutomountManager() {
-    this._init();
-}
+const AutomountManager = new Lang.Class({
+    Name: 'AutomountManager',
 
-AutomountManager.prototype = {
     _init: function() {
         this._settings = new Gio.Settings({ schema: SETTINGS_SCHEMA });
         this._volumeQueue = [];
@@ -268,4 +266,4 @@ AutomountManager.prototype = {
             return false;
         });
     }
-}
+});

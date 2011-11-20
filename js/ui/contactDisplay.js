@@ -20,11 +20,9 @@ function launchContact(id) {
 
 
 /* This class represents a shown contact search result in the overview */
-function Contact(id) {
-    this._init(id);
-}
+const Contact = new Lang.Class({
+    Name: 'Contact',
 
-Contact.prototype = {
     _init: function(id) {
         this._contactSys = Shell.ContactSystem.get_default();
         this.individual = this._contactSys.get_individual(id);
@@ -131,7 +129,7 @@ Contact.prototype = {
             return tc.load_icon_name(null, 'avatar-default', St.IconType.FULLCOLOR, size);
         }
     },
-};
+});
 
 
 /* Searches for and returns contacts */

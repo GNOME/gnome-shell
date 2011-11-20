@@ -226,11 +226,9 @@ const DragPlaceholderItem = new Lang.Class({
     }
 });
 
-function Dash() {
-    this._init();
-}
+const Dash = new Lang.Class({
+    Name: 'Dash',
 
-Dash.prototype = {
     _init : function() {
         this._maxHeight = -1;
         this.iconSize = 64;
@@ -752,6 +750,6 @@ Dash.prototype = {
 
         return true;
     }
-};
+});
 
 Signals.addSignalMethods(Dash.prototype);

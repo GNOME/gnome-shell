@@ -15,11 +15,9 @@ const DISPLAY_TIMEOUT = 600;
 const UP = -1;
 const DOWN = 1;
 
-function WorkspaceSwitcherPopup() {
-    this._init();
-}
+const WorkspaceSwitcherPopup = new Lang.Class({
+    Name: 'WorkspaceSwitcherPopup',
 
-WorkspaceSwitcherPopup.prototype = {
     _init : function() {
         this.actor = new St.Group({ reactive: true,
                                          x: 0,
@@ -158,4 +156,4 @@ WorkspaceSwitcherPopup.prototype = {
                                             onCompleteScope: this
                                            });
     }
-};
+});

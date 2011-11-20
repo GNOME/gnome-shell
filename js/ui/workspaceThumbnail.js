@@ -25,11 +25,9 @@ const SLIDE_ANIMATION_TIME = 0.2;
 // placeholder exactly.
 const WORKSPACE_CUT_SIZE = 10;
 
-function WindowClone(realWindow) {
-    this._init(realWindow);
-}
+const WindowClone = new Lang.Class({
+    Name: 'WindowClone',
 
-WindowClone.prototype = {
     _init : function(realWindow) {
         this.actor = new Clutter.Clone({ source: realWindow.get_texture(),
                                          reactive: true });
@@ -126,7 +124,7 @@ WindowClone.prototype = {
 
         this.emit('drag-end');
     }
-};
+});
 Signals.addSignalMethods(WindowClone.prototype);
 
 
@@ -144,11 +142,9 @@ const ThumbnailState = {
 /**
  * @metaWorkspace: a #Meta.Workspace
  */
-function WorkspaceThumbnail(metaWorkspace) {
-    this._init(metaWorkspace);
-}
+const WorkspaceThumbnail = new Lang.Class({
+    Name: 'WorkspaceThumbnail',
 
-WorkspaceThumbnail.prototype = {
     _init : function(metaWorkspace) {
         this.metaWorkspace = metaWorkspace;
         this.monitorIndex = Main.layoutManager.primaryIndex;
@@ -469,16 +465,14 @@ WorkspaceThumbnail.prototype = {
 
         return false;
     }
-};
+});
 
 Signals.addSignalMethods(WorkspaceThumbnail.prototype);
 
 
-function ThumbnailsBox() {
-    this._init();
-}
+const ThumbnailsBox = new Lang.Class({
+    Name: 'ThumbnailsBox',
 
-ThumbnailsBox.prototype = {
     _init: function() {
         this.actor = new Shell.GenericContainer({ style_class: 'workspace-thumbnails',
                                                   request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT });
@@ -1028,4 +1022,4 @@ ThumbnailsBox.prototype = {
                            onCompleteScope: this
                          });
     }
-};
+});

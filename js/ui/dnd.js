@@ -69,11 +69,9 @@ function removeDragMonitor(monitor) {
         }
 }
 
-function _Draggable(actor, params) {
-    this._init(actor, params);
-}
+const _Draggable = new Lang.Class({
+    Name: 'Draggable',
 
-_Draggable.prototype = {
     _init : function(actor, params) {
         params = Params.parse(params, { manualMode: false,
                                         restoreOnSuccess: false,
@@ -596,7 +594,7 @@ _Draggable.prototype = {
         this._dragActor = undefined;
         currentDraggable = null;
     }
-};
+});
 
 Signals.addSignalMethods(_Draggable.prototype);
 

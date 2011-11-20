@@ -15,11 +15,9 @@ const Search = imports.ui.search;
 const MAX_SEARCH_RESULTS_ROWS = 1;
 
 
-function SearchResult(provider, metaInfo, terms) {
-    this._init(provider, metaInfo, terms);
-}
+const SearchResult = new Lang.Class({
+    Name: 'SearchResult',
 
-SearchResult.prototype = {
     _init: function(provider, metaInfo, terms) {
         this.provider = provider;
         this.metaInfo = metaInfo;
@@ -97,7 +95,7 @@ SearchResult.prototype = {
         else
             this.provider.activateResult(this.metaInfo.id, params);
     }
-};
+});
 
 
 const GridSearchResults = new Lang.Class({
@@ -179,11 +177,9 @@ const GridSearchResults = new Lang.Class({
     }
 });
 
-function SearchResults(searchSystem, openSearchSystem) {
-    this._init(searchSystem, openSearchSystem);
-}
+const SearchResults = new Lang.Class({
+    Name: 'SearchResults',
 
-SearchResults.prototype = {
     _init: function(searchSystem, openSearchSystem) {
         this._searchSystem = searchSystem;
         this._searchSystem.connect('search-updated', Lang.bind(this, this._updateCurrentResults));
@@ -483,4 +479,4 @@ SearchResults.prototype = {
         resultDisplay.activateSelected();
         Main.overview.hide();
     }
-};
+});
