@@ -32,15 +32,12 @@ const ModalDialog = imports.ui.modalDialog;
 const PopupMenu = imports.ui.popupMenu;
 const ShellEntry = imports.ui.shellEntry;
 
-function NetworkSecretDialog() {
-    this._init.apply(this, arguments);
-}
-
-NetworkSecretDialog.prototype = {
-    __proto__: ModalDialog.ModalDialog.prototype,
+const NetworkSecretDialog = new Lang.Class({
+    Name: 'NetworkSecretDialog',
+    Extends: ModalDialog.ModalDialog,
 
     _init: function(agent, requestId, connection, settingName, hints) {
-        ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'polkit-dialog' });
+        this.parent({ styleClass: 'polkit-dialog' });
 
         this._agent = agent;
         this._requestId = requestId;
@@ -358,7 +355,7 @@ NetworkSecretDialog.prototype = {
 
         return content;
     }
-};
+});
 
 function NetworkAgent() {
     this._init.apply(this, arguments);

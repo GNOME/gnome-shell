@@ -36,15 +36,12 @@ const PolkitAgent = imports.gi.PolkitAgent;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 
-function AuthenticationDialog(actionId, message, cookie, userNames) {
-    this._init(actionId, message, cookie, userNames);
-}
-
-AuthenticationDialog.prototype = {
-    __proto__: ModalDialog.ModalDialog.prototype,
+const AuthenticationDialog = new Lang.Class({
+    Name: 'AuthenticationDialog',
+    Extends: ModalDialog.ModalDialog,
 
     _init: function(actionId, message, cookie, userNames) {
-        ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'polkit-dialog' });
+        this.parent({ styleClass: 'polkit-dialog' });
 
         this.actionId = actionId;
         this.message = message;
@@ -335,8 +332,7 @@ AuthenticationDialog.prototype = {
         this.close(global.get_current_time());
         this._emitDone(false, true);
     },
-
-};
+});
 Signals.addSignalMethods(AuthenticationDialog.prototype);
 
 function AuthenticationAgent() {

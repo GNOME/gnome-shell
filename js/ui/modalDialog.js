@@ -29,11 +29,9 @@ const State = {
     FADED_OUT: 4
 };
 
-function ModalDialog() {
-    this._init();
-}
+const ModalDialog = new Lang.Class({
+    Name: 'ModalDialog',
 
-ModalDialog.prototype = {
     _init: function(params) {
         params = Params.parse(params, { shellReactive: false,
                                         styleClass: null });
@@ -303,5 +301,5 @@ ModalDialog.prototype = {
                                })
                          });
     }
-};
+});
 Signals.addSignalMethods(ModalDialog.prototype);

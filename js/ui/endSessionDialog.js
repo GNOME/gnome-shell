@@ -230,27 +230,19 @@ function _setLabelText(label, text) {
     }
 }
 
-function EndSessionDialog() {
-    if (_endSessionDialog == null) {
-        this._init();
-        _endSessionDialog = this;
-    }
-
-    return _endSessionDialog;
-}
-
 function init() {
     // This always returns the same singleton object
     // By instantiating it initially, we register the
     // bus object, etc.
-    let dialog = new EndSessionDialog();
+    _endSessionDialog = new EndSessionDialog();
 }
 
-EndSessionDialog.prototype = {
-    __proto__: ModalDialog.ModalDialog.prototype,
+const EndSessionDialog = new Lang.Class({
+    Name: 'EndSessionDialog',
+    Extends: ModalDialog.ModalDialog,
 
     _init: function() {
-        ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'end-session-dialog' });
+        this.parent({ styleClass: 'end-session-dialog' });
 
         this._user = AccountsService.UserManager.get_default().get_user(GLib.get_user_name());
 
@@ -441,7 +433,7 @@ EndSessionDialog.prototype = {
     },
 
     close: function() {
-        ModalDialog.ModalDialog.prototype.close.call(this);
+        this.parent();
         this._dbusImpl.emit_signal('Closed', null);
     },
 
@@ -543,4 +535,4 @@ EndSessionDialog.prototype = {
                                         this.disconnect(signalId);
                                     }));
     }
-};
+});

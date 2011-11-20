@@ -502,15 +502,12 @@ function loadExtensions() {
     _loadExtensionsIn(userExtensionsDir, ExtensionType.PER_USER);
 }
 
-function InstallExtensionDialog(uuid, version_tag, name) {
-    this._init(uuid, version_tag, name);
-}
-
-InstallExtensionDialog.prototype = {
-    __proto__: ModalDialog.ModalDialog.prototype,
+const InstallExtensionDialog = new Lang.Class({
+    Name: 'InstallExtensionDialog',
+    Extends: ModalDialog.ModalDialog,
 
     _init: function(uuid, version_tag, name) {
-        ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'extension-dialog' });
+        this.parent({ styleClass: 'extension-dialog' });
 
         this._uuid = uuid;
         this._version_tag = version_tag;
@@ -570,4 +567,4 @@ InstallExtensionDialog.prototype = {
 
         this.close(global.get_current_time());
     }
-};
+});

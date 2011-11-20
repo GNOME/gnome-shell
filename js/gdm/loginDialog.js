@@ -750,12 +750,12 @@ function LoginDialog() {
     return _loginDialog;
 }
 
-LoginDialog.prototype = {
-    __proto__: ModalDialog.ModalDialog.prototype,
+const LoginDialog = new Lang.Class({
+    Name: 'LoginDialog',
+    Extends: ModalDialog.ModalDialog,
 
     _init: function() {
-        ModalDialog.ModalDialog.prototype._init.call(this, { shellReactive: true,
-                                                             styleClass: 'login-dialog' });
+        this.parent({ shellReactive: true, styleClass: 'login-dialog' });
         this.connect('destroy',
                      Lang.bind(this, this._onDestroy));
         this.connect('opened',
@@ -1399,8 +1399,8 @@ LoginDialog.prototype = {
     },
 
     close: function() {
-        ModalDialog.ModalDialog.prototype.close.call(this);
+        this.parent();
 
         Main.ctrlAltTabManager.removeGroup(this._group);
     }
-};
+});

@@ -192,15 +192,12 @@ ShellMountOperation.prototype = {
     },
 }
 
-function ShellMountQuestionDialog(icon) {
-    this._init(icon);
-}
-
-ShellMountQuestionDialog.prototype = {
-    __proto__: ModalDialog.ModalDialog.prototype,
+const ShellMountQuestionDialog = new Lang.Class({
+    Name: 'ShellMountQuestionDialog',
+    Extends: ModalDialog.ModalDialog,
 
     _init: function(icon) {
-        ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'mount-question-dialog' });
+        this.parent({ styleClass: 'mount-question-dialog' });
 
         let mainContentLayout = new St.BoxLayout();
         this.contentLayout.add(mainContentLayout, { x_fill: true,
@@ -236,7 +233,7 @@ ShellMountQuestionDialog.prototype = {
         _setLabelsForMessage(this, message);
         _setButtonsForChoices(this, choices);
     }
-}
+});
 Signals.addSignalMethods(ShellMountQuestionDialog.prototype);
 
 const ShellMountPasswordSource = new Lang.Class({
@@ -298,15 +295,12 @@ const ShellMountPasswordNotification = new Lang.Class({
     }
 });
 
-function ShellProcessesDialog(icon) {
-    this._init(icon);
-}
-
-ShellProcessesDialog.prototype = {
-    __proto__: ModalDialog.ModalDialog.prototype,
+const ShellProcessesDialog = new Lang.Class({
+    Name: 'ShellProcessesDialog',
+    Extends: ModalDialog.ModalDialog,
 
     _init: function(icon) {
-        ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'show-processes-dialog' });
+        this.parent({ styleClass: 'show-processes-dialog' });
 
         let mainContentLayout = new St.BoxLayout();
         this.contentLayout.add(mainContentLayout, { x_fill: true,
@@ -392,5 +386,5 @@ ShellProcessesDialog.prototype = {
         _setLabelsForMessage(this, message);
         _setButtonsForChoices(this, choices);
     }
-}
+});
 Signals.addSignalMethods(ShellProcessesDialog.prototype);
