@@ -135,15 +135,12 @@ Contact.prototype = {
 
 
 /* Searches for and returns contacts */
-function ContactSearchProvider() {
-    this._init();
-}
-
-ContactSearchProvider.prototype = {
-    __proto__: Search.SearchProvider.prototype,
+const ContactSearchProvider = new Lang.Class({
+    Name: 'ContactSearchProvider',
+    Extends: Search.SearchProvider,
 
     _init: function() {
-        Search.SearchProvider.prototype._init.call(this, _("CONTACTS"));
+        this.parent(_("CONTACTS"));
         this._contactSys = Shell.ContactSystem.get_default();
     },
 
@@ -182,4 +179,4 @@ ContactSearchProvider.prototype = {
     activateResult: function(id, params) {
         launchContact(id);
     }
-};
+});

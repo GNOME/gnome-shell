@@ -21,11 +21,9 @@
 const Lang = imports.lang;
 const Signals = imports.signals;
 
-function Task() {
-    this._init.apply(this, arguments);
-}
+const Task = new Lang.Class({
+    Name: 'Task',
 
-Task.prototype = {
     _init: function(scope, handler) {
         if (scope)
             this.scope = scope;
@@ -41,22 +39,17 @@ Task.prototype = {
 
         return null;
     },
-};
+});
 Signals.addSignalMethods(Task.prototype);
 
-function Hold() {
-    this._init.apply(this, arguments);
-}
-
-Hold.prototype = {
-    __proto__: Task.prototype,
+const Hold = new Lang.Class({
+    Name: 'Hold',
+    Extends: Task,
 
     _init: function() {
-        Task.prototype._init.call(this,
-                                  this,
-                                  function () {
-                                      return this;
-                                  });
+        this.parent(this, function () {
+            return this;
+        });
 
         this._acquisitions = 1;
     },
@@ -88,18 +81,15 @@ Hold.prototype = {
     isAcquired: function() {
         return this._acquisitions > 0;
     }
-}
+});
 Signals.addSignalMethods(Hold.prototype);
 
-function Batch() {
-    this._init.apply(this, arguments);
-}
-
-Batch.prototype = {
-    __proto__: Task.prototype,
+const Batch = new Lang.Class({
+    Name: 'Batch',
+    Extends: Task,
 
     _init: function(scope, tasks) {
-        Task.prototype._init.call(this);
+        this.parent();
 
         this.tasks = [];
 
@@ -166,20 +156,12 @@ Batch.prototype = {
     cancel: function() {
         this.tasks = this.tasks.splice(0, this._currentTaskIndex + 1);
     }
-
-};
+});
 Signals.addSignalMethods(Batch.prototype);
 
-function ConcurrentBatch() {
-    this._init.apply(this, arguments);
-}
-
-ConcurrentBatch.prototype = {
-    __proto__: Batch.prototype,
-
-    _init: function(scope, tasks) {
-        Batch.prototype._init.call(this, scope, tasks);
-    },
+const ConcurrentBatch = new Lang.Class({
+    Name: 'ConcurrentBatch',
+    Extends: Batch,
 
     process: function() {
        let hold = this.runTask();
@@ -193,19 +175,12 @@ ConcurrentBatch.prototype = {
        // concurrently.
        this.nextTask();
     }
-};
+});
 Signals.addSignalMethods(ConcurrentBatch.prototype);
 
-function ConsecutiveBatch() {
-    this._init.apply(this, arguments);
-}
-
-ConsecutiveBatch.prototype = {
-    __proto__: Batch.prototype,
-
-    _init: function(scope, tasks) {
-        Batch.prototype._init.call(this, scope, tasks);
-    },
+const ConsecutiveBatch = new Lang.Class({
+    Name: 'ConsecutiveBatch',
+    Extends: Batch,
 
     process: function() {
        let hold = this.runTask();
@@ -224,5 +199,5 @@ ConsecutiveBatch.prototype = {
            this.nextTask();
        }
     }
-};
+});
 Signals.addSignalMethods(ConsecutiveBatch.prototype);

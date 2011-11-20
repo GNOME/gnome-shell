@@ -278,11 +278,10 @@ const NMWirelessSectionTitleMenuItem = new Lang.Class({
     }
 });
 
-function NMDevice() {
-    throw new TypeError('Instantanting abstract class NMDevice');
-}
+const NMDevice = new Lang.Class({
+    Name: 'NMDevice',
+    Abstract: true,
 
-NMDevice.prototype = {
     _init: function(client, device, connections) {
         this.device = device;
         if (device) {
@@ -664,26 +663,23 @@ NMDevice.prototype = {
 
         return out;
     }
-};
+});
 Signals.addSignalMethods(NMDevice.prototype);
 
 
-function NMDeviceWired() {
-    this._init.apply(this, arguments);
-}
-
-NMDeviceWired.prototype = {
-    __proto__: NMDevice.prototype,
+const NMDeviceWired = new Lang.Class({
+    Name: 'NMDeviceWired',
+    Extends: NMDevice,
 
     _init: function(client, device, connections) {
         this._autoConnectionName = _("Auto Ethernet");
         this.category = NMConnectionCategory.WIRED;
 
-        NMDevice.prototype._init.call(this, client, device, connections);
+        this.parent(client, device, connections);
     },
 
     _createSection: function() {
-        NMDevice.prototype._createSection.call(this);
+        this.parent();
 
         // if we have only one connection (normal or automatic)
         // we hide the connection list, and use the switch to control
@@ -708,14 +704,11 @@ NMDeviceWired.prototype = {
         }));
         return connection;
     }
-};
+});
 
-function NMDeviceModem() {
-    this._init.apply(this, arguments);
-}
-
-NMDeviceModem.prototype = {
-    __proto__: NMDevice.prototype,
+const NMDeviceModem = new Lang.Class({
+    Name: 'NMDeviceModem',
+    Extends: NMDevice,
 
     _init: function(client, device, connections) {
         let is_wwan = false;
@@ -764,7 +757,7 @@ NMDeviceModem.prototype = {
             }));
         }
 
-        NMDevice.prototype._init.call(this, client, device, connections);
+        this.parent(client, device, connections);
     },
 
     setEnabled: function(enabled) {
@@ -777,7 +770,7 @@ NMDeviceModem.prototype = {
                 this.statusItem.setStatus(this.getStatusLabel());
         }
 
-        NMDevice.prototype.setEnabled.call(this, enabled);
+        this.parent(enabled);
     },
 
     get connected() {
@@ -794,7 +787,7 @@ NMDeviceModem.prototype = {
             this._signalQualityId = 0;
         }
 
-        NMDevice.prototype.destroy.call(this);
+        this.parent();
     },
 
     _getSignalIcon: function() {
@@ -815,13 +808,13 @@ NMDeviceModem.prototype = {
             this.section.addMenuItem(this._operatorItem);
         }
 
-        NMDevice.prototype._createSection.call(this);
+        this.parent();
     },
 
     _clearSection: function() {
         this._operatorItem = null;
 
-        NMDevice.prototype._clearSection.call(this);
+        this.parent();
     },
 
     _createAutomaticConnection: function() {
@@ -831,14 +824,11 @@ NMDeviceModem.prototype = {
                     'connect-3g', this.device.get_path()]);
         return null;
     }
-};
+});
 
-function NMDeviceBluetooth() {
-    this._init.apply(this, arguments);
-}
-
-NMDeviceBluetooth.prototype = {
-    __proto__: NMDevice.prototype,
+const NMDeviceBluetooth = new Lang.Class({
+    Name: 'NMDeviceBluetooth',
+    Extends: NMDevice,
 
     _init: function(client, device, connections) {
         this._autoConnectionName = this._makeConnectionName(device);
@@ -846,7 +836,7 @@ NMDeviceBluetooth.prototype = {
 
         this.category = NMConnectionCategory.WWAN;
 
-        NMDevice.prototype._init.call(this, client, device, connections);
+        this.parent(client, device, connections);
     },
 
     _createAutomaticConnection: function() {
@@ -876,23 +866,20 @@ NMDeviceBluetooth.prototype = {
         this._clearSection();
         this._createSection();
     }
-};
+});
 
 
 // Not a real device, but I save a lot code this way
-function NMDeviceVPN() {
-    this._init.apply(this, arguments);
-}
-
-NMDeviceVPN.prototype = {
-    __proto__: NMDevice.prototype,
+const NMDeviceVPN = new Lang.Class({
+    Name: 'NMDeviceVPN',
+    Extends: NMDevice,
 
     _init: function(client) {
         // Disable autoconnections
         this._autoConnectionName = null;
         this.category = NMConnectionCategory.VPN;
 
-        NMDevice.prototype._init.call(this, client, null, [ ]);
+        this.parent(client, null, [ ]);
     },
 
     connectionValid: function(connection) {
@@ -908,7 +895,7 @@ NMDeviceVPN.prototype = {
     },
 
     setActiveConnection: function(activeConnection) {
-        NMDevice.prototype.setActiveConnection.call(this, activeConnection);
+        this.parent(activeConnection);
 
         this.emit('active-connection-changed');
     },
@@ -925,14 +912,11 @@ NMDeviceVPN.prototype = {
     getStatusLabel: function() {
         return null;
     }
-};
+});
 
-function NMDeviceWireless() {
-    this._init.apply(this, arguments);
-}
-
-NMDeviceWireless.prototype = {
-    __proto__: NMDevice.prototype,
+const NMDeviceWireless = new Lang.Class({
+    Name: 'NMDeviceWireless',
+    Extends: NMDevice,
 
     _init: function(client, device, connections) {
         this.category = NMConnectionCategory.WIRELESS;
@@ -1004,7 +988,7 @@ NMDeviceWireless.prototype = {
         this._apAddedId = device.connect('access-point-added', Lang.bind(this, this._accessPointAdded));
         this._apRemovedId = device.connect('access-point-removed', Lang.bind(this, this._accessPointRemoved));
 
-        NMDevice.prototype._init.call(this, client, device, validConnections);
+        this.parent(client, device, validConnections);
     },
 
     destroy: function() {
@@ -1024,7 +1008,7 @@ NMDeviceWireless.prototype = {
             this._apRemovedId = 0;
         }
 
-        NMDevice.prototype.destroy.call(this);
+        this.parent();
     },
 
     setEnabled: function(enabled) {
@@ -1338,7 +1322,7 @@ NMDeviceWireless.prototype = {
     },
 
     _clearSection: function() {
-        NMDevice.prototype._clearSection.call(this);
+        this.parent();
 
         for (let i = 0; i < this._networks.length; i++)
             this._networks[i].item = null;
@@ -1546,7 +1530,7 @@ NMDeviceWireless.prototype = {
             this._createNetworkItem(apObj, j + activeOffset);
         }
     },
-};
+});
 
 const NMApplet = new Lang.Class({
     Name: 'NMApplet',

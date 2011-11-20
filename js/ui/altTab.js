@@ -542,11 +542,9 @@ AltTabPopup.prototype = {
     }
 };
 
-function SwitcherList(squareItems) {
-    this._init(squareItems);
-}
+const SwitcherList = new Lang.Class({
+    Name: 'SwitcherList',
 
-SwitcherList.prototype = {
     _init : function(squareItems) {
         this.actor = new Shell.GenericContainer({ style_class: 'switcher-list' });
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
@@ -851,7 +849,7 @@ SwitcherList.prototype = {
         // Clip the area for scrolling
         this._clipBin.set_clip(0, -topPadding, (this.actor.allocation.x2 - this.actor.allocation.x1) - leftPadding - rightPadding, this.actor.height + bottomPadding);
     }
-};
+});
 
 Signals.addSignalMethods(SwitcherList.prototype);
 
@@ -879,15 +877,12 @@ AppIcon.prototype = {
     }
 };
 
-function AppSwitcher() {
-    this._init.apply(this, arguments);
-}
-
-AppSwitcher.prototype = {
-    __proto__ : SwitcherList.prototype,
+const AppSwitcher = new Lang.Class({
+    Name: 'AppSwitcher',
+    Extends: SwitcherList,
 
     _init : function(localApps, otherApps, altTabPopup) {
-        SwitcherList.prototype._init.call(this, true);
+        this.parent(true);
 
         // Construct the AppIcons, add to the popup
         let activeWorkspace = global.screen.get_active_workspace();
@@ -966,7 +961,7 @@ AppSwitcher.prototype = {
 
     _allocate: function (actor, box, flags) {
         // Allocate the main list items
-        SwitcherList.prototype._allocate.call(this, actor, box, flags);
+        this.parent(actor, box, flags);
 
         let arrowHeight = Math.floor(this.actor.get_theme_node().get_padding(St.Side.BOTTOM) / 3);
         let arrowWidth = arrowHeight * 2;
@@ -1021,7 +1016,7 @@ AppSwitcher.prototype = {
                 this._arrows[this._curApp].remove_style_pseudo_class('highlighted');
         }
 
-        SwitcherList.prototype.highlight.call(this, n, justOutline);
+        this.parent(n, justOutline);
         this._curApp = n;
 
         if (this._curApp != -1) {
@@ -1045,17 +1040,14 @@ AppSwitcher.prototype = {
         if (appIcon.cachedWindows.length == 1)
             arrow.hide();
     }
-};
+});
 
-function ThumbnailList(windows) {
-    this._init(windows);
-}
-
-ThumbnailList.prototype = {
-    __proto__ : SwitcherList.prototype,
+const ThumbnailList = new Lang.Class({
+    Name: 'ThumbnailList',
+    Extends: SwitcherList,
 
     _init : function(windows) {
-        SwitcherList.prototype._init.call(this);
+        this.parent(false);
 
         let activeWorkspace = global.screen.get_active_workspace();
 
@@ -1133,7 +1125,7 @@ ThumbnailList.prototype = {
         // Make sure we only do this once
         this._thumbnailBins = new Array();
     }
-};
+});
 
 function _drawArrow(area, side) {
     let themeNode = area.get_theme_node();

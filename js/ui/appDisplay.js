@@ -308,15 +308,13 @@ AllAppDisplay.prototype = {
     }
 };
 
-function AppSearchProvider() {
-    this._init();
-}
-
-AppSearchProvider.prototype = {
-    __proto__: Search.SearchProvider.prototype,
+const AppSearchProvider = new Lang.Class({
+    Name: 'AppSearchProvider',
+    Extends: Search.SearchProvider,
 
     _init: function() {
-        Search.SearchProvider.prototype._init.call(this, _("APPLICATIONS"));
+        this.parent(_("APPLICATIONS"));
+
         this._appSys = Shell.AppSystem.get_default();
     },
 
@@ -364,17 +362,15 @@ AppSearchProvider.prototype = {
         let icon = new AppWellIcon(app);
         return icon.actor;
     }
-};
+});
 
-function SettingsSearchProvider() {
-    this._init();
-}
-
-SettingsSearchProvider.prototype = {
-    __proto__: Search.SearchProvider.prototype,
+const SettingsSearchProvider = new Lang.Class({
+    Name: 'SettingsSearchProvider',
+    Extends: Search.SearchProvider,
 
     _init: function() {
-        Search.SearchProvider.prototype._init.call(this, _("SETTINGS"));
+        this.parent(_("SETTINGS"));
+
         this._appSys = Shell.AppSystem.get_default();
         this._gnomecc = this._appSys.lookup_app('gnome-control-center.desktop');
     },
@@ -412,29 +408,24 @@ SettingsSearchProvider.prototype = {
         let icon = new AppWellIcon(app);
         return icon.actor;
     }
-};
+});
 
-function AppIcon(app, params) {
-    this._init(app, params);
-}
-
-AppIcon.prototype = {
-    __proto__:  IconGrid.BaseIcon.prototype,
+const AppIcon = new Lang.Class({
+    Name: 'AppIcon',
+    Extends: IconGrid.BaseIcon,
 
     _init : function(app, params) {
         this.app = app;
 
         let label = this.app.get_name();
 
-        IconGrid.BaseIcon.prototype._init.call(this,
-                                               label,
-                                               params);
+        this.parent(label, params);
     },
 
     createIcon: function(iconSize) {
         return this.app.create_icon_texture(iconSize);
     }
-};
+});
 
 function AppWellIcon(app, iconParams, onActivateOverride) {
     this._init(app, iconParams, onActivateOverride);

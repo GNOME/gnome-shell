@@ -164,14 +164,12 @@ CommandCompleter.prototype = {
     }
 };
 
-function RunDialog() {
-    this._init();
-}
+const RunDialog = new Lang.Class({
+    Name: 'RunDialog',
+    Extends: ModalDialog.ModalDialog,
 
-RunDialog.prototype = {
-__proto__: ModalDialog.ModalDialog.prototype,
     _init : function() {
-        ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'run-dialog' });
+        this.parent({ styleClass: 'run-dialog' });
 
         this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
         this._terminalSettings = new Gio.Settings({ schema: TERMINAL_SCHEMA });
@@ -384,8 +382,7 @@ __proto__: ModalDialog.ModalDialog.prototype,
         if (this._lockdownSettings.get_boolean(DISABLE_COMMAND_LINE_KEY))
             return;
 
-        ModalDialog.ModalDialog.prototype.open.call(this);
+        this.parent();
     },
-
-};
+});
 Signals.addSignalMethods(RunDialog.prototype);

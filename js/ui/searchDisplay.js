@@ -100,15 +100,13 @@ SearchResult.prototype = {
 };
 
 
-function GridSearchResults(provider, grid) {
-    this._init(provider, grid);
-}
-
-GridSearchResults.prototype = {
-    __proto__: Search.SearchResultDisplay.prototype,
+const GridSearchResults = new Lang.Class({
+    Name: 'GridSearchResults',
+    Extends: Search.SearchResultDisplay,
 
     _init: function(provider, grid) {
-        Search.SearchResultDisplay.prototype._init.call(this, provider);
+        this.parent(provider);
+
         this._grid = grid || new IconGrid.IconGrid({ rowLimit: MAX_SEARCH_RESULTS_ROWS,
                                                      xAlign: St.Align.START });
         this.actor = new St.Bin({ x_align: St.Align.START });
@@ -179,8 +177,7 @@ GridSearchResults.prototype = {
         let targetActor = this._grid.getItemAtIndex(this.selectionIndex);
         targetActor._delegate.activate();
     }
-};
-
+});
 
 function SearchResults(searchSystem, openSearchSystem) {
     this._init(searchSystem, openSearchSystem);

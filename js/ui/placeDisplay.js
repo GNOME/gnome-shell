@@ -22,11 +22,9 @@ const Util = imports.misc.util;
  * @iconFactory: A JavaScript callback which will create an icon texture given a size parameter
  * @launch: A JavaScript callback to launch the entry
  */
-function PlaceInfo(id, name, iconFactory, launch) {
-    this._init(id, name, iconFactory, launch);
-}
+const PlaceInfo = new Lang.Class({
+    Name: 'PlaceInfo',
 
-PlaceInfo.prototype = {
     _init: function(id, name, iconFactory, launch) {
         this.id = id;
         this.name = name;
@@ -55,7 +53,7 @@ PlaceInfo.prototype = {
     isRemovable: function() {
         return false;
     }
-};
+});
 
 // Helper function to translate launch parameters into a GAppLaunchContext
 function _makeLaunchContext(params)
@@ -72,12 +70,9 @@ function _makeLaunchContext(params)
     return launchContext;
 }
 
-function PlaceDeviceInfo(mount) {
-    this._init(mount);
-}
-
-PlaceDeviceInfo.prototype = {
-    __proto__: PlaceInfo.prototype,
+const PlaceDeviceInfo = new Lang.Class({
+    Name: 'PlaceDeviceInfo',
+    Extends: PlaceInfo,
 
     _init: function(mount) {
         this._mount = mount;
@@ -123,7 +118,7 @@ PlaceDeviceInfo.prototype = {
                                      _("Retry"));
         }
     }
-};
+});
 
 function PlacesManager() {
     this._init();
@@ -363,16 +358,12 @@ PlacesManager.prototype = {
 };
 Signals.addSignalMethods(PlacesManager.prototype);
 
-
-function PlaceSearchProvider() {
-    this._init();
-}
-
-PlaceSearchProvider.prototype = {
-    __proto__: Search.SearchProvider.prototype,
+const PlaceSearchProvider = new Lang.Class({
+    Name: 'PlaceSearchProvider',
+    Extends: Search.SearchProvider,
 
     _init: function() {
-        Search.SearchProvider.prototype._init.call(this, _("PLACES & DEVICES"));
+        this.parent(_("PLACES & DEVICES"));
     },
 
     getResultMeta: function(resultId) {
@@ -434,4 +425,4 @@ PlaceSearchProvider.prototype = {
         let places = previousResults.map(function (id) { return Main.placesManager.lookupPlaceById(id); });
         return this._searchPlaces(places, terms);
     }
-};
+});

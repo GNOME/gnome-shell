@@ -262,12 +262,9 @@ function objectToString(o) {
     }
 }
 
-function ObjLink(o, title) {
-    this._init(o, title);
-}
-
-ObjLink.prototype = {
-    __proto__: Link.Link,
+const ObjLink = new Lang.Class({
+    Name: 'ObjLink',
+    Extends: Link.Link,
 
     _init: function(o, title) {
         let text;
@@ -277,7 +274,8 @@ ObjLink.prototype = {
             text = objectToString(o);
         text = GLib.markup_escape_text(text, -1);
         this._obj = o;
-        Link.Link.prototype._init.call(this, { label: text });
+
+        this.parent({ label: text });
         this.actor.get_child().single_line_mode = true;
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
     },
@@ -285,7 +283,7 @@ ObjLink.prototype = {
     _onClicked: function (link) {
         Main.lookingGlass.inspectObject(this._obj, this.actor);
     }
-};
+});
 
 function Result(command, o, index) {
     this._init(command, o, index);

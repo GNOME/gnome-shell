@@ -1,19 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const DocInfo = imports.misc.docInfo;
+const Lang = imports.lang;
 const Params = imports.misc.params;
 const Search = imports.ui.search;
 
-
-function DocSearchProvider() {
-    this._init();
-}
-
-DocSearchProvider.prototype = {
-    __proto__: Search.SearchProvider.prototype,
+const DocSearchProvider = new Lang.Class({
+    Name: 'DocSearchProvider',
+    Extends: Search.SearchProvider,
 
     _init: function(name) {
-        Search.SearchProvider.prototype._init.call(this, _("RECENT ITEMS"));
+        this.parent(_("RECENT ITEMS"));
         this._docManager = DocInfo.getDocManager();
     },
 
@@ -44,4 +41,4 @@ DocSearchProvider.prototype = {
     getSubsearchResultSet: function(previousResults, terms) {
         return this._docManager.subsearch(previousResults, terms);
     }
-};
+});

@@ -10,11 +10,9 @@ const Params = imports.misc.params;
 const ICON_SIZE = 48;
 
 
-function BaseIcon(label, createIcon) {
-    this._init(label, createIcon);
-}
+const BaseIcon = new Lang.Class({
+    Name: 'BaseIcon',
 
-BaseIcon.prototype = {
     _init : function(label, params) {
         params = Params.parse(params, { createIcon: null,
                                         setSizeManually: false,
@@ -149,7 +147,7 @@ BaseIcon.prototype = {
 
         this._createIconTexture(size);
     }
-};
+});
 
 function IconGrid(params) {
     this._init(params);

@@ -15,11 +15,9 @@ const SearchDisplay = imports.ui.searchDisplay;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 
-function BaseTab(titleActor, pageActor, name, a11yIcon) {
-    this._init(titleActor, pageActor, name, a11yIcon);
-}
+const BaseTab = new Lang.Class({
+    Name: 'BaseTab',
 
-BaseTab.prototype = {
     _init: function(titleActor, pageActor, name, a11yIcon) {
         this.title = titleActor;
         this.page = new St.Bin({ child: pageActor,
@@ -75,16 +73,13 @@ BaseTab.prototype = {
     _activate: function() {
         this.emit('activated');
     }
-};
+});
 Signals.addSignalMethods(BaseTab.prototype);
 
 
-function ViewTab(id, label, pageActor, a11yIcon) {
-    this._init(id, label, pageActor, a11yIcon);
-}
-
-ViewTab.prototype = {
-    __proto__: BaseTab.prototype,
+const ViewTab = new Lang.Class({
+    Name: 'ViewTab',
+    Extends: BaseTab,
 
     _init: function(id, label, pageActor, a11yIcon) {
         this.id = id;
@@ -93,17 +88,14 @@ ViewTab.prototype = {
                                          style_class: 'view-tab-title' });
         titleActor.connect('clicked', Lang.bind(this, this._activate));
 
-        BaseTab.prototype._init.call(this, titleActor, pageActor, label, a11yIcon);
+        this.parent(titleActor, pageActor, label, a11yIcon);
     }
-};
+});
 
 
-function SearchTab() {
-    this._init();
-}
-
-SearchTab.prototype = {
-    __proto__: BaseTab.prototype,
+const SearchTab = new Lang.Class({
+    Name: 'SearchTab',
+    Extends: BaseTab,
 
     _init: function() {
         this.active = false;
@@ -136,11 +128,7 @@ SearchTab.prototype = {
         this._iconClickedId = 0;
 
         this._searchResults = new SearchDisplay.SearchResults(this._searchSystem, this._openSearchSystem);
-        BaseTab.prototype._init.call(this,
-                                     this._entry,
-                                     this._searchResults.actor,
-                                     _("Search"),
-                                     'edit-find');
+        this.parent(this._entry, this._searchResults.actor, _("Search"), 'edit-find');
 
         this._text.connect('text-changed', Lang.bind(this, this._onTextChanged));
         this._text.connect('key-press-event', Lang.bind(this, function (o, e) {
@@ -166,7 +154,7 @@ SearchTab.prototype = {
     },
 
     hide: function() {
-        BaseTab.prototype.hide.call(this);
+        this.parent();
 
         // Leave the entry focused when it doesn't have any text;
         // when replacing a selected search term, Clutter emits
@@ -310,7 +298,7 @@ SearchTab.prototype = {
 
         return false;
     }
-};
+});
 
 
 function ViewSelector() {

@@ -19,11 +19,9 @@ const DASH_ANIMATION_TIME = 0.2;
 
 // A container like StBin, but taking the child's scale into account
 // when requesting a size
-function DashItemContainer() {
-    this._init();
-}
+const DashItemContainer = new Lang.Class({
+    Name: 'DashItemContainer',
 
-DashItemContainer.prototype = {
     _init: function() {
         this.actor = new Shell.GenericContainer({ style_class: 'dash-item-container' });
         this.actor.connect('get-preferred-width',
@@ -157,17 +155,14 @@ DashItemContainer.prototype = {
     get childOpacity() {
         return this._childOpacity;
     }
-};
+});
 
-function RemoveFavoriteIcon() {
-    this._init();
-}
-
-RemoveFavoriteIcon.prototype = {
-    __proto__: DashItemContainer.prototype,
+const RemoveFavoriteIcon = new Lang.Class({
+    Name: 'RemoveFavoriteIcon',
+    Extends: DashItemContainer,
 
     _init: function() {
-        DashItemContainer.prototype._init.call(this);
+        this.parent();
 
         this._iconBin = new St.Bin({ style_class: 'remove-favorite' });
         this._iconActor = null;
@@ -219,22 +214,17 @@ RemoveFavoriteIcon.prototype = {
 
         return true;
     }
-};
+});
 
-
-function DragPlaceholderItem() {
-    this._init();
-}
-
-DragPlaceholderItem.prototype = {
-    __proto__: DashItemContainer.prototype,
+const DragPlaceholderItem = new Lang.Class({
+    Name: 'DragPlaceholderItem',
+    Extends: DashItemContainer,
 
     _init: function() {
-        DashItemContainer.prototype._init.call(this);
+        this.parent();
         this.setChild(new St.Bin({ style_class: 'placeholder' }));
     }
-};
-
+});
 
 function Dash() {
     this._init();

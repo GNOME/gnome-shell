@@ -23,11 +23,9 @@ const MatchType = {
     MULTIPLE_PREFIX: 4
 };
 
-function SearchResultDisplay(provider) {
-    this._init(provider);
-}
+const SearchResultDisplay = new Lang.Class({
+    Name: 'SearchResultDisplay',
 
-SearchResultDisplay.prototype = {
     _init: function(provider) {
         this.provider = provider;
         this.actor = null;
@@ -96,7 +94,7 @@ SearchResultDisplay.prototype = {
     activateSelected: function() {
         throw new Error('Not implemented');
     }
-};
+});
 
 /**
  * SearchProvider:
@@ -105,11 +103,9 @@ SearchResultDisplay.prototype = {
  * to the search system, then call registerProvider()
  * in SearchSystem with an instance.
  */
-function SearchProvider(title) {
-    this._init(title);
-}
+const SearchProvider = new Lang.Class({
+    Name: 'SearchProvider',
 
-SearchProvider.prototype = {
     _init: function(title) {
         this.title = title;
         this.searchSystem = null;
@@ -243,7 +239,7 @@ SearchProvider.prototype = {
     activateResult: function(id) {
         throw new Error('Not implemented');
     }
-};
+});
 Signals.addSignalMethods(SearchProvider.prototype);
 
 function OpenSearchSystem() {

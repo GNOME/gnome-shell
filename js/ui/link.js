@@ -4,11 +4,9 @@ const Lang = imports.lang;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
-function Link(props) {
-    this._init(props);
-}
+const Link = new Lang.Class({
+    Name: 'Link',
 
-Link.prototype = {
     _init : function(props) {
         let realProps = { reactive: true,
                           track_hover: true,
@@ -19,6 +17,5 @@ Link.prototype = {
 
         this.actor = new St.Button(realProps);
     }
-};
-
+});
 Signals.addSignalMethods(Link.prototype);

@@ -305,15 +305,12 @@ CtrlAltTabPopup.prototype = {
     }
 };
 
-function CtrlAltTabSwitcher(items) {
-    this._init(items);
-}
-
-CtrlAltTabSwitcher.prototype = {
-    __proto__ : AltTab.SwitcherList.prototype,
+const CtrlAltTabSwitcher = new Lang.Class({
+    Name: 'CtrlAltTabSwitcher',
+    Extends: AltTab.SwitcherList,
 
     _init : function(items) {
-        AltTab.SwitcherList.prototype._init.call(this, true);
+        this.parent(true);
 
         for (let i = 0; i < items.length; i++)
             this._addIcon(items[i]);
@@ -336,4 +333,4 @@ CtrlAltTabSwitcher.prototype = {
 
         this.addItem(box, text);
     }
-};
+});
