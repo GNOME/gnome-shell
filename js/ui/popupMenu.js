@@ -26,11 +26,9 @@ function _ensureStyle(actor) {
         actor.ensure_style();
 }
 
-function PopupBaseMenuItem(params) {
-    this._init(params);
-}
+const PopupBaseMenuItem = new Lang.Class({
+    Name: 'PopupBaseMenuItem',
 
-PopupBaseMenuItem.prototype = {
     _init: function (params) {
         params = Params.parse (params, { reactive: true,
                                          activate: true,
@@ -377,33 +375,27 @@ PopupBaseMenuItem.prototype = {
                 x -= availWidth + this._spacing;
         }
     }
-};
+});
 Signals.addSignalMethods(PopupBaseMenuItem.prototype);
 
-function PopupMenuItem() {
-    this._init.apply(this, arguments);
-}
-
-PopupMenuItem.prototype = {
-    __proto__: PopupBaseMenuItem.prototype,
+const PopupMenuItem = new Lang.Class({
+    Name: 'PopupMenuItem',
+    Extends: PopupBaseMenuItem,
 
     _init: function (text, params) {
-        PopupBaseMenuItem.prototype._init.call(this, params);
+        this.parent(params);
 
         this.label = new St.Label({ text: text });
         this.addActor(this.label);
     }
-};
+});
 
-function PopupSeparatorMenuItem() {
-    this._init();
-}
-
-PopupSeparatorMenuItem.prototype = {
-    __proto__: PopupBaseMenuItem.prototype,
+const PopupSeparatorMenuItem = new Lang.Class({
+    Name: 'PopupSeparatorMenuItem',
+    Extends: PopupBaseMenuItem,
 
     _init: function () {
-        PopupBaseMenuItem.prototype._init.call(this, { reactive: false });
+        this.parent({ reactive: false });
 
         this._drawingArea = new St.DrawingArea({ style_class: 'popup-separator-menu-item' });
         this.addActor(this._drawingArea, { span: -1, expand: true });
@@ -429,22 +421,19 @@ PopupSeparatorMenuItem.prototype = {
         cr.rectangle(margin, gradientOffset, gradientWidth, gradientHeight);
         cr.fill();
     }
-};
+});
 
 const PopupAlternatingMenuItemState = {
     DEFAULT: 0,
     ALTERNATIVE: 1
 }
 
-function PopupAlternatingMenuItem() {
-    this._init.apply(this, arguments);
-}
-
-PopupAlternatingMenuItem.prototype = {
-    __proto__: PopupBaseMenuItem.prototype,
+const PopupAlternatingMenuItem = new Lang.Class({
+    Name: 'PopupAlternatingMenuItem',
+    Extends: PopupBaseMenuItem,
 
     _init: function(text, alternateText, params) {
-        PopupBaseMenuItem.prototype._init.call(this, params);
+        this.parent(params);
         this.actor.add_style_class_name('popup-alternating-menu-item');
 
         this._text = text;
@@ -530,17 +519,14 @@ PopupAlternatingMenuItem.prototype = {
 
         this._updateLabel();
     }
-};
+});
 
-function PopupSliderMenuItem() {
-    this._init.apply(this, arguments);
-}
-
-PopupSliderMenuItem.prototype = {
-    __proto__: PopupBaseMenuItem.prototype,
+const PopupSliderMenuItem = new Lang.Class({
+    Name: 'PopupSliderMenuItem',
+    Extends: PopupBaseMenuItem,
 
     _init: function(value) {
-        PopupBaseMenuItem.prototype._init.call(this, { activate: false });
+        this.parent({ activate: false });
 
         this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
 
@@ -716,13 +702,11 @@ PopupSliderMenuItem.prototype = {
         }
         return false;
     }
-};
+});
 
-function Switch() {
-    this._init.apply(this, arguments);
-}
+const Switch = new Lang.Class({
+    Name: 'Switch',
 
-Switch.prototype = {
     _init: function(state) {
         this.actor = new St.Bin({ style_class: 'toggle-switch' });
         // Translators: this MUST be either "toggle-switch-us"
@@ -745,17 +729,14 @@ Switch.prototype = {
     toggle: function() {
         this.setToggleState(!this.state);
     }
-};
+});
 
-function PopupSwitchMenuItem() {
-    this._init.apply(this, arguments);
-}
-
-PopupSwitchMenuItem.prototype = {
-    __proto__: PopupBaseMenuItem.prototype,
+const PopupSwitchMenuItem = new Lang.Class({
+    Name: 'PopupSwitchMenuItem',
+    Extends: PopupBaseMenuItem,
 
     _init: function(text, active, params) {
-        PopupBaseMenuItem.prototype._init.call(this, params);
+        this.parent(params);
 
         this.label = new St.Label({ text: text });
         this._switch = new Switch(active);
@@ -805,17 +786,14 @@ PopupSwitchMenuItem.prototype = {
     setToggleState: function(state) {
         this._switch.setToggleState(state);
     }
-};
+});
 
-function PopupImageMenuItem() {
-    this._init.apply(this, arguments);
-}
-
-PopupImageMenuItem.prototype = {
-    __proto__: PopupBaseMenuItem.prototype,
+const PopupImageMenuItem = new Lang.Class({
+    Name: 'PopupImageMenuItem',
+    Extends: PopupBaseMenuItem,
 
     _init: function (text, iconName, params) {
-        PopupBaseMenuItem.prototype._init.call(this, params);
+        this.parent(params);
 
         this.label = new St.Label({ text: text });
         this.addActor(this.label);
@@ -828,13 +806,12 @@ PopupImageMenuItem.prototype = {
     setIcon: function(name) {
         this._icon.icon_name = name;
     }
-};
+});
 
-function PopupMenuBase() {
-    throw new TypeError('Trying to instantiate abstract class PopupMenuBase');
-}
+const PopupMenuBase = new Lang.Class({
+    Name: 'PopupMenuBase',
+    Abstract: true,
 
-PopupMenuBase.prototype = {
     _init: function(sourceActor, styleClass) {
         this.sourceActor = sourceActor;
 
@@ -1139,18 +1116,15 @@ PopupMenuBase.prototype = {
 
         this.emit('destroy');
     }
-};
+});
 Signals.addSignalMethods(PopupMenuBase.prototype);
 
-function PopupMenu() {
-    this._init.apply(this, arguments);
-}
-
-PopupMenu.prototype = {
-    __proto__: PopupMenuBase.prototype,
+const PopupMenu = new Lang.Class({
+    Name: 'PopupMenu',
+    Extends: PopupMenuBase,
 
     _init: function(sourceActor, arrowAlignment, arrowSide) {
-        PopupMenuBase.prototype._init.call (this, sourceActor, 'popup-menu-content');
+        this.parent(sourceActor, 'popup-menu-content');
 
         this._arrowAlignment = arrowAlignment;
         this._arrowSide = arrowSide;
@@ -1235,17 +1209,14 @@ PopupMenu.prototype = {
         this.isOpen = false;
         this.emit('open-state-changed', false);
     }
-};
+});
 
-function PopupSubMenu() {
-    this._init.apply(this, arguments);
-}
-
-PopupSubMenu.prototype = {
-    __proto__: PopupMenuBase.prototype,
+const PopupSubMenu = new Lang.Class({
+    Name: 'PopupSubMenu',
+    Extends: PopupMenuBase,
 
     _init: function(sourceActor, sourceArrow) {
-        PopupMenuBase.prototype._init.call(this, sourceActor);
+        this.parent(sourceActor);
 
         this._arrow = sourceArrow;
         this._arrow.rotation_center_z_gravity = Clutter.Gravity.CENTER;
@@ -1400,7 +1371,7 @@ PopupSubMenu.prototype = {
 
         return false;
     }
-};
+});
 
 /**
  * PopupMenuSection:
@@ -1410,15 +1381,12 @@ PopupSubMenu.prototype = {
  * can add it to another menu), but is completely transparent
  * to the user
  */
-function PopupMenuSection() {
-    this._init.apply(this, arguments);
-}
-
-PopupMenuSection.prototype = {
-    __proto__: PopupMenuBase.prototype,
+const PopupMenuSection = new Lang.Class({
+    Name: 'PopupMenuSection',
+    Extends: PopupMenuBase,
 
     _init: function() {
-        PopupMenuBase.prototype._init.call(this);
+        this.parent();
 
         this.actor = this.box;
         this.actor._delegate = this;
@@ -1429,17 +1397,14 @@ PopupMenuSection.prototype = {
     // corresponding signal so children can still pick it up
     open: function(animate) { this.emit('open-state-changed', true); },
     close: function() { this.emit('open-state-changed', false); },
-}
+});
 
-function PopupSubMenuMenuItem() {
-    this._init.apply(this, arguments);
-}
-
-PopupSubMenuMenuItem.prototype = {
-    __proto__: PopupBaseMenuItem.prototype,
+const PopupSubMenuMenuItem = new Lang.Class({
+    Name: 'PopupSubMenuMenuItem',
+    Extends: PopupBaseMenuItem,
 
     _init: function(text) {
-        PopupBaseMenuItem.prototype._init.call(this);
+        this.parent();
 
         this.actor.add_style_class_name('popup-submenu-menu-item');
 
@@ -1461,7 +1426,8 @@ PopupSubMenuMenuItem.prototype = {
 
     destroy: function() {
         this.menu.destroy();
-        PopupBaseMenuItem.prototype.destroy.call(this);
+
+        this.parent();
     },
 
     _onKeyPressEvent: function(actor, event) {
@@ -1476,7 +1442,7 @@ PopupSubMenuMenuItem.prototype = {
             return true;
         }
 
-        return PopupBaseMenuItem.prototype._onKeyPressEvent.call(this, actor, event);
+        return this.parent(actor, event);
     },
 
     activate: function(event) {
@@ -1486,18 +1452,15 @@ PopupSubMenuMenuItem.prototype = {
     _onButtonReleaseEvent: function(actor) {
         this.menu.toggle();
     }
-};
+});
 
-function PopupComboMenu() {
-    this._init.apply(this, arguments);
-}
-
-PopupComboMenu.prototype = {
-    __proto__: PopupMenuBase.prototype,
+const PopupComboMenu = new Lang.Class({
+    Name: 'PopupComboMenu',
+    Extends: PopupMenuBase,
 
     _init: function(sourceActor) {
-        PopupMenuBase.prototype._init.call(this,
-                                           sourceActor, 'popup-combo-menu');
+        this.parent(sourceActor, 'popup-combo-menu');
+
         this.actor = this.box;
         this.actor._delegate = this;
         this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
@@ -1602,17 +1565,14 @@ PopupComboMenu.prototype = {
     getItemVisible: function(position) {
         return this._getMenuItems()[position].actor.visible;
     }
-};
+});
 
-function PopupComboBoxMenuItem() {
-    this._init.apply(this, arguments);
-}
-
-PopupComboBoxMenuItem.prototype = {
-    __proto__: PopupBaseMenuItem.prototype,
+const PopupComboBoxMenuItem = new Lang.Class({
+    Name: 'PopupComboBoxMenuItem',
+    Extends: PopupBaseMenuItem,
 
     _init: function (params) {
-        PopupBaseMenuItem.prototype._init.call(this, params);
+        this.parent(params);
 
         this._itemBox = new Shell.Stack();
         this.addActor(this._itemBox);
@@ -1730,16 +1690,14 @@ PopupComboBoxMenuItem.prototype = {
         this.setActiveItem(position);
         this.emit('active-item-changed', position);
     }
-};
+});
 
 /* Basic implementation of a menu manager.
  * Call addMenu to add menus
  */
-function PopupMenuManager(owner) {
-    this._init(owner);
-}
+const PopupMenuManager = new Lang.Class({
+    Name: 'PopupMenuManager',
 
-PopupMenuManager.prototype = {
     _init: function(owner) {
         this._owner = owner;
         this.grabbed = false;
@@ -2011,4 +1969,4 @@ PopupMenuManager.prototype = {
         if (this._activeMenu != null)
             this._activeMenu.close(true);
     }
-};
+});

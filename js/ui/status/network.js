@@ -97,15 +97,12 @@ function ssidToLabel(ssid) {
     return label;
 }
 
-function NMNetworkMenuItem() {
-    this._init.apply(this, arguments);
-}
-
-NMNetworkMenuItem.prototype = {
-    __proto__: PopupMenu.PopupBaseMenuItem.prototype,
+const NMNetworkMenuItem = new Lang.Class({
+    Name: 'NMNetworkMenuItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
 
     _init: function(accessPoints, title, params) {
-        PopupMenu.PopupBaseMenuItem.prototype._init.call(this, params);
+        this.parent(params);
 
         accessPoints = sortAccessPoints(accessPoints);
         this.bestAP = accessPoints[0];
@@ -184,21 +181,18 @@ NMNetworkMenuItem.prototype = {
             apObj.updateId = 0;
         }
 
-        PopupMenu.PopupBaseMenuItem.prototype.destroy.call(this);
+        this.parent();
     }
-};
+});
 
-function NMWiredSectionTitleMenuItem() {
-    this._init.apply(this, arguments);
-}
-
-NMWiredSectionTitleMenuItem.prototype = {
-    __proto__: PopupMenu.PopupSwitchMenuItem.prototype,
+const NMWiredSectionTitleMenuItem = new Lang.Class({
+    Name: 'NMWiredSectionTitleMenuItem',
+    Extends: PopupMenu.PopupSwitchMenuItem,
 
     _init: function(label, params) {
         params = params || { };
         params.style_class = 'popup-subtitle-menu-item';
-        PopupMenu.PopupSwitchMenuItem.prototype._init.call(this, label, false, params);
+        this.parent(label, false, params);
     },
 
     updateForDevice: function(device) {
@@ -211,7 +205,7 @@ NMWiredSectionTitleMenuItem.prototype = {
     },
 
     activate: function(event) {
-        PopupMenu.PopupSwitchMenuItem.prototype.activate.call(this, event);
+        this.parent(event);
 
         if (!this._device) {
             log('Section title activated when there is more than one device, should be non reactive');
@@ -230,19 +224,16 @@ NMWiredSectionTitleMenuItem.prototype = {
         else
             this._device.deactivate();
     }
-};
+});
 
-function NMWirelessSectionTitleMenuItem() {
-    this._init.apply(this, arguments);
-}
-
-NMWirelessSectionTitleMenuItem.prototype = {
-    __proto__: PopupMenu.PopupSwitchMenuItem.prototype,
+const NMWirelessSectionTitleMenuItem = new Lang.Class({
+    Name: 'NMWirelessSectionTitleMenuItem',
+    Extends: PopupMenu.PopupSwitchMenuItem,
 
     _init: function(client, property, title, params) {
         params = params || { };
         params.style_class = 'popup-subtitle-menu-item';
-        PopupMenu.PopupSwitchMenuItem.prototype._init.call(this, title, false, params);
+        this.parent(title, false, params);
 
         this._client = client;
         this._property = property + '_enabled';
@@ -268,7 +259,7 @@ NMWirelessSectionTitleMenuItem.prototype = {
     },
 
     activate: function(event) {
-        PopupMenu.PopupSwitchMenuItem.prototype.activate.call(this, event);
+        this.parent(event);
 
         this._client[this._setEnabledFunc](this._switch.state);
     },
@@ -285,7 +276,7 @@ NMWirelessSectionTitleMenuItem.prototype = {
 
         this.emit('enabled-changed', enabled);
     }
-};
+});
 
 function NMDevice() {
     throw new TypeError('Instantanting abstract class NMDevice');

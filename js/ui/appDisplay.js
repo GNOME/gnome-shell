@@ -623,19 +623,16 @@ AppWellIcon.prototype = {
 };
 Signals.addSignalMethods(AppWellIcon.prototype);
 
-function AppIconMenu(source) {
-    this._init(source);
-}
-
-AppIconMenu.prototype = {
-    __proto__: PopupMenu.PopupMenu.prototype,
+const AppIconMenu = new Lang.Class({
+    Name: 'AppIconMenu',
+    Extends: PopupMenu.PopupMenu,
 
     _init: function(source) {
         let side = St.Side.LEFT;
         if (St.Widget.get_default_direction() == St.TextDirection.RTL)
             side = St.Side.RIGHT;
 
-        PopupMenu.PopupMenu.prototype._init.call(this, source.actor, 0.5, side);
+        this.parent(source.actor, 0.5, side);
 
         // We want to keep the item hovered while the menu is up
         this.blockSourceEvents = true;
@@ -723,5 +720,5 @@ AppIconMenu.prototype = {
         }
         this.close();
     }
-};
+});
 Signals.addSignalMethods(AppIconMenu.prototype);

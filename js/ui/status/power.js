@@ -165,15 +165,12 @@ Indicator.prototype = {
     }
 };
 
-function DeviceItem() {
-    this._init.apply(this, arguments);
-}
-
-DeviceItem.prototype = {
-    __proto__: PopupMenu.PopupBaseMenuItem.prototype,
+const DeviceItem = new Lang.Class({
+    Name: 'DeviceItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
 
     _init: function(device) {
-        PopupMenu.PopupBaseMenuItem.prototype._init.call(this, { reactive: false });
+        this.parent({ reactive: false });
 
         let [device_id, device_type, icon, percentage, state, time] = device;
 
@@ -220,4 +217,4 @@ DeviceItem.prototype = {
             return _("Unknown");
         }
     }
-}
+});

@@ -14,15 +14,12 @@ const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const Util = imports.misc.util;
 
-function LayoutMenuItem() {
-    this._init.apply(this, arguments);
-}
-
-LayoutMenuItem.prototype = {
-    __proto__: PopupMenu.PopupBaseMenuItem.prototype,
+const LayoutMenuItem = new Lang.Class({
+    Name: 'LayoutMenuItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
 
     _init: function(config, id, indicator, long_name) {
-        PopupMenu.PopupBaseMenuItem.prototype._init.call(this);
+        this.parent();
 
         this._config = config;
         this._id = id;
@@ -33,10 +30,11 @@ LayoutMenuItem.prototype = {
     },
 
     activate: function(event) {
-        PopupMenu.PopupBaseMenuItem.prototype.activate.call(this);
+        this.parent(event);
+
         this._config.lock_group(this._id);
     }
-};
+});
 
 function XKBIndicator() {
     this._init.call(this);

@@ -7,18 +7,14 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
-
-function _EntryMenu(entry, params) {
-    this._init(entry, params);
-};
-
-_EntryMenu.prototype = {
-    __proto__: PopupMenu.PopupMenu.prototype,
+const _EntryMenu = new Lang.Class({
+    Name: 'ShellEntryMenu',
+    Extends: PopupMenu.PopupMenu,
 
     _init: function(entry, params) {
         params = Params.parse (params, { isPassword: false });
 
-        PopupMenu.PopupMenu.prototype._init.call(this, entry, 0, St.Side.TOP);
+        this.parent(entry, 0, St.Side.TOP);
 
         this.actor.add_style_class_name('entry-context-menu');
 
@@ -60,7 +56,7 @@ _EntryMenu.prototype = {
         if (!this.actor.navigate_focus(null, direction, false))
             this.actor.grab_key_focus();
 
-        PopupMenu.PopupMenu.prototype.open.call(this);
+        this.parent();
     },
 
     _updateCopyItem: function() {
@@ -103,8 +99,7 @@ _EntryMenu.prototype = {
         let visible = !!(this._entry.clutter_text.password_char);
         this._entry.clutter_text.set_password_char(visible ? '' : '\u25cf');
     }
-};
-
+});
 
 function _setMenuAlignment(entry, stageX) {
     let [success, entryX, entryY] = entry.transform_stage_point(stageX, 0);

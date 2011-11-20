@@ -40,15 +40,12 @@ const IMStatus = {
 // Copyright (C) 2008,2009 Red Hat, Inc.
 
 
-function IMStatusItem(label, iconName) {
-    this._init(label, iconName);
-}
-
-IMStatusItem.prototype = {
-    __proto__: PopupMenu.PopupBaseMenuItem.prototype,
+const IMStatusItem = new Lang.Class({
+    Name: 'IMStatusItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
 
     _init: function(label, iconName) {
-        PopupMenu.PopupBaseMenuItem.prototype._init.call(this);
+        this.parent();
 
         this.actor.add_style_class_name('status-chooser-status-item');
 
@@ -61,19 +58,15 @@ IMStatusItem.prototype = {
         this.label = new St.Label({ text: label });
         this.addActor(this.label);
     }
-};
+});
 
-function IMUserNameItem() {
-    this._init();
-}
-
-IMUserNameItem.prototype = {
-    __proto__: PopupMenu.PopupBaseMenuItem.prototype,
+const IMUserNameItem = new Lang.Class({
+    Name: 'IMUserNameItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
 
     _init: function() {
-        PopupMenu.PopupBaseMenuItem.prototype._init.call(this,
-                                                         { reactive: false,
-                                                           style_class: 'status-chooser-user-name' });
+        this.parent({ reactive: false,
+                      style_class: 'status-chooser-user-name' });
 
         this._wrapper = new Shell.GenericContainer();
         this._wrapper.connect('get-preferred-width',
@@ -102,19 +95,15 @@ IMUserNameItem.prototype = {
     _wrapperAllocate: function(actor, box, flags) {
         this.label.allocate(box, flags);
     }
-};
+});
 
-function IMStatusChooserItem() {
-    this._init();
-}
-
-IMStatusChooserItem.prototype = {
-    __proto__: PopupMenu.PopupBaseMenuItem.prototype,
+const IMStatusChooserItem = new Lang.Class({
+    Name: 'IMStatusChooserItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
 
     _init: function() {
-        PopupMenu.PopupBaseMenuItem.prototype._init.call (this,
-                                                          { reactive: false,
-                                                            style_class: 'status-chooser' });
+        this.parent({ reactive: false,
+                      style_class: 'status-chooser' });
 
         this._iconBin = new St.Button({ style_class: 'status-chooser-user-icon' });
         this.addActor(this._iconBin);
@@ -220,7 +209,7 @@ IMStatusChooserItem.prototype = {
             this._userChangedId = 0;
         }
 
-        PopupMenu.PopupBaseMenuItem.prototype.destroy.call(this);
+        this.parent();
     },
 
     // Override getColumnWidths()/setColumnWidths() to make the item
@@ -422,7 +411,7 @@ IMStatusChooserItem.prototype = {
         this._expectedPresence = newPresence;
         this._accountMgr.set_all_requested_presences(newPresence, status, msg);
     }
-};
+});
 
 
 function UserMenuButton() {
