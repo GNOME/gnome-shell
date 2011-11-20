@@ -1916,6 +1916,27 @@ cogl_framebuffer_orthographic (CoglFramebuffer *framebuffer,
 }
 
 void
+_cogl_framebuffer_push_projection (CoglFramebuffer *framebuffer)
+{
+  CoglMatrixStack *projection_stack =
+    _cogl_framebuffer_get_projection_stack (framebuffer);
+  _cogl_matrix_stack_push (projection_stack);
+
+  framebuffer->context->current_draw_buffer_changes |=
+    COGL_FRAMEBUFFER_STATE_PROJECTION;
+}
+
+void
+_cogl_framebuffer_pop_projection (CoglFramebuffer *framebuffer)
+{
+  CoglMatrixStack *projection_stack =
+    _cogl_framebuffer_get_projection_stack (framebuffer);
+  _cogl_matrix_stack_pop (projection_stack);
+  framebuffer->context->current_draw_buffer_changes |=
+    COGL_FRAMEBUFFER_STATE_PROJECTION;
+}
+
+void
 cogl_framebuffer_get_modelview_matrix (CoglFramebuffer *framebuffer,
                                        CoglMatrix *matrix)
 {

@@ -874,8 +874,6 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
   CoglFramebuffer *framebuffer;
   float viewport[4];
   CoglBitmap *alpha_bmp;
-  CoglMatrixStack *projection_stack;
-  CoglMatrixStack *modelview_stack;
   int target_width = _cogl_bitmap_get_width (target_bmp);
   int target_height = _cogl_bitmap_get_height (target_bmp);
   int target_rowstride = _cogl_bitmap_get_rowstride (target_bmp);
@@ -896,18 +894,14 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
    * works)
    */
 
-  projection_stack = _cogl_framebuffer_get_projection_stack (framebuffer);
-  _cogl_matrix_stack_push (projection_stack);
-  _cogl_matrix_stack_load_identity (projection_stack);
-  _cogl_matrix_stack_ortho (projection_stack,
-                            0, viewport[2],
-                            viewport[3], 0,
-                            0,
-                            100);
+  _cogl_framebuffer_push_projection (framebuffer);
+  cogl_framebuffer_orthographic (framebuffer,
+                                 0, 0,
+                                 viewport[2], viewport[3],
+                                 0, 100);
 
-  modelview_stack = _cogl_framebuffer_get_modelview_stack (framebuffer);
-  _cogl_matrix_stack_push (modelview_stack);
-  _cogl_matrix_stack_load_identity (modelview_stack);
+  cogl_framebuffer_push_matrix (framebuffer);
+  cogl_framebuffer_identity_matrix (framebuffer);
 
   /* Direct copy operation */
 
@@ -999,8 +993,8 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
     }
 
   /* Restore old state */
-  _cogl_matrix_stack_pop (modelview_stack);
-  _cogl_matrix_stack_pop (projection_stack);
+  cogl_framebuffer_pop_matrix (framebuffer);
+  _cogl_framebuffer_pop_projection (framebuffer);
 
   /* restore the original pipeline */
   cogl_pop_source ();

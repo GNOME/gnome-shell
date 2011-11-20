@@ -334,4 +334,10 @@ _cogl_blit_framebuffer (unsigned int src_x,
                         unsigned int width,
                         unsigned int height);
 
+void
+_cogl_framebuffer_push_projection (CoglFramebuffer *framebuffer);
+
+void
+_cogl_framebuffer_pop_projection (CoglFramebuffer *framebuffer);
+
 #endif /* __COGL_FRAMEBUFFER_PRIVATE_H */
