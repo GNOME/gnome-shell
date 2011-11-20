@@ -33,7 +33,6 @@ const St = imports.gi.St;
 const GdmGreeter = imports.gi.GdmGreeter;
 
 const Batch = imports.gdm.batch;
-const DBus = imports.dbus;
 const Fprint = imports.gdm.fingerprint;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
@@ -908,7 +907,7 @@ const LoginDialog = new Lang.Class({
         if (!this._settings.get_boolean(_FINGERPRINT_AUTHENTICATION_KEY))
             return;
 
-        this._fprintManager.GetDefaultDeviceRemote(DBus.CALL_FLAG_START, Lang.bind(this,
+        this._fprintManager.GetDefaultDeviceRemote(Gio.DBusCallFlags.NONE, Lang.bind(this,
             function(device, error) {
                 if (!error && device)
                     this._haveFingerprintReader = true;

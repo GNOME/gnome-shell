@@ -1,6 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const DBus = imports.dbus;
 const GDesktopEnums = imports.gi.GDesktopEnums;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;

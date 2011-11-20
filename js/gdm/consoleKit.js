@@ -1,32 +1,22 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const DBus = imports.dbus;
+const Gio = imports.gi.Gio;
 
-const ConsoleKitManagerIface = {
-    name: 'org.freedesktop.ConsoleKit.Manager',
-    methods: [{ name: 'CanRestart',
-                inSignature: '',
-                outSignature: 'b' },
-              { name: 'CanStop',
-                inSignature: '',
-                outSignature: 'b' },
-              { name: 'Restart',
-                inSignature: '',
-                outSignature: '' },
-              { name: 'Stop',
-                inSignature: '',
-                outSignature: '' }]
-};
+const ConsoleKitManagerIface = <interface name='org.freedesktop.ConsoleKit.Manager'>
+<method name='CanRestart'>
+    <arg type='b' direction='out'/>
+</method>
+<method name='CanStop'>
+    <arg type='b' direction='out'/>
+</method>
+<method name='Restart' />
+<method name='Stop' />
+</interface>;
+
+const ConsoleKitProxy = Gio.DBusProxy.makeProxyWrapper(ConsoleKitManagerIface);
 
 function ConsoleKitManager() {
-    this._init();
+    return new ConsoleKitProxy(Gio.DBus.system,
+                               'org.freedesktop.ConsoleKit',
+                               '/org/freedesktop/ConsoleKit/Manager');
 };
-
-ConsoleKitManager.prototype = {
-    _init: function() {
-        DBus.system.proxifyObject(this,
-                                  'org.freedesktop.ConsoleKit',
-                                  '/org/freedesktop/ConsoleKit/Manager');
-    }
-};
-DBus.proxifyPrototype(ConsoleKitManager.prototype, ConsoleKitManagerIface);

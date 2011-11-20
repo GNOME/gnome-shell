@@ -1,26 +1,20 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const DBus = imports.dbus;
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
-const FprintManagerIface = {
-    name: 'net.reactivated.Fprint.Manager',
-    methods: [{ name: 'GetDefaultDevice',
-                inSignature: '',
-                outSignature: 'o' }]
-};
+const FprintManagerIface = <interface name='net.reactivated.Fprint.Manager'>
+<method name='GetDefaultDevice'>
+    <arg type='o' direction='out' />
+</method>
+</interface>;
+
+const FprintManagerProxy = Gio.DBusProxy.makeProxyWrapper(FprintManagerIface);
 
 function FprintManager() {
-    this._init();
+    return new FprintManagerProxy(Gio.DBus.system,
+                           'net.reactivated.Fprint',
+                           '/net/reactivated/Fprint/Manager');
 };
-
-FprintManager.prototype = {
-    _init: function() {
-        DBus.system.proxifyObject(this,
-                                  'net.reactivated.Fprint',
-                                  '/net/reactivated/Fprint/Manager');
-    }
-};
-DBus.proxifyPrototype(FprintManager.prototype, FprintManagerIface);
