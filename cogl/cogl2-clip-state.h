@@ -37,8 +37,9 @@ G_BEGIN_DECLS
  * cogl_clip_push_from_path:
  * @path: The path to clip with.
  *
- * Sets a new clipping area using @path. The clipping area is intersected
- * with the previous clipping area. To restore the previous clipping area,
+ * Sets a new clipping area using the silhouette of the specified,
+ * filled @path.  The clipping area is intersected with the previous
+ * clipping area. To restore the previous clipping area, call
  * call cogl_clip_pop().
  *
  * Since: 1.8
