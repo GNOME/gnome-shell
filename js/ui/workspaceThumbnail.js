@@ -597,7 +597,7 @@ ThumbnailsBox.prototype = {
             // ... and bam, a workspace, good as new.
             source.metaWindow.change_workspace_by_index(newWorkspaceIndex,
                                                         true, time);
-        else (source.shellWorkspaceLaunch)
+        else if (source.shellWorkspaceLaunch)
             source.shellWorkspaceLaunch({ workspace: newWorkspaceIndex,
                                           timestamp: time });
 
