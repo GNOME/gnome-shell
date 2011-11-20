@@ -1032,8 +1032,10 @@ cogl_clip_push_from_path_preserve (void);
  * to be larger than the true bounds but behaviour is undefined if the
  * bounds are smaller than the true bounds.
  *
- * The clipping area is intersected with the previous clipping area.
- * To restore the previous clipping area, call cogl_clip_pop().
+ * The primitive is transformed by the current model-view matrix and
+ * the silhouette is intersected with the previous clipping area.  To
+ * restore the previous clipping area, call
+ * cogl_clip_pop().
  *
  * Since: 1.10
  * Stability: unstable
