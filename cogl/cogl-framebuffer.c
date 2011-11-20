@@ -1798,6 +1798,14 @@ cogl_framebuffer_pop_matrix (CoglFramebuffer *framebuffer)
 }
 
 void
+cogl_framebuffer_identity_matrix (CoglFramebuffer *framebuffer)
+{
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  _cogl_matrix_stack_load_identity (modelview_stack);
+}
+
+void
 cogl_framebuffer_scale (CoglFramebuffer *framebuffer,
                         float x,
                         float y,

@@ -152,6 +152,20 @@ cogl_framebuffer_push_matrix (CoglFramebuffer *framebuffer);
 void
 cogl_framebuffer_pop_matrix (CoglFramebuffer *framebuffer);
 
+#define cogl_framebuffer_identity_matrix \
+  cogl_framebuffer_identity_matrix_EXP
+/**
+ * cogl_framebuffer_identity_matrix:
+ * @framebuffer: A #CoglFramebuffer pointer
+ *
+ * Resets the current model-view matrix to the identity matrix.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_identity_matrix (CoglFramebuffer *framebuffer);
+
 #define cogl_framebuffer_scale cogl_framebuffer_scale_EXP
 /**
  * cogl_framebuffer_scale:
