@@ -272,6 +272,8 @@ _cogl_path_get_bounds (CoglPath *path,
 static void
 _cogl_path_fill_nodes_with_clipped_rectangle (CoglPath *path)
 {
+  CoglFramebuffer *fb;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_STENCIL_BUFFER))
@@ -287,12 +289,13 @@ _cogl_path_fill_nodes_with_clipped_rectangle (CoglPath *path)
         }
     }
 
-  cogl_clip_push_from_path (path);
+  fb = cogl_get_draw_framebuffer ();
+  cogl_framebuffer_push_path_clip (fb, path);
   cogl_rectangle (path->data->path_nodes_min.x,
                   path->data->path_nodes_min.y,
                   path->data->path_nodes_max.x,
                   path->data->path_nodes_max.y);
-  cogl_clip_pop ();
+  cogl_framebuffer_pop_clip (fb);
 }
 
 static gboolean
