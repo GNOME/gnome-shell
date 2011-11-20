@@ -367,13 +367,18 @@ cogl_get_bitmasks (int *red,
 
 /**
  * cogl_perspective:
- * @fovy: Vertical of view angle in degrees.
- * @aspect: Aspect ratio of diesplay
- * @z_near: Nearest visible point
- * @z_far: Furthest visible point along the z-axis
+ * @fovy: Vertical field of view angle in degrees.
+ * @aspect: The (width over height) aspect ratio for display
+ * @z_near: The distance to the near clipping plane (Must be positive)
+ * @z_far: The distance to the far clipping plane (Must be positive)
  *
  * Replaces the current projection matrix with a perspective matrix
  * based on the provided values.
+ *
+ * <note>You should be careful not to have to great a @z_far / @z_near
+ * ratio since that will reduce the effectiveness of depth testing
+ * since there wont be enough precision to identify the depth of
+ * objects near to each other.</note>
  */
 void
 cogl_perspective (float fovy,
@@ -383,15 +388,20 @@ cogl_perspective (float fovy,
 
 /**
  * cogl_frustum:
- * @left: Left clipping plane
- * @right: Right clipping plane
- * @bottom: Bottom clipping plane
- * @top: Top clipping plane
- * @z_near: Nearest visible point
- * @z_far: Furthest visible point along the z-axis
+ * @left: X position of the left clipping plane where it
+ *   intersects the near clipping plane
+ * @right: X position of the right clipping plane where it
+ *   intersects the near clipping plane
+ * @bottom: Y position of the bottom clipping plane where it
+ *   intersects the near clipping plane
+ * @top: Y position of the top clipping plane where it intersects
+ *   the near clipping plane
+ * @z_near: The distance to the near clipping plane (Must be positive)
+ * @z_far: The distance to the far clipping plane (Must be positive)
  *
  * Replaces the current projection matrix with a perspective matrix
- * for the given viewing frustum.
+ * for a given viewing frustum defined by 4 side clip planes that
+ * all cross through the origin and 2 near and far clip planes.
  *
  * Since: 0.8.2
  */
