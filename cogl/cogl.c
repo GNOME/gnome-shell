@@ -1007,20 +1007,33 @@ _cogl_init (void)
     }
 }
 
+/*
+ * Returns the number of bytes-per-pixel of a given format. The bpp
+ * can be extracted from the least significant nibble of the pixel
+ * format (see CoglPixelFormat).
+ *
+ * The mapping is the following (see discussion on bug #660188):
+ *
+ * 0     = undefined
+ * 1, 8  = 1 bpp (e.g. A_8, G_8)
+ * 2     = 3 bpp, aligned (e.g. 888)
+ * 3     = 4 bpp, aligned (e.g. 8888)
+ * 4-6   = 2 bpp, not aligned (e.g. 565, 4444, 5551)
+ * 7     = undefined yuv
+ * 9     = 2 bpp, aligned
+ * 10     = undefined
+ * 11     = undefined
+ * 12    = 3 bpp, not aligned
+ * 13    = 4 bpp, not aligned (e.g. 2101010)
+ * 14-15 = undefined
+ */
 int
 _cogl_pixel_format_get_bytes_per_pixel (CoglPixelFormat format)
 {
-  int bpp_lut[] = {
-    0, /* invalid  */
-    1, /* A_8      */
-    3, /* 888      */
-    4, /* 8888     */
-    2, /* 565      */
-    2, /* 4444     */
-    2, /* 5551     */
-    2, /* YUV      */
-    1  /* G_8      */
-  };
+  int bpp_lut[] = { 0, 1, 3, 4,
+                    2, 2, 2, 0,
+                    1, 2, 0, 0,
+                    3, 4, 0, 0 };
 
   return bpp_lut [format & 0xf];
 }
