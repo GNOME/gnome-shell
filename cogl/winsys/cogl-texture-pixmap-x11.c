@@ -477,12 +477,14 @@ static void
 _cogl_texture_pixmap_x11_update_image_texture (CoglTexturePixmapX11 *tex_pixmap)
 {
   Display *display;
+  Visual *visual;
   CoglPixelFormat image_format;
   XImage *image;
   int src_x, src_y;
   int x, y, width, height;
 
   display = cogl_xlib_get_display ();
+  visual = tex_pixmap->visual;
 
   /* If the damage region is empty then there's nothing to do */
   if (tex_pixmap->damage_rect.x2 == tex_pixmap->damage_rect.x1)
@@ -576,47 +578,13 @@ _cogl_texture_pixmap_x11_update_image_texture (CoglTexturePixmapX11 *tex_pixmap)
                     x, y);
     }
 
-  /* xlib doesn't appear to fill in image->{red,green,blue}_mask so
-     this just assumes that the image is stored as ARGB from most
-     significant byte to to least significant. If the format is little
-     endian that means the order will be BGRA in memory */
-
-  switch (image->bits_per_pixel)
-    {
-    default:
-    case 32:
-      {
-        /* If the pixmap is actually non-packed-pixel RGB format then
-           the texture would have been created in RGB_888 format so Cogl
-           will ignore the alpha channel and effectively pack it for
-           us */
-        image_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
-
-        /* If the format is actually big endian then the alpha
-           component will come first */
-        if (image->byte_order == MSBFirst)
-          image_format |= COGL_AFIRST_BIT;
-      }
-      break;
-
-    case 24:
-      image_format = COGL_PIXEL_FORMAT_RGB_888;
-      break;
-
-    case 16:
-      /* FIXME: this should probably swap the orders around if the
-         endianness does not match */
-      image_format = COGL_PIXEL_FORMAT_RGB_565;
-      break;
-    }
-
-  if (image->bits_per_pixel != 16)
-    {
-      /* If the image is in little-endian then the order in memory is
-         reversed */
-      if (image->byte_order == LSBFirst)
-        image_format |= COGL_BGR_BIT;
-    }
+  image_format =
+    _cogl_util_pixel_format_from_masks (visual->red_mask,
+                                        visual->green_mask,
+                                        visual->blue_mask,
+                                        image->depth,
+                                        image->bits_per_pixel,
+                                        image->byte_order == LSBFirst);
 
   cogl_texture_set_region (tex_pixmap->tex,
                            src_x, src_y,
