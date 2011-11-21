@@ -3853,11 +3853,8 @@ clutter_actor_dispose (GObject *object)
       /* go through the Container implementation unless this
        * is an internal child and has been marked as such
        */
-      if (CLUTTER_IS_CONTAINER (parent) &&
-          !CLUTTER_ACTOR_IS_INTERNAL_CHILD (self))
-        {
-          clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
-        }
+      if (!CLUTTER_ACTOR_IS_INTERNAL_CHILD (self))
+        clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
       else
         clutter_actor_remove_child (parent, self);
     }
@@ -8023,7 +8020,7 @@ clutter_actor_set_depth (ClutterActor *self,
       /* Sets Z value - XXX 2.0: should we invert? */
       priv->z = depth;
 
-      if (priv->parent_actor && CLUTTER_IS_CONTAINER (priv->parent_actor))
+      if (priv->parent_actor != NULL)
         {
           ClutterContainer *parent;
 
@@ -8696,8 +8693,7 @@ clutter_actor_reparent (ClutterActor *self,
       /* go through the Container implementation if this is a regular
        * child and not an internal one
        */
-      if (CLUTTER_IS_CONTAINER (priv->parent_actor) &&
-          !CLUTTER_ACTOR_IS_INTERNAL_CHILD (self))
+      if (!CLUTTER_ACTOR_IS_INTERNAL_CHILD (self))
         {
           ClutterContainer *parent = CLUTTER_CONTAINER (old_parent);
 
@@ -8707,8 +8703,8 @@ clutter_actor_reparent (ClutterActor *self,
       else
         clutter_actor_remove_child (old_parent, self);
 
-      /* Note, will call parent() */
-      if (CLUTTER_IS_CONTAINER (new_parent))
+      /* Note, will call set_parent() */
+      if (!CLUTTER_ACTOR_IS_INTERNAL_CHILD (self))
         clutter_container_add_actor (CLUTTER_CONTAINER (new_parent), self);
       else
         clutter_actor_add_child (new_parent, self);
@@ -8775,7 +8771,7 @@ clutter_actor_raise (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   parent = clutter_actor_get_parent (self);
-  if (parent == NULL || !CLUTTER_IS_CONTAINER (parent))
+  if (parent == NULL)
     {
       g_warning ("%s: Actor '%s' is not inside a container",
                  G_STRFUNC,
@@ -8817,10 +8813,10 @@ clutter_actor_lower (ClutterActor *self,
 {
   ClutterActor *parent;
 
-  g_return_if_fail (CLUTTER_IS_ACTOR(self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   parent = clutter_actor_get_parent (self);
-  if (parent == NULL || !CLUTTER_IS_CONTAINER (parent))
+  if (parent == NULL)
     {
       g_warning ("%s: Actor of type %s is not inside a container",
                  G_STRFUNC,
@@ -11536,13 +11532,15 @@ clutter_actor_is_in_clone_paint (ClutterActor *self)
   return self->priv->in_clone_paint;
 }
 
-static void
+static gboolean
 set_direction_recursive (ClutterActor *actor,
                          gpointer      user_data)
 {
   ClutterTextDirection text_dir = GPOINTER_TO_INT (user_data);
 
   clutter_actor_set_text_direction (actor, text_dir);
+
+  return TRUE;
 }
 
 /**
@@ -11585,15 +11583,8 @@ clutter_actor_set_text_direction (ClutterActor         *self,
        */
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT_DIRECTION]);
 
-      /* if this is a container we need to recurse */
-      if (CLUTTER_IS_CONTAINER (self))
-        {
-          ClutterContainer *container = CLUTTER_CONTAINER (self);
-
-          clutter_container_foreach_with_internals (container,
-                                                    set_direction_recursive,
-                                                    GINT_TO_POINTER (text_dir));
-        }
+      _clutter_actor_foreach_child (self, set_direction_recursive,
+                                    GINT_TO_POINTER (text_dir));
 
       clutter_actor_queue_relayout (self);
     }
