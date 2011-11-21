@@ -81,6 +81,8 @@ _cogl_pipeline_vertend_fixed_add_layer (CoglPipeline *pipeline,
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
   CoglTextureUnit *unit = _cogl_get_texture_unit (unit_index);
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_USER_MATRIX)
     {
       CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_USER_MATRIX;
@@ -92,7 +94,8 @@ _cogl_pipeline_vertend_fixed_add_layer (CoglPipeline *pipeline,
 
       _cogl_set_active_texture_unit (unit_index);
 
-      _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
+      _cogl_matrix_stack_flush_to_gl (ctx, unit->matrix_stack,
+                                      COGL_MATRIX_TEXTURE);
     }
 
   return TRUE;

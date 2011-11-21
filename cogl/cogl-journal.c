@@ -292,7 +292,8 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
     {
       _cogl_matrix_stack_set (state->modelview_stack,
                               &batch_start->model_view);
-      _cogl_matrix_stack_flush_to_gl (state->modelview_stack,
+      _cogl_matrix_stack_flush_to_gl (ctx,
+                                      state->modelview_stack,
                                       COGL_MATRIX_MODELVIEW);
     }
 
@@ -718,14 +719,16 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
   if (G_LIKELY (!(COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))))
     {
       _cogl_matrix_stack_load_identity (state->modelview_stack);
-      _cogl_matrix_stack_flush_to_gl (state->modelview_stack,
+      _cogl_matrix_stack_flush_to_gl (ctx,
+                                      state->modelview_stack,
                                       COGL_MATRIX_MODELVIEW);
     }
 
   /* Setting up the clip state can sometimes also flush the projection
      matrix so we should flush it again. This will be a no-op if the
      clip code didn't modify the projection */
-  _cogl_matrix_stack_flush_to_gl (state->projection_stack,
+  _cogl_matrix_stack_flush_to_gl (ctx,
+                                  state->projection_stack,
                                   COGL_MATRIX_PROJECTION);
 
   batch_and_call (batch_start,

@@ -30,6 +30,7 @@
 #define __COGL_MATRIX_STACK_H
 
 #include "cogl-matrix.h"
+#include "cogl-context.h"
 
 typedef struct _CoglMatrixStack CoglMatrixStack;
 
@@ -39,7 +40,8 @@ typedef enum {
   COGL_MATRIX_TEXTURE
 } CoglMatrixMode;
 
-typedef void (* CoglMatrixStackFlushFunc) (gboolean is_identity,
+typedef void (* CoglMatrixStackFlushFunc) (CoglContext *context,
+                                           gboolean is_identity,
                                            const CoglMatrix *matrix,
                                            void *user_data);
 
@@ -106,7 +108,8 @@ void
 _cogl_matrix_stack_set (CoglMatrixStack *stack,
                         const CoglMatrix *matrix);
 void
-_cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
+_cogl_matrix_stack_flush_to_gl (CoglContext *ctx,
+                                CoglMatrixStack *stack,
                                 CoglMatrixMode mode);
 void
 _cogl_matrix_stack_dirty (CoglMatrixStack  *stack);
@@ -122,7 +125,8 @@ gboolean
 _cogl_matrix_stack_has_identity_flag (CoglMatrixStack *stack);
 
 void
-_cogl_matrix_stack_prepare_for_flush (CoglMatrixStack *stack,
+_cogl_prepare_matrix_stack_for_flush (CoglContext *context,
+                                      CoglMatrixStack *stack,
                                       CoglMatrixMode mode,
                                       CoglMatrixStackFlushFunc callback,
                                       void *user_data);

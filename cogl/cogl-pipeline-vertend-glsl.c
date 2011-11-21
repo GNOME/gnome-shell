@@ -306,7 +306,8 @@ _cogl_pipeline_vertend_glsl_add_layer (CoglPipeline *pipeline,
 
           _cogl_set_active_texture_unit (unit_index);
 
-          _cogl_matrix_stack_flush_to_gl (unit->matrix_stack,
+          _cogl_matrix_stack_flush_to_gl (ctx,
+                                          unit->matrix_stack,
                                           COGL_MATRIX_TEXTURE);
         }
     }

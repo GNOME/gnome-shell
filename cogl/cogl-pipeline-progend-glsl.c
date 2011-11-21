@@ -994,26 +994,24 @@ _cogl_pipeline_progend_glsl_layer_pre_change_notify (
 #ifdef HAVE_COGL_GLES2
 
 static void
-flush_modelview_cb (gboolean is_identity,
+flush_modelview_cb (CoglContext *ctx,
+                    gboolean is_identity,
                     const CoglMatrix *matrix,
                     void *user_data)
 {
   CoglPipelineProgramState *program_state = user_data;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   GE( ctx, glUniformMatrix4fv (program_state->modelview_uniform, 1, FALSE,
                                cogl_matrix_get_array (matrix)) );
 }
 
 static void
-flush_projection_cb (gboolean is_identity,
-                    const CoglMatrix *matrix,
-                    void *user_data)
+flush_projection_cb (CoglContext *ctx,
+                     gboolean is_identity,
+                     const CoglMatrix *matrix,
+                     void *user_data)
 {
   CoglPipelineProgramState *program_state = user_data;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   GE( ctx, glUniformMatrix4fv (program_state->projection_uniform, 1, FALSE,
                                cogl_matrix_get_array (matrix)) );
@@ -1026,14 +1024,13 @@ typedef struct
 } FlushCombinedData;
 
 static void
-flush_combined_step_two_cb (gboolean is_identity,
+flush_combined_step_two_cb (CoglContext *ctx,
+                            gboolean is_identity,
                             const CoglMatrix *matrix,
                             void *user_data)
 {
   FlushCombinedData *data = user_data;
   CoglMatrix mvp_matrix;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* If the modelview is the identity then we can bypass the matrix
      multiplication */
@@ -1055,18 +1052,18 @@ flush_combined_step_two_cb (gboolean is_identity,
 }
 
 static void
-flush_combined_step_one_cb (gboolean is_identity,
+flush_combined_step_one_cb (CoglContext *ctx,
+                            gboolean is_identity,
                             const CoglMatrix *matrix,
                             void *user_data)
 {
   FlushCombinedData data;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   data.program_state = user_data;
   data.projection_matrix = matrix;
 
-  _cogl_matrix_stack_prepare_for_flush (ctx->flushed_modelview_stack,
+  _cogl_prepare_matrix_stack_for_flush (ctx,
+                                        ctx->flushed_modelview_stack,
                                         COGL_MATRIX_MODELVIEW,
                                         flush_combined_step_two_cb,
                                         &data);
@@ -1127,8 +1124,9 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
         _cogl_matrix_stack_has_identity_flag (ctx->flushed_modelview_stack);
 
       if (program_state->modelview_uniform != -1)
-        _cogl_matrix_stack_prepare_for_flush (program_state
-                                              ->flushed_modelview_stack,
+        _cogl_prepare_matrix_stack_for_flush (ctx,
+                                              program_state
+                                                ->flushed_modelview_stack,
                                               COGL_MATRIX_MODELVIEW,
                                               flush_modelview_cb,
                                               program_state);
@@ -1144,8 +1142,9 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
         _cogl_matrix_stack_get_age (ctx->flushed_projection_stack);
 
       if (program_state->projection_uniform != -1)
-        _cogl_matrix_stack_prepare_for_flush (program_state
-                                              ->flushed_projection_stack,
+        _cogl_prepare_matrix_stack_for_flush (ctx,
+                                              program_state
+                                                ->flushed_projection_stack,
                                               COGL_MATRIX_PROJECTION,
                                               flush_projection_cb,
                                               program_state);
@@ -1153,7 +1152,8 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
 
   if (program_state->mvp_uniform != -1 &&
       (modelview_changed || projection_changed))
-    _cogl_matrix_stack_prepare_for_flush (ctx->flushed_projection_stack,
+    _cogl_prepare_matrix_stack_for_flush (ctx,
+                                          ctx->flushed_projection_stack,
                                           COGL_MATRIX_PROJECTION,
                                           flush_combined_step_one_cb,
                                           program_state);

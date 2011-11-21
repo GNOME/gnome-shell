@@ -396,23 +396,22 @@ _cogl_matrix_stack_set (CoglMatrixStack  *stack,
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
 
 static void
-flush_to_fixed_api_gl (gboolean is_identity,
+flush_to_fixed_api_gl (CoglContext *context,
+                       gboolean is_identity,
                        const CoglMatrix *matrix,
                        void *user_data)
 {
   CoglMatrixStack *stack = user_data;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   if (is_identity)
     {
       if (!stack->flushed_identity)
-        GE (ctx, glLoadIdentity ());
+        GE (context, glLoadIdentity ());
       stack->flushed_identity = TRUE;
     }
   else
     {
-      GE (ctx, glLoadMatrixf (cogl_matrix_get_array (matrix)) );
+      GE (context, glLoadMatrixf (cogl_matrix_get_array (matrix)) );
       stack->flushed_identity = FALSE;
     }
 }
@@ -420,16 +419,13 @@ flush_to_fixed_api_gl (gboolean is_identity,
 #endif
 
 void
-_cogl_matrix_stack_prepare_for_flush (CoglMatrixStack *stack,
+_cogl_prepare_matrix_stack_for_flush (CoglContext *context,
+                                      CoglMatrixStack *stack,
                                       CoglMatrixMode mode,
                                       CoglMatrixStackFlushFunc callback,
                                       void *user_data)
 {
-  CoglMatrixState *state;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  state = _cogl_matrix_stack_top (stack);
+  CoglMatrixState *state = _cogl_matrix_stack_top (stack);
 
   /* Because Cogl defines texture coordinates to have a top left origin and
    * because offscreen framebuffers may be used for rendering to textures we
@@ -440,29 +436,28 @@ _cogl_matrix_stack_prepare_for_flush (CoglMatrixStack *stack,
     {
       CoglMatrix flipped_projection;
       CoglMatrix *projection =
-        state->is_identity ? &ctx->identity_matrix : &state->matrix;
+        state->is_identity ? &context->identity_matrix : &state->matrix;
 
       cogl_matrix_multiply (&flipped_projection,
-                            &ctx->y_flip_matrix, projection);
-      callback (FALSE, &flipped_projection, user_data);
+                            &context->y_flip_matrix, projection);
+      callback (context, FALSE, &flipped_projection, user_data);
     }
   else
-    callback (state->is_identity,
-              state->is_identity ? &ctx->identity_matrix : &state->matrix,
-              user_data);
+    {
+      CoglMatrix *modelview =
+        state->is_identity ? &context->identity_matrix : &state->matrix;
+      callback (context, state->is_identity, modelview, user_data);
+    }
 }
 
 void
-_cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
-                                CoglMatrixMode   mode)
+_cogl_matrix_stack_flush_to_gl (CoglContext *context,
+                                CoglMatrixStack *stack,
+                                CoglMatrixMode mode)
 {
-  CoglMatrixState *state;
+  CoglMatrixState *state = _cogl_matrix_stack_top (stack);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  state = _cogl_matrix_stack_top (stack);
-
-  if (ctx->driver == COGL_DRIVER_GLES2)
+  if (context->driver == COGL_DRIVER_GLES2)
     {
       /* Under GLES2 we need to flush the matrices differently because
          they are stored in uniforms attached to the program instead of
@@ -475,16 +470,16 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
         {
         case COGL_MATRIX_MODELVIEW:
           cogl_object_ref (stack);
-          if (ctx->flushed_modelview_stack)
-            cogl_object_unref (ctx->flushed_modelview_stack);
-          ctx->flushed_modelview_stack = stack;
+          if (context->flushed_modelview_stack)
+            cogl_object_unref (context->flushed_modelview_stack);
+          context->flushed_modelview_stack = stack;
           break;
 
         case COGL_MATRIX_PROJECTION:
           cogl_object_ref (stack);
-          if (ctx->flushed_projection_stack)
-            cogl_object_unref (ctx->flushed_projection_stack);
-          ctx->flushed_projection_stack = stack;
+          if (context->flushed_projection_stack)
+            cogl_object_unref (context->flushed_projection_stack);
+          context->flushed_projection_stack = stack;
           break;
 
         case COGL_MATRIX_TEXTURE:
@@ -501,7 +496,7 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
       if (stack->flushed_state == state)
         return;
 
-      if (ctx->flushed_matrix_mode != mode)
+      if (context->flushed_matrix_mode != mode)
         {
           GLenum gl_mode = 0;
 
@@ -520,11 +515,12 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
               break;
             }
 
-          GE (ctx, glMatrixMode (gl_mode));
-          ctx->flushed_matrix_mode = mode;
+          GE (context, glMatrixMode (gl_mode));
+          context->flushed_matrix_mode = mode;
         }
 
-      _cogl_matrix_stack_prepare_for_flush (stack,
+      _cogl_prepare_matrix_stack_for_flush (context,
+                                            stack,
                                             mode,
                                             flush_to_fixed_api_gl,
                                             stack);

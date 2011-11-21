@@ -109,7 +109,7 @@ set_clip_plane (CoglFramebuffer *framebuffer,
   _cogl_matrix_stack_translate (modelview_stack,
                                 -vertex_a[0], -vertex_a[1], -vertex_a[2]);
 
-  _cogl_matrix_stack_flush_to_gl (modelview_stack, COGL_MATRIX_MODELVIEW);
+  _cogl_matrix_stack_flush_to_gl (ctx, modelview_stack, COGL_MATRIX_MODELVIEW);
 
   planef[0] = 0;
   planef[1] = -1.0;
@@ -210,8 +210,7 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
     _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrixStack *projection_stack =
     _cogl_framebuffer_get_projection_stack (framebuffer);
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = cogl_framebuffer_get_context (framebuffer);
 
   /* temporarily swap in our special stenciling pipeline */
   _cogl_push_source (ctx->stencil_pipeline, FALSE);
@@ -219,9 +218,11 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
   /* This can be called from the journal code which doesn't flush
      the matrix stacks between calls so we need to ensure they're
      flushed now */
-  _cogl_matrix_stack_flush_to_gl (modelview_stack,
+  _cogl_matrix_stack_flush_to_gl (ctx,
+                                  modelview_stack,
                                   COGL_MATRIX_MODELVIEW);
-  _cogl_matrix_stack_flush_to_gl (projection_stack,
+  _cogl_matrix_stack_flush_to_gl (ctx,
+                                  projection_stack,
                                   COGL_MATRIX_PROJECTION);
 
   if (first)
@@ -257,9 +258,11 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
       _cogl_matrix_stack_push (modelview_stack);
       _cogl_matrix_stack_load_identity (modelview_stack);
 
-      _cogl_matrix_stack_flush_to_gl (modelview_stack,
+      _cogl_matrix_stack_flush_to_gl (ctx,
+                                      modelview_stack,
                                       COGL_MATRIX_MODELVIEW);
-      _cogl_matrix_stack_flush_to_gl (projection_stack,
+      _cogl_matrix_stack_flush_to_gl (ctx,
+                                      projection_stack,
                                       COGL_MATRIX_PROJECTION);
 
       _cogl_rectangle_immediate (-1.0, -1.0, 1.0, 1.0);
@@ -298,9 +301,11 @@ add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
   /* This can be called from the clip stack code which doesn't flush
      the matrix stacks between calls so we need to ensure they're
      flushed now */
-  _cogl_matrix_stack_flush_to_gl (modelview_stack,
+  _cogl_matrix_stack_flush_to_gl (ctx,
+                                  modelview_stack,
                                   COGL_MATRIX_MODELVIEW);
-  _cogl_matrix_stack_flush_to_gl (projection_stack,
+  _cogl_matrix_stack_flush_to_gl (ctx,
+                                  projection_stack,
                                   COGL_MATRIX_PROJECTION);
 
   /* Just setup a simple pipeline that doesn't use texturing... */
@@ -361,12 +366,14 @@ add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
 
       _cogl_matrix_stack_push (projection_stack);
       _cogl_matrix_stack_load_identity (projection_stack);
-      _cogl_matrix_stack_flush_to_gl (projection_stack,
+      _cogl_matrix_stack_flush_to_gl (ctx,
+                                      projection_stack,
                                       COGL_MATRIX_PROJECTION);
 
       _cogl_matrix_stack_push (modelview_stack);
       _cogl_matrix_stack_load_identity (modelview_stack);
-      _cogl_matrix_stack_flush_to_gl (modelview_stack,
+      _cogl_matrix_stack_flush_to_gl (ctx,
+                                      modelview_stack,
                                       COGL_MATRIX_MODELVIEW);
 
       _cogl_rectangle_immediate (-1.0, -1.0, 1.0, 1.0);
