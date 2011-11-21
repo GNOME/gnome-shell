@@ -1108,17 +1108,6 @@ notify_buffers_changed (CoglFramebuffer *old_draw_buffer,
 
   if (old_draw_buffer && new_draw_buffer)
     {
-      /* If the two draw framebuffers have a different color mask then
-         we need to ensure the logic ops are reflushed the next time
-         something is drawn */
-      if (cogl_framebuffer_get_color_mask (old_draw_buffer) !=
-          cogl_framebuffer_get_color_mask (new_draw_buffer))
-        {
-          ctx->current_pipeline_changes_since_flush |=
-            COGL_PIPELINE_STATE_LOGIC_OPS;
-          ctx->current_pipeline_age--;
-        }
-
       /* If we're switching from onscreen to offscreen and the last
          flush pipeline is using backface culling then we also need to
          reflush the cull face state because the winding order of the
@@ -1429,6 +1418,17 @@ _cogl_framebuffer_compare_projection_state (CoglFramebuffer *a,
 }
 
 static unsigned long
+_cogl_framebuffer_compare_color_mask_state (CoglFramebuffer *a,
+                                            CoglFramebuffer *b)
+{
+  if (cogl_framebuffer_get_color_mask (a) !=
+      cogl_framebuffer_get_color_mask (b))
+    return COGL_FRAMEBUFFER_STATE_COLOR_MASK;
+  else
+    return 0;
+}
+
+static unsigned long
 _cogl_framebuffer_compare (CoglFramebuffer *a,
                            CoglFramebuffer *b,
                            unsigned long state)
@@ -1467,6 +1467,10 @@ _cogl_framebuffer_compare (CoglFramebuffer *a,
         case COGL_FRAMEBUFFER_STATE_INDEX_PROJECTION:
           differences |=
             _cogl_framebuffer_compare_projection_state (a, b);
+          break;
+        case COGL_FRAMEBUFFER_STATE_INDEX_COLOR_MASK:
+          differences |=
+            _cogl_framebuffer_compare_color_mask_state (a, b);
           break;
         default:
           g_warn_if_reached ();
@@ -1545,6 +1549,20 @@ _cogl_framebuffer_flush_projection_state (CoglFramebuffer *framebuffer)
   _cogl_matrix_stack_flush_to_gl (framebuffer->context,
                                   framebuffer->projection_stack,
                                   COGL_MATRIX_PROJECTION);
+}
+
+static void
+_cogl_framebuffer_flush_color_mask_state (CoglFramebuffer *framebuffer)
+{
+  CoglContext *context = framebuffer->context;
+
+  /* The color mask state is really owned by a CoglPipeline so to
+   * ensure the color mask is updated the next time we draw something
+   * we need to make sure the logic ops for the pipeline are
+   * re-flushed... */
+  context->current_pipeline_changes_since_flush |=
+    COGL_PIPELINE_STATE_LOGIC_OPS;
+  context->current_pipeline_age--;
 }
 
 void
@@ -1647,6 +1665,9 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
         case COGL_FRAMEBUFFER_STATE_INDEX_PROJECTION:
           _cogl_framebuffer_flush_projection_state (draw_buffer);
           break;
+        case COGL_FRAMEBUFFER_STATE_INDEX_COLOR_MASK:
+          _cogl_framebuffer_flush_color_mask_state (draw_buffer);
+          break;
         default:
           g_warn_if_reached ();
         }
@@ -1699,15 +1720,14 @@ void
 cogl_framebuffer_set_color_mask (CoglFramebuffer *framebuffer,
                                  CoglColorMask color_mask)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  /* XXX: Currently color mask changes don't go through the journal */
+  _cogl_framebuffer_flush_journal (framebuffer);
 
-  cogl_flush (); /* XXX: Currently color mask changes don't go through the journal */
   framebuffer->color_mask = color_mask;
 
-  /* Make sure the ColorMask is updated when the next primitive is drawn */
-  ctx->current_pipeline_changes_since_flush |=
-    COGL_PIPELINE_STATE_LOGIC_OPS;
-  ctx->current_pipeline_age--;
+  if (framebuffer->context->current_draw_buffer == framebuffer)
+    framebuffer->context->current_draw_buffer_changes |=
+      COGL_FRAMEBUFFER_STATE_COLOR_MASK;
 }
 
 gboolean
