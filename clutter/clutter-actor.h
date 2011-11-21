@@ -374,6 +374,13 @@ void                  clutter_actor_set_y_expand              (ClutterActor     
                                                                gboolean               y_expand);
 gboolean              clutter_actor_get_y_expand              (ClutterActor          *self);
 
+void                  clutter_actor_set_x_align               (ClutterActor          *self,
+                                                               ClutterActorAlign      x_align);
+ClutterActorAlign     clutter_actor_get_x_align               (ClutterActor          *self);
+void                  clutter_actor_set_y_align               (ClutterActor          *self,
+                                                               ClutterActorAlign      y_align);
+ClutterActorAlign     clutter_actor_get_y_align               (ClutterActor          *self);
+
 void                  clutter_actor_set_rotation              (ClutterActor          *self,
                                                                ClutterRotateAxis      axis,
                                                                gdouble                angle,

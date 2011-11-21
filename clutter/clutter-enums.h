@@ -1056,6 +1056,33 @@ typedef enum {
   CLUTTER_PATH_REL_CURVE_TO = CLUTTER_PATH_CURVE_TO | CLUTTER_PATH_RELATIVE
 } ClutterPathNodeType;
 
+/**
+ * ClutterActorAlign:
+ * @CLUTTER_ACTOR_ALIGN_FILL: Stretch to cover the whole allocated space
+ * @CLUTTER_ACTOR_ALIGN_START: Snap to left or top side, leaving space
+ *   to the right or bottom. For horizontal layouts, in right-to-left
+ *   locales this should be reversed.
+ * @CLUTTER_ACTOR_ALIGN_CENTER: Center the actor inside the allocation
+ * @CLUTTER_ACTOR_ALIGN_END: Snap to right or bottom side, leaving space
+ *   to the left or top. For horizontal layouts, in right-to-left locales
+ *   this should be reversed.
+ *
+ * Controls how a #ClutterActor should align itself inside the extra space
+ * assigned to it during the allocation.
+ *
+ * Alignment only matters if the allocated space given to an actor is
+ * bigger than its natural size; for example, when the #ClutterActor:x-expand
+ * or the #ClutterActor:y-expand properties of #ClutterActor are set to %TRUE.
+ *
+ * Since: 1.10
+ */
+typedef enum {
+  CLUTTER_ACTOR_ALIGN_FILL,
+  CLUTTER_ACTOR_ALIGN_START,
+  CLUTTER_ACTOR_ALIGN_CENTER,
+  CLUTTER_ACTOR_ALIGN_END
+} ClutterActorAlign;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ENUMS_H__ */

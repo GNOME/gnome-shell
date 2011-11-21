@@ -525,6 +525,8 @@ struct _ClutterActorPrivate
   guint is_dirty                    : 1;
   guint x_expand                    : 1;
   guint y_expand                    : 1;
+  guint x_align                     : 4;
+  guint y_align                     : 4;
 };
 
 enum
@@ -617,6 +619,8 @@ enum
 
   PROP_X_EXPAND,
   PROP_Y_EXPAND,
+  PROP_X_ALIGN,
+  PROP_Y_ALIGN,
 
   PROP_LAST
 };
@@ -3549,6 +3553,14 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_y_expand (actor, g_value_get_boolean (value));
       break;
 
+    case PROP_X_ALIGN:
+      clutter_actor_set_x_align (actor, g_value_get_enum (value));
+      break;
+
+    case PROP_Y_ALIGN:
+      clutter_actor_set_y_align (actor, g_value_get_enum (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -3824,6 +3836,14 @@ clutter_actor_get_property (GObject    *object,
 
     case PROP_Y_EXPAND:
       g_value_set_boolean (value, priv->y_expand);
+      break;
+
+    case PROP_X_ALIGN:
+      g_value_set_enum (value, priv->x_align);
+      break;
+
+    case PROP_Y_ALIGN:
+      g_value_set_enum (value, priv->y_align);
       break;
 
     default:
@@ -4894,6 +4914,26 @@ clutter_actor_class_init (ClutterActorClass *klass)
   g_object_class_install_property (object_class, PROP_Y_EXPAND,
                                    obj_props[PROP_Y_EXPAND]);
 
+  obj_props[PROP_X_ALIGN] =
+    g_param_spec_enum ("x-align",
+                       P_("X Alignment"),
+                       P_("The alignment of the actor on the X axis within its allocation"),
+                       CLUTTER_TYPE_ACTOR_ALIGN,
+                       CLUTTER_ACTOR_ALIGN_FILL,
+                       CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_X_ALIGN,
+                                   obj_props[PROP_X_ALIGN]);
+
+  obj_props[PROP_Y_ALIGN] =
+    g_param_spec_enum ("y-align",
+                       P_("Y Alignment"),
+                       P_("The alignment of the actor on the Y axis within its allocation"),
+                       CLUTTER_TYPE_ACTOR_ALIGN,
+                       CLUTTER_ACTOR_ALIGN_FILL,
+                       CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_Y_ALIGN,
+                                   obj_props[PROP_Y_ALIGN]);
+
   /**
    * ClutterActor::destroy:
    * @actor: the #ClutterActor which emitted the signal
@@ -5481,6 +5521,11 @@ clutter_actor_init (ClutterActor *self)
 
   priv->cached_width_age = 1;
   priv->cached_height_age = 1;
+
+  priv->x_expand = FALSE;
+  priv->y_expand = FALSE;
+  priv->x_align = CLUTTER_ACTOR_ALIGN_FILL;
+  priv->y_align = CLUTTER_ACTOR_ALIGN_FILL;
 
   priv->opacity_override = -1;
   priv->enable_model_view_transform = TRUE;
@@ -13161,4 +13206,60 @@ clutter_actor_get_y_expand (ClutterActor *self)
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
   return self->priv->y_expand;
+}
+
+void
+clutter_actor_set_x_align (ClutterActor      *self,
+                           ClutterActorAlign  x_align)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (priv->x_align != x_align)
+    {
+      priv->x_align = x_align;
+
+      clutter_actor_queue_relayout (self);
+
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_X_ALIGN]);
+    }
+}
+
+ClutterActorAlign
+clutter_actor_get_x_align (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), CLUTTER_ACTOR_ALIGN_FILL);
+
+  return self->priv->x_align;
+}
+
+void
+clutter_actor_set_y_align (ClutterActor      *self,
+                           ClutterActorAlign  y_align)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (priv->y_align != y_align)
+    {
+      priv->y_align = y_align;
+
+      clutter_actor_queue_relayout (self);
+
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_Y_ALIGN]);
+    }
+}
+
+ClutterActorAlign
+clutter_actor_get_y_align (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), CLUTTER_ACTOR_ALIGN_FILL);
+
+  return self->priv->y_align;
 }
