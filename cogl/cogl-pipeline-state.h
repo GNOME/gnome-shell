@@ -689,12 +689,12 @@ cogl_pipeline_get_depth_state (CoglPipeline *pipeline,
 /**
  * CoglPipelineCullFaceMode:
  * @COGL_PIPELINE_CULL_FACE_MODE_NONE: Neither face will be
- *  called. This is the default.
- * @COGL_PIPELINE_CULL_FACE_MODE_FRONT: Front faces will be called.
- * @COGL_PIPELINE_CULL_FACE_MODE_BACK: Back faces will be called.
- * @COGL_PIPELINE_CULL_FACE_MODE_BOTH: All faces will be called.
+ *  culled. This is the default.
+ * @COGL_PIPELINE_CULL_FACE_MODE_FRONT: Front faces will be culled.
+ * @COGL_PIPELINE_CULL_FACE_MODE_BACK: Back faces will be culled.
+ * @COGL_PIPELINE_CULL_FACE_MODE_BOTH: All faces will be culled.
  *
- * Specifies which faces should be called. This can be set on a
+ * Specifies which faces should be culled. This can be set on a
  * pipeline using cogl_pipeline_set_cull_face_mode().
  */
 typedef enum
