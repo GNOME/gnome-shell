@@ -1003,15 +1003,3 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
 
   ctx->current_clip_stack_uses_stencil = using_stencil_buffer;
 }
-
-void
-_cogl_clip_stack_dirty (void)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (ctx->current_clip_stack_valid)
-    {
-      ctx->current_clip_stack_valid = FALSE;
-      _cogl_clip_stack_unref (ctx->current_clip_stack);
-    }
-}

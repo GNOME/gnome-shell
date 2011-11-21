@@ -215,7 +215,4 @@ _cogl_clip_stack_ref (CoglClipStack *stack);
 void
 _cogl_clip_stack_unref (CoglClipStack *stack);
 
-void
-_cogl_clip_stack_dirty (void);
-
 #endif /* __COGL_CLIP_STACK_H */

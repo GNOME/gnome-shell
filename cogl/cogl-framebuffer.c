@@ -1102,8 +1102,6 @@ notify_buffers_changed (CoglFramebuffer *old_draw_buffer,
   ctx->dirty_bound_framebuffer = 1;
   ctx->dirty_gl_viewport = 1;
 
-  _cogl_clip_stack_dirty ();
-
   if (old_draw_buffer && new_draw_buffer)
     {
       /* If the two draw framebuffers have a different color mask then
