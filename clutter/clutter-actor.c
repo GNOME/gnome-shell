@@ -378,14 +378,24 @@ typedef enum {
                               */
 } MapStateChange;
 
+typedef struct _LayoutInfo      LayoutInfo;
+struct _LayoutInfo
+{
+  /* fixed position coordinates */
+  float fixed_x;
+  float fixed_y;
+
+  ClutterMargin margin;
+
+  guint x_expand : 1;
+  guint y_expand : 1;
+
+  guint x_align : 4;
+  guint y_align : 4;
+};
+
 struct _ClutterActorPrivate
 {
-  /* fixed_x, fixed_y, and the allocation box are all in parent
-   * coordinates.
-   */
-  gfloat fixed_x;
-  gfloat fixed_y;
-
   /* request mode */
   ClutterRequestMode request_mode;
 
@@ -523,10 +533,6 @@ struct _ClutterActorPrivate
      the redraw was queued from or it will be NULL if the redraw was
      queued without an effect. */
   guint is_dirty                    : 1;
-  guint x_expand                    : 1;
-  guint y_expand                    : 1;
-  guint x_align                     : 4;
-  guint y_align                     : 4;
 };
 
 enum
@@ -621,6 +627,10 @@ enum
   PROP_Y_EXPAND,
   PROP_X_ALIGN,
   PROP_Y_ALIGN,
+  PROP_MARGIN_TOP,
+  PROP_MARGIN_BOTTOM,
+  PROP_MARGIN_LEFT,
+  PROP_MARGIN_RIGHT,
 
   PROP_LAST
 };
@@ -716,6 +726,9 @@ static void _clutter_actor_get_relative_transformation_matrix (ClutterActor *sel
 
 static ClutterPaintVolume *_clutter_actor_get_paint_volume_mutable (ClutterActor *self);
 
+static LayoutInfo *      clutter_actor_get_layout_info             (ClutterActor *self);
+static const LayoutInfo *clutter_actor_get_layout_info_or_defaults (ClutterActor *self);
+
 /* Helper macro which translates by the anchor coord, applies the
    given transformation and then translates back */
 #define TRANSFORM_ABOUT_ANCHOR_COORD(a,m,c,_transform)  G_STMT_START { \
@@ -726,6 +739,7 @@ static ClutterPaintVolume *_clutter_actor_get_paint_volume_mutable (ClutterActor
   cogl_matrix_translate ((m), -_tx, -_ty, -_tz);        } G_STMT_END
 
 static GQuark quark_shader_data = 0;
+static GQuark quark_actor_layout_info = 0;
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                   clutter_actor,
@@ -3561,6 +3575,22 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_y_align (actor, g_value_get_enum (value));
       break;
 
+    case PROP_MARGIN_TOP:
+      clutter_actor_set_margin_top (actor, g_value_get_float (value));
+      break;
+
+    case PROP_MARGIN_BOTTOM:
+      clutter_actor_set_margin_bottom (actor, g_value_get_float (value));
+      break;
+
+    case PROP_MARGIN_LEFT:
+      clutter_actor_set_margin_left (actor, g_value_get_float (value));
+      break;
+
+    case PROP_MARGIN_RIGHT:
+      clutter_actor_set_margin_right (actor, g_value_get_float (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -3595,11 +3625,19 @@ clutter_actor_get_property (GObject    *object,
       break;
 
     case PROP_FIXED_X:
-      g_value_set_float (value, priv->fixed_x);
+      {
+        LayoutInfo *info = clutter_actor_get_layout_info (actor);
+
+        g_value_set_float (value, info->fixed_x);
+      }
       break;
 
     case PROP_FIXED_Y:
-      g_value_set_float (value, priv->fixed_y);
+      {
+        LayoutInfo *info = clutter_actor_get_layout_info (actor);
+
+        g_value_set_float (value, info->fixed_y);
+      }
       break;
 
     case PROP_FIXED_POSITION_SET:
@@ -3831,19 +3869,83 @@ clutter_actor_get_property (GObject    *object,
       break;
 
     case PROP_X_EXPAND:
-      g_value_set_boolean (value, priv->x_expand);
+      {
+        const LayoutInfo *info;
+
+        info = clutter_actor_get_layout_info_or_defaults (actor);
+
+        g_value_set_boolean (value, info->x_expand);
+      }
       break;
 
     case PROP_Y_EXPAND:
-      g_value_set_boolean (value, priv->y_expand);
+      {
+        const LayoutInfo *info;
+
+        info = clutter_actor_get_layout_info_or_defaults (actor);
+
+        g_value_set_boolean (value, info->y_expand);
+      }
       break;
 
     case PROP_X_ALIGN:
-      g_value_set_enum (value, priv->x_align);
+      {
+        const LayoutInfo *info;
+
+        info = clutter_actor_get_layout_info_or_defaults (actor);
+
+        g_value_set_enum (value, info->x_align);
+      }
       break;
 
     case PROP_Y_ALIGN:
-      g_value_set_enum (value, priv->y_align);
+      {
+        const LayoutInfo *info;
+
+        info = clutter_actor_get_layout_info_or_defaults (actor);
+
+        g_value_set_enum (value, info->y_align);
+      }
+      break;
+
+    case PROP_MARGIN_TOP:
+      {
+        const LayoutInfo *info;
+
+        info = clutter_actor_get_layout_info_or_defaults (actor);
+
+        g_value_set_float (value, info->margin.top);
+      }
+      break;
+
+    case PROP_MARGIN_BOTTOM:
+      {
+        const LayoutInfo *info;
+
+        info = clutter_actor_get_layout_info_or_defaults (actor);
+
+        g_value_set_float (value, info->margin.bottom);
+      }
+      break;
+
+    case PROP_MARGIN_LEFT:
+      {
+        const LayoutInfo *info;
+
+        info = clutter_actor_get_layout_info_or_defaults (actor);
+
+        g_value_set_float (value, info->margin.left);
+      }
+      break;
+
+    case PROP_MARGIN_RIGHT:
+      {
+        const LayoutInfo *info;
+
+        info = clutter_actor_get_layout_info_or_defaults (actor);
+
+        g_value_set_float (value, info->margin.right);
+      }
       break;
 
     default:
@@ -4005,6 +4107,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   GParamSpec *pspec;
 
   quark_shader_data = g_quark_from_static_string ("-clutter-actor-shader-data");
+  quark_actor_layout_info = g_quark_from_static_string ("-clutter-actor-layout-info");
 
   object_class->constructed  = clutter_actor_constructed;
   object_class->set_property = clutter_actor_set_property;
@@ -4934,6 +5037,46 @@ clutter_actor_class_init (ClutterActorClass *klass)
   g_object_class_install_property (object_class, PROP_Y_ALIGN,
                                    obj_props[PROP_Y_ALIGN]);
 
+  obj_props[PROP_MARGIN_TOP] =
+    g_param_spec_float ("margin-top",
+                        P_("Margin Top"),
+                        P_("Extra space at the top"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_MARGIN_TOP,
+                                   obj_props[PROP_MARGIN_TOP]);
+
+  obj_props[PROP_MARGIN_BOTTOM] =
+    g_param_spec_float ("margin-bottom",
+                        P_("Margin Bottom"),
+                        P_("Extra space at the bottom"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_MARGIN_BOTTOM,
+                                   obj_props[PROP_MARGIN_BOTTOM]);
+
+  obj_props[PROP_MARGIN_LEFT] =
+    g_param_spec_float ("margin-left",
+                        P_("Margin Left"),
+                        P_("Extra space at the left"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_MARGIN_LEFT,
+                                   obj_props[PROP_MARGIN_LEFT]);
+
+  obj_props[PROP_MARGIN_RIGHT] =
+    g_param_spec_float ("margin-right",
+                        P_("Margin Right"),
+                        P_("Extra space at the right"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_MARGIN_RIGHT,
+                                   obj_props[PROP_MARGIN_RIGHT]);
+
   /**
    * ClutterActor::destroy:
    * @actor: the #ClutterActor which emitted the signal
@@ -5521,11 +5664,6 @@ clutter_actor_init (ClutterActor *self)
 
   priv->cached_width_age = 1;
   priv->cached_height_age = 1;
-
-  priv->x_expand = FALSE;
-  priv->y_expand = FALSE;
-  priv->x_align = CLUTTER_ACTOR_ALIGN_FILL;
-  priv->y_align = CLUTTER_ACTOR_ALIGN_FILL;
 
   priv->opacity_override = -1;
   priv->enable_model_view_transform = TRUE;
@@ -6663,15 +6801,15 @@ clutter_actor_move_by (ClutterActor *self,
 		       gfloat        dx,
 		       gfloat        dy)
 {
-  ClutterActorPrivate *priv;
+  LayoutInfo *info;
   gfloat x, y;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
+  info = clutter_actor_get_layout_info (self);
 
-  x = priv->fixed_x;
-  y = priv->fixed_y;
+  x = info->fixed_x;
+  y = info->fixed_y;
 
   clutter_actor_set_position (self, x + dx, y + dy);
 }
@@ -7406,17 +7544,20 @@ clutter_actor_set_x (ClutterActor *self,
 {
   ClutterActorBox old = { 0, };
   ClutterActorPrivate *priv;
+  LayoutInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
 
-  if (priv->position_set && priv->fixed_x == x)
+  info = clutter_actor_get_layout_info (self);
+
+  if (priv->position_set && info->fixed_x == x)
     return;
 
   clutter_actor_store_old_geometry (self, &old);
 
-  priv->fixed_x = x;
+  info->fixed_x = x;
   clutter_actor_set_fixed_position_set (self, TRUE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
@@ -7442,17 +7583,20 @@ clutter_actor_set_y (ClutterActor *self,
 {
   ClutterActorBox old = { 0, };
   ClutterActorPrivate *priv;
+  LayoutInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
 
-  if (priv->position_set && priv->fixed_y == y)
+  info = clutter_actor_get_layout_info (self);
+
+  if (priv->position_set && info->fixed_y == y)
     return;
 
   clutter_actor_store_old_geometry (self, &old);
 
-  priv->fixed_y = y;
+  info->fixed_y = y;
   clutter_actor_set_fixed_position_set (self, TRUE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
@@ -7494,7 +7638,11 @@ clutter_actor_get_x (ClutterActor *self)
   if (priv->needs_allocation)
     {
       if (priv->position_set)
-        return priv->fixed_x;
+        {
+          LayoutInfo *info = clutter_actor_get_layout_info (self);
+
+          return info->fixed_x;
+        }
       else
         return 0;
     }
@@ -7536,7 +7684,11 @@ clutter_actor_get_y (ClutterActor *self)
   if (priv->needs_allocation)
     {
       if (priv->position_set)
-        return priv->fixed_y;
+        {
+          LayoutInfo *info = clutter_actor_get_layout_info (self);
+
+          return info->fixed_y;
+        }
       else
         return 0;
     }
@@ -13148,21 +13300,99 @@ clutter_actor_get_layout_manager (ClutterActor *self)
   return self->priv->layout_manager;
 }
 
+static const LayoutInfo default_layout_info = {
+  0.f,                          /* fixed-x */
+  0.f,                          /* fixed-y */
+  { 0, 0, 0, 0 },               /* margin */
+  FALSE,                        /* x-expand */
+  FALSE,                        /* y-expand */
+  CLUTTER_ACTOR_ALIGN_FILL,     /* x-align */
+  CLUTTER_ACTOR_ALIGN_FILL,     /* y-align */
+};
+
+static void
+layout_info_free (gpointer data)
+{
+  if (G_LIKELY (data != NULL))
+    g_slice_free (LayoutInfo, data);
+}
+
+/*< private >
+ * clutter_actor_get_layout_info:
+ * @self: a #ClutterActor
+ *
+ * Retrieves a pointer to the LayoutInfo structure.
+ *
+ * If the actor does not have a LayoutInfo associated to it, one
+ * will be created and initialized to the default values.
+ *
+ * This function should be used for setters.
+ *
+ * For getters, you should use clutter_actor_get_layout_info_or_defaults()
+ * instead.
+ *
+ * Return value: (transfer none): a pointer to the LayoutInfo structure
+ */
+static LayoutInfo *
+clutter_actor_get_layout_info (ClutterActor *self)
+{
+  LayoutInfo *retval;
+
+  retval = g_object_get_qdata (G_OBJECT (self), quark_actor_layout_info);
+  if (retval == NULL)
+    {
+      retval = g_slice_new (LayoutInfo);
+
+      *retval = default_layout_info;
+
+      g_object_set_qdata_full (G_OBJECT (self), quark_actor_layout_info,
+                               retval,
+                               layout_info_free);
+    }
+
+  return retval;
+}
+
+/*< private >
+ * clutter_actor_get_layout_info_or_defaults:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the LayoutInfo structure associated to an actor.
+ *
+ * If the actor does not have a LayoutInfo structure associated to it,
+ * then the default structure will be returned.
+ *
+ * This function should only be used for getters.
+ *
+ * Return value: a const pointer to the LayoutInfo structure
+ */
+static const LayoutInfo *
+clutter_actor_get_layout_info_or_defaults (ClutterActor *self)
+{
+  const LayoutInfo *info;
+
+  info = g_object_get_qdata (G_OBJECT (self), quark_actor_layout_info);
+  if (info == NULL)
+    return &default_layout_info;
+
+  return info;
+}
+
 void
 clutter_actor_set_x_expand (ClutterActor *self,
                             gboolean      x_expand)
 {
-  ClutterActorPrivate *priv;
+  LayoutInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   x_expand = !!x_expand;
 
-  priv = self->priv;
+  info = clutter_actor_get_layout_info (self);
 
-  if (priv->x_expand != x_expand)
+  if (info->x_expand != x_expand)
     {
-      priv->x_expand = x_expand;
+      info->x_expand = x_expand;
 
       clutter_actor_queue_relayout (self);
 
@@ -13175,24 +13405,24 @@ clutter_actor_get_x_expand (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  return self->priv->x_expand;
+  return clutter_actor_get_layout_info_or_defaults (self)->x_expand;
 }
 
 void
 clutter_actor_set_y_expand (ClutterActor *self,
                             gboolean      y_expand)
 {
-  ClutterActorPrivate *priv;
+  LayoutInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   y_expand = !!y_expand;
 
-  priv = self->priv;
+  info = clutter_actor_get_layout_info (self);
 
-  if (priv->y_expand != y_expand)
+  if (info->y_expand != y_expand)
     {
-      priv->y_expand = y_expand;
+      info->y_expand = y_expand;
 
       clutter_actor_queue_relayout (self);
 
@@ -13205,22 +13435,22 @@ clutter_actor_get_y_expand (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  return self->priv->y_expand;
+  return clutter_actor_get_layout_info_or_defaults (self)->y_expand;
 }
 
 void
 clutter_actor_set_x_align (ClutterActor      *self,
                            ClutterActorAlign  x_align)
 {
-  ClutterActorPrivate *priv;
+  LayoutInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
+  info = clutter_actor_get_layout_info (self);
 
-  if (priv->x_align != x_align)
+  if (info->x_align != x_align)
     {
-      priv->x_align = x_align;
+      info->x_align = x_align;
 
       clutter_actor_queue_relayout (self);
 
@@ -13233,22 +13463,22 @@ clutter_actor_get_x_align (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), CLUTTER_ACTOR_ALIGN_FILL);
 
-  return self->priv->x_align;
+  return clutter_actor_get_layout_info_or_defaults (self)->x_align;
 }
 
 void
 clutter_actor_set_y_align (ClutterActor      *self,
                            ClutterActorAlign  y_align)
 {
-  ClutterActorPrivate *priv;
+  LayoutInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
+  info = clutter_actor_get_layout_info (self);
 
-  if (priv->y_align != y_align)
+  if (info->y_align != y_align)
     {
-      priv->y_align = y_align;
+      info->y_align = y_align;
 
       clutter_actor_queue_relayout (self);
 
@@ -13261,5 +13491,147 @@ clutter_actor_get_y_align (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), CLUTTER_ACTOR_ALIGN_FILL);
 
-  return self->priv->y_align;
+  return clutter_actor_get_layout_info_or_defaults (self)->y_align;
+}
+
+ClutterMargin *
+clutter_margin_new (void)
+{
+  return g_slice_new0 (ClutterMargin);
+}
+
+ClutterMargin *
+clutter_margin_copy (const ClutterMargin *margin_)
+{
+  if (G_LIKELY (margin_ != NULL))
+    return g_slice_dup (ClutterMargin, margin_);
+
+  return NULL;
+}
+
+void
+clutter_margin_free (ClutterMargin *margin_)
+{
+  if (G_LIKELY (margin_ != NULL))
+    g_slice_free (ClutterMargin, margin_);
+}
+
+G_DEFINE_BOXED_TYPE (ClutterMargin, clutter_margin,
+                     clutter_margin_copy,
+                     clutter_margin_free)
+
+void
+clutter_actor_set_margin_top (ClutterActor *self,
+                              gfloat        margin)
+{
+  LayoutInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (margin >= 0.f);
+
+  info = clutter_actor_get_layout_info (self);
+
+  if (info->margin.top == margin)
+    return;
+
+  info->margin.top = margin;
+
+  clutter_actor_queue_relayout (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MARGIN_TOP]);
+}
+
+gfloat
+clutter_actor_get_margin_top (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.f);
+
+  return clutter_actor_get_layout_info_or_defaults (self)->margin.top;
+}
+
+void
+clutter_actor_set_margin_bottom (ClutterActor *self,
+                                 gfloat        margin)
+{
+  LayoutInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (margin >= 0.f);
+
+  info = clutter_actor_get_layout_info (self);
+
+  if (info->margin.bottom == margin)
+    return;
+
+  info->margin.bottom = margin;
+
+  clutter_actor_queue_relayout (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MARGIN_BOTTOM]);
+}
+
+gfloat
+clutter_actor_get_margin_bottom (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.f);
+
+  return clutter_actor_get_layout_info_or_defaults (self)->margin.bottom;
+}
+
+void
+clutter_actor_set_margin_left (ClutterActor *self,
+                               gfloat        margin)
+{
+  LayoutInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (margin >= 0.f);
+
+  info = clutter_actor_get_layout_info (self);
+
+  if (info->margin.left == margin)
+    return;
+
+  info->margin.left = margin;
+
+  clutter_actor_queue_relayout (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MARGIN_LEFT]);
+}
+
+gfloat
+clutter_actor_get_margin_left (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.f);
+
+  return clutter_actor_get_layout_info_or_defaults (self)->margin.left;
+}
+
+void
+clutter_actor_set_margin_right (ClutterActor *self,
+                                gfloat        margin)
+{
+  LayoutInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (margin >= 0.f);
+
+  info = clutter_actor_get_layout_info (self);
+
+  if (info->margin.right == margin)
+    return;
+
+  info->margin.right = margin;
+
+  clutter_actor_queue_relayout (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MARGIN_RIGHT]);
+}
+
+gfloat
+clutter_actor_get_margin_right (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.f);
+
+  return clutter_actor_get_layout_info_or_defaults (self)->margin.right;
 }

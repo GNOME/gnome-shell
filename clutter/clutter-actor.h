@@ -381,6 +381,19 @@ void                  clutter_actor_set_y_align               (ClutterActor     
                                                                ClutterActorAlign      y_align);
 ClutterActorAlign     clutter_actor_get_y_align               (ClutterActor          *self);
 
+void                  clutter_actor_set_margin_top            (ClutterActor          *self,
+                                                               gfloat                 margin);
+gfloat                clutter_actor_get_margin_top            (ClutterActor          *self);
+void                  clutter_actor_set_margin_bottom         (ClutterActor          *self,
+                                                               gfloat                 margin);
+gfloat                clutter_actor_get_margin_bottom         (ClutterActor          *self);
+void                  clutter_actor_set_margin_left           (ClutterActor          *self,
+                                                               gfloat                 margin);
+gfloat                clutter_actor_get_margin_left           (ClutterActor          *self);
+void                  clutter_actor_set_margin_right          (ClutterActor          *self,
+                                                               gfloat                 margin);
+gfloat                clutter_actor_get_margin_right          (ClutterActor          *self);
+
 void                  clutter_actor_set_rotation              (ClutterActor          *self,
                                                                ClutterRotateAxis      axis,
                                                                gdouble                angle,

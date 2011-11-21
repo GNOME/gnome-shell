@@ -52,6 +52,7 @@ G_BEGIN_DECLS
 #define CLUTTER_TYPE_FOG                (clutter_fog_get_type ())
 #define CLUTTER_TYPE_GEOMETRY           (clutter_geometry_get_type ())
 #define CLUTTER_TYPE_KNOT               (clutter_knot_get_type ())
+#define CLUTTER_TYPE_MARGIN             (clutter_margin_get_type ())
 #define CLUTTER_TYPE_PAINT_VOLUME       (clutter_paint_volume_get_type ())
 #define CLUTTER_TYPE_PERSPECTIVE        (clutter_perspective_get_type ())
 #define CLUTTER_TYPE_VERTEX             (clutter_vertex_get_type ())
@@ -82,6 +83,7 @@ typedef struct _ClutterColor            ClutterColor;
 typedef struct _ClutterFog              ClutterFog;
 typedef struct _ClutterGeometry         ClutterGeometry;
 typedef struct _ClutterKnot             ClutterKnot;
+typedef struct _ClutterMargin           ClutterMargin;
 typedef struct _ClutterPerspective      ClutterPerspective;
 typedef struct _ClutterVertex           ClutterVertex;
 
@@ -264,6 +266,20 @@ void                clutter_paint_volume_union               (ClutterPaintVolume
 
 gboolean            clutter_paint_volume_set_from_allocation (ClutterPaintVolume       *pv,
                                                               ClutterActor             *actor);
+
+struct _ClutterMargin
+{
+  float left;
+  float right;
+  float top;
+  float bottom;
+};
+
+GType clutter_margin_get_type (void) G_GNUC_CONST;
+
+ClutterMargin * clutter_margin_new      (void) G_GNUC_MALLOC;
+ClutterMargin * clutter_margin_copy     (const ClutterMargin *margin);
+void            clutter_margin_free     (ClutterMargin       *margin);
 
 G_END_DECLS
 
