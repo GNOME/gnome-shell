@@ -167,6 +167,11 @@ _cogl_util_pixel_format_from_masks_real (unsigned long r_mask,
     {
       return COGL_PIXEL_FORMAT_ARGB_8888_PRE;
     }
+  else if ((depth == 30 || depth == 32) &&
+           r_mask == 0x3ff00000 && g_mask == 0xffc00 && b_mask == 0x3ff)
+    {
+      return COGL_PIXEL_FORMAT_ARGB_2101010_PRE;
+    }
   else if (depth == 16 && bpp == 16 &&
            r_mask == 0xf800 && g_mask == 0x7e0 && b_mask == 0x1f)
     {

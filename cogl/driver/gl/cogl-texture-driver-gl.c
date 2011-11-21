@@ -466,6 +466,30 @@ _cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
 #endif
       break;
 
+    case COGL_PIXEL_FORMAT_RGBA_1010102:
+      glintformat = GL_RGBA;
+      glformat = GL_RGBA;
+      gltype = GL_UNSIGNED_INT_10_10_10_2;
+      break;
+
+    case COGL_PIXEL_FORMAT_BGRA_1010102:
+      glintformat = GL_RGBA;
+      glformat = GL_BGRA;
+      gltype = GL_UNSIGNED_INT_10_10_10_2;
+      break;
+
+    case COGL_PIXEL_FORMAT_ABGR_2101010:
+      glintformat = GL_RGBA;
+      glformat = GL_RGBA;
+      gltype = GL_UNSIGNED_INT_2_10_10_10_REV;
+      break;
+
+    case COGL_PIXEL_FORMAT_ARGB_2101010:
+      glintformat = GL_RGBA;
+      glformat = GL_BGRA;
+      gltype = GL_UNSIGNED_INT_2_10_10_10_REV;
+      break;
+
       /* The following three types of channel ordering
        * are always defined using system word byte
        * ordering (even according to GLES spec) */
