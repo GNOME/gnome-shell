@@ -1104,25 +1104,6 @@ notify_buffers_changed (CoglFramebuffer *old_draw_buffer,
                         CoglFramebuffer *old_read_buffer,
                         CoglFramebuffer *new_read_buffer)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (old_draw_buffer && new_draw_buffer)
-    {
-      /* If we're switching from onscreen to offscreen and the last
-         flush pipeline is using backface culling then we also need to
-         reflush the cull face state because the winding order of the
-         front face is flipped for offscreen buffers */
-      if (old_draw_buffer->type != new_draw_buffer->type &&
-          ctx->current_pipeline &&
-          cogl_pipeline_get_cull_face_mode (ctx->current_pipeline) !=
-          COGL_PIPELINE_CULL_FACE_MODE_NONE)
-        {
-          ctx->current_pipeline_changes_since_flush |=
-            COGL_PIPELINE_STATE_CULL_FACE;
-          ctx->current_pipeline_age--;
-        }
-    }
-
   /* XXX: To support the deprecated cogl_set_draw_buffer API we keep
    * track of the last onscreen framebuffer that was set so that it
    * can be restored if the COGL_WINDOW_BUFFER enum is used. A
@@ -1132,7 +1113,7 @@ notify_buffers_changed (CoglFramebuffer *old_draw_buffer,
    * _cogl_onscreen_free as a kind of a cheap weak reference */
   if (new_draw_buffer &&
       new_draw_buffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
-    ctx->window_buffer = new_draw_buffer;
+    new_draw_buffer->context->window_buffer = new_draw_buffer;
 }
 
 /* Set the current framebuffer without checking if it's already the
@@ -1429,6 +1410,16 @@ _cogl_framebuffer_compare_color_mask_state (CoglFramebuffer *a,
 }
 
 static unsigned long
+_cogl_framebuffer_compare_front_face_winding_state (CoglFramebuffer *a,
+                                                    CoglFramebuffer *b)
+{
+  if (a->type != b->type)
+    return COGL_FRAMEBUFFER_STATE_FRONT_FACE_WINDING;
+  else
+    return 0;
+}
+
+static unsigned long
 _cogl_framebuffer_compare (CoglFramebuffer *a,
                            CoglFramebuffer *b,
                            unsigned long state)
@@ -1471,6 +1462,10 @@ _cogl_framebuffer_compare (CoglFramebuffer *a,
         case COGL_FRAMEBUFFER_STATE_INDEX_COLOR_MASK:
           differences |=
             _cogl_framebuffer_compare_color_mask_state (a, b);
+          break;
+        case COGL_FRAMEBUFFER_STATE_INDEX_FRONT_FACE_WINDING:
+          differences |=
+            _cogl_framebuffer_compare_front_face_winding_state (a, b);
           break;
         default:
           g_warn_if_reached ();
@@ -1562,6 +1557,38 @@ _cogl_framebuffer_flush_color_mask_state (CoglFramebuffer *framebuffer)
    * re-flushed... */
   context->current_pipeline_changes_since_flush |=
     COGL_PIPELINE_STATE_LOGIC_OPS;
+  context->current_pipeline_age--;
+}
+
+static void
+_cogl_framebuffer_flush_front_face_winding_state (CoglFramebuffer *framebuffer)
+{
+  CoglContext *context = framebuffer->context;
+  CoglPipelineCullFaceMode mode;
+
+  /* NB: The face winding state is actually owned by the current
+   * CoglPipeline.
+   *
+   * If we don't have a current pipeline then we can just assume that
+   * when we later do flush a pipeline we will check the current
+   * framebuffer to know how to setup the winding */
+  if (!context->current_pipeline)
+    return;
+
+  mode = cogl_pipeline_get_cull_face_mode (context->current_pipeline);
+
+  /* If the current CoglPipeline has a culling mode that doesn't care
+   * about the winding we can avoid forcing an update of the state and
+   * bail out. */
+  if (mode == COGL_PIPELINE_CULL_FACE_MODE_NONE ||
+      mode == COGL_PIPELINE_CULL_FACE_MODE_BOTH)
+    return;
+
+  /* Since the winding state is really owned by the current pipeline
+   * the way we "flush" an updated winding is to dirty the pipeline
+   * state... */
+  context->current_pipeline_changes_since_flush |=
+    COGL_PIPELINE_STATE_CULL_FACE;
   context->current_pipeline_age--;
 }
 
@@ -1667,6 +1694,9 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
           break;
         case COGL_FRAMEBUFFER_STATE_INDEX_COLOR_MASK:
           _cogl_framebuffer_flush_color_mask_state (draw_buffer);
+          break;
+        case COGL_FRAMEBUFFER_STATE_INDEX_FRONT_FACE_WINDING:
+          _cogl_framebuffer_flush_front_face_winding_state (draw_buffer);
           break;
         default:
           g_warn_if_reached ();
