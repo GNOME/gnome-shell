@@ -774,6 +774,12 @@ const PopupSwitchMenuItem = new Lang.Class({
             this.toggle();
         }
 
+        // we allow pressing space to toggle the switch
+        // without closing the menu
+        if (event.type() == Clutter.EventType.KEY_PRESS &&
+            event.get_key_symbol() == Clutter.KEY_space)
+            return;
+
         this.parent(event);
     },
 

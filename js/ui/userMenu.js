@@ -613,7 +613,7 @@ const UserMenuButton = new Lang.Class({
         this._statusChooser = item;
 
         item = new PopupMenu.PopupSwitchMenuItem(_("Notifications"));
-        item.connect('activate', Lang.bind(this, this._updatePresenceStatus));
+        item.connect('toggled', Lang.bind(this, this._updatePresenceStatus));
         this.menu.addMenuItem(item);
         this._notificationsSwitch = item;
 
