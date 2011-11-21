@@ -156,8 +156,10 @@ struct _CoglContext
   /* Framebuffers */
   GSList           *framebuffer_stack;
   CoglHandle        window_buffer;
-  gboolean          dirty_bound_framebuffer;
-  gboolean          dirty_gl_viewport;
+  unsigned long     current_draw_buffer_state_flushed;
+  unsigned long     current_draw_buffer_changes;
+  CoglFramebuffer  *current_draw_buffer;
+  CoglFramebuffer  *current_read_buffer;
 
   /* Primitives */
   CoglPath         *current_path;

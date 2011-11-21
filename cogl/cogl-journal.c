@@ -710,6 +710,12 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
 
   _cogl_clip_stack_flush (batch_start->clip_stack, state->framebuffer);
 
+  /* XXX: Because we are manually flushing clip state here we need to
+   * make sure that the clip state gets updated the next time we flush
+   * framebuffer state by marking the current framebuffer's clip state
+   * as changed. */
+  ctx->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_CLIP;
+
   _cogl_matrix_stack_push (state->modelview_stack);
 
   /* If we have transformed all our quads at log time then we ensure
@@ -1373,8 +1379,9 @@ _cogl_journal_flush (CoglJournal *journal,
      state manually */
   _cogl_framebuffer_flush_state (framebuffer,
                                  framebuffer,
-                                 COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW |
-                                 COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE);
+                                 COGL_FRAMEBUFFER_STATE_ALL &
+                                 ~(COGL_FRAMEBUFFER_STATE_MODELVIEW |
+                                   COGL_FRAMEBUFFER_STATE_CLIP));
 
   state.journal = journal;
 

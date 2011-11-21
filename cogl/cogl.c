@@ -484,7 +484,7 @@ _cogl_read_pixels_with_rowstride (int x,
 
   _cogl_framebuffer_flush_state (cogl_get_draw_framebuffer (),
                                  framebuffer,
-                                 0);
+                                 COGL_FRAMEBUFFER_STATE_BIND);
 
   framebuffer_height = cogl_framebuffer_get_height (framebuffer);
 
@@ -671,7 +671,7 @@ cogl_begin_gl (void)
    * always be done first when preparing to draw. */
   _cogl_framebuffer_flush_state (cogl_get_draw_framebuffer (),
                                  _cogl_get_read_framebuffer (),
-                                 0);
+                                 COGL_FRAMEBUFFER_STATE_ALL);
 
   /* Setup the state for the current pipeline */
 

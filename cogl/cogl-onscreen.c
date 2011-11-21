@@ -334,15 +334,17 @@ void
 _cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
                                       int width, int height)
 {
-  CoglContext *ctx = framebuffer->context;
-
   if (framebuffer->width == width && framebuffer->height == height)
     return;
 
   framebuffer->width = width;
   framebuffer->height = height;
 
-  /* We'll need to recalculate the GL viewport state derived
-   * from the Cogl viewport */
-  ctx->dirty_gl_viewport = 1;
+  /* The framebuffer geometry can affect the GL viewport so if the
+   * framebuffer being updated is the current framebuffer we mark the
+   * viewport state as changed so it will be updated the next time
+   * _cogl_framebuffer_flush_state() is called. */
+  if (framebuffer->context->current_draw_buffer == framebuffer)
+    framebuffer->context->current_draw_buffer_changes |=
+      COGL_FRAMEBUFFER_STATE_VIEWPORT;
 }

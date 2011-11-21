@@ -1101,7 +1101,7 @@ flush_state (CoglDrawFlags flags,
   if (!(flags & COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH))
     _cogl_framebuffer_flush_state (cogl_get_draw_framebuffer (),
                                    _cogl_get_read_framebuffer (),
-                                   0);
+                                   COGL_FRAMEBUFFER_STATE_ALL);
 }
 
 /* This can be called directly by the CoglJournal to draw attributes

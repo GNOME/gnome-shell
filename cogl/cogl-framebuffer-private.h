@@ -57,6 +57,35 @@ typedef enum
   COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL = 1
 } CoglOffscreenFlags;
 
+/* XXX: The order of these indices determines the order they are
+ * flushed.
+ *
+ * Flushing clip state may trash the modelview and projection matrices
+ * so we must do it before flushing the matrices.
+ */
+typedef enum _CoglFramebufferStateIndex
+{
+  COGL_FRAMEBUFFER_STATE_INDEX_BIND       = 0,
+  COGL_FRAMEBUFFER_STATE_INDEX_VIEWPORT   = 1,
+  COGL_FRAMEBUFFER_STATE_INDEX_CLIP       = 2,
+  COGL_FRAMEBUFFER_STATE_INDEX_DITHER     = 3,
+  COGL_FRAMEBUFFER_STATE_INDEX_MODELVIEW  = 4,
+  COGL_FRAMEBUFFER_STATE_INDEX_PROJECTION = 5,
+  COGL_FRAMEBUFFER_STATE_INDEX_MAX        = 6
+} CoglFramebufferStateIndex;
+
+typedef enum _CoglFramebufferState
+{
+  COGL_FRAMEBUFFER_STATE_BIND       = 1<<0,
+  COGL_FRAMEBUFFER_STATE_VIEWPORT   = 1<<1,
+  COGL_FRAMEBUFFER_STATE_CLIP       = 1<<2,
+  COGL_FRAMEBUFFER_STATE_DITHER     = 1<<3,
+  COGL_FRAMEBUFFER_STATE_MODELVIEW  = 1<<4,
+  COGL_FRAMEBUFFER_STATE_PROJECTION = 1<<5
+} CoglFramebufferState;
+
+#define COGL_FRAMEBUFFER_STATE_ALL ((1<<COGL_FRAMEBUFFER_STATE_INDEX_MAX) - 1)
+
 struct _CoglFramebuffer
 {
   CoglObject          _parent;
@@ -218,26 +247,10 @@ _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
                                        CoglPixelFormat format,
                                        guint8 *pixel);
 
-typedef enum _CoglFramebufferFlushFlags
-{
-  /* XXX: When using this, that imples you are going to manually load the
-   * modelview matrix (via glLoadMatrix). _cogl_matrix_stack_flush_to_gl wont
-   * be called for framebuffer->modelview_stack, and the modelview_stack will
-   * also be marked as dirty. */
-  COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW =     1L<<0,
-  /* Similarly this flag implies you are going to flush the clip state
-     yourself */
-  COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE =    1L<<1,
-  /* When using this all that will be updated is the glBindFramebuffer
-   * state and corresponding winsys state to make the framebuffer
-   * current if it is a CoglOnscreen framebuffer. */
-  COGL_FRAMEBUFFER_FLUSH_BIND_ONLY =          1L<<2
-} CoglFramebufferFlushFlags;
-
 void
 _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
                                CoglFramebuffer *read_buffer,
-                               CoglFramebufferFlushFlags flags);
+                               CoglFramebufferState state);
 
 CoglFramebuffer *
 _cogl_get_read_framebuffer (void);

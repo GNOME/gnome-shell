@@ -1219,7 +1219,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
 
   _cogl_framebuffer_flush_state (framebuffer,
                                  framebuffer,
-                                 COGL_FRAMEBUFFER_FLUSH_BIND_ONLY);
+                                 COGL_FRAMEBUFFER_STATE_BIND);
 
   if (onscreen->swap_throttled)
     {
@@ -1351,7 +1351,7 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
    * we get a BadDrawable error from the X server. */
   _cogl_framebuffer_flush_state (framebuffer,
                                  framebuffer,
-                                 COGL_FRAMEBUFFER_FLUSH_BIND_ONLY);
+                                 COGL_FRAMEBUFFER_STATE_BIND);
 
   drawable = glx_onscreen->glxwin ? glx_onscreen->glxwin : xlib_onscreen->xwin;
 

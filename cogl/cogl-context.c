@@ -269,6 +269,10 @@ cogl_context_new (CoglDisplay *display,
   context->default_gl_texture_rect_tex = NULL;
 
   context->framebuffers = NULL;
+  context->current_draw_buffer = NULL;
+  context->current_read_buffer = NULL;
+  context->current_draw_buffer_state_flushed = 0;
+  context->current_draw_buffer_changes = COGL_FRAMEBUFFER_STATE_ALL;
 
   context->journal_flush_attributes_array =
     g_array_new (TRUE, FALSE, sizeof (CoglAttribute *));
@@ -326,9 +330,6 @@ cogl_context_new (CoglDisplay *display,
       cogl_set_framebuffer (COGL_FRAMEBUFFER (window));
       cogl_object_unref (COGL_FRAMEBUFFER (window));
     }
-
-  context->dirty_bound_framebuffer = TRUE;
-  context->dirty_gl_viewport = TRUE;
 
   context->current_path = cogl2_path_new ();
   context->stencil_pipeline = cogl_pipeline_new ();

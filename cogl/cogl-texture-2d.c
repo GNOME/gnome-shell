@@ -588,7 +588,8 @@ _cogl_texture_2d_copy_from_framebuffer (CoglHandle handle,
    * framebuffer. */
   _cogl_framebuffer_flush_state (cogl_get_draw_framebuffer (),
                                  _cogl_get_read_framebuffer (),
-                                 COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE);
+                                 COGL_FRAMEBUFFER_STATE_ALL &
+                                 ~COGL_FRAMEBUFFER_STATE_CLIP);
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
