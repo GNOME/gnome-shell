@@ -19,7 +19,7 @@ typedef struct _ShellXFixesCursorClass   ShellXFixesCursorClass;
 
 GType               shell_xfixes_cursor_get_type     (void) G_GNUC_CONST;
 
-ShellXFixesCursor   *shell_xfixes_cursor_get_default (void);
+ShellXFixesCursor   *shell_xfixes_cursor_get_for_stage (ClutterStage *stage);
 
 void                shell_xfixes_cursor_show (ShellXFixesCursor *xfixes_cursor);
 void                shell_xfixes_cursor_hide (ShellXFixesCursor *xfixes_cursor);
