@@ -552,3 +552,19 @@ _cogl_matrix_stack_has_identity_flag (CoglMatrixStack *stack)
 {
   return _cogl_matrix_stack_top (stack)->is_identity;
 }
+
+gboolean
+_cogl_matrix_stack_equal (CoglMatrixStack *stack0,
+                          CoglMatrixStack *stack1)
+{
+  CoglMatrixState *state0 = _cogl_matrix_stack_top (stack0);
+  CoglMatrixState *state1 = _cogl_matrix_stack_top (stack1);
+
+  if (state0->is_identity != state1->is_identity)
+    return FALSE;
+
+  if (state0->is_identity)
+    return TRUE;
+  else
+    return cogl_matrix_equal (&state0->matrix, &state1->matrix);
+}

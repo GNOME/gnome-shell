@@ -127,4 +127,8 @@ _cogl_matrix_stack_prepare_for_flush (CoglMatrixStack *stack,
                                       CoglMatrixStackFlushFunc callback,
                                       void *user_data);
 
+gboolean
+_cogl_matrix_stack_equal (CoglMatrixStack *stack0,
+                          CoglMatrixStack *stack1);
+
 #endif /* __COGL_MATRIX_STACK_H */
