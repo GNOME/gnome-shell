@@ -515,10 +515,11 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
 
   meta_screen_set_cm_selection (screen);
 
-  info->stage = clutter_stage_get_default ();
+  info->stage = clutter_stage_new ();
 
   meta_screen_get_size (screen, &width, &height);
   clutter_actor_set_size (info->stage, width, height);
+  clutter_actor_realize (info->stage);
 
   xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
 
