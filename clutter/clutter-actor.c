@@ -9239,8 +9239,8 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
 }
 
 static void
-actor_add_actor (ClutterContainer *container,
-                 ClutterActor     *actor)
+container_add_actor (ClutterContainer *container,
+                     ClutterActor     *actor)
 {
   clutter_actor_add_child (CLUTTER_ACTOR (container), actor);
   clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
@@ -9249,8 +9249,8 @@ actor_add_actor (ClutterContainer *container,
 }
 
 static void
-actor_remove_actor (ClutterContainer *container,
-                    ClutterActor     *actor)
+container_remove_actor (ClutterContainer *container,
+                        ClutterActor     *actor)
 {
   g_object_ref (actor);
 
@@ -9279,9 +9279,9 @@ foreach_cb (ClutterActor *actor,
 }
 
 static void
-actor_foreach (ClutterContainer *container,
-               ClutterCallback   callback,
-               gpointer          user_data)
+container_foreach (ClutterContainer *container,
+                   ClutterCallback   callback,
+                   gpointer          user_data)
 {
   ForeachClosure clos;
 
@@ -9294,11 +9294,58 @@ actor_foreach (ClutterContainer *container,
 }
 
 static void
+container_raise (ClutterContainer *container,
+                 ClutterActor     *child,
+                 ClutterActor     *sibling)
+{
+  ClutterActor *self = CLUTTER_ACTOR (container);
+  ClutterActorPrivate *priv = self->priv;
+
+  priv->children = g_list_remove (priv->children, child);
+
+  if (sibling == NULL)
+    priv->children = g_list_append (priv->children, child);
+  else
+    {
+      gint index_ = g_list_index (priv->children, sibling) + 1;
+
+      priv->children = g_list_insert (priv->children, child, index_);
+    }
+
+  clutter_actor_queue_relayout (self);
+}
+
+static void
+container_lower (ClutterContainer *container,
+                 ClutterActor     *child,
+                 ClutterActor     *sibling)
+{
+  ClutterActor *self = CLUTTER_ACTOR (container);
+  ClutterActorPrivate *priv = self->priv;
+
+  priv->children = g_list_remove (priv->children, child);
+
+  if (sibling == NULL)
+    priv->children = g_list_prepend (priv->children, child);
+  else
+    {
+      gint index_ = g_list_index (priv->children, sibling);
+
+      priv->children = g_list_insert (priv->children, child, index_);
+    }
+
+  clutter_actor_queue_relayout (self);
+}
+
+static void
 clutter_container_iface_init (ClutterContainerIface *iface)
 {
-  iface->add = actor_add_actor;
-  iface->remove = actor_remove_actor;
-  iface->foreach = actor_foreach;
+  iface->add = container_add_actor;
+  iface->remove = container_remove_actor;
+  iface->foreach = container_foreach;
+
+  iface->raise = container_raise;
+  iface->lower = container_lower;
 }
 
 typedef enum
