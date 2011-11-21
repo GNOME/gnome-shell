@@ -58,10 +58,6 @@ struct _CoglMatrixStack
 
   GArray *stack;
 
-  /* which state does GL have, NULL if unknown */
-  CoglMatrixState *flushed_state;
-  gboolean flushed_identity;
-
   unsigned int age;
 };
 
@@ -124,9 +120,6 @@ _cogl_matrix_stack_top_mutable (CoglMatrixStack *stack,
         cogl_matrix_init_identity (&new_top->matrix);
       else
         new_top->matrix = state->matrix;
-
-      if (stack->flushed_state == state)
-        stack->flushed_state = new_top;
     }
 
   return new_top;
@@ -191,11 +184,6 @@ _cogl_matrix_stack_pop (CoglMatrixStack *stack)
           return;
         }
 
-      if (stack->flushed_state == state)
-        {
-          stack->flushed_state = NULL;
-        }
-
       stack->age++;
       g_array_set_size (stack->stack, stack->stack->len - 1);
     }
@@ -218,9 +206,6 @@ _cogl_matrix_stack_load_identity (CoglMatrixStack *stack)
   if (!state->is_identity)
     {
       state->is_identity = TRUE;
-
-      /* mark dirty */
-      stack->flushed_state = NULL;
       stack->age++;
     }
 }
@@ -235,8 +220,6 @@ _cogl_matrix_stack_scale (CoglMatrixStack *stack,
 
   state = _cogl_matrix_stack_top_mutable (stack, TRUE);
   cogl_matrix_scale (&state->matrix, x, y, z);
-  /* mark dirty */
-  stack->flushed_state = NULL;
   state->is_identity = FALSE;
   stack->age++;
 }
@@ -251,8 +234,6 @@ _cogl_matrix_stack_translate (CoglMatrixStack *stack,
 
   state = _cogl_matrix_stack_top_mutable (stack, TRUE);
   cogl_matrix_translate (&state->matrix, x, y, z);
-  /* mark dirty */
-  stack->flushed_state = NULL;
   state->is_identity = FALSE;
   stack->age++;
 }
@@ -268,8 +249,6 @@ _cogl_matrix_stack_rotate (CoglMatrixStack *stack,
 
   state = _cogl_matrix_stack_top_mutable (stack, TRUE);
   cogl_matrix_rotate (&state->matrix, angle, x, y, z);
-  /* mark dirty */
-  stack->flushed_state = NULL;
   state->is_identity = FALSE;
   stack->age++;
 }
@@ -282,8 +261,6 @@ _cogl_matrix_stack_multiply (CoglMatrixStack  *stack,
 
   state = _cogl_matrix_stack_top_mutable (stack, TRUE);
   cogl_matrix_multiply (&state->matrix, &state->matrix, matrix);
-  /* mark dirty */
-  stack->flushed_state = NULL;
   state->is_identity = FALSE;
   stack->age++;
 }
@@ -303,8 +280,6 @@ _cogl_matrix_stack_frustum (CoglMatrixStack *stack,
   cogl_matrix_frustum (&state->matrix,
                        left, right, bottom, top,
                        z_near, z_far);
-  /* mark dirty */
-  stack->flushed_state = NULL;
   state->is_identity = FALSE;
   stack->age++;
 }
@@ -321,8 +296,6 @@ _cogl_matrix_stack_perspective (CoglMatrixStack *stack,
   state = _cogl_matrix_stack_top_mutable (stack, TRUE);
   cogl_matrix_perspective (&state->matrix,
                            fov_y, aspect, z_near, z_far);
-  /* mark dirty */
-  stack->flushed_state = NULL;
   state->is_identity = FALSE;
   stack->age++;
 }
@@ -341,8 +314,6 @@ _cogl_matrix_stack_ortho (CoglMatrixStack *stack,
   state = _cogl_matrix_stack_top_mutable (stack, TRUE);
   cogl_matrix_ortho (&state->matrix,
                      left, right, bottom, top, z_near, z_far);
-  /* mark dirty */
-  stack->flushed_state = NULL;
   state->is_identity = FALSE;
   stack->age++;
 }
@@ -387,8 +358,6 @@ _cogl_matrix_stack_set (CoglMatrixStack  *stack,
 
   state = _cogl_matrix_stack_top_mutable (stack, FALSE);
   state->matrix = *matrix;
-  /* mark dirty */
-  stack->flushed_state = NULL;
   state->is_identity = FALSE;
   stack->age++;
 }
@@ -401,19 +370,10 @@ flush_to_fixed_api_gl (CoglContext *context,
                        const CoglMatrix *matrix,
                        void *user_data)
 {
-  CoglMatrixStack *stack = user_data;
-
   if (is_identity)
-    {
-      if (!stack->flushed_identity)
-        GE (context, glLoadIdentity ());
-      stack->flushed_identity = TRUE;
-    }
+    GE (context, glLoadIdentity ());
   else
-    {
-      GE (context, glLoadMatrixf (cogl_matrix_get_array (matrix)) );
-      stack->flushed_identity = FALSE;
-    }
+    GE (context, glLoadMatrixf (cogl_matrix_get_array (matrix)) );
 }
 
 #endif
@@ -455,8 +415,6 @@ _cogl_matrix_stack_flush_to_gl (CoglContext *context,
                                 CoglMatrixStack *stack,
                                 CoglMatrixMode mode)
 {
-  CoglMatrixState *state = _cogl_matrix_stack_top (stack);
-
   if (context->driver == COGL_DRIVER_GLES2)
     {
       /* Under GLES2 we need to flush the matrices differently because
@@ -493,9 +451,6 @@ _cogl_matrix_stack_flush_to_gl (CoglContext *context,
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
   else
     {
-      if (stack->flushed_state == state)
-        return;
-
       if (context->flushed_matrix_mode != mode)
         {
           GLenum gl_mode = 0;
@@ -526,15 +481,6 @@ _cogl_matrix_stack_flush_to_gl (CoglContext *context,
                                             stack);
     }
 #endif
-
-  stack->flushed_state = state;
-}
-
-void
-_cogl_matrix_stack_dirty (CoglMatrixStack *stack)
-{
-  stack->flushed_state = NULL;
-  stack->flushed_identity = FALSE;
 }
 
 unsigned int

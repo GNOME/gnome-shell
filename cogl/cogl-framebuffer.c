@@ -1102,16 +1102,6 @@ notify_buffers_changed (CoglFramebuffer *old_draw_buffer,
   ctx->dirty_bound_framebuffer = 1;
   ctx->dirty_gl_viewport = 1;
 
-  /* We've effectively just switched the current modelview and
-   * projection matrix stacks and clip state so we need to dirty
-   * them to ensure they get flushed for the next batch of geometry
-   * we flush */
-  if (new_draw_buffer)
-    {
-      _cogl_matrix_stack_dirty (new_draw_buffer->modelview_stack);
-      _cogl_matrix_stack_dirty (new_draw_buffer->projection_stack);
-    }
-
   _cogl_clip_stack_dirty ();
 
   if (old_draw_buffer && new_draw_buffer)
