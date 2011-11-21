@@ -1267,7 +1267,8 @@ StTooltip StLabel {
 }
 
 .notification-icon-button > StIcon {
-    icon-size: 36px;
+    icon-size: 16px;
+    padding: 8px;
 }
 
 .hotplug-transient-box {
