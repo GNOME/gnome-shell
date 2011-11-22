@@ -1,3 +1,99 @@
+Clutter 1.9.2                                                        2011-11-22
+===============================================================================
+
+  • List of changes since Clutter 1.8
+
+    - Multi-backend build, and run-time backend selection
+    Clutter can be built with support for multiple backends in the same
+    shared library; the backend singleton is determined at run-time,
+    either with the default backend for the platform, or using the value
+    of the CLUTTER_BACKEND environment variable.
+
+    - GDK windowing system backend
+    A new backend has been added, which uses the GDK API for creating the
+    drawing surface, as well as receiving the windowing system and input
+    events.
+
+    - Show a hint when ClutterText is in password mode
+    If the password-hint-time ClutterSettings property is set to a non
+    zero value, the last character entered inside a ClutterText actor when
+    in password mode will be shown in plain for the duration of the timeout,
+    before being replaced by the glyph chosen as the password character.
+
+    - Improve Windows build support
+    Clutter now provides project files to build the library using Visual
+    Studio 9 and Visual Studio 10. Also, the scripts to build Clutter using
+    MinGW have been improved.
+
+    - Remove the requirement for using clutter_threads_init()
+    Threads are initialized by default (depending on the platform), so there
+    is no need to call clutter_threads_init().
+
+    - Deprecate the default ClutterStage
+    The semantics of the default Stage were not obvious, and had the tendency
+    to confuse the user.
+
+    - Move the deprecated headers into their own directory
+    This should help developers identify the deprecated API.
+
+    - Change deprecation policy
+    Deprecated functions are now marked using compiler annotations, instead
+    of being forcibly disabled through pre-processor directives from the
+    headers. Deprecations will cause compiler warnings, and thus are enabled
+    by default. If you're building your project with compiler flags that
+    consider every warning a fatal error, you can use the symbol
+    CLUTTER_DISABLE_DEPRECATION_WARNINGS to disable the deprecation warnings.
+
+    - Translation updates
+    Portuguese, Assamese, Punjabi, Tamil, Oriya, Telugu, French, German,
+    Danish, Traditional Chinese (Hong Kong and Taiwan), Catalan, Esperanto,
+    Lithuanian, Galician, Norwegian bokmål, Slovenian, Hebrew, Bulgarian.
+
+  • List of bugs fixed since Clutter 1.8
+
+    652588 - add support for password hint in ClutterText
+    659625 - mingw32: Update the build script to compile 1.8.0
+    659601 - offscreen effects on children of containers also with an
+             offscreen effect get a wrong viewport
+    659928 - Two strings are not marked as translatable
+    659893 - clutter-main: Reword translator comment for default:LTR
+    656663 - Remove internal usage of ClutterGeometry in StageWindow
+    660354 - Add paint-deform-tiles option to CLUTTER_DEBUG
+    660471 - ClutterActor: Add clutter_actor_has_effects
+    660512 - ClutterShaderEffect recompiles the shader for every instance
+    660623 - clutter-actor-meta: Fix _clutter_meta_group_has_metas_no_internal
+    660985 - memory leak in clutter_box_layout.c
+    661015 - Add clutter_unicode_to_keyval function
+    660786 - Deprecate clutter_[sg]et_font_flags()
+    661887 - auto-resize of ClutterCairoTexture does not work correctly
+    657434 - Add a GDK backend to Clutter
+    663332 - orca reads my password in gnome-shell policykit dialogs
+    663594 - Minor whitespace parsing bug in clutter_color_from_string
+    663733 - clutter-stage-x11: Make sure to set geometry x and y
+    651718 - Make tests work on platforms supporting only a single stage
+    663999 - The removal of per-backend CLUTTER_VBLANK envvar had unwanted
+             cruft in the Win32 backend
+    663720 - DeformEffect: Avoid redrawing actors on vertices invalidation
+    663636 - Use newer Cogl API in ClutterDeformEffect
+
+Special thanks to
+
+  Chun-wei Fan, for building, testing, and keeping up to date the Visual
+  Studio project files.
+
+Many thanks to:
+
+  Neil Roberts, Rico Tzschichholz, Robert Bragg, Adel Gadllah,
+  Lionel Landwerlin, Alexandre Franke, Colin Walters, Daniel Mustieles,
+  Giovanni Campagna, Piotr Drąg, krishnababu k, A S Alam, Alexander Shopov,
+  Algimantas Margevičius, Ask H. Larsen, Bruno Brouard, Carles Ferrando,
+  Chao-Hsiung Liao, Craig R. Hughes, Damien Lespiau, Duarte Loreto,
+  Florian Müllner, Fran Dieguez, Fran Diéguez, Håkon Løvdal, I Felix,
+  Jasper St. Pierre, Jorge González, Joseph Scheuhammer, Kjartan Maraas,
+  Kristjan SCHMIDT, Manoj Kumar Giri, Marc-André Lureau, Mario Blättermann,
+  Matej Urbančič, Matthias Clasen, Nilamdyuti Goswami, Sunjin Yang,
+  Tomeu Vizoso, Yaron Shahrabani, Zan Dobersek, Мирослав Николић.
+
 Clutter 1.7.90                                                       2011-09-12
 ===============================================================================
 
