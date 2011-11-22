@@ -109,7 +109,12 @@ G_BEGIN_DECLS
         {                                               \
           int _next_bit = _cogl_util_ffsl (_mask);      \
           (bit) += _next_bit;                           \
-          _mask >>= _next_bit;
+          /* This odd two-part shift is to avoid */     \
+          /* shifting by sizeof (long)*8 which has */   \
+          /* undefined results according to the */      \
+          /* C spec (and seems to be a no-op in */      \
+          /* practice) */                               \
+          _mask = (_mask >> (_next_bit - 1)) >> 1;      \
 
 #define COGL_FLAGS_FOREACH_END \
   } } } G_STMT_END
