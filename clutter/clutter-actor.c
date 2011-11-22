@@ -4104,7 +4104,6 @@ static void
 clutter_actor_class_init (ClutterActorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   quark_shader_data = g_quark_from_static_string ("-clutter-actor-shader-data");
   quark_actor_layout_info = g_quark_from_static_string ("-clutter-actor-layout-info");
@@ -4124,14 +4123,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * position for the actor. If read, returns the fixed position if any,
    * otherwise the allocation if available, otherwise 0.
    */
-  pspec = g_param_spec_float ("x",
-                              P_("X coordinate"),
-                              P_("X coordinate of the actor"),
-                              -G_MAXFLOAT, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_X] = pspec;
-  g_object_class_install_property (object_class, PROP_X, pspec);
+  obj_props[PROP_X] =
+    g_param_spec_float ("x",
+                        P_("X coordinate"),
+                        P_("X coordinate of the actor"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:y:
@@ -4140,14 +4138,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * position for the actor.  If read, returns the fixed position if
    * any, otherwise the allocation if available, otherwise 0.
    */
-  pspec = g_param_spec_float ("y",
-                              P_("Y coordinate"),
-                              P_("Y coordinate of the actor"),
-                              -G_MAXFLOAT, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_Y] = pspec;
-  g_object_class_install_property (object_class, PROP_Y, pspec);
+  obj_props[PROP_Y] =
+    g_param_spec_float ("y",
+                        P_("Y coordinate"),
+                        P_("Y coordinate of the actor"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:width:
@@ -4156,14 +4153,14 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * natural size request of the actor to the given width. If read, returns
    * the allocated width if available, otherwise the width request.
    */
-  pspec = g_param_spec_float ("width",
-                              P_("Width"),
-                              P_("Width of the actor"),
-                              0.0, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_WIDTH] = pspec;
-  g_object_class_install_property (object_class, PROP_WIDTH, pspec);
+  obj_props[PROP_WIDTH] =
+    g_param_spec_float ("width",
+                        P_("Width"),
+                        P_("Width of the actor"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
+
   /**
    * ClutterActor:height:
    *
@@ -4171,14 +4168,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * natural size request of the actor to the given height. If read, returns
    * the allocated height if available, otherwise the height request.
    */
-  pspec = g_param_spec_float ("height",
-                              P_("Height"),
-                              P_("Height of the actor"),
-                              0.0, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_HEIGHT] = pspec;
-  g_object_class_install_property (object_class, PROP_HEIGHT, pspec);
+  obj_props[PROP_HEIGHT] =
+    g_param_spec_float ("height",
+                        P_("Height"),
+                        P_("Height of the actor"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:fixed-x:
@@ -4190,14 +4186,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_float ("fixed-x",
-                              P_("Fixed X"),
-                              P_("Forced X position of the actor"),
-                              -G_MAXFLOAT, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_FIXED_X] = pspec;
-  g_object_class_install_property (object_class, PROP_FIXED_X, pspec);
+  obj_props[PROP_FIXED_X] =
+    g_param_spec_float ("fixed-x",
+                        P_("Fixed X"),
+                        P_("Forced X position of the actor"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:fixed-y:
@@ -4209,14 +4204,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_float ("fixed-y",
-                              P_("Fixed Y"),
-                              P_("Forced Y position of the actor"),
-                              -G_MAXFLOAT, G_MAXFLOAT,
-                              0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_FIXED_Y] = pspec;
-  g_object_class_install_property (object_class, PROP_FIXED_Y, pspec);
+  obj_props[PROP_FIXED_Y] =
+    g_param_spec_float ("fixed-y",
+                        P_("Fixed Y"),
+                        P_("Forced Y position of the actor"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:fixed-position-set:
@@ -4226,16 +4220,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_boolean ("fixed-position-set",
-                                P_("Fixed position set"),
-                                P_("Whether to use fixed positioning "
-                                   "for the actor"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_FIXED_POSITION_SET] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_FIXED_POSITION_SET,
-                                   pspec);
+  obj_props[PROP_FIXED_POSITION_SET] =
+    g_param_spec_boolean ("fixed-position-set",
+                          P_("Fixed position set"),
+                          P_("Whether to use fixed positioning for the actor"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:min-width:
@@ -4249,14 +4239,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_float ("min-width",
-                              P_("Min Width"),
-                              P_("Forced minimum width request for the actor"),
-                              0.0, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_MIN_WIDTH] = pspec;
-  g_object_class_install_property (object_class, PROP_MIN_WIDTH, pspec);
+  obj_props[PROP_MIN_WIDTH] =
+    g_param_spec_float ("min-width",
+                        P_("Min Width"),
+                        P_("Forced minimum width request for the actor"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:min-height:
@@ -4269,14 +4258,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_float ("min-height",
-                              P_("Min Height"),
-                              P_("Forced minimum height request for the actor"),
-                              0.0, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_MIN_HEIGHT] = pspec;
-  g_object_class_install_property (object_class, PROP_MIN_HEIGHT, pspec);
+  obj_props[PROP_MIN_HEIGHT] =
+    g_param_spec_float ("min-height",
+                        P_("Min Height"),
+                        P_("Forced minimum height request for the actor"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:natural-width:
@@ -4289,14 +4277,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_float ("natural-width",
-                              P_("Natural Width"),
-                              P_("Forced natural width request for the actor"),
-                              0.0, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_NATURAL_WIDTH] = pspec;
-  g_object_class_install_property (object_class, PROP_NATURAL_WIDTH, pspec);
+  obj_props[PROP_NATURAL_WIDTH] =
+    g_param_spec_float ("natural-width",
+                        P_("Natural Width"),
+                        P_("Forced natural width request for the actor"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:natural-height:
@@ -4309,14 +4296,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_float ("natural-height",
-                              P_("Natural Height"),
-                              P_("Forced natural height request for the actor"),
-                              0.0, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_NATURAL_HEIGHT] = pspec;
-  g_object_class_install_property (object_class, PROP_NATURAL_HEIGHT, pspec);
+  obj_props[PROP_NATURAL_HEIGHT] =
+    g_param_spec_float ("natural-height",
+                        P_("Natural Height"),
+                        P_("Forced natural height request for the actor"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:min-width-set:
@@ -4326,13 +4312,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_boolean ("min-width-set",
-                                P_("Minimum width set"),
-                                P_("Whether to use the min-width property"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_MIN_WIDTH_SET] = pspec;
-  g_object_class_install_property (object_class, PROP_MIN_WIDTH_SET, pspec);
+  obj_props[PROP_MIN_WIDTH_SET] =
+    g_param_spec_boolean ("min-width-set",
+                          P_("Minimum width set"),
+                          P_("Whether to use the min-width property"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:min-height-set:
@@ -4342,13 +4327,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_boolean ("min-height-set",
-                                P_("Minimum height set"),
-                                P_("Whether to use the min-height property"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_MIN_HEIGHT_SET] = pspec;
-  g_object_class_install_property (object_class, PROP_MIN_HEIGHT_SET, pspec);
+  obj_props[PROP_MIN_HEIGHT_SET] =
+    g_param_spec_boolean ("min-height-set",
+                          P_("Minimum height set"),
+                          P_("Whether to use the min-height property"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:natural-width-set:
@@ -4358,15 +4342,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_boolean ("natural-width-set",
-                                P_("Natural width set"),
-                                P_("Whether to use the natural-width property"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_NATURAL_WIDTH_SET] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_NATURAL_WIDTH_SET,
-                                   pspec);
+  obj_props[PROP_NATURAL_WIDTH_SET] =
+    g_param_spec_boolean ("natural-width-set",
+                          P_("Natural width set"),
+                          P_("Whether to use the natural-width property"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:natural-height-set:
@@ -4376,15 +4357,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_boolean ("natural-height-set",
-                                P_("Natural height set"),
-                                P_("Whether to use the natural-height property"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_NATURAL_HEIGHT_SET] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_NATURAL_HEIGHT_SET,
-                                   pspec);
+  obj_props[PROP_NATURAL_HEIGHT_SET] =
+    g_param_spec_boolean ("natural-height-set",
+                          P_("Natural height set"),
+                          P_("Whether to use the natural-height property"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:allocation:
@@ -4396,13 +4374,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_boxed ("allocation",
-                              P_("Allocation"),
-                              P_("The actor's allocation"),
-                              CLUTTER_TYPE_ACTOR_BOX,
-                              CLUTTER_PARAM_READABLE);
-  obj_props[PROP_ALLOCATION] = pspec;
-  g_object_class_install_property (object_class, PROP_ALLOCATION, pspec);
+  obj_props[PROP_ALLOCATION] =
+    g_param_spec_boxed ("allocation",
+                        P_("Allocation"),
+                        P_("The actor's allocation"),
+                        CLUTTER_TYPE_ACTOR_BOX,
+                        CLUTTER_PARAM_READABLE);
 
   /**
    * ClutterActor:request-mode:
@@ -4453,14 +4430,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_enum ("request-mode",
-                             P_("Request Mode"),
-                             P_("The actor's request mode"),
-                             CLUTTER_TYPE_REQUEST_MODE,
-                             CLUTTER_REQUEST_HEIGHT_FOR_WIDTH,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_REQUEST_MODE] = pspec;
-  g_object_class_install_property (object_class, PROP_REQUEST_MODE, pspec);
+  obj_props[PROP_REQUEST_MODE] =
+    g_param_spec_enum ("request-mode",
+                       P_("Request Mode"),
+                       P_("The actor's request mode"),
+                       CLUTTER_TYPE_REQUEST_MODE,
+                       CLUTTER_REQUEST_HEIGHT_FOR_WIDTH,
+                       CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:depth:
@@ -4469,14 +4445,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_float ("depth",
-                              P_("Depth"),
-                              P_("Position on the Z axis"),
-                              -G_MAXFLOAT, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_DEPTH] = pspec;
-  g_object_class_install_property (object_class, PROP_DEPTH, pspec);
+  obj_props[PROP_DEPTH] =
+    g_param_spec_float ("depth",
+                        P_("Depth"),
+                        P_("Position on the Z axis"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:opacity:
@@ -4484,14 +4459,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * Opacity of an actor, between 0 (fully transparent) and
    * 255 (fully opaque)
    */
-  pspec = g_param_spec_uint ("opacity",
-                             P_("Opacity"),
-                             P_("Opacity of an actor"),
-                             0, 255,
-                             255,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_OPACITY] = pspec;
-  g_object_class_install_property (object_class, PROP_OPACITY, pspec);
+  obj_props[PROP_OPACITY] =
+    g_param_spec_uint ("opacity",
+                       P_("Opacity"),
+                       P_("Opacity of an actor"),
+                       0, 255,
+                       255,
+                       CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:offscreen-redirect:
@@ -4504,17 +4478,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 1.8
    */
-  pspec = g_param_spec_flags ("offscreen-redirect",
-                              P_("Offscreen redirect"),
-                              P_("Flags controlling when to flatten the "
-                                 "actor into a single image"),
-                              CLUTTER_TYPE_OFFSCREEN_REDIRECT,
-                              0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_OFFSCREEN_REDIRECT] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_OFFSCREEN_REDIRECT,
-                                   pspec);
+  obj_props[PROP_OFFSCREEN_REDIRECT] =
+    g_param_spec_flags ("offscreen-redirect",
+                        P_("Offscreen redirect"),
+                        P_("Flags controlling when to flatten the actor into a single image"),
+                        CLUTTER_TYPE_OFFSCREEN_REDIRECT,
+                        0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:visible:
@@ -4523,13 +4493,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * See also #ClutterActor:mapped
    */
-  pspec = g_param_spec_boolean ("visible",
-                                P_("Visible"),
-                                P_("Whether the actor is visible or not"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_VISIBLE] = pspec;
-  g_object_class_install_property (object_class, PROP_VISIBLE, pspec);
+  obj_props[PROP_VISIBLE] =
+    g_param_spec_boolean ("visible",
+                          P_("Visible"),
+                          P_("Whether the actor is visible or not"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:mapped:
@@ -4539,13 +4508,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_boolean ("mapped",
-                                P_("Mapped"),
-                                P_("Whether the actor will be painted"),
-                                FALSE,
-                                CLUTTER_PARAM_READABLE);
-  obj_props[PROP_MAPPED] = pspec;
-  g_object_class_install_property (object_class, PROP_MAPPED, pspec);
+  obj_props[PROP_MAPPED] =
+    g_param_spec_boolean ("mapped",
+                          P_("Mapped"),
+                          P_("Whether the actor will be painted"),
+                          FALSE,
+                          CLUTTER_PARAM_READABLE);
 
   /**
    * ClutterActor:realized:
@@ -4554,13 +4522,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_boolean ("realized",
-                                P_("Realized"),
-                                P_("Whether the actor has been realized"),
-                                FALSE,
-                                CLUTTER_PARAM_READABLE);
-  obj_props[PROP_REALIZED] = pspec;
-  g_object_class_install_property (object_class, PROP_REALIZED, pspec);
+  obj_props[PROP_REALIZED] =
+    g_param_spec_boolean ("realized",
+                          P_("Realized"),
+                          P_("Whether the actor has been realized"),
+                          FALSE,
+                          CLUTTER_PARAM_READABLE);
 
   /**
    * ClutterActor:reactive:
@@ -4571,26 +4538,24 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_boolean ("reactive",
-                                P_("Reactive"),
-                                P_("Whether the actor is reactive to events"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_REACTIVE] = pspec;
-  g_object_class_install_property (object_class, PROP_REACTIVE, pspec);
+  obj_props[PROP_REACTIVE] =
+    g_param_spec_boolean ("reactive",
+                          P_("Reactive"),
+                          P_("Whether the actor is reactive to events"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:has-clip:
    *
    * Whether the actor has the #ClutterActor:clip property set or not
    */
-  pspec = g_param_spec_boolean ("has-clip",
-                                P_("Has Clip"),
-                                P_("Whether the actor has a clip set"),
-                                FALSE,
-                                CLUTTER_PARAM_READABLE);
-  obj_props[PROP_HAS_CLIP] = pspec;
-  g_object_class_install_property (object_class, PROP_HAS_CLIP, pspec);
+  obj_props[PROP_HAS_CLIP] =
+    g_param_spec_boolean ("has-clip",
+                          P_("Has Clip"),
+                          P_("Whether the actor has a clip set"),
+                          FALSE,
+                          CLUTTER_PARAM_READABLE);
 
   /**
    * ClutterActor:clip:
@@ -4600,13 +4565,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * Every part of the actor outside the clip region will not be
    * painted
    */
-  pspec = g_param_spec_boxed ("clip",
-                              P_("Clip"),
-                              P_("The clip region for the actor"),
-                              CLUTTER_TYPE_GEOMETRY,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_CLIP] = pspec;
-  g_object_class_install_property (object_class, PROP_CLIP, pspec);
+  obj_props[PROP_CLIP] =
+    g_param_spec_boxed ("clip",
+                        P_("Clip"),
+                        P_("The clip region for the actor"),
+                        CLUTTER_TYPE_GEOMETRY,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:name:
@@ -4615,13 +4579,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.2
    */
-  pspec = g_param_spec_string ("name",
-                               P_("Name"),
-                               P_("Name of the actor"),
-                               NULL,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_NAME] = pspec;
-  g_object_class_install_property (object_class, PROP_NAME, pspec);
+  obj_props[PROP_NAME] =
+    g_param_spec_string ("name",
+                         P_("Name"),
+                         P_("Name of the actor"),
+                         NULL,
+                         CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:scale-x:
@@ -4630,14 +4593,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_double ("scale-x",
-                               P_("Scale X"),
-                               P_("Scale factor on the X axis"),
-                               0.0, G_MAXDOUBLE,
-                               1.0,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_SCALE_X] = pspec;
-  g_object_class_install_property (object_class, PROP_SCALE_X, pspec);
+  obj_props[PROP_SCALE_X] =
+    g_param_spec_double ("scale-x",
+                         P_("Scale X"),
+                         P_("Scale factor on the X axis"),
+                         0.0, G_MAXDOUBLE,
+                         1.0,
+                         CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:scale-y:
@@ -4646,14 +4608,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_double ("scale-y",
-                               P_("Scale Y"),
-                               P_("Scale factor on the Y axis"),
-                               0.0, G_MAXDOUBLE,
-                               1.0,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_SCALE_Y] = pspec;
-  g_object_class_install_property (object_class, PROP_SCALE_Y, pspec);
+  obj_props[PROP_SCALE_Y] =
+    g_param_spec_double ("scale-y",
+                         P_("Scale Y"),
+                         P_("Scale factor on the Y axis"),
+                         0.0, G_MAXDOUBLE,
+                         1.0,
+                         CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:scale-center-x:
@@ -4662,14 +4623,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_float ("scale-center-x",
-                              P_("Scale Center X"),
-                              P_("Horizontal scale center"),
-                              -G_MAXFLOAT, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_SCALE_CENTER_X] = pspec;
-  g_object_class_install_property (object_class, PROP_SCALE_CENTER_X, pspec);
+  obj_props[PROP_SCALE_CENTER_X] =
+    g_param_spec_float ("scale-center-x",
+                        P_("Scale Center X"),
+                        P_("Horizontal scale center"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:scale-center-y:
@@ -4678,14 +4638,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_float ("scale-center-y",
-                              P_("Scale Center Y"),
-                              P_("Vertical scale center"),
-                              -G_MAXFLOAT, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_SCALE_CENTER_Y] = pspec;
-  g_object_class_install_property (object_class, PROP_SCALE_CENTER_Y, pspec);
+  obj_props[PROP_SCALE_CENTER_Y] =
+    g_param_spec_float ("scale-center-y",
+                        P_("Scale Center Y"),
+                        P_("Vertical scale center"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:scale-gravity:
@@ -4694,16 +4653,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_enum ("scale-gravity",
-                             P_("Scale Gravity"),
-                             P_("The center of scaling"),
-                             CLUTTER_TYPE_GRAVITY,
-                             CLUTTER_GRAVITY_NONE,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_SCALE_GRAVITY] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_SCALE_GRAVITY,
-                                   pspec);
+  obj_props[PROP_SCALE_GRAVITY] =
+    g_param_spec_enum ("scale-gravity",
+                       P_("Scale Gravity"),
+                       P_("The center of scaling"),
+                       CLUTTER_TYPE_GRAVITY,
+                       CLUTTER_GRAVITY_NONE,
+                       CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:rotation-angle-x:
@@ -4712,14 +4668,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_double ("rotation-angle-x",
-                               P_("Rotation Angle X"),
-                               P_("The rotation angle on the X axis"),
-                               -G_MAXDOUBLE, G_MAXDOUBLE,
-                               0.0,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_ROTATION_ANGLE_X] = pspec;
-  g_object_class_install_property (object_class, PROP_ROTATION_ANGLE_X, pspec);
+  obj_props[PROP_ROTATION_ANGLE_X] =
+    g_param_spec_double ("rotation-angle-x",
+                         P_("Rotation Angle X"),
+                         P_("The rotation angle on the X axis"),
+                         -G_MAXDOUBLE, G_MAXDOUBLE,
+                         0.0,
+                         CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:rotation-angle-y:
@@ -4728,14 +4683,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_double ("rotation-angle-y",
-                               P_("Rotation Angle Y"),
-                               P_("The rotation angle on the Y axis"),
-                               -G_MAXDOUBLE, G_MAXDOUBLE,
-                               0.0,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_ROTATION_ANGLE_Y] = pspec;
-  g_object_class_install_property (object_class, PROP_ROTATION_ANGLE_Y, pspec);
+  obj_props[PROP_ROTATION_ANGLE_Y] =
+    g_param_spec_double ("rotation-angle-y",
+                         P_("Rotation Angle Y"),
+                         P_("The rotation angle on the Y axis"),
+                         -G_MAXDOUBLE, G_MAXDOUBLE,
+                         0.0,
+                         CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:rotation-angle-z:
@@ -4744,14 +4698,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_double ("rotation-angle-z",
-                               P_("Rotation Angle Z"),
-                               P_("The rotation angle on the Z axis"),
-                               -G_MAXDOUBLE, G_MAXDOUBLE,
-                               0.0,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_ROTATION_ANGLE_Z] = pspec;
-  g_object_class_install_property (object_class, PROP_ROTATION_ANGLE_Z, pspec);
+  obj_props[PROP_ROTATION_ANGLE_Z] =
+    g_param_spec_double ("rotation-angle-z",
+                         P_("Rotation Angle Z"),
+                         P_("The rotation angle on the Z axis"),
+                         -G_MAXDOUBLE, G_MAXDOUBLE,
+                         0.0,
+                         CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:rotation-center-x:
@@ -4760,15 +4713,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_boxed ("rotation-center-x",
-                              P_("Rotation Center X"),
-                              P_("The rotation center on the X axis"),
-                              CLUTTER_TYPE_VERTEX,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_ROTATION_CENTER_X] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_ROTATION_CENTER_X,
-                                   pspec);
+  obj_props[PROP_ROTATION_CENTER_X] =
+    g_param_spec_boxed ("rotation-center-x",
+                        P_("Rotation Center X"),
+                        P_("The rotation center on the X axis"),
+                        CLUTTER_TYPE_VERTEX,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:rotation-center-y:
@@ -4777,15 +4727,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_boxed ("rotation-center-y",
-                              P_("Rotation Center Y"),
-                              P_("The rotation center on the Y axis"),
-                              CLUTTER_TYPE_VERTEX,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_ROTATION_CENTER_Y] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_ROTATION_CENTER_Y,
-                                   pspec);
+  obj_props[PROP_ROTATION_CENTER_Y] =
+    g_param_spec_boxed ("rotation-center-y",
+                        P_("Rotation Center Y"),
+                        P_("The rotation center on the Y axis"),
+                        CLUTTER_TYPE_VERTEX,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:rotation-center-z:
@@ -4794,15 +4741,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_boxed ("rotation-center-z",
-                              P_("Rotation Center Z"),
-                              P_("The rotation center on the Z axis"),
-                              CLUTTER_TYPE_VERTEX,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_ROTATION_CENTER_Z] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_ROTATION_CENTER_Z,
-                                   pspec);
+  obj_props[PROP_ROTATION_CENTER_Z] =
+    g_param_spec_boxed ("rotation-center-z",
+                        P_("Rotation Center Z"),
+                        P_("The rotation center on the Z axis"),
+                        CLUTTER_TYPE_VERTEX,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:rotation-center-z-gravity:
@@ -4811,16 +4755,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_enum ("rotation-center-z-gravity",
-                             P_("Rotation Center Z Gravity"),
-                             P_("Center point for rotation around the Z axis"),
-                             CLUTTER_TYPE_GRAVITY,
-                             CLUTTER_GRAVITY_NONE,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_ROTATION_CENTER_Z_GRAVITY] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_ROTATION_CENTER_Z_GRAVITY,
-                                   pspec);
+  obj_props[PROP_ROTATION_CENTER_Z_GRAVITY] =
+    g_param_spec_enum ("rotation-center-z-gravity",
+                       P_("Rotation Center Z Gravity"),
+                       P_("Center point for rotation around the Z axis"),
+                       CLUTTER_TYPE_GRAVITY,
+                       CLUTTER_GRAVITY_NONE,
+                       CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:anchor-x:
@@ -4830,14 +4771,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_float ("anchor-x",
-                              P_("Anchor X"),
-                              P_("X coordinate of the anchor point"),
-                              -G_MAXFLOAT, G_MAXFLOAT,
-                              0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_ANCHOR_X] = pspec;
-  g_object_class_install_property (object_class, PROP_ANCHOR_X, pspec);
+  obj_props[PROP_ANCHOR_X] =
+    g_param_spec_float ("anchor-x",
+                        P_("Anchor X"),
+                        P_("X coordinate of the anchor point"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:anchor-y:
@@ -4847,14 +4787,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_float ("anchor-y",
-                              P_("Anchor Y"),
-                              P_("Y coordinate of the anchor point"),
-                              -G_MAXFLOAT, G_MAXFLOAT,
-                              0,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_ANCHOR_Y] = pspec;
-  g_object_class_install_property (object_class, PROP_ANCHOR_Y, pspec);
+  obj_props[PROP_ANCHOR_Y] =
+    g_param_spec_float ("anchor-y",
+                        P_("Anchor Y"),
+                        P_("Y coordinate of the anchor point"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:anchor-gravity:
@@ -4863,15 +4802,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_enum ("anchor-gravity",
-                             P_("Anchor Gravity"),
-                             P_("The anchor point as a ClutterGravity"),
-                             CLUTTER_TYPE_GRAVITY,
-                             CLUTTER_GRAVITY_NONE,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_ANCHOR_GRAVITY] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_ANCHOR_GRAVITY, pspec);
+  obj_props[PROP_ANCHOR_GRAVITY] =
+    g_param_spec_enum ("anchor-gravity",
+                       P_("Anchor Gravity"),
+                       P_("The anchor point as a ClutterGravity"),
+                       CLUTTER_TYPE_GRAVITY,
+                       CLUTTER_GRAVITY_NONE,
+                       CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:show-on-set-parent:
@@ -4883,15 +4820,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_boolean ("show-on-set-parent",
-                                P_("Show on set parent"),
-                                P_("Whether the actor is shown when parented"),
-                                TRUE,
-                                CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_SHOW_ON_SET_PARENT] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_SHOW_ON_SET_PARENT,
-                                   pspec);
+  obj_props[PROP_SHOW_ON_SET_PARENT] =
+    g_param_spec_boolean ("show-on-set-parent",
+                          P_("Show on set parent"),
+                          P_("Whether the actor is shown when parented"),
+                          TRUE,
+                          CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:clip-to-allocation:
@@ -4904,27 +4838,27 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_boolean ("clip-to-allocation",
-                                P_("Clip to Allocation"),
-                                P_("Sets the clip region to track the "
-                                   "actor's allocation"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_CLIP_TO_ALLOCATION] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_CLIP_TO_ALLOCATION,
-                                   pspec);
+  obj_props[PROP_CLIP_TO_ALLOCATION] =
+    g_param_spec_boolean ("clip-to-allocation",
+                          P_("Clip to Allocation"),
+                          P_("Sets the clip region to track the actor's allocation"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
 
-  pspec = g_param_spec_enum ("text-direction",
-                             P_("Text Direction"),
-                             P_("Direction of the text"),
-                             CLUTTER_TYPE_TEXT_DIRECTION,
-                             CLUTTER_TEXT_DIRECTION_LTR,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_TEXT_DIRECTION] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_TEXT_DIRECTION,
-                                   pspec);
+  /**
+   * ClutterActor:text-direction:
+   *
+   * The direction of the text inside a #ClutterActor.
+   *
+   * Since: 1.0
+   */
+  obj_props[PROP_TEXT_DIRECTION] =
+    g_param_spec_enum ("text-direction",
+                       P_("Text Direction"),
+                       P_("Direction of the text"),
+                       CLUTTER_TYPE_TEXT_DIRECTION,
+                       CLUTTER_TEXT_DIRECTION_LTR,
+                       CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterActor:has-pointer:
@@ -4934,16 +4868,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_boolean ("has-pointer",
-                                P_("Has Pointer"),
-                                P_("Whether the actor contains the pointer "
-                                   "of an input device"),
-                                FALSE,
-                                CLUTTER_PARAM_READABLE);
-  obj_props[PROP_HAS_POINTER] = pspec;
-  g_object_class_install_property (object_class,
-                                   PROP_HAS_POINTER,
-                                   pspec);
+  obj_props[PROP_HAS_POINTER] =
+    g_param_spec_boolean ("has-pointer",
+                          P_("Has Pointer"),
+                          P_("Whether the actor contains the pointer of an input device"),
+                          FALSE,
+                          CLUTTER_PARAM_READABLE);
 
   /**
    * ClutterActor:actions:
@@ -4952,13 +4882,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_object ("actions",
-                               P_("Actions"),
-                               P_("Adds an action to the actor"),
-                               CLUTTER_TYPE_ACTION,
-                               CLUTTER_PARAM_WRITABLE);
-  obj_props[PROP_ACTIONS] = pspec;
-  g_object_class_install_property (object_class, PROP_ACTIONS, pspec);
+  obj_props[PROP_ACTIONS] =
+    g_param_spec_object ("actions",
+                         P_("Actions"),
+                         P_("Adds an action to the actor"),
+                         CLUTTER_TYPE_ACTION,
+                         CLUTTER_PARAM_WRITABLE);
 
   /**
    * ClutterActor:constraints:
@@ -4967,13 +4896,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_object ("constraints",
-                               P_("Constraints"),
-                               P_("Adds a constraint to the actor"),
-                               CLUTTER_TYPE_CONSTRAINT,
-                               CLUTTER_PARAM_WRITABLE);
-  obj_props[PROP_CONSTRAINTS] = pspec;
-  g_object_class_install_property (object_class, PROP_CONSTRAINTS, pspec);
+  obj_props[PROP_CONSTRAINTS] =
+    g_param_spec_object ("constraints",
+                         P_("Constraints"),
+                         P_("Adds a constraint to the actor"),
+                         CLUTTER_TYPE_CONSTRAINT,
+                         CLUTTER_PARAM_WRITABLE);
 
   /**
    * ClutterActor:effect:
@@ -4982,41 +4910,68 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_object ("effect",
-                               P_("Effect"),
-                               P_("Add an effect to be applied on the actor"),
-                               CLUTTER_TYPE_EFFECT,
-                               CLUTTER_PARAM_WRITABLE);
-  obj_props[PROP_EFFECT] = pspec;
-  g_object_class_install_property (object_class, PROP_EFFECT, pspec);
+  obj_props[PROP_EFFECT] =
+    g_param_spec_object ("effect",
+                         P_("Effect"),
+                         P_("Add an effect to be applied on the actor"),
+                         CLUTTER_TYPE_EFFECT,
+                         CLUTTER_PARAM_WRITABLE);
 
+  /**
+   * ClutterActor:layout-manager:
+   *
+   * A delegate object for controlling the layout of the child of
+   * an actor.
+   *
+   * Since: 1.10
+   */
   obj_props[PROP_LAYOUT_MANAGER] =
     g_param_spec_object ("layout-manager",
                          P_("Layout Manager"),
                          P_("The object controlling the layout of an actor's children"),
                          CLUTTER_TYPE_LAYOUT_MANAGER,
                          CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_LAYOUT_MANAGER,
-                                   obj_props[PROP_LAYOUT_MANAGER]);
 
+
+  /**
+   * ClutterActor:x-expand:
+   *
+   * Whether the actor should use extra space on the X axis when allocating.
+   *
+   * Since: 1.10
+   */
   obj_props[PROP_X_EXPAND] =
     g_param_spec_boolean ("x-expand",
                           P_("X Expand"),
                           P_("Whether the actor should expand on the X axis"),
                           FALSE,
                           CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_X_EXPAND,
-                                   obj_props[PROP_X_EXPAND]);
 
+  /**
+   * ClutterActor:y-expand:
+   *
+   * Whether the actor should use extra space on the Y axis when allocating.
+   *
+   * Since: 1.10
+   */
   obj_props[PROP_Y_EXPAND] =
     g_param_spec_boolean ("y-expand",
                           P_("Y Expand"),
                           P_("Whether the actor should expand on the Y axis"),
                           FALSE,
                           CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_Y_EXPAND,
-                                   obj_props[PROP_Y_EXPAND]);
 
+  /**
+   * ClutterActor:x-align:
+   *
+   * The alignment of an actor on the X axis, if the actor has been given
+   * extra space for its allocation.
+   *
+   * This property only applies if the #ClutterActor:x-expand property
+   * has been set to %TRUE.
+   *
+   * Since: 1.10
+   */
   obj_props[PROP_X_ALIGN] =
     g_param_spec_enum ("x-align",
                        P_("X Alignment"),
@@ -5024,9 +4979,18 @@ clutter_actor_class_init (ClutterActorClass *klass)
                        CLUTTER_TYPE_ACTOR_ALIGN,
                        CLUTTER_ACTOR_ALIGN_FILL,
                        CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_X_ALIGN,
-                                   obj_props[PROP_X_ALIGN]);
 
+  /**
+   * ClutterActor:y-align:
+   *
+   * The alignment of an actor on the Y axis, if the actor has been given
+   * extra space for its allocation.
+   *
+   * This property only applies if the #ClutterActor:y-expand property
+   * has been set to %TRUE.
+   *
+   * Since: 1.10
+   */
   obj_props[PROP_Y_ALIGN] =
     g_param_spec_enum ("y-align",
                        P_("Y Alignment"),
@@ -5034,8 +4998,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
                        CLUTTER_TYPE_ACTOR_ALIGN,
                        CLUTTER_ACTOR_ALIGN_FILL,
                        CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_Y_ALIGN,
-                                   obj_props[PROP_Y_ALIGN]);
 
   obj_props[PROP_MARGIN_TOP] =
     g_param_spec_float ("margin-top",
@@ -5044,8 +5006,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         0.0, G_MAXFLOAT,
                         0.0,
                         CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_MARGIN_TOP,
-                                   obj_props[PROP_MARGIN_TOP]);
 
   obj_props[PROP_MARGIN_BOTTOM] =
     g_param_spec_float ("margin-bottom",
@@ -5054,8 +5014,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         0.0, G_MAXFLOAT,
                         0.0,
                         CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_MARGIN_BOTTOM,
-                                   obj_props[PROP_MARGIN_BOTTOM]);
 
   obj_props[PROP_MARGIN_LEFT] =
     g_param_spec_float ("margin-left",
@@ -5064,8 +5022,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         0.0, G_MAXFLOAT,
                         0.0,
                         CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_MARGIN_LEFT,
-                                   obj_props[PROP_MARGIN_LEFT]);
 
   obj_props[PROP_MARGIN_RIGHT] =
     g_param_spec_float ("margin-right",
@@ -5074,8 +5030,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         0.0, G_MAXFLOAT,
                         0.0,
                         CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_MARGIN_RIGHT,
-                                   obj_props[PROP_MARGIN_RIGHT]);
+
+  g_object_class_install_properties (object_class, PROP_LAST, obj_props);
 
   /**
    * ClutterActor::destroy:
