@@ -889,7 +889,8 @@ LookingGlass.prototype = {
         this.actor = new St.BoxLayout({ name: 'LookingGlassDialog',
                                         style_class: 'lg-dialog',
                                         vertical: true,
-                                        visible: false });
+                                        visible: false,
+                                        reactive: true });
         this.actor.connect('key-press-event', Lang.bind(this, this._globalKeyPressEvent));
 
         this._interfaceSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
