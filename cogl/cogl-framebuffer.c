@@ -1446,8 +1446,11 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
    * matrices so we must do it before flushing the matrices...
    */
   if (!(flags & COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE))
-    _cogl_clip_state_flush (&draw_buffer->clip_state,
-                            draw_buffer);
+    {
+      CoglClipStack *stack =
+        _cogl_clip_state_get_stack (&draw_buffer->clip_state);
+      _cogl_clip_stack_flush (stack);
+    }
 
   if (!(flags & COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW))
     _cogl_matrix_stack_flush_to_gl (draw_buffer->modelview_stack,

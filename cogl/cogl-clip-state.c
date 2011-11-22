@@ -203,13 +203,3 @@ _cogl_clip_state_restore_clip_stack (CoglClipState *clip_state)
   clip_state->stacks = g_slist_delete_link (clip_state->stacks,
                                             clip_state->stacks);
 }
-
-void
-_cogl_clip_state_flush (CoglClipState *clip_state,
-                        CoglFramebuffer *framebuffer)
-{
-  /* Flush the topmost stack. The clip stack code will bail out early
-     if this is already flushed */
-  _cogl_clip_stack_flush (clip_state->stacks->data,
-                          framebuffer);
-}
