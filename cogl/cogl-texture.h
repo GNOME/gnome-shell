@@ -366,8 +366,10 @@ cogl_texture_get_data (CoglTexture *texture,
  * @src_y: upper left coordinate to use from source data.
  * @dst_x: upper left destination horizontal coordinate.
  * @dst_y: upper left destination vertical coordinate.
- * @dst_width: width of destination region to write.
- * @dst_height: height of destination region to write.
+ * @dst_width: width of destination region to write. (Must be less
+ *   than or equal to @width)
+ * @dst_height: height of destination region to write. (Must be less
+ *   than or equal to @height)
  * @width: width of source data buffer.
  * @height: height of source data buffer.
  * @format: the #CoglPixelFormat used in the source buffer.
@@ -375,8 +377,10 @@ cogl_texture_get_data (CoglTexture *texture,
  * specified)
  * @data: the actual pixel data.
  *
- * Sets the pixels in a rectangular subregion of @handle from an in-memory
+ * Sets the pixels in a rectangular subregion of @texture from an in-memory
  * buffer containing pixel data.
+ *
+ * <note>The region set can't be larger than the source @data</note>
  *
  * Return value: %TRUE if the subregion upload was successful, and
  *   %FALSE otherwise
@@ -406,12 +410,17 @@ cogl_texture_set_region (CoglTexture     *texture,
  * @src_y: upper left coordinate to use from the source bitmap
  * @dst_x: upper left destination horizontal coordinate.
  * @dst_y: upper left destination vertical coordinate.
- * @dst_width: width of destination region to write.
- * @dst_height: height of destination region to write.
+ * @dst_width: width of destination region to write. (Must be less
+ *   than or equal to the bitmap width)
+ * @dst_height: height of destination region to write. (Must be less
+ *   than or equal to the bitmap height)
  * @bitmap: The source bitmap to read from
  *
  * Copies a specified source region from @bitmap to the position
  * (@src_x, @src_y) of the given destination texture @handle.
+ *
+ * <note>The region updated can't be larger than the source
+ * bitmap</note>
  *
  * Return value: %TRUE if the subregion upload was successful, and
  *   %FALSE otherwise

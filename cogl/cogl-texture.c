@@ -676,6 +676,11 @@ cogl_texture_set_region_from_bitmap (CoglTexture *texture,
 {
   gboolean ret;
 
+  _COGL_RETURN_VAL_IF_FAIL ((_cogl_bitmap_get_width (bmp) - src_x)
+                            >= dst_width, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL ((_cogl_bitmap_get_height (bmp) - src_y)
+                            >= dst_height, FALSE);
+
   /* Shortcut out early if the image is empty */
   if (dst_width == 0 || dst_height == 0)
     return TRUE;
@@ -712,6 +717,9 @@ cogl_texture_set_region (CoglTexture     *texture,
 {
   CoglBitmap *source_bmp;
   gboolean    ret;
+
+  _COGL_RETURN_VAL_IF_FAIL ((width - src_x) >= dst_width, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL ((height - src_y) >= dst_height, FALSE);
 
   /* Check for valid format */
   if (format == COGL_PIXEL_FORMAT_ANY)
