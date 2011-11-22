@@ -1,3 +1,101 @@
+Cogl 1.9.2                                                         2011-11-23
+
+  • List of changes since Cogl 1.8.0
+
+  » Fix a crash while generating ARBfp code with layers containing a
+    NULL texture.
+  » Improvements to the mingw-fetch-dependencies script to work
+    without first needing to find a copy of config.guess.
+  » Translation updates.
+  » Ported more conformance tests from Clutter to be standalone Cogl tests.
+  » Adds experimental support for EXT_discard_framebuffer extension which
+    is important for good performance on PowerVR graphics hardware
+  » Adds experimental API to enable clipping to the silhouette of an arbitrary
+    2D CoglPrimitive
+  » Make the CoglTexture2DSliced API directly available as experimental API
+  » Adds a new feature checking API that's not limited to just 32 features
+    and also must be passed a CoglContext pointer so it's clear at what point
+    the features can start to be queried.
+  » Adds an experimental CoglMetaTexture interface that gives one simple
+    api for mapping meta-textures that aren't directly understood by the GPU
+    (such as sliced textures, atlas textures, sub textures) into low level
+    textures. This interface also gives us a single place to handle repeat
+    mode fallbacks, supporting clamp-to-edge, repeat and mirrored repeat.
+  » Make the CoglTextureRectangle API directly available as experimental API
+  » Adds experimental support for multisampling, which is where the gpu
+    calculates multiple samples per pixel and the final pixel is a weighted
+    average of those samples.  For example you can expect that multisampling
+    with 4 samples per pixel would give similar quality to rendering at double
+    the resolution and then scaling that image down with texture filtering, but
+    the GPU can often do some tricks such that multisampling is faster than
+    doing that manually (known as supersampling)
+  » Make the CoglSubTexture API directly available as experimental API
+  » Added an n_indices argument to cogl_primitive_set_indices to avoid needing
+    to always call cogl_primitive_set_n_vertices() after using the api and
+    to make it less error prone to use the api.
+  » Ship a standalone cogl-xlib.h that must be included manually for any xlib
+    specific api because the Xlib headers so many numerous badly namespaced
+    symbols that it's not desireable to include them unless absolutely
+    required.
+  » Updated the Wayland support to work with the latest upstream interfaces.
+  » Add experimental CoglPipeline API for controlling the backface culling.
+  » Added a cogl_matrix_transpose() function
+  » Add experimental support for setting uniforms on a CoglPipeline. This
+    is in preparation for being able to associate snippets of GLSL that hook
+    into specific parts of the pipeline. We plan to eventually deprecate
+    CoglProgram but even in the meantime we would also recommend setting
+    uniforms on the pipeline now instead of the program.
+  » Adds experimental cogl_framebuffer_finish() api for explicitly synchonizing
+    the GPU with the CPU.
+
+  • List of bugs fixed since Cogl 1.8.0
+
+    https://bugzilla.gnome.org:
+
+    #656755 - Install the examples
+    #658700 - Bind the locale domain so that gettext actually works
+    #660184 - Running an X client causes a segfault when using software
+              rendering
+    #660387 - test-color-mask fails due to uninitialized texture data
+    #660617 - Porting of clutter tests
+    #660986 - memory leak in CoglPipeline::layers_cache
+    #661019 - Indices don't seem to work
+    #661174 - Remove inclusion of Xlib headers from Cogl headers
+    #662184 - Pipeline shaders often fail to link on GLES2 because of different
+              n_tex_coord_attribs
+    #662542 - The ARBfp and GLSL pipeline backends sometimes don't flush
+              uniforms
+    #663578 - _COGL_RETURN_IF_FAIL sometimes doesn't use glib
+    #663628 - Make the pipeline backface culling experimental public
+
+Many thanks too:
+    Robert Bragg
+    Neil Roberts
+    Luca Bruno
+    Chun-wei Fan
+    Jorge González
+    Rob Bradford
+    Fran Diéguez
+    Rico Tzschichholz
+    Yaron Shahrabani
+    krishnababu k
+    Damien Leone
+    Daniel Martinez Cucalon
+    Daniel Mustieles
+    Flemming Christensen
+    Gabor Kelemen
+    Gil Forcada
+    Ivaylo Valkov
+    Jasper St. Pierre
+    Kjartan Maraas
+    Matej Urbančič
+    Muhammet Kara
+    Nguyễn Thái Ngọc Duy
+    Nilamdyuti Goswami
+    Seong-ho, Cho
+    Simos Xenitellis
+    Zan Dobersek
+
 Cogl 1.8.0                                                         2011-09-19
 
   • List of changes since Cogl 1.7.8
