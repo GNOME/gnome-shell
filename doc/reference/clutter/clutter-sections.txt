@@ -917,6 +917,10 @@ clutter_backend_get_font_options
 clutter_backend_set_font_name
 clutter_backend_get_font_name
 clutter_backend_get_cogl_context
+
+<SUBSECTION>
+clutter_check_windowing_backend
+
 <SUBSECTION Standard>
 CLUTTER_BACKEND
 CLUTTER_IS_BACKEND
@@ -1242,6 +1246,8 @@ clutter_do_event
 <SUBSECTION Standard>
 CLUTTER_INIT_ERROR
 <SUBSECTION Private>
+CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_FOR
 clutter_init_error_quark
 clutter_base_init
 clutter_redraw
@@ -1350,6 +1356,17 @@ clutter_win32_handle_event
 <FILE>clutter-wayland</FILE>
 <TITLE>Wayland Specific Support</TITLE>
 clutter_wayland_get_egl_display
+</SECTION>
+
+<SECTION>
+<FILE>clutter-gdk</FILE>
+<TITLE>GDK Specific Support</TITLE>
+clutter_gdk_disable_event_retrieval
+clutter_gdk_get_stage_from_window
+clutter_gdk_get_stage_window
+clutter_gdk_handle_event
+clutter_gdk_set_display
+clutter_gdk_set_stage_foreign
 </SECTION>
 
 <SECTION>
@@ -1953,6 +1970,7 @@ clutter_egl_get_egl_display
 clutter_cex100_set_plane
 ClutterCex100BufferingMode
 clutter_cex100_set_buffering_mode
+clutter_cex100_get_egl_display
 </SECTION>
 
 <SECTION>

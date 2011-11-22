@@ -99,6 +99,7 @@ IGNORE_HFILES=\
 	clutter-stage-window.h 		\
 	clutter-timeout-interval.h 	\
 	cally				\
+	cex100				\
 	cogl 				\
 	egl				\
 	evdev				\
