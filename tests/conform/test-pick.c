@@ -142,6 +142,9 @@ on_timeout (State *state)
         }
       else if (test_num == 3)
         {
+          if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
+            continue;
+
           clutter_actor_hide (over_actor);
 
           clutter_actor_add_effect_with_name (CLUTTER_ACTOR (state->stage),
@@ -153,6 +156,9 @@ on_timeout (State *state)
         }
       else if (test_num == 4)
         {
+          if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
+            continue;
+
           clutter_actor_hide (over_actor);
           clutter_actor_remove_effect_by_name (CLUTTER_ACTOR (state->stage),
                                                "blur");

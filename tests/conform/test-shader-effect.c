@@ -239,6 +239,9 @@ test_shader_effect (TestConformSimpleFixture *fixture,
   ClutterActor *stage;
   ClutterActor *rect;
 
+  if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
+    return;
+
   stage = clutter_stage_new ();
 
   rect = make_actor (foo_old_shader_effect_get_type ());
