@@ -1,3 +1,28 @@
+3.3.2
+=====
+
+* Move from GConf to GSettings for preferences [Florian; #635378]
+* Add meta_display_add_keybinding()/meta_display_remove_keybinding()
+  to allow creating new keybindings at runtime [Florian; #663428]
+* Add suport for new _NET_WM_STATE_FOCUSED atom in _NET_WM_STATE
+  to allow applications to draw unfocused windows differently
+  [Rui; #661427]
+* Add meta_window_move_resize_frame() to allow specifying the
+  size and position of a window via the outside dimensions of the
+  window frame.
+* Don't activate window tiling when moving in snap mode
+  [Rui; #662270]
+* Remove the ability to resize a window from the inner edge of
+  the titlebar [Jasper; #660129]
+* Fix for deprecations in GTK+ [Jasper, Rico; #662574, #662895]
+* Misc bug fixes [Jasper, Rico, Rui; #662895, #642652, #660941, #662225]
+
+Contributors:
+ Tim Cuthbertson, Rui Matos, Florian Müllner, Jasper St. Pierre, Rico Tzschichholz
+
+Translations:
+ Jorge González (es), Kjartan Maraas (nb), Krishnababu Krothapalli (te), Nguyễn Thái Ngọc Duy (vi)
+
 3.2.1
 =====
 * Allow keyboard window switching (alt-Tab) during drag-and-drop
