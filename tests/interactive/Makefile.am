@@ -135,7 +135,7 @@ clean-wrappers:
 		rm -f $$test_bin$(SHEXT); \
 	done \
 	&& rm -f $(top_builddir)/build/win32/*.bat \
-	&& rm -f *.bat \
+	&& rm -f stamp-test-unit-names \
 	&& rm -f stamp-test-interactive
 
 .PHONY: wrappers clean-wrappers
@@ -176,9 +176,9 @@ $(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj: $(top_srcdir)/b
 		*.c)	echo '   <File RelativePath="..\..\..\tests\interactive\'$$F'" />' \
 			;; \
 		esac; \
-	done >testinteractive.sourcefiles
+	done > testinteractive.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/test-interactive-clutter.vcprojin >$@
-	rm testinteractive.sourcefiles
+	rm -f testinteractive.sourcefiles
 
 $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj: $(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxprojin
 	for F in $(test_interactive_SOURCES); do \
@@ -187,9 +187,9 @@ $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj: $(top_srcdir)
 		*.c)	echo '    <ClCompile Include="..\..\..\tests\interactive\'$$F'" />' \
 			;; \
 		esac; \
-	done >testinteractive.vs10.sourcefiles
+	done > testinteractive.vs10.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxprojin >$@
-	rm testinteractive.vs10.sourcefiles
+	rm -f testinteractive.vs10.sourcefiles
 
 $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters: $(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxproj.filtersin
 	for F in $(test_interactive_SOURCES); do \
@@ -198,17 +198,20 @@ $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters: $(top
 		*.c)	echo '    <ClCompile Include="..\..\..\tests\interactive\'$$F'"><Filter>Sources</Filter></ClCompile>' \
 			;; \
 		esac; \
-	done >testinteractive.vs10.sourcefiles.filters
+	done > testinteractive.vs10.sourcefiles.filters
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxproj.filtersin >$@
-	rm testinteractive.vs10.sourcefiles.filters
+	rm -f testinteractive.vs10.sourcefiles.filters
 
 # Let the VS9/VS10 Project files be cleared out before they are re-expanded...
-DISTCLEANFILES += $(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj	\
-		  $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj	\
-		  $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters
+DISTCLEANFILES += \
+	$(top_builddir)/build/win32/test-unit-names.h \
+	$(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj	\
+	$(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj \
+	$(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters
+
 EXTRA_DIST += \
-	$(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj			\
-	$(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj		\
+	$(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj	\
+	$(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj \
 	$(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters
 
 clean-local: clean-wrappers

@@ -523,18 +523,13 @@ EXTRA_DIST += \
 	$(srcdir)/win32/resources.rc		\
 	$(NULL)
 
-# EGL backend rules
-egl_source_h = \
-	$(srcdir)/egl/clutter-egl-headers.h	\
-	$(srcdir)/egl/clutter-egl.h		\
-	$(NULL)
-
-egl_source_h_priv = $(srcdir)/egl/clutter-backend-eglnative.h
-egl_source_c = $(srcdir)/egl/clutter-backend-eglnative.c
-egl_source_c_priv =
-
 egl_tslib_h = $(srcdir)/tslib/clutter-event-tslib.h
 egl_tslib_c = $(srcdir)/tslib/clutter-event-tslib.c
+
+if USE_TSLIB
+backend_source_c_priv += $(egl_tslib_c)
+backend_source_h_priv += $(egl_tslib_h)
+endif # SUPPORT_TSLIB
 
 evdev_c_priv = \
 	$(srcdir)/evdev/clutter-xkb-utils.c 		\
@@ -547,21 +542,16 @@ evdev_h_priv = \
 	$(srcdir)/evdev/clutter-input-device-evdev.h	\
 	$(NULL)
 
+if USE_EVDEV
+backend_source_c_priv += $(evdev_c_priv)
+backend_source_h_priv += $(evdev_h_priv)
+endif # SUPPORT_EVDEV
+
 cex_source_h_priv = $(srcdir)/cex100/clutter-backend-cex100.h
 cex_source_c = $(srcdir)/cex100/clutter-backend-cex100.c
 cex_h = cex100/clutter-cex100.h
 BUILT_SOURCES += $(cex_h)
 EXTRA_DIST += $(srcdir)/$(cex_h).in
-
-if USE_TSLIB
-egl_source_c_priv += $(egl_tslib_c)
-egl_source_h_priv += $(egl_tslib_h)
-endif # SUPPORT_TSLIB
-
-if USE_EVDEV
-egl_source_c_priv += $(evdev_c_priv)
-egl_source_h_priv += $(evdev_h_priv)
-endif # SUPPORT_EVDEV
 
 if SUPPORT_CEX100
 backend_source_h += $(cex_h)
@@ -581,10 +571,18 @@ compat_libs += \
 	$(NULL)
 endif # SUPPORT_CEX100
 
+# EGL backend rules
+egl_source_h = \
+	$(srcdir)/egl/clutter-egl-headers.h	\
+	$(srcdir)/egl/clutter-egl.h		\
+	$(NULL)
+
+egl_source_h_priv = $(srcdir)/egl/clutter-backend-eglnative.h
+egl_source_c = $(srcdir)/egl/clutter-backend-eglnative.c
+
 if SUPPORT_EGL
 backend_source_h += $(egl_source_h)
 backend_source_c += $(egl_source_c)
-backend_source_h_priv += $(egl_source_h_priv)
 
 clutteregl_includedir = $(clutter_includedir)/egl
 clutteregl_include_HEADERS = $(egl_source_h)

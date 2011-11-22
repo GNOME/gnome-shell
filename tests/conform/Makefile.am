@@ -145,8 +145,7 @@ clean-wrappers:
 		rm -f wrappers/$$unit$(SHEXT) ; \
 	done \
 	&& rm -f unit-tests \
-	&& rm -f $(top_srcdir)/build/win32/*.bat \
-	&& rm -f *.bat \
+	&& rm -f $(top_builddir)/build/win32/*.bat \
 	&& rm -f stamp-test-conformance
 
 # NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
@@ -156,9 +155,7 @@ BUILT_SOURCES = wrappers
 INCLUDES = \
 	-I$(top_srcdir)/ \
 	-I$(top_srcdir)/clutter \
-	-I$(top_srcdir)/clutter/cogl \
-	-I$(top_builddir)/clutter \
-	-I$(top_builddir)/clutter/cogl
+	-I$(top_builddir)/clutter
 
 test_conformance_CPPFLAGS = \
 	-DG_DISABLE_SINGLE_INCLUDES \
@@ -317,14 +314,15 @@ $(top_builddir)/build/win32/vs10/test-conformance-clutter.vcxproj.filters: $(top
 		*.c)	echo '    <ClCompile Include="..\..\..\tests\conform\'$$F'"><Filter>Sources</Filter></ClCompile>' \
 			;; \
 		esac; \
-	done >testconformance.vs10.sourcefiles.filters
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-conformance-clutter.vcxproj.filtersin >$@
+	done > testconformance.vs10.sourcefiles.filters
+	$(CPP) -P - < $(top_srcdir)/build/win32/vs10/test-conformance-clutter.vcxproj.filtersin > $@
 	rm -f testconformance.vs10.sourcefiles.filters
 
 # Let the VS9/VS10 Project files be cleared out before they are re-expanded...
-DISTCLEANFILES += $(top_builddir)/build/win32/vs9/test-conformance-clutter.vcproj	\
-		  $(top_builddir)/build/win32/vs10/test-conformance-clutter.vcxproj	\
-		  $(top_builddir)/build/win32/vs10/test-conformance-clutter.vcxproj.filters
+DISTCLEANFILES += \
+	$(top_builddir)/build/win32/vs9/test-conformance-clutter.vcproj	\
+	$(top_builddir)/build/win32/vs10/test-conformance-clutter.vcxproj \
+	$(top_builddir)/build/win32/vs10/test-conformance-clutter.vcxproj.filters
 
 # we override the clean-generic target to clean up the wrappers so
 # we cannot use CLEANFILES
