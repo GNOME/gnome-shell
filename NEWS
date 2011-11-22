@@ -1,3 +1,66 @@
+3.3.2
+=====
+* Port D-Bus usage in the shell to GDBus [Giovanni, Marc-Antoine, Florian,
+  Jasper, Matthias; #648651, #658078, #663902, #663941]
+* Message tray
+  - Add right-click option to chats to mute the conversation [Ana; #659962]
+  - Don't steal the focus when popping up under the pointer [Rui; #661358]
+* Looking Glass
+  - Add alt-Tab completion [Jason; #661054]
+  - Show errors from extensions in the extensions tab [Jasper; #660546]
+  - Allow switching tabs with <Control>PageUp/PageDown
+  - Theme consistently with the rest of the shell [Jason; 650900]
+* Extension system
+  - Don't try to load disabled extensions at all [Jasper; #661815, #662704]
+  - Enable and disable plugins in a consistent order [Jasper; #661815, #662704]
+  - Add options to enable/disable extensions to gnome-shell-extension-tool
+    [Jasper; #661815]
+* Adapt to Mutter change to GSettings [Florian, Matthias; #663429]
+* Allow creating a new workspace by dragging a window or launcher in the
+  middle of two existing ones [Jasper; #646409]
+* Allow using Alt-Tab while during drag-and-drop and other operations
+  that grab the pointer [Adel; #660457]
+* Do a better job of finding the right user to authenticate
+  as when showing a PolKit dialog [Matthias; #651547]
+* Control the D-Bus Eval() method by the developer-tools GSetting which
+  is used for looking glass and screen recorder. [Jasper; #662891]
+* Fix browser plugin to work under WebKit-based browser [Jasper; #663823]
+* Fix certain stacking issues with alt-Tab [Jasper; #660650]
+* Fixes for GLib deprecations [Jasper; #662011]p
+* Fixes for GTK+ deprecations [Florian, Rico; #662245]p
+* Fixes for Clutter deprecations [Jasper; #662627]
+* Visual improvements and UI tweaks [Florian, Jakub, Jasper;
+  #662800, #658096, #662226]
+* Hard-code "Home" as the name for the home dir, rather than looking
+  it up via GSettings; avoids schema dependency [Cosimo; #559895]
+* Don't show "Switch User" on single user machines [Florian; #657011]
+* Generate documentation for St toolkit [Florian]
+* Improve marking of strings for translation [Matthias, Piotr; #658664]
+* Networking menu bug fixes [Giovanni; #650007, #651378, #659277, #663278]
+* Code cleanups and leak fixes to StTextureCache
+  [Jasper, Florian; #660968, #662998]
+* Code cleanups [Adel, Florian, Jasper; #662238, #663584]
+* Build fixes [Adel, Colin, Florian, Ming Han]
+* Misc bug fixes [Adel, Florian, "Fry", Jasper, Giovanni, Ray, Rui, Stefan;
+  #660520, #661029, #661231, #661623, #661921, #662235, #662236, #662502,
+  #662394, #662799, #662969, #663175, #663277, #663815, #663891, #662967]
+
+Contributors:
+ Giovanni Campagna, Cosimo Cecchi, Matthias Clasen, Piotr Drąg, Adel Gadllah,
+ Rui Matos, Florian Müllner, Marc-Antoine Perennou, Ana Risteska,
+ Jason Siefken, Jakub Steiner, Ray Strode, Jasper St. Pierre, Ming Han Teh,
+ Rico Tzschichholz, Colin Walters, Stefan Zwanenburg
+
+Translation:
+ Alexander Shopov [bg], Marek Černocký [cs], Mario Blättermann [de],
+ Kostas Papadimas [el], Bruce Cowan [en_GB], Kristjan Schmidt [eo],
+ Jorge González, Daniel Mustieles, Benjamín Valero Espinosa [es],
+ Mattias Põldaru [et], Arash Mousavi [fa], Ville-Pekka Vainio [fi],
+ Fran Diéguez [gl], Yaron Shahrabani [he], Hideki Yamane [ja],
+ Algimantas Margevičius [lt], Kjartan Maraas [nb], Daniel Nylander [se],
+ Matej Urbančič [sl], Praveen Illa [te], Muhammet Kara [tr],
+ Nguyễn Thái Ngọc Duy [vi], Cheng-Chia Tseng [zh_HK, zh_TW]
+
 3.2.1
 =====
 * Restore the IM state on startup - if you were available in when you logged
