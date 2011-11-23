@@ -34,12 +34,10 @@ function _sameDay(dateA, dateB) {
     return _sameMonth(dateA, dateB) && (dateA.getDate() == dateB.getDate());
 }
 
-/* TODO: maybe needs config - right now we assume that Saturday and
- * Sunday are non-work days (not true in e.g. Israel, it's Sunday and
- * Monday there)
- */
 function _isWorkDay(date) {
-    return date.getDay() != 0 && date.getDay() != 6;
+    /* Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
+    let days = C_('calendar-no-work', "06");
+    return days.indexOf(date.getDay().toString()) == -1;
 }
 
 function _getBeginningOfDay(date) {
