@@ -10,9 +10,9 @@ backends=@CLUTTER_BACKENDS@
 # only kept for backward compatibility
 soname_infix=@CLUTTER_SONAME_INFIX@
 winsys=@CLUTTER_WINSYS@
-cogl=@COGL_DRIVER@
-cogl_driver=@COGL_DRIVER@
 backend=@CLUTTER_WINSYS@
+cogl=deprecated
+cogl_driver=deprecated
 
 Name: Clutter
 Description: Clutter Core Library
