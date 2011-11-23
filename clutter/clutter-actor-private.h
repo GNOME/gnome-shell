@@ -108,6 +108,38 @@ typedef ClutterActorTraverseVisitFlags (*ClutterTraverseCallback) (ClutterActor 
 typedef gboolean (*ClutterForeachCallback) (ClutterActor *actor,
                                             gpointer      user_data);
 
+typedef struct _ClutterLayoutInfo       ClutterLayoutInfo;
+
+/*< private >
+ * ClutterLayoutInfo:
+ * @fixed_x: the fixed position of the actor, set using clutter_actor_set_x()
+ * @fixed_y: the fixed position of the actor, set using clutter_actor_set_y()
+ * @margin: the composed margin of the actor
+ * @x_expand: whether the actor should expand horizontally
+ * @y_expand: whether the actor should expand vertically
+ * @x_align: the horizontal alignment, if the actor expands horizontally
+ * @y_align: the vertical alignment, if the actor expands vertically
+ *
+ * Ancillary layout information for an actor.
+ */
+struct _ClutterLayoutInfo
+{
+  /* fixed position coordinates */
+  float fixed_x;
+  float fixed_y;
+
+  ClutterMargin margin;
+
+  guint x_expand : 1;
+  guint y_expand : 1;
+
+  guint x_align : 4;
+  guint y_align : 4;
+};
+
+const ClutterLayoutInfo *       _clutter_actor_get_layout_info_or_defaults      (ClutterActor *self);
+ClutterLayoutInfo *             _clutter_actor_get_layout_info                  (ClutterActor *self);
+
 gint          _clutter_actor_get_n_children             (ClutterActor *self);
 gboolean      _clutter_actor_foreach_child              (ClutterActor *self,
                                                          ClutterForeachCallback callback,
