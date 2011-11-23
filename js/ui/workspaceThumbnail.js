@@ -611,7 +611,11 @@ const ThumbnailsBox = new Lang.Class({
         let thumbHeight = this._porthole.height * this._scale;
 
         let workspace = -1;
-        let firstThumbY = this._thumbnails[0].actor.y;
+        let firstThumbY;
+        if (this._dropPlaceholderPos == 0)
+            firstThumbY = this._dropPlaceholder.y;
+        else
+            firstThumbY = this._thumbnails[0].actor.y;
         for (let i = 0; i < this._thumbnails.length; i ++) {
             let targetBase = firstThumbY + (thumbHeight + spacing) * i;
 
