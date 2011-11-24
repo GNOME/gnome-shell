@@ -72,8 +72,21 @@ struct _CoglContext
   CoglHandle        default_layer_n;
   CoglHandle        dummy_layer_dependant;
 
-  /* Enable cache */
-  unsigned long     enable_flags;
+  GHashTable *attribute_name_states_hash;
+  GArray *attribute_name_index_map;
+  int n_attribute_names;
+
+  CoglBitmask       enabled_builtin_attributes;
+  CoglBitmask       enabled_texcoord_attributes;
+  CoglBitmask       enabled_custom_attributes;
+
+  /* These are temporary bitmasks that are used when disabling
+   * builtin,texcoord and custom attribute arrays. They are here just
+   * to avoid allocating new ones each time */
+  CoglBitmask       enable_builtin_attributes_tmp;
+  CoglBitmask       enable_texcoord_attributes_tmp;
+  CoglBitmask       enable_custom_attributes_tmp;
+  CoglBitmask       changed_bits_tmp;
 
   gboolean          legacy_backface_culling_enabled;
 
@@ -128,16 +141,6 @@ struct _CoglContext
   unsigned long     current_pipeline_changes_since_flush;
   gboolean          current_pipeline_skip_gl_color;
   unsigned long     current_pipeline_age;
-
-  /* Bitmask of attributes enabled. On GLES2 these are the vertex
-     attribute numbers and on regular GL these are only used for the
-     texture coordinate arrays */
-  CoglBitmask       arrays_enabled;
-  /* These are temporary bitmasks that are used when disabling
-     texcoord arrays. They are here just to avoid allocating new ones
-     each time */
-  CoglBitmask       arrays_to_change;
-  CoglBitmask       temp_bitmask;
 
   gboolean          gl_blend_enable_cache;
 

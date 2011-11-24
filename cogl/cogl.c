@@ -141,69 +141,6 @@ cogl_clear (const CoglColor *color, unsigned long buffers)
   cogl_framebuffer_clear (cogl_get_draw_framebuffer (), buffers, color);
 }
 
-#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
-
-static gboolean
-toggle_client_flag (CoglContext *ctx,
-		    unsigned long new_flags,
-		    unsigned long flag,
-		    GLenum gl_flag)
-{
-  _COGL_RETURN_VAL_IF_FAIL (ctx->driver != COGL_DRIVER_GLES2, FALSE);
-
-  /* Toggles and caches a single client-side enable flag
-   * on or off by comparing to current state
-   */
-  if (new_flags & flag)
-    {
-      if (!(ctx->enable_flags & flag))
-	{
-	  GE( ctx, glEnableClientState (gl_flag) );
-	  ctx->enable_flags |= flag;
-	  return TRUE;
-	}
-    }
-  else if (ctx->enable_flags & flag)
-    {
-      GE( ctx, glDisableClientState (gl_flag) );
-      ctx->enable_flags &= ~flag;
-    }
-
-  return FALSE;
-}
-
-#endif
-
-void
-_cogl_enable (unsigned long flags)
-{
-  /* This function essentially caches glEnable state() in the
-   * hope of lessening number GL traffic.
-  */
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
-  if (ctx->driver != COGL_DRIVER_GLES2)
-    {
-      toggle_client_flag (ctx, flags,
-                          COGL_ENABLE_VERTEX_ARRAY,
-                          GL_VERTEX_ARRAY);
-
-      toggle_client_flag (ctx, flags,
-                          COGL_ENABLE_COLOR_ARRAY,
-                          GL_COLOR_ARRAY);
-    }
-#endif
-}
-
-unsigned long
-_cogl_get_enable (void)
-{
-  _COGL_GET_CONTEXT (ctx, 0);
-
-  return ctx->enable_flags;
-}
-
 /* XXX: This API has been deprecated */
 void
 cogl_set_depth_test_enabled (gboolean setting)
@@ -645,7 +582,6 @@ cogl_read_pixels (int x,
 void
 cogl_begin_gl (void)
 {
-  unsigned long enable_flags = 0;
   CoglPipeline *pipeline;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -696,8 +632,6 @@ cogl_begin_gl (void)
   _cogl_pipeline_flush_gl_state (pipeline,
                                  FALSE,
                                  cogl_pipeline_get_n_layers (pipeline));
-
-  _cogl_enable (enable_flags);
 
   /* Disable any cached vertex arrays */
   _cogl_attribute_disable_cached_arrays ();

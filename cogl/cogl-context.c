@@ -43,6 +43,7 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-onscreen-private.h"
 #include "cogl2-path.h"
+#include "cogl-attribute-private.h"
 
 #include <string.h>
 
@@ -129,7 +130,6 @@ cogl_context_new (CoglDisplay *display,
 {
   CoglContext *context;
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
-  unsigned long enable_flags = 0;
   const CoglWinsysVtable *winsys;
   int i;
 
@@ -221,6 +221,16 @@ cogl_context_new (CoglDisplay *display,
       g_assert_not_reached ();
     }
 
+  context->attribute_name_states_hash =
+    g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+  context->attribute_name_index_map = NULL;
+  context->n_attribute_names = 0;
+
+  /* The "cogl_color_in" attribute needs a deterministic name_index
+   * so we make sure it's the first attribute name we register */
+  _cogl_attribute_register_attribute_name (context, "cogl_color_in");
+
+
   context->uniform_names =
     g_ptr_array_new_with_free_func ((GDestroyNotify) g_free);
   context->uniform_name_hash = g_hash_table_new (g_str_hash, g_str_equal);
@@ -234,7 +244,6 @@ cogl_context_new (CoglDisplay *display,
   _cogl_pipeline_init_state_hash_functions ();
   _cogl_pipeline_init_layer_state_hash_functions ();
 
-  context->enable_flags = 0;
   context->current_clip_stack_valid = FALSE;
   context->current_clip_stack = NULL;
 
@@ -284,9 +293,13 @@ cogl_context_new (CoglDisplay *display,
   context->current_pipeline_changes_since_flush = 0;
   context->current_pipeline_skip_gl_color = FALSE;
 
-  _cogl_bitmask_init (&context->arrays_enabled);
-  _cogl_bitmask_init (&context->temp_bitmask);
-  _cogl_bitmask_init (&context->arrays_to_change);
+  _cogl_bitmask_init (&context->enabled_builtin_attributes);
+  _cogl_bitmask_init (&context->enable_builtin_attributes_tmp);
+  _cogl_bitmask_init (&context->enabled_texcoord_attributes);
+  _cogl_bitmask_init (&context->enable_texcoord_attributes_tmp);
+  _cogl_bitmask_init (&context->enabled_custom_attributes);
+  _cogl_bitmask_init (&context->enable_custom_attributes_tmp);
+  _cogl_bitmask_init (&context->changed_bits_tmp);
 
   context->max_texture_units = -1;
   context->max_activateable_texture_units = -1;
@@ -385,7 +398,6 @@ cogl_context_new (CoglDisplay *display,
 
   cogl_push_source (context->opaque_color_pipeline);
   _cogl_pipeline_flush_gl_state (context->opaque_color_pipeline, FALSE, 0);
-  _cogl_enable (enable_flags);
 
   context->atlases = NULL;
   g_hook_list_init (&context->atlas_reorganize_callbacks, sizeof (GHook));
@@ -468,9 +480,13 @@ _cogl_context_free (CoglContext *context)
   g_slist_free (context->atlases);
   g_hook_list_clear (&context->atlas_reorganize_callbacks);
 
-  _cogl_bitmask_destroy (&context->arrays_enabled);
-  _cogl_bitmask_destroy (&context->temp_bitmask);
-  _cogl_bitmask_destroy (&context->arrays_to_change);
+  _cogl_bitmask_destroy (&context->enabled_builtin_attributes);
+  _cogl_bitmask_destroy (&context->enable_builtin_attributes_tmp);
+  _cogl_bitmask_destroy (&context->enabled_texcoord_attributes);
+  _cogl_bitmask_destroy (&context->enable_texcoord_attributes_tmp);
+  _cogl_bitmask_destroy (&context->enabled_custom_attributes);
+  _cogl_bitmask_destroy (&context->enable_custom_attributes_tmp);
+  _cogl_bitmask_destroy (&context->changed_bits_tmp);
 
   g_slist_free (context->texture_types);
   g_slist_free (context->buffer_types);
@@ -489,6 +505,9 @@ _cogl_context_free (CoglContext *context)
 
   g_ptr_array_free (context->uniform_names, TRUE);
   g_hash_table_destroy (context->uniform_name_hash);
+
+  g_hash_table_destroy (context->attribute_name_states_hash);
+  g_array_free (context->attribute_name_index_map, TRUE);
 
   g_byte_array_free (context->buffer_map_fallback_array, TRUE);
 

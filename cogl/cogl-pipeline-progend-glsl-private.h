@@ -33,22 +33,9 @@
 
 extern const CoglPipelineProgend _cogl_pipeline_glsl_progend;
 
-#ifdef HAVE_COGL_GLES2
-
 int
-_cogl_pipeline_progend_glsl_get_position_attribute (CoglPipeline *pipeline);
-
-int
-_cogl_pipeline_progend_glsl_get_color_attribute (CoglPipeline *pipeline);
-
-int
-_cogl_pipeline_progend_glsl_get_normal_attribute (CoglPipeline *pipeline);
-
-int
-_cogl_pipeline_progend_glsl_get_tex_coord_attribute (CoglPipeline *pipeline,
-                                                     int unit);
-
-#endif /* HAVE_COGL_GLES2 */
+_cogl_pipeline_progend_glsl_get_attrib_location (CoglPipeline *pipeline,
+                                                 int name_index);
 
 #endif /* __COGL_PIPELINE_PROGEND_GLSL_PRIVATE_H */
 

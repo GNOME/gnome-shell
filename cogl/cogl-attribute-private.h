@@ -40,19 +40,26 @@ typedef enum
   COGL_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY
 } CoglAttributeNameID;
 
+typedef struct _CoglAttributeNameState
+{
+  char *name;
+  CoglAttributeNameID name_id;
+  int name_index;
+  gboolean normalized_default;
+  int texture_unit;
+} CoglAttributeNameState;
+
 struct _CoglAttribute
 {
   CoglObject _parent;
 
   CoglAttributeBuffer *attribute_buffer;
-  const char *name;
-  CoglAttributeNameID name_id;
+  const CoglAttributeNameState *name_state;
   gsize stride;
   gsize offset;
   int n_components;
   CoglAttributeType type;
   gboolean normalized;
-  unsigned int texture_unit;
 
   int immutable_ref;
 };
@@ -70,6 +77,16 @@ typedef enum
      this flag. */
   COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE = 1 << 3
 } CoglDrawFlags;
+
+/* During CoglContext initialization we register the "cogl_color_in"
+ * attribute name so it gets a global name_index of 0. We need to know
+ * the name_index for "cogl_color_in" in
+ * _cogl_pipeline_flush_gl_state() */
+#define COGL_ATTRIBUTE_COLOR_NAME_INDEX 0
+
+CoglAttributeNameState *
+_cogl_attribute_register_attribute_name (CoglContext *context,
+                                         const char *name);
 
 CoglAttribute *
 _cogl_attribute_immutable_ref (CoglAttribute *attribute);

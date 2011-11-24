@@ -1372,8 +1372,10 @@ done:
       int attribute;
       CoglPipeline *authority =
         _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_COLOR);
+      int name_index = COGL_ATTRIBUTE_COLOR_NAME_INDEX;
 
-      attribute = _cogl_pipeline_progend_glsl_get_color_attribute (pipeline);
+      attribute =
+        _cogl_pipeline_progend_glsl_get_attrib_location (pipeline, name_index);
       if (attribute != -1)
         GE (ctx,
             glVertexAttrib4f (attribute,

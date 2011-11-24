@@ -47,6 +47,7 @@
 #include "cogl-pipeline-vertend-glsl-private.h"
 #include "cogl-pipeline-cache.h"
 #include "cogl-pipeline-state-private.h"
+#include "cogl-attribute-private.h"
 
 #ifdef HAVE_COGL_GLES2
 
@@ -116,18 +117,6 @@ typedef struct
   unsigned long dirty_builtin_uniforms;
   GLint builtin_uniform_locations[G_N_ELEMENTS (builtin_uniforms)];
 
-  /* Under GLES2 we can't use the builtin functions to set attribute
-     pointers such as the vertex position. Instead the vertex
-     attribute code needs to query the attribute numbers from the
-     progend backend */
-  int position_attribute_location;
-  int color_attribute_location;
-  int normal_attribute_location;
-  int tex_coord0_attribute_location;
-  /* We only allocate this array if more than one tex coord attribute
-     is requested because most pipelines will only use one layer */
-  GArray *tex_coord_attribute_locations;
-
   GLint modelview_uniform;
   GLint projection_uniform;
   GLint mvp_uniform;
@@ -148,6 +137,9 @@ typedef struct
      uniform is actually set */
   GArray *uniform_locations;
 
+  /* Array of attribute locations. */
+  GArray *attribute_locations;
+
   UnitState *unit_state;
 } CoglPipelineProgramState;
 
@@ -161,8 +153,6 @@ get_program_state (CoglPipeline *pipeline)
 
 #define UNIFORM_LOCATION_UNKNOWN -2
 
-#ifdef HAVE_COGL_GLES2
-
 #define ATTRIBUTE_LOCATION_UNKNOWN -2
 
 /* Under GLES2 the vertex attribute API needs to query the attribute
@@ -172,124 +162,65 @@ get_program_state (CoglPipeline *pipeline)
    cache. This should always be called after the pipeline is flushed
    so they can assert that the gl program is valid */
 
+/* All attributes names get internally mapped to a global set of
+ * sequential indices when they are setup which we need to need to
+ * then be able to map to a GL attribute location once we have
+ * a linked GLSL program */
+
 int
-_cogl_pipeline_progend_glsl_get_position_attribute (CoglPipeline *pipeline)
+_cogl_pipeline_progend_glsl_get_attrib_location (CoglPipeline *pipeline,
+                                                 int name_index)
 {
   CoglPipelineProgramState *program_state = get_program_state (pipeline);
+  int *locations;
 
   _COGL_GET_CONTEXT (ctx, -1);
 
   _COGL_RETURN_VAL_IF_FAIL (program_state != NULL, -1);
   _COGL_RETURN_VAL_IF_FAIL (program_state->program != 0, -1);
 
-  if (program_state->position_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
-    GE_RET( program_state->position_attribute_location,
-            ctx, glGetAttribLocation (program_state->program,
-                                      "cogl_position_in") );
+  if (G_UNLIKELY (program_state->attribute_locations == NULL))
+    program_state->attribute_locations =
+      g_array_new (FALSE, FALSE, sizeof (int));
 
-  return program_state->position_attribute_location;
-}
-
-int
-_cogl_pipeline_progend_glsl_get_color_attribute (CoglPipeline *pipeline)
-{
-  CoglPipelineProgramState *program_state = get_program_state (pipeline);
-
-  _COGL_GET_CONTEXT (ctx, -1);
-
-  _COGL_RETURN_VAL_IF_FAIL (program_state != NULL, -1);
-  _COGL_RETURN_VAL_IF_FAIL (program_state->program != 0, -1);
-
-  if (program_state->color_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
-    GE_RET( program_state->color_attribute_location,
-            ctx, glGetAttribLocation (program_state->program,
-                                      "cogl_color_in") );
-
-  return program_state->color_attribute_location;
-}
-
-int
-_cogl_pipeline_progend_glsl_get_normal_attribute (CoglPipeline *pipeline)
-{
-  CoglPipelineProgramState *program_state = get_program_state (pipeline);
-
-  _COGL_GET_CONTEXT (ctx, -1);
-
-  _COGL_RETURN_VAL_IF_FAIL (program_state != NULL, -1);
-  _COGL_RETURN_VAL_IF_FAIL (program_state->program != 0, -1);
-
-  if (program_state->normal_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
-    GE_RET( program_state->normal_attribute_location,
-            ctx, glGetAttribLocation (program_state->program,
-                                      "cogl_normal_in") );
-
-  return program_state->normal_attribute_location;
-}
-
-int
-_cogl_pipeline_progend_glsl_get_tex_coord_attribute (CoglPipeline *pipeline,
-                                                     int unit)
-{
-  CoglPipelineProgramState *program_state = get_program_state (pipeline);
-
-  _COGL_GET_CONTEXT (ctx, -1);
-
-  _COGL_RETURN_VAL_IF_FAIL (program_state != NULL, -1);
-  _COGL_RETURN_VAL_IF_FAIL (program_state->program != 0, -1);
-
-  if (unit == 0)
+  if (G_UNLIKELY (program_state->attribute_locations->len <= name_index))
     {
-      if (program_state->tex_coord0_attribute_location ==
-          ATTRIBUTE_LOCATION_UNKNOWN)
-        GE_RET( program_state->tex_coord0_attribute_location,
-                ctx, glGetAttribLocation (program_state->program,
-                                          "cogl_tex_coord0_in") );
-
-      return program_state->tex_coord0_attribute_location;
+      int i = program_state->attribute_locations->len;
+      g_array_set_size (program_state->attribute_locations, name_index + 1);
+      for (; i < program_state->attribute_locations->len; i++)
+        g_array_index (program_state->attribute_locations, int, i)
+          = ATTRIBUTE_LOCATION_UNKNOWN;
     }
-  else
+
+  locations = &g_array_index (program_state->attribute_locations, int, 0);
+
+  if (locations[name_index] == ATTRIBUTE_LOCATION_UNKNOWN)
     {
-      char *name = g_strdup_printf ("cogl_tex_coord%i_in", unit);
-      int *locations;
+      CoglAttributeNameState *name_state =
+        g_array_index (ctx->attribute_name_index_map,
+                       CoglAttributeNameState *, name_index);
 
-      if (program_state->tex_coord_attribute_locations == NULL)
-        program_state->tex_coord_attribute_locations =
-          g_array_new (FALSE, FALSE, sizeof (int));
-      if (program_state->tex_coord_attribute_locations->len <= unit - 1)
-        {
-          int i = program_state->tex_coord_attribute_locations->len;
-          g_array_set_size (program_state->tex_coord_attribute_locations, unit);
-          for (; i < unit; i++)
-            g_array_index (program_state->tex_coord_attribute_locations, int, i)
-              = ATTRIBUTE_LOCATION_UNKNOWN;
-        }
+      _COGL_RETURN_VAL_IF_FAIL (name_state != NULL, 0);
 
-      locations = &g_array_index (program_state->tex_coord_attribute_locations,
-                                  int, 0);
-
-      if (locations[unit - 1] == ATTRIBUTE_LOCATION_UNKNOWN)
-        GE_RET( locations[unit - 1],
-                ctx, glGetAttribLocation (program_state->program, name) );
-
-      g_free (name);
-
-      return locations[unit - 1];
+      GE_RET( locations[name_index],
+              ctx, glGetAttribLocation (program_state->program,
+                                        name_state->name) );
     }
+
+  return locations[name_index];
 }
 
 static void
 clear_attribute_cache (CoglPipelineProgramState *program_state)
 {
-  program_state->position_attribute_location = ATTRIBUTE_LOCATION_UNKNOWN;
-  program_state->color_attribute_location = ATTRIBUTE_LOCATION_UNKNOWN;
-  program_state->normal_attribute_location = ATTRIBUTE_LOCATION_UNKNOWN;
-  program_state->tex_coord0_attribute_location = ATTRIBUTE_LOCATION_UNKNOWN;
-  if (program_state->tex_coord_attribute_locations)
+  if (program_state->attribute_locations)
     {
-      g_array_free (program_state->tex_coord_attribute_locations, TRUE);
-      program_state->tex_coord_attribute_locations = NULL;
+      g_array_free (program_state->attribute_locations, TRUE);
+      program_state->attribute_locations = NULL;
     }
 }
+
+#ifdef HAVE_COGL_GLES2
 
 static void
 clear_flushed_matrix_stacks (CoglPipelineProgramState *program_state)
@@ -320,8 +251,8 @@ program_state_new (int n_layers)
   program_state->n_tex_coord_attribs = 0;
   program_state->unit_state = g_new (UnitState, n_layers);
   program_state->uniform_locations = NULL;
+  program_state->attribute_locations = NULL;
 #ifdef HAVE_COGL_GLES2
-  program_state->tex_coord_attribute_locations = NULL;
   program_state->flushed_modelview_stack = NULL;
   program_state->flushed_modelview_is_identity = FALSE;
   program_state->flushed_projection_stack = NULL;
@@ -347,12 +278,11 @@ destroy_program_state (void *user_data,
 
   if (--program_state->ref_count == 0)
     {
+      clear_attribute_cache (program_state);
+
 #ifdef HAVE_COGL_GLES2
       if (ctx->driver == COGL_DRIVER_GLES2)
-        {
-          clear_attribute_cache (program_state);
-          clear_flushed_matrix_stacks (program_state);
-        }
+        clear_flushed_matrix_stacks (program_state);
 #endif
 
       if (program_state->program)
@@ -858,9 +788,12 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
   state.program_state = program_state;
 
   if (program_changed)
-    cogl_pipeline_foreach_layer (pipeline,
-                                 get_uniform_cb,
-                                 &state);
+    {
+      cogl_pipeline_foreach_layer (pipeline,
+                                   get_uniform_cb,
+                                   &state);
+      clear_attribute_cache (program_state);
+    }
 
   state.unit = 0;
   state.update_all = (program_changed ||
@@ -877,7 +810,6 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
         {
           int i;
 
-          clear_attribute_cache (program_state);
           clear_flushed_matrix_stacks (program_state);
 
           for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
