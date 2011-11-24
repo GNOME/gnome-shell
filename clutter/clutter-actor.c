@@ -6610,14 +6610,18 @@ clutter_actor_adjust_allocation (ClutterActor    *self,
 
 #ifdef CLUTTER_ENABLE_DEBUG
   /* warn about underallocations */
-  if ((min_width > alloc_width) || (min_height > alloc_height))
+  if (floorf (min_width - alloc_width) > 0 ||
+      floorf (min_height - alloc_height) > 0)
     {
+      ClutterActor *parent = clutter_actor_get_parent (self);
+
       g_warning (G_STRLOC ": The actor '%s' is getting an allocation "
                  "of %.2f x %.2f from its parent actor '%s', but its "
                  "requested minimum size is of %.2f x %.2f",
                  _clutter_actor_get_debug_name (self),
                  alloc_width, alloc_height,
-                 _clutter_actor_get_debug_name (priv->parent_actor),
+                 parent != NULL ? _clutter_actor_get_debug_name (parent)
+                                : "top-level",
                  min_width, min_height);
     }
 #endif
