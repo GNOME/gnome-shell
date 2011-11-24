@@ -119,6 +119,10 @@ typedef struct _ClutterLayoutInfo       ClutterLayoutInfo;
  * @y_expand: whether the actor should expand vertically
  * @x_align: the horizontal alignment, if the actor expands horizontally
  * @y_align: the vertical alignment, if the actor expands vertically
+ * @min_width: the minimum width, set using clutter_actor_set_min_width()
+ * @min_height: the minimum height, set using clutter_actor_set_min_height()
+ * @natural_width: the natural width, set using clutter_actor_set_natural_width()
+ * @natural_height: the natural height, set using clutter_actor_set_natural_height()
  *
  * Ancillary layout information for an actor.
  */
@@ -135,6 +139,11 @@ struct _ClutterLayoutInfo
 
   guint x_align : 4;
   guint y_align : 4;
+
+  float min_width;
+  float min_height;
+  float natural_width;
+  float natural_height;
 };
 
 const ClutterLayoutInfo *       _clutter_actor_get_layout_info_or_defaults      (ClutterActor *self);

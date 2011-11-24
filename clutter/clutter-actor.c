@@ -394,11 +394,6 @@ struct _ClutterActorPrivate
   guint cached_height_age;
   guint cached_width_age;
 
-  gfloat request_min_width;
-  gfloat request_min_height;
-  gfloat request_natural_width;
-  gfloat request_natural_height;
-
   ClutterActorBox allocation;
   ClutterAllocationFlags allocation_flags;
 
@@ -3635,19 +3630,39 @@ clutter_actor_get_property (GObject    *object,
       break;
 
     case PROP_MIN_WIDTH:
-      g_value_set_float (value, priv->request_min_width);
+      {
+        const ClutterLayoutInfo *info;
+
+        info = _clutter_actor_get_layout_info_or_defaults (actor);
+        g_value_set_float (value, info->min_width);
+      }
       break;
 
     case PROP_MIN_HEIGHT:
-      g_value_set_float (value, priv->request_min_height);
+      {
+        const ClutterLayoutInfo *info;
+
+        info = _clutter_actor_get_layout_info_or_defaults (actor);
+        g_value_set_float (value, info->min_height);
+      }
       break;
 
     case PROP_NATURAL_WIDTH:
-      g_value_set_float (value, priv->request_natural_width);
+      {
+        const ClutterLayoutInfo *info;
+
+        info = _clutter_actor_get_layout_info_or_defaults (actor);
+        g_value_set_float (value, info->natural_width);
+      }
       break;
 
     case PROP_NATURAL_HEIGHT:
-      g_value_set_float (value, priv->request_natural_height);
+      {
+        const ClutterLayoutInfo *info;
+
+        info = _clutter_actor_get_layout_info_or_defaults (actor);
+        g_value_set_float (value, info->natural_height);
+      }
       break;
 
     case PROP_MIN_WIDTH_SET:
@@ -6243,32 +6258,64 @@ clutter_actor_get_preferred_width (ClutterActor *self,
                                    gfloat       *min_width_p,
                                    gfloat       *natural_width_p)
 {
-  ClutterActorClass *klass;
+  float request_min_width, request_natural_width;
+  SizeRequest *cached_size_request;
+  const ClutterLayoutInfo *info;
   ClutterActorPrivate *priv;
   gboolean found_in_cache;
-  SizeRequest *cached_size_request;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
   priv = self->priv;
 
-  found_in_cache = FALSE;
-  cached_size_request = &priv->width_requests[0];
+  info = _clutter_actor_get_layout_info_or_defaults (self);
+
+  /* we shortcircuit the case of a fixed size set using set_width() */
+  if (priv->min_width_set && priv->natural_width_set)
+    {
+      if (min_width_p != NULL)
+        *min_width_p = info->min_width;
+
+      if (natural_width_p != NULL)
+        *natural_width_p = info->natural_width;
+
+      return;
+    }
+
+  /* the remaining cases are:
+   *
+   *   - either min_width or natural_width have been set
+   *   - neither min_width or natural_width have been set
+   *
+   * in both cases, we go through the cache (and through the actor in case
+   * of cache misses) and determine the authoritative value depending on
+   * the *_set flags.
+   */
 
   if (!priv->needs_width_request)
-    found_in_cache = _clutter_actor_get_cached_size_request (for_height,
-                                                             priv->width_requests,
-                                                             &cached_size_request);
+    {
+      found_in_cache =
+        _clutter_actor_get_cached_size_request (for_height,
+                                                priv->width_requests,
+                                                &cached_size_request);
+    }
+  else
+    {
+      /* if the actor needs a width request we use the first slot */
+      found_in_cache = FALSE;
+      cached_size_request = &priv->width_requests[0];
+    }
 
   if (!found_in_cache)
     {
       gfloat min_width, natural_width;
+      ClutterActorClass *klass;
 
       min_width = natural_width = 0;
 
       CLUTTER_NOTE (LAYOUT, "Width request for %.2f px", for_height);
 
+      klass = CLUTTER_ACTOR_GET_CLASS (self);
       klass->get_preferred_width (self, for_height,
                                   &min_width,
                                   &natural_width);
@@ -6284,21 +6331,25 @@ clutter_actor_get_preferred_width (ClutterActor *self,
       cached_size_request->for_size = for_height;
       cached_size_request->age = priv->cached_width_age;
 
-      priv->cached_width_age ++;
+      priv->cached_width_age += 1;
       priv->needs_width_request = FALSE;
     }
 
   if (!priv->min_width_set)
-    priv->request_min_width = cached_size_request->min_size;
+    request_min_width = cached_size_request->min_size;
+  else
+    request_min_width = info->min_width;
 
   if (!priv->natural_width_set)
-    priv->request_natural_width = cached_size_request->natural_size;
+    request_natural_width = cached_size_request->natural_size;
+  else
+    request_natural_width = info->natural_width;
 
   if (min_width_p)
-    *min_width_p = priv->request_min_width;
+    *min_width_p = request_min_width;
 
   if (natural_width_p)
-    *natural_width_p = priv->request_natural_width;
+    *natural_width_p = request_natural_width;
 }
 
 /**
@@ -6328,32 +6379,63 @@ clutter_actor_get_preferred_height (ClutterActor *self,
                                     gfloat       *min_height_p,
                                     gfloat       *natural_height_p)
 {
-  ClutterActorClass *klass;
+  float request_min_height, request_natural_height;
+  SizeRequest *cached_size_request;
+  const ClutterLayoutInfo *info;
   ClutterActorPrivate *priv;
   gboolean found_in_cache;
-  SizeRequest *cached_size_request;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
   priv = self->priv;
 
-  found_in_cache = FALSE;
-  cached_size_request = &priv->height_requests[0];
+  info = _clutter_actor_get_layout_info_or_defaults (self);
+
+  /* we shortcircuit the case of a fixed size set using set_height() */
+  if (priv->min_height_set && priv->natural_height_set)
+    {
+      if (min_height_p != NULL)
+        *min_height_p = info->min_height;
+
+      if (natural_height_p != NULL)
+        *natural_height_p = info->natural_height;
+
+      return;
+    }
+
+  /* the remaining cases are:
+   *
+   *   - either min_height or natural_height have been set
+   *   - neither min_height or natural_height have been set
+   *
+   * in both cases, we go through the cache (and through the actor in case
+   * of cache misses) and determine the authoritative value depending on
+   * the *_set flags.
+   */
 
   if (!priv->needs_height_request)
-    found_in_cache = _clutter_actor_get_cached_size_request (for_width,
-                                                             priv->height_requests,
-                                                             &cached_size_request);
+    {
+      found_in_cache =
+        _clutter_actor_get_cached_size_request (for_width,
+                                                priv->height_requests,
+                                                &cached_size_request);
+    }
+  else
+    {
+      found_in_cache = FALSE;
+      cached_size_request = &priv->height_requests[0];
+    }
 
   if (!found_in_cache)
     {
       gfloat min_height, natural_height;
+      ClutterActorClass *klass;
 
       min_height = natural_height = 0;
 
       CLUTTER_NOTE (LAYOUT, "Height request for %.2f px", for_width);
 
+      klass = CLUTTER_ACTOR_GET_CLASS (self);
       klass->get_preferred_height (self, for_width,
                                    &min_height,
                                    &natural_height);
@@ -6364,37 +6446,30 @@ clutter_actor_get_preferred_height (ClutterActor *self,
       if (natural_height < min_height)
 	natural_height = min_height;
 
-      if (!priv->min_height_set)
-        {
-          priv->request_min_height = min_height;
-        }
-
-      if (!priv->natural_height_set)
-        {
-          priv->request_natural_height = natural_height;
-        }
-
       cached_size_request->min_size = min_height;
       cached_size_request->natural_size = natural_height;
       cached_size_request->for_size = for_width;
       cached_size_request->age = priv->cached_height_age;
 
-      priv->cached_height_age ++;
-
+      priv->cached_height_age += 1;
       priv->needs_height_request = FALSE;
     }
 
   if (!priv->min_height_set)
-    priv->request_min_height = cached_size_request->min_size;
+    request_min_height = cached_size_request->min_size;
+  else
+    request_min_height = info->min_height;
 
   if (!priv->natural_height_set)
-    priv->request_natural_height = cached_size_request->natural_size;
+    request_natural_height = cached_size_request->natural_size;
+  else
+    request_natural_height = info->natural_height;
 
   if (min_height_p)
-    *min_height_p = priv->request_min_height;
+    *min_height_p = request_min_height;
 
   if (natural_height_p)
-    *natural_height_p = priv->request_natural_height;
+    *natural_height_p = request_natural_height;
 }
 
 /**
@@ -6573,7 +6648,6 @@ static void
 clutter_actor_adjust_allocation (ClutterActor    *self,
                                  ClutterActorBox *allocation)
 {
-  ClutterActorPrivate *priv = self->priv;
   ClutterActorBox adj_allocation;
   float alloc_width, alloc_height;
   float min_width, min_height;
@@ -6968,6 +7042,7 @@ clutter_actor_set_min_width (ClutterActor *self,
 {
   ClutterActorPrivate *priv = self->priv;
   ClutterActorBox old = { 0, };
+  ClutterLayoutInfo *info;
 
   /* if we are setting the size on a top-level actor and the
    * backend only supports static top-levels (e.g. framebuffers)
@@ -6978,14 +7053,16 @@ clutter_actor_set_min_width (ClutterActor *self,
       clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
     return;
 
-  if (priv->min_width_set && min_width == priv->request_min_width)
+  info = _clutter_actor_get_layout_info (self);
+
+  if (priv->min_width_set && min_width == info->min_width)
     return;
 
   g_object_freeze_notify (G_OBJECT (self));
 
   clutter_actor_store_old_geometry (self, &old);
 
-  priv->request_min_width = min_width;
+  info->min_width = min_width;
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_WIDTH]);
   clutter_actor_set_min_width_set (self, TRUE);
 
@@ -7003,6 +7080,7 @@ clutter_actor_set_min_height (ClutterActor *self,
 {
   ClutterActorPrivate *priv = self->priv;
   ClutterActorBox old = { 0, };
+  ClutterLayoutInfo *info;
 
   /* if we are setting the size on a top-level actor and the
    * backend only supports static top-levels (e.g. framebuffers)
@@ -7013,14 +7091,16 @@ clutter_actor_set_min_height (ClutterActor *self,
       clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
     return;
 
-  if (priv->min_height_set && min_height == priv->request_min_height)
+  info = _clutter_actor_get_layout_info (self);
+
+  if (priv->min_height_set && min_height == info->min_height)
     return;
 
   g_object_freeze_notify (G_OBJECT (self));
 
   clutter_actor_store_old_geometry (self, &old);
 
-  priv->request_min_height = min_height;
+  info->min_height = min_height;
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_HEIGHT]);
   clutter_actor_set_min_height_set (self, TRUE);
 
@@ -7037,6 +7117,7 @@ clutter_actor_set_natural_width (ClutterActor *self,
 {
   ClutterActorPrivate *priv = self->priv;
   ClutterActorBox old = { 0, };
+  ClutterLayoutInfo *info;
 
   /* if we are setting the size on a top-level actor and the
    * backend only supports static top-levels (e.g. framebuffers)
@@ -7047,15 +7128,16 @@ clutter_actor_set_natural_width (ClutterActor *self,
       clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
     return;
 
-  if (priv->natural_width_set &&
-      natural_width == priv->request_natural_width)
+  info = _clutter_actor_get_layout_info (self);
+
+  if (priv->natural_width_set && natural_width == info->natural_width)
     return;
 
   g_object_freeze_notify (G_OBJECT (self));
 
   clutter_actor_store_old_geometry (self, &old);
 
-  priv->request_natural_width = natural_width;
+  info->natural_width = natural_width;
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_WIDTH]);
   clutter_actor_set_natural_width_set (self, TRUE);
 
@@ -7072,6 +7154,7 @@ clutter_actor_set_natural_height (ClutterActor *self,
 {
   ClutterActorPrivate *priv = self->priv;
   ClutterActorBox old = { 0, };
+  ClutterLayoutInfo *info;
 
   /* if we are setting the size on a top-level actor and the
    * backend only supports static top-levels (e.g. framebuffers)
@@ -7082,15 +7165,16 @@ clutter_actor_set_natural_height (ClutterActor *self,
       clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
     return;
 
-  if (priv->natural_height_set &&
-      natural_height == priv->request_natural_height)
+  info = _clutter_actor_get_layout_info (self);
+
+  if (priv->natural_height_set && natural_height == info->natural_height)
     return;
 
   g_object_freeze_notify (G_OBJECT (self));
 
   clutter_actor_store_old_geometry (self, &old);
 
-  priv->request_natural_height = natural_height;
+  info->natural_height = natural_height;
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_HEIGHT]);
   clutter_actor_set_natural_height_set (self, TRUE);
 
@@ -13460,6 +13544,8 @@ static const ClutterLayoutInfo default_layout_info = {
   FALSE,                        /* y-expand */
   CLUTTER_ACTOR_ALIGN_FILL,     /* x-align */
   CLUTTER_ACTOR_ALIGN_FILL,     /* y-align */
+  0.f, 0.f,                     /* min_width, natural_width */
+  0.f, 0.f,                     /* natual_width, natural_height */
 };
 
 static void
