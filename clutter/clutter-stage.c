@@ -1189,14 +1189,12 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
   /* Convert the clip volume into stage coordinates and then into an
    * axis aligned stage coordinates bounding box...
    */
-
-  if (!_clutter_actor_get_queue_redraw_clip (leaf))
+  redraw_clip = _clutter_actor_get_queue_redraw_clip (leaf);
+  if (redraw_clip == NULL)
     {
       _clutter_stage_window_add_redraw_clip (stage_window, NULL);
       return;
     }
-
-  redraw_clip = _clutter_actor_get_queue_redraw_clip (leaf);
 
   _clutter_paint_volume_get_stage_paint_box (redraw_clip,
                                              stage,

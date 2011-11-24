@@ -399,65 +399,62 @@ struct _ClutterActorPrivate
 
   gfloat clip[4];
 
-  /* Rotation angles */
-  gdouble rxang;
-  gdouble ryang;
-  gdouble rzang;
+  /* transformations */
 
-  /* Rotation center: X axis */
+  /* rotation (angle and center) */
+  gdouble rxang;
   AnchorCoord rx_center;
 
-  /* Rotation center: Y axis */
+  gdouble ryang;
   AnchorCoord ry_center;
 
-  /* Rotation center: Z axis */
+  gdouble rzang;
   AnchorCoord rz_center;
 
-  /* Anchor point coordinates */
-  AnchorCoord anchor;
+  /* scaling */
+  gdouble scale_x;
+  gdouble scale_y;
+  AnchorCoord scale_center;
 
   /* depth */
   gfloat z;
 
+  /* anchor point */
+  AnchorCoord anchor;
+
+  /* the cached transformation matrix; see apply_transform() */
   CoglMatrix transform;
 
   guint8 opacity;
-  gint   opacity_override;
+  gint opacity_override;
 
   ClutterOffscreenRedirect offscreen_redirect;
 
   /* This is an internal effect used to implement the
      offscreen-redirect property */
-  ClutterEffect  *flatten_effect;
+  ClutterEffect *flatten_effect;
 
-  ClutterActor   *parent_actor;
-  GList          *children;
-  gint            n_children;
+  /* scene graph */
+  ClutterActor *parent_actor;
+  GList *children;
+  gint n_children;
 
-  gchar          *name;
-  guint32         id; /* Unique ID */
+  gchar *name; /* a non-unique name, used for debugging */
+  guint32 id; /* unique id, used for backward compatibility */
 
-  gint32 pick_id;
+  gint32 pick_id; /* per-stage unique id, used for picking */
 
-  gdouble         scale_x;
-  gdouble         scale_y;
-  AnchorCoord     scale_center;
-
-  PangoContext   *pango_context;
-
+  PangoContext *pango_context;
   ClutterTextDirection text_direction;
 
   gint internal_child;
 
-  /* XXX: This is a workaround for not being able to break the ABI
-   * of the QUEUE_REDRAW signal. It's an out-of-band argument.
-   * See clutter_actor_queue_clipped_redraw() for details.
-   */
-  ClutterPaintVolume *oob_queue_redraw_clip;
-
+  /* meta classes */
   ClutterMetaGroup *actions;
   ClutterMetaGroup *constraints;
   ClutterMetaGroup *effects;
+
+  ClutterLayoutManager *layout_manager;
 
   /* used when painting, to update the paint volume */
   ClutterEffect *current_effect;
@@ -471,12 +468,12 @@ struct _ClutterActorPrivate
      whole actor is dirty. */
   ClutterEffect *effect_to_redraw;
 
-  ClutterPaintVolume paint_volume;
-
   /* This is used when painting effects to implement the
      clutter_actor_continue_paint() function. It points to the node in
      the list of effects that is next in the chain */
   const GList *next_effect_to_paint;
+
+  ClutterPaintVolume paint_volume;
 
   /* NB: This volume isn't relative to this actor, it is in eye
    * coordinates so that it can remain valid after the actor changes.
@@ -485,9 +482,9 @@ struct _ClutterActorPrivate
 
   ClutterStageQueueRedrawEntry *queue_redraw_entry;
 
-  ClutterLayoutManager *layout_manager;
-
   /* bitfields */
+
+  /* fixed position and sizes */
   guint position_set                : 1;
   guint min_width_set               : 1;
   guint min_height_set              : 1;
@@ -5712,8 +5709,7 @@ _clutter_actor_finish_queue_redraw (ClutterActor *self,
 
           /* XXX: Ideally the redraw signal would take a clip volume
            * argument, but that would be an ABI break. Until we can
-           * break the ABI we pass the argument out-of-band via an
-           * actor->priv member...
+           * break the ABI we pass the argument out-of-band
            */
 
           /* setup the clip for the actors new position... */
@@ -5913,13 +5909,13 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
   if (!priv->is_dirty)
     priv->effect_to_redraw = effect;
   /* Otherwise we need to merge it with the existing effect parameter */
-  else if (effect)
+  else if (effect != NULL)
     {
       /* If there's already an effect then we need to use whichever is
          later in the chain of actors. Otherwise a full redraw has
          already been queued on the actor so we need to ignore the
          effect parameter */
-      if (priv->effect_to_redraw)
+      if (priv->effect_to_redraw != NULL)
         {
           if (priv->effects == NULL)
             g_warning ("Redraw queued with an effect that is "
@@ -5940,9 +5936,11 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
         }
     }
   else
-    /* If no effect is specified then we need to redraw the whole
-       actor */
-    priv->effect_to_redraw = NULL;
+    {
+      /* If no effect is specified then we need to redraw the whole
+         actor */
+      priv->effect_to_redraw = NULL;
+    }
 
   priv->is_dirty = TRUE;
 }
@@ -12228,14 +12226,17 @@ clutter_actor_has_pointer (ClutterActor *self)
 ClutterPaintVolume *
 _clutter_actor_get_queue_redraw_clip (ClutterActor *self)
 {
-  return self->priv->oob_queue_redraw_clip;
+  return g_object_get_data (G_OBJECT (self),
+                            "-clutter-actor-queue-redraw-clip");
 }
 
 void
-_clutter_actor_set_queue_redraw_clip (ClutterActor *self,
+_clutter_actor_set_queue_redraw_clip (ClutterActor       *self,
                                       ClutterPaintVolume *clip)
 {
-  self->priv->oob_queue_redraw_clip = clip;
+  g_object_set_data (G_OBJECT (self),
+                     "-clutter-actor-queue-redraw-clip",
+                     clip);
 }
 
 /**
