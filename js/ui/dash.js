@@ -387,6 +387,7 @@ const Dash = new Lang.Class({
         let srcIsFavorite = (id in favorites);
 
         if (srcIsFavorite &&
+            app.get_state() != Shell.AppState.RUNNING &&
             dragEvent.source.actor &&
             this.actor.contains (dragEvent.source.actor) &&
             this._favRemoveTarget == null) {
