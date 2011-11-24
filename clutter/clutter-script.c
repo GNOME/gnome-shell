@@ -1128,9 +1128,9 @@ connect_each_object (gpointer key,
 }
 
 /**
- * clutter_script_connect_signals_full: (skip)
+ * clutter_script_connect_signals_full:
  * @script: a #ClutterScript
- * @func: signal connection function
+ * @func: (scope call): signal connection function
  * @user_data: data to be passed to the signal handlers, or %NULL
  *
  * Connects all the signals defined into a UI definition file to their
