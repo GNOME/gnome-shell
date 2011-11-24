@@ -26,6 +26,7 @@
 
 #include "cogl-profile.h"
 #include "cogl-flags.h"
+#include "cogl-util.h"
 
 #include <glib.h>
 
@@ -74,7 +75,11 @@ typedef enum {
 
 #define COGL_DEBUG_N_LONGS COGL_FLAGS_N_LONGS_FOR_SIZE (COGL_DEBUG_N_FLAGS)
 
-extern unsigned long _cogl_debug_flags[COGL_DEBUG_N_LONGS];
+/* _cogl_debug_flags currently needs to exported outside of the shared
+   library for cogl-pango. The special COGL_EXPORT macro is needed to
+   get this to work when building with MSVC */
+COGL_EXPORT extern unsigned long _cogl_debug_flags[COGL_DEBUG_N_LONGS];
+
 extern GHashTable *_cogl_debug_instances;
 
 #define COGL_DEBUG_ENABLED(flag) \

@@ -32,6 +32,19 @@
 #include <stdio.h>
 #endif
 
+/* When compiling with Visual Studio, symbols that represent data that
+   are exported out of the DLL need to be marked with the dllexport
+   attribute. */
+#ifdef _MSC_VER
+#ifdef COGL_BUILD_EXP
+#define COGL_EXPORT __declspec(dllexport)
+#else
+#define COGL_EXPORT __declspec(dllimport)
+#endif
+#else
+#define COGL_EXPORT
+#endif
+
 int
 _cogl_util_next_p2 (int a);
 
