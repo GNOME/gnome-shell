@@ -513,12 +513,18 @@ const WorkspacesDisplay = new Lang.Class({
         controls.connect('scroll-event',
                          Lang.bind(this, this._onScrollEvent));
 
-        this._monitorIndex = Main.layoutManager.primaryIndex;
+        this._primaryIndex = Main.layoutManager.primaryIndex;
 
         this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
         controls.add_actor(this._thumbnailsBox.actor);
 
-        this._workspacesView = null;
+        this._workspacesViews = null;
+
+        this._settings = new Gio.Settings({ schema: OVERRIDE_SCHEMA });
+        this._settings.connect('changed::workspaces-only-on-primary',
+                               Lang.bind(this,
+                                         this._workspacesOnlyOnPrimaryChanged));
+        this._workspacesOnlyOnPrimaryChanged();
 
         this._inDrag = false;
         this._cancelledDrag = false;
@@ -529,6 +535,8 @@ const WorkspacesDisplay = new Lang.Class({
 
         this._updateAlwaysZoom();
 
+        // If we stop hiding the overview on layout changes, we will need to
+        // update the _workspacesViews here
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._updateAlwaysZoom));
 
         Main.xdndHandler.connect('drag-begin', Lang.bind(this, function(){
@@ -560,17 +568,7 @@ const WorkspacesDisplay = new Lang.Class({
         this._controls.show();
         this._thumbnailsBox.show();
 
-        this._workspaces = [];
-        for (let i = 0; i < global.screen.n_workspaces; i++) {
-            let metaWorkspace = global.screen.get_workspace_by_index(i);
-            this._workspaces[i] = new Workspace.Workspace(metaWorkspace, this._monitorIndex);
-        }
-
-        if (this._workspacesView)
-            this._workspacesView.destroy();
-        this._workspacesView = new WorkspacesView(this._workspaces);
-        this._updateWorkspacesGeometry();
-        global.overlay_group.add_actor(this._workspacesView.actor);
+        this._updateWorkspacesViews();
 
         this._restackedNotifyId =
             global.screen.connect('restacked',
@@ -602,7 +600,9 @@ const WorkspacesDisplay = new Lang.Class({
     },
 
     zoomFromOverview: function() {
-        this._workspacesView.hide();
+        for (let i = 0; i < this._workspacesViews.length; i++) {
+            this._workspacesViews[i].hide();
+        }
     },
 
     hide: function() {
@@ -638,16 +638,70 @@ const WorkspacesDisplay = new Lang.Class({
             this._windowDragEndId = 0;
         }
 
-        this._workspacesView.destroy();
-        this._workspacesView = null;
-        for (let w = 0; w < this._workspaces.length; w++) {
-            this._workspaces[w].disconnectAll();
-            this._workspaces[w].destroy();
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].destroy();
+        this._workspacesViews = null;
+
+        for (let i = 0; i < this._workspaces.length; i++)
+            for (let w = 0; w < this._workspaces[i].length; w++) {
+                this._workspaces[i][w].disconnectAll();
+                this._workspaces[i][w].destroy();
+            }
+    },
+
+    _workspacesOnlyOnPrimaryChanged: function() {
+        this._workspacesOnlyOnPrimary = this._settings.get_boolean('workspaces-only-on-primary');
+
+        if (!Main.overview.visible)
+            return;
+
+        this._updateWorkspacesViews();
+    },
+
+    _updateWorkspacesViews: function() {
+        if (this._workspacesViews)
+            for (let i = 0; i < this._workspacesViews.length; i++)
+                this._workspacesViews[i].destroy();
+
+        if (this._workspaces)
+            for (let i = 0; i < this._workspaces.length; i++)
+                for (let w = 0; w < this._workspaces[i].length; w++)
+                    this._workspaces[i][w].destroy();
+
+        this._workspacesViews = [];
+        this._workspaces = [];
+        let monitors = Main.layoutManager.monitors;
+        for (let i = 0; i < monitors.length; i++) {
+            if (this._workspacesOnlyOnPrimary && i != this._primaryIndex)
+                continue;  // we are only interested in the primary monitor
+
+            let monitorWorkspaces = [];
+            for (let w = 0; w < global.screen.n_workspaces; w++) {
+                let metaWorkspace = global.screen.get_workspace_by_index(w);
+                monitorWorkspaces.push(new Workspace.Workspace(metaWorkspace, i));
+            }
+
+            this._workspaces.push(monitorWorkspaces);
+            this._workspacesViews.push(new WorkspacesView(monitorWorkspaces));
         }
+
+        this._updateWorkspacesGeometry();
+
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            global.overlay_group.add_actor(this._workspacesViews[i].actor);
+    },
+
+    _getPrimaryView: function() {
+        if (!this._workspacesViews)
+            return null;
+        if (this._workspacesOnlyOnPrimary)
+            return this._workspacesViews[0];
+        else
+            return this._workspacesViews[this._primaryIndex];
     },
 
     activeWorkspaceHasMaximizedWindows: function() {
-        return this._workspacesView.getActiveWorkspace().hasMaximizedWindows();
+        return this._getPrimaryView().getActiveWorkspace().hasMaximizedWindows();
     },
 
     // zoomFraction property allows us to tween the controls sliding in and out
@@ -737,17 +791,20 @@ const WorkspacesDisplay = new Lang.Class({
                 this._notifyOpacityId = newParent.connect('notify::opacity',
                     Lang.bind(this, function() {
                         let opacity = this.actor.get_parent().opacity;
-                        this._workspacesView.actor.opacity = opacity;
+                        let primaryView = this._getPrimaryView();
+                        if (!primaryView)
+                            return;
+                        primaryView.actor.opacity = opacity;
                         if (opacity == 0)
-                            this._workspacesView.actor.hide();
+                            primaryView.actor.hide();
                         else
-                            this._workspacesView.actor.show();
+                            primaryView.actor.show();
                     }));
         }));
     },
 
     _updateWorkspacesGeometry: function() {
-        if (!this._workspacesView)
+        if (!this._workspacesViews)
             return;
 
         let fullWidth = this.actor.allocation.x2 - this.actor.allocation.x1;
@@ -768,8 +825,6 @@ const WorkspacesDisplay = new Lang.Class({
         let clipX = rtl ? x + controlsVisible : x;
         let clipY = y + (fullHeight - clipHeight) / 2;
 
-        this._workspacesView.setClipRect(clipX, clipY, clipWidth, clipHeight);
-
         if (this._zoomOut) {
             width -= controlsNatural;
             if (rtl)
@@ -784,7 +839,28 @@ const WorkspacesDisplay = new Lang.Class({
         let difference = fullHeight - height;
         y += difference / 2;
 
-        this._workspacesView.setGeometry(x, y, width, height, difference);
+
+        let monitors = Main.layoutManager.monitors;
+        let m = 0;
+        for (let i = 0; i < monitors.length; i++) {
+            if (i == this._primaryIndex) {
+                this._workspacesViews[m].setClipRect(clipX, clipY,
+                                                     clipWidth, clipHeight);
+                this._workspacesViews[m].setGeometry(x, y, width, height,
+                                                     difference);
+                m++;
+            } else if (!this._workspacesOnlyOnPrimary) {
+                this._workspacesViews[m].setClipRect(monitors[i].x,
+                                                     monitors[i].y,
+                                                     monitors[i].width,
+                                                     monitors[i].height);
+                this._workspacesViews[m].setGeometry(monitors[i].x,
+                                                     monitors[i].y,
+                                                     monitors[i].width,
+                                                     monitors[i].height, 0);
+                m++;
+            }
+        }
     },
 
     _onRestacked: function() {
@@ -796,12 +872,14 @@ const WorkspacesDisplay = new Lang.Class({
             stackIndices[stack[i].get_meta_window().get_stable_sequence()] = i;
         }
 
-        this._workspacesView.syncStacking(stackIndices);
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].syncStacking(stackIndices);
+
         this._thumbnailsBox.syncStacking(stackIndices);
     },
 
     _workspacesChanged: function() {
-        let oldNumWorkspaces = this._workspaces.length;
+        let oldNumWorkspaces = this._workspaces[0].length;
         let newNumWorkspaces = global.screen.n_workspaces;
         let active = global.screen.get_active_workspace_index();
 
@@ -811,15 +889,24 @@ const WorkspacesDisplay = new Lang.Class({
         this._updateAlwaysZoom();
         this._updateZoom();
 
-        if (this._workspacesView == null)
+        if (this._workspacesViews == null)
             return;
 
         let lostWorkspaces = [];
         if (newNumWorkspaces > oldNumWorkspaces) {
-            // Assume workspaces are only added at the end
-            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
-                let metaWorkspace = global.screen.get_workspace_by_index(w);
-                this._workspaces[w] = new Workspace.Workspace(metaWorkspace, this._monitorIndex);
+            let monitors = Main.layoutManager.monitors;
+            let m = 0;
+            for (let i = 0; i < monitors.length; i++) {
+                if (this._workspacesOnlyOnPrimaryChanged &&
+                    i != this._primaryIndex)
+                    continue;
+
+                // Assume workspaces are only added at the end
+                for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
+                    let metaWorkspace = global.screen.get_workspace_by_index(w);
+                    this._workspaces[m++][w] =
+                        new Workspace.Workspace(metaWorkspace, i);
+                }
             }
 
             this._thumbnailsBox.addThumbnails(oldNumWorkspaces, newNumWorkspaces - oldNumWorkspaces);
@@ -830,25 +917,28 @@ const WorkspacesDisplay = new Lang.Class({
             let removedNum = oldNumWorkspaces - newNumWorkspaces;
             for (let w = 0; w < oldNumWorkspaces; w++) {
                 let metaWorkspace = global.screen.get_workspace_by_index(w);
-                if (this._workspaces[w].metaWorkspace != metaWorkspace) {
+                if (this._workspaces[0][w].metaWorkspace != metaWorkspace) {
                     removedIndex = w;
                     break;
                 }
             }
 
-            lostWorkspaces = this._workspaces.splice(removedIndex,
-                                                     removedNum);
+            for (let i = 0; i < this._workspaces.length; i++) {
+                lostWorkspaces = this._workspaces[i].splice(removedIndex,
+                                                            removedNum);
 
-            for (let l = 0; l < lostWorkspaces.length; l++) {
-                lostWorkspaces[l].disconnectAll();
-                lostWorkspaces[l].destroy();
+                for (let l = 0; l < lostWorkspaces.length; l++) {
+                    lostWorkspaces[l].disconnectAll();
+                    lostWorkspaces[l].destroy();
+                }
             }
 
             this._thumbnailsBox.removeThumbmails(removedIndex, removedNum);
         }
 
-        this._workspacesView.updateWorkspaces(oldNumWorkspaces,
-                                              newNumWorkspaces);
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].updateWorkspaces(oldNumWorkspaces,
+                                                      newNumWorkspaces);
     },
 
     _updateZoom : function() {
@@ -860,7 +950,7 @@ const WorkspacesDisplay = new Lang.Class({
             this._zoomOut = shouldZoom;
             this._updateWorkspacesGeometry();
 
-            if (!this._workspacesView)
+            if (!this._workspacesViews)
                 return;
 
             Tweener.addTween(this,
@@ -868,7 +958,8 @@ const WorkspacesDisplay = new Lang.Class({
                                time: WORKSPACE_SWITCH_TIME,
                                transition: 'easeOutQuad' });
 
-            this._workspacesView.updateWindowPositions();
+            for (let i = 0; i < this._workspacesViews.length; i++)
+                this._workspacesViews[i].updateWindowPositions();
         }
     },
 
