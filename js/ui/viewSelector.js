@@ -419,29 +419,6 @@ const ViewSelector = new Lang.Class({
         // not when setting the initially selected one.
         if (!tab.visible)
             tab.show(!firstSwitch);
-
-        // Pull a Meg Ryan:
-        if (!firstSwitch && Main.overview.workspaces) {
-            if (tab != this._tabs[0]) {
-                Tweener.addTween(Main.overview.workspaces.actor,
-                                 { opacity: 0,
-                                   time: 0.1,
-                                   transition: 'easeOutQuad',
-                                   onComplete: Lang.bind(this,
-                                       function() {
-                                           Main.overview.workspaces.actor.hide();
-                                           Main.overview.workspaces.actor.opacity = 255;
-                                       })
-                                });
-            } else {
-                Main.overview.workspaces.actor.opacity = 0;
-                Main.overview.workspaces.actor.show();
-                Tweener.addTween(Main.overview.workspaces.actor,
-                                 { opacity: 255,
-                                   time: 0.1,
-                                   transition: 'easeOutQuad' });
-            }
-        }
     },
 
     switchTab: function(id) {

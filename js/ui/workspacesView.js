@@ -157,10 +157,6 @@ const WorkspacesView = new Lang.Class({
         return this._workspaces[active];
     },
 
-    getWorkspaceByIndex: function(index) {
-        return this._workspaces[index];
-    },
-
     hide: function() {
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace = this._workspaces[activeWorkspaceIndex];
@@ -462,6 +458,7 @@ const WorkspacesDisplay = new Lang.Class({
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.connect('parent-set', Lang.bind(this, this._parentSet));
         this.actor.set_clip_to_allocation(true);
 
         let controls = new St.Bin({ style_class: 'workspace-controls',
@@ -483,7 +480,7 @@ const WorkspacesDisplay = new Lang.Class({
         this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
         controls.add_actor(this._thumbnailsBox.actor);
 
-        this.workspacesView = null;
+        this._workspacesView = null;
 
         this._inDrag = false;
         this._cancelledDrag = false;
@@ -514,6 +511,7 @@ const WorkspacesDisplay = new Lang.Class({
         this._windowDragBeginId = 0;
         this._windowDragCancelledId = 0;
         this._windowDragEndId = 0;
+        this._notifyOpacityId = 0;
     },
 
     show: function() {
@@ -530,10 +528,11 @@ const WorkspacesDisplay = new Lang.Class({
             this._workspaces[i] = new Workspace.Workspace(metaWorkspace, this._monitorIndex);
         }
 
-        if (this.workspacesView)
-            this.workspacesView.destroy();
-        this.workspacesView = new WorkspacesView(this._workspaces);
+        if (this._workspacesView)
+            this._workspacesView.destroy();
+        this._workspacesView = new WorkspacesView(this._workspaces);
         this._updateWorkspacesGeometry();
+        global.overlay_group.add_actor(this._workspacesView.actor);
 
         this._restackedNotifyId =
             global.screen.connect('restacked',
@@ -562,6 +561,10 @@ const WorkspacesDisplay = new Lang.Class({
                                                           Lang.bind(this, this._dragEnd));
 
         this._onRestacked();
+    },
+
+    zoomFromOverview: function() {
+        this._workspacesView.hide();
     },
 
     hide: function() {
@@ -597,12 +600,16 @@ const WorkspacesDisplay = new Lang.Class({
             this._windowDragEndId = 0;
         }
 
-        this.workspacesView.destroy();
-        this.workspacesView = null;
+        this._workspacesView.destroy();
+        this._workspacesView = null;
         for (let w = 0; w < this._workspaces.length; w++) {
             this._workspaces[w].disconnectAll();
             this._workspaces[w].destroy();
         }
+    },
+
+    activeWorkspaceHasMaximizedWindows: function() {
+        return this._workspacesView.getActiveWorkspace().hasMaximizedWindows();
     },
 
     // zoomFraction property allows us to tween the controls sliding in and out
@@ -675,8 +682,34 @@ const WorkspacesDisplay = new Lang.Class({
         this._updateWorkspacesGeometry();
     },
 
+    _parentSet: function(actor, oldParent) {
+        if (oldParent && this._notifyOpacityId)
+            oldParent.disconnect(this._notifyOpacityId);
+        this._notifyOpacityId = 0;
+
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
+            function() {
+                let newParent = this.actor.get_parent();
+                if (!newParent)
+                    return;
+
+                // This is kinda hackish - we want the primary view to
+                // appear as parent of this.actor, though in reality it
+                // is added directly to overlay_group
+                this._notifyOpacityId = newParent.connect('notify::opacity',
+                    Lang.bind(this, function() {
+                        let opacity = this.actor.get_parent().opacity;
+                        this._workspacesView.actor.opacity = opacity;
+                        if (opacity == 0)
+                            this._workspacesView.actor.hide();
+                        else
+                            this._workspacesView.actor.show();
+                    }));
+        }));
+    },
+
     _updateWorkspacesGeometry: function() {
-        if (!this.workspacesView)
+        if (!this._workspacesView)
             return;
 
         let fullWidth = this.actor.allocation.x2 - this.actor.allocation.x1;
@@ -697,7 +730,7 @@ const WorkspacesDisplay = new Lang.Class({
         let clipX = rtl ? x + controlsVisible : x;
         let clipY = y + (fullHeight - clipHeight) / 2;
 
-        this.workspacesView.setClipRect(clipX, clipY, clipWidth, clipHeight);
+        this._workspacesView.setClipRect(clipX, clipY, clipWidth, clipHeight);
 
         if (this._zoomOut) {
             width -= controlsNatural;
@@ -713,7 +746,7 @@ const WorkspacesDisplay = new Lang.Class({
         let difference = fullHeight - height;
         y += difference / 2;
 
-        this.workspacesView.setGeometry(x, y, width, height, difference);
+        this._workspacesView.setGeometry(x, y, width, height, difference);
     },
 
     _onRestacked: function() {
@@ -725,7 +758,7 @@ const WorkspacesDisplay = new Lang.Class({
             stackIndices[stack[i].get_meta_window().get_stable_sequence()] = i;
         }
 
-        this.workspacesView.syncStacking(stackIndices);
+        this._workspacesView.syncStacking(stackIndices);
         this._thumbnailsBox.syncStacking(stackIndices);
     },
 
@@ -740,7 +773,7 @@ const WorkspacesDisplay = new Lang.Class({
         this._updateAlwaysZoom();
         this._updateZoom();
 
-        if (this.workspacesView == null)
+        if (this._workspacesView == null)
             return;
 
         let lostWorkspaces = [];
@@ -776,8 +809,8 @@ const WorkspacesDisplay = new Lang.Class({
             this._thumbnailsBox.removeThumbmails(removedIndex, removedNum);
         }
 
-        this.workspacesView.updateWorkspaces(oldNumWorkspaces,
-                                             newNumWorkspaces);
+        this._workspacesView.updateWorkspaces(oldNumWorkspaces,
+                                              newNumWorkspaces);
     },
 
     _updateZoom : function() {
@@ -789,7 +822,7 @@ const WorkspacesDisplay = new Lang.Class({
             this._zoomOut = shouldZoom;
             this._updateWorkspacesGeometry();
 
-            if (!this.workspacesView)
+            if (!this._workspacesView)
                 return;
 
             Tweener.addTween(this,
@@ -797,7 +830,7 @@ const WorkspacesDisplay = new Lang.Class({
                                time: WORKSPACE_SWITCH_TIME,
                                transition: 'easeOutQuad' });
 
-            this.workspacesView.updateWindowPositions();
+            this._workspacesView.updateWindowPositions();
         }
     },
 

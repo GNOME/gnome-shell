@@ -94,10 +94,11 @@ const ScaledPoint = new Lang.Class({
 const WindowClone = new Lang.Class({
     Name: 'WindowClone',
 
-    _init : function(realWindow) {
+    _init : function(realWindow, workspace) {
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
         this.metaWindow._delegate = this;
+        this._workspace = workspace;
 
         let [borderX, borderY] = this._getInvisibleBorderPadding();
         this._windowClone = new Clutter.Clone({ source: realWindow.get_texture(),
@@ -383,19 +384,12 @@ const WindowClone = new Lang.Class({
         this.emit('drag-begin');
     },
 
-    _getWorkspaceActor : function() {
-        let index = this.metaWindow.get_workspace().index();
-        return Main.overview.workspaces.getWorkspaceByIndex(index);
-    },
-
     handleDragOver : function(source, actor, x, y, time) {
-        let workspace = this._getWorkspaceActor();
-        return workspace.handleDragOver(source, actor, x, y, time);
+        return this._workspace.handleDragOver(source, actor, x, y, time);
     },
 
     acceptDrop : function(source, actor, x, y, time) {
-        let workspace = this._getWorkspaceActor();
-        workspace.acceptDrop(source, actor, x, y, time);
+        this._workspace.acceptDrop(source, actor, x, y, time);
     },
 
     _onDragCancelled : function (draggable, time) {
@@ -1386,7 +1380,7 @@ const Workspace = new Lang.Class({
 
     // Create a clone of a (non-desktop) window and add it to the window list
     _addWindowClone : function(win) {
-        let clone = new WindowClone(win);
+        let clone = new WindowClone(win, this);
         let overlay = new WindowOverlay(clone, this._windowOverlaysGroup);
 
         clone.connect('selected',

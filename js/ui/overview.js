@@ -108,7 +108,6 @@ const Overview = new Lang.Class({
         if (this.isDummy) {
             this.animationInProgress = false;
             this.visible = false;
-            this.workspaces = null;
             return;
         }
 
@@ -180,8 +179,6 @@ const Overview = new Lang.Class({
         this._lastActiveWorkspaceIndex = -1;
         this._lastHoveredWindow = null;
         this._needsFakePointerEvent = false;
-
-        this.workspaces = null;
     },
 
     // The members we construct that are implemented in JS might
@@ -587,13 +584,10 @@ const Overview = new Lang.Class({
 
         this._workspacesDisplay.show();
 
-        this.workspaces = this._workspacesDisplay.workspacesView;
-        global.overlay_group.add_actor(this.workspaces.actor);
-
         if (!this._desktopFade.child)
             this._desktopFade.child = this._getDesktopClone();
 
-        if (!this.workspaces.getActiveWorkspace().hasMaximizedWindows()) {
+        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows()) {
             this._desktopFade.opacity = 255;
             this._desktopFade.show();
             Tweener.addTween(this._desktopFade,
@@ -728,7 +722,7 @@ const Overview = new Lang.Class({
         this.animationInProgress = true;
         this._hideInProgress = true;
 
-        if (!this.workspaces.getActiveWorkspace().hasMaximizedWindows()) {
+        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows()) {
             this._desktopFade.opacity = 0;
             this._desktopFade.show();
             Tweener.addTween(this._desktopFade,
@@ -737,7 +731,7 @@ const Overview = new Lang.Class({
                                transition: 'easeOutQuad' });
         }
 
-        this.workspaces.hide();
+        this._workspacesDisplay.zoomFromOverview();
 
         // Make other elements fade out.
         Tweener.addTween(this._group,
@@ -778,9 +772,6 @@ const Overview = new Lang.Class({
         Meta.enable_unredirect_for_screen(global.screen);
 
         global.window_group.show();
-
-        this.workspaces.destroy();
-        this.workspaces = null;
 
         this._workspacesDisplay.hide();
 
