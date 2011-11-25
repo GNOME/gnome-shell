@@ -164,7 +164,8 @@ enum {
   PROP_APPEARS_FOCUSED,
   PROP_RESIZEABLE,
   PROP_ABOVE,
-  PROP_WM_CLASS
+  PROP_WM_CLASS,
+  PROP_DBUS_APPLICATION_ID
 };
 
 enum
@@ -221,6 +222,7 @@ meta_window_finalize (GObject *object)
   g_free (window->icon_name);
   g_free (window->desc);
   g_free (window->gtk_theme_variant);
+  g_free (window->dbus_application_id);
 }
 
 static void
@@ -283,6 +285,9 @@ meta_window_get_property(GObject         *object,
       break;
     case PROP_ABOVE:
       g_value_set_boolean (value, win->wm_state_above);
+      break;
+    case PROP_DBUS_APPLICATION_ID:
+      g_value_set_string (value, win->dbus_application_id);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -447,6 +452,14 @@ meta_window_class_init (MetaWindowClass *klass)
                                    g_param_spec_string ("wm-class",
                                                         "WM_CLASS",
                                                         "Contents of the WM_CLASS property of this window",
+                                                        NULL,
+                                                        G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_DBUS_APPLICATION_ID,
+                                   g_param_spec_string ("dbus-application-id",
+                                                        "DBusApplicationID",
+                                                        "Contents of the _DBUS_APPLICATION_ID property of this window",
                                                         NULL,
                                                         G_PARAM_READABLE));
 
@@ -10209,6 +10222,18 @@ meta_window_get_wm_class_instance (MetaWindow *window)
     return NULL;
 
   return window->res_name;
+}
+
+/**
+ * meta_window_get_dbus_application_id:
+ * @window: a #MetaWindow
+ *
+ * Return value: (transfer none): the application ID
+ **/
+const char *
+meta_window_get_dbus_application_id (MetaWindow *window)
+{
+  return window->dbus_application_id;
 }
 
 /**

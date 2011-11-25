@@ -95,6 +95,8 @@ const char * meta_window_get_wm_class (MetaWindow *window);
 const char * meta_window_get_wm_class_instance (MetaWindow *window);
 gboolean    meta_window_showing_on_its_workspace (MetaWindow *window);
 
+const char * meta_window_get_dbus_application_id (MetaWindow *window);
+
 void meta_window_move(MetaWindow *window, gboolean user_op, int root_x_nw, int root_y_nw);
 void meta_window_move_frame(MetaWindow *window, gboolean user_op, int root_x_nw, int root_y_nw);
 void meta_window_move_resize_frame (MetaWindow *window, gboolean user_op, int root_x_nw, int root_y_nw, int w, int h);
