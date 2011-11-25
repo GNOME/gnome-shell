@@ -54,6 +54,8 @@ typedef struct _CoglSnippet CoglSnippet;
  *   stage of the pipeline.
  * @COGL_SNIPPET_HOOK_FRAGMENT: A hook for the entire fragment
  *   processing stage of the pipeline.
+ * @COGL_SNIPPET_HOOK_LAYER_FRAGMENT: A hook for the fragment
+ *   processing of a particular layer.
  * @COGL_SNIPPET_HOOK_TEXTURE_LOOKUP: A hook for the texture lookup
  *   stage of a given layer in a pipeline.
  *
@@ -127,6 +129,39 @@ typedef struct _CoglSnippet CoglSnippet;
  *   </glossdef>
  *  </glossentry>
  *  <glossentry>
+ *   <glossterm>%COGL_SNIPPET_HOOK_LAYER_FRAGMENT</glossterm>
+ * Adds a shader snippet that will hook on to the fragment processing
+ * of a particular layer. This can be used to replace the processing
+ * for a layer or to modify the results.
+ * </para>
+ * <para>
+ * Within the snippet code for this hook there is an extra vec4
+ * variable called ‘cogl_layer’. This contains the resulting color
+ * that will be used for the layer. This can be modified in the ‘post’
+ * section or it the default processing can be replaced entirely using
+ * the ‘replace’ section.
+ * </para>
+ * <para>
+ * The ‘declarations’ string in @snippet will be inserted in the
+ * global scope of the shader. Use this to declare any uniforms,
+ * attributes or functions that the snippet requires.
+ * </para>
+ * <para>
+ * The ‘pre’ string in @snippet will be inserted just before the
+ * fragment processing for this layer.
+ * </para>
+ * <para>
+ * If a ‘replace’ string is given then this will be used instead of
+ * the default fragment processing for this layer. The snippet must write to
+ * the ‘cogl_layer’ variable in that case.
+ * </para>
+ * <para>
+ * The ‘post’ string in @snippet will be inserted just after the
+ * fragment processing for the layer. The results can be modified by changing
+ * the value of the ‘cogl_layer’ variable.
+ * </para>
+ *  </glossentry>
+ *  <glossentry>
  *   <glossterm>%COGL_SNIPPET_HOOK_TEXTURE_LOOKUP</glossterm>
  * Adds a shader snippet that will hook on to the texture lookup part
  * of a given layer. This gives a chance for the application to modify
@@ -178,7 +213,8 @@ typedef enum {
   /* ... = 4096 */
 
   /* Per layer fragment hooks */
-  COGL_SNIPPET_HOOK_TEXTURE_LOOKUP = 6144
+  COGL_SNIPPET_HOOK_LAYER_FRAGMENT = 6144,
+  COGL_SNIPPET_HOOK_TEXTURE_LOOKUP
 } CoglSnippetHook;
 
 #define cogl_snippet_new cogl_snippet_new_EXP

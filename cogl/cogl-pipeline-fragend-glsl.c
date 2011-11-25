@@ -369,16 +369,7 @@ add_constant_lookup (CoglPipelineShaderState *shader_state,
 {
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
 
-  /* Create a sampler uniform for this layer if we haven't already */
-  if (!shader_state->unit_state[unit_index].combine_constant_used)
-    {
-      g_string_append_printf (shader_state->header,
-                              "uniform vec4 _cogl_layer_constant_%i;\n",
-                              unit_index);
-      shader_state->unit_state[unit_index].combine_constant_used = TRUE;
-    }
-
-  g_string_append_printf (shader_state->source,
+  g_string_append_printf (shader_state->header,
                           "_cogl_layer_constant_%i.%s",
                           unit_index, swizzle);
 }
@@ -532,7 +523,7 @@ add_arg (CoglPipelineShaderState *shader_state,
          CoglPipelineCombineOp operand,
          const char *swizzle)
 {
-  GString *shader_source = shader_state->source;
+  GString *shader_source = shader_state->header;
   char alpha_swizzle[5] = "aaaa";
 
   g_string_append_c (shader_source, '(');
@@ -630,9 +621,22 @@ ensure_arg_generated (CoglPipeline *pipeline,
 
   switch (src)
     {
-    case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
     case COGL_PIPELINE_COMBINE_SOURCE_PRIMARY_COLOR:
-      /* These don't involve any other layers */
+      /* This doesn't involve any other layers */
+      break;
+
+    case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
+      {
+        int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
+        /* Create a sampler uniform for this layer if we haven't already */
+        if (!shader_state->unit_state[unit_index].combine_constant_used)
+          {
+            g_string_append_printf (shader_state->header,
+                                    "uniform vec4 _cogl_layer_constant_%i;\n",
+                                    unit_index);
+            shader_state->unit_state[unit_index].combine_constant_used = TRUE;
+          }
+      }
       break;
 
     case COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS:
@@ -668,6 +672,20 @@ ensure_arg_generated (CoglPipeline *pipeline,
 }
 
 static void
+ensure_args_for_func (CoglPipeline *pipeline,
+                      CoglPipelineLayer *layer,
+                      int previous_layer_index,
+                      CoglPipelineCombineFunc function,
+                      CoglPipelineCombineSource *src)
+{
+  int n_args = _cogl_get_n_args_for_combine_func (function);
+  int i;
+
+  for (i = 0; i < n_args; i++)
+    ensure_arg_generated (pipeline, layer, previous_layer_index, src[i]);
+}
+
+static void
 append_masked_combine (CoglPipeline *pipeline,
                        CoglPipelineLayer *layer,
                        int previous_layer_index,
@@ -677,18 +695,10 @@ append_masked_combine (CoglPipeline *pipeline,
                        CoglPipelineCombineOp *op)
 {
   CoglPipelineShaderState *shader_state = get_shader_state (pipeline);
-  GString *shader_source = shader_state->source;
-  int n_args;
-  int i;
+  GString *shader_source = shader_state->header;
 
-  n_args = _cogl_get_n_args_for_combine_func (function);
-
-  for (i = 0; i < n_args; i++)
-    ensure_arg_generated (pipeline, layer, previous_layer_index, src[i]);
-
-  g_string_append_printf (shader_state->source,
-                          "  cogl_layer%i.%s = ",
-                          layer->index,
+  g_string_append_printf (shader_state->header,
+                          "  cogl_layer.%s = ",
                           swizzle);
 
   switch (function)
@@ -785,6 +795,7 @@ ensure_layer_generated (CoglPipeline *pipeline,
   CoglPipelineLayer *combine_authority;
   CoglPipelineLayerBigState *big_state;
   CoglPipelineLayer *layer;
+  CoglPipelineSnippetData snippet_data;
   LayerData *layer_data;
 
   /* Find the layer that corresponds to this layer_num */
@@ -815,36 +826,92 @@ ensure_layer_generated (CoglPipeline *pipeline,
                           "vec4 cogl_layer%i;\n",
                           layer_index);
 
-  if (!_cogl_pipeline_layer_needs_combine_separate (combine_authority) ||
-      /* GL_DOT3_RGBA Is a bit weird as a GL_COMBINE_RGB function
-       * since if you use it, it overrides your ALPHA function...
-       */
-      big_state->texture_combine_rgb_func ==
-      COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA)
-    append_masked_combine (pipeline,
-                           layer,
-                           layer_data->previous_layer_index,
-                           "rgba",
-                           big_state->texture_combine_rgb_func,
-                           big_state->texture_combine_rgb_src,
-                           big_state->texture_combine_rgb_op);
-  else
+  /* Skip the layer generation if there is a snippet that replaces the
+     default layer code. This is important because generating this
+     code may cause the code for other layers to be generated and
+     stored in the global variable. If this code isn't actually used
+     then the global variables would be uninitialised and they may be
+     used from other layers */
+  if (!has_replace_hook (layer, COGL_SNIPPET_HOOK_LAYER_FRAGMENT))
     {
-      append_masked_combine (pipeline,
-                             layer,
-                             layer_data->previous_layer_index,
-                             "rgb",
-                             big_state->texture_combine_rgb_func,
-                             big_state->texture_combine_rgb_src,
-                             big_state->texture_combine_rgb_op);
-      append_masked_combine (pipeline,
-                             layer,
-                             layer_data->previous_layer_index,
-                             "a",
-                             big_state->texture_combine_alpha_func,
-                             big_state->texture_combine_alpha_src,
-                             big_state->texture_combine_alpha_op);
+      ensure_args_for_func (pipeline,
+                            layer,
+                            layer_data->previous_layer_index,
+                            big_state->texture_combine_rgb_func,
+                            big_state->texture_combine_rgb_src);
+      ensure_args_for_func (pipeline,
+                            layer,
+                            layer_data->previous_layer_index,
+                            big_state->texture_combine_alpha_func,
+                            big_state->texture_combine_alpha_src);
+
+      g_string_append_printf (shader_state->header,
+                              "vec4\n"
+                              "cogl_real_generate_layer%i ()\n"
+                              "{\n"
+                              "  vec4 cogl_layer;\n",
+                              layer_index);
+
+      if (!_cogl_pipeline_layer_needs_combine_separate (combine_authority) ||
+          /* GL_DOT3_RGBA Is a bit weird as a GL_COMBINE_RGB function
+           * since if you use it, it overrides your ALPHA function...
+           */
+          big_state->texture_combine_rgb_func ==
+          COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA)
+        append_masked_combine (pipeline,
+                               layer,
+                               layer_data->previous_layer_index,
+                               "rgba",
+                               big_state->texture_combine_rgb_func,
+                               big_state->texture_combine_rgb_src,
+                               big_state->texture_combine_rgb_op);
+      else
+        {
+          append_masked_combine (pipeline,
+                                 layer,
+                                 layer_data->previous_layer_index,
+                                 "rgb",
+                                 big_state->texture_combine_rgb_func,
+                                 big_state->texture_combine_rgb_src,
+                                 big_state->texture_combine_rgb_op);
+          append_masked_combine (pipeline,
+                                 layer,
+                                 layer_data->previous_layer_index,
+                                 "a",
+                                 big_state->texture_combine_alpha_func,
+                                 big_state->texture_combine_alpha_src,
+                                 big_state->texture_combine_alpha_op);
+        }
+
+      g_string_append (shader_state->header,
+                       "  return cogl_layer;\n"
+                       "}\n");
     }
+
+  /* Wrap the layer code in any snippets that have been hooked */
+  memset (&snippet_data, 0, sizeof (snippet_data));
+  snippet_data.snippets = get_layer_fragment_snippets (layer);
+  snippet_data.hook = COGL_SNIPPET_HOOK_LAYER_FRAGMENT;
+  snippet_data.chain_function = g_strdup_printf ("cogl_real_generate_layer%i",
+                                                 layer_index);
+  snippet_data.final_name = g_strdup_printf ("cogl_generate_layer%i",
+                                             layer_index);
+  snippet_data.function_prefix = g_strdup_printf ("cogl_generate_layer%i",
+                                                  layer_index);
+  snippet_data.return_type = "vec4";
+  snippet_data.return_variable = "cogl_layer";
+  snippet_data.source_buf = shader_state->header;
+
+  _cogl_pipeline_snippet_generate_code (&snippet_data);
+
+  g_free ((char *) snippet_data.chain_function);
+  g_free ((char *) snippet_data.final_name);
+  g_free ((char *) snippet_data.function_prefix);
+
+  g_string_append_printf (shader_state->source,
+                          "  cogl_layer%i = cogl_generate_layer%i ();\n",
+                          layer_index,
+                          layer_index);
 
   g_slice_free (LayerData, layer_data);
 }

@@ -268,6 +268,49 @@ paint (TestState *state)
   cogl_pop_source ();
   cogl_object_unref (pipeline);
 
+  /* Test replacing the layer code */
+  pipeline = create_texture_pipeline ();
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_LAYER_FRAGMENT, NULL, NULL);
+  cogl_snippet_set_replace (snippet, "cogl_layer = vec4 (0.0, 0.0, 1.0, 1.0);");
+  cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
+  cogl_object_unref (snippet);
+
+  /* Add a second layer which samples from the texture in the first
+     layer. The snippet override should cause the first layer not to
+     generate the code for the texture lookup but this second layer
+     should still be able to cause it to be generated */
+  cogl_pipeline_set_layer_combine (pipeline, 1,
+                                   "RGB = ADD(TEXTURE_0, PREVIOUS)"
+                                   "A = REPLACE(PREVIOUS)",
+                                   NULL);
+
+  cogl_push_source (pipeline);
+  cogl_rectangle_with_texture_coords (110, 0, 120, 10,
+                                      0, 0, 0, 0);
+  cogl_pop_source ();
+  cogl_object_unref (pipeline);
+
+  /* Test modifying the layer code */
+  pipeline = cogl_pipeline_new ();
+
+  cogl_pipeline_set_uniform_1f (pipeline,
+                                cogl_pipeline_get_uniform_location (pipeline,
+                                                                    "a_value"),
+                                0.5);
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_LAYER_FRAGMENT,
+                              "uniform float a_value;",
+                              "cogl_layer.g = a_value;");
+  cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
+  cogl_object_unref (snippet);
+
+  cogl_push_source (pipeline);
+  cogl_rectangle_with_texture_coords (120, 0, 130, 10,
+                                      0, 0, 0, 0);
+  cogl_pop_source ();
+  cogl_object_unref (pipeline);
+
   /* Sanity check modifying the snippet */
   snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT, "foo", "bar");
   g_assert_cmpstr (cogl_snippet_get_declarations (snippet), ==, "foo");
@@ -318,6 +361,8 @@ validate_result (void)
   test_utils_check_pixel (85, 5, 0x00ffffff);
   test_utils_check_pixel (95, 5, 0x0000ffff);
   test_utils_check_pixel (105, 5, 0xff0000ff);
+  test_utils_check_pixel (115, 5, 0xff00ffff);
+  test_utils_check_pixel (125, 5, 0xff80ffff);
 }
 
 void
