@@ -25,9 +25,7 @@
 
 #include <meta/main.h>
 #include <meta/util.h>
-#ifdef HAVE_INTROSPECTION
 #include "meta-plugin-manager.h"
-#endif
 
 #include <glib.h>
 
