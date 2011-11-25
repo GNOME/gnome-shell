@@ -37,6 +37,7 @@
 #include "cogl-queue.h"
 #include "cogl-internal.h"
 #include "cogl-boxed-value.h"
+#include "cogl-pipeline-snippet-private.h"
 
 #include <glib.h>
 
@@ -365,35 +366,6 @@ typedef struct
      flushed */
   CoglBitmask changed_mask;
 } CoglPipelineUniformsState;
-
-/* Enumeration of all the hook points that a snippet can be attached
-   to within a pipeline. Note that although there are currently only
-   two points that directly correspond to the two state flags, the
-   idea isn't that each new enum here will mean a state flag. The
-   state flags are just intended to mark the split between hooks that
-   affect the fragment shader and hooks that affect the vertex
-   shader. For example, if we add a hook to wrap around the processing
-   for a particular layer then that hook would be part of the fragment
-   snippets state. */
-typedef enum
-{
-  COGL_PIPELINE_SNIPPET_HOOK_VERTEX,
-  COGL_PIPELINE_SNIPPET_HOOK_FRAGMENT
-} CoglPipelineSnippetHook;
-
-typedef struct _CoglPipelineSnippet CoglPipelineSnippet;
-
-COGL_LIST_HEAD (CoglPipelineSnippetList, CoglPipelineSnippet);
-
-struct _CoglPipelineSnippet
-{
-  COGL_LIST_ENTRY (CoglPipelineSnippet) list_node;
-
-  /* Hook where this snippet is attached */
-  CoglPipelineSnippetHook hook;
-
-  CoglSnippet *snippet;
-};
 
 typedef struct
 {

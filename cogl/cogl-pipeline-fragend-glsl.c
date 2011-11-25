@@ -895,8 +895,7 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       GLint lengths[2];
       GLint compile_status;
       GLuint shader;
-      CoglPipelineSnippet *snippet;
-      int snippet_num;
+      CoglPipelineSnippetData snippet_data;
 
       COGL_STATIC_COUNTER (fragend_glsl_compile_counter,
                            "glsl fragment compile counter",
@@ -937,59 +936,15 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       /* Close the function surrounding the generated fragment processing */
       g_string_append (shader_state->source, "}\n");
 
-      /* Add all of the post-hooks for fragment processing */
-      snippet_num = 0;
-      COGL_LIST_FOREACH (snippet, get_fragment_snippets (pipeline), list_node)
-        if (snippet->hook == COGL_PIPELINE_SNIPPET_HOOK_FRAGMENT)
-          {
-            const char *source;
-
-            if ((source = cogl_snippet_get_declarations (snippet->snippet)))
-              g_string_append (shader_state->source, source);
-
-            g_string_append_printf (shader_state->source,
-                                    "\n"
-                                    "void\n"
-                                    "cogl_snippet%i ()\n"
-                                    "{\n",
-                                    snippet_num);
-
-            if ((source = cogl_snippet_get_pre (snippet->snippet)))
-              g_string_append (shader_state->source, source);
-
-            /* Chain on to the next function, or bypass it if there is
-               a replace string */
-            if ((source = cogl_snippet_get_replace (snippet->snippet)))
-              g_string_append (shader_state->source, source);
-            else if (snippet_num > 0)
-              g_string_append_printf (shader_state->source,
-                                      "  cogl_snippet%i ();\n",
-                                      snippet_num - 1);
-            else
-              g_string_append (shader_state->source,
-                               "  cogl_generated_source ();\n");
-
-            if ((source = cogl_snippet_get_post (snippet->snippet)))
-              g_string_append (shader_state->source, source);
-
-            g_string_append (shader_state->source, "}\n");
-
-            snippet_num++;
-          }
-
-      g_string_append (shader_state->source,
-                       "\n"
-                       "void\n"
-                       "main ()\n"
-                       "{\n");
-      if (snippet_num > 0)
-        g_string_append_printf (shader_state->source,
-                                "  cogl_snippet%i ();\n",
-                                snippet_num - 1);
-      else
-        g_string_append (shader_state->source,
-                         "  cogl_generated_source ();\n");
-      g_string_append (shader_state->source, "}\n");
+      /* Add all of the hooks for fragment processing */
+      memset (&snippet_data, 0, sizeof (snippet_data));
+      snippet_data.snippets = get_fragment_snippets (pipeline);
+      snippet_data.hook = COGL_PIPELINE_SNIPPET_HOOK_FRAGMENT;
+      snippet_data.chain_function = "cogl_generated_source";
+      snippet_data.final_name = "main";
+      snippet_data.function_prefix = "cogl_fragment_hook";
+      snippet_data.source_buf = shader_state->source;
+      _cogl_pipeline_snippet_generate_code (&snippet_data);
 
       GE_RET( shader, ctx, glCreateShader (GL_FRAGMENT_SHADER) );
 

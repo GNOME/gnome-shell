@@ -1,0 +1,160 @@
+/*
+ * Cogl
+ *
+ * An object oriented GL/GLES Abstraction/Utility Layer
+ *
+ * Copyright (C) 2011 Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see
+ * <http://www.gnu.org/licenses/>.
+ *
+ *
+ *
+ * Authors:
+ *   Neil Roberts <neil@linux.intel.com>
+ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <string.h>
+
+#include "cogl-pipeline-snippet-private.h"
+
+/* Helper functions that are used by both GLSL pipeline backends */
+
+void
+_cogl_pipeline_snippet_generate_code (const CoglPipelineSnippetData *data)
+{
+  CoglPipelineSnippet *snippet;
+  int snippet_num = 0;
+
+  COGL_LIST_FOREACH (snippet, data->snippets, list_node)
+    if (snippet->hook == data->hook)
+      {
+        const char *source;
+
+        if ((source = cogl_snippet_get_declarations (snippet->snippet)))
+          g_string_append (data->source_buf, source);
+
+        g_string_append_printf (data->source_buf,
+                                "\n"
+                                "%s\n",
+                                data->return_type ?
+                                data->return_type :
+                                "void");
+
+        if (COGL_LIST_NEXT (snippet, list_node))
+          g_string_append_printf (data->source_buf,
+                                  "%s_%i",
+                                  data->function_prefix,
+                                  snippet_num);
+        else
+          g_string_append (data->source_buf, data->final_name);
+
+        g_string_append (data->source_buf, " (");
+
+        if (data->argument_declarations)
+          g_string_append (data->source_buf, data->argument_declarations);
+
+        g_string_append (data->source_buf,
+                         ")\n"
+                         "{\n");
+
+        if (data->return_type)
+          g_string_append_printf (data->source_buf,
+                                  "  %s %s;\n"
+                                  "\n",
+                                  data->return_type,
+                                  data->return_variable);
+
+        if ((source = cogl_snippet_get_pre (snippet->snippet)))
+          g_string_append (data->source_buf, source);
+
+        /* Chain on to the next function, or bypass it if there is
+           a replace string */
+        if ((source = cogl_snippet_get_replace (snippet->snippet)))
+          g_string_append (data->source_buf, source);
+        else
+          {
+            g_string_append (data->source_buf, "  ");
+
+            if (data->return_type)
+              g_string_append_printf (data->source_buf,
+                                      "%s = ",
+                                      data->return_variable);
+
+            if (snippet_num > 0)
+              g_string_append_printf (data->source_buf,
+                                      "%s_%i",
+                                      data->function_prefix,
+                                      snippet_num - 1);
+            else
+              g_string_append (data->source_buf, data->chain_function);
+
+            g_string_append (data->source_buf, " (");
+
+            if (data->arguments)
+              g_string_append (data->source_buf, data->arguments);
+
+            g_string_append (data->source_buf, ");\n");
+          }
+
+        if ((source = cogl_snippet_get_post (snippet->snippet)))
+          g_string_append (data->source_buf, source);
+
+        if (data->return_type)
+          g_string_append_printf (data->source_buf,
+                                  "  return %s;\n",
+                                  data->return_variable);
+
+        g_string_append (data->source_buf, "}\n");
+
+        snippet_num++;
+      }
+
+  /* If there weren't any snippets then generate a stub function with
+     the final name */
+  if (snippet_num == 0)
+    {
+      if (data->return_type)
+        g_string_append_printf (data->source_buf,
+                                "\n"
+                                "%s\n"
+                                "%s (%s)\n"
+                                "{\n"
+                                "  return %s (%s);\n"
+                                "}\n",
+                                data->return_type,
+                                data->final_name,
+                                data->argument_declarations ?
+                                data->argument_declarations : "",
+                                data->chain_function,
+                                data->arguments ? data->arguments : "");
+      else
+        g_string_append_printf (data->source_buf,
+                                "\n"
+                                "void\n"
+                                "%s (%s)\n"
+                                "{\n"
+                                "  %s (%s);\n"
+                                "}\n",
+                                data->final_name,
+                                data->argument_declarations ?
+                                data->argument_declarations : "",
+                                data->chain_function,
+                                data->arguments ? data->arguments : "");
+    }
+}
