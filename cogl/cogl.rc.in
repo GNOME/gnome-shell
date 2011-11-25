@@ -1,0 +1,30 @@
+#include <winver.h>
+
+VS_VERSION_INFO VERSIONINFO
+  FILEVERSION 1,@COGL_1_MINOR_VERSION@,@COGL_1_MICRO_VERSION@,0
+  PRODUCTVERSION 1,@COGL_1_MINOR_VERSION@,@COGL_1_MICRO_VERSION@,0
+  FILEFLAGSMASK 0
+  FILEFLAGS 0
+  FILEOS VOS__WINDOWS32
+  FILETYPE VFT_DLL
+  FILESUBTYPE VFT2_UNKNOWN
+  BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+      BLOCK "040904B0"
+      BEGIN
+	VALUE "CompanyName", "Intel Corporation"
+	VALUE "FileDescription", "cogl"
+	VALUE "FileVersion", "@COGL_1_VERSION@.0"
+	VALUE "InternalName", "libcogl-1.0-@COGL_LT_AGE@"
+	VALUE "LegalCopyright", "Copyright 1995-2011 © Intel Corporation"
+	VALUE "OriginalFilename", "libcogl-1.0-@COGL_LT_AGE@.dll"
+	VALUE "ProductName", "cogl"
+	VALUE "ProductVersion", "@COGL_1_VERSION@"
+      END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+      VALUE "Translation", 0x409, 1200
+    END
+  END
