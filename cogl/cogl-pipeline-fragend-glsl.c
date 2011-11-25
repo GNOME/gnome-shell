@@ -386,8 +386,12 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
 
   shader_state->unit_state[unit_index].sampled = TRUE;
 
+  g_string_append_printf (shader_state->header,
+                          "vec4 cogl_texel%i;\n",
+                          unit_index);
+
   g_string_append_printf (shader_state->source,
-                          "  vec4 texel%i = cogl_texture_lookup%i (",
+                          "  cogl_texel%i = cogl_texture_lookup%i (",
                           unit_index,
                           unit_index);
 
@@ -534,7 +538,7 @@ add_arg (CoglPipelineShaderState *shader_state,
     {
     case COGL_PIPELINE_COMBINE_SOURCE_TEXTURE:
       g_string_append_printf (shader_source,
-                              "texel%i.%s",
+                              "cogl_texel%i.%s",
                               _cogl_pipeline_layer_get_unit_index (layer),
                               swizzle);
       break;
@@ -550,7 +554,7 @@ add_arg (CoglPipelineShaderState *shader_state,
       if (previous_layer_index >= 0)
         {
           g_string_append_printf (shader_source,
-                                  "layer%i.%s",
+                                  "cogl_layer%i.%s",
                                   previous_layer_index,
                                   swizzle);
           break;
@@ -564,7 +568,7 @@ add_arg (CoglPipelineShaderState *shader_state,
       if (src >= COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 &&
           src < COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 + 32)
         g_string_append_printf (shader_source,
-                                "texel%i.%s",
+                                "cogl_texel%i.%s",
                                 src - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0,
                                 swizzle);
       break;
@@ -665,7 +669,7 @@ append_masked_combine (CoglPipeline *pipeline,
     ensure_arg_generated (pipeline, layer, previous_layer_index, src[i]);
 
   g_string_append_printf (shader_state->source,
-                          "  layer%i.%s = ",
+                          "  cogl_layer%i.%s = ",
                           layer->index,
                           swizzle);
 
@@ -788,8 +792,9 @@ ensure_layer_generated (CoglPipeline *pipeline,
                                         COGL_PIPELINE_LAYER_STATE_COMBINE);
   big_state = combine_authority->big_state;
 
-  g_string_append_printf (shader_state->source,
-                          "  vec4 layer%i;\n",
+  /* Make a global variable for the result of the layer code */
+  g_string_append_printf (shader_state->header,
+                          "vec4 cogl_layer%i;\n",
                           layer_index);
 
   if (!_cogl_pipeline_layer_needs_combine_separate (combine_authority) ||
@@ -955,7 +960,7 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
 
           ensure_layer_generated (pipeline, last_layer->index);
           g_string_append_printf (shader_state->source,
-                                  "  cogl_color_out = layer%i;\n",
+                                  "  cogl_color_out = cogl_layer%i;\n",
                                   last_layer->index);
 
           COGL_LIST_FOREACH_SAFE (layer_data, &shader_state->layers,
