@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -19,6 +20,7 @@ const WORKSPACE_SWITCH_TIME = 0.25;
 // Note that mutter has a compile-time limit of 36
 const MAX_WORKSPACES = 16;
 
+const OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
 
 const CONTROLS_POP_IN_TIME = 0.1;
 
@@ -59,6 +61,11 @@ const WorkspacesView = new Lang.Class({
         this._zoomOut = false; // zoom to a larger area
         this._inDrag = false; // dragging a window
 
+        this._settings = new Gio.Settings({ schema: OVERRIDE_SCHEMA });
+        this._updateExtraWorkspacesId =
+            this._settings.connect('changed::workspaces-only-on-primary',
+                                   Lang.bind(this, this._updateExtraWorkspaces));
+
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         this._workspaces = workspaces;
 
@@ -67,17 +74,7 @@ const WorkspacesView = new Lang.Class({
             this._workspaces[w].actor.reparent(this.actor);
         this._workspaces[activeWorkspaceIndex].actor.raise_top();
 
-        this._extraWorkspaces = [];
-        let monitors = Main.layoutManager.monitors;
-        let m = 0;
-        for (let i = 0; i < monitors.length; i++) {
-            if (i == Main.layoutManager.primaryIndex)
-                continue;
-            let ws = new Workspace.Workspace(null, i);
-            this._extraWorkspaces[m++] = ws;
-            ws.setGeometry(monitors[i].x, monitors[i].y, monitors[i].width, monitors[i].height);
-            global.overlay_group.add_actor(ws.actor);
-        }
+        this._updateExtraWorkspaces();
 
         // Position/scale the desktop windows and their children after the
         // workspaces have been created. This cannot be done first because
@@ -88,6 +85,8 @@ const WorkspacesView = new Lang.Class({
                                  Lang.bind(this, function() {
                 for (let w = 0; w < this._workspaces.length; w++)
                     this._workspaces[w].zoomToOverview();
+                if (!this._extraWorkspaces)
+                    return;
                 for (let w = 0; w < this._extraWorkspaces.length; w++)
                     this._extraWorkspaces[w].zoomToOverview();
         }));
@@ -121,6 +120,35 @@ const WorkspacesView = new Lang.Class({
                                                       Lang.bind(this, this._dragEnd));
         this._swipeScrollBeginId = 0;
         this._swipeScrollEndId = 0;
+    },
+
+    _updateExtraWorkspaces: function() {
+        this._destroyExtraWorkspaces();
+
+        if (!this._settings.get_boolean('workspaces-only-on-primary'))
+            return;
+
+        this._extraWorkspaces = [];
+        let monitors = Main.layoutManager.monitors;
+        for (let i = 0; i < monitors.length; i++) {
+            if (i == Main.layoutManager.primaryIndex)
+                continue;
+
+            let ws = new Workspace.Workspace(null, i);
+            ws.setGeometry(monitors[i].x, monitors[i].y,
+                           monitors[i].width, monitors[i].height);
+            global.overlay_group.add_actor(ws.actor);
+            this._extraWorkspaces.push(ws);
+        }
+    },
+
+    _destroyExtraWorkspaces: function() {
+        if (!this._extraWorkspaces)
+            return;
+
+        for (let m = 0; m < this._extraWorkspaces.length; m++)
+            this._extraWorkspaces[m].destroy();
+        this._extraWorkspaces = null;
     },
 
     setGeometry: function(x, y, width, height, spacing) {
@@ -167,6 +195,8 @@ const WorkspacesView = new Lang.Class({
 
         for (let w = 0; w < this._workspaces.length; w++)
             this._workspaces[w].zoomFromOverview();
+        if (!this._extraWorkspaces)
+            return;
         for (let w = 0; w < this._extraWorkspaces.length; w++)
             this._extraWorkspaces[w].zoomFromOverview();
     },
@@ -178,6 +208,8 @@ const WorkspacesView = new Lang.Class({
     syncStacking: function(stackIndices) {
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].syncStacking(stackIndices);
+        if (!this._extraWorkspaces)
+            return;
         for (let i = 0; i < this._extraWorkspaces.length; i++)
             this._extraWorkspaces[i].syncStacking(stackIndices);
     },
@@ -303,12 +335,12 @@ const WorkspacesView = new Lang.Class({
     },
 
     _onDestroy: function() {
-        for (let i = 0; i < this._extraWorkspaces.length; i++)
-            this._extraWorkspaces[i].destroy();
+        this._destroyExtraWorkspaces();
         this._scrollAdjustment.run_dispose();
         Main.overview.disconnect(this._overviewShowingId);
         Main.overview.disconnect(this._overviewShownId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
+        this._settings.disconnect(this._updateExtraWorkspacesId);
 
         if (this._inDrag)
             this._dragEnd();
@@ -367,6 +399,9 @@ const WorkspacesView = new Lang.Class({
             this._firstDragMotion = false;
             for (let i = 0; i < this._workspaces.length; i++)
                 this._workspaces[i].setReservedSlot(dragEvent.dragActor._delegate);
+            if (!this._extraWorkspaces)
+                return DND.DragMotionResult.CONTINUE;
+
             for (let i = 0; i < this._extraWorkspaces.length; i++)
                 this._extraWorkspaces[i].setReservedSlot(dragEvent.dragActor._delegate);
         }
@@ -380,6 +415,9 @@ const WorkspacesView = new Lang.Class({
 
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setReservedSlot(null);
+
+        if (!this._extraWorkspaces)
+            return;
         for (let i = 0; i < this._extraWorkspaces.length; i++)
             this._extraWorkspaces[i].setReservedSlot(null);
     },
