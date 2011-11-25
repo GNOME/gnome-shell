@@ -267,6 +267,17 @@ void                clutter_paint_volume_union               (ClutterPaintVolume
 gboolean            clutter_paint_volume_set_from_allocation (ClutterPaintVolume       *pv,
                                                               ClutterActor             *actor);
 
+/**
+ * ClutterMargin:
+ * @left: the margin from the left
+ * @right: the margin from the right
+ * @top: the margin from the top
+ * @bottom: the margin from the bottom
+ *
+ * A representation of the components of a margin.
+ *
+ * Since: 1.10
+ */
 struct _ClutterMargin
 {
   float left;

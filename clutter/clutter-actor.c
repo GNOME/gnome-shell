@@ -512,6 +512,12 @@ struct _ClutterActorPrivate
      the redraw was queued from or it will be NULL if the redraw was
      queued without an effect. */
   guint is_dirty                    : 1;
+  /* expand flag management */
+  guint x_expand_set                : 1;
+  guint x_expand_effective          : 1;
+  guint y_expand_set                : 1;
+  guint y_expand_effective          : 1;
+  guint needs_compute_expand        : 1;
 };
 
 enum
@@ -4914,7 +4920,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor:layout-manager:
    *
-   * A delegate object for controlling the layout of the child of
+   * A delegate object for controlling the layout of the children of
    * an actor.
    *
    * Since: 1.10
@@ -4993,6 +4999,16 @@ clutter_actor_class_init (ClutterActorClass *klass)
                        CLUTTER_ACTOR_ALIGN_FILL,
                        CLUTTER_PARAM_READWRITE);
 
+  /**
+   * ClutterActor:margin-top:
+   *
+   * The margin (in pixels) from the top of the actor.
+   *
+   * This property adds a margin to the actor's preferred size; the margin
+   * will be automatically taken into account when allocating the actor.
+   *
+   * Since: 1.10
+   */
   obj_props[PROP_MARGIN_TOP] =
     g_param_spec_float ("margin-top",
                         P_("Margin Top"),
@@ -5001,6 +5017,16 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         0.0,
                         CLUTTER_PARAM_READWRITE);
 
+  /**
+   * ClutterActor:margin-bottom:
+   *
+   * The margin (in pixels) from the bottom of the actor.
+   *
+   * This property adds a margin to the actor's preferred size; the margin
+   * will be automatically taken into account when allocating the actor.
+   *
+   * Since: 1.10
+   */
   obj_props[PROP_MARGIN_BOTTOM] =
     g_param_spec_float ("margin-bottom",
                         P_("Margin Bottom"),
@@ -5009,6 +5035,16 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         0.0,
                         CLUTTER_PARAM_READWRITE);
 
+  /**
+   * ClutterActor:margin-left:
+   *
+   * The margin (in pixels) from the left of the actor.
+   *
+   * This property adds a margin to the actor's preferred size; the margin
+   * will be automatically taken into account when allocating the actor.
+   *
+   * Since: 1.10
+   */
   obj_props[PROP_MARGIN_LEFT] =
     g_param_spec_float ("margin-left",
                         P_("Margin Left"),
@@ -5017,6 +5053,16 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         0.0,
                         CLUTTER_PARAM_READWRITE);
 
+  /**
+   * ClutterActor:margin-right:
+   *
+   * The margin (in pixels) from the right of the actor.
+   *
+   * This property adds a margin to the actor's preferred size; the margin
+   * will be automatically taken into account when allocating the actor.
+   *
+   * Since: 1.10
+   */
   obj_props[PROP_MARGIN_RIGHT] =
     g_param_spec_float ("margin-right",
                         P_("Margin Right"),
@@ -8821,6 +8867,49 @@ clutter_actor_get_children (ClutterActor *self)
   return g_list_copy (self->priv->children);
 }
 
+/*< private >
+ * clutter_actor_insert_child:
+ * @self: a #ClutterActor
+ * @child: a #ClutterActor
+ *
+ * Inserts @child inside the list of children held by @self, using
+ * the depth as the insertion criteria.
+ */
+static void
+clutter_actor_insert_child (ClutterActor *self,
+                            ClutterActor *child)
+{
+  ClutterActorPrivate *priv = self->priv;
+  GList *l, *prev;
+
+  /* Find the right place to insert the child so that it will still be
+     sorted and the child will be after all of the actors at the same
+     depth */
+  for (l = priv->children; l != NULL; l = l->next)
+    {
+      ClutterActor *iter = l->data;
+
+      if (iter->priv->z > child->priv->z)
+        break;
+
+      prev = l;
+    }
+
+  /* Insert the node before the found node */
+  l = g_list_prepend (l, child);
+
+  /* Fixup the links */
+  if (prev != NULL)
+    {
+      prev->next = l;
+      l->prev = prev;
+    }
+  else
+    priv->children = l;
+
+  priv->n_children++;
+}
+
 /**
  * clutter_actor_add_child:
  * @self: a #ClutterActor
@@ -8865,8 +8954,7 @@ clutter_actor_add_child (ClutterActor *self,
   child->priv->parent_actor = self;
 
   /* Maintain an explicit list of children for every actor... */
-  self->priv->children = g_list_prepend (self->priv->children, child);
-  self->priv->n_children++;
+  clutter_actor_insert_child (self, child);
 
   /* if push_internal() has been called then we automatically set
    * the flag on the actor
@@ -8909,6 +8997,22 @@ clutter_actor_add_child (ClutterActor *self,
       child->priv->needs_allocation = TRUE;
 
       clutter_actor_queue_relayout (child->priv->parent_actor);
+    }
+
+  /* child expand flags may cause the parent's expand flags
+   * to change; if a child is not set to expand then it cannot
+   * modify its parent's expand flags.
+   *
+   * this check, plus defaulting to needs_compute_expand to FALSE,
+   * should avoid having to walk the hierarchy at UI construction
+   * time.
+   */
+  if (CLUTTER_ACTOR_IS_MAPPED (child) &&
+      (child->priv->needs_compute_expand ||
+       child->priv->x_expand_effective ||
+       child->priv->y_expand_effective))
+    {
+      clutter_actor_queue_compute_expand (self);
     }
 }
 
@@ -9047,13 +9151,24 @@ clutter_actor_remove_child (ClutterActor *self,
   self->priv->children = g_list_remove (self->priv->children, child);
   self->priv->n_children--;
 
-  /* Queue a redraw on old_parent only if we were painted in the first
-   * place. Will be no-op if old parent is not shown.
+  /* if the child was mapped then we need to relayout ourselves to account
+   * for the removed child
    */
-  if (was_mapped && !CLUTTER_ACTOR_IS_MAPPED (child))
-    clutter_actor_queue_redraw (self);
+  if (was_mapped)
+    clutter_actor_queue_relayout (self);
 
-  /* remove the reference we acquired in clutter_actor_set_parent() */
+  /* the parent may no longer need to expand if the child was the only
+   * thing responsible for expand_effective being TRUE
+   */
+  if (CLUTTER_ACTOR_IS_MAPPED (child) &&
+      (child->priv->needs_compute_expand ||
+       child->priv->x_expand_effective ||
+       child->priv->y_expand_effective))
+    {
+      clutter_actor_queue_compute_expand (self);
+    }
+
+  /* remove the reference we acquired in clutter_actor_add_child() */
   g_object_unref (child);
 }
 
@@ -9081,7 +9196,7 @@ clutter_actor_unparent (ClutterActor *self)
  * This function resets the parent actor of @self.  It is
  * logically equivalent to calling clutter_actor_unparent()
  * and clutter_actor_set_parent(), but more efficiently
- * implemented, ensures the child is not finalized
+ * implemented, as it ensures the child is not finalized
  * when unparented, and emits the parent-set signal only
  * one time.
  *
@@ -13617,28 +13732,256 @@ _clutter_actor_get_layout_info_or_defaults (ClutterActor *self)
   return info;
 }
 
+typedef struct _ExpandClosure
+{
+  gboolean x_expand;
+  gboolean y_expand;
+} ExpandClosure;
+
+static gboolean
+foreach_compute_expand (ClutterActor *child,
+                        gpointer      data_)
+{
+  ExpandClosure *data = data_;
+
+  data->x_expand = data->x_expand || clutter_actor_needs_x_expand (child);
+  data->y_expand = data->y_expand || clutter_actor_needs_y_expand (child);
+
+  return TRUE;
+}
+
+static void
+clutter_actor_compute_expand (ClutterActor *self,
+                              gboolean     *x_expand,
+                              gboolean     *y_expand)
+{
+  ExpandClosure data;
+
+  data.x_expand = FALSE;
+  data.y_expand = FALSE;
+
+  _clutter_actor_foreach_child (self,
+                                foreach_compute_expand,
+                                &data);
+
+  if (x_expand != NULL)
+    *x_expand = data.x_expand;
+
+  if (y_expand != NULL)
+    *y_expand = data.y_expand;
+}
+
+static inline void
+clutter_actor_update_effective_expand (ClutterActor *self)
+{
+  ClutterActorPrivate *priv = self->priv;
+  const ClutterLayoutInfo *info;
+  gboolean x_expand, y_expand;
+
+  if (!priv->needs_compute_expand)
+    return;
+
+  info = _clutter_actor_get_layout_info_or_defaults (self);
+
+  if (priv->x_expand_set)
+    x_expand = info->x_expand;
+  else
+    x_expand = FALSE;
+
+  if (priv->y_expand_set)
+    y_expand = info->y_expand;
+  else
+    y_expand = FALSE;
+
+  /* we don't need to traverse the children of the actor if expand
+   * has been explicitly set
+   */
+  if (priv->children != NULL || !(priv->x_expand_set && priv->y_expand_set))
+    {
+      gboolean dummy = FALSE;
+
+      clutter_actor_compute_expand (self,
+                                    priv->x_expand_set ? &dummy : &x_expand,
+                                    priv->y_expand_set ? &dummy : &y_expand);
+    }
+
+  priv->needs_compute_expand = FALSE;
+  priv->x_expand_effective = x_expand != FALSE;
+  priv->y_expand_effective = y_expand != FALSE;
+}
+
+/**
+ * clutter_actor_needs_x_expand:
+ * @self: a #ClutterActor
+ *
+ * Whether an actor should receive extra horizontal space when possible
+ * during the allocation.
+ *
+ * This function takes into consideration eventual actors contained by
+ * @self, under the invariant that if an actor has the #ClutterActor:x-expand
+ * property set then its parent will need to expand as well.
+ *
+ * Unlike clutter_actor_get_x_expand(), this function may return %TRUE even
+ * if clutter_actor_set_x_expand() hasn't been called on @self.
+ *
+ * Layout managers should call this function on their children, instead of
+ * using clutter_actor_get_x_expand().
+ *
+ * Return value: %TRUE if the actor should expand, and %FALSE otherwise
+ *
+ * Since: 1.10
+ */
+gboolean
+clutter_actor_needs_x_expand (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+    return FALSE;
+
+  if (!CLUTTER_ACTOR_IS_MAPPED (self))
+    return FALSE;
+
+  clutter_actor_update_effective_expand (self);
+
+  return self->priv->x_expand_effective;
+}
+
+/**
+ * clutter_actor_needs_y_expand:
+ * @self: a #ClutterActor
+ *
+ * Whether an actor should receive extra vertical space when possible
+ * during the allocation.
+ *
+ * This function takes into consideration eventual actors contained by
+ * @self, under the invariant that if an actor has the #ClutterActor:y-expand
+ * property set then its parent will need to expand as well.
+ *
+ * Unlike clutter_actor_get_y_expand(), this function may return %TRUE even
+ * if clutter_actor_set_y_expand() hasn't been called on @self.
+ *
+ * Layout managers should call this function on their children, instead of
+ * using clutter_actor_get_y_expand().
+ *
+ * Return value: %TRUE if the actor should expand, and %FALSE otherwise
+ *
+ * Since: 1.10
+ */
+gboolean
+clutter_actor_needs_y_expand (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+    return FALSE;
+
+  if (!CLUTTER_ACTOR_IS_MAPPED (self))
+    return FALSE;
+
+  clutter_actor_update_effective_expand (self);
+
+  return self->priv->y_expand_effective;
+}
+
+/*< private >
+ * clutter_actor_queue_compute_expand:
+ * @self: a #ClutterActor
+ *
+ * Asks a #ClutterActor to (lazily) compute its expand flags.
+ *
+ * This function should be called by layout managers when setting legacy
+ * expand layout properties.
+ *
+ * Since: 1.10
+ */
+static void
+clutter_actor_queue_compute_expand (ClutterActor *self)
+{
+  ClutterActor *parent_actor;
+  gboolean changed_anything;
+
+  if (self->priv->needs_compute_expand)
+    return;
+
+  changed_anything = FALSE;
+  parent_actor = self;
+  while (parent_actor != NULL)
+    {
+      if (!parent_actor->priv->needs_compute_expand)
+        {
+          parent_actor->priv->needs_compute_expand = TRUE;
+          changed_anything = TRUE;
+        }
+
+      parent_actor = parent_actor->priv->parent_actor;
+    }
+
+  if (changed_anything)
+    clutter_actor_queue_relayout (self);
+}
+
+/**
+ * clutter_actor_set_x_expand:
+ * @self: a #ClutterActor
+ * @x_expand: whether the actor should expand
+ *
+ * Sets whether a #ClutterActor should receive extra space when possible,
+ * during the allocation.
+ *
+ * Whenever a #ClutterActor is resized, all the actors that it contains that
+ * have the #ClutterActor:x-expand property set to %TRUE will receive extra
+ * horizontal space.
+ *
+ * By default, actors will expand if any of their children want to expand. A
+ * layout manager can check whether a #ClutterActor should expand by using
+ * clutter_actor_needs_x_expand().
+ *
+ * By setting the #ClutterActor:x-expand property explicitly, the default
+ * automatic behavior is overridden, regardless of whether an actor has
+ * children or not.
+ *
+ * Since: 1.10
+ */
 void
 clutter_actor_set_x_expand (ClutterActor *self,
                             gboolean      x_expand)
 {
+  ClutterActorPrivate *priv;
   ClutterLayoutInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   x_expand = !!x_expand;
 
+  priv = self->priv;
   info = _clutter_actor_get_layout_info (self);
 
-  if (info->x_expand != x_expand)
-    {
-      info->x_expand = x_expand;
+  if (priv->x_expand_set &&
+      info->x_expand == x_expand)
+    return;
 
-      clutter_actor_queue_relayout (self);
+  priv->x_expand_set = TRUE;
+  info->x_expand = x_expand;
 
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_X_EXPAND]);
-    }
+  clutter_actor_queue_compute_expand (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_X_EXPAND]);
 }
 
+/**
+ * clutter_actor_get_x_expand:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the value set using clutter_actor_set_x_expand().
+ *
+ * Layout managers should use clutter_actor_needs_x_expand() instead, as that
+ * function will check whether any of the actor's children need to expand.
+ *
+ * Return value: %TRUE if the #ClutterActor was explicitly set to expand.
+ *
+ * Since: 1.10
+ */
 gboolean
 clutter_actor_get_x_expand (ClutterActor *self)
 {
@@ -13647,28 +13990,67 @@ clutter_actor_get_x_expand (ClutterActor *self)
   return _clutter_actor_get_layout_info_or_defaults (self)->x_expand;
 }
 
+/**
+ * clutter_actor_set_y_expand:
+ * @self: a #ClutterActor
+ * @x_expand: whether the actor should expand
+ *
+ * Sets whether a #ClutterActor should receive extra space when possible,
+ * during the allocation.
+ *
+ * Whenever a #ClutterActor is resized, all the actors that it contains that
+ * have the #ClutterActor:y-expand property set to %TRUE will receive extra
+ * horizontal space.
+ *
+ * By default, actors will expand if any of their children want to expand. A
+ * layout manager can check whether a #ClutterActor should expand by using
+ * clutter_actor_needs_y_expand().
+ *
+ * By setting the #ClutterActor:y-expand property explicitly, the default
+ * automatic behavior is overridden, regardless of whether an actor has
+ * children or not.
+ *
+ * Since: 1.10
+ */
 void
 clutter_actor_set_y_expand (ClutterActor *self,
                             gboolean      y_expand)
 {
+  ClutterActorPrivate *priv;
   ClutterLayoutInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   y_expand = !!y_expand;
 
+  priv = self->priv;
   info = _clutter_actor_get_layout_info (self);
 
-  if (info->y_expand != y_expand)
-    {
-      info->y_expand = y_expand;
+  if (priv->y_expand_set &&
+      info->y_expand == y_expand)
+    return;
 
-      clutter_actor_queue_relayout (self);
+  priv->y_expand_set = TRUE;
+  info->y_expand = y_expand;
 
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_Y_EXPAND]);
-    }
+  clutter_actor_queue_compute_expand (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_Y_EXPAND]);
 }
 
+/**
+ * clutter_actor_get_y_expand:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the value set using clutter_actor_set_y_expand().
+ *
+ * Layout managers should use clutter_actor_needs_y_expand() instead, as that
+ * function will check whether any of the actor's children need to expand.
+ *
+ * Return value: %TRUE if the #ClutterActor was explicitly set to expand.
+ *
+ * Since: 1.10
+ */
 gboolean
 clutter_actor_get_y_expand (ClutterActor *self)
 {
@@ -13677,6 +14059,19 @@ clutter_actor_get_y_expand (ClutterActor *self)
   return _clutter_actor_get_layout_info_or_defaults (self)->y_expand;
 }
 
+/**
+ * clutter_actor_set_x_align:
+ * @self: a #ClutterActor
+ * @x_align: the horizontal alignment policy
+ *
+ * Sets the horizontal alignment policy of a #ClutterActor, in case the
+ * actor received extra horizontal space.
+ *
+ * See also the #ClutterActor:x-align property, as well as the
+ * #ClutterActor:x-expand property.
+ *
+ * Since: 1.10
+ */
 void
 clutter_actor_set_x_align (ClutterActor      *self,
                            ClutterActorAlign  x_align)
@@ -13697,6 +14092,17 @@ clutter_actor_set_x_align (ClutterActor      *self,
     }
 }
 
+/**
+ * clutter_actor_get_x_align:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the horizontal alignment policy set using
+ * clutter_actor_set_x_align().
+ *
+ * Return value: the horizontal alignment policy.
+ *
+ * Since: 1.10
+ */
 ClutterActorAlign
 clutter_actor_get_x_align (ClutterActor *self)
 {
@@ -13705,6 +14111,19 @@ clutter_actor_get_x_align (ClutterActor *self)
   return _clutter_actor_get_layout_info_or_defaults (self)->x_align;
 }
 
+/**
+ * clutter_actor_set_y_align:
+ * @self: a #ClutterActor
+ * @x_align: the vertical alignment policy
+ *
+ * Sets the vertical alignment policy of a #ClutterActor, in case the
+ * actor received extra vertical space.
+ *
+ * See also the #ClutterActor:y-align property, as well as the
+ * #ClutterActor:y-expand property.
+ *
+ * Since: 1.10
+ */
 void
 clutter_actor_set_y_align (ClutterActor      *self,
                            ClutterActorAlign  y_align)
@@ -13725,6 +14144,17 @@ clutter_actor_set_y_align (ClutterActor      *self,
     }
 }
 
+/**
+ * clutter_actor_get_y_align:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the vertical alignment policy set using
+ * clutter_actor_set_y_align().
+ *
+ * Return value: the vertical alignment policy.
+ *
+ * Since: 1.10
+ */
 ClutterActorAlign
 clutter_actor_get_y_align (ClutterActor *self)
 {
@@ -13733,12 +14163,35 @@ clutter_actor_get_y_align (ClutterActor *self)
   return _clutter_actor_get_layout_info_or_defaults (self)->y_align;
 }
 
+
+/**
+ * clutter_margin_new:
+ *
+ * Creates a new #ClutterMargin.
+ *
+ * Return value: (transfer full): a newly allocated #ClutterMargin. Use
+ *   clutter_margin_free() to free the resources associated with it when
+ *   done.
+ *
+ * Since: 1.10
+ */
 ClutterMargin *
 clutter_margin_new (void)
 {
   return g_slice_new0 (ClutterMargin);
 }
 
+/**
+ * clutter_margin_copy:
+ * @margin_: a #ClutterMargin
+ *
+ * Creates a new #ClutterMargin and copies the contents of @margin_ into
+ * the newly created structure.
+ *
+ * Return value: (transfer full): a copy of the #ClutterMargin.
+ *
+ * Since: 1.10
+ */
 ClutterMargin *
 clutter_margin_copy (const ClutterMargin *margin_)
 {
@@ -13748,6 +14201,15 @@ clutter_margin_copy (const ClutterMargin *margin_)
   return NULL;
 }
 
+/**
+ * clutter_margin_free:
+ * @margin_: a #ClutterMargin
+ *
+ * Frees the resources allocated by clutter_margin_new() and
+ * clutter_margin_copy().
+ *
+ * Since: 1.10
+ */
 void
 clutter_margin_free (ClutterMargin *margin_)
 {
@@ -13759,6 +14221,15 @@ G_DEFINE_BOXED_TYPE (ClutterMargin, clutter_margin,
                      clutter_margin_copy,
                      clutter_margin_free)
 
+/**
+ * clutter_actor_set_margin_top:
+ * @self: a #ClutterActor
+ * @margin: the top margin
+ *
+ * Sets the margin from the top of a #ClutterActor.
+ *
+ * Since: 1.10
+ */
 void
 clutter_actor_set_margin_top (ClutterActor *self,
                               gfloat        margin)
@@ -13780,6 +14251,16 @@ clutter_actor_set_margin_top (ClutterActor *self,
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MARGIN_TOP]);
 }
 
+/**
+ * clutter_actor_get_margin_top:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the top margin of a #ClutterActor.
+ *
+ * Return value: the top margin
+ *
+ * Since: 1.10
+ */
 gfloat
 clutter_actor_get_margin_top (ClutterActor *self)
 {
@@ -13788,6 +14269,15 @@ clutter_actor_get_margin_top (ClutterActor *self)
   return _clutter_actor_get_layout_info_or_defaults (self)->margin.top;
 }
 
+/**
+ * clutter_actor_set_margin_bottom:
+ * @self: a #ClutterActor
+ * @margin: the bottom margin
+ *
+ * Sets the margin from the bottom of a #ClutterActor.
+ *
+ * Since: 1.10
+ */
 void
 clutter_actor_set_margin_bottom (ClutterActor *self,
                                  gfloat        margin)
@@ -13809,6 +14299,16 @@ clutter_actor_set_margin_bottom (ClutterActor *self,
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MARGIN_BOTTOM]);
 }
 
+/**
+ * clutter_actor_get_margin_bottom:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the bottom margin of a #ClutterActor.
+ *
+ * Return value: the bottom margin
+ *
+ * Since: 1.10
+ */
 gfloat
 clutter_actor_get_margin_bottom (ClutterActor *self)
 {
@@ -13817,6 +14317,15 @@ clutter_actor_get_margin_bottom (ClutterActor *self)
   return _clutter_actor_get_layout_info_or_defaults (self)->margin.bottom;
 }
 
+/**
+ * clutter_actor_set_margin_left:
+ * @self: a #ClutterActor
+ * @margin: the left margin
+ *
+ * Sets the margin from the left of a #ClutterActor.
+ *
+ * Since: 1.10
+ */
 void
 clutter_actor_set_margin_left (ClutterActor *self,
                                gfloat        margin)
@@ -13838,6 +14347,16 @@ clutter_actor_set_margin_left (ClutterActor *self,
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MARGIN_LEFT]);
 }
 
+/**
+ * clutter_actor_get_margin_left:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the left margin of a #ClutterActor.
+ *
+ * Return value: the left margin
+ *
+ * Since: 1.10
+ */
 gfloat
 clutter_actor_get_margin_left (ClutterActor *self)
 {
@@ -13846,6 +14365,15 @@ clutter_actor_get_margin_left (ClutterActor *self)
   return _clutter_actor_get_layout_info_or_defaults (self)->margin.left;
 }
 
+/**
+ * clutter_actor_set_margin_right:
+ * @self: a #ClutterActor
+ * @margin: the right margin
+ *
+ * Sets the margin from the right of a #ClutterActor.
+ *
+ * Since: 1.10
+ */
 void
 clutter_actor_set_margin_right (ClutterActor *self,
                                 gfloat        margin)
@@ -13867,6 +14395,16 @@ clutter_actor_set_margin_right (ClutterActor *self,
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MARGIN_RIGHT]);
 }
 
+/**
+ * clutter_actor_get_margin_right:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the right margin of a #ClutterActor.
+ *
+ * Return value: the right margin
+ *
+ * Since: 1.10
+ */
 gfloat
 clutter_actor_get_margin_right (ClutterActor *self)
 {
