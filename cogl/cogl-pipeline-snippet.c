@@ -42,6 +42,13 @@ _cogl_pipeline_snippet_generate_code (const CoglPipelineSnippetData *data)
 {
   CoglPipelineSnippet *snippet;
   int snippet_num = 0;
+  int n_snippets = 0;
+
+  /* First count the number of snippets so we can easily tell when
+     we're at the last one */
+  COGL_LIST_FOREACH (snippet, data->snippets, list_node)
+    if (snippet->snippet->hook == data->hook)
+      n_snippets++;
 
   COGL_LIST_FOREACH (snippet, data->snippets, list_node)
     if (snippet->snippet->hook == data->hook)
@@ -58,7 +65,7 @@ _cogl_pipeline_snippet_generate_code (const CoglPipelineSnippetData *data)
                                 data->return_type :
                                 "void");
 
-        if (COGL_LIST_NEXT (snippet, list_node))
+        if (snippet_num + 1 < n_snippets)
           g_string_append_printf (data->source_buf,
                                   "%s_%i",
                                   data->function_prefix,
