@@ -146,7 +146,6 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
 {
   CoglPipelineShaderState *shader_state;
   CoglPipeline *template_pipeline = NULL;
-  CoglPipelineSnippet *snippet;
   CoglProgram *user_program;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -262,39 +261,8 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
 
   g_string_append (shader_state->source,
                    "void\n"
-                   "main ()\n"
+                   "cogl_generated_source ()\n"
                    "{\n");
-
-  COGL_LIST_FOREACH (snippet, get_vertex_snippets (pipeline), list_node)
-    {
-      const char *declarations =
-        cogl_snippet_get_declarations (snippet->snippet);
-
-      /* Add all of the declarations for vertex snippets */
-      if (declarations)
-        {
-          g_string_append (shader_state->header, declarations);
-          g_string_append_c (shader_state->header, '\n');
-        }
-
-      /* Add all of the pre-hooks for vertex processing */
-      if (snippet->hook == COGL_PIPELINE_SNIPPET_HOOK_VERTEX)
-        {
-          const char *pre =
-            cogl_snippet_get_pre (snippet->snippet);
-
-          if (pre)
-            {
-              g_string_append (shader_state->source, "  {\n");
-              g_string_append (shader_state->source, pre);
-              g_string_append (shader_state->source, "  }\n");
-            }
-        }
-    }
-
-  /* Enclose the generated vertex processing in a block so that any
-     variables declared in it won't be in the scope of the snippets */
-  g_string_append (shader_state->source, "  {\n");
 
   if (ctx->driver == COGL_DRIVER_GLES2)
     /* There is no builtin uniform for the pointsize on GLES2 so we need
@@ -393,6 +361,7 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
       GLint compile_status;
       GLuint shader;
       CoglPipelineSnippet *snippet;
+      int snippet_num;
 
       COGL_STATIC_COUNTER (vertend_glsl_compile_counter,
                            "glsl vertex compile counter",
@@ -406,23 +375,57 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
                        "cogl_modelview_projection_matrix * "
                        "cogl_position_in;\n"
                        "  cogl_color_out = cogl_color_in;\n"
-                       "  }\n");
+                       "}\n");
 
       /* Add all of the post-hooks for vertex processing */
+      snippet_num = 0;
       COGL_LIST_FOREACH (snippet, get_vertex_snippets (pipeline), list_node)
         if (snippet->hook == COGL_PIPELINE_SNIPPET_HOOK_VERTEX)
           {
-            const char *post =
-              cogl_snippet_get_post (snippet->snippet);
+            const char *source;
 
-            if (post)
-              {
-                g_string_append (shader_state->source, "  {\n");
-                g_string_append (shader_state->source, post);
-                g_string_append (shader_state->source, "  }\n");
-              }
+            if ((source = cogl_snippet_get_declarations (snippet->snippet)))
+              g_string_append (shader_state->source, source);
+
+            g_string_append_printf (shader_state->source,
+                                    "\n"
+                                    "void\n"
+                                    "cogl_snippet%i ()\n"
+                                    "{\n",
+                                    snippet_num);
+
+            if ((source = cogl_snippet_get_pre (snippet->snippet)))
+              g_string_append (shader_state->source, source);
+
+            /* Chain on to the next function */
+            if (snippet_num > 0)
+              g_string_append_printf (shader_state->source,
+                                      "  cogl_snippet%i ();\n",
+                                      snippet_num - 1);
+            else
+              g_string_append (shader_state->source,
+                               "  cogl_generated_source ();\n");
+
+            if ((source = cogl_snippet_get_post (snippet->snippet)))
+              g_string_append (shader_state->source, source);
+
+            g_string_append (shader_state->source, "}\n");
+
+            snippet_num++;
           }
 
+      g_string_append (shader_state->source,
+                       "\n"
+                       "void\n"
+                       "main ()\n"
+                       "{\n");
+      if (snippet_num > 0)
+        g_string_append_printf (shader_state->source,
+                                "  cogl_snippet%i ();\n",
+                                snippet_num - 1);
+      else
+        g_string_append (shader_state->source,
+                         "  cogl_generated_source ();\n");
       g_string_append (shader_state->source, "}\n");
 
       GE_RET( shader, ctx, glCreateShader (GL_VERTEX_SHADER) );

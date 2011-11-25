@@ -105,14 +105,14 @@ paint (TestState *state)
 
   cogl_object_unref (pipeline);
 
-  /* The pre string can't really do anything with the current hooks,
-     but let's just test that it compiles */
+  /* Test that the pre string can declare variables used by the post
+     string */
   pipeline = cogl_pipeline_new ();
 
-  cogl_pipeline_set_color4ub (pipeline, 255, 0, 0, 255);
+  cogl_pipeline_set_color4ub (pipeline, 255, 255, 255, 255);
 
-  snippet = cogl_snippet_new (NULL, NULL);
-  cogl_snippet_set_pre (snippet, "cogl_color_out = vec4 (1.0, 0.5, 0.8, 1.0);");
+  snippet = cogl_snippet_new (NULL, "cogl_color_out = redvec;");
+  cogl_snippet_set_pre (snippet, "vec4 redvec = vec4 (1.0, 0.0, 0.0, 1.0);");
   cogl_pipeline_add_vertex_hook (pipeline, snippet);
   cogl_pipeline_add_fragment_hook (pipeline, snippet);
   cogl_object_unref (snippet);
