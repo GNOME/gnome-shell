@@ -37,6 +37,7 @@
 #include "cogl-pipeline-layer-private.h"
 #include "cogl-shader-private.h"
 #include "cogl-blend-string.h"
+#include "cogl-snippet-private.h"
 
 #ifdef COGL_PIPELINE_FRAGEND_GLSL
 
@@ -198,6 +199,19 @@ get_layer_fragment_snippets (CoglPipelineLayer *layer)
   layer = _cogl_pipeline_layer_get_authority (layer, state);
 
   return &layer->big_state->fragment_snippets;
+}
+
+static gboolean
+has_replace_hook (CoglPipelineLayer *layer,
+                  CoglSnippetHook hook)
+{
+  CoglPipelineSnippet *snippet;
+
+  COGL_LIST_FOREACH (snippet, get_layer_fragment_snippets (layer), list_node)
+    if (snippet->snippet->hook == hook && snippet->snippet->replace)
+      return TRUE;
+
+  return FALSE;
 }
 
 static gboolean
@@ -374,9 +388,7 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
                                  CoglPipeline *pipeline,
                                  CoglPipelineLayer *layer)
 {
-  CoglHandle texture;
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
-  const char *target_string, *tex_coord_swizzle;
   CoglPipelineSnippetData snippet_data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -415,72 +427,78 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
 
   g_string_append (shader_state->source, ");\n");
 
-  texture = _cogl_pipeline_layer_get_texture (layer);
-
-  if (texture == NULL)
+  /* There's no need to generate the real texture lookup if it's going
+     to be replaced */
+  if (!has_replace_hook (layer, COGL_SNIPPET_HOOK_TEXTURE_LOOKUP))
     {
-      target_string = "2D";
-      tex_coord_swizzle = "st";
-    }
-  else
-    {
-      GLenum gl_target;
+      CoglHandle texture = _cogl_pipeline_layer_get_texture (layer);
+      const char *target_string, *tex_coord_swizzle;
 
-      cogl_texture_get_gl_texture (texture, NULL, &gl_target);
-      switch (gl_target)
+      if (texture == NULL)
         {
-#ifdef HAVE_COGL_GL
-        case GL_TEXTURE_1D:
-          target_string = "1D";
-          tex_coord_swizzle = "s";
-          break;
-#endif
-
-        case GL_TEXTURE_2D:
           target_string = "2D";
           tex_coord_swizzle = "st";
-          break;
+        }
+      else
+        {
+          GLenum gl_target;
 
-#ifdef GL_ARB_texture_rectangle
-        case GL_TEXTURE_RECTANGLE_ARB:
-          target_string = "2DRect";
-          tex_coord_swizzle = "st";
-          break;
+          cogl_texture_get_gl_texture (texture, NULL, &gl_target);
+          switch (gl_target)
+            {
+#ifdef HAVE_COGL_GL
+            case GL_TEXTURE_1D:
+              target_string = "1D";
+              tex_coord_swizzle = "s";
+              break;
 #endif
 
-        case GL_TEXTURE_3D:
-          target_string = "3D";
-          tex_coord_swizzle = "stp";
-          break;
+            case GL_TEXTURE_2D:
+              target_string = "2D";
+              tex_coord_swizzle = "st";
+              break;
 
-        default:
-          g_assert_not_reached ();
+#ifdef GL_ARB_texture_rectangle
+            case GL_TEXTURE_RECTANGLE_ARB:
+              target_string = "2DRect";
+              tex_coord_swizzle = "st";
+              break;
+#endif
+
+            case GL_TEXTURE_3D:
+              target_string = "3D";
+              tex_coord_swizzle = "stp";
+              break;
+
+            default:
+              g_assert_not_reached ();
+            }
         }
+
+      /* Create a sampler uniform */
+      if (G_LIKELY (!COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
+        g_string_append_printf (shader_state->header,
+                                "uniform sampler%s _cogl_sampler_%i;\n",
+                                target_string,
+                                unit_index);
+
+      g_string_append_printf (shader_state->header,
+                              "vec4\n"
+                              "cogl_real_texture_lookup%i (vec4 coords)\n"
+                              "{\n"
+                              "  return ",
+                              unit_index);
+
+      if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
+        g_string_append (shader_state->header,
+                         "vec4 (1.0, 1.0, 1.0, 1.0);\n");
+      else
+        g_string_append_printf (shader_state->header,
+                                "texture%s (_cogl_sampler_%i, coords.%s);\n",
+                                target_string, unit_index, tex_coord_swizzle);
+
+      g_string_append (shader_state->header, "}\n");
     }
-
-  /* Create a sampler uniform */
-  if (G_LIKELY (!COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
-    g_string_append_printf (shader_state->header,
-                            "uniform sampler%s _cogl_sampler_%i;\n",
-                            target_string,
-                            unit_index);
-
-  g_string_append_printf (shader_state->header,
-                          "vec4\n"
-                          "cogl_real_texture_lookup%i (vec4 coords)\n"
-                          "{\n"
-                          "  return ",
-                          unit_index);
-
-  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
-    g_string_append (shader_state->header,
-                     "vec4 (1.0, 1.0, 1.0, 1.0);\n");
-  else
-    g_string_append_printf (shader_state->header,
-                            "texture%s (_cogl_sampler_%i, coords.%s);\n",
-                            target_string, unit_index, tex_coord_swizzle);
-
-  g_string_append (shader_state->header, "}\n");
 
   /* Wrap the texture lookup in any snippets that have been hooked */
   memset (&snippet_data, 0, sizeof (snippet_data));

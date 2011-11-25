@@ -232,6 +232,20 @@ paint (TestState *state)
 
   cogl_object_unref (snippet);
 
+  /* Check replacing the texture lookup hook */
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP, NULL, NULL);
+  cogl_snippet_set_replace (snippet, "cogl_texel = vec4 (0.0, 0.0, 1.0, 0.0);");
+
+  pipeline = create_texture_pipeline ();
+  cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
+  cogl_push_source (pipeline);
+  cogl_rectangle_with_texture_coords (90, 0, 100, 10,
+                                      0, 0, 0, 0);
+  cogl_pop_source ();
+  cogl_object_unref (pipeline);
+
+  cogl_object_unref (snippet);
+
   /* Test replacing a previous snippet */
   pipeline = create_texture_pipeline ();
 
@@ -302,6 +316,7 @@ validate_result (void)
   test_utils_check_pixel (65, 5, 0x00ff00ff);
   test_utils_check_pixel (75, 5, 0x808000ff);
   test_utils_check_pixel (85, 5, 0x00ffffff);
+  test_utils_check_pixel (95, 5, 0x0000ffff);
   test_utils_check_pixel (105, 5, 0xff0000ff);
 }
 
