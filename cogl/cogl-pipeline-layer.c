@@ -204,6 +204,11 @@ _cogl_pipeline_layer_init_multi_property_sparse_state (
           }
         break;
       }
+    case COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS:
+      _cogl_pipeline_snippet_list_copy (&layer->big_state->fragment_snippets,
+                                        &authority->big_state->
+                                        fragment_snippets);
+      break;
     }
 }
 
@@ -579,6 +584,12 @@ _cogl_pipeline_layer_equal (CoglPipelineLayer *layer0,
                           _cogl_pipeline_layer_point_sprite_coords_equal))
     return FALSE;
 
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS &&
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS_INDEX,
+                          authorities0, authorities1,
+                          _cogl_pipeline_layer_fragment_snippets_equal))
+    return FALSE;
+
   return TRUE;
 }
 
@@ -590,6 +601,9 @@ _cogl_pipeline_layer_free (CoglPipelineLayer *layer)
   if (layer->differences & COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA &&
       layer->texture != NULL)
     cogl_object_unref (layer->texture);
+
+  if (layer->differences & COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS)
+    _cogl_pipeline_snippet_list_free (&layer->big_state->fragment_snippets);
 
   if (layer->differences & COGL_PIPELINE_LAYER_STATE_NEEDS_BIG_STATE)
     g_slice_free (CoglPipelineLayerBigState, layer->big_state);

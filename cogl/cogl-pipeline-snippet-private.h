@@ -32,18 +32,12 @@
 #include "cogl-queue.h"
 
 /* Enumeration of all the hook points that a snippet can be attached
-   to within a pipeline. Note that although there are currently only
-   two points that directly correspond to the two state flags, the
-   idea isn't that each new enum here will mean a state flag. The
-   state flags are just intended to mark the split between hooks that
-   affect the fragment shader and hooks that affect the vertex
-   shader. For example, if we add a hook to wrap around the processing
-   for a particular layer then that hook would be part of the fragment
-   snippets state. */
+   to within a pipeline. */
 typedef enum
 {
   COGL_PIPELINE_SNIPPET_HOOK_VERTEX,
-  COGL_PIPELINE_SNIPPET_HOOK_FRAGMENT
+  COGL_PIPELINE_SNIPPET_HOOK_FRAGMENT,
+  COGL_PIPELINE_SNIPPET_HOOK_TEXTURE_LOOKUP
 } CoglPipelineSnippetHook;
 
 typedef struct _CoglPipelineSnippet CoglPipelineSnippet;
@@ -98,6 +92,26 @@ typedef struct
 
 void
 _cogl_pipeline_snippet_generate_code (const CoglPipelineSnippetData *data);
+
+void
+_cogl_pipeline_snippet_list_free (CoglPipelineSnippetList *list);
+
+void
+_cogl_pipeline_snippet_list_add (CoglPipelineSnippetList *list,
+                                 CoglPipelineSnippetHook hook,
+                                 CoglSnippet *snippet);
+
+void
+_cogl_pipeline_snippet_list_copy (CoglPipelineSnippetList *dst,
+                                  const CoglPipelineSnippetList *src);
+
+void
+_cogl_pipeline_snippet_list_hash (CoglPipelineSnippetList *list,
+                                  unsigned int *hash);
+
+gboolean
+_cogl_pipeline_snippet_list_equal (CoglPipelineSnippetList *list0,
+                                   CoglPipelineSnippetList *list1);
 
 #endif /* __COGL_PIPELINE_SNIPPET_PRIVATE_H */
 

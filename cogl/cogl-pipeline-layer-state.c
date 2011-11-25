@@ -774,6 +774,58 @@ cogl_pipeline_get_layer_point_sprite_coords_enabled (CoglPipeline *pipeline,
   return authority->big_state->point_sprite_coords;
 }
 
+static void
+_cogl_pipeline_layer_add_fragment_snippet (CoglPipeline *pipeline,
+                                           int layer_index,
+                                           CoglPipelineSnippetHook hook,
+                                           CoglSnippet *snippet)
+{
+  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS;
+  CoglPipelineLayer *layer, *authority;
+
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
+
+  /* Note: this will ensure that the layer exists, creating one if it
+   * doesn't already.
+   *
+   * Note: If the layer already existed it's possibly owned by another
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
+
+  /* Now find the ancestor of the layer that is the authority for the
+   * state we want to change */
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
+
+  layer = _cogl_pipeline_layer_pre_change_notify (pipeline, layer, change);
+
+  _cogl_pipeline_snippet_list_add (&layer->big_state->fragment_snippets,
+                                   hook,
+                                   snippet);
+
+  /* If we weren't previously the authority on this state then we need
+   * to extended our differences mask and so it's possible that some
+   * of our ancestry will now become redundant, so we aim to reparent
+   * ourselves if that's true... */
+  if (layer != authority)
+    {
+      layer->differences |= change;
+      _cogl_pipeline_layer_prune_redundant_ancestry (layer);
+    }
+}
+
+void
+cogl_pipeline_add_texture_lookup_hook (CoglPipeline *pipeline,
+                                       int layer_index,
+                                       CoglSnippet *snippet)
+{
+  CoglPipelineSnippetHook hook = COGL_PIPELINE_SNIPPET_HOOK_TEXTURE_LOOKUP;
+  _cogl_pipeline_layer_add_fragment_snippet (pipeline,
+                                             layer_index,
+                                             hook,
+                                             snippet);
+}
+
 gboolean
 _cogl_pipeline_layer_texture_target_equal (CoglPipelineLayer *authority0,
                                            CoglPipelineLayer *authority1,
@@ -909,6 +961,16 @@ _cogl_pipeline_layer_point_sprite_coords_equal (CoglPipelineLayer *authority0,
   CoglPipelineLayerBigState *big_state1 = authority1->big_state;
 
   return big_state0->point_sprite_coords == big_state1->point_sprite_coords;
+}
+
+gboolean
+_cogl_pipeline_layer_fragment_snippets_equal (CoglPipelineLayer *authority0,
+                                              CoglPipelineLayer *authority1)
+{
+  return _cogl_pipeline_snippet_list_equal (&authority0->big_state->
+                                            fragment_snippets,
+                                            &authority1->big_state->
+                                            fragment_snippets);
 }
 
 static void
@@ -1664,4 +1726,11 @@ _cogl_pipeline_layer_hash_point_sprite_state (CoglPipelineLayer *authority,
                                    sizeof (big_state->point_sprite_coords));
 }
 
-
+void
+_cogl_pipeline_layer_hash_fragment_snippets_state (CoglPipelineLayer *authority,
+                                                   CoglPipelineLayer **authorities,
+                                                   CoglPipelineHashState *state)
+{
+  _cogl_pipeline_snippet_list_hash (&authority->big_state->fragment_snippets,
+                                    &state->hash);
+}

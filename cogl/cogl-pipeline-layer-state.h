@@ -497,6 +497,47 @@ cogl_pipeline_set_layer_wrap_mode (CoglPipeline        *pipeline,
                                    int                  layer_index,
                                    CoglPipelineWrapMode mode);
 
+/**
+ * cogl_pipeline_add_texture_lookup_hook:
+ * @pipeline: A #CoglPipeline
+ * @layer: The layer whose texutre lookup should be hooked
+ * @snippet: The #CoglSnippet to add to the texture lookup for @layer
+ *
+ * Adds a shader snippet that will hook on to the texture lookup part
+ * of a given layer. This gives a chance for the application to modify
+ * the coordinates that will be used for the texture lookup or to
+ * alter the returned texel.
+ *
+ * Within the snippet code for this hook there are two extra variables
+ * available. ‘cogl_tex_coord’ is a vec4 which contains the texture
+ * coordinates that will be used for the texture lookup this can be
+ * modified. ‘cogl_texel’ will contain the result of the texture
+ * lookup. This can be modified.
+ *
+ * The ‘declarations’ string in @snippet will be inserted in the
+ * global scope of the shader. Use this to declare any uniforms,
+ * attributes or functions that the snippet requires.
+ *
+ * The ‘pre’ string in @snippet will be inserted at the top of the
+ * main() function before any fragment processing is done. This is a
+ * good place to modify the cogl_tex_coord variable.
+ *
+ * If a ‘replace’ string is given then this will be used instead of a
+ * the default texture lookup. The snippet would typically use its own
+ * sampler in this case.
+ *
+ * The ‘post’ string in @snippet will be inserted after texture lookup
+ * has been preformed. Here the snippet can modify the cogl_texel
+ * variable to alter the returned texel.
+ *
+ * Since: 1.10
+ * Stability: Unstable
+ */
+void
+cogl_pipeline_add_texture_lookup_hook (CoglPipeline *pipeline,
+                                       int layer_index,
+                                       CoglSnippet *snippet);
+
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 G_END_DECLS

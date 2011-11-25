@@ -32,6 +32,8 @@
 #include <string.h>
 
 #include "cogl-pipeline-snippet-private.h"
+#include "cogl-snippet-private.h"
+#include "cogl-util.h"
 
 /* Helper functions that are used by both GLSL pipeline backends */
 
@@ -157,4 +159,102 @@ _cogl_pipeline_snippet_generate_code (const CoglPipelineSnippetData *data)
                                 data->chain_function,
                                 data->arguments ? data->arguments : "");
     }
+}
+
+static void
+_cogl_pipeline_snippet_free (CoglPipelineSnippet *pipeline_snippet)
+{
+  cogl_object_unref (pipeline_snippet->snippet);
+  g_slice_free (CoglPipelineSnippet, pipeline_snippet);
+}
+
+void
+_cogl_pipeline_snippet_list_free (CoglPipelineSnippetList *list)
+{
+  CoglPipelineSnippet *pipeline_snippet, *tmp;
+
+  COGL_LIST_FOREACH_SAFE (pipeline_snippet, list, list_node, tmp)
+    _cogl_pipeline_snippet_free (pipeline_snippet);
+}
+
+void
+_cogl_pipeline_snippet_list_add (CoglPipelineSnippetList *list,
+                                 CoglPipelineSnippetHook hook,
+                                 CoglSnippet *snippet)
+{
+  CoglPipelineSnippet *pipeline_snippet = g_slice_new (CoglPipelineSnippet);
+
+  pipeline_snippet->hook = hook;
+  pipeline_snippet->snippet = cogl_object_ref (snippet);
+
+  _cogl_snippet_make_immutable (pipeline_snippet->snippet);
+
+  if (COGL_LIST_EMPTY (list))
+    COGL_LIST_INSERT_HEAD (list, pipeline_snippet, list_node);
+  else
+    {
+      CoglPipelineSnippet *tail;
+
+      for (tail = COGL_LIST_FIRST (list);
+           COGL_LIST_NEXT (tail, list_node);
+           tail = COGL_LIST_NEXT (tail, list_node));
+
+      COGL_LIST_INSERT_AFTER (tail, pipeline_snippet, list_node);
+    }
+}
+
+void
+_cogl_pipeline_snippet_list_copy (CoglPipelineSnippetList *dst,
+                                  const CoglPipelineSnippetList *src)
+{
+  CoglPipelineSnippet *tail = NULL;
+  const CoglPipelineSnippet *l;
+
+  COGL_LIST_INIT (dst);
+
+  COGL_LIST_FOREACH (l, src, list_node)
+    {
+      CoglPipelineSnippet *copy = g_slice_dup (CoglPipelineSnippet, l);
+
+      cogl_object_ref (copy->snippet);
+
+      if (tail)
+        COGL_LIST_INSERT_AFTER (tail, copy, list_node);
+      else
+        COGL_LIST_INSERT_HEAD (dst, copy, list_node);
+
+      tail = copy;
+    }
+}
+
+void
+_cogl_pipeline_snippet_list_hash (CoglPipelineSnippetList *list,
+                                  unsigned int *hash)
+{
+  CoglPipelineSnippet *l;
+
+  COGL_LIST_FOREACH (l, list, list_node)
+    {
+      *hash = _cogl_util_one_at_a_time_hash (*hash,
+                                             &l->hook,
+                                             sizeof (CoglPipelineSnippetHook));
+      *hash = _cogl_util_one_at_a_time_hash (*hash,
+                                             &l->snippet,
+                                             sizeof (CoglSnippet *));
+    }
+}
+
+gboolean
+_cogl_pipeline_snippet_list_equal (CoglPipelineSnippetList *list0,
+                                   CoglPipelineSnippetList *list1)
+{
+  CoglPipelineSnippet *l0, *l1;
+
+  for (l0 = COGL_LIST_FIRST (list0), l1 = COGL_LIST_FIRST (list1);
+       l0 && l1;
+       l0 = COGL_LIST_NEXT (l0, list_node), l1 = COGL_LIST_NEXT (l1, list_node))
+    if (l0->hook != l1->hook || l0->snippet != l1->snippet)
+      return FALSE;
+
+  return l0 == NULL && l1 == NULL;
 }

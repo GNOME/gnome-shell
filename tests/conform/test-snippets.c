@@ -9,6 +9,37 @@ typedef struct _TestState
   int stub;
 } TestState;
 
+static CoglPipeline *
+create_texture_pipeline (void)
+{
+  CoglPipeline *pipeline;
+  CoglHandle tex;
+  static const guint8 tex_data[] =
+    {
+      0xff, 0x00, 0x00, 0xff, /* red */  0x00, 0xff, 0x00, 0xff, /* green */
+      0x00, 0x00, 0xff, 0xff, /* blue */ 0xff, 0xff, 0x00, 0xff, /* yellow */
+    };
+
+  tex = cogl_texture_new_from_data (2, 2, /* width/height */
+                                    COGL_TEXTURE_NO_ATLAS,
+                                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                    COGL_PIXEL_FORMAT_ANY,
+                                    8, /* rowstride */
+                                    tex_data);
+
+  pipeline = cogl_pipeline_new ();
+
+  cogl_pipeline_set_layer_texture (pipeline, 0, tex);
+
+  cogl_pipeline_set_layer_filters (pipeline, 0,
+                                   COGL_PIPELINE_FILTER_NEAREST,
+                                   COGL_PIPELINE_FILTER_NEAREST);
+
+  cogl_handle_unref (tex);
+
+  return pipeline;
+}
+
 static void
 paint (TestState *state)
 {
@@ -170,6 +201,23 @@ paint (TestState *state)
 
   cogl_object_unref (snippet);
 
+  /* Check the texture lookup hook */
+  snippet = cogl_snippet_new (NULL,
+                              "cogl_texel.b += 1.0;");
+  /* Flip the texture coordinates around the y axis so that it will
+     get the green texel */
+  cogl_snippet_set_pre (snippet, "cogl_tex_coord.x = 1.0 - cogl_tex_coord.x;");
+
+  pipeline = create_texture_pipeline ();
+  cogl_pipeline_add_texture_lookup_hook (pipeline, 0, snippet);
+  cogl_push_source (pipeline);
+  cogl_rectangle_with_texture_coords (80, 0, 90, 10,
+                                      0, 0, 0, 0);
+  cogl_pop_source ();
+  cogl_object_unref (pipeline);
+
+  cogl_object_unref (snippet);
+
   /* Sanity check modifying the snippet */
   snippet = cogl_snippet_new ("foo", "bar");
   g_assert_cmpstr (cogl_snippet_get_declarations (snippet), ==, "foo");
@@ -213,6 +261,7 @@ validate_result (void)
   test_utils_check_pixel (55, 5, 0x00ff00ff);
   test_utils_check_pixel (65, 5, 0x00ff00ff);
   test_utils_check_pixel (75, 5, 0x808000ff);
+  test_utils_check_pixel (85, 5, 0x00ffffff);
 }
 
 void

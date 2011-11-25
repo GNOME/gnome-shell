@@ -78,6 +78,10 @@ gboolean
 _cogl_pipeline_layer_point_sprite_coords_equal (CoglPipelineLayer *authority0,
                                                 CoglPipelineLayer *authority1);
 
+gboolean
+_cogl_pipeline_layer_fragment_snippets_equal (CoglPipelineLayer *authority0,
+                                              CoglPipelineLayer *authority1);
+
 void
 _cogl_pipeline_layer_hash_unit_state (CoglPipelineLayer *authority,
                                       CoglPipelineLayer **authorities,
@@ -122,5 +126,10 @@ void
 _cogl_pipeline_layer_hash_point_sprite_state (CoglPipelineLayer *authority,
                                               CoglPipelineLayer **authorities,
                                               CoglPipelineHashState *state);
+
+void
+_cogl_pipeline_layer_hash_fragment_snippets_state (CoglPipelineLayer *authority,
+                                                   CoglPipelineLayer **authorities,
+                                                   CoglPipelineHashState *state);
 
 #endif /* __COGL_PIPELINE_LAYER_STATE_PRIVATE_H */

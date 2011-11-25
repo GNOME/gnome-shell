@@ -340,21 +340,6 @@ _cogl_pipeline_uniforms_state_equal (CoglPipeline *authority0,
   return TRUE;
 }
 
-static gboolean
-_cogl_pipeline_snippet_list_equal (CoglPipelineSnippetList *list0,
-                                   CoglPipelineSnippetList *list1)
-{
-  CoglPipelineSnippet *l0, *l1;
-
-  for (l0 = COGL_LIST_FIRST (list0), l1 = COGL_LIST_FIRST (list1);
-       l0 && l1;
-       l0 = COGL_LIST_NEXT (l0, list_node), l1 = COGL_LIST_NEXT (l1, list_node))
-    if (l0->hook != l1->hook || l0->snippet != l1->snippet)
-      return FALSE;
-
-  return l0 == NULL && l1 == NULL;
-}
-
 gboolean
 _cogl_pipeline_vertex_snippets_state_equal (CoglPipeline *authority0,
                                             CoglPipeline *authority1)
@@ -1585,32 +1570,6 @@ cogl_pipeline_set_uniform_matrix (CoglPipeline *pipeline,
 }
 
 static void
-_cogl_pipeline_snippet_list_add (CoglPipelineSnippetList *list,
-                                 CoglPipelineSnippetHook hook,
-                                 CoglSnippet *snippet)
-{
-  CoglPipelineSnippet *pipeline_snippet = g_slice_new (CoglPipelineSnippet);
-
-  pipeline_snippet->hook = hook;
-  pipeline_snippet->snippet = cogl_object_ref (snippet);
-
-  _cogl_snippet_make_immutable (pipeline_snippet->snippet);
-
-  if (COGL_LIST_EMPTY (list))
-    COGL_LIST_INSERT_HEAD (list, pipeline_snippet, list_node);
-  else
-    {
-      CoglPipelineSnippet *tail;
-
-      for (tail = COGL_LIST_FIRST (list);
-           COGL_LIST_NEXT (tail, list_node);
-           tail = COGL_LIST_NEXT (tail, list_node));
-
-      COGL_LIST_INSERT_AFTER (tail, pipeline_snippet, list_node);
-    }
-}
-
-static void
 _cogl_pipeline_add_vertex_snippet (CoglPipeline *pipeline,
                                    CoglPipelineSnippetHook hook,
                                    CoglSnippet *snippet)
@@ -1682,14 +1641,40 @@ _cogl_pipeline_has_vertex_snippets (CoglPipeline *pipeline)
   return !COGL_LIST_EMPTY (&authority->big_state->vertex_snippets);
 }
 
+static gboolean
+check_layer_has_fragment_snippet (CoglPipelineLayer *layer,
+                                  void *user_data)
+{
+  unsigned long state = COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS;
+  CoglPipelineLayer *authority =
+    _cogl_pipeline_layer_get_authority (layer, state);
+  gboolean *found_fragment_snippet = user_data;
+
+  if (!COGL_LIST_EMPTY (&authority->big_state->fragment_snippets))
+    {
+      *found_fragment_snippet = TRUE;
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 gboolean
 _cogl_pipeline_has_fragment_snippets (CoglPipeline *pipeline)
 {
   CoglPipeline *authority =
     _cogl_pipeline_get_authority (pipeline,
                                   COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS);
+  gboolean found_fragment_snippet = FALSE;
 
-  return !COGL_LIST_EMPTY (&authority->big_state->fragment_snippets);
+  if (!COGL_LIST_EMPTY (&authority->big_state->fragment_snippets))
+    return TRUE;
+
+  _cogl_pipeline_foreach_layer_internal (pipeline,
+                                         check_layer_has_fragment_snippet,
+                                         &found_fragment_snippet);
+
+  return found_fragment_snippet;
 }
 
 void
@@ -1973,31 +1958,12 @@ _cogl_pipeline_compare_uniform_differences (unsigned long *differences,
     }
 }
 
-static void
-_cogl_pipeline_snippet_list_hash (CoglPipelineSnippetList *list,
-                                  CoglPipelineHashState *state)
-{
-  CoglPipelineSnippet *l;
-
-  COGL_LIST_FOREACH (l, list, list_node)
-    {
-      state->hash =
-        _cogl_util_one_at_a_time_hash (state->hash,
-                                       &l->hook,
-                                       sizeof (CoglPipelineSnippetHook));
-      state->hash =
-        _cogl_util_one_at_a_time_hash (state->hash,
-                                       &l->snippet,
-                                       sizeof (CoglSnippet *));
-    }
-}
-
 void
 _cogl_pipeline_hash_vertex_snippets_state (CoglPipeline *authority,
                                            CoglPipelineHashState *state)
 {
   _cogl_pipeline_snippet_list_hash (&authority->big_state->vertex_snippets,
-                                    state);
+                                    &state->hash);
 }
 
 void
@@ -2005,5 +1971,5 @@ _cogl_pipeline_hash_fragment_snippets_state (CoglPipeline *authority,
                                              CoglPipelineHashState *state)
 {
   _cogl_pipeline_snippet_list_hash (&authority->big_state->fragment_snippets,
-                                    state);
+                                    &state->hash);
 }

@@ -191,6 +191,15 @@ get_fragment_snippets (CoglPipeline *pipeline)
   return &pipeline->big_state->fragment_snippets;
 }
 
+static CoglPipelineSnippetList *
+get_layer_fragment_snippets (CoglPipelineLayer *layer)
+{
+  unsigned long state = COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS;
+  layer = _cogl_pipeline_layer_get_authority (layer, state);
+
+  return &layer->big_state->fragment_snippets;
+}
+
 static gboolean
 _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
                                    int n_layers,
@@ -368,6 +377,7 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
   CoglHandle texture;
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
   const char *target_string, *tex_coord_swizzle;
+  CoglPipelineSnippetData snippet_data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -377,16 +387,29 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
   shader_state->unit_state[unit_index].sampled = TRUE;
 
   g_string_append_printf (shader_state->source,
-                          "  vec4 texel%i = ",
+                          "  vec4 texel%i = cogl_texture_lookup%i (",
+                          unit_index,
                           unit_index);
 
-  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
-    {
-      g_string_append (shader_state->source,
-                       "vec4 (1.0, 1.0, 1.0, 1.0);\n");
+  /* If point sprite coord generation is being used then divert to the
+     built-in varying var for that instead of the texture
+     coordinates. We don't want to do this under GL because in that
+     case we will instead use glTexEnv(GL_COORD_REPLACE) to replace
+     the texture coords with the point sprite coords. Although GL also
+     supports the gl_PointCoord variable, it requires GLSL 1.2 which
+     would mean we would have to declare the GLSL version and check
+     for it */
+  if (ctx->driver == COGL_DRIVER_GLES2 &&
+      cogl_pipeline_get_layer_point_sprite_coords_enabled (pipeline,
+                                                           layer->index))
+    g_string_append_printf (shader_state->source,
+                            "gl_PointCoord");
+  else
+    g_string_append_printf (shader_state->source,
+                            "cogl_tex_coord_in[%d]",
+                            unit_index);
 
-      return;
-    }
+  g_string_append (shader_state->source, ");\n");
 
   texture = _cogl_pipeline_layer_get_texture (layer);
 
@@ -432,35 +455,50 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
     }
 
   /* Create a sampler uniform */
+  if (G_LIKELY (!COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
+    g_string_append_printf (shader_state->header,
+                            "uniform sampler%s _cogl_sampler_%i;\n",
+                            target_string,
+                            unit_index);
+
   g_string_append_printf (shader_state->header,
-                          "uniform sampler%s _cogl_sampler_%i;\n",
-                          target_string,
+                          "vec4\n"
+                          "cogl_real_texture_lookup%i (vec4 coords)\n"
+                          "{\n"
+                          "  return ",
                           unit_index);
 
-  g_string_append_printf (shader_state->source,
-                          "texture%s (_cogl_sampler_%i, ",
-                          target_string, unit_index);
-
-  /* If point sprite coord generation is being used then divert to the
-     built-in varying var for that instead of the texture
-     coordinates. We don't want to do this under GL because in that
-     case we will instead use glTexEnv(GL_COORD_REPLACE) to replace
-     the texture coords with the point sprite coords. Although GL also
-     supports the gl_PointCoord variable, it requires GLSL 1.2 which
-     would mean we would have to declare the GLSL version and check
-     for it */
-  if (ctx->driver == COGL_DRIVER_GLES2 &&
-      cogl_pipeline_get_layer_point_sprite_coords_enabled (pipeline,
-                                                           layer->index))
-    g_string_append_printf (shader_state->source,
-                            "gl_PointCoord.%s",
-                            tex_coord_swizzle);
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
+    g_string_append (shader_state->header,
+                     "vec4 (1.0, 1.0, 1.0, 1.0);\n");
   else
-    g_string_append_printf (shader_state->source,
-                            "cogl_tex_coord_in[%d].%s",
-                            unit_index, tex_coord_swizzle);
+    g_string_append_printf (shader_state->header,
+                            "texture%s (_cogl_sampler_%i, coords.%s);\n",
+                            target_string, unit_index, tex_coord_swizzle);
 
-  g_string_append (shader_state->source, ");\n");
+  g_string_append (shader_state->header, "}\n");
+
+  /* Wrap the texture lookup in any snippets that have been hooked */
+  memset (&snippet_data, 0, sizeof (snippet_data));
+  snippet_data.snippets = get_layer_fragment_snippets (layer);
+  snippet_data.hook = COGL_PIPELINE_SNIPPET_HOOK_TEXTURE_LOOKUP;
+  snippet_data.chain_function = g_strdup_printf ("cogl_real_texture_lookup%i",
+                                                 unit_index);
+  snippet_data.final_name = g_strdup_printf ("cogl_texture_lookup%i",
+                                             unit_index);
+  snippet_data.function_prefix = g_strdup_printf ("cogl_texture_lookup_hook%i",
+                                                  unit_index);
+  snippet_data.return_type = "vec4";
+  snippet_data.return_variable = "cogl_texel";
+  snippet_data.arguments = "cogl_tex_coord";
+  snippet_data.argument_declarations = "vec4 cogl_tex_coord";
+  snippet_data.source_buf = shader_state->header;
+
+  _cogl_pipeline_snippet_generate_code (&snippet_data);
+
+  g_free ((char *) snippet_data.chain_function);
+  g_free ((char *) snippet_data.final_name);
+  g_free ((char *) snippet_data.function_prefix);
 }
 
 static void
