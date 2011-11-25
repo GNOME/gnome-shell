@@ -78,6 +78,7 @@ _cogl_pipeline_layer_has_alpha (CoglPipelineLayer *layer)
                                         COGL_PIPELINE_LAYER_STATE_COMBINE);
   CoglPipelineLayerBigState *big_state = combine_authority->big_state;
   CoglPipelineLayer *tex_authority;
+  CoglPipelineLayer *snippets_authority;
 
   /* has_alpha maintains the alpha status for the GL_PREVIOUS layer */
 
@@ -111,6 +112,12 @@ _cogl_pipeline_layer_has_alpha (CoglPipelineLayer *layer)
     {
       return TRUE;
     }
+
+  /* All bets are off if the layer contains any snippets */
+  snippets_authority = _cogl_pipeline_layer_get_authority
+    (layer, COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS);
+  if (!COGL_LIST_EMPTY (&snippets_authority->big_state->fragment_snippets))
+    return TRUE;
 
   return FALSE;
 }

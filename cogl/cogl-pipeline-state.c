@@ -1632,13 +1632,29 @@ cogl_pipeline_add_fragment_hook (CoglPipeline *pipeline,
 }
 
 gboolean
-_cogl_pipeline_has_vertex_snippets (CoglPipeline *pipeline)
+_cogl_pipeline_has_non_layer_vertex_snippets (CoglPipeline *pipeline)
 {
   CoglPipeline *authority =
     _cogl_pipeline_get_authority (pipeline,
                                   COGL_PIPELINE_STATE_VERTEX_SNIPPETS);
 
   return !COGL_LIST_EMPTY (&authority->big_state->vertex_snippets);
+}
+
+gboolean
+_cogl_pipeline_has_vertex_snippets (CoglPipeline *pipeline)
+{
+  return _cogl_pipeline_has_non_layer_vertex_snippets (pipeline);
+}
+
+gboolean
+_cogl_pipeline_has_non_layer_fragment_snippets (CoglPipeline *pipeline)
+{
+  CoglPipeline *authority =
+    _cogl_pipeline_get_authority (pipeline,
+                                  COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS);
+
+  return !COGL_LIST_EMPTY (&authority->big_state->fragment_snippets);
 }
 
 static gboolean
@@ -1662,12 +1678,9 @@ check_layer_has_fragment_snippet (CoglPipelineLayer *layer,
 gboolean
 _cogl_pipeline_has_fragment_snippets (CoglPipeline *pipeline)
 {
-  CoglPipeline *authority =
-    _cogl_pipeline_get_authority (pipeline,
-                                  COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS);
   gboolean found_fragment_snippet = FALSE;
 
-  if (!COGL_LIST_EMPTY (&authority->big_state->fragment_snippets))
+  if (_cogl_pipeline_has_non_layer_fragment_snippets (pipeline))
     return TRUE;
 
   _cogl_pipeline_foreach_layer_internal (pipeline,

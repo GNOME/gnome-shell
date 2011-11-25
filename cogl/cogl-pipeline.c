@@ -761,6 +761,18 @@ _cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
         return TRUE;
     }
 
+  if (changes & COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS)
+    {
+      if (!_cogl_pipeline_has_non_layer_fragment_snippets (pipeline))
+        return TRUE;
+    }
+
+  if (changes & COGL_PIPELINE_STATE_VERTEX_SNIPPETS)
+    {
+      if (!_cogl_pipeline_has_non_layer_vertex_snippets (pipeline))
+        return TRUE;
+    }
+
   /* XXX: we should only need to look at these if lighting is enabled
    */
   if (changes & COGL_PIPELINE_STATE_LIGHTING)

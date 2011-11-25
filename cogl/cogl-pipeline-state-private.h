@@ -37,6 +37,12 @@ _cogl_pipeline_has_vertex_snippets (CoglPipeline *pipeline);
 gboolean
 _cogl_pipeline_has_fragment_snippets (CoglPipeline *pipeline);
 
+gboolean
+_cogl_pipeline_has_non_layer_vertex_snippets (CoglPipeline *pipeline);
+
+gboolean
+_cogl_pipeline_has_non_layer_fragment_snippets (CoglPipeline *pipeline);
+
 void
 _cogl_pipeline_set_fog_state (CoglPipeline *pipeline,
                               const CoglPipelineFogState *fog_state);
