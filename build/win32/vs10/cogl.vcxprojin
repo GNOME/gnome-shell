@@ -191,6 +191,9 @@
 		<ClCompile Include="..\..\..\cogl\driver\gl\cogl-gl.c" />
 		<ClCompile Include="..\..\..\cogl\driver\gl\cogl-texture-driver-gl.c" />
 	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="..\..\..\cogl\cogl.rc" />
+	</ItemGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 	<ImportGroup Label="ExtensionTargets">
 	</ImportGroup>

@@ -189,6 +189,9 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 		</Filter>
+		<Filter Name="Resource Files">
+			<File RelativePath="..\..\..\cogl-pango\cogl-pango.rc" />
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

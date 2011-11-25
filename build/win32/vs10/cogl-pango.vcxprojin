@@ -184,6 +184,9 @@
 #include "coglpango.vs10.sourcefiles"
 	</ItemGroup>
 	<ItemGroup>
+		<ResourceCompile Include="..\..\..\cogl-pango\cogl-pango.rc" />
+	</ItemGroup>
+	<ItemGroup>
 		<ProjectReference Include="cogl.vcxproj">
 			<Project>{f3a80987-5411-43db-a23b-06f2076e1206}</Project>
 			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>

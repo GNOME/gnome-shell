@@ -194,6 +194,9 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 		</Filter>
+		<Filter Name="Resource Files">
+			<File RelativePath="..\..\..\cogl\cogl.rc" />
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
