@@ -109,6 +109,27 @@ cogl_snippet_get_pre (CoglSnippet *snippet)
 }
 
 void
+cogl_snippet_set_replace (CoglSnippet *snippet,
+                          const char *replace)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_snippet (snippet));
+
+  if (!_cogl_snippet_modify (snippet))
+    return;
+
+  g_free (snippet->replace);
+  snippet->replace = replace ? g_strdup (replace) : NULL;
+}
+
+const char *
+cogl_snippet_get_replace (CoglSnippet *snippet)
+{
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_snippet (snippet), NULL);
+
+  return snippet->replace;
+}
+
+void
 cogl_snippet_set_post (CoglSnippet *snippet,
                        const char *post)
 {
@@ -140,6 +161,7 @@ _cogl_snippet_free (CoglSnippet *snippet)
 {
   g_free (snippet->declarations);
   g_free (snippet->pre);
+  g_free (snippet->replace);
   g_free (snippet->post);
   g_slice_free (CoglSnippet, snippet);
 }

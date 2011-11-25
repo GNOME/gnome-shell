@@ -954,6 +954,11 @@ cogl_pipeline_set_uniform_matrix (CoglPipeline *pipeline,
  * The ‘pre’ string in @snippet will be inserted at the top of the
  * main() function before any vertex processing is done.
  *
+ * The ‘replace’ string in @snippet will be used instead of the
+ * generated vertex processing if it is present. This can be used if
+ * the application wants to provide a complete vertex shader and
+ * doesn't need the generated output from Cogl.
+ *
  * The ‘post’ string in @snippet will be inserted after all of the
  * standard vertex processing is done. This can be used to modify the
  * outputs.
@@ -981,6 +986,11 @@ cogl_pipeline_add_vertex_hook (CoglPipeline *pipeline,
  *
  * The ‘pre’ string in @snippet will be inserted at the top of the
  * main() function before any fragment processing is done.
+ *
+ * The ‘replace’ string in @snippet will be used instead of the
+ * generated fragment processing if it is present. This can be used if
+ * the application wants to provide a complete fragment shader and
+ * doesn't need the generated output from Cogl.
  *
  * The ‘post’ string in @snippet will be inserted after all of the
  * standard fragment processing is done. At this point the generated

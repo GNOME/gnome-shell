@@ -154,6 +154,42 @@ cogl_snippet_set_pre (CoglSnippet *snippet,
 const char *
 cogl_snippet_get_pre (CoglSnippet *snippet);
 
+#define cogl_snippet_set_replace cogl_snippet_set_replace_EXP
+/**
+ * cogl_snippet_set_replace:
+ * @snippet: A #CoglSnippet
+ * @replace: The new source string for the replace section of this snippet.
+ *
+ * Sets a source string that will be used instead of any generated
+ * source code or any previous snippets for this hook point. Please
+ * see the documentation of each hook point in #CoglPipeline for a
+ * description of how this string should be used.
+ *
+ * This function should only be called before the snippet is attached
+ * to its first pipeline. After that the snippet should be considered
+ * immutable.
+ *
+ * Since: 1.10
+ * Stability: Unstable
+ */
+void
+cogl_snippet_set_replace (CoglSnippet *snippet,
+                          const char *replace);
+
+#define cogl_snippet_get_replace cogl_snippet_get_replace_EXP
+/**
+ * cogl_snippet_get_replace:
+ * @snippet: A #CoglSnippet
+ *
+ * Return value: the source string that was set with
+ *   cogl_snippet_set_replace() or %NULL if none was set.
+ *
+ * Since: 1.10
+ * Stability: Unstable
+ */
+const char *
+cogl_snippet_get_replace (CoglSnippet *snippet);
+
 #define cogl_snippet_set_post cogl_snippet_set_post_EXP
 /**
  * cogl_snippet_set_post:

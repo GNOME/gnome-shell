@@ -397,8 +397,11 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
             if ((source = cogl_snippet_get_pre (snippet->snippet)))
               g_string_append (shader_state->source, source);
 
-            /* Chain on to the next function */
-            if (snippet_num > 0)
+            /* Chain on to the next function, or bypass it if there is
+               a replace string */
+            if ((source = cogl_snippet_get_replace (snippet->snippet)))
+              g_string_append (shader_state->source, source);
+            else if (snippet_num > 0)
               g_string_append_printf (shader_state->source,
                                       "  cogl_snippet%i ();\n",
                                       snippet_num - 1);

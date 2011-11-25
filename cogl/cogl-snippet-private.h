@@ -44,6 +44,7 @@ struct _CoglSnippet
 
   char *declarations;
   char *pre;
+  char *replace;
   char *post;
 };
 

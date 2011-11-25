@@ -150,25 +150,55 @@ paint (TestState *state)
 
   cogl_object_unref (snippet);
 
+  /* Check the replace string */
+  snippet = cogl_snippet_new (NULL, NULL);
+  cogl_snippet_set_pre (snippet,
+                        "cogl_color_out = vec4 (0.0, 0.5, 0.0, 1.0);");
+  /* Remove the generated output. If the replace string isn't working
+     then the code from the pre string would get overwritten with
+     white */
+  cogl_snippet_set_replace (snippet, "/* do nothing */");
+  cogl_snippet_set_post (snippet,
+                         "cogl_color_out += vec4 (0.5, 0.0, 0.0, 1.0);");
+
+  pipeline = cogl_pipeline_new ();
+  cogl_pipeline_add_fragment_hook (pipeline, snippet);
+  cogl_push_source (pipeline);
+  cogl_rectangle (70, 0, 80, 10);
+  cogl_pop_source ();
+  cogl_object_unref (pipeline);
+
+  cogl_object_unref (snippet);
+
   /* Sanity check modifying the snippet */
   snippet = cogl_snippet_new ("foo", "bar");
   g_assert_cmpstr (cogl_snippet_get_declarations (snippet), ==, "foo");
   g_assert_cmpstr (cogl_snippet_get_post (snippet), ==, "bar");
+  g_assert_cmpstr (cogl_snippet_get_replace (snippet), ==, NULL);
   g_assert_cmpstr (cogl_snippet_get_pre (snippet), ==, NULL);
 
   cogl_snippet_set_declarations (snippet, "fu");
   g_assert_cmpstr (cogl_snippet_get_declarations (snippet), ==, "fu");
   g_assert_cmpstr (cogl_snippet_get_post (snippet), ==, "bar");
+  g_assert_cmpstr (cogl_snippet_get_replace (snippet), ==, NULL);
   g_assert_cmpstr (cogl_snippet_get_pre (snippet), ==, NULL);
 
   cogl_snippet_set_post (snippet, "ba");
   g_assert_cmpstr (cogl_snippet_get_declarations (snippet), ==, "fu");
   g_assert_cmpstr (cogl_snippet_get_post (snippet), ==, "ba");
+  g_assert_cmpstr (cogl_snippet_get_replace (snippet), ==, NULL);
   g_assert_cmpstr (cogl_snippet_get_pre (snippet), ==, NULL);
 
   cogl_snippet_set_pre (snippet, "fuba");
   g_assert_cmpstr (cogl_snippet_get_declarations (snippet), ==, "fu");
   g_assert_cmpstr (cogl_snippet_get_post (snippet), ==, "ba");
+  g_assert_cmpstr (cogl_snippet_get_replace (snippet), ==, NULL);
+  g_assert_cmpstr (cogl_snippet_get_pre (snippet), ==, "fuba");
+
+  cogl_snippet_set_replace (snippet, "baba");
+  g_assert_cmpstr (cogl_snippet_get_declarations (snippet), ==, "fu");
+  g_assert_cmpstr (cogl_snippet_get_post (snippet), ==, "ba");
+  g_assert_cmpstr (cogl_snippet_get_replace (snippet), ==, "baba");
   g_assert_cmpstr (cogl_snippet_get_pre (snippet), ==, "fuba");
 }
 
@@ -182,6 +212,7 @@ validate_result (void)
   test_utils_check_pixel (45, 5, 0xff0000ff);
   test_utils_check_pixel (55, 5, 0x00ff00ff);
   test_utils_check_pixel (65, 5, 0x00ff00ff);
+  test_utils_check_pixel (75, 5, 0x808000ff);
 }
 
 void
