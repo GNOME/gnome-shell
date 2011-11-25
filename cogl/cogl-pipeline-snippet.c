@@ -40,17 +40,66 @@
 void
 _cogl_pipeline_snippet_generate_code (const CoglPipelineSnippetData *data)
 {
-  CoglPipelineSnippet *snippet;
+  CoglPipelineSnippet *first_snippet, *snippet;
   int snippet_num = 0;
   int n_snippets = 0;
+
+  first_snippet = COGL_LIST_FIRST (data->snippets);
 
   /* First count the number of snippets so we can easily tell when
      we're at the last one */
   COGL_LIST_FOREACH (snippet, data->snippets, list_node)
     if (snippet->snippet->hook == data->hook)
-      n_snippets++;
+      {
+        /* Don't bother processing any previous snippets if we reach
+           one that has a replacement */
+        if (snippet->snippet->replace)
+          {
+            n_snippets = 1;
+            first_snippet = snippet;
+          }
+        else
+          n_snippets++;
+      }
 
-  COGL_LIST_FOREACH (snippet, data->snippets, list_node)
+  /* If there weren't any snippets then generate a stub function with
+     the final name */
+  if (n_snippets == 0)
+    {
+      if (data->return_type)
+        g_string_append_printf (data->source_buf,
+                                "\n"
+                                "%s\n"
+                                "%s (%s)\n"
+                                "{\n"
+                                "  return %s (%s);\n"
+                                "}\n",
+                                data->return_type,
+                                data->final_name,
+                                data->argument_declarations ?
+                                data->argument_declarations : "",
+                                data->chain_function,
+                                data->arguments ? data->arguments : "");
+      else
+        g_string_append_printf (data->source_buf,
+                                "\n"
+                                "void\n"
+                                "%s (%s)\n"
+                                "{\n"
+                                "  %s (%s);\n"
+                                "}\n",
+                                data->final_name,
+                                data->argument_declarations ?
+                                data->argument_declarations : "",
+                                data->chain_function,
+                                data->arguments ? data->arguments : "");
+
+      return;
+    }
+
+  for (snippet = first_snippet, snippet_num = 0;
+       snippet_num < n_snippets;
+       snippet = COGL_LIST_NEXT (snippet, list_node), snippet_num++)
     if (snippet->snippet->hook == data->hook)
       {
         const char *source;
@@ -130,42 +179,7 @@ _cogl_pipeline_snippet_generate_code (const CoglPipelineSnippetData *data)
                                   data->return_variable);
 
         g_string_append (data->source_buf, "}\n");
-
-        snippet_num++;
       }
-
-  /* If there weren't any snippets then generate a stub function with
-     the final name */
-  if (snippet_num == 0)
-    {
-      if (data->return_type)
-        g_string_append_printf (data->source_buf,
-                                "\n"
-                                "%s\n"
-                                "%s (%s)\n"
-                                "{\n"
-                                "  return %s (%s);\n"
-                                "}\n",
-                                data->return_type,
-                                data->final_name,
-                                data->argument_declarations ?
-                                data->argument_declarations : "",
-                                data->chain_function,
-                                data->arguments ? data->arguments : "");
-      else
-        g_string_append_printf (data->source_buf,
-                                "\n"
-                                "void\n"
-                                "%s (%s)\n"
-                                "{\n"
-                                "  %s (%s);\n"
-                                "}\n",
-                                data->final_name,
-                                data->argument_declarations ?
-                                data->argument_declarations : "",
-                                data->chain_function,
-                                data->arguments ? data->arguments : "");
-    }
 }
 
 static void
