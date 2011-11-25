@@ -481,7 +481,7 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
   /* Wrap the texture lookup in any snippets that have been hooked */
   memset (&snippet_data, 0, sizeof (snippet_data));
   snippet_data.snippets = get_layer_fragment_snippets (layer);
-  snippet_data.hook = COGL_PIPELINE_SNIPPET_HOOK_TEXTURE_LOOKUP;
+  snippet_data.hook = COGL_SNIPPET_HOOK_TEXTURE_LOOKUP;
   snippet_data.chain_function = g_strdup_printf ("cogl_real_texture_lookup%i",
                                                  unit_index);
   snippet_data.final_name = g_strdup_printf ("cogl_texture_lookup%i",
@@ -977,7 +977,7 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       /* Add all of the hooks for fragment processing */
       memset (&snippet_data, 0, sizeof (snippet_data));
       snippet_data.snippets = get_fragment_snippets (pipeline);
-      snippet_data.hook = COGL_PIPELINE_SNIPPET_HOOK_FRAGMENT;
+      snippet_data.hook = COGL_SNIPPET_HOOK_FRAGMENT;
       snippet_data.chain_function = "cogl_generated_source";
       snippet_data.final_name = "main";
       snippet_data.function_prefix = "cogl_fragment_hook";

@@ -1571,13 +1571,9 @@ cogl_pipeline_set_uniform_matrix (CoglPipeline *pipeline,
 
 static void
 _cogl_pipeline_add_vertex_snippet (CoglPipeline *pipeline,
-                                   CoglPipelineSnippetHook hook,
                                    CoglSnippet *snippet)
 {
   CoglPipelineState state = COGL_PIPELINE_STATE_VERTEX_SNIPPETS;
-
-  g_return_if_fail (cogl_is_pipeline (pipeline));
-  g_return_if_fail (cogl_is_snippet (snippet));
 
   /* - Flush journal primitives referencing the current state.
    * - Make sure the pipeline has no dependants so it may be modified.
@@ -1587,28 +1583,14 @@ _cogl_pipeline_add_vertex_snippet (CoglPipeline *pipeline,
   _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
   _cogl_pipeline_snippet_list_add (&pipeline->big_state->vertex_snippets,
-                                   hook,
                                    snippet);
-}
-
-void
-cogl_pipeline_add_vertex_hook (CoglPipeline *pipeline,
-                               CoglSnippet *snippet)
-{
-  _cogl_pipeline_add_vertex_snippet (pipeline,
-                                     COGL_PIPELINE_SNIPPET_HOOK_VERTEX,
-                                     snippet);
 }
 
 static void
 _cogl_pipeline_add_fragment_snippet (CoglPipeline *pipeline,
-                                     CoglPipelineSnippetHook hook,
                                      CoglSnippet *snippet)
 {
   CoglPipelineState state = COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS;
-
-  g_return_if_fail (cogl_is_pipeline (pipeline));
-  g_return_if_fail (cogl_is_snippet (snippet));
 
   /* - Flush journal primitives referencing the current state.
    * - Make sure the pipeline has no dependants so it may be modified.
@@ -1618,17 +1600,21 @@ _cogl_pipeline_add_fragment_snippet (CoglPipeline *pipeline,
   _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
   _cogl_pipeline_snippet_list_add (&pipeline->big_state->fragment_snippets,
-                                   hook,
                                    snippet);
 }
 
 void
-cogl_pipeline_add_fragment_hook (CoglPipeline *pipeline,
-                                 CoglSnippet *snippet)
+cogl_pipeline_add_snippet (CoglPipeline *pipeline,
+                           CoglSnippet *snippet)
 {
-  _cogl_pipeline_add_fragment_snippet (pipeline,
-                                       COGL_PIPELINE_SNIPPET_HOOK_FRAGMENT,
-                                       snippet);
+  g_return_if_fail (cogl_is_pipeline (pipeline));
+  g_return_if_fail (cogl_is_snippet (snippet));
+  g_return_if_fail (snippet->hook < COGL_SNIPPET_FIRST_LAYER_HOOK);
+
+  if (snippet->hook < COGL_SNIPPET_FIRST_PIPELINE_FRAGMENT_HOOK)
+    _cogl_pipeline_add_vertex_snippet (pipeline, snippet);
+  else
+    _cogl_pipeline_add_fragment_snippet (pipeline, snippet);
 }
 
 gboolean

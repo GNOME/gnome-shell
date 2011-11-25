@@ -33,9 +33,25 @@
 #include "cogl-snippet.h"
 #include "cogl-object-private.h"
 
+/* These values are also used in the enum for CoglSnippetHook. They
+   are copied here because we don't really want these names to be part
+   of the public API */
+#define COGL_SNIPPET_HOOK_BAND_SIZE 2048
+#define COGL_SNIPPET_FIRST_PIPELINE_HOOK 0
+#define COGL_SNIPPET_FIRST_PIPELINE_VERTEX_HOOK \
+  COGL_SNIPPET_FIRST_PIPELINE_HOOK
+#define COGL_SNIPPET_FIRST_PIPELINE_FRAGMENT_HOOK \
+  (COGL_SNIPPET_FIRST_PIPELINE_VERTEX_HOOK + COGL_SNIPPET_HOOK_BAND_SIZE)
+#define COGL_SNIPPET_FIRST_LAYER_HOOK (COGL_SNIPPET_HOOK_BAND_SIZE * 2)
+#define COGL_SNIPPET_FIRST_LAYER_VERTEX_HOOK COGL_SNIPPET_FIRST_LAYER_HOOK
+#define COGL_SNIPPET_FIRST_LAYER_FRAGMENT_HOOK \
+  (COGL_SNIPPET_FIRST_LAYER_VERTEX_HOOK + COGL_SNIPPET_HOOK_BAND_SIZE)
+
 struct _CoglSnippet
 {
   CoglObject _parent;
+
+  CoglSnippetHook hook;
 
   /* This is set to TRUE the first time the snippet is attached to the
      pipeline. After that any attempts to modify the snippet will be

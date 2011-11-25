@@ -31,15 +31,6 @@
 #include "cogl-snippet.h"
 #include "cogl-queue.h"
 
-/* Enumeration of all the hook points that a snippet can be attached
-   to within a pipeline. */
-typedef enum
-{
-  COGL_PIPELINE_SNIPPET_HOOK_VERTEX,
-  COGL_PIPELINE_SNIPPET_HOOK_FRAGMENT,
-  COGL_PIPELINE_SNIPPET_HOOK_TEXTURE_LOOKUP
-} CoglPipelineSnippetHook;
-
 typedef struct _CoglPipelineSnippet CoglPipelineSnippet;
 
 COGL_LIST_HEAD (CoglPipelineSnippetList, CoglPipelineSnippet);
@@ -47,9 +38,6 @@ COGL_LIST_HEAD (CoglPipelineSnippetList, CoglPipelineSnippet);
 struct _CoglPipelineSnippet
 {
   COGL_LIST_ENTRY (CoglPipelineSnippet) list_node;
-
-  /* Hook where this snippet is attached */
-  CoglPipelineSnippetHook hook;
 
   CoglSnippet *snippet;
 };
@@ -60,7 +48,7 @@ typedef struct
   CoglPipelineSnippetList *snippets;
 
   /* Only snippets at this hook point will be used */
-  CoglPipelineSnippetHook hook;
+  CoglSnippetHook hook;
 
   /* The final function to chain on to after all of the snippets code
      has been run */
@@ -98,7 +86,6 @@ _cogl_pipeline_snippet_list_free (CoglPipelineSnippetList *list);
 
 void
 _cogl_pipeline_snippet_list_add (CoglPipelineSnippetList *list,
-                                 CoglPipelineSnippetHook hook,
                                  CoglSnippet *snippet);
 
 void

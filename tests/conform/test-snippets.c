@@ -57,8 +57,10 @@ paint (TestState *state)
 
   cogl_pipeline_set_color4ub (pipeline, 255, 0, 0, 255);
 
-  snippet = cogl_snippet_new (NULL, "cogl_color_out.g += 1.0;");
-  cogl_pipeline_add_fragment_hook (pipeline, snippet);
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                              NULL, /* declarations */
+                              "cogl_color_out.g += 1.0;");
+  cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_object_unref (snippet);
 
   cogl_push_source (pipeline);
@@ -72,8 +74,10 @@ paint (TestState *state)
 
   cogl_pipeline_set_color4ub (pipeline, 255, 0, 0, 255);
 
-  snippet = cogl_snippet_new (NULL, "cogl_color_out.b += 1.0;");
-  cogl_pipeline_add_vertex_hook (pipeline, snippet);
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX,
+                              NULL,
+                              "cogl_color_out.b += 1.0;");
+  cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_object_unref (snippet);
 
   cogl_push_source (pipeline);
@@ -82,8 +86,8 @@ paint (TestState *state)
 
   cogl_object_unref (pipeline);
 
-  /* Single snippet used with in both the vertex and fragment hooks
-     with a uniform */
+  /* Snippets sharing a uniform across the vertex and fragment
+     hooks */
   pipeline = cogl_pipeline_new ();
 
   location = cogl_pipeline_get_uniform_location (pipeline, "a_value");
@@ -91,10 +95,15 @@ paint (TestState *state)
 
   cogl_pipeline_set_color4ub (pipeline, 255, 0, 0, 255);
 
-  snippet = cogl_snippet_new ("uniform float a_value;",
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX,
+                              "uniform float a_value;",
                               "cogl_color_out.b += a_value;");
-  cogl_pipeline_add_fragment_hook (pipeline, snippet);
-  cogl_pipeline_add_vertex_hook (pipeline, snippet);
+  cogl_pipeline_add_snippet (pipeline, snippet);
+  cogl_object_unref (snippet);
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                              "uniform float a_value;",
+                              "cogl_color_out.b += a_value;");
+  cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_object_unref (snippet);
 
   cogl_push_source (pipeline);
@@ -121,8 +130,10 @@ paint (TestState *state)
       location = cogl_pipeline_get_uniform_location (pipeline, uniform_name);
       cogl_pipeline_set_uniform_1f (pipeline, location, (i + 1) * 0.1f);
 
-      snippet = cogl_snippet_new (declarations, code);
-      cogl_pipeline_add_fragment_hook (pipeline, snippet);
+      snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                                  declarations,
+                                  code);
+      cogl_pipeline_add_snippet (pipeline, snippet);
       cogl_object_unref (snippet);
 
       g_free (code);
@@ -142,10 +153,11 @@ paint (TestState *state)
 
   cogl_pipeline_set_color4ub (pipeline, 255, 255, 255, 255);
 
-  snippet = cogl_snippet_new (NULL, "cogl_color_out = redvec;");
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                              NULL, /* declarations */
+                              "cogl_color_out = redvec;");
   cogl_snippet_set_pre (snippet, "vec4 redvec = vec4 (1.0, 0.0, 0.0, 1.0);");
-  cogl_pipeline_add_vertex_hook (pipeline, snippet);
-  cogl_pipeline_add_fragment_hook (pipeline, snippet);
+  cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_object_unref (snippet);
 
   cogl_push_source (pipeline);
@@ -159,21 +171,22 @@ paint (TestState *state)
      the conformance test but at least it should be possible to see by
      setting COGL_DEBUG=show-source to check whether this shader gets
      generated twice */
-  snippet = cogl_snippet_new ("/* This comment should only be seen ONCE\n"
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                              "/* This comment should only be seen ONCE\n"
                               "   when COGL_DEBUG=show-source is TRUE\n"
                               "   even though it is used in two different\n"
                               "   unrelated pipelines */",
                               "cogl_color_out = vec4 (0.0, 1.0, 0.0, 1.0);\n");
 
   pipeline = cogl_pipeline_new ();
-  cogl_pipeline_add_fragment_hook (pipeline, snippet);
+  cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_push_source (pipeline);
   cogl_rectangle (50, 0, 60, 10);
   cogl_pop_source ();
   cogl_object_unref (pipeline);
 
   pipeline = cogl_pipeline_new ();
-  cogl_pipeline_add_fragment_hook (pipeline, snippet);
+  cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_push_source (pipeline);
   cogl_rectangle (60, 0, 70, 10);
   cogl_pop_source ();
@@ -182,7 +195,7 @@ paint (TestState *state)
   cogl_object_unref (snippet);
 
   /* Check the replace string */
-  snippet = cogl_snippet_new (NULL, NULL);
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT, NULL, NULL);
   cogl_snippet_set_pre (snippet,
                         "cogl_color_out = vec4 (0.0, 0.5, 0.0, 1.0);");
   /* Remove the generated output. If the replace string isn't working
@@ -193,7 +206,7 @@ paint (TestState *state)
                          "cogl_color_out += vec4 (0.5, 0.0, 0.0, 1.0);");
 
   pipeline = cogl_pipeline_new ();
-  cogl_pipeline_add_fragment_hook (pipeline, snippet);
+  cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_push_source (pipeline);
   cogl_rectangle (70, 0, 80, 10);
   cogl_pop_source ();
@@ -202,14 +215,15 @@ paint (TestState *state)
   cogl_object_unref (snippet);
 
   /* Check the texture lookup hook */
-  snippet = cogl_snippet_new (NULL,
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
+                              NULL,
                               "cogl_texel.b += 1.0;");
   /* Flip the texture coordinates around the y axis so that it will
      get the green texel */
   cogl_snippet_set_pre (snippet, "cogl_tex_coord.x = 1.0 - cogl_tex_coord.x;");
 
   pipeline = create_texture_pipeline ();
-  cogl_pipeline_add_texture_lookup_hook (pipeline, 0, snippet);
+  cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
   cogl_push_source (pipeline);
   cogl_rectangle_with_texture_coords (80, 0, 90, 10,
                                       0, 0, 0, 0);
@@ -219,7 +233,7 @@ paint (TestState *state)
   cogl_object_unref (snippet);
 
   /* Sanity check modifying the snippet */
-  snippet = cogl_snippet_new ("foo", "bar");
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT, "foo", "bar");
   g_assert_cmpstr (cogl_snippet_get_declarations (snippet), ==, "foo");
   g_assert_cmpstr (cogl_snippet_get_post (snippet), ==, "bar");
   g_assert_cmpstr (cogl_snippet_get_replace (snippet), ==, NULL);
@@ -248,6 +262,10 @@ paint (TestState *state)
   g_assert_cmpstr (cogl_snippet_get_post (snippet), ==, "ba");
   g_assert_cmpstr (cogl_snippet_get_replace (snippet), ==, "baba");
   g_assert_cmpstr (cogl_snippet_get_pre (snippet), ==, "fuba");
+
+  g_assert_cmpint (cogl_snippet_get_hook (snippet),
+                   ==,
+                   COGL_SNIPPET_HOOK_FRAGMENT);
 }
 
 static void

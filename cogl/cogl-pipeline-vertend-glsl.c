@@ -381,7 +381,7 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
       /* Add all of the hooks for vertex processing */
       memset (&snippet_data, 0, sizeof (snippet_data));
       snippet_data.snippets = get_vertex_snippets (pipeline);
-      snippet_data.hook = COGL_PIPELINE_SNIPPET_HOOK_VERTEX;
+      snippet_data.hook = COGL_SNIPPET_HOOK_VERTEX;
       snippet_data.chain_function = "cogl_generated_source";
       snippet_data.final_name = "main";
       snippet_data.function_prefix = "cogl_vertex_hook";

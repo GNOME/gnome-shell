@@ -34,6 +34,7 @@
 #include "cogl-blend-string.h"
 #include "cogl-util.h"
 #include "cogl-matrix.h"
+#include "cogl-snippet-private.h"
 
 #include "string.h"
 #if 0
@@ -777,13 +778,10 @@ cogl_pipeline_get_layer_point_sprite_coords_enabled (CoglPipeline *pipeline,
 static void
 _cogl_pipeline_layer_add_fragment_snippet (CoglPipeline *pipeline,
                                            int layer_index,
-                                           CoglPipelineSnippetHook hook,
                                            CoglSnippet *snippet)
 {
   CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS;
   CoglPipelineLayer *layer, *authority;
-
-  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -800,7 +798,6 @@ _cogl_pipeline_layer_add_fragment_snippet (CoglPipeline *pipeline,
   layer = _cogl_pipeline_layer_pre_change_notify (pipeline, layer, change);
 
   _cogl_pipeline_snippet_list_add (&layer->big_state->fragment_snippets,
-                                   hook,
                                    snippet);
 
   /* If we weren't previously the authority on this state then we need
@@ -815,15 +812,21 @@ _cogl_pipeline_layer_add_fragment_snippet (CoglPipeline *pipeline,
 }
 
 void
-cogl_pipeline_add_texture_lookup_hook (CoglPipeline *pipeline,
-                                       int layer_index,
-                                       CoglSnippet *snippet)
+cogl_pipeline_add_layer_snippet (CoglPipeline *pipeline,
+                                 int layer_index,
+                                 CoglSnippet *snippet)
 {
-  CoglPipelineSnippetHook hook = COGL_PIPELINE_SNIPPET_HOOK_TEXTURE_LOOKUP;
-  _cogl_pipeline_layer_add_fragment_snippet (pipeline,
-                                             layer_index,
-                                             hook,
-                                             snippet);
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_snippet (snippet));
+  _COGL_RETURN_IF_FAIL (snippet->hook >= COGL_SNIPPET_FIRST_LAYER_HOOK);
+
+  if (snippet->hook < COGL_SNIPPET_FIRST_LAYER_FRAGMENT_HOOK)
+    /* TODO */
+    g_assert_not_reached ();
+  else
+    _cogl_pipeline_layer_add_fragment_snippet (pipeline,
+                                               layer_index,
+                                               snippet);
 }
 
 gboolean

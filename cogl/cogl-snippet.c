@@ -38,17 +38,28 @@ _cogl_snippet_free (CoglSnippet *snippet);
 COGL_OBJECT_DEFINE (Snippet, snippet);
 
 CoglSnippet *
-cogl_snippet_new (const char *declarations,
+cogl_snippet_new (CoglSnippetHook hook,
+                  const char *declarations,
                   const char *post)
 {
   CoglSnippet *snippet = g_slice_new0 (CoglSnippet);
 
   _cogl_snippet_object_new (snippet);
 
+  snippet->hook = hook;
+
   cogl_snippet_set_declarations (snippet, declarations);
   cogl_snippet_set_post (snippet, post);
 
   return snippet;
+}
+
+CoglSnippetHook
+cogl_snippet_get_hook (CoglSnippet *snippet)
+{
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_snippet (snippet), 0);
+
+  return snippet->hook;
 }
 
 static gboolean

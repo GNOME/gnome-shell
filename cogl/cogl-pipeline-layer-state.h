@@ -497,46 +497,26 @@ cogl_pipeline_set_layer_wrap_mode (CoglPipeline        *pipeline,
                                    int                  layer_index,
                                    CoglPipelineWrapMode mode);
 
+#define cogl_pipeline_add_layer_snippet cogl_pipeline_add_layer_snippet_EXP
 /**
- * cogl_pipeline_add_texture_lookup_hook:
+ * cogl_pipeline_add_layer_snippet:
  * @pipeline: A #CoglPipeline
- * @layer: The layer whose texutre lookup should be hooked
- * @snippet: The #CoglSnippet to add to the texture lookup for @layer
+ * @layer: The layer to hook the snippet to
+ * @snippet: A #CoglSnippet
  *
- * Adds a shader snippet that will hook on to the texture lookup part
- * of a given layer. This gives a chance for the application to modify
- * the coordinates that will be used for the texture lookup or to
- * alter the returned texel.
- *
- * Within the snippet code for this hook there are two extra variables
- * available. ‘cogl_tex_coord’ is a vec4 which contains the texture
- * coordinates that will be used for the texture lookup this can be
- * modified. ‘cogl_texel’ will contain the result of the texture
- * lookup. This can be modified.
- *
- * The ‘declarations’ string in @snippet will be inserted in the
- * global scope of the shader. Use this to declare any uniforms,
- * attributes or functions that the snippet requires.
- *
- * The ‘pre’ string in @snippet will be inserted at the top of the
- * main() function before any fragment processing is done. This is a
- * good place to modify the cogl_tex_coord variable.
- *
- * If a ‘replace’ string is given then this will be used instead of a
- * the default texture lookup. The snippet would typically use its own
- * sampler in this case.
- *
- * The ‘post’ string in @snippet will be inserted after texture lookup
- * has been preformed. Here the snippet can modify the cogl_texel
- * variable to alter the returned texel.
+ * Adds a shader snippet that will hook on to the given layer of the
+ * pipeline. The exact part of the pipeline that the snippet wraps
+ * around depends on the hook that is given to
+ * cogl_snippet_new(). Note that some hooks can't be used with a layer
+ * and need to be added with cogl_pipeline_add_snippet() instead.
  *
  * Since: 1.10
  * Stability: Unstable
  */
 void
-cogl_pipeline_add_texture_lookup_hook (CoglPipeline *pipeline,
-                                       int layer_index,
-                                       CoglSnippet *snippet);
+cogl_pipeline_add_layer_snippet (CoglPipeline *pipeline,
+                                 int layer,
+                                 CoglSnippet *snippet);
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 

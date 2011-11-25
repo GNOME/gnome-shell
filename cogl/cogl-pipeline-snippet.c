@@ -44,7 +44,7 @@ _cogl_pipeline_snippet_generate_code (const CoglPipelineSnippetData *data)
   int snippet_num = 0;
 
   COGL_LIST_FOREACH (snippet, data->snippets, list_node)
-    if (snippet->hook == data->hook)
+    if (snippet->snippet->hook == data->hook)
       {
         const char *source;
 
@@ -179,12 +179,10 @@ _cogl_pipeline_snippet_list_free (CoglPipelineSnippetList *list)
 
 void
 _cogl_pipeline_snippet_list_add (CoglPipelineSnippetList *list,
-                                 CoglPipelineSnippetHook hook,
                                  CoglSnippet *snippet)
 {
   CoglPipelineSnippet *pipeline_snippet = g_slice_new (CoglPipelineSnippet);
 
-  pipeline_snippet->hook = hook;
   pipeline_snippet->snippet = cogl_object_ref (snippet);
 
   _cogl_snippet_make_immutable (pipeline_snippet->snippet);
@@ -236,9 +234,6 @@ _cogl_pipeline_snippet_list_hash (CoglPipelineSnippetList *list,
   COGL_LIST_FOREACH (l, list, list_node)
     {
       *hash = _cogl_util_one_at_a_time_hash (*hash,
-                                             &l->hook,
-                                             sizeof (CoglPipelineSnippetHook));
-      *hash = _cogl_util_one_at_a_time_hash (*hash,
                                              &l->snippet,
                                              sizeof (CoglSnippet *));
     }
@@ -253,7 +248,7 @@ _cogl_pipeline_snippet_list_equal (CoglPipelineSnippetList *list0,
   for (l0 = COGL_LIST_FIRST (list0), l1 = COGL_LIST_FIRST (list1);
        l0 && l1;
        l0 = COGL_LIST_NEXT (l0, list_node), l1 = COGL_LIST_NEXT (l1, list_node))
-    if (l0->hook != l1->hook || l0->snippet != l1->snippet)
+    if (l0->snippet != l1->snippet)
       return FALSE;
 
   return l0 == NULL && l1 == NULL;
