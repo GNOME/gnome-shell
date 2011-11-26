@@ -2324,7 +2324,7 @@ emit_keyboard_event (ClutterEvent       *event,
   if (context->keyboard_grab_actor == NULL &&
       (device == NULL || device->keyboard_grab_actor == NULL))
     {
-      emit_event (event, FALSE);
+      emit_event (event, TRUE);
     }
   else
     {
