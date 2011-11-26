@@ -1045,9 +1045,16 @@ const ThumbnailsBox = new Lang.Class({
         childBox.y2 = box.y2;
         this._background.allocate(childBox, flags);
 
-        let indicatorY = this._indicatorY;
+        let indicatorY1 = this._indicatorY;
+        let indicatorY2;
         // when not animating, the workspace position overrides this._indicatorY
         let indicatorWorkspace = !this._animatingIndicator ? global.screen.get_active_workspace() : null;
+        let indicatorThemeNode = this._indicator.get_theme_node();
+
+        let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
+        let indicatorBottomFullBorder = indicatorThemeNode.get_padding(St.Side.BOTTOM) + indicatorThemeNode.get_border_width(St.Side.BOTTOM);
+        let indicatorLeftFullBorder = indicatorThemeNode.get_padding(St.Side.LEFT) + indicatorThemeNode.get_border_width(St.Side.LEFT);
+        let indicatorRightFullBorder = indicatorThemeNode.get_padding(St.Side.RIGHT) + indicatorThemeNode.get_border_width(St.Side.RIGHT);
 
         let y = contentBox.y1;
 
@@ -1093,8 +1100,10 @@ const ThumbnailsBox = new Lang.Class({
             let y2 = Math.round(y + thumbnailHeight);
             let roundedVScale = (y2 - y1) / portholeHeight;
 
-            if (thumbnail.metaWorkspace == indicatorWorkspace)
-                indicatorY = y1;
+            if (thumbnail.metaWorkspace == indicatorWorkspace) {
+                indicatorY1 = y1;
+                indicatorY2 = y2;
+            }
 
             // Allocating a scaled actor is funny - x1/y1 correspond to the origin
             // of the actor, but x2/y2 are increased by the *unscaled* size.
@@ -1119,8 +1128,10 @@ const ThumbnailsBox = new Lang.Class({
             childBox.x1 = contentBox.x2 - thumbnailWidth;
             childBox.x2 = contentBox.x2;
         }
-        childBox.y1 = indicatorY;
-        childBox.y2 = childBox.y1 + thumbnailHeight;
+        childBox.x1 -= indicatorLeftFullBorder;
+        childBox.x2 += indicatorRightFullBorder;
+        childBox.y1 = indicatorY1 - indicatorTopFullBorder;
+        childBox.y2 = (indicatorY2 ? indicatorY2 : (indicatorY1 + thumbnailHeight)) + indicatorBottomFullBorder;
         this._indicator.allocate(childBox, flags);
     },
 
@@ -1135,7 +1146,9 @@ const ThumbnailsBox = new Lang.Class({
         }
 
         this._animatingIndicator = true;
-        this.indicatorY = this._indicator.allocation.y1;
+        let indicatorThemeNode = this._indicator.get_theme_node();
+        let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
+        this.indicatorY = this._indicator.allocation.y1 + indicatorTopFullBorder;
         Tweener.addTween(this,
                          { indicatorY: thumbnail.actor.allocation.y1,
                            time: WorkspacesView.WORKSPACE_SWITCH_TIME,

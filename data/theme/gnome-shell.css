@@ -578,22 +578,24 @@ StButton.popup-menu-item:insensitive {
     border-right: 0px;
     border-radius: 9px 0px 0px 9px;
     background-color: rgba(0, 0, 0, 0.5);
-    padding: 8px;
+    padding: 11px 7px 11px 11px;
 }
 
 .workspace-thumbnails-background:rtl {
     border-right: 1px;
     border-left: 0px;
     border-radius: 0px 9px 9px 0px;
+    padding: 11px 11px 11px 7px;
 }
 
 .workspace-thumbnails {
-    spacing: 7px;
+    spacing: 11px;
 }
 
 .workspace-thumbnail-indicator {
-    outline: 2px solid white;
-    border: 1px solid #888;
+    border: 4px solid rgba(255,255,255,0.7);
+    border-radius: 4px;
+    padding: 1px;
 }
 
 .window-caption {
