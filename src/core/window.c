@@ -180,6 +180,20 @@ enum
 static guint window_signals[LAST_SIGNAL] = { 0 };
 
 static void
+prefs_changed_callback (MetaPreference pref,
+                        gpointer       data)
+{
+  MetaWindow *window = data;
+
+  if (pref != META_PREF_WORKSPACES_ONLY_ON_PRIMARY)
+    return;
+
+  meta_window_update_on_all_workspaces (window);
+
+  meta_window_queue (window, META_QUEUE_CALC_SHOWING);
+}
+
+static void
 meta_window_finalize (GObject *object)
 {
   MetaWindow *window = META_WINDOW (object);
@@ -194,6 +208,8 @@ meta_window_finalize (GObject *object)
     cairo_region_destroy (window->frame_bounds);
 
   meta_icon_cache_free (&window->icon_cache);
+
+  meta_prefs_remove_listener (prefs_changed_callback, window);
 
   g_free (window->sm_client_id);
   g_free (window->wm_client_machine);
@@ -475,6 +491,7 @@ meta_window_class_init (MetaWindowClass *klass)
 static void
 meta_window_init (MetaWindow *self)
 {
+  meta_prefs_add_listener (prefs_changed_callback, self);
 }
 
 #ifdef WITH_VERBOSE_MODE
