@@ -528,6 +528,59 @@ const ThumbnailsBox = new Lang.Class({
             this._stateCounts[ThumbnailState[key]] = 0;
 
         this._thumbnails = [];
+
+        Main.overview.connect('item-drag-begin',
+                              Lang.bind(this, this._onDragBegin));
+        Main.overview.connect('item-drag-end',
+                              Lang.bind(this, this._onDragEnd));
+        Main.overview.connect('item-drag-cancelled',
+                              Lang.bind(this, this._onDragCancelled));
+        Main.overview.connect('window-drag-begin',
+                              Lang.bind(this, this._onDragBegin));
+        Main.overview.connect('window-drag-end',
+                              Lang.bind(this, this._onDragEnd));
+        Main.overview.connect('window-drag-cancelled',
+                              Lang.bind(this, this._onDragCancelled));
+    },
+
+    _onDragBegin: function() {
+        this._dragCancelled = false;
+        this._dragMonitor = {
+            dragMotion: Lang.bind(this, this._onDragMotion)
+        };
+        DND.addDragMonitor(this._dragMonitor);
+    },
+
+    _onDragEnd: function() {
+        if (this._dragCancelled)
+            return;
+
+        this._endDrag();
+    },
+
+    _onDragCancelled: function() {
+        this._dragCancelled = true;
+        this._endDrag();
+    },
+
+    _endDrag: function() {
+        this._clearDragPlaceholder();
+        DND.removeDragMonitor(this._dragMonitor);
+    },
+
+    _onDragMotion: function(dragEvent) {
+        if (!this.actor.contains(dragEvent.targetActor))
+            this._onLeave();
+        return DND.DragMotionResult.CONTINUE;
+    },
+
+    _onLeave: function() {
+        this._clearDragPlaceholder();
+    },
+
+    _clearDragPlaceholder: function() {
+        this._dropPlaceholderPos = -1;
+        this.actor.queue_relayout();
     },
 
     // Draggable target interface
