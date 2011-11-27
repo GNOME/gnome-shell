@@ -208,6 +208,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/script", test_script_layout_property);
 
   TEST_CONFORM_SIMPLE ("/timeline", test_timeline);
+  TEST_CONFORM_SIMPLE ("/timeline", markers_from_script);
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", timeline_interpolation);
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", timeline_rewind);
 

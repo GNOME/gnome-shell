@@ -318,3 +318,43 @@ test_timeline (TestConformSimpleFixture *fixture,
 
   clutter_actor_destroy (stage);
 }
+
+void
+markers_from_script (TestConformSimpleFixture *fixture,
+                     gconstpointer data)
+{
+  ClutterScript *script = clutter_script_new ();
+  ClutterTimeline *timeline;
+  GError *error = NULL;
+  gchar *test_file;
+  gchar **markers;
+  gsize n_markers;
+
+  test_file = clutter_test_get_data_file ("test-script-timeline-markers.json");
+  clutter_script_load_from_file (script, test_file, &error);
+  if (g_test_verbose () && error != NULL)
+    g_print ("Error: %s", error->message);
+
+  g_assert_no_error (error);
+
+  timeline = CLUTTER_TIMELINE (clutter_script_get_object (script, "timeline0"));
+
+  g_assert (clutter_timeline_has_marker (timeline, "marker0"));
+  g_assert (clutter_timeline_has_marker (timeline, "marker1"));
+  g_assert (!clutter_timeline_has_marker (timeline, "foo"));
+  g_assert (clutter_timeline_has_marker (timeline, "marker2"));
+
+  markers = clutter_timeline_list_markers (timeline, -1, &n_markers);
+  g_assert_cmpint (n_markers, ==, 3);
+  g_strfreev (markers);
+
+  markers = clutter_timeline_list_markers (timeline, 500, &n_markers);
+  g_assert_cmpint (n_markers, ==, 1);
+  g_assert (markers != NULL);
+  g_assert_cmpstr (markers[0], ==, "marker1");
+  g_strfreev (markers);
+
+  g_object_unref (script);
+
+  g_free (test_file);
+}
