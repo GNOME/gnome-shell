@@ -1064,6 +1064,7 @@ _cogl_pipeline_init_multi_property_sparse_state (CoglPipeline *pipeline,
         _cogl_bitmask_init (&uniforms_state->override_mask);
         _cogl_bitmask_init (&uniforms_state->changed_mask);
         uniforms_state->override_values = NULL;
+        break;
       }
     }
 }
