@@ -85,8 +85,16 @@ struct _ClutterOffscreenEffectPrivate
   gfloat x_offset;
   gfloat y_offset;
 
+  /* The size of the texture */
   gfloat target_width;
   gfloat target_height;
+
+  /* This is the calculated size of the fbo before being passed
+     through create_texture(). This needs to be tracked separately so
+     that we can detect when a different size is calculated and
+     regenerate the fbo */
+  int fbo_width;
+  int fbo_height;
 
   gint old_opacity_override;
 
@@ -154,8 +162,8 @@ update_fbo (ClutterEffect *effect, int fbo_width, int fbo_height)
       return FALSE;
     }
 
-  if (priv->target_width == fbo_width &&
-      priv->target_height == fbo_height &&
+  if (priv->fbo_width == fbo_width &&
+      priv->fbo_height == fbo_height &&
       priv->offscreen != COGL_INVALID_HANDLE)
     return TRUE;
 
@@ -187,6 +195,9 @@ update_fbo (ClutterEffect *effect, int fbo_width, int fbo_height)
   priv->target_width = cogl_texture_get_width (texture);
   priv->target_height = cogl_texture_get_height (texture);
 
+  priv->fbo_width = fbo_width;
+  priv->fbo_height = fbo_height;
+
   if (priv->offscreen != COGL_INVALID_HANDLE)
     cogl_handle_unref (priv->offscreen);
 
@@ -200,6 +211,8 @@ update_fbo (ClutterEffect *effect, int fbo_width, int fbo_height)
 
       priv->target_width = 0;
       priv->target_height = 0;
+      priv->fbo_width = 0;
+      priv->fbo_height = 0;
 
       return FALSE;
     }
