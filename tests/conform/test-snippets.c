@@ -45,10 +45,12 @@ paint (TestState *state)
 {
   CoglPipeline *pipeline;
   CoglSnippet *snippet;
-  CoglMatrix matrix;
+  CoglMatrix matrix, identity_matrix;
   CoglColor color;
   int location;
   int i;
+
+  cogl_matrix_init_identity (&identity_matrix);
 
   cogl_color_init_from_4ub (&color, 0, 0, 0, 255);
   cogl_clear (&color, COGL_BUFFER_BIT_COLOR);
@@ -351,6 +353,41 @@ paint (TestState *state)
   cogl_pop_source ();
   cogl_object_unref (pipeline);
 
+  /* Test the vertex transform hook */
+  pipeline = cogl_pipeline_new ();
+
+  cogl_pipeline_set_color4ub (pipeline, 255, 0, 255, 255);
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX_TRANSFORM,
+                              "uniform mat4 pmat;",
+                              NULL);
+  cogl_snippet_set_replace (snippet, "cogl_position_out = "
+                            "pmat * cogl_position_in;");
+  cogl_pipeline_add_snippet (pipeline, snippet);
+  cogl_object_unref (snippet);
+
+  /* Copy the current projection matrix to a uniform */
+  cogl_get_projection_matrix (&matrix);
+  location = cogl_pipeline_get_uniform_location (pipeline, "pmat");
+  cogl_pipeline_set_uniform_matrix (pipeline,
+                                    location,
+                                    4, /* dimensions */
+                                    1, /* count */
+                                    FALSE, /* don't transpose */
+                                    cogl_matrix_get_array (&matrix));
+
+  /* Replace the real projection matrix with the identity. This should
+     mess up the drawing unless the snippet replacement is working */
+  cogl_set_projection_matrix (&identity_matrix);
+
+  cogl_push_source (pipeline);
+  cogl_rectangle (150, 0, 160, 10);
+  cogl_pop_source ();
+  cogl_object_unref (pipeline);
+
+  /* Restore the projection matrix */
+  cogl_set_projection_matrix (&matrix);
+
   /* Sanity check modifying the snippet */
   snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT, "foo", "bar");
   g_assert_cmpstr (cogl_snippet_get_declarations (snippet), ==, "foo");
@@ -405,6 +442,7 @@ validate_result (void)
   test_utils_check_pixel (125, 5, 0xff80ffff);
   test_utils_check_pixel (135, 5, 0xffff00ff);
   test_utils_check_pixel (145, 5, 0x00ff00ff);
+  test_utils_check_pixel (155, 5, 0xff00ffff);
 }
 
 void

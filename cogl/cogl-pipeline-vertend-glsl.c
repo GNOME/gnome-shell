@@ -418,12 +418,29 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
                            0 /* no application private data */);
       COGL_COUNTER_INC (_cogl_uprof_context, vertend_glsl_compile_counter);
 
-      g_string_append (shader_state->source,
+      g_string_append (shader_state->header,
+                       "void\n"
+                       "cogl_real_vertex_transform ()\n"
+                       "{\n"
                        "  cogl_position_out = "
                        "cogl_modelview_projection_matrix * "
                        "cogl_position_in;\n"
+                       "}\n");
+
+      g_string_append (shader_state->source,
+                       "  cogl_vertex_transform ();\n"
                        "  cogl_color_out = cogl_color_in;\n"
                        "}\n");
+
+      /* Add hooks for the vertex transform part */
+      memset (&snippet_data, 0, sizeof (snippet_data));
+      snippet_data.snippets = get_vertex_snippets (pipeline);
+      snippet_data.hook = COGL_SNIPPET_HOOK_VERTEX_TRANSFORM;
+      snippet_data.chain_function = "cogl_real_vertex_transform";
+      snippet_data.final_name = "cogl_vertex_transform";
+      snippet_data.function_prefix = "cogl_vertex_transform";
+      snippet_data.source_buf = shader_state->header;
+      _cogl_pipeline_snippet_generate_code (&snippet_data);
 
       /* Add all of the hooks for vertex processing */
       memset (&snippet_data, 0, sizeof (snippet_data));

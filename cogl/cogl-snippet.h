@@ -52,6 +52,7 @@ typedef struct _CoglSnippet CoglSnippet;
  * CoglSnippetHook:
  * @COGL_SNIPPET_HOOK_VERTEX: A hook for the entire vertex processing
  *   stage of the pipeline.
+ * @COGL_SNIPPET_HOOK_VERTEX_TRANSFORM: A hook for the vertex transformation.
  * @COGL_SNIPPET_HOOK_FRAGMENT: A hook for the entire fragment
  *   processing stage of the pipeline.
  * @COGL_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM: A hook for applying the
@@ -94,6 +95,37 @@ typedef struct _CoglSnippet CoglSnippet;
  * The ‘post’ string in @snippet will be inserted after all of the
  * standard vertex processing is done. This can be used to modify the
  * outputs.
+ * </para>
+ *   </glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>%COGL_SNIPPET_HOOK_VERTEX_TRANSFORM</glossterm>
+ *   <glossdef>
+ * <para>
+ * Adds a shader snippet that will hook on to the vertex transform stage.
+ * Typically the snippet will use the cogl_modelview_matrix,
+ * cogl_projection_matrix and cogl_modelview_projection_matrix matrices and the
+ * cogl_position_in attribute. The hook must write to cogl_position_out.
+ * The default processing for this hook will multiply cogl_position_in by
+ * the combined modelview-projection matrix and store it on cogl_position_out.
+ * </para>
+ * <para>
+ * The ‘declarations’ string in @snippet will be inserted in the
+ * global scope of the shader. Use this to declare any uniforms,
+ * attributes or functions that the snippet requires.
+ * </para>
+ * <para>
+ * The ‘pre’ string in @snippet will be inserted at the top of the
+ * main() function before the vertex transform is done.
+ * </para>
+ * <para>
+ * The ‘replace’ string in @snippet will be used instead of the
+ * generated vertex transform if it is present.
+ * </para>
+ * <para>
+ * The ‘post’ string in @snippet will be inserted after all of the
+ * standard vertex transformation is done. This can be used to modify the
+ * cogl_position_out in addition to the default processing.
  * </para>
  *   </glossdef>
  *  </glossentry>
@@ -246,6 +278,7 @@ typedef struct _CoglSnippet CoglSnippet;
 typedef enum {
   /* Per pipeline vertex hooks */
   COGL_SNIPPET_HOOK_VERTEX = 0,
+  COGL_SNIPPET_HOOK_VERTEX_TRANSFORM,
 
   /* Per pipeline fragment hooks */
   COGL_SNIPPET_HOOK_FRAGMENT = 2048,
