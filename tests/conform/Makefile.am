@@ -60,8 +60,9 @@ units_sources += \
 # actors tests
 units_sources += \
 	test-actor-destroy.c		\
-	test-actor-size.c		\
 	test-actor-invariants.c 	\
+	test-actor-layout.c		\
+	test-actor-size.c		\
 	test-anchors.c                  \
 	test-binding-pool.c		\
 	test-clutter-cairo-texture.c    \
