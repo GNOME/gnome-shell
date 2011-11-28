@@ -54,29 +54,26 @@
 /* FIXME - lame shader; we should really have a decoupled
  * horizontal/vertical two pass shader for the gaussian blur
  */
+static const gchar *box_blur_glsl_declarations =
+"uniform vec2 pixel_step;\n";
+/* FIXME: Is this shader right? It is doing 10 samples (ie, sampling
+   the middle texel twice) and then only dividing by 9 */
+#define SAMPLE(offx, offy) \
+  "cogl_texel += texture2D (cogl_sampler, cogl_tex_coord.st + pixel_step * " \
+  "vec2 (" G_STRINGIFY (offx) ", " G_STRINGIFY (offy) ") * 2.0);\n"
 static const gchar *box_blur_glsl_shader =
-"uniform sampler2D tex;\n"
-"uniform float x_step, y_step;\n"
-"\n"
-"vec4 get_rgba_rel (sampler2D source, float dx, float dy)\n"
-"{\n"
-"  return texture2D (tex, cogl_tex_coord_in[0].st + vec2 (dx, dy) * 2.0);\n"
-"}\n"
-"\n"
-"void main ()\n"
-"{\n"
-"  vec4 color = cogl_color_in * texture2D (tex, vec2 (cogl_tex_coord_in[0].xy));\n"
-"  color += get_rgba_rel (tex, -x_step, -y_step);\n"
-"  color += get_rgba_rel (tex,  0.0,    -y_step);\n"
-"  color += get_rgba_rel (tex,  x_step, -y_step);\n"
-"  color += get_rgba_rel (tex, -x_step,  0.0);\n"
-"  color += get_rgba_rel (tex,  0.0,     0.0);\n"
-"  color += get_rgba_rel (tex,  x_step,  0.0);\n"
-"  color += get_rgba_rel (tex, -x_step,  y_step);\n"
-"  color += get_rgba_rel (tex,  0.0,     y_step);\n"
-"  color += get_rgba_rel (tex,  x_step,  y_step);\n"
-"  cogl_color_out = color / 9.0;\n"
-"}";
+"  cogl_texel = texture2D (cogl_sampler, cogl_tex_coord.st);\n"
+  SAMPLE (-1.0, -1.0)
+  SAMPLE ( 0.0, -1.0)
+  SAMPLE (+1.0, -1.0)
+  SAMPLE (-1.0,  0.0)
+  SAMPLE ( 0.0,  0.0)
+  SAMPLE (+1.0,  0.0)
+  SAMPLE (-1.0, +1.0)
+  SAMPLE ( 0.0, +1.0)
+  SAMPLE (+1.0, +1.0)
+"  cogl_texel /= 9.0;\n";
+#undef SAMPLE
 
 struct _ClutterBlurEffect
 {
@@ -85,19 +82,19 @@ struct _ClutterBlurEffect
   /* a back pointer to our actor, so that we can query it */
   ClutterActor *actor;
 
-  CoglHandle shader;
-  CoglHandle program;
+  gint pixel_step_uniform;
 
-  gint tex_uniform;
-  gint x_step_uniform;
-  gint y_step_uniform;
+  gint tex_width;
+  gint tex_height;
 
-  guint is_compiled : 1;
+  CoglPipeline *pipeline;
 };
 
 struct _ClutterBlurEffectClass
 {
   ClutterOffscreenEffectClass parent_class;
+
+  CoglPipeline *base_pipeline;
 };
 
 G_DEFINE_TYPE (ClutterBlurEffect,
@@ -109,8 +106,6 @@ clutter_blur_effect_pre_paint (ClutterEffect *effect)
 {
   ClutterBlurEffect *self = CLUTTER_BLUR_EFFECT (effect);
   ClutterEffectClass *parent_class;
-  ClutterActorBox allocation;
-  gfloat width, height;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (effect)))
     return FALSE;
@@ -131,103 +126,57 @@ clutter_blur_effect_pre_paint (ClutterEffect *effect)
       return FALSE;
     }
 
-  clutter_actor_get_allocation_box (self->actor, &allocation);
-  clutter_actor_box_get_size (&allocation, &width, &height);
-
-  if (self->shader == COGL_INVALID_HANDLE)
-    {
-      self->shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
-      cogl_shader_source (self->shader, box_blur_glsl_shader);
-
-      self->is_compiled = FALSE;
-      self->tex_uniform = -1;
-      self->x_step_uniform = -1;
-      self->y_step_uniform = -1;
-    }
-
-  if (self->program == COGL_INVALID_HANDLE)
-    self->program = cogl_create_program ();
-
-  if (!self->is_compiled)
-    {
-      g_assert (self->shader != COGL_INVALID_HANDLE);
-      g_assert (self->program != COGL_INVALID_HANDLE);
-
-      cogl_shader_compile (self->shader);
-      if (!cogl_shader_is_compiled (self->shader))
-        {
-          gchar *log_buf = cogl_shader_get_info_log (self->shader);
-
-          g_warning (G_STRLOC ": Unable to compile the box blur shader: %s",
-                     log_buf);
-          g_free (log_buf);
-
-          cogl_handle_unref (self->shader);
-          cogl_handle_unref (self->program);
-
-          self->shader = COGL_INVALID_HANDLE;
-          self->program = COGL_INVALID_HANDLE;
-        }
-      else
-        {
-          cogl_program_attach_shader (self->program, self->shader);
-          cogl_program_link (self->program);
-
-          cogl_handle_unref (self->shader);
-
-          self->is_compiled = TRUE;
-
-          self->tex_uniform =
-            cogl_program_get_uniform_location (self->program, "tex");
-          self->x_step_uniform =
-            cogl_program_get_uniform_location (self->program, "x_step");
-          self->y_step_uniform =
-            cogl_program_get_uniform_location (self->program, "y_step");
-        }
-    }
-
   parent_class = CLUTTER_EFFECT_CLASS (clutter_blur_effect_parent_class);
-  return parent_class->pre_paint (effect);
+  if (parent_class->pre_paint (effect))
+    {
+      ClutterOffscreenEffect *offscreen_effect =
+        CLUTTER_OFFSCREEN_EFFECT (effect);
+      CoglHandle texture;
+
+      texture = clutter_offscreen_effect_get_texture (offscreen_effect);
+      self->tex_width = cogl_texture_get_width (texture);
+      self->tex_height = cogl_texture_get_height (texture);
+
+      if (self->pixel_step_uniform > -1)
+        {
+          gfloat pixel_step[2];
+
+          pixel_step[0] = 1.0f / self->tex_width;
+          pixel_step[1] = 1.0f / self->tex_height;
+
+          cogl_pipeline_set_uniform_float (self->pipeline,
+                                           self->pixel_step_uniform,
+                                           2, /* n_components */
+                                           1, /* count */
+                                           pixel_step);
+        }
+
+      cogl_pipeline_set_layer_texture (self->pipeline, 0, texture);
+
+      return TRUE;
+    }
+  else
+    return FALSE;
 }
 
 static void
 clutter_blur_effect_paint_target (ClutterOffscreenEffect *effect)
 {
   ClutterBlurEffect *self = CLUTTER_BLUR_EFFECT (effect);
-  ClutterOffscreenEffectClass *parent;
-  CoglHandle material;
-  CoglHandle texture;
+  guint8 paint_opacity;
 
-  if (self->program == COGL_INVALID_HANDLE)
-    goto out;
+  paint_opacity = clutter_actor_get_paint_opacity (self->actor);
 
-  texture = clutter_offscreen_effect_get_texture (effect);
+  cogl_pipeline_set_color4ub (self->pipeline,
+                              paint_opacity,
+                              paint_opacity,
+                              paint_opacity,
+                              paint_opacity);
+  cogl_push_source (self->pipeline);
 
-  if (self->tex_uniform > -1)
-    cogl_program_set_uniform_1i (self->program, self->tex_uniform, 0);
+  cogl_rectangle (0, 0, self->tex_width, self->tex_height);
 
-  if (self->x_step_uniform > -1)
-    {
-      int width = cogl_texture_get_width (texture);
-      cogl_program_set_uniform_1f (self->program,
-                                   self->x_step_uniform,
-                                   1.0f / width);
-    }
-
-  if (self->y_step_uniform > -1)
-    {
-      int height = cogl_texture_get_height (texture);
-      cogl_program_set_uniform_1f (self->program,
-                                   self->y_step_uniform,
-                                   1.0f / height);
-    }
-
-  material = clutter_offscreen_effect_get_target (effect);
-  cogl_material_set_user_program (material, self->program);
-
-out:
-  parent = CLUTTER_OFFSCREEN_EFFECT_CLASS (clutter_blur_effect_parent_class);
-  parent->paint_target (effect);
+  cogl_pop_source ();
 }
 
 static gboolean
@@ -257,12 +206,10 @@ clutter_blur_effect_dispose (GObject *gobject)
 {
   ClutterBlurEffect *self = CLUTTER_BLUR_EFFECT (gobject);
 
-  if (self->program != COGL_INVALID_HANDLE)
+  if (self->pipeline != NULL)
     {
-      cogl_handle_unref (self->program);
-
-      self->program = COGL_INVALID_HANDLE;
-      self->shader = COGL_INVALID_HANDLE;
+      cogl_object_unref (self->pipeline);
+      self->pipeline = NULL;
     }
 
   G_OBJECT_CLASS (clutter_blur_effect_parent_class)->dispose (gobject);
@@ -282,11 +229,37 @@ clutter_blur_effect_class_init (ClutterBlurEffectClass *klass)
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
   offscreen_class->paint_target = clutter_blur_effect_paint_target;
+
+  klass->base_pipeline = cogl_pipeline_new ();
+
+  if (clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
+    {
+      CoglSnippet *snippet;
+
+      snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
+                                  box_blur_glsl_declarations,
+                                  NULL);
+      cogl_snippet_set_replace (snippet,
+                                box_blur_glsl_shader);
+      cogl_pipeline_add_layer_snippet (klass->base_pipeline, 0, snippet);
+      cogl_object_unref (snippet);
+    }
+
+  cogl_pipeline_set_layer_null_texture (klass->base_pipeline,
+                                        0, /* layer number */
+                                        COGL_TEXTURE_TYPE_2D);
 }
 
 static void
 clutter_blur_effect_init (ClutterBlurEffect *self)
 {
+  CoglPipeline *base_pipeline =
+    CLUTTER_BLUR_EFFECT_GET_CLASS (self)->base_pipeline;
+
+  self->pipeline = cogl_pipeline_copy (base_pipeline);
+
+  self->pixel_step_uniform =
+    cogl_pipeline_get_uniform_location (self->pipeline, "pixel_step");
 }
 
 /**

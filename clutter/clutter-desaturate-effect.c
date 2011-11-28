@@ -61,18 +61,19 @@ struct _ClutterDesaturateEffect
   /* the desaturation factor, also known as "strength" */
   gdouble factor;
 
-  CoglHandle shader;
-  CoglHandle program;
-
-  gint tex_uniform;
   gint factor_uniform;
 
-  guint is_compiled : 1;
+  gint tex_width;
+  gint tex_height;
+
+  CoglPipeline *pipeline;
 };
 
 struct _ClutterDesaturateEffectClass
 {
   ClutterOffscreenEffectClass parent_class;
+
+  CoglPipeline *base_pipeline;
 };
 
 /* the magic gray vec3 has been taken from the NTSC conversion weights
@@ -82,23 +83,18 @@ struct _ClutterDesaturateEffectClass
  *   -- Richard S. Wright Jr, Benjamin Lipchak, Nicholas Haemel
  *   Addison-Wesley
  */
-static const gchar *desaturate_glsl_shader =
-"uniform sampler2D tex;\n"
-"uniform float factor;\n"
-"\n"
-"vec3 desaturate (const vec3 color, const float desaturation)\n"
-"{\n"
-"  const vec3 gray_conv = vec3 (0.299, 0.587, 0.114);\n"
-"  vec3 gray = vec3 (dot (gray_conv, color));\n"
-"  return vec3 (mix (color.rgb, gray, desaturation));\n"
-"}\n"
-"\n"
-"void main ()\n"
-"{\n"
-"  vec4 color = cogl_color_in * texture2D (tex, vec2 (cogl_tex_coord_in[0].xy));\n"
-"  color.rgb = desaturate (color.rgb, factor);\n"
-"  cogl_color_out = color;\n"
-"}\n";
+static const gchar *desaturate_glsl_declarations =
+  "uniform float factor;\n"
+  "\n"
+  "vec3 desaturate (const vec3 color, const float desaturation)\n"
+  "{\n"
+  "  const vec3 gray_conv = vec3 (0.299, 0.587, 0.114);\n"
+  "  vec3 gray = vec3 (dot (gray_conv, color));\n"
+  "  return vec3 (mix (color.rgb, gray, desaturation));\n"
+  "}\n";
+
+static const gchar *desaturate_glsl_source =
+  "  cogl_color_out.rgb = desaturate (cogl_color_out.rgb, factor);\n";
 
 enum
 {
@@ -136,83 +132,51 @@ clutter_desaturate_effect_pre_paint (ClutterEffect *effect)
       return FALSE;
     }
 
-  if (self->shader == COGL_INVALID_HANDLE)
-    {
-      self->shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
-      cogl_shader_source (self->shader, desaturate_glsl_shader);
-
-      self->is_compiled = FALSE;
-      self->tex_uniform = -1;
-      self->factor_uniform = -1;
-    }
-
-  if (self->program == COGL_INVALID_HANDLE)
-    self->program = cogl_create_program ();
-
-  if (!self->is_compiled)
-    {
-      g_assert (self->shader != COGL_INVALID_HANDLE);
-      g_assert (self->program != COGL_INVALID_HANDLE);
-
-      cogl_shader_compile (self->shader);
-      if (!cogl_shader_is_compiled (self->shader))
-        {
-          gchar *log_buf = cogl_shader_get_info_log (self->shader);
-
-          g_warning (G_STRLOC ": Unable to compile the desaturate shader: %s",
-                     log_buf);
-          g_free (log_buf);
-
-          cogl_handle_unref (self->shader);
-          cogl_handle_unref (self->program);
-
-          self->shader = COGL_INVALID_HANDLE;
-          self->program = COGL_INVALID_HANDLE;
-        }
-      else
-        {
-          cogl_program_attach_shader (self->program, self->shader);
-          cogl_program_link (self->program);
-
-          cogl_handle_unref (self->shader);
-
-          self->is_compiled = TRUE;
-
-          self->tex_uniform =
-            cogl_program_get_uniform_location (self->program, "tex");
-          self->factor_uniform =
-            cogl_program_get_uniform_location (self->program, "factor");
-        }
-    }
-
   parent_class = CLUTTER_EFFECT_CLASS (clutter_desaturate_effect_parent_class);
-  return parent_class->pre_paint (effect);
+  if (parent_class->pre_paint (effect))
+    {
+      ClutterOffscreenEffect *offscreen_effect =
+        CLUTTER_OFFSCREEN_EFFECT (effect);
+      CoglHandle texture;
+
+      texture = clutter_offscreen_effect_get_texture (offscreen_effect);
+      self->tex_width = cogl_texture_get_width (texture);
+      self->tex_height = cogl_texture_get_height (texture);
+
+      cogl_pipeline_set_layer_texture (self->pipeline, 0, texture);
+
+      return TRUE;
+    }
+  else
+    return FALSE;
 }
 
 static void
 clutter_desaturate_effect_paint_target (ClutterOffscreenEffect *effect)
 {
   ClutterDesaturateEffect *self = CLUTTER_DESATURATE_EFFECT (effect);
-  ClutterOffscreenEffectClass *parent;
-  CoglHandle material;
+  ClutterActor *actor;
+  CoglHandle texture;
+  guint8 paint_opacity;
 
-  if (self->program == COGL_INVALID_HANDLE)
-    goto out;
+  texture = clutter_offscreen_effect_get_texture (effect);
+  cogl_pipeline_set_layer_texture (self->pipeline, 0, texture);
 
-  if (self->tex_uniform > -1)
-    cogl_program_set_uniform_1i (self->program, self->tex_uniform, 0);
+  actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
+  paint_opacity = clutter_actor_get_paint_opacity (actor);
 
-  if (self->factor_uniform > -1)
-    cogl_program_set_uniform_1f (self->program,
-                                 self->factor_uniform,
-                                 self->factor);
+  cogl_pipeline_set_color4ub (self->pipeline,
+                              paint_opacity,
+                              paint_opacity,
+                              paint_opacity,
+                              paint_opacity);
+  cogl_push_source (self->pipeline);
 
-  material = clutter_offscreen_effect_get_target (effect);
-  cogl_material_set_user_program (material, self->program);
+  cogl_rectangle (0, 0,
+                  cogl_texture_get_width (texture),
+                  cogl_texture_get_height (texture));
 
-out:
-  parent = CLUTTER_OFFSCREEN_EFFECT_CLASS (clutter_desaturate_effect_parent_class);
-  parent->paint_target (effect);
+  cogl_pop_source ();
 }
 
 static void
@@ -220,12 +184,10 @@ clutter_desaturate_effect_dispose (GObject *gobject)
 {
   ClutterDesaturateEffect *self = CLUTTER_DESATURATE_EFFECT (gobject);
 
-  if (self->program != COGL_INVALID_HANDLE)
+  if (self->pipeline != NULL)
     {
-      cogl_handle_unref (self->program);
-
-      self->program = COGL_INVALID_HANDLE;
-      self->shader = COGL_INVALID_HANDLE;
+      cogl_object_unref (self->pipeline);
+      self->pipeline = NULL;
     }
 
   G_OBJECT_CLASS (clutter_desaturate_effect_parent_class)->dispose (gobject);
@@ -273,6 +235,15 @@ clutter_desaturate_effect_get_property (GObject    *gobject,
 }
 
 static void
+update_factor_uniform (ClutterDesaturateEffect *self)
+{
+  if (self->factor_uniform > -1)
+    cogl_pipeline_set_uniform_1f (self->pipeline,
+                                  self->factor_uniform,
+                                  self->factor);
+}
+
+static void
 clutter_desaturate_effect_class_init (ClutterDesaturateEffectClass *klass)
 {
   ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
@@ -307,12 +278,39 @@ clutter_desaturate_effect_class_init (ClutterDesaturateEffectClass *klass)
   g_object_class_install_properties (gobject_class,
                                      PROP_LAST,
                                      obj_props);
+
+  klass->base_pipeline = cogl_pipeline_new ();
+
+  if (clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
+    {
+      CoglSnippet *snippet;
+
+      snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                                  desaturate_glsl_declarations,
+                                  desaturate_glsl_source);
+      cogl_pipeline_add_snippet (klass->base_pipeline, snippet);
+      cogl_object_unref (snippet);
+    }
+
+  cogl_pipeline_set_layer_null_texture (klass->base_pipeline,
+                                        0, /* layer number */
+                                        COGL_TEXTURE_TYPE_2D);
 }
 
 static void
 clutter_desaturate_effect_init (ClutterDesaturateEffect *self)
 {
+  CoglPipeline *base_pipeline =
+    CLUTTER_DESATURATE_EFFECT_GET_CLASS (self)->base_pipeline;
+
+  self->pipeline = cogl_pipeline_copy (base_pipeline);
+
+  self->factor_uniform =
+    cogl_pipeline_get_uniform_location (self->pipeline, "factor");
+
   self->factor = 1.0;
+
+  update_factor_uniform (self);
 }
 
 /**
@@ -356,6 +354,7 @@ clutter_desaturate_effect_set_factor (ClutterDesaturateEffect *effect,
   if (fabsf (effect->factor - factor) >= 0.00001)
     {
       effect->factor = factor;
+      update_factor_uniform (effect);
 
       clutter_effect_queue_repaint (CLUTTER_EFFECT (effect));
 
