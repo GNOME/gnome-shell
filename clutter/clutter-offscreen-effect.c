@@ -78,16 +78,13 @@ struct _ClutterOffscreenEffectPrivate
 {
   CoglHandle offscreen;
   CoglMaterial *target;
+  CoglHandle texture;
 
   ClutterActor *actor;
   ClutterActor *stage;
 
   gfloat x_offset;
   gfloat y_offset;
-
-  /* The size of the texture */
-  gfloat target_width;
-  gfloat target_height;
 
   /* This is the calculated size of the fbo before being passed
      through create_texture(). This needs to be tracked separately so
@@ -150,7 +147,6 @@ update_fbo (ClutterEffect *effect, int fbo_width, int fbo_height)
 {
   ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
   ClutterOffscreenEffectPrivate *priv = self->priv;
-  CoglHandle texture;
 
   priv->stage = clutter_actor_get_stage (priv->actor);
   if (priv->stage == NULL)
@@ -180,20 +176,18 @@ update_fbo (ClutterEffect *effect, int fbo_width, int fbo_height)
                                        COGL_MATERIAL_FILTER_NEAREST);
     }
 
-  texture =
+  if (priv->texture != COGL_INVALID_HANDLE)
+    {
+      cogl_handle_unref (priv->texture);
+      priv->texture = COGL_INVALID_HANDLE;
+    }
+
+  priv->texture =
     clutter_offscreen_effect_create_texture (self, fbo_width, fbo_height);
-  if (texture == COGL_INVALID_HANDLE)
-     return FALSE;
+  if (priv->texture == COGL_INVALID_HANDLE)
+    return FALSE;
 
-  cogl_material_set_layer (priv->target, 0, texture);
-  cogl_handle_unref (texture);
-
-  /* we need to use the size of the texture target and not the minimum
-   * size we passed to the create_texture() vfunc, as any sub-class might
-   * give use a bigger texture
-   */
-  priv->target_width = cogl_texture_get_width (texture);
-  priv->target_height = cogl_texture_get_height (texture);
+  cogl_material_set_layer (priv->target, 0, priv->texture);
 
   priv->fbo_width = fbo_width;
   priv->fbo_height = fbo_height;
@@ -201,7 +195,7 @@ update_fbo (ClutterEffect *effect, int fbo_width, int fbo_height)
   if (priv->offscreen != COGL_INVALID_HANDLE)
     cogl_handle_unref (priv->offscreen);
 
-  priv->offscreen = cogl_offscreen_new_to_texture (texture);
+  priv->offscreen = cogl_offscreen_new_to_texture (priv->texture);
   if (priv->offscreen == COGL_INVALID_HANDLE)
     {
       g_warning ("%s: Unable to create an Offscreen buffer", G_STRLOC);
@@ -209,8 +203,6 @@ update_fbo (ClutterEffect *effect, int fbo_width, int fbo_height)
       cogl_handle_unref (priv->target);
       priv->target = COGL_INVALID_HANDLE;
 
-      priv->target_width = 0;
-      priv->target_height = 0;
       priv->fbo_width = 0;
       priv->fbo_height = 0;
 
@@ -231,6 +223,7 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   gfloat fbo_width, fbo_height;
   gfloat width, height;
   gfloat xexpand, yexpand;
+  int texture_width, texture_height;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (effect)))
     return FALSE;
@@ -261,6 +254,9 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   if (!update_fbo (effect, fbo_width, fbo_height))
     return FALSE;
 
+  texture_width = cogl_texture_get_width (priv->texture);
+  texture_height = cogl_texture_get_height (priv->texture);
+
   /* get the current modelview matrix so that we can copy it to the
    * framebuffer. We also store the matrix that was last used when we
    * updated the FBO so that we can detect when we don't need to
@@ -284,14 +280,14 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   xexpand = 0.f;
   if (priv->x_offset < 0.f)
     xexpand = -priv->x_offset;
-  if (priv->x_offset + priv->target_width > width)
-    xexpand = MAX (xexpand, (priv->x_offset + priv->target_width) - width);
+  if (priv->x_offset + texture_width > width)
+    xexpand = MAX (xexpand, (priv->x_offset + texture_width) - width);
 
   yexpand = 0.f;
   if (priv->y_offset < 0.f)
     yexpand = -priv->y_offset;
-  if (priv->y_offset + priv->target_height > height)
-    yexpand = MAX (yexpand, (priv->y_offset + priv->target_height) - height);
+  if (priv->y_offset + texture_height > height)
+    yexpand = MAX (yexpand, (priv->y_offset + texture_height) - height);
 
   /* Set the viewport */
   cogl_set_viewport (-(priv->x_offset + xexpand), -(priv->y_offset + yexpand),
@@ -359,8 +355,8 @@ clutter_offscreen_effect_real_paint_target (ClutterOffscreenEffect *effect)
    * hadn't been redirected offscreen.
    */
   cogl_rectangle_with_texture_coords (0, 0,
-                                      priv->target_width,
-                                      priv->target_height,
+                                      cogl_texture_get_width (priv->texture),
+                                      cogl_texture_get_height (priv->texture),
                                       0.0, 0.0,
                                       1.0, 1.0);
 }
@@ -448,6 +444,9 @@ clutter_offscreen_effect_finalize (GObject *gobject)
   if (priv->target)
     cogl_handle_unref (priv->target);
 
+  if (priv->texture)
+    cogl_handle_unref (priv->texture);
+
   G_OBJECT_CLASS (clutter_offscreen_effect_parent_class)->finalize (gobject);
 }
 
@@ -478,6 +477,35 @@ clutter_offscreen_effect_init (ClutterOffscreenEffect *self)
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                             CLUTTER_TYPE_OFFSCREEN_EFFECT,
                                             ClutterOffscreenEffectPrivate);
+}
+
+/**
+ * clutter_offscreen_effect_get_texture:
+ * @effect: a #ClutterOffscreenEffect
+ *
+ * Retrieves the texture used as a render target for the offscreen
+ * buffer created by @effect
+ *
+ * You should only use the returned texture when painting. The texture
+ * may change after ClutterEffect::pre_paint is called so the effect
+ * implementation should update any references to the texture after
+ * chaining-up to the parent's pre_paint implementation. This can be
+ * used instead of clutter_offscreen_effect_get_target() when the
+ * effect subclass wants to paint using its own material.
+ *
+ * Return value: (transfer none): a #CoglHandle or %COGL_INVALID_HANDLE. The
+ *   returned texture is owned by Clutter and it should not be
+ *   modified or freed
+ *
+ * Since: 1.10
+ */
+CoglHandle
+clutter_offscreen_effect_get_texture (ClutterOffscreenEffect *effect)
+{
+  g_return_val_if_fail (CLUTTER_IS_OFFSCREEN_EFFECT (effect),
+                        COGL_INVALID_HANDLE);
+
+  return effect->priv->texture;
 }
 
 /**
@@ -574,17 +602,17 @@ clutter_offscreen_effect_get_target_size (ClutterOffscreenEffect *effect,
   ClutterOffscreenEffectPrivate *priv;
 
   g_return_val_if_fail (CLUTTER_IS_OFFSCREEN_EFFECT (effect), FALSE);
-  
+
   priv = effect->priv;
 
-  if (priv->target == NULL)
+  if (priv->texture == COGL_INVALID_HANDLE)
     return FALSE;
 
   if (width)
-    *width = priv->target_width;
+    *width = cogl_texture_get_width (priv->texture);
 
   if (height)
-    *height = priv->target_height;
+    *height = cogl_texture_get_height (priv->texture);
 
   return TRUE;
 }
