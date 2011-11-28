@@ -43,7 +43,9 @@
 #include "cogl-display-private.h"
 #include "cogl-winsys-private.h"
 #include "cogl-winsys-stub-private.h"
+#ifdef COGL_HAS_EGL_SUPPORT
 #include "cogl-winsys-egl-private.h"
+#endif
 #include "cogl-config-private.h"
 
 #if COGL_HAS_XLIB_SUPPORT

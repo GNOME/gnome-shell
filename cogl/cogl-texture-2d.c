@@ -39,7 +39,9 @@
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-framebuffer-private.h"
+#ifdef COGL_HAS_EGL_SUPPORT
 #include "cogl-winsys-egl-private.h"
+#endif
 
 #include <string.h>
 #include <math.h>
