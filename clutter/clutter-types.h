@@ -289,8 +289,8 @@ struct _ClutterMargin
 GType clutter_margin_get_type (void) G_GNUC_CONST;
 
 ClutterMargin * clutter_margin_new      (void) G_GNUC_MALLOC;
-ClutterMargin * clutter_margin_copy     (const ClutterMargin *margin);
-void            clutter_margin_free     (ClutterMargin       *margin);
+ClutterMargin * clutter_margin_copy     (const ClutterMargin *margin_);
+void            clutter_margin_free     (ClutterMargin       *margin_);
 
 G_END_DECLS
 

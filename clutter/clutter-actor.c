@@ -6239,6 +6239,178 @@ clutter_actor_get_preferred_size (ClutterActor *self,
     *natural_height_p = natural_height;
 }
 
+/*< private >
+ * effective_align:
+ * @align: a #ClutterActorAlign
+ * @direction: a #ClutterTextDirection
+ *
+ * Retrieves the correct alignment depending on the text direction
+ *
+ * Return value: the effective alignment
+ */
+static ClutterActorAlign
+effective_align (ClutterActorAlign    align,
+                 ClutterTextDirection direction)
+{
+  ClutterActorAlign res;
+
+  switch (align)
+    {
+    case CLUTTER_ACTOR_ALIGN_START:
+      res = (direction == CLUTTER_TEXT_DIRECTION_RTL)
+          ? CLUTTER_ACTOR_ALIGN_END
+          : CLUTTER_ACTOR_ALIGN_START;
+      break;
+
+    case CLUTTER_ACTOR_ALIGN_END:
+      res = (direction == CLUTTER_TEXT_DIRECTION_RTL)
+          ? CLUTTER_ACTOR_ALIGN_START
+          : CLUTTER_ACTOR_ALIGN_END;
+      break;
+
+    default:
+      res = align;
+      break;
+    }
+
+  return res;
+}
+
+static inline void
+adjust_for_margin (float  margin_start,
+                   float  margin_end,
+                   float *minimum_size,
+                   float *natural_size,
+                   float *allocated_start,
+                   float *allocated_end)
+{
+  *minimum_size -= (margin_start + margin_end);
+  *natural_size -= (margin_start + margin_end);
+  *allocated_start += margin_start;
+  *allocated_end -= margin_end;
+}
+
+static inline void
+adjust_for_alignment (ClutterActorAlign  alignment,
+                      float              natural_size,
+                      float             *allocated_start,
+                      float             *allocated_end)
+{
+  float allocated_size = *allocated_end - *allocated_start;
+
+  switch (alignment)
+    {
+    case CLUTTER_ACTOR_ALIGN_FILL:
+      /* do nothing */
+      break;
+
+    case CLUTTER_ACTOR_ALIGN_START:
+      /* keep start */
+      *allocated_end = *allocated_start + MIN (natural_size, allocated_size);
+      break;
+
+    case CLUTTER_ACTOR_ALIGN_END:
+      if (allocated_size > natural_size)
+        {
+          *allocated_start += (allocated_size - natural_size);
+          *allocated_end = *allocated_start + natural_size;
+        }
+      break;
+
+    case CLUTTER_ACTOR_ALIGN_CENTER:
+      if (allocated_size > natural_size)
+        {
+          *allocated_start += ceilf ((allocated_size - natural_size) / 2);
+          *allocated_end = *allocated_start + MIN (allocated_size, natural_size);
+        }
+      break;
+    }
+}
+
+/*< private >
+ * clutter_actor_adjust_width:
+ * @self: a #ClutterActor
+ * @minimum_width: (inout): the actor's preferred minimum width, which
+ *   will be adjusted depending on the margin
+ * @natural_width: (inout): the actor's preferred natural width, which
+ *   will be adjusted depending on the margin
+ * @adjusted_x1: (out): the adjusted x1 for the actor's bounding box
+ * @adjusted_x2: (out): the adjusted x2 for the actor's bounding box
+ *
+ * Adjusts the preferred and allocated position and size of an actor,
+ * depending on the margin and alignment properties.
+ */
+static void
+clutter_actor_adjust_width (ClutterActor *self,
+                            gfloat       *minimum_width,
+                            gfloat       *natural_width,
+                            gfloat       *adjusted_x1,
+                            gfloat       *adjusted_x2)
+{
+  ClutterTextDirection text_dir;
+  const ClutterLayoutInfo *info;
+
+  info = _clutter_actor_get_layout_info_or_defaults (self);
+  text_dir = clutter_actor_get_text_direction (self);
+
+  CLUTTER_NOTE (LAYOUT, "Adjusting allocated X and width");
+
+  /* this will tweak natural_width to remove the margin, so that
+   * adjust_for_alignment() will use the correct size
+   */
+  adjust_for_margin (info->margin.left, info->margin.right,
+                     minimum_width, natural_width,
+                     adjusted_x1, adjusted_x2);
+
+  adjust_for_alignment (effective_align (info->x_align, text_dir),
+                        *natural_width,
+                        adjusted_x1, adjusted_x2);
+}
+
+/*< private >
+ * clutter_actor_adjust_height:
+ * @self: a #ClutterActor
+ * @minimum_height: (inout): the actor's preferred minimum height, which
+ *   will be adjusted depending on the margin
+ * @natural_height: (inout): the actor's preferred natural height, which
+ *   will be adjusted depending on the margin
+ * @adjusted_y1: (out): the adjusted y1 for the actor's bounding box
+ * @adjusted_y2: (out): the adjusted y2 for the actor's bounding box
+ *
+ * Adjusts the preferred and allocated position and size of an actor,
+ * depending on the margin and alignment properties.
+ */
+static void
+clutter_actor_adjust_height (ClutterActor *self,
+                             gfloat       *minimum_height,
+                             gfloat       *natural_height,
+                             gfloat       *adjusted_y1,
+                             gfloat       *adjusted_y2)
+{
+  const ClutterLayoutInfo *info;
+
+  info = _clutter_actor_get_layout_info_or_defaults (self);
+
+  CLUTTER_NOTE (LAYOUT, "Adjusting allocated Y and height");
+
+  /* this will tweak natural_height to remove the margin, so that
+   * adjust_for_alignment() will use the correct size
+   */
+  adjust_for_margin (info->margin.top, info->margin.bottom,
+                     minimum_height, natural_height,
+                     adjusted_y1,
+                     adjusted_y2);
+
+  /* we don't use effective_align() here, because text direction
+   * only affects the horizontal axis
+   */
+  adjust_for_alignment (info->y_align,
+                        *natural_height,
+                        adjusted_y1,
+                        adjusted_y2);
+
+}
+
 /* looks for a cached size request for this for_size. If not
  * found, returns the oldest entry so it can be overwritten */
 static gboolean
@@ -6318,10 +6490,10 @@ clutter_actor_get_preferred_width (ClutterActor *self,
   if (priv->min_width_set && priv->natural_width_set)
     {
       if (min_width_p != NULL)
-        *min_width_p = info->min_width;
+        *min_width_p = info->min_width + (info->margin.left + info->margin.right);
 
       if (natural_width_p != NULL)
-        *natural_width_p = info->natural_width;
+        *natural_width_p = info->natural_width + (info->margin.left + info->margin.right);
 
       return;
     }
@@ -6352,25 +6524,37 @@ clutter_actor_get_preferred_width (ClutterActor *self,
 
   if (!found_in_cache)
     {
-      gfloat min_width, natural_width;
+      gfloat minimum_width, natural_width;
       ClutterActorClass *klass;
 
-      min_width = natural_width = 0;
+      minimum_width = natural_width = 0;
+
+      /* adjust for the margin */
+      if (for_height >= 0)
+        {
+          for_height -= (info->margin.top + info->margin.bottom);
+          if (for_height < 0)
+            for_height = 0;
+        }
 
       CLUTTER_NOTE (LAYOUT, "Width request for %.2f px", for_height);
 
       klass = CLUTTER_ACTOR_GET_CLASS (self);
       klass->get_preferred_width (self, for_height,
-                                  &min_width,
+                                  &minimum_width,
                                   &natural_width);
+
+      /* adjust for the margin */
+      minimum_width += (info->margin.left + info->margin.right);
+      natural_width += (info->margin.left + info->margin.right);
 
       /* Due to accumulated float errors, it's better not to warn
        * on this, but just fix it.
        */
-      if (natural_width < min_width)
-	natural_width = min_width;
+      if (natural_width < minimum_width)
+	natural_width = minimum_width;
 
-      cached_size_request->min_size = min_width;
+      cached_size_request->min_size = minimum_width;
       cached_size_request->natural_size = natural_width;
       cached_size_request->for_size = for_height;
       cached_size_request->age = priv->cached_width_age;
@@ -6439,10 +6623,10 @@ clutter_actor_get_preferred_height (ClutterActor *self,
   if (priv->min_height_set && priv->natural_height_set)
     {
       if (min_height_p != NULL)
-        *min_height_p = info->min_height;
+        *min_height_p = info->min_height + (info->margin.top + info->margin.bottom);
 
       if (natural_height_p != NULL)
-        *natural_height_p = info->natural_height;
+        *natural_height_p = info->natural_height + (info->margin.top + info->margin.bottom);
 
       return;
     }
@@ -6472,25 +6656,37 @@ clutter_actor_get_preferred_height (ClutterActor *self,
 
   if (!found_in_cache)
     {
-      gfloat min_height, natural_height;
+      gfloat minimum_height, natural_height;
       ClutterActorClass *klass;
 
-      min_height = natural_height = 0;
+      minimum_height = natural_height = 0;
 
       CLUTTER_NOTE (LAYOUT, "Height request for %.2f px", for_width);
 
+      /* adjust for margin */
+      if (for_width >= 0)
+        {
+          for_width -= (info->margin.left + info->margin.right);
+          if (for_width < 0)
+            for_width = 0;
+        }
+
       klass = CLUTTER_ACTOR_GET_CLASS (self);
       klass->get_preferred_height (self, for_width,
-                                   &min_height,
+                                   &minimum_height,
                                    &natural_height);
+
+      /* adjust for margin */
+      minimum_height += (info->margin.top + info->margin.bottom);
+      natural_height += (info->margin.top + info->margin.bottom);
 
       /* Due to accumulated float errors, it's better not to warn
        * on this, but just fix it.
        */
-      if (natural_height < min_height)
-	natural_height = min_height;
+      if (natural_height < minimum_height)
+	natural_height = minimum_height;
 
-      cached_size_request->min_size = min_height;
+      cached_size_request->min_size = minimum_height;
       cached_size_request->natural_size = natural_height;
       cached_size_request->for_size = for_width;
       cached_size_request->age = priv->cached_height_age;
@@ -6601,85 +6797,6 @@ clutter_actor_get_allocation_geometry (ClutterActor    *self,
   geom->height = CLUTTER_NEARBYINT (clutter_actor_box_get_height (&box));
 }
 
-static ClutterActorAlign
-effective_align (ClutterActorAlign    align,
-                 ClutterTextDirection direction)
-{
-  ClutterActorAlign res;
-
-  switch (align)
-    {
-    case CLUTTER_ACTOR_ALIGN_START:
-      res = (direction == CLUTTER_TEXT_DIRECTION_RTL)
-          ? CLUTTER_ACTOR_ALIGN_END
-          : CLUTTER_ACTOR_ALIGN_START;
-      break;
-
-    case CLUTTER_ACTOR_ALIGN_END:
-      res = (direction == CLUTTER_TEXT_DIRECTION_RTL)
-          ? CLUTTER_ACTOR_ALIGN_START
-          : CLUTTER_ACTOR_ALIGN_END;
-      break;
-
-    default:
-      res = align;
-      break;
-    }
-
-  return res;
-}
-
-static inline void
-adjust_for_margin (float  margin_start,
-                   float  margin_end,
-                   float *minimum_size,
-                   float *natural_size,
-                   float *allocated_start,
-                   float *allocated_end)
-{
-  *minimum_size -= (margin_start + margin_end);
-  *natural_size -= (margin_start + margin_end);
-  *allocated_start += margin_start;
-  *allocated_end -= margin_end;
-}
-
-static inline void
-adjust_for_alignment (ClutterActorAlign  alignment,
-                      float              natural_size,
-                      float             *allocated_start,
-                      float             *allocated_end)
-{
-  float allocated_size = *allocated_end - *allocated_start;
-
-  switch (alignment)
-    {
-    case CLUTTER_ACTOR_ALIGN_FILL:
-      /* do nothing */
-      break;
-
-    case CLUTTER_ACTOR_ALIGN_START:
-      /* keep start */
-      *allocated_end = *allocated_start + MIN (natural_size, allocated_size);
-      break;
-
-    case CLUTTER_ACTOR_ALIGN_END:
-      if (allocated_size > natural_size)
-        {
-          *allocated_start += (allocated_size - natural_size);
-          *allocated_end = *allocated_start + natural_size;
-        }
-      break;
-
-    case CLUTTER_ACTOR_ALIGN_CENTER:
-      if (allocated_size > natural_size)
-        {
-          *allocated_start += ceilf ((allocated_size - natural_size) / 2);
-          *allocated_end = *allocated_start + MIN (allocated_size, natural_size);
-        }
-      break;
-    }
-}
-
 /*< private >
  * clutter_actor_adjust_allocation:
  * @self: a #ClutterActor
@@ -6697,8 +6814,6 @@ clutter_actor_adjust_allocation (ClutterActor    *self,
   float min_width, min_height;
   float nat_width, nat_height;
   ClutterRequestMode req_mode;
-  ClutterTextDirection text_dir;
-  const ClutterLayoutInfo *info;
 
   adj_allocation = *allocation;
 
@@ -6744,24 +6859,17 @@ clutter_actor_adjust_allocation (ClutterActor    *self,
     }
 #endif
 
-  info = _clutter_actor_get_layout_info_or_defaults (self);
-  text_dir = clutter_actor_get_text_direction (self);
+  clutter_actor_adjust_width (self,
+                              &min_width,
+                              &nat_width,
+                              &adj_allocation.x1,
+                              &adj_allocation.x2);
 
-  CLUTTER_NOTE (LAYOUT, "Adjusting allocated X and width");
-  adjust_for_margin (info->margin.left, info->margin.right,
-                     &min_width, &nat_width,
-                     &adj_allocation.x1, &adj_allocation.x2);
-  adjust_for_alignment (effective_align (info->x_align, text_dir),
-                        nat_width,
-                        &adj_allocation.x1, &adj_allocation.x2);
-
-  CLUTTER_NOTE (LAYOUT, "Adjusting allocated Y and height");
-  adjust_for_margin (info->margin.top, info->margin.bottom,
-                     &min_height, &nat_height,
-                     &adj_allocation.y1, &adj_allocation.y2);
-  adjust_for_alignment (info->y_align,
-                        nat_height,
-                        &adj_allocation.y1, &adj_allocation.y2);
+  clutter_actor_adjust_height (self,
+                               &min_height,
+                               &nat_height,
+                               &adj_allocation.y1,
+                               &adj_allocation.y2);
 
   /* we maintain the invariant that an allocation cannot be adjusted
    * to be outside the parent-given box
@@ -8880,7 +8988,7 @@ clutter_actor_insert_child (ClutterActor *self,
                             ClutterActor *child)
 {
   ClutterActorPrivate *priv = self->priv;
-  GList *l, *prev;
+  GList *l, *prev = NULL;
 
   /* Find the right place to insert the child so that it will still be
      sorted and the child will be after all of the actors at the same
@@ -13884,7 +13992,7 @@ clutter_actor_needs_y_expand (ClutterActor *self)
   return self->priv->y_expand_effective;
 }
 
-/*< private >
+/**
  * clutter_actor_queue_compute_expand:
  * @self: a #ClutterActor
  *
@@ -13895,7 +14003,7 @@ clutter_actor_needs_y_expand (ClutterActor *self)
  *
  * Since: 1.10
  */
-static void
+void
 clutter_actor_queue_compute_expand (ClutterActor *self)
 {
   ClutterActor *parent_actor;
@@ -13993,7 +14101,7 @@ clutter_actor_get_x_expand (ClutterActor *self)
 /**
  * clutter_actor_set_y_expand:
  * @self: a #ClutterActor
- * @x_expand: whether the actor should expand
+ * @y_expand: whether the actor should expand
  *
  * Sets whether a #ClutterActor should receive extra space when possible,
  * during the allocation.
@@ -14114,7 +14222,7 @@ clutter_actor_get_x_align (ClutterActor *self)
 /**
  * clutter_actor_set_y_align:
  * @self: a #ClutterActor
- * @x_align: the vertical alignment policy
+ * @y_align: the vertical alignment policy
  *
  * Sets the vertical alignment policy of a #ClutterActor, in case the
  * actor received extra vertical space.
