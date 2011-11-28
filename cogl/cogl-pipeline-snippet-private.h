@@ -68,6 +68,12 @@ typedef struct
      NULL */
   const char *return_variable;
 
+  /* If this is TRUE then it won't allocate a separate variable for
+     the return value. Instead it is expected that the snippet will
+     modify one of the argument variables directly and that will be
+     returned */
+  gboolean return_variable_is_argument;
+
   /* The argument names or NULL if there are none */
   const char *arguments;
 

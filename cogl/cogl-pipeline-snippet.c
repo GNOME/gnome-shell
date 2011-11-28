@@ -131,7 +131,7 @@ _cogl_pipeline_snippet_generate_code (const CoglPipelineSnippetData *data)
                          ")\n"
                          "{\n");
 
-        if (data->return_type)
+        if (data->return_type && !data->return_variable_is_argument)
           g_string_append_printf (data->source_buf,
                                   "  %s %s;\n"
                                   "\n",

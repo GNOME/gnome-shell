@@ -1627,10 +1627,37 @@ _cogl_pipeline_has_non_layer_vertex_snippets (CoglPipeline *pipeline)
   return !COGL_LIST_EMPTY (&authority->big_state->vertex_snippets);
 }
 
+static gboolean
+check_layer_has_vertex_snippet (CoglPipelineLayer *layer,
+                                void *user_data)
+{
+  unsigned long state = COGL_PIPELINE_LAYER_STATE_VERTEX_SNIPPETS;
+  CoglPipelineLayer *authority =
+    _cogl_pipeline_layer_get_authority (layer, state);
+  gboolean *found_vertex_snippet = user_data;
+
+  if (!COGL_LIST_EMPTY (&authority->big_state->vertex_snippets))
+    {
+      *found_vertex_snippet = TRUE;
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 gboolean
 _cogl_pipeline_has_vertex_snippets (CoglPipeline *pipeline)
 {
-  return _cogl_pipeline_has_non_layer_vertex_snippets (pipeline);
+  gboolean found_vertex_snippet = FALSE;
+
+  if (_cogl_pipeline_has_non_layer_vertex_snippets (pipeline))
+    return TRUE;
+
+  _cogl_pipeline_foreach_layer_internal (pipeline,
+                                         check_layer_has_vertex_snippet,
+                                         &found_vertex_snippet);
+
+  return found_vertex_snippet;
 }
 
 gboolean

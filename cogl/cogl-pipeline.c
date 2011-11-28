@@ -2614,12 +2614,15 @@ _cogl_pipeline_init_layer_state_hash_functions (void)
   _index = COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS_INDEX;
   layer_state_hash_functions[_index] =
     _cogl_pipeline_layer_hash_point_sprite_state;
+  _index = COGL_PIPELINE_LAYER_STATE_VERTEX_SNIPPETS_INDEX;
+  layer_state_hash_functions[_index] =
+    _cogl_pipeline_layer_hash_point_sprite_state;
   _index = COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS_INDEX;
   layer_state_hash_functions[_index] =
     _cogl_pipeline_layer_hash_fragment_snippets_state;
 
   /* So we get a big error if we forget to update this code! */
-  g_assert (COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT == 10);
+  g_assert (COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT == 11);
 }
 
 static gboolean

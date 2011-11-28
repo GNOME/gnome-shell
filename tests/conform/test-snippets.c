@@ -45,6 +45,7 @@ paint (TestState *state)
 {
   CoglPipeline *pipeline;
   CoglSnippet *snippet;
+  CoglMatrix matrix;
   CoglColor color;
   int location;
   int i;
@@ -268,7 +269,7 @@ paint (TestState *state)
   cogl_pop_source ();
   cogl_object_unref (pipeline);
 
-  /* Test replacing the layer code */
+  /* Test replacing the fragment layer code */
   pipeline = create_texture_pipeline ();
 
   snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_LAYER_FRAGMENT, NULL, NULL);
@@ -291,7 +292,7 @@ paint (TestState *state)
   cogl_pop_source ();
   cogl_object_unref (pipeline);
 
-  /* Test modifying the layer code */
+  /* Test modifying the fragment layer code */
   pipeline = cogl_pipeline_new ();
 
   cogl_pipeline_set_uniform_1f (pipeline,
@@ -307,6 +308,45 @@ paint (TestState *state)
 
   cogl_push_source (pipeline);
   cogl_rectangle_with_texture_coords (120, 0, 130, 10,
+                                      0, 0, 0, 0);
+  cogl_pop_source ();
+  cogl_object_unref (pipeline);
+
+  /* Test modifying the vertex layer code */
+  pipeline = create_texture_pipeline ();
+
+  cogl_matrix_init_identity (&matrix);
+  cogl_matrix_translate (&matrix, 0.0f, 1.0f, 0.0f);
+  cogl_pipeline_set_layer_matrix (pipeline, 0, &matrix);
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM,
+                              NULL,
+                              "cogl_tex_coord.x = 1.0;");
+  cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
+  cogl_object_unref (snippet);
+
+  cogl_push_source (pipeline);
+  cogl_rectangle_with_texture_coords (130, 0, 140, 10,
+                                      0, 0, 0, 0);
+  cogl_pop_source ();
+  cogl_object_unref (pipeline);
+
+  /* Test replacing the vertex layer code */
+  pipeline = create_texture_pipeline ();
+
+  cogl_matrix_init_identity (&matrix);
+  cogl_matrix_translate (&matrix, 0.0f, 1.0f, 0.0f);
+  cogl_pipeline_set_layer_matrix (pipeline, 0, &matrix);
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM,
+                              NULL,
+                              NULL);
+  cogl_snippet_set_replace (snippet, "cogl_tex_coord.x = 1.0;\n");
+  cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
+  cogl_object_unref (snippet);
+
+  cogl_push_source (pipeline);
+  cogl_rectangle_with_texture_coords (140, 0, 150, 10,
                                       0, 0, 0, 0);
   cogl_pop_source ();
   cogl_object_unref (pipeline);
@@ -363,6 +403,8 @@ validate_result (void)
   test_utils_check_pixel (105, 5, 0xff0000ff);
   test_utils_check_pixel (115, 5, 0xff00ffff);
   test_utils_check_pixel (125, 5, 0xff80ffff);
+  test_utils_check_pixel (135, 5, 0xffff00ff);
+  test_utils_check_pixel (145, 5, 0x00ff00ff);
 }
 
 void

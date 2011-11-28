@@ -140,6 +140,15 @@ get_vertex_snippets (CoglPipeline *pipeline)
   return &pipeline->big_state->vertex_snippets;
 }
 
+static CoglPipelineSnippetList *
+get_layer_vertex_snippets (CoglPipelineLayer *layer)
+{
+  unsigned long state = COGL_PIPELINE_LAYER_STATE_VERTEX_SNIPPETS;
+  layer = _cogl_pipeline_layer_get_authority (layer, state);
+
+  return &layer->big_state->vertex_snippets;
+}
+
 static gboolean
 _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
                                    int n_layers,
@@ -293,6 +302,7 @@ _cogl_pipeline_vertend_glsl_add_layer (CoglPipeline *pipeline,
                                        unsigned long layers_difference)
 {
   CoglPipelineShaderState *shader_state;
+  CoglPipelineSnippetData snippet_data;
   int unit_index;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -338,10 +348,47 @@ _cogl_pipeline_vertend_glsl_add_layer (CoglPipeline *pipeline,
    * avoid setting them if not
    */
 
+  g_string_append_printf (shader_state->header,
+                          "vec4\n"
+                          "cogl_real_transform_layer%i (mat4 matrix, "
+                          "vec4 tex_coord)\n"
+                          "{\n"
+                          "  return matrix * tex_coord;\n"
+                          "}\n",
+                          unit_index);
+
+  /* Wrap the layer code in any snippets that have been hooked */
+  memset (&snippet_data, 0, sizeof (snippet_data));
+  snippet_data.snippets = get_layer_vertex_snippets (layer);
+  snippet_data.hook = COGL_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM;
+  snippet_data.chain_function = g_strdup_printf ("cogl_real_transform_layer%i",
+                                                 unit_index);
+  snippet_data.final_name = g_strdup_printf ("cogl_transform_layer%i",
+                                             unit_index);
+  snippet_data.function_prefix = g_strdup_printf ("cogl_transform_layer%i",
+                                                  unit_index);
+  snippet_data.return_type = "vec4";
+  snippet_data.return_variable = "cogl_tex_coord";
+  snippet_data.return_variable_is_argument = TRUE;
+  snippet_data.arguments = "cogl_matrix, cogl_tex_coord";
+  snippet_data.argument_declarations = "mat4 cogl_matrix, vec4 cogl_tex_coord";
+  snippet_data.source_buf = shader_state->header;
+
+  _cogl_pipeline_snippet_generate_code (&snippet_data);
+
+  g_free ((char *) snippet_data.chain_function);
+  g_free ((char *) snippet_data.final_name);
+  g_free ((char *) snippet_data.function_prefix);
+
   g_string_append_printf (shader_state->source,
                           "  cogl_tex_coord_out[%i] = "
-                          "cogl_texture_matrix[%i] * cogl_tex_coord%i_in;\n",
-                          unit_index, unit_index, unit_index);
+                          "cogl_transform_layer%i (cogl_texture_matrix[%i],\n"
+                          "                           "
+                          "                        cogl_tex_coord%i_in);\n",
+                          unit_index,
+                          unit_index,
+                          unit_index,
+                          unit_index);
 
   return TRUE;
 }

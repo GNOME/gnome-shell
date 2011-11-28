@@ -54,6 +54,8 @@ typedef struct _CoglSnippet CoglSnippet;
  *   stage of the pipeline.
  * @COGL_SNIPPET_HOOK_FRAGMENT: A hook for the entire fragment
  *   processing stage of the pipeline.
+ * @COGL_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM: A hook for applying the
+ *   layer matrix to a texture coordinate for a layer.
  * @COGL_SNIPPET_HOOK_LAYER_FRAGMENT: A hook for the fragment
  *   processing of a particular layer.
  * @COGL_SNIPPET_HOOK_TEXTURE_LOOKUP: A hook for the texture lookup
@@ -127,6 +129,46 @@ typedef struct _CoglSnippet CoglSnippet;
  * this variable.
  * </para>
  *   </glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>%COGL_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM</glossterm>
+ * Adds a shader snippet that will hook on to the texture coordinate
+ * transformation of a particular layer. This can be used to replace
+ * the processing for a layer or to modify the results.
+ * </para>
+ * <para>
+ * Within the snippet code for this hook there are two extra
+ * variables. The first is a mat4 called cogl_matrix which represents
+ * the user matrix for this layer. The second is called cogl_tex_coord
+ * and represents the incoming and outgoing texture coordinate. On
+ * entry to the hook, cogl_tex_coord contains the value of the
+ * corresponding texture coordinate attribute for this layer. The hook
+ * is expected to modify this variable. The output will be passed as a
+ * varying to the fragment processing stage. The default code will
+ * just multiply cogl_matrix by cogl_tex_coord and store the result in
+ * cogl_tex_coord.
+ * </para>
+ * <para>
+ * The ‘declarations’ string in @snippet will be inserted in the
+ * global scope of the shader. Use this to declare any uniforms,
+ * attributes or functions that the snippet requires.
+ * </para>
+ * <para>
+ * The ‘pre’ string in @snippet will be inserted just before the
+ * fragment processing for this layer. At this point cogl_tex_coord
+ * still contains the value of the texture coordinate attribute.
+ * </para>
+ * <para>
+ * If a ‘replace’ string is given then this will be used instead of
+ * the default fragment processing for this layer. The snippet can
+ * modify cogl_tex_coord or leave it as is to apply no transformation.
+ * </para>
+ * <para>
+ * The ‘post’ string in @snippet will be inserted just after the
+ * transformation. At this point cogl_tex_coord will contain the
+ * results of the transformation but it can be further modified by the
+ * snippet.
+ * </para>
  *  </glossentry>
  *  <glossentry>
  *   <glossterm>%COGL_SNIPPET_HOOK_LAYER_FRAGMENT</glossterm>
@@ -209,8 +251,7 @@ typedef enum {
   COGL_SNIPPET_HOOK_FRAGMENT = 2048,
 
   /* Per layer vertex hooks */
-  /* TODO */
-  /* ... = 4096 */
+  COGL_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM = 4096,
 
   /* Per layer fragment hooks */
   COGL_SNIPPET_HOOK_LAYER_FRAGMENT = 6144,

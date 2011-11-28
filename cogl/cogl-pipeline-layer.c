@@ -115,6 +115,10 @@ _cogl_pipeline_layer_has_alpha (CoglPipelineLayer *layer)
 
   /* All bets are off if the layer contains any snippets */
   snippets_authority = _cogl_pipeline_layer_get_authority
+    (layer, COGL_PIPELINE_LAYER_STATE_VERTEX_SNIPPETS);
+  if (!COGL_LIST_EMPTY (&snippets_authority->big_state->vertex_snippets))
+    return TRUE;
+  snippets_authority = _cogl_pipeline_layer_get_authority
     (layer, COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS);
   if (!COGL_LIST_EMPTY (&snippets_authority->big_state->fragment_snippets))
     return TRUE;
@@ -211,6 +215,11 @@ _cogl_pipeline_layer_init_multi_property_sparse_state (
           }
         break;
       }
+    case COGL_PIPELINE_LAYER_STATE_VERTEX_SNIPPETS:
+      _cogl_pipeline_snippet_list_copy (&layer->big_state->vertex_snippets,
+                                        &authority->big_state->
+                                        vertex_snippets);
+      break;
     case COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS:
       _cogl_pipeline_snippet_list_copy (&layer->big_state->fragment_snippets,
                                         &authority->big_state->
@@ -591,6 +600,12 @@ _cogl_pipeline_layer_equal (CoglPipelineLayer *layer0,
                           _cogl_pipeline_layer_point_sprite_coords_equal))
     return FALSE;
 
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_VERTEX_SNIPPETS &&
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_VERTEX_SNIPPETS_INDEX,
+                          authorities0, authorities1,
+                          _cogl_pipeline_layer_vertex_snippets_equal))
+    return FALSE;
+
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS &&
       !layer_state_equal (COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS_INDEX,
                           authorities0, authorities1,
@@ -608,6 +623,9 @@ _cogl_pipeline_layer_free (CoglPipelineLayer *layer)
   if (layer->differences & COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA &&
       layer->texture != NULL)
     cogl_object_unref (layer->texture);
+
+  if (layer->differences & COGL_PIPELINE_LAYER_STATE_VERTEX_SNIPPETS)
+    _cogl_pipeline_snippet_list_free (&layer->big_state->vertex_snippets);
 
   if (layer->differences & COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS)
     _cogl_pipeline_snippet_list_free (&layer->big_state->fragment_snippets);
