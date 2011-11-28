@@ -120,6 +120,15 @@ _cogl_winsys_kms_display_setup (CoglDisplay *display, GError **error)
   drmModeEncoder *encoder;
   int i;
 
+  if (!(egl_renderer->private_features &
+        COGL_EGL_WINSYS_FEATURE_SURFACELESS_OPENGL))
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_INIT,
+                   "EGL_KHR_surfaceless_opengl extension not available");
+      return FALSE;
+    }
+
   resources = drmModeGetResources (kms_renderer->fd);
   if (!resources)
     {
