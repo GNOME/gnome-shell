@@ -42,8 +42,6 @@ const WorkspacesView = new Lang.Class({
                 this._spacing = node.get_length('spacing');
                 this._updateWorkspaceActors(false);
             }));
-        this.actor.connect('notify::mapped',
-                           Lang.bind(this, this._onMappedChanged));
 
         this._width = 0;
         this._height = 0;
@@ -97,14 +95,14 @@ const WorkspacesView = new Lang.Class({
                                     this._clipWidth, this._clipHeight);
         }));
 
-        this._scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
-                                                     lower: 0,
-                                                     page_increment: 1,
-                                                     page_size: 1,
-                                                     step_increment: 0,
-                                                     upper: this._workspaces.length });
-        this._scrollAdjustment.connect('notify::value',
-                                       Lang.bind(this, this._onScroll));
+        this.scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
+                                                    lower: 0,
+                                                    page_increment: 1,
+                                                    page_size: 1,
+                                                    step_increment: 0,
+                                                    upper: this._workspaces.length });
+        this.scrollAdjustment.connect('notify::value',
+                                      Lang.bind(this, this._onScroll));
 
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
@@ -118,8 +116,6 @@ const WorkspacesView = new Lang.Class({
                                                         Lang.bind(this, this._dragBegin));
         this._windowDragEndId = Main.overview.connect('window-drag-end',
                                                       Lang.bind(this, this._dragEnd));
-        this._swipeScrollBeginId = 0;
-        this._swipeScrollEndId = 0;
     },
 
     _updateExtraWorkspaces: function() {
@@ -290,7 +286,7 @@ const WorkspacesView = new Lang.Class({
         this._animatingScroll = true;
 
         if (showAnimation) {
-            Tweener.addTween(this._scrollAdjustment, {
+            Tweener.addTween(this.scrollAdjustment, {
                value: index,
                time: WORKSPACE_SWITCH_TIME,
                transition: 'easeOutQuad',
@@ -300,7 +296,7 @@ const WorkspacesView = new Lang.Class({
                    })
             });
         } else {
-            this._scrollAdjustment.value = index;
+            this.scrollAdjustment.value = index;
             this._animatingScroll = false;
         }
     },
@@ -308,7 +304,7 @@ const WorkspacesView = new Lang.Class({
     updateWorkspaces: function(oldNumWorkspaces, newNumWorkspaces) {
         let active = global.screen.get_active_workspace_index();
 
-        Tweener.addTween(this._scrollAdjustment,
+        Tweener.addTween(this.scrollAdjustment,
                          { upper: newNumWorkspaces,
                            time: WORKSPACE_SWITCH_TIME,
                            transition: 'easeOutQuad'
@@ -336,7 +332,7 @@ const WorkspacesView = new Lang.Class({
 
     _onDestroy: function() {
         this._destroyExtraWorkspaces();
-        this._scrollAdjustment.run_dispose();
+        this.scrollAdjustment.run_dispose();
         Main.overview.disconnect(this._overviewShowingId);
         Main.overview.disconnect(this._overviewShownId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
@@ -360,21 +356,6 @@ const WorkspacesView = new Lang.Class({
         if (this._windowDragEndId > 0) {
             Main.overview.disconnect(this._windowDragEndId);
             this._windowDragEndId = 0;
-        }
-    },
-
-    _onMappedChanged: function() {
-        if (this.actor.mapped) {
-            let direction = Overview.SwipeScrollDirection.VERTICAL;
-            Main.overview.setScrollAdjustment(this._scrollAdjustment,
-                                              direction);
-            this._swipeScrollBeginId = Main.overview.connect('swipe-scroll-begin',
-                                                             Lang.bind(this, this._swipeScrollBegin));
-            this._swipeScrollEndId = Main.overview.connect('swipe-scroll-end',
-                                                           Lang.bind(this, this._swipeScrollEnd));
-        } else {
-            Main.overview.disconnect(this._swipeScrollBeginId);
-            Main.overview.disconnect(this._swipeScrollEndId);
         }
     },
 
@@ -422,11 +403,11 @@ const WorkspacesView = new Lang.Class({
             this._extraWorkspaces[i].setReservedSlot(null);
     },
 
-    _swipeScrollBegin: function() {
+    startSwipeScroll: function() {
         this._scrolling = true;
     },
 
-    _swipeScrollEnd: function(overview, result) {
+    endSwipeScroll: function(result) {
         this._scrolling = false;
 
         if (result == Overview.SwipeScrollResult.CLICK) {
@@ -496,6 +477,7 @@ const WorkspacesDisplay = new Lang.Class({
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.connect('notify::mapped', Lang.bind(this, this._setupSwipeScrolling));
         this.actor.connect('parent-set', Lang.bind(this, this._parentSet));
         this.actor.set_clip_to_allocation(true);
 
@@ -519,6 +501,7 @@ const WorkspacesDisplay = new Lang.Class({
         controls.add_actor(this._thumbnailsBox.actor);
 
         this._workspacesViews = null;
+        this._primaryScrollAdjustment = null;
 
         this._settings = new Gio.Settings({ schema: OVERRIDE_SCHEMA });
         this._settings.connect('changed::workspaces-only-on-primary',
@@ -558,6 +541,8 @@ const WorkspacesDisplay = new Lang.Class({
         this._windowDragCancelledId = 0;
         this._windowDragEndId = 0;
         this._notifyOpacityId = 0;
+        this._swipeScrollBeginId = 0;
+        this._swipeScrollEndId = 0;
     },
 
     show: function() {
@@ -649,6 +634,33 @@ const WorkspacesDisplay = new Lang.Class({
             }
     },
 
+    _setupSwipeScrolling: function() {
+        if (this._swipeScrollBeginId)
+            Main.overview.disconnect(this._swipeScrollBeginId);
+        this._swipeScrollBeginId = 0;
+
+        if (this._swipeScrollEndId)
+            Main.overview.disconnect(this._swipeScrollEndId);
+        this._swipeScrollEndId = 0;
+
+        if (!this.actor.mapped)
+            return;
+
+        let direction = Overview.SwipeScrollDirection.VERTICAL;
+        Main.overview.setScrollAdjustment(this._scrollAdjustment,
+                                          direction);
+        this._swipeScrollBeginId = Main.overview.connect('swipe-scroll-begin',
+            Lang.bind(this, function() {
+                for (let i = 0; i < this._workspacesViews.length; i++)
+                    this._workspacesViews[i].startSwipeScroll();
+            }));
+        this._swipeScrollEndId = Main.overview.connect('swipe-scroll-end',
+           Lang.bind(this, function(overview, result) {
+                for (let i = 0; i < this._workspacesViews.length; i++)
+                    this._workspacesViews[i].endSwipeScroll(result);
+           }));
+    },
+
     _workspacesOnlyOnPrimaryChanged: function() {
         this._workspacesOnlyOnPrimary = this._settings.get_boolean('workspaces-only-on-primary');
 
@@ -682,13 +694,36 @@ const WorkspacesDisplay = new Lang.Class({
             }
 
             this._workspaces.push(monitorWorkspaces);
-            this._workspacesViews.push(new WorkspacesView(monitorWorkspaces));
+
+            let view = new WorkspacesView(monitorWorkspaces);
+            if (this._workspacesOnlyOnPrimary || i == this._primaryIndex) {
+                this._scrollAdjustment = view.scrollAdjustment;
+                this._scrollAdjustment.connect('notify::value',
+                                               Lang.bind(this, this._scrollValueChanged));
+                this._setupSwipeScrolling();
+            }
+            this._workspacesViews.push(view);
         }
 
         this._updateWorkspacesGeometry();
 
         for (let i = 0; i < this._workspacesViews.length; i++)
             global.overlay_group.add_actor(this._workspacesViews[i].actor);
+    },
+
+    _scrollValueChanged: function() {
+        if (this._workspacesOnlyOnPrimary)
+            return;
+
+        for (let i = 0; i < this._workspacesViews.length; i++) {
+            if (i == this._primaryIndex)
+                continue;
+
+            let adjustment = this._workspacesViews[i].scrollAdjustment;
+            // the adjustments work in terms of workspaces, so the
+            // values map directly
+            adjustment.value = this._scrollAdjustment.value;
+        }
     },
 
     _getPrimaryView: function() {
