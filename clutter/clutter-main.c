@@ -3737,7 +3737,7 @@ _clutter_debug_messagev (const char *format,
 
 #ifdef CLUTTER_ENABLE_PROFILE
   if (_clutter_uprof_context != NULL)
-    uprof_context_vtrace_message (_clutter_uprof_context, format, args);
+    uprof_context_vtrace_message (_clutter_uprof_context, format, var_args);
 #endif
 
   g_free (fmt);
