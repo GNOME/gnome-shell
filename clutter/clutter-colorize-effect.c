@@ -54,9 +54,6 @@ struct _ClutterColorizeEffect
 {
   ClutterOffscreenEffect parent_instance;
 
-  /* a back pointer to our actor, so that we can query it */
-  ClutterActor *actor;
-
   /* the tint of the colorization */
   ClutterColor tint;
 
@@ -117,10 +114,6 @@ clutter_colorize_effect_pre_paint (ClutterEffect *effect)
   ClutterEffectClass *parent_class;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (effect)))
-    return FALSE;
-
-  self->actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
-  if (self->actor == NULL)
     return FALSE;
 
   if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
@@ -356,8 +349,7 @@ clutter_colorize_effect_set_tint (ClutterColorizeEffect *effect,
 
   effect->tint = *tint;
 
-  if (effect->actor != NULL)
-    clutter_actor_queue_redraw (effect->actor);
+  clutter_effect_queue_repaint (CLUTTER_EFFECT (effect));
 
   g_object_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_TINT]);
 }

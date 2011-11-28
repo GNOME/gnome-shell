@@ -634,7 +634,7 @@ clutter_shader_effect_add_uniform (ClutterShaderEffect *effect,
     shader_uniform_update (uniform, value);
 
   if (priv->actor != NULL && !CLUTTER_ACTOR_IN_PAINT (priv->actor))
-    clutter_actor_queue_redraw (priv->actor);
+    clutter_effect_queue_repaint (CLUTTER_EFFECT (effect));
 }
 
 /**
