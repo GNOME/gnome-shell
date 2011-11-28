@@ -49,7 +49,7 @@ typedef struct _CoglDisplayKMS
   drmModeEncoder *encoder;
   drmModeModeInfo mode;
   drmModeCrtcPtr saved_crtc;
-  gint width, height;
+  int width, height;
 } CoglDisplayKMS;
 
 typedef struct _CoglOnscreenKMS
@@ -58,9 +58,9 @@ typedef struct _CoglOnscreenKMS
 
   uint32_t fb_id[2];
   struct gbm_bo *bo[2];
-  GLuint fb, color_rb[2], depth_rb;
+  unsigned int fb, color_rb[2], depth_rb;
   EGLImageKHR image[2];
-  gint current_frame;
+  int current_frame;
 } CoglOnscreenKMS;
 
 gboolean
