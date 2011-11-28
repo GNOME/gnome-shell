@@ -30,6 +30,14 @@
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
 #include "cogl-winsys-kms.h"
 #endif
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
+#include "cogl-xlib-renderer-private.h"
+#include "cogl-xlib-display-private.h"
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+#include <wayland-client.h>
+#include <wayland-egl.h>
+#endif
 
 typedef enum _CoglEGLWinsysFeature
 {
