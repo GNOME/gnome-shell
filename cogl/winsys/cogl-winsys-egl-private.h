@@ -27,7 +27,9 @@
 #include "cogl-defines.h"
 #include "cogl-winsys-private.h"
 #include "cogl-context.h"
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
 #include "cogl-winsys-kms.h"
+#endif
 
 typedef enum _CoglEGLWinsysFeature
 {
