@@ -1092,7 +1092,7 @@ const AudioVideoNotification = new Lang.Class({
              /* translators: argument is a contact name like Alice for example. */
             title = _("Call from %s").format(contact.get_alias());
 
-        this.parent(this, source, title, null, { customContent: true });
+        this.parent(source, title, null, { customContent: true });
         this.setResident(true);
 
         this.addButton('reject', _("Reject"));
@@ -1123,8 +1123,7 @@ const FileTransferNotification = new Lang.Class({
     Extends: MessageTray.Notification,
 
     _init: function(source, dispatchOp, channel, contact) {
-        this.parent(this,
-                    source,
+        this.parent(source,
                     /* To translators: The first parameter is
                      * the contact's alias and the second one is the
                      * file name. The string will be something
@@ -1197,7 +1196,7 @@ const SubscriptionRequestNotification = new Lang.Class({
     Extends: MessageTray.Notification,
 
     _init: function(source, contact) {
-        this.parent(this, source,
+        this.parent(source,
                     /* To translators: The parameter is the contact's alias */
                     _("%s would like permission to see when you are online").format(contact.get_alias()),
                     null, { customContent: true });
