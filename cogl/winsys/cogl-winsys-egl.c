@@ -1092,9 +1092,7 @@ _cogl_winsys_display_setup (CoglDisplay *display,
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  if (!_cogl_winsys_kms_display_setup (&egl_renderer->kms_renderer,
-                                       &egl_display->kms_display,
-                                       error))
+  if (!_cogl_winsys_kms_display_setup (display, error))
     goto error;
 #endif
 

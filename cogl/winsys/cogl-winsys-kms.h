@@ -78,9 +78,8 @@ _cogl_winsys_kms_onscreen_deinit (CoglRendererKMS *kms_renderer,
                                   CoglOnscreenKMS *kms_onscreen);
 
 gboolean
-_cogl_winsys_kms_display_setup (CoglRendererKMS *kms_renderer,
-                                CoglDisplayKMS  *kms_display,
-                                GError         **error);
+_cogl_winsys_kms_display_setup (CoglDisplay  *display,
+                                GError      **error);
 
 void
 _cogl_winsys_kms_swap_buffers (CoglRendererKMS *kms_renderer,

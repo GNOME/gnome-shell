@@ -55,69 +55,6 @@
 
 static const char device_name[] = "/dev/dri/card0";
 
-static gboolean
-setup_kms (CoglRendererKMS *kms_renderer,
-           CoglDisplayKMS  *kms_display,
-           GError         **error)
-{
-  drmModeRes *resources;
-  drmModeConnector *connector;
-  drmModeEncoder *encoder;
-  int i;
-
-  resources = drmModeGetResources (kms_renderer->fd);
-  if (!resources)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_INIT,
-                   "drmModeGetResources failed");
-      return FALSE;
-    }
-
-  for (i = 0; i < resources->count_connectors; i++)
-    {
-      connector = drmModeGetConnector (kms_renderer->fd, resources->connectors[i]);
-      if (connector == NULL)
-        continue;
-
-      if (connector->connection == DRM_MODE_CONNECTED &&
-          connector->count_modes > 0)
-        break;
-
-      drmModeFreeConnector(connector);
-    }
-
-  if (i == resources->count_connectors)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_INIT,
-                   "No currently active connector found");
-      return FALSE;
-    }
-
-  for (i = 0; i < resources->count_encoders; i++)
-    {
-      encoder = drmModeGetEncoder (kms_renderer->fd, resources->encoders[i]);
-
-      if (encoder == NULL)
-        continue;
-
-      if (encoder->encoder_id == connector->encoder_id)
-        break;
-
-      drmModeFreeEncoder (encoder);
-    }
-
-  kms_display->saved_crtc = drmModeGetCrtc (kms_renderer->fd,
-                                            kms_display->encoder->crtc_id);
-
-  kms_display->connector = connector;
-  kms_display->encoder = encoder;
-  kms_display->mode = connector->modes[0];
-
-  return TRUE;
-}
-
 gboolean
 _cogl_winsys_kms_connect (CoglRendererKMS  *kms_renderer,
                           GError          **error)
@@ -172,13 +109,66 @@ close_fd:
 }
 
 gboolean
-_cogl_winsys_kms_display_setup (CoglRendererKMS *kms_renderer,
-                                CoglDisplayKMS  *kms_display,
-                                GError         **error)
+_cogl_winsys_kms_display_setup (CoglDisplay *display, GError **error)
 {
-  if (!setup_kms (kms_renderer, kms_display, error))
-    return FALSE;
+  CoglDisplayEGL *egl_display = display->winsys;
+  CoglDisplayKMS *kms_display = &egl_display->kms_display;
+  CoglRendererEGL *egl_renderer = display->renderer->winsys;
+  CoglRendererKMS *kms_renderer = &egl_renderer->kms_renderer;
+  drmModeRes *resources;
+  drmModeConnector *connector;
+  drmModeEncoder *encoder;
+  int i;
 
+  resources = drmModeGetResources (kms_renderer->fd);
+  if (!resources)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_INIT,
+                   "drmModeGetResources failed");
+      return FALSE;
+    }
+
+  for (i = 0; i < resources->count_connectors; i++)
+    {
+      connector = drmModeGetConnector (kms_renderer->fd, resources->connectors[i]);
+      if (connector == NULL)
+        continue;
+
+      if (connector->connection == DRM_MODE_CONNECTED &&
+          connector->count_modes > 0)
+        break;
+
+      drmModeFreeConnector(connector);
+    }
+
+  if (i == resources->count_connectors)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_INIT,
+                   "No currently active connector found");
+      return FALSE;
+    }
+
+  for (i = 0; i < resources->count_encoders; i++)
+    {
+      encoder = drmModeGetEncoder (kms_renderer->fd, resources->encoders[i]);
+
+      if (encoder == NULL)
+        continue;
+
+      if (encoder->encoder_id == connector->encoder_id)
+        break;
+
+      drmModeFreeEncoder (encoder);
+    }
+
+  kms_display->saved_crtc = drmModeGetCrtc (kms_renderer->fd,
+                                            kms_display->encoder->crtc_id);
+
+  kms_display->connector = connector;
+  kms_display->encoder = encoder;
+  kms_display->mode = connector->modes[0];
   kms_display->width = kms_display->mode.hdisplay;
   kms_display->height = kms_display->mode.vdisplay;
 
