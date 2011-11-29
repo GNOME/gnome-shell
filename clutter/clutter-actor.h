@@ -351,6 +351,7 @@ gboolean              clutter_actor_get_fixed_position_set    (ClutterActor     
 void                  clutter_actor_set_fixed_position_set    (ClutterActor          *self,
                                                                gboolean               is_set);
 
+/* Actor geometry */
 gfloat                clutter_actor_get_width                 (ClutterActor          *self);
 gfloat                clutter_actor_get_height                (ClutterActor          *self);
 void                  clutter_actor_set_width                 (ClutterActor          *self,
@@ -363,6 +364,9 @@ void                  clutter_actor_set_x                     (ClutterActor     
                                                                gfloat                 x);
 void                  clutter_actor_set_y                     (ClutterActor          *self,
                                                                gfloat                 y);
+void                  clutter_actor_set_depth                 (ClutterActor          *self,
+                                                               gfloat                 depth);
+gfloat                clutter_actor_get_depth                 (ClutterActor          *self);
 void                  clutter_actor_set_layout_manager        (ClutterActor          *self,
                                                                ClutterLayoutManager  *manager);
 ClutterLayoutManager *clutter_actor_get_layout_manager        (ClutterActor          *self);
@@ -445,8 +449,18 @@ void                  clutter_actor_set_clip_to_allocation    (ClutterActor     
                                                                gboolean               clip_set);
 gboolean              clutter_actor_get_clip_to_allocation    (ClutterActor          *self);
 
+/* Actor hierarchy */
 void                  clutter_actor_add_child                 (ClutterActor          *self,
                                                                ClutterActor          *child);
+void                  clutter_actor_insert_child_at_index     (ClutterActor          *self,
+                                                               ClutterActor          *child,
+                                                               gint                   index_);
+void                  clutter_actor_insert_child_above        (ClutterActor          *self,
+                                                               ClutterActor          *child,
+                                                               ClutterActor          *sibling);
+void                  clutter_actor_insert_child_below        (ClutterActor          *self,
+                                                               ClutterActor          *child,
+                                                               ClutterActor          *sibling);
 void                  clutter_actor_remove_child              (ClutterActor          *self,
                                                                ClutterActor          *child);
 GList *               clutter_actor_get_children              (ClutterActor          *self);
@@ -459,16 +473,12 @@ void                  clutter_actor_unparent                  (ClutterActor     
 gboolean              clutter_actor_contains                  (ClutterActor          *self,
 							       ClutterActor          *descendant);
 ClutterActor*         clutter_actor_get_stage                 (ClutterActor          *actor);
-
 void                  clutter_actor_raise                     (ClutterActor          *self,
                                                                ClutterActor          *below);
 void                  clutter_actor_lower                     (ClutterActor          *self,
                                                                ClutterActor          *above);
 void                  clutter_actor_raise_top                 (ClutterActor          *self);
 void                  clutter_actor_lower_bottom              (ClutterActor          *self);
-void                  clutter_actor_set_depth                 (ClutterActor          *self,
-                                                               gfloat                 depth);
-gfloat                clutter_actor_get_depth                 (ClutterActor          *self);
 
 void                  clutter_actor_set_scale                 (ClutterActor          *self,
                                                                gdouble                scale_x,

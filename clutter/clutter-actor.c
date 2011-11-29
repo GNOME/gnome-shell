@@ -8976,7 +8976,7 @@ clutter_actor_get_children (ClutterActor *self)
 }
 
 /*< private >
- * clutter_actor_insert_child:
+ * insert_child_at_depth:
  * @self: a #ClutterActor
  * @child: a #ClutterActor
  *
@@ -8984,8 +8984,9 @@ clutter_actor_get_children (ClutterActor *self)
  * the depth as the insertion criteria.
  */
 static void
-clutter_actor_insert_child (ClutterActor *self,
-                            ClutterActor *child)
+insert_child_at_depth (ClutterActor *self,
+                       ClutterActor *child,
+                       gpointer      dummy G_GNUC_UNUSED)
 {
   ClutterActorPrivate *priv = self->priv;
   GList *l, *prev = NULL;
@@ -9014,30 +9015,113 @@ clutter_actor_insert_child (ClutterActor *self,
     }
   else
     priv->children = l;
-
-  priv->n_children++;
 }
 
-/**
- * clutter_actor_add_child:
- * @self: a #ClutterActor
- * @child: a #ClutterActor
- *
- * Adds @child to the children of @self.
- *
- * This function will acquire a reference on @child.
- *
- * Since: 1.10
- */
-void
-clutter_actor_add_child (ClutterActor *self,
-                         ClutterActor *child)
+static void
+insert_child_at_index (ClutterActor *self,
+                       ClutterActor *child,
+                       gpointer      data_)
+{
+  gint index_ = GPOINTER_TO_INT (data_);
+  ClutterActorPrivate *priv;
+
+  priv = self->priv;
+
+  if (index_ == 0)
+    priv->children = g_list_prepend (priv->children, child);
+  else if (index < 0)
+    priv->children = g_list_append (priv->children, child);
+  else
+    priv->children = g_list_insert (priv->children, child, index_);
+}
+
+static void
+insert_child_above (ClutterActor *self,
+                    ClutterActor *child,
+                    gpointer      data)
+{
+  ClutterActor *sibling = data;
+  ClutterActorPrivate *priv;
+  GList *l, *next = NULL;
+
+  priv = self->priv;
+
+  if (sibling == NULL)
+    {
+      priv->children = g_list_append (priv->children, child);
+
+      return;
+    }
+
+  for (l = priv->children; l != NULL; l = l->next)
+    {
+      ClutterActor *iter = l->data;
+
+      next = l->next;
+
+      if (iter == sibling)
+        break;
+    }
+
+  /* Insert the node after the found node */
+  l = g_list_append (l, child);
+
+  /* Fixup the links */
+  if (next != NULL)
+    {
+      l->next = next;
+      next->prev = l;
+    }
+}
+
+static void
+insert_child_below (ClutterActor *self,
+                    ClutterActor *child,
+                    gpointer      data)
+{
+  ClutterActorPrivate *priv = self->priv;
+  ClutterActor *sibling = data;
+  GList *l, *prev = NULL;
+
+  if (sibling == NULL)
+    {
+      priv->children = g_list_prepend (priv->children, child);
+
+      return;
+    }
+
+  for (l = priv->children; l != NULL; l = l->next)
+    {
+      ClutterActor *iter = l->data;
+
+      if (iter == sibling)
+        break;
+
+      prev = l;
+    }
+
+  l = g_list_prepend (l, child);
+
+  if (prev != NULL)
+    {
+      prev->next = l;
+      l->prev = prev;
+    }
+  else
+    priv->children = l;
+}
+
+typedef void (* ClutterActorAddChildFunc) (ClutterActor *parent,
+                                           ClutterActor *child,
+                                           gpointer      data);
+
+static void
+clutter_actor_add_child_internal (ClutterActor             *self,
+                                  ClutterActor             *child,
+                                  ClutterActorAddChildFunc  add_func,
+                                  gpointer                  data)
 {
   ClutterTextDirection text_dir;
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail (CLUTTER_IS_ACTOR (child));
-  g_return_if_fail (self != child);
 
   if (child->priv->parent_actor != NULL)
     {
@@ -9061,8 +9145,10 @@ clutter_actor_add_child (ClutterActor *self,
   g_object_ref_sink (child);
   child->priv->parent_actor = self;
 
-  /* Maintain an explicit list of children for every actor... */
-  clutter_actor_insert_child (self, child);
+  /* delegate the actual insertion */
+  add_func (self, child, data);
+
+  self->priv->n_children += 1;
 
   /* if push_internal() has been called then we automatically set
    * the flag on the actor
@@ -9125,6 +9211,136 @@ clutter_actor_add_child (ClutterActor *self,
 }
 
 /**
+ * clutter_actor_add_child:
+ * @self: a #ClutterActor
+ * @child: a #ClutterActor
+ *
+ * Adds @child to the children of @self.
+ *
+ * This function will acquire a reference on @child that will only
+ * be released when calling clutter_actor_remove_child().
+ *
+ * This function will take into consideration the #ClutterActor:depth
+ * of @child, and will keep the list of children sorted.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_add_child (ClutterActor *self,
+                         ClutterActor *child)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (self != child);
+
+  clutter_actor_add_child_internal (self, child,
+                                    insert_child_at_depth,
+                                    NULL);
+}
+
+/**
+ * clutter_actor_insert_child_at_index:
+ * @self: a #ClutterActor
+ * @child: a #ClutterActor
+ * @index_: the index
+ *
+ * Inserts @child into the list of children of @self, using the
+ * given @index_.
+ *
+ * This function will acquire a reference on @child that will only
+ * be released when calling clutter_actor_remove_child().
+ *
+ * This function will not take into consideration the #ClutterActor:depth
+ * of @child.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_insert_child_at_index (ClutterActor *self,
+                                     ClutterActor *child,
+                                     gint          index_)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (child->priv->parent_actor == NULL);
+  g_return_if_fail (index_ < self->priv->n_children);
+
+  clutter_actor_add_child_internal (self, child,
+                                    insert_child_at_index,
+                                    GINT_TO_POINTER (index_));
+}
+
+/**
+ * clutter_actor_insert_child_above:
+ * @self: a #ClutterActor
+ * @child: a #ClutterActor
+ * @sibling: (allow-none): a child of @self, or %NULL
+ *
+ * Inserts @child into the list of children of @self, above another
+ * child of @self or, if @sibling is %NULL, above all the children
+ * of @self.
+ *
+ * This function will acquire a reference on @child that will only
+ * be released when calling clutter_actor_remove_child().
+ *
+ * This function will not take into consideration the #ClutterActor:depth
+ * of @child.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_insert_child_above (ClutterActor *self,
+                                  ClutterActor *child,
+                                  ClutterActor *sibling)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (child->priv->parent_actor == NULL);
+  g_return_if_fail (sibling == NULL ||
+                    (CLUTTER_IS_ACTOR (sibling) &&
+                     sibling->priv->parent_actor == self));
+
+  clutter_actor_add_child_internal (self, child,
+                                    insert_child_above,
+                                    sibling);
+}
+
+/**
+ * clutter_actor_insert_child_below:
+ * @self: a #ClutterActor
+ * @child: a #ClutterActor
+ * @sibling: (allow-none): a child of @self, or %NULL
+ *
+ * Inserts @child into the list of children of @self, below another
+ * child of @self or, if @sibling is %NULL, below all the children
+ * of @self.
+ *
+ * This function will acquire a reference on @child that will only
+ * be released when calling clutter_actor_remove_child().
+ *
+ * This function will not take into consideration the #ClutterActor:depth
+ * of @child.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_insert_child_below (ClutterActor *self,
+                                  ClutterActor *child,
+                                  ClutterActor *sibling)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (child->priv->parent_actor == NULL);
+  g_return_if_fail (sibling == NULL ||
+                    (CLUTTER_IS_ACTOR (sibling) &&
+                     sibling->priv->parent_actor == self));
+
+  clutter_actor_add_child_internal (self, child,
+                                    insert_child_below,
+                                    sibling);
+}
+
+/**
  * clutter_actor_set_parent:
  * @self: A #ClutterActor
  * @parent: A new #ClutterActor parent
@@ -9164,9 +9380,9 @@ clutter_actor_get_parent (ClutterActor *self)
  * Retrieves the 'paint' visibility of an actor recursively checking for non
  * visible parents.
  *
- * This is by definition the same as CLUTTER_ACTOR_IS_MAPPED().
+ * This is by definition the same as %CLUTTER_ACTOR_IS_MAPPED.
  *
- * Return Value: TRUE if the actor is visibile and will be painted.
+ * Return Value: %TRUE if the actor is visibile and will be painted.
  *
  * Since: 0.8.4
  */
