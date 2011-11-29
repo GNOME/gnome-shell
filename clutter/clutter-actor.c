@@ -3997,6 +3997,13 @@ clutter_actor_dispose (GObject *object)
   g_clear_object (&priv->effects);
   g_clear_object (&priv->flatten_effect);
 
+  if (priv->layout_manager != NULL)
+    {
+      clutter_layout_manager_set_container (priv->layout_manager, NULL);
+      g_object_unref (priv->layout_manager);
+      priv->layout_manager = NULL;
+    }
+
   G_OBJECT_CLASS (clutter_actor_parent_class)->dispose (object);
 }
 
