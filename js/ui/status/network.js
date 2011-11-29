@@ -1803,6 +1803,7 @@ const NMApplet = new Lang.Class({
         let activating = null;
         let default_ip4 = null;
         let default_ip6 = null;
+        let active_vpn = null;
         for (let i = 0; i < this._activeConnections.length; i++) {
             let a = this._activeConnections[i];
 
@@ -1832,6 +1833,8 @@ const NMApplet = new Lang.Class({
                 default_ip4 = a;
             if (a.default6)
                 default_ip6 = a;
+            if (a._type == 'vpn')
+                active_vpn = a;
 
             if (a.state == NetworkManager.ActiveConnectionState.ACTIVATING)
                 activating = a;
@@ -1862,7 +1865,7 @@ const NMApplet = new Lang.Class({
             }
         }
 
-        this._mainConnection = activating || default_ip4 || default_ip6 || this._activeConnections[0] || null;
+        this._mainConnection = activating || active_vpn || default_ip4 || default_ip6 || this._activeConnections[0] || null;
     },
 
     _notifyActivated: function(activeConnection) {
