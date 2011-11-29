@@ -362,124 +362,117 @@ _cogl_matrix_stack_set (CoglMatrixStack  *stack,
   stack->age++;
 }
 
-#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
-
 static void
-flush_to_fixed_api_gl (CoglContext *context,
-                       gboolean is_identity,
-                       const CoglMatrix *matrix,
-                       void *user_data)
+_cogl_matrix_stack_flush_matrix_to_gl_builtin (CoglContext *ctx,
+                                               gboolean is_identity,
+                                               CoglMatrix *matrix,
+                                               CoglMatrixMode mode)
 {
-  if (is_identity)
-    GE (context, glLoadIdentity ());
-  else
-    GE (context, glLoadMatrixf (cogl_matrix_get_array (matrix)) );
-}
+  g_assert (ctx->driver == COGL_DRIVER_GL ||
+            ctx->driver == COGL_DRIVER_GLES1);
 
-#endif
-
-void
-_cogl_prepare_matrix_stack_for_flush (CoglContext *context,
-                                      CoglMatrixStack *stack,
-                                      CoglMatrixMode mode,
-                                      CoglMatrixStackFlushFunc callback,
-                                      void *user_data)
-{
-  CoglMatrixState *state = _cogl_matrix_stack_top (stack);
-
-  /* Because Cogl defines texture coordinates to have a top left origin and
-   * because offscreen framebuffers may be used for rendering to textures we
-   * always render upside down to offscreen buffers.
-   */
-  if (mode == COGL_MATRIX_PROJECTION &&
-      cogl_is_offscreen (cogl_get_draw_framebuffer ()))
+#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
+  if (ctx->flushed_matrix_mode != mode)
     {
-      CoglMatrix flipped_projection;
-      CoglMatrix *projection =
-        state->is_identity ? &context->identity_matrix : &state->matrix;
-
-      cogl_matrix_multiply (&flipped_projection,
-                            &context->y_flip_matrix, projection);
-      callback (context, FALSE, &flipped_projection, user_data);
-    }
-  else
-    {
-      CoglMatrix *modelview =
-        state->is_identity ? &context->identity_matrix : &state->matrix;
-      callback (context, state->is_identity, modelview, user_data);
-    }
-}
-
-void
-_cogl_matrix_stack_flush_to_gl (CoglContext *context,
-                                CoglMatrixStack *stack,
-                                CoglMatrixMode mode)
-{
-  if (context->driver == COGL_DRIVER_GLES2)
-    {
-      /* Under GLES2 we need to flush the matrices differently because
-         they are stored in uniforms attached to the program instead of
-         the global GL context state. At this point we can't be sure that
-         the right program will be generated so instead we'll just store a
-         reference to the matrix stack that is intended to be flushed and
-         update the uniform once the program is ready. */
+      GLenum gl_mode = 0;
 
       switch (mode)
         {
         case COGL_MATRIX_MODELVIEW:
-          cogl_object_ref (stack);
-          if (context->flushed_modelview_stack)
-            cogl_object_unref (context->flushed_modelview_stack);
-          context->flushed_modelview_stack = stack;
+          gl_mode = GL_MODELVIEW;
           break;
 
         case COGL_MATRIX_PROJECTION:
-          cogl_object_ref (stack);
-          if (context->flushed_projection_stack)
-            cogl_object_unref (context->flushed_projection_stack);
-          context->flushed_projection_stack = stack;
+          gl_mode = GL_PROJECTION;
           break;
 
         case COGL_MATRIX_TEXTURE:
-          /* This shouldn't happen because the texture matrices are
-             handled by the GLSL pipeline backend */
-          g_assert_not_reached ();
+          gl_mode = GL_TEXTURE;
           break;
         }
+
+      GE (ctx, glMatrixMode (gl_mode));
+      ctx->flushed_matrix_mode = mode;
     }
+
+  if (is_identity)
+    GE (ctx, glLoadIdentity ());
+  else
+    GE (ctx, glLoadMatrixf (cogl_matrix_get_array (matrix)));
+#endif
+}
+
+void
+_cogl_matrix_stack_flush_to_gl_builtins (CoglContext *ctx,
+                                         CoglMatrixStack *stack,
+                                         CoglMatrixMode mode,
+                                         gboolean disable_flip)
+{
+  g_assert (ctx->driver == COGL_DRIVER_GL ||
+            ctx->driver == COGL_DRIVER_GLES1);
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
-  else
-    {
-      if (context->flushed_matrix_mode != mode)
-        {
-          GLenum gl_mode = 0;
+  {
+    gboolean needs_flip;
+    CoglMatrixState *state;
+    CoglMatrixStackCache *cache;
 
-          switch (mode)
-            {
-            case COGL_MATRIX_MODELVIEW:
-              gl_mode = GL_MODELVIEW;
-              break;
+    state = _cogl_matrix_stack_top (stack);
 
-            case COGL_MATRIX_PROJECTION:
-              gl_mode = GL_PROJECTION;
-              break;
+    if (mode == COGL_MATRIX_PROJECTION)
+      {
+        /* Because Cogl defines texture coordinates to have a top left
+         * origin and because offscreen framebuffers may be used for
+         * rendering to textures we always render upside down to
+         * offscreen buffers. Also for some backends we need to render
+         * onscreen buffers upside-down too.
+         */
+        if (disable_flip)
+          needs_flip = FALSE;
+        else
+          needs_flip = cogl_is_offscreen (cogl_get_draw_framebuffer ());
 
-            case COGL_MATRIX_TEXTURE:
-              gl_mode = GL_TEXTURE;
-              break;
-            }
+        cache = &ctx->builtin_flushed_projection;
+      }
+    else
+      {
+        needs_flip = FALSE;
 
-          GE (context, glMatrixMode (gl_mode));
-          context->flushed_matrix_mode = mode;
-        }
+        if (mode == COGL_MATRIX_MODELVIEW)
+          cache = &ctx->builtin_flushed_modelview;
+        else
+          cache = NULL;
+      }
 
-      _cogl_prepare_matrix_stack_for_flush (context,
-                                            stack,
-                                            mode,
-                                            flush_to_fixed_api_gl,
-                                            stack);
-    }
+    /* We don't need to do anything if the state is the same */
+    if (!cache ||
+        _cogl_matrix_stack_check_and_update_cache (stack, cache, needs_flip))
+      {
+        gboolean is_identity = state->is_identity && !needs_flip;
+
+        if (needs_flip)
+          {
+            CoglMatrix flipped_matrix;
+
+            cogl_matrix_multiply (&flipped_matrix,
+                                  &ctx->y_flip_matrix,
+                                  state->is_identity ?
+                                  &ctx->identity_matrix :
+                                  &state->matrix);
+
+            _cogl_matrix_stack_flush_matrix_to_gl_builtin (ctx,
+                                                           /* not identity */
+                                                           FALSE,
+                                                           &flipped_matrix,
+                                                           mode);
+          }
+        else
+          _cogl_matrix_stack_flush_matrix_to_gl_builtin (ctx,
+                                                         is_identity,
+                                                         &state->matrix,
+                                                         mode);
+      }
+  }
 #endif
 }
 
@@ -509,4 +502,52 @@ _cogl_matrix_stack_equal (CoglMatrixStack *stack0,
     return TRUE;
   else
     return cogl_matrix_equal (&state0->matrix, &state1->matrix);
+}
+
+gboolean
+_cogl_matrix_stack_check_and_update_cache (CoglMatrixStack *stack,
+                                           CoglMatrixStackCache *cache,
+                                           gboolean flip)
+{
+  gboolean is_identity =
+    _cogl_matrix_stack_has_identity_flag (stack) && !flip;
+  gboolean is_dirty;
+
+  if (is_identity && cache->flushed_identity)
+    is_dirty = FALSE;
+  else if (cache->stack == NULL ||
+           cache->stack->age != cache->age ||
+           flip != cache->flipped)
+    is_dirty = TRUE;
+  else
+    is_dirty = (cache->stack != stack &&
+                !_cogl_matrix_stack_equal (cache->stack, stack));
+
+  /* We'll update the cache values even if the stack isn't dirty in
+     case the reason it wasn't dirty is because we compared the
+     matrices and found them to be the same. In that case updating the
+     cache values will avoid the comparison next time */
+  cache->age = stack->age;
+  cogl_object_ref (stack);
+  if (cache->stack)
+    cogl_object_unref (cache->stack);
+  cache->stack = stack;
+  cache->flushed_identity = is_identity;
+  cache->flipped = flip;
+
+  return is_dirty;
+}
+
+void
+_cogl_matrix_stack_init_cache (CoglMatrixStackCache *cache)
+{
+  cache->stack = NULL;
+  cache->flushed_identity = FALSE;
+}
+
+void
+_cogl_matrix_stack_destroy_cache (CoglMatrixStackCache *cache)
+{
+  if (cache->stack)
+    cogl_object_unref (cache->stack);
 }

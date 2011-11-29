@@ -71,15 +71,19 @@ _cogl_pipeline_progends[MAX (COGL_PIPELINE_N_PROGENDS, 1)];
 #ifdef COGL_PIPELINE_FRAGEND_FIXED
 #include "cogl-pipeline-fragend-fixed-private.h"
 #endif
-#ifdef COGL_PIPELINE_PROGEND_GLSL
-#include "cogl-pipeline-progend-glsl-private.h"
-#endif
 
 #ifdef COGL_PIPELINE_VERTEND_GLSL
 #include "cogl-pipeline-vertend-glsl-private.h"
 #endif
 #ifdef COGL_PIPELINE_VERTEND_FIXED
 #include "cogl-pipeline-vertend-fixed-private.h"
+#endif
+
+#ifdef COGL_PIPELINE_PROGEND_FIXED
+#include "cogl-pipeline-progend-fixed-private.h"
+#endif
+#ifdef COGL_PIPELINE_PROGEND_GLSL
+#include "cogl-pipeline-progend-glsl-private.h"
 #endif
 
 COGL_OBJECT_DEFINE (Pipeline, pipeline);
@@ -127,6 +131,10 @@ _cogl_pipeline_init_default_pipeline (void)
 #ifdef COGL_PIPELINE_FRAGEND_FIXED
   _cogl_pipeline_fragends[COGL_PIPELINE_FRAGEND_FIXED] =
     &_cogl_pipeline_fixed_fragend;
+#endif
+#ifdef COGL_PIPELINE_PROGEND_FIXED
+  _cogl_pipeline_progends[COGL_PIPELINE_PROGEND_FIXED] =
+    &_cogl_pipeline_fixed_progend;
 #endif
 #ifdef COGL_PIPELINE_PROGEND_GLSL
   _cogl_pipeline_progends[COGL_PIPELINE_PROGEND_GLSL] =

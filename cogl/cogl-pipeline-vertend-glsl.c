@@ -43,6 +43,7 @@
 #include "cogl-handle.h"
 #include "cogl-program-private.h"
 #include "cogl-pipeline-vertend-glsl-private.h"
+#include "cogl-pipeline-state-private.h"
 
 const CoglPipelineVertend _cogl_pipeline_glsl_vertend;
 
@@ -328,9 +329,10 @@ _cogl_pipeline_vertend_glsl_add_layer (CoglPipeline *pipeline,
 
           _cogl_set_active_texture_unit (unit_index);
 
-          _cogl_matrix_stack_flush_to_gl (ctx,
-                                          unit->matrix_stack,
-                                          COGL_MATRIX_TEXTURE);
+          _cogl_matrix_stack_flush_to_gl_builtins (ctx,
+                                                   unit->matrix_stack,
+                                                   COGL_MATRIX_TEXTURE,
+                                                   FALSE /* do flip */);
         }
     }
 
@@ -410,6 +412,7 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
       GLint compile_status;
       GLuint shader;
       CoglPipelineSnippetData snippet_data;
+      CoglPipelineSnippetList *vertex_snippets;
 
       COGL_STATIC_COUNTER (vertend_glsl_compile_counter,
                            "glsl vertex compile counter",
@@ -432,9 +435,11 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
                        "  cogl_color_out = cogl_color_in;\n"
                        "}\n");
 
+      vertex_snippets = get_vertex_snippets (pipeline);
+
       /* Add hooks for the vertex transform part */
       memset (&snippet_data, 0, sizeof (snippet_data));
-      snippet_data.snippets = get_vertex_snippets (pipeline);
+      snippet_data.snippets = vertex_snippets;
       snippet_data.hook = COGL_SNIPPET_HOOK_VERTEX_TRANSFORM;
       snippet_data.chain_function = "cogl_real_vertex_transform";
       snippet_data.final_name = "cogl_vertex_transform";
@@ -444,13 +449,34 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
 
       /* Add all of the hooks for vertex processing */
       memset (&snippet_data, 0, sizeof (snippet_data));
-      snippet_data.snippets = get_vertex_snippets (pipeline);
+      snippet_data.snippets = vertex_snippets;
       snippet_data.hook = COGL_SNIPPET_HOOK_VERTEX;
       snippet_data.chain_function = "cogl_generated_source";
-      snippet_data.final_name = "main";
+      snippet_data.final_name = "cogl_vertex_hook";
       snippet_data.function_prefix = "cogl_vertex_hook";
       snippet_data.source_buf = shader_state->source;
       _cogl_pipeline_snippet_generate_code (&snippet_data);
+
+      g_string_append (shader_state->source,
+                       "void\n"
+                       "main ()\n"
+                       "{\n"
+                       "  cogl_vertex_hook ();\n");
+
+      /* If there are any snippets then we can't rely on the
+         projection matrix to flip the rendering for offscreen buffers
+         so we'll need to flip it using an extra statement and a
+         uniform */
+      if (_cogl_pipeline_has_vertex_snippets (pipeline))
+        {
+          g_string_append (shader_state->header,
+                           "uniform vec4 _cogl_flip_vector;\n");
+          g_string_append (shader_state->source,
+                           "  cogl_position_out *= _cogl_flip_vector;\n");
+        }
+
+      g_string_append (shader_state->source,
+                       "}\n");
 
       GE_RET( shader, ctx, glCreateShader (GL_VERTEX_SHADER) );
 

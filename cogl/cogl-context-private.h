@@ -94,16 +94,18 @@ struct _CoglContext
   CoglMatrix        identity_matrix;
   CoglMatrix        y_flip_matrix;
 
-  /* Client-side matrix stack or NULL if none */
+  /* Value that was last used when calling glMatrixMode to avoid
+     calling it multiple times */
   CoglMatrixMode    flushed_matrix_mode;
 
-  /* On GLES2 we need to track the matrices separately because the are
-     stored in GLSL uniforms rather than using the fixed function
-     API. We keep track of the matrix stack that Cogl is trying to
-     flush so we can flush it later after the program is generated. A
-     reference is taken on the stacks. */
-  CoglMatrixStack  *flushed_modelview_stack;
-  CoglMatrixStack  *flushed_projection_stack;
+  /* The matrix stack that should be used for the next render */
+  CoglMatrixStack  *current_projection_stack;
+  CoglMatrixStack  *current_modelview_stack;
+
+  /* The last matrix stack with age that was flushed to the GL matrix
+     builtins */
+  CoglMatrixStackCache builtin_flushed_projection;
+  CoglMatrixStackCache builtin_flushed_modelview;
 
   GArray           *texture_units;
   int               active_texture_unit;
@@ -319,5 +321,13 @@ CoglContext *ctxvar = _cogl_context_get_default (); \
 if (ctxvar == NULL) return retval;
 
 #define NO_RETVAL
+
+void
+_cogl_context_set_current_projection (CoglContext *context,
+                                      CoglMatrixStack *stack);
+
+void
+_cogl_context_set_current_modelview (CoglContext *context,
+                                     CoglMatrixStack *stack);
 
 #endif /* __COGL_CONTEXT_PRIVATE_H */

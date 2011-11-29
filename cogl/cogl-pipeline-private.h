@@ -137,17 +137,29 @@
 
 /* If we have either of the GLSL backends then we also need a GLSL
    progend to combine the shaders generated into a single
-   program. Currently there is only one progend but if we ever add
-   other languages they would likely need their own progend too. The
-   progends are different from the other backends because there can be
-   more than one in use for each pipeline. All of the progends are
-   invoked whenever a pipeline is flushed. */
+   program. Same goes for the fixed progends which are used to flush
+   the matrices */
+#ifdef COGL_PIPELINE_FRAGEND_FIXED
+
+#define COGL_PIPELINE_PROGEND_FIXED      0
+
+#ifdef COGL_PIPELINE_FRAGEND_GLSL
+#define COGL_PIPELINE_PROGEND_GLSL       1
+#define COGL_PIPELINE_N_PROGENDS         2
+#else
+#define COGL_PIPELINE_N_PROGENDS         1
+#endif
+
+#else /* COGL_PIPELINE_FRAGEND_FIXED */
+
 #ifdef COGL_PIPELINE_FRAGEND_GLSL
 #define COGL_PIPELINE_PROGEND_GLSL       0
 #define COGL_PIPELINE_N_PROGENDS         1
 #else
 #define COGL_PIPELINE_N_PROGENDS         0
 #endif
+
+#endif /* COGL_PIPELINE_FRAGEND_FIXED */
 
 /* XXX: should I rename these as
  * COGL_PIPELINE_STATE_INDEX_XYZ... ?

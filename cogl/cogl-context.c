@@ -371,10 +371,10 @@ cogl_context_new (CoglDisplay *display,
     GE (context, glEnable (GL_ALPHA_TEST));
 #endif
 
-#ifdef HAVE_COGL_GLES2
-  _context->flushed_modelview_stack = NULL;
-  _context->flushed_projection_stack = NULL;
-#endif
+  _context->current_modelview_stack = NULL;
+  _context->current_projection_stack = NULL;
+  _cogl_matrix_stack_init_cache (&_context->builtin_flushed_projection);
+  _cogl_matrix_stack_init_cache (&_context->builtin_flushed_modelview);
 
   /* Create default textures used for fall backs */
   context->default_gl_texture_2d_tex =
@@ -491,12 +491,12 @@ _cogl_context_free (CoglContext *context)
   g_slist_free (context->texture_types);
   g_slist_free (context->buffer_types);
 
-#ifdef HAVE_COGL_GLES2
-  if (_context->flushed_modelview_stack)
-    cogl_object_unref (_context->flushed_modelview_stack);
-  if (_context->flushed_projection_stack)
-    cogl_object_unref (_context->flushed_projection_stack);
-#endif
+  if (_context->current_modelview_stack)
+    cogl_object_unref (_context->current_modelview_stack);
+  if (_context->current_projection_stack)
+    cogl_object_unref (_context->current_projection_stack);
+  _cogl_matrix_stack_destroy_cache (&context->builtin_flushed_projection);
+  _cogl_matrix_stack_destroy_cache (&context->builtin_flushed_modelview);
 
   cogl_pipeline_cache_free (context->pipeline_cache);
 
@@ -568,4 +568,24 @@ _cogl_context_update_features (CoglContext *context,
 #endif
 
   g_assert_not_reached ();
+}
+
+void
+_cogl_context_set_current_projection (CoglContext *context,
+                                      CoglMatrixStack *stack)
+{
+  cogl_object_ref (stack);
+  if (context->current_projection_stack)
+    cogl_object_unref (context->current_projection_stack);
+  context->current_projection_stack = stack;
+}
+
+void
+_cogl_context_set_current_modelview (CoglContext *context,
+                                     CoglMatrixStack *stack)
+{
+  cogl_object_ref (stack);
+  if (context->current_modelview_stack)
+    cogl_object_unref (context->current_modelview_stack);
+  context->current_modelview_stack = stack;
 }

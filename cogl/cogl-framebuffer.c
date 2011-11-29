@@ -1382,20 +1382,20 @@ static unsigned long
 _cogl_framebuffer_compare_modelview_state (CoglFramebuffer *a,
                                            CoglFramebuffer *b)
 {
-  if (!_cogl_matrix_stack_equal (a->modelview_stack, b->modelview_stack))
-    return COGL_FRAMEBUFFER_STATE_MODELVIEW;
-  else
-    return 0;
+  /* We always want to flush the modelview state. All this does is set
+     the current modelview stack on the context to the framebuffer's
+     stack. */
+  return COGL_FRAMEBUFFER_STATE_MODELVIEW;
 }
 
 static unsigned long
 _cogl_framebuffer_compare_projection_state (CoglFramebuffer *a,
                                             CoglFramebuffer *b)
 {
-  if (!_cogl_matrix_stack_equal (a->projection_stack, b->projection_stack))
-    return COGL_FRAMEBUFFER_STATE_MODELVIEW;
-  else
-    return 0;
+  /* We always want to flush the projection state. All this does is
+     set the current projection stack on the context to the
+     framebuffer's stack. */
+  return COGL_FRAMEBUFFER_STATE_PROJECTION;
 }
 
 static unsigned long
@@ -1533,17 +1533,15 @@ _cogl_framebuffer_flush_dither_state (CoglFramebuffer *framebuffer)
 static void
 _cogl_framebuffer_flush_modelview_state (CoglFramebuffer *framebuffer)
 {
-  _cogl_matrix_stack_flush_to_gl (framebuffer->context,
-                                  framebuffer->modelview_stack,
-                                  COGL_MATRIX_MODELVIEW);
+  _cogl_context_set_current_modelview (framebuffer->context,
+                                       framebuffer->modelview_stack);
 }
 
 static void
 _cogl_framebuffer_flush_projection_state (CoglFramebuffer *framebuffer)
 {
-  _cogl_matrix_stack_flush_to_gl (framebuffer->context,
-                                  framebuffer->projection_stack,
-                                  COGL_MATRIX_PROJECTION);
+  _cogl_context_set_current_projection (framebuffer->context,
+                                        framebuffer->projection_stack);
 }
 
 static void

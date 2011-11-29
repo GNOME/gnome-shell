@@ -271,6 +271,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-pipeline-vertend-glsl-private.h	\
 	$(srcdir)/cogl-pipeline-vertend-fixed.c		\
 	$(srcdir)/cogl-pipeline-vertend-fixed-private.h	\
+	$(srcdir)/cogl-pipeline-progend-fixed.c		\
+	$(srcdir)/cogl-pipeline-progend-fixed-private.h	\
 	$(srcdir)/cogl-pipeline-progend-glsl.c		\
 	$(srcdir)/cogl-pipeline-progend-glsl-private.h	\
 	$(srcdir)/cogl-pipeline-snippet-private.h	\
