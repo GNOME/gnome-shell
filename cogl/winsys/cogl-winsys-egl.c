@@ -328,10 +328,13 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
     {
       egl_renderer->wayland_display = renderer->foreign_wayland_display;
       /* XXX: For now we have to assume that if a foreign display is
-       * given then so is a foreing compositor because there is no way
-       * to retrospectively be notified of the compositor. */
+       * given then a foreign compositor and shell must also have been
+       * given because wayland doesn't provide a way to
+       * retrospectively be notified of the these objects. */
       g_assert (renderer->foreign_wayland_compositor);
+      g_assert (renderer->foreign_wayland_shell);
       egl_renderer->wayland_compositor = renderer->foreign_wayland_compositor;
+      egl_renderer->wayland_shell = renderer->foreign_wayland_shell;
     }
   else
     {
@@ -1881,6 +1884,34 @@ cogl_wayland_renderer_get_compositor (CoglRenderer *renderer)
     {
       CoglRendererEGL *egl_renderer = renderer->winsys;
       return egl_renderer->wayland_compositor;
+    }
+  else
+    return NULL;
+}
+
+void
+cogl_wayland_renderer_set_foreign_shell (CoglRenderer *renderer,
+                                         struct wl_shell *shell)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
+
+  /* NB: Renderers are considered immutable once connected */
+  _COGL_RETURN_IF_FAIL (!renderer->connected);
+
+  renderer->foreign_wayland_shell = shell;
+}
+
+struct wl_shell *
+cogl_wayland_renderer_get_shell (CoglRenderer *renderer)
+{
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), NULL);
+
+  if (renderer->foreign_wayland_shell)
+    return renderer->foreign_wayland_shell;
+  else if (renderer->connected)
+    {
+      CoglRendererEGL *egl_renderer = renderer->winsys;
+      return egl_renderer->wayland_shell;
     }
   else
     return NULL;

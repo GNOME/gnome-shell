@@ -37,25 +37,139 @@ G_BEGIN_DECLS
 
 #define cogl_wayland_renderer_set_foreign_display \
   cogl_wayland_renderer_set_foreign_display_EXP
+/**
+ * cogl_wayland_renderer_set_foreign_display:
+ * @renderer: A #CoglRenderer
+ * @display: A Wayland display
+ *
+ * Allows you to explicitly control what Wayland display you want Cogl
+ * to work with instead of leaving Cogl to automatically connect to a
+ * wayland compositor.
+ *
+ * <note>If you use this API you must also explicitly set foreign
+ * Wayland compositor and shell objects using the
+ * cogl_wayland_renderer_set_foreign_compositor() and
+ * cogl_wayland_renderer_set_foreign_shell() respectively. This ie
+ * because Wayland doesn't currently provide a way to retrospectively
+ * query these interfaces so the expectation is that if you have taken
+ * ownership of the display then you will also have been notified of
+ * the compositor and shell interfaces which Cogl needs to use.</note>
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
 void
 cogl_wayland_renderer_set_foreign_display (CoglRenderer *renderer,
                                            struct wl_display *display);
 
 #define cogl_wayland_renderer_get_display \
   cogl_wayland_renderer_get_display_EXP
+/**
+ * cogl_wayland_renderer_get_display:
+ * @renderer: A #CoglRenderer
+ * @display: A Wayland display
+ *
+ * Retrieves the Wayland display that Cogl is using. If a foreign
+ * display has been specified using
+ * cogl_wayland_renderer_set_foreign_display() then that display will
+ * be returned. If no foreign display has been specified then the
+ * display that Cogl creates internally will be returned unless the
+ * renderer has not yet been connected (either implicitly or explicitly by
+ * calling cogl_renderer_connect()) in which case %NULL is returned.
+ *
+ * Returns: The wayland display currently associated with @renderer,
+ *          or %NULL if the renderer hasn't yet been connected and no
+ *          foreign display has been specified.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
 struct wl_display *
 cogl_wayland_renderer_get_display (CoglRenderer *renderer);
 
 #define cogl_wayland_renderer_set_foreign_compositor \
   cogl_wayland_renderer_set_foreign_compositor_EXP
+/**
+ * cogl_wayland_renderer_set_foreign_compositor:
+ * @renderer: A #CoglRenderer
+ * @compositor: A Wayland compositor
+ *
+ * Allows you to explicitly notify Cogl of a Wayland compositor
+ * interface to use. This API should be used in conjunction with
+ * cogl_wayland_renderer_set_foreign_display() because if you are
+ * connecting to a wayland compositor manually that will also mean you
+ * will be notified on connection of the available interfaces that
+ * can't be queried retrosectively with the current Wayland protocol.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
 void
 cogl_wayland_renderer_set_foreign_compositor (CoglRenderer *renderer,
                                               struct wl_compositor *compositor);
 
 #define cogl_wayland_renderer_get_compositor \
   cogl_wayland_renderer_get_compositor_EXP
+/**
+ * cogl_wayland_renderer_get_compositor:
+ * @renderer: A #CoglRenderer
+ *
+ * Retrieves the Wayland compositor interface that Cogl is using. If a
+ * foreign compositor has been specified using
+ * cogl_wayland_renderer_set_foreign_compositor() then that compositor
+ * will be returned. If no foreign compositor has been specified then
+ * the compositor that Cogl is notified of internally will be returned
+ * unless the renderer has not yet been connected (either implicitly
+ * or explicitly by calling cogl_renderer_connect()) in which case
+ * %NULL is returned.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
 struct wl_compositor *
 cogl_wayland_renderer_get_compositor (CoglRenderer *renderer);
+
+#define cogl_wayland_renderer_set_foreign_shell \
+  cogl_wayland_renderer_set_foreign_shell_EXP
+/**
+ * cogl_wayland_renderer_set_foreign_shell:
+ * @renderer: A #CoglRenderer
+ * @shell: A Wayland shell
+ *
+ * Allows you to explicitly notify Cogl of a Wayland shell interface
+ * to use.  This API should be used in conjunction with
+ * cogl_wayland_renderer_set_foreign_display() because if you are
+ * connecting to a wayland compositor manually that will also mean you
+ * will be notified on connection of the available interfaces that
+ * can't be queried retrosectively with the current Wayland protocol.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_wayland_renderer_set_foreign_shell (CoglRenderer *renderer,
+                                         struct wl_shell *shell);
+
+#define cogl_wayland_renderer_get_shell \
+  cogl_wayland_renderer_get_shell_EXP
+/**
+ * cogl_wayland_renderer_get_shell:
+ * @renderer: A #CoglRenderer
+ *
+ * Retrieves the Wayland shell interface that Cogl is using. If a
+ * foreign shell has been specified using
+ * cogl_wayland_renderer_set_foreign_shell() then that shell
+ * will be returned. If no foreign shell has been specified then
+ * the shell that Cogl is notified of internally will be returned
+ * unless the renderer has not yet been connected (either implicitly
+ * or explicitly by calling cogl_renderer_connect()) in which case
+ * %NULL is returned.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+struct wl_shell *
+cogl_wayland_renderer_get_shell (CoglRenderer *renderer);
 
 G_END_DECLS
 
