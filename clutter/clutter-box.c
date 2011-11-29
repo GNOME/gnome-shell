@@ -89,8 +89,6 @@ struct _ClutterBoxPrivate
 {
   ClutterLayoutManager *manager;
 
-  GList *children;
-
   guint changed_id;
 
   ClutterColor color;
@@ -112,167 +110,13 @@ static GParamSpec *obj_props[PROP_LAST];
 
 static const ClutterColor default_box_color = { 255, 255, 255, 255 };
 
-static void clutter_container_iface_init (ClutterContainerIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterBox, clutter_box, CLUTTER_TYPE_ACTOR,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                clutter_container_iface_init));
-
-static gint
-sort_by_depth (gconstpointer a,
-               gconstpointer b)
-{
-  gfloat depth_a = clutter_actor_get_depth ((ClutterActor *) a);
-  gfloat depth_b = clutter_actor_get_depth ((ClutterActor *) b);
-
-  if (depth_a < depth_b)
-    return -1;
-
-  if (depth_a > depth_b)
-    return 1;
-
-  return 0;
-}
-
-static void
-clutter_box_real_add (ClutterContainer *container,
-                      ClutterActor     *actor)
-{
-  ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
-  GList *l, *prev = NULL;
-  gfloat actor_depth;
-
-  g_object_ref (actor);
-
-  actor_depth = clutter_actor_get_depth (actor);
-
-  /* Find the right place to insert the child so that it will still be
-     sorted and the child will be after all of the actors at the same
-     depth */
-  for (l = priv->children;
-       l && (clutter_actor_get_depth (l->data) <= actor_depth);
-       l = l->next)
-    prev = l;
-
-  /* Insert the node before the found node */
-  l = g_list_prepend (l, actor);
-  /* Fixup the links */
-  if (prev)
-    {
-      prev->next = l;
-      l->prev = prev;
-    }
-  else
-    priv->children = l;
-
-  clutter_actor_add_child (CLUTTER_ACTOR (container), actor);
-
-  clutter_actor_queue_relayout (actor);
-
-  g_signal_emit_by_name (container, "actor-added", actor);
-
-  g_object_unref (actor);
-}
-
-static void
-clutter_box_real_remove (ClutterContainer *container,
-                         ClutterActor     *actor)
-{
-  ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
-
-  g_object_ref (actor);
-
-  priv->children = g_list_remove (priv->children, actor);
-  clutter_actor_remove_child (CLUTTER_ACTOR (container), actor);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-
-  g_signal_emit_by_name (container, "actor-removed", actor);
-
-  g_object_unref (actor);
-}
-
-static void
-clutter_box_real_foreach (ClutterContainer *container,
-                          ClutterCallback   callback,
-                          gpointer          user_data)
-{
-  ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
-
-  /* Using g_list_foreach instead of iterating the list manually
-     because it has better protection against the current node being
-     removed. This will happen for example if someone calls
-     clutter_container_foreach(container, clutter_actor_destroy) */
-  g_list_foreach (priv->children, (GFunc) callback, user_data);
-}
-
-static void
-clutter_box_real_raise (ClutterContainer *container,
-                        ClutterActor     *actor,
-                        ClutterActor     *sibling)
-{
-  ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
-
-  priv->children = g_list_remove (priv->children, actor);
-
-  if (sibling == NULL)
-    priv->children = g_list_append (priv->children, actor);
-  else
-    {
-      gint index_ = g_list_index (priv->children, sibling) + 1;
-
-      priv->children = g_list_insert (priv->children, actor, index_);
-    }
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-}
-
-static void
-clutter_box_real_lower (ClutterContainer *container,
-                        ClutterActor     *actor,
-                        ClutterActor     *sibling)
-{
-  ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
-
-  priv->children = g_list_remove (priv->children, actor);
-
-  if (sibling == NULL)
-    priv->children = g_list_prepend (priv->children, actor);
-  else
-    {
-      gint index_ = g_list_index (priv->children, sibling);
-
-      priv->children = g_list_insert (priv->children, actor, index_);
-    }
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-}
-
-static void
-clutter_box_real_sort_depth_order (ClutterContainer *container)
-{
-  ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
-
-  priv->children = g_list_sort (priv->children, sort_by_depth);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-}
-
-static void
-clutter_container_iface_init (ClutterContainerIface *iface)
-{
-  iface->add = clutter_box_real_add;
-  iface->remove = clutter_box_real_remove;
-  iface->foreach = clutter_box_real_foreach;
-  iface->raise = clutter_box_real_raise;
-  iface->lower = clutter_box_real_lower;
-  iface->sort_depth_order = clutter_box_real_sort_depth_order;
-}
+G_DEFINE_TYPE (ClutterBox, clutter_box, CLUTTER_TYPE_ACTOR);
 
 static void
 clutter_box_real_paint (ClutterActor *actor)
 {
   ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
+  GList *children;
 
   if (priv->color_set)
     {
@@ -295,7 +139,9 @@ clutter_box_real_paint (ClutterActor *actor)
       cogl_rectangle (0, 0, width, height);
     }
 
-  g_list_foreach (priv->children, (GFunc) clutter_actor_paint, NULL);
+  children = clutter_actor_get_children (actor);
+  g_list_foreach (children, (GFunc) clutter_actor_paint, NULL);
+  g_list_free (children);
 }
 
 static gboolean
@@ -304,7 +150,7 @@ clutter_box_real_get_paint_volume (ClutterActor       *actor,
 {
   ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
   gboolean retval = FALSE;
-  GList *l;
+  GList *children, *l;
 
   /* if we have a background color, and an allocation, then we need to
    * set it as the base of our paint volume
@@ -312,8 +158,10 @@ clutter_box_real_get_paint_volume (ClutterActor       *actor,
   if (priv->color_set)
     retval = clutter_paint_volume_set_from_allocation (volume, actor);
 
+  children = clutter_actor_get_children (actor);
+
   /* bail out early if we don't have any child */
-  if (priv->children == NULL)
+  if (children == NULL)
     return retval;
   else
     retval = TRUE;
@@ -321,7 +169,7 @@ clutter_box_real_get_paint_volume (ClutterActor       *actor,
   /* otherwise, union the paint volumes of our children, in case
    * any one of them decides to paint outside the parent's allocation
    */
-  for (l = priv->children; l != NULL; l = l->next)
+  for (l = children; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
       const ClutterPaintVolume *child_volume;
@@ -335,6 +183,8 @@ clutter_box_real_get_paint_volume (ClutterActor       *actor,
       clutter_paint_volume_union (volume, child_volume);
     }
 
+  g_list_free (children);
+
   return retval;
 }
 
@@ -342,29 +192,13 @@ static void
 clutter_box_real_pick (ClutterActor       *actor,
                        const ClutterColor *pick)
 {
-  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
+  GList *children;
 
   CLUTTER_ACTOR_CLASS (clutter_box_parent_class)->pick (actor, pick);
 
-  g_list_foreach (priv->children, (GFunc) clutter_actor_paint, NULL);
-}
-
-static void
-clutter_box_destroy (ClutterActor *actor)
-{
-  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
-
-  /* destroy all our children */
-  g_list_foreach (priv->children, (GFunc) clutter_actor_destroy, NULL);
-
-  if (CLUTTER_ACTOR_CLASS (clutter_box_parent_class)->destroy)
-    CLUTTER_ACTOR_CLASS (clutter_box_parent_class)->destroy (actor);
-}
-
-static void
-clutter_box_dispose (GObject *gobject)
-{
-  G_OBJECT_CLASS (clutter_box_parent_class)->dispose (gobject);
+  children = clutter_actor_get_children (actor);
+  g_list_foreach (children, (GFunc) clutter_actor_paint, NULL);
+  g_list_free (children);
 }
 
 static void
@@ -423,11 +257,9 @@ clutter_box_class_init (ClutterBoxClass *klass)
   actor_class->paint = clutter_box_real_paint;
   actor_class->get_paint_volume = clutter_box_real_get_paint_volume;
   actor_class->pick = clutter_box_real_pick;
-  actor_class->destroy = clutter_box_destroy;
 
   gobject_class->set_property = clutter_box_set_property;
   gobject_class->get_property = clutter_box_get_property;
-  gobject_class->dispose = clutter_box_dispose;
 
   /**
    * ClutterBox:color:
@@ -837,21 +669,14 @@ clutter_box_pack_at (ClutterBox   *box,
                      const gchar  *first_property,
                      ...)
 {
-  ClutterBoxPrivate *priv;
   va_list var_args;
 
   g_return_if_fail (CLUTTER_IS_BOX (box));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  priv = box->priv;
-
-  /* this is really clutter_box_add() with a different insert() */
-  priv->children = g_list_insert (priv->children,
-                                  actor,
-                                  position);
-
-  clutter_actor_add_child (CLUTTER_ACTOR (box), actor);
-  clutter_actor_queue_relayout (actor);
+  clutter_actor_insert_child_at_index (CLUTTER_ACTOR (box),
+                                       actor,
+                                       position);
 
   /* we need to explicitly call this, because we're not going through
    * the default code paths provided by clutter_container_add()
