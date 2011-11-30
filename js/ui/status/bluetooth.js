@@ -30,7 +30,6 @@ const Indicator = new Lang.Class({
     _init: function() {
         this.parent('bluetooth-disabled', null);
 
-        GLib.spawn_command_line_sync ('pkill -f "^bluetooth-applet$"');
         this._applet = new GnomeBluetoothApplet.Applet();
 
         this._killswitch = new PopupMenu.PopupSwitchMenuItem(_("Bluetooth"), false);
