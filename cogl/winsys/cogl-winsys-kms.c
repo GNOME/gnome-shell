@@ -173,7 +173,7 @@ _cogl_winsys_kms_display_setup (CoglDisplay *display, GError **error)
     }
 
   kms_display->saved_crtc = drmModeGetCrtc (kms_renderer->fd,
-                                            kms_display->encoder->crtc_id);
+                                            encoder->crtc_id);
 
   kms_display->connector = connector;
   kms_display->encoder = encoder;
