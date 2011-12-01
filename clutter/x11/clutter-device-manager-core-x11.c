@@ -97,8 +97,9 @@ translate_class_info (ClutterInputDevice *device,
             n_keys = xk_info->max_keycode - xk_info->min_keycode + 1;
 
             _clutter_input_device_set_n_keys (device, n_keys);
-            device_x11->min_keycode = xk_info->min_keycode;
-            device_x11->max_keycode = xk_info->max_keycode;
+            _clutter_input_device_x11_set_keycodes (device_x11,
+                                                    xk_info->min_keycode,
+                                                    xk_info->max_keycode);
           }
           break;
 

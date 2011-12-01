@@ -62,8 +62,8 @@ struct _ClutterInputDeviceX11
 
   gint *axis_data;
 
-  gint min_keycode;
-  gint max_keycode;
+  int min_keycode;
+  int max_keycode;
 };
 
 #define clutter_input_device_x11_get_type       _clutter_input_device_x11_get_type
@@ -215,6 +215,27 @@ clutter_input_device_x11_class_init (ClutterInputDeviceX11Class *klass)
 static void
 clutter_input_device_x11_init (ClutterInputDeviceX11 *self)
 {
+}
+
+void
+_clutter_input_device_x11_set_keycodes (ClutterInputDeviceX11 *device_x11,
+                                        int                    min_keycode,
+                                        int                    max_keycode)
+{
+  device_x11->min_keycode = min_keycode;
+  device_x11->max_keycode = max_keycode;
+}
+
+int
+_clutter_input_device_x11_get_min_keycode (ClutterInputDeviceX11 *device_x11)
+{
+  return device_x11->min_keycode;
+}
+
+int
+_clutter_input_device_x11_get_max_keycode (ClutterInputDeviceX11 *device_x11)
+{
+  return device_x11->max_keycode;
 }
 
 #ifdef HAVE_XINPUT
