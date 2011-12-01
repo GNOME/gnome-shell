@@ -202,7 +202,7 @@ function gotExtensionZipFile(session, message, uuid) {
             global.settings.set_strv(ENABLED_EXTENSIONS_KEY, enabledExtensions);
         }
 
-        loadExtension(dir, true, ExtensionType.PER_USER);
+        loadExtension(dir, ExtensionType.PER_USER, true);
     });
 }
 
