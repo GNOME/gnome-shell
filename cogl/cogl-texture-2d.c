@@ -493,45 +493,52 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
 #endif /* defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base) */
 
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
-static CoglPixelFormat
-get_buffer_format (struct wl_buffer *buffer)
-{
-  struct wl_compositor *compositor = buffer->compositor;
-  struct wl_visual *visual = buffer->visual;
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-  if (visual == &compositor->premultiplied_argb_visual)
-    return COGL_PIXEL_FORMAT_ARGB_8888_PRE;
-  else if (visual == &compositor->argb_visual)
-    return COGL_PIXEL_FORMAT_ARGB_8888;
-  else if (visual == &compositor->rgb_visual)
-    return COGL_PIXEL_FORMAT_RGB_888;
-#elif G_BYTE_ORDER == G_LITTLE_ENDIAN
-  if (visual == &compositor->premultiplied_argb_visual)
-    return COGL_PIXEL_FORMAT_BGRA_8888_PRE;
-  else if (visual == &compositor->argb_visual)
-    return COGL_PIXEL_FORMAT_BGRA_8888;
-  else if (visual == &compositor->rgb_visual)
-    return COGL_PIXEL_FORMAT_BGR_888;
-#endif
-  else
-    g_return_val_if_reached (COGL_PIXEL_FORMAT_ANY);
-}
-
 CoglTexture2D *
 cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
                                          struct wl_buffer *buffer,
                                          GError **error)
 {
-  CoglPixelFormat format = get_buffer_format (buffer);
-
   if (wl_buffer_is_shm (buffer))
     {
       int stride = wl_shm_buffer_get_stride (buffer);
+      CoglPixelFormat format;
+      CoglPixelFormat internal_format = COGL_PIXEL_FORMAT_ANY;
+
+      switch (wl_shm_buffer_get_format (buffer))
+        {
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+          case WL_SHM_FORMAT_PREMULTIPLIED_ARGB32:
+            format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
+            break;
+          case WL_SHM_FORMAT_ARGB32:
+            format = COGL_PIXEL_FORMAT_ARGB_8888;
+            break;
+          case WL_SHM_FORMAT_XRGB32:
+            format = COGL_PIXEL_FORMAT_ARGB_8888;
+            internal_format = COGL_PIXEL_FORMAT_RGB_888;
+            break;
+#elif G_BYTE_ORDER == G_LITTLE_ENDIAN
+          case WL_SHM_FORMAT_PREMULTIPLIED_ARGB32:
+            format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
+            break;
+          case WL_SHM_FORMAT_ARGB32:
+            format = COGL_PIXEL_FORMAT_BGRA_8888;
+            break;
+          case WL_SHM_FORMAT_XRGB32:
+            format = COGL_PIXEL_FORMAT_BGRA_8888;
+            internal_format = COGL_PIXEL_FORMAT_BGR_888;
+            break;
+#endif
+          default:
+            g_warn_if_reached ();
+            format = COGL_PIXEL_FORMAT_ARGB_8888;
+        }
+
       return cogl_texture_2d_new_from_data (ctx,
                                             buffer->width,
                                             buffer->height,
                                             format,
-                                            COGL_PIXEL_FORMAT_ANY,
+                                            internal_format,
                                             stride,
                                             wl_shm_buffer_get_data (buffer),
                                             error);
@@ -541,16 +548,17 @@ cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
       EGLImageKHR image;
 
       _COGL_RETURN_VAL_IF_FAIL (_cogl_context_get_winsys (ctx) ==
-                            _cogl_winsys_egl_get_vtable (),
-                            NULL);
+                                _cogl_winsys_egl_get_vtable (),
+                                NULL);
       image = _cogl_egl_create_image (ctx,
                                       EGL_WAYLAND_BUFFER_WL,
                                       buffer,
                                       NULL);
+#warning "XXX: without a way to query the format of a wayland buffer we have to guess!"
       return _cogl_egl_texture_2d_new_from_image (ctx,
                                                   buffer->width,
                                                   buffer->height,
-                                                  format,
+                                                  COGL_PIXEL_FORMAT_ARGB_8888_PRE,
                                                   image,
                                                   error);
     }
