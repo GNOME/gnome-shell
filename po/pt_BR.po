@@ -1175,9 +1175,16 @@ msgstr "Gerenciador"
 msgid "The manager that created this data"
 msgstr "O gerenciador que criou estes dados"
 
+#. Translators: Leave this UNTRANSLATED if your language is
+#. * left-to-right.  If your language is right-to-left
+#. * (e.g. Hebrew, Arabic), translate it to "default:RTL".
+#. *
+#. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
+#. * it isn't default:LTR or default:RTL it will not work.
+#.
 #: clutter/clutter-main.c:490
 msgid "default:LTR"
-msgstr "Padro: LTR"
+msgstr "default:LTR"
 
 #: clutter/clutter-main.c:1321
 msgid "Show frames per second"
