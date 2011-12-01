@@ -1615,12 +1615,21 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
 
   if (ctx->current_draw_buffer != draw_buffer)
     {
-      /* NB: we only need to compare the state we're being asked to flush
-       * and we don't need to compare the state we've already decided
-       * we will definitely flush... */
-      differences |= _cogl_framebuffer_compare (ctx->current_draw_buffer,
-                                                draw_buffer,
-                                                state & ~differences);
+      /* If the previous draw buffer is NULL then we'll assume
+         everything has changed. This can happen if a framebuffer is
+         destroyed while it is the last flushed draw buffer. In that
+         case the framebuffer destructor will set
+         ctx->current_draw_buffer to NULL */
+      if (ctx->current_draw_buffer == NULL)
+        differences |= state;
+      else
+        /* NB: we only need to compare the state we're being asked to flush
+         * and we don't need to compare the state we've already decided
+         * we will definitely flush... */
+        differences |= _cogl_framebuffer_compare (ctx->current_draw_buffer,
+                                                  draw_buffer,
+                                                  state & ~differences);
+
       /* NB: we don't take a reference here, to avoid a circular
        * reference. */
       ctx->current_draw_buffer = draw_buffer;
