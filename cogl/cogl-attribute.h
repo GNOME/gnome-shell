@@ -140,6 +140,68 @@ cogl_attribute_new (CoglAttributeBuffer *attribute_buffer,
                     CoglAttributeType type);
 
 /**
+ * cogl_attribute_set_normalized:
+ * @attribute: A #CoglAttribute
+ * @normalized: The new value for the normalized property.
+ *
+ * Sets whether fixed point attribute types are mapped to the range
+ * 0→1. For example when this property is TRUE and a
+ * %COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE type is used then the value 255
+ * will be mapped to 1.0.
+ *
+ * The default value of this property depends on the name of the
+ * attribute. For the builtin properties cogl_color_in and
+ * cogl_normal_in it will default to TRUE and for all other names it
+ * will default to FALSE.
+ *
+ * Stability: unstable
+ * Since: 1.10
+ */
+void
+cogl_attribute_set_normalized (CoglAttribute *attribute,
+                               gboolean normalized);
+
+/**
+ * cogl_attribute_get_normalized:
+ * @attribute: A #CoglAttribute
+ *
+ * Return value: the value of the normalized property set with
+ * cogl_attribute_set_normalized().
+ *
+ * Stability: unstable
+ * Since: 1.10
+ */
+gboolean
+cogl_attribute_get_normalized (CoglAttribute *attribute);
+
+/**
+ * cogl_attribute_get_buffer:
+ * @attribute: A #CoglAttribute
+ *
+ * Return value: the #CoglAttributeBuffer that was set with
+ * cogl_attribute_set_buffer() or cogl_attribute_new().
+ *
+ * Stability: unstable
+ * Since: 1.10
+ */
+CoglAttributeBuffer *
+cogl_attribute_get_buffer (CoglAttribute *attribute);
+
+/**
+ * cogl_attribute_set_buffer:
+ * @attribute: A #CoglAttribute
+ * @attribute_buffer: A #CoglAttributeBuffer
+ *
+ * Sets a new #CoglAttributeBuffer for the attribute.
+ *
+ * Stability: unstable
+ * Since: 1.10
+ */
+void
+cogl_attribute_set_buffer (CoglAttribute *attribute,
+                           CoglAttributeBuffer *attribute_buffer);
+
+/**
  * cogl_is_attribute:
  * @object: A #CoglObject
  *

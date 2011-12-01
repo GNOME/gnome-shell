@@ -189,6 +189,10 @@ cogl_is_index_array
 <TITLE>Vertex Attributes</TITLE>
 cogl_attribute_new
 cogl_is_attribute
+cogl_attribute_set_normalized
+cogl_attribute_get_normalized
+cogl_attribute_get_buffer
+cogl_attribute_set_buffer
 </SECTION>
 
 <SECTION>
