@@ -211,6 +211,8 @@ const ShellMountQuestionDialog = new Lang.Class({
                               { y_align: St.Align.START });
 
         this.subjectLabel = new St.Label({ style_class: 'mount-question-dialog-subject' });
+        this.subjectLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this.subjectLabel.clutter_text.line_wrap = true;
 
         messageLayout.add(this.subjectLabel,
                           { y_fill:  false,

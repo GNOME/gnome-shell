@@ -1832,6 +1832,10 @@ StTooltip StLabel {
     padding-bottom: 6px;
 }
 
+.mount-question-dialog-subject {
+    max-width: 500px;
+}
+
 .show-processes-dialog-subject:rtl,
 .mount-question-dialog-subject:rtl {
     padding-left: 0px;
