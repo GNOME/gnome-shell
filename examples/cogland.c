@@ -29,13 +29,25 @@ typedef struct
 
 typedef struct
 {
-  struct wl_object wayland_output;
-
-  int x;
-  int y;
+  guint32 flags;
   int width;
   int height;
+  int refresh;
+} CoglandMode;
+
+typedef struct
+{
+  struct wl_object wayland_output;
+
+  gint32 x;
+  gint32 y;
+  gint32 width_mm;
+  gint32 height_mm;
+
   CoglOnscreen *onscreen;
+
+  GList *modes;
+
 } CoglandOutput;
 
 typedef struct
@@ -48,7 +60,6 @@ typedef struct
 struct _CoglandCompositor
 {
   struct wl_display *wayland_display;
-  struct wl_compositor wayland_compositor;
   struct wl_shm *wayland_shm;
   struct wl_event_loop *wayland_loop;
 
@@ -58,6 +69,8 @@ struct _CoglandCompositor
   int virtual_width;
   int virtual_height;
   GList *outputs;
+
+  GArray *frame_callbacks;
 
   CoglPrimitive *triangle;
 
@@ -160,30 +173,6 @@ shm_buffer_created (struct wl_buffer *wayland_buffer)
   wayland_buffer->user_data = cogland_buffer_new (wayland_buffer);
 }
 
-static CoglPixelFormat
-get_buffer_format (struct wl_buffer *wayland_buffer)
-{
-  struct wl_compositor *compositor = wayland_buffer->compositor;
-  struct wl_visual *visual = wayland_buffer->visual;
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-  if (visual == &compositor->premultiplied_argb_visual)
-    return COGL_PIXEL_FORMAT_ARGB_8888_PRE;
-  else if (visual == &compositor->argb_visual)
-    return COGL_PIXEL_FORMAT_ARGB_8888;
-  else if (visual == &compositor->rgb_visual)
-    return COGL_PIXEL_FORMAT_RGB_888;
-#elif G_BYTE_ORDER == G_LITTLE_ENDIAN
-  if (visual == &compositor->premultiplied_argb_visual)
-    return COGL_PIXEL_FORMAT_BGRA_8888_PRE;
-  else if (visual == &compositor->argb_visual)
-    return COGL_PIXEL_FORMAT_BGRA_8888;
-  else if (visual == &compositor->rgb_visual)
-    return COGL_PIXEL_FORMAT_BGR_888;
-#endif
-  else
-    g_return_val_if_reached (COGL_PIXEL_FORMAT_ANY);
-}
-
 static void
 shm_buffer_damaged (struct wl_buffer *wayland_buffer,
 		    gint32 x,
@@ -195,12 +184,38 @@ shm_buffer_damaged (struct wl_buffer *wayland_buffer,
 
   if (buffer->texture)
     {
-      cogl_texture_set_region (buffer->texture,
+      CoglPixelFormat format;
+
+      switch (wl_shm_buffer_get_format (wayland_buffer))
+        {
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+          case WL_SHM_FORMAT_PREMULTIPLIED_ARGB32:
+            format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
+            break;
+          case WL_SHM_FORMAT_ARGB32:
+          case WL_SHM_FORMAT_XRGB32:
+            format = COGL_PIXEL_FORMAT_ARGB_8888;
+            break;
+#elif G_BYTE_ORDER == G_LITTLE_ENDIAN
+          case WL_SHM_FORMAT_PREMULTIPLIED_ARGB32:
+            format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
+            break;
+          case WL_SHM_FORMAT_ARGB32:
+          case WL_SHM_FORMAT_XRGB32:
+            format = COGL_PIXEL_FORMAT_BGRA_8888;
+            break;
+#endif
+          default:
+            g_warn_if_reached ();
+            format = COGL_PIXEL_FORMAT_ARGB_8888;
+        }
+
+      cogl_texture_set_region (COGL_TEXTURE (buffer->texture),
                                x, y,
                                x, y,
                                width, height,
                                width, height,
-                               get_buffer_format (wayland_buffer),
+                               format,
                                wl_shm_buffer_get_stride (wayland_buffer),
                                wl_shm_buffer_get_data (wayland_buffer));
     }
@@ -221,9 +236,9 @@ const static struct wl_shm_callbacks shm_callbacks = {
 
 static void
 cogland_surface_destroy (struct wl_client *wayland_client,
-                         struct wl_surface *wayland_surface)
+                         struct wl_resource *wayland_resource)
 {
-  wl_resource_destroy (&wayland_surface->resource, wayland_client, get_time ());
+  wl_resource_destroy (wayland_resource, get_time ());
 }
 
 static void
@@ -243,15 +258,21 @@ cogland_surface_detach_buffer (CoglandSurface *surface)
 
 static void
 cogland_surface_attach_buffer (struct wl_client *wayland_client,
-                               struct wl_surface *wayland_surface,
-                               struct wl_buffer *wayland_buffer,
+                               struct wl_resource *wayland_surface_resource,
+                               struct wl_resource *wayland_buffer_resource,
                                gint32 dx, gint32 dy)
 {
+  struct wl_buffer *wayland_buffer = wayland_buffer_resource->data;
   CoglandBuffer *buffer = wayland_buffer->user_data;
-  CoglandSurface *surface = container_of (wayland_surface,
-                                          CoglandSurface,
-                                          wayland_surface);
+  CoglandSurface *surface = wayland_surface_resource->data;
   CoglandCompositor *compositor = surface->compositor;
+
+  /* XXX: in the case where we are reattaching the same buffer we can
+   * simply bail out. Note this is important because if we don't bail
+   * out then the _detach_buffer will actually end up destroying the
+   * buffer we're trying to attach. */
+  if (buffer && surface->buffer == buffer)
+    return;
 
   cogland_surface_detach_buffer (surface);
 
@@ -263,10 +284,6 @@ cogland_surface_attach_buffer (struct wl_client *wayland_client,
       buffer = cogland_buffer_new (wayland_buffer);
       wayland_buffer->user_data = buffer;
     }
-
-  /* wayland-drm.c: drm_create_buffer doesn't fill this in for us...*/
-  if (!wayland_buffer->compositor)
-    wayland_buffer->compositor = &compositor->wayland_compositor;
 
   g_return_if_fail (g_list_find (buffer->surfaces_attached_to, surface) == NULL);
 
@@ -290,30 +307,8 @@ cogland_surface_attach_buffer (struct wl_client *wayland_client,
 }
 
 static void
-cogland_surface_map_toplevel (struct wl_client *client,
-                              struct wl_surface *surface)
-{
-}
-
-static void
-cogland_surface_map_transient (struct wl_client *client,
-                               struct wl_surface *surface,
-                               struct wl_surface *parent,
-                               gint32 dx,
-                               gint32 dy,
-                               guint32 flags)
-{
-}
-
-static void
-cogland_surface_map_fullscreen (struct wl_client *client,
-                                struct wl_surface *surface)
-{
-}
-
-static void
 cogland_surface_damage (struct wl_client *client,
-                        struct wl_surface *surface,
+                        struct wl_resource *resource,
                         gint32 x,
                         gint32 y,
                         gint32 width,
@@ -321,13 +316,43 @@ cogland_surface_damage (struct wl_client *client,
 {
 }
 
+typedef struct _CoglandFrameCallback
+{
+  struct wl_resource resource;
+} CoglandFrameCallback;
+
+static void
+destroy_frame_callback (struct wl_resource *callback_resource)
+{
+  CoglandFrameCallback *callback = callback_resource->data;
+
+  g_slice_free (CoglandFrameCallback, callback);
+}
+
+static void
+cogland_surface_frame (struct wl_client *client,
+                       struct wl_resource *surface_resource,
+                       guint32 callback_id)
+{
+  CoglandFrameCallback *callback;
+  CoglandSurface *surface = surface_resource->data;
+
+  callback = g_slice_new0 (CoglandFrameCallback);
+  callback->resource.object.interface = &wl_callback_interface;
+  callback->resource.object.id = callback_id;
+  callback->resource.destroy = destroy_frame_callback;
+  callback->resource.data = callback;
+
+  wl_client_add_resource (client, &callback->resource);
+
+  g_array_append_val (surface->compositor->frame_callbacks, callback);
+}
+
 const struct wl_surface_interface cogland_surface_interface = {
   cogland_surface_destroy,
   cogland_surface_attach_buffer,
-  cogland_surface_map_toplevel,
-  cogland_surface_map_transient,
-  cogland_surface_map_fullscreen,
-  cogland_surface_damage
+  cogland_surface_damage,
+  cogland_surface_frame
 };
 
 static void
@@ -338,35 +363,30 @@ cogland_surface_free (CoglandSurface *surface)
   cogland_surface_detach_buffer (surface);
   g_slice_free (CoglandSurface, surface);
 }
-
 static void
-cogland_surface_resource_destroy_cb (struct wl_resource *wayland_resource,
-                                     struct wl_client *wayland_client)
+cogland_surface_resource_destroy_cb (struct wl_resource *resource)
 {
-  CoglandSurface *surface =
-    container_of (wayland_resource, CoglandSurface, wayland_surface.resource);
+  CoglandSurface *surface = resource->data;
   cogland_surface_free (surface);
 }
 
 static void
 cogland_compositor_create_surface (struct wl_client *wayland_client,
-                                   struct wl_compositor *wayland_compositor,
-                                   guint32 wayland_id)
+                                   struct wl_resource *wayland_compositor_resource,
+                                   guint32 id)
 {
-  CoglandCompositor *compositor = container_of (wayland_compositor,
-                                                CoglandCompositor,
-                                                wayland_compositor);
+  CoglandCompositor *compositor = wayland_compositor_resource->data;
   CoglandSurface *surface = g_slice_new0 (CoglandSurface);
+
   surface->compositor = compositor;
 
   surface->wayland_surface.resource.destroy =
     cogland_surface_resource_destroy_cb;
-
-  surface->wayland_surface.resource.object.id = wayland_id;
+  surface->wayland_surface.resource.object.id = id;
   surface->wayland_surface.resource.object.interface = &wl_surface_interface;
   surface->wayland_surface.resource.object.implementation =
           (void (**)(void)) &cogland_surface_interface;
-  surface->wayland_surface.client = wayland_client;
+  surface->wayland_surface.resource.data = surface;
 
   wl_client_add_resource (wayland_client, &surface->wayland_surface.resource);
 
@@ -374,45 +394,64 @@ cogland_compositor_create_surface (struct wl_client *wayland_client,
                                          surface);
 }
 
-const static struct wl_compositor_interface cogland_compositor_interface =
-{
-  cogland_compositor_create_surface,
-};
-
 static void
-cogland_output_post_geometry (struct wl_client *wayland_client,
-                              struct wl_object *wayland_output,
-                              guint32 version)
+bind_output (struct wl_client *client,
+             void *data,
+             guint32 version,
+             guint32 id)
 {
-  CoglandOutput *output =
-    container_of (wayland_output, CoglandOutput, wayland_output);
+  CoglandOutput *output = data;
+  struct wl_resource *resource =
+    wl_client_add_object (client, &wl_output_interface, NULL, id, data);
+  GList *l;
 
-  wl_client_post_event (wayland_client,
-                        wayland_output,
-                        WL_OUTPUT_GEOMETRY,
-                        output->x, output->y,
-                        output->width, output->height);
+  wl_resource_post_event (resource,
+                          WL_OUTPUT_GEOMETRY,
+                          output->x, output->y,
+                          output->width_mm,
+                          output->height_mm,
+                          0, /* subpixel: unknown */
+                          "unknown", /* make */
+                          "unknown"); /* model */
+
+  for (l = output->modes; l; l = l->next)
+    {
+      CoglandMode *mode = l->data;
+      wl_resource_post_event (resource,
+                              WL_OUTPUT_MODE,
+                              mode->flags,
+                              mode->width,
+                              mode->height,
+                              mode->refresh);
+    }
 }
 
 static void
 cogland_compositor_create_output (CoglandCompositor *compositor,
                                   int x,
                                   int y,
-                                  int width,
-                                  int height)
+                                  int width_mm,
+                                  int height_mm)
 {
   CoglandOutput *output = g_slice_new0 (CoglandOutput);
   CoglFramebuffer *fb;
   GError *error = NULL;
+  CoglandMode *mode;
+
+  output->x = x;
+  output->y = y;
+  output->width_mm = width_mm;
+  output->height_mm = height_mm;
 
   output->wayland_output.interface = &wl_output_interface;
 
-  wl_display_add_object (compositor->wayland_display, &output->wayland_output);
-  wl_display_add_global (compositor->wayland_display, &output->wayland_output,
-                         cogland_output_post_geometry);
+  wl_display_add_global (compositor->wayland_display,
+                         &wl_output_interface,
+                         output,
+                         bind_output);
 
   output->onscreen = cogl_onscreen_new (compositor->cogl_context,
-                                        width, height);
+                                        width_mm, height_mm);
   /* Eventually there will be an implicit allocate on first use so this
    * will become optional... */
   fb = COGL_FRAMEBUFFER (output->onscreen);
@@ -430,6 +469,14 @@ cogland_compositor_create_output (CoglandCompositor *compositor,
   cogl_pop_framebuffer ();
 #endif
 
+  mode = g_slice_new0 (CoglandMode);
+  mode->flags = 0;
+  mode->width = width_mm;
+  mode->height = height_mm;
+  mode->refresh = 60;
+
+  output->modes = g_list_prepend (output->modes, mode);
+
   compositor->outputs = g_list_prepend (compositor->outputs, output);
 }
 
@@ -438,6 +485,7 @@ paint_cb (void *user_data)
 {
   CoglandCompositor *compositor = user_data;
   GList *l;
+  int i;
 
   for (l = compositor->outputs; l; l = l->next)
     {
@@ -452,6 +500,7 @@ paint_cb (void *user_data)
 #else
       cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
 #endif
+
       cogl_primitive_draw (compositor->triangle);
 
       for (l2 = compositor->surfaces; l2; l2 = l2->next)
@@ -461,20 +510,105 @@ paint_cb (void *user_data)
           if (surface->buffer)
             {
               CoglTexture2D *texture = surface->buffer->texture;
-              cogl_set_source_texture (texture);
+              cogl_set_source_texture (COGL_TEXTURE (texture));
               cogl_rectangle (-1, 1, 1, -1);
             }
-          wl_display_post_frame (compositor->wayland_display,
-                                 &surface->wayland_surface, get_time ());
         }
       cogl_framebuffer_swap_buffers (fb);
 
-
       cogl_pop_framebuffer ();
-
     }
 
+  for (i = 0; i < compositor->frame_callbacks->len; i++)
+    {
+      CoglandFrameCallback *callback =
+        g_array_index (compositor->frame_callbacks, CoglandFrameCallback *, i);
+
+      wl_resource_post_event (&callback->resource,
+                              WL_CALLBACK_DONE, get_time ());
+      wl_resource_destroy (&callback->resource, 0);
+    }
+  g_array_set_size (compositor->frame_callbacks, 0);
+
   return TRUE;
+}
+
+const static struct wl_compositor_interface cogland_compositor_interface =
+{
+  cogland_compositor_create_surface,
+};
+
+static void
+compositor_bind (struct wl_client *client,
+		 void *data,
+                 guint32 version,
+                 guint32 id)
+{
+  CoglandCompositor *compositor = data;
+
+  wl_client_add_object (client, &wl_compositor_interface,
+                        &cogland_compositor_interface, id, compositor);
+}
+
+static void
+shell_move(struct wl_client *client,
+           struct wl_resource *resource,
+           struct wl_resource *surface_resource,
+           struct wl_resource *input_resource,
+           guint32 time)
+{
+}
+
+static void
+shell_resize (struct wl_client *client,
+              struct wl_resource *resource,
+              struct wl_resource *surface_resource,
+              struct wl_resource *input_resource,
+              guint32 time,
+              guint32 edges)
+{
+}
+
+static void
+shell_set_toplevel (struct wl_client *client,
+		    struct wl_resource *resource,
+		    struct wl_resource *surface_resource)
+{
+}
+
+static void
+shell_set_transient (struct wl_client *client,
+		     struct wl_resource *resource,
+		     struct wl_resource *surface_resource,
+		     struct wl_resource *parent_resource,
+		     int x, int y, uint32_t flags)
+{
+}
+
+static void
+shell_set_fullscreen (struct wl_client *client,
+		      struct wl_resource *resource,
+		      struct wl_resource *surface_resource)
+{
+}
+
+static const struct wl_shell_interface cogland_shell_interface =
+{
+  shell_move,
+  shell_resize,
+  shell_set_toplevel,
+  shell_set_transient,
+  shell_set_fullscreen
+};
+
+static void
+bind_shell (struct wl_client *client,
+            void *data,
+            guint32 version,
+            guint32 id)
+{
+  wl_client_add_object (client, &wl_shell_interface,
+                        &cogland_shell_interface, id, data);
 }
 
 int
@@ -495,10 +629,13 @@ main (int argc, char **argv)
   if (compositor.wayland_display == NULL)
     g_error ("failed to create wayland display");
 
-  if (wl_compositor_init (&compositor.wayland_compositor,
-                          &cogland_compositor_interface,
-                          compositor.wayland_display) < 0)
-    g_error ("Failed to init wayland compositor");
+  compositor.frame_callbacks = g_array_new (FALSE, FALSE, sizeof (void *));
+
+  if (!wl_display_add_global (compositor.wayland_display,
+                              &wl_compositor_interface,
+			      &compositor,
+                              compositor_bind))
+    g_error ("Failed to register wayland compositor object");
 
   compositor.wayland_shm = wl_shm_init (compositor.wayland_display,
                                         &shm_callbacks);
@@ -528,6 +665,10 @@ main (int argc, char **argv)
   cogland_compositor_create_output (&compositor, 320, 0, 320, 240);
   cogland_compositor_create_output (&compositor, 0, 240, 320, 240);
   cogland_compositor_create_output (&compositor, 320, 240, 320, 240);
+
+  if (wl_display_add_global (compositor.wayland_display, &wl_shell_interface,
+                             &compositor, bind_shell) == NULL)
+    g_error ("Failed to register a global shell object");
 
   if (wl_display_add_socket (compositor.wayland_display, "wayland-0"))
     g_error ("Failed to create socket");
