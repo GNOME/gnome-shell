@@ -1169,7 +1169,7 @@ clutter_state_fetch_state (ClutterState *state,
 /**
  * clutter_state_set_key:
  * @state: a #ClutterState instance.
- * @source_state_name: the source transition to specify transition for or NULL
+ * @source_state_name: (allow-none): the source transition to specify transition for or NULL
  *   to specify the default fallback when a more specific source_state doesn't
  *   exist.
  * @target_state_name: the name of the transition to set a key value for.
