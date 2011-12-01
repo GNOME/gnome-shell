@@ -1169,9 +1169,9 @@ clutter_state_fetch_state (ClutterState *state,
 /**
  * clutter_state_set_key:
  * @state: a #ClutterState instance.
- * @source_state_name: (allow-none): the source transition to specify transition for or NULL
- *   to specify the default fallback when a more specific source_state doesn't
- *   exist.
+ * @source_state_name: (allow-none): the source transition to specify
+ *   transition for, or %NULL to specify the default fallback when a
+ *   more specific source state doesn't exist.
  * @target_state_name: the name of the transition to set a key value for.
  * @object: the #GObject to set a key for
  * @property_name: the property to set a key for
@@ -1182,7 +1182,7 @@ clutter_state_fetch_state (ClutterState *state,
  * @post_delay: relative time of the transition to be idle in the end of
  *   the transition
  *
- * Sets one specific end key for a state_name, object, property_name
+ * Sets one specific end key for a state name, @object, @property_name
  * combination.
  *
  * Return value: (transfer none): the #ClutterState instance, allowing
