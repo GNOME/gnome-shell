@@ -9126,7 +9126,9 @@ static void
 clutter_actor_add_child_internal (ClutterActor             *self,
                                   ClutterActor             *child,
                                   ClutterActorAddChildFunc  add_func,
-                                  gpointer                  data)
+                                  gpointer                  data,
+                                  gboolean                  create_meta,
+                                  gboolean                  emit_signal)
 {
   ClutterTextDirection text_dir;
 
@@ -9148,6 +9150,9 @@ clutter_actor_add_child_internal (ClutterActor             *self,
       g_warning ("Cannot set a parent currently being destroyed");
       return;
     }
+
+  if (create_meta)
+    clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
 
   g_object_ref_sink (child);
   child->priv->parent_actor = self;
@@ -9215,6 +9220,9 @@ clutter_actor_add_child_internal (ClutterActor             *self,
     {
       clutter_actor_queue_compute_expand (self);
     }
+
+  if (emit_signal)
+    g_signal_emit_by_name (self, "actor-added", child);
 }
 
 /**
@@ -9243,11 +9251,11 @@ clutter_actor_add_child (ClutterActor *self,
   g_return_if_fail (self != child);
   g_return_if_fail (child->priv->parent_actor == NULL);
 
-  clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
   clutter_actor_add_child_internal (self, child,
                                     insert_child_at_depth,
-                                    NULL);
-  g_signal_emit_by_name (self, "actor-added", child);
+                                    NULL,
+                                    TRUE, /* create_meta */
+                                    TRUE  /* emit_signals */);
 }
 
 /**
@@ -9280,11 +9288,11 @@ clutter_actor_insert_child_at_index (ClutterActor *self,
   g_return_if_fail (child->priv->parent_actor == NULL);
   g_return_if_fail (index_ < self->priv->n_children);
 
-  clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
   clutter_actor_add_child_internal (self, child,
                                     insert_child_at_index,
-                                    GINT_TO_POINTER (index_));
-  g_signal_emit_by_name (self, "actor-added", child);
+                                    GINT_TO_POINTER (index_),
+                                    TRUE,
+                                    TRUE);
 }
 
 /**
@@ -9321,11 +9329,11 @@ clutter_actor_insert_child_above (ClutterActor *self,
                     (CLUTTER_IS_ACTOR (sibling) &&
                      sibling->priv->parent_actor == self));
 
-  clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
   clutter_actor_add_child_internal (self, child,
                                     insert_child_above,
-                                    sibling);
-  g_signal_emit_by_name (self, "actor-added", child);
+                                    sibling,
+                                    TRUE,
+                                    TRUE);
 }
 
 /**
@@ -9362,11 +9370,11 @@ clutter_actor_insert_child_below (ClutterActor *self,
                     (CLUTTER_IS_ACTOR (sibling) &&
                      sibling->priv->parent_actor == self));
 
-  clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
   clutter_actor_add_child_internal (self, child,
                                     insert_child_below,
-                                    sibling);
-  g_signal_emit_by_name (self, "actor-added", child);
+                                    sibling,
+                                    TRUE,
+                                    TRUE);
 }
 
 /**
@@ -9396,7 +9404,9 @@ clutter_actor_set_parent (ClutterActor *self,
 
   clutter_actor_add_child_internal (parent, self,
                                     insert_child_at_depth,
-                                    NULL);
+                                    NULL,
+                                    FALSE,
+                                    FALSE);
 }
 
 /**
@@ -9455,9 +9465,14 @@ invalidate_queue_redraw_entry (ClutterActor *self,
 
 static void
 clutter_actor_remove_child_internal (ClutterActor *self,
-                                     ClutterActor *child)
+                                     ClutterActor *child,
+                                     gboolean      destroy_meta,
+                                     gboolean      emit_signal)
 {
   gboolean was_mapped;
+
+  if (destroy_meta)
+    clutter_container_destroy_child_meta (CLUTTER_CONTAINER (self), child);
 
   was_mapped = CLUTTER_ACTOR_IS_MAPPED (child);
 
@@ -9514,6 +9529,10 @@ clutter_actor_remove_child_internal (ClutterActor *self,
       clutter_actor_queue_compute_expand (self);
     }
 
+  /* we need to emit the signal before dropping the reference */
+  if (emit_signal)
+    g_signal_emit_by_name (self, "actor-removed", child);
+
   /* remove the reference we acquired in clutter_actor_add_child() */
   g_object_unref (child);
 }
@@ -9545,15 +9564,7 @@ clutter_actor_remove_child (ClutterActor *self,
   g_return_if_fail (child->priv->parent_actor != NULL);
   g_return_if_fail (child->priv->parent_actor == self);
 
-  g_object_ref (child);
-
-  clutter_container_destroy_child_meta (CLUTTER_CONTAINER (self), child);
-
-  clutter_actor_remove_child_internal (self, child);
-
-  g_signal_emit_by_name (self, "actor-removed", child);
-
-  g_object_unref (child);
+  clutter_actor_remove_child_internal (self, child, TRUE, TRUE);
 }
 
 /**
@@ -9582,7 +9593,9 @@ clutter_actor_unparent (ClutterActor *self)
   if (self->priv->parent_actor == NULL)
     return;
 
-  clutter_actor_remove_child_internal (self->priv->parent_actor, self);
+  clutter_actor_remove_child_internal (self->priv->parent_actor, self,
+                                       FALSE,
+                                       FALSE);
 }
 
 /**
