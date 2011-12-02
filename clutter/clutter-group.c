@@ -73,24 +73,6 @@ struct _ClutterGroupPrivate
 G_DEFINE_TYPE (ClutterGroup, clutter_group, CLUTTER_TYPE_ACTOR)
 
 static void
-clutter_group_real_paint (ClutterActor *actor)
-{
-  GList *children = clutter_actor_get_children (actor);
-
-  CLUTTER_NOTE (PAINT, "ClutterGroup paint enter '%s'",
-                clutter_actor_get_name (actor) ? clutter_actor_get_name (actor)
-                                               : "unknown");
-
-  g_list_foreach (children, (GFunc) clutter_actor_paint, NULL);
-
-  CLUTTER_NOTE (PAINT, "ClutterGroup paint leave '%s'",
-                clutter_actor_get_name (actor) ? clutter_actor_get_name (actor)
-                                               : "unknown");
-
-  g_list_free (children);
-}
-
-static void
 clutter_group_real_pick (ClutterActor       *actor,
                          const ClutterColor *pick)
 {
@@ -225,7 +207,6 @@ clutter_group_class_init (ClutterGroupClass *klass)
   actor_class->get_preferred_width = clutter_group_real_get_preferred_width;
   actor_class->get_preferred_height = clutter_group_real_get_preferred_height;
   actor_class->allocate = clutter_group_real_allocate;
-  actor_class->paint = clutter_group_real_paint;
   actor_class->pick = clutter_group_real_pick;
   actor_class->show_all = clutter_group_real_show_all;
   actor_class->hide_all = clutter_group_real_hide_all;
