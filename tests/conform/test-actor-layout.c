@@ -213,7 +213,7 @@ basic_layout (TestConformSimpleFixture *fixture,
   TestState *state;
 
   vase = clutter_box_new (clutter_flow_layout_new (CLUTTER_FLOW_HORIZONTAL));
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), vase);
+  clutter_actor_add_child (stage, vase);
 
   flower[0] = clutter_rectangle_new_with_color (CLUTTER_COLOR_Red);
   clutter_actor_set_size (flower[0], 100, 100);
@@ -253,7 +253,7 @@ margin_layout (TestConformSimpleFixture *fixture,
   TestState *state;
 
   vase = clutter_box_new (clutter_flow_layout_new (CLUTTER_FLOW_HORIZONTAL));
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), vase);
+  clutter_actor_add_child (stage, vase);
 
   flower[0] = clutter_rectangle_new_with_color (CLUTTER_COLOR_Red);
   clutter_actor_set_size (flower[0], 100, 100);
