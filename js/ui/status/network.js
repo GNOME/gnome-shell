@@ -249,9 +249,11 @@ const NMWirelessSectionTitleMenuItem = new Lang.Class({
     updateForDevice: function(device) {
         // we show the switch
         // - if there not just one device
-        // - if the switch is off
+        // - if the switch is off (but it can be turned on)
         // - if the device is activated or disconnected
-        if (device && this._softwareEnabled && this._hardwareEnabled) {
+        if (!this._hardwareEnabled) {
+            this.setStatus(_("hardware disabled"));
+        } else if (device && this._softwareEnabled) {
             let text = device.getStatusLabel();
             this.setStatus(text);
         } else
