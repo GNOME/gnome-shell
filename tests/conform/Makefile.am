@@ -46,6 +46,7 @@ test_sources = \
 	test-snippets.c \
 	test-wrap-modes.c \
 	test-sub-texture.c \
+	test-custom-attributes.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)

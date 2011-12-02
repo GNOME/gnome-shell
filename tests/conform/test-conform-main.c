@@ -163,6 +163,7 @@ main (int argc, char **argv)
   ADD_TEST ("/cogl/shaders", test_cogl_just_vertex_shader);
   ADD_TEST ("/cogl/shaders", test_cogl_pipeline_uniforms);
   ADD_TEST ("/cogl/shaders", test_cogl_snippets);
+  ADD_TEST ("/cogl/shaders", test_cogl_custom_attributes);
 
   ADD_TEST ("/cogl/internal/bitmask", test_cogl_bitmask);
 
