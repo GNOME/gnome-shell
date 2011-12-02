@@ -67,234 +67,40 @@
 
 struct _ClutterGroupPrivate
 {
-  GList *children;
-
   ClutterLayoutManager *layout;
 };
 
-enum
-{
-  ADD,
-  REMOVE,
-
-  LAST_SIGNAL
-};
-
-static void clutter_container_iface_init (ClutterContainerIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterGroup, clutter_group, CLUTTER_TYPE_ACTOR,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                clutter_container_iface_init));
-
-static gint
-sort_by_depth (gconstpointer a,
-               gconstpointer b)
-{
-  gfloat depth_a = clutter_actor_get_depth (CLUTTER_ACTOR(a));
-  gfloat depth_b = clutter_actor_get_depth (CLUTTER_ACTOR(b));
-
-  if (depth_a < depth_b)
-    return -1;
-
-  if (depth_a > depth_b)
-    return 1;
-
-  return 0;
-}
-
-static void
-clutter_group_real_add (ClutterContainer *container,
-                        ClutterActor     *actor)
-{
-  ClutterGroupPrivate *priv = CLUTTER_GROUP (container)->priv;
-
-  g_object_ref (actor);
-
-  priv->children = g_list_append (priv->children, actor);
-  clutter_actor_add_child (CLUTTER_ACTOR (container), actor);
-
-  /* queue a relayout, to get the correct positioning inside
-   * the ::actor-added signal handlers
-   */
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-
-  g_signal_emit_by_name (container, "actor-added", actor);
-
-  clutter_container_sort_depth_order (container);
-
-  g_object_unref (actor);
-}
-
-static void
-clutter_group_real_remove (ClutterContainer *container,
-                           ClutterActor     *actor)
-{
-  ClutterGroupPrivate *priv = CLUTTER_GROUP (container)->priv;
-
-  g_object_ref (actor);
-
-  priv->children = g_list_remove (priv->children, actor);
-  clutter_actor_remove_child (CLUTTER_ACTOR (container), actor);
-
-  /* queue a relayout, to get the correct positioning inside
-   * the ::actor-removed signal handlers
-   */
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-
-  /* at this point, the actor passed to the "actor-removed" signal
-   * handlers is not parented anymore to the container but since we
-   * are holding a reference on it, it's still valid
-   */
-  g_signal_emit_by_name (container, "actor-removed", actor);
-
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
-
-  g_object_unref (actor);
-}
-
-static void
-clutter_group_real_foreach (ClutterContainer *container,
-                            ClutterCallback   callback,
-                            gpointer          user_data)
-{
-  ClutterGroupPrivate *priv = CLUTTER_GROUP (container)->priv;
-
-  /* Using g_list_foreach instead of iterating the list manually
-     because it has better protection against the current node being
-     removed. This will happen for example if someone calls
-     clutter_container_foreach(container, clutter_actor_destroy) */
-  g_list_foreach (priv->children, (GFunc) callback, user_data);
-}
-
-static void
-clutter_group_real_raise (ClutterContainer *container,
-                          ClutterActor     *actor,
-                          ClutterActor     *sibling)
-{
-  ClutterGroupPrivate *priv = CLUTTER_GROUP (container)->priv;
-
-  priv->children = g_list_remove (priv->children, actor);
-
-  /* Raise at the top */
-  if (!sibling)
-    {
-      GList *last_item;
-
-      last_item = g_list_last (priv->children);
-
-      if (last_item)
-	sibling = last_item->data;
-
-      priv->children = g_list_append (priv->children, actor);
-    }
-  else
-    {
-      gint index_ = g_list_index (priv->children, sibling) + 1;
-
-      priv->children = g_list_insert (priv->children, actor, index_);
-    }
-
-  /* set Z ordering a value below, this will then call sort
-   * as values are equal ordering shouldn't change but Z
-   * values will be correct.
-   *
-   * FIXME: optimise
-   */
-  if (sibling &&
-      clutter_actor_get_depth (sibling) != clutter_actor_get_depth (actor))
-    {
-      clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
-    }
-
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
-}
-
-static void
-clutter_group_real_lower (ClutterContainer *container,
-                          ClutterActor     *actor,
-                          ClutterActor     *sibling)
-{
-  ClutterGroup *self = CLUTTER_GROUP (container);
-  ClutterGroupPrivate *priv = self->priv;
-
-  priv->children = g_list_remove (priv->children, actor);
-
-  /* Push to bottom */
-  if (!sibling)
-    {
-      GList *last_item;
-
-      last_item = g_list_first (priv->children);
-
-      if (last_item)
-	sibling = last_item->data;
-
-      priv->children = g_list_prepend (priv->children, actor);
-    }
-  else
-    {
-      gint index_ = g_list_index (priv->children, sibling);
-
-      priv->children = g_list_insert (priv->children, actor, index_);
-    }
-
-  /* See comment in group_raise for this */
-  if (sibling &&
-      clutter_actor_get_depth (sibling) != clutter_actor_get_depth (actor))
-    {
-      clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
-    }
-
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
-}
-
-static void
-clutter_group_real_sort_depth_order (ClutterContainer *container)
-{
-  ClutterGroupPrivate *priv = CLUTTER_GROUP (container)->priv;
-
-  priv->children = g_list_sort (priv->children, sort_by_depth);
-
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
-}
-
-static void
-clutter_container_iface_init (ClutterContainerIface *iface)
-{
-  iface->add = clutter_group_real_add;
-  iface->remove = clutter_group_real_remove;
-  iface->foreach = clutter_group_real_foreach;
-  iface->raise = clutter_group_real_raise;
-  iface->lower = clutter_group_real_lower;
-  iface->sort_depth_order = clutter_group_real_sort_depth_order;
-}
+G_DEFINE_TYPE (ClutterGroup, clutter_group, CLUTTER_TYPE_ACTOR)
 
 static void
 clutter_group_real_paint (ClutterActor *actor)
 {
-  ClutterGroupPrivate *priv = CLUTTER_GROUP (actor)->priv;
+  GList *children = clutter_actor_get_children (actor);
 
   CLUTTER_NOTE (PAINT, "ClutterGroup paint enter '%s'",
                 clutter_actor_get_name (actor) ? clutter_actor_get_name (actor)
                                                : "unknown");
 
-  g_list_foreach (priv->children, (GFunc) clutter_actor_paint, NULL);
+  g_list_foreach (children, (GFunc) clutter_actor_paint, NULL);
 
   CLUTTER_NOTE (PAINT, "ClutterGroup paint leave '%s'",
                 clutter_actor_get_name (actor) ? clutter_actor_get_name (actor)
                                                : "unknown");
+
+  g_list_free (children);
 }
 
 static void
 clutter_group_real_pick (ClutterActor       *actor,
                          const ClutterColor *pick)
 {
-  ClutterGroupPrivate *priv = CLUTTER_GROUP (actor)->priv;
+  GList *children = clutter_actor_get_children (actor);
 
   /* Chain up so we get a bounding box pained (if we are reactive) */
   CLUTTER_ACTOR_CLASS (clutter_group_parent_class)->pick (actor, pick);
 
-  g_list_foreach (priv->children, (GFunc) clutter_actor_paint, NULL);
+  g_list_foreach (children, (GFunc) clutter_actor_paint, NULL);
+  g_list_free (children);
 }
 
 static void
@@ -336,9 +142,6 @@ clutter_group_real_allocate (ClutterActor           *actor,
   klass = CLUTTER_ACTOR_CLASS (clutter_group_parent_class);
   klass->allocate (actor, allocation, flags);
 
-  if (priv->children == NULL)
-    return;
-
   clutter_layout_manager_allocate (priv->layout,
                                    CLUTTER_CONTAINER (actor),
                                    allocation, flags);
@@ -350,17 +153,7 @@ clutter_group_dispose (GObject *object)
   ClutterGroup *self = CLUTTER_GROUP (object);
   ClutterGroupPrivate *priv = self->priv;
 
-  /* Note: we are careful to consider that destroying children could
-   * have the side-effect of destroying other children so
-   * priv->children may be modified during clutter_actor_destroy. */
-  while (priv->children != NULL)
-    {
-      ClutterActor *child = priv->children->data;
-      priv->children = g_list_delete_link (priv->children, priv->children);
-      clutter_actor_destroy (child);
-    }
-
-  if (priv->layout)
+  if (priv->layout != NULL)
     {
       clutter_layout_manager_set_container (priv->layout, NULL);
       g_object_unref (priv->layout);
@@ -392,13 +185,14 @@ static gboolean
 clutter_group_real_get_paint_volume (ClutterActor       *actor,
                                      ClutterPaintVolume *volume)
 {
-  ClutterGroupPrivate *priv = CLUTTER_GROUP (actor)->priv;
-  GList *l;
+  GList *children, *l;
+  gboolean res = TRUE;
 
-  if (priv->children == NULL)
+  children = clutter_actor_get_children (actor);
+  if (children == NULL)
     return TRUE;
 
-  for (l = priv->children; l != NULL; l = l->next)
+  for (l = children; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
       const ClutterPaintVolume *child_volume;
@@ -406,13 +200,18 @@ clutter_group_real_get_paint_volume (ClutterActor       *actor,
       /* This gets the paint volume of the child transformed into the
        * group's coordinate space... */
       child_volume = clutter_actor_get_transformed_paint_volume (child, actor);
-      if (!child_volume)
-        return FALSE;
+      if (child_volume == NULL)
+        {
+          res = FALSE;
+          break;
+        }
 
       clutter_paint_volume_union (volume, child_volume);
     }
 
-  return TRUE;
+  g_list_free (children);
+
+  return res;
 }
 
 static void
@@ -470,20 +269,20 @@ clutter_group_new (void)
 void
 clutter_group_remove_all (ClutterGroup *self)
 {
-  ClutterContainer *container;
+  ClutterActor *actor;
   GList *children;
 
   g_return_if_fail (CLUTTER_IS_GROUP (self));
 
-  container = CLUTTER_CONTAINER (self);
-  children = self->priv->children;
+  actor = CLUTTER_ACTOR (self);
+  children = clutter_actor_get_children (actor);
 
   while (children != NULL)
     {
       ClutterActor *child = children->data;
       children = children->next;
 
-      clutter_container_remove_actor (container, child);
+      clutter_actor_remove_child (actor, child);
     }
 }
 
@@ -500,9 +299,17 @@ clutter_group_remove_all (ClutterGroup *self)
 gint
 clutter_group_get_n_children (ClutterGroup *self)
 {
+  GList *children;
+  gint retval;
+
   g_return_val_if_fail (CLUTTER_IS_GROUP (self), 0);
 
-  return g_list_length (self->priv->children);
+  children = clutter_actor_get_children (CLUTTER_ACTOR (self));
+  retval = g_list_length (children);
+
+  g_list_free (children);
+
+  return retval;
 }
 
 /**
@@ -521,7 +328,18 @@ ClutterActor *
 clutter_group_get_nth_child (ClutterGroup *self,
 			     gint          index_)
 {
+  ClutterActor *retval;
+  GList *children;
+
   g_return_val_if_fail (CLUTTER_IS_GROUP (self), NULL);
 
-  return g_list_nth_data (self->priv->children, index_);
+  children = clutter_actor_get_children (CLUTTER_ACTOR (self));
+  if (children == NULL)
+    return NULL;
+
+  retval = g_list_nth_data (children, index_);
+
+  g_list_free (children);
+
+  return retval;
 }
