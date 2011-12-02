@@ -328,6 +328,7 @@ void                  clutter_actor_get_allocation_geometry   (ClutterActor     
 void                  clutter_actor_get_allocation_vertices   (ClutterActor          *self,
 							       ClutterActor          *ancestor,
                                                                ClutterVertex          verts[]);
+gboolean              clutter_actor_has_allocation            (ClutterActor          *self);
 void                  clutter_actor_set_size                  (ClutterActor          *self,
                                                                gfloat                 width,
                                                                gfloat                 height);
@@ -350,6 +351,9 @@ void                  clutter_actor_get_transformed_position  (ClutterActor     
 gboolean              clutter_actor_get_fixed_position_set    (ClutterActor          *self);
 void                  clutter_actor_set_fixed_position_set    (ClutterActor          *self,
                                                                gboolean               is_set);
+void                  clutter_actor_move_by                   (ClutterActor          *self,
+                                                               gfloat                 dx,
+                                                               gfloat                 dy);
 
 /* Actor geometry */
 gfloat                clutter_actor_get_width                 (ClutterActor          *self);
@@ -401,22 +405,6 @@ void                  clutter_actor_set_margin_right          (ClutterActor     
                                                                gfloat                 margin);
 gfloat                clutter_actor_get_margin_right          (ClutterActor          *self);
 
-void                  clutter_actor_set_rotation              (ClutterActor          *self,
-                                                               ClutterRotateAxis      axis,
-                                                               gdouble                angle,
-                                                               gfloat                 x,
-                                                               gfloat                 y,
-                                                               gfloat                 z);
-void                  clutter_actor_set_z_rotation_from_gravity (ClutterActor        *self,
-                                                               gdouble                angle,
-                                                               ClutterGravity         gravity);
-gdouble               clutter_actor_get_rotation              (ClutterActor          *self,
-                                                               ClutterRotateAxis      axis,
-                                                               gfloat                *x,
-                                                               gfloat                *y,
-                                                               gfloat                *z);
-ClutterGravity        clutter_actor_get_z_rotation_gravity    (ClutterActor          *self);
-
 void                  clutter_actor_set_opacity               (ClutterActor          *self,
                                                                guint8                 opacity);
 guint8                clutter_actor_get_opacity               (ClutterActor          *self);
@@ -449,6 +437,16 @@ void                  clutter_actor_set_clip_to_allocation    (ClutterActor     
                                                                gboolean               clip_set);
 gboolean              clutter_actor_get_clip_to_allocation    (ClutterActor          *self);
 
+/* Events */
+void                  clutter_actor_set_reactive              (ClutterActor          *actor,
+                                                               gboolean               reactive);
+gboolean              clutter_actor_get_reactive              (ClutterActor          *actor);
+gboolean              clutter_actor_has_key_focus             (ClutterActor          *self);
+void                  clutter_actor_grab_key_focus            (ClutterActor          *self);
+gboolean              clutter_actor_event                     (ClutterActor          *actor,
+                                                               ClutterEvent          *event,
+                                                               gboolean               capture);
+
 /* Actor hierarchy */
 void                  clutter_actor_add_child                 (ClutterActor          *self,
                                                                ClutterActor          *child);
@@ -479,6 +477,28 @@ void                  clutter_actor_lower                     (ClutterActor     
                                                                ClutterActor          *above);
 void                  clutter_actor_raise_top                 (ClutterActor          *self);
 void                  clutter_actor_lower_bottom              (ClutterActor          *self);
+void                  clutter_actor_push_internal             (ClutterActor          *self);
+void                  clutter_actor_pop_internal              (ClutterActor          *self);
+
+
+/* Transformations */
+gboolean              clutter_actor_is_rotated                (ClutterActor          *self);
+gboolean              clutter_actor_is_scaled                 (ClutterActor          *self);
+void                  clutter_actor_set_rotation              (ClutterActor          *self,
+                                                               ClutterRotateAxis      axis,
+                                                               gdouble                angle,
+                                                               gfloat                 x,
+                                                               gfloat                 y,
+                                                               gfloat                 z);
+void                  clutter_actor_set_z_rotation_from_gravity (ClutterActor        *self,
+                                                               gdouble                angle,
+                                                               ClutterGravity         gravity);
+gdouble               clutter_actor_get_rotation              (ClutterActor          *self,
+                                                               ClutterRotateAxis      axis,
+                                                               gfloat                *x,
+                                                               gfloat                *y,
+                                                               gfloat                *z);
+ClutterGravity        clutter_actor_get_z_rotation_gravity    (ClutterActor          *self);
 
 void                  clutter_actor_set_scale                 (ClutterActor          *self,
                                                                gdouble                scale_x,
@@ -499,41 +519,26 @@ void                  clutter_actor_get_scale_center          (ClutterActor     
                                                                gfloat                *center_x,
                                                                gfloat                *center_y);
 ClutterGravity        clutter_actor_get_scale_gravity         (ClutterActor          *self);
-
-void                  clutter_actor_move_by                   (ClutterActor          *self,
-                                                               gfloat                 dx,
-                                                               gfloat                 dy);
-
-void                  clutter_actor_set_reactive              (ClutterActor          *actor,
-                                                               gboolean               reactive);
-gboolean              clutter_actor_get_reactive              (ClutterActor          *actor);
-
-gboolean              clutter_actor_event                     (ClutterActor          *actor,
-                                                               ClutterEvent          *event,
-                                                               gboolean               capture);
-
-void     clutter_actor_set_anchor_point               (ClutterActor   *self,
-                                                       gfloat          anchor_x,
-                                                       gfloat          anchor_y);
-void     clutter_actor_move_anchor_point              (ClutterActor   *self,
-                                                       gfloat          anchor_x,
-                                                       gfloat          anchor_y);
-void     clutter_actor_get_anchor_point               (ClutterActor   *self,
-                                                       gfloat         *anchor_x,
-                                                       gfloat         *anchor_y);
-ClutterGravity clutter_actor_get_anchor_point_gravity (ClutterActor   *self);
-void     clutter_actor_set_anchor_point_from_gravity  (ClutterActor   *self,
-                                                       ClutterGravity  gravity);
-void     clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
-                                                       ClutterGravity  gravity);
+void                  clutter_actor_set_anchor_point          (ClutterActor          *self,
+                                                               gfloat                 anchor_x,
+                                                               gfloat                 anchor_y);
+void                  clutter_actor_move_anchor_point         (ClutterActor          *self,
+                                                               gfloat                 anchor_x,
+                                                               gfloat                 anchor_y);
+void                  clutter_actor_get_anchor_point          (ClutterActor          *self,
+                                                               gfloat                *anchor_x,
+                                                               gfloat                *anchor_y);
+ClutterGravity        clutter_actor_get_anchor_point_gravity  (ClutterActor          *self);
+void                  clutter_actor_set_anchor_point_from_gravity  (ClutterActor     *self,
+                                                               ClutterGravity         gravity);
+void                  clutter_actor_move_anchor_point_from_gravity (ClutterActor     *self,
+                                                               ClutterGravity         gravity);
 
 gboolean clutter_actor_transform_stage_point          (ClutterActor   *self,
                                                        gfloat          x,
                                                        gfloat          y,
                                                        gfloat         *x_out,
                                                        gfloat         *y_out);
-gboolean clutter_actor_is_rotated                     (ClutterActor   *self);
-gboolean clutter_actor_is_scaled                      (ClutterActor   *self);
 gboolean clutter_actor_should_pick_paint              (ClutterActor   *self);
 
 void clutter_actor_get_abs_allocation_vertices        (ClutterActor        *self,
@@ -546,8 +551,6 @@ void clutter_actor_apply_relative_transform_to_point  (ClutterActor        *self
                                                        ClutterActor        *ancestor,
                                                        const ClutterVertex *point,
                                                        ClutterVertex       *vertex);
-
-void          clutter_actor_grab_key_focus            (ClutterActor        *self);
 
 PangoContext *clutter_actor_get_pango_context         (ClutterActor        *self);
 PangoContext *clutter_actor_create_pango_context      (ClutterActor        *self);
@@ -564,14 +567,7 @@ void                 clutter_actor_set_text_direction (ClutterActor         *sel
                                                        ClutterTextDirection  text_dir);
 ClutterTextDirection clutter_actor_get_text_direction (ClutterActor         *self);
 
-void                 clutter_actor_push_internal      (ClutterActor         *self);
-void                 clutter_actor_pop_internal       (ClutterActor         *self);
-
-gboolean             clutter_actor_has_allocation     (ClutterActor         *self);
-
 AtkObject *          clutter_actor_get_accessible     (ClutterActor         *self);
-
-gboolean             clutter_actor_has_key_focus      (ClutterActor         *self);
 
 const ClutterPaintVolume  *clutter_actor_get_paint_volume             (ClutterActor         *self);
 const ClutterPaintVolume  *clutter_actor_get_transformed_paint_volume (ClutterActor *self,
