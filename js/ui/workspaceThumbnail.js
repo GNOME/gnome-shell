@@ -51,6 +51,7 @@ const WindowClone = new Lang.Class({
                                               dragActorMaxSize: Workspace.WINDOW_DND_SIZE,
                                               dragActorOpacity: Workspace.DRAGGING_WINDOW_OPACITY });
         this._draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
+        this._draggable.connect('drag-cancelled', Lang.bind(this, this._onDragCancelled));
         this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
         this.inDrag = false;
     },
@@ -106,6 +107,10 @@ const WindowClone = new Lang.Class({
     _onDragBegin : function (draggable, time) {
         this.inDrag = true;
         this.emit('drag-begin');
+    },
+
+    _onDragCancelled : function (draggable, time) {
+        this.emit('drag-cancelled');
     },
 
     _onDragEnd : function (draggable, time, snapback) {
@@ -385,6 +390,10 @@ const WorkspaceThumbnail = new Lang.Class({
         clone.connect('drag-begin',
                       Lang.bind(this, function(clone) {
                           Main.overview.beginWindowDrag();
+                      }));
+        clone.connect('drag-cancelled',
+                      Lang.bind(this, function(clone) {
+                          Main.overview.cancelledWindowDrag();
                       }));
         clone.connect('drag-end',
                       Lang.bind(this, function(clone) {
