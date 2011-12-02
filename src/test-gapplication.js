@@ -30,35 +30,31 @@ function main() {
 	print ("Activated");
     });
 
-    let group = new Gio.SimpleActionGroup();
-
-    let action = Gio.SimpleAction.new('one', null);
+    let action = new Gio.SimpleAction({ name: 'one' });
     action.connect('activate', do_action);
-    group.insert(action);
+    app.add_action(action);
 
-    let action = Gio.SimpleAction.new('two', null);
+    let action = new Gio.SimpleAction({ name: 'two' });
     action.connect('activate', do_action);
-    group.insert(action);
+    app.add_action(action);
 
-    let action = Gio.SimpleAction.new_stateful('toggle', null, GLib.Variant.new('b', false));
+    let action = new Gio.SimpleAction({ name: 'toggle', state: GLib.Variant.new('b', false) });
     action.connect('activate', do_action_toggle);
     action.connect('notify::state', do_action_state_change);
-    group.insert(action);
+    app.add_action(action);
 
-    let action = Gio.SimpleAction.new('disable', null);
+    let action = new Gio.SimpleAction({ name: 'disable', enabled: false });
     action.set_enabled(false);
     action.connect('activate', do_action);
-    group.insert(action);
+    app.add_action(action);
 
-    let action = Gio.SimpleAction.new('parameter-int', GLib.VariantType.new('u'));
+    let action = new Gio.SimpleAction({ name: 'parameter-int', parameter_type: GLib.VariantType.new('u') });
     action.connect('activate', do_action_param);
-    group.insert(action);
+    app.add_action(action);
 
-    let action = Gio.SimpleAction.new('parameter-string', GLib.VariantType.new('s'));
+    let action = new Gio.SimpleAction({ name: 'parameter-string', parameter_type: GLib.VariantType.new('s') });
     action.connect('activate', do_action_param);
-    group.insert(action);
-
-    app.action_group = group;
+    app.add_action(action);
 
     let menu = new Gio.Menu();
     menu.append('An action', 'one');
@@ -91,10 +87,13 @@ function main() {
     item.set_action_and_target_value('parameter-int', GLib.Variant.new('u', 43));
     menu.append_item(item);
 
-    app.menu = menu;
+    app.set_app_menu(menu);
 
-    app.connect('startup', function(app) {
-	let window = new Gtk.Window({ title: "Test Application", application: app });
+    let window = null;
+
+    app.connect('activate', function(app) {
+	if (!window)
+	    window = new Gtk.Window({ title: "Test Application", application: app });
 	window.present();
     });
 
