@@ -9230,6 +9230,8 @@ clutter_actor_add_child_internal (ClutterActor             *self,
  * This function will take into consideration the #ClutterActor:depth
  * of @child, and will keep the list of children sorted.
  *
+ * This function will emit the #ClutterContainer::actor-added signal.
+ *
  * Since: 1.10
  */
 void
@@ -9239,10 +9241,13 @@ clutter_actor_add_child (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (child));
   g_return_if_fail (self != child);
+  g_return_if_fail (child->priv->parent_actor == NULL);
 
+  clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
   clutter_actor_add_child_internal (self, child,
                                     insert_child_at_depth,
                                     NULL);
+  g_signal_emit_by_name (self, "actor-added", child);
 }
 
 /**
@@ -9260,6 +9265,8 @@ clutter_actor_add_child (ClutterActor *self,
  * This function will not take into consideration the #ClutterActor:depth
  * of @child.
  *
+ * This function will emit the #ClutterContainer::actor-added signal.
+ *
  * Since: 1.10
  */
 void
@@ -9269,12 +9276,15 @@ clutter_actor_insert_child_at_index (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (self != child);
   g_return_if_fail (child->priv->parent_actor == NULL);
   g_return_if_fail (index_ < self->priv->n_children);
 
+  clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
   clutter_actor_add_child_internal (self, child,
                                     insert_child_at_index,
                                     GINT_TO_POINTER (index_));
+  g_signal_emit_by_name (self, "actor-added", child);
 }
 
 /**
@@ -9293,6 +9303,8 @@ clutter_actor_insert_child_at_index (ClutterActor *self,
  * This function will not take into consideration the #ClutterActor:depth
  * of @child.
  *
+ * This function will emit the #ClutterContainer::actor-added signal.
+ *
  * Since: 1.10
  */
 void
@@ -9302,14 +9314,18 @@ clutter_actor_insert_child_above (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (self != child);
+  g_return_if_fail (child != sibling);
   g_return_if_fail (child->priv->parent_actor == NULL);
   g_return_if_fail (sibling == NULL ||
                     (CLUTTER_IS_ACTOR (sibling) &&
                      sibling->priv->parent_actor == self));
 
+  clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
   clutter_actor_add_child_internal (self, child,
                                     insert_child_above,
                                     sibling);
+  g_signal_emit_by_name (self, "actor-added", child);
 }
 
 /**
@@ -9328,6 +9344,8 @@ clutter_actor_insert_child_above (ClutterActor *self,
  * This function will not take into consideration the #ClutterActor:depth
  * of @child.
  *
+ * This function will emit the #ClutterContainer::actor-added signal.
+ *
  * Since: 1.10
  */
 void
@@ -9337,14 +9355,18 @@ clutter_actor_insert_child_below (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (self != child);
+  g_return_if_fail (child != sibling);
   g_return_if_fail (child->priv->parent_actor == NULL);
   g_return_if_fail (sibling == NULL ||
                     (CLUTTER_IS_ACTOR (sibling) &&
                      sibling->priv->parent_actor == self));
 
+  clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
   clutter_actor_add_child_internal (self, child,
                                     insert_child_below,
                                     sibling);
+  g_signal_emit_by_name (self, "actor-added", child);
 }
 
 /**
@@ -9354,13 +9376,27 @@ clutter_actor_insert_child_below (ClutterActor *self,
  *
  * Sets the parent of @self to @parent.
  *
- * This function just calls clutter_actor_add_child().
+ * This function will result in @parent acquiring a reference on @self,
+ * eventually by sinking its floating reference first. The reference
+ * will be released by clutter_actor_unparent().
+ *
+ * This function should only be called by legacy #ClutterActor<!-- -->s
+ * implementing the #ClutterContainer interface.
+ *
+ * Newly written code should use clutter_actor_add_child() instead.
  */
 void
 clutter_actor_set_parent (ClutterActor *self,
 		          ClutterActor *parent)
 {
-  clutter_actor_add_child (parent, self);
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (parent));
+  g_return_if_fail (self != parent);
+  g_return_if_fail (self->priv->parent_actor == NULL);
+
+  clutter_actor_add_child_internal (parent, self,
+                                    insert_child_at_depth,
+                                    NULL);
 }
 
 /**
@@ -9417,32 +9453,11 @@ invalidate_queue_redraw_entry (ClutterActor *self,
   return CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE;
 }
 
-/**
- * clutter_actor_remove_child:
- * @self: a #ClutterActor
- * @child: a #ClutterActor
- *
- * Removes @child from the children of @self.
- *
- * This function will release the reference added by
- * clutter_actor_add_child().
- *
- * Since: 1.10
- */
-void
-clutter_actor_remove_child (ClutterActor *self,
-                            ClutterActor *child)
+static void
+clutter_actor_remove_child_internal (ClutterActor *self,
+                                     ClutterActor *child)
 {
   gboolean was_mapped;
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail (CLUTTER_IS_ACTOR (child));
-
-  if (child->priv->parent_actor == NULL)
-    return;
-
-  if (child->priv->parent_actor != self)
-    return;
 
   was_mapped = CLUTTER_ACTOR_IS_MAPPED (child);
 
@@ -9504,19 +9519,70 @@ clutter_actor_remove_child (ClutterActor *self,
 }
 
 /**
+ * clutter_actor_remove_child:
+ * @self: a #ClutterActor
+ * @child: a #ClutterActor
+ *
+ * Removes @child from the children of @self.
+ *
+ * This function will release the reference added by
+ * clutter_actor_add_child(), so if you want to keep using @child
+ * you will have to acquire a referenced on it before calling this
+ * function.
+ *
+ * This function will emit the #ClutterContainer::actor-removed
+ * signal.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_remove_child (ClutterActor *self,
+                            ClutterActor *child)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (self != child);
+  g_return_if_fail (child->priv->parent_actor != NULL);
+  g_return_if_fail (child->priv->parent_actor == self);
+
+  g_object_ref (child);
+
+  clutter_container_destroy_child_meta (CLUTTER_CONTAINER (self), child);
+
+  clutter_actor_remove_child_internal (self, child);
+
+  g_signal_emit_by_name (self, "actor-removed", child);
+
+  g_object_unref (child);
+}
+
+/**
  * clutter_actor_unparent:
  * @self: a #ClutterActor
  *
  * Removes the parent of @self.
  *
- * This function just calls clutter_actor_remove_child().
+ * This will cause the parent of @self to release the reference
+ * acquired when calling clutter_actor_set_parent(), so if you
+ * want to keep @self you will have to acquire a reference of
+ * your own, through g_object_ref().
+ *
+ * This function should only be called by legacy #ClutterActor<!-- -->s
+ * implementing the #ClutterContainer interface.
+ *
+ * Newly written code should use clutter_actor_remove_child() instead.
  *
  * Since: 0.1.1
  */
 void
 clutter_actor_unparent (ClutterActor *self)
 {
-  clutter_actor_remove_child (self->priv->parent_actor, self);
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (self->priv->parent_actor == NULL)
+    return;
+
+  clutter_actor_remove_child_internal (self->priv->parent_actor, self);
 }
 
 /**
@@ -10120,23 +10186,13 @@ container_add_actor (ClutterContainer *container,
                      ClutterActor     *actor)
 {
   clutter_actor_add_child (CLUTTER_ACTOR (container), actor);
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-
-  g_signal_emit_by_name (container, "actor-added", actor);
 }
 
 static void
 container_remove_actor (ClutterContainer *container,
                         ClutterActor     *actor)
 {
-  g_object_ref (actor);
-
   clutter_actor_remove_child (CLUTTER_ACTOR (container), actor);
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-
-  g_signal_emit_by_name (container, "actor-removed", actor);
-
-  g_object_unref (actor);
 }
 
 typedef struct {
