@@ -467,12 +467,12 @@ StTooltip StLabel {
 }
 
 .window-caption {
-    background: rgba(0,0,0,0.8);
-    border: 1px solid rgba(128,128,128,0.40);
-    border-radius: 10px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 8px;
     font-size: 9pt;
-    padding: 2px 8px;
-    -shell-caption-spacing: 4px;
+    font-weight: bold;
+    padding: 6px 12px;
+    -shell-caption-spacing: 12px;
 }
 
 .window-close {
