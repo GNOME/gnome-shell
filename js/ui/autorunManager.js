@@ -557,7 +557,7 @@ const AutorunTransientNotification = new Lang.Class({
 
         let label = new St.Bin({ y_align: St.Align.MIDDLE,
                                  child: new St.Label
-                                 ({ text: _("Open with %s").format(app.get_display_name()) })
+                                 ({ text: _("Open with %s").format(app.get_name()) })
                                });
         box.add(label);
 
