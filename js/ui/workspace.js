@@ -488,6 +488,9 @@ const WindowOverlay = new Lang.Class({
     },
 
     fadeIn: function() {
+        if (!this._hidden)
+            return;
+
         this.show();
         this.title.opacity = 0;
         this._parentActor.raise_top();
@@ -516,7 +519,7 @@ const WindowOverlay = new Lang.Class({
     // get_transformed_position() and get_transformed_size(),
     // as windowClone might be moving.
     // See Workspace._showWindowOverlay
-    updatePositions: function(cloneX, cloneY, cloneWidth, cloneHeight) {
+    updatePositions: function(cloneX, cloneY, cloneWidth, cloneHeight, animate) {
         let button = this.closeButton;
         let title = this.title;
 
@@ -538,15 +541,34 @@ const WindowOverlay = new Lang.Class({
         else
             buttonX = cloneX + (cloneWidth - button._overlap);
 
-        button.set_position(Math.floor(buttonX), Math.floor(buttonY));
+        if (animate)
+            this._animateOverlayActor(button, Math.floor(buttonX), Math.floor(buttonY), button.width);
+        else
+            button.set_position(Math.floor(buttonX), Math.floor(buttonY));
 
         if (!title.fullWidth)
             title.fullWidth = title.width;
-        title.width = Math.min(title.fullWidth, cloneWidth);
+        let titleWidth = Math.min(title.fullWidth, cloneWidth);
 
-        let titleX = cloneX + (cloneWidth - title.width) / 2;
+        let titleX = cloneX + (cloneWidth - titleWidth) / 2;
         let titleY = cloneY + cloneHeight + title._spacing;
-        title.set_position(Math.floor(titleX), Math.floor(titleY));
+
+        if (animate)
+            this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY), titleWidth);
+        else {
+            title.width = titleWidth;
+            title.set_position(Math.floor(titleX), Math.floor(titleY));
+        }
+    },
+
+    _animateOverlayActor: function(actor, x, y, width) {
+        Tweener.addTween(actor,
+                         { x: x,
+                           y: y,
+                           width: width,
+                           time: Overview.ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
     },
 
     _closeWindow: function(actor) {
@@ -1011,7 +1033,7 @@ const Workspace = new Lang.Class({
 
             let [x, y, scale] = this._computeWindowLayout(metaWindow, slot);
 
-            if (overlay)
+            if (overlay && initialPositioning)
                 overlay.hide();
             if (animate && isOnCurrentWorkspace) {
                 if (!metaWindow.showing_on_its_workspace()) {
@@ -1034,20 +1056,11 @@ const Workspace = new Lang.Class({
                                       });
                 }
 
-                Tweener.addTween(clone.actor,
-                                 { x: x,
-                                   y: y,
-                                   scale_x: scale,
-                                   scale_y: scale,
-                                   time: Overview.ANIMATION_TIME,
-                                   transition: 'easeOutQuad',
-                                   onComplete: Lang.bind(this, function() {
-                                      this._showWindowOverlay(clone, overlay, true);
-                                   })
-                                 });
+                this._animateClone(clone, overlay, x, y, scale, initialPositioning);
             } else {
                 clone.actor.set_position(x, y);
                 clone.actor.set_scale(scale, scale);
+                this._updateWindowOverlayPositions(clone, overlay, x, y, scale, false);
                 this._showWindowOverlay(clone, overlay, isOnCurrentWorkspace);
             }
         }
@@ -1069,23 +1082,35 @@ const Workspace = new Lang.Class({
         }
     },
 
+    _animateClone: function(clone, overlay, x, y, scale, initialPositioning) {
+        Tweener.addTween(clone.actor,
+                                 { x: x,
+                                   y: y,
+                                   scale_x: scale,
+                                   scale_y: scale,
+                                   time: Overview.ANIMATION_TIME,
+                                   transition: 'easeOutQuad',
+                                   onComplete: Lang.bind(this, function() {
+                                         this._showWindowOverlay(clone, overlay, true);
+                                   })
+                                 });
+
+        this._updateWindowOverlayPositions(clone, overlay, x, y, scale, true);
+    },
+
+    _updateWindowOverlayPositions: function(clone, overlay, x, y, scale, animate) {
+        let [cloneWidth, cloneHeight] = clone.actor.get_size();
+        cloneWidth = scale * cloneWidth;
+        cloneHeight = scale * cloneHeight;
+        if (overlay)
+            overlay.updatePositions(x, y, cloneWidth, cloneHeight, animate);
+    },
+
     _showWindowOverlay: function(clone, overlay, fade) {
         if (clone.inDrag)
             return;
 
-        // This is a little messy and complicated because when we
-        // start the fade-in we may not have done the final positioning
-        // of the workspaces. (Tweener doesn't necessarily finish
-        // all animations before calling onComplete callbacks.)
-        // So we need to manually compute where the window will
-        // be after the workspace animation finishes.
-        let [cloneX, cloneY] = clone.actor.get_position();
-        let [cloneWidth, cloneHeight] = clone.actor.get_size();
-        cloneWidth = clone.actor.scale_x * cloneWidth;
-        cloneHeight = clone.actor.scale_y * cloneHeight;
-
         if (overlay) {
-            overlay.updatePositions(cloneX, cloneY, cloneWidth, cloneHeight);
             if (fade)
                 overlay.fadeIn();
             else
@@ -1100,6 +1125,14 @@ const Workspace = new Lang.Class({
             let overlay = this._windowOverlays[i];
             this._showWindowOverlay(clone, overlay,
                                     this.metaWorkspace == null || this.metaWorkspace == currentWorkspace);
+        }
+    },
+
+    _hideAllOverlays: function() {
+        for (let i = 0; i < this._windows.length; i++) {
+            let overlay = this._windowOverlays[i];
+            if (overlay)
+                overlay.hide();
         }
     },
 
@@ -1122,18 +1155,6 @@ const Workspace = new Lang.Class({
 
         this.positionWindows(WindowPositionFlags.ANIMATE);
         return false;
-    },
-
-    showWindowsOverlays: function() {
-        if (this.leavingOverview)
-            return;
-
-        this._windowOverlaysGroup.show();
-        this._showAllOverlays();
-    },
-
-    hideWindowsOverlays: function() {
-        this._windowOverlaysGroup.hide();
     },
 
     _doRemoveWindow : function(metaWin) {
@@ -1289,7 +1310,7 @@ const Workspace = new Lang.Class({
 
         this.leavingOverview = true;
 
-        this.hideWindowsOverlays();
+        this._hideAllOverlays();
 
         if (this._repositionWindowsId > 0) {
             Mainloop.source_remove(this._repositionWindowsId);
