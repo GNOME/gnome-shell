@@ -3600,13 +3600,7 @@ meta_window_tile (MetaWindow *window)
 static gboolean
 meta_window_can_tile_maximized (MetaWindow *window)
 {
-  if (!META_WINDOW_ALLOWS_RESIZE (window))
-    return FALSE;
-
-  if (!window->has_maximize_func)
-    return FALSE;
-
-  return TRUE;
+  return window->has_maximize_func;
 }
 
 static gboolean
