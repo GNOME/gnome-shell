@@ -3419,6 +3419,9 @@ meta_window_maximize_internal (MetaWindow        *window,
   else
     meta_window_save_rect (window);
 
+  if (maximize_horizontally && maximize_vertically)
+    window->saved_maximize = TRUE;
+
   window->maximized_horizontally =
     window->maximized_horizontally || maximize_horizontally;
   window->maximized_vertically =
@@ -3684,6 +3687,9 @@ meta_window_unmaximize_internal (MetaWindow        *window,
   unmaximize_horizontally = directions & META_MAXIMIZE_HORIZONTAL;
   unmaximize_vertically   = directions & META_MAXIMIZE_VERTICAL;
   g_assert (unmaximize_horizontally || unmaximize_vertically);
+
+  if (unmaximize_horizontally && unmaximize_vertically)
+    window->saved_maximize = FALSE;
 
   /* Only do something if the window isn't already maximized in the
    * given direction(s).
