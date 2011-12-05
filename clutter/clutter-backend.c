@@ -200,14 +200,20 @@ clutter_backend_real_resolution_changed (ClutterBackend *backend)
   ClutterBackendPrivate *priv = backend->priv;
   ClutterMainContext *context;
   ClutterSettings *settings;
+  gdouble resolution;
   gint dpi;
 
   settings = clutter_settings_get_default ();
   g_object_get (settings, "font-dpi", &dpi, NULL);
 
+  if (dpi < 0)
+    resolution = 96.0;
+  else
+    resolution = dpi / 1024.0;
+
   context = _clutter_context_get_default ();
   if (context->font_map != NULL)
-    cogl_pango_font_map_set_resolution (context->font_map, dpi / 1024.0);
+    cogl_pango_font_map_set_resolution (context->font_map, resolution);
 
   priv->units_per_em = get_units_per_em (backend, NULL);
   priv->units_serial += 1;
@@ -1083,6 +1089,9 @@ clutter_backend_get_resolution (ClutterBackend *backend)
 
   settings = clutter_settings_get_default ();
   g_object_get (settings, "font-dpi", &resolution, NULL);
+
+  if (resolution < 0)
+    return 96.0;
 
   return resolution / 1024.0;
 }
