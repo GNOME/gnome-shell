@@ -165,7 +165,7 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
   CoglDisplay *display;
   const CoglWinsysVtable *winsys = _cogl_renderer_get_winsys (renderer);
 
-  if (!winsys->renderer_connect (renderer, error))
+  if (!cogl_renderer_connect (renderer, error))
     return FALSE;
 
   display = cogl_display_new (renderer, onscreen_template);
