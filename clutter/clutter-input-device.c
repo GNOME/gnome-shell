@@ -459,6 +459,20 @@ _clutter_input_device_set_stage (ClutterInputDevice *device,
 }
 
 /*< private >
+ * clutter_input_device_get_stage:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the stage currently associated with @device.
+ *
+ * Return value: The stage currently associated with @device.
+ */
+ClutterStage *
+_clutter_input_device_get_stage (ClutterInputDevice *device)
+{
+  return device->stage;
+}
+
+/*< private >
  * clutter_input_device_set_actor:
  * @device: a #ClutterInputDevice
  * @actor: a #ClutterActor

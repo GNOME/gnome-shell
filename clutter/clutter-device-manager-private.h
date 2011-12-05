@@ -136,6 +136,7 @@ void            _clutter_input_device_set_time                  (ClutterInputDev
                                                                  guint32               time_);
 void            _clutter_input_device_set_stage                 (ClutterInputDevice   *device,
                                                                  ClutterStage         *stage);
+ClutterStage *  _clutter_input_device_get_stage                 (ClutterInputDevice   *device);
 void            _clutter_input_device_set_actor                 (ClutterInputDevice   *device,
                                                                  ClutterActor         *actor,
                                                                  gboolean              emit_crossing);
