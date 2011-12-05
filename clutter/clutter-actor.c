@@ -4119,7 +4119,65 @@ static gboolean
 clutter_actor_real_get_paint_volume (ClutterActor       *self,
                                      ClutterPaintVolume *volume)
 {
-  return FALSE;
+  ClutterActorPrivate *priv = self->priv;
+  gboolean res;
+  GList *l;
+
+  /* this is the default return value: we cannot know if a class
+   * is going to paint outside its allocation, so we take the
+   * conservative approach.
+   */
+  res = FALSE;
+
+  /* if the actor has a clip set then we have a pretty definite
+   * size for the paint volume: the actor cannot possibly paint
+   * outside the clip region.
+   */
+  if (priv->clip_to_allocation)
+    {
+      clutter_paint_volume_set_from_allocation (volume, self);
+
+      res = TRUE;
+    }
+  else if (priv->has_clip)
+    {
+      ClutterVertex origin;
+
+      origin.x = priv->clip[0];
+      origin.y = priv->clip[1];
+      origin.z = 0;
+
+      clutter_paint_volume_set_origin (volume, &origin);
+      clutter_paint_volume_set_width (volume, priv->clip[2]);
+      clutter_paint_volume_set_height (volume, priv->clip[3]);
+
+      res = TRUE;
+    }
+
+  /* if we don't have children we just bail out here */
+  if (priv->children == NULL)
+    return res;
+
+  /* but if we have children then we ask for their paint volume in
+   * our coordinates. if any of our children replies that it doesn't
+   * have a paint volume, we bail out
+   */
+  for (l = priv->children; l != NULL; l = l->next)
+    {
+      ClutterActor *child = l->data;
+      const ClutterPaintVolume *child_volume;
+
+      child_volume = clutter_actor_get_transformed_paint_volume (child, self);
+      if (child_volume == NULL)
+        {
+          res = FALSE;
+          break;
+        }
+
+      clutter_paint_volume_union (volume, child_volume);
+    }
+
+  return res;
 }
 
 static gboolean
