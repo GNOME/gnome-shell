@@ -3603,7 +3603,7 @@ meta_window_can_tile_maximized (MetaWindow *window)
   return window->has_maximize_func;
 }
 
-static gboolean
+gboolean
 meta_window_can_tile_side_by_side (MetaWindow *window)
 {
   const MetaMonitorInfo *monitor;
