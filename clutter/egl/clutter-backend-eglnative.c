@@ -41,7 +41,7 @@
 #include "cogl/clutter-stage-cogl.h"
 
 #ifdef HAVE_EVDEV
-#include "clutter-device-manager-evdev.h"
+#include "evdev/clutter-device-manager-evdev.h"
 #endif
 
 #include "clutter-debug.h"
