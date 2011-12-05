@@ -578,6 +578,11 @@ gboolean             clutter_actor_get_paint_box      (ClutterActor         *sel
 
 gboolean             clutter_actor_has_overlaps       (ClutterActor         *self);
 
+void                    clutter_actor_set_background_color      (ClutterActor       *self,
+                                                                 const ClutterColor *color);
+void                    clutter_actor_get_background_color      (ClutterActor       *self,
+                                                                 ClutterColor       *color);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_H__ */

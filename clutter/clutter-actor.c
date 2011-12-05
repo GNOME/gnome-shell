@@ -306,6 +306,8 @@
 #include "clutter-actor-meta-private.h"
 #include "clutter-animatable.h"
 #include "clutter-behaviour.h"
+#include "clutter-color-static.h"
+#include "clutter-color.h"
 #include "clutter-constraint.h"
 #include "clutter-container.h"
 #include "clutter-debug.h"
@@ -482,6 +484,8 @@ struct _ClutterActorPrivate
 
   ClutterStageQueueRedrawEntry *queue_redraw_entry;
 
+  ClutterColor bg_color;
+
   /* bitfields */
 
   /* fixed position and sizes */
@@ -518,6 +522,7 @@ struct _ClutterActorPrivate
   guint y_expand_set                : 1;
   guint y_expand_effective          : 1;
   guint needs_compute_expand        : 1;
+  guint bg_color_set                : 1;
 };
 
 enum
@@ -616,6 +621,9 @@ enum
   PROP_MARGIN_BOTTOM,
   PROP_MARGIN_LEFT,
   PROP_MARGIN_RIGHT,
+
+  PROP_BACKGROUND_COLOR,
+  PROP_BACKGROUND_COLOR_SET,
 
   PROP_LAST
 };
@@ -3163,7 +3171,26 @@ clutter_actor_continue_paint (ClutterActor *self)
   if (priv->next_effect_to_paint == NULL)
     {
       if (_clutter_context_get_pick_mode () == CLUTTER_PICK_NONE)
-        g_signal_emit (self, actor_signals[PAINT], 0);
+        {
+          /* paint the background color, if set */
+          if (priv->bg_color_set)
+            {
+              float width, height;
+
+              clutter_actor_box_get_size (&priv->allocation,
+                                          &width,
+                                          &height);
+
+              cogl_set_source_color4ub (priv->bg_color.red,
+                                        priv->bg_color.green,
+                                        priv->bg_color.blue,
+                                        priv->bg_color.alpha);
+
+              cogl_rectangle (0, 0, width, height);
+            }
+
+          g_signal_emit (self, actor_signals[PAINT], 0);
+        }
       else
         {
           ClutterColor col = { 0, };
@@ -3577,6 +3604,10 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_margin_right (actor, g_value_get_float (value));
       break;
 
+    case PROP_BACKGROUND_COLOR:
+      clutter_actor_set_background_color (actor, g_value_get_boxed (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -3946,6 +3977,14 @@ clutter_actor_get_property (GObject    *object,
         info = _clutter_actor_get_layout_info_or_defaults (actor);
         g_value_set_float (value, info->margin.right);
       }
+      break;
+
+    case PROP_BACKGROUND_COLOR_SET:
+      g_value_set_boolean (value, priv->bg_color_set);
+      break;
+
+    case PROP_BACKGROUND_COLOR:
+      g_value_set_boxed (value, &priv->bg_color);
       break;
 
     default:
@@ -5077,6 +5116,35 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         0.0, G_MAXFLOAT,
                         0.0,
                         CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterActor:background-color-set:
+   *
+   * Whether the #ClutterActor:background-color property has been set.
+   *
+   * Since: 1.10
+   */
+  obj_props[PROP_BACKGROUND_COLOR_SET] =
+    g_param_spec_boolean ("background-color-set",
+                          P_("Background Color Set"),
+                          P_("Whether the background color is set"),
+                          FALSE,
+                          CLUTTER_PARAM_READABLE);
+
+  /**
+   * ClutterActor:background-color:
+   *
+   * Paints a solid fill of the actor's allocation using the specified
+   * color.
+   *
+   * Since: 1.10
+   */
+  obj_props[PROP_BACKGROUND_COLOR] =
+    clutter_param_spec_color ("background-color",
+                              P_("Background color"),
+                              P_("The actor's background color"),
+                              CLUTTER_COLOR_Transparent,
+                              CLUTTER_PARAM_READWRITE);
 
   g_object_class_install_properties (object_class, PROP_LAST, obj_props);
 
@@ -14838,4 +14906,71 @@ clutter_actor_get_margin_right (ClutterActor *self)
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.f);
 
   return _clutter_actor_get_layout_info_or_defaults (self)->margin.right;
+}
+
+/**
+ * clutter_actor_set_background_color:
+ * @self: a #ClutterActor
+ * @color: (allow-none): a #ClutterColor, or %NULL to unset a previously
+ *  set color
+ *
+ * Sets the background color of a #ClutterActor.
+ *
+ * The background color will be used to cover the whole allocation of the
+ * actor. The default background color of an actor is transparent.
+ *
+ * To check whether an actor has a background color, you can use the
+ * #ClutterActor:background-color-set actor property.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_set_background_color (ClutterActor       *self,
+                                    const ClutterColor *color)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (color == NULL)
+    {
+      priv->bg_color_set = FALSE;
+      g_object_notify_by_pspec (G_OBJECT (self),
+                                obj_props[PROP_BACKGROUND_COLOR_SET]);
+      return;
+    }
+
+  if (priv->bg_color_set && clutter_color_equal (color, &priv->bg_color))
+    return;
+
+  priv->bg_color = *color;
+  priv->bg_color_set = TRUE;
+
+  clutter_actor_queue_redraw (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self),
+                            obj_props[PROP_BACKGROUND_COLOR_SET]);
+  g_object_notify_by_pspec (G_OBJECT (self),
+                            obj_props[PROP_BACKGROUND_COLOR]);
+}
+
+/**
+ * clutter_actor_get_background_color:
+ * @self: a #ClutterActor
+ * @color: (out caller-allocates): return location for a #ClutterColor
+ *
+ * Retrieves the color set using clutter_actor_set_background_color().
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_get_background_color (ClutterActor *self,
+                                    ClutterColor *color)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (color != NULL);
+
+  *color = self->priv->bg_color;
 }
