@@ -3581,6 +3581,10 @@ meta_window_tile (MetaWindow *window)
                                        window,
                                        &old_rect,
                                        &new_rect);
+
+      if (window->frame)
+        meta_ui_queue_frame_draw (window->screen->ui,
+                                  window->frame->xwindow);
     }
   else
     {
