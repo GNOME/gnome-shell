@@ -102,6 +102,8 @@ struct _MetaWindow
   char *mutter_hints;
   char *gtk_theme_variant;
   char *dbus_application_id;
+  char *dbus_unique_name;
+  char *dbus_object_path;
 
   int net_wm_pid;
   

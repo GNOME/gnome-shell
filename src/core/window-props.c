@@ -1600,7 +1600,7 @@ reload_dbus_application_id (MetaWindow    *window,
   if (value->type != META_PROP_VALUE_INVALID)
     new_id = value->v.str;
 
-  if (g_strcmp0 (new_id, current_id))
+  if (g_strcmp0 (new_id, current_id) != 0)
     {
       g_free (current_id);
 
@@ -1610,6 +1610,48 @@ reload_dbus_application_id (MetaWindow    *window,
         window->dbus_application_id = NULL;
 
       g_object_notify ((GObject*)window, "dbus-application-id");
+    }
+}
+
+static void
+reload_dbus_unique_name (MetaWindow    *window,
+                         MetaPropValue *value,
+                         gboolean       initial)
+{
+  char *new_id = NULL;
+  char *current_id = window->dbus_unique_name;
+
+  if (value->type != META_PROP_VALUE_INVALID)
+    new_id = value->v.str;
+
+  if (g_strcmp0 (new_id, current_id) != 0)
+    {
+      g_free (current_id);
+
+      window->dbus_unique_name = g_strdup (new_id);
+
+      g_object_notify ((GObject*)window, "dbus-unique-name");
+    }
+}
+
+static void
+reload_dbus_object_path (MetaWindow    *window,
+                         MetaPropValue *value,
+                         gboolean       initial)
+{
+  char *new_path = NULL;
+  char *current_path = window->dbus_object_path;
+
+  if (value->type != META_PROP_VALUE_INVALID)
+    new_path = value->v.str;
+
+  if (g_strcmp0 (new_path, current_path) != 0)
+    {
+      g_free (current_path);
+
+      window->dbus_object_path = g_strdup (new_path);
+
+      g_object_notify ((GObject*)window, "dbus-object-path");
     }
 }
 
@@ -1667,6 +1709,8 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
     { XA_WM_TRANSIENT_FOR,             META_PROP_VALUE_WINDOW,    reload_transient_for,    TRUE,  FALSE },
     { display->atom__GTK_THEME_VARIANT, META_PROP_VALUE_UTF8,     reload_gtk_theme_variant, TRUE, FALSE },
     { display->atom__DBUS_APPLICATION_ID, META_PROP_VALUE_UTF8,   reload_dbus_application_id, TRUE, FALSE },
+    { display->atom__DBUS_UNIQUE_NAME, META_PROP_VALUE_UTF8,      reload_dbus_unique_name, TRUE, FALSE },
+    { display->atom__DBUS_OBJECT_PATH, META_PROP_VALUE_UTF8,      reload_dbus_object_path, TRUE, FALSE },
     { display->atom__NET_WM_USER_TIME_WINDOW, META_PROP_VALUE_WINDOW, reload_net_wm_user_time_window, TRUE, FALSE },
     { display->atom_WM_STATE,          META_PROP_VALUE_INVALID,  NULL,                     FALSE, FALSE },
     { display->atom__NET_WM_ICON,      META_PROP_VALUE_INVALID,  reload_net_wm_icon,       FALSE, FALSE },

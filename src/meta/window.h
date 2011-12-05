@@ -96,6 +96,8 @@ const char * meta_window_get_wm_class_instance (MetaWindow *window);
 gboolean    meta_window_showing_on_its_workspace (MetaWindow *window);
 
 const char * meta_window_get_dbus_application_id (MetaWindow *window);
+const char * meta_window_get_dbus_unique_name (MetaWindow *window);
+const char * meta_window_get_dbus_object_path (MetaWindow *window);
 
 void meta_window_move(MetaWindow *window, gboolean user_op, int root_x_nw, int root_y_nw);
 void meta_window_move_frame(MetaWindow *window, gboolean user_op, int root_x_nw, int root_y_nw);

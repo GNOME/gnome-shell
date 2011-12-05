@@ -165,7 +165,9 @@ enum {
   PROP_RESIZEABLE,
   PROP_ABOVE,
   PROP_WM_CLASS,
-  PROP_DBUS_APPLICATION_ID
+  PROP_DBUS_APPLICATION_ID,
+  PROP_DBUS_UNIQUE_NAME,
+  PROP_DBUS_OBJECT_PATH
 };
 
 enum
@@ -223,6 +225,8 @@ meta_window_finalize (GObject *object)
   g_free (window->desc);
   g_free (window->gtk_theme_variant);
   g_free (window->dbus_application_id);
+  g_free (window->dbus_unique_name);
+  g_free (window->dbus_object_path);
 }
 
 static void
@@ -288,6 +292,12 @@ meta_window_get_property(GObject         *object,
       break;
     case PROP_DBUS_APPLICATION_ID:
       g_value_set_string (value, win->dbus_application_id);
+      break;
+    case PROP_DBUS_UNIQUE_NAME:
+      g_value_set_string (value, win->dbus_unique_name);
+      break;
+    case PROP_DBUS_OBJECT_PATH:
+      g_value_set_string (value, win->dbus_object_path);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -460,6 +470,22 @@ meta_window_class_init (MetaWindowClass *klass)
                                    g_param_spec_string ("dbus-application-id",
                                                         "DBusApplicationID",
                                                         "Contents of the _DBUS_APPLICATION_ID property of this window",
+                                                        NULL,
+                                                        G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_DBUS_UNIQUE_NAME,
+                                   g_param_spec_string ("dbus-unique-name",
+                                                        "_DBUS_UNIQUE_NAME",
+                                                        "Contents of the _DBUS_UNIQUE_NAME property of this window",
+                                                        NULL,
+                                                        G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_DBUS_OBJECT_PATH,
+                                   g_param_spec_string ("dbus-object-path",
+                                                        "_DBUS_OBJECT_PATH",
+                                                        "Contents of the _DBUS_OBJECT_PATH property of this window",
                                                         NULL,
                                                         G_PARAM_READABLE));
 
@@ -10234,6 +10260,30 @@ const char *
 meta_window_get_dbus_application_id (MetaWindow *window)
 {
   return window->dbus_application_id;
+}
+
+/**
+ * meta_window_get_dbus_unique_name:
+ * @window: a #MetaWindow
+ *
+ * Return value: (transfer none): the unique name
+ **/
+const char *
+meta_window_get_dbus_unique_name (MetaWindow *window)
+{
+  return window->dbus_unique_name;
+}
+
+/**
+ * meta_window_get_dbus_object_path:
+ * @window: a #MetaWindow
+ *
+ * Return value: (transfer none): the object path
+ **/
+const char *
+meta_window_get_dbus_object_path (MetaWindow *window)
+{
+  return window->dbus_object_path;
 }
 
 /**
