@@ -163,39 +163,6 @@ clutter_group_real_hide_all (ClutterActor *actor)
                              NULL);
 }
 
-static gboolean
-clutter_group_real_get_paint_volume (ClutterActor       *actor,
-                                     ClutterPaintVolume *volume)
-{
-  GList *children, *l;
-  gboolean res = TRUE;
-
-  children = clutter_actor_get_children (actor);
-  if (children == NULL)
-    return TRUE;
-
-  for (l = children; l != NULL; l = l->next)
-    {
-      ClutterActor *child = l->data;
-      const ClutterPaintVolume *child_volume;
-
-      /* This gets the paint volume of the child transformed into the
-       * group's coordinate space... */
-      child_volume = clutter_actor_get_transformed_paint_volume (child, actor);
-      if (child_volume == NULL)
-        {
-          res = FALSE;
-          break;
-        }
-
-      clutter_paint_volume_union (volume, child_volume);
-    }
-
-  g_list_free (children);
-
-  return res;
-}
-
 static void
 clutter_group_class_init (ClutterGroupClass *klass)
 {
@@ -210,7 +177,6 @@ clutter_group_class_init (ClutterGroupClass *klass)
   actor_class->pick = clutter_group_real_pick;
   actor_class->show_all = clutter_group_real_show_all;
   actor_class->hide_all = clutter_group_real_hide_all;
-  actor_class->get_paint_volume = clutter_group_real_get_paint_volume;
 
   gobject_class->dispose = clutter_group_dispose;
 
