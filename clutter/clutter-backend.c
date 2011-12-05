@@ -176,14 +176,10 @@ get_units_per_em (ClutterBackend       *backend,
       if (is_absolute)
         font_size = (gdouble) pango_size / PANGO_SCALE;
       else
-        font_size = (gdouble) pango_size / PANGO_SCALE
-                  * dpi
-                  / 96.0f;
+        font_size = dpi * ((gdouble) pango_size / PANGO_SCALE) / 72.0f;
 
       /* 10 points at 96 DPI is 13.3 pixels */
-      units_per_em = (1.2f * font_size)
-                   * dpi
-                   / 96.0f;
+      units_per_em = (1.2f * font_size) * dpi / 96.0f;
     }
   else
     units_per_em = -1.0f;
