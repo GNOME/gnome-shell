@@ -433,9 +433,9 @@ const HotCorner = new Lang.Class({
                              Lang.bind(this, this._onCornerLeft));
 
         // Cache the three ripples instead of dynamically creating and destroying them.
-        this._ripple1 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0 });
-        this._ripple2 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0 });
-        this._ripple3 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0 });
+        this._ripple1 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0, visible: false });
+        this._ripple2 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0, visible: false });
+        this._ripple3 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0, visible: false });
 
         Main.uiGroup.add_actor(this._ripple1);
         Main.uiGroup.add_actor(this._ripple2);
