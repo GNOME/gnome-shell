@@ -90,81 +90,42 @@ struct _ClutterBoxPrivate
   ClutterLayoutManager *manager;
 
   guint changed_id;
-
-  ClutterColor color;
-  guint color_set : 1;
 };
 
 enum
 {
   PROP_0,
 
-  PROP_LAYOUT_MANAGER,
   PROP_COLOR,
   PROP_COLOR_SET,
 
   PROP_LAST
 };
 
-static GParamSpec *obj_props[PROP_LAST];
+static GParamSpec *obj_props[PROP_LAST] = { NULL, };
 
 static const ClutterColor default_box_color = { 255, 255, 255, 255 };
 
 G_DEFINE_TYPE (ClutterBox, clutter_box, CLUTTER_TYPE_ACTOR);
 
-static void
-clutter_box_real_paint (ClutterActor *actor)
-{
-  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
-  GList *children;
-
-  if (priv->color_set)
-    {
-      ClutterActorBox box = { 0, };
-      gfloat width, height;
-      guint8 tmp_alpha;
-
-      clutter_actor_get_allocation_box (actor, &box);
-      clutter_actor_box_get_size (&box, &width, &height);
-
-      tmp_alpha = clutter_actor_get_paint_opacity (actor)
-                * priv->color.alpha
-                / 255;
-
-      cogl_set_source_color4ub (priv->color.red,
-                                priv->color.green,
-                                priv->color.blue,
-                                tmp_alpha);
-
-      cogl_rectangle (0, 0, width, height);
-    }
-
-  children = clutter_actor_get_children (actor);
-  g_list_foreach (children, (GFunc) clutter_actor_paint, NULL);
-  g_list_free (children);
-}
-
 static gboolean
 clutter_box_real_get_paint_volume (ClutterActor       *actor,
                                    ClutterPaintVolume *volume)
 {
-  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
   gboolean retval = FALSE;
   GList *children, *l;
 
   /* if we have a background color, and an allocation, then we need to
    * set it as the base of our paint volume
    */
-  if (priv->color_set)
-    retval = clutter_paint_volume_set_from_allocation (volume, actor);
-
+  retval = clutter_paint_volume_set_from_allocation (volume, actor);
   children = clutter_actor_get_children (actor);
 
   /* bail out early if we don't have any child */
   if (children == NULL)
     return retval;
-  else
-    retval = TRUE;
+
+  retval = TRUE;
 
   /* otherwise, union the paint volumes of our children, in case
    * any one of them decides to paint outside the parent's allocation
@@ -227,16 +188,25 @@ clutter_box_get_property (GObject    *gobject,
                           GValue     *value,
                           GParamSpec *pspec)
 {
-  ClutterBoxPrivate *priv = CLUTTER_BOX (gobject)->priv;
-
   switch (prop_id)
     {
     case PROP_COLOR:
-      clutter_value_set_color (value, &priv->color);
+      {
+        ClutterColor color;
+
+        clutter_actor_get_background_color (CLUTTER_ACTOR (gobject),
+                                            &color);
+        clutter_value_set_color (value, &color);
+      }
       break;
 
     case PROP_COLOR_SET:
-      g_value_set_boolean (value, priv->color_set);
+      {
+        gboolean color_set;
+
+        g_object_get (gobject, "background-color-set", &color_set, NULL);
+        g_value_set_boolean (value, color_set);
+      }
       break;
 
     default:
@@ -250,11 +220,9 @@ clutter_box_class_init (ClutterBoxClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (ClutterBoxPrivate));
 
-  actor_class->paint = clutter_box_real_paint;
   actor_class->get_paint_volume = clutter_box_real_get_paint_volume;
   actor_class->pick = clutter_box_real_pick;
 
@@ -270,13 +238,12 @@ clutter_box_class_init (ClutterBoxClass *klass)
    *
    * Since: 1.2
    */
-  pspec = clutter_param_spec_color ("color",
-                                    P_("Color"),
-                                    P_("The background color of the box"),
-                                    &default_box_color,
-                                    CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_COLOR] = pspec;
-  g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
+  obj_props[PROP_COLOR] =
+    clutter_param_spec_color ("color",
+                              P_("Color"),
+                              P_("The background color of the box"),
+                              &default_box_color,
+                              CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterBox:color-set:
@@ -285,21 +252,20 @@ clutter_box_class_init (ClutterBoxClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_boolean ("color-set",
-                                P_("Color Set"),
-                                P_("Whether the background color is set"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_COLOR_SET] = pspec;
-  g_object_class_install_property (gobject_class, PROP_COLOR_SET, pspec);
+  obj_props[PROP_COLOR_SET] =
+    g_param_spec_boolean ("color-set",
+                          P_("Color Set"),
+                          P_("Whether the background color is set"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
+
+  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
 }
 
 static void
 clutter_box_init (ClutterBox *self)
 {
   self->priv = CLUTTER_BOX_GET_PRIVATE (self);
-
-  self->priv->color = default_box_color;
 }
 
 /**
@@ -706,21 +672,9 @@ void
 clutter_box_set_color (ClutterBox         *box,
                        const ClutterColor *color)
 {
-  ClutterBoxPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_BOX (box));
 
-  priv = box->priv;
-
-  if (color)
-    {
-      priv->color = *color;
-      priv->color_set = TRUE;
-    }
-  else
-    priv->color_set = FALSE;
-
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (box));
+  clutter_actor_set_background_color (CLUTTER_ACTOR (box), color);
 
   g_object_notify_by_pspec (G_OBJECT (box), obj_props[PROP_COLOR_SET]);
   g_object_notify_by_pspec (G_OBJECT (box), obj_props[PROP_COLOR]);
@@ -745,5 +699,5 @@ clutter_box_get_color (ClutterBox   *box,
   g_return_if_fail (CLUTTER_IS_BOX (box));
   g_return_if_fail (color != NULL);
 
-  *color = box->priv->color;
+  clutter_actor_get_background_color (CLUTTER_ACTOR (box), color);
 }
