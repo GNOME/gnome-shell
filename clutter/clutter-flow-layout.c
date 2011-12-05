@@ -365,7 +365,7 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
   priv->req_height = for_height;
 
   if (min_width_p)
-    *min_width_p = total_min_width;
+    *min_width_p = max_min_width;
 
   if (nat_width_p)
     *nat_width_p = total_natural_width;
@@ -542,7 +542,7 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
   priv->req_width = for_width;
 
   if (min_height_p)
-    *min_height_p = total_min_height;
+    *min_height_p = max_min_height;
 
   if (nat_height_p)
     *nat_height_p = total_natural_height;
