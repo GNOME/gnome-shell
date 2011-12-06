@@ -2,8 +2,22 @@
 #define __CLUTTER_GROUP_DEPRECATED_H__
 
 #include <clutter/clutter-types.h>
+#include <clutter/clutter-group.h>
 
 G_BEGIN_DECLS
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_new)
+ClutterActor *  clutter_group_new               (void);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_get_child_at_index)
+ClutterActor *  clutter_group_get_nth_child     (ClutterGroup *self,
+                                                 gint          index_);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_get_n_children)
+gint            clutter_group_get_n_children    (ClutterGroup *self);
+
+CLUTTER_DEPRECATED
+void            clutter_group_remove_all        (ClutterGroup *self);
 
 #ifndef CLUTTER_DISABLE_DEPRECATED
 

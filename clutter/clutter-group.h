@@ -41,6 +41,12 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_GROUP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_GROUP))
 #define CLUTTER_GROUP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_GROUP, ClutterGroupClass))
 
+/* XXX - ClutterGroup is to be considered fully deprecated; the only
+ * reason we keep this header is because ClutterStage inherits from
+ * ClutterGroup, and thus we need to have a structure definition for
+ * the Stage object to expand.
+ */
+
 typedef struct _ClutterGroup            ClutterGroup;
 typedef struct _ClutterGroupClass       ClutterGroupClass;
 typedef struct _ClutterGroupPrivate     ClutterGroupPrivate;
@@ -83,12 +89,6 @@ struct _ClutterGroupClass
 };
 
 GType clutter_group_get_type (void) G_GNUC_CONST;
-
-ClutterActor *  clutter_group_new               (void);
-ClutterActor *  clutter_group_get_nth_child     (ClutterGroup *self,
-                                                 gint          index_);
-gint            clutter_group_get_n_children    (ClutterGroup *self);
-void            clutter_group_remove_all        (ClutterGroup *self);
 
 G_END_DECLS
 

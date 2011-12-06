@@ -157,7 +157,6 @@ source_c = \
 	$(srcdir)/clutter-flatten-effect.c	\
 	$(srcdir)/clutter-flow-layout.c		\
 	$(srcdir)/clutter-gesture-action.c 	\
-	$(srcdir)/clutter-group.c 		\
 	$(srcdir)/clutter-input-device.c	\
 	$(srcdir)/clutter-interval.c            \
 	$(srcdir)/clutter-keysyms-table.c	\
@@ -261,6 +260,7 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-box.c			\
 	$(srcdir)/deprecated/clutter-fixed.c			\
 	$(srcdir)/deprecated/clutter-frame-source.c		\
+	$(srcdir)/deprecated/clutter-group.c 			\
 	$(srcdir)/deprecated/clutter-timeout-pool.c		\
 	$(srcdir)/deprecated/clutter-score.c 			\
 	$(srcdir)/deprecated/clutter-shader.c 			\

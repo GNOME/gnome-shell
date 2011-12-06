@@ -42,6 +42,8 @@
  * the visible area of a #ClutterGroup to a specified allocation is to
  * explicitly set the size of the #ClutterGroup and then use the
  * #ClutterActor:clip-to-allocation property.
+ *
+ * Deprecated: 1.10: Use #ClutterActor instead.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -200,6 +202,8 @@ clutter_group_init (ClutterGroup *self)
  * Create a new  #ClutterGroup.
  *
  * Return value: the newly created #ClutterGroup actor
+ *
+ * Deprecated: 1.10: Use clutter_actor_new() instead.
  */
 ClutterActor *
 clutter_group_new (void)
@@ -212,6 +216,9 @@ clutter_group_new (void)
  * @self: A #ClutterGroup
  *
  * Removes all children actors from the #ClutterGroup.
+ *
+ * Deprecated: 1.10: Use clutter_actor_get_children() and
+ *   clutter_actor_remove_child() instead.
  */
 void
 clutter_group_remove_all (ClutterGroup *self)
@@ -242,6 +249,8 @@ clutter_group_remove_all (ClutterGroup *self)
  * Return value: The number of child actors held in the group.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.10: Use clutter_actor_get_n_children() instead.
  */
 gint
 clutter_group_get_n_children (ClutterGroup *self)
@@ -262,6 +271,8 @@ clutter_group_get_n_children (ClutterGroup *self)
  *   @index_ is invalid.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.10: Use clutter_actor_get_child_at_index() instead.
  */
 ClutterActor *
 clutter_group_get_nth_child (ClutterGroup *self,
