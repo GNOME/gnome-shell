@@ -13,7 +13,7 @@ INCLUDES = \
 	-I$(top_builddir)/clutter \
 	-I$(top_srcdir)/tests/accessibility
 
-AM_CPPFLAGS = -DPREFIXDIR=\"$(libdir)\"
+AM_CPPFLAGS = -DPREFIXDIR=\"$(libdir)\" -DCLUTTER_DISABLE_DEPRECATION_WARNINGS -DGLIB_DISABLE_DEPRECATION_WARNINGS
 AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 LDADD = $(common_ldadd) $(CLUTTER_LIBS)
 
