@@ -212,20 +212,24 @@ basic_layout (TestConformSimpleFixture *fixture,
   ClutterActor *flower[3];
   TestState *state;
 
-  vase = clutter_box_new (clutter_flow_layout_new (CLUTTER_FLOW_HORIZONTAL));
+  vase = clutter_actor_new ();
+  clutter_actor_set_layout_manager (vase, clutter_flow_layout_new (CLUTTER_FLOW_HORIZONTAL));
   clutter_actor_add_child (stage, vase);
 
-  flower[0] = clutter_rectangle_new_with_color (CLUTTER_COLOR_Red);
+  flower[0] = clutter_actor_new ();
+  clutter_actor_set_background_color (flower[0], CLUTTER_COLOR_Red);
   clutter_actor_set_size (flower[0], 100, 100);
   clutter_actor_set_name (flower[0], "Red Flower");
   clutter_actor_add_child (vase, flower[0]);
 
-  flower[1] = clutter_rectangle_new_with_color (CLUTTER_COLOR_Yellow);
+  flower[1] = clutter_actor_new ();
+  clutter_actor_set_background_color (flower[1], CLUTTER_COLOR_Yellow);
   clutter_actor_set_size (flower[1], 100, 100);
   clutter_actor_set_name (flower[1], "Yellow Flower");
   clutter_actor_add_child (vase, flower[1]);
 
-  flower[2] = clutter_rectangle_new_with_color (CLUTTER_COLOR_Green);
+  flower[2] = clutter_actor_new ();
+  clutter_actor_set_background_color (flower[2], CLUTTER_COLOR_Green);
   clutter_actor_set_size (flower[2], 100, 100);
   clutter_actor_set_name (flower[2], "Green Flower");
   clutter_actor_add_child (vase, flower[2]);
@@ -252,22 +256,26 @@ margin_layout (TestConformSimpleFixture *fixture,
   ClutterActor *flower[3];
   TestState *state;
 
-  vase = clutter_box_new (clutter_flow_layout_new (CLUTTER_FLOW_HORIZONTAL));
+  vase = clutter_actor_new ();
+  clutter_actor_set_layout_manager (vase, clutter_flow_layout_new (CLUTTER_FLOW_HORIZONTAL));
   clutter_actor_add_child (stage, vase);
 
-  flower[0] = clutter_rectangle_new_with_color (CLUTTER_COLOR_Red);
+  flower[0] = clutter_actor_new ();
+  clutter_actor_set_background_color (flower[0], CLUTTER_COLOR_Red);
   clutter_actor_set_size (flower[0], 100, 100);
   clutter_actor_set_name (flower[0], "Red Flower");
   clutter_actor_add_child (vase, flower[0]);
 
-  flower[1] = clutter_rectangle_new_with_color (CLUTTER_COLOR_Yellow);
+  flower[1] = clutter_actor_new ();
+  clutter_actor_set_background_color (flower[1], CLUTTER_COLOR_Yellow);
   clutter_actor_set_size (flower[1], 100, 100);
   clutter_actor_set_name (flower[1], "Yellow Flower");
   clutter_actor_set_margin_right (flower[1], 6);
   clutter_actor_set_margin_left (flower[1], 6);
   clutter_actor_add_child (vase, flower[1]);
 
-  flower[2] = clutter_rectangle_new_with_color (CLUTTER_COLOR_Green);
+  flower[2] = clutter_actor_new ();
+  clutter_actor_set_background_color (flower[2], CLUTTER_COLOR_Green);
   clutter_actor_set_size (flower[2], 100, 100);
   clutter_actor_set_name (flower[2], "Green Flower");
   clutter_actor_set_margin_top (flower[2], 6);

@@ -731,17 +731,17 @@ static ClutterPaintVolume *_clutter_actor_get_paint_volume_mutable (ClutterActor
 static GQuark quark_shader_data = 0;
 static GQuark quark_actor_layout_info = 0;
 
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
-                                  clutter_actor,
-                                  G_TYPE_INITIALLY_UNOWNED,
-                                  G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                         clutter_container_iface_init)
-                                  G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                         clutter_scriptable_iface_init)
-                                  G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_ANIMATABLE,
-                                                         clutter_animatable_iface_init)
-                                  G_IMPLEMENT_INTERFACE (ATK_TYPE_IMPLEMENTOR,
-                                                         atk_implementor_iface_init));
+G_DEFINE_TYPE_WITH_CODE (ClutterActor,
+                         clutter_actor,
+                         G_TYPE_INITIALLY_UNOWNED,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
+                                                clutter_container_iface_init)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_ANIMATABLE,
+                                                clutter_animatable_iface_init)
+                         G_IMPLEMENT_INTERFACE (ATK_TYPE_IMPLEMENTOR,
+                                                atk_implementor_iface_init));
 
 /*< private >
  * clutter_actor_get_debug_name:
@@ -5804,6 +5804,24 @@ clutter_actor_init (ClutterActor *self)
   priv->transform_valid = FALSE;
 
   memset (priv->clip, 0, sizeof (gfloat) * 4);
+}
+
+/**
+ * clutter_actor_new:
+ *
+ * Creates a new #ClutterActor.
+ *
+ * A newly created actor has a floating reference, which will be sunk
+ * when it is added to another actor.
+ *
+ * Return value: (transfer full): the newly created #ClutterActor
+ *
+ * Since: 1.10
+ */
+ClutterActor *
+clutter_actor_new (void)
+{
+  return g_object_new (CLUTTER_TYPE_ACTOR, NULL);
 }
 
 /**

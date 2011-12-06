@@ -261,7 +261,9 @@ struct _ClutterActorClass
   gpointer _padding_dummy[28];
 };
 
-GType                 clutter_actor_get_type                  (void) G_GNUC_CONST;
+GType clutter_actor_get_type (void) G_GNUC_CONST;
+
+ClutterActor *        clutter_actor_new                       (void);
 
 void                  clutter_actor_set_flags                 (ClutterActor          *self,
                                                                ClutterActorFlags      flags);
