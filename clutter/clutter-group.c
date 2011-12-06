@@ -246,17 +246,9 @@ clutter_group_remove_all (ClutterGroup *self)
 gint
 clutter_group_get_n_children (ClutterGroup *self)
 {
-  GList *children;
-  gint retval;
-
   g_return_val_if_fail (CLUTTER_IS_GROUP (self), 0);
 
-  children = clutter_actor_get_children (CLUTTER_ACTOR (self));
-  retval = g_list_length (children);
-
-  g_list_free (children);
-
-  return retval;
+  return clutter_actor_get_n_children (CLUTTER_ACTOR (self));
 }
 
 /**
@@ -275,18 +267,12 @@ ClutterActor *
 clutter_group_get_nth_child (ClutterGroup *self,
 			     gint          index_)
 {
-  ClutterActor *retval;
-  GList *children;
+  ClutterActor *actor;
 
   g_return_val_if_fail (CLUTTER_IS_GROUP (self), NULL);
 
-  children = clutter_actor_get_children (CLUTTER_ACTOR (self));
-  if (children == NULL)
-    return NULL;
+  actor = CLUTTER_ACTOR (self);
+  g_return_val_if_fail (index_ <= clutter_actor_get_n_children (actor), NULL);
 
-  retval = g_list_nth_data (children, index_);
-
-  g_list_free (children);
-
-  return retval;
+  return clutter_actor_get_child_at_index (actor, index_);
 }
