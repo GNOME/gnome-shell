@@ -89,6 +89,7 @@ IGNORE_HFILES=\
 	cogl-program.h				\
 	cogl-shader-private.h			\
 	cogl-shader.h				\
+	cogl-snippet-private.h			\
 	cogl-sub-texture-private.h		\
 	cogl-texture-2d-private.h		\
 	cogl-texture-2d-sliced-private.h	\

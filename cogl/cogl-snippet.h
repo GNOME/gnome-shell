@@ -40,7 +40,271 @@ G_BEGIN_DECLS
  * SECTION:cogl-snippet
  * @short_description: Functions for creating and manipulating shader snippets
  *
- * ...
+ * #CoglSnippet<!-- -->s are used to modify or replace parts of a
+ * #CoglPipeline using GLSL. GLSL is a programming language supported
+ * by OpenGL on programmable hardware to provide a more flexible
+ * description of what should be rendered. A description of GLSL
+ * itself is outside the scope of this documentation but any good
+ * OpenGL book should help to describe it.
+ *
+ * Unlike in OpenGL, when using GLSL with Cogl it is possible to write
+ * short snippets to replace small sections of the pipeline instead of
+ * having to replace the whole of either the vertex or fragment
+ * pipelines. Of course it is also possible to replace the whole of
+ * the pipeline if needed.
+ *
+ * Each snippet is a standalone chunk of code which would attach to
+ * the pipeline at a particular point. The code is split into four
+ * separate strings (all of which are optional):
+ *
+ * <glosslist>
+ *  <glossentry>
+ *   <glossterm>declarations</glossterm>
+ *   <glossdef><para>
+ * The code in this string will be inserted outside of any function in
+ * the global scope of the shader. This can be used to declare
+ * uniforms, attributes, varyings and functions to be used by the
+ * snippet.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>pre</glossterm>
+ *   <glossdef><para>
+ * The code in this string will be inserted before the hook point.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>post</glossterm>
+ *   <glossdef><para>
+ * The code in this string will be inserted after the hook point. This
+ * can be used to modify the results of the builtin generated code for
+ * that hook point.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>replace</glossterm>
+ *   <glossdef><para>
+ * If present the code in this string will replace the generated code
+ * for the hook point.
+ *   </para></glossdef>
+ *  </glossentry>
+ * </glosslist>
+ *
+ * All of the strings apart from the declarations string of a pipeline
+ * are generated in a single function so they can share variables
+ * declared from one string in another. The scope of the code is
+ * limited to each snippet so local variables declared in the snippet
+ * will not collide with variables declared in another
+ * snippet. However, code in the 'declarations' string is global to
+ * the shader so it is the application's responsibility to ensure that
+ * variables declared here will not collide with those from other
+ * snippets.
+ *
+ * The snippets can be added to a pipeline with
+ * cogl_pipeline_add_snippet() or
+ * cogl_pipeline_add_layer_snippet(). Which function to use depends on
+ * which hook the snippet is targetting. The snippets are all
+ * generated in the order they are added to the pipeline. That is, the
+ * post strings are executed in the order they are added to the
+ * pipeline and the pre strings are executed in reverse order. If any
+ * replace strings are given for a snippet then any other snippets
+ * with the same hook added before that snippet will be ignored. The
+ * different hooks are documented under #CoglSnippetHook.
+ *
+ * For portability with GLES2, it is recommended not to use the GLSL
+ * builtin names such as gl_FragColor. Instead there are replacement
+ * names under the cogl_* namespace which can be used instead. These
+ * are:
+ *
+ * <glosslist>
+ *  <glossentry>
+ *   <glossterm>uniform mat4
+ *         <emphasis>cogl_modelview_matrix</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The current modelview matrix. This is equivalent to
+ *    #gl_ModelViewMatrix.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>uniform mat4
+ *         <emphasis>cogl_projection_matrix</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The current projection matrix. This is equivalent to
+ *    #gl_ProjectionMatrix.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>uniform mat4
+ *         <emphasis>cogl_modelview_projection_matrix</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The combined modelview and projection matrix. A vertex shader
+ *    would typically use this to transform the incoming vertex
+ *    position. The separate modelview and projection matrices are
+ *    usually only needed for lighting calculations. This is
+ *    equivalent to #gl_ModelViewProjectionMatrix.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>uniform mat4
+ *         <emphasis>cogl_texture_matrix</emphasis>[]</glossterm>
+ *   <glossdef><para>
+ *    An array of matrices for transforming the texture
+ *    coordinates. This is equivalent to #gl_TextureMatrix.
+ *   </para></glossdef>
+ *  </glossentry>
+ * </glosslist>
+ *
+ * In a vertex shader, the following are also available:
+ *
+ * <glosslist>
+ *  <glossentry>
+ *   <glossterm>attribute vec4
+ *         <emphasis>cogl_position_in</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The incoming vertex position. This is equivalent to #gl_Vertex.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>attribute vec4
+ *         <emphasis>cogl_color_in</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The incoming vertex color. This is equivalent to #gl_Color.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>attribute vec4
+ *         <emphasis>cogl_tex_coord_in</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The texture coordinate for the first texture unit. This is
+ *    equivalent to #gl_MultiTexCoord0.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>attribute vec4
+ *         <emphasis>cogl_tex_coord0_in</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The texture coordinate for the first texture unit. This is
+ *    equivalent to #gl_MultiTexCoord0. There is also
+ *    #cogl_tex_coord1_in and so on.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>attribute vec3
+ *         <emphasis>cogl_normal_in</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The normal of the vertex. This is equivalent to #gl_Normal.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>vec4
+ *         <emphasis>cogl_position_out</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The calculated position of the vertex. This must be written to
+ *    in all vertex shaders. This is equivalent to #gl_Position.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>float
+ *         <emphasis>cogl_point_size_out</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The calculated size of a point. This is equivalent to #gl_PointSize.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>varying vec4
+ *         <emphasis>cogl_color_out</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The calculated color of a vertex. This is equivalent to #gl_FrontColor.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>varying vec4
+ *         <emphasis>cogl_tex_coord_out</emphasis>[]</glossterm>
+ *   <glossdef><para>
+ *    An array of calculated texture coordinates for a vertex. This is
+ *    equivalent to #gl_TexCoord.
+ *   </para></glossdef>
+ *  </glossentry>
+ * </glosslist>
+ *
+ * In a fragment shader, the following are also available:
+ *
+ * <glosslist>
+ *  <glossentry>
+ *   <glossterm>varying vec4 <emphasis>cogl_color_in</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The calculated color of a vertex. This is equivalent to #gl_FrontColor.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>varying vec4
+ *              <emphasis>cogl_tex_coord_in</emphasis>[]</glossterm>
+ *   <glossdef><para>
+ *    An array of calculated texture coordinates for a vertex. This is
+ *    equivalent to #gl_TexCoord.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>vec4 <emphasis>cogl_color_out</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The final calculated color of the fragment. All fragment shaders
+ *    must write to this variable. This is equivalent to
+ *    #gl_FrontColor.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>float <emphasis>cogl_depth_out</emphasis></glossterm>
+ *   <glossdef><para>
+ *    An optional output variable specifying the depth value to use
+ *    for this fragment. This is equivalent to #gl_FragDepth.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>bool <emphasis>cogl_front_facing</emphasis></glossterm>
+ *   <glossdef><para>
+ *    A readonly variable that will be true if the current primitive
+ *    is front facing. This can be used to implement two-sided
+ *    coloring algorithms. This is equivalent to #gl_FrontFacing.
+ *   </para></glossdef>
+ *  </glossentry>
+ * </glosslist>
+ *
+ * Here is an example of using a snippet to add a desaturate effect to the
+ * generated color on a pipeline.
+ *
+ * <programlisting>
+ *   CoglPipeline *pipeline = cogl_pipeline_new ();
+ *
+ *   /<!-- -->* Set up the pipeline here, ie by adding a texture or other
+ *      layers *<!-- -->/
+ *
+ *   /<!-- -->* Create the snippet. The first string is the declarations which
+ *      we will use to add a uniform. The second is the 'post' string which
+ *      will contain the code to perform the desaturation. *<!-- -->/
+ *   CoglSnippet *snippet =
+ *     cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+ *                       "uniform float factor;",
+ *                       "float gray = dot (vec3 (0.299, 0.587, 0.114), "
+ *                       "                  cogl_color_out.rgb);"
+ *                       "cogl_color_out.rgb = mix (vec3 (gray),"
+ *                       "                          cogl_color_out.rgb,"
+ *                       "                          factor);");
+ *
+ *   /<!-- -->* Add it to the pipeline *<!-- -->/
+ *   cogl_pipeline_add_snippet (pipeline, snippet);
+ *   /<!-- -->* The pipeline keeps a reference to the snippet
+ *      so we don't need to *<!-- -->/
+ *   cogl_object_unref (snippet);
+ *
+ *   /<!-- -->* Update the custom uniform on the pipeline *<!-- -->/
+ *   int location = cogl_pipeline_get_uniform_location (pipeline, "factor");
+ *   cogl_pipeline_set_uniform_1f (pipeline, location, 0.5f);
+ *
+ *   /<!-- -->* Now we can render with the snippet as usual *<!-- -->/
+ *   cogl_push_source (pipeline);
+ *   cogl_rectangle (0, 0, 10, 10);
+ *   cogl_pop_source ();
+ * </programlisting>
  */
 typedef struct _CoglSnippet CoglSnippet;
 
@@ -164,6 +428,8 @@ typedef struct _CoglSnippet CoglSnippet;
  *  </glossentry>
  *  <glossentry>
  *   <glossterm>%COGL_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM</glossterm>
+ *    <glossdef>
+ * <para>
  * Adds a shader snippet that will hook on to the texture coordinate
  * transformation of a particular layer. This can be used to replace
  * the processing for a layer or to modify the results.
@@ -201,9 +467,12 @@ typedef struct _CoglSnippet CoglSnippet;
  * results of the transformation but it can be further modified by the
  * snippet.
  * </para>
+ *   </glossdef>
  *  </glossentry>
  *  <glossentry>
  *   <glossterm>%COGL_SNIPPET_HOOK_LAYER_FRAGMENT</glossterm>
+ *    <glossdef>
+ * <para>
  * Adds a shader snippet that will hook on to the fragment processing
  * of a particular layer. This can be used to replace the processing
  * for a layer or to modify the results.
@@ -234,9 +503,12 @@ typedef struct _CoglSnippet CoglSnippet;
  * fragment processing for the layer. The results can be modified by changing
  * the value of the ‘cogl_layer’ variable.
  * </para>
+ *   </glossdef>
  *  </glossentry>
  *  <glossentry>
  *   <glossterm>%COGL_SNIPPET_HOOK_TEXTURE_LOOKUP</glossterm>
+ *   <glossdef>
+ * <para>
  * Adds a shader snippet that will hook on to the texture lookup part
  * of a given layer. This gives a chance for the application to modify
  * the coordinates that will be used for the texture lookup or to
@@ -269,6 +541,7 @@ typedef struct _CoglSnippet CoglSnippet;
  * has been preformed. Here the snippet can modify the cogl_texel
  * variable to alter the returned texel.
  * </para>
+ *   </glossdef>
  *  </glossentry>
  * </glosslist>
  *
@@ -319,7 +592,9 @@ cogl_snippet_new (CoglSnippetHook hook,
  * @snippet: A #CoglSnippet
  *
  * Return value: the hook that was set when cogl_snippet_new() was
- * called.
+ *   called.
+ * Since: 1.10
+ * Stability: Unstable
  */
 CoglSnippetHook
 cogl_snippet_get_hook (CoglSnippet *snippet);

@@ -238,6 +238,24 @@ cogl_rectangle_with_multitexture_coords
 </SECTION>
 
 <SECTION>
+<FILE>cogl-snippet</FILE>
+<TITLE>Shader snippets</TITLE>
+CoglSnippet
+CoglSnippetHook
+cogl_snippet_new
+cogl_snippet_get_hook
+cogl_is_snippet
+cogl_snippet_set_declarations
+cogl_snippet_get_declarations
+cogl_snippet_set_pre
+cogl_snippet_get_pre
+cogl_snippet_set_replace
+cogl_snippet_get_replace
+cogl_snippet_set_post
+cogl_snippet_get_post
+</SECTION>
+
+<SECTION>
 <FILE>cogl-primitives-deprecated</FILE>
 <TITLE>Primitives (Deprecated)</TITLE>
 cogl_polygon
@@ -608,6 +626,9 @@ cogl_pipeline_set_uniform_1i
 cogl_pipeline_set_uniform_float
 cogl_pipeline_set_uniform_int
 cogl_pipeline_set_uniform_matrix
+
+cogl_pipeline_add_snippet
+cogl_pipeline_add_layer_snippet
 
 <SUBSECTION Private>
 cogl_blend_string_error_get_type

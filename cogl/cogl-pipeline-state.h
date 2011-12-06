@@ -943,11 +943,10 @@ cogl_pipeline_set_uniform_matrix (CoglPipeline *pipeline,
  * @pipeline: A #CoglPipeline
  * @snippet: The #CoglSnippet to add to the vertex processing hook
  *
- * Adds a shader snippet that to @pipeline. The snippet will wrap
- * around or replace some part of the pipeline as defined by the hook
- * point in @snippet. Note that some hook points are specific to a
- * layer and must be added with cogl_pipeline_add_layer_snippet()
- * instead.
+ * Adds a shader snippet to @pipeline. The snippet will wrap around or
+ * replace some part of the pipeline as defined by the hook point in
+ * @snippet. Note that some hook points are specific to a layer and
+ * must be added with cogl_pipeline_add_layer_snippet() instead.
  *
  * Since: 1.10
  * Stability: Unstable

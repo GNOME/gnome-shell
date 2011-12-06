@@ -213,11 +213,8 @@ G_BEGIN_DECLS
  * </tip>
  *
  * It's worth nothing that this API isn't what Cogl would like to have
- * and at some point it may become deprecated. In future Cogl would
- * like to have an API where parts of the pipeline in a #CoglMaterial
- * can be replaced with snippets of shader code. This API only allows
- * the entire fragment or vertex pipeline to be replaced with shader
- * code.
+ * in the long term and it may be removed in Cogl 2.0. The
+ * experimental #CoglShader API is the proposed replacement.
  */
 
 /**
