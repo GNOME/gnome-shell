@@ -26,6 +26,7 @@
 static const char*const vendor_prefixes[] = { "gnome-",
                                               "fedora-",
                                               "mozilla-",
+                                              "debian-",
                                               NULL };
 
 enum {
