@@ -28,17 +28,22 @@
  * @short_description: An actor that displays a simple rectangle.
  *
  * #ClutterRectangle is a #ClutterActor which draws a simple filled rectangle.
+ *
+ * Deprecated: 1.10: Use #ClutterActor instead.
  */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#include "clutter-rectangle.h"
 
 #include "clutter-actor-private.h"
 #include "clutter-color.h"
 #include "clutter-debug.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
-#include "clutter-rectangle.h"
 
 #include "cogl/cogl.h"
 

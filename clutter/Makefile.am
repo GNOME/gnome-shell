@@ -99,7 +99,6 @@ source_h =					\
 	$(srcdir)/clutter-page-turn-effect.h	\
 	$(srcdir)/clutter-path-constraint.h	\
 	$(srcdir)/clutter-path.h		\
-	$(srcdir)/clutter-rectangle.h		\
 	$(srcdir)/clutter-script.h		\
 	$(srcdir)/clutter-scriptable.h		\
 	$(srcdir)/clutter-settings.h		\
@@ -171,7 +170,6 @@ source_c = \
 	$(srcdir)/clutter-page-turn-effect.c	\
 	$(srcdir)/clutter-path-constraint.c	\
 	$(srcdir)/clutter-path.c		\
-	$(srcdir)/clutter-rectangle.c 		\
 	$(srcdir)/clutter-script.c		\
 	$(srcdir)/clutter-script-parser.c	\
 	$(srcdir)/clutter-scriptable.c		\
@@ -242,10 +240,11 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-group.h			\
 	$(srcdir)/deprecated/clutter-keysyms.h			\
 	$(srcdir)/deprecated/clutter-main.h			\
-	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
+	$(srcdir)/deprecated/clutter-rectangle.h		\
 	$(srcdir)/deprecated/clutter-score.h 			\
 	$(srcdir)/deprecated/clutter-shader.h 			\
 	$(srcdir)/deprecated/clutter-stage.h			\
+	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
 	$(NULL)
 
 # deprecated source code
@@ -261,9 +260,10 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-fixed.c			\
 	$(srcdir)/deprecated/clutter-frame-source.c		\
 	$(srcdir)/deprecated/clutter-group.c 			\
-	$(srcdir)/deprecated/clutter-timeout-pool.c		\
+	$(srcdir)/deprecated/clutter-rectangle.c 		\
 	$(srcdir)/deprecated/clutter-score.c 			\
 	$(srcdir)/deprecated/clutter-shader.c 			\
+	$(srcdir)/deprecated/clutter-timeout-pool.c		\
 	$(NULL)
 
 # deprecated private headers; these should not be installed
