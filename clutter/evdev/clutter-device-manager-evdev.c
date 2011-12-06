@@ -85,9 +85,9 @@ static const gchar *subsystems[] = { "input", NULL };
  */
 
 
-const char *option_xkb_layout = "us";
-const char *option_xkb_variant = "";
-const char *option_xkb_options = "";
+static const char *option_xkb_layout = "us";
+static const char *option_xkb_variant = "";
+static const char *option_xkb_options = "";
 
 /*
  * ClutterEventSource for reading input devices

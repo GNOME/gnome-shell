@@ -147,9 +147,9 @@ _clutter_device_manager_wayland_init (ClutterDeviceManagerWayland *self)
 {
 }
 
-const char *option_xkb_layout = "us";
-const char *option_xkb_variant = "";
-const char *option_xkb_options = "";
+static const char *option_xkb_layout = "us";
+static const char *option_xkb_variant = "";
+static const char *option_xkb_options = "";
 
 void
 _clutter_device_manager_wayland_add_input_group (ClutterDeviceManager *manager,
