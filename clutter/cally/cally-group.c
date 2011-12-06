@@ -109,7 +109,7 @@ cally_group_get_n_children (AtkObject *obj)
 
   g_return_val_if_fail (CLUTTER_IS_GROUP(actor), count);
 
-  count = clutter_group_get_n_children (CLUTTER_GROUP (actor));
+  count = clutter_actor_get_n_children (actor);
 
   return count;
 }
@@ -128,7 +128,7 @@ cally_group_ref_child (AtkObject *obj,
   actor = CALLY_GET_CLUTTER_ACTOR (obj);
 
   g_return_val_if_fail (CLUTTER_IS_GROUP(actor), NULL);
-  child = clutter_group_get_nth_child (CLUTTER_GROUP(actor), i);
+  child = clutter_actor_get_child_at_index (actor, i);
 
   if (!child)
     return NULL;
