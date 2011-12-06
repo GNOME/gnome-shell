@@ -1554,7 +1554,7 @@ static void
 update_num_workspaces (MetaScreen *screen,
                        guint32     timestamp)
 {
-  int new_num;
+  int new_num, old_num;
   GList *tmp;
   int i;
   GList *extras;
@@ -1584,6 +1584,7 @@ update_num_workspaces (MetaScreen *screen,
       ++i;
       tmp = tmp->next;
     }
+  old_num = i;
 
   g_assert (last_remaining);
   
@@ -1618,21 +1619,21 @@ update_num_workspaces (MetaScreen *screen,
 
       g_assert (w->windows == NULL);
       meta_workspace_remove (w);
-      
+
       tmp = tmp->next;
     }
-  
+
   g_list_free (extras);
-  
-  while (i < new_num)
-    {
-      meta_workspace_new (screen);
-      ++i;
-    }
+
+  for (i = old_num; i < new_num; i++)
+    meta_workspace_new (screen);
 
   set_number_of_spaces_hint (screen, new_num);
 
   meta_screen_queue_workarea_recalc (screen);
+
+  for (i = old_num; i < new_num; i++)
+    g_signal_emit (screen, screen_signals[WORKSPACE_ADDED], 0, i);
 
   g_object_notify (G_OBJECT (screen), "n-workspaces");
 }
