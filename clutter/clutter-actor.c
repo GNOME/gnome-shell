@@ -13978,10 +13978,44 @@ clutter_actor_has_actions (ClutterActor *self)
   return self->priv->actions != NULL;
 }
 
+/**
+ * clutter_actor_get_n_children:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the number of children of @self.
+ *
+ * Return value: the number of children of an actor
+ *
+ * Since: 1.10
+ */
 gint
-_clutter_actor_get_n_children (ClutterActor *self)
+clutter_actor_get_n_children (ClutterActor *self)
 {
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
+
   return self->priv->n_children;
+}
+
+/**
+ * clutter_actor_get_child_at_index:
+ * @self: a #ClutterActor
+ * @index_: the position in the list of children
+ *
+ * Retrieves the actor at the given @index_ inside the list of
+ * children of @self.
+ *
+ * Return value: (transfer none): a pointer to a #ClutterActor, or %NULL
+ *
+ * Since: 1.10
+ */
+ClutterActor *
+clutter_actor_get_child_at_index (ClutterActor *self,
+                                  gint          index_)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+  g_return_val_if_fail (index_ <= self->priv->n_children, NULL);
+
+  return g_list_nth_data (self->priv->children, index_);
 }
 
 /* _clutter_actor_foreach_child:

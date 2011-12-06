@@ -149,7 +149,6 @@ struct _ClutterLayoutInfo
 const ClutterLayoutInfo *       _clutter_actor_get_layout_info_or_defaults      (ClutterActor *self);
 ClutterLayoutInfo *             _clutter_actor_get_layout_info                  (ClutterActor *self);
 
-gint          _clutter_actor_get_n_children             (ClutterActor *self);
 gboolean      _clutter_actor_foreach_child              (ClutterActor *self,
                                                          ClutterForeachCallback callback,
                                                          gpointer user_data);

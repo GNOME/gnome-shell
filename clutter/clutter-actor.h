@@ -462,6 +462,9 @@ void                  clutter_actor_insert_child_below        (ClutterActor     
 void                  clutter_actor_remove_child              (ClutterActor          *self,
                                                                ClutterActor          *child);
 GList *               clutter_actor_get_children              (ClutterActor          *self);
+gint                  clutter_actor_get_n_children            (ClutterActor          *self);
+ClutterActor *        clutter_actor_get_child_at_index        (ClutterActor          *self,
+                                                               gint                   index_);
 void                  clutter_actor_set_parent                (ClutterActor          *self,
                                                                ClutterActor          *parent);
 ClutterActor *        clutter_actor_get_parent                (ClutterActor          *self);
@@ -477,9 +480,9 @@ void                  clutter_actor_lower                     (ClutterActor     
                                                                ClutterActor          *above);
 void                  clutter_actor_raise_top                 (ClutterActor          *self);
 void                  clutter_actor_lower_bottom              (ClutterActor          *self);
+
 void                  clutter_actor_push_internal             (ClutterActor          *self);
 void                  clutter_actor_pop_internal              (ClutterActor          *self);
-
 
 /* Transformations */
 gboolean              clutter_actor_is_rotated                (ClutterActor          *self);
