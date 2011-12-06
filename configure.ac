@@ -193,6 +193,7 @@ FLAVOUR_LIBS=""
 FLAVOUR_CFLAGS=""
 CLUTTER_BACKENDS=""
 CLUTTER_INPUT_BACKENDS=""
+CLUTTER_CONFIG_DEFINES=
 
 experimental_backend=no
 experimental_input_backend=no
@@ -335,6 +336,8 @@ AS_IF([test "x$enable_wayland_compositor" = "xyes"],
         PKG_CHECK_EXISTS([wayland-server],
 			 [BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-server"], [])
         SUPPORT_WAYLAND_COMPOSITOR=1
+	CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT 1"
         AC_DEFINE([HAVE_CLUTTER_WAYLAND_COMPOSITOR], [1], [Have wayland compositor support])
       ])
 AM_CONDITIONAL(SUPPORT_WAYLAND_COMPOSITOR, [test "x$SUPPORT_WAYLAND_COMPOSITOR" = "x1"])
@@ -507,8 +510,6 @@ AC_SUBST(CLUTTER_INPUT_BACKENDS)
 AC_CACHE_SAVE
 
 dnl === Clutter configuration =================================================
-
-CLUTTER_CONFIG_DEFINES=
 
 # windowing systems
 AS_IF([test "x$SUPPORT_X11" = "x1"],
