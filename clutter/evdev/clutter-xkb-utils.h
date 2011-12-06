@@ -22,6 +22,9 @@
  *  Damien Lespiau <damien.lespiau@intel.com>
  */
 
+#ifndef __CLUTTER_XKB_UTILS_H__
+#define __CLUTTER_XKB_UTILS_H__
+
 #include <X11/extensions/XKBcommon.h>
 
 #include "clutter-stage.h"
@@ -39,3 +42,5 @@ struct xkb_desc * _clutter_xkb_desc_new             (const gchar *model,
                                                      const gchar *layout,
                                                      const gchar *variant,
                                                      const gchar *options);
+
+#endif /* __CLUTTER_XKB_UTILS_H__ */
