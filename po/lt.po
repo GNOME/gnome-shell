@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-06 16:37+0200\n"
-"PO-Revision-Date: 2011-12-06 16:57+0300\n"
+"PO-Revision-Date: 2011-12-06 17:07+0300\n"
 "Last-Translator: Žygimantas Beručka <zygis@gnome.org>\n"
 "Language-Team: Lithuanian\n"
 "Language: lt\n"
@@ -58,7 +58,7 @@ msgid ""
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension DBus methods on org.gnome.Shell."
 msgstr ""
-"GNOME Shell plėtiniai turi uuid savybę; šiame rakte išvardinti plėtiniai, "
+"GNOME Shell plėtiniai turi uuid savybę. Šiame rakte išvardinti plėtiniai, "
 "kurie neturėtų būti įkelti. Raktas disabled-extensions turi pirmenybę prieš "
 "šį plėtiniams, kurie yra abiejuose sąrašuose."
 
@@ -230,7 +230,7 @@ msgstr "Užmigdyti"
 
 #: ../js/gdm/powerMenu.js:118
 msgid "Restart"
-msgstr "Įkelti iš naujo"
+msgstr "Paleisti iš naujo"
 
 #: ../js/gdm/powerMenu.js:123
 msgid "Power Off"
