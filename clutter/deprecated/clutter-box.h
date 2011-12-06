@@ -85,37 +85,52 @@ struct _ClutterBoxClass
 
 GType clutter_box_get_type (void) G_GNUC_CONST;
 
+CLUTTER_DEPRECATED_FOR(clutter_actor_new)
 ClutterActor *        clutter_box_new                (ClutterLayoutManager *manager);
 
+CLUTTER_DEPRECATED_FOR(clutter_actor_set_layout_manager)
 void                  clutter_box_set_layout_manager (ClutterBox           *box,
                                                       ClutterLayoutManager *manager);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_get_layout_manager)
 ClutterLayoutManager *clutter_box_get_layout_manager (ClutterBox           *box);
 
+CLUTTER_DEPRECATED_FOR(clutter_actor_set_background_color)
 void                  clutter_box_set_color          (ClutterBox           *box,
                                                       const ClutterColor   *color);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_get_background_color)
 void                  clutter_box_get_color          (ClutterBox           *box,
                                                       ClutterColor         *color);
 
+CLUTTER_DEPRECATED_FOR(clutter_actor_add_child)
 void                  clutter_box_pack               (ClutterBox           *box,
                                                       ClutterActor         *actor,
                                                       const gchar          *first_property,
                                                       ...);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_add_child)
 void                  clutter_box_packv              (ClutterBox           *box,
                                                       ClutterActor         *actor,
                                                       guint                 n_properties,
                                                       const gchar * const   properties[],
                                                       const GValue         *values);
 
+CLUTTER_DEPRECATED_FOR(clutter_actor_insert_child_above)
 void                  clutter_box_pack_after         (ClutterBox           *box,
                                                       ClutterActor         *actor,
                                                       ClutterActor         *sibling,
                                                       const gchar          *first_property,
                                                       ...);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_insert_child_below)
 void                  clutter_box_pack_before        (ClutterBox           *box,
                                                       ClutterActor         *actor,
                                                       ClutterActor         *sibling,
                                                       const gchar          *first_property,
                                                       ...);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_insert_child_at_index)
 void                  clutter_box_pack_at            (ClutterBox           *box,
                                                       ClutterActor         *actor,
                                                       gint                  position,

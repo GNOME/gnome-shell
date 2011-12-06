@@ -66,6 +66,8 @@
  * layout properties while adding the new child to the box.
  *
  * #ClutterBox is available since Clutter 1.2
+ *
+ * Deprecated: 1.10: Use #ClutterActor instead.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -107,6 +109,16 @@ static GParamSpec *obj_props[PROP_LAST] = { NULL, };
 static const ClutterColor default_box_color = { 255, 255, 255, 255 };
 
 G_DEFINE_TYPE (ClutterBox, clutter_box, CLUTTER_TYPE_ACTOR);
+
+static inline void
+clutter_box_set_color_internal (ClutterBox         *box,
+                                const ClutterColor *color)
+{
+  clutter_actor_set_background_color (CLUTTER_ACTOR (box), color);
+
+  g_object_notify_by_pspec (G_OBJECT (box), obj_props[PROP_COLOR_SET]);
+  g_object_notify_by_pspec (G_OBJECT (box), obj_props[PROP_COLOR]);
+}
 
 static gboolean
 clutter_box_real_get_paint_volume (ClutterActor       *actor,
@@ -173,7 +185,7 @@ clutter_box_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_COLOR:
-      clutter_box_set_color (self, clutter_value_get_color (value));
+      clutter_box_set_color_internal (self, clutter_value_get_color (value));
       break;
 
     default:
@@ -277,7 +289,9 @@ clutter_box_init (ClutterBox *self)
  *
  * Return value: the newly created #ClutterBox actor
  *
- * Since: 1.0
+ * Since: 1.2
+ *
+ * Deprecated: 1.10: Use clutter_actor_new() instead.
  */
 ClutterActor *
 clutter_box_new (ClutterLayoutManager *manager)
@@ -300,6 +314,8 @@ clutter_box_new (ClutterLayoutManager *manager)
  * layout of the children of @box
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.10: Use clutter_actor_set_layout_manager() instead.
  */
 void
 clutter_box_set_layout_manager (ClutterBox           *box,
@@ -319,6 +335,8 @@ clutter_box_set_layout_manager (ClutterBox           *box,
  *   be unreferenced
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.10: Use clutter_actor_get_layout_manager() instead.
  */
 ClutterLayoutManager *
 clutter_box_get_layout_manager (ClutterBox *box)
@@ -340,6 +358,8 @@ clutter_box_get_layout_manager (ClutterBox *box)
  * bindings to use
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.10: Use clutter_actor_add_child() instead.
  */
 void
 clutter_box_packv (ClutterBox          *box,
@@ -500,6 +520,8 @@ clutter_box_set_property_valist (ClutterBox   *box,
  * variant instead
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.10: Use clutter_actor_add_child() instead.
  */
 void
 clutter_box_pack (ClutterBox   *box,
@@ -541,6 +563,8 @@ clutter_box_pack (ClutterBox   *box,
  * clutter_container_raise_child() and clutter_layout_manager_child_set()
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.10: Use clutter_actor_insert_child_above() instead.
  */
 void
 clutter_box_pack_after (ClutterBox   *box,
@@ -585,6 +609,8 @@ clutter_box_pack_after (ClutterBox   *box,
  * clutter_container_lower_child() and clutter_layout_manager_child_set()
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.10: Use clutter_actor_insert_child_below() instead.
  */
 void
 clutter_box_pack_before (ClutterBox   *box,
@@ -627,6 +653,8 @@ clutter_box_pack_before (ClutterBox   *box,
  * children
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.10: Use clutter_actor_insert_child_at_index() instead.
  */
 void
 clutter_box_pack_at (ClutterBox   *box,
@@ -667,6 +695,8 @@ clutter_box_pack_at (ClutterBox   *box,
  * Sets (or unsets) the background color for @box
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.10: Use clutter_actor_set_background_color() instead.
  */
 void
 clutter_box_set_color (ClutterBox         *box,
@@ -674,10 +704,7 @@ clutter_box_set_color (ClutterBox         *box,
 {
   g_return_if_fail (CLUTTER_IS_BOX (box));
 
-  clutter_actor_set_background_color (CLUTTER_ACTOR (box), color);
-
-  g_object_notify_by_pspec (G_OBJECT (box), obj_props[PROP_COLOR_SET]);
-  g_object_notify_by_pspec (G_OBJECT (box), obj_props[PROP_COLOR]);
+  clutter_box_set_color_internal (box, color);
 }
 
 /**
@@ -691,6 +718,8 @@ clutter_box_set_color (ClutterBox         *box,
  * returned #ClutterColor is undefined
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.10: Use clutter_actor_get_background_color() instead.
  */
 void
 clutter_box_get_color (ClutterBox   *box,
