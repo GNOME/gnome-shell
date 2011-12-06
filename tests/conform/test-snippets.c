@@ -388,6 +388,37 @@ paint (TestState *state)
   /* Restore the projection matrix */
   cogl_set_projection_matrix (&matrix);
 
+  /* Verify that the snippets are executed in the right order. We'll
+     replace the r component of the color in the pre sections of the
+     snippets and the g component in the post. The pre sections should
+     be executed in the reverse order they were added and the post
+     sections in the same order as they were added. Therefore the r
+     component should be taken from the the second snippet and the g
+     component from the first */
+  pipeline = cogl_pipeline_new ();
+
+  cogl_pipeline_set_color4ub (pipeline, 0, 0, 0, 255);
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                              NULL,
+                              "cogl_color_out.g = 0.5;\n");
+  cogl_snippet_set_pre (snippet, "cogl_color_out.r = 0.5;\n");
+  cogl_snippet_set_replace (snippet, "cogl_color_out.ba = vec2 (0.0, 1.0);");
+  cogl_pipeline_add_snippet (pipeline, snippet);
+  cogl_object_unref (snippet);
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                              NULL,
+                              "cogl_color_out.g = 1.0;\n");
+  cogl_snippet_set_pre (snippet, "cogl_color_out.r = 1.0;\n");
+  cogl_pipeline_add_snippet (pipeline, snippet);
+  cogl_object_unref (snippet);
+
+  cogl_push_source (pipeline);
+  cogl_rectangle (160, 0, 170, 10);
+  cogl_pop_source ();
+  cogl_object_unref (pipeline);
+
   /* Sanity check modifying the snippet */
   snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT, "foo", "bar");
   g_assert_cmpstr (cogl_snippet_get_declarations (snippet), ==, "foo");
@@ -443,6 +474,7 @@ validate_result (void)
   test_utils_check_pixel (135, 5, 0xffff00ff);
   test_utils_check_pixel (145, 5, 0x00ff00ff);
   test_utils_check_pixel (155, 5, 0xff00ffff);
+  test_utils_check_pixel (165, 5, 0x80ff00ff);
 }
 
 void
