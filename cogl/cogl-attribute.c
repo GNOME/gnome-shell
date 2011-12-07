@@ -703,6 +703,7 @@ flush_state (CoglDrawFlags flags,
 #ifdef HAVE_COGL_GLES2
           if (ctx->driver == COGL_DRIVER_GLES2)
             setup_generic_attribute (ctx, source, attribute, base);
+          else
 #endif
             {
               _cogl_bitmask_set (&ctx->enable_builtin_attributes_tmp,
