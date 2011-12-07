@@ -258,7 +258,7 @@ _cogl_bitmask_set_flags (const CoglBitmask *bitmask,
                          unsigned long *flags)
 {
   if (_cogl_bitmask_has_array (bitmask))
-    return _cogl_bitmask_set_flags_array (bitmask, flags);
+    _cogl_bitmask_set_flags_array (bitmask, flags);
   else
     flags[0] |= _cogl_bitmask_to_bits (bitmask);
 }
