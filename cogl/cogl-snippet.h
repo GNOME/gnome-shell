@@ -313,7 +313,7 @@ cogl_snippet_new (CoglSnippetHook hook,
                   const char *declarations,
                   const char *post);
 
-#define cogl_snippet_get_hook cogl_snipet_get_hook_EXP
+#define cogl_snippet_get_hook cogl_snippet_get_hook_EXP
 /**
  * cogl_snippet_get_hook:
  * @snippet: A #CoglSnippet
