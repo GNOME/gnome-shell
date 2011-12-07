@@ -41,7 +41,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-indices-private.h"
-#ifdef HAVE_COGL_GLES2
+#ifdef COGL_PIPELINE_PROGEND_GLSL
 #include "cogl-pipeline-progend-glsl-private.h"
 #endif
 #include "cogl-private.h"
@@ -481,6 +481,8 @@ foreach_changed_bit_and_save (CoglContext *context,
   _cogl_bitmask_set_bits (current_bits, new_bits);
 }
 
+#ifdef COGL_PIPELINE_PROGEND_GLSL
+
 static void
 setup_generic_attribute (CoglContext *context,
                          CoglPipeline *pipeline,
@@ -502,6 +504,8 @@ setup_generic_attribute (CoglContext *context,
                          attrib_location, TRUE);
     }
 }
+
+#endif /* COGL_PIPELINE_PROGEND_GLSL */
 
 static void
 apply_attribute_enable_updates (CoglContext *context,
@@ -747,8 +751,10 @@ flush_state (CoglDrawFlags flags,
             }
           break;
         case COGL_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY:
+#ifdef COGL_PIPELINE_PROGEND_GLSL
           if (ctx->driver != COGL_DRIVER_GLES1)
             setup_generic_attribute (ctx, source, attribute, base);
+#endif
           break;
         default:
           g_warning ("Unrecognised attribute type 0x%08x", attribute->type);
