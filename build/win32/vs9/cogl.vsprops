@@ -52,7 +52,7 @@
 	/>
 	<UserMacro
 		Name="TestProgDef"
-		Value="TESTS_DATADIR=\&quot;../share/cogl-$(CoglApiVersion)/tests\&quot;"
+		Value="CLUTTER_COMPILATION;TESTS_DATADIR=\&quot;../share/cogl-$(CoglApiVersion)/tests\&quot;"
 	/>
 	<UserMacro
 		Name="PreBuildCmd"
