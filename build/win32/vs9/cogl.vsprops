@@ -121,6 +121,7 @@ copy ..\..\..\cogl\cogl-pipeline-layer-state.h $(OutDir)\include\cogl-$(CoglApiV
 copy ..\..\..\cogl\cogl-pipeline-state.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-pixel-buffer.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-shader.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
+copy ..\..\..\cogl\cogl-snippet.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-texture.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-texture-2d.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-texture-2d-sliced.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;

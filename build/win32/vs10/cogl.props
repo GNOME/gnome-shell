@@ -123,6 +123,8 @@ copy ..\..\..\cogl\cogl-quaternion.h $(CopyDir)\include\cogl-$(CoglApiVersion)\c
 
 copy ..\..\..\cogl\cogl-shader.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
+copy ..\..\..\cogl\cogl-snippet.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+
 copy ..\..\..\cogl\cogl-texture.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-texture-2d.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
