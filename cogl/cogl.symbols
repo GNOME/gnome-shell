@@ -40,7 +40,10 @@ cogl_attribute_new
 #endif
 
 cogl_attribute_buffer_new
-
+cogl_attribute_get_buffer
+cogl_attribute_get_normalized
+cogl_attribute_set_buffer
+cogl_attribute_set_normalized
 cogl_attribute_type_get_type
 cogl_begin_gl
 cogl_bitmap_error_get_type
@@ -250,6 +253,7 @@ cogl_framebuffer_clear_EXP
 cogl_framebuffer_discard_buffers_EXP
 cogl_framebuffer_error_quark_EXP
 cogl_framebuffer_finish
+cogl_framebuffer_frustum_EXP
 cogl_framebuffer_get_alpha_bits_EXP
 cogl_framebuffer_get_blue_bits_EXP
 cogl_framebuffer_get_color_format_EXP
@@ -258,6 +262,8 @@ cogl_framebuffer_get_context_EXP
 cogl_framebuffer_get_dither_enabled
 cogl_framebuffer_get_green_bits_EXP
 cogl_framebuffer_get_height_EXP
+cogl_framebuffer_get_modelview_matrix_EXP
+cogl_framebuffer_get_projection_matrix
 cogl_framebuffer_get_red_bits_EXP
 cogl_framebuffer_get_samples_per_pixel_EXP
 cogl_framebuffer_get_viewport4fv_EXP
@@ -266,15 +272,31 @@ cogl_framebuffer_get_viewport_width_EXP
 cogl_framebuffer_get_viewport_x_EXP
 cogl_framebuffer_get_viewport_y_EXP
 cogl_framebuffer_get_width_EXP
+cogl_framebuffer_identity_matrix_EXP
+cogl_framebuffer_orthographic_EXP
+cogl_framebuffer_perspective_EXP
+cogl_framebuffer_pop_clip_EXP
+cogl_framebuffer_pop_matrix_EXP
+cogl_framebuffer_push_matrix_EXP
+cogl_framebuffer_push_path_clip_EXP
+cogl_framebuffer_push_primitive_clip_EXP
+cogl_framebuffer_push_rectangle_clip_EXP
+cogl_framebuffer_push_scissor_clip_EXP
 cogl_framebuffer_remove_swap_buffers_callback_EXP
 cogl_framebuffer_resolve_samples_EXP
 cogl_framebuffer_resolve_samples_region_EXP
+cogl_framebuffer_rotate_EXP
+cogl_framebuffer_scale_EXP
 cogl_framebuffer_set_color_mask_EXP
 cogl_framebuffer_set_dither_enabled
+cogl_framebuffer_set_modelview_matrix_EXP
+cogl_framebuffer_set_projection_matrix
 cogl_framebuffer_set_samples_per_pixel_EXP
 cogl_framebuffer_set_viewport_EXP
 cogl_framebuffer_swap_buffers_EXP
 cogl_framebuffer_swap_region_EXP
+cogl_framebuffer_transform_EXP
+cogl_framebuffer_translate_EXP
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
@@ -367,6 +389,7 @@ cogl_is_renderer_EXP
 cogl_is_shader
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
+cogl_is_snippet_EXP
 cogl_is_sub_texture_EXP
 #endif
 
@@ -474,7 +497,15 @@ cogl_matrix_init_from_quaternion
 cogl_matrix_init_identity
 cogl_matrix_look_at_EXP
 cogl_matrix_multiply
+
+#ifndef COGL_DISABLE_DEPRECATED
 cogl_matrix_ortho
+#endif
+
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
+cogl_matrix_orthographic_EXP
+#endif
+
 cogl_matrix_perspective
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
@@ -555,6 +586,11 @@ cogl_path_set_fill_rule
 cogl_path_stroke
 cogl_path_stroke_preserve	;this is COGL 1.0 API
 cogl_perspective
+
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
+cogl_pipeline_add_layer_snippet_EXP
+cogl_pipeline_add_snippet_EXP
+#endif
 
 cogl_pipeline_cache_free
 cogl_pipeline_cache_new
@@ -779,6 +815,20 @@ cogl_shader_unref
 #endif
 
 cogl_shader_type_get_type
+
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
+cogl_snippet_get_declarations_EXP
+cogl_snippet_get_hook_EXP
+cogl_snippet_get_post_EXP
+cogl_snippet_get_pre_EXP
+cogl_snippet_get_replace_EXP
+cogl_snippet_new_EXP
+cogl_snippet_set_declarations_EXP
+cogl_snippet_set_post_EXP
+cogl_snippet_set_pre_EXP
+cogl_snippet_set_replace_EXP
+#endif
+
 cogl_sqrti
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
