@@ -93,3 +93,13 @@ COGL_WINSYS_FEATURE_BEGIN (surfaceless_opengl,
                            "surfaceless_opengl\0",
                            COGL_EGL_WINSYS_FEATURE_SURFACELESS_OPENGL)
 COGL_WINSYS_FEATURE_END ()
+COGL_WINSYS_FEATURE_BEGIN (surfaceless_gles1,
+                           "KHR\0",
+                           "surfaceless_gles1\0",
+                           COGL_EGL_WINSYS_FEATURE_SURFACELESS_GLES1)
+COGL_WINSYS_FEATURE_END ()
+COGL_WINSYS_FEATURE_BEGIN (surfaceless_gles2,
+                           "KHR\0",
+                           "surfaceless_gles2\0",
+                           COGL_EGL_WINSYS_FEATURE_SURFACELESS_GLES2)
+COGL_WINSYS_FEATURE_END ()

@@ -115,17 +115,35 @@ _cogl_winsys_kms_display_setup (CoglDisplay *display, GError **error)
   CoglDisplayKMS *kms_display = &egl_display->kms_display;
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
   CoglRendererKMS *kms_renderer = &egl_renderer->kms_renderer;
+  CoglEGLWinsysFeature surfaceless_feature = 0;
+  const char *surfaceless_feature_name = "";
   drmModeRes *resources;
   drmModeConnector *connector;
   drmModeEncoder *encoder;
   int i;
 
-  if (!(egl_renderer->private_features &
-        COGL_EGL_WINSYS_FEATURE_SURFACELESS_OPENGL))
+  switch (display->renderer->driver)
+    {
+    case COGL_DRIVER_GL:
+      surfaceless_feature = COGL_EGL_WINSYS_FEATURE_SURFACELESS_OPENGL;
+      surfaceless_feature_name = "opengl";
+      break;
+    case COGL_DRIVER_GLES1:
+      surfaceless_feature = COGL_EGL_WINSYS_FEATURE_SURFACELESS_GLES1;
+      surfaceless_feature_name = "gles1";
+      break;
+    case COGL_DRIVER_GLES2:
+      surfaceless_feature = COGL_EGL_WINSYS_FEATURE_SURFACELESS_GLES2;
+      surfaceless_feature_name = "gles2";
+      break;
+    }
+
+  if (!(egl_renderer->private_features & surfaceless_feature))
     {
       g_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
-                   "EGL_KHR_surfaceless_opengl extension not available");
+                   "EGL_KHR_surfaceless_%s extension not available",
+                   surfaceless_feature_name);
       return FALSE;
     }
 
