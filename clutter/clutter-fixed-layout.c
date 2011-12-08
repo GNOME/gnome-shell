@@ -157,10 +157,13 @@ clutter_fixed_layout_set_container (ClutterLayoutManager *manager,
                                     ClutterContainer *container)
 {
   ClutterLayoutManagerClass *parent_class;
+  GObject *obj = G_OBJECT (manager);
 
   if (container != NULL)
     {
-      g_object_set_data (G_OBJECT (manager), "fixed-container", container);
+      g_object_set_data (obj,
+                         "-clutter-fixed-layout-container",
+                         container);
 
       /* signal Clutter that we don't impose any layout on
        * our children, so we can shave off some relayout
@@ -172,11 +175,13 @@ clutter_fixed_layout_set_container (ClutterLayoutManager *manager,
     {
       gpointer old_container;
 
-      old_container = g_object_get_data (G_OBJECT (manager), "fixed-container");
+      old_container =
+        g_object_get_data (obj, "-clutter-fixed-layout-container");
+
       if (old_container != NULL)
         CLUTTER_ACTOR_UNSET_FLAGS (old_container, CLUTTER_ACTOR_NO_LAYOUT);
 
-      g_object_set_data (G_OBJECT (manager), "fixed-container", NULL);
+      g_object_set_data (obj, "-clutter-fixed-layout-container", NULL);
     }
 
   parent_class = CLUTTER_LAYOUT_MANAGER_CLASS (clutter_fixed_layout_parent_class);
