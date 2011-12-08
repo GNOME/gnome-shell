@@ -26,26 +26,11 @@ copy ..\..\..\cogl\cogl-defines.h.win32 ..\..\..\cogl\cogl-defines.h
 :DONE_COGL_DEFINES_H
 
 
-if exist ..\..\..\cogl\cogl-enum-types.h goto DONE_COGL_ENUMS_H
+cd ..
 
-cd ..\..\..\cogl
+gen-enums.bat $(GlibEtcInstallRoot)
 
-perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-enum-types.h.in ./cogl-object.h ./cogl-bitmap.h ./cogl-buffer.h ./cogl-color.h ./cogl-fixed.h ./cogl-depth-state.h ./cogl-material-compat.h ./cogl-vector.h ./cogl-euler.h ./cogl-quaternion.h ./cogl-matrix.h ./cogl-offscreen.h ./cogl-primitives.h ./cogl-path.h ./cogl-pixel-buffer.h ./cogl-shader.h ./cogl-texture.h ./cogl-texture-2d.h ./cogl-texture-3d.h ./cogl-texture-rectangle.h ./cogl-texture-2d-sliced.h ./cogl-sub-texture.h  ./cogl-meta-texture.h ./cogl-types.h ./cogl-vertex-buffer.h ./cogl-index-buffer.h ./cogl-attribute-buffer.h ./cogl-indices.h ./cogl-attribute.h ./cogl-primitive.h ./cogl-clip-state.h ./cogl-framebuffer.h ./cogl-onscreen.h ./cogl-clutter.h ./cogl.h ./cogl-win32-renderer.h &gt; cogl-enum-types.h
-
-cd ..\build\win32\vs10
-
-:DONE_COGL_ENUMS_H
-
-
-if exist ..\..\..\cogl\cogl-enum-types.c goto DONE_COGL_ENUMS_C
-
-cd ..\..\..\cogl
-
-perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-enum-types.c.in ./cogl-object.h ./cogl-bitmap.h ./cogl-buffer.h ./cogl-color.h ./cogl-fixed.h ./cogl-depth-state.h ./cogl-material-compat.h ./cogl-vector.h ./cogl-euler.h ./cogl-quaternion.h ./cogl-matrix.h ./cogl-offscreen.h ./cogl-primitives.h ./cogl-path.h ./cogl-pixel-buffer.h ./cogl-shader.h ./cogl-texture.h ./cogl-texture-2d.h ./cogl-texture-3d.h ./cogl-texture-rectangle.h ./cogl-texture-2d-sliced.h ./cogl-sub-texture.h  ./cogl-meta-texture.h ./cogl-types.h ./cogl-vertex-buffer.h ./cogl-index-buffer.h ./cogl-attribute-buffer.h ./cogl-indices.h ./cogl-attribute.h ./cogl-primitive.h ./cogl-clip-state.h ./cogl-framebuffer.h ./cogl-onscreen.h ./cogl-clutter.h ./cogl.h ./cogl-win32-renderer.h &gt; cogl-enum-types.c
-
-cd ..\build\win32\vs10
-
-:DONE_COGL_ENUMS_C
+cd .\vs10
 
 
 </PreBuildCmd>

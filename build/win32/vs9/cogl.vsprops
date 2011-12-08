@@ -65,17 +65,9 @@ if exist ..\..\..\cogl\cogl-defines.h goto DONE_COGL_DEFINES_H&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-defines.h.win32 ..\..\..\cogl\cogl-defines.h&#x0D;&#x0A;
 :DONE_COGL_DEFINES_H&#x0D;&#x0A;
 
-if exist ..\..\..\cogl\cogl-enum-types.h goto DONE_COGL_ENUMS_H&#x0D;&#x0A;
-cd ..\..\..\cogl&#x0D;&#x0A;
-perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-enum-types.h.in ./cogl-object.h ./cogl-bitmap.h ./cogl-buffer.h ./cogl-color.h ./cogl-fixed.h ./cogl-depth-state.h ./cogl-material-compat.h ./cogl-vector.h ./cogl-euler.h ./cogl-quaternion.h ./cogl-matrix.h ./cogl-offscreen.h ./cogl-primitives.h ./cogl-path.h ./cogl-pixel-buffer.h ./cogl-shader.h ./cogl-texture.h ./cogl-texture-2d.h ./cogl-texture-3d.h ./cogl-texture-rectangle.h ./cogl-texture-2d-sliced.h ./cogl-sub-texture.h  ./cogl-meta-texture.h ./cogl-types.h ./cogl-vertex-buffer.h ./cogl-index-buffer.h ./cogl-attribute-buffer.h ./cogl-indices.h ./cogl-attribute.h ./cogl-primitive.h ./cogl-clip-state.h ./cogl-framebuffer.h ./cogl-onscreen.h ./cogl-clutter.h ./cogl.h ./cogl-win32-renderer.h &gt; cogl-enum-types.h&#x0D;&#x0A;
-cd ..\build\win32\vs9&#x0D;&#x0A;
-:DONE_COGL_ENUMS_H&#x0D;&#x0A;
-
-if exist ..\..\..\cogl\cogl-enum-types.c goto DONE_COGL_ENUMS_C&#x0D;&#x0A;
-cd ..\..\..\cogl&#x0D;&#x0A;
-perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-enum-types.c.in ./cogl-object.h ./cogl-bitmap.h ./cogl-buffer.h ./cogl-color.h ./cogl-fixed.h ./cogl-depth-state.h ./cogl-material-compat.h ./cogl-vector.h ./cogl-euler.h ./cogl-quaternion.h ./cogl-matrix.h ./cogl-offscreen.h ./cogl-primitives.h ./cogl-path.h ./cogl-pixel-buffer.h ./cogl-shader.h ./cogl-texture.h ./cogl-texture-2d.h ./cogl-texture-3d.h ./cogl-texture-rectangle.h ./cogl-texture-2d-sliced.h ./cogl-sub-texture.h ./cogl-meta-texture.h ./cogl-types.h ./cogl-vertex-buffer.h ./cogl-index-buffer.h ./cogl-attribute-buffer.h ./cogl-indices.h ./cogl-attribute.h ./cogl-primitive.h ./cogl-clip-state.h ./cogl-framebuffer.h ./cogl-onscreen.h ./cogl-clutter.h ./cogl.h ./cogl-win32-renderer.h &gt; cogl-enum-types.c&#x0D;&#x0A;
-cd ..\build\win32\vs9&#x0D;&#x0A;
-:DONE_COGL_ENUMS_C&#x0D;&#x0A;
+cd ..&#x0D;&#x0A;
+gen-enums.bat $(GlibEtcInstallRoot)&#x0D;&#x0A;
+cd .\vs9&#x0D;&#x0A;
 
 "
 	/>
