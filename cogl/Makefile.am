@@ -425,7 +425,7 @@ coglincludedir = $(includedir)/cogl/cogl
 coglinclude_HEADERS = $(cogl_headers) $(cogl_experimental_h)
 nodist_coglinclude_HEADERS = cogl-defines.h cogl-enum-types.h
 
-dist-hook: ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../build/win32/vs10/cogl.vcxproj.filters
+dist-hook: ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../build/win32/vs10/cogl.vcxproj.filters ../build/win32/gen-enums.bat
 
 # I know those filters below don't look nice, but this is to ensure the right files are in the Project files only *once*
 ../build/win32/vs9/cogl.vcproj: $(top_srcdir)/build/win32/vs9/cogl.vcprojin
@@ -461,11 +461,51 @@ dist-hook: ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../bu
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl.vcxproj.filtersin >$@
 	rm cogl.vs10.sourcefiles.filters
 
+cogl.vsenums_h:
+	echo 'perl %%1\bin\glib-mkenums --template ../../cogl/cogl-enum-types.h.in ' >vsenums_h.temp1
+	for F in `echo $(cogl_public_h) $(srcdir)/cogl-win32-renderer.h`; do \
+		case $$F in \
+		*xlib*.h|*wayland*.h) ;; \
+		*.h) echo '../../cogl'$$F' '	\
+			;;	\
+		esac;	\
+	done >>vsenums_h.temp1
+	cat vsenums_h.temp1 | sed 's_/cogl./_/cogl/_' >vsenums_h.temp
+	cat vsenums_h.temp | tr -d '\n' >>$@
+	echo '> ..\..\cogl\cogl-enum-types.h' >>$@
+	rm vsenums_h.temp1
+	rm vsenums_h.temp
+
+cogl.vsenums_c:
+	echo 'perl %%1\bin\glib-mkenums --template ../../cogl/cogl-enum-types.c.in ' >vsenums_c.temp1
+	for F in `echo $(cogl_public_h) $(srcdir)/cogl-win32-renderer.h`; do \
+		case $$F in \
+		*xlib*.h|*wayland*.h) ;; \
+		*.h) echo '../../cogl'$$F' '	\
+			;;	\
+		esac;	\
+	done >>vsenums_c.temp1
+	cat vsenums_c.temp1 | sed 's_/cogl./_/cogl/_' >vsenums_c.temp
+	cat vsenums_c.temp | tr -d '\n' >>$@
+	echo '> ..\..\cogl\cogl-enum-types.c' >>$@
+	rm vsenums_c.temp1
+	rm vsenums_c.temp
+
+../build/win32/gen-enums.bat: cogl.vsenums_h cogl.vsenums_c
+	echo 'if exist ..\..\cogl\cogl-enum-types.h goto DONE_COGL_ENUMS_H' >$@
+	cat cogl.vsenums_h >>$@
+	echo ':DONE_COGL_ENUMS_H' >>$@
+	echo 'if exist ..\..\cogl\cogl-enum-types.c goto DONE_COGL_ENUMS_C' >>$@
+	cat cogl.vsenums_c >>$@
+	echo ':DONE_COGL_ENUMS_C' >>$@
+	rm cogl.vsenums_h
+	rm cogl.vsenums_c
+
 EXTRA_DIST += \
 	cogl-defines.h.win32	\
 	cogl.symbols
 
-DISTCLEANFILES += ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../build/win32/vs10/cogl.vcxproj.filters
+DISTCLEANFILES += ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../build/win32/vs10/cogl.vcxproj.filters ../build/win32/gen-enums.bat
 
 -include $(INTROSPECTION_MAKEFILE)
 
