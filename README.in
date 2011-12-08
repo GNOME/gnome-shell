@@ -289,6 +289,15 @@ features).
 Release Notes for Clutter 1.10
 -------------------------------------------------------------------------------
 
+• ClutterActor now implements ClutterContainer, and takes over the entire API
+  for modifying the scene graph; this means that every actor can have children
+  and it's not necessary any more to implement the ClutterContainer interface.
+  ClutterActor provides new API to replace clutter_actor_set_parent() and
+  clutter_actor_unparent(), as well as a default implementation of every
+  Container virtual function. Existing actors overriding ClutterContainer and
+  providing an alternate implementation will continue to work, even though it
+  is strongly encouraged to port to the new API.
+
 • The ClutterActor::destroy signal is going to be emitted at the beginning
   of the dispose sequence of a ClutterActor, instead of the end. This allows
   to access the state of the actor being destroyed, instead of just being
