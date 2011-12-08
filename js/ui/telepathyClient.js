@@ -502,15 +502,9 @@ const ChatSource = new Lang.Class({
         this._notification.setUrgency(MessageTray.Urgency.HIGH);
         this._notifyTimeoutId = 0;
 
-        // We ack messages when the message box is collapsed if user has
-        // interacted with it before and so read the messages:
-        // - user clicked on it the tray
-        // - user expanded the notification by hovering over the toaster notification
-        this._shouldAck = false;
-
-        this.connect('summary-item-clicked', Lang.bind(this, this._summaryItemClicked));
-        this._notification.connect('expanded', Lang.bind(this, this._notificationExpanded));
-        this._notification.connect('collapsed', Lang.bind(this, this._notificationCollapsed));
+        // We ack messages when the user expands the new notification or views the summary
+        // notification, in which case the notification is also expanded.
+        this._notification.connect('expanded', Lang.bind(this, this._ackMessages));
 
         this._presence = contact.get_presence_type();
 
@@ -774,24 +768,6 @@ const ChatSource = new Lang.Class({
         // 'pending-message-removed' for each one.
         this._channel.ack_all_pending_messages_async(Lang.bind(this, function(src, result) {
             this._channel.ack_all_pending_messages_finish(result);}));
-    },
-
-    _summaryItemClicked: function(source, button) {
-        if (button != 1)
-            return;
-
-        this._shouldAck = true;
-    },
-
-    _notificationExpanded: function() {
-        this._shouldAck = true;
-    },
-
-    _notificationCollapsed: function() {
-        if (this._shouldAck)
-            this._ackMessages();
-
-        this._shouldAck = false;
     }
 });
 
