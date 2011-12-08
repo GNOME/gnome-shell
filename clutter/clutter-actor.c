@@ -308,6 +308,7 @@
 #include "clutter-debug.h"
 #include "clutter-effect-private.h"
 #include "clutter-enum-types.h"
+#include "clutter-fixed-layout.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
 #include "clutter-flatten-effect.h"
@@ -3945,6 +3946,21 @@ clutter_actor_real_has_overlaps (ClutterActor *self)
 }
 
 static void
+clutter_actor_constructed (GObject *gobject)
+{
+  ClutterActor *self = CLUTTER_ACTOR (gobject);
+
+  /* if we weren't constructed with a layout manager, we fall back to a
+   * fixed layout; this is the most sensible option, as it will make
+   * things like constraints work out of the box
+   */
+  if (self->priv->layout_manager == NULL)
+    clutter_actor_set_layout_manager (self, clutter_fixed_layout_new ());
+
+  G_OBJECT_CLASS (clutter_actor_parent_class)->constructed (gobject);
+}
+
+static void
 clutter_actor_class_init (ClutterActorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -3952,6 +3968,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 
   quark_shader_data = g_quark_from_static_string ("-clutter-actor-shader-data");
 
+  object_class->constructed  = clutter_actor_constructed;
   object_class->set_property = clutter_actor_set_property;
   object_class->get_property = clutter_actor_get_property;
   object_class->dispose      = clutter_actor_dispose;
