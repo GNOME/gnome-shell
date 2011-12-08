@@ -805,7 +805,7 @@ dist-hook: ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj
 
 clutter.vsenums_h:
 	echo 'perl %1\bin\glib-mkenums --template ../../clutter/clutter-enum-types.h.in ' >vsenums_h.temp1
-	for F in `echo $(source_h) $(backend_source_h) $(srcdir)/clutter-win32.h`; do \
+	for F in `echo $(source_h) $(backend_source_h) $(srcdir)/win32/clutter-win32.h`; do \
 		case $$F in \
 		*-x11*.h|*-wayland*.h|*-gdk*.h|*-glx*.h|*-cex*.h|*-egl*.h|*-osx*.h) ;; \
 		*.h) echo '../../clutter'$$F' '	\
@@ -820,7 +820,7 @@ clutter.vsenums_h:
 
 clutter.vsenums_c:
 	echo 'perl %1\bin\glib-mkenums --template ../../clutter/clutter-enum-types.c.in ' >vsenums_c.temp1
-	for F in `echo $(source_h) $(backend_source_h) $(srcdir)/clutter-win32.h`; do \
+	for F in `echo $(source_h) $(backend_source_h) $(srcdir)/win32/clutter-win32.h`; do \
 		case $$F in \
 		*-x11*.h|*-wayland*.h|*-gdk*.h|*-glx*.h|*-cex*.h|*-egl*.h|*-osx*.h) ;; \
 		*.h) echo '../../clutter'$$F' '	\
