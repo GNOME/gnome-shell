@@ -376,11 +376,36 @@ endif
 if SUPPORT_EGL_PLATFORM_WAYLAND
 cogl_public_h += \
 	$(srcdir)/cogl-wayland-renderer.h
+cogl_sources_c += \
+	$(srcdir)/winsys/cogl-winsys-egl-wayland.c \
+	$(srcdir)/winsys/cogl-winsys-egl-wayland-private.h
 endif
 if SUPPORT_EGL_PLATFORM_KMS
 cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-kms.c \
-	$(srcdir)/winsys/cogl-winsys-kms.h
+	$(srcdir)/winsys/cogl-winsys-kms.h \
+	$(srcdir)/winsys/cogl-winsys-egl-kms.c \
+	$(srcdir)/winsys/cogl-winsys-egl-kms-private.h
+endif
+if SUPPORT_EGL_PLATFORM_POWERVR_X11
+cogl_sources_c += \
+	$(srcdir)/winsys/cogl-winsys-egl-x11.c \
+	$(srcdir)/winsys/cogl-winsys-egl-x11-private.h
+endif
+if SUPPORT_EGL_PLATFORM_POWERVR_NULL
+cogl_sources_c += \
+	$(srcdir)/winsys/cogl-winsys-egl-null.c \
+	$(srcdir)/winsys/cogl-winsys-egl-null-private.h
+endif
+if SUPPORT_EGL_PLATFORM_GDL
+cogl_sources_c += \
+	$(srcdir)/winsys/cogl-winsys-egl-gdl.c \
+	$(srcdir)/winsys/cogl-winsys-egl-gdl-private.h
+endif
+if SUPPORT_EGL_PLATFORM_ANDROID
+cogl_sources_c += \
+	$(srcdir)/winsys/cogl-winsys-egl-android.c \
+	$(srcdir)/winsys/cogl-winsys-egl-android-private.h
 endif
 if SUPPORT_EGL
 cogl_sources_c += \

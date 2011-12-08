@@ -43,10 +43,26 @@
 #include "cogl-display-private.h"
 #include "cogl-winsys-private.h"
 #include "cogl-winsys-stub-private.h"
-#ifdef COGL_HAS_EGL_SUPPORT
-#include "cogl-winsys-egl-private.h"
-#endif
 #include "cogl-config-private.h"
+
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
+#include "cogl-winsys-egl-x11-private.h"
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+#include "cogl-winsys-egl-wayland-private.h"
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+#include "cogl-winsys-egl-kms-private.h"
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+#include "cogl-winsys-egl-gdl-private.h"
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
+#include "cogl-winsys-egl-android-private.h"
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT
+#include "cogl-winsys-egl-null-private.h"
+#endif
 
 #if COGL_HAS_XLIB_SUPPORT
 #include "cogl-xlib-renderer.h"
@@ -66,8 +82,23 @@ static CoglWinsysVtableGetter _cogl_winsys_vtable_getters[] =
 #ifdef COGL_HAS_GLX_SUPPORT
   _cogl_winsys_glx_get_vtable,
 #endif
-#ifdef COGL_HAS_EGL_SUPPORT
-  _cogl_winsys_egl_get_vtable,
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
+  _cogl_winsys_egl_x11_get_vtable,
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+  _cogl_winsys_egl_wayland_get_vtable,
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+  _cogl_winsys_egl_kms_get_vtable,
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+  _cogl_winsys_egl_gdl_get_vtable,
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
+  _cogl_winsys_egl_android_get_vtable,
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT
+  _cogl_winsys_egl_null_get_vtable,
 #endif
 #ifdef COGL_HAS_WGL_SUPPORT
   _cogl_winsys_wgl_get_vtable,

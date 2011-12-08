@@ -1774,8 +1774,9 @@ _cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
 
 static CoglWinsysVtable _cogl_winsys_vtable =
   {
-    .id = COGL_WINSYS_ID_EGL,
-    .name = "EGL",
+    /* This winsys is only used as a base for the EGL-platform
+       winsys's so it does not have an ID or a name */
+
     .renderer_get_proc_address = _cogl_winsys_renderer_get_proc_address,
     .renderer_connect = _cogl_winsys_renderer_connect,
     .renderer_disconnect = _cogl_winsys_renderer_disconnect,
