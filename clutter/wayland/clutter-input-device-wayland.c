@@ -145,7 +145,7 @@ clutter_wayland_handle_pointer_focus (void *data,
   ClutterStageCogl          *stage_cogl;
   ClutterEvent              *event;
 
-  if (device->pointer_focus)
+  if (!surface)
     {
       stage_cogl = device->pointer_focus;
 
@@ -171,13 +171,13 @@ clutter_wayland_handle_pointer_focus (void *data,
       _clutter_input_device_set_stage (CLUTTER_INPUT_DEVICE (device),
 				       stage_cogl->wrapper);
 
-      event = clutter_event_new (CLUTTER_MOTION);
-      event->motion.time = _time;
-      event->motion.x = sx;
-      event->motion.y = sy;
-      event->motion.modifier_state = device->modifier_state;
-      event->motion.source = CLUTTER_ACTOR (stage_cogl->wrapper);
-      event->motion.device = CLUTTER_INPUT_DEVICE (device);
+      event = clutter_event_new (CLUTTER_ENTER);
+      event->crossing.stage = stage_cogl->wrapper;
+      event->crossing.time = _time;
+      event->crossing.x = sx;
+      event->crossing.y = sy;
+      event->crossing.source = CLUTTER_ACTOR (stage_cogl->wrapper);
+      event->crossing.device = CLUTTER_INPUT_DEVICE (device);
 
       _clutter_event_push (event, FALSE);
 
