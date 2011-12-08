@@ -1936,6 +1936,22 @@ cogl_wayland_onscreen_get_surface (CoglOnscreen *onscreen)
     return NULL;
 }
 
+
+struct wl_shell_surface *
+cogl_wayland_onscreen_get_shell_surface (CoglOnscreen *onscreen)
+{
+  CoglFramebuffer *fb;
+
+  fb = COGL_FRAMEBUFFER (onscreen);
+  if (fb->allocated)
+    {
+      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+      return egl_onscreen->wayland_shell_surface;
+    }
+  else
+    return NULL;
+}
+
 #endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
 
 #ifdef EGL_KHR_image_base

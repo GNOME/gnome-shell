@@ -131,6 +131,8 @@ cogl_win32_onscreen_get_window (CoglOnscreen *onscreen);
 #if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
 struct wl_surface *
 cogl_wayland_onscreen_get_surface (CoglOnscreen *onscreen);
+struct wl_shell_surface *
+cogl_wayland_onscreen_get_shell_surface (CoglOnscreen *onscreen);
 #endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
 
 #define cogl_onscreen_set_swap_throttled cogl_onscreen_set_swap_throttled_EXP
