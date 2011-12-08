@@ -243,6 +243,7 @@ const AppMenuButton = new Lang.Class({
 
         this._menuManager = menuManager;
         this._targetApp = null;
+        this._appMenuNotifyId = 0;
 
         let bin = new St.Bin({ name: 'appMenu' });
         this.actor.add_actor(bin);
@@ -518,6 +519,11 @@ const AppMenuButton = new Lang.Class({
             this._iconBox.child.destroy();
         this._iconBox.hide();
         this._label.setText('');
+
+        if (this._appMenuNotifyId)
+            this._targetApp.disconnect(this._appMenuNotifyId);
+        if (targetApp)
+            this._appMenuNotifyId = targetApp.connect('notify::menu', Lang.bind(this, this._sync));
 
         this._targetApp = targetApp;
         let icon = targetApp.get_faded_icon(2 * PANEL_ICON_SIZE);
