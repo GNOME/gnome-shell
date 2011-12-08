@@ -35,13 +35,6 @@ copy ..\..\..\clutter\clutter-version.h.win32 ..\..\..\clutter\clutter-version.h
 :DONE_CLUTTER_VERSION_H
 
 
-cd ..
-
-gen-enums.bat $(GlibEtcInstallRoot)
-
-cd .\vs10
-
-
 if exist ..\..\..\clutter\clutter-marshal.h goto DONE_CLUTTER_MARSHAL_H
 
 cd ..\..\..\clutter
@@ -64,6 +57,13 @@ $(GlibEtcInstallRoot)\bin\glib-genmarshal --prefix=_clutter_marshal --body clutt
 cd ..\build\win32\vs10
 
 :DONE_CLUTTER_MARSHAL_C
+
+
+cd ..
+
+gen-enums.bat $(GlibEtcInstallRoot)
+
+cd .\vs10
 
 </PreBuildCmd>
     <ClutterDoInstall>
