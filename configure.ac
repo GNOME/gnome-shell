@@ -839,11 +839,6 @@ AS_IF([test "x$enable_xlib_egl_platform" = "xyes"],
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_X11,
                [test "x$enable_xlib_egl_platform" = "xyes"])
 
-
-
-AS_IF([test $EGL_PLATFORM_COUNT -gt 1],
-      [AC_MSG_ERROR(['The --enable-*-egl-platform options are currently mutually exclusive'])])
-
 AS_IF([test "x$NEED_EGL" = "xyes" && test "x$EGL_CHECKED" != "xyes"],
       [
         PKG_CHECK_EXISTS([egl],

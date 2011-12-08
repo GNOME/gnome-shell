@@ -104,9 +104,8 @@ typedef struct _CoglOnscreenEGL
 
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   CoglOnscreenKMS kms_onscreen;
-#else
-  EGLSurface egl_surface;
 #endif
+  EGLSurface egl_surface;
 } CoglOnscreenEGL;
 
 #ifdef EGL_KHR_image_pixmap
@@ -228,12 +227,14 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
   CoglRendererEGL *egl_renderer = renderer->winsys;
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  if (egl_renderer->gdl_initialized)
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_GDL &&
+      egl_renderer->gdl_initialized)
     gdl_close ();
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  _cogl_xlib_renderer_disconnect (renderer);
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_X11)
+    _cogl_xlib_renderer_disconnect (renderer);
 #endif
 
   eglTerminate (egl_renderer->edpy);
@@ -304,82 +305,103 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   renderer->winsys = g_slice_new0 (CoglRendererEGL);
 
   egl_renderer = renderer->winsys;
+
+  switch (renderer->winsys_vtable->id)
+    {
+    default:
+      g_warn_if_reached ();
+      goto error;
+
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  xlib_renderer = renderer->winsys;
+    case COGL_WINSYS_ID_EGL_X11:
+      xlib_renderer = renderer->winsys;
 
-  if (!_cogl_xlib_renderer_connect (renderer, error))
-    goto error;
+      if (!_cogl_xlib_renderer_connect (renderer, error))
+        goto error;
 
-  egl_renderer->edpy =
-    eglGetDisplay ((NativeDisplayType) xlib_renderer->xdpy);
+      egl_renderer->edpy =
+        eglGetDisplay ((NativeDisplayType) xlib_renderer->xdpy);
 
-  status = eglInitialize (egl_renderer->edpy,
-                          &egl_renderer->egl_version_major,
-                          &egl_renderer->egl_version_minor);
+      status = eglInitialize (egl_renderer->edpy,
+                              &egl_renderer->egl_version_major,
+                              &egl_renderer->egl_version_minor);
+      break;
+#endif
 
-#elif defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+    case COGL_WINSYS_ID_EGL_WAYLAND:
+      /* The EGL API doesn't provide for a way to explicitly select a
+       * platform when the driver can support multiple. Mesa allows
+       * selection using an environment variable though so that's what
+       * we're doing here... */
+      setenv("EGL_PLATFORM", "wayland", 1);
 
-  /* The EGL API doesn't provide for a way to explicitly select a
-   * platform when the driver can support multiple. Mesa allows
-   * selection using an environment variable though so that's what
-   * we're doing here... */
-  setenv("EGL_PLATFORM", "wayland", 1);
-
-  if (renderer->foreign_wayland_display)
-    {
-      egl_renderer->wayland_display = renderer->foreign_wayland_display;
-      /* XXX: For now we have to assume that if a foreign display is
-       * given then a foreign compositor and shell must also have been
-       * given because wayland doesn't provide a way to
-       * retrospectively be notified of the these objects. */
-      g_assert (renderer->foreign_wayland_compositor);
-      g_assert (renderer->foreign_wayland_shell);
-      egl_renderer->wayland_compositor = renderer->foreign_wayland_compositor;
-      egl_renderer->wayland_shell = renderer->foreign_wayland_shell;
-    }
-  else
-    {
-      egl_renderer->wayland_display = wl_display_connect (NULL);
-      if (!egl_renderer->wayland_display)
+      if (renderer->foreign_wayland_display)
         {
-          g_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_INIT,
-                       "Failed to connect wayland display");
-          goto error;
+          egl_renderer->wayland_display = renderer->foreign_wayland_display;
+          /* XXX: For now we have to assume that if a foreign display is
+           * given then a foreign compositor and shell must also have been
+           * given because wayland doesn't provide a way to
+           * retrospectively be notified of the these objects. */
+          g_assert (renderer->foreign_wayland_compositor);
+          g_assert (renderer->foreign_wayland_shell);
+          egl_renderer->wayland_compositor =
+            renderer->foreign_wayland_compositor;
+          egl_renderer->wayland_shell = renderer->foreign_wayland_shell;
+        }
+      else
+        {
+          egl_renderer->wayland_display = wl_display_connect (NULL);
+          if (!egl_renderer->wayland_display)
+            {
+              g_set_error (error, COGL_WINSYS_ERROR,
+                           COGL_WINSYS_ERROR_INIT,
+                           "Failed to connect wayland display");
+              goto error;
+            }
+
+          wl_display_add_global_listener (egl_renderer->wayland_display,
+                                          display_handle_global_cb,
+                                          egl_renderer);
         }
 
-      wl_display_add_global_listener (egl_renderer->wayland_display,
-                                      display_handle_global_cb,
-                                      egl_renderer);
-    }
+      /*
+       * Ensure that that we've received the messages setting up the
+       * compostor and shell object. This is better than just
+       * wl_display_iterate since it will always ensure that something
+       * is available to be read
+       */
+      while (!(egl_renderer->wayland_compositor && egl_renderer->wayland_shell))
+        wl_display_roundtrip (egl_renderer->wayland_display);
 
-  /*
-   * Ensure that that we've received the messages setting up the compostor and
-   * shell object. This is better than just wl_display_iterate since it will
-   * always ensure that something is available to be read
-   */
-  while (!(egl_renderer->wayland_compositor && egl_renderer->wayland_shell))
-    wl_display_roundtrip (egl_renderer->wayland_display);
+      egl_renderer->edpy =
+        eglGetDisplay ((EGLNativeDisplayType)egl_renderer->wayland_display);
 
-  egl_renderer->edpy =
-    eglGetDisplay ((EGLNativeDisplayType)egl_renderer->wayland_display);
-
-  status = eglInitialize (egl_renderer->edpy,
-			  &egl_renderer->egl_version_major,
-			  &egl_renderer->egl_version_minor);
-
-#elif defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
-  if (!_cogl_winsys_kms_connect (&egl_renderer->kms_renderer, error))
-    goto error;
-  egl_renderer->edpy = egl_renderer->kms_renderer.dpy;
-  status = EGL_TRUE;
-#else
-  egl_renderer->edpy = eglGetDisplay (EGL_DEFAULT_DISPLAY);
-
-  status = eglInitialize (egl_renderer->edpy,
-			  &egl_renderer->egl_version_major,
-			  &egl_renderer->egl_version_minor);
+      status = eglInitialize (egl_renderer->edpy,
+                              &egl_renderer->egl_version_major,
+                              &egl_renderer->egl_version_minor);
+      break;
 #endif
+
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+    case COGL_WINSYS_ID_EGL_KMS:
+      if (!_cogl_winsys_kms_connect (&egl_renderer->kms_renderer, error))
+        goto error;
+      egl_renderer->edpy = egl_renderer->kms_renderer.dpy;
+      status = EGL_TRUE;
+      break;
+#endif
+
+    case COGL_WINSYS_ID_EGL_GDL:
+    case COGL_WINSYS_ID_EGL_ANDROID:
+    case COGL_WINSYS_ID_EGL_NULL:
+      egl_renderer->edpy = eglGetDisplay (EGL_DEFAULT_DISPLAY);
+
+      status = eglInitialize (egl_renderer->edpy,
+                              &egl_renderer->egl_version_major,
+                              &egl_renderer->egl_version_minor);
+      break;
+    }
 
   if (status != EGL_TRUE)
     {
@@ -390,30 +412,33 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
     }
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  /* Check we can talk to the GDL library */
-
-  rc = gdl_init (NULL);
-  if (rc != GDL_SUCCESS)
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_GDL)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_INIT,
-                   "GDL initialize failed. %s",
-                   gdl_get_error_string (rc));
-      goto error;
-    }
+      /* Check we can talk to the GDL library */
 
-  rc = gdl_get_display_info (GDL_DISPLAY_ID_0, &gdl_display_info);
-  if (rc != GDL_SUCCESS)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_INIT,
-                   "GDL failed to get display information: %s",
-                   gdl_get_error_string (rc));
+      rc = gdl_init (NULL);
+      if (rc != GDL_SUCCESS)
+        {
+          g_set_error (error, COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_INIT,
+                       "GDL initialize failed. %s",
+                       gdl_get_error_string (rc));
+          goto error;
+        }
+
+      rc = gdl_get_display_info (GDL_DISPLAY_ID_0, &gdl_display_info);
+      if (rc != GDL_SUCCESS)
+        {
+          g_set_error (error, COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_INIT,
+                       "GDL failed to get display information: %s",
+                       gdl_get_error_string (rc));
+          gdl_close ();
+          goto error;
+        }
+
       gdl_close ();
-      goto error;
     }
-
-  gdl_close ();
 #endif
 
   check_egl_extensions (renderer);
@@ -428,27 +453,29 @@ error:
 static gboolean
 update_winsys_features (CoglContext *context, GError **error)
 {
+  CoglRenderer *renderer = context->display->renderer;
   CoglDisplayEGL *egl_display = context->display->winsys;
-  CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
 
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context, FALSE);
 
   memset (context->winsys_features, 0, sizeof (context->winsys_features));
 
-  check_egl_extensions (context->display->renderer);
+  check_egl_extensions (renderer);
 
   if (!_cogl_context_update_features (context, error))
     return FALSE;
 
-#if defined (COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT) || \
-    defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
-  context->feature_flags |= COGL_FEATURE_ONSCREEN_MULTIPLE;
-  COGL_FLAGS_SET (context->features,
-                  COGL_FEATURE_ID_ONSCREEN_MULTIPLE, TRUE);
-  COGL_FLAGS_SET (context->winsys_features,
-                  COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
-                  TRUE);
-#endif
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_X11 ||
+      renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_WAYLAND)
+    {
+      context->feature_flags |= COGL_FEATURE_ONSCREEN_MULTIPLE;
+      COGL_FLAGS_SET (context->features,
+                      COGL_FEATURE_ID_ONSCREEN_MULTIPLE, TRUE);
+      COGL_FLAGS_SET (context->winsys_features,
+                      COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
+                      TRUE);
+    }
 
   if (egl_renderer->private_features & COGL_EGL_WINSYS_FEATURE_SWAP_REGION)
     {
@@ -517,6 +544,7 @@ egl_attributes_from_framebuffer_config (CoglDisplay *display,
                                         gboolean needs_stencil_override,
                                         EGLint *attributes)
 {
+  CoglRenderer *renderer = display->renderer;
   int i = 0;
 
   attributes[i++] = EGL_STENCIL_SIZE;
@@ -537,19 +565,22 @@ egl_attributes_from_framebuffer_config (CoglDisplay *display,
 
   /* XXX: Why does the GDL platform choose these by default? */
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  attributes[i++] = EGL_BIND_TO_TEXTURE_RGBA;
-  attributes[i++] = EGL_TRUE;
-  attributes[i++] = EGL_BIND_TO_TEXTURE_RGB;
-  attributes[i++] = EGL_TRUE;
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_GDL)
+    {
+      attributes[i++] = EGL_BIND_TO_TEXTURE_RGBA;
+      attributes[i++] = EGL_TRUE;
+      attributes[i++] = EGL_BIND_TO_TEXTURE_RGB;
+      attributes[i++] = EGL_TRUE;
+    }
 #endif
 
   attributes[i++] = EGL_BUFFER_SIZE;
   attributes[i++] = EGL_DONT_CARE;
 
   attributes[i++] = EGL_RENDERABLE_TYPE;
-  attributes[i++] = (display->renderer->driver == COGL_DRIVER_GL ?
+  attributes[i++] = (renderer->driver == COGL_DRIVER_GL ?
                       EGL_OPENGL_BIT :
-                      display->renderer->driver == COGL_DRIVER_GLES1 ?
+                      renderer->driver == COGL_DRIVER_GLES1 ?
                       EGL_OPENGL_ES_BIT :
                       EGL_OPENGL_ES2_BIT);
 
@@ -574,19 +605,18 @@ try_create_context (CoglDisplay *display,
                     gboolean with_stencil_buffer,
                     GError **error)
 {
+  CoglRenderer *renderer = display->renderer;
   CoglDisplayEGL *egl_display = display->winsys;
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
   CoglXlibDisplay *xlib_display = display->winsys;
-  CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer = renderer->winsys;
 #endif
-#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  CoglRendererEGL *egl_renderer = display->renderer->winsys;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
   EGLDisplay edpy;
   EGLConfig config;
   EGLint config_count = 0;
   EGLBoolean status;
   EGLint attribs[3];
-#endif
   EGLint cfg_attribs[MAX_EGL_CONFIG_ATTRIBS];
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
   XVisualInfo *xvisinfo;
@@ -601,272 +631,290 @@ try_create_context (CoglDisplay *display,
 
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context == NULL, TRUE);
 
-  if (display->renderer->driver == COGL_DRIVER_GL)
+  if (renderer->driver == COGL_DRIVER_GL)
     eglBindAPI (EGL_OPENGL_API);
 
-#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  edpy = egl_renderer->edpy;
-
-  status = eglChooseConfig (edpy,
-                            cfg_attribs,
-                            &config, 1,
-                            &config_count);
-  if (status != EGL_TRUE || config_count == 0)
+  if (renderer->winsys_vtable->id != COGL_WINSYS_ID_EGL_KMS)
     {
-      error_message = "Unable to find a usable EGL configuration";
+      edpy = egl_renderer->edpy;
+
+      status = eglChooseConfig (edpy,
+                                cfg_attribs,
+                                &config, 1,
+                                &config_count);
+      if (status != EGL_TRUE || config_count == 0)
+        {
+          error_message = "Unable to find a usable EGL configuration";
+          goto fail;
+        }
+
+      egl_display->egl_config = config;
+
+      if (display->renderer->driver == COGL_DRIVER_GLES2)
+        {
+          attribs[0] = EGL_CONTEXT_CLIENT_VERSION;
+          attribs[1] = 2;
+          attribs[2] = EGL_NONE;
+        }
+      else
+        attribs[0] = EGL_NONE;
+
+      egl_display->egl_context = eglCreateContext (edpy,
+                                                   config,
+                                                   EGL_NO_CONTEXT,
+                                                   attribs);
+      if (egl_display->egl_context == EGL_NO_CONTEXT)
+        {
+          error_message = "Unable to create a suitable EGL context";
+          goto fail;
+        }
+    }
+
+  switch (renderer->winsys_vtable->id)
+    {
+    default:
+      g_warn_if_reached ();
       goto fail;
-    }
 
-  egl_display->egl_config = config;
-
-  if (display->renderer->driver == COGL_DRIVER_GLES2)
-    {
-      attribs[0] = EGL_CONTEXT_CLIENT_VERSION;
-      attribs[1] = 2;
-      attribs[2] = EGL_NONE;
-    }
-  else
-    attribs[0] = EGL_NONE;
-
-  egl_display->egl_context = eglCreateContext (edpy,
-                                               config,
-                                               EGL_NO_CONTEXT,
-                                               attribs);
-  if (egl_display->egl_context == EGL_NO_CONTEXT)
-    {
-      error_message = "Unable to create a suitable EGL context";
-      goto fail;
-    }
-#endif
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
+    case COGL_WINSYS_ID_EGL_X11:
+      xvisinfo = get_visual_info (display, config);
+      if (xvisinfo == NULL)
+        {
+          error_message = "Unable to find suitable X visual";
+          goto fail;
+        }
 
-  xvisinfo = get_visual_info (display, config);
-  if (xvisinfo == NULL)
-    {
-      error_message = "Unable to find suitable X visual";
-      goto fail;
-    }
+      attrs.override_redirect = True;
+      attrs.colormap = XCreateColormap (xlib_renderer->xdpy,
+                                        DefaultRootWindow (xlib_renderer->xdpy),
+                                        xvisinfo->visual,
+                                        AllocNone);
+      attrs.border_pixel = 0;
 
-  attrs.override_redirect = True;
-  attrs.colormap = XCreateColormap (xlib_renderer->xdpy,
-                                    DefaultRootWindow (xlib_renderer->xdpy),
-                                    xvisinfo->visual,
-                                    AllocNone);
-  attrs.border_pixel = 0;
+      xlib_display->dummy_xwin =
+        XCreateWindow (xlib_renderer->xdpy,
+                       DefaultRootWindow (xlib_renderer->xdpy),
+                       -100, -100, 1, 1,
+                       0,
+                       xvisinfo->depth,
+                       CopyFromParent,
+                       xvisinfo->visual,
+                       CWOverrideRedirect |
+                       CWColormap |
+                       CWBorderPixel,
+                       &attrs);
 
-  xlib_display->dummy_xwin =
-    XCreateWindow (xlib_renderer->xdpy,
-                   DefaultRootWindow (xlib_renderer->xdpy),
-                   -100, -100, 1, 1,
-                   0,
-                   xvisinfo->depth,
-                   CopyFromParent,
-                   xvisinfo->visual,
-                   CWOverrideRedirect |
-                   CWColormap |
-                   CWBorderPixel,
-                   &attrs);
+      XFree (xvisinfo);
 
-  XFree (xvisinfo);
+      egl_display->dummy_surface =
+        eglCreateWindowSurface (edpy,
+                                egl_display->egl_config,
+                                (NativeWindowType) xlib_display->dummy_xwin,
+                                NULL);
 
-  egl_display->dummy_surface =
-    eglCreateWindowSurface (edpy,
-                            egl_display->egl_config,
-                            (NativeWindowType) xlib_display->dummy_xwin,
-                            NULL);
+      if (egl_display->dummy_surface == EGL_NO_SURFACE)
+        {
+          error_message = "Unable to create an EGL surface";
+          goto fail;
+        }
 
-  if (egl_display->dummy_surface == EGL_NO_SURFACE)
-    {
-      error_message = "Unable to create an EGL surface";
-      goto fail;
-    }
-
-  if (!eglMakeCurrent (edpy,
-                       egl_display->dummy_surface,
-                       egl_display->dummy_surface,
-                       egl_display->egl_context))
-    {
-      error_message = "Unable to eglMakeCurrent with dummy surface";
-      goto fail;
-    }
-
-#elif defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
-
-  egl_display->wayland_surface =
-    wl_compositor_create_surface (egl_renderer->wayland_compositor);
-  if (!egl_display->wayland_surface)
-    {
-      error_message= "Failed to create a dummy wayland surface";
-      goto fail;
-    }
-
-  egl_display->wayland_egl_native_window =
-    wl_egl_window_create (egl_display->wayland_surface,
-                          1,
-                          1);
-  if (!egl_display->wayland_egl_native_window)
-    {
-      error_message= "Failed to create a dummy wayland native egl surface";
-      goto fail;
-    }
-
-  egl_display->dummy_surface =
-    eglCreateWindowSurface (edpy,
-                            egl_display->egl_config,
-                            (EGLNativeWindowType)
-                            egl_display->wayland_egl_native_window,
-                            NULL);
-  if (egl_display->dummy_surface == EGL_NO_SURFACE)
-    {
-      error_message= "Unable to eglMakeCurrent with dummy surface";
-      goto fail;
-    }
-
-  if (!eglMakeCurrent (edpy,
-                       egl_display->dummy_surface,
-                       egl_display->dummy_surface,
-                       egl_display->egl_context))
-    {
-      error_message = "Unable to eglMakeCurrent with dummy surface";
-      goto fail;
-    }
-
-#elif defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)
-  {
-    EGLint format;
-
-    if (android_native_window == NULL)
-      {
-        error_message = "No ANativeWindow window specified with "
-          "cogl_android_set_native_window()";
-        goto fail;
-      }
-
-    /* EGL_NATIVE_VISUAL_ID is an attribute of the EGLConfig that is
-     * guaranteed to be accepted by ANativeWindow_setBuffersGeometry ().
-     * As soon as we picked a EGLConfig, we can safely reconfigure the
-     * ANativeWindow buffers to match, using EGL_NATIVE_VISUAL_ID. */
-    eglGetConfigAttrib (edpy, config, EGL_NATIVE_VISUAL_ID, &format);
-
-    ANativeWindow_setBuffersGeometry (android_native_window,
-                                      0,
-                                      0,
-                                      format);
-
-    egl_display->egl_surface =
-      eglCreateWindowSurface (edpy,
-                              config,
-                              (NativeWindowType) android_native_window,
-                              NULL);
-    if (egl_display->egl_surface == EGL_NO_SURFACE)
-      {
-        error_message = "Unable to create EGL window surface";
-        goto fail;
-      }
-
-    if (!eglMakeCurrent (egl_renderer->edpy,
-                         egl_display->egl_surface,
-                         egl_display->egl_surface,
-                         egl_display->egl_context))
-      {
-        error_message = "Unable to eglMakeCurrent with egl surface";
-        goto fail;
-      }
-
-    eglQuerySurface (egl_renderer->edpy,
-                     egl_display->egl_surface,
-                     EGL_WIDTH,
-                     &egl_display->egl_surface_width);
-
-    eglQuerySurface (egl_renderer->edpy,
-                     egl_display->egl_surface,
-                     EGL_HEIGHT,
-                     &egl_display->egl_surface_height);
-  }
-
-#elif defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
-
-  egl_display->egl_surface =
-    eglCreateWindowSurface (edpy,
-                            config,
-                            (NativeWindowType) display->gdl_plane,
-                            NULL);
-
-  if (egl_display->egl_surface == EGL_NO_SURFACE)
-    {
-      error_message = "Unable to create EGL window surface";
-      goto fail;
-    }
-
-  if (!eglMakeCurrent (egl_renderer->edpy,
-                       egl_display->egl_surface,
-                       egl_display->egl_surface,
-                       egl_display->egl_context))
-    {
-      error_message = "Unable to eglMakeCurrent with egl surface";
-      goto fail;
-    }
-
-  eglQuerySurface (egl_renderer->edpy,
-                   egl_display->egl_surface,
-                   EGL_WIDTH,
-                   &egl_display->egl_surface_width);
-
-  eglQuerySurface (egl_renderer->edpy,
-                   egl_display->egl_surface,
-                   EGL_HEIGHT,
-                   &egl_display->egl_surface_height);
-
-#elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT)
-
-  egl_display->egl_surface =
-    eglCreateWindowSurface (edpy,
-                            config,
-                            (NativeWindowType) NULL,
-                            NULL);
-  if (egl_display->egl_surface == EGL_NO_SURFACE)
-    {
-      error_message = "Unable to create EGL window surface";
-      goto fail;
-    }
-
-  if (!eglMakeCurrent (egl_renderer->edpy,
-                       egl_display->egl_surface,
-                       egl_display->egl_surface,
-                       egl_display->egl_context))
-    {
-      error_message = "Unable to eglMakeCurrent with egl surface";
-      goto fail;
-    }
-
-  eglQuerySurface (egl_renderer->edpy,
-                   egl_display->egl_surface,
-                   EGL_WIDTH,
-                   &egl_display->egl_surface_width);
-
-  eglQuerySurface (egl_renderer->edpy,
-                   egl_display->egl_surface,
-                   EGL_HEIGHT,
-                   &egl_display->egl_surface_height);
-
-#elif defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
-  if (!_cogl_winsys_kms_create_context (display->renderer,
-                                        display,
-                                        error))
-    return FALSE;
-
-  egl_display->egl_surface_width = egl_display->kms_display.width;
-  egl_display->egl_surface_height = egl_display->kms_display.height;
-  egl_display->egl_context = egl_display->kms_display.egl_context;
-#else
-#error "Unknown EGL platform"
+      if (!eglMakeCurrent (edpy,
+                           egl_display->dummy_surface,
+                           egl_display->dummy_surface,
+                           egl_display->egl_context))
+        {
+          error_message = "Unable to eglMakeCurrent with dummy surface";
+          goto fail;
+        }
+      break;
 #endif
+
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+    case COGL_WINSYS_ID_EGL_WAYLAND:
+      egl_display->wayland_surface =
+        wl_compositor_create_surface (egl_renderer->wayland_compositor);
+      if (!egl_display->wayland_surface)
+        {
+          error_message= "Failed to create a dummy wayland surface";
+          goto fail;
+        }
+
+      egl_display->wayland_egl_native_window =
+        wl_egl_window_create (egl_display->wayland_surface,
+                              1,
+                              1);
+      if (!egl_display->wayland_egl_native_window)
+        {
+          error_message= "Failed to create a dummy wayland native egl surface";
+          goto fail;
+        }
+
+      egl_display->dummy_surface =
+        eglCreateWindowSurface (edpy,
+                                egl_display->egl_config,
+                                (EGLNativeWindowType)
+                                egl_display->wayland_egl_native_window,
+                                NULL);
+      if (egl_display->dummy_surface == EGL_NO_SURFACE)
+        {
+          error_message= "Unable to eglMakeCurrent with dummy surface";
+          goto fail;
+        }
+
+      if (!eglMakeCurrent (edpy,
+                           egl_display->dummy_surface,
+                           egl_display->dummy_surface,
+                           egl_display->egl_context))
+        {
+          error_message = "Unable to eglMakeCurrent with dummy surface";
+          goto fail;
+        }
+      break;
+#endif
+
+#ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
+    case COGL_WINSYS_ID_EGL_ANDROID:
+      {
+        EGLint format;
+
+        if (android_native_window == NULL)
+          {
+            error_message = "No ANativeWindow window specified with "
+              "cogl_android_set_native_window()";
+            goto fail;
+          }
+
+        /* EGL_NATIVE_VISUAL_ID is an attribute of the EGLConfig that is
+         * guaranteed to be accepted by ANativeWindow_setBuffersGeometry ().
+         * As soon as we picked a EGLConfig, we can safely reconfigure the
+         * ANativeWindow buffers to match, using EGL_NATIVE_VISUAL_ID. */
+        eglGetConfigAttrib (edpy, config, EGL_NATIVE_VISUAL_ID, &format);
+
+        ANativeWindow_setBuffersGeometry (android_native_window,
+                                          0,
+                                          0,
+                                          format);
+
+        egl_display->egl_surface =
+          eglCreateWindowSurface (edpy,
+                                  config,
+                                  (NativeWindowType) android_native_window,
+                                  NULL);
+        if (egl_display->egl_surface == EGL_NO_SURFACE)
+          {
+            error_message = "Unable to create EGL window surface";
+            goto fail;
+          }
+
+        if (!eglMakeCurrent (egl_renderer->edpy,
+                             egl_display->egl_surface,
+                             egl_display->egl_surface,
+                             egl_display->egl_context))
+          {
+            error_message = "Unable to eglMakeCurrent with egl surface";
+            goto fail;
+          }
+
+        eglQuerySurface (egl_renderer->edpy,
+                         egl_display->egl_surface,
+                         EGL_WIDTH,
+                         &egl_display->egl_surface_width);
+
+        eglQuerySurface (egl_renderer->edpy,
+                         egl_display->egl_surface,
+                         EGL_HEIGHT,
+                         &egl_display->egl_surface_height);
+      }
+      break;
+#endif
+
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+    case COGL_WINSYS_ID_EGL_GDL:
+      egl_display->egl_surface =
+        eglCreateWindowSurface (edpy,
+                                config,
+                                (NativeWindowType) display->gdl_plane,
+                                NULL);
+
+      if (egl_display->egl_surface == EGL_NO_SURFACE)
+        {
+          error_message = "Unable to create EGL window surface";
+          goto fail;
+        }
+
+      if (!eglMakeCurrent (egl_renderer->edpy,
+                           egl_display->egl_surface,
+                           egl_display->egl_surface,
+                           egl_display->egl_context))
+        {
+          error_message = "Unable to eglMakeCurrent with egl surface";
+          goto fail;
+        }
+
+      eglQuerySurface (egl_renderer->edpy,
+                       egl_display->egl_surface,
+                       EGL_WIDTH,
+                       &egl_display->egl_surface_width);
+
+      eglQuerySurface (egl_renderer->edpy,
+                       egl_display->egl_surface,
+                       EGL_HEIGHT,
+                       &egl_display->egl_surface_height);
+      break;
+#endif
+
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT
+    case COGL_WINSYS_ID_EGL_NULL:
+      egl_display->egl_surface =
+        eglCreateWindowSurface (edpy,
+                                config,
+                                (NativeWindowType) NULL,
+                                NULL);
+      if (egl_display->egl_surface == EGL_NO_SURFACE)
+        {
+          error_message = "Unable to create EGL window surface";
+          goto fail;
+        }
+
+      if (!eglMakeCurrent (egl_renderer->edpy,
+                           egl_display->egl_surface,
+                           egl_display->egl_surface,
+                           egl_display->egl_context))
+        {
+          error_message = "Unable to eglMakeCurrent with egl surface";
+          goto fail;
+        }
+
+      eglQuerySurface (egl_renderer->edpy,
+                       egl_display->egl_surface,
+                       EGL_WIDTH,
+                       &egl_display->egl_surface_width);
+
+      eglQuerySurface (egl_renderer->edpy,
+                       egl_display->egl_surface,
+                       EGL_HEIGHT,
+                       &egl_display->egl_surface_height);
+      break;
+#endif
+
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+    case COGL_WINSYS_ID_EGL_KMS:
+      if (!_cogl_winsys_kms_create_context (display->renderer,
+                                            display,
+                                            error))
+        return FALSE;
+
+      egl_display->egl_surface_width = egl_display->kms_display.width;
+      egl_display->egl_surface_height = egl_display->kms_display.height;
+      egl_display->egl_context = egl_display->kms_display.egl_context;
+      break;
+#endif
+    }
 
   return TRUE;
 
-#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
 fail:
-#endif
   g_set_error (error, COGL_WINSYS_ERROR,
                COGL_WINSYS_ERROR_CREATE_CONTEXT,
                "%s", error_message);
@@ -876,21 +924,27 @@ fail:
 static void
 cleanup_context (CoglDisplay *display)
 {
+  CoglRenderer *renderer = display->renderer;
   CoglDisplayEGL *egl_display = display->winsys;
-  CoglRendererEGL *egl_renderer = display->renderer->winsys;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
   CoglXlibDisplay *xlib_display = display->winsys;
-  CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer = renderer->winsys;
 #endif
-#if defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
-  GError *error = NULL;
 
-  if (!_cogl_winsys_kms_destroy_context (&egl_renderer->kms_renderer,
-                                         &egl_display->kms_display,
-                                         &error))
+#if defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_KMS)
     {
-      g_critical (G_STRLOC ": Error cleaning up KMS rendering state: %s", error->message);
-      g_clear_error (&error);
+      GError *error = NULL;
+
+      if (!_cogl_winsys_kms_destroy_context (&egl_renderer->kms_renderer,
+                                             &egl_display->kms_display,
+                                             &error))
+        {
+          g_critical (G_STRLOC ": Error cleaning up KMS rendering state: %s",
+                      error->message);
+          g_clear_error (&error);
+        }
     }
 #endif
 
@@ -902,44 +956,61 @@ cleanup_context (CoglDisplay *display)
       egl_display->egl_context = EGL_NO_CONTEXT;
     }
 
-#if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
+  switch (renderer->winsys_vtable->id)
+    {
+    default:
+      break;
+
+#if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) ||    \
     defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
-  if (egl_display->egl_surface != EGL_NO_SURFACE)
-    {
-      eglDestroySurface (egl_renderer->edpy, egl_display->egl_surface);
-      egl_display->egl_surface = EGL_NO_SURFACE;
-    }
-#elif COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  if (egl_display->dummy_surface != EGL_NO_SURFACE)
-    {
-      eglDestroySurface (egl_renderer->edpy, egl_display->dummy_surface);
-      egl_display->dummy_surface = EGL_NO_SURFACE;
-    }
-
-  if (xlib_display->dummy_xwin)
-    {
-      XDestroyWindow (xlib_renderer->xdpy, xlib_display->dummy_xwin);
-      xlib_display->dummy_xwin = None;
-    }
-#elif defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
-  if (egl_display->dummy_surface != EGL_NO_SURFACE)
-    {
-      eglDestroySurface (egl_renderer->edpy, egl_display->dummy_surface);
-      egl_display->dummy_surface = EGL_NO_SURFACE;
-    }
-
-  if (egl_display->wayland_egl_native_window)
-    {
-      wl_egl_window_destroy (egl_display->wayland_egl_native_window);
-      egl_display->wayland_egl_native_window = NULL;
-    }
-
-  if (egl_display->wayland_surface)
-    {
-      wl_surface_destroy (egl_display->wayland_surface);
-      egl_display->wayland_surface = NULL;
-    }
+    case COGL_WINSYS_ID_EGL_NULL:
+    case COGL_WINSYS_ID_EGL_GDL:
+      if (egl_display->egl_surface != EGL_NO_SURFACE)
+        {
+          eglDestroySurface (egl_renderer->edpy, egl_display->egl_surface);
+          egl_display->egl_surface = EGL_NO_SURFACE;
+        }
+      break;
 #endif
+
+#if COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
+    case COGL_WINSYS_ID_EGL_X11:
+      if (egl_display->dummy_surface != EGL_NO_SURFACE)
+        {
+          eglDestroySurface (egl_renderer->edpy, egl_display->dummy_surface);
+          egl_display->dummy_surface = EGL_NO_SURFACE;
+        }
+
+      if (xlib_display->dummy_xwin)
+        {
+          XDestroyWindow (xlib_renderer->xdpy, xlib_display->dummy_xwin);
+          xlib_display->dummy_xwin = None;
+        }
+      break;
+#endif
+
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+    case COGL_WINSYS_ID_EGL_WAYLAND:
+      if (egl_display->dummy_surface != EGL_NO_SURFACE)
+        {
+          eglDestroySurface (egl_renderer->edpy, egl_display->dummy_surface);
+          egl_display->dummy_surface = EGL_NO_SURFACE;
+        }
+
+      if (egl_display->wayland_egl_native_window)
+        {
+          wl_egl_window_destroy (egl_display->wayland_egl_native_window);
+          egl_display->wayland_egl_native_window = NULL;
+        }
+
+      if (egl_display->wayland_surface)
+        {
+          wl_surface_destroy (egl_display->wayland_surface);
+          egl_display->wayland_surface = NULL;
+        }
+      break;
+#endif
+    }
 }
 
 static gboolean
@@ -1071,9 +1142,9 @@ _cogl_winsys_display_setup (CoglDisplay *display,
                             GError **error)
 {
   CoglDisplayEGL *egl_display;
-#if defined (COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT) || \
-  defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
-  CoglRendererEGL *egl_renderer = display->renderer->winsys;
+  CoglRenderer *renderer = display->renderer;
+#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
+  CoglRendererEGL *egl_renderer = renderer->winsys;
 #endif
 
   _COGL_RETURN_VAL_IF_FAIL (display->winsys == NULL, FALSE);
@@ -1082,12 +1153,14 @@ _cogl_winsys_display_setup (CoglDisplay *display,
   display->winsys = egl_display;
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  if (!gdl_plane_init (display, error))
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_GDL &&
+      !gdl_plane_init (display, error))
     goto error;
 #endif
 
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
-  if (display->wayland_compositor_display)
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_WAYLAND &&
+      display->wayland_compositor_display)
     {
       struct wl_display *wayland_display = display->wayland_compositor_display;
       egl_renderer->pf_eglBindWaylandDisplay (egl_renderer->edpy,
@@ -1096,7 +1169,8 @@ _cogl_winsys_display_setup (CoglDisplay *display,
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  if (!_cogl_winsys_kms_display_setup (display, error))
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_KMS &&
+      !_cogl_winsys_kms_display_setup (display, error))
     goto error;
 #endif
 
@@ -1118,9 +1192,10 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
   context->winsys = g_new0 (CoglContextEGL, 1);
 
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  cogl_xlib_renderer_add_filter (context->display->renderer,
-                                 event_filter_cb,
-                                 context);
+  if (context->display->renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_X11)
+    cogl_xlib_renderer_add_filter (context->display->renderer,
+                                   event_filter_cb,
+                                   context);
 #endif
   return update_winsys_features (context, error);
 }
@@ -1129,9 +1204,10 @@ static void
 _cogl_winsys_context_deinit (CoglContext *context)
 {
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  cogl_xlib_renderer_remove_filter (context->display->renderer,
-                                    event_filter_cb,
-                                    context);
+  if (context->display->renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_X11)
+    cogl_xlib_renderer_remove_filter (context->display->renderer,
+                                      event_filter_cb,
+                                      context);
 #endif
   g_free (context->winsys);
 }
@@ -1144,165 +1220,169 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   CoglContext *context = framebuffer->context;
   CoglDisplay *display = context->display;
   CoglDisplayEGL *egl_display = display->winsys;
+  CoglRenderer *renderer = display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  CoglRendererEGL *egl_renderer = display->renderer->winsys;
-  CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer = renderer->winsys;
   CoglOnscreenXlib *xlib_onscreen;
   Window xwin;
 #endif
-#if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT) || \
-    defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
-  CoglRendererEGL *egl_renderer = display->renderer->winsys;
-#endif
   CoglOnscreenEGL *egl_onscreen;
-#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   EGLint attributes[MAX_EGL_CONFIG_ATTRIBS];
   EGLConfig egl_config;
   EGLint config_count = 0;
   EGLBoolean status;
   gboolean need_stencil =
     egl_display->stencil_disabled ? FALSE : framebuffer->config.need_stencil;
-#endif
 
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context, FALSE);
 
-
-#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  egl_attributes_from_framebuffer_config (display,
-                                          &framebuffer->config,
-                                          need_stencil,
-                                          attributes);
-
-  status = eglChooseConfig (egl_renderer->edpy,
-                            attributes,
-                            &egl_config, 1,
-                            &config_count);
-  if (status != EGL_TRUE || config_count == 0)
+  if (renderer->winsys_vtable->id != COGL_WINSYS_ID_EGL_KMS)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_CREATE_ONSCREEN,
-                   "Failed to find a suitable EGL configuration");
-      return FALSE;
+      egl_attributes_from_framebuffer_config (display,
+                                              &framebuffer->config,
+                                              need_stencil,
+                                              attributes);
+
+      status = eglChooseConfig (egl_renderer->edpy,
+                                attributes,
+                                &egl_config, 1,
+                                &config_count);
+      if (status != EGL_TRUE || config_count == 0)
+        {
+          g_set_error (error, COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                       "Failed to find a suitable EGL configuration");
+          return FALSE;
+        }
+
+      /* Update the real number of samples_per_pixel now that we have
+       * found an egl_config... */
+      if (framebuffer->config.samples_per_pixel)
+        {
+          EGLint samples;
+          status = eglGetConfigAttrib (egl_renderer->edpy,
+                                       egl_config,
+                                       EGL_SAMPLES, &samples);
+          g_return_val_if_fail (status == EGL_TRUE, TRUE);
+          framebuffer->samples_per_pixel = samples;
+        }
     }
 
-  /* Update the real number of samples_per_pixel now that we have
-   * found an egl_config... */
-  if (framebuffer->config.samples_per_pixel)
-    {
-      EGLint samples;
-      status = eglGetConfigAttrib (egl_renderer->edpy,
-                                   egl_config,
-                                   EGL_SAMPLES, &samples);
-      g_return_val_if_fail (status == EGL_TRUE, TRUE);
-      framebuffer->samples_per_pixel = samples;
-    }
-#endif
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-
-  /* FIXME: We need to explicitly Select for ConfigureNotify events.
-   * For foreign windows we need to be careful not to mess up any
-   * existing event mask.
-   * We need to document that for windows we create then toolkits
-   * must be careful not to clear event mask bits that we select.
-   */
-
-  /* XXX: Note we ignore the user's original width/height when
-   * given a foreign X window. */
-  if (onscreen->foreign_xid)
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_X11)
     {
-      Status status;
-      CoglXlibTrapState state;
-      XWindowAttributes attr;
-      int xerror;
+      /* FIXME: We need to explicitly Select for ConfigureNotify events.
+       * For foreign windows we need to be careful not to mess up any
+       * existing event mask.
+       * We need to document that for windows we create then toolkits
+       * must be careful not to clear event mask bits that we select.
+       */
 
-      xwin = onscreen->foreign_xid;
-
-      _cogl_xlib_renderer_trap_errors (display->renderer, &state);
-
-      status = XGetWindowAttributes (xlib_renderer->xdpy, xwin, &attr);
-      xerror = _cogl_xlib_renderer_untrap_errors (display->renderer, &state);
-      if (status == 0 || xerror)
+      /* XXX: Note we ignore the user's original width/height when
+       * given a foreign X window. */
+      if (onscreen->foreign_xid)
         {
-          char message[1000];
-          XGetErrorText (xlib_renderer->xdpy, xerror,
-                         message, sizeof (message));
-          g_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_CREATE_ONSCREEN,
-                       "Unable to query geometry of foreign xid 0x%08lX: %s",
-                       xwin, message);
-          return FALSE;
+          Status status;
+          CoglXlibTrapState state;
+          XWindowAttributes attr;
+          int xerror;
+
+          xwin = onscreen->foreign_xid;
+
+          _cogl_xlib_renderer_trap_errors (display->renderer, &state);
+
+          status = XGetWindowAttributes (xlib_renderer->xdpy, xwin, &attr);
+          xerror = _cogl_xlib_renderer_untrap_errors (display->renderer,
+                                                      &state);
+          if (status == 0 || xerror)
+            {
+              char message[1000];
+              XGetErrorText (xlib_renderer->xdpy, xerror,
+                             message, sizeof (message));
+              g_set_error (error, COGL_WINSYS_ERROR,
+                           COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                           "Unable to query geometry of foreign "
+                           "xid 0x%08lX: %s",
+                           xwin, message);
+              return FALSE;
+            }
+
+          _cogl_framebuffer_winsys_update_size (framebuffer,
+                                                attr.width, attr.height);
+
+          /* Make sure the app selects for the events we require... */
+          onscreen->foreign_update_mask_callback (onscreen,
+                                                  COGL_ONSCREEN_X11_EVENT_MASK,
+                                                  onscreen->
+                                                  foreign_update_mask_data);
         }
-
-      _cogl_framebuffer_winsys_update_size (framebuffer,
-                                            attr.width, attr.height);
-
-      /* Make sure the app selects for the events we require... */
-      onscreen->foreign_update_mask_callback (onscreen,
-                                              COGL_ONSCREEN_X11_EVENT_MASK,
-                                              onscreen->foreign_update_mask_data);
-    }
-  else
-    {
-      int width;
-      int height;
-      CoglXlibTrapState state;
-      XVisualInfo *xvisinfo;
-      XSetWindowAttributes xattr;
-      unsigned long mask;
-      int xerror;
-
-      width = cogl_framebuffer_get_width (framebuffer);
-      height = cogl_framebuffer_get_height (framebuffer);
-
-      _cogl_xlib_renderer_trap_errors (display->renderer, &state);
-
-      xvisinfo = get_visual_info (display, egl_config);
-      if (xvisinfo == NULL)
+      else
         {
-          g_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_CREATE_ONSCREEN,
-                       "Unable to retrieve the X11 visual of context's "
-                       "fbconfig");
-          return FALSE;
-        }
+          int width;
+          int height;
+          CoglXlibTrapState state;
+          XVisualInfo *xvisinfo;
+          XSetWindowAttributes xattr;
+          unsigned long mask;
+          int xerror;
 
-      /* window attributes */
-      xattr.background_pixel = WhitePixel (xlib_renderer->xdpy,
-                                           DefaultScreen (xlib_renderer->xdpy));
-      xattr.border_pixel = 0;
-      /* XXX: is this an X resource that we are leaking‽... */
-      xattr.colormap = XCreateColormap (xlib_renderer->xdpy,
-                                        DefaultRootWindow (xlib_renderer->xdpy),
-                                        xvisinfo->visual,
-                                        AllocNone);
-      xattr.event_mask = COGL_ONSCREEN_X11_EVENT_MASK;
+          width = cogl_framebuffer_get_width (framebuffer);
+          height = cogl_framebuffer_get_height (framebuffer);
 
-      mask = CWBorderPixel | CWColormap | CWEventMask;
+          _cogl_xlib_renderer_trap_errors (display->renderer, &state);
 
-      xwin = XCreateWindow (xlib_renderer->xdpy,
-                            DefaultRootWindow (xlib_renderer->xdpy),
-                            0, 0,
-                            width, height,
-                            0,
-                            xvisinfo->depth,
-                            InputOutput,
-                            xvisinfo->visual,
-                            mask, &xattr);
+          xvisinfo = get_visual_info (display, egl_config);
+          if (xvisinfo == NULL)
+            {
+              g_set_error (error, COGL_WINSYS_ERROR,
+                           COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                           "Unable to retrieve the X11 visual of context's "
+                           "fbconfig");
+              return FALSE;
+            }
 
-      XFree (xvisinfo);
+          /* window attributes */
+          xattr.background_pixel =
+            WhitePixel (xlib_renderer->xdpy,
+                        DefaultScreen (xlib_renderer->xdpy));
+          xattr.border_pixel = 0;
+          /* XXX: is this an X resource that we are leaking‽... */
+          xattr.colormap =
+            XCreateColormap (xlib_renderer->xdpy,
+                             DefaultRootWindow (xlib_renderer->xdpy),
+                             xvisinfo->visual,
+                             AllocNone);
+          xattr.event_mask = COGL_ONSCREEN_X11_EVENT_MASK;
 
-      XSync (xlib_renderer->xdpy, False);
-      xerror = _cogl_xlib_renderer_untrap_errors (display->renderer, &state);
-      if (xerror)
-        {
-          char message[1000];
-          XGetErrorText (xlib_renderer->xdpy, xerror,
-                         message, sizeof (message));
-          g_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_CREATE_ONSCREEN,
-                       "X error while creating Window for CoglOnscreen: %s",
-                       message);
-          return FALSE;
+          mask = CWBorderPixel | CWColormap | CWEventMask;
+
+          xwin = XCreateWindow (xlib_renderer->xdpy,
+                                DefaultRootWindow (xlib_renderer->xdpy),
+                                0, 0,
+                                width, height,
+                                0,
+                                xvisinfo->depth,
+                                InputOutput,
+                                xvisinfo->visual,
+                                mask, &xattr);
+
+          XFree (xvisinfo);
+
+          XSync (xlib_renderer->xdpy, False);
+          xerror =
+            _cogl_xlib_renderer_untrap_errors (display->renderer, &state);
+          if (xerror)
+            {
+              char message[1000];
+              XGetErrorText (xlib_renderer->xdpy, xerror,
+                             message, sizeof (message));
+              g_set_error (error, COGL_WINSYS_ERROR,
+                           COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                           "X error while creating Window for CoglOnscreen: %s",
+                           message);
+              return FALSE;
+            }
         }
     }
 #endif
@@ -1310,85 +1390,106 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   onscreen->winsys = g_slice_new0 (CoglOnscreenEGL);
   egl_onscreen = onscreen->winsys;
 
+  switch (renderer->winsys_vtable->id)
+    {
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  xlib_onscreen = onscreen->winsys;
+    case COGL_WINSYS_ID_EGL_X11:
+      xlib_onscreen = onscreen->winsys;
 
-  xlib_onscreen->xwin = xwin;
-  xlib_onscreen->is_foreign_xwin = onscreen->foreign_xid ? TRUE : FALSE;
+      xlib_onscreen->xwin = xwin;
+      xlib_onscreen->is_foreign_xwin = onscreen->foreign_xid ? TRUE : FALSE;
 
-  egl_onscreen->egl_surface =
-    eglCreateWindowSurface (egl_renderer->edpy,
-                            egl_config,
-                            (NativeWindowType) xlib_onscreen->xwin,
-                            NULL);
-#elif defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
+      egl_onscreen->egl_surface =
+        eglCreateWindowSurface (egl_renderer->edpy,
+                                egl_config,
+                                (NativeWindowType) xlib_onscreen->xwin,
+                                NULL);
+      break;
+#endif
 
-  egl_onscreen->wayland_surface =
-    wl_compositor_create_surface (egl_renderer->wayland_compositor);
-  if (!egl_onscreen->wayland_surface)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_CREATE_ONSCREEN,
-                   "Error while creating wayland surface for CoglOnscreen");
-      return FALSE;
-    }
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+    case COGL_WINSYS_ID_EGL_WAYLAND:
+      egl_onscreen->wayland_surface =
+        wl_compositor_create_surface (egl_renderer->wayland_compositor);
+      if (!egl_onscreen->wayland_surface)
+        {
+          g_set_error (error, COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                       "Error while creating wayland surface for CoglOnscreen");
+          return FALSE;
+        }
 
-  egl_onscreen->wayland_shell_surface =
-    wl_shell_get_shell_surface (egl_renderer->wayland_shell,
-                                egl_onscreen->wayland_surface);
+      egl_onscreen->wayland_shell_surface =
+        wl_shell_get_shell_surface (egl_renderer->wayland_shell,
+                                    egl_onscreen->wayland_surface);
 
-  egl_onscreen->wayland_egl_native_window =
-    wl_egl_window_create (egl_onscreen->wayland_surface,
-                          cogl_framebuffer_get_width (framebuffer),
-                          cogl_framebuffer_get_height (framebuffer));
-  if (!egl_onscreen->wayland_egl_native_window)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_CREATE_ONSCREEN,
-                   "Error while creating wayland egl native window "
-                   "for CoglOnscreen");
-      return FALSE;
-    }
+      egl_onscreen->wayland_egl_native_window =
+        wl_egl_window_create (egl_onscreen->wayland_surface,
+                              cogl_framebuffer_get_width (framebuffer),
+                              cogl_framebuffer_get_height (framebuffer));
+      if (!egl_onscreen->wayland_egl_native_window)
+        {
+          g_set_error (error, COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                       "Error while creating wayland egl native window "
+                       "for CoglOnscreen");
+          return FALSE;
+        }
 
-  egl_onscreen->egl_surface =
-    eglCreateWindowSurface (egl_renderer->edpy,
-                            egl_config,
-                            (EGLNativeWindowType)
-                            egl_onscreen->wayland_egl_native_window,
-                            NULL);
+      egl_onscreen->egl_surface =
+        eglCreateWindowSurface (egl_renderer->edpy,
+                                egl_config,
+                                (EGLNativeWindowType)
+                                egl_onscreen->wayland_egl_native_window,
+                                NULL);
 
-  wl_shell_surface_set_toplevel (egl_onscreen->wayland_shell_surface);
+      wl_shell_surface_set_toplevel (egl_onscreen->wayland_shell_surface);
+      break;
+#endif
 
-#elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
-      defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
-      defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)          || \
-      defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
-  if (egl_display->have_onscreen)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_CREATE_ONSCREEN,
-                   "EGL platform only supports a single onscreen window");
-      return FALSE;
-    }
+#if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
+    defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
+    defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)          || \
+    defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
+    case COGL_WINSYS_ID_EGL_NULL:
+    case COGL_WINSYS_ID_EGL_ANDROID:
+    case COGL_WINSYS_ID_EGL_GDL:
+    case COGL_WINSYS_ID_EGL_KMS:
+
+      if (egl_display->have_onscreen)
+        {
+          g_set_error (error, COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                       "EGL platform only supports a single onscreen window");
+          return FALSE;
+        }
 
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  if (!_cogl_winsys_kms_onscreen_init (cogl_framebuffer_get_context (framebuffer),
-                                       &egl_renderer->kms_renderer,
-                                       &egl_display->kms_display,
-                                       &egl_onscreen->kms_onscreen,
-                                       error))
-    return FALSE;
-#else
-  egl_onscreen->egl_surface = egl_display->egl_surface;
+      if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_KMS)
+        {
+          CoglContext *context = cogl_framebuffer_get_context (framebuffer);
+          if (!_cogl_winsys_kms_onscreen_init (context,
+                                               &egl_renderer->kms_renderer,
+                                               &egl_display->kms_display,
+                                               &egl_onscreen->kms_onscreen,
+                                               error))
+            return FALSE;
+        }
+      else
+#endif
+        egl_onscreen->egl_surface = egl_display->egl_surface;
+
+      _cogl_framebuffer_winsys_update_size (framebuffer,
+                                            egl_display->egl_surface_width,
+                                            egl_display->egl_surface_height);
+      egl_display->have_onscreen = TRUE;
+      break;
 #endif
 
-  _cogl_framebuffer_winsys_update_size (framebuffer,
-                                        egl_display->egl_surface_width,
-                                        egl_display->egl_surface_height);
-  egl_display->have_onscreen = TRUE;
-#else
-#error "Unknown EGL platform"
-#endif
+    default:
+      g_warn_if_reached ();
+      return FALSE;
+    }
 
   return TRUE;
 }
@@ -1398,12 +1499,14 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
-  CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  CoglXlibRenderer *xlib_renderer = context->display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer = renderer->winsys;
   CoglXlibTrapState old_state;
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
-#elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT)
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT
   CoglDisplayEGL *egl_display = context->display->winsys;
 #endif
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
@@ -1411,21 +1514,20 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   /* If we never successfully allocated then there's nothing to do */
   if (egl_onscreen == NULL)
     return;
-#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  if (egl_onscreen->egl_surface != EGL_NO_SURFACE)
+  if (renderer->winsys_vtable->id != COGL_WINSYS_ID_EGL_KMS &&
+      egl_onscreen->egl_surface != EGL_NO_SURFACE)
     {
       if (eglDestroySurface (egl_renderer->edpy, egl_onscreen->egl_surface)
           == EGL_FALSE)
         g_warning ("Failed to destroy EGL surface");
       egl_onscreen->egl_surface = EGL_NO_SURFACE;
     }
-#endif
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT
   egl_display->have_onscreen = FALSE;
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  _cogl_xlib_renderer_trap_errors (context->display->renderer, &old_state);
+  _cogl_xlib_renderer_trap_errors (renderer, &old_state);
 
   if (!xlib_onscreen->is_foreign_xwin && xlib_onscreen->xwin != None)
     {
@@ -1437,7 +1539,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 
   XSync (xlib_renderer->xdpy, False);
 
-  if (_cogl_xlib_renderer_untrap_errors (context->display->renderer,
+  if (_cogl_xlib_renderer_untrap_errors (renderer,
                                          &old_state) != Success)
     g_warning ("X Error while destroying X window");
 #endif
@@ -1470,54 +1572,58 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglDisplayEGL *egl_display = context->display->winsys;
-  CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
-#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
-  CoglContextEGL *egl_context = context->winsys;
-#endif
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
 
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  _cogl_winsys_kms_bind (&egl_renderer->kms_renderer,
-                         &egl_display->kms_display);
-  return;
-
-#else
-
-  if (egl_context->current_surface == egl_onscreen->egl_surface)
-    return;
-
-  if (G_UNLIKELY (!onscreen))
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_KMS)
     {
-#if defined (COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT) || \
-    defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
-      eglMakeCurrent (egl_renderer->edpy,
-                      egl_display->dummy_surface,
-                      egl_display->dummy_surface,
-                      egl_display->egl_context);
-      egl_context->current_surface = egl_display->dummy_surface;
-#elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
-      defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
-      defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
-
+      _cogl_winsys_kms_bind (&egl_renderer->kms_renderer,
+                             &egl_display->kms_display);
       return;
-#else
-#error "Unknown EGL platform"
+    }
 #endif
-    }
-  else
-    {
-      eglMakeCurrent (egl_renderer->edpy,
-                      egl_onscreen->egl_surface,
-                      egl_onscreen->egl_surface,
-                      egl_display->egl_context);
-      egl_context->current_surface = egl_onscreen->egl_surface;
-    }
 
-  if (onscreen->swap_throttled)
-    eglSwapInterval (egl_renderer->edpy, 1);
-  else
-    eglSwapInterval (egl_renderer->edpy, 0);
+#if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
+  defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT) ||            \
+  defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT) ||        \
+  defined (COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT) ||    \
+  defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
+  {
+    CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+    CoglContextEGL *egl_context = context->winsys;
 
+    if (egl_context->current_surface == egl_onscreen->egl_surface)
+      return;
+
+    if (G_UNLIKELY (!onscreen))
+      {
+        if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_X11 ||
+            renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_WAYLAND)
+          {
+            eglMakeCurrent (egl_renderer->edpy,
+                            egl_display->dummy_surface,
+                            egl_display->dummy_surface,
+                            egl_display->egl_context);
+            egl_context->current_surface = egl_display->dummy_surface;
+          }
+        else
+          return;
+      }
+    else
+      {
+        eglMakeCurrent (egl_renderer->edpy,
+                        egl_onscreen->egl_surface,
+                        egl_onscreen->egl_surface,
+                        egl_display->egl_context);
+        egl_context->current_surface = egl_onscreen->egl_surface;
+      }
+
+    if (onscreen->swap_throttled)
+      eglSwapInterval (egl_renderer->edpy, 1);
+    else
+      eglSwapInterval (egl_renderer->edpy, 0);
+  }
 #endif
 }
 
@@ -1526,38 +1632,47 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
                                    const int *user_rectangles,
                                    int n_rectangles)
 {
-#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+#if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
+  defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT) ||            \
+  defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT) ||        \
+  defined (COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT) ||    \
+  defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
+
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   int framebuffer_height  = cogl_framebuffer_get_height (framebuffer);
   int *rectangles = g_alloca (sizeof (int) * n_rectangles * 4);
   int i;
 
-  /* eglSwapBuffersRegion expects rectangles relative to the bottom left corner
-   * but we are given rectangles relative to the top left so we need to flip
-   * them... */
-  memcpy (rectangles, user_rectangles, sizeof (int) * n_rectangles * 4);
-  for (i = 0; i < n_rectangles; i++)
+  if (renderer->winsys_vtable->id != COGL_WINSYS_ID_EGL_KMS)
     {
-      int *rect = &rectangles[4 * i];
-      rect[1] = framebuffer_height - rect[1] - rect[3];
+      /* eglSwapBuffersRegion expects rectangles relative to the
+       * bottom left corner but we are given rectangles relative to
+       * the top left so we need to flip them... */
+      memcpy (rectangles, user_rectangles, sizeof (int) * n_rectangles * 4);
+      for (i = 0; i < n_rectangles; i++)
+        {
+          int *rect = &rectangles[4 * i];
+          rect[1] = framebuffer_height - rect[1] - rect[3];
+        }
+
+      /* At least for eglSwapBuffers the EGL spec says that the surface to
+         swap must be bound to the current context. It looks like Mesa
+         also validates that this is the case for eglSwapBuffersRegion so
+         we must bind here too */
+      _cogl_framebuffer_flush_state (COGL_FRAMEBUFFER (onscreen),
+                                     COGL_FRAMEBUFFER (onscreen),
+                                     COGL_FRAMEBUFFER_STATE_BIND);
+
+      if (egl_renderer->pf_eglSwapBuffersRegion (egl_renderer->edpy,
+                                                 egl_onscreen->egl_surface,
+                                                 n_rectangles,
+                                                 rectangles) == EGL_FALSE)
+        g_warning ("Error reported by eglSwapBuffersRegion");
     }
-
-  /* At least for eglSwapBuffers the EGL spec says that the surface to
-     swap must be bound to the current context. It looks like Mesa
-     also validates that this is the case for eglSwapBuffersRegion so
-     we must bind here too */
-  _cogl_framebuffer_flush_state (COGL_FRAMEBUFFER (onscreen),
-                                 COGL_FRAMEBUFFER (onscreen),
-                                 COGL_FRAMEBUFFER_STATE_BIND);
-
-  if (egl_renderer->pf_eglSwapBuffersRegion (egl_renderer->edpy,
-                                             egl_onscreen->egl_surface,
-                                             n_rectangles,
-                                             rectangles) == EGL_FALSE)
-    g_warning ("Error reported by eglSwapBuffersRegion");
 #endif
 }
 
@@ -1567,8 +1682,12 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
                                       gboolean visibility)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglXlibRenderer *xlib_renderer = context->display->renderer->winsys;
+  CoglRenderer *renderer = context->display->renderer;
+  CoglXlibRenderer *xlib_renderer = renderer->winsys;
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
+
+  if (renderer->winsys_vtable->id != COGL_WINSYS_ID_EGL_X11)
+    return;
 
   if (visibility)
     XMapWindow (xlib_renderer->xdpy, xlib_onscreen->xwin);
@@ -1581,18 +1700,23 @@ static void
 _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   CoglDisplayEGL *egl_display = context->display->winsys;
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  _cogl_winsys_kms_swap_buffers (&egl_renderer->kms_renderer,
-                                 &egl_display->kms_display,
-                                 &egl_onscreen->kms_onscreen);
-  return;
-#else
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_KMS)
+    {
+      _cogl_winsys_kms_swap_buffers (&egl_renderer->kms_renderer,
+                                     &egl_display->kms_display,
+                                     &egl_onscreen->kms_onscreen);
+      return;
+    }
+#endif
+
   /* The specification for EGL (at least in 1.4) says that the surface
      needs to be bound to the current context for the swap to work
      although it may change in future. Mesa explicitly checks for this
@@ -1603,7 +1727,6 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
                                  COGL_FRAMEBUFFER_STATE_BIND);
 
   eglSwapBuffers (egl_renderer->edpy, egl_onscreen->egl_surface);
-#endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
   /*
@@ -1612,7 +1735,8 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
    * the implementation changing we should explicitly ensure all messages are
    * sent.
    */
-  wl_display_flush (egl_renderer->wayland_display);
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_WAYLAND)
+    wl_display_flush (egl_renderer->wayland_display);
 #endif
 }
 
@@ -1620,24 +1744,36 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
 static guint32
 _cogl_winsys_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
 {
-  CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
-  return xlib_onscreen->xwin;
+  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglRenderer *renderer = context->display->renderer;
+
+  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_X11)
+    {
+      CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
+      return xlib_onscreen->xwin;
+    }
+  else
+    return None;
 }
 #endif
 
 static void
 _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
 {
-#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglContextEGL *egl_context = context->winsys;
-  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglRenderer *renderer = context->display->renderer;
 
-  if (egl_context->current_surface != egl_onscreen->egl_surface)
-    return;
+  if (renderer->winsys_vtable->id != COGL_WINSYS_ID_EGL_KMS)
+    {
+      CoglContextEGL *egl_context = context->winsys;
+      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
 
-  egl_context->current_surface = EGL_NO_SURFACE;
-#endif
+      if (egl_context->current_surface != egl_onscreen->egl_surface)
+        return;
+
+      egl_context->current_surface = EGL_NO_SURFACE;
+    }
+
   _cogl_winsys_onscreen_bind (onscreen);
 }
 
@@ -1651,6 +1787,9 @@ _cogl_winsys_xlib_get_visual_info (void)
   _COGL_GET_CONTEXT (ctx, NULL);
 
   _COGL_RETURN_VAL_IF_FAIL (ctx->display->winsys, FALSE);
+
+  if (ctx->display->renderer->winsys_vtable->id != COGL_WINSYS_ID_EGL_X11)
+    return NULL;
 
   egl_display = ctx->display->winsys;
 

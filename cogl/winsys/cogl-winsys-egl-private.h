@@ -98,27 +98,23 @@ typedef struct _CoglDisplayEGL
 #endif
 
   EGLContext egl_context;
-#if defined (COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT)
   EGLSurface dummy_surface;
-#elif defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
   struct wl_surface *wayland_surface;
   struct wl_egl_window *wayland_egl_native_window;
-  EGLSurface dummy_surface;
-#elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
-      defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT) || \
-      defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT) || \
-      defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
-#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  EGLSurface egl_surface;
-#else
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   CoglDisplayKMS kms_display;
 #endif
+#if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
+  defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT) ||            \
+  defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT) ||        \
+  defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
   int egl_surface_width;
   int egl_surface_height;
   gboolean have_onscreen;
-#else
-#error "Unknown EGL platform"
 #endif
+  EGLSurface egl_surface;
 
   EGLConfig egl_config;
   gboolean found_egl_config;
