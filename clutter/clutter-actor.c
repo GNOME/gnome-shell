@@ -1262,7 +1262,7 @@ clutter_actor_real_show (ClutterActor *self)
       /* we queue a relayout unless the actor is inside a
        * container that explicitly told us not to
        */
-      if (priv->parent_actor &&
+      if (priv->parent_actor != NULL &&
           (!(priv->parent_actor->flags & CLUTTER_ACTOR_NO_LAYOUT)))
         {
           /* While an actor is hidden the parent may not have
@@ -1384,7 +1384,7 @@ clutter_actor_real_hide (ClutterActor *self)
       /* we queue a relayout unless the actor is inside a
        * container that explicitly told us not to
        */
-      if (priv->parent_actor &&
+      if (priv->parent_actor != NULL &&
           (!(priv->parent_actor->flags & CLUTTER_ACTOR_NO_LAYOUT)))
         clutter_actor_queue_relayout (priv->parent_actor);
     }
@@ -6999,14 +6999,22 @@ clutter_actor_adjust_allocation (ClutterActor    *self,
     {
       ClutterActor *parent = clutter_actor_get_parent (self);
 
-      g_warning (G_STRLOC ": The actor '%s' is getting an allocation "
-                 "of %.2f x %.2f from its parent actor '%s', but its "
-                 "requested minimum size is of %.2f x %.2f",
-                 _clutter_actor_get_debug_name (self),
-                 alloc_width, alloc_height,
-                 parent != NULL ? _clutter_actor_get_debug_name (parent)
-                                : "top-level",
-                 min_width, min_height);
+      /* the only actors that are allowed to be underallocated are the Stage,
+       * as it doesn't have an implicit size, and Actors that specifically
+       * told us that they want to opt-out from layout control mechanisms
+       * through the NO_LAYOUT escape hatch.
+       */
+      if (parent != NULL &&
+          !(self->flags & CLUTTER_ACTOR_NO_LAYOUT) != 0)
+        {
+          g_warning (G_STRLOC ": The actor '%s' is getting an allocation "
+                     "of %.2f x %.2f from its parent actor '%s', but its "
+                     "requested minimum size is of %.2f x %.2f",
+                     _clutter_actor_get_debug_name (self),
+                     alloc_width, alloc_height,
+                     _clutter_actor_get_debug_name (parent),
+                     min_width, min_height);
+        }
     }
 #endif
 
