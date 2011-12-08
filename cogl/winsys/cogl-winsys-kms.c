@@ -185,11 +185,29 @@ _cogl_winsys_kms_display_setup (CoglDisplay *display, GError **error)
 }
 
 gboolean
-_cogl_winsys_kms_create_context (CoglRendererKMS *kms_renderer,
-                                 CoglDisplayKMS  *kms_display,
-                                 GError          **error)
+_cogl_winsys_kms_create_context (CoglRenderer *renderer,
+                                 CoglDisplay *display,
+                                 GError **error)
 {
-  kms_display->egl_context = eglCreateContext (kms_renderer->dpy, NULL, EGL_NO_CONTEXT, NULL);
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglDisplayEGL *egl_display = display->winsys;
+  CoglRendererKMS *kms_renderer = &egl_renderer->kms_renderer;
+  CoglDisplayKMS *kms_display = &egl_display->kms_display;
+  EGLint attribs[3];
+
+  if (renderer->driver == COGL_DRIVER_GLES2)
+    {
+      attribs[0] = EGL_CONTEXT_CLIENT_VERSION;
+      attribs[1] = 2;
+      attribs[2] = EGL_NONE;
+    }
+  else
+    attribs[0] = EGL_NONE;
+
+  kms_display->egl_context = eglCreateContext (kms_renderer->dpy,
+                                               NULL,
+                                               EGL_NO_CONTEXT,
+                                               attribs);
 
   if (kms_display->egl_context == NULL)
     {
@@ -277,11 +295,12 @@ _cogl_winsys_kms_onscreen_init (CoglContext      *context,
   context->glGenFramebuffers (1, &kms_onscreen->fb);
   context->glBindFramebuffer (GL_FRAMEBUFFER_EXT, kms_onscreen->fb);
 
-  context->glGenRenderbuffers(1, &kms_onscreen->depth_rb);
-  context->glBindRenderbuffer(GL_RENDERBUFFER_EXT, kms_onscreen->depth_rb);
-  context->glRenderbufferStorage(GL_RENDERBUFFER_EXT,
-                        GL_DEPTH_COMPONENT,
-                        kms_display->mode.hdisplay, kms_display->mode.vdisplay);
+  context->glGenRenderbuffers (1, &kms_onscreen->depth_rb);
+  context->glBindRenderbuffer (GL_RENDERBUFFER_EXT, kms_onscreen->depth_rb);
+  context->glRenderbufferStorage (GL_RENDERBUFFER_EXT,
+                                  GL_DEPTH_COMPONENT16,
+                                  kms_display->mode.hdisplay,
+                                  kms_display->mode.vdisplay);
   context->glBindRenderbuffer (GL_RENDERBUFFER_EXT, 0);
 
   context->glFramebufferRenderbuffer (GL_FRAMEBUFFER_EXT,

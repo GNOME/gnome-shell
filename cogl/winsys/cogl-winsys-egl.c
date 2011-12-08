@@ -578,8 +578,8 @@ try_create_context (CoglDisplay *display,
   CoglXlibDisplay *xlib_display = display->winsys;
   CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
 #endif
-  CoglRendererEGL *egl_renderer = display->renderer->winsys;
 #ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+  CoglRendererEGL *egl_renderer = display->renderer->winsys;
   EGLDisplay edpy;
   EGLConfig config;
   EGLint config_count = 0;
@@ -849,8 +849,8 @@ try_create_context (CoglDisplay *display,
                    &egl_display->egl_surface_height);
 
 #elif defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
-  if (!_cogl_winsys_kms_create_context (&egl_renderer->kms_renderer,
-                                        &egl_display->kms_display,
+  if (!_cogl_winsys_kms_create_context (display->renderer,
+                                        display,
                                         error))
     return FALSE;
 

@@ -91,9 +91,9 @@ _cogl_winsys_kms_bind (CoglRendererKMS *kms_renderer,
                        CoglDisplayKMS  *kms_display);
 
 gboolean
-_cogl_winsys_kms_create_context (CoglRendererKMS *kms_renderer,
-                                 CoglDisplayKMS  *kms_display,
-                                 GError         **error);
+_cogl_winsys_kms_create_context (CoglRenderer *renderer,
+                                 CoglDisplay *display,
+                                 GError **error);
 
 gboolean
 _cogl_winsys_kms_destroy_context (CoglRendererKMS  *kms_renderer,
