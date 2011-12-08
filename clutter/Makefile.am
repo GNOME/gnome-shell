@@ -771,7 +771,7 @@ libclutter_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(win32_resources_ldflag) \
 	$(NULL)
 
-dist-hook: ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj ../build/win32/vs10/clutter.vcxproj.filters
+dist-hook: ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj ../build/win32/vs10/clutter.vcxproj.filters ../build/win32/gen-enums.bat
 
 ../build/win32/vs9/clutter.vcproj: $(top_srcdir)/build/win32/vs9/clutter.vcprojin
 	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(deprecated_c) $(deprecated_c_priv) $(built_source_c) | tr '/' '\\'`; do \
@@ -802,7 +802,47 @@ dist-hook: ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj
 	done >clutter.vs10.sourcefiles.filters
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/clutter.vcxproj.filtersin >$@
 	rm clutter.vs10.sourcefiles.filters
-	
+
+clutter.vsenums_h:
+	echo 'perl %1\bin\glib-mkenums --template ../../clutter/clutter-enum-types.h.in ' >vsenums_h.temp1
+	for F in `echo $(source_h) $(backend_source_h) $(srcdir)/clutter-win32.h`; do \
+		case $$F in \
+		*-x11*.h|*-wayland*.h|*-gdk*.h|*-glx*.h|*-cex*.h|*-egl*.h|*-osx*.h) ;; \
+		*.h) echo '../../clutter'$$F' '	\
+			;;	\
+		esac;	\
+	done >>vsenums_h.temp1
+	cat vsenums_h.temp1 | sed 's_/clutter./_/clutter/_' >vsenums_h.temp
+	cat vsenums_h.temp | tr -d '\n' >>$@
+	echo '> ..\..\clutter\clutter-enum-types.h' >>$@
+	rm vsenums_h.temp1
+	rm vsenums_h.temp
+
+clutter.vsenums_c:
+	echo 'perl %1\bin\glib-mkenums --template ../../clutter/clutter-enum-types.c.in ' >vsenums_c.temp1
+	for F in `echo $(source_h) $(backend_source_h) $(srcdir)/clutter-win32.h`; do \
+		case $$F in \
+		*-x11*.h|*-wayland*.h|*-gdk*.h|*-glx*.h|*-cex*.h|*-egl*.h|*-osx*.h) ;; \
+		*.h) echo '../../clutter'$$F' '	\
+			;;	\
+		esac;	\
+	done >>vsenums_c.temp1
+	cat vsenums_c.temp1 | sed 's_/clutter./_/clutter/_' >vsenums_c.temp
+	cat vsenums_c.temp | tr -d '\n' >>$@
+	echo '> ..\..\clutter\clutter-enum-types.c' >>$@
+	rm vsenums_c.temp1
+	rm vsenums_c.temp
+
+../build/win32/gen-enums.bat: clutter.vsenums_h clutter.vsenums_c
+	echo 'if exist ..\..\clutter\clutter-enum-types.h goto DONE_COGL_ENUMS_H' >$@
+	cat clutter.vsenums_h >>$@
+	echo ':DONE_COGL_ENUMS_H' >>$@
+	echo 'if exist ..\..\clutter\clutter-enum-types.c goto DONE_COGL_ENUMS_C' >>$@
+	cat clutter.vsenums_c >>$@
+	echo ':DONE_COGL_ENUMS_C' >>$@
+	rm clutter.vsenums_h
+	rm clutter.vsenums_c
+
 EXTRA_DIST += \
 	clutter-version.h.win32	\
 	clutter-config.h.win32	\
@@ -811,7 +851,7 @@ EXTRA_DIST += \
 	$(NULL)
 
 # Let the VS9/VS10 Project files be cleared out before they are re-expanded...
-DISTCLEANFILES += ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj ../build/win32/vs10/clutter.vcxproj.filters
+DISTCLEANFILES += ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj ../build/win32/vs10/clutter.vcxproj.filters ../build/win32/gen-enums.bat
 
 install-exec-local:
 	test -z "$(libdir)" || $(MKDIR_P) "$(DESTDIR)$(libdir)"
