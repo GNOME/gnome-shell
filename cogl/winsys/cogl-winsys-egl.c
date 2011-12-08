@@ -99,6 +99,7 @@ typedef struct _CoglOnscreenEGL
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
   struct wl_egl_window *wayland_egl_native_window;
   struct wl_surface *wayland_surface;
+  struct wl_shell_surface *wayland_shell_surface;
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
@@ -1332,6 +1333,10 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
       return FALSE;
     }
 
+  egl_onscreen->wayland_shell_surface =
+    wl_shell_get_shell_surface (egl_renderer->wayland_shell,
+                                egl_onscreen->wayland_surface);
+
   egl_onscreen->wayland_egl_native_window =
     wl_egl_window_create (egl_onscreen->wayland_surface,
                           cogl_framebuffer_get_width (framebuffer),
@@ -1352,8 +1357,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                             egl_onscreen->wayland_egl_native_window,
                             NULL);
 
-  wl_shell_set_toplevel (egl_renderer->wayland_shell,
-                         egl_onscreen->wayland_surface);
+  wl_shell_surface_set_toplevel (egl_onscreen->wayland_shell_surface);
 
 #elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
       defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
