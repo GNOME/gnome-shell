@@ -46,18 +46,52 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageWayland,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init));
 
+static void
+handle_configure (void *data,
+                  struct wl_shell_surface *shell_surface,
+                  uint32_t timestamp,
+                  uint32_t edges,
+                  int32_t width,
+                  int32_t height)
+{
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL(data);
+  CoglFramebuffer *fb = COGL_FRAMEBUFFER (stage_cogl->onscreen);
+
+  if (cogl_framebuffer_get_width (fb) != width ||
+      cogl_framebuffer_get_height (fb) != height)
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_cogl->wrapper));
+
+  clutter_actor_set_size (CLUTTER_ACTOR (stage_cogl->wrapper),
+                         width, height);
+
+  /* the resize process is complete, so we can ask the stage
+   * to set up the GL viewport with the new size
+   */
+  clutter_stage_ensure_viewport (stage_cogl->wrapper);
+}
+
+static const struct wl_shell_surface_listener shell_surface_listener = {
+       handle_configure,
+};
+
 static gboolean
 clutter_stage_wayland_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageWayland *stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
   struct wl_surface *wl_surface;
+  struct wl_shell_surface *wl_shell_surface;
 
   clutter_stage_window_parent_iface->realize (stage_window);
 
   wl_surface = cogl_wayland_onscreen_get_surface (stage_cogl->onscreen);
-
   wl_surface_set_user_data (wl_surface, stage_wayland);
+
+  wl_shell_surface =
+    cogl_wayland_onscreen_get_shell_surface (stage_cogl->onscreen);
+  wl_shell_surface_add_listener (wl_shell_surface,
+                                 &shell_surface_listener,
+                                 stage_wayland);
 
   return TRUE;
 }

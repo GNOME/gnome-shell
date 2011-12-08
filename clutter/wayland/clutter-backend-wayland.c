@@ -68,34 +68,7 @@ clutter_backend_wayland_dispose (GObject *gobject)
   G_OBJECT_CLASS (clutter_backend_wayland_parent_class)->dispose (gobject);
 }
 
-static void
-handle_configure (void *data,
-                  struct wl_shell *shell,
-                  uint32_t timestamp,
-                  uint32_t edges,
-                  struct wl_surface *surface,
-                  int32_t width,
-                  int32_t height)
-{
-  ClutterStageCogl *stage_cogl = wl_surface_get_user_data (surface);
-  CoglFramebuffer *fb = COGL_FRAMEBUFFER (stage_cogl->onscreen);
 
-  if (cogl_framebuffer_get_width (fb) != width ||
-      cogl_framebuffer_get_height (fb) != height)
-    clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_cogl->wrapper));
-
-  clutter_actor_set_size (CLUTTER_ACTOR (stage_cogl->wrapper),
-                         width, height);
-
-  /* the resize process is complete, so we can ask the stage
-   * to set up the GL viewport with the new size
-   */
-  clutter_stage_ensure_viewport (stage_cogl->wrapper);
-}
-
-static const struct wl_shell_listener shell_listener = {
-       handle_configure,
-};
 
 static void
 display_handle_global (struct wl_display *display,
@@ -118,8 +91,7 @@ display_handle_global (struct wl_display *display,
     {
       backend_wayland->wayland_shell =
         wl_display_bind (display, id, &wl_shell_interface);
-      wl_shell_add_listener (backend_wayland->wayland_shell,
-                             &shell_listener, backend_wayland);
+
     }
   else if (strcmp (interface, "wl_shm") == 0)
     backend_wayland->wayland_shm =
