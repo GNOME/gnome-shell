@@ -222,7 +222,7 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
     driver_name = _cogl_config_driver;
 
 #ifdef HAVE_COGL_GL
-  if (driver_name == NULL || !strcmp (driver_name, "gl"))
+  if (driver_name == NULL || !g_ascii_strcasecmp (driver_name, "gl"))
     {
       renderer->driver = COGL_DRIVER_GL;
       libgl_name = COGL_GL_LIBNAME;
@@ -231,7 +231,7 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
 #endif
 
 #ifdef HAVE_COGL_GLES2
-  if (driver_name == NULL || !strcmp (driver_name, "gles2"))
+  if (driver_name == NULL || !g_ascii_strcasecmp (driver_name, "gles2"))
     {
       renderer->driver = COGL_DRIVER_GLES2;
       libgl_name = COGL_GLES2_LIBNAME;
@@ -240,7 +240,7 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
 #endif
 
 #ifdef HAVE_COGL_GLES
-  if (driver_name == NULL || !strcmp (driver_name, "gles1"))
+  if (driver_name == NULL || !g_ascii_strcasecmp (driver_name, "gles1"))
     {
       renderer->driver = COGL_DRIVER_GLES1;
       libgl_name = COGL_GLES1_LIBNAME;
@@ -308,7 +308,8 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
           char *user_choice = getenv ("COGL_RENDERER");
           if (!user_choice)
             user_choice = _cogl_config_renderer;
-          if (user_choice && strcmp (winsys->name, user_choice) != 0)
+          if (user_choice &&
+              g_ascii_strcasecmp (winsys->name, user_choice) != 0)
             continue;
         }
 
