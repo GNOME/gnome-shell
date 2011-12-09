@@ -382,8 +382,6 @@ cogl_sources_c += \
 endif
 if SUPPORT_EGL_PLATFORM_KMS
 cogl_sources_c += \
-	$(srcdir)/winsys/cogl-winsys-kms.c \
-	$(srcdir)/winsys/cogl-winsys-kms.h \
 	$(srcdir)/winsys/cogl-winsys-egl-kms.c \
 	$(srcdir)/winsys/cogl-winsys-egl-kms-private.h
 endif

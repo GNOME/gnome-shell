@@ -28,9 +28,6 @@
 #include "cogl-winsys-private.h"
 #include "cogl-context.h"
 #include "cogl-context-private.h"
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-#include "cogl-winsys-kms.h"
-#endif
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
 #include "cogl-xlib-renderer-private.h"
 #include "cogl-xlib-display-private.h"
@@ -39,6 +36,23 @@
 #include <wayland-client.h>
 #include <wayland-egl.h>
 #endif
+
+typedef struct _CoglWinsysEGLVtable
+{
+  gboolean
+  (* display_setup) (CoglDisplay *display,
+                     GError **error);
+  void
+  (* display_destroy) (CoglDisplay *display);
+
+  gboolean
+  (* try_create_context) (CoglDisplay *display,
+                          EGLint *attribs,
+                          GError **error);
+
+  void
+  (* cleanup_context) (CoglDisplay *display);
+} CoglWinsysEGLVtable;
 
 typedef enum _CoglEGLWinsysFeature
 {
@@ -72,9 +86,11 @@ typedef struct _CoglRendererEGL
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
   gboolean gdl_initialized;
 #endif
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  CoglRendererKMS kms_renderer;
-#endif
+
+  /* Data specific to the EGL platform */
+  void *platform;
+  /* vtable for platform specific parts */
+  const CoglWinsysEGLVtable *platform_vtable;
 
   /* Function pointers for GLX specific extensions */
 #define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d)
@@ -103,9 +119,6 @@ typedef struct _CoglDisplayEGL
   struct wl_surface *wayland_surface;
   struct wl_egl_window *wayland_egl_native_window;
 #endif
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  CoglDisplayKMS kms_display;
-#endif
 #if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
   defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT) ||            \
   defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT) ||        \
@@ -119,12 +132,41 @@ typedef struct _CoglDisplayEGL
   EGLConfig egl_config;
   gboolean found_egl_config;
   gboolean stencil_disabled;
+
+  /* Platform specific display data */
+  void *platform;
 } CoglDisplayEGL;
 
 typedef struct _CoglContextEGL
 {
   EGLSurface current_surface;
 } CoglContextEGL;
+
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
+typedef struct _CoglOnscreenXlib
+{
+  Window xwin;
+  gboolean is_foreign_xwin;
+} CoglOnscreenXlib;
+#endif
+
+typedef struct _CoglOnscreenEGL
+{
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
+  CoglOnscreenXlib _parent;
+#endif
+
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+  struct wl_egl_window *wayland_egl_native_window;
+  struct wl_surface *wayland_surface;
+  struct wl_shell_surface *wayland_shell_surface;
+#endif
+
+  EGLSurface egl_surface;
+
+  /* Platform specific data */
+  void *platform;
+} CoglOnscreenEGL;
 
 const CoglWinsysVtable *
 _cogl_winsys_egl_get_vtable (void);
@@ -140,5 +182,9 @@ void
 _cogl_egl_destroy_image (CoglContext *ctx,
                          EGLImageKHR image);
 #endif
+
+gboolean
+_cogl_winsys_egl_renderer_connect_common (CoglRenderer *renderer,
+                                          GError **error);
 
 #endif /* __COGL_WINSYS_EGL_PRIVATE_H */

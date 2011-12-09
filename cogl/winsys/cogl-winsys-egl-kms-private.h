@@ -19,6 +19,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  *
  *
+ * Authors:
+ *   Neil Roberts <neil@linux.intel.com>
  */
 
 #ifndef __COGL_WINSYS_EGL_KMS_PRIVATE_H

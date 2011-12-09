@@ -62,10 +62,6 @@
 #include <android/native_window.h>
 #endif
 
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-#include "cogl-winsys-kms.h"
-#endif
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -81,32 +77,6 @@
 #endif
 
 #define MAX_EGL_CONFIG_ATTRIBS 30
-
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-typedef struct _CoglOnscreenXlib
-{
-  Window xwin;
-  gboolean is_foreign_xwin;
-} CoglOnscreenXlib;
-#endif
-
-typedef struct _CoglOnscreenEGL
-{
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  CoglOnscreenXlib _parent;
-#endif
-
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-  struct wl_egl_window *wayland_egl_native_window;
-  struct wl_surface *wayland_surface;
-  struct wl_shell_surface *wayland_shell_surface;
-#endif
-
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  CoglOnscreenKMS kms_onscreen;
-#endif
-  EGLSurface egl_surface;
-} CoglOnscreenEGL;
 
 #ifdef EGL_KHR_image_pixmap
 typedef struct _CoglTexturePixmapEGL
@@ -288,6 +258,27 @@ check_egl_extensions (CoglRenderer *renderer)
       }
 }
 
+gboolean
+_cogl_winsys_egl_renderer_connect_common (CoglRenderer *renderer,
+                                          GError **error)
+{
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+
+  if (!eglInitialize (egl_renderer->edpy,
+                      &egl_renderer->egl_version_major,
+                      &egl_renderer->egl_version_minor))
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_INIT,
+                   "Couldn't initialize EGL");
+      return FALSE;
+    }
+
+  check_egl_extensions (renderer);
+
+  return TRUE;
+}
+
 static gboolean
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                GError **error)
@@ -296,7 +287,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
   CoglXlibRenderer *xlib_renderer;
 #endif
-  EGLBoolean status;
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
   gdl_ret_t rc = GDL_SUCCESS;
   gdl_display_info_t gdl_display_info;
@@ -321,10 +311,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
       egl_renderer->edpy =
         eglGetDisplay ((NativeDisplayType) xlib_renderer->xdpy);
-
-      status = eglInitialize (egl_renderer->edpy,
-                              &egl_renderer->egl_version_major,
-                              &egl_renderer->egl_version_minor);
       break;
 #endif
 
@@ -376,19 +362,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
       egl_renderer->edpy =
         eglGetDisplay ((EGLNativeDisplayType)egl_renderer->wayland_display);
-
-      status = eglInitialize (egl_renderer->edpy,
-                              &egl_renderer->egl_version_major,
-                              &egl_renderer->egl_version_minor);
-      break;
-#endif
-
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-    case COGL_WINSYS_ID_EGL_KMS:
-      if (!_cogl_winsys_kms_connect (&egl_renderer->kms_renderer, error))
-        goto error;
-      egl_renderer->edpy = egl_renderer->kms_renderer.dpy;
-      status = EGL_TRUE;
       break;
 #endif
 
@@ -396,20 +369,11 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
     case COGL_WINSYS_ID_EGL_ANDROID:
     case COGL_WINSYS_ID_EGL_NULL:
       egl_renderer->edpy = eglGetDisplay (EGL_DEFAULT_DISPLAY);
-
-      status = eglInitialize (egl_renderer->edpy,
-                              &egl_renderer->egl_version_major,
-                              &egl_renderer->egl_version_minor);
       break;
     }
 
-  if (status != EGL_TRUE)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_INIT,
-                   "Failed to initialize EGL");
-      goto error;
-    }
+  if (!_cogl_winsys_egl_renderer_connect_common (renderer, error))
+    goto error;
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
   if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_GDL)
@@ -440,8 +404,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
       gdl_close ();
     }
 #endif
-
-  check_egl_extensions (renderer);
 
   return TRUE;
 
@@ -624,50 +586,53 @@ try_create_context (CoglDisplay *display,
 #endif
   const char *error_message;
 
-  egl_attributes_from_framebuffer_config (display,
-                                          &display->onscreen_template->config,
-                                          with_stencil_buffer,
-                                          cfg_attribs);
-
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context == NULL, TRUE);
 
   if (renderer->driver == COGL_DRIVER_GL)
     eglBindAPI (EGL_OPENGL_API);
 
-  if (renderer->winsys_vtable->id != COGL_WINSYS_ID_EGL_KMS)
+  if (display->renderer->driver == COGL_DRIVER_GLES2)
     {
-      edpy = egl_renderer->edpy;
+      attribs[0] = EGL_CONTEXT_CLIENT_VERSION;
+      attribs[1] = 2;
+      attribs[2] = EGL_NONE;
+    }
+  else
+    attribs[0] = EGL_NONE;
 
-      status = eglChooseConfig (edpy,
-                                cfg_attribs,
-                                &config, 1,
-                                &config_count);
-      if (status != EGL_TRUE || config_count == 0)
-        {
-          error_message = "Unable to find a usable EGL configuration";
-          goto fail;
-        }
+  /* Divert to the platform implementation if one is defined */
+  if (egl_renderer->platform_vtable &&
+      egl_renderer->platform_vtable->try_create_context)
+    return egl_renderer->platform_vtable->
+      try_create_context (display, attribs, error);
 
-      egl_display->egl_config = config;
+  egl_attributes_from_framebuffer_config (display,
+                                          &display->onscreen_template->config,
+                                          with_stencil_buffer,
+                                          cfg_attribs);
 
-      if (display->renderer->driver == COGL_DRIVER_GLES2)
-        {
-          attribs[0] = EGL_CONTEXT_CLIENT_VERSION;
-          attribs[1] = 2;
-          attribs[2] = EGL_NONE;
-        }
-      else
-        attribs[0] = EGL_NONE;
+  edpy = egl_renderer->edpy;
 
-      egl_display->egl_context = eglCreateContext (edpy,
-                                                   config,
-                                                   EGL_NO_CONTEXT,
-                                                   attribs);
-      if (egl_display->egl_context == EGL_NO_CONTEXT)
-        {
-          error_message = "Unable to create a suitable EGL context";
-          goto fail;
-        }
+  status = eglChooseConfig (edpy,
+                            cfg_attribs,
+                            &config, 1,
+                            &config_count);
+  if (status != EGL_TRUE || config_count == 0)
+    {
+      error_message = "Unable to find a usable EGL configuration";
+      goto fail;
+    }
+
+  egl_display->egl_config = config;
+
+  egl_display->egl_context = eglCreateContext (edpy,
+                                               config,
+                                               EGL_NO_CONTEXT,
+                                               attribs);
+  if (egl_display->egl_context == EGL_NO_CONTEXT)
+    {
+      error_message = "Unable to create a suitable EGL context";
+      goto fail;
     }
 
   switch (renderer->winsys_vtable->id)
@@ -897,19 +862,6 @@ try_create_context (CoglDisplay *display,
                        &egl_display->egl_surface_height);
       break;
 #endif
-
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-    case COGL_WINSYS_ID_EGL_KMS:
-      if (!_cogl_winsys_kms_create_context (display->renderer,
-                                            display,
-                                            error))
-        return FALSE;
-
-      egl_display->egl_surface_width = egl_display->kms_display.width;
-      egl_display->egl_surface_height = egl_display->kms_display.height;
-      egl_display->egl_context = egl_display->kms_display.egl_context;
-      break;
-#endif
     }
 
   return TRUE;
@@ -932,21 +884,9 @@ cleanup_context (CoglDisplay *display)
   CoglXlibRenderer *xlib_renderer = renderer->winsys;
 #endif
 
-#if defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
-  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_KMS)
-    {
-      GError *error = NULL;
-
-      if (!_cogl_winsys_kms_destroy_context (&egl_renderer->kms_renderer,
-                                             &egl_display->kms_display,
-                                             &error))
-        {
-          g_critical (G_STRLOC ": Error cleaning up KMS rendering state: %s",
-                      error->message);
-          g_clear_error (&error);
-        }
-    }
-#endif
+  if (egl_renderer->platform_vtable &&
+      egl_renderer->platform_vtable->cleanup_context)
+    egl_renderer->platform_vtable->cleanup_context (display);
 
   if (egl_display->egl_context != EGL_NO_CONTEXT)
     {
@@ -1041,11 +981,16 @@ create_context (CoglDisplay *display, GError **error)
 static void
 _cogl_winsys_display_destroy (CoglDisplay *display)
 {
+  CoglRendererEGL *egl_renderer = display->renderer->winsys;
   CoglDisplayEGL *egl_display = display->winsys;
 
   _COGL_RETURN_IF_FAIL (egl_display != NULL);
 
   cleanup_context (display);
+
+  if (egl_renderer->platform_vtable &&
+      egl_renderer->platform_vtable->display_destroy)
+    egl_renderer->platform_vtable->display_destroy (display);
 
   g_slice_free (CoglDisplayEGL, display->winsys);
   display->winsys = NULL;
@@ -1143,9 +1088,7 @@ _cogl_winsys_display_setup (CoglDisplay *display,
 {
   CoglDisplayEGL *egl_display;
   CoglRenderer *renderer = display->renderer;
-#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
   CoglRendererEGL *egl_renderer = renderer->winsys;
-#endif
 
   _COGL_RETURN_VAL_IF_FAIL (display->winsys == NULL, FALSE);
 
@@ -1168,11 +1111,10 @@ _cogl_winsys_display_setup (CoglDisplay *display,
     }
 #endif
 
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_KMS &&
-      !_cogl_winsys_kms_display_setup (display, error))
+  if (egl_renderer->platform_vtable &&
+      egl_renderer->platform_vtable->display_setup &&
+      !egl_renderer->platform_vtable->display_setup (display, error))
     goto error;
-#endif
 
   if (!create_context (display, error))
     goto error;
@@ -1237,36 +1179,33 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context, FALSE);
 
-  if (renderer->winsys_vtable->id != COGL_WINSYS_ID_EGL_KMS)
+  egl_attributes_from_framebuffer_config (display,
+                                          &framebuffer->config,
+                                          need_stencil,
+                                          attributes);
+
+  status = eglChooseConfig (egl_renderer->edpy,
+                            attributes,
+                            &egl_config, 1,
+                            &config_count);
+  if (status != EGL_TRUE || config_count == 0)
     {
-      egl_attributes_from_framebuffer_config (display,
-                                              &framebuffer->config,
-                                              need_stencil,
-                                              attributes);
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                   "Failed to find a suitable EGL configuration");
+      return FALSE;
+    }
 
-      status = eglChooseConfig (egl_renderer->edpy,
-                                attributes,
-                                &egl_config, 1,
-                                &config_count);
-      if (status != EGL_TRUE || config_count == 0)
-        {
-          g_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_CREATE_ONSCREEN,
-                       "Failed to find a suitable EGL configuration");
-          return FALSE;
-        }
-
-      /* Update the real number of samples_per_pixel now that we have
-       * found an egl_config... */
-      if (framebuffer->config.samples_per_pixel)
-        {
-          EGLint samples;
-          status = eglGetConfigAttrib (egl_renderer->edpy,
-                                       egl_config,
-                                       EGL_SAMPLES, &samples);
-          g_return_val_if_fail (status == EGL_TRUE, TRUE);
-          framebuffer->samples_per_pixel = samples;
-        }
+  /* Update the real number of samples_per_pixel now that we have
+   * found an egl_config... */
+  if (framebuffer->config.samples_per_pixel)
+    {
+      EGLint samples;
+      status = eglGetConfigAttrib (egl_renderer->edpy,
+                                   egl_config,
+                                   EGL_SAMPLES, &samples);
+      g_return_val_if_fail (status == EGL_TRUE, TRUE);
+      framebuffer->samples_per_pixel = samples;
     }
 
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
@@ -1449,12 +1388,10 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
 #if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
     defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
-    defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)          || \
-    defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
+    defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
     case COGL_WINSYS_ID_EGL_NULL:
     case COGL_WINSYS_ID_EGL_ANDROID:
     case COGL_WINSYS_ID_EGL_GDL:
-    case COGL_WINSYS_ID_EGL_KMS:
 
       if (egl_display->have_onscreen)
         {
@@ -1464,20 +1401,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
           return FALSE;
         }
 
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-      if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_KMS)
-        {
-          CoglContext *context = cogl_framebuffer_get_context (framebuffer);
-          if (!_cogl_winsys_kms_onscreen_init (context,
-                                               &egl_renderer->kms_renderer,
-                                               &egl_display->kms_display,
-                                               &egl_onscreen->kms_onscreen,
-                                               error))
-            return FALSE;
-        }
-      else
-#endif
-        egl_onscreen->egl_surface = egl_display->egl_surface;
+      egl_onscreen->egl_surface = egl_display->egl_surface;
 
       _cogl_framebuffer_winsys_update_size (framebuffer,
                                             egl_display->egl_surface_width,
@@ -1514,8 +1438,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   /* If we never successfully allocated then there's nothing to do */
   if (egl_onscreen == NULL)
     return;
-  if (renderer->winsys_vtable->id != COGL_WINSYS_ID_EGL_KMS &&
-      egl_onscreen->egl_surface != EGL_NO_SURFACE)
+  if (egl_onscreen->egl_surface != EGL_NO_SURFACE)
     {
       if (eglDestroySurface (egl_renderer->edpy, egl_onscreen->egl_surface)
           == EGL_FALSE)
@@ -1558,11 +1481,6 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
     }
 #endif
 
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  _cogl_winsys_kms_onscreen_deinit (&egl_renderer->kms_renderer,
-                                    &egl_onscreen->kms_onscreen);
-#endif
-
   g_slice_free (CoglOnscreenEGL, onscreen->winsys);
   onscreen->winsys = NULL;
 }
@@ -1574,15 +1492,6 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
   CoglDisplayEGL *egl_display = context->display->winsys;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
-
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_KMS)
-    {
-      _cogl_winsys_kms_bind (&egl_renderer->kms_renderer,
-                             &egl_display->kms_display);
-      return;
-    }
-#endif
 
 #if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
   defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT) ||            \
@@ -1647,32 +1556,29 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
   int *rectangles = g_alloca (sizeof (int) * n_rectangles * 4);
   int i;
 
-  if (renderer->winsys_vtable->id != COGL_WINSYS_ID_EGL_KMS)
+  /* eglSwapBuffersRegion expects rectangles relative to the
+   * bottom left corner but we are given rectangles relative to
+   * the top left so we need to flip them... */
+  memcpy (rectangles, user_rectangles, sizeof (int) * n_rectangles * 4);
+  for (i = 0; i < n_rectangles; i++)
     {
-      /* eglSwapBuffersRegion expects rectangles relative to the
-       * bottom left corner but we are given rectangles relative to
-       * the top left so we need to flip them... */
-      memcpy (rectangles, user_rectangles, sizeof (int) * n_rectangles * 4);
-      for (i = 0; i < n_rectangles; i++)
-        {
-          int *rect = &rectangles[4 * i];
-          rect[1] = framebuffer_height - rect[1] - rect[3];
-        }
-
-      /* At least for eglSwapBuffers the EGL spec says that the surface to
-         swap must be bound to the current context. It looks like Mesa
-         also validates that this is the case for eglSwapBuffersRegion so
-         we must bind here too */
-      _cogl_framebuffer_flush_state (COGL_FRAMEBUFFER (onscreen),
-                                     COGL_FRAMEBUFFER (onscreen),
-                                     COGL_FRAMEBUFFER_STATE_BIND);
-
-      if (egl_renderer->pf_eglSwapBuffersRegion (egl_renderer->edpy,
-                                                 egl_onscreen->egl_surface,
-                                                 n_rectangles,
-                                                 rectangles) == EGL_FALSE)
-        g_warning ("Error reported by eglSwapBuffersRegion");
+      int *rect = &rectangles[4 * i];
+      rect[1] = framebuffer_height - rect[1] - rect[3];
     }
+
+  /* At least for eglSwapBuffers the EGL spec says that the surface to
+     swap must be bound to the current context. It looks like Mesa
+     also validates that this is the case for eglSwapBuffersRegion so
+     we must bind here too */
+  _cogl_framebuffer_flush_state (COGL_FRAMEBUFFER (onscreen),
+                                 COGL_FRAMEBUFFER (onscreen),
+                                 COGL_FRAMEBUFFER_STATE_BIND);
+
+  if (egl_renderer->pf_eglSwapBuffersRegion (egl_renderer->edpy,
+                                             egl_onscreen->egl_surface,
+                                             n_rectangles,
+                                             rectangles) == EGL_FALSE)
+    g_warning ("Error reported by eglSwapBuffersRegion");
 #endif
 }
 
@@ -1703,19 +1609,6 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  CoglDisplayEGL *egl_display = context->display->winsys;
-#endif
-
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_KMS)
-    {
-      _cogl_winsys_kms_swap_buffers (&egl_renderer->kms_renderer,
-                                     &egl_display->kms_display,
-                                     &egl_onscreen->kms_onscreen);
-      return;
-    }
-#endif
 
   /* The specification for EGL (at least in 1.4) says that the surface
      needs to be bound to the current context for the swap to work
@@ -1761,18 +1654,13 @@ static void
 _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglRenderer *renderer = context->display->renderer;
+  CoglContextEGL *egl_context = context->winsys;
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
 
-  if (renderer->winsys_vtable->id != COGL_WINSYS_ID_EGL_KMS)
-    {
-      CoglContextEGL *egl_context = context->winsys;
-      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  if (egl_context->current_surface != egl_onscreen->egl_surface)
+    return;
 
-      if (egl_context->current_surface != egl_onscreen->egl_surface)
-        return;
-
-      egl_context->current_surface = EGL_NO_SURFACE;
-    }
+  egl_context->current_surface = EGL_NO_SURFACE;
 
   _cogl_winsys_onscreen_bind (onscreen);
 }
