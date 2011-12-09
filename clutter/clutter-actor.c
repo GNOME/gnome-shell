@@ -327,44 +327,9 @@
 #include "clutter-units.h"
 
 typedef struct _ShaderData ShaderData;
-typedef struct _AnchorCoord AnchorCoord;
 
 #define CLUTTER_ACTOR_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ACTOR, ClutterActorPrivate))
-
-/* Internal helper struct to represent a point that can be stored in
-   either direct pixel coordinates or as a fraction of the actor's
-   size. It is used for the anchor point, scale center and rotation
-   centers. */
-struct _AnchorCoord
-{
-  gboolean is_fractional;
-
-  union
-  {
-    /* Used when is_fractional == TRUE */
-    struct
-    {
-      gdouble x;
-      gdouble y;
-    } fraction;
-
-    /* Use when is_fractional == FALSE */
-    ClutterVertex units;
-  } v;
-};
-
-/* 3 entries should be a good compromise, few layout managers
- * will ask for 3 different preferred size in each allocation cycle */
-#define N_CACHED_SIZE_REQUESTS 3
-typedef struct _SizeRequest SizeRequest;
-struct _SizeRequest
-{
-  guint  age;
-  gfloat for_size;
-  gfloat min_size;
-  gfloat natural_size;
-};
 
 /* Internal enum used to control mapped state update.  This is a hint
  * which indicates when to do something other than just enforce
@@ -383,6 +348,10 @@ typedef enum {
                               */
 } MapStateChange;
 
+/* 3 entries should be a good compromise, few layout managers
+ * will ask for 3 different preferred size in each allocation cycle */
+#define N_CACHED_SIZE_REQUESTS 3
+
 struct _ClutterActorPrivate
 {
   /* request mode */
@@ -399,30 +368,10 @@ struct _ClutterActorPrivate
   ClutterActorBox allocation;
   ClutterAllocationFlags allocation_flags;
 
-  gfloat clip[4];
-
-  /* transformations */
-
-  /* rotation (angle and center) */
-  gdouble rxang;
-  AnchorCoord rx_center;
-
-  gdouble ryang;
-  AnchorCoord ry_center;
-
-  gdouble rzang;
-  AnchorCoord rz_center;
-
-  /* scaling */
-  gdouble scale_x;
-  gdouble scale_y;
-  AnchorCoord scale_center;
-
   /* depth */
   gfloat z;
 
-  /* anchor point */
-  AnchorCoord anchor;
+  gfloat clip[4];
 
   /* the cached transformation matrix; see apply_transform() */
   CoglMatrix transform;
@@ -705,9 +654,9 @@ static void clutter_anchor_coord_set_units (AnchorCoord       *coord,
                                             gfloat             y,
                                             gfloat             z);
 
-static ClutterGravity clutter_anchor_coord_get_gravity (AnchorCoord    *coord);
-static void           clutter_anchor_coord_set_gravity (AnchorCoord    *coord,
-                                                        ClutterGravity  gravity);
+static ClutterGravity clutter_anchor_coord_get_gravity (const AnchorCoord *coord);
+static void           clutter_anchor_coord_set_gravity (AnchorCoord       *coord,
+                                                        ClutterGravity     gravity);
 
 static gboolean clutter_anchor_coord_is_zero (const AnchorCoord *coord);
 
@@ -730,6 +679,7 @@ static ClutterPaintVolume *_clutter_actor_get_paint_volume_mutable (ClutterActor
 
 static GQuark quark_shader_data = 0;
 static GQuark quark_actor_layout_info = 0;
+static GQuark quark_actor_transform_info = 0;
 
 G_DEFINE_TYPE_WITH_CODE (ClutterActor,
                          clutter_actor,
@@ -2415,6 +2365,9 @@ clutter_actor_real_apply_transform (ClutterActor *self,
   if (!priv->transform_valid)
     {
       CoglMatrix *transform = &priv->transform;
+      const ClutterTransformInfo *info;
+
+      info = _clutter_actor_get_transform_info_or_defaults (self);
 
       cogl_matrix_init_identity (transform);
 
@@ -2433,42 +2386,42 @@ clutter_actor_real_apply_transform (ClutterActor *self,
        * not scaled and so the entire object will move on the screen
        * as a result of rotating it).
        */
-      if (priv->scale_x != 1.0 || priv->scale_y != 1.0)
+      if (info->scale_x != 1.0 || info->scale_y != 1.0)
         {
           TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
-                                        &priv->scale_center,
+                                        &info->scale_center,
                                         cogl_matrix_scale (transform,
-                                                           priv->scale_x,
-                                                           priv->scale_y,
+                                                           info->scale_x,
+                                                           info->scale_y,
                                                            1.0));
         }
 
-      if (priv->rzang)
+      if (info->rz_angle)
         TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
-                                      &priv->rz_center,
+                                      &info->rz_center,
                                       cogl_matrix_rotate (transform,
-                                                          priv->rzang,
+                                                          info->rz_angle,
                                                           0, 0, 1.0));
 
-      if (priv->ryang)
+      if (info->ry_angle)
         TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
-                                      &priv->ry_center,
+                                      &info->ry_center,
                                       cogl_matrix_rotate (transform,
-                                                          priv->ryang,
+                                                          info->ry_angle,
                                                           0, 1.0, 0));
 
-      if (priv->rxang)
+      if (info->rx_angle)
         TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
-                                      &priv->rx_center,
+                                      &info->rx_center,
                                       cogl_matrix_rotate (transform,
-                                                          priv->rxang,
+                                                          info->rx_angle,
                                                           1.0, 0, 0));
 
-      if (!clutter_anchor_coord_is_zero (&priv->anchor))
+      if (!clutter_anchor_coord_is_zero (&info->anchor))
         {
           gfloat x, y, z;
 
-          clutter_anchor_coord_get_units (self, &priv->anchor, &x, &y, &z);
+          clutter_anchor_coord_get_units (self, &info->anchor, &x, &y, &z);
           cogl_matrix_translate (transform, -x, -y, -z);
         }
 
@@ -3246,41 +3199,319 @@ clutter_actor_continue_paint (ClutterActor *self)
     }
 }
 
-/* internal helper function set the rotation angle without affecting
-   the center point
+static const ClutterTransformInfo default_transform_info = {
+  0.0, { 0, },          /* rotation-x */
+  0.0, { 0, },          /* rotation-y */
+  0.0, { 0, },          /* rotation-z */
+
+  1.0, 1.0, { 0, },     /* scale */
+
+  { 0, },               /* anchor */
+};
+
+/*< private >
+ * _clutter_actor_get_transform_info_or_defaults:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the ClutterTransformInfo structure associated to an actor.
+ *
+ * If the actor does not have a ClutterTransformInfo structure associated
+ * to it, then the default structure will be returned.
+ *
+ * This function should only be used for getters.
+ *
+ * Return value: a const pointer to the ClutterTransformInfo structure
  */
-static void
-clutter_actor_set_rotation_internal (ClutterActor      *self,
-                                     ClutterRotateAxis  axis,
-                                     gdouble            angle)
+const ClutterTransformInfo *
+_clutter_actor_get_transform_info_or_defaults (ClutterActor *self)
 {
-  ClutterActorPrivate *priv = self->priv;
+  ClutterTransformInfo *info;
 
-  g_object_freeze_notify (G_OBJECT (self));
+  info = g_object_get_qdata (G_OBJECT (self), quark_actor_transform_info);
+  if (info != NULL)
+    return info;
 
-  priv->transform_valid = FALSE;
+  return &default_transform_info;
+}
+
+static void
+clutter_transform_info_free (gpointer data)
+{
+  if (data != NULL)
+    g_slice_free (ClutterTransformInfo, data);
+}
+
+/*< private >
+ * _clutter_actor_get_transform_info:
+ * @self: a #ClutterActor
+ *
+ * Retrieves a pointer to the ClutterTransformInfo structure.
+ *
+ * If the actor does not have a ClutterTransformInfo associated to it, one
+ * will be created and initialized to the default values.
+ *
+ * This function should be used for setters.
+ *
+ * For getters, you should use _clutter_actor_get_transform_info_or_defaults()
+ * instead.
+ *
+ * Return value: (transfer none): a pointer to the ClutterTransformInfo
+ *   structure
+ */
+ClutterTransformInfo *
+_clutter_actor_get_transform_info (ClutterActor *self)
+{
+  ClutterTransformInfo *info;
+
+  info = g_object_get_qdata (G_OBJECT (self), quark_actor_transform_info);
+  if (info == NULL)
+    {
+      info = g_slice_new (ClutterTransformInfo);
+
+      *info = default_transform_info;
+
+      g_object_set_qdata_full (G_OBJECT (self), quark_actor_transform_info,
+                               info,
+                               clutter_transform_info_free);
+    }
+
+  return info;
+}
+
+/*< private >
+ * clutter_actor_set_rotation_angle_internal:
+ * @self: a #ClutterActor
+ * @axis: the axis of the angle to change
+ * @angle: the angle of rotation
+ *
+ * Sets the rotation angle on the given axis without affecting the
+ * rotation center point.
+ */
+static inline void
+clutter_actor_set_rotation_angle_internal (ClutterActor      *self,
+                                           ClutterRotateAxis  axis,
+                                           gdouble            angle)
+{
+  GObject *obj = G_OBJECT (self);
+  ClutterTransformInfo *info;
+
+  info = _clutter_actor_get_transform_info (self);
+
+  g_object_freeze_notify (obj);
 
   switch (axis)
     {
     case CLUTTER_X_AXIS:
-      priv->rxang = angle;
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_ANGLE_X]);
+      info->rx_angle = angle;
+      g_object_notify_by_pspec (obj, obj_props[PROP_ROTATION_ANGLE_X]);
       break;
 
     case CLUTTER_Y_AXIS:
-      priv->ryang = angle;
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_ANGLE_Y]);
+      info->ry_angle = angle;
+      g_object_notify_by_pspec (obj, obj_props[PROP_ROTATION_ANGLE_Y]);
       break;
 
     case CLUTTER_Z_AXIS:
-      priv->rzang = angle;
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_ANGLE_Z]);
+      info->rz_angle = angle;
+      g_object_notify_by_pspec (obj, obj_props[PROP_ROTATION_ANGLE_Z]);
       break;
     }
 
-  g_object_thaw_notify (G_OBJECT (self));
+  self->priv->transform_valid = FALSE;
+
+  g_object_thaw_notify (obj);
 
   clutter_actor_queue_redraw (self);
+}
+
+/*< private >
+ * clutter_actor_set_rotation_center_internal:
+ * @self: a #ClutterActor
+ * @axis: the axis of the center to change
+ * @center: the coordinates of the rotation center
+ *
+ * Sets the rotation center on the given axis without affecting the
+ * rotation angle.
+ */
+static inline void
+clutter_actor_set_rotation_center_internal (ClutterActor        *self,
+                                            ClutterRotateAxis    axis,
+                                            const ClutterVertex *center)
+{
+  GObject *obj = G_OBJECT (self);
+  ClutterTransformInfo *info;
+  ClutterVertex v = { 0, 0, 0 };
+
+  info = _clutter_actor_get_transform_info (self);
+
+  if (center != NULL)
+    v = *center;
+
+  g_object_freeze_notify (obj);
+
+  switch (axis)
+    {
+    case CLUTTER_X_AXIS:
+      clutter_anchor_coord_set_units (&info->rx_center, v.x, v.y, v.z);
+      g_object_notify_by_pspec (obj, obj_props[PROP_ROTATION_CENTER_X]);
+      break;
+
+    case CLUTTER_Y_AXIS:
+      clutter_anchor_coord_set_units (&info->ry_center, v.x, v.y, v.z);
+      g_object_notify_by_pspec (obj, obj_props[PROP_ROTATION_CENTER_Y]);
+      break;
+
+    case CLUTTER_Z_AXIS:
+      /* if the previously set rotation center was fractional, then
+       * setting explicit coordinates will have to notify the
+       * :rotation-center-z-gravity property as well
+       */
+      if (info->rz_center.is_fractional)
+        g_object_notify_by_pspec (obj, obj_props[PROP_ROTATION_CENTER_Z_GRAVITY]);
+
+      clutter_anchor_coord_set_units (&info->rz_center, v.x, v.y, v.z);
+      g_object_notify_by_pspec (obj, obj_props[PROP_ROTATION_CENTER_Z]);
+      break;
+    }
+
+  self->priv->transform_valid = FALSE;
+
+  g_object_thaw_notify (obj);
+
+  clutter_actor_queue_redraw (self);
+}
+
+static inline void
+clutter_actor_set_scale_factor (ClutterActor      *self,
+                                ClutterRotateAxis  axis,
+                                gdouble            factor)
+{
+  GObject *obj = G_OBJECT (self);
+  ClutterTransformInfo *info;
+
+  info = _clutter_actor_get_transform_info (self);
+
+  g_object_freeze_notify (obj);
+
+  switch (axis)
+    {
+    case CLUTTER_X_AXIS:
+      info->scale_x = factor;
+      g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_X]);
+      break;
+
+    case CLUTTER_Y_AXIS:
+      info->scale_y = factor;
+      g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_Y]);
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
+
+  self->priv->transform_valid = FALSE;
+
+  clutter_actor_queue_redraw (self);
+
+  g_object_thaw_notify (obj);
+}
+
+static inline void
+clutter_actor_set_scale_center (ClutterActor      *self,
+                                ClutterRotateAxis  axis,
+                                gfloat             coord)
+{
+  GObject *obj = G_OBJECT (self);
+  ClutterTransformInfo *info;
+  gfloat center_x, center_y;
+
+  info = _clutter_actor_get_transform_info (self);
+
+  g_object_freeze_notify (obj);
+
+  /* get the current scale center coordinates */
+  clutter_anchor_coord_get_units (self, &info->scale_center,
+                                  &center_x,
+                                  &center_y,
+                                  NULL);
+
+  /* we need to notify this too, because setting explicit coordinates will
+   * change the gravity as a side effect
+   */
+  if (info->scale_center.is_fractional)
+    g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_GRAVITY]);
+
+  switch (axis)
+    {
+    case CLUTTER_X_AXIS:
+      clutter_anchor_coord_set_units (&info->scale_center, coord, center_y, 0);
+      g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_CENTER_X]);
+      break;
+
+    case CLUTTER_Y_AXIS:
+      clutter_anchor_coord_set_units (&info->scale_center, center_x, coord, 0);
+      g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_CENTER_Y]);
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
+
+  self->priv->transform_valid = FALSE;
+
+  clutter_actor_queue_redraw (self);
+
+  g_object_thaw_notify (obj);
+}
+
+static inline void
+clutter_actor_set_anchor_coord (ClutterActor      *self,
+                                ClutterRotateAxis  axis,
+                                gfloat             coord)
+{
+  GObject *obj = G_OBJECT (self);
+  ClutterTransformInfo *info;
+  gfloat anchor_x, anchor_y;
+
+  info = _clutter_actor_get_transform_info (self);
+
+  g_object_freeze_notify (obj);
+
+  clutter_anchor_coord_get_units (self, &info->anchor,
+                                  &anchor_x,
+                                  &anchor_y,
+                                  NULL);
+
+  if (info->anchor.is_fractional)
+    g_object_notify_by_pspec (obj, obj_props[PROP_ANCHOR_GRAVITY]);
+
+  switch (axis)
+    {
+    case CLUTTER_X_AXIS:
+      clutter_anchor_coord_set_units (&info->anchor,
+                                      coord,
+                                      anchor_y,
+                                      0.0);
+      g_object_notify_by_pspec (obj, obj_props[PROP_ANCHOR_X]);
+      break;
+
+    case CLUTTER_Y_AXIS:
+      clutter_anchor_coord_set_units (&info->anchor,
+                                      anchor_x,
+                                      coord,
+                                      0.0);
+      g_object_notify_by_pspec (obj, obj_props[PROP_ANCHOR_Y]);
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
+
+  self->priv->transform_valid = FALSE;
+
+  clutter_actor_queue_redraw (self);
+
+  g_object_thaw_notify (obj);
 }
 
 static void
@@ -3382,56 +3613,38 @@ clutter_actor_set_property (GObject      *object,
       break;
 
     case PROP_SCALE_X:
-      clutter_actor_set_scale (actor,
-                               g_value_get_double (value),
-                               priv->scale_y);
+      clutter_actor_set_scale_factor (actor, CLUTTER_X_AXIS,
+                                      g_value_get_double (value));
       break;
 
     case PROP_SCALE_Y:
-      clutter_actor_set_scale (actor,
-                               priv->scale_x,
-                               g_value_get_double (value));
+      clutter_actor_set_scale_factor (actor, CLUTTER_Y_AXIS,
+                                      g_value_get_double (value));
       break;
 
     case PROP_SCALE_CENTER_X:
-      {
-	gfloat center_x = g_value_get_float (value);
-        gfloat center_y;
-
-        clutter_anchor_coord_get_units (actor, &priv->scale_center,
-                                        NULL,
-                                        &center_y,
-                                        NULL);
-	clutter_actor_set_scale_full (actor,
-                                      priv->scale_x,
-                                      priv->scale_y,
-                                      center_x,
-                                      center_y);
-      }
+      clutter_actor_set_scale_center (actor, CLUTTER_X_AXIS,
+                                      g_value_get_float (value));
       break;
 
     case PROP_SCALE_CENTER_Y:
-      {
-        gfloat center_y = g_value_get_float (value);
-	gfloat center_x;
-
-        clutter_anchor_coord_get_units (actor, &priv->scale_center,
-                                        &center_x,
-                                        NULL,
-                                        NULL);
-	clutter_actor_set_scale_full (actor,
-                                      priv->scale_x,
-                                      priv->scale_y,
-                                      center_x,
-                                      center_y);
-      }
+      clutter_actor_set_scale_center (actor, CLUTTER_Y_AXIS,
+                                      g_value_get_float (value));
       break;
 
     case PROP_SCALE_GRAVITY:
-      clutter_actor_set_scale_with_gravity (actor,
-                                            priv->scale_x,
-                                            priv->scale_y,
-                                            g_value_get_enum (value));
+      {
+        const ClutterTransformInfo *info;
+        ClutterGravity gravity;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        gravity = g_value_get_enum (value);
+
+        clutter_actor_set_scale_with_gravity (actor,
+                                              info->scale_x,
+                                              info->scale_y,
+                                              gravity);
+      }
       break;
 
     case PROP_CLIP:
@@ -3453,94 +3666,59 @@ clutter_actor_set_property (GObject      *object,
       break;
 
     case PROP_ROTATION_ANGLE_X:
-      clutter_actor_set_rotation_internal (actor,
-                                           CLUTTER_X_AXIS,
-                                           g_value_get_double (value));
+      clutter_actor_set_rotation_angle_internal (actor,
+                                                 CLUTTER_X_AXIS,
+                                                 g_value_get_double (value));
       break;
 
     case PROP_ROTATION_ANGLE_Y:
-      clutter_actor_set_rotation_internal (actor,
-                                           CLUTTER_Y_AXIS,
-                                           g_value_get_double (value));
+      clutter_actor_set_rotation_angle_internal (actor,
+                                                 CLUTTER_Y_AXIS,
+                                                 g_value_get_double (value));
       break;
 
     case PROP_ROTATION_ANGLE_Z:
-      clutter_actor_set_rotation_internal (actor,
-                                           CLUTTER_Z_AXIS,
-                                           g_value_get_double (value));
+      clutter_actor_set_rotation_angle_internal (actor,
+                                                 CLUTTER_Z_AXIS,
+                                                 g_value_get_double (value));
       break;
 
     case PROP_ROTATION_CENTER_X:
-      {
-        const ClutterVertex *center;
-
-        if ((center = g_value_get_boxed (value)))
-          clutter_actor_set_rotation (actor,
-                                      CLUTTER_X_AXIS,
-                                      priv->rxang,
-                                      center->x,
-                                      center->y,
-                                      center->z);
-      }
+      clutter_actor_set_rotation_center_internal (actor,
+                                                  CLUTTER_X_AXIS,
+                                                  g_value_get_boxed (value));
       break;
 
     case PROP_ROTATION_CENTER_Y:
-      {
-        const ClutterVertex *center;
-
-        if ((center = g_value_get_boxed (value)))
-          clutter_actor_set_rotation (actor,
-                                      CLUTTER_Y_AXIS,
-                                      priv->ryang,
-                                      center->x,
-                                      center->y,
-                                      center->z);
-      }
+      clutter_actor_set_rotation_center_internal (actor,
+                                                  CLUTTER_Y_AXIS,
+                                                  g_value_get_boxed (value));
       break;
 
     case PROP_ROTATION_CENTER_Z:
-      {
-        const ClutterVertex *center;
-
-        if ((center = g_value_get_boxed (value)))
-          clutter_actor_set_rotation (actor,
-                                      CLUTTER_Z_AXIS,
-                                      priv->rzang,
-                                      center->x,
-                                      center->y,
-                                      center->z);
-      }
+      clutter_actor_set_rotation_center_internal (actor,
+                                                  CLUTTER_Z_AXIS,
+                                                  g_value_get_boxed (value));
       break;
 
     case PROP_ROTATION_CENTER_Z_GRAVITY:
-      clutter_actor_set_z_rotation_from_gravity (actor, priv->rzang,
-                                                 g_value_get_enum (value));
+      {
+        const ClutterTransformInfo *info;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        clutter_actor_set_z_rotation_from_gravity (actor, info->rz_angle,
+                                                   g_value_get_enum (value));
+      }
       break;
 
     case PROP_ANCHOR_X:
-      {
-        gfloat anchor_x = g_value_get_float (value);
-        gfloat anchor_y;
-
-        clutter_anchor_coord_get_units (actor, &priv->anchor,
-                                        NULL,
-                                        &anchor_y,
-                                        NULL);
-	clutter_actor_set_anchor_point (actor, anchor_x, anchor_y);
-      }
+      clutter_actor_set_anchor_coord (actor, CLUTTER_X_AXIS,
+                                      g_value_get_float (value));
       break;
 
     case PROP_ANCHOR_Y:
-      {
-        gfloat anchor_y = g_value_get_float (value);
-        gfloat anchor_x;
-
-        clutter_anchor_coord_get_units (actor, &priv->anchor,
-                                        &anchor_x,
-                                        NULL,
-                                        NULL);
-	clutter_actor_set_anchor_point (actor, anchor_x, anchor_y);
-      }
+      clutter_actor_set_anchor_coord (actor, CLUTTER_Y_AXIS,
+                                      g_value_get_float (value));
       break;
 
     case PROP_ANCHOR_GRAVITY:
@@ -3773,11 +3951,21 @@ clutter_actor_get_property (GObject    *object,
       break;
 
     case PROP_SCALE_X:
-      g_value_set_double (value, priv->scale_x);
+      {
+        const ClutterTransformInfo *info;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        g_value_set_double (value, info->scale_x);
+      }
       break;
 
     case PROP_SCALE_Y:
-      g_value_set_double (value, priv->scale_y);
+      {
+        const ClutterTransformInfo *info;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        g_value_set_double (value, info->scale_y);
+      }
       break;
 
     case PROP_SCALE_CENTER_X:
@@ -3809,15 +3997,30 @@ clutter_actor_get_property (GObject    *object,
       break;
 
     case PROP_ROTATION_ANGLE_X:
-      g_value_set_double (value, priv->rxang);
+      {
+        const ClutterTransformInfo *info;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        g_value_set_double (value, info->rx_angle);
+      }
       break;
 
     case PROP_ROTATION_ANGLE_Y:
-      g_value_set_double (value, priv->ryang);
+      {
+        const ClutterTransformInfo *info;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        g_value_set_double (value, info->ry_angle);
+      }
       break;
 
     case PROP_ROTATION_ANGLE_Z:
-      g_value_set_double (value, priv->rzang);
+      {
+        const ClutterTransformInfo *info;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        g_value_set_double (value, info->rz_angle);
+      }
       break;
 
     case PROP_ROTATION_CENTER_X:
@@ -3865,9 +4068,11 @@ clutter_actor_get_property (GObject    *object,
 
     case PROP_ANCHOR_X:
       {
+        const ClutterTransformInfo *info;
         gfloat anchor_x;
 
-        clutter_anchor_coord_get_units (actor, &priv->anchor,
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        clutter_anchor_coord_get_units (actor, &info->anchor,
                                         &anchor_x,
                                         NULL,
                                         NULL);
@@ -3877,9 +4082,11 @@ clutter_actor_get_property (GObject    *object,
 
     case PROP_ANCHOR_Y:
       {
+        const ClutterTransformInfo *info;
         gfloat anchor_y;
 
-        clutter_anchor_coord_get_units (actor, &priv->anchor,
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        clutter_anchor_coord_get_units (actor, &info->anchor,
                                         NULL,
                                         &anchor_y,
                                         NULL);
@@ -4211,6 +4418,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 
   quark_shader_data = g_quark_from_static_string ("-clutter-actor-shader-data");
   quark_actor_layout_info = g_quark_from_static_string ("-clutter-actor-layout-info");
+  quark_actor_transform_info = g_quark_from_static_string ("-clutter-actor-transform-info");
 
   object_class->constructed  = clutter_actor_constructed;
   object_class->set_property = clutter_actor_set_property;
@@ -5778,13 +5986,10 @@ clutter_actor_init (ClutterActor *self)
 
   self->priv = priv = CLUTTER_ACTOR_GET_PRIVATE (self);
 
-  priv->parent_actor = NULL;
-  priv->has_clip = FALSE;
-  priv->opacity = 0xff;
   priv->id = _clutter_context_acquire_id (self);
   priv->pick_id = -1;
-  priv->scale_x = 1.0;
-  priv->scale_y = 1.0;
+
+  priv->opacity = 0xff;
   priv->show_on_set_parent = TRUE;
 
   priv->needs_width_request = TRUE;
@@ -8260,23 +8465,12 @@ clutter_actor_set_scale (ClutterActor *self,
                          gdouble       scale_x,
                          gdouble       scale_y)
 {
-  ClutterActorPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  priv = self->priv;
-
-  priv->transform_valid = FALSE;
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  priv->scale_x = scale_x;
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_X]);
-
-  priv->scale_y = scale_y;
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_Y]);
-
-  clutter_actor_queue_redraw (self);
+  clutter_actor_set_scale_factor (self, CLUTTER_X_AXIS, scale_x);
+  clutter_actor_set_scale_factor (self, CLUTTER_Y_AXIS, scale_y);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -8302,25 +8496,14 @@ clutter_actor_set_scale_full (ClutterActor *self,
                               gfloat        center_x,
                               gfloat        center_y)
 {
-  ClutterActorPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  priv = self->priv;
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  clutter_actor_set_scale (self, scale_x, scale_y);
-
-  priv->transform_valid = FALSE;
-
-  if (priv->scale_center.is_fractional)
-    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_GRAVITY]);
-
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_X]);
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_Y]);
-
-  clutter_anchor_coord_set_units (&priv->scale_center, center_x, center_y, 0);
+  clutter_actor_set_scale_factor (self, CLUTTER_X_AXIS, scale_x);
+  clutter_actor_set_scale_factor (self, CLUTTER_Y_AXIS, scale_y);
+  clutter_actor_set_scale_center (self, CLUTTER_X_AXIS, center_x);
+  clutter_actor_set_scale_center (self, CLUTTER_Y_AXIS, center_y);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -8347,30 +8530,35 @@ clutter_actor_set_scale_with_gravity (ClutterActor   *self,
                                       gdouble         scale_y,
                                       ClutterGravity  gravity)
 {
-  ClutterActorPrivate *priv;
+  ClutterTransformInfo *info;
+  GObject *obj;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
+  obj = G_OBJECT (self);
+
+  g_object_freeze_notify (obj);
+
+  info = _clutter_actor_get_transform_info (self);
+  info->scale_x = scale_x;
+  info->scale_y = scale_y;
 
   if (gravity == CLUTTER_GRAVITY_NONE)
-    clutter_actor_set_scale_full (self, scale_x, scale_y, 0, 0);
+    clutter_anchor_coord_set_units (&info->scale_center, 0, 0, 0);
   else
-    {
-      g_object_freeze_notify (G_OBJECT (self));
+    clutter_anchor_coord_set_gravity (&info->scale_center, gravity);
 
-      clutter_actor_set_scale (self, scale_x, scale_y);
+  self->priv->transform_valid = FALSE;
 
-      priv->transform_valid = FALSE;
+  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_X]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_Y]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_CENTER_X]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_CENTER_Y]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_GRAVITY]);
 
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_GRAVITY]);
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_X]);
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_Y]);
+  clutter_actor_queue_redraw (self);
 
-      clutter_anchor_coord_set_gravity (&priv->scale_center, gravity);
-
-      g_object_thaw_notify (G_OBJECT (self));
-    }
+  g_object_thaw_notify (obj);
 }
 
 /**
@@ -8390,13 +8578,17 @@ clutter_actor_get_scale (ClutterActor *self,
 			 gdouble      *scale_x,
 			 gdouble      *scale_y)
 {
+  const ClutterTransformInfo *info;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+
   if (scale_x)
-    *scale_x = self->priv->scale_x;
+    *scale_x = info->scale_x;
 
   if (scale_y)
-    *scale_y = self->priv->scale_y;
+    *scale_y = info->scale_y;
 }
 
 /**
@@ -8419,9 +8611,13 @@ clutter_actor_get_scale_center (ClutterActor *self,
                                 gfloat       *center_x,
                                 gfloat       *center_y)
 {
+  const ClutterTransformInfo *info;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_anchor_coord_get_units (self, &self->priv->scale_center,
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+
+  clutter_anchor_coord_get_units (self, &info->scale_center,
                                   center_x,
                                   center_y,
                                   NULL);
@@ -8442,9 +8638,13 @@ clutter_actor_get_scale_center (ClutterActor *self,
 ClutterGravity
 clutter_actor_get_scale_gravity (ClutterActor *self)
 {
+  const ClutterTransformInfo *info;
+
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), CLUTTER_GRAVITY_NONE);
 
-  return clutter_anchor_coord_get_gravity (&self->priv->scale_center);
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+
+  return clutter_anchor_coord_get_gravity (&info->scale_center);
 }
 
 /**
@@ -8834,37 +9034,18 @@ clutter_actor_set_rotation (ClutterActor      *self,
                             gfloat             y,
                             gfloat             z)
 {
-  ClutterActorPrivate *priv;
+  ClutterVertex v;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
+  v.x = x;
+  v.y = y;
+  v.z = z;
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  clutter_actor_set_rotation_internal (self, axis, angle);
-
-  switch (axis)
-    {
-    case CLUTTER_X_AXIS:
-      clutter_anchor_coord_set_units (&priv->rx_center, x, y, z);
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_X]);
-      break;
-
-    case CLUTTER_Y_AXIS:
-      clutter_anchor_coord_set_units (&priv->ry_center, x, y, z);
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Y]);
-      break;
-
-    case CLUTTER_Z_AXIS:
-      if (priv->rz_center.is_fractional)
-        g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z_GRAVITY]);
-      clutter_anchor_coord_set_units (&priv->rz_center, x, y, z);
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z]);
-      break;
-    }
-
-  priv->transform_valid = FALSE;
+  clutter_actor_set_rotation_angle_internal (self, axis, angle);
+  clutter_actor_set_rotation_center_internal (self, axis, &v);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -8888,25 +9069,26 @@ clutter_actor_set_z_rotation_from_gravity (ClutterActor   *self,
                                            gdouble         angle,
                                            ClutterGravity  gravity)
 {
-  ClutterActorPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   if (gravity == CLUTTER_GRAVITY_NONE)
     clutter_actor_set_rotation (self, CLUTTER_Z_AXIS, angle, 0, 0, 0);
   else
     {
-      priv = self->priv;
+      GObject *obj = G_OBJECT (self);
+      ClutterTransformInfo *info;
 
-      g_object_freeze_notify (G_OBJECT (self));
+      info = _clutter_actor_get_transform_info (self);
 
-      clutter_actor_set_rotation_internal (self, CLUTTER_Z_AXIS, angle);
+      g_object_freeze_notify (obj);
 
-      clutter_anchor_coord_set_gravity (&priv->rz_center, gravity);
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z_GRAVITY]);
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z]);
+      clutter_actor_set_rotation_angle_internal (self, CLUTTER_Z_AXIS, angle);
 
-      g_object_thaw_notify (G_OBJECT (self));
+      clutter_anchor_coord_set_gravity (&info->rz_center, gravity);
+      g_object_notify_by_pspec (obj, obj_props[PROP_ROTATION_CENTER_Z_GRAVITY]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_ROTATION_CENTER_Z]);
+
+      g_object_thaw_notify (obj);
     }
 }
 
@@ -8932,29 +9114,34 @@ clutter_actor_get_rotation (ClutterActor      *self,
                             gfloat            *y,
                             gfloat            *z)
 {
-  ClutterActorPrivate *priv;
+  const ClutterTransformInfo *info;
+  const AnchorCoord *anchor_coord;
   gdouble retval = 0;
-  AnchorCoord *anchor_coord = NULL;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  priv = self->priv;
+  info = _clutter_actor_get_transform_info_or_defaults (self);
 
   switch (axis)
     {
     case CLUTTER_X_AXIS:
-      anchor_coord = &priv->rx_center;
-      retval = priv->rxang;
+      anchor_coord = &info->rx_center;
+      retval = info->rx_angle;
       break;
 
     case CLUTTER_Y_AXIS:
-      anchor_coord = &priv->ry_center;
-      retval = priv->ryang;
+      anchor_coord = &info->ry_center;
+      retval = info->ry_angle;
       break;
 
     case CLUTTER_Z_AXIS:
-      anchor_coord = &priv->rz_center;
-      retval = priv->rzang;
+      anchor_coord = &info->rz_center;
+      retval = info->rz_angle;
+      break;
+
+    default:
+      anchor_coord = NULL;
+      retval = 0.0;
       break;
     }
 
@@ -8978,9 +9165,13 @@ clutter_actor_get_rotation (ClutterActor      *self,
 ClutterGravity
 clutter_actor_get_z_rotation_gravity (ClutterActor *self)
 {
+  const ClutterTransformInfo *info;
+
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.0);
 
-  return clutter_anchor_coord_get_gravity (&self->priv->rz_center);
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+
+  return clutter_anchor_coord_get_gravity (&info->rz_center);
 }
 
 /**
@@ -10127,13 +10318,12 @@ clutter_actor_get_anchor_point (ClutterActor *self,
 				gfloat       *anchor_x,
                                 gfloat       *anchor_y)
 {
-  ClutterActorPrivate *priv;
+  const ClutterTransformInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
-
-  clutter_anchor_coord_get_units (self, &priv->anchor,
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+  clutter_anchor_coord_get_units (self, &info->anchor,
                                   anchor_x,
                                   anchor_y,
                                   NULL);
@@ -10157,37 +10347,41 @@ clutter_actor_set_anchor_point (ClutterActor *self,
                                 gfloat        anchor_x,
                                 gfloat        anchor_y)
 {
+  ClutterTransformInfo *info;
   ClutterActorPrivate *priv;
   gboolean changed = FALSE;
   gfloat old_anchor_x, old_anchor_y;
+  GObject *obj;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  obj = G_OBJECT (self);
   priv = self->priv;
+  info = _clutter_actor_get_transform_info (self);
 
-  g_object_freeze_notify (G_OBJECT (self));
+  g_object_freeze_notify (obj);
 
-  clutter_anchor_coord_get_units (self, &priv->anchor,
+  clutter_anchor_coord_get_units (self, &info->anchor,
                                   &old_anchor_x,
                                   &old_anchor_y,
                                   NULL);
 
-  if (priv->anchor.is_fractional)
-    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_GRAVITY]);
+  if (info->anchor.is_fractional)
+    g_object_notify_by_pspec (obj, obj_props[PROP_ANCHOR_GRAVITY]);
 
   if (old_anchor_x != anchor_x)
     {
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_X]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_ANCHOR_X]);
       changed = TRUE;
     }
 
   if (old_anchor_y != anchor_y)
     {
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_Y]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_ANCHOR_Y]);
       changed = TRUE;
     }
 
-  clutter_anchor_coord_set_units (&priv->anchor, anchor_x, anchor_y, 0);
+  clutter_anchor_coord_set_units (&info->anchor, anchor_x, anchor_y, 0);
 
   if (changed)
     {
@@ -10195,7 +10389,7 @@ clutter_actor_set_anchor_point (ClutterActor *self,
       clutter_actor_queue_redraw (self);
     }
 
-  g_object_thaw_notify (G_OBJECT (self));
+  g_object_thaw_notify (obj);
 }
 
 /**
@@ -10213,13 +10407,13 @@ clutter_actor_set_anchor_point (ClutterActor *self,
 ClutterGravity
 clutter_actor_get_anchor_point_gravity (ClutterActor *self)
 {
-  ClutterActorPrivate *priv;
+  const ClutterTransformInfo *info;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), CLUTTER_GRAVITY_NONE);
 
-  priv = self->priv;
+  info = _clutter_actor_get_transform_info_or_defaults (self);
 
-  return clutter_anchor_coord_get_gravity (&priv->anchor);
+  return clutter_anchor_coord_get_gravity (&info->anchor);
 }
 
 /**
@@ -10238,14 +10432,13 @@ clutter_actor_move_anchor_point (ClutterActor *self,
                                  gfloat        anchor_x,
                                  gfloat        anchor_y)
 {
-  ClutterActorPrivate *priv;
   gfloat old_anchor_x, old_anchor_y;
+  const ClutterTransformInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
-
-  clutter_anchor_coord_get_units (self, &priv->anchor,
+  info = _clutter_actor_get_transform_info (self);
+  clutter_anchor_coord_get_units (self, &info->anchor,
                                   &old_anchor_x,
                                   &old_anchor_y,
                                   NULL);
@@ -10254,7 +10447,7 @@ clutter_actor_move_anchor_point (ClutterActor *self,
 
   clutter_actor_set_anchor_point (self, anchor_x, anchor_y);
 
-  if (priv->position_set)
+  if (self->priv->position_set)
     clutter_actor_move_by (self,
                            anchor_x - old_anchor_x,
                            anchor_y - old_anchor_y);
@@ -10284,20 +10477,22 @@ clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
 					      ClutterGravity  gravity)
 {
   gfloat old_anchor_x, old_anchor_y, new_anchor_x, new_anchor_y;
+  const ClutterTransformInfo *info;
   ClutterActorPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
+  info = _clutter_actor_get_transform_info (self);
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  clutter_anchor_coord_get_units (self, &priv->anchor,
+  clutter_anchor_coord_get_units (self, &info->anchor,
                                   &old_anchor_x,
                                   &old_anchor_y,
                                   NULL);
   clutter_actor_set_anchor_point_from_gravity (self, gravity);
-  clutter_anchor_coord_get_units (self, &priv->anchor,
+  clutter_anchor_coord_get_units (self, &info->anchor,
                                   &new_anchor_x,
                                   &new_anchor_y,
                                   NULL);
@@ -10336,13 +10531,23 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
     clutter_actor_set_anchor_point (self, 0, 0);
   else
     {
-      clutter_anchor_coord_set_gravity (&self->priv->anchor, gravity);
+      GObject *obj = G_OBJECT (self);
+      ClutterTransformInfo *info;
+
+      g_object_freeze_notify (obj);
+
+      info = _clutter_actor_get_transform_info (self);
+      clutter_anchor_coord_set_gravity (&info->anchor, gravity);
+
+      g_object_notify_by_pspec (obj, obj_props[PROP_ANCHOR_GRAVITY]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_ANCHOR_X]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_ANCHOR_Y]);
 
       self->priv->transform_valid = FALSE;
 
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_GRAVITY]);
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_X]);
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_Y]);
+      clutter_actor_queue_redraw (self);
+
+      g_object_thaw_notify (obj);
     }
 }
 
@@ -11804,13 +12009,13 @@ clutter_actor_set_shader_param_int (ClutterActor *self,
 gboolean
 clutter_actor_is_rotated (ClutterActor *self)
 {
-  ClutterActorPrivate *priv;
+  const ClutterTransformInfo *info;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  priv = self->priv;
+  info = _clutter_actor_get_transform_info_or_defaults (self);
 
-  if (priv->rxang || priv->ryang || priv->rzang)
+  if (info->rx_angle || info->ry_angle || info->rz_angle)
     return TRUE;
 
   return FALSE;
@@ -11829,13 +12034,13 @@ clutter_actor_is_rotated (ClutterActor *self)
 gboolean
 clutter_actor_is_scaled (ClutterActor *self)
 {
-  ClutterActorPrivate *priv;
+  const ClutterTransformInfo *info;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  priv = self->priv;
+  info = _clutter_actor_get_transform_info_or_defaults (self);
 
-  if (priv->scale_x != 1.0 || priv->scale_y != 1.0)
+  if (info->scale_x != 1.0 || info->scale_y != 1.0)
     return TRUE;
 
   return FALSE;
@@ -12397,7 +12602,7 @@ clutter_anchor_coord_set_units (AnchorCoord *coord,
 }
 
 static ClutterGravity
-clutter_anchor_coord_get_gravity (AnchorCoord *coord)
+clutter_anchor_coord_get_gravity (const AnchorCoord *coord)
 {
   if (coord->is_fractional)
     {
