@@ -167,7 +167,7 @@ _cogl_parse_debug_string (const char *value,
         else
           COGL_DEBUG_CLEAR_FLAG (cogl_log_debug_keys[i].value);
     }
-  else if (strcmp (value, "help") == 0)
+  else if (g_ascii_strcasecmp (value, "help") == 0)
     {
       g_printerr ("\n\n%28s\n", _("Supported debug values:"));
 #define OPT(MASK_NAME, GROUP, NAME, NAME_FORMATTED, DESCRIPTION) \
