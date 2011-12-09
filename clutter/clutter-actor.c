@@ -365,12 +365,21 @@ struct _ClutterActorPrivate
   guint cached_height_age;
   guint cached_width_age;
 
+  /* the bounding box of the actor, relative to the parent's
+   * allocation
+   */
   ClutterActorBox allocation;
   ClutterAllocationFlags allocation_flags;
 
   /* depth */
   gfloat z;
 
+  /* clip, in actor coordinates; offsets are:
+   *  0: x
+   *  1: y
+   *  2: width
+   *  3: height
+   */
   gfloat clip[4];
 
   /* the cached transformation matrix; see apply_transform() */
@@ -395,9 +404,17 @@ struct _ClutterActorPrivate
 
   gint32 pick_id; /* per-stage unique id, used for picking */
 
+  /* a back-pointer to the Pango context that we can use
+   * to create pre-configured PangoLayout
+   */
   PangoContext *pango_context;
+
+  /* the text direction configured for this child - either by
+   * application code, or by the actor's parent
+   */
   ClutterTextDirection text_direction;
 
+  /* a counter used to toggle the CLUTTER_INTERNAL_CHILD flag */
   gint internal_child;
 
   /* meta classes */
@@ -405,6 +422,7 @@ struct _ClutterActorPrivate
   ClutterMetaGroup *constraints;
   ClutterMetaGroup *effects;
 
+  /* delegate object used to allocate the children of this actor */
   ClutterLayoutManager *layout_manager;
 
   /* used when painting, to update the paint volume */
