@@ -93,6 +93,9 @@ clutter_stage_wayland_realize (ClutterStageWindow *stage_window)
                                  &shell_surface_listener,
                                  stage_wayland);
 
+  stage_wayland->wayland_surface = wl_surface;
+  stage_wayland->wayland_shell_surface = wl_shell_surface;
+
   return TRUE;
 }
 

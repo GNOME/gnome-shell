@@ -49,6 +49,9 @@ typedef struct _ClutterStageWaylandClass    ClutterStageWaylandClass;
 struct _ClutterStageWayland
 {
   ClutterStageCogl parent_instance;
+
+  struct wl_surface *wayland_surface;
+  struct wl_shell_surface *wayland_shell_surface;
 };
 
 struct _ClutterStageWaylandClass
