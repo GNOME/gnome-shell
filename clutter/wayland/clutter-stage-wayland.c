@@ -100,6 +100,18 @@ clutter_stage_wayland_realize (ClutterStageWindow *stage_window)
 }
 
 static void
+clutter_stage_wayland_set_fullscreen (ClutterStageWindow *stage_window,
+                                      gboolean            fullscreen)
+{
+  ClutterStageWayland *stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
+
+  if (fullscreen)
+    wl_shell_surface_set_fullscreen (stage_wayland->wayland_shell_surface);
+  else
+    g_warning (G_STRLOC ": There is no Wayland API for un-fullscreening now");
+}
+
+static void
 clutter_stage_wayland_init (ClutterStageWayland *stage_wayland)
 {
 }
@@ -110,6 +122,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   clutter_stage_window_parent_iface = g_type_interface_peek_parent (iface);
 
   iface->realize = clutter_stage_wayland_realize;
+  iface->set_fullscreen = clutter_stage_wayland_set_fullscreen;
 }
 
 static void
