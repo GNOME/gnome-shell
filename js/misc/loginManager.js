@@ -33,8 +33,26 @@ const SystemdLoginSessionIface = <interface name='org.freedesktop.login1.Session
 <signal name='Unlock' />
 </interface>;
 
-const SystemdLoginManager = Gio.DBusProxy.makeProxyWrapper(SystemdLoginManagerIface);
-const SystemdLoginSession = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIface);
+const SystemdLoginManager = new Gio.DBusProxyClass({
+    Name: 'SystemdLoginManager',
+    Interface: SystemdLoginManagerIface,
+
+    _init: function() {
+        this.parent({ g_bus_type: Gio.BusType.SYSTEM,
+                      g_name: 'org.freedesktop.login1',
+                      g_object_path: '/org/freedesktop/login1' });
+    }
+});
+const SystemdLoginSession = new Gio.DBusProxyClass({
+    Name: 'SystemdLoginSession',
+    Interface: SystemdLoginSessionIface,
+
+    _init: function(session) {
+        this.parent({ g_bus_type: Gio.BusType.SYSTEM,
+                      g_name: 'org.freedesktop.login1',
+                      g_object_path: session });
+    }
+});
 
 const ConsoleKitManagerIface = <interface name='org.freedesktop.ConsoleKit.Manager'>
 <method name='CanRestart'>
@@ -61,8 +79,26 @@ const ConsoleKitSessionIface = <interface name='org.freedesktop.ConsoleKit.Sessi
 <signal name='Unlock' />
 </interface>;
 
-const ConsoleKitSession = Gio.DBusProxy.makeProxyWrapper(ConsoleKitSessionIface);
-const ConsoleKitManager = Gio.DBusProxy.makeProxyWrapper(ConsoleKitManagerIface);
+const ConsoleKitSession = new Gio.DBusProxyClass({
+    Name: 'ConsoleKitSession',
+    Interface: ConsoleKitSessionIface,
+
+    _init: function(session) {
+        this.parent({ g_bus_type: Gio.BusType.SYSTEM,
+                      g_name: 'org.freedesktop.ConsoleKit',
+                      g_object_path: session });
+    }
+});
+const ConsoleKitManager = new Gio.DBusProxyClass({
+    Name: 'ConsoleKitManager',
+    Interface: ConsoleKitManagerIface,
+
+    _init: function() {
+        this.parent({ g_bus_type: Gio.BusType.SYSTEM,
+                      g_name: 'org.freedesktop.ConsoleKit',
+                      g_object_path: '/org/freedesktop/ConsoleKit/Manager' });
+    }
+});
 
 function haveSystemd() {
     return GLib.access("/sys/fs/cgroup/systemd", 0) >= 0;
@@ -90,9 +126,8 @@ const LoginManagerSystemd = new Lang.Class({
     Name: 'LoginManagerSystemd',
 
     _init: function() {
-        this._proxy = new SystemdLoginManager(Gio.DBus.system,
-                                              'org.freedesktop.login1',
-                                              '/org/freedesktop/login1');
+        this._proxy = new SystemdLoginManager();
+        this._proxy.init(null);
     },
 
     // Having this function is a bit of a hack since the Systemd and ConsoleKit
@@ -100,10 +135,9 @@ const LoginManagerSystemd = new Lang.Class({
     // Lock/Unlock signals, and that's all we count upon at the moment.
     getCurrentSessionProxy: function() {
         if (!this._currentSession) {
-            this._currentSession = new SystemdLoginSession(Gio.DBus.system,
-                                                           'org.freedesktop.login1',
-                                                           '/org/freedesktop/login1/session/' +
+            this._currentSession = new SystemdLoginSession('/org/freedesktop/login1/session/' +
                                                            GLib.getenv('XDG_SESSION_ID'));
+            this._currentSession.init(null);
         }
 
         return this._currentSession;
@@ -114,42 +148,51 @@ const LoginManagerSystemd = new Lang.Class({
     },
 
     canPowerOff: function(asyncCallback) {
-        this._proxy.CanPowerOffRemote(function(result, error) {
-            if (error)
-                asyncCallback(false);
-            else
-                asyncCallback(result[0] != 'no');
+        this._proxy.CanPowerOffRemote(null, function(proxy, result) {
+            let val = false;
+
+            try {
+                val = proxy.CanPowerOffFinish(result)[0] != 'no';
+            } catch(e) { }
+
+            asyncCallback(val);
         });
     },
 
     canReboot: function(asyncCallback) {
-        this._proxy.CanRebootRemote(function(result, error) {
-            if (error)
-                asyncCallback(false);
-            else
-                asyncCallback(result[0] != 'no');
+        this._proxy.CanRebootRemote(null, function(proxy, result) {
+            let val = false;
+
+            try {
+                val = proxy.CanRebootFinish(result)[0] != 'no';
+            } catch(e) { }
+
+            asyncCallback(val);
         });
     },
 
     canSuspend: function(asyncCallback) {
-        this._proxy.CanSuspendRemote(function(result, error) {
-            if (error)
-                asyncCallback(false);
-            else
-                asyncCallback(result[0] != 'no');
+        this._proxy.CanSuspendRemote(null, function(proxy, result) {
+            let val = false;
+
+            try {
+                val = proxy.CanRebootFinish(result)[0] != 'no';
+            } catch(e) { }
+
+            asyncCallback(val);
         });
     },
 
     powerOff: function() {
-        this._proxy.PowerOffRemote(true);
+        this._proxy.PowerOffRemote(true, null, null);
     },
 
     reboot: function() {
-        this._proxy.RebootRemote(true);
+        this._proxy.RebootRemote(true, null, null);
     },
 
     suspend: function() {
-        this._proxy.SuspendRemote(true);
+        this._proxy.SuspendRemote(true, null, null);
     }
 });
 
@@ -157,9 +200,9 @@ const LoginManagerConsoleKit = new Lang.Class({
     Name: 'LoginManagerConsoleKit',
 
     _init: function() {
-        this._proxy = new ConsoleKitManager(Gio.DBus.system,
-                                            'org.freedesktop.ConsoleKit',
-                                            '/org/freedesktop/ConsoleKit/Manager');
+        this._proxy = new ConsoleKitManager();
+        this._proxy.init(null);
+
         this._upClient = new UPowerGlib.Client();
     },
 
@@ -168,10 +211,9 @@ const LoginManagerConsoleKit = new Lang.Class({
     // Lock/Unlock signals, and that's all we count upon at the moment.
     getCurrentSessionProxy: function() {
         if (!this._currentSession) {
-            let [currentSessionId] = this._proxy.GetCurrentSessionSync();
-            this._currentSession = new ConsoleKitSession(Gio.DBus.system,
-                                                         'org.freedesktop.ConsoleKit',
-                                                         currentSessionId);
+            let [currentSessionId] = this._proxy.GetCurrentSessionSync(null);
+            this._currentSession = new ConsoleKitSession(currentSessionId);
+            this._currentSession.init(null);
         }
 
         return this._currentSession;
@@ -185,26 +227,32 @@ const LoginManagerConsoleKit = new Lang.Class({
         session.connectSignal('ActiveChanged', Lang.bind(this, function(object, senderName, [isActive]) {
             this._sessionActive = isActive;
         }));
-        [this._sessionActive] = session.IsActiveSync();
+        [this._sessionActive] = session.IsActiveSync(null);
 
         return this._sessionActive;
     },
 
     canPowerOff: function(asyncCallback) {
-        this._proxy.CanStopRemote(function(result, error) {
-            if (error)
-                asyncCallback(false);
-            else
-                asyncCallback(result[0]);
+        this._proxy.CanStopRemote(null, function(proxy, result) {
+            let val = false;
+
+            try {
+                [val] = proxy.CanStopFinish(result);
+            } catch(e) { }
+
+            asyncCallback(val);
         });
     },
 
     canReboot: function(asyncCallback) {
-        this._proxy.CanRestartRemote(function(result, error) {
-            if (error)
-                asyncCallback(false);
-            else
-                asyncCallback(result[0]);
+        this._proxy.CanRestartRemote(null, function(proxy, result) {
+            let val = false;
+
+            try {
+                [val] = proxy.CanRestartFinish(result);
+            } catch(e) { }
+
+            asyncCallback(val);
         });
     },
 
@@ -216,11 +264,11 @@ const LoginManagerConsoleKit = new Lang.Class({
     },
 
     powerOff: function() {
-        this._proxy.StopRemote();
+        this._proxy.StopRemote(null, null);
     },
 
     reboot: function() {
-        this._proxy.RestartRemote();
+        this._proxy.RestartRemote(null, null);
     },
 
     suspend: function() {

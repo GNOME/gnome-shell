@@ -2,7 +2,6 @@
 
 const Caribou = imports.gi.Caribou;
 const Clutter = imports.gi.Clutter;
-const DBus = imports.dbus;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -191,13 +190,14 @@ const Key = new Lang.Class({
     }
 });
 
-const Keyboard = new Lang.Class({
+const Keyboard = new Gio.DBusImplementerClass({
     // HACK: we can't set Name, because it collides with Name dbus property
     // Name: 'Keyboard',
+    Interface: CaribouKeyboardIface,
 
     _init: function () {
-        this._impl = Gio.DBusExportedObject.wrapJSObject(CaribouKeyboardIface, this);
-        this._impl.export(Gio.DBus.session, '/org/gnome/Caribou/Keyboard');
+        this.parent();
+        this.export(Gio.DBus.session, '/org/gnome/Caribou/Keyboard');
 
         this.actor = null;
         this._focusInTray = false;

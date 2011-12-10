@@ -1365,13 +1365,16 @@ const MessageTray = new Lang.Class({
     Name: 'MessageTray',
 
     _init: function() {
-        this._presence = new GnomeSession.Presence(Lang.bind(this, function(proxy, error) {
+        this._presence = new GnomeSession.Presence();
+        this._presence.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(proxy, result) {
+            proxy.init_finish(result);
+
             this._onStatusChanged(proxy.status);
+            this._presence.connectSignal('StatusChanged', Lang.bind(this, function(proxy, senderName, [status]) {
+                this._onStatusChanged(status);
+            }));
         }));
         this._busy = false;
-        this._presence.connectSignal('StatusChanged', Lang.bind(this, function(proxy, senderName, [status]) {
-            this._onStatusChanged(status);
-        }));
 
         this.actor = new St.Widget({ name: 'message-tray',
                                      reactive: true,

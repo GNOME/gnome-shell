@@ -21,11 +21,16 @@ const PresenceStatus = {
     IDLE: 3
 };
 
-var PresenceProxy = Gio.DBusProxy.makeProxyWrapper(PresenceIface);
-function Presence(initCallback, cancellable) {
-    return new PresenceProxy(Gio.DBus.session, 'org.gnome.SessionManager',
-                             '/org/gnome/SessionManager/Presence', initCallback, cancellable);
-}
+const Presence = new Gio.DBusProxyClass({
+    Name: 'GnomeSessionPresence',
+    Interface: PresenceIface,
+
+    _init: function() {
+        this.parent({ g_bus_type: Gio.BusType.SESSION,
+                      g_name: 'org.gnome.SessionManager',
+                      g_object_path: '/org/gnome/SessionManager/Presence' });
+    }
+});
 
 // Note inhibitors are immutable objects, so they don't
 // change at runtime (changes always come in the form
@@ -39,10 +44,16 @@ const InhibitorIface = <interface name="org.gnome.SessionManager.Inhibitor">
 </method>
 </interface>;
 
-var InhibitorProxy = Gio.DBusProxy.makeProxyWrapper(InhibitorIface);
-function Inhibitor(objectPath, initCallback, cancellable) {
-    return new InhibitorProxy(Gio.DBus.session, 'org.gnome.SessionManager', objectPath, initCallback, cancellable);
-}
+const Inhibitor = new Gio.DBusProxyClass({
+    Name: 'GnomeSessionInhibitor',
+    Interface: InhibitorIface,
+
+    _init: function(inhibitor) {
+        this.parent({ g_bus_type: Gio.BusType.SESSION,
+                      g_name: 'org.gnome.SessionManager',
+                      g_object_path: inhibitor });
+    }
+});
 
 // Not the full interface, only the methods we use
 const SessionManagerIface = <interface name="org.gnome.SessionManager">
@@ -66,7 +77,14 @@ const SessionManagerIface = <interface name="org.gnome.SessionManager">
 </signal>
 </interface>;
 
-var SessionManagerProxy = Gio.DBusProxy.makeProxyWrapper(SessionManagerIface);
-function SessionManager(initCallback, cancellable) {
-    return new SessionManagerProxy(Gio.DBus.session, 'org.gnome.SessionManager', '/org/gnome/SessionManager', initCallback, cancellable);
-}
+const SessionManager = new Gio.DBusProxyClass({
+    Name: 'GnomeSessionManager',
+    Interface: SessionManagerIface,
+
+    _init: function() {
+        this.parent({ g_bus_type: Gio.BusType.SESSION,
+                      g_name: 'org.gnome.SessionManager',
+                      g_object_path: '/org/gnome/SessionManager' });
+    },
+});
+

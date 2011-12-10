@@ -96,14 +96,15 @@ const ZoomRegionIface = <interface name={ZOOM_SERVICE_NAME}>
 // '/org/gnome/Magnifier/ZoomRegion/zoomer1', etc.
 let _zoomRegionInstanceCount = 0;
 
-const ShellMagnifier = new Lang.Class({
+const ShellMagnifier = new Gio.DBusImplementerClass({
     Name: 'ShellMagnifier',
+    Interface: MagnifierIface,
 
     _init: function() {
-        this._zoomers = {};
+        this.parent();
+        this.export(Gio.DBus.session, MAG_SERVICE_PATH);
 
-        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(MagnifierIface, this);
-        this._dbusImpl.export(Gio.DBus.session, MAG_SERVICE_PATH);
+        this._zoomers = {};
     },
 
     /**
@@ -332,14 +333,15 @@ const ShellMagnifier = new Lang.Class({
  * @zoomerObjectPath:   String that is the path to a DBus ZoomRegion.
  * @zoomRegion:         The actual zoom region associated with the object path.
  */
-const ShellMagnifierZoomRegion = new Lang.Class({
+const ShellMagnifierZoomRegion = new Gio.DBusImplementerClass({
     Name: 'ShellMagnifierZoomRegion',
+    Interface: ZoomRegionIface,
 
     _init: function(zoomerObjectPath, zoomRegion) {
-        this._zoomRegion = zoomRegion;
+        this.parent();
+        this.export(Gio.DBus.session, zoomerObjectPath);
 
-        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ZoomRegionIface, this);
-        this._dbusImpl.export(Gio.DBus.session, zoomerObjectPath);
+        this._zoomRegion = zoomRegion;
     },
 
     /**
@@ -417,6 +419,6 @@ const ShellMagnifierZoomRegion = new Lang.Class({
     },
 
     destroy: function() {
-        this._dbusImpl.unexport();
+        this.unexport();
     }
 });

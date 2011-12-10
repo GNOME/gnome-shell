@@ -25,10 +25,16 @@ const BusIface = <interface name="org.freedesktop.DBus">
 </method>
 </interface>;
 
-var BusProxy = Gio.DBusProxy.makeProxyWrapper(BusIface);
-function Bus() {
-    return new BusProxy(Gio.DBus.session, 'org.freedesktop.DBus', '/org/freedesktop/DBus');
-}
+const Bus = new Gio.DBusProxyClass({
+    Name: 'SessionBusProxy',
+    Interface: BusIface,
+
+    _init: function() {
+        this.parent({ g_bus_type: Gio.BusType.SESSION,
+                      g_name: 'org.freedesktop.DBus',
+                      g_object_path: '/org/freedesktop/DBus' });
+    }
+});
 
 const NotificationDaemonIface = <interface name="org.freedesktop.Notifications">
 <method name="Notify">
@@ -103,17 +109,19 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'ibus-ui-gtk': 'keyboard'
 };
 
-const NotificationDaemon = new Lang.Class({
+const NotificationDaemon = new Gio.DBusImplementerClass({
     Name: 'NotificationDaemon',
+    Interface: NotificationDaemonIface,
 
     _init: function() {
-        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(NotificationDaemonIface, this);
-        this._dbusImpl.export(Gio.DBus.session, '/org/freedesktop/Notifications');
+        this.parent();
+        this.export(Gio.DBus.session, '/org/freedesktop/Notifications');
 
         this._sources = [];
         this._senderToPid = {};
         this._notifications = {};
         this._busProxy = new Bus();
+        this._busProxy.init(null);
 
         this._trayManager = new Shell.TrayManager();
         this._trayIconAddedId = this._trayManager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
@@ -316,18 +324,20 @@ const NotificationDaemon = new Lang.Class({
             return invocation.return_value(GLib.Variant.new('(u)', [id]));;
         }
 
-        this._busProxy.GetConnectionUnixProcessIDRemote(sender, Lang.bind(this, function (result, excp) {
+        this._busProxy.GetConnectionUnixProcessIDRemote(sender, null, Lang.bind(this, function (proxy, result) {
             // The app may have updated or removed the notification
             ndata = this._notifications[id];
             if (!ndata)
                 return;
-
-            if (excp) {
+            
+            let pid;
+            try {
+                [pid] = proxy.GetConnectionUnixProcessIDFinish(result);
+            } catch(excp) {
                 logError(excp, 'Call to GetConnectionUnixProcessID failed');
                 return;
             }
 
-            let [pid] = result;
             source = this._getSource(appName, pid, ndata, sender, null);
 
             // We only store sender-pid entries for persistent sources.
@@ -487,13 +497,11 @@ const NotificationDaemon = new Lang.Class({
     },
 
     _emitNotificationClosed: function(id, reason) {
-        this._dbusImpl.emit_signal('NotificationClosed',
-                                   GLib.Variant.new('(uu)', [id, reason]));
+        this.emit_signal('NotificationClosed', id, reason);
     },
 
     _emitActionInvoked: function(id, action) {
-        this._dbusImpl.emit_signal('ActionInvoked',
-                                   GLib.Variant.new('(us)', [id, action]));
+        this.emit_signal('ActionInvoked', id, action);
     },
 
     _onTrayIconAdded: function(o, icon) {

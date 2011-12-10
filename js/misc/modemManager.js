@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -26,7 +27,16 @@ const ModemGsmNetworkInterface = <interface name="org.freedesktop.ModemManager.M
 </signal>
 </interface>;
 
-const ModemGsmNetworkProxy = Gio.DBusProxy.makeProxyWrapper(ModemGsmNetworkInterface);
+const ModemGsmNetworkProxy = new Gio.DBusProxyClass({
+    Name: 'ModemGsmNetworkProxy',
+    Interface: ModemGsmNetworkInterface,
+
+    _init: function(modem) {
+        this.parent({ g_bus_type: Gio.BusType.SYSTEM,
+                      g_name: 'org.freedesktop.ModemManager',
+                      g_object_path: modem });
+    }
+});
 
 const ModemCdmaInterface = <interface name="org.freedesktop.ModemManager.Modem.Cdma">
 <method name="GetSignalQuality">
@@ -40,7 +50,16 @@ const ModemCdmaInterface = <interface name="org.freedesktop.ModemManager.Modem.C
 </signal>
 </interface>;
 
-const ModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(ModemCdmaInterface);
+const ModemCdmaProxy = new Gio.DBusProxyClass({
+    Name: 'ModemCdmaProxy',
+    Interface: ModemCdmaInterface,
+
+    _init: function(modem) {
+        this.parent({ g_bus_type: Gio.BusType.SYSTEM,
+                      g_name: 'org.freedesktop.ModemManager',
+                      g_object_path: modem });
+    },
+});
 
 let _providersTable;
 function _getProvidersTable() {
@@ -54,11 +73,18 @@ const ModemGsm = new Lang.Class({
     Name: 'ModemGsm',
 
     _init: function(path) {
-        this._proxy = new ModemGsmNetworkProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
+        this._proxy = new ModemGsmNetworkProxy(path);
+        this._proxy.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(obj, result) {
+            obj.init_finish(result);
+
+            this._finishInit();
+        }));
 
         this.signal_quality = 0;
         this.operator_name = null;
+    },
 
+    _finishInit: function() {
         // Code is duplicated because the function have different signatures
         this._proxy.connectSignal('SignalQuality', Lang.bind(this, function(proxy, sender, [quality]) {
             this.signal_quality = quality;
@@ -68,24 +94,19 @@ const ModemGsm = new Lang.Class({
             this.operator_name = this._findOperatorName(name, code);
             this.emit('notify::operator-name');
         }));
-        this._proxy.GetRegistrationInfoRemote(Lang.bind(this, function([result], err) {
-            if (err) {
-                log(err);
-                return;
-            }
-
-            let [status, code, name] = result;
+        this._proxy.GetRegistrationInfoRemote(null, Lang.bind(this, function(proxy, result) {
+            let [status, code, name] = proxy.GetRegistrationInfoFinish(result);
             this.operator_name = this._findOperatorName(name, code);
             this.emit('notify::operator-name');
         }));
-        this._proxy.GetSignalQualityRemote(Lang.bind(this, function(result, err) {
-            if (err) {
+        this._proxy.GetSignalQualityRemote(null, Lang.bind(this, function(proxy, result) {
+            try {
+                [this.signal_quality] = proxy.GetSignalQualityFinish(result);
+            } catch(e) {
                 // it will return an error if the device is not connected
                 this.signal_quality = 0;
-            } else {
-                let [quality] = result;
-                this.signal_quality = quality;
             }
+
             this.emit('notify::signal-quality');
         }));
     },
@@ -157,10 +178,18 @@ const ModemCdma = new Lang.Class({
     Name: 'ModemCdma',
 
     _init: function(path) {
-        this._proxy = new ModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
+        this._proxy = new ModemCdmaProxy(path);
+        this._proxy.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(obj, result) {
+            obj.init_finish(result);
+
+            this._finishInit();
+        }));
 
         this.signal_quality = 0;
         this.operator_name = null;
+    },
+
+    _finishInit: function() {
         this._proxy.connectSignal('SignalQuality', Lang.bind(this, function(proxy, sender, params) {
             this.signal_quality = params[0];
             this.emit('notify::signal-quality');
@@ -170,30 +199,31 @@ const ModemCdma = new Lang.Class({
             if (this.operator_name == null)
                 this._refreshServingSystem();
         }));
-        this._proxy.GetSignalQualityRemote(Lang.bind(this, function(result, err) {
-            if (err) {
+        this._proxy.GetSignalQualityRemote(null, Lang.bind(this, function(proxy, result) {
+            try {
+                [this.signal_quality] = proxy.GetSignalQualityFinish(result);
+            } catch(e) {
                 // it will return an error if the device is not connected
                 this.signal_quality = 0;
-            } else {
-                let [quality] = result;
-                this.signal_quality = quality;
             }
+
             this.emit('notify::signal-quality');
         }));
     },
 
     _refreshServingSystem: function() {
-        this._proxy.GetServingSystemRemote(Lang.bind(this, function([result], err) {
-            if (err) {
-                // it will return an error if the device is not connected
-                this.operator_name = null;
-            } else {
-                let [bandClass, band, id] = result;
+        this._proxy.GetServingSystemRemote(null, Lang.bind(this, function(proxy, result) {
+            try {
+                let [bandClass, band, name] = proxy.GetServingSystemFinish(result);
                 if (name.length > 0)
-                    this.operator_name = this._findProviderForSid(id);
+                    this.operator_name = this._findProviderForSid(name);
                 else
                     this.operator_name = null;
+            } catch(e) {
+                // it will return an error if the device is not connected
+                this.operator_name = null;
             }
+
             this.emit('notify::operator-name');
         }));
     },

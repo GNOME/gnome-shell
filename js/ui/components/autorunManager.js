@@ -2,6 +2,7 @@
 
 const Lang = imports.lang;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const St = imports.gi.St;
 
 const LoginManager = imports.misc.loginManager;
@@ -82,12 +83,16 @@ const HotplugSnifferIface = <interface name="org.gnome.Shell.HotplugSniffer">
 </method>
 </interface>;
 
-const HotplugSnifferProxy = Gio.DBusProxy.makeProxyWrapper(HotplugSnifferIface);
-function HotplugSniffer() {
-    return new HotplugSnifferProxy(Gio.DBus.session,
-                                   'org.gnome.Shell.HotplugSniffer',
-                                   '/org/gnome/Shell/HotplugSniffer');
-}
+const HotplugSniffer = new Gio.DBusProxyClass({
+    Name: 'HotplugSnifferProxy',
+    Interface: HotplugSnifferIface,
+
+    _init: function() {
+        this.parent({ g_bus_type: Gio.BusType.SESSION,
+                      g_name: 'org.gnome.Shell.HotplugSniffer',
+                      g_object_path: '/org/gnome/Shell/HotplugSniffer' });
+    }
+});
 
 const ContentTypeDiscoverer = new Lang.Class({
     Name: 'ContentTypeDiscoverer',
@@ -127,10 +132,14 @@ const ContentTypeDiscoverer = new Lang.Class({
             let root = mount.get_root();
 
             let hotplugSniffer = new HotplugSniffer();
-            hotplugSniffer.SniffURIRemote(root.get_uri(),
-                 Lang.bind(this, function([contentTypes]) {
-                     this._emitCallback(mount, contentTypes);
-                 }));
+            hotplugSniffer.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(proxy, result) {
+                proxy.init_finish(result);
+
+                proxy.SniffURIRemote(root.get_uri(), null, Lang.bind(this, function(proxy, result) {
+                    let [contentTypes] = proxy.SniffURIFinish(result);
+                    this._emitCallback(mount, contentTypes);
+                }));
+            }));
         }
     },
 

@@ -82,6 +82,8 @@ const ShellUserVerifier = new Lang.Class({
         this._settings = new Gio.Settings({ schema: LOGIN_SCREEN_SCHEMA });
 
         this._fprintManager = new Fprint.FprintManager();
+        this._fprintManager.init(null);
+
         this._realmManager = new Realmd.Manager();
 
         this._failCounter = 0;
@@ -137,11 +139,14 @@ const ShellUserVerifier = new Lang.Class({
         if (!this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY))
             return;
 
-        this._fprintManager.GetDefaultDeviceRemote(Gio.DBusCallFlags.NONE, this._cancellable, Lang.bind(this,
-            function(device, error) {
-                if (!error && device)
-                    this._haveFingerprintReader = true;
-            }));
+        this._fprintManager.GetDefaultDeviceRemote(this._cancellable, Lang.bind(this, function(manager, result) {
+            try {
+                let device = manager.GetDefaultDeviceFinish(result);
+                this._haveFingerprintReader = !!device;
+            } catch(e) {
+                this._haveFingerprintReader = false;
+            }
+        }));
     },
 
     _reportInitError: function(where, error) {

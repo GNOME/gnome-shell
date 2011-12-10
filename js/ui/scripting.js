@@ -80,15 +80,23 @@ const PerfHelperIface = <interface name="org.gnome.Shell.PerfHelper">
 <method name="DestroyWindows" />
 </interface>;
 
-var PerfHelperProxy = Gio.DBusProxy.makeProxyWrapper(PerfHelperIface);
-function PerfHelper() {
-    return new PerfHelperProxy(Gio.DBus.session, 'org.gnome.Shell.PerfHelper', '/org/gnome/Shell/PerfHelper');
-}
+const PerfHelper = new Gio.DBusProxyClass({
+    Name: 'PerfHelperProxy',
+    Interface: PerfHelperIface,
+
+    _init: function() {
+        this.parent({ g_bus_type: Gio.BusType.SESSION,
+                      g_name: 'org.gnome.Shell.PerfHelper',
+                      g_object_path: '/org/gnome/Shell/PerfHelper' });
+    }
+});
 
 let _perfHelper = null;
 function _getPerfHelper() {
-    if (_perfHelper == null)
+    if (_perfHelper == null) {
         _perfHelper = new PerfHelper();
+        _perfHelper.init(null);
+    }
 
     return _perfHelper;
 }
@@ -111,7 +119,8 @@ function createTestWindow(width, height, alpha, maximized) {
     let perfHelper = _getPerfHelper();
 
     perfHelper.CreateWindowRemote(width, height, alpha, maximized,
-                                  function(result, excp) {
+                                  null,
+                                  function(proxy, result) {
                                       if (cb)
                                           cb();
                                   });
@@ -131,7 +140,7 @@ function waitTestWindows() {
     let cb;
     let perfHelper = _getPerfHelper();
 
-    perfHelper.WaitWindowsRemote(function(result, excp) {
+    perfHelper.WaitWindowsRemote(null, function(proxy, result) {
                                      if (cb)
                                          cb();
                                  });
@@ -154,7 +163,7 @@ function destroyTestWindows() {
     let cb;
     let perfHelper = _getPerfHelper();
 
-    perfHelper.DestroyWindowsRemote(function(result, excp) {
+    perfHelper.DestroyWindowsRemote(null, function(proxy, result) {
                                         if (cb)
                                             cb();
                                     });

@@ -195,8 +195,12 @@ const IMStatusChooserItem = new Lang.Class({
                             Lang.bind(this, this._changeIMStatus));
 
         this._presence = new GnomeSession.Presence();
-        this._presence.connectSignal('StatusChanged', Lang.bind(this, function(proxy, senderName, [status]) {
-            this._sessionStatusChanged(status);
+        this._presence.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(obj, result) {
+            obj.init_finish(result);
+
+            this._presence.connectSignal('StatusChanged', Lang.bind(this, function(proxy, senderName, [status]) {
+                this._sessionStatusChanged(status);
+            }));
         }));
 
         this._sessionPresenceRestored = false;
@@ -480,8 +484,19 @@ const UserMenuButton = new Lang.Class({
         this._userManager = AccountsService.UserManager.get_default();
 
         this._user = this._userManager.get_user(GLib.get_user_name());
+
         this._presence = new GnomeSession.Presence();
+        this._presence.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(proxy, result) {
+            proxy.init_finish(result);
+
+            this._updateSwitch(this._presence.status);
+            this._presence.connectSignal('StatusChanged', Lang.bind(this, function (proxy, senderName, [status]) {
+                this._updateSwitch(status);
+            }));
+        }));
+
         this._session = new GnomeSession.SessionManager();
+        this._session.init(null);
         this._haveShutdown = true;
         this._haveSuspend = true;
 
@@ -532,11 +547,6 @@ const UserMenuButton = new Lang.Class({
         this._updateUserName();
 
         this._createSubMenu();
-
-        this._updateSwitch(this._presence.status);
-        this._presence.connectSignal('StatusChanged', Lang.bind(this, function (proxy, senderName, [status]) {
-            this._updateSwitch(status);
-        }));
 
         this._userManager.connect('notify::is-loaded',
                                   Lang.bind(this, this._updateMultiUser));
@@ -637,14 +647,16 @@ const UserMenuButton = new Lang.Class({
     },
 
     _updateHaveShutdown: function() {
-        this._session.CanShutdownRemote(Lang.bind(this,
-            function(result, error) {
-                if (!error) {
-                    this._haveShutdown = result[0];
-                    this._updateInstallUpdates();
-                    this._updateSuspendOrPowerOff();
-                }
-            }));
+        this._session.CanShutdownRemote(null, Lang.bind(this, function(proxy, result) {
+            try {
+                [this._haveShutdown] = proxy.CanShutdownFinish(result);
+            } catch(e) {
+                this._haveShutdown = false;
+            }
+
+            this._updateInstallUpdates();
+            this._updateSuspendOrPowerOff();
+        }));
     },
 
     _updateHaveSuspend: function() {
@@ -837,7 +849,7 @@ const UserMenuButton = new Lang.Class({
 
     _onQuitSessionActivate: function() {
         Main.overview.hide();
-        this._session.LogoutRemote(0);
+        this._session.LogoutRemote(0, null, null);
     },
 
     _onInstallUpdatesActivate: function() {
@@ -852,7 +864,7 @@ const UserMenuButton = new Lang.Class({
 
         if (this._haveShutdown &&
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
-            this._session.ShutdownRemote();
+            this._session.ShutdownRemote(null, null);
         } else {
             if (this._screenSaverSettings.get_boolean(LOCK_ENABLED_KEY)) {
                 let tmpId = Main.screenShield.connect('lock-screen-shown', Lang.bind(this, function() {

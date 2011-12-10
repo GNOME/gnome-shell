@@ -554,14 +554,16 @@ const ShellMountOperationType = {
     SHOW_PROCESSES: 3
 };
 
-const GnomeShellMountOpHandler = new Lang.Class({
+const GnomeShellMountOpHandler = new Gio.DBusImplementerClass({
     Name: 'GnomeShellMountOpHandler',
+    Interface: GnomeShellMountOpIface,
 
     _init: function() {
-        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellMountOpIface, this);
-        this._dbusImpl.export(Gio.DBus.session, '/org/gtk/MountOperationHandler');
-        Gio.bus_own_name_on_connection(Gio.DBus.session, 'org.gtk.MountOperationHandler',
-                                       Gio.BusNameOwnerFlags.REPLACE, null, null);
+        this.parent();
+
+        this.export(Gio.DBus.session, '/org/gtk/MountOperationHandler');
+        Gio.DBus.session.own_name('org.gtk.MountOperationHandler',
+                                  Gio.BusNameOwnerFlags.REPLACE, null, null);
 
         this._dialog = null;
         this._volumeMonitor = Gio.VolumeMonitor.get();

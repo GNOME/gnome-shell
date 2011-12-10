@@ -218,6 +218,34 @@ function init() {
     _endSessionDialog = new EndSessionDialog();
 }
 
+const EndSessionExporter = new Gio.DBusImplementerClass({
+    Name: 'EndSessionExporter',
+    Interface: EndSessionDialogIface,
+
+    _init: function() {
+        this.parent();
+
+        this.export(Gio.DBus.session, '/org/gnome/SessionManager/EndSessionDialog');
+    },
+
+    OpenAsync: function(parameters, invocation) {
+        this.emit('open', parameters, invocation);
+    },
+
+    close: function() {
+        this.emit_signal('Closed');
+    },
+
+    cancel: function() {
+        this.emit_signal('Canceled');
+    },
+
+    confirm: function(type) {
+        this.emit_signal(type);
+    },
+});
+Signals.addSignalMethods(EndSessionExporter.prototype);
+
 const EndSessionDialog = new Lang.Class({
     Name: 'EndSessionDialog',
     Extends: ModalDialog.ModalDialog,
@@ -295,8 +323,8 @@ const EndSessionDialog = new Lang.Class({
                                               scrollView.hide();
                                       }));
 
-        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(EndSessionDialogIface, this);
-        this._dbusImpl.export(Gio.DBus.session, '/org/gnome/SessionManager/EndSessionDialog');
+        this._exporter = new EndSessionExporter();
+        this._exporter.connect('open', Lang.bind(this, this._onOpenRequest));
     },
 
     _onDestroy: function() {
@@ -387,19 +415,19 @@ const EndSessionDialog = new Lang.Class({
 
     close: function() {
         this.parent();
-        this._dbusImpl.emit_signal('Closed', null);
+        this._exporter.close();
     },
 
     cancel: function() {
         this._stopTimer();
-        this._dbusImpl.emit_signal('Canceled', null);
+        this._exporter.cancel();
         this.close(global.get_current_time());
     },
 
     _confirm: function(signal) {
         this._fadeOutDialog();
         this._stopTimer();
-        this._dbusImpl.emit_signal(signal, null);
+        this._exporter.confirm(signal);
     },
 
     _onOpened: function() {
@@ -452,7 +480,7 @@ const EndSessionDialog = new Lang.Class({
         this._updateContent();
     },
 
-    OpenAsync: function(parameters, invocation) {
+    _onOpenRequest: function(exporter, parameters, invocation) {
         let [type, timestamp, totalSecondsToStayOpen, inhibitorObjectPaths] = parameters;
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._inhibitors = [];
@@ -466,7 +494,10 @@ const EndSessionDialog = new Lang.Class({
         }
 
         for (let i = 0; i < inhibitorObjectPaths.length; i++) {
-            let inhibitor = new GnomeSession.Inhibitor(inhibitorObjectPaths[i], Lang.bind(this, function(proxy, error) {
+            let inhibitor = new GnomeSession.Inhibitor(inhibitorObjectPaths[i]);
+            inhibitor.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(proxy, result) {
+                proxy.init_finish(result);
+
                 this._onInhibitorLoaded(proxy);
             }));
 

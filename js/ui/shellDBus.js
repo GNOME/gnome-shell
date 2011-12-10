@@ -67,14 +67,16 @@ const ScreenSaverIface = <interface name="org.gnome.ScreenSaver">
 </signal>
 </interface>;
 
-const GnomeShell = new Lang.Class({
+const GnomeShell = new Gio.DBusImplementerClass({
     Name: 'GnomeShellDBus',
+    Interface: GnomeShellIface,
 
     _init: function() {
-        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellIface, this);
-        this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
+        this.parent();
 
-        this._extensionsSerivce = new GnomeShellExtensions();
+        this.export(Gio.DBus.session, '/org/gnome/Shell');
+
+        this._extensionsService = new GnomeShellExtensions();
     },
 
     /**
@@ -236,12 +238,14 @@ const GnomeShellExtensionsIface = <interface name="org.gnome.Shell.Extensions">
 <property name="ShellVersion" type="s" access="read" />
 </interface>;
 
-const GnomeShellExtensions = new Lang.Class({
+const GnomeShellExtensions = new Gio.DBusImplementerClass({
     Name: 'GnomeShellExtensionsDBus',
+    Interface: GnomeShellExtensionsIface,
 
     _init: function() {
-        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellExtensionsIface, this);
-        this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
+        this.parent();
+
+        this.export(Gio.DBus.session, '/org/gnome/Shell');
         ExtensionSystem.connect('extension-state-changed',
                                 Lang.bind(this, this._extensionStateChanged));
     },
@@ -335,25 +339,23 @@ const GnomeShellExtensions = new Lang.Class({
     ShellVersion: Config.PACKAGE_VERSION,
 
     _extensionStateChanged: function(_, newState) {
-        this._dbusImpl.emit_signal('ExtensionStatusChanged',
-                                   GLib.Variant.new('(sis)', [newState.uuid, newState.state, newState.error]));
+        this.emit_signal('ExtensionStatusChanged', newState.uuid, newState.state, newState.error);
     }
 });
 
-const ScreenSaverDBus = new Lang.Class({
+const ScreenSaverDBus = new Gio.DBusImplementerClass({
     Name: 'ScreenSaverDBus',
+    Interface: ScreenSaverIface,
 
     _init: function(screenShield) {
         this.parent();
 
         this._screenShield = screenShield;
         screenShield.connect('lock-status-changed', Lang.bind(this, function(shield) {
-            this._dbusImpl.emit_signal('ActiveChanged', GLib.Variant.new('(b)', [shield.locked]));
+            this.emit_signal('ActiveChanged', shield.locked);
         }));
 
-        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreenSaverIface, this);
-        this._dbusImpl.export(Gio.DBus.session, '/org/gnome/ScreenSaver');
-
+        this.export(Gio.DBus.session, '/org/gnome/ScreenSaver');
         Gio.DBus.session.own_name('org.gnome.ScreenSaver', Gio.BusNameOwnerFlags.REPLACE, null, null);
     },
 

@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const St = imports.gi.St;
@@ -200,19 +201,17 @@ const CalendarServerIface = <interface name="org.gnome.Shell.CalendarServer">
 <signal name="Changed" />
 </interface>;
 
-const CalendarServerInfo  = Gio.DBusInterfaceInfo.new_for_xml(CalendarServerIface);
+const CalendarServer = new Gio.DBusProxyClass({
+    Name: 'CalendarServer',
+    Interface: CalendarServerIface,
 
-function CalendarServer() {
-    var self = new Gio.DBusProxy({ g_connection: Gio.DBus.session,
-                                   g_interface_name: CalendarServerInfo.name,
-                                   g_interface_info: CalendarServerInfo,
-                                   g_name: 'org.gnome.Shell.CalendarServer',
-                                   g_object_path: '/org/gnome/Shell/CalendarServer',
-                                   g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES });
-
-    self.init(null);
-    return self;
-}
+    _init: function() {
+        this.parent({ g_bus_type: Gio.BusType.SESSION,
+                      g_name: 'org.gnome.Shell.CalendarServer',
+                      g_object_path: '/org/gnome/Shell/CalendarServer',
+                      g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES });
+    }
+});
 
 function _datesEqual(a, b) {
     if (a < b)
@@ -240,6 +239,7 @@ const DBusEventSource = new Lang.Class({
         this._resetCache();
 
         this._dbusProxy = new CalendarServer();
+        this._dbusProxy.init(null);
         this._dbusProxy.connectSignal('Changed', Lang.bind(this, this._onChanged));
 
         this._dbusProxy.connect('notify::g-name-owner', Lang.bind(this, function() {
@@ -270,23 +270,28 @@ const DBusEventSource = new Lang.Class({
         this._loadEvents(false);
     },
 
-    _onEventsReceived: function(results, error) {
-        let newEvents = [];
-        let appointments = results ? results[0] : null;
-        if (appointments != null) {
-            for (let n = 0; n < appointments.length; n++) {
-                let a = appointments[n];
-                let date = new Date(a[4] * 1000);
-                let end = new Date(a[5] * 1000);
-                let summary = a[1];
-                let allDay = a[3];
-                let event = new CalendarEvent(date, end, summary, allDay);
-                newEvents.push(event);
-            }
-            newEvents.sort(function(event1, event2) {
-                return event1.date.getTime() - event2.date.getTime();
-            });
+    _onEventsReceived: function(proxy, result) {
+        let appointments;
+        try {
+            [appointments] = proxy.call_finish(result).deep_unpack();
+        } catch(e if e instanceof GLib.Error) {
+            // ignore errors coming from DBus
+            appointments = [];
         }
+
+        let newEvents = [];
+        for (let n = 0; n < appointments.length; n++) {
+            let a = appointments[n];
+            let date = new Date(a[4] * 1000);
+            let end = new Date(a[5] * 1000);
+            let summary = a[1];
+            let allDay = a[3];
+            let event = new CalendarEvent(date, end, summary, allDay);
+            newEvents.push(event);
+        }
+        newEvents.sort(function(event1, event2) {
+            return event1.date.getTime() - event2.date.getTime();
+        });
 
         this._events = newEvents;
         this.emit('changed');
@@ -294,14 +299,19 @@ const DBusEventSource = new Lang.Class({
 
     _loadEvents: function(forceReload) {
         if (this._curRequestBegin && this._curRequestEnd){
+            /* Can't use GetEventsRemote because we need to pass the
+               flags here */
             let callFlags = Gio.DBusCallFlags.NO_AUTO_START;
             if (forceReload)
-                callFlags = Gio.DBusCallFlags.NONE;
-            this._dbusProxy.GetEventsRemote(this._curRequestBegin.getTime() / 1000,
-                                            this._curRequestEnd.getTime() / 1000,
-                                            forceReload,
-                                            Lang.bind(this, this._onEventsReceived),
-                                            callFlags);
+                 callFlags = Gio.DBusCallFlags.NONE;
+            this._dbusProxy.call("GetEvents",
+                                 GLib.Variant.new("(xxb)", [this._curRequestBegin.getTime() / 1000,
+                                                            this._curRequestEnd.getTime() / 1000,
+                                                            forceReload]),
+                                 callFlags,
+                                 -1,
+                                 null,
+                                 Lang.bind(this, this._onEventsReceived));
         }
     },
 

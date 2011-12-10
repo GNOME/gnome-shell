@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const St = imports.gi.St;
 
@@ -45,7 +46,16 @@ const PowerManagerInterface = <interface name="org.gnome.SettingsDaemon.Power">
 <property name="Icon" type="s" access="read" />
 </interface>;
 
-const PowerManagerProxy = Gio.DBusProxy.makeProxyWrapper(PowerManagerInterface);
+const PowerManagerProxy = new Gio.DBusProxyClass({
+    Name: 'PowerManagerProxy',
+    Interface: PowerManagerInterface,
+
+    _init: function() {
+        this.parent({ g_bus_type: Gio.BusType.SESSION,
+                      g_name: BUS_NAME,
+                      g_object_path: OBJECT_PATH });
+    }
+});
 
 const Indicator = new Lang.Class({
     Name: 'PowerIndicator',
@@ -54,7 +64,7 @@ const Indicator = new Lang.Class({
     _init: function() {
         this.parent('battery-missing-symbolic', _("Battery"));
 
-        this._proxy = new PowerManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH);
+        this._proxy = new PowerManagerProxy();
 
         this._deviceItems = [ ];
         this._hasPrimary = false;
@@ -73,18 +83,26 @@ const Indicator = new Lang.Class({
 
         this._proxy.connect('g-properties-changed',
                             Lang.bind(this, this._devicesChanged));
-        this._devicesChanged();
+        this._proxy.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(proxy, result) {
+            proxy.init_finish(result);
+
+            this._devicesChanged();
+        }));
     },
 
     _readPrimaryDevice: function() {
-        this._proxy.GetPrimaryDeviceRemote(Lang.bind(this, function(result, error) {
-            if (error) {
+        this._proxy.GetPrimaryDeviceRemote(null, Lang.bind(this, function(proxy, result) {
+            let device_id, device_type, icon, percentage, state, seconds;
+            try {
+                [[device_id, device_type, icon, percentage, state, seconds]] =
+                    proxy.GetPrimaryDeviceFinish(result);
+            } catch(e) {
                 this._hasPrimary = false;
                 this._primaryDeviceId = null;
                 this._batteryItem.actor.hide();
                 return;
             }
-            let [[device_id, device_type, icon, percentage, state, seconds]] = result;
+
             if (device_type == UPDeviceType.BATTERY) {
                 this._hasPrimary = true;
                 let time = Math.round(seconds / 60);
@@ -121,16 +139,18 @@ const Indicator = new Lang.Class({
     },
 
     _readOtherDevices: function() {
-        this._proxy.GetDevicesRemote(Lang.bind(this, function(result, error) {
+        this._proxy.GetDevicesRemote(null, Lang.bind(this, function(proxy, result) {
             this._deviceItems.forEach(function(i) { i.destroy(); });
             this._deviceItems = [];
 
-            if (error) {
+            let devices;
+            try {
+                [devices] = proxy.GetDevicesFinish(result);
+            } catch(e) {
                 return;
             }
 
             let position = 0;
-            let [devices] = result;
             for (let i = 0; i < devices.length; i++) {
                 let [device_id, device_type] = devices[i];
                 if (device_type == UPDeviceType.AC_POWER || device_id == this._primaryDeviceId)

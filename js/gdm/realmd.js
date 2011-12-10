@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -16,7 +17,16 @@ const ProviderIface = <interface name='org.freedesktop.realmd.Provider'>
         <arg name="realm" type="ao" direction="out"/>
     </method>
 </interface>;
-const Provider = Gio.DBusProxy.makeProxyWrapper(ProviderIface);
+const Provider = new Gio.DBusProxyClass({
+    Name: 'RealmdProvider',
+    Interface: ProviderIface,
+
+    _init: function() {
+        this.parent({ g_bus_type: Gio.BusType.SYSTEM,
+                      g_name: 'org.freedesktop.realmd',
+                      g_object_path: '/org/freedesktop/realmd' });
+    }
+});
 
 const ServiceIface = <interface name="org.freedesktop.realmd.Service">
     <method name="Cancel">
@@ -31,7 +41,16 @@ const ServiceIface = <interface name="org.freedesktop.realmd.Service">
         <arg name="operation" type="s"/>
     </signal>
 </interface>;
-const Service = Gio.DBusProxy.makeProxyWrapper(ServiceIface);
+const Service = new Gio.DBusProxyClass({
+    Name: 'RealmdService',
+    Interface: ServiceIface,
+
+    _init: function(service) {
+        this.parent({ g_bus_type: Gio.BusType.SYSTEM,
+                      g_name: 'org.freedesktop.realmd',
+                      g_object_path: service });
+    }
+});
 
 const RealmIface = <interface name="org.freedesktop.realmd.Realm">
     <property name="Name" type="s" access="read"/>
@@ -51,16 +70,23 @@ const RealmIface = <interface name="org.freedesktop.realmd.Realm">
         <arg name="options" type="a{sv}" direction="in"/>
     </method>
 </interface>;
-const Realm = Gio.DBusProxy.makeProxyWrapper(RealmIface);
+const Realm = new Gio.DBusProxyClass({
+    Name: 'RealmdRealm',
+    Interface: RealmIface,
+
+    _init: function(realm) {
+        this.parent({ g_bus_type: Gio.BusType.SYSTEM,
+                      g_name: 'org.freedesktop.realmd',
+                      g_object_path: realm });
+    }
+});
 
 const Manager = new Lang.Class({
     Name: 'Manager',
 
     _init: function(parentActor) {
-        this._aggregateProvider = Provider(Gio.DBus.system,
-                                           'org.freedesktop.realmd',
-                                           '/org/freedesktop/realmd',
-                                           Lang.bind(this, this._reloadRealms))
+        this._aggregateProvider = new Provider();
+        this._aggregateProvider.init(null);
         this._realms = {};
 
         this._aggregateProvider.connect('g-properties-changed',
@@ -77,10 +103,8 @@ const Manager = new Lang.Class({
             return;
 
         for (let i = 0; i < realmPaths.length; i++) {
-            let realm = Realm(Gio.DBus.system,
-                              'org.freedesktop.realmd',
-                              realmPaths[i],
-                              Lang.bind(this, this._onRealmLoaded));
+            let realm = new Realm(realmPaths[i]);
+            realm.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, this._onRealmLoaded));
         }
     },
 
@@ -97,9 +121,10 @@ const Manager = new Lang.Class({
         this._updateLoginFormat();
     },
 
-    _onRealmLoaded: function(realm, error) {
-        if (error)
-            return;
+    _onRealmLoaded: function(realm, result) {
+        try {
+            realm.init_finish(result);
+        } catch(e) { return; }
 
         this._reloadRealm(realm);
 
