@@ -28,9 +28,6 @@
 #include "cogl-winsys-private.h"
 #include "cogl-context.h"
 #include "cogl-context-private.h"
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-#include "cogl-xlib-renderer-private.h"
-#endif
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
 #include <wayland-client.h>
 #include <wayland-egl.h>
@@ -49,8 +46,25 @@ typedef struct _CoglWinsysEGLVtable
                           EGLint *attribs,
                           GError **error);
 
+  gboolean
+  (* context_created) (CoglDisplay *display,
+                       GError **error);
+
   void
   (* cleanup_context) (CoglDisplay *display);
+
+  gboolean
+  (* context_init) (CoglContext *context, GError **error);
+
+  void
+  (* context_deinit) (CoglContext *context);
+
+  gboolean
+  (* onscreen_init) (CoglOnscreen *onscreen,
+                     EGLConfig config,
+                     GError **error);
+  void
+  (* onscreen_deinit) (CoglOnscreen *onscreen);
 } CoglWinsysEGLVtable;
 
 typedef enum _CoglEGLWinsysFeature
@@ -87,7 +101,7 @@ typedef struct _CoglRendererEGL
   /* vtable for platform specific parts */
   const CoglWinsysEGLVtable *platform_vtable;
 
-  /* Function pointers for GLX specific extensions */
+  /* Function pointers for EGL specific extensions */
 #define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d)
 
 #define COGL_WINSYS_FEATURE_FUNCTION(ret, name, args) \
@@ -104,10 +118,6 @@ typedef struct _CoglRendererEGL
 
 typedef struct _CoglDisplayEGL
 {
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  Window dummy_xwin;
-#endif
-
   EGLContext egl_context;
   EGLSurface dummy_surface;
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
@@ -137,20 +147,8 @@ typedef struct _CoglContextEGL
   EGLSurface current_surface;
 } CoglContextEGL;
 
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-typedef struct _CoglOnscreenXlib
-{
-  Window xwin;
-  gboolean is_foreign_xwin;
-} CoglOnscreenXlib;
-#endif
-
 typedef struct _CoglOnscreenEGL
 {
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  CoglOnscreenXlib _parent;
-#endif
-
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
   struct wl_egl_window *wayland_egl_native_window;
   struct wl_surface *wayland_surface;
