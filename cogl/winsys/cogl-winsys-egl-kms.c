@@ -261,7 +261,6 @@ _cogl_winsys_egl_try_create_context (CoglDisplay *display,
   CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglDisplayEGL *egl_display = display->winsys;
-  CoglDisplayKMS *kms_display = egl_display->platform;
 
   egl_display->egl_context = eglCreateContext (egl_renderer->edpy,
                                                NULL,
@@ -286,9 +285,6 @@ _cogl_winsys_egl_try_create_context (CoglDisplay *display,
                    "Failed to make context current");
       return FALSE;
     }
-
-  egl_display->egl_surface_width = kms_display->width;
-  egl_display->egl_surface_height = kms_display->height;
 
   return TRUE;
 }
@@ -457,8 +453,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   _cogl_winsys_onscreen_swap_buffers (onscreen);
 
   _cogl_framebuffer_winsys_update_size (framebuffer,
-                                        egl_display->egl_surface_width,
-                                        egl_display->egl_surface_height);
+                                        kms_display->width,
+                                        kms_display->height);
 
   return TRUE;
 }

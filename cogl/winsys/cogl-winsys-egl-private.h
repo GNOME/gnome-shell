@@ -112,8 +112,7 @@ typedef struct _CoglDisplayEGL
   EGLSurface dummy_surface;
 #if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
   defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT) ||            \
-  defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT) ||        \
-  defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
+  defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)
   int egl_surface_width;
   int egl_surface_height;
   gboolean have_onscreen;
