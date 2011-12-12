@@ -175,7 +175,7 @@ shm_buffer_created (struct wl_buffer *wayland_buffer)
 
 static void
 shm_buffer_damaged (struct wl_buffer *wayland_buffer,
-		    gint32 x,
+                    gint32 x,
                     gint32 y,
                     gint32 width,
                     gint32 height)
@@ -540,7 +540,7 @@ const static struct wl_compositor_interface cogland_compositor_interface =
 
 static void
 compositor_bind (struct wl_client *client,
-		 void *data,
+                 void *data,
                  guint32 version,
                  guint32 id)
 {
@@ -571,24 +571,24 @@ shell_resize (struct wl_client *client,
 
 static void
 shell_set_toplevel (struct wl_client *client,
-		    struct wl_resource *resource,
-		    struct wl_resource *surface_resource)
+                    struct wl_resource *resource,
+                    struct wl_resource *surface_resource)
 {
 }
 
 static void
 shell_set_transient (struct wl_client *client,
-		     struct wl_resource *resource,
-		     struct wl_resource *surface_resource,
-		     struct wl_resource *parent_resource,
-		     int x, int y, uint32_t flags)
+                     struct wl_resource *resource,
+                     struct wl_resource *surface_resource,
+                     struct wl_resource *parent_resource,
+                     int x, int y, uint32_t flags)
 {
 }
 
 static void
 shell_set_fullscreen (struct wl_client *client,
-		      struct wl_resource *resource,
-		      struct wl_resource *surface_resource)
+                      struct wl_resource *resource,
+                      struct wl_resource *surface_resource)
 {
 }
 
@@ -633,7 +633,7 @@ main (int argc, char **argv)
 
   if (!wl_display_add_global (compositor.wayland_display,
                               &wl_compositor_interface,
-			      &compositor,
+                              &compositor,
                               compositor_bind))
     g_error ("Failed to register wayland compositor object");
 
