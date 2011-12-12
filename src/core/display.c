@@ -1799,6 +1799,8 @@ event_callback (XEvent   *event,
       if (display->grab_op == META_GRAB_OP_COMPOSITOR)
         break;
 
+      display->overlay_key_only_pressed = FALSE;
+
       if (event->xbutton.button == 4 || event->xbutton.button == 5)
         /* Scrollwheel event, do nothing and deliver event to compositor below */
         break;
@@ -1995,6 +1997,8 @@ event_callback (XEvent   *event,
     case ButtonRelease:
       if (display->grab_op == META_GRAB_OP_COMPOSITOR)
         break;
+
+      display->overlay_key_only_pressed = FALSE;
 
       if (display->grab_window == window &&
           grab_op_is_mouse (display->grab_op))
