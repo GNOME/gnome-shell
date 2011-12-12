@@ -25,7 +25,16 @@ typedef struct
   int x;
   int y;
   CoglandBuffer *buffer;
+
+  gboolean has_shell_surface;
 } CoglandSurface;
+
+typedef struct
+{
+  CoglandSurface *surface;
+  struct wl_resource resource;
+  struct wl_listener surface_destroy_listener;
+} CoglandShellSurface;
 
 typedef struct
 {
@@ -551,54 +560,119 @@ compositor_bind (struct wl_client *client,
 }
 
 static void
-shell_move(struct wl_client *client,
-           struct wl_resource *resource,
-           struct wl_resource *surface_resource,
-           struct wl_resource *input_resource,
-           guint32 time)
-{
-}
-
-static void
-shell_resize (struct wl_client *client,
-              struct wl_resource *resource,
-              struct wl_resource *surface_resource,
-              struct wl_resource *input_resource,
-              guint32 time,
-              guint32 edges)
-{
-}
-
-static void
-shell_set_toplevel (struct wl_client *client,
+shell_surface_move (struct wl_client *client,
                     struct wl_resource *resource,
-                    struct wl_resource *surface_resource)
+                    struct wl_resource *input_device,
+                    uint32_t time)
 {
 }
 
 static void
-shell_set_transient (struct wl_client *client,
-                     struct wl_resource *resource,
-                     struct wl_resource *surface_resource,
-                     struct wl_resource *parent_resource,
-                     int x, int y, uint32_t flags)
-{
-}
-
-static void
-shell_set_fullscreen (struct wl_client *client,
+shell_surface_resize (struct wl_client *client,
                       struct wl_resource *resource,
-                      struct wl_resource *surface_resource)
+                      struct wl_resource *input_device,
+                      uint32_t time,
+                      uint32_t edges)
 {
+}
+
+static void
+shell_surface_set_toplevel (struct wl_client *client,
+                            struct wl_resource *resource)
+{
+}
+
+static void
+shell_surface_set_transient (struct wl_client *client,
+                             struct wl_resource *resource,
+                             struct wl_resource *parent,
+                             int32_t x,
+                             int32_t y,
+                             uint32_t flags)
+{
+}
+
+static void
+shell_surface_set_fullscreen (struct wl_client *client,
+                              struct wl_resource *resource)
+{
+}
+
+static const struct wl_shell_surface_interface cogl_shell_surface_interface =
+{
+  shell_surface_move,
+  shell_surface_resize,
+  shell_surface_set_toplevel,
+  shell_surface_set_transient,
+  shell_surface_set_fullscreen
+};
+
+static void
+shell_handle_surface_destroy (struct wl_listener *listener,
+                              struct wl_resource *resource,
+                              uint32_t time)
+{
+  CoglandShellSurface *shell_surface = container_of (listener,
+                                                     CoglandShellSurface,
+                                                     surface_destroy_listener);
+
+  shell_surface->surface->has_shell_surface = FALSE;
+  shell_surface->surface = NULL;
+  wl_resource_destroy (&shell_surface->resource, time);
+}
+
+static void
+destroy_shell_surface (struct wl_resource *resource)
+{
+  CoglandShellSurface *shell_surface = resource->data;
+
+  /* In case cleaning up a dead client destroys shell_surface first */
+  if (shell_surface->surface)
+    {
+      wl_list_remove (&shell_surface->surface_destroy_listener.link);
+      shell_surface->surface->has_shell_surface = FALSE;
+    }
+
+  g_free (shell_surface);
+}
+
+static void
+get_shell_surface (struct wl_client *client,
+                   struct wl_resource *resource,
+                   uint32_t id,
+                   struct wl_resource *surface_resource)
+{
+  CoglandSurface *surface = surface_resource->data;
+  CoglandShellSurface *shell_surface = g_new0 (CoglandShellSurface, 1);
+
+  if (surface->has_shell_surface)
+    {
+      wl_resource_post_error (surface_resource,
+                              WL_DISPLAY_ERROR_INVALID_OBJECT,
+                              "wl_shell::get_shell_surface already requested");
+      return;
+    }
+
+  shell_surface->resource.destroy = destroy_shell_surface;
+  shell_surface->resource.object.id = id;
+  shell_surface->resource.object.interface = &wl_shell_surface_interface;
+  shell_surface->resource.object.implementation =
+    (void (**) (void)) &cogl_shell_surface_interface;
+  shell_surface->resource.data = shell_surface;
+
+  shell_surface->surface = surface;
+  shell_surface->surface_destroy_listener.func = shell_handle_surface_destroy;
+  wl_list_insert (surface->wayland_surface.resource.destroy_listener_list.prev,
+                  &shell_surface->surface_destroy_listener.link);
+
+  surface->has_shell_surface = TRUE;
+
+  wl_client_add_resource (client, &shell_surface->resource);
 }
 
 static const struct wl_shell_interface cogland_shell_interface =
 {
-  shell_move,
-  shell_resize,
-  shell_set_toplevel,
-  shell_set_transient,
-  shell_set_fullscreen
+  get_shell_surface
 };
 
 static void
