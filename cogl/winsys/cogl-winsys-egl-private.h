@@ -30,7 +30,6 @@
 #include "cogl-context-private.h"
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
 #include "cogl-xlib-renderer-private.h"
-#include "cogl-xlib-display-private.h"
 #endif
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
 #include <wayland-client.h>
@@ -106,7 +105,7 @@ typedef struct _CoglRendererEGL
 typedef struct _CoglDisplayEGL
 {
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  CoglXlibDisplay _parent;
+  Window dummy_xwin;
 #endif
 
   EGLContext egl_context;

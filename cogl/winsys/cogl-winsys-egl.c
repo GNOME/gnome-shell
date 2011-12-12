@@ -42,7 +42,6 @@
 #include "cogl-onscreen-template-private.h"
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
 #include "cogl-xlib-renderer-private.h"
-#include "cogl-xlib-display-private.h"
 #include "cogl-xlib-renderer.h"
 #endif
 
@@ -571,7 +570,6 @@ try_create_context (CoglDisplay *display,
   CoglRenderer *renderer = display->renderer;
   CoglDisplayEGL *egl_display = display->winsys;
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  CoglXlibDisplay *xlib_display = display->winsys;
   CoglXlibRenderer *xlib_renderer =
     _cogl_xlib_renderer_get_data (renderer);
 #endif
@@ -659,7 +657,7 @@ try_create_context (CoglDisplay *display,
                                         AllocNone);
       attrs.border_pixel = 0;
 
-      xlib_display->dummy_xwin =
+      egl_display->dummy_xwin =
         XCreateWindow (xlib_renderer->xdpy,
                        DefaultRootWindow (xlib_renderer->xdpy),
                        -100, -100, 1, 1,
@@ -677,7 +675,7 @@ try_create_context (CoglDisplay *display,
       egl_display->dummy_surface =
         eglCreateWindowSurface (edpy,
                                 egl_display->egl_config,
-                                (NativeWindowType) xlib_display->dummy_xwin,
+                                (NativeWindowType) egl_display->dummy_xwin,
                                 NULL);
 
       if (egl_display->dummy_surface == EGL_NO_SURFACE)
@@ -882,7 +880,6 @@ cleanup_context (CoglDisplay *display)
   CoglDisplayEGL *egl_display = display->winsys;
   CoglRendererEGL *egl_renderer = renderer->winsys;
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  CoglXlibDisplay *xlib_display = display->winsys;
   CoglXlibRenderer *xlib_renderer =
     _cogl_xlib_renderer_get_data (renderer);
 #endif
@@ -924,10 +921,10 @@ cleanup_context (CoglDisplay *display)
           egl_display->dummy_surface = EGL_NO_SURFACE;
         }
 
-      if (xlib_display->dummy_xwin)
+      if (egl_display->dummy_xwin)
         {
-          XDestroyWindow (xlib_renderer->xdpy, xlib_display->dummy_xwin);
-          xlib_display->dummy_xwin = None;
+          XDestroyWindow (xlib_renderer->xdpy, egl_display->dummy_xwin);
+          egl_display->dummy_xwin = None;
         }
       break;
 #endif

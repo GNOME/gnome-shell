@@ -39,7 +39,6 @@
 #include "cogl-renderer-private.h"
 #include "cogl-glx-renderer-private.h"
 #include "cogl-onscreen-template-private.h"
-#include "cogl-xlib-display-private.h"
 #include "cogl-glx-display-private.h"
 #include "cogl-private.h"
 #include "cogl-texture-2d-private.h"
@@ -583,7 +582,6 @@ static gboolean
 create_context (CoglDisplay *display, GError **error)
 {
   CoglGLXDisplay *glx_display = display->winsys;
-  CoglXlibDisplay *xlib_display = display->winsys;
   CoglXlibRenderer *xlib_renderer =
     _cogl_xlib_renderer_get_data (display->renderer);
   CoglGLXRenderer *glx_renderer = display->renderer->winsys;
@@ -661,7 +659,7 @@ create_context (CoglDisplay *display, GError **error)
                                     AllocNone);
   attrs.border_pixel = 0;
 
-  xlib_display->dummy_xwin =
+  glx_display->dummy_xwin =
     XCreateWindow (xlib_renderer->xdpy,
                    DefaultRootWindow (xlib_renderer->xdpy),
                    -100, -100, 1, 1,
@@ -680,14 +678,14 @@ create_context (CoglDisplay *display, GError **error)
       glx_display->dummy_glxwin =
         glx_renderer->glXCreateWindow (xlib_renderer->xdpy,
                                        config,
-                                       xlib_display->dummy_xwin,
+                                       glx_display->dummy_xwin,
                                        NULL);
     }
 
   if (glx_display->dummy_glxwin)
     dummy_drawable = glx_display->dummy_glxwin;
   else
-    dummy_drawable = xlib_display->dummy_xwin;
+    dummy_drawable = glx_display->dummy_xwin;
 
   COGL_NOTE (WINSYS, "Selecting dummy 0x%x for the GLX context",
              (unsigned int) dummy_drawable);
@@ -714,7 +712,6 @@ static void
 _cogl_winsys_display_destroy (CoglDisplay *display)
 {
   CoglGLXDisplay *glx_display = display->winsys;
-  CoglXlibDisplay *xlib_display = display->winsys;
   CoglXlibRenderer *xlib_renderer =
     _cogl_xlib_renderer_get_data (display->renderer);
   CoglGLXRenderer *glx_renderer = display->renderer->winsys;
@@ -737,10 +734,10 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
       glx_display->dummy_glxwin = None;
     }
 
-  if (xlib_display->dummy_xwin)
+  if (glx_display->dummy_xwin)
     {
-      XDestroyWindow (xlib_renderer->xdpy, xlib_display->dummy_xwin);
-      xlib_display->dummy_xwin = None;
+      XDestroyWindow (xlib_renderer->xdpy, glx_display->dummy_xwin);
+      glx_display->dummy_xwin = None;
     }
 
   g_slice_free (CoglGLXDisplay, display->winsys);
@@ -1028,7 +1025,6 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglContextGLX *glx_context = context->winsys;
-  CoglXlibDisplay *xlib_display = context->display->winsys;
   CoglGLXDisplay *glx_display = context->display->winsys;
   CoglXlibRenderer *xlib_renderer =
     _cogl_xlib_renderer_get_data (context->display->renderer);
@@ -1042,7 +1038,7 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
     {
       drawable =
         glx_display->dummy_glxwin ?
-        glx_display->dummy_glxwin : xlib_display->dummy_xwin;
+        glx_display->dummy_glxwin : glx_display->dummy_xwin;
 
       if (glx_context->current_drawable == drawable)
         return;

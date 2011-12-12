@@ -26,7 +26,6 @@
 #define __COGL_DISPLAY_GLX_PRIVATE_H
 
 #include "cogl-object-private.h"
-#include "cogl-xlib-display-private.h"
 
 typedef struct _CoglGLXCachedConfig
 {
@@ -41,8 +40,6 @@ typedef struct _CoglGLXCachedConfig
 
 typedef struct _CoglGLXDisplay
 {
-  CoglXlibDisplay _parent;
-
   CoglGLXCachedConfig glx_cached_configs[COGL_GLX_N_CACHED_CONFIGS];
 
   gboolean found_fbconfig;
@@ -52,6 +49,7 @@ typedef struct _CoglGLXDisplay
   /* Single context for all wins */
   GLXContext glx_context;
   GLXWindow dummy_glxwin;
+  Window dummy_xwin;
 } CoglGLXDisplay;
 
 #endif /* __COGL_DISPLAY_GLX_PRIVATE_H */

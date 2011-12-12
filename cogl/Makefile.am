@@ -351,7 +351,6 @@ cogl_sources_c += \
 	$(srcdir)/cogl-x11-renderer-private.h \
 	$(srcdir)/cogl-xlib-renderer-private.h \
 	$(srcdir)/cogl-xlib-renderer.c \
-	$(srcdir)/cogl-xlib-display-private.h \
 	$(srcdir)/cogl-xlib.c \
 	$(srcdir)/cogl-xlib-private.h \
 	$(srcdir)/winsys/cogl-texture-pixmap-x11.c \
