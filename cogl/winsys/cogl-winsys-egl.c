@@ -1507,28 +1507,11 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
     if (egl_context->current_surface == egl_onscreen->egl_surface)
       return;
 
-    if (G_UNLIKELY (!onscreen))
-      {
-        if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_X11 ||
-            renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_WAYLAND)
-          {
-            eglMakeCurrent (egl_renderer->edpy,
-                            egl_display->dummy_surface,
-                            egl_display->dummy_surface,
-                            egl_display->egl_context);
-            egl_context->current_surface = egl_display->dummy_surface;
-          }
-        else
-          return;
-      }
-    else
-      {
-        eglMakeCurrent (egl_renderer->edpy,
-                        egl_onscreen->egl_surface,
-                        egl_onscreen->egl_surface,
-                        egl_display->egl_context);
-        egl_context->current_surface = egl_onscreen->egl_surface;
-      }
+    eglMakeCurrent (egl_renderer->edpy,
+                    egl_onscreen->egl_surface,
+                    egl_onscreen->egl_surface,
+                    egl_display->egl_context);
+    egl_context->current_surface = egl_onscreen->egl_surface;
 
     if (onscreen->swap_throttled)
       eglSwapInterval (egl_renderer->edpy, 1);

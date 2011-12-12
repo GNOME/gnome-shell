@@ -1034,70 +1034,52 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
   CoglXlibTrapState old_state;
   GLXDrawable drawable;
 
-  if (G_UNLIKELY (!onscreen))
+  drawable =
+    glx_onscreen->glxwin ? glx_onscreen->glxwin : xlib_onscreen->xwin;
+
+  if (glx_context->current_drawable == drawable)
+    return;
+
+  _cogl_xlib_renderer_trap_errors (context->display->renderer, &old_state);
+
+  COGL_NOTE (WINSYS,
+             "MakeContextCurrent dpy: %p, window: 0x%x (%s), context: %p",
+             xlib_renderer->xdpy,
+             (unsigned int) drawable,
+             xlib_onscreen->is_foreign_xwin ? "foreign" : "native",
+             glx_display->glx_context);
+
+  glx_renderer->glXMakeContextCurrent (xlib_renderer->xdpy,
+                                       drawable,
+                                       drawable,
+                                       glx_display->glx_context);
+
+  /* In case we are using GLX_SGI_swap_control for vblank syncing
+   * we need call glXSwapIntervalSGI here to make sure that it
+   * affects the current drawable.
+   *
+   * Note: we explicitly set to 0 when we aren't using the swap
+   * interval to synchronize since some drivers have a default
+   * swap interval of 1. Sadly some drivers even ignore requests
+   * to disable the swap interval.
+   *
+   * NB: glXSwapIntervalSGI applies to the context not the
+   * drawable which is why we can't just do this once when the
+   * framebuffer is allocated.
+   *
+   * FIXME: We should check for GLX_EXT_swap_control which allows
+   * per framebuffer swap intervals. GLX_MESA_swap_control also
+   * allows per-framebuffer swap intervals but the semantics tend
+   * to be more muddled since Mesa drivers tend to expose both the
+   * MESA and SGI extensions which should technically be mutually
+   * exclusive.
+   */
+  if (glx_renderer->pf_glXSwapInterval)
     {
-      drawable =
-        glx_display->dummy_glxwin ?
-        glx_display->dummy_glxwin : glx_display->dummy_xwin;
-
-      if (glx_context->current_drawable == drawable)
-        return;
-
-      _cogl_xlib_renderer_trap_errors (context->display->renderer, &old_state);
-
-      glx_renderer->glXMakeContextCurrent (xlib_renderer->xdpy,
-                                           drawable, drawable,
-                                           glx_display->glx_context);
-    }
-  else
-    {
-      drawable =
-        glx_onscreen->glxwin ? glx_onscreen->glxwin : xlib_onscreen->xwin;
-
-      if (glx_context->current_drawable == drawable)
-        return;
-
-      _cogl_xlib_renderer_trap_errors (context->display->renderer, &old_state);
-
-      COGL_NOTE (WINSYS,
-                 "MakeContextCurrent dpy: %p, window: 0x%x (%s), context: %p",
-                 xlib_renderer->xdpy,
-                 (unsigned int) drawable,
-                 xlib_onscreen->is_foreign_xwin ? "foreign" : "native",
-                 glx_display->glx_context);
-
-      glx_renderer->glXMakeContextCurrent (xlib_renderer->xdpy,
-                                           drawable,
-                                           drawable,
-                                           glx_display->glx_context);
-
-      /* In case we are using GLX_SGI_swap_control for vblank syncing
-       * we need call glXSwapIntervalSGI here to make sure that it
-       * affects the current drawable.
-       *
-       * Note: we explicitly set to 0 when we aren't using the swap
-       * interval to synchronize since some drivers have a default
-       * swap interval of 1. Sadly some drivers even ignore requests
-       * to disable the swap interval.
-       *
-       * NB: glXSwapIntervalSGI applies to the context not the
-       * drawable which is why we can't just do this once when the
-       * framebuffer is allocated.
-       *
-       * FIXME: We should check for GLX_EXT_swap_control which allows
-       * per framebuffer swap intervals. GLX_MESA_swap_control also
-       * allows per-framebuffer swap intervals but the semantics tend
-       * to be more muddled since Mesa drivers tend to expose both the
-       * MESA and SGI extensions which should technically be mutually
-       * exclusive.
-       */
-      if (glx_renderer->pf_glXSwapInterval)
-        {
-          if (onscreen->swap_throttled)
-            glx_renderer->pf_glXSwapInterval (1);
-          else
-            glx_renderer->pf_glXSwapInterval (0);
-        }
+      if (onscreen->swap_throttled)
+        glx_renderer->pf_glXSwapInterval (1);
+      else
+        glx_renderer->pf_glXSwapInterval (0);
     }
 
   XSync (xlib_renderer->xdpy, False);
