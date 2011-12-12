@@ -256,6 +256,12 @@ cogl_sub_texture_new (CoglContext *ctx,
   return _cogl_sub_texture_handle_new (sub_tex);
 }
 
+CoglTexture *
+cogl_sub_texture_get_parent (CoglSubTexture *sub_texture)
+{
+  return sub_texture->next_texture;
+}
+
 static int
 _cogl_sub_texture_get_max_waste (CoglTexture *tex)
 {

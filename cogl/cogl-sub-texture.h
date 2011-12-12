@@ -89,6 +89,22 @@ cogl_sub_texture_new (CoglContext *ctx,
                       int sub_width,
                       int sub_height);
 
+/**
+ * cogl_sub_texture_get_parent:
+ * @sub_texture: A pointer to a #CoglSubTexture
+ *
+ * Retrieves the parent texture that @sub_texture derives its content
+ * from.  This is the texture that was passed to
+ * cogl_sub_texture_new() as the parent_texture argument.
+ *
+ * Return value: (transfer none): The parent texture that @sub_texture
+ *               derives its content from.
+ * Since: 1.10
+ * Stability: unstable
+ */
+CoglTexture *
+cogl_sub_texture_get_parent (CoglSubTexture *sub_texture);
+
 #define cogl_is_sub_texture cogl_is_sub_texture_EXP
 /**
  * cogl_is_sub_texture:
