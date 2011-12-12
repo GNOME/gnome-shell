@@ -939,7 +939,12 @@ const PopupMenuBase = new Lang.Class({
             this.emit('activate', menuItem);
             this.close(true);
         }));
-        menuItem.connect('destroy', Lang.bind(this, function(emitter) {
+        // the weird name is to avoid a conflict with some random property
+        // the menuItem may have, called destroyId
+        // (FIXME: in the future it may make sense to have container objects
+        // like PopupMenuManager does)
+        menuItem._popupMenuDestroyId = menuItem.connect('destroy', Lang.bind(this, function(menuItem) {
+            menuItem.disconnect(menuItem._popupMenuDestroyId);
             menuItem.disconnect(menuItem._activateId);
             menuItem.disconnect(menuItem._activeChangeId);
             menuItem.disconnect(menuItem._sensitiveChangeId);
