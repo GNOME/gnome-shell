@@ -28,10 +28,6 @@
 #include "cogl-winsys-private.h"
 #include "cogl-context.h"
 #include "cogl-context-private.h"
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-#include <wayland-client.h>
-#include <wayland-egl.h>
-#endif
 
 typedef struct _CoglWinsysEGLVtable
 {
@@ -81,12 +77,6 @@ typedef struct _CoglRendererEGL
 {
   CoglEGLWinsysFeature private_features;
 
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-  struct wl_display *wayland_display;
-  struct wl_compositor *wayland_compositor;
-  struct wl_shell *wayland_shell;
-#endif
-
   EGLDisplay edpy;
 
   EGLint egl_version_major;
@@ -120,10 +110,6 @@ typedef struct _CoglDisplayEGL
 {
   EGLContext egl_context;
   EGLSurface dummy_surface;
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-  struct wl_surface *wayland_surface;
-  struct wl_egl_window *wayland_egl_native_window;
-#endif
 #if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
   defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT) ||            \
   defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT) ||        \
@@ -149,12 +135,6 @@ typedef struct _CoglContextEGL
 
 typedef struct _CoglOnscreenEGL
 {
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-  struct wl_egl_window *wayland_egl_native_window;
-  struct wl_surface *wayland_surface;
-  struct wl_shell_surface *wayland_shell_surface;
-#endif
-
   EGLSurface egl_surface;
 
   /* Platform specific data */

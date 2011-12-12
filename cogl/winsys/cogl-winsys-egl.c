@@ -43,11 +43,6 @@
 
 #include "cogl-private.h"
 
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-#include <wayland-client.h>
-#include <wayland-egl.h>
-#endif
-
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
 #include <android/native_window.h>
 #endif
@@ -137,27 +132,6 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
   g_slice_free (CoglRendererEGL, egl_renderer);
 }
 
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-
-static void
-display_handle_global_cb (struct wl_display *display,
-                          uint32_t id,
-                          const char *interface,
-                          uint32_t version,
-                          void *data)
-{
-  CoglRendererEGL *egl_renderer = (CoglRendererEGL *)data;
-
-  if (strcmp (interface, "wl_compositor") == 0)
-    egl_renderer->wayland_compositor =
-      wl_display_bind (display, id, &wl_compositor_interface);
-  else if (strcmp(interface, "wl_shell") == 0)
-    egl_renderer->wayland_shell =
-      wl_display_bind (display, id, &wl_shell_interface);
-}
-
-#endif
-
 /* Updates all the function pointers */
 static void
 check_egl_extensions (CoglRenderer *renderer)
@@ -223,57 +197,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
     default:
       g_warn_if_reached ();
       goto error;
-
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-    case COGL_WINSYS_ID_EGL_WAYLAND:
-      /* The EGL API doesn't provide for a way to explicitly select a
-       * platform when the driver can support multiple. Mesa allows
-       * selection using an environment variable though so that's what
-       * we're doing here... */
-      setenv("EGL_PLATFORM", "wayland", 1);
-
-      if (renderer->foreign_wayland_display)
-        {
-          egl_renderer->wayland_display = renderer->foreign_wayland_display;
-          /* XXX: For now we have to assume that if a foreign display is
-           * given then a foreign compositor and shell must also have been
-           * given because wayland doesn't provide a way to
-           * retrospectively be notified of the these objects. */
-          g_assert (renderer->foreign_wayland_compositor);
-          g_assert (renderer->foreign_wayland_shell);
-          egl_renderer->wayland_compositor =
-            renderer->foreign_wayland_compositor;
-          egl_renderer->wayland_shell = renderer->foreign_wayland_shell;
-        }
-      else
-        {
-          egl_renderer->wayland_display = wl_display_connect (NULL);
-          if (!egl_renderer->wayland_display)
-            {
-              g_set_error (error, COGL_WINSYS_ERROR,
-                           COGL_WINSYS_ERROR_INIT,
-                           "Failed to connect wayland display");
-              goto error;
-            }
-
-          wl_display_add_global_listener (egl_renderer->wayland_display,
-                                          display_handle_global_cb,
-                                          egl_renderer);
-        }
-
-      /*
-       * Ensure that that we've received the messages setting up the
-       * compostor and shell object. This is better than just
-       * wl_display_iterate since it will always ensure that something
-       * is available to be read
-       */
-      while (!(egl_renderer->wayland_compositor && egl_renderer->wayland_shell))
-        wl_display_roundtrip (egl_renderer->wayland_display);
-
-      egl_renderer->edpy =
-        eglGetDisplay ((EGLNativeDisplayType)egl_renderer->wayland_display);
-      break;
-#endif
 
     case COGL_WINSYS_ID_EGL_GDL:
     case COGL_WINSYS_ID_EGL_ANDROID:
@@ -458,49 +381,6 @@ try_create_context (CoglDisplay *display,
         return FALSE;
       break;
 
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-    case COGL_WINSYS_ID_EGL_WAYLAND:
-      egl_display->wayland_surface =
-        wl_compositor_create_surface (egl_renderer->wayland_compositor);
-      if (!egl_display->wayland_surface)
-        {
-          error_message= "Failed to create a dummy wayland surface";
-          goto fail;
-        }
-
-      egl_display->wayland_egl_native_window =
-        wl_egl_window_create (egl_display->wayland_surface,
-                              1,
-                              1);
-      if (!egl_display->wayland_egl_native_window)
-        {
-          error_message= "Failed to create a dummy wayland native egl surface";
-          goto fail;
-        }
-
-      egl_display->dummy_surface =
-        eglCreateWindowSurface (edpy,
-                                egl_display->egl_config,
-                                (EGLNativeWindowType)
-                                egl_display->wayland_egl_native_window,
-                                NULL);
-      if (egl_display->dummy_surface == EGL_NO_SURFACE)
-        {
-          error_message= "Unable to eglMakeCurrent with dummy surface";
-          goto fail;
-        }
-
-      if (!eglMakeCurrent (edpy,
-                           egl_display->dummy_surface,
-                           egl_display->dummy_surface,
-                           egl_display->egl_context))
-        {
-          error_message = "Unable to eglMakeCurrent with dummy surface";
-          goto fail;
-        }
-      break;
-#endif
-
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
     case COGL_WINSYS_ID_EGL_ANDROID:
       {
@@ -671,28 +551,6 @@ cleanup_context (CoglDisplay *display)
         }
       break;
 #endif
-
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-    case COGL_WINSYS_ID_EGL_WAYLAND:
-      if (egl_display->dummy_surface != EGL_NO_SURFACE)
-        {
-          eglDestroySurface (egl_renderer->edpy, egl_display->dummy_surface);
-          egl_display->dummy_surface = EGL_NO_SURFACE;
-        }
-
-      if (egl_display->wayland_egl_native_window)
-        {
-          wl_egl_window_destroy (egl_display->wayland_egl_native_window);
-          egl_display->wayland_egl_native_window = NULL;
-        }
-
-      if (egl_display->wayland_surface)
-        {
-          wl_surface_destroy (egl_display->wayland_surface);
-          egl_display->wayland_surface = NULL;
-        }
-      break;
-#endif
     }
 }
 
@@ -845,10 +703,11 @@ _cogl_winsys_display_setup (CoglDisplay *display,
 #endif
 
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
-  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_WAYLAND &&
-      display->wayland_compositor_display)
+  if (display->wayland_compositor_display)
     {
       struct wl_display *wayland_display = display->wayland_compositor_display;
+      CoglRendererEGL *egl_renderer = display->renderer->winsys;
+
       egl_renderer->pf_eglBindWaylandDisplay (egl_renderer->edpy,
                                               wayland_display);
     }
@@ -888,16 +747,6 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
 
   if (!_cogl_context_update_features (context, error))
     return FALSE;
-
-  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_WAYLAND)
-    {
-      context->feature_flags |= COGL_FEATURE_ONSCREEN_MULTIPLE;
-      COGL_FLAGS_SET (context->features,
-                      COGL_FEATURE_ID_ONSCREEN_MULTIPLE, TRUE);
-      COGL_FLAGS_SET (context->winsys_features,
-                      COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
-                      TRUE);
-    }
 
   if (egl_renderer->private_features & COGL_EGL_WINSYS_FEATURE_SWAP_REGION)
     {
@@ -994,46 +843,6 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
         }
       break;
 
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-    case COGL_WINSYS_ID_EGL_WAYLAND:
-      egl_onscreen->wayland_surface =
-        wl_compositor_create_surface (egl_renderer->wayland_compositor);
-      if (!egl_onscreen->wayland_surface)
-        {
-          g_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_CREATE_ONSCREEN,
-                       "Error while creating wayland surface for CoglOnscreen");
-          return FALSE;
-        }
-
-      egl_onscreen->wayland_shell_surface =
-        wl_shell_get_shell_surface (egl_renderer->wayland_shell,
-                                    egl_onscreen->wayland_surface);
-
-      egl_onscreen->wayland_egl_native_window =
-        wl_egl_window_create (egl_onscreen->wayland_surface,
-                              cogl_framebuffer_get_width (framebuffer),
-                              cogl_framebuffer_get_height (framebuffer));
-      if (!egl_onscreen->wayland_egl_native_window)
-        {
-          g_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_CREATE_ONSCREEN,
-                       "Error while creating wayland egl native window "
-                       "for CoglOnscreen");
-          return FALSE;
-        }
-
-      egl_onscreen->egl_surface =
-        eglCreateWindowSurface (egl_renderer->edpy,
-                                egl_config,
-                                (EGLNativeWindowType)
-                                egl_onscreen->wayland_egl_native_window,
-                                NULL);
-
-      wl_shell_surface_set_toplevel (egl_onscreen->wayland_shell_surface);
-      break;
-#endif
-
 #if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
     defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
     defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
@@ -1091,20 +900,6 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT
   egl_display->have_onscreen = FALSE;
-#endif
-
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-  if (egl_onscreen->wayland_egl_native_window)
-    {
-      wl_egl_window_destroy (egl_onscreen->wayland_egl_native_window);
-      egl_onscreen->wayland_egl_native_window = NULL;
-    }
-
-  if (egl_onscreen->wayland_surface)
-    {
-      wl_surface_destroy (egl_onscreen->wayland_surface);
-      egl_onscreen->wayland_surface = NULL;
-    }
 #endif
 
   g_slice_free (CoglOnscreenEGL, onscreen->winsys);
@@ -1193,17 +988,6 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
                                  COGL_FRAMEBUFFER_STATE_BIND);
 
   eglSwapBuffers (egl_renderer->edpy, egl_onscreen->egl_surface);
-
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-  /*
-   * The implementation of eglSwapBuffers may do a flush however the semantics
-   * of eglSwapBuffers on Wayland has changed in the past. So to be safe to
-   * the implementation changing we should explicitly ensure all messages are
-   * sent.
-   */
-  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_WAYLAND)
-    wl_display_flush (egl_renderer->wayland_display);
-#endif
 }
 
 static void
@@ -1266,126 +1050,6 @@ _cogl_winsys_egl_get_vtable (void)
 {
   return &_cogl_winsys_vtable;
 }
-
-/* FIXME: we should have a separate wayland file for these entry
- * points... */
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-void
-cogl_wayland_renderer_set_foreign_display (CoglRenderer *renderer,
-                                           struct wl_display *display)
-{
-  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
-
-  /* NB: Renderers are considered immutable once connected */
-  _COGL_RETURN_IF_FAIL (!renderer->connected);
-
-  renderer->foreign_wayland_display = display;
-}
-
-struct wl_display *
-cogl_wayland_renderer_get_display (CoglRenderer *renderer)
-{
-  _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), NULL);
-
-  if (renderer->foreign_wayland_display)
-    return renderer->foreign_wayland_display;
-  else if (renderer->connected)
-    {
-      CoglRendererEGL *egl_renderer = renderer->winsys;
-      return egl_renderer->wayland_display;
-    }
-  else
-    return NULL;
-}
-
-void
-cogl_wayland_renderer_set_foreign_compositor (CoglRenderer *renderer,
-                                              struct wl_compositor *compositor)
-{
-  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
-
-  /* NB: Renderers are considered immutable once connected */
-  _COGL_RETURN_IF_FAIL (!renderer->connected);
-
-  renderer->foreign_wayland_compositor = compositor;
-}
-
-struct wl_compositor *
-cogl_wayland_renderer_get_compositor (CoglRenderer *renderer)
-{
-  _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), NULL);
-
-  if (renderer->foreign_wayland_compositor)
-    return renderer->foreign_wayland_compositor;
-  else if (renderer->connected)
-    {
-      CoglRendererEGL *egl_renderer = renderer->winsys;
-      return egl_renderer->wayland_compositor;
-    }
-  else
-    return NULL;
-}
-
-void
-cogl_wayland_renderer_set_foreign_shell (CoglRenderer *renderer,
-                                         struct wl_shell *shell)
-{
-  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
-
-  /* NB: Renderers are considered immutable once connected */
-  _COGL_RETURN_IF_FAIL (!renderer->connected);
-
-  renderer->foreign_wayland_shell = shell;
-}
-
-struct wl_shell *
-cogl_wayland_renderer_get_shell (CoglRenderer *renderer)
-{
-  _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), NULL);
-
-  if (renderer->foreign_wayland_shell)
-    return renderer->foreign_wayland_shell;
-  else if (renderer->connected)
-    {
-      CoglRendererEGL *egl_renderer = renderer->winsys;
-      return egl_renderer->wayland_shell;
-    }
-  else
-    return NULL;
-}
-
-struct wl_surface *
-cogl_wayland_onscreen_get_surface (CoglOnscreen *onscreen)
-{
-  CoglFramebuffer *fb;
-
-  fb = COGL_FRAMEBUFFER (onscreen);
-  if (fb->allocated)
-    {
-      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
-      return egl_onscreen->wayland_surface;
-    }
-  else
-    return NULL;
-}
-
-
-struct wl_shell_surface *
-cogl_wayland_onscreen_get_shell_surface (CoglOnscreen *onscreen)
-{
-  CoglFramebuffer *fb;
-
-  fb = COGL_FRAMEBUFFER (onscreen);
-  if (fb->allocated)
-    {
-      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
-      return egl_onscreen->wayland_shell_surface;
-    }
-  else
-    return NULL;
-}
-
-#endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
 
 #ifdef EGL_KHR_image_base
 EGLImageKHR
