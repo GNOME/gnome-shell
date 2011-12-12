@@ -200,7 +200,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
     case COGL_WINSYS_ID_EGL_GDL:
     case COGL_WINSYS_ID_EGL_ANDROID:
-    case COGL_WINSYS_ID_EGL_NULL:
       egl_renderer->edpy = eglGetDisplay (EGL_DEFAULT_DISPLAY);
       break;
     }
@@ -471,40 +470,6 @@ try_create_context (CoglDisplay *display,
                        &egl_display->egl_surface_height);
       break;
 #endif
-
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT
-    case COGL_WINSYS_ID_EGL_NULL:
-      egl_display->egl_surface =
-        eglCreateWindowSurface (edpy,
-                                config,
-                                (NativeWindowType) NULL,
-                                NULL);
-      if (egl_display->egl_surface == EGL_NO_SURFACE)
-        {
-          error_message = "Unable to create EGL window surface";
-          goto fail;
-        }
-
-      if (!eglMakeCurrent (egl_renderer->edpy,
-                           egl_display->egl_surface,
-                           egl_display->egl_surface,
-                           egl_display->egl_context))
-        {
-          error_message = "Unable to eglMakeCurrent with egl surface";
-          goto fail;
-        }
-
-      eglQuerySurface (egl_renderer->edpy,
-                       egl_display->egl_surface,
-                       EGL_WIDTH,
-                       &egl_display->egl_surface_width);
-
-      eglQuerySurface (egl_renderer->edpy,
-                       egl_display->egl_surface,
-                       EGL_HEIGHT,
-                       &egl_display->egl_surface_height);
-      break;
-#endif
     }
 
   return TRUE;
@@ -540,9 +505,7 @@ cleanup_context (CoglDisplay *display)
     default:
       break;
 
-#if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) ||    \
-    defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
-    case COGL_WINSYS_ID_EGL_NULL:
+#if defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
     case COGL_WINSYS_ID_EGL_GDL:
       if (egl_display->egl_surface != EGL_NO_SURFACE)
         {
@@ -843,10 +806,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
         }
       break;
 
-#if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
-    defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
+#if defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
     defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
-    case COGL_WINSYS_ID_EGL_NULL:
     case COGL_WINSYS_ID_EGL_ANDROID:
     case COGL_WINSYS_ID_EGL_GDL:
 
@@ -878,9 +839,6 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   CoglContext *context = framebuffer->context;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT
-  CoglDisplayEGL *egl_display = context->display->winsys;
-#endif
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
 
   /* If we never successfully allocated then there's nothing to do */
@@ -897,10 +855,6 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   if (egl_renderer->platform_vtable &&
       egl_renderer->platform_vtable->onscreen_deinit)
     egl_renderer->platform_vtable->onscreen_deinit (onscreen);
-
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT
-  egl_display->have_onscreen = FALSE;
-#endif
 
   g_slice_free (CoglOnscreenEGL, onscreen->winsys);
   onscreen->winsys = NULL;
