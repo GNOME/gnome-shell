@@ -374,13 +374,8 @@ struct _ClutterActorPrivate
   /* depth */
   gfloat z;
 
-  /* clip, in actor coordinates; offsets are:
-   *  0: x
-   *  1: y
-   *  2: width
-   *  3: height
-   */
-  gfloat clip[4];
+  /* clip, in actor coordinates */
+  cairo_rectangle_t clip;
 
   /* the cached transformation matrix; see apply_transform() */
   CoglMatrix transform;
@@ -2991,10 +2986,10 @@ clutter_actor_paint (ClutterActor *self)
 
   if (priv->has_clip)
     {
-      cogl_clip_push_rectangle (priv->clip[0],
-                                priv->clip[1],
-                                priv->clip[0] + priv->clip[2],
-                                priv->clip[1] + priv->clip[3]);
+      cogl_clip_push_rectangle (priv->clip.x,
+                                priv->clip.y,
+                                priv->clip.x + priv->clip.width,
+                                priv->clip.y + priv->clip.height);
       clip_set = TRUE;
     }
   else if (priv->clip_to_allocation)
@@ -3953,12 +3948,12 @@ clutter_actor_get_property (GObject    *object,
 
     case PROP_CLIP:
       {
-        ClutterGeometry clip = { 0, };
+        ClutterGeometry clip;
 
-        clip.x      = priv->clip[0];
-        clip.y      = priv->clip[1];
-        clip.width  = priv->clip[2];
-        clip.height = priv->clip[3];
+        clip.x      = CLUTTER_NEARBYINT (priv->clip.x);
+        clip.y      = CLUTTER_NEARBYINT (priv->clip.y);
+        clip.width  = CLUTTER_NEARBYINT (priv->clip.width);
+        clip.height = CLUTTER_NEARBYINT (priv->clip.height);
 
         g_value_set_boxed (value, &clip);
       }
@@ -4368,13 +4363,13 @@ clutter_actor_real_get_paint_volume (ClutterActor       *self,
     {
       ClutterVertex origin;
 
-      origin.x = priv->clip[0];
-      origin.y = priv->clip[1];
+      origin.x = priv->clip.x;
+      origin.y = priv->clip.y;
       origin.z = 0;
 
       clutter_paint_volume_set_origin (volume, &origin);
-      clutter_paint_volume_set_width (volume, priv->clip[2]);
-      clutter_paint_volume_set_height (volume, priv->clip[3]);
+      clutter_paint_volume_set_width (volume, priv->clip.width);
+      clutter_paint_volume_set_height (volume, priv->clip.height);
 
       res = TRUE;
     }
@@ -6025,8 +6020,6 @@ clutter_actor_init (ClutterActor *self)
   priv->last_paint_volume_valid = TRUE;
 
   priv->transform_valid = FALSE;
-
-  memset (priv->clip, 0, sizeof (gfloat) * 4);
 }
 
 /**
@@ -9220,16 +9213,16 @@ clutter_actor_set_clip (ClutterActor *self,
   priv = self->priv;
 
   if (priv->has_clip &&
-      priv->clip[0] == xoff &&
-      priv->clip[1] == yoff &&
-      priv->clip[2] == width &&
-      priv->clip[3] == height)
+      priv->clip.x == xoff &&
+      priv->clip.y == yoff &&
+      priv->clip.width == width &&
+      priv->clip.height == height)
     return;
 
-  priv->clip[0] = xoff;
-  priv->clip[1] = yoff;
-  priv->clip[2] = width;
-  priv->clip[3] = height;
+  priv->clip.x = xoff;
+  priv->clip.y = yoff;
+  priv->clip.width = width;
+  priv->clip.height = height;
 
   priv->has_clip = TRUE;
 
@@ -9310,17 +9303,17 @@ clutter_actor_get_clip (ClutterActor *self,
   if (!priv->has_clip)
     return;
 
-  if (xoff)
-    *xoff = priv->clip[0];
+  if (xoff != NULL)
+    *xoff = priv->clip.x;
 
-  if (yoff)
-    *yoff = priv->clip[1];
+  if (yoff != NULL)
+    *yoff = priv->clip.y;
 
-  if (width)
-    *width = priv->clip[2];
+  if (width != NULL)
+    *width = priv->clip.width;
 
-  if (height)
-    *height = priv->clip[3];
+  if (height != NULL)
+    *height = priv->clip.height;
 }
 
 /**
