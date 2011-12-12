@@ -758,7 +758,7 @@ AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_WAYLAND,
 
 AC_ARG_ENABLE(
   [kms-egl-platform],
-  [AC_HELP_STRING([--enable-kms-egl-platform=@<:@no/yes@:>@], [Enable support for the Wayland egl platform @<:@default=no@:>@])],
+  [AC_HELP_STRING([--enable-kms-egl-platform=@<:@no/yes@:>@], [Enable support for the KMS egl platform @<:@default=no@:>@])],
   [],
   enable_kms_egl_platform=no
 )
