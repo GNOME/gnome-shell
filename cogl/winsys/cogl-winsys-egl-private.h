@@ -66,10 +66,6 @@ typedef enum _CoglEGLWinsysFeature
 
 typedef struct _CoglRendererEGL
 {
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  CoglXlibRenderer _parent;
-#endif
-
   CoglEGLWinsysFeature private_features;
 
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT

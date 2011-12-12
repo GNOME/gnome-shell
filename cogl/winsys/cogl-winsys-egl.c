@@ -304,7 +304,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
     case COGL_WINSYS_ID_EGL_X11:
-      xlib_renderer = renderer->winsys;
+      xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
 
       if (!_cogl_xlib_renderer_connect (renderer, error))
         goto error;
@@ -454,7 +454,8 @@ update_winsys_features (CoglContext *context, GError **error)
 static XVisualInfo *
 get_visual_info (CoglDisplay *display, EGLConfig egl_config)
 {
-  CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (display->renderer);
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
   XVisualInfo visinfo_template;
   int template_mask = 0;
@@ -571,7 +572,8 @@ try_create_context (CoglDisplay *display,
   CoglDisplayEGL *egl_display = display->winsys;
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
   CoglXlibDisplay *xlib_display = display->winsys;
-  CoglXlibRenderer *xlib_renderer = renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (renderer);
 #endif
   CoglRendererEGL *egl_renderer = renderer->winsys;
   EGLDisplay edpy;
@@ -881,7 +883,8 @@ cleanup_context (CoglDisplay *display)
   CoglRendererEGL *egl_renderer = renderer->winsys;
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
   CoglXlibDisplay *xlib_display = display->winsys;
-  CoglXlibRenderer *xlib_renderer = renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (renderer);
 #endif
 
   if (egl_renderer->platform_vtable &&
@@ -1165,7 +1168,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  CoglXlibRenderer *xlib_renderer = renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (renderer);
   CoglOnscreenXlib *xlib_onscreen;
   Window xwin;
 #endif
@@ -1426,7 +1430,8 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  CoglXlibRenderer *xlib_renderer = renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (renderer);
   CoglXlibTrapState old_state;
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
 #endif
@@ -1589,7 +1594,8 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglRenderer *renderer = context->display->renderer;
-  CoglXlibRenderer *xlib_renderer = renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (renderer);
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
 
   if (renderer->winsys_vtable->id != COGL_WINSYS_ID_EGL_X11)

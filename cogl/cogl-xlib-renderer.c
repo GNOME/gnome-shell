@@ -47,6 +47,39 @@ static char *_cogl_x11_display_name = NULL;
 static GList *_cogl_xlib_renderers = NULL;
 
 static void
+destroy_xlib_renderer_data (void *user_data)
+{
+  g_slice_free (CoglXlibRenderer, user_data);
+}
+
+CoglXlibRenderer *
+_cogl_xlib_renderer_get_data (CoglRenderer *renderer)
+{
+  static CoglUserDataKey key;
+  CoglXlibRenderer *data;
+
+  /* Constructs a CoglXlibRenderer struct on demand and attaches it to
+     the object using user data. It's done this way instead of using a
+     subclassing hierarchy in the winsys data because all EGL winsys's
+     need the EGL winsys data but only one of them wants the Xlib
+     data. */
+
+  data = cogl_object_get_user_data (COGL_OBJECT (renderer), &key);
+
+  if (data == NULL)
+    {
+      data = g_slice_new0 (CoglXlibRenderer);
+
+      cogl_object_set_user_data (COGL_OBJECT (renderer),
+                                 &key,
+                                 data,
+                                 destroy_xlib_renderer_data);
+    }
+
+  return data;
+}
+
+static void
 register_xlib_renderer (CoglRenderer *renderer)
 {
   GList *l;
@@ -72,7 +105,8 @@ get_renderer_for_xdisplay (Display *xdpy)
   for (l = _cogl_xlib_renderers; l; l = l->next)
     {
       CoglRenderer *renderer = l->data;
-      CoglXlibRenderer *xlib_renderer = renderer->winsys;
+      CoglXlibRenderer *xlib_renderer =
+        _cogl_xlib_renderer_get_data (renderer);
 
       if (xlib_renderer->xdpy == xdpy)
         return renderer;
@@ -90,7 +124,7 @@ error_handler (Display *xdpy,
 
   renderer = get_renderer_for_xdisplay (xdpy);
 
-  xlib_renderer = renderer->winsys;
+  xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
   g_assert (xlib_renderer->trap_state);
 
   xlib_renderer->trap_state->trapped_error_code = error->error_code;
@@ -104,7 +138,7 @@ _cogl_xlib_renderer_trap_errors (CoglRenderer *renderer,
 {
   CoglXlibRenderer *xlib_renderer;
 
-  xlib_renderer = renderer->winsys;
+  xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
 
   state->trapped_error_code = 0;
   state->old_error_handler = XSetErrorHandler (error_handler);
@@ -119,7 +153,7 @@ _cogl_xlib_renderer_untrap_errors (CoglRenderer *renderer,
 {
   CoglXlibRenderer *xlib_renderer;
 
-  xlib_renderer = renderer->winsys;
+  xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
   g_assert (state == xlib_renderer->trap_state);
 
   XSetErrorHandler (state->old_error_handler);
@@ -133,7 +167,7 @@ static Display *
 assert_xlib_display (CoglRenderer *renderer, GError **error)
 {
   Display *xdpy = cogl_xlib_renderer_get_foreign_display (renderer);
-  CoglXlibRenderer *xlib_renderer = renderer->winsys;
+  CoglXlibRenderer *xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
 
   /* A foreign display may have already been set... */
   if (xdpy)
@@ -159,8 +193,10 @@ assert_xlib_display (CoglRenderer *renderer, GError **error)
 gboolean
 _cogl_xlib_renderer_connect (CoglRenderer *renderer, GError **error)
 {
-  CoglXlibRenderer *xlib_renderer = renderer->winsys;
-  CoglX11Renderer *x11_renderer = renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (renderer);
+  CoglX11Renderer *x11_renderer =
+    (CoglX11Renderer *) xlib_renderer;
   int damage_error;
 
   if (!assert_xlib_display (renderer, error))
@@ -185,7 +221,8 @@ _cogl_xlib_renderer_connect (CoglRenderer *renderer, GError **error)
 void
 _cogl_xlib_renderer_disconnect (CoglRenderer *renderer)
 {
-  CoglXlibRenderer *xlib_renderer = renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (renderer);
 
   if (!renderer->foreign_xdpy && xlib_renderer->xdpy)
     XCloseDisplay (xlib_renderer->xdpy);
@@ -200,7 +237,7 @@ cogl_xlib_renderer_get_display (CoglRenderer *renderer)
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), NULL);
 
-  xlib_renderer = renderer->winsys;
+  xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
 
   return xlib_renderer->xdpy;
 }

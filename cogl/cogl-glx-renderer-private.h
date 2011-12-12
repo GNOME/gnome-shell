@@ -31,8 +31,6 @@
 
 typedef struct _CoglGLXRenderer
 {
-  CoglXlibRenderer _parent;
-
   int glx_major;
   int glx_minor;
 

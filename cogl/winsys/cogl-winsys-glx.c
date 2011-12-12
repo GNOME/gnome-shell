@@ -314,7 +314,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   renderer->winsys = g_slice_new0 (CoglGLXRenderer);
 
   glx_renderer = renderer->winsys;
-  xlib_renderer = renderer->winsys;
+  xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
 
   if (!_cogl_xlib_renderer_connect (renderer, error))
     goto error;
@@ -378,7 +378,8 @@ static gboolean
 update_winsys_features (CoglContext *context, GError **error)
 {
   CoglGLXDisplay *glx_display = context->display->winsys;
-  CoglXlibRenderer *xlib_renderer = context->display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (context->display->renderer);
   CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
   const char *glx_extensions;
   int default_screen;
@@ -514,7 +515,8 @@ find_fbconfig (CoglDisplay *display,
                GLXFBConfig *config_ret,
                GError **error)
 {
-  CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (display->renderer);
   CoglGLXRenderer *glx_renderer = display->renderer->winsys;
   GLXFBConfig *configs = NULL;
   int n_configs;
@@ -582,7 +584,8 @@ create_context (CoglDisplay *display, GError **error)
 {
   CoglGLXDisplay *glx_display = display->winsys;
   CoglXlibDisplay *xlib_display = display->winsys;
-  CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (display->renderer);
   CoglGLXRenderer *glx_renderer = display->renderer->winsys;
   gboolean support_transparent_windows =
     display->onscreen_template->config.swap_chain->has_alpha;
@@ -712,7 +715,8 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
 {
   CoglGLXDisplay *glx_display = display->winsys;
   CoglXlibDisplay *xlib_display = display->winsys;
-  CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (display->renderer);
   CoglGLXRenderer *glx_renderer = display->renderer->winsys;
 
   _COGL_RETURN_IF_FAIL (glx_display != NULL);
@@ -796,7 +800,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   CoglContext *context = framebuffer->context;
   CoglDisplay *display = context->display;
   CoglGLXDisplay *glx_display = display->winsys;
-  CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (display->renderer);
   CoglGLXRenderer *glx_renderer = display->renderer->winsys;
   Window xwin;
   CoglOnscreenXlib *xlib_onscreen;
@@ -982,7 +987,8 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
-  CoglXlibRenderer *xlib_renderer = context->display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (context->display->renderer);
   CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
   CoglXlibTrapState old_state;
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
@@ -1024,7 +1030,8 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
   CoglContextGLX *glx_context = context->winsys;
   CoglXlibDisplay *xlib_display = context->display->winsys;
   CoglGLXDisplay *glx_display = context->display->winsys;
-  CoglXlibRenderer *xlib_renderer = context->display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (context->display->renderer);
   CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
   CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
@@ -1184,7 +1191,8 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
-  CoglXlibRenderer *xlib_renderer = context->display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (context->display->renderer);
   CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
   CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
@@ -1338,7 +1346,8 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
-  CoglXlibRenderer *xlib_renderer = context->display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (context->display->renderer);
   CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
   CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
@@ -1478,7 +1487,8 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
                                       gboolean visibility)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglXlibRenderer *xlib_renderer = context->display->renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (context->display->renderer);
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
 
   if (visibility)
@@ -1500,7 +1510,7 @@ _cogl_winsys_xlib_get_visual_info (void)
   _COGL_RETURN_VAL_IF_FAIL (ctx->display->winsys, FALSE);
 
   glx_display = ctx->display->winsys;
-  xlib_renderer = ctx->display->renderer->winsys;
+  xlib_renderer = _cogl_xlib_renderer_get_data (ctx->display->renderer);
   glx_renderer = ctx->display->renderer->winsys;
 
   if (!glx_display->found_fbconfig)
@@ -1526,7 +1536,7 @@ get_fbconfig_for_depth (CoglContext *context,
   int spare_cache_slot = 0;
   gboolean found = FALSE;
 
-  xlib_renderer = context->display->renderer->winsys;
+  xlib_renderer = _cogl_xlib_renderer_get_data (context->display->renderer);
   glx_renderer = context->display->renderer->winsys;
   glx_display = context->display->winsys;
 
@@ -1721,7 +1731,7 @@ try_create_glx_pixmap (CoglContext *context,
   Visual* visual = tex_pixmap->visual;
 
   renderer = context->display->renderer;
-  xlib_renderer = renderer->winsys;
+  xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
   glx_renderer = renderer->winsys;
   dpy = xlib_renderer->xdpy;
 
@@ -1844,7 +1854,7 @@ free_glx_pixmap (CoglContext *context,
   CoglGLXRenderer *glx_renderer;
 
   renderer = context->display->renderer;
-  xlib_renderer = renderer->winsys;
+  xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
   glx_renderer = renderer->winsys;
 
   if (glx_tex_pixmap->pixmap_bound)
@@ -2008,7 +2018,8 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
   if (glx_tex_pixmap->bind_tex_image_queued)
     {
       GLuint gl_handle, gl_target;
-      CoglXlibRenderer *xlib_renderer = ctx->display->renderer->winsys;
+      CoglXlibRenderer *xlib_renderer =
+        _cogl_xlib_renderer_get_data (ctx->display->renderer);
 
       cogl_texture_get_gl_texture (glx_tex_pixmap->glx_tex,
                                    &gl_handle, &gl_target);

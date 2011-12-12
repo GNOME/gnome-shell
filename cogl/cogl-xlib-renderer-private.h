@@ -74,4 +74,7 @@ int
 _cogl_xlib_renderer_untrap_errors (CoglRenderer *renderer,
                                    CoglXlibTrapState *state);
 
+CoglXlibRenderer *
+_cogl_xlib_renderer_get_data (CoglRenderer *renderer);
+
 #endif /* __COGL_RENDERER_XLIB_PRIVATE_H */
