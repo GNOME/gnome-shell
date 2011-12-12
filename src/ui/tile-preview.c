@@ -39,8 +39,6 @@ struct _MetaTilePreview {
   GdkRGBA       *preview_color;
 
   MetaRectangle  tile_rect;
-
-  gboolean       has_alpha: 1;
 };
 
 static gboolean
@@ -52,30 +50,17 @@ meta_tile_preview_draw (GtkWidget *widget,
 
   cairo_set_line_width (cr, 1.0);
 
-  if (preview->has_alpha)
-    {
-      /* Fill the preview area with a transparent color */
-      gdk_cairo_set_source_rgba (cr, preview->preview_color);
+  /* Fill the preview area with a transparent color */
+  gdk_cairo_set_source_rgba (cr, preview->preview_color);
 
-      cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-      cairo_paint (cr);
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+  cairo_paint (cr);
 
-      /* Use the opaque color for the border */
-      cairo_set_source_rgb (cr,
-                            preview->preview_color->red,
-                            preview->preview_color->green,
-                            preview->preview_color->blue);
-    }
-  else
-    {
-      cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
-
-      cairo_rectangle (cr,
-                       OUTLINE_WIDTH - 0.5, OUTLINE_WIDTH - 0.5,
-                       preview->tile_rect.width - 2 * (OUTLINE_WIDTH - 1) - 1,
-                       preview->tile_rect.height - 2 * (OUTLINE_WIDTH - 1) - 1);
-      cairo_stroke (cr);
-    }
+  /* Use the opaque color for the border */
+  cairo_set_source_rgb (cr,
+                        preview->preview_color->red,
+                        preview->preview_color->green,
+                        preview->preview_color->blue);
 
   cairo_rectangle (cr,
                    0.5, 0.5,
@@ -87,11 +72,13 @@ meta_tile_preview_draw (GtkWidget *widget,
 }
 
 MetaTilePreview *
-meta_tile_preview_new (int      screen_number,
-                       gboolean composited)
+meta_tile_preview_new (int      screen_number)
 {
   MetaTilePreview *preview;
   GdkScreen *screen;
+  GtkStyleContext *context;
+  GtkWidgetPath *path;
+  guchar selection_alpha = 0xFF;
 
   screen = gdk_display_get_screen (gdk_display_get_default (), screen_number);
 
@@ -107,44 +94,34 @@ meta_tile_preview_new (int      screen_number,
   preview->tile_rect.x = preview->tile_rect.y = 0;
   preview->tile_rect.width = preview->tile_rect.height = 0;
 
-  preview->has_alpha = composited &&
-                       (gdk_screen_get_rgba_visual (screen) != NULL);
+  gtk_widget_set_visual (preview->preview_window,
+                         gdk_screen_get_rgba_visual (screen));
 
-  if (preview->has_alpha)
-    {
-      GtkStyleContext *context;
-      GtkWidgetPath *path;
-      guchar selection_alpha = 0xFF;
+  path = gtk_widget_path_new ();
+  gtk_widget_path_append_type (path, GTK_TYPE_ICON_VIEW);
 
-      gtk_widget_set_visual (preview->preview_window,
-                             gdk_screen_get_rgba_visual (screen));
+  context = gtk_style_context_new ();
+  gtk_style_context_set_path (context, path);
+  gtk_style_context_add_class (context,
+                               GTK_STYLE_CLASS_RUBBERBAND);
 
-      path = gtk_widget_path_new ();
-      gtk_widget_path_append_type (path, GTK_TYPE_ICON_VIEW);
+  gtk_widget_path_free (path);
 
-      context = gtk_style_context_new ();
-      gtk_style_context_set_path (context, path);
-      gtk_style_context_add_class (context,
-                                   GTK_STYLE_CLASS_RUBBERBAND);
+  gtk_style_context_get (context, GTK_STATE_FLAG_SELECTED,
+                         "background-color", &preview->preview_color,
+                         NULL);
 
-      gtk_widget_path_free (path);
+  /* The background-color for the .rubberband class should probably
+   * contain the correct alpha value - unfortunately, at least for now
+   * it doesn't. Hopefully the following workaround can be removed
+   * when GtkIconView gets ported to GtkStyleContext.
+   */
+  gtk_style_context_get_style (context,
+                               "selection-box-alpha", &selection_alpha,
+                               NULL);
+  preview->preview_color->alpha = (double)selection_alpha / 0xFF;
 
-      gtk_style_context_get (context, GTK_STATE_FLAG_SELECTED,
-                             "background-color", &preview->preview_color,
-                             NULL);
-
-      /* The background-color for the .rubberband class should probably
-       * contain the correct alpha value - unfortunately, at least for now
-       * it doesn't. Hopefully the following workaround can be removed
-       * when GtkIconView gets ported to GtkStyleContext.
-       */
-      gtk_style_context_get_style (context,
-                                   "selection-box-alpha", &selection_alpha,
-                                   NULL);
-      preview->preview_color->alpha = (double)selection_alpha / 0xFF;
-
-      g_object_unref (context);
-    }
+  g_object_unref (context);
 
   /* We make an assumption that XCreateWindow will be the first operation
    * when calling gtk_widget_realize() (via gdk_window_new()), or that it
@@ -200,33 +177,6 @@ meta_tile_preview_show (MetaTilePreview *preview,
   gdk_window_move_resize (window,
                           preview->tile_rect.x, preview->tile_rect.y,
                           preview->tile_rect.width, preview->tile_rect.height);
-
-  if (!preview->has_alpha)
-    {
-      cairo_region_t *outer_region, *inner_region;
-      GdkRectangle outer_rect, inner_rect;
-      GdkRGBA black = { 0.0, 0.0, 0.0, 1.0 };
-
-      gdk_window_set_background_rgba (window, &black);
-
-      outer_rect.x = outer_rect.y = 0;
-      outer_rect.width = preview->tile_rect.width;
-      outer_rect.height = preview->tile_rect.height;
-
-      inner_rect.x = OUTLINE_WIDTH;
-      inner_rect.y = OUTLINE_WIDTH;
-      inner_rect.width = outer_rect.width - 2 * OUTLINE_WIDTH;
-      inner_rect.height = outer_rect.height - 2 * OUTLINE_WIDTH;
-
-      outer_region = cairo_region_create_rectangle (&outer_rect);
-      inner_region = cairo_region_create_rectangle (&inner_rect);
-
-      cairo_region_subtract (outer_region, inner_region);
-      cairo_region_destroy (inner_region);
-
-      gdk_window_shape_combine_region (window, outer_region, 0, 0);
-      cairo_region_destroy (outer_region);
-    }
 }
 
 void
