@@ -45,7 +45,7 @@
 #include "cogl-winsys-stub-private.h"
 #include "cogl-config-private.h"
 
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
+#ifdef COGL_HAS_EGL_PLATFORM_XLIB_SUPPORT
 #include "cogl-winsys-egl-x11-private.h"
 #endif
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
@@ -82,8 +82,8 @@ static CoglWinsysVtableGetter _cogl_winsys_vtable_getters[] =
 #ifdef COGL_HAS_GLX_SUPPORT
   _cogl_winsys_glx_get_vtable,
 #endif
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  _cogl_winsys_egl_x11_get_vtable,
+#ifdef COGL_HAS_EGL_PLATFORM_XLIB_SUPPORT
+  _cogl_winsys_egl_xlib_get_vtable,
 #endif
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
   _cogl_winsys_egl_wayland_get_vtable,

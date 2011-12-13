@@ -682,7 +682,7 @@ _cogl_winsys_egl_vtable =
   };
 
 const CoglWinsysVtable *
-_cogl_winsys_egl_x11_get_vtable (void)
+_cogl_winsys_egl_xlib_get_vtable (void)
 {
   static gboolean vtable_inited = FALSE;
   static CoglWinsysVtable vtable;
@@ -694,8 +694,8 @@ _cogl_winsys_egl_x11_get_vtable (void)
 
       vtable = *_cogl_winsys_egl_get_vtable ();
 
-      vtable.id = COGL_WINSYS_ID_EGL_X11;
-      vtable.name = "EGL_X11";
+      vtable.id = COGL_WINSYS_ID_EGL_XLIB;
+      vtable.name = "EGL_XLIB";
 
       vtable.renderer_connect = _cogl_winsys_renderer_connect;
       vtable.renderer_disconnect = _cogl_winsys_renderer_disconnect;

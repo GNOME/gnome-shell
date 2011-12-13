@@ -834,9 +834,9 @@ AS_IF([test "x$enable_xlib_egl_platform" = "xyes"],
         NEED_XLIB=yes
         EGL_PLATFORMS="$EGL_PLATFORMS xlib"
 
-        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT"
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_XLIB_SUPPORT"
       ])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_X11,
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_XLIB,
                [test "x$enable_xlib_egl_platform" = "xyes"])
 
 AS_IF([test "x$NEED_EGL" = "xyes" && test "x$EGL_CHECKED" != "xyes"],

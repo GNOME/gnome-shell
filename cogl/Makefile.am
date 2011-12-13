@@ -384,7 +384,7 @@ cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-egl-kms.c \
 	$(srcdir)/winsys/cogl-winsys-egl-kms-private.h
 endif
-if SUPPORT_EGL_PLATFORM_POWERVR_X11
+if SUPPORT_EGL_PLATFORM_XLIB
 cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-egl-x11.c \
 	$(srcdir)/winsys/cogl-winsys-egl-x11-private.h

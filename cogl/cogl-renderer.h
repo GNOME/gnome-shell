@@ -64,7 +64,12 @@ cogl_renderer_new (void);
  * @COGL_WINSYS_ID_ANY: Implies no preference for which backend is used
  * @COGL_WINSYS_ID_STUB: Use the no-op stub backend
  * @COGL_WINSYS_ID_GLX: Use the GLX window system binding API
- * @COGL_WINSYS_ID_EGL: Use the Khronos EGL window system binding API
+ * @COGL_WINSYS_ID_EGL_XLIB: Use EGL with the X window system via XLib
+ * @COGL_WINSYS_ID_EGL_NULL: Use EGL with the PowerVR NULL window system
+ * @COGL_WINSYS_ID_EGL_GDL: Use EGL with the GDL platform
+ * @COGL_WINSYS_ID_EGL_WAYLAND: Use EGL with the Wayland window system
+ * @COGL_WINSYS_ID_EGL_KMS: Use EGL with the KMS platform
+ * @COGL_WINSYS_ID_EGL_ANDROID: Use EGL with the Android platform
  * @COGL_WINSYS_ID_WGL: Use the Microsoft Windows WGL binding API
  *
  * Identifies specific window system backends that Cogl supports.
@@ -77,7 +82,7 @@ typedef enum
   COGL_WINSYS_ID_ANY,
   COGL_WINSYS_ID_STUB,
   COGL_WINSYS_ID_GLX,
-  COGL_WINSYS_ID_EGL_X11,
+  COGL_WINSYS_ID_EGL_XLIB,
   COGL_WINSYS_ID_EGL_NULL,
   COGL_WINSYS_ID_EGL_GDL,
   COGL_WINSYS_ID_EGL_WAYLAND,
