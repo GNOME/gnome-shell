@@ -79,7 +79,7 @@ struct _CoglandCompositor
   int virtual_height;
   GList *outputs;
 
-  GArray *frame_callbacks;
+  GQueue frame_callbacks;
 
   CoglPrimitive *triangle;
 
@@ -327,6 +327,12 @@ cogland_surface_damage (struct wl_client *client,
 
 typedef struct _CoglandFrameCallback
 {
+  /* GList node used as an embedded list */
+  GList node;
+
+  /* Pointer back to the compositor */
+  CoglandCompositor *compositor;
+
   struct wl_resource resource;
 } CoglandFrameCallback;
 
@@ -335,6 +341,8 @@ destroy_frame_callback (struct wl_resource *callback_resource)
 {
   CoglandFrameCallback *callback = callback_resource->data;
 
+  g_queue_unlink (&callback->compositor->frame_callbacks,
+                  &callback->node);
   g_slice_free (CoglandFrameCallback, callback);
 }
 
@@ -347,6 +355,8 @@ cogland_surface_frame (struct wl_client *client,
   CoglandSurface *surface = surface_resource->data;
 
   callback = g_slice_new0 (CoglandFrameCallback);
+  callback->compositor = surface->compositor;
+  callback->node.data = callback;
   callback->resource.object.interface = &wl_callback_interface;
   callback->resource.object.id = callback_id;
   callback->resource.destroy = destroy_frame_callback;
@@ -354,7 +364,8 @@ cogland_surface_frame (struct wl_client *client,
 
   wl_client_add_resource (client, &callback->resource);
 
-  g_array_append_val (surface->compositor->frame_callbacks, callback);
+  g_queue_push_tail_link (&surface->compositor->frame_callbacks,
+                          &callback->node);
 }
 
 const struct wl_surface_interface cogland_surface_interface = {
@@ -494,7 +505,6 @@ paint_cb (void *user_data)
 {
   CoglandCompositor *compositor = user_data;
   GList *l;
-  int i;
 
   for (l = compositor->outputs; l; l = l->next)
     {
@@ -528,16 +538,15 @@ paint_cb (void *user_data)
       cogl_pop_framebuffer ();
     }
 
-  for (i = 0; i < compositor->frame_callbacks->len; i++)
+  while (!g_queue_is_empty (&compositor->frame_callbacks))
     {
       CoglandFrameCallback *callback =
-        g_array_index (compositor->frame_callbacks, CoglandFrameCallback *, i);
+        g_queue_peek_head (&compositor->frame_callbacks);
 
       wl_resource_post_event (&callback->resource,
                               WL_CALLBACK_DONE, get_time ());
       wl_resource_destroy (&callback->resource, 0);
     }
-  g_array_set_size (compositor->frame_callbacks, 0);
 
   return TRUE;
 }
@@ -703,7 +712,7 @@ main (int argc, char **argv)
   if (compositor.wayland_display == NULL)
     g_error ("failed to create wayland display");
 
-  compositor.frame_callbacks = g_array_new (FALSE, FALSE, sizeof (void *));
+  g_queue_init (&compositor.frame_callbacks);
 
   if (!wl_display_add_global (compositor.wayland_display,
                               &wl_compositor_interface,
