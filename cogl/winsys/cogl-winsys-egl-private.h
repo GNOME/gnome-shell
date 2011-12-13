@@ -112,11 +112,6 @@ typedef struct _CoglDisplayEGL
 {
   EGLContext egl_context;
   EGLSurface dummy_surface;
-#if defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)
-  int egl_surface_width;
-  int egl_surface_height;
-  gboolean have_onscreen;
-#endif
   EGLSurface egl_surface;
 
   EGLConfig egl_config;
