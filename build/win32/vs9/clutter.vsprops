@@ -51,16 +51,16 @@
 		Value="$(BaseBuildDef);G_LOG_DOMAIN=\&quot;Clutter\&quot;;CLUTTER_PREFIX=\&quot;../\&quot;;CLUTTER_LIBDIR=\&quot;../lib\&quot;;CLUTTER_DATADIR=\&quot;../share\&quot;;CLUTTER_LOCALEDIR=\&quot;../share/locale\&quot;;CLUTTER_SYSCONFDIR=\&quot;../etc\&quot;"
 	/>
 	<UserMacro
+		Name="ClutterDisableDeprecationWarnings"
+		Value="CLUTTER_DISABLE_DEPRECATION_WARNINGS;GLIB_DISABLE_DEPRECATION_WARNINGS"
+	/>
+	<UserMacro
 		Name="CallyTestDefs"
-		Value="$(BaseWinBuildDef);PREFIXDIR=\&quot;/some/dummy/dir\&quot;"
+		Value="$(BaseWinBuildDef);PREFIXDIR=\&quot;/some/dummy/dir\&quot;;$(ClutterDisableDeprecationWarnings)"
 	/>
 	<UserMacro
 		Name="TestProgDef"
 		Value="$(BaseBuildDef);TESTS_DATADIR=\&quot;../share/clutter-$(ClutterApiVersion)/data\&quot;"
-	/>
-	<UserMacro
-		Name="ClutterDisableDeprecationWarnings"
-		Value="CLUTTER_DISABLE_DEPRECATION_WARNINGS;GLIB_DISABLE_DEPRECATION_WARNINGS"
 	/>
 	<UserMacro
 		Name="TestPerfProgDef"
