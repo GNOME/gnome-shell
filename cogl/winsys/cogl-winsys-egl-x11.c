@@ -696,6 +696,8 @@ _cogl_winsys_egl_xlib_get_vtable (void)
 
       vtable.id = COGL_WINSYS_ID_EGL_XLIB;
       vtable.name = "EGL_XLIB";
+      vtable.criteria |= (COGL_WINSYS_CRITERIA_USES_X11 |
+                          COGL_WINSYS_CRITERIA_USES_XLIB);
 
       vtable.renderer_connect = _cogl_winsys_renderer_connect;
       vtable.renderer_disconnect = _cogl_winsys_renderer_disconnect;

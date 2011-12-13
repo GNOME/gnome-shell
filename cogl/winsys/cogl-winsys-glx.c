@@ -2056,6 +2056,9 @@ static CoglWinsysVtable _cogl_winsys_vtable =
   {
     .id = COGL_WINSYS_ID_GLX,
     .name = "GLX",
+    .criteria = (COGL_WINSYS_CRITERIA_USES_X11 |
+                 COGL_WINSYS_CRITERIA_USES_XLIB),
+
     .renderer_get_proc_address = _cogl_winsys_renderer_get_proc_address,
     .renderer_connect = _cogl_winsys_renderer_connect,
     .renderer_disconnect = _cogl_winsys_renderer_disconnect,

@@ -640,6 +640,8 @@ _cogl_winsys_context_egl_get_egl_display (CoglContext *context)
 
 static CoglWinsysVtable _cogl_winsys_vtable =
   {
+    .criteria = COGL_WINSYS_CRITERIA_USES_EGL,
+
     /* This winsys is only used as a base for the EGL-platform
        winsys's so it does not have an ID or a name */
 
