@@ -3266,6 +3266,7 @@ handle_toggle_tiled (MetaDisplay    *display,
        * horizontally first; rather than calling meta_window_unmaximize(),
        * we just set the flag and rely on meta_window_tile() syncing it to
        * save an additional roundtrip.
+       */
       window->maximized_horizontally = FALSE;
       meta_window_tile (window);
     }
