@@ -59,8 +59,12 @@
 		Value="$(BaseBuildDef);TESTS_DATADIR=\&quot;../share/clutter-$(ClutterApiVersion)/data\&quot;"
 	/>
 	<UserMacro
+		Name="ClutterDisableDeprecationWarnings"
+		Value="CLUTTER_DISABLE_DEPRECATION_WARNINGS;GLIB_DISABLE_DEPRECATION_WARNINGS"
+	/>
+	<UserMacro
 		Name="TestPerfProgDef"
-		Value="$(BaseBuildDef);TESTS_DATA_DIR=\&quot;../share/clutter-$(ClutterApiVersion)/data\&quot;"
+		Value="$(BaseBuildDef);TESTS_DATA_DIR=\&quot;../share/clutter-$(ClutterApiVersion)/data\&quot;;$(ClutterDisableDeprecationWarnings)"
 	/>
 	<UserMacro
 		Name="PreBuildCmd"
