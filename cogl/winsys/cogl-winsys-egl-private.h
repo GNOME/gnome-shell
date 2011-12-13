@@ -28,6 +28,7 @@
 #include "cogl-winsys-private.h"
 #include "cogl-context.h"
 #include "cogl-context-private.h"
+#include "cogl-framebuffer-private.h"
 
 typedef struct _CoglWinsysEGLVtable
 {
@@ -61,6 +62,11 @@ typedef struct _CoglWinsysEGLVtable
                      GError **error);
   void
   (* onscreen_deinit) (CoglOnscreen *onscreen);
+
+  int
+  (* add_config_attributes) (CoglDisplay *display,
+                             CoglFramebufferConfig *config,
+                             EGLint *attributes);
 } CoglWinsysEGLVtable;
 
 typedef enum _CoglEGLWinsysFeature
@@ -81,10 +87,6 @@ typedef struct _CoglRendererEGL
 
   EGLint egl_version_major;
   EGLint egl_version_minor;
-
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  gboolean gdl_initialized;
-#endif
 
   /* Data specific to the EGL platform */
   void *platform;
@@ -110,8 +112,7 @@ typedef struct _CoglDisplayEGL
 {
   EGLContext egl_context;
   EGLSurface dummy_surface;
-#if defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT) ||      \
-  defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)
+#if defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)
   int egl_surface_width;
   int egl_surface_height;
   gboolean have_onscreen;

@@ -121,12 +121,6 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 {
   CoglRendererEGL *egl_renderer = renderer->winsys;
 
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_GDL &&
-      egl_renderer->gdl_initialized)
-    gdl_close ();
-#endif
-
   eglTerminate (egl_renderer->edpy);
 
   g_slice_free (CoglRendererEGL, egl_renderer);
@@ -183,10 +177,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                GError **error)
 {
   CoglRendererEGL *egl_renderer;
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  gdl_ret_t rc = GDL_SUCCESS;
-  gdl_display_info_t gdl_display_info;
-#endif
 
   renderer->winsys = g_slice_new0 (CoglRendererEGL);
 
@@ -198,7 +188,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
       g_warn_if_reached ();
       goto error;
 
-    case COGL_WINSYS_ID_EGL_GDL:
     case COGL_WINSYS_ID_EGL_ANDROID:
       egl_renderer->edpy = eglGetDisplay (EGL_DEFAULT_DISPLAY);
       break;
@@ -206,36 +195,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
   if (!_cogl_winsys_egl_renderer_connect_common (renderer, error))
     goto error;
-
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_GDL)
-    {
-      /* Check we can talk to the GDL library */
-
-      rc = gdl_init (NULL);
-      if (rc != GDL_SUCCESS)
-        {
-          g_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_INIT,
-                       "GDL initialize failed. %s",
-                       gdl_get_error_string (rc));
-          goto error;
-        }
-
-      rc = gdl_get_display_info (GDL_DISPLAY_ID_0, &gdl_display_info);
-      if (rc != GDL_SUCCESS)
-        {
-          g_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_INIT,
-                       "GDL failed to get display information: %s",
-                       gdl_get_error_string (rc));
-          gdl_close ();
-          goto error;
-        }
-
-      gdl_close ();
-    }
-#endif
 
   return TRUE;
 
@@ -251,7 +210,15 @@ egl_attributes_from_framebuffer_config (CoglDisplay *display,
                                         EGLint *attributes)
 {
   CoglRenderer *renderer = display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
   int i = 0;
+
+  /* Let the platform add attributes first */
+  if (egl_renderer->platform_vtable &&
+      egl_renderer->platform_vtable->add_config_attributes)
+    i = egl_renderer->platform_vtable->add_config_attributes (display,
+                                                              config,
+                                                              attributes);
 
   attributes[i++] = EGL_STENCIL_SIZE;
   attributes[i++] = needs_stencil_override ? 2 : 0;
@@ -268,17 +235,6 @@ egl_attributes_from_framebuffer_config (CoglDisplay *display,
 
   attributes[i++] = EGL_DEPTH_SIZE;
   attributes[i++] = 1;
-
-  /* XXX: Why does the GDL platform choose these by default? */
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_GDL)
-    {
-      attributes[i++] = EGL_BIND_TO_TEXTURE_RGBA;
-      attributes[i++] = EGL_TRUE;
-      attributes[i++] = EGL_BIND_TO_TEXTURE_RGB;
-      attributes[i++] = EGL_TRUE;
-    }
-#endif
 
   attributes[i++] = EGL_BUFFER_SIZE;
   attributes[i++] = EGL_DONT_CARE;
@@ -435,41 +391,6 @@ try_create_context (CoglDisplay *display,
       }
       break;
 #endif
-
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-    case COGL_WINSYS_ID_EGL_GDL:
-      egl_display->egl_surface =
-        eglCreateWindowSurface (edpy,
-                                config,
-                                (NativeWindowType) display->gdl_plane,
-                                NULL);
-
-      if (egl_display->egl_surface == EGL_NO_SURFACE)
-        {
-          error_message = "Unable to create EGL window surface";
-          goto fail;
-        }
-
-      if (!eglMakeCurrent (egl_renderer->edpy,
-                           egl_display->egl_surface,
-                           egl_display->egl_surface,
-                           egl_display->egl_context))
-        {
-          error_message = "Unable to eglMakeCurrent with egl surface";
-          goto fail;
-        }
-
-      eglQuerySurface (egl_renderer->edpy,
-                       egl_display->egl_surface,
-                       EGL_WIDTH,
-                       &egl_display->egl_surface_width);
-
-      eglQuerySurface (egl_renderer->edpy,
-                       egl_display->egl_surface,
-                       EGL_HEIGHT,
-                       &egl_display->egl_surface_height);
-      break;
-#endif
     }
 
   return TRUE;
@@ -499,22 +420,6 @@ cleanup_context (CoglDisplay *display)
   if (egl_renderer->platform_vtable &&
       egl_renderer->platform_vtable->cleanup_context)
     egl_renderer->platform_vtable->cleanup_context (display);
-
-  switch (renderer->winsys_vtable->id)
-    {
-    default:
-      break;
-
-#if defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
-    case COGL_WINSYS_ID_EGL_GDL:
-      if (egl_display->egl_surface != EGL_NO_SURFACE)
-        {
-          eglDestroySurface (egl_renderer->edpy, egl_display->egl_surface);
-          egl_display->egl_surface = EGL_NO_SURFACE;
-        }
-      break;
-#endif
-    }
 }
 
 static gboolean
@@ -560,92 +465,6 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
   display->winsys = NULL;
 }
 
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-static gboolean
-gdl_plane_init (CoglDisplay *display, GError **error)
-{
-  gboolean ret = TRUE;
-  gdl_color_space_t colorSpace = GDL_COLOR_SPACE_RGB;
-  gdl_pixel_format_t pixfmt = GDL_PF_ARGB_32;
-  gdl_rectangle_t dstRect;
-  gdl_display_info_t display_info;
-  gdl_ret_t rc = GDL_SUCCESS;
-
-  if (!display->gdl_plane)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                   "No GDL plane specified with "
-                   "cogl_gdl_display_set_plane");
-      return FALSE;
-    }
-
-  rc = gdl_init (NULL);
-  if (rc != GDL_SUCCESS)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                   "GDL initialize failed. %s", gdl_get_error_string (rc));
-      return FALSE;
-    }
-
-  rc = gdl_get_display_info (GDL_DISPLAY_ID_0, &display_info);
-  if (rc != GDL_SUCCESS)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                   "GDL failed to get display infomation: %s",
-                   gdl_get_error_string (rc));
-      gdl_close ();
-      return FALSE;
-    }
-
-  dstRect.origin.x = 0;
-  dstRect.origin.y = 0;
-  dstRect.width = display_info.tvmode.width;
-  dstRect.height = display_info.tvmode.height;
-
-  /* Configure the plane attribute. */
-  rc = gdl_plane_reset (display->gdl_plane);
-  if (rc == GDL_SUCCESS)
-    rc = gdl_plane_config_begin (display->gdl_plane);
-
-  if (rc == GDL_SUCCESS)
-    rc = gdl_plane_set_attr (GDL_PLANE_SRC_COLOR_SPACE, &colorSpace);
-
-  if (rc == GDL_SUCCESS)
-    rc = gdl_plane_set_attr (GDL_PLANE_PIXEL_FORMAT, &pixfmt);
-
-  if (rc == GDL_SUCCESS)
-    rc = gdl_plane_set_attr (GDL_PLANE_DST_RECT, &dstRect);
-
-  /* Default to triple buffering if the swap_chain doesn't have an explicit
-   * length */
-  if (rc == GDL_SUCCESS)
-    {
-      if (display->onscreen_template->swap_chain &&
-          display->onscreen_template->swap_chain->length != -1)
-        rc = gdl_plane_set_uint (GDL_PLANE_NUM_GFX_SURFACES,
-                                 display->onscreen_template->swap_chain->length);
-      else
-        rc = gdl_plane_set_uint (GDL_PLANE_NUM_GFX_SURFACES, 3);
-    }
-
-  if (rc == GDL_SUCCESS)
-    rc = gdl_plane_config_end (GDL_FALSE);
-  else
-    gdl_plane_config_end (GDL_TRUE);
-
-  if (rc != GDL_SUCCESS)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                   "GDL configuration failed: %s.", gdl_get_error_string (rc));
-      ret = FALSE;
-    }
-
-  gdl_close ();
-
-  return TRUE;
-}
-#endif
-
 static gboolean
 _cogl_winsys_display_setup (CoglDisplay *display,
                             GError **error)
@@ -658,12 +477,6 @@ _cogl_winsys_display_setup (CoglDisplay *display,
 
   egl_display = g_slice_new0 (CoglDisplayEGL);
   display->winsys = egl_display;
-
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  if (renderer->winsys_vtable->id == COGL_WINSYS_ID_EGL_GDL &&
-      !gdl_plane_init (display, error))
-    goto error;
-#endif
 
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
   if (display->wayland_compositor_display)
@@ -806,10 +619,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
         }
       break;
 
-#if defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
-    defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
+#if defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)
     case COGL_WINSYS_ID_EGL_ANDROID:
-    case COGL_WINSYS_ID_EGL_GDL:
 
       if (egl_display->have_onscreen)
         {
