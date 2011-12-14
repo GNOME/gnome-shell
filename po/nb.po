@@ -6,14 +6,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter 3.3.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-01 20:27+0100\n"
-"PO-Revision-Date: 2011-12-01 20:29+0100\n"
+"POT-Creation-Date: 2011-12-14 22:59+0100\n"
+"PO-Revision-Date: 2011-12-14 22:59+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+msgid "View split on left"
+msgstr "Visning delt til venstre"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "View split on right"
+msgstr "Visning delt til høyre"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Windows"
+msgstr "Vinduer"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
@@ -58,12 +70,12 @@ msgstr "_Vent"
 msgid "_Force Quit"
 msgstr "_Tvungen nedstenging"
 
-#: ../src/core/display.c:365
+#: ../src/core/display.c:361
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Mangler utvidelsen %s som kreves for komposittfunksjon"
 
-#: ../src/core/display.c:431
+#: ../src/core/display.c:427
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
@@ -172,12 +184,12 @@ msgstr ""
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
 
-#: ../src/core/screen.c:741
+#: ../src/core/screen.c:730
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skjerm %d på display «%s» er ugyldig\n"
 
-#: ../src/core/screen.c:757
+#: ../src/core/screen.c:746
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -186,19 +198,19 @@ msgstr ""
 "Skjerm %d på display «%s» har allerede en vindushåndterer; prøv å bruke "
 "flagget --replace for å erstatte aktiv vindushåndterer.\n"
 
-#: ../src/core/screen.c:784
+#: ../src/core/screen.c:773
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Kunne ikke hente utvalg fra vinduhåndterer på skjerm %d, display «%s»\n"
 
-#: ../src/core/screen.c:839
+#: ../src/core/screen.c:828
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skjerm %d på display «%s» har allerede en vinduhåndterer\n"
 
-#: ../src/core/screen.c:1024
+#: ../src/core/screen.c:1013
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
@@ -418,7 +430,11 @@ msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
 "vertically and resizes them horizontally to cover half of the available "
 "area. Dropping windows on the top screen edge maximizes them completely."
-msgstr "Maksimerer vinduer vertikalt og endrer størrelse horisontalt slik at de dekker halve det tilgjengeligeområdet hvis de slippes på vertikale skjermkanter. Hvis vindu slippes på øverste kant av skjermen maksimeres de fullstendig."
+msgstr ""
+"Maksimerer vinduer vertikalt og endrer størrelse horisontalt slik at de "
+"dekker halve det tilgjengeligeområdet hvis de slippes på vertikale "
+"skjermkanter. Hvis vindu slippes på øverste kant av skjermen maksimeres de "
+"fullstendig."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Live Hidden Windows"
