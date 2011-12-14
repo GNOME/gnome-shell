@@ -876,6 +876,25 @@ AS_IF([test "x$NEED_EGL" = "xyes"],
 
 AM_CONDITIONAL(SUPPORT_EGL, [test "x$SUPPORT_EGL" = "xyes"])
 
+AC_ARG_ENABLE(
+  [sdl],
+  [AC_HELP_STRING([--enable-sdl=@<:@no/yes@:>@], [Enable support SDL @<:@default=no@:>@])],
+  [],
+  [enable_sdl=no])
+AS_IF([test "x$enable_sdl" = "xyes"],
+      [
+        PKG_CHECK_EXISTS([sdl],
+                         [],
+                         [AC_MSG_ERROR([SDL support requested but SDL not found])])
+
+        SUPPORT_SDL=yes
+        GL_WINSYS_APIS="$GL_WINSYS_APIS sdl"
+        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES sdl"
+
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_SDL_SUPPORT"
+      ],
+      [SUPPORT_SDL=no])
+AM_CONDITIONAL(SUPPORT_SDL, [test "x$SUPPORT_SDL" = "xyes"])
 
 dnl         ========================================================
 dnl         Check X11 dependencies if required

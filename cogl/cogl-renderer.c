@@ -74,6 +74,9 @@ extern const CoglWinsysVtable *_cogl_winsys_glx_get_vtable (void);
 #ifdef COGL_HAS_WGL_SUPPORT
 extern const CoglWinsysVtable *_cogl_winsys_wgl_get_vtable (void);
 #endif
+#ifdef COGL_HAS_SDL_SUPPORT
+extern const CoglWinsysVtable *_cogl_winsys_sdl_get_vtable (void);
+#endif
 
 typedef const CoglWinsysVtable *(*CoglWinsysVtableGetter) (void);
 
@@ -102,6 +105,9 @@ static CoglWinsysVtableGetter _cogl_winsys_vtable_getters[] =
 #endif
 #ifdef COGL_HAS_WGL_SUPPORT
   _cogl_winsys_wgl_get_vtable,
+#endif
+#ifdef COGL_HAS_SDL_SUPPORT
+  _cogl_winsys_sdl_get_vtable,
 #endif
   _cogl_winsys_stub_get_vtable,
 };

@@ -410,6 +410,10 @@ cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-egl-feature-functions.h \
        $(srcdir)/winsys/cogl-winsys-egl-private.h
 endif
+if SUPPORT_SDL
+cogl_sources_c += \
+       $(srcdir)/winsys/cogl-winsys-sdl.c
+endif
 
 EXTRA_DIST += stb_image.c
 
