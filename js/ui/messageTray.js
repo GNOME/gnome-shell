@@ -2048,8 +2048,11 @@ const MessageTray = new Lang.Class({
             if (haveClickedSummaryItem && !summarySourceIsMainNotificationSource && canShowSummaryBoxPointer && !requestedNotificationStackIsEmpty)
                 this._showSummaryBoxPointer();
         } else if (this._summaryBoxPointerState == State.SHOWN) {
-            if (!haveClickedSummaryItem || !canShowSummaryBoxPointer || wrongSummaryBoxPointer || mustHideSummary)
+            if (!haveClickedSummaryItem || !canShowSummaryBoxPointer || wrongSummaryBoxPointer || mustHideSummary) {
                 this._hideSummaryBoxPointer();
+                if (wrongSummaryBoxPointer)
+                    this._showSummaryBoxPointer();
+            }
         }
 
         // Tray itself
@@ -2390,9 +2393,8 @@ const MessageTray = new Lang.Class({
         }
 
         this._summaryBoxPointerState = State.HIDING;
-        // Unset this._clickedSummaryItem if we are no longer showing the summary or if
-        // this._clickedSummaryItem is still the item associated with the currently showing box pointer
-        if (this._summaryState != State.SHOWN || this._summaryBoxPointerItem == this._clickedSummaryItem)
+        // Unset this._clickedSummaryItem if we are no longer showing the summary
+        if (this._summaryState != State.SHOWN)
             this._unsetClickedSummaryItem();
 
         this._focusGrabber.ungrabFocus();
