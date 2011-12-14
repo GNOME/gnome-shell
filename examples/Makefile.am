@@ -51,6 +51,12 @@ cogland_SOURCES = cogland.c
 cogland_LDADD = $(common_ldadd)
 endif
 
+if SUPPORT_SDL
+programs += cogl-sdl-hello
+cogl_sdl_hello_SOURCES = cogl-sdl-hello.c
+cogl_sdl_hello_LDADD = $(common_ldadd)
+endif
+
 if INSTALL_EXAMPLES
 bin_PROGRAMS = $(programs)
 else
