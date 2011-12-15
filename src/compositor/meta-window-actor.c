@@ -1253,19 +1253,24 @@ void
 meta_window_actor_set_redirected (MetaWindowActor *self, gboolean state)
 {
   MetaWindow *metaWindow = meta_window_actor_get_meta_window (self);
+  MetaDisplay *display = meta_window_get_display (metaWindow);
 
-  Display *xdisplay = meta_display_get_xdisplay (meta_window_get_display (metaWindow));
+  Display *xdisplay = meta_display_get_xdisplay (display);
   Window  xwin = meta_window_actor_get_x_window (self);
 
   if (state)
     {
+      meta_error_trap_push (display);
       XCompositeRedirectWindow (xdisplay, xwin, CompositeRedirectManual);
+      meta_error_trap_pop (display);
       meta_window_actor_queue_create_pixmap (self);
       self->priv->unredirected = FALSE;
     }
   else
     {
+      meta_error_trap_push (display);
       XCompositeUnredirectWindow (xdisplay, xwin, CompositeRedirectManual);
+      meta_error_trap_pop (display);
       self->priv->unredirected = TRUE;
     }
 }
