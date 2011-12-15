@@ -83,6 +83,8 @@ int shell_app_compare_by_name (ShellApp *app, ShellApp *other);
 
 int shell_app_compare (ShellApp *app, ShellApp *other);
 
+void shell_app_update_window_actions (ShellApp *app, MetaWindow *window);
+
 G_END_DECLS
 
 #endif /* __SHELL_APP_H__ */
