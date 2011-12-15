@@ -21,6 +21,7 @@ const MessageTray = imports.ui.messageTray;
 const Panel = imports.ui.panel;
 const Params = imports.misc.params;
 const PlaceDisplay = imports.ui.placeDisplay;
+const RemoteSearch = imports.ui.remoteSearch;
 const Tweener = imports.ui.tweener;
 const ViewSelector = imports.ui.viewSelector;
 const Wanda = imports.ui.wanda;
@@ -209,6 +210,9 @@ const Overview = new Lang.Class({
         this.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());
         this.addSearchProvider(new DocDisplay.DocSearchProvider());
         this.addSearchProvider(new ContactDisplay.ContactSearchProvider());
+
+        // Load remote search providers provided by applications
+        RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, this.addSearchProvider));
 
         // TODO - recalculate everything when desktop size changes
         this._dash = new Dash.Dash();
