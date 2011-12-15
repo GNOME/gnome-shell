@@ -413,6 +413,9 @@ update_focus_app (ShellWindowTracker *self)
   new_focus_win = meta_display_get_focus_window (shell_global_get_display (shell_global_get ()));
   new_focus_app = new_focus_win ? shell_window_tracker_get_window_app (self, new_focus_win) : NULL;
 
+  if (new_focus_app)
+    shell_app_update_window_actions (new_focus_app, new_focus_win);
+
   set_focus_app (self, new_focus_app);
 }
 
