@@ -157,7 +157,14 @@ libgnome_shell_la_SOURCES =		\
 	shell-util.c			\
 	shell-window-tracker.c		\
 	shell-wm.c			\
-	shell-xfixes-cursor.c
+	shell-xfixes-cursor.c		\
+	gactionmuxer.h			\
+	gactionmuxer.c			\
+	gactionobservable.h		\
+	gactionobservable.c		\
+	gactionobserver.h		\
+	gactionobserver.c
+
 
 libgnome_shell_la_gir_sources = \
 	$(filter-out %-private.h $(shell_recorder_non_gir_sources), $(shell_public_headers_h) $(libgnome_shell_la_SOURCES))

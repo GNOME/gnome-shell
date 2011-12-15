@@ -1752,7 +1752,6 @@ const RemoteMenu = new Lang.Class({
         }
 
         let action_id = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_ACTION, null).deep_unpack();
-        action_id = action_id.replace('app.', '');
         if (!this.actionGroup.has_action(action_id)) {
             // the action may not be there yet, wait for action-added
             return [null, false, 'action-added'];

@@ -15,6 +15,7 @@
 #include "shell-app-system-private.h"
 #include "shell-window-tracker-private.h"
 #include "st.h"
+#include "gactionmuxer.h"
 
 typedef enum {
   MATCH_NONE,
@@ -42,8 +43,9 @@ typedef struct {
   gint              name_watcher_id;
   gchar            *dbus_name;
   GDBusProxy       *app_proxy;
-  GDBusActionGroup *remote_actions;
+  GActionGroup     *remote_actions;
   GMenuModel       *remote_menu;
+  GActionMuxer     *muxer;
   GCancellable     *dbus_cancellable;
 } ShellAppRunningState;
 
@@ -129,7 +131,7 @@ shell_app_get_property (GObject    *gobject,
       break;
     case PROP_ACTION_GROUP:
       if (app->running_state)
-        g_value_set_object (value, app->running_state->remote_actions);
+        g_value_set_object (value, app->running_state->muxer);
       break;
     case PROP_MENU:
       if (app->running_state)
@@ -1023,66 +1025,6 @@ _shell_app_remove_window (ShellApp   *app,
 }
 
 static void
-on_action_group_acquired (GObject      *object,
-                          GAsyncResult *result,
-                          gpointer      user_data)
-{
-  ShellApp *self = SHELL_APP (user_data);
-  ShellAppRunningState *state = self->running_state;
-  GError *error = NULL;
-  GVariant *menu_property;
-
-  state->remote_actions = g_dbus_action_group_new_finish (result,
-                                                          &error);
-
-  if (error)
-    {
-      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) &&
-          !g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD))
-        {
-          g_warning ("Unexpected error while reading application actions: %s", error->message);
-        }
-
-      g_clear_error (&error);
-      g_clear_object (&state->dbus_cancellable);
-      g_clear_object (&state->app_proxy);
-
-      if (state->name_watcher_id)
-        {
-          g_bus_unwatch_name (state->name_watcher_id);
-          state->name_watcher_id = 0;
-        }
-
-      g_free (state->dbus_name);
-      state->dbus_name = NULL;
-
-      g_object_unref (self);
-      return;
-    }
-
-  g_object_notify (G_OBJECT (self), "action-group");
-
-  /* third step: the application menu */
-
-  menu_property = g_dbus_proxy_get_cached_property (state->app_proxy, "AppMenu");
-
-  if (menu_property && g_variant_n_children (menu_property) > 0)
-    {
-      const gchar *object_path;
-
-      g_variant_get_child (menu_property, 0, "&o", &object_path);
-
-      state->remote_menu = G_MENU_MODEL (g_dbus_menu_model_get (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL),
-                                                                state->dbus_name,
-                                                                object_path));
-
-      g_object_notify (G_OBJECT (self), "menu");
-    }
-
-  g_object_unref (self);
-}
-
-static void
 on_dbus_proxy_gotten (GObject      *initable,
                       GAsyncResult *result,
                       gpointer      user_data)
@@ -1090,6 +1032,7 @@ on_dbus_proxy_gotten (GObject      *initable,
   ShellApp *self = SHELL_APP (user_data);
   ShellAppRunningState *state = self->running_state;
   GError *error = NULL;
+  GVariant *menu_property;
 
   state->app_proxy = g_dbus_proxy_new_finish (result,
                                               &error);
@@ -1120,13 +1063,30 @@ on_dbus_proxy_gotten (GObject      *initable,
 
   /* on to the second step, the primary action group */
 
-  g_dbus_action_group_new (g_dbus_proxy_get_connection (state->app_proxy),
+  state->remote_actions = (GActionGroup*)g_dbus_action_group_get (
+                           g_dbus_proxy_get_connection (state->app_proxy),
                            g_dbus_proxy_get_name (state->app_proxy),
-                           g_dbus_proxy_get_object_path (state->app_proxy),
-                           G_DBUS_ACTION_GROUP_FLAGS_NONE,
-                           state->dbus_cancellable,
-                           on_action_group_acquired,
-                           self);
+                           g_dbus_proxy_get_object_path (state->app_proxy));
+  state->muxer = g_action_muxer_new ();
+  g_action_muxer_insert (state->muxer, "app", state->remote_actions);
+  g_strfreev (g_action_group_list_actions (state->remote_actions));
+
+  g_object_notify (G_OBJECT (self), "action-group");
+
+  menu_property = g_dbus_proxy_get_cached_property (state->app_proxy, "AppMenu");
+
+  if (menu_property && g_variant_n_children (menu_property) > 0)
+    {
+      const gchar *object_path;
+
+      g_variant_get_child (menu_property, 0, "&o", &object_path);
+
+      state->remote_menu = G_MENU_MODEL (g_dbus_menu_model_get (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL),
+                                                                state->dbus_name,
+                                                                object_path));
+
+      g_object_notify (G_OBJECT (self), "menu");
+    }
 }
 
 static void
@@ -1183,6 +1143,7 @@ on_dbus_name_disappeared (GDBusConnection *bus,
   g_clear_object (&state->app_proxy);
   g_clear_object (&state->remote_actions);
   g_clear_object (&state->remote_menu);
+  g_clear_object (&state->muxer);
 
   g_free (state->dbus_name);
   state->dbus_name = NULL;
@@ -1428,6 +1389,7 @@ unref_running_state (ShellAppRunningState *state)
   g_clear_object (&state->app_proxy);
   g_clear_object (&state->remote_actions);
   g_clear_object (&state->remote_menu);
+  g_clear_object (&state->muxer);
   g_free (state->dbus_name);
 
   if (state->name_watcher_id)
@@ -1701,7 +1663,7 @@ shell_app_class_init(ShellAppClass *klass)
                                    g_param_spec_object ("action-group",
                                                         "Application Action Group",
                                                         "The action group exported by the remote application",
-                                                        G_TYPE_DBUS_ACTION_GROUP,
+                                                        G_TYPE_ACTION_GROUP,
                                                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
   /**
    * ShellApp:menu:
