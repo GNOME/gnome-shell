@@ -529,9 +529,11 @@ cogl.vsenums_c:
 
 EXTRA_DIST += \
 	cogl-defines.h.win32	\
-	cogl.symbols
+	cogl.symbols	\
+	cogl.rc.in	\
+	cogl.rc
 
-DISTCLEANFILES += ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../build/win32/vs10/cogl.vcxproj.filters ../build/win32/gen-enums.bat
+DISTCLEANFILES += ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../build/win32/vs10/cogl.vcxproj.filters ../build/win32/gen-enums.bat cogl.rc
 
 -include $(INTROSPECTION_MAKEFILE)
 

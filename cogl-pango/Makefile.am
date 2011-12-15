@@ -89,9 +89,9 @@ dist-hook: ../build/win32/vs9/cogl-pango.vcproj ../build/win32/vs10/cogl-pango.v
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl-pango.vcxproj.filtersin >$@
 	rm coglpango.vs10.sourcefiles.filters
 
-EXTRA_DIST += cogl-pango.symbols
+EXTRA_DIST += cogl-pango.symbols cogl-pango.rc.in cogl-pango.rc
 
-DISTCLEANFILES += ../build/win32/vs9/cogl-pango.vcproj ../build/win32/vs10/cogl-pango.vcxproj ../build/win32/vs10/cogl-pango.vcxproj.filters
+DISTCLEANFILES += ../build/win32/vs9/cogl-pango.vcproj ../build/win32/vs10/cogl-pango.vcxproj ../build/win32/vs10/cogl-pango.vcxproj.filters cogl-pango.rc
 
 -include $(INTROSPECTION_MAKEFILE)
 
