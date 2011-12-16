@@ -73,6 +73,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-primitives.h 		\
 	$(srcdir)/cogl-path.h 			\
 	$(srcdir)/cogl-pixel-buffer.h		\
+	$(srcdir)/cogl-poll.h			\
 	$(srcdir)/cogl-shader.h 		\
 	$(srcdir)/cogl-texture.h 		\
 	$(srcdir)/cogl-texture-3d.h             \
@@ -335,6 +336,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-boxed-value.c			\
 	$(srcdir)/cogl-snippet-private.h		\
 	$(srcdir)/cogl-snippet.c			\
+	$(srcdir)/cogl-poll.c				\
 	$(srcdir)/gl-prototypes/cogl-all-functions.h	\
 	$(srcdir)/gl-prototypes/cogl-gles1-functions.h	\
 	$(srcdir)/gl-prototypes/cogl-gles2-functions.h	\

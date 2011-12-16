@@ -1024,9 +1024,47 @@ dnl available. Cogl has a fallback if needed.
 AC_CHECK_FUNCS([ffs])
 
 dnl ================================================================
+dnl Platform values
+dnl ================================================================
+
+dnl These are values from system headers that we want to copy into the
+dnl public Cogl headers without having to include the system header
+AC_CHECK_HEADER(poll.h,
+        [
+         AC_COMPUTE_INT(COGL_SYSDEF_POLLIN, POLLIN, [#include <poll.h>],
+                        AC_MSG_ERROR([Unable to get value of POLLIN]))
+         AC_COMPUTE_INT(COGL_SYSDEF_POLLPRI, POLLPRI, [#include <poll.h>],
+                        AC_MSG_ERROR([Unable to get value of POLLPRI]))
+         AC_COMPUTE_INT(COGL_SYSDEF_POLLOUT, POLLOUT, [#include <poll.h>],
+                        AC_MSG_ERROR([Unable to get value of POLLOUT]))
+         AC_COMPUTE_INT(COGL_SYSDEF_POLLERR, POLLERR, [#include <poll.h>],
+                        AC_MSG_ERROR([Unable to get value of POLLERR]))
+         AC_COMPUTE_INT(COGL_SYSDEF_POLLHUP, POLLHUP, [#include <poll.h>],
+                        AC_MSG_ERROR([Unable to get value of POLLHUP]))
+         AC_COMPUTE_INT(COGL_SYSDEF_POLLNVAL, POLLNVAL, [#include <poll.h>],
+                        AC_MSG_ERROR([Unable to get value of POLLNVAL]))
+        ],
+        [
+         COGL_SYSDEF_POLLIN=1
+         COGL_SYSDEF_POLLPRI=2
+         COGL_SYSDEF_POLLOUT=4
+         COGL_SYSDEF_POLLERR=8
+         COGL_SYSDEF_POLLHUP=16
+         COGL_SYSDEF_POLLNVAL=32
+        ])
+COGL_DEFINES_EXTRA="$COGL_DEFINES_EXTRA
+#define COGL_SYSDEF_POLLIN $COGL_SYSDEF_POLLIN
+#define COGL_SYSDEF_POLLPRI $COGL_SYSDEF_POLLPRI
+#define COGL_SYSDEF_POLLOUT $COGL_SYSDEF_POLLOUT
+#define COGL_SYSDEF_POLLERR $COGL_SYSDEF_POLLERR
+#define COGL_SYSDEF_POLLHUP $COGL_SYSDEF_POLLHUP
+#define COGL_SYSDEF_POLLNVAL $COGL_SYSDEF_POLLNVAL
+"
+
+dnl ================================================================
 dnl What needs to be substituted in other files
 dnl ================================================================
-COGL_DEFINES=""
+COGL_DEFINES="$COGL_DEFINES_EXTRA"
 for x in $COGL_DEFINES_SYMBOLS; do
   COGL_DEFINES="$COGL_DEFINES
 #define $x 1"

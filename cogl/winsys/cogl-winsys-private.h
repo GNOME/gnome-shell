@@ -151,6 +151,16 @@ typedef struct _CoglWinsysVtable
   (*onscreen_remove_swap_buffers_callback) (CoglOnscreen *onscreen,
                                             unsigned int id);
 
+  void
+  (*poll_get_info) (CoglContext *context,
+                    CoglPollFD **poll_fds,
+                    int *n_poll_fds,
+                    gint64 *timeout);
+  void
+  (*poll_dispatch) (CoglContext *context,
+                    const CoglPollFD *poll_fds,
+                    int n_poll_fds);
+
 #ifdef COGL_HAS_XLIB_SUPPORT
   gboolean
   (*texture_pixmap_x11_create) (CoglTexturePixmapX11 *tex_pixmap);
