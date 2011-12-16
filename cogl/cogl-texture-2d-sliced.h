@@ -66,8 +66,6 @@
 typedef struct _CoglTexture2DSliced CoglTexture2DSliced;
 #define COGL_TEXTURE_2D_SLICED(X) ((CoglTexture2DSliced *)X)
 
-#define cogl_texture_2d_sliced_new_with_size \
-  cogl_texture_2d_sliced_new_with_size_EXP
 /**
  * cogl_texture_2d_sliced_new_with_size:
  * @ctx: A #CoglContext

@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 /**
  * SECTION:cogl-buffer
  * @short_description: Common buffer functions, including data upload APIs
- * @stability: Unstable
+ * @stability: unstable
  *
  * The CoglBuffer API provides a common interface to manipulate
  * buffers that have been allocated either via cogl_pixel_buffer_new()
@@ -59,21 +59,6 @@ G_BEGIN_DECLS
  * without blocking other Cogl operations.
  */
 
-/* All of the cogl-buffer API is currently experimental so we suffix
- * the actual symbols with _EXP so if somone is monitoring for ABI
- * changes it will hopefully be clearer to them what's going on if any
- * of the symbols dissapear at a later date.
- */
-#define cogl_is_buffer  cogl_is_buffer_EXP
-#define cogl_buffer_get_size cogl_buffer_get_size_EXP
-#define cogl_buffer_set_usage_hint cogl_buffer_set_usage_hint_EXP
-#define cogl_buffer_get_usage_hint cogl_buffer_get_usage_hint_EXP
-#define cogl_buffer_set_update_hint cogl_buffer_set_update_hint_EXP
-#define cogl_buffer_get_update_hint cogl_buffer_get_update_hint_EXP
-#define cogl_buffer_map cogl_buffer_map_EXP
-#define cogl_buffer_unmap cogl_buffer_unmap_EXP
-#define cogl_buffer_set_data cogl_buffer_set_data_EXP
-
 #define COGL_BUFFER(buffer)     ((CoglBuffer *)(buffer))
 
 typedef struct _CoglBuffer CoglBuffer;
@@ -87,7 +72,7 @@ typedef struct _CoglBuffer CoglBuffer;
  * Return value: %TRUE if the handle is a CoglBuffer, and %FALSE otherwise
  *
  * Since: 1.2
- * Stability: Unstable
+ * Stability: unstable
  */
 gboolean
 cogl_is_buffer (const void *object);
@@ -101,7 +86,7 @@ cogl_is_buffer (const void *object);
  * Return value: the size of the buffer in bytes
  *
  * Since: 1.2
- * Stability: Unstable
+ * Stability: unstable
  */
 unsigned int
 cogl_buffer_get_size (CoglBuffer *buffer);
@@ -117,7 +102,7 @@ cogl_buffer_get_size (CoglBuffer *buffer);
  * the buffer data is going to be updated.
  *
  * Since: 1.2
- * Stability: Unstable
+ * Stability: unstable
  */
 typedef enum { /*< prefix=COGL_BUFFER_UPDATE_HINT >*/
   COGL_BUFFER_UPDATE_HINT_STATIC,
@@ -134,7 +119,7 @@ typedef enum { /*< prefix=COGL_BUFFER_UPDATE_HINT >*/
  * of the available hints.
  *
  * Since: 1.2
- * Stability: Unstable
+ * Stability: unstable
  */
 void
 cogl_buffer_set_update_hint (CoglBuffer          *buffer,
@@ -149,7 +134,7 @@ cogl_buffer_set_update_hint (CoglBuffer          *buffer,
  * Return value: the #CoglBufferUpdateHint currently used by the buffer
  *
  * Since: 1.2
- * Stability: Unstable
+ * Stability: unstable
  */
 CoglBufferUpdateHint
 cogl_buffer_get_update_hint (CoglBuffer *buffer);
@@ -164,7 +149,7 @@ cogl_buffer_get_update_hint (CoglBuffer *buffer);
  * The access hints for cogl_buffer_set_update_hint()
  *
  * Since: 1.2
- * Stability: Unstable
+ * Stability: unstable
  */
 typedef enum { /*< prefix=COGL_BUFFER_ACCESS >*/
  COGL_BUFFER_ACCESS_READ       = 1 << 0,
@@ -182,7 +167,7 @@ typedef enum { /*< prefix=COGL_BUFFER_ACCESS >*/
  * is mapped.
  *
  * Since: 1.4
- * Stability: Unstable
+ * Stability: unstable
  */
 typedef enum { /*< prefix=COGL_BUFFER_MAP_HINT >*/
   COGL_BUFFER_MAP_HINT_DISCARD = 1 << 0
@@ -211,7 +196,7 @@ typedef enum { /*< prefix=COGL_BUFFER_MAP_HINT >*/
  * Return value: A pointer to the mapped memory or %NULL is the call fails
  *
  * Since: 1.2
- * Stability: Unstable
+ * Stability: unstable
  */
 void *
 cogl_buffer_map (CoglBuffer        *buffer,
@@ -225,7 +210,7 @@ cogl_buffer_map (CoglBuffer        *buffer,
  * Unmaps a buffer previously mapped by cogl_buffer_map().
  *
  * Since: 1.2
- * Stability: Unstable
+ * Stability: unstable
  */
 void
 cogl_buffer_unmap (CoglBuffer *buffer);
@@ -244,7 +229,7 @@ cogl_buffer_unmap (CoglBuffer *buffer);
  * Return value: %TRUE is the operation succeeded, %FALSE otherwise
  *
  * Since: 1.2
- * Stability: Unstable
+ * Stability: unstable
  */
 gboolean
 cogl_buffer_set_data (CoglBuffer  *buffer,

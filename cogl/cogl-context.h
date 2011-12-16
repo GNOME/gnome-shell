@@ -43,36 +43,94 @@ G_BEGIN_DECLS
  * SECTION:cogl-context
  * @short_description: The top level application context.
  *
- * A CoglContext is the topmost sandbox of Cogl state for an
- * application or toolkit. Its main purpose is to bind together the
- * key state objects at any one time; with the most significant being
- * the current framebuffer being drawn too (See #CoglFramebuffer for
- * more details) and the current GPU pipeline configuration (See
- * #CoglPipeline for more details).
+ * A #CoglContext is the top most sandbox of Cogl state for an
+ * application or toolkit. Its main purpose is to act as a sandbox
+ * for the memory management of state objects. Normally an application
+ * will only create a single context since there is no way to share
+ * resources between contexts.
+ *
+ * For those familiar with OpenGL or perhaps Cairo it should be
+ * understood that unlike these APIs a Cogl context isn't a rendering
+ * context as such. In other words Cogl doesn't aim to provide a state
+ * machine style model for configuring rendering parameters. Most
+ * rendering state in Cogl is directly associated with user managed
+ * objects called pipelines and geometry is drawn with a specific
+ * pipeline object to a framebuffer object and those 3 things fully
+ * define the state for drawing. This is an important part of Cogl's
+ * design since it helps you write orthogonal rendering components
+ * that can all access the same GPU without having to worry about
+ * what state other components have left you with.
  */
 
 typedef struct _CoglContext	      CoglContext;
 
 #define COGL_CONTEXT(OBJECT) ((CoglContext *)OBJECT)
 
-#define cogl_context_new cogl_context_new_EXP
-
+/**
+ * cogl_context_new:
+ * @display: A #CoglDisplay pointer
+ * @error: A GError return location.
+ *
+ * Creates a new #CoglContext which acts as an application sandbox
+ * for any state objects that are allocated.
+ *
+ * Return value: (transfer full): A newly allocated #CoglContext
+ * Since: 1.8
+ * Stability: unstable
+ */
 CoglContext *
 cogl_context_new (CoglDisplay *display,
                   GError **error);
 
-#define cogl_context_get_display cogl_context_get_display_EXP
+/**
+ * cogl_context_get_display:
+ * @context: A #CoglContext pointer
+ *
+ * Retrieves the #CoglDisplay that is internally associated with the
+ * given @context. This will return the same #CoglDisplay that was
+ * passed to cogl_context_new() or if %NULL was passed to
+ * cogl_context_new() then this function returns a pointer to the
+ * display that was automatically setup internally.
+ *
+ * Return value: (transfer none): The #CoglDisplay associated with the
+ *               given @context.
+ * Since: 1.8
+ * Stability: unstable
+ */
 CoglDisplay *
 cogl_context_get_display (CoglContext *context);
 
 #ifdef COGL_HAS_EGL_SUPPORT
-#define cogl_egl_context_get_egl_display cogl_egl_context_get_egl_display_EXP
+/**
+ * cogl_egl_context_get_egl_display:
+ * @context: A #CoglContext pointer
+ *
+ * If you have done a runtime check to determine that Cogl is using
+ * EGL internally then this API can be used to retrieve the EGLDisplay
+ * handle that was setup internally. The result is undefined if Cogl
+ * is not using EGL.
+ *
+ * Return value: The internally setup EGLDisplay handle.
+ * Since: 1.8
+ * Stability: unstable
+ */
 EGLDisplay
 cogl_egl_context_get_egl_display (CoglContext *context);
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
-#define cogl_android_set_native_window cogl_android_set_native_window_EXP
+/**
+ * cogl_android_set_native_window:
+ * @window: A native Android window
+ *
+ * Allows Android applications to inform Cogl of the native window
+ * that they have been given which Cogl can render too. On Android
+ * this API must be used before creating a #CoglRenderer, #CoglDisplay
+ * and #CoglContext.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
 void
 cogl_android_set_native_window (ANativeWindow *window);
 #endif

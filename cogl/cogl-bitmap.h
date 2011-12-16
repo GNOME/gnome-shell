@@ -65,7 +65,6 @@ cogl_bitmap_new_from_file (const char *filename,
 
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
 
-#define cogl_bitmap_new_from_buffer cogl_bitmap_new_from_buffer_EXP
 /**
  * cogl_bitmap_new_from_buffer:
  * @buffer: A #CoglBuffer containing image data
