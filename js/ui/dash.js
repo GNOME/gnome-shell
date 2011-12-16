@@ -6,6 +6,7 @@ const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+const Mainloop = imports.mainloop;
 
 const AppDisplay = imports.ui.appDisplay;
 const AppFavorites = imports.ui.appFavorites;
@@ -16,6 +17,9 @@ const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
 
 const DASH_ANIMATION_TIME = 0.2;
+const DASH_ITEM_LABEL_SHOW_TIME = 0.15;
+const DASH_ITEM_LABEL_HIDE_TIME = 0.1;
+const DASH_ITEM_HOVER_TIMEOUT = 300;
 
 // A container like StBin, but taking the child's scale into account
 // when requesting a size
@@ -31,6 +35,8 @@ const DashItemContainer = new Lang.Class({
         this.actor.connect('allocate',
                            Lang.bind(this, this._allocate));
         this.actor._delegate = this;
+
+        this._label = null;
 
         this.child = null;
         this._childScale = 1;
@@ -82,6 +88,60 @@ const DashItemContainer = new Lang.Class({
         let [minWidth, natWidth] = this.child.get_preferred_width(forHeight);
         alloc.min_size = minWidth * this.child.scale_y;
         alloc.natural_size = natWidth * this.child.scale_y;
+    },
+
+    showLabel: function() {
+        if (this._label == null)
+            return;
+
+        this._label.opacity = 0;
+        this._label.show();
+
+        let [stageX, stageY] = this.actor.get_transformed_position();
+
+        let itemHeight = this.actor.allocation.y2 - this.actor.allocation.y1;
+
+        let labelHeight = this._label.get_height();
+        let yOffset = Math.floor((itemHeight - labelHeight) / 2)
+
+        let y = stageY + yOffset;
+
+        let node = this._label.get_theme_node();
+        let xOffset = node.get_length('-x-offset');
+
+        let x;
+        if (St.Widget.get_default_direction () == St.TextDirection.RTL)
+            x = stageX - this._label.get_width() - xOffset;
+        else
+            x = stageX + this.actor.get_width() + xOffset;
+
+        this._label.set_position(x, y);
+        Tweener.addTween(this._label,
+                         { opacity: 255,
+                           time: DASH_ITEM_LABEL_SHOW_TIME,
+                           transition: 'easeOutQuad',
+                         });
+    },
+
+    setLabelText: function(text) {
+        if (this._label == null)
+            this._label = new St.Label({ style_class: 'dash-label'});
+
+        this._label.set_text(text);
+        Main.layoutManager.addChrome(this._label);
+        this._label.hide();
+    },
+
+    hideLabel: function () {
+        this._label.opacity = 255;
+        Tweener.addTween(this._label,
+                         { opacity: 0,
+                           time: DASH_ITEM_LABEL_HIDE_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this, function() {
+                               this._label.hide();
+                           })
+                         });
     },
 
     setChild: function(actor) {
@@ -238,6 +298,7 @@ const Dash = new Lang.Class({
         this._dragPlaceholderPos = -1;
         this._animatingPlaceholdersCount = 0;
         this._favRemoveTarget = null;
+        this._labelTimeoutId = 0;
 
         this._box = new St.BoxLayout({ name: 'dash',
                                        vertical: true,
@@ -371,14 +432,35 @@ const Dash = new Lang.Class({
                                    Lang.bind(this, function() {
                                        display.actor.opacity = 255;
                                    }));
-        display.actor.set_tooltip_text(app.get_name());
 
         let item = new DashItemContainer();
         item.setChild(display.actor);
 
-        display.icon.setIconSize(this.iconSize);
+        item.setLabelText(app.get_name());
 
+        display.icon.setIconSize(this.iconSize);
+        display.actor.connect('notify::hover',
+                               Lang.bind(this, function() {
+                                   this._onHover(item, display)
+                               }));
         return item;
+    },
+
+    _onHover: function (item, display) {
+        if (display.actor.get_hover() && !display.isMenuUp) {
+            if (this._labelTimeoutId == 0) {
+                this._labelTimeoutId = Mainloop.timeout_add(DASH_ITEM_HOVER_TIMEOUT,
+                    Lang.bind(this, function() {
+                        item.showLabel();
+                        return false;
+                    }));
+            }
+        } else {
+            if (this._labelTimeoutId > 0)
+                Mainloop.source_remove(this._labelTimeoutId);
+            this._labelTimeoutId = 0;
+            item.hideLabel();
+        }
     },
 
     _adjustIconSize: function() {

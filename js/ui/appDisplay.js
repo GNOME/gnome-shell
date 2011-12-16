@@ -470,6 +470,7 @@ const AppWellIcon = new Lang.Class({
                                                 Lang.bind(this,
                                                           this._onStateChanged));
         this._onStateChanged();
+        this.isMenuUp = false;
     },
 
     _onDestroy: function() {
@@ -551,8 +552,8 @@ const AppWellIcon = new Lang.Class({
             this._menuManager.addMenu(this._menu);
         }
 
+        this.isMenuUp = true;
         this.actor.set_hover(true);
-        this.actor.show_tooltip();
         this._menu.popup();
 
         return false;
@@ -568,6 +569,7 @@ const AppWellIcon = new Lang.Class({
 
     _onMenuPoppedDown: function() {
         this.actor.sync_hover();
+        this.isMenuUp = false;
     },
 
     _onActivate: function (event) {

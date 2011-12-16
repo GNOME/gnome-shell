@@ -645,6 +645,17 @@ StTooltip StLabel {
     font-size: 11pt;
 }
 
+.dash-label {
+    border-radius: 7px;
+    padding: 4px 12px;
+    background-color: rgba(0,0,0,0.5);
+    color: #ffffff;
+    font-size: 0.9em;
+    font-weight: bold;;
+    text-align: center;
+    -x-offset: 8px;
+}
+
 /* Apps */
 
 .icon-grid {
