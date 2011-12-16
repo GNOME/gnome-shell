@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\cogl\winsys\cogl-winsys-wgl.c"><Filter>Sources</Filter></ClCompile>
+	<ClCompile Include="..\..\..\cogl\winsys\cogl-winsys-sdl.c"><Filter>Sources</Filter></ClCompile>
 	<ClCompile Include="..\..\..\cogl\cogl-win32-renderer.c"><Filter>Sources</Filter></ClCompile>
 #include "cogl.vs10.sourcefiles.filters"
     <ClCompile Include="..\..\..\cogl\driver\gl\cogl-gl.c"><Filter>Sources\Driver_GL</Filter></ClCompile>

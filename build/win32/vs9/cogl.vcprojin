@@ -27,7 +27,10 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(PreBuildCmd)"
+				CommandLine="
+$(DoDefines)
+$(PreBuildCmd)
+							"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -58,6 +61,48 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Debug_SDL|Win32"
+			InheritedPropertySheets=".\cogl.vsprops"
+			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
+			ConfigurationType="2"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="
+$(DoDefinesSDL)
+$(PreBuildCmd)
+							"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+				CommandLine="$(GenerateCoglDef)"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+				LinkIncremental="2"
+				ModuleDefinitionFile="..\..\..\cogl\cogl.def"
+				ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Debug|x64"
 			InheritedPropertySheets=".\cogl.vsprops"
 			ConfigurationType="2"
@@ -65,7 +110,10 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(PreBuildCmd)"
+				CommandLine="
+$(DoDefines)
+$(PreBuildCmd)
+							"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -96,6 +144,48 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Debug_SDL|x64"
+			InheritedPropertySheets=".\cogl.vsprops"
+			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
+			ConfigurationType="2"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="
+$(DoDefinesSDL)
+$(PreBuildCmd)
+							"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+				CommandLine="$(GenerateCoglDef)"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+				LinkIncremental="2"
+				ModuleDefinitionFile="..\..\..\cogl\cogl.def"
+				ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="17"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Release|Win32"
 			InheritedPropertySheets=".\cogl.vsprops"
 			ConfigurationType="2"
@@ -104,7 +194,10 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(PreBuildCmd)"
+				CommandLine="
+$(DoDefines)
+$(PreBuildCmd)
+							"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -137,6 +230,51 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Release_SDL|Win32"
+			InheritedPropertySheets=".\cogl.vsprops"
+			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
+			ConfigurationType="2"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="
+$(DoDefinesSDL)
+$(PreBuildCmd)
+							"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+				EnableIntrinsicFunctions="true"
+				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+				CommandLine="$(GenerateCoglDef)"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+				LinkIncremental="1"
+				ModuleDefinitionFile="..\..\..\cogl\cogl.def"
+				ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Release|x64"
 			InheritedPropertySheets=".\cogl.vsprops"
 			ConfigurationType="2"
@@ -144,7 +282,10 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(PreBuildCmd)"
+				CommandLine="
+$(DoDefines)
+$(PreBuildCmd)
+							"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -173,6 +314,47 @@
 				TargetMachine="17"
 			/>
 		</Configuration>
+		<Configuration
+			Name="Release_SDL|x64"
+			InheritedPropertySheets=".\cogl.vsprops"
+			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
+			ConfigurationType="2"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="
+$(DoDefinesSDL)
+$(PreBuildCmd)
+							"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+				CommandLine="$(GenerateCoglDef)"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+				LinkIncremental="2"
+				ModuleDefinitionFile="..\..\..\cogl\cogl.def"
+				ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="17"
+			/>
+		</Configuration>
 	</Configurations>
 	<References>
 	</References>
@@ -182,6 +364,12 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File RelativePath="..\..\..\cogl\winsys\cogl-winsys-wgl.c" />
+			<File RelativePath="..\..\..\cogl\winsys\cogl-winsys-sdl.c" >
+				<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+			</File>
 			<File RelativePath="..\..\..\cogl\cogl-win32-renderer.c" />
 #include "cogl.sourcefiles"
 			<Filter Name="Driver_GL" >
