@@ -390,8 +390,12 @@ struct _ClutterActorPrivate
   ClutterEffect *flatten_effect;
 
   /* scene graph */
-  ClutterActor *parent_actor;
-  GList *children;
+  ClutterActor *parent;
+  ClutterActor *prev_sibling;
+  ClutterActor *next_sibling;
+  ClutterActor *first_child;
+  ClutterActor *last_child;
+
   gint n_children;
 
   gchar *name; /* a non-unique name, used for debugging */
@@ -738,7 +742,7 @@ clutter_actor_verify_map_state (ClutterActor *self)
        */
       if (!CLUTTER_ACTOR_IN_REPARENT (self))
         {
-          if (priv->parent_actor == NULL)
+          if (priv->parent == NULL)
             {
               if (CLUTTER_ACTOR_IS_TOPLEVEL (self))
                 {
@@ -748,11 +752,11 @@ clutter_actor_verify_map_state (ClutterActor *self)
                            "have a parent",
                            _clutter_actor_get_debug_name (self));
             }
-          else if (!CLUTTER_ACTOR_IS_REALIZED (priv->parent_actor))
+          else if (!CLUTTER_ACTOR_IS_REALIZED (priv->parent))
             {
               g_warning ("Realized actor %s has an unrealized parent %s",
                          _clutter_actor_get_debug_name (self),
-                         _clutter_actor_get_debug_name (priv->parent_actor));
+                         _clutter_actor_get_debug_name (priv->parent));
             }
         }
     }
@@ -768,7 +772,7 @@ clutter_actor_verify_map_state (ClutterActor *self)
        */
       if (!CLUTTER_ACTOR_IN_REPARENT (self))
         {
-          if (priv->parent_actor == NULL)
+          if (priv->parent == NULL)
             {
               if (CLUTTER_ACTOR_IS_TOPLEVEL (self))
                 {
@@ -800,32 +804,32 @@ clutter_actor_verify_map_state (ClutterActor *self)
                   if (iter->priv->enable_paint_unmapped)
                     return;
 
-                  iter = iter->priv->parent_actor;
+                  iter = iter->priv->parent;
                 }
 
-              if (!CLUTTER_ACTOR_IS_VISIBLE (priv->parent_actor))
+              if (!CLUTTER_ACTOR_IS_VISIBLE (priv->parent))
                 {
                   g_warning ("Actor '%s' should not be mapped if parent '%s'"
                              "is not visible",
                              _clutter_actor_get_debug_name (self),
-                             _clutter_actor_get_debug_name (priv->parent_actor));
+                             _clutter_actor_get_debug_name (priv->parent));
                 }
 
-              if (!CLUTTER_ACTOR_IS_REALIZED (priv->parent_actor))
+              if (!CLUTTER_ACTOR_IS_REALIZED (priv->parent))
                 {
                   g_warning ("Actor '%s' should not be mapped if parent '%s'"
                              "is not realized",
                              _clutter_actor_get_debug_name (self),
-                             _clutter_actor_get_debug_name (priv->parent_actor));
+                             _clutter_actor_get_debug_name (priv->parent));
                 }
 
-              if (!CLUTTER_ACTOR_IS_TOPLEVEL (priv->parent_actor))
+              if (!CLUTTER_ACTOR_IS_TOPLEVEL (priv->parent))
                 {
-                  if (!CLUTTER_ACTOR_IS_MAPPED (priv->parent_actor))
+                  if (!CLUTTER_ACTOR_IS_MAPPED (priv->parent))
                     g_warning ("Actor '%s' is mapped but its non-toplevel "
                                "parent '%s' is not mapped",
                                _clutter_actor_get_debug_name (self),
-                               _clutter_actor_get_debug_name (priv->parent_actor));
+                               _clutter_actor_get_debug_name (priv->parent));
                 }
             }
         }
@@ -924,7 +928,7 @@ clutter_actor_update_map_state (ClutterActor  *self,
   else
     {
       ClutterActorPrivate *priv = self->priv;
-      ClutterActor *parent = priv->parent_actor;
+      ClutterActor *parent = priv->parent;
       gboolean should_be_mapped;
       gboolean may_be_realized;
       gboolean must_be_realized;
@@ -992,7 +996,7 @@ clutter_actor_update_map_state (ClutterActor  *self,
            */
           if (priv->enable_paint_unmapped)
             {
-              if (priv->parent_actor == NULL)
+              if (priv->parent == NULL)
                 g_warning ("Attempting to map an unparented actor '%s'",
                            _clutter_actor_get_debug_name (self));
 
@@ -1016,7 +1020,7 @@ clutter_actor_update_map_state (ClutterActor  *self,
                        "meet the necessary invariants: the actor '%s' "
                        "is parented to an unmapped actor '%s'",
                        _clutter_actor_get_debug_name (self),
-                       _clutter_actor_get_debug_name (priv->parent_actor));
+                       _clutter_actor_get_debug_name (priv->parent));
         }
 
       /* If in reparent, we temporarily suspend unmap and unrealize.
@@ -1067,8 +1071,7 @@ static void
 clutter_actor_real_map (ClutterActor *self)
 {
   ClutterActorPrivate *priv = self->priv;
-  ClutterActor *stage;
-  GList *c;
+  ClutterActor *stage, *iter;
 
   g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
 
@@ -1079,6 +1082,7 @@ clutter_actor_real_map (ClutterActor *self)
 
   stage = _clutter_actor_get_stage_internal (self);
   priv->pick_id = _clutter_stage_acquire_pick_id (CLUTTER_STAGE (stage), self);
+
   CLUTTER_NOTE (ACTOR, "Pick id '%d' for actor '%s'",
                 priv->pick_id,
                 _clutter_actor_get_debug_name (self));
@@ -1088,10 +1092,11 @@ clutter_actor_real_map (ClutterActor *self)
    */
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MAPPED]);
 
-  for (c = self->priv->children; c; c = c->next)
+  for (iter = self->priv->first_child;
+       iter != NULL;
+       iter = iter->priv->next_sibling)
     {
-      ClutterActor *child = c->data;
-      clutter_actor_map (child);
+      clutter_actor_map (iter);
     }
 }
 
@@ -1132,17 +1137,18 @@ static void
 clutter_actor_real_unmap (ClutterActor *self)
 {
   ClutterActorPrivate *priv = self->priv;
-  GList *c;
+  ClutterActor *iter;
 
   g_assert (CLUTTER_ACTOR_IS_MAPPED (self));
 
   CLUTTER_NOTE (ACTOR, "Unmapping actor '%s'",
                 _clutter_actor_get_debug_name (self));
 
-  for (c = priv->children; c; c = c->next)
+  for (iter = self->priv->first_child;
+       iter != NULL;
+       iter = iter->priv->next_sibling)
     {
-      ClutterActor *child = c->data;
-      clutter_actor_unmap (child);
+      clutter_actor_unmap (iter);
     }
 
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
@@ -1225,8 +1231,8 @@ clutter_actor_real_show (ClutterActor *self)
       /* we queue a relayout unless the actor is inside a
        * container that explicitly told us not to
        */
-      if (priv->parent_actor != NULL &&
-          (!(priv->parent_actor->flags & CLUTTER_ACTOR_NO_LAYOUT)))
+      if (priv->parent != NULL &&
+          (!(priv->parent->flags & CLUTTER_ACTOR_NO_LAYOUT)))
         {
           /* While an actor is hidden the parent may not have
            * allocated/requested so we need to start from scratch
@@ -1252,7 +1258,7 @@ set_show_on_set_parent (ClutterActor *self,
   if (priv->show_on_set_parent == set_show)
     return;
 
-  if (priv->parent_actor == NULL)
+  if (priv->parent == NULL)
     {
       priv->show_on_set_parent = set_show;
       g_object_notify_by_pspec (G_OBJECT (self),
@@ -1303,8 +1309,8 @@ clutter_actor_show (ClutterActor *self)
   g_signal_emit (self, actor_signals[SHOW], 0);
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
 
-  if (priv->parent_actor)
-    clutter_actor_queue_redraw (priv->parent_actor);
+  if (priv->parent)
+    clutter_actor_queue_redraw (priv->parent);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -1347,9 +1353,9 @@ clutter_actor_real_hide (ClutterActor *self)
       /* we queue a relayout unless the actor is inside a
        * container that explicitly told us not to
        */
-      if (priv->parent_actor != NULL &&
-          (!(priv->parent_actor->flags & CLUTTER_ACTOR_NO_LAYOUT)))
-        clutter_actor_queue_relayout (priv->parent_actor);
+      if (priv->parent != NULL &&
+          (!(priv->parent->flags & CLUTTER_ACTOR_NO_LAYOUT)))
+        clutter_actor_queue_relayout (priv->parent);
     }
 }
 
@@ -1396,8 +1402,8 @@ clutter_actor_hide (ClutterActor *self)
   g_signal_emit (self, actor_signals[HIDE], 0);
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
 
-  if (priv->parent_actor)
-    clutter_actor_queue_redraw (priv->parent_actor);
+  if (priv->parent)
+    clutter_actor_queue_redraw (priv->parent);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -1461,8 +1467,8 @@ clutter_actor_realize (ClutterActor *self)
   /* To be realized, our parent actors must be realized first.
    * This will only succeed if we're inside a toplevel.
    */
-  if (priv->parent_actor != NULL)
-    clutter_actor_realize (priv->parent_actor);
+  if (priv->parent != NULL)
+    clutter_actor_realize (priv->parent);
 
   if (CLUTTER_ACTOR_IS_TOPLEVEL (self))
     {
@@ -1477,8 +1483,8 @@ clutter_actor_realize (ClutterActor *self)
        * someone can fix it. But for now it's too hard to fix this
        * because e.g. ClutterTexture needs reworking.
        */
-      if (priv->parent_actor == NULL ||
-          !CLUTTER_ACTOR_IS_REALIZED (priv->parent_actor))
+      if (priv->parent == NULL ||
+          !CLUTTER_ACTOR_IS_REALIZED (priv->parent))
         return;
     }
 
@@ -1739,7 +1745,8 @@ clutter_actor_real_get_preferred_width (ClutterActor *self,
 {
   ClutterActorPrivate *priv = self->priv;
 
-  if (priv->children != NULL && priv->layout_manager != NULL)
+  if (priv->n_children != 0 &&
+      priv->layout_manager != NULL)
     {
       ClutterContainer *container = CLUTTER_CONTAINER (self);
 
@@ -1778,7 +1785,8 @@ clutter_actor_real_get_preferred_height (ClutterActor *self,
 {
   ClutterActorPrivate *priv = self->priv;
 
-  if (priv->children != NULL && priv->layout_manager != NULL)
+  if (priv->n_children != 0 &&
+      priv->layout_manager != NULL)
     {
       ClutterContainer *container = CLUTTER_CONTAINER (self);
 
@@ -1905,7 +1913,8 @@ clutter_actor_real_allocate (ClutterActor           *self,
    * data out of the sub-tree of the scene graph that has this actor at
    * the root
    */
-  if (priv->children != NULL && priv->layout_manager != NULL)
+  if (priv->n_children != 0 &&
+      priv->layout_manager != NULL)
     {
       ClutterContainer *container = CLUTTER_CONTAINER (self);
       gfloat width, height;
@@ -2041,8 +2050,8 @@ clutter_actor_real_queue_relayout (ClutterActor *self)
           N_CACHED_SIZE_REQUESTS * sizeof (SizeRequest));
 
   /* We need to go all the way up the hierarchy */
-  if (priv->parent_actor != NULL)
-    _clutter_actor_queue_only_relayout (priv->parent_actor);
+  if (priv->parent != NULL)
+    _clutter_actor_queue_only_relayout (priv->parent);
 }
 
 /**
@@ -2849,19 +2858,17 @@ add_or_remove_flatten_effect (ClutterActor *self)
     }
 }
 
-static gboolean
-foreach_child_paint (ClutterActor *child,
-                     gpointer      dummy G_GNUC_UNUSED)
-{
-  clutter_actor_paint (child);
-
-  return TRUE;
-}
-
 static void
 clutter_actor_real_paint (ClutterActor *actor)
 {
-  _clutter_actor_foreach_child (actor, foreach_child_paint, NULL);
+  ClutterActor *iter;
+
+  for (iter = actor->priv->first_child;
+       iter != NULL;
+       iter = iter->priv->next_sibling)
+    {
+      clutter_actor_paint (iter);
+    }
 }
 
 /**
@@ -2963,10 +2970,10 @@ clutter_actor_paint (ClutterActor *self)
                 {
                   g_string_append (buf, _clutter_actor_get_debug_name (parent));
 
-                  if (parent->priv->parent_actor != NULL)
+                  if (parent->priv->parent != NULL)
                     g_string_append (buf, "->");
 
-                  parent = parent->priv->parent_actor;
+                  parent = parent->priv->parent;
                 }
 
               g_warning ("Unexpected transform found when painting actor "
@@ -4227,9 +4234,9 @@ clutter_actor_dispose (GObject *object)
   g_signal_emit (self, actor_signals[DESTROY], 0);
 
   /* avoid recursing when called from clutter_actor_destroy() */
-  if (priv->parent_actor != NULL)
+  if (priv->parent != NULL)
     {
-      ClutterActor *parent = priv->parent_actor;
+      ClutterActor *parent = priv->parent;
 
       /* go through the Container implementation unless this
        * is an internal child and has been marked as such
@@ -4241,7 +4248,7 @@ clutter_actor_dispose (GObject *object)
     }
 
   /* parent should be gone */
-  g_assert (priv->parent_actor == NULL);
+  g_assert (priv->parent == NULL);
 
   if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
     {
@@ -4340,8 +4347,8 @@ clutter_actor_real_get_paint_volume (ClutterActor       *self,
                                      ClutterPaintVolume *volume)
 {
   ClutterActorPrivate *priv = self->priv;
+  ClutterActor *child;
   gboolean res;
-  GList *l;
 
   /* this is the default return value: we cannot know if a class
    * is going to paint outside its allocation, so we take the
@@ -4375,16 +4382,17 @@ clutter_actor_real_get_paint_volume (ClutterActor       *self,
     }
 
   /* if we don't have children we just bail out here */
-  if (priv->children == NULL)
+  if (priv->n_children == 0)
     return res;
 
   /* but if we have children then we ask for their paint volume in
    * our coordinates. if any of our children replies that it doesn't
    * have a paint volume, we bail out
    */
-  for (l = priv->children; l != NULL; l = l->next)
+  for (child = priv->first_child;
+       child != NULL;
+       child = child->priv->next_sibling)
     {
-      ClutterActor *child = l->data;
       const ClutterPaintVolume *child_volume;
 
       child_volume = clutter_actor_get_transformed_paint_volume (child, self);
@@ -8721,7 +8729,7 @@ clutter_actor_get_paint_opacity_internal (ClutterActor *self)
   if (priv->opacity_override >= 0)
     return priv->opacity_override;
 
-  parent = priv->parent_actor;
+  parent = priv->parent;
 
   /* Factor in the actual actors opacity with parents */
   if (parent != NULL)
@@ -8974,20 +8982,6 @@ clutter_actor_set_depth (ClutterActor *self,
     {
       /* Sets Z value - XXX 2.0: should we invert? */
       priv->z = depth;
-
-      if (priv->parent_actor != NULL)
-        {
-          ClutterContainer *parent;
-
-          /* We need to resort the container stacking order as to
-           * correctly render alpha values.
-           *
-           * FIXME: This is sub-optimal. maybe queue the sort
-           *        before stacking
-           */
-          parent = CLUTTER_CONTAINER (priv->parent_actor);
-          clutter_container_sort_depth_order (parent);
-        }
 
       priv->transform_valid = FALSE;
 
@@ -9331,9 +9325,22 @@ clutter_actor_get_clip (ClutterActor *self,
 GList *
 clutter_actor_get_children (ClutterActor *self)
 {
+  ClutterActor *iter;
+  GList *res;
+
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
-  return g_list_copy (self->priv->children);
+  /* we walk the list backward so that we can use prepend(),
+   * which is O(1)
+   */
+  for (iter = self->priv->last_child, res = NULL;
+       iter != NULL;
+       iter = iter->priv->prev_sibling)
+    {
+      res = g_list_prepend (res, iter);
+    }
+
+  return res;
 }
 
 /*< private >
@@ -9343,39 +9350,65 @@ clutter_actor_get_children (ClutterActor *self)
  *
  * Inserts @child inside the list of children held by @self, using
  * the depth as the insertion criteria.
+ *
+ * This sadly makes the insertion not O(1), but we can keep the
+ * list sorted so that the painters algorithm we use for painting
+ * the children will work correctly.
  */
 static void
 insert_child_at_depth (ClutterActor *self,
                        ClutterActor *child,
                        gpointer      dummy G_GNUC_UNUSED)
 {
-  ClutterActorPrivate *priv = self->priv;
-  GList *l, *prev = NULL;
+  ClutterActor *iter;
+
+  if (self->priv->n_children == 0)
+    {
+      self->priv->first_child = child;
+      self->priv->last_child = child;
+
+      return;
+    }
 
   /* Find the right place to insert the child so that it will still be
      sorted and the child will be after all of the actors at the same
-     depth */
-  for (l = priv->children; l != NULL; l = l->next)
+     dept */
+  for (iter = self->priv->first_child;
+       iter != NULL;
+       iter = iter->priv->next_sibling)
     {
-      ClutterActor *iter = l->data;
-
       if (iter->priv->z > child->priv->z)
         break;
-
-      prev = l;
     }
 
-  /* Insert the node before the found node */
-  l = g_list_prepend (l, child);
-
-  /* Fixup the links */
-  if (prev != NULL)
+  if (iter != NULL)
     {
-      prev->next = l;
-      l->prev = prev;
+      ClutterActor *tmp = iter->priv->prev_sibling;
+
+      if (tmp != NULL)
+        tmp->priv->next_sibling = child;
+
+      /* Insert the node before the found one */
+      child->priv->prev_sibling = iter->priv->prev_sibling;
+      child->priv->next_sibling = iter;
+      iter->priv->prev_sibling = child;
+
+      /* Update the head of the list */
+      if (self->priv->first_child == iter)
+        self->priv->first_child = child;
     }
   else
-    priv->children = l;
+    {
+      ClutterActor *tmp = self->priv->last_child;
+
+      if (tmp != NULL)
+        tmp->priv->next_sibling = child;
+
+      child->priv->prev_sibling = self->priv->last_child;
+      child->priv->next_sibling = NULL;
+
+      self->priv->last_child = child;
+    }
 }
 
 static void
@@ -9384,16 +9417,59 @@ insert_child_at_index (ClutterActor *self,
                        gpointer      data_)
 {
   gint index_ = GPOINTER_TO_INT (data_);
-  ClutterActorPrivate *priv;
-
-  priv = self->priv;
 
   if (index_ == 0)
-    priv->children = g_list_prepend (priv->children, child);
+    {
+      ClutterActor *tmp = self->priv->first_child;
+
+      if (tmp != NULL)
+        tmp->priv->prev_sibling = child;
+
+      child->priv->prev_sibling = NULL;
+      child->priv->next_sibling = tmp;
+
+      self->priv->first_child = child;
+    }
   else if (index < 0)
-    priv->children = g_list_append (priv->children, child);
+    {
+      ClutterActor *tmp = self->priv->last_child;
+
+      if (tmp != NULL)
+        tmp->priv->next_sibling = child;
+
+      child->priv->prev_sibling = tmp;
+      child->priv->next_sibling = NULL;
+
+      self->priv->last_child = child;
+    }
   else
-    priv->children = g_list_insert (priv->children, child, index_);
+    {
+      ClutterActor *iter;
+      int i;
+
+      for (iter = self->priv->first_child, i = 0;
+           iter != NULL;
+           iter = iter->priv->next_sibling, i += 1)
+        {
+          if (index_ == i)
+            {
+              ClutterActor *tmp = iter->priv->prev_sibling;
+
+              child->priv->prev_sibling = iter->priv->prev_sibling;
+              child->priv->next_sibling = iter;
+
+              iter->priv->prev_sibling = child;
+
+              if (tmp != NULL)
+                tmp->priv->next_sibling = child;
+
+              if (self->priv->last_child == iter)
+                self->priv->last_child = child;
+
+              break;
+            }
+        }
+    }
 }
 
 static void
@@ -9402,37 +9478,17 @@ insert_child_above (ClutterActor *self,
                     gpointer      data)
 {
   ClutterActor *sibling = data;
-  ClutterActorPrivate *priv;
-  GList *l, *next = NULL;
-
-  priv = self->priv;
 
   if (sibling == NULL)
-    {
-      priv->children = g_list_append (priv->children, child);
+    sibling = self->priv->last_child;
 
-      return;
-    }
+  child->priv->prev_sibling = sibling;
+  child->priv->next_sibling = NULL;
 
-  for (l = priv->children; l != NULL; l = l->next)
-    {
-      ClutterActor *iter = l->data;
+  sibling->priv->next_sibling = child;
 
-      next = l->next;
-
-      if (iter == sibling)
-        break;
-    }
-
-  /* Insert the node after the found node */
-  l = g_list_append (l, child);
-
-  /* Fixup the links */
-  if (next != NULL)
-    {
-      l->next = next;
-      next->prev = l;
-    }
+  if (self->priv->last_child == sibling)
+    self->priv->last_child = child;
 }
 
 static void
@@ -9440,36 +9496,18 @@ insert_child_below (ClutterActor *self,
                     ClutterActor *child,
                     gpointer      data)
 {
-  ClutterActorPrivate *priv = self->priv;
   ClutterActor *sibling = data;
-  GList *l, *prev = NULL;
 
   if (sibling == NULL)
-    {
-      priv->children = g_list_prepend (priv->children, child);
+    sibling = self->priv->first_child;
 
-      return;
-    }
+  child->priv->prev_sibling = NULL;
+  child->priv->next_sibling = sibling;
 
-  for (l = priv->children; l != NULL; l = l->next)
-    {
-      ClutterActor *iter = l->data;
+  sibling->priv->prev_sibling = child;
 
-      if (iter == sibling)
-        break;
-
-      prev = l;
-    }
-
-  l = g_list_prepend (l, child);
-
-  if (prev != NULL)
-    {
-      prev->next = l;
-      l->prev = prev;
-    }
-  else
-    priv->children = l;
+  if (self->priv->first_child == sibling)
+    self->priv->first_child = child;
 }
 
 typedef void (* ClutterActorAddChildFunc) (ClutterActor *parent,
@@ -9486,7 +9524,7 @@ clutter_actor_add_child_internal (ClutterActor             *self,
 {
   ClutterTextDirection text_dir;
 
-  if (child->priv->parent_actor != NULL)
+  if (child->priv->parent != NULL)
     {
       g_warning ("Cannot set a parent on an actor which has a parent. "
 		 "You must use clutter_actor_remove_child() first.");
@@ -9509,7 +9547,7 @@ clutter_actor_add_child_internal (ClutterActor             *self,
     clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
 
   g_object_ref_sink (child);
-  child->priv->parent_actor = self;
+  child->priv->parent = self;
 
   /* delegate the actual insertion */
   add_func (self, child, data);
@@ -9556,7 +9594,7 @@ clutter_actor_add_child_internal (ClutterActor             *self,
       child->priv->needs_height_request = TRUE;
       child->priv->needs_allocation = TRUE;
 
-      clutter_actor_queue_relayout (child->priv->parent_actor);
+      clutter_actor_queue_relayout (child->priv->parent);
     }
 
   /* child expand flags may cause the parent's expand flags
@@ -9603,7 +9641,7 @@ clutter_actor_add_child (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (child));
   g_return_if_fail (self != child);
-  g_return_if_fail (child->priv->parent_actor == NULL);
+  g_return_if_fail (child->priv->parent == NULL);
 
   clutter_actor_add_child_internal (self, child,
                                     insert_child_at_depth,
@@ -9639,7 +9677,7 @@ clutter_actor_insert_child_at_index (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (child));
   g_return_if_fail (self != child);
-  g_return_if_fail (child->priv->parent_actor == NULL);
+  g_return_if_fail (child->priv->parent == NULL);
   g_return_if_fail (index_ < self->priv->n_children);
 
   clutter_actor_add_child_internal (self, child,
@@ -9678,10 +9716,10 @@ clutter_actor_insert_child_above (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (child));
   g_return_if_fail (self != child);
   g_return_if_fail (child != sibling);
-  g_return_if_fail (child->priv->parent_actor == NULL);
+  g_return_if_fail (child->priv->parent == NULL);
   g_return_if_fail (sibling == NULL ||
                     (CLUTTER_IS_ACTOR (sibling) &&
-                     sibling->priv->parent_actor == self));
+                     sibling->priv->parent == self));
 
   clutter_actor_add_child_internal (self, child,
                                     insert_child_above,
@@ -9719,10 +9757,10 @@ clutter_actor_insert_child_below (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (child));
   g_return_if_fail (self != child);
   g_return_if_fail (child != sibling);
-  g_return_if_fail (child->priv->parent_actor == NULL);
+  g_return_if_fail (child->priv->parent == NULL);
   g_return_if_fail (sibling == NULL ||
                     (CLUTTER_IS_ACTOR (sibling) &&
-                     sibling->priv->parent_actor == self));
+                     sibling->priv->parent == self));
 
   clutter_actor_add_child_internal (self, child,
                                     insert_child_below,
@@ -9754,7 +9792,7 @@ clutter_actor_set_parent (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (parent));
   g_return_if_fail (self != parent);
-  g_return_if_fail (self->priv->parent_actor == NULL);
+  g_return_if_fail (self->priv->parent == NULL);
 
   clutter_actor_add_child_internal (parent, self,
                                     insert_child_at_depth,
@@ -9777,7 +9815,7 @@ clutter_actor_get_parent (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
-  return self->priv->parent_actor;
+  return self->priv->parent;
 }
 
 /**
@@ -9815,6 +9853,28 @@ invalidate_queue_redraw_entry (ClutterActor *self,
     }
 
   return CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE;
+}
+
+static inline void
+remove_child (ClutterActor *self,
+              ClutterActor *child)
+{
+  ClutterActor *prev_sibling, *next_sibling;
+
+  prev_sibling = child->priv->prev_sibling;
+  next_sibling = child->priv->next_sibling;
+
+  if (prev_sibling != NULL)
+    prev_sibling->priv->next_sibling = next_sibling;
+
+  if (next_sibling != NULL)
+    next_sibling->priv->prev_sibling = prev_sibling;
+
+  if (self->priv->first_child == child)
+    self->priv->first_child = next_sibling;
+
+  if (self->priv->last_child == child)
+    self->priv->last_child = prev_sibling;
 }
 
 static void
@@ -9857,14 +9917,15 @@ clutter_actor_remove_child_internal (ClutterActor *self,
                            NULL,
                            NULL);
 
-  child->priv->parent_actor = NULL;
+  child->priv->parent = NULL;
 
   /* clutter_actor_reparent() will emit ::parent-set for us */
   if (!CLUTTER_ACTOR_IN_REPARENT (child))
     g_signal_emit (child, actor_signals[PARENT_SET], 0, self);
 
-  self->priv->children = g_list_remove (self->priv->children, child);
-  self->priv->n_children--;
+  remove_child (self, child);
+
+  self->priv->n_children -= 1;
 
   /* if the child was mapped then we need to relayout ourselves to account
    * for the removed child
@@ -9915,8 +9976,8 @@ clutter_actor_remove_child (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (child));
   g_return_if_fail (self != child);
-  g_return_if_fail (child->priv->parent_actor != NULL);
-  g_return_if_fail (child->priv->parent_actor == self);
+  g_return_if_fail (child->priv->parent != NULL);
+  g_return_if_fail (child->priv->parent == self);
 
   clutter_actor_remove_child_internal (self, child, TRUE, TRUE);
 }
@@ -9944,10 +10005,10 @@ clutter_actor_unparent (ClutterActor *self)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  if (self->priv->parent_actor == NULL)
+  if (self->priv->parent == NULL)
     return;
 
-  clutter_actor_remove_child_internal (self->priv->parent_actor, self,
+  clutter_actor_remove_child_internal (self->priv->parent, self,
                                        FALSE,
                                        FALSE);
 }
@@ -9990,13 +10051,13 @@ clutter_actor_reparent (ClutterActor *self,
 
   priv = self->priv;
 
-  if (priv->parent_actor != new_parent)
+  if (priv->parent != new_parent)
     {
       ClutterActor *old_parent;
 
       CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IN_REPARENT);
 
-      old_parent = priv->parent_actor;
+      old_parent = priv->parent;
 
       g_object_ref (self);
 
@@ -10053,7 +10114,7 @@ clutter_actor_contains (ClutterActor *self,
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
   g_return_val_if_fail (CLUTTER_IS_ACTOR (descendant), FALSE);
 
-  for (actor = descendant; actor; actor = actor->priv->parent_actor)
+  for (actor = descendant; actor; actor = actor->priv->parent)
     if (actor == self)
       return TRUE;
 
@@ -10613,18 +10674,9 @@ container_raise (ClutterContainer *container,
                  ClutterActor     *sibling)
 {
   ClutterActor *self = CLUTTER_ACTOR (container);
-  ClutterActorPrivate *priv = self->priv;
 
-  priv->children = g_list_remove (priv->children, child);
-
-  if (sibling == NULL)
-    priv->children = g_list_append (priv->children, child);
-  else
-    {
-      gint index_ = g_list_index (priv->children, sibling) + 1;
-
-      priv->children = g_list_insert (priv->children, child, index_);
-    }
+  remove_child (self, child);
+  insert_child_above (self, child, sibling);
 
   clutter_actor_queue_relayout (self);
 }
@@ -10635,46 +10687,16 @@ container_lower (ClutterContainer *container,
                  ClutterActor     *sibling)
 {
   ClutterActor *self = CLUTTER_ACTOR (container);
-  ClutterActorPrivate *priv = self->priv;
 
-  priv->children = g_list_remove (priv->children, child);
-
-  if (sibling == NULL)
-    priv->children = g_list_prepend (priv->children, child);
-  else
-    {
-      gint index_ = g_list_index (priv->children, sibling);
-
-      priv->children = g_list_insert (priv->children, child, index_);
-    }
+  remove_child (self, child);
+  insert_child_below (self, child, sibling);
 
   clutter_actor_queue_relayout (self);
-}
-
-static gint
-sort_by_depth (gconstpointer a,
-               gconstpointer b)
-{
-  const ClutterActor *actor_a = a;
-  const ClutterActor *actor_b = b;
-
-  if (actor_a->priv->z < actor_b->priv->z)
-    return -1;
-
-  if (actor_a->priv->z > actor_b->priv->z)
-    return 1;
-
-  return 0;
 }
 
 static void
 container_sort_by_depth (ClutterContainer *container)
 {
-  ClutterActorPrivate *priv = CLUTTER_ACTOR (container)->priv;
-
-  priv->children = g_list_sort (priv->children, sort_by_depth);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
 }
 
 static void
@@ -12061,7 +12083,7 @@ ClutterActor *
 _clutter_actor_get_stage_internal (ClutterActor *actor)
 {
   while (actor && !CLUTTER_ACTOR_IS_TOPLEVEL (actor))
-    actor = actor->priv->parent_actor;
+    actor = actor->priv->parent;
 
   return actor;
 }
@@ -13177,7 +13199,7 @@ clutter_actor_has_allocation (ClutterActor *self)
 
   priv = self->priv;
 
-  return priv->parent_actor != NULL &&
+  return priv->parent != NULL &&
          CLUTTER_ACTOR_IS_VISIBLE (self) &&
          !priv->needs_allocation;
 }
@@ -14254,13 +14276,22 @@ ClutterActor *
 clutter_actor_get_child_at_index (ClutterActor *self,
                                   gint          index_)
 {
+  ClutterActor *iter;
+  int i;
+
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
   g_return_val_if_fail (index_ <= self->priv->n_children, NULL);
 
-  return g_list_nth_data (self->priv->children, index_);
+  for (iter = self->priv->first_child, i = 0;
+       iter != NULL && i < index_;
+       iter = iter->priv->next_sibling, i += 1)
+    ;
+
+  return iter;
 }
 
-/* _clutter_actor_foreach_child:
+/*< private >
+ * _clutter_actor_foreach_child:
  * @actor: The actor whos children you want to iterate
  * @callback: The function to call for each child
  * @user_data: Private data to pass to @callback
@@ -14272,16 +14303,20 @@ clutter_actor_get_child_at_index (ClutterActor *self,
  *    %FALSE if a callback broke out of iteration early.
  */
 gboolean
-_clutter_actor_foreach_child (ClutterActor *self,
-                              ClutterForeachCallback callback,
-                              void *user_data)
+_clutter_actor_foreach_child (ClutterActor           *self,
+                              ClutterForeachCallback  callback,
+                              gpointer                user_data)
 {
   ClutterActorPrivate *priv = self->priv;
+  ClutterActor *iter;
   gboolean cont;
-  GList *l;
 
-  for (cont = TRUE, l = priv->children; cont && l; l = l->next)
-    cont = callback (l->data, user_data);
+  for (cont = TRUE, iter = priv->first_child;
+       cont && iter != NULL;
+       iter = iter->priv->next_sibling)
+    {
+      cont = callback (iter, user_data);
+    }
 
   return cont;
 }
@@ -14337,9 +14372,14 @@ _clutter_actor_traverse_breadth (ClutterActor           *actor,
         break;
       else if (!(flags & CLUTTER_ACTOR_TRAVERSE_VISIT_SKIP_CHILDREN))
         {
-          GList *l;
-          for (l = actor->priv->children; l; l = l->next)
-            g_queue_push_tail (queue, l->data);
+          ClutterActor *iter;
+
+          for (iter = actor->priv->first_child;
+               iter != NULL;
+               iter = iter->priv->next_sibling)
+            {
+              g_queue_push_tail (queue, iter);
+            }
         }
     }
 
@@ -14361,14 +14401,18 @@ _clutter_actor_traverse_depth (ClutterActor           *actor,
 
   if (!(flags & CLUTTER_ACTOR_TRAVERSE_VISIT_SKIP_CHILDREN))
     {
-      GList *l;
-      for (l = actor->priv->children; l; l = l->next)
+      ClutterActor *iter;
+
+      for (iter = actor->priv->first_child;
+           iter != NULL;
+           iter = iter->priv->next_sibling)
         {
-          flags = _clutter_actor_traverse_depth (l->data,
+          flags = _clutter_actor_traverse_depth (iter,
                                                  before_children_callback,
                                                  after_children_callback,
                                                  current_depth + 1,
                                                  user_data);
+
           if (flags & CLUTTER_ACTOR_TRAVERSE_VISIT_BREAK)
             return CLUTTER_ACTOR_TRAVERSE_VISIT_BREAK;
         }
@@ -14625,7 +14669,7 @@ clutter_actor_update_effective_expand (ClutterActor *self)
   /* we don't need to traverse the children of the actor if expand
    * has been explicitly set
    */
-  if (priv->children != NULL || !(priv->x_expand_set && priv->y_expand_set))
+  if (priv->n_children != 0 || !(priv->x_expand_set && priv->y_expand_set))
     {
       gboolean dummy = FALSE;
 
@@ -14743,7 +14787,7 @@ clutter_actor_queue_compute_expand (ClutterActor *self)
           changed_anything = TRUE;
         }
 
-      parent_actor = parent_actor->priv->parent_actor;
+      parent_actor = parent_actor->priv->parent;
     }
 
   if (changed_anything)
