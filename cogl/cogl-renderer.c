@@ -169,6 +169,10 @@ cogl_renderer_new (void)
   renderer->connected = FALSE;
   renderer->event_filters = NULL;
 
+#ifdef COGL_HAS_XLIB_SUPPORT
+  renderer->xlib_enable_event_retrieval = TRUE;
+#endif
+
   return _cogl_renderer_object_new (renderer);
 }
 
@@ -183,6 +187,10 @@ cogl_xlib_renderer_set_foreign_display (CoglRenderer *renderer,
   _COGL_RETURN_IF_FAIL (!renderer->connected);
 
   renderer->foreign_xdpy = xdisplay;
+
+  /* If the application is using a foreign display then we can assume
+     it will also do its own event retrieval */
+  cogl_xlib_renderer_set_event_retrieval_enabled (renderer, FALSE);
 }
 
 Display *
@@ -191,6 +199,17 @@ cogl_xlib_renderer_get_foreign_display (CoglRenderer *renderer)
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), NULL);
 
   return renderer->foreign_xdpy;
+}
+
+void
+cogl_xlib_renderer_set_event_retrieval_enabled (CoglRenderer *renderer,
+                                                gboolean enable)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
+  /* NB: Renderers are considered immutable once connected */
+  _COGL_RETURN_IF_FAIL (!renderer->connected);
+
+  renderer->xlib_enable_event_retrieval = enable;
 }
 #endif /* COGL_HAS_XLIB_SUPPORT */
 

@@ -564,6 +564,28 @@ _cogl_winsys_xlib_get_visual_info (void)
   return get_visual_info (ctx->display, egl_display->egl_config);
 }
 
+static void
+_cogl_winsys_poll_get_info (CoglContext *context,
+                            CoglPollFD **poll_fds,
+                            int *n_poll_fds,
+                            gint64 *timeout)
+{
+  _cogl_xlib_renderer_poll_get_info (context->display->renderer,
+                                     poll_fds,
+                                     n_poll_fds,
+                                     timeout);
+}
+
+static void
+_cogl_winsys_poll_dispatch (CoglContext *context,
+                            const CoglPollFD *poll_fds,
+                            int n_poll_fds)
+{
+  _cogl_xlib_renderer_poll_dispatch (context->display->renderer,
+                                     poll_fds,
+                                     n_poll_fds);
+}
+
 #ifdef EGL_KHR_image_pixmap
 
 static gboolean
@@ -709,6 +731,9 @@ _cogl_winsys_egl_xlib_get_vtable (void)
         _cogl_winsys_onscreen_x11_get_window_xid;
 
       vtable.xlib_get_visual_info = _cogl_winsys_xlib_get_visual_info;
+
+      vtable.poll_get_info = _cogl_winsys_poll_get_info;
+      vtable.poll_dispatch = _cogl_winsys_poll_dispatch;
 
 #ifdef EGL_KHR_image_pixmap
       /* X11 tfp support... */

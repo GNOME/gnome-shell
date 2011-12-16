@@ -213,6 +213,9 @@ _cogl_xlib_renderer_connect (CoglRenderer *renderer, GError **error)
 
   xlib_renderer->trap_state = NULL;
 
+  xlib_renderer->poll_fd.fd = ConnectionNumber (xlib_renderer->xdpy);
+  xlib_renderer->poll_fd.events = COGL_POLL_FD_EVENT_IN;
+
   register_xlib_renderer (renderer);
 
   return TRUE;
@@ -267,3 +270,45 @@ cogl_xlib_renderer_remove_filter (CoglRenderer *renderer,
                                        (CoglNativeFilterFunc)func, data);
 }
 
+void
+_cogl_xlib_renderer_poll_get_info (CoglRenderer *renderer,
+                                   CoglPollFD **poll_fds,
+                                   int *n_poll_fds,
+                                   gint64 *timeout)
+{
+  CoglXlibRenderer *xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
+
+  if (renderer->xlib_enable_event_retrieval)
+    {
+      *n_poll_fds = 1;
+      *poll_fds = &xlib_renderer->poll_fd;
+      if (XPending (xlib_renderer->xdpy))
+        *timeout = 0;
+      else
+        *timeout = -1;
+    }
+  else
+    {
+      *n_poll_fds = 0;
+      *poll_fds = NULL;
+      *timeout = -1;
+    }
+}
+
+void
+_cogl_xlib_renderer_poll_dispatch (CoglRenderer *renderer,
+                                   const CoglPollFD *poll_fds,
+                                   int n_poll_fds)
+{
+  CoglXlibRenderer *xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
+
+  if (renderer->xlib_enable_event_retrieval)
+    while (XPending (xlib_renderer->xdpy))
+      {
+        XEvent xevent;
+
+        XNextEvent (xlib_renderer->xdpy, &xevent);
+
+        cogl_xlib_renderer_handle_event (renderer, &xevent);
+      }
+}

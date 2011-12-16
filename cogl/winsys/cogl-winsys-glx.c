@@ -2051,6 +2051,27 @@ _cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
   return glx_tex_pixmap->glx_tex;
 }
 
+static void
+_cogl_winsys_poll_get_info (CoglContext *context,
+                            CoglPollFD **poll_fds,
+                            int *n_poll_fds,
+                            gint64 *timeout)
+{
+  _cogl_xlib_renderer_poll_get_info (context->display->renderer,
+                                     poll_fds,
+                                     n_poll_fds,
+                                     timeout);
+}
+
+static void
+_cogl_winsys_poll_dispatch (CoglContext *context,
+                            const CoglPollFD *poll_fds,
+                            int n_poll_fds)
+{
+  _cogl_xlib_renderer_poll_dispatch (context->display->renderer,
+                                     poll_fds,
+                                     n_poll_fds);
+}
 
 static CoglWinsysVtable _cogl_winsys_vtable =
   {
@@ -2081,6 +2102,9 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .onscreen_remove_swap_buffers_callback =
       _cogl_winsys_onscreen_remove_swap_buffers_callback,
     .onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility,
+
+    .poll_get_info = _cogl_winsys_poll_get_info,
+    .poll_dispatch = _cogl_winsys_poll_dispatch,
 
     /* X11 tfp support... */
     /* XXX: instead of having a rather monolithic winsys vtable we could

@@ -27,6 +27,7 @@
 #include "cogl-object-private.h"
 #include "cogl-xlib-private.h"
 #include "cogl-x11-renderer-private.h"
+#include "cogl-context.h"
 
 typedef struct _CoglXlibRenderer
 {
@@ -37,6 +38,9 @@ typedef struct _CoglXlibRenderer
   /* Current top of the XError trap state stack. The actual memory for
      these is expected to be allocated on the stack by the caller */
   CoglXlibTrapState *trap_state;
+
+  /* A poll FD for handling event retrieval within Cogl */
+  CoglPollFD poll_fd;
 } CoglXlibRenderer;
 
 gboolean
@@ -76,5 +80,16 @@ _cogl_xlib_renderer_untrap_errors (CoglRenderer *renderer,
 
 CoglXlibRenderer *
 _cogl_xlib_renderer_get_data (CoglRenderer *renderer);
+
+void
+_cogl_xlib_renderer_poll_get_info (CoglRenderer *renderer,
+                                   CoglPollFD **poll_fds,
+                                   int *n_poll_fds,
+                                   gint64 *timeout);
+
+void
+_cogl_xlib_renderer_poll_dispatch (CoglRenderer *renderer,
+                                   const CoglPollFD *poll_fds,
+                                   int n_poll_fds);
 
 #endif /* __COGL_RENDERER_XLIB_PRIVATE_H */

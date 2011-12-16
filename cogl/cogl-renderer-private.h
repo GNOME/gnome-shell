@@ -46,6 +46,7 @@ struct _CoglRenderer
   CoglWinsysID winsys_id_override;
 #ifdef COGL_HAS_XLIB_SUPPORT
   Display *foreign_xdpy;
+  gboolean xlib_enable_event_retrieval;
 #endif
 
   CoglDriver driver;
