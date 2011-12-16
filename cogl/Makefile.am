@@ -529,6 +529,7 @@ cogl.vsenums_c:
 
 EXTRA_DIST += \
 	cogl-defines.h.win32	\
+	cogl-defines.h.win32_SDL	\
 	cogl.symbols	\
 	cogl.rc.in	\
 	cogl.rc
