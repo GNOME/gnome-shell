@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-11-22 00:22+0000\n"
-"PO-Revision-Date: 2011-11-25 20:53+0100\n"
+"POT-Creation-Date: 2011-12-16 13:21+0000\n"
+"PO-Revision-Date: 2011-12-16 21:47+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -22,6 +22,18 @@ msgstr ""
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+msgid "View split on left"
+msgstr "Poglej razdelek na levi"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "View split on right"
+msgstr "Poglej razdelek na desni"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Windows"
+msgstr "Okna"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
@@ -60,12 +72,12 @@ msgstr "_Počakaj"
 msgid "_Force Quit"
 msgstr "_Vsili konec"
 
-#: ../src/core/display.c:365
+#: ../src/core/display.c:361
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Manjka razširitev %s, ki je ključna za sestavljanje"
 
-#: ../src/core/display.c:431
+#: ../src/core/display.c:427
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ni mogoče odpreti zaslona '%s' okenskega sistema X\n"
@@ -110,7 +122,7 @@ msgstr "Ni mogoče preiskati mape tem: %s\n"
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "Ni mogoče najti teme! Prepričajte se, da %s obstaja in vsebuje običajni zapis teme.\n"
 
-#: ../src/core/mutter.c:42
+#: ../src/core/mutter.c:40
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -123,11 +135,11 @@ msgstr ""
 "To je prosta programska oprema; za pogoje kopiranja si poglejte izvorno kodo.\n"
 "Program je na voljo BREZ KAKRŠNIHKOLI ZAGOTOVIL.\n"
 
-#: ../src/core/mutter.c:56
+#: ../src/core/mutter.c:54
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: ../src/core/mutter.c:62
+#: ../src/core/mutter.c:60
 msgid "Comma-separated list of compositor plugins"
 msgstr "Z vejico ločen seznam vstavkov sestavljanja"
 
@@ -156,27 +168,27 @@ msgstr "\"%s\", najden v podatkovni zbirki nastavitev, ni veljaven ključ za tip
 msgid "Workspace %d"
 msgstr "Delovna površina %d"
 
-#: ../src/core/screen.c:741
+#: ../src/core/screen.c:730
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Zaslon %d na prikazu '%s' ni veljaven\n"
 
-#: ../src/core/screen.c:757
+#: ../src/core/screen.c:746
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
 msgstr "Zaslon %d na prikazu \"%s\" je že upravljan z upravljalnikom oken; poskušajte uporabiti možnost --replace za zamenjavo trenutnega.\n"
 
-#: ../src/core/screen.c:784
+#: ../src/core/screen.c:773
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Ni mogoče dobiti izbire upravljalnika oken na zaslonu %d prikaza \"%s\"\n"
 
-#: ../src/core/screen.c:839
+#: ../src/core/screen.c:828
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Zaslon %d na prikazu \"%s\"  je že upravljan z upravljalnikom oken\n"
 
-#: ../src/core/screen.c:1024
+#: ../src/core/screen.c:1013
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Ni mogoče opustiti zaslona %d na prikazu \"%s\"\n"
@@ -276,7 +288,7 @@ msgid "Window manager error: "
 msgstr "Napaka upravljalnika oken: "
 
 #. first time through
-#: ../src/core/window.c:7124
+#: ../src/core/window.c:7180
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LEADER kot je zavedeno v ICCCM.\n"
@@ -288,7 +300,7 @@ msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LE
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7787
+#: ../src/core/window.c:7843
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Okno %s določi namig MWM, ki pove, da ni mogoče spremeniti velikosti, hkrati pa določi najmanjšo velikost na %d x %d in največjo na %d x %d; vrednost ni smiselna.\n"
