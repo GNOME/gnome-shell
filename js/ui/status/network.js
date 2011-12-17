@@ -1234,7 +1234,6 @@ const NMDeviceWireless = new Lang.Class({
                       accessPoints: [ accessPoint ]
                     };
             apObj.ssidText = ssidToLabel(apObj.ssid);
-            needsupdate = true;
         }
 
         // check if this enables new connections for this group
@@ -1249,7 +1248,11 @@ const NMDeviceWireless = new Lang.Class({
             }
         }
 
-        if (needsupdate) {
+        if (pos == -1 || needsupdate) {
+            if (pos != -1)
+                this._networks.splice(pos, 1);
+            pos = Util.insertSorted(this._networks, apObj, this._networkSortFunction);
+
             this._clearSection();
             this._queueCreateSection();
         }
