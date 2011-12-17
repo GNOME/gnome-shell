@@ -26,6 +26,8 @@
 #include "gactionobservable.h"
 #include "gactionobserver.h"
 
+#include <clutter/clutter.h>
+
 #include <string.h>
 
 /*
@@ -238,6 +240,26 @@ g_action_muxer_query_action (GActionGroup        *action_group,
                                       parameter_type, state_type, state_hint, state);
 }
 
+static GVariant *
+get_platform_data (void)
+{
+  gchar time[32];
+  GVariantBuilder *builder;
+  GVariant *result;
+
+  g_snprintf (time, 32, "_TIME%d", clutter_get_current_event_time ());
+
+  builder = g_variant_builder_new (G_VARIANT_TYPE ("a{sv}"));
+
+  g_variant_builder_add (builder, "{sv}", "desktop-startup-id",
+                         g_variant_new_string (time));
+
+  result = g_variant_builder_end (builder);
+  g_variant_builder_unref (builder);
+
+  return result;
+}
+
 static void
 g_action_muxer_activate_action (GActionGroup *action_group,
                                 const gchar  *action_name,
@@ -249,7 +271,15 @@ g_action_muxer_activate_action (GActionGroup *action_group,
   group = g_action_muxer_find_group (muxer, &action_name);
 
   if (group)
-    g_action_group_activate_action (group->group, action_name, parameter);
+    {
+      if (G_IS_DBUS_ACTION_GROUP (group->group))
+        g_dbus_action_group_activate_action_full (G_DBUS_ACTION_GROUP (group->group),
+                                                  action_name,
+                                                  parameter,
+                                                  get_platform_data ());
+      else
+        g_action_group_activate_action (group->group, action_name, parameter);
+    }
 }
 
 static void
@@ -263,7 +293,15 @@ g_action_muxer_change_action_state (GActionGroup *action_group,
   group = g_action_muxer_find_group (muxer, &action_name);
 
   if (group)
-    g_action_group_change_action_state (group->group, action_name, state);
+    {
+      if (G_IS_DBUS_ACTION_GROUP (group->group))
+        g_dbus_action_group_change_action_state_full (G_DBUS_ACTION_GROUP (group->group),
+                                                      action_name,
+                                                      state,
+                                                      get_platform_data ());
+      else
+        g_action_group_change_action_state (group->group, action_name, state);
+    }
 }
 
 static void
