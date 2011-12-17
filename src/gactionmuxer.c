@@ -272,11 +272,11 @@ g_action_muxer_activate_action (GActionGroup *action_group,
 
   if (group)
     {
-      if (G_IS_DBUS_ACTION_GROUP (group->group))
-        g_dbus_action_group_activate_action_full (G_DBUS_ACTION_GROUP (group->group),
-                                                  action_name,
-                                                  parameter,
-                                                  get_platform_data ());
+      if (G_IS_REMOTE_ACTION_GROUP (group->group))
+        g_remote_action_group_activate_action_full (G_REMOTE_ACTION_GROUP (group->group),
+                                                    action_name,
+                                                    parameter,
+                                                    get_platform_data ());
       else
         g_action_group_activate_action (group->group, action_name, parameter);
     }
@@ -294,11 +294,11 @@ g_action_muxer_change_action_state (GActionGroup *action_group,
 
   if (group)
     {
-      if (G_IS_DBUS_ACTION_GROUP (group->group))
-        g_dbus_action_group_change_action_state_full (G_DBUS_ACTION_GROUP (group->group),
-                                                      action_name,
-                                                      state,
-                                                      get_platform_data ());
+      if (G_IS_REMOTE_ACTION_GROUP (group->group))
+        g_remote_action_group_change_action_state_full (G_REMOTE_ACTION_GROUP (group->group),
+                                                        action_name,
+                                                        state,
+                                                        get_platform_data ());
       else
         g_action_group_change_action_state (group->group, action_name, state);
     }
