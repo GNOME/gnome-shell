@@ -20,6 +20,7 @@ TEST_JS =					\
 	testcommon/face-plain.png		\
 	testcommon/ui.js                        \
 	unit/format.js				\
+	unit/insertSorted.js			\
 	unit/markup.js				\
 	unit/jsParse.js				\
 	unit/url.js
