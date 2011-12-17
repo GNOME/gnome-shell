@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: clutter-1.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-11-25 10:58+0000\n"
-"PO-Revision-Date: 2011-11-25 21:12+0100\n"
+"POT-Creation-Date: 2011-12-13 05:08+0000\n"
+"PO-Revision-Date: 2011-12-17 17:22+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -461,7 +461,7 @@ msgid "The axis to align the position to"
 msgstr "Os za poravnavo položaja na"
 
 #: ../clutter/clutter-align-constraint.c:315
-#: ../clutter/clutter-desaturate-effect.c:304
+#: ../clutter/clutter-desaturate-effect.c:297
 msgid "Factor"
 msgstr "Faktor"
 
@@ -512,7 +512,7 @@ msgstr "Način animacije"
 #: ../clutter/clutter-animator.c:1786
 #: ../clutter/clutter-media.c:194
 #: ../clutter/clutter-state.c:1486
-#: ../clutter/clutter-timeline.c:294
+#: ../clutter/clutter-timeline.c:516
 msgid "Duration"
 msgstr "Trajanje"
 
@@ -521,7 +521,7 @@ msgid "Duration of the animation, in milliseconds"
 msgstr "Trajanje animacije v milisekundah"
 
 #: ../clutter/clutter-animation.c:524
-#: ../clutter/clutter-timeline.c:263
+#: ../clutter/clutter-timeline.c:485
 msgid "Loop"
 msgstr "Zanka"
 
@@ -550,11 +550,11 @@ msgstr "Trajanje animacije"
 msgid "The timeline of the animation"
 msgstr "Časovnica animacije"
 
-#: ../clutter/clutter-backend.c:333
+#: ../clutter/clutter-backend.c:354
 msgid "Unable to initialize the Clutter backend"
 msgstr "Ni mogoče zagnati ozadnjega programa Clutter"
 
-#: ../clutter/clutter-backend.c:407
+#: ../clutter/clutter-backend.c:428
 #, c-format
 msgid "The backend of type '%s' does not support creating multiple stages"
 msgstr "Ozadnji program vrste '%s' ne podpira ustvarjanja več ravni dejanj"
@@ -815,11 +815,11 @@ msgstr "Največji prag preden je dogotrajni pritisk gumba preklican"
 msgid "Specifies the actor to be cloned"
 msgstr "Navede predmet za kloniranje"
 
-#: ../clutter/clutter-colorize-effect.c:307
+#: ../clutter/clutter-colorize-effect.c:300
 msgid "Tint"
 msgstr "Črnilo"
 
-#: ../clutter/clutter-colorize-effect.c:308
+#: ../clutter/clutter-colorize-effect.c:301
 msgid "The tint to apply"
 msgstr "Črnilo za uveljavitev"
 
@@ -847,7 +847,7 @@ msgstr "Hrbtno gradivo"
 msgid "The material to be used when painting the back of the actor"
 msgstr "Gradivo, ki bo uporabljeno za slikanje hrbtne strani predmeta"
 
-#: ../clutter/clutter-desaturate-effect.c:305
+#: ../clutter/clutter-desaturate-effect.c:298
 msgid "The desaturation factor"
 msgstr "Faktor odstranitve zasičenosti"
 
@@ -1719,7 +1719,7 @@ msgstr "Velikost usklajevanja predmeta"
 
 #: ../clutter/clutter-texture.c:980
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
-msgstr "Samodejna velikost usklajevanja predmeta za spodaj ležeče mere bitnih slik"
+msgstr "Samodejna velikost usklajevanja predmeta za podpornih mer bitnih slik"
 
 #: ../clutter/clutter-texture.c:987
 msgid "Disable Slicing"
@@ -1775,7 +1775,7 @@ msgstr "Tekstura Cogl"
 
 #: ../clutter/clutter-texture.c:1041
 msgid "The underlying Cogl texture handle used to draw this actor"
-msgstr "Spodaj ležeči ročnik teksture Cogl za izris tega predmeta"
+msgstr "Podporni ročnik teksture Cogl za izris tega predmeta"
 
 #: ../clutter/clutter-texture.c:1048
 msgid "Cogl Material"
@@ -1783,7 +1783,7 @@ msgstr "Material Cogl"
 
 #: ../clutter/clutter-texture.c:1049
 msgid "The underlying Cogl material handle used to draw this actor"
-msgstr "Spodnji ročnik materiala Cogl za izris tega predmeta"
+msgstr "Podporni ročnik materiala Cogl za izris tega predmeta"
 
 #: ../clutter/clutter-texture.c:1066
 msgid "The path of the file containing the image data"
@@ -1839,37 +1839,37 @@ msgstr "Teksture YUV niso podprte"
 msgid "YUV2 textues are not supported"
 msgstr "Teksture YUV2 niso podprte"
 
-#: ../clutter/clutter-timeline.c:264
+#: ../clutter/clutter-timeline.c:486
 msgid "Should the timeline automatically restart"
 msgstr "Ali naj se časovni potek samodejno ponovno zažene"
 
-#: ../clutter/clutter-timeline.c:278
+#: ../clutter/clutter-timeline.c:500
 msgid "Delay"
 msgstr "Časovni zamik"
 
-#: ../clutter/clutter-timeline.c:279
+#: ../clutter/clutter-timeline.c:501
 msgid "Delay before start"
 msgstr "Časovni zamik pred začetkom"
 
-#: ../clutter/clutter-timeline.c:295
+#: ../clutter/clutter-timeline.c:517
 msgid "Duration of the timeline in milliseconds"
 msgstr "Trajanje časovnega poteka v milisekundah."
 
-#: ../clutter/clutter-timeline.c:310
+#: ../clutter/clutter-timeline.c:532
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:526
 #: ../clutter/deprecated/clutter-behaviour-rotate.c:335
 msgid "Direction"
 msgstr "Smer"
 
-#: ../clutter/clutter-timeline.c:311
+#: ../clutter/clutter-timeline.c:533
 msgid "Direction of the timeline"
 msgstr "Smer časovnega poteka"
 
-#: ../clutter/clutter-timeline.c:326
+#: ../clutter/clutter-timeline.c:548
 msgid "Auto Reverse"
 msgstr "Samodejno obračanje"
 
-#: ../clutter/clutter-timeline.c:327
+#: ../clutter/clutter-timeline.c:549
 msgid "Whether the direction should be reversed when reaching the end"
 msgstr "Ali naj se smer obrne ob dosegu konca"
 
@@ -2110,6 +2110,30 @@ msgstr "Pot do vozlišča naprave"
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
 msgstr "Ni mogoče najti ustreznega predmeta CoglWinsys za vrsto GdkDisplay %s"
 
+#: ../clutter/wayland/clutter-wayland-surface.c:384
+msgid "Surface"
+msgstr "Površina"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:385
+msgid "The underlying wayland surface"
+msgstr "Podporna površina wayland"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:392
+msgid "Surface width"
+msgstr "Širina površine"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:393
+msgid "The width of the underlying wayland surface"
+msgstr "Širina podporne površine wayland"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:401
+msgid "Surface height"
+msgstr "Višina površine"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:402
+msgid "The height of the underlying wayland surface"
+msgstr "Višina podporne površine wayland"
+
 #: ../clutter/x11/clutter-backend-x11.c:506
 msgid "X display to use"
 msgstr "Zaslon X, ki naj bo uporabljen"
@@ -2130,99 +2154,99 @@ msgstr "Omogoči podporo XInput"
 msgid "The Clutter backend"
 msgstr "Ozadnji program Clutter"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:544
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:536
 msgid "Pixmap"
 msgstr "Sličica"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:545
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:537
 msgid "The X11 Pixmap to be bound"
 msgstr "Večbitna sličica X11 za vezavo"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:553
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:545
 msgid "Pixmap width"
 msgstr "Širina sličice"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:554
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:546
 msgid "The width of the pixmap bound to this texture"
 msgstr "Širina večbitne sličice za vezavo na to teksturo"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:562
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:554
 msgid "Pixmap height"
 msgstr "Višina sličice"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:563
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:555
 msgid "The height of the pixmap bound to this texture"
 msgstr "Višina večbitne sličice za vezavo na to teksturo"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:571
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:563
 msgid "Pixmap Depth"
 msgstr "Globina sličice"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:572
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:564
 msgid "The depth (in number of bits) of the pixmap bound to this texture"
 msgstr "Globina (v bitih) večbitne sličice, ki je vezana na to teksturo"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:580
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:572
 msgid "Automatic Updates"
 msgstr "Samodejno posodabljanje"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:581
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:573
 msgid "If the texture should be kept in sync with any pixmap changes."
 msgstr "Ali naj se tekstura obdrži usklajena z morebitnimi spremembami večbitnih sličic."
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:589
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:581
 msgid "Window"
 msgstr "Okno"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:590
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:582
 msgid "The X11 Window to be bound"
 msgstr "Okno X11 za vezavo"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:598
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:590
 msgid "Window Redirect Automatic"
 msgstr "Samodejna preusmeritev okna"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:599
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:591
 msgid "If composite window redirects are set to Automatic (or Manual if false)"
 msgstr "Ali so preusmeritve sestavljenega okna nastavljene na samodejne (ali ročne, če je napak)"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:609
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:601
 msgid "Window Mapped"
 msgstr "Preslikave okna"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:610
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:602
 msgid "If window is mapped"
 msgstr "Ali je okno preslikano"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:619
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:611
 msgid "Destroyed"
 msgstr "Uničeno"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:620
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:612
 msgid "If window has been destroyed"
 msgstr "Ali je okno uničeno"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:628
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:620
 msgid "Window X"
 msgstr "Okno X"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:629
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:621
 msgid "X position of window on screen according to X11"
 msgstr "X položaj okna na zaslonu, kot ga opredeli X11"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:637
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:629
 msgid "Window Y"
 msgstr "Okno Y"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:638
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:630
 msgid "Y position of window on screen according to X11"
 msgstr "Y položaj okna na zaslonu, kot ga opredeli X11"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:645
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:637
 msgid "Window Override Redirect"
 msgstr "Preusmeritev prepisa okna"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:646
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:638
 msgid "If this is an override-redirect window"
 msgstr "Ali je to okno preusmeritve prepisa"
 
