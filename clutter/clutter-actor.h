@@ -461,6 +461,9 @@ void                  clutter_actor_insert_child_above        (ClutterActor     
 void                  clutter_actor_insert_child_below        (ClutterActor          *self,
                                                                ClutterActor          *child,
                                                                ClutterActor          *sibling);
+void                  clutter_actor_replace_child             (ClutterActor          *self,
+                                                               ClutterActor          *old_child,
+                                                               ClutterActor          *new_child);
 void                  clutter_actor_remove_child              (ClutterActor          *self,
                                                                ClutterActor          *child);
 GList *               clutter_actor_get_children              (ClutterActor          *self);

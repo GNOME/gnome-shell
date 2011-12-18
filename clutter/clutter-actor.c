@@ -10016,6 +10016,36 @@ clutter_actor_remove_child (ClutterActor *self,
 }
 
 /**
+ * clutter_actor_replace_child:
+ * @self: a #ClutterActor
+ * @old_child: the child of @self to replace
+ * @new_child: the #ClutterActor to replace @old_child
+ *
+ * Replaces @old_child with @new_child in the list of children of @self.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_replace_child (ClutterActor *self,
+                             ClutterActor *old_child,
+                             ClutterActor *new_child)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (old_child));
+  g_return_if_fail (old_child->priv->parent == self);
+  g_return_if_fail (CLUTTER_IS_ACTOR (new_child));
+  g_return_if_fail (old_child != new_child);
+  g_return_if_fail (new_child != self);
+  g_return_if_fail (new_child->priv->parent == NULL);
+
+  clutter_actor_add_child_internal (self, new_child,
+                                    insert_child_above,
+                                    old_child,
+                                    TRUE, TRUE);
+  clutter_actor_remove_child_internal (self, old_child, TRUE, TRUE);
+}
+
+/**
  * clutter_actor_unparent:
  * @self: a #ClutterActor
  *
