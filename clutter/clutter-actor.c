@@ -9485,7 +9485,8 @@ insert_child_above (ClutterActor *self,
   child->priv->prev_sibling = sibling;
   child->priv->next_sibling = NULL;
 
-  sibling->priv->next_sibling = child;
+  if (sibling != NULL)
+    sibling->priv->next_sibling = child;
 
   if (self->priv->last_child == sibling)
     self->priv->last_child = child;
@@ -9504,7 +9505,8 @@ insert_child_below (ClutterActor *self,
   child->priv->prev_sibling = NULL;
   child->priv->next_sibling = sibling;
 
-  sibling->priv->prev_sibling = child;
+  if (sibling != NULL)
+    sibling->priv->prev_sibling = child;
 
   if (self->priv->first_child == sibling)
     self->priv->first_child = child;
@@ -15351,4 +15353,87 @@ clutter_actor_get_background_color (ClutterActor *self,
   g_return_if_fail (color != NULL);
 
   *color = self->priv->bg_color;
+}
+
+/**
+ * clutter_actor_get_previous_sibling:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the sibling of @self that comes before it in the list
+ * of children of @self's parent.
+ *
+ * The returned pointer is only valid until the scene graph changes; it
+ * is guaranteed to remain the same during the paint sequence.
+ *
+ * Return value: (transfer none): a pointer to a #ClutterActor, or %NULL
+ *
+ * Since: 1.10
+ */
+ClutterActor *
+clutter_actor_get_previous_sibling (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  return self->priv->prev_sibling;
+}
+
+/**
+ * clutter_actor_get_next_sibling:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the sibling of @self that comes after it in the list
+ * of children of @self's parent.
+ *
+ * The returned pointer is only valid until the scene graph changes.
+ *
+ * Return value: (transfer none): a pointer to a #ClutterActor, or %NULL
+ *
+ * Since: 1.10
+ */
+ClutterActor *
+clutter_actor_get_next_sibling (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  return self->priv->next_sibling;
+}
+
+/**
+ * clutter_actor_get_first_child:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the first child of @self.
+ *
+ * The returned pointer is only valid until the scene graph changes.
+ *
+ * Return value: (transfer none): a pointer to a #ClutterActor, or %NULL
+ *
+ * Since: 1.10
+ */
+ClutterActor *
+clutter_actor_get_first_child (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  return self->priv->first_child;
+}
+
+/**
+ * clutter_actor_get_last_child:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the last child of @self.
+ *
+ * The returned pointer is only valid until the scene graph changes.
+ *
+ * Return value: (transfer none): a pointer to a #ClutterActor, or %NULL
+ *
+ * Since: 1.10
+ */
+ClutterActor *
+clutter_actor_get_last_child (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  return self->priv->last_child;
 }
