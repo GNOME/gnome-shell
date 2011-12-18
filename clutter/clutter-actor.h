@@ -482,12 +482,6 @@ void                  clutter_actor_lower                     (ClutterActor     
 void                  clutter_actor_raise_top                 (ClutterActor          *self);
 void                  clutter_actor_lower_bottom              (ClutterActor          *self);
 
-void                  clutter_actor_reparent                  (ClutterActor          *self,
-                                                               ClutterActor          *new_parent);
-void                  clutter_actor_set_parent                (ClutterActor          *self,
-                                                               ClutterActor          *parent);
-void                  clutter_actor_unparent                  (ClutterActor          *self);
-
 void                  clutter_actor_push_internal             (ClutterActor          *self);
 void                  clutter_actor_pop_internal              (ClutterActor          *self);
 

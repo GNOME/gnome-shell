@@ -9816,7 +9816,7 @@ clutter_actor_insert_child_below (ClutterActor *self,
  * This function should only be called by legacy #ClutterActor<!-- -->s
  * implementing the #ClutterContainer interface.
  *
- * Newly written code should use clutter_actor_add_child() instead.
+ * Deprecated: 1.10: Use clutter_actor_add_child() instead.
  */
 void
 clutter_actor_set_parent (ClutterActor *self,
@@ -10029,9 +10029,9 @@ clutter_actor_remove_child (ClutterActor *self,
  * This function should only be called by legacy #ClutterActor<!-- -->s
  * implementing the #ClutterContainer interface.
  *
- * Newly written code should use clutter_actor_remove_child() instead.
- *
  * Since: 0.1.1
+ *
+ * Deprecated: 1.10: Use clutter_actor_remove_child() instead.
  */
 void
 clutter_actor_unparent (ClutterActor *self)
@@ -10051,14 +10051,26 @@ clutter_actor_unparent (ClutterActor *self)
  * @self: a #ClutterActor
  * @new_parent: the new #ClutterActor parent
  *
- * This function resets the parent actor of @self.  It is
- * logically equivalent to calling clutter_actor_unparent()
- * and clutter_actor_set_parent(), but more efficiently
- * implemented, as it ensures the child is not finalized
- * when unparented, and emits the parent-set signal only
- * one time.
+ * Resets the parent actor of @self.
+ *
+ * This function is logically equivalent to calling clutter_actor_unparent()
+ * and clutter_actor_set_parent(), but more efficiently implemented, as it
+ * ensures the child is not finalized when unparented, and emits the
+ * #ClutterActor::parent-set signal only once.
+ *
+ * In reality, calling this function is less useful than it sounds, as some
+ * application code may rely on changes in the intermediate state between
+ * removal and addition of the actor from its old parent to the @new_parent.
+ * Thus, it is strongly encouraged to avoid using this function in application
+ * code.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.10: Use clutter_actor_remove_child() and
+ *   clutter_actor_add_child() instead; remember to take a reference on
+ *   the actor being removed before calling clutter_actor_remove_child()
+ *   to avoid the reference count dropping to zero and the actor being
+ *   destroyed.
  */
 void
 clutter_actor_reparent (ClutterActor *self,
