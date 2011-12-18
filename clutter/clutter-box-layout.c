@@ -476,16 +476,15 @@ clutter_box_layout_set_container (ClutterLayoutManager *layout,
 
 static void
 get_preferred_width (ClutterBoxLayout *self,
-                     ClutterContainer *container,
-                     GList            *children,
+                     ClutterActor     *container,
                      gfloat            for_height,
                      gfloat           *min_width_p,
                      gfloat           *natural_width_p)
 {
   ClutterBoxLayoutPrivate *priv = self->priv;
+  ClutterActor *child;
   gint n_children = 0;
   gboolean is_rtl;
-  GList *l;
 
   if (min_width_p)
     *min_width_p = 0;
@@ -497,17 +496,18 @@ get_preferred_width (ClutterBoxLayout *self,
     {
       ClutterTextDirection text_dir;
 
-      text_dir = clutter_actor_get_text_direction (CLUTTER_ACTOR (container));
+      text_dir = clutter_actor_get_text_direction (container);
       is_rtl = (text_dir == CLUTTER_TEXT_DIRECTION_RTL) ? TRUE : FALSE;
     }
   else
     is_rtl = FALSE;
 
-  for (l = (is_rtl) ? g_list_last (children) : children;
-       l != NULL;
-       l = (is_rtl) ? l->prev : l->next)
+  for (child = (is_rtl) ? clutter_actor_get_last_child (container)
+                        : clutter_actor_get_first_child (container);
+       child != NULL;
+       child = (is_rtl) ? clutter_actor_get_previous_sibling (child)
+                        : clutter_actor_get_next_sibling (child))
     {
-      ClutterActor *child = l->data;
       gfloat child_min = 0, child_nat = 0;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
@@ -553,16 +553,15 @@ get_preferred_width (ClutterBoxLayout *self,
 
 static void
 get_preferred_height (ClutterBoxLayout *self,
-                      ClutterContainer *container,
-                      GList            *children,
+                      ClutterActor     *container,
                       gfloat            for_width,
                       gfloat           *min_height_p,
                       gfloat           *natural_height_p)
 {
   ClutterBoxLayoutPrivate *priv = self->priv;
+  ClutterActor *child;
   gint n_children = 0;
   gboolean is_rtl;
-  GList *l;
 
   if (min_height_p)
     *min_height_p = 0;
@@ -574,17 +573,18 @@ get_preferred_height (ClutterBoxLayout *self,
     {
       ClutterTextDirection text_dir;
 
-      text_dir = clutter_actor_get_text_direction (CLUTTER_ACTOR (container));
+      text_dir = clutter_actor_get_text_direction (container);
       is_rtl = (text_dir == CLUTTER_TEXT_DIRECTION_RTL) ? TRUE : FALSE;
     }
   else
     is_rtl = FALSE;
 
-  for (l = (is_rtl) ? g_list_last (children) : children;
-       l != NULL;
-       l = (is_rtl) ? l->prev : l->next)
+  for (child = (is_rtl) ? clutter_actor_get_last_child (container)
+                        : clutter_actor_get_first_child (container);
+       child != NULL;
+       child = (is_rtl) ? clutter_actor_get_previous_sibling (child)
+                        : clutter_actor_get_next_sibling (child))
     {
-      ClutterActor *child = l->data;
       gfloat child_min = 0, child_nat = 0;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
@@ -713,15 +713,10 @@ clutter_box_layout_get_preferred_width (ClutterLayoutManager *layout,
                                         gfloat               *natural_width_p)
 {
   ClutterBoxLayout *self = CLUTTER_BOX_LAYOUT (layout);
-  GList *children;
 
-  children = clutter_container_get_children (container);
-
-  get_preferred_width (self, container, children, for_height,
+  get_preferred_width (self, CLUTTER_ACTOR (container), for_height,
                        min_width_p,
                        natural_width_p);
-
-  g_list_free (children);
 }
 
 static void
@@ -732,15 +727,10 @@ clutter_box_layout_get_preferred_height (ClutterLayoutManager *layout,
                                          gfloat               *natural_height_p)
 {
   ClutterBoxLayout *self = CLUTTER_BOX_LAYOUT (layout);
-  GList *children;
 
-  children = clutter_container_get_children (container);
-
-  get_preferred_height (self, container, children, for_width,
+  get_preferred_height (self, CLUTTER_ACTOR (container), for_width,
                         min_height_p,
                         natural_height_p);
-
-  g_list_free (children);
 }
 
 static void
@@ -749,16 +739,16 @@ count_expand_children (ClutterLayoutManager *layout,
                        gint                 *visible_children,
                        gint                 *expand_children)
 {
-  GList        *children, *l;
-  ClutterActor *child;
+  ClutterActor *actor, *child;
+
+  actor = CLUTTER_ACTOR (container);
 
   *visible_children = *expand_children = 0;
 
-  children = clutter_container_get_children (container);
-  for (l = children; l != NULL; l = l->next)
+  for (child = clutter_actor_get_first_child (actor);
+       child != NULL;
+       child = clutter_actor_get_next_sibling (child))
     {
-      child = l->data;
-
       if (CLUTTER_ACTOR_IS_VISIBLE (child))
         {
           ClutterLayoutMeta *meta;
@@ -773,7 +763,6 @@ count_expand_children (ClutterLayoutManager *layout,
             *expand_children += 1;
         }
     }
-  g_list_free (children);
 }
 
 struct _ClutterRequestedSize
@@ -899,8 +888,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
                              ClutterAllocationFlags  flags)
 {
   ClutterBoxLayoutPrivate *priv = CLUTTER_BOX_LAYOUT (layout)->priv;
-  ClutterActor *child;
-  GList *children, *l;
+  ClutterActor *actor, *child;
   gint nvis_children;
   gint nexpand_children;
   gboolean is_rtl;
@@ -927,12 +915,13 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
   else
     size = box->x2 - box->x1 - (nvis_children - 1) * priv->spacing;
 
-  /* Retrieve desired size for visible children. */
-  children = clutter_container_get_children (container);
-  for (i = 0, l = children; l != NULL; l = l->next)
-    {
-      child = l->data;
+  actor = CLUTTER_ACTOR (container);
 
+  /* Retrieve desired size for visible children. */
+  for (i = 0, child = clutter_actor_get_first_child (actor);
+       child != NULL;
+       child = clutter_actor_get_next_sibling (child))
+    {
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
@@ -972,7 +961,6 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
 
       i++;
     }
-  g_list_free (children);
 
   if (priv->is_homogeneous)
     {
@@ -1034,15 +1022,16 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
         x = 0.0 + box->x2 - box->x1;
     }
 
-  children = clutter_container_get_children (container);
-  for (i = g_list_length (children) - 1, l = g_list_last (children);
-       l != NULL;
-       l = l->prev, i--)
+  i = clutter_actor_get_n_children (actor);
+  for (child = clutter_actor_get_last_child (actor);
+       child != NULL;
+       child = clutter_actor_get_previous_sibling (child))
     {
       ClutterLayoutMeta *meta;
       ClutterBoxChild *box_child;
 
-      child = l->data;
+      i -= 1;
+
       meta = clutter_layout_manager_get_child_meta (layout,
                                                     container,
                                                     child);
@@ -1146,7 +1135,6 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
                             &child_allocation,
                             flags);
     }
-  g_list_free (children);
 }
 
 static ClutterAlpha *
