@@ -462,11 +462,11 @@ cally_actor_get_parent (AtkObject *obj)
 static gint
 cally_actor_get_index_in_parent (AtkObject *obj)
 {
-  CallyActor    *cally_actor   = NULL;
-  ClutterActor *actor        = NULL;
+  CallyActor *cally_actor = NULL;
+  ClutterActor *actor = NULL;
   ClutterActor *parent_actor = NULL;
-  GList        *children     = NULL;
-  gint          index        = -1;
+  ClutterActor *iter;
+  gint index = -1;
 
   g_return_val_if_fail (CALLY_IS_ACTOR (obj), -1);
 
@@ -496,14 +496,17 @@ cally_actor_get_index_in_parent (AtkObject *obj)
   if (actor == NULL) /* Object is defunct */
     return -1;
 
-  parent_actor = clutter_actor_get_parent(actor);
-  if ((parent_actor == NULL)||(!CLUTTER_IS_CONTAINER(parent_actor)))
+  index = 0;
+  parent_actor = clutter_actor_get_parent (actor);
+  if (parent_actor == NULL)
     return -1;
 
-  children = clutter_container_get_children(CLUTTER_CONTAINER(parent_actor));
-
-  index = g_list_index (children, actor);
-  g_list_free (children);
+  for (iter = clutter_actor_get_first_child (parent_actor);
+       iter != NULL && iter != actor;
+       iter = clutter_actor_get_next_sibling (iter))
+    {
+      index += 1;
+    }
 
   return index;
 }
@@ -565,9 +568,7 @@ cally_actor_ref_state_set (AtkObject *obj)
 static gint
 cally_actor_get_n_children (AtkObject *obj)
 {
-  ClutterActor     *actor    = NULL;
-  GList            *children = NULL;
-  gint              num      = 0;
+  ClutterActor *actor = NULL;
 
   g_return_val_if_fail (CALLY_IS_ACTOR (obj), 0);
 
@@ -578,57 +579,32 @@ cally_actor_get_n_children (AtkObject *obj)
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), 0);
 
-  if (CLUTTER_IS_CONTAINER (actor))
-    {
-      children = clutter_container_get_children (CLUTTER_CONTAINER (actor));
-      num = g_list_length (children);
-
-      g_list_free (children);
-    }
-  else
-    {
-      num = 0;
-    }
-
-  return num;
+  return clutter_actor_get_n_children (actor);
 }
 
 static AtkObject*
 cally_actor_ref_child (AtkObject *obj,
-                      gint       i)
+                       gint       i)
 {
-  ClutterActor     *actor    = NULL;
-  ClutterActor     *child    = NULL;
-  GList            *children = NULL;
-  AtkObject        *result   = NULL;
+  ClutterActor *actor = NULL;
+  ClutterActor *child = NULL;
 
   g_return_val_if_fail (CALLY_IS_ACTOR (obj), NULL);
 
   actor = CALLY_GET_CLUTTER_ACTOR (obj);
-
   if (actor == NULL) /* State is defunct */
-    {
-      return NULL;
-    }
+    return NULL;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
 
-  if (CLUTTER_IS_CONTAINER (actor))
-    {
-      children = clutter_container_get_children (CLUTTER_CONTAINER (actor));
-      child = g_list_nth_data (children, i);
+  if (i >= clutter_actor_get_n_children (actor))
+    return NULL;
 
-      result = clutter_actor_get_accessible (child);
+  child = clutter_actor_get_child_at_index (actor, i);
+  if (child == NULL)
+    return NULL;
 
-      g_object_ref (result);
-      g_list_free (children);
-    }
-  else
-    {
-      result = NULL;
-    }
-
-  return result;
+  return g_object_ref (clutter_actor_get_accessible (child));
 }
 
 static AtkAttributeSet *
