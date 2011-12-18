@@ -267,6 +267,10 @@ void _clutter_actor_pop_clone_paint  (void);
 
 guint32 _clutter_actor_get_pick_id (ClutterActor *self);
 
+void    _clutter_actor_shader_pre_paint         (ClutterActor *actor,
+                                                 gboolean      repeat);
+void    _clutter_actor_shader_post_paint        (ClutterActor *actor);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_PRIVATE_H__ */

@@ -252,6 +252,7 @@ deprecated_h = \
 
 # deprecated source code
 deprecated_c = \
+	$(srcdir)/deprecated/clutter-actor-deprecated.c		\
 	$(srcdir)/deprecated/clutter-behaviour.c 		\
 	$(srcdir)/deprecated/clutter-behaviour-depth.c		\
 	$(srcdir)/deprecated/clutter-behaviour-ellipse.c	\
