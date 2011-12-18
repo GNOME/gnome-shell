@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-11-15 10:59+0000\n"
-"PO-Revision-Date: 2011-11-17 14:16+0100\n"
+"POT-Creation-Date: 2011-11-17 13:20+0000\n"
+"PO-Revision-Date: 2011-12-18 15:30+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,31 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: ../cogl/cogl-debug.c:154
+#: ../cogl/cogl-debug.c:172
 msgid "Supported debug values:"
 msgstr "Valores de depuración soportados:"
 
-#: ../cogl/cogl-debug.c:159
+#: ../cogl/cogl-debug.c:177
 msgid "Special debug values:"
 msgstr "Valores especiales de depuración:"
 
-#: ../cogl/cogl-debug.c:161 ../cogl/cogl-debug.c:163
+#: ../cogl/cogl-debug.c:179 ../cogl/cogl-debug.c:181
 msgid "Enables all non-behavioural debug options"
 msgstr "Activa todas las opciones de depuración sin comportamiento"
 
-#: ../cogl/cogl-debug.c:207
+#: ../cogl/cogl-debug.c:225
 msgid "Cogl debugging flags to set"
 msgstr "Opciones de depuración de Cogl que activar"
 
-#: ../cogl/cogl-debug.c:209
+#: ../cogl/cogl-debug.c:227
 msgid "Cogl debugging flags to unset"
 msgstr "Opciones de depuración de Cogl que desactivar"
 
-#: ../cogl/cogl-debug.c:258
+#: ../cogl/cogl-debug.c:276
 msgid "Cogl Options"
 msgstr "Opciones de Cogl"
 
-#: ../cogl/cogl-debug.c:259
+#: ../cogl/cogl-debug.c:277
 msgid "Show Cogl options"
 msgstr "Mostrar las opciones de Cogl"
 
@@ -66,11 +66,11 @@ msgstr "Depurar problemas de conteo de referencias para CoglObjects"
 
 #: ../cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
-msgstr ""
+msgstr "Rastrear el troceado de texturas"
 
 #: ../cogl/cogl-debug-options.h:33
 msgid "debug the creation of texture slices"
-msgstr ""
+msgstr "depurar la creación de troceado de texturas"
 
 #: ../cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
@@ -98,11 +98,11 @@ msgstr "Ver toda la geometría que pasa a través del diario"
 
 #: ../cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
-msgstr ""
+msgstr "Rastrear procesado por lotes"
 
 #: ../cogl/cogl-debug-options.h:53
 msgid "Show how geometry is being batched in the journal"
-msgstr ""
+msgstr "Mostrar cómo se procesa por lotes la geometría en el diario"
 
 #: ../cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
@@ -169,11 +169,12 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:88
 msgid "Disable Journal batching"
-msgstr ""
+msgstr "Desactivar el procesado por lotes en el diario"
 
 #: ../cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
 msgstr ""
+"Desactivar el procesado por lotes de la geometría en el diario de Cogl."
 
 #: ../cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
@@ -197,7 +198,7 @@ msgstr "Desactivar la transformación de rectas por software"
 
 #: ../cogl/cogl-debug-options.h:104
 msgid "Use the GPU to transform rectangular geometry"
-msgstr ""
+msgstr "Usar la GPU para transformar geometría rectangular"
 
 #: ../cogl/cogl-debug-options.h:106
 msgid "Cogl Specialist"
@@ -205,11 +206,11 @@ msgstr "Especialista de Cogl"
 
 #: ../cogl/cogl-debug-options.h:108
 msgid "Dump atlas images"
-msgstr ""
+msgstr "Volcar imagenes atlas"
 
 #: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
-msgstr ""
+msgstr "Volcar cambios en la textura de atlas a un archivo de imagen"
 
 #: ../cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
@@ -235,7 +236,7 @@ msgstr "Desactivar texturizado"
 
 #: ../cogl/cogl-debug-options.h:125
 msgid "Disable texturing any primitives"
-msgstr ""
+msgstr "Desactivar el texturizado de cualquier primitiva"
 
 #: ../cogl/cogl-debug-options.h:129
 msgid "Disable arbfp"
