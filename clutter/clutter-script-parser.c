@@ -1832,20 +1832,19 @@ _clutter_script_check_unresolved (ClutterScript *script,
       ClutterActor *parent;
 
       parent = clutter_actor_get_parent (CLUTTER_ACTOR (oinfo->object));
-      if (parent != NULL && CLUTTER_IS_CONTAINER (parent))
+      if (parent != NULL)
         {
           ClutterContainer *container = CLUTTER_CONTAINER (parent);
-          GList *children, *l;
+          ClutterActor *child;
 
-          children = clutter_container_get_children (container);
-
-          for (l = children; l != NULL; l = l->next)
+          for (child = clutter_actor_get_first_child (parent);
+               child != NULL;
+               child = clutter_actor_get_next_sibling (child))
             {
-              GObject *child = l->data;
               ObjectInfo *child_info;
               const gchar *id_;
 
-              id_ = clutter_get_script_id (child);
+              id_ = clutter_get_script_id (G_OBJECT (child));
               if (id_ == NULL || *id_ == '\0')
                 continue;
 
@@ -1854,14 +1853,12 @@ _clutter_script_check_unresolved (ClutterScript *script,
                 continue;
 
               apply_child_properties (script, container,
-                                      CLUTTER_ACTOR (child),
+                                      child,
                                       child_info);
               apply_layout_properties (script, container,
-                                       CLUTTER_ACTOR (child),
+                                       child,
                                        child_info);
             }
-
-          g_list_free (children);
         }
     }
 

@@ -156,13 +156,12 @@
  *                             ClutterAllocationFlags  flags)
  * {
  *   MyLayoutManager *self = MY_LAYOUT_MANAGER (manager);
- *   GList *children, *l;
+ *   ClutterActor *child;
  *
- *   children = clutter_container_get_children (container);
- *
- *   for (l = children; l != NULL; l = l-&gt;next)
+ *   for (child = clutter_actor_get_first_child (CLUTTER_ACTOR (container));
+ *        child != NULL;
+ *        child = clutter_actor_get_next_sibling (child))
  *     {
- *       ClutterActor *child = l->data;
  *       ClutterLayoutMeta *meta;
  *       MyLayoutMeta *my_meta;
  *
@@ -223,8 +222,6 @@
  *       /&ast; allocate the child &ast;/
  *       clutter_actor_allocate (child, &child_box, flags);
  *     }
- *
- *   g_list_free (children);
  * }
  *     </programlisting>
  *   </example>
