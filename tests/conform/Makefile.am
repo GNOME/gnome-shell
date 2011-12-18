@@ -59,6 +59,7 @@ units_sources += \
 
 # actors tests
 units_sources += \
+	test-actor-graph.c		\
 	test-actor-destroy.c		\
 	test-actor-invariants.c 	\
 	test-actor-layout.c		\

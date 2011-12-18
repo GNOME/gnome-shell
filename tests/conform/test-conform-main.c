@@ -128,15 +128,18 @@ main (int argc, char **argv)
   /* sanity check for the test suite itself */
   TEST_CONFORM_TODO ("/suite", verify_failure);
 
+  TEST_CONFORM_SIMPLE ("/actor", actor_add_child);
+  TEST_CONFORM_SIMPLE ("/actor", actor_insert_child);
+  TEST_CONFORM_SIMPLE ("/actor", actor_remove_child);
   TEST_CONFORM_SIMPLE ("/actor", actor_destruction);
   TEST_CONFORM_SIMPLE ("/actor", actor_anchors);
   TEST_CONFORM_SIMPLE ("/actor", actor_picking);
   TEST_CONFORM_SIMPLE ("/actor", actor_fixed_size);
   TEST_CONFORM_SIMPLE ("/actor", actor_preferred_size);
-  TEST_CONFORM_SIMPLE ("/actor", test_offscreen_redirect);
-  TEST_CONFORM_SIMPLE ("/actor", test_shader_effect);
   TEST_CONFORM_SIMPLE ("/actor", basic_layout);
   TEST_CONFORM_SIMPLE ("/actor", margin_layout);
+  TEST_CONFORM_SIMPLE ("/actor", test_offscreen_redirect);
+  TEST_CONFORM_SIMPLE ("/actor", test_shader_effect);
 
   TEST_CONFORM_SIMPLE ("/invariants", test_initial_state);
   TEST_CONFORM_SIMPLE ("/invariants", test_shown_not_parented);
