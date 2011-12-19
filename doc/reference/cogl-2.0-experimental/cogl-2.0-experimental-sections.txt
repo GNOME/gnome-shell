@@ -174,6 +174,7 @@ CoglPollFDEvent
 CoglPollFD
 cogl_poll_get_info
 cogl_poll_dispatch
+cogl_glib_source_new
 </SECTION>
 
 <SECTION>

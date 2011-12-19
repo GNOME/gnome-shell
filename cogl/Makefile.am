@@ -348,6 +348,13 @@ cogl_sources_c = \
 	$(srcdir)/gl-prototypes/cogl-glsl-functions.h	\
 	$(NULL)
 
+if USE_GLIB
+cogl_public_h += \
+	$(srcdir)/cogl-glib-source.h
+cogl_sources_c += \
+	$(srcdir)/cogl-glib-source.c
+endif
+
 if SUPPORT_XLIB
 cogl_public_h += \
 	$(srcdir)/cogl-clutter-xlib.h \
