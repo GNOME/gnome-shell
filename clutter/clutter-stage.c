@@ -668,13 +668,18 @@ static void
 clutter_stage_pick (ClutterActor       *self,
 		    const ClutterColor *color)
 {
+  ClutterActor *child;
+
   /* Note: we don't chain up to our parent as we don't want any geometry
    * emitted for the stage itself. The stage's pick id is effectively handled
    * by the call to cogl_clear done in clutter-main.c:_clutter_do_pick_async()
    */
-  clutter_container_foreach (CLUTTER_CONTAINER (self),
-                             CLUTTER_CALLBACK (clutter_actor_paint),
-                             NULL);
+  for (child = clutter_actor_get_first_child (self);
+       child != NULL;
+       child = clutter_actor_get_next_sibling (child))
+    {
+      clutter_actor_paint (child);
+    }
 }
 
 static gboolean
