@@ -802,7 +802,7 @@ _cogl_texture_pixmap_x11_foreach_sub_texture_in_region
       data.callback = callback;
       data.user_data = user_data;
 
-      cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (tex),
+      cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (child_tex),
                                            virtual_tx_1,
                                            virtual_ty_1,
                                            virtual_tx_2,
@@ -813,7 +813,7 @@ _cogl_texture_pixmap_x11_foreach_sub_texture_in_region
                                            &data);
     }
   else
-    cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (tex),
+    cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (child_tex),
                                          virtual_tx_1,
                                          virtual_ty_1,
                                          virtual_tx_2,
