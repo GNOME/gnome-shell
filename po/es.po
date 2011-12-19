@@ -1,22 +1,22 @@
 # Spanish translation for cogl.
 # Copyright (C) 2011 cogl's COPYRIGHT HOLDER
 # This file is distributed under the same license as the cogl package.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
 # Jorge González <jorgegonz@svn.gnome.org>, 2011.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-11-17 13:20+0000\n"
-"PO-Revision-Date: 2011-12-18 15:30+0100\n"
-"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
-"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
+"POT-Creation-Date: 2011-12-18 14:32+0000\n"
+"PO-Revision-Date: 2011-12-19 18:25+0100\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
+"Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../cogl/cogl-debug.c:172
 msgid "Supported debug values:"
@@ -130,7 +130,7 @@ msgstr "Rastrear el dibujado Pango de Cogl"
 
 #: ../cogl/cogl-debug-options.h:73
 msgid "Trace CoglTexturePixmap backend"
-msgstr ""
+msgstr "Rastrear el backend de CoglTexturePixmap"
 
 #: ../cogl/cogl-debug-options.h:74
 msgid "Trace the Cogl texture pixmap backend"
@@ -146,15 +146,15 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:79
 msgid "Add wire outlines for all rectangular geometry"
-msgstr ""
+msgstr "Añadir trazos de líneas para toda la geometría rectangular"
 
 #: ../cogl/cogl-debug-options.h:83
 msgid "Show wireframes"
-msgstr ""
+msgstr "Mostrar trazados de líneas (wireframes)"
 
 #: ../cogl/cogl-debug-options.h:84
 msgid "Add wire outlines for all geometry"
-msgstr ""
+msgstr "Añadir trazos de líneas para toda la geometría"
 
 #: ../cogl/cogl-debug-options.h:86 ../cogl/cogl-debug-options.h:91
 #: ../cogl/cogl-debug-options.h:96 ../cogl/cogl-debug-options.h:101
@@ -214,11 +214,11 @@ msgstr "Volcar cambios en la textura de atlas a un archivo de imagen"
 
 #: ../cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
-msgstr ""
+msgstr "Desactivar los atlas de texturas"
 
 #: ../cogl/cogl-debug-options.h:114
 msgid "Disable use of texture atlasing"
-msgstr ""
+msgstr "Desactivar el uso de atlas de texturas"
 
 #: ../cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
@@ -272,7 +272,7 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:149
 msgid "Disable non-power-of-two textures"
-msgstr ""
+msgstr "Desactivar las texturas que no sean potencias de dos"
 
 #: ../cogl/cogl-debug-options.h:150
 msgid ""
