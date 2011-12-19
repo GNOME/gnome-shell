@@ -24,6 +24,8 @@ typedef struct _Data
 
   GTimer *timer;
 
+  gboolean swap_ready;
+
 } Data;
 
 /* A static identity matrix initialized for convenience. */
@@ -133,6 +135,15 @@ paint (Data *data)
                             &white, 0);
 }
 
+static void
+swap_notify_cb (CoglFramebuffer *framebuffer,
+                void *user_data)
+{
+  Data *data = user_data;
+
+  data->swap_ready = TRUE;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -144,6 +155,7 @@ main (int argc, char **argv)
   PangoRectangle hello_label_size;
   float fovy, aspect, z_near, z_2d, z_far;
   CoglDepthState depth_state;
+  gboolean has_swap_notify;
 
   g_type_init ();
 
@@ -270,17 +282,41 @@ main (int argc, char **argv)
 
   cogl_push_framebuffer (fb);
 
+  data.swap_ready = TRUE;
+
+  has_swap_notify =
+    cogl_has_feature (ctx, COGL_FEATURE_ID_SWAP_BUFFERS_EVENT);
+
+  if (has_swap_notify)
+    cogl_framebuffer_add_swap_buffers_callback (fb,
+                                                swap_notify_cb,
+                                                &data);
+
   while (1)
     {
       CoglPollFD *poll_fds;
       int n_poll_fds;
       gint64 timeout;
 
-      paint (&data);
-      cogl_framebuffer_swap_buffers (fb);
+      if (data.swap_ready)
+        {
+          paint (&data);
+          cogl_framebuffer_swap_buffers (fb);
+        }
 
       cogl_poll_get_info (ctx, &poll_fds, &n_poll_fds, &timeout);
-      g_poll ((GPollFD *) poll_fds, n_poll_fds, 0);
+
+      if (!has_swap_notify)
+        {
+          /* If the winsys doesn't support swap event notification
+             then we'll just redraw constantly */
+          data.swap_ready = TRUE;
+          timeout = 0;
+        }
+
+      g_poll ((GPollFD *) poll_fds, n_poll_fds,
+              timeout == -1 ? -1 : timeout / 1000);
+
       cogl_poll_dispatch (ctx, poll_fds, n_poll_fds);
     }
 
