@@ -139,22 +139,6 @@ struct _ClutterContainerIface
 
 GType         clutter_container_get_type         (void) G_GNUC_CONST;
 
-void          clutter_container_add              (ClutterContainer *container,
-                                                  ClutterActor     *first_actor,
-                                                  ...) G_GNUC_NULL_TERMINATED;
-void          clutter_container_add_actor        (ClutterContainer *container,
-                                                  ClutterActor     *actor);
-void          clutter_container_add_valist       (ClutterContainer *container,
-                                                  ClutterActor     *first_actor,
-                                                  va_list           var_args);
-void          clutter_container_remove           (ClutterContainer *container,
-                                                  ClutterActor     *first_actor,
-                                                  ...) G_GNUC_NULL_TERMINATED;
-void          clutter_container_remove_actor     (ClutterContainer *container,
-                                                  ClutterActor     *actor);
-void          clutter_container_remove_valist    (ClutterContainer *container,
-                                                  ClutterActor     *first_actor,
-                                                  va_list           var_args);
 GList *       clutter_container_get_children           (ClutterContainer *container);
 void          clutter_container_foreach                (ClutterContainer *container,
                                                         ClutterCallback   callback,

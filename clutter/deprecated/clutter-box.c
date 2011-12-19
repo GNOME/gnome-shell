@@ -77,6 +77,9 @@
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#include "deprecated/clutter-container.h"
+
 #include "clutter-box.h"
 
 #include "clutter-actor-private.h"

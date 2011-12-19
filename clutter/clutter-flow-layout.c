@@ -73,6 +73,9 @@
 
 #include <math.h>
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#include "deprecated/clutter-container.h"
+
 #include "clutter-actor.h"
 #include "clutter-animatable.h"
 #include "clutter-child-meta.h"

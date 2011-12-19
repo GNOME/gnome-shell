@@ -76,6 +76,9 @@
 
 #include <math.h>
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#include "deprecated/clutter-container.h"
+
 #include "clutter-table-layout.h"
 
 #include "clutter-debug.h"

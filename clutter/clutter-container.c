@@ -176,67 +176,22 @@ clutter_container_default_init (ClutterContainerInterface *iface)
   iface->child_notify       = child_notify;
 }
 
-/**
- * clutter_container_add: (skip)
- * @container: a #ClutterContainer
- * @first_actor: the first #ClutterActor to add
- * @...: %NULL terminated list of actors to add
- *
- * Adds a list of #ClutterActor<!-- -->s to @container. Each time and
- * actor is added, the "actor-added" signal is emitted. Each actor should
- * be parented to @container, which takes a reference on the actor. You
- * cannot add a #ClutterActor to more than one #ClutterContainer.
- *
- * Since: 0.4
- */
-void
-clutter_container_add (ClutterContainer *container,
-                       ClutterActor     *first_actor,
-                       ...)
-{
-  va_list args;
-
-  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
-  g_return_if_fail (CLUTTER_IS_ACTOR (first_actor));
-
-  va_start (args, first_actor);
-  clutter_container_add_valist (container, first_actor, args);
-  va_end (args);
-}
-
-/**
- * clutter_container_add_actor:
- * @container: a #ClutterContainer
- * @actor: the first #ClutterActor to add
- *
- * Adds a #ClutterActor to @container. This function will emit the
- * "actor-added" signal. The actor should be parented to
- * @container. You cannot add a #ClutterActor to more than one
- * #ClutterContainer.
- *
- * Virtual: add
- *
- * Since: 0.4
- */
-void
-clutter_container_add_actor (ClutterContainer *container,
-                             ClutterActor     *actor)
+static inline void
+container_add_actor (ClutterContainer *container,
+                     ClutterActor     *actor)
 {
   ClutterContainerIface *iface;
   ClutterActor *parent;
 
-  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
   iface = CLUTTER_CONTAINER_GET_IFACE (container);
-  if (!iface->add)
+  if (G_UNLIKELY (iface->add == NULL))
     {
       CLUTTER_CONTAINER_WARN_NOT_IMPLEMENTED (container, "add");
       return;
     }
 
   parent = clutter_actor_get_parent (actor);
-  if (parent)
+  if (G_UNLIKELY (parent == NULL))
     {
       g_warning ("Attempting to add actor of type '%s' to a "
 		 "container of type '%s', but the actor has "
@@ -252,89 +207,15 @@ clutter_container_add_actor (ClutterContainer *container,
   iface->add (container, actor);
 }
 
-/**
- * clutter_container_add_valist: (skip)
- * @container: a #ClutterContainer
- * @first_actor: the first #ClutterActor to add
- * @var_args: list of actors to add, followed by %NULL
- *
- * Alternative va_list version of clutter_container_add().
- *
- * Since: 0.4
- */
-void
-clutter_container_add_valist (ClutterContainer *container,
-                              ClutterActor     *first_actor,
-                              va_list           var_args)
-{
-  ClutterActor *actor;
-
-  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
-  g_return_if_fail (CLUTTER_IS_ACTOR (first_actor));
-
-  actor = first_actor;
-  while (actor)
-    {
-      clutter_container_add_actor (container, actor);
-      actor = va_arg (var_args, ClutterActor*);
-    }
-}
-
-/**
- * clutter_container_remove: (skip)
- * @container: a #ClutterContainer
- * @first_actor: first #ClutterActor to remove
- * @...: a %NULL-terminated list of actors to remove
- *
- * Removes a %NULL terminated list of #ClutterActor<!-- -->s from
- * @container. Each actor should be unparented, so if you want to keep it
- * around you must hold a reference to it yourself, using g_object_ref().
- * Each time an actor is removed, the "actor-removed" signal is
- * emitted by @container.
- *
- * Since: 0.4
- */
-void
-clutter_container_remove (ClutterContainer *container,
-                          ClutterActor     *first_actor,
-                          ...)
-{
-  va_list var_args;
-
-  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
-  g_return_if_fail (CLUTTER_IS_ACTOR (first_actor));
-
-  va_start (var_args, first_actor);
-  clutter_container_remove_valist (container, first_actor, var_args);
-  va_end (var_args);
-}
-
-/**
- * clutter_container_remove_actor:
- * @container: a #ClutterContainer
- * @actor: a #ClutterActor
- *
- * Removes @actor from @container. The actor should be unparented, so
- * if you want to keep it around you must hold a reference to it
- * yourself, using g_object_ref(). When the actor has been removed,
- * the "actor-removed" signal is emitted by @container.
- *
- * Virtual: remove
- *
- * Since: 0.4
- */
-void
-clutter_container_remove_actor (ClutterContainer *container,
-                                ClutterActor     *actor)
+static inline void
+container_remove_actor (ClutterContainer *container,
+                        ClutterActor     *actor)
 {
   ClutterContainerIface *iface;
   ClutterActor *parent;
 
-  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
   iface = CLUTTER_CONTAINER_GET_IFACE (container);
-  if (!iface->remove)
+  if (G_UNLIKELY (iface->remove == NULL))
     {
       CLUTTER_CONTAINER_WARN_NOT_IMPLEMENTED (container, "remove");
       return;
@@ -356,6 +237,170 @@ clutter_container_remove_actor (ClutterContainer *container,
   iface->remove (container, actor);
 }
 
+static inline void
+container_add_valist (ClutterContainer *container,
+                      ClutterActor     *first_actor,
+                      va_list           args)
+{
+  ClutterActor *actor = first_actor;
+
+  while (actor != NULL)
+    {
+      container_add_actor (container, actor);
+      actor = va_arg (args, ClutterActor *);
+    }
+}
+
+static inline void
+container_remove_valist (ClutterContainer *container,
+                         ClutterActor     *first_actor,
+                         va_list           args)
+{
+  ClutterActor *actor = first_actor;
+
+  while (actor != NULL)
+    {
+      container_remove_actor (container, actor);
+      actor = va_arg (args, ClutterActor *);
+    }
+}
+
+/**
+ * clutter_container_add: (skip)
+ * @container: a #ClutterContainer
+ * @first_actor: the first #ClutterActor to add
+ * @...: %NULL terminated list of actors to add
+ *
+ * Adds a list of #ClutterActor<!-- -->s to @container. Each time and
+ * actor is added, the "actor-added" signal is emitted. Each actor should
+ * be parented to @container, which takes a reference on the actor. You
+ * cannot add a #ClutterActor to more than one #ClutterContainer.
+ *
+ * Since: 0.4
+ *
+ * Deprecated: 1.10: Use clutter_actor_add_child() instead.
+ */
+void
+clutter_container_add (ClutterContainer *container,
+                       ClutterActor     *first_actor,
+                       ...)
+{
+  va_list args;
+
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (first_actor));
+
+  va_start (args, first_actor);
+  container_add_valist (container, first_actor, args);
+  va_end (args);
+}
+
+/**
+ * clutter_container_add_actor:
+ * @container: a #ClutterContainer
+ * @actor: the first #ClutterActor to add
+ *
+ * Adds a #ClutterActor to @container. This function will emit the
+ * "actor-added" signal. The actor should be parented to
+ * @container. You cannot add a #ClutterActor to more than one
+ * #ClutterContainer.
+ *
+ * Virtual: add
+ *
+ * Since: 0.4
+ *
+ * Deprecated: 1.10: Use clutter_actor_add_child() instead.
+ */
+void
+clutter_container_add_actor (ClutterContainer *container,
+                             ClutterActor     *actor)
+{
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  container_add_actor (container, actor);
+}
+
+/**
+ * clutter_container_add_valist: (skip)
+ * @container: a #ClutterContainer
+ * @first_actor: the first #ClutterActor to add
+ * @var_args: list of actors to add, followed by %NULL
+ *
+ * Alternative va_list version of clutter_container_add().
+ *
+ * Since: 0.4
+ *
+ * Deprecated: 1.10: Use clutter_actor_add_child() instead.
+ */
+void
+clutter_container_add_valist (ClutterContainer *container,
+                              ClutterActor     *first_actor,
+                              va_list           var_args)
+{
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (first_actor));
+
+  container_add_valist (container, first_actor, var_args);
+}
+
+/**
+ * clutter_container_remove: (skip)
+ * @container: a #ClutterContainer
+ * @first_actor: first #ClutterActor to remove
+ * @...: a %NULL-terminated list of actors to remove
+ *
+ * Removes a %NULL terminated list of #ClutterActor<!-- -->s from
+ * @container. Each actor should be unparented, so if you want to keep it
+ * around you must hold a reference to it yourself, using g_object_ref().
+ * Each time an actor is removed, the "actor-removed" signal is
+ * emitted by @container.
+ *
+ * Since: 0.4
+ *
+ * Deprecated: 1.10: Use clutter_actor_remove_child() instead.
+ */
+void
+clutter_container_remove (ClutterContainer *container,
+                          ClutterActor     *first_actor,
+                          ...)
+{
+  va_list var_args;
+
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (first_actor));
+
+  va_start (var_args, first_actor);
+  container_remove_valist (container, first_actor, var_args);
+  va_end (var_args);
+}
+
+/**
+ * clutter_container_remove_actor:
+ * @container: a #ClutterContainer
+ * @actor: a #ClutterActor
+ *
+ * Removes @actor from @container. The actor should be unparented, so
+ * if you want to keep it around you must hold a reference to it
+ * yourself, using g_object_ref(). When the actor has been removed,
+ * the "actor-removed" signal is emitted by @container.
+ *
+ * Virtual: remove
+ *
+ * Since: 0.4
+ *
+ * Deprecated: 1.10: Use clutter_actor_remove_child() instead.
+ */
+void
+clutter_container_remove_actor (ClutterContainer *container,
+                                ClutterActor     *actor)
+{
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  container_remove_actor (container, actor);
+}
+
 /**
  * clutter_container_remove_valist: (skip)
  * @container: a #ClutterContainer
@@ -365,23 +410,18 @@ clutter_container_remove_actor (ClutterContainer *container,
  * Alternative va_list version of clutter_container_remove().
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.10: Use clutter_actor_remove_child() instead.
  */
 void
 clutter_container_remove_valist (ClutterContainer *container,
                                  ClutterActor     *first_actor,
                                  va_list           var_args)
 {
-  ClutterActor *actor;
-
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (CLUTTER_IS_ACTOR (first_actor));
 
-  actor = first_actor;
-  while (actor)
-    {
-      clutter_container_remove_actor (container, actor);
-      actor = va_arg (var_args, ClutterActor*);
-    }
+  container_remove_valist (container, first_actor, var_args);
 }
 
 static void

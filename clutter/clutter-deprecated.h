@@ -13,6 +13,7 @@
 #include "deprecated/clutter-behaviour-rotate.h"
 #include "deprecated/clutter-behaviour-scale.h"
 #include "deprecated/clutter-box.h"
+#include "deprecated/clutter-container.h"
 #include "deprecated/clutter-fixed.h"
 #include "deprecated/clutter-frame-source.h"
 #include "deprecated/clutter-group.h"

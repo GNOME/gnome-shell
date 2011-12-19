@@ -293,19 +293,17 @@
 #include "config.h"
 #endif
 
-/* for ClutterShader */
-#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
-
 #include <math.h>
 
 #include "cogl/cogl.h"
+
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
 #include "clutter-actor-private.h"
 
 #include "clutter-action.h"
 #include "clutter-actor-meta-private.h"
 #include "clutter-animatable.h"
-#include "clutter-behaviour.h"
 #include "clutter-color-static.h"
 #include "clutter-color.h"
 #include "clutter-constraint.h"
@@ -322,9 +320,13 @@
 #include "clutter-profile.h"
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
-#include "clutter-shader.h"
 #include "clutter-stage-private.h"
 #include "clutter-units.h"
+
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#include "deprecated/clutter-behaviour.h"
+#include "deprecated/clutter-container.h"
+#include "deprecated/clutter-shader.h"
 
 typedef struct _ShaderData ShaderData;
 
