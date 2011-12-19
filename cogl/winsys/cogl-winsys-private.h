@@ -129,15 +129,6 @@ typedef struct _CoglWinsysVtable
   (*onscreen_win32_get_window) (CoglOnscreen *onscreen);
 #endif
 
-  unsigned int
-  (*onscreen_add_swap_buffers_callback) (CoglOnscreen *onscreen,
-                                         CoglSwapBuffersNotify callback,
-                                         void *user_data);
-
-  void
-  (*onscreen_remove_swap_buffers_callback) (CoglOnscreen *onscreen,
-                                            unsigned int id);
-
   void
   (*poll_get_info) (CoglContext *context,
                     CoglPollFD **poll_fds,

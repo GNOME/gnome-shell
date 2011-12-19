@@ -83,13 +83,6 @@ typedef struct _CoglOnscreenGLX
   GList *swap_callbacks;
 } CoglOnscreenGLX;
 
-typedef struct _CoglSwapBuffersNotifyEntry
-{
-  CoglSwapBuffersNotify callback;
-  void *user_data;
-  unsigned int id;
-} CoglSwapBuffersNotifyEntry;
-
 typedef struct _CoglTexturePixmapGLX
 {
   GLXPixmap glx_pixmap;
@@ -170,19 +163,11 @@ static void
 notify_swap_buffers (CoglContext *context, GLXDrawable drawable)
 {
   CoglOnscreen *onscreen = find_onscreen_for_xid (context, (guint32)drawable);
-  CoglOnscreenGLX *glx_onscreen;
-  GList *l;
 
   if (!onscreen)
     return;
 
-  glx_onscreen = onscreen->winsys;
-
-  for (l = glx_onscreen->swap_callbacks; l; l = l->next)
-    {
-      CoglSwapBuffersNotifyEntry *entry = l->data;
-      entry->callback (COGL_FRAMEBUFFER (onscreen), entry->user_data);
-    }
+  _cogl_onscreen_notify_swap_buffers (onscreen);
 }
 
 static CoglFilterReturn
@@ -1360,45 +1345,6 @@ _cogl_winsys_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
   return xlib_onscreen->xwin;
 }
 
-static unsigned int
-_cogl_winsys_onscreen_add_swap_buffers_callback (CoglOnscreen *onscreen,
-                                                 CoglSwapBuffersNotify callback,
-                                                 void *user_data)
-{
-  CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
-  CoglSwapBuffersNotifyEntry *entry = g_slice_new0 (CoglSwapBuffersNotifyEntry);
-  static int next_swap_buffers_callback_id = 0;
-
-  entry->callback = callback;
-  entry->user_data = user_data;
-  entry->id = next_swap_buffers_callback_id++;
-
-  glx_onscreen->swap_callbacks =
-    g_list_prepend (glx_onscreen->swap_callbacks, entry);
-
-  return entry->id;
-}
-
-static void
-_cogl_winsys_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
-                                                    unsigned int id)
-{
-  CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
-  GList *l;
-
-  for (l = glx_onscreen->swap_callbacks; l; l = l->next)
-    {
-      CoglSwapBuffersNotifyEntry *entry = l->data;
-      if (entry->id == id)
-        {
-          g_slice_free (CoglSwapBuffersNotifyEntry, entry);
-          glx_onscreen->swap_callbacks =
-            g_list_delete_link (glx_onscreen->swap_callbacks, l);
-          return;
-        }
-    }
-}
-
 static void
 _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
 {
@@ -2053,10 +1999,6 @@ static CoglWinsysVtable _cogl_winsys_vtable =
       _cogl_winsys_onscreen_update_swap_throttled,
     .onscreen_x11_get_window_xid =
       _cogl_winsys_onscreen_x11_get_window_xid,
-    .onscreen_add_swap_buffers_callback =
-      _cogl_winsys_onscreen_add_swap_buffers_callback,
-    .onscreen_remove_swap_buffers_callback =
-      _cogl_winsys_onscreen_remove_swap_buffers_callback,
     .onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility,
 
     .poll_get_info = _cogl_winsys_poll_get_info,

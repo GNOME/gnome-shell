@@ -32,6 +32,19 @@
 #include <windows.h>
 #endif
 
+typedef struct _CoglSwapBuffersNotifyEntry CoglSwapBuffersNotifyEntry;
+
+COGL_TAILQ_HEAD (CoglSwapBuffersNotifyList, CoglSwapBuffersNotifyEntry);
+
+struct _CoglSwapBuffersNotifyEntry
+{
+  COGL_TAILQ_ENTRY (CoglSwapBuffersNotifyEntry) list_node;
+
+  CoglSwapBuffersNotify callback;
+  void *user_data;
+  unsigned int id;
+};
+
 struct _CoglOnscreen
 {
   CoglFramebuffer  _parent;
@@ -48,6 +61,8 @@ struct _CoglOnscreen
 
   gboolean swap_throttled;
 
+  CoglSwapBuffersNotifyList swap_callbacks;
+
   void *winsys;
 };
 
@@ -57,5 +72,8 @@ _cogl_onscreen_new (void);
 void
 _cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
                                       int width, int height);
+
+void
+_cogl_onscreen_notify_swap_buffers (CoglOnscreen *onscreen);
 
 #endif /* __COGL_ONSCREEN_PRIVATE_H */

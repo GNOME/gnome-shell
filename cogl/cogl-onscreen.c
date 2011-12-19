@@ -44,6 +44,8 @@ _cogl_onscreen_init_from_template (CoglOnscreen *onscreen,
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
 
+  COGL_TAILQ_INIT (&onscreen->swap_callbacks);
+
   framebuffer->config = onscreen_template->config;
   cogl_object_ref (framebuffer->config.swap_chain);
 }
@@ -256,18 +258,16 @@ cogl_framebuffer_add_swap_buffers_callback (CoglFramebuffer *framebuffer,
                                             void *user_data)
 {
   CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
-  const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
+  CoglSwapBuffersNotifyEntry *entry = g_slice_new0 (CoglSwapBuffersNotifyEntry);
+  static int next_swap_buffers_callback_id = 0;
 
-  /* Should this just be cogl_onscreen API instead? */
-  _COGL_RETURN_VAL_IF_FAIL (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN, 0);
+  entry->callback = callback;
+  entry->user_data = user_data;
+  entry->id = next_swap_buffers_callback_id++;
 
-  /* This should only be called when
-     COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT is advertised */
-  _COGL_RETURN_VAL_IF_FAIL (winsys->onscreen_add_swap_buffers_callback != NULL, 0);
+  COGL_TAILQ_INSERT_TAIL (&onscreen->swap_callbacks, entry, list_node);
 
-  return winsys->onscreen_add_swap_buffers_callback (onscreen,
-                                                     callback,
-                                                     user_data);
+  return entry->id;
 }
 
 void
@@ -275,13 +275,17 @@ cogl_framebuffer_remove_swap_buffers_callback (CoglFramebuffer *framebuffer,
                                                unsigned int id)
 {
   CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
-  const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
+  CoglSwapBuffersNotifyEntry *entry;
 
-  /* This should only be called when
-     COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT is advertised */
-  _COGL_RETURN_IF_FAIL (winsys->onscreen_remove_swap_buffers_callback != NULL);
-
-  winsys->onscreen_remove_swap_buffers_callback (onscreen, id);
+  COGL_TAILQ_FOREACH (entry, &onscreen->swap_callbacks, list_node)
+    {
+      if (entry->id == id)
+        {
+          COGL_TAILQ_REMOVE (&onscreen->swap_callbacks, entry, list_node);
+          g_slice_free (CoglSwapBuffersNotifyEntry, entry);
+          break;
+        }
+    }
 }
 
 void
@@ -327,6 +331,18 @@ cogl_onscreen_hide (CoglOnscreen *onscreen)
       if (winsys->onscreen_set_visibility)
         winsys->onscreen_set_visibility (onscreen, FALSE);
     }
+}
+
+void
+_cogl_onscreen_notify_swap_buffers (CoglOnscreen *onscreen)
+{
+  CoglSwapBuffersNotifyEntry *entry, *tmp;
+
+  COGL_TAILQ_FOREACH_SAFE (entry,
+                           &onscreen->swap_callbacks,
+                           list_node,
+                           tmp)
+    entry->callback (COGL_FRAMEBUFFER (onscreen), entry->user_data);
 }
 
 void
