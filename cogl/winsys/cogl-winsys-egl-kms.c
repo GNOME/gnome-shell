@@ -68,6 +68,7 @@ typedef struct _CoglDisplayKMS
   drmModeModeInfo mode;
   drmModeCrtcPtr saved_crtc;
   int width, height;
+  gboolean pending_swap_notify;
 } CoglDisplayKMS;
 
 typedef struct _CoglOnscreenKMS
@@ -77,6 +78,7 @@ typedef struct _CoglOnscreenKMS
   uint32_t next_fb_id;
   struct gbm_bo *current_bo;
   struct gbm_bo *next_bo;
+  gboolean pending_swap_notify;
 } CoglOnscreenKMS;
 
 static const char device_name[] = "/dev/dri/card0";
@@ -313,13 +315,8 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
 }
 
 static void
-page_flip_handler (int fd,
-                   unsigned int frame,
-                   unsigned int sec,
-                   unsigned int usec,
-                   void *data)
+free_current_bo (CoglOnscreen *onscreen)
 {
-  CoglOnscreen *onscreen = data;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
@@ -339,12 +336,36 @@ page_flip_handler (int fd,
                                   kms_onscreen->current_bo);
       kms_onscreen->current_bo = NULL;
     }
+}
+
+static void
+page_flip_handler (int fd,
+                   unsigned int frame,
+                   unsigned int sec,
+                   unsigned int usec,
+                   void *data)
+{
+  CoglOnscreen *onscreen = data;
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
+  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglDisplay *display = context->display;
+  CoglDisplayEGL *egl_display = display->winsys;
+  CoglDisplayKMS *kms_display = egl_display->platform;
+
+  free_current_bo (onscreen);
 
   kms_onscreen->current_fb_id = kms_onscreen->next_fb_id;
   kms_onscreen->next_fb_id = 0;
 
   kms_onscreen->current_bo = kms_onscreen->next_bo;
   kms_onscreen->next_bo = NULL;
+
+  /* We only want to notify that the swap is complete when the
+     application calls cogl_context_dispatch so instead of immediately
+     notifying we'll set a flag to remember to notify later */
+  kms_display->pending_swap_notify = TRUE;
+  kms_onscreen->pending_swap_notify = TRUE;
 }
 
 static void
@@ -406,6 +427,19 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
       kms_onscreen->next_bo = NULL;
       kms_onscreen->next_fb_id = 0;
     }
+}
+
+static gboolean
+_cogl_winsys_egl_context_init (CoglContext *context,
+                               GError **error)
+{
+  COGL_FLAGS_SET (context->features,
+                  COGL_FEATURE_ID_SWAP_BUFFERS_EVENT, TRUE);
+  COGL_FLAGS_SET (context->winsys_features,
+                  COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT,
+                  TRUE);
+
+  return TRUE;
 }
 
 static gboolean
@@ -474,6 +508,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   CoglContext *context = framebuffer->context;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenKMS *kms_onscreen;
 
@@ -482,6 +517,12 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
     return;
 
   kms_onscreen = egl_onscreen->platform;
+
+  /* If have a pending swap then block until it completes */
+  while (kms_onscreen->next_fb_id != 0)
+    handle_drm_event (kms_renderer);
+
+  free_current_bo (onscreen);
 
   if (egl_onscreen->egl_surface != EGL_NO_SURFACE)
     {
@@ -506,13 +547,39 @@ _cogl_winsys_poll_get_info (CoglContext *context,
                             int *n_poll_fds,
                             gint64 *timeout)
 {
-  CoglRenderer *renderer = context->display->renderer;
+  CoglDisplay *display = context->display;
+  CoglDisplayEGL *egl_display = display->winsys;
+  CoglDisplayKMS *kms_display = egl_display->platform;
+  CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglRendererKMS *kms_renderer = egl_renderer->platform;
 
   *poll_fds = &kms_renderer->poll_fd;
   *n_poll_fds = 1;
-  *timeout = -1;
+
+  /* If we've already got a pending swap notify then we'll dispatch
+     immediately */
+  *timeout = kms_display->pending_swap_notify ? 0 : -1;
+}
+
+static void
+flush_pending_swap_notify_cb (void *data,
+                              void *user_data)
+{
+  CoglFramebuffer *framebuffer = data;
+
+  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
+    {
+      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+      CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
+
+      if (kms_onscreen->pending_swap_notify)
+        {
+          _cogl_onscreen_notify_swap_buffers (onscreen);
+          kms_onscreen->pending_swap_notify = FALSE;
+        }
+    }
 }
 
 static void
@@ -520,7 +587,10 @@ _cogl_winsys_poll_dispatch (CoglContext *context,
                             const CoglPollFD *poll_fds,
                             int n_poll_fds)
 {
-  CoglRenderer *renderer = context->display->renderer;
+  CoglDisplay *display = context->display;
+  CoglDisplayEGL *egl_display = display->winsys;
+  CoglDisplayKMS *kms_display = egl_display->platform;
+  CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglRendererKMS *kms_renderer = egl_renderer->platform;
   int i;
@@ -533,6 +603,14 @@ _cogl_winsys_poll_dispatch (CoglContext *context,
 
         break;
       }
+
+  if (kms_display->pending_swap_notify)
+    {
+      g_list_foreach (context->framebuffers,
+                      flush_pending_swap_notify_cb,
+                      NULL);
+      kms_display->pending_swap_notify = FALSE;
+    }
 }
 
 static const CoglWinsysEGLVtable
@@ -541,7 +619,8 @@ _cogl_winsys_egl_vtable =
     .display_setup = _cogl_winsys_egl_display_setup,
     .display_destroy = _cogl_winsys_egl_display_destroy,
     .context_created = _cogl_winsys_egl_context_created,
-    .cleanup_context = _cogl_winsys_egl_cleanup_context
+    .cleanup_context = _cogl_winsys_egl_cleanup_context,
+    .context_init = _cogl_winsys_egl_context_init
   };
 
 const CoglWinsysVtable *
