@@ -12,6 +12,7 @@ typedef struct Data
   CoglPrimitive *triangle;
   float center_x, center_y;
   CoglFramebuffer *fb;
+  gboolean quit;
 } Data;
 
 static void
@@ -26,6 +27,85 @@ redraw (Data *data)
   cogl_pop_matrix ();
 
   cogl_framebuffer_swap_buffers (data->fb);
+}
+
+static void
+handle_event (Data *data, SDL_Event *event)
+{
+  switch (event->type)
+    {
+    case SDL_VIDEOEXPOSE:
+      redraw (data);
+      break;
+
+    case SDL_MOUSEMOTION:
+      {
+        int width =
+          cogl_framebuffer_get_width (COGL_FRAMEBUFFER (data->fb));
+        int height =
+          cogl_framebuffer_get_height (COGL_FRAMEBUFFER (data->fb));
+
+        data->center_x = event->motion.x * 2.0f / width - 1.0f;
+        data->center_y = event->motion.y * 2.0f / height - 1.0f;
+
+        redraw (data);
+      }
+      break;
+
+    case SDL_QUIT:
+      data->quit = TRUE;
+      break;
+    }
+}
+
+static Uint32
+timer_handler (Uint32 interval, void *user_data)
+{
+  static const SDL_UserEvent dummy_event =
+    {
+      SDL_USEREVENT
+    };
+
+  /* Post an event to wake up from SDL_WaitEvent */
+  SDL_PushEvent ((SDL_Event *) &dummy_event);
+
+  return 0;
+}
+
+static gboolean
+wait_event_with_timeout (Data *data, SDL_Event *event, gint64 timeout)
+{
+  if (timeout == -1)
+    {
+      if (SDL_WaitEvent (event))
+        return TRUE;
+      else
+        {
+          data->quit = TRUE;
+          return FALSE;
+        }
+    }
+  else if (timeout == 0)
+    return SDL_PollEvent (event);
+  else
+    {
+      gboolean ret;
+      /* Add a timer so that we can wake up the event loop */
+      SDL_TimerID timer_id =
+        SDL_AddTimer (timeout / 1000, timer_handler, data);
+
+      if (SDL_WaitEvent (event))
+        ret = TRUE;
+      else
+        {
+          data->quit = TRUE;
+          ret = FALSE;
+        }
+
+      SDL_RemoveTimer (timer_id);
+
+      return ret;
+    }
 }
 
 int
@@ -55,6 +135,8 @@ main (int argc, char **argv)
       return 1;
     }
 
+  SDL_InitSubSystem (SDL_INIT_TIMER);
+
   onscreen = cogl_onscreen_new (ctx, 800, 600);
   /* Eventually there will be an implicit allocate on first use so this
    * will become optional... */
@@ -69,6 +151,7 @@ main (int argc, char **argv)
   cogl_color_set_from_4ub (&data.black, 0, 0, 0, 255);
   data.center_x = 0.0f;
   data.center_y = 0.0f;
+  data.quit = FALSE;
 
   cogl_onscreen_show (onscreen);
 
@@ -76,37 +159,27 @@ main (int argc, char **argv)
 
   data.triangle = cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,
                                            3, triangle_vertices);
-  while (SDL_WaitEvent (&event))
+  while (!data.quit)
     {
-      switch (event.type)
-        {
-        case SDL_VIDEOEXPOSE:
-          redraw (&data);
-          break;
+      CoglPollFD *poll_fds;
+      int n_poll_fds;
+      gint64 timeout;
 
-        case SDL_MOUSEMOTION:
-          {
-            int width =
-              cogl_framebuffer_get_width (COGL_FRAMEBUFFER (data.fb));
-            int height =
-              cogl_framebuffer_get_height (COGL_FRAMEBUFFER (data.fb));
+      cogl_poll_get_info (ctx, &poll_fds, &n_poll_fds, &timeout);
 
-            data.center_x = event.motion.x * 2.0f / width - 1.0f;
-            data.center_y = event.motion.y * 2.0f / height - 1.0f;
+      /* It's difficult to wait for file descriptors using the SDL
+         event mechanism, but it the SDL winsys is documented that it
+         will never require this so we can assert that there are no
+         fds */
+      g_assert (n_poll_fds == 0);
 
-            redraw (&data);
-          }
-          break;
+      if (wait_event_with_timeout (&data, &event, timeout))
+        do
+          handle_event (&data, &event);
+        while (SDL_PollEvent (&event));
 
-        case SDL_QUIT:
-          goto done;
-        }
+      cogl_poll_dispatch (ctx, poll_fds, n_poll_fds);
     }
-
-  fprintf (stderr, "Error waiting for an event: %s\n",
-           SDL_GetError ());
-
- done:
 
   cogl_pop_framebuffer ();
 

@@ -163,6 +163,10 @@ main (int argc, char **argv)
                                       3, triangle_vertices);
   for (;;)
     {
+      CoglPollFD *poll_fds;
+      int n_poll_fds;
+      gint64 timeout;
+
       while (XPending (xdpy))
         {
           XEvent event;
@@ -178,6 +182,10 @@ main (int argc, char **argv)
       cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
       cogl_primitive_draw (triangle);
       cogl_framebuffer_swap_buffers (fb);
+
+      cogl_poll_get_info (ctx, &poll_fds, &n_poll_fds, &timeout);
+      g_poll ((GPollFD *) poll_fds, n_poll_fds, 0);
+      cogl_poll_dispatch (ctx, poll_fds, n_poll_fds);
     }
 
   return 0;

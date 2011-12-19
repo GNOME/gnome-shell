@@ -705,6 +705,7 @@ main (int argc, char **argv)
       {-0.7, -0.7, 0x00, 0xff, 0x00, 0xff},
       {0.7, -0.7, 0x00, 0x00, 0xff, 0xff}
   };
+  GSource *cogl_source;
 
   memset (&compositor, 0, sizeof (compositor));
 
@@ -760,6 +761,11 @@ main (int argc, char **argv)
                                                  3, triangle_vertices);
 
   g_timeout_add (16, paint_cb, &compositor);
+
+  cogl_source = cogl_glib_source_new (compositor.cogl_context,
+                                      G_PRIORITY_DEFAULT);
+
+  g_source_attach (cogl_source, NULL);
 
   g_main_loop_run (loop);
 
