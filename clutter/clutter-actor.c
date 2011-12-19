@@ -9679,7 +9679,8 @@ clutter_actor_add_child_internal (ClutterActor             *self,
  * This function will take into consideration the #ClutterActor:depth
  * of @child, and will keep the list of children sorted.
  *
- * This function will emit the #ClutterContainer::actor-added signal.
+ * This function will emit the #ClutterContainer::actor-added signal
+ * on @self.
  *
  * Since: 1.10
  */
@@ -9714,7 +9715,8 @@ clutter_actor_add_child (ClutterActor *self,
  * This function will not take into consideration the #ClutterActor:depth
  * of @child.
  *
- * This function will emit the #ClutterContainer::actor-added signal.
+ * This function will emit the #ClutterContainer::actor-added signal
+ * on @self.
  *
  * Since: 1.10
  */
@@ -9751,7 +9753,8 @@ clutter_actor_insert_child_at_index (ClutterActor *self,
  * This function will not take into consideration the #ClutterActor:depth
  * of @child.
  *
- * This function will emit the #ClutterContainer::actor-added signal.
+ * This function will emit the #ClutterContainer::actor-added signal
+ * on @self.
  *
  * Since: 1.10
  */
@@ -9792,7 +9795,8 @@ clutter_actor_insert_child_above (ClutterActor *self,
  * This function will not take into consideration the #ClutterActor:depth
  * of @child.
  *
- * This function will emit the #ClutterContainer::actor-added signal.
+ * This function will emit the #ClutterContainer::actor-added signal
+ * on @self.
  *
  * Since: 1.10
  */
@@ -10019,7 +10023,7 @@ clutter_actor_remove_child_internal (ClutterActor *self,
  * function.
  *
  * This function will emit the #ClutterContainer::actor-removed
- * signal.
+ * signal on @self.
  *
  * Since: 1.10
  */
@@ -10034,6 +10038,42 @@ clutter_actor_remove_child (ClutterActor *self,
   g_return_if_fail (child->priv->parent == self);
 
   clutter_actor_remove_child_internal (self, child, TRUE, TRUE);
+}
+
+/**
+ * clutter_actor_remove_all_children:
+ * @self: a #ClutterActor
+ *
+ * Removes all children of @self.
+ *
+ * This function releases the reference added by inserting a child actor
+ * in the list of children of @self.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_remove_all_children (ClutterActor *self)
+{
+  ClutterActor *iter;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (self->priv->n_children == 0)
+    return;
+
+  iter = self->priv->first_child;
+  while (iter != NULL)
+    {
+      ClutterActor *next = iter->priv->next_sibling;
+
+      clutter_actor_remove_child_internal (self, iter, TRUE, TRUE);
+
+      iter = next;
+    }
+
+  g_assert (self->priv->first_child == NULL);
+  g_assert (self->priv->last_child == NULL);
+  g_assert (self->priv->n_children == 0);
 }
 
 typedef struct _InsertBetweenData {

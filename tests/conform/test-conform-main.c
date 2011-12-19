@@ -130,10 +130,11 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/actor", actor_add_child);
   TEST_CONFORM_SIMPLE ("/actor", actor_insert_child);
-  TEST_CONFORM_SIMPLE ("/actor", actor_remove_child);
   TEST_CONFORM_SIMPLE ("/actor", actor_raise_child);
   TEST_CONFORM_SIMPLE ("/actor", actor_lower_child);
   TEST_CONFORM_SIMPLE ("/actor", actor_replace_child);
+  TEST_CONFORM_SIMPLE ("/actor", actor_remove_child);
+  TEST_CONFORM_SIMPLE ("/actor", actor_remove_all);
   TEST_CONFORM_SIMPLE ("/actor", actor_destruction);
   TEST_CONFORM_SIMPLE ("/actor", actor_anchors);
   TEST_CONFORM_SIMPLE ("/actor", actor_picking);
