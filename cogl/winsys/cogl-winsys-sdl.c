@@ -47,12 +47,18 @@ typedef struct _CoglDisplaySdl
 {
   SDL_Surface *surface;
   CoglBool has_onscreen;
+  Uint32 video_mode_flags;
 } CoglDisplaySdl;
 
 static CoglFuncPtr
 _cogl_winsys_renderer_get_proc_address (CoglRenderer *renderer,
                                         const char *name)
 {
+#ifdef COGL_HAS_SDL_GLES_SUPPORT
+  if (renderer->driver != COGL_DRIVER_GL)
+    return SDL_GLES_GetProcAddress (name);
+#endif
+
   return SDL_GL_GetProcAddress (name);
 }
 
@@ -68,6 +74,7 @@ static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                GError **error)
 {
+#ifndef COGL_HAS_SDL_GLES_SUPPORT
   if (renderer->driver != COGL_DRIVER_GL)
     {
       g_set_error (error, COGL_WINSYS_ERROR,
@@ -75,6 +82,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                    "The SDL winsys only supports the GL driver");
       return FALSE;
     }
+#endif /* COGL_HAS_SDL_GLES_SUPPORT */
 
   if (SDL_Init (SDL_INIT_VIDEO) == -1)
     {
@@ -134,11 +142,37 @@ _cogl_winsys_display_setup (CoglDisplay *display,
 
   set_gl_attribs_from_framebuffer_config (&display->onscreen_template->config);
 
+  switch (display->renderer->driver)
+    {
+    case COGL_DRIVER_GL:
+      sdl_display->video_mode_flags = SDL_OPENGL;
+      break;
+
+#ifdef COGL_HAS_SDL_GLES_SUPPORT
+    case COGL_DRIVER_GLES2:
+      sdl_display->video_mode_flags = SDL_OPENGLES;
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_MINOR_VERSION, 0);
+      break;
+
+    case COGL_DRIVER_GLES1:
+      sdl_display->video_mode_flags = SDL_OPENGLES;
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_MAJOR_VERSION, 1);
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_MINOR_VERSION, 1);
+      break;
+#endif /* COGL_HAS_SDL_GLES_SUPPORT */
+
+    default:
+      g_assert_not_reached ();
+    }
+
   /* There's no way to know what size the application will need until
      it creates the first onscreen but we need to set the video mode
      now so that we can get a GL context. We'll have to just guess at
      a size an resize it later */
-  sdl_display->surface = SDL_SetVideoMode (640, 480, 0, SDL_OPENGL);
+  sdl_display->surface = SDL_SetVideoMode (640, 480, /* width/height */
+                                           0, /* bitsperpixel */
+                                           sdl_display->video_mode_flags);
 
   if (sdl_display->surface == NULL)
     {
@@ -213,7 +247,9 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   if (width != sdl_display->surface->w ||
       height != sdl_display->surface->h)
     {
-      sdl_display->surface = SDL_SetVideoMode (width, height, 0, SDL_OPENGL);
+      sdl_display->surface = SDL_SetVideoMode (width, height,
+                                               0, /* bitsperpixel */
+                                               sdl_display->video_mode_flags);
 
       if (sdl_display->surface == NULL)
         {

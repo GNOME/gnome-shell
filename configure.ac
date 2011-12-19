@@ -456,7 +456,6 @@ AS_IF([test "x$enable_gles1" = "xyes"],
         PKG_CHECK_EXISTS([glesv1_cm],
           [COGL_PKG_REQUIRES_GL="$COGL_PKG_REQUIRES_GL glesv1_cm"
            COGL_GLES1_LIBNAME="libGLESv1_CM.so"
-           NEED_EGL=yes
           ],
           [
             # We have to check the two headers independently as GLES/glext.h
@@ -551,8 +550,6 @@ AS_IF([test "x$enable_gles2" = "xyes"],
 
             COGL_GLES2_LIBNAME="libGLESv2.so"
           ])
-
-        NEED_EGL=yes
       ])
 
 HAVE_GL=0
@@ -689,6 +686,46 @@ AS_IF([test "x$enable_wgl" = "xyes"],
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_WIN32_SUPPORT"
       ])
 AM_CONDITIONAL(SUPPORT_WGL, [test "x$SUPPORT_WGL" = "xyes"])
+
+AC_ARG_ENABLE(
+  [sdl],
+  [AC_HELP_STRING([--enable-sdl=@<:@no/yes@:>@], [Enable support SDL @<:@default=no@:>@])],
+  [],
+  [enable_sdl=no])
+AS_IF([test "x$enable_sdl" = "xyes"],
+      [
+        PKG_CHECK_MODULES([SDL],
+                          [sdl],
+                          [],
+                          [AC_MSG_ERROR([SDL support requested but SDL not found])])
+
+        SUPPORT_SDL=yes
+        GL_WINSYS_APIS="$GL_WINSYS_APIS sdl"
+        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES sdl"
+
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_SDL_SUPPORT"
+
+        dnl WebOS has a specially patched version of SDL to add
+        dnl support for creating a GLES1/2 context. This tries to
+        dnl detect that patch so we can use it if the GLES2 driver is
+        dnl selected.
+        cogl_save_CPPFLAGS="$CPPFLAGS"
+        CPPFLAGS="$CPPFLAGS $SDL_CFLAGS"
+        AC_CHECK_DECL([SDL_OPENGLES],
+                      [SUPPORT_SDL_GLES=yes],
+                      [SUPPORT_SDL_GLES=no],
+                      [#include <SDL.h>])
+        AC_CHECK_DECL([SDL_GL_CONTEXT_MAJOR_VERSION], [], [SUPPORT_SDL_GLES=no],
+                      [#include <SDL.h>])
+        AC_CHECK_DECL([SDL_GL_CONTEXT_MINOR_VERSION], [], [SUPPORT_SDL_GLES=no],
+                      [#include <SDL.h>])
+        CPPFLAGS="$cogl_save_CPPFLAGS"
+
+        AS_IF([test "x$SUPPORT_SDL_GLES" = "xyes"],
+              COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_SDL_GLES_SUPPORT")
+      ],
+      [SUPPORT_SDL=no])
+AM_CONDITIONAL(SUPPORT_SDL, [test "x$SUPPORT_SDL" = "xyes"])
 
 EGL_PLATFORM_COUNT=0
 
@@ -832,7 +869,7 @@ AC_ARG_ENABLE(
   [xlib-egl-platform],
   [AC_HELP_STRING([--enable-xlib-egl-platform=@<:@no/yes@:>@], [Enable support for the Xlib egl platform @<:@default=auto@:>@])],
   [],
-  AS_IF([test "x$enable_gles1" = "xyes" -o "x$enable_gles2" = "xyes" && test $EGL_PLATFORM_COUNT -eq 0],
+  AS_IF([test "x$enable_gles1" = "xyes" -o "x$enable_gles2" = "xyes" && test "x$SUPPORT_SDL_GLES" != "xyes" && test $EGL_PLATFORM_COUNT -eq 0],
         [enable_xlib_egl_platform=yes], [enable_xlib_egl_platform=no])
 )
 AS_IF([test "x$enable_xlib_egl_platform" = "xyes"],
@@ -883,26 +920,6 @@ AS_IF([test "x$NEED_EGL" = "xyes"],
       ])
 
 AM_CONDITIONAL(SUPPORT_EGL, [test "x$SUPPORT_EGL" = "xyes"])
-
-AC_ARG_ENABLE(
-  [sdl],
-  [AC_HELP_STRING([--enable-sdl=@<:@no/yes@:>@], [Enable support SDL @<:@default=no@:>@])],
-  [],
-  [enable_sdl=no])
-AS_IF([test "x$enable_sdl" = "xyes"],
-      [
-        PKG_CHECK_EXISTS([sdl],
-                         [],
-                         [AC_MSG_ERROR([SDL support requested but SDL not found])])
-
-        SUPPORT_SDL=yes
-        GL_WINSYS_APIS="$GL_WINSYS_APIS sdl"
-        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES sdl"
-
-        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_SDL_SUPPORT"
-      ],
-      [SUPPORT_SDL=no])
-AM_CONDITIONAL(SUPPORT_SDL, [test "x$SUPPORT_SDL" = "xyes"])
 
 dnl         ========================================================
 dnl         Check X11 dependencies if required
@@ -1177,6 +1194,9 @@ echo "        GL Window System APIs:${GL_WINSYS_APIS}"
 if test "x$SUPPORT_EGL" = "xyes"; then
 echo "        EGL Platforms:${EGL_PLATFORMS}"
 echo "        Wayland compositor support: ${enable_wayland_egl_server}"
+fi
+if test "x$SUPPORT_SDL" = "xyes"; then
+echo "        Support GLES under SDL: ${SUPPORT_SDL_GLES}"
 fi
 echo "        Image backend: ${COGL_IMAGE_BACKEND}"
 echo "        Cogl Pango: ${enable_cogl_pango}"
