@@ -992,7 +992,10 @@ if test -n "$COGL_PKG_REQUIRES_GL"; then
   COGL_DEP_LIBS="$COGL_DEP_LIBS $gl_libs"
 fi
 AC_SUBST(COGL_PANGO_PKG_REQUIRES)
-PKG_CHECK_MODULES(COGL_PANGO_DEP, [$COGL_PANGO_PKG_REQUIRES])
+
+AS_IF([test "x$enable_cogl_pango" = "xyes"],
+  PKG_CHECK_MODULES(COGL_PANGO_DEP, [$COGL_PANGO_PKG_REQUIRES])
+)
 
 dnl ================================================================
 dnl Misc program dependencies.
