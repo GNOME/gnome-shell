@@ -78,13 +78,17 @@ static void
 clutter_group_real_pick (ClutterActor       *actor,
                          const ClutterColor *pick)
 {
-  GList *children = clutter_actor_get_children (actor);
+  ClutterActor *child;
 
   /* Chain up so we get a bounding box pained (if we are reactive) */
   CLUTTER_ACTOR_CLASS (clutter_group_parent_class)->pick (actor, pick);
 
-  g_list_foreach (children, (GFunc) clutter_actor_paint, NULL);
-  g_list_free (children);
+  for (child = clutter_actor_get_first_child (actor);
+       child != NULL;
+       child = clutter_actor_get_next_sibling (child))
+    {
+      clutter_actor_paint (child);
+    }
 }
 
 static void

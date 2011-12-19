@@ -125,16 +125,15 @@ clutter_box_real_get_paint_volume (ClutterActor       *actor,
                                    ClutterPaintVolume *volume)
 {
   gboolean retval = FALSE;
-  GList *children, *l;
+  ClutterActor *child;
 
   /* if we have a background color, and an allocation, then we need to
    * set it as the base of our paint volume
    */
   retval = clutter_paint_volume_set_from_allocation (volume, actor);
-  children = clutter_actor_get_children (actor);
 
   /* bail out early if we don't have any child */
-  if (children == NULL)
+  if (clutter_actor_get_n_children (actor) == 0)
     return retval;
 
   retval = TRUE;
@@ -142,9 +141,10 @@ clutter_box_real_get_paint_volume (ClutterActor       *actor,
   /* otherwise, union the paint volumes of our children, in case
    * any one of them decides to paint outside the parent's allocation
    */
-  for (l = children; l != NULL; l = l->next)
+  for (child = clutter_actor_get_first_child (actor);
+       child != NULL;
+       child = clutter_actor_get_next_sibling (child))
     {
-      ClutterActor *child = l->data;
       const ClutterPaintVolume *child_volume;
 
       /* This gets the paint volume of the child transformed into the
@@ -156,8 +156,6 @@ clutter_box_real_get_paint_volume (ClutterActor       *actor,
       clutter_paint_volume_union (volume, child_volume);
     }
 
-  g_list_free (children);
-
   return retval;
 }
 
@@ -165,13 +163,16 @@ static void
 clutter_box_real_pick (ClutterActor       *actor,
                        const ClutterColor *pick)
 {
-  GList *children;
+  ClutterActor *child;
 
   CLUTTER_ACTOR_CLASS (clutter_box_parent_class)->pick (actor, pick);
 
-  children = clutter_actor_get_children (actor);
-  g_list_foreach (children, (GFunc) clutter_actor_paint, NULL);
-  g_list_free (children);
+  for (child = clutter_actor_get_first_child (actor);
+       child != NULL;
+       child = clutter_actor_get_next_sibling (child))
+    {
+      clutter_actor_paint (child);
+    }
 }
 
 static void
