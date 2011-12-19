@@ -438,6 +438,11 @@ update_winsys_features (CoglContext *context, GError **error)
     COGL_FLAGS_SET (context->winsys_features,
                     COGL_WINSYS_FEATURE_SWAP_REGION_THROTTLE, TRUE);
 
+  if (_cogl_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT))
+    COGL_FLAGS_SET (context->features,
+                    COGL_FEATURE_ID_SWAP_BUFFERS_EVENT,
+                    TRUE);
+
   return TRUE;
 }
 
