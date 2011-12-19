@@ -35,11 +35,13 @@
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include <drm.h>
+#include <xf86drm.h>
 #include <xf86drmMode.h>
 #include <gbm.h>
 #include <glib.h>
 #include <sys/fcntl.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "cogl-winsys-egl-kms-private.h"
 #include "cogl-winsys-egl-private.h"
@@ -56,6 +58,7 @@ typedef struct _CoglRendererKMS
 {
   int fd;
   struct gbm_device *gbm;
+  CoglPollFD poll_fd;
 } CoglRendererKMS;
 
 typedef struct _CoglDisplayKMS
@@ -134,6 +137,9 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
   if (!_cogl_winsys_egl_renderer_connect_common (renderer, error))
     goto egl_terminate;
+
+  kms_renderer->poll_fd.fd = kms_renderer->fd;
+  kms_renderer->poll_fd.events = COGL_POLL_FD_EVENT_IN;
 
   return TRUE;
 
@@ -307,6 +313,52 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
 }
 
 static void
+page_flip_handler (int fd,
+                   unsigned int frame,
+                   unsigned int sec,
+                   unsigned int usec,
+                   void *data)
+{
+  CoglOnscreen *onscreen = data;
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
+  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+
+  if (kms_onscreen->current_fb_id)
+    {
+      drmModeRmFB (kms_renderer->fd,
+                   kms_onscreen->current_fb_id);
+      kms_onscreen->current_fb_id = 0;
+    }
+  if (kms_onscreen->current_bo)
+    {
+      gbm_surface_release_buffer (kms_onscreen->surface,
+                                  kms_onscreen->current_bo);
+      kms_onscreen->current_bo = NULL;
+    }
+
+  kms_onscreen->current_fb_id = kms_onscreen->next_fb_id;
+  kms_onscreen->next_fb_id = 0;
+
+  kms_onscreen->current_bo = kms_onscreen->next_bo;
+  kms_onscreen->next_bo = NULL;
+}
+
+static void
+handle_drm_event (CoglRendererKMS *kms_renderer)
+{
+  drmEventContext evctx;
+
+  memset (&evctx, 0, sizeof evctx);
+  evctx.version = DRM_EVENT_CONTEXT_VERSION;
+  evctx.page_flip_handler = page_flip_handler;
+  drmHandleEvent (kms_renderer->fd, &evctx);
+}
+
+static void
 _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
@@ -317,18 +369,20 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
   CoglRendererKMS *kms_renderer = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
-  struct gbm_bo *next_bo;
   EGLint handle, pitch;
-  uint32_t next_fb_id;
+
+  /* If we already have a pending swap then block until it completes */
+  while (kms_onscreen->next_fb_id != 0)
+    handle_drm_event (kms_renderer);
 
   /* First chain-up. This will call eglSwapBuffers */
   parent_vtable->onscreen_swap_buffers (onscreen);
 
   /* Now we need to set the CRTC to whatever is the front buffer */
-  next_bo = gbm_surface_lock_front_buffer (kms_onscreen->surface);
+  kms_onscreen->next_bo = gbm_surface_lock_front_buffer (kms_onscreen->surface);
 
-  pitch = gbm_bo_get_pitch (next_bo);
-  handle = gbm_bo_get_handle (next_bo).u32;
+  pitch = gbm_bo_get_pitch (kms_onscreen->next_bo);
+  handle = gbm_bo_get_handle (kms_onscreen->next_bo).u32;
 
   if (drmModeAddFB (kms_renderer->fd,
                     kms_display->width,
@@ -337,19 +391,21 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
                     32, /* bpp */
                     pitch,
                     handle,
-                    &next_fb_id) == 0)
+                    &kms_onscreen->next_fb_id) == 0)
     {
-      if (drmModeSetCrtc (kms_renderer->fd,
-                          kms_display->encoder->crtc_id,
-                          next_fb_id,
-                          0, 0, /* x, y */
-                          &kms_display->connector->connector_id,
-                          1, /* count */
-                          &kms_display->mode) != 0)
-        g_error (G_STRLOC ": Setting CRTC failed");
+      drmModePageFlip (kms_renderer->fd,
+                       kms_display->encoder->crtc_id,
+                       kms_onscreen->next_fb_id,
+                       DRM_MODE_PAGE_FLIP_EVENT,
+                       onscreen);
     }
-
-  gbm_surface_release_buffer (kms_onscreen->surface, next_bo);
+  else
+    {
+      gbm_surface_release_buffer (kms_onscreen->surface,
+                                  kms_onscreen->next_bo);
+      kms_onscreen->next_bo = NULL;
+      kms_onscreen->next_fb_id = 0;
+    }
 }
 
 static gboolean
@@ -444,6 +500,41 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   onscreen->winsys = NULL;
 }
 
+static void
+_cogl_winsys_poll_get_info (CoglContext *context,
+                            CoglPollFD **poll_fds,
+                            int *n_poll_fds,
+                            gint64 *timeout)
+{
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+
+  *poll_fds = &kms_renderer->poll_fd;
+  *n_poll_fds = 1;
+  *timeout = -1;
+}
+
+static void
+_cogl_winsys_poll_dispatch (CoglContext *context,
+                            const CoglPollFD *poll_fds,
+                            int n_poll_fds)
+{
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  int i;
+
+  for (i = 0; i < n_poll_fds; i++)
+    if (poll_fds[i].fd == kms_renderer->fd)
+      {
+        if (poll_fds[i].revents)
+          handle_drm_event (kms_renderer);
+
+        break;
+      }
+}
+
 static const CoglWinsysEGLVtable
 _cogl_winsys_egl_vtable =
   {
@@ -479,6 +570,9 @@ _cogl_winsys_egl_kms_get_vtable (void)
       /* The KMS winsys doesn't support swap region */
       vtable.onscreen_swap_region = NULL;
       vtable.onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers;
+
+      vtable.poll_get_info = _cogl_winsys_poll_get_info;
+      vtable.poll_dispatch = _cogl_winsys_poll_dispatch;
 
       vtable_inited = TRUE;
     }
