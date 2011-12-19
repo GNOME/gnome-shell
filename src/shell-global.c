@@ -25,6 +25,7 @@
 #include <girepository.h>
 #include <meta/display.h>
 #include <meta/util.h>
+#include <meta/meta-shaped-texture.h>
 
 /* Memory report bits */
 #ifdef HAVE_MALLINFO
@@ -2163,30 +2164,6 @@ shell_global_screenshot_area (ShellGlobal  *global,
   clutter_actor_queue_redraw (stage);
 }
 
-static void
-screenshot_get_texture_data (ClutterActor *window_actor,
-                             cairo_rectangle_int_t *clip,
-                             guint8 *data)
-{
-  ClutterTexture *window_tex;
-  CoglHandle texture;
-
-  window_tex = CLUTTER_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor)));
-  texture = clutter_texture_get_cogl_texture (window_tex);
-
-  g_return_if_fail (texture != COGL_INVALID_HANDLE);
-
-  if (clip != NULL)
-    texture = cogl_texture_new_from_sub_texture (texture,
-                                                 clip->x,
-                                                 clip->y,
-                                                 clip->width,
-                                                 clip->height);
-
-  cogl_flush();
-  cogl_texture_get_data (texture, CLUTTER_CAIRO_FORMAT_ARGB32, 0, data);
-}
-
 /**
  * shell_global_screenshot_window:
  * @global: the #ShellGlobal
@@ -2206,7 +2183,6 @@ shell_global_screenshot_window (ShellGlobal  *global,
                                 const char *filename,
                                 ShellGlobalScreenshotCallback callback)
 {
-  guchar *data;
   GSimpleAsyncResult *result;
 
   _screenshot_data *screenshot_data = g_new0 (_screenshot_data, 1);
@@ -2216,6 +2192,7 @@ shell_global_screenshot_window (ShellGlobal  *global,
   MetaWindow *window = meta_display_get_focus_window (display);
   ClutterActor *window_actor;
   gfloat actor_x, actor_y;
+  MetaShapedTexture *stex;
   MetaRectangle rect;
   cairo_rectangle_int_t clip;
 
@@ -2250,12 +2227,8 @@ shell_global_screenshot_window (ShellGlobal  *global,
   clip.width = screenshot_data->screenshot_area.width = rect.width;
   clip.height = screenshot_data->screenshot_area.height = rect.height;
 
-  screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                                       clip.width, clip.height);
-  data = cairo_image_surface_get_data (screenshot_data->image);
-  screenshot_get_texture_data (window_actor, &clip, data);
-
-  cairo_surface_mark_dirty (screenshot_data->image);
+  stex = META_SHAPED_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor)));
+  screenshot_data->image = meta_shaped_texture_get_image (stex, &clip);
 
   result = g_simple_async_result_new (NULL, on_screenshot_written, (gpointer)screenshot_data, shell_global_screenshot_window);
   g_simple_async_result_run_in_thread (result, write_screenshot_thread, G_PRIORITY_DEFAULT, NULL);
