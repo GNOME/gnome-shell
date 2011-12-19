@@ -914,6 +914,8 @@ do_override (char *key,
   detailed_signal = g_strdup_printf ("changed::%s", key);
   handler_id = g_signal_connect (settings, detailed_signal,
                                  G_CALLBACK (settings_changed), NULL);
+  g_free (detailed_signal);
+
   g_object_set_data (G_OBJECT (settings), key, GUINT_TO_POINTER (handler_id));
 
   settings_changed (settings, key, NULL);
