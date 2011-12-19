@@ -251,3 +251,63 @@ actor_lower_child (TestConformSimpleFixture *fixture,
   clutter_actor_destroy (actor);
   g_object_unref (actor);
 }
+
+void
+actor_replace_child (TestConformSimpleFixture *fixture,
+                     gconstpointer dummy)
+{
+  ClutterActor *actor = clutter_actor_new ();
+  ClutterActor *iter;
+
+  g_object_ref_sink (actor);
+
+  clutter_actor_add_child (actor, g_object_new (CLUTTER_TYPE_ACTOR,
+                                                "name", "foo",
+                                                NULL));
+  clutter_actor_add_child (actor, g_object_new (CLUTTER_TYPE_ACTOR,
+                                                "name", "bar",
+                                                NULL));
+
+  iter = clutter_actor_get_child_at_index (actor, 0);
+  g_assert_cmpstr (clutter_actor_get_name (iter), ==, "foo");
+
+  clutter_actor_replace_child (actor, iter,
+                               g_object_new (CLUTTER_TYPE_ACTOR,
+                                             "name", "baz",
+                                             NULL));
+
+  iter = clutter_actor_get_child_at_index (actor, 0);
+  g_assert_cmpstr (clutter_actor_get_name (iter), ==, "baz");
+
+  iter = clutter_actor_get_child_at_index (actor, 1);
+  g_assert_cmpstr (clutter_actor_get_name (iter), ==, "bar");
+
+  clutter_actor_replace_child (actor, iter,
+                               g_object_new (CLUTTER_TYPE_ACTOR,
+                                             "name", "qux",
+                                             NULL));
+
+  iter = clutter_actor_get_child_at_index (actor, 0);
+  g_assert_cmpstr (clutter_actor_get_name (iter), ==, "baz");
+
+  iter = clutter_actor_get_child_at_index (actor, 1);
+  g_assert_cmpstr (clutter_actor_get_name (iter), ==, "qux");
+
+  clutter_actor_add_child (actor, g_object_new (CLUTTER_TYPE_ACTOR,
+                                                "name", "foo"));
+
+  clutter_actor_replace_child (actor, iter,
+                               g_object_new (CLUTTER_TYPE_ACTOR,
+                                             "name", "bar",
+                                             NULL));
+
+  iter = clutter_actor_get_last_child (actor);
+  g_assert_cmpstr (clutter_actor_get_name (iter), ==, "foo");
+  iter = clutter_actor_get_previous_sibling (iter);
+  g_assert_cmpstr (clutter_actor_get_name (iter), ==, "bar");
+  iter = clutter_actor_get_previous_sibling (iter);
+  g_assert_cmpstr (clutter_actor_get_name (iter), ==, "baz");
+
+  clutter_actor_destroy (actor);
+  g_object_unref (actor);
+}

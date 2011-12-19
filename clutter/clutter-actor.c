@@ -9542,6 +9542,27 @@ typedef void (* ClutterActorAddChildFunc) (ClutterActor *parent,
                                            ClutterActor *child,
                                            gpointer      data);
 
+/*< private >
+ * clutter_actor_add_child_internal:
+ * @self: a #ClutterActor
+ * @child: a #ClutterActor
+ * @add_func: delegate function
+ * @data: (closure): data to pass to @add_func
+ * @create_meta: whether this function should create a #ClutterChildMeta
+ *   instance through the #ClutterContainer interface
+ * @emit_signal: whether this function should emit the
+ *   #ClutterContainer::actor-added signal
+ *
+ * Adds @child to the list of children of @self.
+ *
+ * The actual insertion inside the list is delegated to @add_func: this
+ * function will just set up the state, perform basic checks, and emit
+ * signals.
+ *
+ * For backward compatibility with #ClutterContainer and the old
+ * #ClutterActor API, this function can optionally emit the Container
+ * signals and create #ClutterChildMeta instances.
+ */
 static void
 clutter_actor_add_child_internal (ClutterActor             *self,
                                   ClutterActor             *child,
@@ -9821,6 +9842,12 @@ clutter_actor_set_parent (ClutterActor *self,
   g_return_if_fail (self != parent);
   g_return_if_fail (self->priv->parent == NULL);
 
+  /* as this function will be called inside ClutterContainer::add
+   * implementations or when building up a composite actor, we have
+   * to preserve the old behaviour, and not create child meta or
+   * emit the ::actor-added signal, to avoid recursion or double
+   * emissions
+   */
   clutter_actor_add_child_internal (parent, self,
                                     insert_child_at_depth,
                                     NULL,
@@ -10009,6 +10036,36 @@ clutter_actor_remove_child (ClutterActor *self,
   clutter_actor_remove_child_internal (self, child, TRUE, TRUE);
 }
 
+typedef struct _InsertBetweenData {
+  ClutterActor *prev_sibling;
+  ClutterActor *next_sibling;
+} InsertBetweenData;
+
+static void
+insert_child_between (ClutterActor *self,
+                      ClutterActor *child,
+                      gpointer      data_)
+{
+  InsertBetweenData *data = data_;
+  ClutterActor *prev_sibling = data->prev_sibling;
+  ClutterActor *next_sibling = data->next_sibling;
+
+  child->priv->prev_sibling = prev_sibling;
+  child->priv->next_sibling = next_sibling;
+
+  if (prev_sibling != NULL)
+    prev_sibling->priv->next_sibling = child;
+
+  if (next_sibling != NULL)
+    next_sibling->priv->prev_sibling = child;
+
+  if (child->priv->prev_sibling == NULL)
+    self->priv->first_child = child;
+
+  if (child->priv->next_sibling == NULL)
+    self->priv->last_child = child;
+}
+
 /**
  * clutter_actor_replace_child:
  * @self: a #ClutterActor
@@ -10024,6 +10081,9 @@ clutter_actor_replace_child (ClutterActor *self,
                              ClutterActor *old_child,
                              ClutterActor *new_child)
 {
+  ClutterActor *prev_sibling, *next_sibling;
+  InsertBetweenData clos;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (old_child));
   g_return_if_fail (old_child->priv->parent == self);
@@ -10032,11 +10092,17 @@ clutter_actor_replace_child (ClutterActor *self,
   g_return_if_fail (new_child != self);
   g_return_if_fail (new_child->priv->parent == NULL);
 
-  clutter_actor_add_child_internal (self, new_child,
-                                    insert_child_above,
-                                    old_child,
-                                    TRUE, TRUE);
+  prev_sibling = old_child->priv->prev_sibling;
+  next_sibling = old_child->priv->next_sibling;
+
   clutter_actor_remove_child_internal (self, old_child, TRUE, TRUE);
+
+  clos.prev_sibling = prev_sibling;
+  clos.next_sibling = next_sibling;
+  clutter_actor_add_child_internal (self, new_child,
+                                    insert_child_between,
+                                    &clos,
+                                    TRUE, TRUE);
 }
 
 /**
