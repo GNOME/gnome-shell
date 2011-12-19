@@ -425,6 +425,8 @@ clutter_text_ensure_effective_attributes (ClutterText *self)
                   g_slist_free (attributes);
                 }
               while (pango_attr_iterator_next (iter));
+
+              pango_attr_iterator_destroy (iter);
             }
         }
       else if (priv->markup_attrs != NULL)
