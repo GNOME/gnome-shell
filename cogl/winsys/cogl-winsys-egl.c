@@ -247,11 +247,6 @@ try_create_context (CoglDisplay *display,
   else
     attribs[0] = EGL_NONE;
 
-  /* Divert to the platform implementation if one is defined */
-  if (egl_renderer->platform_vtable->try_create_context)
-    return egl_renderer->platform_vtable->
-      try_create_context (display, attribs, error);
-
   egl_attributes_from_framebuffer_config (display,
                                           &display->onscreen_template->config,
                                           with_stencil_buffer,

@@ -39,11 +39,6 @@ typedef struct _CoglWinsysEGLVtable
   (* display_destroy) (CoglDisplay *display);
 
   gboolean
-  (* try_create_context) (CoglDisplay *display,
-                          EGLint *attribs,
-                          GError **error);
-
-  gboolean
   (* context_created) (CoglDisplay *display,
                        GError **error);
 

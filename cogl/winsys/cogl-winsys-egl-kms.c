@@ -50,6 +50,8 @@
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 
+static const CoglWinsysVtable *parent_vtable;
+
 typedef struct _CoglRendererKMS
 {
   int fd;
@@ -67,11 +69,11 @@ typedef struct _CoglDisplayKMS
 
 typedef struct _CoglOnscreenKMS
 {
-  uint32_t fb_id[2];
-  struct gbm_bo *bo[2];
-  unsigned int fb, color_rb[2], depth_rb;
-  EGLImageKHR image[2];
-  int current_frame;
+  struct gbm_surface *surface;
+  uint32_t current_fb_id;
+  uint32_t next_fb_id;
+  struct gbm_bo *current_bo;
+  struct gbm_bo *next_bo;
 } CoglOnscreenKMS;
 
 static const char device_name[] = "/dev/dri/card0";
@@ -257,26 +259,12 @@ _cogl_winsys_egl_display_destroy (CoglDisplay *display)
 }
 
 static gboolean
-_cogl_winsys_egl_try_create_context (CoglDisplay *display,
-                                     EGLint *attribs,
-                                     GError **error)
+_cogl_winsys_egl_context_created (CoglDisplay *display,
+                                  GError **error)
 {
   CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglDisplayEGL *egl_display = display->winsys;
-
-  egl_display->egl_context = eglCreateContext (egl_renderer->edpy,
-                                               NULL,
-                                               EGL_NO_CONTEXT,
-                                               attribs);
-
-  if (egl_display->egl_context == NULL)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                   "Couldn't create EGL context");
-      return FALSE;
-    }
 
   if (!eglMakeCurrent (egl_renderer->edpy,
                        EGL_NO_SURFACE,
@@ -329,33 +317,39 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
   CoglRendererKMS *kms_renderer = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
+  struct gbm_bo *next_bo;
+  EGLint handle, pitch;
+  uint32_t next_fb_id;
 
-  if (drmModeSetCrtc (kms_renderer->fd,
-                      kms_display->encoder->crtc_id,
-                      kms_onscreen->fb_id[kms_onscreen->current_frame],
-                      0, 0,
-                      &kms_display->connector->connector_id,
-                      1,
-                      &kms_display->mode) != 0)
+  /* First chain-up. This will call eglSwapBuffers */
+  parent_vtable->onscreen_swap_buffers (onscreen);
+
+  /* Now we need to set the CRTC to whatever is the front buffer */
+  next_bo = gbm_surface_lock_front_buffer (kms_onscreen->surface);
+
+  pitch = gbm_bo_get_pitch (next_bo);
+  handle = gbm_bo_get_handle (next_bo).u32;
+
+  if (drmModeAddFB (kms_renderer->fd,
+                    kms_display->width,
+                    kms_display->height,
+                    24, /* depth */
+                    32, /* bpp */
+                    pitch,
+                    handle,
+                    &next_fb_id) == 0)
     {
-      g_error (G_STRLOC ": Setting CRTC failed");
+      if (drmModeSetCrtc (kms_renderer->fd,
+                          kms_display->encoder->crtc_id,
+                          next_fb_id,
+                          0, 0, /* x, y */
+                          &kms_display->connector->connector_id,
+                          1, /* count */
+                          &kms_display->mode) != 0)
+        g_error (G_STRLOC ": Setting CRTC failed");
     }
 
-  /* Update frame that we're drawing to be the new one */
-  kms_onscreen->current_frame ^= 1;
-
-  context->glBindFramebuffer (GL_FRAMEBUFFER_EXT, kms_onscreen->fb);
-  context->glFramebufferRenderbuffer (GL_FRAMEBUFFER_EXT,
-                                      GL_COLOR_ATTACHMENT0_EXT,
-                                      GL_RENDERBUFFER_EXT,
-                                      kms_onscreen->
-                                      color_rb[kms_onscreen->current_frame]);
-
-  if (context->glCheckFramebufferStatus (GL_FRAMEBUFFER_EXT) !=
-      GL_FRAMEBUFFER_COMPLETE)
-    {
-      g_error (G_STRLOC ": FBO not complete");
-    }
+  gbm_surface_release_buffer (kms_onscreen->surface, next_bo);
 }
 
 static gboolean
@@ -372,7 +366,6 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   CoglRendererKMS *kms_renderer = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen;
   CoglOnscreenKMS *kms_onscreen;
-  int i;
 
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context, FALSE);
 
@@ -382,81 +375,34 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   kms_onscreen = g_slice_new0 (CoglOnscreenKMS);
   egl_onscreen->platform = kms_onscreen;
 
-  context->glGenRenderbuffers (2, kms_onscreen->color_rb);
-
-  for (i = 0; i < 2; i++)
-    {
-      uint32_t handle, stride;
-
-      kms_onscreen->bo[i] =
-        gbm_bo_create (kms_renderer->gbm,
-                       kms_display->mode.hdisplay, kms_display->mode.vdisplay,
-                       GBM_BO_FORMAT_XRGB8888,
-                       GBM_BO_USE_SCANOUT | GBM_BO_USE_RENDERING);
-      if (!kms_onscreen->bo[i])
-        {
-          g_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                       "Failed to allocate buffer");
-          return FALSE;
-        }
-
-      kms_onscreen->image[i] =
-        _cogl_egl_create_image (context,
-                                EGL_NATIVE_PIXMAP_KHR,
-                                kms_onscreen->bo[i],
-                                NULL);
-
-      if (kms_onscreen->image[i] == EGL_NO_IMAGE_KHR)
-        {
-          g_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                       "Failed to create EGL image");
-          return FALSE;
-        }
-
-      context->glBindRenderbuffer (GL_RENDERBUFFER_EXT,
-                                   kms_onscreen->color_rb[i]);
-      context->glEGLImageTargetRenderbufferStorage (GL_RENDERBUFFER,
-                                                    kms_onscreen->image[i]);
-      context->glBindRenderbuffer (GL_RENDERBUFFER_EXT, 0);
-
-      handle = gbm_bo_get_handle (kms_onscreen->bo[i]).u32;
-      stride = gbm_bo_get_pitch (kms_onscreen->bo[i]);
-
-      if (drmModeAddFB (kms_renderer->fd,
+  kms_onscreen->surface =
+    gbm_surface_create (kms_renderer->gbm,
                         kms_display->mode.hdisplay,
                         kms_display->mode.vdisplay,
-                        24, 32,
-                        stride,
-                        handle,
-                        &kms_onscreen->fb_id[i]) != 0)
-        {
-          g_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                       "Failed to create framebuffer from buffer");
-          return FALSE;
-        }
+                        GBM_BO_FORMAT_XRGB8888,
+                        GBM_BO_USE_SCANOUT |
+                        GBM_BO_USE_RENDERING);
+
+  if (!kms_onscreen->surface)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                   "Failed to allocate surface");
+      return FALSE;
     }
 
-  context->glGenFramebuffers (1, &kms_onscreen->fb);
-  context->glBindFramebuffer (GL_FRAMEBUFFER_EXT, kms_onscreen->fb);
-
-  context->glGenRenderbuffers (1, &kms_onscreen->depth_rb);
-  context->glBindRenderbuffer (GL_RENDERBUFFER_EXT, kms_onscreen->depth_rb);
-  context->glRenderbufferStorage (GL_RENDERBUFFER_EXT,
-                                  GL_DEPTH_COMPONENT16,
-                                  kms_display->mode.hdisplay,
-                                  kms_display->mode.vdisplay);
-  context->glBindRenderbuffer (GL_RENDERBUFFER_EXT, 0);
-
-  context->glFramebufferRenderbuffer (GL_FRAMEBUFFER_EXT,
-                                      GL_DEPTH_ATTACHMENT_EXT,
-                                      GL_RENDERBUFFER_EXT,
-                                      kms_onscreen->depth_rb);
-
-  kms_onscreen->current_frame = 0;
-  _cogl_winsys_onscreen_swap_buffers (onscreen);
+  egl_onscreen->egl_surface =
+    eglCreateWindowSurface (egl_renderer->edpy,
+                            egl_display->egl_config,
+                            (NativeWindowType) kms_onscreen->surface,
+                            NULL);
+  if (egl_onscreen->egl_surface == EGL_NO_SURFACE)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                   "Failed to allocate surface");
+      return FALSE;
+    }
 
   _cogl_framebuffer_winsys_update_size (framebuffer,
                                         kms_display->width,
@@ -472,10 +418,8 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   CoglContext *context = framebuffer->context;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenKMS *kms_onscreen;
-  int i;
 
   /* If we never successfully allocated then there's nothing to do */
   if (egl_onscreen == NULL)
@@ -483,23 +427,16 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 
   kms_onscreen = egl_onscreen->platform;
 
-  context->glBindFramebuffer (GL_FRAMEBUFFER_EXT, kms_onscreen->fb);
-  context->glFramebufferRenderbuffer (GL_FRAMEBUFFER_EXT,
-                                      GL_COLOR_ATTACHMENT0_EXT,
-                                      GL_RENDERBUFFER_EXT,
-                                      0);
-  context->glDeleteRenderbuffers(2, kms_onscreen->color_rb);
-  context->glFramebufferRenderbuffer (GL_FRAMEBUFFER_EXT,
-                                      GL_DEPTH_ATTACHMENT_EXT,
-                                      GL_RENDERBUFFER_EXT,
-                                      0);
-  context->glDeleteRenderbuffers(1, &kms_onscreen->depth_rb);
-
-  for (i = 0; i < 2; i++)
+  if (egl_onscreen->egl_surface != EGL_NO_SURFACE)
     {
-      drmModeRmFB (kms_renderer->fd, kms_onscreen->fb_id[i]);
-      _cogl_egl_destroy_image (context, kms_onscreen->image[i]);
-      gbm_bo_destroy (kms_onscreen->bo[i]);
+      eglDestroySurface (egl_renderer->edpy, egl_onscreen->egl_surface);
+      egl_onscreen->egl_surface = EGL_NO_SURFACE;
+    }
+
+  if (kms_onscreen->surface)
+    {
+      gbm_surface_destroy (kms_onscreen->surface);
+      kms_onscreen->surface = NULL;
     }
 
   g_slice_free (CoglOnscreenKMS, kms_onscreen);
@@ -507,32 +444,12 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   onscreen->winsys = NULL;
 }
 
-static void
-_cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
-{
-  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglDisplayEGL *egl_display = context->display->winsys;
-  CoglRenderer *renderer = context->display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-
-  eglMakeCurrent (egl_renderer->edpy,
-                  EGL_NO_SURFACE,
-                  EGL_NO_SURFACE,
-                  egl_display->egl_context);
-}
-
-static void
-_cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
-{
-  _cogl_winsys_onscreen_bind (onscreen);
-}
-
 static const CoglWinsysEGLVtable
 _cogl_winsys_egl_vtable =
   {
     .display_setup = _cogl_winsys_egl_display_setup,
     .display_destroy = _cogl_winsys_egl_display_destroy,
-    .try_create_context = _cogl_winsys_egl_try_create_context,
+    .context_created = _cogl_winsys_egl_context_created,
     .cleanup_context = _cogl_winsys_egl_cleanup_context
   };
 
@@ -547,7 +464,8 @@ _cogl_winsys_egl_kms_get_vtable (void)
       /* The EGL_KMS winsys is a subclass of the EGL winsys so we
          start by copying its vtable */
 
-      vtable = *_cogl_winsys_egl_get_vtable ();
+      parent_vtable = _cogl_winsys_egl_get_vtable ();
+      vtable = *parent_vtable;
 
       vtable.id = COGL_WINSYS_ID_EGL_KMS;
       vtable.name = "EGL_KMS";
@@ -557,14 +475,10 @@ _cogl_winsys_egl_kms_get_vtable (void)
 
       vtable.onscreen_init = _cogl_winsys_onscreen_init;
       vtable.onscreen_deinit = _cogl_winsys_onscreen_deinit;
-      vtable.onscreen_bind = _cogl_winsys_onscreen_bind;
 
       /* The KMS winsys doesn't support swap region */
       vtable.onscreen_swap_region = NULL;
       vtable.onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers;
-
-      vtable.onscreen_update_swap_throttled =
-        _cogl_winsys_onscreen_update_swap_throttled;
 
       vtable_inited = TRUE;
     }
