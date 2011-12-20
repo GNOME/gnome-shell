@@ -247,6 +247,19 @@ container_add_actor (ClutterContainer *container,
 
   clutter_container_create_child_meta (container, actor);
 
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (G_UNLIKELY (_clutter_diagnostic_enabled ()))
+    {
+      ClutterContainerIface *iface = CLUTTER_CONTAINER_GET_IFACE (container);
+
+      if (iface->add != container_real_add)
+        _clutter_diagnostic_message ("The ClutterContainer::add() virtual "
+                                     "function has been deprecated and it "
+                                     "should not be overridden by newly "
+                                     "written code");
+    }
+#endif /* CLUTTER_ENABLE_DEBUG */
+
   CLUTTER_CONTAINER_GET_IFACE (container)->add (container, actor);
 }
 
@@ -268,6 +281,19 @@ container_remove_actor (ClutterContainer *container,
     }
 
   clutter_container_destroy_child_meta (container, actor);
+
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (G_UNLIKELY (_clutter_diagnostic_enabled ()))
+    {
+      ClutterContainerIface *iface = CLUTTER_CONTAINER_GET_IFACE (container);
+
+      if (iface->remove != container_real_remove)
+        _clutter_diagnostic_message ("The ClutterContainer::remove() virtual "
+                                     "function has been deprecated and it "
+                                     "should not be overridden by newly "
+                                     "written code");
+    }
+#endif /* CLUTTER_ENABLE_DEBUG */
 
   CLUTTER_CONTAINER_GET_IFACE (container)->remove (container, actor);
 }
@@ -521,6 +547,19 @@ clutter_container_foreach (ClutterContainer *container,
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (callback != NULL);
 
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (G_UNLIKELY (_clutter_diagnostic_enabled ()))
+    {
+      ClutterContainerIface *iface = CLUTTER_CONTAINER_GET_IFACE (container);
+
+      if (iface->foreach != container_real_foreach)
+        _clutter_diagnostic_message ("The ClutterContainer::foreach() "
+                                     "virtual function has been deprecated "
+                                     "and it should not be overridden by "
+                                     "newly written code");
+    }
+#endif /* CLUTTER_ENABLE_DEBUG */
+
   CLUTTER_CONTAINER_GET_IFACE (container)->foreach (container,
                                                     callback,
                                                     user_data);
@@ -551,11 +590,17 @@ clutter_container_foreach_with_internals (ClutterContainer *container,
   g_return_if_fail (callback != NULL);
 
   iface = CLUTTER_CONTAINER_GET_IFACE (container);
-  if (!iface->foreach)
+
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (G_UNLIKELY (_clutter_diagnostic_enabled ()))
     {
-      CLUTTER_CONTAINER_WARN_NOT_IMPLEMENTED (container, "foreach");
-      return;
+      if (iface->foreach_with_internals != NULL)
+        _clutter_diagnostic_message ("The ClutterContainer::foreach_with_internals() "
+                                     "virtual function has been deprecated "
+                                     "and it should not be overridden by "
+                                     "newly written code");
     }
+#endif /* CLUTTER_ENABLE_DEBUG */
 
   if (iface->foreach_with_internals != NULL)
     iface->foreach_with_internals (container, callback, user_data);
