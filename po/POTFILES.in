@@ -36,6 +36,7 @@ js/ui/status/volume.js
 js/ui/telepathyClient.js
 js/ui/userMenu.js
 js/ui/viewSelector.js
+js/ui/wanda.js
 js/ui/windowAttentionHandler.js
 src/gvc/gvc-mixer-control.c
 src/main.c
