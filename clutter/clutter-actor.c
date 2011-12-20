@@ -14748,6 +14748,8 @@ typedef struct _ExpandClosure
 {
   gboolean x_expand;
   gboolean y_expand;
+  ClutterLayoutManager *layout_manager;
+  ClutterContainer *container;
 } ExpandClosure;
 
 static gboolean
@@ -14756,8 +14758,34 @@ foreach_compute_expand (ClutterActor *child,
 {
   ExpandClosure *data = data_;
 
+  /* if there is a layout manager, we ask it to influence the result
+   * in case it has layout properties that map to [xy]-expand
+   */
+  if (data->layout_manager != NULL)
+    {
+      ClutterLayoutManagerClass *manager_class;
+      gboolean x_expand, y_expand;
+
+      x_expand = y_expand = FALSE;
+      manager_class = CLUTTER_LAYOUT_MANAGER_GET_CLASS (data->layout_manager);
+      manager_class->compute_expand (data->layout_manager,
+                                     data->container,
+                                     child,
+                                     &x_expand,
+                                     &y_expand);
+
+      data->x_expand = data->x_expand || x_expand;
+      data->y_expand = data->y_expand || y_expand;
+    }
+
   data->x_expand = data->x_expand || clutter_actor_needs_x_expand (child);
   data->y_expand = data->y_expand || clutter_actor_needs_y_expand (child);
+
+  /* we stop recursing as soon as we know that we are set to expand
+   * in both directions
+   */
+  if (data->x_expand && data->y_expand)
+    return FALSE;
 
   return TRUE;
 }
@@ -14771,6 +14799,8 @@ clutter_actor_compute_expand (ClutterActor *self,
 
   data.x_expand = FALSE;
   data.y_expand = FALSE;
+  data.layout_manager = self->priv->layout_manager;
+  data.container = CLUTTER_CONTAINER (self);
 
   _clutter_actor_foreach_child (self,
                                 foreach_compute_expand,
@@ -14820,6 +14850,11 @@ clutter_actor_update_effective_expand (ClutterActor *self)
   priv->needs_compute_expand = FALSE;
   priv->x_expand_effective = x_expand != FALSE;
   priv->y_expand_effective = y_expand != FALSE;
+
+  g_debug ("Actor %s expand effective - x:%s, y:%s",
+           _clutter_actor_get_debug_name (self),
+           priv->x_expand_effective ? "Y" : "N",
+           priv->y_expand_effective ? "Y" : "N");
 }
 
 /**
