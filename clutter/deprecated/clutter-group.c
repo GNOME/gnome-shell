@@ -52,6 +52,7 @@
 
 #include <stdarg.h>
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include "clutter-group.h"
 
 #include "clutter-container.h"
@@ -221,27 +222,14 @@ clutter_group_new (void)
  *
  * Removes all children actors from the #ClutterGroup.
  *
- * Deprecated: 1.10: Use clutter_actor_get_children() and
- *   clutter_actor_remove_child() instead.
+ * Deprecated: 1.10: Use clutter_actor_remove_all_children() instead.
  */
 void
 clutter_group_remove_all (ClutterGroup *self)
 {
-  ClutterActor *actor;
-  GList *children;
-
   g_return_if_fail (CLUTTER_IS_GROUP (self));
 
-  actor = CLUTTER_ACTOR (self);
-  children = clutter_actor_get_children (actor);
-
-  while (children != NULL)
-    {
-      ClutterActor *child = children->data;
-      children = children->next;
-
-      clutter_actor_remove_child (actor, child);
-    }
+  clutter_actor_remove_all_children (CLUTTER_ACTOR (self));
 }
 
 /**
