@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-12-18 14:32+0000\n"
-"PO-Revision-Date: 2011-12-19 18:25+0100\n"
+"POT-Creation-Date: 2011-12-19 17:31+0000\n"
+"PO-Revision-Date: 2011-12-20 14:18+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -82,7 +82,7 @@ msgstr "Gestión de la depuración de texturas atlas"
 
 #: ../cogl/cogl-debug-options.h:42
 msgid "Trace Blend Strings"
-msgstr ""
+msgstr "Rastrear cadenas de mezclado"
 
 #: ../cogl/cogl-debug-options.h:43
 msgid "Debug CoglBlendString parsing"
@@ -134,7 +134,7 @@ msgstr "Rastrear el backend de CoglTexturePixmap"
 
 #: ../cogl/cogl-debug-options.h:74
 msgid "Trace the Cogl texture pixmap backend"
-msgstr ""
+msgstr "Rastrear el «backend» del mapa de píxeles de la textura de Cogl"
 
 #: ../cogl/cogl-debug-options.h:76 ../cogl/cogl-debug-options.h:81
 msgid "Visualize"
@@ -142,7 +142,7 @@ msgstr "Visualizar"
 
 #: ../cogl/cogl-debug-options.h:78
 msgid "Outline rectangles"
-msgstr ""
+msgstr "Esbozar rectángulos"
 
 #: ../cogl/cogl-debug-options.h:79
 msgid "Add wire outlines for all rectangular geometry"
@@ -165,7 +165,7 @@ msgstr "Añadir trazos de líneas para toda la geometría"
 #: ../cogl/cogl-debug-options.h:153 ../cogl/cogl-debug-options.h:173
 #: ../cogl/cogl-debug-options.h:178
 msgid "Root Cause"
-msgstr ""
+msgstr "Causa raíz"
 
 #: ../cogl/cogl-debug-options.h:88
 msgid "Disable Journal batching"
@@ -206,7 +206,7 @@ msgstr "Especialista de Cogl"
 
 #: ../cogl/cogl-debug-options.h:108
 msgid "Dump atlas images"
-msgstr "Volcar imagenes atlas"
+msgstr "Volcar atlas de imágenes"
 
 #: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
@@ -222,13 +222,16 @@ msgstr "Desactivar el uso de atlas de texturas"
 
 #: ../cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
-msgstr ""
+msgstr "Desactivar la compartición de atlas de texturas entre texto e imágenes"
 
 #: ../cogl/cogl-debug-options.h:119
 msgid ""
 "When this is set the glyph cache will always use a separate texture for its "
 "atlas. Otherwise it will try to share the atlas with images."
 msgstr ""
+"Cuando esto está establecido, la caché de glyph usará siempre una textura "
+"separada para su atlas. De otro modo, intentará compartir el atlas con las "
+"imágenes."
 
 #: ../cogl/cogl-debug-options.h:124
 msgid "Disable texturing"
@@ -244,15 +247,15 @@ msgstr "Desactivar arbfp"
 
 #: ../cogl/cogl-debug-options.h:130
 msgid "Disable use of ARB fragment programs"
-msgstr ""
+msgstr "Desactivar el uso de programas de fragmentos ARB"
 
 #: ../cogl/cogl-debug-options.h:134
 msgid "Disable fixed"
-msgstr ""
+msgstr "Desactivar la función fija"
 
 #: ../cogl/cogl-debug-options.h:135
 msgid "Disable use of the fixed function pipeline backend"
-msgstr ""
+msgstr "Desactivar el uso del «backend» de la tubería de la función fija"
 
 #: ../cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
@@ -264,11 +267,11 @@ msgstr "Desactivar el uso de GLSL"
 
 #: ../cogl/cogl-debug-options.h:144
 msgid "Disable blending"
-msgstr ""
+msgstr "Desactivar la mezcla"
 
 #: ../cogl/cogl-debug-options.h:145
 msgid "Disable use of blending"
-msgstr ""
+msgstr "Desactivar el uso de la mezcla"
 
 #: ../cogl/cogl-debug-options.h:149
 msgid "Disable non-power-of-two textures"
@@ -279,6 +282,8 @@ msgid ""
 "Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
 "will create sliced textures or textures with waste instead."
 msgstr ""
+"Hace que Cogl crea que el driver de GL no soporta texturas NPOT, por lo que "
+"creará texturas troceadas o texturas con residuos"
 
 #: ../cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
@@ -319,7 +324,7 @@ msgstr "Desactivar las cachés de los programas"
 
 #: ../cogl/cogl-debug-options.h:176
 msgid "Disable fallback caches for arbfp and glsl programs"
-msgstr ""
+msgstr "Desactivar las cachés alternativas para programas arbfp y glsl"
 
 #: ../cogl/cogl-debug-options.h:180
 msgid "Disable read pixel optimization"
