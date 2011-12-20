@@ -34,7 +34,9 @@
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 
-#include "clutter-container.h"
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#include "deprecated/clutter-container.h"
+
 #include "clutter-child-meta.h"
 
 #include "clutter-debug.h"
@@ -191,7 +193,7 @@ container_add_actor (ClutterContainer *container,
     }
 
   parent = clutter_actor_get_parent (actor);
-  if (G_UNLIKELY (parent == NULL))
+  if (G_UNLIKELY (parent != NULL))
     {
       g_warning ("Attempting to add actor of type '%s' to a "
 		 "container of type '%s', but the actor has "
@@ -444,6 +446,8 @@ get_children_cb (ClutterActor *child,
  *   list when done.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.10: Use clutter_actor_get_children() instead.
  */
 GList *
 clutter_container_get_children (ClutterContainer *container)
@@ -470,6 +474,11 @@ clutter_container_get_children (ClutterContainer *container)
  * container's own implementation, if any.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.10: Use clutter_actor_get_first_child() or
+ *   clutter_actor_get_last_child() to retrieve the beginning of
+ *   the list of children, and clutter_actor_get_next_sibling()
+ *   and clutter_actor_get_previous_sibling() to iterate over it.
  */
 void
 clutter_container_foreach (ClutterContainer *container,
@@ -502,6 +511,8 @@ clutter_container_foreach (ClutterContainer *container,
  * by the application.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.10: See clutter_container_foreach().
  */
 void
 clutter_container_foreach_with_internals (ClutterContainer *container,

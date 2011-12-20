@@ -59,6 +59,19 @@ void            clutter_container_remove_valist (ClutterContainer *container,
                                                  ClutterActor     *first_actor,
                                                  va_list           var_args);
 
+CLUTTER_DEPRECATED_FOR(clutter_actor_get_children)
+GList *         clutter_container_get_children  (ClutterContainer *container);
+
+CLUTTER_DEPRECATED
+void            clutter_container_foreach                       (ClutterContainer *container,
+                                                                 ClutterCallback   callback,
+                                                                 gpointer          user_data);
+
+CLUTTER_DEPRECATED
+void            clutter_container_foreach_with_internals        (ClutterContainer *container,
+                                                                 ClutterCallback   callback,
+                                                                 gpointer          user_data);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_CONTAINER_DEPRECATED_H__ */

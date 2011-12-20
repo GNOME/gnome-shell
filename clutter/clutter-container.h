@@ -55,12 +55,12 @@ typedef struct _ClutterContainerIface   ClutterContainerIface;
 
 /**
  * ClutterContainerIface:
- * @add: virtual function for adding an actor to the container. The
- *   implementation of this virtual function is required.
- * @remove: virtual function for removing an actor from the container. The
- *   implementation of this virtual function is required.
+ * @add: virtual function for adding an actor to the container. This virtual
+ *   function is deprecated, and it should not be overridden.
+ * @remove: virtual function for removing an actor from the container. This
+ *   virtual function is deprecated, and it should not be overridden.
  * @foreach: virtual function for iterating over the container's children.
- *   The implementation of this virtual function is required.
+ *   This virtual function is deprecated, and it should not be overridden.
  * @foreach_with_internals: virtual functions for iterating over the
  *   container's children, both added using the #ClutterContainer API
  *   and internal children. The implementation of this virtual function
@@ -139,13 +139,6 @@ struct _ClutterContainerIface
 
 GType         clutter_container_get_type         (void) G_GNUC_CONST;
 
-GList *       clutter_container_get_children           (ClutterContainer *container);
-void          clutter_container_foreach                (ClutterContainer *container,
-                                                        ClutterCallback   callback,
-                                                        gpointer          user_data);
-void          clutter_container_foreach_with_internals (ClutterContainer *container,
-                                                        ClutterCallback   callback,
-                                                        gpointer          user_data);
 ClutterActor *clutter_container_find_child_by_name     (ClutterContainer *container,
                                                         const gchar      *child_name);
 void          clutter_container_raise_child            (ClutterContainer *container,
