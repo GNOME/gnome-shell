@@ -37,8 +37,8 @@
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include "deprecated/clutter-container.h"
 
+#include "clutter-actor-private.h"
 #include "clutter-child-meta.h"
-
 #include "clutter-debug.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
@@ -101,6 +101,51 @@ static void              child_notify       (ClutterContainer *container,
 typedef ClutterContainerIface   ClutterContainerInterface;
 
 G_DEFINE_INTERFACE (ClutterContainer, clutter_container, G_TYPE_OBJECT);
+
+static void
+container_real_add (ClutterContainer *container,
+                    ClutterActor     *actor)
+{
+  clutter_actor_add_child (CLUTTER_ACTOR (container), actor);
+}
+
+static void
+container_real_remove (ClutterContainer *container,
+                       ClutterActor     *actor)
+{
+  clutter_actor_remove_child (CLUTTER_ACTOR (container), actor);
+}
+
+typedef struct {
+  ClutterCallback callback;
+  gpointer data;
+} ForeachClosure;
+
+static gboolean
+foreach_cb (ClutterActor *actor,
+            gpointer      data)
+{
+  ForeachClosure *clos = data;
+
+  clos->callback (actor, clos->data);
+
+  return TRUE;
+}
+
+static void
+container_real_foreach (ClutterContainer *container,
+                        ClutterCallback   callback,
+                        gpointer          user_data)
+{
+  ForeachClosure clos;
+
+  clos.callback = callback;
+  clos.data = user_data;
+
+  _clutter_actor_foreach_child (CLUTTER_ACTOR (container),
+                                foreach_cb,
+                                &clos);
+}
 
 static void
 clutter_container_default_init (ClutterContainerInterface *iface)
@@ -171,26 +216,22 @@ clutter_container_default_init (ClutterContainerInterface *iface)
                   G_TYPE_NONE, 2,
                   CLUTTER_TYPE_ACTOR, G_TYPE_PARAM);
 
-  iface->child_meta_type    = G_TYPE_INVALID;
-  iface->create_child_meta  = create_child_meta;
+  iface->add = container_real_add;
+  iface->remove = container_real_remove;
+  iface->foreach = container_real_foreach;
+
+  iface->child_meta_type = G_TYPE_INVALID;
+  iface->create_child_meta = create_child_meta;
   iface->destroy_child_meta = destroy_child_meta;
-  iface->get_child_meta     = get_child_meta;
-  iface->child_notify       = child_notify;
+  iface->get_child_meta = get_child_meta;
+  iface->child_notify = child_notify;
 }
 
 static inline void
 container_add_actor (ClutterContainer *container,
                      ClutterActor     *actor)
 {
-  ClutterContainerIface *iface;
   ClutterActor *parent;
-
-  iface = CLUTTER_CONTAINER_GET_IFACE (container);
-  if (G_UNLIKELY (iface->add == NULL))
-    {
-      CLUTTER_CONTAINER_WARN_NOT_IMPLEMENTED (container, "add");
-      return;
-    }
 
   parent = clutter_actor_get_parent (actor);
   if (G_UNLIKELY (parent != NULL))
@@ -206,22 +247,14 @@ container_add_actor (ClutterContainer *container,
 
   clutter_container_create_child_meta (container, actor);
 
-  iface->add (container, actor);
+  CLUTTER_CONTAINER_GET_IFACE (container)->add (container, actor);
 }
 
 static inline void
 container_remove_actor (ClutterContainer *container,
                         ClutterActor     *actor)
 {
-  ClutterContainerIface *iface;
   ClutterActor *parent;
-
-  iface = CLUTTER_CONTAINER_GET_IFACE (container);
-  if (G_UNLIKELY (iface->remove == NULL))
-    {
-      CLUTTER_CONTAINER_WARN_NOT_IMPLEMENTED (container, "remove");
-      return;
-    }
 
   parent = clutter_actor_get_parent (actor);
   if (parent != CLUTTER_ACTOR (container))
@@ -236,7 +269,7 @@ container_remove_actor (ClutterContainer *container,
 
   clutter_container_destroy_child_meta (container, actor);
 
-  iface->remove (container, actor);
+  CLUTTER_CONTAINER_GET_IFACE (container)->remove (container, actor);
 }
 
 static inline void
@@ -485,19 +518,12 @@ clutter_container_foreach (ClutterContainer *container,
                            ClutterCallback   callback,
                            gpointer          user_data)
 {
-  ClutterContainerIface *iface;
-
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (callback != NULL);
 
-  iface = CLUTTER_CONTAINER_GET_IFACE (container);
-  if (!iface->foreach)
-    {
-      CLUTTER_CONTAINER_WARN_NOT_IMPLEMENTED (container, "foreach");
-      return;
-    }
-
-  iface->foreach (container, callback, user_data);
+  CLUTTER_CONTAINER_GET_IFACE (container)->foreach (container,
+                                                    callback,
+                                                    user_data);
 }
 
 /**

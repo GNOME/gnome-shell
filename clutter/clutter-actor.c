@@ -10812,51 +10812,6 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
 }
 
 static void
-container_add_actor (ClutterContainer *container,
-                     ClutterActor     *actor)
-{
-  clutter_actor_add_child (CLUTTER_ACTOR (container), actor);
-}
-
-static void
-container_remove_actor (ClutterContainer *container,
-                        ClutterActor     *actor)
-{
-  clutter_actor_remove_child (CLUTTER_ACTOR (container), actor);
-}
-
-typedef struct {
-  ClutterCallback callback;
-  gpointer data;
-} ForeachClosure;
-
-static gboolean
-foreach_cb (ClutterActor *actor,
-            gpointer      data)
-{
-  ForeachClosure *clos = data;
-
-  clos->callback (actor, clos->data);
-
-  return TRUE;
-}
-
-static void
-container_foreach (ClutterContainer *container,
-                   ClutterCallback   callback,
-                   gpointer          user_data)
-{
-  ForeachClosure clos;
-
-  clos.callback = callback;
-  clos.data = user_data;
-
-  _clutter_actor_foreach_child (CLUTTER_ACTOR (container),
-                                foreach_cb,
-                                &clos);
-}
-
-static void
 container_raise (ClutterContainer *container,
                  ClutterActor     *child,
                  ClutterActor     *sibling)
@@ -10890,10 +10845,6 @@ container_sort_by_depth (ClutterContainer *container)
 static void
 clutter_container_iface_init (ClutterContainerIface *iface)
 {
-  iface->add = container_add_actor;
-  iface->remove = container_remove_actor;
-  iface->foreach = container_foreach;
-
   iface->raise = container_raise;
   iface->lower = container_lower;
   iface->sort_depth_order = container_sort_by_depth;
