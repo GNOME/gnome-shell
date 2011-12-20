@@ -265,7 +265,7 @@ function lowerBound(array, val, cmp) {
             max = mid;
     }
 
-    return (cmp(array[min], val) < 0) ? max : min;
+    return (min == max || cmp(array[min], val) < 0) ? max : min;
 }
 
 // insertSorted:

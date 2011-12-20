@@ -64,8 +64,13 @@ let arrayEmpty = [];
 // inserting in a empty array
 Util.insertSorted(arrayEmpty, 3, checkedCmp);
 
+// Insert at the end and check that we don't
+// access past it
+Util.insertSorted(arrayEmpty, 4, checkedCmp);
+Util.insertSorted(arrayEmpty, 5, checkedCmp);
+
 // Some more insertions
 Util.insertSorted(arrayEmpty, 2, checkedCmp);
 Util.insertSorted(arrayEmpty, 1, checkedCmp);
 
-assertArrayEquals('checkedCmp test', [1, 2, 3], arrayEmpty);
+assertArrayEquals('checkedCmp test', [1, 2, 3, 4, 5], arrayEmpty);
