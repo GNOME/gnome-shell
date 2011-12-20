@@ -58,7 +58,8 @@ UNIT_TESTS = \
 	test-snap-constraint.c \
 	test-state-script.c \
 	test-drop.c \
-	test-devices.c
+	test-devices.c \
+	test-actor.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c
