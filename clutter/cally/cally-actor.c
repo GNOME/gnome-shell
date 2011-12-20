@@ -295,36 +295,27 @@ cally_actor_initialize (AtkObject *obj,
   g_object_set_data (G_OBJECT (obj), "atk-component-layer",
                      GINT_TO_POINTER (ATK_LAYER_MDI));
 
-  /* Depends if the object implement ClutterContainer */
-  if (CLUTTER_IS_CONTAINER(actor))
-    {
-      priv->children = clutter_container_get_children (CLUTTER_CONTAINER (actor));
+  priv->children = clutter_actor_get_children (actor);
 
-      /*
-       * We store the handler ids for these signals in case some objects
-       * need to remove these handlers.
-       */
-      handler_id = g_signal_connect (actor,
-                                     "actor-added",
-                                     G_CALLBACK (cally_actor_add_actor),
-                                     obj);
-      g_object_set_data (G_OBJECT (obj), "cally-add-handler-id",
-                         GUINT_TO_POINTER (handler_id));
-      handler_id = g_signal_connect (actor,
-                                     "actor-removed",
-                                     G_CALLBACK (cally_actor_remove_actor),
-                                     obj);
-      g_object_set_data (G_OBJECT (obj), "cally-remove-handler-id",
-                         GUINT_TO_POINTER (handler_id));
+  /*
+   * We store the handler ids for these signals in case some objects
+   * need to remove these handlers.
+   */
+  handler_id = g_signal_connect (actor,
+                                 "actor-added",
+                                 G_CALLBACK (cally_actor_add_actor),
+                                 obj);
+  g_object_set_data (G_OBJECT (obj), "cally-add-handler-id",
+                     GUINT_TO_POINTER (handler_id));
+  handler_id = g_signal_connect (actor,
+                                 "actor-removed",
+                                 G_CALLBACK (cally_actor_remove_actor),
+                                 obj);
+  g_object_set_data (G_OBJECT (obj), "cally-remove-handler-id",
+                     GUINT_TO_POINTER (handler_id));
 
-      obj->role = ATK_ROLE_PANEL; /* typically objects implementing ClutterContainer
-                                     interface would be a panel */
-    }
-  else
-    {
-      priv->children = NULL;
-      obj->role = ATK_ROLE_UNKNOWN;
-    }
+  obj->role = ATK_ROLE_PANEL; /* typically objects implementing ClutterContainer
+                                 interface would be a panel */
 }
 
 static void
@@ -658,8 +649,8 @@ cally_actor_remove_actor (ClutterActor *container,
 
 static gint
 cally_actor_real_add_actor (ClutterActor *container,
-                           ClutterActor *actor,
-                           gpointer      data)
+                            ClutterActor *actor,
+                            gpointer      data)
 {
   AtkObject        *atk_parent = ATK_OBJECT (data);
   AtkObject        *atk_child  = clutter_actor_get_accessible (actor);
@@ -674,8 +665,7 @@ cally_actor_real_add_actor (ClutterActor *container,
 
   g_list_free (priv->children);
 
-  priv->children =
-    clutter_container_get_children (CLUTTER_CONTAINER(container));
+  priv->children = clutter_actor_get_children (CLUTTER_ACTOR (container));
 
   index = g_list_index (priv->children, actor);
   g_signal_emit_by_name (atk_parent, "children_changed::add",
@@ -686,8 +676,8 @@ cally_actor_real_add_actor (ClutterActor *container,
 
 static gint
 cally_actor_real_remove_actor (ClutterActor *container,
-                              ClutterActor *actor,
-                              gpointer      data)
+                               ClutterActor *actor,
+                               gpointer      data)
 {
   AtkPropertyValues  values      = { NULL };
   AtkObject*         atk_parent  = NULL;
@@ -717,7 +707,8 @@ cally_actor_real_remove_actor (ClutterActor *container,
   priv = CALLY_ACTOR (atk_parent)->priv;
   index = g_list_index (priv->children, actor);
   g_list_free (priv->children);
-  priv->children = clutter_container_get_children (CLUTTER_CONTAINER(container));
+
+  priv->children = clutter_actor_get_children (CLUTTER_ACTOR (container));
 
   if (index >= 0 && index <= g_list_length (priv->children))
     g_signal_emit_by_name (atk_parent, "children_changed::remove",
