@@ -33,6 +33,7 @@
 #include <cogl/cogl.h>
 #define COGL_ENABLE_EXPERIMENTAL_API
 #include <cogl/cogl-texture-pixmap-x11.h>
+#include <gdk/gdk.h> /* for gdk_rectangle_intersect() */
 #include <string.h>
 
 static void meta_shaped_texture_dispose  (GObject    *object);
@@ -884,4 +885,102 @@ meta_shaped_texture_set_clip_region (MetaShapedTexture *stex,
     }
 
   priv->clip_region = clip_region;
+}
+
+/**
+ * meta_shaped_texture_get_image:
+ * @stex: A #MetaShapedTexture
+ * @clip: A clipping rectangle, to help prevent extra processing.
+ * In the case that the clipping rectangle is partially or fully
+ * outside the bounds of the texture, the rectangle will be clipped.
+ *
+ * Flattens the two layers of the shaped texture into one ARGB32
+ * image by alpha blending the two images, and returns the flattened
+ * image.
+ *
+ * Returns: (transfer full): a new cairo surface to be freed with
+ * cairo_surface_destroy().
+ */
+cairo_surface_t *
+meta_shaped_texture_get_image (MetaShapedTexture     *stex,
+                               cairo_rectangle_int_t *clip)
+{
+  CoglHandle texture, mask_texture;
+  cairo_rectangle_int_t texture_rect = { 0, 0, 0, 0 };
+  cairo_surface_t *surface;
+
+  g_return_val_if_fail (META_IS_SHAPED_TEXTURE (stex), NULL);
+
+  texture = stex->priv->texture;
+
+  if (texture == NULL)
+    return NULL;
+
+  texture_rect.width = cogl_texture_get_width (texture);
+  texture_rect.height = cogl_texture_get_height (texture);
+
+  if (clip != NULL)
+    {
+      /* GdkRectangle is just a typedef of cairo_rectangle_int_t,
+       * so we can use the gdk_rectangle_* APIs on these. */
+      if (!gdk_rectangle_intersect (&texture_rect, clip, clip))
+        return NULL;
+    }
+
+  if (clip != NULL)
+    texture = cogl_texture_new_from_sub_texture (texture,
+                                                 clip->x,
+                                                 clip->y,
+                                                 clip->width,
+                                                 clip->height);
+
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                        cogl_texture_get_width (texture),
+                                        cogl_texture_get_height (texture));
+
+  cogl_texture_get_data (texture, CLUTTER_CAIRO_FORMAT_ARGB32,
+                         cairo_image_surface_get_stride (surface),
+                         cairo_image_surface_get_data (surface));
+
+  cairo_surface_mark_dirty (surface);
+
+  if (clip != NULL)
+    cogl_object_unref (texture);
+
+  mask_texture = stex->priv->mask_texture;
+  if (mask_texture != COGL_INVALID_HANDLE)
+    {
+      cairo_t *cr;
+      cairo_surface_t *mask_surface;
+
+      if (clip != NULL)
+        mask_texture = cogl_texture_new_from_sub_texture (mask_texture,
+                                                          clip->x,
+                                                          clip->y,
+                                                          clip->width,
+                                                          clip->height);
+
+      mask_surface = cairo_image_surface_create (CAIRO_FORMAT_A8,
+                                                 cogl_texture_get_width (mask_texture),
+                                                 cogl_texture_get_height (mask_texture));
+
+      cogl_texture_get_data (mask_texture, COGL_PIXEL_FORMAT_A_8,
+                             cairo_image_surface_get_stride (mask_surface),
+                             cairo_image_surface_get_data (mask_surface));
+
+      cairo_surface_mark_dirty (mask_surface);
+
+      cr = cairo_create (surface);
+      cairo_set_source_surface (cr, mask_surface, 0, 0);
+      cairo_set_operator (cr, CAIRO_OPERATOR_DEST_IN);
+      cairo_paint (cr);
+      cairo_destroy (cr);
+
+      cairo_surface_destroy (mask_surface);
+
+      if (clip != NULL)
+        cogl_object_unref (mask_texture);
+    }
+
+  return surface;
 }
