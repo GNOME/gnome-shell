@@ -56,7 +56,9 @@ HFILE_GLOB=\
 	$(top_srcdir)/clutter/egl/clutter-egl.h \
 	$(top_srcdir)/clutter/cex100/clutter-cex100.h \
 	$(top_srcdir)/clutter/win32/clutter-win32.h \
-	$(top_srcdir)/clutter/gdk/clutter-gdk.h
+	$(top_srcdir)/clutter/gdk/clutter-gdk.h \
+	$(top_srcdir)/clutter/wayland/clutter-wayland-compositor.h \
+	$(top_srcdir)/clutter/wayland/clutter-wayland-surface.h
 
 CFILE_GLOB=\
 	$(top_srcdir)/clutter/*.c \
@@ -65,7 +67,8 @@ CFILE_GLOB=\
 	$(top_srcdir)/clutter/win32/*.c \
 	$(top_srcdir)/clutter/gdk/*.c \
 	$(top_srcdir)/clutter/cex100/*.c \
-	$(top_srcdir)/clutter/egl/*.c
+	$(top_srcdir)/clutter/egl/*.c \
+	$(top_srcdir)/clutter/wayland/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
@@ -116,9 +119,10 @@ EXTRA_HFILES=\
 	$(top_srcdir)/clutter/x11/clutter-glx-texture-pixmap.h \
 	$(top_srcdir)/clutter/egl/clutter-egl.h \
 	$(top_srcdir)/clutter/cex100/clutter-cex100.h \
-	$(top_srcdir)/clutter/wayland/clutter-wayland.h \
 	$(top_srcdir)/clutter/win32/clutter-win32.h \
-	$(top_srcdir)/clutter/gdk/clutter-gdk.h
+	$(top_srcdir)/clutter/gdk/clutter-gdk.h \
+	$(top_srcdir)/clutter/wayland/clutter-wayland-compositor.h \
+	$(top_srcdir)/clutter/wayland/clutter-wayland-surface.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
@@ -139,9 +143,7 @@ HTML_IMAGES=\
 # e.g. content_files=running.sgml building.sgml changes-2.0.sgml
 content_files= \
 	glossary.xml \
-	subclassing-ClutterActor.xml \
         clutter-animation-tutorial.xml \
-	creating-behaviours.xml \
 	clutter-overview.xml \
 	building-clutter.xml \
 	running-clutter.xml \
@@ -154,9 +156,7 @@ content_files= \
 # e.g. expand_content_files=running.sgml
 expand_content_files= \
 	glossary.xml \
-	subclassing-ClutterActor.xml \
         clutter-animation-tutorial.xml \
-	creating-behaviours.xml \
 	clutter-overview.xml \
 	building-clutter.xml \
 	running-clutter.xml \

@@ -26,107 +26,105 @@
  * SECTION:clutter-actor
  * @short_description: Base abstract class for all visual stage actors.
  *
- * #ClutterActor is a base abstract class for all visual elements on the
- * stage. Every object that must appear on the main #ClutterStage must also
- * be a #ClutterActor, either by using one of the classes provided by
- * Clutter, or by implementing a new #ClutterActor subclass.
+ * The ClutterActor class is the basic element of the scene graph in Clutter,
+ * and it encapsulates the position, size, and transformations of a node in
+ * the graph.
  *
- * Every actor is a 2D surface positioned and optionally transformed
- * in 3D space. The actor is positioned relative to top left corner of
- * it parent with the childs origin being its anchor point (also top
- * left by default).
- *
- * <refsect2 id="ClutterActor-box">
- *   <title>Actor bounding box and transformations</title>
- *   <para>Any actor's 2D surface is contained inside its bounding box,
- *   as described by the #ClutterActorBox structure:</para>
- *   <figure id="actor-box">
- *     <title>Bounding box of an Actor</title>
- *     <graphic fileref="actor-box.png" format="PNG"/>
- *   </figure>
- *   <para>The actor box represents the untransformed area occupied by an
- *   actor. Each visible actor that has been put on a #ClutterStage also
- *   has a transformed area, depending on the actual transformations
- *   applied to it by the developer (scale, rotation). Tranforms will
- *   also be applied to any child actors. Also applied to all actors by
- *   the #ClutterStage is a perspective transformation. API is provided
- *   for both tranformed and untransformed actor geometry information.</para>
- *   <para>The GL 'modelview' transform matrix for the actor is constructed
- *   from the actor settings by the following order of operations:</para>
+ * <refsect2 id="ClutterActor-transformations">
+ *   <title>Actor transformations</title>
+ *   <para>Each actor can be transformed using methods like
+ *   clutter_actor_set_scale() or clutter_actor_set_rotation(). The order
+ *   in which the transformations are applied is decided by Clutter and it is
+ *   the following:</para>
  *   <orderedlist>
- *     <listitem><para>Translation by actor x, y coords,</para></listitem>
- *     <listitem><para>Translation by actor depth (z),</para></listitem>
- *     <listitem><para>Scaling by scale_x, scale_y,</para></listitem>
- *     <listitem><para>Rotation around z axis,</para></listitem>
- *     <listitem><para>Rotation around y axis,</para></listitem>
- *     <listitem><para>Rotation around x axis,</para></listitem>
- *     <listitem><para>Negative translation by anchor point x,
- *     y,</para></listitem>
- *     <listitem><para>Rectangular Clip is applied (this is not an operation
- *     on the matrix as such, but it is done as part of the transform set
- *     up).</para></listitem>
+ *     <listitem><para>translation by the origin of the #ClutterActor:allocation;</para></listitem>
+ *     <listitem><para>translation by the actor's #ClutterActor:depth;</para></listitem>
+ *     <listitem><para>scaling by the #ClutterActor:scale-x and #ClutterActor:scale-y factors;</para></listitem>
+ *     <listitem><para>rotation around the #ClutterActor:rotation-z-angle and #ClutterActor:rotation-z-center;</para></listitem>
+ *     <listitem><para>rotation around the #ClutterActor:rotation-y-angle and #ClutterActor:rotation-y-center;</para></listitem>
+ *     <listitem><para>rotation around the #ClutterActor:rotation-x-angle and #ClutterActor:rotation-x-center;</para></listitem>
+ *     <listitem><para>negative translation by the #ClutterActor:anchor-x and #ClutterActor:anchor-y point.</para></listitem>
  *   </orderedlist>
- *   <para>An actor can either be explicitly sized and positioned, using the
- *   various size and position accessors, like clutter_actor_set_x() or
- *   clutter_actor_set_width(); or it can have a preferred width and
- *   height, which then allows a layout manager to implicitly size and
- *   position it by "allocating" an area for an actor. This allows for
- *   actors to be manipulated in both a fixed (or static) parent container
- *   (i.e. children of #ClutterGroup) and a more automatic (or dynamic)
- *   layout based parent container.</para>
- *   <para>When accessing the position and size of an actor, the simple
- *   accessors like clutter_actor_get_width() and clutter_actor_get_x()
- *   will return a value depending on whether the actor has been explicitly
- *   sized and positioned by the developer or implicitly by the layout
- *   manager.</para>
- *   <para>Depending on whether you are querying an actor or implementing a
- *   layout manager, you should either use the simple accessors or use the
- *   size negotiation API.</para>
  * </refsect2>
  *
- * <refsect2 id="ClutterActor-event-handling">
- *   <title>Event Handling</title>
- *   <para>Clutter actors are also able to receive input events and react to
- *   them. Events are handled in the following ways:</para>
- *   <orderedlist>
- *     <listitem><para>Actors emit pointer events if set reactive, see
- *     clutter_actor_set_reactive()</para></listitem>
- *     <listitem><para>The stage is always reactive</para></listitem>
- *     <listitem><para>Events are handled by connecting signal handlers to
- *     the numerous event signal types.</para></listitem>
- *     <listitem><para>Event handlers must return %TRUE if they handled
- *     the event and wish to block the event emission chain, or %FALSE
- *     if the emission chain must continue</para></listitem>
- *     <listitem><para>Keyboard events are emitted if actor has focus, see
- *     clutter_stage_set_key_focus()</para></listitem>
- *     <listitem><para>Motion events (motion, enter, leave) are not emitted
- *     if clutter_set_motion_events_enabled() is called with %FALSE.
- *     See clutter_set_motion_events_enabled() documentation for more
- *     information.</para></listitem>
- *     <listitem><para>Once emitted, an event emission chain has two
- *     phases: capture and bubble. An emitted event starts in the capture
- *     phase (see ClutterActor::captured-event) beginning at the stage and
- *     traversing every child actor until the event source actor is reached.
- *     The emission then enters the bubble phase, traversing back up the
- *     chain via parents until it reaches the stage. Any event handler can
- *     abort this chain by returning %TRUE (meaning "event handled").
- *     </para></listitem>
- *     <listitem><para>Pointer events will 'pass through' non reactive
- *     overlapping actors.</para></listitem>
- *   </orderedlist>
- *   <figure id="event-flow">
- *     <title>Event flow in Clutter</title>
- *     <graphic fileref="event-flow.png" format="PNG"/>
- *   </figure>
- *   <para>Every '?' box in the diagram above is an entry point for
- *   application code.</para>
+ * <refsect2 id="ClutterActor-geometry">
+ *   <title>Modifying an actor's geometry</title>
+ *   <para>Each actor has a bounding box, called #ClutterActor:allocation
+ *   which is either set by its parent or explicitly through the
+ *   clutter_actor_set_position() and clutter_actor_set_size() methods.
+ *   Each actor also has an implicit preferred size.</para>
+ *   <para>An actor’s preferred size can be defined by any subclass by
+ *   overriding the #ClutterActorClass.get_preferred_width() and the
+ *   #ClutterActorClass.get_preferred_height() virtual functions, or it can
+ *   be explicitly set by using clutter_actor_set_width() and
+ *   clutter_actor_set_height().</para>
+ *   <para>An actor’s position can be set explicitly by using
+ *   clutter_actor_set_x() and clutter_actor_set_y(); the coordinates are
+ *   relative to the origin of the actor’s parent.</para>
+ * </refsect2>
+ *
+ * <refsect2 id="ClutterActor-children">
+ *   <title>Managing actor children</title>
+ *   <para>Each actor can have multiple children, by calling
+ *   clutter_actor_add_child() to add a new child actor, and
+ *   clutter_actor_remove_child() to remove an existing child. #ClutterActor
+ *   will hold a reference on each child actor, which will be released when
+ *   the child is removed from its parent, or destroyed using
+ *   clutter_actor_destroy().</para>
+ *   <para>Children can be inserted at a given index, or above and below
+ *   another child actor. The order of insertion determines the order of the
+ *   children when iterating over them. Iterating over children is performed
+ *   by using clutter_actor_get_first_child(), clutter_actor_get_previous_sibling(),
+ *   clutter_actor_get_next_child(), and clutter_actor_get_last_child(). It is
+ *   also possible to retrieve a list of children by using
+ *   clutter_actor_get_children(), as well as retrieving a specific child at a
+ *   given index by using clutter_actor_get_child_at_index().</para>
+ *   <para>If you need to track additions of children to a #ClutterActor, use
+ *   the #ClutterContainer::actor-added signal; similarly, to track removals
+ *   of children from a ClutterActor, use the #ClutterContainer::actor-removed
+ *   signal.</para>
+ * </refsect2>
+ *
+ * <refsect2 id="ClutterActor-events">
+ *   <title>Handling events on an actor</title>
+ *   <para>A #ClutterActor can receive and handle input device events, for
+ *   instance pointer events and key events, as long as its
+ *   #ClutterActor:reactive property is set to %TRUE.</para>
+ *   <para>Once an actor has been determined to be the source of an event,
+ *   Clutter will traverse the scene graph from the top-level actor towards the
+ *   event source, emitting the #ClutterActor::captured-event signal on each
+ *   ancestor until it reaches the source; this phase is also called
+ *   <emphasis>the capture phase</emphasis>. If the event propagation was not
+ *   stopped, the graph is walked backwards, from the source actor to the
+ *   top-level, and the #ClutterActor::event signal, along with other event
+ *   signals if needed, is emitted; this phase is also called <emphasis>the
+ *   bubble phase</emphasis>. At any point of the signal emission, signal
+ *   handlers can stop the propagation through the scene graph by returning
+ *   %CLUTTER_EVENT_STOP; otherwise, they can continue the propagation by
+ *   returning %CLUTTER_EVENT_PROPAGATE.</para>
  * </refsect2>
  *
  * <refsect2 id="ClutterActor-subclassing">
- *   <title>Implementing a ClutterActor</title>
- *   <para>For implementing a new custom actor class, please read <link
- *   linkend="clutter-subclassing-ClutterActor">the corresponding
- *   section</link> of the API reference.</para>
+ *   <title>Implementing an actor</title>
+ *   <para>Careful consideration should be given when deciding to implement
+ *   a #ClutterActor sub-class. It is generally recommended to implement a
+ *   sub-class of #ClutterActor only for actors that should be used as leaf
+ *   nodes of a scene graph.</para>
+ *   <para>If your actor should be painted in a custom way, you should
+ *   override the #ClutterActor::paint signal class handler. You can either
+ *   opt to chain up to the parent class implementation or decide to fully
+ *   override the default paint implementation; Clutter will set up the
+ *   transformations and clip regions prior to emitting the #ClutterActor::paint
+ *   signal.</para>
+ *   <para>By overriding the #ClutterActorClass.get_preferred_width() and
+ *   #ClutterActorClass.get_preferred_height() virtual functions it is
+ *   possible to change or provide the preferred size of an actor; similarly,
+ *   by overriding the #ClutterActorClass.allocate() virtual function it is
+ *   possible to control the layout of the children of an actor. Make sure to
+ *   always chain up to the parent implementation of the
+ *   #ClutterActorClass.allocate() virtual function.</para>
+ *   <para>In general, it is strongly encouraged to use delegation and
+ *   composition instead of direct subclassing.</para>
  * </refsect2>
  *
  * <refsect2 id="ClutterActor-script">
@@ -178,14 +176,12 @@
  *   property.</para>
  *   <para>The <emphasis>property-name</emphasis> fragment is the name of the
  *   action or constraint property to be animated.</para>
- *   <example id="example-ClutterActor-animating-meta">
- *     <title>Animating a constraint property</title>
- *     <para>The example below animates a #ClutterBindConstraint applied to an
- *     actor using clutter_actor_animate(). The <emphasis>rect</emphasis> has
- *     a binding constraint for the <emphasis>origin</emphasis> actor, and in
- *     its initial state is fully transparent and overlapping the actor to
- *     which is bound to. </para>
- *     <programlisting>
+ *   <para>The example below animates a #ClutterBindConstraint applied to an
+ *   actor using clutter_actor_animate(). The <emphasis>rect</emphasis> has
+ *   a binding constraint for the <emphasis>origin</emphasis> actor, and in
+ *   its initial state is fully transparent and overlapping the actor to
+ *   which is bound to. </para>
+ *   <informalexample><programlisting>
  * constraint = clutter_bind_constraint_new (origin, CLUTTER_BIND_X, 0.0);
  * clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), "bind-x");
  * clutter_actor_add_constraint (rect, constraint);
@@ -200,19 +196,18 @@
  * g_signal_connect (rect, "button-press-event",
  *                   G_CALLBACK (on_button_press),
  *                   NULL);
- *     </programlisting>
- *     <para>On button press, the rectangle "slides" from behind the actor to
- *     which is bound to, using the #ClutterBindConstraint:offset property and
- *     the #ClutterActor:opacity property.</para>
- *     <programlisting>
+ *   </programlisting></informalexample>
+ *   <para>On button press, the rectangle "slides" from behind the actor to
+ *   which is bound to, using the #ClutterBindConstraint:offset property and
+ *   the #ClutterActor:opacity property.</para>
+ *   <informalexample><programlisting>
  * float new_offset = clutter_actor_get_width (origin) + h_padding;
  *
  * clutter_actor_animate (rect, CLUTTER_EASE_OUT_CUBIC, 500,
  *                        "opacity", 255,
  *                        "@constraints.bind-x.offset", new_offset,
  *                        NULL);
- *     </programlisting>
- *   </example>
+ *   </programlisting></informalexample>
  * </refsect2>
  */
 

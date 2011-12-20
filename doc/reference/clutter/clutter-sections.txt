@@ -348,6 +348,35 @@ clutter_actor_get_offscreen_redirect
 clutter_actor_set_name
 clutter_actor_get_name
 clutter_actor_get_gid
+ClutterActorAlign
+clutter_actor_set_x_align
+clutter_actor_get_x_align
+clutter_actor_set_y_align
+clutter_actor_get_y_align
+clutter_actor_set_x_expand
+clutter_actor_get_x_expand
+clutter_actor_set_y_expand
+clutter_actor_get_y_expand
+clutter_actor_needs_x_expand
+clutter_actor_needs_y_expand
+clutter_actor_queue_compute_expand
+ClutterMargin
+clutter_margin_copy
+clutter_margin_free
+clutter_margin_get_type
+clutter_margin_new
+clutter_actor_set_margin_top
+clutter_actor_get_margin_top
+clutter_actor_set_margin_right
+clutter_actor_get_margin_right
+clutter_actor_set_margin_bottom
+clutter_actor_get_margin_bottom
+clutter_actor_set_margin_left
+clutter_actor_get_margin_left
+clutter_actor_set_layout_manager
+clutter_actor_get_layout_manager
+clutter_actor_set_background_color
+clutter_actor_get_background_color
 
 <SUBSECTION>
 clutter_actor_set_clip
@@ -358,18 +387,33 @@ clutter_actor_set_clip_to_allocation
 clutter_actor_get_clip_to_allocation
 
 <SUBSECTION>
-clutter_actor_set_parent
+clutter_actor_new
+clutter_actor_add_child
+clutter_actor_insert_child_above
+clutter_actor_insert_child_at_index
+clutter_actor_insert_child_below
+clutter_actor_replace_child
+clutter_actor_remove_all_children
+clutter_actor_remove_child
+clutter_actor_get_first_child
+clutter_actor_get_next_sibling
+clutter_actor_get_previous_sibling
+clutter_actor_get_last_child
+clutter_actor_get_child_at_index
+clutter_actor_get_children
+clutter_actor_get_n_children
 clutter_actor_get_parent
-clutter_actor_reparent
-clutter_actor_unparent
-clutter_actor_contains
 clutter_actor_raise
 clutter_actor_lower
 clutter_actor_raise_top
 clutter_actor_lower_bottom
+clutter_actor_contains
 clutter_actor_get_stage
 clutter_actor_push_internal
 clutter_actor_pop_internal
+clutter_actor_set_parent
+clutter_actor_reparent
+clutter_actor_unparent
 
 <SUBSECTION>
 clutter_actor_set_depth
@@ -502,6 +546,7 @@ CLUTTER_TYPE_GEOMETRY
 CLUTTER_TYPE_ACTOR_BOX
 CLUTTER_TYPE_VERTEX
 CLUTTER_TYPE_PAINT_VOLUME
+CLUTTER_TYPE_MARGIN
 CLUTTER_ACTOR
 CLUTTER_IS_ACTOR
 CLUTTER_TYPE_ACTOR
@@ -601,6 +646,7 @@ clutter_stage_ensure_current
 clutter_stage_ensure_viewport
 clutter_stage_ensure_redraw
 clutter_stage_queue_redraw
+clutter_actor_queue_redraw_with_clip
 clutter_stage_event
 clutter_stage_set_key_focus
 clutter_stage_get_key_focus
@@ -1352,11 +1398,22 @@ clutter_wayland_set_compositor_display
 
 <SECTION>
 <FILE>clutter-wayland-surface</FILE>
+<TITLE>ClutterWaylandSurface</TITLE>
 ClutterWaylandSurface
 ClutterWaylandSurfaceClass
 clutter_wayland_surface_new
 clutter_wayland_surface_attach_buffer
 clutter_wayland_surface_damage_buffer
+<SUBSECTION Standard>
+CLUTTER_WAYLAND_IS_SURFACE
+CLUTTER_WAYLAND_IS_SURFACE_CLASS
+CLUTTER_WAYLAND_SURFACE
+CLUTTER_WAYLAND_SURFACE_CLASS
+CLUTTER_WAYLAND_SURFACE_GET_CLASS
+CLUTTER_WAYLAND_TYPE_SURFACE
+<SUBSECTION Private>
+ClutterWaylandSurfacePrivate
+clutter_wayland_surface_get_type
 </SECTION>
 
 <SECTION>
