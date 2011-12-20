@@ -57,16 +57,26 @@
 	<UserMacro
 		Name="DoDefinesSDL"
 		Value="
-if exist ..\..\..\cogl\cogl-defines.h goto DONE_COGL_DEFINES_H&#x0D;&#x0A;
-copy ..\..\..\cogl\cogl-defines.h.win32_sdl ..\..\..\cogl\cogl-defines.h&#x0D;&#x0A;
+if exist ..\..\..\cogl\SDL_DEFINES goto DONE_COGL_DEFINES_H&#x0D;&#x0A;
+if not exist ..\..\..\cogl\WGL_DEFINES goto DO_COGL_DEFINES_H&#x0D;&#x0A;
+del ..\..\..\cogl\cogl-defines.h&#x0D;&#x0A;
+del ..\..\..\cogl\WGL_DEFINES&#x0D;&#x0A;
+:DO_COGL_DEFINES_H&#x0D;&#x0A;
+copy ..\..\..\cogl\cogl-defines.h.win32_sdl ..\..\..\cogl\SDL_DEFINES&#x0D;&#x0A;
+copy ..\..\..\cogl\SDL_DEFINES ..\..\..\cogl\cogl-defines.h&#x0D;&#x0A;
 :DONE_COGL_DEFINES_H&#x0D;&#x0A;
 "
 	/>
 	<UserMacro
 		Name="DoDefines"
 		Value="
-if exist ..\..\..\cogl\cogl-defines.h goto DONE_COGL_DEFINES_H&#x0D;&#x0A;
-copy ..\..\..\cogl\cogl-defines.h.win32 ..\..\..\cogl\cogl-defines.h&#x0D;&#x0A;
+if exist ..\..\..\cogl\WGL_DEFINES goto DONE_COGL_DEFINES_H&#x0D;&#x0A;
+if not exist ..\..\..\cogl\SDL_DEFINES goto DO_COGL_DEFINES_H&#x0D;&#x0A;
+del ..\..\..\cogl\cogl-defines.h&#x0D;&#x0A;
+del ..\..\..\cogl\SDL_DEFINES&#x0D;&#x0A;
+:DO_COGL_DEFINES_H&#x0D;&#x0A;
+copy ..\..\..\cogl\cogl-defines.h.win32 ..\..\..\cogl\WGL_DEFINES&#x0D;&#x0A;
+copy ..\..\..\cogl\WGL_DEFINES ..\..\..\cogl\cogl-defines.h&#x0D;&#x0A;
 :DONE_COGL_DEFINES_H&#x0D;&#x0A;
 "
 	/>

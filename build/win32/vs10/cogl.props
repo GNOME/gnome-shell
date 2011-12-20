@@ -12,13 +12,23 @@
     <TestProgDef>CLUTTER_COMPILATION;TESTS_DATADIR="../share/cogl-$(CoglApiVersion)/tests"</TestProgDef>
     <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
     <DoDefinesSDL>
-if exist ..\..\..\cogl\cogl-defines.h goto DONE_COGL_DEFINES_H
-copy ..\..\..\cogl\cogl-defines.h.win32_sdl ..\..\..\cogl\cogl-defines.h
+if exist ..\..\..\cogl\SDL_DEFINES goto DONE_COGL_DEFINES_H
+if not exist ..\..\..\cogl\WGL_DEFINES goto DO_COGL_DEFINES_H
+del ..\..\..\cogl\cogl-defines.h
+del ..\..\..\cogl\WGL_DEFINES
+:DO_COGL_DEFINES_H
+copy ..\..\..\cogl\cogl-defines.h.win32_sdl ..\..\..\cogl\SDL_DEFINES
+copy ..\..\..\cogl\SDL_DEFINES ..\..\..\cogl\cogl-defines.h
 :DONE_COGL_DEFINES_H
     </DoDefinesSDL>
     <DoDefines>
-if exist ..\..\..\cogl\cogl-defines.h goto DONE_COGL_DEFINES_H
-copy ..\..\..\cogl\cogl-defines.h.win32 ..\..\..\cogl\cogl-defines.h
+if exist ..\..\..\cogl\WGL_DEFINES goto DONE_COGL_DEFINES_H
+if not exist ..\..\..\cogl\SDL_DEFINES goto DO_COGL_DEFINES_H
+del ..\..\..\cogl\cogl-defines.h
+del ..\..\..\cogl\SDL_DEFINES
+:DO_COGL_DEFINES_H
+copy ..\..\..\cogl\cogl-defines.h.win32 ..\..\..\cogl\WGL_DEFINES
+copy ..\..\..\cogl\WGL_DEFINES ..\..\..\cogl\cogl-defines.h
 :DONE_COGL_DEFINES_H
     </DoDefines>
     <PreBuildCmd>
