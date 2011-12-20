@@ -3752,3 +3752,34 @@ _clutter_debug_message (const char *format, ...)
   _clutter_debug_messagev (format, args);
   va_end (args);
 }
+
+gboolean
+_clutter_diagnostic_enabled (void)
+{
+  static const char *clutter_enable_diagnostic = NULL;
+
+  if (G_UNLIKELY (clutter_enable_diagnostic == NULL))
+    {
+      clutter_enable_diagnostic = g_getenv ("CLUTTER_ENABLE_DIAGNOSTIC");
+
+      if (clutter_enable_diagnostic == NULL)
+        clutter_enable_diagnostic = "0";
+    }
+
+  return *clutter_enable_diagnostic != '0';
+}
+
+void
+_clutter_diagnostic_message (const char *format, ...)
+{
+  va_list args;
+  char *fmt;
+
+  fmt = g_strconcat ("[DIAGNOSTIC]: ", format, NULL);
+
+  va_start (args, format);
+  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, fmt, args);
+  va_end (args);
+
+  g_free (fmt);
+}

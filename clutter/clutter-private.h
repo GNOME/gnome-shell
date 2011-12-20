@@ -210,6 +210,10 @@ const gchar *_clutter_gettext (const gchar *str);
 
 gboolean      _clutter_feature_init (GError **error);
 
+/* Diagnostic mode */
+gboolean        _clutter_diagnostic_enabled     (void);
+void            _clutter_diagnostic_message     (const char *fmt, ...);
+
 /* Picking code */
 guint           _clutter_pixel_to_id            (guchar        pixel[4]);
 void            _clutter_id_to_color            (guint         id,
