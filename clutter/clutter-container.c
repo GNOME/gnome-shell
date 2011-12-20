@@ -65,15 +65,10 @@
 
 /**
  * SECTION:clutter-container
- * @short_description: An interface for implementing container actors
+ * @short_description: An interface for container actors
  *
- * #ClutterContainer is an interface for writing actors containing other
- * #ClutterActor<!-- -->s. It provides a standard API for adding, removing
- * and iterating on every contained actor.
- *
- * An actor implementing #ClutterContainer is #ClutterGroup.
- *
- * #ClutterContainer is available since Clutter 0.4
+ * #ClutterContainer provides some common API for #ClutterActor
+ * instances containing children.
  */
 
 enum
