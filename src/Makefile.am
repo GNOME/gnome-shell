@@ -121,9 +121,18 @@ shell_public_headers_h =		\
 	shell-wm.h			\
 	shell-xfixes-cursor.h
 
+shell_private_sources = \
+	gactionmuxer.h			\
+	gactionmuxer.c			\
+	gactionobservable.h		\
+	gactionobservable.c		\
+	gactionobserver.h		\
+	gactionobserver.c
+
 libgnome_shell_la_SOURCES =		\
 	$(shell_built_sources)		\
 	$(shell_public_headers_h)	\
+	$(shell_private_sources)	\
 	shell-app-private.h		\
 	shell-app-system-private.h	\
 	shell-embedded-window-private.h	\
@@ -158,16 +167,11 @@ libgnome_shell_la_SOURCES =		\
 	shell-window-tracker.c		\
 	shell-wm.c			\
 	shell-xfixes-cursor.c		\
-	gactionmuxer.h			\
-	gactionmuxer.c			\
-	gactionobservable.h		\
-	gactionobservable.c		\
-	gactionobserver.h		\
-	gactionobserver.c
+	$(NULL)
 
 
 libgnome_shell_la_gir_sources = \
-	$(filter-out %-private.h $(shell_recorder_non_gir_sources), $(shell_public_headers_h) $(libgnome_shell_la_SOURCES))
+	$(filter-out %-private.h $(shell_private_sources), $(shell_public_headers_h) $(libgnome_shell_la_SOURCES))
 
 gnome_shell_real_SOURCES =		\
 	main.c
@@ -182,12 +186,16 @@ shell_recorder_sources =        \
 	shell-recorder.h
 
 # Custom element is an internal detail
-shell_recorder_non_gir_sources =  \
-	shell-recorder-src.c	  \
-	shell-recorder-src.h
 
 if BUILD_RECORDER
-libgnome_shell_la_SOURCES += $(shell_recorder_sources) $(shell_recorder_non_gir_sources)
+libgnome_shell_la_SOURCES += $(shell_recorder_sources)
+
+shell_recorder_private_sources =  \
+	shell-recorder-src.c	\
+	shell-recorder-src.h	\
+	$(NULL)
+
+shell_private_sources += $(shell_recorder_private_sources)
 
 noinst_PROGRAMS += test-recorder
 
@@ -195,7 +203,7 @@ test_recorder_CPPFLAGS = $(TEST_SHELL_RECORDER_CFLAGS)
 test_recorder_LDADD = $(TEST_SHELL_RECORDER_LIBS)
 
 test_recorder_SOURCES =     \
-	$(shell_recorder_sources) $(shell_recorder_non_gir_sources) \
+	$(shell_recorder_sources) $(shell_recorder_private_sources) \
 	test-recorder.c
 endif BUILD_RECORDER
 
