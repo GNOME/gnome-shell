@@ -31,6 +31,8 @@
 #include <clutter/clutter-types.h>
 #include <clutter/clutter-input-device.h>
 
+G_BEGIN_DECLS
+
 #define CLUTTER_TYPE_EVENT	(clutter_event_get_type ())
 
 /**
@@ -51,7 +53,25 @@
  */
 #define CLUTTER_CURRENT_TIME    0L
 
-G_BEGIN_DECLS
+/**
+ * CLUTTER_EVENT_PROPAGATE:
+ *
+ * Continues the propagation of an event; this macro should be
+ * used in event-related signals.
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_EVENT_PROPAGATE         FALSE
+
+/**
+ * CLUTTER_EVENT_STOP:
+ *
+ * Stops the propagattion of an event; this macro should be used
+ * in event-related signals.
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_EVENT_STOP              TRUE
 
 typedef struct _ClutterAnyEvent         ClutterAnyEvent;
 typedef struct _ClutterButtonEvent      ClutterButtonEvent;
