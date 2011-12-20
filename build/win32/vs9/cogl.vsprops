@@ -55,15 +55,27 @@
 		Value="CLUTTER_COMPILATION;TESTS_DATADIR=\&quot;../share/cogl-$(CoglApiVersion)/tests\&quot;"
 	/>
 	<UserMacro
+		Name="DoDefinesSDL"
+		Value="
+if exist ..\..\..\cogl\cogl-defines.h goto DONE_COGL_DEFINES_H&#x0D;&#x0A;
+copy ..\..\..\cogl\cogl-defines.h.win32_sdl ..\..\..\cogl\cogl-defines.h&#x0D;&#x0A;
+:DONE_COGL_DEFINES_H&#x0D;&#x0A;
+"
+	/>
+	<UserMacro
+		Name="DoDefines"
+		Value="
+if exist ..\..\..\cogl\cogl-defines.h goto DONE_COGL_DEFINES_H&#x0D;&#x0A;
+copy ..\..\..\cogl\cogl-defines.h.win32 ..\..\..\cogl\cogl-defines.h&#x0D;&#x0A;
+:DONE_COGL_DEFINES_H&#x0D;&#x0A;
+"
+	/>
+	<UserMacro
 		Name="PreBuildCmd"
 		Value="
 if exist ..\..\..\config.h goto DONE_CONFIG_H&#x0D;&#x0A;
 copy ..\..\..\config.h.win32 ..\..\..\config.h&#x0D;&#x0A;
 :DONE_CONFIG_H&#x0D;&#x0A;
-
-if exist ..\..\..\cogl\cogl-defines.h goto DONE_COGL_DEFINES_H&#x0D;&#x0A;
-copy ..\..\..\cogl\cogl-defines.h.win32 ..\..\..\cogl\cogl-defines.h&#x0D;&#x0A;
-:DONE_COGL_DEFINES_H&#x0D;&#x0A;
 
 cd ..&#x0D;&#x0A;
 gen-enums.bat $(GlibEtcInstallRoot)&#x0D;&#x0A;

@@ -14,11 +14,23 @@ first need to use some Unix-like environment or manual work to expand
 the files needed, like config.h.win32.in into config.h.win32 and the
 .vcprojin files here into corresponding actual .vcproj files.
 
+Decide whether you want to build the SDL winsys with your COGL build, and
+use one of the .sln for building COGL (note that both will build the Windows
+OpenGL (WGL) winsys):
+-cogl.sln for building COGL without the SDL winsys
+-cogl_sdl.sln for building COGL with the SDL winsys
+
 You will need the parts from GNOME: GDK-Pixbuf, Pango* and GLib.
 External dependencies are at least zlib, libpng,
 gettext-runtime* and Cairo*, and glext.h from
 http://www.opengl.org/registry/api/glext.h (which need to be in the GL folder
 in your include directories or in <root>\vs9\<PlatformName>\include\GL).
+
+If building the SDL winsys is desired, you will also need the SDL libraries
+from www.libsdl.org-building the SDL source package with Visual C++ 2008
+is recommended (working Visual C++ 2005 projects are included with it, upgrade
+the projects one prompted), but one may want to use the VC8 binary packages
+from that website.
 
 Please see the README file in the root directory of this Cogl source package
 for the versions of the dependencies required.  See also

@@ -11,19 +11,22 @@
     <CoglPangoBuildDefines>G_LOG_DOMAIN="Cogl-Pango"</CoglPangoBuildDefines>
     <TestProgDef>CLUTTER_COMPILATION;TESTS_DATADIR="../share/cogl-$(CoglApiVersion)/tests"</TestProgDef>
     <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
+    <DoDefinesSDL>
+if exist ..\..\..\cogl\cogl-defines.h goto DONE_COGL_DEFINES_H
+copy ..\..\..\cogl\cogl-defines.h.win32_sdl ..\..\..\cogl\cogl-defines.h
+:DONE_COGL_DEFINES_H
+    </DoDefinesSDL>
+    <DoDefines>
+if exist ..\..\..\cogl\cogl-defines.h goto DONE_COGL_DEFINES_H
+copy ..\..\..\cogl\cogl-defines.h.win32 ..\..\..\cogl\cogl-defines.h
+:DONE_COGL_DEFINES_H
+    </DoDefines>
     <PreBuildCmd>
 if exist ..\..\..\config.h goto DONE_CONFIG_H
 
 copy ..\..\..\config.h.win32 ..\..\..\config.h
 
 :DONE_CONFIG_H
-
-
-if exist ..\..\..\cogl\cogl-defines.h goto DONE_COGL_DEFINES_H
-
-copy ..\..\..\cogl\cogl-defines.h.win32 ..\..\..\cogl\cogl-defines.h
-
-:DONE_COGL_DEFINES_H
 
 
 cd ..
@@ -231,6 +234,12 @@ copy ..\..\..\cogl\cogl2-experimental.h $(CopyDir)\include\cogl-$(CoglApiVersion
     </BuildMacro>
     <BuildMacro Include="TestProgDef">
       <Value>$(TestProgDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DoDefinesSDL">
+      <Value>$(DoDefinesSDL)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DoDefines">
+      <Value>$(DoDefinesSDL)</Value>
     </BuildMacro>
     <BuildMacro Include="PreBuildCmd">
       <Value>$(PreBuildCmd)</Value>

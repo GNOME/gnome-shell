@@ -27,6 +27,12 @@ where to unpack them.  It is recommended that at least the dependencies
 from GNOME are also built with VS10 to avoid crashes caused by mixing different
 CRTs-please see also the build/win32/vs10/README.txt in those respective packages.
 
+If building the SDL winsys is desired, you will also need the SDL libraries
+from www.libsdl.org-building the SDL source package with Visual C++ 2008
+is recommended (working Visual C++ 2005 projects are included with it, upgrade
+the projects one prompted), but one may want to use the VC8 binary packages
+from that website.
+
 The recommended build sequence of the dependencies are as follows (the non-GNOME
 packages that are not downloaded as binaries from ftp://ftp.gnome.org have
 makefiles and/or VS project files that can be used to compile with VS directly,
