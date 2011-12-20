@@ -90,6 +90,9 @@ struct _ClutterLayoutManager
  *   progress of the animation of a #ClutterLayoutManager
  * @layout_changed: class handler for the #ClutterLayoutManager::layout-changed
  *   signal
+ * @compute_expand: virtual function, used to let the layout manager instance
+ *   influence the result of the clutter_actor_needs_x_expand() and
+ *   clutter_actor_needs_y_expand() functions
  *
  * The #ClutterLayoutManagerClass structure contains only private
  * data and should be accessed using the provided API
@@ -102,7 +105,6 @@ struct _ClutterLayoutManagerClass
   GInitiallyUnownedClass parent_class;
 
   /*< public >*/
-  /* vfuncs, not signals */
   void               (* get_preferred_width)    (ClutterLayoutManager   *manager,
                                                  ClutterContainer       *container,
                                                  gfloat                  for_height,
@@ -132,8 +134,13 @@ struct _ClutterLayoutManagerClass
   gdouble            (* get_animation_progress) (ClutterLayoutManager   *manager);
   void               (* end_animation)          (ClutterLayoutManager   *manager);
 
-  /* signals */
   void               (* layout_changed)         (ClutterLayoutManager   *manager);
+
+  void               (* compute_expand)         (ClutterLayoutManager   *manager,
+                                                 ClutterContainer       *container,
+                                                 ClutterActor           *child,
+                                                 gboolean               *x_expand,
+                                                 gboolean               *y_expand);
 
   /*< private >*/
   /* padding for future expansion */
@@ -144,7 +151,6 @@ struct _ClutterLayoutManagerClass
   void (* _clutter_padding_5) (void);
   void (* _clutter_padding_6) (void);
   void (* _clutter_padding_7) (void);
-  void (* _clutter_padding_8) (void);
 };
 
 GType clutter_layout_manager_get_type (void) G_GNUC_CONST;

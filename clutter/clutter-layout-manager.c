@@ -578,6 +578,21 @@ layout_manager_real_end_animation (ClutterLayoutManager *manager)
 }
 
 static void
+layout_manager_real_compute_expand (ClutterLayoutManager *manager,
+                                    ClutterContainer     *container,
+                                    ClutterActor         *child,
+                                    gboolean             *x_expand,
+                                    gboolean             *y_expand)
+{
+  /* be default, we don't interfere with the Actor [xy]-expand */
+  if (x_expand != NULL)
+    *x_expand = FALSE;
+
+  if (y_expand != NULL)
+    *y_expand = FALSE;
+}
+
+static void
 clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
 {
   quark_layout_meta =
@@ -594,6 +609,7 @@ clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
   klass->get_animation_progress = layout_manager_real_get_animation_progress;
   klass->end_animation = layout_manager_real_end_animation;
   klass->set_container = layout_manager_real_set_container;
+  klass->compute_expand = layout_manager_real_compute_expand;
 
   /**
    * ClutterLayoutManager::layout-changed:
