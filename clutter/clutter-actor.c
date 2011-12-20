@@ -2867,14 +2867,31 @@ add_or_remove_flatten_effect (ClutterActor *self)
 static void
 clutter_actor_real_paint (ClutterActor *actor)
 {
+  ClutterActorPrivate *priv = actor->priv;
   ClutterActor *iter;
 
-  for (iter = actor->priv->first_child;
+  /* paint the background color, if set */
+  if (priv->bg_color_set)
+    {
+      float width, height;
+
+      clutter_actor_box_get_size (&priv->allocation, &width, &height);
+
+      cogl_set_source_color4ub (priv->bg_color.red,
+                                priv->bg_color.green,
+                                priv->bg_color.blue,
+                                priv->bg_color.alpha);
+
+      cogl_rectangle (0, 0, width, height);
+    }
+
+  for (iter = priv->first_child;
        iter != NULL;
        iter = iter->priv->next_sibling)
     {
-      CLUTTER_NOTE (PAINT, "Painting %s at { %.2f, %.2f - %.2f x %.2f }",
+      CLUTTER_NOTE (PAINT, "Painting %s, child of %s, at { %.2f, %.2f - %.2f x %.2f }",
                     _clutter_actor_get_debug_name (iter),
+                    _clutter_actor_get_debug_name (actor),
                     iter->priv->allocation.x1,
                     iter->priv->allocation.y1,
                     iter->priv->allocation.x2 - iter->priv->allocation.x1,
@@ -3158,23 +3175,6 @@ clutter_actor_continue_paint (ClutterActor *self)
     {
       if (_clutter_context_get_pick_mode () == CLUTTER_PICK_NONE)
         {
-          /* paint the background color, if set */
-          if (priv->bg_color_set)
-            {
-              float width, height;
-
-              clutter_actor_box_get_size (&priv->allocation,
-                                          &width,
-                                          &height);
-
-              cogl_set_source_color4ub (priv->bg_color.red,
-                                        priv->bg_color.green,
-                                        priv->bg_color.blue,
-                                        priv->bg_color.alpha);
-
-              cogl_rectangle (0, 0, width, height);
-            }
-
           g_signal_emit (self, actor_signals[PAINT], 0);
         }
       else
