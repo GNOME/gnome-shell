@@ -35,7 +35,8 @@ const BaseIcon = new Lang.Class({
         this.actor.set_child(box);
 
         this.iconSize = ICON_SIZE;
-        this._iconBin = new St.Bin();
+        this._iconBin = new St.Bin({ x_align: St.Align.MIDDLE,
+                                     y_align: St.Align.MIDDLE });
 
         box.add_actor(this._iconBin);
 
@@ -125,12 +126,12 @@ const BaseIcon = new Lang.Class({
         this.iconSize = size;
         this.icon = this.createIcon(this.iconSize);
 
+        this._iconBin.child = this.icon;
+
         // The icon returned by createIcon() might actually be smaller than
         // the requested icon size (for instance StTextureCache does this
         // for fallback icons), so set the size explicitly.
-        this.icon.set_size(this.iconSize, this.iconSize);
-
-        this._iconBin.child = this.icon;
+        this._iconBin.set_size(this.iconSize, this.iconSize);
     },
 
     _onStyleChanged: function() {
@@ -144,6 +145,11 @@ const BaseIcon = new Lang.Class({
             let [found, len] = node.lookup_length('icon-size', false);
             size = found ? len : ICON_SIZE;
         }
+
+        // don't create icons unnecessarily
+        if (size == this.iconSize &&
+            this._iconBin.child)
+            return;
 
         this._createIconTexture(size);
     }
