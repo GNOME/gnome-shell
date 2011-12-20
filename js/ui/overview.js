@@ -23,6 +23,7 @@ const Params = imports.misc.params;
 const PlaceDisplay = imports.ui.placeDisplay;
 const Tweener = imports.ui.tweener;
 const ViewSelector = imports.ui.viewSelector;
+const Wanda = imports.ui.wanda;
 const WorkspacesView = imports.ui.workspacesView;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
@@ -201,6 +202,8 @@ const Overview = new Lang.Class({
         this._viewSelector.addViewTab('applications', _("Applications"), appView.actor, 'system-run');
 
         // Default search providers
+        // Wanda comes obviously first
+        this.addSearchProvider(new Wanda.WandaSearchProvider());
         this.addSearchProvider(new AppDisplay.AppSearchProvider());
         this.addSearchProvider(new AppDisplay.SettingsSearchProvider());
         this.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());

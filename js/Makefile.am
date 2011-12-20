@@ -72,6 +72,7 @@ nobase_dist_js_DATA = 	\
 	ui/tweener.js		\
 	ui/userMenu.js		\
 	ui/viewSelector.js	\
+	ui/wanda.js		\
 	ui/windowAttentionHandler.js	\
 	ui/windowManager.js	\
 	ui/workspace.js		\
