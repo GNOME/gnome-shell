@@ -433,6 +433,8 @@ table_child_set_expand (ClutterTableChild *self,
       else
         clutter_layout_manager_layout_changed (layout);
 
+      clutter_actor_queue_compute_expand (CLUTTER_CHILD_META (self)->actor);
+
       if (x_changed)
         g_object_notify (G_OBJECT (self), "x-expand");
 
@@ -503,14 +505,14 @@ clutter_table_child_set_property (GObject      *gobject,
 
     case PROP_CHILD_X_EXPAND:
       table_child_set_expand (self,
-                            g_value_get_boolean (value),
-                            self->y_expand);
+                              g_value_get_boolean (value),
+                              self->y_expand);
       break;
 
     case PROP_CHILD_Y_EXPAND:
       table_child_set_expand (self,
-                            self->x_expand,
-                            g_value_get_boolean (value));
+                              self->x_expand,
+                              g_value_get_boolean (value));
       break;
 
     default:
@@ -764,7 +766,10 @@ calculate_col_widths (ClutterTableLayout *self,
   /* reset the visibility of all columns */
   priv->visible_cols = 0;
   for (i = 0; i < priv->n_cols; i++)
-    columns[i].visible = FALSE;
+    {
+      columns[i].expand = FALSE;
+      columns[i].visible = FALSE;
+    }
 
   actor = CLUTTER_ACTOR (container);
 
@@ -800,7 +805,10 @@ calculate_col_widths (ClutterTableLayout *self,
 
       col->min_size = MAX (col->min_size, c_min);
       col->pref_size = MAX (col->pref_size, c_pref);
-      col->expand = MAX (col->expand, meta->x_expand);
+
+      col->expand = MAX (col->expand,
+                         MAX (meta->x_expand,
+                              clutter_actor_needs_x_expand (child)));
     }
 
   /* STAGE TWO: take spanning children into account */
@@ -1033,7 +1041,10 @@ calculate_row_heights (ClutterTableLayout *self,
   /* reset the visibility of all rows */
   priv->visible_rows = 0;
   for (i = 0; i < priv->n_rows; i++)
-    rows[i].visible = FALSE;
+    {
+      rows[i].expand = FALSE;
+      rows[i].visible = FALSE;
+    }
 
   actor = CLUTTER_ACTOR (container);
 
@@ -1070,7 +1081,10 @@ calculate_row_heights (ClutterTableLayout *self,
 
       row->min_size = MAX (row->min_size, c_min);
       row->pref_size = MAX (row->pref_size, c_pref);
-      row->expand = MAX (row->expand, meta->y_expand);
+
+      row->expand = MAX (row->expand,
+                         MAX (meta->y_expand,
+                              clutter_actor_needs_y_expand (child)));
     }
 
   /* STAGE TWO: take spanning children into account */
@@ -1617,6 +1631,31 @@ clutter_table_layout_end_animation (ClutterLayoutManager *manager)
 }
 
 static void
+clutter_table_layout_compute_expand (ClutterLayoutManager *manager,
+                                     ClutterContainer     *container,
+                                     ClutterActor         *actor,
+                                     gboolean             *x_expand_p,
+                                     gboolean             *y_expand_p)
+{
+  ClutterLayoutMeta *meta;
+
+  meta = clutter_layout_manager_get_child_meta (manager, container, actor);
+
+  if (x_expand_p != NULL)
+    *x_expand_p = CLUTTER_TABLE_CHILD (meta)->x_expand ||
+                  clutter_actor_needs_x_expand (actor);
+
+  if (y_expand_p != NULL)
+    *y_expand_p = CLUTTER_TABLE_CHILD (meta)->y_expand ||
+                  clutter_actor_needs_y_expand (actor);
+
+  g_debug ("Computing expand for '%s': x:%s, y:%s",
+           G_OBJECT_TYPE_NAME (actor),
+           x_expand_p != NULL ? (*x_expand_p ? "Y" : "N") : "N",
+           y_expand_p != NULL ? (*y_expand_p ? "Y" : "N") : "N");
+}
+
+static void
 clutter_table_layout_set_property (GObject      *gobject,
                                    guint         prop_id,
                                    const GValue *value,
@@ -1722,6 +1761,7 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
     clutter_table_layout_get_child_meta_type;
   layout_class->begin_animation = clutter_table_layout_begin_animation;
   layout_class->end_animation = clutter_table_layout_end_animation;
+  layout_class->compute_expand = clutter_table_layout_compute_expand;
 
   g_type_class_add_private (klass, sizeof (ClutterTableLayoutPrivate));
 
