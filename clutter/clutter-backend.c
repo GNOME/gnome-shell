@@ -142,6 +142,8 @@ clutter_backend_finalize (GObject *gobject)
 {
   ClutterBackend *backend = CLUTTER_BACKEND (gobject);
 
+  g_source_destroy (backend->cogl_source);
+
   g_free (backend->priv->font_name);
   clutter_backend_set_font_options (backend, NULL);
 
@@ -323,6 +325,10 @@ clutter_backend_real_create_context (ClutterBackend  *backend,
   backend->cogl_context = cogl_context_new (backend->cogl_display, &internal_error);
   if (backend->cogl_context == NULL)
     goto error;
+
+  backend->cogl_source = cogl_glib_source_new (backend->cogl_context,
+                                               G_PRIORITY_DEFAULT);
+  g_source_attach (backend->cogl_source, NULL);
 
   /* the display owns the renderer and the swap chain */
   cogl_object_unref (backend->cogl_renderer);
