@@ -377,16 +377,6 @@ void                  clutter_actor_set_layout_manager        (ClutterActor     
                                                                ClutterLayoutManager  *manager);
 ClutterLayoutManager *clutter_actor_get_layout_manager        (ClutterActor          *self);
 
-void                  clutter_actor_set_x_expand              (ClutterActor          *self,
-                                                               gboolean               x_expand);
-gboolean              clutter_actor_get_x_expand              (ClutterActor          *self);
-void                  clutter_actor_set_y_expand              (ClutterActor          *self,
-                                                               gboolean               y_expand);
-gboolean              clutter_actor_get_y_expand              (ClutterActor          *self);
-gboolean              clutter_actor_needs_x_expand            (ClutterActor          *self);
-gboolean              clutter_actor_needs_y_expand            (ClutterActor          *self);
-void                  clutter_actor_queue_compute_expand      (ClutterActor          *self);
-
 void                  clutter_actor_set_x_align               (ClutterActor          *self,
                                                                ClutterActorAlign      x_align);
 ClutterActorAlign     clutter_actor_get_x_align               (ClutterActor          *self);

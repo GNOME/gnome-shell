@@ -276,11 +276,6 @@ box_child_set_expand (ClutterBoxChild *self,
       else
         clutter_layout_manager_layout_changed (layout);
 
-      /* we need to let the scene graph that the expand flags may have
-       * been changed
-       */
-      clutter_actor_queue_compute_expand (CLUTTER_CHILD_META (self)->actor);
-
       g_object_notify (G_OBJECT (self), "expand");
     }
 }
@@ -747,10 +742,8 @@ count_expand_children (ClutterLayoutManager *layout,
                        gint                 *visible_children,
                        gint                 *expand_children)
 {
-  ClutterBoxLayoutPrivate *priv;
   ClutterActor *actor, *child;
 
-  priv = CLUTTER_BOX_LAYOUT (layout)->priv;
   actor = CLUTTER_ACTOR (container);
 
   *visible_children = *expand_children = 0;
@@ -762,7 +755,6 @@ count_expand_children (ClutterLayoutManager *layout,
       if (CLUTTER_ACTOR_IS_VISIBLE (child))
         {
           ClutterLayoutMeta *meta;
-          gboolean needs_expand;
 
           *visible_children += 1;
 
@@ -770,12 +762,7 @@ count_expand_children (ClutterLayoutManager *layout,
                                                         container,
                                                         child);
 
-          if (priv->is_vertical)
-            needs_expand = clutter_actor_needs_y_expand (child);
-          else
-            needs_expand = clutter_actor_needs_x_expand (child);
-
-          if (CLUTTER_BOX_CHILD (meta)->expand || needs_expand)
+          if (CLUTTER_BOX_CHILD (meta)->expand)
             *expand_children += 1;
         }
     }
@@ -1070,16 +1057,9 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
         }
       else
         {
-          gboolean needs_expand;
-
           child_size = sizes[i].minimum_size;
 
-          if (priv->is_vertical)
-            needs_expand = clutter_actor_needs_y_expand (child);
-          else
-            needs_expand = clutter_actor_needs_x_expand (child);
-
-          if (box_child->expand || needs_expand)
+          if (box_child->expand)
             {
               child_size += extra;
 
@@ -1187,38 +1167,6 @@ clutter_box_layout_end_animation (ClutterLayoutManager *manager)
   /* we want the default implementation */
   parent_class = CLUTTER_LAYOUT_MANAGER_CLASS (clutter_box_layout_parent_class);
   parent_class->end_animation (manager);
-}
-
-static void
-clutter_box_layout_compute_expand (ClutterLayoutManager *manager,
-                                   ClutterContainer     *container,
-                                   ClutterActor         *actor,
-                                   gboolean             *x_expand_p,
-                                   gboolean             *y_expand_p)
-{
-  ClutterBoxLayoutPrivate *priv;
-  ClutterLayoutMeta *meta;
-  gboolean x_expand, y_expand;
-
-  priv = CLUTTER_BOX_LAYOUT (manager)->priv;
-  meta = clutter_layout_manager_get_child_meta (manager, container, actor);
-
-  if (priv->is_vertical)
-    {
-      x_expand = FALSE;
-      y_expand = CLUTTER_BOX_CHILD (meta)->expand;
-    }
-  else
-    {
-      x_expand = CLUTTER_BOX_CHILD (meta)->expand;
-      y_expand = FALSE;
-    }
-
-  if (x_expand_p != NULL)
-    *x_expand_p = x_expand;
-
-  if (y_expand_p != NULL)
-    *y_expand_p = y_expand;
 }
 
 static void
@@ -1331,7 +1279,6 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
     clutter_box_layout_get_child_meta_type;
   layout_class->begin_animation = clutter_box_layout_begin_animation;
   layout_class->end_animation = clutter_box_layout_end_animation;
-  layout_class->compute_expand = clutter_box_layout_compute_expand;
 
   g_type_class_add_private (klass, sizeof (ClutterBoxLayoutPrivate));
 
