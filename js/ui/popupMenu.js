@@ -1398,12 +1398,23 @@ const PopupMenuSection = new Lang.Class({
         this.actor = this.box;
         this.actor._delegate = this;
         this.isOpen = true;
+
+        // an array of externally managed separators
+        this.separators = [];
     },
 
     // deliberately ignore any attempt to open() or close(), but emit the
     // corresponding signal so children can still pick it up
     open: function(animate) { this.emit('open-state-changed', true); },
     close: function() { this.emit('open-state-changed', false); },
+
+    destroy: function() {
+        for (let i = 0; i < this.separators.length; i++)
+            this.separators[i].destroy();
+        this.separators = [];
+
+        this.parent();
+    }
 });
 
 const PopupSubMenuMenuItem = new Lang.Class({
@@ -1737,17 +1748,25 @@ const RemoteMenu = new Lang.Class({
     },
 
     _createMenuItem: function(model, index) {
+        let labelValue = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_LABEL, null);
+        let label = labelValue ? labelValue.deep_unpack() : '';
+        // remove all underscores that are not followed by another underscore
+        label = label.replace(/_([^_])/, '$1');
+
         let section_link = model.get_item_link(index, Gio.MENU_LINK_SECTION);
         if (section_link) {
             let item = new PopupMenuSection();
+            if (label) {
+                let title = new PopupMenuItem(label, { reactive: false,
+                                                       style_class: 'popup-subtitle-menu-item' });
+                item._titleMenuItem = title;
+                title._ignored = true;
+                item.addMenuItem(title);
+            }
             this._modelChanged(section_link, 0, 0, section_link.get_n_items(), item);
             return [item, true, ''];
         }
 
-        // labels are not checked for existance, as they're required for all items
-        let label = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_LABEL, null).deep_unpack();
-        // remove all underscores that are not followed by another underscore
-        label = label.replace(/_([^_])/, '$1');
         let submenu_link = model.get_item_link(index, Gio.MENU_LINK_SUBMENU);
 
         if (submenu_link) {
@@ -1831,8 +1850,13 @@ const RemoteMenu = new Lang.Class({
 
         let currentItems = target._getMenuItems();
 
-        for (j0 = 0, k0 = 0; j0 < position; j0++, k0++) {
-            if (currentItems[k0] instanceof PopupSeparatorMenuItem)
+        k0 = 0;
+        // skip ignored items at the beginning
+        while (k0 < currentItems.length && currentItems[k0]._ignored)
+            k0++;
+        // find the right menu item matching the model item
+        for (j0 = 0; j0 < position; j0++, k0++) {
+            if (currentItems[k0]._ignored)
                 k0++;
         }
 
@@ -1844,7 +1868,7 @@ const RemoteMenu = new Lang.Class({
             for (j = j0, k = k0; j < j0 + removed; j++, k++) {
                 currentItems[k].destroy();
 
-                if (currentItems[k] instanceof PopupSeparatorMenuItem)
+                if (currentItems[k]._ignored)
                     j--;
             }
         }
@@ -1855,14 +1879,20 @@ const RemoteMenu = new Lang.Class({
             if (item) {
                 // separators must be added in the parent to make autohiding work
                 if (addSeparator) {
-                    target.addMenuItem(new PopupSeparatorMenuItem(), k+1);
+                    let separator = new PopupSeparatorMenuItem();
+                    item.separators.push(separator);
+                    separator._ignored = true;
+                    target.addMenuItem(separator, k+1);
                     k++;
                 }
 
                 target.addMenuItem(item, k);
 
                 if (addSeparator) {
-                    target.addMenuItem(new PopupSeparatorMenuItem(), k+1);
+                    let separator = new PopupSeparatorMenuItem();
+                    item.separators.push(separator);
+                    separator._ignored = true;
+                    target.addMenuItem(separator, k+1);
                     k++;
                 }
             } else if (changeSignal) {
@@ -1888,7 +1918,10 @@ const RemoteMenu = new Lang.Class({
         }
 
         if (target instanceof PopupMenuSection) {
-            target.actor.visible = target.numMenuItems != 0;
+            if (target._titleMenuItem)
+                target.actor.visible = target.numMenuItems != 1;
+            else
+                target.actor.visible = target.numMenuItems != 0;
         } else {
             let sourceItem = target.sourceActor._delegate;
             if (sourceItem instanceof PopupSubMenuMenuItem)

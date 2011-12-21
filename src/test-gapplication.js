@@ -68,7 +68,7 @@ function main() {
     section = new Gio.Menu();
     section.append('Checkbox', 'app.toggle');
     section.append('Disabled', 'app.disable');
-    menu.append_section(null, section);
+    menu.append_section('Subsection', section);
 
     // empty sections or submenus should be invisible
     menu.append_section('Empty section', new Gio.Menu());
