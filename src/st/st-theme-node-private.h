@@ -3,6 +3,7 @@
  * st-theme-node-private.h: private structures and functions for StThemeNode
  *
  * Copyright 2009, 2010 Red Hat, Inc.
+ * Copyright 2011 Quentin "Sardem FF7" Glidic
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -24,6 +25,7 @@
 #include <gdk/gdk.h>
 
 #include "st-theme-node.h"
+#include "st-types.h"
 
 G_BEGIN_DECLS
 
@@ -44,6 +46,9 @@ struct _StThemeNode {
   int background_position_x;
   int background_position_y;
   gboolean background_position_set : 1;
+  StBackgroundSize background_size;
+  gint background_size_w;
+  gint background_size_h;
 
   ClutterColor foreground_color;
   ClutterColor border_color[4];

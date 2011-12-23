@@ -60,6 +60,7 @@ StScrollBar StBin#trough {
 StScrollBar StButton#vhandle
 {
     background-image: url("scroll-vhandle.svg");
+    background-size: contain;
     background-color: #252525;
     border: 1px solid #080808;
     border-radius: 8px;
@@ -68,6 +69,7 @@ StScrollBar StButton#vhandle
 StScrollBar StButton#hhandle
 {
     background-image: url("scroll-hhandle.svg");
+    background-size: contain;
     background-color: #252525;
     border: 1px solid #080808;
     border-radius: 8px;
@@ -224,16 +226,20 @@ StTooltip StLabel {
 
 .toggle-switch-us {
     background-image: url("toggle-off-us.svg");
+    background-size: contain;
 }
 .toggle-switch-us:checked {
     background-image: url("toggle-on-us.svg");
+    background-size: contain;
 }
 
 .toggle-switch-intl {
     background-image: url("toggle-off-intl.svg");
+    background-size: contain;
 }
 .toggle-switch-intl:checked {
     background-image: url("toggle-on-intl.svg");
+    background-size: contain;
 }
 
 .nm-menu-item-icons {
@@ -356,6 +362,7 @@ StTooltip StLabel {
 .panel-button:focus {
     border-image: url("panel-button-border.svg") 10 10 0 2;
     background-image: url("panel-button-highlight-wide.svg");
+    background-size: contain;
     color: white;
     text-shadow: black 0px 2px 2px;
 }
@@ -364,6 +371,7 @@ StTooltip StLabel {
 .panel-status-button:checked,
 .panel-status-button:focus {
     background-image: url("panel-button-highlight-narrow.svg");
+    background-size: contain;
 }
 
 .panel-button:active > .system-status-icon,
@@ -477,6 +485,7 @@ StTooltip StLabel {
 
 .window-close {
     background-image: url("close-window.svg");
+    background-size: 34px;
     height: 34px;
     width: 34px;
     -shell-close-overlap: 20px;
@@ -511,6 +520,7 @@ StTooltip StLabel {
 
 .placeholder {
     background-image: url("dash-placeholder.svg");
+    background-size: contain;
     height: 24px;
 }
 
@@ -697,11 +707,13 @@ StTooltip StLabel {
 .app-filter:selected {
     color: #ffffff;
     background-image: url("filter-selected-ltr.svg");
+    background-size: contain;
     background-position: 190px 10px;
 }
 
 .app-filter:selected:rtl {
     background-image: url("filter-selected-rtl.svg");
+    background-size: contain;
     background-position: 10px 10px;
 }
 
@@ -782,6 +794,7 @@ StTooltip StLabel {
 .app-well-app.running > .overview-icon {
     text-shadow: black 0px 2px 2px;
     background-image: url("running-indicator.svg");
+    background-size: contain;
 }
 
 .contact:selected,
@@ -1443,6 +1456,7 @@ StTooltip StLabel {
 
 .summary-source-button:selected .summary-source {
     background-image: url("panel-button-highlight-narrow.svg");
+    background-size: contain;
     border-image: url("source-button-border.svg") 10 10 0 1;
 }
 
@@ -1453,6 +1467,7 @@ StTooltip StLabel {
 
 .summary-source-button:expanded:selected {
     background-image: url("panel-button-highlight-wide.svg");
+    background-size: contain;
     border-image: url("source-button-border.svg") 10 10 0 1;
 }
 
@@ -1566,6 +1581,7 @@ StTooltip StLabel {
     width: 52px;
     height: 52px;
     background-image: url("corner-ripple-ltr.png");
+    background-size: contain;
 }
 
 .ripple-box:rtl {
@@ -1607,6 +1623,7 @@ StTooltip StLabel {
     border: 0px;
     background: rgba(255,255,255,0.5);
     background-image: url("ws-switch-arrow-up.svg");
+    background-size: contain;
     border-radius: 8px;
 }
 
@@ -1615,6 +1632,7 @@ StTooltip StLabel {
     border: 0px;
     background: rgba(255,255,255,0.5);
     background-image: url("ws-switch-arrow-down.svg");
+    background-size: contain;
     border-radius: 8px;
 }
 

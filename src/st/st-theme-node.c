@@ -7,6 +7,7 @@
  * Copyright 2009, 2010 Florian Müllner
  * Copyright 2010 Adel Gadllah
  * Copyright 2010 Giovanni Campagna
+ * Copyright 2011 Quentin "Sardem FF7" Glidic
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -1579,6 +1580,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
   node->background_color = TRANSPARENT_COLOR;
   node->background_gradient_type = ST_GRADIENT_NONE;
   node->background_position_set = FALSE;
+  node->background_size = ST_BACKGROUND_SIZE_AUTO;
 
   ensure_properties (node);
 
@@ -1606,6 +1608,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
           g_free (node->background_image);
           node->background_image = NULL;
           node->background_position_set = FALSE;
+          node->background_size = ST_BACKGROUND_SIZE_AUTO;
 
           for (term = decl->value; term; term = term->next)
             {
@@ -1661,6 +1664,44 @@ _st_theme_node_ensure_background (StThemeNode *node)
             }
           else
             node->background_position_set = TRUE;
+        }
+      else if (strcmp (property_name, "-size") == 0)
+        {
+          if (decl->value->type == TERM_IDENT)
+            {
+              if (strcmp (decl->value->content.str->stryng->str, "contain") == 0)
+                node->background_size = ST_BACKGROUND_SIZE_CONTAIN;
+              else if (strcmp (decl->value->content.str->stryng->str, "cover") == 0)
+                node->background_size = ST_BACKGROUND_SIZE_COVER;
+              else if ((strcmp (decl->value->content.str->stryng->str, "auto") == 0) && (decl->value->next) && (decl->value->next->type == TERM_NUMBER))
+                {
+                  GetFromTermResult result = get_length_from_term_int (node, decl->value->next, FALSE, &node->background_size_h);
+
+                  node->background_size_w = -1;
+                  node->background_size = (result == VALUE_FOUND) ? ST_BACKGROUND_SIZE_FIXED : ST_BACKGROUND_SIZE_AUTO;
+                }
+              else
+                node->background_size = ST_BACKGROUND_SIZE_AUTO;
+            }
+          else if (decl->value->type == TERM_NUMBER)
+            {
+              GetFromTermResult result = get_length_from_term_int (node, decl->value, FALSE, &node->background_size_w);
+              if (result == VALUE_NOT_FOUND)
+                continue;
+
+              node->background_size = ST_BACKGROUND_SIZE_FIXED;
+
+              if ((decl->value->next) && (decl->value->next->type == TERM_NUMBER))
+                {
+                  result = get_length_from_term_int (node, decl->value->next, FALSE, &node->background_size_h);
+
+                  if (result == VALUE_FOUND)
+                    continue;
+                }
+              node->background_size_h = -1;
+            }
+          else
+            node->background_size = ST_BACKGROUND_SIZE_AUTO;
         }
       else if (strcmp (property_name, "-color") == 0)
         {
