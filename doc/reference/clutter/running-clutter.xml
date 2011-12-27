@@ -76,6 +76,14 @@
             behaviour of the paint cycle.</para>
           </listitem>
         </varlistentry>
+        <varlistentry>
+          <term>CLUTTER_ENABLE_DIAGNOSTIC</term>
+          <listitem>
+            <para>When set to 1, enables diagnostic messages for run-time
+            deprecations, similarly to <envvar>G_ENABLE_DIAGNOSTIC</envvar> in
+            GLib.</para>
+          </listitem>
+        </varlistentry>
       </variablelist>
 
       <para>On the GLX backend there is also:</para>
@@ -226,7 +234,7 @@
         </varlistentry>
       </variablelist>
 
-      <para>It is possible to get the whole debugging notes using the
+      <para>It is possible to get all the debugging notes using the
       special "all" flag.</para>
 
     </section>
