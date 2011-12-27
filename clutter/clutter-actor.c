@@ -10362,7 +10362,9 @@ clutter_actor_set_child_at_index (ClutterActor *self,
  * Both actors must have the same parent, and the parent must implement
  * the #ClutterContainer interface
  *
- * This function is the equivalent of clutter_container_raise_child().
+ * This function calls clutter_container_raise_child() internally.
+ *
+ * Deprecated: 1.10: Use clutter_actor_set_child_above_sibling() instead.
  */
 void
 clutter_actor_raise (ClutterActor *self,
@@ -10407,7 +10409,9 @@ clutter_actor_raise (ClutterActor *self,
  * Both actors must have the same parent, and the parent must implement
  * the #ClutterContainer interface.
  *
- * This function is the equivalent of clutter_container_lower_child().
+ * This function calls clutter_container_lower_child() internally.
+ *
+ * Deprecated: 1.10: Use clutter_actor_set_child_below_sibling() instead.
  */
 void
 clutter_actor_lower (ClutterActor *self,
@@ -10449,6 +10453,9 @@ clutter_actor_lower (ClutterActor *self,
  * Raises @self to the top.
  *
  * This function calls clutter_actor_raise() internally.
+ *
+ * Deprecated: 1.10: Use clutter_actor_set_child_above_sibling() with
+ *   a %NULL sibling, instead.
  */
 void
 clutter_actor_raise_top (ClutterActor *self)
@@ -10463,6 +10470,9 @@ clutter_actor_raise_top (ClutterActor *self)
  * Lowers @self to the bottom.
  *
  * This function calls clutter_actor_lower() internally.
+ *
+ * Deprecated: 1.10: Use clutter_actor_set_child_below_sibling() with
+ *   a %NULL sibling, instead.
  */
 void
 clutter_actor_lower_bottom (ClutterActor *self)
@@ -10855,42 +10865,11 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
 }
 
 static void
-container_raise (ClutterContainer *container,
-                 ClutterActor     *child,
-                 ClutterActor     *sibling)
-{
-  ClutterActor *self = CLUTTER_ACTOR (container);
-
-  remove_child (self, child);
-  insert_child_above (self, child, sibling);
-
-  clutter_actor_queue_relayout (self);
-}
-
-static void
-container_lower (ClutterContainer *container,
-                 ClutterActor     *child,
-                 ClutterActor     *sibling)
-{
-  ClutterActor *self = CLUTTER_ACTOR (container);
-
-  remove_child (self, child);
-  insert_child_below (self, child, sibling);
-
-  clutter_actor_queue_relayout (self);
-}
-
-static void
-container_sort_by_depth (ClutterContainer *container)
-{
-}
-
-static void
 clutter_container_iface_init (ClutterContainerIface *iface)
 {
-  iface->raise = container_raise;
-  iface->lower = container_lower;
-  iface->sort_depth_order = container_sort_by_depth;
+  /* we don't override anything, as ClutterContainer already has a default
+   * implementation that we can use, and which calls into our own API.
+   */
 }
 
 typedef enum

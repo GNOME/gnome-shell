@@ -65,11 +65,15 @@ typedef struct _ClutterContainerIface   ClutterContainerIface;
  *   container's children, both added using the #ClutterContainer API
  *   and internal children. The implementation of this virtual function
  *   is required only if the #ClutterContainer implementation has
- *   internal children.
- * @raise: virtual function for raising a child
- * @lower: virtual function for lowering a child
+ *   internal children. This virtual function is deprecated, and it should
+ *   not be overridden.
+ * @raise: virtual function for raising a child. This virtual function is
+ *   deprecated and it should not be overridden.
+ * @lower: virtual function for lowering a child. This virtual function is
+ *   deprecated and it should not be overridden.
  * @sort_depth_order: virtual function for sorting the children of a
- *   container depending on their depth
+ *   container depending on their depth. This virtual function is deprecated
+ *   and it should not be overridden.
  * @child_meta_type: The GType used for storing auxiliary information about
  *   each of the containers children.
  * @create_child_meta: virtual function that gets called for each added
@@ -141,14 +145,6 @@ GType         clutter_container_get_type         (void) G_GNUC_CONST;
 
 ClutterActor *clutter_container_find_child_by_name     (ClutterContainer *container,
                                                         const gchar      *child_name);
-void          clutter_container_raise_child            (ClutterContainer *container,
-                                                        ClutterActor     *actor,
-                                                        ClutterActor     *sibling);
-void          clutter_container_lower_child            (ClutterContainer *container,
-                                                        ClutterActor     *actor,
-                                                        ClutterActor     *sibling);
-void          clutter_container_sort_depth_order       (ClutterContainer *container);
-
 
 GParamSpec *      clutter_container_class_find_child_property   (GObjectClass     *klass,
                                                                  const gchar      *property_name);

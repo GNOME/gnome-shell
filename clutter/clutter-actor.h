@@ -479,13 +479,6 @@ void                  clutter_actor_set_child_at_index        (ClutterActor     
                                                                ClutterActor          *child,
                                                                gint                   index_);
 
-void                  clutter_actor_raise                     (ClutterActor          *self,
-                                                               ClutterActor          *below);
-void                  clutter_actor_lower                     (ClutterActor          *self,
-                                                               ClutterActor          *above);
-void                  clutter_actor_raise_top                 (ClutterActor          *self);
-void                  clutter_actor_lower_bottom              (ClutterActor          *self);
-
 void                  clutter_actor_push_internal             (ClutterActor          *self);
 void                  clutter_actor_pop_internal              (ClutterActor          *self);
 

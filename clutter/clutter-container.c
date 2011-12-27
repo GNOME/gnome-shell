@@ -143,6 +143,31 @@ container_real_foreach (ClutterContainer *container,
 }
 
 static void
+container_real_raise (ClutterContainer *container,
+                      ClutterActor     *child,
+                      ClutterActor     *sibling)
+{
+  ClutterActor *self = CLUTTER_ACTOR (container);
+
+  clutter_actor_set_child_above_sibling (self, child, sibling);
+}
+
+static void
+container_real_lower (ClutterContainer *container,
+                      ClutterActor     *child,
+                      ClutterActor     *sibling)
+{
+  ClutterActor *self = CLUTTER_ACTOR (container);
+
+  clutter_actor_set_child_below_sibling (self, child, sibling);
+}
+
+static void
+container_real_sort_depth_order (ClutterContainer *container)
+{
+}
+
+static void
 clutter_container_default_init (ClutterContainerInterface *iface)
 {
   GType iface_type = G_TYPE_FROM_INTERFACE (iface);
@@ -214,6 +239,9 @@ clutter_container_default_init (ClutterContainerInterface *iface)
   iface->add = container_real_add;
   iface->remove = container_real_remove;
   iface->foreach = container_real_foreach;
+  iface->raise = container_real_raise;
+  iface->lower = container_real_lower;
+  iface->sort_depth_order = container_real_sort_depth_order;
 
   iface->child_meta_type = G_TYPE_INVALID;
   iface->create_child_meta = create_child_meta;
@@ -615,6 +643,8 @@ clutter_container_foreach_with_internals (ClutterContainer *container,
  * Virtual: raise
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.10: Use clutter_actor_set_child_above_sibling() instead.
  */
 void
 clutter_container_raise_child (ClutterContainer *container,
@@ -622,22 +652,18 @@ clutter_container_raise_child (ClutterContainer *container,
                                ClutterActor     *sibling)
 {
   ClutterContainerIface *iface;
+  ClutterActor *self;
 
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
   g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
 
-  iface = CLUTTER_CONTAINER_GET_IFACE (container);
-  if (!iface->raise)
-    {
-      CLUTTER_CONTAINER_NOTE_NOT_IMPLEMENTED (container, "raise");
-      return;
-    };
-
   if (actor == sibling)
     return;
 
-  if (clutter_actor_get_parent (actor) != CLUTTER_ACTOR (container))
+  self = CLUTTER_ACTOR (container);
+
+  if (clutter_actor_get_parent (actor) != self)
     {
       g_warning ("Actor of type '%s' is not a child of the container "
                  "of type '%s'",
@@ -646,8 +672,8 @@ clutter_container_raise_child (ClutterContainer *container,
       return;
     }
 
-  if (sibling &&
-      clutter_actor_get_parent (sibling) != CLUTTER_ACTOR (container))
+  if (sibling != NULL &&
+      clutter_actor_get_parent (sibling) != self)
     {
       g_warning ("Actor of type '%s' is not a child of the container "
                  "of type '%s'",
@@ -655,6 +681,19 @@ clutter_container_raise_child (ClutterContainer *container,
                  g_type_name (G_OBJECT_TYPE (container)));
       return;
     }
+
+  iface = CLUTTER_CONTAINER_GET_IFACE (container);
+
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (G_UNLIKELY (_clutter_diagnostic_enabled ()))
+    {
+      if (iface->raise != container_real_raise)
+        _clutter_diagnostic_message ("The ClutterContainer::raise() "
+                                     "virtual function has been deprecated "
+                                     "and it should not be overridden by "
+                                     "newly written code");
+    }
+#endif /* CLUTTER_ENABLE_DEBUG */
 
   iface->raise (container, actor, sibling);
 }
@@ -671,6 +710,8 @@ clutter_container_raise_child (ClutterContainer *container,
  * Virtual: lower
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.10: Use clutter_actor_set_child_below_sibling() instead.
  */
 void
 clutter_container_lower_child (ClutterContainer *container,
@@ -678,22 +719,18 @@ clutter_container_lower_child (ClutterContainer *container,
                                ClutterActor     *sibling)
 {
   ClutterContainerIface *iface;
+  ClutterActor *self;
 
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
   g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
 
-  iface = CLUTTER_CONTAINER_GET_IFACE (container);
-  if (!iface->lower)
-    {
-      CLUTTER_CONTAINER_NOTE_NOT_IMPLEMENTED (container, "lower");
-      return;
-    }
-
   if (actor == sibling)
     return;
 
-  if (clutter_actor_get_parent (actor) != CLUTTER_ACTOR (container))
+  self = CLUTTER_ACTOR (container);
+
+  if (clutter_actor_get_parent (actor) != self)
     {
       g_warning ("Actor of type '%s' is not a child of the container "
                  "of type '%s'",
@@ -702,8 +739,8 @@ clutter_container_lower_child (ClutterContainer *container,
       return;
     }
 
-  if (sibling &&
-      clutter_actor_get_parent (sibling) != CLUTTER_ACTOR (container))
+  if (sibling != NULL&&
+      clutter_actor_get_parent (sibling) != self)
     {
       g_warning ("Actor of type '%s' is not a child of the container "
                  "of type '%s'",
@@ -711,6 +748,19 @@ clutter_container_lower_child (ClutterContainer *container,
                  g_type_name (G_OBJECT_TYPE (container)));
       return;
     }
+
+  iface = CLUTTER_CONTAINER_GET_IFACE (container);
+
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (G_UNLIKELY (_clutter_diagnostic_enabled ()))
+    {
+      if (iface->lower != container_real_lower)
+        _clutter_diagnostic_message ("The ClutterContainer::lower() "
+                                     "virtual function has been deprecated "
+                                     "and it should not be overridden by "
+                                     "newly written code");
+    }
+#endif /* CLUTTER_ENABLE_DEBUG */
 
   iface->lower (container, actor, sibling);
 }
@@ -723,6 +773,10 @@ clutter_container_lower_child (ClutterContainer *container,
  * be normally used by applications.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.10: The #ClutterContainerIface.sort_depth_order() virtual
+ *   function should not be used any more; the default implementation in
+ *   #ClutterContainer does not do anything.
  */
 void
 clutter_container_sort_depth_order (ClutterContainer *container)
@@ -732,10 +786,19 @@ clutter_container_sort_depth_order (ClutterContainer *container)
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
 
   iface = CLUTTER_CONTAINER_GET_IFACE (container);
-  if (iface->sort_depth_order)
-    iface->sort_depth_order (container);
-  else
-    CLUTTER_CONTAINER_NOTE_NOT_IMPLEMENTED (container, "sort_depth_order");
+
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (G_UNLIKELY (_clutter_diagnostic_enabled ()))
+    {
+      if (iface->sort_depth_order != container_real_sort_depth_order)
+        _clutter_diagnostic_message ("The ClutterContainer::sort_depth_order() "
+                                     "virtual function has been deprecated "
+                                     "and it should not be overridden by "
+                                     "newly written code");
+    }
+#endif /* CLUTTER_ENABLE_DEBUG */
+
+  iface->sort_depth_order (container);
 }
 
 /**

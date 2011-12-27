@@ -32,35 +32,35 @@
 G_BEGIN_DECLS
 
 CLUTTER_DEPRECATED_FOR(clutter_actor_add_child)
-void            clutter_container_add           (ClutterContainer *container,
-                                                 ClutterActor     *first_actor,
-                                                 ...) G_GNUC_NULL_TERMINATED;
+void            clutter_container_add                           (ClutterContainer *container,
+                                                                 ClutterActor     *first_actor,
+                                                                 ...) G_GNUC_NULL_TERMINATED;
 
 CLUTTER_DEPRECATED_FOR(clutter_actor_add_child)
-void            clutter_container_add_actor     (ClutterContainer *container,
-                                                 ClutterActor     *actor);
+void            clutter_container_add_actor                     (ClutterContainer *container,
+                                                                 ClutterActor     *actor);
 
 CLUTTER_DEPRECATED_FOR(clutter_actor_add_child)
-void            clutter_container_add_valist    (ClutterContainer *container,
-                                                 ClutterActor     *first_actor,
-                                                 va_list           var_args);
+void            clutter_container_add_valist                    (ClutterContainer *container,
+                                                                 ClutterActor     *first_actor,
+                                                                 va_list           var_args);
 
 CLUTTER_DEPRECATED_FOR(clutter_actor_remove_child)
-void            clutter_container_remove        (ClutterContainer *container,
-                                                 ClutterActor     *first_actor,
-                                                 ...) G_GNUC_NULL_TERMINATED;
+void            clutter_container_remove                        (ClutterContainer *container,
+                                                                 ClutterActor     *first_actor,
+                                                                 ...) G_GNUC_NULL_TERMINATED;
 
 CLUTTER_DEPRECATED_FOR(clutter_actor_remove_child)
-void            clutter_container_remove_actor  (ClutterContainer *container,
-                                                 ClutterActor     *actor);
+void            clutter_container_remove_actor                  (ClutterContainer *container,
+                                                                 ClutterActor     *actor);
 
 CLUTTER_DEPRECATED_FOR(clutter_actor_remove_child)
-void            clutter_container_remove_valist (ClutterContainer *container,
-                                                 ClutterActor     *first_actor,
-                                                 va_list           var_args);
+void            clutter_container_remove_valist                 (ClutterContainer *container,
+                                                                 ClutterActor     *first_actor,
+                                                                 va_list           var_args);
 
 CLUTTER_DEPRECATED_FOR(clutter_actor_get_children)
-GList *         clutter_container_get_children  (ClutterContainer *container);
+GList *         clutter_container_get_children                  (ClutterContainer *container);
 
 CLUTTER_DEPRECATED
 void            clutter_container_foreach                       (ClutterContainer *container,
@@ -71,6 +71,19 @@ CLUTTER_DEPRECATED
 void            clutter_container_foreach_with_internals        (ClutterContainer *container,
                                                                  ClutterCallback   callback,
                                                                  gpointer          user_data);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_set_child_above_sibling)
+void            clutter_container_raise_child                   (ClutterContainer *container,
+                                                                 ClutterActor     *actor,
+                                                                 ClutterActor     *sibling);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_set_child_below_sibling)
+void            clutter_container_lower_child                   (ClutterContainer *container,
+                                                                 ClutterActor     *actor,
+                                                                 ClutterActor     *sibling);
+
+CLUTTER_DEPRECATED
+void            clutter_container_sort_depth_order              (ClutterContainer *container);
 
 G_END_DECLS
 
