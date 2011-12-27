@@ -10251,6 +10251,108 @@ clutter_actor_contains (ClutterActor *self,
 }
 
 /**
+ * clutter_actor_set_above_sibling:
+ * @self: a #ClutterActor
+ * @child: a #ClutterActor child of @self
+ * @sibling: (allow-none): a #ClutterActor child of @self, or %NULL
+ *
+ * Sets @child to be above @sibling in the list of children of @self.
+ *
+ * If @sibling is %NULL, @child will be the new last child of @self.
+ *
+ * This function is logically equivalent to removing @child and using
+ * clutter_actor_insert_child_above(), but it will not emit signals
+ * or change state on @child.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_set_child_above_sibling (ClutterActor *self,
+                                       ClutterActor *child,
+                                       ClutterActor *sibling)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (child->priv->parent == self);
+  g_return_if_fail (child != sibling);
+  g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
+
+  if (sibling != NULL)
+    g_return_if_fail (sibling->priv->parent == self);
+
+  remove_child (self, child);
+  insert_child_above (self, child, sibling);
+
+  clutter_actor_queue_relayout (self);
+}
+
+/**
+ * clutter_actor_set_child_below_sibling:
+ * @self: a #ClutterActor
+ * @child: a #ClutterActor child of @self
+ * @sibling: (allow-none): a #ClutterActor child of @self, or %NULL
+ *
+ * Sets @child to be below @sibling in the list of children of @self.
+ *
+ * If @sibling is %NULL, @child will be the new first child of @self.
+ *
+ * This function is logically equivalent to removing @self and using
+ * clutter_actor_insert_child_below(), but it will not emit signals
+ * or change state on @child.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_set_child_below_sibling (ClutterActor *self,
+                                       ClutterActor *child,
+                                       ClutterActor *sibling)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (child->priv->parent == self);
+  g_return_if_fail (child != sibling);
+  g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
+
+  if (sibling != NULL)
+    g_return_if_fail (sibling->priv->parent == self);
+
+  remove_child (self, child);
+  insert_child_below (self, child, sibling);
+
+  clutter_actor_queue_relayout (self);
+}
+
+/**
+ * clutter_actor_set_child_at_index:
+ * @self: a #ClutterActor
+ * @child: a #ClutterActor child of @self
+ * @index_: the new index for @child
+ *
+ * Changes the index of @child in the list of children of @self.
+ *
+ * This function is logically equivalent to removing @child and
+ * calling clutter_actor_insert_child_at_index(), but it will not
+ * emit signals or change state on @child.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_set_child_at_index (ClutterActor *self,
+                                  ClutterActor *child,
+                                  gint          index_)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (child->priv->parent == self);
+  g_return_if_fail (index_ <= self->priv->n_children);
+
+  remove_child (self, child);
+  insert_child_at_index (self, child, GINT_TO_POINTER (index_));
+
+  clutter_actor_queue_relayout (self);
+}
+
+/**
  * clutter_actor_raise:
  * @self: A #ClutterActor
  * @below: (allow-none): A #ClutterActor to raise above.

@@ -469,6 +469,16 @@ ClutterActor *        clutter_actor_get_parent                (ClutterActor     
 gboolean              clutter_actor_contains                  (ClutterActor          *self,
 							       ClutterActor          *descendant);
 ClutterActor*         clutter_actor_get_stage                 (ClutterActor          *actor);
+void                  clutter_actor_set_child_below_sibling   (ClutterActor          *self,
+                                                               ClutterActor          *child,
+                                                               ClutterActor          *sibling);
+void                  clutter_actor_set_child_above_sibling   (ClutterActor          *self,
+                                                               ClutterActor          *child,
+                                                               ClutterActor          *sibling);
+void                  clutter_actor_set_child_at_index        (ClutterActor          *self,
+                                                               ClutterActor          *child,
+                                                               gint                   index_);
+
 void                  clutter_actor_raise                     (ClutterActor          *self,
                                                                ClutterActor          *below);
 void                  clutter_actor_lower                     (ClutterActor          *self,

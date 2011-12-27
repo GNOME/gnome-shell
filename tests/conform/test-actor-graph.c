@@ -170,7 +170,8 @@ actor_raise_child (TestConformSimpleFixture *fixture,
   iter = clutter_actor_get_child_at_index (actor, 1);
   g_assert_cmpstr (clutter_actor_get_name (iter), ==, "bar");
 
-  clutter_actor_raise (iter, clutter_actor_get_child_at_index (actor, 2));
+  clutter_actor_set_child_above_sibling (actor, iter,
+                                         clutter_actor_get_child_at_index (actor, 2));
 
   g_assert_cmpstr (clutter_actor_get_name (clutter_actor_get_child_at_index (actor, 0)),
                    ==,
@@ -183,7 +184,7 @@ actor_raise_child (TestConformSimpleFixture *fixture,
                    "bar");
 
   iter = clutter_actor_get_child_at_index (actor, 0);
-  clutter_actor_raise_top (iter);
+  clutter_actor_set_child_above_sibling (actor, iter, NULL);
 
   g_assert_cmpstr (clutter_actor_get_name (clutter_actor_get_child_at_index (actor, 0)),
                    ==,
@@ -223,7 +224,8 @@ actor_lower_child (TestConformSimpleFixture *fixture,
   iter = clutter_actor_get_child_at_index (actor, 1);
   g_assert_cmpstr (clutter_actor_get_name (iter), ==, "bar");
 
-  clutter_actor_lower (iter, clutter_actor_get_child_at_index (actor, 0));
+  clutter_actor_set_child_below_sibling (actor, iter,
+                                         clutter_actor_get_child_at_index (actor, 0));
 
   g_assert_cmpstr (clutter_actor_get_name (clutter_actor_get_child_at_index (actor, 0)),
                    ==,
@@ -236,7 +238,7 @@ actor_lower_child (TestConformSimpleFixture *fixture,
                    "baz");
 
   iter = clutter_actor_get_child_at_index (actor, 2);
-  clutter_actor_lower_bottom (iter);
+  clutter_actor_set_child_below_sibling (actor, iter, NULL);
 
   g_assert_cmpstr (clutter_actor_get_name (clutter_actor_get_child_at_index (actor, 0)),
                    ==,
