@@ -9490,7 +9490,18 @@ typedef void (* ClutterActorAddChildFunc) (ClutterActor *parent,
 typedef enum {
   ADD_CHILD_CREATE_META      = 1 << 0,
   ADD_CHILD_EMIT_PARENT_SET  = 1 << 1,
-  ADD_CHILD_EMIT_ACTOR_ADDED = 1 << 2
+  ADD_CHILD_EMIT_ACTOR_ADDED = 1 << 2,
+  ADD_CHILD_CHECK_STATE      = 1 << 3,
+
+  /* default flags for public API */
+  ADD_CHILD_DEFAULT_FLAGS    = ADD_CHILD_CREATE_META |
+                               ADD_CHILD_EMIT_PARENT_SET |
+                               ADD_CHILD_EMIT_ACTOR_ADDED |
+                               ADD_CHILD_CHECK_STATE,
+
+  /* flags for legacy/deprecated API */
+  ADD_CHILD_LEGACY_FLAGS     = ADD_CHILD_EMIT_PARENT_SET |
+                               ADD_CHILD_CHECK_STATE
 } ClutterActorAddChildFlags;
 
 /*< private >
@@ -9517,7 +9528,7 @@ clutter_actor_add_child_internal (ClutterActor              *self,
                                   gpointer                   data)
 {
   ClutterTextDirection text_dir;
-  gboolean create_meta, emit_parent_set, emit_actor_added;
+  gboolean create_meta, emit_parent_set, emit_actor_added, check_state;
 
   if (child->priv->parent != NULL)
     {
@@ -9541,6 +9552,7 @@ clutter_actor_add_child_internal (ClutterActor              *self,
   create_meta = (flags & ADD_CHILD_CREATE_META) != 0;
   emit_parent_set = (flags & ADD_CHILD_EMIT_PARENT_SET) != 0;
   emit_actor_added = (flags & ADD_CHILD_EMIT_ACTOR_ADDED) != 0;
+  check_state = (flags & ADD_CHILD_CHECK_STATE) != 0;
 
   if (create_meta)
     clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
@@ -9563,14 +9575,17 @@ clutter_actor_add_child_internal (ClutterActor              *self,
   if (emit_parent_set && !CLUTTER_ACTOR_IN_REPARENT (child))
     g_signal_emit (child, actor_signals[PARENT_SET], 0, NULL);
 
-  /* If parent is mapped or realized, we need to also be mapped or
-   * realized once we're inside the parent.
-   */
-  clutter_actor_update_map_state (child, MAP_STATE_CHECK);
+  if (check_state)
+    {
+      /* If parent is mapped or realized, we need to also be mapped or
+       * realized once we're inside the parent.
+       */
+      clutter_actor_update_map_state (child, MAP_STATE_CHECK);
 
-  /* propagate the parent's text direction to the child */
-  text_dir = clutter_actor_get_text_direction (self);
-  clutter_actor_set_text_direction (child, text_dir);
+      /* propagate the parent's text direction to the child */
+      text_dir = clutter_actor_get_text_direction (self);
+      clutter_actor_set_text_direction (child, text_dir);
+    }
 
   if (child->priv->show_on_set_parent)
     clutter_actor_show (child);
@@ -9628,9 +9643,7 @@ clutter_actor_add_child (ClutterActor *self,
   g_return_if_fail (child->priv->parent == NULL);
 
   clutter_actor_add_child_internal (self, child,
-                                    ADD_CHILD_CREATE_META |
-                                    ADD_CHILD_EMIT_PARENT_SET |
-                                    ADD_CHILD_EMIT_ACTOR_ADDED,
+                                    ADD_CHILD_DEFAULT_FLAGS,
                                     insert_child_at_depth,
                                     NULL);
 }
@@ -9666,9 +9679,7 @@ clutter_actor_insert_child_at_index (ClutterActor *self,
   g_return_if_fail (child->priv->parent == NULL);
 
   clutter_actor_add_child_internal (self, child,
-                                    ADD_CHILD_CREATE_META |
-                                    ADD_CHILD_EMIT_PARENT_SET |
-                                    ADD_CHILD_EMIT_ACTOR_ADDED,
+                                    ADD_CHILD_DEFAULT_FLAGS,
                                     insert_child_at_index,
                                     GINT_TO_POINTER (index_));
 }
@@ -9709,9 +9720,7 @@ clutter_actor_insert_child_above (ClutterActor *self,
                      sibling->priv->parent == self));
 
   clutter_actor_add_child_internal (self, child,
-                                    ADD_CHILD_CREATE_META |
-                                    ADD_CHILD_EMIT_PARENT_SET |
-                                    ADD_CHILD_EMIT_ACTOR_ADDED,
+                                    ADD_CHILD_DEFAULT_FLAGS,
                                     insert_child_above,
                                     sibling);
 }
@@ -9752,9 +9761,7 @@ clutter_actor_insert_child_below (ClutterActor *self,
                      sibling->priv->parent == self));
 
   clutter_actor_add_child_internal (self, child,
-                                    ADD_CHILD_CREATE_META |
-                                    ADD_CHILD_EMIT_PARENT_SET |
-                                    ADD_CHILD_EMIT_ACTOR_ADDED,
+                                    ADD_CHILD_DEFAULT_FLAGS,
                                     insert_child_below,
                                     sibling);
 }
@@ -9790,8 +9797,7 @@ clutter_actor_set_parent (ClutterActor *self,
    * emit the ::actor-added signal, to avoid recursion or double
    * emissions
    */
-  clutter_actor_add_child_internal (parent, self,
-                                    ADD_CHILD_EMIT_PARENT_SET,
+  clutter_actor_add_child_internal (parent, self, ADD_CHILD_LEGACY_FLAGS,
                                     insert_child_at_depth,
                                     NULL);
 }
@@ -9873,9 +9879,23 @@ remove_child (ClutterActor *self,
 }
 
 typedef enum {
-  REMOVE_CHILD_DESTROY_META = 1 << 0,
-  REMOVE_CHILD_EMIT_PARENT_SET = 1 << 1,
-  REMOVE_CHILD_EMIT_ACTOR_REMOVED = 1 << 2
+  REMOVE_CHILD_DESTROY_META       = 1 << 0,
+  REMOVE_CHILD_EMIT_PARENT_SET    = 1 << 1,
+  REMOVE_CHILD_EMIT_ACTOR_REMOVED = 1 << 2,
+  REMOVE_CHILD_CHECK_STATE        = 1 << 3,
+  REMOVE_CHILD_FLUSH_QUEUE        = 1 << 4,
+
+  /* default flags for public API */
+  REMOVE_CHILD_DEFAULT_FLAGS      = REMOVE_CHILD_DESTROY_META |
+                                    REMOVE_CHILD_EMIT_PARENT_SET |
+                                    REMOVE_CHILD_EMIT_ACTOR_REMOVED |
+                                    REMOVE_CHILD_CHECK_STATE |
+                                    REMOVE_CHILD_FLUSH_QUEUE,
+
+  /* flags for legacy/deprecated API */
+  REMOVE_CHILD_LEGACY_FLAGS       = REMOVE_CHILD_CHECK_STATE |
+                                    REMOVE_CHILD_FLUSH_QUEUE |
+                                    REMOVE_CHILD_EMIT_PARENT_SET
 } ClutterActorRemoveChildFlags;
 
 /*< private >
@@ -9891,44 +9911,55 @@ clutter_actor_remove_child_internal (ClutterActor                 *self,
                                      ClutterActor                 *child,
                                      ClutterActorRemoveChildFlags  flags)
 {
-  gboolean destroy_meta, emit_parent_set, emit_actor_removed;
+  gboolean destroy_meta, emit_parent_set, emit_actor_removed, check_state;
+  gboolean flush_queue;
   gboolean was_mapped;
 
   destroy_meta = (flags & REMOVE_CHILD_DESTROY_META) != 0;
   emit_parent_set = (flags & REMOVE_CHILD_EMIT_PARENT_SET) != 0;
   emit_actor_removed = (flags & REMOVE_CHILD_EMIT_ACTOR_REMOVED) != 0;
+  check_state = (flags & REMOVE_CHILD_CHECK_STATE) != 0;
+  flush_queue = (flags & REMOVE_CHILD_FLUSH_QUEUE) != 0;
 
   if (destroy_meta)
     clutter_container_destroy_child_meta (CLUTTER_CONTAINER (self), child);
 
-  was_mapped = CLUTTER_ACTOR_IS_MAPPED (child);
+  if (check_state)
+    {
+      was_mapped = CLUTTER_ACTOR_IS_MAPPED (child);
 
-  /* we need to unrealize *before* we set parent_actor to NULL,
-   * because in an unrealize method actors are dissociating from the
-   * stage, which means they need to be able to
-   * clutter_actor_get_stage(). This should unmap and unrealize,
-   * unless we're reparenting.
-   */
-  clutter_actor_update_map_state (child, MAP_STATE_MAKE_UNREALIZED);
+      /* we need to unrealize *before* we set parent_actor to NULL,
+       * because in an unrealize method actors are dissociating from the
+       * stage, which means they need to be able to
+       * clutter_actor_get_stage(). This should unmap and unrealize,
+       *  unless we're reparenting.
+       */
+      clutter_actor_update_map_state (child, MAP_STATE_MAKE_UNREALIZED);
+    }
+  else
+    was_mapped = FALSE;
 
-   /* We take this opportunity to invalidate any queue redraw entry
-    * associated with the actor and descendants since we won't be able to
-    * determine the appropriate stage after this.
-    *
-    * we do this after we updated the mapped state because actors might
-    * end up queueing redraws inside their mapped/unmapped virtual
-    * functions, and if we invalidate the redraw entry we could end up
-    * with an inconsistent state and weird memory corruption. see
-    * bugs:
-    *
-    *   http://bugzilla.clutter-project.org/show_bug.cgi?id=2621
-    *   https://bugzilla.gnome.org/show_bug.cgi?id=652036
-    */
-  _clutter_actor_traverse (child,
-                           0,
-                           invalidate_queue_redraw_entry,
-                           NULL,
-                           NULL);
+  if (flush_queue)
+    {
+      /* We take this opportunity to invalidate any queue redraw entry
+       * associated with the actor and descendants since we won't be able to
+       * determine the appropriate stage after this.
+       *
+       * we do this after we updated the mapped state because actors might
+       * end up queueing redraws inside their mapped/unmapped virtual
+       * functions, and if we invalidate the redraw entry we could end up
+       * with an inconsistent state and weird memory corruption. see
+       * bugs:
+       *
+       *   http://bugzilla.clutter-project.org/show_bug.cgi?id=2621
+       *   https://bugzilla.gnome.org/show_bug.cgi?id=652036
+       */
+      _clutter_actor_traverse (child,
+                               0,
+                               invalidate_queue_redraw_entry,
+                               NULL,
+                               NULL);
+    }
 
   child->priv->parent = NULL;
 
@@ -9982,9 +10013,7 @@ clutter_actor_remove_child (ClutterActor *self,
   g_return_if_fail (child->priv->parent == self);
 
   clutter_actor_remove_child_internal (self, child,
-                                       REMOVE_CHILD_DESTROY_META |
-                                       REMOVE_CHILD_EMIT_PARENT_SET |
-                                       REMOVE_CHILD_EMIT_ACTOR_REMOVED);
+                                       REMOVE_CHILD_DEFAULT_FLAGS);
 }
 
 /**
@@ -10014,9 +10043,7 @@ clutter_actor_remove_all_children (ClutterActor *self)
       ClutterActor *next = iter->priv->next_sibling;
 
       clutter_actor_remove_child_internal (self, iter,
-                                           REMOVE_CHILD_DESTROY_META |
-                                           REMOVE_CHILD_EMIT_PARENT_SET |
-                                           REMOVE_CHILD_EMIT_ACTOR_REMOVED);
+                                           REMOVE_CHILD_DEFAULT_FLAGS);
 
       iter = next;
     }
@@ -10086,16 +10113,12 @@ clutter_actor_replace_child (ClutterActor *self,
   next_sibling = old_child->priv->next_sibling;
 
   clutter_actor_remove_child_internal (self, old_child,
-                                       REMOVE_CHILD_DESTROY_META |
-                                       REMOVE_CHILD_EMIT_PARENT_SET |
-                                       REMOVE_CHILD_EMIT_ACTOR_REMOVED);
+                                       REMOVE_CHILD_DEFAULT_FLAGS);
 
   clos.prev_sibling = prev_sibling;
   clos.next_sibling = next_sibling;
   clutter_actor_add_child_internal (self, new_child,
-                                    ADD_CHILD_CREATE_META |
-                                    ADD_CHILD_EMIT_PARENT_SET |
-                                    ADD_CHILD_EMIT_ACTOR_ADDED,
+                                    ADD_CHILD_DEFAULT_FLAGS,
                                     insert_child_between,
                                     &clos);
 }
@@ -10127,7 +10150,7 @@ clutter_actor_unparent (ClutterActor *self)
     return;
 
   clutter_actor_remove_child_internal (self->priv->parent, self,
-                                       REMOVE_CHILD_EMIT_PARENT_SET);
+                                       REMOVE_CHILD_LEGACY_FLAGS);
 }
 
 /**
@@ -10280,8 +10303,17 @@ clutter_actor_set_child_above_sibling (ClutterActor *self,
   if (sibling != NULL)
     g_return_if_fail (sibling->priv->parent == self);
 
-  remove_child (self, child);
-  insert_child_above (self, child, sibling);
+  /* we don't want to change the state of child, or emit signals, or
+   * regenerate ChildMeta instances here, but we still want to follow
+   * the correct sequence of steps encoded in remove_child() and
+   * add_child(), so that correctness is ensured, and we only go
+   * through one known code path.
+   */
+  g_object_ref (child);
+  clutter_actor_remove_child_internal (self, child, 0);
+  clutter_actor_add_child_internal (self, child, 0,
+                                    insert_child_above,
+                                    sibling);
 
   clutter_actor_queue_relayout (self);
 }
@@ -10316,8 +10348,12 @@ clutter_actor_set_child_below_sibling (ClutterActor *self,
   if (sibling != NULL)
     g_return_if_fail (sibling->priv->parent == self);
 
-  remove_child (self, child);
-  insert_child_below (self, child, sibling);
+  /* see the comment in set_child_above_sibling() */
+  g_object_ref (child);
+  clutter_actor_remove_child_internal (self, child, 0);
+  clutter_actor_add_child_internal (self, child, 0,
+                                    insert_child_below,
+                                    sibling);
 
   clutter_actor_queue_relayout (self);
 }
@@ -10346,8 +10382,11 @@ clutter_actor_set_child_at_index (ClutterActor *self,
   g_return_if_fail (child->priv->parent == self);
   g_return_if_fail (index_ <= self->priv->n_children);
 
-  remove_child (self, child);
-  insert_child_at_index (self, child, GINT_TO_POINTER (index_));
+  g_object_ref (child);
+  clutter_actor_remove_child_internal (self, child, 0);
+  clutter_actor_add_child_internal (self, child, 0,
+                                    insert_child_at_index,
+                                    GINT_TO_POINTER (index_));
 
   clutter_actor_queue_relayout (self);
 }
