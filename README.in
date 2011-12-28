@@ -290,12 +290,15 @@ Release Notes for Clutter 1.10
 -------------------------------------------------------------------------------
 
 • ClutterBox and ClutterGroup have been deprecated. ClutterActor should be
-  used directly, instead.
+  used directly, instead. Since ClutterStage inherits from ClutterGroup, the
+  instance and class structures are still available, but subclassing Group
+  is strongly disencouraged.
 
 • ClutterContainer provides default implementations for add(), remove(),
-  and foreach(); this means that overriding these methods is now deprecated,
-  and that developers should only implement ClutterContainer for classes
-  providing child properties.
+  foreach(), raise(), lower(), and sort_depth_order(); this means that
+  overriding these virtual functions is now deprecated, and developers
+  should only implement ClutterContainer for classes providing child
+  properties.
 
 • ClutterActor is not an abstract type any more, and can be instantiated
   either through clutter_actor_new() or through g_object_new().
