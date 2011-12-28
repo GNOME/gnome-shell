@@ -3,8 +3,7 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Copyright (C) 2006, 2007, 2008 OpenedHand
- * Copyright (C) 2009, 2010, 2011 Intel Corporation
+ * Copyright (C) 2011 Intel Corporation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +22,10 @@
  *
  * Author: Emmanuele Bassi <ebassi@linux.intel.com>
  */
+
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
 
 #ifndef __CLUTTER_CONTAINER_DEPRECATED_H__
 #define __CLUTTER_CONTAINER_DEPRECATED_H__
