@@ -3,7 +3,7 @@
 /* Context will be used to carry interesting variables between functions */
 typedef struct
 {
-  ClutterActor *sub_no, *sub_ne, *sub_so, *sub_se;
+  ClutterActor *sub_nw, *sub_ne, *sub_sw, *sub_se;
   gfloat image_width, image_height;
 } Context;
 
@@ -15,7 +15,7 @@ go_away (gpointer data)
 {
   Context *context = data;
 
-  clutter_actor_animate (context->sub_no, CLUTTER_EASE_OUT_CUBIC, 1500,
+  clutter_actor_animate (context->sub_nw, CLUTTER_EASE_OUT_CUBIC, 1500,
                          "x", -context->image_width,
                          "y", -context->image_height,
                          "rotation-angle-z", 2000.,
@@ -25,7 +25,7 @@ go_away (gpointer data)
                          "y", -context->image_height,
                          "rotation-angle-z", 2000.,
                          NULL);
-  clutter_actor_animate (context->sub_so, CLUTTER_EASE_OUT_CUBIC, 1500,
+  clutter_actor_animate (context->sub_sw, CLUTTER_EASE_OUT_CUBIC, 1500,
                          "x", -context->image_width,
                          "y", +context->image_height,
                          "rotation-angle-z", 2000.,
@@ -46,8 +46,8 @@ split (gpointer data)
   Context *context = data;
   gfloat x, y;
 
-  clutter_actor_get_position (context->sub_no, &x, &y);
-  clutter_actor_animate (context->sub_no, CLUTTER_EASE_OUT_CUBIC, 300,
+  clutter_actor_get_position (context->sub_nw, &x, &y);
+  clutter_actor_animate (context->sub_nw, CLUTTER_EASE_OUT_CUBIC, 300,
                          "x", x - 10,
                          "y", y - 10,
                          NULL);
@@ -56,8 +56,8 @@ split (gpointer data)
                          "x", x + 10,
                          "y", y - 10,
                          NULL);
-  clutter_actor_get_position (context->sub_so, &x, &y);
-  clutter_actor_animate (context->sub_so, CLUTTER_EASE_OUT_CUBIC, 300,
+  clutter_actor_get_position (context->sub_sw, &x, &y);
+  clutter_actor_animate (context->sub_sw, CLUTTER_EASE_OUT_CUBIC, 300,
                          "x", x - 10,
                          "y", y + 10,
                          NULL);
@@ -136,12 +136,12 @@ main (int    argc,
 
   /* Create four sub-textures from image, actually splitting the image in
    * four */
-  context.sub_no = setup_sub (texture, image_width, image_height,
+  context.sub_nw = setup_sub (texture, image_width, image_height,
                               0, 0, image_width / 2 , image_width / 2);
   context.sub_ne = setup_sub (texture, image_width, image_height,
                               image_width / 2 , 0,
                               image_width / 2, image_width / 2);
-  context.sub_so = setup_sub (texture, image_width, image_height,
+  context.sub_sw = setup_sub (texture, image_width, image_height,
                               0.f, image_width / 2,
                               image_width / 2, image_width / 2);
   context.sub_se = setup_sub (texture, image_width, image_height,
@@ -155,13 +155,13 @@ main (int    argc,
 
   /* Position the sub-texures in the middle of the screen, recreating the
    * original texture */
-  clutter_actor_set_position (context.sub_no,
+  clutter_actor_set_position (context.sub_nw,
                               stage_width / 2 - image_width / 4,
                               stage_height / 2 - image_height / 4);
   clutter_actor_set_position (context.sub_ne,
                               stage_width / 2 + image_width / 4,
                               stage_height / 2 - image_height / 4);
-  clutter_actor_set_position (context.sub_so,
+  clutter_actor_set_position (context.sub_sw,
                               stage_width / 2 - image_width / 4,
                               stage_height / 2 + image_height / 4);
   clutter_actor_set_position (context.sub_se,
@@ -169,8 +169,8 @@ main (int    argc,
                               stage_height / 2 + image_height / 4);
 
   /* Add the four sub-textures to the stage */
-  clutter_container_add (CLUTTER_CONTAINER (stage), context.sub_no,
-                         context.sub_ne, context.sub_so, context.sub_se, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (stage), context.sub_nw,
+                         context.sub_ne, context.sub_sw, context.sub_se, NULL);
 
   clutter_actor_show_all (stage);
 

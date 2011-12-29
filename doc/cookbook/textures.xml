@@ -533,7 +533,7 @@ clutter_actor_get_size (image, &image_width, &image_height);
 texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (image));
 
 /* Create a new Cogl texture from the handle above. That new texture is a
- * rectangular region from image, more precisely the north ouest corner
+ * rectangular region from image, more precisely the northwest corner
  * of the image */
 sub_texture = cogl_texture_new_from_sub_texture (texture,
                                                  0, 0,
