@@ -289,6 +289,13 @@ features).
 Release Notes for Clutter 1.10
 -------------------------------------------------------------------------------
 
+• The long since broken depth cueing support in ClutterStage has been
+  deprecated; the fixed pipeline fog API has been pretty much useless
+  since the switch to colors and textures with premultiplied alpha
+  channels. Setting ClutterStage:use-fog to TRUE has no visible results,
+  and querying the :use-fog and :fog properties will always yield the
+  default values.
+
 • ClutterDeformEffect switched from using CoglVertexBuffer to using the
   CoglPrimitive API internally, to improve performance and use non-deprecated
   Cogl API. CoglPrimitive converts COGL_WRAP_MODE_AUTOMATIC to
