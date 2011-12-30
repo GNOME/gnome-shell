@@ -142,89 +142,76 @@ struct _ClutterFog
   gfloat z_far;
 };
 
-GType         clutter_perspective_get_type    (void) G_GNUC_CONST;
-GType         clutter_fog_get_type            (void) G_GNUC_CONST;
-GType         clutter_stage_get_type          (void) G_GNUC_CONST;
+GType clutter_perspective_get_type (void) G_GNUC_CONST;
+GType clutter_fog_get_type (void) G_GNUC_CONST;
+GType clutter_stage_get_type (void) G_GNUC_CONST;
 
-ClutterActor *clutter_stage_new               (void);
+ClutterActor *  clutter_stage_new                               (void);
 
-void          clutter_stage_set_color         (ClutterStage       *stage,
-                                               const ClutterColor *color);
-void          clutter_stage_get_color         (ClutterStage       *stage,
-                                               ClutterColor       *color);
-void          clutter_stage_set_perspective   (ClutterStage       *stage,
-			                       ClutterPerspective *perspective);
-void          clutter_stage_get_perspective   (ClutterStage       *stage,
-			                       ClutterPerspective *perspective);
-void          clutter_stage_set_fullscreen    (ClutterStage       *stage,
-                                               gboolean            fullscreen);
-gboolean      clutter_stage_get_fullscreen    (ClutterStage       *stage);
-void          clutter_stage_show_cursor       (ClutterStage       *stage);
-void          clutter_stage_hide_cursor       (ClutterStage       *stage);
+void            clutter_stage_set_color                         (ClutterStage          *stage,
+                                                                 const ClutterColor    *color);
+void            clutter_stage_get_color                         (ClutterStage          *stage,
+                                                                 ClutterColor          *color);
+void            clutter_stage_set_perspective                   (ClutterStage          *stage,
+			                                         ClutterPerspective    *perspective);
+void            clutter_stage_get_perspective                   (ClutterStage          *stage,
+			                                         ClutterPerspective    *perspective);
+void            clutter_stage_set_fullscreen                    (ClutterStage          *stage,
+                                                                 gboolean               fullscreen);
+gboolean        clutter_stage_get_fullscreen                    (ClutterStage          *stage);
+void            clutter_stage_show_cursor                       (ClutterStage          *stage);
+void            clutter_stage_hide_cursor                       (ClutterStage          *stage);
+void            clutter_stage_set_title                         (ClutterStage          *stage,
+                                                                 const gchar           *title);
+const gchar *   clutter_stage_get_title                         (ClutterStage          *stage);
+void            clutter_stage_set_user_resizable                (ClutterStage          *stage,
+						                 gboolean               resizable);
+gboolean        clutter_stage_get_user_resizable                (ClutterStage          *stage);
 
-ClutterActor *clutter_stage_get_actor_at_pos  (ClutterStage       *stage,
-                                               ClutterPickMode     pick_mode,
-                                               gint                x,
-                                               gint                y);
-guchar *      clutter_stage_read_pixels       (ClutterStage       *stage,
-                                               gint                x,
-                                               gint                y,
-                                               gint                width,
-                                               gint                height);
-gboolean      clutter_stage_event             (ClutterStage       *stage,
-                                               ClutterEvent       *event);
+void            clutter_stage_set_minimum_size                  (ClutterStage          *stage,
+                                                                 guint                  width,
+                                                                 guint                  height);
+void            clutter_stage_get_minimum_size                  (ClutterStage          *stage,
+                                                                 guint                 *width,
+                                                                 guint                 *height);
+void            clutter_stage_set_no_clear_hint                 (ClutterStage          *stage,
+                                                                 gboolean               no_clear);
+gboolean        clutter_stage_get_no_clear_hint                 (ClutterStage          *stage);
+void            clutter_stage_set_use_alpha                     (ClutterStage          *stage,
+                                                                 gboolean               use_alpha);
+gboolean        clutter_stage_get_use_alpha                     (ClutterStage          *stage);
 
-void                  clutter_stage_set_title          (ClutterStage *stage,
-                                                        const gchar  *title);
-const gchar *         clutter_stage_get_title          (ClutterStage *stage);
-void                  clutter_stage_set_user_resizable (ClutterStage *stage,
-						        gboolean      resizable);
-gboolean              clutter_stage_get_user_resizable (ClutterStage *stage);
-void                  clutter_stage_set_use_fog        (ClutterStage *stage,
-                                                        gboolean      fog);
-gboolean              clutter_stage_get_use_fog        (ClutterStage *stage);
-void                  clutter_stage_set_fog            (ClutterStage *stage,
-                                                        ClutterFog   *fog);
-void                  clutter_stage_get_fog            (ClutterStage *stage,
-                                                        ClutterFog   *fog);
+void            clutter_stage_set_key_focus                     (ClutterStage          *stage,
+                                                                 ClutterActor          *actor);
+ClutterActor *  clutter_stage_get_key_focus                     (ClutterStage          *stage);
+void            clutter_stage_set_throttle_motion_events        (ClutterStage          *stage,
+                                                                 gboolean               throttle);
+gboolean        clutter_stage_get_throttle_motion_events        (ClutterStage          *stage);
+void            clutter_stage_set_motion_events_enabled         (ClutterStage          *stage,
+                                                                 gboolean               enabled);
+gboolean        clutter_stage_get_motion_events_enabled         (ClutterStage          *stage);
+void            clutter_stage_set_accept_focus                  (ClutterStage          *stage,
+                                                                 gboolean               accept_focus);
+gboolean        clutter_stage_get_accept_focus                  (ClutterStage          *stage);
+gboolean        clutter_stage_event                             (ClutterStage          *stage,
+                                                                 ClutterEvent          *event);
 
-void                  clutter_stage_set_key_focus      (ClutterStage *stage,
-                                                        ClutterActor *actor);
-ClutterActor *        clutter_stage_get_key_focus      (ClutterStage *stage);
-void                  clutter_stage_ensure_current     (ClutterStage *stage);
-void                  clutter_stage_ensure_viewport    (ClutterStage *stage);
-void                  clutter_stage_ensure_redraw      (ClutterStage *stage);
+ClutterActor *  clutter_stage_get_actor_at_pos                  (ClutterStage          *stage,
+                                                                 ClutterPickMode        pick_mode,
+                                                                 gint                   x,
+                                                                 gint                   y);
+guchar *        clutter_stage_read_pixels                       (ClutterStage          *stage,
+                                                                 gint                   x,
+                                                                 gint                   y,
+                                                                 gint                   width,
+                                                                 gint                   height);
 
-void     clutter_stage_set_throttle_motion_events (ClutterStage *stage,
-                                                   gboolean      throttle);
-gboolean clutter_stage_get_throttle_motion_events (ClutterStage *stage);
+void            clutter_stage_get_redraw_clip_bounds            (ClutterStage          *stage,
+                                                                 cairo_rectangle_int_t *clip);
 
-void                  clutter_stage_set_use_alpha      (ClutterStage *stage,
-                                                        gboolean      use_alpha);
-gboolean              clutter_stage_get_use_alpha      (ClutterStage *stage);
-
-void                  clutter_stage_set_minimum_size (ClutterStage *stage,
-                                                      guint         width,
-                                                      guint         height);
-void                  clutter_stage_get_minimum_size (ClutterStage *stage,
-                                                      guint        *width,
-                                                      guint        *height);
-
-void                  clutter_stage_set_no_clear_hint (ClutterStage *stage,
-                                                       gboolean      no_clear);
-gboolean              clutter_stage_get_no_clear_hint (ClutterStage *stage);
-
-void                  clutter_stage_set_accept_focus  (ClutterStage *stage,
-                                                       gboolean      accept_focus);
-gboolean              clutter_stage_get_accept_focus  (ClutterStage *stage);
-
-
-void                  clutter_stage_get_redraw_clip_bounds    (ClutterStage    *stage,
-                                                               cairo_rectangle_int_t *clip);
-
-void                  clutter_stage_set_motion_events_enabled (ClutterStage *stage,
-                                                               gboolean      enabled);
-gboolean              clutter_stage_get_motion_events_enabled (ClutterStage *stage);
+void            clutter_stage_ensure_current                    (ClutterStage          *stage);
+void            clutter_stage_ensure_viewport                   (ClutterStage          *stage);
+void            clutter_stage_ensure_redraw                     (ClutterStage          *stage);
 
 G_END_DECLS
 

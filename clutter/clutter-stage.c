@@ -48,9 +48,13 @@
 #include "config.h"
 #endif
 
+#include <math.h>
 #include <cairo.h>
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-stage.h"
+#include "deprecated/clutter-stage.h"
 
 #include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
@@ -75,13 +79,6 @@
 #include "clutter-private.h"
 
 #include "cogl/cogl.h"
-
-#include <math.h>
-
-#ifdef USE_GDKPIXBUF
-#include <gdk-pixbuf/gdk-pixbuf.h>
-#endif
-
 
 G_DEFINE_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
 
@@ -646,7 +643,8 @@ clutter_stage_paint (ClutterActor *self)
 
   CLUTTER_TIMER_STOP (_clutter_uprof_context, stage_clear_timer);
 
-  if (priv->use_fog)
+#if 0
+  if (G_UNLIKELY (priv->use_fog))
     {
       /* we only expose the linear progression of the fog in
        * the ClutterStage API, and that ignores the fog density.
@@ -660,6 +658,7 @@ clutter_stage_paint (ClutterActor *self)
     }
   else
     cogl_disable_fog ();
+#endif
 
   /* this will take care of painting every child */
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (self);
@@ -1791,15 +1790,13 @@ clutter_stage_class_init (ClutterStageClass *klass)
    *
    * Whether the stage should be rendered in an offscreen buffer.
    *
-   * <warning><para>Not every backend supports redirecting the
-   * stage to an offscreen buffer. This property might not work
-   * and it might be deprecated at any later date.</para></warning>
+   * Deprecated: 1.10: This property does not do anything.
    */
   pspec = g_param_spec_boolean ("offscreen",
                                 P_("Offscreen"),
                                 P_("Whether the main stage should be rendered offscreen"),
                                 FALSE,
-                                CLUTTER_PARAM_READWRITE);
+                                CLUTTER_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (gobject_class,
                                    PROP_OFFSCREEN,
                                    pspec);
@@ -1882,12 +1879,14 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * actors farther from the viewpoint.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.10: This property does not do anything.
    */
   pspec = g_param_spec_boolean ("use-fog",
                                 P_("Use Fog"),
                                 P_("Whether to enable depth cueing"),
                                 FALSE,
-                                CLUTTER_PARAM_READWRITE);
+                                CLUTTER_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (gobject_class, PROP_USE_FOG, pspec);
 
   /**
@@ -1897,12 +1896,14 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * is set to %TRUE
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.10: This property does not do anything.
    */
   pspec = g_param_spec_boxed ("fog",
                               P_("Fog"),
                               P_("Settings for the depth cueing"),
                               CLUTTER_TYPE_FOG,
-                              CLUTTER_PARAM_READWRITE);
+                              CLUTTER_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (gobject_class, PROP_FOG, pspec);
 
   /**
@@ -2162,7 +2163,7 @@ clutter_stage_init (ClutterStage *self)
                                       geom.height);
 
 
-  /* depth cueing */
+  /* FIXME - remove for 2.0 */
   priv->fog.z_near = 1.0;
   priv->fog.z_far  = 2.0;
 
@@ -3019,6 +3020,8 @@ clutter_stage_get_key_focus (ClutterStage *stage)
  * Return value: %TRUE if the depth cueing effect is enabled
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.10: This function will always return %FALSE
  */
 gboolean
 clutter_stage_get_use_fog (ClutterStage *stage)
@@ -3043,11 +3046,14 @@ clutter_stage_get_use_fog (ClutterStage *stage)
  * clutter_stage_set_fog() function.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.10: Calling this function produces no visible effect
  */
 void
 clutter_stage_set_use_fog (ClutterStage *stage,
                            gboolean      fog)
 {
+#if 0
   ClutterStagePrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
@@ -3065,6 +3071,7 @@ clutter_stage_set_use_fog (ClutterStage *stage,
 
       g_object_notify (G_OBJECT (stage), "use-fog");
     }
+#endif
 }
 
 /**
@@ -3122,11 +3129,14 @@ clutter_stage_set_use_fog (ClutterStage *stage,
  * depend on fragment shaders.</note>
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.10: Fog settings are ignored.
  */
 void
 clutter_stage_set_fog (ClutterStage *stage,
                        ClutterFog   *fog)
 {
+#if 0
   ClutterStagePrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
@@ -3138,6 +3148,7 @@ clutter_stage_set_fog (ClutterStage *stage,
 
   if (priv->use_fog)
     clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+#endif
 }
 
 /**
@@ -3148,6 +3159,9 @@ clutter_stage_set_fog (ClutterStage *stage,
  * Retrieves the current depth cueing settings from the stage.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.10: This function will always return the default
+ *   values of #ClutterFog
  */
 void
 clutter_stage_get_fog (ClutterStage *stage,
