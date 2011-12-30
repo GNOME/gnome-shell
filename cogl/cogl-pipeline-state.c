@@ -1484,8 +1484,8 @@ _cogl_pipeline_override_uniform (CoglPipeline *pipeline,
       memcpy (uniforms_state->override_values,
               old_values,
               sizeof (CoglBoxedValue) * override_index);
-      memcpy (uniforms_state->override_values,
-              old_values + override_index + 1,
+      memcpy (uniforms_state->override_values + override_index + 1,
+              old_values + override_index,
               sizeof (CoglBoxedValue) * (old_size - override_index));
 
       g_free (old_values);
