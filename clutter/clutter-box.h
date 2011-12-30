@@ -99,7 +99,7 @@ void                  clutter_box_get_color          (ClutterBox           *box,
 void                  clutter_box_pack               (ClutterBox           *box,
                                                       ClutterActor         *actor,
                                                       const gchar          *first_property,
-                                                      ...) G_GNUC_NULL_TERMINATED;
+                                                      ...);
 void                  clutter_box_packv              (ClutterBox           *box,
                                                       ClutterActor         *actor,
                                                       guint                 n_properties,
@@ -110,17 +110,17 @@ void                  clutter_box_pack_after         (ClutterBox           *box,
                                                       ClutterActor         *actor,
                                                       ClutterActor         *sibling,
                                                       const gchar          *first_property,
-                                                      ...) G_GNUC_NULL_TERMINATED;
+                                                      ...);
 void                  clutter_box_pack_before        (ClutterBox           *box,
                                                       ClutterActor         *actor,
                                                       ClutterActor         *sibling,
                                                       const gchar          *first_property,
-                                                      ...) G_GNUC_NULL_TERMINATED;
+                                                      ...);
 void                  clutter_box_pack_at            (ClutterBox           *box,
                                                       ClutterActor         *actor,
                                                       gint                  position,
                                                       const gchar          *first_property,
-                                                      ...) G_GNUC_NULL_TERMINATED;
+                                                      ...);
 
 G_END_DECLS
 
