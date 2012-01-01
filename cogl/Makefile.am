@@ -216,7 +216,6 @@ cogl_sources_c = \
 	$(srcdir)/cogl-clip-state.c			\
 	$(srcdir)/cogl2-clip-state.h 			\
 	$(srcdir)/cogl2-clip-state.c 			\
-	$(srcdir)/cogl-ext-functions.h			\
 	$(srcdir)/cogl-feature-private.h                \
 	$(srcdir)/cogl-feature-private.c                \
 	$(srcdir)/cogl-fixed.c		    		\
@@ -336,6 +335,15 @@ cogl_sources_c = \
 	$(srcdir)/cogl-boxed-value.c			\
 	$(srcdir)/cogl-snippet-private.h		\
 	$(srcdir)/cogl-snippet.c			\
+	$(srcdir)/gl-prototypes/cogl-all-functions.h	\
+	$(srcdir)/gl-prototypes/cogl-gles1-functions.h	\
+	$(srcdir)/gl-prototypes/cogl-gles2-functions.h	\
+	$(srcdir)/gl-prototypes/cogl-core-functions.h	\
+	$(srcdir)/gl-prototypes/cogl-in-gles-core-functions.h	\
+	$(srcdir)/gl-prototypes/cogl-in-gles1-core-functions.h	\
+	$(srcdir)/gl-prototypes/cogl-in-gles2-core-functions.h	\
+	$(srcdir)/gl-prototypes/cogl-fixed-functions.h	\
+	$(srcdir)/gl-prototypes/cogl-glsl-functions.h	\
 	$(NULL)
 
 if SUPPORT_XLIB

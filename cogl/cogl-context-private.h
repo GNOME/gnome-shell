@@ -292,7 +292,7 @@ struct _CoglContext
   ret (APIENTRY * name) args;
 #define COGL_EXT_END()
 
-#include "cogl-ext-functions.h"
+#include "gl-prototypes/cogl-all-functions.h"
 
 #undef COGL_EXT_BEGIN
 #undef COGL_EXT_FUNCTION
