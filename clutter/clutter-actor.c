@@ -14964,6 +14964,90 @@ G_DEFINE_BOXED_TYPE (ClutterMargin, clutter_margin,
                      clutter_margin_free)
 
 /**
+ * clutter_actor_set_margin:
+ * @self: a #ClutterActor
+ * @margin: a #ClutterMargin
+ *
+ * Sets all the components of the margin of a #ClutterActor.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_set_margin (ClutterActor        *self,
+                          const ClutterMargin *margin)
+{
+  ClutterLayoutInfo *info;
+  gboolean changed;
+  GObject *obj;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (margin != NULL);
+
+  obj = G_OBJECT (self);
+  changed = FALSE;
+
+  g_object_freeze_notify (obj);
+
+  info = _clutter_actor_get_layout_info (self);
+
+  if (info->margin.top != margin->top)
+    {
+      info->margin.top = margin->top;
+      g_object_notify_by_pspec (obj, obj_props[PROP_MARGIN_TOP]);
+      changed = TRUE;
+    }
+
+  if (info->margin.right != margin->right)
+    {
+      info->margin.right = margin->right;
+      g_object_notify_by_pspec (obj, obj_props[PROP_MARGIN_RIGHT]);
+      changed = TRUE;
+    }
+
+  if (info->margin.bottom != margin->bottom)
+    {
+      info->margin.bottom = margin->bottom;
+      g_object_notify_by_pspec (obj, obj_props[PROP_MARGIN_BOTTOM]);
+      changed = TRUE;
+    }
+
+  if (info->margin.left != margin->left)
+    {
+      info->margin.left = margin->left;
+      g_object_notify_by_pspec (obj, obj_props[PROP_MARGIN_LEFT]);
+      changed = TRUE;
+    }
+
+  if (changed)
+    clutter_actor_queue_relayout (self);
+
+  g_object_thaw_notify (obj);
+}
+
+/**
+ * clutter_actor_get_margin:
+ * @self: a #ClutterActor
+ * @margin: (out caller-allocates): return location for a #ClutterMargin
+ *
+ * Retrieves all the components of the margin of a #ClutterActor.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_get_margin (ClutterActor  *self,
+                          ClutterMargin *margin)
+{
+  const ClutterLayoutInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (margin != NULL);
+
+  info = _clutter_actor_get_layout_info_or_defaults (self);
+
+  *margin = info->margin;
+}
+
+/**
  * clutter_actor_set_margin_top:
  * @self: a #ClutterActor
  * @margin: the top margin

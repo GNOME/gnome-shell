@@ -396,6 +396,10 @@ gfloat                clutter_actor_get_margin_left           (ClutterActor     
 void                  clutter_actor_set_margin_right          (ClutterActor          *self,
                                                                gfloat                 margin);
 gfloat                clutter_actor_get_margin_right          (ClutterActor          *self);
+void                  clutter_actor_set_margin                (ClutterActor          *self,
+                                                               const ClutterMargin   *margin);
+void                  clutter_actor_get_margin                (ClutterActor          *self,
+                                                               ClutterMargin         *margin);
 
 void                  clutter_actor_set_opacity               (ClutterActor          *self,
                                                                guint8                 opacity);
