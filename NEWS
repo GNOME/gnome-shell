@@ -1,3 +1,23 @@
+3.3.3
+=====
+* Add keybindings for tiling to left or right [Florian; #648700]
+* Support GTK+'s hide-titlebar-when-maximized hint [Florian; #665617]
+* Load _DBUS_APPLICATION_ID, _DBUS_UNIQUE_NAME, _DBUS_OBJECT_PATH
+  property [Colin, Ryan; #664851]
+* Handle changes to workspaces-only-on-primary GSetting [Florian; #664853]
+* Don't use the Clutter default stage [Jasper; #664028]
+* Fix compilation with --disable-introspection [Lionel; #661871]
+* Fix problem where stage could end up mis-sized on startup with
+  multiple monitors [Lionel]
+* Misc bug fixes [Adel, Lionel, Jasper; #666015]
+
+Contributors:
+ Adel Gadllah, Lionel Landwerlin, Florian Müllner, Jasper St. Pierre
+
+Translations:
+ Daniel Mustieles [es], Yaron Shahrabani [he], Kjartan Maraas [nb],
+ Matej Urbančič [sk], Muhammet Kara [tr]
+
 3.3.2
 =====
 
