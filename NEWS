@@ -1,3 +1,44 @@
+3.3.3
+=====
+* https://live.gnome.org/EveryDetailMatters
+  - Stop flashing the window labels on actions in overview [Zan; #644861]
+  - Improve the look of window captions in the overview [Marc; #664487]
+  - Move dash tooltips beside the icon [Seif, Stefano; #666166]
+* Support application menus exported from applications via new GLib API
+   and D-Bus protocol. [Giovanni, Colin, Matthias, Cosimo]
+* For removable device prompts, show "Open with Rhythmbox], rather
+  than "Open with Rhythmbox Music Player' [Florian; #664561]
+* Switch to activating the message tray only with a hot corner rather
+  than a full row of pixels, allowing mouse events to apps [Rui; #663366]
+* Fully handle the case where the workspaces-only-on-primary
+  GSetting is set to false [Florian; #652580]
+* Add support for background-size CSS property to St [Quentin; #633462]
+* Port to new GJS Lang.Class framework [Giovanni; #664436]
+* Finish port to GDBus [Giovanni; #664436]
+* Stop using the deprecated Clutter default stage [Florian, Jasper; #664052]
+* Fix bugs that kept browser plugin from working in WebKit-based browser
+  [Jasper; #666444]
+* Fix typo that made uninstalling extensions not work [Jasper]
+* Fix crash in browser plugin if shell is not run [Jürg]
+* Reintroduce piscine paschal ovum [Giovanni; #666606]
+* Network menu bug fixes
+  Giovanni; #664124, #665194, #665680, #666429, #666614]
+* Misc bug fixes [Florian, Jasper, Jonny, Marina, Ron; #647587, #659272,
+  #665261, #666020, #666243]
+
+Contributors:
+ Jürg Billeter, Giovanni Campagna, Stefano Candori, Cosimo Cecchi,
+ Matthias Clasen, Zan Dobersek, Quentin Glidic, Jonny Lamb, Ryan Lortie,
+ Seif Lotfy, Rui Matos, Florian Müllner, Bastien Nocera, Jasper St. Pierre,
+ Marc Plano-Lesay, Colin Walters, Ron Yorsten, Marina Zhurakhinskaya
+
+Translations:
+ Petr Kovar [cz], Kris Thomsen [dk], Daniel Mustieles [es],
+ Ville-Pekka Vainio [fi], Yaron Shahrabani [he], Žygimantas Beručka [lt],
+ Jovan Naumovski [mk], Kjartan Maraas [nb], "Andreas N" [nn],
+ Lucian Adrian Grijincu [ro], Matej Urbančič [sl], Praveen Illa [te],
+ Muhammet Kara [tr], Daniel Korostil [uk], Aron Xu [zh_CN]
+
 3.3.2
 =====
 * Port D-Bus usage in the shell to GDBus [Giovanni, Marc-Antoine, Florian,
