@@ -1021,6 +1021,8 @@ clutter_param_color_get_type
 <TITLE>Events</TITLE>
 CLUTTER_CURRENT_TIME
 CLUTTER_PRIORITY_EVENTS
+CLUTTER_EVENT_PROPAGATE
+CLUTTER_EVENT_STOP
 ClutterModifierType
 ClutterScrollDirection
 ClutterStageState
