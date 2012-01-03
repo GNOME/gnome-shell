@@ -36,8 +36,6 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_PERSPECTIVE        (clutter_perspective_get_type ())
-#define CLUTTER_TYPE_FOG                (clutter_fog_get_type ())
 #define CLUTTER_TYPE_STAGE              (clutter_stage_get_type())
 
 #define CLUTTER_STAGE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE, ClutterStage))
@@ -45,9 +43,6 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_STAGE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_STAGE))
 #define CLUTTER_IS_STAGE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_STAGE))
 #define CLUTTER_STAGE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_STAGE, ClutterStageClass))
-
-typedef struct _ClutterPerspective  ClutterPerspective;
-typedef struct _ClutterFog          ClutterFog;
 
 typedef struct _ClutterStageClass   ClutterStageClass;
 typedef struct _ClutterStagePrivate ClutterStagePrivate;
@@ -99,8 +94,6 @@ struct _ClutterStageClass
   /* padding for future expansion */
   gpointer _padding_dummy[31];
 };
-
-
 
 /**
  * ClutterPerspective:

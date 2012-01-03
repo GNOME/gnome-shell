@@ -49,9 +49,11 @@ G_BEGIN_DECLS
 #endif
 
 #define CLUTTER_TYPE_ACTOR_BOX          (clutter_actor_box_get_type ())
+#define CLUTTER_TYPE_FOG                (clutter_fog_get_type ())
 #define CLUTTER_TYPE_GEOMETRY           (clutter_geometry_get_type ())
 #define CLUTTER_TYPE_KNOT               (clutter_knot_get_type ())
 #define CLUTTER_TYPE_PAINT_VOLUME       (clutter_paint_volume_get_type ())
+#define CLUTTER_TYPE_PERSPECTIVE        (clutter_perspective_get_type ())
 #define CLUTTER_TYPE_VERTEX             (clutter_vertex_get_type ())
 
 typedef struct _ClutterActor            ClutterActor;
@@ -76,8 +78,10 @@ typedef struct _ClutterPath             ClutterPath;
 
 typedef struct _ClutterActorBox         ClutterActorBox;
 typedef struct _ClutterColor            ClutterColor;
+typedef struct _ClutterFog              ClutterFog;
 typedef struct _ClutterGeometry         ClutterGeometry;
 typedef struct _ClutterKnot             ClutterKnot;
+typedef struct _ClutterPerspective      ClutterPerspective;
 typedef struct _ClutterVertex           ClutterVertex;
 
 typedef struct _ClutterBehaviour        ClutterBehaviour;
