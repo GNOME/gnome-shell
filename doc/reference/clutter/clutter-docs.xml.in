@@ -68,19 +68,11 @@
 
     <chapter>
       <title>Base actors</title>
-      <xi:include href="xml/clutter-rectangle.xml"/>
+      <xi:include href="xml/clutter-stage.xml"/>
       <xi:include href="xml/clutter-texture.xml"/>
       <xi:include href="xml/clutter-clone.xml"/>
       <xi:include href="xml/clutter-text.xml"/>
       <xi:include href="xml/clutter-cairo-texture.xml"/>
-    </chapter>
-
-    <chapter>
-      <title>Container actors</title>
-
-      <xi:include href="xml/clutter-group.xml"/>
-      <xi:include href="xml/clutter-stage.xml"/>
-      <xi:include href="xml/clutter-box.xml"/>
     </chapter>
 
     <chapter>
@@ -253,6 +245,9 @@
       <xi:include href="xml/clutter-behaviour-path.xml"/>
       <xi:include href="xml/clutter-behaviour-rotate.xml"/>
       <xi:include href="xml/clutter-behaviour-scale.xml"/>
+      <xi:include href="xml/clutter-group.xml"/>
+      <xi:include href="xml/clutter-box.xml"/>
+      <xi:include href="xml/clutter-rectangle.xml"/>
   </part>
 
   <part id="clutterobjects">
@@ -331,6 +326,11 @@
   <index role="1.8">
     <title>Index of new symbols in 1.8</title>
     <xi:include href="xml/api-index-1.8.xml"><xi:fallback /></xi:include>
+  </index>
+
+  <index role="1.10">
+    <title>Index of new symbols in 1.10</title>
+    <xi:include href="xml/api-index-1.10.xml"><xi:fallback /></xi:include>
   </index>
 
   <appendix id="license">
