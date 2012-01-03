@@ -353,18 +353,12 @@ clutter_actor_set_x_align
 clutter_actor_get_x_align
 clutter_actor_set_y_align
 clutter_actor_get_y_align
-clutter_actor_set_x_expand
-clutter_actor_get_x_expand
-clutter_actor_set_y_expand
-clutter_actor_get_y_expand
-clutter_actor_needs_x_expand
-clutter_actor_needs_y_expand
-clutter_actor_queue_compute_expand
 ClutterMargin
 clutter_margin_copy
 clutter_margin_free
-clutter_margin_get_type
 clutter_margin_new
+clutter_actor_set_margin
+clutter_actor_get_margin
 clutter_actor_set_margin_top
 clutter_actor_get_margin_top
 clutter_actor_set_margin_right
@@ -403,10 +397,9 @@ clutter_actor_get_child_at_index
 clutter_actor_get_children
 clutter_actor_get_n_children
 clutter_actor_get_parent
-clutter_actor_raise
-clutter_actor_lower
-clutter_actor_raise_top
-clutter_actor_lower_bottom
+clutter_actor_set_child_above_sibling
+clutter_actor_set_child_at_index
+clutter_actor_set_child_below_sibling
 clutter_actor_contains
 clutter_actor_get_stage
 clutter_actor_push_internal
@@ -414,6 +407,10 @@ clutter_actor_pop_internal
 clutter_actor_set_parent
 clutter_actor_reparent
 clutter_actor_unparent
+clutter_actor_raise
+clutter_actor_lower
+clutter_actor_raise_top
+clutter_actor_lower_bottom
 
 <SUBSECTION>
 clutter_actor_set_depth
@@ -560,6 +557,7 @@ ClutterActorPrivate
 clutter_actor_get_type
 clutter_actor_box_get_type
 clutter_geometry_get_type
+clutter_margin_get_type
 clutter_paint_volume_get_type
 clutter_vertex_get_type
 </SECTION>

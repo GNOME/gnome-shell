@@ -10274,7 +10274,7 @@ clutter_actor_contains (ClutterActor *self,
 }
 
 /**
- * clutter_actor_set_above_sibling:
+ * clutter_actor_set_child_above_sibling:
  * @self: a #ClutterActor
  * @child: a #ClutterActor child of @self
  * @sibling: (allow-none): a #ClutterActor child of @self, or %NULL
@@ -14670,6 +14670,20 @@ on_layout_manager_changed (ClutterLayoutManager *manager,
   clutter_actor_queue_relayout (self);
 }
 
+/**
+ * clutter_actor_set_layout_manager:
+ * @self: a #ClutterActor
+ * @manager: (allow-none): a #ClutterLayoutManager, or %NULL to unset it
+ *
+ * Sets the #ClutterLayoutManager delegate object that will be used to
+ * lay out the children of @self.
+ *
+ * The #ClutterActor will take a reference on the passed @manager which
+ * will be released either when the layout manager is removed, or when
+ * the actor is destroyed.
+ *
+ * Since: 1.10
+ */
 void
 clutter_actor_set_layout_manager (ClutterActor         *self,
                                   ClutterLayoutManager *manager)
