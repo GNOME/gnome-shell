@@ -373,6 +373,44 @@ add_constant_lookup (CoglPipelineShaderState *shader_state,
 }
 
 static void
+get_texture_target_string (CoglTextureType texture_type,
+                           const char **target_string_out,
+                           const char **swizzle_out)
+{
+  const char *target_string, *tex_coord_swizzle;
+
+  switch (texture_type)
+    {
+#if 0 /* TODO */
+    case COGL_TEXTURE_TYPE_1D:
+      target_string = "1D";
+      tex_coord_swizzle = "s";
+      break;
+#endif
+
+    case COGL_TEXTURE_TYPE_2D:
+      target_string = "2D";
+      tex_coord_swizzle = "st";
+      break;
+
+    case COGL_TEXTURE_TYPE_3D:
+      target_string = "3D";
+      tex_coord_swizzle = "stp";
+      break;
+
+    case COGL_TEXTURE_TYPE_RECTANGLE:
+      target_string = "2DRect";
+      tex_coord_swizzle = "st";
+      break;
+    }
+
+  if (target_string_out)
+    *target_string_out = target_string;
+  if (swizzle_out)
+    *swizzle_out = tex_coord_swizzle;
+}
+
+static void
 ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
                                  CoglPipeline *pipeline,
                                  CoglPipelineLayer *layer)
@@ -424,37 +462,9 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
         _cogl_pipeline_layer_get_texture_type (layer);
       const char *target_string, *tex_coord_swizzle;
 
-      switch (texture_type)
-        {
-#if 0 /* TODO */
-        case COGL_TEXTURE_TYPE_1D:
-          target_string = "1D";
-          tex_coord_swizzle = "s";
-          break;
-#endif
-
-        case COGL_TEXTURE_TYPE_2D:
-          target_string = "2D";
-          tex_coord_swizzle = "st";
-          break;
-
-        case COGL_TEXTURE_TYPE_3D:
-          target_string = "3D";
-          tex_coord_swizzle = "stp";
-          break;
-
-        case COGL_TEXTURE_TYPE_RECTANGLE:
-          target_string = "2DRect";
-          tex_coord_swizzle = "st";
-          break;
-        }
-
-      /* Create a sampler uniform */
-      if (G_LIKELY (!COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
-        g_string_append_printf (shader_state->header,
-                                "uniform sampler%s _cogl_sampler_%i;\n",
-                                target_string,
-                                layer->index);
+      get_texture_target_string (texture_type,
+                                 &target_string,
+                                 &tex_coord_swizzle);
 
       g_string_append_printf (shader_state->header,
                               "vec4\n"
@@ -468,7 +478,7 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
                          "vec4 (1.0, 1.0, 1.0, 1.0);\n");
       else
         g_string_append_printf (shader_state->header,
-                                "texture%s (_cogl_sampler_%i, coords.%s);\n",
+                                "texture%s (cogl_sampler%i, coords.%s);\n",
                                 target_string, layer->index, tex_coord_swizzle);
 
       g_string_append (shader_state->header, "}\n");
@@ -1013,6 +1023,24 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
         {
           CoglPipelineLayer *last_layer;
           LayerData *layer_data, *tmp;
+
+          /* We always emit sampler uniforms in case there will be custom
+           * layer snippets that want to sample arbitrary layers. */
+
+          COGL_LIST_FOREACH (layer_data, &shader_state->layers, list_node)
+            {
+              CoglPipelineLayer *layer = layer_data->layer;
+              CoglTextureType texture_type =
+                _cogl_pipeline_layer_get_texture_type (layer);
+              const char *target_string;
+
+              get_texture_target_string (texture_type, &target_string, NULL);
+
+              g_string_append_printf (shader_state->header,
+                                      "uniform sampler%s cogl_sampler%i;\n",
+                                      target_string,
+                                      layer->index);
+            }
 
           last_layer = COGL_LIST_FIRST (&shader_state->layers)->layer;
 
