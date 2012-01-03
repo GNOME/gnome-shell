@@ -44,9 +44,15 @@
     </orderedlist>
 
     <para>At any point during the event emission sequence a handler of either
-    the captured-event or the event signals can stop it, by returning a value
-    of TRUE, which means that the event has been handled. If an event hasn't
-    been handled, FALSE should be returned instead.</para>
+    the captured-event or the event signals can stop it, by returning a boolean
+    value of <emphasis>true</emphasis>, which means that the event has been
+    handled. If an event hasn't  been handled, a boolean value of
+    <emphasis>false</emphasis> should be returned instead.</para>
+
+    <note><para>Clutter provides two useful macros to avoid remembering which
+    boolean value should be used in an event signal handler:
+    CLUTTER_EVENT_PROPAGATE, equivalent to FALSE; and CLUTTER_EVENT_STOP,
+    equivalent to TRUE.</para></note>
   </section>
 
   <section id="events-handling-key-events">
@@ -124,11 +130,11 @@ _key_press_cb (ClutterActor *actor,
         g_debug ("Up pressed");
 
       /* The event was handled, and the emission should stop */
-      return TRUE;
+      return CLUTTER_EVENT_STOP;
     }
 
   /* The event was not handled, and the emission should continue */
-  return FALSE;
+  return CLUTTER_EVENT_PROPAGATE;
 }
 ]]>
           </programlisting>
@@ -406,7 +412,7 @@ _scroll_event_cb (ClutterActor *actor,
       break;
     }
 
-  return TRUE; /* event has been handled */
+  return CLUTTER_EVENT_STOP; /* event has been handled */
 }
 ]]>
         </programlisting>
@@ -578,7 +584,7 @@ _scroll_event_cb (ClutterActor *viewport,
 
   /* no need to scroll if the scrollable is shorter than the viewport */
   if (scrollable_height < viewport_height)
-    return TRUE;
+    return CLUTTER_EVENT_STOP;
 
   gfloat y = clutter_actor_get_y (scrollable);
 
@@ -619,7 +625,7 @@ _scroll_event_cb (ClutterActor *viewport,
                          "y", y,
                          NULL);
 
-  return TRUE;
+  return CLUTTER_EVENT_STOP;
 }
 ]]>
               </programlisting>
@@ -802,7 +808,7 @@ _pointer_enter_cb (ClutterActor *actor,
            stage_x, stage_y,
            actor_x, actor_y);
 
-  return TRUE;
+  return CLUTTER_EVENT_STOP;
 }
 ]]>
           </programlisting>
@@ -1150,7 +1156,7 @@ button_event_cb (ClutterActor *actor,
            ctrl_pressed,
            click_count);
 
-  return TRUE;
+  return CLUTTER_EVENT_STOP;
 }
         </programlisting>
       </informalexample>
