@@ -13294,6 +13294,11 @@ clutter_actor_get_text_direction (ClutterActor *self)
  * one must by followed by a clutter_actor_pop_internal() call.
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.10: All children of an actor are accessible through
+ *   the #ClutterActor API, and #ClutterActor implements the
+ *   #ClutterContainer interface, so this function is only useful
+ *   for legacy containers overriding the default implementation.
  */
 void
 clutter_actor_push_internal (ClutterActor *self)
@@ -13307,9 +13312,14 @@ clutter_actor_push_internal (ClutterActor *self)
  * clutter_actor_pop_internal:
  * @self: a #ClutterActor
  *
- * Disables the effects of clutter_actor_push_internal()
+ * Disables the effects of clutter_actor_push_internal().
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.10: All children of an actor are accessible through
+ *   the #ClutterActor API. This function is only useful for legacy
+ *   containers overriding the default implementation of the
+ *   #ClutterContainer interface.
  */
 void
 clutter_actor_pop_internal (ClutterActor *self)

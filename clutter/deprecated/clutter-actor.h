@@ -71,6 +71,12 @@ void            clutter_actor_raise_top         (ClutterActor          *self);
 CLUTTER_DEPRECATED_FOR(clutter_actor_set_child_below_sibling() with NULL sibling)
 void            clutter_actor_lower_bottom      (ClutterActor          *self);
 
+CLUTTER_DEPRECATED
+void            clutter_actor_push_internal     (ClutterActor          *self);
+
+CLUTTER_DEPRECATED
+void            clutter_actor_pop_internal      (ClutterActor          *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_DEPRECATED_H__ */

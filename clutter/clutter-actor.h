@@ -483,9 +483,6 @@ void                  clutter_actor_set_child_at_index        (ClutterActor     
                                                                ClutterActor          *child,
                                                                gint                   index_);
 
-void                  clutter_actor_push_internal             (ClutterActor          *self);
-void                  clutter_actor_pop_internal              (ClutterActor          *self);
-
 /* Transformations */
 gboolean              clutter_actor_is_rotated                (ClutterActor          *self);
 gboolean              clutter_actor_is_scaled                 (ClutterActor          *self);
