@@ -317,14 +317,15 @@ AS_IF([test "x$enable_wayland" = "xyes"],
                          [BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-client xkbcommon"],
                          [])
 
-        AC_DEFINE([HAVE_CLUTTER_WAYLAND], [1], [Have the Wayland backend])
+        AC_DEFINE([HAVE_CLUTTER_WAYLAND], [1], [Have the Wayland client backend])
       ])
 
 dnl Note this is orthogonal to the client side support and you can
-dnl use the wayland compositor features with any of the clutter
+dnl use the Wayland compositor features with any of the clutter
 dnl backends with corresponding Cogl support.
 AC_ARG_ENABLE([wayland-compositor],
-              [AS_HELP_STRING([--enable-wayland-compositor], [Enable Wayland compositor features])],
+              [AS_HELP_STRING([--enable-wayland-compositor=@<:@yes/no@:>@],
+                              [Enable Wayland compositor features (default=no)])],
               [],
               [AS_IF([test "x$SUPPORT_EGL" = "x1"],
                      [enable_wayland_compositor=yes],
@@ -338,8 +339,9 @@ AS_IF([test "x$enable_wayland_compositor" = "xyes"],
         SUPPORT_WAYLAND_COMPOSITOR=1
 	CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT 1"
-        AC_DEFINE([HAVE_CLUTTER_WAYLAND_COMPOSITOR], [1], [Have wayland compositor support])
+        AC_DEFINE([HAVE_CLUTTER_WAYLAND_COMPOSITOR], [1], [Have Wayland compositor support])
       ])
+
 AM_CONDITIONAL(SUPPORT_WAYLAND_COMPOSITOR, [test "x$SUPPORT_WAYLAND_COMPOSITOR" = "x1"])
 
 AS_IF([test "x$enable_wayland_compositor" != "xyes" -a "x$enable_wayland" != "xyes"],
@@ -357,7 +359,7 @@ AS_IF([test "x$enable_cex100" = "xyes"],
         experimental_backend="yes"
 
         SUPPORT_COGL=1
-        SUPPORT_EGL_PLATFORM_GDL=1
+        SUPPORT_CEX100=1
 
         have_gdl=no
         AC_CHECK_HEADERS([libgdl.h], [have_gdl=yes])
@@ -483,7 +485,7 @@ AM_CONDITIONAL(SUPPORT_GDK,     [test "x$SUPPORT_GDK" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL,     [test "x$SUPPORT_EGL" = "x1"])
 AM_CONDITIONAL(SUPPORT_OSX,     [test "x$SUPPORT_OSX" = "x1"])
 AM_CONDITIONAL(SUPPORT_WIN32,   [test "x$SUPPORT_WIN32" = "x1"])
-AM_CONDITIONAL(SUPPORT_CEX100,  [test "x$SUPPORT_EGL_PLATFORM_GDL" = "x1"])
+AM_CONDITIONAL(SUPPORT_CEX100,  [test "x$SUPPORT_CEX100" = "x1"])
 AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$SUPPORT_WAYLAND" = "x1"])
 AM_CONDITIONAL(SUPPORT_STUB,    [test "x$SUPPORT_WIN32" = "x1" -o \
                                       "x$SUPPORT_OSX" = "x1"])
@@ -537,7 +539,7 @@ AS_IF([test "x$SUPPORT_WIN32" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_WINDOWING_WIN32 \"win32\"
 #define CLUTTER_INPUT_WIN32 \"win32\""])
-AS_IF([test "x$SUPPORT_EGL_PLATFORM_GDL" = "x1"],
+AS_IF([test "x$SUPPORT_CEX100" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_WINDOWING_CEX100 \"cex100\""])
 AS_IF([test "x$SUPPORT_EVDEV" = "x1"],
@@ -1142,11 +1144,14 @@ fi
 
 if test "x$SUPPORT_CEX100" = "x1"; then
 echo ""
-echo "     - CEx100 backend options:"
+echo "     - CEx100 backend options (WARNING: Experimental):"
 echo "        libGDL include prefix: ${CLUTTER_CEX100_LIBGDL_PREFIX}"
 fi
 
-echo "        Wayland compositor features: ${SUPPORT_WAYLAND_COMPOSITOR}"
+if test "x$SUPPORT_WAYLAND_COMPOSITOR" = "x1"; then
+echo ""
+echo "     - Wayland compositor support enabled (WARNING: Experimental)"
+fi
 
 echo ""
 
