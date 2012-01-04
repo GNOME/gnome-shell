@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-10-04 20:49+0000\n"
-"PO-Revision-Date: 2011-10-17 10:30+0200\n"
+"PO-Revision-Date: 2012-01-04 10:19+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -583,7 +583,7 @@ msgstr[1] "Il sistema verrà spento automaticamente tra %d secondi."
 
 #: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
-msgstr "pegnimento del sistema."
+msgstr "Spegnimento del sistema."
 
 #: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
