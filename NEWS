@@ -24,20 +24,23 @@
 * Network menu bug fixes
   Giovanni; #664124, #665194, #665680, #666429, #666614]
 * Misc bug fixes [Florian, Jasper, Jonny, Marina, Ron; #647587, #659272,
-  #665261, #666020, #666243]
+  #664138, #665261, #666020, #666243]
+* Build fixes [Owen]
 
 Contributors:
  Jürg Billeter, Giovanni Campagna, Stefano Candori, Cosimo Cecchi,
  Matthias Clasen, Zan Dobersek, Quentin Glidic, Jonny Lamb, Ryan Lortie,
  Seif Lotfy, Rui Matos, Florian Müllner, Bastien Nocera, Jasper St. Pierre,
- Marc Plano-Lesay, Colin Walters, Ron Yorsten, Marina Zhurakhinskaya
+ Marc Plano-Lesay, Owen Taylor, Colin Walters, Ron Yorsten,
+ Marina Zhurakhinskaya
 
 Translations:
  Petr Kovar [cz], Kris Thomsen [dk], Daniel Mustieles [es],
- Ville-Pekka Vainio [fi], Yaron Shahrabani [he], Žygimantas Beručka [lt],
- Jovan Naumovski [mk], Kjartan Maraas [nb], "Andreas N" [nn],
- Lucian Adrian Grijincu [ro], Matej Urbančič [sl], Praveen Illa [te],
- Muhammet Kara [tr], Daniel Korostil [uk], Aron Xu [zh_CN]
+ Ville-Pekka Vainio [fi], Yaron Shahrabani [he], Luca Ferretti [it],
+ Hideki Yamane [ja], Žygimantas Beručka [lt], Jovan Naumovski [mk],
+ Kjartan Maraas [nb], "Andreas N" [nn], Lucian Adrian Grijincu [ro],
+ Matej Urbančič [sl], Praveen Illa [te], Muhammet Kara [tr],
+ Daniel Korostil [uk], Aron Xu [zh_CN]
 
 3.3.2
 =====
