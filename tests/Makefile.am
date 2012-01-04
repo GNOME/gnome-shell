@@ -2,6 +2,7 @@ noinst_SCRIPTS = run-test.sh
 EXTRA_DIST = run-test.sh.in
 
 TEST_JS =					\
+	interactive/background-size.js		\
 	interactive/borders.js			\
 	interactive/border-radius.js		\
 	interactive/border-width.js		\
@@ -16,6 +17,9 @@ TEST_JS =					\
 	interactive/scroll-view-sizing.js	\
 	interactive/table.js			\
 	interactive/transitions.js		\
+	testcommon/100-200.svg			\
+	testcommon/200-100.svg			\
+	testcommon/200-200.svg			\
 	testcommon/border-image.png		\
 	testcommon/face-plain.png		\
 	testcommon/ui.js                        \
