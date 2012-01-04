@@ -77,6 +77,21 @@ void
 cogl_android_set_native_window (ANativeWindow *window);
 #endif
 
+/**
+ * cogl_is_context:
+ * @object: An object or %NULL
+ *
+ * Gets whether the given object references an existing context object.
+ *
+ * Return value: %TRUE if the handle references a #CoglContext,
+ *   %FALSE otherwise
+ *
+ * Since: 1.10
+ * Stability: Unstable
+ */
+gboolean
+cogl_is_context (void *object);
+
 G_END_DECLS
 
 #endif /* __COGL_CONTEXT_H__ */

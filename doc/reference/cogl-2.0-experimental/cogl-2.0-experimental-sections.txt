@@ -74,6 +74,7 @@ cogl_wayland_display_set_compositor_display
 
 <SUBSECTION>
 cogl_context_new
+cogl_is_context
 cogl_context_get_display
 
 <SUBSECTION>
