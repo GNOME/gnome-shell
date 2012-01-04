@@ -58,7 +58,16 @@ EXTRA_HFILES=
 
 # Header files or dirs to ignore when scanning. Use base file/dir names
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h private_code
-IGNORE_HFILES=calendar-server gvc hotplug-sniffer st tray
+IGNORE_HFILES=					\
+	calendar-server				\
+	gvc					\
+	hotplug-sniffer				\
+	st					\
+	tray					\
+	gactionmuxer.h				\
+	gactionobservable.h			\
+	gactionobserver.h			\
+	shell-recorder-src.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
@@ -79,7 +88,7 @@ expand_content_files=
 # e.g. GTKDOC_CFLAGS=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
 GTKDOC_CFLAGS=$(GNOME_SHELL_CFLAGS)
-GTKDOC_LIBS=$(GNOME_SHELL_LIBS) $(top_builddir)/src/libgnome-shell.la
+GTKDOC_LIBS=$(GNOME_SHELL_LIBS) $(BLUETOOTH_LIBS) $(top_builddir)/src/libgnome-shell.la
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make
