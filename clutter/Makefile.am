@@ -623,11 +623,20 @@ pc_files += clutter-wayland-$(CLUTTER_API_VERSION).pc
 endif # SUPPORT_WAYLAND
 
 if SUPPORT_WAYLAND_COMPOSITOR
-backend_source_h += \
+wayland_compositor_source_h = \
 	$(srcdir)/wayland/clutter-wayland-compositor.h		\
 	$(srcdir)/wayland/clutter-wayland-surface.h
+backend_source_h += $(wayland_compositor_source_h)
 backend_source_c += \
 	$(srcdir)/wayland/clutter-wayland-surface.c
+
+wayland_compositor_includedir = $(clutter_includedir)/wayland
+wayland_compositor_include_HEADERS = $(wayland_compositor_source_h)
+
+clutter-wayland-compositor-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pc_files += clutter-wayland-compositor-$(CLUTTER_API_VERSION).pc
 endif
 
 if SUPPORT_EGL
