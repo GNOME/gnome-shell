@@ -113,6 +113,21 @@ AC_ARG_ENABLE(shape,
                  [disable mutter's use of the shaped window extension]),,
   enable_shape=auto)
 
+AC_ARG_ENABLE(wayland,
+  AC_HELP_STRING([--enable-wayland],
+                 [Enable support for running as a hybrid X and Wayland compositor]),,
+  enable_wayland=no)
+
+## Wayland support requires the xserver.xml protocol extension found in the weston
+## repository but since there aren't currently established conventions for
+## installing and discovering these we simply require a location to be given
+## explicitly...
+AC_ARG_WITH([wayland-protocols],
+            [AS_HELP_STRING([--with-wayland-protocols], [Location for wayland extension protocol specs])],
+            [
+            ],
+            [])
+
 AM_GLIB_GNU_GETTEXT
 
 ## here we get the flags we'll actually use
@@ -198,6 +213,34 @@ if test x$have_xcursor = xyes; then
   MUTTER_PC_MODULES="$MUTTER_PC_MODULES xcursor"
   AC_DEFINE(HAVE_XCURSOR, , [Building with Xcursor support])
 fi
+
+have_wayland=no
+if test x$enable_wayland = "xyes"; then
+  WAYLAND_VERSION=0.1
+  AC_MSG_CHECKING([Wayland >= $WAYLAND_VERSION])
+  if ! $PKG_CONFIG --atleast-version $WAYLAND_VERSION wayland-server; then
+    AC_MSG_ERROR([wayland support enabled but no suitable wayland-server package found])
+  fi
+  AC_MSG_RESULT(yes)
+
+  CLUTTER_WAYLAND_VERSION=1.9.3
+  AC_MSG_CHECKING([Clutter Wayland Compositor >= $CLUTTER_WAYLAND_VERSION])
+  if ! $PKG_CONFIG --atleast-version $CLUTTER_WAYLAND_VERSION clutter-wayland-compositor-1.0; then
+    AC_MSG_ERROR([wayland support enabled but no suitable clutter-wayland-compositor package found])
+  fi
+  AC_MSG_RESULT(yes)
+
+  AC_PATH_PROG([WAYLAND_SCANNER],[wayland-scanner],[no])
+  AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
+        AC_MSG_ERROR([Could not find wayland-scanner in your PATH, required for parsing wayland extension protocols]))
+  AC_SUBST([WAYLAND_SCANNER])
+
+  MUTTER_PC_MODULES="$MUTTER_PC_MODULES wayland-server clutter-wayland-compositor-1.0"
+  AC_DEFINE(HAVE_WAYLAND, , [Building with Wayland support])
+  have_wayland=yes
+fi
+
+AM_CONDITIONAL(HAVE_WAYLAND, test x$have_wayland = "xyes")
 
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
 
@@ -444,6 +487,7 @@ src/libmutter.pc
 src/mutter-plugins.pc
 src/tools/Makefile
 src/compositor/plugins/Makefile
+protocol/Makefile
 po/Makefile.in
 ])
 
@@ -464,6 +508,8 @@ mutter-$VERSION
 	prefix:                   ${prefix}
 	source code location:	  ${srcdir}
 	compiler:		  ${CC}
+
+	Wayland:		  ${have_wayland}
 
 	Startup notification:     ${have_startup_notification}
 	libcanberra:              ${have_libcanberra}

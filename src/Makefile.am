@@ -342,3 +342,12 @@ mutter-enum-types.c: stamp-mutter-enum-types.h mutter-enum-types.c.in
 	  $(libmutterinclude_base_headers) ) >> xgen-tetc && \
 	cp xgen-tetc mutter-enum-types.c && \
 	rm -f xgen-tetc
+
+if HAVE_WAYLAND
+wayland/%-protocol.c : $(top_builddir)/protocol/%.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
+wayland/%-server-protocol.h : $(top_builddir)/protocol/%.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@
+wayland/%-client-protocol.h : $(top_builddir)/protocol/%.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) client-header < $< > $@
+endif

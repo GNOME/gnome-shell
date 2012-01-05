@@ -1,0 +1,18 @@
+<protocol name="xserver">
+
+  <interface name="xserver" version="1">
+    <request name="set_window_id">
+      <arg name="surface" type="object" interface="wl_surface"/>
+      <arg name="id" type="uint"/>
+    </request>
+
+    <event name="client">
+      <arg name="fd" type="fd"/>
+    </event>
+
+    <event name="listen_socket">
+      <arg name="fd" type="fd"/>
+    </event>
+  </interface>
+
+</protocol>
