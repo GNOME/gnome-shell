@@ -237,7 +237,7 @@ const AppMenuButton = new Lang.Class({
     Extends: PanelMenu.Button,
 
     _init: function(menuManager) {
-        this.parent(0.0, true);
+        this.parent(0.0, null, true);
 
         this._startingApps = [];
 
@@ -537,6 +537,7 @@ const AppMenuButton = new Lang.Class({
         let icon = targetApp.get_faded_icon(2 * PANEL_ICON_SIZE);
 
         this._label.setText(targetApp.get_name());
+        this.setName(targetApp.get_name());
 
         this._iconBox.set_child(icon);
         this._iconBox.show();

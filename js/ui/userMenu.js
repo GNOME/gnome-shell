@@ -466,6 +466,7 @@ const UserMenuButton = new Lang.Class({
             }));
 
         this._name = new St.Label();
+        this.actor.label_actor = this._name;
         box.add(this._name, { y_align: St.Align.MIDDLE, y_fill: false });
         this._userLoadedId = this._user.connect('notify::is-loaded', Lang.bind(this, this._updateUserName));
         this._userChangedId = this._user.connect('changed', Lang.bind(this, this._updateUserName));

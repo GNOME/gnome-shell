@@ -96,7 +96,7 @@ const Button = new Lang.Class({
     Name: 'PanelMenuButton',
     Extends: ButtonBox,
 
-    _init: function(menuAlignment, dontCreateMenu) {
+    _init: function(menuAlignment, nameText, dontCreateMenu) {
         this.parent({ reactive: true,
                       can_focus: true,
                       track_hover: true });
@@ -108,6 +108,24 @@ const Button = new Lang.Class({
             this.menu = null;
         else
             this.setMenu(new PopupMenu.PopupMenu(this.actor, menuAlignment, St.Side.TOP, 0));
+
+        this.setName(nameText);
+    },
+
+    setName: function(text) {
+        if (text != null) {
+            // This is the easiest way to provide a accessible name to
+            // this widget. The label could be also used for other
+            // purposes in the future.
+            if (!this.label) {
+                this.label = new St.Label({ text: text });
+                this.actor.label_actor = this.label;
+            } else
+                this.label.text = text;
+        } else {
+            this.label = null;
+            this.actor.label_actor = null;
+        }
     },
 
     setMenu: function(menu) {
@@ -203,8 +221,8 @@ const SystemStatusButton = new Lang.Class({
     Name: 'SystemStatusButton',
     Extends: Button,
 
-    _init: function(iconName,tooltipText) {
-        this.parent(0.0);
+    _init: function(iconName, tooltipText, nameText) {
+        this.parent(0.0, nameText);
 
         this._iconActor = new St.Icon({ icon_name: iconName,
                                         icon_type: St.IconType.SYMBOLIC,

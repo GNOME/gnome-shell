@@ -69,6 +69,7 @@ const DateMenuButton = new Lang.Class({
 
         // Date
         this._date = new St.Label();
+        this.actor.label_actor = this._date;
         this._date.style_class = 'datemenu-date-label';
         vbox.add(this._date);
 

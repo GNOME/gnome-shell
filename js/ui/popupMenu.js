@@ -389,6 +389,7 @@ const PopupMenuItem = new Lang.Class({
 
         this.label = new St.Label({ text: text });
         this.addActor(this.label);
+        this.actor.label_actor = this.label
     }
 });
 
@@ -1428,6 +1429,7 @@ const PopupSubMenuMenuItem = new Lang.Class({
 
         this.label = new St.Label({ text: text });
         this.addActor(this.label);
+        this.actor.label_actor = this.label;
         this._triangle = new St.Label({ text: '\u25B8' });
         this.addActor(this._triangle, { align: St.Align.END });
 

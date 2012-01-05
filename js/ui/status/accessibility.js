@@ -44,7 +44,7 @@ const ATIndicator = new Lang.Class({
     Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        this.parent('preferences-desktop-accessibility', null);
+        this.parent('preferences-desktop-accessibility', null, _("Accessibility"));
 
         let highContrast = this._buildHCItem();
         this.menu.addMenuItem(highContrast);
