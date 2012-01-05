@@ -61,12 +61,6 @@
 #include <GL/glx.h>
 #include <X11/Xlib.h>
 
-#ifdef HAVE_DRM
-#include <drm.h>
-#include <sys/ioctl.h>
-#include <errno.h>
-#endif
-
 #define COGL_ONSCREEN_X11_EVENT_MASK StructureNotifyMask
 #define MAX_GLX_CONFIG_ATTRIBS 30
 
@@ -431,20 +425,6 @@ update_winsys_features (CoglContext *context, GError **error)
     COGL_FLAGS_SET (context->winsys_features,
                     COGL_WINSYS_FEATURE_VBLANK_WAIT,
                     TRUE);
-
-#ifdef HAVE_DRM
-  /* drm is really an extreme fallback -rumoured to work with Via
-   * chipsets... */
-  if (!glx_renderer->pf_glXWaitVideoSync)
-    {
-      if (glx_renderer->dri_fd < 0)
-        glx_renderer->dri_fd = open("/dev/dri/card0", O_RDWR);
-      if (glx_renderer->dri_fd >= 0)
-        COGL_FLAGS_SET (context->winsys_features,
-                        COGL_WINSYS_FEATURE_VBLANK_WAIT,
-                        TRUE);
-    }
-#endif
 
   if (glx_renderer->pf_glXCopySubBuffer || context->glBlitFramebuffer)
     COGL_FLAGS_SET (context->winsys_features,
@@ -1097,24 +1077,6 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
   glx_context->current_drawable = drawable;
 }
 
-#ifdef HAVE_DRM
-static int
-drm_wait_vblank (int fd, drm_wait_vblank_t *vbl)
-{
-    int ret, rc;
-
-    do
-      {
-        ret = ioctl (fd, DRM_IOCTL_WAIT_VBLANK, vbl);
-        vbl->request.type &= ~_DRM_VBLANK_RELATIVE;
-        rc = errno;
-      }
-    while (ret && rc == EINTR);
-
-    return rc;
-}
-#endif /* HAVE_DRM */
-
 static void
 _cogl_winsys_wait_for_vblank (void)
 {
@@ -1133,18 +1095,6 @@ _cogl_winsys_wait_for_vblank (void)
                                          (current_count + 1) % 2,
                                          &current_count);
     }
-#ifdef HAVE_DRM
-  else
-    {
-      drm_wait_vblank_t blank;
-
-      COGL_NOTE (WINSYS, "Waiting for vblank (drm)");
-      blank.request.type = _DRM_VBLANK_RELATIVE;
-      blank.request.sequence = 1;
-      blank.request.signal = 0;
-      drm_wait_vblank (glx_renderer->dri_fd, &blank);
-    }
-#endif /* HAVE_DRM */
 }
 
 static guint32
