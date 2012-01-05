@@ -629,7 +629,7 @@ cogl_fixed_sqrt (CoglFixed x)
 	/*
 	 * Find the highest bit set
 	 */
-#if defined (__arm__)
+#if defined (__arm__) && !defined(__ARM_ARCH_4T__)
 	/* This actually requires at least arm v5, but gcc does not seem
 	 * to set the architecture defines correctly, and it is I think
 	 * very unlikely that anyone will want to use clutter on anything
