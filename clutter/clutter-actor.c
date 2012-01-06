@@ -3740,35 +3740,11 @@ clutter_actor_dispose (GObject *object)
       g_assert (!CLUTTER_ACTOR_IS_REALIZED (self));
     }
 
-  if (priv->pango_context)
-    {
-      g_object_unref (priv->pango_context);
-      priv->pango_context = NULL;
-    }
-
-  if (priv->actions != NULL)
-    {
-      g_object_unref (priv->actions);
-      priv->actions = NULL;
-    }
-
-  if (priv->constraints != NULL)
-    {
-      g_object_unref (priv->constraints);
-      priv->constraints = NULL;
-    }
-
-  if (priv->effects != NULL)
-    {
-      g_object_unref (priv->effects);
-      priv->effects = NULL;
-    }
-
-  if (priv->flatten_effect != NULL)
-    {
-      g_object_unref (priv->flatten_effect);
-      priv->flatten_effect = NULL;
-    }
+  g_clear_object (&priv->pango_context);
+  g_clear_object (&priv->actions);
+  g_clear_object (&priv->constraints);
+  g_clear_object (&priv->effects);
+  g_clear_object (&priv->flatten_effect);
 
   g_signal_emit (self, actor_signals[DESTROY], 0);
 
