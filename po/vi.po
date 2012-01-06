@@ -1,7 +1,7 @@
 # Vietnamese translation for gnome-shell.
 # Copyright (C) 2010 GNOME i18n Project for Vietnamese.
 # This file is distributed under the same license as the gnome-shell package.
-# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2010-2011.
+# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2010-2012.
 # Ngô Chin <ndtrung4419@gmail.com>, 2011.
 #
 msgid ""
@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-12-26 13:34+0000\n"
-"PO-Revision-Date: 2011-10-19 19:39+1100\n"
+"PO-Revision-Date: 2012-01-06 16:35+0700\n"
 "Last-Translator: Ngô Chin <ndtrung4419@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -48,7 +48,6 @@ msgid "Framerate used for recording screencasts."
 msgstr "Tốc độ khung dùng lưu screencast."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
-#, fuzzy
 #| msgid ""
 #| "GNOME Shell extensions have a uuid property; this key lists extensions "
 #| "which should not be loaded. This setting overrides enabled-extensions for "
@@ -60,8 +59,9 @@ msgid ""
 "DisableExtension DBus methods on org.gnome.Shell."
 msgstr ""
 "Phần mở rộng GNOME Shell có thuộc tính uuid. Khoá này liệt kê danh sách phần "
-"mở rộng không nên nạp. Thiết lập này sẽ ghi đè khoá enabled-extensions đối "
-"với những phần mở rộng có mặt ở cả hai danh sách."
+"mở rộng nên nạp. Bất kỳ phần mở rộng nào muốn nạp phải nằm trong danh sách "
+"này. Bạn có thể thao tác trên danh sách này với phương thức DBus "
+"EnableExtension và DisableExtension trên org.gnome.Shell."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
@@ -531,14 +531,13 @@ msgid "RECENT ITEMS"
 msgstr "MỤC GẦN ĐÂY"
 
 #: ../js/ui/endSessionDialog.js:61
-#, fuzzy, c-format
+#, c-format
 #| msgid "Log Out %s"
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Đăng xuất %s"
 
 #: ../js/ui/endSessionDialog.js:62
-#, fuzzy
 #| msgid "Log Out"
 msgctxt "title"
 msgid "Log Out"
@@ -565,14 +564,12 @@ msgid "Logging out of the system."
 msgstr "Đang xuất khỏi hệ thống."
 
 #: ../js/ui/endSessionDialog.js:76
-#, fuzzy
 #| msgid "Log Out"
 msgctxt "button"
 msgid "Log Out"
 msgstr "Đăng xuất"
 
 #: ../js/ui/endSessionDialog.js:81
-#, fuzzy
 #| msgid "Power Off"
 msgctxt "title"
 msgid "Power Off"
@@ -593,21 +590,18 @@ msgid "Powering off the system."
 msgstr "Tắt máy."
 
 #: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
-#, fuzzy
 #| msgid "Restart"
 msgctxt "button"
 msgid "Restart"
 msgstr "Khởi động lại"
 
 #: ../js/ui/endSessionDialog.js:92
-#, fuzzy
 #| msgid "Power Off"
 msgctxt "button"
 msgid "Power Off"
 msgstr "Tắt máy"
 
 #: ../js/ui/endSessionDialog.js:98
-#, fuzzy
 #| msgid "Restart"
 msgctxt "title"
 msgid "Restart"
@@ -698,17 +692,15 @@ msgid "Open"
 msgstr "Mở"
 
 #: ../js/ui/messageTray.js:1214
-#, fuzzy
 #| msgid "minute"
 #| msgid_plural "minutes"
 msgid "Unmute"
-msgstr "phút"
+msgstr "Ngừng im lặng"
 
 #: ../js/ui/messageTray.js:1214
-#, fuzzy
 #| msgid "Mouse"
 msgid "Mute"
-msgstr "Chuột"
+msgstr "Im lặng"
 
 #: ../js/ui/messageTray.js:2444
 msgid "System Information"
@@ -756,8 +748,8 @@ msgstr "Mạng không dây cần xác thực"
 #: ../js/ui/networkAgent.js:322
 #, c-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network '%"
-"s'."
+"Passwords or encryption keys are required to access the wireless network "
+"'%s'."
 msgstr "Cần mật mã hoặc khoá mã để truy cập mạng không dây '%s'"
 
 #: ../js/ui/networkAgent.js:326
@@ -812,10 +804,9 @@ msgid "Dash"
 msgstr "Neo ứng dụng"
 
 #: ../js/ui/panel.js:564
-#, fuzzy
 #| msgid "Quit %s"
 msgid "Quit"
-msgstr "Thoát %s"
+msgstr "Thoát"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
@@ -1615,15 +1606,17 @@ msgid ""
 "Sorry, no wisdom for you today:\n"
 "%s"
 msgstr ""
+"Rất tiếc, không có lời thông thái nào hôm nay:\n"
+"%s"
 
 #: ../js/ui/wanda.js:128
 #, c-format
 msgid "%s the Oracle says"
-msgstr ""
+msgstr "Nhà tiên tri %s nói"
 
 #: ../js/ui/wanda.js:168
 msgid "Your favorite Easter Egg"
-msgstr ""
+msgstr "Trứng phục sinh yêu thích của bạn"
 
 #: ../js/ui/windowAttentionHandler.js:33
 #, c-format
@@ -1678,10 +1671,9 @@ msgstr "Hộp thoại xác thực bị người dùng bỏ qua"
 #. Translators: this is the same string as the one found in
 #. * nautilus
 #: ../src/shell-util.c:89
-#, fuzzy
 #| msgid "Volume"
 msgid "Home"
-msgstr "Âm lượng"
+msgstr "Thư mục riêng"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
