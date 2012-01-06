@@ -450,11 +450,18 @@ static void
 minimize (MetaPlugin *plugin, MetaWindowActor *window_actor)
 {
   MetaWindowType type;
+  MetaRectangle icon_geometry;
   MetaWindow *meta_window = meta_window_actor_get_meta_window (window_actor);
   ClutterActor *actor  = CLUTTER_ACTOR (window_actor);
 
 
   type = meta_window_get_window_type (meta_window);
+
+  if (!meta_window_get_icon_geometry(meta_window, &icon_geometry))
+    {
+      icon_geometry.x = 0;
+      icon_geometry.y = 0;
+    }
 
   if (type == META_WINDOW_NORMAL)
     {
@@ -472,6 +479,8 @@ minimize (MetaPlugin *plugin, MetaWindowActor *window_actor)
                                          MINIMIZE_TIMEOUT,
                                          "scale-x", 0.0,
                                          "scale-y", 0.0,
+                                         "x", icon_geometry.x,
+                                         "y", icon_geometry.y,
                                          NULL);
       apriv->tml_minimize = clutter_animation_get_timeline (animation);
       data->plugin = plugin;
