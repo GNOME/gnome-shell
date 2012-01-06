@@ -122,6 +122,7 @@ copy ..\..\..\cogl\cogl-deprecated.h $(OutDir)\include\cogl-$(CoglApiVersion)\co
 copy ..\..\..\cogl\cogl-depth-state.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-euler.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-fixed.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
+copy ..\..\..\cogl\cogl-glib-source.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-material-compat.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-pipeline.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-quaternion.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
@@ -134,6 +135,7 @@ copy ..\..\..\cogl\cogl-path.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0
 copy ..\..\..\cogl\cogl-pipeline-layer-state.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-pipeline-state.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-pixel-buffer.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
+copy ..\..\..\cogl\cogl-poll.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-shader.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-snippet.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-texture.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;

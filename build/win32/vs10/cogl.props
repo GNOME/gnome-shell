@@ -95,6 +95,8 @@ copy ..\..\..\cogl\cogl-euler.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-fixed.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
+copy ..\..\..\cogl\cogl-glib-source.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+
 copy ..\..\..\cogl\cogl-material-compat.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-pipeline.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
@@ -116,6 +118,8 @@ copy ..\..\..\cogl\cogl-pipeline-layer-state.h $(CopyDir)\include\cogl-$(CoglApi
 copy ..\..\..\cogl\cogl-pipeline-state.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-pixel-buffer.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-poll.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-quaternion.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
