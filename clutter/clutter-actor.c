@@ -3713,6 +3713,8 @@ clutter_actor_dispose (GObject *object)
 		g_type_name (G_OBJECT_TYPE (self)),
                 object->ref_count);
 
+  g_signal_emit (self, actor_signals[DESTROY], 0);
+
   /* avoid recursing when called from clutter_actor_destroy() */
   if (priv->parent_actor != NULL)
     {
@@ -3745,8 +3747,6 @@ clutter_actor_dispose (GObject *object)
   g_clear_object (&priv->constraints);
   g_clear_object (&priv->effects);
   g_clear_object (&priv->flatten_effect);
-
-  g_signal_emit (self, actor_signals[DESTROY], 0);
 
   G_OBJECT_CLASS (clutter_actor_parent_class)->dispose (object);
 }
