@@ -44,6 +44,17 @@
 #include <X11/Xutil.h>
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#ifdef HAVE_WAYLAND
+#include "meta-wayland-private.h"
+#endif
+
+/* XXX: We should find a nicer approach to deal with the
+ * circular dependency we have with the current headers
+ * (meta-wayland-private.h which typedefs MetaWaylandSurface
+ *  also includes window-private.h) */
+#ifndef HAVE_META_WAYLAND_SURFACE_TYPE
+typedef struct _MetaWaylandSurface MetaWaylandSurface;
+#endif
 
 typedef struct _MetaWindowQueue MetaWindowQueue;
 
@@ -69,6 +80,11 @@ typedef enum {
   _NET_WM_BYPASS_COMPOSITOR_HINT_OFF = 2,
 } MetaBypassCompositorHintValue;
 
+typedef enum {
+  META_WINDOW_CLIENT_TYPE_WAYLAND,
+  META_WINDOW_CLIENT_TYPE_X11
+} MetaWindowClientType;
+
 struct _MetaWindow
 {
   GObject parent_instance;
@@ -77,6 +93,10 @@ struct _MetaWindow
   MetaScreen *screen;
   const MetaMonitorInfo *monitor;
   MetaWorkspace *workspace;
+  MetaWindowClientType client_type;
+#ifdef HAVE_WAYLAND
+  MetaWaylandSurface *surface;
+#endif
   Window xwindow;
   /* may be NULL! not all windows get decorated */
   MetaFrame *frame;
@@ -489,6 +509,10 @@ MetaWindow* meta_window_new_with_attrs     (MetaDisplay       *display,
                                             gboolean           must_be_viewable,
                                             MetaCompEffect     effect,
                                             XWindowAttributes *attrs);
+MetaWindow *meta_window_new_for_wayland    (MetaDisplay        *display,
+                                            int                 width,
+                                            int                 height,
+                                            MetaWaylandSurface *surface);
 void        meta_window_unmanage           (MetaWindow  *window,
                                             guint32      timestamp);
 void        meta_window_calc_showing       (MetaWindow  *window);

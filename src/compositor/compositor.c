@@ -84,6 +84,9 @@
 #include "meta-window-group.h"
 #include "window-private.h" /* to check window->hidden */
 #include "display-private.h" /* for meta_display_lookup_x_window() */
+#ifdef HAVE_WAYLAND
+#include "meta-wayland-private.h"
+#endif
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 
@@ -172,7 +175,7 @@ process_damage (MetaCompositor     *compositor,
   if (window_actor == NULL)
     return;
 
-  meta_window_actor_process_damage (window_actor, event);
+  meta_window_actor_process_x11_damage (window_actor, event);
 }
 
 static void
@@ -327,29 +330,37 @@ void
 meta_set_stage_input_region (MetaScreen   *screen,
                              XserverRegion region)
 {
-  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-  MetaDisplay  *display = meta_screen_get_display (screen);
-  Display      *xdpy    = meta_display_get_xdisplay (display);
+  /* As a wayland compositor we can simply ignore all this trickery
+   * for setting an input region on the stage for capturing events in
+   * clutter since all input comes to us first and we get to choose
+   * who else sees them.
+   */
+  if (!meta_is_wayland_compositor ())
+    {
+      MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+      MetaDisplay  *display = meta_screen_get_display (screen);
+      Display      *xdpy    = meta_display_get_xdisplay (display);
 
-  if (info->stage && info->output)
-    {
-      do_set_stage_input_region (screen, region);
+      if (info->stage && info->output)
+        {
+          do_set_stage_input_region (screen, region);
+        }
+      else 
+        {
+          /* Reset info->pending_input_region if one existed before and set the new
+           * one to use it later. */ 
+          if (info->pending_input_region)
+            {
+              XFixesDestroyRegion (xdpy, info->pending_input_region);
+              info->pending_input_region = None;
+            }
+          if (region != None)
+            {
+              info->pending_input_region = XFixesCreateRegion (xdpy, NULL, 0);
+              XFixesCopyRegion (xdpy, info->pending_input_region, region);
+            }
+        } 
     }
-  else 
-    {
-      /* Reset info->pending_input_region if one existed before and set the new
-       * one to use it later. */ 
-      if (info->pending_input_region)
-        {
-          XFixesDestroyRegion (xdpy, info->pending_input_region);
-          info->pending_input_region = None;
-        }
-      if (region != None)
-        {
-          info->pending_input_region = XFixesCreateRegion (xdpy, NULL, 0);
-          XFixesCopyRegion (xdpy, info->pending_input_region, region);
-        }
-    } 
 }
 
 void
@@ -562,6 +573,11 @@ redirect_windows (MetaCompositor *compositor,
   guint        n_retries;
   guint        max_retries;
 
+  /* If we're running with wayland, connected to a headless xwayland
+   * server then all the windows are implicitly redirected offscreen
+   * already and it would generate an error to try and explicitly
+   * redirect them via XCompositeRedirectSubwindows() */
+
   if (meta_get_replace_current_wm ())
     max_retries = 5;
   else
@@ -604,6 +620,9 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   Display        *xdisplay      = meta_display_get_xdisplay (display);
   Window          xwin;
   gint            width, height;
+#ifdef HAVE_WAYLAND
+  MetaWaylandCompositor *wayland_compositor;
+#endif
 
   /* Check if the screen is already managed */
   if (meta_screen_get_compositor_data (screen))
@@ -616,7 +635,14 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
    * We have to initialize info->pending_input_region to an empty region explicitly, 
    * because None value is used to mean that the whole screen is an input region.
    */
-  info->pending_input_region = XFixesCreateRegion (xdisplay, NULL, 0);
+  if (!meta_is_wayland_compositor ())
+    info->pending_input_region = XFixesCreateRegion (xdisplay, NULL, 0);
+  else
+    {
+      /* Stage input region trickery isn't needed when we're running as a
+       * wayland compositor. */
+      info->pending_input_region = None;
+    }
 
   info->screen = screen;
 
@@ -627,7 +653,55 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
 
   meta_screen_set_cm_selection (screen);
 
-  info->stage = clutter_stage_new ();
+  /* We will have already created a stage if running as a wayland
+   * compositor... */
+#ifdef HAVE_WAYLAND
+  if (meta_is_wayland_compositor ())
+    {
+      wayland_compositor = meta_wayland_compositor_get_default ();
+      info->stage = wayland_compositor->stage;
+    }
+  else
+#endif /* HAVE_WAYLAND */
+    {
+      info->stage = clutter_stage_new ();
+
+      meta_screen_get_size (screen, &width, &height);
+      clutter_actor_realize (info->stage);
+
+      xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
+
+      XResizeWindow (xdisplay, xwin, width, height);
+
+        {
+          long event_mask;
+          unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+          XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+          XWindowAttributes attr;
+
+          meta_core_add_old_event_mask (xdisplay, xwin, &mask);
+
+          XISetMask (mask.mask, XI_KeyPress);
+          XISetMask (mask.mask, XI_KeyRelease);
+          XISetMask (mask.mask, XI_ButtonPress);
+          XISetMask (mask.mask, XI_ButtonRelease);
+          XISetMask (mask.mask, XI_Enter);
+          XISetMask (mask.mask, XI_Leave);
+          XISetMask (mask.mask, XI_FocusIn);
+          XISetMask (mask.mask, XI_FocusOut);
+          XISetMask (mask.mask, XI_Motion);
+          XIClearMask (mask.mask, XI_TouchBegin);
+          XIClearMask (mask.mask, XI_TouchEnd);
+          XIClearMask (mask.mask, XI_TouchUpdate);
+          XISelectEvents (xdisplay, xwin, &mask, 1);
+
+          event_mask = ExposureMask | PropertyChangeMask | StructureNotifyMask;
+          if (XGetWindowAttributes (xdisplay, xwin, &attr))
+            event_mask |= attr.your_event_mask;
+
+          XSelectInput (xdisplay, xwin, event_mask);
+        }
+    }
 
   clutter_stage_set_paint_callback (CLUTTER_STAGE (info->stage),
                                     after_stage_paint,
@@ -635,42 +709,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
                                     NULL);
 
   clutter_stage_set_sync_delay (CLUTTER_STAGE (info->stage), META_SYNC_DELAY);
-
-  meta_screen_get_size (screen, &width, &height);
-  clutter_actor_realize (info->stage);
-
-  xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
-
-  XResizeWindow (xdisplay, xwin, width, height);
-
-  {
-    long event_mask;
-    unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
-    XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-    XWindowAttributes attr;
-
-    meta_core_add_old_event_mask (xdisplay, xwin, &mask);
-
-    XISetMask (mask.mask, XI_KeyPress);
-    XISetMask (mask.mask, XI_KeyRelease);
-    XISetMask (mask.mask, XI_ButtonPress);
-    XISetMask (mask.mask, XI_ButtonRelease);
-    XISetMask (mask.mask, XI_Enter);
-    XISetMask (mask.mask, XI_Leave);
-    XISetMask (mask.mask, XI_FocusIn);
-    XISetMask (mask.mask, XI_FocusOut);
-    XISetMask (mask.mask, XI_Motion);
-    XIClearMask (mask.mask, XI_TouchBegin);
-    XIClearMask (mask.mask, XI_TouchEnd);
-    XIClearMask (mask.mask, XI_TouchUpdate);
-    XISelectEvents (xdisplay, xwin, &mask, 1);
-
-    event_mask = ExposureMask | PropertyChangeMask | StructureNotifyMask;
-    if (XGetWindowAttributes (xdisplay, xwin, &attr))
-      event_mask |= attr.your_event_mask;
-
-    XSelectInput (xdisplay, xwin, event_mask);
-  }
 
   info->window_group = meta_window_group_new (screen);
   info->top_window_group = meta_window_group_new (screen);
@@ -680,53 +718,66 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
 
   info->plugin_mgr = meta_plugin_manager_new (screen);
 
-  /*
-   * Delay the creation of the overlay window as long as we can, to avoid
-   * blanking out the screen. This means that during the plugin loading, the
-   * overlay window is not accessible; if the plugin needs to access it
-   * directly, it should hook into the "show" signal on stage, and do
-   * its stuff there.
-   */
-  info->output = get_output_window (screen);
-  XReparentWindow (xdisplay, xwin, info->output, 0, 0);
-
- /* Make sure there isn't any left-over output shape on the 
-  * overlay window by setting the whole screen to be an
-  * output region.
-  * 
-  * Note: there doesn't seem to be any real chance of that
-  *  because the X server will destroy the overlay window
-  *  when the last client using it exits.
-  */
-  XFixesSetWindowShapeRegion (xdisplay, info->output, ShapeBounding, 0, 0, None);
-
-  do_set_stage_input_region (screen, info->pending_input_region);
-  if (info->pending_input_region != None)
+  if (meta_is_wayland_compositor ())
     {
-      XFixesDestroyRegion (xdisplay, info->pending_input_region);
-      info->pending_input_region = None;
+      /* NB: When running as a wayland compositor we don't need an X
+       * composite overlay window, and we don't need to play any input
+       * region tricks to redirect events into clutter. */
+      info->output = None;
     }
+  else
+    {
+      /*
+       * Delay the creation of the overlay window as long as we can, to avoid
+       * blanking out the screen. This means that during the plugin loading, the
+       * overlay window is not accessible; if the plugin needs to access it
+       * directly, it should hook into the "show" signal on stage, and do
+       * its stuff there.
+       */
+      info->output = get_output_window (screen);
+      XReparentWindow (xdisplay, xwin, info->output, 0, 0);
 
-  /* Map overlay window before redirecting windows offscreen so we catch their
-   * contents until we show the stage.
-   */
-  XMapWindow (xdisplay, info->output);
+      /* Make sure there isn't any left-over output shape on the 
+       * overlay window by setting the whole screen to be an
+       * output region.
+       * 
+       * Note: there doesn't seem to be any real chance of that
+       *  because the X server will destroy the overlay window
+       *  when the last client using it exits.
+       */
+      XFixesSetWindowShapeRegion (xdisplay, info->output, ShapeBounding, 0, 0, None);
 
-  redirect_windows (compositor, screen);
+      do_set_stage_input_region (screen, info->pending_input_region);
+      if (info->pending_input_region != None)
+        {
+          XFixesDestroyRegion (xdisplay, info->pending_input_region);
+          info->pending_input_region = None;
+        }
+
+      /* Map overlay window before redirecting windows offscreen so we catch their
+       * contents until we show the stage.
+       */
+      XMapWindow (xdisplay, info->output);
+
+      redirect_windows (compositor, screen);
+    }
 }
 
 void
 meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                  MetaScreen     *screen)
 {
-  MetaDisplay    *display       = meta_screen_get_display (screen);
-  Display        *xdisplay      = meta_display_get_xdisplay (display);
-  Window          xroot         = meta_screen_get_xroot (screen);
+  if (!meta_is_wayland_compositor ())
+    {
+      MetaDisplay    *display       = meta_screen_get_display (screen);
+      Display        *xdisplay      = meta_display_get_xdisplay (display);
+      Window          xroot         = meta_screen_get_xroot (screen);
 
-  /* This is the most important part of cleanup - we have to do this
-   * before giving up the window manager selection or the next
-   * window manager won't be able to redirect subwindows */
-  XCompositeUnredirectSubwindows (xdisplay, xroot, CompositeRedirectManual);
+      /* This is the most important part of cleanup - we have to do this
+       * before giving up the window manager selection or the next
+       * window manager won't be able to redirect subwindows */
+      XCompositeUnredirectSubwindows (xdisplay, xroot, CompositeRedirectManual);
+    }
 }
 
 /*
@@ -798,15 +849,18 @@ meta_compositor_remove_window (MetaCompositor *compositor,
   if (!window_actor)
     return;
 
-  screen = meta_window_get_screen (window);
-  info = meta_screen_get_compositor_data (screen);
-
-  if (window_actor == info->unredirected_window)
+  if (!meta_is_wayland_compositor ())
     {
-      meta_window_actor_set_redirected (window_actor, TRUE);
-      meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (info->unredirected_window)),
-                                 NULL);
-      info->unredirected_window = NULL;
+      screen = meta_window_get_screen (window);
+      info = meta_screen_get_compositor_data (screen);
+
+      if (window_actor == info->unredirected_window)
+        {
+          meta_window_actor_set_redirected (window_actor, TRUE);
+          meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (info->unredirected_window)),
+                                     NULL);
+          info->unredirected_window = NULL;
+        }
     }
 
   meta_window_actor_destroy (window_actor);
@@ -866,8 +920,8 @@ is_grabbed_event (MetaDisplay *display,
 }
 
 void
-meta_compositor_window_shape_changed (MetaCompositor *compositor,
-                                      MetaWindow     *window)
+meta_compositor_window_x11_shape_changed (MetaCompositor *compositor,
+                                          MetaWindow     *window)
 {
   MetaWindowActor *window_actor;
   window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
@@ -993,7 +1047,8 @@ meta_compositor_process_event (MetaCompositor *compositor,
       break;
 
     default:
-      if (event->type == meta_display_get_damage_event_base (compositor->display) + XDamageNotify)
+      if (!meta_is_wayland_compositor () &&
+          event->type == meta_display_get_damage_event_base (compositor->display) + XDamageNotify)
         {
           /* Core code doesn't handle damage events, so we need to extract the MetaWindow
            * ourselves
@@ -1012,7 +1067,7 @@ meta_compositor_process_event (MetaCompositor *compositor,
 
   /* Clutter needs to know about MapNotify events otherwise it will
      think the stage is invisible */
-  if (event->type == MapNotify)
+  if (!meta_is_wayland_compositor () && event->type == MapNotify)
     clutter_x11_handle_event (event);
 
   /* The above handling is basically just "observing" the events, so we return
@@ -1354,22 +1409,33 @@ meta_compositor_sync_screen_size (MetaCompositor  *compositor,
 				  guint		   width,
 				  guint		   height)
 {
-  MetaDisplay    *display = meta_screen_get_display (screen);
-  MetaCompScreen *info    = meta_screen_get_compositor_data (screen);
-  Display        *xdisplay;
-  Window          xwin;
+  if (meta_is_wayland_compositor ())
+    {
+      /* It's not clear at the moment how we will be dealing with screen
+       * resizing as a Wayland compositor so for now just abort if we
+       * hit this code. */
+      g_critical ("Unexpected call to meta_compositor_sync_screen_size() "
+                  "when running as a wayland compositor");
+    }
+  else
+    {
+      MetaDisplay    *display = meta_screen_get_display (screen);
+      MetaCompScreen *info    = meta_screen_get_compositor_data (screen);
+      Display        *xdisplay;
+      Window          xwin;
 
-  DEBUG_TRACE ("meta_compositor_sync_screen_size\n");
-  g_return_if_fail (info);
+      DEBUG_TRACE ("meta_compositor_sync_screen_size\n");
+      g_return_if_fail (info);
 
-  xdisplay = meta_display_get_xdisplay (display);
-  xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
+      xdisplay = meta_display_get_xdisplay (display);
+      xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
 
-  XResizeWindow (xdisplay, xwin, width, height);
+      XResizeWindow (xdisplay, xwin, width, height);
 
-  meta_verbose ("Changed size for stage on screen %d to %dx%d\n",
-		meta_screen_get_screen_number (screen),
-		width, height);
+      meta_verbose ("Changed size for stage on screen %d to %dx%d\n",
+                    meta_screen_get_screen_number (screen),
+                    width, height);
+    }
 }
 
 static void
@@ -1433,29 +1499,32 @@ pre_paint_windows (MetaCompScreen *info)
   if (info->windows == NULL)
     return;
 
-  top_window = g_list_last (info->windows)->data;
-
-  if (meta_window_actor_should_unredirect (top_window) &&
-      info->disable_unredirect_count == 0)
-    expected_unredirected_window = top_window;
-
-  if (info->unredirected_window != expected_unredirected_window)
+  if (!meta_is_wayland_compositor ())
     {
-      if (info->unredirected_window != NULL)
-        {
-          meta_window_actor_set_redirected (info->unredirected_window, TRUE);
-          meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (info->unredirected_window)),
-                                     NULL);
-        }
+      top_window = g_list_last (info->windows)->data;
 
-      if (expected_unredirected_window != NULL)
-        {
-          meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (top_window)),
-                                     meta_window_actor_get_meta_window (top_window));
-          meta_window_actor_set_redirected (top_window, FALSE);
-        }
+      if (meta_window_actor_should_unredirect (top_window) &&
+          info->disable_unredirect_count == 0)
+        expected_unredirected_window = top_window;
 
-      info->unredirected_window = expected_unredirected_window;
+      if (info->unredirected_window != expected_unredirected_window)
+        {
+          if (info->unredirected_window != NULL)
+            {
+              meta_window_actor_set_redirected (info->unredirected_window, TRUE);
+              meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (info->unredirected_window)),
+                                         NULL);
+            }
+
+          if (expected_unredirected_window != NULL)
+            {
+              meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (top_window)),
+                                         meta_window_actor_get_meta_window (top_window));
+              meta_window_actor_set_redirected (top_window, FALSE);
+            }
+
+          info->unredirected_window = expected_unredirected_window;
+        }
     }
 
   for (l = info->windows; l; l = l->next)

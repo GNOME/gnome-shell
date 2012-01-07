@@ -39,6 +39,13 @@ mutter_built_sources = \
 	mutter-enum-types.h \
 	mutter-enum-types.c
 
+if HAVE_WAYLAND
+mutter_built_sources += \
+	wayland/xserver-protocol.c		\
+	wayland/xserver-server-protocol.h	\
+	wayland/xserver-client-protocol.h
+endif
+
 libmutter_la_SOURCES =				\
 	core/async-getprop.c			\
 	core/async-getprop.h			\
@@ -166,6 +173,14 @@ libmutter_la_SOURCES =				\
 	meta/preview-widget.h			\
 	ui/preview-widget.c			\
 	$(mutter_built_sources)
+
+if HAVE_WAYLAND
+libmutter_la_SOURCES +=				\
+	wayland/meta-wayland.c			\
+	wayland/meta-wayland-private.h		\
+	wayland/meta-xwayland-private.h		\
+	wayland/meta-xwayland.c
+endif
 
 libmutter_la_LDFLAGS = -no-undefined
 libmutter_la_LIBADD  = $(MUTTER_LIBS)

@@ -257,4 +257,6 @@ void     meta_screen_workspace_switched (MetaScreen         *screen,
 
 void meta_screen_set_active_workspace_hint (MetaScreen *screen);
 
+Window   meta_screen_create_guard_window (Display *xdisplay, MetaScreen *screen);
+
 #endif

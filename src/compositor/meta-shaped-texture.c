@@ -30,7 +30,13 @@
 #include <config.h>
 
 #include <meta/meta-shaped-texture.h>
+#include <meta/util.h>
 #include "meta-texture-tower.h"
+
+#ifdef HAVE_WAYLAND
+#include "meta-wayland-private.h"
+#include <cogl/cogl-wayland-server.h>
+#endif
 
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
@@ -55,6 +61,15 @@ static void meta_shaped_texture_get_preferred_height (ClutterActor *self,
 
 static gboolean meta_shaped_texture_get_paint_volume (ClutterActor *self, ClutterPaintVolume *volume);
 
+typedef enum _MetaShapedTextureType
+{
+  META_SHAPED_TEXTURE_TYPE_X11_PIXMAP,
+#ifdef HAVE_WAYLAND
+  META_SHAPED_TEXTURE_TYPE_WAYLAND_SURFACE,
+#endif
+} MetaShapedTextureType;
+
+
 G_DEFINE_TYPE (MetaShapedTexture, meta_shaped_texture,
                CLUTTER_TYPE_ACTOR);
 
@@ -65,8 +80,21 @@ G_DEFINE_TYPE (MetaShapedTexture, meta_shaped_texture,
 struct _MetaShapedTexturePrivate
 {
   MetaTextureTower *paint_tower;
-  Pixmap pixmap;
-  CoglTexturePixmapX11 *texture;
+
+  MetaShapedTextureType type;
+  union {
+    struct {
+      Pixmap pixmap;
+    } x11;
+#ifdef HAVE_WAYLAND
+    struct {
+      MetaWaylandSurface *surface;
+    } wayland;
+#endif
+  };
+
+  CoglTexture *texture;
+
   CoglTexture *mask_texture;
   CoglPipeline *pipeline;
   CoglPipeline *pipeline_unshaped;
@@ -104,7 +132,10 @@ meta_shaped_texture_init (MetaShapedTexture *self)
   priv = self->priv = META_SHAPED_TEXTURE_GET_PRIVATE (self);
 
   priv->paint_tower = meta_texture_tower_new ();
+
+  priv->type = META_SHAPED_TEXTURE_TYPE_X11_PIXMAP;
   priv->texture = NULL;
+
   priv->mask_texture = NULL;
   priv->create_mipmaps = TRUE;
 }
@@ -127,6 +158,56 @@ meta_shaped_texture_dispose (GObject *object)
   meta_shaped_texture_set_clip_region (self, NULL);
 
   G_OBJECT_CLASS (meta_shaped_texture_parent_class)->dispose (object);
+}
+
+static void
+set_cogl_texture (MetaShapedTexture *stex,
+                  CoglTexture       *cogl_tex)
+{
+  MetaShapedTexturePrivate *priv;
+  guint width, height;
+
+  g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
+
+  priv = stex->priv;
+
+  if (priv->texture)
+    cogl_object_unref (priv->texture);
+
+  priv->texture = cogl_tex;
+
+  if (priv->pipeline != NULL)
+    cogl_pipeline_set_layer_texture (priv->pipeline, 0, COGL_TEXTURE (cogl_tex));
+
+  if (priv->pipeline_unshaped != NULL)
+    cogl_pipeline_set_layer_texture (priv->pipeline_unshaped, 0, COGL_TEXTURE (cogl_tex));
+
+  if (cogl_tex != NULL)
+    {
+      width = cogl_texture_get_width (COGL_TEXTURE (cogl_tex));
+      height = cogl_texture_get_height (COGL_TEXTURE (cogl_tex));
+
+      if (width != priv->tex_width ||
+          height != priv->tex_height)
+        {
+          priv->tex_width = width;
+          priv->tex_height = height;
+
+          clutter_actor_queue_relayout (CLUTTER_ACTOR (stex));
+        }
+    }
+  else
+    {
+      /* size changed to 0 going to an invalid handle */
+      priv->tex_width = 0;
+      priv->tex_height = 0;
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (stex));
+    }
+
+  /* NB: We don't queue a redraw of the actor here because we don't
+   * know how much of the buffer has changed with respect to the
+   * previous buffer. We only queue a redraw in response to surface
+   * damage. */
 }
 
 static void
@@ -312,6 +393,7 @@ meta_shaped_texture_pick (ClutterActor       *actor,
        */
 
       n_rects = cairo_region_num_rectangles (priv->input_shape_region);
+      rectangles = g_alloca (sizeof (float) * 4 * n_rects);
 
       for (i = 0; i < n_rects; i++)
         {
@@ -380,12 +462,56 @@ meta_shaped_texture_get_paint_volume (ClutterActor *self,
   return clutter_paint_volume_set_from_allocation (volume, self);
 }
 
+#ifdef HAVE_WAYLAND
 ClutterActor *
-meta_shaped_texture_new (void)
+meta_shaped_texture_new_with_wayland_surface (MetaWaylandSurface *surface)
 {
-  ClutterActor *self = g_object_new (META_TYPE_SHAPED_TEXTURE, NULL);
+  ClutterActor *actor = g_object_new (META_TYPE_SHAPED_TEXTURE, NULL);
+  MetaShapedTexturePrivate *priv = META_SHAPED_TEXTURE (actor)->priv;
 
-  return self;
+  /* XXX: it could probably be better to have a "type" construct-only
+   * property or create wayland/x11 subclasses */
+  priv->type = META_SHAPED_TEXTURE_TYPE_WAYLAND_SURFACE;
+
+  meta_shaped_texture_set_wayland_surface (META_SHAPED_TEXTURE (actor),
+                                           surface);
+
+  return actor;
+}
+
+void
+meta_shaped_texture_set_wayland_surface (MetaShapedTexture *stex,
+                                         MetaWaylandSurface *surface)
+{
+  MetaShapedTexturePrivate *priv = stex->priv;
+
+  priv->wayland.surface = surface;
+
+  if (surface && surface->buffer_ref.buffer)
+    meta_shaped_texture_attach_wayland_buffer (stex,
+                                               surface->buffer_ref.buffer);
+}
+
+MetaWaylandSurface *
+meta_shaped_texture_get_wayland_surface (MetaShapedTexture *stex)
+{
+  MetaShapedTexturePrivate *priv = stex->priv;
+  return priv->wayland.surface;
+}
+#endif /* HAVE_WAYLAND */
+
+ClutterActor *
+meta_shaped_texture_new_with_xwindow (Window xwindow)
+{
+#ifdef HAVE_WAYLAND
+  if (meta_is_wayland_compositor ())
+    {
+      MetaWaylandSurface *surface = meta_wayland_lookup_surface_for_xid (xwindow);
+      return meta_shaped_texture_new_with_wayland_surface (surface);
+    }
+  else
+#endif
+    return g_object_new (META_TYPE_SHAPED_TEXTURE, NULL);
 }
 
 void
@@ -404,8 +530,7 @@ meta_shaped_texture_set_create_mipmaps (MetaShapedTexture *stex,
     {
       CoglTexture *base_texture;
       priv->create_mipmaps = create_mipmaps;
-      base_texture = create_mipmaps ?
-        COGL_TEXTURE (priv->texture) : NULL;
+      base_texture = create_mipmaps ? priv->texture : NULL;
       meta_texture_tower_set_base_texture (priv->paint_tower, base_texture);
     }
 }
@@ -431,74 +556,146 @@ meta_shaped_texture_set_mask_texture (MetaShapedTexture *stex,
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));
 }
 
-void
-meta_shaped_texture_update_area (MetaShapedTexture *stex,
-				 int                x,
-				 int                y,
-				 int                width,
-				 int                height)
+#ifdef HAVE_WAYLAND
+static void
+wayland_surface_update_area (MetaShapedTexture *stex,
+                             int                x,
+                             int                y,
+                             int                width,
+                             int                height)
 {
   MetaShapedTexturePrivate *priv;
-  const cairo_rectangle_int_t clip = { x, y, width, height };
+  MetaWaylandBuffer *buffer;
+
+  priv = stex->priv;
+
+  g_return_if_fail (priv->type == META_SHAPED_TEXTURE_TYPE_WAYLAND_SURFACE);
+  g_return_if_fail (priv->texture != NULL);
+
+  buffer = priv->wayland.surface->buffer_ref.buffer;
+
+  if (buffer)
+    {
+      struct wl_resource *resource = buffer->resource;
+      struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (resource);
+
+      if (shm_buffer)
+        {
+          CoglPixelFormat format;
+
+          switch (wl_shm_buffer_get_format (shm_buffer))
+            {
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+            case WL_SHM_FORMAT_ARGB8888:
+              format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
+              break;
+            case WL_SHM_FORMAT_XRGB8888:
+              format = COGL_PIXEL_FORMAT_ARGB_8888;
+              break;
+#elif G_BYTE_ORDER == G_LITTLE_ENDIAN
+            case WL_SHM_FORMAT_ARGB8888:
+              format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
+              break;
+            case WL_SHM_FORMAT_XRGB8888:
+              format = COGL_PIXEL_FORMAT_BGRA_8888;
+              break;
+#endif
+            default:
+              g_warn_if_reached ();
+              format = COGL_PIXEL_FORMAT_ARGB_8888;
+            }
+
+          cogl_texture_set_region (priv->texture,
+                                   x, y,
+                                   x, y,
+                                   width, height,
+                                   width, height,
+                                   format,
+                                   wl_shm_buffer_get_stride (shm_buffer),
+                                   wl_shm_buffer_get_data (shm_buffer));
+        }
+    }
+}
+#endif /* HAVE_WAYLAND */
+
+static void
+queue_damage_redraw_with_clip (MetaShapedTexture *stex,
+                               int x,
+                               int y,
+                               int width,
+                               int height)
+{
+  ClutterActor *self = CLUTTER_ACTOR (stex);
+  MetaShapedTexturePrivate *priv;
+  ClutterActorBox allocation;
+  float scale_x;
+  float scale_y;
+  cairo_rectangle_int_t clip;
+
+  /* NB: clutter_actor_queue_redraw_with_clip expects a box in the actor's
+   * coordinate space so we need to convert from surface coordinates to
+   * actor coordinates...
+   */
+
+  /* Calling clutter_actor_get_allocation_box() is enormously expensive
+   * if the actor has an out-of-date allocation, since it triggers
+   * a full redraw. clutter_actor_queue_redraw_with_clip() would redraw
+   * the whole stage anyways in that case, so just go ahead and do
+   * it here.
+   */
+  if (!clutter_actor_has_allocation (self))
+    {
+      clutter_actor_queue_redraw (self);
+      return;
+    }
+
+  priv = stex->priv;
+
+  if (priv->tex_width == 0 || priv->tex_height == 0)
+    return;
+
+  clutter_actor_get_allocation_box (self, &allocation);
+
+  scale_x = (allocation.x2 - allocation.x1) / priv->tex_width;
+  scale_y = (allocation.y2 - allocation.y1) / priv->tex_height;
+
+  clip.x = x * scale_x;
+  clip.y = y * scale_y;
+  clip.width = width * scale_x;
+  clip.height = height * scale_y;
+  clutter_actor_queue_redraw_with_clip (self, &clip);
+}
+
+void
+meta_shaped_texture_update_area (MetaShapedTexture *stex,
+                                 int                x,
+                                 int                y,
+                                 int                width,
+                                 int                height)
+{
+  MetaShapedTexturePrivate *priv;
 
   priv = stex->priv;
 
   if (priv->texture == NULL)
     return;
 
-  cogl_texture_pixmap_x11_update_area (priv->texture,
-                                       x, y, width, height);
+  switch (priv->type)
+    {
+    case META_SHAPED_TEXTURE_TYPE_X11_PIXMAP:
+      cogl_texture_pixmap_x11_update_area (COGL_TEXTURE_PIXMAP_X11 (priv->texture),
+                                           x, y, width, height);
+      break;
+#ifdef HAVE_WAYLAND
+    case META_SHAPED_TEXTURE_TYPE_WAYLAND_SURFACE:
+      wayland_surface_update_area (stex, x, y, width, height);
+      break;
+#endif
+    }
 
   meta_texture_tower_update_area (priv->paint_tower, x, y, width, height);
 
-  clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stex), &clip);
-}
-
-static void
-set_cogl_texture (MetaShapedTexture    *stex,
-                  CoglTexturePixmapX11 *cogl_tex)
-{
-  MetaShapedTexturePrivate *priv;
-  guint width, height;
-
-  g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
-
-  priv = stex->priv;
-
-  if (priv->texture != NULL)
-    cogl_object_unref (priv->texture);
-
-  priv->texture = cogl_tex;
-
-  if (priv->pipeline != NULL)
-    cogl_pipeline_set_layer_texture (priv->pipeline, 0, COGL_TEXTURE (cogl_tex));
-
-  if (priv->pipeline_unshaped != NULL)
-    cogl_pipeline_set_layer_texture (priv->pipeline_unshaped, 0, COGL_TEXTURE (cogl_tex));
-
-  if (cogl_tex != NULL)
-    {
-      width = cogl_texture_get_width (COGL_TEXTURE (cogl_tex));
-      height = cogl_texture_get_height (COGL_TEXTURE (cogl_tex));
-
-      if (width != priv->tex_width ||
-          height != priv->tex_height)
-        {
-          priv->tex_width = width;
-          priv->tex_height = height;
-
-          clutter_actor_queue_relayout (CLUTTER_ACTOR (stex));
-        }
-    }
-  else
-    {
-      /* size changed to 0 going to an inavlid texture */
-      priv->tex_width = 0;
-      priv->tex_height = 0;
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (stex));
-    }
-
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));
+  queue_damage_redraw_with_clip (stex, x, y, width, height);
 }
 
 /**
@@ -516,16 +713,18 @@ meta_shaped_texture_set_pixmap (MetaShapedTexture *stex,
 
   priv = stex->priv;
 
-  if (priv->pixmap == pixmap)
+  if (priv->x11.pixmap == pixmap)
     return;
 
-  priv->pixmap = pixmap;
+  priv->x11.pixmap = pixmap;
 
   if (pixmap != None)
     {
       CoglContext *ctx =
         clutter_backend_get_cogl_context (clutter_get_default_backend ());
-      set_cogl_texture (stex, cogl_texture_pixmap_x11_new (ctx, pixmap, FALSE, NULL));
+      CoglTexture *texture =
+        COGL_TEXTURE (cogl_texture_pixmap_x11_new (ctx, pixmap, FALSE, NULL));
+      set_cogl_texture (stex, texture);
     }
   else
     set_cogl_texture (stex, NULL);
@@ -534,6 +733,54 @@ meta_shaped_texture_set_pixmap (MetaShapedTexture *stex,
     meta_texture_tower_set_base_texture (priv->paint_tower,
                                          COGL_TEXTURE (priv->texture));
 }
+
+#ifdef HAVE_WAYLAND
+void
+meta_shaped_texture_attach_wayland_buffer (MetaShapedTexture  *stex,
+                                           MetaWaylandBuffer  *buffer)
+{
+  MetaShapedTexturePrivate *priv;
+
+  g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
+
+  priv = stex->priv;
+
+  /* TODO: we should change this api to be something like
+   * meta_shaped_texture_notify_buffer_attach() since we now maintain
+   * a reference to the MetaWaylandSurface where we can access the
+   * buffer without it being explicitly passed as an argument.
+   */
+  g_return_if_fail (priv->wayland.surface->buffer_ref.buffer == buffer);
+
+  if (buffer)
+    {
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      CoglError *catch_error = NULL;
+      CoglTexture *texture =
+        COGL_TEXTURE (cogl_wayland_texture_2d_new_from_buffer (ctx,
+                                                               buffer->resource,
+                                                               &catch_error));
+      if (!texture)
+        {
+          cogl_error_free (catch_error);
+        }
+      else
+        {
+          buffer->width = cogl_texture_get_width (texture);
+          buffer->height = cogl_texture_get_height (texture);
+        }
+
+      set_cogl_texture (stex, texture);
+    }
+  else
+    set_cogl_texture (stex, NULL);
+
+  if (priv->create_mipmaps)
+    meta_texture_tower_set_base_texture (priv->paint_tower,
+                                         COGL_TEXTURE (priv->texture));
+}
+#endif /* HAVE_WAYLAND */
 
 /**
  * meta_shaped_texture_get_texture:

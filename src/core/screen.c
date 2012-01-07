@@ -45,6 +45,9 @@
 #include <meta/compositor.h>
 #include "mutter-enum-types.h"
 #include "core.h"
+#ifdef HAVE_WAYLAND
+#include "meta-wayland-private.h"
+#endif
 
 #include <X11/extensions/Xinerama.h>
 
@@ -603,8 +606,8 @@ reload_monitor_infos (MetaScreen *screen)
  * should effectively be forwarded to events on the background actor,
  * providing that the scene graph is set up correctly.
  */
-static Window
-create_guard_window (Display *xdisplay, MetaScreen *screen)
+Window
+meta_screen_create_guard_window (Display *xdisplay, MetaScreen *screen)
 {
   XSetWindowAttributes attributes;
   Window guard_window;
@@ -668,6 +671,9 @@ meta_screen_new (MetaDisplay *display,
   char buf[128];
   guint32 manager_timestamp;
   gulong current_workspace;
+#ifdef HAVE_WAYLAND
+  MetaWaylandCompositor *compositor;
+#endif
   
   replace_current_wm = meta_get_replace_current_wm ();
   
@@ -826,8 +832,21 @@ meta_screen_new (MetaDisplay *display,
   screen->xscreen = ScreenOfDisplay (xdisplay, number);
   screen->xroot = xroot;
   screen->rect.x = screen->rect.y = 0;
-  screen->rect.width = WidthOfScreen (screen->xscreen);
-  screen->rect.height = HeightOfScreen (screen->xscreen);
+  
+#ifdef HAVE_WAYLAND
+  if (meta_is_wayland_compositor ())
+    {
+      compositor = meta_wayland_compositor_get_default ();
+      screen->rect.width = clutter_actor_get_width (compositor->stage);
+      screen->rect.height = clutter_actor_get_height (compositor->stage);
+    }
+  else
+#endif
+    {
+      screen->rect.width = WidthOfScreen (screen->xscreen);
+      screen->rect.height = HeightOfScreen (screen->xscreen);
+    }
+
   screen->current_cursor = -1; /* invalid/unset */
   screen->default_xvisual = DefaultVisualOfScreen (screen->xscreen);
   screen->default_depth = DefaultDepthOfScreen (screen->xscreen);
@@ -1082,8 +1101,8 @@ meta_screen_manage_all_windows (MetaScreen *screen)
   meta_display_grab (screen->display);
 
   if (screen->guard_window == None)
-    screen->guard_window = create_guard_window (screen->display->xdisplay,
-                                                screen);
+    screen->guard_window =
+      meta_screen_create_guard_window (screen->display->xdisplay, screen);
 
   windows = list_windows (screen);
 

@@ -13,6 +13,7 @@
 #include "meta-window-group.h"
 #include "meta-background-actor-private.h"
 #include "meta-background-group-private.h"
+#include "window-private.h"
 
 struct _MetaWindowGroupClass
 {
@@ -99,7 +100,7 @@ meta_window_group_paint (ClutterActor *actor)
   int paint_x_offset, paint_y_offset;
 
   MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
-  MetaCompScreen *info = meta_screen_get_compositor_data (window_group->screen);
+  MetaCompScreen *info;
 
   /* Normally we expect an actor to be drawn at it's position on the screen.
    * However, if we're inside the paint of a ClutterClone, that won't be the
@@ -136,13 +137,17 @@ meta_window_group_paint (ClutterActor *actor)
 
   visible_region = cairo_region_create_rectangle (&visible_rect);
 
-  if (info->unredirected_window != NULL)
+  if (!meta_is_wayland_compositor ())
     {
-      cairo_rectangle_int_t unredirected_rect;
-      MetaWindow *window = meta_window_actor_get_meta_window (info->unredirected_window);
+      info = meta_screen_get_compositor_data (window_group->screen);
+      if (info->unredirected_window != NULL)
+        {
+          cairo_rectangle_int_t unredirected_rect;
+          MetaWindow *window = meta_window_actor_get_meta_window (info->unredirected_window);
 
-      meta_window_get_outer_rect (window, (MetaRectangle *)&unredirected_rect);
-      cairo_region_subtract_rectangle (visible_region, &unredirected_rect);
+          meta_window_get_outer_rect (window, (MetaRectangle *)&unredirected_rect);
+          cairo_region_subtract_rectangle (visible_region, &unredirected_rect);
+        }
     }
 
   /* We walk the list from top to bottom (opposite of painting order),
@@ -155,7 +160,8 @@ meta_window_group_paint (ClutterActor *actor)
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
-      if (info->unredirected_window != NULL &&
+      if (!meta_is_wayland_compositor () &&
+          info->unredirected_window != NULL &&
           child == CLUTTER_ACTOR (info->unredirected_window))
         continue;
 
@@ -180,7 +186,8 @@ meta_window_group_paint (ClutterActor *actor)
 
       if (META_IS_WINDOW_ACTOR (child))
         {
-          MetaWindowActor *window_actor = META_WINDOW_ACTOR (child);
+          MetaWindow *meta_window;
+          MetaWindowActor *window_actor = child;
           int x, y;
 
           if (!meta_actor_is_untransformed (CLUTTER_ACTOR (window_actor), &x, &y))
@@ -194,7 +201,14 @@ meta_window_group_paint (ClutterActor *actor)
 
           meta_window_actor_set_visible_region (window_actor, visible_region);
 
-          if (clutter_actor_get_paint_opacity (CLUTTER_ACTOR (window_actor)) == 0xff)
+          /* TODO: Track the opaque regions of wayland clients.
+           * Although wayland clients can report opaque window
+           * regions, for now we assume that all wayland clients are
+           * transparent... */
+          meta_window = meta_window_actor_get_meta_window (window_actor);
+
+          if (meta_window->client_type != META_WINDOW_CLIENT_TYPE_WAYLAND &&
+              clutter_actor_get_paint_opacity (CLUTTER_ACTOR (window_actor)) == 0xff)
             {
               cairo_region_t *obscured_region = meta_window_actor_get_obscured_region (window_actor);
               if (obscured_region)
