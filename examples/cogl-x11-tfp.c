@@ -19,8 +19,6 @@
 #define TFP_XWIN_WIDTH 200
 #define TFP_XWIN_HEIGHT 200
 
-CoglColor black;
-
 static void
 update_cogl_x11_event_mask (CoglOnscreen *onscreen,
                             guint32 event_mask,
@@ -216,7 +214,7 @@ main (int argc, char **argv)
       XFillRectangle (xdpy, tfp_xwin, gc, 0, 0, TFP_XWIN_WIDTH, TFP_XWIN_HEIGHT);
       XFlush (xdpy);
 
-      cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
+      cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
       cogl_set_source_texture (tfp);
       cogl_rectangle (-0.8, 0.8, 0.8, -0.8);
       cogl_framebuffer_swap_buffers (fb);

@@ -13,8 +13,6 @@
    ButtonReleaseMask | \
    PointerMotionMask)
 
-CoglColor black;
-
 static void
 update_cogl_x11_event_mask (CoglOnscreen *onscreen,
                             guint32 event_mask,
@@ -171,7 +169,7 @@ main (int argc, char **argv)
             }
           cogl_xlib_renderer_handle_event (renderer, &event);
         }
-      cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
+      cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
       cogl_primitive_draw (triangle);
       cogl_framebuffer_swap_buffers (fb);
 

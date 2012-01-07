@@ -8,7 +8,6 @@
 
 typedef struct Data
 {
-  CoglColor black;
   CoglPrimitive *triangle;
   float center_x, center_y;
   CoglFramebuffer *fb;
@@ -18,7 +17,7 @@ typedef struct Data
 static void
 redraw (Data *data)
 {
-  cogl_clear (&data->black, COGL_BUFFER_BIT_COLOR);
+  cogl_framebuffer_clear4f (data->fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 
   cogl_push_matrix ();
   cogl_translate (data->center_x, -data->center_y, 0.0f);
@@ -138,8 +137,8 @@ main (int argc, char **argv)
   SDL_InitSubSystem (SDL_INIT_TIMER);
 
   onscreen = cogl_onscreen_new (ctx, 800, 600);
+  data.fb = COGL_FRAMEBUFFER (onscreen);
 
-  cogl_color_set_from_4ub (&data.black, 0, 0, 0, 255);
   data.center_x = 0.0f;
   data.center_y = 0.0f;
   data.quit = FALSE;

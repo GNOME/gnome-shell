@@ -6,8 +6,6 @@
 
 #include <wayland-server.h>
 
-CoglColor black;
-
 typedef struct _CoglandCompositor CoglandCompositor;
 
 typedef struct
@@ -512,11 +510,7 @@ paint_cb (void *user_data)
 
       cogl_push_framebuffer (fb);
 
-#if 0
-      cogl_framebuffer_clear (fb, COGL_BUFFER_BIT_COLOR);
-#else
-      cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
-#endif
+      cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 
       cogl_primitive_draw (compositor->triangle);
 

@@ -4,6 +4,7 @@
 /* The state for this example... */
 typedef struct _Data
 {
+  CoglFramebuffer *fb;
   int framebuffer_width;
   int framebuffer_height;
 
@@ -31,7 +32,6 @@ typedef struct _Data
 /* A static identity matrix initialized for convenience. */
 static CoglMatrix identity;
 /* static colors initialized for convenience. */
-static CoglColor black;
 static CoglColor white;
 
 /* A cube modelled using 4 vertices for each face.
@@ -83,7 +83,9 @@ paint (Data *data)
 {
   float rotation;
 
-  cogl_clear (&black, COGL_BUFFER_BIT_COLOR|COGL_BUFFER_BIT_DEPTH);
+  cogl_framebuffer_clear4f (data->fb,
+                            COGL_BUFFER_BIT_COLOR|COGL_BUFFER_BIT_DEPTH,
+                            0, 0, 0, 1);
 
   cogl_push_matrix ();
 
@@ -167,7 +169,7 @@ main (int argc, char **argv)
 
   onscreen = cogl_onscreen_new (ctx, 640, 480);
   fb = COGL_FRAMEBUFFER (onscreen);
-
+  data.fb = fb;
   data.framebuffer_width = cogl_framebuffer_get_width (fb);
   data.framebuffer_height = cogl_framebuffer_get_height (fb);
 
@@ -206,7 +208,6 @@ main (int argc, char **argv)
 
   /* Initialize some convenient constants */
   cogl_matrix_init_identity (&identity);
-  cogl_color_set_from_4ub (&black, 0x00, 0x00, 0x00, 0xff);
   cogl_color_set_from_4ub (&white, 0xff, 0xff, 0xff, 0xff);
 
   /* rectangle indices allow the GPU to interpret a list of quads (the

@@ -2,8 +2,6 @@
 #include <glib.h>
 #include <stdio.h>
 
-CoglColor black;
-
 int
 main (int argc, char **argv)
 {
@@ -90,7 +88,7 @@ main (int argc, char **argv)
         int n_poll_fds;
         gint64 timeout;
 
-        cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
+        cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 
         cogl_push_matrix ();
         cogl_scale (0.5, 1, 1);
