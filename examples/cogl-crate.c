@@ -165,16 +165,8 @@ main (int argc, char **argv)
       return 1;
   }
 
-  data.framebuffer_width = 640;
-  data.framebuffer_height = 480;
-  onscreen = cogl_onscreen_new (ctx, data.framebuffer_width, data.framebuffer_height);
-  /* Eventually there will be an implicit allocate on first use so this
-   * will become optional... */
+  onscreen = cogl_onscreen_new (ctx, 640, 480);
   fb = COGL_FRAMEBUFFER (onscreen);
-  if (!cogl_framebuffer_allocate (fb, &error)) {
-      fprintf (stderr, "Failed to allocate framebuffer: %s\n", error->message);
-      return 1;
-  }
 
   data.framebuffer_width = cogl_framebuffer_get_width (fb);
   data.framebuffer_height = cogl_framebuffer_get_height (fb);

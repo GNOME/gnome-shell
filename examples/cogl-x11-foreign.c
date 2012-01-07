@@ -146,17 +146,9 @@ main (int argc, char **argv)
                                             update_cogl_x11_event_mask,
                                             xdpy);
 
-  fb = COGL_FRAMEBUFFER (onscreen);
-  /* Eventually there will be an implicit allocate on first use so this
-   * will become optional... */
-  if (!cogl_framebuffer_allocate (fb, &error))
-    {
-      fprintf (stderr, "Failed to allocate framebuffer: %s\n", error->message);
-      return 1;
-    }
-
   XMapWindow (xdpy, xwin);
 
+  fb = COGL_FRAMEBUFFER (onscreen);
   cogl_push_framebuffer (fb);
 
   triangle = cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,

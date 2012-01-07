@@ -25,16 +25,9 @@ main (int argc, char **argv)
     }
 
     onscreen = cogl_onscreen_new (ctx, 640, 480);
-    /* Eventually there will be an implicit allocate on first use so this
-     * will become optional... */
-    fb = COGL_FRAMEBUFFER (onscreen);
-    if (!cogl_framebuffer_allocate (fb, &error)) {
-        fprintf (stderr, "Failed to allocate framebuffer: %s\n", error->message);
-        return 1;
-    }
-
     cogl_onscreen_show (onscreen);
 
+    fb = COGL_FRAMEBUFFER (onscreen);
     cogl_push_framebuffer (fb);
 
     triangle = cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,

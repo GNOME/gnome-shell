@@ -138,15 +138,6 @@ main (int argc, char **argv)
   SDL_InitSubSystem (SDL_INIT_TIMER);
 
   onscreen = cogl_onscreen_new (ctx, 800, 600);
-  /* Eventually there will be an implicit allocate on first use so this
-   * will become optional... */
-  data.fb = COGL_FRAMEBUFFER (onscreen);
-  if (!cogl_framebuffer_allocate (data.fb, &error))
-    {
-      fprintf (stderr, "Failed to allocate framebuffer: %s\n",
-               error->message);
-      return 1;
-    }
 
   cogl_color_set_from_4ub (&data.black, 0, 0, 0, 255);
   data.center_x = 0.0f;

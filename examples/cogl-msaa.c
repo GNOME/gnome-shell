@@ -43,8 +43,6 @@ main (int argc, char **argv)
       }
 
     onscreen = cogl_onscreen_new (ctx, 640, 480);
-    /* Eventually there will be an implicit allocate on first use so this
-     * will become optional... */
     fb = COGL_FRAMEBUFFER (onscreen);
 
     cogl_framebuffer_set_samples_per_pixel (fb, 4);

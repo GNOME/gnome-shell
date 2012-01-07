@@ -167,15 +167,6 @@ main (int argc, char **argv)
                                             update_cogl_x11_event_mask,
                                             xdpy);
 
-  fb = COGL_FRAMEBUFFER (onscreen);
-  /* Eventually there will be an implicit allocate on first use so this
-   * will become optional... */
-  if (!cogl_framebuffer_allocate (fb, &error))
-    {
-      fprintf (stderr, "Failed to allocate framebuffer: %s\n", error->message);
-      return 1;
-    }
-
   XMapWindow (xdpy, xwin);
 
   XCompositeRedirectSubwindows (xdpy, xwin, CompositeRedirectManual);
@@ -190,11 +181,11 @@ main (int argc, char **argv)
 
   gc = XCreateGC (xdpy, tfp_xwin, 0, NULL);
 
-
   pixmap = XCompositeNameWindowPixmap (xdpy, tfp_xwin);
 
   tfp = cogl_texture_pixmap_x11_new (pixmap, TRUE);
 
+  fb = COGL_FRAMEBUFFER (onscreen);
   cogl_push_framebuffer (fb);
 
   for (;;)
