@@ -443,7 +443,7 @@ AC_ARG_ENABLE([tslib-input],
               [enable_tslib=$enableval],
               [enable_tslib=no])
 AC_ARG_ENABLE([evdev-input],
-              [AS_HELP_STRING([--with-evdev=@<:@yes/no@:>@], [Enable evdev for input events (default=no)])],
+              [AS_HELP_STRING([--enable-evdev-input=@<:@yes/no@:>@], [Enable evdev for input events (default=no)])],
               [enable_evdev=$enableval],
               [enable_evdev=no])
 
