@@ -38,6 +38,8 @@
 
 #import <AppKit/AppKit.h>
 
+#define DEFAULT_FONT_NAME       "Lucida Grande 13"
+
 #define clutter_backend_osx_get_type    _clutter_backend_osx_get_type
 
 G_DEFINE_TYPE (ClutterBackendOSX, clutter_backend_osx, CLUTTER_TYPE_BACKEND)
@@ -47,6 +49,8 @@ static gboolean
 clutter_backend_osx_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
+  ClutterSettings *settings = clutter_settings_get_default ();
+
   CLUTTER_OSX_POOL_ALLOC();
   /* getting standart dpi for main screen */
   NSDictionary* prop = [[NSScreen mainScreen] deviceDescription];
@@ -57,15 +61,15 @@ clutter_backend_osx_post_parse (ClutterBackend  *backend,
   /* setting dpi for backend, it needs by font rendering library */
   if (size.height > 0)
     {
-      ClutterSettings *settings = clutter_settings_get_default ();
       int font_dpi = size.height * 1024;
 
       g_object_set (settings, "font-dpi", font_dpi, NULL);
-
-      return TRUE;
     }
 
-  return FALSE;
+  /* set the default font name */
+  g_object_set (settings, "font-name", DEFAULT_FONT_NAME, NULL);
+
+  return TRUE;
 }
 
 static ClutterFeatureFlags
