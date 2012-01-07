@@ -17,15 +17,17 @@ typedef struct Data
 static void
 redraw (Data *data)
 {
-  cogl_framebuffer_clear4f (data->fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
+  CoglFramebuffer *fb = data->fb;
 
-  cogl_push_matrix ();
-  cogl_translate (data->center_x, -data->center_y, 0.0f);
+  cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
+
+  cogl_framebuffer_push_matrix (fb);
+  cogl_framebuffer_translate (fb, data->center_x, -data->center_y, 0.0f);
 
   cogl_primitive_draw (data->triangle);
-  cogl_pop_matrix ();
+  cogl_framebuffer_pop_matrix (fb);
 
-  cogl_framebuffer_swap_buffers (data->fb);
+  cogl_framebuffer_swap_buffers (fb);
 }
 
 static void

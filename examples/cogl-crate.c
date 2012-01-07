@@ -81,17 +81,21 @@ static CoglVertexP3T2 vertices[] =
 static void
 paint (Data *data)
 {
+  CoglFramebuffer *fb = data->fb;
   float rotation;
 
-  cogl_framebuffer_clear4f (data->fb,
+  cogl_framebuffer_clear4f (fb,
                             COGL_BUFFER_BIT_COLOR|COGL_BUFFER_BIT_DEPTH,
                             0, 0, 0, 1);
 
-  cogl_push_matrix ();
+  cogl_framebuffer_push_matrix (fb);
 
-  cogl_translate (data->framebuffer_width / 2, data->framebuffer_height / 2, 0);
+  cogl_framebuffer_translate (fb,
+                              data->framebuffer_width / 2,
+                              data->framebuffer_height / 2,
+                              0);
 
-  cogl_scale (75, 75, 75);
+  cogl_framebuffer_scale (fb, 75, 75, 75);
 
   /* Update the rotation based on the time the application has been
      running so that we get a linear animation regardless of the frame
@@ -107,9 +111,9 @@ paint (Data *data)
    * we want it to be a rotation around the origin, before it is
    * scaled and translated.
    */
-  cogl_rotate (rotation, 0, 0, 1);
-  cogl_rotate (rotation, 0, 1, 0);
-  cogl_rotate (rotation, 1, 0, 0);
+  cogl_framebuffer_rotate (fb, rotation, 0, 0, 1);
+  cogl_framebuffer_rotate (fb, rotation, 0, 1, 0);
+  cogl_framebuffer_rotate (fb, rotation, 1, 0, 0);
 
   /* Whenever you draw something with Cogl using geometry defined by
    * one of cogl_rectangle, cogl_polygon, cogl_path or
@@ -125,7 +129,7 @@ paint (Data *data)
 
   cogl_set_depth_test_enabled (FALSE);
 
-  cogl_pop_matrix ();
+  cogl_framebuffer_pop_matrix (fb);
 
   /* And finally render our Pango layouts... */
 

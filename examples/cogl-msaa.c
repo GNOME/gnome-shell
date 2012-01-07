@@ -90,12 +90,12 @@ main (int argc, char **argv)
 
         cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 
-        cogl_push_matrix ();
-        cogl_scale (0.5, 1, 1);
-        cogl_translate (-1, 0, 0);
+        cogl_framebuffer_push_matrix (fb);
+        cogl_framebuffer_scale (fb, 0.5, 1, 1);
+        cogl_framebuffer_translate (fb, -1, 0, 0);
         cogl_set_source (pipeline);
         cogl_primitive_draw (triangle);
-        cogl_pop_matrix ();
+        cogl_framebuffer_pop_matrix (fb);
 
         cogl_push_framebuffer (offscreen_fb);
         cogl_primitive_draw (triangle);
