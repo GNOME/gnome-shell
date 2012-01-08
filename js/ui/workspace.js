@@ -1155,6 +1155,12 @@ const Workspace = new Lang.Class({
             return true;
         }
 
+        let actorUnderPointer = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
+        for (let i = 0; i < this._windows.length; i++) {
+            if (this._windows[i].actor == actorUnderPointer)
+                return true;
+        }
+
         this.positionWindows(WindowPositionFlags.ANIMATE);
         return false;
     },
