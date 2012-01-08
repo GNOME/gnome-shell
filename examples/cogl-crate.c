@@ -117,8 +117,6 @@ paint (Data *data)
 
   cogl_framebuffer_draw_primitive (fb, data->crate_pipeline, data->prim);
 
-  cogl_set_depth_test_enabled (FALSE);
-
   cogl_framebuffer_pop_matrix (fb);
 
   /* And finally render our Pango layouts... */
