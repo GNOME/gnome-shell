@@ -112,7 +112,7 @@ typedef struct _CoglJournalFlushState
   CoglMatrixStack     *modelview_stack;
   CoglMatrixStack     *projection_stack;
 
-  CoglPipeline        *source;
+  CoglPipeline        *pipeline;
 } CoglJournalFlushState;
 
 typedef void (*CoglJournalBatchCallback) (CoglJournalEntry *start,
@@ -298,7 +298,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
 
   attributes = (CoglAttribute **)state->attributes->data;
 
-  if (!_cogl_pipeline_get_real_blend_enabled (state->source))
+  if (!_cogl_pipeline_get_real_blend_enabled (state->pipeline))
     draw_flags |= COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE;
 
 #ifdef HAVE_COGL_GL
@@ -306,7 +306,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
     {
       /* XXX: it's rather evil that we sneak in the GL_QUADS enum here... */
       _cogl_framebuffer_draw_attributes (state->framebuffer,
-                                         state->source,
+                                         state->pipeline,
                                          GL_QUADS,
                                          state->current_vertex, batch_len * 4,
                                          attributes,
@@ -321,7 +321,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
           CoglVerticesMode mode = COGL_VERTICES_MODE_TRIANGLES;
           int first_vertex = state->current_vertex * 6 / 4;
           _cogl_framebuffer_draw_indexed_attributes (state->framebuffer,
-                                                     state->source,
+                                                     state->pipeline,
                                                      mode,
                                                      first_vertex,
                                                      batch_len * 6,
@@ -333,7 +333,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
       else
         {
           _cogl_framebuffer_draw_attributes (state->framebuffer,
-                                             state->source,
+                                             state->pipeline,
                                              COGL_VERTICES_MODE_TRIANGLE_FAN,
                                              state->current_vertex, 4,
                                              attributes,
@@ -444,7 +444,7 @@ _cogl_journal_flush_pipeline_and_entries (CoglJournalEntry *batch_start,
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING:    pipeline batch len = %d\n", batch_len);
 
-  state->source = batch_start->pipeline;
+  state->pipeline = batch_start->pipeline;
 
   /* If we haven't transformed the quads in software then we need to also break
    * up batches according to changes in the modelview matrix... */
@@ -1502,7 +1502,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
   int               next_entry;
   guint32           disable_layers;
   CoglJournalEntry *entry;
-  CoglPipeline     *source;
+  CoglPipeline     *final_pipeline;
   CoglClipStack    *clip_stack;
   CoglPipelineFlushOptions flush_options;
   COGL_STATIC_TIMER (log_timer,
@@ -1576,7 +1576,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
   entry->n_layers = n_layers;
   entry->array_offset = next_vert;
 
-  source = pipeline;
+  final_pipeline = pipeline;
 
   flush_options.flags = 0;
   if (G_UNLIKELY (cogl_pipeline_get_n_layers (pipeline) != n_layers))
@@ -1594,17 +1594,17 @@ _cogl_journal_log_quad (CoglJournal  *journal,
 
   if (G_UNLIKELY (flush_options.flags))
     {
-      source = cogl_pipeline_copy (pipeline);
-      _cogl_pipeline_apply_overrides (source, &flush_options);
+      final_pipeline = cogl_pipeline_copy (pipeline);
+      _cogl_pipeline_apply_overrides (final_pipeline, &flush_options);
     }
 
-  entry->pipeline = _cogl_pipeline_journal_ref (source);
+  entry->pipeline = _cogl_pipeline_journal_ref (final_pipeline);
 
   clip_stack = _cogl_framebuffer_get_clip_stack (journal->framebuffer);
   entry->clip_stack = _cogl_clip_stack_ref (clip_stack);
 
-  if (G_UNLIKELY (source != pipeline))
-    cogl_handle_unref (source);
+  if (G_UNLIKELY (final_pipeline != pipeline))
+    cogl_handle_unref (final_pipeline);
 
   cogl_get_modelview_matrix (&entry->model_view);
 
