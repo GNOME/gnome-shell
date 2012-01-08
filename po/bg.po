@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-10-30 17:07+0200\n"
-"PO-Revision-Date: 2011-10-30 17:07+0200\n"
+"POT-Creation-Date: 2012-01-08 14:30+0200\n"
+"PO-Revision-Date: 2012-01-08 14:30+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -18,398 +18,398 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../clutter/clutter-actor.c:3886
+#: ../clutter/clutter-actor.c:3862
 msgid "X coordinate"
 msgstr "Координата по X"
 
-#: ../clutter/clutter-actor.c:3887
+#: ../clutter/clutter-actor.c:3863
 msgid "X coordinate of the actor"
 msgstr "Координата по X на участника"
 
-#: ../clutter/clutter-actor.c:3902
+#: ../clutter/clutter-actor.c:3878
 msgid "Y coordinate"
 msgstr "Координата по Y"
 
-#: ../clutter/clutter-actor.c:3903
+#: ../clutter/clutter-actor.c:3879
 msgid "Y coordinate of the actor"
 msgstr "Координата по Y на участника"
 
-#: ../clutter/clutter-actor.c:3918
+#: ../clutter/clutter-actor.c:3894
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:479
 msgid "Width"
 msgstr "Широчина"
 
-#: ../clutter/clutter-actor.c:3919
+#: ../clutter/clutter-actor.c:3895
 msgid "Width of the actor"
 msgstr "Широчина на участника"
 
-#: ../clutter/clutter-actor.c:3933
+#: ../clutter/clutter-actor.c:3909
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:495
 msgid "Height"
 msgstr "Височина"
 
-#: ../clutter/clutter-actor.c:3934
+#: ../clutter/clutter-actor.c:3910
 msgid "Height of the actor"
 msgstr "Височина на участника"
 
-#: ../clutter/clutter-actor.c:3952
+#: ../clutter/clutter-actor.c:3928
 msgid "Fixed X"
 msgstr "Прикрепяне по X"
 
-#: ../clutter/clutter-actor.c:3953
+#: ../clutter/clutter-actor.c:3929
 msgid "Forced X position of the actor"
 msgstr "Положението по X на участника не се променя"
 
-#: ../clutter/clutter-actor.c:3971
+#: ../clutter/clutter-actor.c:3947
 msgid "Fixed Y"
 msgstr "Прикрепяне по Y"
 
-#: ../clutter/clutter-actor.c:3972
+#: ../clutter/clutter-actor.c:3948
 msgid "Forced Y position of the actor"
 msgstr "Положението по Y на участника не се променя"
 
-#: ../clutter/clutter-actor.c:3988
+#: ../clutter/clutter-actor.c:3964
 msgid "Fixed position set"
 msgstr "Непроменимо положение"
 
-#: ../clutter/clutter-actor.c:3989
+#: ../clutter/clutter-actor.c:3965
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Дали положението на участника да не се променя"
 
-#: ../clutter/clutter-actor.c:4011
+#: ../clutter/clutter-actor.c:3987
 msgid "Min Width"
 msgstr "Минимална широчина"
 
-#: ../clutter/clutter-actor.c:4012
+#: ../clutter/clutter-actor.c:3988
 msgid "Forced minimum width request for the actor"
 msgstr "Минимална широчина на участника"
 
-#: ../clutter/clutter-actor.c:4031
+#: ../clutter/clutter-actor.c:4007
 msgid "Min Height"
 msgstr "Минимална височина"
 
-#: ../clutter/clutter-actor.c:4032
+#: ../clutter/clutter-actor.c:4008
 msgid "Forced minimum height request for the actor"
 msgstr "Минимална височина за участника"
 
-#: ../clutter/clutter-actor.c:4051
+#: ../clutter/clutter-actor.c:4027
 msgid "Natural Width"
 msgstr "Естествена широчина"
 
-#: ../clutter/clutter-actor.c:4052
+#: ../clutter/clutter-actor.c:4028
 msgid "Forced natural width request for the actor"
 msgstr "Естествена широчина за участника"
 
-#: ../clutter/clutter-actor.c:4071
+#: ../clutter/clutter-actor.c:4047
 msgid "Natural Height"
 msgstr "Естествена височина"
 
-#: ../clutter/clutter-actor.c:4072
+#: ../clutter/clutter-actor.c:4048
 msgid "Forced natural height request for the actor"
 msgstr "Естествена височина за участника"
 
-#: ../clutter/clutter-actor.c:4088
+#: ../clutter/clutter-actor.c:4064
 msgid "Minimum width set"
 msgstr "Задаване на минимална широчина"
 
-#: ../clutter/clutter-actor.c:4089
+#: ../clutter/clutter-actor.c:4065
 msgid "Whether to use the min-width property"
 msgstr "Дали да се ползва свойството за минимална широчина"
 
-#: ../clutter/clutter-actor.c:4104
+#: ../clutter/clutter-actor.c:4080
 msgid "Minimum height set"
 msgstr "Задаване на минимална височина"
 
-#: ../clutter/clutter-actor.c:4105
+#: ../clutter/clutter-actor.c:4081
 msgid "Whether to use the min-height property"
 msgstr "Дали да се ползва свойството за минимална височина"
 
-#: ../clutter/clutter-actor.c:4120
+#: ../clutter/clutter-actor.c:4096
 msgid "Natural width set"
 msgstr "Задаване на естествена широчина"
 
-#: ../clutter/clutter-actor.c:4121
+#: ../clutter/clutter-actor.c:4097
 msgid "Whether to use the natural-width property"
 msgstr "Дали да се ползва свойството за естествена широчина"
 
-#: ../clutter/clutter-actor.c:4138
+#: ../clutter/clutter-actor.c:4114
 msgid "Natural height set"
 msgstr "Задаване на естествена височина"
 
-#: ../clutter/clutter-actor.c:4139
+#: ../clutter/clutter-actor.c:4115
 msgid "Whether to use the natural-height property"
 msgstr "Дали да се ползва свойството за естествена височина"
 
-#: ../clutter/clutter-actor.c:4158
+#: ../clutter/clutter-actor.c:4134
 msgid "Allocation"
 msgstr "Заделяне"
 
-#: ../clutter/clutter-actor.c:4159
+#: ../clutter/clutter-actor.c:4135
 msgid "The actor's allocation"
 msgstr "Заделяне за участника"
 
-#: ../clutter/clutter-actor.c:4215
+#: ../clutter/clutter-actor.c:4191
 msgid "Request Mode"
 msgstr "Режим на заявка"
 
-#: ../clutter/clutter-actor.c:4216
+#: ../clutter/clutter-actor.c:4192
 msgid "The actor's request mode"
 msgstr "Режимът на заявка на участника"
 
-#: ../clutter/clutter-actor.c:4231
+#: ../clutter/clutter-actor.c:4207
 msgid "Depth"
 msgstr "Дълбочина"
 
-#: ../clutter/clutter-actor.c:4232
+#: ../clutter/clutter-actor.c:4208
 msgid "Position on the Z axis"
 msgstr "Положение по ос Z"
 
-#: ../clutter/clutter-actor.c:4246
+#: ../clutter/clutter-actor.c:4222
 msgid "Opacity"
 msgstr "Непрозрачност"
 
-#: ../clutter/clutter-actor.c:4247
+#: ../clutter/clutter-actor.c:4223
 msgid "Opacity of an actor"
 msgstr "Непрозрачност на участника"
 
-#: ../clutter/clutter-actor.c:4266
+#: ../clutter/clutter-actor.c:4242
 msgid "Offscreen redirect"
 msgstr "Пренасочване извън екрана"
 
-#: ../clutter/clutter-actor.c:4267
+#: ../clutter/clutter-actor.c:4243
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr "Флагове за момента на композирането на участника в едно изображение"
 
-#: ../clutter/clutter-actor.c:4285
+#: ../clutter/clutter-actor.c:4261
 msgid "Visible"
 msgstr "Видим"
 
-#: ../clutter/clutter-actor.c:4286
+#: ../clutter/clutter-actor.c:4262
 msgid "Whether the actor is visible or not"
 msgstr "Дали участникът е видим или не"
 
-#: ../clutter/clutter-actor.c:4301
+#: ../clutter/clutter-actor.c:4277
 msgid "Mapped"
 msgstr "Изобразен"
 
-#: ../clutter/clutter-actor.c:4302
+#: ../clutter/clutter-actor.c:4278
 msgid "Whether the actor will be painted"
 msgstr "Дали участникът ще бъде изобразен"
 
-#: ../clutter/clutter-actor.c:4316
+#: ../clutter/clutter-actor.c:4292
 msgid "Realized"
 msgstr "Реализиран"
 
-#: ../clutter/clutter-actor.c:4317
+#: ../clutter/clutter-actor.c:4293
 msgid "Whether the actor has been realized"
 msgstr "Дали участникът ще бъде реализиран"
 
-#: ../clutter/clutter-actor.c:4333
+#: ../clutter/clutter-actor.c:4309
 msgid "Reactive"
 msgstr "Реагиращ"
 
-#: ../clutter/clutter-actor.c:4334
+#: ../clutter/clutter-actor.c:4310
 msgid "Whether the actor is reactive to events"
 msgstr "Дали участникът ще реагира на събития"
 
-#: ../clutter/clutter-actor.c:4346
+#: ../clutter/clutter-actor.c:4322
 msgid "Has Clip"
 msgstr "Изрязан"
 
-#: ../clutter/clutter-actor.c:4347
+#: ../clutter/clutter-actor.c:4323
 msgid "Whether the actor has a clip set"
 msgstr "Дали участникът е със зададена област за изрязване"
 
-#: ../clutter/clutter-actor.c:4362
+#: ../clutter/clutter-actor.c:4338
 msgid "Clip"
 msgstr "Област за изрязване"
 
-#: ../clutter/clutter-actor.c:4363
+#: ../clutter/clutter-actor.c:4339
 msgid "The clip region for the actor"
 msgstr "Областта за изрязване на участника"
 
-#: ../clutter/clutter-actor.c:4377 ../clutter/clutter-actor-meta.c:207
+#: ../clutter/clutter-actor.c:4353 ../clutter/clutter-actor-meta.c:207
 #: ../clutter/clutter-binding-pool.c:319 ../clutter/clutter-input-device.c:236
 msgid "Name"
 msgstr "Име"
 
-#: ../clutter/clutter-actor.c:4378
+#: ../clutter/clutter-actor.c:4354
 msgid "Name of the actor"
 msgstr "Име на участника"
 
-#: ../clutter/clutter-actor.c:4392
+#: ../clutter/clutter-actor.c:4368
 msgid "Scale X"
 msgstr "Мащабиране по X"
 
-#: ../clutter/clutter-actor.c:4393
+#: ../clutter/clutter-actor.c:4369
 msgid "Scale factor on the X axis"
 msgstr "Коефициент на мащабиране по ос X"
 
-#: ../clutter/clutter-actor.c:4408
+#: ../clutter/clutter-actor.c:4384
 msgid "Scale Y"
 msgstr "Мащабиране по Y"
 
-#: ../clutter/clutter-actor.c:4409
+#: ../clutter/clutter-actor.c:4385
 msgid "Scale factor on the Y axis"
 msgstr "Коефициент на мащабиране по ос Y"
 
-#: ../clutter/clutter-actor.c:4424
+#: ../clutter/clutter-actor.c:4400
 msgid "Scale Center X"
 msgstr "Център за мащабиране — X"
 
-#: ../clutter/clutter-actor.c:4425
+#: ../clutter/clutter-actor.c:4401
 msgid "Horizontal scale center"
 msgstr "Координата по X на центъра за мащабиране"
 
-#: ../clutter/clutter-actor.c:4440
+#: ../clutter/clutter-actor.c:4416
 msgid "Scale Center Y"
 msgstr "Център за мащабиране — Y"
 
-#: ../clutter/clutter-actor.c:4441
+#: ../clutter/clutter-actor.c:4417
 msgid "Vertical scale center"
 msgstr "Координата по Y на центъра за мащабиране"
 
-#: ../clutter/clutter-actor.c:4456
+#: ../clutter/clutter-actor.c:4432
 msgid "Scale Gravity"
 msgstr "Гравитация при мащабирането"
 
-#: ../clutter/clutter-actor.c:4457
+#: ../clutter/clutter-actor.c:4433
 msgid "The center of scaling"
 msgstr "Центърът на мащабирането"
 
-#: ../clutter/clutter-actor.c:4474
+#: ../clutter/clutter-actor.c:4450
 msgid "Rotation Angle X"
 msgstr "Ъгъл на завъртане по X"
 
-#: ../clutter/clutter-actor.c:4475
+#: ../clutter/clutter-actor.c:4451
 msgid "The rotation angle on the X axis"
 msgstr "Ъгъл на завъртане по оста X"
 
-#: ../clutter/clutter-actor.c:4490
+#: ../clutter/clutter-actor.c:4466
 msgid "Rotation Angle Y"
 msgstr "Ъгъл на завъртане по Y"
 
-#: ../clutter/clutter-actor.c:4491
+#: ../clutter/clutter-actor.c:4467
 msgid "The rotation angle on the Y axis"
 msgstr "Ъгъл на завъртане по оста Y"
 
-#: ../clutter/clutter-actor.c:4506
+#: ../clutter/clutter-actor.c:4482
 msgid "Rotation Angle Z"
 msgstr "Ъгъл на завъртане по Z"
 
-#: ../clutter/clutter-actor.c:4507
+#: ../clutter/clutter-actor.c:4483
 msgid "The rotation angle on the Z axis"
 msgstr "Ъгъл на завъртане по оста Z"
 
-#: ../clutter/clutter-actor.c:4522
+#: ../clutter/clutter-actor.c:4498
 msgid "Rotation Center X"
 msgstr "X на центъра на завъртане"
 
-#: ../clutter/clutter-actor.c:4523
+#: ../clutter/clutter-actor.c:4499
 msgid "The rotation center on the X axis"
 msgstr "Центърът на завъртане по оста X"
 
-#: ../clutter/clutter-actor.c:4539
+#: ../clutter/clutter-actor.c:4515
 msgid "Rotation Center Y"
 msgstr "Y на центъра на завъртане"
 
-#: ../clutter/clutter-actor.c:4540
+#: ../clutter/clutter-actor.c:4516
 msgid "The rotation center on the Y axis"
 msgstr "Центърът на завъртане по оста X"
 
-#: ../clutter/clutter-actor.c:4556
+#: ../clutter/clutter-actor.c:4532
 msgid "Rotation Center Z"
 msgstr "Z на центъра на завъртане"
 
-#: ../clutter/clutter-actor.c:4557
+#: ../clutter/clutter-actor.c:4533
 msgid "The rotation center on the Z axis"
 msgstr "Центърът на завъртане по оста Z"
 
-#: ../clutter/clutter-actor.c:4573
+#: ../clutter/clutter-actor.c:4549
 msgid "Rotation Center Z Gravity"
 msgstr "Гравитация по Z на центъра на завъртане"
 
-#: ../clutter/clutter-actor.c:4574
+#: ../clutter/clutter-actor.c:4550
 msgid "Center point for rotation around the Z axis"
 msgstr "Централна точка за завъртането по оста Z"
 
-#: ../clutter/clutter-actor.c:4592
+#: ../clutter/clutter-actor.c:4568
 msgid "Anchor X"
 msgstr "Прикрепяне по X"
 
-#: ../clutter/clutter-actor.c:4593
+#: ../clutter/clutter-actor.c:4569
 msgid "X coordinate of the anchor point"
 msgstr "Координата по X на точката на прикрепяне"
 
-#: ../clutter/clutter-actor.c:4609
+#: ../clutter/clutter-actor.c:4585
 msgid "Anchor Y"
 msgstr "Прикрепяне по Y"
 
-#: ../clutter/clutter-actor.c:4610
+#: ../clutter/clutter-actor.c:4586
 msgid "Y coordinate of the anchor point"
 msgstr "Координата по Y на точката на прикрепяне"
 
-#: ../clutter/clutter-actor.c:4625
+#: ../clutter/clutter-actor.c:4601
 msgid "Anchor Gravity"
 msgstr "Гравитация на прикрепянето"
 
-#: ../clutter/clutter-actor.c:4626
+#: ../clutter/clutter-actor.c:4602
 msgid "The anchor point as a ClutterGravity"
 msgstr "Точката на прикрепяне като структура ClutterGravity"
 
-#: ../clutter/clutter-actor.c:4645
+#: ../clutter/clutter-actor.c:4621
 msgid "Show on set parent"
 msgstr "Показване при зададен родител"
 
-#: ../clutter/clutter-actor.c:4646
+#: ../clutter/clutter-actor.c:4622
 msgid "Whether the actor is shown when parented"
 msgstr "Дали участникът се показва, когато има родител"
 
-#: ../clutter/clutter-actor.c:4666
+#: ../clutter/clutter-actor.c:4642
 msgid "Clip to Allocation"
 msgstr "Изрязване по заделената област"
 
-#: ../clutter/clutter-actor.c:4667
+#: ../clutter/clutter-actor.c:4643
 msgid "Sets the clip region to track the actor's allocation"
 msgstr "Областта за изрязване да повтаря заделената област на участника"
 
-#: ../clutter/clutter-actor.c:4677
+#: ../clutter/clutter-actor.c:4653
 msgid "Text Direction"
 msgstr "Посока на текста"
 
-#: ../clutter/clutter-actor.c:4678
+#: ../clutter/clutter-actor.c:4654
 msgid "Direction of the text"
 msgstr "Посоката на текста"
 
-#: ../clutter/clutter-actor.c:4696
+#: ../clutter/clutter-actor.c:4672
 msgid "Has Pointer"
 msgstr "С показалец"
 
-#: ../clutter/clutter-actor.c:4697
+#: ../clutter/clutter-actor.c:4673
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Дали участникът съдържа показалеца на входно устройство"
 
-#: ../clutter/clutter-actor.c:4714
+#: ../clutter/clutter-actor.c:4690
 msgid "Actions"
 msgstr "Действия"
 
-#: ../clutter/clutter-actor.c:4715
+#: ../clutter/clutter-actor.c:4691
 msgid "Adds an action to the actor"
 msgstr "Добавя действие към участник"
 
-#: ../clutter/clutter-actor.c:4729
+#: ../clutter/clutter-actor.c:4705
 msgid "Constraints"
 msgstr "Ограничения"
 
-#: ../clutter/clutter-actor.c:4730
+#: ../clutter/clutter-actor.c:4706
 msgid "Adds a constraint to the actor"
 msgstr "Добавяне на ограничение към участник"
 
-#: ../clutter/clutter-actor.c:4744
+#: ../clutter/clutter-actor.c:4720
 msgid "Effect"
 msgstr "Ефект"
 
-#: ../clutter/clutter-actor.c:4745
+#: ../clutter/clutter-actor.c:4721
 msgid "Add an effect to be applied on the actor"
 msgstr "Добавя ефект към участник"
 
@@ -453,7 +453,7 @@ msgid "The axis to align the position to"
 msgstr "Оста, към която да се подравни положението"
 
 #: ../clutter/clutter-align-constraint.c:315
-#: ../clutter/clutter-desaturate-effect.c:304
+#: ../clutter/clutter-desaturate-effect.c:297
 msgid "Factor"
 msgstr "Коефициент"
 
@@ -500,7 +500,7 @@ msgstr "Режимът на анимацията"
 
 #: ../clutter/clutter-animation.c:509 ../clutter/clutter-animator.c:1786
 #: ../clutter/clutter-media.c:194 ../clutter/clutter-state.c:1486
-#: ../clutter/clutter-timeline.c:294
+#: ../clutter/clutter-timeline.c:516
 msgid "Duration"
 msgstr "Продължителност"
 
@@ -508,7 +508,7 @@ msgstr "Продължителност"
 msgid "Duration of the animation, in milliseconds"
 msgstr "Продължителност на анимацията в милисекунди"
 
-#: ../clutter/clutter-animation.c:524 ../clutter/clutter-timeline.c:263
+#: ../clutter/clutter-animation.c:524 ../clutter/clutter-timeline.c:485
 msgid "Loop"
 msgstr "Повтаряне"
 
@@ -537,191 +537,14 @@ msgstr "Продължителност на анимацията"
 msgid "The timeline of the animation"
 msgstr "Времето на анимацията"
 
-#: ../clutter/deprecated/clutter-behaviour.c:241
-msgid "Alpha Object to drive the behaviour"
-msgstr "Обектът за прозрачност, който управлява поведението"
+#: ../clutter/clutter-backend.c:354
+msgid "Unable to initialize the Clutter backend"
+msgstr "Ядрото на Clutter не може да се стартира"
 
-#: ../clutter/deprecated/clutter-behaviour-depth.c:180
-msgid "Start Depth"
-msgstr "Начална дълбочина"
-
-#: ../clutter/deprecated/clutter-behaviour-depth.c:181
-msgid "Initial depth to apply"
-msgstr "Началната дълбочина, която да се приложи"
-
-#: ../clutter/deprecated/clutter-behaviour-depth.c:196
-msgid "End Depth"
-msgstr "Крайна дълбочина"
-
-#: ../clutter/deprecated/clutter-behaviour-depth.c:197
-msgid "Final depth to apply"
-msgstr "Крайната дълбочина, която да се приложи"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:399
-msgid "Start Angle"
-msgstr "Начален ъгъл"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:400
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:282
-msgid "Initial angle"
-msgstr "Начален ъгъл"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:415
-msgid "End Angle"
-msgstr "Краен ъгъл"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:416
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:300
-msgid "Final angle"
-msgstr "Краен ъгъл"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:431
-msgid "Angle x tilt"
-msgstr "Ъгъл на наклона по X"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:432
-msgid "Tilt of the ellipse around x axis"
-msgstr "Наклон на оста на елипсата по оста X"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:447
-msgid "Angle y tilt"
-msgstr "Ъгъл на наклона по Y"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:448
-msgid "Tilt of the ellipse around y axis"
-msgstr "Наклон на оста на елипсата по оста Y"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:463
-msgid "Angle z tilt"
-msgstr "Ъгъл на наклона по Z"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:464
-msgid "Tilt of the ellipse around z axis"
-msgstr "Наклон на оста на елипсата по оста Z"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:480
-msgid "Width of the ellipse"
-msgstr "Широчина на елипсата"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:496
-msgid "Height of ellipse"
-msgstr "Височина на елипсата"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:511
-msgid "Center"
-msgstr "Център"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:512
-msgid "Center of ellipse"
-msgstr "Център на елипсата"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:526
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:335
-#: ../clutter/clutter-timeline.c:310
-msgid "Direction"
-msgstr "Посока"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:527
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:336
-msgid "Direction of rotation"
-msgstr "Посока на въртене"
-
-#: ../clutter/deprecated/clutter-behaviour-opacity.c:183
-msgid "Opacity Start"
-msgstr "Начална непрозрачност"
-
-#: ../clutter/deprecated/clutter-behaviour-opacity.c:184
-msgid "Initial opacity level"
-msgstr "Начално ниво на непрозрачността"
-
-#: ../clutter/deprecated/clutter-behaviour-opacity.c:201
-msgid "Opacity End"
-msgstr "Крайна непрозрачност"
-
-#: ../clutter/deprecated/clutter-behaviour-opacity.c:202
-msgid "Final opacity level"
-msgstr "Крайно ниво на непрозрачността"
-
-#: ../clutter/deprecated/clutter-behaviour-path.c:224
-#: ../clutter/clutter-path-constraint.c:212
-msgid "Path"
-msgstr "Път"
-
-#: ../clutter/deprecated/clutter-behaviour-path.c:225
-msgid "The ClutterPath object representing the path to animate along"
-msgstr "Обектът ClutterPath за пътя, по който върви анимацията"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:281
-msgid "Angle Begin"
-msgstr "Начален ъгъл"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:299
-msgid "Angle End"
-msgstr "Краен ъгъл"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:317
-msgid "Axis"
-msgstr "Ос"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:318
-msgid "Axis of rotation"
-msgstr "Ос на въртенето"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:353
-msgid "Center X"
-msgstr "Център по X"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:354
-msgid "X coordinate of the center of rotation"
-msgstr "Координатата X на центъра на въртене"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:371
-msgid "Center Y"
-msgstr "Център по Y"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:372
-msgid "Y coordinate of the center of rotation"
-msgstr "Координатата Y на центъра на въртене"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:389
-msgid "Center Z"
-msgstr "Център по Z"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:390
-msgid "Z coordinate of the center of rotation"
-msgstr "Координатата Z на центъра на въртене"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:224
-msgid "X Start Scale"
-msgstr "Начално мащабиране по X"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:225
-msgid "Initial scale on the X axis"
-msgstr "Начално мащабиране по оста X"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:243
-msgid "X End Scale"
-msgstr "Крайно мащабиране по X"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:244
-msgid "Final scale on the X axis"
-msgstr "Крайно мащабиране по оста X"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:262
-msgid "Y Start Scale"
-msgstr "Начално мащабиране по Y"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:263
-msgid "Initial scale on the Y axis"
-msgstr "Начално мащабиране по оста Y"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:281
-msgid "Y End Scale"
-msgstr "Крайно мащабиране по Y"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:282
-msgid "Final scale on the Y axis"
-msgstr "Крайно мащабиране по оста Y"
+#: ../clutter/clutter-backend.c:428
+#, c-format
+msgid "The backend of type '%s' does not support creating multiple stages"
+msgstr "Ядрото „%s“ не поддържа създаването на множество сцени"
 
 #: ../clutter/clutter-bind-constraint.c:350
 msgid "The source of the binding"
@@ -786,7 +609,7 @@ msgid "The layout manager used by the box"
 msgstr "Мениджърът на подредбата в кутията"
 
 #: ../clutter/clutter-box.c:564 ../clutter/clutter-rectangle.c:267
-#: ../clutter/clutter-stage.c:1790
+#: ../clutter/clutter-stage.c:1837
 msgid "Color"
 msgstr "Цвят"
 
@@ -899,27 +722,27 @@ msgstr "Продължителност на преход"
 msgid "The duration of the animations"
 msgstr "Продължителност на анимациите"
 
-#: ../clutter/clutter-cairo-texture.c:582
+#: ../clutter/clutter-cairo-texture.c:588
 msgid "Surface Width"
 msgstr "Широчина на повърхността"
 
-#: ../clutter/clutter-cairo-texture.c:583
+#: ../clutter/clutter-cairo-texture.c:589
 msgid "The width of the Cairo surface"
 msgstr "Широчина на повърхността на Cairo"
 
-#: ../clutter/clutter-cairo-texture.c:597
+#: ../clutter/clutter-cairo-texture.c:603
 msgid "Surface Height"
 msgstr "Височина на повърхността"
 
-#: ../clutter/clutter-cairo-texture.c:598
+#: ../clutter/clutter-cairo-texture.c:604
 msgid "The height of the Cairo surface"
 msgstr "Височината на повърхността на Cairo"
 
-#: ../clutter/clutter-cairo-texture.c:615
+#: ../clutter/clutter-cairo-texture.c:621
 msgid "Auto Resize"
 msgstr "Автоматично преоразмеряване"
 
-#: ../clutter/clutter-cairo-texture.c:616
+#: ../clutter/clutter-cairo-texture.c:622
 msgid "Whether the surface should match the allocation"
 msgstr "Дали повърхността да отговаря по размер на заделеното"
 
@@ -972,39 +795,39 @@ msgstr "Максималното време преди отмяната на п�
 msgid "Specifies the actor to be cloned"
 msgstr "Указва участника за клониране"
 
-#: ../clutter/clutter-colorize-effect.c:307
+#: ../clutter/clutter-colorize-effect.c:300
 msgid "Tint"
 msgstr "Нюансиране"
 
-#: ../clutter/clutter-colorize-effect.c:308
+#: ../clutter/clutter-colorize-effect.c:301
 msgid "The tint to apply"
 msgstr "Приложеното нюансиране"
 
-#: ../clutter/clutter-deform-effect.c:547
+#: ../clutter/clutter-deform-effect.c:581
 msgid "Horizontal Tiles"
 msgstr "Хоризонтални плочки"
 
-#: ../clutter/clutter-deform-effect.c:548
+#: ../clutter/clutter-deform-effect.c:582
 msgid "The number of horizontal tiles"
 msgstr "Броят на хоризонталните плочки"
 
-#: ../clutter/clutter-deform-effect.c:563
+#: ../clutter/clutter-deform-effect.c:597
 msgid "Vertical Tiles"
 msgstr "Вертикални плочки"
 
-#: ../clutter/clutter-deform-effect.c:564
+#: ../clutter/clutter-deform-effect.c:598
 msgid "The number of vertical tiles"
 msgstr "Броят на вертикалните плочки"
 
-#: ../clutter/clutter-deform-effect.c:581
+#: ../clutter/clutter-deform-effect.c:615
 msgid "Back Material"
 msgstr "Материал на основата"
 
-#: ../clutter/clutter-deform-effect.c:582
+#: ../clutter/clutter-deform-effect.c:616
 msgid "The material to be used when painting the back of the actor"
 msgstr "Материалът, върху който се изрисува участникът"
 
-#: ../clutter/clutter-desaturate-effect.c:305
+#: ../clutter/clutter-desaturate-effect.c:298
 msgid "The desaturation factor"
 msgstr "Коефициент на разводняване"
 
@@ -1193,59 +1016,59 @@ msgstr "Програмата, която е създала данните"
 #. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
 #. * it isn't default:LTR or default:RTL it will not work.
 #.
-#: ../clutter/clutter-main.c:719
+#: ../clutter/clutter-main.c:764
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1530
+#: ../clutter/clutter-main.c:1611
 msgid "Show frames per second"
 msgstr "Показване на кадрите в секунда"
 
-#: ../clutter/clutter-main.c:1532
+#: ../clutter/clutter-main.c:1613
 msgid "Default frame rate"
 msgstr "Стандартни кадри в секунда"
 
-#: ../clutter/clutter-main.c:1534
+#: ../clutter/clutter-main.c:1615
 msgid "Make all warnings fatal"
 msgstr "Всички предупреждения да са фатални"
 
-#: ../clutter/clutter-main.c:1537
+#: ../clutter/clutter-main.c:1618
 msgid "Direction for the text"
 msgstr "Посока на текста"
 
-#: ../clutter/clutter-main.c:1540
+#: ../clutter/clutter-main.c:1621
 msgid "Disable mipmapping on text"
 msgstr "Изключване на опростеното текстуриране на текста"
 
-#: ../clutter/clutter-main.c:1543
+#: ../clutter/clutter-main.c:1624
 msgid "Use 'fuzzy' picking"
 msgstr "Използване на приблизително напасване"
 
-#: ../clutter/clutter-main.c:1546
+#: ../clutter/clutter-main.c:1627
 msgid "Clutter debugging flags to set"
 msgstr "Флагове за изчистване на грешки на clutter, които да се включат"
 
-#: ../clutter/clutter-main.c:1548
+#: ../clutter/clutter-main.c:1629
 msgid "Clutter debugging flags to unset"
 msgstr "Флагове за изчистване на грешки на clutter, които да се изключат"
 
-#: ../clutter/clutter-main.c:1552
+#: ../clutter/clutter-main.c:1633
 msgid "Clutter profiling flags to set"
 msgstr "Флагове за профилиране на clutter, които да се включат"
 
-#: ../clutter/clutter-main.c:1554
+#: ../clutter/clutter-main.c:1635
 msgid "Clutter profiling flags to unset"
 msgstr "Флагове за профилиране на clutter, които да се изключат"
 
-#: ../clutter/clutter-main.c:1557
+#: ../clutter/clutter-main.c:1638
 msgid "Enable accessibility"
 msgstr "Включване на достъпността"
 
-#: ../clutter/clutter-main.c:1745
+#: ../clutter/clutter-main.c:1830
 msgid "Clutter Options"
 msgstr "Опции на clutter"
 
-#: ../clutter/clutter-main.c:1746
+#: ../clutter/clutter-main.c:1831
 msgid "Show Clutter Options"
 msgstr "Показване на опциите на clutter"
 
@@ -1317,6 +1140,11 @@ msgstr "Ниво на запълване на буфера"
 msgid "The duration of the stream, in seconds"
 msgstr "Продължителност на потока в секунди"
 
+#: ../clutter/clutter-path-constraint.c:212
+#: ../clutter/deprecated/clutter-behaviour-path.c:224
+msgid "Path"
+msgstr "Път"
+
 #: ../clutter/clutter-path-constraint.c:213
 msgid "The path used to constrain an actor"
 msgstr "Пътят ограничаващ участник"
@@ -1361,7 +1189,7 @@ msgstr "Зададено име на файл"
 msgid "Whether the :filename property is set"
 msgstr "Дали свойството „:filename“ е зададено"
 
-#: ../clutter/clutter-script.c:449 ../clutter/clutter-texture.c:1071
+#: ../clutter/clutter-script.c:449 ../clutter/clutter-texture.c:1065
 msgid "Filename"
 msgstr "Има на файла"
 
@@ -1393,7 +1221,7 @@ msgstr "Праг на влачене"
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "Разстоянието, които показалецът трябва да мине, за да започне влачене"
 
-#: ../clutter/clutter-settings.c:487 ../clutter/clutter-text.c:2995
+#: ../clutter/clutter-settings.c:487 ../clutter/clutter-text.c:2997
 msgid "Font Name"
 msgstr "Име на шрифт"
 
@@ -1481,47 +1309,6 @@ msgid "How long to show the last input character in hidden entries"
 msgstr ""
 "Колко време да се показва последният знак в маскираната последователност"
 
-#: ../clutter/deprecated/clutter-shader.c:257
-msgid "Vertex Source"
-msgstr "Код за обработка на върхове"
-
-#: ../clutter/deprecated/clutter-shader.c:258
-msgid "Source of vertex shader"
-msgstr "Код на програмата за обработка на върхове"
-
-#: ../clutter/deprecated/clutter-shader.c:274
-msgid "Fragment Source"
-msgstr "Код за обработка на фрагменти"
-
-#: ../clutter/deprecated/clutter-shader.c:275
-msgid "Source of fragment shader"
-msgstr "Код на програмата за обработка на фрагменти"
-
-#: ../clutter/deprecated/clutter-shader.c:292
-msgid "Compiled"
-msgstr "Компилирана"
-
-#: ../clutter/deprecated/clutter-shader.c:293
-msgid "Whether the shader is compiled and linked"
-msgstr "Дали програмата за графична обработка е компилирана и свързана"
-
-#: ../clutter/deprecated/clutter-shader.c:310
-msgid "Whether the shader is enabled"
-msgstr "Дали програмата за графична обработка е включена"
-
-#: ../clutter/deprecated/clutter-shader.c:521
-#, c-format
-msgid "%s compilation failed: %s"
-msgstr "%s неуспешно компилиране: %s"
-
-#: ../clutter/deprecated/clutter-shader.c:522
-msgid "Vertex shader"
-msgstr "Програма за графична обработка на върхове"
-
-#: ../clutter/deprecated/clutter-shader.c:523
-msgid "Fragment shader"
-msgstr "Програма за графична обработка на фрагменти"
-
 #: ../clutter/clutter-shader-effect.c:482
 msgid "Shader Type"
 msgstr "Вид програма за графична обработка"
@@ -1554,103 +1341,103 @@ msgstr "Ръбът на източника, който трябва да бъд�
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Отместване в пиксели, което да се приложи към ограничението"
 
-#: ../clutter/clutter-stage.c:1732
+#: ../clutter/clutter-stage.c:1781
 msgid "Fullscreen Set"
 msgstr "На цял екран"
 
-#: ../clutter/clutter-stage.c:1733
+#: ../clutter/clutter-stage.c:1782
 msgid "Whether the main stage is fullscreen"
 msgstr "Дали основната сцена е на цял екран"
 
-#: ../clutter/clutter-stage.c:1749
+#: ../clutter/clutter-stage.c:1796
 msgid "Offscreen"
 msgstr "Извън екрана"
 
-#: ../clutter/clutter-stage.c:1750
+#: ../clutter/clutter-stage.c:1797
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Дали основната сцена предварително да се изобразява извън екрана"
 
-#: ../clutter/clutter-stage.c:1762 ../clutter/clutter-text.c:3108
+#: ../clutter/clutter-stage.c:1809 ../clutter/clutter-text.c:3110
 msgid "Cursor Visible"
 msgstr "Видим показалец"
 
-#: ../clutter/clutter-stage.c:1763
+#: ../clutter/clutter-stage.c:1810
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Дали показалецът на мишката да се вижда на основната сцена"
 
-#: ../clutter/clutter-stage.c:1777
+#: ../clutter/clutter-stage.c:1824
 msgid "User Resizable"
 msgstr "Преоразмерима"
 
-#: ../clutter/clutter-stage.c:1778
+#: ../clutter/clutter-stage.c:1825
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Дали сцената може да се преоразмери от потребителя"
 
-#: ../clutter/clutter-stage.c:1791
+#: ../clutter/clutter-stage.c:1838
 msgid "The color of the stage"
 msgstr "Цветът на сцената"
 
-#: ../clutter/clutter-stage.c:1805
+#: ../clutter/clutter-stage.c:1852
 msgid "Perspective"
 msgstr "Перспектива"
 
-#: ../clutter/clutter-stage.c:1806
+#: ../clutter/clutter-stage.c:1853
 msgid "Perspective projection parameters"
 msgstr "Параметри на перспективната проекция"
 
-#: ../clutter/clutter-stage.c:1821
+#: ../clutter/clutter-stage.c:1868
 msgid "Title"
 msgstr "Заглавие"
 
-#: ../clutter/clutter-stage.c:1822
+#: ../clutter/clutter-stage.c:1869
 msgid "Stage Title"
 msgstr "Заглавие на сцената"
 
-#: ../clutter/clutter-stage.c:1837
+#: ../clutter/clutter-stage.c:1886
 msgid "Use Fog"
 msgstr "Замъгляване"
 
-#: ../clutter/clutter-stage.c:1838
+#: ../clutter/clutter-stage.c:1887
 msgid "Whether to enable depth cueing"
 msgstr "Дали да се включи подсказването на дълбочина"
 
-#: ../clutter/clutter-stage.c:1852
+#: ../clutter/clutter-stage.c:1903
 msgid "Fog"
 msgstr "Настройки на замъгляването"
 
-#: ../clutter/clutter-stage.c:1853
+#: ../clutter/clutter-stage.c:1904
 msgid "Settings for the depth cueing"
 msgstr "Настройки на подсказването на дълбочина"
 
-#: ../clutter/clutter-stage.c:1869
+#: ../clutter/clutter-stage.c:1920
 msgid "Use Alpha"
 msgstr "Канал за прозрачност"
 
-#: ../clutter/clutter-stage.c:1870
+#: ../clutter/clutter-stage.c:1921
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Дали да се зачита компонентът за прозрачност на цвета на сцената"
 
-#: ../clutter/clutter-stage.c:1886
+#: ../clutter/clutter-stage.c:1937
 msgid "Key Focus"
 msgstr "Фокус за клавиатурата"
 
-#: ../clutter/clutter-stage.c:1887
+#: ../clutter/clutter-stage.c:1938
 msgid "The currently key focused actor"
 msgstr "Участникът, който в момента държи фокуса на клавиатурата"
 
-#: ../clutter/clutter-stage.c:1903
+#: ../clutter/clutter-stage.c:1954
 msgid "No Clear Hint"
 msgstr "Без изчистване"
 
-#: ../clutter/clutter-stage.c:1904
+#: ../clutter/clutter-stage.c:1955
 msgid "Whether the stage should clear its contents"
 msgstr "Дали сцената да изчисти съдържанието си"
 
-#: ../clutter/clutter-stage.c:1917
+#: ../clutter/clutter-stage.c:1968
 msgid "Accept Focus"
 msgstr "Приемане на фокуса"
 
-#: ../clutter/clutter-stage.c:1918
+#: ../clutter/clutter-stage.c:1969
 msgid "Whether the stage should accept focus on show"
 msgstr "Дали сцената да взема фокуса при показване"
 
@@ -1724,221 +1511,221 @@ msgstr "Разредка между колоните"
 msgid "Spacing between rows"
 msgstr "Разредка между редовете"
 
-#: ../clutter/clutter-text.c:2996
+#: ../clutter/clutter-text.c:2998
 msgid "The font to be used by the text"
 msgstr "Шрифтът за текста"
 
-#: ../clutter/clutter-text.c:3013
+#: ../clutter/clutter-text.c:3015
 msgid "Font Description"
 msgstr "Описание на шрифта"
 
-#: ../clutter/clutter-text.c:3014
+#: ../clutter/clutter-text.c:3016
 msgid "The font description to be used"
 msgstr "Описанието на използвания шрифт"
 
-#: ../clutter/clutter-text.c:3030
+#: ../clutter/clutter-text.c:3032
 msgid "Text"
 msgstr "Текст"
 
-#: ../clutter/clutter-text.c:3031
+#: ../clutter/clutter-text.c:3033
 msgid "The text to render"
 msgstr "Текстът, който да се изобрази"
 
-#: ../clutter/clutter-text.c:3045
+#: ../clutter/clutter-text.c:3047
 msgid "Font Color"
 msgstr "Цвят на шрифта"
 
-#: ../clutter/clutter-text.c:3046
+#: ../clutter/clutter-text.c:3048
 msgid "Color of the font used by the text"
 msgstr "Цветът на шрифта на текста"
 
-#: ../clutter/clutter-text.c:3060
+#: ../clutter/clutter-text.c:3062
 msgid "Editable"
 msgstr "Редактируем"
 
-#: ../clutter/clutter-text.c:3061
+#: ../clutter/clutter-text.c:3063
 msgid "Whether the text is editable"
 msgstr "Дали текстът може да се редактира"
 
-#: ../clutter/clutter-text.c:3076
+#: ../clutter/clutter-text.c:3078
 msgid "Selectable"
 msgstr "Изберим"
 
-#: ../clutter/clutter-text.c:3077
+#: ../clutter/clutter-text.c:3079
 msgid "Whether the text is selectable"
 msgstr "Дали текстът може да се избира"
 
-#: ../clutter/clutter-text.c:3091
+#: ../clutter/clutter-text.c:3093
 msgid "Activatable"
 msgstr "Активен"
 
-#: ../clutter/clutter-text.c:3092
+#: ../clutter/clutter-text.c:3094
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "Дали натискането на „Enter“ кара излъчването на сигнал за активност"
 
-#: ../clutter/clutter-text.c:3109
+#: ../clutter/clutter-text.c:3111
 msgid "Whether the input cursor is visible"
 msgstr "Дали курсорът се вижда"
 
-#: ../clutter/clutter-text.c:3123 ../clutter/clutter-text.c:3124
+#: ../clutter/clutter-text.c:3125 ../clutter/clutter-text.c:3126
 msgid "Cursor Color"
 msgstr "Цвят на курсора"
 
-#: ../clutter/clutter-text.c:3138
+#: ../clutter/clutter-text.c:3140
 msgid "Cursor Color Set"
 msgstr "Зададен цвят на курсора"
 
-#: ../clutter/clutter-text.c:3139
+#: ../clutter/clutter-text.c:3141
 msgid "Whether the cursor color has been set"
 msgstr "Дали цветът на курсора е зададен"
 
-#: ../clutter/clutter-text.c:3154
+#: ../clutter/clutter-text.c:3156
 msgid "Cursor Size"
 msgstr "Размер на курсора"
 
-#: ../clutter/clutter-text.c:3155
+#: ../clutter/clutter-text.c:3157
 msgid "The width of the cursor, in pixels"
 msgstr "Широчина на курсора в пиксели"
 
-#: ../clutter/clutter-text.c:3169
+#: ../clutter/clutter-text.c:3171
 msgid "Cursor Position"
 msgstr "Положение на курсора"
 
-#: ../clutter/clutter-text.c:3170
+#: ../clutter/clutter-text.c:3172
 msgid "The cursor position"
 msgstr "Координатите на курсора"
 
-#: ../clutter/clutter-text.c:3185
+#: ../clutter/clutter-text.c:3187
 msgid "Selection-bound"
 msgstr "Според избраното"
 
-#: ../clutter/clutter-text.c:3186
+#: ../clutter/clutter-text.c:3188
 msgid "The cursor position of the other end of the selection"
 msgstr "Място на курсора в другия край на избраното"
 
-#: ../clutter/clutter-text.c:3201 ../clutter/clutter-text.c:3202
+#: ../clutter/clutter-text.c:3203 ../clutter/clutter-text.c:3204
 msgid "Selection Color"
 msgstr "Цвят на избраното"
 
-#: ../clutter/clutter-text.c:3216
+#: ../clutter/clutter-text.c:3218
 msgid "Selection Color Set"
 msgstr "Зададен цвят на избраното"
 
-#: ../clutter/clutter-text.c:3217
+#: ../clutter/clutter-text.c:3219
 msgid "Whether the selection color has been set"
 msgstr "Дали цветът на избраното е зададен"
 
-#: ../clutter/clutter-text.c:3232
+#: ../clutter/clutter-text.c:3234
 msgid "Attributes"
 msgstr "Атрибути"
 
-#: ../clutter/clutter-text.c:3233
+#: ../clutter/clutter-text.c:3235
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr ""
 "Списък със стилови атрибути, които да се приложат към съдържанието на "
 "участника"
 
-#: ../clutter/clutter-text.c:3255
+#: ../clutter/clutter-text.c:3257
 msgid "Use markup"
 msgstr "Маркиран текст"
 
-#: ../clutter/clutter-text.c:3256
+#: ../clutter/clutter-text.c:3258
 msgid "Whether or not the text includes Pango markup"
 msgstr "Дали да се използва маркиране на текста по Pango"
 
-#: ../clutter/clutter-text.c:3272
+#: ../clutter/clutter-text.c:3274
 msgid "Line wrap"
 msgstr "Пренасяне на редове"
 
-#: ../clutter/clutter-text.c:3273
+#: ../clutter/clutter-text.c:3275
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "Указва дали прекалено дългите редове текст да се пренасят"
 
-#: ../clutter/clutter-text.c:3288
+#: ../clutter/clutter-text.c:3290
 msgid "Line wrap mode"
 msgstr "Режим на пренос на редовете"
 
-#: ../clutter/clutter-text.c:3289
+#: ../clutter/clutter-text.c:3291
 msgid "Control how line-wrapping is done"
 msgstr "Как де се пренасят редовете"
 
-#: ../clutter/clutter-text.c:3304
+#: ../clutter/clutter-text.c:3306
 msgid "Ellipsize"
 msgstr "Съкращаване"
 
-#: ../clutter/clutter-text.c:3305
+#: ../clutter/clutter-text.c:3307
 msgid "The preferred place to ellipsize the string"
 msgstr "Предпочитаното място за съкращаване на низа"
 
-#: ../clutter/clutter-text.c:3321
+#: ../clutter/clutter-text.c:3323
 msgid "Line Alignment"
 msgstr "Подравняване на редовете"
 
-#: ../clutter/clutter-text.c:3322
+#: ../clutter/clutter-text.c:3324
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "Предпочитаното подравняване на текста"
 
-#: ../clutter/clutter-text.c:3338
+#: ../clutter/clutter-text.c:3340
 msgid "Justify"
 msgstr "Двустранно подравняване"
 
-#: ../clutter/clutter-text.c:3339
+#: ../clutter/clutter-text.c:3341
 msgid "Whether the text should be justified"
 msgstr "Дали текстът да бъде подреден двустранно"
 
-#: ../clutter/clutter-text.c:3354
+#: ../clutter/clutter-text.c:3356
 msgid "Password Character"
 msgstr "Знак за пароли"
 
-#: ../clutter/clutter-text.c:3355
+#: ../clutter/clutter-text.c:3357
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr ""
 "Ако е зададен, ще се използва като знак за извеждането на съдържанието на "
 "участника"
 
-#: ../clutter/clutter-text.c:3369
+#: ../clutter/clutter-text.c:3371
 msgid "Max Length"
 msgstr "Максимална дължина"
 
-#: ../clutter/clutter-text.c:3370
+#: ../clutter/clutter-text.c:3372
 msgid "Maximum length of the text inside the actor"
 msgstr "Максимална дължина на текста в участника"
 
-#: ../clutter/clutter-text.c:3393
+#: ../clutter/clutter-text.c:3395
 msgid "Single Line Mode"
 msgstr "Едноредов режим"
 
-#: ../clutter/clutter-text.c:3394
+#: ../clutter/clutter-text.c:3396
 msgid "Whether the text should be a single line"
 msgstr "Дали текстът да е само на един ред"
 
-#: ../clutter/clutter-text.c:3408 ../clutter/clutter-text.c:3409
+#: ../clutter/clutter-text.c:3410 ../clutter/clutter-text.c:3411
 msgid "Selected Text Color"
 msgstr "Цвят на избрания текст"
 
-#: ../clutter/clutter-text.c:3423
+#: ../clutter/clutter-text.c:3425
 msgid "Selected Text Color Set"
 msgstr "Зададен цвят на избран текст"
 
-#: ../clutter/clutter-text.c:3424
+#: ../clutter/clutter-text.c:3426
 msgid "Whether the selected text color has been set"
 msgstr "Дали цветът на избран текст e зададен"
 
-#: ../clutter/clutter-texture.c:985
+#: ../clutter/clutter-texture.c:979
 msgid "Sync size of actor"
 msgstr "Синхронизиран размер"
 
-#: ../clutter/clutter-texture.c:986
+#: ../clutter/clutter-texture.c:980
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
 msgstr ""
 "Автоматично синхронизиране на участника към размерите на прилежащия буфер с "
 "пиксели"
 
-#: ../clutter/clutter-texture.c:993
+#: ../clutter/clutter-texture.c:987
 msgid "Disable Slicing"
 msgstr "Изключване на нарязването"
 
-#: ../clutter/clutter-texture.c:994
+#: ../clutter/clutter-texture.c:988
 msgid ""
 "Forces the underlying texture to be singular and not made of smaller space "
 "saving individual textures"
@@ -1946,71 +1733,71 @@ msgstr ""
 "Текстурата да е цяла и единствена, а не нарязана на малки съставящи парчета "
 "за пестене на място"
 
-#: ../clutter/clutter-texture.c:1003
+#: ../clutter/clutter-texture.c:997
 msgid "Tile Waste"
 msgstr "Загуба при нарязване"
 
-#: ../clutter/clutter-texture.c:1004
+#: ../clutter/clutter-texture.c:998
 msgid "Maximum waste area of a sliced texture"
 msgstr "Максималната неизползваема площ при нарязана текстура"
 
-#: ../clutter/clutter-texture.c:1012
+#: ../clutter/clutter-texture.c:1006
 msgid "Horizontal repeat"
 msgstr "Повтаряне по хоризонтала"
 
-#: ../clutter/clutter-texture.c:1013
+#: ../clutter/clutter-texture.c:1007
 msgid "Repeat the contents rather than scaling them horizontally"
 msgstr "Повтаряне, а не разпъване на текстурата по хоризонтала"
 
-#: ../clutter/clutter-texture.c:1020
+#: ../clutter/clutter-texture.c:1014
 msgid "Vertical repeat"
 msgstr "Повтаряне по вертикала"
 
-#: ../clutter/clutter-texture.c:1021
+#: ../clutter/clutter-texture.c:1015
 msgid "Repeat the contents rather than scaling them vertically"
 msgstr "Повтаряне, а не разпъване на текстурата по хоризонтала"
 
-#: ../clutter/clutter-texture.c:1028
+#: ../clutter/clutter-texture.c:1022
 msgid "Filter Quality"
 msgstr "Качество на филтриране"
 
-#: ../clutter/clutter-texture.c:1029
+#: ../clutter/clutter-texture.c:1023
 msgid "Rendering quality used when drawing the texture"
 msgstr "Качество на изобразяване на текстурата"
 
-#: ../clutter/clutter-texture.c:1037
+#: ../clutter/clutter-texture.c:1031
 msgid "Pixel Format"
 msgstr "Формат на пикселите"
 
-#: ../clutter/clutter-texture.c:1038
+#: ../clutter/clutter-texture.c:1032
 msgid "The Cogl pixel format to use"
 msgstr "Форматът на пиксели в Cogl, който да се ползва"
 
-#: ../clutter/clutter-texture.c:1046
+#: ../clutter/clutter-texture.c:1040
 msgid "Cogl Texture"
 msgstr "Текстура на Cogl"
 
-#: ../clutter/clutter-texture.c:1047
+#: ../clutter/clutter-texture.c:1041
 msgid "The underlying Cogl texture handle used to draw this actor"
 msgstr "Указател към текстурата на Cogl за изобразяването на този участник"
 
-#: ../clutter/clutter-texture.c:1054
+#: ../clutter/clutter-texture.c:1048
 msgid "Cogl Material"
 msgstr "Материал на Cogl"
 
-#: ../clutter/clutter-texture.c:1055
+#: ../clutter/clutter-texture.c:1049
 msgid "The underlying Cogl material handle used to draw this actor"
 msgstr "Указател към материала на Cogl за изобразяването на този участник"
 
-#: ../clutter/clutter-texture.c:1072
+#: ../clutter/clutter-texture.c:1066
 msgid "The path of the file containing the image data"
 msgstr "Пътят към файла с изображението"
 
-#: ../clutter/clutter-texture.c:1079
+#: ../clutter/clutter-texture.c:1073
 msgid "Keep Aspect Ratio"
 msgstr "Запазване на отношението на страните"
 
-#: ../clutter/clutter-texture.c:1080
+#: ../clutter/clutter-texture.c:1074
 msgid ""
 "Keep the aspect ratio of the texture when requesting the preferred width or "
 "height"
@@ -2018,22 +1805,22 @@ msgstr ""
 "Запазване на отношението на страните при заявяване на предпочитана широчина "
 "или височина"
 
-#: ../clutter/clutter-texture.c:1106
+#: ../clutter/clutter-texture.c:1100
 msgid "Load asynchronously"
 msgstr "Асинхронно зареждане"
 
-#: ../clutter/clutter-texture.c:1107
+#: ../clutter/clutter-texture.c:1101
 msgid ""
 "Load files inside a thread to avoid blocking when loading images from disk"
 msgstr ""
 "Зареждане на файловете в отделна нишка, за да се избегне блокирането при "
 "зареждането на големи изображения от диска"
 
-#: ../clutter/clutter-texture.c:1123
+#: ../clutter/clutter-texture.c:1117
 msgid "Load data asynchronously"
 msgstr "Асинхронно декодиране на изображенията"
 
-#: ../clutter/clutter-texture.c:1124
+#: ../clutter/clutter-texture.c:1118
 msgid ""
 "Decode image data files inside a thread to reduce blocking when loading "
 "images from disk"
@@ -2041,57 +1828,279 @@ msgstr ""
 "Декодиране на изображенията от файловете в отделна нишка, за да се избегне "
 "блокирането при зареждането на големи изображения от диска"
 
-#: ../clutter/clutter-texture.c:1148
+#: ../clutter/clutter-texture.c:1142
 msgid "Pick With Alpha"
 msgstr "Прилагане на прозрачност"
 
-#: ../clutter/clutter-texture.c:1149
+#: ../clutter/clutter-texture.c:1143
 msgid "Shape actor with alpha channel when picking"
 msgstr "Прилагане на алфа канала към участника"
 
-#: ../clutter/clutter-texture.c:1547 ../clutter/clutter-texture.c:1930
-#: ../clutter/clutter-texture.c:2024 ../clutter/clutter-texture.c:2305
+#: ../clutter/clutter-texture.c:1541 ../clutter/clutter-texture.c:1923
+#: ../clutter/clutter-texture.c:2017 ../clutter/clutter-texture.c:2298
 #, c-format
 msgid "Failed to load the image data"
 msgstr "Неуспешно зареждане на данните на изображението"
 
-#: ../clutter/clutter-texture.c:1693
+#: ../clutter/clutter-texture.c:1687
 #, c-format
 msgid "YUV textures are not supported"
 msgstr "Не се поддържат текстури във формат YUV"
 
-#: ../clutter/clutter-texture.c:1702
+#: ../clutter/clutter-texture.c:1696
 #, c-format
 msgid "YUV2 textues are not supported"
 msgstr "Не се поддържат текстури във формат YUV2"
 
-#: ../clutter/clutter-timeline.c:264
+#: ../clutter/clutter-timeline.c:486
 msgid "Should the timeline automatically restart"
 msgstr "Ако изпълнението автоматично се повтаря, да се:"
 
-#: ../clutter/clutter-timeline.c:278
+#: ../clutter/clutter-timeline.c:500
 msgid "Delay"
 msgstr "забави"
 
-#: ../clutter/clutter-timeline.c:279
+#: ../clutter/clutter-timeline.c:501
 msgid "Delay before start"
 msgstr "забави преди стартиране"
 
-#: ../clutter/clutter-timeline.c:295
+#: ../clutter/clutter-timeline.c:517
 msgid "Duration of the timeline in milliseconds"
 msgstr "Продължителност на изпълнението в милисекунди"
 
-#: ../clutter/clutter-timeline.c:311
+#: ../clutter/clutter-timeline.c:532
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:526
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:335
+msgid "Direction"
+msgstr "Посока"
+
+#: ../clutter/clutter-timeline.c:533
 msgid "Direction of the timeline"
 msgstr "Посока на изпълнение"
 
-#: ../clutter/clutter-timeline.c:326
+#: ../clutter/clutter-timeline.c:548
 msgid "Auto Reverse"
 msgstr "Автоматична смяна на посоката"
 
-#: ../clutter/clutter-timeline.c:327
+#: ../clutter/clutter-timeline.c:549
 msgid "Whether the direction should be reversed when reaching the end"
 msgstr "Дали посоката да се обръща при стигането на края"
+
+#: ../clutter/deprecated/clutter-behaviour.c:241
+msgid "Alpha Object to drive the behaviour"
+msgstr "Обектът за прозрачност, който управлява поведението"
+
+#: ../clutter/deprecated/clutter-behaviour-depth.c:180
+msgid "Start Depth"
+msgstr "Начална дълбочина"
+
+#: ../clutter/deprecated/clutter-behaviour-depth.c:181
+msgid "Initial depth to apply"
+msgstr "Началната дълбочина, която да се приложи"
+
+#: ../clutter/deprecated/clutter-behaviour-depth.c:196
+msgid "End Depth"
+msgstr "Крайна дълбочина"
+
+#: ../clutter/deprecated/clutter-behaviour-depth.c:197
+msgid "Final depth to apply"
+msgstr "Крайната дълбочина, която да се приложи"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:399
+msgid "Start Angle"
+msgstr "Начален ъгъл"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:400
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:282
+msgid "Initial angle"
+msgstr "Начален ъгъл"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:415
+msgid "End Angle"
+msgstr "Краен ъгъл"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:416
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:300
+msgid "Final angle"
+msgstr "Краен ъгъл"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:431
+msgid "Angle x tilt"
+msgstr "Ъгъл на наклона по X"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:432
+msgid "Tilt of the ellipse around x axis"
+msgstr "Наклон на оста на елипсата по оста X"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:447
+msgid "Angle y tilt"
+msgstr "Ъгъл на наклона по Y"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:448
+msgid "Tilt of the ellipse around y axis"
+msgstr "Наклон на оста на елипсата по оста Y"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:463
+msgid "Angle z tilt"
+msgstr "Ъгъл на наклона по Z"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:464
+msgid "Tilt of the ellipse around z axis"
+msgstr "Наклон на оста на елипсата по оста Z"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:480
+msgid "Width of the ellipse"
+msgstr "Широчина на елипсата"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:496
+msgid "Height of ellipse"
+msgstr "Височина на елипсата"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:511
+msgid "Center"
+msgstr "Център"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:512
+msgid "Center of ellipse"
+msgstr "Център на елипсата"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:527
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:336
+msgid "Direction of rotation"
+msgstr "Посока на въртене"
+
+#: ../clutter/deprecated/clutter-behaviour-opacity.c:183
+msgid "Opacity Start"
+msgstr "Начална непрозрачност"
+
+#: ../clutter/deprecated/clutter-behaviour-opacity.c:184
+msgid "Initial opacity level"
+msgstr "Начално ниво на непрозрачността"
+
+#: ../clutter/deprecated/clutter-behaviour-opacity.c:201
+msgid "Opacity End"
+msgstr "Крайна непрозрачност"
+
+#: ../clutter/deprecated/clutter-behaviour-opacity.c:202
+msgid "Final opacity level"
+msgstr "Крайно ниво на непрозрачността"
+
+#: ../clutter/deprecated/clutter-behaviour-path.c:225
+msgid "The ClutterPath object representing the path to animate along"
+msgstr "Обектът ClutterPath за пътя, по който върви анимацията"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:281
+msgid "Angle Begin"
+msgstr "Начален ъгъл"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:299
+msgid "Angle End"
+msgstr "Краен ъгъл"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:317
+msgid "Axis"
+msgstr "Ос"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:318
+msgid "Axis of rotation"
+msgstr "Ос на въртенето"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:353
+msgid "Center X"
+msgstr "Център по X"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:354
+msgid "X coordinate of the center of rotation"
+msgstr "Координатата X на центъра на въртене"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:371
+msgid "Center Y"
+msgstr "Център по Y"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:372
+msgid "Y coordinate of the center of rotation"
+msgstr "Координатата Y на центъра на въртене"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:389
+msgid "Center Z"
+msgstr "Център по Z"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:390
+msgid "Z coordinate of the center of rotation"
+msgstr "Координатата Z на центъра на въртене"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:224
+msgid "X Start Scale"
+msgstr "Начално мащабиране по X"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:225
+msgid "Initial scale on the X axis"
+msgstr "Начално мащабиране по оста X"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:243
+msgid "X End Scale"
+msgstr "Крайно мащабиране по X"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:244
+msgid "Final scale on the X axis"
+msgstr "Крайно мащабиране по оста X"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:262
+msgid "Y Start Scale"
+msgstr "Начално мащабиране по Y"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:263
+msgid "Initial scale on the Y axis"
+msgstr "Начално мащабиране по оста Y"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:281
+msgid "Y End Scale"
+msgstr "Крайно мащабиране по Y"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:282
+msgid "Final scale on the Y axis"
+msgstr "Крайно мащабиране по оста Y"
+
+#: ../clutter/deprecated/clutter-shader.c:257
+msgid "Vertex Source"
+msgstr "Код за обработка на върхове"
+
+#: ../clutter/deprecated/clutter-shader.c:258
+msgid "Source of vertex shader"
+msgstr "Код на програмата за обработка на върхове"
+
+#: ../clutter/deprecated/clutter-shader.c:274
+msgid "Fragment Source"
+msgstr "Код за обработка на фрагменти"
+
+#: ../clutter/deprecated/clutter-shader.c:275
+msgid "Source of fragment shader"
+msgstr "Код на програмата за обработка на фрагменти"
+
+#: ../clutter/deprecated/clutter-shader.c:292
+msgid "Compiled"
+msgstr "Компилирана"
+
+#: ../clutter/deprecated/clutter-shader.c:293
+msgid "Whether the shader is compiled and linked"
+msgstr "Дали програмата за графична обработка е компилирана и свързана"
+
+#: ../clutter/deprecated/clutter-shader.c:310
+msgid "Whether the shader is enabled"
+msgstr "Дали програмата за графична обработка е включена"
+
+#: ../clutter/deprecated/clutter-shader.c:521
+#, c-format
+msgid "%s compilation failed: %s"
+msgstr "%s неуспешно компилиране: %s"
+
+#: ../clutter/deprecated/clutter-shader.c:522
+msgid "Vertex shader"
+msgstr "Програма за графична обработка на върхове"
+
+#: ../clutter/deprecated/clutter-shader.c:523
+msgid "Fragment shader"
+msgstr "Програма за графична обработка на фрагменти"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:147
 msgid "sysfs Path"
@@ -2109,19 +2118,48 @@ msgstr "Път до устройството"
 msgid "Path of the device node"
 msgstr "Път до възела на устройството"
 
-#: ../clutter/x11/clutter-backend-x11.c:483
+#: ../clutter/gdk/clutter-backend-gdk.c:287
+#, c-format
+msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
+msgstr "Липсва подходящ обект CoglWinsys за GdkDisplay от вида %s"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:384
+msgid "Surface"
+msgstr "Повърхност"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:385
+msgid "The underlying wayland surface"
+msgstr "Повърхност на Wayland"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:392
+msgid "Surface width"
+msgstr "Широчина на повърхността"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:393
+msgid "The width of the underlying wayland surface"
+msgstr "Широчина на повърхността на Wayland"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:401
+msgid "Surface height"
+msgstr "Височина на повърхността"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:402
+msgid "The height of the underlying wayland surface"
+msgstr "Височината на повърхността на Wayland"
+
+#: ../clutter/x11/clutter-backend-x11.c:506
 msgid "X display to use"
 msgstr "Кой дисплей на X да се ползва"
 
-#: ../clutter/x11/clutter-backend-x11.c:489
+#: ../clutter/x11/clutter-backend-x11.c:512
 msgid "X screen to use"
 msgstr "Кой екран на X да се ползва"
 
-#: ../clutter/x11/clutter-backend-x11.c:494
+#: ../clutter/x11/clutter-backend-x11.c:517
 msgid "Make X calls synchronous"
 msgstr "Синхронни извиквания на X"
 
-#: ../clutter/x11/clutter-backend-x11.c:501
+#: ../clutter/x11/clutter-backend-x11.c:524
 msgid "Enable XInput support"
 msgstr "Включване на поддръжката на XInput"
 
@@ -2129,99 +2167,99 @@ msgstr "Включване на поддръжката на XInput"
 msgid "The Clutter backend"
 msgstr "Ядро на Clutter"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:545
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:536
 msgid "Pixmap"
 msgstr "Поле с пиксели"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:546
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:537
 msgid "The X11 Pixmap to be bound"
 msgstr "Кое поле с пиксели на X11 да се ползва"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:554
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:545
 msgid "Pixmap width"
 msgstr "Широчина на полето"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:555
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:546
 msgid "The width of the pixmap bound to this texture"
 msgstr "Широчината на полето с пиксели за тази текстура"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:563
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:554
 msgid "Pixmap height"
 msgstr "Височина на полето"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:564
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:555
 msgid "The height of the pixmap bound to this texture"
 msgstr "Височина на полето с пиксели за тази текстура"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:572
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:563
 msgid "Pixmap Depth"
 msgstr "Битове на пиксел за полето"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:573
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:564
 msgid "The depth (in number of bits) of the pixmap bound to this texture"
 msgstr "Дълбочината на цвета в битове за пиксел за тази текстура"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:581
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:572
 msgid "Automatic Updates"
 msgstr "Автоматично обновяване"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:582
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:573
 msgid "If the texture should be kept in sync with any pixmap changes."
 msgstr "Дали текстурата да се синхронизира към промените на полето с пиксели"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:590
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:581
 msgid "Window"
 msgstr "Прозорец"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:591
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:582
 msgid "The X11 Window to be bound"
 msgstr "Съответният прозорец на X11"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:599
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:590
 msgid "Window Redirect Automatic"
 msgstr "Автоматично пренасочване на прозореца"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:600
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:591
 msgid "If composite window redirects are set to Automatic (or Manual if false)"
 msgstr ""
 "Дали пренасочванията на наслагвания прозорец са автоматични (или са изрични)"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:610
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:601
 msgid "Window Mapped"
 msgstr "За изобразяване"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:611
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:602
 msgid "If window is mapped"
 msgstr "Дали прозорецът да се изобрази заедно със сцената си"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:620
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:611
 msgid "Destroyed"
 msgstr "Унищожен"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:621
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:612
 msgid "If window has been destroyed"
 msgstr "Дали прозорецът е унищожен"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:629
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:620
 msgid "Window X"
 msgstr "X на прозореца"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:630
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:621
 msgid "X position of window on screen according to X11"
 msgstr "Хоризонтално положение на прозореца по X11"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:638
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:629
 msgid "Window Y"
 msgstr "Y на прозореца"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:639
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:630
 msgid "Y position of window on screen according to X11"
 msgstr "Вертикално положение на прозореца по X11"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:646
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:637
 msgid "Window Override Redirect"
 msgstr "Изрично пренасочване на прозореца"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:647
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:638
 msgid "If this is an override-redirect window"
 msgstr "Дали прозорецът е с изрично пренасочване"
