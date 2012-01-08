@@ -115,17 +115,7 @@ paint (Data *data)
   cogl_framebuffer_rotate (fb, rotation, 0, 1, 0);
   cogl_framebuffer_rotate (fb, rotation, 1, 0, 0);
 
-  /* Whenever you draw something with Cogl using geometry defined by
-   * one of cogl_rectangle, cogl_polygon, cogl_path or
-   * cogl_vertex_buffer then you have a current pipeline that defines
-   * how that geometry should be processed.
-   *
-   * Here we are making our crate pipeline current which will sample
-   * the crate texture when fragment processing. */
-  cogl_set_source (data->crate_pipeline);
-
-  /* Give Cogl some geometry to draw. */
-  cogl_primitive_draw (data->prim);
+  cogl_framebuffer_draw_primitive (fb, data->crate_pipeline, data->prim);
 
   cogl_set_depth_test_enabled (FALSE);
 

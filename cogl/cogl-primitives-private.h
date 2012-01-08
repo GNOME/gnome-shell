@@ -33,7 +33,9 @@ G_BEGIN_DECLS
    where the code may be called while the journal is already being
    flushed. In that case using the journal would go wrong */
 void
-_cogl_rectangle_immediate (float x_1,
+_cogl_rectangle_immediate (CoglFramebuffer *framebuffer,
+                           CoglPipeline *pipeline,
+                           float x_1,
                            float y_1,
                            float x_2,
                            float y_2);

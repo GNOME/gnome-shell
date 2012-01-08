@@ -88,11 +88,6 @@
       <title>Geometry</title>
       <xi:include href="xml/cogl-primitive.xml"/>
       <xi:include href="xml/cogl-paths.xml"/>
-    </section>
-
-    <section id="cogl-drawing-apis">
-      <title>Drawing</title>
-      <xi:include href="xml/cogl-drawing.xml"/>
       <xi:include href="xml/cogl-rectangle.xml"/>
     </section>
 

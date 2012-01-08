@@ -364,7 +364,9 @@ emit_vertex_buffer_geometry (CoglPangoDisplayListNode *node)
       cogl_object_unref (attributes[1]);
     }
 
-  cogl_primitive_draw (node->d.texture.primitive);
+  cogl_framebuffer_draw_primitive (cogl_get_draw_framebuffer (),
+                                   cogl_get_source (),
+                                   node->d.texture.primitive);
 }
 
 static void

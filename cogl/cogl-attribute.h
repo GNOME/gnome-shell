@@ -213,34 +213,6 @@ cogl_attribute_set_buffer (CoglAttribute *attribute,
 gboolean
 cogl_is_attribute (void *object);
 
-void
-cogl_vdraw_attributes (CoglVerticesMode mode,
-                       int first_vertex,
-                       int n_vertices,
-                       ...) G_GNUC_NULL_TERMINATED;
-
-void
-cogl_draw_attributes (CoglVerticesMode mode,
-                      int first_vertex,
-                      int n_vertices,
-                      CoglAttribute **attributes,
-                      int n_attributes);
-
-void
-cogl_vdraw_indexed_attributes (CoglVerticesMode mode,
-                               int first_vertex,
-                               int n_vertices,
-                               CoglIndices *indices,
-                               ...) G_GNUC_NULL_TERMINATED;
-
-void
-cogl_draw_indexed_attributes (CoglVerticesMode mode,
-                              int first_vertex,
-                              int n_vertices,
-                              CoglIndices *indices,
-                              CoglAttribute **attributes,
-                              int n_attributes);
-
 G_END_DECLS
 
 #endif /* __COGL_ATTRIBUTE_H__ */

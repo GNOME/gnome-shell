@@ -237,7 +237,6 @@ cogl_primitive_set_mode
 cogl_primitive_set_attributes
 cogl_primitive_get_indices
 cogl_primitive_set_indices
-cogl_primitive_draw
 cogl_primitive_copy
 CoglPrimitiveAttributeCallback
 cogl_primitive_foreach_attribute
@@ -304,15 +303,6 @@ cogl_path_set_fill_rule
 cogl_path_get_fill_rule
 cogl_path_fill
 cogl_path_stroke
-</SECTION>
-
-<SECTION>
-<FILE>cogl-drawing</FILE>
-<TITLE>Draw Vertex Attributes</TITLE>
-cogl_draw_vertex_attributes
-cogl_draw_vertex_attributes_array
-cogl_draw_indexed_vertex_attributes
-cogl_draw_indexed_vertex_attributes_array
 </SECTION>
 
 <SECTION>
@@ -419,6 +409,13 @@ cogl_framebuffer_set_point_samples_per_pixel
 cogl_framebuffer_get_context
 cogl_framebuffer_clear
 cogl_framebuffer_clear4f
+
+<SUBSECTION>
+cogl_framebuffer_draw_primitive
+cogl_framebuffer_draw_attributes
+cogl_framebuffer_draw_indexed_attributes
+
+<SUBSECTION>
 cogl_framebuffer_swap_buffers
 cogl_framebuffer_swap_region
 cogl_framebuffer_add_swap_buffers_callback

@@ -29,6 +29,7 @@
 #include "cogl-clip-state-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-winsys-private.h"
+#include "cogl-attribute-private.h"
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include <X11/Xlib.h>
@@ -366,5 +367,35 @@ _cogl_framebuffer_restore_clip_stack (CoglFramebuffer *framebuffer);
 
 void
 _cogl_framebuffer_unref (CoglFramebuffer *framebuffer);
+
+void
+_cogl_framebuffer_draw_primitive (CoglFramebuffer *framebuffer,
+                                  CoglPipeline *pipeline,
+                                  CoglPrimitive *primitive,
+                                  CoglDrawFlags flags);
+
+/* This can be called directly by the CoglJournal to draw attributes
+ * skipping the implicit journal flush, the framebuffer flush and
+ * pipeline validation. */
+void
+_cogl_framebuffer_draw_attributes (CoglFramebuffer *framebuffer,
+                                   CoglPipeline *pipeline,
+                                   CoglVerticesMode mode,
+                                   int first_vertex,
+                                   int n_vertices,
+                                   CoglAttribute **attributes,
+                                   int n_attributes,
+                                   CoglDrawFlags flags);
+
+void
+_cogl_framebuffer_draw_indexed_attributes (CoglFramebuffer *framebuffer,
+                                           CoglPipeline *pipeline,
+                                           CoglVerticesMode mode,
+                                           int first_vertex,
+                                           int n_vertices,
+                                           CoglIndices *indices,
+                                           CoglAttribute **attributes,
+                                           int n_attributes,
+                                           CoglDrawFlags flags);
 
 #endif /* __COGL_FRAMEBUFFER_PRIVATE_H */

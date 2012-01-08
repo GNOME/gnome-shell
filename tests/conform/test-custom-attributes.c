@@ -6,6 +6,7 @@
 
 typedef struct _TestState
 {
+  CoglFramebuffer *fb;
   CoglPipeline *pipeline;
 } TestState;
 
@@ -57,20 +58,18 @@ test_float_verts (TestState *state, int offset_x, int offset_y)
                                       4, /* n_components */
                                       COGL_ATTRIBUTE_TYPE_FLOAT);
 
-  cogl_push_source (state->pipeline);
-
   cogl_push_matrix ();
   cogl_translate (offset_x, offset_y, 0.0f);
 
-  cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLES,
-                        0, /* first_vertex */
-                        6, /* n_vertices */
-                        attributes,
-                        2 /* n_attributes */);
+  cogl_framebuffer_draw_attributes (state->fb,
+                                    state->pipeline,
+                                    COGL_VERTICES_MODE_TRIANGLES,
+                                    0, /* first_vertex */
+                                    6, /* n_vertices */
+                                    attributes,
+                                    2 /* n_attributes */);
 
   cogl_pop_matrix ();
-
-  cogl_pop_source ();
 
   cogl_object_unref (attributes[1]);
   cogl_object_unref (attributes[0]);
@@ -119,16 +118,16 @@ test_byte_verts (TestState *state, int offset_x, int offset_y)
                                       COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
   cogl_attribute_set_normalized (attributes[1], TRUE);
 
-  cogl_push_source (state->pipeline);
-
   cogl_push_matrix ();
   cogl_translate (offset_x, offset_y, 0.0f);
 
-  cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLES,
-                        0, /* first_vertex */
-                        6, /* n_vertices */
-                        attributes,
-                        2 /* n_attributes */);
+  cogl_framebuffer_draw_attributes (state->fb,
+                                    state->pipeline,
+                                    COGL_VERTICES_MODE_TRIANGLES,
+                                    0, /* first_vertex */
+                                    6, /* n_vertices */
+                                    attributes,
+                                    2 /* n_attributes */);
 
   cogl_object_unref (attributes[1]);
 
@@ -144,15 +143,15 @@ test_byte_verts (TestState *state, int offset_x, int offset_y)
 
   cogl_translate (20, 0, 0);
 
-  cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLES,
-                        0, /* first_vertex */
-                        3, /* n_vertices */
-                        attributes,
-                        2 /* n_attributes */);
+  cogl_framebuffer_draw_attributes (state->fb,
+                                    state->pipeline,
+                                    COGL_VERTICES_MODE_TRIANGLES,
+                                    0, /* first_vertex */
+                                    3, /* n_vertices */
+                                    attributes,
+                                    2 /* n_attributes */);
 
   cogl_pop_matrix ();
-
-  cogl_pop_source ();
 
   cogl_object_unref (attributes[0]);
   cogl_object_unref (attributes[1]);
@@ -200,20 +199,18 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
                                       2, /* n_components */
                                       COGL_ATTRIBUTE_TYPE_SHORT);
 
-  cogl_push_source (pipeline);
-
   cogl_push_matrix ();
   cogl_translate (offset_x + 10.0f, offset_y + 10.0f, 0.0f);
 
-  cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLES,
-                        0, /* first_vertex */
-                        3, /* n_vertices */
-                        attributes,
-                        1 /* n_attributes */);
+  cogl_framebuffer_draw_attributes (state->fb,
+                                    pipeline,
+                                    COGL_VERTICES_MODE_TRIANGLES,
+                                    0, /* first_vertex */
+                                    3, /* n_vertices */
+                                    attributes,
+                                    1 /* n_attributes */);
 
   cogl_pop_matrix ();
-
-  cogl_pop_source ();
 
   cogl_object_unref (attributes[0]);
 
@@ -228,20 +225,18 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
   pipeline2 = cogl_pipeline_copy (pipeline);
   cogl_pipeline_set_color4ub (pipeline2, 0, 255, 0, 255);
 
-  cogl_push_source (pipeline2);
-
   cogl_push_matrix ();
   cogl_translate (offset_x + 10.0f - 65525.0f, offset_y - 65525, 0.0f);
 
-  cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLES,
-                        0, /* first_vertex */
-                        3, /* n_vertices */
-                        attributes,
-                        1 /* n_attributes */);
+  cogl_framebuffer_draw_attributes (state->fb,
+                                    pipeline2,
+                                    COGL_VERTICES_MODE_TRIANGLES,
+                                    0, /* first_vertex */
+                                    3, /* n_vertices */
+                                    attributes,
+                                    1 /* n_attributes */);
 
   cogl_pop_matrix ();
-
-  cogl_pop_source ();
 
   cogl_object_unref (attributes[0]);
 
@@ -277,6 +272,7 @@ test_cogl_custom_attributes (TestUtilsGTestFixture *fixture,
     {
       CoglSnippet *snippet;
       TestState state;
+      state.fb = shared_state->fb;
 
       cogl_ortho (/* left, right */
                   0, cogl_framebuffer_get_width (shared_state->fb),

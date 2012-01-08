@@ -576,34 +576,6 @@ _cogl_primitive_immutable_unref (CoglPrimitive *primitive)
 }
 
 void
-_cogl_primitive_draw (CoglPrimitive *primitive,
-                      CoglDrawFlags flags)
-{
-  if (primitive->indices)
-    _cogl_draw_indexed_attributes (primitive->mode,
-                                   primitive->first_vertex,
-                                   primitive->n_vertices,
-                                   primitive->indices,
-                                   primitive->attributes,
-                                   primitive->n_attributes,
-                                   flags);
-  else
-    _cogl_draw_attributes (primitive->mode,
-                           primitive->first_vertex,
-                           primitive->n_vertices,
-                           primitive->attributes,
-                           primitive->n_attributes,
-                           flags);
-}
-
-/* XXX: cogl_draw_primitive() ? */
-void
-cogl_primitive_draw (CoglPrimitive *primitive)
-{
-  _cogl_primitive_draw (primitive, 0 /* no flags */);
-}
-
-void
 cogl_primitive_foreach_attribute (CoglPrimitive *primitive,
                                   CoglPrimitiveAttributeCallback callback,
                                   void *user_data)

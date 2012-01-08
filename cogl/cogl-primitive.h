@@ -803,18 +803,6 @@ CoglPrimitive *
 cogl_primitive_copy (CoglPrimitive *primitive);
 
 /**
- * cogl_primitive_draw:
- * @primitive: A #CoglPrimitive object
- *
- * Draw the given @primitive with the current source material.
- *
- * Since: 1.6
- * Stability: Unstable
- */
-void
-cogl_primitive_draw (CoglPrimitive *primitive);
-
-/**
  * cogl_is_primitive:
  * @object: A #CoglObject
  *

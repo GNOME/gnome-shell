@@ -1618,9 +1618,18 @@ update_primitive_and_draw (CoglVertexBuffer *buffer,
                                    pipeline_priv);
     }
 
+  /* XXX: although this may seem redundant, we need to do this since
+   * CoglVertexBuffers can be used with legacy state and its the source stack
+   * which track whether legacy state is enabled.
+   *
+   * (We only have a CoglDrawFlag to disable legacy state not one
+   *  to enable it) */
   cogl_push_source (pipeline_priv->real_source);
 
-  cogl_primitive_draw (buffer->primitive);
+  _cogl_framebuffer_draw_primitive (cogl_get_draw_framebuffer (),
+                                    pipeline_priv->real_source,
+                                    buffer->primitive,
+                                    0 /* no draw flags */);
 
   cogl_pop_source ();
 }

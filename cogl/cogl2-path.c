@@ -230,10 +230,12 @@ _cogl_path_stroke_nodes (CoglPath *path)
     {
       node = &g_array_index (data->path_nodes, CoglPathNode, path_start);
 
-      cogl_vdraw_attributes (COGL_VERTICES_MODE_LINE_STRIP,
-                             0, node->path_size,
-                             data->stroke_attributes[path_num],
-                             NULL);
+      cogl_framebuffer_vdraw_attributes (cogl_get_draw_framebuffer (),
+                                         source,
+                                         COGL_VERTICES_MODE_LINE_STRIP,
+                                         0, node->path_size,
+                                         data->stroke_attributes[path_num],
+                                         NULL);
 
       path_num++;
     }
@@ -322,8 +324,9 @@ void
 _cogl_path_fill_nodes (CoglPath *path, CoglDrawFlags flags)
 {
   gboolean needs_fallback = FALSE;
+  CoglPipeline *pipeline = cogl_get_source ();
 
-  _cogl_pipeline_foreach_layer_internal (cogl_get_source (),
+  _cogl_pipeline_foreach_layer_internal (pipeline,
                                          validate_layer_cb, &needs_fallback);
   if (needs_fallback)
     {
@@ -333,13 +336,15 @@ _cogl_path_fill_nodes (CoglPath *path, CoglDrawFlags flags)
 
   _cogl_path_build_fill_attribute_buffer (path);
 
-  _cogl_draw_indexed_attributes (COGL_VERTICES_MODE_TRIANGLES,
-                                 0, /* first_vertex */
-                                 path->data->fill_vbo_n_indices,
-                                 path->data->fill_vbo_indices,
-                                 path->data->fill_attributes,
-                                 COGL_PATH_N_ATTRIBUTES,
-                                 flags);
+  _cogl_framebuffer_draw_indexed_attributes (cogl_get_draw_framebuffer (),
+                                             pipeline,
+                                             COGL_VERTICES_MODE_TRIANGLES,
+                                             0, /* first_vertex */
+                                             path->data->fill_vbo_n_indices,
+                                             path->data->fill_vbo_indices,
+                                             path->data->fill_attributes,
+                                             COGL_PATH_N_ATTRIBUTES,
+                                             flags);
 }
 
 void

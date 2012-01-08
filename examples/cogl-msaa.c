@@ -77,8 +77,6 @@ main (int argc, char **argv)
         cogl_framebuffer_set_samples_per_pixel (offscreen_fb, 0);
       }
 
-    cogl_push_framebuffer (fb);
-
     triangle = cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,
                                         3, triangle_vertices);
     pipeline = cogl_pipeline_new ();
@@ -93,12 +91,11 @@ main (int argc, char **argv)
         cogl_framebuffer_push_matrix (fb);
         cogl_framebuffer_scale (fb, 0.5, 1, 1);
         cogl_framebuffer_translate (fb, -1, 0, 0);
-        cogl_set_source (pipeline);
-        cogl_primitive_draw (triangle);
+        cogl_framebuffer_draw_primitive (fb, pipeline, triangle);
         cogl_framebuffer_pop_matrix (fb);
 
         cogl_push_framebuffer (offscreen_fb);
-        cogl_primitive_draw (triangle);
+        cogl_framebuffer_draw_primitive (fb, pipeline, triangle);
         cogl_framebuffer_resolve_samples (offscreen_fb);
         cogl_pop_framebuffer ();
 

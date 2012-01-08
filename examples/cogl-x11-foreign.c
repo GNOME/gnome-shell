@@ -42,6 +42,7 @@ main (int argc, char **argv)
   CoglContext *ctx;
   CoglOnscreen *onscreen;
   CoglFramebuffer *fb;
+  CoglPipeline *pipeline;
   GError *error = NULL;
   guint32 visual;
   XVisualInfo template, *xvisinfo;
@@ -147,10 +148,10 @@ main (int argc, char **argv)
   XMapWindow (xdpy, xwin);
 
   fb = COGL_FRAMEBUFFER (onscreen);
-  cogl_push_framebuffer (fb);
 
   triangle = cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,
                                       3, triangle_vertices);
+  pipeline = cogl_pipeline_new ();
   for (;;)
     {
       CoglPollFD *poll_fds;
@@ -170,7 +171,7 @@ main (int argc, char **argv)
           cogl_xlib_renderer_handle_event (renderer, &event);
         }
       cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
-      cogl_primitive_draw (triangle);
+      cogl_framebuffer_draw_primitive (fb, pipeline, triangle);
       cogl_framebuffer_swap_buffers (fb);
 
       cogl_poll_get_info (ctx, &poll_fds, &n_poll_fds, &timeout);

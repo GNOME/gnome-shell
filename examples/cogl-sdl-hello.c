@@ -9,6 +9,7 @@
 typedef struct Data
 {
   CoglPrimitive *triangle;
+  CoglPipeline *pipeline;
   float center_x, center_y;
   CoglFramebuffer *fb;
   gboolean quit;
@@ -24,7 +25,7 @@ redraw (Data *data)
   cogl_framebuffer_push_matrix (fb);
   cogl_framebuffer_translate (fb, data->center_x, -data->center_y, 0.0f);
 
-  cogl_primitive_draw (data->triangle);
+  cogl_framebuffer_draw_primitive (fb, data->pipeline, data->triangle);
   cogl_framebuffer_pop_matrix (fb);
 
   cogl_framebuffer_swap_buffers (fb);
@@ -147,10 +148,9 @@ main (int argc, char **argv)
 
   cogl_onscreen_show (onscreen);
 
-  cogl_push_framebuffer (data.fb);
-
   data.triangle = cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,
                                            3, triangle_vertices);
+  data.pipeline = cogl_pipeline_new ();
   while (!data.quit)
     {
       CoglPollFD *poll_fds;
@@ -172,8 +172,6 @@ main (int argc, char **argv)
 
       cogl_poll_dispatch (ctx, poll_fds, n_poll_fds);
     }
-
-  cogl_pop_framebuffer ();
 
   cogl_object_unref (ctx);
   cogl_object_unref (display);

@@ -80,6 +80,7 @@ struct _CoglandCompositor
   GQueue frame_callbacks;
 
   CoglPrimitive *triangle;
+  CoglPipeline *triangle_pipeline;
 
   GSource *wayland_event_source;
 
@@ -512,7 +513,8 @@ paint_cb (void *user_data)
 
       cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 
-      cogl_primitive_draw (compositor->triangle);
+      cogl_framebuffer_draw_primitive (fb, compositor->triangle_pipeline,
+                                       compositor->triangle);
 
       for (l2 = compositor->surfaces; l2; l2 = l2->next)
         {
@@ -751,6 +753,7 @@ main (int argc, char **argv)
 
   compositor.triangle = cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,
                                                  3, triangle_vertices);
+  compositor.triangle_pipeline = cogl_pipeline_new ();
 
   g_timeout_add (16, paint_cb, &compositor);
 

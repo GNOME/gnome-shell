@@ -38,6 +38,7 @@
 #include "cogl-attribute-private.h"
 #include "cogl-private.h"
 #include "cogl-meta-texture.h"
+#include "cogl-framebuffer-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -839,7 +840,9 @@ cogl_rectangle (float x_1,
 }
 
 void
-_cogl_rectangle_immediate (float x_1,
+_cogl_rectangle_immediate (CoglFramebuffer *framebuffer,
+                           CoglPipeline *pipeline,
+                           float x_1,
                            float y_1,
                            float x_2,
                            float y_2)
@@ -866,14 +869,17 @@ _cogl_rectangle_immediate (float x_1,
                                       2, /* n_components */
                                       COGL_ATTRIBUTE_TYPE_FLOAT);
 
-  _cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLE_STRIP,
-                         0, /* first_index */
-                         4, /* n_vertices */
-                         attributes,
-                         1,
-                         COGL_DRAW_SKIP_JOURNAL_FLUSH |
-                         COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                         COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+  _cogl_framebuffer_draw_attributes (framebuffer,
+                                     pipeline,
+                                     COGL_VERTICES_MODE_TRIANGLE_STRIP,
+                                     0, /* first_index */
+                                     4, /* n_vertices */
+                                     attributes,
+                                     1,
+                                     COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                                     COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                                     COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
+                                     COGL_DRAW_SKIP_LEGACY_STATE);
 
 
   cogl_object_unref (attributes[0]);
@@ -1093,12 +1099,21 @@ cogl_polygon (const CoglTextureVertex *vertices,
                         v,
                         ctx->polygon_vertices->len * sizeof (float));
 
+  /* XXX: although this may seem redundant, we need to do this since
+   * cogl_polygon() can be used with legacy state and its the source stack
+   * which track whether legacy state is enabled.
+   *
+   * (We only have a CoglDrawFlag to disable legacy state not one
+   *  to enable it) */
   cogl_push_source (pipeline);
 
-  cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLE_FAN,
-                        0, n_vertices,
-                        attributes,
-                        n_attributes);
+  _cogl_framebuffer_draw_attributes (cogl_get_draw_framebuffer (),
+                                     pipeline,
+                                     COGL_VERTICES_MODE_TRIANGLE_FAN,
+                                     0, n_vertices,
+                                     attributes,
+                                     n_attributes,
+                                     0 /* no draw flags */);
 
   cogl_pop_source ();
 

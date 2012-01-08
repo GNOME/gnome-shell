@@ -273,7 +273,8 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
   CoglAttribute **attributes;
   CoglDrawFlags draw_flags = (COGL_DRAW_SKIP_JOURNAL_FLUSH |
                               COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                              COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+                              COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
+                              COGL_DRAW_SKIP_LEGACY_STATE);
 
   COGL_STATIC_TIMER (time_flush_modelview_and_entries,
                      "flush: pipeline+entries", /* parent */
@@ -296,7 +297,6 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
     }
 
   attributes = (CoglAttribute **)state->attributes->data;
-  _cogl_push_source (state->source, FALSE);
 
   if (!_cogl_pipeline_get_real_blend_enabled (state->source))
     draw_flags |= COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE;
@@ -305,33 +305,40 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
   if (ctx->driver == COGL_DRIVER_GL)
     {
       /* XXX: it's rather evil that we sneak in the GL_QUADS enum here... */
-      _cogl_draw_attributes (GL_QUADS,
-                             state->current_vertex, batch_len * 4,
-                             attributes,
-                             state->attributes->len,
-                             draw_flags);
+      _cogl_framebuffer_draw_attributes (state->framebuffer,
+                                         state->source,
+                                         GL_QUADS,
+                                         state->current_vertex, batch_len * 4,
+                                         attributes,
+                                         state->attributes->len,
+                                         draw_flags);
     }
   else
 #endif /* HAVE_COGL_GL */
     {
       if (batch_len > 1)
         {
-          _cogl_draw_indexed_attributes (COGL_VERTICES_MODE_TRIANGLES,
-                                         state->current_vertex * 6 / 4,
-                                         batch_len * 6,
-                                         state->indices,
-                                         attributes,
-                                         state->attributes->len,
-                                         draw_flags);
-
+          CoglVerticesMode mode = COGL_VERTICES_MODE_TRIANGLES;
+          int first_vertex = state->current_vertex * 6 / 4;
+          _cogl_framebuffer_draw_indexed_attributes (state->framebuffer,
+                                                     state->source,
+                                                     mode,
+                                                     first_vertex,
+                                                     batch_len * 6,
+                                                     state->indices,
+                                                     attributes,
+                                                     state->attributes->len,
+                                                     draw_flags);
         }
       else
         {
-          _cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLE_FAN,
-                                 state->current_vertex, 4,
-                                 attributes,
-                                 state->attributes->len,
-                                 draw_flags);
+          _cogl_framebuffer_draw_attributes (state->framebuffer,
+                                             state->source,
+                                             COGL_VERTICES_MODE_TRIANGLE_FAN,
+                                             state->current_vertex, 4,
+                                             attributes,
+                                             state->attributes->len,
+                                             draw_flags);
         }
     }
 
@@ -369,15 +376,16 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
                                   (ctxt->journal_rectangles_color & 4) ?
                                   color_intensity : 0,
                                   0xff);
-      cogl_set_source (outline);
 
       loop_attributes[0] = attributes[0]; /* we just want the position */
       for (i = 0; i < batch_len; i++)
-        _cogl_draw_attributes (COGL_VERTICES_MODE_LINE_LOOP,
-                               4 * i + state->current_vertex, 4,
-                               loop_attributes,
-                               1,
-                               draw_flags);
+        _cogl_framebuffer_draw_attributes (state->framebuffer,
+                                           outline,
+                                           COGL_VERTICES_MODE_LINE_LOOP,
+                                           4 * i + state->current_vertex, 4,
+                                           loop_attributes,
+                                           1,
+                                           draw_flags);
 
       /* Go to the next color */
       do
@@ -389,8 +397,6 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
     }
 
   state->current_vertex += (4 * batch_len);
-
-  cogl_pop_source ();
 
   COGL_TIMER_STOP (_cogl_uprof_context, time_flush_modelview_and_entries);
 }

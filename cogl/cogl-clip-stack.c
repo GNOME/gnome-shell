@@ -218,9 +218,6 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
     _cogl_framebuffer_get_projection_stack (framebuffer);
   CoglContext *ctx = cogl_framebuffer_get_context (framebuffer);
 
-  /* temporarily swap in our special stenciling pipeline */
-  _cogl_push_source (ctx->stencil_pipeline, FALSE);
-
   /* This can be called from the journal code which doesn't flush
      the matrix stacks between calls so we need to ensure they're
      flushed now */
@@ -239,7 +236,9 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
       GE( ctx, glStencilFunc (GL_NEVER, 0x1, 0x1) );
       GE( ctx, glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
 
-      _cogl_rectangle_immediate (x_1, y_1, x_2, y_2);
+      _cogl_rectangle_immediate (framebuffer,
+                                 ctx->stencil_pipeline,
+                                 x_1, y_1, x_2, y_2);
     }
   else
     {
@@ -247,7 +246,9 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
 	 rectangle */
       GE( ctx, glStencilFunc (GL_NEVER, 0x1, 0x3) );
       GE( ctx, glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
-      _cogl_rectangle_immediate (x_1, y_1, x_2, y_2);
+      _cogl_rectangle_immediate (framebuffer,
+                                 ctx->stencil_pipeline,
+                                 x_1, y_1, x_2, y_2);
 
       /* Subtract one from all pixels in the stencil buffer so that
 	 only pixels where both the original stencil buffer and the
@@ -263,7 +264,9 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
       _cogl_context_set_current_projection (ctx, projection_stack);
       _cogl_context_set_current_modelview (ctx, modelview_stack);
 
-      _cogl_rectangle_immediate (-1.0, -1.0, 1.0, 1.0);
+      _cogl_rectangle_immediate (framebuffer,
+                                 ctx->stencil_pipeline,
+                                 -1.0, -1.0, 1.0, 1.0);
 
       _cogl_matrix_stack_pop (modelview_stack);
       _cogl_matrix_stack_pop (projection_stack);
@@ -272,9 +275,6 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
   /* Restore the stencil mode */
   GE( ctx, glStencilFunc (GL_EQUAL, 0x1, 0x1) );
   GE( ctx, glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
-
-  /* restore the original source pipeline */
-  cogl_pop_source ();
 }
 
 typedef void (*SilhouettePaintCallback) (void *user_data);
@@ -301,9 +301,6 @@ add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
      flushed now */
   _cogl_context_set_current_projection (ctx, projection_stack);
   _cogl_context_set_current_modelview (ctx, modelview_stack);
-
-  /* Just setup a simple pipeline that doesn't use texturing... */
-  _cogl_push_source (ctx->stencil_pipeline, FALSE);
 
   _cogl_pipeline_flush_gl_state (ctx->stencil_pipeline, FALSE, 0);
 
@@ -337,7 +334,9 @@ add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
           /* Just clear the bounding box */
           GE( ctx, glStencilMask (~(GLuint) 0) );
           GE( ctx, glStencilOp (GL_ZERO, GL_ZERO, GL_ZERO) );
-          _cogl_rectangle_immediate (bounds_x1, bounds_y1,
+          _cogl_rectangle_immediate (framebuffer,
+                                     ctx->stencil_pipeline,
+                                     bounds_x1, bounds_y1,
                                      bounds_x2, bounds_y2);
         }
       GE (ctx, glStencilMask (1));
@@ -364,8 +363,10 @@ add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
       _cogl_matrix_stack_push (modelview_stack);
       _cogl_matrix_stack_load_identity (modelview_stack);
 
-      _cogl_rectangle_immediate (-1.0, -1.0, 1.0, 1.0);
-      _cogl_rectangle_immediate (-1.0, -1.0, 1.0, 1.0);
+      _cogl_rectangle_immediate (framebuffer, ctx->stencil_pipeline,
+                                 -1.0, -1.0, 1.0, 1.0);
+      _cogl_rectangle_immediate (framebuffer, ctx->stencil_pipeline,
+                                 -1.0, -1.0, 1.0, 1.0);
 
       _cogl_matrix_stack_pop (modelview_stack);
       _cogl_matrix_stack_pop (projection_stack);
@@ -377,9 +378,6 @@ add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
 
   GE (ctx, glStencilFunc (GL_EQUAL, 0x1, 0x1));
   GE (ctx, glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP));
-
-  /* restore the original pipeline */
-  cogl_pop_source ();
 }
 
 static void
@@ -414,10 +412,13 @@ add_stencil_clip_path (CoglFramebuffer *framebuffer,
 static void
 paint_primitive_silhouette (void *user_data)
 {
-  _cogl_primitive_draw (user_data,
-                        COGL_DRAW_SKIP_JOURNAL_FLUSH |
-                        COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                        COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+  _cogl_framebuffer_draw_primitive (cogl_get_draw_framebuffer (),
+                                    cogl_get_source (),
+                                    user_data,
+                                    COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                                    COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                                    COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
+                                    COGL_DRAW_SKIP_LEGACY_STATE);
 }
 
 void

@@ -177,9 +177,7 @@ test_paint (TestState *state)
                               (PRIM_COLOR >> 8) & 0xff,
                               (PRIM_COLOR >> 0) & 0xff);
   cogl_pipeline_set_layer_texture (pipeline, 0, tex);
-  cogl_handle_unref (tex);
-  cogl_set_source (pipeline);
-  cogl_object_unref (pipeline);
+  cogl_object_unref (tex);
 
   for (i = 0; i < G_N_ELEMENTS (test_prim_funcs); i++)
     {
@@ -190,13 +188,15 @@ test_paint (TestState *state)
 
       cogl_push_matrix ();
       cogl_translate (i * 10, 0, 0);
-      cogl_primitive_draw (prim);
+      cogl_framebuffer_draw_primitive (state->fb, pipeline, prim);
       cogl_pop_matrix ();
 
       test_utils_check_pixel (i * 10 + 2, 2, expected_color);
 
       cogl_object_unref (prim);
     }
+
+  cogl_object_unref (pipeline);
 }
 
 static gboolean
