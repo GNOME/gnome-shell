@@ -528,6 +528,9 @@ const AppMenuButton = new Lang.Class({
         if (targetApp) {
             this._appMenuNotifyId = targetApp.connect('notify::menu', Lang.bind(this, this._sync));
             this._actionGroupNotifyId = targetApp.connect('notify::action-group', Lang.bind(this, this._sync));
+        } else {
+            this._appMenuNotifyId = 0;
+            this._actionGroupNotifyId = 0;
         }
 
         this._targetApp = targetApp;
@@ -549,7 +552,7 @@ const AppMenuButton = new Lang.Class({
     _maybeSetMenu: function() {
         let menu;
 
-        if (this._targetApp.action_group) {
+        if (this._targetApp.action_group && this._targetApp.menu) {
             if (this.menu instanceof PopupMenu.RemoteMenu &&
                 this.menu.actionGroup == this._targetApp.action_group)
                 return;
