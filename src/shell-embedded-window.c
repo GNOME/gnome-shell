@@ -84,7 +84,8 @@ shell_embedded_window_hide (GtkWidget *widget)
 {
   ShellEmbeddedWindow *window = SHELL_EMBEDDED_WINDOW (widget);
 
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (window->priv->actor));
+  if (window->priv->actor)
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (window->priv->actor));
 
   GTK_WIDGET_CLASS (shell_embedded_window_parent_class)->hide (widget);
 }
