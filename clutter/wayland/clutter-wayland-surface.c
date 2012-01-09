@@ -213,7 +213,14 @@ set_size (ClutterWaylandSurface *self,
     }
 }
 
-static void
+struct wl_surface *
+clutter_wayland_surface_get_surface (ClutterWaylandSurface *self)
+{
+  ClutterWaylandSurfacePrivate *priv = self->priv;
+  return priv->surface;
+}
+
+void
 clutter_wayland_surface_set_surface (ClutterWaylandSurface *self,
                                      struct wl_surface *surface)
 {
