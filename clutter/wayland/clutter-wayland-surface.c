@@ -73,7 +73,6 @@ struct _ClutterWaylandSurfacePrivate
   CoglTexture2D *buffer;
   int width, height;
   CoglPipeline *pipeline;
-  GArray *damage;
 };
 
 G_DEFINE_TYPE (ClutterWaylandSurface,
@@ -163,7 +162,6 @@ clutter_wayland_surface_init (ClutterWaylandSurface *self)
   priv->surface = NULL;
   priv->width = 0;
   priv->height = 0;
-  priv->damage = g_array_new (FALSE, FALSE, sizeof (int));
 
   self->priv = priv;
 
@@ -175,12 +173,6 @@ clutter_wayland_surface_dispose (GObject *object)
 {
   ClutterWaylandSurface *self = CLUTTER_WAYLAND_SURFACE (object);
   ClutterWaylandSurfacePrivate *priv = self->priv;
-
-  if (priv->damage)
-    {
-      g_array_free (priv->damage, TRUE);
-      priv->damage = NULL;
-    }
 
   G_OBJECT_CLASS (clutter_wayland_surface_parent_class)->dispose (object);
 }
