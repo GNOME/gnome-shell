@@ -2678,18 +2678,20 @@ _cogl_framebuffer_draw_attributes (CoglFramebuffer *framebuffer,
                                    int n_attributes,
                                    CoglDrawFlags flags)
 {
-  _cogl_flush_attributes_state (framebuffer, pipeline, flags,
-                                attributes, n_attributes);
-
-  GE (framebuffer->context,
-      glDrawArrays ((GLenum)mode, first_vertex, n_vertices));
-
 #ifdef COGL_ENABLE_DEBUG
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_WIREFRAME)))
     draw_wireframe (framebuffer, pipeline,
                     mode, first_vertex, n_vertices,
                     attributes, n_attributes, NULL);
+  else
 #endif
+    {
+      _cogl_flush_attributes_state (framebuffer, pipeline, flags,
+                                    attributes, n_attributes);
+
+      GE (framebuffer->context,
+          glDrawArrays ((GLenum)mode, first_vertex, n_vertices));
+    }
 }
 
 void
@@ -2769,47 +2771,49 @@ _cogl_framebuffer_draw_indexed_attributes (CoglFramebuffer *framebuffer,
                                            int n_attributes,
                                            CoglDrawFlags flags)
 {
-  CoglBuffer *buffer;
-  guint8 *base;
-  size_t buffer_offset;
-  size_t index_size;
-  GLenum indices_gl_type = 0;
-
-  _cogl_flush_attributes_state (framebuffer, pipeline, flags,
-                                attributes, n_attributes);
-
-  buffer = COGL_BUFFER (cogl_indices_get_buffer (indices));
-  base = _cogl_buffer_bind (buffer, COGL_BUFFER_BIND_TARGET_INDEX_BUFFER);
-  buffer_offset = cogl_indices_get_offset (indices);
-  index_size = sizeof_index_type (cogl_indices_get_type (indices));
-
-  switch (cogl_indices_get_type (indices))
-    {
-    case COGL_INDICES_TYPE_UNSIGNED_BYTE:
-      indices_gl_type = GL_UNSIGNED_BYTE;
-      break;
-    case COGL_INDICES_TYPE_UNSIGNED_SHORT:
-      indices_gl_type = GL_UNSIGNED_SHORT;
-      break;
-    case COGL_INDICES_TYPE_UNSIGNED_INT:
-      indices_gl_type = GL_UNSIGNED_INT;
-      break;
-    }
-
-  GE (framebuffer->context,
-      glDrawElements ((GLenum)mode,
-                      n_vertices,
-                      indices_gl_type,
-                      base + buffer_offset + index_size * first_vertex));
-
-  _cogl_buffer_unbind (buffer);
-
 #ifdef COGL_ENABLE_DEBUG
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_WIREFRAME)))
     draw_wireframe (framebuffer, pipeline,
                     mode, first_vertex, n_vertices,
                     attributes, n_attributes, indices);
+  else
 #endif
+    {
+      CoglBuffer *buffer;
+      guint8 *base;
+      size_t buffer_offset;
+      size_t index_size;
+      GLenum indices_gl_type = 0;
+
+      _cogl_flush_attributes_state (framebuffer, pipeline, flags,
+                                    attributes, n_attributes);
+
+      buffer = COGL_BUFFER (cogl_indices_get_buffer (indices));
+      base = _cogl_buffer_bind (buffer, COGL_BUFFER_BIND_TARGET_INDEX_BUFFER);
+      buffer_offset = cogl_indices_get_offset (indices);
+      index_size = sizeof_index_type (cogl_indices_get_type (indices));
+
+      switch (cogl_indices_get_type (indices))
+        {
+        case COGL_INDICES_TYPE_UNSIGNED_BYTE:
+          indices_gl_type = GL_UNSIGNED_BYTE;
+          break;
+        case COGL_INDICES_TYPE_UNSIGNED_SHORT:
+          indices_gl_type = GL_UNSIGNED_SHORT;
+          break;
+        case COGL_INDICES_TYPE_UNSIGNED_INT:
+          indices_gl_type = GL_UNSIGNED_INT;
+          break;
+        }
+
+      GE (framebuffer->context,
+          glDrawElements ((GLenum)mode,
+                          n_vertices,
+                          indices_gl_type,
+                          base + buffer_offset + index_size * first_vertex));
+
+      _cogl_buffer_unbind (buffer);
+    }
 }
 
 void
