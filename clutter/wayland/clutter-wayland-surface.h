@@ -79,6 +79,8 @@ struct _ClutterWaylandSurfaceClass
 GType clutter_wayland_surface_get_type (void) G_GNUC_CONST;
 
 ClutterActor *clutter_wayland_surface_new               (struct wl_surface *surface);
+void          clutter_wayland_surface_set_surface       (ClutterWaylandSurface *self,
+                                                         struct wl_surface *surface);
 gboolean      clutter_wayland_surface_attach_buffer     (ClutterWaylandSurface *self,
                                                          struct wl_buffer *buffer,
                                                          GError **error);

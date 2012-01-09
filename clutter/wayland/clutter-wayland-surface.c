@@ -223,7 +223,19 @@ clutter_wayland_surface_set_surface (ClutterWaylandSurface *self,
 
   priv = self->priv;
 
-  g_return_if_fail (priv->surface == NULL);
+  if (priv->surface == surface)
+    return;
+
+  if (priv->surface)
+    {
+      free_pipeline (self);
+      free_surface_buffers (self);
+      clutter_wayland_surface_queue_damage_redraw (self,
+                                                   0, 0,
+                                                   priv->width,
+                                                   priv->height);
+    }
+
   priv->surface = surface;
 
   /* XXX: should we freeze/thaw notifications? */
