@@ -54,8 +54,8 @@
 enum
 {
   PROP_SURFACE = 1,
-  PROP_WIDTH,
-  PROP_HEIGHT
+  PROP_SURFACE_WIDTH,
+  PROP_SURFACE_HEIGHT
 };
 
 #if 0
@@ -204,12 +204,12 @@ set_size (ClutterWaylandSurface *self,
   if (priv->width != width)
     {
       priv->width = width;
-      g_object_notify (G_OBJECT (self), "width");
+      g_object_notify (G_OBJECT (self), "surface-width");
     }
   if (priv->height != height)
     {
       priv->height = height;
-      g_object_notify (G_OBJECT (self), "height");
+      g_object_notify (G_OBJECT (self), "surface-height");
     }
 
   clutter_actor_set_size (CLUTTER_ACTOR (self), priv->width, priv->height);
@@ -289,10 +289,10 @@ clutter_wayland_surface_get_property (GObject *object,
     case PROP_SURFACE:
       g_value_set_pointer (value, priv->surface);
       break;
-    case PROP_WIDTH:
+    case PROP_SURFACE_WIDTH:
       g_value_set_uint (value, priv->width);
       break;
-    case PROP_HEIGHT:
+    case PROP_SURFACE_HEIGHT:
       g_value_set_uint (value, priv->height);
       break;
     default:
@@ -420,23 +420,23 @@ clutter_wayland_surface_class_init (ClutterWaylandSurfaceClass *klass)
 
   g_object_class_install_property (object_class, PROP_SURFACE, pspec);
 
-  pspec = g_param_spec_uint ("width",
+  pspec = g_param_spec_uint ("surface-width",
                              P_("Surface width"),
                              P_("The width of the underlying wayland surface"),
                              0, G_MAXUINT,
                              0,
                              G_PARAM_READABLE);
 
-  g_object_class_install_property (object_class, PROP_WIDTH, pspec);
+  g_object_class_install_property (object_class, PROP_SURFACE_WIDTH, pspec);
 
-  pspec = g_param_spec_uint ("height",
+  pspec = g_param_spec_uint ("surface-height",
                              P_("Surface height"),
                              P_("The height of the underlying wayland surface"),
                              0, G_MAXUINT,
                              0,
                              G_PARAM_READABLE);
 
-  g_object_class_install_property (object_class, PROP_HEIGHT, pspec);
+  g_object_class_install_property (object_class, PROP_SURFACE_HEIGHT, pspec);
 }
 
 /**
