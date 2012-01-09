@@ -169,10 +169,27 @@ clutter_wayland_surface_init (ClutterWaylandSurface *self)
 }
 
 static void
+free_surface_buffers (ClutterWaylandSurface *self)
+{
+  ClutterWaylandSurfacePrivate *priv = self->priv;
+
+  if (priv->buffer)
+    {
+      cogl_object_unref (priv->buffer);
+      priv->buffer = NULL;
+      free_pipeline (self);
+    }
+}
+
+static void
 clutter_wayland_surface_dispose (GObject *object)
 {
   ClutterWaylandSurface *self = CLUTTER_WAYLAND_SURFACE (object);
   ClutterWaylandSurfacePrivate *priv = self->priv;
+
+  free_pipeline (self);
+  free_surface_buffers (self);
+  priv->surface = NULL;
 
   G_OBJECT_CLASS (clutter_wayland_surface_parent_class)->dispose (object);
 }
@@ -422,19 +439,6 @@ clutter_wayland_surface_new (struct wl_surface *surface)
                         NULL);
 
   return actor;
-}
-
-static void
-free_surface_buffers (ClutterWaylandSurface *self)
-{
-  ClutterWaylandSurfacePrivate *priv = self->priv;
-
-  if (priv->buffer)
-    {
-      cogl_object_unref (priv->buffer);
-      priv->buffer = NULL;
-      free_pipeline (self);
-    }
 }
 
 /**
