@@ -155,9 +155,12 @@ const PlacesManager = new Lang.Class({
 
         this._connect = new PlaceInfo('special:connect', _("Connect to..."),
             function (size) {
-                return new St.Icon({ icon_name: 'applications-internet',
-                                     icon_type: St.IconType.FULLCOLOR,
-                                     icon_size: size });
+                // do NOT use St.Icon here, it crashes the shell
+                // see wanda.js for details
+                return St.TextureCache.get_default().load_icon_name('applications-internet',
+                                                                    null,
+                                                                    St.IconType.FULLCOLOR,
+                                                                    size);
             },
             function (params) {
                 // BUG: nautilus-connect-server doesn't have a desktop file, so we can't
