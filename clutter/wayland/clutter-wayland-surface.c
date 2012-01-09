@@ -211,6 +211,8 @@ set_size (ClutterWaylandSurface *self,
       priv->height = height;
       g_object_notify (G_OBJECT (self), "height");
     }
+
+  clutter_actor_set_size (CLUTTER_ACTOR (self), priv->width, priv->height);
 }
 
 struct wl_surface *
