@@ -155,6 +155,8 @@ libgnome_shell_la_SOURCES =		\
 	shell-generic-container.c	\
 	shell-gtk-embed.c		\
 	shell-global.c			\
+	shell-keyring-prompt.h		\
+	shell-keyring-prompt.c		\
 	shell-mobile-providers.c	\
 	shell-mount-operation.c		\
 	shell-network-agent.c		\

@@ -15,6 +15,7 @@ const AutorunManager = imports.ui.autorunManager;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const EndSessionDialog = imports.ui.endSessionDialog;
 const PolkitAuthenticationAgent = imports.ui.polkitAuthenticationAgent;
+const KeyringPrompt = imports.ui.keyringPrompt;
 const Environment = imports.ui.environment;
 const ExtensionSystem = imports.ui.extensionSystem;
 const Keyboard = imports.ui.keyboard;
@@ -231,6 +232,9 @@ function start() {
 
     // Attempt to become a PolicyKit authentication agent
     PolkitAuthenticationAgent.init()
+
+    // Become a prompter for gnome keyring
+    KeyringPrompt.init();
 
     _startDate = new Date();
 

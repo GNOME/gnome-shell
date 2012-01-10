@@ -56,6 +56,7 @@ nobase_dist_js_DATA = 	\
 	ui/flashspot.js		\
 	ui/iconGrid.js		\
 	ui/keyboard.js		\
+	ui/keyringPrompt.js	\
 	ui/layout.js		\
 	ui/lightbox.js		\
 	ui/link.js		\
