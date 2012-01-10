@@ -6403,8 +6403,8 @@ meta_gtk_state_from_string (const char *str)
     return GTK_STATE_FLAG_INCONSISTENT;
   else if (g_ascii_strcasecmp ("focused", str) == 0)
     return GTK_STATE_FLAG_FOCUSED;
-  else if (g_ascii_strcasecmp ("window-unfocused", str) == 0)
-    return GTK_STATE_FLAG_WINDOW_UNFOCUSED;
+  else if (g_ascii_strcasecmp ("backdrop", str) == 0)
+    return GTK_STATE_FLAG_BACKDROP;
   else
     return -1; /* hack */
 }
@@ -6428,8 +6428,8 @@ meta_gtk_state_to_string (GtkStateFlags state)
       return "INCONSISTENT";
     case GTK_STATE_FLAG_FOCUSED:
       return "FOCUSED";
-    case GTK_STATE_FLAG_WINDOW_UNFOCUSED:
-      return "WINDOW_UNFOCUSED";
+    case GTK_STATE_FLAG_BACKDROP:
+      return "BACKDROP";
     }
 
   return "<unknown>";
