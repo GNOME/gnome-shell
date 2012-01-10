@@ -59,6 +59,8 @@ gschemas.compiled: $(gsettings_SCHEMAS:.xml=.valid)
 
 all-local: gschemas.compiled
 
+convertdir = $(datadir)/GConf/gsettings
+convert_DATA = gnome-shell-overrides.convert
 
 shadersdir = $(pkgdatadir)/shaders
 shaders_DATA = \
@@ -69,6 +71,7 @@ EXTRA_DIST =						\
 	gnome-shell.desktop.in.in			\
 	$(menu_DATA)					\
 	$(shaders_DATA)					\
+	$(convert_DATA)					\
 	org.gnome.shell.gschema.xml.in
 
 CLEANFILES =						\
