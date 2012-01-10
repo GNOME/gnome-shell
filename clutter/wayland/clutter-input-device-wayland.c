@@ -39,6 +39,7 @@
 #include "clutter-keysyms.h"
 #include "evdev/clutter-xkb-utils.h"
 #include "clutter-input-device-wayland.h"
+#include "clutter-backend-wayland.h"
 
 #include "cogl/clutter-stage-cogl.h"
 
@@ -165,6 +166,9 @@ clutter_wayland_handle_pointer_focus (void *data,
 
   if (surface)
     {
+      ClutterBackend        *backend;
+      ClutterBackendWayland *backend_wayland;
+
       stage_cogl = wl_surface_get_user_data (surface);
 
       device->pointer_focus = stage_cogl;
@@ -186,8 +190,15 @@ clutter_wayland_handle_pointer_focus (void *data,
       device->x = x;
       device->y = y;
 
-      /* Revert back to default pointer for now. */
-      wl_input_device_attach (input_device, _time, NULL, 0, 0);
+      /* Set the cursor to the cursor loaded at backend initialisation */
+      backend = clutter_get_default_backend ();
+      backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
+
+      wl_input_device_attach (input_device,
+                              _time,
+                              backend_wayland->cursor_buffer,
+                              backend_wayland->cursor_x,
+                              backend_wayland->cursor_y);
     }
 }
 
