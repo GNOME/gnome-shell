@@ -546,12 +546,10 @@ backend_source_h_priv += $(egl_tslib_h)
 endif # SUPPORT_TSLIB
 
 evdev_c_priv = \
-	$(srcdir)/evdev/clutter-xkb-utils.c 		\
 	$(srcdir)/evdev/clutter-device-manager-evdev.c	\
 	$(srcdir)/evdev/clutter-input-device-evdev.c	\
 	$(NULL)
 evdev_h_priv = \
-	$(srcdir)/evdev/clutter-xkb-utils.h 		\
 	$(srcdir)/evdev/clutter-device-manager-evdev.h	\
 	$(srcdir)/evdev/clutter-input-device-evdev.h	\
 	$(NULL)
@@ -560,6 +558,11 @@ if USE_EVDEV
 backend_source_c_priv += $(evdev_c_priv)
 backend_source_h_priv += $(evdev_h_priv)
 endif # SUPPORT_EVDEV
+
+if NEED_XKB_UTILS
+backend_source_c_priv += $(srcdir)/evdev/clutter-xkb-utils.c
+backend_source_h_priv += $(srcdir)/evdev/clutter-xkb-utils.h
+endif
 
 cex_source_h_priv = $(srcdir)/cex100/clutter-backend-cex100.h
 cex_source_c = $(srcdir)/cex100/clutter-backend-cex100.c
