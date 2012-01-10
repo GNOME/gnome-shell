@@ -205,7 +205,8 @@ const UserListItem = new Lang.Class({
             // We use background-image instead of, say, St.TextureCache
             // so the theme writers can add a rounded frame around the image
             // and so theme writers can pick the icon size.
-            this._iconBin.set_style('background-image: url("' + iconFile + '");');
+            this._iconBin.set_style('background-image: url("' + iconFile + '");' +
+                                    'background-size: contain;');
         } else {
             this._iconBin.hide();
         }

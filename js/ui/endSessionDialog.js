@@ -333,7 +333,8 @@ const EndSessionDialog = new Lang.Class({
         this._iconBin.child = null;
         if (iconFile) {
             this._iconBin.show();
-            this._iconBin.set_style('background-image: url("' + iconFile + '");');
+            this._iconBin.set_style('background-image: url("' + iconFile + '");' +
+                                    'background-size: contain;');
         } else {
             this._iconBin.hide();
         }
