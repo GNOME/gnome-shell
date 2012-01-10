@@ -128,6 +128,11 @@ AC_ARG_WITH([wayland-protocols],
             ],
             [])
 
+AC_ARG_WITH([xwayland-path],
+            [AS_HELP_STRING([--with-xwayland-path], [Absolute path for an X Wayland server])],
+            [XWAYLAND_PATH="$withval"],
+            [XWAYLAND_PATH="$bindir/Xorg"])
+
 AM_GLIB_GNU_GETTEXT
 
 ## here we get the flags we'll actually use
@@ -234,6 +239,8 @@ if test x$enable_wayland = "xyes"; then
   AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
         AC_MSG_ERROR([Could not find wayland-scanner in your PATH, required for parsing wayland extension protocols]))
   AC_SUBST([WAYLAND_SCANNER])
+
+  AC_SUBST(XWAYLAND_PATH)
 
   MUTTER_PC_MODULES="$MUTTER_PC_MODULES wayland-server clutter-wayland-compositor-1.0"
   AC_DEFINE(HAVE_WAYLAND, , [Building with Wayland support])

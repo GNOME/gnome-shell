@@ -29,6 +29,12 @@ INCLUDES=								\
 	-DMUTTER_PLUGIN_DIR=\"@MUTTER_PLUGIN_DIR@\"			\
 	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"
 
+if HAVE_WAYLAND
+INCLUDES += \
+	-I$(srcdir)/wayland						\
+	-DXWAYLAND_PATH='"@XWAYLAND_PATH@"'
+endif
+
 mutter_built_sources = \
 	mutter-enum-types.h \
 	mutter-enum-types.c
