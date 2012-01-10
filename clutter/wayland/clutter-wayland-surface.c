@@ -55,8 +55,12 @@ enum
 {
   PROP_SURFACE = 1,
   PROP_SURFACE_WIDTH,
-  PROP_SURFACE_HEIGHT
+  PROP_SURFACE_HEIGHT,
+  PROP_COGL_TEXTURE,
+  PROP_LAST
 };
+
+static GParamSpec *obj_props[PROP_LAST];
 
 #if 0
 enum
@@ -204,12 +208,12 @@ set_size (ClutterWaylandSurface *self,
   if (priv->width != width)
     {
       priv->width = width;
-      g_object_notify (G_OBJECT (self), "surface-width");
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SURFACE_WIDTH]);
     }
   if (priv->height != height)
     {
       priv->height = height;
-      g_object_notify (G_OBJECT (self), "surface-height");
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SURFACE_HEIGHT]);
     }
 
   clutter_actor_set_size (CLUTTER_ACTOR (self), priv->width, priv->height);
@@ -249,7 +253,7 @@ clutter_wayland_surface_set_surface (ClutterWaylandSurface *self,
 
   /* XXX: should we freeze/thaw notifications? */
 
-  g_object_notify (G_OBJECT (self), "surface");
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SURFACE]);
 
   /* We have to wait until the next attach event to find out the surface
    * geometry... */
@@ -417,7 +421,7 @@ clutter_wayland_surface_class_init (ClutterWaylandSurfaceClass *klass)
 			        P_("The underlying wayland surface"),
                                 CLUTTER_PARAM_READWRITE|
                                 G_PARAM_CONSTRUCT_ONLY);
-
+  obj_props[PROP_SURFACE] = pspec;
   g_object_class_install_property (object_class, PROP_SURFACE, pspec);
 
   pspec = g_param_spec_uint ("surface-width",
@@ -426,7 +430,7 @@ clutter_wayland_surface_class_init (ClutterWaylandSurfaceClass *klass)
                              0, G_MAXUINT,
                              0,
                              G_PARAM_READABLE);
-
+  obj_props[PROP_SURFACE_WIDTH] = pspec;
   g_object_class_install_property (object_class, PROP_SURFACE_WIDTH, pspec);
 
   pspec = g_param_spec_uint ("surface-height",
@@ -435,8 +439,16 @@ clutter_wayland_surface_class_init (ClutterWaylandSurfaceClass *klass)
                              0, G_MAXUINT,
                              0,
                              G_PARAM_READABLE);
-
+  obj_props[PROP_SURFACE_HEIGHT] = pspec;
   g_object_class_install_property (object_class, PROP_SURFACE_HEIGHT, pspec);
+
+  pspec = g_param_spec_boxed ("cogl-texture",
+                              P_("Cogl Texture"),
+                              P_("The underlying Cogl texture handle used to draw this actor"),
+                              COGL_TYPE_HANDLE,
+                              CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_COGL_TEXTURE] = pspec;
+  g_object_class_install_property (object_class, PROP_COGL_TEXTURE, pspec);
 }
 
 /**
@@ -496,6 +508,8 @@ clutter_wayland_surface_attach_buffer (ClutterWaylandSurface *self,
     cogl_wayland_texture_2d_new_from_buffer (context, buffer, error);
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_COGL_TEXTURE]);
 
   if (!priv->buffer)
     return FALSE;
@@ -575,4 +589,12 @@ clutter_wayland_surface_damage_buffer (ClutterWaylandSurface *self,
     }
 
   clutter_wayland_surface_queue_damage_redraw (self, x, y, width, height);
+}
+
+CoglTexture *
+clutter_wayland_surface_get_cogl_texture (ClutterWaylandSurface *self)
+{
+  g_return_val_if_fail (CLUTTER_WAYLAND_IS_SURFACE (self), NULL);
+
+  return COGL_TEXTURE (self->priv->buffer);
 }

@@ -91,6 +91,7 @@ void          clutter_wayland_surface_damage_buffer     (ClutterWaylandSurface *
                                                          gint32 y,
                                                          gint32 width,
                                                          gint32 height);
+CoglTexture  *clutter_wayland_surface_get_cogl_texture  (ClutterWaylandSurface *self);
 
 G_END_DECLS
 
