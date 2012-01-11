@@ -126,20 +126,10 @@ shell_tp_client_init (ShellTpClient *self)
         TP_HANDLE_TYPE_ROOM,
       NULL));
 
-  /* Approve calls (StreameMedia and Call.DRAFT). We let Empathy handle the
-   * call itself. */
+  /* Approve calls. We let Empathy handle the call itself. */
   tp_base_client_take_approver_filter (TP_BASE_CLIENT (self),
       tp_asv_new (
-        TP_PROP_CHANNEL_CHANNEL_TYPE, G_TYPE_STRING,
-          TP_IFACE_CHANNEL_TYPE_STREAMED_MEDIA,
-        TP_PROP_CHANNEL_TARGET_HANDLE_TYPE, G_TYPE_UINT, TP_HANDLE_TYPE_CONTACT,
-        NULL));
-
-  /* FIXME: use TP_IFACE_CHANNEL_TYPE_CALL once API is undrafted (fdo #24936) */
-  tp_base_client_take_approver_filter (TP_BASE_CLIENT (self),
-      tp_asv_new (
-        TP_PROP_CHANNEL_CHANNEL_TYPE, G_TYPE_STRING,
-          "org.freedesktop.Telepathy.Channel.Type.Call.DRAFT",
+        TP_PROP_CHANNEL_CHANNEL_TYPE, G_TYPE_STRING, TP_IFACE_CHANNEL_TYPE_CALL,
         TP_PROP_CHANNEL_TARGET_HANDLE_TYPE, G_TYPE_UINT, TP_HANDLE_TYPE_CONTACT,
         NULL));
 

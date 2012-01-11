@@ -233,8 +233,7 @@ const Client = new Lang.Class({
 
         if (chanType == Tp.IFACE_CHANNEL_TYPE_TEXT)
             this._approveTextChannel(account, conn, channel, dispatchOp, context);
-        else if (chanType == Tp.IFACE_CHANNEL_TYPE_STREAMED_MEDIA ||
-                 chanType == 'org.freedesktop.Telepathy.Channel.Type.Call.DRAFT')
+        else if (chanType == Tp.IFACE_CHANNEL_TYPE_CALL)
             this._approveCall(account, conn, channel, dispatchOp, context);
         else if (chanType == Tp.IFACE_CHANNEL_TYPE_FILE_TRANSFER)
             this._approveFileTransfer(account, conn, channel, dispatchOp, context);
@@ -265,8 +264,7 @@ const Client = new Lang.Class({
 
         let props = channel.borrow_immutable_properties();
 
-        if (props['org.freedesktop.Telepathy.Channel.Type.Call.DRAFT.InitialVideo'] ||
-            props[Tp.PROP_CHANNEL_TYPE_STREAMED_MEDIA_INITIAL_VIDEO])
+        if (props[Tp.PROP_CHANNEL_TYPE_CALL_INITIAL_VIDEO])
           isVideo = true;
 
         // We got the TpContact
