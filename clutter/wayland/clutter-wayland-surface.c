@@ -335,18 +335,6 @@ clutter_wayland_surface_paint (ClutterActor *self)
 }
 
 static void
-clutter_wayland_surface_pick (ClutterActor *self,
-                              const ClutterColor *color)
-{
-  ClutterActorBox box;
-
-  cogl_set_source_color4ub (color->red, color->green, color->blue,
-                            color->alpha);
-  clutter_actor_get_allocation_box (self, &box);
-  cogl_rectangle (0, 0, box.x2 - box.x1, box.y2 - box.y1);
-}
-
-static void
 clutter_wayland_surface_get_preferred_width (ClutterActor *self,
                                              gfloat for_height,
                                              gfloat *min_width_p,
@@ -403,7 +391,6 @@ clutter_wayland_surface_class_init (ClutterWaylandSurfaceClass *klass)
 
   actor_class->get_paint_volume = clutter_wayland_surface_get_paint_volume;
   actor_class->paint = clutter_wayland_surface_paint;
-  actor_class->pick = clutter_wayland_surface_pick;
   actor_class->get_preferred_width =
     clutter_wayland_surface_get_preferred_width;
   actor_class->get_preferred_height =
