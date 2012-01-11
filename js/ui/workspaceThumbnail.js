@@ -154,6 +154,8 @@ const WorkspaceThumbnail = new Lang.Class({
         this.metaWorkspace = metaWorkspace;
         this.monitorIndex = Main.layoutManager.primaryIndex;
 
+        this._removed = false;
+
         this.actor = new St.Group({ reactive: true,
                                     clip_to_allocation: true,
                                     style_class: 'workspace-thumbnail' });
@@ -284,7 +286,7 @@ const WorkspaceThumbnail = new Lang.Class({
     },
 
     _doAddWindow : function(metaWin) {
-        if (this.leavingOverview)
+        if (this._removed)
             return;
 
         let win = metaWin.get_compositor_private();
@@ -294,7 +296,7 @@ const WorkspaceThumbnail = new Lang.Class({
             // the compositor finds out about them...
             Mainloop.idle_add(Lang.bind(this,
                                         function () {
-                                            if (this.actor &&
+                                            if (!this._removed &&
                                                 metaWin.get_compositor_private() &&
                                                 metaWin.get_workspace() == this.metaWorkspace)
                                                 this._doAddWindow(metaWin);
@@ -350,7 +352,12 @@ const WorkspaceThumbnail = new Lang.Class({
         this.actor.destroy();
     },
 
-    _onDestroy: function(actor) {
+    workspaceRemoved : function() {
+        if (this._removed)
+            return;
+
+        this._removed = true;
+
         this.metaWorkspace.disconnect(this._windowAddedId);
         this.metaWorkspace.disconnect(this._windowRemovedId);
         global.screen.disconnect(this._windowEnteredMonitorId);
@@ -363,6 +370,10 @@ const WorkspaceThumbnail = new Lang.Class({
                 delete metaWin._minimizedChangedId;
             }
         }
+    },
+
+    _onDestroy: function(actor) {
+        this.workspaceRemoved();
 
         this._windows = [];
         this.actor = null;
@@ -731,6 +742,8 @@ const ThumbnailsBox = new Lang.Class({
 
             if (thumbnail.state > ThumbnailState.NORMAL)
                 continue;
+
+            thumbnail.workspaceRemoved();
 
             if (currentPos >= start && currentPos < start + count)
                 this._setThumbnailState(thumbnail, ThumbnailState.REMOVING);
