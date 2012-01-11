@@ -5,6 +5,7 @@ includedir=@includedir@
 
 apiversion=@CLUTTER_API_VERSION@
 requires=@CLUTTER_REQUIRES@
+requires_private=@CLUTTER_REQUIRES_PRIVATE@
 backends=@CLUTTER_BACKENDS@
 
 # only kept for backward compatibility
@@ -20,3 +21,4 @@ Version: @VERSION@
 Libs: -L${libdir} -lclutter-${apiversion}
 Cflags: -I${includedir}/clutter-${apiversion}
 Requires: ${requires}
+Requires.private: ${requires_private}
