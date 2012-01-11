@@ -102,7 +102,6 @@ clutter_wayland_surface_queue_damage_redraw (ClutterWaylandSurface *texture,
   ClutterActorBox allocation;
   float scale_x;
   float scale_y;
-  ClutterVertex origin;
   cairo_rectangle_int_t clip;
 
   /* NB: clutter_actor_queue_redraw_with_clip expects a box in the actor's
