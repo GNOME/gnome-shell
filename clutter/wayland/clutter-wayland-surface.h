@@ -74,6 +74,13 @@ struct _ClutterWaylandSurfaceClass
 {
   /*< private >*/
   ClutterActorClass parent_class;
+
+  /*< public >*/
+  void (*queue_damage_redraw) (ClutterWaylandSurface *texture,
+                               gint x,
+                               gint y,
+                               gint width,
+                               gint height);
 };
 
 GType clutter_wayland_surface_get_type (void) G_GNUC_CONST;

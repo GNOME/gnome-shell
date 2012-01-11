@@ -62,14 +62,14 @@ enum
 
 static GParamSpec *obj_props[PROP_LAST];
 
-#if 0
 enum
 {
+  QUEUE_DAMAGE_REDRAW,
+
   LAST_SIGNAL
 };
 
 static guint signals[LAST_SIGNAL] = { 0, };
-#endif
 
 struct _ClutterWaylandSurfacePrivate
 {
@@ -243,10 +243,9 @@ clutter_wayland_surface_set_surface (ClutterWaylandSurface *self,
     {
       free_pipeline (self);
       free_surface_buffers (self);
-      clutter_wayland_surface_queue_damage_redraw (self,
-                                                   0, 0,
-                                                   priv->width,
-                                                   priv->height);
+      g_signal_emit (self, signals[QUEUE_DAMAGE_REDRAW],
+                     0,
+                     0, 0, priv->width, priv->height);
     }
 
   priv->surface = surface;
@@ -449,6 +448,41 @@ clutter_wayland_surface_class_init (ClutterWaylandSurfaceClass *klass)
                               CLUTTER_PARAM_READWRITE);
   obj_props[PROP_COGL_TEXTURE] = pspec;
   g_object_class_install_property (object_class, PROP_COGL_TEXTURE, pspec);
+
+  /**
+   * ClutterWaylandSurface::queue-damage-redraw
+   * @texture: the object which received the signal
+   * @x: The top left x position of the damage region
+   * @y: The top left y position of the damage region
+   * @width: The width of the damage region
+   * @height: The height of the damage region
+   *
+   * ::queue-damage-redraw is emitted to notify that some sub-region
+   * of the texture has been changed. This usually means a redraw
+   * needs to be queued for the actor.
+   *
+   * The default handler will queue a clipped redraw in response to
+   * the damage, using the assumption that the pixmap is being painted
+   * to a rectangle covering the transformed allocation of the actor.
+   * If you sub-class and change the paint method so this isn't true
+   * then you must also provide your own damage signal handler to
+   * queue a redraw that blocks this default behaviour.
+   *
+   * Since: 1.10
+   */
+  signals[QUEUE_DAMAGE_REDRAW] =
+    g_signal_new (g_intern_static_string ("queue-damage-redraw"),
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (ClutterWaylandSurfaceClass, queue_damage_redraw),
+                  NULL, NULL,
+                  _clutter_marshal_VOID__INT_INT_INT_INT,
+                  G_TYPE_NONE, 4,
+                  G_TYPE_INT,
+                  G_TYPE_INT,
+                  G_TYPE_INT,
+                  G_TYPE_INT);
+  klass->queue_damage_redraw = clutter_wayland_surface_queue_damage_redraw;
 }
 
 /**
@@ -588,7 +622,9 @@ clutter_wayland_surface_damage_buffer (ClutterWaylandSurface *self,
                                wl_shm_buffer_get_data (buffer));
     }
 
-  clutter_wayland_surface_queue_damage_redraw (self, x, y, width, height);
+  g_signal_emit (self, signals[QUEUE_DAMAGE_REDRAW],
+                 0,
+                 x, y, width, height);
 }
 
 CoglTexture *
