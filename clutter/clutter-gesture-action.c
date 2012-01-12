@@ -142,7 +142,7 @@ stage_captured_event_cb (ClutterActor       *stage,
         if (!(mods & CLUTTER_BUTTON1_MASK))
           {
             cancel_gesture (action);
-            return FALSE;
+            return CLUTTER_EVENT_PROPAGATE;
           }
 
         clutter_event_get_coords (event, &priv->last_motion_x,
@@ -152,7 +152,7 @@ stage_captured_event_cb (ClutterActor       *stage,
                                                   priv->last_motion_x,
                                                   priv->last_motion_y,
                                                   NULL, NULL))
-          return FALSE;
+          return CLUTTER_EVENT_PROPAGATE;
 
         if (!priv->in_drag)
           {
@@ -173,11 +173,11 @@ stage_captured_event_cb (ClutterActor       *stage,
                 if (!return_value)
                   {
                     cancel_gesture (action);
-                    return FALSE;
+                    return CLUTTER_EVENT_PROPAGATE;
                   }
               }
             else
-              return FALSE;
+              return CLUTTER_EVENT_PROPAGATE;
           }
 
           g_signal_emit (action, gesture_signals[GESTURE_PROGRESS], 0, actor,
@@ -185,7 +185,7 @@ stage_captured_event_cb (ClutterActor       *stage,
           if (!return_value)
             {
               cancel_gesture (action);
-              return FALSE;
+              return CLUTTER_EVENT_PROPAGATE;
             }
       }
       break;
@@ -209,7 +209,7 @@ stage_captured_event_cb (ClutterActor       *stage,
       break;
     }
 
-  return FALSE;
+  return CLUTTER_EVENT_PROPAGATE;
 }
 
 static gboolean
@@ -220,10 +220,10 @@ actor_captured_event_cb (ClutterActor *actor,
   ClutterGestureActionPrivate *priv = action->priv;
 
   if (clutter_event_type (event) != CLUTTER_BUTTON_PRESS)
-    return FALSE;
+    return CLUTTER_EVENT_PROPAGATE;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (action)))
-    return FALSE;
+    return CLUTTER_EVENT_PROPAGATE;
 
   clutter_event_get_coords (event, &priv->press_x, &priv->press_y);
 
@@ -235,7 +235,7 @@ actor_captured_event_cb (ClutterActor *actor,
                             G_CALLBACK (stage_captured_event_cb),
                             action);
 
-  return FALSE;
+  return CLUTTER_EVENT_PROPAGATE;
 }
 
 static void
