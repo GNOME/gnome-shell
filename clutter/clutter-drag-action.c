@@ -317,10 +317,10 @@ on_captured_event (ClutterActor      *stage,
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
 
   if (!priv->in_drag)
-    return FALSE;
+    return CLUTTER_EVENT_PROPAGATE;
 
   if (clutter_event_get_device (event) != priv->device)
-    return FALSE;
+    return CLUTTER_EVENT_PROPAGATE;
 
   switch (clutter_event_type (event))
     {
@@ -347,14 +347,14 @@ on_captured_event (ClutterActor      *stage,
     case CLUTTER_ENTER:
     case CLUTTER_LEAVE:
       if (priv->in_drag)
-        return TRUE;
+        return CLUTTER_EVENT_STOP;
       break;
 
     default:
       break;
     }
 
-  return FALSE;
+  return CLUTTER_EVENT_PROPAGATE;
 }
 
 static gboolean
@@ -365,10 +365,10 @@ on_button_press (ClutterActor      *actor,
   ClutterDragActionPrivate *priv = action->priv;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (action)))
-    return FALSE;
+    return CLUTTER_EVENT_PROPAGATE;
 
   if (clutter_event_get_button (event) != 1)
-    return FALSE;
+    return CLUTTER_EVENT_PROPAGATE;
 
   if (priv->stage == NULL)
     priv->stage = CLUTTER_STAGE (clutter_actor_get_stage (actor));
@@ -400,7 +400,7 @@ on_button_press (ClutterActor      *actor,
                                              G_CALLBACK (on_captured_event),
                                              action);
 
-  return FALSE;
+  return CLUTTER_EVENT_PROPAGATE;
 }
 
 static void
@@ -414,14 +414,17 @@ clutter_drag_action_set_actor (ClutterActorMeta *meta,
       ClutterActor *old_actor;
 
       old_actor = clutter_actor_meta_get_actor (meta);
-
-      g_signal_handler_disconnect (old_actor, priv->button_press_id);
+      if (old_actor != NULL)
+        g_signal_handler_disconnect (old_actor, priv->button_press_id);
+        
       priv->button_press_id = 0;
     }
 
-  if (priv->capture_id != 0 && priv->stage != NULL)
+  if (priv->capture_id != 0)
     {
-      g_signal_handler_disconnect (priv->stage, priv->capture_id);
+      if (priv->stage != NULL)
+        g_signal_handler_disconnect (priv->stage, priv->capture_id);
+
       priv->capture_id = 0;
       priv->stage = NULL;
     }
@@ -550,7 +553,9 @@ clutter_drag_action_dispose (GObject *gobject)
       ClutterActor *actor;
 
       actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (gobject));
-      g_signal_handler_disconnect (actor, priv->button_press_id);
+      if (actor != NULL)
+        g_signal_handler_disconnect (actor, priv->button_press_id);
+
       priv->button_press_id = 0;
     }
 
