@@ -433,13 +433,17 @@ clutter_click_action_set_actor (ClutterActorMeta *meta,
     {
       ClutterActor *old_actor = clutter_actor_meta_get_actor (meta);
 
-      g_signal_handler_disconnect (old_actor, priv->event_id);
+      if (old_actor != NULL)
+        g_signal_handler_disconnect (old_actor, priv->event_id);
+
       priv->event_id = 0;
     }
 
   if (priv->capture_id != 0)
     {
-      g_signal_handler_disconnect (priv->stage, priv->capture_id);
+      if (priv->stage != NULL)
+        g_signal_handler_disconnect (priv->stage, priv->capture_id);
+
       priv->capture_id = 0;
       priv->stage = NULL;
     }
