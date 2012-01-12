@@ -201,8 +201,14 @@ experimental_input_backend=no
 # base dependencies for core
 CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_REQ_VERSION cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION cogl-pango-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
 
+# private base dependencies
+CLUTTER_BASE_PC_FILES_PRIVATE=""
+
 # backend specific pkg-config files
 BACKEND_PC_FILES=""
+
+# private backend specific dependencies
+BACKEND_PC_FILES_PRIVATE=""
 
 dnl === Clutter windowing system backend ======================================
 
@@ -569,9 +575,6 @@ AC_SUBST([CLUTTER_SONAME_INFIX], [deprecated])
 AC_SUBST([CLUTTER_FLAVOUR],      [deprecated])
 AC_SUBST([CLUTTER_COGL],         [deprecated])
 AC_SUBST([COGL_DRIVER],          [deprecated])
-
-dnl === Image loading backend =================================================
-IMAGE_PC_FILES=""
 
 dnl === X11 checks, only for X11-based backends ===============================
 X11_PC_FILES=""
@@ -957,13 +960,21 @@ dnl === Dependencies, compiler flags and linker libraries =====================
 # strip leading space
 BACKEND_PC_FILES=${BACKEND_PC_FILES#* }
 
-CLUTTER_REQUIRES="$CLUTTER_BASE_PC_FILES $IMAGE_PC_FILES $BACKEND_PC_FILES"
+CLUTTER_REQUIRES="$CLUTTER_BASE_PC_FILES $BACKEND_PC_FILES"
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
 AC_SUBST(CLUTTER_REQUIRES)
 
+AS_IF([test "x$CLUTTER_BASE_PC_FILES_PRIVATE" != "x" && test "x$BACKEND_PC_FILES_PRIVATE" != "x"],
+      [
+        CLUTTER_REQUIRES_PRIVATE="$CLUTTER_BASE_PC_FILES_PRIVATE $BACKEND_PC_FILES_PRIVATE"
+        PKG_CHECK_MODULES(CLUTTER_DEPS_PRIVATE, [$CLUTTER_REQUIRES_PRIVATE])
+      ],
+      [
+        CLUTTER_REQUIRES_PRIVATE=""
+        CLUTTER_DEPS_PRIVATE_CFLAGS=""
+        CLUTTER_DEPS_PRIVATE_LIBS=""
+      ])
 
-CLUTTER_REQUIRES_PRIVATE="$CLUTTER_BASE_PC_FILES_PRIVATE $IMAGE_PC_FILES_PRIVATE $BACKEND_PC_FILES_PRIVATE"
-PKG_CHECK_MODULES(CLUTTER_DEPS_PRIVATE, [$CLUTTER_REQUIRES_PRIVATE])
 AC_SUBST(CLUTTER_REQUIRES_PRIVATE)
 
 CLUTTER_CFLAGS="$FLAVOUR_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_PROFILE_CFLAGS $GLIB_CFLAGS"
