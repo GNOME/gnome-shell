@@ -250,13 +250,17 @@ clutter_gesture_action_set_actor (ClutterActorMeta *meta,
     {
       ClutterActor *old_actor = clutter_actor_meta_get_actor (meta);
 
-      g_signal_handler_disconnect (old_actor, priv->actor_capture_id);
+      if (old_actor != NULL)
+        g_signal_handler_disconnect (old_actor, priv->actor_capture_id);
+
       priv->actor_capture_id = 0;
     }
 
   if (priv->stage_capture_id != 0)
     {
-      g_signal_handler_disconnect (priv->stage, priv->stage_capture_id);
+      if (priv->stage != NULL)
+        g_signal_handler_disconnect (priv->stage, priv->stage_capture_id);
+
       priv->stage_capture_id = 0;
       priv->stage = NULL;
     }
