@@ -148,7 +148,9 @@ clutter_deform_effect_set_actor (ClutterActorMeta *meta,
     {
       ClutterActor *old_actor = clutter_actor_meta_get_actor (meta);
 
-      g_signal_handler_disconnect (old_actor, priv->allocation_id);
+      if (old_actor != NULL)
+        g_signal_handler_disconnect (old_actor, priv->allocation_id);
+
       priv->allocation_id = 0;
     }
 
