@@ -122,8 +122,13 @@ const GnomeShell = new Lang.Class({
      * indicating whether the operation was successful or not.
      *
      */
-    ScreenshotAreaAsync : function (x, y, width, height, filename, callback) {
-        global.screenshot_area (x, y, width, height, filename, function (obj, result) { callback(result); });
+    ScreenshotAreaAsync : function (params, invocation) {
+        let [x, y, width, height, filename, callback] = params;
+        global.screenshot_area (x, y, width, height, filename,
+            function (obj, result) {
+                let retval = GLib.Variant.new('(b)', [result]);
+                invocation.return_value(retval);
+            });
     },
 
     /**
@@ -149,8 +154,13 @@ const GnomeShell = new Lang.Class({
      * indicating whether the operation was successful or not.
      *
      */
-    ScreenshotAsync : function (filename, callback) {
-        global.screenshot(filename, function (obj, result) { callback(result); });
+    ScreenshotAsync : function (params, invocation) {
+        let [filename] = params;
+        global.screenshot(filename,
+            function (obj, result) {
+                let retval = GLib.Variant.new('(b)', [result]);
+                invocation.return_value(retval);
+            });
     },
 
     ListExtensions: function() {
