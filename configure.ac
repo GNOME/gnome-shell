@@ -272,26 +272,13 @@ AS_IF([test "x$enable_x11" = "xyes"],
         SUPPORT_GLX=1
         SUPPORT_COGL=1
 
-        # Mesa 7.3 added a GL pkg-config file, finally, but if a pkg-config
-        # file isn't found just add -lGL and hope for the best.
-        PKG_CHECK_EXISTS([gl],
-                         [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"],
-                         [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGL"])
-
-        # We might fall back to DRM for sync-to-vblank on GLX
-        PKG_CHECK_EXISTS([libdrm],
-                         [
-                           AC_DEFINE([HAVE_DRM], [1], [Have libdrm support])
-                           BACKEND_PC_FILES="$BACKEND_PC_FILES libdrm"
-                         ],
-                         [])
-
-        # we use fontconfig API and pango-fc when the fontconfig
-        # configuration changes
+        # we use fontconfig API and pango-ft2 when the fontconfig
+        # configuration changes; we don't expose any API for this
+        # so we add pango-ft2 to the private Requires.
         PKG_CHECK_EXISTS([pangoft2],
                          [
                            AC_DEFINE([HAVE_PANGO_FT2], [1], [Supports PangoFt2])
-                           BACKEND_PC_FILES="$BACKEND_PC_FILES pangoft2"
+                           BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE pangoft2"
                          ],
                          [])
 
@@ -307,7 +294,6 @@ AS_IF([test "x$enable_gdk" = "xyes"],
         SUPPORT_COGL=1
 
 	BACKEND_PC_FILES="$BACKEND_PC_FILES gdk-3.0"
-	PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
       ])
 
 AS_IF([test "x$enable_wayland" = "xyes"],
@@ -404,13 +390,6 @@ AS_IF([test "x$enable_egl" = "xyes"],
         SUPPORT_EGL=1
         SUPPORT_COGL=1
 
-        # if Mesa has support for egl, we can use it as well
-        PKG_CHECK_EXISTS([egl],
-                         [
-                           BACKEND_PC_FILES="$BACKEND_PC_FILES egl"
-                         ],
-                         [])
-
         FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS $EVDEV_LIBS"
         FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS $EVDEV_CFLAGS"
 
@@ -496,8 +475,6 @@ AM_CONDITIONAL(SUPPORT_OSX,     [test "x$SUPPORT_OSX" = "x1"])
 AM_CONDITIONAL(SUPPORT_WIN32,   [test "x$SUPPORT_WIN32" = "x1"])
 AM_CONDITIONAL(SUPPORT_CEX100,  [test "x$SUPPORT_CEX100" = "x1"])
 AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$SUPPORT_WAYLAND" = "x1"])
-AM_CONDITIONAL(SUPPORT_STUB,    [test "x$SUPPORT_WIN32" = "x1" -o \
-                                      "x$SUPPORT_OSX" = "x1"])
 
 AM_CONDITIONAL(USE_COGL,  [test "x$SUPPORT_COGL" = "x1"])
 AM_CONDITIONAL(USE_TSLIB, [test "x$have_tslib" = "xyes"])
@@ -964,7 +941,7 @@ CLUTTER_REQUIRES="$CLUTTER_BASE_PC_FILES $BACKEND_PC_FILES"
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
 AC_SUBST(CLUTTER_REQUIRES)
 
-AS_IF([test "x$CLUTTER_BASE_PC_FILES_PRIVATE" != "x" && test "x$BACKEND_PC_FILES_PRIVATE" != "x"],
+AS_IF([test "x$CLUTTER_BASE_PC_FILES_PRIVATE" != "x" -o test "x$BACKEND_PC_FILES_PRIVATE" != "x"],
       [
         CLUTTER_REQUIRES_PRIVATE="$CLUTTER_BASE_PC_FILES_PRIVATE $BACKEND_PC_FILES_PRIVATE"
         PKG_CHECK_MODULES(CLUTTER_DEPS_PRIVATE, [$CLUTTER_REQUIRES_PRIVATE])

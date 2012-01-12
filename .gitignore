@@ -76,6 +76,7 @@ TAGS
 /tests/conform/test-launcher.sh
 /tests/interactive/wrapper.sh
 /po/POTFILES
+/po/clutter-1.0.pot
 /po/*.gmo
 /po/Makefile.in.in
 /po/Makevars.template
