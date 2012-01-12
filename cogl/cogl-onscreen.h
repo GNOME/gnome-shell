@@ -133,6 +133,13 @@ struct wl_surface *
 cogl_wayland_onscreen_get_surface (CoglOnscreen *onscreen);
 struct wl_shell_surface *
 cogl_wayland_onscreen_get_shell_surface (CoglOnscreen *onscreen);
+
+void
+cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
+                              gint          width,
+                              gint          height,
+                              gint          offset_x,
+                              gint          offset_y);
 #endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
 
 #define cogl_onscreen_set_swap_throttled cogl_onscreen_set_swap_throttled_EXP

@@ -499,6 +499,30 @@ cogl_wayland_onscreen_get_shell_surface (CoglOnscreen *onscreen)
     return NULL;
 }
 
+void
+cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
+                              gint          width,
+                              gint          height,
+                              gint          offset_x,
+                              gint          offset_y)
+{
+  CoglFramebuffer *fb;
+
+  fb = COGL_FRAMEBUFFER (onscreen);
+  if (fb->allocated)
+    {
+      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+      CoglOnscreenWayland *wayland_onscreen = egl_onscreen->platform;
+
+      wl_egl_window_resize (wayland_onscreen->wayland_egl_native_window,
+                            width,
+                            height,
+                            offset_x,
+                            offset_y);
+      _cogl_framebuffer_winsys_update_size (fb, width, height);
+    }
+}
+
 static const CoglWinsysEGLVtable
 _cogl_winsys_egl_vtable =
   {
