@@ -1033,6 +1033,22 @@ clutter_stage_do_redraw (ClutterStage *stage)
   ClutterActor *actor = CLUTTER_ACTOR (stage);
   ClutterStagePrivate *priv = stage->priv;
 
+  CLUTTER_STATIC_COUNTER (redraw_counter,
+                          "clutter_stage_do_redraw counter",
+                          "Increments for each Stage redraw",
+                          0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (redraw_timer,
+                        "Master Clock", /* parent */
+                        "Redrawing",
+                        "The time spent redrawing everything",
+                        0 /* no application private data */);
+
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
+    return;
+
+  if (priv->impl == NULL)
+    return;
+
   CLUTTER_NOTE (PAINT, "Redraw started for stage '%s'[%p]",
                 _clutter_actor_get_debug_name (actor),
                 stage);
@@ -1050,7 +1066,12 @@ clutter_stage_do_redraw (ClutterStage *stage)
 
   _clutter_stage_maybe_setup_viewport (stage);
 
-  _clutter_backend_redraw (backend, stage);
+  CLUTTER_COUNTER_INC (_clutter_uprof_context, redraw_counter);
+  CLUTTER_TIMER_START (_clutter_uprof_context, redraw_timer);
+
+  _clutter_stage_window_redraw (priv->impl);
+
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, redraw_timer);
 
   if (_clutter_context_get_show_fps ())
     {
