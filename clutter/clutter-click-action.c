@@ -279,19 +279,19 @@ on_event (ClutterActor       *actor,
   ClutterClickActionPrivate *priv = action->priv;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (action)))
-    return FALSE;
+    return CLUTTER_EVENT_PROPAGATE;
 
   switch (clutter_event_type (event))
     {
     case CLUTTER_BUTTON_PRESS:
       if (clutter_event_get_click_count (event) != 1)
-        return FALSE;
+        return CLUTTER_EVENT_PROPAGATE;
 
       if (priv->is_held)
-        return TRUE;
+        return CLUTTER_EVENT_STOP;
 
       if (!clutter_actor_contains (actor, clutter_event_get_source (event)))
-        return FALSE;
+        return CLUTTER_EVENT_PROPAGATE;
 
       priv->press_button = clutter_event_get_button (event);
       priv->modifier_state = clutter_event_get_state (event);
@@ -333,7 +333,7 @@ on_event (ClutterActor       *actor,
       break;
     }
 
-  return FALSE;
+  return CLUTTER_EVENT_PROPAGATE;
 }
 
 static gboolean
@@ -351,11 +351,11 @@ on_captured_event (ClutterActor       *stage,
     {
     case CLUTTER_BUTTON_RELEASE:
       if (!priv->is_held)
-        return TRUE;
+        return CLUTTER_EVENT_STOP;
 
       if (clutter_event_get_button (event) != priv->press_button ||
           clutter_event_get_click_count (event) != 1)
-        return FALSE;
+        return CLUTTER_EVENT_PROPAGATE;
 
       click_action_set_held (action, FALSE);
       click_action_cancel_long_press (action);
@@ -374,7 +374,7 @@ on_captured_event (ClutterActor       *stage,
         }
 
       if (!clutter_actor_contains (actor, clutter_event_get_source (event)))
-        return FALSE;
+        return CLUTTER_EVENT_PROPAGATE;
 
       /* exclude any button-mask so that we can compare
        * the press and release states properly */
@@ -402,7 +402,7 @@ on_captured_event (ClutterActor       *stage,
         gfloat delta_x, delta_y;
 
         if (!priv->is_held)
-          return FALSE;
+          return CLUTTER_EVENT_PROPAGATE;
 
         clutter_event_get_coords (event, &motion_x, &motion_y);
 
@@ -419,7 +419,7 @@ on_captured_event (ClutterActor       *stage,
       break;
     }
 
-  return FALSE;
+  return CLUTTER_EVENT_STOP;
 }
 
 static void
