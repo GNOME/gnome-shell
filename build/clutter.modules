@@ -216,7 +216,7 @@
   <autotools id="json-glib">
     <branch repo="git.gnome.org"
             module="json-glib"
-            revision="json-glib-0-12"/>
+            revision="json-glib-0-14"/>
     <dependencies>
       <dep package="glib"/>
       <dep package="gobject-introspection"/>
