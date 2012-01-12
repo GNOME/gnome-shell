@@ -96,6 +96,9 @@ clutter_stage_wayland_realize (ClutterStageWindow *stage_window)
   stage_wayland->wayland_surface = wl_surface;
   stage_wayland->wayland_shell_surface = wl_shell_surface;
 
+  if (stage_wayland->fullscreen)
+    wl_shell_surface_set_fullscreen (stage_wayland->wayland_shell_surface);
+
   return TRUE;
 }
 
@@ -104,6 +107,11 @@ clutter_stage_wayland_set_fullscreen (ClutterStageWindow *stage_window,
                                       gboolean            fullscreen)
 {
   ClutterStageWayland *stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
+
+  stage_wayland->fullscreen = fullscreen;
+
+  if (!stage_wayland->wayland_shell_surface) /* Not realized yet */
+    return;
 
   if (fullscreen)
     wl_shell_surface_set_fullscreen (stage_wayland->wayland_shell_surface);
