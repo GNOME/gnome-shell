@@ -289,6 +289,12 @@ features).
 Release Notes for Clutter 1.10
 -------------------------------------------------------------------------------
 
+• The ClutterActor::destroy signal is going to be emitted at the beginning
+  of the dispose sequence of a ClutterActor, instead of the end. This allows
+  to access the state of the actor being destroyed, instead of just being
+  able to use its pointer. This may expose bugs in code that does not check
+  for NULL actor pointers.
+
 • The long since broken depth cueing support in ClutterStage has been
   deprecated; the fixed pipeline fog API has been pretty much useless
   since the switch to colors and textures with premultiplied alpha
