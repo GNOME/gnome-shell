@@ -1624,7 +1624,6 @@ StTooltip StLabel {
     border: 0px;
     background: rgba(255,255,255,0.5);
     background-image: url("ws-switch-arrow-up.svg");
-    background-size: contain;
     border-radius: 8px;
 }
 
@@ -1633,7 +1632,6 @@ StTooltip StLabel {
     border: 0px;
     background: rgba(255,255,255,0.5);
     background-image: url("ws-switch-arrow-down.svg");
-    background-size: contain;
     border-radius: 8px;
 }
 
