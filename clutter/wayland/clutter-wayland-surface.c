@@ -577,19 +577,17 @@ clutter_wayland_surface_damage_buffer (ClutterWaylandSurface *self,
       switch (wl_shm_buffer_get_format (buffer))
         {
 #if G_BYTE_ORDER == G_BIG_ENDIAN
-          case WL_SHM_FORMAT_PREMULTIPLIED_ARGB32:
+          case WL_SHM_FORMAT_ARGB8888:
             format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
             break;
-          case WL_SHM_FORMAT_ARGB32:
-          case WL_SHM_FORMAT_XRGB32:
+          case WL_SHM_FORMAT_XRGB8888:
             format = COGL_PIXEL_FORMAT_ARGB_8888;
             break;
 #elif G_BYTE_ORDER == G_LITTLE_ENDIAN
-          case WL_SHM_FORMAT_PREMULTIPLIED_ARGB32:
+          case WL_SHM_FORMAT_ARGB8888:
             format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
             break;
-          case WL_SHM_FORMAT_ARGB32:
-          case WL_SHM_FORMAT_XRGB32:
+          case WL_SHM_FORMAT_XRGB8888:
             format = COGL_PIXEL_FORMAT_BGRA_8888;
             break;
 #endif
