@@ -133,17 +133,17 @@ on_stage_capture (ClutterStage *stage,
 
   if (!(clutter_event_type (event) == CLUTTER_MOTION ||
         clutter_event_type (event) == CLUTTER_BUTTON_RELEASE))
-    return FALSE;
+    return CLUTTER_EVENT_PROPAGATE;
 
   if (!(clutter_event_get_state (event) & CLUTTER_BUTTON1_MASK))
-    return FALSE;
+    return CLUTTER_EVENT_PROPAGATE;
 
   clutter_event_get_coords (event, &event_x, &event_y);
   device = clutter_event_get_device (event);
 
   drag_actor = _clutter_stage_get_drag_actor (stage, device);
   if (drag_actor == NULL)
-    return FALSE;
+    return CLUTTER_EVENT_PROPAGATE;
 
   /* get the actor under the cursor, excluding the dragged actor; we
    * use reactivity because it won't cause any scene invalidation
@@ -235,7 +235,7 @@ out:
   if (drag_actor != NULL)
     clutter_actor_set_reactive (drag_actor, was_reactive);
 
-  return FALSE;
+  return CLUTTER_EVENT_PROPAGATE;
 }
 
 static void
