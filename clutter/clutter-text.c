@@ -1864,7 +1864,7 @@ clutter_text_button_press (ClutterActor       *actor,
     {
       clutter_text_set_positions (self, -1, -1);
 
-      return TRUE;
+      return CLUTTER_EVENT_STOP;
     }
 
   res = clutter_actor_transform_stage_point (actor,
@@ -1903,7 +1903,7 @@ clutter_text_button_press (ClutterActor       *actor,
   priv->in_select_drag = TRUE;
   clutter_grab_pointer (actor);
 
-  return TRUE;
+  return CLUTTER_EVENT_STOP;
 }
 
 static gboolean
@@ -1917,13 +1917,13 @@ clutter_text_motion (ClutterActor       *actor,
   gboolean res;
 
   if (!priv->in_select_drag)
-    return FALSE;
+    return CLUTTER_EVENT_PROPAGATE;
 
   res = clutter_actor_transform_stage_point (actor,
                                              mev->x, mev->y,
                                              &x, &y);
   if (!res)
-    return FALSE;
+    return CLUTTER_EVENT_PROPAGATE;
 
   index_ = clutter_text_coords_to_position (self, x, y);
   offset = bytes_to_offset (priv->text, index_);
@@ -1933,7 +1933,7 @@ clutter_text_motion (ClutterActor       *actor,
   else
     clutter_text_set_positions (self, offset, offset);
 
-  return TRUE;
+  return CLUTTER_EVENT_STOP;
 }
 
 static gboolean
@@ -1948,10 +1948,10 @@ clutter_text_button_release (ClutterActor       *actor,
       clutter_ungrab_pointer ();
       priv->in_select_drag = FALSE;
 
-      return TRUE;
+      return CLUTTER_EVENT_STOP;
     }
 
-  return FALSE;
+  return CLUTTER_EVENT_PROPAGATE;
 }
 
 static gboolean
@@ -1965,7 +1965,7 @@ clutter_text_remove_password_hint (gpointer data)
   clutter_text_dirty_cache (data);
   clutter_text_queue_redraw (data);
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static gboolean
@@ -1978,7 +1978,7 @@ clutter_text_key_press (ClutterActor    *actor,
   gboolean res;
 
   if (!priv->editable)
-    return FALSE;
+    return CLUTTER_EVENT_PROPAGATE;
 
   /* we need to use the ClutterText type name to find our own
    * key bindings; subclasses will override or chain up this
@@ -2003,12 +2003,12 @@ clutter_text_key_press (ClutterActor    *actor,
    * actor
    */
   if (res)
-    return TRUE;
-  /* Skip keys when control is pressed */
+    return CLUTTER_EVENT_STOP;
   else if ((event->modifier_state & CLUTTER_CONTROL_MASK) == 0)
     {
       gunichar key_unichar;
 
+      /* Skip keys when control is pressed */
       key_unichar = clutter_event_get_key_unicode ((ClutterEvent *) event);
 
       /* return is reported as CR, but we want LF */
@@ -2032,16 +2032,16 @@ clutter_text_key_press (ClutterActor    *actor,
 
               priv->password_hint_visible = TRUE;
               priv->password_hint_id =
-                g_timeout_add (priv->password_hint_timeout,
-                               clutter_text_remove_password_hint,
-                               self);
+                clutter_threads_add_timeout (priv->password_hint_timeout,
+                                             clutter_text_remove_password_hint,
+                                             self);
             }
 
-          return TRUE;
+          return CLUTTER_EVENT_STOP;
         }
     }
 
-  return FALSE;
+  return CLUTTER_EVENT_PROPAGATE;
 }
 
 #define TEXT_PADDING    2
