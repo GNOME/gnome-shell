@@ -10,9 +10,7 @@ const Signals = imports.signals;
 
 const ModemGsmNetworkInterface = <interface name="org.freedesktop.ModemManager.Modem.Gsm.Network">
 <method name="GetRegistrationInfo">
-    <arg type="u" direction="out" />
-    <arg type="s" direction="out" />
-    <arg type="s" direction="out" />
+    <arg type="(uss)" direction="out" />
 </method>
 <method name="GetSignalQuality">
     <arg type="u" direction="out" />
@@ -35,9 +33,7 @@ const ModemCdmaInterface = <interface name="org.freedesktop.ModemManager.Modem.C
     <arg type="u" direction="out" />
 </method>
 <method name="GetServingSystem">
-    <arg type="u" direction="out" />
-    <arg type="s" direction="out" />
-    <arg type="u" direction="out" />
+    <arg type="(usu)" direction="out" />
 </method>
 <signal name="SignalQuality">
     <arg type="u" direction="out" />
@@ -72,7 +68,7 @@ const ModemGsm = new Lang.Class({
             this.operator_name = this._findOperatorName(name, code);
             this.emit('notify::operator-name');
         }));
-        this._proxy.GetRegistrationInfoRemote(Lang.bind(this, function(result, err) {
+        this._proxy.GetRegistrationInfoRemote(Lang.bind(this, function([result], err) {
             if (err) {
                 log(err);
                 return;
@@ -187,7 +183,7 @@ const ModemCdma = new Lang.Class({
     },
 
     _refreshServingSystem: function() {
-        this._proxy.GetServingSystemRemote(Lang.bind(this, function(result, err) {
+        this._proxy.GetServingSystemRemote(Lang.bind(this, function([result], err) {
             if (err) {
                 // it will return an error if the device is not connected
                 this.operator_name = null;
