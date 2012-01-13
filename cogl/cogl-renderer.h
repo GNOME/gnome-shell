@@ -37,23 +37,101 @@ G_BEGIN_DECLS
 
 /**
  * SECTION:cogl-renderer
- * @short_description:
+ * @short_description: Choosing a means to render
  *
+ * A #CoglRenderer represents a means to render. It encapsulates the
+ * selection of an underlying driver, such as OpenGL or OpenGL-ES and
+ * a selection of a window system binding API such as GLX, or EGL or
+ * WGL.
+ *
+ * A #CoglRenderer has two states, "unconnected" and "connected". When
+ * a renderer is first instantiated using cogl_renderer_new() it is
+ * unconnected so that it can be configured and constraints can be
+ * specified for how the backend driver and window system should be
+ * chosen.
+ *
+ * After configuration a #CoglRenderer can (optionally) be explicitly
+ * connected using cogl_renderer_connect() which allows for the
+ * handling of connection errors so that fallback configurations can
+ * be tried if necessary. Applications that don't support any
+ * fallbacks though can skip using cogl_renderer_connect() and leave
+ * Cogl to automatically connect the renderer.
+ *
+ * Once you have a configured #CoglRenderer it can be used to create a
+ * #CoglDisplay object using cogl_display_new().
+ *
+ * <note>Many applications don't need to explicitly use
+ * cogl_renderer_new() or cogl_display_new() and can just jump
+ * straight to cogl_context_new() and pass a %NULL display argument so
+ * Cogl will automatically connect and setup a renderer and
+ * display.</note>
  */
 
-#define cogl_renderer_error_quark cogl_renderer_error_quark_EXP
 
+/**
+ * COGL_RENDERER_ERROR:
+ *
+ * An error domain for exceptions reported by Cogl
+ */
 #define COGL_RENDERER_ERROR cogl_renderer_error_quark ()
+
 GQuark
 cogl_renderer_error_quark (void);
 
 typedef struct _CoglRenderer CoglRenderer;
 
-#define cogl_is_renderer cogl_is_renderer_EXP
+/**
+ * cogl_is_renderer:
+ * @object: A #CoglObject pointer
+ *
+ * Determines if the given @object is a #CoglRenderer
+ *
+ * Return value: %TRUE if @object is a #CoglRenderer, else %FALSE.
+ * Since: 1.10
+ * Stability: unstable
+ */
 gboolean
 cogl_is_renderer (void *object);
 
-#define cogl_renderer_new cogl_renderer_new_EXP
+/**
+ * cogl_renderer_new:
+ *
+ * Instantiates a new (unconnected) #CoglRenderer object. A
+ * #CoglRenderer represents a means to render. It encapsulates the
+ * selection of an underlying driver, such as OpenGL or OpenGL-ES and
+ * a selection of a window system binding API such as GLX, or EGL or
+ * WGL.
+ *
+ * While the renderer is unconnected it can be configured so that
+ * applications may specify backend constraints, such as "must use
+ * x11" for example via cogl_renderer_add_criteria().
+ *
+ * There are also some platform specific configuration apis such
+ * as cogl_xlib_renderer_set_foreign_display() that may also be
+ * used while the renderer is unconnected.
+ *
+ * Once the renderer has been configured, then it may (optionally) be
+ * explicitly connected using cogl_renderer_connect() which allows
+ * errors to be handled gracefully and potentially fallback
+ * configurations can be tried out if there are initial failures.
+ *
+ * If a renderer is not explicitly connected then cogl_display_new()
+ * will automatically connect the renderer for you. If you don't
+ * have any code to deal with error/fallback situations then its fine
+ * to just let Cogl do the connection for you.
+ *
+ * Once you have setup your renderer then the next step is to create a
+ * #CoglDisplay using cogl_display_new().
+ *
+ * <note>Many applications don't need to explicitly use
+ * cogl_renderer_new() or cogl_display_new() and can just jump
+ * straight to cogl_context_new() and pass a %NULL display argument
+ * so Cogl will automatically connect and setup a renderer and
+ * display.</note>
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
 CoglRenderer *
 cogl_renderer_new (void);
 
@@ -106,7 +184,6 @@ typedef enum
  *
  * This may only be called on an un-connected #CoglRenderer.
  */
-#define cogl_renderer_set_winsys_id cogl_renderer_set_winsys_id_EXP
 void
 cogl_renderer_set_winsys_id (CoglRenderer *renderer,
                              CoglWinsysID winsys_id);
@@ -122,7 +199,6 @@ cogl_renderer_set_winsys_id (CoglRenderer *renderer,
  * Returns: The #CoglWinsysID corresponding to the chosen window
  *          system backend.
  */
-#define cogl_renderer_get_winsys_id cogl_renderer_get_winsys_id_EXP
 CoglWinsysID
 cogl_renderer_get_winsys_id (CoglRenderer *renderer);
 
@@ -137,13 +213,23 @@ cogl_renderer_get_winsys_id (CoglRenderer *renderer);
  * Since: 1.8
  * Stability: Unstable
  */
-#define cogl_renderer_get_n_fragment_texture_units \
-  cogl_renderer_get_n_fragment_texture_units_EXP
 int
 cogl_renderer_get_n_fragment_texture_units (CoglRenderer *renderer);
 
-#define cogl_renderer_check_onscreen_template \
-  cogl_renderer_check_onscreen_template_EXP
+/**
+ * cogl_renderer_check_onscreen_template:
+ * @renderer: A #CoglRenderer
+ * @onscreen_template: A #CoglOnscreenTemplate
+ * @error: A pointer to a #GError for reporting exceptions
+ *
+ * Tests if a given @onscreen_template can be supported with the given
+ * @renderer.
+ *
+ * Return value: %TRUE if the @onscreen_template can be supported,
+ *               else %FALSE.
+ * Since: 1.10
+ * Stability: unstable
+ */
 gboolean
 cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
                                        CoglOnscreenTemplate *onscreen_template,
@@ -151,7 +237,21 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
 
 /* Final connection API */
 
-#define cogl_renderer_connect cogl_renderer_connect_EXP
+/**
+ * cogl_renderer_connect:
+ * @renderer: An unconnected #CoglRenderer
+ * @error a pointer to a #GError for reporting exceptions
+ *
+ * Connects the configured @renderer. Renderer connection isn't a
+ * very active process, it basically just means validating that
+ * any given constraint criteria can be satisfied and that a
+ * usable driver and window system backend can be found.
+ *
+ * Return value: %TRUE if there was no error while connecting the
+ *               given @renderer. %FALSE if there was an error.
+ * Since: 1.10
+ * Stability: unstable
+ */
 gboolean
 cogl_renderer_connect (CoglRenderer *renderer, GError **error);
 
