@@ -54,23 +54,10 @@ typedef enum
   COGL_WINSYS_RECTANGLE_STATE_ENABLE
 } CoglWinsysRectangleState;
 
-/* These criteria flags are hard-coded features of the winsys
-   regardless of the underlying driver or GPU. We might eventually
-   want to use these in a mechanism for the application to specify
-   criteria for the winsys instead of a specific winsys but for now
-   they are only used internally to assert that an EGL winsys is
-   selected */
-typedef enum
-{
-  COGL_WINSYS_CRITERIA_USES_X11 = (1 << 0),
-  COGL_WINSYS_CRITERIA_USES_XLIB = (1 << 1),
-  COGL_WINSYS_CRITERIA_USES_EGL = (1 << 2)
-} CoglWinsysCriteria;
-
 typedef struct _CoglWinsysVtable
 {
   CoglWinsysID id;
-  CoglWinsysCriteria criteria;
+  CoglRendererConstraint constraints;
 
   const char *name;
 

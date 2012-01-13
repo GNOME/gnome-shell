@@ -155,6 +155,70 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
 gboolean
 cogl_renderer_connect (CoglRenderer *renderer, GError **error);
 
+/**
+ * CoglRendererConstraint:
+ * @COGL_RENDERER_CONSTRAINT_USES_X11: Require the renderer to be X11 based
+ * @COGL_RENDERER_CONSTRAINT_USES_XLIB: Require the renderer to be X11
+ *                                      based and use Xlib
+ * @COGL_RENDERER_CONSTRAINT_USES_EGL: Require the renderer to be EGL based
+ *
+ * These constraint flags are hard-coded features of the different renderer
+ * backends. Sometimes a platform may support multiple rendering options which
+ * Cogl will usually choose from automatically. Some of these features are
+ * important to higher level applications and frameworks though, such as
+ * whether a renderer is X11 based because an application might only support
+ * X11 based input handling. An application might also need to ensure EGL is
+ * used internally too if they depend on access to an EGLDisplay for some
+ * purpose.
+ *
+ * Applications should ideally minimize how many of these constraints
+ * they depend on to ensure maximum portability.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+typedef enum
+{
+  COGL_RENDERER_CONSTRAINT_USES_X11 = (1 << 0),
+  COGL_RENDERER_CONSTRAINT_USES_XLIB = (1 << 1),
+  COGL_RENDERER_CONSTRAINT_USES_EGL = (1 << 2)
+} CoglRendererConstraint;
+
+
+/**
+ * cogl_renderer_add_contraint:
+ * @renderer: An unconnected #CoglRenderer
+ * @constraint: A #CoglRendererConstraint to add
+ *
+ * This adds a renderer selection @constraint.
+ *
+ * Applications should ideally minimize how many of these constraints they
+ * depend on to ensure maximum portability.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_renderer_add_contraint (CoglRenderer *renderer,
+                             CoglRendererConstraint constraint);
+
+/**
+ * cogl_renderer_remove_constraint:
+ * @renderer: An unconnected #CoglRenderer
+ * @constraint: A #CoglRendererConstraint to remove
+ *
+ * This removes a renderer selection @constraint.
+ *
+ * Applications should ideally minimize how many of these constraints they
+ * depend on to ensure maximum portability.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_renderer_remove_constraint (CoglRenderer *renderer,
+                                 CoglRendererConstraint constraint);
+
 G_END_DECLS
 
 #endif /* __COGL_RENDERER_H__ */

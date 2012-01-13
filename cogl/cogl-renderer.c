@@ -321,6 +321,8 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
     {
       const CoglWinsysVtable *winsys = _cogl_winsys_vtable_getters[i]();
       GError *tmp_error = NULL;
+      GList *l;
+      gboolean constraints_failed = FALSE;
 
       if (renderer->winsys_id_override != COGL_WINSYS_ID_ANY)
         {
@@ -336,6 +338,18 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
               g_ascii_strcasecmp (winsys->name, user_choice) != 0)
             continue;
         }
+
+      for (l = renderer->constraints; l; l = l->next)
+        {
+          CoglRendererConstraint constraint = GPOINTER_TO_UINT (l->data);
+          if (!(winsys->constraints & constraint))
+            {
+              constraints_failed = TRUE;
+              break;
+            }
+        }
+      if (constraints_failed)
+        continue;
 
       /* At least temporarily we will associate this winsys with
        * the renderer in-case ->renderer_connect calls API that
@@ -473,3 +487,22 @@ cogl_renderer_get_n_fragment_texture_units (CoglRenderer *renderer)
 
   return n;
 }
+
+void
+cogl_renderer_add_contraint (CoglRenderer *renderer,
+                             CoglRendererConstraint constraint)
+{
+  g_return_if_fail (!renderer->connected);
+  renderer->constraints = g_list_prepend (renderer->constraints,
+                                          GUINT_TO_POINTER (constraint));
+}
+
+void
+cogl_renderer_remove_constraint (CoglRenderer *renderer,
+                                 CoglRendererConstraint constraint)
+{
+  g_return_if_fail (!renderer->connected);
+  renderer->constraints = g_list_remove (renderer->constraints,
+                                         GUINT_TO_POINTER (constraint));
+}
+

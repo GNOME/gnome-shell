@@ -460,8 +460,8 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
   CoglTexture2D *tex_2d;
   GLenum gl_error;
 
-  _COGL_RETURN_VAL_IF_FAIL (_cogl_context_get_winsys (ctx)->criteria &
-                            COGL_WINSYS_CRITERIA_USES_EGL,
+  _COGL_RETURN_VAL_IF_FAIL (_cogl_context_get_winsys (ctx)->constraints &
+                            COGL_RENDERER_CONSTRAINT_USES_EGL,
                             NULL);
 
   _COGL_RETURN_VAL_IF_FAIL (ctx->private_feature_flags &
@@ -541,8 +541,8 @@ cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
     {
       EGLImageKHR image;
 
-      _COGL_RETURN_VAL_IF_FAIL (_cogl_context_get_winsys (ctx)->criteria &
-                                COGL_WINSYS_CRITERIA_USES_EGL,
+      _COGL_RETURN_VAL_IF_FAIL (_cogl_context_get_winsys (ctx)->constraints &
+                                COGL_RENDERER_CONSTRAINT_USES_EGL,
                                 NULL);
       image = _cogl_egl_create_image (ctx,
                                       EGL_WAYLAND_BUFFER_WL,

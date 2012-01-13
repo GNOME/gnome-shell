@@ -44,6 +44,8 @@ struct _CoglRenderer
   gboolean connected;
   const CoglWinsysVtable *winsys_vtable;
   CoglWinsysID winsys_id_override;
+  GList *constraints;
+
 #ifdef COGL_HAS_XLIB_SUPPORT
   Display *foreign_xdpy;
   gboolean xlib_enable_event_retrieval;
