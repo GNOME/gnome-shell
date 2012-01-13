@@ -106,6 +106,37 @@ struct {
   }
 };
 
+static const char *
+get_winsys_name_for_id (CoglWinsysID winsys_id)
+{
+  switch (winsys_id)
+    {
+    case COGL_WINSYS_ID_ANY:
+      g_return_val_if_reached ("ERROR");
+    case COGL_WINSYS_ID_STUB:
+      return "Stub";
+    case COGL_WINSYS_ID_GLX:
+      return "GLX";
+    case COGL_WINSYS_ID_EGL_XLIB:
+      return "EGL + Xlib platform";
+    case COGL_WINSYS_ID_EGL_NULL:
+      return "EGL + NULL window system platform";
+    case COGL_WINSYS_ID_EGL_GDL:
+      return "EGL + GDL platform";
+    case COGL_WINSYS_ID_EGL_WAYLAND:
+      return "EGL + Wayland platform";
+    case COGL_WINSYS_ID_EGL_KMS:
+      return "EGL + KMS platform";
+    case COGL_WINSYS_ID_EGL_ANDROID:
+      return "EGL + Android platform";
+    case COGL_WINSYS_ID_WGL:
+      return "EGL + Windows WGL platform";
+    case COGL_WINSYS_ID_SDL:
+      return "EGL + SDL platform";
+    }
+  g_return_val_if_reached ("Unknown");
+}
+
 static void
 feature_cb (CoglFeatureID feature, void *user_data)
 {
@@ -124,17 +155,27 @@ feature_cb (CoglFeatureID feature, void *user_data)
 int
 main (int argc, char **argv)
 {
-    CoglContext *ctx;
-    GError *error = NULL;
+  CoglRenderer *renderer;
+  CoglDisplay *display;
+  CoglContext *ctx;
+  GError *error = NULL;
+  CoglWinsysID winsys_id;
+  const char *winsys_name;
 
-    ctx = cogl_context_new (NULL, &error);
-    if (!ctx) {
-        fprintf (stderr, "Failed to create context: %s\n", error->message);
-        return 1;
-    }
+  ctx = cogl_context_new (NULL, &error);
+  if (!ctx) {
+      fprintf (stderr, "Failed to create context: %s\n", error->message);
+      return 1;
+  }
 
-    g_print ("Features:\n");
-    cogl_foreach_feature (ctx, feature_cb, NULL);
+  display = cogl_context_get_display (ctx);
+  renderer = cogl_display_get_renderer (display);
+  winsys_id = cogl_renderer_get_winsys_id (renderer);
+  winsys_name = get_winsys_name_for_id (winsys_id);
+  g_print ("Renderer: %s\n\n", winsys_name);
 
-    return 0;
+  g_print ("Features:\n");
+  cogl_foreach_feature (ctx, feature_cb, NULL);
+
+  return 0;
 }
