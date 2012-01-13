@@ -413,7 +413,7 @@ clutter_timeout_pool_new (gint priority)
  * @pool: a #ClutterTimeoutPool
  * @fps: the time between calls to the function, in frames per second
  * @func: function to call
- * @data: data to pass to the function, or %NULL
+ * @data: (closure): data to pass to the function, or %NULL
  * @notify: function to call when the timeout is removed, or %NULL
  *
  * Sets a function to be called at regular intervals, and puts it inside

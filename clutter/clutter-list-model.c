@@ -782,8 +782,8 @@ clutter_list_model_new (guint n_columns,
 /**
  * clutter_list_model_newv:
  * @n_columns: number of columns in the model
- * @types: an array of #GType types for the columns, from first to last
- * @names: an array of names for the columns, from first to last
+ * @types: (array length=n_columns): an array of #GType types for the columns, from first to last
+ * @names: (array length=n_columns): an array of names for the columns, from first to last
  *
  * Non-vararg version of clutter_list_model_new(). This function is
  * useful for language bindings.
