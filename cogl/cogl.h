@@ -242,7 +242,6 @@ typedef enum _CoglFeatureID
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
 
-#define cogl_has_feature cogl_has_feature_EXP
 /**
  * cogl_has_feature:
  * @context: A #CoglContext pointer
@@ -264,7 +263,6 @@ typedef enum _CoglFeatureID
 gboolean
 cogl_has_feature (CoglContext *context, CoglFeatureID feature);
 
-#define cogl_has_features cogl_has_features_EXP
 /**
  * cogl_has_features:
  * @context: A #CoglContext pointer
@@ -298,7 +296,6 @@ cogl_has_features (CoglContext *context, ...);
  */
 typedef void (*CoglFeatureCallback) (CoglFeatureID feature, void *user_data);
 
-#define cogl_foreach_feature cogl_foreach_feature_EXP
 /**
  * cogl_foreach_feature:
  * @context: A #CoglContext pointer
@@ -1017,7 +1014,6 @@ void
 cogl_clip_push_from_path_preserve (void);
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
-#define cogl_clip_push_primitive cogl_clip_push_primitive_EXP
 /**
  * cogl_clip_push_primitive:
  * @primitive: A #CoglPrimitive describing a flat 2D shape
