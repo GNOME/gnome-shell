@@ -164,7 +164,7 @@ cogl_quaternion_init (CoglQuaternion *quaternion,
 /**
  * cogl_quaternion_init_from_angle_vector:
  * @quaternion: An uninitialized #CoglQuaternion
- * @axis: your axis vector about which you want to rotate.
+ * @axis: your 3 component axis vector about which you want to rotate.
  *
  * Initializes a quaternion that rotates @angle degrees around the
  * given @axis vector. The axis vector does not need to be
@@ -178,7 +178,7 @@ cogl_quaternion_init (CoglQuaternion *quaternion,
 void
 cogl_quaternion_init_from_angle_vector (CoglQuaternion *quaternion,
                                         float angle,
-                                        const CoglVector3 *axis);
+                                        const float *axis3f);
 
 /**
  * cogl_quaternion_init_identity:
@@ -316,7 +316,7 @@ cogl_quaternion_get_rotation_angle (const CoglQuaternion *quaternion);
  */
 void
 cogl_quaternion_get_rotation_axis (const CoglQuaternion *quaternion,
-                                   CoglVector3 *vector);
+                                   float *vector3);
 
 /**
  * cogl_quaternion_normalize:

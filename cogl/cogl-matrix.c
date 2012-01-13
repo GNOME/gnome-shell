@@ -2085,41 +2085,41 @@ cogl_matrix_look_at (CoglMatrix *matrix,
                      float world_up_z)
 {
   CoglMatrix tmp;
-  CoglVector3 forward;
-  CoglVector3 side;
-  CoglVector3 up;
+  float forward[3];
+  float side[3];
+  float up[3];
 
   /* Get a unit viewing direction vector */
-  cogl_vector3_init (&forward,
+  cogl_vector3_init (forward,
                      object_x - eye_position_x,
                      object_y - eye_position_y,
                      object_z - eye_position_z);
-  cogl_vector3_normalize (&forward);
+  cogl_vector3_normalize (forward);
 
-  cogl_vector3_init (&up, world_up_x, world_up_y, world_up_z);
+  cogl_vector3_init (up, world_up_x, world_up_y, world_up_z);
 
   /* Take the sideways direction as being perpendicular to the viewing
    * direction and the word up vector. */
-  cogl_vector3_cross_product (&side, &forward, &up);
-  cogl_vector3_normalize (&side);
+  cogl_vector3_cross_product (side, forward, up);
+  cogl_vector3_normalize (side);
 
   /* Now we have unit sideways and forward-direction vectors calculate
    * a new mutually perpendicular up vector. */
-  cogl_vector3_cross_product (&up, &side, &forward);
+  cogl_vector3_cross_product (up, side, forward);
 
-  tmp.xx = side.x;
-  tmp.yx = side.y;
-  tmp.zx = side.z;
+  tmp.xx = side[0];
+  tmp.yx = side[1];
+  tmp.zx = side[2];
   tmp.wx = 0;
 
-  tmp.xy = up.x;
-  tmp.yy = up.y;
-  tmp.zy = up.z;
+  tmp.xy = up[0];
+  tmp.yy = up[1];
+  tmp.zy = up[2];
   tmp.wy = 0;
 
-  tmp.xz = -forward.x;
-  tmp.yz = -forward.y;
-  tmp.zz = -forward.z;
+  tmp.xz = -forward[0];
+  tmp.yz = -forward[1];
+  tmp.zz = -forward[2];
   tmp.wz = 0;
 
   tmp.xw = 0;

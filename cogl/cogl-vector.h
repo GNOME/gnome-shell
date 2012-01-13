@@ -44,50 +44,9 @@ G_BEGIN_DECLS
  * component float vectors.
  */
 
-/* All of the cogl-vector API is currently experimental so we
- * suffix the actual symbols with _EXP so if somone is monitoring for
- * ABI changes it will hopefully be clearer to them what's going on if
- * any of the symbols dissapear at a later date.
- */
-#define cogl_vector3_init cogl_vector3_init_EXP
-#define cogl_vector3_init_zero cogl_vector3_init_zero_EXP
-#define cogl_vector3_equal cogl_vector3_equal_EXP
-#define cogl_vector3_equal_with_epsilon cogl_vector3_equal_with_epsilon_EXP
-#define cogl_vector3_copy cogl_vector3_copy_EXP
-#define cogl_vector3_free cogl_vector3_free_EXP
-#define cogl_vector3_invert cogl_vector3_invert_EXP
-#define cogl_vector3_add cogl_vector3_add_EXP
-#define cogl_vector3_subtract cogl_vector3_subtract_EXP
-#define cogl_vector3_multiply_scalar cogl_vector3_multiply_scalar_EXP
-#define cogl_vector3_divide_scalar cogl_vector3_divide_scalar_EXP
-#define cogl_vector3_normalize cogl_vector3_normalize_EXP
-#define cogl_vector3_magnitude cogl_vector3_magnitude_EXP
-#define cogl_vector3_cross_product cogl_vector3_cross_product_EXP
-#define cogl_vector3_dot_product cogl_vector3_dot_product_EXP
-#define cogl_vector3_distance cogl_vector3_distance_EXP
-
-typedef struct
-{
-  /* FIXME: add sse alignment constraint? */
-  float x;
-  float y;
-  float z;
-} CoglVector3;
-
-#if 0
-typedef struct
-{
-  /* FIXME: add sse alignment constraint? */
-  float x;
-  float y;
-  float z;
-  float w;
-} CoglVector4;
-#endif
-
 /**
  * cogl_vector3_init:
- * @vector: The CoglVector3 you want to initialize
+ * @vector: The 3 component vector you want to initialize
  * @x: The x component
  * @y: The y component
  * @z: The z component
@@ -100,11 +59,11 @@ typedef struct
  * Stability: Unstable
  */
 void
-cogl_vector3_init (CoglVector3 *vector, float x, float y, float z);
+cogl_vector3_init (float *vector, float x, float y, float z);
 
 /**
  * cogl_vector3_init_zero:
- * @vector: The CoglVector3 you want to initialize
+ * @vector: The 3 component vector you want to initialize
  *
  * Initializes a 3 component, single precision float vector with zero
  * for each component.
@@ -113,12 +72,12 @@ cogl_vector3_init (CoglVector3 *vector, float x, float y, float z);
  * Stability: Unstable
  */
 void
-cogl_vector3_init_zero (CoglVector3 *vector);
+cogl_vector3_init_zero (float *vector);
 
 /**
  * cogl_vector3_equal:
- * @v1: The first CoglVector3 you want to compare
- * @v2: The second CoglVector3 you want to compare
+ * @v1: The first 3 component vector you want to compare
+ * @v2: The second 3 component vector you want to compare
  *
  * Compares the components of two vectors and returns TRUE if they are
  * the same.
@@ -139,8 +98,8 @@ cogl_vector3_equal (gconstpointer v1, gconstpointer v2);
 
 /**
  * cogl_vector3_equal_with_epsilon:
- * @vector0: The first CoglVector3 you want to compare
- * @vector1: The second CoglVector3 you want to compare
+ * @vector0: The first 3 component vector you want to compare
+ * @vector1: The second 3 component vector you want to compare
  * @epsilon: The allowable difference between components to still be
  *           considered equal
  *
@@ -159,43 +118,43 @@ cogl_vector3_equal (gconstpointer v1, gconstpointer v2);
  * Stability: Unstable
  */
 gboolean
-cogl_vector3_equal_with_epsilon (const CoglVector3 *vector0,
-                                 const CoglVector3 *vector1,
+cogl_vector3_equal_with_epsilon (const float *vector0,
+                                 const float *vector1,
                                  float epsilon);
 
 /**
  * cogl_vector3_copy:
- * @vector: The CoglVector3 you want to copy
+ * @vector: The 3 component vector you want to copy
  *
- * Allocates a new #CoglVector3 structure on the heap initializing the
- * components from the given @vector and returns a pointer to the newly
- * allocated vector. You should free the memory using
+ * Allocates a new 3 component float vector on the heap initializing
+ * the components from the given @vector and returns a pointer to the
+ * newly allocated vector. You should free the memory using
  * cogl_vector3_free()
  *
- * Returns: A newly allocated #CoglVector3.
+ * Returns: A newly allocated 3 component float vector
  *
  * Since: 1.4
  * Stability: Unstable
  */
-CoglVector3 *
-cogl_vector3_copy (const CoglVector3 *vector);
+float *
+cogl_vector3_copy (const float *vector);
 
 /**
  * cogl_vector3_free:
- * @vector: The CoglVector3 you want to free
+ * @vector: The 3 component you want to free
  *
- * Frees a #CoglVector3 that was previously allocated with
+ * Frees a 3 component vector that was previously allocated with
  * cogl_vector_copy()
  *
  * Since: 1.4
  * Stability: Unstable
  */
 void
-cogl_vector3_free (CoglVector3 *vector);
+cogl_vector3_free (float *vector);
 
 /**
  * cogl_vector3_invert:
- * @vector: The CoglVector3 you want to manipulate
+ * @vector: The 3 component vector you want to manipulate
  *
  * Inverts/negates all the components of the given @vector.
  *
@@ -203,7 +162,7 @@ cogl_vector3_free (CoglVector3 *vector);
  * Stability: Unstable
  */
 void
-cogl_vector3_invert (CoglVector3 *vector);
+cogl_vector3_invert (float *vector);
 
 /**
  * cogl_vector3_add:
@@ -218,9 +177,9 @@ cogl_vector3_invert (CoglVector3 *vector);
  * Stability: Unstable
  */
 void
-cogl_vector3_add (CoglVector3 *result,
-                  const CoglVector3 *a,
-                  const CoglVector3 *b);
+cogl_vector3_add (float *result,
+                  const float *a,
+                  const float *b);
 
 /**
  * cogl_vector3_subtract:
@@ -235,13 +194,13 @@ cogl_vector3_add (CoglVector3 *result,
  * Stability: Unstable
  */
 void
-cogl_vector3_subtract (CoglVector3 *result,
-                       const CoglVector3 *a,
-                       const CoglVector3 *b);
+cogl_vector3_subtract (float *result,
+                       const float *a,
+                       const float *b);
 
 /**
  * cogl_vector3_multiply_scalar:
- * @vector: The CoglVector3 you want to manipulate
+ * @vector: The 3 component vector you want to manipulate
  * @scalar: The scalar you want to multiply the vector components by
  *
  * Multiplies each of the @vector components by the given scalar.
@@ -250,12 +209,12 @@ cogl_vector3_subtract (CoglVector3 *result,
  * Stability: Unstable
  */
 void
-cogl_vector3_multiply_scalar (CoglVector3 *vector,
+cogl_vector3_multiply_scalar (float *vector,
                               float scalar);
 
 /**
  * cogl_vector3_divide_scalar:
- * @vector: The CoglVector3 you want to manipulate
+ * @vector: The 3 component vector you want to manipulate
  * @scalar: The scalar you want to divide the vector components by
  *
  * Divides each of the @vector components by the given scalar.
@@ -264,12 +223,12 @@ cogl_vector3_multiply_scalar (CoglVector3 *vector,
  * Stability: Unstable
  */
 void
-cogl_vector3_divide_scalar (CoglVector3 *vector,
+cogl_vector3_divide_scalar (float *vector,
                             float scalar);
 
 /**
  * cogl_vector3_normalize:
- * @vector: The CoglVector3 you want to manipulate
+ * @vector: The 3 component vector you want to manipulate
  *
  * Updates the vector so it is a "unit vector" such that the
  * @vector<!-- -->s magnitude or length is equal to 1.
@@ -278,11 +237,11 @@ cogl_vector3_divide_scalar (CoglVector3 *vector,
  * Stability: Unstable
  */
 void
-cogl_vector3_normalize (CoglVector3 *vector);
+cogl_vector3_normalize (float *vector);
 
 /**
  * cogl_vector3_magnitude:
- * @vector: The CoglVector3 you want the magnitude for
+ * @vector: The 3 component vector you want the magnitude for
  *
  * Calculates the scalar magnitude or length of @vector.
  *
@@ -292,13 +251,13 @@ cogl_vector3_normalize (CoglVector3 *vector);
  * Stability: Unstable
  */
 float
-cogl_vector3_magnitude (const CoglVector3 *vector);
+cogl_vector3_magnitude (const float *vector);
 
 /**
  * cogl_vector3_cross_product:
  * @result: Where you want the result written
- * @u: Your first CoglVector3
- * @v: Your second CoglVector3
+ * @u: Your first 3 component vector
+ * @v: Your second 3 component vector
  *
  * Calculates the cross product between the two vectors @u and @v.
  *
@@ -322,16 +281,16 @@ cogl_vector3_magnitude (const CoglVector3 *vector);
  * Stability: Unstable
  */
 void
-cogl_vector3_cross_product (CoglVector3 *result,
-                            const CoglVector3 *u,
-                            const CoglVector3 *v);
+cogl_vector3_cross_product (float *result,
+                            const float *u,
+                            const float *v);
 
 /**
  * cogl_vector3_dot_product:
- * @a: Your first CoglVector3
- * @b: Your second CoglVector3
+ * @a: Your first 3 component vector
+ * @b: Your second 3 component vector
  *
- * Calculates the dot product of the two #CoglVector3<!-- -->s. This
+ * Calculates the dot product of the two 3 component vectors. This
  * can be used to determine the magnitude of one vector projected onto
  * another. (for example a surface normal)
  *
@@ -365,7 +324,7 @@ cogl_vector3_cross_product (CoglVector3 *result,
  * Stability: Unstable
  */
 float
-cogl_vector3_dot_product (const CoglVector3 *a, const CoglVector3 *b);
+cogl_vector3_dot_product (const float *a, const float *b);
 
 /**
  * cogl_vector3_distance:
@@ -375,13 +334,14 @@ cogl_vector3_dot_product (const CoglVector3 *a, const CoglVector3 *b);
  * If you consider the two given vectors as (x,y,z) points instead
  * then this will compute the distance between those two points.
  *
- * Returns: The distance between two points given as @CoglVector3<!-- -->s
+ * Returns: The distance between two points given as 3 component
+ *          vectors.
  *
  * Since: 1.4
  * Stability: Unstable
  */
 float
-cogl_vector3_distance (const CoglVector3 *a, const CoglVector3 *b);
+cogl_vector3_distance (const float *a, const float *b);
 
 G_END_DECLS
 

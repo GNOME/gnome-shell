@@ -74,36 +74,38 @@ cogl_quaternion_init (CoglQuaternion *quaternion,
                       float y,
                       float z)
 {
-  CoglVector3 axis = { x, y, z};
-  cogl_quaternion_init_from_angle_vector (quaternion, angle, &axis);
+  float axis[3] = { x, y, z};
+  cogl_quaternion_init_from_angle_vector (quaternion, angle, axis);
 }
 
 void
 cogl_quaternion_init_from_angle_vector (CoglQuaternion *quaternion,
                                         float angle,
-                                        const CoglVector3 *axis_in)
+                                        const float *axis3f_in)
 {
   /* NB: We are using quaternions to represent an axis (a), angle (𝜃) pair
    * in this form:
    * [w=cos(𝜃/2) ( x=sin(𝜃/2)*a.x, y=sin(𝜃/2)*a.y, z=sin(𝜃/2)*a.x )]
    */
-  CoglVector3 axis;
+  float axis[3];
   float half_angle;
   float sin_half_angle;
 
   /* XXX: Should we make cogl_vector3_normalize have separate in and
    * out args? */
-  axis = *axis_in;
-  cogl_vector3_normalize (&axis);
+  axis[0] = axis3f_in[0];
+  axis[1] = axis3f_in[1];
+  axis[2] = axis3f_in[2];
+  cogl_vector3_normalize (axis);
 
   half_angle = angle * _COGL_QUATERNION_DEGREES_TO_RADIANS * 0.5f;
   sin_half_angle = sinf (half_angle);
 
   quaternion->w = cosf (half_angle);
 
-  quaternion->x = axis.x * sin_half_angle;
-  quaternion->y = axis.y * sin_half_angle;
-  quaternion->z = axis.z * sin_half_angle;
+  quaternion->x = axis[0] * sin_half_angle;
+  quaternion->y = axis[1] * sin_half_angle;
+  quaternion->z = axis[2] * sin_half_angle;
 
   cogl_quaternion_normalize (quaternion);
 }
@@ -365,7 +367,7 @@ cogl_quaternion_get_rotation_angle (const CoglQuaternion *quaternion)
 
 void
 cogl_quaternion_get_rotation_axis (const CoglQuaternion *quaternion,
-                                   CoglVector3 *vector)
+                                   float *vector3)
 {
   float sin_half_angle_sqr;
   float one_over_sin_angle_over_2;
@@ -383,18 +385,18 @@ cogl_quaternion_get_rotation_axis (const CoglQuaternion *quaternion,
     {
       /* Either an identity quaternion or numerical imprecision.
        * Either way we return an arbitrary vector. */
-      vector->x = 1;
-      vector->y = 0;
-      vector->z = 0;
+      vector3[0] = 1;
+      vector3[1] = 0;
+      vector3[2] = 0;
       return;
     }
 
   /* Calculate 1 / sin(𝜃/2) */
   one_over_sin_angle_over_2 = 1.0f / sqrtf (sin_half_angle_sqr);
 
-  vector->x = quaternion->x * one_over_sin_angle_over_2;
-  vector->y = quaternion->y * one_over_sin_angle_over_2;
-  vector->z = quaternion->z * one_over_sin_angle_over_2;
+  vector3[0] = quaternion->x * one_over_sin_angle_over_2;
+  vector3[1] = quaternion->y * one_over_sin_angle_over_2;
+  vector3[2] = quaternion->z * one_over_sin_angle_over_2;
 }
 
 void
