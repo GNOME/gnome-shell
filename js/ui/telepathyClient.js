@@ -669,12 +669,12 @@ const ChatSource = new Lang.Class({
         if (presence == Tp.ConnectionPresenceType.AVAILABLE) {
             msg = _("%s is online.").format(title);
             shouldNotify = (this._presence == Tp.ConnectionPresenceType.OFFLINE);
-        } else if (presence == Tp.ConnectionPresenceType.OFFLINE ||
-                   presence == Tp.ConnectionPresenceType.EXTENDED_AWAY) {
+        } else if (presence == Tp.ConnectionPresenceType.OFFLINE) {
             presence = Tp.ConnectionPresenceType.OFFLINE;
             msg = _("%s is offline.").format(title);
             shouldNotify = (this._presence != Tp.ConnectionPresenceType.OFFLINE);
-        } else if (presence == Tp.ConnectionPresenceType.AWAY) {
+        } else if (presence == Tp.ConnectionPresenceType.AWAY ||
+                   presence == Tp.ConnectionPresenceType.EXTENDED_AWAY) {
             msg = _("%s is away.").format(title);
             shouldNotify = false;
         } else if (presence == Tp.ConnectionPresenceType.BUSY) {
