@@ -2869,35 +2869,52 @@ clutter_actor_paint (ClutterActor *self)
   if (priv->enable_model_view_transform)
     {
       CoglMatrix matrix;
+
       /* XXX: It could be better to cache the modelview with the actor
        * instead of progressively building up the transformations on
        * the matrix stack every time we paint. */
       cogl_get_modelview_matrix (&matrix);
       _clutter_actor_apply_modelview_transform (self, &matrix);
-      cogl_set_modelview_matrix (&matrix);
 
+#ifdef CLUTTER_ENABLE_DEBUG
       /* Catch when out-of-band transforms have been made by actors not as part
        * of an apply_transform vfunc... */
       if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_OOB_TRANSFORMS))
         {
           CoglMatrix expected_matrix;
+
           _clutter_actor_get_relative_transformation_matrix (self, NULL,
                                                              &expected_matrix);
+
           if (!cogl_matrix_equal (&matrix, &expected_matrix))
             {
-              ClutterActor *parent = self;
-              GString *parents = g_string_new ("");
-              while ((parent = clutter_actor_get_parent (parent)))
-                g_string_append_printf (parents, "->%s", G_OBJECT_TYPE_NAME (parent));
+              GString *buf = g_string_sized_new (1024);
+              ClutterActor *parent;
+
+              parent = self;
+              while (parent != NULL)
+                {
+                  g_string_append (buf, _clutter_actor_get_debug_name (parent));
+
+                  if (parent->priv->parent_actor != NULL)
+                    g_string_append (buf, "->");
+
+                  parent = parent->priv->parent_actor;
+                }
+
               g_warning ("Unexpected transform found when painting actor "
                          "\"%s\". This will be caused by one of the actor's "
                          "ancestors (%s) using the Cogl API directly to transform "
                          "children instead of using ::apply_transform().",
                          _clutter_actor_get_debug_name (self),
-                         parents->str);
-              g_string_free (parents, TRUE);
+                         buf->str);
+
+              g_string_free (buf, TRUE);
             }
         }
+#endif /* CLUTTER_ENABLE_DEBUG */
+
+      cogl_set_modelview_matrix (&matrix);
     }
 
   if (priv->has_clip)
