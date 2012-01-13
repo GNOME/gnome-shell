@@ -52,7 +52,6 @@ typedef struct _CoglPipeline	      CoglPipeline;
 
 #define COGL_PIPELINE(OBJECT) ((CoglPipeline *)OBJECT)
 
-#define cogl_pipeline_new cogl_pipeline_new_EXP
 /**
  * cogl_pipeline_new:
  *
@@ -67,7 +66,6 @@ typedef struct _CoglPipeline	      CoglPipeline;
 CoglPipeline *
 cogl_pipeline_new (void);
 
-#define cogl_pipeline_copy cogl_pipeline_copy_EXP
 /**
  * cogl_pipeline_copy:
  * @source: a #CoglPipeline object to copy
@@ -89,7 +87,6 @@ cogl_pipeline_new (void);
 CoglPipeline *
 cogl_pipeline_copy (CoglPipeline *source);
 
-#define cogl_is_pipeline cogl_is_pipeline_EXP
 /**
  * cogl_is_pipeline:
  * @handle: A CoglHandle
@@ -121,7 +118,6 @@ typedef gboolean (*CoglPipelineLayerCallback) (CoglPipeline *pipeline,
                                                int layer_index,
                                                void *user_data);
 
-#define cogl_pipeline_foreach_layer cogl_pipeline_foreach_layer_EXP
 /**
  * cogl_pipeline_foreach_layer:
  * @pipeline: A #CoglPipeline object
@@ -139,8 +135,6 @@ cogl_pipeline_foreach_layer (CoglPipeline *pipeline,
                              CoglPipelineLayerCallback callback,
                              void *user_data);
 
-#define cogl_pipeline_get_uniform_location \
-        cogl_pipeline_get_uniform_location_EXP
 /**
  * cogl_pipeline_get_uniform_location:
  * @pipeline: A #CoglPipeline object

@@ -36,7 +36,6 @@ G_BEGIN_DECLS
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
-#define cogl_pipeline_set_color cogl_pipeline_set_color_EXP
 /**
  * cogl_pipeline_set_color:
  * @pipeline: A #CoglPipeline object
@@ -58,7 +57,6 @@ void
 cogl_pipeline_set_color (CoglPipeline    *pipeline,
                          const CoglColor *color);
 
-#define cogl_pipeline_set_color4ub cogl_pipeline_set_color4ub_EXP
 /**
  * cogl_pipeline_set_color4ub:
  * @pipeline: A #CoglPipeline object
@@ -81,7 +79,6 @@ cogl_pipeline_set_color4ub (CoglPipeline *pipeline,
                             guint8        blue,
                             guint8        alpha);
 
-#define cogl_pipeline_set_color4f cogl_pipeline_set_color4f_EXP
 /**
  * cogl_pipeline_set_color4f:
  * @pipeline: A #CoglPipeline object
@@ -104,7 +101,6 @@ cogl_pipeline_set_color4f (CoglPipeline *pipeline,
                            float         blue,
                            float         alpha);
 
-#define cogl_pipeline_get_color cogl_pipeline_get_color_EXP
 /**
  * cogl_pipeline_get_color:
  * @pipeline: A #CoglPipeline object
@@ -119,7 +115,6 @@ void
 cogl_pipeline_get_color (CoglPipeline *pipeline,
                          CoglColor    *color);
 
-#define cogl_pipeline_set_ambient cogl_pipeline_set_ambient_EXP
 /**
  * cogl_pipeline_set_ambient:
  * @pipeline: A #CoglPipeline object
@@ -141,7 +136,6 @@ void
 cogl_pipeline_set_ambient (CoglPipeline    *pipeline,
 			   const CoglColor *ambient);
 
-#define cogl_pipeline_get_ambient cogl_pipeline_get_ambient_EXP
 /**
  * cogl_pipeline_get_ambient:
  * @pipeline: A #CoglPipeline object
@@ -156,7 +150,6 @@ void
 cogl_pipeline_get_ambient (CoglPipeline *pipeline,
                            CoglColor    *ambient);
 
-#define cogl_pipeline_set_diffuse cogl_pipeline_set_diffuse_EXP
 /**
  * cogl_pipeline_set_diffuse:
  * @pipeline: A #CoglPipeline object
@@ -175,7 +168,6 @@ void
 cogl_pipeline_set_diffuse (CoglPipeline    *pipeline,
 			   const CoglColor *diffuse);
 
-#define cogl_pipeline_get_diffuse cogl_pipeline_get_diffuse_EXP
 /**
  * cogl_pipeline_get_diffuse:
  * @pipeline: A #CoglPipeline object
@@ -190,8 +182,6 @@ void
 cogl_pipeline_get_diffuse (CoglPipeline *pipeline,
                            CoglColor    *diffuse);
 
-#define cogl_pipeline_set_ambient_and_diffuse \
-  cogl_pipeline_set_ambient_and_diffuse_EXP
 /**
  * cogl_pipeline_set_ambient_and_diffuse:
  * @pipeline: A #CoglPipeline object
@@ -211,7 +201,6 @@ void
 cogl_pipeline_set_ambient_and_diffuse (CoglPipeline    *pipeline,
 				       const CoglColor *color);
 
-#define cogl_pipeline_set_specular cogl_pipeline_set_specular_EXP
 /**
  * cogl_pipeline_set_specular:
  * @pipeline: A #CoglPipeline object
@@ -230,7 +219,6 @@ void
 cogl_pipeline_set_specular (CoglPipeline    *pipeline,
 			    const CoglColor *specular);
 
-#define cogl_pipeline_get_specular cogl_pipeline_get_specular_EXP
 /**
  * cogl_pipeline_get_specular:
  * @pipeline: A #CoglPipeline object
@@ -245,7 +233,6 @@ void
 cogl_pipeline_get_specular (CoglPipeline *pipeline,
                             CoglColor    *specular);
 
-#define cogl_pipeline_set_shininess cogl_pipeline_set_shininess_EXP
 /**
  * cogl_pipeline_set_shininess:
  * @pipeline: A #CoglPipeline object
@@ -265,7 +252,6 @@ void
 cogl_pipeline_set_shininess (CoglPipeline *pipeline,
 			     float         shininess);
 
-#define cogl_pipeline_get_shininess cogl_pipeline_get_shininess_EXP
 /**
  * cogl_pipeline_get_shininess:
  * @pipeline: A #CoglPipeline object
@@ -280,7 +266,6 @@ cogl_pipeline_set_shininess (CoglPipeline *pipeline,
 float
 cogl_pipeline_get_shininess (CoglPipeline *pipeline);
 
-#define cogl_pipeline_set_emission cogl_pipeline_set_emission_EXP
 /**
  * cogl_pipeline_set_emission:
  * @pipeline: A #CoglPipeline object
@@ -299,7 +284,6 @@ void
 cogl_pipeline_set_emission (CoglPipeline    *pipeline,
 			    const CoglColor *emission);
 
-#define cogl_pipeline_get_emission cogl_pipeline_get_emission_EXP
 /**
  * cogl_pipeline_get_emission:
  * @pipeline: A #CoglPipeline object
@@ -348,8 +332,6 @@ typedef enum {
 } CoglPipelineAlphaFunc;
 /* NB: these values come from the equivalents in gl.h */
 
-#define cogl_pipeline_set_alpha_test_function \
-  cogl_pipeline_set_alpha_test_function_EXP
 /**
  * cogl_pipeline_set_alpha_test_function:
  * @pipeline: A #CoglPipeline object
@@ -373,8 +355,6 @@ cogl_pipeline_set_alpha_test_function (CoglPipeline         *pipeline,
 				       CoglPipelineAlphaFunc alpha_func,
 				       float                 alpha_reference);
 
-#define cogl_pipeline_get_alpha_test_function \
-  cogl_pipeline_get_alpha_test_function_EXP
 /**
  * cogl_pipeline_get_alpha_test_function:
  * @pipeline: A #CoglPipeline object
@@ -387,8 +367,6 @@ cogl_pipeline_set_alpha_test_function (CoglPipeline         *pipeline,
 CoglPipelineAlphaFunc
 cogl_pipeline_get_alpha_test_function (CoglPipeline *pipeline);
 
-#define cogl_pipeline_get_alpha_test_reference \
-  cogl_pipeline_get_alpha_test_reference_EXP
 /**
  * cogl_pipeline_get_alpha_test_reference:
  * @pipeline: A #CoglPipeline object
@@ -401,7 +379,6 @@ cogl_pipeline_get_alpha_test_function (CoglPipeline *pipeline);
 float
 cogl_pipeline_get_alpha_test_reference (CoglPipeline *pipeline);
 
-#define cogl_pipeline_set_blend cogl_pipeline_set_blend_EXP
 /**
  * cogl_pipeline_set_blend:
  * @pipeline: A #CoglPipeline object
@@ -489,7 +466,6 @@ cogl_pipeline_set_blend (CoglPipeline *pipeline,
                          const char   *blend_string,
                          GError      **error);
 
-#define cogl_pipeline_set_blend_constant cogl_pipeline_set_blend_constant_EXP
 /**
  * cogl_pipeline_set_blend_constant:
  * @pipeline: A #CoglPipeline object
@@ -505,7 +481,6 @@ void
 cogl_pipeline_set_blend_constant (CoglPipeline *pipeline,
                                   const CoglColor *constant_color);
 
-#define cogl_pipeline_set_point_size cogl_pipeline_set_point_size_EXP
 /**
  * cogl_pipeline_set_point_size:
  * @pipeline: a #CoglPipeline pointer
@@ -526,7 +501,6 @@ void
 cogl_pipeline_set_point_size (CoglPipeline *pipeline,
                               float point_size);
 
-#define cogl_pipeline_get_point_size cogl_pipeline_get_point_size_EXP
 /**
  * cogl_pipeline_get_point_size:
  * @pipeline: a #CoglPipeline pointer
@@ -542,7 +516,6 @@ cogl_pipeline_set_point_size (CoglPipeline *pipeline,
 float
 cogl_pipeline_get_point_size (CoglPipeline *pipeline);
 
-#define cogl_pipeline_get_color_mask cogl_pipeline_get_color_mask_EXP
 /**
  * cogl_pipeline_get_color_mask:
  * @pipeline: a #CoglPipeline object.
@@ -558,7 +531,6 @@ cogl_pipeline_get_point_size (CoglPipeline *pipeline);
 CoglColorMask
 cogl_pipeline_get_color_mask (CoglPipeline *pipeline);
 
-#define cogl_pipeline_set_color_mask cogl_pipeline_set_color_mask_EXP
 /**
  * cogl_pipeline_set_color_mask:
  * @pipeline: a #CoglPipeline object.
@@ -576,7 +548,6 @@ void
 cogl_pipeline_set_color_mask (CoglPipeline *pipeline,
                               CoglColorMask color_mask);
 
-#define cogl_pipeline_get_user_program cogl_pipeline_get_user_program_EXP
 /**
  * cogl_pipeline_get_user_program:
  * @pipeline: a #CoglPipeline object.
@@ -592,7 +563,6 @@ cogl_pipeline_set_color_mask (CoglPipeline *pipeline,
 CoglHandle
 cogl_pipeline_get_user_program (CoglPipeline *pipeline);
 
-#define cogl_pipeline_set_user_program cogl_pipeline_set_user_program_EXP
 /**
  * cogl_pipeline_set_user_program:
  * @pipeline: a #CoglPipeline object.
@@ -644,7 +614,6 @@ void
 cogl_pipeline_set_user_program (CoglPipeline *pipeline,
                                 CoglHandle program);
 
-#define cogl_pipeline_set_depth_state cogl_pipeline_set_depth_state_EXP
 /**
  * cogl_pipeline_set_depth_state:
  * @pipeline: A #CoglPipeline object
@@ -670,7 +639,6 @@ cogl_pipeline_set_depth_state (CoglPipeline *pipeline,
                                const CoglDepthState *state,
                                GError **error);
 
-#define cogl_pipeline_get_depth_state cogl_pipeline_get_depth_state_EXP
 /**
  * cogl_pipeline_get_depth_state
  * @pipeline: A #CoglPipeline object
@@ -777,8 +745,6 @@ cogl_pipeline_set_front_face_winding (CoglPipeline *pipeline,
 CoglWinding
 cogl_pipeline_get_front_face_winding (CoglPipeline *pipeline);
 
-#define cogl_pipeline_set_uniform_1f \
-        cogl_pipeline_set_uniform_1f_EXP
 /**
  * cogl_pipeline_set_uniform_1f:
  * @pipeline: A #CoglPipeline object
@@ -804,8 +770,6 @@ cogl_pipeline_set_uniform_1f (CoglPipeline *pipeline,
                               int uniform_location,
                               float value);
 
-#define cogl_pipeline_set_uniform_1i \
-        cogl_pipeline_set_uniform_1i_EXP
 /**
  * cogl_pipeline_set_uniform_1i:
  * @pipeline: A #CoglPipeline object
@@ -831,8 +795,6 @@ cogl_pipeline_set_uniform_1i (CoglPipeline *pipeline,
                               int uniform_location,
                               int value);
 
-#define cogl_pipeline_set_uniform_float \
-        cogl_pipeline_set_uniform_float_EXP
 /**
  * cogl_pipeline_set_uniform_float:
  * @pipeline: A #CoglPipeline object
@@ -864,8 +826,6 @@ cogl_pipeline_set_uniform_float (CoglPipeline *pipeline,
                                  int count,
                                  const float *value);
 
-#define cogl_pipeline_set_uniform_int \
-        cogl_pipeline_set_uniform_int_EXP
 /**
  * cogl_pipeline_set_uniform_int:
  * @pipeline: A #CoglPipeline object
@@ -897,8 +857,6 @@ cogl_pipeline_set_uniform_int (CoglPipeline *pipeline,
                                int count,
                                const int *value);
 
-#define cogl_pipeline_set_uniform_matrix \
-        cogl_pipeline_set_uniform_matrix_EXP
 /**
  * cogl_pipeline_set_uniform_matrix:
  * @pipeline: A #CoglPipeline object
@@ -937,7 +895,6 @@ cogl_pipeline_set_uniform_matrix (CoglPipeline *pipeline,
                                   gboolean transpose,
                                   const float *value);
 
-#define cogl_pipeline_add_snippet cogl_pipeline_add_snippet_EXP
 /**
  * cogl_pipeline_add_snippet:
  * @pipeline: A #CoglPipeline
