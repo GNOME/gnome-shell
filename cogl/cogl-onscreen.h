@@ -41,6 +41,20 @@ G_BEGIN_DECLS
 typedef struct _CoglOnscreen CoglOnscreen;
 #define COGL_ONSCREEN(X) ((CoglOnscreen *)(X))
 
+/**
+ * cogl_onscreen_new:
+ * @context: A #CoglContext
+ * @width: The desired framebuffer width
+ * @height: The desired framebuffer height
+ *
+ * Instantiates an "unallocated" #CoglOnscreen framebuffer that may be
+ * configured before later being allocated, either implicitly when
+ * it is first used or explicitly via cogl_framebuffer_allocate().
+ *
+ * Return value: A newly instantiated #CoglOnscreen framebuffer
+ * Since: 1.8
+ * Stability: unstable
+ */
 CoglOnscreen *
 cogl_onscreen_new (CoglContext *context, int width, int height);
 
@@ -99,31 +113,68 @@ typedef void (*CoglOnscreenX11MaskCallback) (CoglOnscreen *onscreen,
  * Since: 2.0
  * Stability: Unstable
  */
-#define cogl_x11_onscreen_set_foreign_window_xid \
-  cogl_x11_onscreen_set_foreign_window_xid_EXP
 void
 cogl_x11_onscreen_set_foreign_window_xid (CoglOnscreen *onscreen,
                                           guint32 xid,
                                           CoglOnscreenX11MaskCallback update,
                                           void *user_data);
 
-#define cogl_x11_onscreen_get_window_xid cogl_x11_onscreen_get_window_xid_EXP
+/**
+ * cogl_x11_onscreen_get_window_xid:
+ * @onscreen: A #CoglOnscreen framebuffer
+ *
+ * Assuming you know the given @onscreen framebuffer is based on an x11 window
+ * this queries the XID of that window. If
+ * cogl_x11_onscreen_set_foreign_window_xid() was previously called then it
+ * will return that same XID otherwise it will be the XID of a window Cogl
+ * created internally. If the window has not been allocated yet and a foreign
+ * xid has not been set then it's undefined what value will be returned.
+ *
+ * It's undefined what this function does if called when not using an x11 based
+ * renderer.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
 guint32
 cogl_x11_onscreen_get_window_xid (CoglOnscreen *onscreen);
 
-#define cogl_x11_onscreen_get_visual_xid cogl_x11_onscreen_get_visual_xid_EXP
+/* XXX: we should maybe remove this, since nothing currently uses
+ * it and the current implementation looks dubious. */
 guint32
 cogl_x11_onscreen_get_visual_xid (CoglOnscreen *onscreen);
 #endif /* COGL_HAS_X11 */
 
 #ifdef COGL_HAS_WIN32_SUPPORT
-#define cogl_win32_onscreen_set_foreign_window \
-  cogl_win32_onscreen_set_foreign_window_EXP
+/**
+ * cogl_win32_onscreen_set_foreign_window:
+ * @onscreen: A #CoglOnscreen framebuffer
+ * @hwnd: A win32 window handle
+ *
+ * Ideally we would recommend that you let Cogl be responsible for
+ * creating any window required to back an onscreen framebuffer but
+ * if you really need to target a window created manually this
+ * function can be called before @onscreen has been allocated to set a
+ * foreign XID for your existing X window.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
 void
 cogl_win32_onscreen_set_foreign_window (CoglOnscreen *onscreen,
                                         HWND hwnd);
 
-#define cogl_win32_onscreen_get_window cogl_win32_onscreen_get_window_EXP
+/**
+ * cogl_win32_onscreen_get_window:
+ * @onscreen: A #CoglOnscreen framebuffer
+ *
+ * Queries the internally created window HWND backing the given @onscreen
+ * framebuffer.  If cogl_win32_onscreen_set_foreign_window() has been used then
+ * it will return the same handle set with that API.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
 HWND
 cogl_win32_onscreen_get_window (CoglOnscreen *onscreen);
 #endif /* COGL_HAS_WIN32_SUPPORT */
@@ -142,7 +193,19 @@ cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
                               gint          offset_y);
 #endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
 
-#define cogl_onscreen_set_swap_throttled cogl_onscreen_set_swap_throttled_EXP
+/**
+ * cogl_onscreen_set_swap_throttled:
+ * @onscreen: A #CoglOncsreen framebuffer
+ * @throttled: Whether swap throttling is wanted or not.
+ *
+ * Requests that the given @onscreen framebuffer should have swap buffer
+ * requests (made using cogl_framebuffer_swap_buffers()) throttled either by a
+ * displays vblank period or perhaps some other mechanism in a composited
+ * environment.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
 void
 cogl_onscreen_set_swap_throttled (CoglOnscreen *onscreen,
                                   gboolean throttled);
@@ -169,7 +232,6 @@ cogl_onscreen_set_swap_throttled (CoglOnscreen *onscreen,
  * Since: 2.0
  * Stability: Unstable
  */
-#define cogl_onscreen_show cogl_onscreen_show_EXP
 void
 cogl_onscreen_show (CoglOnscreen *onscreen);
 
@@ -195,12 +257,10 @@ cogl_onscreen_show (CoglOnscreen *onscreen);
  * Since: 2.0
  * Stability: Unstable
  */
-#define cogl_onscreen_hide cogl_onscreen_hide_EXP
 void
 cogl_onscreen_hide (CoglOnscreen *onscreen);
 
 /* XXX: Actually should this be renamed too cogl_onscreen_swap_buffers()? */
-#define cogl_framebuffer_swap_buffers cogl_framebuffer_swap_buffers_EXP
 /**
  * cogl_framebuffer_swap_buffers:
  * @framebuffer: A #CoglFramebuffer
@@ -219,7 +279,6 @@ cogl_onscreen_hide (CoglOnscreen *onscreen);
 void
 cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_swap_region cogl_framebuffer_swap_region_EXP
 /**
  * cogl_framebuffer_swap_region:
  * @framebuffer: A #CoglFramebuffer
@@ -249,15 +308,46 @@ cogl_framebuffer_swap_region (CoglFramebuffer *framebuffer,
 typedef void (*CoglSwapBuffersNotify) (CoglFramebuffer *framebuffer,
                                        void *user_data);
 
-#define cogl_framebuffer_add_swap_buffers_callback \
-  cogl_framebuffer_add_swap_buffers_callback_EXP
+/**
+ * cogl_framebuffer_add_swap_buffers_callback:
+ * @framebuffer A #CoglFramebuffer
+ * @callback: A callback function to call when a swap has completed
+ * @user_data: A private pointer to be passed to @callback
+ *
+ * Installs a @callback function that should be called whenever a swap buffers
+ * request (made using cogl_framebuffer_swap_buffers()) for the given
+ * @framebuffer completes.
+ *
+ * <note>Applications should check for the %COGL_FEATURE_ID_SWAP_BUFFERS_EVENT
+ * feature before using this API. It's currently undefined when and if
+ * registered callbacks will be called if this feature is not supported.</note>
+ *
+ * We recommend using this mechanism when available to manually throttle your
+ * applications (in conjunction with  cogl_onscreen_set_swap_throttled()) so
+ * your application will be able to avoid long blocks in the driver caused by
+ * throttling when you request to swap buffers too quickly.
+ *
+ * Return value: a unique identifier that can be used to remove to remove
+ *               the callback later.
+ * Since: 1.10
+ * Stability: unstable
+ */
 unsigned int
 cogl_framebuffer_add_swap_buffers_callback (CoglFramebuffer *framebuffer,
                                             CoglSwapBuffersNotify callback,
                                             void *user_data);
 
-#define cogl_framebuffer_remove_swap_buffers_callback \
-  cogl_framebuffer_remove_swap_buffers_callback_EXP
+/**
+ * cogl_framebuffer_remove_swap_buffers_callback:
+ * @framebuffer:
+ * @id: An identifier returned from cogl_framebuffer_add_swap_buffers_callback()
+ *
+ * Removes a callback that was previously registered
+ * using cogl_framebuffer_add_swap_buffers_callback().
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
 void
 cogl_framebuffer_remove_swap_buffers_callback (CoglFramebuffer *framebuffer,
                                                unsigned int id);
