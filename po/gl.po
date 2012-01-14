@@ -7,10 +7,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=clutter\n"
 "POT-Creation-Date: 2011-11-10 00:22+0100\n"
-"PO-Revision-Date: 2011-11-10 00:21+0100\n"
+"PO-Revision-Date: 2011-11-19 16:40+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: \n"
@@ -66,10 +66,12 @@ msgid "Debug ref counting issues for CoglObjects"
 msgstr "Depurar problemas de conteo de referencias para CoglObjects"
 
 #: ../cogl/cogl-debug-options.h:32
+#, untranslated
 msgid "Trace Texture Slicing"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:33
+#, untranslated
 msgid "debug the creation of texture slices"
 msgstr ""
 
@@ -82,6 +84,7 @@ msgid "Debug texture atlas management"
 msgstr "Xestión da depuración de texturas atlas"
 
 #: ../cogl/cogl-debug-options.h:42
+#, untranslated
 msgid "Trace Blend Strings"
 msgstr ""
 
@@ -98,10 +101,12 @@ msgid "View all the geometry passing through the journal"
 msgstr "Ver toda a xeometría que pasa a través do diario"
 
 #: ../cogl/cogl-debug-options.h:52
+#, untranslated
 msgid "Trace Batching"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:53
+#, untranslated
 msgid "Show how geometry is being batched in the journal"
 msgstr ""
 
@@ -110,30 +115,37 @@ msgid "Trace matrices"
 msgstr "Rastrear matrices"
 
 #: ../cogl/cogl-debug-options.h:58
+#, untranslated
 msgid "Trace all matrix manipulation"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:63
+#, untranslated
 msgid "Trace Misc Drawing"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:64
+#, untranslated
 msgid "Trace some misc drawing operations"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:68
+#, untranslated
 msgid "Trace Pango Renderer"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:69
+#, untranslated
 msgid "Trace the Cogl Pango renderer"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:73
+#, untranslated
 msgid "Trace CoglTexturePixmap backend"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:74
+#, untranslated
 msgid "Trace the Cogl texture pixmap backend"
 msgstr ""
 
@@ -142,18 +154,22 @@ msgid "Visualize"
 msgstr "Visualizar"
 
 #: ../cogl/cogl-debug-options.h:78
+#, untranslated
 msgid "Outline rectangles"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:79
+#, untranslated
 msgid "Add wire outlines for all rectangular geometry"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:83
+#, untranslated
 msgid "Show wireframes"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:84
+#, untranslated
 msgid "Add wire outlines for all geometry"
 msgstr ""
 
@@ -165,38 +181,47 @@ msgstr ""
 #: ../cogl/cogl-debug-options.h:142 ../cogl/cogl-debug-options.h:147
 #: ../cogl/cogl-debug-options.h:153 ../cogl/cogl-debug-options.h:173
 #: ../cogl/cogl-debug-options.h:178
+#, untranslated
 msgid "Root Cause"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:88
+#, untranslated
 msgid "Disable Journal batching"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:89
+#, untranslated
 msgid "Disable batching of geometry in the Cogl Journal."
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:93
+#, untranslated
 msgid "Disable GL Vertex Buffers"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:94
+#, untranslated
 msgid "Disable use of OpenGL vertex buffer objects"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:98
+#, untranslated
 msgid "Disable GL Pixel Buffers"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:99
+#, untranslated
 msgid "Disable use of OpenGL pixel buffer objects"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:103
+#, untranslated
 msgid "Disable software rect transform"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:104
+#, untranslated
 msgid "Use the GPU to transform rectangular geometry"
 msgstr ""
 
@@ -205,26 +230,32 @@ msgid "Cogl Specialist"
 msgstr "Especialista de Cogl"
 
 #: ../cogl/cogl-debug-options.h:108
+#, untranslated
 msgid "Dump atlas images"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:109
+#, untranslated
 msgid "Dump texture atlas changes to an image file"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:113
+#, untranslated
 msgid "Disable texture atlasing"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:114
+#, untranslated
 msgid "Disable use of texture atlasing"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:118
+#, untranslated
 msgid "Disable sharing the texture atlas between text and images"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:119
+#, untranslated
 msgid ""
 "When this is set the glyph cache will always use a separate texture for its "
 "atlas. Otherwise it will try to share the atlas with images."
@@ -247,10 +278,12 @@ msgid "Disable use of ARB fragment programs"
 msgstr "Desactivar o uso de programas de fragmentos ARB"
 
 #: ../cogl/cogl-debug-options.h:134
+#, untranslated
 msgid "Disable fixed"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:135
+#, untranslated
 msgid "Disable use of the fixed function pipeline backend"
 msgstr ""
 
@@ -263,18 +296,22 @@ msgid "Disable use of GLSL"
 msgstr "Desactivar o uso de GLSL"
 
 #: ../cogl/cogl-debug-options.h:144
+#, untranslated
 msgid "Disable blending"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:145
+#, untranslated
 msgid "Disable use of blending"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:149
+#, untranslated
 msgid "Disable non-power-of-two textures"
 msgstr ""
 
 #: ../cogl/cogl-debug-options.h:150
+#, untranslated
 msgid ""
 "Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
 "will create sliced textures or textures with waste instead."
@@ -317,6 +354,7 @@ msgid "Disable program caches"
 msgstr "Desactivar as cachés dos programas"
 
 #: ../cogl/cogl-debug-options.h:176
+#, untranslated
 msgid "Disable fallback caches for arbfp and glsl programs"
 msgstr ""
 
