@@ -661,7 +661,7 @@ StTooltip StLabel {
     background-color: rgba(0,0,0,0.5);
     color: #ffffff;
     font-size: 0.9em;
-    font-weight: bold;;
+    font-weight: bold;
     text-align: center;
     -x-offset: 8px;
 }
@@ -740,7 +740,8 @@ StTooltip StLabel {
     border-radius: 4px;
     padding: 3px;
     border: 1px rgba(0,0,0,0);
-    font-size: 7.5pt;
+    font-size: 8pt;
+    font-weight: bold;
     color: white;
     transition-duration: 100;
     text-align: center;
