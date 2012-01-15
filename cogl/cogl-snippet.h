@@ -564,7 +564,6 @@ typedef enum {
   COGL_SNIPPET_HOOK_TEXTURE_LOOKUP
 } CoglSnippetHook;
 
-#define cogl_snippet_new cogl_snippet_new_EXP
 /**
  * cogl_snippet_new:
  * @hook: The point in the pipeline that this snippet will wrap around
@@ -586,7 +585,6 @@ cogl_snippet_new (CoglSnippetHook hook,
                   const char *declarations,
                   const char *post);
 
-#define cogl_snippet_get_hook cogl_snippet_get_hook_EXP
 /**
  * cogl_snippet_get_hook:
  * @snippet: A #CoglSnippet
@@ -599,7 +597,6 @@ cogl_snippet_new (CoglSnippetHook hook,
 CoglSnippetHook
 cogl_snippet_get_hook (CoglSnippet *snippet);
 
-#define cogl_is_snippet cogl_is_snippet_EXP
 /**
  * cogl_is_snippet:
  * @handle: A CoglHandle
@@ -615,7 +612,6 @@ cogl_snippet_get_hook (CoglSnippet *snippet);
 gboolean
 cogl_is_snippet (void *object);
 
-#define cogl_snippet_set_declarations cogl_snippet_set_declarations_EXP
 /**
  * cogl_snippet_set_declarations:
  * @snippet: A #CoglSnippet
@@ -638,7 +634,6 @@ void
 cogl_snippet_set_declarations (CoglSnippet *snippet,
                                const char *declarations);
 
-#define cogl_snippet_get_declarations cogl_snippet_get_declarations_EXP
 /**
  * cogl_snippet_get_declarations:
  * @snippet: A #CoglSnippet
@@ -652,7 +647,6 @@ cogl_snippet_set_declarations (CoglSnippet *snippet,
 const char *
 cogl_snippet_get_declarations (CoglSnippet *snippet);
 
-#define cogl_snippet_set_pre cogl_snippet_set_pre_EXP
 /**
  * cogl_snippet_set_pre:
  * @snippet: A #CoglSnippet
@@ -674,7 +668,6 @@ void
 cogl_snippet_set_pre (CoglSnippet *snippet,
                       const char *pre);
 
-#define cogl_snippet_get_pre cogl_snippet_get_pre_EXP
 /**
  * cogl_snippet_get_pre:
  * @snippet: A #CoglSnippet
@@ -688,7 +681,6 @@ cogl_snippet_set_pre (CoglSnippet *snippet,
 const char *
 cogl_snippet_get_pre (CoglSnippet *snippet);
 
-#define cogl_snippet_set_replace cogl_snippet_set_replace_EXP
 /**
  * cogl_snippet_set_replace:
  * @snippet: A #CoglSnippet
@@ -710,7 +702,6 @@ void
 cogl_snippet_set_replace (CoglSnippet *snippet,
                           const char *replace);
 
-#define cogl_snippet_get_replace cogl_snippet_get_replace_EXP
 /**
  * cogl_snippet_get_replace:
  * @snippet: A #CoglSnippet
@@ -724,7 +715,6 @@ cogl_snippet_set_replace (CoglSnippet *snippet,
 const char *
 cogl_snippet_get_replace (CoglSnippet *snippet);
 
-#define cogl_snippet_set_post cogl_snippet_set_post_EXP
 /**
  * cogl_snippet_set_post:
  * @snippet: A #CoglSnippet
@@ -746,7 +736,6 @@ void
 cogl_snippet_set_post (CoglSnippet *snippet,
                        const char *post);
 
-#define cogl_snippet_get_post cogl_snippet_get_post_EXP
 /**
  * cogl_snippet_get_post:
  * @snippet: A #CoglSnippet
