@@ -72,8 +72,8 @@ G_BEGIN_DECLS
  * configuration stage where you specify all the options and ancillary
  * buffers you want associated with your framebuffer and then when you
  * are happy with the configuration you can "allocate" the framebuffer
- * using cogl_framebuffer_allocate (). Technically explicitly calling
- * cogl_framebuffer_allocate () is optional for convenience and the
+ * using cogl_framebuffer_allocate(). Technically explicitly calling
+ * cogl_framebuffer_allocate() is optional for convenience and the
  * framebuffer will automatically be allocated when you first try to
  * draw to it, but if you do the allocation manually then you can
  * also catch any possible errors that may arise from your
@@ -81,24 +81,88 @@ G_BEGIN_DECLS
  */
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
-#define cogl_onscreen_new cogl_onscreen_new_EXP
 
 #define COGL_FRAMEBUFFER(X) ((CoglFramebuffer *)(X))
 
-#define cogl_framebuffer_allocate cogl_framebuffer_allocate_EXP
+/**
+ * cogl_framebuffer_allocate:
+ * @framebuffer: A #CoglFramebuffer
+ * @error: A pointer to a #GError for returning exceptions.
+ *
+ * Explicitly allocates a configured #CoglFramebuffer allowing developers to
+ * check and handle any errors that might arise from an unsupported
+ * configuration so that fallback configurations may be tried.
+ *
+ * <note>Many applications don't support any fallback options at least when
+ * they are initially developed and in that case the don't need to use this API
+ * since Cogl will automatically allocate a framebuffer when it first gets
+ * used.  The disadvantage of relying on automatic allocation is that the
+ * program will abort with an error message if there is an error during
+ * automatic allocation.<note>
+ *
+ * Return value: %TRUE if there were no error allocating the framebuffer, else %FALSE.
+ * Since: 1.8
+ * Stability: unstable
+ */
 gboolean
 cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
                            GError **error);
 
-#define cogl_framebuffer_get_width cogl_framebuffer_get_width_EXP
+/**
+ * cogl_framebuffer_get_width:
+ * @framebuffer: A #CoglFramebuffer
+ *
+ * Queries the current width of the given @framebuffer.
+ *
+ * Return value: The width of @framebuffer.
+ * Since: 1.8
+ * Stability: unstable
+ */
 int
 cogl_framebuffer_get_width (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_get_height cogl_framebuffer_get_height_EXP
+/**
+ * cogl_framebuffer_get_height:
+ * @framebuffer: A #CoglFramebuffer
+ *
+ * Queries the current height of the given @framebuffer.
+ *
+ * Return value: The height of @framebuffer.
+ * Since: 1.8
+ * Stability: unstable
+ */
 int
 cogl_framebuffer_get_height (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_set_viewport cogl_framebuffer_set_viewport_EXP
+/**
+ * cogl_framebuffer_set_viewport:
+ * @framebuffer: A #CoglFramebuffer
+ * @x: The top-left x coordinate of the viewport origin (only integers
+ *     supported currently)
+ * @y: The top-left y coordinate of the viewport origin (only integers
+ *     supported currently)
+ * @width: The width of the viewport (only integers supported currently)
+ * @height: The height of the viewport (only integers supported currently)
+ *
+ * Defines a scale and offset for everything rendered relative to the
+ * top-left of the destination framebuffer.
+ *
+ * By default the viewport has an origin of (0,0) and width and height
+ * that match the framebuffer's size. Assuming a default projection and
+ * modelview matrix then you could translate the contents of a window
+ * down and right by leaving the viewport size unchanged by moving the
+ * offset to (10,10). The viewport coordinates are measured in pixels.
+ * If you left the x and y origin as (0,0) you could scale the windows
+ * contents down by specify and width and height that's half the real
+ * size of the framebuffer.
+ *
+ * <note>Although the function takes floating point arguments, existing
+ * drivers only allow the use of integer values. In the future floating
+ * point values will be exposed via a checkable feature.</note>
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
 void
 cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
                                float x,
@@ -106,28 +170,80 @@ cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
                                float width,
                                float height);
 
-#define cogl_framebuffer_get_viewport_x cogl_framebuffer_get_viewport_x_EXP
+/**
+ * cogl_framebuffer_get_viewport_x:
+ * @framebuffer: A #CoglFramebuffer
+ *
+ * Queries the x coordinate of the viewport origin as set using cogl_framebuffer_set_viewport()
+ * or the default value which is %0.
+ *
+ * Return value: The x coordinate of the viewport origin.
+ * Since: 1.8
+ * Stability: unstable
+ */
 float
 cogl_framebuffer_get_viewport_x (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_get_viewport_y cogl_framebuffer_get_viewport_y_EXP
+/**
+ * cogl_framebuffer_get_viewport_y:
+ * @framebuffer: A #CoglFramebuffer
+ *
+ * Queries the y coordinate of the viewport origin as set using cogl_framebuffer_set_viewport()
+ * or the default value which is %0.
+ *
+ * Return value: The y coordinate of the viewport origin.
+ * Since: 1.8
+ * Stability: unstable
+ */
 float
 cogl_framebuffer_get_viewport_y (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_get_viewport_width cogl_framebuffer_get_viewport_width_EXP
+/**
+ * cogl_framebuffer_get_viewport_width:
+ * @framebuffer: A #CoglFramebuffer
+ *
+ * Queries the width of the viewport as set using cogl_framebuffer_set_viewport()
+ * or the default value which is the width of the framebuffer.
+ *
+ * Return value: The width of the viewport.
+ * Since: 1.8
+ * Stability: unstable
+ */
 float
 cogl_framebuffer_get_viewport_width (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_get_viewport_height cogl_framebuffer_get_viewport_height_EXP
+/**
+ * cogl_framebuffer_get_viewport_height:
+ * @framebuffer: A #CoglFramebuffer
+ *
+ * Queries the height of the viewport as set using cogl_framebuffer_set_viewport()
+ * or the default value which is the height of the framebuffer.
+ *
+ * Return value: The height of the viewport.
+ * Since: 1.8
+ * Stability: unstable
+ */
 float
 cogl_framebuffer_get_viewport_height (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_get_viewport4fv cogl_framebuffer_get_viewport4fv_EXP
+/**
+ * cogl_framebuffer_get_viewport4fv:
+ * @framebuffer: A #CoglFramebuffer
+ * @viewport: A pointer to an array of 4 floats to receive the (x, y, width, height)
+ *            components of the current viewport.
+ *
+ * Queries the x, y, width and height components of the current viewport as set
+ * using cogl_framebuffer_set_viewport() or the default values which are 0, 0,
+ * framebuffer_width and framebuffer_height.  The values are written into the
+ * given @viewport array.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
 void
 cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer,
                                   float *viewport);
 
-#define cogl_framebuffer_push_matrix cogl_framebuffer_push_matrix_EXP
 /**
  * cogl_framebuffer_push_matrix:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -140,7 +256,6 @@ cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer,
 void
 cogl_framebuffer_push_matrix (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_pop_matrix cogl_framebuffer_pop_matrix_EXP
 /**
  * cogl_framebuffer_pop_matrix:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -152,8 +267,6 @@ cogl_framebuffer_push_matrix (CoglFramebuffer *framebuffer);
 void
 cogl_framebuffer_pop_matrix (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_identity_matrix \
-  cogl_framebuffer_identity_matrix_EXP
 /**
  * cogl_framebuffer_identity_matrix:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -166,7 +279,6 @@ cogl_framebuffer_pop_matrix (CoglFramebuffer *framebuffer);
 void
 cogl_framebuffer_identity_matrix (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_scale cogl_framebuffer_scale_EXP
 /**
  * cogl_framebuffer_scale:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -178,6 +290,7 @@ cogl_framebuffer_identity_matrix (CoglFramebuffer *framebuffer);
  * y and z axes by the given values.
  *
  * Since: 1.10
+ * Stability: unstable
  */
 void
 cogl_framebuffer_scale (CoglFramebuffer *framebuffer,
@@ -185,7 +298,6 @@ cogl_framebuffer_scale (CoglFramebuffer *framebuffer,
                         float y,
                         float z);
 
-#define cogl_framebuffer_translate cogl_framebuffer_translate_EXP
 /**
  * cogl_framebuffer_translate:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -197,6 +309,7 @@ cogl_framebuffer_scale (CoglFramebuffer *framebuffer,
  * model along all three axes according to the given values.
  *
  * Since: 1.10
+ * Stability: unstable
  */
 void
 cogl_framebuffer_translate (CoglFramebuffer *framebuffer,
@@ -204,7 +317,6 @@ cogl_framebuffer_translate (CoglFramebuffer *framebuffer,
                             float y,
                             float z);
 
-#define cogl_framebuffer_rotate cogl_framebuffer_rotate_EXP
 /**
  * cogl_framebuffer_rotate:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -220,6 +332,7 @@ cogl_framebuffer_translate (CoglFramebuffer *framebuffer,
  * rotation.
  *
  * Since: 1.10
+ * Stability: unstable
  */
 void
 cogl_framebuffer_rotate (CoglFramebuffer *framebuffer,
@@ -228,7 +341,6 @@ cogl_framebuffer_rotate (CoglFramebuffer *framebuffer,
                          float y,
                          float z);
 
-#define cogl_framebuffer_transform cogl_framebuffer_transform_EXP
 /**
  * cogl_framebuffer_transform:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -237,13 +349,12 @@ cogl_framebuffer_rotate (CoglFramebuffer *framebuffer,
  * Multiplies the current model-view matrix by the given matrix.
  *
  * Since: 1.10
+ * Stability: unstable
  */
 void
 cogl_framebuffer_transform (CoglFramebuffer *framebuffer,
                             const CoglMatrix *matrix);
 
-#define cogl_framebuffer_get_modelview_matrix \
-  cogl_framebuffer_get_modelview_matrix_EXP
 /**
  * cogl_framebuffer_get_modelview_matrix:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -252,13 +363,12 @@ cogl_framebuffer_transform (CoglFramebuffer *framebuffer,
  * Stores the current model-view matrix in @matrix.
  *
  * Since: 1.10
+ * Stability: unstable
  */
 void
 cogl_framebuffer_get_modelview_matrix (CoglFramebuffer *framebuffer,
                                        CoglMatrix *matrix);
 
-#define cogl_framebuffer_set_modelview_matrix \
-  cogl_framebuffer_set_modelview_matrix_EXP
 /**
  * cogl_framebuffer_set_modelview_matrix:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -267,12 +377,12 @@ cogl_framebuffer_get_modelview_matrix (CoglFramebuffer *framebuffer,
  * Sets @matrix as the new model-view matrix.
  *
  * Since: 1.10
+ * Stability: unstable
  */
 void
 cogl_framebuffer_set_modelview_matrix (CoglFramebuffer *framebuffer,
                                        CoglMatrix *matrix);
 
-#define cogl_framebuffer_perspective cogl_framebuffer_perspective_EXP
 /**
  * cogl_framebuffer_perspective:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -291,6 +401,7 @@ cogl_framebuffer_set_modelview_matrix (CoglFramebuffer *framebuffer,
  * objects near to each other.</note>
  *
  * Since: 1.10
+ * Stability: unstable
  */
 void
 cogl_framebuffer_perspective (CoglFramebuffer *framebuffer,
@@ -299,7 +410,6 @@ cogl_framebuffer_perspective (CoglFramebuffer *framebuffer,
                               float z_near,
                               float z_far);
 
-#define cogl_framebuffer_frustum cogl_framebuffer_frustum_EXP
 /**
  * cogl_framebuffer_frustum:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -319,6 +429,7 @@ cogl_framebuffer_perspective (CoglFramebuffer *framebuffer,
  * all cross through the origin and 2 near and far clip planes.
  *
  * Since: 1.10
+ * Stability: unstable
  */
 void
 cogl_framebuffer_frustum (CoglFramebuffer *framebuffer,
@@ -329,7 +440,6 @@ cogl_framebuffer_frustum (CoglFramebuffer *framebuffer,
                           float z_near,
                           float z_far);
 
-#define cogl_framebuffer_orthographic cogl_framebuffer_orthographic_EXP
 /**
  * cogl_framebuffer_orthographic:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -348,6 +458,7 @@ cogl_framebuffer_frustum (CoglFramebuffer *framebuffer,
  * matrix.
  *
  * Since: 1.0
+ * Stability: unstable
  */
 void
 cogl_framebuffer_orthographic (CoglFramebuffer *framebuffer,
@@ -358,34 +469,34 @@ cogl_framebuffer_orthographic (CoglFramebuffer *framebuffer,
                                float near,
                                float far);
 
-#define cogl_framebuffer_get_projection_matrix \
-  cogl_framebuffer_get_projection_matrix
 /**
  * cogl_framebuffer_get_projection_matrix:
  * @framebuffer: A #CoglFramebuffer pointer
  * @matrix: (out): return location for the projection matrix
  *
  * Stores the current projection matrix in @matrix.
+ *
+ * Since: 1.10
+ * Stability: unstable
  */
 void
 cogl_framebuffer_get_projection_matrix (CoglFramebuffer *framebuffer,
                                         CoglMatrix *matrix);
 
-#define cogl_framebuffer_set_projection_matrix \
-  cogl_framebuffer_set_projection_matrix
 /**
  * cogl_set_projection_matrix:
  * @framebuffer: A #CoglFramebuffer pointer
  * @matrix: the new projection matrix
  *
  * Sets @matrix as the new projection matrix.
+ *
+ * Since: 1.10
+ * Stability: unstable
  */
 void
 cogl_framebuffer_set_projection_matrix (CoglFramebuffer *framebuffer,
                                         CoglMatrix *matrix);
 
-#define cogl_framebuffer_push_scissor_clip \
-  cogl_framebuffer_push_scissor_clip_EXP
 /**
  * cogl_framebuffer_push_scissor_clip:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -413,8 +524,6 @@ cogl_framebuffer_push_scissor_clip (CoglFramebuffer *framebuffer,
                                     int width,
                                     int height);
 
-#define cogl_framebuffer_push_rectangle_clip \
-  cogl_framebuffer_push_rectangle_clip_EXP
 /**
  * cogl_framebuffer_push_rectangle_clip:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -442,8 +551,6 @@ cogl_framebuffer_push_rectangle_clip (CoglFramebuffer *framebuffer,
                                       float x_2,
                                       float y_2);
 
-#define cogl_framebuffer_push_path_clip \
-  cogl_framebuffer_push_path_clip_EXP
 /**
  * cogl_framebuffer_push_path_clip:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -461,8 +568,6 @@ void
 cogl_framebuffer_push_path_clip (CoglFramebuffer *framebuffer,
                                  CoglPath *path);
 
-#define cogl_framebuffer_push_primitive_clip \
-  cogl_framebuffer_push_primitive_clip_EXP
 /**
  * cogl_framebuffer_push_primitive_clip:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -502,7 +607,6 @@ cogl_framebuffer_push_primitive_clip (CoglFramebuffer *framebuffer,
                                       float bounds_x2,
                                       float bounds_y2);
 
-#define cogl_framebuffer_pop_clip cogl_framebuffer_pop_clip_EXP
 /**
  * cogl_framebuffer_pop_clip:
  * @framebuffer: A #CoglFramebuffer pointer
@@ -527,7 +631,6 @@ cogl_framebuffer_pop_clip (CoglFramebuffer *framebuffer);
  * Since: 1.8
  * Stability: unstable
  */
-#define cogl_framebuffer_get_red_bits cogl_framebuffer_get_red_bits_EXP
 int
 cogl_framebuffer_get_red_bits (CoglFramebuffer *framebuffer);
 
@@ -542,7 +645,6 @@ cogl_framebuffer_get_red_bits (CoglFramebuffer *framebuffer);
  * Since: 1.8
  * Stability: unstable
  */
-#define cogl_framebuffer_get_green_bits cogl_framebuffer_get_green_bits_EXP
 int
 cogl_framebuffer_get_green_bits (CoglFramebuffer *framebuffer);
 
@@ -557,7 +659,6 @@ cogl_framebuffer_get_green_bits (CoglFramebuffer *framebuffer);
  * Since: 1.8
  * Stability: unstable
  */
-#define cogl_framebuffer_get_blue_bits cogl_framebuffer_get_blue_bits_EXP
 int
 cogl_framebuffer_get_blue_bits (CoglFramebuffer *framebuffer);
 
@@ -572,7 +673,6 @@ cogl_framebuffer_get_blue_bits (CoglFramebuffer *framebuffer);
  * Since: 1.8
  * Stability: unstable
  */
-#define cogl_framebuffer_get_alpha_bits cogl_framebuffer_get_alpha_bits_EXP
 int
 cogl_framebuffer_get_alpha_bits (CoglFramebuffer *framebuffer);
 
@@ -588,6 +688,8 @@ cogl_framebuffer_get_alpha_bits (CoglFramebuffer *framebuffer);
  * the user's request for dithering.</note>
  *
  * Return value: %TRUE if dithering has been requested or %FALSE if not.
+ * Since: 1.8
+ * Stability: unstable
  */
 gboolean
 cogl_framebuffer_get_dither_enabled (CoglFramebuffer *framebuffer);
@@ -618,7 +720,6 @@ void
 cogl_framebuffer_set_dither_enabled (CoglFramebuffer *framebuffer,
                                      gboolean dither_enabled);
 
-#define cogl_framebuffer_get_color_mask cogl_framebuffer_get_color_mask_EXP
 /**
  * cogl_framebuffer_get_color_mask:
  * @framebuffer: a pointer to a #CoglFramebuffer
@@ -634,7 +735,6 @@ cogl_framebuffer_set_dither_enabled (CoglFramebuffer *framebuffer,
 CoglColorMask
 cogl_framebuffer_get_color_mask (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_set_color_mask cogl_framebuffer_set_color_mask_EXP
 /**
  * cogl_framebuffer_set_color_mask:
  * @framebuffer: a pointer to a #CoglFramebuffer
@@ -652,7 +752,6 @@ void
 cogl_framebuffer_set_color_mask (CoglFramebuffer *framebuffer,
                                  CoglColorMask color_mask);
 
-#define cogl_framebuffer_get_color_format cogl_framebuffer_get_color_format_EXP
 /**
  * cogl_framebuffer_get_color_format:
  * @framebuffer: A #CoglFramebuffer framebuffer
@@ -668,8 +767,6 @@ cogl_framebuffer_set_color_mask (CoglFramebuffer *framebuffer,
 CoglPixelFormat
 cogl_framebuffer_get_color_format (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_set_samples_per_pixel \
-  cogl_framebuffer_set_samples_per_pixel_EXP
 /**
  * cogl_framebuffer_set_samples_per_pixel:
  * @framebuffer: A #CoglFramebuffer framebuffer
@@ -715,8 +812,6 @@ void
 cogl_framebuffer_set_samples_per_pixel (CoglFramebuffer *framebuffer,
                                         int samples_per_pixel);
 
-#define cogl_framebuffer_get_samples_per_pixel \
-  cogl_framebuffer_get_samples_per_pixel_EXP
 /**
  * cogl_framebuffer_get_samples_per_pixel:
  * @framebuffer: A #CoglFramebuffer framebuffer
@@ -745,8 +840,6 @@ int
 cogl_framebuffer_get_samples_per_pixel (CoglFramebuffer *framebuffer);
 
 
-#define cogl_framebuffer_resolve_samples \
-  cogl_framebuffer_resolve_samples_EXP
 /**
  * cogl_framebuffer_resolve_samples:
  * @framebuffer: A #CoglFramebuffer framebuffer
@@ -778,8 +871,6 @@ cogl_framebuffer_get_samples_per_pixel (CoglFramebuffer *framebuffer);
 void
 cogl_framebuffer_resolve_samples (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_resolve_samples_region \
-  cogl_framebuffer_resolve_samples_region_EXP
 /**
  * cogl_framebuffer_resolve_samples_region:
  * @framebuffer: A #CoglFramebuffer framebuffer
@@ -820,7 +911,6 @@ cogl_framebuffer_resolve_samples_region (CoglFramebuffer *framebuffer,
                                          int width,
                                          int height);
 
-#define cogl_framebuffer_get_context cogl_framebuffer_get_context_EXP
 /**
  * @framebuffer: A #CoglFramebuffer
  *
@@ -836,7 +926,6 @@ cogl_framebuffer_resolve_samples_region (CoglFramebuffer *framebuffer,
 CoglContext *
 cogl_framebuffer_get_context (CoglFramebuffer *framebuffer);
 
-#define cogl_framebuffer_clear cogl_framebuffer_clear_EXP
 /**
  * cogl_framebuffer_clear:
  * @framebuffer: A #CoglFramebuffer
@@ -856,7 +945,6 @@ cogl_framebuffer_clear (CoglFramebuffer *framebuffer,
                         unsigned long buffers,
                         const CoglColor *color);
 
-#define cogl_framebuffer_clear4f cogl_framebuffer_clear4f_EXP
 /**
  * cogl_framebuffer_clear4f:
  * @framebuffer: A #CoglFramebuffer
@@ -887,7 +975,6 @@ cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
 
 /* XXX: Should we take an n_buffers + buffer id array instead of using
  * the CoglBufferBits type which doesn't seem future proof? */
-#define cogl_framebuffer_discard_buffers cogl_framebuffer_discard_buffers_EXP
 /**
  * cogl_framebuffer_discard_buffers:
  * @framebuffer: A #CoglFramebuffer
@@ -939,7 +1026,16 @@ cogl_framebuffer_discard_buffers (CoglFramebuffer *framebuffer,
 void
 cogl_framebuffer_finish (CoglFramebuffer *framebuffer);
 
-#define cogl_get_draw_framebuffer cogl_get_draw_framebuffer_EXP
+/**
+ * cogl_get_draw_framebuffer:
+ *
+ * Gets the current #CoglFramebuffer as set using
+ * cogl_push_framebuffer()
+ *
+ * Return value: The current #CoglFramebuffer
+ * Stability: unstable
+ * Since: 1.8
+ */
 CoglFramebuffer *
 cogl_get_draw_framebuffer (void);
 
@@ -948,10 +1044,14 @@ cogl_get_draw_framebuffer (void);
 /* XXX: Note these are defined outside the COGL_ENABLE_EXPERIMENTAL_API guard since
  * otherwise the glib-mkenums stuff will get upset. */
 
-#define cogl_framebuffer_error_quark cogl_framebuffer_error_quark_EXP
 GQuark
 cogl_framebuffer_error_quark (void);
 
+/**
+ * COGL_FRAMEBUFFER_ERROR:
+ *
+ * An error domain for reporting #CoglFramebuffer exceptions
+ */
 #define COGL_FRAMEBUFFER_ERROR (cogl_framebuffer_error_quark ())
 
 typedef enum { /*< prefix=COGL_FRAMEBUFFER_ERROR >*/
