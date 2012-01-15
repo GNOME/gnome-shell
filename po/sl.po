@@ -2,14 +2,14 @@
 # Copyright (C) 2006 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Matej Urbančič <mateju@svn.gnome.org>, 2009 - 2011.
+# Matej Urbančič <mateju@svn.gnome.org>, 2009 - 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-11-24 08:51+0000\n"
-"PO-Revision-Date: 2011-11-25 20:55+0100\n"
+"POT-Creation-Date: 2012-01-15 01:35+0000\n"
+"PO-Revision-Date: 2012-01-15 13:44+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -130,50 +130,50 @@ msgstr "Katera tipkovnica naj bo uporabljena?"
 msgid "disabled OpenSearch providers"
 msgstr "ponudniki OpenSearch so bili onemogočeni"
 
-#: ../js/gdm/loginDialog.js:623
+#: ../js/gdm/loginDialog.js:624
 msgid "Session..."
 msgstr "Seja ..."
 
-#: ../js/gdm/loginDialog.js:785
+#: ../js/gdm/loginDialog.js:786
 msgctxt "title"
 msgid "Sign In"
 msgstr "Prijava"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:830
+#: ../js/gdm/loginDialog.js:831
 msgid "(or swipe finger)"
 msgstr "(ali pa povlecite prst)"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:851
+#: ../js/gdm/loginDialog.js:852
 msgid "Not listed?"
 msgstr "Ali je ni na seznamu?"
 
-#: ../js/gdm/loginDialog.js:1019
-#: ../js/ui/endSessionDialog.js:418
+#: ../js/gdm/loginDialog.js:1020
+#: ../js/ui/endSessionDialog.js:419
 #: ../js/ui/extensionSystem.js:516
 #: ../js/ui/networkAgent.js:145
 #: ../js/ui/polkitAuthenticationAgent.js:175
-#: ../js/ui/status/bluetooth.js:463
+#: ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: ../js/gdm/loginDialog.js:1024
+#: ../js/gdm/loginDialog.js:1025
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prijava"
 
-#: ../js/gdm/loginDialog.js:1376
+#: ../js/gdm/loginDialog.js:1377
 msgid "Login Window"
 msgstr "Prijavno okno"
 
 #: ../js/gdm/powerMenu.js:113
-#: ../js/ui/userMenu.js:578
-#: ../js/ui/userMenu.js:580
-#: ../js/ui/userMenu.js:649
+#: ../js/ui/userMenu.js:579
+#: ../js/ui/userMenu.js:581
+#: ../js/ui/userMenu.js:650
 msgid "Suspend"
 msgstr "Zaustavi"
 
@@ -213,15 +213,15 @@ msgstr "Programi"
 msgid "SETTINGS"
 msgstr "NASTAVITVE"
 
-#: ../js/ui/appDisplay.js:664
+#: ../js/ui/appDisplay.js:666
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:667
+#: ../js/ui/appDisplay.js:669
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:668
+#: ../js/ui/appDisplay.js:670
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
@@ -395,9 +395,9 @@ msgid "Next week"
 msgstr "Naslednji teden"
 
 #: ../js/ui/contactDisplay.js:63
-#: ../js/ui/notificationDaemon.js:466
+#: ../js/ui/notificationDaemon.js:486
 #: ../js/ui/status/power.js:215
-#: ../src/shell-app.c:350
+#: ../src/shell-app.c:394
 msgid "Unknown"
 msgstr "Neznano"
 
@@ -424,7 +424,7 @@ msgstr "Nepovezano"
 msgid "CONTACTS"
 msgstr "Stiki"
 
-#: ../js/ui/dash.js:169
+#: ../js/ui/dash.js:229
 #: ../js/ui/messageTray.js:1204
 msgid "Remove"
 msgstr "Odstrani"
@@ -665,7 +665,7 @@ msgstr "Povrni glasnost"
 msgid "Mute"
 msgstr "Utišaj"
 
-#: ../js/ui/messageTray.js:2424
+#: ../js/ui/messageTray.js:2444
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -749,15 +749,15 @@ msgstr "Geslo mobilnega širokopasovnega dostopa"
 msgid "A password is required to connect to '%s'."
 msgstr "Za povezavo z omrežjem '%s' je zahtevano geslo."
 
-#: ../js/ui/overview.js:89
+#: ../js/ui/overview.js:90
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: ../js/ui/overview.js:201
+#: ../js/ui/overview.js:199
 msgid "Windows"
 msgstr "Okna"
 
-#: ../js/ui/overview.js:204
+#: ../js/ui/overview.js:202
 msgid "Applications"
 msgstr "Programi"
 
@@ -767,19 +767,17 @@ msgstr "Programi"
 msgid "Dash"
 msgstr "Armaturna plošča"
 
-#. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:532
-#, c-format
-msgid "Quit %s"
-msgstr "Končaj %s"
+#: ../js/ui/panel.js:564
+msgid "Quit"
+msgstr "Končaj"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:565
+#: ../js/ui/panel.js:595
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:953
+#: ../js/ui/panel.js:982
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -796,7 +794,7 @@ msgstr "Poskusi znova"
 msgid "Connect to..."
 msgstr "Povezava z ..."
 
-#: ../js/ui/placeDisplay.js:364
+#: ../js/ui/placeDisplay.js:367
 msgid "PLACES & DEVICES"
 msgstr "Mesta in naprave"
 
@@ -829,7 +827,7 @@ msgstr "Geslo:"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:717
+#: ../js/ui/popupMenu.js:719
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -908,137 +906,139 @@ msgstr "Visok kontrast"
 msgid "Large Text"
 msgstr "Veliko besedilo"
 
-#: ../js/ui/status/bluetooth.js:36
-#: ../js/ui/status/bluetooth.js:259
-#: ../js/ui/status/bluetooth.js:342
-#: ../js/ui/status/bluetooth.js:372
-#: ../js/ui/status/bluetooth.js:408
-#: ../js/ui/status/bluetooth.js:437
+#: ../js/ui/status/bluetooth.js:35
+#: ../js/ui/status/bluetooth.js:258
+#: ../js/ui/status/bluetooth.js:341
+#: ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:407
+#: ../js/ui/status/bluetooth.js:436
+#: ../js/ui/status/network.js:892
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:49
+#: ../js/ui/status/bluetooth.js:48
 msgid "Visibility"
 msgstr "Vidnost"
 
-#: ../js/ui/status/bluetooth.js:63
+#: ../js/ui/status/bluetooth.js:62
 msgid "Send Files to Device..."
 msgstr "Pošilji datoteke na napravo ..."
 
-#: ../js/ui/status/bluetooth.js:64
+#: ../js/ui/status/bluetooth.js:63
 msgid "Set up a New Device..."
 msgstr "Nastavitev nove naprave ..."
 
-#: ../js/ui/status/bluetooth.js:88
+#: ../js/ui/status/bluetooth.js:87
 msgid "Bluetooth Settings"
 msgstr "Nastavitve za Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:108
+#: ../js/ui/status/bluetooth.js:107
+#: ../js/ui/status/network.js:255
 msgid "hardware disabled"
 msgstr "strojno onemogočen"
 
-#: ../js/ui/status/bluetooth.js:204
+#: ../js/ui/status/bluetooth.js:203
 msgid "Connection"
 msgstr "Povezava"
 
-#: ../js/ui/status/bluetooth.js:215
-#: ../js/ui/status/network.js:475
+#: ../js/ui/status/bluetooth.js:214
+#: ../js/ui/status/network.js:490
 msgid "disconnecting..."
 msgstr "prekinjanje povezave ..."
 
-#: ../js/ui/status/bluetooth.js:228
-#: ../js/ui/status/network.js:481
+#: ../js/ui/status/bluetooth.js:227
+#: ../js/ui/status/network.js:496
 msgid "connecting..."
 msgstr "povezovanje ..."
 
-#: ../js/ui/status/bluetooth.js:246
+#: ../js/ui/status/bluetooth.js:245
 msgid "Send Files..."
 msgstr "Pošlji datoteke ..."
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:250
 msgid "Browse Files..."
 msgstr "Brskanje datotek ..."
 
-#: ../js/ui/status/bluetooth.js:260
+#: ../js/ui/status/bluetooth.js:259
 msgid "Error browsing device"
 msgstr "Napaka med brskanjem po napravi"
 
-#: ../js/ui/status/bluetooth.js:261
+#: ../js/ui/status/bluetooth.js:260
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Po zahtevani naprave ni mogoče brskati, napaka je '%s'"
 
-#: ../js/ui/status/bluetooth.js:269
+#: ../js/ui/status/bluetooth.js:268
 msgid "Keyboard Settings"
 msgstr "Nastavitve tipkovnice"
 
-#: ../js/ui/status/bluetooth.js:272
+#: ../js/ui/status/bluetooth.js:271
 msgid "Mouse Settings"
 msgstr "Nastavitve miške"
 
-#: ../js/ui/status/bluetooth.js:277
+#: ../js/ui/status/bluetooth.js:276
 #: ../js/ui/status/volume.js:58
 msgid "Sound Settings"
 msgstr "Nastavitve zvoka"
 
-#: ../js/ui/status/bluetooth.js:373
+#: ../js/ui/status/bluetooth.js:372
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Zahteva za pooblastitev od %s"
 
-#: ../js/ui/status/bluetooth.js:379
+#: ../js/ui/status/bluetooth.js:378
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Naprava %s želi dostop do storitve '%s'."
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:380
 msgid "Always grant access"
 msgstr "Vedno odobri dostop"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:381
 msgid "Grant this time only"
 msgstr "Odobri le tokrat"
 
-#: ../js/ui/status/bluetooth.js:383
-#: ../js/ui/telepathyClient.js:1181
+#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/telepathyClient.js:1098
 msgid "Reject"
 msgstr "Zavrni"
 
-#: ../js/ui/status/bluetooth.js:409
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Potrditev razčlenjevanja za %s"
 
-#: ../js/ui/status/bluetooth.js:415
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:444
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Naprava %s se poskuša seznaniti s tem računalnikom"
 
-#: ../js/ui/status/bluetooth.js:416
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Potrdite, ali se PIN '%s' ujema s tistim na napravi."
 
-#: ../js/ui/status/bluetooth.js:418
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
 msgstr "Ujemanja"
 
-#: ../js/ui/status/bluetooth.js:419
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "Se ne ujema"
 
-#: ../js/ui/status/bluetooth.js:438
+#: ../js/ui/status/bluetooth.js:437
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Zahteva razčlenjevanja za %s"
 
-#: ../js/ui/status/bluetooth.js:446
+#: ../js/ui/status/bluetooth.js:445
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Vnesite PIN, ki je naveden na napravi."
 
-#: ../js/ui/status/bluetooth.js:462
+#: ../js/ui/status/bluetooth.js:461
 msgid "OK"
 msgstr "V redu"
 
@@ -1055,78 +1055,78 @@ msgid "<unknown>"
 msgstr "<neznano>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:275
+#: ../js/ui/status/network.js:277
 msgid "disabled"
 msgstr "onemogočeno"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:473
+#: ../js/ui/status/network.js:488
 msgid "unmanaged"
 msgstr "neupravljano"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:484
+#: ../js/ui/status/network.js:499
 msgid "authentication required"
 msgstr "zahtevana je overitev"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:494
+#: ../js/ui/status/network.js:509
 msgid "firmware missing"
 msgstr "manjka strojna programska oprema"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:501
+#: ../js/ui/status/network.js:516
 msgid "cable unplugged"
 msgstr "kabel ni priklopljen"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:506
+#: ../js/ui/status/network.js:521
 msgid "unavailable"
 msgstr "ni na voljo"
 
-#: ../js/ui/status/network.js:508
+#: ../js/ui/status/network.js:523
 msgid "connection failed"
 msgstr "povezovanje je spodletelo"
 
-#: ../js/ui/status/network.js:564
-#: ../js/ui/status/network.js:1506
+#: ../js/ui/status/network.js:584
+#: ../js/ui/status/network.js:1504
 msgid "More..."
 msgstr "Več ..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:600
-#: ../js/ui/status/network.js:1441
+#: ../js/ui/status/network.js:620
+#: ../js/ui/status/network.js:1439
 msgid "Connected (private)"
 msgstr "Povezano (zasebna povezava)"
 
-#: ../js/ui/status/network.js:675
+#: ../js/ui/status/network.js:695
 msgid "Auto Ethernet"
 msgstr "Samodejni eternet"
 
-#: ../js/ui/status/network.js:736
+#: ../js/ui/status/network.js:756
 msgid "Auto broadband"
 msgstr "Samodejni širokopasovni dostop"
 
-#: ../js/ui/status/network.js:739
+#: ../js/ui/status/network.js:759
 msgid "Auto dial-up"
 msgstr "Samodejni klicni dostop"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:858
-#: ../js/ui/status/network.js:1453
+#: ../js/ui/status/network.js:878
+#: ../js/ui/status/network.js:1451
 #, c-format
 msgid "Auto %s"
 msgstr "Samodejna povezava z %s"
 
-#: ../js/ui/status/network.js:860
+#: ../js/ui/status/network.js:880
 msgid "Auto bluetooth"
 msgstr "Samodejna povezava z Bluetooth"
 
-#: ../js/ui/status/network.js:1455
+#: ../js/ui/status/network.js:1453
 msgid "Auto wireless"
 msgstr "Samodejni brezžični dostop"
 
@@ -1275,47 +1275,46 @@ msgstr "Glasnost"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#. We got the TpContact
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:256
+#: ../js/ui/telepathyClient.js:225
 msgid "Invitation"
 msgstr "Povabilo"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:324
+#: ../js/ui/telepathyClient.js:278
 msgid "Call"
 msgstr "Pokliči"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:354
+#: ../js/ui/telepathyClient.js:294
 msgid "File Transfer"
 msgstr "Prenos datotek"
 
-#: ../js/ui/telepathyClient.js:435
+#: ../js/ui/telepathyClient.js:376
 msgid "Subscription request"
 msgstr "Zahteva po naročilu"
 
-#: ../js/ui/telepathyClient.js:471
+#: ../js/ui/telepathyClient.js:412
 msgid "Connection error"
 msgstr "Napaka povezovanja"
 
-#: ../js/ui/telepathyClient.js:735
+#: ../js/ui/telepathyClient.js:670
 #, c-format
 msgid "%s is online."
 msgstr "%s je povezan."
 
-#: ../js/ui/telepathyClient.js:740
+#: ../js/ui/telepathyClient.js:674
 #, c-format
 msgid "%s is offline."
 msgstr "%s ni povezan."
 
-#: ../js/ui/telepathyClient.js:743
+#: ../js/ui/telepathyClient.js:678
 #, c-format
 msgid "%s is away."
 msgstr "%s je odsoten."
 
-#: ../js/ui/telepathyClient.js:746
+#: ../js/ui/telepathyClient.js:681
 #, c-format
 msgid "%s is busy."
 msgstr "%s je zaposlen."
@@ -1323,35 +1322,35 @@ msgstr "%s je zaposlen."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:977
+#: ../js/ui/telepathyClient.js:894
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Poslano <b>%A</b> ob <b>%X</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:983
+#: ../js/ui/telepathyClient.js:900
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Poslano <b>%A</b>, <b>%d. %Ba</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:988
+#: ../js/ui/telepathyClient.js:905
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Poslano <b>%A</b>, <b>%d. %Ba</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:1030
+#: ../js/ui/telepathyClient.js:947
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s je sedaj znan kot v %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1132
+#: ../js/ui/telepathyClient.js:1049
 #, c-format
 msgid "Invitation to %s"
 msgstr "Povabilo v %s"
@@ -1359,37 +1358,37 @@ msgstr "Povabilo v %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1140
+#: ../js/ui/telepathyClient.js:1057
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s vas vabi, da se pridružite v %s"
 
-#: ../js/ui/telepathyClient.js:1142
-#: ../js/ui/telepathyClient.js:1222
-#: ../js/ui/telepathyClient.js:1320
+#: ../js/ui/telepathyClient.js:1059
+#: ../js/ui/telepathyClient.js:1139
+#: ../js/ui/telepathyClient.js:1237
 msgid "Decline"
 msgstr "Zavrni"
 
-#: ../js/ui/telepathyClient.js:1143
-#: ../js/ui/telepathyClient.js:1223
-#: ../js/ui/telepathyClient.js:1321
+#: ../js/ui/telepathyClient.js:1060
+#: ../js/ui/telepathyClient.js:1140
+#: ../js/ui/telepathyClient.js:1238
 msgid "Accept"
 msgstr "Sprejmi"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1173
+#: ../js/ui/telepathyClient.js:1090
 #, c-format
 msgid "Video call from %s"
 msgstr "%s želi vzpostaviti video klic"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1176
+#: ../js/ui/telepathyClient.js:1093
 #, c-format
 msgid "Call from %s"
 msgstr "%s kliče"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1183
+#: ../js/ui/telepathyClient.js:1100
 msgid "Answer"
 msgstr "Odgovori"
 
@@ -1398,125 +1397,125 @@ msgstr "Odgovori"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1216
+#: ../js/ui/telepathyClient.js:1133
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s pošilja %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1285
+#: ../js/ui/telepathyClient.js:1202
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s želi dovoljenje za pogled dosegljivosti"
 
-#: ../js/ui/telepathyClient.js:1378
+#: ../js/ui/telepathyClient.js:1295
 msgid "Network error"
 msgstr "Napaka omrežja"
 
-#: ../js/ui/telepathyClient.js:1380
+#: ../js/ui/telepathyClient.js:1297
 msgid "Authentication failed"
 msgstr "Overitev je spodletela"
 
-#: ../js/ui/telepathyClient.js:1382
+#: ../js/ui/telepathyClient.js:1299
 msgid "Encryption error"
 msgstr "Napaka šifriranja"
 
-#: ../js/ui/telepathyClient.js:1384
+#: ../js/ui/telepathyClient.js:1301
 msgid "Certificate not provided"
 msgstr "Potrdilo ni na voljo"
 
-#: ../js/ui/telepathyClient.js:1386
+#: ../js/ui/telepathyClient.js:1303
 msgid "Certificate untrusted"
 msgstr "Potrdilo ni zaupljivo"
 
-#: ../js/ui/telepathyClient.js:1388
+#: ../js/ui/telepathyClient.js:1305
 msgid "Certificate expired"
 msgstr "Potrdilo je preteklo"
 
-#: ../js/ui/telepathyClient.js:1390
+#: ../js/ui/telepathyClient.js:1307
 msgid "Certificate not activated"
 msgstr "Potrdilo ni potrjeno"
 
-#: ../js/ui/telepathyClient.js:1392
+#: ../js/ui/telepathyClient.js:1309
 msgid "Certificate hostname mismatch"
 msgstr "Neustrezno ime gostitelja potrdila"
 
-#: ../js/ui/telepathyClient.js:1394
+#: ../js/ui/telepathyClient.js:1311
 msgid "Certificate fingerprint mismatch"
 msgstr "Neustrezen prstni odtis potrdila"
 
-#: ../js/ui/telepathyClient.js:1396
+#: ../js/ui/telepathyClient.js:1313
 msgid "Certificate self-signed"
 msgstr "Potrdilo je samo-podpisano"
 
-#: ../js/ui/telepathyClient.js:1398
+#: ../js/ui/telepathyClient.js:1315
 msgid "Status is set to offline"
 msgstr "Stanje je nastavljeno na brez povezave"
 
-#: ../js/ui/telepathyClient.js:1400
+#: ../js/ui/telepathyClient.js:1317
 msgid "Encryption is not available"
 msgstr "Šifriranje ni na voljo."
 
-#: ../js/ui/telepathyClient.js:1402
+#: ../js/ui/telepathyClient.js:1319
 msgid "Certificate is invalid"
 msgstr "Potrdilo je neveljavno."
 
-#: ../js/ui/telepathyClient.js:1404
+#: ../js/ui/telepathyClient.js:1321
 msgid "Connection has been refused"
 msgstr "Povezava je zavrnjena."
 
-#: ../js/ui/telepathyClient.js:1406
+#: ../js/ui/telepathyClient.js:1323
 msgid "Connection can't be established"
 msgstr "Povezave ni mogoče vzpostaviti."
 
-#: ../js/ui/telepathyClient.js:1408
+#: ../js/ui/telepathyClient.js:1325
 msgid "Connection has been lost"
 msgstr "Povezava je prekinjena."
 
-#: ../js/ui/telepathyClient.js:1410
+#: ../js/ui/telepathyClient.js:1327
 msgid "This resource is already connected to the server"
 msgstr "Vir je s strežnikom že povezan"
 
-#: ../js/ui/telepathyClient.js:1412
+#: ../js/ui/telepathyClient.js:1329
 msgid "Connection has been replaced by a new connection using the same resource"
 msgstr "Povezava je zamenjana z novo povezavo, ki uporablja isti vir."
 
-#: ../js/ui/telepathyClient.js:1414
+#: ../js/ui/telepathyClient.js:1331
 msgid "The account already exists on the server"
 msgstr "Račun na strežniku že obstaja"
 
-#: ../js/ui/telepathyClient.js:1416
+#: ../js/ui/telepathyClient.js:1333
 msgid "Server is currently too busy to handle the connection"
 msgstr "Strežnik je trenutno preveč zaposlen za upravljanje s povezavo."
 
-#: ../js/ui/telepathyClient.js:1418
+#: ../js/ui/telepathyClient.js:1335
 msgid "Certificate has been revoked"
 msgstr "Potrdilo je preklicano"
 
-#: ../js/ui/telepathyClient.js:1420
+#: ../js/ui/telepathyClient.js:1337
 msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "Potrdilo ne uporablja varnega algoritma ali pa uporablja šibko šifriranje."
 
-#: ../js/ui/telepathyClient.js:1422
+#: ../js/ui/telepathyClient.js:1339
 msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
 msgstr "Dolžina potrdila strežnika ali pa globina verige potrdila presega omejitev, ki je določena s šifrirno knjižnico."
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1432
+#: ../js/ui/telepathyClient.js:1349
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Povezava z %s je spodletela"
 
-#: ../js/ui/telepathyClient.js:1441
+#: ../js/ui/telepathyClient.js:1358
 msgid "Reconnect"
 msgstr "Ponovno se poveži"
 
-#: ../js/ui/telepathyClient.js:1442
+#: ../js/ui/telepathyClient.js:1359
 msgid "Edit account"
 msgstr "Uredi račun"
 
-#: ../js/ui/telepathyClient.js:1488
+#: ../js/ui/telepathyClient.js:1405
 msgid "Unknown reason"
 msgstr "Neznan vzrok"
 
@@ -1532,41 +1531,41 @@ msgstr "Nedejavno"
 msgid "Unavailable"
 msgstr "Nedostopno"
 
-#: ../js/ui/userMenu.js:576
-#: ../js/ui/userMenu.js:580
-#: ../js/ui/userMenu.js:650
+#: ../js/ui/userMenu.js:577
+#: ../js/ui/userMenu.js:581
+#: ../js/ui/userMenu.js:651
 msgid "Power Off..."
 msgstr "Izklop ..."
 
-#: ../js/ui/userMenu.js:612
+#: ../js/ui/userMenu.js:613
 msgid "Notifications"
 msgstr "Obvestila"
 
-#: ../js/ui/userMenu.js:620
+#: ../js/ui/userMenu.js:621
 msgid "Online Accounts"
 msgstr "Spletni računi"
 
-#: ../js/ui/userMenu.js:624
+#: ../js/ui/userMenu.js:625
 msgid "System Settings"
 msgstr "Sistemske nastavitve"
 
-#: ../js/ui/userMenu.js:631
+#: ../js/ui/userMenu.js:632
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
-#: ../js/ui/userMenu.js:636
+#: ../js/ui/userMenu.js:637
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: ../js/ui/userMenu.js:641
+#: ../js/ui/userMenu.js:642
 msgid "Log Out..."
 msgstr "Odjava ..."
 
-#: ../js/ui/userMenu.js:669
+#: ../js/ui/userMenu.js:670
 msgid "Your chat status will be set to busy"
 msgstr "Stanje vašega klepeta bo nastavljeno na zasedeno"
 
-#: ../js/ui/userMenu.js:670
+#: ../js/ui/userMenu.js:671
 msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
 msgstr "Obveščanje je zdaj onemogočeno, vključno s sporočili klepeta. Vaše stanje povezanosti se je prilagodilo, da bodo drugi vedeli, da njihovih sporočil morda ne boste opazili."
 
@@ -1582,6 +1581,24 @@ msgstr "Vtipkajte za iskanje ..."
 #: ../src/shell-util.c:244
 msgid "Search"
 msgstr "Poišči"
+
+#: ../js/ui/wanda.js:124
+#, c-format
+msgid ""
+"Sorry, no wisdom for you today:\n"
+"%s"
+msgstr ""
+"Za danes ni modrosti:\n"
+"%s"
+
+#: ../js/ui/wanda.js:128
+#, c-format
+msgid "%s the Oracle says"
+msgstr "Riba %s pravi"
+
+#: ../js/ui/wanda.js:168
+msgid "Your favorite Easter Egg"
+msgstr "Vaše priljubljeno velikonočno jajce"
 
 #: ../js/ui/windowAttentionHandler.js:33
 #, c-format
@@ -1614,15 +1631,15 @@ msgstr[3] "%u dovodi naprave"
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
 
-#: ../src/main.c:508
+#: ../src/main.c:262
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: ../src/main.c:514
+#: ../src/main.c:268
 msgid "Mode used by GDM for login screen"
 msgstr "Način uporabljen v GDM za prijavni naslov"
 
-#: ../src/shell-app.c:567
+#: ../src/shell-app.c:639
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Zaganjanje '%s' je spodletelo"
