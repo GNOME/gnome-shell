@@ -23,6 +23,8 @@ const WINDOW_DND_SIZE = 256;
 
 const SCROLL_SCALE_AMOUNT = 100 / 5;
 
+const WINDOW_CLONE_MAXIMUM_SCALE = 0.7;
+
 const LIGHTBOX_FADE_TIME = 0.1;
 const CLOSE_BUTTON_FADE_TIME = 0.1;
 
@@ -964,7 +966,7 @@ const Workspace = new Lang.Class({
 
         let scale = Math.min((width - buttonOuterWidth) / rect.width,
                              (height - buttonOuterHeight - captionHeight) / rect.height,
-                             1.0);
+                             WINDOW_CLONE_MAXIMUM_SCALE);
 
         x = Math.floor(x + (width - scale * rect.width) / 2);
 
