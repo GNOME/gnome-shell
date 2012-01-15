@@ -193,7 +193,6 @@ cogl_matrix_scale (CoglMatrix *matrix,
 		   float sy,
 		   float sz);
 
-#define cogl_matrix_look_at cogl_matrix_look_at_EXP
 /**
  * cogl_matrix_look_at:
  * @matrix: A 4x4 transformation matrix
@@ -298,7 +297,6 @@ cogl_matrix_perspective (CoglMatrix *matrix,
                          float       z_far);
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
-#define cogl_matrix_orthographic cogl_matrix_orthographic_EXP
 /**
  * cogl_matrix_orthographic:
  * @matrix: A 4x4 transformation matrix
@@ -316,6 +314,7 @@ cogl_matrix_perspective (CoglMatrix *matrix,
  * Multiplies @matrix by a parallel projection matrix.
  *
  * Since: 1.10
+ * Stability: unstable
  */
 void
 cogl_matrix_orthographic (CoglMatrix *matrix,
@@ -355,10 +354,6 @@ cogl_matrix_ortho (CoglMatrix *matrix,
                    float       far);
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
-#define cogl_matrix_view_2d_in_frustum cogl_matrix_view_2d_in_frustum_EXP
-#define cogl_matrix_view_2d_in_perspective \
-  cogl_matrix_view_2d_in_perspective_EXP
-
 /**
  * cogl_matrix_view_2d_in_frustum:
  * @matrix: A 4x4 transformation matrix
@@ -385,6 +380,9 @@ cogl_matrix_ortho (CoglMatrix *matrix,
  * Toolkits such as Clutter that mix 2D and 3D drawing can use this to
  * create a 2D coordinate system within a 3D perspective projected
  * view frustum.
+ *
+ * Since: 1.8
+ * Stability: unstable
  */
 void
 cogl_matrix_view_2d_in_frustum (CoglMatrix *matrix,
@@ -421,7 +419,9 @@ cogl_matrix_view_2d_in_frustum (CoglMatrix *matrix,
  * Toolkits such as Clutter that mix 2D and 3D drawing can use this to
  * create a 2D coordinate system within a 3D perspective projected
  * view frustum.
-
+ *
+ * Since: 1.8
+ * Stability: unstable
  */
 void
 cogl_matrix_view_2d_in_perspective (CoglMatrix *matrix,
@@ -560,9 +560,6 @@ cogl_matrix_transform_point (const CoglMatrix *matrix,
                              float *w);
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
-#define cogl_matrix_transform_points cogl_matrix_transform_points_EXP
-#define cogl_matrix_project_points cogl_matrix_project_points_EXP
-
 /**
  * cogl_matrix_transform_points:
  * @matrix: A transformation matrix
@@ -610,7 +607,7 @@ cogl_matrix_transform_point (const CoglMatrix *matrix,
  *                               N_VERTICES);
  * ]|
  *
- * Stability: Unstable
+ * Stability: unstable
  */
 void
 cogl_matrix_transform_points (const CoglMatrix *matrix,
@@ -665,7 +662,7 @@ cogl_matrix_transform_points (const CoglMatrix *matrix,
  *                             N_VERTICES);
  * ]|
  *
- * Stability: Unstable
+ * Stability: unstable
  */
 void
 cogl_matrix_project_points (const CoglMatrix *matrix,
