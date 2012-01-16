@@ -1,3 +1,85 @@
+Cogl 1.9.4                                                         2012-01-16
+
+  • List of changes since Cogl 1.9.2
+
+  » Visual Studio 2008/2010 project files have landed and are being actively
+    maintained by Chun-wei Fan <fanchunwei@src.gnome.org>
+  » A basic KMS (Kernel Mode Setting) backend was added so we can run fullscreen
+    Cogl applications without X11 on Linux.
+  » EGL platforms can now be selected at runtime. Although we've had the ability
+    select backends at runtime for a while, up until now all EGL platforms were
+    part of one monolithic backend and were mutually exclusive so a platform
+    had to be chosen at build time.
+  » cogl_matrix_orthographic() was added as a replacement for cogl_matrix_ortho()
+    since the OpenGL style of arguments for cogl_matrix_ortho() wasn't consistent
+    with the rest of the Cogl API.
+  » Experimental cogl_framebuffer_ apis were added for manipulating the
+    per-framebuffer modelview matrix stack. The aim is for these to replace
+    apis like cogl_rotate/translate/scale because those apis aren't explicitly
+    related to a CoglContext which we'd like to avoid so we can remove the
+    need for a global CoglContext.
+  » Experimental cogl_framebuffer apis were added for manipulating the
+    per-framebuffer clip stacks.
+  » The internal _cogl_framebuffer_flush_state() function was optimized to do
+    a better job of bailing out when no framebuffer state has changed, and
+    when state has changed the cost should now scale by the number of changes
+    made instead of scaling by the total range of framebuffer state that Cogl
+    tracks.
+  » Internally we finally removed _cogl_enable() which won't mean much to most
+    people but makes the maintainers happy. This happened as part of a rework
+    for how attribute state is flushed when drawing which fixed some problems
+    with supporting custom attributes and should improve the performance of
+    flushing attributes too.
+  » We added an experimental CoglSnippets api aiming to greatly simplify how
+    developers can incorporate snippets of GLSL code into the pipeline. This is
+    a feature that has been on the drawing board for a long time so we're
+    really happy that it's finally here. 
+    
+    *** We'd really love to see people start to play with the snippets API and
+    tell us how they get on. The plan is for this API to replace all need for
+    developers to use the CoglProgram and CoglShader apis which are rather poor
+    copies of the OpenGL APIs for using GLSL which don't map well to Cogl's
+    design. ***
+
+  » We've updated Cogl's client side Wayland support
+  » We've updated Cogl's compositor side Wayland support, including updating the
+    example cogland compositor.
+  » We added an SDL window system backend for Cogl, which provides a simple,
+    portable way to play with Cogl as a standalone graphics API with basic
+    support for input events available from SDL. See examples/cogl-sdl-hello
+    to see how that works.
+  » We added mainloop integration support to Cogl. Since we want to have the
+    ability to use poll() to block for events from some drivers we have introduced
+    apis that all Cogl applications are required to use to integrate Cogl
+    into their mainloop. For applications using a glib mainloop we've provided
+    a GSource for convenience.
+
+  • List of bugs fixed since Cogl 1.8.0
+
+    https://bugzilla.gnome.org:
+
+    #650020 - Visual C++ 2008/2010 Project files to compile Cogl and Cogl-Pango
+    #665190 - The conformance test wrapper scripts don't return an exit code
+    #665604 - Cogl needs to bind the framebuffer before calling eglSwapBuffers
+    #665722 - Build Fixes for COGL master branch
+    #665723 - Conformance tests failed (snippets, pipeline_uniforms)
+    #667009 - Remove DRM vblank hack
+
+Many thanks to:
+
+  Neil Roberts
+  Chun-wei Fan
+  Rob Bradford
+  Daniel Mustieles
+  Fran Diéguez
+  Aurimas Černius
+  Javier Jardón
+  Jorge González
+  Joshua Lock
+  Seong-ho, Cho
+  Tomeu Vizoso
+  Yinghua Wang
+
 Cogl 1.9.2                                                         2011-11-23
 
   • List of changes since Cogl 1.8.0
