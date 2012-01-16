@@ -1063,12 +1063,13 @@ _clutter_paint_volume_cull (ClutterPaintVolume *pv,
           /* XXX: for perspective projections this can be optimized
            * out because all the planes should pass through the origin
            * so (0,0,0) is a valid v0. */
-          p.x = vertices[j].x - planes[i].v0.x;
-          p.y = vertices[j].y - planes[i].v0.y;
-          p.z = vertices[j].z - planes[i].v0.z;
+          p.x = vertices[j].x - planes[i].v0[0];
+          p.y = vertices[j].y - planes[i].v0[1];
+          p.z = vertices[j].z - planes[i].v0[2];
 
-          distance =
-            planes[i].n.x * p.x + planes[i].n.y * p.y + planes[i].n.z * p.z;
+          distance = (planes[i].n[0] * p.x +
+                      planes[i].n[1] * p.y +
+                      planes[i].n[2] * p.z);
 
           if (distance < 0)
             out++;

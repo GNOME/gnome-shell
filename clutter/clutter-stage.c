@@ -439,8 +439,8 @@ _cogl_util_get_eye_planes_for_screen_poly (float *polygon,
   Vector4 *tmp_poly;
   ClutterPlane *plane;
   int i;
-  CoglVector3 b;
-  CoglVector3 c;
+  float b[3];
+  float c[3];
   int count;
 
   tmp_poly = g_alloca (sizeof (Vector4) * n_vertices * 2);
@@ -507,23 +507,23 @@ _cogl_util_get_eye_planes_for_screen_poly (float *polygon,
   for (i = 0; i < count; i++)
     {
       plane = &planes[i];
-      plane->v0 = *(CoglVector3 *)&tmp_poly[i];
-      b = *(CoglVector3 *)&tmp_poly[n_vertices + i];
-      c = *(CoglVector3 *)&tmp_poly[n_vertices + i + 1];
-      cogl_vector3_subtract (&b, &b, &plane->v0);
-      cogl_vector3_subtract (&c, &c, &plane->v0);
-      cogl_vector3_cross_product (&plane->n, &b, &c);
-      cogl_vector3_normalize (&plane->n);
+      memcpy (plane->v0, tmp_poly + i, sizeof (float) * 3);
+      memcpy (b, tmp_poly + n_vertices + i, sizeof (float) * 3);
+      memcpy (c, tmp_poly + n_vertices + i + 1, sizeof (float) * 3);
+      cogl_vector3_subtract (b, b, plane->v0);
+      cogl_vector3_subtract (c, c, plane->v0);
+      cogl_vector3_cross_product (plane->n, b, c);
+      cogl_vector3_normalize (plane->n);
     }
 
   plane = &planes[n_vertices - 1];
-  plane->v0 = *(CoglVector3 *)&tmp_poly[0];
-  b = *(CoglVector3 *)&tmp_poly[2 * n_vertices - 1];
-  c = *(CoglVector3 *)&tmp_poly[n_vertices];
-  cogl_vector3_subtract (&b, &b, &plane->v0);
-  cogl_vector3_subtract (&c, &c, &plane->v0);
-  cogl_vector3_cross_product (&plane->n, &b, &c);
-  cogl_vector3_normalize (&plane->n);
+  memcpy (plane->v0, tmp_poly + 0, sizeof (float) * 3);
+  memcpy (b, tmp_poly + (2 * n_vertices - 1), sizeof (float) * 3);
+  memcpy (c, tmp_poly + n_vertices, sizeof (float) * 3);
+  cogl_vector3_subtract (b, b, plane->v0);
+  cogl_vector3_subtract (c, c, plane->v0);
+  cogl_vector3_cross_product (plane->n, b, c);
+  cogl_vector3_normalize (plane->n);
 }
 
 static void

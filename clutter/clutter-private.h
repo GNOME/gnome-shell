@@ -253,8 +253,8 @@ void _clutter_util_rectangle_union (const cairo_rectangle_int_t *src1,
 
 typedef struct _ClutterPlane
 {
-  CoglVector3 v0;
-  CoglVector3 n;
+  float v0[3];
+  float n[3];
 } ClutterPlane;
 
 typedef enum _ClutterCullResult
