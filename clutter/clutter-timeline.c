@@ -1631,7 +1631,7 @@ clutter_timeline_list_markers (ClutterTimeline *timeline,
                             &data);
 
       i = data.markers->len;
-      retval = (gchar **) g_array_free (data.markers, FALSE);
+      retval = (gchar **) (void *) g_array_free (data.markers, FALSE);
     }
 
   if (n_markers)

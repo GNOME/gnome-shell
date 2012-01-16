@@ -1537,9 +1537,8 @@ clutter_state_get_animator (ClutterState *state,
                             const gchar  *source_state_name,
                             const gchar  *target_state_name)
 {
-  State         *target_state;
-  StateAnimator *animators;
-  gint i;
+  State *target_state;
+  guint i;
 
   g_return_val_if_fail (CLUTTER_IS_STATE (state), NULL);
 
@@ -1552,13 +1551,14 @@ clutter_state_get_animator (ClutterState *state,
   target_state = clutter_state_fetch_state (state, target_state_name, FALSE);
   if (target_state == NULL)
     return NULL;
-  
-  animators = (StateAnimator*)target_state->animators->data;
 
-  for (i = 0; animators[i].animator; i++)
+  for (i = 0; i < target_state->animators->len; i++)
     {
-      if (animators[i].source_state_name == source_state_name)
-        return animators[i].animator;
+      const StateAnimator *animator;
+
+      animator = &g_array_index (target_state->animators, StateAnimator, i);
+      if (animator->source_state_name == source_state_name)
+        return animator->animator;
     }
 
   return NULL;
@@ -1592,8 +1592,7 @@ clutter_state_set_animator (ClutterState    *state,
                             ClutterAnimator *animator)
 {
   State *target_state;
-  StateAnimator *animators;
-  gint i;
+  guint i;
 
   g_return_if_fail (CLUTTER_IS_STATE (state));
 
@@ -1604,15 +1603,17 @@ clutter_state_set_animator (ClutterState    *state,
   if (target_state == NULL)
     return;
   
-  animators = (StateAnimator *) target_state->animators->data;
-  for (i = 0; animators[i].animator; i++)
+  for (i = 0; target_state->animators->len; i++)
     {
-      if (animators[i].source_state_name == source_state_name)
+      StateAnimator *a;
+
+      a = &g_array_index (target_state->animators, StateAnimator, i);
+      if (a->source_state_name == source_state_name)
         {
-          g_object_unref (animators[i].animator);
+          g_object_unref (a->animator);
 
           if (animator != NULL)
-            animators[i].animator = g_object_ref (animator);
+            a->animator = g_object_ref (animator);
           else
             {
               /* remove the matched animator if passed NULL */

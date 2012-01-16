@@ -759,7 +759,7 @@ calculate_col_widths (ClutterTableLayout *self,
   update_row_col (self, container);
   g_array_set_size (priv->columns, 0);
   g_array_set_size (priv->columns, priv->n_cols);
-  columns = (DimensionData *) priv->columns->data;
+  columns = (DimensionData *) (void *) priv->columns->data;
 
   /* reset the visibility of all columns */
   priv->visible_cols = 0;
@@ -1032,8 +1032,8 @@ calculate_row_heights (ClutterTableLayout *self,
   g_array_set_size (priv->rows, 0);
   g_array_set_size (priv->rows, self->priv->n_rows);
 
-  rows = (DimensionData *) priv->rows->data;
-  columns = (DimensionData *) priv->columns->data;
+  rows = (DimensionData *) (void *) priv->rows->data;
+  columns = (DimensionData *) (void *) priv->columns->data;
 
   /* reset the visibility of all rows */
   priv->visible_rows = 0;
@@ -1334,7 +1334,7 @@ clutter_table_layout_get_preferred_width (ClutterLayoutManager *layout,
     }
 
   calculate_table_dimensions (self, container, -1, for_height);
-  columns = (DimensionData *) priv->columns->data;
+  columns = (DimensionData *) (void *) priv->columns->data;
 
   total_min_width = (priv->visible_cols - 1) * (float) priv->col_spacing;
   total_pref_width = total_min_width;
@@ -1374,7 +1374,7 @@ clutter_table_layout_get_preferred_height (ClutterLayoutManager *layout,
     }
 
   calculate_table_dimensions (self, container, for_width, -1);
-  rows = (DimensionData *) priv->rows->data;
+  rows = (DimensionData *) (void *) priv->rows->data;
 
   total_min_height = (priv->visible_rows - 1) * (float) priv->row_spacing;
   total_pref_height = total_min_height;
@@ -1439,8 +1439,8 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
                               box->x2 - box->x1,
                               box->y2 - box->y1);
 
-  rows = (DimensionData *) priv->rows->data;
-  columns = (DimensionData *) priv->columns->data;
+  rows = (DimensionData *) (void *) priv->rows->data;
+  columns = (DimensionData *) (void *) priv->columns->data;
 
   for (child = clutter_actor_get_first_child (actor);
        child != NULL;
