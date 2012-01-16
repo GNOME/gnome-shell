@@ -60,6 +60,15 @@ typedef struct _CoglOnscreenWayland
   struct wl_egl_window *wayland_egl_native_window;
   struct wl_surface *wayland_surface;
   struct wl_shell_surface *wayland_shell_surface;
+
+  /* Resizing a wayland framebuffer doesn't take affect
+   * until the next swap buffers request, so we have to
+   * track the resize geometry until then... */
+  int pending_width;
+  int pending_height;
+  int pending_dx;
+  int pending_dy;
+  gboolean has_pending;
 } CoglOnscreenWayland;
 
 static void
@@ -363,12 +372,29 @@ _cogl_winsys_egl_onscreen_deinit (CoglOnscreen *onscreen)
 static void
 _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
 {
-  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
+  CoglContext *context = fb->context;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglRendererWayland *wayland_renderer = egl_renderer->platform;
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglOnscreenWayland *wayland_onscreen = egl_onscreen->platform;
 
-  /* First chain-up */
+  if (wayland_onscreen->has_pending)
+    {
+      wl_egl_window_resize (wayland_onscreen->wayland_egl_native_window,
+                            wayland_onscreen->pending_width,
+                            wayland_onscreen->pending_height,
+                            wayland_onscreen->pending_dx,
+                            wayland_onscreen->pending_dy);
+
+      _cogl_framebuffer_winsys_update_size (fb,
+                                            wayland_onscreen->pending_width,
+                                            wayland_onscreen->pending_height);
+      wayland_onscreen->has_pending = FALSE;
+    }
+
+  /* chain-up */
   parent_vtable->onscreen_swap_buffers (onscreen);
 
   /*
@@ -514,13 +540,20 @@ cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
       CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
       CoglOnscreenWayland *wayland_onscreen = egl_onscreen->platform;
 
-      wl_egl_window_resize (wayland_onscreen->wayland_egl_native_window,
-                            width,
-                            height,
-                            offset_x,
-                            offset_y);
-      _cogl_framebuffer_winsys_update_size (fb, width, height);
+      if (cogl_framebuffer_get_width (fb) != width ||
+          cogl_framebuffer_get_height (fb) != height ||
+          offset_x ||
+          offset_y)
+        {
+          wayland_onscreen->pending_width = width;
+          wayland_onscreen->pending_height = height;
+          wayland_onscreen->pending_dx += offset_x;
+          wayland_onscreen->pending_dy += offset_y;
+          wayland_onscreen->has_pending = TRUE;
+        }
     }
+  else
+    _cogl_framebuffer_winsys_update_size (fb, width, height);
 }
 
 static const CoglWinsysEGLVtable

@@ -185,6 +185,35 @@ cogl_wayland_onscreen_get_surface (CoglOnscreen *onscreen);
 struct wl_shell_surface *
 cogl_wayland_onscreen_get_shell_surface (CoglOnscreen *onscreen);
 
+/**
+ * cogl_wayland_onscreen_resize:
+ * @onscreen: A #CoglOnscreen framebuffer
+ * @width: The desired width of the framebuffer
+ * @height: The desired height of the framebuffer
+ * @offset_x: A relative x offset for the new framebuffer
+ * @offset_y: A relative x offset for the new framebuffer
+ *
+ * Queues a resize of the given @onscreen framebuffer which will be applied
+ * during the next swap buffers request. Since a buffer is usually conceptually
+ * scaled with a center point the @offset_x and @offset_y arguments allow the
+ * newly allocated buffer to be positioned relative to the old buffer size.
+ *
+ * For example a buffer that is being resized by moving the bottom right
+ * corner, and the top left corner is remaining static would use x and y
+ * offsets of (0, 0) since the top-left of the new buffer should have the same
+ * position as the old buffer. If the center of the old buffer is being zoomed
+ * into then all the corners of the new buffer move out from the center and the x
+ * and y offsets would be (-half_x_size_increase, -half_y_size_increase) where
+ * x/y_size_increase is how many pixels bigger the buffer is on the x and y
+ * axis.
+ *
+ * If cogl_wayland_onscreen_resize() is called multiple times before the next
+ * swap buffers request then the relative x and y offsets accumulate instead of
+ * being replaced. The @width and @height values superseed the old values.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
 void
 cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
                               int           width,
