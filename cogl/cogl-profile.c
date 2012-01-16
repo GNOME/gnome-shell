@@ -65,7 +65,7 @@ _cogl_uprof_init (void)
 #include "cogl-debug-options.h"
 #undef OPT
 
-  g_atexit (print_exit_report);
+  atexit (print_exit_report);
 }
 
 void
