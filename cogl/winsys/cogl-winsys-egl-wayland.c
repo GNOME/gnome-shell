@@ -501,10 +501,10 @@ cogl_wayland_onscreen_get_shell_surface (CoglOnscreen *onscreen)
 
 void
 cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
-                              gint          width,
-                              gint          height,
-                              gint          offset_x,
-                              gint          offset_y)
+                              int           width,
+                              int           height,
+                              int           offset_x,
+                              int           offset_y)
 {
   CoglFramebuffer *fb;
 
