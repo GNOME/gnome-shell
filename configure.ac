@@ -81,7 +81,7 @@ AC_CONFIG_HEADERS(config.h)
 dnl ================================================================
 dnl Required versions for dependencies
 dnl ================================================================
-m4_define([glib_req_version],           [2.26.0])
+m4_define([glib_req_version],           [2.28.0])
 m4_define([pangocairo_req_version],     [1.20])
 m4_define([gi_req_version],             [0.9.5])
 m4_define([gdk_pixbuf_req_version],     [2.0])
