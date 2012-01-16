@@ -8,7 +8,7 @@
 TOR_URL="http://ftp.gnome.org/pub/gnome/binaries/win32";
 
 TOR_BINARIES=( \
-    glib/2.26/glib{-dev,}_2.26.0-2_win32.zip \
+    glib/2.28/glib{-dev,}_2.28.8-1_win32.zip \
     pango/1.28/pango{-dev,}_1.28.0-1_win32.zip);
 
 TOR_DEP_URL="http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies";
