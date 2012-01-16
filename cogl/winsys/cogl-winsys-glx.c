@@ -1061,7 +1061,8 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
    */
   if (glx_renderer->pf_glXSwapInterval)
     {
-      if (onscreen->swap_throttled)
+      CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
+      if (fb->config.swap_throttled)
         glx_renderer->pf_glXSwapInterval (1);
       else
         glx_renderer->pf_glXSwapInterval (0);
@@ -1162,7 +1163,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
                                  framebuffer,
                                  COGL_FRAMEBUFFER_STATE_BIND);
 
-  if (onscreen->swap_throttled)
+  if (framebuffer->config.swap_throttled)
     {
       have_counter =
         _cogl_winsys_has_feature (COGL_WINSYS_FEATURE_VBLANK_COUNTER);
@@ -1297,7 +1298,7 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
 
   drawable = glx_onscreen->glxwin ? glx_onscreen->glxwin : xlib_onscreen->xwin;
 
-  if (onscreen->swap_throttled)
+  if (framebuffer->config.swap_throttled)
     {
       guint32 end_frame_vsync_counter = 0;
 

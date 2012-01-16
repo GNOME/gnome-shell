@@ -89,7 +89,6 @@ typedef struct _CoglOnscreenWgl
 
   HDC client_dc;
 
-  gboolean swap_throttled;
 } CoglOnscreenWgl;
 
 /* Define a set of arrays containing the functions required from GL
@@ -651,6 +650,7 @@ _cogl_winsys_context_deinit (CoglContext *context)
 static void
 _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
 {
+  CoglFramebuffer *fb;
   CoglContext *context;
   CoglContextWgl *wgl_context;
   CoglDisplayWgl *wgl_display;
@@ -663,7 +663,8 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
      context */
   _COGL_RETURN_IF_FAIL (onscreen != NULL);
 
-  context = COGL_FRAMEBUFFER (onscreen)->context;
+  fb = COGL_FRAMEBUFFER (onscreen);
+  context = fb->context;
   wgl_context = context->winsys;
   wgl_display = context->display->winsys;
   wgl_onscreen = onscreen->winsys;
@@ -680,7 +681,7 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
    */
   if (wgl_renderer->pf_wglSwapInterval)
     {
-      if (onscreen->swap_throttled)
+      if (fb->config.swap_throttled)
         wgl_renderer->pf_wglSwapInterval (1);
       else
         wgl_renderer->pf_wglSwapInterval (0);

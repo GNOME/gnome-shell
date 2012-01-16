@@ -534,7 +534,8 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 static void
 _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
 {
-  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
+  CoglContext *context = fb->context;
   CoglDisplayEGL *egl_display = context->display->winsys;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
@@ -550,7 +551,7 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
                   egl_display->egl_context);
   egl_context->current_surface = egl_onscreen->egl_surface;
 
-  if (onscreen->swap_throttled)
+  if (fb->config.swap_throttled)
     eglSwapInterval (egl_renderer->edpy, 1);
   else
     eglSwapInterval (egl_renderer->edpy, 0);

@@ -100,9 +100,6 @@ cogl_onscreen_new (CoglContext *ctx, int width, int height)
 
   _cogl_onscreen_init_from_template (onscreen, ctx->display->onscreen_template);
 
-  /* FIXME: This should be configurable via the template too */
-  onscreen->swap_throttled = TRUE;
-
   return _cogl_onscreen_object_new (onscreen);
 }
 
@@ -290,7 +287,7 @@ cogl_onscreen_set_swap_throttled (CoglOnscreen *onscreen,
                                   gboolean throttled)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
-  onscreen->swap_throttled = throttled;
+  framebuffer->config.swap_throttled = throttled;
   if (framebuffer->allocated)
     {
       const CoglWinsysVtable *winsys =

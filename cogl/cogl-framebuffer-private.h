@@ -49,6 +49,7 @@ typedef struct
   CoglSwapChain *swap_chain;
   gboolean need_stencil;
   int samples_per_pixel;
+  gboolean swap_throttled;
 } CoglFramebufferConfig;
 
 /* Flags to pass to _cogl_offscreen_new_to_texture_full */

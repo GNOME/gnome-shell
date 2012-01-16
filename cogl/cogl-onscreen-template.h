@@ -71,6 +71,23 @@ cogl_onscreen_template_set_samples_per_pixel (
                                           CoglOnscreenTemplate *onscreen_template,
                                           int n);
 
+/**
+ * cogl_onscreen_template_set_swap_throttled:
+ * @onscreen_template: A #CoglOnscreenTemplate template framebuffer
+ * @throttled: Whether throttling should be enabled
+ *
+ * Requests that any future #CoglOnscreen framebuffers derived from this
+ * template should enable or disable swap throttling according to the given
+ * @throttled argument.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_onscreen_template_set_swap_throttled (
+                                          CoglOnscreenTemplate *onscreen_template,
+                                          gboolean throttled);
+
 G_END_DECLS
 
 #endif /* __COGL_ONSCREEN_TEMPLATE_H__ */
