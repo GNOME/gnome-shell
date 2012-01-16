@@ -337,7 +337,7 @@ create_cursor (ClutterBackendWayland *backend_wayland,
                                  width,
                                  height,
                                  stride,
-                                 WL_SHM_FORMAT_ARGB32);
+                                 WL_SHM_FORMAT_ARGB8888);
 
   close(fd);
   munmap (map, size);
