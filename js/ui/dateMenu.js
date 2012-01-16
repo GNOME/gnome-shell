@@ -63,9 +63,14 @@ const DateMenuButton = new Lang.Class({
         hbox.add(vbox);
 
         // Date
-        this._date = new St.Label({ style_class: 'datemenu-date-label',
-                                    can_focus: true });
-        vbox.add(this._date);
+        this._date = new St.Button({ style_class: 'datemenu-date-label',
+                                     can_focus: true,
+                                   });
+        this._date.connect('clicked',
+                           Lang.bind(this, function() {
+                               this._calendar.setDate(new Date(), false);
+                           }));
+        vbox.add(this._date, { x_fill: false  });
 
         this._eventList = new Calendar.EventsList();
         this._calendar = new Calendar.Calendar();
@@ -186,7 +191,7 @@ const DateMenuButton = new Lang.Class({
          */
         let dateFormat = _("%A %B %e, %Y");
         let displayDate = new Date();
-        this._date.set_text(displayDate.toLocaleFormat(dateFormat));
+        this._date.set_label(displayDate.toLocaleFormat(dateFormat));
     },
 
     _getCalendarApp: function() {
