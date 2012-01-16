@@ -153,6 +153,9 @@ guint           clutter_script_load_from_data           (ClutterScript          
                                                          const gchar               *data,
                                                          gssize                     length,
                                                          GError                   **error);
+guint           clutter_script_load_from_resource       (ClutterScript             *script,
+                                                         const gchar               *resource_path,
+                                                         GError                   **error);
 
 GObject *       clutter_script_get_object               (ClutterScript             *script,
                                                          const gchar               *name);

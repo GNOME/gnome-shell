@@ -936,6 +936,7 @@ clutter_script_get_type_from_name
 clutter_script_list_objects
 clutter_script_load_from_data
 clutter_script_load_from_file
+clutter_script_load_from_resource
 clutter_script_lookup_filename
 clutter_script_new
 clutter_script_unmerge_objects

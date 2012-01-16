@@ -601,6 +601,45 @@ clutter_script_load_from_data (ClutterScript  *script,
 }
 
 /**
+ * clutter_script_load_from_resource:
+ * @script: a #ClutterScript
+ * @resource_path: the resource path of the file to parse
+ * @error: return location for a #GError, or %NULL
+ *
+ * Loads the definitions from a resource file into @script and merges with
+ * the currently loaded ones, if any.
+ *
+ * Return value: on error, zero is returned and @error is set
+ *   accordingly. On success, the merge id for the UI definitions is
+ *   returned. You can use the merge id with clutter_script_unmerge_objects().
+ *
+ * Since: 1.10
+ */
+guint
+clutter_script_load_from_resource (ClutterScript  *script,
+                                   const gchar    *resource_path,
+                                   GError        **error)
+{
+  GBytes *data;
+  guint res;
+
+  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), 0);
+
+  data = g_resources_lookup_data (resource_path, 0, error);
+  if (data == NULL)
+    return 0;
+
+  res = clutter_script_load_from_data (script,
+                                       g_bytes_get_data (data, NULL),
+                                       g_bytes_get_size (data),
+                                       error);
+
+  g_bytes_unref (data);
+
+  return res;
+}
+
+/**
  * clutter_script_get_object:
  * @script: a #ClutterScript
  * @name: the name of the object to retrieve
