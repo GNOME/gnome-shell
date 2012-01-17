@@ -147,7 +147,8 @@ actor_fixed_size (void)
   gfloat min_width, min_height;
   gfloat nat_width, nat_height;
 
-  rect = clutter_rectangle_new ();
+  rect = clutter_actor_new ();
+  g_object_ref_sink (rect);
 
   if (g_test_verbose ())
     g_print ("Initial size is 0\n");
@@ -206,4 +207,5 @@ actor_fixed_size (void)
   g_assert_cmpfloat (clutter_actor_get_height (rect), ==, 0);
 
   clutter_actor_destroy (rect);
+  g_object_unref (rect);
 }
