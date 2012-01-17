@@ -212,7 +212,7 @@ test_actors_main (int argc, char *argv[])
   g_free (file);
 
   /* create a new group to hold multiple actors in a group */
-  oh->group = clutter_group_new();
+  oh->group = clutter_actor_new ();
   clutter_actor_set_name (oh->group, "Group");
   g_signal_connect (oh->group, "destroy", G_CALLBACK (on_group_destroy), oh);
   clutter_actor_add_constraint (oh->group, clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5));

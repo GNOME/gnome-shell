@@ -85,8 +85,8 @@ test_scrolling_main (int argc, char *argv[])
    * size to be the same as one rectangle, position it in the middle of
    * the stage and set it to clip its contents to the allocated size
    */
-  scroll = clutter_group_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), scroll);
+  scroll = clutter_actor_new ();
+  clutter_actor_add_child (stage, scroll);
   clutter_actor_set_size (scroll, RECT_WIDTH, RECT_HEIGHT);
   clutter_actor_add_constraint (scroll, clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5));
   clutter_actor_set_clip_to_allocation (scroll, TRUE);
@@ -96,8 +96,9 @@ test_scrolling_main (int argc, char *argv[])
    * the dragging ends we check whether we're dragging past the end of
    * the viewport
    */
-  viewport = clutter_box_new (clutter_box_layout_new ());
-  clutter_container_add_actor (CLUTTER_CONTAINER (scroll), viewport);
+  viewport = clutter_actor_new ();
+  clutter_actor_set_layout_manager (viewport, clutter_box_layout_new ());
+  clutter_actor_add_child (scroll, viewport);
 
   /* add dragging capabilities to the viewport; the heavy lifting is
    * all done by the DragAction itself, plus the ::drag-end signal
@@ -117,8 +118,9 @@ test_scrolling_main (int argc, char *argv[])
 
       clutter_color_from_string (&color, rect_color[i]);
 
-      rectangle[i] = clutter_rectangle_new_with_color (&color);
-      clutter_container_add_actor (CLUTTER_CONTAINER (viewport), rectangle[i]);
+      rectangle[i] = clutter_actor_new ();
+      clutter_actor_set_background_color (rectangle[i], &color);
+      clutter_actor_add_child (viewport, rectangle[i]);
       clutter_actor_set_size (rectangle[i], RECT_WIDTH, RECT_HEIGHT);
     }
 
