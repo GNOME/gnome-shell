@@ -1703,6 +1703,23 @@ clutter_actor_real_pick (ClutterActor       *self,
 
       cogl_rectangle (0, 0, width, height);
     }
+
+  /* XXX - this thoroughly sucks, but we need to maintain compatibility
+   * with existing container classes that override the pick() virtual
+   * and chain up to the default implementation - otherwise we'll end up
+   * painting our children twice.
+   *
+   * this has to go away for 2.0; hopefully along the pick() itself.
+   */
+  if (CLUTTER_ACTOR_GET_CLASS (self)->pick == clutter_actor_real_pick)
+    {
+      ClutterActor *iter;
+
+      for (iter = self->priv->first_child;
+           iter != NULL;
+           iter = iter->priv->next_sibling)
+        clutter_actor_paint (iter);
+    }
 }
 
 /**
