@@ -68,6 +68,10 @@ struct _ClutterDeviceManagerEvdevPrivate
 
   ClutterInputDevice *core_pointer;
   ClutterInputDevice *core_keyboard;
+
+  ClutterStageManager *stage_manager;
+  guint stage_added_handler;
+  guint stage_removed_handler;
 };
 
 static const gchar *subsystems[] = { "input", NULL };
@@ -804,6 +808,38 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
 }
 
 static void
+clutter_device_manager_evdev_dispose (GObject *object)
+{
+  ClutterDeviceManagerEvdev *manager_evdev;
+  ClutterDeviceManagerEvdevPrivate *priv;
+
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (object);
+  priv = manager_evdev->priv;
+
+  if (priv->stage_added_handler)
+    {
+      g_signal_handler_disconnect (priv->stage_manager,
+                                   priv->stage_added_handler);
+      priv->stage_added_handler = 0;
+    }
+
+  if (priv->stage_removed_handler)
+    {
+      g_signal_handler_disconnect (priv->stage_manager,
+                                   priv->stage_removed_handler);
+      priv->stage_removed_handler = 0;
+    }
+
+  if (priv->stage_manager)
+    {
+      g_object_unref (priv->stage_manager);
+      priv->stage_manager = NULL;
+    }
+
+  G_OBJECT_CLASS (clutter_device_manager_evdev_parent_class)->dispose (object);
+}
+
+static void
 clutter_device_manager_evdev_finalize (GObject *object)
 {
   ClutterDeviceManagerEvdev *manager_evdev;
@@ -844,6 +880,7 @@ clutter_device_manager_evdev_class_init (ClutterDeviceManagerEvdevClass *klass)
 
   gobject_class->constructed = clutter_device_manager_evdev_constructed;
   gobject_class->finalize = clutter_device_manager_evdev_finalize;
+  gobject_class->dispose = clutter_device_manager_evdev_dispose;
 
   manager_class = CLUTTER_DEVICE_MANAGER_CLASS (klass);
   manager_class->add_device = clutter_device_manager_evdev_add_device;
@@ -854,9 +891,76 @@ clutter_device_manager_evdev_class_init (ClutterDeviceManagerEvdevClass *klass)
 }
 
 static void
+clutter_device_manager_evdev_stage_added_cb (ClutterStageManager *manager,
+                                             ClutterStage *stage,
+                                             ClutterDeviceManagerEvdev *self)
+{
+  ClutterDeviceManagerEvdevPrivate *priv = self->priv;
+  GSList *l;
+
+  /* Set the stage of any devices that don't already have a stage */
+  for (l = priv->devices; l; l = l->next)
+    {
+      ClutterInputDevice *device = l->data;
+
+      if (_clutter_input_device_get_stage (device) == NULL)
+        _clutter_input_device_set_stage (device, stage);
+    }
+
+  /* We only want to do this once so we can catch the default
+     stage. If the application has multiple stages then it will need
+     to manage the stage of the input devices itself */
+  g_signal_handler_disconnect (priv->stage_manager,
+                               priv->stage_added_handler);
+  priv->stage_added_handler = 0;
+}
+
+static void
+clutter_device_manager_evdev_stage_removed_cb (ClutterStageManager *manager,
+                                               ClutterStage *stage,
+                                               ClutterDeviceManagerEvdev *self)
+{
+  ClutterDeviceManagerEvdevPrivate *priv = self->priv;
+  GSList *l;
+
+  /* Remove the stage of any input devices that were pointing to this
+     stage so we don't send events to invalid stages */
+  for (l = priv->devices; l; l = l->next)
+    {
+      ClutterInputDevice *device = l->data;
+
+      if (_clutter_input_device_get_stage (device) == stage)
+        _clutter_input_device_set_stage (device, NULL);
+    }
+}
+
+static void
 clutter_device_manager_evdev_init (ClutterDeviceManagerEvdev *self)
 {
-  self->priv = CLUTTER_DEVICE_MANAGER_EVDEV_GET_PRIVATE (self);
+  ClutterDeviceManagerEvdevPrivate *priv;
+
+  priv = self->priv = CLUTTER_DEVICE_MANAGER_EVDEV_GET_PRIVATE (self);
+
+  priv->stage_manager = clutter_stage_manager_get_default ();
+  g_object_ref (priv->stage_manager);
+
+  /* evdev doesn't have any way to link an event to a particular stage
+     so we'll have to leave it up to applications to set the
+     corresponding stage for an input device. However to make it
+     easier for applications that are only using one fullscreen stage
+     (which is probably the most frequent use-case for the evdev
+     backend) we'll associate any input devices that don't have a
+     stage with the first stage created. */
+  priv->stage_added_handler =
+    g_signal_connect (priv->stage_manager,
+                      "stage-added",
+                      G_CALLBACK (clutter_device_manager_evdev_stage_added_cb),
+                      self);
+  priv->stage_removed_handler =
+    g_signal_connect (priv->stage_manager,
+                      "stage-removed",
+                      G_CALLBACK (clutter_device_manager_evdev_stage_removed_cb),
+                      self);
 }
 
 void
