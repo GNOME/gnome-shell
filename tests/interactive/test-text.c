@@ -84,8 +84,6 @@ test_text_main (gint    argc,
 
   clutter_main ();
 
-  g_object_unref (stage);
-
   return EXIT_SUCCESS;
 }
 
