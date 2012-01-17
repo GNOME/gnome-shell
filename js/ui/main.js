@@ -332,6 +332,7 @@ function _windowRemoved(workspace, window) {
             workspace._lastRemovedWindow = null;
             _queueCheckWorkspaces();
         }
+        return false;
     });
 }
 

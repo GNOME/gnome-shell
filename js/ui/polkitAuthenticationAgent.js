@@ -393,6 +393,7 @@ const AuthenticationAgent = new Lang.Class({
                                  Lang.bind(this,
                                            function() {
                                                this._reallyCompleteRequest(wasDismissed);
+                                               return false;
                                            }));
         } else {
             this._reallyCompleteRequest(wasDismissed);
