@@ -16,17 +16,17 @@
 
 struct _MetaWindowGroupClass
 {
-  ClutterGroupClass parent_class;
+  ClutterActorClass parent_class;
 };
 
 struct _MetaWindowGroup
 {
-  ClutterGroup parent;
+  ClutterActor parent;
 
   MetaScreen *screen;
 };
 
-G_DEFINE_TYPE (MetaWindowGroup, meta_window_group, CLUTTER_TYPE_GROUP);
+G_DEFINE_TYPE (MetaWindowGroup, meta_window_group, CLUTTER_TYPE_ACTOR);
 
 /* Help macros to scale from OpenGL <-1,1> coordinates system to
  * window coordinates ranging [0,window-size]. Borrowed from clutter-utils.c
@@ -127,7 +127,7 @@ meta_window_group_paint (ClutterActor *actor)
    * and subtract the opaque area of each window out of the visible
    * region that we pass to the windows below.
    */
-  children = clutter_container_get_children (CLUTTER_CONTAINER (actor));
+  children = clutter_actor_get_children (actor);
   children = g_list_reverse (children);
 
   /* Get the clipped redraw bounds from Clutter so that we can avoid
