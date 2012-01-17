@@ -1,3 +1,77 @@
+Clutter 1.9.4                                                        2012-01-17
+===============================================================================
+
+  • List of changes since Clutter 1.9.2
+
+    - New scene graph API in ClutterActor
+    ClutterActor now provides the API for adding, removing, and iterating
+    over the list of children; this deprecates most of the ClutterContainer
+    API. ClutterActor implements ClutterContainer as well, which means that
+    all actors can be containers.
+
+    - Layout management updates
+    ClutterActor now have an horizontal and vertical alignment properties
+    that will be used when added to a parent; a margin has also been added
+    to the ClutterActor class. Both margin and alignment will be automatically
+    managed during the allocation, so they will work out of the box. It is
+    also possible to set a ClutterLayoutManager delegate object on any
+    ClutterActor instance: the LayoutManager will take care of the layout
+    policy for the children of an actor.
+
+    - Add ClutterTextBuffer
+    The ClutterTextBuffer class provides a storage for the contents of
+    a ClutterText actor; the same instance can be shared across different
+    actors as well. The main use for ClutterTextBuffer is implementing
+    secure memory storage for the contents of a ClutterText in password
+    mode.
+
+    - Deprecations
+    ClutterGroup, ClutterBox, and ClutterRectangle have been deprecated; their
+    functionality is now available directly in ClutterActor. The old child
+    actor management API in ClutterActor and ClutterContainer has been
+    deprecated as well. Other deprecations include the ClutterStage
+    fog-related properties and API; the ClutterContainer.sort_depth_order(),
+    raise(), and lower() virtual functions; the internal child push and
+    pop methods on ClutterActor.
+
+    - ClutterTimeline can parse markers from ClutterScript
+    Markers can now be defined inside ClutterScript, and a ClutterTimeline
+    will be able to automatically add them from a UI definition.
+
+    - Add a diagnostic mode
+    Similar to the GLib diagnostic mode, Clutter now supports an environment
+    variable that will print out diagnostic messages for deprecations and
+    warnings that can only be detected at run-time.
+
+    - Wayland backend updates
+    The wayland backend now tracks the latest API changes in the client API,
+    and Clutter now provides a Wayland surface actor that allows to write
+    Wayland compositors, similarly to the X11TexturePixmap actor for the
+    X11 backend.
+
+  • List of bugs fixed since Clutter 1.9.2
+
+    [bugzilla.gnome.org]
+    #665040 - The offscreen effect always recreates the texture if
+              create_texture() is overridden to change the size
+    #665052 - The internal effects should queue a repaint on the effect not
+              on the actor when a property changes
+    #664996 - clutter_state_set_key (allow-none)
+    #664336 - path: Fix introspection annotations
+    #664252 - in case GLSL shader fails to compile clutter-shader-effect.c
+              should print out position in source code
+    #664582 - lookingGlass: Fix global key press handler
+    #660997 - Make _clutter_actor_queue_redraw_with_clip or an equivalent
+              public
+
+Many thanks to:
+
+  Chun-wei Fan, Robert Bragg, Rob Bradford, Neil Roberts, Bastian Winkler,
+  Fran Diéguez, Jasper St. Pierre, Matej Urbančič, Piotr Drąg,
+  Alexander Shopov, Bastien Nocera, Daniel Mustieles, Jeremy Moles,
+  Jovan Naumovski, Kjartan Maraas, Lucian Adrian Grijincu, Manuel Osdoba,
+  Ryan Lortie
+
 Clutter 1.9.2                                                        2011-11-22
 ===============================================================================
 
