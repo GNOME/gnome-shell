@@ -46,7 +46,7 @@
  * useful in the case of important passwords. Or a derived class could
  * integrate with an application's concept of undo/redo.
  *
- * Since: 1.8
+ * Since: 1.10
  */
 
 /* Initial size of buffer, in bytes */
@@ -344,7 +344,7 @@ clutter_text_buffer_class_init (ClutterTextBufferClass *klass)
    *
    * The contents of the buffer.
    *
-   * Since: 1.8
+   * Since: 1.10
    */
   obj_props[PROP_TEXT] =
       g_param_spec_string ("text",
@@ -358,7 +358,7 @@ clutter_text_buffer_class_init (ClutterTextBufferClass *klass)
    *
    * The length (in characters) of the text in buffer.
    *
-   * Since: 1.8
+   * Since: 1.10
    */
   obj_props[PROP_LENGTH] =
       g_param_spec_uint ("length",
@@ -372,7 +372,7 @@ clutter_text_buffer_class_init (ClutterTextBufferClass *klass)
    *
    * The maximum length (in characters) of the text in the buffer.
    *
-   * Since: 1.8
+   * Since: 1.10
    */
   obj_props[PROP_MAX_LENGTH] =
       g_param_spec_int ("max-length",
@@ -392,18 +392,19 @@ clutter_text_buffer_class_init (ClutterTextBufferClass *klass)
    *
    * This signal is emitted after text is inserted into the buffer.
    *
-   * Since: 1.8
+   * Since: 1.10
    */
-  signals[INSERTED_TEXT] = g_signal_new (I_("inserted-text"),
-                                         CLUTTER_TYPE_TEXT_BUFFER,
-                                         G_SIGNAL_RUN_FIRST,
-                                         G_STRUCT_OFFSET (ClutterTextBufferClass, inserted_text),
-                                         NULL, NULL,
-                                         _clutter_marshal_VOID__UINT_STRING_UINT,
-                                         G_TYPE_NONE, 3,
-                                         G_TYPE_UINT,
-                                         G_TYPE_STRING,
-                                         G_TYPE_UINT);
+  signals[INSERTED_TEXT] =
+    g_signal_new (I_("inserted-text"),
+                  CLUTTER_TYPE_TEXT_BUFFER,
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (ClutterTextBufferClass, inserted_text),
+                  NULL, NULL,
+                  _clutter_marshal_VOID__UINT_STRING_UINT,
+                  G_TYPE_NONE, 3,
+                  G_TYPE_UINT,
+                  G_TYPE_STRING,
+                  G_TYPE_UINT);
 
   /**
    * ClutterTextBuffer::deleted-text:
@@ -413,17 +414,18 @@ clutter_text_buffer_class_init (ClutterTextBufferClass *klass)
    *
    * This signal is emitted after text is deleted from the buffer.
    *
-   * Since: 1.8
+   * Since: 1.10
    */
-  signals[DELETED_TEXT] =  g_signal_new (I_("deleted-text"),
-                                         CLUTTER_TYPE_TEXT_BUFFER,
-                                         G_SIGNAL_RUN_FIRST,
-                                         G_STRUCT_OFFSET (ClutterTextBufferClass, deleted_text),
-                                         NULL, NULL,
-                                         _clutter_marshal_VOID__UINT_UINT,
-                                         G_TYPE_NONE, 2,
-                                         G_TYPE_UINT,
-                                         G_TYPE_UINT);
+  signals[DELETED_TEXT] =
+    g_signal_new (I_("deleted-text"),
+                  CLUTTER_TYPE_TEXT_BUFFER,
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (ClutterTextBufferClass, deleted_text),
+                  NULL, NULL,
+                  _clutter_marshal_VOID__UINT_UINT,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_UINT,
+                  G_TYPE_UINT);
 }
 
 /* --------------------------------------------------------------------------------
@@ -437,7 +439,7 @@ clutter_text_buffer_class_init (ClutterTextBufferClass *klass)
  *
  * Return value: A new ClutterTextBuffer object.
  *
- * Since: 1.8
+ * Since: 1.10
  **/
 ClutterTextBuffer*
 clutter_text_buffer_new (void)
@@ -455,7 +457,7 @@ clutter_text_buffer_new (void)
  *
  * Return value: A new ClutterTextBuffer object.
  *
- * Since: 1.8
+ * Since: 1.10
  **/
 ClutterTextBuffer*
 clutter_text_buffer_new_with_text (const gchar   *text,
@@ -476,7 +478,7 @@ clutter_text_buffer_new_with_text (const gchar   *text,
  *
  * Return value: The number of characters in the buffer.
  *
- * Since: 1.8
+ * Since: 1.10
  **/
 guint
 clutter_text_buffer_get_length (ClutterTextBuffer *buffer)
@@ -500,7 +502,7 @@ clutter_text_buffer_get_length (ClutterTextBuffer *buffer)
  *
  * Return value: The byte length of the buffer.
  *
- * Since: 1.8
+ * Since: 1.10
  **/
 gsize
 clutter_text_buffer_get_bytes (ClutterTextBuffer *buffer)
@@ -531,7 +533,7 @@ clutter_text_buffer_get_bytes (ClutterTextBuffer *buffer)
  *      storage in the buffer and must not be freed, modified or
  *      stored.
  *
- * Since: 1.8
+ * Since: 1.10
  **/
 const gchar*
 clutter_text_buffer_get_text (ClutterTextBuffer *buffer)
@@ -559,7 +561,7 @@ clutter_text_buffer_get_text (ClutterTextBuffer *buffer)
  *
  * Note that @n_chars is in characters, not in bytes.
  *
- * Since: 1.8
+ * Since: 1.10
  **/
 void
 clutter_text_buffer_set_text (ClutterTextBuffer *buffer,
@@ -580,13 +582,13 @@ clutter_text_buffer_set_text (ClutterTextBuffer *buffer,
  * @buffer: a #ClutterTextBuffer
  * @max_length: the maximum length of the entry buffer, or 0 for no maximum.
  *   (other than the maximum length of entries.) The value passed in will
- *   be clamped to the range 0-65536.
+ *   be clamped to the range [ 0, %CLUTTER_TEXT_BUFFER_MAX_SIZE ].
  *
  * Sets the maximum allowed length of the contents of the buffer. If
  * the current contents are longer than the given length, then they
  * will be truncated to fit.
  *
- * Since: 1.8
+ * Since: 1.10
  **/
 void
 clutter_text_buffer_set_max_length (ClutterTextBuffer *buffer,
@@ -613,7 +615,7 @@ clutter_text_buffer_set_max_length (ClutterTextBuffer *buffer,
  * Return value: the maximum allowed number of characters
  *               in #ClutterTextBuffer, or 0 if there is no maximum.
  *
- * Since: 1.8
+ * Since: 1.10
  */
 gint
 clutter_text_buffer_get_max_length (ClutterTextBuffer *buffer)
@@ -641,7 +643,7 @@ clutter_text_buffer_get_max_length (ClutterTextBuffer *buffer)
  *
  * Returns: The number of characters actually inserted.
  *
- * Since: 1.8
+ * Since: 1.10
  */
 guint
 clutter_text_buffer_insert_text (ClutterTextBuffer *buffer,
@@ -697,7 +699,7 @@ clutter_text_buffer_insert_text (ClutterTextBuffer *buffer,
  *
  * Returns: The number of characters deleted.
  *
- * Since: 1.8
+ * Since: 1.10
  */
 guint
 clutter_text_buffer_delete_text (ClutterTextBuffer *buffer,
@@ -730,9 +732,11 @@ clutter_text_buffer_delete_text (ClutterTextBuffer *buffer,
  * @chars: text that was inserted
  * @n_chars: number of characters inserted
  *
+ * Emits the #ClutterTextBuffer::inserted-text signal on @buffer.
+ *
  * Used when subclassing #ClutterTextBuffer
  *
- * Since: 1.8
+ * Since: 1.10
  */
 void
 clutter_text_buffer_emit_inserted_text (ClutterTextBuffer *buffer,
@@ -750,9 +754,11 @@ clutter_text_buffer_emit_inserted_text (ClutterTextBuffer *buffer,
  * @position: position at which text was deleted
  * @n_chars: number of characters deleted
  *
+ * Emits the #ClutterTextBuffer::deleted-text signal on @buffer.
+ *
  * Used when subclassing #ClutterTextBuffer
  *
- * Since: 1.8
+ * Since: 1.10
  */
 void
 clutter_text_buffer_emit_deleted_text (ClutterTextBuffer *buffer,
