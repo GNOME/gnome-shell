@@ -1885,8 +1885,11 @@ ClutterTextClass
 clutter_text_new
 clutter_text_new_full
 clutter_text_new_with_text
+clutter_text_new_with_buffer
 
 <SUBSECTION>
+clutter_text_set_buffer
+clutter_text_get_buffer
 clutter_text_set_text
 clutter_text_set_markup
 clutter_text_get_text
@@ -2836,4 +2839,33 @@ CLUTTER_DROP_ACTION_GET_CLASS
 <SUBSECTION Private>
 ClutterDropActionPrivate
 clutter_drop_action_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-text-buffer</FILE>
+CLUTTER_TEXT_BUFFER_MAX_SIZE
+ClutterTextBuffer
+ClutterTextBufferClass
+clutter_text_buffer_new
+clutter_text_buffer_new_with_text
+clutter_text_buffer_set_text
+clutter_text_buffer_get_text
+clutter_text_buffer_get_bytes
+clutter_text_buffer_get_length
+clutter_text_buffer_set_max_length
+clutter_text_buffer_get_max_length
+clutter_text_buffer_insert_text
+clutter_text_buffer_delete_text
+clutter_text_buffer_emit_inserted_text
+clutter_text_buffer_emit_deleted_text
+<SUBSECTION Standard>
+CLUTTER_TYPE_TEXT_BUFFER
+CLUTTER_TEXT_BUFFER
+CLUTTER_TEXT_BUFFER_CLASS
+CLUTTER_IS_TEXT_BUFFER
+CLUTTER_IS_TEXT_BUFFER_CLASS
+CLUTTER_TEXT_BUFFER_GET_CLASS
+<SUBSECTION Private>
+ClutterTextBufferPrivate
+clutter_text_buffer_get_type
 </SECTION>

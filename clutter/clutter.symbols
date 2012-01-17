@@ -1149,6 +1149,7 @@ clutter_text_delete_text
 clutter_text_direction_get_type
 clutter_text_get_activatable
 clutter_text_get_attributes
+clutter_text_get_buffer
 clutter_text_get_chars
 clutter_text_get_color
 clutter_text_get_cursor_color
@@ -1180,10 +1181,12 @@ clutter_text_insert_text
 clutter_text_insert_unichar
 clutter_text_new
 clutter_text_new_full
+clutter_text_new_with_buffer
 clutter_text_new_with_text
 clutter_text_position_to_coords
 clutter_text_set_activatable
 clutter_text_set_attributes
+clutter_text_set_buffer
 clutter_text_set_color
 clutter_text_set_cursor_color
 clutter_text_set_cursor_position
