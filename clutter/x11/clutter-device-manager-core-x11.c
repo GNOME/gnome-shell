@@ -589,7 +589,7 @@ default_device:
    * cover core devices
    */
   manager_x11->core_pointer =
-    g_object_new (CLUTTER_TYPE_INPUT_DEVICE,
+    g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
                   "name", "Core Pointer",
                   "has-cursor", TRUE,
                   "device-type", CLUTTER_POINTER_DEVICE,
@@ -601,7 +601,7 @@ default_device:
   CLUTTER_NOTE (BACKEND, "Added core pointer device");
 
   manager_x11->core_keyboard =
-    g_object_new (CLUTTER_TYPE_INPUT_DEVICE,
+    g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
                   "name", "Core Keyboard",
                   "has-cursor", FALSE,
                   "device-type", CLUTTER_KEYBOARD_DEVICE,
