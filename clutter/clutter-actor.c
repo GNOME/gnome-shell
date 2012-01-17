@@ -674,6 +674,9 @@ static void _clutter_actor_get_relative_transformation_matrix (ClutterActor *sel
 
 static ClutterPaintVolume *_clutter_actor_get_paint_volume_mutable (ClutterActor *self);
 
+static void on_layout_manager_changed (ClutterLayoutManager *manager,
+                                       ClutterActor         *self);
+
 /* Helper macro which translates by the anchor coord, applies the
    given transformation and then translates back */
 #define TRANSFORM_ABOUT_ANCHOR_COORD(a,m,c,_transform)  G_STMT_START { \
@@ -4420,21 +4423,6 @@ clutter_actor_real_has_overlaps (ClutterActor *self)
 }
 
 static void
-clutter_actor_constructed (GObject *gobject)
-{
-  ClutterActor *self = CLUTTER_ACTOR (gobject);
-
-  /* if we weren't constructed with a layout manager, we fall back to a
-   * fixed layout; this is the most sensible option, as it will make
-   * things like constraints work out of the box
-   */
-  if (self->priv->layout_manager == NULL)
-    clutter_actor_set_layout_manager (self, clutter_fixed_layout_new ());
-
-  G_OBJECT_CLASS (clutter_actor_parent_class)->constructed (gobject);
-}
-
-static void
 clutter_actor_class_init (ClutterActorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -4443,7 +4431,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
   quark_actor_layout_info = g_quark_from_static_string ("-clutter-actor-layout-info");
   quark_actor_transform_info = g_quark_from_static_string ("-clutter-actor-transform-info");
 
-  object_class->constructed  = clutter_actor_constructed;
   object_class->set_property = clutter_actor_set_property;
   object_class->get_property = clutter_actor_get_property;
   object_class->dispose      = clutter_actor_dispose;
@@ -5996,6 +5983,18 @@ clutter_actor_init (ClutterActor *self)
   priv->last_paint_volume_valid = TRUE;
 
   priv->transform_valid = FALSE;
+
+  /* we need to create the default layout manager here, because
+   * constructed() may not end up being called, if for instance
+   * somebody forgot to chain up
+   */
+  priv->layout_manager = clutter_fixed_layout_new ();
+  g_object_ref_sink (priv->layout_manager);
+  clutter_layout_manager_set_container (priv->layout_manager,
+                                        CLUTTER_CONTAINER (self));
+  g_signal_connect (priv->layout_manager, "layout-changed",
+                    G_CALLBACK (on_layout_manager_changed),
+                    self);
 }
 
 /**
