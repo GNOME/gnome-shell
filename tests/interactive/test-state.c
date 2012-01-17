@@ -70,8 +70,8 @@ static ClutterActor *new_rect (gint r,
 {
   GError *error = NULL;
   ClutterColor *color = clutter_color_new (r, g, b, a);
-  ClutterActor *group = clutter_group_new ();
-  ClutterActor *rectangle = clutter_rectangle_new_with_color (color);
+  ClutterActor *group = clutter_actor_new ();
+  ClutterActor *rectangle = clutter_actor_new ();
   ClutterActor *hand = NULL;
 
   gchar *file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
@@ -82,9 +82,13 @@ static ClutterActor *new_rect (gint r,
   g_free (file);
   clutter_actor_set_size (hand, ACTOR_WIDTH,ACTOR_HEIGHT);
 
+  clutter_actor_set_background_color (rectangle, color);
   clutter_actor_set_size (rectangle, ACTOR_WIDTH,ACTOR_HEIGHT);
   clutter_color_free (color);
-  clutter_container_add (CLUTTER_CONTAINER (group), rectangle, hand, NULL);
+
+  clutter_actor_add_child (group, rectangle);
+  clutter_actor_add_child (group, hand);
+
   return group;
 }
 
