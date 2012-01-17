@@ -101,9 +101,12 @@ struct _MetaWindow
   char *startup_id;
   char *mutter_hints;
   char *gtk_theme_variant;
-  char *dbus_application_id;
-  char *dbus_unique_name;
-  char *dbus_object_path;
+  char *gtk_application_id;
+  char *gtk_unique_bus_name;
+  char *gtk_application_object_path;
+  char *gtk_window_object_path;
+  char *gtk_app_menu_object_path;
+  char *gtk_menubar_object_path;
 
   int hide_titlebar_when_maximized;
   int net_wm_pid;

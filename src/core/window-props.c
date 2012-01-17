@@ -1617,71 +1617,30 @@ reload_gtk_hide_titlebar_when_maximized (MetaWindow    *window,
     }
 }
 
-static void
-reload_dbus_application_id (MetaWindow    *window,
-                            MetaPropValue *value,
-                            gboolean       initial)
-{
-  char *new_id = NULL;
-  char *current_id = window->dbus_application_id;
+#define RELOAD_STRING(var_name, propname) \
+  static void                                       \
+  reload_ ## var_name (MetaWindow    *window,       \
+                       MetaPropValue *value,        \
+                       gboolean       initial)      \
+  {                                                 \
+    g_free (window->var_name);                      \
+                                                    \
+    if (value->type != META_PROP_VALUE_INVALID)     \
+      window->var_name = g_strdup (value->v.str);   \
+    else                                            \
+      window->var_name = NULL;                      \
+                                                    \
+    g_object_notify (G_OBJECT (window), propname);  \
+  }
 
-  if (value->type != META_PROP_VALUE_INVALID)
-    new_id = value->v.str;
+RELOAD_STRING (gtk_unique_bus_name,         "gtk-unique-bus-name")
+RELOAD_STRING (gtk_application_id,          "gtk-application-id")
+RELOAD_STRING (gtk_application_object_path, "gtk-application-object-path")
+RELOAD_STRING (gtk_window_object_path,      "gtk-window-object-path")
+RELOAD_STRING (gtk_app_menu_object_path,    "gtk-app-menu-object-path")
+RELOAD_STRING (gtk_menubar_object_path,     "gtk-menubar-object-path")
 
-  if (g_strcmp0 (new_id, current_id) != 0)
-    {
-      g_free (current_id);
-
-      if (new_id)
-        window->dbus_application_id = g_strdup (new_id);
-      else
-        window->dbus_application_id = NULL;
-
-      g_object_notify ((GObject*)window, "dbus-application-id");
-    }
-}
-
-static void
-reload_dbus_unique_name (MetaWindow    *window,
-                         MetaPropValue *value,
-                         gboolean       initial)
-{
-  char *new_id = NULL;
-  char *current_id = window->dbus_unique_name;
-
-  if (value->type != META_PROP_VALUE_INVALID)
-    new_id = value->v.str;
-
-  if (g_strcmp0 (new_id, current_id) != 0)
-    {
-      g_free (current_id);
-
-      window->dbus_unique_name = g_strdup (new_id);
-
-      g_object_notify ((GObject*)window, "dbus-unique-name");
-    }
-}
-
-static void
-reload_dbus_object_path (MetaWindow    *window,
-                         MetaPropValue *value,
-                         gboolean       initial)
-{
-  char *new_path = NULL;
-  char *current_path = window->dbus_object_path;
-
-  if (value->type != META_PROP_VALUE_INVALID)
-    new_path = value->v.str;
-
-  if (g_strcmp0 (new_path, current_path) != 0)
-    {
-      g_free (current_path);
-
-      window->dbus_object_path = g_strdup (new_path);
-
-      g_object_notify ((GObject*)window, "dbus-object-path");
-    }
-}
+#undef RELOAD_STRING
 
 /**
  * Initialises the property hooks system.  Each row in the table named "hooks"
@@ -1737,9 +1696,12 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
     { XA_WM_TRANSIENT_FOR,             META_PROP_VALUE_WINDOW,    reload_transient_for,    TRUE,  FALSE },
     { display->atom__GTK_THEME_VARIANT, META_PROP_VALUE_UTF8,     reload_gtk_theme_variant, TRUE, FALSE },
     { display->atom__GTK_HIDE_TITLEBAR_WHEN_MAXIMIZED, META_PROP_VALUE_CARDINAL,     reload_gtk_hide_titlebar_when_maximized, TRUE, FALSE },
-    { display->atom__DBUS_APPLICATION_ID, META_PROP_VALUE_UTF8,   reload_dbus_application_id, TRUE, FALSE },
-    { display->atom__DBUS_UNIQUE_NAME, META_PROP_VALUE_UTF8,      reload_dbus_unique_name, TRUE, FALSE },
-    { display->atom__DBUS_OBJECT_PATH, META_PROP_VALUE_UTF8,      reload_dbus_object_path, TRUE, FALSE },
+    { display->atom__GTK_APPLICATION_ID,               META_PROP_VALUE_UTF8,         reload_gtk_application_id,               TRUE, FALSE },
+    { display->atom__GTK_UNIQUE_BUS_NAME,              META_PROP_VALUE_UTF8,         reload_gtk_unique_bus_name,              TRUE, FALSE },
+    { display->atom__GTK_APPLICATION_OBJECT_PATH,      META_PROP_VALUE_UTF8,         reload_gtk_application_object_path,      TRUE, FALSE },
+    { display->atom__GTK_WINDOW_OBJECT_PATH,           META_PROP_VALUE_UTF8,         reload_gtk_window_object_path,           TRUE, FALSE },
+    { display->atom__GTK_APP_MENU_OBJECT_PATH,         META_PROP_VALUE_UTF8,         reload_gtk_app_menu_object_path,         TRUE, FALSE },
+    { display->atom__GTK_MENUBAR_OBJECT_PATH,          META_PROP_VALUE_UTF8,         reload_gtk_menubar_object_path,          TRUE, FALSE },
     { display->atom__NET_WM_USER_TIME_WINDOW, META_PROP_VALUE_WINDOW, reload_net_wm_user_time_window, TRUE, FALSE },
     { display->atom_WM_STATE,          META_PROP_VALUE_INVALID,  NULL,                     FALSE, FALSE },
     { display->atom__NET_WM_ICON,      META_PROP_VALUE_INVALID,  reload_net_wm_icon,       FALSE, FALSE },

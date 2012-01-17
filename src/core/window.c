@@ -165,9 +165,12 @@ enum {
   PROP_RESIZEABLE,
   PROP_ABOVE,
   PROP_WM_CLASS,
-  PROP_DBUS_APPLICATION_ID,
-  PROP_DBUS_UNIQUE_NAME,
-  PROP_DBUS_OBJECT_PATH
+  PROP_GTK_APPLICATION_ID,
+  PROP_GTK_UNIQUE_BUS_NAME,
+  PROP_GTK_APPLICATION_OBJECT_PATH,
+  PROP_GTK_WINDOW_OBJECT_PATH,
+  PROP_GTK_APP_MENU_OBJECT_PATH,
+  PROP_GTK_MENUBAR_OBJECT_PATH
 };
 
 enum
@@ -224,9 +227,12 @@ meta_window_finalize (GObject *object)
   g_free (window->icon_name);
   g_free (window->desc);
   g_free (window->gtk_theme_variant);
-  g_free (window->dbus_application_id);
-  g_free (window->dbus_unique_name);
-  g_free (window->dbus_object_path);
+  g_free (window->gtk_application_id);
+  g_free (window->gtk_unique_bus_name);
+  g_free (window->gtk_application_object_path);
+  g_free (window->gtk_window_object_path);
+  g_free (window->gtk_app_menu_object_path);
+  g_free (window->gtk_menubar_object_path);
 }
 
 static void
@@ -290,14 +296,23 @@ meta_window_get_property(GObject         *object,
     case PROP_ABOVE:
       g_value_set_boolean (value, win->wm_state_above);
       break;
-    case PROP_DBUS_APPLICATION_ID:
-      g_value_set_string (value, win->dbus_application_id);
+    case PROP_GTK_APPLICATION_ID:
+      g_value_set_string (value, win->gtk_application_id);
       break;
-    case PROP_DBUS_UNIQUE_NAME:
-      g_value_set_string (value, win->dbus_unique_name);
+    case PROP_GTK_UNIQUE_BUS_NAME:
+      g_value_set_string (value, win->gtk_unique_bus_name);
       break;
-    case PROP_DBUS_OBJECT_PATH:
-      g_value_set_string (value, win->dbus_object_path);
+    case PROP_GTK_APPLICATION_OBJECT_PATH:
+      g_value_set_string (value, win->gtk_application_object_path);
+      break;
+    case PROP_GTK_WINDOW_OBJECT_PATH:
+      g_value_set_string (value, win->gtk_window_object_path);
+      break;
+    case PROP_GTK_APP_MENU_OBJECT_PATH:
+      g_value_set_string (value, win->gtk_app_menu_object_path);
+      break;
+    case PROP_GTK_MENUBAR_OBJECT_PATH:
+      g_value_set_string (value, win->gtk_menubar_object_path);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -466,26 +481,50 @@ meta_window_class_init (MetaWindowClass *klass)
                                                         G_PARAM_READABLE));
 
   g_object_class_install_property (object_class,
-                                   PROP_DBUS_APPLICATION_ID,
-                                   g_param_spec_string ("dbus-application-id",
-                                                        "DBusApplicationID",
-                                                        "Contents of the _DBUS_APPLICATION_ID property of this window",
+                                   PROP_GTK_APPLICATION_ID,
+                                   g_param_spec_string ("gtk-application-id",
+                                                        "_GTK_APPLICATION_ID",
+                                                        "Contents of the _GTK_APPLICATION_ID property of this window",
                                                         NULL,
                                                         G_PARAM_READABLE));
 
   g_object_class_install_property (object_class,
-                                   PROP_DBUS_UNIQUE_NAME,
-                                   g_param_spec_string ("dbus-unique-name",
-                                                        "_DBUS_UNIQUE_NAME",
-                                                        "Contents of the _DBUS_UNIQUE_NAME property of this window",
+                                   PROP_GTK_UNIQUE_BUS_NAME,
+                                   g_param_spec_string ("gtk-unique-bus-name",
+                                                        "_GTK_UNIQUE_BUS_NAME",
+                                                        "Contents of the _GTK_UNIQUE_BUS_NAME property of this window",
                                                         NULL,
                                                         G_PARAM_READABLE));
 
   g_object_class_install_property (object_class,
-                                   PROP_DBUS_OBJECT_PATH,
-                                   g_param_spec_string ("dbus-object-path",
-                                                        "_DBUS_OBJECT_PATH",
-                                                        "Contents of the _DBUS_OBJECT_PATH property of this window",
+                                   PROP_GTK_APPLICATION_OBJECT_PATH,
+                                   g_param_spec_string ("gtk-application-object-path",
+                                                        "_GTK_APPLICATION_OBJECT_PATH",
+                                                        "Contents of the _GTK_APPLICATION_OBJECT_PATH property of this window",
+                                                        NULL,
+                                                        G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_GTK_WINDOW_OBJECT_PATH,
+                                   g_param_spec_string ("gtk-window-object-path",
+                                                        "_GTK_WINDOW_OBJECT_PATH",
+                                                        "Contents of the _GTK_WINDOW_OBJECT_PATH property of this window",
+                                                        NULL,
+                                                        G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_GTK_APP_MENU_OBJECT_PATH,
+                                   g_param_spec_string ("gtk-app-menu-object-path",
+                                                        "_GTK_APP_MENU_OBJECT_PATH",
+                                                        "Contents of the _GTK_APP_MENU_OBJECT_PATH property of this window",
+                                                        NULL,
+                                                        G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_GTK_MENUBAR_OBJECT_PATH,
+                                   g_param_spec_string ("gtk-menubar-object-path",
+                                                        "_GTK_MENUBAR_OBJECT_PATH",
+                                                        "Contents of the _GTK_MENUBAR_OBJECT_PATH property of this window",
                                                         NULL,
                                                         G_PARAM_READABLE));
 
@@ -10251,39 +10290,75 @@ meta_window_get_wm_class_instance (MetaWindow *window)
 }
 
 /**
- * meta_window_get_dbus_application_id:
+ * meta_window_get_gtk_application_id:
  * @window: a #MetaWindow
  *
  * Return value: (transfer none): the application ID
  **/
 const char *
-meta_window_get_dbus_application_id (MetaWindow *window)
+meta_window_get_gtk_application_id (MetaWindow *window)
 {
-  return window->dbus_application_id;
+  return window->gtk_application_id;
 }
 
 /**
- * meta_window_get_dbus_unique_name:
+ * meta_window_get_gtk_unique_bus_name:
  * @window: a #MetaWindow
  *
  * Return value: (transfer none): the unique name
  **/
 const char *
-meta_window_get_dbus_unique_name (MetaWindow *window)
+meta_window_get_gtk_unique_bus_name (MetaWindow *window)
 {
-  return window->dbus_unique_name;
+  return window->gtk_unique_bus_name;
 }
 
 /**
- * meta_window_get_dbus_object_path:
+ * meta_window_get_gtk_application_object_path:
  * @window: a #MetaWindow
  *
  * Return value: (transfer none): the object path
  **/
 const char *
-meta_window_get_dbus_object_path (MetaWindow *window)
+meta_window_get_gtk_application_object_path (MetaWindow *window)
 {
-  return window->dbus_object_path;
+  return window->gtk_application_object_path;
+}
+
+/**
+ * meta_window_get_gtk_window_object_path:
+ * @window: a #MetaWindow
+ *
+ * Return value: (transfer none): the object path
+ **/
+const char *
+meta_window_get_gtk_window_object_path (MetaWindow *window)
+{
+  return window->gtk_window_object_path;
+}
+
+/**
+ * meta_window_get_gtk_app_menu_object_path:
+ * @window: a #MetaWindow
+ *
+ * Return value: (transfer none): the object path
+ **/
+const char *
+meta_window_get_gtk_app_menu_object_path (MetaWindow *window)
+{
+  return window->gtk_app_menu_object_path;
+}
+
+/**
+ * meta_window_get_gtk_menubar_object_path:
+ * @window: a #MetaWindow
+ *
+ * Return value: (transfer none): the object path
+ **/
+const char *
+meta_window_get_gtk_menubar_object_path (MetaWindow *window)
+{
+  return window->gtk_menubar_object_path;
 }
 
 /**
