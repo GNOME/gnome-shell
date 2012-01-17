@@ -1184,6 +1184,7 @@ clutter_input_device_set_enabled
 clutter_input_device_get_enabled
 clutter_input_device_get_associated_device
 clutter_input_device_get_slave_devices
+clutter_input_device_keycode_to_evdev
 
 <SUBSECTION>
 clutter_input_device_get_n_keys

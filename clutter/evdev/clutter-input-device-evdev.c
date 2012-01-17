@@ -123,6 +123,17 @@ clutter_input_device_evdev_finalize (GObject *object)
   G_OBJECT_CLASS (clutter_input_device_evdev_parent_class)->finalize (object);
 }
 
+static gboolean
+clutter_input_device_evdev_keycode_to_evdev (ClutterInputDevice *device,
+                                             guint hardware_keycode,
+                                             guint *evdev_keycode)
+{
+  /* The hardware keycodes from the evdev backend are already evdev
+     keycodes */
+  *evdev_keycode = hardware_keycode;
+  return TRUE;
+}
+
 static void
 clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
 {
@@ -134,6 +145,7 @@ clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
   object_class->get_property = clutter_input_device_evdev_get_property;
   object_class->set_property = clutter_input_device_evdev_set_property;
   object_class->finalize = clutter_input_device_evdev_finalize;
+  klass->keycode_to_evdev = clutter_input_device_evdev_keycode_to_evdev;
 
   /*
    * ClutterInputDeviceEvdev:udev-device:

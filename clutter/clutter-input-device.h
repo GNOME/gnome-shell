@@ -97,6 +97,10 @@ void                    clutter_input_device_ungrab             (ClutterInputDev
 CLUTTER_AVAILABLE_IN_1_10
 ClutterActor *          clutter_input_device_get_grabbed_actor  (ClutterInputDevice  *device);
 
+gboolean                clutter_input_device_keycode_to_evdev   (ClutterInputDevice *device,
+                                                                 guint               hardware_keycode,
+                                                                 guint              *evdev_keycode);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_INPUT_DEVICE_H__ */

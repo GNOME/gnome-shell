@@ -113,6 +113,9 @@ struct _ClutterInputDeviceClass
   void (* select_stage_events) (ClutterInputDevice *device,
                                 ClutterStage       *stage,
                                 gint                event_mask);
+  gboolean (* keycode_to_evdev) (ClutterInputDevice *device,
+                                 guint               hardware_keycode,
+                                 guint              *evdev_keycode);
 };
 
 /* device manager */

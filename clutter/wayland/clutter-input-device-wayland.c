@@ -247,9 +247,21 @@ const struct wl_input_device_listener _clutter_input_device_wayland_listener = {
   clutter_wayland_handle_keyboard_focus,
 };
 
+static gboolean
+clutter_input_device_wayland_keycode_to_evdev (ClutterInputDevice *device,
+                                               guint hardware_keycode,
+                                               guint *evdev_keycode)
+{
+  /* The hardware keycodes from the wayland backend are already evdev
+     keycodes */
+  *evdev_keycode = hardware_keycode;
+  return TRUE;
+}
+
 static void
 clutter_input_device_wayland_class_init (ClutterInputDeviceWaylandClass *klass)
 {
+  klass->keycode_to_evdev = clutter_input_device_wayland_keycode_to_evdev;
 }
 
 static void

@@ -1410,3 +1410,34 @@ _clutter_input_device_select_stage_events (ClutterInputDevice *device,
   if (device_class->select_stage_events != NULL)
     device_class->select_stage_events (device, stage, event_mask);
 }
+
+/**
+ * clutter_input_device_keycode_to_evdev:
+ * @device: A #ClutterInputDevice
+ * @hardware_keycode: The hardware keycode from a #ClutterKeyEvent
+ * @evdev_keycode: The return location for the evdev keycode
+ *
+ * Translates a hardware keycode from a #ClutterKeyEvent to the
+ * equivalent evdev keycode. Note that depending on the input backend
+ * used by Clutter this function can fail if there is no obvious
+ * mapping between the key codes. The hardware keycode can be taken
+ * from the hardware_keycode member of #ClutterKeyEvent.
+ *
+ * Return value: %TRUE if the conversion succeeded, %FALSE otherwise.
+ * Since: 1.10
+ */
+gboolean
+clutter_input_device_keycode_to_evdev (ClutterInputDevice *device,
+                                       guint               hardware_keycode,
+                                       guint              *evdev_keycode)
+{
+  ClutterInputDeviceClass *device_class;
+
+  device_class = CLUTTER_INPUT_DEVICE_GET_CLASS (device);
+  if (device_class->keycode_to_evdev == NULL)
+    return FALSE;
+  else
+    return device_class->keycode_to_evdev (device,
+                                           hardware_keycode,
+                                           evdev_keycode);
+}

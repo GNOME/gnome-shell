@@ -200,6 +200,20 @@ clutter_input_device_x11_constructed (GObject *gobject)
     G_OBJECT_CLASS (clutter_input_device_x11_parent_class)->constructed (gobject);
 }
 
+static gboolean
+clutter_input_device_x11_keycode_to_evdev (ClutterInputDevice *device,
+                                           guint hardware_keycode,
+                                           guint *evdev_keycode)
+{
+  /* When using evdev under X11 the hardware keycodes are the evdev
+     keycodes plus 8. I haven't been able to find any documentation to
+     know what the +8 is for. FIXME: This should probably verify that
+     X server is using evdev. */
+  *evdev_keycode = hardware_keycode - 8;
+
+  return TRUE;
+}
+
 static void
 clutter_input_device_x11_class_init (ClutterInputDeviceX11Class *klass)
 {
@@ -210,6 +224,7 @@ clutter_input_device_x11_class_init (ClutterInputDeviceX11Class *klass)
   gobject_class->dispose = clutter_input_device_x11_dispose;
 
   device_class->select_stage_events = clutter_input_device_x11_select_stage_events;
+  device_class->keycode_to_evdev = clutter_input_device_x11_keycode_to_evdev;
 }
 
 static void
