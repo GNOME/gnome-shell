@@ -1,3 +1,47 @@
+3.2.2
+=====
+* Fix crash when searching in the shell caused by .desktop files
+  without Exec= lines (commonly, nautilus-pastebin) [Ray; #663815]
+* Message Tray:
+ - Fix bug that would cause confusion between notifications from different
+   services running in the gnome-settings-daemon process
+  [Marina, Jasper; #664138]
+ - Don't steal the focus when popping up beneath the pointer [Rui; #661358]
+ - Only pop up the message tray from a hot corner, rather than trapping
+   clicks on the entire bottom row. [Rui; #663366]
+* Browser plugin and extension.gnome.org integration
+  - Fix multiple bugs that kept the plugin from working in WebKit-based browsers
+    [Jasper, #663823, #666444]
+  - Fix plugin crash when the shell is installed but not running [Jürg]
+  - Fix problem that kept plugin uninstallation from working [Jasper]
+* gnome-shell-extension-tool
+  - Fix error that was printed after creating an extension [Jasper; #661623]
+  - Use xdg-open rather than the deprecated gnome-open [Jasper]
+* Don't recreate dash icons unnecessarily - this hopefully fixes various
+  crashes. [Owen, Giovanni; #648450]
+* Fix several bugs that caused errors and slowdowns when updating the
+  network menu. [Giovanni; #651378, #659277, #663278]
+* Fix several crashers related to updating workspace thumbnails
+  [Owen; #667652]
+* Fix memory management error causing gnome-shell-hotplug-sniffer to crash
+  [Owen; #667378]
+* Fix crash and misdrawing with shadowed elements [Owen; #668048, #668050]
+* Fix several small memory leaks. [Jasper, Florian]
+
+Contributors:
+ Jürg Billeter, Rui Matos, Florian Müllner, Jasper St. Pierre, Ray Strode,
+ Owen Taylor, Marina Zhurakhinskaya
+
+Translations:
+ Alexander Shopov [bg], Gil Forcada [ca], Carles Ferrando [ca@valencia],
+ Marek Černocký [cz], Kris Thomsen [dk], Bruce Cowan [en_GB],
+ Kristjan Schmidt [eo], Daniel Mustieles [es], Arash Mousavi [fa],
+ Ville-Pekka Vainio [fi], Bruno Brouard [fr], Hideki Yamane [ja],
+ Žygimantas Beručka, Aurimas Černius [lt], Kjartan Maraas [nb],
+ "Andreas N" [nn], Djavan Fagundes, Antonio Fernandes C. Neto [pt_BR],
+ Daniel Nylander [se], Matej Urbančič [sl], Praveen Illa [te],
+ Nguyễn Thái Ngọc Duy [vi]
+
 3.2.1
 =====
 * Restore the IM state on startup - if you were available in when you logged
