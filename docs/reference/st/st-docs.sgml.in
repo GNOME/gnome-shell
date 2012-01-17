@@ -37,7 +37,6 @@
       <xi:include href="xml/st-bin.xml"/>
       <xi:include href="xml/st-box-layout.xml"/>
       <xi:include href="xml/st-group.xml"/>
-      <xi:include href="xml/st-overflow-box.xml"/>
       <xi:include href="xml/st-scroll-view.xml"/>
       <xi:include href="xml/st-table.xml"/>
     </chapter>
