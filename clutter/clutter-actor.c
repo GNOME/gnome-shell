@@ -1311,6 +1311,8 @@ clutter_actor_show (ClutterActor *self)
  * Calls clutter_actor_show() on all children of an actor (if any).
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.10: Actors are visible by default
  */
 void
 clutter_actor_show_all (ClutterActor *self)
@@ -1404,6 +1406,9 @@ clutter_actor_hide (ClutterActor *self)
  * Calls clutter_actor_hide() on all child actors (if any).
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.10: Using clutter_actor_hide() on the actor will
+ *   prevent its children from being painted as well.
  */
 void
 clutter_actor_hide_all (ClutterActor *self)

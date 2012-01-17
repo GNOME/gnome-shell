@@ -77,6 +77,12 @@ void            clutter_actor_push_internal     (ClutterActor          *self);
 CLUTTER_DEPRECATED
 void            clutter_actor_pop_internal      (ClutterActor          *self);
 
+CLUTTER_DEPRECATED
+void            clutter_actor_show_all          (ClutterActor          *self);
+
+CLUTTER_DEPRECATED
+void            clutter_actor_hide_all          (ClutterActor          *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_DEPRECATED_H__ */
