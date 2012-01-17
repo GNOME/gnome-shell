@@ -76,10 +76,20 @@ release-message:
 	@echo "         Subject: Release Cogl $(COGL_1_VERSION) ($(COGL_RELEASE_STATUS))"
 	@echo "        Contents:"
 	@csplit -q --prefix=.README-section- $(top_builddir)/README '/^--$$/' '{*}'
+	@csplit -q --prefix=.NEWS-section- NEWS '/^Cogl/' '{*}'
 	@echo "--- CUT HERE ---"
 	@echo "Good news, everyone!"
 	@echo ""
-	@echo "A new Cogl $(COGL_RELEASE_STATUS) is now available at:"
+	@echo "A new Cogl $(COGL_RELEASE_STATUS) ($(COGL_1_VERSION)) is now available:"
+	@echo ""
+	@echo "LATEST NEWS"
+	@echo "-------------------------------------------------------------------------------"
+	@echo ""
+	@cat .NEWS-section-01
+	@echo "FETCHING THE RELEASE"
+	@echo "-------------------------------------------------------------------------------"
+	@echo ""
+	@echo "Tarballs can be downloaded from:"
 	@echo ""
 	@echo "  http://source.clutter-project.org/sources/cogl/1.$(COGL_1_MINOR_VERSION)/"
 	@echo "  http://download.gnome.org/sources/cogl/1.$(COGL_1_MINOR_VERSION)/"
