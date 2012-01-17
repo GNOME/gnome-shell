@@ -489,8 +489,8 @@ cogl_renderer_get_n_fragment_texture_units (CoglRenderer *renderer)
 }
 
 void
-cogl_renderer_add_contraint (CoglRenderer *renderer,
-                             CoglRendererConstraint constraint)
+cogl_renderer_add_constraint (CoglRenderer *renderer,
+                              CoglRendererConstraint constraint)
 {
   g_return_if_fail (!renderer->connected);
   renderer->constraints = g_list_prepend (renderer->constraints,

@@ -286,7 +286,7 @@ typedef enum
 
 
 /**
- * cogl_renderer_add_contraint:
+ * cogl_renderer_add_constraint:
  * @renderer: An unconnected #CoglRenderer
  * @constraint: A #CoglRendererConstraint to add
  *
@@ -299,8 +299,8 @@ typedef enum
  * Stability: unstable
  */
 void
-cogl_renderer_add_contraint (CoglRenderer *renderer,
-                             CoglRendererConstraint constraint);
+cogl_renderer_add_constraint (CoglRenderer *renderer,
+                              CoglRendererConstraint constraint);
 
 /**
  * cogl_renderer_remove_constraint:
