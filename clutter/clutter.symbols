@@ -25,6 +25,7 @@ clutter_action_get_type
 clutter_actor_flags_get_type
 clutter_actor_add_action
 clutter_actor_add_action_with_name
+clutter_actor_add_child
 clutter_actor_add_constraint
 clutter_actor_add_constraint_with_name
 clutter_actor_add_effect
@@ -80,6 +81,8 @@ clutter_actor_get_allocation_vertices
 clutter_actor_get_anchor_point
 clutter_actor_get_anchor_point_gravity
 clutter_actor_get_animation
+clutter_actor_get_background_color
+clutter_actor_get_child_at_index
 clutter_actor_get_clip
 clutter_actor_get_clip_to_allocation
 clutter_actor_get_constraint
@@ -87,16 +90,22 @@ clutter_actor_get_constraints
 clutter_actor_get_depth
 clutter_actor_get_effect
 clutter_actor_get_effects
+clutter_actor_get_first_child
 clutter_actor_get_fixed_position_set
 clutter_actor_get_flags
 clutter_actor_get_geometry
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_actor_get_gid
-#endif
-
 clutter_actor_get_height
+clutter_actor_get_last_child
+clutter_actor_get_layout_manager
+clutter_actor_get_margin_bottom
+clutter_actor_get_margin_left
+clutter_actor_get_margin_right
+clutter_actor_get_margin_top
+clutter_actor_get_margin
+clutter_actor_get_n_children
 clutter_actor_get_name
+clutter_actor_get_next_sibling
 clutter_actor_get_offscreen_redirect
 clutter_actor_get_opacity
 clutter_actor_get_paint_box
@@ -109,6 +118,7 @@ clutter_actor_get_position
 clutter_actor_get_preferred_height
 clutter_actor_get_preferred_size
 clutter_actor_get_preferred_width
+clutter_actor_get_previous_sibling
 clutter_actor_get_reactive
 clutter_actor_get_request_mode
 clutter_actor_get_rotation
@@ -125,7 +135,9 @@ clutter_actor_get_transformed_position
 clutter_actor_get_transformed_size
 clutter_actor_get_type
 clutter_actor_get_width
+clutter_actor_get_x_align
 clutter_actor_get_x
+clutter_actor_get_y_align
 clutter_actor_get_y
 clutter_actor_get_z_rotation_gravity
 clutter_actor_grab_key_focus
@@ -139,6 +151,9 @@ clutter_actor_has_overlaps
 clutter_actor_has_pointer
 clutter_actor_hide
 clutter_actor_hide_all
+clutter_actor_insert_child_above
+clutter_actor_insert_child_at_index
+clutter_actor_insert_child_below
 clutter_actor_is_in_clone_paint
 clutter_actor_is_rotated
 clutter_actor_is_scaled
@@ -165,21 +180,34 @@ clutter_actor_raise_top
 clutter_actor_realize
 clutter_actor_remove_action
 clutter_actor_remove_action_by_name
+clutter_actor_remove_all_children
 clutter_actor_remove_constraint
 clutter_actor_remove_constraint_by_name
+clutter_actor_remove_child
 clutter_actor_remove_clip
 clutter_actor_remove_effect
 clutter_actor_remove_effect_by_name
 clutter_actor_reparent
+clutter_actor_replace_child
 clutter_actor_set_anchor_point
 clutter_actor_set_anchor_point_from_gravity
+clutter_actor_set_background_color
+clutter_actor_set_child_above_sibling
+clutter_actor_set_child_below_sibling
+clutter_actor_set_child_at_index
 clutter_actor_set_clip
 clutter_actor_set_clip_to_allocation
 clutter_actor_set_depth
 clutter_actor_set_fixed_position_set
 clutter_actor_set_flags
-clutter_actor_set_height
 clutter_actor_set_geometry
+clutter_actor_set_height
+clutter_actor_set_layout_manager
+clutter_actor_set_margin_bottom
+clutter_actor_set_margin_left
+clutter_actor_set_margin_right
+clutter_actor_set_margin_top
+clutter_actor_set_margin
 clutter_actor_set_name
 clutter_actor_set_offscreen_redirect
 clutter_actor_set_opacity
@@ -198,7 +226,9 @@ clutter_actor_set_shader_param_int
 clutter_actor_set_size
 clutter_actor_set_text_direction
 clutter_actor_set_width
+clutter_actor_set_x_align
 clutter_actor_set_x
+clutter_actor_set_y_align
 clutter_actor_set_y
 clutter_actor_set_z_rotation_from_gravity
 clutter_actor_should_pick_paint
@@ -232,11 +262,7 @@ clutter_alpha_set_closure
 clutter_alpha_set_func
 clutter_alpha_set_mode
 clutter_alpha_set_timeline
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_animatable_animate_property
-#endif
-
 clutter_animatable_find_property
 clutter_animatable_get_initial_state
 clutter_animatable_get_type
@@ -288,33 +314,18 @@ clutter_animator_set
 clutter_animator_set_duration
 clutter_animator_set_timeline
 clutter_animator_start
-
-#ifdef CLUTTER_ENABLE_EXPERIMENTAL_API
 clutter_backend_get_cogl_context
-#endif
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_backend_get_double_click_distance
 clutter_backend_get_double_click_time
 clutter_backend_get_font_name
-#endif
-
 clutter_backend_get_font_options 
 clutter_backend_get_resolution
 clutter_backend_get_type
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_backend_set_double_click_distance
 clutter_backend_set_double_click_time
 clutter_backend_set_font_name
-#endif
-
 clutter_backend_set_font_options
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_backend_set_resolution
-#endif
-
 clutter_base_init
 clutter_behaviour_actors_foreach
 clutter_behaviour_apply
@@ -322,8 +333,6 @@ clutter_behaviour_depth_get_bounds
 clutter_behaviour_depth_get_type
 clutter_behaviour_depth_new
 clutter_behaviour_depth_set_bounds
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_behaviour_ellipse_get_angle_end
 clutter_behaviour_ellipse_get_angle_start
 clutter_behaviour_ellipse_get_angle_tilt
@@ -342,16 +351,12 @@ clutter_behaviour_ellipse_set_direction
 clutter_behaviour_ellipse_set_height
 clutter_behaviour_ellipse_set_tilt
 clutter_behaviour_ellipse_set_width
-#endif
-
 clutter_behaviour_get_actors
 clutter_behaviour_get_alpha
 clutter_behaviour_get_nth_actor
 clutter_behaviour_get_n_actors
 clutter_behaviour_get_type
 clutter_behaviour_is_applied
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_behaviour_opacity_get_bounds
 clutter_behaviour_opacity_get_type
 clutter_behaviour_opacity_new
@@ -362,12 +367,8 @@ clutter_behaviour_path_new
 clutter_behaviour_path_new_with_description
 clutter_behaviour_path_new_with_knots
 clutter_behaviour_path_set_path
-#endif
-
 clutter_behaviour_remove
 clutter_behaviour_remove_all
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_behaviour_rotate_get_axis
 clutter_behaviour_rotate_get_bounds
 clutter_behaviour_rotate_get_center
@@ -382,8 +383,6 @@ clutter_behaviour_scale_get_bounds
 clutter_behaviour_scale_get_type
 clutter_behaviour_scale_new
 clutter_behaviour_scale_set_bounds
-#endif
-
 clutter_behaviour_set_alpha
 clutter_binding_pool_activate
 clutter_binding_pool_block_action
@@ -452,12 +451,8 @@ clutter_box_pack_at
 clutter_box_pack_before
 clutter_cairo_set_source_color
 clutter_cairo_texture_clear
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_cairo_texture_create
 clutter_cairo_texture_create_region
-#endif
-
 clutter_cairo_texture_get_auto_resize 
 clutter_cairo_texture_get_surface_size
 clutter_cairo_texture_get_type
@@ -626,11 +621,8 @@ clutter_flow_layout_set_row_spacing
 clutter_flow_orientation_get_type
 clutter_fog_get_type
 clutter_font_flags_get_type
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_frame_source_add
 clutter_frame_source_add_full
-#endif
 
 #ifdef CLUTTER_WINDOWING_GDK
 clutter_gdk_disable_event_retrieval
@@ -652,11 +644,7 @@ clutter_gesture_action_get_type
 clutter_gesture_action_new
 
 clutter_get_accessibility_enabled
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_get_actor_by_gid
-#endif
-
 clutter_get_current_event
 clutter_get_current_event_time
 clutter_get_debug_enabled
@@ -1020,10 +1008,7 @@ clutter_stage_manager_get_default_stage
 clutter_stage_manager_get_type
 clutter_stage_manager_list_stages
 clutter_stage_manager_peek_stages
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_stage_manager_set_default_stage
-#endif
 
 #ifdef HAVE_CLUTTER_EGL
 
@@ -1128,11 +1113,7 @@ clutter_texture_get_repeat
 clutter_texture_get_sync_size
 clutter_texture_get_type
 clutter_texture_new
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_texture_new_from_actor
-#endif
-
 clutter_texture_new_from_file
 clutter_texture_quality_get_type
 clutter_texture_set_area_from_rgb_data
@@ -1281,11 +1262,7 @@ clutter_units_get_unit_value
 clutter_units_to_pixels
 clutter_units_to_string
 clutter_unit_type_get_type
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_util_next_p2
-#endif
-
 clutter_value_get_color
 clutter_value_get_fixed
 clutter_value_get_shader_float
@@ -1324,18 +1301,10 @@ clutter_x11_event_get_key_group
 clutter_x11_get_current_event_time
 clutter_x11_get_default_display
 clutter_x11_get_default_screen
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_x11_get_input_devices
-#endif
-
 clutter_x11_get_root_window
 clutter_x11_get_stage_from_window
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_x11_get_stage_visual
-#endif
-
 clutter_x11_get_stage_window
 clutter_x11_get_use_argb_visual
 clutter_x11_get_visual_info
@@ -1361,9 +1330,6 @@ clutter_x11_untrap_x_errors
 #endif
 
 #ifdef HAVE_CLUTTER_OSX
-_clutter_events_osx_init
-_clutter_event_osx_put
-_clutter_events_osx_uninit
 #endif
 
 #ifndef CLUTTER_NO_UNDERSCORE
