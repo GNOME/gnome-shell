@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-01-17 00:29+0000\n"
-"PO-Revision-Date: 2012-01-17 12:45+0100\n"
+"POT-Creation-Date: 2012-01-17 14:31+0000\n"
+"PO-Revision-Date: 2012-01-17 17:12+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -423,22 +423,18 @@ msgid "The object controlling the layout of an actor's children"
 msgstr "El objeto que controla la distribución del hijo de un actor"
 
 #: ../clutter/clutter-actor.c:5259
-#| msgid "Line Alignment"
 msgid "X Alignment"
 msgstr "Alineación X"
 
 #: ../clutter/clutter-actor.c:5260
-#| msgid "Vertical alignment of the actor within the cell"
 msgid "The alignment of the actor on the X axis within its allocation"
 msgstr "La alineación del actor en el eje X en su asignación"
 
 #: ../clutter/clutter-actor.c:5275
-#| msgid "Line Alignment"
 msgid "Y Alignment"
 msgstr "Alineación Y"
 
 #: ../clutter/clutter-actor.c:5276
-#| msgid "Vertical alignment of the actor within the cell"
 msgid "The alignment of the actor on the Y axis within its allocation"
 msgstr "La alineación del actor en el eje Y en su asignación"
 
@@ -467,7 +463,6 @@ msgid "Extra space at the left"
 msgstr "Espacio adicional a la izquierda"
 
 #: ../clutter/clutter-actor.c:5347
-#| msgid "Min Height"
 msgid "Margin Right"
 msgstr "Margen derecho"
 
@@ -476,7 +471,6 @@ msgid "Extra space at the right"
 msgstr "Espacio adicional a la derecha"
 
 #: ../clutter/clutter-actor.c:5362
-#| msgid "Cursor Color Set"
 msgid "Background Color Set"
 msgstr "Conjunto de colores de fondo"
 
@@ -485,12 +479,10 @@ msgid "Whether the background color is set"
 msgstr "Indica si el color de fondo está establecido"
 
 #: ../clutter/clutter-actor.c:5377
-#| msgid "The background color of the box"
 msgid "Background color"
 msgstr "Color de fondo"
 
 #: ../clutter/clutter-actor.c:5378
-#| msgid "The background color of the box"
 msgid "The actor's background color"
 msgstr "El color de fondo del actor"
 
@@ -1255,7 +1247,7 @@ msgstr "Umbral de arrastre"
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "La distancia que el cursor debe recorrer antes de empezar a arrastrar"
 
-#: ../clutter/clutter-settings.c:487 ../clutter/clutter-text.c:2997
+#: ../clutter/clutter-settings.c:487 ../clutter/clutter-text.c:2952
 msgid "Font Name"
 msgstr "Nombre de la tipografía"
 
@@ -1386,7 +1378,7 @@ msgid "Whether the main stage should be rendered offscreen"
 msgstr ""
 "Indica si el escenario principal se debe renderizar fuera de la pantalla"
 
-#: ../clutter/clutter-stage.c:1833 ../clutter/clutter-text.c:3110
+#: ../clutter/clutter-stage.c:1833 ../clutter/clutter-text.c:3065
 msgid "Cursor Visible"
 msgstr "Cursor visible"
 
@@ -1547,201 +1539,211 @@ msgstr "Espaciado entre columnas"
 msgid "Spacing between rows"
 msgstr "Espaciado entre filas"
 
-#: ../clutter/clutter-text.c:2998
+#: ../clutter/clutter-text.c:2934
+#| msgid "Buffer Fill"
+msgid "Buffer"
+msgstr "Búfer"
+
+#: ../clutter/clutter-text.c:2935
+#| msgid "The name of the meta"
+msgid "The buffer for the text"
+msgstr "El búfer para el texto"
+
+#: ../clutter/clutter-text.c:2953
 msgid "The font to be used by the text"
 msgstr "La tipografía usada para el texto"
 
-#: ../clutter/clutter-text.c:3015
+#: ../clutter/clutter-text.c:2970
 msgid "Font Description"
 msgstr "Descripción de la tipografía"
 
-#: ../clutter/clutter-text.c:3016
+#: ../clutter/clutter-text.c:2971
 msgid "The font description to be used"
 msgstr "La descripción de la tipografía que usar"
 
-#: ../clutter/clutter-text.c:3032
+#: ../clutter/clutter-text.c:2987
 msgid "Text"
 msgstr "Texto"
 
-#: ../clutter/clutter-text.c:3033
+#: ../clutter/clutter-text.c:2988
 msgid "The text to render"
 msgstr "El texto que renderizar"
 
-#: ../clutter/clutter-text.c:3047
+#: ../clutter/clutter-text.c:3002
 msgid "Font Color"
 msgstr "Color de la tipografía"
 
-#: ../clutter/clutter-text.c:3048
+#: ../clutter/clutter-text.c:3003
 msgid "Color of the font used by the text"
 msgstr "Color de la tipografía usada por el texto"
 
-#: ../clutter/clutter-text.c:3062
+#: ../clutter/clutter-text.c:3017
 msgid "Editable"
 msgstr "Editable"
 
-#: ../clutter/clutter-text.c:3063
+#: ../clutter/clutter-text.c:3018
 msgid "Whether the text is editable"
 msgstr "Indica si el texto es editable"
 
-#: ../clutter/clutter-text.c:3078
+#: ../clutter/clutter-text.c:3033
 msgid "Selectable"
 msgstr "Seleccionable"
 
-#: ../clutter/clutter-text.c:3079
+#: ../clutter/clutter-text.c:3034
 msgid "Whether the text is selectable"
 msgstr "Indica si el texto es seleccionable"
 
-#: ../clutter/clutter-text.c:3093
+#: ../clutter/clutter-text.c:3048
 msgid "Activatable"
 msgstr "Activable"
 
-#: ../clutter/clutter-text.c:3094
+#: ../clutter/clutter-text.c:3049
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "Indica si al pulsar «Intro» hace que se emita la señal de activación"
 
-#: ../clutter/clutter-text.c:3111
+#: ../clutter/clutter-text.c:3066
 msgid "Whether the input cursor is visible"
 msgstr "Indica si el cursor de entrada es visible"
 
-#: ../clutter/clutter-text.c:3125 ../clutter/clutter-text.c:3126
+#: ../clutter/clutter-text.c:3080 ../clutter/clutter-text.c:3081
 msgid "Cursor Color"
 msgstr "Color del cursor"
 
-#: ../clutter/clutter-text.c:3140
+#: ../clutter/clutter-text.c:3095
 msgid "Cursor Color Set"
 msgstr "Conjunto de colores del cursor"
 
-#: ../clutter/clutter-text.c:3141
+#: ../clutter/clutter-text.c:3096
 msgid "Whether the cursor color has been set"
 msgstr "Indica si se ha establecido el color del cursor"
 
-#: ../clutter/clutter-text.c:3156
+#: ../clutter/clutter-text.c:3111
 msgid "Cursor Size"
 msgstr "Tamaño del cursor"
 
-#: ../clutter/clutter-text.c:3157
+#: ../clutter/clutter-text.c:3112
 msgid "The width of the cursor, in pixels"
 msgstr "La anchura del cursor, en píxeles"
 
-#: ../clutter/clutter-text.c:3171
+#: ../clutter/clutter-text.c:3126
 msgid "Cursor Position"
 msgstr "Posición del cursor"
 
-#: ../clutter/clutter-text.c:3172
+#: ../clutter/clutter-text.c:3127
 msgid "The cursor position"
 msgstr "La posición del cursor"
 
-#: ../clutter/clutter-text.c:3187
+#: ../clutter/clutter-text.c:3142
 msgid "Selection-bound"
 msgstr "Destino de la selección"
 
-#: ../clutter/clutter-text.c:3188
+#: ../clutter/clutter-text.c:3143
 msgid "The cursor position of the other end of the selection"
 msgstr "La posición del cursor del otro final de la selección"
 
-#: ../clutter/clutter-text.c:3203 ../clutter/clutter-text.c:3204
+#: ../clutter/clutter-text.c:3158 ../clutter/clutter-text.c:3159
 msgid "Selection Color"
 msgstr "Selección de color"
 
-#: ../clutter/clutter-text.c:3218
+#: ../clutter/clutter-text.c:3173
 msgid "Selection Color Set"
 msgstr "Conjunto de selección de colores"
 
-#: ../clutter/clutter-text.c:3219
+#: ../clutter/clutter-text.c:3174
 msgid "Whether the selection color has been set"
 msgstr "Indica si se ha establecido el color de la selección"
 
-#: ../clutter/clutter-text.c:3234
+#: ../clutter/clutter-text.c:3189
 msgid "Attributes"
 msgstr "Atributos"
 
-#: ../clutter/clutter-text.c:3235
+#: ../clutter/clutter-text.c:3190
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr ""
 "Una lista de atributos de estilo que aplicar a los contenidos del actor"
 
-#: ../clutter/clutter-text.c:3257
+#: ../clutter/clutter-text.c:3212
 msgid "Use markup"
 msgstr "Usar marcado"
 
-#: ../clutter/clutter-text.c:3258
+#: ../clutter/clutter-text.c:3213
 msgid "Whether or not the text includes Pango markup"
 msgstr "Indica si el texto incluye o no el marcado de Pango"
 
-#: ../clutter/clutter-text.c:3274
+#: ../clutter/clutter-text.c:3229
 msgid "Line wrap"
 msgstr "Ajuste de línea"
 
-#: ../clutter/clutter-text.c:3275
+#: ../clutter/clutter-text.c:3230
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr ""
 "Si está definido, ajustar las líneas si el texto se vuelve demasiado ancho"
 
-#: ../clutter/clutter-text.c:3290
+#: ../clutter/clutter-text.c:3245
 msgid "Line wrap mode"
 msgstr "Modo de ajuste de línea"
 
-#: ../clutter/clutter-text.c:3291
+#: ../clutter/clutter-text.c:3246
 msgid "Control how line-wrapping is done"
 msgstr "Controlar cómo se hace el ajuste de línea"
 
-#: ../clutter/clutter-text.c:3306
+#: ../clutter/clutter-text.c:3261
 msgid "Ellipsize"
 msgstr "Crear elipse"
 
-#: ../clutter/clutter-text.c:3307
+#: ../clutter/clutter-text.c:3262
 msgid "The preferred place to ellipsize the string"
 msgstr "El lugar preferido para crear la cadena elíptica"
 
-#: ../clutter/clutter-text.c:3323
+#: ../clutter/clutter-text.c:3278
 msgid "Line Alignment"
 msgstr "Alineación de línea"
 
-#: ../clutter/clutter-text.c:3324
+#: ../clutter/clutter-text.c:3279
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "La alineación preferida para la cadena, para texto multilínea"
 
-#: ../clutter/clutter-text.c:3340
+#: ../clutter/clutter-text.c:3295
 msgid "Justify"
 msgstr "Justificar"
 
-#: ../clutter/clutter-text.c:3341
+#: ../clutter/clutter-text.c:3296
 msgid "Whether the text should be justified"
 msgstr "Indica si el texto se debe justificar"
 
-#: ../clutter/clutter-text.c:3356
+#: ../clutter/clutter-text.c:3311
 msgid "Password Character"
 msgstr "Carácter de la contraseña"
 
-#: ../clutter/clutter-text.c:3357
+#: ../clutter/clutter-text.c:3312
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr "Si no es cero, usar este carácter para mostrar el contenido del actor"
 
-#: ../clutter/clutter-text.c:3371
+#: ../clutter/clutter-text.c:3326
 msgid "Max Length"
 msgstr "Longitud máxima"
 
-#: ../clutter/clutter-text.c:3372
+#: ../clutter/clutter-text.c:3327
 msgid "Maximum length of the text inside the actor"
 msgstr "Longitud máxima del texto dentro del actor"
 
-#: ../clutter/clutter-text.c:3395
+#: ../clutter/clutter-text.c:3350
 msgid "Single Line Mode"
 msgstr "Modo de línea única"
 
-#: ../clutter/clutter-text.c:3396
+#: ../clutter/clutter-text.c:3351
 msgid "Whether the text should be a single line"
 msgstr "Indica si el texto debe estar en una única línea"
 
-#: ../clutter/clutter-text.c:3410 ../clutter/clutter-text.c:3411
+#: ../clutter/clutter-text.c:3365 ../clutter/clutter-text.c:3366
 msgid "Selected Text Color"
 msgstr "Color del texto seleccionado"
 
-#: ../clutter/clutter-text.c:3425
+#: ../clutter/clutter-text.c:3380
 msgid "Selected Text Color Set"
 msgstr "Conjunto de colores del texto seleccionado"
 
-#: ../clutter/clutter-text.c:3426
+#: ../clutter/clutter-text.c:3381
 msgid "Whether the selected text color has been set"
 msgstr "Indica si se ha establecido el color del texto seleccionado"
 
