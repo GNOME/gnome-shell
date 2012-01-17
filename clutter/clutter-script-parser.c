@@ -2000,7 +2000,7 @@ _clutter_script_construct_object (ClutterScript *script,
   else
     {
       GList *properties = oinfo->properties;
-      GParameter *parameters = (GParameter *) (void *) params->data;
+      GParameter *parameters;
 
       /* every other object: first, we get the construction parameters */
       oinfo->properties =
@@ -2010,6 +2010,7 @@ _clutter_script_construct_object (ClutterScript *script,
                                              properties,
                                              &params);
 
+      parameters = (GParameter *) (void *) params->data;
       oinfo->object = g_object_newv (oinfo->gtype,
                                      params->len,
                                      parameters);
