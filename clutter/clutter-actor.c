@@ -580,6 +580,9 @@ enum
   PROP_BACKGROUND_COLOR,
   PROP_BACKGROUND_COLOR_SET,
 
+  PROP_FIRST_CHILD,
+  PROP_LAST_CHILD,
+
   PROP_LAST
 };
 
@@ -4218,6 +4221,14 @@ clutter_actor_get_property (GObject    *object,
       g_value_set_boxed (value, &priv->bg_color);
       break;
 
+    case PROP_FIRST_CHILD:
+      g_value_set_object (value, priv->first_child);
+      break;
+
+    case PROP_LAST_CHILD:
+      g_value_set_object (value, priv->last_child);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -5387,6 +5398,34 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               P_("The actor's background color"),
                               CLUTTER_COLOR_Transparent,
                               CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterActor:first-child:
+   *
+   * The actor's first child.
+   *
+   * Since: 1.10
+   */
+  obj_props[PROP_FIRST_CHILD] =
+    g_param_spec_object ("first-child",
+                         P_("First Child"),
+                         P_("The actor's first child"),
+                         CLUTTER_TYPE_ACTOR,
+                         CLUTTER_PARAM_READABLE);
+
+  /**
+   * ClutterActor:last-child:
+   *
+   * The actor's last child.
+   *
+   * Since: 1.10
+   */
+  obj_props[PROP_LAST_CHILD] =
+    g_param_spec_object ("last-child",
+                         P_("Last Child"),
+                         P_("The actor's last child"),
+                         CLUTTER_TYPE_ACTOR,
+                         CLUTTER_PARAM_READABLE);
 
   g_object_class_install_properties (object_class, PROP_LAST, obj_props);
 
@@ -9550,6 +9589,7 @@ clutter_actor_add_child_internal (ClutterActor              *self,
 {
   ClutterTextDirection text_dir;
   gboolean create_meta, emit_parent_set, emit_actor_added, check_state;
+  ClutterActor *old_first_child, *old_last_child;
 
   if (child->priv->parent != NULL)
     {
@@ -9574,6 +9614,9 @@ clutter_actor_add_child_internal (ClutterActor              *self,
   emit_parent_set = (flags & ADD_CHILD_EMIT_PARENT_SET) != 0;
   emit_actor_added = (flags & ADD_CHILD_EMIT_ACTOR_ADDED) != 0;
   check_state = (flags & ADD_CHILD_CHECK_STATE) != 0;
+
+  old_first_child = self->priv->first_child;
+  old_last_child = self->priv->last_child;
 
   if (create_meta)
     clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
@@ -9634,6 +9677,12 @@ clutter_actor_add_child_internal (ClutterActor              *self,
 
   if (emit_actor_added)
     g_signal_emit_by_name (self, "actor-added", child);
+
+  if (old_first_child != self->priv->first_child)
+    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FIRST_CHILD]);
+
+  if (old_last_child != self->priv->last_child)
+    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAST_CHILD]);
 }
 
 /**
