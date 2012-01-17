@@ -9,7 +9,6 @@ clutter/clutter-backend.c
 clutter/clutter-bind-constraint.c
 clutter/clutter-binding-pool.c
 clutter/clutter-bin-layout.c
-clutter/clutter-box.c
 clutter/clutter-box-layout.c
 clutter/clutter-cairo-texture.c
 clutter/clutter-child-meta.c
@@ -33,7 +32,6 @@ clutter/clutter-layout-meta.c
 clutter/clutter-main.c
 clutter/clutter-media.c
 clutter/clutter-path-constraint.c
-clutter/clutter-rectangle.c
 clutter/clutter-script.c
 clutter/clutter-settings.c
 clutter/clutter-shader-effect.c
@@ -55,8 +53,10 @@ clutter/deprecated/clutter-behaviour-opacity.c
 clutter/deprecated/clutter-behaviour-path.c
 clutter/deprecated/clutter-behaviour-rotate.c
 clutter/deprecated/clutter-behaviour-scale.c
+clutter/deprecated/clutter-box.c
 clutter/deprecated/clutter-fixed.c
 clutter/deprecated/clutter-fixed.h
+clutter/deprecated/clutter-rectangle.c
 clutter/deprecated/clutter-shader.c
 clutter/evdev/clutter-input-device-evdev.c
 clutter/gdk/clutter-backend-gdk.c
