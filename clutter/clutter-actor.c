@@ -4365,6 +4365,8 @@ clutter_actor_real_get_paint_volume (ClutterActor       *self,
   ClutterActor *child;
   gboolean res;
 
+  clutter_paint_volume_set_from_allocation (volume, self);
+
   /* this is the default return value: we cannot know if a class
    * is going to paint outside its allocation, so we take the
    * conservative approach.
@@ -4377,11 +4379,20 @@ clutter_actor_real_get_paint_volume (ClutterActor       *self,
    */
   if (priv->clip_to_allocation)
     {
-      clutter_paint_volume_set_from_allocation (volume, self);
+      float w, h;
 
-      res = TRUE;
+      w = h = 0.f;
+      clutter_actor_box_get_size (&priv->allocation, &w, &h);
+
+      if (w >= 0 && h >= 0)
+        {
+          clutter_paint_volume_set_from_allocation (volume, self);
+          res = TRUE;
+        }
     }
-  else if (priv->has_clip)
+  else if (priv->has_clip &&
+           priv->clip.width >= 0 &&
+           priv->clip.height >= 0)
     {
       ClutterVertex origin;
 
