@@ -495,6 +495,7 @@ src/mutter-plugins.pc
 src/tools/Makefile
 src/compositor/plugins/Makefile
 protocol/Makefile
+data/Makefile
 po/Makefile.in
 ])
 

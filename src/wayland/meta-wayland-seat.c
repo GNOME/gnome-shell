@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <cogl/cogl-wayland-server.h>
 #include <clutter/clutter.h>
 #include <clutter/wayland/clutter-wayland-compositor.h>
 #include <clutter/wayland/clutter-wayland-surface.h>
@@ -34,6 +35,7 @@
 #include "meta-wayland-data-device.h"
 #include "meta-window-actor-private.h"
 #include "meta/meta-shaped-texture.h"
+#include "meta-wayland-stage.h"
 
 #define DEFAULT_AXIS_STEP_DISTANCE wl_fixed_from_int (10)
 
@@ -71,20 +73,37 @@ transform_stage_point_fixed (MetaWaylandSurface *surface,
 static void
 pointer_unmap_sprite (MetaWaylandSeat *seat)
 {
+  if (seat->current_stage)
+    {
+      MetaWaylandStage *stage = META_WAYLAND_STAGE (seat->current_stage);
+      meta_wayland_stage_set_invisible_cursor (stage);
+    }
+
   if (seat->sprite)
     {
-      if (seat->sprite->window)
-        {
-          GObject *window_actor_object =
-            meta_window_get_compositor_private (seat->sprite->window);
-          ClutterActor *window_actor = CLUTTER_ACTOR (window_actor_object);
-
-          if (window_actor)
-            clutter_actor_hide (window_actor);
-        }
-
       wl_list_remove (&seat->sprite_destroy_listener.link);
       seat->sprite = NULL;
+    }
+}
+
+void
+meta_wayland_seat_update_sprite (MetaWaylandSeat *seat)
+{
+  if (seat->current_stage)
+    {
+      MetaWaylandStage *stage = META_WAYLAND_STAGE (seat->current_stage);
+      ClutterBackend *backend = clutter_get_default_backend ();
+      CoglContext *context = clutter_backend_get_cogl_context (backend);
+      struct wl_resource *buffer = seat->sprite->buffer_ref.buffer->resource;
+      CoglTexture2D *texture =
+        cogl_wayland_texture_2d_new_from_buffer (context, buffer, NULL);
+
+      meta_wayland_stage_set_cursor_from_texture (stage,
+                                                  COGL_TEXTURE (texture),
+                                                  seat->hotspot_x,
+                                                  seat->hotspot_y);
+
+      cogl_object_unref (texture);
     }
 }
 
@@ -109,17 +128,24 @@ pointer_set_cursor (struct wl_client *client,
   if (seat->pointer.focus_serial - serial > G_MAXUINT32 / 2)
     return;
 
-  pointer_unmap_sprite (seat);
-
-  if (!surface)
-    return;
-
-  wl_resource_add_destroy_listener (surface->resource,
-                                    &seat->sprite_destroy_listener);
-
-  seat->sprite = surface;
   seat->hotspot_x = x;
   seat->hotspot_y = y;
+
+  if (seat->sprite != surface)
+    {
+      pointer_unmap_sprite (seat);
+
+      if (!surface)
+        return;
+
+      wl_resource_add_destroy_listener (surface->resource,
+                                        &seat->sprite_destroy_listener);
+
+      seat->sprite = surface;
+
+      if (seat->sprite->buffer_ref.buffer)
+        meta_wayland_seat_update_sprite (seat);
+    }
 }
 
 static const struct wl_pointer_interface
@@ -228,7 +254,7 @@ pointer_handle_sprite_destroy (struct wl_listener *listener, void *data)
   MetaWaylandSeat *seat =
     wl_container_of (listener, seat, sprite_destroy_listener);
 
-  seat->sprite = NULL;
+  pointer_unmap_sprite (seat);
 }
 
 MetaWaylandSeat *

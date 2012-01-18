@@ -42,6 +42,9 @@ meta_wayland_seat_repick (MetaWaylandSeat *seat,
                           ClutterActor *actor);
 
 void
+meta_wayland_seat_update_sprite (MetaWaylandSeat *seat);
+
+void
 meta_wayland_seat_free (MetaWaylandSeat *seat);
 
 #endif /* __META_WAYLAND_SEAT_H__ */

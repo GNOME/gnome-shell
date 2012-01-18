@@ -187,7 +187,9 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-pointer.c		\
 	wayland/meta-wayland-pointer.h		\
 	wayland/meta-wayland-seat.c		\
-	wayland/meta-wayland-seat.h
+	wayland/meta-wayland-seat.h		\
+	wayland/meta-wayland-stage.h		\
+	wayland/meta-wayland-stage.c
 endif
 
 libmutter_la_LDFLAGS = -no-undefined

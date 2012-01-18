@@ -1,5 +1,5 @@
 
-SUBDIRS=src protocol po doc
+SUBDIRS=src protocol data po doc
 
 EXTRA_DIST = HACKING MAINTAINERS rationales.txt
 
