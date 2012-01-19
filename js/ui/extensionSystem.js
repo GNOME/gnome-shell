@@ -8,6 +8,7 @@ const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
+const ShellJS = imports.gi.ShellJS;
 const Soup = imports.gi.Soup;
 
 const Config = imports.misc.config;
@@ -388,7 +389,7 @@ function loadExtension(dir, type, enabled) {
     let extensionModule;
     let extensionState = null;
     try {
-        global.add_extension_importer('imports.ui.extensionSystem.extensions', meta.uuid, dir.get_path());
+        ShellJS.add_extension_importer('imports.ui.extensionSystem.extensions', meta.uuid, dir.get_path());
         extensionModule = extensions[meta.uuid].extension;
     } catch (e) {
         if (stylesheetPath != null)

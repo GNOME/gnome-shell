@@ -119,12 +119,6 @@ void shell_global_run_at_leisure (ShellGlobal          *global,
 
 
 /* Misc utilities / Shell API */
-gboolean shell_global_add_extension_importer    (ShellGlobal  *global,
-                                                 const char   *target_object_script,
-                                                 const char   *target_property,
-                                                 const char   *directory,
-                                                 GError      **error);
-
 void     shell_global_sync_pointer              (ShellGlobal  *global);
 
 GAppLaunchContext *

@@ -86,7 +86,7 @@ gnome_shell_cflags =				\
 	-DJSDIR=\"$(pkgdatadir)/js\"
 
 privlibdir = $(pkglibdir)
-privlib_LTLIBRARIES = libgnome-shell.la
+privlib_LTLIBRARIES = libgnome-shell.la libgnome-shell-js.la
 
 shell_built_sources = \
 	shell-enum-types.h \
@@ -182,6 +182,23 @@ EXTRA_DIST += test-gapplication.js
 
 ########################################
 
+libgnome_shell_js_la_SOURCES =		\
+	shell-js.h			\
+	shell-js.c			\
+	$(NULL)
+
+libgnome_shell_js_la_LIBADD =		\
+	$(GNOME_SHELL_JS_LIBS)		\
+	$(NULL)
+
+libgnome_shell_js_la_LDFLAGS =		\
+	-avoid-version
+
+libgnome_shell_js_la_CPPFLAGS =		\
+	$(GNOME_SHELL_JS_CFLAGS)
+
+########################################
+
 shell_recorder_sources =        \
 	shell-recorder.c	\
 	shell-recorder.h
@@ -274,6 +291,13 @@ Shell_0_1_gir_SCANNERFLAGS = --include-uninstalled=$(builddir)/St-1.0.gir \
 	--add-include-path=$(MUTTER_GIR_DIR) $(if $(BLUETOOTH_DIR),-L $(BLUETOOTH_DIR),)
 INTROSPECTION_GIRS += Shell-0.1.gir
 CLEANFILES += Shell-0.1.gir
+
+ShellJS-0.1.gir: libgnome-shell-js.la
+ShellJS_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
+ShellJS_0_1_gir_LIBS = libgnome-shell-js.la
+ShellJS_0_1_gir_FILES = $(libgnome_shell_js_la_SOURCES)
+INTROSPECTION_GIRS += ShellJS-0.1.gir
+CLEANFILES += ShellJS-0.1.gir
 
 St-1.0.gir: libst-1.0.la
 St_1_0_gir_INCLUDES = Clutter-1.0 Gtk-3.0
