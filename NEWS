@@ -1,3 +1,38 @@
+Clutter 1.9.6                                                        2012-01-19
+===============================================================================
+
+  • List of changes since Clutter 1.9.4
+
+    - Deprecate clutter_actor_show_all() and clutter_actor_hide_all()
+    The latter never did make a lot of sense: hiding the parent will
+    effectively hide the children as well; the former was there only for
+    convenience, but Actors are visible by default.
+
+    - Gracefully handle existing code
+    The changes in ClutterActor introduced regressions in existing code
+    because of the new functionaly that was introduced to replace deprecated
+    classes like Box and Group. These regressions have hopefully been fixed;
+    Clutter 1.9.6 has been tested with a project as complex as the GNOME
+    Shell.
+
+    - Fix build with binutils-gold
+    The private dependencies were not used when building Clutter, and this
+    made the Gold linker angry.
+
+    - Allow tracking of an actor's first and last child
+    ClutterActor has two new properties, :first-child and :last-child; these
+    are read-only properties that can be used by toolkits based on Clutter
+    to track the first and last child whenever they change.
+
+    - Bump the Cogl dependency
+    The 1.9.4 release depended on Cogl ≥ 1.9.4, but the minimum required
+    version was not bumped along with the changes.
+
+  • List of bugs fixed since Clutter 1.9.4
+
+    [bugzilla.gnome.org]
+    #668137 - FTBFS: pangoft2 check seems to be broken
+
 Clutter 1.9.4                                                        2012-01-17
 ===============================================================================
 
