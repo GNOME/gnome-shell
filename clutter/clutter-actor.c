@@ -6109,7 +6109,7 @@ clutter_actor_init (ClutterActor *self)
                     self);
 
   priv->has_overridden_allocate =
-    CLUTTER_ACTOR_GET_CLASS (self)->allocate == clutter_actor_real_allocate;
+    CLUTTER_ACTOR_GET_CLASS (self)->allocate != clutter_actor_real_allocate;
 }
 
 /**
