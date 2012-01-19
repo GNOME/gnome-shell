@@ -5025,12 +5025,21 @@ meta_display_unmanage_windows_for_screen (MetaDisplay *display,
   winlist = meta_display_list_windows (display,
                                        META_LIST_INCLUDE_OVERRIDE_REDIRECT);
   winlist = g_slist_sort (winlist, meta_display_stack_cmp);
+  g_slist_foreach (winlist, (GFunc)g_object_ref, NULL);
 
   /* Unmanage all windows */
   tmp = winlist;
   while (tmp != NULL)
     {
-      meta_window_unmanage (tmp->data, timestamp);
+      MetaWindow *window = tmp->data;
+
+      /* Check if already unmanaged for safety - in particular, catch
+       * the case where unmanaging a parent window can cause attached
+       * dialogs to be (temporarily) unmanaged.
+       */
+      if (!window->unmanaging)
+        meta_window_unmanage (window, timestamp);
+      g_object_unref (window);
       
       tmp = tmp->next;
     }
