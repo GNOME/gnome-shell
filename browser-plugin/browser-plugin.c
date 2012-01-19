@@ -41,7 +41,7 @@
       "It can be used only by extensions.gnome.org"
 #define PLUGIN_MIME_STRING "application/x-gnome-shell-integration::Gnome Shell Integration Dummy Content-Type";
 
-#define PLUGIN_API_VERSION 2
+#define PLUGIN_API_VERSION 3
 
 typedef struct {
   GDBusProxy *proxy;
@@ -375,6 +375,7 @@ static NPIdentifier uninstall_extension_id;
 static NPIdentifier onextension_changed_id;
 static NPIdentifier onrestart_id;
 static NPIdentifier get_errors_id;
+static NPIdentifier launch_extension_prefs_id;
 
 static bool
 plugin_object_has_method (NPObject     *npobj,
@@ -385,7 +386,8 @@ plugin_object_has_method (NPObject     *npobj,
           name == enable_extension_id ||
           name == install_extension_id ||
           name == uninstall_extension_id ||
-          name == get_errors_id);
+          name == get_errors_id ||
+          name == launch_extension_prefs_id);
 }
 
 static inline gboolean
@@ -652,6 +654,33 @@ plugin_get_errors (PluginObject *obj,
   return jsonify_variant (res, result);
 }
 
+static gboolean
+plugin_launch_extension_prefs (PluginObject *obj,
+                               NPString      uuid,
+                               NPVariant    *result)
+{
+  gchar *uuid_str;
+
+  uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
+  if (!uuid_is_valid (uuid_str))
+    {
+      g_free (uuid_str);
+      return FALSE;
+    }
+
+  g_dbus_proxy_call (obj->proxy,
+                     "LaunchExtensionPrefs",
+                     g_variant_new ("(s)", uuid_str),
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1, /* timeout */
+                     NULL, /* cancellable */
+                     NULL, /* callback */
+                     NULL /* user_data */);
+
+  g_free (uuid_str);
+  return TRUE;
+}
+
 static int
 plugin_get_api_version (PluginObject  *obj,
                         NPVariant     *result)
@@ -761,6 +790,14 @@ plugin_object_invoke (NPObject        *npobj,
       return plugin_get_errors (obj,
                                 NPVARIANT_TO_STRING(args[0]),
                                 result);
+    }
+  else if (name == launch_extension_prefs_id)
+    {
+      if (!NPVARIANT_IS_STRING(args[0])) return FALSE;
+
+      return plugin_launch_extension_prefs (obj,
+                                            NPVARIANT_TO_STRING(args[0]),
+                                            result);
     }
 
   return TRUE;
@@ -876,6 +913,7 @@ init_methods_and_properties (void)
   install_extension_id = funcs.getstringidentifier ("installExtension");
   uninstall_extension_id = funcs.getstringidentifier ("uninstallExtension");
   get_errors_id = funcs.getstringidentifier ("getExtensionErrors");
+  launch_extension_prefs_id = funcs.getstringidentifier ("launchExtensionPrefs");
 
   onrestart_id = funcs.getstringidentifier ("onshellrestart");
   onextension_changed_id = funcs.getstringidentifier ("onchange");

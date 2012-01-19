@@ -99,6 +99,7 @@ function loadMetadata(uuid, dir, type) {
     meta.dir = dir;
     meta.path = dir.get_path();
     meta.error = '';
+    meta.hasPrefs = dir.get_child('prefs.js').query_exists(null);
 
     return meta;
 }

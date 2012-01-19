@@ -3,6 +3,7 @@
 const Lang = imports.lang;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const Shell = imports.gi.Shell;
 
 const Config = imports.misc.config;
 const ExtensionSystem = imports.ui.extensionSystem;
@@ -59,6 +60,9 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
 <method name="UninstallExtension">
     <arg type="s" direction="in" name="uuid"/>
     <arg type="b" direction="out" name="success"/>
+</method>
+<method name="LaunchExtensionPrefs">
+    <arg type="s" direction="in" name="uuid"/>
 </method>
 <property name="OverviewActive" type="b" access="readwrite" />
 <property name="ApiVersion" type="i" access="read" />
@@ -198,6 +202,9 @@ const GnomeShell = new Lang.Class({
             case 'number':
                 type = 'd';
                 break;
+            case 'boolean':
+                type = 'b';
+                break;
             default:
                 continue;
             }
@@ -230,6 +237,13 @@ const GnomeShell = new Lang.Class({
 
     UninstallExtension: function(uuid) {
         return ExtensionSystem.uninstallExtensionFromUUID(uuid);
+    },
+
+    LaunchExtensionPrefs: function(uuid) {
+        let appSys = Shell.AppSystem.get_default();
+        let app = appSys.lookup_app('gnome-shell-extension-prefs.desktop');
+        app.launch(global.display.get_current_time_roundtrip(),
+                   ['extension:///' + uuid], -1, null);
     },
 
     get OverviewActive() {
