@@ -394,7 +394,7 @@ function loadExtension(dir, type, enabled) {
     } catch (e) {
         if (stylesheetPath != null)
             theme.unload_stylesheet(stylesheetPath);
-        logExtensionError(uuid, e);
+        logExtensionError(uuid, '' + e);
         return;
     }
 
