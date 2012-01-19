@@ -1,5 +1,5 @@
 desktopdir=$(datadir)/applications
-desktop_DATA = gnome-shell.desktop
+desktop_DATA = gnome-shell.desktop gnome-shell-extension-prefs.desktop
 
 # We substitute in bindir so it works as an autostart
 # file when built in a non-system prefix
@@ -69,6 +69,7 @@ shaders_DATA = \
 
 EXTRA_DIST =						\
 	gnome-shell.desktop.in.in			\
+	gnome-shell-extension-prefs.in.in		\
 	$(menu_DATA)					\
 	$(shaders_DATA)					\
 	$(convert_DATA)					\
@@ -76,6 +77,7 @@ EXTRA_DIST =						\
 
 CLEANFILES =						\
 	gnome-shell.desktop.in				\
+	gnome-shell-extension-prefs.in			\
 	$(desktop_DATA)					\
 	$(gsettings_SCHEMAS)				\
 	gschemas.compiled

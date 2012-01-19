@@ -18,6 +18,8 @@ config
 configure
 data/gnome-shell.desktop
 data/gnome-shell.desktop.in
+data/gnome-shell-extension-prefs.desktop
+data/gnome-shell-extension-prefs.desktop.in
 data/gschemas.compiled
 data/org.gnome.shell.gschema.xml
 data/org.gnome.shell.gschema.valid
@@ -62,6 +64,7 @@ src/calendar-server/org.gnome.Shell.CalendarServer.service
 src/gnome-shell
 src/gnome-shell-calendar-server
 src/gnome-shell-extension-tool
+src/gnome-shell-extension-prefs
 src/gnome-shell-hotplug-sniffer
 src/gnome-shell-jhbuild
 src/gnome-shell-perf-helper
