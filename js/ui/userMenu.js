@@ -388,8 +388,8 @@ const IMStatusChooserItem = new Lang.Class({
         if (!this._imPresenceRestored)
             return;
 
+        let savedStatus = global.settings.get_int('saved-session-presence');
         if (!this._sessionPresenceRestored) {
-            let savedStatus = global.settings.get_int('saved-session-presence');
 
             // We should never save/restore a status other than AVAILABLE
             // or BUSY
@@ -404,8 +404,9 @@ const IMStatusChooserItem = new Lang.Class({
             this._sessionPresenceRestored = true;
         }
 
-        if (sessionStatus == GnomeSession.PresenceStatus.AVAILABLE ||
-            sessionStatus == GnomeSession.PresenceStatus.BUSY)
+        if ((sessionStatus == GnomeSession.PresenceStatus.AVAILABLE ||
+             sessionStatus == GnomeSession.PresenceStatus.BUSY) &&
+            savedStatus != sessionStatus)
             global.settings.set_int('saved-session-presence', sessionStatus);
 
         let [presence, s, msg] = this._accountMgr.get_most_available_presence();
