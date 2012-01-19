@@ -323,6 +323,9 @@ void                  clutter_actor_allocate_align_fill       (ClutterActor     
                                                                gboolean               x_fill,
                                                                gboolean               y_fill,
                                                                ClutterAllocationFlags flags);
+void                  clutter_actor_set_allocation            (ClutterActor          *self,
+                                                               const ClutterActorBox *box,
+                                                               ClutterAllocationFlags flags);
 void                  clutter_actor_get_allocation_box        (ClutterActor          *self,
                                                                ClutterActorBox       *box);
 void                  clutter_actor_get_allocation_geometry   (ClutterActor          *self,
