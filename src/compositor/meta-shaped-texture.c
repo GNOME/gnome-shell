@@ -72,6 +72,7 @@ struct _MetaShapedTexturePrivate
   CoglPipeline *pipeline_unshaped;
 
   cairo_region_t *clip_region;
+  cairo_region_t *input_shape_region;
 
   guint tex_width, tex_height;
 
@@ -285,38 +286,52 @@ meta_shaped_texture_pick (ClutterActor       *actor,
   MetaShapedTexture *stex = (MetaShapedTexture *) actor;
   MetaShapedTexturePrivate *priv = stex->priv;
 
+  if (!clutter_actor_should_pick_paint (actor) ||
+      (priv->clip_region && cairo_region_is_empty (priv->clip_region)))
+    return;
+
   /* If there is no region then use the regular pick */
-  if (priv->mask_texture == NULL)
+  if (priv->input_shape_region == NULL)
     CLUTTER_ACTOR_CLASS (meta_shaped_texture_parent_class)
       ->pick (actor, color);
-  else if (clutter_actor_should_pick_paint (actor))
+  else
     {
-      CoglTexture *paint_tex;
-      ClutterActorBox alloc;
-      guint tex_width, tex_height;
+      int n_rects;
+      float *rectangles;
+      int i;
 
-      paint_tex = COGL_TEXTURE (priv->texture);
+      /* Note: We don't bother trying to intersect the pick and clip regions
+       * since needing to copy the region, do the intersection, and probably
+       * increase the number of rectangles seems more likely to have a negative
+       * effect.
+       *
+       * NB: Most of the time when just using rectangles for picking then
+       * picking shouldn't involve any rendering, and minimizing the number of
+       * rectangles has more benefit than reducing the area of the pick
+       * region.
+       */
 
-      if (paint_tex == NULL)
-        return;
+      n_rects = cairo_region_num_rectangles (priv->input_shape_region);
 
-      tex_width = cogl_texture_get_width (paint_tex);
-      tex_height = cogl_texture_get_height (paint_tex);
+      for (i = 0; i < n_rects; i++)
+        {
+          cairo_rectangle_int_t rect;
+          int pos = i * 4;
 
-      if (tex_width == 0 || tex_height == 0) /* no contents yet */
-        return;
+          cairo_region_get_rectangle (priv->input_shape_region, i, &rect);
 
-      cogl_set_source_color4ub (color->red, color->green, color->blue,
-                                 color->alpha);
+          rectangles[pos] = rect.x;
+          rectangles[pos + 1] = rect.y;
+          rectangles[pos + 2] = rect.x + rect.width;
+          rectangles[pos + 3] = rect.y + rect.height;
+        }
 
-      clutter_actor_get_allocation_box (actor, &alloc);
+      cogl_set_source_color4ub (color->red,
+                                color->green,
+                                color->blue,
+                                color->alpha);
 
-      /* Paint the mask rectangle in the given color */
-      cogl_set_source_texture (priv->mask_texture);
-      cogl_rectangle_with_texture_coords (0, 0,
-                                          alloc.x2 - alloc.x1,
-                                          alloc.y2 - alloc.y1,
-                                          0, 0, 1, 1);
+      cogl_rectangles (rectangles, n_rects);
     }
 }
 
@@ -531,6 +546,41 @@ meta_shaped_texture_get_texture (MetaShapedTexture *stex)
 {
   g_return_val_if_fail (META_IS_SHAPED_TEXTURE (stex), NULL);
   return COGL_TEXTURE (stex->priv->texture);
+}
+
+/**
+ * meta_shaped_texture_set_input_shape_region:
+ * @stex: a #MetaShapedTexture
+ * @shape_region: the region of the texture that should respond to
+ *    input.
+ *
+ * Determines what region of the texture should accept input. For
+ * X based windows this is defined by the ShapeInput region of the
+ * window.
+ */
+void
+meta_shaped_texture_set_input_shape_region (MetaShapedTexture *stex,
+                                            cairo_region_t    *shape_region)
+{
+  MetaShapedTexturePrivate *priv;
+
+  g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
+
+  priv = stex->priv;
+
+  if (priv->input_shape_region != NULL)
+    {
+      cairo_region_destroy (priv->input_shape_region);
+      priv->input_shape_region = NULL;
+    }
+
+  if (shape_region != NULL)
+    {
+      cairo_region_reference (shape_region);
+      priv->input_shape_region = shape_region;
+    }
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));
 }
 
 /**

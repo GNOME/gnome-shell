@@ -2287,6 +2287,33 @@ event_callback (XEvent   *event,
                 meta_compositor_window_shape_changed (display->compositor,
                                                       window);
             }
+          else if (sev->kind == ShapeInput)
+            {
+              if (sev->shaped && !window->has_input_shape)
+                {
+                  window->has_input_shape = TRUE;                  
+                  meta_topic (META_DEBUG_SHAPES,
+                              "Window %s now has an input shape\n",
+                              window->desc);
+                }
+              else if (!sev->shaped && window->has_input_shape)
+                {
+                  window->has_input_shape = FALSE;
+                  meta_topic (META_DEBUG_SHAPES,
+                              "Window %s no longer has an input shape\n",
+                              window->desc);
+                }
+              else
+                {
+                  meta_topic (META_DEBUG_SHAPES,
+                              "Window %s input shape changed\n",
+                              window->desc);
+                }
+
+              if (display->compositor)
+                meta_compositor_window_shape_changed (display->compositor,
+                                                      window);
+            }
         }
       else
         {

@@ -72,6 +72,8 @@ struct _MetaWindowActorPrivate
 
   /* A region that matches the shape of the window, including frame bounds */
   cairo_region_t   *shape_region;
+  /* If the window has an input shape, a region that matches the shape */
+  cairo_region_t   *input_shape_region;
   /* The opaque region, from _NET_WM_OPAQUE_REGION, intersected with
    * the shape region. */
   cairo_region_t   *opaque_region;
@@ -413,6 +415,7 @@ meta_window_actor_dispose (GObject *object)
   meta_window_actor_detach (self);
 
   g_clear_pointer (&priv->shape_region, cairo_region_destroy);
+  g_clear_pointer (&priv->input_shape_region, cairo_region_destroy);
   g_clear_pointer (&priv->opaque_region, cairo_region_destroy);
   g_clear_pointer (&priv->shadow_clip, cairo_region_destroy);
 
@@ -2082,38 +2085,39 @@ build_and_scan_frame_mask (MetaWindowActor       *self,
   g_free (mask_data);
 }
 
+static cairo_region_t *
+region_create_from_x_rectangles (const XRectangle *rects,
+                                 int n_rects,
+                                 int dx,
+                                 int dy)
+{
+  int i;
+  cairo_rectangle_int_t *cairo_rects = g_newa (cairo_rectangle_int_t, n_rects);
+
+  for (i = 0; i < n_rects; i ++)
+    {
+      cairo_rects[i].x = rects[i].x + dx;
+      cairo_rects[i].y = rects[i].y + dy;
+      cairo_rects[i].width = rects[i].width;
+      cairo_rects[i].height = rects[i].height;
+    }
+
+  return cairo_region_create_rectangles (cairo_rects, n_rects);
+}
+
 static void
-check_needs_reshape (MetaWindowActor *self)
+meta_window_actor_update_shape_region (MetaWindowActor *self,
+                                       cairo_rectangle_int_t *client_area)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  MetaScreen *screen = priv->screen;
-  MetaDisplay *display = meta_screen_get_display (screen);
-  MetaFrameBorders borders;
   cairo_region_t *region = NULL;
-  cairo_rectangle_int_t client_area;
   gboolean needs_mask;
-
-  if (!priv->mapped)
-    return;
-
-  if (!priv->needs_reshape)
-    return;
 
   if (priv->shadow_shape != NULL)
     {
       meta_window_shape_unref (priv->shadow_shape);
       priv->shadow_shape = NULL;
     }
-
-  meta_frame_calc_borders (priv->window->frame, &borders);
-
-  client_area.x = borders.total.left;
-  client_area.y = borders.total.top;
-  client_area.width = priv->window->rect.width;
-  if (priv->window->shaded)
-    client_area.height = 0;
-  else
-    client_area.height = priv->window->rect.height;
 
   meta_shaped_texture_set_mask_texture (META_SHAPED_TEXTURE (priv->actor), NULL);
   g_clear_pointer (&priv->shape_region, cairo_region_destroy);
@@ -2124,6 +2128,8 @@ check_needs_reshape (MetaWindowActor *self)
     {
       /* Translate the set of XShape rectangles that we
        * get from the X server to a cairo_region. */
+      MetaScreen *screen = priv->screen;
+      MetaDisplay *display = meta_screen_get_display (screen);
       Display *xdisplay = meta_display_get_xdisplay (display);
       XRectangle *rects;
       int n_rects, ordering;
@@ -2138,20 +2144,10 @@ check_needs_reshape (MetaWindowActor *self)
 
       if (rects)
         {
-          int i;
-          cairo_rectangle_int_t *cairo_rects = g_new (cairo_rectangle_int_t, n_rects);
-
-          for (i = 0; i < n_rects; i ++)
-            {
-              cairo_rects[i].x = rects[i].x + client_area.x;
-              cairo_rects[i].y = rects[i].y + client_area.y;
-              cairo_rects[i].width = rects[i].width;
-              cairo_rects[i].height = rects[i].height;
-            }
-
+          region = region_create_from_x_rectangles (rects, n_rects,
+                                                    client_area->x,
+                                                    client_area->y);
           XFree (rects);
-          region = cairo_region_create_rectangles (cairo_rects, n_rects);
-          g_free (cairo_rects);
         }
     }
 #endif
@@ -2167,14 +2163,14 @@ check_needs_reshape (MetaWindowActor *self)
        * window would have gotten if it was unshaped. In our case,
        * this is simply the client area.
        */
-      cairo_region_intersect_rectangle (region, &client_area);
+      cairo_region_intersect_rectangle (region, client_area);
     }
   else
     {
       /* If we don't have a shape on the server, that means that
        * we have an implicit shape of one rectangle covering the
        * entire window. */
-      region = cairo_region_create_rectangle (&client_area);
+      region = cairo_region_create_rectangle (client_area);
     }
 
   /* The region at this point should be constrained to the
@@ -2193,7 +2189,7 @@ check_needs_reshape (MetaWindowActor *self)
        * case, graphical glitches will occur.
        */
       priv->opaque_region = cairo_region_copy (priv->window->opaque_region);
-      cairo_region_translate (priv->opaque_region, client_area.x, client_area.y);
+      cairo_region_translate (priv->opaque_region, client_area->x, client_area->y);
       cairo_region_intersect (priv->opaque_region, region);
     }
   else if (priv->argb32)
@@ -2207,13 +2203,106 @@ check_needs_reshape (MetaWindowActor *self)
        * and scans the mask looking for all opaque pixels,
        * adding it to region.
        */
-      build_and_scan_frame_mask (self, &client_area, region);
+      build_and_scan_frame_mask (self, client_area, region);
     }
 
   priv->shape_region = region;
 
-  priv->needs_reshape = FALSE;
   meta_window_actor_invalidate_shadow (self);
+}
+
+static void
+meta_window_actor_update_input_shape_region (MetaWindowActor *self,
+                                             cairo_rectangle_int_t *client_area)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+  cairo_region_t *region = NULL;
+
+  g_clear_pointer (&priv->input_shape_region, cairo_region_destroy);
+
+#ifdef HAVE_SHAPE
+  /* Note: we currently assume that mutter never sets an input region
+   * when there is a frame. */
+  if (priv->window->frame == NULL && priv->window->has_input_shape)
+    {
+      MetaScreen *screen = priv->screen;
+      MetaDisplay *display = meta_screen_get_display (screen);
+      Display *xdisplay = meta_display_get_xdisplay (display);
+      XRectangle *rects;
+      int n_rects, ordering;
+
+      /* Note we only actually query the ShapeInput shape of a window
+       * when we don't have a frame because we assume currently that
+       * mutter never sets an ShapeInput shape on a frame. */
+      meta_error_trap_push (display);
+      rects = XShapeGetRectangles (xdisplay,
+                                   priv->window->xwindow,
+                                   ShapeInput,
+                                   &n_rects,
+                                   &ordering);
+      meta_error_trap_pop (display);
+      if (rects)
+        {
+          region = region_create_from_x_rectangles (rects, n_rects,
+                                                    client_area->x,
+                                                    client_area->y);
+          XFree (rects);
+        }
+    }
+#endif /* HAVE_SHAPE */
+
+  if (region != NULL)
+    {
+      /* The X shape extension requires us to intersect the input
+       * region with the effective bounding shape to determine the
+       * effective input region.
+       */
+      if (priv->shape_region)
+        cairo_region_intersect (region, priv->shape_region);
+      else
+        cairo_region_intersect_rectangle (region, client_area);
+    }
+  else
+    {
+      /* If we don't have a shape on the server, that means that we
+       * have an implicit shape of one rectangle covering the entire
+       * window. */
+      region = cairo_region_create_rectangle (client_area);
+    }
+
+  priv->input_shape_region = region;
+
+  meta_shaped_texture_set_input_shape_region (META_SHAPED_TEXTURE (priv->actor),
+                                              priv->input_shape_region);
+}
+
+static void
+check_needs_reshape (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaFrameBorders borders;
+  cairo_rectangle_int_t client_area;
+
+  if (!priv->mapped)
+    return;
+
+  if (!priv->needs_reshape)
+    return;
+
+  meta_frame_calc_borders (priv->window->frame, &borders);
+
+  client_area.x = borders.total.left;
+  client_area.y = borders.total.top;
+  client_area.width = priv->window->rect.width;
+  if (priv->window->shaded)
+    client_area.height = 0;
+  else
+    client_area.height = priv->window->rect.height;
+
+  meta_window_actor_update_shape_region (self, &client_area);
+  meta_window_actor_update_input_shape_region (self, &client_area);
+
+  priv->needs_reshape = FALSE;
 }
 
 void

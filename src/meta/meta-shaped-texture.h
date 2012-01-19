@@ -82,6 +82,8 @@ CoglTexture * meta_shaped_texture_get_texture (MetaShapedTexture *stex);
 
 void meta_shaped_texture_set_mask_texture (MetaShapedTexture *stex,
                                            CoglTexture       *mask_texture);
+void meta_shaped_texture_set_input_shape_region (MetaShapedTexture *stex,
+                                                 cairo_region_t    *shape_region);
 
 /* Assumes ownership of clip_region */
 void meta_shaped_texture_set_clip_region (MetaShapedTexture *stex,

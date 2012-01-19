@@ -325,8 +325,10 @@ struct _MetaWindow
   guint using_net_wm_icon_name         : 1; /* vs. plain wm_icon_name */
   guint using_net_wm_visible_icon_name : 1; /* tracked so we can clear it */
 
-  /* has a shape mask */
+  /* has a bounding shape mask */
   guint has_shape : 1;
+  /* has an input shape mask */
+  guint has_input_shape : 1;
 
   /* icon props have changed */
   guint need_reread_icon : 1;
