@@ -8,10 +8,10 @@ const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
-const ShellJS = imports.gi.ShellJS;
 const Soup = imports.gi.Soup;
 
 const Config = imports.misc.config;
+const ExtensionUtils = imports.misc.extensionUtils;
 const FileUtils = imports.misc.fileUtils;
 const ModalDialog = imports.ui.modalDialog;
 
@@ -28,11 +28,6 @@ const ExtensionState = {
     // Used as an error state for operations on unknown extensions,
     // should never be in a real extensionMeta object.
     UNINSTALLED: 99
-};
-
-const ExtensionType = {
-    SYSTEM: 1,
-    PER_USER: 2
 };
 
 const REPOSITORY_URL_BASE = 'https://extensions.gnome.org';
@@ -60,8 +55,6 @@ _httpSession.ssl_ca_file = _getCertFile();
 
 // Maps uuid -> metadata object
 const extensionMeta = {};
-// Maps uuid -> importer object (extension directory tree)
-const extensions = {};
 // Maps uuid -> extension state object (returned from init())
 const extensionStateObjs = {};
 // Contains the order that extensions were enabled in.
@@ -69,8 +62,6 @@ const extensionOrder = [];
 
 // Arrays of uuids
 var enabledExtensions;
-// GFile for user extensions
-var userExtensionsDir = null;
 
 // We don't really have a class to add signals on. So, create
 // a simple dummy object, add the signal methods, and export those
@@ -85,36 +76,6 @@ const disconnect = Lang.bind(_signals, _signals.disconnect);
 var errors = {};
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
-
-/**
- * versionCheck:
- * @required: an array of versions we're compatible with
- * @current: the version we have
- *
- * Check if a component is compatible for an extension.
- * @required is an array, and at least one version must match.
- * @current must be in the format <major>.<minor>.<point>.<micro>
- * <micro> is always ignored
- * <point> is ignored if <minor> is even (so you can target the
- * whole stable release)
- * <minor> and <major> must match
- * Each target version must be at least <major> and <minor>
- */
-function versionCheck(required, current) {
-    let currentArray = current.split('.');
-    let major = currentArray[0];
-    let minor = currentArray[1];
-    let point = currentArray[2];
-    for (let i = 0; i < required.length; i++) {
-        let requiredArray = required[i].split('.');
-        if (requiredArray[0] == major &&
-            requiredArray[1] == minor &&
-            (requiredArray[2] == point ||
-             (requiredArray[2] == undefined && parseInt(minor) % 2 == 0)))
-            return true;
-    }
-    return false;
-}
 
 function installExtensionFromUUID(uuid, version_tag) {
     let params = { uuid: uuid,
@@ -143,18 +104,13 @@ function uninstallExtensionFromUUID(uuid) {
     disableExtension(uuid);
 
     // Don't try to uninstall system extensions
-    if (meta.type != ExtensionType.PER_USER)
+    if (meta.type != ExtensionUtils.ExtensionType.PER_USER)
         return false;
 
     meta.state = ExtensionState.UNINSTALLED;
     _signals.emit('extension-state-changed', meta);
 
     delete extensionMeta[uuid];
-
-    // Importers are marked as PERMANENT, so we can't do this.
-    // delete extensions[uuid];
-    extensions[uuid] = undefined;
-
     delete extensionStateObjs[uuid];
     delete errors[uuid];
 
@@ -179,7 +135,7 @@ function gotExtensionZipFile(session, message, uuid) {
     }
 
     let stream = new Gio.UnixOutputStream({ fd: fd });
-    let dir = userExtensionsDir.get_child(uuid);
+    let dir = ExtensionUtils.userExtensionsDir.get_child(uuid);
     Shell.write_soup_message_to_stream(stream, message);
     stream.close(null);
     let [success, pid] = GLib.spawn_async(null,
@@ -203,7 +159,7 @@ function gotExtensionZipFile(session, message, uuid) {
             global.settings.set_strv(ENABLED_EXTENSIONS_KEY, enabledExtensions);
         }
 
-        loadExtension(dir, ExtensionType.PER_USER, true);
+        loadExtension(dir, ExtensionUtils.ExtensionType.PER_USER, true);
     });
 }
 
@@ -299,65 +255,26 @@ function logExtensionError(uuid, message, state) {
 }
 
 function loadExtension(dir, type, enabled) {
-    let info;
     let uuid = dir.get_basename();
-
-    let metadataFile = dir.get_child('metadata.json');
-    if (!metadataFile.query_exists(null)) {
-        logExtensionError(uuid, 'Missing metadata.json');
-        return;
-    }
-
-    let metadataContents;
-    try {
-        metadataContents = Shell.get_file_contents_utf8_sync(metadataFile.get_path());
-    } catch (e) {
-        logExtensionError(uuid, 'Failed to load metadata.json: ' + e);
-        return;
-    }
     let meta;
+
+    if (extensionMeta[uuid] != undefined) {
+        throw new Error('extension already loaded');
+    }
+
     try {
-        meta = JSON.parse(metadataContents);
-    } catch (e) {
-        logExtensionError(uuid, 'Failed to parse metadata.json: ' + e);
-        return;
-    }
-
-    let requiredProperties = ['uuid', 'name', 'description', 'shell-version'];
-    for (let i = 0; i < requiredProperties.length; i++) {
-        let prop = requiredProperties[i];
-        if (!meta[prop]) {
-            logExtensionError(uuid, 'missing "' + prop + '" property in metadata.json');
-            return;
-        }
-    }
-
-    if (extensions[uuid] != undefined) {
-        logExtensionError(uuid, 'extension already loaded');
-        return;
-    }
-
-    // Encourage people to add this
-    if (!meta['url']) {
-        global.log('Warning: Missing "url" property in metadata.json');
-    }
-
-    if (uuid != meta.uuid) {
-        logExtensionError(uuid, 'uuid "' + meta.uuid + '" from metadata.json does not match directory name "' + uuid + '"');
+        meta = ExtensionUtils.loadMetadata(uuid, dir, type);
+    } catch(e) {
+        logExtensionError(uuid, e.message);
         return;
     }
 
     extensionMeta[uuid] = meta;
-    meta.type = type;
-    meta.dir = dir;
-    meta.path = dir.get_path();
-    meta.error = '';
 
     // Default to error, we set success as the last step
     meta.state = ExtensionState.ERROR;
 
-    if (!versionCheck(meta['shell-version'], Config.PACKAGE_VERSION) ||
-        (meta['js-version'] && !versionCheck(meta['js-version'], Config.GJS_VERSION))) {
+    if (ExtensionUtils.isOutOfDate(meta)) {
         logExtensionError(uuid, 'extension is not compatible with current GNOME Shell and/or GJS version', ExtensionState.OUT_OF_DATE);
         meta.state = ExtensionState.OUT_OF_DATE;
         return;
@@ -389,8 +306,8 @@ function loadExtension(dir, type, enabled) {
     let extensionModule;
     let extensionState = null;
     try {
-        ShellJS.add_extension_importer('imports.ui.extensionSystem.extensions', meta.uuid, dir.get_path());
-        extensionModule = extensions[meta.uuid].extension;
+        ExtensionUtils.installImporter(meta);
+        extensionModule = meta.importer.extension;
     } catch (e) {
         if (stylesheetPath != null)
             theme.unload_stylesheet(stylesheetPath);
@@ -457,50 +374,17 @@ function onEnabledExtensionsChanged() {
 }
 
 function init() {
-    let userExtensionsPath = GLib.build_filenamev([global.userdatadir, 'extensions']);
-    userExtensionsDir = Gio.file_new_for_path(userExtensionsPath);
-    try {
-        if (!userExtensionsDir.query_exists(null))
-            userExtensionsDir.make_directory_with_parents(null);
-    } catch (e) {
-        global.logError('' + e);
-    }
+    ExtensionUtils.init();
 
     global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
 }
 
-function _loadExtensionsIn(dir, type) {
-    let fileEnum;
-    let file, info;
-    try {
-        fileEnum = dir.enumerate_children('standard::*', Gio.FileQueryInfoFlags.NONE, null);
-    } catch (e) {
-        global.logError('' + e);
-       return;
-    }
-
-    while ((info = fileEnum.next_file(null)) != null) {
-        let fileType = info.get_file_type();
-        if (fileType != Gio.FileType.DIRECTORY)
-            continue;
-        let name = info.get_name();
-        let child = dir.get_child(name);
-        let enabled = enabledExtensions.indexOf(name) != -1;
-        loadExtension(child, type, enabled);
-    }
-    fileEnum.close(null);
-}
-
 function loadExtensions() {
-    let systemDataDirs = GLib.get_system_data_dirs();
-    for (let i = 0; i < systemDataDirs.length; i++) {
-        let dirPath = systemDataDirs[i] + '/gnome-shell/extensions';
-        let dir = Gio.file_new_for_path(dirPath);
-        if (dir.query_exists(null))
-            _loadExtensionsIn(dir, ExtensionType.SYSTEM);
-    }
-    _loadExtensionsIn(userExtensionsDir, ExtensionType.PER_USER);
+    ExtensionUtils.scanExtensions(function(uuid, dir, type) {
+        let enabled = enabledExtensions.indexOf(uuid) != -1;
+        loadExtension(dir, type, enabled);
+    });
 }
 
 const InstallExtensionDialog = new Lang.Class({
