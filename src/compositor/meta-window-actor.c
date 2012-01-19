@@ -72,6 +72,8 @@ struct _MetaWindowActorPrivate
 
   /* A region that matches the shape of the window, including frame bounds */
   cairo_region_t   *shape_region;
+  /* If the window has an input shape, a region that matches the shape */
+  cairo_region_t   *input_region;
   /* The opaque region, from _NET_WM_OPAQUE_REGION, intersected with
    * the shape region. */
   cairo_region_t   *opaque_region;
@@ -432,6 +434,7 @@ meta_window_actor_dispose (GObject *object)
 
   g_clear_pointer (&priv->unobscured_region, cairo_region_destroy);
   g_clear_pointer (&priv->shape_region, cairo_region_destroy);
+  g_clear_pointer (&priv->input_region, cairo_region_destroy);
   g_clear_pointer (&priv->opaque_region, cairo_region_destroy);
   g_clear_pointer (&priv->shadow_clip, cairo_region_destroy);
 
@@ -2256,7 +2259,44 @@ meta_window_actor_update_shape_region (MetaWindowActor       *self,
   priv->shape_region = region;
 
   g_clear_pointer (&priv->shadow_shape, meta_window_shape_unref);
+
   meta_window_actor_invalidate_shadow (self);
+}
+
+static void
+meta_window_actor_update_input_region (MetaWindowActor       *self,
+                                       cairo_rectangle_int_t *client_area)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaShapedTexture *stex = META_SHAPED_TEXTURE (priv->actor);
+  cairo_region_t *region = NULL;
+
+  if (priv->window->frame != NULL && priv->window->input_region != NULL)
+    {
+      region = meta_frame_get_frame_bounds (priv->window->frame);
+
+      cairo_region_subtract_rectangle (region, client_area);
+
+      /* input_region is in client window coordinates, so translate the
+       * input region into that coordinate system and back */
+      cairo_region_translate (region, -client_area->x, -client_area->y);
+      cairo_region_union (region, priv->window->input_region);
+      cairo_region_translate (region, client_area->x, client_area->y);
+    }
+  else if (priv->window->shape_region != NULL)
+    {
+      region = cairo_region_reference (priv->window->input_region);
+    }
+  else
+    {
+      /* If we don't have a shape on the server, that means that
+       * we have an implicit shape of one rectangle covering the
+       * entire window. */
+      region = cairo_region_create_rectangle (client_area);
+    }
+
+  meta_shaped_texture_set_input_shape_region (stex, region);
+  cairo_region_destroy (region);
 }
 
 static void
@@ -2319,10 +2359,10 @@ check_needs_reshape (MetaWindowActor *self)
     client_area.height = priv->window->rect.height;
 
   meta_window_actor_update_shape_region (self, &client_area);
+  meta_window_actor_update_input_region (self, &client_area);
   meta_window_actor_update_opaque_region (self);
 
   priv->needs_reshape = FALSE;
-  meta_window_actor_invalidate_shadow (self);
 }
 
 void

@@ -352,6 +352,9 @@ struct _MetaWindow
   /* if non-NULL, the opaque region _NET_WM_OPAQUE_REGION */
   cairo_region_t *opaque_region;
 
+  /* the input shape region for picking */
+  cairo_region_t *input_region;
+
   /* if TRUE, the we have the new form of sync request counter which
    * also handles application frames */
   guint extended_sync_request_counter : 1;
@@ -681,6 +684,10 @@ gboolean meta_window_updates_are_frozen (MetaWindow *window);
 void meta_window_set_opaque_region        (MetaWindow     *window,
                                            cairo_region_t *region);
 void meta_window_update_opaque_region_x11 (MetaWindow *window);
+
+void meta_window_set_input_region         (MetaWindow     *window,
+                                           cairo_region_t *region);
+void meta_window_update_input_region_x11  (MetaWindow *window);
 
 void meta_window_set_shape_region         (MetaWindow     *window,
                                            cairo_region_t *region);

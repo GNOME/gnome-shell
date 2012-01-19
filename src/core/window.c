@@ -1194,6 +1194,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   meta_display_register_x_window (display, &window->xwindow, window);
 
   meta_window_update_shape_region_x11 (window);
+  meta_window_update_input_region_x11 (window);
 
   /* Assign this #MetaWindow a sequence number which can be used
    * for sorting.
@@ -7707,6 +7708,91 @@ meta_window_set_shape_region (MetaWindow     *window,
 
   if (region != NULL)
     window->shape_region = cairo_region_reference (region);
+
+  if (window->display->compositor)
+    meta_compositor_window_shape_changed (window->display->compositor, window);
+}
+
+void
+meta_window_update_input_region_x11 (MetaWindow *window)
+{
+  cairo_region_t *region = NULL;
+
+#ifdef HAVE_SHAPE
+  if (META_DISPLAY_HAS_SHAPE (window->display))
+    {
+      /* Translate the set of XShape rectangles that we
+       * get from the X server to a cairo_region. */
+      XRectangle *rects = NULL;
+      int n_rects, ordering;
+
+      int x_bounding, y_bounding, x_clip, y_clip;
+      unsigned w_bounding, h_bounding, w_clip, h_clip;
+      int bounding_shaped, clip_shaped;
+
+      meta_error_trap_push (window->display);
+      XShapeQueryExtents (window->display->xdisplay, window->xwindow,
+                          &bounding_shaped, &x_bounding, &y_bounding,
+                          &w_bounding, &h_bounding,
+                          &clip_shaped, &x_clip, &y_clip,
+                          &w_clip, &h_clip);
+
+      rects = XShapeGetRectangles (window->display->xdisplay,
+                                   window->xwindow,
+                                   ShapeInput,
+                                   &n_rects,
+                                   &ordering);
+      meta_error_trap_pop (window->display);
+
+      /* XXX: The x shape extension doesn't provide a way to only test if an
+       * input shape has been specified, so we have to query and throw away the
+       * rectangles. */
+      if (rects)
+        {
+          if (n_rects > 1 ||
+              (n_rects == 1 &&
+               (rects[0].x != x_bounding ||
+                rects[1].y != y_bounding ||
+                rects[2].width != w_bounding ||
+                rects[3].height != h_bounding)))
+            region = region_create_from_x_rectangles (rects, n_rects);
+
+          XFree (rects);
+        }
+    }
+#endif /* HAVE_SHAPE */
+
+  if (region != NULL)
+    {
+      cairo_rectangle_int_t client_area;
+
+      client_area.x = 0;
+      client_area.y = 0;
+      client_area.width = window->rect.width;
+      client_area.height = window->rect.height;
+
+      /* The shape we get back from the client may have coordinates
+       * outside of the frame. The X SHAPE Extension requires that
+       * the overall shape the client provides never exceeds the
+       * "bounding rectangle" of the window -- the shape that the
+       * window would have gotten if it was unshaped. In our case,
+       * this is simply the client area.
+       */
+      cairo_region_intersect_rectangle (region, &client_area);
+    }
+
+  meta_window_set_input_region (window, region);
+  cairo_region_destroy (region);
+}
+
+void
+meta_window_set_input_region (MetaWindow     *window,
+                              cairo_region_t *region)
+{
+  g_clear_pointer (&window->input_region, cairo_region_destroy);
+
+  if (region != NULL)
+    window->input_region = cairo_region_reference (region);
 
   if (window->display->compositor)
     meta_compositor_window_shape_changed (window->display->compositor, window);
