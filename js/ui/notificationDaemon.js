@@ -480,7 +480,7 @@ NotificationDaemon.prototype = {
     },
 
     _onTrayIconRemoved: function(o, icon) {
-        let source = this._lookupSource(icon.pid, null, true);
+        let source = this._lookupSource(null, icon.pid, true);
         if (source)
             source.destroy();
     }
