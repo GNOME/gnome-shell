@@ -325,15 +325,12 @@ clutter_stage_allocate (ClutterActor           *self,
    */
   if ((!clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC)))
     {
-      ClutterActorClass *klass;
-
       CLUTTER_NOTE (LAYOUT,
                     "Following allocation to %dx%d (origin %s)",
                     width, height,
                     origin_changed ? "changed" : "not changed");
 
-      klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
-      klass->allocate (self, box, flags);
+      clutter_actor_set_allocation (self, box, flags);
 
       /* Ensure the window is sized correctly */
       if (!priv->is_fullscreen)
@@ -373,7 +370,6 @@ clutter_stage_allocate (ClutterActor           *self,
   else
     {
       ClutterActorBox override = { 0, };
-      ClutterActorClass *klass;
 
       /* override the passed allocation */
       override.x1 = 0;
@@ -390,8 +386,7 @@ clutter_stage_allocate (ClutterActor           *self,
                     origin_changed ? "changed" : "not changed");
 
       /* and store the overridden allocation */
-      klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
-      klass->allocate (self, &override, flags);
+      clutter_actor_set_allocation (self, &override, flags);
     }
 
   /* XXX: Until Cogl becomes fully responsible for backend windows
