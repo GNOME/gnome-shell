@@ -330,7 +330,7 @@ clutter_stage_allocate (ClutterActor           *self,
                     width, height,
                     origin_changed ? "changed" : "not changed");
 
-      clutter_actor_set_allocation (self, box, flags);
+      CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->allocate (self, box, flags);
 
       /* Ensure the window is sized correctly */
       if (!priv->is_fullscreen)
@@ -386,7 +386,7 @@ clutter_stage_allocate (ClutterActor           *self,
                     origin_changed ? "changed" : "not changed");
 
       /* and store the overridden allocation */
-      clutter_actor_set_allocation (self, &override, flags);
+      CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->allocate (self, &override, flags);
     }
 
   /* XXX: Until Cogl becomes fully responsible for backend windows
