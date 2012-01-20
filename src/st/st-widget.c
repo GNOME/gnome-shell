@@ -2185,7 +2185,7 @@ static void on_can_focus_notify    (GObject    *gobject,
 static void on_label_notify        (GObject    *gobject,
                                     GParamSpec *pspec,
                                     gpointer    data);
-static void check_selected         (StWidgetAccessible *self,
+static void check_pseudo_class     (StWidgetAccessible *self,
                                     StWidget *widget);
 static void check_labels           (StWidgetAccessible *self,
                                     StWidget *widget);
@@ -2200,6 +2200,7 @@ struct _StWidgetAccessiblePrivate
 {
   /* Cached values (used to avoid extra notifications) */
   gboolean selected;
+  gboolean checked;
 
   /* The current_label. Right now there are the proper atk
    * relationships between this object and the label
@@ -2287,7 +2288,7 @@ st_widget_accessible_initialize (AtkObject *obj,
    * Ie: it is required to ensure a first notification when Alt+Tab
    * popup appears
    */
-  check_selected (ST_WIDGET_ACCESSIBLE (obj), ST_WIDGET (data));
+  check_pseudo_class (ST_WIDGET_ACCESSIBLE (obj), ST_WIDGET (data));
   check_labels (ST_WIDGET_ACCESSIBLE (obj), ST_WIDGET (data));
 }
 
@@ -2315,6 +2316,9 @@ st_widget_accessible_ref_state_set (AtkObject *obj)
   if (self->priv->selected)
     atk_state_set_add_state (result, ATK_STATE_SELECTED);
 
+  if (self->priv->checked)
+    atk_state_set_add_state (result, ATK_STATE_CHECKED);
+
   /* On clutter there isn't any tip to know if a actor is focusable or
    * not, anyone can receive the key_focus. For this reason
    * cally_actor sets any actor as FOCUSABLE. This is not the case on
@@ -2334,27 +2338,30 @@ on_pseudo_class_notify (GObject    *gobject,
                         GParamSpec *pspec,
                         gpointer    data)
 {
-  check_selected (ST_WIDGET_ACCESSIBLE (data),
-                  ST_WIDGET (gobject));
+  check_pseudo_class (ST_WIDGET_ACCESSIBLE (data),
+                      ST_WIDGET (gobject));
 }
 
 /*
- * This method checks if the widget is selected, and notify a atk
- * state change if required
+ * In some cases the only way to check some states are checking the
+ * pseudo-class. Like if the object is selected (see bug 637830) or if
+ * the object is toggled. This method also notifies a state change if
+ * the value is different to the one cached.
  *
- * In order to decide if there was a selection, we use the current
- * pseudo-class of the widget searching for "selected", the current
- * homogeneus way to check if a item is selected (see bug 637830)
+ * We also assume that if the object uses that pseudo-class, it makes
+ * sense to notify that state change. It would be possible to refine
+ * that behaviour checking the role (ie: notify CHECKED changes only
+ * for CHECK_BUTTON roles).
  *
- * In a ideal world we would have a more standard way to check if the
- * item is selected or not, like the widget-context (as in the case of
+ * In a ideal world we would have a more standard way to get the
+ * state, like the widget-context (as in the case of
  * gtktreeview-cells), or something like the property "can-focus". But
  * for the moment this is enough, and we can update that in the future
  * if required.
  */
 static void
-check_selected (StWidgetAccessible *self,
-                StWidget *widget)
+check_pseudo_class (StWidgetAccessible *self,
+                    StWidget *widget)
 {
   gboolean found = FALSE;
 
@@ -2366,6 +2373,16 @@ check_selected (StWidgetAccessible *self,
       self->priv->selected = found;
       atk_object_notify_state_change (ATK_OBJECT (self),
                                       ATK_STATE_SELECTED,
+                                      found);
+    }
+
+  found = st_widget_has_style_pseudo_class (widget,
+                                            "checked");
+  if (found != self->priv->checked)
+    {
+      self->priv->checked = found;
+      atk_object_notify_state_change (ATK_OBJECT (self),
+                                      ATK_STATE_CHECKED,
                                       found);
     }
 }
