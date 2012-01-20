@@ -10448,24 +10448,31 @@ clutter_actor_reparent (ClutterActor *self,
 
       g_object_ref (self);
 
-      /* go through the Container implementation if this is a regular
-       * child and not an internal one
-       */
-      if (!CLUTTER_ACTOR_IS_INTERNAL_CHILD (self))
+      if (old_parent != NULL)
         {
-          ClutterContainer *parent = CLUTTER_CONTAINER (old_parent);
+         /* go through the Container implementation if this is a regular
+          * child and not an internal one
+          */
+         if (!CLUTTER_ACTOR_IS_INTERNAL_CHILD (self))
+           {
+             ClutterContainer *parent = CLUTTER_CONTAINER (old_parent);
 
-          /* this will have to call unparent() */
-          clutter_container_remove_actor (parent, self);
+             /* this will have to call unparent() */
+             clutter_container_remove_actor (parent, self);
+           }
+         else
+           clutter_actor_remove_child_internal (old_parent, self,
+                                                REMOVE_CHILD_LEGACY_FLAGS);
         }
-      else
-        clutter_actor_remove_child (old_parent, self);
 
       /* Note, will call set_parent() */
       if (!CLUTTER_ACTOR_IS_INTERNAL_CHILD (self))
         clutter_container_add_actor (CLUTTER_CONTAINER (new_parent), self);
       else
-        clutter_actor_add_child (new_parent, self);
+        clutter_actor_add_child_internal (new_parent, self,
+                                          ADD_CHILD_LEGACY_FLAGS,
+                                          insert_child_at_depth,
+                                          NULL);
 
       /* we emit the ::parent-set signal once */
       g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
