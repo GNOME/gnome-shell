@@ -1,3 +1,17 @@
+3.3.4
+=====
+* Adapt to changes in GtkStateFlags [Owen]
+* Redo properties for applications menu corresponding to GTK+ changes -
+  they are now _GTK_* not DBUS_*. [Ryan]
+* Fix crash on gnome-shell restart when a modal dialog is open [Owen; #668299]
+* Code cleanup [Florian; #666039]
+
+Contributors:
+ Ryan Lortie, Florian Müllner, Owen Taylor
+
+Translations:
+ Alexander Shopov [bg], Fran Diéguez [gl]
+
 3.3.3
 =====
 * Add keybindings for tiling to left or right [Florian; #648700]
