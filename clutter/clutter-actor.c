@@ -480,7 +480,6 @@ struct _ClutterActorPrivate
      queued without an effect. */
   guint is_dirty                    : 1;
   guint bg_color_set                : 1;
-  guint has_overridden_allocate     : 1;
 };
 
 enum
@@ -1970,17 +1969,9 @@ clutter_actor_set_allocation_internal (ClutterActor           *self,
 }
 
 static inline void
-clutter_actor_maybe_layout_children (ClutterActor *self,
-                                     gboolean      check_allocate)
+clutter_actor_maybe_layout_children (ClutterActor *self)
 {
   ClutterActorPrivate *priv = self->priv;
-
-  /* see the comment in clutter_actor_real_allocate() and in
-   * clutter_actor_set_allocation() for why this is currently
-   * necessary
-   */
-  if (check_allocate && priv->has_overridden_allocate)
-    return;
 
   if (priv->n_children != 0 &&
       priv->layout_manager != NULL)
@@ -2026,19 +2017,8 @@ clutter_actor_real_allocate (ClutterActor           *self,
    * so that people connecting to properties will be able to get valid
    * data out of the sub-tree of the scene graph that has this actor at
    * the root.
-   *
-   * XXX - the default behaviour for actor subclasses with a layout
-   * management policy for their children is to override allocate() and
-   * chain up; this means that we cannot call clutter_layout_manager_allocate()
-   * unconditionally here, because it will lead to a double allocation. hence
-   * the nasty check on the allocate() vfunc.
-   *
-   * if an actor wants to override the allocate() vfunc and still delegate
-   * to the actor's layout manager, then it can either call the layout manager
-   * allocate() method by itself, or use clutter_actor_set_allocation()
-   * instead.
    */
-  clutter_actor_maybe_layout_children (self, TRUE);
+  clutter_actor_maybe_layout_children (self);
 
   if (changed)
     g_signal_emit (self, actor_signals[ALLOCATION_CHANGED], 0,
@@ -4517,8 +4497,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
 
   object_class->set_property = clutter_actor_set_property;
   object_class->get_property = clutter_actor_get_property;
-  object_class->dispose      = clutter_actor_dispose;
-  object_class->finalize     = clutter_actor_finalize;
+  object_class->dispose = clutter_actor_dispose;
+  object_class->finalize = clutter_actor_finalize;
 
   g_type_class_add_private (klass, sizeof (ClutterActorPrivate));
 
@@ -6095,21 +6075,6 @@ clutter_actor_init (ClutterActor *self)
   priv->last_paint_volume_valid = TRUE;
 
   priv->transform_valid = FALSE;
-
-  /* we need to create the default layout manager here, because
-   * constructed() may not end up being called, if for instance
-   * somebody forgot to chain up
-   */
-  priv->layout_manager = clutter_fixed_layout_new ();
-  g_object_ref_sink (priv->layout_manager);
-  clutter_layout_manager_set_container (priv->layout_manager,
-                                        CLUTTER_CONTAINER (self));
-  g_signal_connect (priv->layout_manager, "layout-changed",
-                    G_CALLBACK (on_layout_manager_changed),
-                    self);
-
-  priv->has_overridden_allocate =
-    CLUTTER_ACTOR_GET_CLASS (self)->allocate != clutter_actor_real_allocate;
 }
 
 /**
@@ -7567,13 +7532,8 @@ clutter_actor_set_allocation (ClutterActor           *self,
    * so that people connecting to properties will be able to get valid
    * data out of the sub-tree of the scene graph that has this actor at
    * the root.
-   *
-   * XXX - unlike the default ClutterActor::allocate(), we let any
-   * layout manager delegate layout our children, if any. the rationale
-   * for this being that only newly written code will call this function
-   * and will be able to avoid the double allocation.
    */
-  clutter_actor_maybe_layout_children (self, FALSE);
+  clutter_actor_maybe_layout_children (self);
 
   if (changed)
     g_signal_emit (self, actor_signals[ALLOCATION_CHANGED], 0,
@@ -14970,6 +14930,7 @@ clutter_actor_set_layout_manager (ClutterActor         *self,
     }
 
   clutter_actor_queue_relayout (self);
+
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAYOUT_MANAGER]);
 }
 
