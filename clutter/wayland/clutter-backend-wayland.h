@@ -57,7 +57,10 @@ struct _ClutterBackendWayland
   struct wl_shell *wayland_shell;
   struct wl_shm *wayland_shm;
   struct wl_buffer *cursor_buffer;
+  struct wl_output *wayland_output;
+
   gint cursor_x, cursor_y;
+  gint output_width, output_height;
 
   GSource *wayland_source;
 

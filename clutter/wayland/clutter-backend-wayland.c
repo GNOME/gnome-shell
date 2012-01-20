@@ -79,6 +79,42 @@ clutter_backend_wayland_dispose (GObject *gobject)
 }
 
 
+static void
+output_handle_mode (void             *data,
+                    struct wl_output *wl_output,
+                    uint32_t          flags,
+                    int               width,
+                    int               height,
+                    int               refresh)
+{
+  ClutterBackendWayland *backend_wayland = data;
+
+  if (flags & WL_OUTPUT_MODE_CURRENT)
+    {
+      backend_wayland->output_width = width;
+      backend_wayland->output_height = height;
+    }
+}
+
+static void
+output_handle_geometry (void             *data,
+                        struct wl_output *wl_output,
+                        int               x,
+                        int               y,
+                        int               physical_width,
+                        int               physical_height,
+                        int               subpixel,
+                        const char       *make,
+                        const char       *model)
+{
+}
+
+
+static const struct wl_output_listener wayland_output_listener = {
+  output_handle_geometry,
+  output_handle_mode,
+};
+
 
 static void
 display_handle_global (struct wl_display *display,
@@ -101,11 +137,21 @@ display_handle_global (struct wl_display *display,
     {
       backend_wayland->wayland_shell =
         wl_display_bind (display, id, &wl_shell_interface);
-
     }
   else if (strcmp (interface, "wl_shm") == 0)
-    backend_wayland->wayland_shm =
-      wl_display_bind (display, id, &wl_shm_interface);
+    {
+      backend_wayland->wayland_shm =
+        wl_display_bind (display, id, &wl_shm_interface);
+    }
+  else if (strcmp (interface, "wl_output") == 0)
+    {
+      /* FIXME: Support multiple outputs */
+      backend_wayland->wayland_output =
+        wl_display_bind (display, id, &wl_output_interface);
+      wl_output_add_listener (backend_wayland->wayland_output,
+                              &wayland_output_listener,
+                              backend_wayland);
+    }
 }
 
 static gboolean
