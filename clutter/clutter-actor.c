@@ -9499,6 +9499,9 @@ insert_child_at_depth (ClutterActor *self,
       self->priv->first_child = child;
       self->priv->last_child = child;
 
+      child->priv->next_sibling = NULL;
+      child->priv->prev_sibling = NULL;
+
       return;
     }
 
@@ -9749,6 +9752,8 @@ clutter_actor_add_child_internal (ClutterActor              *self,
 
   g_object_ref_sink (child);
   child->priv->parent = self;
+  child->priv->next_sibling = NULL;
+  child->priv->prev_sibling = NULL;
 
   /* delegate the actual insertion */
   add_func (self, child, data);
@@ -9993,7 +9998,8 @@ clutter_actor_set_parent (ClutterActor *self,
    * emit the ::actor-added signal, to avoid recursion or double
    * emissions
    */
-  clutter_actor_add_child_internal (parent, self, ADD_CHILD_LEGACY_FLAGS,
+  clutter_actor_add_child_internal (parent, self,
+                                    ADD_CHILD_LEGACY_FLAGS,
                                     insert_child_at_depth,
                                     NULL);
 }
@@ -10072,6 +10078,9 @@ remove_child (ClutterActor *self,
 
   if (self->priv->last_child == child)
     self->priv->last_child = prev_sibling;
+
+  child->priv->prev_sibling = NULL;
+  child->priv->next_sibling = NULL;
 }
 
 typedef enum {
