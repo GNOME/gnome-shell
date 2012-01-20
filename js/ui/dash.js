@@ -298,7 +298,9 @@ const Dash = new Lang.Class({
         this._dragPlaceholderPos = -1;
         this._animatingPlaceholdersCount = 0;
         this._favRemoveTarget = null;
-        this._labelTimeoutId = 0;
+        this._showLabelTimeoutId = 0;
+        this._resetHoverTimeoutId = 0;
+        this._labelShowing = false;
 
         this._box = new St.BoxLayout({ name: 'dash',
                                        vertical: true,
@@ -448,18 +450,31 @@ const Dash = new Lang.Class({
 
     _onHover: function (item, display) {
         if (display.actor.get_hover() && !display.isMenuUp) {
-            if (this._labelTimeoutId == 0) {
-                this._labelTimeoutId = Mainloop.timeout_add(DASH_ITEM_HOVER_TIMEOUT,
+            if (this._showLabelTimeoutId == 0) {
+                let timeout = this._labelShowing ? 0 : DASH_ITEM_HOVER_TIMEOUT;
+                this._showLabelTimeoutId = Mainloop.timeout_add(timeout,
                     Lang.bind(this, function() {
+                        this._labelShowing = true;
                         item.showLabel();
                         return false;
                     }));
+                if (this._resetHoverTimeoutId > 0) {
+                    Mainloop.source_remove(this._resetHoverTimeoutId);
+                this._resetHoverTimeoutId = 0;
+                }
             }
         } else {
-            if (this._labelTimeoutId > 0)
-                Mainloop.source_remove(this._labelTimeoutId);
-            this._labelTimeoutId = 0;
+            if (this._showLabelTimeoutId > 0)
+                Mainloop.source_remove(this._showLabelTimeoutId);
+            this._showLabelTimeoutId = 0;
             item.hideLabel();
+            if (this._labelShowing) {
+                this._resetHoverTimeoutId = Mainloop.timeout_add(DASH_ITEM_HOVER_TIMEOUT,
+                    Lang.bind(this, function() {
+                        this._labelShowing = false;
+                        return false;
+                    }));
+            }
         }
     },
 
