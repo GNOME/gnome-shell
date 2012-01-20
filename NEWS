@@ -1,3 +1,10 @@
+3.2.2.1
+=======
+* Fix several regressions with tray icons introduced in 3.2.2 [Owen; #664138]
+
+Contributors:
+ Owen Taylor
+
 3.2.2
 =====
 * Fix crash when searching in the shell caused by .desktop files
