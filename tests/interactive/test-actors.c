@@ -143,6 +143,15 @@ frame_cb (ClutterTimeline *timeline,
     }
 }
 
+static void
+stop_and_quit (ClutterActor *stage,
+               SuperOH      *data)
+{
+  clutter_timeline_stop (data->timeline);
+
+  clutter_main_quit ();
+}
+
 static gdouble
 my_sine_wave (ClutterAlpha *alpha,
               gpointer      dummy G_GNUC_UNUSED)
@@ -157,7 +166,6 @@ G_MODULE_EXPORT int
 test_actors_main (int argc, char *argv[])
 {
   ClutterAlpha *alpha;
-  ClutterActor *stage;
   SuperOH      *oh;
   gint          i;
   GError       *error;
@@ -179,17 +187,16 @@ test_actors_main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  stage = clutter_stage_new ();
-  clutter_actor_set_size (stage, 800, 600);
-  clutter_actor_set_name (stage, "Default Stage");
-  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
-
-  clutter_stage_set_title (CLUTTER_STAGE (stage), "Actors");
-  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_LightSkyBlue);
-  clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
-
   oh = g_new (SuperOH, 1);
-  oh->stage = stage;
+
+  oh->stage = clutter_stage_new ();
+  clutter_actor_set_size (oh->stage, 800, 600);
+  clutter_actor_set_name (oh->stage, "Default Stage");
+  g_signal_connect (oh->stage, "destroy", G_CALLBACK (stop_and_quit), oh);
+
+  clutter_stage_set_title (CLUTTER_STAGE (oh->stage), "Actors");
+  clutter_stage_set_color (CLUTTER_STAGE (oh->stage), CLUTTER_COLOR_LightSkyBlue);
+  clutter_stage_set_user_resizable (CLUTTER_STAGE (oh->stage), TRUE);
 
   /* Create a timeline to manage animation */
   oh->timeline = clutter_timeline_new (6000);
@@ -211,17 +218,18 @@ test_actors_main (int argc, char *argv[])
 
   g_free (file);
 
-  /* create a new group to hold multiple actors in a group */
+  /* create a new actor to hold other actors */
   oh->group = clutter_actor_new ();
+  clutter_actor_set_layout_manager (oh->group, clutter_fixed_layout_new ());
   clutter_actor_set_name (oh->group, "Group");
   g_signal_connect (oh->group, "destroy", G_CALLBACK (on_group_destroy), oh);
-  clutter_actor_add_constraint (oh->group, clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5));
-  clutter_actor_add_constraint (oh->group, clutter_bind_constraint_new (stage, CLUTTER_BIND_SIZE, 0.0f));
+  clutter_actor_add_constraint (oh->group, clutter_align_constraint_new (oh->stage, CLUTTER_ALIGN_BOTH, 0.5));
+  clutter_actor_add_constraint (oh->group, clutter_bind_constraint_new (oh->stage, CLUTTER_BIND_SIZE, 0.0f));
 
   oh->hand = g_new (ClutterActor*, n_hands);
 
-  oh->stage_width = clutter_actor_get_width (stage);
-  oh->stage_height = clutter_actor_get_height (stage);
+  oh->stage_width = clutter_actor_get_width (oh->stage);
+  oh->stage_height = clutter_actor_get_height (oh->stage);
   oh->radius = (oh->stage_width + oh->stage_height)
              / n_hands;
 
@@ -281,12 +289,12 @@ test_actors_main (int argc, char *argv[])
     }
 
   /* Add the group to the stage */
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), oh->group);
+  clutter_container_add_actor (CLUTTER_CONTAINER (oh->stage), oh->group);
 
   /* Show everying */
-  clutter_actor_show (stage);
+  clutter_actor_show (oh->stage);
 
-  g_signal_connect (stage, "key-release-event",
+  g_signal_connect (oh->stage, "key-release-event",
 		    G_CALLBACK (input_cb),
 		    oh);
 
