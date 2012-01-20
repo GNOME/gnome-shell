@@ -749,6 +749,7 @@ const PopupSwitchMenuItem = new Lang.Class({
         this._switch = new Switch(active);
 
         this.actor.accessible_role = Atk.Role.CHECK_MENU_ITEM;
+        this.checkAccessibleState();
         this.actor.label_actor = this.label;
 
         this.addActor(this.label);
@@ -776,6 +777,7 @@ const PopupSwitchMenuItem = new Lang.Class({
             this.actor.can_focus = true;
             this.actor.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         }
+        this.checkAccessibleState();
     },
 
     activate: function(event) {
@@ -795,6 +797,7 @@ const PopupSwitchMenuItem = new Lang.Class({
     toggle: function() {
         this._switch.toggle();
         this.emit('toggled', this._switch.state);
+        this.checkAccessibleState();
     },
 
     get state() {
@@ -803,6 +806,20 @@ const PopupSwitchMenuItem = new Lang.Class({
 
     setToggleState: function(state) {
         this._switch.setToggleState(state);
+        this.checkAccessibleState();
+    },
+
+    checkAccessibleState: function() {
+        switch (this.actor.accessible_role) {
+        case Atk.Role.CHECK_MENU_ITEM:
+            if (this._switch.state)
+                this.actor.add_accessible_state (Atk.StateType.CHECKED);
+            else
+                this.actor.remove_accessible_state (Atk.StateType.CHECKED);
+            break;
+        default:
+            this.actor.remove_accessible_state (Atk.StateType.CHECKED);
+        }
     }
 });
 
