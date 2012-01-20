@@ -10438,12 +10438,12 @@ clutter_actor_reparent (ClutterActor *self,
       /* we emit the ::parent-set signal once */
       g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
 
-      g_object_unref (self);
-
       CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_IN_REPARENT);
 
       /* the IN_REPARENT flag suspends state updates */
       clutter_actor_update_map_state (self, MAP_STATE_CHECK);
+
+      g_object_unref (self);
    }
 }
 
