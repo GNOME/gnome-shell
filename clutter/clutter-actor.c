@@ -7325,8 +7325,9 @@ clutter_actor_adjust_allocation (ClutterActor    *self,
 
 #ifdef CLUTTER_ENABLE_DEBUG
   /* warn about underallocations */
-  if (floorf (min_width - alloc_width) > 0 ||
-      floorf (min_height - alloc_height) > 0)
+  if (_clutter_diagnostic_enabled () &&
+      (floorf (min_width - alloc_width) > 0 ||
+       floorf (min_height - alloc_height) > 0))
     {
       ClutterActor *parent = clutter_actor_get_parent (self);
 
