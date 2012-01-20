@@ -19,8 +19,6 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
- *
- *
  */
 
 /**
@@ -68,137 +66,83 @@
 #define CLUTTER_GROUP_GET_PRIVATE(obj) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_GROUP, ClutterGroupPrivate))
 
-struct _ClutterGroupPrivate
-{
-  ClutterLayoutManager *layout;
-};
-
 G_DEFINE_TYPE (ClutterGroup, clutter_group, CLUTTER_TYPE_ACTOR)
-
-static void
-clutter_group_real_pick (ClutterActor       *actor,
-                         const ClutterColor *pick)
-{
-  ClutterActor *child;
-
-  /* Chain up so we get a bounding box pained (if we are reactive) */
-  CLUTTER_ACTOR_CLASS (clutter_group_parent_class)->pick (actor, pick);
-
-  for (child = clutter_actor_get_first_child (actor);
-       child != NULL;
-       child = clutter_actor_get_next_sibling (child))
-    {
-      clutter_actor_paint (child);
-    }
-}
-
-static void
-clutter_group_real_get_preferred_width (ClutterActor *actor,
-                                        gfloat        for_height,
-                                        gfloat       *min_width,
-                                        gfloat       *natural_width)
-{
-  ClutterGroupPrivate *priv = CLUTTER_GROUP (actor)->priv;
-
-  clutter_layout_manager_get_preferred_width (priv->layout,
-                                              CLUTTER_CONTAINER (actor),
-                                              for_height,
-                                              min_width, natural_width);
-}
-
-static void
-clutter_group_real_get_preferred_height (ClutterActor *actor,
-                                         gfloat        for_width,
-                                         gfloat       *min_height,
-                                         gfloat       *natural_height)
-{
-  ClutterGroupPrivate *priv = CLUTTER_GROUP (actor)->priv;
-
-  clutter_layout_manager_get_preferred_height (priv->layout,
-                                               CLUTTER_CONTAINER (actor),
-                                               for_width,
-                                               min_height, natural_height);
-}
-
-static void
-clutter_group_real_allocate (ClutterActor           *actor,
-                             const ClutterActorBox  *allocation,
-                             ClutterAllocationFlags  flags)
-{
-  ClutterGroupPrivate *priv = CLUTTER_GROUP (actor)->priv;
-  ClutterActorClass *klass;
-
-  klass = CLUTTER_ACTOR_CLASS (clutter_group_parent_class);
-  klass->allocate (actor, allocation, flags);
-
-  clutter_layout_manager_allocate (priv->layout,
-                                   CLUTTER_CONTAINER (actor),
-                                   allocation, flags);
-}
-
-static void
-clutter_group_dispose (GObject *object)
-{
-  ClutterGroup *self = CLUTTER_GROUP (object);
-  ClutterGroupPrivate *priv = self->priv;
-
-  if (priv->layout != NULL)
-    {
-      clutter_layout_manager_set_container (priv->layout, NULL);
-      g_object_unref (priv->layout);
-      priv->layout = NULL;
-    }
-
-  G_OBJECT_CLASS (clutter_group_parent_class)->dispose (object);
-}
 
 static void
 clutter_group_real_show_all (ClutterActor *actor)
 {
-  clutter_container_foreach (CLUTTER_CONTAINER (actor),
-                             CLUTTER_CALLBACK (clutter_actor_show),
-                             NULL);
+  ClutterActor *iter;
+
+  for (iter = clutter_actor_get_first_child (actor);
+       iter != NULL;
+       iter = clutter_actor_get_next_sibling (iter))
+    clutter_actor_show (iter);
+
   clutter_actor_show (actor);
 }
 
 static void
 clutter_group_real_hide_all (ClutterActor *actor)
 {
+  ClutterActor *iter;
+
   clutter_actor_hide (actor);
-  clutter_container_foreach (CLUTTER_CONTAINER (actor),
-                             CLUTTER_CALLBACK (clutter_actor_hide),
-                             NULL);
+
+  for (iter = clutter_actor_get_first_child (actor);
+       iter != NULL;
+       iter = clutter_actor_get_next_sibling (iter))
+    clutter_actor_hide (iter);
+}
+
+static gboolean
+clutter_group_get_paint_volume (ClutterActor *actor,
+                                ClutterPaintVolume *volume)
+{
+  ClutterActor *child;
+  gboolean retval;
+
+  /* bail out early if we don't have any child */
+  if (clutter_actor_get_n_children (actor) == 0)
+    return FALSE;
+
+  retval = TRUE;
+
+  /* otherwise, union the paint volumes of our children, in case
+   * any one of them decides to paint outside the parent's allocation
+   */
+  for (child = clutter_actor_get_first_child (actor);
+       child != NULL;
+       child = clutter_actor_get_next_sibling (child))
+    {
+      const ClutterPaintVolume *child_volume;
+
+      /* This gets the paint volume of the child transformed into the
+       * group's coordinate space... */
+      child_volume = clutter_actor_get_transformed_paint_volume (child, actor);
+      if (!child_volume)
+        return FALSE;
+
+      clutter_paint_volume_union (volume, child_volume);
+    }
+
+  return retval;
 }
 
 static void
 clutter_group_class_init (ClutterGroupClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterGroupPrivate));
-
-  actor_class->get_preferred_width = clutter_group_real_get_preferred_width;
-  actor_class->get_preferred_height = clutter_group_real_get_preferred_height;
-  actor_class->allocate = clutter_group_real_allocate;
-  actor_class->pick = clutter_group_real_pick;
   actor_class->show_all = clutter_group_real_show_all;
   actor_class->hide_all = clutter_group_real_hide_all;
-
-  gobject_class->dispose = clutter_group_dispose;
-
+  actor_class->get_paint_volume = clutter_group_get_paint_volume;
 }
 
 static void
 clutter_group_init (ClutterGroup *self)
 {
-  self->priv = CLUTTER_GROUP_GET_PRIVATE (self);
-
-  self->priv->layout = clutter_fixed_layout_new ();
-  g_object_ref_sink (self->priv->layout);
-
-  clutter_layout_manager_set_container (self->priv->layout,
-                                        CLUTTER_CONTAINER (self));
+  clutter_actor_set_layout_manager (CLUTTER_ACTOR (self),
+                                    clutter_fixed_layout_new ());
 }
 
 /**
