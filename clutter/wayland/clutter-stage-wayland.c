@@ -120,6 +120,18 @@ clutter_stage_wayland_set_fullscreen (ClutterStageWindow *stage_window,
 }
 
 static void
+clutter_stage_wayland_resize (ClutterStageWindow *stage_window,
+                              gint                width,
+                              gint                height)
+{
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+
+  /* Resize preserving top left */
+  cogl_wayland_onscreen_resize (stage_cogl->onscreen, width, height, 0, 0);
+  _clutter_stage_window_redraw (stage_window);
+}
+
+static void
 clutter_stage_wayland_init (ClutterStageWayland *stage_wayland)
 {
 }
@@ -131,6 +143,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 
   iface->realize = clutter_stage_wayland_realize;
   iface->set_fullscreen = clutter_stage_wayland_set_fullscreen;
+  iface->resize = clutter_stage_wayland_resize;
 }
 
 static void
