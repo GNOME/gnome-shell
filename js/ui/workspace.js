@@ -370,6 +370,7 @@ const WindowClone = new Lang.Class({
                     if (this._selected)
                         return;
                     let [x, y] = action.get_coords();
+                    action.release();
                     this._draggable.startDrag(x, y, global.get_current_time());
                 }));
         }
