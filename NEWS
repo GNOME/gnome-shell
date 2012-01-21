@@ -1,3 +1,41 @@
+3.3.4
+=====
+* https://live.gnome.org/EveryDetailMatters
+  - Add "browse" for labels for dash items - once a tooltip is
+    showing, switch to other items without a delay [Seif; #666170]
+  - Always scale down windows in the overview at least to 70% [Vit; #646704]
+  - Fix the new-workspace drop indicator sometimes getting stuck
+    [Stefano; #664201]
+  - Delay rearranging windows in the overview as long as the pointer
+    is over a window [Vit; #645325]
+* Add a GConf => DConf migration file for overriden Mutter settings
+  [Florian; #667636]
+* When a VPN connection is active, show that as the network icon
+  [Giovanni; #665115]
+* Handle the "ExtendedAway" IM status as away, not offline [Guillaume; #667813]
+* Improve the appearance of the labels in "Applications" [Alex; #642392]
+* Adjust for GTK+ and Mutter API changes for application menu [Ryan; #668118]
+* Add section label support to the application menu [Giovanni; #666681]
+* Fix screenshot methods to work again [Cosimo; #667662]
+* Fix several crashers related to updating workspace thumbnails [Owen; #667652]
+* Fix memory management error causing gnome-shell-hotplug-sniffer to crash
+  [Owen; #667378]
+* Build fixes [Emmanuele, Rico; #667864]
+* Code cleanups [Adel; #668087]
+* Misc bug fixes [Colin, Florian, Giovanni, Owen, Xavier; #633028, #658817,
+  #664138, #667881, #668048, #668050]
+
+Contributors:
+ Emmanuele Bassi, Giovanni Campagna, Cosimo Cecchi, Xavier Claessens,
+ Guillaume Desmottes, Stefano Facchini, Adel Gadllah, Alex Hultman,
+ Ryan Lortie, Seif Lotfy, Florian Müllner, Vit Stanislav, Owen Taylor,
+ Rico Tzschichholz, Colin Walters
+
+Translations:
+ Ihar Hrachyshka [be], Alexander Shopov [bg], Arash Mousavi [fa],
+ Jiri Grönroos, Timo Jyrinki [fi], Fran Diéguez [gl], Kjartan Maraas [nb],
+ Yuri Myasoedov [ru], Matej Urbančič [sl], Nguyễn Thái Ngọc Duy [vi]
+
 3.3.3
 =====
 * https://live.gnome.org/EveryDetailMatters
