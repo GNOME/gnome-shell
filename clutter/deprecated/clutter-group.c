@@ -54,6 +54,7 @@
 #include "clutter-group.h"
 
 #include "clutter-actor.h"
+#include "clutter-actor-private.h"
 #include "clutter-container.h"
 #include "clutter-fixed-layout.h"
 #include "clutter-main.h"
@@ -114,9 +115,6 @@ clutter_group_real_add (ClutterContainer *container,
   priv->children = g_list_append (priv->children, actor);
   clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
 
-  /* queue a relayout, to get the correct positioning inside
-   * the ::actor-added signal handlers
-   */
   clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
 
   g_signal_emit_by_name (container, "actor-added", actor);
@@ -124,6 +122,27 @@ clutter_group_real_add (ClutterContainer *container,
   clutter_container_sort_depth_order (container);
 
   g_object_unref (actor);
+}
+
+static void
+clutter_group_real_actor_added (ClutterContainer *container,
+                                ClutterActor     *actor)
+{
+  ClutterGroupPrivate *priv = CLUTTER_GROUP (container)->priv;
+
+  /* XXX - children added using clutter_actor_add_child() will
+   * cause actor-added to be emitted without going through the
+   * add() virtual function.
+   *
+   * if we get an actor-added for a child that is not in our
+   * list of children already, then we go in compatibility
+   * mode.
+   */
+  if (g_list_find (priv->children, actor) != NULL)
+    return;
+
+  priv->children = g_list_append (priv->children, actor);
+  clutter_container_sort_depth_order (container);
 }
 
 static void
@@ -137,20 +156,26 @@ clutter_group_real_remove (ClutterContainer *container,
   priv->children = g_list_remove (priv->children, actor);
   clutter_actor_unparent (actor);
 
-  /* queue a relayout, to get the correct positioning inside
-   * the ::actor-removed signal handlers
-   */
   clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
 
-  /* at this point, the actor passed to the "actor-removed" signal
-   * handlers is not parented anymore to the container but since we
-   * are holding a reference on it, it's still valid
-   */
   g_signal_emit_by_name (container, "actor-removed", actor);
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
 
   g_object_unref (actor);
+}
+
+static void
+clutter_group_real_actor_removed (ClutterContainer *container,
+                                  ClutterActor     *actor)
+{
+  ClutterGroupPrivate *priv = CLUTTER_GROUP (container)->priv;
+
+  /* XXX - same compatibility mode of the ::actor-added implementation */
+  if (g_list_find (priv->children, actor) == NULL)
+    return;
+
+  priv->children = g_list_remove (priv->children, actor);
 }
 
 static void
@@ -199,7 +224,9 @@ clutter_group_real_raise (ClutterContainer *container,
    * as values are equal ordering shouldn't change but Z
    * values will be correct.
    *
-   * FIXME: optimise
+   * FIXME: get rid of this crap; this is so utterly broken and wrong on
+   * so many levels it's not even funny. sadly, we get to keep this until
+   * we can break API and remove Group for good.
    */
   if (sibling &&
       clutter_actor_get_depth (sibling) != clutter_actor_get_depth (actor))
@@ -256,6 +283,13 @@ clutter_group_real_sort_depth_order (ClutterContainer *container)
 
   priv->children = g_list_sort (priv->children, sort_by_depth);
 
+  /* XXX - this is a hack, to ensure that the list of children that is stored
+   * inside ClutterActor itself is kept in sync with the list of children held
+   * by ClutterGroup. this is needed so we can use the old deprecated API and
+   * mix it with the Actor API.
+   */
+  _clutter_actor_sort_children (CLUTTER_ACTOR (container), sort_by_depth);
+
   clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
 }
 
@@ -263,7 +297,9 @@ static void
 clutter_container_iface_init (ClutterContainerIface *iface)
 {
   iface->add = clutter_group_real_add;
+  iface->actor_added = clutter_group_real_actor_added;
   iface->remove = clutter_group_real_remove;
+  iface->actor_removed = clutter_group_real_actor_removed;
   iface->foreach = clutter_group_real_foreach;
   iface->raise = clutter_group_real_raise;
   iface->lower = clutter_group_real_lower;
@@ -444,8 +480,8 @@ clutter_group_init (ClutterGroup *self)
   self->priv->layout = clutter_fixed_layout_new ();
   g_object_ref_sink (self->priv->layout);
 
-  clutter_layout_manager_set_container (self->priv->layout,
-                                        CLUTTER_CONTAINER (self));
+  clutter_actor_set_layout_manager (CLUTTER_ACTOR (self),
+                                    self->priv->layout);
 }
 
 /**

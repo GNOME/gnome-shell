@@ -1968,36 +1968,92 @@ clutter_actor_set_allocation_internal (ClutterActor           *self,
   return retval;
 }
 
+static void clutter_actor_real_allocate (ClutterActor           *self,
+                                         const ClutterActorBox  *box,
+                                         ClutterAllocationFlags  flags);
+
 static inline void
-clutter_actor_maybe_layout_children (ClutterActor *self)
+clutter_actor_maybe_layout_children (ClutterActor           *self,
+                                     const ClutterActorBox  *allocation,
+                                     ClutterAllocationFlags  flags)
 {
   ClutterActorPrivate *priv = self->priv;
 
+  /* this is going to be a bit hard to follow, so let's put an explanation
+   * here.
+   *
+   * we want ClutterActor to have a default layout manager if the actor was
+   * created using "g_object_new (CLUTTER_TYPE_ACTOR, NULL)".
+   *
+   * we also want any subclass of ClutterActor that does not override the
+   * ::allocate() virtual function to delegate to a layout manager.
+   *
+   * finally, we want to allow people subclassing ClutterActor and overriding
+   * the ::allocate() vfunc to let Clutter delegate to the layout manager.
+   *
+   * on the other hand, we want existing actor subclasses overriding the
+   * ::allocate() virtual function and chaining up to the parent's
+   * implementation to continue working without allocating their children
+   * twice, or without entering an allocation loop.
+   *
+   * for the first two points, we check if the class of the actor is
+   * overridding the ::allocate() virtual function; if it isn't, then we
+   * follow through with checking whether we have children and a layout
+   * manager, and eventually calling clutter_layout_manager_allocate().
+   *
+   * for the third point, we check the CLUTTER_DELEGATE_LAYOUT flag in the
+   * allocation flags that we got passed, and if it is present, we continue
+   * with the check above.
+   *
+   * if neither of these two checks yields a positive result, we just
+   * assume that the ::allocate() virtual function that resulted in this
+   * function being called will also allocate the children of the actor.
+   */
+
+  if (CLUTTER_ACTOR_GET_CLASS (self)->allocate == clutter_actor_real_allocate)
+    goto check_layout;
+
+  if ((flags & CLUTTER_DELEGATE_LAYOUT) != 0)
+    goto check_layout;
+
+  return;
+
+check_layout:
   if (priv->n_children != 0 &&
       priv->layout_manager != NULL)
     {
       ClutterContainer *container = CLUTTER_CONTAINER (self);
-      gfloat width, height;
+      ClutterAllocationFlags children_flags;
       ClutterActorBox children_box;
 
-      clutter_actor_box_get_size (&priv->allocation, &width, &height);
+      /* normalize the box passed to the layout manager */
+      children_box.x1 = children_box.y1 = 0.f;
+      children_box.x2 = (allocation->x2 - allocation->x1);
+      children_box.y2 = (allocation->y2 - allocation->y1);
 
-      clutter_actor_box_set_origin (&children_box, 0, 0);
-      clutter_actor_box_set_size (&children_box, width, height);
+      /* remove the DELEGATE_LAYOUT flag; this won't be passed to
+       * the actor's children, since it refers only to the current
+       * actor's allocation.
+       */
+      children_flags = flags;
+      children_flags &= ~CLUTTER_DELEGATE_LAYOUT;
 
       CLUTTER_NOTE (LAYOUT,
-                    "Allocating children of %s at { %.2f, %.2f - %.2f x %.2f } using %s",
+                    "Allocating %d children of %s "
+                    "at { %.2f, %.2f - %.2f x %.2f } "
+                    "using %s",
+                    priv->n_children,
                     _clutter_actor_get_debug_name (self),
-                    priv->allocation.x1,
-                    priv->allocation.y1,
-                    width,
-                    height,
+                    allocation->x1,
+                    allocation->y1,
+                    (allocation->x2 - allocation->x1),
+                    (allocation->y2 - allocation->y1),
                     G_OBJECT_TYPE_NAME (priv->layout_manager));
 
       clutter_layout_manager_allocate (priv->layout_manager,
                                        container,
                                        &children_box,
-                                       priv->allocation_flags);
+                                       children_flags);
     }
 }
 
@@ -2018,7 +2074,7 @@ clutter_actor_real_allocate (ClutterActor           *self,
    * data out of the sub-tree of the scene graph that has this actor at
    * the root.
    */
-  clutter_actor_maybe_layout_children (self);
+  clutter_actor_maybe_layout_children (self, box, flags);
 
   if (changed)
     g_signal_emit (self, actor_signals[ALLOCATION_CHANGED], 0,
@@ -3299,6 +3355,171 @@ clutter_actor_continue_paint (ClutterActor *self)
     }
 }
 
+static ClutterActorTraverseVisitFlags
+invalidate_queue_redraw_entry (ClutterActor *self,
+                               int           depth,
+                               gpointer      user_data)
+{
+  ClutterActorPrivate *priv = self->priv;
+
+  if (priv->queue_redraw_entry != NULL)
+    {
+      _clutter_stage_queue_redraw_entry_invalidate (priv->queue_redraw_entry);
+      priv->queue_redraw_entry = NULL;
+    }
+
+  return CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE;
+}
+
+static inline void
+remove_child (ClutterActor *self,
+              ClutterActor *child)
+{
+  ClutterActor *prev_sibling, *next_sibling;
+
+  prev_sibling = child->priv->prev_sibling;
+  next_sibling = child->priv->next_sibling;
+
+  if (prev_sibling != NULL)
+    prev_sibling->priv->next_sibling = next_sibling;
+
+  if (next_sibling != NULL)
+    next_sibling->priv->prev_sibling = prev_sibling;
+
+  if (self->priv->first_child == child)
+    self->priv->first_child = next_sibling;
+
+  if (self->priv->last_child == child)
+    self->priv->last_child = prev_sibling;
+
+  child->priv->parent = NULL;
+  child->priv->prev_sibling = NULL;
+  child->priv->next_sibling = NULL;
+}
+
+typedef enum {
+  REMOVE_CHILD_DESTROY_META       = 1 << 0,
+  REMOVE_CHILD_EMIT_PARENT_SET    = 1 << 1,
+  REMOVE_CHILD_EMIT_ACTOR_REMOVED = 1 << 2,
+  REMOVE_CHILD_CHECK_STATE        = 1 << 3,
+  REMOVE_CHILD_FLUSH_QUEUE        = 1 << 4,
+  REMOVE_CHILD_NOTIFY_FIRST_LAST  = 1 << 5,
+
+  /* default flags for public API */
+  REMOVE_CHILD_DEFAULT_FLAGS      = REMOVE_CHILD_DESTROY_META |
+                                    REMOVE_CHILD_EMIT_PARENT_SET |
+                                    REMOVE_CHILD_EMIT_ACTOR_REMOVED |
+                                    REMOVE_CHILD_CHECK_STATE |
+                                    REMOVE_CHILD_FLUSH_QUEUE |
+                                    REMOVE_CHILD_NOTIFY_FIRST_LAST,
+
+  /* flags for legacy/deprecated API */
+  REMOVE_CHILD_LEGACY_FLAGS       = REMOVE_CHILD_CHECK_STATE |
+                                    REMOVE_CHILD_FLUSH_QUEUE |
+                                    REMOVE_CHILD_EMIT_PARENT_SET |
+                                    REMOVE_CHILD_NOTIFY_FIRST_LAST
+} ClutterActorRemoveChildFlags;
+
+/*< private >
+ * clutter_actor_remove_child_internal:
+ * @self: a #ClutterActor
+ * @child: the child of @self that has to be removed
+ * @flags: control the removal operations
+ *
+ * Removes @child from the list of children of @self.
+ */
+static void
+clutter_actor_remove_child_internal (ClutterActor                 *self,
+                                     ClutterActor                 *child,
+                                     ClutterActorRemoveChildFlags  flags)
+{
+  ClutterActor *old_first, *old_last;
+  gboolean destroy_meta, emit_parent_set, emit_actor_removed, check_state;
+  gboolean flush_queue;
+  gboolean notify_first_last;
+  gboolean was_mapped;
+
+  destroy_meta = (flags & REMOVE_CHILD_DESTROY_META) != 0;
+  emit_parent_set = (flags & REMOVE_CHILD_EMIT_PARENT_SET) != 0;
+  emit_actor_removed = (flags & REMOVE_CHILD_EMIT_ACTOR_REMOVED) != 0;
+  check_state = (flags & REMOVE_CHILD_CHECK_STATE) != 0;
+  flush_queue = (flags & REMOVE_CHILD_FLUSH_QUEUE) != 0;
+  notify_first_last = (flags & REMOVE_CHILD_NOTIFY_FIRST_LAST) != 0;
+
+  if (destroy_meta)
+    clutter_container_destroy_child_meta (CLUTTER_CONTAINER (self), child);
+
+  if (check_state)
+    {
+      was_mapped = CLUTTER_ACTOR_IS_MAPPED (child);
+
+      /* we need to unrealize *before* we set parent_actor to NULL,
+       * because in an unrealize method actors are dissociating from the
+       * stage, which means they need to be able to
+       * clutter_actor_get_stage(). This should unmap and unrealize,
+       *  unless we're reparenting.
+       */
+      clutter_actor_update_map_state (child, MAP_STATE_MAKE_UNREALIZED);
+    }
+  else
+    was_mapped = FALSE;
+
+  if (flush_queue)
+    {
+      /* We take this opportunity to invalidate any queue redraw entry
+       * associated with the actor and descendants since we won't be able to
+       * determine the appropriate stage after this.
+       *
+       * we do this after we updated the mapped state because actors might
+       * end up queueing redraws inside their mapped/unmapped virtual
+       * functions, and if we invalidate the redraw entry we could end up
+       * with an inconsistent state and weird memory corruption. see
+       * bugs:
+       *
+       *   http://bugzilla.clutter-project.org/show_bug.cgi?id=2621
+       *   https://bugzilla.gnome.org/show_bug.cgi?id=652036
+       */
+      _clutter_actor_traverse (child,
+                               0,
+                               invalidate_queue_redraw_entry,
+                               NULL,
+                               NULL);
+    }
+
+  old_first = self->priv->first_child;
+  old_last = self->priv->last_child;
+
+  remove_child (self, child);
+
+  self->priv->n_children -= 1;
+
+  /* clutter_actor_reparent() will emit ::parent-set for us */
+  if (emit_parent_set && !CLUTTER_ACTOR_IN_REPARENT (child))
+    g_signal_emit (child, actor_signals[PARENT_SET], 0, self);
+
+  /* if the child was mapped then we need to relayout ourselves to account
+   * for the removed child
+   */
+  if (was_mapped)
+    clutter_actor_queue_relayout (self);
+
+  /* we need to emit the signal before dropping the reference */
+  if (emit_actor_removed)
+    g_signal_emit_by_name (self, "actor-removed", child);
+
+  if (notify_first_last)
+    {
+      if (old_first != self->priv->first_child)
+        g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FIRST_CHILD]);
+
+      if (old_last != self->priv->last_child)
+        g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAST_CHILD]);
+    }
+
+  /* remove the reference we acquired in clutter_actor_add_child() */
+  g_object_unref (child);
+}
+
 static const ClutterTransformInfo default_transform_info = {
   0.0, { 0, },          /* rotation-x */
   0.0, { 0, },          /* rotation-y */
@@ -4306,7 +4527,8 @@ clutter_actor_dispose (GObject *object)
       if (!CLUTTER_ACTOR_IS_INTERNAL_CHILD (self))
         clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
       else
-        clutter_actor_remove_child (parent, self);
+        clutter_actor_remove_child_internal (parent, self,
+                                             REMOVE_CHILD_LEGACY_FLAGS);
     }
 
   /* parent should be gone */
@@ -4486,6 +4708,32 @@ clutter_actor_real_has_overlaps (ClutterActor *self)
   return TRUE;
 }
 
+static GObject *
+clutter_actor_constructor (GType gtype,
+                           guint n_props,
+                           GObjectConstructParam *props)
+{
+  GObjectClass *gobject_class;
+  ClutterActor *self;
+  GObject *retval;
+
+  gobject_class = G_OBJECT_CLASS (clutter_actor_parent_class);
+  retval = gobject_class->constructor (gtype, n_props, props);
+  self = CLUTTER_ACTOR (retval);
+
+  if (self->priv->layout_manager == NULL)
+    {
+      ClutterLayoutManager *default_layout;
+
+      CLUTTER_NOTE (LAYOUT, "Creating default layout manager");
+
+      default_layout = clutter_fixed_layout_new ();
+      clutter_actor_set_layout_manager (self, default_layout);
+    }
+
+  return retval;
+}
+
 static void
 clutter_actor_class_init (ClutterActorClass *klass)
 {
@@ -4495,6 +4743,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   quark_actor_layout_info = g_quark_from_static_string ("-clutter-actor-layout-info");
   quark_actor_transform_info = g_quark_from_static_string ("-clutter-actor-transform-info");
 
+  object_class->constructor = clutter_actor_constructor;
   object_class->set_property = clutter_actor_set_property;
   object_class->get_property = clutter_actor_get_property;
   object_class->dispose = clutter_actor_dispose;
@@ -7533,7 +7782,7 @@ clutter_actor_set_allocation (ClutterActor           *self,
    * data out of the sub-tree of the scene graph that has this actor at
    * the root.
    */
-  clutter_actor_maybe_layout_children (self);
+  clutter_actor_maybe_layout_children (self, box, flags);
 
   if (changed)
     g_signal_emit (self, actor_signals[ALLOCATION_CHANGED], 0,
@@ -9117,6 +9366,11 @@ clutter_actor_set_depth (ClutterActor *self,
 
       priv->transform_valid = FALSE;
 
+      /* FIXME - remove this crap; sadly, there are still containers
+       * in Clutter that depend on this utter brain damage
+       */
+      clutter_container_sort_depth_order (CLUTTER_CONTAINER (self));
+
       clutter_actor_queue_redraw (self);
 
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_DEPTH]);
@@ -9494,6 +9748,9 @@ insert_child_at_depth (ClutterActor *self,
 {
   ClutterActor *iter;
 
+  child->priv->parent = self;
+
+  /* special-case the first child */
   if (self->priv->n_children == 0)
     {
       self->priv->first_child = child;
@@ -9535,6 +9792,7 @@ insert_child_at_depth (ClutterActor *self,
       if (tmp != NULL)
         tmp->priv->next_sibling = child;
 
+      /* insert the node at the end of the list */
       child->priv->prev_sibling = self->priv->last_child;
       child->priv->next_sibling = NULL;
     }
@@ -9552,6 +9810,8 @@ insert_child_at_index (ClutterActor *self,
                        gpointer      data_)
 {
   gint index_ = GPOINTER_TO_INT (data_);
+
+  child->priv->parent = self;
 
   if (index_ == 0)
     {
@@ -9586,7 +9846,7 @@ insert_child_at_index (ClutterActor *self,
             {
               ClutterActor *tmp = iter->priv->prev_sibling;
 
-              child->priv->prev_sibling = iter->priv->prev_sibling;
+              child->priv->prev_sibling = tmp;
               child->priv->next_sibling = iter;
 
               iter->priv->prev_sibling = child;
@@ -9612,6 +9872,8 @@ insert_child_above (ClutterActor *self,
                     gpointer      data)
 {
   ClutterActor *sibling = data;
+
+  child->priv->parent = self;
 
   if (sibling == NULL)
     sibling = self->priv->last_child;
@@ -9646,6 +9908,8 @@ insert_child_below (ClutterActor *self,
 {
   ClutterActor *sibling = data;
 
+  child->priv->parent = self;
+
   if (sibling == NULL)
     sibling = self->priv->first_child;
 
@@ -9677,20 +9941,23 @@ typedef void (* ClutterActorAddChildFunc) (ClutterActor *parent,
                                            gpointer      data);
 
 typedef enum {
-  ADD_CHILD_CREATE_META      = 1 << 0,
-  ADD_CHILD_EMIT_PARENT_SET  = 1 << 1,
-  ADD_CHILD_EMIT_ACTOR_ADDED = 1 << 2,
-  ADD_CHILD_CHECK_STATE      = 1 << 3,
+  ADD_CHILD_CREATE_META       = 1 << 0,
+  ADD_CHILD_EMIT_PARENT_SET   = 1 << 1,
+  ADD_CHILD_EMIT_ACTOR_ADDED  = 1 << 2,
+  ADD_CHILD_CHECK_STATE       = 1 << 3,
+  ADD_CHILD_NOTIFY_FIRST_LAST = 1 << 4,
 
   /* default flags for public API */
   ADD_CHILD_DEFAULT_FLAGS    = ADD_CHILD_CREATE_META |
                                ADD_CHILD_EMIT_PARENT_SET |
                                ADD_CHILD_EMIT_ACTOR_ADDED |
-                               ADD_CHILD_CHECK_STATE,
+                               ADD_CHILD_CHECK_STATE |
+                               ADD_CHILD_NOTIFY_FIRST_LAST,
 
   /* flags for legacy/deprecated API */
   ADD_CHILD_LEGACY_FLAGS     = ADD_CHILD_EMIT_PARENT_SET |
-                               ADD_CHILD_CHECK_STATE
+                               ADD_CHILD_CHECK_STATE |
+                               ADD_CHILD_NOTIFY_FIRST_LAST
 } ClutterActorAddChildFlags;
 
 /*< private >
@@ -9717,7 +9984,10 @@ clutter_actor_add_child_internal (ClutterActor              *self,
                                   gpointer                   data)
 {
   ClutterTextDirection text_dir;
-  gboolean create_meta, emit_parent_set, emit_actor_added, check_state;
+  gboolean create_meta;
+  gboolean emit_parent_set, emit_actor_added;
+  gboolean check_state;
+  gboolean notify_first_last;
   ClutterActor *old_first_child, *old_last_child;
 
   if (child->priv->parent != NULL)
@@ -9743,6 +10013,7 @@ clutter_actor_add_child_internal (ClutterActor              *self,
   emit_parent_set = (flags & ADD_CHILD_EMIT_PARENT_SET) != 0;
   emit_actor_added = (flags & ADD_CHILD_EMIT_ACTOR_ADDED) != 0;
   check_state = (flags & ADD_CHILD_CHECK_STATE) != 0;
+  notify_first_last = (flags & ADD_CHILD_NOTIFY_FIRST_LAST) != 0;
 
   old_first_child = self->priv->first_child;
   old_last_child = self->priv->last_child;
@@ -9751,12 +10022,14 @@ clutter_actor_add_child_internal (ClutterActor              *self,
     clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
 
   g_object_ref_sink (child);
-  child->priv->parent = self;
+  child->priv->parent = NULL;
   child->priv->next_sibling = NULL;
   child->priv->prev_sibling = NULL;
 
   /* delegate the actual insertion */
   add_func (self, child, data);
+
+  g_assert (child->priv->parent == self);
 
   self->priv->n_children += 1;
 
@@ -9809,11 +10082,14 @@ clutter_actor_add_child_internal (ClutterActor              *self,
   if (emit_actor_added)
     g_signal_emit_by_name (self, "actor-added", child);
 
-  if (old_first_child != self->priv->first_child)
-    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FIRST_CHILD]);
+  if (notify_first_last)
+    {
+      if (old_first_child != self->priv->first_child)
+        g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FIRST_CHILD]);
 
-  if (old_last_child != self->priv->last_child)
-    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAST_CHILD]);
+      if (old_last_child != self->priv->last_child)
+        g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAST_CHILD]);
+    }
 }
 
 /**
@@ -10042,154 +10318,6 @@ clutter_actor_get_paint_visibility (ClutterActor *actor)
   return CLUTTER_ACTOR_IS_MAPPED (actor);
 }
 
-static ClutterActorTraverseVisitFlags
-invalidate_queue_redraw_entry (ClutterActor *self,
-                               int           depth,
-                               gpointer      user_data)
-{
-  ClutterActorPrivate *priv = self->priv;
-
-  if (priv->queue_redraw_entry != NULL)
-    {
-      _clutter_stage_queue_redraw_entry_invalidate (priv->queue_redraw_entry);
-      priv->queue_redraw_entry = NULL;
-    }
-
-  return CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE;
-}
-
-static inline void
-remove_child (ClutterActor *self,
-              ClutterActor *child)
-{
-  ClutterActor *prev_sibling, *next_sibling;
-
-  prev_sibling = child->priv->prev_sibling;
-  next_sibling = child->priv->next_sibling;
-
-  if (prev_sibling != NULL)
-    prev_sibling->priv->next_sibling = next_sibling;
-
-  if (next_sibling != NULL)
-    next_sibling->priv->prev_sibling = prev_sibling;
-
-  if (self->priv->first_child == child)
-    self->priv->first_child = next_sibling;
-
-  if (self->priv->last_child == child)
-    self->priv->last_child = prev_sibling;
-
-  child->priv->prev_sibling = NULL;
-  child->priv->next_sibling = NULL;
-}
-
-typedef enum {
-  REMOVE_CHILD_DESTROY_META       = 1 << 0,
-  REMOVE_CHILD_EMIT_PARENT_SET    = 1 << 1,
-  REMOVE_CHILD_EMIT_ACTOR_REMOVED = 1 << 2,
-  REMOVE_CHILD_CHECK_STATE        = 1 << 3,
-  REMOVE_CHILD_FLUSH_QUEUE        = 1 << 4,
-
-  /* default flags for public API */
-  REMOVE_CHILD_DEFAULT_FLAGS      = REMOVE_CHILD_DESTROY_META |
-                                    REMOVE_CHILD_EMIT_PARENT_SET |
-                                    REMOVE_CHILD_EMIT_ACTOR_REMOVED |
-                                    REMOVE_CHILD_CHECK_STATE |
-                                    REMOVE_CHILD_FLUSH_QUEUE,
-
-  /* flags for legacy/deprecated API */
-  REMOVE_CHILD_LEGACY_FLAGS       = REMOVE_CHILD_CHECK_STATE |
-                                    REMOVE_CHILD_FLUSH_QUEUE |
-                                    REMOVE_CHILD_EMIT_PARENT_SET
-} ClutterActorRemoveChildFlags;
-
-/*< private >
- * clutter_actor_remove_child_internal:
- * @self: a #ClutterActor
- * @child: the child of @self that has to be removed
- * @flags: control the removal operations
- *
- * Removes @child from the list of children of @self.
- */
-static void
-clutter_actor_remove_child_internal (ClutterActor                 *self,
-                                     ClutterActor                 *child,
-                                     ClutterActorRemoveChildFlags  flags)
-{
-  gboolean destroy_meta, emit_parent_set, emit_actor_removed, check_state;
-  gboolean flush_queue;
-  gboolean was_mapped;
-
-  destroy_meta = (flags & REMOVE_CHILD_DESTROY_META) != 0;
-  emit_parent_set = (flags & REMOVE_CHILD_EMIT_PARENT_SET) != 0;
-  emit_actor_removed = (flags & REMOVE_CHILD_EMIT_ACTOR_REMOVED) != 0;
-  check_state = (flags & REMOVE_CHILD_CHECK_STATE) != 0;
-  flush_queue = (flags & REMOVE_CHILD_FLUSH_QUEUE) != 0;
-
-  if (destroy_meta)
-    clutter_container_destroy_child_meta (CLUTTER_CONTAINER (self), child);
-
-  if (check_state)
-    {
-      was_mapped = CLUTTER_ACTOR_IS_MAPPED (child);
-
-      /* we need to unrealize *before* we set parent_actor to NULL,
-       * because in an unrealize method actors are dissociating from the
-       * stage, which means they need to be able to
-       * clutter_actor_get_stage(). This should unmap and unrealize,
-       *  unless we're reparenting.
-       */
-      clutter_actor_update_map_state (child, MAP_STATE_MAKE_UNREALIZED);
-    }
-  else
-    was_mapped = FALSE;
-
-  if (flush_queue)
-    {
-      /* We take this opportunity to invalidate any queue redraw entry
-       * associated with the actor and descendants since we won't be able to
-       * determine the appropriate stage after this.
-       *
-       * we do this after we updated the mapped state because actors might
-       * end up queueing redraws inside their mapped/unmapped virtual
-       * functions, and if we invalidate the redraw entry we could end up
-       * with an inconsistent state and weird memory corruption. see
-       * bugs:
-       *
-       *   http://bugzilla.clutter-project.org/show_bug.cgi?id=2621
-       *   https://bugzilla.gnome.org/show_bug.cgi?id=652036
-       */
-      _clutter_actor_traverse (child,
-                               0,
-                               invalidate_queue_redraw_entry,
-                               NULL,
-                               NULL);
-    }
-
-  child->priv->parent = NULL;
-
-  /* clutter_actor_reparent() will emit ::parent-set for us */
-  if (emit_parent_set && !CLUTTER_ACTOR_IN_REPARENT (child))
-    g_signal_emit (child, actor_signals[PARENT_SET], 0, self);
-
-  remove_child (self, child);
-
-  self->priv->n_children -= 1;
-
-  /* if the child was mapped then we need to relayout ourselves to account
-   * for the removed child
-   */
-  if (was_mapped)
-    clutter_actor_queue_relayout (self);
-
-  /* we need to emit the signal before dropping the reference */
-  if (emit_actor_removed)
-    g_signal_emit_by_name (self, "actor-removed", child);
-
-  /* remove the reference we acquired in clutter_actor_add_child() */
-  g_object_unref (child);
-}
-
 /**
  * clutter_actor_remove_child:
  * @self: a #ClutterActor
@@ -10272,6 +10400,7 @@ insert_child_between (ClutterActor *self,
   ClutterActor *prev_sibling = data->prev_sibling;
   ClutterActor *next_sibling = data->next_sibling;
 
+  child->priv->parent = self;
   child->priv->prev_sibling = prev_sibling;
   child->priv->next_sibling = next_sibling;
 
@@ -10316,7 +10445,6 @@ clutter_actor_replace_child (ClutterActor *self,
 
   prev_sibling = old_child->priv->prev_sibling;
   next_sibling = old_child->priv->next_sibling;
-
   clutter_actor_remove_child_internal (self, old_child,
                                        REMOVE_CHILD_DEFAULT_FLAGS);
 
@@ -10523,7 +10651,8 @@ clutter_actor_set_child_above_sibling (ClutterActor *self,
    */
   g_object_ref (child);
   clutter_actor_remove_child_internal (self, child, 0);
-  clutter_actor_add_child_internal (self, child, 0,
+  clutter_actor_add_child_internal (self, child,
+                                    ADD_CHILD_NOTIFY_FIRST_LAST,
                                     insert_child_above,
                                     sibling);
 
@@ -10563,7 +10692,8 @@ clutter_actor_set_child_below_sibling (ClutterActor *self,
   /* see the comment in set_child_above_sibling() */
   g_object_ref (child);
   clutter_actor_remove_child_internal (self, child, 0);
-  clutter_actor_add_child_internal (self, child, 0,
+  clutter_actor_add_child_internal (self, child,
+                                    ADD_CHILD_NOTIFY_FIRST_LAST,
                                     insert_child_below,
                                     sibling);
 
@@ -10596,7 +10726,8 @@ clutter_actor_set_child_at_index (ClutterActor *self,
 
   g_object_ref (child);
   clutter_actor_remove_child_internal (self, child, 0);
-  clutter_actor_add_child_internal (self, child, 0,
+  clutter_actor_add_child_internal (self, child,
+                                    ADD_CHILD_NOTIFY_FIRST_LAST,
                                     insert_child_at_index,
                                     GINT_TO_POINTER (index_));
 
@@ -15631,4 +15762,61 @@ clutter_actor_get_last_child (ClutterActor *self)
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
   return self->priv->last_child;
+}
+
+/*< private >
+ * @self: a #ClutterActor
+ * @func: a comparison function
+ *
+ * Sorts the list of children of @self using the provided comparison
+ * function.
+ */
+void
+_clutter_actor_sort_children (ClutterActor *self,
+                              GCompareFunc  func)
+{
+  ClutterActor *old_first, *old_last;
+  ClutterActor *iter;
+  GList *tmp, *l;
+
+  old_first = self->priv->first_child;
+  old_last = self->priv->last_child;
+
+  /* build a list from the list of children, while removing them
+   * at the same time; removal is O(1), as well as prepending it
+   * to the temporary list
+   */
+  tmp = NULL;
+  iter = self->priv->first_child;
+  while (iter != NULL)
+    {
+      ClutterActor *next = iter->priv->next_sibling;
+
+      tmp = g_list_prepend (tmp, g_object_ref (iter));
+
+      clutter_actor_remove_child_internal (self, iter, 0);
+
+      iter = next;
+    }
+
+  tmp = g_list_sort (tmp, func);
+
+  for (l = tmp; l != NULL; l = l->next)
+    {
+      clutter_actor_add_child_internal (self, l->data, 0,
+                                        insert_child_above,
+                                        NULL);
+      g_object_unref (l->data);
+    }
+
+  g_list_free (tmp);
+
+  /* we don't notify :first-child and :last-child until the end, to avoid
+   * spurious signal emissions
+   */
+  if (old_first != self->priv->first_child)
+    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FIRST_CHILD]);
+
+  if (old_last != self->priv->last_child)
+    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAST_CHILD]);
 }

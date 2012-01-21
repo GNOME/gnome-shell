@@ -55,6 +55,7 @@
 
 #include "clutter-stage.h"
 #include "deprecated/clutter-stage.h"
+#include "deprecated/clutter-container.h"
 
 #include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
@@ -604,6 +605,7 @@ clutter_stage_paint (ClutterActor *self)
   CoglBufferBit clear_flags;
   CoglColor stage_color;
   guint8 real_alpha;
+
   CLUTTER_STATIC_TIMER (stage_clear_timer,
                         "Painting actors", /* parent */
                         "Stage clear",
@@ -655,7 +657,6 @@ clutter_stage_paint (ClutterActor *self)
     cogl_disable_fog ();
 #endif
 
-  /* this will take care of painting every child */
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (self);
 }
 
