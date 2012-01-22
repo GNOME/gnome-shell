@@ -63,6 +63,9 @@ struct _ClutterDeviceManagerEvdevPrivate
 {
   GUdevClient *udev_client;
 
+  ClutterStage *stage;
+  gboolean released;
+
   GSList *devices;          /* list of ClutterInputDeviceEvdevs */
   GSList *event_sources;    /* list of the event sources */
 
@@ -593,6 +596,8 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
                          "enabled", TRUE,
                          NULL);
 
+  _clutter_input_device_set_stage (device, manager_evdev->priv->stage);
+
   _clutter_device_manager_add_device (manager, device);
 
   CLUTTER_NOTE (EVENT, "Added device %s, type %d, sysfs %s",
@@ -651,6 +656,10 @@ on_uevent (GUdevClient *client,
            gpointer     data)
 {
   ClutterDeviceManagerEvdev *manager = CLUTTER_DEVICE_MANAGER_EVDEV (data);
+  ClutterDeviceManagerEvdevPrivate *priv = manager->priv;
+
+  if (priv->released)
+    return;
 
   if (g_strcmp0 (action, "add") == 0)
     evdev_add_device (manager, device);
@@ -776,6 +785,23 @@ clutter_device_manager_evdev_get_device (ClutterDeviceManager *manager,
   return NULL;
 }
 
+static void
+clutter_device_manager_evdev_probe_devices (ClutterDeviceManagerEvdev *self)
+{
+  ClutterDeviceManagerEvdevPrivate *priv = self->priv;
+  GList *devices, *l;
+
+  devices = g_udev_client_query_by_subsystem (priv->udev_client, subsystems[0]);
+  for (l = devices; l; l = g_list_next (l))
+    {
+      GUdevDevice *device = l->data;
+
+      evdev_add_device (self, device);
+      g_object_unref (device);
+    }
+  g_list_free (devices);
+}
+
 /*
  * GObject implementation
  */
@@ -785,22 +811,13 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
 {
   ClutterDeviceManagerEvdev *manager_evdev;
   ClutterDeviceManagerEvdevPrivate *priv;
-  GList *devices, *l;
 
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (gobject);
   priv = manager_evdev->priv;
 
   priv->udev_client = g_udev_client_new (subsystems);
 
-  devices = g_udev_client_query_by_subsystem (priv->udev_client, subsystems[0]);
-  for (l = devices; l; l = g_list_next (l))
-    {
-      GUdevDevice *device = l->data;
-
-      evdev_add_device (manager_evdev, device);
-      g_object_unref (device);
-    }
-  g_list_free (devices);
+  clutter_device_manager_evdev_probe_devices (manager_evdev);
 
   /* subcribe for events on input devices */
   g_signal_connect (priv->udev_client, "uevent",
@@ -898,6 +915,15 @@ clutter_device_manager_evdev_stage_added_cb (ClutterStageManager *manager,
   ClutterDeviceManagerEvdevPrivate *priv = self->priv;
   GSList *l;
 
+  /* NB: Currently we can only associate a single stage with all evdev
+   * devices.
+   *
+   * We save a pointer to the stage so if we release/reclaim input
+   * devices due to switching virtual terminals then we know what
+   * stage to re associate the devices with.
+   */
+  priv->stage = stage;
+
   /* Set the stage of any devices that don't already have a stage */
   for (l = priv->devices; l; l = l->next)
     {
@@ -977,4 +1003,102 @@ void
 _clutter_events_evdev_uninit (ClutterBackend *backend)
 {
   CLUTTER_NOTE (EVENT, "Uninitializing evdev backend");
+}
+
+/**
+ * clutter_evdev_release_devices:
+ *
+ * Releases all the evdev devices that Clutter is currently managing. This api
+ * is typically used when switching away from the Clutter application when
+ * switching tty. The devices can be reclaimed later with a call to
+ * clutter_evdev_reclaim_devices().
+ *
+ * This function should only be called after clutter has been initialized.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+clutter_evdev_release_devices (void)
+{
+  ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+  ClutterDeviceManagerEvdev *evdev_manager;
+  ClutterDeviceManagerEvdevPrivate *priv;
+  GSList *l, *next;
+
+  if (!manager)
+    {
+      g_warning ("clutter_evdev_release_devices shouldn't be called "
+                 "before clutter_init()");
+      return;
+    }
+
+  g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (manager));
+
+  evdev_manager = CLUTTER_DEVICE_MANAGER_EVDEV (manager);
+  priv = evdev_manager->priv;
+
+  if (priv->released)
+    {
+      g_warning ("clutter_evdev_release_devices() shouldn't be called "
+                 "multiple times without a corresponding call to "
+                 "clutter_evdev_reclaim_devices() first");
+      return;
+    }
+
+  for (l = priv->devices; l; l = next)
+    {
+      ClutterInputDevice *device = l->data;
+
+      /* Be careful about the list we're iterating being modified... */
+      next = l->next;
+
+      _clutter_device_manager_remove_device (manager, device);
+    }
+
+  priv->released = TRUE;
+}
+
+/**
+ * clutter_evdev_reclaim_devices:
+ *
+ * This causes Clutter to re-probe for evdev devices. This is must only be
+ * called after a corresponding call to clutter_evdev_release_devices()
+ * was previously used to release all evdev devices. This API is typically
+ * used when a clutter application using evdev has regained focus due to
+ * switching ttys.
+ *
+ * This function should only be called after clutter has been initialized.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+clutter_evdev_reclaim_devices (void)
+{
+  ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+  ClutterDeviceManagerEvdev *evdev_manager;
+  ClutterDeviceManagerEvdevPrivate *priv;
+
+  if (!manager)
+    {
+      g_warning ("clutter_evdev_reclaim_devices shouldn't be called "
+                 "before clutter_init()");
+      return;
+    }
+
+  g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (manager));
+
+  evdev_manager = CLUTTER_DEVICE_MANAGER_EVDEV (manager);
+  priv = evdev_manager->priv;
+
+  if (!priv->released)
+    {
+      g_warning ("Spurious call to clutter_evdev_reclaim_devices() without "
+                 "previous call to clutter_evdev_release_devices");
+      return;
+    }
+
+  priv->released = FALSE;
+  clutter_device_manager_evdev_probe_devices (evdev_manager);
 }

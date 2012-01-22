@@ -553,10 +553,15 @@ evdev_h_priv = \
 	$(srcdir)/evdev/clutter-device-manager-evdev.h	\
 	$(srcdir)/evdev/clutter-input-device-evdev.h	\
 	$(NULL)
+evdev_h = $(srcdir)/evdev/clutter-evdev.h
 
 if USE_EVDEV
 backend_source_c_priv += $(evdev_c_priv)
 backend_source_h_priv += $(evdev_h_priv)
+backend_source_h += $(evdev_h)
+
+clutterevdev_includedir = $(clutter_includedir)/evdev
+clutterevdev_include_HEADERS = $(evdev_h)
 endif # SUPPORT_EVDEV
 
 if NEED_XKB_UTILS
