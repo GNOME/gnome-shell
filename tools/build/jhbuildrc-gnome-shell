@@ -18,11 +18,9 @@
 # Only rebuild modules that have changed
 build_policy = 'updated'
 
-moduleset = 'http://git.gnome.org/browse/gnome-shell/plain/tools/build/gnome-shell.modules'
+moduleset = 'gnome-apps-3.4'
 
-modules = [ 'gnome-shell-using-gir-repository' ]
-# Enable this one to use introspection built from the stack itself
-# modules = [ 'gnome-shell-full' ]
+modules = [ 'meta-gnome-core-shell' ]
 
 # what directory should the source be checked out to?
 checkoutroot = os.path.expanduser('~/gnome-shell/source')
