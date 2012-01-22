@@ -156,9 +156,10 @@ void    shell_global_screenshot_area           (ShellGlobal  *global,
                                                 const char *filename,
                                                 ShellGlobalScreenshotCallback callback);
 
-gboolean shell_global_screenshot_window         (ShellGlobal  *global,
+void    shell_global_screenshot_window         (ShellGlobal  *global,
                                                 gboolean include_frame,
-                                                const char *filename);
+                                                const char *filename,
+                                                ShellGlobalScreenshotCallback callback);
 
 void    shell_global_screenshot                (ShellGlobal  *global,
                                                 const char *filename,

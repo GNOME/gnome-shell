@@ -1966,24 +1966,51 @@ shell_global_launch_calendar_server (ShellGlobal *global)
 }
 
 static void
+on_screenshot_written (GObject *source,
+                       GAsyncResult *result,
+                       gpointer user_data)
+{
+  _screenshot_data *screenshot_data = (_screenshot_data*) user_data;
+  if (screenshot_data->callback)
+    screenshot_data->callback (screenshot_data->global, g_simple_async_result_get_op_res_gboolean (G_SIMPLE_ASYNC_RESULT (result)));
+
+  cairo_surface_destroy (screenshot_data->image);
+  g_free (screenshot_data->filename);
+  g_free (screenshot_data);
+}
+
+static void
+write_screenshot_thread (GSimpleAsyncResult *result,
+                         GObject *object,
+                         GCancellable *cancellable)
+{
+  cairo_status_t status;
+  _screenshot_data *screenshot_data = g_async_result_get_user_data (G_ASYNC_RESULT (result));
+  g_assert (screenshot_data != NULL);
+
+  status = cairo_surface_write_to_png (screenshot_data->image, screenshot_data->filename);
+  g_simple_async_result_set_op_res_gboolean (result, status == CAIRO_STATUS_SUCCESS);
+}
+
+static void
 grab_screenshot (ClutterActor *stage,
                  _screenshot_data *screenshot_data)
 {
   MetaScreen *screen = shell_global_get_screen (screenshot_data->global);
-  cairo_status_t status;
-  cairo_surface_t *image;
   guchar *data;
   int width, height;
 
+  GSimpleAsyncResult *result;
+
   meta_plugin_query_screen_size (screenshot_data->global->plugin, &width, &height);
-  image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
-  data = cairo_image_surface_get_data (image);
+  screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
+  data = cairo_image_surface_get_data (screenshot_data->image);
 
   cogl_flush();
 
   cogl_read_pixels (0, 0, width, height, COGL_READ_PIXELS_COLOR_BUFFER, CLUTTER_CAIRO_FORMAT_ARGB32, data);
 
-  cairo_surface_mark_dirty (image);
+  cairo_surface_mark_dirty (screenshot_data->image);
 
   if (meta_screen_get_n_monitors (screen) > 1)
     {
@@ -2009,7 +2036,7 @@ grab_screenshot (ClutterActor *stage,
       cairo_region_xor (stage_region, screen_region);
       cairo_region_destroy (screen_region);
 
-      cr = cairo_create (image);
+      cr = cairo_create (screenshot_data->image);
 
       for (i = 0; i < cairo_region_num_rectangles (stage_region); i++)
         {
@@ -2023,41 +2050,34 @@ grab_screenshot (ClutterActor *stage,
       cairo_region_destroy (stage_region);
     }
 
-
-  status = cairo_surface_write_to_png (image, screenshot_data->filename);
-  cairo_surface_destroy (image);
-
-  if (screenshot_data->callback)
-    screenshot_data->callback (screenshot_data->global, status == CAIRO_STATUS_SUCCESS);
-
   g_signal_handlers_disconnect_by_func (stage, (void *)grab_screenshot, (gpointer)screenshot_data);
-  g_free (screenshot_data->filename);
-  g_free (screenshot_data);
+
+  result = g_simple_async_result_new (NULL, on_screenshot_written, (gpointer)screenshot_data, grab_screenshot);
+  g_simple_async_result_run_in_thread (result, write_screenshot_thread, G_PRIORITY_DEFAULT, NULL);
+  g_object_unref (result);
 }
 
 static void
 grab_area_screenshot (ClutterActor *stage,
                       _screenshot_data *screenshot_data)
 {
-  cairo_status_t status;
-  cairo_surface_t *image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, screenshot_data->width, screenshot_data->height);
-  guchar *data = cairo_image_surface_get_data (image);
+  GSimpleAsyncResult *result;
+  guchar *data;
+
+  screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, screenshot_data->width, screenshot_data->height);
+  data = cairo_image_surface_get_data (screenshot_data->image);
 
   cogl_flush();
 
   cogl_read_pixels (screenshot_data->x, screenshot_data->y, screenshot_data->width, screenshot_data->height,
                     COGL_READ_PIXELS_COLOR_BUFFER, CLUTTER_CAIRO_FORMAT_ARGB32, data);
 
-  cairo_surface_mark_dirty (image);
-  status = cairo_surface_write_to_png (image, screenshot_data->filename);
-  cairo_surface_destroy (image);
-
-  if (screenshot_data->callback)
-    screenshot_data->callback (screenshot_data->global, status == CAIRO_STATUS_SUCCESS);
+  cairo_surface_mark_dirty (screenshot_data->image);
 
   g_signal_handlers_disconnect_by_func (stage, (void *)grab_area_screenshot, (gpointer)screenshot_data);
-  g_free (screenshot_data->filename);
-  g_free (screenshot_data);
+  result = g_simple_async_result_new (NULL, on_screenshot_written, (gpointer)screenshot_data, grab_area_screenshot);
+  g_simple_async_result_run_in_thread (result, write_screenshot_thread, G_PRIORITY_DEFAULT, NULL);
+  g_object_unref (result);
 }
 
 /**
@@ -2138,27 +2158,33 @@ shell_global_screenshot_area (ShellGlobal  *global,
  * @include_frame: Whether to include the frame or not
  *
  * @filename: The filename for the screenshot
+ * @callback: (scope async): function to call returning success or failure
+ * of the async grabbing
  *
  * Takes a screenshot of the focused window (optionally omitting the frame)
  * in @filename as png image.
  *
- * Return value: success or failure.
  */
-gboolean
+void
 shell_global_screenshot_window (ShellGlobal  *global,
                                 gboolean include_frame,
-                                const char *filename)
+                                const char *filename,
+                                ShellGlobalScreenshotCallback callback)
 {
   CoglHandle texture;
-  cairo_surface_t *image;
   guchar *data;
+  GSimpleAsyncResult *result;
+
+  _screenshot_data *screenshot_data = g_new0 (_screenshot_data, 1);
 
   MetaScreen *screen = meta_plugin_get_screen (global->plugin);
   MetaDisplay *display = meta_screen_get_display (screen);
   MetaWindow *window = meta_display_get_focus_window (display);
   ClutterActor *window_actor;
 
-  cairo_status_t status;
+  screenshot_data->global = global;
+  screenshot_data->filename = g_strdup (filename);
+  screenshot_data->callback = callback;
 
   window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
   texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor))));
@@ -2172,26 +2198,26 @@ shell_global_screenshot_window (ShellGlobal  *global,
                                                    window_rect->width,
                                                    window_rect->height);
 
-      image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                          window_rect->width,
-                                          window_rect->height);
+      screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                                          window_rect->width,
+                                                          window_rect->height);
     }
   else
-    image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                        clutter_actor_get_width (window_actor),
-                                        clutter_actor_get_height (window_actor));
+    screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                                        clutter_actor_get_width (window_actor),
+                                                        clutter_actor_get_height (window_actor));
 
-  data = cairo_image_surface_get_data (image);
+  data = cairo_image_surface_get_data (screenshot_data->image);
 
   cogl_flush();
 
   cogl_texture_get_data (texture, CLUTTER_CAIRO_FORMAT_ARGB32, 0, data);
 
-  cairo_surface_mark_dirty (image);
-  status = cairo_surface_write_to_png (image, filename);
-  cairo_surface_destroy (image);
+  cairo_surface_mark_dirty (screenshot_data->image);
 
-  return status == CAIRO_STATUS_SUCCESS;
+  result = g_simple_async_result_new (NULL, on_screenshot_written, (gpointer)screenshot_data, shell_global_screenshot_window);
+  g_simple_async_result_run_in_thread (result, write_screenshot_thread, G_PRIORITY_DEFAULT, NULL);
+  g_object_unref (result);
 }
 
 /**

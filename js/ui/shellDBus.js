@@ -141,8 +141,13 @@ const GnomeShell = new Lang.Class({
      * indicating whether the operation was successful or not.
      *
      */
-    ScreenshotWindow : function (include_frame, filename) {
-        return global.screenshot_window (include_frame, filename);
+    ScreenshotWindowAsync : function (params, invocation) {
+        let [include_frame, filename] = params;
+        global.screenshot_window (include_frame, filename,
+            function (obj, result) {
+                let retval = GLib.Variant.new('(b)', [result]);
+                invocation.return_value(retval);
+            });
     },
 
     /**
