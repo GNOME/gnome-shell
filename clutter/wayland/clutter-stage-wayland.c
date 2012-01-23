@@ -31,9 +31,9 @@
 #include <glib.h>
 
 #include "clutter-stage-wayland.h"
-
+#include "clutter-backend-wayland.h"
 #include "clutter-stage-window.h"
-
+#include "clutter-event-private.h"
 #include <cogl/cogl.h>
 
 static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;
@@ -107,6 +107,10 @@ clutter_stage_wayland_set_fullscreen (ClutterStageWindow *stage_window,
                                       gboolean            fullscreen)
 {
   ClutterStageWayland *stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+  ClutterBackend *backend = CLUTTER_BACKEND (stage_cogl->backend);
+  ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
+  ClutterActor *stage = _clutter_stage_window_get_wrapper (stage_window);
 
   stage_wayland->fullscreen = fullscreen;
 
@@ -114,9 +118,32 @@ clutter_stage_wayland_set_fullscreen (ClutterStageWindow *stage_window,
     return;
 
   if (fullscreen)
-    wl_shell_surface_set_fullscreen (stage_wayland->wayland_shell_surface);
+    {
+      ClutterEvent *event = clutter_event_new (CLUTTER_STAGE_STATE);
+
+      event->stage_state.changed_mask = CLUTTER_STAGE_STATE_FULLSCREEN;
+      event->stage_state.new_state = CLUTTER_STAGE_STATE_FULLSCREEN;
+      event->stage_state.stage = stage;
+
+      _clutter_event_push (event, FALSE);
+
+      clutter_actor_set_size (stage,
+                              backend_wayland->output_width,
+                              backend_wayland->output_height);
+      wl_shell_surface_set_fullscreen (stage_wayland->wayland_shell_surface);
+    }
   else
-    g_warning (G_STRLOC ": There is no Wayland API for un-fullscreening now");
+    {
+      ClutterEvent *event = clutter_event_new (CLUTTER_STAGE_STATE);
+
+      event->stage_state.changed_mask = CLUTTER_STAGE_STATE_FULLSCREEN;
+      event->stage_state.new_state = 0;
+      event->stage_state.stage = stage;
+
+      _clutter_event_push (event, FALSE);
+
+      wl_shell_surface_set_toplevel (stage_wayland->wayland_shell_surface);
+    }
 }
 
 static void
