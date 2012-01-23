@@ -397,6 +397,8 @@ cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-egl-wayland-private.h
 endif
 if SUPPORT_EGL_PLATFORM_KMS
+cogl_public_h += \
+	$(srcdir)/cogl-kms-renderer.h
 cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-egl-kms.c \
 	$(srcdir)/winsys/cogl-winsys-egl-kms-private.h

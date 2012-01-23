@@ -565,3 +565,18 @@ _cogl_winsys_egl_kms_get_vtable (void)
 
   return &vtable;
 }
+
+int
+cogl_kms_renderer_get_kms_fd (CoglRenderer *renderer)
+{
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), -1);
+
+  if (renderer->connected)
+    {
+      CoglRendererEGL *egl_renderer = renderer->winsys;
+      CoglRendererKMS *kms_renderer = egl_renderer->platform;
+      return kms_renderer->fd;
+    }
+  else
+    return -1;
+}
