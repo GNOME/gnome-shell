@@ -163,4 +163,6 @@ cogl_poll_dispatch (CoglContext *context,
                     const CoglPollFD *poll_fds,
                     int n_poll_fds);
 
+G_END_DECLS
+
 #endif /* __COGL_POLL_H__ */
