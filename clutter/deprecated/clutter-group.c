@@ -74,14 +74,6 @@ struct _ClutterGroupPrivate
   ClutterLayoutManager *layout;
 };
 
-enum
-{
-  ADD,
-  REMOVE,
-
-  LAST_SIGNAL
-};
-
 static void clutter_container_iface_init (ClutterContainerIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterGroup, clutter_group, CLUTTER_TYPE_ACTOR,
@@ -283,13 +275,6 @@ clutter_group_real_sort_depth_order (ClutterContainer *container)
 
   priv->children = g_list_sort (priv->children, sort_by_depth);
 
-  /* XXX - this is a hack, to ensure that the list of children that is stored
-   * inside ClutterActor itself is kept in sync with the list of children held
-   * by ClutterGroup. this is needed so we can use the old deprecated API and
-   * mix it with the Actor API.
-   */
-  _clutter_actor_sort_children (CLUTTER_ACTOR (container), sort_by_depth);
-
   clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
 }
 
@@ -312,14 +297,12 @@ clutter_group_real_paint (ClutterActor *actor)
   ClutterGroupPrivate *priv = CLUTTER_GROUP (actor)->priv;
 
   CLUTTER_NOTE (PAINT, "ClutterGroup paint enter '%s'",
-                clutter_actor_get_name (actor) ? clutter_actor_get_name (actor)
-                                               : "unknown");
+                _clutter_actor_get_debug_name (actor));
 
   g_list_foreach (priv->children, (GFunc) clutter_actor_paint, NULL);
 
   CLUTTER_NOTE (PAINT, "ClutterGroup paint leave '%s'",
-                clutter_actor_get_name (actor) ? clutter_actor_get_name (actor)
-                                               : "unknown");
+                _clutter_actor_get_debug_name (actor));
 }
 
 static void

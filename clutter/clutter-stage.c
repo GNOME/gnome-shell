@@ -81,7 +81,11 @@
 
 #include "cogl/cogl.h"
 
-G_DEFINE_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
+static void clutter_container_iface_init (ClutterContainerIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
+                                                clutter_container_iface_init))
 
 #define CLUTTER_STAGE_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_STAGE, ClutterStagePrivate))
@@ -209,7 +213,72 @@ static const ClutterColor default_stage_color = { 255, 255, 255, 255 };
 static void _clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage);
 
 static void
-_clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage);
+clutter_stage_real_add (ClutterContainer *container,
+                        ClutterActor     *child)
+{
+  clutter_actor_add_child (CLUTTER_ACTOR (container), child);
+}
+
+static void
+clutter_stage_real_remove (ClutterContainer *container,
+                           ClutterActor     *child)
+{
+  clutter_actor_remove_child (CLUTTER_ACTOR (container), child);
+}
+
+static void
+clutter_stage_real_foreach (ClutterContainer *container,
+                            ClutterCallback   callback,
+                            gpointer          user_data)
+{
+  ClutterActor *iter;
+
+  iter = clutter_actor_get_first_child (CLUTTER_ACTOR (container));
+  while (iter != NULL)
+    {
+      ClutterActor *next = clutter_actor_get_next_sibling (iter);
+
+      callback (iter, user_data);
+
+      iter = next;
+    }
+}
+
+static void
+clutter_stage_real_raise (ClutterContainer *container,
+                          ClutterActor     *child,
+                          ClutterActor     *sibling)
+{
+  clutter_actor_set_child_above_sibling (CLUTTER_ACTOR (container),
+                                         child,
+                                         sibling);
+}
+
+static void
+clutter_stage_real_lower (ClutterContainer *container,
+                          ClutterActor     *child,
+                          ClutterActor     *sibling)
+{
+  clutter_actor_set_child_below_sibling (CLUTTER_ACTOR (container),
+                                         child,
+                                         sibling);
+}
+
+static void
+clutter_stage_real_sort_depth_order (ClutterContainer *container)
+{
+}
+
+static void
+clutter_container_iface_init (ClutterContainerIface *iface)
+{
+  iface->add = clutter_stage_real_add;
+  iface->remove = clutter_stage_real_remove;
+  iface->foreach = clutter_stage_real_foreach;
+  iface->raise = clutter_stage_real_raise;
+  iface->lower = clutter_stage_real_lower;
+  iface->sort_depth_order = clutter_stage_real_sort_depth_order;
+}
 
 static void
 clutter_stage_get_preferred_width (ClutterActor *self,
@@ -331,7 +400,8 @@ clutter_stage_allocate (ClutterActor           *self,
                     width, height,
                     origin_changed ? "changed" : "not changed");
 
-      CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->allocate (self, box, flags);
+      clutter_actor_set_allocation (self, box,
+                                    flags | CLUTTER_DELEGATE_LAYOUT);
 
       /* Ensure the window is sized correctly */
       if (!priv->is_fullscreen)
@@ -387,7 +457,8 @@ clutter_stage_allocate (ClutterActor           *self,
                     origin_changed ? "changed" : "not changed");
 
       /* and store the overridden allocation */
-      CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->allocate (self, &override, flags);
+      clutter_actor_set_allocation (self, &override,
+                                    flags | CLUTTER_DELEGATE_LAYOUT);
     }
 
   /* XXX: Until Cogl becomes fully responsible for backend windows
@@ -604,6 +675,7 @@ clutter_stage_paint (ClutterActor *self)
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
   CoglBufferBit clear_flags;
   CoglColor stage_color;
+  ClutterActor *child;
   guint8 real_alpha;
 
   CLUTTER_STATIC_TIMER (stage_clear_timer,
@@ -657,7 +729,12 @@ clutter_stage_paint (ClutterActor *self)
     cogl_disable_fog ();
 #endif
 
-  CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (self);
+  for (child = clutter_actor_get_first_child (self);
+       child != NULL;
+       child = clutter_actor_get_next_sibling (child))
+    {
+      clutter_actor_paint (child);
+    }
 }
 
 static void
@@ -739,6 +816,14 @@ static void
 clutter_stage_show (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+  ClutterActor *child;
+
+  for (child = clutter_actor_get_first_child (self);
+       child != NULL;
+       child = clutter_actor_get_next_sibling (child))
+    {
+      clutter_actor_show (child);
+    }
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->show (self);
 
@@ -754,9 +839,17 @@ static void
 clutter_stage_hide (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+  ClutterActor *child;
 
   g_assert (priv->impl != NULL);
   _clutter_stage_window_hide (priv->impl);
+
+  for (child = clutter_actor_get_first_child (self);
+       child != NULL;
+       child = clutter_actor_get_next_sibling (child))
+    {
+      clutter_actor_show (child);
+    }
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->hide (self);
 }
@@ -1730,6 +1823,8 @@ clutter_stage_dispose (GObject *object)
       g_object_unref (priv->impl);
       priv->impl = NULL;
     }
+
+  clutter_actor_remove_all_children (CLUTTER_ACTOR (object));
 
   G_OBJECT_CLASS (clutter_stage_parent_class)->dispose (object);
 }
