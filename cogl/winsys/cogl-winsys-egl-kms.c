@@ -297,19 +297,22 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
   CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglRendererKMS *kms_renderer = egl_renderer->platform;
-  int ret;
 
   /* Restore the saved CRTC - this failing should not propagate an error */
-  ret = drmModeSetCrtc (kms_renderer->fd,
-                        kms_display->saved_crtc->crtc_id,
-                        kms_display->saved_crtc->buffer_id,
-                        kms_display->saved_crtc->x, kms_display->saved_crtc->y,
-                        &kms_display->connector->connector_id, 1,
-                        &kms_display->saved_crtc->mode);
-  if (ret)
-    g_critical (G_STRLOC ": Error restoring saved CRTC");
+  if (kms_display->saved_crtc)
+    {
+      int ret = drmModeSetCrtc (kms_renderer->fd,
+                                kms_display->saved_crtc->crtc_id,
+                                kms_display->saved_crtc->buffer_id,
+                                kms_display->saved_crtc->x,
+                                kms_display->saved_crtc->y,
+                                &kms_display->connector->connector_id, 1,
+                                &kms_display->saved_crtc->mode);
+      if (ret)
+        g_critical (G_STRLOC ": Error restoring saved CRTC");
 
-  drmModeFreeCrtc (kms_display->saved_crtc);
+      drmModeFreeCrtc (kms_display->saved_crtc);
+    }
 }
 
 static void
