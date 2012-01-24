@@ -52,7 +52,7 @@ cogl_handle_ref (CoglHandle handle)
 }
 
 void
-cogl_object_unref (void *object)
+_cogl_object_default_unref (void *object)
 {
   CoglObject *obj = object;
 
@@ -95,6 +95,13 @@ cogl_object_unref (void *object)
       free_func = obj->klass->virt_free;
       free_func (obj);
     }
+}
+
+void
+cogl_object_unref (void *obj)
+{
+  void (* unref_func) (void *) = ((CoglObject *) obj)->klass->virt_unref;
+  unref_func (obj);
 }
 
 void

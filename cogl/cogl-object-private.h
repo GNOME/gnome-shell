@@ -53,6 +53,7 @@ typedef struct _CoglObjectClass
 {
   const char *name;
   void *virt_free;
+  void *virt_unref;
 } CoglObjectClass;
 
 #define COGL_OBJECT_N_PRE_ALLOCATED_USER_DATA_ENTRIES 2
@@ -167,6 +168,8 @@ _cogl_##type_name##_object_new (Cogl##TypeName *new_obj)                \
                                                                         \
       obj->klass->virt_free =                                           \
         _cogl_object_##type_name##_indirect_free;                       \
+      obj->klass->virt_unref =                                          \
+        _cogl_object_default_unref;                                     \
       obj->klass->name = "Cogl"#TypeName,                               \
                                                                         \
       g_hash_table_insert (_cogl_debug_instances,                       \
@@ -286,6 +289,9 @@ _cogl_object_set_user_data (CoglObject *object,
                             CoglUserDataKey *key,
                             void *user_data,
                             CoglUserDataDestroyInternalCallback destroy);
+
+void
+_cogl_object_default_unref (void *obj);
 
 #endif /* __COGL_OBJECT_PRIVATE_H */
 
