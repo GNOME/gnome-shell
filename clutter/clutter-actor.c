@@ -677,6 +677,8 @@ static void _clutter_actor_get_relative_transformation_matrix (ClutterActor *sel
 
 static ClutterPaintVolume *_clutter_actor_get_paint_volume_mutable (ClutterActor *self);
 
+static guint8   clutter_actor_get_paint_opacity_internal        (ClutterActor *self);
+
 static void on_layout_manager_changed (ClutterLayoutManager *manager,
                                        ClutterActor         *self);
 
@@ -2997,13 +2999,18 @@ clutter_actor_real_paint (ClutterActor *actor)
   if (priv->bg_color_set)
     {
       float width, height;
+      guint8 real_alpha;
 
       clutter_actor_box_get_size (&priv->allocation, &width, &height);
+
+      real_alpha = clutter_actor_get_paint_opacity_internal (actor)
+                 * priv->bg_color.alpha
+                 / 255;
 
       cogl_set_source_color4ub (priv->bg_color.red,
                                 priv->bg_color.green,
                                 priv->bg_color.blue,
-                                priv->bg_color.alpha);
+                                real_alpha);
 
       cogl_rectangle (0, 0, width, height);
     }
