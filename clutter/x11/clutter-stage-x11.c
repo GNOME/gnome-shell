@@ -435,6 +435,11 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
   stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context,
                                             width, height);
 
+  /* We just created a window of the size of the actor. No need to fix
+     the size of the stage, just update it. */
+  stage_x11->xwin_width = width;
+  stage_x11->xwin_height = height;
+
   if (stage_x11->xwin != None)
     {
       cogl_x11_onscreen_set_foreign_window_xid (stage_cogl->onscreen,
@@ -500,7 +505,6 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
                                                stage_cogl->wrapper,
                                                event_flags);
 
-  /* no user resize.. */
   clutter_stage_x11_fix_window_size (stage_x11,
                                      stage_x11->xwin_width,
                                      stage_x11->xwin_height);
