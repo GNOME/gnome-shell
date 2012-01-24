@@ -1,3 +1,27 @@
+Clutter 1.9.8                                                        2012-01-24
+===============================================================================
+
+  • List of changes since Clutter 1.9.6
+
+    - Fix regressions in users of deprecated API
+    Also, allow to mix the new Actor API with the old Container API without
+    breaking.
+
+    - Add GResource support in ClutterScript
+    GResource is a new infrastructure in GIO that allows to compile resources
+    like UI builder files and image data into a shared library or an
+    executable. A newly added method to ClutterScript makes it possible to
+    load a UI definition from a resource, like it's done for files and
+    data.
+
+    - Update the Wayland client backend
+    The SHM transport API has changed upstream, and the Clutter backend has
+    been updated to reflect it.
+
+Many thanks to:
+
+  Rob Bradford, Fran Diéguez
+
 Clutter 1.9.6                                                        2012-01-19
 ===============================================================================
 
