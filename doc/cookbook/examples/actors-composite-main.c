@@ -70,7 +70,7 @@ main (int   argc,
   clutter_actor_add_constraint (button, align_x_constraint);
   clutter_actor_add_constraint (button, align_y_constraint);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), button);
+  clutter_actor_add_child (stage, button);
 
   clutter_actor_show (stage);
 

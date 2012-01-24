@@ -4,8 +4,6 @@
 #define OVERLAY_FACTOR 1.1
 
 static const ClutterColor stage_color = { 0x33, 0x33, 0x55, 0xff };
-static const ClutterColor red = { 0xff, 0x00, 0x00, 0xff };
-static const ClutterColor blue = { 0x00, 0x00, 0xff, 0x66 };
 
 void
 allocation_changed_cb (ClutterActor           *actor,
@@ -43,18 +41,22 @@ main (int argc, char *argv[])
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  actor = clutter_rectangle_new_with_color (&red);
+  actor = clutter_actor_new ();
+  clutter_actor_set_background_color (actor, CLUTTER_COLOR_Red);
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_position (actor, 150, 150);
+  clutter_actor_add_child (stage, actor);
 
-  overlay = clutter_rectangle_new_with_color (&blue);
+  overlay = clutter_actor_new ();
+  clutter_actor_set_background_color (overlay, CLUTTER_COLOR_Blue);
+  clutter_actor_set_opacity (overlay, 128);
 
   g_signal_connect (actor,
                     "allocation-changed",
                     G_CALLBACK (allocation_changed_cb),
                     overlay);
 
-  clutter_container_add (CLUTTER_CONTAINER (stage), actor, overlay, NULL);
+  clutter_actor_add_child (stage, overlay);
 
   clutter_actor_animate (actor, CLUTTER_LINEAR, 2000,
                          "width", 300.0,

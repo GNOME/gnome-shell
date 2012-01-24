@@ -17,11 +17,9 @@ static const ClutterColor blue_color = { 0x00, 0x00, 0xff, 0xff };
  * to a random x position
  */
 static void
-add_keys_for_actor (ClutterActor *actor,
-                    gpointer      user_data)
+add_keys_for_actor (ClutterActor    *actor,
+                    ClutterAnimator *animator)
 {
-  ClutterAnimator *animator = CLUTTER_ANIMATOR (user_data);
-
   gfloat x, end_x;
 
   x = clutter_actor_get_x (actor);
@@ -41,7 +39,8 @@ move_actors (ClutterActor *actor,
              ClutterEvent *event,
              gpointer      user_data)
 {
-  State *state = (State *) user_data;
+  State *state = user_data;
+  ClutterActor *child;
 
   /* do nothing if the animator is already running */
   if (clutter_timeline_is_playing (clutter_animator_get_timeline (state->animator)))
@@ -51,9 +50,12 @@ move_actors (ClutterActor *actor,
   clutter_animator_remove_key (state->animator, NULL, NULL, -1);
 
   /* add keys for all actors in the group */
-  clutter_container_foreach (CLUTTER_CONTAINER (state->group),
-                             add_keys_for_actor,
-                             state->animator);
+  for (child = clutter_actor_get_first_child (state->group);
+       child != NULL;
+       child = clutter_actor_get_next_sibling (child))
+    {
+      add_keys_for_actor (child, state->animator);
+    }
 
   /* start the animation */
   clutter_animator_start (state->animator);
@@ -68,12 +70,13 @@ main (int   argc,
   ClutterActor *red;
   ClutterActor *green;
   ClutterActor *blue;
+
   State *state = g_new0 (State, 1);
 
   /* seed random number generator */
   srand ((unsigned int) time (NULL));
 
-if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
   state->animator = clutter_animator_new ();
@@ -87,31 +90,31 @@ if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
                     G_CALLBACK (clutter_main_quit),
                     NULL);
 
-  state->group = clutter_group_new ();
+  state->group = clutter_actor_new ();
+  clutter_actor_add_child (state->stage, state->group);
 
-  red = clutter_rectangle_new_with_color (&red_color);
+  red = clutter_actor_new ();
+  clutter_actor_set_background_color (red, &red_color);
   clutter_actor_set_size (red, 50, 50);
   clutter_actor_set_position (red, 50, 50);
+  clutter_actor_add_child (state->group, red);
 
-  green = clutter_rectangle_new_with_color (&green_color);
+  green = clutter_actor_new ();
+  clutter_actor_set_background_color (green, &green_color);
   clutter_actor_set_size (green, 50, 50);
   clutter_actor_set_position (green, 50, 150);
+  clutter_actor_add_child (state->group, green);
 
-  blue = clutter_rectangle_new_with_color (&blue_color);
+  blue = clutter_actor_new ();
+  clutter_actor_set_background_color (blue, &blue_color);
   clutter_actor_set_size (blue, 50, 50);
   clutter_actor_set_position (blue, 50, 250);
+  clutter_actor_add_child (state->group, blue);
 
   g_signal_connect (state->stage,
                     "key-press-event",
                     G_CALLBACK (move_actors),
                     state);
-
-  clutter_container_add (CLUTTER_CONTAINER (state->group),
-                         red,
-                         green,
-                         blue,
-                         NULL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (state->stage), state->group);
 
   clutter_actor_show (state->stage);
 

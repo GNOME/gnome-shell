@@ -326,8 +326,7 @@ cb_button_init (CbButton *self)
   priv->child = clutter_box_new (layout);
 
   /* set the parent of the ClutterBox to this instance */
-  clutter_actor_set_parent (priv->child,
-                            CLUTTER_ACTOR (self));
+  clutter_actor_add_child (CLUTTER_ACTOR (self), priv->child);
 
   /* add text label to the button; see the ClutterText API docs
    * for more information about available properties
@@ -337,8 +336,7 @@ cb_button_init (CbButton *self)
                               "ellipsize", PANGO_ELLIPSIZE_END,
                               NULL);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->child),
-                               priv->label);
+  clutter_actor_add_child (priv->child, priv->label);
 
   /* add a ClutterClickAction on this actor, so we can proxy its
    * "clicked" signal into a signal from this actor

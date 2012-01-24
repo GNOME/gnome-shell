@@ -2,15 +2,15 @@
 #include <clutter/clutter.h>
 
 static const ClutterColor stage_color = { 0x33, 0x33, 0x55, 0xff };
-static const ClutterColor red_color = { 0xff, 0x00, 0x00, 0xff };
-static const ClutterColor blue_color = { 0x00, 0x00, 0xff, 0xff };
 
 void
 clicked_cb (ClutterClickAction *action,
             ClutterActor       *actor,
             gpointer            user_data)
 {
-  g_debug ("Button %d clicked", clutter_click_action_get_button (action));
+  g_print ("Pointer button %d clicked on actor %s\n",
+           clutter_click_action_get_button (action),
+           clutter_actor_get_name (actor));
 }
 
 int
@@ -31,23 +31,27 @@ main (int   argc,
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  actor1 = clutter_rectangle_new_with_color (&red_color);
+  actor1 = clutter_actor_new ();
+  clutter_actor_set_name (actor1, "Red Button");
+  clutter_actor_set_background_color (actor1, CLUTTER_COLOR_Red);
   clutter_actor_set_size (actor1, 100, 100);
   clutter_actor_set_reactive (actor1, TRUE);
   clutter_actor_set_position (actor1, 50, 150);
+  clutter_actor_add_child (stage, actor1);
 
-  actor2 = clutter_rectangle_new_with_color (&blue_color);
+  actor2 = clutter_actor_new ();
+  clutter_actor_set_name (actor2, "Blue Button");
+  clutter_actor_set_background_color (actor2, CLUTTER_COLOR_Blue);
   clutter_actor_set_size (actor2, 100, 100);
   clutter_actor_set_position (actor2, 250, 150);
   clutter_actor_set_reactive (actor2, TRUE);
+  clutter_actor_add_child (stage, actor2);
 
   action1 = clutter_click_action_new ();
   clutter_actor_add_action (actor1, action1);
 
   action2 = clutter_click_action_new ();
   clutter_actor_add_action (actor2, action2);
-
-  clutter_container_add (CLUTTER_CONTAINER (stage), actor1, actor2, NULL);
 
   g_signal_connect (action1,
                     "clicked",

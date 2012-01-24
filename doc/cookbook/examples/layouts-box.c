@@ -35,18 +35,20 @@ main (int   argc,
   /* put 5px of spacing between actors */
   clutter_box_layout_set_spacing (CLUTTER_BOX_LAYOUT (box_layout), 5);
 
-  /* actors are packed into this box; we set its width, but
+  /* actors are packed into this actor; we set its width, but
    * allow its height to be determined by the children it contains
    */
-  box = clutter_box_new (box_layout);
-  clutter_box_set_color (CLUTTER_BOX (box), &box_color);
+  box = clutter_actor_new ();
+  clutter_actor_set_layout_manager (box, box_layout);
+  clutter_actor_set_background_color (box, CLUTTER_COLOR_White);
   clutter_actor_set_position (box, 100, 50);
   clutter_actor_set_width (box, 200);
 
   /* pack an actor into the layout and set all layout properties on it
    * at the same time
    */
-  yellow = clutter_rectangle_new_with_color (&yellow_color);
+  yellow = clutter_actor_new ();
+  clutter_actor_set_background_color (yellow, CLUTTER_COLOR_Yellow);
   clutter_actor_set_size (yellow, 100, 100);
 
   clutter_box_layout_pack (CLUTTER_BOX_LAYOUT (box_layout),
@@ -57,28 +59,27 @@ main (int   argc,
                            CLUTTER_BOX_ALIGNMENT_START,   /* x-align */
                            CLUTTER_BOX_ALIGNMENT_START);  /* y-align */
 
-  /* pack an actor into the box and set layout properties at the
-   * same time; note this is more concise if you mostly want to
-   * use the default properties for the layout
-   */
-  red = clutter_rectangle_new_with_color (&red_color);
-  clutter_actor_set_size (red, 100, 100);
-
-  clutter_box_pack (CLUTTER_BOX (box),
-                    red,
-                    "x-fill", TRUE,
-                    NULL);
-
   /* add an actor to the box as a container and set layout properties
    * afterwards; the latter is useful if you want to change properties on
    * actors already inside a layout, but note that you have to
    * pass the function both the layout AND the container
    */
-  blue = clutter_rectangle_new_with_color (&blue_color);
+  red = clutter_actor_new ();
+  clutter_actor_set_background_color (red, CLUTTER_COLOR_Red);
+  clutter_actor_set_size (red, 100, 100);
+
+  clutter_actor_add_child (box, red);
+  clutter_layout_manager_child_set (box_layout,
+                                    CLUTTER_CONTAINER (box),
+                                    red,
+                                    "x-fill", TRUE,
+                                    NULL);
+
+  blue = clutter_actor_new ();
+  clutter_actor_set_background_color (blue, CLUTTER_COLOR_Blue);
   clutter_actor_set_size (blue, 100, 100);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), blue);
-
+  clutter_actor_add_child (box, blue);
   clutter_layout_manager_child_set (box_layout,
                                     CLUTTER_CONTAINER (box),
                                     blue,
@@ -86,7 +87,7 @@ main (int   argc,
                                     NULL);
 
   /* put the box on the stage */
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
+  clutter_actor_add_child (stage, box);
 
   clutter_actor_show (stage);
 
