@@ -215,8 +215,6 @@ void          _clutter_actor_traverse                   (ClutterActor *actor,
                                                          ClutterTraverseCallback before_children_callback,
                                                          ClutterTraverseCallback after_children_callback,
                                                          gpointer user_data);
-void          _clutter_actor_sort_children              (ClutterActor *actor,
-                                                         GCompareFunc  func);
 ClutterActor *_clutter_actor_get_stage_internal         (ClutterActor *actor);
 
 void _clutter_actor_apply_modelview_transform           (ClutterActor *self,

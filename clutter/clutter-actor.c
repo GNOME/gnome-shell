@@ -75,7 +75,7 @@
  *   another child actor. The order of insertion determines the order of the
  *   children when iterating over them. Iterating over children is performed
  *   by using clutter_actor_get_first_child(), clutter_actor_get_previous_sibling(),
- *   clutter_actor_get_next_child(), and clutter_actor_get_last_child(). It is
+ *   clutter_actor_get_next_sibling(), and clutter_actor_get_last_child(). It is
  *   also possible to retrieve a list of children by using
  *   clutter_actor_get_children(), as well as retrieving a specific child at a
  *   given index by using clutter_actor_get_child_at_index().</para>
@@ -15762,61 +15762,4 @@ clutter_actor_get_last_child (ClutterActor *self)
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
   return self->priv->last_child;
-}
-
-/*< private >
- * @self: a #ClutterActor
- * @func: a comparison function
- *
- * Sorts the list of children of @self using the provided comparison
- * function.
- */
-void
-_clutter_actor_sort_children (ClutterActor *self,
-                              GCompareFunc  func)
-{
-  ClutterActor *old_first, *old_last;
-  ClutterActor *iter;
-  GList *tmp, *l;
-
-  old_first = self->priv->first_child;
-  old_last = self->priv->last_child;
-
-  /* build a list from the list of children, while removing them
-   * at the same time; removal is O(1), as well as prepending it
-   * to the temporary list
-   */
-  tmp = NULL;
-  iter = self->priv->first_child;
-  while (iter != NULL)
-    {
-      ClutterActor *next = iter->priv->next_sibling;
-
-      tmp = g_list_prepend (tmp, g_object_ref (iter));
-
-      clutter_actor_remove_child_internal (self, iter, 0);
-
-      iter = next;
-    }
-
-  tmp = g_list_sort (tmp, func);
-
-  for (l = tmp; l != NULL; l = l->next)
-    {
-      clutter_actor_add_child_internal (self, l->data, 0,
-                                        insert_child_above,
-                                        NULL);
-      g_object_unref (l->data);
-    }
-
-  g_list_free (tmp);
-
-  /* we don't notify :first-child and :last-child until the end, to avoid
-   * spurious signal emissions
-   */
-  if (old_first != self->priv->first_child)
-    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FIRST_CHILD]);
-
-  if (old_last != self->priv->last_child)
-    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAST_CHILD]);
 }
