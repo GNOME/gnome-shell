@@ -25,12 +25,8 @@ typedef struct _screenshot_data {
 
   char *filename;
 
-  int x;
-  int y;
-  int width;
-  int height;
-
   cairo_surface_t *image;
+  cairo_rectangle_int_t screenshot_area;
 
   ShellGlobalScreenshotCallback callback;
 } _screenshot_data;

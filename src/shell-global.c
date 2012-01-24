@@ -1967,7 +1967,9 @@ on_screenshot_written (GObject *source,
 {
   _screenshot_data *screenshot_data = (_screenshot_data*) user_data;
   if (screenshot_data->callback)
-    screenshot_data->callback (screenshot_data->global, g_simple_async_result_get_op_res_gboolean (G_SIMPLE_ASYNC_RESULT (result)));
+    screenshot_data->callback (screenshot_data->global, 
+                               g_simple_async_result_get_op_res_gboolean (G_SIMPLE_ASYNC_RESULT (result)),
+                               &screenshot_data->screenshot_area);
 
   cairo_surface_destroy (screenshot_data->image);
   g_free (screenshot_data->filename);
@@ -2045,6 +2047,11 @@ grab_screenshot (ClutterActor *stage,
       cairo_region_destroy (stage_region);
     }
 
+  screenshot_data->screenshot_area.x = 0;
+  screenshot_data->screenshot_area.y = 0;
+  screenshot_data->screenshot_area.width = width;
+  screenshot_data->screenshot_area.height = height;
+
   g_signal_handlers_disconnect_by_func (stage, (void *)grab_screenshot, (gpointer)screenshot_data);
 
   result = g_simple_async_result_new (NULL, on_screenshot_written, (gpointer)screenshot_data, grab_screenshot);
@@ -2059,12 +2066,15 @@ grab_area_screenshot (ClutterActor *stage,
   GSimpleAsyncResult *result;
   guchar *data;
 
-  screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, screenshot_data->width, screenshot_data->height);
+  screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 
+                                                       screenshot_data->screenshot_area.width, 
+                                                       screenshot_data->screenshot_area.height);
   data = cairo_image_surface_get_data (screenshot_data->image);
 
   cogl_flush();
 
-  cogl_read_pixels (screenshot_data->x, screenshot_data->y, screenshot_data->width, screenshot_data->height,
+  cogl_read_pixels (screenshot_data->screenshot_area.x, screenshot_data->screenshot_area.y,
+                    screenshot_data->screenshot_area.width, screenshot_data->screenshot_area.height,
                     COGL_READ_PIXELS_COLOR_BUFFER, CLUTTER_CAIRO_FORMAT_ARGB32, data);
 
   cairo_surface_mark_dirty (screenshot_data->image);
@@ -2088,8 +2098,8 @@ grab_area_screenshot (ClutterActor *stage,
  */
 void
 shell_global_screenshot (ShellGlobal  *global,
-                        const char *filename,
-                        ShellGlobalScreenshotCallback callback)
+                         const char *filename,
+                         ShellGlobalScreenshotCallback callback)
 {
   ClutterActor *stage;
   _screenshot_data *data = g_new0 (_screenshot_data, 1);
@@ -2134,10 +2144,10 @@ shell_global_screenshot_area (ShellGlobal  *global,
 
   data->global = global;
   data->filename = g_strdup (filename);
-  data->x = x;
-  data->y = y;
-  data->width = width;
-  data->height = height;
+  data->screenshot_area.x = x;
+  data->screenshot_area.y = y;
+  data->screenshot_area.width = width;
+  data->screenshot_area.height = height;
   data->callback = callback;
 
   stage = CLUTTER_ACTOR (meta_plugin_get_stage (global->plugin));
@@ -2176,6 +2186,7 @@ shell_global_screenshot_window (ShellGlobal  *global,
   MetaDisplay *display = meta_screen_get_display (screen);
   MetaWindow *window = meta_display_get_focus_window (display);
   ClutterActor *window_actor;
+  gint width, height;
 
   screenshot_data->global = global;
   screenshot_data->filename = g_strdup (filename);
@@ -2183,6 +2194,9 @@ shell_global_screenshot_window (ShellGlobal  *global,
 
   window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
   texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor))));
+
+  screenshot_data->screenshot_area.x = (gint) clutter_actor_get_x (window_actor);
+  screenshot_data->screenshot_area.y = (gint) clutter_actor_get_y (window_actor);
 
   if (!include_frame)
     {
@@ -2196,11 +2210,23 @@ shell_global_screenshot_window (ShellGlobal  *global,
       screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
                                                           window_rect->width,
                                                           window_rect->height);
+
+      screenshot_data->screenshot_area.x += window_rect->x;
+      screenshot_data->screenshot_area.y += window_rect->y;
+      screenshot_data->screenshot_area.width = window_rect->width;
+      screenshot_data->screenshot_area.height = window_rect->height;
     }
   else
-    screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                                        clutter_actor_get_width (window_actor),
-                                                        clutter_actor_get_height (window_actor));
+    {
+      width = (gint) clutter_actor_get_width (window_actor);
+      height = (gint) clutter_actor_get_height (window_actor);
+
+      screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                                           width, height);
+
+      screenshot_data->screenshot_area.width = width;
+      screenshot_data->screenshot_area.height = height;
+    }
 
   data = cairo_image_surface_get_data (screenshot_data->image);
 

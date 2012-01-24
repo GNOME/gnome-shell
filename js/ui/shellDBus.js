@@ -6,6 +6,7 @@ const GLib = imports.gi.GLib;
 
 const Config = imports.misc.config;
 const ExtensionSystem = imports.ui.extensionSystem;
+const Flashspot = imports.ui.flashspot;
 const Main = imports.ui.main;
 
 const GnomeShellIface = <interface name="org.gnome.Shell">
@@ -30,15 +31,18 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
     <arg type="i" direction="in" name="y"/>
     <arg type="i" direction="in" name="width"/>
     <arg type="i" direction="in" name="height"/>
+    <arg type="b" direction="in" name="flash"/>
     <arg type="s" direction="in" name="filename"/>
     <arg type="b" direction="out" name="success"/>
 </method>
 <method name="ScreenshotWindow">
     <arg type="b" direction="in" name="include_frame"/>
+    <arg type="b" direction="in" name="flash"/>
     <arg type="s" direction="in" name="filename"/>
     <arg type="b" direction="out" name="success"/>
 </method>
 <method name="Screenshot">
+    <arg type="b" direction="in" name="flash"/>
     <arg type="s" direction="in" name="filename"/>
     <arg type="b" direction="out" name="success"/>
 </method>
@@ -109,6 +113,13 @@ const GnomeShell = new Lang.Class({
         return [success, returnValue];
     },
 
+    _handleScreenshotFlash: function(flash, area) {
+        if (flash) {
+            let flashspot = new Flashspot.Flashspot(area);
+            flashspot.fire();
+        }
+    },
+
     /**
      * ScreenshotArea:
      * @x: The X coordinate of the area
@@ -123,12 +134,14 @@ const GnomeShell = new Lang.Class({
      *
      */
     ScreenshotAreaAsync : function (params, invocation) {
-        let [x, y, width, height, filename, callback] = params;
-        global.screenshot_area (x, y, width, height, filename,
-            function (obj, result) {
+        let [x, y, width, height, flash, filename, callback] = params;
+        global.screenshot_area (x, y, width, height, filename, Lang.bind(this,
+            function (obj, result, area) {
+                this._handleScreenshotFlash(flash, area);
+
                 let retval = GLib.Variant.new('(b)', [result]);
                 invocation.return_value(retval);
-            });
+            }));
     },
 
     /**
@@ -142,12 +155,14 @@ const GnomeShell = new Lang.Class({
      *
      */
     ScreenshotWindowAsync : function (params, invocation) {
-        let [include_frame, filename] = params;
-        global.screenshot_window (include_frame, filename,
-            function (obj, result) {
+        let [include_frame, flash, filename] = params;
+        global.screenshot_window (include_frame, filename, Lang.bind(this,
+            function (obj, result, area) {
+                this._handleScreenshotFlash(flash, area);
+
                 let retval = GLib.Variant.new('(b)', [result]);
                 invocation.return_value(retval);
-            });
+            }));
     },
 
     /**
@@ -160,12 +175,14 @@ const GnomeShell = new Lang.Class({
      *
      */
     ScreenshotAsync : function (params, invocation) {
-        let [filename] = params;
-        global.screenshot(filename,
-            function (obj, result) {
+        let [flash, filename] = params;
+        global.screenshot(filename, Lang.bind(this,
+            function (obj, result, area) {
+                this._handleScreenshotFlash(flash, area);
+
                 let retval = GLib.Variant.new('(b)', [result]);
                 invocation.return_value(retval);
-            });
+            }));
     },
 
     ListExtensions: function() {

@@ -1716,6 +1716,10 @@ StTooltip StLabel {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
+.flashspot {
+    background-color: white;
+}
+
 /* End Session Dialog */
 .end-session-dialog {
     spacing: 42px;

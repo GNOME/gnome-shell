@@ -146,7 +146,9 @@ void     shell_global_reexec_self               (ShellGlobal  *global);
 
 void     shell_global_launch_calendar_server    (ShellGlobal  *global);
 
-typedef void (*ShellGlobalScreenshotCallback)  (ShellGlobal *global, gboolean success);
+typedef void (*ShellGlobalScreenshotCallback)  (ShellGlobal *global, 
+                                                gboolean success,
+                                                cairo_rectangle_int_t *screenshot_area);
 
 void    shell_global_screenshot_area           (ShellGlobal  *global,
                                                 int x,
