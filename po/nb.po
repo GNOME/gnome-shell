@@ -1,15 +1,15 @@
 # Norwegian bokmål translation of cogl.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Kjartan Maraas <kmaraas@gnome.org>, 2011.
+# Kjartan Maraas <kmaraas@gnome.org>, 2011-2012.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: cogl\n"
+"Project-Id-Version: cogl 1.9.4\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-10-19 23:18+0200\n"
-"PO-Revision-Date: 2011-10-19 23:20+0200\n"
+"POT-Creation-Date: 2012-01-24 15:02+0100\n"
+"PO-Revision-Date: 2012-01-24 15:03+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -17,31 +17,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../cogl/cogl-debug.c:154
+#: ../cogl/cogl-debug.c:172
 msgid "Supported debug values:"
 msgstr "Støttede feilsøkingsverdier:"
 
-#: ../cogl/cogl-debug.c:159
+#: ../cogl/cogl-debug.c:177
 msgid "Special debug values:"
 msgstr "Spesielle feilsøkingsverdier:"
 
-#: ../cogl/cogl-debug.c:161 ../cogl/cogl-debug.c:163
+#: ../cogl/cogl-debug.c:179 ../cogl/cogl-debug.c:181
 msgid "Enables all non-behavioural debug options"
 msgstr ""
 
-#: ../cogl/cogl-debug.c:207
+#: ../cogl/cogl-debug.c:225
 msgid "Cogl debugging flags to set"
 msgstr "Feilsøkingsflagg som skal settes for Cogl"
 
-#: ../cogl/cogl-debug.c:209
+#: ../cogl/cogl-debug.c:227
 msgid "Cogl debugging flags to unset"
 msgstr "Feilsøkingsflagg som skal fjernes for Cogl"
 
-#: ../cogl/cogl-debug.c:258
+#: ../cogl/cogl-debug.c:276
 msgid "Cogl Options"
 msgstr "Alternativer for Cogl"
 
-#: ../cogl/cogl-debug.c:259
+#: ../cogl/cogl-debug.c:277
 msgid "Show Cogl options"
 msgstr "Vis alternativer for Cogl"
 
@@ -53,11 +53,11 @@ msgstr "Vis alternativer for Cogl"
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
 msgid "Cogl Tracing"
-msgstr ""
+msgstr "Cogl-sporing"
 
 #: ../cogl/cogl-debug-options.h:27
 msgid "CoglObject references"
-msgstr ""
+msgstr "CoglObject-referanser"
 
 #: ../cogl/cogl-debug-options.h:28
 msgid "Debug ref counting issues for CoglObjects"
