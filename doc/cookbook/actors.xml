@@ -770,13 +770,10 @@ clutter_actor_raise (actorB, actorA);
               </programlisting>
             </informalexample>
 
-            <para><function>clutter_actor_raise()</function>,
-            <function>clutter_actor_lower()</function> and related
+            <para><function>clutter_actor_set_child_above_sibling()</function>,
+            <function>clutter_actor_set_child_below_sibling()</function> and related
             <type>ClutterActor</type> functions set
-            depth ordering on actors; see also <type>ClutterContainer</type>'s
-            <function>clutter_container_raise_child()</function> and
-            <function>clutter_container_lower_child()</function>
-            functions.</para>
+            depth ordering on actors.</para>
           </listitem>
         </itemizedlist>
 

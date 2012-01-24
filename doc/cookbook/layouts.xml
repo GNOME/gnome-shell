@@ -57,7 +57,7 @@
 
       <para>Although Clutter provides plenty of flexibility in how you
       can use layout management, the simplest way to get started is to
-      use the built-in <type>ClutterBox</type> class with one of the
+      use the built-in <type>ClutterActor</type> class with one of the
       provided <type>ClutterLayoutManager</type> implementations.</para>
 
       <para>The pattern for doing this is:</para>
@@ -76,11 +76,11 @@
           in the layout).</para>
         </listitem>
         <listitem>
-          <para>Create a <type>ClutterBox</type>, setting its layout
+          <para>Create a <type>ClutterActor</type>, setting its layout
           manager to the one you just created.</para>
         </listitem>
         <listitem>
-          <para>Pack actors into the <type>ClutterBox</type>,
+          <para>Pack actors into the <type>ClutterActor</type>,
           setting layout properties (if required) as each is added.</para>
         </listitem>
         <listitem>
@@ -93,13 +93,6 @@
       <para>Individual recipes in this section give more examples of
       how to make use of the different layout manager
       implementations.</para>
-
-      <note>
-        <para>It is not possible to use a layout manager with an arbitrary
-        <type>ClutterContainer</type>: you must use a <type>ClutterActor</type>
-        subclass which can delegate its layout to a layout manager (either
-        use <type>ClutterBox</type> or write your own).</para>
-      </note>
 
     </section>
 
@@ -377,7 +370,7 @@
       <title>Solution</title>
 
       <para>The most flexible approach is to use a <type>ClutterBinLayout</type>
-      associated with a <type>ClutterBox</type>:</para>
+      associated with a <type>ClutterActor</type>:</para>
 
       <informalexample>
         <programlisting>
@@ -419,7 +412,7 @@ background = clutter_rectangle_new_with_color (&background_color);
  * as it should use the default alignment, it can be added
  * direct to the container, rather than via the layout
  */
-clutter_container_add_actor (CLUTTER_CONTAINER (box), background);
+clutter_actor_add_child (box, background);
 
 /* text for the button */
 text = clutter_text_new_full ("Sans 15px", "Click me", &text_color);
@@ -516,7 +509,7 @@ clutter_actor_raise_top (text);
         </note>
 
         <para>The white space is the stage visible behind the
-        <type>ClutterBox</type> holding the coloured rectangles.
+        <type>ClutterActor</type> holding the coloured rectangles.
         Notice that the layout is the width of the widest actor
         within it and the height of the tallest.</para>
 
@@ -535,8 +528,9 @@ clutter_actor_raise_top (text);
         mirrors the order in which actors are added to the layout: the
         earlier an actor is added, the lower down in the depth order it
         is. If this isn't what you want, you can fix the depth ordering using
-        <function>clutter_actor_raise()</function>,
-        <function>clutter_actor_lower()</function> and their relatives.</para>
+        <function>clutter_actor_set_child_above_sibling()</function>,
+        <function>clutter_actor_set_child_below_sibling()</function> and
+        their relatives.</para>
       </section>
 
       <section>
@@ -550,12 +544,14 @@ clutter_actor_raise_top (text);
 
         <para>However, if you have a small number of actors and you
         need some simple alignment, an alternative is to use
-        manual positioning inside a <type>ClutterFixedLayout</type>
-        (or even a <type>ClutterGroup</type>), possibly combined with
-        <type>ClutterConstraints</type> to align actors with each other
-        and bind their widths and heights together. See
+        manual positioning inside a <type>ClutterFixedLayout</type>, possibly
+        combined with <type>ClutterConstraints</type> to align actors with
+        each other and bind their widths and heights together. See
         <link linkend="layouts-introduction-not-using-layout-managers">this
         section</link> for more details.</para>
+
+        <note><para>By default, <type>ClutterActor</type> uses a
+        <type>ClutterFixedLayout</type> as its layout manager.</para></note>
       </section>
 
     </section>
@@ -832,7 +828,7 @@ clutter_actor_raise_top (text);
     <section>
       <title>Solution</title>
 
-      <para>Create a <type>ClutterBox</type> with a
+      <para>Create a <type>ClutterActor</type> with a
       <type>ClutterBoxLayout</type> as its layout manager.</para>
 
       <para>A <type>ClutterBoxLayout</type> can hold a single row or
@@ -862,8 +858,9 @@ clutter_box_layout_set_spacing (CLUTTER_BOX_LAYOUT (box_layout), 5);
 /* actors are packed into this box; we set its width, but
  * allow its height to be determined by the children it contains
  */
-box = clutter_box_new (box_layout);
-clutter_box_set_color (CLUTTER_BOX (box), &box_color);
+box = clutter_actor_new ();
+clutter_actor_set_layout_manager (box, box_layout);
+clutter_actor_set_background_color (box, &box_color);
 clutter_actor_set_position (box, 100, 50);
 clutter_actor_set_width (box, 200);
 
@@ -881,27 +878,26 @@ clutter_box_layout_pack (CLUTTER_BOX_LAYOUT (box_layout),
                          CLUTTER_BOX_ALIGNMENT_START,   /* x-align */
                          CLUTTER_BOX_ALIGNMENT_START);  /* y-align */
 
-/* pack an actor into the box and set layout properties at the
- * same time; note this is more concise if you mostly want to
- * use the default properties for the layout
- */
-red = clutter_rectangle_new_with_color (&red_color);
-clutter_actor_set_size (red, 100, 100);
-
-clutter_box_pack (CLUTTER_BOX (box),
-                  red,
-                  "x-fill", TRUE,
-                  NULL);
-
 /* add an actor to the box as a container and set layout properties
  * afterwards; the latter is useful if you want to change properties on
  * actors already inside a layout, but note that you have to
  * pass the function both the layout AND the container
  */
+red = clutter_rectangle_new_with_color (&red_color);
+clutter_actor_set_size (red, 100, 100);
+
+clutter_actor_add_child (box, blue);
+
+clutter_layout_manager_child_set (box_layout,
+                                  CLUTTER_CONTAINER (box),
+                                  blue,
+                                  "x-fill", TRUE,
+                                  NULL);
+
 blue = clutter_rectangle_new_with_color (&blue_color);
 clutter_actor_set_size (blue, 100, 100);
 
-clutter_container_add_actor (CLUTTER_CONTAINER (box), blue);
+clutter_actor_add_child (box, blue);
 
 clutter_layout_manager_child_set (box_layout,
                                   CLUTTER_CONTAINER (box),
@@ -910,7 +906,7 @@ clutter_layout_manager_child_set (box_layout,
                                   NULL);
 
 /* put the box on the stage */
-clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
+clutter_actor_add_child (stage, box);
 ]]>
         </programlisting>
       </informalexample>

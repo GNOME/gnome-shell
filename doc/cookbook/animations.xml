@@ -1588,7 +1588,7 @@ foo_button_pressed_cb (ClutterActor *actor,
   g_object_set_data_full (G_OBJECT (rig), "script", script, g_object_unref);
 
   /* add the rig to the stage */
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), rig);
+  clutter_actor_add_child (stage, rig);
 
   /* place the rig at the same coordinates on the stage as the rectangle */
   clutter_actor_set_position (rig,
@@ -1596,7 +1596,9 @@ foo_button_pressed_cb (ClutterActor *actor,
                               clutter_actor_get_y (actor));
 
   /* put the rectangle into the top-left corner of the rig */
-  clutter_actor_reparent (actor, rig);
+  g_object_ref (actor);
+  clutter_actor_remove_child (clutter_actor_get_parent (actor), actor);
+  clutter_actor_add_child (rig, actor);
 
   clutter_actor_set_position (actor, 0, 0);
 
@@ -3120,7 +3122,7 @@ clutter_actor_set_size (rectangle, 60, 60);
 clutter_actor_add_constraint_with_name (rectangle, "path", constraint);
 
 /* add the rectangle to the stage */
-clutter_container_add_actor (CLUTTER_CONTAINER (stage), rectangle);
+clutter_actor_add_child (stage, rectangle);
         </programlisting>
       </informalexample>
 

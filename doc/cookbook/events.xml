@@ -557,9 +557,9 @@ clutter_actor_set_clip_to_allocation (viewport, TRUE);
 
             <informalexample>
               <programlisting>
-clutter_container_add_actor (CLUTTER_CONTAINER (viewport), texture);
+clutter_actor_add_child (viewport, texture);
 
-clutter_container_add_actor (CLUTTER_CONTAINER (stage), viewport);
+clutter_actor_add_child (stage, viewport);
               </programlisting>
             </informalexample>
 
