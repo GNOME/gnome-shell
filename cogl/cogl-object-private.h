@@ -73,14 +73,14 @@ typedef struct
  */
 struct _CoglObject
 {
-  unsigned int      ref_count;
+  CoglObjectClass  *klass;
 
   CoglUserDataEntry user_data_entry[
     COGL_OBJECT_N_PRE_ALLOCATED_USER_DATA_ENTRIES];
   GArray           *user_data_array;
   int               n_user_data_entries;
 
-  CoglObjectClass  *klass;
+  unsigned int      ref_count;
 };
 
 /* Helper macro to encapsulate the common code for COGL reference
