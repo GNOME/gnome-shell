@@ -286,7 +286,7 @@ on_shell_signal (GDBusProxy *proxy,
       gint32 status;
       gchar *error;
       NPVariant args[3];
-      NPVariant result;
+      NPVariant result = { NPVariantType_Void };
 
       g_variant_get (parameters, "(sis)", &uuid, &status, &error);
       STRINGZ_TO_NPVARIANT (uuid, args[0]);
