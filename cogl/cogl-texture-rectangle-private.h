@@ -47,9 +47,6 @@ struct _CoglTextureRectangle
   gboolean        is_foreign;
 };
 
-GQuark
-_cogl_handle_texture_rectangle_get_type (void);
-
 CoglTextureRectangle *
 _cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
                                          CoglTextureFlags flags,

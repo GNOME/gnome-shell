@@ -168,19 +168,17 @@ _cogl_texture_free (CoglTexture *texture);
 /* This is used to register a type to the list of handle types that
    will be considered a texture in cogl_is_texture() */
 void
-_cogl_texture_register_texture_type (GQuark type);
+_cogl_texture_register_texture_type (const CoglObjectClass *klass);
 
 #define COGL_TEXTURE_DEFINE(TypeName, type_name)                        \
   COGL_HANDLE_DEFINE_WITH_CODE                                          \
   (TypeName, type_name,                                                 \
-   _cogl_texture_register_texture_type (_cogl_handle_                   \
-                                        ## type_name ## _get_type ()))
+   _cogl_texture_register_texture_type (&_cogl_##type_name##_class))
 
 #define COGL_TEXTURE_INTERNAL_DEFINE(TypeName, type_name)               \
   COGL_HANDLE_INTERNAL_DEFINE_WITH_CODE                                 \
   (TypeName, type_name,                                                 \
-   _cogl_texture_register_texture_type (_cogl_handle_                   \
-                                        ## type_name ## _get_type ()))
+   _cogl_texture_register_texture_type (&_cogl_##type_name##_class))
 
 gboolean
 _cogl_texture_can_hardware_repeat (CoglTexture *texture);

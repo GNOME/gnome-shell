@@ -102,13 +102,12 @@ struct _CoglBuffer
 /* This is used to register a type to the list of handle types that
    will be considered a texture in cogl_is_texture() */
 void
-_cogl_buffer_register_buffer_type (GQuark type);
+_cogl_buffer_register_buffer_type (const CoglObjectClass *klass);
 
 #define COGL_BUFFER_DEFINE(TypeName, type_name)                         \
   COGL_OBJECT_DEFINE_WITH_CODE                                          \
   (TypeName, type_name,                                                 \
-   _cogl_buffer_register_buffer_type (_cogl_object_                     \
-                                      ## type_name ## _get_type ()))
+   _cogl_buffer_register_buffer_type (&_cogl_##type_name##_class))
 
 void
 _cogl_buffer_initialize (CoglBuffer          *buffer,

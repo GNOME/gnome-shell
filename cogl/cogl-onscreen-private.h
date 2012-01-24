@@ -50,14 +50,12 @@ struct _CoglOnscreen
 
   void *winsys;
 };
+
 CoglOnscreen *
 _cogl_onscreen_new (void);
 
 void
 _cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
                                       int width, int height);
-
-GQuark
-_cogl_object_onscreen_get_type (void);
 
 #endif /* __COGL_ONSCREEN_PRIVATE_H */

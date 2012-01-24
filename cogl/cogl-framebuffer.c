@@ -109,7 +109,7 @@ typedef struct _CoglFramebufferStackEntry
   CoglFramebuffer *read_buffer;
 } CoglFramebufferStackEntry;
 
-extern GQuark _cogl_object_onscreen_get_type (void);
+extern CoglObjectClass _cogl_onscreen_class;
 
 static void _cogl_offscreen_free (CoglOffscreen *offscreen);
 
@@ -136,8 +136,8 @@ _cogl_is_framebuffer (void *object)
   if (obj == NULL)
     return FALSE;
 
-  return obj->klass->type == _cogl_object_onscreen_get_type ()
-    || obj->klass->type == _cogl_object_offscreen_get_type ();
+  return (obj->klass == &_cogl_onscreen_class ||
+          obj->klass == &_cogl_offscreen_class);
 }
 
 void

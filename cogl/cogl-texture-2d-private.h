@@ -52,9 +52,6 @@ struct _CoglTexture2D
   CoglTexturePixel first_pixel;
 };
 
-GQuark
-_cogl_handle_texture_2d_get_type (void);
-
 CoglHandle
 _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
                                   CoglTextureFlags flags,

@@ -54,7 +54,4 @@ struct _CoglSubTexture
   int         sub_height;
 };
 
-GQuark
-_cogl_handle_sub_texture_get_type (void);
-
 #endif /* __COGL_SUB_TEXTURE_PRIVATE_H */

@@ -70,12 +70,11 @@ cogl_texture_error_quark (void)
  */
 
 void
-_cogl_texture_register_texture_type (GQuark type)
+_cogl_texture_register_texture_type (const CoglObjectClass *klass)
 {
   _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
 
-  ctxt->texture_types = g_slist_prepend (ctxt->texture_types,
-                                         GINT_TO_POINTER (type));
+  ctxt->texture_types = g_slist_prepend (ctxt->texture_types, (void *) klass);
 }
 
 gboolean
@@ -90,7 +89,7 @@ cogl_is_texture (void *object)
     return FALSE;
 
   for (l = ctxt->texture_types; l; l = l->next)
-    if (GPOINTER_TO_INT (l->data) == obj->klass->type)
+    if (l->data == obj->klass)
       return TRUE;
 
   return FALSE;

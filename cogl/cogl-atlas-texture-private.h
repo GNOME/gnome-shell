@@ -55,9 +55,6 @@ struct _CoglAtlasTexture
   CoglHandle            sub_texture;
 };
 
-GQuark
-_cogl_handle_atlas_texture_get_type (void);
-
 CoglHandle
 _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
                                      CoglTextureFlags flags,

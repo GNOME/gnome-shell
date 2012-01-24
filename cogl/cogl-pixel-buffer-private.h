@@ -47,9 +47,6 @@ struct _CoglPixelBuffer
   unsigned int          stride;
 };
 
-GQuark
-_cogl_handle_pixel_buffer_get_type (void);
-
 G_END_DECLS
 
 #endif /* __COGL_PIXEL_BUFFER_PRIVATE_H__ */

@@ -43,9 +43,6 @@ struct _CoglTexture2DSliced
   int               height;
 };
 
-GQuark
-_cogl_handle_texture_2d_sliced_get_type (void);
-
 CoglTexture2DSliced *
 _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
                                           GLenum           gl_target,

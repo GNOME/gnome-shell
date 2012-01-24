@@ -58,9 +58,6 @@ struct _CoglTexture3D
   CoglTexturePixel first_pixel;
 };
 
-GQuark
-_cogl_handle_texture_3d_get_type (void);
-
 /*
  * cogl_texture_3d_new_from_bitmap:
  * @bmp_handle: A #CoglHandle to a bitmap.

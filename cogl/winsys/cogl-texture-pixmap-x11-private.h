@@ -81,7 +81,4 @@ struct _CoglTexturePixmapX11
   gboolean use_winsys_texture;
 };
 
-GQuark
-_cogl_handle_texture_pixmap_x11_get_type (void);
-
 #endif /* __COGL_TEXTURE_PIXMAP_X11_PRIVATE_H */

@@ -78,12 +78,11 @@
  */
 
 void
-_cogl_buffer_register_buffer_type (GQuark type)
+_cogl_buffer_register_buffer_type (const CoglObjectClass *klass)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  ctx->buffer_types = g_slist_prepend (ctx->buffer_types,
-                                       GINT_TO_POINTER (type));
+  ctx->buffer_types = g_slist_prepend (ctx->buffer_types, (void *) klass);
 }
 
 gboolean
@@ -98,7 +97,7 @@ cogl_is_buffer (const void *object)
     return FALSE;
 
   for (l = ctx->buffer_types; l; l = l->next)
-    if (GPOINTER_TO_INT (l->data) == obj->klass->type)
+    if (l->data == obj->klass)
       return TRUE;
 
   return FALSE;
