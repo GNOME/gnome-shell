@@ -407,41 +407,10 @@ typedef enum { /*< prefix=CLUTTER_OFFSCREEN_REDIRECT >*/
  *   should only be used if you are subclassing #ClutterActor and
  *   overriding the #ClutterActorClass.allocate() virtual function, but
  *   you wish to use the default implementation of the virtual function
- *   inside #ClutterActor, for instance:
- * |[
- *   static void
- *   my_actor_allocate (ClutterActor *actor,
- *                      const ClutterActorBox *alloc,
- *                      ClutterAllocationFlags flags)
- *   {
- *     ClutterActorBox new_alloc;
- *     ClutterAllocationFlags new_flags;
- *
- *     /&ast; change the allocation &ast;/
- *     new_alloc = *alloc;
- *     new_alloc.x1 += 6;
- *     new_alloc.y1 += 3;
- *     new_alloc.x2 -= 6;
- *     new_alloc.y2 -= 3;
- *
- *     /&ast; change the flags &ast;/
- *     new_flags = flags | CLUTTER_DELEGATE_LAYOUT;
- *
- *     /&ast; store the allocation and delegate the children layout
- *      &ast; to the ClutterLayoutManager used by the actor.
- *      &ast;/
- *     clutter_actor_set_allocation (actor, &amp;new_alloc, flags);
- *
- *     /&ast; alternatively, instead of using this flags, you could
- *      &ast; retrieve the layout manager and call the
- *      &ast; clutter_layout_manager_allocate() yourself.
- *      &ast;/
- *   }
- * ]|
- *   the %CLUTTER_DELEGATE_LAYOUT was added in Clutter 1.10.
+ *   inside #ClutterActor. Added in Clutter 1.10.
  *
  * Flags passed to the #ClutterActorClass.allocate() virtual function
- * and to the clutter_actor_allocate() function
+ * and to the clutter_actor_allocate() function.
  *
  * Since: 1.0
  */
