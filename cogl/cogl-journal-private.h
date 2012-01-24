@@ -34,6 +34,14 @@ typedef struct _CoglJournal
 {
   CoglObject _parent;
 
+  /* A pointer the framebuffer that is using this journal. This is
+     only valid when the journal is not empty. It *does* take a
+     reference on the framebuffer. Although this creates a circular
+     reference, the framebuffer has special code to handle the case
+     where the journal is the only thing holding a reference and it
+     will cause the journal to flush */
+  CoglFramebuffer *framebuffer;
+
   GArray *entries;
   GArray *vertices;
   size_t needed_vbo_len;

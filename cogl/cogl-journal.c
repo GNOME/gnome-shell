@@ -1261,6 +1261,14 @@ _cogl_journal_discard (CoglJournal *journal)
   g_array_set_size (journal->vertices, 0);
   journal->needed_vbo_len = 0;
   journal->fast_read_pixel_count = 0;
+
+  /* The journal only holds a reference to the framebuffer while the
+     journal is not empty */
+  if (journal->framebuffer)
+    {
+      cogl_object_unref (journal->framebuffer);
+      journal->framebuffer = NULL;
+    }
 }
 
 /* Note: A return value of FALSE doesn't mean 'no' it means
@@ -1352,6 +1360,11 @@ _cogl_journal_flush (CoglJournal *journal,
 
   if (journal->entries->len == 0)
     return;
+
+  /* Something has gone wrong if we're using a different framebuffer
+     to flush than the one that was current when the entries were
+     added */
+  _COGL_RETURN_IF_FAIL (framebuffer == journal->framebuffer);
 
   /* The entries in this journal may depend on images in other
    * framebuffers which may require that we flush the journals
@@ -1496,6 +1509,14 @@ _cogl_journal_log_quad (CoglJournal  *journal,
 
   COGL_TIMER_START (_cogl_uprof_context, log_timer);
 
+  /* If the framebuffer was previously empty then we'll take a
+     reference to the current framebuffer. This reference will be
+     removed when the journal is flushed. FIXME: This should probably
+     be being passed a pointer to the framebuffer from further up so
+     that we don't have to rely on the global framebuffer stack */
+  if (journal->vertices->len == 0)
+    journal->framebuffer = cogl_object_ref (cogl_get_draw_framebuffer ());
+
   /* The vertex data is logged into a separate array. The data needs
      to be copied into a vertex array before it's given to GL so we
      only store two vertices per quad and expand it to four while
@@ -1573,7 +1594,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
 
   entry->pipeline = _cogl_pipeline_journal_ref (source);
 
-  clip_stack = _cogl_framebuffer_get_clip_stack (cogl_get_draw_framebuffer ());
+  clip_stack = _cogl_framebuffer_get_clip_stack (journal->framebuffer);
   entry->clip_stack = _cogl_clip_stack_ref (clip_stack);
 
   if (G_UNLIKELY (source != pipeline))
@@ -1583,7 +1604,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
 
   _cogl_pipeline_foreach_layer_internal (pipeline,
                                          add_framebuffer_deps_cb,
-                                         cogl_get_draw_framebuffer ());
+                                         journal->framebuffer);
 
   /* XXX: It doesn't feel very nice that in this case we just assume
    * that the journal is associated with the current framebuffer. I
@@ -1591,13 +1612,14 @@ _cogl_journal_log_quad (CoglJournal  *journal,
    * the reason we don't have that currently is that it would
    * introduce a circular reference. */
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_BATCHING)))
-    _cogl_framebuffer_flush_journal (cogl_get_draw_framebuffer ());
+    _cogl_framebuffer_flush_journal (journal->framebuffer);
 
   COGL_TIMER_STOP (_cogl_uprof_context, log_timer);
 }
 
 static void
-entry_to_screen_polygon (const CoglJournalEntry *entry,
+entry_to_screen_polygon (CoglFramebuffer *framebuffer,
+                         const CoglJournalEntry *entry,
                          float *vertices,
                          float *poly)
 {
@@ -1642,7 +1664,7 @@ entry_to_screen_polygon (const CoglJournalEntry *entry,
                                 4 /* n_points */);
 
   projection_stack =
-    _cogl_framebuffer_get_projection_stack (cogl_get_draw_framebuffer ());
+    _cogl_framebuffer_get_projection_stack (framebuffer);
   _cogl_matrix_stack_get (projection_stack, &projection);
 
   cogl_matrix_project_points (&projection,
@@ -1654,7 +1676,7 @@ entry_to_screen_polygon (const CoglJournalEntry *entry,
                               poly, /* points_out */
                               4 /* n_points */);
 
-  cogl_framebuffer_get_viewport4fv (cogl_get_draw_framebuffer (), viewport);
+  cogl_framebuffer_get_viewport4fv (framebuffer, viewport);
 
 /* Scale from OpenGL normalized device coordinates (ranging from -1 to 1)
  * to Cogl window/framebuffer coordinates (ranging from 0 to buffer-size) with
@@ -1688,7 +1710,8 @@ entry_to_screen_polygon (const CoglJournalEntry *entry,
 }
 
 static gboolean
-try_checking_point_hits_entry_after_clipping (CoglJournalEntry *entry,
+try_checking_point_hits_entry_after_clipping (CoglFramebuffer *framebuffer,
+                                              CoglJournalEntry *entry,
                                               float *vertices,
                                               float x,
                                               float y,
@@ -1750,7 +1773,7 @@ try_checking_point_hits_entry_after_clipping (CoglJournalEntry *entry,
         return FALSE;
 
       software_clip_entry (entry, vertices, &clip_bounds);
-      entry_to_screen_polygon (entry, vertices, poly);
+      entry_to_screen_polygon (framebuffer, entry, vertices, poly);
 
       *hit = _cogl_util_point_in_screen_poly (x, y, poly, sizeof (float) * 4, 4);
       return TRUE;
@@ -1803,22 +1826,20 @@ _cogl_journal_try_read_pixel (CoglJournal *journal,
                                                 entry->array_offset);
       float *vertices = (float *)color + 1;
       float poly[16];
+      CoglFramebuffer *framebuffer = journal->framebuffer;
 
-      entry_to_screen_polygon (entry, vertices, poly);
+      entry_to_screen_polygon (framebuffer, entry, vertices, poly);
 
       if (!_cogl_util_point_in_screen_poly (x, y, poly, sizeof (float) * 4, 4))
         continue;
 
-      /* FIXME: the journal should have a back pointer to the
-       * associated framebuffer, because it should be possible to read
-       * a pixel from arbitrary framebuffers without needing to
-       * internally call _cogl_push/pop_framebuffer.
-       */
       if (entry->clip_stack)
         {
           gboolean hit;
 
-          if (!try_checking_point_hits_entry_after_clipping (entry, vertices,
+          if (!try_checking_point_hits_entry_after_clipping (framebuffer,
+                                                             entry,
+                                                             vertices,
                                                              x, y, &hit))
             return FALSE; /* hit couldn't be determined */
 

@@ -113,7 +113,9 @@ extern CoglObjectClass _cogl_onscreen_class;
 
 static void _cogl_offscreen_free (CoglOffscreen *offscreen);
 
-COGL_OBJECT_DEFINE (Offscreen, offscreen);
+COGL_OBJECT_DEFINE_WITH_CODE (Offscreen, offscreen,
+                              _cogl_offscreen_class.virt_unref =
+                              _cogl_framebuffer_unref);
 COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (offscreen);
 
 /* XXX:
@@ -1167,19 +1169,7 @@ _cogl_set_framebuffers (CoglFramebuffer *draw_buffer,
 
   if (current_draw_buffer != draw_buffer ||
       current_read_buffer != read_buffer)
-    {
-      /* XXX: eventually we want to remove this implicit journal flush
-       * so we can log into the journal beyond framebuffer changes to
-       * support batching scenes that depend on the results of
-       * mid-scene renders to textures. Current will be NULL when the
-       * framebuffer stack is first created so we need to guard
-       * against that here */
-      if (current_draw_buffer)
-        _cogl_framebuffer_flush_journal (current_draw_buffer);
-      if (current_read_buffer)
-        _cogl_framebuffer_flush_journal (current_read_buffer);
-      _cogl_set_framebuffers_real (draw_buffer, read_buffer);
-    }
+    _cogl_set_framebuffers_real (draw_buffer, read_buffer);
 }
 
 void
@@ -1292,19 +1282,10 @@ cogl_pop_framebuffer (void)
 
   if (to_pop->draw_buffer != to_restore->draw_buffer ||
       to_pop->read_buffer != to_restore->read_buffer)
-    {
-      /* XXX: eventually we want to remove this implicit journal flush
-       * so we can log into the journal beyond framebuffer changes to
-       * support batching scenes that depend on the results of
-       * mid-scene renders to textures. */
-      _cogl_framebuffer_flush_journal (to_pop->draw_buffer);
-      _cogl_framebuffer_flush_journal (to_pop->read_buffer);
-
-      notify_buffers_changed (to_pop->draw_buffer,
-                              to_restore->draw_buffer,
-                              to_pop->read_buffer,
-                              to_restore->read_buffer);
-    }
+    notify_buffers_changed (to_pop->draw_buffer,
+                            to_restore->draw_buffer,
+                            to_pop->read_buffer,
+                            to_restore->read_buffer);
 
   cogl_object_unref (to_pop->draw_buffer);
   cogl_object_unref (to_pop->read_buffer);
@@ -2406,4 +2387,32 @@ _cogl_framebuffer_restore_clip_stack (CoglFramebuffer *framebuffer)
   if (framebuffer->context->current_draw_buffer == framebuffer)
     framebuffer->context->current_draw_buffer_changes |=
       COGL_FRAMEBUFFER_STATE_CLIP;
+}
+
+void
+_cogl_framebuffer_unref (CoglFramebuffer *framebuffer)
+{
+  /* The journal holds a reference to the framebuffer whenever it is
+     non-empty. Therefore if the journal is non-empty and we will have
+     exactly one reference then we know the journal is the only thing
+     keeping the framebuffer alive. In that case we want to flush the
+     journal and let the framebuffer die. It is fine at this point if
+     flushing the journal causes something else to take a reference to
+     it and it comes back to life */
+  if (framebuffer->journal->entries->len > 0)
+    {
+      unsigned int ref_count = ((CoglObject *) framebuffer)->ref_count;
+
+      /* There should be at least two references - the one we are
+         about to drop and the one held by the journal */
+      if (ref_count < 2)
+        g_warning ("Inconsistent ref count on a framebuffer with journal "
+                   "entries.");
+
+      if (ref_count == 2)
+        _cogl_framebuffer_flush_journal (framebuffer);
+    }
+
+  /* Chain-up */
+  _cogl_object_default_unref (framebuffer);
 }
