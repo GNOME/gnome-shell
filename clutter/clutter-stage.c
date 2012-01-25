@@ -234,17 +234,13 @@ clutter_stage_real_foreach (ClutterContainer *container,
                             ClutterCallback   callback,
                             gpointer          user_data)
 {
-  ClutterActor *iter;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
-  iter = clutter_actor_get_first_child (CLUTTER_ACTOR (container));
-  while (iter != NULL)
-    {
-      ClutterActor *next = clutter_actor_get_next_sibling (iter);
+  clutter_actor_iter_init (&iter, CLUTTER_ACTOR (container));
 
-      callback (iter, user_data);
-
-      iter = next;
-    }
+  while (clutter_actor_iter_next (&iter, &child))
+    callback (child, user_data);
 }
 
 static void
@@ -678,6 +674,7 @@ clutter_stage_paint (ClutterActor *self)
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
   CoglBufferBit clear_flags;
   CoglColor stage_color;
+  ClutterActorIter iter;
   ClutterActor *child;
   guint8 real_alpha;
 
@@ -732,30 +729,25 @@ clutter_stage_paint (ClutterActor *self)
     cogl_disable_fog ();
 #endif
 
-  for (child = clutter_actor_get_first_child (self);
-       child != NULL;
-       child = clutter_actor_get_next_sibling (child))
-    {
-      clutter_actor_paint (child);
-    }
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
+    clutter_actor_paint (child);
 }
 
 static void
 clutter_stage_pick (ClutterActor       *self,
 		    const ClutterColor *color)
 {
+  ClutterActorIter iter;
   ClutterActor *child;
 
   /* Note: we don't chain up to our parent as we don't want any geometry
    * emitted for the stage itself. The stage's pick id is effectively handled
    * by the call to cogl_clear done in clutter-main.c:_clutter_do_pick_async()
    */
-  for (child = clutter_actor_get_first_child (self);
-       child != NULL;
-       child = clutter_actor_get_next_sibling (child))
-    {
-      clutter_actor_paint (child);
-    }
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
+    clutter_actor_paint (child);
 }
 
 static gboolean
@@ -819,14 +811,12 @@ static void
 clutter_stage_show (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+  ClutterActorIter iter;
   ClutterActor *child;
 
-  for (child = clutter_actor_get_first_child (self);
-       child != NULL;
-       child = clutter_actor_get_next_sibling (child))
-    {
-      clutter_actor_show (child);
-    }
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
+    clutter_actor_show (child);
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->show (self);
 
@@ -842,17 +832,15 @@ static void
 clutter_stage_hide (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+  ClutterActorIter iter;
   ClutterActor *child;
 
   g_assert (priv->impl != NULL);
   _clutter_stage_window_hide (priv->impl);
 
-  for (child = clutter_actor_get_first_child (self);
-       child != NULL;
-       child = clutter_actor_get_next_sibling (child))
-    {
-      clutter_actor_show (child);
-    }
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
+    clutter_actor_show (child);
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->hide (self);
 }
