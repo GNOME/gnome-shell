@@ -810,48 +810,37 @@ plugin_object_get_property (NPObject     *npobj,
 }
 
 static bool
+plugin_object_set_callback (NPObject        **listener,
+                            const NPVariant  *value)
+{
+  if (!NPVARIANT_IS_OBJECT (*value) && !NPVARIANT_IS_NULL (*value))
+    return FALSE;
+
+  if (*listener)
+    funcs.releaseobject (*listener);
+  *listener = NULL;
+
+  if (NPVARIANT_IS_OBJECT (*value))
+    {
+      funcs.retainobject (*listener);
+      *listener = NPVARIANT_TO_OBJECT (*value);
+    }
+
+  return TRUE;
+}
+
+static bool
 plugin_object_set_property (NPObject        *npobj,
                             NPIdentifier     name,
                             const NPVariant *value)
 {
   PluginObject *obj;
 
-  if (!plugin_object_has_property (npobj, name))
-    return FALSE;
-
   if (name == onextension_changed_id)
-    {
-      obj = (PluginObject*) npobj;
-      if (obj->listener)
-        funcs.releaseobject (obj->listener);
-
-      obj->listener = NULL;
-      if (NPVARIANT_IS_OBJECT (*value))
-        {
-          obj->listener = NPVARIANT_TO_OBJECT (*value);
-          funcs.retainobject (obj->listener);
-          return TRUE;
-        }
-      else if (NPVARIANT_IS_NULL (*value))
-        return TRUE;
-    }
+    return plugin_object_set_callback (&obj->listener, value);
 
   if (name == onrestart_id)
-    {
-      obj = (PluginObject*) npobj;
-      if (obj->restart_listener)
-        funcs.releaseobject (obj->restart_listener);
-
-      obj->restart_listener = NULL;
-      if (NPVARIANT_IS_OBJECT (*value))
-        {
-          obj->restart_listener = NPVARIANT_TO_OBJECT (*value);
-          funcs.retainobject (obj->restart_listener);
-          return TRUE;
-        }
-      else if (NPVARIANT_IS_NULL (*value))
-        return TRUE;
-    }
+    return plugin_object_set_callback (&obj->restart_listener, value);
 
   return FALSE;
 }
