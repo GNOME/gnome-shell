@@ -32,9 +32,9 @@
     <title>Basic Animations</title>
 
     <para>The most basic way to create animations with Clutter is via the use
-    of g_timeout_add(). This enables a callback function to be called at a
-    defined interval. The callback function can then modify actors visual
-    properties as to produce an animation.</para>
+    of clutter_threads_add_timeout(). This enables a callback function to be
+    called at a defined interval. The callback function can then modify actors
+    visual properties as to produce an animation.</para>
 
     <example id="clutter-timeout-example">
       <title>Simple timeout example</title>
@@ -57,10 +57,11 @@ rotate_actor (gpointer data)
   /* add one degree */
   clos-&gt;current_angle += 1.0
 
+  /* if we reached the target angle, stop */
   if (clos-&gt;current_angle == clos-&gt;final_angle)
-    return FALSE;
+    return G_SOURCE_REMOVE;
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 static void
@@ -80,27 +81,28 @@ rotate_actor_cleanup (gpointer data)
   clos-&gt;final_angle = 360.0;
   clos-&gt;current_angle = 0;
 
-  g_timeout_add_full (1000 / 360, /* 360 updates in one second */
-                      rotate_actor,
-                      clos,
-                      rotate_actor_cleanup);
+  clutter_threads_add_timeout_full (G_PRIORITY_DEFAULT,
+                                    1000 / 360, /* 360 updates in one second */
+                                    rotate_actor,
+                                    clos,
+                                    rotate_actor_cleanup);
       </programlisting>
     </example>
 
     <note>
       <title>Priorities</title>
       <para>%G_PRIORITY_DEFAULT should always be used as the timeouts priority
-      (in case of g_timeout_add_full()) as not to intefere with Clutter's
-      scheduling of repaints and input event handling.</para>
+      (in case of clutter_threads_add_timeout_full()) as not to intefere with
+      Clutter's scheduling of repaints and input event handling.</para>
     </note>
   </section>
 
   <section id="clutter-animation-timelines">
     <title>Timelines</title>
 
-    <para>Using g_timeout_add() to control an animation is complicated
-    and does not work in concert with the rest of the operations Clutter
-    must perform for each redraw cycle.</para>
+    <para>Using clutter_threads_add_timeout() to control an animation is
+    complicated and does not work in concert with the rest of the operations
+    Clutter must perform for each redraw cycle.</para>
 
     <para>For this reason, Clutter provides #ClutterTimeline, a class that
     allows scheduling animations with a definite duration. Timelines are
@@ -113,7 +115,7 @@ rotate_actor_cleanup (gpointer data)
     <para>A Timeline is created with:</para>
 
     <programlisting>
-clutter_timeline_new (duration_in_milliseconds);
+ClutterTimeline *timeline = clutter_timeline_new (duration_in_milliseconds);
     </programlisting>
 
     <para>The duration of the timeline then be modifed via the
@@ -161,7 +163,7 @@ on_new_frame (ClutterTimeline *timeline,
     <example id="clutter-timeline-example">
       <title>Using a Timeline to drive an animation</title>
       <para>Rewrite the example above with a #ClutterTimeline instead of
-      using g_timeout_add()</para>
+      using clutter_threads_add_timeout()</para>
       <programlisting>
 #include &lt;clutter/clutter.h&gt;
 
@@ -189,12 +191,9 @@ on_new_frame (ClutterTimeline *timeline,
   clutter_timeline_start (timeline);
       </programlisting>
     </example>
-
-    <note><para>Multiple timelines can be sequenced in order by using a
-    #ClutterScore. See the #ClutterScore documentation for more details on
-    using this.</para></note>
   </section>
 
+<!-- XXX - Behaviours are deprecated
   <section id="clutter-animation-behaviours">
     <title>Behaviours</title>
     <para>With a large application containing many animations, the use of
@@ -364,6 +363,7 @@ main (int argc, char *argv[])
       linkend="creating-your-own-behaviours">here</link>.</para></note>
 
   </section>
+-->
 
   <section id="clutter-animation-implicit">
     <title>Implicit Animations</title>

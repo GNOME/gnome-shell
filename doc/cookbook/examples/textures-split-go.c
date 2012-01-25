@@ -35,7 +35,7 @@ go_away (gpointer data)
                          "y", +context->image_height,
                          "rotation-angle-z", 2000.,
                          NULL);
-  return FALSE; /* remove the timeout source */
+  return G_SOURCE_REMOVE; /* remove the timeout source */
 }
 
 /* We split the four sub-textures faking to be the big texture, moving them
@@ -68,9 +68,9 @@ split (gpointer data)
                          NULL);
 
   /* In 500ms the textures will flee! */
-  g_timeout_add (500, go_away, context);
+  clutter_threads_add_timeout (500, go_away, context);
 
-  return FALSE; /* remove the timeout source */
+  return G_SOURCE_REMOVE; /* remove the timeout source */
 }
 
 static ClutterActor *
@@ -178,7 +178,7 @@ main (int    argc,
   context.image_height = image_height;
 
   /* In two seconds, we'll split the texture! */
-  g_timeout_add_seconds (2, split, &context);
+  clutter_threads_add_timeout (2000, split, &context);
 
   clutter_main ();
 
