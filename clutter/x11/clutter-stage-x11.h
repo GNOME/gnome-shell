@@ -59,8 +59,6 @@ struct _ClutterStageX11
 
   guint clipped_redraws_cool_off;
 
-  ClutterStageState state;
-
   ClutterStageX11State wm_state;
 
   guint is_foreign_xwin      : 1;

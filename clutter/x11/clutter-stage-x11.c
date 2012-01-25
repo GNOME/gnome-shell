@@ -207,7 +207,7 @@ clutter_stage_x11_get_geometry (ClutterStageWindow    *stage_window,
   geometry->x = geometry->y = 0;
 
   /* If we're fullscreen, return the size of the display. */
-  if ((stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN) &&
+  if (_clutter_stage_is_fullscreen (stage_x11->wrapper) &&
       stage_x11->fullscreening)
     {
       geometry->width = DisplayWidth (backend_x11->xdpy, backend_x11->xscreen_num);
@@ -524,7 +524,7 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
   if (stage == NULL || CLUTTER_ACTOR_IN_DESTRUCTION (stage))
     return;
 
-  was_fullscreen = ((stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN) != 0);
+  was_fullscreen = _clutter_stage_is_fullscreen (stage);
   is_fullscreen = !!is_fullscreen;
 
   if (was_fullscreen == is_fullscreen)
@@ -681,9 +681,9 @@ clutter_stage_x11_set_accept_focus (ClutterStageWindow *stage_window,
 }
 
 static void
-set_stage_state (ClutterStageX11      *stage_x11,
-                 ClutterStageX11State  unset_flags,
-                 ClutterStageX11State  set_flags)
+set_stage_x11_state (ClutterStageX11      *stage_x11,
+                     ClutterStageX11State  unset_flags,
+                     ClutterStageX11State  set_flags)
 {
   ClutterStageX11State new_stage_state, old_stage_state;
 
@@ -721,7 +721,7 @@ clutter_stage_x11_show (ClutterStageWindow *stage_window,
           CLUTTER_NOTE (BACKEND, "Mapping stage[%lu]",
                         (unsigned long) stage_x11->xwin);
 
-          set_stage_state (stage_x11, STAGE_X11_WITHDRAWN, 0);
+          set_stage_x11_state (stage_x11, STAGE_X11_WITHDRAWN, 0);
 
           update_wm_hints (stage_x11);
 
@@ -750,7 +750,7 @@ clutter_stage_x11_hide (ClutterStageWindow *stage_window)
   if (stage_x11->xwin != None)
     {
       if (STAGE_X11_IS_MAPPED (stage_x11))
-        set_stage_state (stage_x11, 0, STAGE_X11_WITHDRAWN);
+        set_stage_x11_state (stage_x11, 0, STAGE_X11_WITHDRAWN);
 
       g_assert (!STAGE_X11_IS_MAPPED (stage_x11));
 
@@ -939,7 +939,7 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
           /* When fullscreen, we'll keep the xwin_width/height
              variables to track the old size of the window and we'll
              assume all ConfigureNotifies constitute a size change */
-          if ((stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN))
+          if (_clutter_stage_is_fullscreen (stage))
             size_changed = TRUE;
           else if ((stage_x11->xwin_width != xevent->xconfigure.width) ||
                    (stage_x11->xwin_height != xevent->xconfigure.height))
@@ -1039,9 +1039,9 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
 
           if (type != None && data != NULL)
             {
+              gboolean is_fullscreen = FALSE;
               Atom *atoms = (Atom *) data;
               gulong i;
-              gboolean is_fullscreen = FALSE;
 
               for (i = 0; i < n_items; i++)
                 {
@@ -1049,26 +1049,20 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
                     fullscreen_set = TRUE;
                 }
 
-              is_fullscreen =
-                (stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN);
+              is_fullscreen = _clutter_stage_is_fullscreen (stage_x11->wrapper);
 
               if (fullscreen_set != is_fullscreen)
                 {
+                  ClutterStageState new_state;
+
                   if (fullscreen_set)
-                    stage_x11->state |= CLUTTER_STAGE_STATE_FULLSCREEN;
+                    _clutter_stage_update_state (stage_x11->wrapper,
+                                                 0,
+                                                 CLUTTER_STAGE_STATE_FULLSCREEN);
                   else
-                    stage_x11->state &= ~CLUTTER_STAGE_STATE_FULLSCREEN;
-
-                  stage_x11->fullscreening = fullscreen_set;
-
-                  event->any.type = CLUTTER_STAGE_STATE;
-                  event->any.source = CLUTTER_ACTOR (stage);
-                  event->any.stage = stage;
-                  event->stage_state.changed_mask =
-                    CLUTTER_STAGE_STATE_FULLSCREEN;
-                  event->stage_state.new_state = stage_x11->state;
-
-                  res = CLUTTER_TRANSLATE_QUEUE;
+                    _clutter_stage_update_state (stage_x11->wrapper,
+                                                 CLUTTER_STAGE_STATE_FULLSCREEN,
+                                                 0);
                 }
 
               XFree (data);
@@ -1077,34 +1071,20 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
       break;
 
     case FocusIn:
-      if (!(stage_x11->state & CLUTTER_STAGE_STATE_ACTIVATED))
+      if (!_clutter_stage_is_activated (stage_x11->wrapper))
         {
-          /* TODO: check the detail? */
-          stage_x11->state |= CLUTTER_STAGE_STATE_ACTIVATED;
-
-          event->type = CLUTTER_STAGE_STATE;
-          event->any.source = CLUTTER_ACTOR (stage);
-          event->any.stage = stage;
-          event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-          event->stage_state.new_state = stage_x11->state;
-
-          res = CLUTTER_TRANSLATE_QUEUE;
+          _clutter_stage_update_state (stage_x11->wrapper,
+                                       0,
+                                       CLUTTER_STAGE_STATE_ACTIVATED);
         }
       break;
 
     case FocusOut:
-      if (stage_x11->state & CLUTTER_STAGE_STATE_ACTIVATED)
+      if (_clutter_stage_is_activated (stage_x11->wrapper))
         {
-          /* TODO: check the detail? */
-          stage_x11->state &= ~CLUTTER_STAGE_STATE_ACTIVATED;
-
-          event->any.type = CLUTTER_STAGE_STATE;
-          event->any.source = CLUTTER_ACTOR (stage);
-          event->any.stage = stage;
-          event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-          event->stage_state.new_state = stage_x11->state;
-
-          res = CLUTTER_TRANSLATE_QUEUE;
+          _clutter_stage_update_state (stage_x11->wrapper,
+                                       CLUTTER_STAGE_STATE_ACTIVATED,
+                                       0);
         }
       break;
 
