@@ -904,7 +904,7 @@ clipped_redraws_cool_off_cb (void *data)
 
   stage_x11->clipped_redraws_cool_off = 0;
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static ClutterTranslateReturn
@@ -993,8 +993,9 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
                 g_source_remove (stage_x11->clipped_redraws_cool_off);
 
               stage_x11->clipped_redraws_cool_off =
-                g_timeout_add_seconds (1, clipped_redraws_cool_off_cb,
-                                       stage_x11);
+                clutter_threads_add_timeout (1000,
+                                             clipped_redraws_cool_off_cb,
+                                             stage_x11);
 
               /* Queue a relayout - we want glViewport to be called
                * with the correct values, and this is done in ClutterStage
