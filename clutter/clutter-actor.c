@@ -395,6 +395,14 @@ struct _ClutterActorPrivate
 
   gint n_children;
 
+  /* tracks whenever the children of an actor are changed; the
+   * age is incremented by 1 whenever an actor is added or
+   * removed. the age is not incremented when the first or the
+   * last child pointers are changed, or when grandchildren of
+   * an actor are changed.
+   */
+  gint age;
+
   gchar *name; /* a non-unique name, used for debugging */
   guint32 id; /* unique id, used for backward compatibility */
 
@@ -3499,6 +3507,8 @@ clutter_actor_remove_child_internal (ClutterActor                 *self,
   remove_child (self, child);
 
   self->priv->n_children -= 1;
+
+  self->priv->age += 1;
 
   /* clutter_actor_reparent() will emit ::parent-set for us */
   if (emit_parent_set && !CLUTTER_ACTOR_IN_REPARENT (child))
@@ -10040,6 +10050,8 @@ clutter_actor_add_child_internal (ClutterActor              *self,
 
   self->priv->n_children += 1;
 
+  self->priv->age += 1;
+
   /* if push_internal() has been called then we automatically set
    * the flag on the actor
    */
@@ -15769,4 +15781,178 @@ clutter_actor_get_last_child (ClutterActor *self)
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
   return self->priv->last_child;
+}
+
+/* easy way to have properly named fields instead of the dummy ones
+ * we use in the public structure
+ */
+typedef struct _RealActorIter
+{
+  ClutterActor *root;           /* dummy1 */
+  ClutterActor *current;        /* dummy2 */
+  gpointer padding_1;           /* dummy3 */
+  gint age;                     /* dummy4 */
+  gpointer padding_2;           /* dummy5 */
+} RealActorIter;
+
+/**
+ * clutter_actor_iter_init:
+ * @iter: a #ClutterActorIter
+ * @root: a #ClutterActor
+ *
+ * Initializes a #ClutterActorIter, which can then be used to iterate
+ * efficiently over a section of the scene graph, and associates it
+ * with @root.
+ *
+ * Modifying the scene graph section that contains @root will invalidate
+ * the iterator.
+ *
+ * |[
+ *   ClutterActorIter iter;
+ *   ClutterActor *child;
+ *
+ *   clutter_actor_iter_init (&iter, container);
+ *   while (clutter_actor_iter_next (&iter, &child))
+ *     {
+ *       /&ast; do something with child &ast;/
+ *     }
+ * ]|
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_iter_init (ClutterActorIter *iter,
+                         ClutterActor     *root)
+{
+  RealActorIter *ri = (RealActorIter *) iter;
+
+  g_return_if_fail (iter != NULL);
+  g_return_if_fail (CLUTTER_IS_ACTOR (root));
+
+  ri->root = root;
+  ri->current = NULL;
+  ri->age = root->priv->age;
+}
+
+/**
+ * clutter_actor_iter_next:
+ * @iter: a #ClutterActorIter
+ * @child: (out): return location for a #ClutterActor
+ *
+ * Advances the @iter and retrieves the next child of the root #ClutterActor
+ * that was used to initialize the #ClutterActorIterator.
+ *
+ * If the iterator can advance, this function returns %TRUE and sets the
+ * @child argument.
+ *
+ * If the iterator cannot advance, this function returns %FALSE, and
+ * the contents of @child are undefined.
+ *
+ * Return value: %TRUE if the iterator could advance, and %FALSE otherwise.
+ *
+ * Since: 1.10
+ */
+gboolean
+clutter_actor_iter_next (ClutterActorIter  *iter,
+                         ClutterActor     **child)
+{
+  RealActorIter *ri = (RealActorIter *) iter;
+
+  g_return_val_if_fail (iter != NULL, FALSE);
+  g_return_val_if_fail (ri->root != NULL, FALSE);
+#ifndef G_DISABLE_ASSERT
+  g_return_val_if_fail (ri->age == ri->root->priv->age, FALSE);
+#endif
+
+  if (ri->current == NULL)
+    ri->current = ri->root->priv->first_child;
+  else
+    ri->current = ri->current->priv->next_sibling;
+
+  if (child != NULL)
+    *child = ri->current;
+
+  return ri->current != NULL;
+}
+
+/**
+ * clutter_actor_iter_next:
+ * @iter: a #ClutterActorIter
+ * @child: (out): return location for a #ClutterActor
+ *
+ * Advances the @iter and retrieves the previous child of the root
+ * #ClutterActor that was used to initialize the #ClutterActorIterator.
+ *
+ * If the iterator can advance, this function returns %TRUE and sets the
+ * @child argument.
+ *
+ * If the iterator cannot advance, this function returns %FALSE, and
+ * the contents of @child are undefined.
+ *
+ * Return value: %TRUE if the iterator could advance, and %FALSE otherwise.
+ *
+ * Since: 1.10
+ */
+gboolean
+clutter_actor_iter_prev (ClutterActorIter  *iter,
+                         ClutterActor     **child)
+{
+  RealActorIter *ri = (RealActorIter *) iter;
+
+  g_return_val_if_fail (iter != NULL, FALSE);
+  g_return_val_if_fail (ri->root != NULL, FALSE);
+#ifndef G_DISABLE_ASSERT
+  g_return_val_if_fail (ri->age == ri->root->priv->age, FALSE);
+#endif
+
+  if (ri->current == NULL)
+    ri->current = ri->root->priv->last_child;
+  else
+    ri->current = ri->current->priv->prev_sibling;
+
+  if (child != NULL)
+    *child = ri->current;
+
+  return ri->current != NULL;
+}
+
+/**
+ * clutter_actor_iter_remove:
+ * @iter: a #ClutterActorIter
+ *
+ * Safely removes the #ClutterActor currently pointer to by the iterator
+ * from its parent.
+ *
+ * This function can only be called after clutter_actor_iter_next() or
+ * clutter_actor_iter_prev() returned %TRUE, and cannot be called more
+ * than once for the same actor.
+ *
+ * This function will call clutter_actor_remove_child() internally.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_iter_remove (ClutterActorIter *iter)
+{
+  RealActorIter *ri = (RealActorIter *) iter;
+  ClutterActor *cur;
+
+  g_return_if_fail (iter != NULL);
+  g_return_if_fail (ri->root != NULL);
+#ifndef G_DISABLE_ASSERT
+  g_return_if_fail (ri->age == ri->root->priv->age);
+#endif
+  g_return_if_fail (ri->current != NULL);
+
+  cur = ri->current;
+
+  if (cur != NULL)
+    {
+      ri->current = cur->priv->prev_sibling;
+
+      clutter_actor_remove_child_internal (ri->root, cur,
+                                           REMOVE_CHILD_DEFAULT_FLAGS);
+
+      ri->age += 1;
+    }
 }

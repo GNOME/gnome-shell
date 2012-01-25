@@ -145,20 +145,23 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/actor", test_offscreen_redirect);
   TEST_CONFORM_SIMPLE ("/actor", test_shader_effect);
 
-  TEST_CONFORM_SIMPLE ("/invariants", test_initial_state);
-  TEST_CONFORM_SIMPLE ("/invariants", test_shown_not_parented);
-  TEST_CONFORM_SIMPLE ("/invariants", test_realized);
-  TEST_CONFORM_SIMPLE ("/invariants", test_realize_not_recursive);
-  TEST_CONFORM_SIMPLE ("/invariants", test_map_recursive);
-  TEST_CONFORM_SIMPLE ("/invariants", test_mapped);
-  TEST_CONFORM_SIMPLE ("/invariants", test_show_on_set_parent);
-  TEST_CONFORM_SIMPLE ("/invariants", test_clone_no_map);
-  TEST_CONFORM_SIMPLE ("/invariants", test_contains);
-  TEST_CONFORM_SIMPLE ("/invariants", default_stage);
+  TEST_CONFORM_SIMPLE ("/actor/iter", actor_iter_traverse_children);
+  TEST_CONFORM_SIMPLE ("/actor/iter", actor_iter_traverse_remove);
 
-  TEST_CONFORM_SIMPLE ("/opacity", test_label_opacity);
-  TEST_CONFORM_SIMPLE ("/opacity", test_rectangle_opacity);
-  TEST_CONFORM_SIMPLE ("/opacity", test_paint_opacity);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", test_initial_state);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", test_shown_not_parented);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", test_realized);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", test_realize_not_recursive);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", test_map_recursive);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", test_mapped);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", test_show_on_set_parent);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", test_clone_no_map);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", test_contains);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", default_stage);
+
+  TEST_CONFORM_SIMPLE ("/actor/opacity", test_label_opacity);
+  TEST_CONFORM_SIMPLE ("/actor/opacity", test_rectangle_opacity);
+  TEST_CONFORM_SIMPLE ("/actor/opacity", test_paint_opacity);
 
   TEST_CONFORM_SIMPLE ("/text", text_utf8_validation);
   TEST_CONFORM_SIMPLE ("/text", text_set_empty);

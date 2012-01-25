@@ -62,6 +62,7 @@ units_sources += \
 	test-actor-graph.c		\
 	test-actor-destroy.c		\
 	test-actor-invariants.c 	\
+	test-actor-iter.c		\
 	test-actor-layout.c		\
 	test-actor-size.c		\
 	test-anchors.c                  \

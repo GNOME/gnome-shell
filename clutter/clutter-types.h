@@ -48,6 +48,18 @@ G_BEGIN_DECLS
 #define CLUTTER_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f)
 #endif
 
+/* some structures are meant to be opaque and still be allocated on the stack;
+ * in order to avoid people poking at their internals, we use this macro to
+ * ensure that users don't accidentally access a struct private members.
+ *
+ * we use the CLUTTER_COMPILATION define to allow us easier access, though.
+ */
+#ifdef CLUTTER_COMPILATION
+#define CLUTTER_PRIVATE_FIELD(x)        x
+#else
+#define CLUTTER_PRIVATE_FIELD(x)        clutter_private_ ## x
+#endif
+
 #define CLUTTER_TYPE_ACTOR_BOX          (clutter_actor_box_get_type ())
 #define CLUTTER_TYPE_FOG                (clutter_fog_get_type ())
 #define CLUTTER_TYPE_GEOMETRY           (clutter_geometry_get_type ())
@@ -65,6 +77,7 @@ typedef struct _ClutterChildMeta        ClutterChildMeta;
 typedef struct _ClutterLayoutMeta       ClutterLayoutMeta;
 typedef struct _ClutterActorMeta        ClutterActorMeta;
 typedef struct _ClutterLayoutManager    ClutterLayoutManager;
+typedef struct _ClutterActorIter        ClutterActorIter;
 
 typedef struct _ClutterAlpha            ClutterAlpha;
 typedef struct _ClutterAnimatable       ClutterAnimatable; /* dummy */

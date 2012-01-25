@@ -263,6 +263,27 @@ struct _ClutterActorClass
   gpointer _padding_dummy[28];
 };
 
+/**
+ * ClutterActorIter:
+ *
+ * An iterator structure that allows to efficiently iterate over a
+ * section of the scene graph.
+ *
+ * The contents of the <structname>ClutterActorIter</structname> structure
+ * are private and should only be accessed using the provided API.
+ *
+ * Since: 1.10
+ */
+struct _ClutterActorIter
+{
+  /*< private >*/
+  gpointer CLUTTER_PRIVATE_FIELD (dummy1);
+  gpointer CLUTTER_PRIVATE_FIELD (dummy2);
+  gpointer CLUTTER_PRIVATE_FIELD (dummy3);
+  gint     CLUTTER_PRIVATE_FIELD (dummy4);
+  gpointer CLUTTER_PRIVATE_FIELD (dummy5);
+};
+
 GType clutter_actor_get_type (void) G_GNUC_CONST;
 
 ClutterActor *        clutter_actor_new                       (void);
@@ -485,6 +506,14 @@ void                  clutter_actor_set_child_above_sibling   (ClutterActor     
 void                  clutter_actor_set_child_at_index        (ClutterActor          *self,
                                                                ClutterActor          *child,
                                                                gint                   index_);
+
+void                  clutter_actor_iter_init                 (ClutterActorIter      *iter,
+                                                               ClutterActor          *root);
+gboolean              clutter_actor_iter_next                 (ClutterActorIter      *iter,
+                                                               ClutterActor         **child);
+gboolean              clutter_actor_iter_prev                 (ClutterActorIter      *iter,
+                                                               ClutterActor         **child);
+void                  clutter_actor_iter_remove               (ClutterActorIter      *iter);
 
 /* Transformations */
 gboolean              clutter_actor_is_rotated                (ClutterActor          *self);
