@@ -50,12 +50,6 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageOSX,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init))
 
-/* FIXME: this should be in clutter-stage.c */
-static void
-clutter_stage_osx_state_update (ClutterStageOSX   *self,
-                                ClutterStageState  unset_flags,
-                                ClutterStageState  set_flags);
-
 static ClutterActor *
 clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 
@@ -87,7 +81,7 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
   CLUTTER_NOTE (BACKEND, "[%p] windowShouldClose", self->stage_osx);
 
   event.type = CLUTTER_DELETE;
-  event.any.stage = CLUTTER_STAGE (self->stage_osx->wrapper);
+  event.any.stage = self->stage_osx->wrapper;
   clutter_event_put (&event);
 
   return NO;
@@ -104,26 +98,34 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 
 - (void) windowDidBecomeKey:(NSNotification*)aNotification
 {
+  ClutterStage *stage;
+
   CLUTTER_NOTE (BACKEND, "[%p] windowDidBecomeKey", self->stage_osx);
 
-  if (self->stage_osx->stage_state & CLUTTER_STAGE_STATE_FULLSCREEN)
+  stage = self->stage_osx->wrapper;
+
+  if (_clutter_stage_is_fullscreen (stage))
     [self setLevel: CLUTTER_OSX_FULLSCREEN_WINDOW_LEVEL];
 
-  clutter_stage_osx_state_update (self->stage_osx, 0, CLUTTER_STAGE_STATE_ACTIVATED);
+  _clutter_stage_update_state (stage, 0, CLUTTER_STAGE_STATE_ACTIVATED);
 }
 
 - (void) windowDidResignKey:(NSNotification*)aNotification
 {
+  ClutterStage *stage;
+
   CLUTTER_NOTE (BACKEND, "[%p] windowDidResignKey", self->stage_osx);
 
-  if (self->stage_osx->stage_state & CLUTTER_STAGE_STATE_FULLSCREEN)
+  stage = self->stage_osx->wrapper;
+
+  if (_clutter_stage_is_fullscreen (stage))
     {
       [self setLevel: NSNormalWindowLevel];
       if (!self->stage_osx->isHiding)
         [self orderBack: nil];
     }
 
-  clutter_stage_osx_state_update (self->stage_osx, CLUTTER_STAGE_STATE_ACTIVATED, 0);
+  _clutter_stage_update_state (stage, CLUTTER_STAGE_STATE_ACTIVATED, 0);
 }
 
 - (NSSize) windowWillResize:(NSWindow *) sender toSize:(NSSize) frameSize
@@ -143,7 +145,7 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 
 - (void)windowDidChangeScreen:(NSNotification *)notification
 {
-  clutter_stage_ensure_redraw (CLUTTER_STAGE (self->stage_osx->wrapper));
+  clutter_stage_ensure_redraw (self->stage_osx->wrapper);
 }
 @end
 
@@ -244,28 +246,6 @@ EVENT_HANDLER(tabletProximity)
 @end
 
 /*************************************************************************/
-static void
-clutter_stage_osx_state_update (ClutterStageOSX   *self,
-                                ClutterStageState  unset_flags,
-                                ClutterStageState  set_flags)
-{
-  ClutterStageStateEvent event;
-
-  event.new_state = self->stage_state;
-  event.new_state |= set_flags;
-  event.new_state &= ~unset_flags;
-
-  if (event.new_state == self->stage_state)
-    return;
-
-  event.changed_mask = event.new_state ^ self->stage_state;
-
-  self->stage_state = event.new_state;
-
-  event.type = CLUTTER_STAGE_STATE;
-  event.stage = CLUTTER_STAGE (self->wrapper);
-  clutter_event_put ((ClutterEvent*)&event);
-}
 
 static void
 clutter_stage_osx_save_frame (ClutterStageOSX *self)
@@ -281,7 +261,7 @@ clutter_stage_osx_set_frame (ClutterStageOSX *self)
 {
   g_assert (self->window != NULL);
 
-  if (self->stage_state & CLUTTER_STAGE_STATE_FULLSCREEN)
+  if (_clutter_stage_is_fullscreen (self->wrapper))
     {
       /* Raise above the menubar (and dock) covering the whole screen.
        *
@@ -528,11 +508,17 @@ clutter_stage_osx_set_fullscreen (ClutterStageWindow *stage_window,
    */
   if (fullscreen)
     {
-      clutter_stage_osx_state_update (self, 0, CLUTTER_STAGE_STATE_FULLSCREEN);
+      _clutter_stage_update_state (CLUTTER_STAGE (self->wrapper),
+                                   0,
+                                   CLUTTER_STAGE_STATE_FULLSCREEN);
       clutter_stage_osx_save_frame (self);
     }
   else
-    clutter_stage_osx_state_update (self, CLUTTER_STAGE_STATE_FULLSCREEN, 0);
+    {
+      _clutter_stage_update_state (CLUTTER_STAGE (self->wrapper),
+                                   CLUTTER_STAGE_STATE_FULLSCREEN,
+                                   0);
+    }
 
   clutter_stage_osx_set_frame (self);
 
