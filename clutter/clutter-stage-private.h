@@ -109,6 +109,13 @@ ClutterActor *  _clutter_stage_get_drag_actor           (ClutterStage       *sta
 void            _clutter_stage_remove_drag_actor        (ClutterStage       *stage,
                                                          ClutterInputDevice *device);
 
+ClutterStageState       _clutter_stage_get_state        (ClutterStage      *stage);
+gboolean                _clutter_stage_is_activated     (ClutterStage      *stage);
+gboolean                _clutter_stage_is_fullscreen    (ClutterStage      *stage);
+gboolean                _clutter_stage_update_state     (ClutterStage      *stage,
+                                                         ClutterStageState  unset_state,
+                                                         ClutterStageState  set_state);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_PRIVATE_H__ */
