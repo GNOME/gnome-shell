@@ -142,7 +142,9 @@ static void
 _cogl_renderer_free (CoglRenderer *renderer)
 {
   const CoglWinsysVtable *winsys = _cogl_renderer_get_winsys (renderer);
-  winsys->renderer_disconnect (renderer);
+
+  if (winsys)
+    winsys->renderer_disconnect (renderer);
 
 #ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
   if (renderer->libgl_module)

@@ -42,6 +42,7 @@
 #include <sys/fcntl.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "cogl-winsys-egl-kms-private.h"
 #include "cogl-winsys-egl-private.h"
@@ -61,15 +62,28 @@ typedef struct _CoglRendererKMS
   CoglPollFD poll_fd;
 } CoglRendererKMS;
 
-typedef struct _CoglDisplayKMS
+typedef struct _CoglOutputKMS
 {
   drmModeConnector *connector;
   drmModeEncoder *encoder;
+  drmModeCrtc *saved_crtc;
+  drmModeModeInfo *modes;
+  int n_modes;
   drmModeModeInfo mode;
-  drmModeCrtcPtr saved_crtc;
+} CoglOutputKMS;
+
+typedef struct _CoglDisplayKMS
+{
+  GList *outputs;
   int width, height;
   gboolean pending_swap_notify;
 } CoglDisplayKMS;
+
+typedef struct _CoglFlipKMS
+{
+  CoglOnscreen *onscreen;
+  int pending;
+} CoglFlipKMS;
 
 typedef struct _CoglOnscreenKMS
 {
@@ -158,6 +172,210 @@ close_fd:
 }
 
 static gboolean
+is_connector_excluded (int id,
+                       int *excluded_connectors,
+                       int n_excluded_connectors)
+{
+  int i;
+  for (i = 0; i < n_excluded_connectors; i++)
+    if (excluded_connectors[i] == id)
+      return TRUE;
+  return FALSE;
+}
+
+static drmModeConnector *
+find_connector (int fd,
+                drmModeRes *resources,
+                int *excluded_connectors,
+                int n_excluded_connectors)
+{
+  int i;
+
+  for (i = 0; i < resources->count_connectors; i++)
+    {
+      drmModeConnector *connector =
+        drmModeGetConnector (fd, resources->connectors[i]);
+
+      if (connector &&
+          connector->connection == DRM_MODE_CONNECTED &&
+          connector->count_modes > 0 &&
+          !is_connector_excluded (connector->connector_id,
+                                  excluded_connectors,
+                                  n_excluded_connectors))
+        return connector;
+      drmModeFreeConnector(connector);
+    }
+  return NULL;
+}
+
+static gboolean
+find_mirror_modes (drmModeModeInfo *modes0,
+                   int n_modes0,
+                   drmModeModeInfo *modes1,
+                   int n_modes1,
+                   drmModeModeInfo *mode1_out,
+                   drmModeModeInfo *mode0_out)
+{
+  int i;
+  for (i = 0; i < n_modes0; i++)
+    {
+      int j;
+      drmModeModeInfo *mode0 = &modes0[i];
+      for (j = 0; j < n_modes1; j++)
+        {
+          drmModeModeInfo *mode1 = &modes1[j];
+          if (mode1->hdisplay == mode0->hdisplay &&
+              mode1->vdisplay == mode0->vdisplay)
+            {
+              *mode0_out = *mode0;
+              *mode1_out = *mode1;
+              return TRUE;
+            }
+        }
+    }
+  return FALSE;
+}
+
+static drmModeModeInfo builtin_1024x768 =
+{
+	63500,			/* clock */
+	1024, 1072, 1176, 1328, 0,
+	768, 771, 775, 798, 0,
+	59920,
+	DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC,
+	0,
+	"1024x768"
+};
+
+static gboolean
+is_panel (int type)
+{
+  return (type == DRM_MODE_CONNECTOR_LVDS ||
+          type == DRM_MODE_CONNECTOR_eDP);
+}
+
+static CoglOutputKMS *
+find_output (int _index,
+             int fd,
+             drmModeRes *resources,
+             int *excluded_connectors,
+             int n_excluded_connectors,
+             GError **error)
+{
+  char *connector_env_name = g_strdup_printf ("COGL_KMS_CONNECTOR%d", _index);
+  char *mode_env_name;
+  drmModeConnector *connector;
+  drmModeEncoder *encoder;
+  CoglOutputKMS *output;
+  drmModeModeInfo *modes;
+  int n_modes;
+
+  if (getenv (connector_env_name))
+    {
+      unsigned long id = strtoul (getenv (connector_env_name), NULL, 10);
+      connector = drmModeGetConnector (fd, id);
+    }
+  else
+    connector = NULL;
+  g_free (connector_env_name);
+
+  if (connector == NULL)
+    connector = find_connector (fd, resources,
+                                excluded_connectors, n_excluded_connectors);
+  if (connector == NULL)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_INIT,
+                   "No currently active connector found");
+      return NULL;
+    }
+
+  /* XXX: At this point it seems connector->encoder_id may be an invalid id of 0
+   * even though the connector is marked as connected. Referencing ->encoders[0]
+   * seems more reliable. */
+  encoder = drmModeGetEncoder (fd, connector->encoders[0]);
+
+  output = g_slice_new0 (CoglOutputKMS);
+  output->connector = connector;
+  output->encoder = encoder;
+  output->saved_crtc = drmModeGetCrtc (fd, encoder->crtc_id);
+
+  if (is_panel (connector->connector_type))
+    {
+      n_modes = connector->count_modes + 1;
+      modes = g_new (drmModeModeInfo, n_modes);
+      memcpy (modes, connector->modes,
+              sizeof (drmModeModeInfo) * connector->count_modes);
+      /* TODO: parse EDID */
+      modes[n_modes - 1] = builtin_1024x768;
+    }
+  else
+    {
+      n_modes = connector->count_modes;
+      modes = g_new (drmModeModeInfo, n_modes);
+      memcpy (modes, connector->modes,
+              sizeof (drmModeModeInfo) * n_modes);
+    }
+
+  mode_env_name = g_strdup_printf ("COGL_KMS_CONNECTOR%d_MODE", _index);
+  if (getenv (mode_env_name))
+    {
+      const char *name = getenv (mode_env_name);
+      int i;
+      gboolean found = FALSE;
+      drmModeModeInfo mode;
+
+      for (i = 0; i < n_modes; i++)
+        {
+          if (strcmp (modes[i].name, name) == 0)
+            {
+              found = TRUE;
+              break;
+            }
+        }
+      if (!found)
+        {
+          g_free (mode_env_name);
+          g_set_error (error, COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_INIT,
+                       "COGL_KMS_CONNECTOR%d_MODE of %s could not be found",
+                       _index, name);
+          return NULL;
+        }
+      n_modes = 1;
+      mode = modes[i];
+      g_free (modes);
+      modes = g_new (drmModeModeInfo, 1);
+      modes[0] = mode;
+    }
+  g_free (mode_env_name);
+
+  output->modes = modes;
+  output->n_modes = n_modes;
+
+  return output;
+}
+
+static gboolean
+set_crtc (int fd, uint32_t fb_id, CoglOutputKMS *output, GError **error)
+{
+  int ret = drmModeSetCrtc (fd,
+                            output->encoder->crtc_id,
+                            fb_id, 0, 0,
+                            &output->connector->connector_id, 1,
+                            &output->mode);
+  if (ret)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_INIT,
+                   "Failed to set mode %s: %m", output->mode.name);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
 _cogl_winsys_egl_display_setup (CoglDisplay *display,
                                 GError **error)
 {
@@ -168,9 +386,12 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
   CoglEGLWinsysFeature surfaceless_feature = 0;
   const char *surfaceless_feature_name = "";
   drmModeRes *resources;
-  drmModeConnector *connector;
-  drmModeEncoder *encoder;
-  int i;
+  CoglOutputKMS *output0, *output1;
+  gboolean mirror;
+  struct gbm_bo *bo;
+  uint32_t handle, pitch, fb_id;
+  int width;
+  int height;
 
   kms_display = g_slice_new0 (CoglDisplayKMS);
   egl_display->platform = kms_display;
@@ -211,57 +432,127 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
       return FALSE;
     }
 
-  for (i = 0; i < resources->count_connectors; i++)
+  output0 = find_output (0,
+                         kms_renderer->fd,
+                         resources,
+                         NULL,
+                         0, /* n excluded connectors */
+                         error);
+  kms_display->outputs = g_list_append (kms_display->outputs, output0);
+  if (!output0)
+    return FALSE;
+
+  if (getenv ("COGL_KMS_MIRROR"))
+    mirror = TRUE;
+  else
+    mirror = FALSE;
+
+  if (mirror)
     {
-      connector = drmModeGetConnector (kms_renderer->fd,
-                                       resources->connectors[i]);
-      if (connector == NULL)
-        continue;
+      int exclude_connector = output0->connector->connector_id;
+      output1 = find_output (1,
+                             kms_renderer->fd,
+                             resources,
+                             &exclude_connector,
+                             1, /* n excluded connectors */
+                             error);
+      if (!output1)
+        return FALSE;
 
-      if (connector->connection == DRM_MODE_CONNECTED &&
-          connector->count_modes > 0)
-        break;
+      kms_display->outputs = g_list_append (kms_display->outputs, output1);
 
-      drmModeFreeConnector(connector);
+      if (!find_mirror_modes (output0->modes, output0->n_modes,
+                              output1->modes, output1->n_modes,
+                              &output0->mode,
+                              &output1->mode))
+        {
+          g_set_error (error, COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_INIT,
+                       "Failed to find matching modes for mirroring");
+          return FALSE;
+        }
     }
+  else
+    output0->mode = output0->modes[0];
 
-  if (i == resources->count_connectors)
+  width = output0->mode.hdisplay;
+  height = output0->mode.vdisplay;
+
+  bo = gbm_bo_create (kms_renderer->gbm,
+                      width, height, GBM_BO_FORMAT_XRGB8888, GBM_BO_USE_SCANOUT);
+  pitch = gbm_bo_get_pitch (bo);
+  handle = gbm_bo_get_handle (bo).u32;
+  if (drmModeAddFB (kms_renderer->fd,
+                    width,
+                    height,
+                    24, /* depth */
+                    32, /* bpp */
+                    pitch,
+                    handle,
+                    &fb_id) != 0)
     {
       g_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
-                   "No currently active connector found");
+                   "Failed to create initial framebuffer");
       return FALSE;
     }
 
-  for (i = 0; i < resources->count_encoders; i++)
-    {
-      encoder = drmModeGetEncoder (kms_renderer->fd, resources->encoders[i]);
+  if (!set_crtc (kms_renderer->fd, fb_id, output0, error))
+    return FALSE;
 
-      if (encoder == NULL)
-        continue;
+  if (mirror)
+    if (!set_crtc (kms_renderer->fd, fb_id, output1, error))
+      return FALSE;
 
-      if (encoder->encoder_id == connector->encoder_id)
-        break;
-
-      drmModeFreeEncoder (encoder);
-    }
-
-  kms_display->saved_crtc = drmModeGetCrtc (kms_renderer->fd,
-                                            encoder->crtc_id);
-
-  kms_display->connector = connector;
-  kms_display->encoder = encoder;
-  kms_display->mode = connector->modes[0];
-  kms_display->width = kms_display->mode.hdisplay;
-  kms_display->height = kms_display->mode.vdisplay;
+  kms_display->width = width;
+  kms_display->height = height;
 
   return TRUE;
+}
+
+static void
+output_free (int fd, CoglOutputKMS *output)
+{
+  if (output->modes)
+    g_free (output->modes);
+
+  if (output->encoder)
+    drmModeFreeEncoder (output->encoder);
+
+  if (output->connector)
+    {
+      if (output->saved_crtc)
+        {
+          int ret = drmModeSetCrtc (fd,
+                                    output->saved_crtc->crtc_id,
+                                    output->saved_crtc->buffer_id,
+                                    output->saved_crtc->x,
+                                    output->saved_crtc->y,
+                                    &output->connector->connector_id, 1,
+                                    &output->saved_crtc->mode);
+          if (ret)
+            g_warning (G_STRLOC ": Error restoring saved CRTC");
+        }
+      drmModeFreeConnector (output->connector);
+    }
+
+  g_slice_free (CoglOutputKMS, output);
 }
 
 static void
 _cogl_winsys_egl_display_destroy (CoglDisplay *display)
 {
   CoglDisplayEGL *egl_display = display->winsys;
+  CoglDisplayKMS *kms_display = egl_display->platform;
+  CoglRenderer *renderer = display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  GList *l;
+
+  for (l = kms_display->outputs; l; l = l->next)
+    output_free (kms_renderer->fd, l->data);
+  g_list_free (kms_display->outputs);
+  kms_display->outputs = NULL;
 
   g_slice_free (CoglDisplayKMS, egl_display->platform);
 }
@@ -291,27 +582,6 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
 static void
 _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
 {
-  CoglDisplayEGL *egl_display = display->winsys;
-  CoglDisplayKMS *kms_display = egl_display->platform;
-  CoglRenderer *renderer = display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
-
-  /* Restore the saved CRTC - this failing should not propagate an error */
-  if (kms_display->saved_crtc)
-    {
-      int ret = drmModeSetCrtc (kms_renderer->fd,
-                                kms_display->saved_crtc->crtc_id,
-                                kms_display->saved_crtc->buffer_id,
-                                kms_display->saved_crtc->x,
-                                kms_display->saved_crtc->y,
-                                &kms_display->connector->connector_id, 1,
-                                &kms_display->saved_crtc->mode);
-      if (ret)
-        g_critical (G_STRLOC ": Error restoring saved CRTC");
-
-      drmModeFreeCrtc (kms_display->saved_crtc);
-    }
 }
 
 static void
@@ -345,7 +615,8 @@ page_flip_handler (int fd,
                    unsigned int usec,
                    void *data)
 {
-  CoglOnscreen *onscreen = data;
+  CoglFlipKMS *flip = data;
+  CoglOnscreen *onscreen = flip->onscreen;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
@@ -353,19 +624,29 @@ page_flip_handler (int fd,
   CoglDisplayEGL *egl_display = display->winsys;
   CoglDisplayKMS *kms_display = egl_display->platform;
 
-  free_current_bo (onscreen);
+  /* We're only ready to dispatch a swap notification once all outputs
+   * have flipped... */
+  flip->pending--;
+  if (flip->pending == 0)
+    {
+      /* We only want to notify that the swap is complete when the application
+       * calls cogl_context_dispatch so instead of immediately notifying we'll
+       * set a flag to remember to notify later */
+      kms_display->pending_swap_notify = TRUE;
+      kms_onscreen->pending_swap_notify = TRUE;
 
-  kms_onscreen->current_fb_id = kms_onscreen->next_fb_id;
-  kms_onscreen->next_fb_id = 0;
+      free_current_bo (onscreen);
 
-  kms_onscreen->current_bo = kms_onscreen->next_bo;
-  kms_onscreen->next_bo = NULL;
+      kms_onscreen->current_fb_id = kms_onscreen->next_fb_id;
+      kms_onscreen->next_fb_id = 0;
 
-  /* We only want to notify that the swap is complete when the
-     application calls cogl_context_dispatch so instead of immediately
-     notifying we'll set a flag to remember to notify later */
-  kms_display->pending_swap_notify = TRUE;
-  kms_onscreen->pending_swap_notify = TRUE;
+      kms_onscreen->current_bo = kms_onscreen->next_bo;
+      kms_onscreen->next_bo = NULL;
+
+      cogl_object_unref (flip->onscreen);
+
+      g_slice_free (CoglFlipKMS, flip);
+    }
 }
 
 static void
@@ -390,7 +671,9 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
   CoglRendererKMS *kms_renderer = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
-  EGLint handle, pitch;
+  uint32_t handle, pitch;
+  CoglFlipKMS *flip;
+  GList *l;
 
   /* If we already have a pending swap then block until it completes */
   while (kms_onscreen->next_fb_id != 0)
@@ -412,20 +695,50 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
                     32, /* bpp */
                     pitch,
                     handle,
-                    &kms_onscreen->next_fb_id) == 0)
+                    &kms_onscreen->next_fb_id))
     {
-      drmModePageFlip (kms_renderer->fd,
-                       kms_display->encoder->crtc_id,
-                       kms_onscreen->next_fb_id,
-                       DRM_MODE_PAGE_FLIP_EVENT,
-                       onscreen);
-    }
-  else
-    {
+      g_warning ("Failed to create new back buffer handle: %m");
       gbm_surface_release_buffer (kms_onscreen->surface,
                                   kms_onscreen->next_bo);
       kms_onscreen->next_bo = NULL;
       kms_onscreen->next_fb_id = 0;
+      return;
+    }
+
+  flip = g_slice_new0 (CoglFlipKMS);
+  flip->onscreen = onscreen;
+
+  for (l = kms_display->outputs; l; l = l->next)
+    {
+      CoglOutputKMS *output = l->data;
+
+      if (drmModePageFlip (kms_renderer->fd,
+                           output->encoder->crtc_id,
+                           kms_onscreen->next_fb_id,
+                           DRM_MODE_PAGE_FLIP_EVENT,
+                           flip))
+        {
+          g_warning ("Failed to flip: %m");
+          continue;
+        }
+
+      flip->pending++;
+    }
+
+  if (flip->pending == 0)
+    {
+      drmModeRmFB (kms_renderer->fd, kms_onscreen->next_fb_id);
+      gbm_surface_release_buffer (kms_onscreen->surface,
+                                  kms_onscreen->next_bo);
+      kms_onscreen->next_bo = NULL;
+      kms_onscreen->next_fb_id = 0;
+      g_slice_free (CoglFlipKMS, flip);
+      flip = NULL;
+    }
+  else
+    {
+      /* Ensure the onscreen remains valid while it has any pending flips... */
+      cogl_object_ref (flip->onscreen);
     }
 }
 
@@ -467,8 +780,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
   kms_onscreen->surface =
     gbm_surface_create (kms_renderer->gbm,
-                        kms_display->mode.hdisplay,
-                        kms_display->mode.vdisplay,
+                        kms_display->width,
+                        kms_display->height,
                         GBM_BO_FORMAT_XRGB8888,
                         GBM_BO_USE_SCANOUT |
                         GBM_BO_USE_RENDERING);
@@ -508,7 +821,6 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   CoglContext *context = framebuffer->context;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenKMS *kms_onscreen;
 
@@ -518,9 +830,9 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 
   kms_onscreen = egl_onscreen->platform;
 
-  /* If have a pending swap then block until it completes */
-  while (kms_onscreen->next_fb_id != 0)
-    handle_drm_event (kms_renderer);
+  /* flip state takes a reference on the onscreen so there should
+   * never be outstanding flips when we reach here. */
+  g_return_if_fail (kms_onscreen->next_fb_id == 0);
 
   free_current_bo (onscreen);
 
