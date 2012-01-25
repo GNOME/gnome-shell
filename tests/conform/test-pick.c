@@ -90,8 +90,9 @@ shift_effect_init (ShiftEffect *self)
 }
 
 static gboolean
-on_timeout (State *state)
+on_timeout (gpointer data)
 {
+  State *state = data;
   int test_num = 0;
   int y, x;
   ClutterActor *over_actor = NULL;
@@ -235,7 +236,7 @@ on_timeout (State *state)
 
   clutter_main_quit ();
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 void
@@ -273,7 +274,7 @@ actor_picking (void)
 
   clutter_actor_show (state.stage);
 
-  g_idle_add ((GSourceFunc) on_timeout, &state);
+  clutter_threads_add_idle (on_timeout, &state);
 
   clutter_main ();
 

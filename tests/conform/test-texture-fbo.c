@@ -165,7 +165,7 @@ queue_redraw (gpointer stage)
 {
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 void
@@ -227,7 +227,7 @@ test_texture_fbo (TestConformSimpleFixture *fixture,
   /* We force continuous redrawing of the stage, since we need to skip
    * the first few frames, and we wont be doing anything else that
    * will trigger redrawing. */
-  g_idle_add (queue_redraw, state.stage);
+  clutter_threads_add_idle (queue_redraw, state.stage);
   g_signal_connect_after (state.stage, "paint", G_CALLBACK (on_paint), &state);
 
   clutter_actor_show_all (state.stage);

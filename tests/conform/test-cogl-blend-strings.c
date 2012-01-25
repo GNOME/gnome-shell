@@ -393,7 +393,7 @@ queue_redraw (gpointer stage)
 {
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 void
@@ -416,7 +416,7 @@ test_cogl_blend_strings (TestConformSimpleFixture *fixture,
   /* We force continuous redrawing incase someone comments out the
    * clutter_main_quit and wants visual feedback for the test since we
    * wont be doing anything else that will trigger redrawing. */
-  idle_source = g_idle_add (queue_redraw, stage);
+  idle_source = clutter_threads_add_idle (queue_redraw, stage);
 
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);
 

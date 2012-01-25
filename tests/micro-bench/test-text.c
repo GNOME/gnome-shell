@@ -36,7 +36,7 @@ queue_redraw (gpointer stage)
 {
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 int
@@ -60,7 +60,7 @@ main (int argc, char *argv[])
   clutter_actor_set_size (group, STAGE_WIDTH, STAGE_WIDTH);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
 
-  g_idle_add (queue_redraw, stage);
+  clutter_threads_add_idle (queue_redraw, stage);
 
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), NULL);
 

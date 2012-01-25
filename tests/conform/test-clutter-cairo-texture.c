@@ -157,7 +157,7 @@ idle_cb (gpointer data)
         break;
       }
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 void
@@ -180,7 +180,7 @@ test_clutter_cairo_texture (TestConformSimpleFixture *fixture,
   /* We force continuous redrawing of the stage, since we need to skip
    * the first few frames, and we wont be doing anything else that
    * will trigger redrawing. */
-  idle_source = g_idle_add (idle_cb, &state);
+  idle_source = clutter_threads_add_idle (idle_cb, &state);
   paint_handler = g_signal_connect_after (state.stage, "paint",
                                           G_CALLBACK (paint_cb), &state);
 

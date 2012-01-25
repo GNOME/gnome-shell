@@ -668,7 +668,7 @@ idle_cb (gpointer data)
 
   clutter_main_quit ();
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 void
@@ -691,7 +691,7 @@ actor_anchors (void)
 
   /* Run the tests in a low priority idle function so that we can be
      sure the stage is correctly setup */
-  g_idle_add_full (G_PRIORITY_LOW, idle_cb, &state, NULL);
+  clutter_threads_add_idle_full (G_PRIORITY_LOW, idle_cb, &state, NULL);
 
   clutter_actor_show (stage);
 

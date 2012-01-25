@@ -277,7 +277,7 @@ button_release_cb (ClutterActor    *actor,
 
   set_shader_num (actor, new_no);
 
-  return FALSE;
+  return CLUTTER_EVENT_STOP;
 }
 
 #ifdef COGL_HAS_GLES2
@@ -291,7 +291,7 @@ timeout_cb (gpointer data)
 
   set_shader_num (CLUTTER_ACTOR (data), new_no);
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 #endif /* COGL_HAS_GLES2 */
 
@@ -399,7 +399,7 @@ test_shader_main (gint argc, gchar *argv[])
 #ifdef COGL_HAS_GLES2
   /* On an embedded platform it is difficult to right click so we will
      cycle through the shaders automatically */
-  g_timeout_add_seconds (3, timeout_cb, actor);
+  clutter_threads_add_timeout (3000, timeout_cb, actor);
 #endif
 
   /* Show everying ( and map window ) */

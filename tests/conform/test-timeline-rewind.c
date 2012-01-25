@@ -14,8 +14,10 @@ typedef struct _TestState
 } TestState;
 
 static gboolean
-watchdog_timeout (TestState *state)
+watchdog_timeout (gpointer data)
 {
+  TestState *state = data;
+
   g_test_message ("Watchdog timer kicking in");
   g_test_message ("rewind_count=%i", state->rewind_count);
   if (state->rewind_count <= 3)
@@ -30,7 +32,7 @@ watchdog_timeout (TestState *state)
       clutter_main_quit ();
     }
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -77,9 +79,9 @@ timeline_rewind (void)
                     &state);
   g_test_message ("Installing a watchdog timeout "
 		  "to determine if this test hangs");
-  g_timeout_add (TEST_WATCHDOG_KICK_IN_SECONDS*1000,
-		 (GSourceFunc)watchdog_timeout,
-                 &state);
+  clutter_threads_add_timeout (TEST_WATCHDOG_KICK_IN_SECONDS * 1000,
+                               watchdog_timeout,
+                               &state);
   state.rewind_count = 0;
 
   clutter_timeline_start (state.timeline);

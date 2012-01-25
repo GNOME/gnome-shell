@@ -40,7 +40,7 @@ queue_redraw (gpointer stage)
 {
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 static gunichar
@@ -179,7 +179,7 @@ main (int argc, char *argv[])
 
   clutter_actor_show_all (stage);
 
-  g_idle_add (queue_redraw, stage);
+  clutter_threads_add_idle (queue_redraw, stage);
 
   clutter_main ();
 

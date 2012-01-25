@@ -89,9 +89,11 @@ stage_key_release_cb (ClutterActor *actor,
 }
 
 static gboolean
-draw_arc (Pixmap pixmap)
+draw_arc (data)
 {
+  Pixmap pixmap = GPOINTER_TO_UINT (data);
   Display *dpy = clutter_x11_get_default_display ();
+
   static GC gc = None;
   static int x = 100, y = 100;
 
@@ -116,7 +118,7 @@ draw_arc (Pixmap pixmap)
   x -= 5;
   y -= 5;
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 static gboolean
@@ -124,9 +126,9 @@ stage_button_press_cb (ClutterActor    *actor,
 		       ClutterEvent    *event,
 		       gpointer         data)
 {
-  draw_arc ((Pixmap)data);
+  draw_arc (GPOINTER_TO_UINT (data));
 
-  return FALSE;
+  return CLUTTER_EVENT_STOP;
 }
 
 Pixmap
@@ -311,7 +313,7 @@ test_pixmap_main (int argc, char **argv)
   if (!disable_animation)
     clutter_timeline_start (timeline);
 
-  g_timeout_add_seconds (1, (GSourceFunc)draw_arc, GUINT_TO_POINTER (pixmap));
+  clutter_threads_add_timeout (1000, draw_arc, GUINT_TO_POINTER (pixmap));
 
   clutter_main ();
 

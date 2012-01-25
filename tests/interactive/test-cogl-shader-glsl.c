@@ -180,10 +180,10 @@ static int shader_no = 0;
 static void
 paint_cb (ClutterActor *actor)
 {
-  int stage_width = clutter_actor_get_width (actor);
-  int stage_height = clutter_actor_get_height (actor);
-  int image_width = cogl_texture_get_width (redhand);
-  int image_height = cogl_texture_get_height (redhand);
+  float stage_width = clutter_actor_get_width (actor);
+  float stage_height = clutter_actor_get_height (actor);
+  float image_width = cogl_texture_get_width (redhand);
+  float image_height = cogl_texture_get_height (redhand);
 
   cogl_set_source (material);
   cogl_rectangle (stage_width/2.0f - image_width/2.0f,
@@ -237,7 +237,7 @@ set_shader_num (int new_no)
 static gboolean
 button_release_cb (ClutterActor *actor,
                    ClutterEvent *event,
-                   void *data)
+                   gpointer data)
 {
   int new_no;
 
@@ -264,13 +264,13 @@ button_release_cb (ClutterActor *actor,
 
   set_shader_num (new_no);
 
-  return FALSE;
+  return CLUTTER_EVENT_STOP;
 }
 
 static gboolean
 key_release_cb (ClutterActor *actor,
                 ClutterEvent *event,
-                void *user_data)
+                gpointer user_data)
 {
   guint keysym = clutter_event_get_key_symbol (event);
   ClutterModifierType mods = clutter_event_get_state (event);
@@ -279,11 +279,11 @@ key_release_cb (ClutterActor *actor,
       ((mods & CLUTTER_SHIFT_MASK) && keysym == CLUTTER_KEY_q))
     clutter_main_quit ();
 
-  return FALSE;
+  return CLUTTER_EVENT_STOP;
 }
 
 static gboolean
-timeout_cb (void *user_data)
+timeout_cb (gpointer user_data)
 {
   shader_no++;
   if (shader_no > (G_N_ELEMENTS (shaders) - 1))
@@ -291,24 +291,25 @@ timeout_cb (void *user_data)
 
   set_shader_num (shader_no);
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 static gboolean
-idle_cb (void *data)
+idle_cb (gpointer data)
 {
   clutter_actor_queue_redraw (data);
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 static gboolean
 destroy_window_cb (ClutterStage *stage,
                    ClutterEvent *event,
-                   void *user_data)
+                   gpointer user_data)
 {
   clutter_main_quit ();
-  return TRUE;
+
+  return CLUTTER_EVENT_STOP;
 }
 
 G_MODULE_EXPORT int
@@ -351,11 +352,11 @@ test_cogl_shader_glsl_main (int argc, char *argv[])
   g_signal_connect (stage, "delete-event",
                     G_CALLBACK (destroy_window_cb), NULL);
 
-  timeout_id = g_timeout_add (1000, timeout_cb, NULL);
+  timeout_id = clutter_threads_add_timeout (1000, timeout_cb, NULL);
 
-  g_idle_add (idle_cb, stage);
+  clutter_threads_add_idle (idle_cb, stage);
 
-  clutter_actor_show_all (stage);
+  clutter_actor_show (stage);
 
   clutter_main ();
 

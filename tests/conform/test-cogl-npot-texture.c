@@ -122,7 +122,7 @@ queue_redraw (gpointer stage)
 {
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 static CoglHandle
@@ -221,7 +221,7 @@ test_cogl_npot_texture (TestConformSimpleFixture *fixture,
   /* We force continuous redrawing of the stage, since we need to skip
    * the first few frames, and we wont be doing anything else that
    * will trigger redrawing. */
-  idle_source = g_idle_add (queue_redraw, stage);
+  idle_source = clutter_threads_add_idle (queue_redraw, stage);
 
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);
 

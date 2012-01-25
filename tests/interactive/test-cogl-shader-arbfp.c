@@ -309,13 +309,13 @@ button_release_cb (ClutterActor *actor,
 
   set_shader_num (new_no);
 
-  return FALSE;
+  return CLUTTER_EVENT_STOP;
 }
 
 static gboolean
 key_release_cb (ClutterActor *actor,
                 ClutterEvent *event,
-                void *user_data)
+                gpointer user_data)
 {
   guint keysym = clutter_event_get_key_symbol (event);
   ClutterModifierType mods = clutter_event_get_state (event);
@@ -324,11 +324,11 @@ key_release_cb (ClutterActor *actor,
       ((mods & CLUTTER_SHIFT_MASK) && keysym == CLUTTER_KEY_q))
     clutter_main_quit ();
 
-  return FALSE;
+  return CLUTTER_EVENT_STOP;
 }
 
 static gboolean
-timeout_cb (void *user_data)
+timeout_cb (gpointer user_data)
 {
   shader_no++;
   if (shader_no > (G_N_ELEMENTS (shaders) - 1))
@@ -336,15 +336,15 @@ timeout_cb (void *user_data)
 
   set_shader_num (shader_no);
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 static gboolean
-idle_cb (void *data)
+idle_cb (gpointer data)
 {
   clutter_actor_queue_redraw (data);
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 static gboolean
@@ -394,11 +394,11 @@ test_cogl_shader_arbfp_main (int argc, char *argv[])
   g_signal_connect (stage, "delete-event",
                     G_CALLBACK (destroy_window_cb), NULL);
 
-  timeout_id = g_timeout_add (1000, timeout_cb, NULL);
+  timeout_id = clutter_threads_add_timeout (1000, timeout_cb, NULL);
 
-  g_idle_add (idle_cb, stage);
+  clutter_threads_add_idle (idle_cb, stage);
 
-  clutter_actor_show_all (stage);
+  clutter_actor_show (stage);
 
   clutter_main ();
 

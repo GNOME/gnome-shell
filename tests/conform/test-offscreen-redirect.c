@@ -290,7 +290,7 @@ timeout_cb (gpointer user_data)
 
   clutter_main_quit ();
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 void
@@ -333,7 +333,7 @@ test_offscreen_redirect (TestConformSimpleFixture *fixture,
 
       /* Start the test after a short delay to allow the stage to
          render its initial frames without affecting the results */
-      g_timeout_add_full (G_PRIORITY_LOW, 250, timeout_cb, &data, NULL);
+      clutter_threads_add_timeout_full (G_PRIORITY_LOW, 250, timeout_cb, &data, NULL);
 
       clutter_main ();
 

@@ -16,14 +16,14 @@ static ClutterActor *raise_actor[2];
 static gboolean raise_no = 0;
 
 static gboolean
-raise_top (gpointer ignored)
+raise_top (gpointer ignored G_GNUC_UNUSED)
 {
   ClutterActor *parent = clutter_actor_get_parent (raise_actor[raise_no]);
 
   clutter_actor_set_child_above_sibling (parent, raise_actor[raise_no], NULL);
   raise_no = !raise_no;
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 static ClutterActor *
@@ -106,7 +106,6 @@ janus_group (const gchar *front_text,
   return group;
 }
 
-
 G_MODULE_EXPORT gint
 test_depth_main (int argc, char *argv[])
 {
@@ -118,7 +117,7 @@ test_depth_main (int argc, char *argv[])
   GError           *error;
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
-    return 1;
+    return EXIT_FAILURE;
 
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Depth Test");
@@ -153,7 +152,6 @@ test_depth_main (int argc, char *argv[])
   clutter_container_add (CLUTTER_CONTAINER (group), hand, rect, NULL);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
 
-  /* 3 seconds, at 60 fps */
   timeline = clutter_timeline_new (3000);
   g_signal_connect (timeline,
                     "completed", G_CALLBACK (timeline_completed),
@@ -200,7 +198,7 @@ test_depth_main (int argc, char *argv[])
 
   raise_actor[0] = rect;
   raise_actor[1] = hand;
-  g_timeout_add (2000, raise_top, NULL);
+  clutter_threads_add_timeout (2000, raise_top, NULL);
 
   clutter_main ();
 

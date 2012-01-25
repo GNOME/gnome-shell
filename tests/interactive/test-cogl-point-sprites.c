@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <clutter/clutter.h>
 #include <math.h>
 #include <gmodule.h>
@@ -213,7 +214,7 @@ idle_cb (gpointer data)
 {
   clutter_actor_queue_redraw (data);
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 G_MODULE_EXPORT int
@@ -226,7 +227,7 @@ test_cogl_point_sprites_main (int argc, char *argv[])
   int i;
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
-    return 1;
+    return EXIT_FAILURE;
 
   data.material = cogl_material_new ();
   data.last_spark_time = g_timer_new ();
@@ -267,7 +268,7 @@ test_cogl_point_sprites_main (int argc, char *argv[])
 
   clutter_actor_show (stage);
 
-  g_idle_add (idle_cb, stage);
+  clutter_threads_add_idle (idle_cb, stage);
 
   clutter_main ();
 

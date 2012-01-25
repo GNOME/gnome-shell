@@ -34,7 +34,7 @@ void clutter_perf_fps_start (ClutterStage *stage)
 
 void clutter_perf_fake_mouse (ClutterStage *stage)
 {
-  g_timeout_add (1000/60, perf_fake_mouse_cb, stage);
+  clutter_threads_add_timeout (1000/60, perf_fake_mouse_cb, stage);
 }
 
 void clutter_perf_fps_report (const gchar *id)
@@ -126,5 +126,5 @@ static gboolean perf_fake_mouse_cb (gpointer stage)
       yd = CLAMP(yd, -1.3, 1.3);
     }
   clutter_event_free (event);
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
