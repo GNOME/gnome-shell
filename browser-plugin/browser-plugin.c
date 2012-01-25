@@ -457,7 +457,10 @@ plugin_enable_extension (PluginObject *obj,
 {
   gchar *uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
   if (!uuid_is_valid (uuid_str))
-    return FALSE;
+    {
+      g_free (uuid_str);
+      return FALSE;
+    }
 
   g_dbus_proxy_call (obj->proxy,
                      (enabled ? "EnableExtension" : "DisableExtension"),
