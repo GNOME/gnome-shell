@@ -113,11 +113,14 @@ const GnomeShell = new Lang.Class({
         return [success, returnValue];
     },
 
-    _handleScreenshotFlash: function(flash, area) {
+    _onScreenshotComplete: function(obj, result, area, flash, invocation) {
         if (flash) {
             let flashspot = new Flashspot.Flashspot(area);
             flashspot.fire();
         }
+
+        let retval = GLib.Variant.new('(b)', [result]);
+        invocation.return_value(retval);
     },
 
     /**
@@ -135,13 +138,9 @@ const GnomeShell = new Lang.Class({
      */
     ScreenshotAreaAsync : function (params, invocation) {
         let [x, y, width, height, flash, filename, callback] = params;
-        global.screenshot_area (x, y, width, height, filename, Lang.bind(this,
-            function (obj, result, area) {
-                this._handleScreenshotFlash(flash, area);
-
-                let retval = GLib.Variant.new('(b)', [result]);
-                invocation.return_value(retval);
-            }));
+        global.screenshot_area (x, y, width, height, filename, 
+                                Lang.bind(this, this._onScreenshotComplete, 
+                                          flash, invocation));
     },
 
     /**
@@ -156,13 +155,9 @@ const GnomeShell = new Lang.Class({
      */
     ScreenshotWindowAsync : function (params, invocation) {
         let [include_frame, flash, filename] = params;
-        global.screenshot_window (include_frame, filename, Lang.bind(this,
-            function (obj, result, area) {
-                this._handleScreenshotFlash(flash, area);
-
-                let retval = GLib.Variant.new('(b)', [result]);
-                invocation.return_value(retval);
-            }));
+        global.screenshot_window (include_frame, filename, 
+                                  Lang.bind(this, this._onScreenshotComplete, 
+                                            flash, invocation));
     },
 
     /**
@@ -176,13 +171,9 @@ const GnomeShell = new Lang.Class({
      */
     ScreenshotAsync : function (params, invocation) {
         let [flash, filename] = params;
-        global.screenshot(filename, Lang.bind(this,
-            function (obj, result, area) {
-                this._handleScreenshotFlash(flash, area);
-
-                let retval = GLib.Variant.new('(b)', [result]);
-                invocation.return_value(retval);
-            }));
+        global.screenshot(filename, 
+                          Lang.bind(this, this._onScreenshotComplete, 
+                                    flash, invocation));
     },
 
     ListExtensions: function() {
