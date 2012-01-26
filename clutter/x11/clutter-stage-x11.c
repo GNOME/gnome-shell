@@ -207,7 +207,7 @@ clutter_stage_x11_get_geometry (ClutterStageWindow    *stage_window,
   geometry->x = geometry->y = 0;
 
   /* If we're fullscreen, return the size of the display. */
-  if (_clutter_stage_is_fullscreen (stage_x11->wrapper) &&
+  if (_clutter_stage_is_fullscreen (stage_cogl->wrapper) &&
       stage_x11->fullscreening)
     {
       geometry->width = DisplayWidth (backend_x11->xdpy, backend_x11->xscreen_num);
@@ -1050,18 +1050,18 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
                     fullscreen_set = TRUE;
                 }
 
-              is_fullscreen = _clutter_stage_is_fullscreen (stage_x11->wrapper);
+              is_fullscreen = _clutter_stage_is_fullscreen (stage_cogl->wrapper);
 
               if (fullscreen_set != is_fullscreen)
                 {
                   ClutterStageState new_state;
 
                   if (fullscreen_set)
-                    _clutter_stage_update_state (stage_x11->wrapper,
+                    _clutter_stage_update_state (stage_cogl->wrapper,
                                                  0,
                                                  CLUTTER_STAGE_STATE_FULLSCREEN);
                   else
-                    _clutter_stage_update_state (stage_x11->wrapper,
+                    _clutter_stage_update_state (stage_cogl->wrapper,
                                                  CLUTTER_STAGE_STATE_FULLSCREEN,
                                                  0);
                 }
@@ -1072,18 +1072,18 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
       break;
 
     case FocusIn:
-      if (!_clutter_stage_is_activated (stage_x11->wrapper))
+      if (!_clutter_stage_is_activated (stage_cogl->wrapper))
         {
-          _clutter_stage_update_state (stage_x11->wrapper,
+          _clutter_stage_update_state (stage_cogl->wrapper,
                                        0,
                                        CLUTTER_STAGE_STATE_ACTIVATED);
         }
       break;
 
     case FocusOut:
-      if (_clutter_stage_is_activated (stage_x11->wrapper))
+      if (_clutter_stage_is_activated (stage_cogl->wrapper))
         {
-          _clutter_stage_update_state (stage_x11->wrapper,
+          _clutter_stage_update_state (stage_cogl->wrapper,
                                        CLUTTER_STAGE_STATE_ACTIVATED,
                                        0);
         }
