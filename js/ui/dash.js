@@ -793,6 +793,14 @@ const Dash = new Lang.Class({
                 this._dragPlaceholder.animateIn();
         }
 
+        // Remove the drag placeholder if we are not in the
+        // "favorites zone"
+        if (pos > numFavorites && this._dragPlaceholder) {
+            this._clearDragPlaceholder();
+        }
+        if (!this._dragPlaceholder)
+            return DND.DragMotionResult.NO_DROP;
+
         let srcIsFavorite = (favPos != -1);
 
         if (srcIsFavorite)
@@ -834,6 +842,11 @@ const Dash = new Lang.Class({
             if (childId in favorites)
                 favPos++;
         }
+
+        // No drag placeholder means we don't wan't to favorite the app
+        // and we are dragging it to its original position
+        if (!this._dragPlaceholder)
+            return true;
 
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
             function () {
