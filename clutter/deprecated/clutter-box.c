@@ -128,6 +128,7 @@ clutter_box_real_get_paint_volume (ClutterActor       *actor,
                                    ClutterPaintVolume *volume)
 {
   gboolean retval = FALSE;
+  ClutterActorIter iter;
   ClutterActor *child;
 
   /* if we have a background color, and an allocation, then we need to
@@ -144,9 +145,8 @@ clutter_box_real_get_paint_volume (ClutterActor       *actor,
   /* otherwise, union the paint volumes of our children, in case
    * any one of them decides to paint outside the parent's allocation
    */
-  for (child = clutter_actor_get_first_child (actor);
-       child != NULL;
-       child = clutter_actor_get_next_sibling (child))
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
     {
       const ClutterPaintVolume *child_volume;
 
@@ -160,22 +160,6 @@ clutter_box_real_get_paint_volume (ClutterActor       *actor,
     }
 
   return retval;
-}
-
-static void
-clutter_box_real_pick (ClutterActor       *actor,
-                       const ClutterColor *pick)
-{
-  ClutterActor *child;
-
-  CLUTTER_ACTOR_CLASS (clutter_box_parent_class)->pick (actor, pick);
-
-  for (child = clutter_actor_get_first_child (actor);
-       child != NULL;
-       child = clutter_actor_get_next_sibling (child))
-    {
-      clutter_actor_paint (child);
-    }
 }
 
 static void
@@ -257,7 +241,6 @@ clutter_box_class_init (ClutterBoxClass *klass)
 
   actor_class->destroy = clutter_box_real_destroy;
   actor_class->get_paint_volume = clutter_box_real_get_paint_volume;
-  actor_class->pick = clutter_box_real_pick;
 
   gobject_class->set_property = clutter_box_set_property;
   gobject_class->get_property = clutter_box_get_property;
