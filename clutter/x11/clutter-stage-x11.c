@@ -1054,8 +1054,6 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
 
               if (fullscreen_set != is_fullscreen)
                 {
-                  ClutterStageState new_state;
-
                   if (fullscreen_set)
                     _clutter_stage_update_state (stage_cogl->wrapper,
                                                  0,
