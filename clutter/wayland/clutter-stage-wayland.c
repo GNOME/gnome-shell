@@ -131,6 +131,11 @@ clutter_stage_wayland_set_fullscreen (ClutterStageWindow *stage_window,
       clutter_actor_set_size (stage,
                               backend_wayland->output_width,
                               backend_wayland->output_height);
+
+      /* FIXME: And we must force a redraw so that new sized buffer gets
+       * attached
+       */
+      _clutter_stage_window_redraw (stage_window);
       wl_shell_surface_set_fullscreen (stage_wayland->wayland_shell_surface);
     }
   else
