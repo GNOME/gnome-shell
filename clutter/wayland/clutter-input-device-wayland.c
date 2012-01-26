@@ -211,7 +211,6 @@ clutter_wayland_handle_keyboard_focus (void *data,
 {
   ClutterInputDeviceWayland *device = data;
   ClutterStageCogl          *stage_cogl;
-  ClutterEvent              *event;
   uint32_t                  *k, *end;
 
   if (device->keyboard_focus)
@@ -219,14 +218,9 @@ clutter_wayland_handle_keyboard_focus (void *data,
       stage_cogl = device->keyboard_focus;
       device->keyboard_focus = NULL;
 
-      event = clutter_event_new (CLUTTER_STAGE_STATE);
-      event->stage_state.time = _time;
-      event->stage_state.stage = stage_cogl->wrapper;
-      event->stage_state.stage = stage_cogl->wrapper;
-      event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-      event->stage_state.new_state = 0;
-
-      _clutter_event_push (event, FALSE);
+      _clutter_stage_update_state (stage_cogl->wrapper,
+                                   CLUTTER_STAGE_STATE_ACTIVATED,
+                                   0);
     }
 
   if (surface)
@@ -234,17 +228,14 @@ clutter_wayland_handle_keyboard_focus (void *data,
       stage_cogl = wl_surface_get_user_data (surface);
       device->keyboard_focus = stage_cogl;
 
-      event = clutter_event_new (CLUTTER_STAGE_STATE);
-      event->stage_state.stage = stage_cogl->wrapper;
-      event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-      event->stage_state.new_state = CLUTTER_STAGE_STATE_ACTIVATED;
+      _clutter_stage_update_state (stage_cogl->wrapper,
+                                   0,
+                                   CLUTTER_STAGE_STATE_ACTIVATED);
 
       end = (uint32_t *)((guint8 *)keys->data + keys->size);
       device->modifier_state = 0;
       for (k = keys->data; k < end; k++)
 	device->modifier_state |= device->xkb->map->modmap[*k];
-
-      _clutter_event_push (event, FALSE);
     }
 }
 
