@@ -556,6 +556,7 @@ const ZoomRegion = new Lang.Class({
         this._screenPosition = GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN;
 
         this._magView = null;
+        this._background = null;
         this._uiGroupClone = null;
         this._mouseSourceActor = mouseSourceActor;
         this._mouseActor  = null;
@@ -565,12 +566,15 @@ const ZoomRegion = new Lang.Class({
         this._viewPortX = 0;
         this._viewPortY = 0;
         this._viewPortWidth = global.screen_width;
-        this._viewPortWidth = global.screen_height;
+        this._viewPortHeight = global.screen_height;
         this._xCenter = this._viewPortWidth / 2;
         this._yCenter = this._viewPortHeight / 2;
         this._xMagFactor = 1;
         this._yMagFactor = 1;
         this._followingCursor = false;
+
+        Main.layoutManager.connect('monitors-changed',
+                                   Lang.bind(this, this._monitorsChanged));
     },
 
     /**
@@ -891,15 +895,15 @@ const ZoomRegion = new Lang.Class({
 
         // Add a background for when the magnified uiGroup is scrolled
         // out of view (don't want to see desktop showing through).
-        let background = new Clutter.Rectangle({ color: Main.DEFAULT_BACKGROUND_COLOR });
-        mainGroup.add_actor(background);
+        this._background = new Clutter.Rectangle({ color: Main.DEFAULT_BACKGROUND_COLOR });
+        mainGroup.add_actor(this._background);
 
         // Clone the group that contains all of UI on the screen.  This is the
         // chrome, the windows, etc.
         this._uiGroupClone = new Clutter.Clone({ source: Main.uiGroup });
         mainGroup.add_actor(this._uiGroupClone);
         Main.uiGroup.set_size(global.screen_width, global.screen_height);
-        background.set_size(global.screen_width, global.screen_height);
+        this._background.set_size(global.screen_width, global.screen_height);
 
         // Add either the given mouseSourceActor to the ZoomRegion, or a clone of
         // it.
@@ -923,6 +927,7 @@ const ZoomRegion = new Lang.Class({
 
         this._magView.destroy();
         this._magView = null;
+        this._background = null;
         this._uiGroupClone = null;
         this._mouseActor = null;
         this._crossHairsActor = null;
@@ -1145,6 +1150,22 @@ const ZoomRegion = new Lang.Class({
             this._crossHairsActor.set_position(xMagMouse - groupWidth / 2,
                                                yMagMouse - groupHeight / 2);
         }
+    },
+
+    _monitorsChanged: function() {
+        if (!this.isActive())
+            return;
+
+        Main.uiGroup.set_size(global.screen_width, global.screen_height);
+        this._background.set_size(global.screen_width, global.screen_height);
+
+        if (this._screenPosition == GDesktopEnums.MagnifierScreenPosition.NONE)
+            this._setViewPort({ x: this._viewPortX,
+                                y: this._viewPortY,
+                                width: this._viewPortWidth,
+                                height: this._viewPortHeight });
+        else
+            this.setScreenPosition(this._screenPosition);
     }
 });
 
@@ -1174,6 +1195,14 @@ const Crosshairs = new Lang.Class({
         this._actor.add_actor(this._vertBottomHair);
         this._clipSize = [0, 0];
         this._clones = [];
+        this.reCenter();
+
+        Main.layoutManager.connect('monitors-changed',
+                                   Lang.bind(this, this._monitorsChanged));
+    },
+
+    _monitorsChanged: function() {
+        this._actor.set_size(global.screen_width * 3, global.screen_height * 3);
         this.reCenter();
     },
 
