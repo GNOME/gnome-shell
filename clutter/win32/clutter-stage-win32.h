@@ -54,7 +54,6 @@ struct _ClutterStageWin32
   wchar_t     *wtitle;
 
   ClutterBackendWin32 *backend;
-  ClutterStageState   state;
 
   ClutterStage *wrapper;
 
