@@ -75,6 +75,10 @@ static const struct wl_shell_surface_listener shell_surface_listener = {
        handle_configure,
 };
 
+static void
+clutter_stage_wayland_set_fullscreen (ClutterStageWindow *stage_window,
+                                      gboolean            fullscreen);
+
 static gboolean
 clutter_stage_wayland_realize (ClutterStageWindow *stage_window)
 {
@@ -98,7 +102,7 @@ clutter_stage_wayland_realize (ClutterStageWindow *stage_window)
   stage_wayland->wayland_shell_surface = wl_shell_surface;
 
   if (stage_wayland->fullscreen)
-    wl_shell_surface_set_fullscreen (stage_wayland->wayland_shell_surface);
+    clutter_stage_wayland_set_fullscreen (stage_window, TRUE);
 
   return TRUE;
 }
