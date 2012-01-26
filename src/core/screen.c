@@ -2980,7 +2980,7 @@ meta_screen_resize (MetaScreen *screen,
   g_free (old_monitor_infos);
   g_slist_free (windows);
 
-  g_signal_emit (screen, screen_signals[MONITORS_CHANGED], 0, index);
+  g_signal_emit (screen, screen_signals[MONITORS_CHANGED], 0);
 }
 
 void
