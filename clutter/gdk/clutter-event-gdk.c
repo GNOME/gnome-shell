@@ -226,12 +226,10 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       break;
 
     case GDK_FOCUS_CHANGE:
-      event = clutter_event_new (CLUTTER_STAGE_STATE);
-      event->stage_state.time = 0; /* XXX: there is no timestamp in this GdkEvent */
-      event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-      event->stage_state.new_state = gdk_event->focus_change.in
-                                   ? CLUTTER_STAGE_STATE_ACTIVATED
-                                   : 0;
+      if (gdk_event->focus_change.in)
+        _clutter_stage_update_state (stage, 0, CLUTTER_STAGE_STATE_ACTIVATED);
+      else
+        _clutter_stage_update_state (stage, CLUTTER_STAGE_STATE_ACTIVATED, 0);
       break;
 
     case GDK_CONFIGURE:
@@ -263,23 +261,15 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       break;
 
     case GDK_WINDOW_STATE:
-      event = clutter_event_new (CLUTTER_STAGE_STATE);
-      event->stage_state.changed_mask = 0;
-      event->stage_state.new_state = 0;
-      if (gdk_event->window_state.changed_mask & GDK_WINDOW_STATE_WITHDRAWN)
-        {
-          event->stage_state.changed_mask |= CLUTTER_STAGE_STATE_OFFSCREEN;
-          event->stage_state.new_state |= (gdk_event->window_state.new_window_state & GDK_WINDOW_STATE_WITHDRAWN)
-                                        ? CLUTTER_STAGE_STATE_OFFSCREEN
-                                        : 0;
-        }
-
       if (gdk_event->window_state.changed_mask & GDK_WINDOW_STATE_FULLSCREEN)
         {
-          event->stage_state.changed_mask |= CLUTTER_STAGE_STATE_FULLSCREEN;
-          event->stage_state.new_state |= (gdk_event->window_state.new_window_state & GDK_WINDOW_STATE_FULLSCREEN)
-                                        ? CLUTTER_STAGE_STATE_FULLSCREEN
-                                        : 0;
+          gboolean is_fullscreen;
+
+          is_fullscreen = (gdk_event->window_state.new_window_state & GDK_WINDOW_STATE_FULLSCREEN) != 0;
+          if (is_fullscreen)
+            _clutter_stage_update_state (stage, 0, CLUTTER_STAGE_STATE_FULLSCREEN);
+          else
+            _clutter_stage_update_state (stage, CLUTTER_STAGE_STATE_FULLSCREEN, 0);
         }
       break;
 

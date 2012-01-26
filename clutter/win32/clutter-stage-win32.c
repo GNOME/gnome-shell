@@ -92,7 +92,7 @@ clutter_stage_win32_get_geometry (ClutterStageWindow    *stage_window,
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage_window);
 
-  if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN))
+  if (_clutter_stage_is_fullscreen (stage_win32->wrapper))
     {
       geometry->width = stage_win32->fullscreen_rect.right
                       - stage_win32->fullscreen_rect.left;
@@ -177,7 +177,7 @@ clutter_stage_win32_resize (ClutterStageWindow *stage_window,
   if (width != stage_win32->win_width || height != stage_win32->win_height)
     {
       /* Ignore size requests if we are in full screen mode */
-      if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN) == 0)
+      if (!_clutter_stage_is_fullscreen (stage_win32->wrapper))
         {
           stage_win32->win_width = width;
           stage_win32->win_height = height;
@@ -272,7 +272,7 @@ get_window_style (ClutterStageWin32 *stage_win32)
   ClutterStage *wrapper = stage_win32->wrapper;
 
   /* Fullscreen mode shouldn't have any borders */
-  if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN))
+  if (_clutter_stage_is_fullscreen (wrapper))
     return WS_POPUP;
   /* Otherwise it's an overlapped window but if it isn't resizable
      then it shouldn't have a thick frame */
@@ -323,11 +323,6 @@ clutter_stage_win32_set_fullscreen (ClutterStageWindow *stage_window,
   LONG old_style = GetWindowLongW (hwnd, GWL_STYLE);
   ClutterStageStateEvent event;
 
-  if (value)
-    stage_win32->state |= CLUTTER_STAGE_STATE_FULLSCREEN;
-  else
-    stage_win32->state &= ~CLUTTER_STAGE_STATE_FULLSCREEN;
-
   if (hwnd)
     {
       /* Update the window style but preserve the visibility */
@@ -364,12 +359,18 @@ clutter_stage_win32_set_fullscreen (ClutterStageWindow *stage_window,
     }
 
   /* Report the state change */
-  memset (&event, 0, sizeof (event));
-  event.type = CLUTTER_STAGE_STATE;
-  event.stage = CLUTTER_STAGE (stage_win32->wrapper);
-  event.new_state = stage_win32->state;
-  event.changed_mask = CLUTTER_STAGE_STATE_FULLSCREEN;
-  clutter_event_put ((ClutterEvent *) &event);
+  if (value)
+    {
+      _clutter_stage_update_state (stage_win32->wrapper,
+                                   0,
+                                   CLUTTER_STAGE_STATE_FULLSCREEN);
+    }
+  else
+    {
+      _clutter_stage_update_state (stage_win32->wrapper,
+                                   CLUTTER_STAGE_STATE_FULLSCREEN,
+                                   0);
+    }
 }
 
 static ATOM
@@ -431,7 +432,7 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
 
       /* If we're in fullscreen mode then use the fullscreen rect
          instead */
-      if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN))
+      if (_clutter_stage_is_fullscreen (stage_win32->wrapper))
         {
           get_fullscreen_rect (stage_win32);
           win_xpos = stage_win32->fullscreen_rect.left;

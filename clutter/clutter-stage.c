@@ -121,32 +121,33 @@ struct _ClutterStagePrivate
   /* the stage implementation */
   ClutterStageWindow *impl;
 
-  ClutterColor        color;
-  ClutterPerspective  perspective;
-  CoglMatrix          projection;
-  CoglMatrix          inverse_projection;
-  CoglMatrix          view;
-  float               viewport[4];
-  ClutterFog          fog;
+  ClutterColor color;
+  ClutterPerspective perspective;
+  CoglMatrix projection;
+  CoglMatrix inverse_projection;
+  CoglMatrix view;
+  float viewport[4];
 
-  gchar              *title;
-  ClutterActor       *key_focused_actor;
+  ClutterFog fog;
 
-  GQueue             *event_queue;
+  gchar *title;
+  ClutterActor *key_focused_actor;
 
-  ClutterStageHint    stage_hints;
+  GQueue *event_queue;
 
-  gint                picks_per_frame;
+  ClutterStageHint stage_hints;
 
-  GArray             *paint_volume_stack;
+  gint picks_per_frame;
 
-  ClutterPlane        current_clip_planes[4];
+  GArray *paint_volume_stack;
 
-  GList              *pending_queue_redraws;
+  ClutterPlane current_clip_planes[4];
 
-  ClutterPickMode     pick_buffer_mode;
+  GList *pending_queue_redraws;
 
-  CoglFramebuffer    *active_framebuffer;
+  ClutterPickMode pick_buffer_mode;
+
+  CoglFramebuffer *active_framebuffer;
 
   GHashTable *devices;
 
@@ -158,6 +159,8 @@ struct _ClutterStagePrivate
 #ifdef CLUTTER_ENABLE_DEBUG
   gulong redraw_count;
 #endif /* CLUTTER_ENABLE_DEBUG */
+
+  ClutterStageState current_state;
 
   guint relayout_pending       : 1;
   guint redraw_pending         : 1;
@@ -4396,4 +4399,88 @@ _clutter_stage_remove_drag_actor (ClutterStage       *stage,
 
   if (g_hash_table_size (drag_actors) == 0)
     g_object_set_data (G_OBJECT (stage), "__clutter_stage_drag_actors", NULL);
+}
+
+/*< private >
+ * _clutter_stage_get_state:
+ * @stage: a #ClutterStage
+ *
+ * Retrieves the current #ClutterStageState flags associated to the @stage.
+ *
+ * Return value: a bitwise OR of #ClutterStageState flags
+ */
+ClutterStageState
+_clutter_stage_get_state (ClutterStage *stage)
+{
+  return stage->priv->current_state;
+}
+
+/*< private >
+ * _clutter_stage_is_activated:
+ * @stage: a #ClutterStage
+ *
+ * Checks whether the @stage state includes %CLUTTER_STAGE_STATE_ACTIVATED.
+ *
+ * Return value: %TRUE if the @stage is active
+ */
+gboolean
+_clutter_stage_is_activated (ClutterStage *stage)
+{
+  return (stage->priv->current_state & CLUTTER_STAGE_STATE_ACTIVATED) != 0;
+}
+
+/*< private >
+ * _clutter_stage_is_fullscreen:
+ * @stage: a #ClutterStage
+ *
+ * Checks whether the @stage state includes %CLUTTER_STAGE_STATE_FULLSCREEN.
+ *
+ * Return value: %TRUE if the @stage is fullscreen
+ */
+gboolean
+_clutter_stage_is_fullscreen (ClutterStage *stage)
+{
+  return (stage->priv->current_state & CLUTTER_STAGE_STATE_FULLSCREEN) != 0;
+}
+
+/*< private >
+ * _clutter_stage_update_state:
+ * @stage: a #ClutterStage
+ * @unset_flags: flags to unset
+ * @set_flags: flags to set
+ *
+ * Updates the state of @stage, by unsetting the @unset_flags and setting
+ * the @set_flags.
+ *
+ * If the stage state has been changed, this function will queue a
+ * #ClutterEvent of type %CLUTTER_STAGE_STATE.
+ *
+ * Return value: %TRUE if the state was updated, and %FALSE otherwise
+ */
+gboolean
+_clutter_stage_update_state (ClutterStage      *stage,
+                             ClutterStageState  unset_flags,
+                             ClutterStageState  set_flags)
+{
+  ClutterStageState new_state;
+  ClutterEvent *event;
+
+  new_state = stage->priv->current_state;
+  new_state |= set_flags;
+  new_state &= ~unset_flags;
+
+  if (new_state == stage->priv->current_state)
+    return FALSE;
+
+  event = clutter_event_new (CLUTTER_STAGE_STATE);
+  clutter_event_set_stage (event, stage);
+
+  event->stage_state.new_state = new_state;
+  event->stage_state.changed_mask = new_state ^ stage->priv->current_state;
+
+  stage->priv->current_state = new_state;
+
+  _clutter_event_push (event, FALSE);
+
+  return TRUE;
 }

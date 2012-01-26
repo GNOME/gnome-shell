@@ -65,8 +65,6 @@ struct _ClutterStageOSX
   gint requisition_width;
   gint requisition_height;
 
-  ClutterStageState stage_state;
-
   gboolean acceptFocus;
   gboolean isHiding;
   gboolean haveRealized;

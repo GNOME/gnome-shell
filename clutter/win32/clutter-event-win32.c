@@ -412,30 +412,18 @@ clutter_win32_handle_event (const MSG *msg)
     case WM_ACTIVATE:
       if (msg->wParam == WA_INACTIVE)
         {
-          if (stage_win32->state & CLUTTER_STAGE_STATE_ACTIVATED)
+          if (_clutter_stage_is_activated (stage_win32->wrapper))
             {
-              ClutterEvent *event = clutter_event_new (CLUTTER_STAGE_STATE);
-
-              stage_win32->state &= ~CLUTTER_STAGE_STATE_ACTIVATED;
-
-              event->any.stage = stage;
-              event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-              event->stage_state.new_state = stage_win32->state;
-
-              take_and_queue_event (event);
+              _clutter_stage_update_state (stage_win32->wrapper,
+                                           CLUTTER_STAGE_STATE_ACTIVATED,
+                                           0);
             }
         }
-      else if (!(stage_win32->state & CLUTTER_STAGE_STATE_ACTIVATED))
+      else if (!_clutter_stage_is_activated (stage_win32->wrapper))
         {
-          ClutterEvent *event = clutter_event_new (CLUTTER_STAGE_STATE);
-
-          stage_win32->state |= CLUTTER_STAGE_STATE_ACTIVATED;
-
-          event->any.stage = stage;
-          event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-          event->stage_state.new_state = stage_win32->state;
-
-          take_and_queue_event (event);
+          _clutter_stage_update_state (stage_win32->wrapper,
+                                       0,
+                                       CLUTTER_STAGE_STATE_ACTIVATED);
         }
       break;
 
