@@ -744,20 +744,10 @@ const Dash = new Lang.Class({
             numChildren--;
         }
 
-        let pos = Math.round(y * numChildren / boxHeight);
+        let pos = Math.floor(y * numChildren / boxHeight);
 
-        if (pos != this._dragPlaceholderPos && pos <= numFavorites) {
-            if (this._animatingPlaceholdersCount > 0) {
-                let appChildren = children.filter(function(actor) {
-                    return actor._delegate &&
-                           actor._delegate.child &&
-                           actor._delegate.child._delegate &&
-                           actor._delegate.child._delegate.app;
-                });
-                this._dragPlaceholderPos = children.indexOf(appChildren[pos]);
-            } else {
-                this._dragPlaceholderPos = pos;
-            }
+        if (pos != this._dragPlaceholderPos && pos <= numFavorites && this._animatingPlaceholdersCount == 0) {
+            this._dragPlaceholderPos = pos;
 
             // Don't allow positioning before or after self
             if (favPos != -1 && (pos == favPos || pos == favPos + 1)) {
