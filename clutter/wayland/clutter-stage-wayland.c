@@ -33,6 +33,7 @@
 #include "clutter-stage-wayland.h"
 #include "clutter-backend-wayland.h"
 #include "clutter-stage-window.h"
+#include "clutter-stage-private.h"
 #include "clutter-event-private.h"
 #include <cogl/cogl.h>
 
@@ -119,14 +120,14 @@ clutter_stage_wayland_set_fullscreen (ClutterStageWindow *stage_window,
 
   if (fullscreen)
     {
-      ClutterEvent *event = clutter_event_new (CLUTTER_STAGE_STATE);
+      _clutter_stage_update_state (stage_cogl->wrapper,
+                                   0,
+                                   CLUTTER_STAGE_STATE_FULLSCREEN);
 
-      event->stage_state.changed_mask = CLUTTER_STAGE_STATE_FULLSCREEN;
-      event->stage_state.new_state = CLUTTER_STAGE_STATE_FULLSCREEN;
-      event->stage_state.stage = stage;
-
-      _clutter_event_push (event, FALSE);
-
+      /* FIXME: In future versions of the Wayland protocol we'll get a
+       * configure with the dimensions we can use - but for now we have to
+       * use the dimensions from the output's mode
+       */
       clutter_actor_set_size (stage,
                               backend_wayland->output_width,
                               backend_wayland->output_height);
@@ -134,13 +135,9 @@ clutter_stage_wayland_set_fullscreen (ClutterStageWindow *stage_window,
     }
   else
     {
-      ClutterEvent *event = clutter_event_new (CLUTTER_STAGE_STATE);
-
-      event->stage_state.changed_mask = CLUTTER_STAGE_STATE_FULLSCREEN;
-      event->stage_state.new_state = 0;
-      event->stage_state.stage = stage;
-
-      _clutter_event_push (event, FALSE);
+      _clutter_stage_update_state (stage_cogl->wrapper,
+                                   CLUTTER_STAGE_STATE_FULLSCREEN,
+                                   0);
 
       wl_shell_surface_set_toplevel (stage_wayland->wayland_shell_surface);
     }
