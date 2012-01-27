@@ -33,7 +33,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_EVENT	(clutter_event_get_type ())
+#define CLUTTER_TYPE_EVENT	        (clutter_event_get_type ())
 
 /**
  * CLUTTER_PRIORITY_EVENTS:
@@ -42,7 +42,7 @@ G_BEGIN_DECLS
  *
  * Since: 0.4
  */
-#define CLUTTER_PRIORITY_EVENTS (G_PRIORITY_DEFAULT)
+#define CLUTTER_PRIORITY_EVENTS         (G_PRIORITY_DEFAULT)
 
 /**
  * CLUTTER_CURRENT_TIME:
@@ -51,7 +51,7 @@ G_BEGIN_DECLS
  *
  * Since: 0.4
  */
-#define CLUTTER_CURRENT_TIME    0L
+#define CLUTTER_CURRENT_TIME            (0L)
 
 /**
  * CLUTTER_EVENT_PROPAGATE:
@@ -61,7 +61,7 @@ G_BEGIN_DECLS
  *
  * Since: 1.10
  */
-#define CLUTTER_EVENT_PROPAGATE         FALSE
+#define CLUTTER_EVENT_PROPAGATE         (FALSE)
 
 /**
  * CLUTTER_EVENT_STOP:
@@ -71,7 +71,40 @@ G_BEGIN_DECLS
  *
  * Since: 1.10
  */
-#define CLUTTER_EVENT_STOP              TRUE
+#define CLUTTER_EVENT_STOP              (TRUE)
+
+/**
+ * CLUTTER_BUTTON_PRIMARY:
+ *
+ * The primary button of a pointer device.
+ *
+ * This is typically the left mouse button in a right-handed
+ * mouse configuration.
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_BUTTON_PRIMARY          (1)
+
+/**
+ * CLUTTER_BUTTON_MIDDLE:
+ *
+ * The middle button of a pointer device.
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_BUTTON_MIDDLE           (2)
+
+/**
+ * CLUTTER_BUTTON_SECONDARY:
+ *
+ * The secondary button of a pointer device.
+ *
+ * This is typically the right mouse button in a right-handed
+ * mouse configuration.
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_BUTTON_SECONDARY        (3)
 
 typedef struct _ClutterAnyEvent         ClutterAnyEvent;
 typedef struct _ClutterButtonEvent      ClutterButtonEvent;
