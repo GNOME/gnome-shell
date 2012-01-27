@@ -1107,6 +1107,9 @@ clutter_event_put
 clutter_events_pending
 
 <SUBSECTION>
+CLUTTER_BUTTON_PRIMARY
+CLUTTER_BUTTON_MIDDLE
+CLUTTER_BUTTON_SECONDARY
 clutter_event_set_button
 clutter_event_get_button
 clutter_event_get_click_count

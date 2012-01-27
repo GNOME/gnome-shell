@@ -55,9 +55,9 @@ clicked_cb (ClutterActor *actor,
 
   clutter_actor_get_scale (actor, &scale, NULL);
 
-  if (button == 1)
+  if (button == CLUTTER_BUTTON_PRIMARY)
     scale *= 1.2;
-  else if (button == 3)
+  else if (button == CLUTTER_BUTTON_SECONDARY)
     scale /= 1.2;
 
   /* don't do anything if scale is outside bounds */

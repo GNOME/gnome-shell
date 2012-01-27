@@ -1274,15 +1274,21 @@ g_object_set (settings,
 
         <itemizedlist>
           <listitem>
-            <para>1 = left mouse button</para>
+            <para>1 = left mouse button in a right-handed configuration,
+            or the right mouse button in a left-handed configuration</para>
           </listitem>
           <listitem>
-            <para>2 = scroll wheel</para>
+            <para>2 = scroll wheel button</para>
           </listitem>
           <listitem>
-            <para>3 = right mouse button</para>
+            <para>3 = right mouse button in a right-handed configuration,
+            or the left mouse button in a left-handed configuration</para>
           </listitem>
         </itemizedlist>
+
+        <note><para>Clutter provides symbolic names for the three buttons
+        above: CLUTTER_BUTTON_PRIMARY, CLUTTER_BUTTON_MIDDLE, and
+        CLUTTER_BUTTON_SECONDARY.</para></note>
 
         <para>For mice with more buttons, or other types of
         input devices, the mappings may not be so
