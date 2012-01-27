@@ -165,7 +165,7 @@ const ModemCdma = new Lang.Class({
 
         this.signal_quality = 0;
         this.operator_name = null;
-        this._proxy.connect('SignalQuality', Lang.bind(this, function(proxy, sender, params) {
+        this._proxy.connectSignal('SignalQuality', Lang.bind(this, function(proxy, sender, params) {
             this.signal_quality = params[0];
             this.emit('notify::signal-quality');
 
