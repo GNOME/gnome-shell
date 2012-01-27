@@ -458,13 +458,30 @@ clutter_group_class_init (ClutterGroupClass *klass)
 static void
 clutter_group_init (ClutterGroup *self)
 {
+  ClutterActor *actor = CLUTTER_ACTOR (self);
+
   self->priv = CLUTTER_GROUP_GET_PRIVATE (self);
+
+  /* turn on some optimization
+   *
+   * XXX - these so-called "optimizations" are insane and should have never
+   * been used. they introduce some weird behaviour that breaks invariants
+   * and has to be explicitly worked around.
+   *
+   * this flag was set by the ClutterFixedLayout, but since that layout
+   * manager is now the default for ClutterActor, we set the flag explicitly
+   * here, to avoid breaking perfectly working actors overriding the
+   * allocate() virtual function.
+   *
+   * also, we keep this flag here so that it can die once we get rid of
+   * ClutterGroup.
+   */
+  clutter_actor_set_flags (actor, CLUTTER_ACTOR_NO_LAYOUT);
 
   self->priv->layout = clutter_fixed_layout_new ();
   g_object_ref_sink (self->priv->layout);
 
-  clutter_actor_set_layout_manager (CLUTTER_ACTOR (self),
-                                    self->priv->layout);
+  clutter_actor_set_layout_manager (actor, self->priv->layout);
 }
 
 /**
