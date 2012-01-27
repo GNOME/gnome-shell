@@ -69,6 +69,9 @@ clutter_backend_osx_post_parse (ClutterBackend  *backend,
   /* set the default font name */
   g_object_set (settings, "font-name", DEFAULT_FONT_NAME, NULL);
 
+  /* finish launching the application */
+  [NSApp finishLaunching];
+
   return TRUE;
 }
 
