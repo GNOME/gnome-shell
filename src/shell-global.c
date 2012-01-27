@@ -2157,6 +2157,30 @@ shell_global_screenshot_area (ShellGlobal  *global,
   clutter_actor_queue_redraw (stage);
 }
 
+static void
+screenshot_get_texture_data (ClutterActor *window_actor,
+                             cairo_rectangle_int_t *clip,
+                             guint8 *data)
+{
+  ClutterTexture *window_tex;
+  CoglHandle texture;
+
+  window_tex = CLUTTER_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor)));
+  texture = clutter_texture_get_cogl_texture (window_tex);
+
+  g_return_if_fail (texture != COGL_INVALID_HANDLE);
+
+  if (clip != NULL)
+    texture = cogl_texture_new_from_sub_texture (texture,
+                                                 clip->x,
+                                                 clip->y,
+                                                 clip->width,
+                                                 clip->height);
+
+  cogl_flush();
+  cogl_texture_get_data (texture, CLUTTER_CAIRO_FORMAT_ARGB32, 0, data);
+}
+
 /**
  * shell_global_screenshot_window:
  * @global: the #ShellGlobal
@@ -2176,7 +2200,6 @@ shell_global_screenshot_window (ShellGlobal  *global,
                                 const char *filename,
                                 ShellGlobalScreenshotCallback callback)
 {
-  CoglHandle texture;
   guchar *data;
   GSimpleAsyncResult *result;
 
@@ -2186,53 +2209,45 @@ shell_global_screenshot_window (ShellGlobal  *global,
   MetaDisplay *display = meta_screen_get_display (screen);
   MetaWindow *window = meta_display_get_focus_window (display);
   ClutterActor *window_actor;
-  gint width, height;
+  gfloat actor_x, actor_y;
+  MetaRectangle rect;
+  cairo_rectangle_int_t clip;
 
   screenshot_data->global = global;
   screenshot_data->filename = g_strdup (filename);
   screenshot_data->callback = callback;
 
   window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
-  texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor))));
+  clutter_actor_get_position (window_actor, &actor_x, &actor_y);
 
-  screenshot_data->screenshot_area.x = (gint) clutter_actor_get_x (window_actor);
-  screenshot_data->screenshot_area.y = (gint) clutter_actor_get_y (window_actor);
-
-  if (!include_frame)
+  if (include_frame || !meta_window_get_frame (window))
     {
-      MetaRectangle *window_rect = meta_window_get_rect (window);
-      texture = cogl_texture_new_from_sub_texture (texture,
-                                                   window_rect->x,
-                                                   window_rect->y,
-                                                   window_rect->width,
-                                                   window_rect->height);
+      meta_window_get_outer_rect (window, &rect);
 
-      screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                                          window_rect->width,
-                                                          window_rect->height);
+      screenshot_data->screenshot_area.x = rect.x;
+      screenshot_data->screenshot_area.y = rect.y;
 
-      screenshot_data->screenshot_area.x += window_rect->x;
-      screenshot_data->screenshot_area.y += window_rect->y;
-      screenshot_data->screenshot_area.width = window_rect->width;
-      screenshot_data->screenshot_area.height = window_rect->height;
+      clip.x = rect.x - (gint) actor_x;
+      clip.y = rect.y - (gint) actor_y;
     }
   else
     {
-      width = (gint) clutter_actor_get_width (window_actor);
-      height = (gint) clutter_actor_get_height (window_actor);
+      rect = *meta_window_get_rect (window);
 
-      screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                                           width, height);
+      screenshot_data->screenshot_area.x = (gint) actor_x + rect.x;
+      screenshot_data->screenshot_area.y = (gint) actor_y + rect.y;
 
-      screenshot_data->screenshot_area.width = width;
-      screenshot_data->screenshot_area.height = height;
+      clip.x = rect.x;
+      clip.y = rect.y;
     }
 
+  clip.width = screenshot_data->screenshot_area.width = rect.width;
+  clip.height = screenshot_data->screenshot_area.height = rect.height;
+
+  screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                                       clip.width, clip.height);
   data = cairo_image_surface_get_data (screenshot_data->image);
-
-  cogl_flush();
-
-  cogl_texture_get_data (texture, CLUTTER_CAIRO_FORMAT_ARGB32, 0, data);
+  screenshot_get_texture_data (window_actor, &clip, data);
 
   cairo_surface_mark_dirty (screenshot_data->image);
 
