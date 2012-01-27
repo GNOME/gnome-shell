@@ -367,7 +367,8 @@ on_button_press (ClutterActor      *actor,
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (action)))
     return CLUTTER_EVENT_PROPAGATE;
 
-  if (clutter_event_get_button (event) != 1)
+  /* dragging is only performed using the primary button */
+  if (clutter_event_get_button (event) != CLUTTER_BUTTON_PRIMARY)
     return CLUTTER_EVENT_PROPAGATE;
 
   if (priv->stage == NULL)
