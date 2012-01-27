@@ -7765,7 +7765,51 @@ clutter_actor_allocate (ClutterActor           *self,
  *
  * If the #ClutterActor is using a #ClutterLayoutManager delegate object
  * to handle the allocation of its children, this function will call
- * the clutter_layout_manager_allocate() function.
+ * the clutter_layout_manager_allocate() function only if the
+ * %CLUTTER_DELEGATE_LAYOUT flag is set on @flags, otherwise it is
+ * expected that the subclass will call clutter_layout_manager_allocate()
+ * by itself. For instance, the following code:
+ *
+ * |[
+ * static void
+ * my_actor_allocate (ClutterActor *actor,
+ *                    const ClutterActorBox *allocation,
+ *                    ClutterAllocationFlags flags)
+ * {
+ *   ClutterActorBox new_alloc;
+ *   ClutterAllocationFlags new_flags;
+ *
+ *   adjust_allocation (allocation, &amp;new_alloc);
+ *
+ *   new_flags = flags | CLUTTER_DELEGATE_LAYOUT;
+ *
+ *   /&ast; this will use the layout manager set on the actor &ast;/
+ *   clutter_actor_set_allocation (actor, &amp;new_alloc, new_flags);
+ * }
+ * ]|
+ *
+ * is equivalent to this:
+ *
+ * |[
+ * static void
+ * my_actor_allocate (ClutterActor *actor,
+ *                    const ClutterActorBox *allocation,
+ *                    ClutterAllocationFlags flags)
+ * {
+ *   ClutterLayoutManager *layout;
+ *   ClutterActorBox new_alloc;
+ *
+ *   adjust_allocation (allocation, &amp;new_alloc);
+ *
+ *   clutter_actor_set_allocation (actor, &amp;new_alloc, flags);
+ *
+ *   layout = clutter_actor_get_layout_manager (actor);
+ *   clutter_layout_manager_allocate (layout,
+ *                                    CLUTTER_CONTAINER (actor),
+ *                                    &amp;new_alloc,
+ *                                    flags);
+ * }
+ * ]|
  *
  * Since: 1.10
  */
