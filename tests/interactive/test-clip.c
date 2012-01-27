@@ -232,8 +232,8 @@ on_button_press (ClutterActor *stage, ClutterButtonEvent *event,
   data->current_clip.y1 = data->current_clip.y2 = event->y;
 
   data->current_clip.type
-    = event->button == 1 ? CLIP_RECTANGLE
-    : event->button == 2 ? CLIP_SHAPES
+    = event->button == CLUTTER_BUTTON_PRIMARY ? CLIP_RECTANGLE
+    : event->button == CLUTTER_BUTTON_MIDDLE ? CLIP_SHAPES
     : CLIP_ROTATED_RECTANGLE;
 
   clutter_actor_queue_redraw (stage);

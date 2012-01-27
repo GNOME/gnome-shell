@@ -82,7 +82,7 @@ on_button_press (ClutterActor       *actor,
                  ClutterButtonEvent *event,
                  ClutterActor       *rectangle)
 {
-  if (event->button == 3)
+  if (event->button == CLUTTER_BUTTON_SECONDARY)
     {
       gchar *text;
 
@@ -100,7 +100,7 @@ on_button_press (ClutterActor       *actor,
       clutter_text_set_text (CLUTTER_TEXT (easing_mode_label), text);
       g_free (text);
     }
-  else if (event->button == 1)
+  else if (event->button == CLUTTER_BUTTON_PRIMARY)
     {
       ClutterAnimation *animation;
       ClutterAnimationMode cur_mode;

@@ -99,7 +99,7 @@ button_release_event (ClutterActor     *actor,
 
   button = clutter_event_get_button (event);
 
-  if (button == 1)
+  if (button == CLUTTER_BUTTON_PRIMARY)
     {
       clutter_box_layout_get_fill (layout, actor, &xfill, &yfill);
       clutter_box_layout_set_fill (layout, actor,
