@@ -232,6 +232,22 @@ clutter_box_get_property (GObject    *gobject,
 }
 
 static void
+clutter_box_real_destroy (ClutterActor *actor)
+{
+  ClutterActor *iter;
+
+  iter = clutter_actor_get_first_child (actor);
+  while (iter != NULL)
+    {
+      ClutterActor *next = clutter_actor_get_next_sibling (iter);
+
+      clutter_actor_destroy (iter);
+
+      iter = next;
+    }
+}
+
+static void
 clutter_box_class_init (ClutterBoxClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -239,6 +255,7 @@ clutter_box_class_init (ClutterBoxClass *klass)
 
   g_type_class_add_private (klass, sizeof (ClutterBoxPrivate));
 
+  actor_class->destroy = clutter_box_real_destroy;
   actor_class->get_paint_volume = clutter_box_real_get_paint_volume;
   actor_class->pick = clutter_box_real_pick;
 
