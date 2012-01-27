@@ -333,7 +333,7 @@ test_offscreen_redirect (TestConformSimpleFixture *fixture,
 
       /* Start the test after a short delay to allow the stage to
          render its initial frames without affecting the results */
-      clutter_threads_add_timeout_full (G_PRIORITY_LOW, 250, timeout_cb, &data, NULL);
+      g_timeout_add_full (G_PRIORITY_LOW, 250, timeout_cb, &data, NULL);
 
       clutter_main ();
 
