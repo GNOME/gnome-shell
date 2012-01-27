@@ -151,6 +151,17 @@ COGL_EXT_BEGIN (gles2_only_api,
                 "\0",
                 "\0")
 COGL_EXT_FUNCTION (void, glReleaseShaderCompiler, (void))
+COGL_EXT_FUNCTION (void, glGetShaderPrecisionFormat,
+                   (GLenum shadertype,
+                    GLenum precisiontype,
+                    GLint* range,
+                    GLint* precision))
+COGL_EXT_FUNCTION (void, glShaderBinary,
+                   (GLsizei n,
+                    const GLuint* shaders,
+                    GLenum binaryformat,
+                    const GLvoid* binary,
+                    GLsizei length))
 COGL_EXT_END ()
 
 /* GL and GLES 2.0 apis */

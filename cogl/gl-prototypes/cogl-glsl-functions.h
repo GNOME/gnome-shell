@@ -258,11 +258,6 @@ COGL_EXT_FUNCTION (void, glGetAttachedShaders,
                     GLsizei maxcount,
                     GLsizei* count,
                     GLuint* shaders))
-COGL_EXT_FUNCTION (void, glGetShaderPrecisionFormat,
-                   (GLenum shadertype,
-                    GLenum precisiontype,
-                    GLint* range,
-                    GLint* precision))
 COGL_EXT_FUNCTION (void, glGetShaderSource,
                    (GLuint shader,
                     GLsizei bufsize,
@@ -274,12 +269,6 @@ COGL_EXT_FUNCTION (GLboolean, glIsShader,
 COGL_EXT_FUNCTION (GLboolean, glIsProgram,
                    (GLuint program))
 
-COGL_EXT_FUNCTION (void, glShaderBinary,
-                   (GLsizei n,
-                    const GLuint* shaders,
-                    GLenum binaryformat,
-                    const GLvoid* binary,
-                    GLsizei length))
 COGL_EXT_FUNCTION (void, glValidateProgram, (GLuint program))
 
 COGL_EXT_END ()
