@@ -108,6 +108,7 @@ shell_public_headers_h =		\
 	shell-mount-operation.h		\
 	shell-network-agent.h		\
 	shell-perf-log.h		\
+	shell-screen-grabber.h		\
 	shell-slicer.h			\
 	shell-stack.h			\
 	shell-tp-client.h		\
@@ -155,6 +156,7 @@ libgnome_shell_la_SOURCES =		\
 	shell-perf-log.c		\
 	shell-polkit-authentication-agent.h	\
 	shell-polkit-authentication-agent.c	\
+	shell-screen-grabber.c		\
 	shell-slicer.c			\
 	shell-stack.c			\
 	shell-tp-client.c			\
@@ -203,6 +205,8 @@ test_recorder_LDADD = $(TEST_SHELL_RECORDER_LIBS)
 
 test_recorder_SOURCES =     \
 	$(shell_recorder_sources) $(shell_recorder_private_sources) \
+	shell-screen-grabber.c	\
+	shell-screen-grabber.h	\
 	test-recorder.c
 endif BUILD_RECORDER
 

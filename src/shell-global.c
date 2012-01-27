@@ -35,6 +35,7 @@
 #include "shell-global-private.h"
 #include "shell-jsapi-compat-private.h"
 #include "shell-perf-log.h"
+#include "shell-screen-grabber.h"
 #include "shell-window-tracker.h"
 #include "shell-wm.h"
 #include "st.h"
@@ -1990,24 +1991,37 @@ write_screenshot_thread (GSimpleAsyncResult *result,
 }
 
 static void
+do_grab_screenshot (_screenshot_data *screenshot_data,
+                    int               x,
+                    int               y,
+                    int               width,
+                    int               height)
+{
+  ShellScreenGrabber *grabber;
+  static const cairo_user_data_key_t key;
+  guchar *data;
+
+  grabber = shell_screen_grabber_new ();
+  data = shell_screen_grabber_grab (grabber, x, y, width, height);
+  g_object_unref (grabber);
+
+  screenshot_data->image = cairo_image_surface_create_for_data (data, CAIRO_FORMAT_RGB24,
+                                                               width, height, width * 4);
+  cairo_surface_set_user_data (screenshot_data->image, &key,
+                               data, (cairo_destroy_func_t)g_free);
+}
+
+static void
 grab_screenshot (ClutterActor *stage,
                  _screenshot_data *screenshot_data)
 {
   MetaScreen *screen = shell_global_get_screen (screenshot_data->global);
-  guchar *data;
   int width, height;
-
   GSimpleAsyncResult *result;
 
   meta_plugin_query_screen_size (screenshot_data->global->plugin, &width, &height);
-  screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
-  data = cairo_image_surface_get_data (screenshot_data->image);
 
-  cogl_flush();
-
-  cogl_read_pixels (0, 0, width, height, COGL_READ_PIXELS_COLOR_BUFFER, CLUTTER_CAIRO_FORMAT_ARGB32, data);
-
-  cairo_surface_mark_dirty (screenshot_data->image);
+  do_grab_screenshot (screenshot_data, 0, 0, width, height);
 
   if (meta_screen_get_n_monitors (screen) > 1)
     {
@@ -2064,20 +2078,12 @@ grab_area_screenshot (ClutterActor *stage,
                       _screenshot_data *screenshot_data)
 {
   GSimpleAsyncResult *result;
-  guchar *data;
 
-  screenshot_data->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 
-                                                       screenshot_data->screenshot_area.width, 
-                                                       screenshot_data->screenshot_area.height);
-  data = cairo_image_surface_get_data (screenshot_data->image);
-
-  cogl_flush();
-
-  cogl_read_pixels (screenshot_data->screenshot_area.x, screenshot_data->screenshot_area.y,
-                    screenshot_data->screenshot_area.width, screenshot_data->screenshot_area.height,
-                    COGL_READ_PIXELS_COLOR_BUFFER, CLUTTER_CAIRO_FORMAT_ARGB32, data);
-
-  cairo_surface_mark_dirty (screenshot_data->image);
+  do_grab_screenshot (screenshot_data,
+                      screenshot_data->screenshot_area.x,
+                      screenshot_data->screenshot_area.y,
+                      screenshot_data->screenshot_area.width,
+                      screenshot_data->screenshot_area.height);
 
   g_signal_handlers_disconnect_by_func (stage, (void *)grab_area_screenshot, (gpointer)screenshot_data);
   result = g_simple_async_result_new (NULL, on_screenshot_written, (gpointer)screenshot_data, grab_area_screenshot);
