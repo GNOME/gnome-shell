@@ -88,4 +88,17 @@ test_utils_check_region (int x, int y,
                          int width, int height,
                          guint32 expected_rgba);
 
+/*
+ * test_utils_compare_pixel:
+ * @screen_pixel: A pixel stored in memory
+ * @expected_pixel: The expected RGBA value
+ *
+ * Compares a pixel from a buffer to an expected value. The pixels are
+ * converted to a string and compared with g_assert_cmpstr so that if
+ * the comparison fails then the assert will display a meaningful
+ * message.
+ */
+void
+test_utils_compare_pixel (const guint8 *screen_pixel, guint32 expected_pixel);
+
 #endif /* _TEST_UTILS_H_ */

@@ -85,8 +85,8 @@ compare_component (int a, int b)
   return ABS (a - b) <= 1;
 }
 
-static void
-compare_pixel (const guint8 *screen_pixel, guint32 expected_pixel)
+void
+test_utils_compare_pixel (const guint8 *screen_pixel, guint32 expected_pixel)
 {
   /* Compare each component with a small fuzz factor */
   if (!compare_component (screen_pixel[0], expected_pixel >> 24) ||
@@ -115,7 +115,7 @@ test_utils_check_pixel (int x, int y, guint32 expected_pixel)
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
 
-  compare_pixel (pixel, expected_pixel);
+  test_utils_compare_pixel (pixel, expected_pixel);
 }
 
 void
@@ -144,7 +144,7 @@ test_utils_check_region (int x, int y,
   for (y = 0; y < height; y++)
     for (x = 0; x < width; x++)
       {
-        compare_pixel (p, expected_rgba);
+        test_utils_compare_pixel (p, expected_rgba);
         p += 4;
       }
 
