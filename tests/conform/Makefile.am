@@ -17,7 +17,6 @@ unported_test_sources = \
 	test-multitexture.c \
 	test-npot-texture.c \
 	test-object.c \
-	test-offscreen.c \
 	test-pixel-buffer.c \
 	test-premult.c \
 	test-readpixels.c \
@@ -47,6 +46,7 @@ test_sources = \
 	test-wrap-modes.c \
 	test-sub-texture.c \
 	test-custom-attributes.c \
+	test-offscreen.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)

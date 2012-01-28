@@ -1,61 +1,66 @@
-
-#include <clutter/clutter.h>
 #include <cogl/cogl.h>
 
-#include "test-conform-common.h"
+#include "test-utils.h"
 
 #define RED 0
 #define GREEN 1
 #define BLUE 2
 
-#define FRAMEBUFFER_WIDTH  640
-#define FRAMEBUFFER_HEIGHT 480
-
-static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
-
+typedef struct _TestState
+{
+  CoglContext *context;
+  int fb_width;
+  int fb_height;
+} TestState;
 
 static void
-on_paint (ClutterActor *actor, void *state)
+check_quadrant (TestState *state,
+                int qx,
+                int qy,
+                guint32 expected_rgba)
 {
-  float saved_viewport[4];
-  CoglMatrix saved_projection;
-  CoglMatrix projection;
-  CoglMatrix modelview;
-  guchar *data;
-  CoglHandle tex;
+  /* The quadrants are all stuffed into the top right corner of the
+     framebuffer */
+  int x = state->fb_width * qx / 4 + state->fb_width / 2;
+  int y = state->fb_height * qy / 4;
+  int width = state->fb_width / 4;
+  int height = state->fb_height / 4;
+
+  /* Subtract a two-pixel gap around the edges to allow some rounding
+     differences */
+  x += 2;
+  y += 2;
+  width -= 4;
+  height -= 4;
+
+  test_utils_check_region (x, y, width, height, expected_rgba);
+}
+
+static void
+paint (TestState *state)
+{
+  CoglTexture2D *tex_2d;
+  CoglTexture *tex;
   CoglHandle offscreen;
-  guint8 pixel[4];
 
-  /* Save the Clutter viewport/matrices and load identity matrices */
+  tex_2d = cogl_texture_2d_new_with_size (state->context,
+                                          state->fb_width,
+                                          state->fb_height,
+                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                          NULL);
+  tex = COGL_TEXTURE (tex_2d);
 
-  cogl_get_viewport (saved_viewport);
-  cogl_get_projection_matrix (&saved_projection);
-  cogl_push_matrix ();
-
-  cogl_matrix_init_identity (&projection);
-  cogl_matrix_init_identity (&modelview);
-
-  cogl_set_projection_matrix (&projection);
-  cogl_set_modelview_matrix (&modelview);
-
-  data = g_malloc (FRAMEBUFFER_WIDTH * 4 * FRAMEBUFFER_HEIGHT);
-  tex = cogl_texture_new_from_data (FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT,
-                                    COGL_TEXTURE_NO_SLICING,
-                                    COGL_PIXEL_FORMAT_RGBA_8888, /* data fmt */
-                                    COGL_PIXEL_FORMAT_ANY, /* internal fmt */
-                                    FRAMEBUFFER_WIDTH * 4, /* rowstride */
-                                    data);
-  g_free (data);
   offscreen = cogl_offscreen_new_to_texture (tex);
 
-  /* Set a scale and translate transform on the window framebuffer before
-   * switching to the offscreen framebuffer so we can verify it gets restored
-   * when we switch back
+  /* Set a scale and translate transform on the window framebuffer
+   * before switching to the offscreen framebuffer so we can verify it
+   * gets restored when we switch back
    *
-   * The test is going to draw a grid of 4 colors to a texture which we
-   * subsequently draw to the window with a fullscreen rectangle. This
-   * transform will flip the texture left to right, scale it to a quater of the
-   * window size and slide it to the top right of the window.
+   * The test is going to draw a grid of 4 colors to a texture which
+   * we subsequently draw to the window with a fullscreen rectangle.
+   * This transform will flip the texture left to right, scale it to a
+   * quarter of the window size and slide it to the top right of the
+   * window.
    */
   cogl_translate (0.5, 0.5, 0);
   cogl_scale (-0.5, 0.5, 1);
@@ -88,80 +93,34 @@ on_paint (ClutterActor *actor, void *state)
   cogl_set_source_texture (tex);
   cogl_rectangle (-1, 1, 1, -1);
 
-  cogl_handle_unref (tex);
+  cogl_object_unref (tex_2d);
 
   /* NB: The texture is drawn flipped horizontally and scaled to fit in the
    * top right corner of the window. */
 
   /* red, top right */
-  cogl_read_pixels (FRAMEBUFFER_WIDTH - 1, 0, 1, 1,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    pixel);
-  g_assert (pixel[RED] == 0xff && pixel[GREEN] == 0x00 && pixel[BLUE] == 0x00);
-
+  check_quadrant (state, 1, 0, 0xff0000ff);
   /* green, top left */
-  cogl_read_pixels ((FRAMEBUFFER_WIDTH/2), 0, 1, 1,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    pixel);
-  g_assert (pixel[RED] == 0x00 && pixel[GREEN] == 0xff && pixel[BLUE] == 0x00);
-
+  check_quadrant (state, 0, 0, 0x00ff00ff);
   /* blue, bottom right */
-  cogl_read_pixels (FRAMEBUFFER_WIDTH - 1, (FRAMEBUFFER_HEIGHT/2) - 1, 1, 1,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    pixel);
-  g_assert (pixel[RED] == 0x00 && pixel[GREEN] == 0x00 && pixel[BLUE] == 0xff);
-
+  check_quadrant (state, 1, 1, 0x0000ffff);
   /* white, bottom left */
-  cogl_read_pixels ((FRAMEBUFFER_WIDTH/2), (FRAMEBUFFER_HEIGHT/2) - 1, 1, 1,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    pixel);
-  g_assert (pixel[RED] == 0xff && pixel[GREEN] == 0xff && pixel[BLUE] == 0xff);
-
-  /* Comment this out if you want visual feedback of what this test
-   * paints.
-   */
-  clutter_main_quit ();
-}
-
-static gboolean
-queue_redraw (gpointer stage)
-{
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-
-  return TRUE;
+  check_quadrant (state, 0, 1, 0xffffffff);
 }
 
 void
 test_cogl_offscreen (TestUtilsGTestFixture *fixture,
                      void *data)
 {
-  unsigned int idle_source;
-  ClutterActor *stage;
+  TestUtilsSharedState *shared_state = data;
+  TestState state;
 
-  stage = clutter_stage_get_default ();
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  state.context = shared_state->ctx;
+  state.fb_width = cogl_framebuffer_get_width (shared_state->fb);
+  state.fb_height = cogl_framebuffer_get_height (shared_state->fb);
 
-  /* We force continuous redrawing of the stage, since we need to skip
-   * the first few frames, and we wont be doing anything else that
-   * will trigger redrawing. */
-  idle_source = g_idle_add (queue_redraw, stage);
-  g_signal_connect_after (stage, "paint", G_CALLBACK (on_paint), NULL);
-
-  clutter_actor_show (stage);
-  clutter_main ();
-
-  g_source_remove (idle_source);
-
-  /* Remove all of the actors from the stage */
-  clutter_container_foreach (CLUTTER_CONTAINER (stage),
-                             (ClutterCallback) clutter_actor_destroy,
-                             NULL);
+  paint (&state);
 
   if (g_test_verbose ())
     g_print ("OK\n");
 }
-

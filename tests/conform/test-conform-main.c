@@ -167,10 +167,11 @@ main (int argc, char **argv)
 
   ADD_TEST ("/cogl/internal/bitmask", test_cogl_bitmask);
 
+  ADD_TEST ("/cogl", test_cogl_offscreen);
+
   /* left to the end because they aren't currently very orthogonal and tend to
    * break subsequent tests! */
   UNPORTED_TEST ("/cogl", test_cogl_viewport);
-  UNPORTED_TEST ("/cogl", test_cogl_offscreen);
 
   return g_test_run ();
 }
