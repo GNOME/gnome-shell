@@ -37,7 +37,7 @@ check_quadrant (TestState *state,
 }
 
 static void
-paint (TestState *state)
+test_paint (TestState *state)
 {
   CoglTexture2D *tex_2d;
   CoglTexture *tex;
@@ -62,6 +62,7 @@ paint (TestState *state)
    * quarter of the window size and slide it to the top right of the
    * window.
    */
+  cogl_push_matrix ();
   cogl_translate (0.5, 0.5, 0);
   cogl_scale (-0.5, 0.5, 1);
 
@@ -95,6 +96,8 @@ paint (TestState *state)
 
   cogl_object_unref (tex_2d);
 
+  cogl_pop_matrix ();
+
   /* NB: The texture is drawn flipped horizontally and scaled to fit in the
    * top right corner of the window. */
 
@@ -108,6 +111,75 @@ paint (TestState *state)
   check_quadrant (state, 0, 1, 0xffffffff);
 }
 
+static void
+test_flush (TestState *state)
+{
+  CoglTexture2D *tex_2d;
+  CoglTexture *tex;
+  CoglHandle offscreen;
+  CoglColor clear_color;
+  int i;
+
+  for (i = 0; i < 3; i++)
+    {
+      /* This tests that rendering to a framebuffer and then reading back
+         the contents of the texture will automatically flush the
+         journal */
+
+      tex_2d = cogl_texture_2d_new_with_size (state->context,
+                                              16, 16, /* width/height */
+                                              COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                              NULL);
+      tex = COGL_TEXTURE (tex_2d);
+
+      offscreen = cogl_offscreen_new_to_texture (tex);
+
+      cogl_push_framebuffer (offscreen);
+
+      cogl_color_init_from_4ub (&clear_color, 0, 0, 0, 255);
+      cogl_clear (&clear_color, COGL_BUFFER_BIT_COLOR);
+
+      cogl_set_source_color4ub (255, 0, 0, 255);
+      cogl_rectangle (-1, -1, 1, 1);
+
+      if (i == 0)
+        /* First time check using read pixels on the offscreen */
+        test_utils_check_region (1, 1, 15, 15, 0xff0000ff);
+      else if (i == 1)
+        {
+          guint8 data[16 * 4 * 16];
+          int x, y;
+
+          /* Second time try reading back the texture contents */
+          cogl_texture_get_data (tex,
+                                 COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                 16 * 4, /* rowstride */
+                                 data);
+
+          for (y = 1; y < 15; y++)
+            for (x = 1; x < 15; x++)
+              test_utils_compare_pixel (data + x * 4 + y * 16 * 4,
+                                        0xff0000ff);
+        }
+
+      cogl_pop_framebuffer ();
+
+      if (i == 2)
+        {
+          /* Third time try drawing the texture to the screen */
+          cogl_set_source_texture (tex);
+          cogl_rectangle (-1, -1, 1, 1);
+          test_utils_check_region (2, 2, /* x/y */
+                                   state->fb_width - 4,
+                                   state->fb_height - 4,
+                                   0xff0000ff);
+        }
+
+      cogl_object_unref (tex_2d);
+      cogl_handle_unref (offscreen);
+    }
+}
+
 void
 test_cogl_offscreen (TestUtilsGTestFixture *fixture,
                      void *data)
@@ -119,7 +191,8 @@ test_cogl_offscreen (TestUtilsGTestFixture *fixture,
   state.fb_width = cogl_framebuffer_get_width (shared_state->fb);
   state.fb_height = cogl_framebuffer_get_height (shared_state->fb);
 
-  paint (&state);
+  test_paint (&state);
+  test_flush (&state);
 
   if (g_test_verbose ())
     g_print ("OK\n");
