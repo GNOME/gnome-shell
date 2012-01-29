@@ -432,11 +432,14 @@ again_from_start:
       /* Go through each TargetState */
       if (target_state)
         {
-          GList *k;
-again_for_target_state:
-          for (k = target_state->keys; k != NULL; k = k->next)
+          GList *k = target_state->keys;
+
+	  /* Note the safe while() loop, because we modify the list inline */
+          while (k != NULL)
             {
               ClutterStateKey *key = k->data;
+
+	      k = k->next;
 
               /* Check if each key matches query */
               if (   (object == NULL        || (object == key->object))
@@ -456,13 +459,12 @@ again_for_target_state:
                         clutter_state_set_state (this, NULL);
 
                       /* remove any keys that exist that uses this state as a source */
-                      clutter_state_remove_key (this, s->data, NULL, NULL, NULL);
+		      clutter_state_remove_key_internal (this, s->data, NULL, NULL, NULL, is_inert);
 
                       g_hash_table_remove (this->priv->states, s->data);
                       goto again_from_start; /* we have just freed State *target_state, so
                                                 need to restart removal */
                     }
-                  goto again_for_target_state;
                 }
             }
         }
