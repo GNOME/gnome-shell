@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 3.1.90\n"
+"Project-Id-Version: metacity 3.3.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-06 19:49+0800\n"
+"POT-Creation-Date: 2012-01-29 23:38+0800\n"
 "PO-Revision-Date: 2011-09-05 20:16+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
@@ -17,326 +17,31 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+msgid "View split on left"
+msgstr "檢視分割於左側"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "View split on right"
+msgstr "檢視分割於右側"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Windows"
+msgstr "視窗"
 
 # FIXME: I'm still unclear about the meaning of XGetSelectionOwner -- Abel
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:486
+#: ../src/compositor/compositor.c:492
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "在畫面「%2$s」中的第 %1$i 個螢幕中已啟動另一個組合視窗管理員。"
 
-#: ../src/core/all-keybindings.h:88
-msgid "Switch to workspace 1"
-msgstr "切換至第 1 個工作區"
-
-#: ../src/core/all-keybindings.h:90
-msgid "Switch to workspace 2"
-msgstr "切換至第 2 個工作區"
-
-#: ../src/core/all-keybindings.h:92
-msgid "Switch to workspace 3"
-msgstr "切換至第 3 個工作區"
-
-#: ../src/core/all-keybindings.h:94
-msgid "Switch to workspace 4"
-msgstr "切換至第 4 個工作區"
-
-#: ../src/core/all-keybindings.h:96
-msgid "Switch to workspace 5"
-msgstr "切換至第 5 個工作區"
-
-#: ../src/core/all-keybindings.h:98
-msgid "Switch to workspace 6"
-msgstr "切換至第 6 個工作區"
-
-#: ../src/core/all-keybindings.h:100
-msgid "Switch to workspace 7"
-msgstr "切換至第 7 個工作區"
-
-#: ../src/core/all-keybindings.h:102
-msgid "Switch to workspace 8"
-msgstr "切換至第 8 個工作區"
-
-#: ../src/core/all-keybindings.h:104
-msgid "Switch to workspace 9"
-msgstr "切換至第 9 個工作區"
-
-#: ../src/core/all-keybindings.h:106
-msgid "Switch to workspace 10"
-msgstr "切換至第 10 個工作區"
-
-#: ../src/core/all-keybindings.h:108
-msgid "Switch to workspace 11"
-msgstr "切換至第 11 個工作區"
-
-#: ../src/core/all-keybindings.h:110
-msgid "Switch to workspace 12"
-msgstr "切換至第 12 個工作區"
-
-#: ../src/core/all-keybindings.h:122
-msgid "Switch to workspace on the left of the current workspace"
-msgstr "切換至目前工作區的左方工作區"
-
-#: ../src/core/all-keybindings.h:126
-msgid "Switch to workspace on the right of the current workspace"
-msgstr "切換至目前工作區的右方工作區"
-
-#: ../src/core/all-keybindings.h:130
-msgid "Switch to workspace above the current workspace"
-msgstr "切換至目前工作區的上方工作區"
-
-#: ../src/core/all-keybindings.h:134
-msgid "Switch to workspace below the current workspace"
-msgstr "切換至目前工作區的下方工作區"
-
-#: ../src/core/all-keybindings.h:150
-msgid "Move between windows of an application, using a popup window"
-msgstr "在應用程式的視窗之間切換，使用彈出式視窗"
-
-#: ../src/core/all-keybindings.h:153
-msgid "Move backward between windows of an application, using a popup window"
-msgstr "在應用程式的視窗之間相反次序切換，使用彈出式視窗"
-
-#: ../src/core/all-keybindings.h:157
-msgid "Move between windows, using a popup window"
-msgstr "在視窗之間切換，使用彈出式視窗"
-
-#: ../src/core/all-keybindings.h:160
-msgid "Move backward between windows, using a popup window"
-msgstr "在視窗之間以相反次序切換，使用彈出式視窗"
-
-#: ../src/core/all-keybindings.h:163
-msgid "Move between panels and the desktop, using a popup window"
-msgstr "在面板及桌面之間切換，使用彈出式視窗"
-
-#: ../src/core/all-keybindings.h:166
-msgid "Move backward between panels and the desktop, using a popup window"
-msgstr "在面板及桌面之間以相反次序切換，使用彈出式視窗"
-
-#: ../src/core/all-keybindings.h:171
-msgid "Move between windows of an application immediately"
-msgstr "在視窗及程式之間切換（立即模式）"
-
-#: ../src/core/all-keybindings.h:174
-msgid "Move backward between windows of an application immediately"
-msgstr "立即在應用程式的視窗之間相反次序切換"
-
-#: ../src/core/all-keybindings.h:177
-msgid "Move between windows immediately"
-msgstr "將輸入焦點在各視窗之間切換（立即模式）"
-
-#: ../src/core/all-keybindings.h:180
-msgid "Move backward between windows immediately"
-msgstr "立即在視窗之間相反次序切換"
-
-#: ../src/core/all-keybindings.h:183
-msgid "Move between panels and the desktop immediately"
-msgstr "將輸入焦點在面板及桌面之間切換（立即模式）"
-
-#: ../src/core/all-keybindings.h:186
-msgid "Move backward between panels and the desktop immediately"
-msgstr "將輸入焦點在面板及桌面之間以相反次序切換（立即模式）"
-
-#: ../src/core/all-keybindings.h:203
-msgid "Hide all normal windows and set focus to the desktop"
-msgstr "隱藏所有一般視窗並將焦點設至桌面"
-
-#: ../src/core/all-keybindings.h:206
-msgid "Show the panel's main menu"
-msgstr "顯示面板的主選單"
-
-#: ../src/core/all-keybindings.h:209
-msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "顯示面板的「執行程式」對話盒"
-
-#: ../src/core/all-keybindings.h:211
-msgid "Start or stop recording the session"
-msgstr "開始或停止錄製作業階段"
-
-#: ../src/core/all-keybindings.h:252
-msgid "Take a screenshot"
-msgstr "擷取畫面快照"
-
-#: ../src/core/all-keybindings.h:254
-msgid "Take a screenshot of a window"
-msgstr "拍下視窗的畫面快照"
-
-#: ../src/core/all-keybindings.h:256
-msgid "Run a terminal"
-msgstr "執行終端機"
-
-#: ../src/core/all-keybindings.h:271
-msgid "Activate the window menu"
-msgstr "使用視窗選單"
-
-#: ../src/core/all-keybindings.h:274
-msgid "Toggle fullscreen mode"
-msgstr "切換全螢幕模式"
-
-#: ../src/core/all-keybindings.h:276
-msgid "Toggle maximization state"
-msgstr "切換最大化狀態"
-
-#: ../src/core/all-keybindings.h:278
-msgid "Toggle whether a window will always be visible over other windows"
-msgstr "切換某個視窗是否永遠可以遮蔽其他視窗"
-
-#: ../src/core/all-keybindings.h:280
-msgid "Maximize window"
-msgstr "視窗最大化"
-
-#: ../src/core/all-keybindings.h:282
-msgid "Restore window"
-msgstr "還原視窗"
-
-#: ../src/core/all-keybindings.h:284
-msgid "Toggle shaded state"
-msgstr "切換視窗捲起/放下狀態"
-
-#: ../src/core/all-keybindings.h:286
-msgid "Minimize window"
-msgstr "視窗最小化"
-
-#: ../src/core/all-keybindings.h:288
-msgid "Close window"
-msgstr "關閉視窗"
-
-#: ../src/core/all-keybindings.h:290
-msgid "Move window"
-msgstr "移動視窗"
-
-#: ../src/core/all-keybindings.h:292
-msgid "Resize window"
-msgstr "調整視窗大小"
-
-#: ../src/core/all-keybindings.h:295
-msgid "Toggle whether window is on all workspaces or just one"
-msgstr "切換視窗是否在所有工作區顯示或是只顯示於其中之一"
-
-#: ../src/core/all-keybindings.h:299
-msgid "Move window to workspace 1"
-msgstr "將視窗移至第 1 個工作區"
-
-#: ../src/core/all-keybindings.h:302
-msgid "Move window to workspace 2"
-msgstr "將視窗移至第 2 個工作區"
-
-#: ../src/core/all-keybindings.h:305
-msgid "Move window to workspace 3"
-msgstr "將視窗移至第 3 個工作區"
-
-#: ../src/core/all-keybindings.h:308
-msgid "Move window to workspace 4"
-msgstr "將視窗移至第 4 個工作區"
-
-#: ../src/core/all-keybindings.h:311
-msgid "Move window to workspace 5"
-msgstr "將視窗移至第 5 個工作區"
-
-#: ../src/core/all-keybindings.h:314
-msgid "Move window to workspace 6"
-msgstr "將視窗移至第 6 個工作區"
-
-#: ../src/core/all-keybindings.h:317
-msgid "Move window to workspace 7"
-msgstr "將視窗移至第 7 個工作區"
-
-#: ../src/core/all-keybindings.h:320
-msgid "Move window to workspace 8"
-msgstr "將視窗移至第 8 個工作區"
-
-#: ../src/core/all-keybindings.h:323
-msgid "Move window to workspace 9"
-msgstr "將視窗移至第 9 個工作區"
-
-#: ../src/core/all-keybindings.h:326
-msgid "Move window to workspace 10"
-msgstr "將視窗移至第 10 個工作區"
-
-#: ../src/core/all-keybindings.h:329
-msgid "Move window to workspace 11"
-msgstr "將視窗移至第 11 個工作區"
-
-#: ../src/core/all-keybindings.h:332
-msgid "Move window to workspace 12"
-msgstr "將視窗移至第 12 個工作區"
-
-#: ../src/core/all-keybindings.h:344
-msgid "Move window one workspace to the left"
-msgstr "將視窗移至左方的工作區"
-
-#: ../src/core/all-keybindings.h:347
-msgid "Move window one workspace to the right"
-msgstr "將視窗移至右方的工作區"
-
-#: ../src/core/all-keybindings.h:350
-msgid "Move window one workspace up"
-msgstr "將視窗移至上方的工作區"
-
-#: ../src/core/all-keybindings.h:353
-msgid "Move window one workspace down"
-msgstr "將視窗移至下方的工作區"
-
-#: ../src/core/all-keybindings.h:356
-msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "若視窗被其他視窗遮蔽就抬升它，否則將它降下"
-
-#: ../src/core/all-keybindings.h:358
-msgid "Raise window above other windows"
-msgstr "令某個視窗覆蓋其它視窗"
-
-#: ../src/core/all-keybindings.h:360
-msgid "Lower window below other windows"
-msgstr "遮蔽某個視窗"
-
-#: ../src/core/all-keybindings.h:364
-msgid "Maximize window vertically"
-msgstr "將視窗縱向最大化"
-
-#: ../src/core/all-keybindings.h:368
-msgid "Maximize window horizontally"
-msgstr "將視窗橫向最大化"
-
-#: ../src/core/all-keybindings.h:372
-msgid "Move window to north-west (top left) corner"
-msgstr "將視窗移至北-西(左上)角"
-
-#: ../src/core/all-keybindings.h:375
-msgid "Move window to north-east (top right) corner"
-msgstr "將視窗移至北-東(右上)角"
-
-#: ../src/core/all-keybindings.h:378
-msgid "Move window to south-west (bottom left) corner"
-msgstr "將視窗移至南-西(左下)角"
-
-#: ../src/core/all-keybindings.h:381
-msgid "Move window to south-east (bottom right) corner"
-msgstr "將視窗移至南-東(右下)角"
-
-#: ../src/core/all-keybindings.h:385
-msgid "Move window to north (top) side of screen"
-msgstr "將視窗移至畫面的北(上)方"
-
-#: ../src/core/all-keybindings.h:388
-msgid "Move window to south (bottom) side of screen"
-msgstr "將視窗移至畫面的南(下)方"
-
-#: ../src/core/all-keybindings.h:391
-msgid "Move window to east (right) side of screen"
-msgstr "將視窗移至畫面的東(右)方"
-
-#: ../src/core/all-keybindings.h:394
-msgid "Move window to west (left) side of screen"
-msgstr "將視窗移至畫面的西(左)方"
-
-#: ../src/core/all-keybindings.h:397
-msgid "Move window to center of screen"
-msgstr "將視窗移動至螢幕中央"
-
-#: ../src/core/bell.c:310
+#: ../src/core/bell.c:307
 msgid "Bell event"
 msgstr "響鈴事件"
 
@@ -368,46 +73,22 @@ msgstr "等待(_W)"
 msgid "_Force Quit"
 msgstr "強制結束(_F)"
 
-#: ../src/core/display.c:365
+#: ../src/core/display.c:361
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "遺失複合視窗管理所需的 %s 延伸功能"
 
-#: ../src/core/display.c:431
+#: ../src/core/display.c:427
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "無法開啟 X Window 畫面‘%s’\n"
 
-#: ../src/core/keybindings.c:759
+#: ../src/core/keybindings.c:852
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "其它程式已經使用了按鍵 %s 加上特殊按鍵 %x 作為按鍵組合\n"
-
-#. Displayed when a keybinding which is
-#. * supposed to launch a program fails.
-#.
-#: ../src/core/keybindings.c:2523
-#, c-format
-msgid ""
-"There was an error running <tt>%s</tt>:\n"
-"\n"
-"%s"
-msgstr ""
-"執行 <tt>%s</tt> 時發生錯誤：\n"
-"\n"
-"%s"
-
-#: ../src/core/keybindings.c:2613
-#, c-format
-msgid "No command %d has been defined.\n"
-msgstr "並未定義任何指令 %d。\n"
-
-#: ../src/core/keybindings.c:3625
-#, c-format
-msgid "No terminal command has been defined.\n"
-msgstr "沒有定義任何終端機指令。\n"
 
 #: ../src/core/main.c:206
 msgid "Disable connection to session manager"
@@ -444,7 +125,7 @@ msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "找不到任何佈景主題！請確定 %s 存在及其中存放了平常使用的佈景主題。\n"
 
-#: ../src/core/mutter.c:42
+#: ../src/core/mutter.c:40
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -458,109 +139,51 @@ msgstr ""
 "本程式是自由軟體；有關版權的詳情請參考源程式碼。\n"
 "本程式不負任何擔保責任；亦無對適售性或特定目的適用性所為的默示性擔保。\n"
 
-#: ../src/core/mutter.c:56
+#: ../src/core/mutter.c:54
 msgid "Print version"
 msgstr "顯示版本"
 
-#: ../src/core/mutter.c:62
+#: ../src/core/mutter.c:60
 msgid "Comma-separated list of compositor plugins"
 msgstr "以逗號分隔的複合視窗外掛程式清單"
 
-#.
-#. * We found it, but it was invalid.  Complain.
-#. *
-#. * FIXME: This replicates the original behaviour, but in the future
-#. * we might consider reverting invalid keys to their original values.
-#. * (We know the old value, so we can look up a suitable string in
-#. * the symtab.)
-#. *
-#. * (Empty comment follows so the translators don't see this.)
-#.
-#.
-#: ../src/core/prefs.c:550 ../src/core/prefs.c:711
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "GConf 設定鍵‘%s’的設定值無效\n"
-
-#: ../src/core/prefs.c:637 ../src/core/prefs.c:880
-#, c-format
-msgid "%d stored in GConf key %s is out of range %d to %d\n"
-msgstr "GConf 設定鍵 %2$s 的值 %1$d 超出範圍 (%3$d 至 %4$d)\n"
-
-#: ../src/core/prefs.c:681 ../src/core/prefs.c:758 ../src/core/prefs.c:806
-#: ../src/core/prefs.c:870 ../src/core/prefs.c:1331 ../src/core/prefs.c:1347
-#: ../src/core/prefs.c:1364 ../src/core/prefs.c:1380
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "GConf 設定鍵“%s”的設定值類型無效\n"
-
-#: ../src/core/prefs.c:1210
-#, c-format
-msgid "GConf key %s is already in use and can't be used to override %s\n"
-msgstr "GConf 設定鍵 %s 已在使用中，因此不能用來覆蓋 %s\n"
-
-#: ../src/core/prefs.c:1269
-#, c-format
-msgid "Can't override GConf key, %s not found\n"
-msgstr "不能覆蓋 GConf 設定鍵，找不到 %s\n"
-
-#: ../src/core/prefs.c:1454
+#: ../src/core/prefs.c:1069
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr "關閉了對不合規格的程式的支援。某些程式可能無法正常運作。\n"
 
-#: ../src/core/prefs.c:1531
+#: ../src/core/prefs.c:1144
 #, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "無法從 GConf 設定鍵 %2$s 分析字型描述文字“%1$s”\n"
+msgid "Could not parse font description \"%s\" from GSettings key %s\n"
+msgstr "無法從 GSettings 設定鍵 %2$s 分析字型描述文字「%1$s」\n"
 
-#: ../src/core/prefs.c:1593
+#: ../src/core/prefs.c:1210
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "組態資料庫中的“%s”設定值不是有效的滑鼠按鈕修改功能鍵\n"
 
-#: ../src/core/prefs.c:2028
-#, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "將工作區數目設定為 %d 個時出現錯誤：%s\n"
-
-# (Abel) take care of the same string in libwnck
-#: ../src/core/prefs.c:2212 ../src/core/prefs.c:2714
-#, c-format
-msgid "Workspace %d"
-msgstr "工作區 %d"
-
-#: ../src/core/prefs.c:2244 ../src/core/prefs.c:2422
+#: ../src/core/prefs.c:1722
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "組態資料庫中的“%s”不是按鍵組合“%s”的有效設定值\n"
 
-#: ../src/core/prefs.c:2795
+# (Abel) take care of the same string in libwnck
+#: ../src/core/prefs.c:1819
 #, c-format
-msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "將第 %d 個工作區的名稱設定為“%s”時出現錯誤：%s\n"
+msgid "Workspace %d"
+msgstr "工作區 %d"
 
-#: ../src/core/prefs.c:3009
-#, c-format
-msgid "Error setting live hidden windows status status: %s\n"
-msgstr "設定使用中隱藏視窗狀態時發生錯誤：%s\n"
-
-#: ../src/core/prefs.c:3044
-#, c-format
-msgid "Error setting no tab popup status: %s\n"
-msgstr "設定無分頁彈出視窗狀態時發生錯誤：%s\n"
-
-#: ../src/core/screen.c:663
+#: ../src/core/screen.c:730
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "畫面‘%2$s’中的第 %1$d 個螢幕無效\n"
 
-#: ../src/core/screen.c:679
+#: ../src/core/screen.c:746
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -570,18 +193,18 @@ msgstr ""
 "換目前的視窗管理員。\n"
 
 # FIXME: I'm still unclear about the meaning of XGetSelectionOwner -- Abel
-#: ../src/core/screen.c:706
+#: ../src/core/screen.c:773
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "無法在畫面“%2$s”中的第 %1$d 個螢幕進行視窗管理員選擇程序\n"
 
-#: ../src/core/screen.c:761
+#: ../src/core/screen.c:828
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "畫面“%2$s”中的第 %1$d 個螢幕已經有了視窗總管\n"
 
-#: ../src/core/screen.c:946
+#: ../src/core/screen.c:1013
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "無法釋放畫面“%2$s”中的第 %1$d 個螢幕\n"
@@ -675,14 +298,8 @@ msgstr "視窗總管警告："
 msgid "Window manager error: "
 msgstr "視窗總管錯誤："
 
-#. Translators: This is the title used on dialog boxes
-#: ../src/core/util.c:640 ../src/mutter.desktop.in.h:1
-#: ../src/mutter-wm.desktop.in.h:1
-msgid "Mutter"
-msgstr "Mutter"
-
 #. first time through
-#: ../src/core/window.c:7019
+#: ../src/core/window.c:7219
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -698,7 +315,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7682
+#: ../src/core/window.c:7882
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -753,43 +370,78 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "視窗 0x%2$lx 的屬性清單 %1$s 的第 %3$d 個項目含有無效的 UTF-8 資料\n"
 
-#: ../src/mutter.schemas.in.h:1
+#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:1
 msgid "Attach modal dialogs"
 msgstr "附加模態對話盒"
 
-#: ../src/mutter.schemas.in.h:2
+#: ../src/org.gnome.mutter.gschema.xml.in.h:2
+msgid "Cancel tab popup"
+msgstr "取消分頁彈出項"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
 msgstr ""
 "決定隱藏的視窗（如最小化的視窗和位於目前以外工作區的視窗）是否保持活動。"
 
-#: ../src/mutter.schemas.in.h:3
+#: ../src/org.gnome.mutter.gschema.xml.in.h:4
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr "決定當視窗輪換時是否使用彈出式和強調框架。"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:5
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
 msgstr "決定工作區切換是否使用於所有螢幕的視窗或只用於主要螢幕的視窗。"
 
-#: ../src/mutter.schemas.in.h:4
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid "Draggable border width"
 msgstr "可拖曳邊框寬度"
 
-#: ../src/mutter.schemas.in.h:5
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "在螢幕邊緣放下視窗時啟用邊緣拼貼"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+msgid ""
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
+msgstr ""
+"如果啟用，將視窗拖放到螢幕垂直邊緣時會讓它們垂直最大化並調整水平方向大小覆蓋"
+"可用區域的一半。拖放視窗到螢幕頂端邊緣則會讓它們完全最大化。"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Live Hidden Windows"
 msgstr "活動中的隱藏 Windows"
 
-#: ../src/mutter.schemas.in.h:6
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid "Modifier to use for extended window management operations"
 msgstr "用於延伸視窗管理操作程序的特殊按鍵"
 
-#: ../src/mutter.schemas.in.h:7
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+msgid "No tab popup"
+msgstr "沒有分頁彈出項"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid "Select window from tab popup"
+msgstr "從分頁彈出項選擇視窗"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
 "所有可拖曳邊框的總數。如果布景的可視邊框不夠，會加入隱形邊框來符合這個數值。"
 
-#: ../src/mutter.schemas.in.h:8
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -800,7 +452,7 @@ msgstr ""
 "要成為 PC 硬體上的「Windows key」。預期這個按鍵組含不是預設值就是設定為空字"
 "串。"
 
-#: ../src/mutter.schemas.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -809,7 +461,7 @@ msgstr ""
 "當設為「true」，將不會有獨立的標題列，模態對話盒會附加在上層視窗的標題列並與"
 "上層視窗一起移動。"
 
-#: ../src/mutter.schemas.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "Workspaces only on primary"
 msgstr "只有主要螢幕的工作區"
 
@@ -1114,12 +766,12 @@ msgstr "按鈕的長寬比 %g 不合理"
 msgid "Frame geometry does not specify size of buttons"
 msgstr "邊框的位置大小規格內未有指定按鈕的大小"
 
-#: ../src/ui/theme.c:1060
+#: ../src/ui/theme.c:1067
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "漸層至少應該有兩種顏色"
 
-#: ../src/ui/theme.c:1212
+#: ../src/ui/theme.c:1219
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
@@ -1128,14 +780,14 @@ msgstr ""
 "GTK 自訂顏色規格規定必須有顏色名稱並加上封閉括號，例如 gtk:custom(foo,bar)；"
 "無法分析「%s」"
 
-#: ../src/ui/theme.c:1228
+#: ../src/ui/theme.c:1235
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
 "_ are valid"
 msgstr "gtk:custom 的 color_name 參數 '%c' 中有無效字元，只能使用 A-Za-z0-9-_ "
 
-#: ../src/ui/theme.c:1242
+#: ../src/ui/theme.c:1249
 #, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
@@ -1143,7 +795,7 @@ msgid ""
 msgstr ""
 "Gtk:custom 的格式是「gtk:custom(color_name,fallback)」，但「%s」不符合格式"
 
-#: ../src/ui/theme.c:1287
+#: ../src/ui/theme.c:1294
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1152,7 +804,7 @@ msgstr ""
 "GTK 色彩規格規定必須在狀態外加上方括號，例如 gtk:fg[NORMAL]，這裡 NORMAL 表示"
 "狀態；無法分析“%s”"
 
-#: ../src/ui/theme.c:1301
+#: ../src/ui/theme.c:1308
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1161,148 +813,148 @@ msgstr ""
 "GTK 色彩規格規定必須在狀態後加上閉方括號，例如 gtk:fg[NORMAL]，這裡 NORMAL 表"
 "示狀態；無法分析“%s”"
 
-#: ../src/ui/theme.c:1312
+#: ../src/ui/theme.c:1319
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "無法將“%s”理解為色彩規格中的狀態"
 
-#: ../src/ui/theme.c:1325
+#: ../src/ui/theme.c:1332
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "無法將“%s”理解為色彩規格中的色彩部分"
 
-#: ../src/ui/theme.c:1355
+#: ../src/ui/theme.c:1361
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr "指定混色的格式是“blend/背景顏色/前景顏色/透明度”，“%s”不符合規格"
 
-#: ../src/ui/theme.c:1366
+#: ../src/ui/theme.c:1372
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "無法理解“%s”作為混色的透明度數值"
 
-#: ../src/ui/theme.c:1376
+#: ../src/ui/theme.c:1382
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "混色的透明度數值“%s”不是在 0.0 至 1.0 之間"
 
-#: ../src/ui/theme.c:1423
+#: ../src/ui/theme.c:1429
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "陰影的格式是“shade/基本顏色/比重”，但“%s”不符合格式"
 
-#: ../src/ui/theme.c:1434
+#: ../src/ui/theme.c:1440
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "在陰影顏色中無法將“%s”理解為陰影比重"
 
-#: ../src/ui/theme.c:1444
+#: ../src/ui/theme.c:1450
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "在陰影顏色中陰影比重“%s”是負數"
 
-#: ../src/ui/theme.c:1473
+#: ../src/ui/theme.c:1479
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "無法分析顏色“%s”"
 
-#: ../src/ui/theme.c:1784
+#: ../src/ui/theme.c:1790
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "座標表達式中出現不可接受的字元‘%s’"
 
-#: ../src/ui/theme.c:1811
+#: ../src/ui/theme.c:1817
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "座標表達式中出現無法分析的浮點小數‘%s’"
 
-#: ../src/ui/theme.c:1825
+#: ../src/ui/theme.c:1831
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "座標表達式中出現無法分析的整數‘%s’"
 
-#: ../src/ui/theme.c:1947
+#: ../src/ui/theme.c:1953
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "在座標表達式中，以下文字的開始部分含有不明的運算符：“%s”"
 
-#: ../src/ui/theme.c:2004
+#: ../src/ui/theme.c:2010
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "座標表達式是空白的或是無法分析"
 
-#: ../src/ui/theme.c:2115 ../src/ui/theme.c:2125 ../src/ui/theme.c:2159
+#: ../src/ui/theme.c:2121 ../src/ui/theme.c:2131 ../src/ui/theme.c:2165
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "座標表達式中出現被 0 整除的錯誤"
 
-#: ../src/ui/theme.c:2167
+#: ../src/ui/theme.c:2173
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "座標表達式中出現將浮點數使用於餘數運算符 (mod) 的錯誤"
 
-#: ../src/ui/theme.c:2223
+#: ../src/ui/theme.c:2229
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "在座標表達式中，應該有運算子的地方出現了運算符“%s”"
 
-#: ../src/ui/theme.c:2232
+#: ../src/ui/theme.c:2238
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "在座標表達式中，應該有運算符的地方出現了運算子"
 
-#: ../src/ui/theme.c:2240
+#: ../src/ui/theme.c:2246
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "結束座標表達式的是一個運算符而非運算子"
 
-#: ../src/ui/theme.c:2250
+#: ../src/ui/theme.c:2256
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr "在座標表達式中，運算符“%c”緊隨運算符“%c”出現，但中間沒有任何運算子"
 
-#: ../src/ui/theme.c:2401 ../src/ui/theme.c:2446
+#: ../src/ui/theme.c:2407 ../src/ui/theme.c:2452
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "座標表達式中出現不明的變數或常數“%s”"
 
-#: ../src/ui/theme.c:2500
+#: ../src/ui/theme.c:2506
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "座標表達式分析器令緩衝溢位。"
 
-#: ../src/ui/theme.c:2529
+#: ../src/ui/theme.c:2535
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "座標表達式中的閉括號沒有相應的開括號"
 
-#: ../src/ui/theme.c:2593
+#: ../src/ui/theme.c:2599
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "座標表達式中的開括號沒有相應的閉括號"
 
-#: ../src/ui/theme.c:2604
+#: ../src/ui/theme.c:2610
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "座標表達式中似乎沒有任何運算符或運算子"
 
-#: ../src/ui/theme.c:2816 ../src/ui/theme.c:2836 ../src/ui/theme.c:2856
+#: ../src/ui/theme.c:2822 ../src/ui/theme.c:2842 ../src/ui/theme.c:2862
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "佈景主題中含有引致錯誤的表達式：%s\n"
 
-#: ../src/ui/theme.c:4527
+#: ../src/ui/theme.c:4533
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1311,25 +963,25 @@ msgstr ""
 "此邊框款式必須指定 <button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
 "\"/>"
 
-#: ../src/ui/theme.c:5060 ../src/ui/theme.c:5085
+#: ../src/ui/theme.c:5066 ../src/ui/theme.c:5091
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "缺少了 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5133
+#: ../src/ui/theme.c:5139
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "無法載入佈景主題“%s”：%s\n"
 
-#: ../src/ui/theme.c:5269 ../src/ui/theme.c:5276 ../src/ui/theme.c:5283
-#: ../src/ui/theme.c:5290 ../src/ui/theme.c:5297
+#: ../src/ui/theme.c:5275 ../src/ui/theme.c:5282 ../src/ui/theme.c:5289
+#: ../src/ui/theme.c:5296 ../src/ui/theme.c:5303
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "佈景主題“%s”未指定 <%s>"
 
-#: ../src/ui/theme.c:5305
+#: ../src/ui/theme.c:5311
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1338,13 +990,13 @@ msgstr ""
 "在佈景主題“%2$s”中，視窗類型“%1$s”沒有指定任何邊框款式。請加上 <window type="
 "\"%3$s\" style_set=\"whatever\"/> 元素"
 
-#: ../src/ui/theme.c:5744 ../src/ui/theme.c:5806 ../src/ui/theme.c:5869
+#: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "自行定義的常數必須以大寫字母開始；但“%s”不是"
 
-#: ../src/ui/theme.c:5752 ../src/ui/theme.c:5814 ../src/ui/theme.c:5877
+#: ../src/ui/theme.c:5717 ../src/ui/theme.c:5779 ../src/ui/theme.c:5842
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "已定義了“%s”常數"
@@ -1749,11 +1401,11 @@ msgstr "底部浮動列(_B)"
 
 #: ../src/ui/theme-viewer.c:106
 msgid "_Left dock"
-msgstr "左端浮動列(_L)"
+msgstr "左側浮動列(_L)"
 
 #: ../src/ui/theme-viewer.c:107
 msgid "_Right dock"
-msgstr "右端浮動列(_R)"
+msgstr "右側浮動列(_R)"
 
 #: ../src/ui/theme-viewer.c:108
 msgid "_All docks"
@@ -1775,101 +1427,101 @@ msgstr "這是有開啟圖示的展示用按鈕"
 msgid "This is a demo button with a 'quit' icon"
 msgstr "這是有離開圖示的展示用按鈕"
 
-#: ../src/ui/theme-viewer.c:253
+#: ../src/ui/theme-viewer.c:248
 msgid "This is a sample message in a sample dialog"
 msgstr "這是在樣版對話視窗中的樣版訊息"
 
-#: ../src/ui/theme-viewer.c:336
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "假的選單項目 %d\n"
 
-#: ../src/ui/theme-viewer.c:371
+#: ../src/ui/theme-viewer.c:363
 msgid "Border-only window"
 msgstr "只有邊框的視窗"
 
-#: ../src/ui/theme-viewer.c:373
+#: ../src/ui/theme-viewer.c:365
 msgid "Bar"
 msgstr "列"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:382
 msgid "Normal Application Window"
 msgstr "正常的程式視窗"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:386
 msgid "Dialog Box"
 msgstr "對話盒"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:390
 msgid "Modal Dialog Box"
 msgstr "模態對話盒"
 
-#: ../src/ui/theme-viewer.c:402
+#: ../src/ui/theme-viewer.c:394
 msgid "Utility Palette"
 msgstr "公用程式控制板"
 
-#: ../src/ui/theme-viewer.c:406
+#: ../src/ui/theme-viewer.c:398
 msgid "Torn-off Menu"
 msgstr "關閉選單"
 
-#: ../src/ui/theme-viewer.c:410
+#: ../src/ui/theme-viewer.c:402
 msgid "Border"
 msgstr "邊框"
 
-#: ../src/ui/theme-viewer.c:414
+#: ../src/ui/theme-viewer.c:406
 msgid "Attached Modal Dialog"
 msgstr "附加的模態對話盒"
 
-#: ../src/ui/theme-viewer.c:747
+#: ../src/ui/theme-viewer.c:739
 #, c-format
 msgid "Button layout test %d"
 msgstr "按鈕配置測試 %d"
 
-#: ../src/ui/theme-viewer.c:776
+#: ../src/ui/theme-viewer.c:768
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "繪畫一個視窗需時 %g 毫秒"
 
-#: ../src/ui/theme-viewer.c:821
+#: ../src/ui/theme-viewer.c:813
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "用法： metacity-theme-viewer [佈景主題名稱]\n"
 
-#: ../src/ui/theme-viewer.c:828
+#: ../src/ui/theme-viewer.c:820
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "載入佈景主題失敗 %s\n"
 
-#: ../src/ui/theme-viewer.c:834
+#: ../src/ui/theme-viewer.c:826
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "載入佈景主題 “%s” 需時 %g 秒\n"
 
-#: ../src/ui/theme-viewer.c:878
+#: ../src/ui/theme-viewer.c:870
 msgid "Normal Title Font"
 msgstr "正常標題列字型"
 
-#: ../src/ui/theme-viewer.c:884
+#: ../src/ui/theme-viewer.c:876
 msgid "Small Title Font"
 msgstr "小標題列字型"
 
-#: ../src/ui/theme-viewer.c:890
+#: ../src/ui/theme-viewer.c:882
 msgid "Large Title Font"
 msgstr "大標題列字型"
 
-#: ../src/ui/theme-viewer.c:895
+#: ../src/ui/theme-viewer.c:887
 msgid "Button Layouts"
 msgstr "按鈕配置"
 
-#: ../src/ui/theme-viewer.c:900
+#: ../src/ui/theme-viewer.c:892
 msgid "Benchmark"
 msgstr "速度測試"
 
-#: ../src/ui/theme-viewer.c:952
+#: ../src/ui/theme-viewer.c:944
 msgid "Window Title Goes Here"
 msgstr "這裡是視窗標題"
 
-#: ../src/ui/theme-viewer.c:1055
+#: ../src/ui/theme-viewer.c:1047
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1880,488 +1532,39 @@ msgstr ""
 "在客戶端是 %g 秒（每幀 %g 毫秒）\n"
 "包括 X 伺服器資源的實際消耗時間是 %g 秒（每幀 %g 毫秒）\n"
 
-#: ../src/ui/theme-viewer.c:1274
+#: ../src/ui/theme-viewer.c:1266
 msgid "position expression test returned TRUE but set error"
 msgstr "位置表現測試返回值是「正確」，但有 set error"
 
-#: ../src/ui/theme-viewer.c:1276
+#: ../src/ui/theme-viewer.c:1268
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "位置表現測試返回值是「錯誤」，但沒有 set error"
 
-#: ../src/ui/theme-viewer.c:1280
+#: ../src/ui/theme-viewer.c:1272
 msgid "Error was expected but none given"
 msgstr "預期會發生錯誤，但結果並沒錯誤發生"
 
-#: ../src/ui/theme-viewer.c:1282
+#: ../src/ui/theme-viewer.c:1274
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "預期會發生錯誤 %d ，但結果卻出現 %d"
 
-#: ../src/ui/theme-viewer.c:1288
+#: ../src/ui/theme-viewer.c:1280
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "預期不會發生錯誤，但結果返回了一個：%s"
 
-#: ../src/ui/theme-viewer.c:1292
+#: ../src/ui/theme-viewer.c:1284
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x 的數值是 %d，%d是預期中的數值"
 
-#: ../src/ui/theme-viewer.c:1295
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y 的數值是 %d，%d是預期中的數值"
 
-#: ../src/ui/theme-viewer.c:1360
+#: ../src/ui/theme-viewer.c:1352
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "分析 %d 座標表現需時 %g 秒（平均 %g 秒）\n"
-
-#~ msgid ""
-#~ "Don't make fullscreen windows that are maximized and have no decorations"
-#~ msgstr "不要將已最大化且沒有裝飾的視窗放大至全螢幕"
-
-#~ msgid "Whether window popup/frame should be shown when cycling windows."
-#~ msgstr "當循環視窗時是否顯示彈出視窗/框架。"
-
-#~ msgid "Internal argument for GObject introspection"
-#~ msgstr "GObject introspection 內部引數"
-
-#~ msgid "Failed to restart: %s\n"
-#~ msgstr "無法重新啟動：%s\n"
-
-#~ msgid "Error setting clutter plugin list: %s\n"
-#~ msgstr "設定 clutter 外掛程式清單時出現錯誤：%s\n"
-
-#~ msgid "Clutter Plugins"
-#~ msgstr "Clutter 外掛程式"
-
-#~ msgid "Plugins to load for the Clutter-based compositing manager."
-#~ msgstr "載入以 Clutter 為基礎複合視窗管理員的外掛程式。"
-
-#~ msgid ""
-#~ "Lost connection to the display '%s';\n"
-#~ "most likely the X server was shut down or you killed/destroyed\n"
-#~ "the window manager.\n"
-#~ msgstr ""
-#~ "跟畫面‘%s’失去聯繫；\n"
-#~ "很可能 X 伺服程式已經中止運作，或是您強行中止了視窗管理員。\n"
-
-#~ msgid "Fatal IO error %d (%s) on display '%s'.\n"
-#~ msgstr "畫面‘%3$s’發生嚴重輸入/出錯誤 %1$d (%2$s)。\n"
-
-#~ msgid "Turn compositing on"
-#~ msgstr "開啟複合視窗功能"
-
-#~ msgid "Turn compositing off"
-#~ msgstr "關閉複合視窗功能"
-
-#~ msgid "Error setting compositor status: %s\n"
-#~ msgstr "設定複合視窗狀態時出現錯誤：%s\n"
-
-#~ msgid "Window Management"
-#~ msgstr "視窗管理員"
-
-#~ msgid "Failed to parse message \"%s\" from dialog process\n"
-#~ msgstr "無法從對話視窗進程中分析訊息“%s”\n"
-
-#~ msgid "Error reading from dialog display process: %s\n"
-#~ msgstr "從對話視窗進程中讀取資料時出現錯誤：%s\n"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to ask about killing an application: %s\n"
-#~ msgstr "啟動 metacity-dialog 來詢問是否強行中止其它程式時出現錯誤：%s\n"
-
-#~ msgid "Failed to get hostname: %s\n"
-#~ msgstr "無法取得主機名稱：%s\n"
-
-#~ msgid ""
-#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-#~ "\n"
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "格式可以像「<Control>a」或是 <Shift><Alt>F1。\n"
-#~ "分析按鍵組合字串時是比較寬鬆的，允許使用大寫或小寫，也允許使用像「<Ctl>」"
-#~ "及「<Ctrl>」等的縮寫。如果將此選項設定為字串「disabled」，則不會為該項操作"
-#~ "安排任何按鍵組合。"
-
-#~ msgid ""
-#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-#~ "\n"
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action.\n"
-#~ "\n"
-#~ "This keybinding may be reversed by holding down the \"shift\" key; "
-#~ "therefore, \"shift\" cannot be one of the keys it uses."
-#~ msgstr ""
-#~ "格式可以像「<Control>a」或是 <Shift><Alt>F1。\n"
-#~ "分析按鍵組合字串時是比較寬鬆的，允許使用大寫或小寫，也允許使用像「<Ctl>」"
-#~ "及「<Ctrl>」等的縮寫。如果將此選項設定為字串「disabled」，則不會為該項操作"
-#~ "安排任何按鍵組合。\n"
-#~ "\n"
-#~ "這個按鍵組合可按下「shift」按鍵讓它反轉；因此，「shift」不能成為它所使用的"
-#~ "按鍵之一。"
-
-#~ msgid "Failed to read saved session file %s: %s\n"
-#~ msgstr "無法讀入已儲存的作業階段檔案 %s：%s\n"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to warn about apps that don't support "
-#~ "session management: %s\n"
-#~ msgstr ""
-#~ "目前有不支援作業階段管理的程式存在，但當啟動 metactiy-dialog 來顯示有關此"
-#~ "類程式的警告訊息時出現錯誤：%s\n"
-
-#~ msgid "Metacity"
-#~ msgstr "Metacity"
-
-#~ msgid ""
-#~ "(Not implemented) Navigation works in terms of applications not windows"
-#~ msgstr "（未完成）使用桌面時以應用程式為主的方式運作，並非以視窗為主"
-
-#~ msgid ""
-#~ "A font description string describing a font for window titlebars. The "
-#~ "size from the description will only be used if the titlebar_font_size "
-#~ "option is set to 0. Also, this option is disabled if the "
-#~ "titlebar_uses_desktop_font option is set to true."
-#~ msgstr ""
-#~ "視窗標題所使用的字型的描述字串。可是只有當 titlebar_font_size option 設定"
-#~ "為 0 時才會採用本設定值中的字型大小。另外，當 titlebar_uses_desktop_font "
-#~ "設定為‘true’時本設定值不會生效。"
-
-#~ msgid "Action on title bar double-click"
-#~ msgstr "雙擊標題列所表示的操作程序"
-
-#~ msgid "Action on title bar middle-click"
-#~ msgstr "中鍵點選標題列所表示的操作程序"
-
-#~ msgid "Action on title bar right-click"
-#~ msgstr "右擊標題列所表示的操作程序"
-
-#~ msgid "Arrangement of buttons on the titlebar"
-#~ msgstr "標題列上的按鈕排列"
-
-#~ msgid ""
-#~ "Arrangement of buttons on the titlebar. The value should be a string, "
-#~ "such as \"menu:minimize,maximize,spacer,close\"; the colon separates the "
-#~ "left corner of the window from the right corner, and the button names are "
-#~ "comma-separated. Duplicate buttons are not allowed. Unknown button names "
-#~ "are silently ignored so that buttons can be added in future metacity "
-#~ "versions without breaking older versions. A special spacer tag can be "
-#~ "used to insert some space between two adjacent buttons."
-#~ msgstr ""
-#~ "標題列上的按鈕排列。設定值必須為字串，例如“menu:minimize,maximize,spacer,"
-#~ "close”；冒號表示將視窗左上角及右上角分開，而按鈕名稱則以逗號分開。不會接受"
-#~ "重複的按鈕名稱。不明的按鈕會忽略不理，使得在日後的 metacity 版本增加新的按"
-#~ "鈕時也不會令舊版本無法使用。特殊的 spacer 標籤則是用來在兩個相鄰的按鈕之間"
-#~ "加入空白。"
-
-#~ msgid "Automatically raises the focused window"
-#~ msgstr "輸入焦點所在的視窗自動地覆蓋其它視窗"
-
-#~ msgid ""
-#~ "Clicking a window while holding down this modifier key will move the "
-#~ "window (left click), resize the window (middle click), or show the window "
-#~ "menu (right click). The left and right operations may be swapped using "
-#~ "the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" "
-#~ "or \"&lt;Super&gt;\" for example."
-#~ msgstr ""
-#~ "當在視窗中按下滑鼠按鈕及本特殊按鍵會：移動視窗（左按鈕）、調整視窗大小（中"
-#~ "按鈕）或顯示視窗選單（右按鈕）。使用「mouse_button_resize」設定鍵可以交換"
-#~ "左和右的操作。特殊按鍵可以表示為「&lt;Alt&gt;」或「&lt;Super&gt;」那樣。"
-
-#~ msgid "Commands to run in response to keybindings"
-#~ msgstr "按下按鍵組合後執行相關的指令"
-
-#~ msgid "Compositing Manager"
-#~ msgstr "複合視窗管理程式"
-
-#~ msgid "Control how new windows get focus"
-#~ msgstr "控制視窗如何取得焦點"
-
-#~ msgid "Current theme"
-#~ msgstr "目前的佈景主題"
-
-#~ msgid "Delay in milliseconds for the auto raise option"
-#~ msgstr "某視窗自動覆蓋其它視窗前延遲的時間"
-
-#~ msgid "Determines whether Metacity is a compositing manager."
-#~ msgstr "決定 Metacity 是否為複合視窗管理程式。"
-
-#~ msgid ""
-#~ "Determines whether applications or the system can generate audible "
-#~ "'beeps'; may be used in conjunction with 'visual bell' to allow silent "
-#~ "'beeps'."
-#~ msgstr ""
-#~ "決定程式或系統可否發出可聽見的「聲響」；配合「鈴聲視覺效果」後，就可以產生"
-#~ "不發出聲音的「聲響」。"
-
-#~ msgid "Disable misfeatures that are required by old or broken applications"
-#~ msgstr "關閉舊式或不合規格的程式所需的功能"
-
-#~ msgid "Enable Visual Bell"
-#~ msgstr "啟用鈴聲視覺效果"
-
-#~ msgid ""
-#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#~ "the focused window will be automatically raised after a delay specified "
-#~ "by the auto_raise_delay key. This is not related to clicking on a window "
-#~ "to raise it, nor to entering a window during drag-and-drop."
-#~ msgstr ""
-#~ "如設定為‘true’，而且焦點模式是“sloppy”或“mouse”的時候，輸入焦點所在的視窗"
-#~ "經過某段時間後會自動完全顯示（auto_raise_delay 設定鍵指定了延遲的時間）。"
-#~ "這跟按下視窗將視窗升起，及以在拖曳時進入視窗無關。"
-
-#~ msgid ""
-#~ "If true, ignore the titlebar_font option, and use the standard "
-#~ "application font for window titles."
-#~ msgstr ""
-#~ "如設定為‘true’，則忽略 titlebar_font 選項，並在視窗標題中使用標準的程式字"
-#~ "型。"
-
-#~ msgid ""
-#~ "If true, metacity will give the user less feedback by using wireframes, "
-#~ "avoiding animations, or other means. This is a significant reduction in "
-#~ "usability for many users, but may allow legacy applications to continue "
-#~ "working, and may also be a useful tradeoff for terminal servers. However, "
-#~ "the wireframe feature is disabled when accessibility is on."
-#~ msgstr ""
-#~ "如設定為‘true’，metacity 會給使用者更少的回饋：會使用線框、防止動畫或使用"
-#~ "其它方法的使用。這很明顯會減低很多給使用者的可用性。但可能會使到在啟用此項"
-#~ "前不能使用的舊程式及終端服務可以運作。但是，如果使用了無障礙環境，線框功能"
-#~ "將會停用，以防止捆綁的桌面破損。"
-
-#~ msgid ""
-#~ "If true, then Metacity works in terms of applications rather than "
-#~ "windows. The concept is a bit abstract, but in general an application-"
-#~ "based setup is more like the Mac and less like Windows. When you focus a "
-#~ "window in application-based mode, all the windows in the application will "
-#~ "be raised. Also, in application-based mode, focus clicks are not passed "
-#~ "through to windows in other applications. Application-based mode is, "
-#~ "however, largely unimplemented at the moment."
-#~ msgstr ""
-#~ "如設定為‘true’，Metacity 會以應用程式而不是以視窗為主的方式運作。它的概念"
-#~ "是比較抽象，但大致上，以應用程式為主的設定會類似 Mac 多於 Windows。在應用"
-#~ "程式為主的模式中，當視窗獲得輸入焦點時，所有該程式的視窗都會完全顯示出來。"
-#~ "另外，在應用程式為主的模式中，若在輸入焦點以外的視窗按滑鼠按鈕，只會令輸入"
-#~ "焦點轉移，按該下按鈕不會令程式帶來其它變化。另外，應用程式為主的設定目前大"
-#~ "致上仍未編寫完成。"
-
-#~ msgid "If true, trade off usability for less resource usage"
-#~ msgstr "如設定為‘true’，以改變可用性來換取使用更少的資源"
-
-#~ msgid "Name of workspace"
-#~ msgstr "工作區名稱"
-
-#~ msgid "Number of workspaces"
-#~ msgstr "工作區數目"
-
-#~ msgid ""
-#~ "Number of workspaces. Must be more than zero, and has a fixed maximum to "
-#~ "prevent making the desktop unusable by accidentally asking for too many "
-#~ "workspaces."
-#~ msgstr ""
-#~ "工作區數目。必須大於 0，並有固定的最大值（防止因工作區數目過多而破壞桌"
-#~ "面）。"
-
-#~ msgid "Run a defined command"
-#~ msgstr "執行指定的指令"
-
-#~ msgid ""
-#~ "Set this to true to resize with the right button and show a menu with the "
-#~ "middle button while holding down the key given in \"mouse_button_modifier"
-#~ "\"; set it to false to make it work the opposite way around."
-#~ msgstr ""
-#~ "將此項設為 true 則按下「mouse_button_modifier」指定的按鍵時，可用右鍵調整"
-#~ "大小並以中鍵顯示選單；將它設為 false 則會以相反的方式運作。"
-
-#~ msgid ""
-#~ "Setting this option to false can lead to buggy behavior, so users are "
-#~ "strongly discouraged from changing it from the default of true. Many "
-#~ "actions (e.g. clicking in the client area, moving or resizing the window) "
-#~ "normally raise the window as a side-effect. Setting this option to false, "
-#~ "which is strongly discouraged, will decouple raising from other user "
-#~ "actions, and ignore raise requests generated by applications. See http://"
-#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is "
-#~ "false, windows can still be raised by an alt-left-click anywhere on the "
-#~ "window, a normal click on the window decorations, or by special messages "
-#~ "from pagers, such as activation requests from tasklist applets. This "
-#~ "option is currently disabled in click-to-focus mode. Note that the list "
-#~ "of ways to raise windows when raise_on_click is false does not include "
-#~ "programmatic requests from applications to raise windows; such requests "
-#~ "will be ignored regardless of the reason for the request. If you are an "
-#~ "application developer and have a user complaining that your application "
-#~ "does not work with this setting disabled, tell them it is _their_ fault "
-#~ "for breaking their window manager and that they need to change this "
-#~ "option back to true or live with the \"bug\" they requested."
-#~ msgstr ""
-#~ "將這個選項設定為 false 可能會導致程式錯誤的行為，因此強烈不建議使用者將它"
-#~ "從預設的 true 改變。許多動作（例如：在客戶端區域點擊、移動或調整視窗大小）"
-#~ "通常會同時讓該視窗有抬升的效果。將這個選項設定為 false，注意我們強烈不建議"
-#~ "這麼做，會減低來自其他使用者動作的抬升視窗要求，並且忽略由應用程式產生的抬"
-#~ "升要求。請查閱  http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6。即使"
-#~ "在把這個選項設為 false 的時候，視窗仍然可能因為以下因素被抬升：在視窗中任"
-#~ "何地方按 alt 加上滑鼠左擊、點選視窗裝飾區，或是來自呼叫器的特殊訊息，例如"
-#~ "工作清單面板程式要求它進入使用中狀態。這個選項目前在點選以聚焦(click-to-"
-#~ "focus)模式中是停用的。注意當 raise_on_click 設為 false 時一系列用來抬升視"
-#~ "窗的方法中不包含來自應用程式的程式化要求；這類要求不論其原因為何都會被忽"
-#~ "略。如果您是應用程式開發者，而且有使用者向您抱怨您的程式在停用這個選項時無"
-#~ "法運作，請告訴他們那是「他們的問題」才使得視窗管理程式壞掉。因此他們只能把"
-#~ "這個選項改回 true 或是繼續活在他們自己要求的「程式錯誤」中。"
-
-#~ msgid ""
-#~ "Some applications disregard specifications in ways that result in window "
-#~ "manager misfeatures. This option puts Metacity in a rigorously correct "
-#~ "mode, which gives a more consistent user interface, provided one does not "
-#~ "need to run any misbehaving applications."
-#~ msgstr ""
-#~ "某些應用程式不符合規定，導致令視窗管理員要加入某些不應該有的功能。本選項會"
-#~ "關閉對這些不合規格的程式的支援，如果您不需要執行任何不合規格的程式，這樣的"
-#~ "使用者界面會較好。"
-
-#~ msgid "System Bell is Audible"
-#~ msgstr "系統聲響可發出聲音"
-
-#~ msgid ""
-#~ "Tells Metacity how to implement the visual indication that the system "
-#~ "bell or another application 'bell' indicator has been rung. Currently "
-#~ "there are two valid values, \"fullscreen\", which causes a fullscreen "
-#~ "white-black flash, and \"frame_flash\" which causes the titlebar of the "
-#~ "application which sent the bell signal to flash. If the application which "
-#~ "sent the bell is unknown (as is usually the case for the default \"system "
-#~ "beep\"), the currently focused window's titlebar is flashed."
-#~ msgstr ""
-#~ "讓 Metacity 知道當系統或程式發出「鈴聲」時，如何顯示該「鈴聲」的視覺效果。"
-#~ "目前可接受的值有兩個：\n"
-#~ "“fullscreen”令整個畫面以黑白方式閃爍\n"
-#~ "“frame_flash”令發出鈴聲的程式的視窗標題列閃動。如果不知道發出鈴聲的是哪一"
-#~ "個視窗（主要的例子為預設的「系統聲響」），則會令目前輸入焦點所在的視窗閃動"
-#~ "標題列。"
-
-#~ msgid ""
-#~ "The /apps/metacity/global_keybindings/run_command_N keys define "
-#~ "keybindings that correspond to these commands. Pressing the keybinding "
-#~ "for run_command_N will execute command_N."
-#~ msgstr ""
-#~ "/apps/metacity/global_keybindings/run_command_N 設定鍵中定義了相應指令所使"
-#~ "用的按鍵組合。按下 run_command_N 的按鍵組合會執行 command_N。"
-
-#~ msgid ""
-#~ "The /apps/metacity/global_keybindings/run_command_screenshot key defines "
-#~ "a keybinding which causes the command specified by this setting to be "
-#~ "invoked."
-#~ msgstr ""
-#~ "/apps/metacity/global_keybindings/run_command_screenshot 設定鍵中定義了相"
-#~ "應指令所使用的按鍵組合。"
-
-#~ msgid ""
-#~ "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-#~ "defines a keybinding which causes the command specified by this setting "
-#~ "to be invoked."
-#~ msgstr ""
-#~ "/apps/metacity/global_keybindings/run_command_window_screenshot 設定鍵中定"
-#~ "義了相應指令所使用的按鍵組合。"
-
-#~ msgid ""
-#~ "The keybinding that runs the correspondingly-numbered command in /apps/"
-#~ "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" "
-#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "本按鍵組合可以執行在 /apps/metacity/keybinding_commands 中加上相應數字的指"
-#~ "令。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵"
-#~ "組合字串時是比較寬鬆的，允許使用大寫或小寫，也允許使用像“&lt;"
-#~ "Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串“disabled”，則不會"
-#~ "為該項操作安排任何按鍵組合。"
-
-#~ msgid "The name of a workspace."
-#~ msgstr "工作區的名稱。"
-
-#~ msgid "The screenshot command"
-#~ msgstr "桌面畫面快照指令"
-
-#~ msgid ""
-#~ "The theme determines the appearance of window borders, titlebar, and so "
-#~ "forth."
-#~ msgstr "佈景主題可指定視窗邊框、標題列等的外觀。"
-
-#~ msgid ""
-#~ "The time delay before raising a window if auto_raise is set to true. The "
-#~ "delay is given in thousandths of a second."
-#~ msgstr ""
-#~ "如果選用 auto_raise 選項時，令視窗不被遮蔽的延遲時間。延遲的時間會以 "
-#~ "1/1000 秒為單位來表示。"
-
-#~ msgid ""
-#~ "The window focus mode indicates how windows are activated. It has three "
-#~ "possible values; \"click\" means windows must be clicked in order to "
-#~ "focus them, \"sloppy\" means windows are focused when the mouse enters "
-#~ "the window, and \"mouse\" means windows are focused when the mouse enters "
-#~ "the window and unfocused when the mouse leaves the window."
-#~ msgstr ""
-#~ "「視窗焦點模式」表示視窗如何對輸入產生反應。它有 3 個可接受的值：\n"
-#~ "“click”表示必須在視窗按滑鼠按鈕才會令視窗獲取輸入焦點，\n"
-#~ "“sloppy”表示當鼠標在某視窗上時會令該視窗獲取輸入焦點，最後\n"
-#~ "“mouse”表示當鼠標在某視窗上時會令該視窗獲取輸入焦點，而且當鼠標移離視窗時"
-#~ "輸入焦點也會脫離該視窗。"
-
-#~ msgid "The window screenshot command"
-#~ msgstr "視窗畫面快照指令"
-
-#~ msgid ""
-#~ "This option determines the effects of double-clicking on the title bar. "
-#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
-#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
-#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
-#~ "which will minimize the window, 'shade' which will roll the window up, "
-#~ "'menu' which will display the window menu, 'lower' which will put the "
-#~ "window behind all the others, and 'none' which will not do anything."
-#~ msgstr ""
-#~ "本選項決定在標題列上雙擊滑鼠按鈕的效果。目前有效的選項為：「toggle_shade」"
-#~ "會捲起/放下視窗，「toggle_maximize」會切換是否將視窗最大化，"
-#~ "「toggle_maximize_horizontally」和「toggle_maximize_vertically」會根據其方"
-#~ "向決定最大化的方式。「minimize」會將視窗最小化，「shade」會捲起視窗，"
-#~ "「menu」會顯示視窗選單，「降低」會把視窗置於所有其他視窗之後，而「nome」則"
-#~ "不會作出任何反應。"
-
-#~ msgid ""
-#~ "This option determines the effects of middle-clicking on the title bar. "
-#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
-#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
-#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
-#~ "which will minimize the window, 'shade' which will roll the window up, "
-#~ "'menu' which will display the window menu, 'lower' which will put the "
-#~ "window behind all the others, and 'none' which will not do anything."
-#~ msgstr ""
-#~ "本選項決定在標題列上按下滑鼠中鍵的效果。目前有效的選項為：「toggle_shade」"
-#~ "會捲起/放下視窗，「toggle_maximize」會切換是否將視窗最大化，"
-#~ "「toggle_maximize_horizontally」和「toggle_maximize_vertically」會根據其方"
-#~ "向決定最大化的方式。「minimize」會將視窗最小化，「shade」會捲起視窗，"
-#~ "「menu」會顯示視窗選單，「降低」會把視窗置於所有其他視窗之後，而「nome」則"
-#~ "不會作出任何反應。"
-
-#~ msgid ""
-#~ "This option determines the effects of right-clicking on the title bar. "
-#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
-#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
-#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
-#~ "which will minimize the window, 'shade' which will roll the window up, "
-#~ "'menu' which will display the window menu, 'lower' which will put the "
-#~ "window behind all the others, and 'none' which will not do anything."
-#~ msgstr ""
-#~ "本選項決定在標題列上安下滑鼠右鍵的效果。目前有效的選項為：「toggle_shade」"
-#~ "會捲起/放下視窗，「toggle_maximize」會切換是否將視窗最大化，"
-#~ "「toggle_maximize_horizontally」和「toggle_maximize_vertically」會根據其方"
-#~ "向決定最大化的方式。「minimize」會將視窗最小化，「shade」會捲起視窗，"
-#~ "「menu」會顯示視窗選單，「降低」會把視窗置於所有其他視窗之後，而「nome」則"
-#~ "不會作出任何反應。"
