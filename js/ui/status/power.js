@@ -46,7 +46,6 @@ const PowerManagerInterface = <interface name="org.gnome.SettingsDaemon.Power">
 <method name="GetPrimaryDevice">
     <arg type="(susdut)" direction="out" />
 </method>
-<signal name="Changed" />
 <property name="Icon" type="s" access="read" />
 </interface>;
 
@@ -76,7 +75,8 @@ const Indicator = new Lang.Class({
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addSettingsAction(_("Power Settings"), 'gnome-power-panel.desktop');
 
-        this._proxy.connectSignal('Changed', Lang.bind(this, this._devicesChanged));
+        this._proxy.connect('g-properties-changed',
+                            Lang.bind(this, this._devicesChanged));
         this._devicesChanged();
     },
 
