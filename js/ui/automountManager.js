@@ -43,7 +43,7 @@ function ConsoleKitManager() {
                                    g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START |
                                              Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
 
-    self.connect('notify::g-name-owner', function() {
+    self._updateSessionActive = function() {
         if (self.g_name_owner) {
             self.GetCurrentSessionRemote(function([session]) {
                 self._ckSession = new ConsoleKitSessionProxy(Gio.DBus.system, 'org.freedesktop.ConsoleKit', session);
@@ -58,8 +58,11 @@ function ConsoleKitManager() {
         } else {
             self.sessionActive = true;
         }
-    });
+    };
+    self.connect('notify::g-name-owner',
+                 Lang.bind(self, self._updateSessionActive));
 
+    self._updateSessionActive();
     self.init(null);
     return self;
 }
