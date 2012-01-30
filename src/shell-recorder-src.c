@@ -40,6 +40,8 @@ static void
 shell_recorder_src_init (ShellRecorderSrc      *src,
 			 ShellRecorderSrcClass *klass)
 {
+  gst_base_src_set_format (GST_BASE_SRC (src), GST_FORMAT_TIME);
+
   src->queue = g_async_queue_new ();
   src->mutex = &src->mutex_data;
   g_mutex_init (src->mutex);
