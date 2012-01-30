@@ -148,7 +148,7 @@ G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
  * (Theora does have some support for frames at non-uniform times, but
  * things seem to break down if there are large gaps.)
  */
-#define DEFAULT_PIPELINE "videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux"
+#define DEFAULT_PIPELINE "vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux"
 
 /* The default filename pattern. Example shell-20090311b-2.webm
  */
@@ -1623,7 +1623,7 @@ shell_recorder_set_filename (ShellRecorder *recorder,
  * might be used to send the output to an icecast server
  * via shout2send or similar.
  *
- * The default value is 'videorate ! theoraenc ! oggmux'
+ * The default value is 'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux'
  */
 void
 shell_recorder_set_pipeline (ShellRecorder *recorder,
