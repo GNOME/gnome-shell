@@ -416,7 +416,8 @@ cogl_sources_c += \
 endif
 if SUPPORT_EGL_PLATFORM_KMS
 cogl_experimental_h += \
-	$(srcdir)/cogl-kms-renderer.h
+	$(srcdir)/cogl-kms-renderer.h \
+	$(srcdir)/cogl-kms-display.h
 cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-egl-kms.c \
 	$(srcdir)/winsys/cogl-winsys-egl-kms-private.h

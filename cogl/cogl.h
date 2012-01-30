@@ -105,6 +105,7 @@
 #include <cogl/cogl-poll.h>
 #if defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
 #include <cogl/cogl-kms-renderer.h>
+#include <cogl/cogl-kms-display.h>
 #endif
 #if COGL_HAS_WIN32_SUPPORT
 #include <cogl/cogl-win32-renderer.h>

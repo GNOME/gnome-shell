@@ -50,6 +50,7 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-onscreen-private.h"
 #include "cogl-kms-renderer.h"
+#include "cogl-kms-display.h"
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 
@@ -76,6 +77,7 @@ typedef struct _CoglDisplayKMS
 {
   GList *outputs;
   int width, height;
+  gboolean pending_set_crtc;
   gboolean pending_swap_notify;
 } CoglDisplayKMS;
 
@@ -356,23 +358,26 @@ find_output (int _index,
   return output;
 }
 
-static gboolean
-set_crtc (int fd, uint32_t fb_id, CoglOutputKMS *output, GError **error)
+static void
+setup_crtc_modes (CoglDisplay *display, int fb_id)
 {
-  int ret = drmModeSetCrtc (fd,
-                            output->encoder->crtc_id,
-                            fb_id, 0, 0,
-                            &output->connector->connector_id, 1,
-                            &output->mode);
-  if (ret)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_INIT,
-                   "Failed to set mode %s: %m", output->mode.name);
-      return FALSE;
-    }
+  CoglDisplayEGL *egl_display = display->winsys;
+  CoglDisplayKMS *kms_display = egl_display->platform;
+  CoglRendererEGL *egl_renderer = display->renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  GList *l;
 
-  return TRUE;
+  for (l = kms_display->outputs; l; l = l->next)
+    {
+      CoglOutputKMS *output = l->data;
+      int ret = drmModeSetCrtc (kms_renderer->fd,
+                                output->encoder->crtc_id,
+                                fb_id, 0, 0,
+                                &output->connector->connector_id, 1,
+                                &output->mode);
+      if (ret)
+        g_warning ("Failed to set crtc mode %s: %m", output->mode.name);
+    }
 }
 
 static gboolean
@@ -388,10 +393,6 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
   drmModeRes *resources;
   CoglOutputKMS *output0, *output1;
   gboolean mirror;
-  struct gbm_bo *bo;
-  uint32_t handle, pitch, fb_id;
-  int width;
-  int height;
 
   kms_display = g_slice_new0 (CoglDisplayKMS);
   egl_display->platform = kms_display;
@@ -475,37 +476,12 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
   else
     output0->mode = output0->modes[0];
 
-  width = output0->mode.hdisplay;
-  height = output0->mode.vdisplay;
+  kms_display->width = output0->mode.hdisplay;
+  kms_display->height = output0->mode.vdisplay;
 
-  bo = gbm_bo_create (kms_renderer->gbm,
-                      width, height, GBM_BO_FORMAT_XRGB8888, GBM_BO_USE_SCANOUT);
-  pitch = gbm_bo_get_pitch (bo);
-  handle = gbm_bo_get_handle (bo).u32;
-  if (drmModeAddFB (kms_renderer->fd,
-                    width,
-                    height,
-                    24, /* depth */
-                    32, /* bpp */
-                    pitch,
-                    handle,
-                    &fb_id) != 0)
-    {
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_INIT,
-                   "Failed to create initial framebuffer");
-      return FALSE;
-    }
-
-  if (!set_crtc (kms_renderer->fd, fb_id, output0, error))
-    return FALSE;
-
-  if (mirror)
-    if (!set_crtc (kms_renderer->fd, fb_id, output1, error))
-      return FALSE;
-
-  kms_display->width = width;
-  kms_display->height = height;
+  /* We defer setting the crtc modes until the first swap_buffers request of a
+   * CoglOnscreen framebuffer. */
+  kms_display->pending_set_crtc = TRUE;
 
   return TRUE;
 }
@@ -703,6 +679,14 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
       kms_onscreen->next_bo = NULL;
       kms_onscreen->next_fb_id = 0;
       return;
+    }
+
+  /* If this is the first framebuffer to be presented then we now setup the
+   * crtc modes... */
+  if (kms_display->pending_set_crtc)
+    {
+      setup_crtc_modes (context->display, kms_onscreen->next_fb_id);
+      kms_display->pending_set_crtc = FALSE;
     }
 
   flip = g_slice_new0 (CoglFlipKMS);
@@ -984,4 +968,15 @@ cogl_kms_renderer_get_kms_fd (CoglRenderer *renderer)
     }
   else
     return -1;
+}
+
+void
+cogl_kms_display_queue_modes_reset (CoglDisplay *display)
+{
+  if (display->setup)
+    {
+      CoglDisplayEGL *egl_display = display->winsys;
+      CoglDisplayKMS *kms_display = egl_display->platform;
+      kms_display->pending_set_crtc = TRUE;
+    }
 }
