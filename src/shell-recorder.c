@@ -526,6 +526,12 @@ recorder_record_frame (ShellRecorder *recorder)
   guint8 *data;
   guint size;
 
+  /* If we get into the red zone, stop buffering new frames; 13/16 is
+  * a bit more than the 3/4 threshold for a red indicator to keep the
+  * indicator from flashing between red and yellow. */
+  if (recorder->memory_used > (recorder->memory_target * 13) / 16)
+    return;
+
   size = recorder->stage_width * recorder->stage_height * 4;
 
   data = shell_screen_grabber_grab (recorder->grabber,
