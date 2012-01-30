@@ -108,7 +108,7 @@
   <schema id="org.gnome.shell.recorder" path="/org/gnome/shell/recorder/"
           gettext-domain="@GETTEXT_PACKAGE@">
     <key name="framerate" type="i">
-      <default>15</default>
+      <default>30</default>
       <_summary>Framerate used for recording screencasts.</_summary>
       <_description>
         The framerate of the resulting screencast recordered

@@ -77,6 +77,7 @@ struct _ShellRecorder {
   GSList *pipelines; /* all pipelines */
 
   GstClockTime start_time; /* When we started recording (adjusted for pauses) */
+  GstClockTime last_frame_time; /* Timestamp for the last frame */
   GstClockTime pause_time; /* When the pipeline was paused */
 
   /* GSource IDs for different timeouts and idles */
@@ -117,14 +118,12 @@ enum {
 
 G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
 
-/* The number of frames per second we configure for the GStreamer pipeline.
- * (the number of frames we actually write into the GStreamer pipeline is
- * based entirely on how fast clutter is drawing.) Using 60fps seems high
- * but the observed smoothness is a lot better than for 30fps when encoding
- * as theora for a minimal size increase. This may be an artifact of the
- * encoding process.
+/* The default value of the target frame rate; we'll never record more
+ * than this many frames per second, though we may record less if the
+ * screen isn't being redrawn. 30 is a compromise between smoothness
+ * and the size of the recording.
  */
-#define DEFAULT_FRAMES_PER_SECOND 15
+#define DEFAULT_FRAMES_PER_SECOND 30
 
 /* The time (in milliseconds) between querying the server for the cursor
  * position.
@@ -525,12 +524,24 @@ recorder_record_frame (ShellRecorder *recorder)
   GstBuffer *buffer;
   guint8 *data;
   guint size;
+  GstClockTime now;
 
   /* If we get into the red zone, stop buffering new frames; 13/16 is
   * a bit more than the 3/4 threshold for a red indicator to keep the
   * indicator from flashing between red and yellow. */
   if (recorder->memory_used > (recorder->memory_target * 13) / 16)
     return;
+
+  /* Drop frames to get down to something like the target frame rate; since frames
+   * are generated with VBlank sync, we don't have full control anyways, so we just
+   * drop frames if the interval since the last frame is less than 75% of the
+   * desired inter-frame interval.
+   */
+  now = get_wall_time();
+  if (now - recorder->last_frame_time < (3 * 1000000000LL / (4 * recorder->framerate)))
+    return;
+
+  recorder->last_frame_time = now;
 
   size = recorder->stage_width * recorder->stage_height * 4;
 
@@ -541,8 +552,7 @@ recorder_record_frame (ShellRecorder *recorder)
   GST_BUFFER_SIZE(buffer) = size;
   GST_BUFFER_MALLOCDATA(buffer) = GST_BUFFER_DATA(buffer) = data;
 
-  GST_BUFFER_TIMESTAMP(buffer) = get_wall_time() - recorder->start_time;
-
+  GST_BUFFER_TIMESTAMP(buffer) = now - recorder->start_time;
 
   recorder_draw_cursor (recorder, buffer);
 
@@ -1568,9 +1578,15 @@ shell_recorder_new (ClutterStage  *stage)
  * @recorder: the #ShellRecorder
  * @framerate: Framerate used for resulting video in frames-per-second.
  *
- * Sets the number of frames per second we configure for the GStreamer pipeline.
+ * Sets the number of frames per second we try to record. Less frames
+ * will be recorded when the screen doesn't need to be redrawn this
+ * quickly. (This value will also be set as the framerate for the
+ * GStreamer pipeline; whether that has an effect on the resulting
+ * video will depend on the details of the pipeline and the codec. The
+ * default encoding to webm format doesn't pay attention to the pipeline
+ * framerate.)
  *
- * The default value is 15.
+ * The default value is 30.
  */
 void
 shell_recorder_set_framerate (ShellRecorder *recorder,
@@ -1672,6 +1688,7 @@ shell_recorder_record (ShellRecorder *recorder)
        * pause
        */
       recorder->start_time = recorder->start_time + (get_wall_time() - recorder->pause_time);
+      recorder->last_frame_time = 0;
     }
   else
     {
@@ -1679,6 +1696,7 @@ shell_recorder_record (ShellRecorder *recorder)
         return FALSE;
 
       recorder->start_time = get_wall_time();
+      recorder->last_frame_time = 0;
     }
 
   recorder->state = RECORDER_STATE_RECORDING;
