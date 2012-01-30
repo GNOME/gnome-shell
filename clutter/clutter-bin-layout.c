@@ -339,14 +339,14 @@ clutter_bin_layout_get_preferred_width (ClutterLayoutManager *manager,
                                         gfloat               *nat_width_p)
 {
   ClutterActor *actor = CLUTTER_ACTOR (container);
+  ClutterActorIter iter;
   ClutterActor *child;
   gfloat min_width, nat_width;
 
   min_width = nat_width = 0.0;
 
-  for (child = clutter_actor_get_first_child (actor);
-       child != NULL;
-       child = clutter_actor_get_next_sibling (child))
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
     {
       gfloat minimum, natural;
 
@@ -373,14 +373,14 @@ clutter_bin_layout_get_preferred_height (ClutterLayoutManager *manager,
                                          gfloat               *nat_height_p)
 {
   ClutterActor *actor = CLUTTER_ACTOR (container);
+  ClutterActorIter iter;
   ClutterActor *child;
   gfloat min_height, nat_height;
 
   min_height = nat_height = 0.0;
 
-  for (child = clutter_actor_get_first_child (actor);
-       child != NULL;
-       child = clutter_actor_get_next_sibling (child))
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
     {
       gfloat minimum, natural;
 
@@ -430,15 +430,15 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
   gfloat allocation_x, allocation_y;
   gfloat available_w, available_h;
   ClutterActor *actor, *child;
+  ClutterActorIter iter;
 
   clutter_actor_box_get_origin (allocation, &allocation_x, &allocation_y);
   clutter_actor_box_get_size (allocation, &available_w, &available_h);
 
   actor = CLUTTER_ACTOR (container);
 
-  for (child = clutter_actor_get_first_child (actor);
-       child != NULL;
-       child = clutter_actor_get_next_sibling (child))
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
     {
       ClutterLayoutMeta *meta;
       ClutterBinLayer *layer;
@@ -609,22 +609,14 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
 
   gobject_class->set_property = clutter_bin_layout_set_property;
   gobject_class->get_property = clutter_bin_layout_get_property;
-  g_object_class_install_properties (gobject_class,
-                                     PROP_LAST,
-                                     bin_props);
+  g_object_class_install_properties (gobject_class, PROP_LAST, bin_props);
 
-  layout_class->get_preferred_width =
-    clutter_bin_layout_get_preferred_width;
-  layout_class->get_preferred_height =
-    clutter_bin_layout_get_preferred_height;
-  layout_class->allocate =
-    clutter_bin_layout_allocate;
-  layout_class->create_child_meta =
-    clutter_bin_layout_create_child_meta;
-  layout_class->get_child_meta_type =
-    clutter_bin_layout_get_child_meta_type;
-  layout_class->set_container =
-    clutter_bin_layout_set_container;
+  layout_class->get_preferred_width = clutter_bin_layout_get_preferred_width;
+  layout_class->get_preferred_height = clutter_bin_layout_get_preferred_height;
+  layout_class->allocate = clutter_bin_layout_allocate;
+  layout_class->create_child_meta = clutter_bin_layout_create_child_meta;
+  layout_class->get_child_meta_type = clutter_bin_layout_get_child_meta_type;
+  layout_class->set_container = clutter_bin_layout_set_container;
 }
 
 static void

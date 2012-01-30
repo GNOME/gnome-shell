@@ -210,6 +210,7 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
   gfloat line_min_width, line_natural_width;
   gfloat max_min_width, max_natural_width;
   ClutterActor *actor, *child;
+  ClutterActorIter iter;
   gfloat item_y;
 
   n_rows = get_rows (CLUTTER_FLOW_LAYOUT (manager), for_height);
@@ -246,9 +247,8 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
 
   max_min_width = max_natural_width = 0;
 
-  for (child = clutter_actor_get_first_child (actor);
-       child != NULL;
-       child = clutter_actor_get_next_sibling (child))
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
     {
       gfloat child_min, child_natural;
       gfloat new_y, item_height;
@@ -388,6 +388,7 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
   gfloat line_min_height, line_natural_height;
   gfloat max_min_height, max_natural_height;
   ClutterActor *actor, *child;
+  ClutterActorIter iter;
   gfloat item_x;
 
   n_columns = get_columns (CLUTTER_FLOW_LAYOUT (manager), for_width);
@@ -424,9 +425,8 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
 
   max_min_height = max_natural_height = 0;
 
-  for (child = clutter_actor_get_first_child (actor);
-       child != NULL;
-       child = clutter_actor_get_next_sibling (child))
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
     {
       gfloat child_min, child_natural;
       gfloat new_x, item_width;
@@ -561,6 +561,7 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
 {
   ClutterFlowLayoutPrivate *priv = CLUTTER_FLOW_LAYOUT (manager)->priv;
   ClutterActor *actor, *child;
+  ClutterActorIter iter;
   gfloat x_off, y_off;
   gfloat avail_width, avail_height;
   gfloat item_x, item_y;
@@ -599,9 +600,8 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
   line_item_count = 0;
   line_index = 0;
 
-  for (child = clutter_actor_get_first_child (actor);
-       child != NULL;
-       child = clutter_actor_get_next_sibling (child))
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
     {
       ClutterActorBox child_alloc;
       gfloat item_width, item_height;
