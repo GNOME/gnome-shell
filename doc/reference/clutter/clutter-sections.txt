@@ -1305,6 +1305,7 @@ CLUTTER_INIT_ERROR
 <SUBSECTION Private>
 CLUTTER_DEPRECATED
 CLUTTER_DEPRECATED_FOR
+CLUTTER_PRIVATE_FIELD
 clutter_init_error_quark
 clutter_base_init
 clutter_redraw
