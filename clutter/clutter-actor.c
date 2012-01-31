@@ -71,6 +71,27 @@
  *   will hold a reference on each child actor, which will be released when
  *   the child is removed from its parent, or destroyed using
  *   clutter_actor_destroy().</para>
+ *   <informalexample><programlisting>
+ *  ClutterActor *actor = clutter_actor_new ();
+ *
+ *  /&ast; set the bounding box of the actor &ast;/
+ *  clutter_actor_set_position (actor, 0, 0);
+ *  clutter_actor_set_size (actor, 480, 640);
+ *
+ *  /&ast; set the background color of the actor &ast;/
+ *  clutter_actor_set_background_color (actor, CLUTTER_COLOR_Orange);
+ *
+ *  /&ast; set the bounding box of the child, relative to the parent &ast;/
+ *  ClutterActor *child = clutter_actor_new ();
+ *  clutter_actor_set_position (child, 20, 20);
+ *  clutter_actor_set_size (child, 80, 240);
+ *
+ *  /&ast; set the background color of the child &ast;/
+ *  clutter_actor_set_background_color (child, CLUTTER_COLOR_Blue);
+ *
+ *  /&ast; add the child to the actor &ast;/
+ *  clutter_actor_add_child (actor, child);
+ *   </programlisting></informalexample>
  *   <para>Children can be inserted at a given index, or above and below
  *   another child actor. The order of insertion determines the order of the
  *   children when iterating over them. Iterating over children is performed
