@@ -28,8 +28,6 @@
 
 #include <clutter/x11/clutter-x11-texture-pixmap.h>
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-
 G_BEGIN_DECLS
 
 #define CLUTTER_GLX_TYPE_TEXTURE_PIXMAP            (clutter_glx_texture_pixmap_get_type ())
@@ -77,16 +75,18 @@ struct _ClutterGLXTexturePixmap
 
 GType clutter_glx_texture_pixmap_get_type (void);
 
+CLUTTER_DEPRECATED_FOR(clutter_x11_texture_pixmap_new)
 ClutterActor * clutter_glx_texture_pixmap_new (void);
 
+CLUTTER_DEPRECATED_FOR(clutter_x11_texture_pixmap_new_with_pixmap)
 ClutterActor * clutter_glx_texture_pixmap_new_with_pixmap (Pixmap pixmap);
 
+CLUTTER_DEPRECATED_FOR(clutter_x11_texture_pixmap_new_with_window)
 ClutterActor * clutter_glx_texture_pixmap_new_with_window (Window window);
 
+CLUTTER_DEPRECATED_FOR(cogl_texture_pixmap_x11_is_using_tfp_extension)
 gboolean       clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixmap *texture);
 
 G_END_DECLS
-
-#endif /* !CLUTTER_DISABLE_DEPRECATED || !CLUTTER_COMPILATION */
 
 #endif /* __CLUTTER_GLX_TEXTURE_PIXMAP_H__ */
