@@ -1666,9 +1666,20 @@ clutter_texture_set_from_rgb_data (ClutterTexture       *texture,
  * Sets a #ClutterTexture from YUV image data. If an error occurred,
  * %FALSE is returned and @error is set.
  *
+ * The YUV support depends on the driver; the format supported by the
+ * few drivers exposing this capability are not really useful.
+ *
+ * The proper way to convert image data in any YUV colorspace to any
+ * RGB colorspace is to use a fragment shader associated with the
+ * #ClutterTexture material.
+ *
  * Return value: %TRUE if the texture was successfully updated
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.10: Use clutter_texture_get_cogl_material() and
+ *   the Cogl API to install a fragment shader for decoding YUV
+ *   formats on the GPU
  */
 gboolean
 clutter_texture_set_from_yuv_data (ClutterTexture     *texture,

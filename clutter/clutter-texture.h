@@ -142,12 +142,6 @@ gboolean             clutter_texture_set_from_rgb_data      (ClutterTexture     
                                                              gint                    bpp,
                                                              ClutterTextureFlags     flags,
                                                              GError                **error);
-gboolean              clutter_texture_set_from_yuv_data     (ClutterTexture         *texture,
-                                                             const guchar           *data,
-                                                             gint                    width,
-                                                             gint                    height,
-                                                             ClutterTextureFlags     flags,
-                                                             GError                **error);
 gboolean             clutter_texture_set_area_from_rgb_data (ClutterTexture         *texture,
                                                              const guchar           *data,
                                                              gboolean                has_alpha,
@@ -159,6 +153,15 @@ gboolean             clutter_texture_set_area_from_rgb_data (ClutterTexture     
                                                              gint                    bpp,
                                                              ClutterTextureFlags     flags,
                                                              GError                **error);
+
+CLUTTER_DEPRECATED
+gboolean              clutter_texture_set_from_yuv_data     (ClutterTexture         *texture,
+                                                             const guchar           *data,
+                                                             gint                    width,
+                                                             gint                    height,
+                                                             ClutterTextureFlags     flags,
+                                                             GError                **error);
+
 void                  clutter_texture_get_base_size         (ClutterTexture         *texture,
                                                              gint                   *width,
                                                              gint                   *height);
