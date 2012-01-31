@@ -109,6 +109,10 @@
  *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
  * </xi:include>
  *   </programlisting></informalexample>
+ *   <figure id="bin-layout">
+ *     <title>Actors</title>
+ *     <graphic fileref="test-actor.png" format="PNG"/>
+ *   </figure>
  * </refsect2>
  *
  * <refsect2 id="ClutterActor-events">
