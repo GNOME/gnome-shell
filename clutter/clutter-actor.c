@@ -3464,8 +3464,9 @@ clutter_actor_remove_child_internal (ClutterActor                 *self,
       /* we need to unrealize *before* we set parent_actor to NULL,
        * because in an unrealize method actors are dissociating from the
        * stage, which means they need to be able to
-       * clutter_actor_get_stage(). This should unmap and unrealize,
-       *  unless we're reparenting.
+       * clutter_actor_get_stage().
+       *
+       * yhis should unmap and unrealize, unless we're reparenting.
        */
       clutter_actor_update_map_state (child, MAP_STATE_MAKE_UNREALIZED);
     }
@@ -4532,7 +4533,10 @@ clutter_actor_dispose (GObject *object)
       ClutterActor *parent = priv->parent;
 
       /* go through the Container implementation unless this
-       * is an internal child and has been marked as such
+       * is an internal child and has been marked as such.
+       *
+       * removing the actor from its parent will reset the
+       * realized and mapped states.
        */
       if (!CLUTTER_ACTOR_IS_INTERNAL_CHILD (self))
         clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
@@ -4541,7 +4545,7 @@ clutter_actor_dispose (GObject *object)
                                              REMOVE_CHILD_LEGACY_FLAGS);
     }
 
-  /* parent should be gone */
+  /* parent must be gone at this point */
   g_assert (priv->parent == NULL);
 
   if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
@@ -6378,12 +6382,6 @@ clutter_actor_destroy (ClutterActor *self)
   if (!CLUTTER_ACTOR_IN_DESTRUCTION (self))
     {
       CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IN_DESTRUCTION);
-
-      /* if we are destroying we want to unrealize ourselves
-       * first before the dispose run removes the parent
-       */
-      if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
-        clutter_actor_update_map_state (self, MAP_STATE_MAKE_UNREALIZED);
 
       g_object_run_dispose (G_OBJECT (self));
 
