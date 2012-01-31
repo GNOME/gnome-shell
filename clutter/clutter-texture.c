@@ -1573,7 +1573,7 @@ get_pixel_format_from_texture_flags (gint                 bpp,
     {
       if (G_UNLIKELY (bpp != 4))
 	{
-          g_warning ("Unsupported bits per pixel value '%d': "
+          g_warning ("Unsupported bytes per pixel value '%d': "
                      "Clutter supports only a  value of 4 "
                      "for RGBA data",
                      bpp);
@@ -1586,7 +1586,7 @@ get_pixel_format_from_texture_flags (gint                 bpp,
     {
       if (G_UNLIKELY (bpp != 3))
 	{
-          g_warning ("Unsupported bits per pixel value '%d': "
+          g_warning ("Unsupported bytes per pixel value '%d': "
                      "Clutter supports only a BPP value of 3 "
                      "for RGB data",
                      bpp);
@@ -1607,14 +1607,14 @@ get_pixel_format_from_texture_flags (gint                 bpp,
 
 /**
  * clutter_texture_set_from_rgb_data:
- * @texture: A #ClutterTexture
- * @data: (array): Image data in RGBA type colorspace.
- * @has_alpha: Set to TRUE if image data has an alpha channel.
- * @width: Width in pixels of image data.
- * @height: Height in pixels of image data
- * @rowstride: Distance in bytes between row starts.
- * @bpp: bytes per pixel (Currently only 3 and 4 supported,
- *                        depending on @has_alpha)
+ * @texture: a #ClutterTexture
+ * @data: (array): image data in RGBA type colorspace.
+ * @has_alpha: set to %TRUE if image data has an alpha channel.
+ * @width: width in pixels of image data.
+ * @height: height in pixels of image data
+ * @rowstride: distance in bytes between row starts.
+ * @bpp: bytes per pixel (currently only 3 and 4 supported, depending
+ *   on the value of @has_alpha)
  * @flags: #ClutterTextureFlags
  * @error: return location for a #GError, or %NULL.
  *
