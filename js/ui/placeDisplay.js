@@ -157,8 +157,8 @@ const PlacesManager = new Lang.Class({
             function (size) {
                 // do NOT use St.Icon here, it crashes the shell
                 // see wanda.js for details
-                return St.TextureCache.get_default().load_icon_name('applications-internet',
-                                                                    null,
+                return St.TextureCache.get_default().load_icon_name(null,
+                                                                    'applications-internet',
                                                                     St.IconType.FULLCOLOR,
                                                                     size);
             },
