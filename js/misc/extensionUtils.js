@@ -17,6 +17,38 @@ const ExtensionType = {
 // GFile for user extensions
 var userExtensionsDir = null;
 
+// Maps uuid -> metadata object
+const extensions = {};
+
+function getCurrentExtension() {
+    let stack = (new Error()).stack;
+
+    // Assuming we're importing this directly from an extension (and we shouldn't
+    // ever not be), its UUID should be directly in the path here.
+    let extensionStackLine = stack.split('\n')[1];
+    if (!extensionStackLine)
+        throw new Error('Could not find current extension');
+
+    // The stack line is like:
+    //   init([object Object])@/home/user/data/gnome-shell/extensions/u@u.id/prefs.js:8
+    //
+    // In the case that we're importing from
+    // module scope, the first field is blank:
+    //   @/home/user/data/gnome-shell/extensions/u@u.id/prefs.js:8
+    let match = new RegExp('@(.+):\\d+').exec(extensionStackLine);
+    if (!match)
+        throw new Error('Could not find current extension');
+
+    let path = match[1];
+    let uuid = GLib.path_get_basename(GLib.path_get_dirname(path));
+
+    let extension = extensions[uuid];
+    if (extension === undefined)
+        throw new Error('Could not find current extension');
+
+    return extension;
+}
+
 /**
  * versionCheck:
  * @required: an array of versions we're compatible with
@@ -47,17 +79,17 @@ function versionCheck(required, current) {
     return false;
 }
 
-function isOutOfDate(meta) {
-    if (!versionCheck(meta['shell-version'], Config.PACKAGE_VERSION))
+function isOutOfDate(extension) {
+    if (!versionCheck(extension.metadata['shell-version'], Config.PACKAGE_VERSION))
         return true;
 
-    if (meta['js-version'] && !versionCheck(meta['js-version'], Config.GJS_VERSION))
+    if (extension.metadata['js-version'] && !versionCheck(extension.metadata['js-version'], Config.GJS_VERSION))
         return true;
 
     return false;
 }
 
-function loadMetadata(uuid, dir, type) {
+function createExtensionObject(uuid, dir, type) {
     let info;
 
     let metadataFile = dir.get_child('metadata.json');
@@ -95,21 +127,27 @@ function loadMetadata(uuid, dir, type) {
         throw new Error('uuid "' + meta.uuid + '" from metadata.json does not match directory name "' + uuid + '"');
     }
 
-    meta.type = type;
-    meta.dir = dir;
-    meta.path = dir.get_path();
-    meta.error = '';
-    meta.hasPrefs = dir.get_child('prefs.js').query_exists(null);
+    let extension = {};
 
-    return meta;
+    extension.metadata = meta;
+    extension.uuid = meta.uuid;
+    extension.type = type;
+    extension.dir = dir;
+    extension.path = dir.get_path();
+    extension.error = '';
+    extension.hasPrefs = dir.get_child('prefs.js').query_exists(null);
+
+    extensions[uuid] = extension;
+
+    return extension;
 }
 
-var _meta = null;
+var _extension = null;
 
-function installImporter(meta) {
-    _meta = meta;
-    ShellJS.add_extension_importer('imports.misc.extensionUtils._meta', 'importer', meta.path);
-    _meta = null;
+function installImporter(extension) {
+    _extension = extension;
+    ShellJS.add_extension_importer('imports.misc.extensionUtils._extension', 'imports', extension.path);
+    _extension = null;
 }
 
 function init() {

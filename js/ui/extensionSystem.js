@@ -53,15 +53,10 @@ function _getCertFile() {
 
 _httpSession.ssl_ca_file = _getCertFile();
 
-// Maps uuid -> metadata object
-const extensionMeta = {};
-// Maps uuid -> extension state object (returned from init())
-const extensionStateObjs = {};
-// Contains the order that extensions were enabled in.
-const extensionOrder = [];
-
 // Arrays of uuids
 var enabledExtensions;
+// Contains the order that extensions were enabled in.
+const extensionOrder = [];
 
 // We don't really have a class to add signals on. So, create
 // a simple dummy object, add the signal methods, and export those
@@ -71,9 +66,6 @@ Signals.addSignalMethods(_signals);
 
 const connect = Lang.bind(_signals, _signals.connect);
 const disconnect = Lang.bind(_signals, _signals.disconnect);
-
-// UUID => Array of error messages
-var errors = {};
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
 
@@ -94,8 +86,8 @@ function installExtensionFromUUID(uuid, version_tag) {
 }
 
 function uninstallExtensionFromUUID(uuid) {
-    let meta = extensionMeta[uuid];
-    if (!meta)
+    let extension = ExtensionUtils.extensions[uuid];
+    if (!extension)
         return false;
 
     // Try to disable it -- if it's ERROR'd, we can't guarantee that,
@@ -104,17 +96,17 @@ function uninstallExtensionFromUUID(uuid) {
     disableExtension(uuid);
 
     // Don't try to uninstall system extensions
-    if (meta.type != ExtensionUtils.ExtensionType.PER_USER)
+    if (extension.type != ExtensionUtils.ExtensionType.PER_USER)
         return false;
 
-    meta.state = ExtensionState.UNINSTALLED;
-    _signals.emit('extension-state-changed', meta);
+    extension.state = ExtensionState.UNINSTALLED;
+    _signals.emit('extension-state-changed', extension);
 
-    delete extensionMeta[uuid];
+    delete ExtensionUtils.extensions[uuid];
     delete extensionStateObjs[uuid];
     delete errors[uuid];
 
-    FileUtils.recursivelyDeleteDir(Gio.file_new_for_path(meta.path));
+    FileUtils.recursivelyDeleteDir(Gio.file_new_for_path(extension.path));
 
     return true;
 }
@@ -164,11 +156,11 @@ function gotExtensionZipFile(session, message, uuid) {
 }
 
 function disableExtension(uuid) {
-    let meta = extensionMeta[uuid];
-    if (!meta)
+    let extension = ExtensionUtils.extensions[uuid];
+    if (!extension)
         return;
 
-    if (meta.state != ExtensionState.ENABLED)
+    if (extension.state != ExtensionState.ENABLED)
         return;
 
     let extensionState = extensionStateObjs[uuid];
@@ -212,41 +204,45 @@ function disableExtension(uuid) {
 
     extensionOrder.splice(orderIdx, 1);
 
-    meta.state = ExtensionState.DISABLED;
-    _signals.emit('extension-state-changed', meta);
+    extension.state = ExtensionState.DISABLED;
+    _signals.emit('extension-state-changed', extension);
 }
 
 function enableExtension(uuid) {
-    let meta = extensionMeta[uuid];
-    if (!meta)
+    let extension = ExtensionUtils.extensions[uuid];
+    if (!extension)
         return;
 
-    if (meta.state == ExtensionState.INITIALIZED) {
-        loadExtension(meta.dir, meta.type, true);
+    if (extension.state == ExtensionState.INITIALIZED) {
+        loadExtension(extension.dir, extension.type, true);
         return;
     }
 
-    if (meta.state != ExtensionState.DISABLED)
+    if (extension.state != ExtensionState.DISABLED)
         return;
-
-    let extensionState = extensionStateObjs[uuid];
 
     extensionOrder.push(uuid);
 
     try {
-        extensionState.enable();
+        extension.stateObj.enable();
     } catch(e) {
         logExtensionError(uuid, e.toString());
         return;
     }
 
-    meta.state = ExtensionState.ENABLED;
-    _signals.emit('extension-state-changed', meta);
+    extension.state = ExtensionState.ENABLED;
+    _signals.emit('extension-state-changed', extension);
 }
 
 function logExtensionError(uuid, message, state) {
-    if (!errors[uuid]) errors[uuid] = [];
-    errors[uuid].push(message);
+    let extension = ExtensionUtils.extensions[uuid];
+    if (!extension)
+        return;
+
+    if (!extension.errors)
+        extension.errors = [];
+
+    extension.errors.push(message);
     global.logError('Extension "%s" had error: %s'.format(uuid, message));
     state = state || ExtensionState.ERROR;
     _signals.emit('extension-state-changed', { uuid: uuid,
@@ -256,32 +252,30 @@ function logExtensionError(uuid, message, state) {
 
 function loadExtension(dir, type, enabled) {
     let uuid = dir.get_basename();
-    let meta;
+    let extension;
 
-    if (extensionMeta[uuid] != undefined) {
+    if (ExtensionUtils.extensions[uuid] != undefined) {
         throw new Error('extension already loaded');
     }
 
     try {
-        meta = ExtensionUtils.loadMetadata(uuid, dir, type);
+        extension = ExtensionUtils.createExtensionObject(uuid, dir, type);
     } catch(e) {
         logExtensionError(uuid, e.message);
         return;
     }
 
-    extensionMeta[uuid] = meta;
-
     // Default to error, we set success as the last step
-    meta.state = ExtensionState.ERROR;
+    extension.state = ExtensionState.ERROR;
 
-    if (ExtensionUtils.isOutOfDate(meta)) {
+    if (ExtensionUtils.isOutOfDate(extension)) {
         logExtensionError(uuid, 'extension is not compatible with current GNOME Shell and/or GJS version', ExtensionState.OUT_OF_DATE);
-        meta.state = ExtensionState.OUT_OF_DATE;
+        extension.state = ExtensionState.OUT_OF_DATE;
         return;
     }
 
     if (!enabled) {
-        meta.state = ExtensionState.INITIALIZED;
+        extension.state = ExtensionState.INITIALIZED;
         return;
     }
 
@@ -306,8 +300,8 @@ function loadExtension(dir, type, enabled) {
     let extensionModule;
     let extensionState = null;
     try {
-        ExtensionUtils.installImporter(meta);
-        extensionModule = meta.importer.extension;
+        ExtensionUtils.installImporter(extension);
+        extensionModule = extension.imports.extension;
     } catch (e) {
         if (stylesheetPath != null)
             theme.unload_stylesheet(stylesheetPath);
@@ -321,7 +315,7 @@ function loadExtension(dir, type, enabled) {
     }
 
     try {
-        extensionState = extensionModule.init(meta);
+        extensionState = extensionModule.init(extension);
     } catch (e) {
         if (stylesheetPath != null)
             theme.unload_stylesheet(stylesheetPath);
@@ -331,7 +325,7 @@ function loadExtension(dir, type, enabled) {
 
     if (!extensionState)
         extensionState = extensionModule;
-    extensionStateObjs[uuid] = extensionState;
+    extension.stateObj = extensionState;
 
     if (!extensionState.enable) {
         logExtensionError(uuid, 'missing \'enable\' function');
@@ -342,13 +336,13 @@ function loadExtension(dir, type, enabled) {
         return;
     }
 
-    meta.state = ExtensionState.DISABLED;
+    extension.state = ExtensionState.DISABLED;
 
     enableExtension(uuid);
 
-    _signals.emit('extension-loaded', meta.uuid);
-    _signals.emit('extension-state-changed', meta);
-    global.log('Loaded extension ' + meta.uuid);
+    _signals.emit('extension-loaded', uuid);
+    _signals.emit('extension-state-changed', extension);
+    global.log('Loaded extension ' + uuid);
 }
 
 function onEnabledExtensionsChanged() {
@@ -430,13 +424,13 @@ const InstallExtensionDialog = new Lang.Class({
     },
 
     _onInstallButtonPressed: function(button, event) {
-        let meta = { uuid: this._uuid,
-                     state: ExtensionState.DOWNLOADING,
-                     error: '' };
+        let extension = { uuid: this._uuid,
+                          state: ExtensionState.DOWNLOADING,
+                          error: '' };
 
-        extensionMeta[this._uuid] = meta;
+        ExtensionUtils.extensions[this._uuid] = extension;
 
-        _signals.emit('extension-state-changed', meta);
+        _signals.emit('extension-state-changed', extension);
 
         let params = { version_tag: this._version_tag,
                        shell_version: Config.PACKAGE_VERSION,

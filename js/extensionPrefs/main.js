@@ -43,7 +43,6 @@ const Application = new Lang.Class({
         this.application.connect('command-line', Lang.bind(this, this._onCommandLine));
         this.application.connect('startup', Lang.bind(this, this._onStartup));
 
-        this._extensionMetas = {};
         this._extensionPrefsModules = {};
 
         this._extensionIters = {};
@@ -55,15 +54,15 @@ const Application = new Lang.Class({
     },
 
     _extensionAvailable: function(uuid) {
-        let meta = this._extensionMetas[uuid];
+        let extension = ExtensionUtils.extensions[uuid];
 
-        if (!meta)
+        if (!extension)
             return false;
 
-        if (ExtensionUtils.isOutOfDate(meta))
+        if (ExtensionUtils.isOutOfDate(extension))
             return false;
 
-        if (!meta.dir.get_child('prefs.js').query_exists(null))
+        if (!extension.dir.get_child('prefs.js').query_exists(null))
             return false;
 
         return true;
@@ -75,16 +74,18 @@ const Application = new Lang.Class({
             cell.set_sensitive(false);
     },
 
-    _getExtensionPrefsModule: function(meta) {
-        if (this._extensionPrefsModules.hasOwnProperty(meta.uuid))
-            return this._extensionPrefsModules[meta.uuid];
+    _getExtensionPrefsModule: function(extension) {
+        let uuid = extension.metadata.uuid;
 
-        ExtensionUtils.installImporter(meta);
+        if (this._extensionPrefsModules.hasOwnProperty(uuid))
+            return this._extensionPrefsModules[uuid];
 
-        let prefsModule = meta.importer.prefs;
-        prefsModule.init(meta);
+        ExtensionUtils.installImporter(extension);
 
-        this._extensionPrefsModules[meta.uuid] = prefsModule;
+        let prefsModule = extension.imports.prefs;
+        prefsModule.init(extension.metadata);
+
+        this._extensionPrefsModules[uuid] = prefsModule;
         return prefsModule;
     },
 
@@ -92,14 +93,14 @@ const Application = new Lang.Class({
         if (!this._extensionAvailable(uuid))
             return;
 
-        let meta = this._extensionMetas[uuid];
+        let extension = ExtensionUtils.extensions[uuid];
         let widget;
 
         try {
-            let prefsModule = this._getExtensionPrefsModule(meta);
-            widget = prefsModule.buildPrefsWidget(meta);
+            let prefsModule = this._getExtensionPrefsModule(extension);
+            widget = prefsModule.buildPrefsWidget();
         } catch (e) {
-            widget = this._buildErrorUI(meta, e);
+            widget = this._buildErrorUI(extension, e);
         }
 
         // Destroy the current prefs widget, if it exists
@@ -119,10 +120,10 @@ const Application = new Lang.Class({
         this._selectExtension(uuid);
     },
 
-    _buildErrorUI: function(meta, exc) {
+    _buildErrorUI: function(extension, exc) {
         let box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
         let label = new Gtk.Label({
-            label: _("There was an error loading the preferences dialog for %s:").format(meta.name)
+            label: _("There was an error loading the preferences dialog for %s:").format(extension.metadata.name)
         });
         box.add(label);
 
@@ -194,7 +195,7 @@ const Application = new Lang.Class({
 
         this._shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
         this._shellProxy.connectSignal('ExtensionStatusChanged', Lang.bind(this, function(proxy, senderName, [uuid, state, error]) {
-            if (!this._extensionMetas.hasOwnProperty(uuid))
+            if (ExtensionUtils.extensions[uuid] !== undefined)
                 this._scanExtensions();
         }));
 
@@ -203,21 +204,19 @@ const Application = new Lang.Class({
 
     _scanExtensions: function() {
         ExtensionUtils.scanExtensions(Lang.bind(this, function(uuid, dir, type) {
-            if (this._extensionMetas.hasOwnProperty(uuid))
+            if (ExtensionUtils.extensions[uuid] !== undefined)
                 return;
 
-            let meta;
+            let extension;
             try {
-                meta = ExtensionUtils.loadMetadata(uuid, dir, type);
+                extension = ExtensionUtils.createExtensionObject(uuid, dir, type);
             } catch(e) {
                 global.logError('' + e);
                 return;
             }
 
-            this._extensionMetas[uuid] = meta;
-
             let iter = this._model.append();
-            this._model.set(iter, [0, 1], [uuid, meta.name]);
+            this._model.set(iter, [0, 1], [uuid, extension.metadata.name]);
             this._extensionIters[uuid] = iter;
         }));
     },

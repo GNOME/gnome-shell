@@ -7,6 +7,7 @@ const Shell = imports.gi.Shell;
 
 const Config = imports.misc.config;
 const ExtensionSystem = imports.ui.extensionSystem;
+const ExtensionUtils = imports.misc.extensionUtils;
 const Flashspot = imports.ui.flashspot;
 const Main = imports.ui.main;
 
@@ -182,7 +183,7 @@ const GnomeShell = new Lang.Class({
 
     ListExtensions: function() {
         let out = {};
-        for (let uuid in ExtensionSystem.extensionMeta) {
+        for (let uuid in ExtensionUtils.extensions) {
             let dbusObj = this.GetExtensionInfo(uuid);
             out[uuid] = dbusObj;
         }
@@ -190,10 +191,23 @@ const GnomeShell = new Lang.Class({
     },
 
     GetExtensionInfo: function(uuid) {
-        let meta = ExtensionSystem.extensionMeta[uuid] || {};
+        let extension = ExtensionUtils.extensions[uuid];
+        if (!extension)
+            return {};
+
+        let obj = {};
+        Lang.copyProperties(extension.metadata, obj);
+
+        // Only serialize the properties that we actually need.
+        const serializedProperties = ["type", "state", "path", "error", "hasPrefs"];
+
+        serializedProperties.forEach(function(prop) {
+            obj[prop] = extension[prop];
+        });
+
         let out = {};
-        for (let key in meta) {
-            let val = meta[key];
+        for (let key in obj) {
+            let val = obj[key];
             let type;
             switch (typeof val) {
             case 'string':
@@ -210,11 +224,19 @@ const GnomeShell = new Lang.Class({
             }
             out[key] = GLib.Variant.new(type, val);
         }
+
         return out;
     },
 
     GetExtensionErrors: function(uuid) {
-        return ExtensionSystem.errors[uuid] || [];
+        let extension = ExtensionUtils.extensions[uuid];
+        if (!extension)
+            return [];
+
+        if (!extension.errors)
+            return [];
+
+        return extension.errors;
     },
 
     EnableExtension: function(uuid) {

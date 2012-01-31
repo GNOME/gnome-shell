@@ -15,6 +15,7 @@ const Mainloop = imports.mainloop;
 
 const History = imports.misc.history;
 const ExtensionSystem = imports.ui.extensionSystem;
+const ExtensionUtils = imports.misc.extensionUtils;
 const Link = imports.ui.link;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
@@ -728,7 +729,7 @@ const Extensions = new Lang.Class({
         this._extensionsList.add(this._noExtensions);
         this.actor.add(this._extensionsList);
 
-        for (let uuid in ExtensionSystem.extensionMeta)
+        for (let uuid in ExtensionUtils.extensions)
             this._loadExtension(null, uuid);
 
         ExtensionSystem.connect('extension-loaded',
@@ -736,10 +737,10 @@ const Extensions = new Lang.Class({
     },
 
     _loadExtension: function(o, uuid) {
-        let extension = ExtensionSystem.extensionMeta[uuid];
+        let extension = ExtensionUtils.extensions[uuid];
         // There can be cases where we create dummy extension metadata
         // that's not really a proper extension. Don't bother with these.
-        if (!extension.name)
+        if (!extension.metadata.name)
             return;
 
         let extensionDisplay = this._createExtensionDisplay(extension);
@@ -751,25 +752,24 @@ const Extensions = new Lang.Class({
     },
 
     _onViewSource: function (actor) {
-        let meta = actor._extensionMeta;
-        let file = Gio.file_new_for_path(meta.path);
-        let uri = file.get_uri();
+        let extension = actor._extension;
+        let uri = extension.dir.get_uri();
         Gio.app_info_launch_default_for_uri(uri, global.create_app_launch_context());
         Main.lookingGlass.close();
     },
 
     _onWebPage: function (actor) {
-        let meta = actor._extensionMeta;
-        Gio.app_info_launch_default_for_uri(meta.url, global.create_app_launch_context());
+        let extension = actor._extension;
+        Gio.app_info_launch_default_for_uri(extension.metadata.url, global.create_app_launch_context());
         Main.lookingGlass.close();
     },
 
     _onViewErrors: function (actor) {
-        let meta = actor._extensionMeta;
+        let extension = actor._extension;
         let shouldShow = !actor._isShowing;
 
         if (shouldShow) {
-            let errors = ExtensionSystem.errors[meta.uuid];
+            let errors = extension.errors;
             let errorDisplay = new St.BoxLayout({ vertical: true });
             if (errors && errors.length) {
                 for (let i = 0; i < errors.length; i ++)
@@ -809,36 +809,36 @@ const Extensions = new Lang.Class({
         return 'Unknown'; // Not translated, shouldn't appear
     },
 
-    _createExtensionDisplay: function(meta) {
+    _createExtensionDisplay: function(extension) {
         let box = new St.BoxLayout({ style_class: 'lg-extension', vertical: true });
         let name = new St.Label({ style_class: 'lg-extension-name',
-                                   text: meta.name });
+                                   text: extension.metadata.name });
         box.add(name, { expand: true });
         let description = new St.Label({ style_class: 'lg-extension-description',
-                                         text: meta.description || 'No description' });
+                                         text: extension.metadata.description || 'No description' });
         box.add(description, { expand: true });
 
         let metaBox = new St.BoxLayout({ style_class: 'lg-extension-meta' });
         box.add(metaBox);
-        let stateString = this._stateToString(meta.state);
+        let stateString = this._stateToString(extension.state);
         let state = new St.Label({ style_class: 'lg-extension-state',
-                                   text: this._stateToString(meta.state) });
+                                   text: this._stateToString(extension.state) });
         metaBox.add(state);
 
         let viewsource = new Link.Link({ label: _("View Source") });
-        viewsource.actor._extensionMeta = meta;
+        viewsource.actor._extension = extension;
         viewsource.actor.connect('clicked', Lang.bind(this, this._onViewSource));
         metaBox.add(viewsource.actor);
 
-        if (meta.url) {
+        if (extension.metadata.url) {
             let webpage = new Link.Link({ label: _("Web Page") });
-            webpage.actor._extensionMeta = meta;
+            webpage.actor._extension = extension;
             webpage.actor.connect('clicked', Lang.bind(this, this._onWebPage));
             metaBox.add(webpage.actor);
         }
 
         let viewerrors = new Link.Link({ label: _("Show Errors") });
-        viewerrors.actor._extensionMeta = meta;
+        viewerrors.actor._extension = extension;
         viewerrors.actor._parentBox = box;
         viewerrors.actor._isShowing = false;
         viewerrors.actor.connect('clicked', Lang.bind(this, this._onViewErrors));
