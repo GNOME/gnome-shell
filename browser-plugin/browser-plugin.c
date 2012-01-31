@@ -822,8 +822,8 @@ plugin_object_set_callback (NPObject        **listener,
 
   if (NPVARIANT_IS_OBJECT (*value))
     {
-      funcs.retainobject (*listener);
       *listener = NPVARIANT_TO_OBJECT (*value);
+      funcs.retainobject (*listener);
     }
 
   return TRUE;
@@ -835,6 +835,8 @@ plugin_object_set_property (NPObject        *npobj,
                             const NPVariant *value)
 {
   PluginObject *obj;
+
+  obj = (PluginObject *)npobj;
 
   if (name == onextension_changed_id)
     return plugin_object_set_callback (&obj->listener, value);
