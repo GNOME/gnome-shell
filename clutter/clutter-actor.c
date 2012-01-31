@@ -11657,6 +11657,13 @@ clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
     {
       GSList *l;
 
+#ifdef CLUTTER_ENABLE_DEBUG
+      if (G_UNLIKELY (_clutter_diagnostic_enabled ()))
+        _clutter_diagnostic_message ("The 'behaviours' key is deprecated "
+                                     "and it should not be used in newly "
+                                     "written ClutterScript definitions.");
+#endif
+
       l = parse_behaviours (script, actor, node);
 
       g_value_init (value, G_TYPE_POINTER);
