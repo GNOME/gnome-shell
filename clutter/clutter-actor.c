@@ -388,6 +388,8 @@
 #include "clutter-interval.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
+#include "clutter-paint-nodes.h"
+#include "clutter-paint-node-private.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
 #include "clutter-profile.h"
@@ -3085,30 +3087,42 @@ add_or_remove_flatten_effect (ClutterActor *self)
 }
 
 static void
+clutter_actor_paint_node (ClutterActor     *actor,
+                          ClutterPaintNode *root)
+{
+  ClutterActorPrivate *priv = actor->priv;
+
+  if (priv->bg_color_set)
+    {
+      ClutterPaintNode *node;
+      ClutterColor bg_color;
+
+      bg_color = priv->bg_color;
+      bg_color.alpha = clutter_actor_get_paint_opacity_internal (actor)
+                     * priv->bg_color.alpha
+                     / 255;
+
+      node = clutter_color_node_new (&bg_color);
+      clutter_paint_node_set_name (node, "backgroundColor");
+      clutter_paint_node_add_rectangle (node, &priv->allocation);
+      clutter_paint_node_add_child (root, node);
+      clutter_paint_node_unref (node);
+    }
+
+  if (CLUTTER_ACTOR_GET_CLASS (actor)->paint_node != NULL)
+    CLUTTER_ACTOR_GET_CLASS (actor)->paint_node (actor, root);
+
+  if (clutter_paint_node_get_n_children (root) == 0)
+    return;
+
+  _clutter_paint_node_paint (root);
+}
+
+static void
 clutter_actor_real_paint (ClutterActor *actor)
 {
   ClutterActorPrivate *priv = actor->priv;
   ClutterActor *iter;
-
-  /* paint the background color, if set */
-  if (priv->bg_color_set)
-    {
-      float width, height;
-      guint8 real_alpha;
-
-      clutter_actor_box_get_size (&priv->allocation, &width, &height);
-
-      real_alpha = clutter_actor_get_paint_opacity_internal (actor)
-                 * priv->bg_color.alpha
-                 / 255;
-
-      cogl_set_source_color4ub (priv->bg_color.red,
-                                priv->bg_color.green,
-                                priv->bg_color.blue,
-                                real_alpha);
-
-      cogl_rectangle (0, 0, width, height);
-    }
 
   for (iter = priv->first_child;
        iter != NULL;
@@ -3401,6 +3415,31 @@ clutter_actor_continue_paint (ClutterActor *self)
     {
       if (_clutter_context_get_pick_mode () == CLUTTER_PICK_NONE)
         {
+          ClutterPaintNode *dummy;
+
+          /* XXX - this will go away in 2.0, when we can get rid of this
+           * stuff and switch to a pure retained render tree of PaintNodes
+           * for the entire frame, starting from the Stage.
+           */
+          dummy = _clutter_dummy_node_new ();
+          clutter_paint_node_set_name (dummy, "Root");
+          clutter_actor_paint_node (self, dummy);
+
+          if (clutter_paint_node_get_n_children (dummy) != 0)
+            {
+#ifdef CLUTTER_ENABLE_DEBUG
+              if (CLUTTER_HAS_DEBUG (PAINT))
+                {
+                  /* dump the tree only if we have one */
+                  _clutter_paint_node_dump_tree (dummy);
+                }
+#endif /* CLUTTER_ENABLE_DEBUG */
+
+              _clutter_paint_node_paint (dummy);
+            }
+
+          clutter_paint_node_unref (dummy);
+
           g_signal_emit (self, actor_signals[PAINT], 0);
         }
       else

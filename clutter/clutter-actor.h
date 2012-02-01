@@ -253,14 +253,17 @@ struct _ClutterActorClass
   /* accessibility support */
   AtkObject * (* get_accessible)    (ClutterActor         *self);
 
-  gboolean    (* get_paint_volume)  (ClutterActor         *actor,
+  gboolean (* get_paint_volume)     (ClutterActor         *actor,
                                      ClutterPaintVolume   *volume);
 
   gboolean (* has_overlaps)         (ClutterActor         *self);
 
+  void     (* paint_node)           (ClutterActor         *self,
+                                     ClutterPaintNode     *root);
+
   /*< private >*/
   /* padding for future expansion */
-  gpointer _padding_dummy[28];
+  gpointer _padding_dummy[27];
 };
 
 /**
