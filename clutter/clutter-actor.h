@@ -467,6 +467,21 @@ gboolean                        clutter_actor_is_in_clone_paint                 
 gboolean                        clutter_actor_get_paint_box                     (ClutterActor               *self,
                                                                                  ClutterActorBox            *box);
 gboolean                        clutter_actor_has_overlaps                      (ClutterActor               *self);
+
+/* Content */
+CLUTTER_AVAILABLE_IN_1_10
+void                            clutter_actor_set_content                       (ClutterActor               *self,
+                                                                                 ClutterContent             *content);
+CLUTTER_AVAILABLE_IN_1_10
+ClutterContent *                clutter_actor_get_content                       (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_1_10
+void                            clutter_actor_set_content_gravity               (ClutterActor               *self,
+                                                                                 ClutterContentGravity       gravity);
+CLUTTER_AVAILABLE_IN_1_10
+ClutterContentGravity           clutter_actor_get_content_gravity               (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_1_10
+void                            clutter_actor_get_content_box                   (ClutterActor               *self,
+                                                                                 ClutterActorBox            *box);
 CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_set_background_color              (ClutterActor               *self,
                                                                                  const ClutterColor         *color);

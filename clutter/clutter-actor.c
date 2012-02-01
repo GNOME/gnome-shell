@@ -380,6 +380,7 @@
 #include "clutter-color.h"
 #include "clutter-constraint.h"
 #include "clutter-container.h"
+#include "clutter-content-private.h"
 #include "clutter-debug.h"
 #include "clutter-effect-private.h"
 #include "clutter-enum-types.h"
@@ -505,6 +506,11 @@ struct _ClutterActorPrivate
 
   /* delegate object used to allocate the children of this actor */
   ClutterLayoutManager *layout_manager;
+
+  /* delegate object used to paint the contents of this actor */
+  ClutterContent *content;
+
+  ClutterContentGravity content_gravity;
 
   /* used when painting, to update the paint volume */
   ClutterEffect *current_effect;
@@ -667,6 +673,10 @@ enum
 
   PROP_FIRST_CHILD,
   PROP_LAST_CHILD,
+
+  PROP_CONTENT,
+  PROP_CONTENT_GRAVITY,
+  PROP_CONTENT_BOX,
 
   PROP_LAST
 };
@@ -2045,6 +2055,10 @@ clutter_actor_set_allocation_internal (ClutterActor           *self,
 
       g_object_notify_by_pspec (obj, obj_props[PROP_ALLOCATION]);
 
+      /* if the allocation changes, so does the content box */
+      if (priv->content != NULL)
+        g_object_notify_by_pspec (obj, obj_props[PROP_CONTENT_BOX]);
+
       retval = TRUE;
     }
   else
@@ -3108,6 +3122,9 @@ clutter_actor_paint_node (ClutterActor     *actor,
       clutter_paint_node_add_child (root, node);
       clutter_paint_node_unref (node);
     }
+
+  if (priv->content != NULL)
+    _clutter_content_paint_content (priv->content, actor, root);
 
   if (CLUTTER_ACTOR_GET_CLASS (actor)->paint_node != NULL)
     CLUTTER_ACTOR_GET_CLASS (actor)->paint_node (actor, root);
@@ -4353,6 +4370,14 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_background_color (actor, g_value_get_boxed (value));
       break;
 
+    case PROP_CONTENT:
+      clutter_actor_set_content (actor, g_value_get_object (value));
+      break;
+
+    case PROP_CONTENT_GRAVITY:
+      clutter_actor_set_content_gravity (actor, g_value_get_enum (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -4751,6 +4776,23 @@ clutter_actor_get_property (GObject    *object,
       g_value_set_object (value, priv->last_child);
       break;
 
+    case PROP_CONTENT:
+      g_value_set_object (value, priv->content);
+      break;
+
+    case PROP_CONTENT_GRAVITY:
+      g_value_set_enum (value, priv->content_gravity);
+      break;
+
+    case PROP_CONTENT_BOX:
+      {
+        ClutterActorBox box = { 0, };
+
+        clutter_actor_get_content_box (actor, &box);
+        g_value_set_boxed (value, &box);
+      }
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -4807,8 +4849,13 @@ clutter_actor_dispose (GObject *object)
   if (priv->layout_manager != NULL)
     {
       clutter_layout_manager_set_container (priv->layout_manager, NULL);
-      g_object_unref (priv->layout_manager);
-      priv->layout_manager = NULL;
+      g_clear_object (&priv->layout_manager);
+    }
+
+  if (priv->content != NULL)
+    {
+      _clutter_content_detached (priv->content, self);
+      g_clear_object (&priv->content);
     }
 
   G_OBJECT_CLASS (clutter_actor_parent_class)->dispose (object);
@@ -6152,6 +6199,66 @@ clutter_actor_class_init (ClutterActorClass *klass)
                          CLUTTER_TYPE_ACTOR,
                          CLUTTER_PARAM_READABLE);
 
+  /**
+   * ClutterActor:content:
+   *
+   * The #ClutterContent implementation that controls the content
+   * of the actor.
+   *
+   * Since: 1.10
+   */
+  obj_props[PROP_CONTENT] =
+    g_param_spec_object ("content",
+                         P_("Content"),
+                         P_("Delegate object for painting the actor's content"),
+                         CLUTTER_TYPE_CONTENT,
+                         CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterActor:content-gravity:
+   *
+   * The alignment that should be honoured by the #ClutterContent
+   * set with the #ClutterActor:content property.
+   *
+   * Changing the value of this property will change the bounding box of
+   * the content; you can use the #ClutterActor:content-box property to
+   * get the position and size of the content within the actor's
+   * allocation.
+   *
+   * This property is meaningful only for #ClutterContent implementations
+   * that have a preferred size, and if the preferred size is smaller than
+   * the actor's allocation.
+   *
+   * Since: 1.10
+   */
+  obj_props[PROP_CONTENT_GRAVITY] =
+    g_param_spec_enum ("content-gravity",
+                       P_("Content Gravity"),
+                       P_("Alignment of the actor's content"),
+                       CLUTTER_TYPE_CONTENT_GRAVITY,
+                       CLUTTER_CONTENT_GRAVITY_RESIZE_FILL,
+                       CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterActor:content-box:
+   *
+   * The bounding box for the #ClutterContent used by the actor.
+   *
+   * The value of this property is controlled by the #ClutterActor:allocation
+   * and #ClutterActor:content-gravity properties of #ClutterActor.
+   *
+   * The bounding box for the content is guaranteed to never exceed the
+   * allocation's of the actor.
+   *
+   * Since: 1.10
+   */
+  obj_props[PROP_CONTENT_BOX] =
+    g_param_spec_boxed ("content-box",
+                        P_("Content Box"),
+                        P_("The bounding box of the actor's content"),
+                        CLUTTER_TYPE_ACTOR_BOX,
+                        CLUTTER_PARAM_READABLE);
+
   g_object_class_install_properties (object_class, PROP_LAST, obj_props);
 
   /**
@@ -6731,6 +6838,12 @@ clutter_actor_init (ClutterActor *self)
   priv->last_paint_volume_valid = TRUE;
 
   priv->transform_valid = FALSE;
+
+  /* the default is to stretch the content, to match the
+   * current behaviour of basically all actors. also, it's
+   * the easiest thing to compute.
+   */
+  priv->content_gravity = CLUTTER_CONTENT_GRAVITY_RESIZE_FILL;
 }
 
 /**
@@ -17235,4 +17348,304 @@ clutter_actor_restore_easing_state (ClutterActor *self)
 
   g_array_remove_index (info->states, info->states->len - 1);
   info->cur_state = &g_array_index (info->states, AState, info->states->len - 1);
+}
+
+/**
+ * clutter_actor_set_content:
+ * @self: a #ClutterActor
+ * @content: (allow-none): a #ClutterContent, or %NULL
+ *
+ * Sets the contents of a #ClutterActor.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_set_content (ClutterActor   *self,
+                           ClutterContent *content)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (content == NULL || CLUTTER_IS_CONTENT (content));
+
+  priv = self->priv;
+
+  if (priv->content != NULL)
+    {
+      _clutter_content_detached (priv->content, self);
+      g_object_unref (priv->content);
+    }
+
+  priv->content = content;
+
+  if (priv->content != NULL)
+    {
+      g_object_ref (priv->content);
+      _clutter_content_attached (priv->content, self);
+    }
+
+  /* given that the content is always painted within the allocation,
+   * we only need to queue a redraw here
+   */
+  clutter_actor_queue_redraw (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONTENT]);
+
+  /* if the content gravity is not resize-fill, and the new content has a
+   * different preferred size than the previous one, then the content box
+   * may have been changed. since we compute that lazily, we just notify
+   * here, and let whomever watches :content-box do whatever they need to
+   * do.
+   */
+  if (priv->content_gravity != CLUTTER_CONTENT_GRAVITY_RESIZE_FILL)
+    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONTENT_BOX]);
+}
+
+/**
+ * clutter_actor_get_content:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the contents of @self.
+ *
+ * Return value: (transfer none): a pointer to the #ClutterContent instance,
+ *   or %NULL if none was set
+ *
+ * Since: 1.10
+ */
+ClutterContent *
+clutter_actor_get_content (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  return self->priv->content;
+}
+
+/**
+ * clutter_actor_set_content_gravity:
+ * @self: a #ClutterActor
+ * @gravity: the #ClutterContentGravity
+ *
+ * Sets the gravity of the #ClutterContent used by @self.
+ *
+ * See the description of the #ClutterActor:content-gravity property for
+ * more information.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_set_content_gravity (ClutterActor *self,
+                                   ClutterContentGravity  gravity)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (priv->content_gravity == gravity)
+    return;
+
+  priv->content_gravity = gravity;
+
+  clutter_actor_queue_redraw (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONTENT_GRAVITY]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONTENT_BOX]);
+}
+
+/**
+ * clutter_actor_get_content_gravity:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the content gravity as set using
+ * clutter_actor_get_content_gravity().
+ *
+ * Return value: the content gravity
+ *
+ * Since: 1.10
+ */
+ClutterContentGravity
+clutter_actor_get_content_gravity (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self),
+                        CLUTTER_CONTENT_GRAVITY_RESIZE_FILL);
+
+  return self->priv->content_gravity;
+}
+
+/**
+ * clutter_actor_get_content_box:
+ * @self: a #ClutterActor
+ * @box: (out caller-allocates): the return location for the bounding
+ *   box for the #ClutterContent
+ *
+ * Retrieves the bounding box for the #ClutterContent of @self.
+ *
+ * If no #ClutterContent is set for @self, or if @self has not been
+ * allocated yet, then the result is undefined.
+ *
+ * The content box is guaranteed to be, at most, as big as the allocation
+ * of the #ClutterActor.
+ *
+ * If the #ClutterContent used by the actor has a preferred size, then
+ * it is possible to modify the content box by using the
+ * #ClutterActor:content-gravity property.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_get_content_box (ClutterActor    *self,
+                               ClutterActorBox *box)
+{
+  ClutterActorPrivate *priv;
+  gfloat content_w, content_h;
+  gfloat alloc_w, alloc_h;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (box != NULL);
+
+  priv = self->priv;
+
+  if (!clutter_actor_has_allocation (self))
+    return;
+
+  if (priv->content == NULL)
+    return;
+
+  *box = priv->allocation;
+
+  /* no need to do any more work */
+  if (priv->content_gravity == CLUTTER_CONTENT_GRAVITY_RESIZE_FILL)
+    return;
+
+  /* if the content does not have a preferred size then there is
+   * no point in computing the content box
+   */
+  if (!_clutter_content_get_preferred_size (priv->content,
+                                            &content_w,
+                                            &content_h))
+    return;
+
+  clutter_actor_box_get_size (&priv->allocation, &alloc_w, &alloc_h);
+
+  switch (priv->content_gravity)
+    {
+    case CLUTTER_CONTENT_GRAVITY_TOP_LEFT:
+      box->x2 = box->x1 + MIN (content_w, alloc_w);
+      box->y2 = box->y1 + MIN (content_h, alloc_h);
+      break;
+
+    case CLUTTER_CONTENT_GRAVITY_TOP:
+      if (alloc_w > content_w)
+        {
+          box->x1 += ceilf ((alloc_w - content_w) / 2.0);
+          box->x2 = box->x1 + content_w;
+        }
+      box->y2 = box->y1 + MIN (content_h, alloc_h);
+      break;
+
+    case CLUTTER_CONTENT_GRAVITY_TOP_RIGHT:
+      if (alloc_w > content_w)
+        {
+          box->x1 += (alloc_w - content_w);
+          box->x2 = box->x1 + content_w;
+        }
+      box->y2 = box->y1 + MIN (content_h, alloc_h);
+      break;
+
+    case CLUTTER_CONTENT_GRAVITY_LEFT:
+      box->x2 = box->x1 + MIN (content_w, alloc_w);
+      if (alloc_h > content_h)
+        {
+          box->y1 += ceilf ((alloc_h - content_h) / 2.0);
+          box->y2 = box->y1 + content_h;
+        }
+      break;
+
+    case CLUTTER_CONTENT_GRAVITY_CENTER:
+      if (alloc_w > content_w)
+        {
+          box->x1 += ceilf ((alloc_w - content_w) / 2.0);
+          box->x2 = box->x1 + content_w;
+        }
+      if (alloc_h > content_h)
+        {
+          box->y1 += ceilf ((alloc_h - content_h) / 2.0);
+          box->y2 = box->y1 + content_h;
+        }
+      break;
+
+    case CLUTTER_CONTENT_GRAVITY_RIGHT:
+      if (alloc_w > content_w)
+        {
+          box->x1 += (alloc_w - content_w);
+          box->x2 = box->x1 + content_w;
+        }
+      if (alloc_h > content_h)
+        {
+          box->y1 += ceilf ((alloc_h - content_h) / 2.0);
+          box->y2 = box->y1 + content_h;
+        }
+      break;
+
+    case CLUTTER_CONTENT_GRAVITY_BOTTOM_LEFT:
+      box->x2 = box->x1 + MIN (content_w, alloc_w);
+      if (alloc_h > content_h)
+        {
+          box->y1 += (alloc_h - content_h);
+          box->y2 = box->y1 + content_h;
+        }
+      break;
+
+    case CLUTTER_CONTENT_GRAVITY_BOTTOM:
+      if (alloc_w > content_w)
+        {
+          box->x1 += ceilf ((alloc_w - content_w) / 2.0);
+          box->x2 = box->x1 + content_w;
+        }
+      if (alloc_h > content_h)
+        {
+          box->y1 += (alloc_h - content_h);
+          box->y2 = box->y1 + content_h;
+        }
+      break;
+
+    case CLUTTER_CONTENT_GRAVITY_BOTTOM_RIGHT:
+      if (alloc_w > content_w)
+        {
+          box->x1 += (alloc_w - content_w);
+          box->x2 = box->x1 + content_w;
+        }
+      if (alloc_h > content_h)
+        {
+          box->y1 += (alloc_h - content_h);
+          box->y2 = box->y1 + content_h;
+        }
+      break;
+
+    case CLUTTER_CONTENT_GRAVITY_RESIZE_FILL:
+      g_assert_not_reached ();
+      break;
+
+    case CLUTTER_CONTENT_GRAVITY_RESIZE_ASPECT:
+      if (content_w >= content_h && content_h > 0)
+        {
+          double ratio = content_w / content_h;
+
+          box->x2 = box->x1 + alloc_w;
+
+          box->y1 += ceilf ((alloc_h - (alloc_h / ratio)) / 2.0);
+          box->y2 = box->y1 + (alloc_h / ratio);
+        }
+      else if (content_h > content_w && content_w > 0)
+        {
+          double ratio = content_h / content_w;
+
+          box->x1 += ceilf ((alloc_w - (alloc_w / ratio)) / 2.0);
+          box->x2 = box->x2 + (alloc_w / ratio);
+
+          box->y2 = box->x1 + alloc_h;
+        }
+      break;
+    }
 }

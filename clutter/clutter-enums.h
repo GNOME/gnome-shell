@@ -1113,6 +1113,42 @@ typedef enum {
   CLUTTER_REPAINT_FLAGS_QUEUE_REDRAW_ON_ADD = 1 << 2
 } ClutterRepaintFlags;
 
+/**
+ * ClutterContentGravity:
+ * @CLUTTER_CONTENT_GRAVITY_TOP_LEFT: Align the content to the top left corner
+ * @CLUTTER_CONTENT_GRAVITY_TOP: Align the content to the top edge
+ * @CLUTTER_CONTENT_GRAVITY_TOP_RIGHT: Align the content to the top right corner
+ * @CLUTTER_CONTENT_GRAVITY_LEFT: Align the content to the left edge
+ * @CLUTTER_CONTENT_GRAVITY_CENTER: Align the content to the center
+ * @CLUTTER_CONTENT_GRAVITY_RIGHT: Align the content to the right edge
+ * @CLUTTER_CONTENT_GRAVITY_BOTTOM_LEFT: Align the content to the bottom left corner
+ * @CLUTTER_CONTENT_GRAVITY_BOTTOM: Align the content to the bottom edge
+ * @CLUTTER_CONTENT_GRAVITY_BOTTOM_RIGHT: Align the content to the bottom right corner
+ * @CLUTTER_CONTENT_GRAVITY_RESIZE_FILL: Resize the content to fill the allocation
+ * @CLUTTER_CONTENT_GRAVITY_RESIZE_ASPECT: Resize the content to remain within the
+ *   allocation, while maintaining the aspect ratio
+ *
+ * Controls the alignment of the #ClutterContent inside a #ClutterActor.
+ *
+ * Since: 1.10
+ */
+typedef enum {
+  CLUTTER_CONTENT_GRAVITY_TOP_LEFT,
+  CLUTTER_CONTENT_GRAVITY_TOP,
+  CLUTTER_CONTENT_GRAVITY_TOP_RIGHT,
+
+  CLUTTER_CONTENT_GRAVITY_LEFT,
+  CLUTTER_CONTENT_GRAVITY_CENTER,
+  CLUTTER_CONTENT_GRAVITY_RIGHT,
+
+  CLUTTER_CONTENT_GRAVITY_BOTTOM_LEFT,
+  CLUTTER_CONTENT_GRAVITY_BOTTOM,
+  CLUTTER_CONTENT_GRAVITY_BOTTOM_RIGHT,
+
+  CLUTTER_CONTENT_GRAVITY_RESIZE_FILL,
+  CLUTTER_CONTENT_GRAVITY_RESIZE_ASPECT
+} ClutterContentGravity;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ENUMS_H__ */

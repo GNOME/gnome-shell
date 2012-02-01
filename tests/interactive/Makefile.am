@@ -56,7 +56,8 @@ UNIT_TESTS = \
 	test-drop.c \
 	test-devices.c \
 	test-actor.c \
-	test-transitions.c
+	test-transitions.c \
+	test-content.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c

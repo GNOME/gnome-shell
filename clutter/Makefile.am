@@ -74,6 +74,7 @@ source_h =					\
 	$(srcdir)/clutter-colorize-effect.h	\
 	$(srcdir)/clutter-constraint.h		\
 	$(srcdir)/clutter-container.h		\
+	$(srcdir)/clutter-content.h		\
 	$(srcdir)/clutter-deform-effect.h	\
 	$(srcdir)/clutter-deprecated.h		\
 	$(srcdir)/clutter-desaturate-effect.h	\
@@ -151,6 +152,7 @@ source_c = \
 	$(srcdir)/clutter-colorize-effect.c	\
 	$(srcdir)/clutter-constraint.c		\
 	$(srcdir)/clutter-container.c		\
+	$(srcdir)/clutter-content.c		\
 	$(srcdir)/clutter-deform-effect.c	\
 	$(srcdir)/clutter-desaturate-effect.c	\
 	$(srcdir)/clutter-device-manager.c	\
@@ -209,6 +211,7 @@ source_h_priv = \
 	$(srcdir)/clutter-actor-private.h		\
 	$(srcdir)/clutter-backend-private.h		\
 	$(srcdir)/clutter-bezier.h			\
+	$(srcdir)/clutter-content-private.h		\
 	$(srcdir)/clutter-debug.h 			\
 	$(srcdir)/clutter-device-manager-private.h	\
 	$(srcdir)/clutter-easing.h			\
