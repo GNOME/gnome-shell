@@ -1,0 +1,161 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright (C) 2011  Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Emmanuele Bassi <ebassi@linux.intel.com>
+ */
+
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
+
+#ifndef __CLUTTER_PAINT_NODES_H__
+#define __CLUTTER_PAINT_NODES_H__
+
+#include <cogl/cogl.h>
+#include <clutter/clutter-types.h>
+
+G_BEGIN_DECLS
+
+#define CLUTTER_TYPE_COLOR_NODE         (clutter_color_node_get_type ())
+#define CLUTTER_COLOR_NODE(obj)         (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_COLOR_NODE, ClutterColorNode))
+#define CLUTTER_IS_COLOR_NODE(obj)      (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_COLOR_NODE))
+
+/**
+ * ClutterColorNode:
+ *
+ * The <structname>ClutterTextNode</structname> structure is an opaque
+ * type whose members cannot be directly accessed.
+ *
+ * Since: 1.10
+ */
+typedef struct _ClutterColorNode                ClutterColorNode;
+typedef struct _ClutterColorNodeClass           ClutterColorNodeClass;
+
+GType clutter_color_node_get_type (void) G_GNUC_CONST;
+
+ClutterPaintNode *      clutter_color_node_new          (const ClutterColor    *color);
+
+#define CLUTTER_TYPE_TEXTURE_NODE               (clutter_texture_node_get_type ())
+#define CLUTTER_TEXTURE_NODE(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_TEXTURE_NODE, ClutterTextureNode))
+#define CLUTTER_IS_TEXTURE_NODE(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_TEXTURE_NODE))
+
+/**
+ * ClutterTextureNode:
+ *
+ * The <structname>ClutterTextNode</structname> structure is an opaque
+ * type whose members cannot be directly accessed.
+ *
+ * Since: 1.10
+ */
+typedef struct _ClutterTextureNode              ClutterTextureNode;
+typedef struct _ClutterTextureNodeClass         ClutterTextureNodeClass;
+
+GType clutter_texture_node_get_type (void) G_GNUC_CONST;
+
+ClutterPaintNode *      clutter_texture_node_new        (CoglTexture           *texture,
+                                                         const ClutterColor    *color);
+
+#define CLUTTER_TYPE_CLIP_NODE                  (clutter_clip_node_get_type ())
+#define CLUTTER_CLIP_NODE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_CLIP_NODE, ClutterClipNode))
+#define CLUTTER_IS_CLIP_NODE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_CLIP_NODE))
+
+/**
+ * ClutterClipNode:
+ *
+ * The <structname>ClutterTextNode</structname> structure is an opaque
+ * type whose members cannot be directly accessed.
+ *
+ * Since: 1.10
+ */
+typedef struct _ClutterClipNode                 ClutterClipNode;
+typedef struct _ClutterClipNodeClass            ClutterClipNodeClass;
+
+GType clutter_clip_node_get_type (void) G_GNUC_CONST;
+
+ClutterPaintNode *      clutter_clip_node_new           (void);
+
+#define CLUTTER_TYPE_PIPELINE_NODE              (clutter_pipeline_node_get_type ())
+#define CLUTTER_PIPELINE_NODE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_PIPELINE_NODE, ClutterPipelineNode))
+#define CLUTTER_IS_PIPELINE_NODE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_PIPELINE_NODE))
+
+/**
+ * ClutterPipelineNode:
+ *
+ * The <structname>ClutterTextNode</structname> structure is an opaque
+ * type whose members cannot be directly accessed.
+ *
+ * Since: 1.10
+ */
+typedef struct _ClutterPipelineNode             ClutterPipelineNode;
+typedef struct _ClutterPipelineNodeClass        ClutterPipelineNodeClass;
+
+GType clutter_pipeline_node_get_type (void) G_GNUC_CONST;
+
+#if defined(COGL_ENABLE_EXPERIMENTAL_2_0_API) && defined(CLUTTER_ENABLE_EXPERIMENTAL_API)
+ClutterPaintNode *      clutter_pipeline_node_new       (CoglPipeline          *pipeline);
+#endif /* COGL_ENABLE_EXPERIMENTAL_2_0_API && CLUTTER_ENABLE_EXPERIMENTAL_API */
+
+#define CLUTTER_TYPE_TEXT_NODE                  (clutter_text_node_get_type ())
+#define CLUTTER_TEXT_NODE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_TEXT_NODE, ClutterTextNode))
+#define CLUTTER_IS_TEXT_NODE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_TEXT_NODE))
+
+/**
+ * ClutterTextNode:
+ *
+ * The <structname>ClutterTextNode</structname> structure is an opaque
+ * type whose members cannot be directly accessed.
+ *
+ * Since: 1.10
+ */
+typedef struct _ClutterTextNode                 ClutterTextNode;
+typedef struct _ClutterTextNodeClass            ClutterTextNodeClass;
+
+GType clutter_text_node_get_type (void) G_GNUC_CONST;
+
+ClutterPaintNode *      clutter_text_node_new           (PangoLayout           *layout,
+                                                         const ClutterColor    *color);
+
+#define CLUTTER_TYPE_LAYER_NODE                 (clutter_layer_node_get_type ())
+#define CLUTTER_LAYER_NODE(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_LAYER_NODE, ClutterLayerNode))
+#define CLUTTER_IS_LAYER_NODE(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_LAYER_NODE))
+
+/**
+ * ClutterLayerNode:
+ *
+ * The <structname>ClutterLayerNode</structname> structure is an opaque
+ * type whose members cannot be directly accessed.
+ *
+ * Since: 1.10
+ */
+typedef struct _ClutterLayerNode                ClutterLayerNode;
+typedef struct _ClutterLayerNodeClass           ClutterLayerNodeClass;
+
+GType clutter_layer_node_get_type (void) G_GNUC_CONST;
+
+ClutterPaintNode *      clutter_layer_node_new          (const CoglMatrix        *projection,
+                                                         const cairo_rectangle_t *viewport,
+                                                         float                    width,
+                                                         float                    height,
+                                                         guint8                   opacity);
+
+G_END_DECLS
+
+#endif /* __CLUTTER_PAINT_NODES_H__ */

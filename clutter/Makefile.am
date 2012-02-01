@@ -100,6 +100,8 @@ source_h =					\
 	$(srcdir)/clutter-model.h		\
 	$(srcdir)/clutter-offscreen-effect.h	\
 	$(srcdir)/clutter-page-turn-effect.h	\
+	$(srcdir)/clutter-paint-nodes.h		\
+	$(srcdir)/clutter-paint-node.h		\
 	$(srcdir)/clutter-path-constraint.h	\
 	$(srcdir)/clutter-path.h		\
 	$(srcdir)/clutter-property-transition.h	\
@@ -173,6 +175,8 @@ source_c = \
 	$(srcdir)/clutter-model.c		\
 	$(srcdir)/clutter-offscreen-effect.c	\
 	$(srcdir)/clutter-page-turn-effect.c	\
+	$(srcdir)/clutter-paint-nodes.c		\
+	$(srcdir)/clutter-paint-node.c		\
 	$(srcdir)/clutter-path-constraint.c	\
 	$(srcdir)/clutter-path.c		\
 	$(srcdir)/clutter-property-transition.c	\
@@ -216,6 +220,7 @@ source_h_priv = \
 	$(srcdir)/clutter-master-clock.h		\
 	$(srcdir)/clutter-model-private.h		\
 	$(srcdir)/clutter-offscreen-effect-private.h	\
+	$(srcdir)/clutter-paint-node-private.h		\
 	$(srcdir)/clutter-paint-volume-private.h	\
 	$(srcdir)/clutter-private.h 			\
 	$(srcdir)/clutter-profile.h			\
