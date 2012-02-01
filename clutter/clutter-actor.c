@@ -115,6 +115,83 @@
  *   </figure>
  * </refsect2>
  *
+ * <refsect2 id="ClutterActor-painting">
+ *   <title>Painting an actor</title>
+ *   <para>There are three ways to paint an actor:</para>
+ *   <itemizedlist>
+ *     <listitem><para>set a delegate #ClutterContent as the value for the
+ *     #ClutterActor:content property of the actor;</para></listitem>
+ *     <listitem><para>subclass #ClutterActor and override the
+ *     #ClutterActorClass.paint_node() virtual function;</para></listitem>
+ *     <listitem><para>subclass #ClutterActor and override the
+ *     #ClutterActorClass.paint() virtual function.</para></listitem>
+ *   </itemizedlist>
+ *   <formalpara>
+ *     <title>Setting the Content property</title>
+ *     <para>A #ClutterContent is a delegate object that takes over the
+ *     painting operation of one, or more actors. The #ClutterContent
+ *     painting will be performed on top of the #ClutterActor:background-color
+ *     of the actor, and before calling the #ClutterActorClass.paint_node()
+ *     virtual function.</para>
+ *     <informalexample><programlisting>
+ * ClutterActor *actor = clutter_actor_new ();
+ *
+ * /&ast; set the bounding box &ast;/
+ * clutter_actor_set_position (actor, 50, 50);
+ * clutter_actor_set_size (actor, 100, 100);
+ *
+ * /&ast; set the content; the image_content variable is set elsewhere &ast;/
+ * clutter_actor_set_content (actor, image_content);
+ *     </programlisting></informalexample>
+ *   </formalpara>
+ *   <formalpara>
+ *     <title>Overriding the paint_node virtual function</title>
+ *     <para>The #ClutterActorClass.paint_node() virtual function is invoked
+ *     whenever an actor needs to be painted. The implementation of the
+ *     virtual function must only paint the contents of the actor itself,
+ *     and not the contents of its children, if the actor has any.</para>
+ *     <para>The #ClutterPaintNode passed to the virtual function is the
+ *     local root of the render tree; any node added to it will be
+ *     rendered at the correct position, as defined by the actor's
+ *     #ClutterActor:allocation.</para>
+ *     <informalexample><programlisting>
+ * static void
+ * my_actor_paint_node (ClutterActor     *actor,
+ *                      ClutterPaintNode *root)
+ * {
+ *   ClutterPaintNode *node;
+ *   ClutterActorBox box;
+ *
+ *   /&ast; where the content of the actor should be painted &ast;/
+ *   clutter_actor_get_allocation_box (actor, &box);
+ *
+ *   /&ast; the cogl_texture variable is set elsewhere &ast;/
+ *   node = clutter_texture_node_new (cogl_texture, CLUTTER_COLOR_White);
+ *
+ *   /&ast; paint the content of the node using the allocation &ast;/
+ *   clutter_paint_node_add_rectangle (node, &box);
+ *
+ *   /&ast; add the node, and transfer ownership &ast;/
+ *   clutter_paint_node_add_child (root, node);
+ *   clutter_paint_node_unref (node);
+ * }
+ *     </programlisting></informalexample>
+ *   </formalpara>
+ *   <formalpara>
+ *     <title>Overriding the paint virtual function</title>
+ *     <para>The #ClutterActorClass.paint() virtual function is invoked
+ *     when the #ClutterActor::paint signal is emitted, and after the other
+ *     signal handlers have been invoked. Overriding the paint virtual
+ *     function gives total control to the paint sequence of the actor
+ *     itself, including the children of the actor, if any.</para>
+ *     <warning><para>It is strongly discouraged to override the
+ *     #ClutterActorClass.paint() virtual function, as well as connecting
+ *     to the #ClutterActor::paint signal. These hooks into the paint
+ *     sequence are considered legacy, and will be removed when the Clutter
+ *     API changes.</para></warning>
+ *   </formalpara>
+ * </refsect2>
+ *
  * <refsect2 id="ClutterActor-events">
  *   <title>Handling events on an actor</title>
  *   <para>A #ClutterActor can receive and handle input device events, for
