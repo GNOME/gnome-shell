@@ -206,7 +206,7 @@ fi
 changequote([,])dnl
 
 AC_ARG_ENABLE(jhbuild-wrapper-script,
-  AS_HELP_STRING([--jhbuild-wrapper-script=yes],[Make "gnome-shell" script work for jhbuild]),,enable_jhbuild_wrapper_script=no)
+  AS_HELP_STRING([--enable-jhbuild-wrapper-script],[Make "gnome-shell" script work for jhbuild]),,enable_jhbuild_wrapper_script=no)
 AM_CONDITIONAL(USE_JHBUILD_WRAPPER_SCRIPT, test "x$enable_jhbuild_wrapper_script" = xyes)
 
 AC_MSG_CHECKING([location of system Certificate Authority list])
