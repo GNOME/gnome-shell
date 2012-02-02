@@ -469,12 +469,12 @@ get_background_position (StThemeNode             *self,
   gdouble scale_w, scale_h;
 
   /* get the background image size */
-  background_image_width = allocation->x2 - allocation->x1;
-  background_image_height = allocation->y2 - allocation->y1;
+  background_image_width = cogl_texture_get_width (self->background_texture);
+  background_image_height = cogl_texture_get_height (self->background_texture);
 
   /* get the painting area size */
-  painting_area_width = cogl_texture_get_width (self->background_texture);
-  painting_area_height = cogl_texture_get_height (self->background_texture);
+  painting_area_width = allocation->x2 - allocation->x1;
+  painting_area_height = allocation->y2 - allocation->y1;
 
   /* scale if requested */
   get_background_scale (self,
