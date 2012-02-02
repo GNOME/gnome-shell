@@ -60,7 +60,6 @@ StScrollBar StBin#trough {
 StScrollBar StButton#vhandle
 {
     background-image: url("scroll-vhandle.svg");
-    background-size: contain;
     background-color: #252525;
     border: 1px solid #080808;
     border-radius: 8px;
@@ -69,7 +68,6 @@ StScrollBar StButton#vhandle
 StScrollBar StButton#hhandle
 {
     background-image: url("scroll-hhandle.svg");
-    background-size: contain;
     background-color: #252525;
     border: 1px solid #080808;
     border-radius: 8px;
@@ -707,13 +705,11 @@ StTooltip StLabel {
 .app-filter:selected {
     color: #ffffff;
     background-image: url("filter-selected-ltr.svg");
-    background-size: contain;
     background-position: 190px 10px;
 }
 
 .app-filter:selected:rtl {
     background-image: url("filter-selected-rtl.svg");
-    background-size: contain;
     background-position: 10px 10px;
 }
 
