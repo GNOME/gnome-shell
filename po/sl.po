@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-01-28 14:54+0000\n"
-"PO-Revision-Date: 2012-01-28 19:52+0100\n"
+"POT-Creation-Date: 2012-02-02 13:31+0000\n"
+"PO-Revision-Date: 2012-02-02 20:58+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -75,8 +75,8 @@ msgstr "Seznam določil ID namiznih datotek priljubljenih programov"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
-msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
-msgstr "Določa cevovod programa GStreamer, ki se uporablja za kodiranje posnetkov. Ta sledi skladnji, ki se uporablja za gst-launch. Cevovod mora imeti nepovezano korito, kamor se posnetek snema. Običajno je za to namenjen nepovezan izvorni pomnilnik, katerega odvod se zapiše v odvodno datoteko. Vendar pa lahko cevovod ta korak naredi v lastni odvod - možnost se lahko uporabi pri pošiljanju odvoda na strežnik icecast preko shout2send ali podobno. Nedoločena ali prazna možnost se odrazi kot privzeti cevovod. Trenutno je to 'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' in omogoča snemanje v zapis WEBM z uporabo kodeka VP8. %T se uporablja kot ročnik za ugibanje optimalnega števila niti na sistemu."
+msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
+msgstr "Določa cevovod programa GStreamer, ki se uporablja za kodiranje posnetkov. Ta sledi skladnji, ki se uporablja za gst-launch. Cevovod mora imeti nepovezano korito, kamor se posnetek snema. Običajno je za to namenjen nepovezan izvorni pomnilnik, katerega odvod se zapiše v odvodno datoteko. Vendar pa lahko cevovod ta korak naredi v lastni odvod - možnost se lahko uporabi pri pošiljanju odvoda na strežnik icecast preko shout2send ali podobno. Nedoločena ali prazna možnost se odrazi kot privzeti cevovod. Trenutno je to 'videorate ! vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' in omogoča snemanje v zapis WEBM z uporabo kodeka VP8. Vrednost %T se uporablja kot ročnik za ugibanje optimalnega števila niti na sistemu."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
@@ -171,9 +171,9 @@ msgid "Login Window"
 msgstr "Prijavno okno"
 
 #: ../js/gdm/powerMenu.js:113
-#: ../js/ui/userMenu.js:580
-#: ../js/ui/userMenu.js:582
-#: ../js/ui/userMenu.js:651
+#: ../js/ui/userMenu.js:581
+#: ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:652
 msgid "Suspend"
 msgstr "Zaustavi"
 
@@ -859,7 +859,7 @@ msgstr "Pokaži besedilo"
 msgid "Hide Text"
 msgstr "Skrij besedilo"
 
-#: ../js/ui/shellMountOperation.js:269
+#: ../js/ui/shellMountOperation.js:271
 msgid "Wrong password, please try again"
 msgstr "Napačno geslo; poskusite znova."
 
@@ -1179,11 +1179,11 @@ msgstr "Omrežje je onemogočeno"
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
-#: ../js/ui/status/power.js:60
+#: ../js/ui/status/power.js:59
 msgid "Battery"
 msgstr "Baterija"
 
-#: ../js/ui/status/power.js:77
+#: ../js/ui/status/power.js:76
 msgid "Power Settings"
 msgstr "Upravljanje napajanja"
 
@@ -1545,41 +1545,41 @@ msgstr "Nedejavno"
 msgid "Unavailable"
 msgstr "Nedostopno"
 
-#: ../js/ui/userMenu.js:578
-#: ../js/ui/userMenu.js:582
-#: ../js/ui/userMenu.js:652
+#: ../js/ui/userMenu.js:579
+#: ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:653
 msgid "Power Off..."
 msgstr "Izklop ..."
 
-#: ../js/ui/userMenu.js:614
+#: ../js/ui/userMenu.js:615
 msgid "Notifications"
 msgstr "Obvestila"
 
-#: ../js/ui/userMenu.js:622
+#: ../js/ui/userMenu.js:623
 msgid "Online Accounts"
 msgstr "Spletni računi"
 
-#: ../js/ui/userMenu.js:626
+#: ../js/ui/userMenu.js:627
 msgid "System Settings"
 msgstr "Sistemske nastavitve"
 
-#: ../js/ui/userMenu.js:633
+#: ../js/ui/userMenu.js:634
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
-#: ../js/ui/userMenu.js:638
+#: ../js/ui/userMenu.js:639
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: ../js/ui/userMenu.js:643
+#: ../js/ui/userMenu.js:644
 msgid "Log Out..."
 msgstr "Odjava ..."
 
-#: ../js/ui/userMenu.js:671
+#: ../js/ui/userMenu.js:672
 msgid "Your chat status will be set to busy"
 msgstr "Stanje vašega klepeta bo nastavljeno na zasedeno"
 
-#: ../js/ui/userMenu.js:672
+#: ../js/ui/userMenu.js:673
 msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
 msgstr "Obveščanje je zdaj onemogočeno, vključno s sporočili klepeta. Vaše stanje povezanosti se je prilagodilo, da bodo drugi vedeli, da njihovih sporočil morda ne boste opazili."
 
