@@ -4,6 +4,28 @@
 
 #define SIZE    128
 
+static gboolean
+on_button_press (ClutterActor *actor,
+                 ClutterEvent *event,
+                 gpointer      data)
+{
+  static gboolean toggled = TRUE;
+  const ClutterColor *end_color;
+
+  if (toggled)
+    end_color = CLUTTER_COLOR_Blue;
+  else
+    end_color = CLUTTER_COLOR_Red;
+
+  clutter_actor_animate (actor, CLUTTER_LINEAR, 500,
+                         "background-color", end_color,
+                         NULL);
+
+  toggled = !toggled;
+
+  return CLUTTER_EVENT_STOP;
+}
+
 G_MODULE_EXPORT int
 test_actor_main (int argc, char *argv[])
 {
@@ -33,6 +55,10 @@ test_actor_main (int argc, char *argv[])
   clutter_actor_set_name (flowers[0], "flower.1");
   clutter_actor_set_size (flowers[0], SIZE, SIZE);
   clutter_actor_set_background_color (flowers[0], CLUTTER_COLOR_Red);
+  clutter_actor_set_reactive (flowers[0], TRUE);
+  g_signal_connect (flowers[0], "button-press-event",
+                    G_CALLBACK (on_button_press),
+                    GUINT_TO_POINTER (0));
   clutter_actor_add_child (vase, flowers[0]);
 
   flowers[1] = clutter_actor_new ();
