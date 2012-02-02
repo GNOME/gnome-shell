@@ -19,6 +19,8 @@
     <copyright>
       <year>2009</year>
       <year>2010</year>
+      <year>2011</year>
+      <year>2012</year>
       <holder>Intel Corporation</holder>
     </copyright>
 
@@ -64,6 +66,7 @@
       <xi:include href="xml/clutter-action.xml"/>
       <xi:include href="xml/clutter-constraint.xml"/>
       <xi:include href="xml/clutter-effect.xml"/>
+      <xi:include href="xml/clutter-content.xml"/>
     </chapter>
 
     <chapter>
@@ -116,6 +119,13 @@
       <xi:include href="xml/clutter-colorize-effect.xml"/>
       <xi:include href="xml/clutter-desaturate-effect.xml"/>
       <xi:include href="xml/clutter-page-turn-effect.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Paint Objects</title>
+
+      <xi:include href="xml/clutter-paint-node.xml"/>
+      <xi:include href="xml/clutter-paint-nodes.xml"/>
     </chapter>
 
   </part>

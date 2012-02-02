@@ -25,7 +25,7 @@
 /**
  * SECTION:clutter-content
  * @Title: ClutterContent
- * @short_desc: Delegate for painting the content of an actor
+ * @Short_Description: Delegate for painting the content of an actor
  *
  * #ClutterContent is an interface to implement types responsible for
  * painting the content of a #ClutterActor.
