@@ -2801,6 +2801,26 @@ clutter_page_turn_effect_get_type
 </SECTION>
 
 <SECTION>
+<TITLE>ClutterBrightnessContrastEffect</TITLE>
+<FILE>clutter-brightness-contrast-effect</FILE>
+ClutterBrightnessContrastEffect
+clutter_brightness_contrast_effect_new
+clutter_brightness_contrast_effect_set_brightness
+clutter_brightness_contrast_effect_set_brightness_full
+clutter_brightness_contrast_effect_get_brightness
+clutter_brightness_contrast_effect_set_contrast
+clutter_brightness_contrast_effect_set_contrast_full
+clutter_brightness_contrast_effect_get_contrast
+<SUBSECTION Standard>
+CLUTTER_TYPE_BRIGHTNESS_CONTRAST_EFFECT
+CLUTTER_BRIGHTNESS_CONTRAST_EFFECT
+CLUTTER_IS_BRIGHTNESS_CONTRAST_EFFECT
+<SUBSECTION Private>
+ClutterBrightnessContrastEffectClass
+clutter_brightness_contrast_effect_get_type
+</SECTION>
+
+<SECTION>
 <FILE>clutter-settings</FILE>
 ClutterSettings
 clutter_settings_get_default

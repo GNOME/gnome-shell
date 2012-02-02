@@ -112,6 +112,7 @@
       <xi:include href="xml/clutter-deform-effect.xml"/>
 
       <xi:include href="xml/clutter-blur-effect.xml"/>
+      <xi:include href="xml/clutter-brightness-contrast-effect.xml"/>
       <xi:include href="xml/clutter-colorize-effect.xml"/>
       <xi:include href="xml/clutter-desaturate-effect.xml"/>
       <xi:include href="xml/clutter-page-turn-effect.xml"/>

@@ -63,6 +63,7 @@ source_h =					\
 	$(srcdir)/clutter-bin-layout.h		\
 	$(srcdir)/clutter-blur-effect.h		\
 	$(srcdir)/clutter-box-layout.h		\
+	$(srcdir)/clutter-brightness-contrast-effect.h	\
 	$(srcdir)/clutter-cairo-texture.h	\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-click-action.h	\
@@ -137,6 +138,7 @@ source_c = \
 	$(srcdir)/clutter-bin-layout.c		\
 	$(srcdir)/clutter-blur-effect.c		\
 	$(srcdir)/clutter-box-layout.c		\
+	$(srcdir)/clutter-brightness-contrast-effect.c	\
 	$(srcdir)/clutter-cairo-texture.c       \
 	$(srcdir)/clutter-child-meta.c		\
 	$(srcdir)/clutter-click-action.c	\
