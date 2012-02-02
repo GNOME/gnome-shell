@@ -1135,11 +1135,9 @@ clutter_actor_real_map (ClutterActor *self)
  * and realizes its children if they are visible. Does nothing if the
  * actor is not visible.
  *
- * Calling this is allowed in only one case: you are implementing the
- * #ClutterActor <function>map()</function> virtual function in an actor
- * and you need to map the children of that actor. It is not necessary
- * to call this if you implement #ClutterContainer because the default
- * implementation will automatically map children of containers.
+ * Calling this function is strongly disencouraged: the default
+ * implementation of #ClutterActorClass.map() will map all the children
+ * of an actor when mapping its parent.
  *
  * When overriding map, it is mandatory to chain up to the parent
  * implementation.
@@ -1218,14 +1216,18 @@ clutter_actor_real_unmap (ClutterActor *self)
  * Unsets the %CLUTTER_ACTOR_MAPPED flag on the actor and possibly
  * unmaps its children if they were mapped.
  *
- * Calling this is allowed in only one case: you are implementing the
- * #ClutterActor <function>unmap()</function> virtual function in an actor
- * and you need to unmap the children of that actor. It is not necessary
- * to call this if you implement #ClutterContainer because the default
- * implementation will automatically unmap children of containers.
+ * Calling this function is not encouraged: the default #ClutterActor
+ * implementation of #ClutterActorClass.unmap() will also unmap any
+ * eventual children by default when their parent is unmapped.
  *
- * When overriding unmap, it is mandatory to chain up to the parent
- * implementation.
+ * When overriding #ClutterActorClass.unmap(), it is mandatory to
+ * chain up to the parent implementation.
+ *
+ * <note>It is important to note that the implementation of the
+ * #ClutterActorClass.unmap() virtual function may be called after
+ * the #ClutterActorClass.destroy() or the #GObjectClass.dispose()
+ * implementation, but it is guaranteed to be called before the
+ * #GObjectClass.finalize() implementation.</note>
  *
  * Since: 1.0
  */
