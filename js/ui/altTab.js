@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gdk = imports.gi.Gdk;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -561,14 +562,13 @@ const SwitcherList = new Lang.Class({
         this._list.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this._list.connect('allocate', Lang.bind(this, this._allocate));
 
-        this._clipBin = new St.Bin({style_class: 'cbin'});
-        this._clipBin.child = this._list;
-        this.actor.add_actor(this._clipBin);
+        this._scrollView = new St.ScrollView({ style_class: 'hfade' });
+        this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER);
 
-        this._leftGradient = new St.BoxLayout({style_class: 'thumbnail-scroll-gradient-left', vertical: true});
-        this._rightGradient = new St.BoxLayout({style_class: 'thumbnail-scroll-gradient-right', vertical: true});
-        this.actor.add_actor(this._leftGradient);
-        this.actor.add_actor(this._rightGradient);
+        let scrollBox = new St.BoxLayout();
+        scrollBox.add_actor(this._list);
+        this._scrollView.add_actor(scrollBox);
+        this.actor.add_actor(this._scrollView);
 
         // Those arrows indicate whether scrolling in one direction is possible
         this._leftArrow = new St.DrawingArea({ style_class: 'switcher-arrow',
@@ -599,21 +599,9 @@ const SwitcherList = new Lang.Class({
         let childBox = new Clutter.ActorBox();
         let scrollable = this._minSize > box.x2 - box.x1;
 
-        this._clipBin.allocate(box, flags);
-
-        childBox.x1 = 0;
-        childBox.y1 = 0;
-        childBox.x2 = this._leftGradient.width;
-        childBox.y2 = this.actor.height;
-        this._leftGradient.allocate(childBox, flags);
-        this._leftGradient.opacity = (this._scrollableLeft && scrollable) ? 255 : 0;
-
-        childBox.x1 = (this.actor.allocation.x2 - this.actor.allocation.x1) - this._rightGradient.width;
-        childBox.y1 = 0;
-        childBox.x2 = childBox.x1 + this._rightGradient.width;
-        childBox.y2 = this.actor.height;
-        this._rightGradient.allocate(childBox, flags);
-        this._rightGradient.opacity = (this._scrollableRight && scrollable) ? 255 : 0;
+        box.y1 -= this.actor.get_theme_node().get_padding(St.Side.TOP);
+        box.y2 += this.actor.get_theme_node().get_padding(St.Side.BOTTOM);
+        this._scrollView.allocate(box, flags);
 
         let arrowWidth = Math.floor(leftPadding / 3);
         let arrowHeight = arrowWidth * 2;
@@ -622,7 +610,7 @@ const SwitcherList = new Lang.Class({
         childBox.x2 = childBox.x1 + arrowWidth;
         childBox.y2 = childBox.y1 + arrowHeight;
         this._leftArrow.allocate(childBox, flags);
-        this._leftArrow.opacity = this._leftGradient.opacity;
+        this._leftArrow.opacity = (this._scrollableLeft && scrollable) ? 255 : 0;
 
         arrowWidth = Math.floor(rightPadding / 3);
         arrowHeight = arrowWidth * 2;
@@ -631,7 +619,7 @@ const SwitcherList = new Lang.Class({
         childBox.x2 = childBox.x1 + arrowWidth;
         childBox.y2 = childBox.y1 + arrowHeight;
         this._rightArrow.allocate(childBox, flags);
-        this._rightArrow.opacity = this._rightGradient.opacity;
+        this._rightArrow.opacity = (this._scrollableRight && scrollable) ? 255 : 0;
     },
 
     addItem : function(item, label) {
@@ -679,47 +667,66 @@ const SwitcherList = new Lang.Class({
                 this._items[this._highlighted].add_style_pseudo_class('selected');
         }
 
+        let adjustment = this._scrollView.hscroll.adjustment;
+        let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
         let [absItemX, absItemY] = this._items[index].get_transformed_position();
         let [result, posX, posY] = this.actor.transform_stage_point(absItemX, 0);
         let [containerWidth, containerHeight] = this.actor.get_transformed_size();
         if (posX + this._items[index].get_width() > containerWidth)
             this._scrollToRight();
-        else if (posX < 0)
+        else if (this._items[index].allocation.x1 - value < 0)
             this._scrollToLeft();
 
     },
 
     _scrollToLeft : function() {
-        let x = this._items[this._highlighted].allocation.x1;
+        let adjustment = this._scrollView.hscroll.adjustment;
+        let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
+
+        let item = this._items[this._highlighted];
+
+        if (item.allocation.x1 < value)
+            value = Math.min(0, item.allocation.x1);
+        else if (item.allocation.x2 > value + pageSize)
+            value = Math.max(upper, item.allocation.x2 - pageSize);
+
         this._scrollableRight = true;
-        Tweener.addTween(this._list, { anchor_x: x,
-                                        time: POPUP_SCROLL_TIME,
-                                        transition: 'easeOutQuad',
-                                        onComplete: Lang.bind(this, function () {
-                                                                        if (this._highlighted == 0) {
-                                                                            this._scrollableLeft = false;
-                                                                            this.actor.queue_relayout();
-                                                                        }
-                                                             })
-                        });
+        Tweener.addTween(adjustment,
+                         { value: value,
+                           time: POPUP_SCROLL_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this, function () {
+                                if (this._highlighted == 0) {
+                                    this._scrollableLeft = false;
+                                    this.actor.queue_relayout();
+                                }
+                           })
+                          });
     },
 
     _scrollToRight : function() {
+        let adjustment = this._scrollView.hscroll.adjustment;
+        let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
+
+        let item = this._items[this._highlighted];
+
+        if (item.allocation.x1 < value)
+            value = Math.max(0, item.allocation.x1);
+        else if (item.allocation.x2 > value + pageSize)
+            value = Math.min(upper, item.allocation.x2 - pageSize);
+
         this._scrollableLeft = true;
-        let monitor = Main.layoutManager.primaryMonitor;
-        let padding = this.actor.get_theme_node().get_horizontal_padding();
-        let parentPadding = this.actor.get_parent().get_theme_node().get_horizontal_padding();
-        let x = this._items[this._highlighted].allocation.x2 - monitor.width + padding + parentPadding;
-        Tweener.addTween(this._list, { anchor_x: x,
-                                        time: POPUP_SCROLL_TIME,
-                                        transition: 'easeOutQuad',
-                                        onComplete: Lang.bind(this, function () {
-                                                                        if (this._highlighted == this._items.length - 1) {
-                                                                            this._scrollableRight = false;
-                                                                            this.actor.queue_relayout();
-                                                                        }
-                                                             })
-                        });
+        Tweener.addTween(adjustment,
+                         { value: value,
+                           time: POPUP_SCROLL_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this, function () {
+                                if (this._highlighted == this._items.length - 1) {
+                                    this._scrollableRight = false;
+                                    this.actor.queue_relayout();
+                                }
+                            })
+                          });
     },
 
     _itemActivated: function(n) {
@@ -838,14 +845,6 @@ const SwitcherList = new Lang.Class({
                 // we don't allocate it.
             }
         }
-
-        let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
-        let rightPadding = this.actor.get_theme_node().get_padding(St.Side.RIGHT);
-        let topPadding = this.actor.get_theme_node().get_padding(St.Side.TOP);
-        let bottomPadding = this.actor.get_theme_node().get_padding(St.Side.BOTTOM);
-
-        // Clip the area for scrolling
-        this._clipBin.set_clip(0, -topPadding, (this.actor.allocation.x2 - this.actor.allocation.x1) - leftPadding - rightPadding, this.actor.height + bottomPadding);
     }
 });
 
