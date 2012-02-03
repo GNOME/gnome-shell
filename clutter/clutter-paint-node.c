@@ -70,6 +70,7 @@
 
 #include <pango/pango.h>
 #include <cogl/cogl.h>
+#include <json-glib/json-glib.h>
 
 #include "clutter-paint-node-private.h"
 
@@ -778,47 +779,6 @@ clutter_paint_operation_clear (ClutterPaintOperation *op)
     }
 }
 
-static void
-clutter_paint_operation_to_string (const ClutterPaintOperation *op,
-                                   GString                     *buf,
-                                   int                          level)
-{
-  int i;
-
-  for (i = 0; i < level; i++)
-    g_string_append (buf, "  ");
-
-  g_string_append (buf, "{ ");
-
-  switch (op->opcode)
-    {
-    case PAINT_OP_INVALID:
-      break;
-
-    case PAINT_OP_TEX_RECT:
-      g_string_append_printf (buf, "\"texrect\" : [ %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f ]",
-                              op->op.texrect[0],
-                              op->op.texrect[1],
-                              op->op.texrect[2],
-                              op->op.texrect[3],
-                              op->op.texrect[4],
-                              op->op.texrect[5],
-                              op->op.texrect[6],
-                              op->op.texrect[7]);
-      break;
-
-    case PAINT_OP_PATH:
-      g_string_append_printf (buf, "\"path\" : \"0x%p\"", op->op.path);
-      break;
-
-    case PAINT_OP_PRIMITIVE:
-      g_string_append_printf (buf, "\"primitive\" : \"0x%p\"", op->op.primitive);
-      break;
-    }
-
-  g_string_append (buf, " }");
-}
-
 static inline void
 clutter_paint_op_init_tex_rect (ClutterPaintOperation *op,
                                 const ClutterActorBox *rect,
@@ -1016,113 +976,130 @@ _clutter_paint_node_paint (ClutterPaintNode *node)
     }
 }
 
-static void
-clutter_paint_node_to_string (ClutterPaintNode *node,
-                              GString          *buf,
-                              int               level)
+#ifdef CLUTTER_ENABLE_DEBUG
+static JsonNode *
+clutter_paint_node_serialize (ClutterPaintNode *node)
 {
-  ClutterPaintNode *iter;
-  int i;
+  ClutterPaintNodeClass *klass = CLUTTER_PAINT_NODE_GET_CLASS (node);
 
-  for (i = 0; i < level; i++)
-    g_string_append (buf, "  ");
+  if (klass->serialize != NULL)
+    return klass->serialize (node);
 
-  g_string_append_c (buf, '"');
-  g_string_append (buf, g_type_name (G_TYPE_FROM_INSTANCE (node)));
-  g_string_append_c (buf, '"');
+  return json_node_new (JSON_NODE_NULL);
+}
 
-  g_string_append (buf, " : {\n");
+static JsonNode *
+clutter_paint_node_to_json (ClutterPaintNode *node)
+{
+  JsonBuilder *builder;
+  JsonNode *res;
 
-  if (node->name != NULL)
-    {
-      for (i = 0; i < level + 1; i++)
-        g_string_append (buf, "  ");
+  builder = json_builder_new ();
 
-      g_string_append_printf (buf, "\"name\" : \"%s\"", node->name);
+  json_builder_begin_object (builder);
 
-      if (node->operations != NULL ||
-          node->first_child != NULL)
-        g_string_append_c (buf, ',');
+  json_builder_set_member_name (builder, "type");
+  json_builder_add_string_value (builder, g_type_name (G_TYPE_FROM_INSTANCE (node)));
 
-      g_string_append_c (buf, '\n');
-    }
+  json_builder_set_member_name (builder, "name");
+  json_builder_add_string_value (builder, node->name);
+
+  json_builder_set_member_name (builder, "node-data");
+  json_builder_add_value (builder, clutter_paint_node_serialize (node));
+
+  json_builder_set_member_name (builder, "operations");
+  json_builder_begin_array (builder);
 
   if (node->operations != NULL)
     {
-      guint o;
+      guint i;
 
-      for (i = 0; i < level + 1; i++)
-        g_string_append (buf, "  ");
-
-      g_string_append (buf, "\"operations\" : [\n");
-
-      for (o = 0; o < node->operations->len; o++)
+      for (i = 0; i < node->operations->len; i++)
         {
           const ClutterPaintOperation *op;
 
-          op = &g_array_index (node->operations, ClutterPaintOperation, o);
-          clutter_paint_operation_to_string (op, buf, level + 2);
+          op = &g_array_index (node->operations, ClutterPaintOperation, i);
+          json_builder_begin_object (builder);
 
-          if ((o + 1) != node->operations->len)
-            g_string_append_c (buf, ',');
+          switch (op->opcode)
+            {
+            case PAINT_OP_TEX_RECT:
+              json_builder_set_member_name (builder, "texrect");
+              json_builder_begin_array (builder);
+              json_builder_add_double_value (builder, op->op.texrect[0]);
+              json_builder_add_double_value (builder, op->op.texrect[1]);
+              json_builder_add_double_value (builder, op->op.texrect[2]);
+              json_builder_add_double_value (builder, op->op.texrect[3]);
+              json_builder_add_double_value (builder, op->op.texrect[4]);
+              json_builder_add_double_value (builder, op->op.texrect[5]);
+              json_builder_add_double_value (builder, op->op.texrect[6]);
+              json_builder_add_double_value (builder, op->op.texrect[7]);
+              json_builder_end_array (builder);
+              break;
 
-          g_string_append_c (buf, '\n');
+            case PAINT_OP_PATH:
+              json_builder_set_member_name (builder, "path");
+              json_builder_add_int_value (builder, (gint64) op->op.path);
+              break;
+
+            case PAINT_OP_PRIMITIVE:
+              json_builder_set_member_name (builder, "primitive");
+              json_builder_add_int_value (builder, (gint64) op->op.primitive);
+              break;
+
+            case PAINT_OP_INVALID:
+              break;
+            }
+
+          json_builder_end_object (builder);
         }
-
-      for (i = 0; i < level + 1; i++)
-        g_string_append (buf, "  ");
-
-      g_string_append (buf, "]");
-
-      if (node->first_child != NULL)
-        g_string_append_c (buf, ',');
-
-      g_string_append_c (buf, '\n');
     }
 
-  if (node->first_child == NULL)
-    goto out;
+  json_builder_end_array (builder);
 
-  for (i = 0; i < level + 1; i++)
-    g_string_append (buf, "  ");
+  json_builder_set_member_name (builder, "children");
+  json_builder_begin_array (builder);
 
-  g_string_append (buf, "\"children\" : [\n");
-
-  for (iter = node->first_child;
-       iter != NULL;
-       iter = iter->next_sibling)
+  if (node->first_child != NULL)
     {
-      clutter_paint_node_to_string (iter, buf, level + 2);
+      ClutterPaintNode *child;
 
-      if (iter->next_sibling != NULL)
-        g_string_append (buf, ",\n");
-      else
-        g_string_append (buf, "\n");
+      for (child = node->first_child;
+           child != NULL;
+           child = child->next_sibling)
+        {
+          JsonNode *n = clutter_paint_node_to_json (child);
+
+          json_builder_add_value (builder, n);
+        }
     }
 
-  for (i = 0; i < level + 1; i++)
-    g_string_append (buf, "  ");
+  json_builder_end_array (builder);
 
-  g_string_append (buf, "]\n");
+  json_builder_end_object (builder);
 
-out:
-  for (i = 0; i < level; i++)
-    g_string_append (buf, "  ");
+  res = json_builder_get_root (builder);
 
-  g_string_append (buf, "}");
+  g_object_unref (builder);
+
+  return res;
 }
+#endif /* CLUTTER_ENABLE_DEBUG */
 
 void
 _clutter_paint_node_dump_tree (ClutterPaintNode *node)
 {
 #ifdef CLUTTER_ENABLE_DEBUG
-  GString *buf = g_string_sized_new (1024);
+  JsonGenerator *gen = json_generator_new ();
+  char *str;
+  gsize len;
 
-  clutter_paint_node_to_string (node, buf, 0);
+  json_generator_set_root (gen, clutter_paint_node_to_json (node));
+  str = json_generator_to_data (gen, &len);
 
-  CLUTTER_NOTE (PAINT, "Render tree:\n%s", buf->str);
+  g_print ("Render tree starting from %p:\n%s\n", node, str);
 
-  g_string_free (buf, TRUE);
+  g_free (str);
 #endif /* CLUTTER_ENABLE_DEBUG */
 }
 

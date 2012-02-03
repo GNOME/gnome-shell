@@ -398,6 +398,46 @@ clutter_pipeline_node_post_draw (ClutterPaintNode *node)
   cogl_pop_source ();
 }
 
+static JsonNode *
+clutter_pipeline_node_serialize (ClutterPaintNode *node)
+{
+  ClutterPipelineNode *pnode = CLUTTER_PIPELINE_NODE (node);
+  JsonBuilder *builder;
+  CoglColor color;
+  JsonNode *res;
+
+  if (pnode->pipeline == NULL)
+    return json_node_new (JSON_NODE_NULL);
+
+  builder = json_builder_new ();
+  json_builder_begin_object (builder);
+
+  cogl_pipeline_get_color (pnode->pipeline, &color);
+  json_builder_set_member_name (builder, "color");
+  json_builder_begin_array (builder);
+  json_builder_add_double_value (builder, cogl_color_get_red (&color));
+  json_builder_add_double_value (builder, cogl_color_get_green (&color));
+  json_builder_add_double_value (builder, cogl_color_get_blue (&color));
+  json_builder_add_double_value (builder, cogl_color_get_alpha (&color));
+  json_builder_end_array (builder);
+
+#if 0
+  json_builder_set_member_name (builder, "layers");
+  json_builder_begin_array (builder);
+  cogl_pipeline_foreach_layer (pnode->pipeline,
+                               clutter_pipeline_node_serialize_layer,
+                               builder);
+  json_builder_end_array (builder);
+#endif
+
+  json_builder_end_object (builder);
+
+  res = json_builder_get_root (builder);
+  g_object_unref (builder);
+
+  return res;
+}
+
 static void
 clutter_pipeline_node_class_init (ClutterPipelineNodeClass *klass)
 {
@@ -408,6 +448,7 @@ clutter_pipeline_node_class_init (ClutterPipelineNodeClass *klass)
   node_class->draw = clutter_pipeline_node_draw;
   node_class->post_draw = clutter_pipeline_node_post_draw;
   node_class->finalize = clutter_pipeline_node_finalize;
+  node_class->serialize = clutter_pipeline_node_serialize;
 }
 
 static void
@@ -714,6 +755,47 @@ clutter_text_node_draw (ClutterPaintNode *node)
     }
 }
 
+static JsonNode *
+clutter_text_node_serialize (ClutterPaintNode *node)
+{
+  ClutterTextNode *tnode = CLUTTER_TEXT_NODE (node);
+  JsonBuilder *builder;
+  JsonNode *res;
+
+  builder = json_builder_new ();
+
+  json_builder_begin_object (builder);
+
+  json_builder_set_member_name (builder, "layout");
+
+  if (pango_layout_get_character_count (tnode->layout) > 12)
+    {
+      const char *text = pango_layout_get_text (tnode->layout);
+      char *str;
+
+      str = g_strndup (text, 12);
+      json_builder_add_string_value (builder, str);
+      g_free (str);
+    }
+  else
+    json_builder_add_string_value (builder, pango_layout_get_text (tnode->layout));
+
+  json_builder_set_member_name (builder, "color");
+  json_builder_begin_array (builder);
+  json_builder_add_double_value (builder, cogl_color_get_red (&tnode->color));
+  json_builder_add_double_value (builder, cogl_color_get_green (&tnode->color));
+  json_builder_add_double_value (builder, cogl_color_get_blue (&tnode->color));
+  json_builder_add_double_value (builder, cogl_color_get_alpha (&tnode->color));
+  json_builder_end_array (builder);
+
+  json_builder_end_object (builder);
+
+  res = json_builder_get_root (builder);
+  g_object_unref (builder);
+
+  return res;
+}
+
 static void
 clutter_text_node_class_init (ClutterTextNodeClass *klass)
 {
@@ -722,6 +804,7 @@ clutter_text_node_class_init (ClutterTextNodeClass *klass)
   node_class->pre_draw = clutter_text_node_pre_draw;
   node_class->draw = clutter_text_node_draw;
   node_class->finalize = clutter_text_node_finalize;
+  node_class->serialize = clutter_text_node_serialize;
 }
 
 static void

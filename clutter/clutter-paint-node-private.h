@@ -26,6 +26,7 @@
 #define __CLUTTER_PAINT_NODE_PRIVATE_H__
 
 #include <glib-object.h>
+#include <json-glib/json-glib.h>
 #include <clutter/clutter-paint-node.h>
 
 G_BEGIN_DECLS
@@ -65,6 +66,8 @@ struct _ClutterPaintNodeClass
   gboolean (* pre_draw)  (ClutterPaintNode *node);
   void     (* draw)      (ClutterPaintNode *node);
   void     (* post_draw) (ClutterPaintNode *node);
+
+  JsonNode*(* serialize) (ClutterPaintNode *node);
 };
 
 typedef enum {
