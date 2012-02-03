@@ -679,18 +679,6 @@ shell_get_file_contents_utf8_sync (const char *path,
 }
 
 /**
- * shell_breakpoint:
- *
- * Using G_BREAKPOINT(), interrupt the current process.  This is useful
- * in conjunction with a debugger such as gdb.
- */
-void
-shell_breakpoint (void)
-{
-  G_BREAKPOINT ();
-}
-
-/**
  * shell_parse_search_provider:
  * @data: description of provider
  * @name: (out): location to store a display name

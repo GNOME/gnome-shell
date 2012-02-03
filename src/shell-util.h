@@ -39,8 +39,6 @@ gboolean shell_write_string_to_stream          (GOutputStream    *stream,
 char    *shell_get_file_contents_utf8_sync     (const char       *path,
                                                 GError          **error);
 
-void     shell_breakpoint                      (void);
-
 gboolean shell_parse_search_provider           (const char       *data,
                                                 char            **name,
                                                 char            **url,
