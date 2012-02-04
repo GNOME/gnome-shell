@@ -48,7 +48,17 @@
 
 typedef struct _ClutterContentIface     ClutterContentInterface;
 
+enum
+{
+  ATTACHED,
+  DETACHED,
+
+  LAST_SIGNAL
+};
+
 static GQuark quark_content_actors = 0;
+
+static guint content_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_INTERFACE (ClutterContent, clutter_content, G_TYPE_OBJECT)
 
@@ -100,6 +110,46 @@ clutter_content_default_init (ClutterContentInterface *iface)
   iface->attached = clutter_content_real_attached;
   iface->detached = clutter_content_real_detached;
   iface->invalidate = clutter_content_real_invalidate;
+
+  /**
+   * ClutterContent::attached:
+   * @content: the object that emitted the signal
+   * @actor: a #ClutterActor
+   *
+   * This signal is emitted each time a #ClutterContent implementation is
+   * assigned to a #ClutterActor.
+   *
+   * Since: 1.10
+   */
+  content_signals[ATTACHED] =
+    g_signal_new (I_("attached"),
+                  G_TYPE_FROM_INTERFACE (iface),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (ClutterContentIface, attached),
+                  NULL, NULL,
+                  _clutter_marshal_VOID__OBJECT,
+                  G_TYPE_NONE, 1,
+                  CLUTTER_TYPE_ACTOR);
+
+  /**
+   * ClutterContent::detached:
+   * @content: the object that emitted the signal
+   * @actor: a #ClutterActor
+   *
+   * This signal is emitted each time a #ClutterContent implementation is
+   * removed from a #ClutterActor.
+   *
+   * Since: 1.10
+   */
+  content_signals[DETACHED] =
+    g_signal_new (I_("detached"),
+                  G_TYPE_FROM_INTERFACE (iface),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (ClutterContentIface, detached),
+                  NULL, NULL,
+                  _clutter_marshal_VOID__OBJECT,
+                  G_TYPE_NONE, 1,
+                  CLUTTER_TYPE_ACTOR);
 }
 
 /**
@@ -172,7 +222,7 @@ _clutter_content_attached (ClutterContent *content,
 
   g_hash_table_insert (actors, actor, actor);
 
-  CLUTTER_CONTENT_GET_IFACE (content)->attached (content, actor);
+  g_signal_emit (content, content_signals[ATTACHED], 0, actor);
 }
 
 /*< private >
@@ -203,7 +253,7 @@ _clutter_content_detached (ClutterContent *content,
   if (g_hash_table_size (actors) == 0)
     g_object_set_qdata (obj, quark_content_actors, NULL);
 
-  CLUTTER_CONTENT_GET_IFACE (content)->detached (content, actor);
+  g_signal_emit (content, content_signals[DETACHED], 0, actor);
 }
 
 /*< private >
