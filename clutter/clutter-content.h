@@ -3,7 +3,7 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Copyright (C) 2011  Intel Corporation.
+ * Copyright (C) 2012  Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -56,14 +56,11 @@ typedef struct _ClutterContentIface     ClutterContentIface;
  * @paint_content: virtual function; called each time the content needs to
  *   paint itself
  * @attached: virtual function; called each time a #ClutterContent is attached
- *   to a #ClutterActor. If overridden, the subclass must chain up to the
- *   parent class implementation.
+ *   to a #ClutterActor.
  * @detached: virtual function; called each time a #ClutterContent is detached
- *   from a #ClutterActor. If overridden, the subclass must chain up to the
- *   parent class implementation.
+ *   from a #ClutterActor.
  * @invalidate: virtual function; called each time a #ClutterContent state
- *   is changed. If overridden, the subclass must chain up to the parent
- *   class implementation.
+ *   is changed.
  *
  * The <structname>ClutterContentIface</structname> structure contains only
  * private data.

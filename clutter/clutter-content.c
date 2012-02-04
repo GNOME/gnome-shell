@@ -70,57 +70,17 @@ static void
 clutter_content_real_attached (ClutterContent *content,
                                ClutterActor   *actor)
 {
-  GObject *obj = G_OBJECT (content);
-  GHashTable *actors;
-
-  actors = g_object_get_qdata (obj, quark_content_actors);
-  if (actors == NULL)
-    {
-      actors = g_hash_table_new (NULL, NULL);
-      g_object_set_qdata_full (obj, quark_content_actors,
-                               actors,
-                               (GDestroyNotify) g_hash_table_unref);
-    }
-
-  g_hash_table_insert (actors, actor, actor);
 }
 
 static void
 clutter_content_real_detached (ClutterContent *content,
                                ClutterActor   *actor)
 {
-  GObject *obj = G_OBJECT (content);
-  GHashTable *actors;
-
-  actors = g_object_get_qdata (obj, quark_content_actors);
-  g_assert (actors != NULL);
-
-  g_hash_table_remove (actors, actor);
-
-  if (g_hash_table_size (actors) == 0)
-    g_object_set_qdata (obj, quark_content_actors, NULL);
 }
 
 static void
 clutter_content_real_invalidate (ClutterContent *content)
 {
-  GHashTable *actors;
-  GHashTableIter iter;
-  gpointer key_p, value_p;
-
-  actors = g_object_get_qdata (G_OBJECT (content), quark_content_actors);
-  if (actors == NULL)
-    return;
-
-  g_hash_table_iter_init (&iter, actors);
-  while (g_hash_table_iter_next (&iter, &key_p, &value_p))
-    {
-      ClutterActor *actor = key_p;
-
-      g_assert (actor != NULL);
-
-      clutter_actor_queue_redraw (actor);
-    }
 }
 
 static void
@@ -157,7 +117,25 @@ clutter_content_default_init (ClutterContentInterface *iface)
 void
 clutter_content_invalidate (ClutterContent *content)
 {
+  GHashTable *actors;
+  GHashTableIter iter;
+  gpointer key_p, value_p;
+
   g_return_if_fail (CLUTTER_IS_CONTENT (content));
+
+  actors = g_object_get_qdata (G_OBJECT (content), quark_content_actors);
+  if (actors == NULL)
+    return;
+
+  g_hash_table_iter_init (&iter, actors);
+  while (g_hash_table_iter_next (&iter, &key_p, &value_p))
+    {
+      ClutterActor *actor = key_p;
+
+      g_assert (actor != NULL);
+
+      clutter_actor_queue_redraw (actor);
+    }
 
   CLUTTER_CONTENT_GET_IFACE (content)->invalidate (content);
 }
@@ -180,6 +158,20 @@ void
 _clutter_content_attached (ClutterContent *content,
                            ClutterActor   *actor)
 {
+  GObject *obj = G_OBJECT (content);
+  GHashTable *actors;
+
+  actors = g_object_get_qdata (obj, quark_content_actors);
+  if (actors == NULL)
+    {
+      actors = g_hash_table_new (NULL, NULL);
+      g_object_set_qdata_full (obj, quark_content_actors,
+                               actors,
+                               (GDestroyNotify) g_hash_table_unref);
+    }
+
+  g_hash_table_insert (actors, actor, actor);
+
   CLUTTER_CONTENT_GET_IFACE (content)->attached (content, actor);
 }
 
@@ -200,6 +192,17 @@ void
 _clutter_content_detached (ClutterContent *content,
                            ClutterActor   *actor)
 {
+  GObject *obj = G_OBJECT (content);
+  GHashTable *actors;
+
+  actors = g_object_get_qdata (obj, quark_content_actors);
+  g_assert (actors != NULL);
+
+  g_hash_table_remove (actors, actor);
+
+  if (g_hash_table_size (actors) == 0)
+    g_object_set_qdata (obj, quark_content_actors, NULL);
+
   CLUTTER_CONTENT_GET_IFACE (content)->detached (content, actor);
 }
 
