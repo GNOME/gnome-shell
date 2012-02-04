@@ -165,7 +165,7 @@ shell_screen_grabber_grab (ShellScreenGrabber *grabber,
           pf_glBindBufferARB (GL_PIXEL_PACK_BUFFER_ARB, grabber->pixel_buffer);
         }
 
-      glReadPixels (0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+      glReadPixels (x, y, width, height, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 
       mapped_data = pf_glMapBufferARB (GL_PIXEL_PACK_BUFFER_ARB, GL_READ_ONLY_ARB);
 
