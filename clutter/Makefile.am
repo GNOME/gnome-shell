@@ -614,6 +614,7 @@ endif
 if SUPPORT_EGL
 backend_source_h += $(egl_source_h)
 backend_source_c += $(egl_source_c)
+backend_source_h_priv += $(egl_source_h_priv)
 
 clutteregl_includedir = $(clutter_includedir)/egl
 clutteregl_include_HEADERS = $(egl_source_h)
