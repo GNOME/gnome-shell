@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-04 15:59+0100\n"
+"POT-Creation-Date: 2012-02-04 17:12+0100\n"
 "PO-Revision-Date: 2012-02-04 15:59+0100\n"
 "Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -701,14 +701,13 @@ msgstr "Webpagina"
 msgid "Open"
 msgstr "Openen"
 
-# Niet erg mooi (Wouter)
 #: ../js/ui/messageTray.js:1214
 msgid "Unmute"
-msgstr "Niet langer dempen"
+msgstr "Geluid aanzetten"
 
 #: ../js/ui/messageTray.js:1214
 msgid "Mute"
-msgstr "Dempen"
+msgstr "Geluid uitzetten"
 
 #: ../js/ui/messageTray.js:2446
 msgid "System Information"
