@@ -308,7 +308,7 @@ validate_tex_coords_cb (CoglPipeline *pipeline,
 
   state->i++;
 
-  texture = _cogl_pipeline_get_layer_texture (pipeline, layer_index);
+  texture = cogl_pipeline_get_layer_texture (pipeline, layer_index);
 
   /* NB: NULL textures are handled by _cogl_pipeline_flush_gl_state */
   if (!texture)
@@ -534,7 +534,7 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
    */
   _cogl_pipeline_pre_paint_for_layer (pipeline, layer_index);
 
-  texture = _cogl_pipeline_get_layer_texture (pipeline, layer_index);
+  texture = cogl_pipeline_get_layer_texture (pipeline, layer_index);
 
   /* NULL textures are handled by
    * _cogl_pipeline_flush_gl_state */
@@ -697,7 +697,7 @@ _cogl_rectangles_with_multitexture_coords (
       /* If multitexturing failed or we are drawing with a sliced texture
        * then we only support a single layer so we pluck out the texture
        * from the first pipeline layer... */
-      texture = _cogl_pipeline_get_layer_texture (pipeline, state.first_layer);
+      texture = cogl_pipeline_get_layer_texture (pipeline, state.first_layer);
 
       if (rects[i].tex_coords)
         tex_coords = rects[i].tex_coords;
@@ -904,7 +904,7 @@ append_tex_coord_attributes_cb (CoglPipeline *pipeline,
   /* NULL textures will be handled in
    * _cogl_pipeline_flush_layers_gl_state but there is no need to worry
    * about scaling texture coordinates in this case */
-  texture = _cogl_pipeline_get_layer_texture (pipeline, layer_index);
+  texture = cogl_pipeline_get_layer_texture (pipeline, layer_index);
   if (texture != NULL)
     _cogl_texture_transform_coords_to_gl (texture, &tx, &ty);
 

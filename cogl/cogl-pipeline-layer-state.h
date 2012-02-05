@@ -143,6 +143,20 @@ cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
                                  CoglTexture  *texture);
 
 /**
+ * cogl_pipeline_get_layer_texture:
+ * @pipeline: A #CoglPipeline object
+ * @layer_index: the index of the layer
+ *
+ * Return value: the texture that was set for the given layer of the
+ *   pipeline or %NULL if no texture was set.
+ * Stability: unstable
+ * Since: 1.10
+ */
+CoglTexture *
+cogl_pipeline_get_layer_texture (CoglPipeline *pipeline,
+                                 int layer_index);
+
+/**
  * cogl_pipeline_remove_layer:
  * @pipeline: A #CoglPipeline object
  * @layer_index: Specifies the layer you want to remove

@@ -960,10 +960,6 @@ _cogl_pipeline_find_equivalent_parent (CoglPipeline *pipeline,
                                        CoglPipelineState pipeline_state,
                                        CoglPipelineLayerState layer_state);
 
-CoglTexture *
-_cogl_pipeline_get_layer_texture (CoglPipeline *pipeline,
-                                  int layer_index);
-
 void
 _cogl_pipeline_get_layer_combine_constant (CoglPipeline *pipeline,
                                            int layer_index,

@@ -323,7 +323,7 @@ validate_layer_cb (CoglPipeline *pipeline,
                    void *user_data)
 {
   CoglTexture *texture =
-    _cogl_pipeline_get_layer_texture (pipeline, layer_index);
+    cogl_pipeline_get_layer_texture (pipeline, layer_index);
   ValidateLayerState *state = user_data;
   gboolean status = TRUE;
 

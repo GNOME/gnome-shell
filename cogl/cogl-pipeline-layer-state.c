@@ -121,8 +121,8 @@ _cogl_pipeline_layer_get_texture_real (CoglPipelineLayer *layer)
 }
 
 CoglTexture *
-_cogl_pipeline_get_layer_texture (CoglPipeline *pipeline,
-                                  int layer_index)
+cogl_pipeline_get_layer_texture (CoglPipeline *pipeline,
+                                 int layer_index)
 {
   CoglPipelineLayer *layer =
     _cogl_pipeline_get_layer (pipeline, layer_index);
@@ -1418,8 +1418,6 @@ cogl_pipeline_set_layer_matrix (CoglPipeline *pipeline,
     }
 }
 
-/* FIXME: deprecate and replace with
- * cogl_pipeline_get_layer_texture() instead. */
 CoglTexture *
 _cogl_pipeline_layer_get_texture (CoglPipelineLayer *layer)
 {
