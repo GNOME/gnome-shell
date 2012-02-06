@@ -1,3 +1,42 @@
+Clutter 1.9.10                                                       2012-02-06
+===============================================================================
+
+  • List of changes since Clutter 1.9.8
+
+    - Provide symbolic names for pointer buttons
+    The primary, middle, and secondary pointer buttons now have simple and
+    easy to remember constants that can be used in place of the "magic"
+    numbers.
+
+    - Add ClutterActorIter
+    A simple API, using a stack allocated opaque structure, for safely and
+    efficiently traverse the children of a ClutterActor.
+
+    - Fix regression introduced by the default FixedLayout layout manager
+    Existing ClutterActor subclasses using their own layout management should
+    now work exactly like in Clutter 1.8.
+
+    - Documentation fixes
+    Including introspection annotations fixes.
+
+    - Updates to the Wayland backend
+    The Wayland client backend is now up to date with the 0.85 release of
+    the Wayland protocol.
+
+  • Bugs fixed since Clutter 1.9.8
+
+    [bugzilla.gnome.org]
+    #668692 - Add symbolic names for left, right and middle buttons
+    #668669 - Add iterator API for ClutterActor
+    #667840 - Add annotations from Vala bindings
+    #669360 - clutter-backend-eglnative.h missing in disted tarball
+    #668951 - Fix warnings when weak_unreffing a finalized object
+
+Many thanks to:
+
+  Rob Bradford, Tristan Van Berkom, Chao-Hsiung Liao, Evan Nemerson,
+  Kerrick Staley, Matej Urbančič
+
 Clutter 1.9.8                                                        2012-01-24
 ===============================================================================
 
