@@ -12,10 +12,10 @@ desktop_DATA = gnome-shell.desktop gnome-shell-extension-prefs.desktop
 %.desktop:%.desktop.in
 	$(AM_V_GEN) sed s/^_// < $< > $@ || rm $@
 
-searchprovidersdir = $(pkgdatadir)/search_providers
+searchprovidersdir = $(pkgdatadir)/open-search-providers
 dist_searchproviders_DATA =				\
-	search_providers/google.xml				\
-	search_providers/wikipedia.xml
+	open-search-providers/google.xml		\
+	open-search-providers/wikipedia.xml
 
 themedir = $(pkgdatadir)/theme
 dist_theme_DATA =				\

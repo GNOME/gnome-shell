@@ -310,7 +310,7 @@ const OpenSearchSystem = new Lang.Class({
     },
 
     _addProvider: function(fileName) {
-        let path = global.datadir + '/search_providers/' + fileName;
+        let path = global.datadir + '/open-search-providers/' + fileName;
         let source = Shell.get_file_contents_utf8_sync(path);
         let [success, name, url, langs, icon_uri] = Shell.parse_search_provider(source);
         let provider ={ name: name,
@@ -327,7 +327,7 @@ const OpenSearchSystem = new Lang.Class({
     _refresh: function() {
         this._providers = [];
         let names = global.settings.get_strv(DISABLED_OPEN_SEARCH_PROVIDERS_KEY);
-        let file = Gio.file_new_for_path(global.datadir + '/search_providers');
+        let file = Gio.file_new_for_path(global.datadir + '/open-search-providers');
         FileUtils.listDirAsync(file, Lang.bind(this, function(files) {
             for (let i = 0; i < files.length; i++) {
                 let enabled = true;
