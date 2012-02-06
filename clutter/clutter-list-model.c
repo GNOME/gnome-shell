@@ -108,7 +108,7 @@ clutter_list_model_iter_get_value (ClutterModelIter *iter,
                                    GValue           *value)
 {
   ClutterListModelIter *iter_default;
-  GValueArray *value_array;
+  GValue *values;
   GValue *iter_value;
   GValue real_value = { 0, };
   gboolean converted = FALSE;
@@ -116,8 +116,8 @@ clutter_list_model_iter_get_value (ClutterModelIter *iter,
   iter_default = CLUTTER_LIST_MODEL_ITER (iter);
   g_assert (iter_default->seq_iter != NULL);
 
-  value_array = g_sequence_get (iter_default->seq_iter);
-  iter_value = g_value_array_get_nth (value_array, column);
+  values = g_sequence_get (iter_default->seq_iter);
+  iter_value = &values[column];
   g_assert (iter_value != NULL);
 
   if (!g_type_is_a (G_VALUE_TYPE (value), G_VALUE_TYPE (iter_value)))
@@ -161,7 +161,7 @@ clutter_list_model_iter_set_value (ClutterModelIter *iter,
                                    const GValue     *value)
 {
   ClutterListModelIter *iter_default;
-  GValueArray *value_array;
+  GValue *values;
   GValue *iter_value;
   GValue real_value = { 0, };
   gboolean converted = FALSE;
@@ -169,8 +169,8 @@ clutter_list_model_iter_set_value (ClutterModelIter *iter,
   iter_default = CLUTTER_LIST_MODEL_ITER (iter);
   g_assert (iter_default->seq_iter != NULL);
 
-  value_array = g_sequence_get (iter_default->seq_iter);
-  iter_value = g_value_array_get_nth (value_array, column);
+  values = g_sequence_get (iter_default->seq_iter);
+  iter_value = &values[column];
   g_assert (iter_value != NULL);
 
   if (!g_type_is_a (G_VALUE_TYPE (value), G_VALUE_TYPE (iter_value)))
@@ -495,36 +495,29 @@ clutter_list_model_insert_row (ClutterModel *model,
   GSequence *sequence = model_default->priv->sequence;
   ClutterListModelIter *retval;
   guint n_columns, i, pos;
-  GValueArray *array;
+  GValue *values;
   GSequenceIter *seq_iter;
 
   n_columns = clutter_model_get_n_columns (model);
-  array = g_value_array_new (n_columns);
+  values = g_new0 (GValue, n_columns);
 
   for (i = 0; i < n_columns; i++)
-    {
-      GValue *value = NULL;
-
-      g_value_array_append (array, NULL);
-
-      value = g_value_array_get_nth (array, i);
-      g_value_init (value, clutter_model_get_column_type (model, i));
-    }
+    g_value_init (&values[i], clutter_model_get_column_type (model, i));
 
   if (index_ < 0)
     {
-      seq_iter = g_sequence_append (sequence, array);
+      seq_iter = g_sequence_append (sequence, values);
       pos = g_sequence_get_length (sequence) - 1;
     }
   else if (index_ == 0)
     {
-      seq_iter = g_sequence_prepend (sequence, array);
+      seq_iter = g_sequence_prepend (sequence, values);
       pos = 0;
     }
   else
     {
       seq_iter = g_sequence_get_iter_at_pos (sequence, index_);
-      seq_iter = g_sequence_insert_before (seq_iter, array);
+      seq_iter = g_sequence_insert_before (seq_iter, values);
       pos = index_;
     }
 
@@ -594,13 +587,13 @@ sort_model_default (gconstpointer a,
                     gconstpointer b,
                     gpointer      data)
 {
-  GValueArray *row_a = (GValueArray *) a;
-  GValueArray *row_b = (GValueArray *) b;
+  const GValue *row_a = a;
+  const GValue *row_b = b;
   SortClosure *clos = data;
 
   return clos->func (clos->model,
-                     g_value_array_get_nth (row_a, clos->column),
-                     g_value_array_get_nth (row_b, clos->column),
+                     &row_a[clos->column],
+                     &row_b[clos->column],
                      clos->data);
 }
 
@@ -638,12 +631,19 @@ clutter_list_model_row_removed (ClutterModel     *model,
                                 ClutterModelIter *iter)
 {
   ClutterListModelIter *iter_default;
-  GValueArray *array;
+  guint i, n_columns;
+  GValue *values;
+
+  n_columns = clutter_model_get_n_columns (model);
 
   iter_default = CLUTTER_LIST_MODEL_ITER (iter);
 
-  array = g_sequence_get (iter_default->seq_iter);
-  g_value_array_free (array);
+  values = g_sequence_get (iter_default->seq_iter);
+
+  for (i = 0; i < n_columns; i++)
+    g_value_unset (&values[i]);
+
+  g_free (values);
 
   g_sequence_remove (iter_default->seq_iter);
   iter_default->seq_iter = NULL;
@@ -655,13 +655,20 @@ clutter_list_model_finalize (GObject *gobject)
   ClutterListModel *model = CLUTTER_LIST_MODEL (gobject);
   GSequence *sequence = model->priv->sequence;
   GSequenceIter *iter;
+  guint n_columns, i;
+
+  n_columns = clutter_model_get_n_columns (CLUTTER_MODEL (gobject));
 
   iter = g_sequence_get_begin_iter (sequence);
   while (!g_sequence_iter_is_end (iter))
     {
-      GValueArray *value_array = g_sequence_get (iter);
+      GValue *values = g_sequence_get (iter);
 
-      g_value_array_free (value_array);
+      for (i = 0; i < n_columns; i++)
+        g_value_unset (&values[i]);
+
+      g_free (values);
+
       iter = g_sequence_iter_next (iter);
     }
   g_sequence_free (sequence);
