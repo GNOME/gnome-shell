@@ -301,7 +301,8 @@ const WindowClone = new Lang.Class({
 
         if (!this._zoomLightbox)
             this._zoomLightbox = new Lightbox.Lightbox(Main.uiGroup,
-                                                       { fadeTime: LIGHTBOX_FADE_TIME });
+                                                       { fadeInTime: LIGHTBOX_FADE_TIME,
+                                                         fadeOutTime: LIGHTBOX_FADE_TIME });
         this._zoomLightbox.show();
 
         this._zoomLocalOrig  = new ScaledPoint(this.actor.x, this.actor.y, this.actor.scale_x, this.actor.scale_y);

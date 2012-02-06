@@ -8,6 +8,8 @@ const St = imports.gi.St;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
+const DEFAULT_FADE_FACTOR = 0.4;
+
 /**
  * Lightbox:
  * @container: parent Clutter.Container
@@ -15,7 +17,8 @@ const Tweener = imports.ui.tweener;
  *           - inhibitEvents: whether to inhibit events for @container
  *           - width: shade actor width
  *           - height: shade actor height
- *           - fadeTime: seconds used to fade in/out
+ *           - fadeInTime: seconds used to fade in
+ *           - fadeOutTime: seconds used to fade out
  *
  * Lightbox creates a dark translucent "shade" actor to hide the
  * contents of @container, and allows you to specify particular actors
@@ -38,12 +41,16 @@ const Lightbox = new Lang.Class({
         params = Params.parse(params, { inhibitEvents: false,
                                         width: null,
                                         height: null,
-                                        fadeTime: null
+                                        fadeInTime: null,
+                                        fadeOutTime: null,
+                                        fadeFactor: DEFAULT_FADE_FACTOR
                                       });
 
         this._container = container;
         this._children = container.get_children();
-        this._fadeTime = params.fadeTime;
+        this._fadeInTime = params.fadeInTime;
+        this._fadeOutTime = params.fadeOutTime;
+        this._fadeFactor = params.fadeFactor;
         this.actor = new St.Bin({ x: 0,
                                   y: 0,
                                   style_class: 'lightbox',
@@ -52,6 +59,7 @@ const Lightbox = new Lang.Class({
         container.add_actor(this.actor);
         this.actor.raise_top();
         this.actor.hide();
+        this.shown = false;
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
@@ -93,24 +101,29 @@ const Lightbox = new Lang.Class({
     },
 
     show: function() {
-        if (this._fadeTime) {
+        if (this._fadeInTime) {
             this.actor.opacity = 0;
             Tweener.addTween(this.actor,
-                             { opacity: 255,
-                               time: this._fadeTime,
-                               transition: 'easeOutQuad'
+                             { opacity: 255 * this._fadeFactor,
+                               time: this._fadeInTime,
+                               transition: 'easeOutQuad',
+                               onComplete: Lang.bind(this, function() {
+                                   this.shown = true;
+                               })
                              });
         } else {
-            this.actor.opacity = 255;
+            this.actor.opacity = 255 * this._fadeFactor;
+            this.shown = true;
         }
         this.actor.show();
     },
 
     hide: function() {
-        if (this._fadeTime) {
+        this.shown = false;
+        if (this._fadeOutTime) {
             Tweener.addTween(this.actor,
                              { opacity: 0,
-                               time: this._fadeTime,
+                               time: this._fadeOutTime,
                                transition: 'easeOutQuad',
                                onComplete: Lang.bind(this, function() {
                                    this.actor.hide();

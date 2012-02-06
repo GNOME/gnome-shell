@@ -1715,7 +1715,7 @@ StScrollBar StButton#vhandle:hover
 }
 
 .lightbox {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: black;
 }
 
 .flashspot {
