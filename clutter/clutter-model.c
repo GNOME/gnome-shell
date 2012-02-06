@@ -652,39 +652,41 @@ clutter_model_set_custom_property (ClutterScriptable *scriptable,
       for (l = rows; l; l = l->next)
         {
           JsonNode *node = l->data;
-          guint *columns, i, n_values = 0;
-          GValueArray *values;
+          guint *columns = NULL, i, n_values = 0;
+          GValue *values = NULL;
 
           if (JSON_NODE_TYPE (node) == JSON_NODE_ARRAY)
             {
               JsonArray *array = json_node_get_array (node);
+
               if (json_array_get_length (array) != n_columns)
                 {
                   g_warning ("Row %d contains the wrong count of columns",
                              g_slist_position (rows, l) + 1);
-                  row++;
+                  row += 1;
                   continue;
                 }
 
+              /* array more requires all columns */
               n_values = n_columns;
+
               columns = g_new (guint, n_values);
-              values = g_value_array_new (n_values);
+              values = g_new0 (GValue, n_values);
 
               for (i = 0; i < n_values; i++)
                 {
                   GType column_type;
                   const gchar *column_name;
-                  GValue v = { 0, };
 
                   column_type = clutter_model_get_column_type (model, i);
                   column_name = clutter_model_get_column_name (model, i);
+
                   columns[i] = i;
-                  g_value_init (&v, column_type);
-                  _clutter_script_parse_node (script, &v, column_name,
+                  g_value_init (&values[i], column_type);
+
+                  _clutter_script_parse_node (script, &values[i], column_name,
                                               json_array_get_element (array, i),
                                               NULL);
-                  g_value_array_append (values, &v);
-                  g_value_unset (&v);
                 }
             }
           else if (JSON_NODE_TYPE (node) == JSON_NODE_OBJECT)
@@ -693,9 +695,11 @@ clutter_model_set_custom_property (ClutterScriptable *scriptable,
               GList *members, *m;
               guint column = 0;
 
+              /* object mode does not require all columns */
               n_values = json_object_get_size (object);
+
               columns = g_new (guint, n_values);
-              values = g_value_array_new (n_values);
+              values = g_new0 (GValue, n_values);
 
               members = json_object_get_members (object);
               for (m = members; m; m = m->next)
@@ -712,35 +716,38 @@ clutter_model_set_custom_property (ClutterScriptable *scriptable,
                           JsonNode *member;
                           GType col_type;
                           const gchar *col_name;
-                          GValue v = { 0, };
+
+                          member = json_object_get_member (object, mname);
 
                           col_type = clutter_model_get_column_type (model, i);
                           col_name = clutter_model_get_column_name (model, i);
+
                           columns[column] = i;
-                          g_value_init (&v, col_type);
-                          member = json_object_get_member (object, mname);
-                          _clutter_script_parse_node (script, &v,
+                          g_value_init (&values[column], col_type);
+
+                          _clutter_script_parse_node (script, &values[column],
                                                       col_name, member,
                                                       NULL);
-                          g_value_array_append (values, &v);
-                          g_value_unset (&v);
                           break;
                         }
                     }
-                  column++;
+
+                  column += 1;
                 }
             }
           else
             {
-              row++;
+              row += 1;
               continue;
             }
 
-          clutter_model_insertv (model, row, n_values, columns, values->values);
-          g_value_array_free (values);
+          clutter_model_insertv (model, row, n_values, columns, values);
+
+          g_free (values);
           g_free (columns);
           json_node_free (node);
-          row++;
+
+          row += 1;
         }
       g_slist_free (rows);
     }
