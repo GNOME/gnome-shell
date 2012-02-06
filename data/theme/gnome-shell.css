@@ -360,7 +360,6 @@ StTooltip StLabel {
 .panel-button:focus {
     border-image: url("panel-button-border.svg") 10 10 0 2;
     background-image: url("panel-button-highlight-wide.svg");
-    background-size: contain;
     color: white;
     text-shadow: black 0px 2px 2px;
 }
@@ -369,7 +368,6 @@ StTooltip StLabel {
 .panel-status-button:checked,
 .panel-status-button:focus {
     background-image: url("panel-button-highlight-narrow.svg");
-    background-size: contain;
 }
 
 .panel-button:active > .system-status-icon,
