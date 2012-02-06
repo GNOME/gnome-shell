@@ -42,63 +42,148 @@ G_BEGIN_DECLS
 
 /**
  * SECTION:cogl-display
- * @short_description: Represents a display pipeline
+ * @short_description: Common aspects of a display pipeline
  *
- * TODO: We still need to decide if we really need this object or if
- * it's enough to just have the CoglSwapChain CoglOnscreenTemplate
- * objects.
- *
- * The basic intention is for this object to let the application
- * specify its display preferences before creating a context, and
+ * The basic intention for this object is to let the application
+ * configure common display preferences before creating a context, and
  * there are a few different aspects to this...
  *
- * Firstly there is the physical display pipeline that is currently
- * being used including the digital to analogue conversion hardware
- * and the screen the user sees. Although we don't have a plan to
- * expose all the advanced features of arbitrary display hardware with
- * a Cogl API, some backends may want to expose limited control over
- * this hardware via Cogl and simpler features like providing a list
- * of modes to choose from in a UI could be nice too.
+ * Firstly there are options directly relating to the physical display
+ * pipeline that is currently being used including the digital to
+ * analogue conversion hardware and the screens the user sees.
  *
- * Another aspect is that the display configuration may be tightly
- * related to how onscreen framebuffers should be configured. In fact
- * one of the early rationals for this object was to let us handle
- * GLX's requirement that framebuffers must be "compatible" with the
- * fbconfig associated with the current context meaning we have to
+ * Another aspect is that display options may constrain or affect how
+ * onscreen framebuffers should later be configured. The original
+ * rationale for the display object in fact was to let us handle GLX
+ * and EGLs requirements that framebuffers must be "compatible" with
+ * the config associated with the current context meaning we have to
  * force the user to describe how they would like to create their
  * onscreen windows before we can choose a suitable fbconfig and
  * create a GLContext.
- *
- * TODO: continue this thought process and come to a decision...
  */
 
 typedef struct _CoglDisplay	      CoglDisplay;
 
 #define COGL_DISPLAY(OBJECT) ((CoglDisplay *)OBJECT)
 
-#define cogl_display_new cogl_display_new_EXP
+/**
+ * cogl_display_new:
+ * @renderer: A #CoglRenderer
+ * @onscreen_template: A #CoglOnscreenTemplate
+ *
+ * Explicitly allocates a new #CoglDisplay object to encapsulate the
+ * common state of the display pipeline that applies to the whole
+ * application.
+ *
+ * <note>Many applications don't need to explicitly use
+ * cogl_display_new() and can just jump straight to cogl_context_new()
+ * and pass a %NULL display argument so Cogl will automatically
+ * connect and setup a renderer and display.</note>
+ *
+ * A @display can only be made for a specific choice of renderer which
+ * is why this takes the @renderer argument.
+ *
+ * A common use for explicitly allocating a display object is to
+ * define a template for allocating onscreen framebuffers which is
+ * what the @onscreen_template argument is for.
+ *
+ * When a display is first allocated via cogl_display_new() it is in a
+ * mutable configuration mode. It's designed this way so we can
+ * extend the apis available for configuring a display without
+ * requiring huge numbers of constructor arguements.
+ *
+ * When you have finished configuring a display object you can
+ * optionally call cogl_display_setup() to explicitly apply the
+ * configuration and check for errors. Alternaitvely you can pass the
+ * display to cogl_context_new() and Cogl will implicitly apply your
+ * configuration but if there are errors then the application will
+ * abort with a message. For simple applications with no fallback
+ * options then relying on the implicit setup can be fine.
+ *
+ * Return value: A newly allocated #CoglDisplay object in a mutable
+ *               configuration mode.
+ * Since: 1.10
+ * Stability: unstable
+ */
 CoglDisplay *
 cogl_display_new (CoglRenderer *renderer,
                   CoglOnscreenTemplate *onscreen_template);
 
-#define cogl_display_get_renderer cogl_display_get_renderer_EXP
+/**
+ * cogl_display_get_renderer:
+ * @display: a #CoglDisplay
+ *
+ * Queries the #CoglRenderer associated with the given @display.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
 CoglRenderer *
 cogl_display_get_renderer (CoglDisplay *display);
 
-#define cogl_display_setup cogl_display_setup_EXP
+/**
+ * cogl_display_setup:
+ * @display: a #CoglDisplay
+ * @error: return location for a #GError
+ *
+ * Explicitly sets up the given @display object. Use of this api is
+ * optional since Cogl will internally setup the display if not done
+ * explicitly.
+ *
+ * When a display is first allocated via cogl_display_new() it is in a
+ * mutable configuration mode. This allows us to extend the apis
+ * available for configuring a display without requiring huge numbers
+ * of constructor arguements.
+ *
+ * Its possible to request a configuration that might not be
+ * supportable on the current system and so this api provides a means
+ * to apply the configuration explicitly but if it fails then an
+ * exception will be returned so you can handle the error gracefully
+ * and perhaps fall back to an alternative configuration.
+ *
+ * If you instead rely on Cogl implicitly calling cogl_display_setup()
+ * for you then if there is an error with the configuration you won't
+ * get an opportunity to handle that and the application may abort
+ * with a message.  For simple applications that don't have any
+ * fallback options this behaviour may be fine.
+ *
+ * Return value: Returns %TRUE if there was no error, else it returns
+ *               %FALSE and returns an exception via @error.
+ * Since: 1.10
+ * Stability: unstable
+ */
 gboolean
 cogl_display_setup (CoglDisplay *display,
                     GError **error);
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-#define cogl_gdl_display_set_plane \
-  cogl_gdl_display_set_plane_EXP
+/**
+ * cogl_gdl_display_set_plane:
+ * @display: a #CoglDisplay
+ *
+ * Request that Cogl output to a specific GDL overlay @plane.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
 void
 cogl_gdl_display_set_plane (CoglDisplay *display,
                             gdl_plane_id_t plane);
 #endif
 
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
+/**
+ * cogl_wayland_display_set_compositor_display:
+ * @display: a #CoglDisplay
+ * @wayland_display: A compositor's Wayland display pointer
+ *
+ * Informs Cogl of a compositor's Wayland display pointer. This
+ * enables Cogl to register private wayland extensions required to
+ * pass buffers between the clients and compositor.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
 void
 cogl_wayland_display_set_compositor_display (CoglDisplay *display,
                                           struct wl_display *wayland_display);
