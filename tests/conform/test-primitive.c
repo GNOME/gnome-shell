@@ -1,5 +1,6 @@
 #include <cogl/cogl.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "test-utils.h"
 
@@ -13,6 +14,8 @@ typedef struct _TestState
 
 #define PRIM_COLOR 0xff00ffff
 #define TEX_COLOR 0x0000ffff
+
+#define N_ATTRIBS 8
 
 typedef CoglPrimitive * (* TestPrimFunc) (guint32 *expected_color);
 
@@ -196,6 +199,110 @@ test_paint (TestState *state)
     }
 }
 
+static gboolean
+get_attributes_cb (CoglPrimitive *prim,
+                   CoglAttribute *attrib,
+                   void *user_data)
+{
+  CoglAttribute ***p = user_data;
+  *((* p)++) = attrib;
+  return TRUE;
+}
+
+static int
+compare_pointers (const void *a, const void *b)
+{
+  CoglAttribute *pa = *(CoglAttribute **) a;
+  CoglAttribute *pb = *(CoglAttribute **) b;
+
+  if (pa < pb)
+    return -1;
+  else if (pa > pb)
+    return 1;
+  else
+    return 0;
+}
+
+static void
+test_copy (TestState *state)
+{
+  static const guint16 indices_data[2] = { 1, 2 };
+  CoglAttributeBuffer *buffer = cogl_attribute_buffer_new (100, NULL);
+  CoglAttribute *attributes[N_ATTRIBS];
+  CoglAttribute *attributes_a[N_ATTRIBS], *attributes_b[N_ATTRIBS];
+  CoglAttribute **p;
+  CoglPrimitive *prim_a, *prim_b;
+  CoglIndices *indices;
+  int i;
+
+  for (i = 0; i < N_ATTRIBS; i++)
+    {
+      char *name = g_strdup_printf ("foo_%i", i);
+      attributes[i] = cogl_attribute_new (buffer,
+                                          name,
+                                          16, /* stride */
+                                          16, /* offset */
+                                          2, /* components */
+                                          COGL_ATTRIBUTE_TYPE_FLOAT);
+      g_free (name);
+    }
+
+  prim_a = cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_TRIANGLES,
+                                               8, /* n_vertices */
+                                               attributes,
+                                               N_ATTRIBS);
+
+  indices = cogl_indices_new (COGL_INDICES_TYPE_UNSIGNED_SHORT,
+                              indices_data,
+                              2 /* n_indices */);
+
+  cogl_primitive_set_first_vertex (prim_a, 12);
+  cogl_primitive_set_indices (prim_a, indices, 2);
+
+  prim_b = cogl_primitive_copy (prim_a);
+
+  p = attributes_a;
+  cogl_primitive_foreach_attribute (prim_a,
+                                    get_attributes_cb,
+                                    &p);
+  g_assert_cmpint (p - attributes_a, ==, N_ATTRIBS);
+
+  p = attributes_b;
+  cogl_primitive_foreach_attribute (prim_b,
+                                    get_attributes_cb,
+                                    &p);
+  g_assert_cmpint (p - attributes_b, ==, N_ATTRIBS);
+
+  qsort (attributes_a, N_ATTRIBS, sizeof (CoglAttribute *), compare_pointers);
+  qsort (attributes_b, N_ATTRIBS, sizeof (CoglAttribute *), compare_pointers);
+
+  g_assert (memcmp (attributes_a, attributes_b, sizeof (attributes_a)) == 0);
+
+  g_assert_cmpint (cogl_primitive_get_first_vertex (prim_a),
+                   ==,
+                   cogl_primitive_get_first_vertex (prim_b));
+
+  g_assert_cmpint (cogl_primitive_get_n_vertices (prim_a),
+                   ==,
+                   cogl_primitive_get_n_vertices (prim_b));
+
+  g_assert_cmpint (cogl_primitive_get_mode (prim_a),
+                   ==,
+                   cogl_primitive_get_mode (prim_b));
+
+  g_assert (cogl_primitive_get_indices (prim_a) ==
+            cogl_primitive_get_indices (prim_b));
+
+  cogl_object_unref (prim_a);
+  cogl_object_unref (prim_b);
+  cogl_object_unref (indices);
+
+  for (i = 0; i < N_ATTRIBS; i++)
+    cogl_object_unref (attributes[i]);
+
+  cogl_object_unref (buffer);
+}
+
 void
 test_cogl_primitive (TestUtilsGTestFixture *fixture,
                      void *data)
@@ -213,6 +320,7 @@ test_cogl_primitive (TestUtilsGTestFixture *fixture,
               -1, 100 /* z near, far */);
 
   test_paint (&state);
+  test_copy (&state);
 
   if (g_test_verbose ())
     g_print ("OK\n");
