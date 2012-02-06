@@ -5732,8 +5732,8 @@ clutter_text_set_preedit_string (ClutterText   *self,
  * Obtains the coordinates where the #ClutterText will draw the #PangoLayout
  * representing the text.
  *
- * Since: 1.7
- **/
+ * Since: 1.8
+ */
 void
 clutter_text_get_layout_offsets (ClutterText *self,
                                  gint        *x,
