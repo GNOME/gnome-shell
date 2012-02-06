@@ -289,6 +289,17 @@ features).
 Release Notes for Clutter 1.10
 -------------------------------------------------------------------------------
 
+• ClutterActor will call its unmap() implementation when it is removed from
+  its parent. This may happen after the ClutterActor::destroy signal has been
+  emitted, i.e. during its dispose(). Prior to 1.10, calling the
+  clutter_actor_destroy() function would unmap the actor first, and then
+  emit the destroy signal. This means that extra care should be used when
+  overriding the map() and unmap() virtual functions, to avoid dereferencing
+  NULL pointers. It is also worthy of note that since Clutter 1.8, overriding
+  map() or unmap() is not required any more for subclasses of ClutterActor
+  that have children, as ClutterActor will automatically do the right thing
+  inside its own implementation, and map or unmap its children when needed.
+
 • ClutterBox and ClutterGroup have been deprecated. ClutterActor should be
   used directly, instead. Since ClutterStage inherits from ClutterGroup, the
   instance and class structures are still available, but subclassing Group
