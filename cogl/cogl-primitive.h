@@ -816,6 +816,41 @@ cogl_primitive_draw (CoglPrimitive *primitive);
 gboolean
 cogl_is_primitive (void *object);
 
+/**
+ * CoglPrimitiveAttributeCallback:
+ * @primitive: The #CoglPrimitive whose attributes are being iterated
+ * @attribute: The #CoglAttribute
+ * @user_data: The private data passed to cogl_primitive_foreach_attribute()
+ *
+ * The callback prototype used with cogl_primitive_foreach_attribute()
+ * for iterating all the attributes of a #CoglPrimitive.
+ *
+ * The function should return TRUE to continue iteration or FALSE to
+ * stop.
+ *
+ * Since: 1.10
+ * Stability: Unstable
+ */
+typedef gboolean (* CoglPrimitiveAttributeCallback) (CoglPrimitive *primitive,
+                                                     CoglAttribute *attribute,
+                                                     void *user_data);
+
+/**
+ * cogl_primitive_foreach_attribute:
+ * @primitive: A #CoglPrimitive object
+ * @callback: A #CoglPrimitiveAttributeCallback to be called for each attribute
+ * @user_data: Private data that will be passed to the callback
+ *
+ * Iterates all the attributes of the given #CoglPrimitive.
+ *
+ * Since: 1.10
+ * Stability: Unstable
+ */
+void
+cogl_primitive_foreach_attribute (CoglPrimitive *primitive,
+                                  CoglPrimitiveAttributeCallback callback,
+                                  void *user_data);
+
 G_END_DECLS
 
 #endif /* __COGL_PRIMITIVE_H__ */

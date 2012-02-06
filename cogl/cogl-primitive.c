@@ -596,3 +596,15 @@ cogl_primitive_draw (CoglPrimitive *primitive)
 {
   _cogl_primitive_draw (primitive, 0 /* no flags */);
 }
+
+void
+cogl_primitive_foreach_attribute (CoglPrimitive *primitive,
+                                  CoglPrimitiveAttributeCallback callback,
+                                  void *user_data)
+{
+  int i;
+
+  for (i = 0; i < primitive->n_attributes; i++)
+    if (!callback (primitive, primitive->attributes[i], user_data))
+      break;
+}

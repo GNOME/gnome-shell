@@ -238,6 +238,8 @@ cogl_primitive_set_attributes
 cogl_primitive_set_indices
 cogl_primitive_draw
 cogl_primitive_copy
+CoglPrimitiveAttributeCallback
+cogl_primitive_foreach_attribute
 </SECTION>
 
 <SECTION>
