@@ -2610,6 +2610,8 @@ draw_wireframe (CoglFramebuffer *framebuffer,
   CoglVertexP3 *lines;
   CoglAttributeBuffer *attribute_buffer;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   for (i = 0; i < n_attributes; i++)
     {
       if (attributes[i]->name_state->name_id ==
@@ -2628,7 +2630,7 @@ draw_wireframe (CoglFramebuffer *framebuffer,
                           &n_line_vertices,
                           indices);
   attribute_buffer =
-    cogl_attribute_buffer_new (sizeof (CoglVertexP3) * n_line_vertices,
+    cogl_attribute_buffer_new (ctx, sizeof (CoglVertexP3) * n_line_vertices,
                                lines);
   wire_attribute[0] =
     cogl_attribute_new (attribute_buffer, "cogl_position_in",

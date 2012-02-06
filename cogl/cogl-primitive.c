@@ -127,12 +127,13 @@ cogl_primitive_new (CoglVerticesMode mode,
 }
 
 CoglPrimitive *
-cogl_primitive_new_p2 (CoglVerticesMode mode,
+cogl_primitive_new_p2 (CoglContext *ctx,
+                       CoglVerticesMode mode,
                        int n_vertices,
                        const CoglVertexP2 *data)
 {
   CoglAttributeBuffer *attribute_buffer =
-    cogl_attribute_buffer_new (n_vertices * sizeof (CoglVertexP2), data);
+    cogl_attribute_buffer_new (ctx, n_vertices * sizeof (CoglVertexP2), data);
   CoglAttribute *attributes[1];
 
   attributes[0] = cogl_attribute_new (attribute_buffer,
@@ -150,12 +151,13 @@ cogl_primitive_new_p2 (CoglVerticesMode mode,
 }
 
 CoglPrimitive *
-cogl_primitive_new_p3 (CoglVerticesMode mode,
+cogl_primitive_new_p3 (CoglContext *ctx,
+                       CoglVerticesMode mode,
                        int n_vertices,
                        const CoglVertexP3 *data)
 {
   CoglAttributeBuffer *attribute_buffer =
-    cogl_attribute_buffer_new (n_vertices * sizeof (CoglVertexP3), data);
+    cogl_attribute_buffer_new (ctx, n_vertices * sizeof (CoglVertexP3), data);
   CoglAttribute *attributes[1];
 
   attributes[0] = cogl_attribute_new (attribute_buffer,
@@ -173,12 +175,13 @@ cogl_primitive_new_p3 (CoglVerticesMode mode,
 }
 
 CoglPrimitive *
-cogl_primitive_new_p2c4 (CoglVerticesMode mode,
+cogl_primitive_new_p2c4 (CoglContext *ctx,
+                         CoglVerticesMode mode,
                          int n_vertices,
                          const CoglVertexP2C4 *data)
 {
   CoglAttributeBuffer *attribute_buffer =
-    cogl_attribute_buffer_new (n_vertices * sizeof (CoglVertexP2C4), data);
+    cogl_attribute_buffer_new (ctx, n_vertices * sizeof (CoglVertexP2C4), data);
   CoglAttribute *attributes[2];
 
   attributes[0] = cogl_attribute_new (attribute_buffer,
@@ -202,12 +205,13 @@ cogl_primitive_new_p2c4 (CoglVerticesMode mode,
 }
 
 CoglPrimitive *
-cogl_primitive_new_p3c4 (CoglVerticesMode mode,
+cogl_primitive_new_p3c4 (CoglContext *ctx,
+                         CoglVerticesMode mode,
                          int n_vertices,
                          const CoglVertexP3C4 *data)
 {
   CoglAttributeBuffer *attribute_buffer =
-    cogl_attribute_buffer_new (n_vertices * sizeof (CoglVertexP3C4), data);
+    cogl_attribute_buffer_new (ctx, n_vertices * sizeof (CoglVertexP3C4), data);
   CoglAttribute *attributes[2];
 
   attributes[0] = cogl_attribute_new (attribute_buffer,
@@ -231,12 +235,13 @@ cogl_primitive_new_p3c4 (CoglVerticesMode mode,
 }
 
 CoglPrimitive *
-cogl_primitive_new_p2t2 (CoglVerticesMode mode,
+cogl_primitive_new_p2t2 (CoglContext *ctx,
+                         CoglVerticesMode mode,
                          int n_vertices,
                          const CoglVertexP2T2 *data)
 {
   CoglAttributeBuffer *attribute_buffer =
-    cogl_attribute_buffer_new (n_vertices * sizeof (CoglVertexP2T2), data);
+    cogl_attribute_buffer_new (ctx, n_vertices * sizeof (CoglVertexP2T2), data);
   CoglAttribute *attributes[2];
 
   attributes[0] = cogl_attribute_new (attribute_buffer,
@@ -260,12 +265,13 @@ cogl_primitive_new_p2t2 (CoglVerticesMode mode,
 }
 
 CoglPrimitive *
-cogl_primitive_new_p3t2 (CoglVerticesMode mode,
+cogl_primitive_new_p3t2 (CoglContext *ctx,
+                         CoglVerticesMode mode,
                          int n_vertices,
                          const CoglVertexP3T2 *data)
 {
   CoglAttributeBuffer *attribute_buffer =
-    cogl_attribute_buffer_new (n_vertices * sizeof (CoglVertexP3T2), data);
+    cogl_attribute_buffer_new (ctx, n_vertices * sizeof (CoglVertexP3T2), data);
   CoglAttribute *attributes[2];
 
   attributes[0] = cogl_attribute_new (attribute_buffer,
@@ -289,12 +295,14 @@ cogl_primitive_new_p3t2 (CoglVerticesMode mode,
 }
 
 CoglPrimitive *
-cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
+cogl_primitive_new_p2t2c4 (CoglContext *ctx,
+                           CoglVerticesMode mode,
                            int n_vertices,
                            const CoglVertexP2T2C4 *data)
 {
   CoglAttributeBuffer *attribute_buffer =
-    cogl_attribute_buffer_new (n_vertices * sizeof (CoglVertexP2T2C4), data);
+    cogl_attribute_buffer_new (ctx,
+                               n_vertices * sizeof (CoglVertexP2T2C4), data);
   CoglAttribute *attributes[3];
 
   attributes[0] = cogl_attribute_new (attribute_buffer,
@@ -324,12 +332,14 @@ cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
 }
 
 CoglPrimitive *
-cogl_primitive_new_p3t2c4 (CoglVerticesMode mode,
+cogl_primitive_new_p3t2c4 (CoglContext *ctx,
+                           CoglVerticesMode mode,
                            int n_vertices,
                            const CoglVertexP3T2C4 *data)
 {
   CoglAttributeBuffer *attribute_buffer =
-    cogl_attribute_buffer_new (n_vertices * sizeof (CoglVertexP3T2C4), data);
+    cogl_attribute_buffer_new (ctx,
+                               n_vertices * sizeof (CoglVertexP3T2C4), data);
   CoglAttribute *attributes[3];
 
   attributes[0] = cogl_attribute_new (attribute_buffer,

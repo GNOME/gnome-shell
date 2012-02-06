@@ -576,6 +576,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
                                              void             *data)
 {
   CoglJournalFlushState   *state = data;
+  CoglContext             *ctx = state->framebuffer->context;
   gsize                    stride;
   int                      i;
   CoglAttribute          **attribute_entry;
@@ -585,8 +586,6 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
                      "The time spent flushing vbo + texcoord offsets + "
                      "pipeline + entries",
                      0 /* no application private data */);
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   COGL_TIMER_START (_cogl_uprof_context,
                     time_flush_vbo_texcoord_pipeline_entries);
@@ -630,7 +629,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
                         COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
 
   if (ctx->driver != COGL_DRIVER_GL)
-    state->indices = cogl_get_rectangle_indices (batch_len);
+    state->indices = cogl_get_rectangle_indices (ctx, batch_len);
 
   /* We only create new Attributes when the stride within the
    * AttributeBuffer changes. (due to a change in the number of pipeline
@@ -1133,20 +1132,20 @@ create_attribute_buffer (CoglJournal *journal,
      really any point in using the pool so we'll just allocate the
      buffer directly */
   if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_VBOS))
-    return cogl_attribute_buffer_new (n_bytes, NULL);
+    return cogl_attribute_buffer_new (ctx, n_bytes, NULL);
 
   vbo = journal->vbo_pool[journal->next_vbo_in_pool];
 
   if (vbo == NULL)
     {
-      vbo = cogl_attribute_buffer_new (n_bytes, NULL);
+      vbo = cogl_attribute_buffer_new (ctx, n_bytes, NULL);
       journal->vbo_pool[journal->next_vbo_in_pool] = vbo;
     }
   else if (cogl_buffer_get_size (COGL_BUFFER (vbo)) < n_bytes)
     {
       /* If the buffer is too small then we'll just recreate it */
       cogl_object_unref (vbo);
-      vbo = cogl_attribute_buffer_new (n_bytes, NULL);
+      vbo = cogl_attribute_buffer_new (ctx, n_bytes, NULL);
       journal->vbo_pool[journal->next_vbo_in_pool] = vbo;
     }
 

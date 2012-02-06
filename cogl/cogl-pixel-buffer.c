@@ -68,21 +68,20 @@ _cogl_pixel_buffer_free (CoglPixelBuffer *buffer);
 COGL_BUFFER_DEFINE (PixelBuffer, pixel_buffer)
 
 static CoglPixelBuffer *
-_cogl_pixel_buffer_new (unsigned int size)
+_cogl_pixel_buffer_new (CoglContext *context, unsigned int size)
 {
   CoglPixelBuffer *pixel_buffer = g_slice_new0 (CoglPixelBuffer);
   CoglBuffer *buffer = COGL_BUFFER (pixel_buffer);
   gboolean use_malloc;
 
-  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
-
-  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_PBOS))
+  if (!(context->private_feature_flags & COGL_PRIVATE_FEATURE_PBOS))
     use_malloc = TRUE;
   else
     use_malloc = FALSE;
 
   /* parent's constructor */
   _cogl_buffer_initialize (buffer,
+                           context,
                            size,
                            use_malloc,
                            COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK,
@@ -94,7 +93,8 @@ _cogl_pixel_buffer_new (unsigned int size)
 }
 
 CoglPixelBuffer *
-cogl_pixel_buffer_new_with_size (unsigned int    width,
+cogl_pixel_buffer_new_with_size (CoglContext    *context,
+                                 unsigned int    width,
                                  unsigned int    height,
                                  CoglPixelFormat format,
                                  unsigned int   *rowstride)
@@ -113,7 +113,7 @@ cogl_pixel_buffer_new_with_size (unsigned int    width,
   if (rowstride)
     *rowstride = stride;
 
-  buffer = _cogl_pixel_buffer_new (height * stride);
+  buffer = _cogl_pixel_buffer_new (context, height * stride);
   if (G_UNLIKELY (buffer == COGL_INVALID_HANDLE))
     return COGL_INVALID_HANDLE;
 
@@ -129,8 +129,6 @@ cogl_pixel_buffer_new_with_size (unsigned int    width,
 static void
 _cogl_pixel_buffer_free (CoglPixelBuffer *buffer)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   /* parent's destructor */
   _cogl_buffer_fini (COGL_BUFFER (buffer));
 

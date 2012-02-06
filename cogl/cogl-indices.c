@@ -76,12 +76,13 @@ cogl_indices_new_for_buffer (CoglIndicesType type,
 }
 
 CoglIndices *
-cogl_indices_new (CoglIndicesType type,
+cogl_indices_new (CoglContext *context,
+                  CoglIndicesType type,
                   const void *indices_data,
                   int n_indices)
 {
   size_t buffer_bytes = sizeof_indices_type (type) * n_indices;
-  CoglIndexBuffer *index_buffer = cogl_index_buffer_new (buffer_bytes);
+  CoglIndexBuffer *index_buffer = cogl_index_buffer_new (context, buffer_bytes);
   CoglBuffer *buffer = COGL_BUFFER (index_buffer);
   CoglIndices *indices;
 
@@ -170,11 +171,9 @@ _cogl_indices_immutable_unref (CoglIndices *indices)
 }
 
 CoglIndices *
-cogl_get_rectangle_indices (int n_rectangles)
+cogl_get_rectangle_indices (CoglContext *ctx, int n_rectangles)
 {
   int n_indices = n_rectangles * 6;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
 
   /* Check if the largest index required will fit in a byte array... */
   if (n_indices <= 256 / 4 * 6)
@@ -198,7 +197,8 @@ cogl_get_rectangle_indices (int n_rectangles)
             }
 
           ctx->rectangle_byte_indices
-            = cogl_indices_new (COGL_INDICES_TYPE_UNSIGNED_BYTE,
+            = cogl_indices_new (ctx,
+                                COGL_INDICES_TYPE_UNSIGNED_BYTE,
                                 byte_array,
                                 256 / 4 * 6);
 
@@ -241,7 +241,8 @@ cogl_get_rectangle_indices (int n_rectangles)
             }
 
           ctx->rectangle_short_indices
-            = cogl_indices_new (COGL_INDICES_TYPE_UNSIGNED_SHORT,
+            = cogl_indices_new (ctx,
+                                COGL_INDICES_TYPE_UNSIGNED_SHORT,
                                 short_array,
                                 ctx->rectangle_short_indices_len);
 

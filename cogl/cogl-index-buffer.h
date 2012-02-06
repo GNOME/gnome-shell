@@ -31,6 +31,8 @@
 #ifndef __COGL_INDEX_BUFFER_H__
 #define __COGL_INDEX_BUFFER_H__
 
+#include <cogl/cogl-context.h>
+
 G_BEGIN_DECLS
 
 /**
@@ -45,6 +47,7 @@ typedef struct _CoglIndexBuffer	      CoglIndexBuffer;
 
 /**
  * cogl_index_buffer_new:
+ * @context: A #CoglContext
  * @bytes: The number of bytes to allocate for vertex attribute data.
  *
  * Declares a new #CoglIndexBuffer of @size bytes to contain vertex
@@ -56,7 +59,8 @@ typedef struct _CoglIndexBuffer	      CoglIndexBuffer;
  * Stability: Unstable
  */
 CoglIndexBuffer *
-cogl_index_buffer_new (gsize bytes);
+cogl_index_buffer_new (CoglContext *context,
+                       gsize bytes);
 
 /**
  * cogl_is_index_buffer:

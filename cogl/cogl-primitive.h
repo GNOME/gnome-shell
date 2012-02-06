@@ -244,6 +244,7 @@ cogl_primitive_new_with_attributes (CoglVerticesMode mode,
 
 /**
  * cogl_primitive_new_p2:
+ * @context: A #CoglContext
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
@@ -289,12 +290,14 @@ cogl_primitive_new_with_attributes (CoglVerticesMode mode,
  * Stability: Unstable
  */
 CoglPrimitive *
-cogl_primitive_new_p2 (CoglVerticesMode mode,
+cogl_primitive_new_p2 (CoglContext *context,
+                       CoglVerticesMode mode,
                        int n_vertices,
                        const CoglVertexP2 *data);
 
 /**
  * cogl_primitive_new_p3:
+ * @context: A #CoglContext
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
@@ -340,12 +343,14 @@ cogl_primitive_new_p2 (CoglVerticesMode mode,
  * Stability: Unstable
  */
 CoglPrimitive *
-cogl_primitive_new_p3 (CoglVerticesMode mode,
+cogl_primitive_new_p3 (CoglContext *context,
+                       CoglVerticesMode mode,
                        int n_vertices,
                        const CoglVertexP3 *data);
 
 /**
  * cogl_primitive_new_p2c4:
+ * @context: A #CoglContext
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
@@ -393,12 +398,14 @@ cogl_primitive_new_p3 (CoglVerticesMode mode,
  * Stability: Unstable
  */
 CoglPrimitive *
-cogl_primitive_new_p2c4 (CoglVerticesMode mode,
+cogl_primitive_new_p2c4 (CoglContext *context,
+                         CoglVerticesMode mode,
                          int n_vertices,
                          const CoglVertexP2C4 *data);
 
 /**
  * cogl_primitive_new_p3c4:
+ * @context: A #CoglContext
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
@@ -446,12 +453,14 @@ cogl_primitive_new_p2c4 (CoglVerticesMode mode,
  * Stability: Unstable
  */
 CoglPrimitive *
-cogl_primitive_new_p3c4 (CoglVerticesMode mode,
+cogl_primitive_new_p3c4 (CoglContext *context,
+                         CoglVerticesMode mode,
                          int n_vertices,
                          const CoglVertexP3C4 *data);
 
 /**
  * cogl_primitive_new_p2t2:
+ * @context: A #CoglContext
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
@@ -499,12 +508,14 @@ cogl_primitive_new_p3c4 (CoglVerticesMode mode,
  * Stability: Unstable
  */
 CoglPrimitive *
-cogl_primitive_new_p2t2 (CoglVerticesMode mode,
+cogl_primitive_new_p2t2 (CoglContext *context,
+                         CoglVerticesMode mode,
                          int n_vertices,
                          const CoglVertexP2T2 *data);
 
 /**
  * cogl_primitive_new_p3t2:
+ * @context: A #CoglContext
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
@@ -552,12 +563,14 @@ cogl_primitive_new_p2t2 (CoglVerticesMode mode,
  * Stability: Unstable
  */
 CoglPrimitive *
-cogl_primitive_new_p3t2 (CoglVerticesMode mode,
+cogl_primitive_new_p3t2 (CoglContext *context,
+                         CoglVerticesMode mode,
                          int n_vertices,
                          const CoglVertexP3T2 *data);
 
 /**
  * cogl_primitive_new_p2t2c4:
+ * @context: A #CoglContext
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
@@ -605,12 +618,14 @@ cogl_primitive_new_p3t2 (CoglVerticesMode mode,
  * Stability: Unstable
  */
 CoglPrimitive *
-cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
+cogl_primitive_new_p2t2c4 (CoglContext *context,
+                           CoglVerticesMode mode,
                            int n_vertices,
                            const CoglVertexP2T2C4 *data);
 
 /**
  * cogl_primitive_new_p3t2c4:
+ * @context: A #CoglContext
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
@@ -658,7 +673,8 @@ cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
  * Stability: Unstable
  */
 CoglPrimitive *
-cogl_primitive_new_p3t2c4 (CoglVerticesMode mode,
+cogl_primitive_new_p3t2c4 (CoglContext *context,
+                           CoglVerticesMode mode,
                            int n_vertices,
                            const CoglVertexP3T2C4 *data);
 int

@@ -29,7 +29,7 @@ main (int argc, char **argv)
     cogl_onscreen_show (onscreen);
     fb = COGL_FRAMEBUFFER (onscreen);
 
-    triangle = cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,
+    triangle = cogl_primitive_new_p2c4 (ctx, COGL_VERTICES_MODE_TRIANGLES,
                                         3, triangle_vertices);
 
     pipeline = cogl_pipeline_new ();

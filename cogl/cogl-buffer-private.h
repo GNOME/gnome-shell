@@ -78,6 +78,9 @@ typedef enum {
 struct _CoglBuffer
 {
   CoglObject              _parent;
+
+  CoglContext            *context;
+
   CoglBufferVtable        vtable;
 
   CoglBufferBindTarget    last_target;
@@ -111,6 +114,7 @@ _cogl_buffer_register_buffer_type (const CoglObjectClass *klass);
 
 void
 _cogl_buffer_initialize (CoglBuffer          *buffer,
+                         CoglContext         *context,
                          unsigned int         size,
                          gboolean             use_malloc,
                          CoglBufferBindTarget default_target,
@@ -132,10 +136,6 @@ _cogl_buffer_get_usage_hint (CoglBuffer *buffer);
 
 GLenum
 _cogl_buffer_access_to_gl_enum (CoglBufferAccess access);
-
-GLenum
-_cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
-                               CoglBufferUpdateHint update_hint);
 
 CoglBuffer *
 _cogl_buffer_immutable_ref (CoglBuffer *buffer);

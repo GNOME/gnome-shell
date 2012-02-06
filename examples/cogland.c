@@ -751,7 +751,8 @@ main (int argc, char **argv)
   if (wl_display_add_socket (compositor.wayland_display, "wayland-0"))
     g_error ("Failed to create socket");
 
-  compositor.triangle = cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,
+  compositor.triangle = cogl_primitive_new_p2c4 (compositor.cogl_context,
+                                                 COGL_VERTICES_MODE_TRIANGLES,
                                                  3, triangle_vertices);
   compositor.triangle_pipeline = cogl_pipeline_new ();
 

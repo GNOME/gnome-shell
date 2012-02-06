@@ -97,7 +97,8 @@ G_BEGIN_DECLS
 typedef struct _CoglIndices CoglIndices;
 
 CoglIndices *
-cogl_indices_new (CoglIndicesType type,
+cogl_indices_new (CoglContext *context,
+                  CoglIndicesType type,
                   const void *indices_data,
                   int n_indices);
 
@@ -120,7 +121,7 @@ cogl_indices_set_offset (CoglIndices *indices,
                          gsize offset);
 
 CoglIndices *
-cogl_get_rectangle_indices (int n_rectangles);
+cogl_get_rectangle_indices (CoglContext *context, int n_rectangles);
 
 G_END_DECLS
 

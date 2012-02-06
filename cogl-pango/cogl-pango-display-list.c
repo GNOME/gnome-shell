@@ -269,7 +269,8 @@ emit_vertex_buffer_geometry (CoglPangoDisplayListNode *node)
       n_verts = node->d.texture.rectangles->len * 4;
 
       buffer
-        = cogl_attribute_buffer_new (n_verts * sizeof (CoglVertexP2T2), NULL);
+        = cogl_attribute_buffer_new (ctx,
+                                     n_verts * sizeof (CoglVertexP2T2), NULL);
 
       if ((verts = cogl_buffer_map (COGL_BUFFER (buffer),
                                     COGL_BUFFER_ACCESS_WRITE,
@@ -351,7 +352,7 @@ emit_vertex_buffer_geometry (CoglPangoDisplayListNode *node)
              quads */
 
           CoglIndices *indices =
-            cogl_get_rectangle_indices (node->d.texture.rectangles->len);
+            cogl_get_rectangle_indices (ctx, node->d.texture.rectangles->len);
 
           cogl_primitive_set_indices (prim, indices,
                                       node->d.texture.rectangles->len * 6);

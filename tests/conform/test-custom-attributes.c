@@ -6,6 +6,7 @@
 
 typedef struct _TestState
 {
+  CoglContext *ctx;
   CoglFramebuffer *fb;
   CoglPipeline *pipeline;
 } TestState;
@@ -44,7 +45,8 @@ test_float_verts (TestState *state, int offset_x, int offset_y)
       { 15, 0, /**/ 0, 1, 0, 1 }
     };
 
-  buffer = cogl_attribute_buffer_new (sizeof (float_verts), float_verts);
+  buffer = cogl_attribute_buffer_new (state->ctx,
+                                      sizeof (float_verts), float_verts);
   attributes[0] = cogl_attribute_new (buffer,
                                       "cogl_position_in",
                                       sizeof (FloatVert),
@@ -103,7 +105,8 @@ test_byte_verts (TestState *state, int offset_x, int offset_y)
       { 0, 0, /**/ 0, 0, 1, 1 },
     };
 
-  buffer = cogl_attribute_buffer_new (sizeof (norm_verts), norm_verts);
+  buffer = cogl_attribute_buffer_new (state->ctx,
+                                      sizeof (norm_verts), norm_verts);
   attributes[0] = cogl_attribute_new (buffer,
                                       "cogl_position_in",
                                       sizeof (ByteVert),
@@ -132,7 +135,8 @@ test_byte_verts (TestState *state, int offset_x, int offset_y)
   cogl_object_unref (attributes[1]);
 
   /* Test again with unnormalized attributes */
-  unnorm_buffer = cogl_attribute_buffer_new (sizeof (unnorm_verts),
+  unnorm_buffer = cogl_attribute_buffer_new (state->ctx,
+                                             sizeof (unnorm_verts),
                                              unnorm_verts);
   attributes[1] = cogl_attribute_new (unnorm_buffer,
                                       "color",
@@ -191,7 +195,8 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
 
   cogl_pipeline_set_color4ub (pipeline, 255, 0, 0, 255);
 
-  buffer = cogl_attribute_buffer_new (sizeof (short_verts), short_verts);
+  buffer = cogl_attribute_buffer_new (state->ctx,
+                                      sizeof (short_verts), short_verts);
   attributes[0] = cogl_attribute_new (buffer,
                                       "pos",
                                       sizeof (ShortVert),
@@ -273,6 +278,8 @@ test_cogl_custom_attributes (TestUtilsGTestFixture *fixture,
       CoglSnippet *snippet;
       TestState state;
       state.fb = shared_state->fb;
+
+      state.ctx = shared_state->ctx;
 
       cogl_ortho (/* left, right */
                   0, cogl_framebuffer_get_width (shared_state->fb),

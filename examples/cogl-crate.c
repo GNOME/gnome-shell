@@ -209,8 +209,8 @@ main (int argc, char **argv)
    * cogl_get_rectangle_indices() is a convenience function for
    * accessing internal index buffers that can be shared.
    */
-  data.indices = cogl_get_rectangle_indices (6 /* n_rectangles */);
-  data.prim = cogl_primitive_new_p3t2 (COGL_VERTICES_MODE_TRIANGLES,
+  data.indices = cogl_get_rectangle_indices (ctx, 6 /* n_rectangles */);
+  data.prim = cogl_primitive_new_p3t2 (ctx, COGL_VERTICES_MODE_TRIANGLES,
                                        G_N_ELEMENTS (vertices),
                                        vertices);
   /* Each face will have 6 indices so we have 6 * 6 indices in total... */

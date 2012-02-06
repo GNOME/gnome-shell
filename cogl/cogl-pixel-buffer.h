@@ -34,6 +34,7 @@
 
 #include <glib.h>
 #include <cogl/cogl-types.h>
+#include <cogl/cogl-context.h>
 
 G_BEGIN_DECLS
 
@@ -54,6 +55,7 @@ typedef struct _CoglPixelBuffer CoglPixelBuffer;
 
 /**
  * cogl_pixel_buffer_new_with_size:
+ * @context: A #CoglContext
  * @width: width of the pixel array in pixels
  * @height: height of the pixel array in pixels
  * @format: the format of the pixels the array will store
@@ -75,7 +77,8 @@ typedef struct _CoglPixelBuffer CoglPixelBuffer;
  * Stability: Unstable
  */
 CoglPixelBuffer *
-cogl_pixel_buffer_new_with_size (unsigned int     width,
+cogl_pixel_buffer_new_with_size (CoglContext     *context,
+                                 unsigned int     width,
                                  unsigned int     height,
                                  CoglPixelFormat  format,
                                  unsigned int    *stride);

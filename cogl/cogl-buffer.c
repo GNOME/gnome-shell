@@ -77,12 +77,12 @@
  * abstract class manually.
  */
 
+static GSList *_cogl_buffer_types;
+
 void
 _cogl_buffer_register_buffer_type (const CoglObjectClass *klass)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  ctx->buffer_types = g_slist_prepend (ctx->buffer_types, (void *) klass);
+  _cogl_buffer_types = g_slist_prepend (_cogl_buffer_types, (void *) klass);
 }
 
 gboolean
@@ -91,12 +91,10 @@ cogl_is_buffer (const void *object)
   const CoglHandleObject *obj = object;
   GSList *l;
 
-  _COGL_GET_CONTEXT (ctx, FALSE);
-
   if (object == NULL)
     return FALSE;
 
-  for (l = ctx->buffer_types; l; l = l->next)
+  for (l = _cogl_buffer_types; l; l = l->next)
     if (l->data == obj->klass)
       return TRUE;
 
@@ -121,6 +119,24 @@ convert_bind_target_to_gl_target (CoglBufferBindTarget target)
     }
 }
 
+static GLenum
+_cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
+                               CoglBufferUpdateHint update_hint)
+{
+  /* usage hint is always TEXTURE for now */
+  if (update_hint == COGL_BUFFER_UPDATE_HINT_STATIC)
+    return GL_STATIC_DRAW;
+  if (update_hint == COGL_BUFFER_UPDATE_HINT_DYNAMIC)
+    return GL_DYNAMIC_DRAW;
+  /* OpenGL ES 1.1 and 2 only know about STATIC_DRAW and DYNAMIC_DRAW */
+#ifdef HAVE_COGL_GL
+  if (update_hint == COGL_BUFFER_UPDATE_HINT_STREAM)
+    return GL_STREAM_DRAW;
+#endif
+
+  return GL_STATIC_DRAW;
+}
+
 static void *
 bo_map (CoglBuffer       *buffer,
         CoglBufferAccess  access,
@@ -129,8 +145,7 @@ bo_map (CoglBuffer       *buffer,
   guint8 *data;
   CoglBufferBindTarget target;
   GLenum gl_target;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
+  CoglContext *ctx = buffer->context;
 
   if ((access & COGL_BUFFER_ACCESS_READ) &&
       !cogl_has_feature (ctx, COGL_FEATURE_ID_MAP_BUFFER_FOR_READ))
@@ -175,7 +190,7 @@ bo_map (CoglBuffer       *buffer,
 static void
 bo_unmap (CoglBuffer *buffer)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = buffer->context;
 
   _cogl_buffer_bind (buffer, buffer->last_target);
 
@@ -194,8 +209,7 @@ bo_set_data (CoglBuffer   *buffer,
 {
   CoglBufferBindTarget target;
   GLenum gl_target;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
+  CoglContext *ctx = buffer->context;
 
   target = buffer->last_target;
   _cogl_buffer_bind (buffer, target);
@@ -254,14 +268,14 @@ malloc_set_data (CoglBuffer   *buffer,
 
 void
 _cogl_buffer_initialize (CoglBuffer           *buffer,
+                         CoglContext          *context,
                          unsigned int          size,
                          gboolean              use_malloc,
                          CoglBufferBindTarget  default_target,
                          CoglBufferUsageHint   usage_hint,
                          CoglBufferUpdateHint  update_hint)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
+  buffer->context       = cogl_object_ref (context);
   buffer->flags         = COGL_BUFFER_FLAG_NONE;
   buffer->store_created = FALSE;
   buffer->size          = size;
@@ -285,7 +299,7 @@ _cogl_buffer_initialize (CoglBuffer           *buffer,
       buffer->vtable.unmap = bo_unmap;
       buffer->vtable.set_data = bo_set_data;
 
-      GE( ctx, glGenBuffers (1, &buffer->gl_handle) );
+      GE( context, glGenBuffers (1, &buffer->gl_handle) );
       buffer->flags |= COGL_BUFFER_FLAG_BUFFER_OBJECT;
     }
 }
@@ -293,15 +307,15 @@ _cogl_buffer_initialize (CoglBuffer           *buffer,
 void
 _cogl_buffer_fini (CoglBuffer *buffer)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   _COGL_RETURN_IF_FAIL (!(buffer->flags & COGL_BUFFER_FLAG_MAPPED));
   _COGL_RETURN_IF_FAIL (buffer->immutable_ref == 0);
 
   if (buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
-    GE( ctx, glDeleteBuffers (1, &buffer->gl_handle) );
+    GE( buffer->context, glDeleteBuffers (1, &buffer->gl_handle) );
   else
     g_free (buffer->data);
+
+  cogl_object_unref (buffer->context);
 }
 
 GLenum
@@ -315,30 +329,10 @@ _cogl_buffer_access_to_gl_enum (CoglBufferAccess access)
     return GL_READ_ONLY;
 }
 
-GLenum
-_cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
-                               CoglBufferUpdateHint update_hint)
-{
-  _COGL_GET_CONTEXT (ctx, 0);
-
-  /* usage hint is always TEXTURE for now */
-  if (update_hint == COGL_BUFFER_UPDATE_HINT_STATIC)
-    return GL_STATIC_DRAW;
-  if (update_hint == COGL_BUFFER_UPDATE_HINT_DYNAMIC)
-    return GL_DYNAMIC_DRAW;
-  /* OpenGL ES 1.1 and 2 only know about STATIC_DRAW and DYNAMIC_DRAW */
-#ifdef HAVE_COGL_GL
-  if (update_hint == COGL_BUFFER_UPDATE_HINT_STREAM)
-    return GL_STREAM_DRAW;
-#endif
-
-  return GL_STATIC_DRAW;
-}
-
 void *
 _cogl_buffer_bind (CoglBuffer *buffer, CoglBufferBindTarget target)
 {
-  _COGL_GET_CONTEXT (ctx, NULL);
+  CoglContext *ctx = buffer->context;
 
   _COGL_RETURN_VAL_IF_FAIL (buffer != NULL, NULL);
 
@@ -365,7 +359,7 @@ _cogl_buffer_bind (CoglBuffer *buffer, CoglBufferBindTarget target)
 void
 _cogl_buffer_unbind (CoglBuffer *buffer)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = buffer->context;
 
   _COGL_RETURN_IF_FAIL (buffer != NULL);
 
@@ -456,9 +450,8 @@ cogl_buffer_unmap (CoglBuffer *buffer)
 void *
 _cogl_buffer_map_for_fill_or_fallback (CoglBuffer *buffer)
 {
+  CoglContext *ctx = buffer->context;
   void *ret;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
 
   _COGL_RETURN_VAL_IF_FAIL (!ctx->buffer_map_fallback_in_use, NULL);
 
@@ -487,7 +480,7 @@ _cogl_buffer_map_for_fill_or_fallback (CoglBuffer *buffer)
 void
 _cogl_buffer_unmap_for_fill_or_fallback (CoglBuffer *buffer)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = buffer->context;
 
   _COGL_RETURN_IF_FAIL (ctx->buffer_map_fallback_in_use);
 

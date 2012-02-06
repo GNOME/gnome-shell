@@ -31,6 +31,8 @@
 #ifndef __COGL_ATTRIBUTE_BUFFER_H__
 #define __COGL_ATTRIBUTE_BUFFER_H__
 
+#include <cogl/cogl-context.h>
+
 G_BEGIN_DECLS
 
 /**
@@ -45,6 +47,7 @@ typedef struct _CoglAttributeBuffer	      CoglAttributeBuffer;
 
 /**
  * cogl_attribute_buffer_new:
+ * @context: A #CoglContext
  * @bytes: The number of bytes to allocate for vertex attribute data.
  * @data: An optional pointer to vertex data to upload immediately.
  *
@@ -59,7 +62,9 @@ typedef struct _CoglAttributeBuffer	      CoglAttributeBuffer;
  * Stability: Unstable
  */
 CoglAttributeBuffer *
-cogl_attribute_buffer_new (gsize bytes, const void *data);
+cogl_attribute_buffer_new (CoglContext *context,
+                           gsize bytes,
+                           const void *data);
 
 /**
  * cogl_is_attribute_buffer:

@@ -1267,6 +1267,8 @@ _cogl_path_build_fill_attribute_buffer (CoglPath *path)
   CoglPathData *data = path->data;
   int i;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   /* If we've already got a vbo then we don't need to do anything */
   if (data->fill_attribute_buffer)
     return;
@@ -1352,7 +1354,8 @@ _cogl_path_build_fill_attribute_buffer (CoglPath *path)
   gluDeleteTess (tess.glu_tess);
 
   data->fill_attribute_buffer =
-    cogl_attribute_buffer_new (sizeof (CoglPathTesselatorVertex) *
+    cogl_attribute_buffer_new (ctx,
+                               sizeof (CoglPathTesselatorVertex) *
                                tess.vertices->len,
                                tess.vertices->data);
   g_array_free (tess.vertices, TRUE);
@@ -1372,7 +1375,8 @@ _cogl_path_build_fill_attribute_buffer (CoglPath *path)
                         2, /* n_components */
                         COGL_ATTRIBUTE_TYPE_FLOAT);
 
-  data->fill_vbo_indices = cogl_indices_new (tess.indices_type,
+  data->fill_vbo_indices = cogl_indices_new (ctx,
+                                             tess.indices_type,
                                              tess.indices->data,
                                              tess.indices->len);
   data->fill_vbo_n_indices = tess.indices->len;
@@ -1390,12 +1394,14 @@ _cogl_path_build_stroke_attribute_buffer (CoglPath *path)
   floatVec2 *buffer_p;
   unsigned int i;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   /* If we've already got a cached vbo then we don't need to do anything */
   if (data->stroke_attribute_buffer)
     return;
 
   data->stroke_attribute_buffer =
-    cogl_attribute_buffer_new (data->path_nodes->len * sizeof (floatVec2),
+    cogl_attribute_buffer_new (ctx, data->path_nodes->len * sizeof (floatVec2),
                                NULL);
 
   buffer = COGL_BUFFER (data->stroke_attribute_buffer);

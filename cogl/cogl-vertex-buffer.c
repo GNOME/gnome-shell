@@ -1133,8 +1133,10 @@ cogl_vertex_buffer_vbo_resolve (CoglVertexBuffer *buffer,
 
   if (!found_target_vbo)
     {
+      _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
       new_cogl_vbo->attribute_buffer =
-        cogl_attribute_buffer_new (new_cogl_vbo->buffer_bytes, NULL);
+        cogl_attribute_buffer_new (ctx, new_cogl_vbo->buffer_bytes, NULL);
 
       upload_attributes (new_cogl_vbo);
       *final_vbos = g_list_prepend (*final_vbos, new_cogl_vbo);
@@ -1665,8 +1667,11 @@ cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
                                 const void      *indices_array,
                                 int              indices_len)
 {
-  CoglIndices *indices =
-    cogl_indices_new (indices_type, indices_array, indices_len);
+  CoglIndices *indices;
+
+  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+
+  indices = cogl_indices_new (ctx, indices_type, indices_array, indices_len);
   return _cogl_vertex_buffer_indices_new_real (indices);
 }
 
@@ -1747,7 +1752,7 @@ cogl_vertex_buffer_indices_get_for_quads (unsigned int n_indices)
       if (ctx->quad_buffer_indices_byte == COGL_INVALID_HANDLE)
         {
           /* NB: cogl_get_quad_indices takes n_quads not n_indices... */
-          CoglIndices *indices = cogl_get_rectangle_indices (256 / 4);
+          CoglIndices *indices = cogl_get_rectangle_indices (ctx, 256 / 4);
           cogl_object_ref (indices);
           ctx->quad_buffer_indices_byte =
             _cogl_vertex_buffer_indices_new_real (indices);
@@ -1767,7 +1772,8 @@ cogl_vertex_buffer_indices_get_for_quads (unsigned int n_indices)
       if (ctx->quad_buffer_indices == COGL_INVALID_HANDLE)
         {
           /* NB: cogl_get_quad_indices takes n_quads not n_indices... */
-          CoglIndices *indices = cogl_get_rectangle_indices (n_indices / 6);
+          CoglIndices *indices =
+            cogl_get_rectangle_indices (ctx, n_indices / 6);
           cogl_object_ref (indices);
           ctx->quad_buffer_indices =
             _cogl_vertex_buffer_indices_new_real (indices);

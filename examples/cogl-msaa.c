@@ -77,7 +77,7 @@ main (int argc, char **argv)
         cogl_framebuffer_set_samples_per_pixel (offscreen_fb, 0);
       }
 
-    triangle = cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,
+    triangle = cogl_primitive_new_p2c4 (ctx, COGL_VERTICES_MODE_TRIANGLES,
                                         3, triangle_vertices);
     pipeline = cogl_pipeline_new ();
 
