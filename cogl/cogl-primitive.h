@@ -775,6 +775,19 @@ cogl_primitive_set_indices (CoglPrimitive *primitive,
                             int n_indices);
 
 /**
+ * cogl_primitive_get_indices:
+ * @primitive: A #CoglPrimitive
+ *
+ * Return value: the indices that were set with
+ * cogl_primitive_set_indices() or %NULL if no indices were set.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+CoglIndices *
+cogl_primitive_get_indices (CoglPrimitive *primitive);
+
+/**
  * cogl_primitive_copy:
  * @primitive: A primitive copy
  *

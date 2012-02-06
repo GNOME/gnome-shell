@@ -524,6 +524,12 @@ cogl_primitive_set_indices (CoglPrimitive *primitive,
   primitive->n_vertices = n_indices;
 }
 
+CoglIndices *
+cogl_primitive_get_indices (CoglPrimitive *primitive)
+{
+  return primitive->indices;
+}
+
 CoglPrimitive *
 cogl_primitive_copy (CoglPrimitive *primitive)
 {

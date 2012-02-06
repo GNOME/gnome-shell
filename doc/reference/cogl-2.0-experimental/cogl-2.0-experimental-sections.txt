@@ -235,6 +235,7 @@ cogl_primitive_set_n_vertices
 cogl_primitive_get_mode
 cogl_primitive_set_mode
 cogl_primitive_set_attributes
+cogl_primitive_get_indices
 cogl_primitive_set_indices
 cogl_primitive_draw
 cogl_primitive_copy
