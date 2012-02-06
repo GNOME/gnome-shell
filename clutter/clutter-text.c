@@ -818,24 +818,36 @@ clutter_text_create_layout (ClutterText *text,
   return oldest_cache->layout;
 }
 
-static gint
-clutter_text_coords_to_position (ClutterText *text,
+/**
+ * clutter_text_coords_to_position:
+ * @self: a #ClutterText
+ * @x: the X coordinate, relative to the actor
+ * @y: the Y coordinate, relative to the actor
+ *
+ * Retrieves the position of the character at the given coordinates.
+ *
+ * Return: the position of the character
+ *
+ * Since: 1.10
+ */
+gint
+clutter_text_coords_to_position (ClutterText *self,
                                  gfloat       x,
                                  gfloat       y)
 {
-  ClutterTextPrivate *priv = text->priv;
   gint index_;
   gint px, py;
   gint trailing;
 
-  /* Take any offset due to scrolling into account */
-  if (priv->single_line_mode)
-    x += priv->text_x * -1;
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), 0);
 
-  px = x * PANGO_SCALE;
-  py = y * PANGO_SCALE;
+  /* Take any offset due to scrolling into account, and normalize
+   * the coordinates to PangoScale units
+   */
+  px = (x - self->priv->text_x) * PANGO_SCALE;
+  py = (y - self->priv->text_y) * PANGO_SCALE;
 
-  pango_layout_xy_to_index (clutter_text_get_layout (text),
+  pango_layout_xy_to_index (clutter_text_get_layout (self),
                             px, py,
                             &index_, &trailing);
 

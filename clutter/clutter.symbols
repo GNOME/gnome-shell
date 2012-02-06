@@ -1149,6 +1149,7 @@ clutter_text_buffer_new
 clutter_text_buffer_set_max_length
 clutter_text_buffer_set_text
 clutter_text_activate
+clutter_text_coords_to_position
 clutter_text_delete_chars
 clutter_text_delete_selection
 clutter_text_delete_text

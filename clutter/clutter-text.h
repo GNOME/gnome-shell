@@ -210,6 +210,9 @@ void                  clutter_text_get_selected_text_color  (ClutterText        
                                                              ClutterColor         *color);
 
 gboolean              clutter_text_activate             (ClutterText          *self);
+gint                  clutter_text_coords_to_position   (ClutterText          *self,
+                                                         gfloat                x,
+                                                         gfloat                y);
 gboolean              clutter_text_position_to_coords   (ClutterText          *self,
                                                          gint                  position,
                                                          gfloat               *x,
