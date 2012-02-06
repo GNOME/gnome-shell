@@ -158,7 +158,7 @@ main (int argc, char **argv)
   UNPORTED_TEST ("/cogl/vertex-buffer", test_cogl_vertex_buffer_interleved);
   UNPORTED_TEST ("/cogl/vertex-buffer", test_cogl_vertex_buffer_mutability);
 
-  UNPORTED_TEST ("/cogl/vertex-array", test_cogl_primitive);
+  ADD_TEST ("/cogl/vertex-array", test_cogl_primitive);
 
   ADD_TEST ("/cogl/shaders", test_cogl_just_vertex_shader);
   ADD_TEST ("/cogl/shaders", test_cogl_pipeline_uniforms);

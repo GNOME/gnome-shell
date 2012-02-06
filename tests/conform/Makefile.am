@@ -29,7 +29,6 @@ unported_test_sources = \
 	test-vertex-buffer-contiguous.c \
 	test-vertex-buffer-interleved.c \
 	test-vertex-buffer-mutability.c \
-	test-primitive.c \
 	$(NULL)
 
 test_sources = \
@@ -47,6 +46,7 @@ test_sources = \
 	test-sub-texture.c \
 	test-custom-attributes.c \
 	test-offscreen.c \
+	test-primitive.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
