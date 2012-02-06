@@ -282,7 +282,6 @@ StTooltip StLabel {
 #panel {
     color: #ffffff;
     background-color: black;
-    border-image: url("panel-border.svg") 1;
     font-size: 10.5pt;
     font-weight: bold;
     height: 1.86em;
@@ -313,8 +312,6 @@ StTooltip StLabel {
     -panel-corner-background-color: black;
     -panel-corner-inner-border-width: 2px;
     -panel-corner-inner-border-color: transparent;
-    -panel-corner-outer-border-width: 1px;
-    -panel-corner-outer-border-color: #536272;
 }
 
 .panel-corner:active,

@@ -31,7 +31,6 @@ dist_theme_DATA =				\
 	theme/filter-selected-rtl.svg		\
 	theme/gdm.css				\
 	theme/gnome-shell.css			\
-	theme/panel-border.svg			\
 	theme/panel-button-border.svg		\
 	theme/panel-button-highlight-narrow.svg	\
 	theme/panel-button-highlight-wide.svg	\
