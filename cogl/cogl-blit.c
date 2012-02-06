@@ -55,6 +55,12 @@ _cogl_blit_texture_render_begin (CoglBlitData *data)
   if (fbo == COGL_INVALID_HANDLE)
     return FALSE;
 
+  if (!cogl_framebuffer_allocate (fbo, NULL))
+    {
+      cogl_handle_unref (fbo);
+      return FALSE;
+    }
+
   cogl_push_framebuffer (fbo);
   cogl_handle_unref (fbo);
 
@@ -141,6 +147,7 @@ static gboolean
 _cogl_blit_framebuffer_begin (CoglBlitData *data)
 {
   CoglHandle dst_fbo, src_fbo;
+  gboolean ret;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -155,22 +162,35 @@ _cogl_blit_framebuffer_begin (CoglBlitData *data)
     (data->dst_tex, COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL, 0 /* level */);
 
   if (dst_fbo == COGL_INVALID_HANDLE)
-    return FALSE;
-
-  src_fbo = _cogl_offscreen_new_to_texture_full
-    (data->src_tex, COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL, 0 /* level */);
-
-  if (src_fbo == COGL_INVALID_HANDLE)
+    ret = FALSE;
+  else
     {
+      if (!cogl_framebuffer_allocate (dst_fbo, NULL))
+        ret = FALSE;
+      else
+        {
+          src_fbo = _cogl_offscreen_new_to_texture_full
+            (data->src_tex,
+             COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL,
+             0 /* level */);
+
+          if (src_fbo == COGL_INVALID_HANDLE)
+            ret = FALSE;
+          else
+            {
+              if (!cogl_framebuffer_allocate (src_fbo, NULL))
+                ret = FALSE;
+              else
+                _cogl_push_framebuffers (dst_fbo, src_fbo);
+
+              cogl_handle_unref (src_fbo);
+            }
+        }
+
       cogl_handle_unref (dst_fbo);
-      return FALSE;
     }
 
-  _cogl_push_framebuffers (dst_fbo, src_fbo);
-  cogl_handle_unref (src_fbo);
-  cogl_handle_unref (dst_fbo);
-
-  return TRUE;
+  return ret;
 }
 
 static void
@@ -209,6 +229,12 @@ _cogl_blit_copy_tex_sub_image_begin (CoglBlitData *data)
 
   if (fbo == COGL_INVALID_HANDLE)
     return FALSE;
+
+  if (!cogl_framebuffer_allocate (fbo, NULL))
+    {
+      cogl_handle_unref (fbo);
+      return FALSE;
+    }
 
   cogl_push_framebuffer (fbo);
   cogl_handle_unref (fbo);
