@@ -775,6 +775,21 @@ cogl_primitive_set_indices (CoglPrimitive *primitive,
                             int n_indices);
 
 /**
+ * cogl_primitive_copy:
+ * @primitive: A primitive copy
+ *
+ * Makes a copy of an existing #CoglPrimitive. Note that the primitive
+ * is a shallow copy which means it will use the same attributes and
+ * attribute buffers as the original primitive.
+ *
+ * Return value: the new primitive
+ * Since: 1.10
+ * Stability: unstable
+ */
+CoglPrimitive *
+cogl_primitive_copy (CoglPrimitive *primitive);
+
+/**
  * cogl_primitive_draw:
  * @primitive: A #CoglPrimitive object
  *

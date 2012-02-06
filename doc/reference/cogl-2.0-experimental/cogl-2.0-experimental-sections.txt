@@ -237,6 +237,7 @@ cogl_primitive_set_mode
 cogl_primitive_set_attributes
 cogl_primitive_set_indices
 cogl_primitive_draw
+cogl_primitive_copy
 </SECTION>
 
 <SECTION>

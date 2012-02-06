@@ -525,6 +525,22 @@ cogl_primitive_set_indices (CoglPrimitive *primitive,
 }
 
 CoglPrimitive *
+cogl_primitive_copy (CoglPrimitive *primitive)
+{
+  CoglPrimitive *copy;
+
+  copy = cogl_primitive_new_with_attributes (primitive->mode,
+                                             primitive->n_vertices,
+                                             primitive->attributes,
+                                             primitive->n_attributes);
+
+  cogl_primitive_set_indices (copy, primitive->indices, primitive->n_vertices);
+  cogl_primitive_set_first_vertex (copy, primitive->first_vertex);
+
+  return copy;
+}
+
+CoglPrimitive *
 _cogl_primitive_immutable_ref (CoglPrimitive *primitive)
 {
   int i;
