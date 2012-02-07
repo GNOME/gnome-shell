@@ -266,7 +266,7 @@ static void buffer_connect_signals (ClutterText *self);
 static void buffer_disconnect_signals (ClutterText *self);
 static ClutterTextBuffer *get_buffer (ClutterText *self);
 
-static void
+static inline void
 clutter_text_dirty_paint_volume (ClutterText *text)
 {
   ClutterTextPrivate *priv = text->priv;
@@ -278,7 +278,7 @@ clutter_text_dirty_paint_volume (ClutterText *text)
     }
 }
 
-static void
+static inline void
 clutter_text_queue_redraw (ClutterActor *self)
 {
   /* This is a wrapper for clutter_actor_queue_redraw that also
@@ -387,53 +387,57 @@ clutter_text_get_display_text (ClutterText *self)
     }
 }
 
-static void
+static inline void
 clutter_text_ensure_effective_attributes (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
 
   /* If we already have the effective attributes then we don't need to
      do anything */
-  if (priv->effective_attrs == NULL)
+  if (priv->effective_attrs != NULL)
+    return;
+
+  /* same as if we don't have any attribute at all */
+  if (priv->attrs == NULL && priv->markup_attrs == NULL)
+    return;
+
+  if (priv->attrs != NULL)
     {
-      if (priv->attrs != NULL)
+      /* If there are no markup attributes then we can just use
+         these attributes directly */
+      if (priv->markup_attrs == NULL)
+        priv->effective_attrs = pango_attr_list_ref (priv->attrs);
+      else
         {
-          /* If there are no markup attributes then we can just use
-             these attributes directly */
-          if (priv->markup_attrs == NULL)
-            priv->effective_attrs = pango_attr_list_ref (priv->attrs);
-          else
+          /* Otherwise we need to merge the two lists */
+          PangoAttrIterator *iter;
+          GSList *attributes, *l;
+
+          priv->effective_attrs = pango_attr_list_copy (priv->markup_attrs);
+
+          iter = pango_attr_list_get_iterator (priv->attrs);
+          do
             {
-              /* Otherwise we need to merge the two lists */
-              PangoAttrIterator *iter;
-              GSList *attributes, *l;
+              attributes = pango_attr_iterator_get_attrs (iter);
 
-              priv->effective_attrs = pango_attr_list_copy (priv->markup_attrs);
-
-              iter = pango_attr_list_get_iterator (priv->attrs);
-              do
+              for (l = attributes; l != NULL; l = l->next)
                 {
-                  attributes = pango_attr_iterator_get_attrs (iter);
+                  PangoAttribute *attr = l->data;
 
-                  for (l = attributes; l != NULL; l = l->next)
-                    {
-                      PangoAttribute *attr = l->data;
-
-                      pango_attr_list_insert (priv->effective_attrs, attr);
-                    }
-
-                  g_slist_free (attributes);
+                  pango_attr_list_insert (priv->effective_attrs, attr);
                 }
-              while (pango_attr_iterator_next (iter));
 
-              pango_attr_iterator_destroy (iter);
+              g_slist_free (attributes);
             }
+          while (pango_attr_iterator_next (iter));
+
+          pango_attr_iterator_destroy (iter);
         }
-      else if (priv->markup_attrs != NULL)
-        {
-          /* We can just use the markup attributes directly */
-          priv->effective_attrs = pango_attr_list_ref (priv->markup_attrs);
-        }
+    }
+  else if (priv->markup_attrs != NULL)
+    {
+      /* We can just use the markup attributes directly */
+      priv->effective_attrs = pango_attr_list_ref (priv->markup_attrs);
     }
 }
 
