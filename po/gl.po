@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-06 02:49+0100\n"
-"PO-Revision-Date: 2012-02-06 02:52+0100\n"
+"POT-Creation-Date: 2012-02-07 11:42+0100\n"
+"PO-Revision-Date: 2012-02-07 11:54+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -1639,7 +1639,7 @@ msgstr "%s o oráculo dí"
 
 #: ../js/ui/wanda.js:168
 msgid "Your favorite Easter Egg"
-msgstr ""
+msgstr "A súa mensaxe oculta favorita"
 
 #: ../js/ui/windowAttentionHandler.js:33
 #, c-format
