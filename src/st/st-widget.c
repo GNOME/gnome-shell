@@ -2438,7 +2438,7 @@ st_ui_root_destroyed (ClutterActor *actor,
 }
 
 /**
- * st_get_ui_root:
+ * st_set_ui_root:
  * @stage: a #ClutterStage
  * @container: (allow-none): the new UI root
  *
