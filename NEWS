@@ -12,7 +12,7 @@
  - Add an onshellrestart callback to the browser plugin [Jasper; #668517]
 * Screenshots:
   - Move the screenshot "flash" to the shell [Cosimo; #668618]
-  - Move saving screenshots to a thread [Adel Gadllah; #652952]
+  - Move saving screenshots to a thread [Adel; #652952]
   - Correctly screenshot rounded decorations [Jasper; #662486]
 * Screen recorder:
   - Change the default pipeline to favor speed over quality [Owen; #669066]
@@ -38,8 +38,8 @@
 
 Contributors:
  Emmanuele Bassi, Giovanni Campagna, Cosimo Cecchi, Stefano Facchini,
- Rui Matos, Florian Müllner, Alejandro Piñeiro, Jasper St. Pierre,
- Owen Taylor, Dan Winship
+ Adel Gadllah, Rui Matos, Florian Müllner, Alejandro Piñeiro,
+ Jasper St. Pierre, Owen Taylor, Dan Winship
 
 Translations:
  Daniel Mustieles [es], Timo Jyrinki [fi], Seán de Búrca [ga],
