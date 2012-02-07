@@ -4724,8 +4724,8 @@ clutter_text_set_use_markup_internal (ClutterText *self,
 /**
  * clutter_text_set_text:
  * @self: a #ClutterText
- * @text: the text to set. Passing %NULL is the same as passing "" (the
- *    empty string)
+ * @text: (allow-none): the text to set. Passing %NULL is the same
+ *   as passing "" (the empty string)
  *
  * Sets the contents of a #ClutterText actor.
  *
@@ -4749,8 +4749,8 @@ clutter_text_set_text (ClutterText *self,
 /**
  * clutter_text_set_markup:
  * @self: a #ClutterText
- * @markup: a string containing Pango markup. Passing %NULL is the same
- *    as passing "" (the empty string)
+ * @markup: (allow-none): a string containing Pango markup.
+ *   Passing %NULL is the same as passing "" (the empty string)
  *
  * Sets @markup as the contents of a #ClutterText.
  *
