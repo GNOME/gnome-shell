@@ -1,5 +1,6 @@
 data/gnome-shell.desktop.in.in
 data/org.gnome.shell.gschema.xml.in
+js/extensionPrefs/main.js
 js/gdm/loginDialog.js
 js/gdm/powerMenu.js
 js/misc/util.js
