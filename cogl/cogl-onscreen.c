@@ -165,7 +165,9 @@ _cogl_onscreen_queue_event (CoglOnscreen *onscreen,
 }
 
 void
-cogl_onscreen_swap_buffers (CoglOnscreen *onscreen)
+cogl_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
+                                        const int *rectangles,
+                                        int n_rectangles)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   const CoglWinsysVtable *winsys;
@@ -181,7 +183,8 @@ cogl_onscreen_swap_buffers (CoglOnscreen *onscreen)
   cogl_flush ();
 
   winsys = _cogl_framebuffer_get_winsys (framebuffer);
-  winsys->onscreen_swap_buffers (COGL_ONSCREEN (framebuffer));
+  winsys->onscreen_swap_buffers_with_damage (onscreen,
+                                             rectangles, n_rectangles);
   cogl_framebuffer_discard_buffers (framebuffer,
                                     COGL_BUFFER_BIT_COLOR |
                                     COGL_BUFFER_BIT_DEPTH |
@@ -202,6 +205,12 @@ cogl_onscreen_swap_buffers (CoglOnscreen *onscreen)
     }
 
   onscreen->frame_counter++;
+}
+
+void
+cogl_onscreen_swap_buffers (CoglOnscreen *onscreen)
+{
+  cogl_onscreen_swap_buffers_with_damage (onscreen, NULL, 0);
 }
 
 void

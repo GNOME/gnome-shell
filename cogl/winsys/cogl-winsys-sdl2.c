@@ -497,7 +497,9 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 }
 
 static void
-_cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
+_cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
+                                                const int *rectangles,
+                                                int n_rectangles)
 {
   CoglOnscreenSdl2 *sdl_onscreen = onscreen->winsys;
 
@@ -572,7 +574,8 @@ _cogl_winsys_sdl_get_vtable (void)
       vtable.onscreen_init = _cogl_winsys_onscreen_init;
       vtable.onscreen_deinit = _cogl_winsys_onscreen_deinit;
       vtable.onscreen_bind = _cogl_winsys_onscreen_bind;
-      vtable.onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers;
+      vtable.onscreen_swap_buffers_with_damage =
+        _cogl_winsys_onscreen_swap_buffers_with_damage;
       vtable.onscreen_update_swap_throttled =
         _cogl_winsys_onscreen_update_swap_throttled;
       vtable.onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility;

@@ -719,7 +719,9 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
 }
 
 static void
-_cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
+_cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
+                                                const int *rectangles,
+                                                int n_rectangles)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglDisplayEGL *egl_display = context->display->winsys;
@@ -737,8 +739,9 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
   while (kms_onscreen->next_fb_id != 0)
     handle_drm_event (kms_renderer);
 
-  /* First chain-up. This will call eglSwapBuffers */
-  parent_vtable->onscreen_swap_buffers (onscreen);
+  parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
+                                                    rectangles,
+                                                    n_rectangles);
 
   /* Now we need to set the CRTC to whatever is the front buffer */
   kms_onscreen->next_bo = gbm_surface_lock_front_buffer (kms_onscreen->surface);
@@ -963,7 +966,8 @@ _cogl_winsys_egl_kms_get_vtable (void)
 
       /* The KMS winsys doesn't support swap region */
       vtable.onscreen_swap_region = NULL;
-      vtable.onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers;
+      vtable.onscreen_swap_buffers_with_damage =
+        _cogl_winsys_onscreen_swap_buffers_with_damage;
 
       vtable_inited = TRUE;
     }

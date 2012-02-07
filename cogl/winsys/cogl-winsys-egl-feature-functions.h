@@ -101,3 +101,14 @@ COGL_WINSYS_FEATURE_BEGIN (buffer_age,
 COGL_WINSYS_FEATURE_END ()
 
 #endif
+
+COGL_WINSYS_FEATURE_BEGIN (swap_buffers_with_damage,
+                           "EXT\0",
+                           "swap_buffers_with_damage\0",
+                           0)
+COGL_WINSYS_FEATURE_FUNCTION (EGLBoolean, eglSwapBuffersWithDamage,
+                              (EGLDisplay dpy,
+                               EGLSurface surface,
+                               const EGLint *rects,
+                               EGLint n_rects))
+COGL_WINSYS_FEATURE_END ()

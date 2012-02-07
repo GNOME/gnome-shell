@@ -322,6 +322,12 @@ cogl_onscreen_hide (CoglOnscreen *onscreen);
  * start a new frame that incrementally builds on the contents of the previous
  * frame.
  *
+ * <note>It is highly recommended that applications use
+ * cogl_onscreen_swap_buffers_with_damage() instead whenever possible
+ * and also use the cogl_onscreen_get_buffer_age() api so they can
+ * perform incremental updates to older buffers instead of having to
+ * render a full buffer for every frame.</note>
+ *
  * Since: 1.10
  * Stability: unstable
  */
@@ -375,6 +381,59 @@ cogl_onscreen_swap_buffers (CoglOnscreen *onscreen);
  */
 int
 cogl_onscreen_get_buffer_age (CoglOnscreen *onscreen);
+
+/**
+ * cogl_onscreen_swap_buffers_with_damage:
+ * @onscreen: A #CoglOnscreen framebuffer
+ * @rectangles: An array of integer 4-tuples representing damaged
+ *              rectangles as (x, y, width, height) tuples.
+ * @n_rectangles: The number of 4-tuples to be read from @rectangles
+ *
+ * Swaps the current back buffer being rendered too, to the front for
+ * display and provides information to any system compositor about
+ * what regions of the buffer have changed (damage) with respect to
+ * the last swapped buffer.
+ *
+ * This function has the same semantics as
+ * cogl_framebuffer_swap_buffers() except that it additionally allows
+ * applications to pass a list of damaged rectangles which may be
+ * passed on to a compositor so that it can minimize how much of the
+ * screen is redrawn in response to this applications newly swapped
+ * front buffer.
+ *
+ * For example if your application is only animating a small object in
+ * the corner of the screen and everything else is remaining static
+ * then it can help the compositor to know that only the bottom right
+ * corner of your newly swapped buffer has really changed with respect
+ * to your previously swapped front buffer.
+ *
+ * If @n_rectangles is 0 then the whole buffer will implicitly be
+ * reported as damaged as if cogl_onscreen_swap_buffers() had been
+ * called.
+ *
+ * This function also implicitly discards the contents of the color,
+ * depth and stencil buffers as if cogl_framebuffer_discard_buffers()
+ * were used. The significance of the discard is that you should not
+ * expect to be able to start a new frame that incrementally builds on
+ * the contents of the previous frame. If you want to perform
+ * incremental updates to older back buffers then please refer to the
+ * cogl_onscreen_get_buffer_age() api.
+ *
+ * Whenever possible it is recommended that applications use this
+ * function instead of cogl_onscreen_swap_buffers() to improve
+ * performance when running under a compositor.
+ *
+ * <note>It is highly recommended to use this API in conjunction with
+ * the cogl_onscreen_get_buffer_age() api so that your application can
+ * perform incremental rendering based on old back buffers.</note>
+ *
+ * Since: 1.16
+ * Stability: unstable
+ */
+void
+cogl_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
+                                        const int *rectangles,
+                                        int n_rectangles);
 
 /**
  * cogl_onscreen_swap_region:

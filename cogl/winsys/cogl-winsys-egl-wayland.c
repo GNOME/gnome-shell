@@ -418,7 +418,9 @@ _cogl_winsys_egl_onscreen_deinit (CoglOnscreen *onscreen)
 }
 
 static void
-_cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
+_cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
+                                                const int *rectangles,
+                                                int n_rectangles)
 {
   CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = fb->context;
@@ -442,8 +444,9 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
       wayland_onscreen->has_pending = FALSE;
     }
 
-  /* chain-up */
-  parent_vtable->onscreen_swap_buffers (onscreen);
+  parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
+                                                    rectangles,
+                                                    n_rectangles);
 
   /*
    * The implementation of eglSwapBuffers may do a flush however the semantics
@@ -648,7 +651,8 @@ _cogl_winsys_egl_wayland_get_vtable (void)
       vtable.renderer_connect = _cogl_winsys_renderer_connect;
       vtable.renderer_disconnect = _cogl_winsys_renderer_disconnect;
 
-      vtable.onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers;
+      vtable.onscreen_swap_buffers_with_damage =
+        _cogl_winsys_onscreen_swap_buffers_with_damage;
 
       vtable_inited = TRUE;
     }

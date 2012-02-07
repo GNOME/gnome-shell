@@ -784,7 +784,9 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
 }
 
 static void
-_cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
+_cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
+                                                const int *rectangles,
+                                                int n_rectangles)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglRenderer *renderer = context->display->renderer;
@@ -800,7 +802,29 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
                                  COGL_FRAMEBUFFER (onscreen),
                                  COGL_FRAMEBUFFER_STATE_BIND);
 
-  eglSwapBuffers (egl_renderer->edpy, egl_onscreen->egl_surface);
+  if (n_rectangles && egl_renderer->pf_eglSwapBuffersWithDamage)
+    {
+      CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
+      size_t size = n_rectangles * sizeof (int) * 4;
+      int *flipped = alloca (size);
+      int i;
+
+      memcpy (flipped, rectangles, size);
+      for (i = 0; i < n_rectangles; i++)
+        {
+          const int *rect = rectangles + 4 * i;
+          int *flip_rect = flipped + 4 * i;
+          flip_rect[1] = fb->height - rect[1] - rect[3];
+        }
+
+      if (egl_renderer->pf_eglSwapBuffersWithDamage (egl_renderer->edpy,
+                                                     egl_onscreen->egl_surface,
+                                                     flipped,
+                                                     n_rectangles) == EGL_FALSE)
+        g_warning ("Error reported by eglSwapBuffersWithDamage");
+    }
+  else
+    eglSwapBuffers (egl_renderer->edpy, egl_onscreen->egl_surface);
 }
 
 static void
@@ -901,7 +925,8 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .onscreen_init = _cogl_winsys_onscreen_init,
     .onscreen_deinit = _cogl_winsys_onscreen_deinit,
     .onscreen_bind = _cogl_winsys_onscreen_bind,
-    .onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers,
+    .onscreen_swap_buffers_with_damage =
+      _cogl_winsys_onscreen_swap_buffers_with_damage,
     .onscreen_swap_region = _cogl_winsys_onscreen_swap_region,
     .onscreen_get_buffer_age = _cogl_winsys_onscreen_get_buffer_age,
     .onscreen_update_swap_throttled =
