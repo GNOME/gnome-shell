@@ -4742,6 +4742,16 @@ clutter_text_set_text (ClutterText *self,
 {
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
+  /* if the text is editable (i.e. there is not markup flag to reset) then
+   * changing the contents will result in selection and cursor changes that
+   * we should avoid
+   */
+  if (self->priv->editable)
+    {
+      if (strcmp (clutter_text_buffer_get_text (get_buffer (self)), text) == 0)
+        return;
+    }
+
   clutter_text_set_use_markup_internal (self, FALSE);
   clutter_text_buffer_set_text (get_buffer (self), text, -1);
 }
