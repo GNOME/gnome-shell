@@ -1,3 +1,16 @@
+3.3.5
+=====
+* MetaShapedTexture no longer is a ClutterTexture subclass [Jasper; #660941]
+* Add meta_shaped_texture_get_image() [Jasper; #660941]
+* Cleanups [Rui, Jasper; #657639]
+* Depend on GTK+ 3.3.7 [Rico]
+
+Contributors:
+ Rui Matos, Jasper St. Pierre, Rico Tzschichholz
+
+Translations:
+ Kjartan Maraas [nb], Chao-Hsiung Liao [zh_HK, zh_TW]
+
 3.3.4
 =====
 * Adapt to changes in GtkStateFlags [Owen]
