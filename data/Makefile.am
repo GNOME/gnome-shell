@@ -69,7 +69,7 @@ shaders_DATA = \
 
 EXTRA_DIST =						\
 	gnome-shell.desktop.in.in			\
-	gnome-shell-extension-prefs.in.in		\
+	gnome-shell-extension-prefs.desktop.in.in	\
 	$(menu_DATA)					\
 	$(shaders_DATA)					\
 	$(convert_DATA)					\
