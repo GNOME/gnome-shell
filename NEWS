@@ -1,3 +1,52 @@
+3.3.5
+=====
+
+* Extension system: [Jasper; #668429]
+  http://blog.mecheye.net/2012/02/more-extension-api-breaks/
+ - Add a 'gnome-shell-extension-prefs' application for displaying extension
+   preferences as provided by the extension in a prefs.js file.
+ - Allow launching gnome-shell-extension-prefs from extensions.gnome.org
+   throuhg the browser plugin.
+ - Add ExtensionUtils.getCurrentExtension() for an extension to get a
+   handle to an extension object, to get local imports or paths.
+ - Add an onshellrestart callback to the browser plugin [Jasper; #668517]
+* Screenshots:
+  - Move the screenshot "flash" to the shell [Cosimo; #668618]
+  - Move saving screenshots to a thread [Adel Gadllah; #652952]
+  - Correctly screenshot rounded decorations [Jasper; #662486]
+* Screen recorder:
+  - Change the default pipeline to favor speed over quality [Owen; #669066]
+  - Drop frames to keep from running the user out of memory [Owen; #669066]
+* Work around a slow implementation of glReadPixels() in the Intel drivers,
+  improving performance for screenshots and the screen recorder.
+  [Owen; #669065]
+* Use Keywords: field in desktop files when search for applications
+  [Florian; #609702]
+* Strip debian- when matching desktop file names [Jasper; #665647]
+* Fix up various problems from CSS background size-addition
+  [Florian, Jasper; #668430, #633462]
+* UI tweaks and behavior fixes
+  [Florian, Giovanni, Stefano; #643867, #666197, #664622]
+* Some improvements to exported accessibility information  [Alejando; #667376]
+* Don't show contacts without IM information as offline [Florian; #662685]
+* Don't change status from hidden to extended_away when going idle
+  [Florian; #642408]
+* Cleanups [Emmanuele, Jasper; #662152, #669239]
+* Misc bug fixes [Cosimo, Dan, Florian, Jasper, Rui, Stefano;
+  #633462, #643867, #662213, #662386, #662747, #665000, #665017, #665322,
+  #667371, #667860, #668020, #668517, #668541, #669236]
+
+Contributors:
+ Emmanuele Bassi, Giovanni Campagna, Cosimo Cecchi, Stefano Facchini,
+ Rui Matos, Florian Müllner, Alejandro Piñeiro, Jasper St. Pierre,
+ Owen Taylor, Dan Winship
+
+Translations:
+ Daniel Mustieles [es], Timo Jyrinki [fi], Seán de Búrca [ga],
+ Fran Diéguez [gl], Kjartan Maraas [nb], Wouter Bolsterlee [nl],
+ Danishka Navin [si], Yaron Shahrabani [he], Matej Urbančič [sl],
+ Chao-Hsiung Liao [zh_HK, zh_TW]
+
 3.3.4
 =====
 * https://live.gnome.org/EveryDetailMatters
