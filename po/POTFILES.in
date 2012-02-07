@@ -1,4 +1,5 @@
 data/gnome-shell.desktop.in.in
+data/gnome-shell-extension-prefs.desktop.in.in
 data/org.gnome.shell.gschema.xml.in
 js/extensionPrefs/main.js
 js/gdm/loginDialog.js
