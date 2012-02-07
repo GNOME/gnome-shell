@@ -1322,7 +1322,7 @@ shell_app_init_search_data (ShellApp *app)
     {
       int i;
 
-      app->casefolded_keywords = g_new0 (char*, g_strv_length (keywords) + 1);
+      app->casefolded_keywords = g_new0 (char*, g_strv_length ((char **)keywords) + 1);
 
       i = 0;
       while (keywords[i])
