@@ -199,7 +199,7 @@ if test "$enable_compile_warnings" != no ; then
     if test "$enable_compile_warnings" = error ; then
       case " $CFLAGS " in
       *[\ \	]-Werror[\ \	]*) ;;
-      *) CFLAGS="$CFLAGS -Werror" ;;
+      *) CFLAGS="$CFLAGS -Werror -Wno-error=deprecated-declarations" ;;
       esac
     fi
   fi
