@@ -308,12 +308,6 @@ validate_tex_coords_cb (CoglPipeline *pipeline,
 
   state->i++;
 
-  texture = cogl_pipeline_get_layer_texture (pipeline, layer_index);
-
-  /* NB: NULL textures are handled by _cogl_pipeline_flush_gl_state */
-  if (!texture)
-    return TRUE;
-
   /* FIXME: we should be able to avoid this copying when no
    * transform is required by the texture backend and the user
    * has supplied enough coordinates for all the layers.
@@ -329,6 +323,12 @@ validate_tex_coords_cb (CoglPipeline *pipeline,
   out_tex_coords = &state->final_tex_coords[state->i * 4];
 
   memcpy (out_tex_coords, in_tex_coords, sizeof (float) * 4);
+
+  texture = cogl_pipeline_get_layer_texture (pipeline, layer_index);
+
+  /* NB: NULL textures are handled by _cogl_pipeline_flush_gl_state */
+  if (!texture)
+    return TRUE;
 
   /* Convert the texture coordinates to GL.
    */
