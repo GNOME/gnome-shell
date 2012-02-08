@@ -273,9 +273,9 @@ main (int argc, char **argv)
     cogl_has_feature (ctx, COGL_FEATURE_ID_SWAP_BUFFERS_EVENT);
 
   if (has_swap_notify)
-    cogl_framebuffer_add_swap_buffers_callback (fb,
-                                                swap_notify_cb,
-                                                &data);
+    cogl_onscreen_add_swap_buffers_callback (COGL_ONSCREEN (fb),
+                                             swap_notify_cb,
+                                             &data);
 
   while (1)
     {
@@ -286,7 +286,7 @@ main (int argc, char **argv)
       if (data.swap_ready)
         {
           paint (&data);
-          cogl_framebuffer_swap_buffers (fb);
+          cogl_onscreen_swap_buffers (COGL_ONSCREEN (fb));
         }
 
       cogl_poll_get_info (ctx, &poll_fds, &n_poll_fds, &timeout);

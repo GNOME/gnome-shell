@@ -217,7 +217,7 @@ main (int argc, char **argv)
       cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
       cogl_set_source_texture (tfp);
       cogl_rectangle (-0.8, 0.8, 0.8, -0.8);
-      cogl_framebuffer_swap_buffers (fb);
+      cogl_onscreen_swap_buffers (onscreen);
     }
 
   return 0;

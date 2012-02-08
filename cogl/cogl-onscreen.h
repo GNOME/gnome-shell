@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2011 Intel Corporation.
+ * Copyright (C) 2011,2012 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -289,10 +289,9 @@ cogl_onscreen_show (CoglOnscreen *onscreen);
 void
 cogl_onscreen_hide (CoglOnscreen *onscreen);
 
-/* XXX: Actually should this be renamed too cogl_onscreen_swap_buffers()? */
 /**
- * cogl_framebuffer_swap_buffers:
- * @framebuffer: A #CoglFramebuffer
+ * cogl_onscreen_swap_buffers:
+ * @onscreen: A #CoglOnscreen framebuffer
  *
  * Swaps the current back buffer being rendered too, to the front for display.
  *
@@ -302,15 +301,15 @@ cogl_onscreen_hide (CoglOnscreen *onscreen);
  * start a new frame that incrementally builds on the contents of the previous
  * frame.
  *
- * Since: 1.8
+ * Since: 1.10
  * Stability: unstable
  */
 void
-cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer);
+cogl_onscreen_swap_buffers (CoglOnscreen *onscreen);
 
 /**
- * cogl_framebuffer_swap_region:
- * @framebuffer: A #CoglFramebuffer
+ * cogl_onscreen_swap_region:
+ * @onscreen: A #CoglOnscreen framebuffer
  * @rectangles: An array of integer 4-tuples representing rectangles as
  *              (x, y, width, height) tuples.
  * @n_rectangles: The number of 4-tuples to be read from @rectangles
@@ -320,32 +319,32 @@ cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer);
  * defined by 4 sequential (x, y, width, height) integers.
  *
  * This function also implicitly discards the contents of the color, depth and
- * stencil buffers as if cogl_framebuffer_discard_buffers() were used. The
+ * stencil buffers as if cogl_onscreen_discard_buffers() were used. The
  * significance of the discard is that you should not expect to be able to
  * start a new frame that incrementally builds on the contents of the previous
  * frame.
  *
- * Since: 1.8
+ * Since: 1.10
  * Stability: unstable
  */
 void
-cogl_framebuffer_swap_region (CoglFramebuffer *framebuffer,
-                              const int *rectangles,
-                              int n_rectangles);
+cogl_onscreen_swap_region (CoglOnscreen *onscreen,
+                           const int *rectangles,
+                           int n_rectangles);
 
 
 typedef void (*CoglSwapBuffersNotify) (CoglFramebuffer *framebuffer,
                                        void *user_data);
 
 /**
- * cogl_framebuffer_add_swap_buffers_callback:
- * @framebuffer A #CoglFramebuffer
+ * cogl_onscreen_add_swap_buffers_callback:
+ * @onscreen: A #CoglOnscreen framebuffer
  * @callback: A callback function to call when a swap has completed
  * @user_data: A private pointer to be passed to @callback
  *
  * Installs a @callback function that should be called whenever a swap buffers
- * request (made using cogl_framebuffer_swap_buffers()) for the given
- * @framebuffer completes.
+ * request (made using cogl_onscreen_swap_buffers()) for the given
+ * @onscreen completes.
  *
  * <note>Applications should check for the %COGL_FEATURE_ID_SWAP_BUFFERS_EVENT
  * feature before using this API. It's currently undefined when and if
@@ -362,24 +361,24 @@ typedef void (*CoglSwapBuffersNotify) (CoglFramebuffer *framebuffer,
  * Stability: unstable
  */
 unsigned int
-cogl_framebuffer_add_swap_buffers_callback (CoglFramebuffer *framebuffer,
-                                            CoglSwapBuffersNotify callback,
-                                            void *user_data);
+cogl_onscreen_add_swap_buffers_callback (CoglOnscreen *onscreen,
+                                         CoglSwapBuffersNotify callback,
+                                         void *user_data);
 
 /**
- * cogl_framebuffer_remove_swap_buffers_callback:
- * @framebuffer:
- * @id: An identifier returned from cogl_framebuffer_add_swap_buffers_callback()
+ * cogl_onscreen_remove_swap_buffers_callback:
+ * @onscreen: A #CoglOnscreen framebuffer
+ * @id: An identifier returned from cogl_onscreen_add_swap_buffers_callback()
  *
  * Removes a callback that was previously registered
- * using cogl_framebuffer_add_swap_buffers_callback().
+ * using cogl_onscreen_add_swap_buffers_callback().
  *
  * Since: 1.10
  * Stability: unstable
  */
 void
-cogl_framebuffer_remove_swap_buffers_callback (CoglFramebuffer *framebuffer,
-                                               unsigned int id);
+cogl_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
+                                            unsigned int id);
 
 G_END_DECLS
 

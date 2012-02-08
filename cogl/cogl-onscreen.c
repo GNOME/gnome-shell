@@ -127,8 +127,9 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
 }
 
 void
-cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer)
+cogl_onscreen_swap_buffers (CoglOnscreen *onscreen)
 {
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   const CoglWinsysVtable *winsys;
 
   _COGL_RETURN_IF_FAIL  (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN);
@@ -144,10 +145,11 @@ cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer)
 }
 
 void
-cogl_framebuffer_swap_region (CoglFramebuffer *framebuffer,
-                              const int *rectangles,
-                              int n_rectangles)
+cogl_onscreen_swap_region (CoglOnscreen *onscreen,
+                           const int *rectangles,
+                           int n_rectangles)
 {
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   const CoglWinsysVtable *winsys;
 
   _COGL_RETURN_IF_FAIL  (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN);
@@ -254,11 +256,10 @@ cogl_win32_onscreen_get_window (CoglOnscreen *onscreen)
 #endif /* COGL_HAS_WIN32_SUPPORT */
 
 unsigned int
-cogl_framebuffer_add_swap_buffers_callback (CoglFramebuffer *framebuffer,
-                                            CoglSwapBuffersNotify callback,
-                                            void *user_data)
+cogl_onscreen_add_swap_buffers_callback (CoglOnscreen *onscreen,
+                                         CoglSwapBuffersNotify callback,
+                                         void *user_data)
 {
-  CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
   CoglSwapBuffersNotifyEntry *entry = g_slice_new0 (CoglSwapBuffersNotifyEntry);
   static int next_swap_buffers_callback_id = 0;
 
@@ -272,10 +273,9 @@ cogl_framebuffer_add_swap_buffers_callback (CoglFramebuffer *framebuffer,
 }
 
 void
-cogl_framebuffer_remove_swap_buffers_callback (CoglFramebuffer *framebuffer,
-                                               unsigned int id)
+cogl_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
+                                            unsigned int id)
 {
-  CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
   CoglSwapBuffersNotifyEntry *entry;
 
   COGL_TAILQ_FOREACH (entry, &onscreen->swap_callbacks, list_node)

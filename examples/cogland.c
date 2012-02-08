@@ -527,7 +527,7 @@ paint_cb (void *user_data)
               cogl_rectangle (-1, 1, 1, -1);
             }
         }
-      cogl_framebuffer_swap_buffers (fb);
+      cogl_onscreen_swap_buffers (COGL_ONSCREEN (fb));
 
       cogl_pop_framebuffer ();
     }

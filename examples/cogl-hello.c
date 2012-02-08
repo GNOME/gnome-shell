@@ -41,7 +41,7 @@ main (int argc, char **argv)
 
         cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
         cogl_framebuffer_draw_primitive (fb, pipeline, triangle);
-        cogl_framebuffer_swap_buffers (fb);
+        cogl_onscreen_swap_buffers (onscreen);
 
         cogl_poll_get_info (ctx, &poll_fds, &n_poll_fds, &timeout);
         g_poll ((GPollFD *) poll_fds, n_poll_fds, 0);

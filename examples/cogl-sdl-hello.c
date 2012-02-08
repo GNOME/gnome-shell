@@ -28,7 +28,7 @@ redraw (Data *data)
   cogl_framebuffer_draw_primitive (fb, data->pipeline, data->triangle);
   cogl_framebuffer_pop_matrix (fb);
 
-  cogl_framebuffer_swap_buffers (fb);
+  cogl_onscreen_swap_buffers (COGL_ONSCREEN (fb));
 }
 
 static void

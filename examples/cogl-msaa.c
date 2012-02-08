@@ -102,7 +102,7 @@ main (int argc, char **argv)
         cogl_set_source_texture (tex);
         cogl_rectangle (0, 1, 1, -1);
 
-        cogl_framebuffer_swap_buffers (fb);
+        cogl_onscreen_swap_buffers (onscreen);
 
         cogl_poll_get_info (ctx, &poll_fds, &n_poll_fds, &timeout);
         g_poll ((GPollFD *) poll_fds, n_poll_fds, 0);
