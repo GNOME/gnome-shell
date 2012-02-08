@@ -310,14 +310,14 @@ StTooltip StLabel {
 .panel-corner {
     -panel-corner-radius: 10px;
     -panel-corner-background-color: black;
-    -panel-corner-inner-border-width: 2px;
-    -panel-corner-inner-border-color: transparent;
+    -panel-corner-border-width: 2px;
+    -panel-corner-border-color: transparent;
 }
 
 .panel-corner:active,
 .panel-corner:overview,
 .panel-corner:focus {
-    -panel-corner-inner-border-color: rgba(255,255,255,0.8);
+    -panel-corner-border-color: rgba(255,255,255,0.8);
 }
 
 #appMenu {

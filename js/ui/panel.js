@@ -841,12 +841,10 @@ const PanelCorner = new Lang.Class({
         let node = this.actor.get_theme_node();
 
         let cornerRadius = node.get_length("-panel-corner-radius");
-        let innerBorderWidth = node.get_length('-panel-corner-inner-border-width');
-        let outerBorderWidth = node.get_length('-panel-corner-outer-border-width');
+        let borderWidth = node.get_length('-panel-corner-border-width');
 
         let backgroundColor = node.get_color('-panel-corner-background-color');
-        let innerBorderColor = node.get_color('-panel-corner-inner-border-color');
-        let outerBorderColor = node.get_color('-panel-corner-outer-border-color');
+        let borderColor = node.get_color('-panel-corner-border-color');
 
         let cr = this.actor.get_context();
         cr.setOperator(Cairo.Operator.SOURCE);
@@ -854,40 +852,23 @@ const PanelCorner = new Lang.Class({
         cr.moveTo(0, 0);
         if (this._side == St.Side.LEFT)
             cr.arc(cornerRadius,
-                   innerBorderWidth + cornerRadius,
+                   borderWidth + cornerRadius,
                    cornerRadius, Math.PI, 3 * Math.PI / 2);
         else
             cr.arc(0,
-                   innerBorderWidth + cornerRadius,
+                   borderWidth + cornerRadius,
                    cornerRadius, 3 * Math.PI / 2, 2 * Math.PI);
         cr.lineTo(cornerRadius, 0);
         cr.closePath();
 
         let savedPath = cr.copyPath();
 
-        let over = _over(innerBorderColor,
-                         _over(outerBorderColor, backgroundColor));
-        Clutter.cairo_set_source_color(cr, over);
-        cr.fill();
-
         let xOffsetDirection = this._side == St.Side.LEFT ? -1 : 1;
-        let offset = outerBorderWidth;
-        over = _over(innerBorderColor, backgroundColor);
+        let over = _over(borderColor, backgroundColor);
         Clutter.cairo_set_source_color(cr, over);
-
-        cr.save();
-        cr.translate(xOffsetDirection * offset, - offset);
-        cr.appendPath(savedPath);
-        cr.fill();
-        cr.restore();
-
-        if (this._side == St.Side.LEFT)
-            cr.rectangle(cornerRadius - offset, 0, offset, outerBorderWidth);
-        else
-            cr.rectangle(0, 0, offset, outerBorderWidth);
         cr.fill();
 
-        offset = innerBorderWidth;
+        let offset = borderWidth;
         Clutter.cairo_set_source_color(cr, backgroundColor);
 
         cr.save();
@@ -901,10 +882,10 @@ const PanelCorner = new Lang.Class({
         let node = this.actor.get_theme_node();
 
         let cornerRadius = node.get_length("-panel-corner-radius");
-        let innerBorderWidth = node.get_length('-panel-corner-inner-border-width');
+        let borderWidth = node.get_length('-panel-corner-border-width');
 
-        this.actor.set_size(cornerRadius, innerBorderWidth + cornerRadius);
-        this.actor.set_anchor_point(0, innerBorderWidth);
+        this.actor.set_size(cornerRadius, borderWidth + cornerRadius);
+        this.actor.set_anchor_point(0, borderWidth);
     }
 });
 
