@@ -776,7 +776,7 @@ const Extensions = new Lang.Class({
                     errorDisplay.add(new St.Label({ text: errors[i] }));
             } else {
                 /* Translators: argument is an extension UUID. */
-                let message = _("%s has not emitted any errors.").format(meta.uuid);
+                let message = _("%s has not emitted any errors.").format(extension.uuid);
                 errorDisplay.add(new St.Label({ text: message }));
             }
 
