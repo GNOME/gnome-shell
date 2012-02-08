@@ -1323,7 +1323,7 @@ _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CONNECTION_FAILED)]
 _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CONNECTION_LOST)]
   = _("Connection has been lost");
 _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.ALREADY_CONNECTED)]
-  = _("This resource is already connected to the server");
+  = _("This account is already connected to the server");
 _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CONNECTION_REPLACED)]
   = _("Connection has been replaced by a new connection using the same resource");
 _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.REGISTRATION_EXISTS)]
