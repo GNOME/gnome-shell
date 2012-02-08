@@ -50,6 +50,7 @@ typedef struct _CoglGLXDisplay
   GLXContext glx_context;
   GLXWindow dummy_glxwin;
   Window dummy_xwin;
+  gboolean pending_swap_notify;
 } CoglGLXDisplay;
 
 #endif /* __COGL_DISPLAY_GLX_PRIVATE_H */

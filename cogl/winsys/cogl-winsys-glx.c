@@ -81,6 +81,7 @@ typedef struct _CoglOnscreenGLX
   GLXDrawable glxwin;
   guint32 last_swap_vsync_counter;
   GList *swap_callbacks;
+  gboolean pending_swap_notify;
 } CoglOnscreenGLX;
 
 typedef struct _CoglTexturePixmapGLX
@@ -163,11 +164,20 @@ static void
 notify_swap_buffers (CoglContext *context, GLXDrawable drawable)
 {
   CoglOnscreen *onscreen = find_onscreen_for_xid (context, (guint32)drawable);
+  CoglDisplay *display = context->display;
+  CoglGLXDisplay *glx_display = display->winsys;
+  CoglOnscreenGLX *glx_onscreen;
 
   if (!onscreen)
     return;
 
-  _cogl_onscreen_notify_swap_buffers (onscreen);
+  glx_onscreen = onscreen->winsys;
+
+  /* We only want to notify that the swap is complete when the
+     application calls cogl_context_dispatch so instead of immediately
+     notifying we'll set a flag to remember to notify later */
+  glx_display->pending_swap_notify = TRUE;
+  glx_onscreen->pending_swap_notify = TRUE;
 }
 
 static CoglFilterReturn
@@ -1959,10 +1969,37 @@ _cogl_winsys_poll_get_info (CoglContext *context,
                             int *n_poll_fds,
                             gint64 *timeout)
 {
+  CoglDisplay *display = context->display;
+  CoglGLXDisplay *glx_display = display->winsys;
+
   _cogl_xlib_renderer_poll_get_info (context->display->renderer,
                                      poll_fds,
                                      n_poll_fds,
                                      timeout);
+
+  /* If we've already got a pending swap notify then we'll dispatch
+     immediately */
+  if (glx_display->pending_swap_notify)
+    *timeout = 0;
+}
+
+static void
+flush_pending_swap_notify_cb (void *data,
+                              void *user_data)
+{
+  CoglFramebuffer *framebuffer = data;
+
+  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
+    {
+      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+      CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
+
+      if (glx_onscreen->pending_swap_notify)
+        {
+          _cogl_onscreen_notify_swap_buffers (onscreen);
+          glx_onscreen->pending_swap_notify = FALSE;
+        }
+    }
 }
 
 static void
@@ -1970,9 +2007,20 @@ _cogl_winsys_poll_dispatch (CoglContext *context,
                             const CoglPollFD *poll_fds,
                             int n_poll_fds)
 {
+  CoglDisplay *display = context->display;
+  CoglGLXDisplay *glx_display = display->winsys;
+
   _cogl_xlib_renderer_poll_dispatch (context->display->renderer,
                                      poll_fds,
                                      n_poll_fds);
+
+  if (glx_display->pending_swap_notify)
+    {
+      g_list_foreach (context->framebuffers,
+                      flush_pending_swap_notify_cb,
+                      NULL);
+      glx_display->pending_swap_notify = FALSE;
+    }
 }
 
 static CoglWinsysVtable _cogl_winsys_vtable =
