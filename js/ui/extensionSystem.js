@@ -163,8 +163,6 @@ function disableExtension(uuid) {
     if (extension.state != ExtensionState.ENABLED)
         return;
 
-    let extensionState = extensionStateObjs[uuid];
-
     // "Rebase" the extension order by disabling and then enabling extensions
     // in order to help prevent conflicts.
 
@@ -180,14 +178,14 @@ function disableExtension(uuid) {
     for (let i = 0; i < orderReversed.length; i++) {
         let uuid = orderReversed[i];
         try {
-            extensionStateObjs[uuid].disable();
+            ExtensionUtils.extensions[uuid].stateObj.disable();
         } catch(e) {
             logExtensionError(uuid, e.toString());
         }
     }
 
     try {
-        extensionState.disable();
+        extension.stateObj.disable();
     } catch(e) {
         logExtensionError(uuid, e.toString());
         return;
@@ -196,7 +194,7 @@ function disableExtension(uuid) {
     for (let i = 0; i < order.length; i++) {
         let uuid = order[i];
         try {
-            extensionStateObjs[uuid].enable();
+            ExtensionUtils.extensions[uuid].stateObj.enable();
         } catch(e) {
             logExtensionError(uuid, e.toString());
         }
@@ -213,10 +211,8 @@ function enableExtension(uuid) {
     if (!extension)
         return;
 
-    if (extension.state == ExtensionState.INITIALIZED) {
-        loadExtension(extension.dir, extension.type, true);
-        return;
-    }
+    if (extension.state == ExtensionState.INITIALIZED)
+        initExtension(uuid);
 
     if (extension.state != ExtensionState.DISABLED)
         return;
@@ -274,10 +270,24 @@ function loadExtension(dir, type, enabled) {
         return;
     }
 
-    if (!enabled) {
+    if (enabled) {
+        initExtension(uuid);
+        if (extension.state == ExtensionState.DISABLED)
+            enableExtension(uuid);
+    } else {
         extension.state = ExtensionState.INITIALIZED;
-        return;
     }
+
+    _signals.emit('extension-state-changed', extension);
+    global.log('Loaded extension ' + uuid);
+}
+
+function initExtension(uuid) {
+    let extension = ExtensionUtils.extensions[uuid];
+    let dir = extension.dir;
+
+    if (!extension)
+        throw new Error("Extension was not properly created. Call loadExtension first");
 
     let extensionJs = dir.get_child('extension.js');
     if (!extensionJs.query_exists(null)) {
@@ -338,11 +348,7 @@ function loadExtension(dir, type, enabled) {
 
     extension.state = ExtensionState.DISABLED;
 
-    enableExtension(uuid);
-
     _signals.emit('extension-loaded', uuid);
-    _signals.emit('extension-state-changed', extension);
-    global.log('Loaded extension ' + uuid);
 }
 
 function onEnabledExtensionsChanged() {
