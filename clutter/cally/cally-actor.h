@@ -89,12 +89,15 @@ struct _CallyActor
 /**
  * CallyActorClass:
  * @notify_clutter: Signal handler for notify signal on Clutter actor
- * @focus_clutter: Signal handler for key-focus-in and key-focus-out signal on Clutter actor
- * @add_actor: Signal handler for actor-added signal on ClutterContainer interface
- * @remove_actor: Signal handler for actor-added signal on ClutterContainer interface
+ * @focus_clutter: Signal handler for key-focus-in and key-focus-out
+ *   signal on Clutter actor. This virtual functions is deprecated.
+ * @add_actor: Signal handler for actor-added signal on
+ *   ClutterContainer interface
+ * @remove_actor: Signal handler for actor-added signal on
+ *   ClutterContainer interface
  *
- * The <structname>CallyActorClass</structname> structure contains only
- * private data
+ * The <structname>CallyActorClass</structname> structure contains
+ * only private data
  *
  * Since: 1.4
  */
@@ -104,13 +107,9 @@ struct _CallyActorClass
   AtkGObjectAccessibleClass parent_class;
 
   /*< public >*/
-  /* Signal handler for notify signal on Clutter Actor */
   void     (*notify_clutter) (GObject    *object,
                               GParamSpec *pspec);
 
-  /*
-   * Signal handler for key_focus_in and key_focus_out on Clutter Actor
-   */
   gboolean (*focus_clutter)  (ClutterActor *actor,
                               gpointer      data);
 

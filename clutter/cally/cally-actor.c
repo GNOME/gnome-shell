@@ -43,7 +43,12 @@
  * clutter_stage_set_key_focus. So, we will use this approach: all actors are
  * focusable, and we get the currently focused using clutter_stage_get_key_focus
  * This affects focus related stateset and some atk_componenet focus methods (like
- * grab focus)
+ * grab focus).
+ *
+ * In the same way, we will manage the focus state change management
+ * on the cally-stage object. The reason is avoid missing a focus
+ * state change event if the object is focused just before the
+ * accessibility object being created.
  *
  * ####
  *
@@ -177,12 +182,6 @@ static void     cally_actor_get_extents              (AtkComponent *component,
                                                      AtkCoordType  coord_type);
 static gint     cally_actor_get_mdi_zorder           (AtkComponent *component);
 static gboolean cally_actor_grab_focus               (AtkComponent *component);
-static guint    cally_actor_add_focus_handler        (AtkComponent *component,
-                                                      AtkFocusHandler handler);
-static void     cally_actor_remove_focus_handler     (AtkComponent *component,
-                                                      guint handler_id);
-static void     cally_actor_focus_event              (AtkObject   *obj,
-                                                      gboolean    focus_in);
 
 /* AtkAction.h */
 static void                  cally_actor_action_interface_init  (AtkActionIface *iface);
@@ -210,10 +209,6 @@ static void cally_actor_notify_clutter          (GObject    *obj,
                                                 GParamSpec *pspec);
 static void cally_actor_real_notify_clutter     (GObject    *obj,
                                                  GParamSpec *pspec);
-static gboolean cally_actor_focus_clutter       (ClutterActor *actor,
-                                                 gpointer      data);
-static gboolean cally_actor_real_focus_clutter  (ClutterActor *actor,
-                                                 gpointer      data);
 
 G_DEFINE_TYPE_WITH_CODE (CallyActor,
                          cally_actor,
@@ -277,20 +272,10 @@ cally_actor_initialize (AtkObject *obj,
   priv = self->priv;
   actor = CLUTTER_ACTOR (data);
 
-  g_signal_connect_after (actor,
-                          "key-focus-in",
-                          G_CALLBACK (cally_actor_focus_clutter),
-                          GINT_TO_POINTER (TRUE));
-  g_signal_connect_after (actor,
-                          "key-focus-out",
-                          G_CALLBACK (cally_actor_focus_clutter),
-                          GINT_TO_POINTER (FALSE));
   g_signal_connect (actor,
                     "notify",
                     G_CALLBACK (cally_actor_notify_clutter),
                     NULL);
-  atk_component_add_focus_handler (ATK_COMPONENT (self),
-                                   cally_actor_focus_event);
 
   g_object_set_data (G_OBJECT (obj), "atk-component-layer",
                      GINT_TO_POINTER (ATK_LAYER_MDI));
@@ -324,7 +309,6 @@ cally_actor_class_init (CallyActorClass *klass)
   AtkObjectClass *class         = ATK_OBJECT_CLASS (klass);
   GObjectClass   *gobject_class = G_OBJECT_CLASS (klass);
 
-  klass->focus_clutter  = cally_actor_real_focus_clutter;
   klass->notify_clutter = cally_actor_real_notify_clutter;
   klass->add_actor      = cally_actor_real_add_actor;
   klass->remove_actor   = cally_actor_real_remove_actor;
@@ -728,8 +712,6 @@ cally_actor_component_interface_init (AtkComponentIface *iface)
 
   /* focus management */
   iface->grab_focus           = cally_actor_grab_focus;
-  iface->add_focus_handler    = cally_actor_add_focus_handler;
-  iface->remove_focus_handler = cally_actor_remove_focus_handler;
 }
 
 static void
@@ -812,46 +794,6 @@ cally_actor_grab_focus (AtkComponent    *component)
 
   return TRUE;
 }
-
-/*
- * These methods are basically taken from gail, as I don't see any
- * reason to modify it. It makes me wonder why it is really required
- * to be implemented in the toolkit
- */
-static guint
-cally_actor_add_focus_handler (AtkComponent *component,
-                               AtkFocusHandler handler)
-{
-  GSignalMatchType match_type;
-  gulong ret;
-  guint signal_id;
-
-  match_type = G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_FUNC;
-  signal_id = g_signal_lookup ("focus-event", ATK_TYPE_OBJECT);
-
-  ret = g_signal_handler_find (component, match_type, signal_id, 0, NULL,
-                               (gpointer) handler, NULL);
-  if (!ret)
-    {
-      return g_signal_connect_closure_by_id (component,
-                                             signal_id, 0,
-                                             g_cclosure_new (G_CALLBACK (handler), NULL,
-                                                             (GClosureNotify) NULL),
-                                             FALSE);
-    }
-  else
-    {
-      return 0;
-    }
-}
-
-static void
-cally_actor_remove_focus_handler (AtkComponent *component,
-                                  guint handler_id)
-{
-  g_signal_handler_disconnect (component, handler_id);
-}
-
 
 /*
  *
@@ -1091,42 +1033,6 @@ cally_actor_action_get_keybinding (AtkAction *action,
 /* Misc functions */
 
 /*
- * This function is a signal handler for key_focus_in and
- * key_focus_out signal which gets emitted on a ClutterActor
- */
-static gboolean
-cally_actor_focus_clutter (ClutterActor *actor,
-                           gpointer      data)
-{
-  CallyActor      *cally_actor = NULL;
-  CallyActorClass *klass       = NULL;
-
-  cally_actor = CALLY_ACTOR (clutter_actor_get_accessible (actor));
-  klass = CALLY_ACTOR_GET_CLASS (cally_actor);
-  if (klass->focus_clutter)
-    return klass->focus_clutter (actor, data);
-  else
-    return FALSE;
-}
-
-static gboolean
-cally_actor_real_focus_clutter (ClutterActor *actor,
-                                gpointer      data)
-{
-  CallyActor *cally_actor = NULL;
-  gboolean return_val = FALSE;
-  gboolean in = FALSE;
-
-  in = GPOINTER_TO_INT (data);
-  cally_actor = CALLY_ACTOR (clutter_actor_get_accessible (actor));
-
-  g_signal_emit_by_name (cally_actor, "focus_event", in, &return_val);
-  atk_focus_tracker_notify (ATK_OBJECT (cally_actor));
-
-  return FALSE;
-}
-
-/*
  * This function is a signal handler for notify signal which gets emitted
  * when a property changes value on the ClutterActor associated with the object.
  *
@@ -1183,14 +1089,6 @@ cally_actor_real_notify_clutter (GObject    *obj,
 
   atk_object_notify_state_change (atk_obj, state, value);
 }
-
-static void
-cally_actor_focus_event (AtkObject   *obj,
-                         gboolean    focus_in)
-{
-  atk_object_notify_state_change (obj, ATK_STATE_FOCUSED, focus_in);
-}
-
 
 static void
 _cally_actor_clean_action_list (CallyActor *cally_actor)
