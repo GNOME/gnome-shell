@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Script that sets up jhbuild to build gnome-shell. Run this to
-# checkout jhbuild and the required configuration. 
+# checkout jhbuild and the required configuration.
 #
 # Copyright (C) 2008, Red Hat, Inc.
 #
@@ -9,23 +9,6 @@
 #
 # Copyright (C) 2006, 2007, 2008 Imendio AB
 #
-
-# Pre-check on GNOME version
-
-gnome_version=`gnome-session --version 2>/dev/null | (read name version && echo $version)`
-have_gnome_26=false
-case $gnome_version in
-    2.2[6789]*|2.[3456789]*|3.*)
-	have_gnome_26=true
-    ;;
-esac
-
-if $have_gnome_26 ; then : ; else
-   echo "GNOME 2.26 or newer is required to build GNOME Shell" 1>&2
-   exit 1
-fi
-
-############################################################
 
 release_file=
 
@@ -47,54 +30,129 @@ if [ x$release_file != x ] ; then
     version=`sed 's/[^0-9\.]*\([0-9\.]\+\).*/\1/' < $release_file`
 fi
 
-# Required software:
+# This is the configuration of packages that we'll need to successfully jhbuild.
+# Each line is of the form:
 #
+#  name_of_depenency: <distro_chars>:package [<distro_chars>:package...]
+#
+# The dependency name is purely informative and isn't otherwise used. distro_chars are:
+#
+#  f: Fedora
+#  d: Debian/Ubuntu
+#  s: SuSE
+#  m: Mandriva
+#
+# Rather than have some complicated system here, when we have packages that depend
+# on distribution version, we just tweak the package list in the code below.
+# Where known, the module that requires a library is commented.
+
+all_packages() {
+cat <<EOF
 # For this script:
-# binutils, curl, gcc, make, git
-#
-# General build stuff:
-# automake, bison, flex, gettext, gnome-common, gperf, gtk-doc, intltool,
-# libtool, pkgconfig
-#
-# Devel packages needed by gnome-shell and its deps:
-# dbus-glib, expat, GL, gnome-menus, gstreamer, libffi,
-# libjasper, libjpeg, libpng, libpulse, libtiff, libwnck,
-# iso-codes, libical, libxml2, ORBit2, pam, python, readline, upower,
-# spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification,
-# xdamage, icon-naming-utils, upower, libtool-ltdl, libvorbis,
-# libgcrypt, libtasn1, libgnome-keyring, libgtop, cups, xcb, libwebkitgtk,
-# libusb, libproxy, libdb, libproxy, sqlite, gudev, liblcms2, sane,
-# python-gobject, libxtst, liboauth, libnm
-#
-# Non-devel packages needed by gnome-shell and its deps:
-# glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
-# gvfs, python, gnome-python (gconf),
-# icon-naming-utils, zenity, libtasn1-tools accountsservice
+curl: fdsm:curl
+git: f:git d:git-core
+
+# Build tools
+build-essential: d:build-essential
+automake: fd:automake
+binutils: f:binutils
+bison: fds:bison
+cmake: fd:cmake # libproxy
+docbook-style-xsl: f:docbook-style-xsl d:docbook-xsl # gtk-doc
+flex: fds:flex
+gettext: fd:gettext
+gcc: f:gcc
+g++: f:gcc-c++
+gperf: f:gperf d:gperf # evolution-data-server gudev
+intltool: f:intltool
+libtool: f:libtool
+make: f:make
+perl-XML-Simple: f:perl-XML-Simple d:libxml-simple-perl # icon-naming-utils
+pkgconfig: f:pkgconfig
+python: f:python
+texinfo: fd:texinfo # libgtop
+xsltproc: f:libxslt d:xsltproc # gtk-doc
+
+# Image handling libraries
+freetype: f:freetype-devel d:libfreetype6-dev # fontconfig
+jasper: f:jasper-devel d:libjasper-dev # gdk-pixbuf
+libjpeg: f:libjpeg-devel d:libjpeg-dev # gdk-pixbuf
+libpng: f:libpng-devel d:libpng-dev # gdk-pixbuf
+libtiff: fs:libtiff-devel d:libtiff-dev # gdk-pixbuf
+
+# X libraries
+GL: f:mesa-libGL-devel d:mesa-common-dev d:libgl1-mesa-dev m:GL-devel # cogl
+libX11: s:xorg-x11-proto-devel s:xorg-x11-devel # gtk+
+libXcomposite: f:libXcomposite-devel d:libxcomposite-dev # cogl mutter
+libXcursor: f:libXcursor-devel libxcursor-dev # mousetweaks
+libXdamage: f:libXdamage-devel m:libxdamage-devel d:libxdamage-dev # cogl mutter
+libXi: f:libXi-devel d:libxi-dev # gtk+
+libXrandr: f:libXrandr-devel d:libxrandr-dev # gnome-desktop
+libXrender: f:libXrender-devel d: libxrender-dev # cairo WebKit
+libXt: f:libXt-devel d:libxt-dev # WebKit
+libXtst: f:libXtst-devel d:libxtst-dev # caribou
+xcb: f:xcb-util-devel d:libx11-xcb-dev # startup-notification
+
+# Other libraries
+cups: fs:cups-devel d:libcups2-dev # gnome-control-center
+db4: f:db4-devel d:libdb-dev # evolution-data-server
+icu: f:libicu-devel d:libicu-dev # WebKit
+libacl: f:libacl-devel d:libacl1-dev # gudev
+libcurl: f:libcurl-devel # liboauth. See below for Debian
+libffi: fs:libffi-devel d:libffi-dev # gobject-introspection
+libtool-ltdl: f:libtool-ltdl-devel d:libltdl-dev # libcanberra
+libusb: f:libusb1-devel d:libusb-1.0-0-dev # upower
+openssl: f:openssl-devel d:libssl-dev # liboauth
+pam: f:pam-devel d:libpam-dev # polkit
+ppp: f:ppp-devel d:ppp-dev # NetworkManager
+python-devel: f:python-devel d:python-dev # pygobject py2cairo
+readline: fsm:readline-devel d:libreadline-dev
+sane: f:sane-backends-devel d:libsane-dev # colord
+sqlite: d:libsqlite3-dev f:sqlite-devel # libsoup
+udev: f:libudev-devel d:libudev-dev # gudev
+uuid: f:libuuid-devel d:uuid-dev # Networkmanager
+vorbis: f:libvorbis-devel d:libvorbis-dev # libcanberra
+
+# python libraries used by gnome-shell wrapper script
+# These are commented out because the gnome-shell wrapper script
+# isn't built by default, and needs updating for running on
+# a pure-GNOME 3 system, rather than recovering to GNOME 2.
+# dbus-python: f:dbus-python d:python-dbus
+# python-gobject: f:pygobject2 d:python-gobject
+# python-gconf: f:gnome-python2-gconf d:python-gconf
+EOF
+}
+
+packages_for_distribution() {
+    distribution_char=$1
+    all_packages |
+        sed -n 's/#.*//; /[^ 	]/p' | # Remove comments and blank lines
+	while read dependency_name words ; do
+	    for word in $words ; do
+		# Word is <distribution-chars>:package
+		IFS=:
+		set $word
+		IFS=' 	'
+		case $1 in
+		    *$distribution_char*) echo $2
+                esac
+	    done
+       done
+}
+
+# We try to make it clear what we're doing via sudo so if a user gets prompted
+# for their password, they have some idea why.
+run_via_sudo() {
+    echo "Running: sudo $@"
+    if sudo "$@" ; then : ; else
+	echo 1>&2 "Command failed."
+	echo 1>&2 "Exiting gnome-shell-build-setup.sh. You can run it again safely."
+	exit 1
+    fi
+}
 
 if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint ; then
-  reqd="
-    build-essential curl
-    automake bison flex gettext git-core gperf gnome-common gtk-doc-tools
-    gvfs gvfs-backends icon-naming-utils
-    libdbus-glib-1-dev libexpat-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev libgtop2-dev
-    libical-dev libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev
-    libwnck-dev libgl1-mesa-dev liborbit2-dev libpulse-dev libreadline-dev libxml2-dev
-    mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject-dev
-    libcroco3-dev
-    libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good
-    libltdl-dev libvorbis-dev iso-codes libgnome-keyring-dev libusb-1.0-0-dev
-    libupower-glib-dev libcups2-dev libproxy-dev libdb-dev libproxy-dev
-    libsqlite3-dev libgudev-1.0-dev libsane-dev libwebkitgtk-3.0-dev
-    libx11-xcb-dev libupower-glib-dev accountsservice
-    gnome-doc-utils liblcms2-dev libxtst-dev liboauth-dev
-    libnm-glib-dev libnm-util-dev
-    "
-
-  if apt-cache show libmozjs-dev > /dev/null 2> /dev/null; then
-    reqd="$reqd libmozjs-dev"
-  elif apt-cache show xulrunner-dev > /dev/null 2> /dev/null; then
-    reqd="$reqd xulrunner-dev"
-  fi
+  reqd=`packages_for_distribution d`
 
   if apt-cache show libxcb-util0-dev > /dev/null 2> /dev/null; then
     reqd="$reqd libxcb-util0-dev"
@@ -106,10 +164,27 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     reqd="$reqd autopoint"
   fi
 
-  if [ ! -x /usr/bin/dpkg-checkbuilddeps ]; then
-    echo "Please run 'sudo apt-get install dpkg-dev' and try again."
-    echo
-    exit 1
+  if [ ! -x /usr/bin/dpkg-checkbuilddeps -o ! -x /usr/bin/apt-file ]; then
+    echo "Installing base dependencies"
+    run_via_sudo apt-get install dpkg-dev apt-file
+  fi
+
+  echo "Updating apt-file cache"
+  run_via_sudo apt-file update
+
+  # libcurl comes in both gnutls and openssl flavors. If the openssl
+  # flavor of the runtime is installed, install the matching -dev
+  # package, but default to the gnutls version. (the libcurl3 vs. libcurl4
+  # mismatch is intentional and is how things are packaged.)
+
+  if ! dpkg-checkbuilddeps -d libcurl-dev /dev/null 2> /dev/null; then
+      if dpkg -s libcurl3 /dev/null 2> /dev/null; then
+	  missing="libcurl4-openssl-dev $missing"
+      elif dpkg -s libcurl3-nss /dev/null 2> /dev/null; then
+	  missing="libcurl4-nss-dev $missing"
+      else
+	  missing="libcurl4-gnutls-dev $missing"
+      fi
   fi
 
   for pkg in $reqd ; do
@@ -118,28 +193,13 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
       fi
   done
   if test ! "x$missing" = x; then
-    echo "Please run 'sudo apt-get install $missing' and try again."
-    echo
-    exit 1
+    echo "Installing packages"
+    run_via_sudo apt-get install $missing
   fi
 fi
 
 if test "x$system" = xFedora ; then
-  reqd="
-    binutils curl gcc gcc-c++ make accountsservice
-    automake bison flex gettext git gnome-common gnome-doc-utils gperf gvfs intltool
-    libtool pkgconfig dbus-glib-devel gnome-desktop-devel gnome-menus-devel
-    gnome-python2-gconf jasper-devel libffi-devel libical-devel libjpeg-devel libpng-devel
-    libtiff-devel libwnck-devel mesa-libGL-devel ORBit2-devel pam-devel
-    pulseaudio-libs-devel python-devel pygobject2 readline-devel xulrunner-devel
-    libXdamage-devel libcroco-devel libxml2-devel gstreamer-devel
-    gstreamer-plugins-base gstreamer-plugins-good glx-utils expat-devel
-    startup-notification-devel zenity webkitgtk3-devel upower-devel
-    icon-naming-utils upower-devel libtool-ltdl-devel libvorbis-devel
-    iso-codes-devel libgcrypt-devel libtasn1-devel libtasn1-tools libusb1-devel
-    libgnome-keyring-devel libgtop2-devel cups-devel db4-devel libproxy-devel
-    sqlite-devel libgudev1-devel lcms2-devel sane-backends-devel xcb-util-devel
-    "
+  reqd=`packages_for_distribution f`
 
   if expr $version = 14 > /dev/null ; then
       reqd="$reqd gettext-autopoint"
@@ -147,32 +207,23 @@ if test "x$system" = xFedora ; then
       reqd="$reqd gettext-devel"
   fi
 
+  echo -n "Computing packages to install ... "
   for pkg in $reqd ; do
-      if ! rpm -q $pkg > /dev/null 2>&1; then
+      if ! rpm -q --whatprovides $pkg > /dev/null 2>&1; then
         missing="$pkg $missing"
       fi
   done
+  echo "done"
+
   if test ! "x$missing" = x; then
-    gpk-install-package-name $missing
+      echo -n "Installing packages ... "
+      gpk-install-package-name $missing
+      echo "done"
   fi
 fi
 
 if test "x$system" = xSUSE -o "x$system" = "xSUSE LINUX" ; then
-  reqd=""
-  for pkg in \
-    curl \
-    bison flex gtk-doc gnome-common gnome-doc-utils-devel \
-    gnome-desktop-devel gnome-menus-devel icon-naming-utils \
-    libgtop-devel libpulse-devel libtiff-devel cups-devel libffi-devel \
-    orbit2-devel libwnck-devel xorg-x11-proto-devel readline-devel \
-    mozilla-xulrunner191-devel libcroco-devel \
-    xorg-x11-devel xorg-x11 xorg-x11-server-extra evolution-data-server-devel \
-    iso-codes-devel \
-    ; do
-      if ! rpm -q $pkg > /dev/null 2>&1; then
-        reqd="$pkg $reqd"
-      fi
-  done
+  reqd=`packages_for_distribution s`
   if test ! "x$reqd" = x; then
     echo "Please run 'su --command=\"zypper install $reqd\"' and try again."
     echo
@@ -181,20 +232,7 @@ if test "x$system" = xSUSE -o "x$system" = "xSUSE LINUX" ; then
 fi
 
 if test "x$system" = xMandrivaLinux ; then
-  reqd=""
-  for pkg in \
-    curl \
-    bison flex gnome-common gnome-doc-utils gtk-doc icon-naming-utils \
-    intltool ffi5-devel libwnck-1-devel GL-devel ORBit2-devel \
-    readline-devel libxulrunner-devel \
-    libxdamage-devel mesa-demos zenity \
-    libcroco0.6-devel libevolution-data-server3-devel \
-    iso-codes-devel \
-    ; do
-      if ! rpm -q --whatprovides $pkg > /dev/null 2>&1; then
-        reqd="$pkg $reqd"
-      fi
-  done
+  reqd=`packages_for_distribution m`
   if test ! "x$reqd" = x; then
 	gurpmi --auto $reqd
   fi
@@ -245,10 +283,12 @@ if [ ! -f $HOME/.jhbuildrc-custom ]; then
     echo "done"
 fi
 
+echo "Installing modules as system packages when possible"
+$HOME/bin/jhbuild sysdeps --install
+
 if test "x`echo $PATH | grep $HOME/bin`" = x; then
     echo "PATH does not contain $HOME/bin, it is recommended that you add that."
     echo
 fi
 
 echo "Done."
-
