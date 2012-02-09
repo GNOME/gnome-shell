@@ -1,9 +1,7 @@
-#include <clutter/clutter.h>
+#include <cogl/cogl2-experimental.h>
 #include <string.h>
 
-#include "test-conform-common.h"
-
-static const ClutterColor stage_color = { 0x0, 0xff, 0x0, 0xff };
+#include "test-utils.h"
 
 #define TEX_WIDTH        4
 #define TEX_HEIGHT       8
@@ -13,7 +11,15 @@ static const ClutterColor stage_color = { 0x0, 0xff, 0x0, 0xff };
 /* Leave four rows of padding between each image */
 #define TEX_IMAGE_STRIDE ((TEX_HEIGHT + 4) * TEX_ROWSTRIDE)
 
-static CoglHandle
+typedef struct _TestState
+{
+  CoglContext *context;
+  int fb_width;
+  int fb_height;
+  CoglFramebuffer *fb;
+} TestState;
+
+static CoglTexture *
 create_texture_3d (void)
 {
   int x, y, z;
@@ -67,22 +73,23 @@ create_texture_3d (void)
 }
 
 static void
-draw_frame (void)
+draw_frame (TestState *state)
 {
-  CoglHandle tex = create_texture_3d ();
-  CoglHandle material = cogl_material_new ();
+  CoglTexture *tex = create_texture_3d ();
+  CoglPipeline *pipeline = cogl_pipeline_new ();
   typedef struct { float x, y, s, t, r; } Vert;
-  CoglHandle vbo, indices;
+  CoglPrimitive *primitive;
+  CoglAttributeBuffer *attribute_buffer;
+  CoglAttribute *attributes[2];
   Vert *verts, *v;
   int i;
 
-  cogl_material_set_layer (material, 0, tex);
-  cogl_handle_unref (tex);
-  cogl_material_set_layer_filters (material, 0,
-                                   COGL_MATERIAL_FILTER_NEAREST,
-                                   COGL_MATERIAL_FILTER_NEAREST);
-  cogl_set_source (material);
-  cogl_handle_unref (material);
+  cogl_pipeline_set_layer_texture (pipeline, 0, tex);
+  cogl_object_unref (tex);
+  cogl_pipeline_set_layer_filters (pipeline, 0,
+                                   COGL_PIPELINE_FILTER_NEAREST,
+                                   COGL_PIPELINE_FILTER_NEAREST);
+  cogl_push_source (pipeline);
 
   /* Render the texture repeated horizontally twice using a regular
      cogl rectangle. This should end up with the r texture coordinates
@@ -90,7 +97,10 @@ draw_frame (void)
   cogl_rectangle_with_texture_coords (0.0f, 0.0f, TEX_WIDTH * 2, TEX_HEIGHT,
                                       0.0f, 0.0f, 2.0f, 1.0f);
 
-  /* Render all of the images in the texture using coordinates from a VBO */
+  cogl_pop_source ();
+
+  /* Render all of the images in the texture using coordinates from a
+     CoglPrimitive */
   v = verts = g_new (Vert, 4 * TEX_DEPTH);
   for (i = 0; i < TEX_DEPTH; i++)
     {
@@ -125,54 +135,54 @@ draw_frame (void)
       v++;
     }
 
-  vbo = cogl_vertex_buffer_new (4 * TEX_DEPTH);
-  cogl_vertex_buffer_add (vbo, "gl_Vertex",
-                          2, COGL_ATTRIBUTE_TYPE_FLOAT, FALSE,
-                          sizeof (Vert),
-                          &verts->x);
-  cogl_vertex_buffer_add (vbo, "gl_MultiTexCoord0",
-                          3, COGL_ATTRIBUTE_TYPE_FLOAT, FALSE,
-                          sizeof (Vert),
-                          &verts->s);
-  cogl_vertex_buffer_submit (vbo);
+  attribute_buffer = cogl_attribute_buffer_new (state->context,
+                                                4 * TEX_DEPTH * sizeof (Vert),
+                                                verts);
+  attributes[0] = cogl_attribute_new (attribute_buffer,
+                                      "cogl_position_in",
+                                      sizeof (Vert),
+                                      G_STRUCT_OFFSET (Vert, x),
+                                      2, /* n_components */
+                                      COGL_ATTRIBUTE_TYPE_FLOAT);
+  attributes[1] = cogl_attribute_new (attribute_buffer,
+                                      "cogl_tex_coord_in",
+                                      sizeof (Vert),
+                                      G_STRUCT_OFFSET (Vert, s),
+                                      3, /* n_components */
+                                      COGL_ATTRIBUTE_TYPE_FLOAT);
+  primitive = cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_TRIANGLES,
+                                                  6 * TEX_DEPTH,
+                                                  attributes,
+                                                  2 /* n_attributes */);
+
+  cogl_primitive_set_indices (primitive,
+                              cogl_get_rectangle_indices (state->context,
+                                                          TEX_DEPTH),
+                              6 * TEX_DEPTH);
+
+  cogl_framebuffer_draw_primitive (state->fb, pipeline, primitive);
 
   g_free (verts);
 
-  indices = cogl_vertex_buffer_indices_get_for_quads (6 * TEX_DEPTH);
-
-  cogl_vertex_buffer_draw_elements (vbo,
-                                    COGL_VERTICES_MODE_TRIANGLES,
-                                    indices,
-                                    0, TEX_DEPTH * 4 - 1,
-                                    0, TEX_DEPTH * 6);
-
-  cogl_handle_unref (vbo);
+  cogl_object_unref (primitive);
+  cogl_object_unref (attributes[0]);
+  cogl_object_unref (attributes[1]);
+  cogl_object_unref (attribute_buffer);
+  cogl_object_unref (pipeline);
 }
 
 static void
 validate_block (int block_x, int block_y, int z)
 {
-  guint8 *data, *p;
   int x, y;
-
-  p = data = g_malloc (TEX_WIDTH * TEX_HEIGHT * 4);
-
-  cogl_read_pixels (block_x * TEX_WIDTH, block_y * TEX_HEIGHT,
-                    TEX_WIDTH, TEX_HEIGHT,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    data);
 
   for (y = 0; y < TEX_HEIGHT; y++)
     for (x = 0; x < TEX_WIDTH; x++)
-      {
-        g_assert_cmpint (p[0], ==, 255 - x * 8);
-        g_assert_cmpint (p[1], ==, y * 8);
-        g_assert_cmpint (p[2], ==, 255 - z * 8);
-        p += 4;
-      }
-
-  g_free (data);
+      test_utils_check_pixel_rgb (block_x * TEX_WIDTH + x,
+                                  block_y * TEX_HEIGHT + y,
+                                  255 - x * 8,
+                                  y * 8,
+                                  255 - z * 8);
 }
 
 static void
@@ -186,40 +196,31 @@ validate_result (void)
     validate_block (i, 1, i);
 }
 
-static void
-on_paint (void)
-{
-  draw_frame ();
-
-  validate_result ();
-
-  /* Comment this out to see what the test paints */
-  clutter_main_quit ();
-}
-
 void
 test_cogl_texture_3d (TestUtilsGTestFixture *fixture,
                       void *data)
 {
-  ClutterActor *stage;
-  unsigned int paint_handler;
-
-  stage = clutter_stage_get_default ();
+  TestUtilsSharedState *shared_state = data;
 
   /* Check whether GL supports the rectangle extension. If not we'll
      just assume the test passes */
-  if (cogl_features_available (COGL_FEATURE_TEXTURE_3D))
+  if (cogl_has_feature (shared_state->ctx, COGL_FEATURE_ID_TEXTURE_3D))
     {
-      clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+      TestState state;
 
-      paint_handler = g_signal_connect_after (stage, "paint",
-                                              G_CALLBACK (on_paint), NULL);
+      state.context = shared_state->ctx;
+      state.fb_width = cogl_framebuffer_get_width (shared_state->fb);
+      state.fb_height = cogl_framebuffer_get_height (shared_state->fb);
+      state.fb = shared_state->fb;
 
-      clutter_actor_show (stage);
+      cogl_framebuffer_orthographic (shared_state->fb,
+                                     0, 0, /* x_1, y_1 */
+                                     state.fb_width, /* x_2 */
+                                     state.fb_height /* y_2 */,
+                                     -1, 100 /* near/far */);
 
-      clutter_main ();
-
-      g_signal_handler_disconnect (stage, paint_handler);
+      draw_frame (&state);
+      validate_result ();
 
       if (g_test_verbose ())
         g_print ("OK\n");

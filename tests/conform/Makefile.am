@@ -20,7 +20,6 @@ unported_test_sources = \
 	test-pixel-buffer.c \
 	test-premult.c \
 	test-readpixels.c \
-	test-texture-3d.c \
 	test-texture-get-set-data.c \
 	test-texture-mipmaps.c \
 	test-texture-pixmap-x11.c \
@@ -47,6 +46,7 @@ test_sources = \
 	test-custom-attributes.c \
 	test-offscreen.c \
 	test-primitive.c \
+	test-texture-3d.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
