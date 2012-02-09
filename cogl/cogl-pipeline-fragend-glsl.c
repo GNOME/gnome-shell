@@ -422,48 +422,33 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
      to be replaced */
   if (!has_replace_hook (layer, COGL_SNIPPET_HOOK_TEXTURE_LOOKUP))
     {
-      CoglHandle texture = _cogl_pipeline_layer_get_texture (layer);
+      CoglTextureType texture_type =
+        _cogl_pipeline_layer_get_texture_type (layer);
       const char *target_string, *tex_coord_swizzle;
 
-      if (texture == NULL)
+      switch (texture_type)
         {
+#if 0 /* TODO */
+        case COGL_TEXTURE_TYPE_1D:
+          target_string = "1D";
+          tex_coord_swizzle = "s";
+          break;
+#endif
+
+        case COGL_TEXTURE_TYPE_2D:
           target_string = "2D";
           tex_coord_swizzle = "st";
-        }
-      else
-        {
-          GLenum gl_target;
+          break;
 
-          cogl_texture_get_gl_texture (texture, NULL, &gl_target);
-          switch (gl_target)
-            {
-#ifdef HAVE_COGL_GL
-            case GL_TEXTURE_1D:
-              target_string = "1D";
-              tex_coord_swizzle = "s";
-              break;
-#endif
+        case COGL_TEXTURE_TYPE_3D:
+          target_string = "3D";
+          tex_coord_swizzle = "stp";
+          break;
 
-            case GL_TEXTURE_2D:
-              target_string = "2D";
-              tex_coord_swizzle = "st";
-              break;
-
-#ifdef GL_ARB_texture_rectangle
-            case GL_TEXTURE_RECTANGLE_ARB:
-              target_string = "2DRect";
-              tex_coord_swizzle = "st";
-              break;
-#endif
-
-            case GL_TEXTURE_3D:
-              target_string = "3D";
-              tex_coord_swizzle = "stp";
-              break;
-
-            default:
-              g_assert_not_reached ();
-            }
+        case COGL_TEXTURE_TYPE_RECTANGLE:
+          target_string = "2DRect";
+          tex_coord_swizzle = "st";
+          break;
         }
 
       /* Create a sampler uniform */

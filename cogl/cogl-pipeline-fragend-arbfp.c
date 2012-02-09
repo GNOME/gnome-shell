@@ -291,26 +291,31 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
 }
 
 static const char *
-gl_target_to_arbfp_string (GLenum gl_target)
+texture_type_to_arbfp_string (CoglTextureType texture_type)
 {
-  if (gl_target == GL_TEXTURE_1D)
-    return "1D";
-  else if (gl_target == GL_TEXTURE_2D)
-    return "2D";
-#ifdef GL_ARB_texture_rectangle
-  else if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    return "RECT";
+  switch (texture_type)
+    {
+#if 0 /* TODO */
+    case COGL_TEXTURE_TYPE_1D:
+      return "1D";
 #endif
-  else if (gl_target == GL_TEXTURE_3D)
-    return "3D";
-  else
-    return "2D";
+    case COGL_TEXTURE_TYPE_2D:
+      return "2D";
+    case COGL_TEXTURE_TYPE_3D:
+      return "3D";
+    case COGL_TEXTURE_TYPE_RECTANGLE:
+      return "RECT";
+    }
+
+  g_warn_if_reached ();
+
+  return "2D";
 }
 
 static void
 setup_texture_source (CoglPipelineShaderState *shader_state,
                       int unit_index,
-                      GLenum gl_target)
+                      CoglTextureType texture_type)
 {
   if (!shader_state->unit_state[unit_index].sampled)
     {
@@ -329,7 +334,7 @@ setup_texture_source (CoglPipelineShaderState *shader_state,
                                 unit_index,
                                 unit_index,
                                 unit_index,
-                                gl_target_to_arbfp_string (gl_target));
+                                texture_type_to_arbfp_string (texture_type));
       shader_state->unit_state[unit_index].sampled = TRUE;
     }
 }
@@ -349,7 +354,7 @@ typedef struct _CoglPipelineFragendARBfpArg
 
   /* for type = TEXTURE */
   int texture_unit;
-  GLenum texture_target;
+  CoglTextureType texture_type;
 
   /* for type = CONSTANT */
   int constant_id;
@@ -392,8 +397,6 @@ setup_arg (CoglPipeline *pipeline,
 {
   CoglPipelineShaderState *shader_state = get_shader_state (pipeline);
   static const char *tmp_name[3] = { "tmp0", "tmp1", "tmp2" };
-  GLenum gl_target;
-  CoglHandle texture;
 
   switch (src)
     {
@@ -401,12 +404,9 @@ setup_arg (CoglPipeline *pipeline,
       arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_TEXTURE;
       arg->name = "texel%d";
       arg->texture_unit = _cogl_pipeline_layer_get_unit_index (layer);
-      texture = _cogl_pipeline_layer_get_texture (layer);
-      if (texture)
-        cogl_texture_get_gl_texture (texture, NULL, &gl_target);
-      else
-        gl_target = GL_TEXTURE_2D;
-      setup_texture_source (shader_state, arg->texture_unit, gl_target);
+      setup_texture_source (shader_state,
+                            arg->texture_unit,
+                            _cogl_pipeline_layer_get_texture_type (layer));
       break;
     case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
       {
@@ -437,12 +437,12 @@ setup_arg (CoglPipeline *pipeline,
       arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_TEXTURE;
       arg->name = "texture[%d]";
       arg->texture_unit = src - GL_TEXTURE0;
-      texture = _cogl_pipeline_layer_get_texture (layer);
-      if (texture)
-        cogl_texture_get_gl_texture (texture, NULL, &gl_target);
-      else
-        gl_target = GL_TEXTURE_2D;
-      setup_texture_source (shader_state, arg->texture_unit, gl_target);
+      /* FIXME: Is this right? Shouldn't it be using the texture type
+         of the layer for the given unit, not the type of the layer
+         we're generating for? */
+      setup_texture_source (shader_state,
+                            arg->texture_unit,
+                            _cogl_pipeline_layer_get_texture_type (layer));
     }
 
   arg->swizzle = "";

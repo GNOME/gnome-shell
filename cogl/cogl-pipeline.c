@@ -1870,8 +1870,8 @@ fallback_layer_cb (CoglPipelineLayer *layer, void *user_data)
 {
   CoglPipelineFallbackState *state = user_data;
   CoglPipeline *pipeline = state->pipeline;
-  CoglHandle texture = _cogl_pipeline_layer_get_texture (layer);
-  GLenum gl_target;
+  CoglTextureType texture_type = _cogl_pipeline_layer_get_texture_type (layer);
+  CoglTexture *texture = NULL;
   COGL_STATIC_COUNTER (layer_fallback_counter,
                        "layer fallback counter",
                        "Increments each time a layer's texture is "
@@ -1885,18 +1885,22 @@ fallback_layer_cb (CoglPipelineLayer *layer, void *user_data)
 
   COGL_COUNTER_INC (_cogl_uprof_context, layer_fallback_counter);
 
-  if (G_LIKELY (texture != NULL))
-    cogl_texture_get_gl_texture (texture, NULL, &gl_target);
-  else
-    gl_target = GL_TEXTURE_2D;
+  switch (texture_type)
+    {
+    case COGL_TEXTURE_TYPE_2D:
+      texture = ctx->default_gl_texture_2d_tex;
+      break;
 
-  if (gl_target == GL_TEXTURE_2D)
-    texture = ctx->default_gl_texture_2d_tex;
-#ifdef HAVE_COGL_GL
-  else if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    texture = ctx->default_gl_texture_rect_tex;
-#endif
-  else
+    case COGL_TEXTURE_TYPE_3D:
+      texture = ctx->default_gl_texture_3d_tex;
+      break;
+
+    case COGL_TEXTURE_TYPE_RECTANGLE:
+      texture = ctx->default_gl_texture_rect_tex;
+      break;
+    }
+
+  if (texture == NULL)
     {
       g_warning ("We don't have a fallback texture we can use to fill "
                  "in for an invalid pipeline layer, since it was "
@@ -2605,8 +2609,8 @@ _cogl_pipeline_init_layer_state_hash_functions (void)
   CoglPipelineLayerStateIndex _index;
   layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_UNIT_INDEX] =
     _cogl_pipeline_layer_hash_unit_state;
-  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET_INDEX] =
-    _cogl_pipeline_layer_hash_texture_target_state;
+  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_TEXTURE_TYPE_INDEX] =
+    _cogl_pipeline_layer_hash_texture_type_state;
   layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA_INDEX] =
     _cogl_pipeline_layer_hash_texture_data_state;
   layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX] =
@@ -2912,7 +2916,7 @@ _cogl_pipeline_get_layer_state_for_fragment_codegen (CoglContext *context)
 {
   CoglPipelineLayerState state =
     (COGL_PIPELINE_LAYER_STATE_COMBINE |
-     COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET |
+     COGL_PIPELINE_LAYER_STATE_TEXTURE_TYPE |
      COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS |
      COGL_PIPELINE_LAYER_STATE_UNIT |
      COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS);

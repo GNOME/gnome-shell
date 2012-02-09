@@ -50,6 +50,10 @@
 #include <glib/gprintf.h>
 #include <string.h>
 
+#ifndef GL_TEXTURE_RECTANGLE_ARB
+#define GL_TEXTURE_RECTANGLE_ARB 0x84F5
+#endif
+
 const CoglPipelineFragend _cogl_pipeline_fixed_fragend;
 
 static void
@@ -149,20 +153,27 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
       return TRUE;
     }
 
-  /* Handle enabling or disabling the right texture target */
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET)
+  /* Handle enabling or disabling the right texture type */
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE_TYPE)
     {
-      CoglPipelineLayer *tex_authority =
-        _cogl_pipeline_layer_get_authority (layer,
-                                            COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA);
-      CoglPipelineLayer *target_authority =
-        _cogl_pipeline_layer_get_authority (layer,
-                                            COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET);
-      /* XXX: currently layers with no associated texture fallback to
-       * using ctx->default_gl_texture_2d_tex so they have a texture
-       * target of GL_TEXTURE_2D */
-      GLenum gl_target =
-        tex_authority->texture ? target_authority->target : GL_TEXTURE_2D;
+      CoglTextureType texture_type =
+        _cogl_pipeline_layer_get_texture_type (layer);
+      GLenum gl_target;
+
+      switch (texture_type)
+        {
+        case COGL_TEXTURE_TYPE_2D:
+          gl_target = GL_TEXTURE_2D;
+          break;
+
+        case COGL_TEXTURE_TYPE_3D:
+          gl_target = GL_TEXTURE_3D;
+          break;
+
+        case COGL_TEXTURE_TYPE_RECTANGLE:
+          gl_target = GL_TEXTURE_RECTANGLE_ARB;
+          break;
+        }
 
       _cogl_set_active_texture_unit (unit_index);
 

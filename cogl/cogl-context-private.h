@@ -126,6 +126,7 @@ struct _CoglContext
 
   /* Textures */
   CoglHandle        default_gl_texture_2d_tex;
+  CoglHandle        default_gl_texture_3d_tex;
   CoglHandle        default_gl_texture_rect_tex;
 
   /* Central list of all framebuffers so all journals can be flushed

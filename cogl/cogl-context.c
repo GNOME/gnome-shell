@@ -38,6 +38,9 @@
 #include "cogl-renderer-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-texture-private.h"
+#include "cogl-texture-2d-private.h"
+#include "cogl-texture-3d-private.h"
+#include "cogl-texture-rectangle-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-framebuffer-private.h"
@@ -130,6 +133,7 @@ cogl_context_new (CoglDisplay *display,
 {
   CoglContext *context;
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
+  CoglBitmap *default_texture_bitmap;
   const CoglWinsysVtable *winsys;
   int i;
 
@@ -275,6 +279,7 @@ cogl_context_new (CoglDisplay *display,
   context->legacy_state_set = 0;
 
   context->default_gl_texture_2d_tex = NULL;
+  context->default_gl_texture_3d_tex = NULL;
   context->default_gl_texture_rect_tex = NULL;
 
   context->framebuffers = NULL;
@@ -376,25 +381,36 @@ cogl_context_new (CoglDisplay *display,
   _cogl_matrix_stack_init_cache (&_context->builtin_flushed_projection);
   _cogl_matrix_stack_init_cache (&_context->builtin_flushed_modelview);
 
+  default_texture_bitmap =
+    _cogl_bitmap_new_from_data (default_texture_data,
+                                COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                1, 1, /* width/height */
+                                4, /* rowstride */
+                                NULL, /* destroy function */
+                                NULL /* destroy function data */);
+
   /* Create default textures used for fall backs */
   context->default_gl_texture_2d_tex =
-    cogl_texture_new_from_data (1, /* width */
-                                1, /* height */
-                                COGL_TEXTURE_NO_SLICING,
-                                COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* data format */
-                                /* internal format */
-                                COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                0, /* auto calc row stride */
-                                default_texture_data);
+    _cogl_texture_2d_new_from_bitmap (default_texture_bitmap,
+                                      COGL_TEXTURE_NONE,
+                                      /* internal format */
+                                      COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                      NULL);
+  /* If 3D or rectangle textures aren't supported then these should
+     just silently return NULL */
+  context->default_gl_texture_3d_tex =
+    _cogl_texture_3d_new_from_bitmap (default_texture_bitmap,
+                                      1, /* height */
+                                      1, /* depth */
+                                      COGL_TEXTURE_NONE,
+                                      COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                      NULL);
   context->default_gl_texture_rect_tex =
-    cogl_texture_new_from_data (1, /* width */
-                                1, /* height */
-                                COGL_TEXTURE_NO_SLICING,
-                                COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* data format */
-                                /* internal format */
-                                COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                0, /* auto calc row stride */
-                                default_texture_data);
+    _cogl_texture_rectangle_new_from_bitmap (default_texture_bitmap,
+                                             COGL_TEXTURE_NONE,
+                                             COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+
+  cogl_object_unref (default_texture_bitmap);
 
   cogl_push_source (context->opaque_color_pipeline);
   _cogl_pipeline_flush_gl_state (context->opaque_color_pipeline, FALSE, 0);
@@ -433,6 +449,8 @@ _cogl_context_free (CoglContext *context)
 
   if (context->default_gl_texture_2d_tex)
     cogl_object_unref (context->default_gl_texture_2d_tex);
+  if (context->default_gl_texture_3d_tex)
+    cogl_object_unref (context->default_gl_texture_3d_tex);
   if (context->default_gl_texture_rect_tex)
     cogl_object_unref (context->default_gl_texture_rect_tex);
 

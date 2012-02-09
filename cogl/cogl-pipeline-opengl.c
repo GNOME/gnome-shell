@@ -779,16 +779,23 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
 
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA)
     {
-      unsigned long state = COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA;
-      CoglPipelineLayer *authority =
-        _cogl_pipeline_layer_get_authority (layer, state);
-      CoglTexture *texture;
+      CoglTexture *texture = _cogl_pipeline_layer_get_texture_real (layer);
       GLuint gl_texture;
       GLenum gl_target;
 
-      texture = (authority->texture == NULL ?
-                 ctx->default_gl_texture_2d_tex :
-                 authority->texture);
+      if (texture == NULL)
+        switch (_cogl_pipeline_layer_get_texture_type (layer))
+          {
+          case COGL_TEXTURE_TYPE_2D:
+            texture = ctx->default_gl_texture_2d_tex;
+            break;
+          case COGL_TEXTURE_TYPE_3D:
+            texture = ctx->default_gl_texture_3d_tex;
+            break;
+          case COGL_TEXTURE_TYPE_RECTANGLE:
+            texture = ctx->default_gl_texture_rect_tex;
+            break;
+          }
 
       cogl_texture_get_gl_texture (texture,
                                    &gl_texture,
