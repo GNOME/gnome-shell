@@ -41,7 +41,7 @@ const AuthenticationDialog = new Lang.Class({
     Extends: ModalDialog.ModalDialog,
 
     _init: function(actionId, message, cookie, userNames) {
-        this.parent({ styleClass: 'polkit-dialog' });
+        this.parent({ styleClass: 'prompt-dialog' });
 
         this.actionId = actionId;
         this.message = message;
@@ -49,7 +49,7 @@ const AuthenticationDialog = new Lang.Class({
         this._wasDismissed = false;
         this._completed = false;
 
-        let mainContentBox = new St.BoxLayout({ style_class: 'polkit-dialog-main-layout',
+        let mainContentBox = new St.BoxLayout({ style_class: 'prompt-dialog-main-layout',
                                                 vertical: false });
         this.contentLayout.add(mainContentBox,
                                { x_fill: true,
@@ -62,19 +62,19 @@ const AuthenticationDialog = new Lang.Class({
                              x_align: St.Align.END,
                              y_align: St.Align.START });
 
-        let messageBox = new St.BoxLayout({ style_class: 'polkit-dialog-message-layout',
+        let messageBox = new St.BoxLayout({ style_class: 'prompt-dialog-message-layout',
                                             vertical: true });
         mainContentBox.add(messageBox,
                            { y_align: St.Align.START });
 
-        this._subjectLabel = new St.Label({ style_class: 'polkit-dialog-headline',
+        this._subjectLabel = new St.Label({ style_class: 'prompt-dialog-headline',
                                             text: _("Authentication Required") });
 
         messageBox.add(this._subjectLabel,
                        { y_fill:  false,
                          y_align: St.Align.START });
 
-        this._descriptionLabel = new St.Label({ style_class: 'polkit-dialog-description',
+        this._descriptionLabel = new St.Label({ style_class: 'prompt-dialog-description',
                                                 text: message });
         this._descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._descriptionLabel.clutter_text.line_wrap = true;
@@ -137,9 +137,9 @@ const AuthenticationDialog = new Lang.Class({
 
         this._passwordBox = new St.BoxLayout({ vertical: false });
         messageBox.add(this._passwordBox);
-        this._passwordLabel = new St.Label(({ style_class: 'polkit-dialog-password-label' }));
+        this._passwordLabel = new St.Label(({ style_class: 'prompt-dialog-password-label' }));
         this._passwordBox.add(this._passwordLabel);
-        this._passwordEntry = new St.Entry({ style_class: 'polkit-dialog-password-entry',
+        this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
                                              text: "",
                                              can_focus: true});
         ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
@@ -149,13 +149,13 @@ const AuthenticationDialog = new Lang.Class({
         this.setInitialKeyFocus(this._passwordEntry);
         this._passwordBox.hide();
 
-        this._errorMessageLabel = new St.Label({ style_class: 'polkit-dialog-error-label' });
+        this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
         messageBox.add(this._errorMessageLabel);
         this._errorMessageLabel.hide();
 
-        this._infoMessageLabel = new St.Label({ style_class: 'polkit-dialog-info-label' });
+        this._infoMessageLabel = new St.Label({ style_class: 'prompt-dialog-info-label' });
         this._infoMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._infoMessageLabel.clutter_text.line_wrap = true;
         messageBox.add(this._infoMessageLabel);
@@ -165,7 +165,7 @@ const AuthenticationDialog = new Lang.Class({
          * infoMessage and errorMessageLabel - but it is still invisible because
          * gnome-shell.css sets the color to be transparent
          */
-        this._nullMessageLabel = new St.Label({ style_class: 'polkit-dialog-null-label',
+        this._nullMessageLabel = new St.Label({ style_class: 'prompt-dialog-null-label',
                                                 text: 'abc'});
         this._nullMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._nullMessageLabel.clutter_text.line_wrap = true;

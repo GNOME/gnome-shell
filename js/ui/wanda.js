@@ -124,14 +124,14 @@ const FortuneDialog = new Lang.Class({
             text = _("Sorry, no wisdom for you today:\n%s").format(e.message);
         }
 
-        this._title = new St.Label({ style_class: 'polkit-dialog-headline',
+        this._title = new St.Label({ style_class: 'prompt-dialog-headline',
                                      text: _("%s the Oracle says").format(name) });
-        this._label = new St.Label({ style_class: 'polkit-dialog-description',
+        this._label = new St.Label({ style_class: 'prompt-dialog-description',
                                      text: text });
         this._label.clutter_text.line_wrap = true;
 
         this._box = new St.BoxLayout({ vertical: true,
-                                       style_class: 'polkit-dialog' // this is just to force a reasonable width
+                                       style_class: 'prompt-dialog' // this is just to force a reasonable width
                                      });
         this._box.add(this._title, { align: St.Align.MIDDLE });
         this._box.add(this._label, { expand: true });

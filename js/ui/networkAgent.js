@@ -37,7 +37,7 @@ const NetworkSecretDialog = new Lang.Class({
     Extends: ModalDialog.ModalDialog,
 
     _init: function(agent, requestId, connection, settingName, hints) {
-        this.parent({ styleClass: 'polkit-dialog' });
+        this.parent({ styleClass: 'prompt-dialog' });
 
         this._agent = agent;
         this._requestId = requestId;
@@ -47,7 +47,7 @@ const NetworkSecretDialog = new Lang.Class({
 
         this._content = this._getContent();
 
-        let mainContentBox = new St.BoxLayout({ style_class: 'polkit-dialog-main-layout',
+        let mainContentBox = new St.BoxLayout({ style_class: 'prompt-dialog-main-layout',
                                                 vertical: false });
         this.contentLayout.add(mainContentBox,
                                { x_fill: true,
@@ -60,19 +60,19 @@ const NetworkSecretDialog = new Lang.Class({
                              x_align: St.Align.END,
                              y_align: St.Align.START });
 
-        let messageBox = new St.BoxLayout({ style_class: 'polkit-dialog-message-layout',
+        let messageBox = new St.BoxLayout({ style_class: 'prompt-dialog-message-layout',
                                             vertical: true });
         mainContentBox.add(messageBox,
                            { y_align: St.Align.START });
 
-        let subjectLabel = new St.Label({ style_class: 'polkit-dialog-headline',
+        let subjectLabel = new St.Label({ style_class: 'prompt-dialog-headline',
                                             text: this._content.title });
         messageBox.add(subjectLabel,
                        { y_fill:  false,
                          y_align: St.Align.START });
 
         if (this._content.message != null) {
-            let descriptionLabel = new St.Label({ style_class: 'polkit-dialog-description',
+            let descriptionLabel = new St.Label({ style_class: 'prompt-dialog-description',
                                                   text: this._content.message,
                                                   // HACK: for reasons unknown to me, the label
                                                   // is not asked the correct height for width,
@@ -93,12 +93,12 @@ const NetworkSecretDialog = new Lang.Class({
         let pos = 0;
         for (let i = 0; i < this._content.secrets.length; i++) {
             let secret = this._content.secrets[i];
-            let label = new St.Label({ style_class: 'polkit-dialog-password-label',
+            let label = new St.Label({ style_class: 'prompt-dialog-password-label',
                                        text: secret.label });
 
             let reactive = secret.key != null;
 
-            secret.entry = new St.Entry({ style_class: 'polkit-dialog-password-entry',
+            secret.entry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
                                           text: secret.value, can_focus: reactive,
                                           reactive: reactive });
             ShellEntry.addContextMenu(secret.entry,
