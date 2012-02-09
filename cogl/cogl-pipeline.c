@@ -1707,8 +1707,9 @@ _cogl_pipeline_get_layer_info (CoglPipeline *pipeline,
 }
 
 CoglPipelineLayer *
-_cogl_pipeline_get_layer (CoglPipeline *pipeline,
-                          int layer_index)
+_cogl_pipeline_get_layer_with_flags (CoglPipeline *pipeline,
+                                     int layer_index,
+                                     CoglPipelineGetLayerFlags flags)
 {
   CoglPipeline *authority =
     _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LAYERS);
@@ -1742,7 +1743,7 @@ _cogl_pipeline_get_layer (CoglPipeline *pipeline,
 
   _cogl_pipeline_get_layer_info (authority, &layer_info);
 
-  if (layer_info.layer)
+  if (layer_info.layer || (flags & COGL_PIPELINE_GET_LAYER_NO_CREATE))
     return layer_info.layer;
 
   ctx = _cogl_context_get_default ();

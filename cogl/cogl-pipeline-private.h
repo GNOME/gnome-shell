@@ -665,9 +665,18 @@ _cogl_pipeline_prune_redundant_ancestry (CoglPipeline *pipeline);
 void _cogl_pipeline_update_blend_enable (CoglPipeline *pipeline,
                                          CoglPipelineState changes);
 
+typedef enum
+{
+  COGL_PIPELINE_GET_LAYER_NO_CREATE
+} CoglPipelineGetLayerFlags;
+
 CoglPipelineLayer *
-_cogl_pipeline_get_layer (CoglPipeline *pipeline,
-                          int layer_index);
+_cogl_pipeline_get_layer_with_flags (CoglPipeline *pipeline,
+                                     int layer_index,
+                                     CoglPipelineGetLayerFlags flags);
+
+#define _cogl_pipeline_get_layer(p, l) \
+  _cogl_pipeline_get_layer_with_flags (p, l, 0)
 
 gboolean
 _cogl_is_pipeline_layer (void *object);
