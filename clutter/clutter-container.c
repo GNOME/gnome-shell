@@ -67,8 +67,17 @@
  * SECTION:clutter-container
  * @short_description: An interface for container actors
  *
- * #ClutterContainer provides some common API for #ClutterActor
- * instances containing children.
+ * #ClutterContainer is an interface implemented by #ClutterActor, and
+ * it provides some common API for notifying when a child actor is added
+ * or removed, as well as the infrastructure for accessing child properties
+ * through #ClutterChildMeta.
+ *
+ * Until Clutter 1.10, the #ClutterContainer interface was also the public
+ * API for implementing container actors; this part of the interface has
+ * been deprecated: #ClutterContainer has a default implementation which
+ * defers to #ClutterActor the child addition and removal, as well as the
+ * iteration. See the documentation of #ClutterContainerIface for the list
+ * of virtual functions that should be overridden.
  */
 
 enum
@@ -360,6 +369,10 @@ container_remove_valist (ClutterContainer *container,
  * be parented to @container, which takes a reference on the actor. You
  * cannot add a #ClutterActor to more than one #ClutterContainer.
  *
+ * This function will call #ClutterContainerIface.add(), which is a
+ * deprecated virtual function. The default implementation will
+ * call clutter_actor_add_child().
+ *
  * Since: 0.4
  *
  * Deprecated: 1.10: Use clutter_actor_add_child() instead.
@@ -389,6 +402,10 @@ clutter_container_add (ClutterContainer *container,
  * @container. You cannot add a #ClutterActor to more than one
  * #ClutterContainer.
  *
+ * This function will call #ClutterContainerIface.add(), which is a
+ * deprecated virtual function. The default implementation will
+ * call clutter_actor_add_child().
+ *
  * Virtual: add
  *
  * Since: 0.4
@@ -412,6 +429,10 @@ clutter_container_add_actor (ClutterContainer *container,
  * @var_args: list of actors to add, followed by %NULL
  *
  * Alternative va_list version of clutter_container_add().
+ *
+ * This function will call #ClutterContainerIface.add(), which is a
+ * deprecated virtual function. The default implementation will
+ * call clutter_actor_add_child().
  *
  * Since: 0.4
  *
@@ -439,6 +460,10 @@ clutter_container_add_valist (ClutterContainer *container,
  * around you must hold a reference to it yourself, using g_object_ref().
  * Each time an actor is removed, the "actor-removed" signal is
  * emitted by @container.
+ *
+ * This function will call #ClutterContainerIface.remove(), which is a
+ * deprecated virtual function. The default implementation will call
+ * clutter_actor_remove_child().
  *
  * Since: 0.4
  *
@@ -469,6 +494,10 @@ clutter_container_remove (ClutterContainer *container,
  * yourself, using g_object_ref(). When the actor has been removed,
  * the "actor-removed" signal is emitted by @container.
  *
+ * This function will call #ClutterContainerIface.remove(), which is a
+ * deprecated virtual function. The default implementation will call
+ * clutter_actor_remove_child().
+ *
  * Virtual: remove
  *
  * Since: 0.4
@@ -492,6 +521,10 @@ clutter_container_remove_actor (ClutterContainer *container,
  * @var_args: list of actors to remove, followed by %NULL
  *
  * Alternative va_list version of clutter_container_remove().
+ *
+ * This function will call #ClutterContainerIface.remove(), which is a
+ * deprecated virtual function. The default implementation will call
+ * clutter_actor_remove_child().
  *
  * Since: 0.4
  *
@@ -555,12 +588,16 @@ clutter_container_get_children (ClutterContainer *container)
  * not iterate over "internal" children that are part of the
  * container's own implementation, if any.
  *
+ * This function calls the #ClutterContainerIface.foreach()
+ * virtual function, which has been deprecated.
+ *
  * Since: 0.4
  *
  * Deprecated: 1.10: Use clutter_actor_get_first_child() or
  *   clutter_actor_get_last_child() to retrieve the beginning of
  *   the list of children, and clutter_actor_get_next_sibling()
- *   and clutter_actor_get_previous_sibling() to iterate over it.
+ *   and clutter_actor_get_previous_sibling() to iterate over it;
+ *   alternatively, use the #ClutterActorIter API.
  */
 void
 clutter_container_foreach (ClutterContainer *container,
@@ -597,6 +634,9 @@ clutter_container_foreach (ClutterContainer *container,
  * Calls @callback for each child of @container, including "internal"
  * children built in to the container itself that were never added
  * by the application.
+ *
+ * This function calls the #ClutterContainerIface.foreach_with_internals()
+ * virtual function, which has been deprecated.
  *
  * Since: 1.0
  *
@@ -639,6 +679,10 @@ clutter_container_foreach_with_internals (ClutterContainer *container,
  *   to the top
  *
  * Raises @actor to @sibling level, in the depth ordering.
+ *
+ * This function calls the #ClutterContainerIface.raise() virtual function,
+ * which has been deprecated. The default implementation will call
+ * clutter_actor_set_child_above_sibling().
  *
  * Virtual: raise
  *
@@ -706,6 +750,10 @@ clutter_container_raise_child (ClutterContainer *container,
  *   to the bottom
  *
  * Lowers @actor to @sibling level, in the depth ordering.
+ *
+ * This function calls the #ClutterContainerIface.lower() virtual function,
+ * which has been deprecated. The default implementation will call
+ * clutter_actor_set_child_below_sibling().
  *
  * Virtual: lower
  *
@@ -1387,8 +1435,8 @@ clutter_container_child_get (ClutterContainer *container,
  * @child: a #ClutterActor
  * @pspec: a #GParamSpec
  *
- * Calls the <function>child_notify()</function> virtual function of
- * #ClutterContainer. The default implementation will emit the
+ * Calls the #ClutterContainerIface.child_notify() virtual function
+ * of #ClutterContainer. The default implementation will emit the
  * #ClutterContainer::child-notify signal.
  *
  * Since: 1.6
