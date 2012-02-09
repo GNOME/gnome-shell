@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-08 14:34+0000\n"
-"PO-Revision-Date: 2012-02-09 10:11+0100\n"
+"POT-Creation-Date: 2012-02-09 11:34+0000\n"
+"PO-Revision-Date: 2012-02-09 17:21+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,8 @@ msgstr "Gestión de ventanas e inicio de aplicaciones"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 #: ../js/extensionPrefs/main.js:154
-msgid "GNOME Shell Extension Preferences"
+#| msgid "GNOME Shell Extension Preferences"
+msgid "GNOME Shell Extensions Preferences"
 msgstr "Preferencias de las extensiones de GNOME Shell"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
@@ -232,7 +233,7 @@ msgid "Not listed?"
 msgstr "¿No está en la lista?"
 
 #: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
-#: ../js/ui/extensionSystem.js:395 ../js/ui/networkAgent.js:145
+#: ../js/ui/extensionSystem.js:401 ../js/ui/networkAgent.js:145
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "Cancelar"
@@ -647,11 +648,11 @@ msgstr[1] "El sistema se reiniciará automáticamente en %d segundos."
 msgid "Restarting the system."
 msgstr "Reiniciando el sistema."
 
-#: ../js/ui/extensionSystem.js:399
+#: ../js/ui/extensionSystem.js:405
 msgid "Install"
 msgstr "Instalar"
 
-#: ../js/ui/extensionSystem.js:403
+#: ../js/ui/extensionSystem.js:409
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
@@ -837,7 +838,7 @@ msgstr "Salir"
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/panel.js:990
+#: ../js/ui/panel.js:971
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1035,7 +1036,7 @@ msgstr "Configuración del teclado"
 msgid "Mouse Settings"
 msgstr "Ajustes del ratón…"
 
-#: ../js/ui/status/bluetooth.js:276 ../js/ui/status/volume.js:58
+#: ../js/ui/status/bluetooth.js:276 ../js/ui/status/volume.js:59
 msgid "Sound Settings"
 msgstr "Configuración del sonido"
 
@@ -1318,11 +1319,12 @@ msgstr "Tableta"
 msgid "Computer"
 msgstr "Equipo"
 
-#: ../js/ui/status/volume.js:25 ../js/ui/status/volume.js:38
+#. Translators: This is the label for audio volume
+#: ../js/ui/status/volume.js:25 ../js/ui/status/volume.js:39
 msgid "Volume"
 msgstr "Volumen"
 
-#: ../js/ui/status/volume.js:50
+#: ../js/ui/status/volume.js:51
 msgid "Microphone"
 msgstr "Micrófono"
 
@@ -1522,7 +1524,6 @@ msgid "Connection has been lost"
 msgstr "Se ha perdido la conexión"
 
 #: ../js/ui/telepathyClient.js:1326
-#| msgid "This resource is already connected to the server"
 msgid "This account is already connected to the server"
 msgstr "Esta cuenta ya está conectada al servidor"
 
