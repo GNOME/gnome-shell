@@ -7951,7 +7951,7 @@ clutter_actor_get_geometry (ClutterActor    *self,
 }
 
 /**
- * clutter_actor_set_position
+ * clutter_actor_set_position:
  * @self: A #ClutterActor
  * @x: New left position of actor in pixels.
  * @y: New top position of actor in pixels.
@@ -8391,7 +8391,7 @@ clutter_actor_set_height_internal (ClutterActor *self,
 }
 
 /**
- * clutter_actor_set_size
+ * clutter_actor_set_size:
  * @self: A #ClutterActor
  * @width: New width of actor in pixels, or -1
  * @height: New height of actor in pixels, or -1
@@ -8720,7 +8720,7 @@ clutter_actor_get_height (ClutterActor *self)
 }
 
 /**
- * clutter_actor_set_width
+ * clutter_actor_set_width:
  * @self: A #ClutterActor
  * @width: Requested new width for the actor, in pixels, or -1
  *
@@ -8748,7 +8748,7 @@ clutter_actor_set_width (ClutterActor *self,
 }
 
 /**
- * clutter_actor_set_height
+ * clutter_actor_set_height:
  * @self: A #ClutterActor
  * @height: Requested new height for the actor, in pixels, or -1
  *
@@ -8854,7 +8854,7 @@ clutter_actor_set_y (ClutterActor *self,
 }
 
 /**
- * clutter_actor_get_x
+ * clutter_actor_get_x:
  * @self: A #ClutterActor
  *
  * Retrieves the X coordinate of a #ClutterActor.
@@ -8902,7 +8902,7 @@ clutter_actor_get_x (ClutterActor *self)
 }
 
 /**
- * clutter_actor_get_y
+ * clutter_actor_get_y:
  * @self: A #ClutterActor
  *
  * Retrieves the Y coordinate of a #ClutterActor.
@@ -9714,7 +9714,7 @@ clutter_actor_set_clip (ClutterActor *self,
 }
 
 /**
- * clutter_actor_remove_clip
+ * clutter_actor_remove_clip:
  * @self: A #ClutterActor
  *
  * Removes clip area from @self.
