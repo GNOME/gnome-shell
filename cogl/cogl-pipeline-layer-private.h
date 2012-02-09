@@ -170,12 +170,14 @@ typedef enum
 
 typedef enum
 {
-  /* These are the same values as GL */
-  COGL_PIPELINE_COMBINE_SOURCE_TEXTURE       = 0x1702,
-  COGL_PIPELINE_COMBINE_SOURCE_CONSTANT      = 0x8576,
-  COGL_PIPELINE_COMBINE_SOURCE_PRIMARY_COLOR = 0x8577,
-  COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS      = 0x8578,
-  COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0      = 0x84C0
+  /* Note that these numbers are deliberately not the same as the GL
+     numbers so that we can reserve all numbers > TEXTURE0 to store
+     very large layer numbers */
+  COGL_PIPELINE_COMBINE_SOURCE_TEXTURE,
+  COGL_PIPELINE_COMBINE_SOURCE_CONSTANT,
+  COGL_PIPELINE_COMBINE_SOURCE_PRIMARY_COLOR,
+  COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS,
+  COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0
 } CoglPipelineCombineSource;
 
 typedef enum

@@ -391,12 +391,12 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
 
   g_string_append_printf (shader_state->header,
                           "vec4 cogl_texel%i;\n",
-                          unit_index);
+                          layer->index);
 
   g_string_append_printf (shader_state->source,
                           "  cogl_texel%i = cogl_texture_lookup%i (",
-                          unit_index,
-                          unit_index);
+                          layer->index,
+                          layer->index);
 
   /* If point sprite coord generation is being used then divert to the
      built-in varying var for that instead of the texture
@@ -463,7 +463,7 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
                               "cogl_real_texture_lookup%i (vec4 coords)\n"
                               "{\n"
                               "  return ",
-                              unit_index);
+                              layer->index);
 
       if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
         g_string_append (shader_state->header,
@@ -481,11 +481,11 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
   snippet_data.snippets = get_layer_fragment_snippets (layer);
   snippet_data.hook = COGL_SNIPPET_HOOK_TEXTURE_LOOKUP;
   snippet_data.chain_function = g_strdup_printf ("cogl_real_texture_lookup%i",
-                                                 unit_index);
+                                                 layer->index);
   snippet_data.final_name = g_strdup_printf ("cogl_texture_lookup%i",
-                                             unit_index);
+                                             layer->index);
   snippet_data.function_prefix = g_strdup_printf ("cogl_texture_lookup_hook%i",
-                                                  unit_index);
+                                                  layer->index);
   snippet_data.return_type = "vec4";
   snippet_data.return_variable = "cogl_texel";
   snippet_data.arguments = "cogl_tex_coord";
@@ -533,7 +533,7 @@ add_arg (CoglPipelineShaderState *shader_state,
     case COGL_PIPELINE_COMBINE_SOURCE_TEXTURE:
       g_string_append_printf (shader_source,
                               "cogl_texel%i.%s",
-                              _cogl_pipeline_layer_get_unit_index (layer),
+                              layer->index,
                               swizzle);
       break;
 
@@ -559,41 +559,35 @@ add_arg (CoglPipelineShaderState *shader_state,
       break;
 
     default:
-      if (src >= COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 &&
-          src < COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 + 32)
-        g_string_append_printf (shader_source,
-                                "cogl_texel%i.%s",
-                                src - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0,
-                                swizzle);
+      {
+        int layer_num = src - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0;
+        CoglPipelineGetLayerFlags flags = COGL_PIPELINE_GET_LAYER_NO_CREATE;
+        CoglPipelineLayer *other_layer =
+          _cogl_pipeline_get_layer_with_flags (pipeline, layer_num, flags);
+
+        if (other_layer == NULL)
+          {
+            static gboolean warning_seen = FALSE;
+            if (!warning_seen)
+              {
+                g_warning ("The application is trying to use a texture "
+                           "combine with a layer number that does not exist");
+                warning_seen = TRUE;
+              }
+            g_string_append_printf (shader_source,
+                                    "vec4 (1.0, 1.0, 1.0, 1.0).%s",
+                                    swizzle);
+          }
+        else
+          g_string_append_printf (shader_source,
+                                  "cogl_texel%i.%s",
+                                  other_layer->index,
+                                  swizzle);
+      }
       break;
     }
 
   g_string_append_c (shader_source, ')');
-}
-
-
-typedef struct
-{
-  int unit_index;
-  CoglPipelineLayer *layer;
-} FindPipelineLayerData;
-
-static gboolean
-find_pipeline_layer_cb (CoglPipelineLayer *layer,
-                        void *user_data)
-{
-  FindPipelineLayerData *data = user_data;
-  int unit_index;
-
-  unit_index = _cogl_pipeline_layer_get_unit_index (layer);
-
-  if (unit_index == data->unit_index)
-    {
-      data->layer = layer;
-      return FALSE;
-    }
-
-  return TRUE;
 }
 
 static void
@@ -636,21 +630,17 @@ ensure_arg_generated (CoglPipeline *pipeline,
       break;
 
     default:
-      if (src >= COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 &&
-          src < COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 + 32)
+      if (src >= COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0)
         {
-          FindPipelineLayerData data;
+          int layer_num = src - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0;
+          CoglPipelineGetLayerFlags flags = COGL_PIPELINE_GET_LAYER_NO_CREATE;
+          CoglPipelineLayer *other_layer =
+            _cogl_pipeline_get_layer_with_flags (pipeline, layer_num, flags);
 
-          data.unit_index = src - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0;
-          data.layer = layer;
-
-          _cogl_pipeline_foreach_layer_internal (pipeline,
-                                                 find_pipeline_layer_cb,
-                                                 &data);
-
-          ensure_texture_lookup_generated (shader_state,
-                                           pipeline,
-                                           data.layer);
+          if (other_layer)
+            ensure_texture_lookup_generated (shader_state,
+                                             pipeline,
+                                             other_layer);
         }
       break;
     }

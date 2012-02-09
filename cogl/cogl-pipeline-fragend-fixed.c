@@ -123,6 +123,61 @@ _cogl_pipeline_fragend_fixed_start (CoglPipeline *pipeline,
   return TRUE;
 }
 
+static void
+translate_sources (CoglPipeline *pipeline,
+                   int n_sources,
+                   CoglPipelineCombineSource *source_in,
+                   GLenum *source_out)
+{
+  int i;
+
+  /* The texture source numbers specified in the layer combine are the
+     layer numbers so we need to map these to unit indices */
+
+  for (i = 0; i < n_sources; i++)
+    switch (source_in[i])
+      {
+      case COGL_PIPELINE_COMBINE_SOURCE_TEXTURE:
+        source_out[i] = GL_TEXTURE;
+        break;
+
+      case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
+        source_out[i] = GL_CONSTANT;
+        break;
+
+      case COGL_PIPELINE_COMBINE_SOURCE_PRIMARY_COLOR:
+        source_out[i] = GL_PRIMARY_COLOR;
+        break;
+
+      case COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS:
+        source_out[i] = GL_PREVIOUS;
+        break;
+
+      default:
+        {
+          int layer_num = source_in[i] - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0;
+          CoglPipelineGetLayerFlags flags = COGL_PIPELINE_GET_LAYER_NO_CREATE;
+          CoglPipelineLayer *layer =
+            _cogl_pipeline_get_layer_with_flags (pipeline, layer_num, flags);
+
+          if (layer == NULL)
+            {
+              static gboolean warning_seen = FALSE;
+              if (!warning_seen)
+                {
+                  g_warning ("The application is trying to use a texture "
+                             "combine with a layer number that does not exist");
+                  warning_seen = TRUE;
+                }
+              source_out[i] = GL_PREVIOUS;
+            }
+          else
+            source_out[i] = (_cogl_pipeline_layer_get_unit_index (layer) +
+                             GL_TEXTURE0);
+        }
+      }
+}
+
 static gboolean
 _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
                                         CoglPipelineLayer *layer,
@@ -216,6 +271,7 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
         _cogl_pipeline_layer_get_authority (layer,
                                             COGL_PIPELINE_LAYER_STATE_COMBINE);
       CoglPipelineLayerBigState *big_state = authority->big_state;
+      GLenum sources[3];
 
       GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE));
 
@@ -235,21 +291,26 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
       n_rgb_func_args =
         _cogl_get_n_args_for_combine_func (big_state->texture_combine_rgb_func);
 
+      translate_sources (pipeline,
+                         n_rgb_func_args,
+                         big_state->texture_combine_rgb_src,
+                         sources);
+
       GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_RGB,
-                          big_state->texture_combine_rgb_src[0]));
+                          sources[0]));
       GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB,
                           big_state->texture_combine_rgb_op[0]));
       if (n_rgb_func_args > 1)
         {
           GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_RGB,
-                              big_state->texture_combine_rgb_src[1]));
+                              sources[1]));
           GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_RGB,
                               big_state->texture_combine_rgb_op[1]));
         }
       if (n_rgb_func_args > 2)
         {
           GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_SRC2_RGB,
-                              big_state->texture_combine_rgb_src[2]));
+                              sources[2]));
           GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND2_RGB,
                               big_state->texture_combine_rgb_op[2]));
         }
@@ -258,21 +319,26 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
       n_alpha_func_args =
         _cogl_get_n_args_for_combine_func (big_state->texture_combine_alpha_func);
 
+      translate_sources (pipeline,
+                         n_alpha_func_args,
+                         big_state->texture_combine_alpha_src,
+                         sources);
+
       GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA,
-                          big_state->texture_combine_alpha_src[0]));
+                          sources[0]));
       GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_ALPHA,
                           big_state->texture_combine_alpha_op[0]));
       if (n_alpha_func_args > 1)
         {
           GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_ALPHA,
-                              big_state->texture_combine_alpha_src[1]));
+                              sources[1]));
           GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_ALPHA,
                               big_state->texture_combine_alpha_op[1]));
         }
       if (n_alpha_func_args > 2)
         {
           GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_SRC2_ALPHA,
-                              big_state->texture_combine_alpha_src[2]));
+                              sources[2]));
           GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND2_ALPHA,
                               big_state->texture_combine_alpha_op[2]));
         }

@@ -391,7 +391,7 @@ setup_arg (CoglPipeline *pipeline,
            CoglPipelineLayer *layer,
            CoglBlendStringChannelMask mask,
            int arg_index,
-           GLint src,
+           CoglPipelineCombineSource src,
            GLint op,
            CoglPipelineFragendARBfpArg *arg)
 {
@@ -433,16 +433,40 @@ setup_arg (CoglPipeline *pipeline,
       else
         arg->name = "output";
       break;
-    default: /* GL_TEXTURE0..N */
-      arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_TEXTURE;
-      arg->name = "texture[%d]";
-      arg->texture_unit = src - GL_TEXTURE0;
-      /* FIXME: Is this right? Shouldn't it be using the texture type
-         of the layer for the given unit, not the type of the layer
-         we're generating for? */
-      setup_texture_source (shader_state,
-                            arg->texture_unit,
-                            _cogl_pipeline_layer_get_texture_type (layer));
+    default: /* Sample the texture attached to a specific layer */
+      {
+        int layer_num = src - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0;
+        CoglPipelineGetLayerFlags flags = COGL_PIPELINE_GET_LAYER_NO_CREATE;
+        CoglPipelineLayer *other_layer =
+          _cogl_pipeline_get_layer_with_flags (pipeline, layer_num, flags);
+
+        if (other_layer == NULL)
+          {
+            static gboolean warning_seen = FALSE;
+            if (!warning_seen)
+              {
+                g_warning ("The application is trying to use a texture "
+                           "combine with a layer number that does not exist");
+                warning_seen = TRUE;
+              }
+            arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_SIMPLE;
+            arg->name = "output";
+          }
+        else
+          {
+            CoglTextureType texture_type;
+
+            arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_TEXTURE;
+            arg->name = "texture[%d]";
+            arg->texture_unit =
+              _cogl_pipeline_layer_get_unit_index (other_layer);
+            texture_type = _cogl_pipeline_layer_get_texture_type (other_layer);
+            setup_texture_source (shader_state,
+                                  arg->texture_unit,
+                                  texture_type);
+          }
+      }
+      break;
     }
 
   arg->swizzle = "";
