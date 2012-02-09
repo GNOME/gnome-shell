@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-01-31 15:48+0000\n"
-"PO-Revision-Date: 2012-01-31 17:14+0100\n"
+"POT-Creation-Date: 2012-02-08 14:34+0000\n"
+"PO-Revision-Date: 2012-02-09 10:11+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,22 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Gestión de ventanas e inicio de aplicaciones"
 
+#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
+#: ../js/extensionPrefs/main.js:154
+msgid "GNOME Shell Extension Preferences"
+msgstr "Preferencias de las extensiones de GNOME Shell"
+
+#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
+msgid "Configure GNOME Shell Extensions"
+msgstr "Configurar las extensiones de GNOME Shell"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Activar las herramientas internas, útiles para desarrolladores y probadores, "
+"desde Alt+F2"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
@@ -35,21 +50,11 @@ msgstr ""
 "Permitir acceder a las herramientas internas de depuración  monitorización "
 "usando el diálogo Alt+F2"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Activar las herramientas internas, útiles para desarrolladores y probadores, "
-"desde Alt+F2"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
-msgid "File extension used for storing the screencast"
-msgstr "Extensión de archivo que usar para almacenar los «screencast»"
+msgid "Uuids of extensions to enable"
+msgstr "Uuid de las extensiones que activar"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
-msgid "Framerate used for recording screencasts."
-msgstr "Tasa de fotogramas usada para grabar «screencast»."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
@@ -61,44 +66,97 @@ msgstr ""
 "cargar debe estar en la lista. También puede manipular esta lista con los "
 "métodos de DBus «EnableExtension» y «DisableExtension» en org.gnome.Shell."
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Whether to collect stats about applications usage"
+msgstr ""
+"Indica si se deben recolectar estadísticas acerca del uso de las aplicaciones"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-msgid "History for command (Alt-F2) dialog"
-msgstr "Histórico del diálogo de comandos (Alt+F2)"
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"La «shell» normalmente monitoriza todas las aplicaciones activas para "
+"presentar las más usadas (ej. en los lanzadores). Aunque estos datos se "
+"mantienen de forma privada, puede querer desactivarlo por razones de "
+"privacidad. Note que haciéndolo no eliminará los datos ya guardados."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-msgid "History for the looking glass dialog"
-msgstr "Histórico del diálogo de «looking glass»"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "If true, display date in the clock, in addition to time."
-msgstr "Si es cierta, muestra la fecha en el reloj, además de la hora."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display seconds in time."
-msgstr "Si es cierta, muestra los segundos en la hora."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid "If true, display the ISO week date in the calendar."
-msgstr "Si es cierta, muestra la fecha de semana ISO en el calendario."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Lista de ID de archivos de escritorio para las aplicaciones favoritas"
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Las aplicaciones correspondientes con esos identificadores se mostrarán en "
+"el área de favoritos."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "disabled OpenSearch providers"
+msgstr "proveedores OpenSearch desactivados"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "History for command (Alt-F2) dialog"
+msgstr "Histórico del diálogo de comandos (Alt+F2)"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "History for the looking glass dialog"
+msgstr "Histórico del diálogo de «looking glass»"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "Show the week date in the calendar"
+msgstr "Mostrar la fecha de la semana en el calendario"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Si es cierta, muestra la fecha de semana ISO en el calendario."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Which keyboard to use"
+msgstr "Qué teclado usar"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "The type of keyboard to use."
+msgstr "El tipo de teclado que usar."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show time with seconds"
+msgstr "Mostrar la hora con segundos"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "If true, display seconds in time."
+msgstr "Si es cierta, muestra los segundos en la hora."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid "Show date in clock"
+msgstr "Mostrar la fecha en el reloj"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Si es cierta, muestra la fecha en el reloj, además de la hora."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid "Framerate used for recording screencasts."
+msgstr "Tasa de fotogramas usada para grabar «screencast»."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"La tasa de fotogramas de la grabación resultante grabada por el grabador de "
+"«screencast» de GNOME Shell, en fotogramas por segundo."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "La tubería de gstreamer usada para codificar el «screencast»"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 #, no-c-format
-#| msgid ""
-#| "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#| "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#| "pad where the recorded video is recorded. It will normally have a "
-#| "unconnected source pad; output from that pad will be written into the "
-#| "output file. However the pipeline can also take care of its own output - "
-#| "this might be used to send the output to an icecast server via shout2send "
-#| "or similar. When unset or set to an empty value, the default pipeline "
-#| "will be used. This is currently 'videorate ! vp8enc quality=10 speed=2 "
-#| "threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T "
-#| "is used as a placeholder for a guess at the optimal thread count on the "
-#| "system."
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -123,27 +181,11 @@ msgstr ""
 "usando el códec VP8. Se usa %T como marcador de posición para el número de "
 "hilos óptimos en el sistema."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
-msgid "Show date in clock"
-msgstr "Mostrar la fecha en el reloj"
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
+msgid "File extension used for storing the screencast"
+msgstr "Extensión de archivo que usar para almacenar los «screencast»"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
-msgid "Show the week date in the calendar"
-msgstr "Mostrar la fecha de la semana en el calendario"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show time with seconds"
-msgstr "Mostrar la hora con segundos"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Las aplicaciones correspondientes con esos identificadores se mostrarán en "
-"el área de favoritos."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -153,50 +195,19 @@ msgstr ""
 "basado en la fecha actual y usará esta extensión. Se debería cambiar al "
 "grabar en otro formato contenedor diferente."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
+#: ../js/extensionPrefs/main.js:126
+#, c-format
+msgid "There was an error loading the preferences dialog for %s:"
+msgstr "Hubo un error al lanzar el diálogo de preferencias para %s:"
+
+#: ../js/extensionPrefs/main.js:166
+msgid "<b>Extension</b>"
+msgstr "<b>Extensión</b>"
+
+#: ../js/extensionPrefs/main.js:190
+msgid "Select an extension to configure using the combobox above."
 msgstr ""
-"La tasa de fotogramas de la grabación resultante grabada por el grabador de "
-"«screencast» de GNOME Shell, en fotogramas por segundo."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
-msgid "The gstreamer pipeline used to encode the screencast"
-msgstr "La tubería de gstreamer usada para codificar el «screencast»"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-"La «shell» normalmente monitoriza todas las aplicaciones activas para "
-"presentar las más usadas (ej. en los lanzadores). Aunque estos datos se "
-"mantienen de forma privada, puede querer desactivarlo por razones de "
-"privacidad. Note que haciéndolo no eliminará los datos ya guardados."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid "The type of keyboard to use."
-msgstr "El tipo de teclado que usar."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid "Uuids of extensions to enable"
-msgstr "Uuid de las extensiones que activar"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
-msgid "Whether to collect stats about applications usage"
-msgstr ""
-"Indica si se deben recolectar estadísticas acerca del uso de las aplicaciones"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
-msgid "Which keyboard to use"
-msgstr "Qué teclado usar"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
-msgid "disabled OpenSearch providers"
-msgstr "proveedores OpenSearch desactivados"
+"Seleccione una extensión que configurar usando la caja combinada de arriba."
 
 #: ../js/gdm/loginDialog.js:624
 msgid "Session..."
@@ -221,7 +232,7 @@ msgid "Not listed?"
 msgstr "¿No está en la lista?"
 
 #: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
-#: ../js/ui/extensionSystem.js:516 ../js/ui/networkAgent.js:145
+#: ../js/ui/extensionSystem.js:395 ../js/ui/networkAgent.js:145
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "Cancelar"
@@ -636,11 +647,11 @@ msgstr[1] "El sistema se reiniciará automáticamente en %d segundos."
 msgid "Restarting the system."
 msgstr "Reiniciando el sistema."
 
-#: ../js/ui/extensionSystem.js:520
+#: ../js/ui/extensionSystem.js:399
 msgid "Install"
 msgstr "Instalar"
 
-#: ../js/ui/extensionSystem.js:524
+#: ../js/ui/extensionSystem.js:403
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
@@ -653,7 +664,7 @@ msgstr "bandeja"
 msgid "Keyboard"
 msgstr "Teclado"
 
-#: ../js/ui/lookingGlass.js:724
+#: ../js/ui/lookingGlass.js:725
 msgid "No extensions installed"
 msgstr "No hay extensiones instaladas"
 
@@ -908,7 +919,7 @@ msgstr "Mostrar texto"
 msgid "Hide Text"
 msgstr "Ocultar texto"
 
-#: ../js/ui/shellMountOperation.js:269
+#: ../js/ui/shellMountOperation.js:271
 msgid "Wrong password, please try again"
 msgstr "Contraseña incorrecta; inténtelo de nuevo"
 
@@ -1511,8 +1522,9 @@ msgid "Connection has been lost"
 msgstr "Se ha perdido la conexión"
 
 #: ../js/ui/telepathyClient.js:1326
-msgid "This resource is already connected to the server"
-msgstr "Este recurso ya está conectado al servidor"
+#| msgid "This resource is already connected to the server"
+msgid "This account is already connected to the server"
+msgstr "Esta cuenta ya está conectada al servidor"
 
 #: ../js/ui/telepathyClient.js:1328
 msgid ""
