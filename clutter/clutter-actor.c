@@ -4754,6 +4754,21 @@ clutter_actor_real_has_overlaps (ClutterActor *self)
   return TRUE;
 }
 
+static void
+clutter_actor_real_destroy (ClutterActor *actor)
+{
+  ClutterActorIter iter;
+  ClutterActor *child;
+
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
+    {
+      g_object_ref (child);
+      clutter_actor_iter_remove (&iter);
+      clutter_actor_destroy (child);
+    }
+}
+
 static GObject *
 clutter_actor_constructor (GType gtype,
                            guint n_props,
@@ -4794,6 +4809,26 @@ clutter_actor_class_init (ClutterActorClass *klass)
   object_class->get_property = clutter_actor_get_property;
   object_class->dispose = clutter_actor_dispose;
   object_class->finalize = clutter_actor_finalize;
+
+  klass->show = clutter_actor_real_show;
+  klass->show_all = clutter_actor_show;
+  klass->hide = clutter_actor_real_hide;
+  klass->hide_all = clutter_actor_hide;
+  klass->map = clutter_actor_real_map;
+  klass->unmap = clutter_actor_real_unmap;
+  klass->unrealize = clutter_actor_real_unrealize;
+  klass->pick = clutter_actor_real_pick;
+  klass->get_preferred_width = clutter_actor_real_get_preferred_width;
+  klass->get_preferred_height = clutter_actor_real_get_preferred_height;
+  klass->allocate = clutter_actor_real_allocate;
+  klass->queue_redraw = clutter_actor_real_queue_redraw;
+  klass->queue_relayout = clutter_actor_real_queue_relayout;
+  klass->apply_transform = clutter_actor_real_apply_transform;
+  klass->get_accessible = clutter_actor_real_get_accessible;
+  klass->get_paint_volume = clutter_actor_real_get_paint_volume;
+  klass->has_overlaps = clutter_actor_real_has_overlaps;
+  klass->paint = clutter_actor_real_paint;
+  klass->destroy = clutter_actor_real_destroy;
 
   g_type_class_add_private (klass, sizeof (ClutterActorPrivate));
 
@@ -6321,25 +6356,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   G_TYPE_NONE, 2,
                   CLUTTER_TYPE_ACTOR_BOX,
                   CLUTTER_TYPE_ALLOCATION_FLAGS);
-
-  klass->show = clutter_actor_real_show;
-  klass->show_all = clutter_actor_show;
-  klass->hide = clutter_actor_real_hide;
-  klass->hide_all = clutter_actor_hide;
-  klass->map = clutter_actor_real_map;
-  klass->unmap = clutter_actor_real_unmap;
-  klass->unrealize = clutter_actor_real_unrealize;
-  klass->pick = clutter_actor_real_pick;
-  klass->get_preferred_width = clutter_actor_real_get_preferred_width;
-  klass->get_preferred_height = clutter_actor_real_get_preferred_height;
-  klass->allocate = clutter_actor_real_allocate;
-  klass->queue_redraw = clutter_actor_real_queue_redraw;
-  klass->queue_relayout = clutter_actor_real_queue_relayout;
-  klass->apply_transform = clutter_actor_real_apply_transform;
-  klass->get_accessible = clutter_actor_real_get_accessible;
-  klass->get_paint_volume = clutter_actor_real_get_paint_volume;
-  klass->has_overlaps = clutter_actor_real_has_overlaps;
-  klass->paint = clutter_actor_real_paint;
 }
 
 static void
