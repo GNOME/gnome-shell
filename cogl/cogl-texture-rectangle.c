@@ -579,6 +579,12 @@ _cogl_texture_rectangle_is_foreign (CoglTexture *tex)
   return COGL_TEXTURE_RECTANGLE (tex)->is_foreign;
 }
 
+static CoglTextureType
+_cogl_texture_rectangle_get_type (CoglTexture *tex)
+{
+  return COGL_TEXTURE_TYPE_RECTANGLE;
+}
+
 static const CoglTextureVtable
 cogl_texture_rectangle_vtable =
   {
@@ -599,5 +605,6 @@ cogl_texture_rectangle_vtable =
     _cogl_texture_rectangle_get_gl_format,
     _cogl_texture_rectangle_get_width,
     _cogl_texture_rectangle_get_height,
+    _cogl_texture_rectangle_get_type,
     _cogl_texture_rectangle_is_foreign
   };

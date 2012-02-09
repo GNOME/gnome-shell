@@ -859,6 +859,12 @@ _cogl_texture_2d_is_foreign (CoglTexture *tex)
   return COGL_TEXTURE_2D (tex)->is_foreign;
 }
 
+static CoglTextureType
+_cogl_texture_2d_get_type (CoglTexture *tex)
+{
+  return COGL_TEXTURE_TYPE_2D;
+}
+
 static const CoglTextureVtable
 cogl_texture_2d_vtable =
   {
@@ -879,5 +885,6 @@ cogl_texture_2d_vtable =
     _cogl_texture_2d_get_gl_format,
     _cogl_texture_2d_get_width,
     _cogl_texture_2d_get_height,
+    _cogl_texture_2d_get_type,
     _cogl_texture_2d_is_foreign
   };

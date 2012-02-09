@@ -1293,6 +1293,12 @@ _cogl_texture_2d_sliced_get_height (CoglTexture *tex)
   return COGL_TEXTURE_2D_SLICED (tex)->height;
 }
 
+static CoglTextureType
+_cogl_texture_2d_sliced_get_type (CoglTexture *tex)
+{
+  return COGL_TEXTURE_TYPE_2D;
+}
+
 static const CoglTextureVtable
 cogl_texture_2d_sliced_vtable =
   {
@@ -1313,5 +1319,6 @@ cogl_texture_2d_sliced_vtable =
     _cogl_texture_2d_sliced_get_gl_format,
     _cogl_texture_2d_sliced_get_width,
     _cogl_texture_2d_sliced_get_height,
+    _cogl_texture_2d_sliced_get_type,
     _cogl_texture_2d_sliced_is_foreign
   };

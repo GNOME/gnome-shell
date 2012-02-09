@@ -998,6 +998,18 @@ _cogl_texture_pixmap_x11_get_height (CoglTexture *tex)
   return tex_pixmap->height;
 }
 
+static CoglTextureType
+_cogl_texture_pixmap_x11_get_type (CoglTexture *tex)
+{
+  CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (tex);
+  CoglTexture *child_tex;
+
+  child_tex = _cogl_texture_pixmap_x11_get_texture (tex_pixmap);
+
+  /* Forward on to the child texture */
+  return _cogl_texture_get_type (child_tex);
+}
+
 static void
 _cogl_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
 {
@@ -1049,5 +1061,6 @@ cogl_texture_pixmap_x11_vtable =
     _cogl_texture_pixmap_x11_get_gl_format,
     _cogl_texture_pixmap_x11_get_width,
     _cogl_texture_pixmap_x11_get_height,
+    _cogl_texture_pixmap_x11_get_type,
     NULL /* is_foreign */
   };

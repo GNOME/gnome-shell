@@ -121,6 +121,8 @@ struct _CoglTextureVtable
   int (* get_width) (CoglTexture *tex);
   int (* get_height) (CoglTexture *tex);
 
+  CoglTextureType (* get_type) (CoglTexture *tex);
+
   gboolean (* is_foreign) (CoglTexture *tex);
 };
 
@@ -273,5 +275,17 @@ _cogl_texture_spans_foreach_in_region (CoglSpan *x_spans,
                                        CoglPipelineWrapMode wrap_y,
                                        CoglMetaTextureCallback callback,
                                        void *user_data);
+
+/*
+ * _cogl_texture_get_type:
+ * @texture: a #CoglTexture pointer
+ *
+ * Retrieves the texture type of the underlying hardware texture that
+ * this #CoglTexture will use.
+ *
+ * Return value: The type of the hardware texture.
+ */
+CoglTextureType
+_cogl_texture_get_type (CoglTexture *texture);
 
 #endif /* __COGL_TEXTURE_PRIVATE_H */

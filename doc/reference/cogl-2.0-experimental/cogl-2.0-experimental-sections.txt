@@ -318,6 +318,7 @@ cogl_texture_get_format
 cogl_texture_is_sliced
 cogl_texture_get_data
 cogl_texture_set_region
+CoglTextureType
 
 <SUBSECTION Private>
 COGL_TEXTURE_MAX_WASTE

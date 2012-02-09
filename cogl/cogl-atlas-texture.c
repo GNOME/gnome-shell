@@ -809,6 +809,12 @@ _cogl_atlas_texture_remove_reorganize_callback (GHookFunc callback,
     g_hook_destroy_link (&ctx->atlas_reorganize_callbacks, hook);
 }
 
+static CoglTextureType
+_cogl_atlas_texture_get_type (CoglTexture *tex)
+{
+  return COGL_TEXTURE_TYPE_2D;
+}
+
 static const CoglTextureVtable
 cogl_atlas_texture_vtable =
   {
@@ -829,5 +835,6 @@ cogl_atlas_texture_vtable =
     _cogl_atlas_texture_get_gl_format,
     _cogl_atlas_texture_get_width,
     _cogl_atlas_texture_get_height,
+    _cogl_atlas_texture_get_type,
     NULL /* is_foreign */
   };

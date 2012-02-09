@@ -592,6 +592,12 @@ _cogl_texture_3d_get_height (CoglTexture *tex)
   return COGL_TEXTURE_3D (tex)->height;
 }
 
+static CoglTextureType
+_cogl_texture_3d_get_type (CoglTexture *tex)
+{
+  return COGL_TEXTURE_TYPE_3D;
+}
+
 static const CoglTextureVtable
 cogl_texture_3d_vtable =
   {
@@ -612,5 +618,6 @@ cogl_texture_3d_vtable =
     _cogl_texture_3d_get_gl_format,
     _cogl_texture_3d_get_width,
     _cogl_texture_3d_get_height,
+    _cogl_texture_3d_get_type,
     NULL /* is_foreign */
   };
