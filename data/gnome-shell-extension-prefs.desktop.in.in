@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-_Name=GNOME Shell Extension Preferences
+_Name=GNOME Shell Extensions Preferences
 _Comment=Configure GNOME Shell Extensions
 Exec=@bindir@/gnome-shell-extension-prefs %u
 X-GNOME-Bugzilla-Bugzilla=GNOME
