@@ -1367,7 +1367,7 @@ clutter_actor_show_all (ClutterActor *self)
     klass->show_all (self);
 }
 
-void
+static void
 clutter_actor_real_hide (ClutterActor *self)
 {
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
@@ -1538,7 +1538,7 @@ clutter_actor_realize (ClutterActor *self)
   clutter_actor_update_map_state (self, MAP_STATE_CHECK);
 }
 
-void
+static void
 clutter_actor_real_unrealize (ClutterActor *self)
 {
   /* we must be unmapped (implying our children are also unmapped) */
@@ -2194,7 +2194,7 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
     }
 }
 
-void
+static void
 clutter_actor_real_queue_relayout (ClutterActor *self)
 {
   ClutterActorPrivate *priv = self->priv;

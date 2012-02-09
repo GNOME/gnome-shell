@@ -490,7 +490,7 @@ clutter_model_init (ClutterModel *self)
  * type.
  */
 gboolean
-clutter_model_check_type (GType gtype)
+_clutter_model_check_type (GType gtype)
 {
   gint i = 0;
   static const GType type_list[] =
@@ -625,14 +625,14 @@ clutter_model_set_custom_property (ClutterScriptable *scriptable,
       columns = g_value_get_pointer (value);
       n_columns = g_slist_length (columns);
 
-      clutter_model_set_n_columns (model, n_columns, TRUE, TRUE);
+      _clutter_model_set_n_columns (model, n_columns, TRUE, TRUE);
 
       for (i = 0, l = columns; l != NULL; l = l->next, i++)
         {
           ColumnInfo *cinfo = l->data;
 
-          clutter_model_set_column_name (model, i, cinfo->name);
-          clutter_model_set_column_type (model, i, cinfo->type);
+          _clutter_model_set_column_name (model, i, cinfo->name);
+          _clutter_model_set_column_type (model, i, cinfo->type);
 
           g_free (cinfo->name);
           g_slice_free (ColumnInfo, cinfo);
@@ -858,7 +858,7 @@ clutter_model_filter_iter (ClutterModel     *model,
   return priv->filter_func (model, iter, priv->filter_data);
 }
 
-/*
+/*< private >
  * clutter_model_set_n_columns:
  * @model: a #ClutterModel
  * @n_columns: number of columns
@@ -872,10 +872,10 @@ clutter_model_filter_iter (ClutterModel     *model,
  * This function can only be called once.
  */
 void
-clutter_model_set_n_columns (ClutterModel *model,
-                             gint          n_columns,
-                             gboolean      set_types,
-                             gboolean      set_names)
+_clutter_model_set_n_columns (ClutterModel *model,
+                              gint          n_columns,
+                              gboolean      set_types,
+                              gboolean      set_names)
 {
   ClutterModelPrivate *priv = model->priv;
 
@@ -891,8 +891,8 @@ clutter_model_set_n_columns (ClutterModel *model,
     priv->column_names = g_new0 (gchar*, n_columns);
 }
 
-/*
- * clutter_model_set_column_type:
+/*< private >
+ * _clutter_model_set_column_type:
  * @model: a #ClutterModel
  * @column: column index
  * @gtype: type of the column
@@ -900,17 +900,17 @@ clutter_model_set_n_columns (ClutterModel *model,
  * Sets the type of @column inside @model
  */
 void
-clutter_model_set_column_type (ClutterModel *model,
-                               gint          column,
-                               GType         gtype)
+_clutter_model_set_column_type (ClutterModel *model,
+                                gint          column,
+                                GType         gtype)
 {
   ClutterModelPrivate *priv = model->priv;
 
   priv->column_types[column] = gtype;
 }
 
-/*
- * clutter_model_set_column_name:
+/*< private >
+ * _clutter_model_set_column_name:
  * @model: a #ClutterModel
  * @column: column index
  * @name: name of the column, or %NULL
@@ -918,9 +918,9 @@ clutter_model_set_column_type (ClutterModel *model,
  * Sets the name of @column inside @model
  */
 void
-clutter_model_set_column_name (ClutterModel *model,
-                               gint          column,
-                               const gchar  *name)
+_clutter_model_set_column_name (ClutterModel *model,
+                                gint          column,
+                                const gchar  *name)
 {
   ClutterModelPrivate *priv = model->priv;
 
@@ -957,17 +957,17 @@ clutter_model_set_types (ClutterModel *model,
   g_return_if_fail (priv->n_columns < 0 || priv->n_columns == n_columns);
   g_return_if_fail (priv->column_types == NULL);
 
-  clutter_model_set_n_columns (model, n_columns, TRUE, FALSE);
+  _clutter_model_set_n_columns (model, n_columns, TRUE, FALSE);
 
   for (i = 0; i < n_columns; i++)
     {
-      if (!clutter_model_check_type (types[i]))
+      if (!_clutter_model_check_type (types[i]))
         {
           g_warning ("%s: Invalid type %s\n", G_STRLOC, g_type_name (types[i]));
           return;
         }
 
-      clutter_model_set_column_type (model, i, types[i]);
+      _clutter_model_set_column_type (model, i, types[i]);
     }
 }
 
@@ -1001,10 +1001,10 @@ clutter_model_set_names (ClutterModel        *model,
   g_return_if_fail (priv->n_columns < 0 || priv->n_columns == n_columns);
   g_return_if_fail (priv->column_names == NULL);
 
-  clutter_model_set_n_columns (model, n_columns, FALSE, TRUE);
+  _clutter_model_set_n_columns (model, n_columns, FALSE, TRUE);
 
   for (i = 0; i < n_columns; i++)
-    clutter_model_set_column_name (model, i, names[i]);
+    _clutter_model_set_column_name (model, i, names[i]);
 }
 
 /**
@@ -1792,8 +1792,8 @@ clutter_model_iter_real_get_row (ClutterModelIter *iter)
 
 /* private function */
 void
-clutter_model_iter_set_row (ClutterModelIter *iter,
-                            guint             row)
+_clutter_model_iter_set_row (ClutterModelIter *iter,
+                             guint             row)
 {
   iter->priv->row = row;
 }

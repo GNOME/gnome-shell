@@ -53,6 +53,8 @@ static void clutter_script_parser_object_end (JsonParser *parser,
                                               JsonObject *object);
 static void clutter_script_parser_parse_end  (JsonParser *parser);
 
+#define clutter_script_parser_get_type  _clutter_script_parser_get_type
+
 G_DEFINE_TYPE (ClutterScriptParser, clutter_script_parser, JSON_TYPE_PARSER);
 
 static void

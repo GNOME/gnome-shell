@@ -333,7 +333,7 @@ clutter_list_model_iter_next (ClutterModelIter *iter)
     row += 1;
 
   /* update the iterator and return it */
-  clutter_model_iter_set_row (CLUTTER_MODEL_ITER (iter_default), row);
+  _clutter_model_iter_set_row (CLUTTER_MODEL_ITER (iter_default), row);
   iter_default->seq_iter = filter_next;
 
   return CLUTTER_MODEL_ITER (iter_default);
@@ -376,7 +376,7 @@ clutter_list_model_iter_prev (ClutterModelIter *iter)
     row -= 1;
 
   /* update the iterator and return it */
-  clutter_model_iter_set_row (CLUTTER_MODEL_ITER (iter_default), row);
+  _clutter_model_iter_set_row (CLUTTER_MODEL_ITER (iter_default), row);
   iter_default->seq_iter = filter_prev;
 
   return CLUTTER_MODEL_ITER (iter_default);
@@ -761,7 +761,7 @@ clutter_list_model_new (guint n_columns,
   g_return_val_if_fail (n_columns > 0, NULL);
 
   model = g_object_new (CLUTTER_TYPE_LIST_MODEL, NULL);
-  clutter_model_set_n_columns (model, n_columns, TRUE, TRUE);
+  _clutter_model_set_n_columns (model, n_columns, TRUE, TRUE);
 
   va_start (args, n_columns);
 
@@ -770,15 +770,15 @@ clutter_list_model_new (guint n_columns,
       GType type = va_arg (args, GType);
       const gchar *name = va_arg (args, gchar*);
 
-      if (!clutter_model_check_type (type))
+      if (!_clutter_model_check_type (type))
         {
           g_warning ("%s: Invalid type %s\n", G_STRLOC, g_type_name (type));
           g_object_unref (model);
           return NULL;
         }
 
-      clutter_model_set_column_type (model, i, type);
-      clutter_model_set_column_name (model, i, name);
+      _clutter_model_set_column_type (model, i, type);
+      _clutter_model_set_column_name (model, i, name);
     }
 
   va_end (args);
@@ -810,19 +810,19 @@ clutter_list_model_newv (guint                n_columns,
   g_return_val_if_fail (n_columns > 0, NULL);
 
   model = g_object_new (CLUTTER_TYPE_LIST_MODEL, NULL);
-  clutter_model_set_n_columns (model, n_columns, TRUE, TRUE);
+  _clutter_model_set_n_columns (model, n_columns, TRUE, TRUE);
 
   for (i = 0; i < n_columns; i++)
     {
-      if (!clutter_model_check_type (types[i]))
+      if (!_clutter_model_check_type (types[i]))
         {
           g_warning ("%s: Invalid type %s\n", G_STRLOC, g_type_name (types[i]));
           g_object_unref (model);
           return NULL;
         }
 
-      clutter_model_set_column_type (model, i, types[i]);
-      clutter_model_set_column_name (model, i, names[i]);
+      _clutter_model_set_column_type (model, i, types[i]);
+      _clutter_model_set_column_name (model, i, names[i]);
     }
 
   return model;

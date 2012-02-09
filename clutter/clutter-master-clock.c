@@ -102,6 +102,8 @@ static GSourceFuncs clock_funcs = {
   NULL
 };
 
+#define clutter_master_clock_get_type   _clutter_master_clock_get_type
+
 G_DEFINE_TYPE (ClutterMasterClock, clutter_master_clock, G_TYPE_OBJECT);
 
 /*
