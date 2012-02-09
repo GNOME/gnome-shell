@@ -263,8 +263,11 @@ else
     echo "done"
 fi
 
-echo "Installing jhbuild..."
-(cd $SOURCE/jhbuild && make -f Makefile.plain DISABLE_GETTEXT=1 bindir=$HOME/bin install >/dev/null)
+echo -n "Installing jhbuild ... "
+(cd $SOURCE/jhbuild &&
+ ./autogen.sh --simple-install &&
+ make -f Makefile.plain DISABLE_GETTEXT=1 bindir=$HOME/bin install) >/dev/null
+echo "done"
 
 if [ -e $HOME/.jhbuildrc ] ; then
     if grep JHBUILDRC_GNOME_SHELL $HOME/.jhbuildrc > /dev/null ; then : ; else
