@@ -142,6 +142,8 @@ main (int argc, char **argv)
   ADD_TEST ("/cogl", test_cogl_color_mask);
   ADD_TEST ("/cogl", test_cogl_backface_culling);
 
+  ADD_TEST ("/cogl/pipeline", test_cogl_sparse_pipeline);
+
   UNPORTED_TEST ("/cogl/texture", test_cogl_npot_texture);
   UNPORTED_TEST ("/cogl/texture", test_cogl_multitexture);
   UNPORTED_TEST ("/cogl/texture", test_cogl_texture_mipmaps);
