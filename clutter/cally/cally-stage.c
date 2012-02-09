@@ -183,7 +183,7 @@ cally_stage_real_initialize (AtkObject *obj,
   g_signal_connect (stage, "notify::key-focus",
                     G_CALLBACK (cally_stage_notify_key_focus_cb), obj);
 
-  obj->role = ATK_ROLE_CANVAS;
+  atk_object_set_role (obj, ATK_ROLE_WINDOW);
 }
 
 static AtkStateSet*
