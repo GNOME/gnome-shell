@@ -521,6 +521,7 @@ gboolean                        clutter_actor_iter_next                         
 gboolean                        clutter_actor_iter_prev                         (ClutterActorIter           *iter,
                                                                                  ClutterActor              **child);
 void                            clutter_actor_iter_remove                       (ClutterActorIter           *iter);
+void                            clutter_actor_iter_destroy                      (ClutterActorIter           *iter);
 
 /* Transformations */
 gboolean                        clutter_actor_is_rotated                        (ClutterActor               *self);

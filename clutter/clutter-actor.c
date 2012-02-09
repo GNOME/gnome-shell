@@ -4758,15 +4758,10 @@ static void
 clutter_actor_real_destroy (ClutterActor *actor)
 {
   ClutterActorIter iter;
-  ClutterActor *child;
 
   clutter_actor_iter_init (&iter, actor);
-  while (clutter_actor_iter_next (&iter, &child))
-    {
-      g_object_ref (child);
-      clutter_actor_iter_remove (&iter);
-      clutter_actor_destroy (child);
-    }
+  while (clutter_actor_iter_next (&iter, NULL))
+    clutter_actor_iter_destroy (&iter);
 }
 
 static GObject *
@@ -15735,6 +15730,46 @@ clutter_actor_iter_remove (ClutterActorIter *iter)
 
       clutter_actor_remove_child_internal (ri->root, cur,
                                            REMOVE_CHILD_DEFAULT_FLAGS);
+
+      ri->age += 1;
+    }
+}
+
+/**
+ * clutter_actor_iter_destroy:
+ * @iter: a #ClutterActorIter
+ *
+ * Safely destroys the #ClutterActor currently pointer to by the iterator
+ * from its parent.
+ *
+ * This function can only be called after clutter_actor_iter_next() or
+ * clutter_actor_iter_prev() returned %TRUE, and cannot be called more
+ * than once for the same actor.
+ *
+ * This function will call clutter_actor_destroy() internally.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_iter_destroy (ClutterActorIter *iter)
+{
+  RealActorIter *ri = (RealActorIter *) iter;
+  ClutterActor *cur;
+
+  g_return_if_fail (iter != NULL);
+  g_return_if_fail (ri->root != NULL);
+#ifndef G_DISABLE_ASSERT
+  g_return_if_fail (ri->age == ri->root->priv->age);
+#endif
+  g_return_if_fail (ri->current != NULL);
+
+  cur = ri->current;
+
+  if (cur != NULL)
+    {
+      ri->current = cur->priv->prev_sibling;
+
+      clutter_actor_destroy (cur);
 
       ri->age += 1;
     }
