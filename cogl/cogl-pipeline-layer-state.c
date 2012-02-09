@@ -324,6 +324,43 @@ cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
 }
 
 void
+cogl_pipeline_set_layer_null_texture (CoglPipeline *pipeline,
+                                      int layer_index,
+                                      CoglTextureType texture_type)
+{
+  CoglContext *ctx = _cogl_context_get_default ();
+
+  /* Disallow setting texture types that aren't supported */
+  switch (texture_type)
+    {
+    case COGL_TEXTURE_TYPE_2D:
+      break;
+
+    case COGL_TEXTURE_TYPE_3D:
+      if (ctx->default_gl_texture_3d_tex == NULL)
+        {
+          g_warning ("The default 3D texture was set on a pipeline but "
+                     "3D textures are not supported");
+          texture_type = COGL_TEXTURE_TYPE_2D;
+          return;
+        }
+      break;
+
+    case COGL_TEXTURE_TYPE_RECTANGLE:
+      if (ctx->default_gl_texture_rect_tex == NULL)
+        {
+          g_warning ("The default rectangle texture was set on a pipeline but "
+                     "rectangle textures are not supported");
+          texture_type = COGL_TEXTURE_TYPE_2D;
+        }
+      break;
+    }
+
+  _cogl_pipeline_set_layer_texture_type (pipeline, layer_index, texture_type);
+  _cogl_pipeline_set_layer_texture_data (pipeline, layer_index, NULL);
+}
+
+void
 _cogl_pipeline_set_layer_wrap_modes (CoglPipeline        *pipeline,
                                      CoglPipelineLayer   *layer,
                                      CoglPipelineLayer   *authority,

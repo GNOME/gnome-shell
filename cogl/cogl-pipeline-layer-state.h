@@ -131,6 +131,13 @@ typedef enum {
  * The index values of multiple layers do not have to be consecutive; it is
  * only their relative order that is important.
  *
+ * The @texture parameter can also be %NULL in which case the pipeline
+ * will use a default white texture. The type of the default texture
+ * will be the same as whatever texture was last used for the pipeline
+ * or %COGL_TEXTURE_TYPE_2D if none has been specified yet. To
+ * explicitly specify the type of default texture required, use
+ * cogl_pipeline_set_layer_null_texture() instead.
+ *
  * <note>In the future, we may define other types of pipeline layers, such
  * as purely GLSL based layers.</note>
  *
@@ -141,6 +148,32 @@ void
 cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
                                  int           layer_index,
                                  CoglTexture  *texture);
+
+/**
+ * cogl_pipeline_set_layer_null_texture:
+ * @pipeline: A #CoglPipeline
+ * @layer_index: The layer number to modify
+ * @texture_type: The type of the default texture to use
+ *
+ * Sets the texture for this layer to be the default texture for the
+ * given type. This is equivalent to calling
+ * cogl_pipeline_set_layer_texture() with %NULL for the texture
+ * argument except that you can also specify the type of default
+ * texture to use. The default texture is a 1x1 pixel white texture.
+ *
+ * This function is mostly useful if you want to create a base
+ * pipeline that you want to create multiple copies from using
+ * cogl_pipeline_copy(). In that case this function can be used to
+ * specify the texture type so that any pipeline copies can share the
+ * internal texture type state for efficiency.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_pipeline_set_layer_null_texture (CoglPipeline *pipeline,
+                                      int layer_index,
+                                      CoglTextureType texure_type);
 
 /**
  * cogl_pipeline_get_layer_texture:
