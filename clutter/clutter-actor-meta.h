@@ -75,6 +75,11 @@ struct _ClutterActorMetaClass
   GInitiallyUnownedClass parent_class;
 
   /*< public >*/
+
+  /**
+   * ClutterActorMetaClass::set_actor:
+   * @actor: (allow-none):
+   */
   void (* set_actor) (ClutterActorMeta *meta,
                       ClutterActor     *actor);
 
