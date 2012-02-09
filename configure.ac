@@ -99,6 +99,11 @@ AS_CASE([$host],
           platform_win32=yes
         ],
 
+        [*-*-linux],
+        [
+          platform_linux=yes
+        ],
+
         []
 )
 AC_MSG_RESULT([$platform_win32])
@@ -111,6 +116,7 @@ AM_CONDITIONAL(OS_QUARTZ, [test "$platform_quartz" = "yes"])
 AC_CHECK_HEADER([GL/glx.h], [platform_glx=yes], [platform_glx=no])
 AC_CHECK_LIB([GL], [glXCreateContext], [platform_glx=yes], [platform_glx=no])
 AM_CONDITIONAL(OS_GLX, [test "$platform_glx" = "yes"])
+AM_CONDITIONAL(OS_LINUX, [test "$platform_linux" = "yes"])
 
 AC_SUBST(CLUTTER_LT_LDFLAGS)
 
