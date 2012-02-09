@@ -135,6 +135,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/actor", actor_replace_child);
   TEST_CONFORM_SIMPLE ("/actor", actor_remove_child);
   TEST_CONFORM_SIMPLE ("/actor", actor_remove_all);
+  TEST_CONFORM_SIMPLE ("/actor", actor_container_signals);
   TEST_CONFORM_SIMPLE ("/actor", actor_destruction);
   TEST_CONFORM_SIMPLE ("/actor", actor_anchors);
   TEST_CONFORM_SIMPLE ("/actor", actor_picking);

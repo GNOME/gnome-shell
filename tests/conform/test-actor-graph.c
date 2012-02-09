@@ -374,3 +374,77 @@ actor_remove_all (TestConformSimpleFixture *fixture,
   clutter_actor_destroy (actor);
   g_object_unref (actor);
 }
+
+static void
+actor_added (ClutterContainer *container,
+             ClutterActor     *child,
+             gpointer          data)
+{
+  ClutterActor *actor = CLUTTER_ACTOR (container);
+  int *counter = data;
+  ClutterActor *old_child;
+
+  if (g_test_verbose ())
+    g_print ("Adding actor '%s'\n", clutter_actor_get_name (child));
+
+  old_child = clutter_actor_get_child_at_index (actor, 0);
+  if (old_child != child)
+    clutter_actor_remove_child (actor, old_child);
+
+  *counter += 1;
+}
+
+static void
+actor_removed (ClutterContainer *container,
+               ClutterActor     *child,
+               gpointer          data)
+{
+  int *counter = data;
+
+  if (g_test_verbose ())
+    g_print ("Removing actor '%s'\n", clutter_actor_get_name (child));
+
+  *counter += 1;
+}
+
+void
+actor_container_signals (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
+                         gconstpointer data G_GNUC_UNUSED)
+{
+  ClutterActor *actor = clutter_actor_new ();
+  int add_count, remove_count;
+
+  g_object_ref_sink (actor);
+
+  add_count = remove_count = 0;
+  g_signal_connect (actor,
+                    "actor-added", G_CALLBACK (actor_added),
+                    &add_count);
+  g_signal_connect (actor,
+                    "actor-removed", G_CALLBACK (actor_removed),
+                    &remove_count);
+
+  clutter_actor_add_child (actor, g_object_new (CLUTTER_TYPE_ACTOR,
+                                                "name", "foo",
+                                                NULL));
+
+  g_assert_cmpint (add_count, ==, 1);
+  g_assert_cmpint (remove_count, ==, 0);
+  g_assert_cmpint (clutter_actor_get_n_children (actor), ==, 1);
+
+  clutter_actor_add_child (actor, g_object_new (CLUTTER_TYPE_ACTOR,
+                                                "name", "bar",
+                                                NULL));
+
+  g_assert_cmpint (add_count, ==, 2);
+  g_assert_cmpint (remove_count, ==, 1);
+  g_assert_cmpint (clutter_actor_get_n_children (actor), ==, 1);
+
+  g_signal_handlers_disconnect_by_func (actor, G_CALLBACK (actor_added),
+                                        &add_count);
+  g_signal_handlers_disconnect_by_func (actor, G_CALLBACK (actor_removed),
+                                        &remove_count);
+
+  clutter_actor_destroy (actor);
+  g_object_unref (actor);
+}
