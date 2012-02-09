@@ -9907,7 +9907,7 @@ insert_child_at_index (ClutterActor *self,
       child->priv->prev_sibling = NULL;
       child->priv->next_sibling = tmp;
     }
-  else if (index < 0)
+  else if (index_ < 0)
     {
       ClutterActor *tmp = self->priv->last_child;
 
