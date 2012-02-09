@@ -196,6 +196,68 @@ validate_result (void)
     validate_block (i, 1, i);
 }
 
+static void
+test_multi_texture (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglHandle tex_3d;
+  CoglTexture2D *tex_2d;
+  guint8 tex_data[4];
+
+  cogl_framebuffer_clear4f (state->fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
+
+  /* Tests a pipeline that is using multi-texturing to combine a 3D
+     texture with a 2D texture. The texture from another layer is
+     sampled with TEXTURE_? just to pick up a specific bug that was
+     happening with the ARBfp fragend */
+
+  pipeline = cogl_pipeline_new ();
+
+  tex_data[0] = 0xff;
+  tex_data[1] = 0x00;
+  tex_data[2] = 0x00;
+  tex_data[3] = 0xff;
+  tex_2d = cogl_texture_2d_new_from_data (state->context,
+                                          1, 1, /* width/height */
+                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                          4, /* rowstride */
+                                          tex_data,
+                                          NULL);
+  cogl_pipeline_set_layer_texture (pipeline, 0, COGL_TEXTURE (tex_2d));
+
+  tex_data[0] = 0x00;
+  tex_data[1] = 0xff;
+  tex_data[2] = 0x00;
+  tex_data[3] = 0xff;
+  tex_3d = cogl_texture_3d_new_from_data (1, 1, 1, /* width/height/depth */
+                                          COGL_TEXTURE_NONE,
+                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                          4, /* rowstride */
+                                          4, /* image_stride */
+                                          tex_data,
+                                          NULL);
+  cogl_pipeline_set_layer_texture (pipeline, 1, COGL_TEXTURE (tex_3d));
+
+  cogl_pipeline_set_layer_combine (pipeline, 0,
+                                   "RGBA = REPLACE(PREVIOUS)",
+                                   NULL);
+  cogl_pipeline_set_layer_combine (pipeline, 1,
+                                   "RGBA = ADD(TEXTURE_0, TEXTURE_1)",
+                                   NULL);
+
+  cogl_push_source (pipeline);
+  cogl_rectangle (0, 0, 10, 10);
+  cogl_pop_source ();
+
+  test_utils_check_pixel (5, 5, 0xffff00ff);
+
+  cogl_object_unref (tex_2d);
+  cogl_object_unref (tex_3d);
+  cogl_object_unref (pipeline);
+}
+
 void
 test_cogl_texture_3d (TestUtilsGTestFixture *fixture,
                       void *data)
@@ -221,6 +283,8 @@ test_cogl_texture_3d (TestUtilsGTestFixture *fixture,
 
       draw_frame (&state);
       validate_result ();
+
+      test_multi_texture (&state);
 
       if (g_test_verbose ())
         g_print ("OK\n");
