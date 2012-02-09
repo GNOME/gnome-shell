@@ -50,6 +50,12 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
     <arg type="s" direction="in" name="filename"/>
     <arg type="b" direction="out" name="success"/>
 </method>
+<method name="FlashArea">
+    <arg type="i" direction="in" name="x"/>
+    <arg type="i" direction="in" name="y"/>
+    <arg type="i" direction="in" name="width"/>
+    <arg type="i" direction="in" name="height"/>
+</method>
 <method name="EnableExtension">
     <arg type="s" direction="in" name="uuid"/>
 </method>
@@ -189,6 +195,11 @@ const GnomeShell = new Lang.Class({
         screenshot.screenshot(include_cursor, filename,
                           Lang.bind(this, this._onScreenshotComplete,
                                     flash, invocation));
+    },
+
+    FlashArea: function(x, y, width, height) {
+        let flashspot = new Flashspot.Flashspot({ x : x, y : y, width: width, height: height});
+        flashspot.fire();
     },
 
     ListExtensions: function() {
