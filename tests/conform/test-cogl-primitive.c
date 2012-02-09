@@ -1,3 +1,5 @@
+#define COGL_ENABLE_EXPERIMENTAL_2_0_API
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
 #include <clutter/clutter.h>
 #include <string.h>
 
@@ -7,32 +9,35 @@ static const ClutterColor stage_color = { 0x00, 0xff, 0x00, 0xff };
 static const ClutterColor prim_color = { 0xff, 0x00, 0xff, 0xff };
 static const ClutterColor tex_color = { 0x00, 0x00, 0xff, 0xff };
 
-typedef CoglPrimitive * (* TestPrimFunc) (ClutterColor *expected_color);
+typedef CoglPrimitive * (* TestPrimFunc) (CoglContext *ctx,
+                                          ClutterColor *expected_color);
 
 static CoglPrimitive *
-test_prim_p2 (ClutterColor *expected_color)
+test_prim_p2 (CoglContext *ctx, ClutterColor *expected_color)
 {
   static const CoglVertexP2 verts[] =
     { { 0, 0 }, { 0, 10 }, { 10, 0 } };
 
-  return cogl_primitive_new_p2 (COGL_VERTICES_MODE_TRIANGLES,
+  return cogl_primitive_new_p2 (ctx,
+                                COGL_VERTICES_MODE_TRIANGLES,
                                 3, /* n_vertices */
                                 verts);
 }
 
 static CoglPrimitive *
-test_prim_p3 (ClutterColor *expected_color)
+test_prim_p3 (CoglContext *ctx, ClutterColor *expected_color)
 {
   static const CoglVertexP3 verts[] =
     { { 0, 0, 0 }, { 0, 10, 0 }, { 10, 0, 0 } };
 
-  return cogl_primitive_new_p3 (COGL_VERTICES_MODE_TRIANGLES,
+  return cogl_primitive_new_p3 (ctx,
+                                COGL_VERTICES_MODE_TRIANGLES,
                                 3, /* n_vertices */
                                 verts);
 }
 
 static CoglPrimitive *
-test_prim_p2c4 (ClutterColor *expected_color)
+test_prim_p2c4 (CoglContext *ctx, ClutterColor *expected_color)
 {
   static const CoglVertexP2C4 verts[] =
     { { 0, 0, 255, 255, 0, 255 },
@@ -43,13 +48,14 @@ test_prim_p2c4 (ClutterColor *expected_color)
   expected_color->green = 255;
   expected_color->blue = 0;
 
-  return cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,
+  return cogl_primitive_new_p2c4 (ctx,
+                                  COGL_VERTICES_MODE_TRIANGLES,
                                   3, /* n_vertices */
                                   verts);
 }
 
 static CoglPrimitive *
-test_prim_p3c4 (ClutterColor *expected_color)
+test_prim_p3c4 (CoglContext *ctx, ClutterColor *expected_color)
 {
   static const CoglVertexP3C4 verts[] =
     { { 0, 0, 0, 255, 255, 0, 255 },
@@ -60,13 +66,14 @@ test_prim_p3c4 (ClutterColor *expected_color)
   expected_color->green = 255;
   expected_color->blue = 0;
 
-  return cogl_primitive_new_p3c4 (COGL_VERTICES_MODE_TRIANGLES,
+  return cogl_primitive_new_p3c4 (ctx,
+                                  COGL_VERTICES_MODE_TRIANGLES,
                                   3, /* n_vertices */
                                   verts);
 }
 
 static CoglPrimitive *
-test_prim_p2t2 (ClutterColor *expected_color)
+test_prim_p2t2 (CoglContext *ctx, ClutterColor *expected_color)
 {
   static const CoglVertexP2T2 verts[] =
     { { 0, 0, 1, 0 },
@@ -75,13 +82,14 @@ test_prim_p2t2 (ClutterColor *expected_color)
 
   *expected_color = tex_color;
 
-  return cogl_primitive_new_p2t2 (COGL_VERTICES_MODE_TRIANGLES,
+  return cogl_primitive_new_p2t2 (ctx,
+                                  COGL_VERTICES_MODE_TRIANGLES,
                                   3, /* n_vertices */
                                   verts);
 }
 
 static CoglPrimitive *
-test_prim_p3t2 (ClutterColor *expected_color)
+test_prim_p3t2 (CoglContext *ctx, ClutterColor *expected_color)
 {
   static const CoglVertexP3T2 verts[] =
     { { 0, 0, 0, 1, 0 },
@@ -90,13 +98,14 @@ test_prim_p3t2 (ClutterColor *expected_color)
 
   *expected_color = tex_color;
 
-  return cogl_primitive_new_p3t2 (COGL_VERTICES_MODE_TRIANGLES,
+  return cogl_primitive_new_p3t2 (ctx,
+                                  COGL_VERTICES_MODE_TRIANGLES,
                                   3, /* n_vertices */
                                   verts);
 }
 
 static CoglPrimitive *
-test_prim_p2t2c4 (ClutterColor *expected_color)
+test_prim_p2t2c4 (CoglContext *ctx, ClutterColor *expected_color)
 {
   static const CoglVertexP2T2C4 verts[] =
     { { 0, 0, 1, 0, 0xff, 0xff, 0xf0, 0xff },
@@ -106,13 +115,14 @@ test_prim_p2t2c4 (ClutterColor *expected_color)
   *expected_color = tex_color;
   expected_color->blue = 0xf0;
 
-  return cogl_primitive_new_p2t2c4 (COGL_VERTICES_MODE_TRIANGLES,
+  return cogl_primitive_new_p2t2c4 (ctx,
+                                    COGL_VERTICES_MODE_TRIANGLES,
                                     3, /* n_vertices */
                                     verts);
 }
 
 static CoglPrimitive *
-test_prim_p3t2c4 (ClutterColor *expected_color)
+test_prim_p3t2c4 (CoglContext *ctx, ClutterColor *expected_color)
 {
   static const CoglVertexP3T2C4 verts[] =
     { { 0, 0, 0, 1, 0, 0xff, 0xff, 0xf0, 0xff },
@@ -122,7 +132,8 @@ test_prim_p3t2c4 (ClutterColor *expected_color)
   *expected_color = tex_color;
   expected_color->blue = 0xf0;
 
-  return cogl_primitive_new_p3t2c4 (COGL_VERTICES_MODE_TRIANGLES,
+  return cogl_primitive_new_p3t2c4 (ctx,
+                                    COGL_VERTICES_MODE_TRIANGLES,
                                     3, /* n_vertices */
                                     verts);
 }
@@ -143,8 +154,11 @@ test_prim_funcs[] =
 static void
 paint_cb (void)
 {
+  CoglContext *ctx =
+    clutter_backend_get_cogl_context (clutter_get_default_backend ());
+  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
   CoglPipeline *pipeline;
-  CoglHandle tex;
+  CoglTexture *tex;
   guint8 tex_data[6];
   int i;
 
@@ -171,9 +185,7 @@ paint_cb (void)
                               prim_color.blue,
                               prim_color.alpha);
   cogl_pipeline_set_layer_texture (pipeline, 0, tex);
-  cogl_handle_unref (tex);
-  cogl_set_source (pipeline);
-  cogl_object_unref (pipeline);
+  cogl_object_unref (tex);
 
   for (i = 0; i < G_N_ELEMENTS (test_prim_funcs); i++)
     {
@@ -181,11 +193,11 @@ paint_cb (void)
       ClutterColor expected_color = prim_color;
       guint8 pixel[4];
 
-      prim = test_prim_funcs[i] (&expected_color);
+      prim = test_prim_funcs[i] (ctx, &expected_color);
 
       cogl_push_matrix ();
       cogl_translate (i * 10, 0, 0);
-      cogl_primitive_draw (prim);
+      cogl_framebuffer_draw_primitive (fb, pipeline, prim);
       cogl_pop_matrix ();
 
       cogl_read_pixels (i * 10 + 2, 2, 1, 1,
@@ -199,6 +211,8 @@ paint_cb (void)
 
       cogl_object_unref (prim);
     }
+
+  cogl_object_unref (pipeline);
 
   /* Comment this out to see what the test paints */
   clutter_main_quit ();

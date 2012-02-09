@@ -323,6 +323,7 @@
 #include "cogl/cogl.h"
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
 
 #include "clutter-actor-private.h"
 
@@ -2681,13 +2682,18 @@ _clutter_actor_draw_paint_volume_full (ClutterActor *self,
                                        const char *label,
                                        const CoglColor *color)
 {
-  static CoglMaterial *outline = NULL;
+  static CoglPipeline *outline = NULL;
   CoglPrimitive *prim;
   ClutterVertex line_ends[12 * 2];
   int n_vertices;
+  CoglContext *ctx =
+    clutter_backend_get_cogl_context (clutter_get_default_backend ());
+  /* XXX: at some point we'll query this from the stage but we can't
+   * do that until the osx backend uses Cogl natively. */
+  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
 
   if (outline == NULL)
-    outline = cogl_material_new ();
+    outline = cogl_pipeline_new ();
 
   _clutter_paint_volume_complete (pv);
 
@@ -2714,12 +2720,12 @@ _clutter_actor_draw_paint_volume_full (ClutterActor *self,
       line_ends[22] = pv->vertices[3]; line_ends[23] = pv->vertices[7];
     }
 
-  prim = cogl_primitive_new_p3 (COGL_VERTICES_MODE_LINES, n_vertices,
+  prim = cogl_primitive_new_p3 (ctx, COGL_VERTICES_MODE_LINES, n_vertices,
                                 (CoglVertexP3 *)line_ends);
 
-  cogl_material_set_color (outline, color);
-  cogl_set_source (outline);
-  cogl_primitive_draw (prim);
+  cogl_pipeline_set_color (outline, color);
+  cogl_framebuffer_draw_primitive (fb, outline, prim);
+  cogl_object_unref (outline);
   cogl_object_unref (prim);
 
   if (label)

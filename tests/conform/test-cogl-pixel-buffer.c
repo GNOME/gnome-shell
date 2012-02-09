@@ -1,3 +1,5 @@
+#define COGL_ENABLE_EXPERIMENTAL_2_0_API
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
 #include <string.h>
@@ -59,8 +61,11 @@ create_map_tile (TestTile *tile)
   guint i;
   unsigned int stride = 0;
   guint8 *line;
+  CoglContext *ctx =
+    clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
-  buffer = cogl_pixel_buffer_new_with_size (TILE_SIZE,
+  buffer = cogl_pixel_buffer_new_with_size (ctx,
+                                            TILE_SIZE,
                                             TILE_SIZE,
                                             COGL_PIXEL_FORMAT_RGBA_8888,
                                             &stride);
@@ -143,13 +148,16 @@ create_set_region_tile (TestTile *tile)
 static void
 create_set_data_tile (TestTile *tile)
 {
+  CoglContext *ctx =
+    clutter_backend_get_cogl_context (clutter_get_default_backend ());
   CoglHandle buffer;
   guint rowstride = 0;
   gboolean res;
   guchar *data;
   guint i;
 
-  buffer = cogl_pixel_buffer_new_with_size (TILE_SIZE,
+  buffer = cogl_pixel_buffer_new_with_size (ctx,
+                                            TILE_SIZE,
                                             TILE_SIZE,
                                             COGL_PIXEL_FORMAT_RGBA_8888,
                                             &rowstride);

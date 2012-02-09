@@ -56,6 +56,7 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
 #include "clutter-deform-effect.h"
 
 #include <cogl/cogl.h>
@@ -175,6 +176,7 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
   CoglHandle material;
   CoglPipeline *pipeline;
   CoglDepthState depth_state;
+  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
 
   if (priv->is_dirty)
     {
@@ -286,11 +288,7 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
 
   /* draw the front */
   if (material != COGL_INVALID_HANDLE)
-    {
-      cogl_push_source (pipeline);
-      cogl_primitive_draw (priv->primitive);
-      cogl_pop_source ();
-    }
+    cogl_framebuffer_draw_primitive (fb, pipeline, priv->primitive);
 
   /* draw the back */
   if (priv->back_material != COGL_INVALID_HANDLE)
@@ -304,17 +302,18 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
       cogl_pipeline_set_cull_face_mode (pipeline,
                                         COGL_PIPELINE_CULL_FACE_MODE_FRONT);
 
-      cogl_push_source (back_pipeline);
-      cogl_primitive_draw (priv->primitive);
-      cogl_pop_source ();
+      cogl_framebuffer_draw_primitive (fb, back_pipeline, priv->primitive);
 
       cogl_object_unref (back_pipeline);
     }
 
   if (G_UNLIKELY (priv->lines_primitive != NULL))
     {
-      cogl_set_source_color4f (1.0, 0, 0, 1.0);
-      cogl_primitive_draw (priv->lines_primitive);
+      CoglPipeline *lines_pipeline = cogl_pipeline_new ();
+      cogl_pipeline_set_color4f (lines_pipeline, 1.0, 0, 0, 1.0);
+      cogl_framebuffer_draw_primitive (fb, lines_pipeline,
+                                       priv->lines_primitive);
+      cogl_object_unref (lines_pipeline);
     }
 }
 
@@ -349,6 +348,8 @@ clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
   gint x, y, direction, n_indices;
   CoglAttribute *attributes[3];
   guint16 *static_indices;
+  CoglContext *ctx =
+    clutter_backend_get_cogl_context (clutter_get_default_backend ());
   CoglIndices *indices;
   guint16 *idx;
   int i;
@@ -412,7 +413,8 @@ clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
 
 #undef MESH_INDEX
 
-  indices = cogl_indices_new (COGL_INDICES_TYPE_UNSIGNED_SHORT,
+  indices = cogl_indices_new (ctx,
+                              COGL_INDICES_TYPE_UNSIGNED_SHORT,
                               static_indices,
                               n_indices);
 
@@ -421,7 +423,8 @@ clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
   priv->n_vertices = (priv->x_tiles + 1) * (priv->y_tiles + 1);
 
   priv->buffer =
-    cogl_attribute_buffer_new (sizeof (CoglVertexP3T2C4) *
+    cogl_attribute_buffer_new (ctx,
+                               sizeof (CoglVertexP3T2C4) *
                                priv->n_vertices,
                                NULL);
 
