@@ -959,6 +959,24 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif # HAVE_INTROSPECTION
 
+# Test
+clutter_all_c_sources = \
+	$(backend_source_c) \
+	$(backend_source_c_priv) \
+	$(source_c) \
+	$(source_c_priv) \
+	$(deprecated_c) \
+	$(deprecated_c_priv) \
+	$(cally_sources_c) \
+	$(built_source_c)
+
+TESTS_ENVIRONMENT = srcdir="$(srcdir)" clutter_all_c_sources="$(clutter_all_c_sources)"
+if OS_LINUX
+TESTS = abicheck.sh
+endif
+
+EXTRA_DIST += abicheck.sh
+
 # GCov rules
 gcov_sources = $(source_c) $(backend_source_c)
 include $(top_srcdir)/build/autotools/Makefile.am.gcov
