@@ -877,12 +877,25 @@ _cogl_pipeline_layer_texture_data_equal (CoglPipelineLayer *authority0,
                                          CoglPipelineLayer *authority1,
                                          CoglPipelineEvalFlags flags)
 {
-  GLuint gl_handle0, gl_handle1;
+  if (authority0->texture == NULL)
+    {
+      if (authority1->texture == NULL)
+        return (_cogl_pipeline_layer_get_texture_type (authority0) ==
+                _cogl_pipeline_layer_get_texture_type (authority1));
+      else
+        return FALSE;
+    }
+  else if (authority1->texture == NULL)
+    return FALSE;
+  else
+    {
+      GLuint gl_handle0, gl_handle1;
 
-  cogl_texture_get_gl_texture (authority0->texture, &gl_handle0, NULL);
-  cogl_texture_get_gl_texture (authority1->texture, &gl_handle1, NULL);
+      cogl_texture_get_gl_texture (authority0->texture, &gl_handle0, NULL);
+      cogl_texture_get_gl_texture (authority1->texture, &gl_handle1, NULL);
 
-  return gl_handle0 == gl_handle1;
+      return gl_handle0 == gl_handle1;
+    }
 }
 
 gboolean
