@@ -1281,14 +1281,13 @@ clutter_texture_init (ClutterTexture *self)
 
   if (G_UNLIKELY (texture_template_material == NULL))
     {
-      CoglHandle dummy_tex;
-
-      dummy_tex = cogl_texture_new_with_size (1, 1, COGL_TEXTURE_NO_SLICING,
-                                              COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+      CoglPipeline *pipeline;
 
       texture_template_material = cogl_material_new ();
-      cogl_material_set_layer (texture_template_material, 0, dummy_tex);
-      cogl_handle_unref (dummy_tex);
+      pipeline = COGL_PIPELINE (texture_template_material);
+      cogl_pipeline_set_layer_null_texture (pipeline,
+                                            0, /* layer_index */
+                                            COGL_TEXTURE_TYPE_2D);
     }
 
   g_assert (texture_template_material != NULL);
