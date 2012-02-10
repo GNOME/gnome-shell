@@ -39,6 +39,9 @@
 /* Have the Wayland backend */
 /*#undef HAVE_CLUTTER_WAYLAND*/
 
+/* Have Wayland compositor support */
+/* #undef HAVE_CLUTTER_WAYLAND_COMPOSITOR */
+
 /* Have the Win32 backend */
 #define HAVE_CLUTTER_WIN32 1
 
@@ -48,9 +51,6 @@
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 /*#undef HAVE_DLFCN_H*/
-
-/* Have libdrm support */
-/*#undef HAVE_DRM*/
 
 /* Have evdev support for input handling */
 /*#undef HAVE_EVDEV*/
