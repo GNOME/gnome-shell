@@ -51,6 +51,8 @@
 #include <meta/compositor.h>
 #include <X11/Xatom.h>
 #include <X11/cursorfont.h>
+#include "mutter-enum-types.h"
+
 #ifdef HAVE_SOLARIS_XINERAMA
 #include <X11/extensions/xinerama.h>
 #endif
@@ -135,6 +137,8 @@ enum
   WINDOW_CREATED,
   WINDOW_DEMANDS_ATTENTION,
   WINDOW_MARKED_URGENT,
+  GRAB_OP_BEGIN,
+  GRAB_OP_END,
   LAST_SIGNAL
 };
 
@@ -257,6 +261,28 @@ meta_display_class_init (MetaDisplayClass *klass)
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 1,
                   META_TYPE_WINDOW);
+
+  display_signals[GRAB_OP_BEGIN] =
+    g_signal_new ("grab-op-begin",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 3,
+                  META_TYPE_SCREEN,
+                  META_TYPE_WINDOW,
+                  META_TYPE_GRAB_OP);
+
+  display_signals[GRAB_OP_END] =
+    g_signal_new ("grab-op-end",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 3,
+                  META_TYPE_SCREEN,
+                  META_TYPE_WINDOW,
+                  META_TYPE_GRAB_OP);
 
   g_object_class_install_property (object_class,
                                    PROP_FOCUS_WINDOW,
@@ -3702,6 +3728,9 @@ meta_display_begin_grab_op (MetaDisplay *display,
     {
       meta_window_refresh_resize_popup (display->grab_window);
     }
+
+  g_signal_emit (display, display_signals[GRAB_OP_BEGIN], 0,
+                 screen, display->grab_window, display->grab_op);
   
   return TRUE;
 }
@@ -3715,6 +3744,9 @@ meta_display_end_grab_op (MetaDisplay *display,
   
   if (display->grab_op == META_GRAB_OP_NONE)
     return;
+
+  g_signal_emit (display, display_signals[GRAB_OP_END], 0,
+                 display->grab_screen, display->grab_window, display->grab_op);
 
   if (display->grab_window != NULL)
     display->grab_window->shaken_loose = FALSE;
