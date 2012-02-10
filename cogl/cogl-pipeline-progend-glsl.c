@@ -371,7 +371,7 @@ get_uniform_cb (CoglPipeline *pipeline,
      the program has now been linked */
   g_string_set_size (ctx->codegen_source_buffer, 0);
   g_string_append_printf (ctx->codegen_source_buffer,
-                          "_cogl_sampler_%i", state->unit);
+                          "_cogl_sampler_%i", layer_index);
 
   GE_RET( uniform_location,
           ctx, glGetUniformLocation (state->gl_program,
@@ -386,7 +386,7 @@ get_uniform_cb (CoglPipeline *pipeline,
 
   g_string_set_size (ctx->codegen_source_buffer, 0);
   g_string_append_printf (ctx->codegen_source_buffer,
-                          "_cogl_layer_constant_%i", state->unit);
+                          "_cogl_layer_constant_%i", layer_index);
 
   GE_RET( uniform_location,
           ctx, glGetUniformLocation (state->gl_program,

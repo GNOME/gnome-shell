@@ -367,11 +367,9 @@ add_constant_lookup (CoglPipelineShaderState *shader_state,
                      CoglPipelineLayer *layer,
                      const char *swizzle)
 {
-  int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
-
   g_string_append_printf (shader_state->header,
                           "_cogl_layer_constant_%i.%s",
-                          unit_index, swizzle);
+                          layer->index, swizzle);
 }
 
 static void
@@ -456,7 +454,7 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
         g_string_append_printf (shader_state->header,
                                 "uniform sampler%s _cogl_sampler_%i;\n",
                                 target_string,
-                                unit_index);
+                                layer->index);
 
       g_string_append_printf (shader_state->header,
                               "vec4\n"
@@ -471,7 +469,7 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
       else
         g_string_append_printf (shader_state->header,
                                 "texture%s (_cogl_sampler_%i, coords.%s);\n",
-                                target_string, unit_index, tex_coord_swizzle);
+                                target_string, layer->index, tex_coord_swizzle);
 
       g_string_append (shader_state->header, "}\n");
     }
@@ -612,7 +610,7 @@ ensure_arg_generated (CoglPipeline *pipeline,
           {
             g_string_append_printf (shader_state->header,
                                     "uniform vec4 _cogl_layer_constant_%i;\n",
-                                    unit_index);
+                                    layer->index);
             shader_state->unit_state[unit_index].combine_constant_used = TRUE;
           }
       }
