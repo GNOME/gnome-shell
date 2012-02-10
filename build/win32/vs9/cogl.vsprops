@@ -176,7 +176,7 @@ copy ..\..\..\tests\data\valgrind.suppressions $(OutDir)\share\cogl-$(CoglApiVer
 		Name="GenerateCoglDef"
 		Value="
 		       echo EXPORTS &gt; ..\..\..\cogl\cogl.def&#x0D;&#x0A;
-		       cl -EP -DCOGL_ENABLE_EXPERIMENTAL_API -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def&#x0D;&#x0A;
+		       cl -EP -DCOGL_ENABLE_EXPERIMENTAL_API -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def&#x0D;&#x0A;
 			  "
 	/>
 	<UserMacro
