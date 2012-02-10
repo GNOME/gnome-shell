@@ -99,7 +99,7 @@ AS_CASE([$host],
           platform_win32=yes
         ],
 
-        [*-*-linux],
+        [*-*-linux*],
         [
           platform_linux=yes
         ],
