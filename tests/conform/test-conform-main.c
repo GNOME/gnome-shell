@@ -234,23 +234,15 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_object);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_fixed);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_backface_culling);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_materials);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_pipeline_user_matrix);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_blend_strings);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_premult);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_readpixels);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_path);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_depth_test);
 
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_npot_texture);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_multitexture);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_mipmaps);
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_sub_texture);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_pixel_array);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_rectangle);
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_3d);
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_wrap_modes);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_pixmap_x11);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_get_set_data);
   TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_atlas_migration);
@@ -259,14 +251,9 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_interleved);
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_mutability);
 
-  TEST_CONFORM_SIMPLE ("/cogl/vertex-array", test_cogl_primitive);
-
-  TEST_CONFORM_SIMPLE ("/cogl/shaders", test_cogl_just_vertex_shader);
-
   /* left to the end because they aren't currently very orthogonal and tend to
    * break subsequent tests! */
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_viewport);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_offscreen);
 
   return g_test_run ();
 }

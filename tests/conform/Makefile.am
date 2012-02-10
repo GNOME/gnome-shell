@@ -27,23 +27,15 @@ units_sources += \
 
 # cogl tests
 units_sources += \
-	test-cogl-backface-culling.c 		\
-	test-cogl-blend-strings.c		\
-	test-cogl-depth-test.c			\
 	test-cogl-fixed.c 			\
 	test-cogl-materials.c			\
-	test-cogl-pipeline-user-matrix.c	\
 	test-cogl-viewport.c			\
 	test-cogl-multitexture.c        	\
 	test-cogl-npot-texture.c        	\
 	test-cogl-object.c			\
-	test-cogl-offscreen.c			\
-	test-cogl-path.c			\
 	test-cogl-pixel-buffer.c		\
 	test-cogl-premult.c			\
 	test-cogl-readpixels.c			\
-	test-cogl-sub-texture.c         	\
-	test-cogl-texture-3d.c          	\
 	test-cogl-texture-get-set-data.c 	\
 	test-cogl-texture-mipmaps.c     	\
 	test-cogl-texture-pixmap-x11.c  	\
@@ -52,9 +44,6 @@ units_sources += \
 	test-cogl-vertex-buffer-contiguous.c 	\
 	test-cogl-vertex-buffer-interleved.c 	\
 	test-cogl-vertex-buffer-mutability.c 	\
-	test-cogl-wrap-modes.c          	\
-	test-cogl-primitive.c			\
-	test-cogl-just-vertex-shader.c		\
 	$(NULL)
 
 # actors tests
