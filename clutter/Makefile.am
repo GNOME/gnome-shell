@@ -602,6 +602,11 @@ backend_source_c += \
        $(srcdir)/wayland/clutter-event-wayland.c               \
        $(srcdir)/wayland/clutter-input-device-wayland.c        \
        $(srcdir)/wayland/clutter-device-manager-wayland.c
+
+clutter-wayland-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pc_files += clutter-wayland-$(CLUTTER_API_VERSION).pc
 endif # SUPPORT_WAYLAND
 
 if SUPPORT_WAYLAND_COMPOSITOR
