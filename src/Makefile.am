@@ -165,6 +165,8 @@ libgnome_shell_la_SOURCES =		\
 	shell-polkit-authentication-agent.c	\
 	shell-screenshot.c		\
 	shell-screen-grabber.c		\
+	shell-secure-text-buffer.c	\
+	shell-secure-text-buffer.h	\
 	shell-slicer.c			\
 	shell-stack.c			\
 	shell-tp-client.c			\

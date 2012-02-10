@@ -23,6 +23,7 @@
 #include "config.h"
 
 #include "shell-keyring-prompt.h"
+#include "shell-secure-text-buffer.h"
 
 #define GCR_API_SUBJECT_TO_CHANGE
 #include <gcr/gcr-base.h>
@@ -617,11 +618,17 @@ void
 shell_keyring_prompt_set_password_actor (ShellKeyringPrompt *self,
                                          ClutterText *password_actor)
 {
+  ClutterTextBuffer *buffer;
+
   g_return_if_fail (SHELL_IS_KEYRING_PROMPT (self));
   g_return_if_fail (password_actor == NULL || CLUTTER_IS_TEXT (password_actor));
 
   if (password_actor)
     {
+      buffer = shell_secure_text_buffer_new ();
+      clutter_text_set_buffer (password_actor, buffer);
+      g_object_unref (buffer);
+
       g_signal_connect (password_actor, "text-changed", G_CALLBACK (on_password_changed), self);
       g_object_ref (password_actor);
     }
@@ -646,11 +653,19 @@ void
 shell_keyring_prompt_set_confirm_actor (ShellKeyringPrompt *self,
                                         ClutterText *confirm_actor)
 {
+  ClutterTextBuffer *buffer;
+
   g_return_if_fail (SHELL_IS_KEYRING_PROMPT (self));
   g_return_if_fail (confirm_actor == NULL || CLUTTER_IS_TEXT (confirm_actor));
 
   if (confirm_actor)
-    g_object_ref (confirm_actor);
+    {
+      buffer = shell_secure_text_buffer_new ();
+      clutter_text_set_buffer (confirm_actor, buffer);
+      g_object_unref (buffer);
+
+      g_object_ref (confirm_actor);
+    }
   if (self->confirm_actor)
     g_object_unref (self->confirm_actor);
   self->confirm_actor = confirm_actor;
