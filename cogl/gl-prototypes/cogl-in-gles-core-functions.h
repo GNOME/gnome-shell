@@ -125,7 +125,7 @@ COGL_EXT_FUNCTION (void, glDeleteBuffers,
                    (GLsizei		 n,
                     const GLuint		*buffers))
 COGL_EXT_FUNCTION (GLboolean, glIsBuffer,
-                   (GLuint               buffer);)
+                   (GLuint               buffer))
 COGL_EXT_END ()
 
 /* Available in GL 1.3, the multitexture extension or GLES. These are
