@@ -6,8 +6,10 @@
 
 typedef struct _TestState
 {
-  int stub;
+  CoglFramebuffer *fb;
 } TestState;
+
+typedef void (* SnippetTestFunc) (TestState *state);
 
 static CoglPipeline *
 create_texture_pipeline (void)
@@ -41,19 +43,10 @@ create_texture_pipeline (void)
 }
 
 static void
-paint (TestState *state)
+simple_fragment_snippet (TestState *state)
 {
   CoglPipeline *pipeline;
   CoglSnippet *snippet;
-  CoglMatrix matrix, identity_matrix;
-  CoglColor color;
-  int location;
-  int i;
-
-  cogl_matrix_init_identity (&identity_matrix);
-
-  cogl_color_init_from_4ub (&color, 0, 0, 0, 255);
-  cogl_clear (&color, COGL_BUFFER_BIT_COLOR);
 
   /* Simple fragment snippet */
   pipeline = cogl_pipeline_new ();
@@ -72,6 +65,15 @@ paint (TestState *state)
 
   cogl_object_unref (pipeline);
 
+  test_utils_check_pixel (5, 5, 0xffff00ff);
+}
+
+static void
+simple_vertex_snippet (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+
   /* Simple vertex snippet */
   pipeline = cogl_pipeline_new ();
 
@@ -88,6 +90,16 @@ paint (TestState *state)
   cogl_pop_source ();
 
   cogl_object_unref (pipeline);
+
+  test_utils_check_pixel (15, 5, 0xff00ffff);
+}
+
+static void
+shared_uniform (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+  int location;
 
   /* Snippets sharing a uniform across the vertex and fragment
      hooks */
@@ -114,6 +126,17 @@ paint (TestState *state)
   cogl_pop_source ();
 
   cogl_object_unref (pipeline);
+
+  test_utils_check_pixel (25, 5, 0xff0080ff);
+}
+
+static void
+lots_snippets (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+  int location;
+  int i;
 
   /* Lots of snippets on one pipeline */
   pipeline = cogl_pipeline_new ();
@@ -150,6 +173,15 @@ paint (TestState *state)
 
   cogl_object_unref (pipeline);
 
+  test_utils_check_pixel (35, 5, 0x19334cff);
+}
+
+static void
+shared_variable_pre_post (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+
   /* Test that the pre string can declare variables used by the post
      string */
   pipeline = cogl_pipeline_new ();
@@ -168,6 +200,15 @@ paint (TestState *state)
   cogl_pop_source ();
 
   cogl_object_unref (pipeline);
+
+  test_utils_check_pixel (45, 5, 0xff0000ff);
+}
+
+static void
+test_pipeline_caching (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
 
   /* Check that the pipeline caching works when unrelated pipelines
      share snippets state. It's too hard to actually assert this in
@@ -197,6 +238,16 @@ paint (TestState *state)
 
   cogl_object_unref (snippet);
 
+  test_utils_check_pixel (55, 5, 0x00ff00ff);
+  test_utils_check_pixel (65, 5, 0x00ff00ff);
+}
+
+static void
+test_replace_string (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+
   /* Check the replace string */
   snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT, NULL, NULL);
   cogl_snippet_set_pre (snippet,
@@ -217,6 +268,15 @@ paint (TestState *state)
 
   cogl_object_unref (snippet);
 
+  test_utils_check_pixel (75, 5, 0x808000ff);
+}
+
+static void
+test_texture_lookup_hook (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+
   /* Check the texture lookup hook */
   snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
                               NULL,
@@ -235,6 +295,15 @@ paint (TestState *state)
 
   cogl_object_unref (snippet);
 
+  test_utils_check_pixel (85, 5, 0x00ffffff);
+}
+
+static void
+test_replace_lookup_hook (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+
   /* Check replacing the texture lookup hook */
   snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP, NULL, NULL);
   cogl_snippet_set_replace (snippet, "cogl_texel = vec4 (0.0, 0.0, 1.0, 0.0);");
@@ -248,6 +317,15 @@ paint (TestState *state)
   cogl_object_unref (pipeline);
 
   cogl_object_unref (snippet);
+
+  test_utils_check_pixel (95, 5, 0x0000ffff);
+}
+
+static void
+test_replace_snippet (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
 
   /* Test replacing a previous snippet */
   pipeline = create_texture_pipeline ();
@@ -270,6 +348,15 @@ paint (TestState *state)
                                       0, 0, 0, 0);
   cogl_pop_source ();
   cogl_object_unref (pipeline);
+
+  test_utils_check_pixel (105, 5, 0xff0000ff);
+}
+
+static void
+test_replace_fragment_layer (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
 
   /* Test replacing the fragment layer code */
   pipeline = create_texture_pipeline ();
@@ -294,6 +381,15 @@ paint (TestState *state)
   cogl_pop_source ();
   cogl_object_unref (pipeline);
 
+  test_utils_check_pixel (115, 5, 0xff00ffff);
+}
+
+static void
+test_modify_fragment_layer (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+
   /* Test modifying the fragment layer code */
   pipeline = cogl_pipeline_new ();
 
@@ -314,6 +410,16 @@ paint (TestState *state)
   cogl_pop_source ();
   cogl_object_unref (pipeline);
 
+  test_utils_check_pixel (125, 5, 0xff80ffff);
+}
+
+static void
+test_modify_vertex_layer (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+  CoglMatrix matrix;
+
   /* Test modifying the vertex layer code */
   pipeline = create_texture_pipeline ();
 
@@ -332,6 +438,16 @@ paint (TestState *state)
                                       0, 0, 0, 0);
   cogl_pop_source ();
   cogl_object_unref (pipeline);
+
+  test_utils_check_pixel (135, 5, 0xffff00ff);
+}
+
+static void
+test_replace_vertex_layer (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+  CoglMatrix matrix;
 
   /* Test replacing the vertex layer code */
   pipeline = create_texture_pipeline ();
@@ -353,7 +469,22 @@ paint (TestState *state)
   cogl_pop_source ();
   cogl_object_unref (pipeline);
 
+  test_utils_check_pixel (145, 5, 0x00ff00ff);
+}
+
+static void
+test_vertex_transform_hook (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+  CoglMatrix identity_matrix;
+  CoglMatrix matrix;
+  int location;
+
   /* Test the vertex transform hook */
+
+  cogl_matrix_init_identity (&identity_matrix);
+
   pipeline = cogl_pipeline_new ();
 
   cogl_pipeline_set_color4ub (pipeline, 255, 0, 255, 255);
@@ -388,6 +519,15 @@ paint (TestState *state)
   /* Restore the projection matrix */
   cogl_set_projection_matrix (&matrix);
 
+  test_utils_check_pixel (155, 5, 0xff00ffff);
+}
+
+static void
+test_snippet_order (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+
   /* Verify that the snippets are executed in the right order. We'll
      replace the r component of the color in the pre sections of the
      snippets and the g component in the post. The pre sections should
@@ -418,6 +558,14 @@ paint (TestState *state)
   cogl_rectangle (160, 0, 170, 10);
   cogl_pop_source ();
   cogl_object_unref (pipeline);
+
+  test_utils_check_pixel (165, 5, 0x80ff00ff);
+}
+
+static void
+test_snippet_properties (TestState *state)
+{
+  CoglSnippet *snippet;
 
   /* Sanity check modifying the snippet */
   snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT, "foo", "bar");
@@ -455,26 +603,41 @@ paint (TestState *state)
                    COGL_SNIPPET_HOOK_FRAGMENT);
 }
 
+static SnippetTestFunc
+tests[] =
+  {
+    simple_fragment_snippet,
+    simple_vertex_snippet,
+    shared_uniform,
+    lots_snippets,
+    shared_variable_pre_post,
+    test_pipeline_caching,
+    test_replace_string,
+    test_texture_lookup_hook,
+    test_replace_lookup_hook,
+    test_replace_snippet,
+    test_replace_fragment_layer,
+    test_modify_fragment_layer,
+    test_modify_vertex_layer,
+    test_replace_vertex_layer,
+    test_vertex_transform_hook,
+    test_snippet_order,
+    test_snippet_properties
+  };
+
 static void
-validate_result (void)
+run_tests (TestState *state)
 {
-  test_utils_check_pixel (5, 5, 0xffff00ff);
-  test_utils_check_pixel (15, 5, 0xff00ffff);
-  test_utils_check_pixel (25, 5, 0xff0080ff);
-  test_utils_check_pixel (35, 5, 0x19334cff);
-  test_utils_check_pixel (45, 5, 0xff0000ff);
-  test_utils_check_pixel (55, 5, 0x00ff00ff);
-  test_utils_check_pixel (65, 5, 0x00ff00ff);
-  test_utils_check_pixel (75, 5, 0x808000ff);
-  test_utils_check_pixel (85, 5, 0x00ffffff);
-  test_utils_check_pixel (95, 5, 0x0000ffff);
-  test_utils_check_pixel (105, 5, 0xff0000ff);
-  test_utils_check_pixel (115, 5, 0xff00ffff);
-  test_utils_check_pixel (125, 5, 0xff80ffff);
-  test_utils_check_pixel (135, 5, 0xffff00ff);
-  test_utils_check_pixel (145, 5, 0x00ff00ff);
-  test_utils_check_pixel (155, 5, 0xff00ffff);
-  test_utils_check_pixel (165, 5, 0x80ff00ff);
+  int i;
+
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      cogl_framebuffer_clear4f (state->fb,
+                                COGL_BUFFER_BIT_COLOR,
+                                0, 0, 0, 1);
+
+      tests[i] (state);
+    }
 }
 
 void
@@ -488,6 +651,8 @@ test_cogl_snippets (TestUtilsGTestFixture *fixture,
     {
       TestState state;
 
+      state.fb = shared_state->fb;
+
       cogl_ortho (/* left, right */
                   0, cogl_framebuffer_get_width (shared_state->fb),
                   /* bottom, top */
@@ -495,8 +660,7 @@ test_cogl_snippets (TestUtilsGTestFixture *fixture,
                   /* z near, far */
                   -1, 100);
 
-      paint (&state);
-      validate_result ();
+      run_tests (&state);
 
       if (g_test_verbose ())
         g_print ("OK\n");
