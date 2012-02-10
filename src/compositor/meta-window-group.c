@@ -101,25 +101,6 @@ actor_is_untransformed (ClutterActor *actor,
   return TRUE;
 }
 
-#if CLUTTER_CHECK_VERSION(1, 9, 0)
-#define has_effects clutter_actor_has_effects
-#else
-
-static gboolean
-has_effects(ClutterActor *actor)
-{
-  GList *list;
-  gboolean ret;
-
-  list = clutter_actor_get_effects (actor);
-  ret = list != NULL;
-  g_list_free (list);
-
-  return ret;
-}
-
-#endif
-
 static void
 meta_window_group_paint (ClutterActor *actor)
 {
@@ -180,7 +161,7 @@ meta_window_group_paint (ClutterActor *actor)
        * as well for the same reason, but omitted for simplicity in the
        * hopes that no-one will do that.
        */
-      if (has_effects (l->data))
+      if (clutter_actor_has_effects (l->data))
         continue;
 
       if (META_IS_WINDOW_ACTOR (l->data))
