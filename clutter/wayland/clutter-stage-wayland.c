@@ -183,3 +183,61 @@ static void
 clutter_stage_wayland_class_init (ClutterStageWaylandClass *klass)
 {
 }
+
+/**
+ * clutter_wayland_stage_get_wl_shell_surface: (skip)
+ *
+ * @stage: a #ClutterStage
+ *
+ * Access the underlying data structure representing the shell surface that is
+ * backing the #ClutterStage
+ *
+ * Note: this function can only be called when running on the Wayland
+ * platform. Calling this function at any other time will return %NULL.
+ *
+ * Returns: (transfer non): the Wayland shell surface associated with
+ * @stage
+ *
+ * Since: 1.10
+ */
+struct wl_shell_surface *
+clutter_wayland_stage_get_wl_shell_surface (ClutterStage *stage)
+{
+  ClutterStageWindow *stage_window = _clutter_stage_get_window (stage);
+  ClutterStageWayland *stage_wayland;
+
+  if (!CLUTTER_IS_STAGE_WAYLAND (stage_window))
+    return NULL;
+
+  stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
+
+  return stage_wayland->wayland_shell_surface;
+}
+
+/**
+ * clutter_wayland_stage_get_wl_surface: (skip)
+ *
+ * @stage: a #ClutterStage
+ *
+ * Access the underlying data structure representing the surface that is
+ * backing the #ClutterStage
+ *
+ * Note: this function can only be called when running on the Wayland
+ * platform. Calling this function at any other time will return %NULL.
+ *
+ * Returns: (transfer none): the Wayland surface associated with @stage
+ */
+struct wl_surface *
+clutter_wayland_stage_get_wl_surface (ClutterStage *stage)
+{
+  ClutterStageWindow *stage_window = _clutter_stage_get_window (stage);
+  ClutterStageWayland *stage_wayland;
+
+  if (!CLUTTER_IS_STAGE_WAYLAND (stage_window))
+    return NULL;
+
+  stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
+
+  return stage_wayland->wayland_surface;
+
+}

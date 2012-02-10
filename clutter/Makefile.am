@@ -603,6 +603,10 @@ backend_source_c += \
        $(srcdir)/wayland/clutter-input-device-wayland.c        \
        $(srcdir)/wayland/clutter-device-manager-wayland.c
 
+
+clutterwayland_includedir = $(clutter_includedir)/wayland
+clutterwayland_include_HEADERS = $(srcdir)/wayland/clutter-wayland.h
+
 clutter-wayland-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 	$(QUIET_GEN)cp -f $< $(@F)
 

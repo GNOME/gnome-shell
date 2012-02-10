@@ -256,3 +256,32 @@ static void
 clutter_input_device_wayland_init (ClutterInputDeviceWayland *self)
 {
 }
+
+/**
+ * clutter_wayland_input_device_get_wl_input_device: (skip)
+ *
+ * @device: a #ClutterInputDevice
+ *
+ * Access the underlying data structure representing the Wayland device that is
+ * backing this #ClutterInputDevice.
+ *
+ * Note: this function can only be called when running on the Wayland platform.
+ * Calling this function at any other time will return %NULL.
+ *
+ * Returns: (transfer none): the Wayland input device associated with the
+ * @device
+ *
+ * Since: 1.10
+ */
+struct wl_input_device *
+clutter_wayland_input_device_get_wl_input_device (ClutterInputDevice *device)
+{
+  ClutterInputDeviceWayland *wayland_device;
+
+  if (!CLUTTER_INPUT_DEVICE_WAYLAND (device))
+    return NULL;
+
+  wayland_device = CLUTTER_INPUT_DEVICE_WAYLAND (device);
+
+  return wayland_device->input_device;
+}
