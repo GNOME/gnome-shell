@@ -151,4 +151,21 @@ test_utils_check_region (int x, int y,
   g_free (pixels);
 }
 
+CoglTexture *
+test_utils_create_color_texture (CoglContext *context,
+                                 guint32 color)
+{
+  CoglTexture2D *tex_2d;
 
+  color = GUINT32_TO_BE (color);
+
+  tex_2d = cogl_texture_2d_new_from_data (context,
+                                          1, 1, /* width/height */
+                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                          4, /* rowstride */
+                                          (guint8 *) &color,
+                                          NULL);
+
+  return COGL_TEXTURE (tex_2d);
+}

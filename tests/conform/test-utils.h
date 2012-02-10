@@ -101,4 +101,15 @@ test_utils_check_region (int x, int y,
 void
 test_utils_compare_pixel (const guint8 *screen_pixel, guint32 expected_pixel);
 
+/*
+ * test_utils_create_color_texture:
+ * @context: A #CoglContext
+ * @color: A color to put in the texture
+ *
+ * Creates a 1x1-pixel RGBA texture filled with the given color.
+ */
+CoglTexture *
+test_utils_create_color_texture (CoglContext *context,
+                                 guint32 color);
+
 #endif /* _TEST_UTILS_H_ */

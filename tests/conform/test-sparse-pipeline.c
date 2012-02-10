@@ -11,25 +11,6 @@ typedef struct _TestState
   CoglFramebuffer *fb;
 } TestState;
 
-static CoglTexture *
-create_color_texture (CoglContext *context,
-                      guint32 color)
-{
-  CoglTexture2D *tex_2d;
-
-  color = GUINT32_TO_BE (color);
-
-  tex_2d = cogl_texture_2d_new_from_data (context,
-                                          1, 1, /* width/height */
-                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                          4, /* rowstride */
-                                          (guint8 *) &color,
-                                          NULL);
-
-  return COGL_TEXTURE (tex_2d);
-}
-
 static void
 test_sparse_layer_combine (TestState *state)
 {
@@ -43,8 +24,8 @@ test_sparse_layer_combine (TestState *state)
      creating a pipeline with very large layer numbers. This should
      end up being mapped to much smaller unit numbers */
 
-  tex1 = create_color_texture (state->context, 0xff0000ff);
-  tex2 = create_color_texture (state->context, 0x00ff00ff);
+  tex1 = test_utils_create_color_texture (state->context, 0xff0000ff);
+  tex2 = test_utils_create_color_texture (state->context, 0x00ff00ff);
 
   pipeline = cogl_pipeline_new ();
 
