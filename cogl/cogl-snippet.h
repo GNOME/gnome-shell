@@ -515,11 +515,13 @@ typedef struct _CoglSnippet CoglSnippet;
  * alter the returned texel.
  * </para>
  * <para>
- * Within the snippet code for this hook there are two extra variables
- * available. ‘cogl_tex_coord’ is a vec4 which contains the texture
- * coordinates that will be used for the texture lookup this can be
+ * Within the snippet code for this hook there are three extra
+ * variables available. ‘cogl_sampler’ is a sampler object
+ * representing the sampler for the layer where the snippet is
+ * attached. ‘cogl_tex_coord’ is a vec4 which contains the texture
+ * coordinates that will be used for the texture lookup. This can be
  * modified. ‘cogl_texel’ will contain the result of the texture
- * lookup. This can be modified.
+ * lookup. This can also be modified.
  * </para>
  * <para>
  * The ‘declarations’ string in @snippet will be inserted in the

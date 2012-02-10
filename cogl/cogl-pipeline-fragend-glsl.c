@@ -417,11 +417,19 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
 {
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
   CoglPipelineSnippetData snippet_data;
+  CoglTextureType texture_type;
+  const char *target_string, *tex_coord_swizzle;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (shader_state->unit_state[unit_index].sampled)
     return;
+
+  texture_type =
+    _cogl_pipeline_layer_get_texture_type (layer);
+  get_texture_target_string (texture_type,
+                             &target_string,
+                             &tex_coord_swizzle);
 
   shader_state->unit_state[unit_index].sampled = TRUE;
 
@@ -430,7 +438,9 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
                           layer->index);
 
   g_string_append_printf (shader_state->source,
-                          "  cogl_texel%i = cogl_texture_lookup%i (",
+                          "  cogl_texel%i = cogl_texture_lookup%i ("
+                          "cogl_sampler%i, ",
+                          layer->index,
                           layer->index,
                           layer->index);
 
@@ -458,28 +468,22 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
      to be replaced */
   if (!has_replace_hook (layer, COGL_SNIPPET_HOOK_TEXTURE_LOOKUP))
     {
-      CoglTextureType texture_type =
-        _cogl_pipeline_layer_get_texture_type (layer);
-      const char *target_string, *tex_coord_swizzle;
-
-      get_texture_target_string (texture_type,
-                                 &target_string,
-                                 &tex_coord_swizzle);
-
       g_string_append_printf (shader_state->header,
                               "vec4\n"
-                              "cogl_real_texture_lookup%i (vec4 coords)\n"
+                              "cogl_real_texture_lookup%i (sampler%s tex,\n"
+                              "                            vec4 coords)\n"
                               "{\n"
                               "  return ",
-                              layer->index);
+                              layer->index,
+                              target_string);
 
       if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
         g_string_append (shader_state->header,
                          "vec4 (1.0, 1.0, 1.0, 1.0);\n");
       else
         g_string_append_printf (shader_state->header,
-                                "texture%s (cogl_sampler%i, coords.%s);\n",
-                                target_string, layer->index, tex_coord_swizzle);
+                                "texture%s (tex, coords.%s);\n",
+                                target_string, tex_coord_swizzle);
 
       g_string_append (shader_state->header, "}\n");
     }
@@ -496,8 +500,10 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
                                                   layer->index);
   snippet_data.return_type = "vec4";
   snippet_data.return_variable = "cogl_texel";
-  snippet_data.arguments = "cogl_tex_coord";
-  snippet_data.argument_declarations = "vec4 cogl_tex_coord";
+  snippet_data.arguments = "cogl_sampler, cogl_tex_coord";
+  snippet_data.argument_declarations =
+    g_strdup_printf ("sampler%s cogl_sampler, vec4 cogl_tex_coord",
+                     target_string);
   snippet_data.source_buf = shader_state->header;
 
   _cogl_pipeline_snippet_generate_code (&snippet_data);
@@ -505,6 +511,7 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
   g_free ((char *) snippet_data.chain_function);
   g_free ((char *) snippet_data.final_name);
   g_free ((char *) snippet_data.function_prefix);
+  g_free ((char *) snippet_data.argument_declarations);
 }
 
 static void
