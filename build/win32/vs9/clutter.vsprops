@@ -132,7 +132,6 @@ copy ..\..\..\clutter\clutter-bind-constraint.h $(OutDir)\include\clutter-$(Clut
 copy ..\..\..\clutter\clutter-binding-pool.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-bin-layout.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-blur-effect.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
-copy ..\..\..\clutter\clutter-box.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-box-layout.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-cairo-texture.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-child-meta.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
@@ -173,7 +172,6 @@ copy ..\..\..\clutter\clutter-offscreen-effect.h $(OutDir)\include\clutter-$(Clu
 copy ..\..\..\clutter\clutter-page-turn-effect.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-path-constraint.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-path.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
-copy ..\..\..\clutter\clutter-rectangle.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-script.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-scriptable.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-settings.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
@@ -188,6 +186,7 @@ copy ..\..\..\clutter\clutter-swipe-action.h $(OutDir)\include\clutter-$(Clutter
 copy ..\..\..\clutter\clutter-table-layout.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-texture.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-text.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
+copy ..\..\..\clutter\clutter-text-buffer.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-timeline.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-types.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-units.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
@@ -205,11 +204,14 @@ copy ..\..\..\clutter\deprecated\clutter-behaviour-opacity.h $(OutDir)\include\c
 copy ..\..\..\clutter\deprecated\clutter-behaviour-path.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-behaviour-rotate.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-behaviour-scale.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
+copy ..\..\..\clutter\deprecated\clutter-box.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
+copy ..\..\..\clutter\deprecated\clutter-container.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-group.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-fixed.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-frame-source.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-keysyms.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-main.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
+copy ..\..\..\clutter\deprecated\clutter-rectangle.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-score.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-shader.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-stage.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
@@ -228,12 +230,6 @@ copy ..\..\..\clutter\cally\cally-stage.h $(OutDir)\include\clutter-$(ClutterApi
 copy ..\..\..\clutter\cally\cally-text.h $(OutDir)\include\clutter-$(ClutterApiVersion)\cally&#x0D;&#x0A;
 copy ..\..\..\clutter\cally\cally-texture.h $(OutDir)\include\clutter-$(ClutterApiVersion)\cally&#x0D;&#x0A;
 copy ..\..\..\clutter\cally\cally-util.h $(OutDir)\include\clutter-$(ClutterApiVersion)\cally&#x0D;&#x0A;
-
-mkdir $(OutDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples&#x0D;&#x0A;
-copy ..\..\..\doc\cookbook\examples\*.c $(OutDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples&#x0D;&#x0A;
-copy ..\..\..\doc\cookbook\examples\*.h $(OutDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples&#x0D;&#x0A;
-copy ..\..\..\doc\cookbook\examples\*.json $(OutDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples&#x0D;&#x0A;
-copy ..\..\..\doc\cookbook\examples\*.png $(OutDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples&#x0D;&#x0A;
 
 "
 	/>
