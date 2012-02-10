@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-09 11:34+0000\n"
-"PO-Revision-Date: 2012-02-09 17:21+0100\n"
+"POT-Creation-Date: 2012-02-10 10:52+0000\n"
+"PO-Revision-Date: 2012-02-10 14:55+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,6 @@ msgstr "Gestión de ventanas e inicio de aplicaciones"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 #: ../js/extensionPrefs/main.js:154
-#| msgid "GNOME Shell Extension Preferences"
 msgid "GNOME Shell Extensions Preferences"
 msgstr "Preferencias de las extensiones de GNOME Shell"
 
@@ -1562,22 +1561,27 @@ msgstr ""
 "certificado del servidor exceden los límites impuestos por la biblioteca de "
 "criptografía"
 
+#: ../js/ui/telepathyClient.js:1340
+#| msgid "Connection error"
+msgid "Internal error"
+msgstr "Error interno"
+
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1348
+#: ../js/ui/telepathyClient.js:1350
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Falló la conexión a %s"
 
-#: ../js/ui/telepathyClient.js:1357
+#: ../js/ui/telepathyClient.js:1359
 msgid "Reconnect"
 msgstr "Reconectar"
 
-#: ../js/ui/telepathyClient.js:1358
+#: ../js/ui/telepathyClient.js:1360
 msgid "Edit account"
 msgstr "Editar cuenta"
 
-#: ../js/ui/telepathyClient.js:1404
+#: ../js/ui/telepathyClient.js:1406
 msgid "Unknown reason"
 msgstr "Razón desconocida"
 
