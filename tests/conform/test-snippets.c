@@ -7,6 +7,7 @@
 typedef struct _TestState
 {
   CoglFramebuffer *fb;
+  CoglContext *context;
 } TestState;
 
 typedef void (* SnippetTestFunc) (TestState *state);
@@ -591,6 +592,46 @@ test_snippet_order (TestState *state)
 }
 
 static void
+test_naming_texture_units (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+  CoglTexture *tex1, *tex2;
+
+  /* Test that we can sample from an arbitrary texture unit by naming
+     its layer number */
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                              NULL,
+                              NULL);
+  cogl_snippet_set_replace (snippet,
+                            "cogl_color_out = "
+                            "texture2D (cogl_sampler100, vec2 (0.0, 0.0)) + "
+                            "texture2D (cogl_sampler200, vec2 (0.0, 0.0));");
+
+  tex1 = test_utils_create_color_texture (state->context, 0xff0000ff);
+  tex2 = test_utils_create_color_texture (state->context, 0x00ff00ff);
+
+  pipeline = cogl_pipeline_new ();
+
+  cogl_pipeline_set_layer_texture (pipeline, 100, tex1);
+  cogl_pipeline_set_layer_texture (pipeline, 200, tex2);
+
+  cogl_pipeline_add_snippet (pipeline, snippet);
+
+  cogl_push_source (pipeline);
+  cogl_rectangle (0, 0, 10, 10);
+  cogl_pop_source ();
+
+  cogl_object_unref (pipeline);
+  cogl_object_unref (snippet);
+  cogl_object_unref (tex1);
+  cogl_object_unref (tex2);
+
+  test_utils_check_pixel (5, 5, 0xffff00ff);
+}
+
+static void
 test_snippet_properties (TestState *state)
 {
   CoglSnippet *snippet;
@@ -651,6 +692,7 @@ tests[] =
     test_replace_vertex_layer,
     test_vertex_transform_hook,
     test_snippet_order,
+    test_naming_texture_units,
     test_snippet_properties
   };
 
@@ -681,6 +723,7 @@ test_cogl_snippets (TestUtilsGTestFixture *fixture,
       TestState state;
 
       state.fb = shared_state->fb;
+      state.context = shared_state->ctx;
 
       cogl_ortho (/* left, right */
                   0, cogl_framebuffer_get_width (shared_state->fb),
