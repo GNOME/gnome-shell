@@ -299,6 +299,34 @@ test_texture_lookup_hook (TestState *state)
 }
 
 static void
+test_multiple_samples (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+
+  /* Check that we can use the passed in sampler in the texture lookup
+     to sample multiple times */
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
+                              NULL,
+                              NULL);
+  cogl_snippet_set_replace (snippet,
+                            "cogl_texel = "
+                            "texture2D (cogl_sampler, vec2 (0.25, 0.25)) + "
+                            "texture2D (cogl_sampler, vec2 (0.75, 0.25));");
+
+  pipeline = create_texture_pipeline ();
+  cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
+  cogl_push_source (pipeline);
+  cogl_rectangle (0, 0, 10, 10);
+  cogl_pop_source ();
+  cogl_object_unref (pipeline);
+
+  cogl_object_unref (snippet);
+
+  test_utils_check_pixel (5, 5, 0xffff00ff);
+}
+
+static void
 test_replace_lookup_hook (TestState *state)
 {
   CoglPipeline *pipeline;
@@ -614,6 +642,7 @@ tests[] =
     test_pipeline_caching,
     test_replace_string,
     test_texture_lookup_hook,
+    test_multiple_samples,
     test_replace_lookup_hook,
     test_replace_snippet,
     test_replace_fragment_layer,
