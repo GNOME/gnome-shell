@@ -8,6 +8,7 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
+const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const ScreenSaver = imports.misc.screenSaver;
@@ -490,13 +491,15 @@ const HotCorner = new Lang.Class({
 
     handleDragOver: function(source, actor, x, y, time) {
         if (source != Main.xdndHandler)
-            return;
+            return DND.DragMotionResult.CONTINUE;
 
         if (!Main.overview.visible && !Main.overview.animationInProgress) {
             this.rippleAnimation();
             Main.overview.showTemporarily();
             Main.overview.beginItemDrag(actor);
         }
+
+        return DND.DragMotionResult.CONTINUE;
     },
 
     _onCornerEntered : function() {

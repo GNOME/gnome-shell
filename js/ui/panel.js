@@ -13,6 +13,7 @@ const Signals = imports.signals;
 
 const Config = imports.misc.config;
 const CtrlAltTab = imports.ui.ctrlAltTab;
+const DND = imports.ui.dnd;
 const Layout = imports.ui.layout;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
@@ -660,12 +661,14 @@ const ActivitiesButton = new Lang.Class({
 
     handleDragOver: function(source, actor, x, y, time) {
         if (source != Main.xdndHandler)
-            return;
+            return DND.DragMotionResult.CONTINUE;
 
         if (this._xdndTimeOut != 0)
             Mainloop.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = Mainloop.timeout_add(BUTTON_DND_ACTIVATION_TIMEOUT,
                                                  Lang.bind(this, this._xdndShowOverview, actor));
+
+        return DND.DragMotionResult.CONTINUE;
     },
 
     _escapeMenuGrab: function() {
