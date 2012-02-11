@@ -113,10 +113,11 @@ const XdndHandler = new Lang.Class({
 
         while (pickedActor) {
                 if (pickedActor._delegate && pickedActor._delegate.handleDragOver) {
+                    let [r, targX, targY] = pickedActor.transform_stage_point(x, y);
                     let result = pickedActor._delegate.handleDragOver(this,
                                                                       dragEvent.dragActor,
-                                                                      x,
-                                                                      y,
+                                                                      targX,
+                                                                      targY,
                                                                       global.get_current_time());
                     if (result != DND.DragMotionResult.CONTINUE)
                         return;
