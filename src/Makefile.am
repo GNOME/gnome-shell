@@ -81,6 +81,7 @@ include Makefile-hotplug-sniffer.am
 
 gnome_shell_cflags =				\
 	$(GNOME_SHELL_CFLAGS)			\
+	$(SYSTEMD_CFLAGS)                       \
 	-I$(srcdir)/tray			\
 	-DVERSION=\"$(VERSION)\"		\
 	-DLOCALEDIR=\"$(datadir)/locale\" 	\
@@ -279,6 +280,7 @@ libgnome_shell_la_LDFLAGS = -avoid-version
 libgnome_shell_la_LIBADD =		\
 	-lm			\
 	$(GNOME_SHELL_LIBS)	\
+	$(SYSTEMD_LIBS)         \
 	$(BLUETOOTH_LIBS)	\
 	libst-1.0.la       	\
 	libtray.la		\

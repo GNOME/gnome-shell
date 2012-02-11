@@ -141,6 +141,33 @@ PKG_CHECK_MODULES(CALENDAR_SERVER, libecal-1.2 >= $LIBECAL_MIN_VERSION libedatas
 AC_SUBST(CALENDAR_SERVER_CFLAGS)
 AC_SUBST(CALENDAR_SERVER_LIBS)
 
+AC_ARG_WITH(systemd,
+            AS_HELP_STRING([--with-systemd],
+                           [Add systemd support]),
+            [with_systemd=$withval], [with_systemd=auto])
+
+PKG_CHECK_MODULES(SYSTEMD,
+                  [libsystemd-login libsystemd-daemon],
+                  [have_systemd=yes], [have_systemd=no])
+
+if test "x$with_systemd" = "xauto" ; then
+        if test x$have_systemd = xno ; then
+                use_systemd=no
+        else
+                use_systemd=yes
+        fi
+else
+        use_systemd=$with_systemd
+fi
+
+if test "x$use_systemd" = "xyes"; then
+        if test "x$have_systemd" = "xno"; then
+                AC_MSG_ERROR([Systemd support explicitly required, but systemd not found])
+        fi
+
+        AC_DEFINE(WITH_SYSTEMD, 1, [systemd support])
+fi
+
 MUTTER_GIR_DIR=`$PKG_CONFIG --variable=girdir libmutter`
 MUTTER_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter`
 AC_SUBST(MUTTER_GIR_DIR)

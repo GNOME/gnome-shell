@@ -2,9 +2,11 @@
 
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Params = imports.misc.params;
 
+const Shell = imports.gi.Shell;
 const Main = imports.ui.main;
 const ShellMountOperation = imports.ui.shellMountOperation;
 const ScreenSaver = imports.misc.screenSaver;
@@ -67,6 +69,10 @@ function ConsoleKitManager() {
     return self;
 }
 
+function haveSystemd() {
+    return GLib.access("/sys/fs/cgroup/systemd", 0) >= 0;
+}
+
 const AutomountManager = new Lang.Class({
     Name: 'AutomountManager',
 
@@ -74,7 +80,8 @@ const AutomountManager = new Lang.Class({
         this._settings = new Gio.Settings({ schema: SETTINGS_SCHEMA });
         this._volumeQueue = [];
 
-        this.ckListener = new ConsoleKitManager();
+        if (!haveSystemd())
+            this.ckListener = new ConsoleKitManager();
 
         this._ssProxy = new ScreenSaver.ScreenSaverProxy();
         this._ssProxy.connectSignal('ActiveChanged',
@@ -122,11 +129,22 @@ const AutomountManager = new Lang.Class({
         return false;
     },
 
+    _sessionActive: function() {
+        // Return whether the current session is active, using the
+        // right mechanism: either systemd if available or ConsoleKit
+        // as fallback.
+
+        if (haveSystemd())
+            return Shell.session_is_active_for_systemd();
+
+        return this.ckListener.sessionActive;
+    },
+
     _onDriveConnected: function() {
         // if we're not in the current ConsoleKit session,
         // or screensaver is active, don't play sounds
-        if (!this.ckListener.sessionActive)
-            return;        
+        if (!this._sessionActive())
+            return;
 
         if (this._ssProxy.screenSaverActive)
             return;
@@ -137,8 +155,8 @@ const AutomountManager = new Lang.Class({
     _onDriveDisconnected: function() {
         // if we're not in the current ConsoleKit session,
         // or screensaver is active, don't play sounds
-        if (!this.ckListener.sessionActive)
-            return;        
+        if (!this._sessionActive())
+            return;
 
         if (this._ssProxy.screenSaverActive)
             return;
@@ -149,7 +167,7 @@ const AutomountManager = new Lang.Class({
     _onDriveEjectButton: function(monitor, drive) {
         // TODO: this code path is not tested, as the GVfs volume monitor
         // doesn't emit this signal just yet.
-        if (!this.ckListener.sessionActive)
+        if (!this._sessionActive())
             return;
 
         // we force stop/eject in this case, so we don't have to pass a
@@ -188,7 +206,7 @@ const AutomountManager = new Lang.Class({
         if (params.checkSession) {
             // if we're not in the current ConsoleKit session,
             // don't attempt automount
-            if (!this.ckListener.sessionActive)
+            if (!this._sessionActive())
                 return;
 
             if (this._ssProxy.screenSaverActive) {
