@@ -14,3 +14,6 @@ const SHELL_SYSTEM_CA_FILE = '@SHELL_SYSTEM_CA_FILE@';
 const GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
 /* locale dir */
 const LOCALEDIR = '@datadir@/locale';
+/* other standard directories */
+const LIBEXECDIR = '@libexecdir@';
+const SYSCONFDIR = '@sysconfdir@';

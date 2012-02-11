@@ -275,7 +275,6 @@ AC_CONFIG_FILES([
   docs/reference/st/Makefile
   docs/reference/st/st-docs.sgml
   js/Makefile
-  js/misc/config.js
   src/Makefile
   browser-plugin/Makefile
   tests/Makefile
