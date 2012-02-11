@@ -1728,28 +1728,20 @@ filter_by_position (GList            *children,
         case GTK_DIR_UP:
           if (cbox.y2 > rbox->y1 + 0.1)
             continue;
-          if (cbox.x1 >= rbox->x2 || cbox.x2 <= rbox->x1)
-            continue;
           break;
 
         case GTK_DIR_DOWN:
           if (cbox.y1 < rbox->y2 - 0.1)
-            continue;
-          if (cbox.x1 >= rbox->x2 || cbox.x2 <= rbox->x1)
             continue;
           break;
 
         case GTK_DIR_LEFT:
           if (cbox.x2 > rbox->x1 + 0.1)
             continue;
-          if (cbox.y1 >= rbox->y2 || cbox.y2 <= rbox->y1)
-            continue;
           break;
 
         case GTK_DIR_RIGHT:
           if (cbox.x1 < rbox->x2 - 0.1)
-            continue;
-          if (cbox.y1 >= rbox->y2 || cbox.y2 <= rbox->y1)
             continue;
           break;
 
