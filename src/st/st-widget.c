@@ -1708,13 +1708,15 @@ filter_by_position (GList            *children,
                     GtkDirectionType  direction)
 {
   ClutterActorBox cbox;
+  ClutterVertex abs_vertices[4];
   GList *l, *ret;
   ClutterActor *child;
 
   for (l = children, ret = NULL; l; l = l->next)
     {
       child = l->data;
-      clutter_actor_get_allocation_box (child, &cbox);
+      clutter_actor_get_abs_allocation_vertices (child, abs_vertices);
+      clutter_actor_box_from_vertices (&cbox, abs_vertices);
 
       /* Filter out children if they are in the wrong direction from
        * @rbox, or if they don't overlap it. To account for floating-
@@ -1778,6 +1780,7 @@ sort_by_position (gconstpointer  a,
   StWidgetChildSortData *sort_data = user_data;
   GtkDirectionType direction = sort_data->direction;
   ClutterActorBox abox, bbox;
+  ClutterVertex abs_vertices[4];
   int ax, ay, bx, by;
   int cmp, fmid;
 
@@ -1788,10 +1791,12 @@ sort_by_position (gconstpointer  a,
    * overall list sorted bottom-to-top.
    */
 
-  clutter_actor_get_allocation_box (actor_a, &abox);
+  clutter_actor_get_abs_allocation_vertices (actor_a, abs_vertices);
+  clutter_actor_box_from_vertices (&abox, abs_vertices);
   ax = (int)(abox.x1 + abox.x2) / 2;
   ay = (int)(abox.y1 + abox.y2) / 2;
-  clutter_actor_get_allocation_box (actor_b, &bbox);
+  clutter_actor_get_abs_allocation_vertices (actor_b, abs_vertices);
+  clutter_actor_box_from_vertices (&bbox, abs_vertices);
   bx = (int)(bbox.x1 + bbox.x2) / 2;
   by = (int)(bbox.y1 + bbox.y2) / 2;
 
@@ -1884,16 +1889,15 @@ st_widget_real_navigate_focus (StWidget         *widget,
         return TRUE;
     }
 
-  /* At this point we know that we want to navigate focus to one of
-   * @widget's immediate children; the next one after @focus_child,
-   * or the first one if @focus_child is %NULL. (With "next" and
-   * "first" being determined by @direction.)
-   */
-
   children = st_widget_get_focus_chain (widget);
   if (direction == GTK_DIR_TAB_FORWARD ||
       direction == GTK_DIR_TAB_BACKWARD)
     {
+      /* At this point we know that we want to navigate focus to one of
+       * @widget's immediate children; the next one after @focus_child, or the
+       * first one if @focus_child is %NULL. (With "next" and "first" being
+       * determined by @direction.)
+       */
       if (direction == GTK_DIR_TAB_BACKWARD)
         children = g_list_reverse (children);
 
@@ -1909,10 +1913,11 @@ st_widget_real_navigate_focus (StWidget         *widget,
   else /* direction is an arrow key, not tab */
     {
       StWidgetChildSortData sort_data;
+      ClutterVertex abs_vertices[4];
 
-      /* Compute the allocation box of the previous focused actor, in
-       * @widget's coordinate space. If there was no previous focus,
-       * use the coordinates of the appropriate edge of @widget.
+      /* Compute the allocation box of the previous focused actor. If there
+       * was no previous focus, use the coordinates of the appropriate edge of
+       * @widget.
        *
        * Note that all of this code assumes the actors are not
        * transformed (or at most, they are all scaled by the same
@@ -1920,13 +1925,15 @@ st_widget_real_navigate_focus (StWidget         *widget,
        * any child is inconsistently scaled, then the focus chain will
        * probably be unpredictable.
        */
-      if (focus_child)
+      if (from)
         {
-          clutter_actor_get_allocation_box (focus_child, &sort_data.box);
+          clutter_actor_get_abs_allocation_vertices (from, abs_vertices);
+          clutter_actor_box_from_vertices (&sort_data.box, abs_vertices);
         }
       else
         {
-          clutter_actor_get_allocation_box (CLUTTER_ACTOR (widget), &sort_data.box);
+          clutter_actor_get_abs_allocation_vertices (widget_actor, abs_vertices);
+          clutter_actor_box_from_vertices (&sort_data.box, abs_vertices);
           switch (direction)
             {
             case GTK_DIR_UP:
@@ -1947,7 +1954,7 @@ st_widget_real_navigate_focus (StWidget         *widget,
         }
       sort_data.direction = direction;
 
-      if (focus_child)
+      if (from)
         children = filter_by_position (children, &sort_data.box, direction);
       if (children)
         children = g_list_sort_with_data (children, sort_by_position, &sort_data);
@@ -1984,9 +1991,11 @@ st_widget_real_navigate_focus (StWidget         *widget,
  * If @from is a descendant of @widget, this attempts to move the
  * keyboard focus to the next descendant of @widget (in the order
  * implied by @direction) that has the #StWidget:can-focus property
- * set. If @from is %NULL, or outside of @widget, this attempts to
- * focus either @widget itself, or its first descendant in the order
- * implied by @direction.
+ * set. If @from is %NULL, this attempts to focus either @widget
+ * itself, or its first descendant in the order implied by
+ * @direction. If @from is outside of @widget, it behaves as if it was
+ * a descendant if @direction is one of the directional arrows and as
+ * if it was %NULL otherwise.
  *
  * If a container type is marked #StWidget:can-focus, the expected
  * behavior is that it will only take up a single slot on the focus
