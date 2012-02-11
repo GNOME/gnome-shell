@@ -168,6 +168,72 @@ typedef struct _CoglTextureVertex       CoglTextureVertex;
 #define COGL_AFIRST_BIT         (1 << 6)
 #define COGL_PREMULT_BIT        (1 << 7)
 
+/* XXX: Notes to those adding new formats here...
+ *
+ * First this diagram outlines how we allocate the 32bits of a
+ * CoglPixelFormat currently...
+ *
+ *                             4 bits for flags
+ *                             |--|
+ *  enum        unused             4 bits for the bytes-per-pixel
+ *                                 and component alignment info
+ *  |------| |---------------|     |--|
+ *  00000000 xxxxxxxx xxxxxxxx PFBA0000
+ *                             ^ premult
+ *                              ^ alpha first
+ *                               ^ bgr order
+ *                                ^ has alpha
+ *
+ * The most awkward part about the formats is how we use the last 4
+ * bits to encode the bytes per pixel and component alignment
+ * information. Ideally we should have had 3 bits for the bpp and a
+ * flag for alignment but we didn't plan for that in advance so we
+ * instead use a small lookup table to query the bpp and whether the
+ * components are byte aligned or not.
+ *
+ * The mapping is the following (see discussion on bug #660188):
+ *
+ * 0     = undefined
+ * 1, 8  = 1 bpp (e.g. A_8, G_8)
+ * 2     = 3 bpp, aligned (e.g. 888)
+ * 3     = 4 bpp, aligned (e.g. 8888)
+ * 4-6   = 2 bpp, not aligned (e.g. 565, 4444, 5551)
+ * 7     = YUV: undefined bpp, undefined alignment
+ * 9     = 2 bpp, aligned
+ * 10    = undefined
+ * 11    = undefined
+ * 12    = 3 bpp, not aligned
+ * 13    = 4 bpp, not aligned (e.g. 2101010)
+ * 14-15 = undefined
+ *
+ * Note: the gap at 10-11 is just because we wanted to maintain that
+ * all non-aligned formats have the third bit set in case that's
+ * useful later.
+ *
+ * Since we don't want to waste bits adding more and more flags, we'd
+ * like to see most new pixel formats that can't be represented
+ * uniquely with the existing flags in the least significant byte
+ * simply be enumerated with sequential values in the most significant
+ * enum byte.
+ *
+ * Note: Cogl avoids exposing any padded XRGB or RGBX formats and
+ * instead we leave it up to applications to decided whether they
+ * consider the A component as padding or valid data. We shouldn't
+ * change this policy without good reasoning.
+ *
+ * So to add a new format:
+ * 1) Use the mapping table above to figure out what to but in
+ *    the lowest nibble.
+ * 2) OR in the COGL_PREMULT_BIT, COGL_AFIRST_BIT, COGL_A_BIT and
+ *    COGL_BGR_BIT flags as appropriate.
+ * 3) If the result is not yet unique then also combine with an
+ *    increment of the last sequence number in the most significant
+ *    byte.
+ *
+ * The last sequence number used was 0 (i.e. no formats currently need
+ *                                      a sequence number)
+ * Update this note whenever a new sequence number is used.
+ */
 /**
  * CoglPixelFormat:
  * @COGL_PIXEL_FORMAT_ANY: Any format
@@ -198,19 +264,20 @@ typedef struct _CoglTextureVertex       CoglTextureVertex;
  * @COGL_PIXEL_FORMAT_ARGB_2101010_PRE: Premultiplied ARGB, 32 bits, 10 bpc
  * @COGL_PIXEL_FORMAT_ABGR_2101010_PRE: Premultiplied ABGR, 32 bits, 10 bpc
  *
- * Pixel formats used by COGL. For the formats with a byte per
+ * Pixel formats used by Cogl. For the formats with a byte per
  * component, the order of the components specify the order in
  * increasing memory addresses. So for example
  * %COGL_PIXEL_FORMAT_RGB_888 would have the red component in the
  * lowest address, green in the next address and blue after that
- * regardless of the endinanness of the system.
+ * regardless of the endianness of the system.
  *
- * For the 16-bit formats the component order specifies the order
- * within a 16-bit number from most significant bit to least
- * significant. So for %COGL_PIXEL_FORMAT_RGB_565, the red component
- * would be in bits 11-15, the green component would be in 6-11 and
- * the blue component would be in 1-5. Therefore the order in memory
- * depends on the endianness of the system.
+ * For the formats with non byte aligned components the component
+ * order specifies the order within a 16-bit or 32-bit number from
+ * most significant bit to least significant. So for
+ * %COGL_PIXEL_FORMAT_RGB_565, the red component would be in bits
+ * 11-15, the green component would be in 6-11 and the blue component
+ * would be in 1-5. Therefore the order in memory depends on the
+ * endianness of the system.
  *
  * When uploading a texture %COGL_PIXEL_FORMAT_ANY can be used as the
  * internal format. Cogl will try to pick the best format to use
