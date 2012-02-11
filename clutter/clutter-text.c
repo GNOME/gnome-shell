@@ -2011,14 +2011,11 @@ clutter_text_paint (ClutterActor *self)
      tied to the workings of this function */
 
   n_chars = clutter_text_buffer_get_length (get_buffer (text));
-  if (G_UNLIKELY (priv->font_desc == NULL || n_chars == 0))
-    {
-      CLUTTER_NOTE (ACTOR, "desc: %p",
-                    priv->font_desc ? priv->font_desc : 0x0);
-      return;
-    }
 
-  /* don't bother painting an empty text actor */
+  /* don't bother painting an empty text actor, unless it's
+   * editable, in which case we want to paint at least the
+   * cursor
+   */
   if (n_chars == 0 && (!priv->editable || !priv->cursor_visible))
     return;
 
