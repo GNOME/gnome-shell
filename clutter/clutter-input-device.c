@@ -422,16 +422,10 @@ _clutter_input_device_set_time (ClutterInputDevice *device,
     device->current_time = time_;
 }
 
-/* #ClutterInputDevice keeps a weak reference on the actor
- * under its pointer; this function unsets the reference on
- * the actor to avoid keeping around stale pointers
- */
 static void
-cursor_weak_unref (gpointer  user_data,
-                   GObject  *object_pointer)
+on_cursor_actor_destroy (ClutterActor       *actor,
+                         ClutterInputDevice *device)
 {
-  ClutterInputDevice *device = user_data;
-
   device->cursor_actor = NULL;
 }
 
@@ -533,9 +527,9 @@ _clutter_input_device_set_actor (ClutterInputDevice *device,
       if (device->cursor_actor != NULL)
         {
           _clutter_actor_set_has_pointer (device->cursor_actor, FALSE);
-          g_object_weak_unref (G_OBJECT (device->cursor_actor),
-                               cursor_weak_unref,
-                               device);
+          g_signal_handlers_disconnect_by_func (device->cursor_actor,
+                                                G_CALLBACK (on_cursor_actor_destroy),
+                                                device);
 
           device->cursor_actor = NULL;
         }
@@ -567,9 +561,9 @@ _clutter_input_device_set_actor (ClutterInputDevice *device,
   device->cursor_actor = actor;
   if (device->cursor_actor != NULL)
     {
-      g_object_weak_ref (G_OBJECT (device->cursor_actor),
-                         cursor_weak_unref,
-                         device);
+      g_signal_connect (device->cursor_actor,
+                        "destroy", G_CALLBACK (on_cursor_actor_destroy),
+                        device);
       _clutter_actor_set_has_pointer (device->cursor_actor, TRUE);
     }
 }
