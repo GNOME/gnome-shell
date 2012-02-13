@@ -4692,7 +4692,10 @@ clutter_actor_real_get_paint_volume (ClutterActor       *self,
   res = FALSE;
 
   /* we start from the allocation */
-  clutter_paint_volume_set_from_allocation (volume, self);
+  clutter_paint_volume_set_width (volume,
+                                  priv->allocation.x2 - priv->allocation.x1);
+  clutter_paint_volume_set_height (volume,
+                                   priv->allocation.y2 - priv->allocation.y1);
 
   /* if the actor has a clip set then we have a pretty definite
    * size for the paint volume: the actor cannot possibly paint

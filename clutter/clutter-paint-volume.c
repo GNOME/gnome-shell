@@ -970,6 +970,10 @@ _clutter_actor_set_default_paint_volume (ClutterActor       *self,
 
   clutter_actor_get_allocation_box (self, &box);
 
+  /* we only set the width and height, as the paint volume is defined
+   * to be relative to the actor's modelview, which means that the
+   * allocation's origin has already been applied
+   */
   clutter_paint_volume_set_width (volume, box.x2 - box.x1);
   clutter_paint_volume_set_height (volume, box.y2 - box.y1);
 
@@ -984,8 +988,8 @@ _clutter_actor_set_default_paint_volume (ClutterActor       *self,
  * Sets the #ClutterPaintVolume from the allocation of @actor.
  *
  * This function should be used when overriding the
- * <function>get_paint_volume()</function> by #ClutterActor sub-classes that do
- * not paint outside their allocation.
+ * #ClutterActorClass.get_paint_volume() by #ClutterActor sub-classes
+ * that do not paint outside their allocation.
  *
  * A typical example is:
  *

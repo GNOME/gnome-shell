@@ -112,8 +112,11 @@ typedef union _ClutterEvent             ClutterEvent;
  * whose members cannot be directly accessed.
  *
  * A <structname>ClutterPaintVolume</structname> represents an
- * a bounding volume whos internal representation isn't defined but
+ * a bounding volume whose internal representation isn't defined but
  * can be set and queried in terms of an axis aligned bounding box.
+ *
+ * A <structname>ClutterPaintVolume</structname> for a #ClutterActor
+ * is defined to be relative from the current actor modelview matrix.
  *
  * Other internal representation and methods for describing the
  * bounding volume may be added in the future.
