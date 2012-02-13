@@ -488,7 +488,7 @@ st_icon_update (StIcon *icon)
                                                            priv->gicon,
                                                            priv->icon_size);
     }
- else if (priv->icon_name)
+  else if (priv->icon_name)
     {
       priv->pending_texture = st_texture_cache_load_icon_name (cache,
                                                                theme_node,

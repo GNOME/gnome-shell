@@ -720,9 +720,7 @@ st_table_allocate (ClutterActor          *self,
   CLUTTER_ACTOR_CLASS (st_table_parent_class)->allocate (self, box, flags);
 
   if (priv->n_cols < 1 || priv->n_rows < 1)
-    {
-      return;
-    };
+    return;
 
   st_theme_node_get_content_box (theme_node, box, &content_box);
 

@@ -530,7 +530,7 @@ st_widget_style_changed (StWidget *widget)
 
 static void
 on_theme_context_changed (StThemeContext *context,
-                          ClutterStage      *stage)
+                          ClutterStage   *stage)
 {
   notify_children_of_style_change (CLUTTER_CONTAINER (stage));
 }
@@ -753,7 +753,8 @@ st_widget_hide (ClutterActor *actor)
 }
 
 static gboolean
-st_widget_get_paint_volume (ClutterActor *self, ClutterPaintVolume *volume)
+st_widget_get_paint_volume (ClutterActor *self,
+                            ClutterPaintVolume *volume)
 {
   ClutterActorBox paint_box, alloc_box;
   StThemeNode *theme_node;
@@ -764,9 +765,9 @@ st_widget_get_paint_volume (ClutterActor *self, ClutterPaintVolume *volume)
   if (!clutter_actor_has_allocation (self))
     return FALSE;
 
-  priv = ST_WIDGET(self)->priv;
+  priv = ST_WIDGET (self)->priv;
 
-  theme_node = st_widget_get_theme_node (ST_WIDGET(self));
+  theme_node = st_widget_get_theme_node (ST_WIDGET (self));
   clutter_actor_get_allocation_box (self, &alloc_box);
 
   if (priv->transition_animation)
