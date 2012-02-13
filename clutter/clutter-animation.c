@@ -1399,7 +1399,7 @@ clutter_animation_set_loop (ClutterAnimation *animation,
   g_object_freeze_notify (G_OBJECT (animation));
 
   timeline = clutter_animation_get_timeline_internal (animation);
-  clutter_timeline_set_loop (timeline, loop);
+  clutter_timeline_set_repeat_count (timeline, loop ? -1 : 0);
 
   g_object_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_LOOP]);
 
@@ -1425,7 +1425,7 @@ clutter_animation_get_loop (ClutterAnimation *animation)
 
   timeline = clutter_animation_get_timeline_internal (animation);
 
-  return clutter_timeline_get_loop (timeline);
+  return clutter_timeline_get_repeat_count (timeline) != 0;
 }
 
 /**
