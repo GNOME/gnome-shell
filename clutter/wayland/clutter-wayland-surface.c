@@ -527,9 +527,12 @@ clutter_wayland_surface_attach_buffer (ClutterWaylandSurface *self,
   priv->buffer =
     cogl_wayland_texture_2d_new_from_buffer (context, buffer, error);
 
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
-
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_COGL_TEXTURE]);
+
+  /* NB: We don't queue a redraw of the actor here because we don't
+   * know how much of the buffer has changed with respect to the
+   * previous buffer. We only ever queue a redraw in response to
+   * surface damage. */
 
   if (!priv->buffer)
     return FALSE;
