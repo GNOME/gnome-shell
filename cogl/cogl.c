@@ -1024,3 +1024,24 @@ _cogl_pixel_format_get_bytes_per_pixel (CoglPixelFormat format)
 
   return bpp_lut [format & 0xf];
 }
+
+/* Note: this also refers to the mapping defined above for
+ * _cogl_pixel_format_get_bytes_per_pixel() */
+gboolean
+_cogl_pixel_format_is_endian_dependant (CoglPixelFormat format)
+{
+  int aligned_lut[] = { -1, 1,  1,  1,
+                         0, 0,  0, -1,
+                         1, 1, -1, -1,
+                         0, 0, -1, -1};
+  int aligned = aligned_lut[format & 0xf];
+
+  _COGL_RETURN_VAL_IF_FAIL (aligned != -1, FALSE);
+
+  /* NB: currently checking whether the format components are aligned
+   * or not determines whether the format is endian dependent or not.
+   * In the future though we might consider adding formats with
+   * aligned components that are also endian independant. */
+
+  return aligned;
+}

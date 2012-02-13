@@ -75,6 +75,33 @@ _cogl_get_enable_legacy_state (void);
 int
 _cogl_pixel_format_get_bytes_per_pixel (CoglPixelFormat format);
 
+/*
+ * _cogl_pixel_format_has_aligned_components:
+ * @format: a #CoglPixelFormat
+ *
+ * Queries whether the ordering of the components for the given
+ * @format depend on the endianness of the host CPU or if the
+ * components can be accessed using bit shifting and bitmasking by
+ * loading a whole pixel into a word.
+ *
+ * XXX: If we ever consider making something like this public we
+ * should really try to think of a better name and come up with
+ * much clearer documentation since it really depends on what
+ * point of view you consider this from whether a format like
+ * COGL_PIXEL_FORMAT_RGBA_8888 is endian dependent. E.g. If you
+ * read an RGBA_8888 pixel into a uint32
+ * it's endian dependent how you mask out the different channels.
+ * But If you already have separate color components and you want
+ * to write them to an RGBA_8888 pixel then the bytes can be
+ * written sequentially regardless of the endianness.
+ *
+ * Return value: %TRUE if you need to consider the host CPU
+ *               endianness when dealing with the given @format
+ *               else %FALSE.
+ */
+gboolean
+_cogl_pixel_format_is_endian_dependant (CoglPixelFormat format);
+
 G_END_DECLS
 
 #endif /* __COGL_PRIVATE_H__ */
