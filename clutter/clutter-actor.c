@@ -9929,7 +9929,7 @@ insert_child_at_index (ClutterActor *self,
       child->priv->prev_sibling = NULL;
       child->priv->next_sibling = tmp;
     }
-  else if (index_ < 0)
+  else if (index_ < 0 || index_ >= self->priv->n_children)
     {
       ClutterActor *tmp = self->priv->last_child;
 
@@ -10240,7 +10240,8 @@ clutter_actor_add_child (ClutterActor *self,
  * @index_: the index
  *
  * Inserts @child into the list of children of @self, using the
- * given @index_.
+ * given @index_. If @index_ is greater than the number of children
+ * in @self, or is less than 0, then the new child is added at the end.
  *
  * This function will acquire a reference on @child that will only
  * be released when calling clutter_actor_remove_child().
