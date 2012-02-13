@@ -87,19 +87,10 @@ gboolean
 _cogl_bitmap_can_convert (CoglPixelFormat src, CoglPixelFormat dst);
 
 gboolean
-_cogl_bitmap_fallback_can_convert (CoglPixelFormat src, CoglPixelFormat dst);
-
-gboolean
 _cogl_bitmap_can_unpremult (CoglPixelFormat format);
 
 gboolean
-_cogl_bitmap_fallback_can_unpremult (CoglPixelFormat format);
-
-gboolean
 _cogl_bitmap_can_premult (CoglPixelFormat format);
-
-gboolean
-_cogl_bitmap_fallback_can_premult (CoglPixelFormat format);
 
 CoglBitmap *
 _cogl_bitmap_convert (CoglBitmap *bmp,

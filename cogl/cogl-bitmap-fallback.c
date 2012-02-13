@@ -300,23 +300,22 @@ _cogl_premult_alpha_last_four_pixels_sse2 (guint8 *p)
 
 #endif /* COGL_USE_PREMULT_SSE2 */
 
-gboolean
+static gboolean
 _cogl_bitmap_fallback_can_convert (CoglPixelFormat src, CoglPixelFormat dst)
 {
   if (src == dst)
     return FALSE;
 
-  switch (src & COGL_UNORDERED_MASK)
+  switch (src & ~COGL_PREMULT_BIT)
     {
     case COGL_PIXEL_FORMAT_G_8:
-    case COGL_PIXEL_FORMAT_24:
-    case COGL_PIXEL_FORMAT_32:
-
-      if ((dst & COGL_UNORDERED_MASK) != COGL_PIXEL_FORMAT_24 &&
-	  (dst & COGL_UNORDERED_MASK) != COGL_PIXEL_FORMAT_32 &&
-	  (dst & COGL_UNORDERED_MASK) != COGL_PIXEL_FORMAT_G_8)
-	return FALSE;
-      break;
+    case COGL_PIXEL_FORMAT_RGB_888:
+    case COGL_PIXEL_FORMAT_BGR_888:
+    case COGL_PIXEL_FORMAT_RGBA_8888:
+    case COGL_PIXEL_FORMAT_BGRA_8888:
+    case COGL_PIXEL_FORMAT_ARGB_8888:
+    case COGL_PIXEL_FORMAT_ABGR_8888:
+      return TRUE;
 
     default:
       return FALSE;
@@ -325,16 +324,20 @@ _cogl_bitmap_fallback_can_convert (CoglPixelFormat src, CoglPixelFormat dst)
   return TRUE;
 }
 
-gboolean
-_cogl_bitmap_fallback_can_unpremult (CoglPixelFormat format)
-{
-  return ((format & COGL_UNORDERED_MASK) == COGL_PIXEL_FORMAT_32);
-}
-
-gboolean
+static gboolean
 _cogl_bitmap_fallback_can_premult (CoglPixelFormat format)
 {
-  return ((format & COGL_UNORDERED_MASK) == COGL_PIXEL_FORMAT_32);
+  switch (format & ~COGL_PREMULT_BIT)
+    {
+    case COGL_PIXEL_FORMAT_RGBA_8888:
+    case COGL_PIXEL_FORMAT_BGRA_8888:
+    case COGL_PIXEL_FORMAT_ARGB_8888:
+    case COGL_PIXEL_FORMAT_ABGR_8888:
+      return TRUE;
+
+    default:
+      return FALSE;
+    }
 }
 
 CoglBitmap *
@@ -459,8 +462,8 @@ _cogl_bitmap_fallback_unpremult (CoglBitmap *bmp)
   height = _cogl_bitmap_get_height (bmp);
   rowstride = _cogl_bitmap_get_rowstride (bmp);
 
-  /* Make sure format supported for un-premultiplication */
-  if (!_cogl_bitmap_fallback_can_unpremult (format))
+  /* If we can premult that implies we can un-premult too... */
+  if (!_cogl_bitmap_fallback_can_premult (format))
     return FALSE;
 
   if ((data = _cogl_bitmap_map (bmp,
