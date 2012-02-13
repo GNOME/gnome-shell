@@ -90,6 +90,25 @@ StTooltip StLabel {
     text-align: center;
 }
 
+.check-box ShellGenericContainer {
+    spacing: .8em;
+}
+
+.check-box StBin {
+    width: 1.2em;
+    height: 1.2em;
+    border: 1px solid white;
+    border-radius: 4px;
+}
+
+.check-box:checked StBin {
+    background-image: url("check-box.svg");
+}
+
+.check-box:focus StBin {
+    border: 1px solid #3465a4;
+}
+
 /* PopupMenu */
 
 .popup-menu-boxpointer {

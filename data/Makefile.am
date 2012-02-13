@@ -22,6 +22,7 @@ dist_theme_DATA =				\
 	theme/calendar-arrow-left.svg		\
 	theme/calendar-arrow-right.svg		\
 	theme/calendar-today.svg		\
+	theme/check-box.svg			\
 	theme/close-window.svg			\
 	theme/close.svg				\
 	theme/corner-ripple-ltr.png		\
