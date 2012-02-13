@@ -1220,26 +1220,33 @@ clutter_timeline_is_playing (ClutterTimeline *timeline)
  * be started and will not be positioned to the current position of
  * @timeline: you will have to start it with clutter_timeline_start().
  *
- * Return Value: (transfer full): a new #ClutterTimeline, cloned
+ * <note><para>The only cloned properties are:</para>
+ * <itemizedlist>
+ *   <listitem><simpara>#ClutterTimeline:duration</simpara></listitem>
+ *   <listitem><simpara>#ClutterTimeline:loop</simpara></listitem>
+ *   <listitem><simpara>#ClutterTimeline:delay</simpara></listitem>
+ *   <listitem><simpara>#ClutterTimeline:direction</simpara></listitem>
+ * </itemizedlist></note>
+ *
+ * Return value: (transfer full): a new #ClutterTimeline, cloned
  *   from @timeline
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.10: Use clutter_timeline_new() or g_object_new()
+ *   instead
  */
 ClutterTimeline *
 clutter_timeline_clone (ClutterTimeline *timeline)
 {
-  ClutterTimeline *copy;
-
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), NULL);
 
-  copy = g_object_new (CLUTTER_TYPE_TIMELINE,
+  return g_object_new (CLUTTER_TYPE_TIMELINE,
                        "duration", clutter_timeline_get_duration (timeline),
                        "loop", clutter_timeline_get_loop (timeline),
                        "delay", clutter_timeline_get_delay (timeline),
                        "direction", clutter_timeline_get_direction (timeline),
                        NULL);
-
-  return copy;
 }
 
 /**
