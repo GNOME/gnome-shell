@@ -748,13 +748,12 @@ StTooltip StLabel {
 }
 
 .contact-content {
-    border-radius: 2px;
+    border-radius: 7px;
     padding: 8px;
     width: 232px;
     height: 84px;
-    background-color: white;
-    color: black;
-    text-align: center;
+    background-color: rgba(0.0, 0.0, 0.0, 0.5);
+    color: white;
 }
 
 .contact-icon {
@@ -762,20 +761,20 @@ StTooltip StLabel {
 }
 
 .contact-details {
-    padding: 6px 8px 11px 8px;
+    padding: 0px 6px 22px 10px;
 }
 
 .contact-details-alias {
-    font-size: 16px;
-    padding-bottom: 11px;
+    font-size: 18px;
+    padding-bottom: 8px;
 }
 
 .contact-details-status {
-    font-size: 11pt;
+    font-size: 10pt;
 }
 
 .contact-details-status-icon {
-    padding-right: 2px;
+    padding-right: 4px;
 }
 
 .contact:hover {
