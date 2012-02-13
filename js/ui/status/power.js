@@ -56,7 +56,7 @@ const Indicator = new Lang.Class({
     Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        this.parent('battery-missing', null, _("Battery"));
+        this.parent('battery-missing', _("Battery"));
 
         this._proxy = new PowerManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH);
 

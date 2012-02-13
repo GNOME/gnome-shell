@@ -1538,7 +1538,7 @@ const NMApplet = new Lang.Class({
     Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        this.parent('network-error', null, _("Network"));
+        this.parent('network-error', _("Network"));
 
         this._client = NMClient.Client.new();
 

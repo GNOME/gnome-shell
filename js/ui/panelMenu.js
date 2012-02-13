@@ -215,13 +215,13 @@ Signals.addSignalMethods(Button.prototype);
  *
  * This class manages one System Status indicator (network, keyboard,
  * volume, bluetooth...), which is just a PanelMenuButton with an
- * icon and a tooltip
+ * icon.
  */
 const SystemStatusButton = new Lang.Class({
     Name: 'SystemStatusButton',
     Extends: Button,
 
-    _init: function(iconName, tooltipText, nameText) {
+    _init: function(iconName, nameText) {
         this.parent(0.0, nameText);
 
         this._iconActor = new St.Icon({ icon_name: iconName,
@@ -229,7 +229,6 @@ const SystemStatusButton = new Lang.Class({
                                         style_class: 'system-status-icon' });
         this.actor.add_actor(this._iconActor);
         this.actor.add_style_class_name('panel-status-button');
-        this.setTooltip(tooltipText);
     },
 
     setIcon: function(iconName) {
@@ -238,16 +237,5 @@ const SystemStatusButton = new Lang.Class({
 
     setGIcon: function(gicon) {
         this._iconActor.gicon = gicon;
-    },
-
-    setTooltip: function(text) {
-        if (text != null) {
-            this.tooltip = text;
-            this.actor.has_tooltip = true;
-            this.actor.tooltip_text = text;
-        } else {
-            this.actor.has_tooltip = false;
-            this.tooltip = null;
-        }
     }
 });

@@ -22,7 +22,7 @@ const Indicator = new Lang.Class({
     Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        this.parent('audio-volume-muted', null, _("Volume"));
+        this.parent('audio-volume-muted', _("Volume"));
 
         this._control = new Gvc.MixerControl({ name: 'GNOME Shell Volume Control' });
         this._control.connect('state-changed', Lang.bind(this, this._onControlStateChanged));

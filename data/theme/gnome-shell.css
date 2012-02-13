@@ -79,17 +79,6 @@ StScrollBar StButton#vhandle:hover
     background-color: #292929;
 }
 
-StTooltip StLabel {
-    border: 1px solid rgba(255,255,255,0.6);
-    border-radius: 5px;
-    padding: 2px 12px;
-    background-color: rgba(0,0,0,0.9);
-    color: #ffffff;
-    font-size: 0.8em;
-    font-weight: normal;
-    text-align: center;
-}
-
 .check-box ShellGenericContainer {
     spacing: .8em;
 }

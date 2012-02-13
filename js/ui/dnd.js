@@ -103,8 +103,8 @@ const _Draggable = new Lang.Class({
         this._dragInProgress = false; // The drag has been started, and has not been dropped or cancelled yet.
         this._animationInProgress = false; // The drag is over and the item is in the process of animating to its original position (snapping back or reverting).
 
-        // During the drag, we eat enter/leave events so that actors don't prelight or show
-        // tooltips. But we remember the actors that we first left/last entered so we can
+        // During the drag, we eat enter/leave events so that actors don't prelight.
+        // But we remember the actors that we first left/last entered so we can
         // fix up the hover state after the drag ends.
         this._firstLeaveActor = null;
         this._lastEnterActor = null;

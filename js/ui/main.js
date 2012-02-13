@@ -190,7 +190,6 @@ function start() {
     let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                   coordinate: Clutter.BindCoordinate.SIZE });
     uiGroup.add_constraint(constraint);
-    St.set_ui_root(global.stage, uiGroup);
     global.window_group.reparent(uiGroup);
     global.overlay_group.reparent(uiGroup);
     global.stage.add_actor(uiGroup);

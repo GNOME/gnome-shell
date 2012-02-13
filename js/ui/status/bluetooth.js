@@ -28,7 +28,7 @@ const Indicator = new Lang.Class({
     Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        this.parent('bluetooth-disabled', null, _("Bluetooth"));
+        this.parent('bluetooth-disabled', _("Bluetooth"));
 
         this._applet = new GnomeBluetoothApplet.Applet();
 

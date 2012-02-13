@@ -30,7 +30,6 @@
       <xi:include href="xml/st-entry.xml"/>
       <xi:include href="xml/st-icon.xml"/>
       <xi:include href="xml/st-label.xml"/>
-      <xi:include href="xml/st-tooltip.xml"/>
     </chapter>
     <chapter id="containers">
       <title>Containers</title>
