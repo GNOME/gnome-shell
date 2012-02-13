@@ -65,7 +65,7 @@ typedef struct _CoglBuffer CoglBuffer;
 
 /**
  * cogl_is_buffer:
- * @buffer: a buffer object
+ * @object: a buffer object
  *
  * Checks whether @buffer is a buffer object.
  *

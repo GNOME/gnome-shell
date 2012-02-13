@@ -386,7 +386,7 @@ cogl_framebuffer_set_modelview_matrix (CoglFramebuffer *framebuffer,
 /**
  * cogl_framebuffer_perspective:
  * @framebuffer: A #CoglFramebuffer pointer
- * @fovy: Vertical field of view angle in degrees.
+ * @fov_y: Vertical field of view angle in degrees.
  * @aspect: The (width over height) aspect ratio for display
  * @z_near: The distance to the near clipping plane (Must be positive,
  *   and must not be 0)
@@ -484,7 +484,7 @@ cogl_framebuffer_get_projection_matrix (CoglFramebuffer *framebuffer,
                                         CoglMatrix *matrix);
 
 /**
- * cogl_set_projection_matrix:
+ * cogl_framebuffer_set_projection_matrix:
  * @framebuffer: A #CoglFramebuffer pointer
  * @matrix: the new projection matrix
  *
@@ -770,7 +770,7 @@ cogl_framebuffer_get_color_format (CoglFramebuffer *framebuffer);
 /**
  * cogl_framebuffer_set_samples_per_pixel:
  * @framebuffer: A #CoglFramebuffer framebuffer
- * @n: The minimum number of samples per pixel
+ * @samples_per_pixel: The minimum number of samples per pixel
  *
  * Requires that when rendering to @framebuffer then @n point samples
  * should be made per pixel which will all contribute to the final

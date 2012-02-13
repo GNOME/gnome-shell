@@ -1221,9 +1221,9 @@ cogl_material_set_depth_state (CoglMaterial *material,
                                GError **error);
 
 /**
- * cogl_material_get_depth_state
+ * cogl_material_get_depth_state:
  * @material: A #CoglMaterial object
- * @state: A destination #CoglDepthState struct
+ * @state_out: A destination #CoglDepthState struct
  *
  * Retrieves the current depth state configuration for the given
  * @pipeline as previously set using cogl_pipeline_set_depth_state().

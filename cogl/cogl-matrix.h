@@ -276,7 +276,7 @@ cogl_matrix_frustum (CoglMatrix *matrix,
 /**
  * cogl_matrix_perspective:
  * @matrix: A 4x4 transformation matrix
- * @fovy: Vertical field of view angle in degrees.
+ * @fov_y: Vertical field of view angle in degrees.
  * @aspect: The (width over height) aspect ratio for display
  * @z_near: The distance to the near clipping plane (Must be positive,
  *   and must not be 0)
