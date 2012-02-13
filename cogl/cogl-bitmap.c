@@ -111,8 +111,8 @@ _cogl_bitmap_convert_format_and_premult (CoglBitmap *bmp,
   CoglBitmap *dst_bmp;
 
   /* Is base format different (not considering premult status)? */
-  if ((src_format & COGL_UNPREMULT_MASK) !=
-      (dst_format & COGL_UNPREMULT_MASK))
+  if ((src_format & ~COGL_PREMULT_BIT) !=
+      (dst_format & ~COGL_PREMULT_BIT))
     {
       /* Try converting using imaging library */
       if ((dst_bmp = _cogl_bitmap_convert (bmp, dst_format)) == NULL)

@@ -170,7 +170,6 @@ typedef struct _CoglTextureVertex       CoglTextureVertex;
 #define COGL_AFIRST_BIT         (1 << 6)
 #define COGL_PREMULT_BIT        (1 << 7)
 #define COGL_UNORDERED_MASK     0x0F
-#define COGL_UNPREMULT_MASK     0x7F
 
 /**
  * CoglPixelFormat:
