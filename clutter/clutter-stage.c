@@ -2980,20 +2980,10 @@ clutter_stage_get_title (ClutterStage       *stage)
 }
 
 static void
-on_key_focused_weak_notify (gpointer data,
-			    GObject *where_the_object_was)
+on_key_focus_destroy (ClutterActor *actor,
+                      ClutterStage *stage)
 {
-  ClutterStagePrivate *priv;
-  ClutterStage        *stage = CLUTTER_STAGE (data);
-
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-
-  priv = stage->priv;
-  priv->key_focused_actor = NULL;
-
-  /* focused actor has dissapeared - fall back to stage
-   * FIXME: need some kind of signal dance/block here.
-  */
+  /* unset the key focus */
   clutter_stage_set_key_focus (stage, NULL);
 }
 
@@ -3019,10 +3009,13 @@ clutter_stage_set_key_focus (ClutterStage *stage,
 
   priv = stage->priv;
 
+  /* avoid emitting signals and notifications if we're setting the same
+   * actor as the key focus
+   */
   if (priv->key_focused_actor == actor)
     return;
 
-  if (priv->key_focused_actor)
+  if (priv->key_focused_actor != NULL)
     {
       ClutterActor *old_focused_actor;
 
@@ -3032,11 +3025,9 @@ clutter_stage_set_key_focus (ClutterStage *stage,
        * might hide the previously focused actor in the signal handler and we'd
        * get re-entrant call and get glib critical from g_object_weak_unref
        */
-
-      g_object_weak_unref (G_OBJECT (priv->key_focused_actor),
-			   on_key_focused_weak_notify,
-			   stage);
-
+      g_signal_handlers_disconnect_by_func (priv->key_focused_actor,
+                                            G_CALLBACK (on_key_focus_destroy),
+                                            stage);
       priv->key_focused_actor = NULL;
 
       g_signal_emit_by_name (old_focused_actor, "key-focus-out");
@@ -3049,14 +3040,13 @@ clutter_stage_set_key_focus (ClutterStage *stage,
    * intended. The order of events would be:
    *   1st focus-out, 2nd focus-out (on stage), 2nd focus-in, 1st focus-in
    */
-
-  if (actor)
+  if (actor != NULL)
     {
       priv->key_focused_actor = actor;
 
-      g_object_weak_ref (G_OBJECT (actor),
-			 on_key_focused_weak_notify,
-			 stage);
+      g_signal_connect (actor,
+                        "destroy", G_CALLBACK (on_key_focus_destroy),
+                        stage);
       g_signal_emit_by_name (priv->key_focused_actor, "key-focus-in");
     }
   else
