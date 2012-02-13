@@ -30,37 +30,6 @@
 
 G_DEFINE_ABSTRACT_TYPE (StContainer, st_container, ST_TYPE_WIDGET);
 
-static gboolean
-st_container_get_paint_volume (ClutterActor *actor,
-                               ClutterPaintVolume *volume)
-{
-  if (!CLUTTER_ACTOR_CLASS (st_container_parent_class)->get_paint_volume (actor, volume))
-    return FALSE;
-
-  if (!clutter_actor_get_clip_to_allocation (actor))
-    {
-      ClutterActor *child;
-
-      /* Based on ClutterGroup/ClutterBox; include the children's
-       * paint volumes, since they may paint outside our allocation.
-       */
-      for (child = clutter_actor_get_first_child (actor);
-           child != NULL;
-           child = clutter_actor_get_next_sibling (child))
-        {
-          const ClutterPaintVolume *child_volume;
-
-          child_volume = clutter_actor_get_transformed_paint_volume (child, actor);
-          if (!child_volume)
-            return FALSE;
-
-          clutter_paint_volume_union (volume, child_volume);
-        }
-    }
-
-  return TRUE;
-}
-
 static void
 st_container_init (StContainer *container)
 {
@@ -69,7 +38,4 @@ st_container_init (StContainer *container)
 static void
 st_container_class_init (StContainerClass *klass)
 {
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-
-  actor_class->get_paint_volume = st_container_get_paint_volume;
 }
