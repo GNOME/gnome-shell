@@ -330,7 +330,7 @@ msgstr "%l:%M %p"
 #: ../js/ui/calendar.js:114
 msgctxt "grid sunday"
 msgid "S"
-msgstr "N"
+msgstr "Ne"
 
 #. Translators: Calendar grid abbreviation for Monday
 #: ../js/ui/calendar.js:116
@@ -342,7 +342,7 @@ msgstr "Po"
 #: ../js/ui/calendar.js:118
 msgctxt "grid tuesday"
 msgid "T"
-msgstr "Ú"
+msgstr "Út"
 
 #. Translators: Calendar grid abbreviation for Wednesday
 #: ../js/ui/calendar.js:120
@@ -354,7 +354,7 @@ msgstr "St"
 #: ../js/ui/calendar.js:122
 msgctxt "grid thursday"
 msgid "T"
-msgstr "Č"
+msgstr "Čt"
 
 #. Translators: Calendar grid abbreviation for Friday
 #: ../js/ui/calendar.js:124
