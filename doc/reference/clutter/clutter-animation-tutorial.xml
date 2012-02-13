@@ -185,9 +185,16 @@ on_new_frame (ClutterTimeline *timeline,
 
   ClutterTimeline *timeline;
 
-  timeline = clutter_timeline_new (1000); /* one second */
-  clutter_timeline_set_loop (timeline, TRUE);
+  /* one second */
+  timeline = clutter_timeline_new (1000);
+
+  /* looping indefinitely */
+  clutter_timeline_set_repeat_count (timeline, -1);
+
+  /* get a notification each time a new frame should be drawn */
   g_signal_connect (timeline, "new-frame", G_CALLBACK (on_new_frame), actor);
+
+  /* start the timeline once control returns to the main loop */
   clutter_timeline_start (timeline);
       </programlisting>
     </example>
@@ -307,9 +314,9 @@ main (int argc, char *argv[])
   actor = clutter_texture_new_from_file ("ohpowers.png", NULL);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);
 
-  /* set up the animation to be 4 seconds long */
+  /* set up the animation to be 4 seconds long, and looping indefinitely */
   timeline = clutter_timeline_new (4000);
-  clutter_timeline_set_loop (timeline, TRUE);
+  clutter_timeline_set_repeat_count (timeline, -1);
 
   /* set up a sinusoidal easing mode to power the behaviour; the
    * alpha will take a reference on the timeline so we can safely
