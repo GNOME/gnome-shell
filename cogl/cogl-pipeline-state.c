@@ -274,17 +274,18 @@ _cogl_pipeline_get_all_uniform_values (CoglPipeline *pipeline,
 
   do
     {
-      const CoglPipelineUniformsState *uniforms_state =
-        &pipeline->big_state->uniforms_state;
-
-      data.override_count = 0;
-      data.src_values = uniforms_state->override_values;
-
       if ((pipeline->differences & COGL_PIPELINE_STATE_UNIFORMS))
-        _cogl_bitmask_foreach (&uniforms_state->override_mask,
-                               get_uniforms_cb,
-                               &data);
+        {
+          const CoglPipelineUniformsState *uniforms_state =
+            &pipeline->big_state->uniforms_state;
 
+          data.override_count = 0;
+          data.src_values = uniforms_state->override_values;
+
+          _cogl_bitmask_foreach (&uniforms_state->override_mask,
+                                 get_uniforms_cb,
+                                 &data);
+        }
       pipeline = _cogl_pipeline_get_parent (pipeline);
     }
   while (pipeline);
