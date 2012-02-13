@@ -138,16 +138,6 @@ gboolean                        clutter_timeline_has_marker             (Clutter
 void                            clutter_timeline_advance_to_marker      (ClutterTimeline          *timeline,
                                                                          const gchar              *marker_name);
 
-CLUTTER_DEPRECATED_FOR(clutter_timeline_new)
-ClutterTimeline *               clutter_timeline_clone                  (ClutterTimeline          *timeline);
-
-CLUTTER_DEPRECATED_FOR(clutter_timeline_set_repeat_count)
-void                            clutter_timeline_set_loop               (ClutterTimeline          *timeline,
-                                                                         gboolean                  loop);
-
-CLUTTER_DEPRECATED_FOR(clutter_timeline_get_repeat_count)
-gboolean                        clutter_timeline_get_loop               (ClutterTimeline          *timeline);
-
 G_END_DECLS
 
 #endif /* _CLUTTER_TIMELINE_H__ */

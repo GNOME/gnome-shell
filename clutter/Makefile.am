@@ -247,6 +247,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-score.h 			\
 	$(srcdir)/deprecated/clutter-shader.h 			\
 	$(srcdir)/deprecated/clutter-stage.h			\
+	$(srcdir)/deprecated/clutter-timeline.h 		\
 	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
 	$(NULL)
 
