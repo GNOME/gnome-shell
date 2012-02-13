@@ -640,6 +640,42 @@ done:
   pv->is_complete = FALSE;
 }
 
+/**
+ * clutter_paint_volume_union_box:
+ * @pv: a #ClutterPaintVolume
+ * @box: a #ClutterActorBox to union to @pv
+ *
+ * Unions the 2D region represented by @box to a #ClutterPaintVolume.
+ *
+ * This function is similar to clutter_paint_volume_union(), but it is
+ * specific for 2D regions.
+ *
+ * Since: 1.10
+ */
+void
+clutter_paint_volume_union_box (ClutterPaintVolume    *pv,
+                                const ClutterActorBox *box)
+{
+  ClutterPaintVolume volume;
+  ClutterVertex origin;
+
+  g_return_if_fail (pv != NULL);
+  g_return_if_fail (box != NULL);
+
+  _clutter_paint_volume_init_static (&volume, pv->actor);
+
+  origin.x = box->x1;
+  origin.y = box->y1;
+  origin.z = 0.f;
+  clutter_paint_volume_set_origin (&volume, &origin);
+  clutter_paint_volume_set_width (&volume, box->x2 - box->x1);
+  clutter_paint_volume_set_height (&volume, box->y2 - box->y1);
+
+  clutter_paint_volume_union (pv, &volume);
+
+  clutter_paint_volume_free (&volume);
+}
+
 /* The paint_volume setters only update vertices 0, 1, 3 and
  * 4 since the others can be drived from them.
  *

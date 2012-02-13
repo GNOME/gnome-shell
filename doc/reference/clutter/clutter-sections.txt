@@ -547,6 +547,7 @@ clutter_paint_volume_set_depth
 clutter_paint_volume_get_depth
 clutter_paint_volume_set_from_allocation
 clutter_paint_volume_union
+clutter_paint_volume_union_box
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY
