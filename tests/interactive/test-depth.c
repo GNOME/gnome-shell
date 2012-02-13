@@ -37,34 +37,34 @@ clone_box (ClutterActor *original)
 
   group = clutter_actor_new ();
   clone = clutter_clone_new (original);
-  clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
+  clutter_actor_add_child (group, clone);
   clutter_actor_set_depth (clone, width / 2);
 
   clone = clutter_clone_new (original);
-  clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
+  clutter_actor_add_child (group, clone);
   clutter_actor_set_rotation (clone, CLUTTER_Y_AXIS, 180, width / 2, 0, 0);
   clutter_actor_set_depth (clone, -width / 2);
 
   clone = clutter_clone_new (original);
-  clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
+  clutter_actor_add_child (group, clone);
   clutter_actor_set_rotation (clone, CLUTTER_Y_AXIS, 90, 0, 0, 0);
   clutter_actor_set_depth (clone, width / 2);
   clutter_actor_set_position (clone, 0, 0);
 
   clone = clutter_clone_new (original);
-  clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
+  clutter_actor_add_child (group, clone);
   clutter_actor_set_rotation (clone, CLUTTER_Y_AXIS, 90, 0, 0, 0);
   clutter_actor_set_depth (clone, width / 2);
   clutter_actor_set_position (clone, width, 0);
 
   clone = clutter_clone_new (original);
-  clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
+  clutter_actor_add_child (group, clone);
   clutter_actor_set_rotation (clone, CLUTTER_X_AXIS, 90, 0, 0, 0);
   clutter_actor_set_depth (clone, -width / 2);
   clutter_actor_set_position (clone, 0, height);
 
   clone = clutter_clone_new (original);
-  clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
+  clutter_actor_add_child (group, clone);
   clutter_actor_set_rotation (clone, CLUTTER_X_AXIS, 90, 0, 0, 0);
   clutter_actor_set_depth (clone, -width / 2);
   clutter_actor_set_position (clone, 0, 0);
@@ -100,8 +100,9 @@ janus_group (const gchar *front_text,
   clutter_actor_set_size (rectangle, width, height);
   clutter_actor_set_rotation (back, CLUTTER_Y_AXIS, 180, width / 2, 0, 0);
 
-  clutter_container_add (CLUTTER_CONTAINER (group),
-                         back, rectangle, front, NULL);
+  clutter_actor_add_child (group, back);
+  clutter_actor_add_child (group, rectangle);
+  clutter_actor_add_child (group, front);
 
   return group;
 }
@@ -130,10 +131,11 @@ test_depth_main (int argc, char *argv[])
                     NULL);
 
   group = clutter_actor_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
+  clutter_actor_add_child (stage, group);
 
   label = clutter_text_new_with_text ("Mono 26", "Clutter");
   clutter_actor_set_position (label, 120, 200);
+  clutter_actor_add_child (stage, label);
 
   error = NULL;
   hand = clutter_texture_new_from_file (TESTS_DATADIR
@@ -149,8 +151,8 @@ test_depth_main (int argc, char *argv[])
   clutter_actor_set_size (rect, 200, 200);
   clutter_actor_set_opacity (rect, 128);
 
-  clutter_container_add (CLUTTER_CONTAINER (group), hand, rect, NULL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
+  clutter_actor_add_child (group, hand);
+  clutter_actor_add_child (group, rect);
 
   timeline = clutter_timeline_new (3000);
   g_signal_connect (timeline,
@@ -178,7 +180,7 @@ test_depth_main (int argc, char *argv[])
 
   /* add hand box */
   box = clone_box (hand);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
+  clutter_actor_add_child (stage, box);
   clutter_actor_set_position (box, 200, 250);
   clutter_actor_set_scale (box, 0.5, 0.5);
   clutter_actor_set_rotation (box, CLUTTER_X_AXIS, 45, 0, 0, 0);
