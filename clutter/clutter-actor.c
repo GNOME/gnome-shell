@@ -10466,24 +10466,18 @@ clutter_actor_remove_child (ClutterActor *self,
 void
 clutter_actor_remove_all_children (ClutterActor *self)
 {
-  ClutterActor *iter;
+  ClutterActorIter iter;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   if (self->priv->n_children == 0)
     return;
 
-  iter = self->priv->first_child;
-  while (iter != NULL)
-    {
-      ClutterActor *next = iter->priv->next_sibling;
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, NULL))
+    clutter_actor_iter_remove (&iter);
 
-      clutter_actor_remove_child_internal (self, iter,
-                                           REMOVE_CHILD_DEFAULT_FLAGS);
-
-      iter = next;
-    }
-
+  /* sanity check */
   g_assert (self->priv->first_child == NULL);
   g_assert (self->priv->last_child == NULL);
   g_assert (self->priv->n_children == 0);
