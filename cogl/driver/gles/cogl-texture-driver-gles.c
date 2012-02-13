@@ -412,16 +412,14 @@ _cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
                                          GLenum          *out_gltype)
 {
   CoglPixelFormat required_format;
-  GLenum          glintformat = 0;
-  GLenum          glformat = 0;
-  GLenum          gltype = 0;
-
-  /* FIXME: check YUV support */
+  GLenum glintformat;
+  GLenum glformat;
+  GLenum gltype;
 
   required_format = format;
 
   /* Find GL equivalents */
-  switch (format & COGL_UNPREMULT_MASK)
+  switch (format)
     {
     case COGL_PIXEL_FORMAT_A_8:
       glintformat = GL_ALPHA;
@@ -445,9 +443,21 @@ _cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
 
       /* Just one 32-bit ordering supported */
     case COGL_PIXEL_FORMAT_RGBA_8888:
+    case COGL_PIXEL_FORMAT_RGBA_8888_PRE:
     case COGL_PIXEL_FORMAT_BGRA_8888:
+    case COGL_PIXEL_FORMAT_BGRA_8888_PRE:
     case COGL_PIXEL_FORMAT_ARGB_8888:
+    case COGL_PIXEL_FORMAT_ARGB_8888_PRE:
     case COGL_PIXEL_FORMAT_ABGR_8888:
+    case COGL_PIXEL_FORMAT_ABGR_8888_PRE:
+    case COGL_PIXEL_FORMAT_RGBA_1010102:
+    case COGL_PIXEL_FORMAT_RGBA_1010102_PRE:
+    case COGL_PIXEL_FORMAT_BGRA_1010102:
+    case COGL_PIXEL_FORMAT_BGRA_1010102_PRE:
+    case COGL_PIXEL_FORMAT_ABGR_2101010:
+    case COGL_PIXEL_FORMAT_ABGR_2101010_PRE:
+    case COGL_PIXEL_FORMAT_ARGB_2101010:
+    case COGL_PIXEL_FORMAT_ARGB_2101010_PRE:
       glintformat = GL_RGBA;
       glformat = GL_RGBA;
       gltype = GL_UNSIGNED_BYTE;
@@ -464,18 +474,21 @@ _cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
       gltype = GL_UNSIGNED_SHORT_5_6_5;
       break;
     case COGL_PIXEL_FORMAT_RGBA_4444:
+    case COGL_PIXEL_FORMAT_RGBA_4444_PRE:
       glintformat = GL_RGBA;
       glformat = GL_RGBA;
       gltype = GL_UNSIGNED_SHORT_4_4_4_4;
       break;
     case COGL_PIXEL_FORMAT_RGBA_5551:
+    case COGL_PIXEL_FORMAT_RGBA_5551_PRE:
       glintformat = GL_RGBA;
       glformat = GL_RGBA;
       gltype = GL_UNSIGNED_SHORT_5_5_5_1;
       break;
 
-      /* FIXME: check extensions for YUV support */
-    default:
+    case COGL_PIXEL_FORMAT_ANY:
+    case COGL_PIXEL_FORMAT_YUV:
+      g_assert_not_reached ();
       break;
     }
 
