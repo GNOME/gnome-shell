@@ -227,7 +227,7 @@ test_easing_main (int argc, char *argv[])
 
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Easing Modes");
-  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_LightSkyBlue);
+  clutter_actor_set_background_color (stage, CLUTTER_COLOR_LightSkyBlue);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
   main_stage = stage;
 

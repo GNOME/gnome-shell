@@ -19,11 +19,11 @@ test_shader_effects_main (int argc, char *argv[])
 
   /* Make a timeline */
   timeline = clutter_timeline_new (7692);
-  clutter_timeline_set_loop (timeline, TRUE);
+  clutter_timeline_set_repeat_count (timeline, -1);
 
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Rotations");
-  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Aluminium3);
+  clutter_actor_set_background_color (stage, CLUTTER_COLOR_Aluminium3);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   /* Make a hand */

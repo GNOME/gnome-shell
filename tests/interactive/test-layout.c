@@ -757,7 +757,7 @@ test_layout_main (int argc, char *argv[])
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   main_timeline = clutter_timeline_new (2000);
-  clutter_timeline_set_loop (main_timeline, TRUE);
+  clutter_timeline_set_repeat_count (main_timeline, -1);
   clutter_timeline_set_auto_reverse (main_timeline, TRUE);
   g_signal_connect (main_timeline, "new-frame",
                     G_CALLBACK (relayout_on_frame),

@@ -239,7 +239,7 @@ test_pixmap_main (int argc, char **argv)
 
   stage = clutter_stage_new ();
   clutter_actor_set_position (stage, 0, 150);
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &gry);
+  clutter_actor_set_background_color (stage, &gry);
   clutter_stage_set_title (CLUTTER_STAGE (stage), "X11 Texture from Pixmap");
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 

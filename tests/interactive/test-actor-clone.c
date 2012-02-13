@@ -170,16 +170,16 @@ test_actor_clone_main (int argc, char *argv[])
   oh = g_new (SuperOH, 1);
 
   oh->stage = stage = clutter_stage_new ();
+  clutter_actor_set_background_color (stage, &stage_color);
   clutter_actor_set_size (stage, 800, 600);
 
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Clone Test");
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
   g_signal_connect (stage, "destroy", G_CALLBACK (clean_and_quit), oh);
 
   /* Create a timeline to manage animation */
   oh->timeline = clutter_timeline_new (6000);
-  clutter_timeline_set_loop (oh->timeline, TRUE);
+  clutter_timeline_set_repeat_count (oh->timeline, -1);
 
   /* fire a callback for frame change */
   oh->frame_id =

@@ -49,9 +49,7 @@ G_MODULE_EXPORT int
 test_scale_main (int argc, char *argv[])
 {
   ClutterActor    *stage, *rect;
-  ClutterColor     stage_color = { 0x0, 0x0, 0x0, 0xff };
   ClutterColor     rect_color = { 0xff, 0xff, 0xff, 0x99 };
-  ClutterColor     white_color = { 0xff, 0xff, 0xff, 0xFF };
   ClutterTimeline *timeline;
   ClutterAlpha    *alpha;
   ClutterBehaviour *behave;
@@ -61,7 +59,7 @@ test_scale_main (int argc, char *argv[])
 
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Scaling");
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  clutter_actor_set_background_color (stage, CLUTTER_COLOR_Black);
   clutter_actor_set_size (stage, 300, 300);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
@@ -72,8 +70,7 @@ test_scale_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
   label = clutter_text_new_with_text ("Sans 20px", "");
-  clutter_text_set_color (CLUTTER_TEXT (label),
-                           &white_color);
+  clutter_text_set_color (CLUTTER_TEXT (label), CLUTTER_COLOR_White);
   clutter_actor_set_position (label,
                               clutter_actor_get_x (rect),
                               clutter_actor_get_y (rect)
@@ -100,7 +97,7 @@ test_scale_main (int argc, char *argv[])
 
   clutter_behaviour_apply (behave, rect);
 
-  clutter_timeline_set_loop (timeline, TRUE);
+  clutter_timeline_set_repeat_count (timeline, -1);
   g_signal_connect_swapped (timeline, "completed",
                             G_CALLBACK (set_next_gravity), rect);
   clutter_timeline_start (timeline);

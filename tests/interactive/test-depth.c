@@ -121,7 +121,7 @@ test_depth_main (int argc, char *argv[])
 
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Depth Test");
-  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Aluminium2);
+  clutter_actor_set_background_color (stage, CLUTTER_COLOR_Aluminium2);
   g_signal_connect (stage,
                     "destroy", G_CALLBACK (clutter_main_quit),
                     NULL);

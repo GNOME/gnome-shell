@@ -212,7 +212,7 @@ test_threads_main (int argc, char *argv[])
 
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Threading");
-  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Aluminium3);
+  clutter_actor_set_background_color (stage, CLUTTER_COLOR_Aluminium3);
   clutter_actor_set_size (stage, 600, 300);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
   
@@ -238,8 +238,8 @@ test_threads_main (int argc, char *argv[])
                          NULL);
 
   timeline = clutter_timeline_new (3000);
-  clutter_timeline_set_loop (timeline, TRUE);
   clutter_timeline_set_auto_reverse (timeline, TRUE);
+  clutter_timeline_set_repeat_count (timeline, -1);
 
   alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
   r_behaviour = clutter_behaviour_rotate_new (alpha,

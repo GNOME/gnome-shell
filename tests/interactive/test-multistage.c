@@ -40,8 +40,8 @@ on_button_press (ClutterActor *actor,
   stage_name = g_strdup_printf ("Stage [%d]", ++n_stages);
 
   clutter_stage_set_title (CLUTTER_STAGE (new_stage), stage_name);
-  clutter_stage_set_color (CLUTTER_STAGE (new_stage),
-                           CLUTTER_COLOR_DarkScarletRed);
+  clutter_actor_set_background_color (new_stage,
+                                      CLUTTER_COLOR_DarkScarletRed);
   clutter_actor_set_size (new_stage, 320, 240);
   clutter_actor_set_name (new_stage, stage_name);
 
@@ -82,7 +82,7 @@ on_button_press (ClutterActor *actor,
   */
 
   timeline = clutter_timeline_new (2000);
-  clutter_timeline_set_loop (timeline, TRUE);
+  clutter_timeline_set_repeat_count (timeline, -1);
 
   alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
   r_behave = clutter_behaviour_rotate_new (alpha,

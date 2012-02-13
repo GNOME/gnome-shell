@@ -334,7 +334,7 @@ test_shader_main (gint argc, gchar *argv[])
     }
 
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Shader Test");
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  clutter_actor_set_background_color (stage, &stage_color);
 
   file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
 

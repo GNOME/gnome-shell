@@ -192,15 +192,15 @@ test_actors_main (int argc, char *argv[])
   oh->stage = clutter_stage_new ();
   clutter_actor_set_size (oh->stage, 800, 600);
   clutter_actor_set_name (oh->stage, "Default Stage");
+  clutter_actor_set_background_color (oh->stage, CLUTTER_COLOR_LightSkyBlue);
   g_signal_connect (oh->stage, "destroy", G_CALLBACK (stop_and_quit), oh);
 
   clutter_stage_set_title (CLUTTER_STAGE (oh->stage), "Actors");
-  clutter_stage_set_color (CLUTTER_STAGE (oh->stage), CLUTTER_COLOR_LightSkyBlue);
   clutter_stage_set_user_resizable (CLUTTER_STAGE (oh->stage), TRUE);
 
   /* Create a timeline to manage animation */
   oh->timeline = clutter_timeline_new (6000);
-  clutter_timeline_set_loop (oh->timeline, TRUE);
+  clutter_timeline_set_repeat_count (oh->timeline, -1);
 
   /* fire a callback for frame change */
   g_signal_connect (oh->timeline, "new-frame", G_CALLBACK (frame_cb), oh);

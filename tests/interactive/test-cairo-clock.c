@@ -80,8 +80,8 @@ test_cairo_clock_main (int argc, char *argv[])
   /* create a resizable stage */
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "2D Clock");
-  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_LightSkyBlue);
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
+  clutter_actor_set_background_color (stage, CLUTTER_COLOR_LightSkyBlue);
   clutter_actor_set_size (stage, 300, 300);
   clutter_actor_show (stage);
 

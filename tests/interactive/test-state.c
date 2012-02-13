@@ -106,7 +106,7 @@ test_state_main (gint    argc,
   layout_state = clutter_state_new ();
 
   stage = clutter_stage_new ();
-  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Black);
+  clutter_actor_set_background_color (stage, CLUTTER_COLOR_Black);
   clutter_stage_set_title (CLUTTER_STAGE (stage), "State Machine");
   clutter_actor_set_size (stage, STAGE_WIDTH, STAGE_HEIGHT);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);

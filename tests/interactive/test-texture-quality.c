@@ -56,7 +56,7 @@ test_texture_quality_main (int argc, char *argv[])
     return 1;
 
   stage = clutter_stage_new ();
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  clutter_actor_set_background_color (stage, &stage_color);
   clutter_stage_set_use_fog (CLUTTER_STAGE (stage), TRUE);
   clutter_stage_set_fog (CLUTTER_STAGE (stage), &stage_fog);
   g_signal_connect (stage,
