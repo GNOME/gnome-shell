@@ -718,8 +718,8 @@ clutter_timeline_clone
 <SUBSECTION>
 clutter_timeline_set_duration
 clutter_timeline_get_duration
-clutter_timeline_set_loop
-clutter_timeline_get_loop
+clutter_timeline_set_repeat_count
+clutter_timeline_get_repeat_count
 clutter_timeline_set_delay
 clutter_timeline_get_delay
 ClutterTimelineDirection
@@ -727,6 +727,8 @@ clutter_timeline_set_direction
 clutter_timeline_get_direction
 clutter_timeline_set_auto_reverse
 clutter_timeline_get_auto_reverse
+clutter_timeline_set_loop
+clutter_timeline_get_loop
 
 <SUBSECTION>
 clutter_timeline_start

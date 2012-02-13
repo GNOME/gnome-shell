@@ -107,12 +107,12 @@ void                            clutter_timeline_set_direction          (Clutter
 void                            clutter_timeline_start                  (ClutterTimeline          *timeline);
 void                            clutter_timeline_pause                  (ClutterTimeline          *timeline);
 void                            clutter_timeline_stop                   (ClutterTimeline          *timeline);
-void                            clutter_timeline_set_loop               (ClutterTimeline          *timeline,
-                                                                         gboolean                  loop);
-gboolean                        clutter_timeline_get_loop               (ClutterTimeline          *timeline);
 void                            clutter_timeline_set_auto_reverse       (ClutterTimeline          *timeline,
                                                                          gboolean                  reverse);
 gboolean                        clutter_timeline_get_auto_reverse       (ClutterTimeline          *timeline);
+void                            clutter_timeline_set_repeat_count       (ClutterTimeline          *timeline,
+                                                                         gint                      count);
+gint                            clutter_timeline_get_repeat_count       (ClutterTimeline          *timeline);
 void                            clutter_timeline_rewind                 (ClutterTimeline          *timeline);
 void                            clutter_timeline_skip                   (ClutterTimeline          *timeline,
                                                                          guint                     msecs);
@@ -140,6 +140,13 @@ void                            clutter_timeline_advance_to_marker      (Clutter
 
 CLUTTER_DEPRECATED_FOR(clutter_timeline_new)
 ClutterTimeline *               clutter_timeline_clone                  (ClutterTimeline          *timeline);
+
+CLUTTER_DEPRECATED_FOR(clutter_timeline_set_repeat_count)
+void                            clutter_timeline_set_loop               (ClutterTimeline          *timeline,
+                                                                         gboolean                  loop);
+
+CLUTTER_DEPRECATED_FOR(clutter_timeline_get_repeat_count)
+gboolean                        clutter_timeline_get_loop               (ClutterTimeline          *timeline);
 
 G_END_DECLS
 

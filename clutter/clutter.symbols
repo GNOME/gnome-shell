@@ -1264,6 +1264,7 @@ clutter_timeline_get_duration
 clutter_timeline_get_elapsed_time
 clutter_timeline_get_loop
 clutter_timeline_get_progress
+clutter_timeline_get_repeat_count
 clutter_timeline_get_type
 clutter_timeline_has_marker
 clutter_timeline_is_playing
@@ -1276,6 +1277,7 @@ clutter_timeline_set_delay
 clutter_timeline_set_direction
 clutter_timeline_set_duration
 clutter_timeline_set_loop
+clutter_timeline_set_repeat_count
 clutter_timeline_skip
 clutter_timeline_start
 clutter_timeline_stop

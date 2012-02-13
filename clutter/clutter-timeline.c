@@ -59,9 +59,10 @@
  * adding <emphasis>markers</emphasis> using clutter_timeline_add_marker_at_time()
  * and connecting to the #ClutterTimeline::marker-reached signal.
  *
- * Timelines can be made to loop once they reach the end of their duration; a
- * looping timeline will still emit the #ClutterTimeline::completed signal
- * once it reaches the end of its duration.
+ * Timelines can be made to loop once they reach the end of their duration, by
+ * using clutter_timeline_set_repeat_count(); a looping timeline will still
+ * emit the #ClutterTimeline::completed signal once it reaches the end of its
+ * duration.
  *
  * Timelines have a #ClutterTimeline:direction: the default direction is
  * %CLUTTER_TIMELINE_FORWARD, and goes from 0 to the duration; it is possible
@@ -132,7 +133,12 @@ struct _ClutterTimelinePrivate
   /* Time we last advanced the elapsed time and showed a frame */
   gint64 last_frame_time;
 
-  guint loop               : 1;
+  /* How many times the timeline should repeat */
+  gint repeat_count;
+
+  /* The number of times the timeline has repeated */
+  gint current_repeat;
+
   guint is_playing         : 1;
 
   /* If we've just started playing and haven't yet gotten
@@ -157,6 +163,7 @@ enum
   PROP_DURATION,
   PROP_DIRECTION,
   PROP_AUTO_REVERSE,
+  PROP_REPEAT_COUNT,
 
   PROP_LAST
 };
@@ -236,6 +243,23 @@ clutter_timeline_add_marker_internal (ClutterTimeline *timeline,
     }
 
   g_hash_table_insert (priv->markers_by_name, marker->name, marker);
+}
+
+static inline void
+clutter_timeline_set_loop_internal (ClutterTimeline *timeline,
+                                    gboolean         loop)
+{
+  gint old_repeat_count;
+
+  old_repeat_count = timeline->priv->repeat_count;
+
+  if (loop)
+    clutter_timeline_set_repeat_count (timeline, -1);
+  else
+    clutter_timeline_set_repeat_count (timeline, 0);
+
+  if (old_repeat_count != timeline->priv->repeat_count)
+    g_object_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_LOOP]);
 }
 
 /* Scriptable */
@@ -370,7 +394,7 @@ clutter_timeline_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_LOOP:
-      clutter_timeline_set_loop (timeline, g_value_get_boolean (value));
+      clutter_timeline_set_loop_internal (timeline, g_value_get_boolean (value));
       break;
 
     case PROP_DELAY:
@@ -387,6 +411,10 @@ clutter_timeline_set_property (GObject      *object,
 
     case PROP_AUTO_REVERSE:
       clutter_timeline_set_auto_reverse (timeline, g_value_get_boolean (value));
+      break;
+
+    case PROP_REPEAT_COUNT:
+      clutter_timeline_set_repeat_count (timeline, g_value_get_int (value));
       break;
 
     default:
@@ -407,7 +435,7 @@ clutter_timeline_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_LOOP:
-      g_value_set_boolean (value, priv->loop);
+      g_value_set_boolean (value, priv->repeat_count != 0);
       break;
 
     case PROP_DELAY:
@@ -424,6 +452,10 @@ clutter_timeline_get_property (GObject    *object,
 
     case PROP_AUTO_REVERSE:
       g_value_set_boolean (value, priv->auto_reverse);
+      break;
+
+    case PROP_REPEAT_COUNT:
+      g_value_set_int (value, priv->repeat_count);
       break;
 
     default:
@@ -479,13 +511,20 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    * ClutterTimeline:loop:
    *
    * Whether the timeline should automatically rewind and restart.
+   *
+   * As a side effect, setting this property to %TRUE will set the
+   * #ClutterTimeline:repeat-count property to -1, while setting this
+   * property to %FALSE will set the #ClutterTimeline:repeat-count
+   * property to 0.
+   *
+   * Deprecated: 1.10: Use the #ClutterTimeline:repeat-count property instead.
    */
   obj_props[PROP_LOOP] =
     g_param_spec_boolean ("loop",
                           P_("Loop"),
                           P_("Should the timeline automatically restart"),
                           FALSE,
-                          CLUTTER_PARAM_READWRITE);
+                          CLUTTER_PARAM_READWRITE | G_PARAM_DEPRECATED);
 
   /**
    * ClutterTimeline:delay:
@@ -549,6 +588,26 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                           P_("Whether the direction should be reversed when reaching the end"),
                           FALSE,
                           CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterTimeline:repeat-count:
+   *
+   * Defines how many times the timeline should repeat.
+   *
+   * If the repeat count is 0, the timeline does not repeat.
+   *
+   * If the repeat count is set to -1, the timeline will repeat until it is
+   * stopped.
+   *
+   * Since: 1.10
+   */
+  obj_props[PROP_REPEAT_COUNT] =
+    g_param_spec_int ("repeat-count",
+                      P_("Repeat Count"),
+                      P_("How many times the timeline should repeat"),
+                      -1, G_MAXINT,
+                      0,
+                      CLUTTER_PARAM_READWRITE);
 
   object_class->dispose      = clutter_timeline_dispose;
   object_class->finalize     = clutter_timeline_finalize;
@@ -806,6 +865,7 @@ set_is_playing (ClutterTimeline *timeline,
     {
       _clutter_master_clock_add_timeline (master_clock, timeline);
       priv->waiting_first_tick = TRUE;
+      priv->current_repeat = 0;
     }
   else
     {
@@ -839,15 +899,9 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
       emit_frame_signal (timeline);
       check_markers (timeline, priv->msecs_delta);
 
-      /* Signal pauses timeline ? */
-      if (!priv->is_playing)
-        {
-          g_object_unref (timeline);
-          return FALSE;
-        }
-
       g_object_unref (timeline);
-      return TRUE;
+
+      return priv->is_playing;
     }
   else
     {
@@ -894,14 +948,19 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
                     (long) priv->elapsed_time,
                     (long) priv->msecs_delta);
 
-      if (!priv->loop && priv->is_playing)
+      priv->current_repeat += 1;
+
+      if (priv->is_playing &&
+          (priv->repeat_count == 0 ||
+           priv->repeat_count == priv->current_repeat))
         {
-          /* We remove the timeout now, so that the completed signal handler
+          /* We stop the timeline now, so that the completed signal handler
            * may choose to re-start the timeline
            *
-           * XXX Perhaps we should remove this earlier, and regardless
-           * of priv->loop. Are we limiting the things that could be done in
-           * the above new-frame signal handler */
+           * XXX Perhaps we should do this earlier, and regardless of
+           * priv->repeat_count. Are we limiting the things that could be
+           * done in the above new-frame signal handler?
+           */
 	  set_is_playing (timeline, FALSE);
         }
 
@@ -933,7 +992,7 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
           return TRUE;
         }
 
-      if (priv->loop)
+      if (priv->repeat_count != 0)
         {
           /* We try and interpolate smoothly around a loop */
           if (saved_direction == CLUTTER_TIMELINE_FORWARD)
@@ -1064,6 +1123,11 @@ clutter_timeline_stop (ClutterTimeline *timeline)
  * @loop: %TRUE for enable looping
  *
  * Sets whether @timeline should loop.
+ *
+ * This function is equivalent to calling clutter_timeline_set_repeat_count()
+ * with -1 if @loop is %TRUE, and with 0 if @loop is %FALSE.
+ *
+ * Deprecated: 1.10: Use clutter_timeline_set_repeat_count() instead.
  */
 void
 clutter_timeline_set_loop (ClutterTimeline *timeline,
@@ -1071,12 +1135,7 @@ clutter_timeline_set_loop (ClutterTimeline *timeline,
 {
   g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
 
-  if (timeline->priv->loop != loop)
-    {
-      timeline->priv->loop = loop;
-
-      g_object_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_LOOP]);
-    }
+  clutter_timeline_set_loop_internal (timeline, loop);
 }
 
 /**
@@ -1086,13 +1145,15 @@ clutter_timeline_set_loop (ClutterTimeline *timeline,
  * Gets whether @timeline is looping
  *
  * Return value: %TRUE if the timeline is looping
+ *
+ * Deprecated: 1.10: Use clutter_timeline_get_repeat_count() instead.
  */
 gboolean
 clutter_timeline_get_loop (ClutterTimeline *timeline)
 {
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
 
-  return timeline->priv->loop;
+  return timeline->priv->repeat_count != 0;
 }
 
 /**
@@ -1242,10 +1303,10 @@ clutter_timeline_clone (ClutterTimeline *timeline)
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), NULL);
 
   return g_object_new (CLUTTER_TYPE_TIMELINE,
-                       "duration", clutter_timeline_get_duration (timeline),
-                       "loop", clutter_timeline_get_loop (timeline),
-                       "delay", clutter_timeline_get_delay (timeline),
-                       "direction", clutter_timeline_get_direction (timeline),
+                       "duration", timeline->priv->duration,
+                       "loop", timeline->priv->repeat_count != 0,
+                       "delay", timeline->priv->delay,
+                       "direction", timeline->priv->direction,
                        NULL);
 }
 
@@ -1780,7 +1841,7 @@ clutter_timeline_has_marker (ClutterTimeline *timeline,
  * }
  * ...
  *   timeline = clutter_timeline_new (1000);
- *   clutter_timeline_set_loop (timeline);
+ *   clutter_timeline_set_repeat_count (timeline, -1);
  *   g_signal_connect (timeline, "completed",
  *                     G_CALLBACK (reverse_timeline),
  *                     NULL);
@@ -1790,7 +1851,7 @@ clutter_timeline_has_marker (ClutterTimeline *timeline,
  *
  * |[
  *   timeline = clutter_timeline_new (1000);
- *   clutter_timeline_set_loop (timeline);
+ *   clutter_timeline_set_repeat_count (timeline, -1);
  *   clutter_timeline_set_auto_reverse (timeline);
  * ]|
  *
@@ -1834,4 +1895,56 @@ clutter_timeline_get_auto_reverse (ClutterTimeline *timeline)
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
 
   return timeline->priv->auto_reverse;
+}
+
+/**
+ * clutter_timeline_set_repeat_count:
+ * @timeline: a #ClutterTimeline
+ * @count: the number of times the timeline should repeat
+ *
+ * Sets the number of times the @timeline should repeat.
+ *
+ * If @count is 0, the timeline never repeats.
+ *
+ * If @count is -1, the timeline will always repeat until
+ * it's stopped.
+ *
+ * Since: 1.10
+ */
+void
+clutter_timeline_set_repeat_count (ClutterTimeline *timeline,
+                                   gint             count)
+{
+  ClutterTimelinePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_if_fail (count >= -1);
+
+  priv = timeline->priv;
+
+  if (priv->repeat_count != count)
+    {
+      priv->repeat_count = count;
+
+      g_object_notify_by_pspec (G_OBJECT (timeline),
+                                obj_props[PROP_REPEAT_COUNT]);
+    }
+}
+
+/**
+ * clutter_timeline_get_repeat_count:
+ * @timeline: a #ClutterTimeline
+ *
+ * Retrieves the number set using clutter_timeline_set_repeat_count().
+ *
+ * Return value: the number of repeats
+ *
+ * Since: 1.10
+ */
+gint
+clutter_timeline_get_repeat_count (ClutterTimeline *timeline)
+{
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
+
+  return timeline->priv->repeat_count;
 }
