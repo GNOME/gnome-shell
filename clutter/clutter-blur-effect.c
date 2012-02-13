@@ -85,12 +85,6 @@ struct _ClutterBlurEffect
   /* a back pointer to our actor, so that we can query it */
   ClutterActor *actor;
 
-  /* the parameters; x_step and y_step depend on
-   * the actor's allocation
-   */
-  gfloat x_step;
-  gfloat y_step;
-
   CoglHandle shader;
   CoglHandle program;
 
@@ -109,17 +103,6 @@ struct _ClutterBlurEffectClass
 G_DEFINE_TYPE (ClutterBlurEffect,
                clutter_blur_effect,
                CLUTTER_TYPE_OFFSCREEN_EFFECT);
-
-static int
-next_p2 (int a)
-{
-  int rval = 1;
-
-  while (rval < a)
-    rval <<= 1;
-
-  return rval;
-}
 
 static gboolean
 clutter_blur_effect_pre_paint (ClutterEffect *effect)
@@ -150,9 +133,6 @@ clutter_blur_effect_pre_paint (ClutterEffect *effect)
 
   clutter_actor_get_allocation_box (self->actor, &allocation);
   clutter_actor_box_get_size (&allocation, &width, &height);
-
-  self->x_step = 1.0f / (float) next_p2 (width);
-  self->y_step = 1.0f / (float) next_p2 (height);
 
   if (self->shader == COGL_INVALID_HANDLE)
     {
@@ -216,22 +196,31 @@ clutter_blur_effect_paint_target (ClutterOffscreenEffect *effect)
   ClutterBlurEffect *self = CLUTTER_BLUR_EFFECT (effect);
   ClutterOffscreenEffectClass *parent;
   CoglHandle material;
+  CoglHandle texture;
 
   if (self->program == COGL_INVALID_HANDLE)
     goto out;
+
+  texture = clutter_offscreen_effect_get_texture (effect);
 
   if (self->tex_uniform > -1)
     cogl_program_set_uniform_1i (self->program, self->tex_uniform, 0);
 
   if (self->x_step_uniform > -1)
-    cogl_program_set_uniform_1f (self->program,
-                                 self->x_step_uniform,
-                                 self->x_step);
+    {
+      int width = cogl_texture_get_width (texture);
+      cogl_program_set_uniform_1f (self->program,
+                                   self->x_step_uniform,
+                                   1.0f / width);
+    }
 
   if (self->y_step_uniform > -1)
-    cogl_program_set_uniform_1f (self->program,
-                                 self->y_step_uniform,
-                                 self->y_step);
+    {
+      int height = cogl_texture_get_height (texture);
+      cogl_program_set_uniform_1f (self->program,
+                                   self->y_step_uniform,
+                                   1.0f / height);
+    }
 
   material = clutter_offscreen_effect_get_target (effect);
   cogl_material_set_user_program (material, self->program);
