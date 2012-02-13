@@ -69,25 +69,34 @@ CLUTTER_DEPRECATED_FOR(clutter_stage_new)
 ClutterActor *  clutter_stage_get_default       (void);
 
 CLUTTER_DEPRECATED
-gboolean        clutter_stage_is_default        (ClutterStage *stage);
+gboolean        clutter_stage_is_default        (ClutterStage       *stage);
 
 CLUTTER_DEPRECATED_FOR(clutter_actor_queue_redraw)
-void            clutter_stage_queue_redraw      (ClutterStage *stage);
+void            clutter_stage_queue_redraw      (ClutterStage       *stage);
 
 CLUTTER_DEPRECATED
-void            clutter_stage_set_use_fog       (ClutterStage *stage,
-                                                 gboolean      fog);
+void            clutter_stage_set_use_fog       (ClutterStage       *stage,
+                                                 gboolean            fog);
 
 CLUTTER_DEPRECATED
-gboolean        clutter_stage_get_use_fog       (ClutterStage *stage);
+gboolean        clutter_stage_get_use_fog       (ClutterStage       *stage);
 
 CLUTTER_DEPRECATED
-void            clutter_stage_set_fog           (ClutterStage *stage,
-                                                 ClutterFog   *fog);
+void            clutter_stage_set_fog           (ClutterStage       *stage,
+                                                 ClutterFog         *fog);
 
 CLUTTER_DEPRECATED
-void            clutter_stage_get_fog           (ClutterStage *stage,
-                                                 ClutterFog   *fog);
+void            clutter_stage_get_fog           (ClutterStage       *stage,
+                                                 ClutterFog         *fog);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_set_background_color)
+void            clutter_stage_set_color         (ClutterStage       *stage,
+                                                 const ClutterColor *color);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_get_background_color)
+void            clutter_stage_get_color         (ClutterStage       *stage,
+                                                 ClutterColor       *color);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_DEPRECATED_H__ */

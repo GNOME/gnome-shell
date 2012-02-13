@@ -141,10 +141,6 @@ GType clutter_stage_get_type (void) G_GNUC_CONST;
 
 ClutterActor *  clutter_stage_new                               (void);
 
-void            clutter_stage_set_color                         (ClutterStage          *stage,
-                                                                 const ClutterColor    *color);
-void            clutter_stage_get_color                         (ClutterStage          *stage,
-                                                                 ClutterColor          *color);
 void            clutter_stage_set_perspective                   (ClutterStage          *stage,
 			                                         ClutterPerspective    *perspective);
 void            clutter_stage_get_perspective                   (ClutterStage          *stage,

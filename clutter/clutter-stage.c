@@ -121,7 +121,6 @@ struct _ClutterStagePrivate
   /* the stage implementation */
   ClutterStageWindow *impl;
 
-  ClutterColor color;
   ClutterPerspective perspective;
   CoglMatrix projection;
   CoglMatrix inverse_projection;
@@ -673,6 +672,7 @@ clutter_stage_paint (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
   CoglBufferBit clear_flags;
+  ClutterColor bg_color;
   CoglColor stage_color;
   ClutterActorIter iter;
   ClutterActor *child;
@@ -687,8 +687,9 @@ clutter_stage_paint (ClutterActor *self)
   CLUTTER_NOTE (PAINT, "Initializing stage paint");
 
   /* composite the opacity to the stage color */
+  clutter_actor_get_background_color (self, &bg_color);
   real_alpha = clutter_actor_get_opacity (self)
-             * priv->color.alpha
+             * bg_color.alpha
              / 255;
 
   clear_flags = COGL_BUFFER_BIT_DEPTH;
@@ -702,9 +703,9 @@ clutter_stage_paint (ClutterActor *self)
    * set; the effect depends entirely on the Clutter backend
    */
   cogl_color_init_from_4ub (&stage_color,
-                            priv->color.red,
-                            priv->color.green,
-                            priv->color.blue,
+                            bg_color.red,
+                            bg_color.green,
+                            bg_color.blue,
                             priv->use_alpha ? real_alpha : 255);
   cogl_color_premultiply (&stage_color);
   cogl_clear (&stage_color, clear_flags);
@@ -1625,7 +1626,8 @@ clutter_stage_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_COLOR:
-      clutter_stage_set_color (stage, clutter_value_get_color (value));
+      clutter_actor_set_background_color (CLUTTER_ACTOR (stage),
+                                          clutter_value_get_color (value));
       break;
 
     case PROP_OFFSCREEN:
@@ -1693,7 +1695,13 @@ clutter_stage_get_property (GObject    *gobject,
   switch (prop_id)
     {
     case PROP_COLOR:
-      clutter_value_set_color (value, &priv->color);
+      {
+        ClutterColor bg_color;
+
+        clutter_actor_get_background_color (CLUTTER_ACTOR (gobject),
+                                            &bg_color);
+        clutter_value_set_color (value, &bg_color);
+      }
       break;
 
     case PROP_OFFSCREEN:
@@ -1906,13 +1914,17 @@ clutter_stage_class_init (ClutterStageClass *klass)
   /**
    * ClutterStage:color:
    *
-   * The color of the main stage.
+   * The background color of the main stage.
+   *
+   * Deprecated: 1.10: Use the #ClutterActor:background-color property of
+   *   #ClutterActor instead.
    */
   pspec = clutter_param_spec_color ("color",
                                     P_("Color"),
                                     P_("The color of the stage"),
                                     &default_stage_color,
-                                    CLUTTER_PARAM_READWRITE);
+                                    CLUTTER_PARAM_READWRITE |
+                                    G_PARAM_DEPRECATED);
   g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
 
   /**
@@ -2213,7 +2225,8 @@ clutter_stage_init (ClutterStage *self)
    */
   priv->motion_events_enabled = _clutter_context_get_motion_events_enabled ();
 
-  priv->color = default_stage_color;
+  clutter_actor_set_background_color (CLUTTER_ACTOR (self),
+                                      &default_stage_color);
 
   priv->perspective.fovy   = 60.0; /* 60 Degrees */
   priv->perspective.aspect = (float) geom.width / (float) geom.height;
@@ -2322,21 +2335,14 @@ clutter_stage_get_default (void)
  * @color: A #ClutterColor
  *
  * Sets the stage color.
+ *
+ * Deprecated: 1.10: Use clutter_actor_set_background_color() instead.
  */
 void
 clutter_stage_set_color (ClutterStage       *stage,
 			 const ClutterColor *color)
 {
-  ClutterStagePrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-  g_return_if_fail (color != NULL);
-
-  priv = stage->priv;
-
-  priv->color = *color;
-
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+  clutter_actor_set_background_color (CLUTTER_ACTOR (stage), color);
 
   g_object_notify (G_OBJECT (stage), "color");
 }
@@ -2347,19 +2353,14 @@ clutter_stage_set_color (ClutterStage       *stage,
  * @color: (out caller-allocates): return location for a #ClutterColor
  *
  * Retrieves the stage color.
+ *
+ * Deprecated: 1.10: Use clutter_actor_get_background_color() instead.
  */
 void
 clutter_stage_get_color (ClutterStage *stage,
 			 ClutterColor *color)
 {
-  ClutterStagePrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-  g_return_if_fail (color != NULL);
-
-  priv = stage->priv;
-
-  *color = priv->color;
+  clutter_actor_get_background_color (CLUTTER_ACTOR (stage), color);
 }
 
 static void
