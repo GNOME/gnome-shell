@@ -2725,7 +2725,6 @@ _clutter_actor_draw_paint_volume_full (ClutterActor *self,
 
   cogl_pipeline_set_color (outline, color);
   cogl_framebuffer_draw_primitive (fb, outline, prim);
-  cogl_object_unref (outline);
   cogl_object_unref (prim);
 
   if (label)
