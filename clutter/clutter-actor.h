@@ -493,6 +493,7 @@ void                            clutter_actor_replace_child                     
 void                            clutter_actor_remove_child                      (ClutterActor               *self,
                                                                                  ClutterActor               *child);
 void                            clutter_actor_remove_all_children               (ClutterActor               *self);
+void                            clutter_actor_destroy_all_children              (ClutterActor               *self);
 GList *                         clutter_actor_get_children                      (ClutterActor               *self);
 gint                            clutter_actor_get_n_children                    (ClutterActor               *self);
 ClutterActor *                  clutter_actor_get_child_at_index                (ClutterActor               *self,

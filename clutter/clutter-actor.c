@@ -10461,6 +10461,10 @@ clutter_actor_remove_child (ClutterActor *self,
  * This function releases the reference added by inserting a child actor
  * in the list of children of @self.
  *
+ * If the reference count of a child drops to zero, the child will be
+ * destroyed. If you want to ensure the destruction of all the children
+ * of @self, use clutter_actor_destroy_all_children().
+ *
  * Since: 1.10
  */
 void
@@ -10476,6 +10480,53 @@ clutter_actor_remove_all_children (ClutterActor *self)
   clutter_actor_iter_init (&iter, self);
   while (clutter_actor_iter_next (&iter, NULL))
     clutter_actor_iter_remove (&iter);
+
+  /* sanity check */
+  g_assert (self->priv->first_child == NULL);
+  g_assert (self->priv->last_child == NULL);
+  g_assert (self->priv->n_children == 0);
+}
+
+/**
+ * clutter_actor_destroy_all_children:
+ * @self: a #ClutterActor
+ *
+ * Destroys all children of @self.
+ *
+ * This function releases the reference added by inserting a child
+ * actor in the list of children of @self, and ensures that the
+ * #ClutterActor::destroy signal is emitted on each child of the
+ * actor.
+ *
+ * By default, #ClutterActor will emit the #ClutterActor::destroy signal
+ * when its reference count drops to 0; the default handler of the
+ * #ClutterActor::destroy signal will destroy all the children of an
+ * actor. This function ensures that all children are destroyed, instead
+ * of just removed from @self, unlike clutter_actor_remove_all_children()
+ * which will merely release the reference and remove each child.
+ *
+ * Unless you acquired an additional reference on each child of @self
+ * prior to calling clutter_actor_remove_all_children() and want to reuse
+ * the actors, you should use clutter_actor_destroy_all_children() in
+ * order to make sure that children are destroyed and signal handlers
+ * are disconnected even in cases where circular references prevent this
+ * from automatically happening through reference counting alone.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_destroy_all_children (ClutterActor *self)
+{
+  ClutterActorIter iter;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (self->priv->n_children == 0)
+    return;
+
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, NULL))
+    clutter_actor_iter_destroy (&iter);
 
   /* sanity check */
   g_assert (self->priv->first_child == NULL);
