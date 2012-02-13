@@ -134,8 +134,7 @@ shell_slicer_paint_child (ShellSlicer *self)
 static void
 shell_slicer_paint (ClutterActor *self)
 {
-  /* StWidget paints CSS elements */
-  CLUTTER_ACTOR_CLASS (g_type_class_peek (st_widget_get_type ()))->paint (self);
+  st_widget_paint_background (ST_WIDGET (self));
 
   shell_slicer_paint_child (SHELL_SLICER (self));
 }

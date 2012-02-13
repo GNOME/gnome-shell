@@ -21,28 +21,6 @@ G_DEFINE_TYPE (ShellStack,
                ST_TYPE_CONTAINER);
 
 static void
-shell_stack_paint (ClutterActor *actor)
-{
-  CLUTTER_ACTOR_CLASS (shell_stack_parent_class)->paint (actor);
-
-  clutter_container_foreach (CLUTTER_CONTAINER (actor),
-                             CLUTTER_CALLBACK (clutter_actor_paint),
-                             NULL);
-}
-
-static void
-shell_stack_pick (ClutterActor       *actor,
-                  const ClutterColor *pick)
-{
-  /* Chain up so we get a bounding box painted (if we are reactive) */
-  CLUTTER_ACTOR_CLASS (shell_stack_parent_class)->pick (actor, pick);
-
-  clutter_container_foreach (CLUTTER_CONTAINER (actor),
-                             CLUTTER_CALLBACK (clutter_actor_paint),
-                             NULL);
-}
-
-static void
 shell_stack_allocate (ClutterActor           *self,
                       const ClutterActorBox  *box,
                       ClutterAllocationFlags  flags)
@@ -206,8 +184,6 @@ shell_stack_class_init (ShellStackClass *klass)
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
 
-  actor_class->paint = shell_stack_paint;
-  actor_class->pick = shell_stack_pick;
   actor_class->get_preferred_width = shell_stack_get_preferred_width;
   actor_class->get_preferred_height = shell_stack_get_preferred_height;
   actor_class->allocate = shell_stack_allocate;

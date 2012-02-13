@@ -127,7 +127,7 @@ shell_generic_container_paint (ClutterActor  *actor)
   ShellGenericContainer *self = (ShellGenericContainer*) actor;
   GList *iter, *children;
 
-  CLUTTER_ACTOR_CLASS (shell_generic_container_parent_class)->paint (actor);
+  st_widget_paint_background (ST_WIDGET (actor));
 
   children = st_container_get_children_list (ST_CONTAINER (actor));
   for (iter = children; iter; iter = iter->next)
