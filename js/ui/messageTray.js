@@ -1520,10 +1520,10 @@ const MessageTray = new Lang.Class({
         let summaryItem = new SummaryItem(source);
 
         if (source.isChat) {
-            this._summary.insert_actor(summaryItem.actor, 0);
+            this._summary.insert_child_at_index(summaryItem.actor, 0);
             this._chatSummaryItemsCount++;
         } else {
-            this._summary.insert_actor(summaryItem.actor, this._chatSummaryItemsCount);
+            this._summary.insert_child_at_index(summaryItem.actor, this._chatSummaryItemsCount);
         }
 
         let titleWidth = summaryItem.getTitleNaturalWidth();

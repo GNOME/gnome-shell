@@ -1010,10 +1010,12 @@ const PopupMenuBase = new Lang.Class({
             let items = this._getMenuItems();
             if (position < items.length) {
                 before_item = items[position].actor;
-                this.box.insert_before(menuItem.actor, before_item);
-            } else
+                this.box.insert_child_below(menuItem.actor, before_item);
+            } else {
                 this.box.add(menuItem.actor);
+            }
         }
+
         if (menuItem instanceof PopupMenuSection) {
             this._connectSubMenuSignals(menuItem, menuItem);
             menuItem._closingId = this.connect('open-state-changed',
@@ -1031,7 +1033,7 @@ const PopupMenuBase = new Lang.Class({
             if (before_item == null)
                 this.box.add(menuItem.menu.actor);
             else
-                this.box.insert_before(menuItem.menu.actor, before_item);
+                this.box.insert_child_below(menuItem.menu.actor, before_item);
             this._connectSubMenuSignals(menuItem, menuItem.menu);
             this._connectItemSignals(menuItem);
             menuItem._closingId = this.connect('open-state-changed', function(self, open) {

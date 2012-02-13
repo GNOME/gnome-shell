@@ -1038,7 +1038,7 @@ const LookingGlass = new Lang.Class({
             actor.add(padBin);
 
             this._completionActor = actor;
-            this._evalBox.insert_before(this._completionActor, this._entryArea);
+            this._evalBox.insert_child_below(this._completionActor, this._entryArea);
         }
 
         this._completionText.set_text(completions.join(', '));

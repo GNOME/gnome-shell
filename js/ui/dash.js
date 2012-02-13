@@ -677,8 +677,8 @@ const Dash = new Lang.Class({
         }
 
         for (let i = 0; i < addedItems.length; i++)
-            this._box.insert_actor(addedItems[i].item.actor,
-                                   addedItems[i].pos);
+            this._box.insert_child_at_index(addedItems[i].item.actor,
+                                            addedItems[i].pos);
 
         for (let i = 0; i < removedActors.length; i++) {
             let item = removedActors[i]._delegate;
@@ -787,8 +787,8 @@ const Dash = new Lang.Class({
             this._dragPlaceholder = new DragPlaceholderItem();
             this._dragPlaceholder.child.set_width (this.iconSize);
             this._dragPlaceholder.child.set_height (this.iconSize / 2);
-            this._box.insert_actor(this._dragPlaceholder.actor,
-                                   this._dragPlaceholderPos);
+            this._box.insert_child_at_index(this._dragPlaceholder.actor,
+                                            this._dragPlaceholderPos);
             if (fadeIn)
                 this._dragPlaceholder.animateIn();
         }

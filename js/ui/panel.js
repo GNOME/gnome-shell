@@ -1078,13 +1078,13 @@ const Panel = new Lang.Class({
         for (i = children.length - 1; i >= 0; i--) {
             let rolePosition = children[i]._rolePosition;
             if (position > rolePosition) {
-                this._rightBox.insert_actor(actor, i + 1);
+                this._rightBox.insert_child_at_index(actor, i + 1);
                 break;
             }
         }
         if (i == -1) {
             // If we didn't find a position, we must be first
-            this._rightBox.insert_actor(actor, 0);
+            this._rightBox.insert_child_at_index(actor, 0);
         }
         actor._rolePosition = position;
     },
