@@ -70,8 +70,7 @@ const Application = new Lang.Class({
 
     _setExtensionInsensitive: function(layout, cell, model, iter, data) {
         let uuid = model.get_value(iter, 0);
-        if (!this._extensionAvailable(uuid))
-            cell.set_sensitive(false);
+        cell.set_sensitive(this._extensionAvailable(uuid));
     },
 
     _getExtensionPrefsModule: function(extension) {
