@@ -691,43 +691,24 @@ clutter_stage_paint (ClutterActor *self)
              * priv->color.alpha
              / 255;
 
+  clear_flags = COGL_BUFFER_BIT_DEPTH;
+  if (!STAGE_NO_CLEAR_ON_PAINT (self))
+    clear_flags |= COGL_BUFFER_BIT_COLOR;
+
+  cogl_disable_fog ();
+
+  CLUTTER_TIMER_START (_clutter_uprof_context, stage_clear_timer);
   /* we use the real alpha to clear the stage if :use-alpha is
-   * set; the effect depends entirely on how the Clutter backend
+   * set; the effect depends entirely on the Clutter backend
    */
   cogl_color_init_from_4ub (&stage_color,
                             priv->color.red,
                             priv->color.green,
                             priv->color.blue,
-                            priv->use_alpha ? real_alpha
-                                           : 255);
+                            priv->use_alpha ? real_alpha : 255);
   cogl_color_premultiply (&stage_color);
-
-  clear_flags = COGL_BUFFER_BIT_DEPTH;
-  if (!STAGE_NO_CLEAR_ON_PAINT (self))
-    clear_flags |= COGL_BUFFER_BIT_COLOR;
-
-  CLUTTER_TIMER_START (_clutter_uprof_context, stage_clear_timer);
-
   cogl_clear (&stage_color, clear_flags);
-
   CLUTTER_TIMER_STOP (_clutter_uprof_context, stage_clear_timer);
-
-#if 0
-  if (G_UNLIKELY (priv->use_fog))
-    {
-      /* we only expose the linear progression of the fog in
-       * the ClutterStage API, and that ignores the fog density.
-       * thus, we pass 1.0 as the density parameter
-       */
-      cogl_set_fog (&stage_color,
-                    COGL_FOG_MODE_LINEAR,
-                    1.0,
-                    priv->fog.z_near,
-                    priv->fog.z_far);
-    }
-  else
-    cogl_disable_fog ();
-#endif
 
   clutter_actor_iter_init (&iter, self);
   while (clutter_actor_iter_next (&iter, &child))
@@ -1400,7 +1381,6 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   ClutterMainContext *context;
   guchar pixel[4] = { 0xff, 0xff, 0xff, 0xff };
   CoglColor stage_pick_id;
-  guint32 id_;
   gboolean dither_enabled_save;
   CoglFramebuffer *fb;
   ClutterActor *actor;
@@ -1463,19 +1443,7 @@ _clutter_stage_do_pick (ClutterStage   *stage,
       CLUTTER_NOTE (PICK, "Reusing pick buffer from previous render to fetch "
                     "actor at %i,%i", x, y);
 
-      /* FIXME: This is a lazy copy and paste of the logic at the end of this
-       * function used when we actually do a pick render. It should be
-       * consolidated somehow.
-       */
-      if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
-        {
-          actor = CLUTTER_ACTOR (stage);
-          goto result;
-        }
-
-      id_ = _clutter_pixel_to_id (pixel);
-      actor = _clutter_get_actor_by_id (stage, id_);
-      goto result;
+      goto check_pixel;
     }
 
   priv->picks_per_frame++;
@@ -1565,16 +1533,17 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   /* Restore whether GL_DITHER was enabled */
   cogl_framebuffer_set_dither_enabled (fb, dither_enabled_save);
 
+check_pixel:
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
     {
       actor = CLUTTER_ACTOR (stage);
-      goto result;
     }
+  else
+    {
+      guint32 id_ = _clutter_pixel_to_id (pixel);
 
-  id_ = _clutter_pixel_to_id (pixel);
-  actor = _clutter_get_actor_by_id (stage, id_);
-
-result:
+      actor = _clutter_get_actor_by_id (stage, id_);
+    }
 
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_timer);
 
@@ -3159,25 +3128,6 @@ void
 clutter_stage_set_use_fog (ClutterStage *stage,
                            gboolean      fog)
 {
-#if 0
-  ClutterStagePrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-
-  priv = stage->priv;
-
-  if (priv->use_fog != fog)
-    {
-      priv->use_fog = fog;
-
-      CLUTTER_NOTE (MISC, "%s depth-cueing inside stage",
-                    priv->use_fog ? "enabling" : "disabling");
-
-      clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-
-      g_object_notify (G_OBJECT (stage), "use-fog");
-    }
-#endif
 }
 
 /**
@@ -3242,19 +3192,6 @@ void
 clutter_stage_set_fog (ClutterStage *stage,
                        ClutterFog   *fog)
 {
-#if 0
-  ClutterStagePrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-  g_return_if_fail (fog != NULL);
-
-  priv = stage->priv;
-
-  priv->fog = *fog;
-
-  if (priv->use_fog)
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-#endif
 }
 
 /**
