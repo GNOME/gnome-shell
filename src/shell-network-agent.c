@@ -229,22 +229,29 @@ get_secrets_keyring_cb (GnomeKeyringResult  result,
 			GList              *list,
 			gpointer            user_data)
 {
-  ShellAgentRequest *closure = user_data;
-  ShellNetworkAgent *self = closure->self;
-  ShellNetworkAgentPrivate *priv = self->priv;
+  ShellAgentRequest *closure;
+  ShellNetworkAgent *self;
+  ShellNetworkAgentPrivate *priv;
   GError *error = NULL;
   gint n_found = 0;
   GList *iter;
   GHashTable *outer;
 
+  if (result == GNOME_KEYRING_RESULT_CANCELLED)
+    return;
+
+  closure = user_data;
+  self = closure->self;
+  priv  = self->priv;
+
   closure->keyring_op = NULL;
 
-  if (result == GNOME_KEYRING_RESULT_CANCELLED)
+  if (result == GNOME_KEYRING_RESULT_DENIED)
     {
       g_set_error (&error,
 		   NM_SECRET_AGENT_ERROR,
 		   NM_SECRET_AGENT_ERROR_USER_CANCELED,
-		   "The secret request was cancelled by the user");
+		   "Access to the secret storage was denied by the user");
 
       closure->callback (NM_SECRET_AGENT (closure->self), closure->connection, NULL, error, closure->callback_data);
 
