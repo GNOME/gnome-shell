@@ -472,7 +472,7 @@ StTooltip StLabel {
     border-radius: 8px;
     font-size: 9pt;
     font-weight: bold;
-    padding: 6px 12px;
+    padding: 4px 12px;
     -shell-caption-spacing: 12px;
 }
 
