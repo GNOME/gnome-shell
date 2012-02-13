@@ -110,7 +110,7 @@ main (int   argc,
                         NULL);
 
   timeline = clutter_animator_get_timeline (animator);
-  clutter_timeline_set_loop (timeline, TRUE);
+  clutter_timeline_set_repeat_count (timeline, -1);
   clutter_timeline_set_auto_reverse (timeline, TRUE);
 
   g_signal_connect (stage,

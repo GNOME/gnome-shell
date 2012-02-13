@@ -49,7 +49,7 @@ main (int   argc,
   clutter_actor_set_position (state->actor, 150, 50);
 
   state->timeline = clutter_timeline_new (1000);
-  clutter_timeline_set_loop (state->timeline, TRUE);
+  clutter_timeline_set_repeat_count (state->timeline, -1);
   clutter_timeline_set_auto_reverse (state->timeline, TRUE);
 
   g_signal_connect (stage,

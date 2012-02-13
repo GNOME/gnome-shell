@@ -2346,7 +2346,7 @@ clutter_animator_start (animator);
         <informalexample>
           <programlisting>
 ClutterTimeline *timeline = clutter_timeline_new (1000);
-clutter_timeline_set_loop (timeline, TRUE);
+clutter_timeline_set_repeat_count (timeline, -1);
           </programlisting>
         </informalexample>
 
@@ -2398,7 +2398,7 @@ clutter_actor_animate_with_timeline (actor,
         <informalexample>
           <programlisting>
 ClutterTimeline *timeline = clutter_timeline_new (2000);
-clutter_timeline_set_loop (timeline, TRUE);
+clutter_timeline_set_repeat_count (timeline, -1);
           </programlisting>
         </informalexample>
 
@@ -2554,7 +2554,7 @@ clutter_state_warp_to_state (transitions, "right");
       <orderedlist>
         <listitem>
           <para>Setting the <type>ClutterTimeline</type> to loop
-          (via <function>clutter_timeline_set_loop()</function>). This
+          (via <function>clutter_timeline_set_repeat_count()</function>). This
           is the best approach where the timeline is explicit (for
           <type>ClutterAnimator</type> and implicit animations).</para>
         </listitem>
@@ -3140,7 +3140,7 @@ ClutterTimeline *timeline;
  * indefinitely and reverses its direction each time it completes
  */
 timeline = clutter_timeline_new (1000);
-clutter_timeline_set_loop (timeline, TRUE);
+clutter_timeline_set_repeat_count (timeline, -1);
 clutter_timeline_set_auto_reverse (timeline, TRUE);
 
 /* animate the offset property on the constraint from 0.0 to 1.0;

@@ -39,7 +39,7 @@ main (int   argc,
   clutter_actor_set_position (actor, 150, 50);
 
   timeline = clutter_timeline_new (2000);
-  clutter_timeline_set_loop (timeline, TRUE);
+  clutter_timeline_set_repeat_count (timeline, -1);
 
   animator = clutter_animator_new ();
   clutter_animator_set_timeline (animator, timeline);

@@ -47,7 +47,7 @@ main (int   argc,
 
   /* set up the timeline */
   timeline = clutter_timeline_new (1000);
-  clutter_timeline_set_loop (timeline, TRUE);
+  clutter_timeline_set_repeat_count (timeline, -1);
   clutter_timeline_set_auto_reverse (timeline, TRUE);
 
   clutter_actor_animate_with_timeline (rectangle, CLUTTER_LINEAR, timeline,
