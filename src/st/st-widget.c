@@ -110,7 +110,7 @@ static guint signals[LAST_SIGNAL] = { 0, };
 
 gfloat st_slow_down_factor = 1.0;
 
-G_DEFINE_ABSTRACT_TYPE (StWidget, st_widget, CLUTTER_TYPE_ACTOR);
+G_DEFINE_TYPE (StWidget, st_widget, CLUTTER_TYPE_ACTOR);
 
 #define ST_WIDGET_GET_PRIVATE(obj)    (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ST_TYPE_WIDGET, StWidgetPrivate))
 
