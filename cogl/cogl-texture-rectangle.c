@@ -29,7 +29,7 @@
 #endif
 
 #include "cogl.h"
-#include "cogl-internal.h"
+#include "cogl-private.h"
 #include "cogl-util.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-rectangle-private.h"
@@ -531,7 +531,7 @@ _cogl_texture_rectangle_get_data (CoglTexture     *tex,
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  bpp = _cogl_get_format_bpp (format);
+  bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
 
   ctx->texture_driver->pixel_format_to_gl (format,
                                            NULL, /* internal format */

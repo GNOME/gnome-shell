@@ -343,7 +343,7 @@ cogl_texture_new_from_data (unsigned int      width,
 
   /* Rowstride from width if not given */
   if (rowstride == 0)
-    rowstride = width * _cogl_get_format_bpp (format);
+    rowstride = width * _cogl_pixel_format_get_bytes_per_pixel (format);
 
   /* Wrap the data into a bitmap */
   bmp = _cogl_bitmap_new_from_data ((guint8 *) data,
@@ -530,7 +530,7 @@ cogl_texture_new_from_buffer_EXP (CoglPixelBuffer    *buffer,
   if (rowstride == 0)
     rowstride = pixel_buffer->stride;
   if (rowstride == 0)
-    rowstride = width * _cogl_get_format_bpp (format);
+    rowstride = width * _cogl_pixel_format_get_bytes_per_pixel (format);
 
   /* use the CoglBuffer height and width as last resort */
   if (width == 0)
@@ -580,12 +580,13 @@ cogl_texture_get_format (CoglTexture *texture)
 unsigned int
 cogl_texture_get_rowstride (CoglTexture *texture)
 {
+  CoglPixelFormat format = cogl_texture_get_format (texture);
   /* FIXME: This function should go away. It previously just returned
      the rowstride that was used to upload the data as far as I can
      tell. This is not helpful */
 
   /* Just guess at a suitable rowstride */
-  return (_cogl_get_format_bpp (cogl_texture_get_format (texture))
+  return (_cogl_pixel_format_get_bytes_per_pixel (format)
           * cogl_texture_get_width (texture));
 }
 
@@ -733,7 +734,7 @@ cogl_texture_set_region (CoglTexture     *texture,
 
   /* Rowstride from width if none specified */
   if (rowstride == 0)
-    rowstride = _cogl_get_format_bpp (format) * width;
+    rowstride = _cogl_pixel_format_get_bytes_per_pixel (format) * width;
 
   /* Init source bitmap */
   source_bmp = _cogl_bitmap_new_from_data ((guint8 *) data,
@@ -782,7 +783,7 @@ do_texture_draw_and_read (CoglTexture *texture,
   CoglBitmap  *rect_bmp;
   unsigned int  tex_width, tex_height;
 
-  bpp = _cogl_get_format_bpp (COGL_PIXEL_FORMAT_RGBA_8888);
+  bpp = _cogl_pixel_format_get_bytes_per_pixel (COGL_PIXEL_FORMAT_RGBA_8888);
 
   tex_width = cogl_texture_get_width (texture);
   tex_height = cogl_texture_get_height (texture);
@@ -886,7 +887,7 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  bpp = _cogl_get_format_bpp (COGL_PIXEL_FORMAT_RGBA_8888);
+  bpp = _cogl_pixel_format_get_bytes_per_pixel (COGL_PIXEL_FORMAT_RGBA_8888);
 
   framebuffer = cogl_get_draw_framebuffer ();
   /* Viewport needs to have some size and be inside the window for this */
@@ -1071,7 +1072,7 @@ get_texture_bits_via_copy (CoglTexture    *texture,
   full_tex_width = cogl_texture_get_width (texture);
   full_tex_height = cogl_texture_get_height (texture);
 
-  bpp = _cogl_get_format_bpp (dst_format);
+  bpp = _cogl_pixel_format_get_bytes_per_pixel (dst_format);
 
   full_rowstride = bpp * full_tex_width;
   full_bits = g_malloc (full_rowstride * full_tex_height);
@@ -1117,7 +1118,7 @@ texture_get_cb (CoglTexture *texture,
 {
   CoglTextureGetData *tg_data = user_data;
   CoglPixelFormat format = _cogl_bitmap_get_format (tg_data->target_bmp);
-  int bpp = _cogl_get_format_bpp (format);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
   unsigned int rowstride = _cogl_bitmap_get_rowstride (tg_data->target_bmp);
   int subtexture_width = cogl_texture_get_width (texture);
   int subtexture_height = cogl_texture_get_height (texture);
@@ -1207,7 +1208,7 @@ cogl_texture_get_data (CoglTexture     *texture,
   tex_height = cogl_texture_get_height (texture);
 
   /* Rowstride from texture width if none specified */
-  bpp = _cogl_get_format_bpp (format);
+  bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
   if (rowstride == 0)
     rowstride = tex_width * bpp;
 
@@ -1220,7 +1221,7 @@ cogl_texture_get_data (CoglTexture     *texture,
     ctx->texture_driver->find_best_gl_get_data_format (format,
                                                        &closest_gl_format,
                                                        &closest_gl_type);
-  closest_bpp = _cogl_get_format_bpp (closest_format);
+  closest_bpp = _cogl_pixel_format_get_bytes_per_pixel (closest_format);
 
   /* Is the requested format supported? */
   if (closest_format == format)

@@ -31,7 +31,7 @@
 #endif
 
 #include "cogl.h"
-#include "cogl-internal.h"
+#include "cogl-private.h"
 #include "cogl-util.h"
 #include "cogl-bitmap.h"
 #include "cogl-bitmap-private.h"
@@ -102,7 +102,7 @@ static CoglBitmap *
 prepare_bitmap_alignment_for_upload (CoglBitmap *src_bmp)
 {
   CoglPixelFormat format = _cogl_bitmap_get_format (src_bmp);
-  int bpp = _cogl_get_format_bpp (format);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
   int src_rowstride = _cogl_bitmap_get_rowstride (src_bmp);
   int width = _cogl_bitmap_get_width (src_bmp);
   int alignment = 1;
@@ -140,7 +140,7 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
 {
   guint8 *data;
   CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
-  int bpp = _cogl_get_format_bpp (source_format);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
   CoglBitmap *slice_bmp;
   int rowstride;
 
@@ -201,7 +201,8 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
                                    GLuint       source_gl_format,
                                    GLuint       source_gl_type)
 {
-  int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
+  CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
   int rowstride;
   int bmp_width = _cogl_bitmap_get_width (source_bmp);
   int bmp_height = _cogl_bitmap_get_height (source_bmp);
@@ -244,7 +245,8 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                                       GLuint       source_gl_format,
                                       GLuint       source_gl_type)
 {
-  int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
+  CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
   int rowstride = _cogl_bitmap_get_rowstride (source_bmp);
   int bmp_width = _cogl_bitmap_get_width (source_bmp);
   int bmp_height = _cogl_bitmap_get_height (source_bmp);

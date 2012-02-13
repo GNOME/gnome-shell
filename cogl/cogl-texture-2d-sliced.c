@@ -32,7 +32,7 @@
 
 #include "cogl.h"
 #include "cogl-debug.h"
-#include "cogl-internal.h"
+#include "cogl-private.h"
 #include "cogl-util.h"
 #include "cogl-bitmap.h"
 #include "cogl-bitmap-private.h"
@@ -146,7 +146,7 @@ _cogl_texture_2d_sliced_allocate_waste_buffer (CoglTexture2DSliced *tex_2ds,
                                 tex_2ds->slice_y_spans->len - 1);
   if (last_x_span->waste > 0 || last_y_span->waste > 0)
     {
-      int bpp = _cogl_get_format_bpp (format);
+      int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
       CoglSpan  *first_x_span
         = &g_array_index (tex_2ds->slice_x_spans, CoglSpan, 0);
       CoglSpan  *first_y_span
@@ -190,7 +190,7 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
     {
       int bmp_rowstride = _cogl_bitmap_get_rowstride (source_bmp);
       CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
-      int bpp = _cogl_get_format_bpp (source_format);
+      int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
       guint8 *bmp_data;
       const guint8 *src;
       guint8 *dst;

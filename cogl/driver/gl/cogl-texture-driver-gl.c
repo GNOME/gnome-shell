@@ -31,7 +31,7 @@
 #endif
 
 #include "cogl.h"
-#include "cogl-internal.h"
+#include "cogl-private.h"
 #include "cogl-util.h"
 #include "cogl-bitmap.h"
 #include "cogl-bitmap-private.h"
@@ -158,7 +158,8 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
 				             GLuint       source_gl_type)
 {
   guint8 *data;
-  int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
+  CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -193,7 +194,8 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
                                    GLuint       source_gl_type)
 {
   guint8 *data;
-  int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
+  CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -229,7 +231,8 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                                       GLuint       source_gl_type)
 {
   guint8 *data;
-  int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
+  CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 

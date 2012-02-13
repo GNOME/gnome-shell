@@ -28,7 +28,7 @@
 #include "cogl.h"
 #include "cogl-util.h"
 #include "cogl-debug.h"
-#include "cogl-internal.h"
+#include "cogl-private.h"
 #include "cogl-bitmap-private.h"
 #include "cogl-buffer-private.h"
 
@@ -78,24 +78,6 @@ _cogl_bitmap_free (CoglBitmap *bmp)
     cogl_object_unref (bmp->buffer);
 
   g_slice_free (CoglBitmap, bmp);
-}
-
-int
-_cogl_get_format_bpp (CoglPixelFormat format)
-{
-  int bpp_lut[] = {
-    0, /* invalid  */
-    1, /* A_8      */
-    3, /* 888      */
-    4, /* 8888     */
-    2, /* 565      */
-    2, /* 4444     */
-    2, /* 5551     */
-    2, /* YUV      */
-    1  /* G_8      */
-  };
-
-  return bpp_lut [format & COGL_UNORDERED_MASK];
 }
 
 gboolean
@@ -187,7 +169,7 @@ _cogl_bitmap_copy (CoglBitmap *src_bmp)
 {
   CoglBitmap *dst_bmp;
   CoglPixelFormat src_format = _cogl_bitmap_get_format (src_bmp);
-  int bpp = _cogl_get_format_bpp (src_format);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (src_format);
   int width = _cogl_bitmap_get_width (src_bmp);
   int height = _cogl_bitmap_get_height (src_bmp);
   int dst_rowstride = width * bpp;
@@ -228,7 +210,7 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
 
   /* Intended only for fast copies when format is equal! */
   g_assert (src->format == dst->format);
-  bpp = _cogl_get_format_bpp (src->format);
+  bpp = _cogl_pixel_format_get_bytes_per_pixel (src->format);
 
   if ((srcdata = _cogl_bitmap_map (src, COGL_BUFFER_ACCESS_READ, 0)))
     {

@@ -26,7 +26,7 @@
 #endif
 
 #include "cogl.h"
-#include "cogl-internal.h"
+#include "cogl-private.h"
 #include "cogl-bitmap-private.h"
 
 #include <string.h>
@@ -367,8 +367,8 @@ _cogl_bitmap_fallback_convert (CoglBitmap      *src_bmp,
   if (src_data == NULL)
     return NULL;
 
-  src_bpp = _cogl_get_format_bpp (src_format);
-  dst_bpp = _cogl_get_format_bpp (dst_format);
+  src_bpp = _cogl_pixel_format_get_bytes_per_pixel (src_format);
+  dst_bpp = _cogl_pixel_format_get_bytes_per_pixel (dst_format);
 
   /* Initialize destination bitmap */
   dst_rowstride = sizeof(guint8) * dst_bpp * width;

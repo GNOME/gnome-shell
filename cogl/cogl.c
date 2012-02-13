@@ -436,7 +436,7 @@ _cogl_read_pixels_with_rowstride (int x,
     y = framebuffer_height - y - height;
 
   /* Initialise the CoglBitmap */
-  bpp = _cogl_get_format_bpp (format);
+  bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
   bmp_format = format;
 
   if ((format & COGL_A_BIT))
@@ -574,10 +574,11 @@ cogl_read_pixels (int x,
                   CoglPixelFormat format,
                   guint8 *pixels)
 {
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
   _cogl_read_pixels_with_rowstride (x, y, width, height,
                                     source, format, pixels,
                                     /* rowstride */
-                                    _cogl_get_format_bpp (format) * width);
+                                    bpp * width);
 }
 
 void
@@ -1004,4 +1005,22 @@ _cogl_init (void)
       _cogl_debug_check_environment ();
       g_once_init_leave (&init_status, 1);
     }
+}
+
+int
+_cogl_pixel_format_get_bytes_per_pixel (CoglPixelFormat format)
+{
+  int bpp_lut[] = {
+    0, /* invalid  */
+    1, /* A_8      */
+    3, /* 888      */
+    4, /* 8888     */
+    2, /* 565      */
+    2, /* 4444     */
+    2, /* 5551     */
+    2, /* YUV      */
+    1  /* G_8      */
+  };
+
+  return bpp_lut [format & 0xf];
 }

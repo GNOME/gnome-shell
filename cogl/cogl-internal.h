@@ -70,9 +70,6 @@ cogl_gl_error_to_string (GLenum error_code);
 #define COGL_ENABLE_VERTEX_ARRAY      (1<<2)
 #define COGL_ENABLE_COLOR_ARRAY       (1<<3)
 
-int
-_cogl_get_format_bpp (CoglPixelFormat format);
-
 void
 _cogl_enable (unsigned long flags);
 

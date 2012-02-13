@@ -63,6 +63,18 @@ _cogl_push_source (CoglPipeline *pipeline, gboolean enable_legacy);
 gboolean
 _cogl_get_enable_legacy_state (void);
 
+/*
+ * _cogl_pixel_format_get_bytes_per_pixel:
+ * @format: a #CoglPixelFormat
+ *
+ * Queries how many bytes a pixel of the given @format takes.
+ *
+ * Return value: The number of bytes taken for a pixel of the given
+ *               @format.
+ */
+int
+_cogl_pixel_format_get_bytes_per_pixel (CoglPixelFormat format);
+
 G_END_DECLS
 
 #endif /* __COGL_PRIVATE_H__ */

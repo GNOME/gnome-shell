@@ -39,7 +39,7 @@
 #include <glib.h>
 
 #include "cogl.h"
-#include "cogl-internal.h"
+#include "cogl-private.h"
 #include "cogl-util.h"
 #include "cogl-context-private.h"
 #include "cogl-object.h"
@@ -109,7 +109,7 @@ cogl_pixel_buffer_new_with_size (CoglContext    *context,
 
   /* for now we fallback to cogl_pixel_buffer_new, later, we could ask
    * libdrm a tiled buffer for instance */
-  stride = width * _cogl_get_format_bpp (format);
+  stride = width * _cogl_pixel_format_get_bytes_per_pixel (format);
   if (rowstride)
     *rowstride = stride;
 

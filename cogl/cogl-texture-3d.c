@@ -27,7 +27,7 @@
 #endif
 
 #include "cogl.h"
-#include "cogl-internal.h"
+#include "cogl-private.h"
 #include "cogl-util.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-3d-private.h"
@@ -287,10 +287,11 @@ _cogl_texture_3d_new_from_bitmap (CoglBitmap      *bmp,
       (data = _cogl_bitmap_map (dst_bmp,
                                 COGL_BUFFER_ACCESS_READ, 0)))
     {
+      CoglPixelFormat format = _cogl_bitmap_get_format (dst_bmp);
       tex_3d->first_pixel.gl_format = gl_format;
       tex_3d->first_pixel.gl_type = gl_type;
       memcpy (tex_3d->first_pixel.data, data,
-              _cogl_get_format_bpp (_cogl_bitmap_get_format (dst_bmp)));
+              _cogl_pixel_format_get_bytes_per_pixel (format));
 
       _cogl_bitmap_unmap (dst_bmp);
     }
@@ -340,7 +341,7 @@ cogl_texture_3d_new_from_data (unsigned int      width,
 
   /* Rowstride from width if not given */
   if (rowstride == 0)
-    rowstride = width * _cogl_get_format_bpp (format);
+    rowstride = width * _cogl_pixel_format_get_bytes_per_pixel (format);
   /* Image stride from height and rowstride if not given */
   if (image_stride == 0)
     image_stride = height * rowstride;
@@ -355,7 +356,8 @@ cogl_texture_3d_new_from_data (unsigned int      width,
   if (image_stride % rowstride != 0)
     {
       int z, y;
-      int bmp_rowstride = _cogl_get_format_bpp (format) * width;
+      int bmp_rowstride =
+        _cogl_pixel_format_get_bytes_per_pixel (format) * width;
       guint8 *bmp_data = g_malloc (bmp_rowstride * height * depth);
 
       bitmap = _cogl_bitmap_new_from_data (bmp_data,
