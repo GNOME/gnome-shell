@@ -4705,46 +4705,49 @@ clutter_actor_real_get_paint_volume (ClutterActor       *self,
        */
       res = TRUE;
     }
-  else if (priv->has_clip &&
-           priv->clip.width >= 0 &&
-           priv->clip.height >= 0)
+  else
     {
-      ClutterVertex origin;
-
-      origin.x = priv->clip.x;
-      origin.y = priv->clip.y;
-      origin.z = 0;
-
-      clutter_paint_volume_set_origin (volume, &origin);
-      clutter_paint_volume_set_width (volume, priv->clip.width);
-      clutter_paint_volume_set_height (volume, priv->clip.height);
-
-      res = TRUE;
-    }
-
-  /* if we don't have children we just bail out here... */
-  if (priv->n_children == 0)
-    return res;
-
-  /* ...but if we have children then we ask for their paint volume in
-   * our coordinates. if any of our children replies that it doesn't
-   * have a paint volume, we bail out
-   */
-  for (child = priv->first_child;
-       child != NULL;
-       child = child->priv->next_sibling)
-    {
-      const ClutterPaintVolume *child_volume;
-
-      child_volume = clutter_actor_get_transformed_paint_volume (child, self);
-      if (child_volume == NULL)
+      if (priv->has_clip &&
+          priv->clip.width >= 0 &&
+          priv->clip.height >= 0)
         {
-          res = FALSE;
-          break;
+          ClutterVertex origin;
+
+          origin.x = priv->clip.x;
+          origin.y = priv->clip.y;
+          origin.z = 0;
+
+          clutter_paint_volume_set_origin (volume, &origin);
+          clutter_paint_volume_set_width (volume, priv->clip.width);
+          clutter_paint_volume_set_height (volume, priv->clip.height);
+
+          res = TRUE;
         }
 
-      clutter_paint_volume_union (volume, child_volume);
-      res = TRUE;
+      /* if we don't have children we just bail out here... */
+      if (priv->n_children == 0)
+        return res;
+
+      /* ...but if we have children then we ask for their paint volume in
+       * our coordinates. if any of our children replies that it doesn't
+       * have a paint volume, we bail out
+       */
+      for (child = priv->first_child;
+           child != NULL;
+           child = child->priv->next_sibling)
+        {
+          const ClutterPaintVolume *child_volume;
+
+          child_volume = clutter_actor_get_transformed_paint_volume (child, self);
+          if (child_volume == NULL)
+            {
+              res = FALSE;
+              break;
+            }
+
+          clutter_paint_volume_union (volume, child_volume);
+          res = TRUE;
+        }
     }
 
   return res;
