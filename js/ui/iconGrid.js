@@ -170,7 +170,7 @@ const IconGrid = new Lang.Class({
                                         vertical: true });
         // Pulled from CSS, but hardcode some defaults here
         this._spacing = 0;
-        this._item_size = ICON_SIZE;
+        this._hItemSize = this._vItemSize = ICON_SIZE;
         this._grid = new Shell.GenericContainer();
         this.actor.add(this._grid, { expand: true, y_align: St.Align.START });
         this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
@@ -189,8 +189,8 @@ const IconGrid = new Lang.Class({
         // Kind of a lie, but not really an issue right now.  If
         // we wanted to support some sort of hidden/overflow that would
         // need higher level design
-        alloc.min_size = this._item_size;
-        alloc.natural_size = nColumns * this._item_size + totalSpacing;
+        alloc.min_size = this._hItemSize;
+        alloc.natural_size = nColumns * this._hItemSize + totalSpacing;
     },
 
     _getVisibleChildren: function() {
@@ -212,7 +212,7 @@ const IconGrid = new Lang.Class({
         if (this._rowLimit)
             nRows = Math.min(nRows, this._rowLimit);
         let totalSpacing = Math.max(0, nRows - 1) * this._spacing;
-        let height = nRows * this._item_size + totalSpacing;
+        let height = nRows * this._vItemSize + totalSpacing;
         alloc.min_size = height;
         alloc.natural_size = height;
     },
@@ -245,9 +245,9 @@ const IconGrid = new Lang.Class({
                 = children[i].get_preferred_size();
 
             /* Center the item in its allocation horizontally */
-            let width = Math.min(this._item_size, childNaturalWidth);
+            let width = Math.min(this._hItemSize, childNaturalWidth);
             let childXSpacing = Math.max(0, width - childNaturalWidth) / 2;
-            let height = Math.min(this._item_size, childNaturalHeight);
+            let height = Math.min(this._vItemSize, childNaturalHeight);
             let childYSpacing = Math.max(0, height - childNaturalHeight) / 2;
 
             let childBox = new Clutter.ActorBox();
@@ -275,10 +275,10 @@ const IconGrid = new Lang.Class({
             }
 
             if (columnIndex == 0) {
-                y += this._item_size + this._spacing;
+                y += this._vItemSize + this._spacing;
                 x = box.x1 + leftPadding;
             } else {
-                x += this._item_size + this._spacing;
+                x += this._hItemSize + this._spacing;
             }
         }
     },
@@ -291,8 +291,8 @@ const IconGrid = new Lang.Class({
         let nColumns = 0;
         let usedWidth = 0;
         while ((this._colLimit == null || nColumns < this._colLimit) &&
-               (usedWidth + this._item_size <= forWidth)) {
-            usedWidth += this._item_size + this._spacing;
+               (usedWidth + this._hItemSize <= forWidth)) {
+            usedWidth += this._hItemSize + this._spacing;
             nColumns += 1;
         }
 
@@ -305,7 +305,8 @@ const IconGrid = new Lang.Class({
     _onStyleChanged: function() {
         let themeNode = this.actor.get_theme_node();
         this._spacing = themeNode.get_length('spacing');
-        this._item_size = themeNode.get_length('-shell-grid-item-size') || ICON_SIZE;
+        this._hItemSize = themeNode.get_length('-shell-grid-horizontal-item-size') || ICON_SIZE;
+        this._vItemSize = themeNode.get_length('-shell-grid-vertical-item-size') || ICON_SIZE;
         this._grid.queue_relayout();
     },
 

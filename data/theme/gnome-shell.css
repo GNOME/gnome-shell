@@ -682,12 +682,14 @@ StTooltip StLabel {
 
 .icon-grid {
     spacing: 36px;
-    -shell-grid-item-size: 118px;
+    -shell-grid-horizontal-item-size: 118px;
+    -shell-grid-vertical-item-size: 118px;
 }
 
 .contact-grid {
     spacing: 36px;
-    -shell-grid-item-size: 272px; /* 2 * -shell-grid-item-size + spacing */
+    -shell-grid-horizontal-item-size: 272px; /* 2 * -shell-grid-horizontal-item-size + spacing */
+    -shell-grid-vertical-item-size: 118px;
 }
 
 .icon-grid .overview-icon {
