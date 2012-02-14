@@ -43,7 +43,7 @@ test_actor_main (int argc, char *argv[])
   /* there are three flowers in a vase */
   vase = clutter_actor_new ();
   clutter_actor_set_name (vase, "vase");
-  clutter_actor_set_layout_manager (vase, clutter_flow_layout_new (CLUTTER_FLOW_HORIZONTAL));
+  clutter_actor_set_layout_manager (vase, clutter_box_layout_new ());
   clutter_actor_set_margin_top (vase, 18);
   clutter_actor_set_margin_bottom (vase, 18);
   clutter_actor_set_margin_left (vase, 6);
