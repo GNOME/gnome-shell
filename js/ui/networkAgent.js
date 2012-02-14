@@ -531,7 +531,7 @@ const VPNRequestHandler = new Lang.Class({
         let contentOverride;
 
         try {
-            keyfile.load_from_data(this._dataStdout.peek_buffer(),
+            keyfile.load_from_data(this._dataStdout.peek_buffer(), -1,
                                    GLib.KeyFileFlags.NONE);
 
             if (keyfile.get_integer(VPN_UI_GROUP, 'Version') != 2)
