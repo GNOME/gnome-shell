@@ -146,8 +146,9 @@ const GnomeShell = new Lang.Class({
      */
     ScreenshotAreaAsync : function (params, invocation) {
         let [x, y, width, height, flash, filename, callback] = params;
-        global.screenshot_area (x, y, width, height, filename, 
-                                Lang.bind(this, this._onScreenshotComplete, 
+        let screenshot = new Shell.Screenshot();
+        screenshot.screenshot_area (x, y, width, height, filename,
+                                Lang.bind(this, this._onScreenshotComplete,
                                           flash, invocation));
     },
 
@@ -165,8 +166,9 @@ const GnomeShell = new Lang.Class({
      */
     ScreenshotWindowAsync : function (params, invocation) {
         let [include_frame, include_cursor, flash, filename] = params;
-        global.screenshot_window (include_frame, include_cursor, filename, 
-                                  Lang.bind(this, this._onScreenshotComplete, 
+        let screenshot = new Shell.Screenshot();
+        screenshot.screenshot_window (include_frame, include_cursor, filename,
+                                  Lang.bind(this, this._onScreenshotComplete,
                                             flash, invocation));
     },
 
@@ -183,8 +185,9 @@ const GnomeShell = new Lang.Class({
      */
     ScreenshotAsync : function (params, invocation) {
         let [include_cursor, flash, filename] = params;
-        global.screenshot(include_cursor, filename, 
-                          Lang.bind(this, this._onScreenshotComplete, 
+        let screenshot = new Shell.Screenshot();
+        screenshot.screenshot(include_cursor, filename,
+                          Lang.bind(this, this._onScreenshotComplete,
                                     flash, invocation));
     },
 

@@ -19,18 +19,4 @@ gboolean _shell_global_check_xdnd_event (ShellGlobal  *global,
 void     _shell_global_set_session_type (ShellGlobal      *global,
                                          ShellSessionType  session_type);
 
-/* Used for async screenshot grabbing */
-typedef struct _screenshot_data {
-  ShellGlobal  *global;
-
-  char *filename;
-
-  cairo_surface_t *image;
-  cairo_rectangle_int_t screenshot_area;
-
-  gboolean include_cursor;
-
-  ShellGlobalScreenshotCallback callback;
-} _screenshot_data;
-
 #endif /* __SHELL_GLOBAL_PRIVATE_H__ */

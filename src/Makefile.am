@@ -114,6 +114,7 @@ shell_public_headers_h =		\
 	shell-mount-operation.h		\
 	shell-network-agent.h		\
 	shell-perf-log.h		\
+	shell-screenshot.h		\
 	shell-screen-grabber.h		\
 	shell-slicer.h			\
 	shell-stack.h			\
@@ -162,6 +163,7 @@ libgnome_shell_la_SOURCES =		\
 	shell-perf-log.c		\
 	shell-polkit-authentication-agent.h	\
 	shell-polkit-authentication-agent.c	\
+	shell-screenshot.c		\
 	shell-screen-grabber.c		\
 	shell-slicer.c			\
 	shell-stack.c			\
