@@ -317,47 +317,32 @@ st_scroll_bar_get_preferred_width (ClutterActor *self,
   StScrollBar *bar = ST_SCROLL_BAR (self);
   StScrollBarPrivate *priv = bar->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
+  gfloat trough_min_width, trough_natural_width;
+  gfloat handle_min_width, handle_natural_width;
 
   st_theme_node_adjust_for_height (theme_node, &for_height);
 
-  if (min_width_p)
-    *min_width_p = 0;
+  _st_actor_get_preferred_width (priv->trough, for_height, TRUE,
+                                 &trough_min_width, &trough_natural_width);
 
-  if (natural_width_p)
-    *natural_width_p = 0;
+  _st_actor_get_preferred_width (priv->handle, for_height, TRUE,
+                                 &handle_min_width, &handle_natural_width);
+
   if (priv->vertical)
     {
-      gfloat tmin_width_p, tnatural_width_p;
+      if (min_width_p)
+        *min_width_p = MAX (trough_min_width, handle_min_width);
 
-      #define ADJUST_WIDTH_IF_LARGER(actor) \
-        _st_actor_get_preferred_width (actor, for_height, TRUE, \
-                                       &tmin_width_p, &tnatural_width_p); \
-        if (min_width_p && tmin_width_p > *min_width_p) \
-          *min_width_p = tmin_width_p; \
-        if (natural_width_p && tnatural_width_p > *natural_width_p) \
-          *natural_width_p = tnatural_width_p;
-
-      ADJUST_WIDTH_IF_LARGER (priv->trough);
-      ADJUST_WIDTH_IF_LARGER (priv->handle);
-
-      #undef ADJUST_WIDTH_IF_LARGER
+      if (natural_width_p)
+        *natural_width_p = MAX (trough_natural_width, handle_natural_width);
     }
   else
     {
-      gfloat tmin_width_p, tnatural_width_p;
+      if (min_width_p)
+        *min_width_p = trough_min_width + handle_min_width;
 
-      #define ADD_TO_WIDTH(actor) \
-        _st_actor_get_preferred_width (actor, for_height, TRUE, \
-                                       &tmin_width_p, &tnatural_width_p); \
-        if (min_width_p) \
-          *min_width_p += tmin_width_p; \
-        if (natural_width_p ) \
-          *natural_width_p += tnatural_width_p;
-
-      ADD_TO_WIDTH (priv->trough);
-      ADD_TO_WIDTH (priv->handle);
-
-      #undef ADD_TO_WIDTH
+      if (natural_width_p)
+        *natural_width_p = trough_natural_width + handle_natural_width;
     }
 
   st_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
@@ -372,47 +357,32 @@ st_scroll_bar_get_preferred_height (ClutterActor *self,
   StScrollBar *bar = ST_SCROLL_BAR (self);
   StScrollBarPrivate *priv = bar->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
+  gfloat trough_min_height, trough_natural_height;
+  gfloat handle_min_height, handle_natural_height;
 
   st_theme_node_adjust_for_width (theme_node, &for_width);
 
-  if (min_height_p)
-    *min_height_p = 0;
+  _st_actor_get_preferred_height (priv->trough, for_width, TRUE,
+                                  &trough_min_height, &trough_natural_height);
 
-  if (natural_height_p)
-    *natural_height_p = 0;
+  _st_actor_get_preferred_height (priv->handle, for_width, TRUE,
+                                  &handle_min_height, &handle_natural_height);
+
   if (priv->vertical)
     {
-      gfloat tmin_height_p, tnatural_height_p;
+      if (min_height_p)
+        *min_height_p = trough_min_height + handle_min_height;
 
-      #define ADD_TO_HEIGHT(actor) \
-        _st_actor_get_preferred_height (actor, for_width, FALSE, \
-                                        &tmin_height_p, &tnatural_height_p); \
-        if (min_height_p) \
-          *min_height_p += tmin_height_p; \
-        if (natural_height_p) \
-          *natural_height_p += tnatural_height_p;
-
-      ADD_TO_HEIGHT (priv->trough);
-      ADD_TO_HEIGHT (priv->handle);
-
-      #undef ADD_TO_HEIGHT
+      if (natural_height_p)
+        *natural_height_p = trough_natural_height + handle_natural_height;
     }
   else
     {
-      gfloat tmin_height_p, tnatural_height_p;
+      if (min_height_p)
+        *min_height_p = MAX (trough_min_height, handle_min_height);
 
-      #define ADJUST_HEIGHT_IF_LARGER(actor) \
-        _st_actor_get_preferred_height (actor, for_width, FALSE, \
-                                        &tmin_height_p, &tnatural_height_p); \
-        if (min_height_p && tmin_height_p > *min_height_p) \
-          *min_height_p = tmin_height_p; \
-        if (natural_height_p && tnatural_height_p > *natural_height_p) \
-          *natural_height_p = tnatural_height_p;
-
-      ADJUST_HEIGHT_IF_LARGER (priv->trough);
-      ADJUST_HEIGHT_IF_LARGER (priv->handle);
-
-      #undef ADJUST_HEIGHT_IF_LARGER
+      if (natural_height_p)
+        *natural_height_p = MAX (trough_natural_height, handle_natural_height);
     }
 
   st_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
