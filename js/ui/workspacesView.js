@@ -29,7 +29,7 @@ const WorkspacesView = new Lang.Class({
     Name: 'WorkspacesView',
 
     _init: function(workspaces) {
-        this.actor = new St.Group({ style_class: 'workspaces-view' });
+        this.actor = new St.Widget({ style_class: 'workspaces-view' });
 
         // The actor itself isn't a drop target, so we don't want to pick on its area
         this.actor.set_size(0, 0);

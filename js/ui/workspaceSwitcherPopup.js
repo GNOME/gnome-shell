@@ -19,12 +19,12 @@ const WorkspaceSwitcherPopup = new Lang.Class({
     Name: 'WorkspaceSwitcherPopup',
 
     _init : function() {
-        this.actor = new St.Group({ reactive: true,
-                                         x: 0,
-                                         y: 0,
-                                         width: global.screen_width,
-                                         height: global.screen_height,
-                                         style_class: 'workspace-switcher-group' });
+        this.actor = new St.Widget({ reactive: true,
+                                     x: 0,
+                                     y: 0,
+                                     width: global.screen_width,
+                                     height: global.screen_height,
+                                     style_class: 'workspace-switcher-group' });
         Main.uiGroup.add_actor(this.actor);
 
         this._container = new St.BoxLayout({ style_class: 'workspace-switcher-container' });

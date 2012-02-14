@@ -40,9 +40,9 @@ const ModalDialog = new Lang.Class({
         this._hasModal = false;
         this._shellReactive = params.shellReactive;
 
-        this._group = new St.Group({ visible: false,
-                                     x: 0,
-                                     y: 0 });
+        this._group = new St.Widget({ visible: false,
+                                      x: 0,
+                                      y: 0 });
         Main.uiGroup.add_actor(this._group);
 
         let constraint = new Clutter.BindConstraint({ source: global.stage,

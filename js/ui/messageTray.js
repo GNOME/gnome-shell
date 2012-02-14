@@ -1348,9 +1348,9 @@ const MessageTray = new Lang.Class({
             this._onStatusChanged(status);
         }));
 
-        this.actor = new St.Group({ name: 'message-tray',
-                                    reactive: true,
-                                    track_hover: true });
+        this.actor = new St.Widget({ name: 'message-tray',
+                                     reactive: true,
+                                     track_hover: true });
         this.actor.connect('notify::hover', Lang.bind(this, this._onTrayHoverChanged));
 
         this._notificationBin = new St.Bin();

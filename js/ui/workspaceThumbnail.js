@@ -156,9 +156,9 @@ const WorkspaceThumbnail = new Lang.Class({
 
         this._removed = false;
 
-        this.actor = new St.Group({ reactive: true,
-                                    clip_to_allocation: true,
-                                    style_class: 'workspace-thumbnail' });
+        this.actor = new St.Widget({ reactive: true,
+                                     clip_to_allocation: true,
+                                     style_class: 'workspace-thumbnail' });
         this.actor._delegate = this;
 
         this._contents = new Clutter.Group();
