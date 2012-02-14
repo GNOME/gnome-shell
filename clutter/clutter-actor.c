@@ -4687,13 +4687,28 @@ clutter_actor_real_get_paint_volume (ClutterActor       *self,
 {
   ClutterActorPrivate *priv = self->priv;
   ClutterActor *child;
+  ClutterActorClass *klass;
   gboolean res;
 
-  /* this is the default return value: we cannot know if a class
-   * is going to paint outside its allocation, so we take the
-   * conservative approach.
+  klass = CLUTTER_ACTOR_GET_CLASS (self);
+
+  /* XXX - this thoroughly sucks, but we don't want to penalize users
+   * who use ClutterActor as a "new ClutterGroup" by forcing a full-stage
+   * redraw. This should go away in 2.0.
    */
-  res = FALSE;
+  if (klass->paint == clutter_actor_real_paint &&
+      klass->get_paint_volume == clutter_actor_real_get_paint_volume)
+    {
+      res = TRUE;
+    }
+  else
+    {
+      /* this is the default return value: we cannot know if a class
+       * is going to paint outside its allocation, so we take the
+       * conservative approach.
+       */
+      res = FALSE;
+    }
 
   /* we start from the allocation */
   clutter_paint_volume_set_width (volume,
