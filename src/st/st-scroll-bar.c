@@ -1163,7 +1163,7 @@ st_scroll_bar_init (StScrollBar *self)
   self->priv->handle = (ClutterActor *) st_button_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->handle), "hhandle");
   clutter_actor_set_parent (CLUTTER_ACTOR (self->priv->handle),
-                            self->priv->trough);
+                            CLUTTER_ACTOR (self));
   g_signal_connect (self->priv->handle, "button-press-event",
                     G_CALLBACK (handle_button_press_event_cb), self);
 
