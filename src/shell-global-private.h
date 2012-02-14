@@ -28,6 +28,8 @@ typedef struct _screenshot_data {
   cairo_surface_t *image;
   cairo_rectangle_int_t screenshot_area;
 
+  gboolean include_cursor;
+
   ShellGlobalScreenshotCallback callback;
 } _screenshot_data;
 

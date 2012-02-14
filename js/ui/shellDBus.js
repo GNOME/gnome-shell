@@ -39,11 +39,13 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
 </method>
 <method name="ScreenshotWindow">
     <arg type="b" direction="in" name="include_frame"/>
+    <arg type="b" direction="in" name="include_cursor"/>
     <arg type="b" direction="in" name="flash"/>
     <arg type="s" direction="in" name="filename"/>
     <arg type="b" direction="out" name="success"/>
 </method>
 <method name="Screenshot">
+    <arg type="b" direction="in" name="include_cursor"/>
     <arg type="b" direction="in" name="flash"/>
     <arg type="s" direction="in" name="filename"/>
     <arg type="b" direction="out" name="success"/>
@@ -134,6 +136,7 @@ const GnomeShell = new Lang.Class({
      * @y: The Y coordinate of the area
      * @width: The width of the area
      * @height: The height of the area
+     * @flash: Whether to flash the area or not
      * @filename: The filename for the screenshot
      *
      * Takes a screenshot of the passed in area and saves it
@@ -151,6 +154,8 @@ const GnomeShell = new Lang.Class({
     /**
      * ScreenshotWindow:
      * @include_frame: Whether to include the frame or not
+     * @include_cursor: Whether to include the cursor image or not
+     * @flash: Whether to flash the window area or not
      * @filename: The filename for the screenshot
      *
      * Takes a screenshot of the focused window (optionally omitting the frame)
@@ -159,8 +164,8 @@ const GnomeShell = new Lang.Class({
      *
      */
     ScreenshotWindowAsync : function (params, invocation) {
-        let [include_frame, flash, filename] = params;
-        global.screenshot_window (include_frame, filename, 
+        let [include_frame, include_cursor, flash, filename] = params;
+        global.screenshot_window (include_frame, include_cursor, filename, 
                                   Lang.bind(this, this._onScreenshotComplete, 
                                             flash, invocation));
     },
@@ -168,6 +173,8 @@ const GnomeShell = new Lang.Class({
     /**
      * Screenshot:
      * @filename: The filename for the screenshot
+     * @include_cursor: Whether to include the cursor image or not
+     * @flash: Whether to flash the screen or not
      *
      * Takes a screenshot of the whole screen and saves it
      * in @filename as png image, it returns a boolean
@@ -175,8 +182,8 @@ const GnomeShell = new Lang.Class({
      *
      */
     ScreenshotAsync : function (params, invocation) {
-        let [flash, filename] = params;
-        global.screenshot(filename, 
+        let [include_cursor, flash, filename] = params;
+        global.screenshot(include_cursor, filename, 
                           Lang.bind(this, this._onScreenshotComplete, 
                                     flash, invocation));
     },

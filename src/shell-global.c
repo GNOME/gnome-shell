@@ -1949,6 +1949,61 @@ do_grab_screenshot (_screenshot_data *screenshot_data,
 }
 
 static void
+_draw_cursor_image (cairo_surface_t *surface,
+                    cairo_rectangle_int_t area)
+{
+  XFixesCursorImage *cursor_image;
+
+  cairo_surface_t *cursor_surface;
+  cairo_region_t *screenshot_region;
+  cairo_t *cr;
+
+  guchar *data;
+  int stride;
+  int i, j;
+
+  cursor_image = XFixesGetCursorImage (clutter_x11_get_default_display ());
+
+  if (!cursor_image)
+    return;
+
+  screenshot_region = cairo_region_create_rectangle (&area);
+
+  if (!cairo_region_contains_point (screenshot_region, cursor_image->x, cursor_image->y))
+    {
+       XFree (cursor_image);
+       cairo_region_destroy (screenshot_region);
+       return;
+    }
+
+  cursor_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, cursor_image->width, cursor_image->height);
+
+  /* The pixel data (in typical Xlib breakage) is longs even on
+   * 64-bit platforms, so we have to data-convert there. For simplicity,
+   * just do it always
+   */
+  data = cairo_image_surface_get_data (cursor_surface);
+  stride = cairo_image_surface_get_stride (cursor_surface);
+  for (i = 0; i < cursor_image->height; i++)
+    for (j = 0; j < cursor_image->width; j++)
+      *(guint32 *)(data + i * stride + 4 * j) = cursor_image->pixels[i * cursor_image->width + j];
+
+  cairo_surface_mark_dirty (cursor_surface);
+
+  cr = cairo_create (surface);
+  cairo_set_source_surface (cr,
+                            cursor_surface,
+                            cursor_image->x - cursor_image->xhot - area.x,
+                            cursor_image->y - cursor_image->yhot - area.y);
+  cairo_paint (cr);
+
+  cairo_destroy (cr);
+  cairo_surface_destroy (cursor_surface);
+  cairo_region_destroy (screenshot_region);
+  XFree (cursor_image);
+}
+
+static void
 grab_screenshot (ClutterActor *stage,
                  _screenshot_data *screenshot_data)
 {
@@ -2003,6 +2058,9 @@ grab_screenshot (ClutterActor *stage,
   screenshot_data->screenshot_area.width = width;
   screenshot_data->screenshot_area.height = height;
 
+  if (screenshot_data->include_cursor)
+    _draw_cursor_image (screenshot_data->image, screenshot_data->screenshot_area);
+
   g_signal_handlers_disconnect_by_func (stage, (void *)grab_screenshot, (gpointer)screenshot_data);
 
   result = g_simple_async_result_new (NULL, on_screenshot_written, (gpointer)screenshot_data, grab_screenshot);
@@ -2031,6 +2089,7 @@ grab_area_screenshot (ClutterActor *stage,
 /**
  * shell_global_screenshot:
  * @global: the #ShellGlobal
+ * @include_cursor: Whether to include the cursor or not
  * @filename: The filename for the screenshot
  * @callback: (scope async): function to call returning success or failure
  * of the async grabbing
@@ -2041,6 +2100,7 @@ grab_area_screenshot (ClutterActor *stage,
  */
 void
 shell_global_screenshot (ShellGlobal  *global,
+                         gboolean include_cursor,
                          const char *filename,
                          ShellGlobalScreenshotCallback callback)
 {
@@ -2050,6 +2110,7 @@ shell_global_screenshot (ShellGlobal  *global,
   data->global = global;
   data->filename = g_strdup (filename);
   data->callback = callback;
+  data->include_cursor = include_cursor;
 
   stage = CLUTTER_ACTOR (meta_plugin_get_stage (global->plugin));
 
@@ -2104,6 +2165,7 @@ shell_global_screenshot_area (ShellGlobal  *global,
  * shell_global_screenshot_window:
  * @global: the #ShellGlobal
  * @include_frame: Whether to include the frame or not
+ * @include_cursor: Whether to include the cursor or not
  *
  * @filename: The filename for the screenshot
  * @callback: (scope async): function to call returning success or failure
@@ -2116,6 +2178,7 @@ shell_global_screenshot_area (ShellGlobal  *global,
 void
 shell_global_screenshot_window (ShellGlobal  *global,
                                 gboolean include_frame,
+                                gboolean include_cursor,
                                 const char *filename,
                                 ShellGlobalScreenshotCallback callback)
 {
@@ -2165,6 +2228,9 @@ shell_global_screenshot_window (ShellGlobal  *global,
 
   stex = META_SHAPED_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor)));
   screenshot_data->image = meta_shaped_texture_get_image (stex, &clip);
+
+  if (include_cursor)
+    _draw_cursor_image (screenshot_data->image, screenshot_data->screenshot_area);
 
   result = g_simple_async_result_new (NULL, on_screenshot_written, (gpointer)screenshot_data, shell_global_screenshot_window);
   g_simple_async_result_run_in_thread (result, write_screenshot_thread, G_PRIORITY_DEFAULT, NULL);

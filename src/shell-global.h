@@ -154,10 +154,12 @@ void    shell_global_screenshot_area           (ShellGlobal  *global,
 
 void    shell_global_screenshot_window         (ShellGlobal  *global,
                                                 gboolean include_frame,
+                                                gboolean include_cursor,
                                                 const char *filename,
                                                 ShellGlobalScreenshotCallback callback);
 
 void    shell_global_screenshot                (ShellGlobal  *global,
+                                                gboolean include_cursor,
                                                 const char *filename,
                                                 ShellGlobalScreenshotCallback callback);
 typedef enum {
