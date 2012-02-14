@@ -394,25 +394,20 @@ st_widget_unmap (ClutterActor *actor)
     st_widget_set_hover (self, FALSE);
 }
 
-static void notify_children_of_style_change (ClutterContainer *container);
-
 static void
-notify_children_of_style_change_foreach (ClutterActor *actor,
-                                         gpointer      user_data)
+notify_children_of_style_change (ClutterActor *self)
 {
-  if (ST_IS_WIDGET (actor))
-    st_widget_style_changed (ST_WIDGET (actor));
-  else if (CLUTTER_IS_CONTAINER (actor))
-    notify_children_of_style_change ((ClutterContainer *)actor);
-}
+  ClutterActorIter iter;
+  ClutterActor *actor;
 
-static void
-notify_children_of_style_change (ClutterContainer *container)
-{
-  /* notify our children that their parent stylable has changed */
-  clutter_container_foreach (container,
-                             notify_children_of_style_change_foreach,
-                             NULL);
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &actor))
+    {
+      if (ST_IS_WIDGET (actor))
+        st_widget_style_changed (ST_WIDGET (actor));
+      else
+        notify_children_of_style_change (actor);
+    }
 }
 
 static void
@@ -425,9 +420,7 @@ st_widget_real_style_changed (StWidget *self)
     return;
 
   clutter_actor_queue_redraw ((ClutterActor *) self);
-
-  if (CLUTTER_IS_CONTAINER (self))
-    notify_children_of_style_change ((ClutterContainer *)self);
+  notify_children_of_style_change ((ClutterActor *) self);
 }
 
 void
@@ -454,7 +447,7 @@ static void
 on_theme_context_changed (StThemeContext *context,
                           ClutterStage   *stage)
 {
-  notify_children_of_style_change (CLUTTER_CONTAINER (stage));
+  notify_children_of_style_change (CLUTTER_ACTOR (stage));
 }
 
 static StThemeNode *
