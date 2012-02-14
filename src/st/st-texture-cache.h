@@ -68,7 +68,7 @@ GType st_texture_cache_get_type (void) G_GNUC_CONST;
 
 StTextureCache* st_texture_cache_get_default (void);
 
-ClutterGroup *
+ClutterActor *
 st_texture_cache_load_sliced_image (StTextureCache    *cache,
                                     const gchar       *path,
                                     gint               grid_width,

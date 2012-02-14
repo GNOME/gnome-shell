@@ -106,38 +106,47 @@ const AnimatedIcon = new Lang.Class({
     _init: function(name, size) {
         this.actor = new St.Bin({ visible: false });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        this.actor.connect('notify::visible', Lang.bind(this, function() {
-            if (this.actor.visible) {
-                this._timeoutId = Mainloop.timeout_add(ANIMATED_ICON_UPDATE_TIMEOUT, Lang.bind(this, this._update));
-            } else {
-                if (this._timeoutId)
-                    Mainloop.source_remove(this._timeoutId);
-                this._timeoutId = 0;
-            }
-        }));
+        this.actor.connect('notify::visible', Lang.bind(this, this._onVisibleNotify));
 
         this._timeoutId = 0;
-        this._i = 0;
+        this._frame = 0;
         this._animations = St.TextureCache.get_default().load_sliced_image (global.datadir + '/theme/' + name, size, size);
         this.actor.set_child(this._animations);
     },
 
-    _update: function() {
-        this._animations.hide_all();
-        this._animations.show();
-        if (this._i && this._i < this._animations.get_n_children())
-            this._animations.get_nth_child(this._i++).show();
-        else {
-            this._i = 1;
-            if (this._animations.get_n_children())
-                this._animations.get_nth_child(0).show();
+    _disconnectTimeout: function() {
+        if (this._timeoutId > 0) {
+            Mainloop.source_remove(this._timeoutId);
+            this._timeoutId = 0;
         }
+    },
+
+    _onVisibleNotify: function() {
+        if (this.actor.visible)
+            this._timeoutId = Mainloop.timeout_add(ANIMATED_ICON_UPDATE_TIMEOUT, Lang.bind(this, this._update));
+        else
+            this._disconnectTimeout();
+    },
+
+    _showFrame: function(frame) {
+        let oldFrameActor = this._animations.get_child_at_index(this._frame);
+        if (oldFrameActor)
+            oldFrameActor.hide();
+
+        this._frame = (frame % this._animations.get_n_children());
+
+        let newFrameActor = this._animations.get_child_at_index(this._frame);
+        if (newFrameActor)
+            newFrameActor.show();
+    },
+
+    _update: function() {
+        this._showFrame(this._frame + 1);
         return true;
     },
 
     _onDestroy: function() {
-        if (this._timeoutId)
-            Mainloop.source_remove(this._timeoutId);
+        this._disconnectTimeout();
     }
 });
 
