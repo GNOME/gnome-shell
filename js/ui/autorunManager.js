@@ -174,7 +174,7 @@ const AutorunManager = new Lang.Class({
     _onMountAdded: function(monitor, mount) {
         // don't do anything if our session is not the currently
         // active one
-        if (!Main.automountManager.ckListener.sessionActive)
+        if (!Main.automountManager.isSessionActive())
             return;
 
         let discoverer = new ContentTypeDiscoverer(Lang.bind (this,

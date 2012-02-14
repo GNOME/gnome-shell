@@ -129,7 +129,7 @@ const AutomountManager = new Lang.Class({
         return false;
     },
 
-    _sessionActive: function() {
+    isSessionActive: function() {
         // Return whether the current session is active, using the
         // right mechanism: either systemd if available or ConsoleKit
         // as fallback.
@@ -143,7 +143,7 @@ const AutomountManager = new Lang.Class({
     _onDriveConnected: function() {
         // if we're not in the current ConsoleKit session,
         // or screensaver is active, don't play sounds
-        if (!this._sessionActive())
+        if (!this.isSessionActive())
             return;
 
         if (this._ssProxy.screenSaverActive)
@@ -155,7 +155,7 @@ const AutomountManager = new Lang.Class({
     _onDriveDisconnected: function() {
         // if we're not in the current ConsoleKit session,
         // or screensaver is active, don't play sounds
-        if (!this._sessionActive())
+        if (!this.isSessionActive())
             return;
 
         if (this._ssProxy.screenSaverActive)
@@ -167,7 +167,7 @@ const AutomountManager = new Lang.Class({
     _onDriveEjectButton: function(monitor, drive) {
         // TODO: this code path is not tested, as the GVfs volume monitor
         // doesn't emit this signal just yet.
-        if (!this._sessionActive())
+        if (!this.isSessionActive())
             return;
 
         // we force stop/eject in this case, so we don't have to pass a
@@ -206,7 +206,7 @@ const AutomountManager = new Lang.Class({
         if (params.checkSession) {
             // if we're not in the current ConsoleKit session,
             // don't attempt automount
-            if (!this._sessionActive())
+            if (!this.isSessionActive())
                 return;
 
             if (this._ssProxy.screenSaverActive) {
