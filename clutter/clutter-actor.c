@@ -3491,6 +3491,8 @@ clutter_actor_remove_child_internal (ClutterActor                 *self,
   flush_queue = (flags & REMOVE_CHILD_FLUSH_QUEUE) != 0;
   notify_first_last = (flags & REMOVE_CHILD_NOTIFY_FIRST_LAST) != 0;
 
+  g_object_freeze_notify (G_OBJECT (self));
+
   if (destroy_meta)
     clutter_container_destroy_child_meta (CLUTTER_CONTAINER (self), child);
 
@@ -3563,6 +3565,8 @@ clutter_actor_remove_child_internal (ClutterActor                 *self,
       if (old_last != self->priv->last_child)
         g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAST_CHILD]);
     }
+
+  g_object_thaw_notify (G_OBJECT (self));
 
   /* remove the reference we acquired in clutter_actor_add_child() */
   g_object_unref (child);
@@ -10124,6 +10128,8 @@ clutter_actor_add_child_internal (ClutterActor              *self,
   old_first_child = self->priv->first_child;
   old_last_child = self->priv->last_child;
 
+  g_object_freeze_notify (G_OBJECT (self));
+
   if (create_meta)
     clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
 
@@ -10198,6 +10204,8 @@ clutter_actor_add_child_internal (ClutterActor              *self,
       if (old_last_child != self->priv->last_child)
         g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAST_CHILD]);
     }
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
@@ -10483,9 +10491,13 @@ clutter_actor_remove_all_children (ClutterActor *self)
   if (self->priv->n_children == 0)
     return;
 
+  g_object_freeze_notify (G_OBJECT (self));
+
   clutter_actor_iter_init (&iter, self);
   while (clutter_actor_iter_next (&iter, NULL))
     clutter_actor_iter_remove (&iter);
+
+  g_object_thaw_notify (G_OBJECT (self));
 
   /* sanity check */
   g_assert (self->priv->first_child == NULL);
@@ -10530,9 +10542,13 @@ clutter_actor_destroy_all_children (ClutterActor *self)
   if (self->priv->n_children == 0)
     return;
 
+  g_object_freeze_notify (G_OBJECT (self));
+
   clutter_actor_iter_init (&iter, self);
   while (clutter_actor_iter_next (&iter, NULL))
     clutter_actor_iter_destroy (&iter);
+
+  g_object_thaw_notify (G_OBJECT (self));
 
   /* sanity check */
   g_assert (self->priv->first_child == NULL);
