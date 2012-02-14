@@ -227,6 +227,7 @@ clutter_colorize_effect_class_init (ClutterColorizeEffectClass *klass)
   ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterOffscreenEffectClass *offscreen_class;
+  CoglSnippet *snippet;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
   offscreen_class->paint_target = clutter_colorize_effect_paint_target;
@@ -258,16 +259,11 @@ clutter_colorize_effect_class_init (ClutterColorizeEffectClass *klass)
 
   klass->base_pipeline = cogl_pipeline_new ();
 
-  if (clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
-    {
-      CoglSnippet *snippet;
-
-      snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
-                                  colorize_glsl_declarations,
-                                  colorize_glsl_source);
-      cogl_pipeline_add_snippet (klass->base_pipeline, snippet);
-      cogl_object_unref (snippet);
-    }
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                              colorize_glsl_declarations,
+                              colorize_glsl_source);
+  cogl_pipeline_add_snippet (klass->base_pipeline, snippet);
+  cogl_object_unref (snippet);
 
   cogl_pipeline_set_layer_null_texture (klass->base_pipeline,
                                         0, /* layer number */

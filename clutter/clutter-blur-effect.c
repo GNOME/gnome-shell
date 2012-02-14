@@ -221,6 +221,7 @@ clutter_blur_effect_class_init (ClutterBlurEffectClass *klass)
   ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterOffscreenEffectClass *offscreen_class;
+  CoglSnippet *snippet;
 
   gobject_class->dispose = clutter_blur_effect_dispose;
 
@@ -232,18 +233,12 @@ clutter_blur_effect_class_init (ClutterBlurEffectClass *klass)
 
   klass->base_pipeline = cogl_pipeline_new ();
 
-  if (clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
-    {
-      CoglSnippet *snippet;
-
-      snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
-                                  box_blur_glsl_declarations,
-                                  NULL);
-      cogl_snippet_set_replace (snippet,
-                                box_blur_glsl_shader);
-      cogl_pipeline_add_layer_snippet (klass->base_pipeline, 0, snippet);
-      cogl_object_unref (snippet);
-    }
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
+                              box_blur_glsl_declarations,
+                              NULL);
+  cogl_snippet_set_replace (snippet, box_blur_glsl_shader);
+  cogl_pipeline_add_layer_snippet (klass->base_pipeline, 0, snippet);
+  cogl_object_unref (snippet);
 
   cogl_pipeline_set_layer_null_texture (klass->base_pipeline,
                                         0, /* layer number */
