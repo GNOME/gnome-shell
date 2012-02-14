@@ -840,6 +840,8 @@ clutter_stage_emit_key_focus_event (ClutterStage *stage,
     g_signal_emit_by_name (priv->key_focused_actor, "key-focus-in");
   else
     g_signal_emit_by_name (priv->key_focused_actor, "key-focus-out");
+
+  g_object_notify (G_OBJECT (stage), "key-focus");
 }
 
 static void
