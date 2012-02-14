@@ -624,7 +624,7 @@ const AppIconMenu = new Lang.Class({
 
     _init: function(source) {
         let side = St.Side.LEFT;
-        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             side = St.Side.RIGHT;
 
         this.parent(source.actor, 0.5, side);

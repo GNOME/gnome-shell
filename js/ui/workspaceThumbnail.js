@@ -952,7 +952,7 @@ const ThumbnailsBox = new Lang.Class({
     },
 
     _allocate: function(actor, box, flags) {
-        let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
+        let rtl = (Clutter.get_default_text_direction () == Clutter.TextDirection.RTL);
 
         // See comment about this._background in _init()
         let themeNode = this._background.get_theme_node();

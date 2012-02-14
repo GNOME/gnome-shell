@@ -790,7 +790,7 @@ const WorkspacesDisplay = new Lang.Class({
         let controlsVisible = this._controls.get_theme_node().get_length('visible-width');
         let controlsReserved = controlsVisible * (1 - this._zoomFraction) + controlsNatural * this._zoomFraction;
 
-        let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
+        let rtl = (Clutter.get_default_text_direction () == Clutter.TextDirection.RTL);
         if (rtl) {
             childBox.x2 = controlsReserved;
             childBox.x1 = childBox.x2 - controlsNatural;
@@ -850,7 +850,7 @@ const WorkspacesDisplay = new Lang.Class({
 
         let [x, y] = this.actor.get_transformed_position();
 
-        let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
+        let rtl = (Clutter.get_default_text_direction () == Clutter.TextDirection.RTL);
 
         let clipWidth = width - controlsVisible;
         let clipHeight = (fullHeight / fullWidth) * clipWidth;

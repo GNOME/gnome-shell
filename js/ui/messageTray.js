@@ -423,7 +423,7 @@ const Notification = new Lang.Class({
         this._bannerBodyText = null;
         this._bannerBodyMarkup = false;
         this._titleFitsInBannerMode = true;
-        this._titleDirection = St.TextDirection.NONE;
+        this._titleDirection = Clutter.TextDirection.DEFAULT;
         this._spacing = 0;
         this._scrollPolicy = Gtk.PolicyType.AUTOMATIC;
         this._imageBin = null;
@@ -544,9 +544,9 @@ const Notification = new Lang.Class({
         this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
 
         if (Pango.find_base_dir(title, -1) == Pango.Direction.RTL)
-            this._titleDirection = St.TextDirection.RTL;
+            this._titleDirection = Clutter.TextDirection.RTL;
         else
-            this._titleDirection = St.TextDirection.LTR;
+            this._titleDirection = Clutter.TextDirection.LTR;
 
         // Let the title's text direction control the overall direction
         // of the notification - in case where different scripts are used
@@ -554,7 +554,7 @@ const Notification = new Lang.Class({
         // arguably for action buttons as well. Labels other than the title
         // will be allocated at the available width, so that their alignment
         // is done correctly automatically.
-        this._table.set_direction(this._titleDirection);
+        this._table.set_text_direction(this._titleDirection);
 
         // Unless the notification has custom content, we save this._bannerBodyText
         // to add it to the content of the notification if the notification is
@@ -802,7 +802,7 @@ const Notification = new Lang.Class({
 
         let titleBox = new Clutter.ActorBox();
         let titleBoxW = Math.min(titleNatW, availWidth);
-        if (this._titleDirection == St.TextDirection.RTL) {
+        if (this._titleDirection == Clutter.TextDirection.RTL) {
             titleBox.x1 = availWidth - titleBoxW;
             titleBox.x2 = availWidth;
         } else {
@@ -821,7 +821,7 @@ const Notification = new Lang.Class({
         } else {
             let bannerBox = new Clutter.ActorBox();
 
-            if (this._titleDirection == St.TextDirection.RTL) {
+            if (this._titleDirection == Clutter.TextDirection.RTL) {
                 bannerBox.x1 = 0;
                 bannerBox.x2 = titleBox.x1 - this._spacing;
 
@@ -1005,9 +1005,9 @@ const Source = new Lang.Class({
         let childBox = new Clutter.ActorBox();
 
         let [minWidth, minHeight, naturalWidth, naturalHeight] = this._counterBin.get_preferred_size();
-        let direction = this.actor.get_direction();
+        let direction = this.actor.get_text_direction();
 
-        if (direction == St.TextDirection.LTR) {
+        if (direction == Clutter.TextDirection.LTR) {
             // allocate on the right in LTR
             childBox.x1 = box.x2 - naturalWidth;
             childBox.x2 = box.x2;
@@ -1491,7 +1491,7 @@ const MessageTray = new Lang.Class({
         this._summaryBin.x = 0;
         this._summaryBin.width = monitor.width;
 
-        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             this._corner.x = 0;
         else
             this._corner.x = Main.layoutManager.trayBox.width - 1;

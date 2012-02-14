@@ -251,7 +251,7 @@ const IconGrid = new Lang.Class({
             let childYSpacing = Math.max(0, height - childNaturalHeight) / 2;
 
             let childBox = new Clutter.ActorBox();
-            if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
+            if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
                 let _x = box.x2 - (x + width);
                 childBox.x1 = Math.floor(_x - childXSpacing);
             } else {

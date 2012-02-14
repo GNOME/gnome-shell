@@ -412,12 +412,12 @@ const AppMenuButton = new Lang.Class({
 
         let [minWidth, minHeight, naturalWidth, naturalHeight] = this._iconBox.get_preferred_size();
 
-        let direction = this.actor.get_direction();
+        let direction = this.actor.get_text_direction();
 
         let yPadding = Math.floor(Math.max(0, allocHeight - naturalHeight) / 2);
         childBox.y1 = yPadding;
         childBox.y2 = childBox.y1 + Math.min(naturalHeight, allocHeight);
-        if (direction == St.TextDirection.LTR) {
+        if (direction == Clutter.TextDirection.LTR) {
             childBox.x1 = 0;
             childBox.x2 = childBox.x1 + Math.min(naturalWidth, allocWidth);
         } else {
@@ -434,7 +434,7 @@ const AppMenuButton = new Lang.Class({
         childBox.y1 = yPadding;
         childBox.y2 = childBox.y1 + Math.min(naturalHeight, allocHeight);
 
-        if (direction == St.TextDirection.LTR) {
+        if (direction == Clutter.TextDirection.LTR) {
             childBox.x1 = Math.floor(iconWidth / 2);
             childBox.x2 = Math.min(childBox.x1 + naturalWidth, allocWidth);
         } else {
@@ -443,7 +443,7 @@ const AppMenuButton = new Lang.Class({
         }
         this._label.actor.allocate(childBox, flags);
 
-        if (direction == St.TextDirection.LTR) {
+        if (direction == Clutter.TextDirection.LTR) {
             childBox.x1 = Math.floor(iconWidth / 2) + this._label.actor.width;
             childBox.x2 = childBox.x1 + this._spinner.actor.width;
             childBox.y1 = box.y1;
@@ -653,7 +653,7 @@ const ActivitiesButton = new Lang.Class({
         let primary = Main.layoutManager.primaryMonitor;
         let hotBox = new Clutter.ActorBox();
         let ok, x, y;
-        if (actor.get_direction() == St.TextDirection.LTR) {
+        if (actor.get_text_direction() == Clutter.TextDirection.LTR) {
             [ok, x, y] = actor.transform_stage_point(primary.x, primary.y)
         } else {
             [ok, x, y] = actor.transform_stage_point(primary.x + primary.width, primary.y);
@@ -807,7 +807,7 @@ const PanelCorner = new Lang.Class({
 
         let rtlAwareContainer = this._box instanceof St.BoxLayout;
         if (rtlAwareContainer &&
-            this._box.get_direction() == St.TextDirection.RTL) {
+            this._box.get_text_direction() == Clutter.TextDirection.RTL) {
             if (this._side == St.Side.LEFT)
                 side = St.Side.RIGHT;
             else if (this._side == St.Side.RIGHT)
@@ -928,14 +928,14 @@ const Panel = new Lang.Class({
         this._rightBox = new St.BoxLayout({ name: 'panelRight' });
         this.actor.add_actor(this._rightBox);
 
-        if (this.actor.get_direction() == St.TextDirection.RTL)
+        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
             this._leftCorner = new PanelCorner(this._rightBox, St.Side.LEFT);
         else
             this._leftCorner = new PanelCorner(this._leftBox, St.Side.LEFT);
 
         this.actor.add_actor(this._leftCorner.actor);
 
-        if (this.actor.get_direction() == St.TextDirection.RTL)
+        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
             this._rightCorner = new PanelCorner(this._leftBox, St.Side.RIGHT);
         else
             this._rightCorner = new PanelCorner(this._rightBox, St.Side.RIGHT);
@@ -1011,7 +1011,7 @@ const Panel = new Lang.Class({
 
         childBox.y1 = 0;
         childBox.y2 = allocHeight;
-        if (this.actor.get_direction() == St.TextDirection.RTL) {
+        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL) {
             childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth),
                                                 leftNaturalWidth);
             childBox.x2 = allocWidth;
@@ -1030,7 +1030,7 @@ const Panel = new Lang.Class({
 
         childBox.y1 = 0;
         childBox.y2 = allocHeight;
-        if (this.actor.get_direction() == St.TextDirection.RTL) {
+        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL) {
             childBox.x1 = 0;
             childBox.x2 = Math.min(Math.floor(sideWidth),
                                    rightNaturalWidth);

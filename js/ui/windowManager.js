@@ -186,7 +186,7 @@ const WindowManager = new Lang.Class({
 
         let primary = Main.layoutManager.primaryMonitor;
         let xDest = primary.x;
-        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             xDest += primary.width;
 
         Tweener.addTween(actor,
@@ -567,7 +567,7 @@ const WindowManager = new Lang.Class({
     },
 
     actionMoveWorkspaceLeft: function() {
-        let rtl = (St.Widget.get_default_direction() == St.TextDirection.RTL);
+        let rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let indexToActivate = activeWorkspaceIndex;
         if (rtl && activeWorkspaceIndex < global.screen.n_workspaces - 1)
@@ -583,7 +583,7 @@ const WindowManager = new Lang.Class({
     },
 
     actionMoveWorkspaceRight: function() {
-        let rtl = (St.Widget.get_default_direction() == St.TextDirection.RTL);
+        let rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let indexToActivate = activeWorkspaceIndex;
         if (rtl && activeWorkspaceIndex > 0)

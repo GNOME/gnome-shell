@@ -257,7 +257,7 @@ _st_get_align_factors (StWidget *widget,
           break;
         }
 
-      if (st_widget_get_direction (widget) == ST_TEXT_DIRECTION_RTL)
+      if (clutter_actor_get_text_direction (CLUTTER_ACTOR (widget)) == CLUTTER_TEXT_DIRECTION_RTL)
         *x_align_out = 1.0 - *x_align_out;
     }
 

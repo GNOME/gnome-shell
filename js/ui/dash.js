@@ -110,7 +110,7 @@ const DashItemContainer = new Lang.Class({
         let xOffset = node.get_length('-x-offset');
 
         let x;
-        if (St.Widget.get_default_direction () == St.TextDirection.RTL)
+        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             x = stageX - this._label.get_width() - xOffset;
         else
             x = stageX + this.actor.get_width() + xOffset;

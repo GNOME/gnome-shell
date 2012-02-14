@@ -228,7 +228,7 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
 
   if (v_scroll_visible)
     {
-      if (st_widget_get_direction (ST_WIDGET (self->actor)) == ST_TEXT_DIRECTION_RTL)
+      if (clutter_actor_get_text_direction (self->actor) == CLUTTER_TEXT_DIRECTION_RTL)
           fade_area[0][0] += clutter_actor_get_width (vscroll);
 
       fade_area[1][0] -= clutter_actor_get_width (vscroll);

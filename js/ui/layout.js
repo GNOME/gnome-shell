@@ -22,7 +22,7 @@ const LayoutManager = new Lang.Class({
     Name: 'LayoutManager',
 
     _init: function () {
-        this._rtl = (St.Widget.get_default_direction() == St.TextDirection.RTL);
+        this._rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
         this.monitors = [];
         this.primaryMonitor = null;
         this.primaryIndex = -1;
@@ -405,7 +405,7 @@ const HotCorner = new Lang.Class({
 
         this.actor.add_actor(this._corner);
 
-        if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
+        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
             this._corner.set_position(this.actor.width - this._corner.width, 0);
             this.actor.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
         } else {
@@ -457,7 +457,7 @@ const HotCorner = new Lang.Class({
 
         ripple._opacity = startOpacity;
 
-        if (ripple.get_direction() == St.TextDirection.RTL)
+        if (ripple.get_text_direction() == Clutter.TextDirection.RTL)
             ripple.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
 
         ripple.visible = true;

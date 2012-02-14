@@ -583,7 +583,7 @@ st_scroll_view_allocate (ClutterActor          *actor,
   /* Vertical scrollbar */
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
     {
-      if (st_widget_get_direction (ST_WIDGET (actor)) == ST_TEXT_DIRECTION_RTL)
+      if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
         {
           child_box.x1 = content_box.x1;
           child_box.x2 = content_box.x1 + sb_width;
@@ -602,7 +602,7 @@ st_scroll_view_allocate (ClutterActor          *actor,
   /* Horizontal scrollbar */
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->hscroll))
     {
-      if (st_widget_get_direction (ST_WIDGET (actor)) == ST_TEXT_DIRECTION_RTL)
+      if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
         {
           child_box.x1 = content_box.x1 + (vscrollbar_visible ? sb_width : 0);
           child_box.x2 = content_box.x2;
@@ -627,7 +627,7 @@ st_scroll_view_allocate (ClutterActor          *actor,
     sb_width = 0;
 
   /* Child */
-  if (st_widget_get_direction (ST_WIDGET (actor)) == ST_TEXT_DIRECTION_RTL)
+  if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
     {
       child_box.x1 = content_box.x1 + sb_width;
       child_box.x2 = content_box.x2;

@@ -224,7 +224,7 @@ st_table_homogeneous_allocate (ClutterActor          *self,
   gfloat col_width, row_height;
   gint row_spacing, col_spacing;
   StTablePrivate *priv = ST_TABLE (self)->priv;
-  gboolean ltr = st_widget_get_direction (ST_WIDGET (self)) == ST_TEXT_DIRECTION_LTR;
+  gboolean ltr = clutter_actor_get_text_direction (self) == CLUTTER_TEXT_DIRECTION_LTR;
   ClutterActor *child;
 
   col_spacing = priv->col_spacing;
@@ -587,7 +587,7 @@ st_table_preferred_allocate (ClutterActor          *self,
                                     (int) (content_box->y2 - content_box->y1),
                                     col_widths);
 
-  ltr = (st_widget_get_direction (ST_WIDGET (self)) == ST_TEXT_DIRECTION_LTR);
+  ltr = (clutter_actor_get_text_direction (self) == CLUTTER_TEXT_DIRECTION_LTR);
 
   for (child = clutter_actor_get_first_child (self);
        child != NULL;

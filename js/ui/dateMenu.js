@@ -52,7 +52,7 @@ const DateMenuButton = new Lang.Class({
         let vbox;
 
         let menuAlignment = 0.25;
-        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             menuAlignment = 1.0 - menuAlignment;
         this.parent(menuAlignment);
 

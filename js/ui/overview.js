@@ -357,7 +357,7 @@ const Overview = new Lang.Class({
                 let direction;
                 if (this._scrollDirection == SwipeScrollDirection.HORIZONTAL) {
                     direction = stageX > this._dragStartX ? -1 : 1;
-                    if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+                    if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
                         direction *= -1;
                 } else {
                     direction = stageY > this._dragStartY ? -1 : 1;
@@ -449,7 +449,7 @@ const Overview = new Lang.Class({
                     return true;
 
                 if (this._scrollDirection == SwipeScrollDirection.HORIZONTAL) {
-                    if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+                    if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
                         this._scrollAdjustment.value -= (dx / primary.width) * this._scrollAdjustment.page_size;
                     else
                         this._scrollAdjustment.value += (dx / primary.width) * this._scrollAdjustment.page_size;
@@ -490,7 +490,7 @@ const Overview = new Lang.Class({
         this.hide();
 
         let primary = Main.layoutManager.primaryMonitor;
-        let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
+        let rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
 
         let contentY = Main.panel.actor.height;
         let contentHeight = primary.height - contentY - Main.messageTray.actor.height;

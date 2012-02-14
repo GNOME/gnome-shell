@@ -611,7 +611,7 @@ st_box_layout_allocate (ClutterActor          *actor,
   gint n_expand_children = 0, i;
   gfloat expand_amount, shrink_amount;
   BoxChildShrink *shrinks = NULL;
-  gboolean flip = (st_widget_get_direction (ST_WIDGET (actor)) == ST_TEXT_DIRECTION_RTL)
+  gboolean flip = (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
                    && (!priv->is_vertical);
   ClutterActor *child;
 

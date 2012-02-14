@@ -273,7 +273,7 @@ const PopupBaseMenuItem = new Lang.Class({
 
     _allocate: function(actor, box, flags) {
         let height = box.y2 - box.y1;
-        let direction = this.actor.get_direction();
+        let direction = this.actor.get_text_direction();
 
         if (this._dot) {
             // The dot is placed outside box
@@ -283,7 +283,7 @@ const PopupBaseMenuItem = new Lang.Class({
             let dotBox = new Clutter.ActorBox();
             let dotWidth = Math.round(box.x1 / 2);
 
-            if (direction == St.TextDirection.LTR) {
+            if (direction == Clutter.TextDirection.LTR) {
                 dotBox.x1 = Math.round(box.x1 / 4);
                 dotBox.x2 = dotBox.x1 + dotWidth;
             } else {
@@ -296,7 +296,7 @@ const PopupBaseMenuItem = new Lang.Class({
         }
 
         let x;
-        if (direction == St.TextDirection.LTR)
+        if (direction == Clutter.TextDirection.LTR)
             x = box.x1;
         else
             x = box.x2;
@@ -311,7 +311,7 @@ const PopupBaseMenuItem = new Lang.Class({
             let availWidth, extraWidth;
             if (this._columnWidths) {
                 if (child.span == -1) {
-                    if (direction == St.TextDirection.LTR)
+                    if (direction == Clutter.TextDirection.LTR)
                         availWidth = box.x2 - x;
                     else
                         availWidth = x - box.x1;
@@ -323,7 +323,7 @@ const PopupBaseMenuItem = new Lang.Class({
                 extraWidth = availWidth - naturalWidth;
             } else {
                 if (child.span == -1) {
-                    if (direction == St.TextDirection.LTR)
+                    if (direction == Clutter.TextDirection.LTR)
                         availWidth = box.x2 - x;
                     else
                         availWidth = x - box.x1;
@@ -333,7 +333,7 @@ const PopupBaseMenuItem = new Lang.Class({
                 extraWidth = 0;
             }
 
-            if (direction == St.TextDirection.LTR) {
+            if (direction == Clutter.TextDirection.LTR) {
                 if (child.expand) {
                     childBox.x1 = x;
                     childBox.x2 = x + availWidth;
@@ -371,7 +371,7 @@ const PopupBaseMenuItem = new Lang.Class({
 
             child.actor.allocate(childBox, flags);
 
-            if (direction == St.TextDirection.LTR)
+            if (direction == Clutter.TextDirection.LTR)
                 x += availWidth + this._spacing;
             else
                 x -= availWidth + this._spacing;

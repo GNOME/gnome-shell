@@ -486,7 +486,7 @@ const ViewSelector = new Lang.Class({
         let childBox = new Clutter.ActorBox();
         childBox.y1 = 0;
         childBox.y2 = allocHeight;
-        if (this.actor.get_direction() == St.TextDirection.RTL) {
+        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL) {
             childBox.x1 = allocWidth - barNatWidth;
             childBox.x2 = allocWidth;
         } else {
@@ -495,7 +495,7 @@ const ViewSelector = new Lang.Class({
         }
         this._tabBox.allocate(childBox, flags);
 
-        if (this.actor.get_direction() == St.TextDirection.RTL) {
+        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL) {
             childBox.x1 = 0;
             childBox.x2 = searchNatWidth;
         } else {
