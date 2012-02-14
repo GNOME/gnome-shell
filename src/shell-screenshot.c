@@ -399,3 +399,9 @@ shell_screenshot_screenshot_window (ShellScreenshot *screenshot,
   g_simple_async_result_run_in_thread (result, write_screenshot_thread, G_PRIORITY_DEFAULT, NULL);
   g_object_unref (result);
 }
+
+ShellScreenshot *
+shell_screenshot_new (void)
+{
+  return g_object_new (SHELL_TYPE_SCREENSHOT, NULL);
+}

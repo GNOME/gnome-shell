@@ -23,7 +23,7 @@ typedef struct _ShellScreenshotClass ShellScreenshotClass;
 
 GType shell_screenshot_get_type (void) G_GNUC_CONST;
 
-ShellScreenGrabber *shell_screenshot_new (void);
+ShellScreenshot *shell_screenshot_new (void);
 
 typedef void (*ShellScreenshotCallback)  (ShellScreenshot *screenshot,
                                            gboolean success,
