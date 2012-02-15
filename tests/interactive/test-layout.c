@@ -40,93 +40,18 @@ enum
   PROP_USE_TRANSFORMED_BOX
 };
 
-static void clutter_container_iface_init (ClutterContainerIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (MyThing,
-                         my_thing,
-                         CLUTTER_TYPE_ACTOR,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                clutter_container_iface_init));
+G_DEFINE_TYPE (MyThing, my_thing, CLUTTER_TYPE_ACTOR)
 
 #define MY_THING_GET_PRIVATE(obj)    \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MY_TYPE_THING, MyThingPrivate))
 
 struct _MyThingPrivate
 {
-  GList  *children;
-  
   gfloat  spacing;
   gfloat  padding;
 
   guint   use_transformed_box : 1;
 };
-
-/* Add, remove, foreach, copied from ClutterGroup code. */
-
-static void
-my_thing_real_add (ClutterContainer *container,
-                   ClutterActor     *actor)
-{
-  MyThing *group = MY_THING (container);
-  MyThingPrivate *priv = group->priv;
-
-  g_object_ref (actor);
-
-  priv->children = g_list_append (priv->children, actor);
-  clutter_actor_set_parent (actor, CLUTTER_ACTOR (group));
-
-  g_signal_emit_by_name (container, "actor-added", actor);
-
-  /* queue relayout to allocate new item */
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (group));
-
-  g_object_unref (actor);
-}
-
-static void
-my_thing_real_remove (ClutterContainer *container,
-                      ClutterActor     *actor)
-{
-  MyThing *group = MY_THING (container);
-  MyThingPrivate *priv = group->priv;
-
-  g_object_ref (actor);
-
-  priv->children = g_list_remove (priv->children, actor);
-  clutter_actor_unparent (actor);
-
-  /* At this point, the actor passed to the "actor-removed" signal
-   * handlers is not parented anymore to the container but since we
-   * are holding a reference on it, it's still valid
-   */
-  g_signal_emit_by_name (container, "actor-removed", actor);
-
-  /* queue relayout to re-allocate children without the
-     removed item */
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (group));
-
-  g_object_unref (actor);
-}
-
-static void
-my_thing_real_foreach (ClutterContainer *container,
-                       ClutterCallback   callback,
-                       gpointer          user_data)
-{
-  MyThingPrivate *priv = MY_THING (container)->priv;
-  GList *l;
-
-  for (l = priv->children; l; l = l->next)
-    (* callback) (CLUTTER_ACTOR (l->data), user_data);
-}
-
-static void
-clutter_container_iface_init (ClutterContainerIface *iface)
-{
-  iface->add = my_thing_real_add;
-  iface->remove = my_thing_real_remove;
-  iface->foreach = my_thing_real_foreach;
-}
 
 static void
 my_thing_set_property (GObject      *gobject,
@@ -193,50 +118,25 @@ my_thing_get_property (GObject    *gobject,
 }
 
 static void
-my_thing_finalize (GObject *gobject)
-{
-  G_OBJECT_CLASS (my_thing_parent_class)->finalize (gobject);
-}
-
-static void
-my_thing_dispose (GObject *gobject)
-{
-  MyThing *self = MY_THING (gobject);
-  MyThingPrivate *priv = self->priv;
-
-  if (priv->children)
-    {
-      g_list_foreach (priv->children, (GFunc) clutter_actor_destroy, NULL);
-      priv->children = NULL;
-    }
-
-  G_OBJECT_CLASS (my_thing_parent_class)->dispose (gobject);
-}
-
-static void
 my_thing_get_preferred_width (ClutterActor *self,
                               gfloat   for_height,
                               gfloat  *min_width_p,
                               gfloat  *natural_width_p)
 {
-  MyThingPrivate *priv;
-  GList *l;
+  ClutterActorIter iter;
+  ClutterActor *child;
   gfloat min_left, min_right;
   gfloat natural_left, natural_right;
-
-  priv = MY_THING (self)->priv;
 
   min_left = 0;
   min_right = 0;
   natural_left = 0;
   natural_right = 0;
 
-  for (l = priv->children; l != NULL; l = l->next)
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
     {
-      ClutterActor *child;
       gfloat child_x, child_min, child_natural;
-
-      child = l->data;
 
       child_x = clutter_actor_get_x (child);
 
@@ -244,7 +144,7 @@ my_thing_get_preferred_width (ClutterActor *self,
                                         &child_min, NULL,
                                         &child_natural, NULL);
 
-      if (l == priv->children)
+      if (child == clutter_actor_get_first_child (self))
         {
           /* First child */
           min_left = child_x;
@@ -297,24 +197,20 @@ my_thing_get_preferred_height (ClutterActor *self,
                                gfloat  *min_height_p,
                                gfloat  *natural_height_p)
 {
-  MyThingPrivate *priv;
-  GList *l;
+  ClutterActorIter iter;
+  ClutterActor *child;
   gfloat min_top, min_bottom;
   gfloat natural_top, natural_bottom;
-
-  priv = MY_THING (self)->priv;
 
   min_top = 0;
   min_bottom = 0;
   natural_top = 0;
   natural_bottom = 0;
 
-  for (l = priv->children; l != NULL; l = l->next)
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
     {
-      ClutterActor *child;
       gfloat child_y, child_min, child_natural;
-
-      child = l->data;
 
       child_y = clutter_actor_get_y (child);
 
@@ -322,7 +218,7 @@ my_thing_get_preferred_height (ClutterActor *self,
                                         NULL, &child_min,
                                         NULL, &child_natural);
 
-      if (l == priv->children)
+      if (child == clutter_actor_get_first_child (self))
         {
           /* First child */
           min_top = child_y;
@@ -376,10 +272,10 @@ my_thing_allocate (ClutterActor           *self,
 {
   MyThingPrivate *priv;
   gfloat current_x, current_y, max_row_height;
-  GList *l;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
-  /* chain up to set actor->allocation */
-  CLUTTER_ACTOR_CLASS (my_thing_parent_class)->allocate (self, box, flags);
+  clutter_actor_set_allocation (self, box, flags);
 
   priv = MY_THING (self)->priv;
 
@@ -391,17 +287,16 @@ my_thing_allocate (ClutterActor           *self,
    * side-by-side and reflow into a new row when we run out of 
    * space 
    */
-  for (l = priv->children; l != NULL; l = l->next)
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
     {
-      ClutterActor *child;
       gfloat natural_width, natural_height;
       ClutterActorBox child_box;
- 
-      child = l->data;
 
       clutter_actor_get_preferred_size (child,
                                         NULL, NULL,
-                                        &natural_width, &natural_height);
+                                        &natural_width,
+                                        &natural_height);
 
       /* if it fits in the current row, keep it there; otherwise
        * reflow into another row
@@ -473,29 +368,6 @@ my_thing_allocate (ClutterActor           *self,
     }
 }
 
-static void
-my_thing_paint (ClutterActor *actor)
-{
-  MyThing *self = MY_THING (actor);
-  GList *c;
-
-  cogl_push_matrix();
-
-  /* paint all visible children */
-  for (c = self->priv->children;
-       c != NULL;
-       c = c->next)
-    {
-      ClutterActor *child = c->data;
-
-      g_assert (child != NULL);
-
-      clutter_actor_paint (child);
-    }
-
-  cogl_pop_matrix();
-}
-
 #define MIN_SIZE 24
 #define MAX_SIZE 64
 
@@ -507,13 +379,10 @@ my_thing_class_init (MyThingClass *klass)
 
   gobject_class->set_property = my_thing_set_property;
   gobject_class->get_property = my_thing_get_property;
-  gobject_class->dispose      = my_thing_dispose;
-  gobject_class->finalize     = my_thing_finalize;
 
   actor_class->get_preferred_width  = my_thing_get_preferred_width;
   actor_class->get_preferred_height = my_thing_get_preferred_height;
-  actor_class->allocate             = my_thing_allocate;
-  actor_class->paint                = my_thing_paint;
+  actor_class->allocate = my_thing_allocate;
 
   g_object_class_install_property (gobject_class,
                                    PROP_SPACING,
@@ -572,15 +441,11 @@ toggle_property_value (ClutterActor *actor,
 {
   gboolean value;
 
-  g_object_get (G_OBJECT (actor),
-                property_name, &value,
-                NULL);
+  g_object_get (actor, property_name, &value, NULL);
 
   value = !value;
 
-  g_object_set (G_OBJECT (box),
-                property_name, value,
-                NULL);
+  g_object_set (box, property_name, value, NULL);
 }
 
 static void
@@ -589,15 +454,11 @@ increase_property_value (ClutterActor *actor,
 {
   gfloat value;
 
-  g_object_get (G_OBJECT (actor),
-                property_name, &value,
-                NULL);
+  g_object_get (actor, property_name, &value, NULL);
 
   value = value + 10.0;
 
-  g_object_set (G_OBJECT (box),
-                property_name, value,
-                NULL);
+  g_object_set (box, property_name, value, NULL);
 }
 
 static void
@@ -606,15 +467,11 @@ decrease_property_value (ClutterActor *actor,
 {
   gfloat value;
 
-  g_object_get (G_OBJECT (actor),
-                property_name, &value,
-                NULL);
+  g_object_get (actor, property_name, &value, NULL);
 
   value = MAX (0, value - 10.0);
 
-  g_object_set (G_OBJECT (box),
-                property_name, value,
-                NULL);
+  g_object_set (box, property_name, value, NULL);
 }
 
 static ClutterActor *
@@ -653,23 +510,20 @@ keypress_cb (ClutterActor *actor,
             ClutterActor *clone = create_item (); 
 
             /* Add one item to container */
-            clutter_container_add_actor (CLUTTER_CONTAINER (box), clone);
+            clutter_actor_add_child (box, clone);
           }
         break;
       }
 
     case CLUTTER_KEY_d:
       {
-        GList *children = 
-          clutter_container_get_children (CLUTTER_CONTAINER (box));
+        ClutterActor *last_child;
 
-        if (children)
+        last_child = clutter_actor_get_last_child (box);
+        if (last_child != NULL)
           {
-            GList *last = g_list_last (children);
-
             /* Remove last item on container */
-            clutter_container_remove_actor (CLUTTER_CONTAINER (box), 
-                                            CLUTTER_ACTOR (last->data));
+            clutter_actor_remove_child (box, last_child);
           }
         break;
       }
@@ -778,7 +632,7 @@ test_layout_main (int argc, char *argv[])
 
   size = g_random_int_range (MIN_SIZE, MAX_SIZE);
   clutter_actor_set_size (icon, size, size);
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), icon);
+  clutter_actor_add_child (box, icon);
   clutter_actor_animate_with_timeline (icon, CLUTTER_EASE_OUT_CUBIC,
                                        main_timeline,
                                        "scale-x", 2.0,
@@ -790,12 +644,12 @@ test_layout_main (int argc, char *argv[])
     {
       ClutterActor *clone = create_item (); 
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (box), clone);
+      clutter_actor_add_child (box, clone);
     }
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
+  clutter_actor_add_child (stage, box);
 
-  instructions = clutter_text_new_with_text ("Sans 14",
+  instructions = clutter_text_new_with_text (NULL,
                                               "<b>Instructions:</b>\n"
                                               "a - add a new item\n"
                                               "d - remove last item\n"
@@ -809,7 +663,7 @@ test_layout_main (int argc, char *argv[])
 
   clutter_text_set_use_markup (CLUTTER_TEXT (instructions), TRUE);
   clutter_actor_set_position (instructions, 450, 10);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), instructions);
+  clutter_actor_add_child (stage, instructions);
 
   g_signal_connect (stage, "key-release-event",
 		    G_CALLBACK (keypress_cb),
