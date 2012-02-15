@@ -486,7 +486,8 @@ typedef enum {
  *   %CLUTTER_BIND_Y
  * @CLUTTER_BIND_SIZE: Equivalent to %CLUTTER_BIND_WIDTH and
  *   %CLUTTER_BIND_HEIGHT
- *
+ * @CLUTTER_BIND_ALL: Equivalent to %CLUTTER_BIND_POSITION and
+ *   %CLUTTER_BIND_SIZE
  * Specifies which property should be used in a binding
  *
  * Since: 1.4
@@ -497,7 +498,8 @@ typedef enum { /*< prefix=CLUTTER_BIND >*/
   CLUTTER_BIND_WIDTH,
   CLUTTER_BIND_HEIGHT,
   CLUTTER_BIND_POSITION,
-  CLUTTER_BIND_SIZE
+  CLUTTER_BIND_SIZE,
+  CLUTTER_BIND_ALL
 } ClutterBindCoordinate;
 
 /**

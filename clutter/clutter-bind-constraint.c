@@ -212,6 +212,13 @@ clutter_bind_constraint_update_allocation (ClutterConstraint *constraint,
       allocation->y2 = allocation->y1 + source_height + bind->offset;
       break;
 
+    case CLUTTER_BIND_ALL:
+      allocation->x1 = source_position.x + bind->offset;
+      allocation->y1 = source_position.y + bind->offset;
+      allocation->x2 = allocation->x1 + source_width + bind->offset;
+      allocation->y2 = allocation->y1 + source_height + bind->offset;
+      break;
+
     default:
       g_assert_not_reached ();
       break;
