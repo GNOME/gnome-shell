@@ -14,7 +14,6 @@ const AppDisplay = imports.ui.appDisplay;
 const ContactDisplay = imports.ui.contactDisplay;
 const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
-const DocDisplay = imports.ui.docDisplay;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
@@ -208,7 +207,6 @@ const Overview = new Lang.Class({
         this.addSearchProvider(new AppDisplay.AppSearchProvider());
         this.addSearchProvider(new AppDisplay.SettingsSearchProvider());
         this.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());
-        this.addSearchProvider(new DocDisplay.DocSearchProvider());
         this.addSearchProvider(new ContactDisplay.ContactSearchProvider());
 
         // Load remote search providers provided by applications

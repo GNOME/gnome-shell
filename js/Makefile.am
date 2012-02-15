@@ -24,7 +24,6 @@ nobase_dist_js_DATA = 	\
 	gdm/systemd.js	 	\
 	extensionPrefs/main.js	\
 	misc/config.js		\
-	misc/docInfo.js		\
 	misc/extensionUtils.js	\
 	misc/fileUtils.js	\
 	misc/format.js		\
@@ -49,7 +48,6 @@ nobase_dist_js_DATA = 	\
 	ui/dash.js		\
 	ui/dateMenu.js		\
 	ui/dnd.js		\
-	ui/docDisplay.js	\
 	ui/endSessionDialog.js	\
 	ui/environment.js	\
 	ui/extensionSystem.js	\

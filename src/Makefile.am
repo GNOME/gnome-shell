@@ -105,7 +105,6 @@ shell_public_headers_h =		\
 	shell-app-system.h		\
 	shell-app-usage.h		\
 	shell-contact-system.h	\
-	shell-doc-system.h		\
 	shell-embedded-window.h		\
 	shell-generic-container.h	\
 	shell-gtk-embed.h		\
@@ -152,7 +151,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-app-system.c		\
 	shell-app-usage.c		\
 	shell-contact-system.c	\
-	shell-doc-system.c		\
 	shell-embedded-window.c		\
 	shell-generic-container.c	\
 	shell-gtk-embed.c		\
