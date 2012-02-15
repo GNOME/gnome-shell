@@ -104,7 +104,7 @@ CoglPango-1.0.gir: libcogl-pango.la Makefile
 
 CoglPango_1_0_gir_NAMESPACE = CoglPango
 CoglPango_1_0_gir_VERSION = 1.0
-CoglPango_1_0_gir_LIBS = libcogl-pango.la
+CoglPango_1_0_gir_LIBS = $(top_builddir)/cogl/libcogl.la libcogl-pango.la
 CoglPango_1_0_gir_FILES = $(source_h) $(source_c)
 CoglPango_1_0_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
 CoglPango_1_0_gir_INCLUDES = Pango-1.0 PangoCairo-1.0
