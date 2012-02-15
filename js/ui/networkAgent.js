@@ -680,7 +680,7 @@ const NetworkAgent = new Lang.Class({
                     let binary = keyfile.get_string('GNOME', 'auth-dialog');
                     let externalUIMode = false;
                     try {
-                        externalUIMode = keyfile.get_boolean('GNOME', 'external-ui-mode');
+                        externalUIMode = keyfile.get_boolean('GNOME', 'supports-external-ui-mode');
                     } catch(e) { } // ignore errors if key does not exist
                     let path = GLib.build_filenamev([Config.LIBEXECDIR, binary]);
 
