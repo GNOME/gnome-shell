@@ -61,11 +61,12 @@ struct _ClutterStageX11
 
   ClutterStageX11State wm_state;
 
-  guint is_foreign_xwin      : 1;
-  guint fullscreening        : 1;
-  guint is_cursor_visible    : 1;
-  guint viewport_initialized : 1;
-  guint accept_focus         : 1;
+  guint is_foreign_xwin       : 1;
+  guint fullscreening         : 1;
+  guint is_cursor_visible     : 1;
+  guint viewport_initialized  : 1;
+  guint accept_focus          : 1;
+  guint fullscreen_on_realize : 1;
 };
 
 struct _ClutterStageX11Class
