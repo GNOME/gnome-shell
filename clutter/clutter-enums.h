@@ -483,11 +483,12 @@ typedef enum {
  * @CLUTTER_BIND_WIDTH: Bind the width
  * @CLUTTER_BIND_HEIGHT: Bind the height
  * @CLUTTER_BIND_POSITION: Equivalent to to %CLUTTER_BIND_X and
- *   %CLUTTER_BIND_Y
+ *   %CLUTTER_BIND_Y (added in Clutter 1.6)
  * @CLUTTER_BIND_SIZE: Equivalent to %CLUTTER_BIND_WIDTH and
- *   %CLUTTER_BIND_HEIGHT
+ *   %CLUTTER_BIND_HEIGHT (added in Clutter 1.6)
  * @CLUTTER_BIND_ALL: Equivalent to %CLUTTER_BIND_POSITION and
- *   %CLUTTER_BIND_SIZE
+ *   %CLUTTER_BIND_SIZE (added in Clutter 1.10)
+ *
  * Specifies which property should be used in a binding
  *
  * Since: 1.4
