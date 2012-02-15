@@ -25,6 +25,7 @@
 #define __COGL_ONSCREEN_PRIVATE_H
 
 #include "cogl-framebuffer-private.h"
+#include "cogl-queue.h"
 
 #include <glib.h>
 
