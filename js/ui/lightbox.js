@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;
@@ -57,27 +58,16 @@ const Lightbox = new Lang.Class({
         if (params.width && params.height) {
             this.actor.width = params.width;
             this.actor.height = params.height;
-            this._allocationChangedSignalId = 0;
         } else {
-            this.actor.width = container.width;
-            this.actor.height = container.height;
-            this._allocationChangedSignalId = container.connect('allocation-changed', Lang.bind(this, this._allocationChanged));
+            let constraint = new Clutter.BindConstraint({ source: container,
+                                                          coordinate: Clutter.BindCoordinate.ALL });
+            this.actor.add_constraint(constraint);
         }
 
         this._actorAddedSignalId = container.connect('actor-added', Lang.bind(this, this._actorAdded));
         this._actorRemovedSignalId = container.connect('actor-removed', Lang.bind(this, this._actorRemoved));
 
         this._highlighted = null;
-    },
-
-    _allocationChanged : function(container, box, flags) {
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
-            this.actor.width = this.width;
-            this.actor.height = this.height;
-            return false;
-        }));
-        this.width = this._container.width;
-        this.height = this._container.height;
     },
 
     _actorAdded : function(container, newChild) {
@@ -187,8 +177,6 @@ const Lightbox = new Lang.Class({
      * by destroying its container or by explicitly calling this.destroy().
      */
     _onDestroy: function() {
-        if (this._allocationChangedSignalId != 0)
-            this._container.disconnect(this._allocationChangedSignalId);
         this._container.disconnect(this._actorAddedSignalId);
         this._container.disconnect(this._actorRemovedSignalId);
 

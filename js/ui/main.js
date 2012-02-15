@@ -187,6 +187,9 @@ function start() {
                         for (let i = 0; i < children.length; i++)
                             children[i].allocate_preferred_size(flags);
                     });
+    let constraint = new Clutter.BindConstraint({ source: global.stage,
+                                                  coordinate: Clutter.BindCoordinate.SIZE });
+    uiGroup.add_constraint(constraint);
     St.set_ui_root(global.stage, uiGroup);
     global.window_group.reparent(uiGroup);
     global.overlay_group.reparent(uiGroup);
