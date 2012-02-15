@@ -46,7 +46,7 @@ const ModalDialog = new Lang.Class({
         Main.uiGroup.add_actor(this._group);
 
         let constraint = new Clutter.BindConstraint({ source: global.stage,
-                                                      coordinate: Clutter.BindCoordinate.POSITION | Clutter.BindCoordinate.SIZE });
+                                                      coordinate: Clutter.BindCoordinate.ALL });
         this._group.add_constraint(constraint);
 
         this._group.connect('destroy', Lang.bind(this, this._onGroupDestroy));
