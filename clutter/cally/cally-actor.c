@@ -50,40 +50,6 @@
  * state change event if the object is focused just before the
  * accessibility object being created.
  *
- * ####
- *
- * #ClutterContainer : cally_actor implements some of his methods based on
- * #ClutterContainer interface, although there are the posibility to not
- * implement it. Could be strange to do that but:
- *   * Some methods (like get_n_children and ref_child) are easily implemented using
- *     this interface so a general implementation can be done
- *   * #ClutterContainer is a popular interface, so several classes will implement
- *     that.
- *   * So we can implement a a11y class similar to GailContainer for each clutter
- *     object implementing that, and their clutter subclasses will have a proper
- *     a11y class, but not if they are parallel classes (ie: #ClutterGroup,
- *     #TinyFrame, #TinyScrollView)
- *   * So, on all this objects, will be required to reimplement again some methods
- *     on the objects.
- *   * A auxiliar object (a kind of a11y specific #ClutterContainer implementation)
- *     could be used to implement this methods in only a place, anyway, this will
- *     require some code on each concrete class to manage it.
- *   * So this implementation is based in that is better to manage a interface
- *     on the top abstract object, instead that C&P some code, with the minor
- *     problem that we need to check if we are implementing or not the interface.
- *
- * This methods can be reimplemented, in concrete cases that we can get ways more
- * efficient to implement that. Take a look to #CallyGroup as a example of this.
- *
- * Anyway, there are several examples of behaviour changes depending of the current
- * type of the object you are granting access.
- *
- * TODO,FIXME: check if an option would be to use a dynamic type, as
- * it has been done on the webkit a11y implementation:
- *      See: https://bugs.webkit.org/show_bug.cgi?id=21546
- *
- * ###
- *
  * #AtkAction implementation: on previous releases ClutterActor added
  * the actions "press", "release" and "click", as at that time some
  * general-purpose actors like textures were directly used as buttons.
