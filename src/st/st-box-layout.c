@@ -628,8 +628,7 @@ st_box_layout_allocate (ClutterActor          *actor,
   gboolean flip = (st_widget_get_direction (ST_WIDGET (actor)) == ST_TEXT_DIRECTION_RTL)
                    && (!priv->is_vertical);
 
-  CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->allocate (actor, box,
-                                                              flags);
+  clutter_actor_set_allocation (actor, box, flags);
 
   children = st_container_get_children_list (ST_CONTAINER (actor));
   if (children == NULL)
