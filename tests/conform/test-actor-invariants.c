@@ -6,53 +6,68 @@
 #include "test-conform-common.h"
 
 void
-test_initial_state (TestConformSimpleFixture *fixture,
-                    gconstpointer             data)
+actor_initial_state (TestConformSimpleFixture *fixture,
+                     gconstpointer             data)
 {
   ClutterActor *actor;
 
   actor = clutter_rectangle_new ();
+  g_object_ref_sink (actor);
+
+  if (g_test_verbose ())
+    g_print ("initial state - visible: %s, realized: %s, mapped: %s\n",
+             CLUTTER_ACTOR_IS_VISIBLE (actor) ? "yes" : "no",
+             CLUTTER_ACTOR_IS_REALIZED (actor) ? "yes" : "no",
+             CLUTTER_ACTOR_IS_MAPPED (actor) ? "yes" : "no");
 
   g_assert (!(CLUTTER_ACTOR_IS_REALIZED (actor)));
   g_assert (!(CLUTTER_ACTOR_IS_MAPPED (actor)));
   g_assert (!(CLUTTER_ACTOR_IS_VISIBLE (actor)));
 
   clutter_actor_destroy (actor);
+  g_object_unref (actor);
 }
 
 void
-test_shown_not_parented (TestConformSimpleFixture *fixture,
-                         gconstpointer             data)
+actor_shown_not_parented (TestConformSimpleFixture *fixture,
+                          gconstpointer             data)
 {
   ClutterActor *actor;
 
   actor = clutter_rectangle_new ();
+  g_object_ref_sink (actor);
 
   clutter_actor_show (actor);
+
+  if (g_test_verbose ())
+    g_print ("show without a parent - visible: %s, realized: %s, mapped: %s\n",
+             CLUTTER_ACTOR_IS_VISIBLE (actor) ? "yes" : "no",
+             CLUTTER_ACTOR_IS_REALIZED (actor) ? "yes" : "no",
+             CLUTTER_ACTOR_IS_MAPPED (actor) ? "yes" : "no");
 
   g_assert (!CLUTTER_ACTOR_IS_REALIZED (actor));
   g_assert (!CLUTTER_ACTOR_IS_MAPPED (actor));
   g_assert (CLUTTER_ACTOR_IS_VISIBLE (actor));
 
   clutter_actor_destroy (actor);
+  g_object_unref (actor);
 }
 
 void
-test_realized (TestConformSimpleFixture *fixture,
-               gconstpointer             data)
+actor_realized (TestConformSimpleFixture *fixture,
+                gconstpointer             data)
 {
   ClutterActor *actor;
   ClutterActor *stage;
 
   stage = clutter_stage_new ();
 
-  actor = clutter_rectangle_new ();
+  actor = clutter_actor_new ();
 
   g_assert (!(CLUTTER_ACTOR_IS_REALIZED (actor)));
 
   clutter_actor_hide (actor); /* don't show, so won't map */
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               actor);
+  clutter_actor_add_child (stage, actor);
   clutter_actor_realize (actor);
 
   g_assert (CLUTTER_ACTOR_IS_REALIZED (actor));
@@ -64,8 +79,8 @@ test_realized (TestConformSimpleFixture *fixture,
 }
 
 void
-test_mapped (TestConformSimpleFixture *fixture,
-             gconstpointer             data)
+actor_mapped (TestConformSimpleFixture *fixture,
+              gconstpointer             data)
 {
   ClutterActor *actor;
   ClutterActor *stage;
@@ -73,24 +88,43 @@ test_mapped (TestConformSimpleFixture *fixture,
   stage = clutter_stage_new ();
   clutter_actor_show (stage);
 
-  actor = clutter_rectangle_new ();
+  actor = clutter_actor_new ();
 
   g_assert (!(CLUTTER_ACTOR_IS_REALIZED (actor)));
   g_assert (!(CLUTTER_ACTOR_IS_MAPPED (actor)));
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               actor);
+  clutter_actor_add_child (stage, actor);
+
+  if (g_test_verbose ())
+    g_print ("adding to a container should map - "
+             "visible: %s, realized: %s, mapped: %s\n",
+             CLUTTER_ACTOR_IS_VISIBLE (actor) ? "yes" : "no",
+             CLUTTER_ACTOR_IS_REALIZED (actor) ? "yes" : "no",
+             CLUTTER_ACTOR_IS_MAPPED (actor) ? "yes" : "no");
 
   g_assert (CLUTTER_ACTOR_IS_REALIZED (actor));
   g_assert (CLUTTER_ACTOR_IS_MAPPED (actor));
   g_assert (CLUTTER_ACTOR_IS_VISIBLE (actor));
 
+  clutter_actor_hide (actor);
+
+  if (g_test_verbose ())
+    g_print ("hiding should unmap - "
+             "visible: %s, realized: %s, mapped: %s\n",
+             CLUTTER_ACTOR_IS_VISIBLE (actor) ? "yes" : "no",
+             CLUTTER_ACTOR_IS_REALIZED (actor) ? "yes" : "no",
+             CLUTTER_ACTOR_IS_MAPPED (actor) ? "yes" : "no");
+
+  g_assert (CLUTTER_ACTOR_IS_REALIZED (actor));
+  g_assert (!CLUTTER_ACTOR_IS_MAPPED (actor));
+  g_assert (!CLUTTER_ACTOR_IS_VISIBLE (actor));
+
   clutter_actor_destroy (stage);
 }
 
 void
-test_realize_not_recursive (TestConformSimpleFixture *fixture,
-                            gconstpointer             data)
+actor_realize_not_recursive (TestConformSimpleFixture *fixture,
+                             gconstpointer             data)
 {
   ClutterActor *actor, *group;
   ClutterActor *stage;
@@ -98,9 +132,9 @@ test_realize_not_recursive (TestConformSimpleFixture *fixture,
   stage = clutter_stage_new ();
   clutter_actor_show (stage);
 
-  group = clutter_group_new ();
+  group = clutter_actor_new ();
 
-  actor = clutter_rectangle_new ();
+  actor = clutter_actor_new ();
 
   clutter_actor_hide (group); /* don't show, so won't map */
   clutter_actor_hide (actor); /* don't show, so won't map */
@@ -108,10 +142,8 @@ test_realize_not_recursive (TestConformSimpleFixture *fixture,
   g_assert (!(CLUTTER_ACTOR_IS_REALIZED (group)));
   g_assert (!(CLUTTER_ACTOR_IS_REALIZED (actor)));
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               group);
-  clutter_container_add_actor (CLUTTER_CONTAINER (group),
-                               actor);
+  clutter_actor_add_child (stage, group);
+  clutter_actor_add_child (group, actor);
 
   clutter_actor_realize (group);
 
@@ -129,8 +161,8 @@ test_realize_not_recursive (TestConformSimpleFixture *fixture,
 }
 
 void
-test_map_recursive (TestConformSimpleFixture *fixture,
-                    gconstpointer             data)
+actor_map_recursive (TestConformSimpleFixture *fixture,
+                     gconstpointer             data)
 {
   ClutterActor *actor, *group;
   ClutterActor *stage;
@@ -138,9 +170,9 @@ test_map_recursive (TestConformSimpleFixture *fixture,
   stage = clutter_stage_new ();
   clutter_actor_show (stage);
 
-  group = clutter_group_new ();
+  group = clutter_actor_new ();
 
-  actor = clutter_rectangle_new ();
+  actor = clutter_actor_new ();
 
   clutter_actor_hide (group); /* hide at first */
   clutter_actor_show (actor); /* show at first */
@@ -152,10 +184,8 @@ test_map_recursive (TestConformSimpleFixture *fixture,
   g_assert (!(CLUTTER_ACTOR_IS_VISIBLE (group)));
   g_assert ((CLUTTER_ACTOR_IS_VISIBLE (actor)));
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               group);
-  clutter_container_add_actor (CLUTTER_CONTAINER (group),
-                               actor);
+  clutter_actor_add_child (stage, group);
+  clutter_actor_add_child (group, actor);
 
   g_assert (!(CLUTTER_ACTOR_IS_REALIZED (group)));
   g_assert (!(CLUTTER_ACTOR_IS_REALIZED (actor)));
@@ -179,8 +209,8 @@ test_map_recursive (TestConformSimpleFixture *fixture,
 }
 
 void
-test_show_on_set_parent (TestConformSimpleFixture *fixture,
-                         gconstpointer             data)
+actor_show_on_set_parent (TestConformSimpleFixture *fixture,
+                          gconstpointer             data)
 {
   ClutterActor *actor, *group;
   gboolean show_on_set_parent;
@@ -188,14 +218,13 @@ test_show_on_set_parent (TestConformSimpleFixture *fixture,
 
   stage = clutter_stage_new ();
 
-  group = clutter_group_new ();
+  group = clutter_actor_new ();
 
   g_assert (!(CLUTTER_ACTOR_IS_VISIBLE (group)));
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               group);
+  clutter_actor_add_child (stage, group);
 
-  actor = clutter_rectangle_new ();
+  actor = clutter_actor_new ();
   g_object_get (actor,
                 "show-on-set-parent", &show_on_set_parent,
                 NULL);
@@ -203,7 +232,7 @@ test_show_on_set_parent (TestConformSimpleFixture *fixture,
   g_assert (!(CLUTTER_ACTOR_IS_VISIBLE (actor)));
   g_assert (show_on_set_parent == TRUE);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (group), actor);
+  clutter_actor_add_child (group, actor);
   g_object_get (actor,
                 "show-on-set-parent", &show_on_set_parent,
                 NULL);
@@ -212,7 +241,7 @@ test_show_on_set_parent (TestConformSimpleFixture *fixture,
   g_assert (show_on_set_parent == TRUE);
 
   g_object_ref (actor);
-  clutter_actor_unparent (actor);
+  clutter_actor_remove_child (group, actor);
   g_object_get (actor,
                 "show-on-set-parent", &show_on_set_parent,
                 NULL);
@@ -228,8 +257,8 @@ test_show_on_set_parent (TestConformSimpleFixture *fixture,
 }
 
 void
-test_clone_no_map (TestConformSimpleFixture *fixture,
-                   gconstpointer             data)
+clone_no_map (TestConformSimpleFixture *fixture,
+              gconstpointer             data)
 {
   ClutterActor *stage;
   ClutterActor *group;
@@ -264,8 +293,8 @@ test_clone_no_map (TestConformSimpleFixture *fixture,
 }
 
 void
-test_contains (TestConformSimpleFixture *fixture,
-               gconstpointer             data)
+actor_contains (TestConformSimpleFixture *fixture,
+                gconstpointer             data)
 {
   /* This build up the following tree:
    *
@@ -298,28 +327,29 @@ test_contains (TestConformSimpleFixture *fixture,
       /* j */    0, 0, 0, 0, 0, 0, 0, 0, 0, 1
     };
 
-  d.actor_a = clutter_group_new ();
-  d.actor_b = clutter_group_new ();
-  d.actor_c = clutter_group_new ();
-  d.actor_d = clutter_group_new ();
-  d.actor_e = clutter_group_new ();
-  d.actor_f = clutter_group_new ();
-  d.actor_g = clutter_group_new ();
-  d.actor_h = clutter_group_new ();
-  d.actor_i = clutter_group_new ();
-  d.actor_j = clutter_group_new ();
+  d.actor_a = clutter_actor_new ();
+  d.actor_b = clutter_actor_new ();
+  d.actor_c = clutter_actor_new ();
+  d.actor_d = clutter_actor_new ();
+  d.actor_e = clutter_actor_new ();
+  d.actor_f = clutter_actor_new ();
+  d.actor_g = clutter_actor_new ();
+  d.actor_h = clutter_actor_new ();
+  d.actor_i = clutter_actor_new ();
+  d.actor_j = clutter_actor_new ();
 
-  clutter_container_add (CLUTTER_CONTAINER (d.actor_a),
-                         d.actor_b, d.actor_c, d.actor_d, NULL);
+  clutter_actor_add_child (d.actor_a, d.actor_b);
+  clutter_actor_add_child (d.actor_a, d.actor_c);
+  clutter_actor_add_child (d.actor_a, d.actor_d);
 
-  clutter_container_add (CLUTTER_CONTAINER (d.actor_b),
-                         d.actor_e, d.actor_f, NULL);
+  clutter_actor_add_child (d.actor_b, d.actor_e);
+  clutter_actor_add_child (d.actor_b, d.actor_f);
 
-  clutter_container_add (CLUTTER_CONTAINER (d.actor_c),
-                         d.actor_g, d.actor_h, NULL);
+  clutter_actor_add_child (d.actor_c, d.actor_g);
+  clutter_actor_add_child (d.actor_c, d.actor_h);
 
-  clutter_container_add (CLUTTER_CONTAINER (d.actor_d),
-                         d.actor_i, d.actor_j, NULL);
+  clutter_actor_add_child (d.actor_d, d.actor_i);
+  clutter_actor_add_child (d.actor_d, d.actor_j);
 
   for (y = 0; y < 10; y++)
     for (x = 0; x < 10; x++)

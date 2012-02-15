@@ -149,15 +149,15 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/actor/iter", actor_iter_traverse_children);
   TEST_CONFORM_SIMPLE ("/actor/iter", actor_iter_traverse_remove);
 
-  TEST_CONFORM_SIMPLE ("/actor/invariants", test_initial_state);
-  TEST_CONFORM_SIMPLE ("/actor/invariants", test_shown_not_parented);
-  TEST_CONFORM_SIMPLE ("/actor/invariants", test_realized);
-  TEST_CONFORM_SIMPLE ("/actor/invariants", test_realize_not_recursive);
-  TEST_CONFORM_SIMPLE ("/actor/invariants", test_map_recursive);
-  TEST_CONFORM_SIMPLE ("/actor/invariants", test_mapped);
-  TEST_CONFORM_SIMPLE ("/actor/invariants", test_show_on_set_parent);
-  TEST_CONFORM_SIMPLE ("/actor/invariants", test_clone_no_map);
-  TEST_CONFORM_SIMPLE ("/actor/invariants", test_contains);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", actor_initial_state);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", actor_shown_not_parented);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", actor_realized);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", actor_realize_not_recursive);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", actor_map_recursive);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", actor_mapped);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", actor_show_on_set_parent);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", clone_no_map);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", actor_contains);
   TEST_CONFORM_SIMPLE ("/actor/invariants", default_stage);
 
   TEST_CONFORM_SIMPLE ("/actor/opacity", test_label_opacity);
