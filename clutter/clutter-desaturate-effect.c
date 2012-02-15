@@ -249,7 +249,6 @@ clutter_desaturate_effect_class_init (ClutterDesaturateEffectClass *klass)
   ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterOffscreenEffectClass *offscreen_class;
-  CoglSnippet *snippet;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
   offscreen_class->paint_target = clutter_desaturate_effect_paint_target;
@@ -276,30 +275,32 @@ clutter_desaturate_effect_class_init (ClutterDesaturateEffectClass *klass)
   gobject_class->set_property = clutter_desaturate_effect_set_property;
   gobject_class->get_property = clutter_desaturate_effect_get_property;
 
-  g_object_class_install_properties (gobject_class,
-                                     PROP_LAST,
-                                     obj_props);
-
-  klass->base_pipeline = cogl_pipeline_new ();
-
-  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
-                              desaturate_glsl_declarations,
-                              desaturate_glsl_source);
-  cogl_pipeline_add_snippet (klass->base_pipeline, snippet);
-  cogl_object_unref (snippet);
-
-  cogl_pipeline_set_layer_null_texture (klass->base_pipeline,
-                                        0, /* layer number */
-                                        COGL_TEXTURE_TYPE_2D);
+  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
 }
 
 static void
 clutter_desaturate_effect_init (ClutterDesaturateEffect *self)
 {
-  CoglPipeline *base_pipeline =
-    CLUTTER_DESATURATE_EFFECT_GET_CLASS (self)->base_pipeline;
+  ClutterDesaturateEffectClass *klass = CLUTTER_DESATURATE_EFFECT_GET_CLASS (self);
 
-  self->pipeline = cogl_pipeline_copy (base_pipeline);
+  if (G_UNLIKELY (klass->base_pipeline == NULL))
+    {
+      CoglSnippet *snippet;
+
+      klass->base_pipeline = cogl_pipeline_new ();
+
+      snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                                  desaturate_glsl_declarations,
+                                  desaturate_glsl_source);
+      cogl_pipeline_add_snippet (klass->base_pipeline, snippet);
+      cogl_object_unref (snippet);
+
+      cogl_pipeline_set_layer_null_texture (klass->base_pipeline,
+                                            0, /* layer number */
+                                            COGL_TEXTURE_TYPE_2D);
+    }
+
+  self->pipeline = cogl_pipeline_copy (klass->base_pipeline);
 
   self->factor_uniform =
     cogl_pipeline_get_uniform_location (self->pipeline, "factor");

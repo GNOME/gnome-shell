@@ -221,7 +221,6 @@ clutter_blur_effect_class_init (ClutterBlurEffectClass *klass)
   ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterOffscreenEffectClass *offscreen_class;
-  CoglSnippet *snippet;
 
   gobject_class->dispose = clutter_blur_effect_dispose;
 
@@ -230,28 +229,32 @@ clutter_blur_effect_class_init (ClutterBlurEffectClass *klass)
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
   offscreen_class->paint_target = clutter_blur_effect_paint_target;
-
-  klass->base_pipeline = cogl_pipeline_new ();
-
-  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
-                              box_blur_glsl_declarations,
-                              NULL);
-  cogl_snippet_set_replace (snippet, box_blur_glsl_shader);
-  cogl_pipeline_add_layer_snippet (klass->base_pipeline, 0, snippet);
-  cogl_object_unref (snippet);
-
-  cogl_pipeline_set_layer_null_texture (klass->base_pipeline,
-                                        0, /* layer number */
-                                        COGL_TEXTURE_TYPE_2D);
 }
 
 static void
 clutter_blur_effect_init (ClutterBlurEffect *self)
 {
-  CoglPipeline *base_pipeline =
-    CLUTTER_BLUR_EFFECT_GET_CLASS (self)->base_pipeline;
+  ClutterBlurEffectClass *klass = CLUTTER_BLUR_EFFECT_GET_CLASS (self);
 
-  self->pipeline = cogl_pipeline_copy (base_pipeline);
+  if (G_UNLIKELY (klass->base_pipeline == NULL))
+    {
+      CoglSnippet *snippet;
+
+      klass->base_pipeline = cogl_pipeline_new ();
+
+      snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
+                                  box_blur_glsl_declarations,
+                                  NULL);
+      cogl_snippet_set_replace (snippet, box_blur_glsl_shader);
+      cogl_pipeline_add_layer_snippet (klass->base_pipeline, 0, snippet);
+      cogl_object_unref (snippet);
+
+      cogl_pipeline_set_layer_null_texture (klass->base_pipeline,
+                                            0, /* layer number */
+                                            COGL_TEXTURE_TYPE_2D);
+    }
+
+  self->pipeline = cogl_pipeline_copy (klass->base_pipeline);
 
   self->pixel_step_uniform =
     cogl_pipeline_get_uniform_location (self->pipeline, "pixel_step");
