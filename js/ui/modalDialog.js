@@ -105,7 +105,7 @@ const ModalDialog = new Lang.Class({
     setButtons: function(buttons) {
         let hadChildren = this._buttonLayout.get_children() > 0;
 
-        this._buttonLayout.destroy_children();
+        this._buttonLayout.destroy_all_children();
         this._actionKeys = {};
 
         for (let i = 0; i < buttons.length; i++) {

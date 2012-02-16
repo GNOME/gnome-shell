@@ -694,7 +694,7 @@ const SessionList = new Lang.Class({
     },
 
     _populate: function() {
-        this._itemList.destroy_children();
+        this._itemList.destroy_all_children();
         this._activeSessionId = null;
         this._items = {};
 

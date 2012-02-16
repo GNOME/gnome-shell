@@ -339,7 +339,7 @@ const AutorunResidentNotification = new Lang.Class({
 
     updateForMounts: function(mounts) {
         // remove all the layout content
-        this._layout.destroy_children();
+        this._layout.destroy_all_children();
 
         for (let idx = 0; idx < mounts.length; idx++) {
             let element = mounts[idx];

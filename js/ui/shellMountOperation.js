@@ -359,7 +359,7 @@ const ShellProcessesDialog = new Lang.Class({
 
     _setAppsForPids: function(pids) {
         // remove all the items
-        this._applicationList.destroy_children();
+        this._applicationList.destroy_all_children();
 
         pids.forEach(Lang.bind(this, function(pid) {
             let tracker = Shell.WindowTracker.get_default();

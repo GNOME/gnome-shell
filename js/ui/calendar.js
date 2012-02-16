@@ -406,7 +406,7 @@ const Calendar = new Lang.Class({
 
     _buildHeader: function() {
         let offsetCols = this._useWeekdate ? 1 : 0;
-        this.actor.destroy_children();
+        this.actor.destroy_all_children();
 
         // Top line of the calendar '<| September 2009 |>'
         this._topBox = new St.BoxLayout();
@@ -685,7 +685,7 @@ const EventsList = new Lang.Class({
     },
 
     _showOtherDay: function(day) {
-        this.actor.destroy_children();
+        this.actor.destroy_all_children();
 
         let dayBegin = _getBeginningOfDay(day);
         let dayEnd = _getEndOfDay(day);
@@ -702,7 +702,7 @@ const EventsList = new Lang.Class({
     },
 
     _showToday: function() {
-        this.actor.destroy_children();
+        this.actor.destroy_all_children();
 
         let now = new Date();
         let dayBegin = _getBeginningOfDay(now);

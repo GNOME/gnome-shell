@@ -236,7 +236,7 @@ const ViewByCategories = new Lang.Class({
 
     _removeAll: function() {
         this._categories = [];
-        this._categoryBox.destroy_children();
+        this._categoryBox.destroy_all_children();
     },
 
     refresh: function() {

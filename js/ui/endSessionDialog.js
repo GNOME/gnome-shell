@@ -501,7 +501,7 @@ const EndSessionDialog = new Lang.Class({
         let [type, timestamp, totalSecondsToStayOpen, inhibitorObjectPaths] = parameters;
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._inhibitors = [];
-        this._applicationList.destroy_children();
+        this._applicationList.destroy_all_children();
         this._type = type;
 
         if (!(this._type in DialogContent)) {

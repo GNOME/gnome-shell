@@ -105,7 +105,7 @@ const WorkspaceSwitcherPopup = new Lang.Class({
     },
 
     _redraw : function(direction, activeWorkspaceIndex) {
-        this._list.destroy_children();
+        this._list.destroy_all_children();
 
         for (let i = 0; i < global.screen.n_workspaces; i++) {
             let indicator = null;

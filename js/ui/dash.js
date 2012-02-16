@@ -148,7 +148,7 @@ const DashItemContainer = new Lang.Class({
         if (this.child == actor)
             return;
 
-        this.actor.destroy_children();
+        this.actor.destroy_all_children();
 
         this.child = actor;
         this.actor.add_actor(this.child);
