@@ -18,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-02-16 01:27+0000\n"
-"PO-Revision-Date: 2012-02-16 18:35+0800\n"
+"PO-Revision-Date: 2012-02-16 10:43+0000\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -200,7 +200,7 @@ msgstr "<b>扩展</b>"
 
 #: ../js/extensionPrefs/main.js:189
 msgid "Select an extension to configure using the combobox above."
-msgstr ""
+msgstr "使用上面的下拉框选择一个要配置的扩展。"
 
 #: ../js/gdm/loginDialog.js:624
 msgid "Session..."
