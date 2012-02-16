@@ -90,17 +90,6 @@ struct _StBoxLayoutPrivate
 };
 
 /*
- * ClutterContainer Interface Implementation
- */
-static void
-st_box_sort_depth_order (ClutterContainer *container)
-{
-  /* The parent class' implementation would mess up the
-   * left-to-right order of the children - do nothing instead
-   */
-}
-
-/*
  * StScrollable Interface Implementation
  */
 static void
@@ -195,7 +184,6 @@ st_box_scrollable_interface_init (StScrollableInterface *iface)
 static void
 st_box_container_iface_init (ClutterContainerIface *iface)
 {
-  iface->sort_depth_order = st_box_sort_depth_order;
   iface->child_meta_type = ST_TYPE_BOX_LAYOUT_CHILD;
 }
 
