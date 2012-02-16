@@ -1327,8 +1327,9 @@ const SummaryItem = new Lang.Class({
             }
         }
 
-        if (this.notificationStack.get_children().length > 0)
-            this.notificationStack.get_children()[0]._delegate.setIconVisible(true);
+        let firstNotification = this._stackedNotifications[0];
+        if (firstNotification)
+            firstNotification.notification.setIconVisible(true);
     }
 });
 Signals.addSignalMethods(SummaryItem.prototype);
