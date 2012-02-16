@@ -252,6 +252,8 @@ meta_background_actor_dispose (GObject *object)
       cogl_handle_unref (priv->material);
       priv->material = COGL_INVALID_HANDLE;
     }
+
+  G_OBJECT_CLASS (meta_background_actor_parent_class)->dispose (object);
 }
 
 static void
