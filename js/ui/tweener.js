@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
@@ -209,9 +210,14 @@ const ClutterFrameTicker = new Lang.Class({
 
     _init : function() {
         // We don't have a finite duration; tweener will tell us to stop
-        // when we need to stop, so use 1000 seconds as "infinity"
+        // when we need to stop, so use 1000 seconds as "infinity", and
+        // set the timeline to loop. Doing this means we have to track
+        // time ourselves, since clutter timeline's time will cycle
+        // instead of strictly increase.
         this._timeline = new Clutter.Timeline({ duration: 1000*1000 });
+        this._timeline.set_loop(true);
         this._startTime = -1;
+        this._currentTime = -1;
 
         this._timeline.connect('new-frame', Lang.bind(this,
             function(timeline, frame) {
@@ -234,17 +240,18 @@ const ClutterFrameTicker = new Lang.Class({
         // That looks bad, so we always start at the first frame of the
         // animation then only do frame dropping from there.
         if (this._startTime < 0)
-            this._startTime = this._timeline.get_elapsed_time();
+            this._startTime = GLib.get_monotonic_time() / 1000.0;
 
         // currentTime is in milliseconds
         let perf_log = Shell.PerfLog.get_default();
+        this._currentTime = GLib.get_monotonic_time() / 1000.0 - this._startTime;
         perf_log.event("tweener.framePrepareStart");
         this.emit('prepare-frame');
         perf_log.event("tweener.framePrepareDone");
     },
 
     getTime : function() {
-        return this._timeline.get_elapsed_time();
+        return this._currentTime;
     },
 
     start : function() {
@@ -257,6 +264,7 @@ const ClutterFrameTicker = new Lang.Class({
     stop : function() {
         this._timeline.stop();
         this._startTime = -1;
+        this._currentTime = -1;
         global.end_work();
     }
 });
