@@ -25,7 +25,7 @@ static void shell_generic_container_iface_init (ClutterContainerIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE(ShellGenericContainer,
                         shell_generic_container,
-                        ST_TYPE_CONTAINER,
+                        ST_TYPE_WIDGET,
                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
                                                shell_generic_container_iface_init));
 

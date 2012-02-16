@@ -19,14 +19,14 @@ typedef struct _ShellStackPrivate ShellStackPrivate;
 
 struct _ShellStack
 {
-    StContainer parent;
+    StWidget parent;
 
     ShellStackPrivate *priv;
 };
 
 struct _ShellStackClass
 {
-    StContainerClass parent_class;
+    StWidgetClass parent_class;
 };
 
 GType shell_stack_get_type (void) G_GNUC_CONST;

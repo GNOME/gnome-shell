@@ -20,7 +20,6 @@
       <title>Abstract classes and Interfaces</title>
       <xi:include href="xml/st-widget.xml"/>
       <xi:include href="xml/st-widget-accessible.xml"/>
-      <xi:include href="xml/st-container.xml"/>
       <xi:include href="xml/st-scrollable.xml"/>
     </chapter>
     <chapter id="widgets">

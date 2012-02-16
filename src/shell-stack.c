@@ -18,7 +18,7 @@
 
 G_DEFINE_TYPE (ShellStack,
                shell_stack,
-               ST_TYPE_CONTAINER);
+               ST_TYPE_WIDGET);
 
 static void
 shell_stack_allocate (ClutterActor           *self,

@@ -29,14 +29,14 @@ typedef struct _ShellGenericContainerPrivate ShellGenericContainerPrivate;
 
 struct _ShellGenericContainer
 {
-    StContainer parent;
+    StWidget parent;
 
     ShellGenericContainerPrivate *priv;
 };
 
 struct _ShellGenericContainerClass
 {
-    StContainerClass parent_class;
+    StWidgetClass parent_class;
 };
 
 GType    shell_generic_container_get_type         (void) G_GNUC_CONST;
