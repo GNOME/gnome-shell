@@ -614,6 +614,8 @@ const ActivitiesButton = new Lang.Class({
         this._label = new St.Label({ text: _("Activities") });
         container.add_actor(this._label);
 
+        this.actor.label_actor = this._label;
+
         this._hotCorner = new Layout.HotCorner();
         container.add_actor(this._hotCorner.actor);
 
