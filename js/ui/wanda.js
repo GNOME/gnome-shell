@@ -89,9 +89,9 @@ const WandaIcon = new Lang.Class({
             return true;
         }
 
-        this._animations.get_nth_child(this._i).hide();
+        this._animations.get_child_at_index(this._i).hide();
         this._i = (this._i + 1) % n;
-        this._animations.get_nth_child(this._i).show();
+        this._animations.get_child_at_index(this._i).show();
 
         return true;
     },
