@@ -27,6 +27,7 @@
 #include <glib.h>
 #include <math.h>
 #include "cogl-defines.h"
+#include "cogl-types.h"
 
 #ifndef COGL_HAS_GLIB_SUPPORT
 #include <stdio.h>
@@ -189,5 +190,19 @@ _cogl_util_popcountl (unsigned long num)
      };                                                             \
   } while(0)
 #endif /* COGL_HAS_GLIB_SUPPORT */
+
+/* Match a CoglPixelFormat according to channel masks, color depth,
+ * bits per pixel and byte order. These information are provided by
+ * the Visual and XImage structures.
+ *
+ * If no specific pixel format could be found, COGL_PIXEL_FORMAT_ANY
+ * is returned.
+ */
+CoglPixelFormat
+_cogl_util_pixel_format_from_masks (unsigned long r_mask,
+                                    unsigned long g_mask,
+                                    unsigned long b_mask,
+                                    int depth, int bpp,
+                                    int byte_order);
 
 #endif /* __COGL_UTIL_H */
