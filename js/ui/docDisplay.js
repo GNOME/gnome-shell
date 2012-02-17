@@ -14,16 +14,21 @@ const DocSearchProvider = new Lang.Class({
         this._docManager = DocInfo.getDocManager();
     },
 
-    getResultMeta: function(resultId) {
-        let docInfo = this._docManager.lookupByUri(resultId);
-        if (!docInfo)
-            return null;
-        return { 'id': resultId,
-                 'name': docInfo.name,
-                 'createIcon': function(size) {
-                                   return docInfo.createIcon(size);
-                               }
-               };
+    getResultMetas: function(resultIds) {
+        let metas = [];
+        for (let i = 0; i < resultIds.length; i++) {
+            let docInfo = this._docManager.lookupByUri(resultIds[i]);
+            if (!docInfo)
+                metas.push(null);
+            else
+                metas.push({ 'id': resultIds[i],
+                             'name': docInfo.name,
+                             'createIcon': function(size) {
+                                 return docInfo.createIcon(size);
+                             }
+                           });
+        }
+        return metas;
     },
 
     activateResult: function(id, params) {

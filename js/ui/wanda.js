@@ -168,22 +168,23 @@ const WandaSearchProvider = new Lang.Class({
         this.parent(_("Your favorite Easter Egg"));
     },
 
-    getResultMeta: function(fish) {
-        return { 'id': fish,
-                 'name': capitalize(fish),
-                 'createIcon': function(iconSize) {
-                     // for DND only (maybe could be improved)
-                     // DON'T use St.Icon here, it crashes the shell
-                     // (dnd.js code assumes it can query the actor size
-                     // without parenting it, while StWidget accesses
-                     // StThemeNode in get_preferred_width/height, which
-                     // triggers an assertion failure)
-                     return St.TextureCache.get_default().load_icon_name(null,
-                                                                         'face-smile',
-                                                                         St.IconType.FULLCOLOR,
-                                                                         iconSize);
-                 }
-               };
+    getResultMetas: function(fish) {
+        return [{ 'id': fish[0], // there may be many fish in the sea, but
+                                 // only one which speaks the truth!
+                  'name': capitalize(fish[0]),
+                  'createIcon': function(iconSize) {
+                      // for DND only (maybe could be improved)
+                      // DON'T use St.Icon here, it crashes the shell
+                      // (dnd.js code assumes it can query the actor size
+                      // without parenting it, while StWidget accesses
+                      // StThemeNode in get_preferred_width/height, which
+                      // triggers an assertion failure)
+                      return St.TextureCache.get_default().load_icon_name(null,
+                                                                          'face-smile',
+                                                                          St.IconType.FULLCOLOR,
+                                                                          iconSize);
+                  }
+                }];
     },
 
     getInitialResultSet: function(terms) {

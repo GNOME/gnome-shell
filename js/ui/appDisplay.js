@@ -312,13 +312,18 @@ const AppSearchProvider = new Lang.Class({
         this._appSys = Shell.AppSystem.get_default();
     },
 
-    getResultMeta: function(app) {
-        return { 'id': app,
-                 'name': app.get_name(),
-                 'createIcon': function(size) {
-                                   return app.create_icon_texture(size);
-                               }
-               };
+    getResultMetas: function(apps) {
+        let metas = [];
+        for (let i = 0; i < apps.length; i++) {
+            let app = apps[i];
+            metas.push({ 'id': app,
+                         'name': app.get_name(),
+                         'createIcon': function(size) {
+                             return app.create_icon_texture(size);
+                         }
+                       });
+        }
+        return metas;
     },
 
     getInitialResultSet: function(terms) {
@@ -369,13 +374,18 @@ const SettingsSearchProvider = new Lang.Class({
         this._gnomecc = this._appSys.lookup_app('gnome-control-center.desktop');
     },
 
-    getResultMeta: function(pref) {
-        return { 'id': pref,
-                 'name': pref.get_name(),
-                 'createIcon': function(size) {
-                                   return pref.create_icon_texture(size);
-                               }
-               };
+    getResultMetas: function(prefs) {
+        let metas = [];
+        for (let i = 0; i < prefs.length; i++) {
+            let pref = prefs[i];
+            metas.push({ 'id': pref,
+                         'name': pref.get_name(),
+                         'createIcon': function(size) {
+                             return pref.create_icon_texture(size);
+                         }
+                       });
+        }
+        return metas;
     },
 
     getInitialResultSet: function(terms) {

@@ -149,14 +149,18 @@ const ContactSearchProvider = new Lang.Class({
         this._contactSys = Shell.ContactSystem.get_default();
     },
 
-    getResultMeta: function(id) {
-        let contact = new Contact(id);
-        return { 'id': id,
-                 'name': contact.alias,
-                 'createIcon': function(size) {
-                         return contact.createIcon(size);
-                 }
-        };
+    getResultMetas: function(ids) {
+        let metas = [];
+        for (let i = 0; i < ids.length; i++) {
+            let contact = new Contact(ids[i]);
+            metas.push({ 'id': ids[i],
+                         'name': contact.alias,
+                         'createIcon': function(size) {
+                             return contact.createIcon(size);
+                         }
+                       });
+        }
+        return metas;
     },
 
     getInitialResultSet: function(terms) {

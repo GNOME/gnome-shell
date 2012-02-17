@@ -367,16 +367,21 @@ const PlaceSearchProvider = new Lang.Class({
         this.parent(_("PLACES & DEVICES"));
     },
 
-    getResultMeta: function(resultId) {
-        let placeInfo = Main.placesManager.lookupPlaceById(resultId);
-        if (!placeInfo)
-            return null;
-        return { 'id': resultId,
-                 'name': placeInfo.name,
-                 'createIcon': function(size) {
-                                   return placeInfo.iconFactory(size);
-                               }
-               };
+    getResultMetas: function(resultIds) {
+        let metas = [];
+        for (let i = 0; i < resultIds.length; i++) {
+            let placeInfo = Main.placesManager.lookupPlaceById(resultIds[i]);
+            if (!placeInfo)
+                metas.push(null);
+            else
+                metas.push({ 'id': resultIds[i],
+                             'name': placeInfo.name,
+                             'createIcon': function(size) {
+                                 return placeInfo.iconFactory(size);
+                             }
+                           });
+        }
+        return metas;
     },
 
     activateResult: function(id, params) {

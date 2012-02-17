@@ -190,14 +190,14 @@ const SearchProvider = new Lang.Class({
     },
 
     /**
-     * getResultMeta:
-     * @id: Result identifier string
+     * getResultMetas:
+     * @ids: Result identifier strings
      *
-     * Return an object with 'id', 'name', (both strings) and 'createIcon'
-     * (function(size) returning a Clutter.Texture) properties which describe
-     * the given search result.
+     * Return an array of objects with 'id', 'name', (both strings) and
+     * 'createIcon' (function(size) returning a Clutter.Texture) properties
+     * with the same number of members as @ids
      */
-    getResultMeta: function(id) {
+    getResultMetas: function(ids) {
         throw new Error('Not implemented');
     },
 

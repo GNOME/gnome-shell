@@ -126,10 +126,13 @@ const GridSearchResults = new Lang.Class({
         let canDisplay = this._grid.childrenInRow(this._width) * MAX_SEARCH_RESULTS_ROWS
                          - this._grid.visibleItemsCount();
 
-        for (let i = Math.min(this._notDisplayedResult.length, canDisplay); i > 0; i--) {
-            let result = this._notDisplayedResult.shift();
-            let meta = this.provider.getResultMeta(result);
-            let display = new SearchResult(this.provider, meta, this._terms);
+        let numResults = Math.min(this._notDisplayedResult.length, canDisplay);
+        if (numResults == 0)
+            return;
+        let results = this._notDisplayedResult.splice(0, numResults);
+        let metas = this.provider.getResultMetas(results);
+        for (let i = 0; i < metas.length; i++) {
+            let display = new SearchResult(this.provider, metas[i], this._terms);
             this._grid.addItem(display.actor);
         }
     },
