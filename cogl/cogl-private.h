@@ -26,6 +26,8 @@
 
 #include <cogl/cogl-pipeline.h>
 
+#include "cogl-context.h"
+
 G_BEGIN_DECLS
 
 gboolean
