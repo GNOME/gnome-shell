@@ -115,37 +115,42 @@ const GridSearchResults = new Lang.Class({
         this.actor.connect('notify::width', Lang.bind(this, function() {
             this._width = this.actor.width;
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
-                this._tryAddResults();
+                let results = this.getResultsForDisplay();
+                if (results.length == 0)
+                    return;
+
+                let metas = provider.getResultMetas(results);
+                this.renderResults(metas);
             }));
         }));
         this._notDisplayedResult = [];
         this._terms = [];
     },
 
-    _tryAddResults: function() {
+    getResultsForDisplay: function() {
         let canDisplay = this._grid.childrenInRow(this._width) * MAX_SEARCH_RESULTS_ROWS
                          - this._grid.visibleItemsCount();
 
         let numResults = Math.min(this._notDisplayedResult.length, canDisplay);
-        if (numResults == 0)
-            return;
-        let results = this._notDisplayedResult.splice(0, numResults);
-        let metas = this.provider.getResultMetas(results);
-        for (let i = 0; i < metas.length; i++) {
-            let display = new SearchResult(this.provider, metas[i], this._terms);
-            this._grid.addItem(display.actor);
-        }
+
+        return this._notDisplayedResult.splice(0, numResults);
     },
 
     getVisibleResultCount: function() {
         return this._grid.visibleItemsCount();
     },
 
-    renderResults: function(results, terms) {
+    setResults: function(results, terms) {
         // copy the lists
         this._notDisplayedResult = results.slice(0);
         this._terms = terms.slice(0);
-        this._tryAddResults();
+    },
+
+    renderResults: function(metas) {
+        for (let i = 0; i < metas.length; i++) {
+            let display = new SearchResult(this.provider, metas[i], this._terms);
+            this._grid.addItem(display.actor);
+        }
     },
 
     clear: function () {
@@ -350,7 +355,9 @@ const SearchResults = new Lang.Class({
         let meta = this._metaForProvider(provider);
         meta.resultDisplay.clear();
         meta.actor.show();
-        meta.resultDisplay.renderResults(results, terms);
+        meta.resultDisplay.setResults(providerResults, terms);
+        let displayResults = meta.resultDisplay.getResultsForDisplay();
+        meta.resultDisplay.renderResults(provider.getResultMetas(displayResults));
         return true;
     },
 
@@ -383,7 +390,9 @@ const SearchResults = new Lang.Class({
                 this._clearDisplayForProvider(i);
                 let meta = this._metaForProvider(provider);
                 meta.actor.show();
-                meta.resultDisplay.renderResults(providerResults, terms);
+                meta.resultDisplay.setResults(providerResults, terms);
+                let displayResults = meta.resultDisplay.getResultsForDisplay();
+                meta.resultDisplay.renderResults(provider.getResultMetas(displayResults));
             }
         }
 
