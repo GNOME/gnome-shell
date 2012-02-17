@@ -43,6 +43,24 @@ typedef struct _ClutterTimelineClass   ClutterTimelineClass;
 typedef struct _ClutterTimelinePrivate ClutterTimelinePrivate;
 
 /**
+ * ClutterTimelineProgressFunc:
+ * @timeline: a #ClutterTimeline
+ * @elapsed: the elapsed time, in milliseconds
+ * @total: the total duration of the timeline, in milliseconds,
+ * @user_data: data passed to the function
+ *
+ * A function for defining a custom progress.
+ *
+ * Return value: the progress, as a floating point value between -1.0 and 2.0.
+ *
+ * Since: 1.10
+ */
+typedef gdouble (* ClutterTimelineProgressFunc) (ClutterTimeline *timeline,
+                                                 gdouble          elapsed,
+                                                 gdouble          total,
+                                                 gpointer         user_data);
+
+/**
  * ClutterTimeline:
  *
  * The #ClutterTimeline structure contains only private data
@@ -53,7 +71,8 @@ typedef struct _ClutterTimelinePrivate ClutterTimelinePrivate;
 struct _ClutterTimeline
 {
   /*< private >*/
-  GObject parent;
+  GObject parent_instance;
+
   ClutterTimelinePrivate *priv;
 };
 
@@ -137,6 +156,14 @@ gboolean                        clutter_timeline_has_marker             (Clutter
                                                                          const gchar              *marker_name);
 void                            clutter_timeline_advance_to_marker      (ClutterTimeline          *timeline,
                                                                          const gchar              *marker_name);
+
+void                            clutter_timeline_set_progress_func      (ClutterTimeline          *timeline,
+                                                                         ClutterTimelineProgressFunc func,
+                                                                         gpointer                  data,
+                                                                         GDestroyNotify            notify);
+void                            clutter_timeline_set_progress_mode      (ClutterTimeline          *timeline,
+                                                                         ClutterAnimationMode      mode);
+ClutterAnimationMode            clutter_timeline_get_progress_mode      (ClutterTimeline          *timeline);
 
 G_END_DECLS
 

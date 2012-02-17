@@ -98,6 +98,7 @@
 #endif
 
 #include "clutter-debug.h"
+#include "clutter-easing.h"
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
@@ -139,6 +140,11 @@ struct _ClutterTimelinePrivate
   /* The number of times the timeline has repeated */
   gint current_repeat;
 
+  ClutterTimelineProgressFunc progress_func;
+  gpointer progress_data;
+  GDestroyNotify progress_notify;
+  ClutterAnimationMode progress_mode;
+
   guint is_playing         : 1;
 
   /* If we've just started playing and haven't yet gotten
@@ -164,6 +170,7 @@ enum
   PROP_DIRECTION,
   PROP_AUTO_REVERSE,
   PROP_REPEAT_COUNT,
+  PROP_PROGRESS_MODE,
 
   PROP_LAST
 };
@@ -417,6 +424,10 @@ clutter_timeline_set_property (GObject      *object,
       clutter_timeline_set_repeat_count (timeline, g_value_get_int (value));
       break;
 
+    case PROP_PROGRESS_MODE:
+      clutter_timeline_set_progress_mode (timeline, g_value_get_enum (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -458,6 +469,10 @@ clutter_timeline_get_property (GObject    *object,
       g_value_set_int (value, priv->repeat_count);
       break;
 
+    case PROP_PROGRESS_MODE:
+      g_value_set_enum (value, priv->progress_mode);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -495,6 +510,14 @@ clutter_timeline_dispose (GObject *object)
     {
       g_source_remove (priv->delay_id);
       priv->delay_id = 0;
+    }
+
+  if (priv->progress_notify != NULL)
+    {
+      priv->progress_notify (priv->progress_data);
+      priv->progress_func = NULL;
+      priv->progress_data = NULL;
+      priv->progress_notify = NULL;
     }
 
   G_OBJECT_CLASS (clutter_timeline_parent_class)->dispose (object);
@@ -609,13 +632,26 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                       0,
                       CLUTTER_PARAM_READWRITE);
 
-  object_class->dispose      = clutter_timeline_dispose;
-  object_class->finalize     = clutter_timeline_finalize;
+  /**
+   * ClutterTimeline:progress-mode:
+   *
+   * Controls the way a #ClutterTimeline computes the normalized progress.
+   *
+   * Since: 1.10
+   */
+  obj_props[PROP_PROGRESS_MODE] =
+    g_param_spec_enum ("progress-mode",
+                       P_("Progress Mode"),
+                       P_("How the timeline should compute the progress"),
+                       CLUTTER_TYPE_ANIMATION_MODE,
+                       CLUTTER_LINEAR,
+                       CLUTTER_PARAM_READWRITE);
+
+  object_class->dispose = clutter_timeline_dispose;
+  object_class->finalize = clutter_timeline_finalize;
   object_class->set_property = clutter_timeline_set_property;
   object_class->get_property = clutter_timeline_get_property;
-  g_object_class_install_properties (object_class,
-                                     PROP_LAST,
-                                     obj_props);
+  g_object_class_install_properties (object_class, PROP_LAST, obj_props);
 
   /**
    * ClutterTimeline::new-frame:
@@ -639,8 +675,12 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    * ClutterTimeline::completed:
    * @timeline: the #ClutterTimeline which received the signal
    *
-   * The ::completed signal is emitted when the timeline reaches the
-   * number of frames specified by the ClutterTimeline:num-frames property.
+   * The #ClutterTimeline::completed signal is emitted when the timeline's
+   * elapsed time reaches the value of the #ClutterTimeline:duration
+   * property.
+   *
+   * This signal will be emitted even if the #ClutterTimeline is set to be
+   * repeating.
    */
   timeline_signals[COMPLETED] =
     g_signal_new (I_("completed"),
@@ -734,9 +774,7 @@ clutter_timeline_init (ClutterTimeline *self)
     G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_TIMELINE,
                                  ClutterTimelinePrivate);
 
-  priv->duration = 0;
-  priv->delay = 0;
-  priv->elapsed_time = 0;
+  priv->progress_mode = CLUTTER_LINEAR;
 }
 
 struct CheckIfMarkerHitClosure
@@ -1429,9 +1467,13 @@ clutter_timeline_set_duration (ClutterTimeline *timeline,
  * clutter_timeline_get_progress:
  * @timeline: a #ClutterTimeline
  *
- * The position of the timeline in a [0, 1] interval.
+ * The position of the timeline in a normalized [-1, 2] interval.
  *
- * Return value: the position of the timeline.
+ * The return value of this function is determined by the progress
+ * mode set using clutter_timeline_set_progress_mode(), or by the
+ * progress function set using clutter_timeline_set_progress_func().
+ *
+ * Return value: the normalized current position in the timeline.
  *
  * Since: 0.6
  */
@@ -1444,7 +1486,14 @@ clutter_timeline_get_progress (ClutterTimeline *timeline)
 
   priv = timeline->priv;
 
-  return (gdouble) priv->elapsed_time / (gdouble) priv->duration;
+  /* short-circuit linear progress */
+  if (priv->progress_func == NULL)
+    return (gdouble) priv->elapsed_time / (gdouble) priv->duration;
+  else
+    return priv->progress_func (timeline,
+                                (gdouble) priv->elapsed_time,
+                                (gdouble) priv->duration,
+                                priv->progress_data);
 }
 
 /**
@@ -1947,4 +1996,178 @@ clutter_timeline_get_repeat_count (ClutterTimeline *timeline)
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
 
   return timeline->priv->repeat_count;
+}
+
+/**
+ * clutter_timeline_set_progress_func:
+ * @timeline: a #ClutterTimeline
+ * @func: (scope notify) (allow-none): a progress function, or %NULL
+ * @data: (closure): data to pass to @func
+ * @notify: a function to be called when the progress function is removed
+ *    or the timeline is disposed
+ *
+ * Sets a custom progress function for @timeline. The progress function will
+ * be called by clutter_timeline_get_progress() and will be used to compute
+ * the progress value based on the elapsed time and the total duration of the
+ * timeline.
+ *
+ * If @func is not %NULL, the #ClutterTimeline:progress-mode property will
+ * be set to %CLUTTER_CUSTOM_MODE.
+ *
+ * If @func is %NULL, any previously set progress function will be unset, and
+ * the #ClutterTimeline:progress-mode property will be set to %CLUTTER_LINEAR.
+ *
+ * Since: 1.10
+ */
+void
+clutter_timeline_set_progress_func (ClutterTimeline             *timeline,
+                                    ClutterTimelineProgressFunc  func,
+                                    gpointer                     data,
+                                    GDestroyNotify               notify)
+{
+  ClutterTimelinePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+
+  priv = timeline->priv;
+
+  if (priv->progress_notify != NULL)
+    priv->progress_notify (priv->progress_data);
+
+  priv->progress_func = func;
+  priv->progress_data = data;
+  priv->progress_notify = notify;
+
+  if (priv->progress_func != NULL)
+    priv->progress_mode = CLUTTER_CUSTOM_MODE;
+  else
+    priv->progress_mode = CLUTTER_LINEAR;
+
+  g_object_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_PROGRESS_MODE]);
+}
+
+/*< private >
+ * _clutter_animation_modes:
+ *
+ * A mapping of animation modes and easing functions.
+ */
+static const struct {
+  ClutterAnimationMode mode;
+  ClutterEasingFunc func;
+  const char *name;
+} _clutter_animation_modes[] = {
+  { CLUTTER_CUSTOM_MODE,         NULL, "custom" },
+
+  { CLUTTER_LINEAR,              clutter_linear, "linear" },
+  { CLUTTER_EASE_IN_QUAD,        clutter_ease_in_quad, "easeInQuad" },
+  { CLUTTER_EASE_OUT_QUAD,       clutter_ease_out_quad, "easeOutQuad" },
+  { CLUTTER_EASE_IN_OUT_QUAD,    clutter_ease_in_out_quad, "easeInOutQuad" },
+  { CLUTTER_EASE_IN_CUBIC,       clutter_ease_in_cubic, "easeInCubic" },
+  { CLUTTER_EASE_OUT_CUBIC,      clutter_ease_out_cubic, "easeOutCubic" },
+  { CLUTTER_EASE_IN_OUT_CUBIC,   clutter_ease_in_out_cubic, "easeInOutCubic" },
+  { CLUTTER_EASE_IN_QUART,       clutter_ease_in_quart, "easeInQuart" },
+  { CLUTTER_EASE_OUT_QUART,      clutter_ease_out_quart, "easeOutQuart" },
+  { CLUTTER_EASE_IN_OUT_QUART,   clutter_ease_in_out_quart, "easeInOutQuart" },
+  { CLUTTER_EASE_IN_QUINT,       clutter_ease_in_quint, "easeInQuint" },
+  { CLUTTER_EASE_OUT_QUINT,      clutter_ease_out_quint, "easeOutQuint" },
+  { CLUTTER_EASE_IN_OUT_QUINT,   clutter_ease_in_out_quint, "easeInOutQuint" },
+  { CLUTTER_EASE_IN_SINE,        clutter_ease_in_sine, "easeInSine" },
+  { CLUTTER_EASE_OUT_SINE,       clutter_ease_out_sine, "easeOutSine" },
+  { CLUTTER_EASE_IN_OUT_SINE,    clutter_ease_in_out_sine, "easeInOutSine" },
+  { CLUTTER_EASE_IN_EXPO,        clutter_ease_in_expo, "easeInExpo" },
+  { CLUTTER_EASE_OUT_EXPO,       clutter_ease_out_expo, "easeOutExpo" },
+  { CLUTTER_EASE_IN_OUT_EXPO,    clutter_ease_in_out_expo, "easeInOutExpo" },
+  { CLUTTER_EASE_IN_CIRC,        clutter_ease_in_circ, "easeInCirc" },
+  { CLUTTER_EASE_OUT_CIRC,       clutter_ease_out_circ, "easeOutCirc" },
+  { CLUTTER_EASE_IN_OUT_CIRC,    clutter_ease_in_out_circ, "easeInOutCirc" },
+  { CLUTTER_EASE_IN_ELASTIC,     clutter_ease_in_elastic, "easeInElastic" },
+  { CLUTTER_EASE_OUT_ELASTIC,    clutter_ease_out_elastic, "easeOutElastic" },
+  { CLUTTER_EASE_IN_OUT_ELASTIC, clutter_ease_in_out_elastic, "easeInOutElastic" },
+  { CLUTTER_EASE_IN_BACK,        clutter_ease_in_back, "easeInBack" },
+  { CLUTTER_EASE_OUT_BACK,       clutter_ease_out_back, "easeOutBack" },
+  { CLUTTER_EASE_IN_OUT_BACK,    clutter_ease_in_out_back, "easeInOutBack" },
+  { CLUTTER_EASE_IN_BOUNCE,      clutter_ease_in_bounce, "easeInBounce" },
+  { CLUTTER_EASE_OUT_BOUNCE,     clutter_ease_out_bounce, "easeOutBounce" },
+  { CLUTTER_EASE_IN_OUT_BOUNCE,  clutter_ease_in_out_bounce, "easeInOutBounce" },
+
+  { CLUTTER_ANIMATION_LAST,      NULL, "sentinel" },
+};
+
+static gdouble
+clutter_timeline_progress_func (ClutterTimeline *timeline,
+                                gdouble          elapsed,
+                                gdouble          duration,
+                                gpointer         user_data G_GNUC_UNUSED)
+{
+  ClutterTimelinePrivate *priv = timeline->priv;
+  ClutterEasingFunc easing_func;
+
+  g_assert (_clutter_animation_modes[priv->progress_mode].mode == priv->progress_mode);
+  g_assert (_clutter_animation_modes[priv->progress_mode].func != NULL);
+
+  easing_func = _clutter_animation_modes[priv->progress_mode].func;
+
+  return easing_func (elapsed, duration);
+}
+
+/**
+ * clutter_timeline_set_progress_mode:
+ * @timeline: a #ClutterTimeline
+ * @mode: the progress mode, as a #ClutterAnimationMode
+ *
+ * Sets the progress function using a value from the #ClutterAnimationMode
+ * enumeration. The @mode cannot be %CLUTTER_CUSTOM_MODE or bigger than
+ * %CLUTTER_ANIMATION_LAST.
+ *
+ * Since: 1.10
+ */
+void
+clutter_timeline_set_progress_mode (ClutterTimeline      *timeline,
+                                    ClutterAnimationMode  mode)
+{
+  ClutterTimelinePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_if_fail (mode < CLUTTER_ANIMATION_LAST);
+  g_return_if_fail (mode != CLUTTER_CUSTOM_MODE);
+
+  priv = timeline->priv;
+
+  if (priv->progress_mode == mode)
+    return;
+
+  if (priv->progress_notify != NULL)
+    priv->progress_notify (priv->progress_data);
+
+  priv->progress_mode = mode;
+
+  /* short-circuit linear progress */
+  if (priv->progress_mode != CLUTTER_LINEAR)
+    priv->progress_func = clutter_timeline_progress_func;
+  else
+    priv->progress_func = NULL;
+
+  priv->progress_data = NULL;
+  priv->progress_notify = NULL;
+
+  g_object_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_PROGRESS_MODE]);
+}
+
+/**
+ * clutter_timeline_get_progress_mode:
+ * @timeline: a #ClutterTimeline
+ *
+ * Retrieves the progress mode set using clutter_timeline_set_progress_mode()
+ * or clutter_timeline_set_progress_func().
+ *
+ * Return value: a #ClutterAnimationMode
+ *
+ * Since: 1.10
+ */
+ClutterAnimationMode
+clutter_timeline_get_progress_mode (ClutterTimeline *timeline)
+{
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), CLUTTER_LINEAR);
+
+  return timeline->priv->progress_mode;
 }
