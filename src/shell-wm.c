@@ -74,7 +74,7 @@ shell_wm_class_init (ShellWMClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL, NULL,
-                  G_TYPE_NONE, 1,
+                  G_TYPE_NONE, 5,
                   META_TYPE_WINDOW_ACTOR, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
   shell_wm_signals[MAP] =
     g_signal_new ("map",
