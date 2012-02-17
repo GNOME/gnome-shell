@@ -56,47 +56,28 @@ pkgconfig_DATA = $(pc_files)
 EXTRA_DIST += cogl-1.0.pc.in cogl-$(COGL_API_VERSION)-experimental.pc.in
 DISTCLEANFILES += $(pc_files)
 
-# public headers
-cogl_public_h = \
-	$(srcdir)/cogl-object.h 		\
+# public 1.x api headers
+cogl_1_public_h = \
 	$(srcdir)/cogl-bitmap.h 		\
-	$(srcdir)/cogl-buffer.h 		\
 	$(srcdir)/cogl-color.h 			\
 	$(srcdir)/cogl-fixed.h 			\
-	$(srcdir)/cogl-depth-state.h 		\
 	$(srcdir)/cogl-material-compat.h 	\
-	$(srcdir)/cogl-vector.h 		\
-	$(srcdir)/cogl-euler.h 			\
-	$(srcdir)/cogl-quaternion.h 		\
 	$(srcdir)/cogl-matrix.h 		\
 	$(srcdir)/cogl-offscreen.h 		\
 	$(srcdir)/cogl-primitives.h 		\
 	$(srcdir)/cogl-path.h 			\
-	$(srcdir)/cogl-pixel-buffer.h		\
-	$(srcdir)/cogl-poll.h			\
 	$(srcdir)/cogl-shader.h 		\
 	$(srcdir)/cogl-texture.h 		\
-	$(srcdir)/cogl-texture-3d.h             \
-	$(srcdir)/cogl-texture-2d.h             \
-	$(srcdir)/cogl-texture-rectangle.h      \
-	$(srcdir)/cogl-texture-2d-sliced.h      \
-	$(srcdir)/cogl-sub-texture.h            \
-	$(srcdir)/cogl-meta-texture.h		\
 	$(srcdir)/cogl-types.h 			\
 	$(srcdir)/cogl-vertex-buffer.h 		\
-	$(srcdir)/cogl-index-buffer.h 		\
-	$(srcdir)/cogl-attribute-buffer.h 	\
-	$(srcdir)/cogl-indices.h 		\
-	$(srcdir)/cogl-attribute.h 		\
-	$(srcdir)/cogl-primitive.h 		\
-	$(srcdir)/cogl-clip-state.h		\
-	$(srcdir)/cogl-framebuffer.h		\
-	$(srcdir)/cogl-onscreen.h		\
 	$(srcdir)/cogl-clutter.h       		\
 	$(srcdir)/cogl.h			\
 	$(NULL)
 
+# experimental 2.0 api headers
+# Note: we don't run glib-mkenums over these headers
 cogl_experimental_h = \
+	$(srcdir)/cogl-object.h 		\
 	$(srcdir)/cogl-renderer.h 		\
 	$(srcdir)/cogl-swap-chain.h 		\
 	$(srcdir)/cogl-onscreen-template.h 	\
@@ -108,6 +89,27 @@ cogl_experimental_h = \
 	$(srcdir)/cogl-snippet.h		\
 	$(srcdir)/cogl2-path.h 			\
 	$(srcdir)/cogl2-clip-state.h		\
+	$(srcdir)/cogl-index-buffer.h 		\
+	$(srcdir)/cogl-attribute-buffer.h 	\
+	$(srcdir)/cogl-indices.h 		\
+	$(srcdir)/cogl-attribute.h 		\
+	$(srcdir)/cogl-primitive.h 		\
+	$(srcdir)/cogl-clip-state.h		\
+	$(srcdir)/cogl-framebuffer.h		\
+	$(srcdir)/cogl-onscreen.h		\
+	$(srcdir)/cogl-vector.h 		\
+	$(srcdir)/cogl-euler.h 			\
+	$(srcdir)/cogl-quaternion.h 		\
+	$(srcdir)/cogl-poll.h			\
+	$(srcdir)/cogl-texture-3d.h             \
+	$(srcdir)/cogl-texture-2d.h             \
+	$(srcdir)/cogl-texture-rectangle.h      \
+	$(srcdir)/cogl-texture-2d-sliced.h      \
+	$(srcdir)/cogl-sub-texture.h            \
+	$(srcdir)/cogl-meta-texture.h		\
+	$(srcdir)/cogl-depth-state.h 		\
+	$(srcdir)/cogl-buffer.h 		\
+	$(srcdir)/cogl-pixel-buffer.h		\
 	$(srcdir)/cogl2-experimental.h		\
 	$(NULL)
 
@@ -349,14 +351,14 @@ cogl_sources_c = \
 	$(NULL)
 
 if USE_GLIB
-cogl_public_h += \
+cogl_experimental_h += \
 	$(srcdir)/cogl-glib-source.h
 cogl_sources_c += \
 	$(srcdir)/cogl-glib-source.c
 endif
 
 if SUPPORT_XLIB
-cogl_public_h += \
+cogl_1_public_h += \
 	$(srcdir)/cogl-clutter-xlib.h \
 	$(srcdir)/cogl-xlib-renderer.h
 
@@ -381,7 +383,7 @@ cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-glx.c
 endif
 if SUPPORT_WGL
-cogl_public_h += \
+cogl_experimental_h += \
 	$(srcdir)/cogl-win32-renderer.h
 
 cogl_sources_c += \
@@ -390,14 +392,14 @@ cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-wgl-feature-functions.h
 endif
 if SUPPORT_EGL_PLATFORM_WAYLAND
-cogl_public_h += \
+cogl_experimental_h += \
 	$(srcdir)/cogl-wayland-renderer.h
 cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-egl-wayland.c \
 	$(srcdir)/winsys/cogl-winsys-egl-wayland-private.h
 endif
 if SUPPORT_EGL_PLATFORM_KMS
-cogl_public_h += \
+cogl_experimental_h += \
 	$(srcdir)/cogl-kms-renderer.h
 cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-egl-kms.c \
@@ -439,7 +441,7 @@ EXTRA_DIST += stb_image.c
 # glib-mkenums rules
 glib_enum_h = cogl-enum-types.h
 glib_enum_c = cogl-enum-types.c
-glib_enum_headers = $(cogl_public_h)
+glib_enum_headers = $(cogl_1_public_h)
 include $(top_srcdir)/build/autotools/Makefile.am.enums
 
 lib_LTLIBRARIES += libcogl.la
@@ -461,7 +463,7 @@ nodist_libcogl_la_SOURCES = $(BUILT_SOURCES)
 
 # Cogl installed headers
 cogl_headers = \
-	$(cogl_public_h) \
+	$(cogl_1_public_h) \
 	$(srcdir)/cogl-deprecated.h \
 	$(srcdir)/cogl-pango.h \
 	$(NULL)
@@ -508,7 +510,7 @@ dist-hook: ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../bu
 
 cogl.vsenums_h:
 	echo 'perl %1\bin\glib-mkenums --template ../../cogl/cogl-enum-types.h.in ' >vsenums_h.temp1
-	for F in `echo $(cogl_public_h) $(srcdir)/cogl-win32-renderer.h`; do \
+	for F in `echo $(cogl_1_public_h) $(srcdir)/cogl-win32-renderer.h`; do \
 		case $$F in \
 		*xlib*.h|*wayland*.h) ;; \
 		*.h) echo '../../cogl'$$F' '	\
@@ -523,7 +525,7 @@ cogl.vsenums_h:
 
 cogl.vsenums_c:
 	echo 'perl %1\bin\glib-mkenums --template ../../cogl/cogl-enum-types.c.in ' >vsenums_c.temp1
-	for F in `echo $(cogl_public_h) $(srcdir)/cogl-win32-renderer.h`; do \
+	for F in `echo $(cogl_1_public_h) $(srcdir)/cogl-win32-renderer.h`; do \
 		case $$F in \
 		*xlib*.h|*wayland*.h) ;; \
 		*.h) echo '../../cogl'$$F' '	\
@@ -565,8 +567,8 @@ Cogl-1.0.gir: libcogl.la Makefile
 Cogl_1_0_gir_NAMESPACE = Cogl
 Cogl_1_0_gir_VERSION = 1.0
 Cogl_1_0_gir_LIBS = libcogl.la
-Cogl_1_0_gir_FILES = $(cogl_public_h) cogl-enum-types.h
-Cogl_1_0_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS)
+Cogl_1_0_gir_FILES = $(cogl_1_public_h) cogl-enum-types.h
+Cogl_1_0_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_ENABLE_EXPERIMENTAL_API -UCOGL_ENABLE_EXPERIMENTAL_2_0_API
 Cogl_1_0_gir_INCLUDES = GL-1.0 GObject-2.0
 Cogl_1_0_gir_EXPORT_PACKAGES = cogl-1.0
 Cogl_1_0_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h'
