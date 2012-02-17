@@ -31,6 +31,11 @@
 #ifndef __COGL_ATTRIBUTE_BUFFER_H__
 #define __COGL_ATTRIBUTE_BUFFER_H__
 
+/* We forward declare the CoglAttributeBuffer type here to avoid some circular
+ * dependency issues with the following headers.
+ */
+typedef struct _CoglAttributeBuffer CoglAttributeBuffer;
+
 #include <cogl/cogl-context.h>
 
 G_BEGIN_DECLS
@@ -42,8 +47,6 @@ G_BEGIN_DECLS
  *
  * FIXME
  */
-
-typedef struct _CoglAttributeBuffer	      CoglAttributeBuffer;
 
 /**
  * cogl_attribute_buffer_new:

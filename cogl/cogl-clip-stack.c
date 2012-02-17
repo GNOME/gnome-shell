@@ -45,6 +45,7 @@
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-attribute-private.h"
 #include "cogl-primitive-private.h"
+#include "cogl1-context.h"
 
 #ifndef GL_CLIP_PLANE0
 #define GL_CLIP_PLANE0 0x3000

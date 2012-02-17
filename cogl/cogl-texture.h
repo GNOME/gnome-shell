@@ -28,6 +28,11 @@
 #ifndef __COGL_TEXTURE_H__
 #define __COGL_TEXTURE_H__
 
+/* We forward declare the CoglTexture type here to avoid some circular
+ * dependency issues with the following headers.
+ */
+typedef struct _CoglTexture CoglTexture;
+
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-defines.h>
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
@@ -46,7 +51,6 @@ G_BEGIN_DECLS
  * loading and manipulating textures.
  */
 
-typedef struct _CoglTexture CoglTexture;
 #define COGL_TEXTURE(X) ((CoglTexture *)X)
 
 #define COGL_TEXTURE_MAX_WASTE  127

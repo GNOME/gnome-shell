@@ -37,6 +37,7 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-texture-2d-private.h"
 #include "cogl-private.h"
+#include "cogl1-context.h"
 
 static const CoglBlitMode *_cogl_blit_default_mode = NULL;
 

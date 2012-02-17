@@ -717,6 +717,34 @@ typedef enum
   COGL_WINDING_COUNTER_CLOCKWISE
 } CoglWinding;
 
+/**
+ * CoglBufferBit:
+ * @COGL_BUFFER_BIT_COLOR: Selects the primary color buffer
+ * @COGL_BUFFER_BIT_DEPTH: Selects the depth buffer
+ * @COGL_BUFFER_BIT_STENCIL: Selects the stencil buffer
+ *
+ * Types of auxiliary buffers
+ *
+ * Since: 1.0
+ */
+typedef enum {
+  COGL_BUFFER_BIT_COLOR   = 1L<<0,
+  COGL_BUFFER_BIT_DEPTH   = 1L<<1,
+  COGL_BUFFER_BIT_STENCIL = 1L<<2
+} CoglBufferBit;
+
+/**
+ * CoglReadPixelsFlags:
+ * @COGL_READ_PIXELS_COLOR_BUFFER: Read from the color buffer
+ *
+ * Flags for cogl_read_pixels()
+ *
+ * Since: 1.0
+ */
+typedef enum { /*< prefix=COGL_READ_PIXELS >*/
+  COGL_READ_PIXELS_COLOR_BUFFER = 1L << 0
+} CoglReadPixelsFlags;
+
 G_END_DECLS
 
 #endif /* __COGL_TYPES_H__ */

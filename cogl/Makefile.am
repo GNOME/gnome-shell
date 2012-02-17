@@ -58,6 +58,7 @@ DISTCLEANFILES += $(pc_files)
 
 # public 1.x api headers
 cogl_1_public_h = \
+	$(srcdir)/cogl1-context.h 		\
 	$(srcdir)/cogl-bitmap.h 		\
 	$(srcdir)/cogl-color.h 			\
 	$(srcdir)/cogl-fixed.h 			\

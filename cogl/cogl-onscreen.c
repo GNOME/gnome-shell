@@ -31,6 +31,7 @@
 #include "cogl-onscreen-template-private.h"
 #include "cogl-context-private.h"
 #include "cogl-object-private.h"
+#include "cogl1-context.h"
 
 static void _cogl_onscreen_free (CoglOnscreen *onscreen);
 

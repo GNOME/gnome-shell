@@ -50,6 +50,7 @@
 #include "cogl-renderer-private.h"
 #include "cogl-config-private.h"
 #include "cogl-private.h"
+#include "cogl1-context.h"
 
 #ifndef GL_PACK_INVERT_MESA
 #define GL_PACK_INVERT_MESA 0x8758

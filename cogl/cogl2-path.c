@@ -44,6 +44,7 @@
 #include "cogl-primitives-private.h"
 #include "cogl-private.h"
 #include "cogl-attribute-private.h"
+#include "cogl1-context.h"
 #include "tesselator/tesselator.h"
 
 #include <string.h>

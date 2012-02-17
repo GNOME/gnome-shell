@@ -47,6 +47,7 @@
 #include "cogl-onscreen-private.h"
 #include "cogl2-path.h"
 #include "cogl-attribute-private.h"
+#include "cogl1-context.h"
 
 #include <string.h>
 

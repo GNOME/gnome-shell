@@ -28,8 +28,6 @@
 #ifndef __COGL_FRAMEBUFFER_H
 #define __COGL_FRAMEBUFFER_H
 
-#include <cogl/cogl.h>
-
 #include <glib.h>
 
 #ifdef COGL_HAS_WIN32_SUPPORT
@@ -39,6 +37,15 @@
 #if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
 #include <wayland-client.h>
 #endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
+
+#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
+#include <cogl/cogl2-path.h>
+#else
+#include <cogl/cogl-path.h>
+#endif
+
+#include <cogl/cogl-pipeline.h>
+#include <cogl/cogl-indices.h>
 
 G_BEGIN_DECLS
 
@@ -79,6 +86,8 @@ G_BEGIN_DECLS
  * also catch any possible errors that may arise from your
  * configuration.
  */
+
+typedef struct _CoglFramebuffer CoglFramebuffer;
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 

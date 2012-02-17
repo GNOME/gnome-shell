@@ -39,6 +39,7 @@
 #include "cogl-attribute-private.h"
 #include "cogl-point-in-poly-private.h"
 #include "cogl-private.h"
+#include "cogl1-context.h"
 
 #include <string.h>
 #include <gmodule.h>

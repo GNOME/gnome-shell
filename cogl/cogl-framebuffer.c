@@ -42,6 +42,8 @@
 #include "cogl-pipeline-state-private.h"
 #include "cogl-matrix-private.h"
 #include "cogl-primitive-private.h"
+#include "cogl-offscreen.h"
+#include "cogl1-context.h"
 
 #ifndef GL_FRAMEBUFFER
 #define GL_FRAMEBUFFER		0x8D40

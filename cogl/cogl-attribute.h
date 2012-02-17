@@ -31,6 +31,11 @@
 #ifndef __COGL_ATTRIBUTE_H__
 #define __COGL_ATTRIBUTE_H__
 
+/* We forward declare the CoglAttribute type here to avoid some circular
+ * dependency issues with the following headers.
+ */
+typedef struct _CoglAttribute CoglAttribute;
+
 #include <cogl/cogl-attribute-buffer.h>
 #include <cogl/cogl-indices.h>
 
@@ -43,8 +48,6 @@ G_BEGIN_DECLS
  *
  * FIXME
  */
-
-typedef struct _CoglAttribute CoglAttribute;
 
 /**
  * cogl_attribute_new:

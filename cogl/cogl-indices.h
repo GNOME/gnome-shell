@@ -31,6 +31,11 @@
 #ifndef __COGL_INDICES_H__
 #define __COGL_INDICES_H__
 
+/* We forward declare the CoglIndices type here to avoid some circular
+ * dependency issues with the following headers.
+ */
+typedef struct _CoglIndices CoglIndices;
+
 #include <cogl/cogl-index-buffer.h>
 
 G_BEGIN_DECLS
@@ -93,8 +98,6 @@ G_BEGIN_DECLS
  * (cogl_get_rectangle_indices()) to get access to re-useable indices
  * for drawing quads as above.
  */
-
-typedef struct _CoglIndices CoglIndices;
 
 CoglIndices *
 cogl_indices_new (CoglContext *context,

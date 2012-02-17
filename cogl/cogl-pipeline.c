@@ -46,6 +46,7 @@
 #include "cogl-util.h"
 #include "cogl-profile.h"
 #include "cogl-depth-state-private.h"
+#include "cogl1-context.h"
 
 #include <glib.h>
 #include <glib/gprintf.h>

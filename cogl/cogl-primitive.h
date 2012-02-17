@@ -31,6 +31,11 @@
 #ifndef __COGL_PRIMITIVE_H__
 #define __COGL_PRIMITIVE_H__
 
+/* We forward declare the CoglPrimitive type here to avoid some circular
+ * dependency issues with the following headers.
+ */
+typedef struct _CoglPrimitive CoglPrimitive;
+
 #include <cogl/cogl-vertex-buffer.h> /* for CoglVerticesMode */
 #include <cogl/cogl-attribute.h>
 
@@ -43,8 +48,6 @@ G_BEGIN_DECLS
  *
  * FIXME
  */
-
-typedef struct _CoglPrimitive CoglPrimitive;
 
 /**
  * CoglVertexP2:

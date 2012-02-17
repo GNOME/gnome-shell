@@ -43,6 +43,7 @@
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-atlas.h"
+#include "cogl1-context.h"
 
 #include <stdlib.h>
 
