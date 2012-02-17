@@ -171,8 +171,10 @@ function start() {
     // and recalculate application associations, so to avoid
     // races for now we initialize it here.  It's better to
     // be predictable anyways.
-    Shell.WindowTracker.get_default();
+    let tracker = Shell.WindowTracker.get_default();
     Shell.AppUsage.get_default();
+
+    tracker.connect('startup-sequence-changed', _queueCheckWorkspaces);
 
     // The stage is always covered so Clutter doesn't need to clear it; however
     // the color is used as the default contents for the Mutter root background
@@ -286,13 +288,21 @@ function _checkWorkspaces() {
 
     for (i = 0; i < _workspaces.length; i++) {
         let lastRemoved = _workspaces[i]._lastRemovedWindow;
-        if (lastRemoved &&
-            (lastRemoved.get_window_type() == Meta.WindowType.SPLASHSCREEN ||
-             lastRemoved.get_window_type() == Meta.WindowType.DIALOG ||
-             lastRemoved.get_window_type() == Meta.WindowType.MODAL_DIALOG))
+        if ((lastRemoved &&
+             (lastRemoved.get_window_type() == Meta.WindowType.SPLASHSCREEN ||
+              lastRemoved.get_window_type() == Meta.WindowType.DIALOG ||
+              lastRemoved.get_window_type() == Meta.WindowType.MODAL_DIALOG)) ||
+            _workspaces[i]._keepAliveId)
                 emptyWorkspaces[i] = false;
         else
             emptyWorkspaces[i] = true;
+    }
+
+    let sequences = Shell.WindowTracker.get_default().get_startup_sequences();
+    for (i = 0; i < sequences.length; i++) {
+        let index = sequences[i].get_workspace();
+        if (index >= 0 && index <= global.screen.n_workspaces)
+            emptyWorkspaces[index] = false;
     }
 
     let windows = global.get_window_actors();
@@ -340,6 +350,17 @@ function _checkWorkspaces() {
 
     _checkWorkspacesId = 0;
     return false;
+}
+
+function keepWorkspaceAlive(workspace, duration) {
+    if (workspace._keepAliveId)
+        Mainloop.source_remove(workspace._keepAliveId);
+
+    workspace._keepAliveId = Mainloop.timeout_add(duration, function() {
+        workspace._keepAliveId = 0;
+        _queueCheckWorkspaces();
+        return false;
+    });
 }
 
 function _windowRemoved(workspace, window) {

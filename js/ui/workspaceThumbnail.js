@@ -25,6 +25,8 @@ const SLIDE_ANIMATION_TIME = 0.2;
 // placeholder exactly.
 const WORKSPACE_CUT_SIZE = 10;
 
+const WORKSPACE_KEEP_ALIVE_TIME = 100;
+
 const WindowClone = new Lang.Class({
     Name: 'WindowClone',
 
@@ -684,9 +686,16 @@ const ThumbnailsBox = new Lang.Class({
             // ... and bam, a workspace, good as new.
             source.metaWindow.change_workspace_by_index(newWorkspaceIndex,
                                                         true, time);
-        else if (source.shellWorkspaceLaunch)
+        else if (source.shellWorkspaceLaunch) {
             source.shellWorkspaceLaunch({ workspace: newWorkspaceIndex,
                                           timestamp: time });
+            // This new workspace will be automatically removed if the application fails
+            // to open its first window within some time, as tracked by Shell.WindowTracker.
+            // Here, we only add a very brief timeout to avoid the _immediate_ removal of the
+            // workspace while we wait for the startup sequence to load.
+            Main.keepWorkspaceAlive(global.screen.get_workspace_by_index(newWorkspaceIndex),
+                                    WORKSPACE_KEEP_ALIVE_TIME);
+        }
 
         return true;
     },

@@ -816,6 +816,12 @@ shell_startup_sequence_get_completed (ShellStartupSequence *sequence)
   return sn_startup_sequence_get_completed ((SnStartupSequence*)sequence);
 }
 
+int
+shell_startup_sequence_get_workspace (ShellStartupSequence *sequence)
+{
+  return sn_startup_sequence_get_workspace ((SnStartupSequence*)sequence);
+}
+
 /**
  * shell_startup_sequence_create_icon:
  * @sequence:
