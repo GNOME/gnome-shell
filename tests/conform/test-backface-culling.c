@@ -296,7 +296,7 @@ test_cogl_backface_culling (TestUtilsGTestFixture *fixture,
   tex = cogl_texture_new_with_size (state.width, state.height,
                                     COGL_TEXTURE_NO_SLICING,
                                     COGL_PIXEL_FORMAT_ANY); /* internal fmt */
-  state.offscreen = cogl_offscreen_new_to_texture (tex);
+  state.offscreen = COGL_FRAMEBUFFER (cogl_offscreen_new_to_texture (tex));
   state.offscreen_tex = tex;
 
   paint (&state);

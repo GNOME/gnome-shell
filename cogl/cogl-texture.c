@@ -1019,6 +1019,7 @@ get_texture_bits_via_offscreen (CoglTexture    *texture,
                                 unsigned int    dst_rowstride,
                                 CoglPixelFormat dst_format)
 {
+  CoglOffscreen *offscreen;
   CoglFramebuffer *framebuffer;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -1026,13 +1027,15 @@ get_texture_bits_via_offscreen (CoglTexture    *texture,
   if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
     return FALSE;
 
-  framebuffer = _cogl_offscreen_new_to_texture_full
+  offscreen = _cogl_offscreen_new_to_texture_full
                                       (texture,
                                        COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL,
                                        0);
 
-  if (framebuffer == NULL)
+  if (offscreen == NULL)
     return FALSE;
+
+  framebuffer = COGL_FRAMEBUFFER (offscreen);
 
   if (!cogl_framebuffer_allocate (framebuffer, NULL))
     {

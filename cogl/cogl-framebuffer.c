@@ -704,7 +704,7 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
   framebuffer->dirty_bitmasks = FALSE;
 }
 
-CoglHandle
+CoglOffscreen *
 _cogl_offscreen_new_to_texture_full (CoglTexture *texture,
                                      CoglOffscreenFlags create_flags,
                                      unsigned int level)
@@ -774,7 +774,7 @@ _cogl_offscreen_new_to_texture_full (CoglTexture *texture,
   return ret;
 }
 
-CoglHandle
+CoglOffscreen *
 cogl_offscreen_new_to_texture (CoglTexture *texture)
 {
   return _cogl_offscreen_new_to_texture_full (texture, 0, 0);

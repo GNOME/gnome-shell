@@ -87,7 +87,8 @@ test_cogl_color_mask (TestUtilsGTestFixture *fixture,
                                                  COGL_PIXEL_FORMAT_RGB_888);
 
 
-      state.fbo[i] = cogl_offscreen_new_to_texture (state.tex[i]);
+      state.fbo[i] = COGL_FRAMEBUFFER (
+        cogl_offscreen_new_to_texture (state.tex[i]));
 
       /* Clear the texture color bits */
       cogl_push_framebuffer (state.fbo[i]);

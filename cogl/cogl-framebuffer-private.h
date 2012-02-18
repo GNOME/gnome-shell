@@ -30,6 +30,7 @@
 #include "cogl-journal-private.h"
 #include "cogl-winsys-private.h"
 #include "cogl-attribute-private.h"
+#include "cogl-offscreen.h"
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include <X11/Xlib.h>
@@ -154,7 +155,7 @@ struct _CoglFramebuffer
   gboolean            clear_clip_dirty;
 };
 
-typedef struct _CoglOffscreen
+struct _CoglOffscreen
 {
   CoglFramebuffer  _parent;
   GLuint          fbo_handle;
@@ -169,9 +170,7 @@ typedef struct _CoglOffscreen
    * fb->config to configure if we want a depth or stencil buffer so
    * we can get rid of these flags */
   CoglOffscreenFlags create_flags;
-} CoglOffscreen;
-
-#define COGL_OFFSCREEN(X) ((CoglOffscreen *)(X))
+};
 
 void
 _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
@@ -280,7 +279,7 @@ _cogl_free_framebuffer_stack (GSList *stack);
  *
  * Return value: the new CoglOffscreen object.
  */
-CoglHandle
+CoglOffscreen *
 _cogl_offscreen_new_to_texture_full (CoglTexture *texture,
                                      CoglOffscreenFlags create_flags,
                                      unsigned int level);

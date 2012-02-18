@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007,2008,2009 Intel Corporation.
+ * Copyright (C) 2007,2008,2009,2012 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -41,6 +41,10 @@ G_BEGIN_DECLS
  * Cogl allows creating and operating on offscreen framebuffers.
  */
 
+typedef struct _CoglOffscreen CoglOffscreen;
+
+#define COGL_OFFSCREEN(X) ((CoglOffscreen *)X)
+
 /* Offscreen api */
 
 /**
@@ -54,50 +58,57 @@ G_BEGIN_DECLS
  * given texture. You don't need to destroy the offscreen buffer before
  * you can use the @texture again.
  *
- * Note: This does not work with sliced Cogl textures.
+ * <note>This only works with low-level #CoglTexture types such as
+ * #CoglTexture2D, #CoglTexture3D and #CoglTextureRectangle, and not
+ * with meta-texture types such as #CoglTexture2DSliced.</note>
  *
- * Return value: (transfer full): a #CoglHandle for the new offscreen
- *   buffer or %COGL_INVALID_HANDLE if it wasn't possible to create the
+ * Return value: (transfer full): a newly instantiated #CoglOffscreen
+ *   framebuffer or %NULL if it wasn't possible to create the
  *   buffer.
  */
-CoglHandle cogl_offscreen_new_to_texture (CoglTexture *texture);
+CoglOffscreen *
+cogl_offscreen_new_to_texture (CoglTexture *texture);
 
 /**
  * cogl_is_offscreen:
- * @handle: A CoglHandle for an offscreen buffer
+ * @object: A pointer to a #CoglObject
  *
- * Determines whether the given #CoglHandle references an offscreen buffer
- * object.
+ * Determines whether the given #CoglObject references an offscreen
+ * framebuffer object.
  *
- * Returns: %TRUE if the handle references an offscreen buffer,
- *   %FALSE otherwise
+ * Returns: %TRUE if @object is a #CoglOffscreen framebuffer,
+ *          %FALSE otherwise
  */
-gboolean        cogl_is_offscreen             (CoglHandle          handle);
+gboolean
+cogl_is_offscreen (void *object);
 
 #ifndef COGL_DISABLE_DEPRECATED
 
 /**
  * cogl_offscreen_ref:
- * @handle: A CoglHandle for an offscreen buffer
+ * @offscreen: A pointer to a #CoglOffscreen framebuffer
  *
- * Increments the reference count on the offscreen buffer.
+ * Increments the reference count on the @offscreen framebuffer.
  *
- * Return value: (transfer none): For convenience it returns the given CoglHandle
+ * Return value: (transfer none): For convenience it returns the
+ *                                given @offscreen
  *
- * Deprecated: 1.2: cogl_handle_ref() should be used in new code.
+ * Deprecated: 1.2: cogl_object_ref() should be used in new code.
  */
-CoglHandle      cogl_offscreen_ref            (CoglHandle          handle) G_GNUC_DEPRECATED;
+void *
+cogl_offscreen_ref (void *offscreen) G_GNUC_DEPRECATED;
 
 /**
  * cogl_offscreen_unref:
- * @handle: A CoglHandle for an offscreen buffer
+ * @offscreen: A pointer to a #CoglOffscreen framebuffer
  *
- * Decreases the reference count for the offscreen buffer and frees it when
+ * Decreases the reference count for the @offscreen buffer and frees it when
  * the count reaches 0.
  *
- * Deprecated: 1.2: cogl_handle_unref() should be used in new code.
+ * Deprecated: 1.2: cogl_object_unref() should be used in new code.
  */
-void            cogl_offscreen_unref          (CoglHandle          handle) G_GNUC_DEPRECATED;
+void
+cogl_offscreen_unref (void *offscreen) G_GNUC_DEPRECATED;
 
 #endif /* COGL_DISABLE_DEPRECATED */
 
