@@ -108,7 +108,7 @@ get_base_texture_rgba_pipeline (CoglPangoPipelineCache *cache)
       pipeline = cache->base_texture_rgba_pipeline = cogl_pipeline_new ();
 
       cogl_pipeline_set_layer_wrap_mode (pipeline, 0,
-                                         COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE);
+                                         COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
 
       if (cache->use_mipmapping)
         cogl_pipeline_set_layer_filters
