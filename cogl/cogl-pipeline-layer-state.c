@@ -1526,8 +1526,8 @@ _cogl_pipeline_get_layer_filters (CoglPipeline *pipeline,
 }
 
 CoglPipelineFilter
-_cogl_pipeline_get_layer_min_filter (CoglPipeline *pipeline,
-                                     int layer_index)
+cogl_pipeline_get_layer_min_filter (CoglPipeline *pipeline,
+                                    int layer_index)
 {
   CoglPipelineFilter min_filter;
   CoglPipelineFilter mag_filter;
@@ -1538,8 +1538,8 @@ _cogl_pipeline_get_layer_min_filter (CoglPipeline *pipeline,
 }
 
 CoglPipelineFilter
-_cogl_pipeline_get_layer_mag_filter (CoglPipeline *pipeline,
-                                     int layer_index)
+cogl_pipeline_get_layer_mag_filter (CoglPipeline *pipeline,
+                                    int layer_index)
 {
   CoglPipelineFilter min_filter;
   CoglPipelineFilter mag_filter;

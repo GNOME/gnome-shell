@@ -370,6 +370,48 @@ cogl_pipeline_set_layer_filters (CoglPipeline      *pipeline,
                                  CoglPipelineFilter mag_filter);
 
 /**
+ * cogl_pipeline_get_layer_min_filter:
+ * @pipeline: A #CoglPipeline object
+ * @layer_index: the layer number to change.
+ *
+ * Retrieves the currently set minification #CoglPipelineFilter set on
+ * the specified layer. The miniifcation filter determines how the
+ * layer should be sampled when down-scaled.
+ *
+ * The default filter is %COGL_PIPELINE_FILTER_LINEAR but this can be
+ * changed using cogl_pipeline_set_layer_filters().
+ *
+ * Return value: The minification #CoglPipelineFilter for the
+ *               specified layer.
+ * Since: 1.10
+ * Stability: unstable
+ */
+CoglPipelineFilter
+cogl_pipeline_get_layer_min_filter (CoglPipeline *pipeline,
+                                    int layer_index);
+
+/**
+ * cogl_pipeline_get_layer_mag_filter:
+ * @pipeline: A #CoglPipeline object
+ * @layer_index: the layer number to change.
+ *
+ * Retrieves the currently set magnification #CoglPipelineFilter set on
+ * the specified layer. The magnification filter determines how the
+ * layer should be sampled when up-scaled.
+ *
+ * The default filter is %COGL_PIPELINE_FILTER_LINEAR but this can be
+ * changed using cogl_pipeline_set_layer_filters().
+ *
+ * Return value: The magnification #CoglPipelineFilter for the
+ *               specified layer.
+ * Since: 1.10
+ * Stability: unstable
+ */
+CoglPipelineFilter
+cogl_pipeline_get_layer_mag_filter (CoglPipeline *pipeline,
+                                    int layer_index);
+
+/**
  * cogl_pipeline_set_layer_point_sprite_coords_enabled:
  * @pipeline: a #CoglHandle to a pipeline.
  * @layer_index: the layer number to change.
