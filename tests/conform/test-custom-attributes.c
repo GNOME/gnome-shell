@@ -182,7 +182,7 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
       { -5, -1 }
     };
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
   snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX_TRANSFORM,
                               "attribute vec2 pos;",
                               NULL);
@@ -288,7 +288,7 @@ test_cogl_custom_attributes (TestUtilsGTestFixture *fixture,
                   /* z near, far */
                   -1, 100);
 
-      state.pipeline = cogl_pipeline_new ();
+      state.pipeline = cogl_pipeline_new (state.ctx);
       snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX,
                                   "attribute vec4 color;",
                                   "cogl_color_out = color;");

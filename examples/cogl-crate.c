@@ -231,7 +231,7 @@ main (int argc, char **argv)
    * processing, fragment processing and blending geometry. When
    * drawing the geometry for the crate this pipeline says to sample a
    * single texture during fragment processing... */
-  data.crate_pipeline = cogl_pipeline_new ();
+  data.crate_pipeline = cogl_pipeline_new (ctx);
   cogl_pipeline_set_layer_texture (data.crate_pipeline, 0, data.texture);
 
   /* Since the box is made of multiple triangles that will overlap

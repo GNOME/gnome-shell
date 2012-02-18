@@ -17,6 +17,7 @@
 
 typedef struct _TestState
 {
+  CoglContext *ctx;
   CoglFramebuffer *fb;
   CoglHandle texture;
   CoglFramebuffer *offscreen;
@@ -46,7 +47,7 @@ static void
 paint_test_backface_culling (TestState *state)
 {
   int draw_num;
-  CoglPipeline *base_pipeline = cogl_pipeline_new ();
+  CoglPipeline *base_pipeline = cogl_pipeline_new (state->ctx);
   CoglColor clear_color;
 
   cogl_ortho (0, state->width, /* left, right */
@@ -285,6 +286,7 @@ test_cogl_backface_culling (TestUtilsGTestFixture *fixture,
   TestState state;
   CoglHandle tex;
 
+  state.ctx = shared_state->ctx;
   state.fb = shared_state->fb;
   state.width = cogl_framebuffer_get_width (shared_state->fb);
   state.height = cogl_framebuffer_get_height (shared_state->fb);

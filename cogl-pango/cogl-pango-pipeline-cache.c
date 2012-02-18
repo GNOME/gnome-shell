@@ -33,6 +33,8 @@
 #include <cogl/cogl.h>
 #include "cogl-pango-pipeline-cache.h"
 
+#include "cogl/cogl-context-private.h"
+
 typedef struct _CoglPangoPipelineCacheEntry CoglPangoPipelineCacheEntry;
 
 struct _CoglPangoPipelineCache
@@ -105,7 +107,9 @@ get_base_texture_rgba_pipeline (CoglPangoPipelineCache *cache)
     {
       CoglPipeline *pipeline;
 
-      pipeline = cache->base_texture_rgba_pipeline = cogl_pipeline_new ();
+      _COGL_GET_CONTEXT (ctx, NULL);
+
+      pipeline = cache->base_texture_rgba_pipeline = cogl_pipeline_new (ctx);
 
       cogl_pipeline_set_layer_wrap_mode (pipeline, 0,
                                          COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
@@ -201,8 +205,10 @@ _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
     }
   else
     {
+      _COGL_GET_CONTEXT (ctx, NULL);
+
       entry->texture = NULL;
-      entry->pipeline = cogl_pipeline_new ();
+      entry->pipeline = cogl_pipeline_new (ctx);
     }
 
   /* Add a weak reference to the pipeline so we can remove it from the

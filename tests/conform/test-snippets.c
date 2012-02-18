@@ -6,14 +6,14 @@
 
 typedef struct _TestState
 {
+  CoglContext *ctx;
   CoglFramebuffer *fb;
-  CoglContext *context;
 } TestState;
 
 typedef void (* SnippetTestFunc) (TestState *state);
 
 static CoglPipeline *
-create_texture_pipeline (void)
+create_texture_pipeline (TestState *state)
 {
   CoglPipeline *pipeline;
   CoglHandle tex;
@@ -30,7 +30,7 @@ create_texture_pipeline (void)
                                     8, /* rowstride */
                                     tex_data);
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   cogl_pipeline_set_layer_texture (pipeline, 0, tex);
 
@@ -50,7 +50,7 @@ simple_fragment_snippet (TestState *state)
   CoglSnippet *snippet;
 
   /* Simple fragment snippet */
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   cogl_pipeline_set_color4ub (pipeline, 255, 0, 0, 255);
 
@@ -76,7 +76,7 @@ simple_vertex_snippet (TestState *state)
   CoglSnippet *snippet;
 
   /* Simple vertex snippet */
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   cogl_pipeline_set_color4ub (pipeline, 255, 0, 0, 255);
 
@@ -104,7 +104,7 @@ shared_uniform (TestState *state)
 
   /* Snippets sharing a uniform across the vertex and fragment
      hooks */
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   location = cogl_pipeline_get_uniform_location (pipeline, "a_value");
   cogl_pipeline_set_uniform_1f (pipeline, location, 0.25f);
@@ -140,7 +140,7 @@ lots_snippets (TestState *state)
   int i;
 
   /* Lots of snippets on one pipeline */
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   cogl_pipeline_set_color4ub (pipeline, 0, 0, 0, 255);
 
@@ -185,7 +185,7 @@ shared_variable_pre_post (TestState *state)
 
   /* Test that the pre string can declare variables used by the post
      string */
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   cogl_pipeline_set_color4ub (pipeline, 255, 255, 255, 255);
 
@@ -223,14 +223,14 @@ test_pipeline_caching (TestState *state)
                               "   unrelated pipelines */",
                               "cogl_color_out = vec4 (0.0, 1.0, 0.0, 1.0);\n");
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
   cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_push_source (pipeline);
   cogl_rectangle (50, 0, 60, 10);
   cogl_pop_source ();
   cogl_object_unref (pipeline);
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
   cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_push_source (pipeline);
   cogl_rectangle (60, 0, 70, 10);
@@ -260,7 +260,7 @@ test_replace_string (TestState *state)
   cogl_snippet_set_post (snippet,
                          "cogl_color_out += vec4 (0.5, 0.0, 0.0, 1.0);");
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
   cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_push_source (pipeline);
   cogl_rectangle (70, 0, 80, 10);
@@ -286,7 +286,7 @@ test_texture_lookup_hook (TestState *state)
      get the green texel */
   cogl_snippet_set_pre (snippet, "cogl_tex_coord.x = 1.0 - cogl_tex_coord.x;");
 
-  pipeline = create_texture_pipeline ();
+  pipeline = create_texture_pipeline (state);
   cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
   cogl_push_source (pipeline);
   cogl_rectangle_with_texture_coords (80, 0, 90, 10,
@@ -315,7 +315,7 @@ test_multiple_samples (TestState *state)
                             "texture2D (cogl_sampler, vec2 (0.25, 0.25)) + "
                             "texture2D (cogl_sampler, vec2 (0.75, 0.25));");
 
-  pipeline = create_texture_pipeline ();
+  pipeline = create_texture_pipeline (state);
   cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
   cogl_push_source (pipeline);
   cogl_rectangle (0, 0, 10, 10);
@@ -337,7 +337,7 @@ test_replace_lookup_hook (TestState *state)
   snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP, NULL, NULL);
   cogl_snippet_set_replace (snippet, "cogl_texel = vec4 (0.0, 0.0, 1.0, 0.0);");
 
-  pipeline = create_texture_pipeline ();
+  pipeline = create_texture_pipeline (state);
   cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
   cogl_push_source (pipeline);
   cogl_rectangle_with_texture_coords (90, 0, 100, 10,
@@ -357,7 +357,7 @@ test_replace_snippet (TestState *state)
   CoglSnippet *snippet;
 
   /* Test replacing a previous snippet */
-  pipeline = create_texture_pipeline ();
+  pipeline = create_texture_pipeline (state);
 
   snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
                               NULL,
@@ -388,7 +388,7 @@ test_replace_fragment_layer (TestState *state)
   CoglSnippet *snippet;
 
   /* Test replacing the fragment layer code */
-  pipeline = create_texture_pipeline ();
+  pipeline = create_texture_pipeline (state);
 
   snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_LAYER_FRAGMENT, NULL, NULL);
   cogl_snippet_set_replace (snippet, "cogl_layer = vec4 (0.0, 0.0, 1.0, 1.0);");
@@ -420,7 +420,7 @@ test_modify_fragment_layer (TestState *state)
   CoglSnippet *snippet;
 
   /* Test modifying the fragment layer code */
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   cogl_pipeline_set_uniform_1f (pipeline,
                                 cogl_pipeline_get_uniform_location (pipeline,
@@ -450,7 +450,7 @@ test_modify_vertex_layer (TestState *state)
   CoglMatrix matrix;
 
   /* Test modifying the vertex layer code */
-  pipeline = create_texture_pipeline ();
+  pipeline = create_texture_pipeline (state);
 
   cogl_matrix_init_identity (&matrix);
   cogl_matrix_translate (&matrix, 0.0f, 1.0f, 0.0f);
@@ -479,7 +479,7 @@ test_replace_vertex_layer (TestState *state)
   CoglMatrix matrix;
 
   /* Test replacing the vertex layer code */
-  pipeline = create_texture_pipeline ();
+  pipeline = create_texture_pipeline (state);
 
   cogl_matrix_init_identity (&matrix);
   cogl_matrix_translate (&matrix, 0.0f, 1.0f, 0.0f);
@@ -514,7 +514,7 @@ test_vertex_transform_hook (TestState *state)
 
   cogl_matrix_init_identity (&identity_matrix);
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   cogl_pipeline_set_color4ub (pipeline, 255, 0, 255, 255);
 
@@ -564,7 +564,7 @@ test_snippet_order (TestState *state)
      sections in the same order as they were added. Therefore the r
      component should be taken from the the second snippet and the g
      component from the first */
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   cogl_pipeline_set_color4ub (pipeline, 0, 0, 0, 255);
 
@@ -609,10 +609,10 @@ test_naming_texture_units (TestState *state)
                             "texture2D (cogl_sampler100, vec2 (0.0, 0.0)) + "
                             "texture2D (cogl_sampler200, vec2 (0.0, 0.0));");
 
-  tex1 = test_utils_create_color_texture (state->context, 0xff0000ff);
-  tex2 = test_utils_create_color_texture (state->context, 0x00ff00ff);
+  tex1 = test_utils_create_color_texture (state->ctx, 0xff0000ff);
+  tex2 = test_utils_create_color_texture (state->ctx, 0x00ff00ff);
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   cogl_pipeline_set_layer_texture (pipeline, 100, tex1);
   cogl_pipeline_set_layer_texture (pipeline, 200, tex2);
@@ -722,8 +722,8 @@ test_cogl_snippets (TestUtilsGTestFixture *fixture,
     {
       TestState state;
 
+      state.ctx = shared_state->ctx;
       state.fb = shared_state->fb;
-      state.context = shared_state->ctx;
 
       cogl_ortho (/* left, right */
                   0, cogl_framebuffer_get_width (shared_state->fb),

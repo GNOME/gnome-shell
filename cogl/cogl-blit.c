@@ -81,7 +81,7 @@ _cogl_blit_texture_render_begin (CoglBlitData *data)
      program */
   if (ctx->blit_texture_pipeline == NULL)
     {
-      ctx->blit_texture_pipeline = cogl_pipeline_new ();
+      ctx->blit_texture_pipeline = cogl_pipeline_new (ctx);
 
       cogl_pipeline_set_layer_filters (ctx->blit_texture_pipeline, 0,
                                        COGL_PIPELINE_FILTER_NEAREST,

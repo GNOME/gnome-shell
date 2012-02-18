@@ -13,7 +13,7 @@
 
 typedef struct _TestState
 {
-  CoglContext *context;
+  CoglContext *ctx;
   int fb_width;
   int fb_height;
   CoglFramebuffer *fb;
@@ -75,8 +75,8 @@ create_texture_3d (CoglContext *context)
 static void
 draw_frame (TestState *state)
 {
-  CoglTexture *tex = COGL_TEXTURE (create_texture_3d (state->context));
-  CoglPipeline *pipeline = cogl_pipeline_new ();
+  CoglTexture *tex = COGL_TEXTURE (create_texture_3d (state->ctx));
+  CoglPipeline *pipeline = cogl_pipeline_new (state->ctx);
   typedef struct { float x, y, s, t, r; } Vert;
   CoglPrimitive *primitive;
   CoglAttributeBuffer *attribute_buffer;
@@ -135,7 +135,7 @@ draw_frame (TestState *state)
       v++;
     }
 
-  attribute_buffer = cogl_attribute_buffer_new (state->context,
+  attribute_buffer = cogl_attribute_buffer_new (state->ctx,
                                                 4 * TEX_DEPTH * sizeof (Vert),
                                                 verts);
   attributes[0] = cogl_attribute_new (attribute_buffer,
@@ -156,7 +156,7 @@ draw_frame (TestState *state)
                                                   2 /* n_attributes */);
 
   cogl_primitive_set_indices (primitive,
-                              cogl_get_rectangle_indices (state->context,
+                              cogl_get_rectangle_indices (state->ctx,
                                                           TEX_DEPTH),
                               6 * TEX_DEPTH);
 
@@ -211,13 +211,13 @@ test_multi_texture (TestState *state)
      sampled with TEXTURE_? just to pick up a specific bug that was
      happening with the ARBfp fragend */
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   tex_data[0] = 0xff;
   tex_data[1] = 0x00;
   tex_data[2] = 0x00;
   tex_data[3] = 0xff;
-  tex_2d = cogl_texture_2d_new_from_data (state->context,
+  tex_2d = cogl_texture_2d_new_from_data (state->ctx,
                                           1, 1, /* width/height */
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
@@ -230,7 +230,7 @@ test_multi_texture (TestState *state)
   tex_data[1] = 0xff;
   tex_data[2] = 0x00;
   tex_data[3] = 0xff;
-  tex_3d = cogl_texture_3d_new_from_data (state->context,
+  tex_3d = cogl_texture_3d_new_from_data (state->ctx,
                                           1, 1, 1, /* width/height/depth */
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
@@ -270,7 +270,7 @@ test_cogl_texture_3d (TestUtilsGTestFixture *fixture,
     {
       TestState state;
 
-      state.context = shared_state->ctx;
+      state.ctx = shared_state->ctx;
       state.fb_width = cogl_framebuffer_get_width (shared_state->fb);
       state.fb_height = cogl_framebuffer_get_height (shared_state->fb);
       state.fb = shared_state->fb;

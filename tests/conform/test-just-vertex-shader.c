@@ -6,7 +6,7 @@
 
 typedef struct _TestState
 {
-  int dummy;
+  CoglContext *ctx;
 } TestState;
 
 static CoglHandle
@@ -97,7 +97,7 @@ paint_legacy (TestState *state)
 static void
 paint (TestState *state)
 {
-  CoglPipeline *pipeline = cogl_pipeline_new ();
+  CoglPipeline *pipeline = cogl_pipeline_new (state->ctx);
   CoglHandle tex;
   CoglColor color;
   GError *error = NULL;
@@ -180,6 +180,8 @@ test_cogl_just_vertex_shader (TestUtilsGTestFixture *fixture,
 {
   TestUtilsSharedState *shared_state = data;
   TestState state;
+
+  state.ctx = shared_state->ctx;
 
   cogl_ortho (0, cogl_framebuffer_get_width (shared_state->fb), /* left, right */
               cogl_framebuffer_get_height (shared_state->fb), 0, /* bottom, top */

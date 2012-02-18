@@ -6,7 +6,7 @@
 
 typedef struct _TestState
 {
-  CoglContext *context;
+  CoglContext *ctx;
   int fb_width;
   int fb_height;
   CoglFramebuffer *fb;
@@ -178,7 +178,7 @@ test_paint (TestState *state)
                                     COGL_PIXEL_FORMAT_ANY,
                                     6, /* rowstride */
                                     tex_data);
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
   cogl_pipeline_set_color4ub (pipeline,
                               (PRIM_COLOR >> 24) & 0xff,
                               (PRIM_COLOR >> 16) & 0xff,
@@ -192,7 +192,7 @@ test_paint (TestState *state)
       CoglPrimitive *prim;
       guint32 expected_color = PRIM_COLOR;
 
-      prim = test_prim_funcs[i] (state->context, &expected_color);
+      prim = test_prim_funcs[i] (state->ctx, &expected_color);
 
       cogl_push_matrix ();
       cogl_translate (i * 10, 0, 0);
@@ -236,7 +236,7 @@ test_copy (TestState *state)
 {
   static const guint16 indices_data[2] = { 1, 2 };
   CoglAttributeBuffer *buffer =
-    cogl_attribute_buffer_new (state->context, 100, NULL);
+    cogl_attribute_buffer_new (state->ctx, 100, NULL);
   CoglAttribute *attributes[N_ATTRIBS];
   CoglAttribute *attributes_a[N_ATTRIBS], *attributes_b[N_ATTRIBS];
   CoglAttribute **p;
@@ -261,7 +261,7 @@ test_copy (TestState *state)
                                                attributes,
                                                N_ATTRIBS);
 
-  indices = cogl_indices_new (state->context,
+  indices = cogl_indices_new (state->ctx,
                               COGL_INDICES_TYPE_UNSIGNED_SHORT,
                               indices_data,
                               2 /* n_indices */);
@@ -320,7 +320,7 @@ test_cogl_primitive (TestUtilsGTestFixture *fixture,
   TestUtilsSharedState *shared_state = data;
   TestState state;
 
-  state.context = shared_state->ctx;
+  state.ctx = shared_state->ctx;
   state.fb_width = cogl_framebuffer_get_width (shared_state->fb);
   state.fb_height = cogl_framebuffer_get_height (shared_state->fb);
   state.fb = shared_state->fb;

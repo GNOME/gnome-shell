@@ -8,6 +8,8 @@
 
 typedef struct _TestState
 {
+  CoglContext *ctx;
+
   CoglPipeline *pipeline_red;
   CoglPipeline *pipeline_green;
   CoglPipeline *pipeline_blue;
@@ -84,13 +86,13 @@ long_source[] =
   "}\n";
 
 static CoglPipeline *
-create_pipeline_for_shader (const char *shader_source)
+create_pipeline_for_shader (TestState *state, const char *shader_source)
 {
   CoglPipeline *pipeline;
   CoglHandle shader;
   CoglHandle program;
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
   cogl_shader_source (shader, shader_source);
@@ -111,7 +113,7 @@ init_state (TestState *state)
 {
   int uniform_location;
 
-  state->pipeline_red = create_pipeline_for_shader (color_source);
+  state->pipeline_red = create_pipeline_for_shader (state, color_source);
 
   uniform_location =
     cogl_pipeline_get_uniform_location (state->pipeline_red, "red");
@@ -133,9 +135,9 @@ init_state (TestState *state)
     cogl_pipeline_get_uniform_location (state->pipeline_blue, "blue");
   cogl_pipeline_set_uniform_1f (state->pipeline_blue, uniform_location, 1.0f);
 
-  state->matrix_pipeline = create_pipeline_for_shader (matrix_source);
-  state->vector_pipeline = create_pipeline_for_shader (vector_source);
-  state->int_pipeline = create_pipeline_for_shader (int_source);
+  state->matrix_pipeline = create_pipeline_for_shader (state, matrix_source);
+  state->vector_pipeline = create_pipeline_for_shader (state, vector_source);
+  state->int_pipeline = create_pipeline_for_shader (state, int_source);
 
   state->long_pipeline = NULL;
 }
@@ -145,7 +147,7 @@ init_long_pipeline_state (TestState *state)
 {
   int i;
 
-  state->long_pipeline = create_pipeline_for_shader (long_source);
+  state->long_pipeline = create_pipeline_for_shader (state, long_source);
 
   /* This tries to lookup a large number of uniform names to make sure
      that the bitmask of overriden uniforms flows over the size of a
@@ -394,6 +396,8 @@ test_cogl_pipeline_uniforms (TestUtilsGTestFixture *fixture,
   if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
     {
       TestState state;
+
+      state.ctx = shared_state->ctx;
 
       init_state (&state);
 

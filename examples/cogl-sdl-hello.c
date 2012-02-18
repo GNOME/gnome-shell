@@ -150,7 +150,7 @@ main (int argc, char **argv)
 
   data.triangle = cogl_primitive_new_p2c4 (ctx, COGL_VERTICES_MODE_TRIANGLES,
                                            3, triangle_vertices);
-  data.pipeline = cogl_pipeline_new ();
+  data.pipeline = cogl_pipeline_new (ctx);
   while (!data.quit)
     {
       CoglPollFD *poll_fds;

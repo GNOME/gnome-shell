@@ -46,7 +46,7 @@ create_pipeline (TestState *state,
 {
   CoglPipeline *pipeline;
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
   cogl_pipeline_set_layer_texture (pipeline, 0, state->texture);
   cogl_pipeline_set_layer_filters (pipeline, 0,
                                    COGL_PIPELINE_FILTER_NEAREST,

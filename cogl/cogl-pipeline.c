@@ -422,13 +422,11 @@ _cogl_pipeline_weak_copy (CoglPipeline *pipeline,
 }
 
 CoglPipeline *
-cogl_pipeline_new (void)
+cogl_pipeline_new (CoglContext *context)
 {
   CoglPipeline *new;
 
-  _COGL_GET_CONTEXT (ctx, NULL);
-
-  new = cogl_pipeline_copy (ctx->default_pipeline);
+  new = cogl_pipeline_copy (context->default_pipeline);
   _cogl_pipeline_set_static_breadcrumb (new, "new");
   return new;
 }

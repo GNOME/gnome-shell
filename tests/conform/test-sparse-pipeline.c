@@ -5,7 +5,7 @@
 
 typedef struct _TestState
 {
-  CoglContext *context;
+  CoglContext *ctx;
   int fb_width;
   int fb_height;
   CoglFramebuffer *fb;
@@ -24,10 +24,10 @@ test_sparse_layer_combine (TestState *state)
      creating a pipeline with very large layer numbers. This should
      end up being mapped to much smaller unit numbers */
 
-  tex1 = test_utils_create_color_texture (state->context, 0xff0000ff);
-  tex2 = test_utils_create_color_texture (state->context, 0x00ff00ff);
+  tex1 = test_utils_create_color_texture (state->ctx, 0xff0000ff);
+  tex2 = test_utils_create_color_texture (state->ctx, 0x00ff00ff);
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   cogl_pipeline_set_layer_texture (pipeline, 50, tex1);
   cogl_pipeline_set_layer_texture (pipeline, 100, tex2);
@@ -53,7 +53,7 @@ test_cogl_sparse_pipeline (TestUtilsGTestFixture *fixture,
   TestUtilsSharedState *shared_state = data;
   TestState state;
 
-  state.context = shared_state->ctx;
+  state.ctx = shared_state->ctx;
   state.fb_width = cogl_framebuffer_get_width (shared_state->fb);
   state.fb_height = cogl_framebuffer_get_height (shared_state->fb);
   state.fb = shared_state->fb;

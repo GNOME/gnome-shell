@@ -754,7 +754,7 @@ main (int argc, char **argv)
   compositor.triangle = cogl_primitive_new_p2c4 (compositor.cogl_context,
                                                  COGL_VERTICES_MODE_TRIANGLES,
                                                  3, triangle_vertices);
-  compositor.triangle_pipeline = cogl_pipeline_new ();
+  compositor.triangle_pipeline = cogl_pipeline_new (compositor.cogl_context);
 
   g_timeout_add (16, paint_cb, &compositor);
 

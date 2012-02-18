@@ -6,6 +6,7 @@
 
 typedef struct _TestState
 {
+  CoglContext *ctx;
   int width;
   int height;
 } TestState;
@@ -81,7 +82,7 @@ paint (TestState *state)
                                      6,
                                      data1);
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
 
   /* Set the two textures as layers */
   cogl_pipeline_set_layer_texture (pipeline, 0, tex0);
@@ -128,6 +129,8 @@ test_cogl_pipeline_user_matrix (TestUtilsGTestFixture *fixture,
 {
   TestUtilsSharedState *shared_state = data;
   TestState state;
+
+  state.ctx = shared_state->ctx;
 
   state.width = cogl_framebuffer_get_width (shared_state->fb);
   state.height = cogl_framebuffer_get_height (shared_state->fb);

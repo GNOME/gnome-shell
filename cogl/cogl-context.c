@@ -269,9 +269,9 @@ cogl_context_new (CoglDisplay *display,
 
   context->legacy_fog_state.enabled = FALSE;
 
-  context->opaque_color_pipeline = cogl_pipeline_new ();
-  context->blended_color_pipeline = cogl_pipeline_new ();
-  context->texture_pipeline = cogl_pipeline_new ();
+  context->opaque_color_pipeline = cogl_pipeline_new (context);
+  context->blended_color_pipeline = cogl_pipeline_new (context);
+  context->texture_pipeline = cogl_pipeline_new (context);
   context->codegen_header_buffer = g_string_new ("");
   context->codegen_source_buffer = g_string_new ("");
   context->source_stack = NULL;
@@ -350,7 +350,7 @@ cogl_context_new (CoglDisplay *display,
     }
 
   context->current_path = cogl2_path_new ();
-  context->stencil_pipeline = cogl_pipeline_new ();
+  context->stencil_pipeline = cogl_pipeline_new (context);
 
   context->in_begin_gl_block = FALSE;
 

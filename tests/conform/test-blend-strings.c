@@ -21,7 +21,7 @@
 
 typedef struct _TestState
 {
-  int dummy;
+  CoglContext *ctx;
 } TestState;
 
 
@@ -60,7 +60,7 @@ test_blend (TestState *state,
   int x_off;
 
   /* First write out the destination color without any blending... */
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
   cogl_pipeline_set_color4ub (pipeline, Dr, Dg, Db, Da);
   cogl_pipeline_set_blend (pipeline, "RGBA = ADD (SRC_COLOR, 0)", NULL);
   cogl_set_source (pipeline);
@@ -74,7 +74,7 @@ test_blend (TestState *state,
    * Now blend a rectangle over our well defined destination:
    */
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
   cogl_pipeline_set_color4ub (pipeline, Sr, Sg, Sb, Sa);
 
   status = cogl_pipeline_set_blend (pipeline, blend_string, &error);
@@ -413,6 +413,8 @@ test_cogl_blend_strings (TestUtilsGTestFixture *fixture,
 {
   TestUtilsSharedState *shared_state = data;
   TestState state;
+
+  state.ctx = shared_state->ctx;
 
   cogl_ortho (0, cogl_framebuffer_get_width (shared_state->fb), /* left, right */
               cogl_framebuffer_get_height (shared_state->fb), 0, /* bottom, top */

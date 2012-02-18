@@ -914,7 +914,7 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
 
   if (ctx->texture_download_pipeline == NULL)
     {
-      ctx->texture_download_pipeline = cogl_pipeline_new ();
+      ctx->texture_download_pipeline = cogl_pipeline_new (ctx);
       cogl_pipeline_set_blend (ctx->texture_download_pipeline,
                                "RGBA = ADD (SRC_COLOR, 0)",
                                NULL);

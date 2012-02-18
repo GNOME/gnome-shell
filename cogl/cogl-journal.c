@@ -358,7 +358,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
       _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
 
       if (outline == NULL)
-        outline = cogl_pipeline_new ();
+        outline = cogl_pipeline_new (ctxt);
 
       /* The least significant three bits represent the three
          components so that the order of colours goes red, green,

@@ -18,7 +18,7 @@
 
 typedef struct _TestState
 {
-  int dummy;
+  CoglContext *ctx;
 } TestState;
 
 typedef struct
@@ -53,7 +53,7 @@ draw_rectangle (TestState *state,
                               rect_state->range_near,
                               rect_state->range_far);
 
-  pipeline = cogl_pipeline_new ();
+  pipeline = cogl_pipeline_new (state->ctx);
   if (!cogl_pipeline_set_depth_state (pipeline, &depth_state, NULL))
     {
       cogl_object_unref (pipeline);
@@ -234,6 +234,8 @@ test_cogl_depth_test (TestUtilsGTestFixture *fixture,
 {
   TestUtilsSharedState *shared_state = data;
   TestState state;
+
+  state.ctx = shared_state->ctx;
 
   cogl_ortho (0, cogl_framebuffer_get_width (shared_state->fb), /* left, right */
               cogl_framebuffer_get_height (shared_state->fb), 0, /* bottom, top */

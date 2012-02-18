@@ -32,7 +32,7 @@ main (int argc, char **argv)
     triangle = cogl_primitive_new_p2c4 (ctx, COGL_VERTICES_MODE_TRIANGLES,
                                         3, triangle_vertices);
 
-    pipeline = cogl_pipeline_new ();
+    pipeline = cogl_pipeline_new (ctx);
 
     for (;;) {
         CoglPollFD *poll_fds;

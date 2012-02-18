@@ -28,7 +28,13 @@
 #ifndef __COGL_PIPELINE_H__
 #define __COGL_PIPELINE_H__
 
+/* We forward declare the CoglPipeline type here to avoid some circular
+ * dependency issues with the following headers.
+ */
+typedef struct _CoglPipeline CoglPipeline;
+
 #include <cogl/cogl-types.h>
+#include <cogl/cogl-context.h>
 #include <cogl/cogl-snippet.h>
 
 G_BEGIN_DECLS
@@ -48,12 +54,12 @@ G_BEGIN_DECLS
  * performs fragment processing including depth testing and texture
  * mapping. Finally it blends the result with the framebuffer.
  */
-typedef struct _CoglPipeline	      CoglPipeline;
 
 #define COGL_PIPELINE(OBJECT) ((CoglPipeline *)OBJECT)
 
 /**
  * cogl_pipeline_new:
+ * @context: a #CoglContext
  *
  * Allocates and initializes a default simple pipeline that will color
  * a primitive white.
@@ -64,7 +70,7 @@ typedef struct _CoglPipeline	      CoglPipeline;
  * Stability: Unstable
  */
 CoglPipeline *
-cogl_pipeline_new (void);
+cogl_pipeline_new (CoglContext *context);
 
 /**
  * cogl_pipeline_copy:
