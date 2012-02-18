@@ -10,6 +10,7 @@ const Signals = imports.signals;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 const Mainloop = imports.mainloop;
+const Atk = imports.gi.Atk;
 
 const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
@@ -148,7 +149,9 @@ const ViewByCategories = new Lang.Class({
         this._categories = [];
         this._apps = null;
 
-        this._categoryBox = new St.BoxLayout({ vertical: true, reactive: true });
+        this._categoryBox = new St.BoxLayout({ vertical: true,
+                                               reactive: true,
+                                               accessible_role: Atk.Role.LIST });
         this._categoryScroll = new St.ScrollView({ x_fill: false,
                                                    y_fill: false,
                                                    style_class: 'vfade' });
@@ -214,7 +217,8 @@ const ViewByCategories = new Lang.Class({
         let button = new St.Button({ label: GLib.markup_escape_text (name, -1),
                                      style_class: 'app-filter',
                                      x_align: St.Align.START,
-                                     can_focus: true });
+                                     can_focus: true ,
+                                     accessible_role: Atk.Role.LIST_ITEM });
         button.connect('clicked', Lang.bind(this, function() {
             this._selectCategory(index);
         }));
