@@ -41,33 +41,38 @@
  */
 #define _COGL_SUPPORTS_GTYPE_INTEGRATION
 
+/*
+ * API common to the 1.x and 2.0 api...
+ */
+
 #include <cogl/cogl-defines.h>
 
 #include <cogl/cogl-object.h>
 #include <cogl/cogl1-context.h>
 #include <cogl/cogl-bitmap.h>
 #include <cogl/cogl-color.h>
-#include <cogl/cogl-fixed.h>
-#include <cogl/cogl-material-compat.h>
 #include <cogl/cogl-matrix.h>
 #include <cogl/cogl-offscreen.h>
 #include <cogl/cogl-primitives.h>
-#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
-#include <cogl/cogl2-path.h>
-#include <cogl/cogl2-clip-state.h>
-#else
-#include <cogl/cogl-path.h>
-#include <cogl/cogl-clip-state.h>
-#endif
-#include <cogl/cogl-shader.h>
 #include <cogl/cogl-texture.h>
 #include <cogl/cogl-types.h>
+
+/*
+ * 1.x only api...
+ */
+#ifndef COGL_ENABLE_EXPERIMENTAL_2_0_API
+#include <cogl/cogl-path.h>
+#include <cogl/cogl-clip-state.h>
 #include <cogl/cogl-vertex-buffer.h>
-
 #include <cogl/cogl-enum-types.h>
+#include <cogl/cogl-fixed.h>
+#include <cogl/cogl-material-compat.h>
+#include <cogl/cogl-shader.h>
+#endif
 
-#include <cogl/cogl-deprecated.h>
-
+/*
+ * 2.0 api that's compatible with the 1.x api...
+ */
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
 #include <cogl/cogl-swap-chain.h>
 #include <cogl/cogl-renderer.h>
@@ -113,6 +118,19 @@
  * code has been migrated down into Cogl! */
 #include <cogl/cogl-clutter.h>
 #endif
+
+/*
+ * 2.0 only api...
+ */
+#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
+#include <cogl/cogl2-path.h>
+#include <cogl/cogl2-clip-state.h>
+#endif
+
+/*
+ * API deprecations
+ */
+#include <cogl/cogl-deprecated.h>
 
 /**
  * SECTION:cogl
