@@ -1,6 +1,5 @@
 /*** BEGIN file-header ***/
 #include "cogl-enum-types.h"
-#include "cogl.h"
 /*** END file-header ***/
 
 /*** BEGIN file-production ***/

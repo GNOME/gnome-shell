@@ -28,9 +28,9 @@
 #include "config.h"
 #endif
 
-#include <cogl.h>
 #include <cogl-util.h>
 #include <cogl-euler.h>
+#include <cogl-matrix.h>
 
 #include <math.h>
 #include <string.h>

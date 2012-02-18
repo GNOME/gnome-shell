@@ -36,6 +36,8 @@
 #include "cogl-texture-pixmap-x11-private.h"
 #endif
 
+#include "cogl-poll.h"
+
 GQuark
 _cogl_winsys_error_quark (void);
 

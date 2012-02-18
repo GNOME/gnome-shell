@@ -26,11 +26,11 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-private.h"
 #include "cogl-util.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-3d-private.h"
+#include "cogl-texture-3d.h"
 #include "cogl-texture-driver.h"
 #include "cogl-context-private.h"
 #include "cogl-handle.h"

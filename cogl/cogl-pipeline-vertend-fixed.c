@@ -36,7 +36,6 @@
 
 #ifdef COGL_PIPELINE_VERTEND_FIXED
 
-#include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-handle.h"

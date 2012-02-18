@@ -28,7 +28,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-debug.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
@@ -44,6 +43,7 @@
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-atlas.h"
 #include "cogl1-context.h"
+#include "cogl-sub-texture.h"
 
 #include <stdlib.h>
 

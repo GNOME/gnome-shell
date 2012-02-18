@@ -27,7 +27,6 @@
 #ifndef __COGL_SHADER_BOILERPLATE_H
 #define __COGL_SHADER_BOILERPLATE_H
 
-#include "cogl.h"
 
 #define _COGL_COMMON_SHADER_BOILERPLATE_GL \
   "#define COGL_VERSION 100\n" \

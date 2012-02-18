@@ -30,7 +30,6 @@
 
 #include <string.h>
 
-#include "cogl.h"
 #include "cogl-private.h"
 #include "cogl-object.h"
 #include "cogl-internal.h"

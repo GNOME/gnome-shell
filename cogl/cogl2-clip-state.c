@@ -25,7 +25,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-clip-state-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-journal-private.h"

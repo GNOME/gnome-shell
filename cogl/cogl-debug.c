@@ -28,7 +28,6 @@
 #include <stdlib.h>
 #include <glib/gi18n-lib.h>
 
-#include "cogl.h"
 #include "cogl-private.h"
 #include "cogl-debug.h"
 

@@ -35,10 +35,10 @@
 #include "cogl-context-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-opengl-private.h"
+#include "cogl-offscreen.h"
 
 #ifdef COGL_PIPELINE_PROGEND_GLSL
 
-#include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-handle.h"

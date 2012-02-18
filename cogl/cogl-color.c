@@ -27,7 +27,6 @@
 
 #include <string.h>
 
-#include "cogl.h"
 #include "cogl-util.h"
 #include "cogl-color.h"
 #include "cogl-fixed.h"

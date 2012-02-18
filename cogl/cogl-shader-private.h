@@ -25,6 +25,7 @@
 #define __COGL_SHADER_H
 
 #include "cogl-handle.h"
+#include "cogl-shader.h"
 
 typedef struct _CoglShader CoglShader;
 

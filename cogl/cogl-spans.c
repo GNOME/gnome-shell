@@ -27,7 +27,6 @@
 
 #include "math.h"
 
-#include "cogl.h"
 #include "cogl-util.h"
 #include "cogl-internal.h"
 #include "cogl-spans.h"

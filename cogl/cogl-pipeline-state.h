@@ -30,6 +30,7 @@
 
 #include <cogl/cogl-pipeline.h>
 #include <cogl/cogl-color.h>
+#include <cogl/cogl-depth-state.h>
 #include <glib.h>
 
 G_BEGIN_DECLS

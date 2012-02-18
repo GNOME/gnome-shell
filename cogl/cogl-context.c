@@ -25,7 +25,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-object.h"
 #include "cogl-internal.h"
 #include "cogl-private.h"

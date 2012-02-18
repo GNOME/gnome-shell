@@ -26,7 +26,7 @@
 
 #define __COGL_H_INSIDE__
 
-#include <cogl/cogl.h>
+#include <cogl/cogl-types.h>
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 

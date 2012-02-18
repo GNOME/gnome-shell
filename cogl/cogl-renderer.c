@@ -31,7 +31,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "cogl.h"
 #include "cogl-util.h"
 #include "cogl-internal.h"
 #include "cogl-private.h"

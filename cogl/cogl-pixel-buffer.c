@@ -38,7 +38,6 @@
 #include <string.h>
 #include <glib.h>
 
-#include "cogl.h"
 #include "cogl-private.h"
 #include "cogl-util.h"
 #include "cogl-context-private.h"

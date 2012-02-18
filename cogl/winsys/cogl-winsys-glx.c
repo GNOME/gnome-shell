@@ -28,8 +28,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
-
 #include "cogl-util.h"
 #include "cogl-winsys-private.h"
 #include "cogl-feature-private.h"

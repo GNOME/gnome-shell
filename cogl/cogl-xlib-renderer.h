@@ -28,9 +28,11 @@
 #ifndef __COGL_XLIB_RENDERER_H__
 #define __COGL_XLIB_RENDERER_H__
 
-#include <cogl/cogl.h>
-
 #include <X11/Xlib.h>
+#include <glib.h>
+
+#define __COGL_H_INSIDE__
+#include <cogl/cogl-renderer.h>
 
 G_BEGIN_DECLS
 

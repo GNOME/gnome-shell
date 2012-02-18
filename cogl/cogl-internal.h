@@ -24,8 +24,6 @@
 #ifndef __COGL_INTERNAL_H
 #define __COGL_INTERNAL_H
 
-#include "cogl.h"
-#include "cogl-matrix-stack.h"
 #include "cogl-bitmask.h"
 
 #ifdef COGL_HAS_XLIB_SUPPORT

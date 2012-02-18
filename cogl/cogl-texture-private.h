@@ -28,6 +28,7 @@
 #include "cogl-handle.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-spans.h"
+#include "cogl-meta-texture.h"
 
 typedef struct _CoglTextureVtable     CoglTextureVtable;
 

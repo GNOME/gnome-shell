@@ -28,10 +28,10 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-object.h"
 
 #include "cogl-swap-chain-private.h"
+#include "cogl-swap-chain.h"
 
 static void _cogl_swap_chain_free (CoglSwapChain *swap_chain);
 

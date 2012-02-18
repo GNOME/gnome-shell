@@ -29,12 +29,12 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-context-private.h"
 #include "cogl-internal.h"
 #include "cogl-matrix-stack.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-object-private.h"
+#include "cogl-offscreen.h"
 
 typedef struct {
   CoglMatrix matrix;

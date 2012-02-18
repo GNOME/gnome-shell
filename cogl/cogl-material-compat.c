@@ -26,7 +26,6 @@
 #include "config.h"
 #endif
 
-#include <cogl.h>
 #include <cogl-material-compat.h>
 #include <cogl-pipeline.h>
 #include <cogl-pipeline-private.h>

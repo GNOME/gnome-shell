@@ -26,7 +26,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-context-private.h"
 
 #include <gmodule.h>

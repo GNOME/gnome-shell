@@ -28,7 +28,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-object.h"
 
 #include "cogl-framebuffer-private.h"

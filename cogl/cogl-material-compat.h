@@ -28,11 +28,11 @@
 #ifndef __COGL_MATERIAL_H__
 #define __COGL_MATERIAL_H__
 
-G_BEGIN_DECLS
-
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-matrix.h>
 #include <cogl/cogl-depth-state.h>
+
+G_BEGIN_DECLS
 
 /**
  * SECTION:cogl-material

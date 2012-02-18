@@ -29,14 +29,13 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
-
 #include "cogl-debug.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-context-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-offscreen.h"
 
 /* This is needed to set the color attribute on GLES2 */
 #ifdef HAVE_COGL_GLES2

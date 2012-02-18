@@ -26,6 +26,7 @@
 
 #include "cogl-pipeline-private.h"
 #include "cogl-texture-private.h"
+#include "cogl-texture-rectangle.h"
 
 struct _CoglTextureRectangle
 {

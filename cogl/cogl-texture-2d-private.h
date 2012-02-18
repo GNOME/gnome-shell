@@ -27,6 +27,7 @@
 #include "cogl-handle.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-texture-private.h"
+#include "cogl-texture-2d.h"
 
 struct _CoglTexture2D
 {

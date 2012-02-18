@@ -28,8 +28,6 @@
 #ifndef __COGL_PIPELINE_OPENGL_PRIVATE_H
 #define __COGL_PIPELINE_OPENGL_PRIVATE_H
 
-#include "cogl.h"
-
 #include "cogl-pipeline-private.h"
 #include "cogl-matrix-stack.h"
 

@@ -25,7 +25,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-private.h"
 #include "cogl-bitmap-private.h"
 

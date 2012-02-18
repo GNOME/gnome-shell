@@ -96,7 +96,6 @@
 #include <string.h>
 #include <glib.h>
 
-#include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context-private.h"

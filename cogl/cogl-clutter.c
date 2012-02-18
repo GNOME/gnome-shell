@@ -30,7 +30,6 @@
 
 #include <glib.h>
 
-#include "cogl.h"
 #include "cogl-util.h"
 #include "cogl-types.h"
 #include "cogl-private.h"
@@ -42,6 +41,7 @@
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include "cogl-clutter-xlib.h"
 #endif
+#include "cogl-clutter.h"
 
 gboolean
 cogl_clutter_check_extension (const char *name, const char *ext)

@@ -31,7 +31,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-bitmap.h"
@@ -53,6 +52,7 @@
 #include "cogl-primitives.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl1-context.h"
+#include "cogl-sub-texture.h"
 
 #include <string.h>
 #include <stdlib.h>

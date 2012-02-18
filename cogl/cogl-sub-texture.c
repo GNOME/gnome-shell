@@ -28,15 +28,16 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-texture-private.h"
 #include "cogl-sub-texture-private.h"
+#include "cogl-sub-texture.h"
 #include "cogl-context-private.h"
 #include "cogl-object.h"
 #include "cogl-texture-driver.h"
 #include "cogl-texture-rectangle-private.h"
+#include "cogl-texture-2d.h"
 
 #include <string.h>
 #include <math.h>

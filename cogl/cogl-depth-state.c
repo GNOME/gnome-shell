@@ -27,9 +27,9 @@
 #include "config.h"
 #endif
 
-#include <cogl/cogl.h>
 #include "cogl-util.h"
 #include "cogl-depth-state-private.h"
+#include "cogl-depth-state.h"
 
 void
 cogl_depth_state_init (CoglDepthState *state)

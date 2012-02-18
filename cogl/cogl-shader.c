@@ -25,7 +25,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-shader-private.h"
 #include "cogl-shader-boilerplate.h"
 #include "cogl-internal.h"

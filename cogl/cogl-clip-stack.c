@@ -30,7 +30,6 @@
 
 #include <glib.h>
 
-#include "cogl.h"
 #include "cogl-clip-stack.h"
 #include "cogl-primitives.h"
 #include "cogl-context-private.h"
@@ -46,6 +45,7 @@
 #include "cogl-attribute-private.h"
 #include "cogl-primitive-private.h"
 #include "cogl1-context.h"
+#include "cogl-offscreen.h"
 
 #ifndef GL_CLIP_PLANE0
 #define GL_CLIP_PLANE0 0x3000

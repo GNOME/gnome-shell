@@ -24,8 +24,6 @@
 #ifndef __COGL_XLIB_PRIVATE_H
 #define __COGL_XLIB_PRIVATE_H
 
-#include "cogl/cogl.h"
-
 #include <X11/Xlib.h>
 
 typedef struct _CoglXlibTrapState CoglXlibTrapState;

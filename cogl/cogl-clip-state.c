@@ -30,7 +30,6 @@
 
 #include <glib.h>
 
-#include "cogl.h"
 #include "cogl-clip-stack.h"
 #include "cogl-clip-state-private.h"
 #include "cogl-context-private.h"
@@ -39,6 +38,12 @@
 #include "cogl-journal-private.h"
 #include "cogl-util.h"
 #include "cogl-matrix-private.h"
+
+#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
+#include <cogl/cogl2-clip-state.h>
+#else
+#include <cogl/cogl-clip-state.h>
+#endif
 
 void
 cogl_clip_push_window_rectangle (int x_offset,

@@ -65,7 +65,6 @@
 #include "config.h"
 #endif
 
-#include <cogl.h>
 #include <cogl-util.h>
 #include <cogl-debug.h>
 #include <cogl-quaternion.h>

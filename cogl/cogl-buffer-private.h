@@ -30,9 +30,9 @@
 
 #include <glib.h>
 
-#include "cogl.h"
 #include "cogl-object-private.h"
 #include "cogl-buffer.h"
+#include "cogl-context.h"
 
 G_BEGIN_DECLS
 

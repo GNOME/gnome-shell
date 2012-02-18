@@ -25,8 +25,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
-
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
@@ -51,6 +49,7 @@
 #include "cogl-config-private.h"
 #include "cogl-private.h"
 #include "cogl1-context.h"
+#include "cogl-offscreen.h"
 
 #ifndef GL_PACK_INVERT_MESA
 #define GL_PACK_INVERT_MESA 0x8758

@@ -28,7 +28,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-atlas.h"
 #include "cogl-rectangle-map.h"
 #include "cogl-context-private.h"

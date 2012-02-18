@@ -38,6 +38,7 @@
 #include "cogl-internal.h"
 #include "cogl-boxed-value.h"
 #include "cogl-pipeline-snippet-private.h"
+#include "cogl-pipeline-state.h"
 
 #include <glib.h>
 
