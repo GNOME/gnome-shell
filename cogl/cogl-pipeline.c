@@ -1889,15 +1889,15 @@ fallback_layer_cb (CoglPipelineLayer *layer, void *user_data)
   switch (texture_type)
     {
     case COGL_TEXTURE_TYPE_2D:
-      texture = ctx->default_gl_texture_2d_tex;
+      texture = COGL_TEXTURE (ctx->default_gl_texture_2d_tex);
       break;
 
     case COGL_TEXTURE_TYPE_3D:
-      texture = ctx->default_gl_texture_3d_tex;
+      texture = COGL_TEXTURE (ctx->default_gl_texture_3d_tex);
       break;
 
     case COGL_TEXTURE_TYPE_RECTANGLE:
-      texture = ctx->default_gl_texture_rect_tex;
+      texture = COGL_TEXTURE (ctx->default_gl_texture_rect_tex);
       break;
     }
 
@@ -1907,7 +1907,7 @@ fallback_layer_cb (CoglPipelineLayer *layer, void *user_data)
                  "in for an invalid pipeline layer, since it was "
                  "using an unsupported texture target ");
       /* might get away with this... */
-      texture = ctx->default_gl_texture_2d_tex;
+      texture = COGL_TEXTURE (ctx->default_gl_texture_2d_tex);
     }
 
   cogl_pipeline_set_layer_texture (pipeline, layer->index, texture);

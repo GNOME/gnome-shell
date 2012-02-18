@@ -582,6 +582,7 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
       else
         {
           static gboolean warning_seen = FALSE;
+          CoglTexture2D *tex_2d;
 
           _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -592,8 +593,9 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
           warning_seen = TRUE;
 
           /* Note: currently only 2D textures can be sliced. */
+          tex_2d = ctx->default_gl_texture_2d_tex;
           cogl_pipeline_set_layer_texture (pipeline, layer_index,
-                                           ctx->default_gl_texture_2d_tex);
+                                           COGL_TEXTURE (tex_2d));
           return TRUE;
         }
     }

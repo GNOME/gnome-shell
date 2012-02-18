@@ -786,13 +786,13 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
         switch (_cogl_pipeline_layer_get_texture_type (layer))
           {
           case COGL_TEXTURE_TYPE_2D:
-            texture = ctx->default_gl_texture_2d_tex;
+            texture = COGL_TEXTURE (ctx->default_gl_texture_2d_tex);
             break;
           case COGL_TEXTURE_TYPE_3D:
-            texture = ctx->default_gl_texture_3d_tex;
+            texture = COGL_TEXTURE (ctx->default_gl_texture_3d_tex);
             break;
           case COGL_TEXTURE_TYPE_RECTANGLE:
-            texture = ctx->default_gl_texture_rect_tex;
+            texture = COGL_TEXTURE (ctx->default_gl_texture_rect_tex);
             break;
           }
 

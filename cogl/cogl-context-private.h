@@ -43,6 +43,9 @@
 #include "cogl-atlas.h"
 #include "cogl-texture-driver.h"
 #include "cogl-pipeline-cache.h"
+#include "cogl-texture-2d.h"
+#include "cogl-texture-3d.h"
+#include "cogl-texture-rectangle.h"
 
 typedef struct
 {
@@ -67,10 +70,10 @@ struct _CoglContext
   CoglFeatureFlags feature_flags; /* legacy/deprecated feature flags */
   CoglPrivateFeatureFlags private_feature_flags;
 
-  CoglHandle        default_pipeline;
-  CoglHandle        default_layer_0;
-  CoglHandle        default_layer_n;
-  CoglHandle        dummy_layer_dependant;
+  CoglPipeline *default_pipeline;
+  CoglPipelineLayer *default_layer_0;
+  CoglPipelineLayer *default_layer_n;
+  CoglPipelineLayer *dummy_layer_dependant;
 
   GHashTable *attribute_name_states_hash;
   GArray *attribute_name_index_map;
@@ -125,9 +128,9 @@ struct _CoglContext
   CoglPipelineCache *pipeline_cache;
 
   /* Textures */
-  CoglHandle        default_gl_texture_2d_tex;
-  CoglHandle        default_gl_texture_3d_tex;
-  CoglHandle        default_gl_texture_rect_tex;
+  CoglTexture2D *default_gl_texture_2d_tex;
+  CoglTexture3D *default_gl_texture_3d_tex;
+  CoglTextureRectangle *default_gl_texture_rect_tex;
 
   /* Central list of all framebuffers so all journals can be flushed
    * at any time. */
