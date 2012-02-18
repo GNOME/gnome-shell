@@ -26,7 +26,11 @@
 
 #define __COGL_H_INSIDE__
 
-#include <cogl/cogl-types.h>
+#include <glib.h>
+
+#include <cogl/cogl-context.h>
+
+G_BEGIN_DECLS
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
@@ -40,19 +44,9 @@
  * pixmap.
  */
 
-/* All of the cogl-texture-pixmap-x11 API is currently experimental so
- * we suffix the actual symbols with _EXP so if somone is monitoring
- * for ABI changes it will hopefully be clearer to them what's going
- * on if any of the symbols dissapear at a later date.
- */
-#define cogl_texture_pixmap_x11_new cogl_texture_pixmap_x11_new_EXP
-#define cogl_texture_pixmap_x11_update_area \
-  cogl_texture_pixmap_x11_update_area_EXP
-#define cogl_texture_pixmap_x11_is_using_tfp_extension \
-  cogl_texture_pixmap_x11_is_using_tfp_extension_EXP
-#define cogl_texture_pixmap_x11_set_damage_object \
-  cogl_texture_pixmap_x11_set_damage_object_EXP
-#define cogl_is_texture_pixmap_x11 cogl_is_texture_pixmap_x11_EXP
+typedef struct _CoglTexturePixmapX11 CoglTexturePixmapX11;
+
+#define COGL_TEXTURE_PIXMAP_X11(X) ((CoglTexturePixmapX11 *)X)
 
 typedef enum
 {
@@ -63,42 +57,70 @@ typedef enum
 } CoglTexturePixmapX11ReportLevel;
 
 /**
+ * COGL_TEXTURE_PIXMAP_X11_ERROR:
+ *
+ * #GError domain for texture-pixmap-x11 errors.
+ *
+ * Since: 1.10
+ */
+#define COGL_TEXTURE_PIXMAP_X11_ERROR (cogl_texture_pixmap_x11_error_quark ())
+
+/**
+ * CoglTexturePixmapX11Error:
+ * @COGL_TEXTURE_PIXMAP_X11_ERROR_X11: An X11 protocol error
+ *
+ * Error codes that can be thrown when performing texture-pixmap-x11
+ * operations.
+ *
+ * Since: 1.10
+ */
+typedef enum {
+  COGL_TEXTURE_PIXMAP_X11_ERROR_X11,
+} CoglTexturePixmapX11Error;
+
+GQuark cogl_texture_pixmap_x11_error_quark (void);
+
+/**
  * cogl_texture_pixmap_x11_new:
+ * @context: A #CoglContext
  * @pixmap: A X11 pixmap ID
  * @automatic_updates: Whether to automatically copy the contents of
  * the pixmap to the texture.
+ * @error: A #GError for exceptions
  *
  * Creates a texture that contains the contents of @pixmap. If
  * @automatic_updates is %TRUE then Cogl will attempt to listen for
  * damage events on the pixmap and automatically update the texture
  * when it changes.
  *
- * Return value: a CoglHandle to a texture
+ * Return value: a new #CoglTexturePixmapX11 instance
  *
- * Since: 1.4
+ * Since: 1.10
  * Stability: Unstable
  */
-CoglHandle
-cogl_texture_pixmap_x11_new (guint32 pixmap,
-                             gboolean automatic_updates);
+CoglTexturePixmapX11 *
+cogl_texture_pixmap_x11_new (CoglContext *context,
+                             guint32 pixmap,
+                             gboolean automatic_updates,
+                             GError **error);
 
 /**
  * cogl_texture_pixmap_x11_update_area:
- * @handle: A CoglHandle to a CoglTexturePixmapX11 instance
+ * @texture: A #CoglTexturePixmapX11 instance
  * @x: x coordinate of the area to update
  * @y: y coordinate of the area to update
  * @width: width of the area to update
  * @height: height of the area to update
  *
- * Forces an update of the texture pointed to by @handle so that it is
- * refreshed with the contents of the pixmap that was given to
+ * Forces an update of the given @texture so that it is refreshed with
+ * the contents of the pixmap that was given to
  * cogl_texture_pixmap_x11_new().
  *
  * Since: 1.4
  * Stability: Unstable
  */
 void
-cogl_texture_pixmap_x11_update_area (CoglHandle handle,
+cogl_texture_pixmap_x11_update_area (CoglTexturePixmapX11 *texture,
                                      int x,
                                      int y,
                                      int width,
@@ -106,12 +128,13 @@ cogl_texture_pixmap_x11_update_area (CoglHandle handle,
 
 /**
  * cogl_texture_pixmap_x11_is_using_tfp_extension:
- * @handle: A CoglHandle to a CoglTexturePixmapX11 instance
+ * @texture: A #CoglTexturePixmapX11 instance
  *
- * Checks whether the texture is using the GLX_EXT_texture_from_pixmap
- * or similar extension to copy the contents of the pixmap to the texture.
- * This extension is usually implemented as zero-copy operation so it
- * implies the updates are working efficiently.
+ * Checks whether the given @texture is using the
+ * GLX_EXT_texture_from_pixmap or similar extension to copy the
+ * contents of the pixmap to the texture.  This extension is usually
+ * implemented as zero-copy operation so it implies the updates are
+ * working efficiently.
  *
  * Return value: %TRUE if the texture is using an efficient extension
  *   and %FALSE otherwise
@@ -120,18 +143,18 @@ cogl_texture_pixmap_x11_update_area (CoglHandle handle,
  * Stability: Unstable
  */
 gboolean
-cogl_texture_pixmap_x11_is_using_tfp_extension (CoglHandle handle);
+cogl_texture_pixmap_x11_is_using_tfp_extension (CoglTexturePixmapX11 *texture);
 
 /**
  * cogl_texture_pixmap_x11_set_damage_object:
- * @handle: A CoglHandle
+ * @texture: A #CoglTexturePixmapX11 instance
  * @damage: A X11 Damage object or 0
  * @report_level: The report level which describes how to interpret
  *   the damage events. This should match the level that the damage
  *   object was created with.
  *
  * Sets the damage object that will be used to track automatic updates
- * to the texture. Damage tracking can be disabled by passing 0 for
+ * to the @texture. Damage tracking can be disabled by passing 0 for
  * @damage. Otherwise this damage will replace the one used if %TRUE
  * was passed for automatic_updates to cogl_texture_pixmap_x11_new().
  *
@@ -142,26 +165,28 @@ cogl_texture_pixmap_x11_is_using_tfp_extension (CoglHandle handle);
  * Stability: Unstable
  */
 void
-cogl_texture_pixmap_x11_set_damage_object (CoglHandle handle,
+cogl_texture_pixmap_x11_set_damage_object (CoglTexturePixmapX11 *texture,
                                            guint32 damage,
                                            CoglTexturePixmapX11ReportLevel
                                                                   report_level);
 
 /**
  * cogl_is_texture_pixmap_x11:
- * @handle: A CoglHandle
+ * @object: A pointer to a #CoglObject
  *
- * Checks whether @handle points to a CoglTexturePixmapX11 instance.
+ * Checks whether @object points to a #CoglTexturePixmapX11 instance.
  *
- * Return value: %TRUE if the handle is a CoglTexturePixmapX11, and
+ * Return value: %TRUE if the object is a #CoglTexturePixmapX11, and
  *   %FALSE otherwise
  *
  * Since: 1.4
  * Stability: Unstable
  */
 gboolean
-cogl_is_texture_pixmap_x11 (CoglHandle handle);
+cogl_is_texture_pixmap_x11 (void *object);
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
+
+G_END_DECLS
 
 #endif /* __COGL_TEXTURE_PIXMAP_X11_H */

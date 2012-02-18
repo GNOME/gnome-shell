@@ -59,7 +59,7 @@ main (int argc, char **argv)
   int screen;
   Window tfp_xwin;
   Pixmap pixmap;
-  CoglHandle tfp;
+  CoglTexturePixmapX11 *tfp;
   GC gc;
 
   g_print ("NB: Don't use this example as a benchmark since there is "
@@ -181,7 +181,13 @@ main (int argc, char **argv)
 
   pixmap = XCompositeNameWindowPixmap (xdpy, tfp_xwin);
 
-  tfp = cogl_texture_pixmap_x11_new (pixmap, TRUE);
+  tfp = cogl_texture_pixmap_x11_new (ctx, pixmap, TRUE, &error);
+  if (!tfp)
+    {
+      fprintf (stderr, "Failed to create CoglTexturePixmapX11: %s",
+               error->message);
+      return 1;
+    }
 
   fb = COGL_FRAMEBUFFER (onscreen);
   cogl_push_framebuffer (fb);
@@ -215,7 +221,7 @@ main (int argc, char **argv)
       XFlush (xdpy);
 
       cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
-      cogl_set_source_texture (tfp);
+      cogl_set_source_texture (COGL_TEXTURE (tfp));
       cogl_rectangle (-0.8, 0.8, 0.8, -0.8);
       cogl_onscreen_swap_buffers (onscreen);
     }

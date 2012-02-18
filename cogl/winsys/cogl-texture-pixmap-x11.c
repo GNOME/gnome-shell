@@ -64,6 +64,12 @@ COGL_TEXTURE_DEFINE (TexturePixmapX11, texture_pixmap_x11);
 
 static const CoglTextureVtable cogl_texture_pixmap_x11_vtable;
 
+GQuark
+cogl_texture_pixmap_x11_error_quark (void)
+{
+  return g_quark_from_static_string ("cogl-texture-pixmap-error-quark");
+}
+
 static void
 cogl_damage_rectangle_union (CoglDamageRectangle *damage_rect,
                              int x,
@@ -263,9 +269,11 @@ set_damage_object_internal (CoglContext *ctx,
                                    tex_pixmap);
 }
 
-CoglHandle
-cogl_texture_pixmap_x11_new (guint32 pixmap,
-                             gboolean automatic_updates)
+CoglTexturePixmapX11 *
+cogl_texture_pixmap_x11_new (CoglContext *ctxt,
+                             guint32 pixmap,
+                             gboolean automatic_updates,
+                             GError **error)
 {
   CoglTexturePixmapX11 *tex_pixmap = g_new (CoglTexturePixmapX11, 1);
   Display *display = cogl_xlib_get_display ();
@@ -276,8 +284,6 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
   XWindowAttributes window_attributes;
   int damage_base;
   const CoglWinsysVtable *winsys;
-
-  _COGL_GET_CONTEXT (ctxt, COGL_INVALID_HANDLE);
 
   _cogl_texture_init (tex, &cogl_texture_pixmap_x11_vtable);
 
@@ -294,8 +300,11 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
                      &pixmap_border_width, &tex_pixmap->depth))
     {
       g_free (tex_pixmap);
-      g_warning ("Unable to query pixmap size");
-      return COGL_INVALID_HANDLE;
+      g_set_error (error,
+                   COGL_TEXTURE_PIXMAP_X11_ERROR,
+                   COGL_TEXTURE_PIXMAP_X11_ERROR_X11,
+                   "Unable to query pixmap size");
+      return NULL;
     }
 
   /* We need a visual to use for shared memory images so we'll query
@@ -303,8 +312,11 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
   if (!XGetWindowAttributes (display, pixmap_root_window, &window_attributes))
     {
       g_free (tex_pixmap);
-      g_warning ("Unable to query root window attributes");
-      return COGL_INVALID_HANDLE;
+      g_set_error (error,
+                   COGL_TEXTURE_PIXMAP_X11_ERROR,
+                   COGL_TEXTURE_PIXMAP_X11_ERROR_X11,
+                   "Unable to query root window attributes");
+      return NULL;
     }
   tex_pixmap->visual = window_attributes.visual;
 
@@ -416,17 +428,12 @@ try_alloc_shm (CoglTexturePixmapX11 *tex_pixmap)
 }
 
 void
-cogl_texture_pixmap_x11_update_area (CoglHandle handle,
+cogl_texture_pixmap_x11_update_area (CoglTexturePixmapX11 *tex_pixmap,
                                      int x,
                                      int y,
                                      int width,
                                      int height)
 {
-  CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (handle);
-
-  if (!cogl_is_texture_pixmap_x11 (handle))
-    return;
-
   /* We'll queue the update for both the GLX texture and the regular
      texture because we can't determine which will be needed until we
      actually render something */
@@ -443,29 +450,20 @@ cogl_texture_pixmap_x11_update_area (CoglHandle handle,
 }
 
 gboolean
-cogl_texture_pixmap_x11_is_using_tfp_extension (CoglHandle handle)
+cogl_texture_pixmap_x11_is_using_tfp_extension (CoglTexturePixmapX11 *tex_pixmap)
 {
-  CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (handle);
-
-  if (!cogl_is_texture_pixmap_x11 (tex_pixmap))
-    return FALSE;
-
   return !!tex_pixmap->winsys;
 }
 
 void
-cogl_texture_pixmap_x11_set_damage_object (CoglHandle handle,
+cogl_texture_pixmap_x11_set_damage_object (CoglTexturePixmapX11 *tex_pixmap,
                                            guint32 damage,
                                            CoglTexturePixmapX11ReportLevel
                                                                   report_level)
 {
-  CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (handle);
   int damage_base;
 
   _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
-
-  if (!cogl_is_texture_pixmap_x11 (tex_pixmap))
-    return;
 
   damage_base = _cogl_xlib_get_damage_base ();
   if (damage_base >= 0)
