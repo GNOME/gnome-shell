@@ -19,13 +19,13 @@ typedef struct _TestState
   CoglFramebuffer *fb;
 } TestState;
 
-static CoglTexture *
-create_texture_3d (void)
+static CoglTexture3D *
+create_texture_3d (CoglContext *context)
 {
   int x, y, z;
   guint8 *data = g_malloc (TEX_IMAGE_STRIDE * TEX_DEPTH);
   guint8 *p = data;
-  CoglHandle tex;
+  CoglTexture3D *tex;
   GError *error = NULL;
 
   for (z = 0; z < TEX_DEPTH; z++)
@@ -51,8 +51,8 @@ create_texture_3d (void)
       p += TEX_IMAGE_STRIDE - (TEX_HEIGHT * TEX_ROWSTRIDE);
     }
 
-  tex = cogl_texture_3d_new_from_data (TEX_WIDTH, TEX_HEIGHT, TEX_DEPTH,
-                                       COGL_TEXTURE_NO_AUTO_MIPMAP,
+  tex = cogl_texture_3d_new_from_data (context,
+                                       TEX_WIDTH, TEX_HEIGHT, TEX_DEPTH,
                                        COGL_PIXEL_FORMAT_RGBA_8888,
                                        COGL_PIXEL_FORMAT_ANY,
                                        TEX_ROWSTRIDE,
@@ -60,7 +60,7 @@ create_texture_3d (void)
                                        data,
                                        &error);
 
-  if (tex == COGL_INVALID_HANDLE)
+  if (tex == NULL)
     {
       g_assert (error != NULL);
       g_warning ("Failed to create 3D texture: %s", error->message);
@@ -75,7 +75,7 @@ create_texture_3d (void)
 static void
 draw_frame (TestState *state)
 {
-  CoglTexture *tex = create_texture_3d ();
+  CoglTexture *tex = COGL_TEXTURE (create_texture_3d (state->context));
   CoglPipeline *pipeline = cogl_pipeline_new ();
   typedef struct { float x, y, s, t, r; } Vert;
   CoglPrimitive *primitive;
@@ -200,7 +200,7 @@ static void
 test_multi_texture (TestState *state)
 {
   CoglPipeline *pipeline;
-  CoglHandle tex_3d;
+  CoglTexture3D *tex_3d;
   CoglTexture2D *tex_2d;
   guint8 tex_data[4];
 
@@ -230,8 +230,8 @@ test_multi_texture (TestState *state)
   tex_data[1] = 0xff;
   tex_data[2] = 0x00;
   tex_data[3] = 0xff;
-  tex_3d = cogl_texture_3d_new_from_data (1, 1, 1, /* width/height/depth */
-                                          COGL_TEXTURE_NONE,
+  tex_3d = cogl_texture_3d_new_from_data (state->context,
+                                          1, 1, 1, /* width/height/depth */
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                           4, /* rowstride */

@@ -399,10 +399,10 @@ cogl_context_new (CoglDisplay *display,
   /* If 3D or rectangle textures aren't supported then these should
      just silently return NULL */
   context->default_gl_texture_3d_tex =
-    _cogl_texture_3d_new_from_bitmap (default_texture_bitmap,
+    _cogl_texture_3d_new_from_bitmap (context,
+                                      default_texture_bitmap,
                                       1, /* height */
                                       1, /* depth */
-                                      COGL_TEXTURE_NONE,
                                       COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                       NULL);
   context->default_gl_texture_rect_tex =

@@ -45,21 +45,16 @@ G_BEGIN_DECLS
  * account the 'r' texture coordinate to select one of the images.
  */
 
-/* All of the cogl-texture-3d API is currently experimental so we
- * suffix the actual symbols with _EXP so if somone is monitoring for
- * ABI changes it will hopefully be clearer to them what's going on if
- * any of the symbols dissapear at a later date.
- */
-#define cogl_texture_3d_new_with_size cogl_texture_3d_new_with_size_EXP
-#define cogl_texture_3d_new_from_data cogl_texture_3d_new_from_data_EXP
-#define cogl_is_texture_3d cogl_is_texture_3d_EXP
+typedef struct _CoglTexture3D CoglTexture3D;
+
+#define COGL_TEXTURE_3D(X) ((CoglTexture3D *)X)
 
 /**
  * cogl_texture_3d_new_with_size:
+ * @context: a #CoglContext
  * @width: width of the texture in pixels.
  * @height: height of the texture in pixels.
  * @depth: depth of the texture in pixels.
- * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU
  *    storage of the texture.
  * @error: A GError return location.
@@ -71,25 +66,26 @@ G_BEGIN_DECLS
  * %COGL_FEATURE_TEXTURE_3D is not advertised. It can also fail if the
  * requested dimensions are not supported by the GPU.
  *
- * Return value: a new handle to a CoglTexture3D object or
- *   %COGL_INVALID_HANDLE on failure.
- * Since: 1.4
+ * Return value: a new #CoglTexture3D object or
+ *               %NULL on failure and an exception will be returned
+ *               in @error.
+ * Since: 1.10
  * Stability: Unstable
  */
-CoglHandle
-cogl_texture_3d_new_with_size (unsigned int     width,
-                               unsigned int     height,
-                               unsigned int     depth,
-                               CoglTextureFlags flags,
+CoglTexture3D *
+cogl_texture_3d_new_with_size (CoglContext *context,
+                               int width,
+                               int height,
+                               int depth,
                                CoglPixelFormat  internal_format,
-                               GError         **error);
+                               GError **error);
 
 /**
  * cogl_texture_3d_new_from_data:
+ * @context: a #CoglContext
  * @width: width of the texture in pixels.
  * @height: height of the texture in pixels.
  * @depth: depth of the texture in pixels.
- * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @format: the #CoglPixelFormat the buffer is stored in in RAM
  * @internal_format: the #CoglPixelFormat that will be used for storing
  *    the buffer on the GPU. If COGL_PIXEL_FORMAT_ANY is given then a
@@ -117,37 +113,38 @@ cogl_texture_3d_new_with_size (unsigned int     width,
  * %COGL_FEATURE_TEXTURE_3D is not advertised. It can also fail if the
  * requested dimensions are not supported by the GPU.
  *
- * Return value: the newly created texture or %COGL_INVALID_HANDLE if
- *   there was an error.
- * Since: 1.4
+ * Return value: the newly created #CoglTexture3D or %NULL if
+ *               there was an error an an exception will be returned
+ *               through @error.
+ * Since: 1.10
  * Stability: Unstable
  */
-CoglHandle
-cogl_texture_3d_new_from_data (unsigned int      width,
-                               unsigned int      height,
-                               unsigned int      depth,
-                               CoglTextureFlags  flags,
-                               CoglPixelFormat   format,
-                               CoglPixelFormat   internal_format,
-                               unsigned int      rowstride,
-                               unsigned int      image_stride,
-                               const guint8     *data,
-                               GError          **error);
+CoglTexture3D *
+cogl_texture_3d_new_from_data (CoglContext *context,
+                               int width,
+                               int height,
+                               int depth,
+                               CoglPixelFormat format,
+                               CoglPixelFormat internal_format,
+                               int rowstride,
+                               int image_stride,
+                               const guint8 *data,
+                               GError **error);
 
 /**
  * cogl_is_texture_3d:
- * @handle: a #CoglHandle
+ * @object: a #CoglObject
  *
- * Checks whether @handle is a #CoglHandle for a 3D texture.
+ * Checks whether the given object references a #CoglTexture3D
  *
- * Return value: %TRUE if the passed handle represents a 3D texture
+ * Return value: %TRUE if the passed object represents a 3D texture
  *   and %FALSE otherwise
  *
  * Since: 1.4
  * Stability: Unstable
  */
 gboolean
-cogl_is_texture_3d (CoglHandle handle);
+cogl_is_texture_3d (void *object);
 
 G_END_DECLS
 

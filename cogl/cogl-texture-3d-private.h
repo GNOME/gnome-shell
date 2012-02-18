@@ -28,10 +28,7 @@
 #include "cogl-handle.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-texture-private.h"
-
-#define COGL_TEXTURE_3D(tex) ((CoglTexture3D *) tex)
-
-typedef struct _CoglTexture3D CoglTexture3D;
+#include "cogl-texture-3d.h"
 
 struct _CoglTexture3D
 {
@@ -60,10 +57,9 @@ struct _CoglTexture3D
 
 /*
  * cogl_texture_3d_new_from_bitmap:
- * @bmp_handle: A #CoglHandle to a bitmap.
+ * @bmp_handle: A #CoglBitmap object.
  * @height: height of the texture in pixels.
  * @depth: depth of the texture in pixels.
- * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat that will be used for storing
  *    the buffer on the GPU. If COGL_PIXEL_FORMAT_ANY is given then a
  *    premultiplied format similar to the format of the source data will
@@ -81,15 +77,15 @@ struct _CoglTexture3D
  * actual height of the bitmap can be larger than @height × @depth. In
  * this case it assumes there is padding between the images.
  *
- * Return value: the newly created texture or %COGL_INVALID_HANDLE if
+ * Return value: the newly created texture or %NULL if
  *   there was an error.
  */
-CoglHandle
-_cogl_texture_3d_new_from_bitmap (CoglBitmap      *bmp,
-                                  unsigned int     height,
-                                  unsigned int     depth,
-                                  CoglTextureFlags flags,
-                                  CoglPixelFormat  internal_format,
-                                  GError         **error);
+CoglTexture3D *
+_cogl_texture_3d_new_from_bitmap (CoglContext *context,
+                                  CoglBitmap *bmp,
+                                  unsigned int height,
+                                  unsigned int depth,
+                                  CoglPixelFormat internal_format,
+                                  GError **error);
 
 #endif /* __COGL_TEXTURE_3D_PRIVATE_H */
