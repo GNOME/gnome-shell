@@ -367,6 +367,8 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
    * ClutterDropAction::can-drop:
    * @action: the #ClutterDropAction that emitted the signal
    * @actor: the #ClutterActor attached to the @action
+   * @event_x: the X coordinate (in stage space) of the drop event
+   * @event_y: the Y coordinate (in stage space) of the drop event
    *
    * The ::can-drop signal is emitted when the dragged actor is dropped
    * on @actor. The return value of the ::can-drop signal will determine
@@ -436,6 +438,8 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
    * ClutterDropAction::drop:
    * @action: the #ClutterDropAction that emitted the signal
    * @actor: the #ClutterActor attached to the @action
+   * @event_x: the X coordinate (in stage space) of the drop event
+   * @event_y: the Y coordinate (in stage space) of the drop event
    *
    * The ::drop signal is emitted when the dragged actor is dropped
    * on @actor. This signal is only emitted if at least an handler of
