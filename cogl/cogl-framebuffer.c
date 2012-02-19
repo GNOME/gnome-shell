@@ -113,6 +113,8 @@ typedef struct _CoglFramebufferStackEntry
 
 extern CoglObjectClass _cogl_onscreen_class;
 
+static CoglUserDataKey wire_pipeline_key;
+
 static void _cogl_offscreen_free (CoglOffscreen *offscreen);
 
 COGL_OBJECT_DEFINE_WITH_CODE (Offscreen, offscreen,
@@ -2442,59 +2444,75 @@ get_index (void *indices,
 }
 
 static void
-add_line (void *vertices,
-          void *indices,
-          CoglIndicesType indices_type,
-          CoglAttribute *attribute,
-          int start,
-          int end,
-          CoglVertexP3 *lines,
-          int *n_line_vertices)
+add_line (guint32 *line_indices,
+          int base,
+          void *user_indices,
+          CoglIndicesType user_indices_type,
+          int index0,
+          int index1,
+          int *pos)
 {
-  int start_index = get_index (indices, indices_type, start);
-  int end_index = get_index (indices, indices_type, end);
-  float *v0 = (float *)((guint8 *)vertices + start_index * attribute->stride);
-  float *v1 = (float *)((guint8 *)vertices + end_index * attribute->stride);
-  float *o = (float *)(&lines[*n_line_vertices]);
-  int i;
+  index0 = get_index (user_indices, user_indices_type, index0);
+  index1 = get_index (user_indices, user_indices_type, index1);
 
-  for (i = 0; i < attribute->n_components; i++)
-    *(o++) = *(v0++);
-  for (;i < 3; i++)
-    *(o++) = 0;
-
-  for (i = 0; i < attribute->n_components; i++)
-    *(o++) = *(v1++);
-  for (;i < 3; i++)
-    *(o++) = 0;
-
-  *n_line_vertices += 2;
+  line_indices[(*pos)++] = base + index0;
+  line_indices[(*pos)++] = base + index1;
 }
 
-static CoglVertexP3 *
-get_wire_lines (CoglAttribute *attribute,
-                CoglVerticesMode mode,
-                int n_vertices_in,
-                int *n_vertices_out,
-                CoglIndices *_indices)
+static int
+get_line_count (CoglVerticesMode mode, int n_vertices)
 {
-  CoglAttributeBuffer *attribute_buffer = cogl_attribute_get_buffer (attribute);
-  void *vertices;
+  if (mode == COGL_VERTICES_MODE_TRIANGLES &&
+      (n_vertices % 3) == 0)
+    {
+      return n_vertices;
+    }
+  else if (mode == COGL_VERTICES_MODE_TRIANGLE_FAN &&
+           n_vertices >= 3)
+    {
+      return 2 * n_vertices - 3;
+    }
+  else if (mode == COGL_VERTICES_MODE_TRIANGLE_STRIP &&
+           n_vertices >= 3)
+    {
+      return 2 * n_vertices - 3;
+    }
+    /* In the journal we are a bit sneaky and actually use GL_QUADS
+     * which isn't actually a valid CoglVerticesMode! */
+#ifdef HAVE_COGL_GL
+  else if (mode == GL_QUADS && (n_vertices % 4) == 0)
+    {
+      return n_vertices;
+    }
+#endif
+
+  g_return_val_if_reached (0);
+}
+
+static CoglIndices *
+get_wire_line_indices (CoglContext *ctx,
+                       CoglVerticesMode mode,
+                       int first_vertex,
+                       int n_vertices_in,
+                       CoglIndices *user_indices,
+                       int *n_indices)
+{
+  int n_lines;
+  guint32 *line_indices;
   CoglIndexBuffer *index_buffer;
   void *indices;
   CoglIndicesType indices_type;
+  int base = first_vertex;
+  int pos;
   int i;
-  int n_lines;
-  CoglVertexP3 *out = NULL;
+  CoglIndices *ret;
 
-  vertices = cogl_buffer_map (COGL_BUFFER (attribute_buffer),
-                              COGL_BUFFER_ACCESS_READ, 0);
-  if (_indices)
+  if (user_indices)
     {
-      index_buffer = cogl_indices_get_buffer (_indices);
+      index_buffer = cogl_indices_get_buffer (user_indices);
       indices = cogl_buffer_map (COGL_BUFFER (index_buffer),
                                  COGL_BUFFER_ACCESS_READ, 0);
-      indices_type = cogl_indices_get_type (_indices);
+      indices_type = cogl_indices_get_type (user_indices);
     }
   else
     {
@@ -2503,63 +2521,47 @@ get_wire_lines (CoglAttribute *attribute,
       indices_type = COGL_INDICES_TYPE_UNSIGNED_BYTE;
     }
 
-  *n_vertices_out = 0;
+  n_lines = get_line_count (mode, n_vertices_in);
+
+  /* Note: we are using COGL_INDICES_TYPE_UNSIGNED_INT so 4 bytes per index. */
+  line_indices = g_malloc (4 * n_lines * 2);
+
+  pos = 0;
 
   if (mode == COGL_VERTICES_MODE_TRIANGLES &&
       (n_vertices_in % 3) == 0)
     {
-      n_lines = n_vertices_in;
-      out = g_new (CoglVertexP3, n_lines * 2);
       for (i = 0; i < n_vertices_in; i += 3)
         {
-          add_line (vertices, indices, indices_type, attribute,
-                    i, i+1, out, n_vertices_out);
-          add_line (vertices, indices, indices_type, attribute,
-                    i+1, i+2, out, n_vertices_out);
-          add_line (vertices, indices, indices_type, attribute,
-                    i+2, i, out, n_vertices_out);
+          add_line (line_indices, base, indices, indices_type, i,   i+1, &pos);
+          add_line (line_indices, base, indices, indices_type, i+1, i+2, &pos);
+          add_line (line_indices, base, indices, indices_type, i+2, i,   &pos);
         }
     }
   else if (mode == COGL_VERTICES_MODE_TRIANGLE_FAN &&
            n_vertices_in >= 3)
     {
-      n_lines = 2 * n_vertices_in - 3;
-      out = g_new (CoglVertexP3, n_lines * 2);
-
-      add_line (vertices, indices, indices_type, attribute,
-                0, 1, out, n_vertices_out);
-      add_line (vertices, indices, indices_type, attribute,
-                1, 2, out, n_vertices_out);
-      add_line (vertices, indices, indices_type, attribute,
-                0, 2, out, n_vertices_out);
+      add_line (line_indices, base, indices, indices_type, 0, 1, &pos);
+      add_line (line_indices, base, indices, indices_type, 1, 2, &pos);
+      add_line (line_indices, base, indices, indices_type, 0, 2, &pos);
 
       for (i = 3; i < n_vertices_in; i++)
         {
-          add_line (vertices, indices, indices_type, attribute,
-                    i - 1, i, out, n_vertices_out);
-          add_line (vertices, indices, indices_type, attribute,
-                    0, i, out, n_vertices_out);
+          add_line (line_indices, base, indices, indices_type, i - 1, i, &pos);
+          add_line (line_indices, base, indices, indices_type, 0,     i, &pos);
         }
     }
   else if (mode == COGL_VERTICES_MODE_TRIANGLE_STRIP &&
            n_vertices_in >= 3)
     {
-      n_lines = 2 * n_vertices_in - 3;
-      out = g_new (CoglVertexP3, n_lines * 2);
-
-      add_line (vertices, indices, indices_type, attribute,
-                0, 1, out, n_vertices_out);
-      add_line (vertices, indices, indices_type, attribute,
-                1, 2, out, n_vertices_out);
-      add_line (vertices, indices, indices_type, attribute,
-                0, 2, out, n_vertices_out);
+      add_line (line_indices, base, indices, indices_type, 0, 1, &pos);
+      add_line (line_indices, base, indices, indices_type, 1, 2, &pos);
+      add_line (line_indices, base, indices, indices_type, 0, 2, &pos);
 
       for (i = 3; i < n_vertices_in; i++)
         {
-          add_line (vertices, indices, indices_type, attribute,
-                    i - 1, i, out, n_vertices_out);
-          add_line (vertices, indices, indices_type, attribute,
-                    i - 2, i, out, n_vertices_out);
+          add_line (line_indices, base, indices, indices_type, i - 1, i, &pos);
+          add_line (line_indices, base, indices, indices_type, i - 2, i, &pos);
         }
     }
     /* In the journal we are a bit sneaky and actually use GL_QUADS
@@ -2567,34 +2569,70 @@ get_wire_lines (CoglAttribute *attribute,
 #ifdef HAVE_COGL_GL
   else if (mode == GL_QUADS && (n_vertices_in % 4) == 0)
     {
-      n_lines = n_vertices_in;
-      out = g_new (CoglVertexP3, n_lines * 2);
-
       for (i = 0; i < n_vertices_in; i += 4)
         {
-          add_line (vertices, indices, indices_type, attribute,
-                    i, i + 1, out, n_vertices_out);
-          add_line (vertices, indices, indices_type, attribute,
-                    i + 1, i + 2, out, n_vertices_out);
-          add_line (vertices, indices, indices_type, attribute,
-                    i + 2, i + 3, out, n_vertices_out);
-          add_line (vertices, indices, indices_type, attribute,
-                    i + 3, i, out, n_vertices_out);
+          add_line (line_indices,
+                    base, indices, indices_type, i,     i + 1, &pos);
+          add_line (line_indices,
+                    base, indices, indices_type, i + 1, i + 2, &pos);
+          add_line (line_indices,
+                    base, indices, indices_type, i + 2, i + 3, &pos);
+          add_line (line_indices,
+                    base, indices, indices_type, i + 3, i,     &pos);
         }
     }
 #endif
 
-  if (vertices != NULL)
-    cogl_buffer_unmap (COGL_BUFFER (attribute_buffer));
-
-  if (indices != NULL)
+  if (user_indices)
     cogl_buffer_unmap (COGL_BUFFER (index_buffer));
 
-  return out;
+  *n_indices = n_lines * 2;
+
+  ret = cogl_indices_new (ctx,
+                          COGL_INDICES_TYPE_UNSIGNED_INT,
+                          line_indices,
+                          *n_indices);
+
+  g_free (line_indices);
+
+  return ret;
+}
+
+static gboolean
+remove_layer_cb (CoglPipeline *pipeline,
+                 int layer_index,
+                 void *user_data)
+{
+  cogl_pipeline_remove_layer (pipeline, layer_index);
+  return TRUE;
 }
 
 static void
-draw_wireframe (CoglFramebuffer *framebuffer,
+pipeline_destroyed_cb (CoglPipeline *weak_pipeline, void *user_data)
+{
+  CoglPipeline *original_pipeline = user_data;
+
+  /* XXX: I think we probably need to provide a custom unref function for
+   * CoglPipeline because it's possible that we will reach this callback
+   * because original_pipeline is being freed which means cogl_object_unref
+   * will have already freed any associated user data.
+   *
+   * Setting more user data here will *probably* succeed but that may allocate
+   * a new user-data array which could be leaked.
+   *
+   * Potentially we could have a _cogl_object_free_user_data function so
+   * that a custom unref function could be written that can destroy weak
+   * pipeline children before removing user data.
+   */
+  cogl_object_set_user_data (COGL_OBJECT (original_pipeline),
+                             &wire_pipeline_key, NULL, NULL);
+
+  cogl_object_unref (weak_pipeline);
+}
+
+static void
+draw_wireframe (CoglContext *ctx,
+                CoglFramebuffer *framebuffer,
                 CoglPipeline *pipeline,
                 CoglVerticesMode mode,
                 int first_vertex,
@@ -2603,68 +2641,70 @@ draw_wireframe (CoglFramebuffer *framebuffer,
                 int n_attributes,
                 CoglIndices *indices)
 {
-  CoglAttribute *position = NULL;
-  int i;
-  int n_line_vertices;
-  static CoglPipeline *wire_pipeline;
-  CoglAttribute *wire_attribute[1];
-  CoglVertexP3 *lines;
-  CoglAttributeBuffer *attribute_buffer;
+  CoglIndices *wire_indices;
+  CoglPipeline *wire_pipeline;
+  int n_indices;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  wire_indices = get_wire_line_indices (ctx,
+                                        mode,
+                                        first_vertex,
+                                        n_vertices,
+                                        indices,
+                                        &n_indices);
 
-  for (i = 0; i < n_attributes; i++)
-    {
-      if (attributes[i]->name_state->name_id ==
-          COGL_ATTRIBUTE_NAME_ID_POSITION_ARRAY)
-        {
-          position = attributes[i];
-          break;
-        }
-    }
-  if (!position)
-    return;
-
-  lines = get_wire_lines (position,
-                          mode,
-                          n_vertices,
-                          &n_line_vertices,
-                          indices);
-  attribute_buffer =
-    cogl_attribute_buffer_new (ctx, sizeof (CoglVertexP3) * n_line_vertices,
-                               lines);
-  wire_attribute[0] =
-    cogl_attribute_new (attribute_buffer, "cogl_position_in",
-                        sizeof (CoglVertexP3),
-                        0,
-                        3,
-                        COGL_ATTRIBUTE_TYPE_FLOAT);
-  cogl_object_unref (attribute_buffer);
+  wire_pipeline = cogl_object_get_user_data (COGL_OBJECT (pipeline),
+                                             &wire_pipeline_key);
 
   if (!wire_pipeline)
     {
-      wire_pipeline = cogl_pipeline_new ();
-      cogl_pipeline_set_color4ub (wire_pipeline,
-                                  0x00, 0xff, 0x00, 0xff);
+      wire_pipeline =
+        _cogl_pipeline_weak_copy (pipeline, pipeline_destroyed_cb, NULL);
+
+      cogl_object_set_user_data (COGL_OBJECT (pipeline),
+                                 &wire_pipeline_key, wire_pipeline,
+                                 NULL);
+
+      /* If we have glsl then the pipeline may have an associated
+       * vertex program and since we'd like to see the results of the
+       * vertex program in the wireframe we just add a final clobber
+       * of the wire color leaving the rest of the state untouched. */
+      if (cogl_has_feature (framebuffer->context, COGL_FEATURE_ID_GLSL))
+        {
+          CoglSnippet *snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                                                   NULL,
+                                                   NULL);
+          cogl_snippet_set_replace (snippet,
+                                    "cogl_color_out = "
+                                      "vec4 (0.0, 1.0, 0.0, 1.0);\n");
+
+          cogl_pipeline_add_snippet (wire_pipeline, snippet);
+          cogl_object_unref (snippet);
+        }
+      else
+        {
+          cogl_pipeline_foreach_layer (wire_pipeline, remove_layer_cb, NULL);
+          cogl_pipeline_set_color4f (wire_pipeline, 0, 1, 0, 1);
+        }
     }
 
   /* temporarily disable the wireframe to avoid recursion! */
   COGL_DEBUG_CLEAR_FLAG (COGL_DEBUG_WIREFRAME);
-  _cogl_framebuffer_draw_attributes (framebuffer,
-                                     wire_pipeline,
-                                     COGL_VERTICES_MODE_LINES,
-                                     0,
-                                     n_line_vertices,
-                                     wire_attribute,
-                                     1,
-                                     COGL_DRAW_SKIP_JOURNAL_FLUSH |
-                                     COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                                     COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
-                                     COGL_DRAW_SKIP_LEGACY_STATE);
-
+  _cogl_framebuffer_draw_indexed_attributes (
+                                           framebuffer,
+                                           wire_pipeline,
+                                           COGL_VERTICES_MODE_LINES,
+                                           0,
+                                           n_indices,
+                                           wire_indices,
+                                           attributes,
+                                           n_attributes,
+                                           COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                                           COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                                           COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
+                                           COGL_DRAW_SKIP_LEGACY_STATE);
   COGL_DEBUG_SET_FLAG (COGL_DEBUG_WIREFRAME);
 
-  cogl_object_unref (wire_attribute[0]);
+  cogl_object_unref (wire_indices);
 }
 #endif
 
@@ -2683,7 +2723,8 @@ _cogl_framebuffer_draw_attributes (CoglFramebuffer *framebuffer,
 {
 #ifdef COGL_ENABLE_DEBUG
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_WIREFRAME)))
-    draw_wireframe (framebuffer, pipeline,
+    draw_wireframe (framebuffer->context,
+                    framebuffer, pipeline,
                     mode, first_vertex, n_vertices,
                     attributes, n_attributes, NULL);
   else
@@ -2776,7 +2817,8 @@ _cogl_framebuffer_draw_indexed_attributes (CoglFramebuffer *framebuffer,
 {
 #ifdef COGL_ENABLE_DEBUG
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_WIREFRAME)))
-    draw_wireframe (framebuffer, pipeline,
+    draw_wireframe (framebuffer->context,
+                    framebuffer, pipeline,
                     mode, first_vertex, n_vertices,
                     attributes, n_attributes, indices);
   else
