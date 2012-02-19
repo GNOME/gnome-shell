@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-02-16 01:27+0000\n"
-"PO-Revision-Date: 2012-02-16 22:29+0100\n"
+"PO-Revision-Date: 2012-02-19 15:39+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italiano <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -989,7 +989,7 @@ msgstr "Tastiera a schermo"
 
 #: ../js/ui/status/accessibility.js:67
 msgid "Visual Alerts"
-msgstr "Allerte visive"
+msgstr "Avvisi visibili"
 
 #: ../js/ui/status/accessibility.js:70
 msgid "Sticky Keys"
