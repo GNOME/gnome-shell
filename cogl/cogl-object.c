@@ -190,6 +190,12 @@ _cogl_object_set_user_data (CoglObject *object,
     }
   else
     {
+      /* NB: Setting a value of NULL is documented to delete the
+       * corresponding entry so we can return immediately in this
+       * case. */
+      if (user_data == NULL)
+        return;
+
       if (G_LIKELY (object->n_user_data_entries <
                     COGL_OBJECT_N_PRE_ALLOCATED_USER_DATA_ENTRIES))
         entry = &object->user_data_entry[object->n_user_data_entries++];
