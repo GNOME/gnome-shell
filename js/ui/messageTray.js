@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
+const Atk = imports.gi.Atk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -435,7 +436,7 @@ const Notification = new Lang.Class({
                 this.destroy(reason);
             }));
 
-        this.actor = new St.Button();
+        this.actor = new St.Button({ accessible_role: Atk.Role.NOTIFICATION });
         this.actor._delegate = this;
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
