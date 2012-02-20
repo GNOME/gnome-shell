@@ -2092,21 +2092,6 @@ _cogl_pipeline_compare_differences (CoglPipeline *pipeline0,
   return pipelines_difference;
 }
 
-static gboolean
-simple_property_equal (CoglPipeline **authorities0,
-                       CoglPipeline **authorities1,
-                       unsigned long pipelines_difference,
-                       CoglPipelineStateIndex state_index,
-                       CoglPipelineStateComparitor comparitor)
-{
-  if (pipelines_difference & (1L<<state_index))
-    {
-      if (!comparitor (authorities0[state_index], authorities1[state_index]))
-        return FALSE;
-    }
-  return TRUE;
-}
-
 static void
 _cogl_pipeline_resolve_authorities (CoglPipeline *pipeline,
                                     unsigned long differences,
@@ -2176,6 +2161,7 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
   unsigned long pipelines_difference;
   CoglPipeline *authorities0[COGL_PIPELINE_STATE_SPARSE_COUNT];
   CoglPipeline *authorities1[COGL_PIPELINE_STATE_SPARSE_COUNT];
+  int bit;
   gboolean ret;
 
   COGL_STATIC_TIMER (pipeline_equal_timer,
@@ -2215,121 +2201,107 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
                                       pipelines_difference,
                                       authorities1);
 
-  /* FIXME: we should resolve all the required authorities up front since
-   * that should reduce some repeat ancestor traversals. */
-
-  if (pipelines_difference & COGL_PIPELINE_STATE_COLOR)
+  COGL_FLAGS_FOREACH_START (&pipelines_difference, 1, bit)
     {
-      CoglPipeline *authority0 = authorities0[COGL_PIPELINE_STATE_COLOR_INDEX];
-      CoglPipeline *authority1 = authorities1[COGL_PIPELINE_STATE_COLOR_INDEX];
+      /* XXX: We considered having an array of callbacks for each state index
+       * that we'd call here but decided that this way the compiler is more
+       * likely going to be able to in-line the comparison functions and use
+       * the index to jump straight to the required code. */
+      switch ((CoglPipelineStateIndex)bit)
+        {
+        case COGL_PIPELINE_STATE_COLOR_INDEX:
+          if (!cogl_color_equal (&authorities0[bit]->color,
+                                 &authorities1[bit]->color))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_LIGHTING_INDEX:
+          if (!_cogl_pipeline_lighting_state_equal (authorities0[bit],
+                                                    authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_ALPHA_FUNC_INDEX:
+          if (!_cogl_pipeline_alpha_func_state_equal (authorities0[bit],
+                                                      authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE_INDEX:
+          if (!_cogl_pipeline_alpha_func_reference_state_equal (
+                                                            authorities0[bit],
+                                                            authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_BLEND_INDEX:
+          /* We don't need to compare the detailed blending state if we know
+           * blending is disabled for both pipelines. */
+          if (pipeline0->real_blend_enable)
+            {
+              if (!_cogl_pipeline_blend_state_equal (authorities0[bit],
+                                                     authorities1[bit]))
+                goto done;
+            }
+          break;
+        case COGL_PIPELINE_STATE_DEPTH_INDEX:
+          if (!_cogl_pipeline_depth_state_equal (authorities0[bit],
+                                                 authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_FOG_INDEX:
+          if (!_cogl_pipeline_fog_state_equal (authorities0[bit],
+                                               authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_CULL_FACE_INDEX:
+          if (!_cogl_pipeline_cull_face_state_equal (authorities0[bit],
+                                                     authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_POINT_SIZE_INDEX:
+          if (!_cogl_pipeline_point_size_equal (authorities0[bit],
+                                                authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_LOGIC_OPS_INDEX:
+          if (!_cogl_pipeline_logic_ops_state_equal (authorities0[bit],
+                                                     authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_USER_SHADER_INDEX:
+          if (!_cogl_pipeline_user_shader_equal (authorities0[bit],
+                                                 authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_UNIFORMS_INDEX:
+          if (!_cogl_pipeline_uniforms_state_equal (authorities0[bit],
+                                                    authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_VERTEX_SNIPPETS_INDEX:
+          if (!_cogl_pipeline_vertex_snippets_state_equal (authorities0[bit],
+                                                           authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS_INDEX:
+          if (!_cogl_pipeline_fragment_snippets_state_equal (authorities0[bit],
+                                                             authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_LAYERS_INDEX:
+          {
+            if (!_cogl_pipeline_layers_equal (authorities0[bit],
+                                              authorities1[bit],
+                                              layer_differences,
+                                              flags))
+              goto done;
+            break;
+          }
 
-      if (!cogl_color_equal (&authority0->color, &authority1->color))
-        goto done;
+        case COGL_PIPELINE_STATE_BLEND_ENABLE_INDEX:
+        case COGL_PIPELINE_STATE_REAL_BLEND_ENABLE_INDEX:
+        case COGL_PIPELINE_STATE_COUNT:
+          g_warn_if_reached ();
+        }
     }
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_LIGHTING_INDEX,
-                              _cogl_pipeline_lighting_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_ALPHA_FUNC_INDEX,
-                              _cogl_pipeline_alpha_func_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE_INDEX,
-                              _cogl_pipeline_alpha_func_reference_state_equal))
-    goto done;
-
-  /* We don't need to compare the detailed blending state if we know
-   * blending is disabled for both pipelines. */
-  if (pipeline0->real_blend_enable &&
-      pipelines_difference & COGL_PIPELINE_STATE_BLEND)
-    {
-      CoglPipeline *authority0 = authorities0[COGL_PIPELINE_STATE_BLEND_INDEX];
-      CoglPipeline *authority1 = authorities1[COGL_PIPELINE_STATE_BLEND_INDEX];
-
-      if (!_cogl_pipeline_blend_state_equal (authority0, authority1))
-        goto done;
-    }
-
-  /* XXX: we don't need to compare the BLEND_ENABLE state because it's
-   * already reflected in ->real_blend_enable */
-#if 0
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_BLEND_INDEX,
-                              _cogl_pipeline_blend_enable_equal))
-    return FALSE;
-#endif
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_DEPTH_INDEX,
-                              _cogl_pipeline_depth_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_FOG_INDEX,
-                              _cogl_pipeline_fog_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_CULL_FACE_INDEX,
-                              _cogl_pipeline_cull_face_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_POINT_SIZE_INDEX,
-                              _cogl_pipeline_point_size_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_LOGIC_OPS_INDEX,
-                              _cogl_pipeline_logic_ops_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_USER_SHADER_INDEX,
-                              _cogl_pipeline_user_shader_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_UNIFORMS_INDEX,
-                              _cogl_pipeline_uniforms_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_VERTEX_SNIPPETS_INDEX,
-                              _cogl_pipeline_vertex_snippets_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS_INDEX,
-                              _cogl_pipeline_fragment_snippets_state_equal))
-    goto done;
-
-  if (pipelines_difference & COGL_PIPELINE_STATE_LAYERS)
-    {
-      CoglPipelineStateIndex state_index = COGL_PIPELINE_STATE_LAYERS_INDEX;
-      if (!_cogl_pipeline_layers_equal (authorities0[state_index],
-                                        authorities1[state_index],
-                                        layer_differences,
-                                        flags))
-        goto done;
-    }
+  COGL_FLAGS_FOREACH_END;
 
   ret = TRUE;
 done:

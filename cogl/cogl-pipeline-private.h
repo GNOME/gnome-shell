@@ -188,9 +188,10 @@ typedef enum
   /* non-sparse */
   COGL_PIPELINE_STATE_REAL_BLEND_ENABLE_INDEX,
 
-  COGL_PIPELINE_STATE_COUNT,
-  COGL_PIPELINE_STATE_SPARSE_COUNT = COGL_PIPELINE_STATE_COUNT - 1,
+  COGL_PIPELINE_STATE_COUNT
 } CoglPipelineStateIndex;
+
+#define COGL_PIPELINE_STATE_SPARSE_COUNT (COGL_PIPELINE_STATE_COUNT - 1)
 
 /* Used in pipeline->differences masks and for notifying pipeline
  * state changes.
