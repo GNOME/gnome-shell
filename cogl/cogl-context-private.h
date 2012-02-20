@@ -110,14 +110,17 @@ struct _CoglContext
      calling it multiple times */
   CoglMatrixMode    flushed_matrix_mode;
 
-  /* The matrix stack that should be used for the next render */
-  CoglMatrixStack  *current_projection_stack;
-  CoglMatrixStack  *current_modelview_stack;
+  /* The matrix stack entries that should be flushed during the next
+   * pipeline state flush */
+  CoglMatrixEntry *current_projection_entry;
+  CoglMatrixEntry *current_modelview_entry;
 
-  /* The last matrix stack with age that was flushed to the GL matrix
-     builtins */
-  CoglMatrixStackCache builtin_flushed_projection;
-  CoglMatrixStackCache builtin_flushed_modelview;
+  CoglMatrixEntry identity_entry;
+
+  /* A cache of the last (immutable) matrix stack entries that were
+   * flushed to the GL matrix builtins */
+  CoglMatrixEntryCache builtin_flushed_projection;
+  CoglMatrixEntryCache builtin_flushed_modelview;
 
   GArray           *texture_units;
   int               active_texture_unit;
@@ -336,11 +339,11 @@ if (ctxvar == NULL) return retval;
 #define NO_RETVAL
 
 void
-_cogl_context_set_current_projection (CoglContext *context,
-                                      CoglMatrixStack *stack);
+_cogl_context_set_current_projection_entry (CoglContext *context,
+                                            CoglMatrixEntry *entry);
 
 void
-_cogl_context_set_current_modelview (CoglContext *context,
-                                     CoglMatrixStack *stack);
+_cogl_context_set_current_modelview_entry (CoglContext *context,
+                                           CoglMatrixEntry *entry);
 
 #endif /* __COGL_CONTEXT_PRIVATE_H */

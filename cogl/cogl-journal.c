@@ -107,9 +107,6 @@ typedef struct _CoglJournalFlushState
   CoglIndices *indices;
   size_t indices_type_size;
 
-  CoglMatrixStack *modelview_stack;
-  CoglMatrixStack *projection_stack;
-
   CoglPipeline *pipeline;
 } CoglJournalFlushState;
 
@@ -297,11 +294,8 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
     g_print ("BATCHING:     modelview batch len = %d\n", batch_len);
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)))
-    {
-      _cogl_matrix_stack_set (state->modelview_stack,
-                              &batch_start->model_view);
-      _cogl_context_set_current_modelview (ctx, state->modelview_stack);
-    }
+    _cogl_context_set_current_modelview_entry (ctx,
+                                               batch_start->modelview_entry);
 
   attributes = (CoglAttribute **)state->attributes->data;
 
@@ -413,21 +407,7 @@ compare_entry_modelviews (CoglJournalEntry *entry0,
                           CoglJournalEntry *entry1)
 {
   /* Batch together quads with the same model view matrix */
-
-  /* FIXME: this is nasty, there are much nicer ways to track this
-   * (at the add_quad_vertices level) without resorting to a memcmp!
-   *
-   * E.g. If the cogl-current-matrix code maintained an "age" for
-   * the modelview matrix we could simply check in add_quad_vertices
-   * if the age has increased, and if so record the change as a
-   * boolean in the journal.
-   */
-
-  if (memcmp (&entry0->model_view, &entry1->model_view,
-              sizeof (GLfloat) * 16) == 0)
-    return TRUE;
-  else
-    return FALSE;
+  return entry0->modelview_entry == entry1->modelview_entry;
 }
 
 /* At this point we have a run of quads that we know have compatible
@@ -702,6 +682,9 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
                                              void             *data)
 {
   CoglJournalFlushState *state = data;
+  CoglFramebuffer *framebuffer = state->journal->framebuffer;
+  CoglContext *ctx = framebuffer->context;
+  CoglMatrixStack *projection_stack;
 
   COGL_STATIC_TIMER (time_flush_clip_stack_pipeline_entries,
                      "Journal Flush", /* parent */
@@ -710,15 +693,13 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
                      "pipeline + entries",
                      0 /* no application private data */);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   COGL_TIMER_START (_cogl_uprof_context,
                     time_flush_clip_stack_pipeline_entries);
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING:  clip stack batch len = %d\n", batch_len);
 
-  _cogl_clip_stack_flush (batch_start->clip_stack, state->journal->framebuffer);
+  _cogl_clip_stack_flush (batch_start->clip_stack, framebuffer);
 
   /* XXX: Because we are manually flushing clip state here we need to
    * make sure that the clip state gets updated the next time we flush
@@ -726,22 +707,21 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
    * as changed. */
   ctx->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_CLIP;
 
-  _cogl_matrix_stack_push (state->modelview_stack);
-
   /* If we have transformed all our quads at log time then we ensure
    * no further model transform is applied by loading the identity
    * matrix here. We need to do this after flushing the clip stack
-   * because the clip stack flushing code can modify the matrix */
+   * because the clip stack flushing code can modify the current
+   * modelview matrix entry */
   if (G_LIKELY (!(COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))))
-    {
-      _cogl_matrix_stack_load_identity (state->modelview_stack);
-      _cogl_context_set_current_modelview (ctx, state->modelview_stack);
-    }
+    _cogl_context_set_current_modelview_entry (ctx, &ctx->identity_entry);
 
-  /* Setting up the clip state can sometimes also flush the projection
-     matrix so we should flush it again. This will be a no-op if the
-     clip code didn't modify the projection */
-  _cogl_context_set_current_projection (ctx, state->projection_stack);
+  /* Setting up the clip state can sometimes also update the current
+   * projection matrix entry so we should update it again. This will have
+   * no affect if the clip code didn't modify the projection */
+  projection_stack =
+    _cogl_framebuffer_get_projection_stack (framebuffer);
+  _cogl_context_set_current_projection_entry (ctx,
+                                              projection_stack->last_entry);
 
   batch_and_call (batch_start,
                   batch_len,
@@ -749,95 +729,8 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
                   _cogl_journal_flush_vbo_offsets_and_entries, /* callback */
                   data);
 
-  _cogl_matrix_stack_pop (state->modelview_stack);
-
   COGL_TIMER_STOP (_cogl_uprof_context,
                    time_flush_clip_stack_pipeline_entries);
-}
-
-static CoglBool
-calculate_translation (const CoglMatrix *a,
-                       const CoglMatrix *b,
-                       float *tx_p,
-                       float *ty_p)
-{
-  float tx, ty;
-  int x, y;
-
-  /* Assuming we had the original matrix in this form:
-   *
-   *      [ a₁₁, a₁₂, a₁₃, a₁₄ ]
-   *      [ a₂₁, a₂₂, a₂₃, a₂₄ ]
-   *  a = [ a₃₁, a₃₂, a₃₃, a₃₄ ]
-   *      [ a₄₁, a₄₂, a₄₃, a₄₄ ]
-   *
-   * then a translation of that matrix would be a multiplication by a
-   * matrix of this form:
-   *
-   *      [ 1, 0, 0, x ]
-   *      [ 0, 1, 0, y ]
-   *  t = [ 0, 0, 1, 0 ]
-   *      [ 0, 0, 0, 1 ]
-   *
-   * That would give us a matrix of this form.
-   *
-   *              [ a₁₁, a₁₂, a₁₃, a₁₁ x + a₁₂ y + a₁₄ ]
-   *              [ a₂₁, a₂₂, a₂₃, a₂₁ x + a₂₂ y + a₂₄ ]
-   *  b = a ⋅ t = [ a₃₁, a₃₂, a₃₃, a₃₁ x + a₃₂ y + a₃₄ ]
-   *              [ a₄₁, a₄₂, a₄₃, a₄₁ x + a₄₂ y + a₄₄ ]
-   *
-   * We can use the two equations from the top left of the matrix to
-   * work out the x and y translation given the two matrices:
-   *
-   *  b₁₄ = a₁₁x + a₁₂y + a₁₄
-   *  b₂₄ = a₂₁x + a₂₂y + a₂₄
-   *
-   * Rearranging gives us:
-   *
-   *        a₁₂ b₂₄ - a₂₄ a₁₂
-   *        -----------------  +  a₁₄ - b₁₄
-   *              a₂₂
-   *  x =  ---------------------------------
-   *                a₁₂ a₂₁
-   *                -------  -  a₁₁
-   *                  a₂₂
-   *
-   *      b₂₄ - a₂₁x - a₂₄
-   *  y = ----------------
-   *            a₂₂
-   *
-   * Once we've worked out what x and y would be if this was a valid
-   * translation then we can simply verify that the rest of the matrix
-   * matches up.
-   */
-
-  /* The leftmost 3x4 part of the matrix shouldn't change by a
-     translation so we can just compare it directly */
-  for (y = 0; y < 4; y++)
-    for (x = 0; x < 3; x++)
-      if ((&a->xx)[x * 4 + y] != (&b->xx)[x * 4 + y])
-        return FALSE;
-
-  tx = (((a->xy * b->yw - a->yw * a->xy) / a->yy + a->xw - b->xw) /
-        ((a->xy * a->yx) / a->yy - a->xx));
-  ty = (b->yw - a->yx * tx - a->yw) / a->yy;
-
-#define APPROX_EQUAL(a, b) (fabsf ((a) - (b)) < 1e-6f)
-
-  /* Check whether the 4th column of the matrices match up to the
-     calculation */
-  if (!APPROX_EQUAL (b->xw, a->xx * tx + a->xy * ty + a->xw) ||
-      !APPROX_EQUAL (b->yw, a->yx * tx + a->yy * ty + a->yw) ||
-      !APPROX_EQUAL (b->zw, a->zx * tx + a->zy * ty + a->zw) ||
-      !APPROX_EQUAL (b->ww, a->wx * tx + a->wy * ty + a->ww))
-    return FALSE;
-
-#undef APPROX_EQUAL
-
-  *tx_p = tx;
-  *ty_p = ty;
-
-  return TRUE;
 }
 
 typedef struct
@@ -887,13 +780,15 @@ can_software_clip_entry (CoglJournalEntry *journal_entry,
     {
       float rect_x1, rect_y1, rect_x2, rect_y2;
       CoglClipStackRect *clip_rect;
-      float tx, ty;
+      float tx, ty, tz;
+      CoglMatrixEntry *modelview_entry;
 
       clip_rect = (CoglClipStackRect *) clip_entry;
 
-      if (!calculate_translation (&clip_rect->matrix,
-                                  &journal_entry->model_view,
-                                  &tx, &ty))
+      modelview_entry = journal_entry->modelview_entry;
+      if (!_cogl_matrix_entry_calculate_translation (clip_rect->matrix_entry,
+                                                     modelview_entry,
+                                                     &tx, &ty, &tz))
         return FALSE;
 
       if (clip_rect->x0 < clip_rect->x1)
@@ -1212,6 +1107,7 @@ upload_vertices (CoglJournal *journal,
       else
         {
           float v[8];
+          CoglMatrix modelview;
 
           v[0] = vin[0];
           v[1] = vin[1];
@@ -1222,7 +1118,8 @@ upload_vertices (CoglJournal *journal,
           v[6] = vin[array_stride];
           v[7] = vin[1];
 
-          cogl_matrix_transform_points (&entry->model_view,
+          _cogl_matrix_entry_get (entry->modelview_entry, &modelview);
+          cogl_matrix_transform_points (&modelview,
                                         2, /* n_components */
                                         sizeof (float) * 2, /* stride_in */
                                         v, /* points_in */
@@ -1269,6 +1166,7 @@ _cogl_journal_discard (CoglJournal *journal)
       CoglJournalEntry *entry =
         &g_array_index (journal->entries, CoglJournalEntry, i);
       _cogl_pipeline_journal_unref (entry->pipeline);
+      _cogl_matrix_entry_unref (entry->modelview_entry);
       _cogl_clip_stack_unref (entry->clip_stack);
     }
 
@@ -1357,25 +1255,27 @@ _cogl_journal_all_entries_within_bounds (CoglJournal *journal,
 void
 _cogl_journal_flush (CoglJournal *journal)
 {
+  CoglFramebuffer *framebuffer;
+  CoglContext *ctx;
   CoglJournalFlushState state;
-  int                   i;
-  CoglMatrixStack      *modelview_stack;
+  int i;
   COGL_STATIC_TIMER (flush_timer,
                      "Mainloop", /* parent */
                      "Journal Flush",
                      "The time spent flushing the Cogl journal",
                      0 /* no application private data */);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   if (journal->entries->len == 0)
     return;
+
+  framebuffer = journal->framebuffer;
+  ctx = framebuffer->context;
 
   /* The entries in this journal may depend on images in other
    * framebuffers which may require that we flush the journals
    * associated with those framebuffers before we can flush
    * this journal... */
-  _cogl_framebuffer_flush_dependency_journals (journal->framebuffer);
+  _cogl_framebuffer_flush_dependency_journals (framebuffer);
 
   /* Note: we start the timer after flushing dependency journals so
    * that the timer isn't started recursively. */
@@ -1386,8 +1286,8 @@ _cogl_journal_flush (CoglJournal *journal)
 
   /* NB: the journal deals with flushing the modelview stack and clip
      state manually */
-  _cogl_framebuffer_flush_state (journal->framebuffer,
-                                 journal->framebuffer,
+  _cogl_framebuffer_flush_state (framebuffer,
+                                 framebuffer,
                                  COGL_FRAMEBUFFER_STATE_ALL &
                                  ~(COGL_FRAMEBUFFER_STATE_MODELVIEW |
                                    COGL_FRAMEBUFFER_STATE_CLIP));
@@ -1395,12 +1295,6 @@ _cogl_journal_flush (CoglJournal *journal)
   state.journal = journal;
 
   state.attributes = ctx->journal_flush_attributes_array;
-
-  modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (journal->framebuffer);
-  state.modelview_stack = modelview_stack;
-  state.projection_stack =
-    _cogl_framebuffer_get_projection_stack (journal->framebuffer);
 
   if (G_UNLIKELY ((COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SOFTWARE_CLIP)) == 0))
     {
@@ -1502,6 +1396,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
   CoglPipeline *final_pipeline;
   CoglClipStack *clip_stack;
   CoglPipelineFlushOptions flush_options;
+  CoglMatrixStack *modelview_stack;
   COGL_STATIC_TIMER (log_timer,
                      "Mainloop", /* parent */
                      "Journal Log",
@@ -1599,8 +1494,9 @@ _cogl_journal_log_quad (CoglJournal  *journal,
   if (G_UNLIKELY (final_pipeline != pipeline))
     cogl_object_unref (final_pipeline);
 
-  cogl_framebuffer_get_modelview_matrix (framebuffer,
-                                         &entry->model_view);
+  modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  entry->modelview_entry = _cogl_matrix_entry_ref (modelview_stack->last_entry);
 
   _cogl_pipeline_foreach_layer_internal (pipeline,
                                          add_framebuffer_deps_cb,
@@ -1622,6 +1518,7 @@ entry_to_screen_polygon (CoglFramebuffer *framebuffer,
     GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS (entry->n_layers);
   CoglMatrixStack *projection_stack;
   CoglMatrix projection;
+  CoglMatrix modelview;
   int i;
   float viewport[4];
 
@@ -1649,7 +1546,8 @@ entry_to_screen_polygon (CoglFramebuffer *framebuffer,
    * _cogl_transform_points utility...
    */
 
-  cogl_matrix_transform_points (&entry->model_view,
+  _cogl_matrix_entry_get (entry->modelview_entry, &modelview);
+  cogl_matrix_transform_points (&modelview,
                                 2, /* n_components */
                                 sizeof (float) * 4, /* stride_in */
                                 poly, /* points_in */

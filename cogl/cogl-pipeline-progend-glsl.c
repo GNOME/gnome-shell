@@ -123,8 +123,8 @@ typedef struct
   GLint projection_uniform;
   GLint mvp_uniform;
 
-  CoglMatrixStackCache projection_cache;
-  CoglMatrixStackCache modelview_cache;
+  CoglMatrixEntryCache projection_cache;
+  CoglMatrixEntryCache modelview_cache;
 #endif
 
   /* We need to track the last pipeline that the program was used with
@@ -231,10 +231,10 @@ clear_attribute_cache (CoglPipelineProgramState *program_state)
 static void
 clear_flushed_matrix_stacks (CoglPipelineProgramState *program_state)
 {
-  _cogl_matrix_stack_destroy_cache (&program_state->projection_cache);
-  _cogl_matrix_stack_init_cache (&program_state->projection_cache);
-  _cogl_matrix_stack_destroy_cache (&program_state->modelview_cache);
-  _cogl_matrix_stack_init_cache (&program_state->modelview_cache);
+  _cogl_matrix_entry_cache_destroy (&program_state->projection_cache);
+  _cogl_matrix_entry_cache_init (&program_state->projection_cache);
+  _cogl_matrix_entry_cache_destroy (&program_state->modelview_cache);
+  _cogl_matrix_entry_cache_init (&program_state->modelview_cache);
 }
 
 #endif /* HAVE_COGL_GLES2 */
@@ -252,8 +252,8 @@ program_state_new (int n_layers)
   program_state->uniform_locations = NULL;
   program_state->attribute_locations = NULL;
 #ifdef HAVE_COGL_GLES2
-  _cogl_matrix_stack_init_cache (&program_state->modelview_cache);
-  _cogl_matrix_stack_init_cache (&program_state->projection_cache);
+  _cogl_matrix_entry_cache_init (&program_state->modelview_cache);
+  _cogl_matrix_entry_cache_init (&program_state->projection_cache);
 #endif
 
   return program_state;
@@ -281,8 +281,8 @@ destroy_program_state (void *user_data,
 #ifdef HAVE_COGL_GLES2
       if (ctx->driver == COGL_DRIVER_GLES2)
         {
-          _cogl_matrix_stack_destroy_cache (&program_state->projection_cache);
-          _cogl_matrix_stack_destroy_cache (&program_state->modelview_cache);
+          _cogl_matrix_entry_cache_destroy (&program_state->projection_cache);
+          _cogl_matrix_entry_cache_destroy (&program_state->modelview_cache);
         }
 #endif
 
@@ -929,11 +929,12 @@ _cogl_pipeline_progend_glsl_layer_pre_change_notify (
 }
 
 static void
-_cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
+_cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline,
+                                       CoglFramebuffer *framebuffer)
 {
   CoglBool needs_flip;
-  CoglMatrixStack *projection_stack;
-  CoglMatrixStack *modelview_stack;
+  CoglMatrixEntry *projection_entry;
+  CoglMatrixEntry *modelview_entry;
   CoglPipelineProgramState *program_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -943,13 +944,13 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
 
   program_state = get_program_state (pipeline);
 
-  projection_stack = ctx->current_projection_stack;
-  modelview_stack = ctx->current_modelview_stack;
+  projection_entry = ctx->current_projection_entry;
+  modelview_entry = ctx->current_modelview_entry;
 
   /* An initial pipeline is flushed while creating the context. At
      this point there are no matrices selected so we can't do
      anything */
-  if (modelview_stack == NULL || projection_stack == NULL)
+  if (modelview_entry == NULL || projection_entry == NULL)
     return;
 
   needs_flip = cogl_is_offscreen (ctx->current_draw_buffer);
@@ -964,19 +965,17 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
       CoglMatrix modelview, projection;
 
       projection_changed =
-        _cogl_matrix_stack_check_and_update_cache (projection_stack,
-                                                   &program_state->
-                                                   projection_cache,
-                                                   needs_flip &&
-                                                   program_state->
-                                                   flip_uniform == -1);
+        _cogl_matrix_entry_cache_maybe_update (&program_state->projection_cache,
+                                               projection_entry,
+                                               (needs_flip &&
+                                                program_state->flip_uniform ==
+                                                -1));
 
       modelview_changed =
-        _cogl_matrix_stack_check_and_update_cache (modelview_stack,
-                                                   &program_state->
-                                                   modelview_cache,
-                                                   /* never flip modelview */
-                                                   FALSE);
+        _cogl_matrix_entry_cache_maybe_update (&program_state->modelview_cache,
+                                               modelview_entry,
+                                               /* never flip modelview */
+                                               FALSE);
 
       if (modelview_changed || projection_changed)
         {
@@ -991,19 +990,19 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
             }
 
           if (need_modelview)
-            _cogl_matrix_stack_get (modelview_stack, &modelview);
+            _cogl_matrix_entry_get (modelview_entry, &modelview);
           if (need_projection)
             {
               if (needs_flip && program_state->flip_uniform == -1)
                 {
                   CoglMatrix tmp_matrix;
-                  _cogl_matrix_stack_get (projection_stack, &tmp_matrix);
+                  _cogl_matrix_entry_get (projection_entry, &tmp_matrix);
                   cogl_matrix_multiply (&projection,
                                         &ctx->y_flip_matrix,
                                         &tmp_matrix);
                 }
               else
-                _cogl_matrix_stack_get (projection_stack, &projection);
+                _cogl_matrix_entry_get (projection_entry, &projection);
             }
 
           if (projection_changed && program_state->projection_uniform != -1)
@@ -1023,7 +1022,7 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
               /* The journal usually uses an identity matrix for the
                  modelview so we can optimise this common case by
                  avoiding the matrix multiplication */
-              if (_cogl_matrix_stack_has_identity_flag (modelview_stack))
+              if (_cogl_matrix_entry_has_identity_flag (modelview_entry))
                 {
                   GE (ctx,
                       glUniformMatrix4fv (program_state->mvp_uniform,
@@ -1056,13 +1055,15 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
          geometry via the matrix and use the flip vertex instead */
       disable_flip = program_state->flip_uniform != -1;
 
-      _cogl_matrix_stack_flush_to_gl_builtins (ctx,
-                                               projection_stack,
+      _cogl_matrix_entry_flush_to_gl_builtins (ctx,
+                                               projection_entry,
                                                COGL_MATRIX_PROJECTION,
+                                               framebuffer,
                                                disable_flip);
-      _cogl_matrix_stack_flush_to_gl_builtins (ctx,
-                                               modelview_stack,
+      _cogl_matrix_entry_flush_to_gl_builtins (ctx,
+                                               modelview_entry,
                                                COGL_MATRIX_MODELVIEW,
+                                               framebuffer,
                                                disable_flip);
     }
 

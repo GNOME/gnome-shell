@@ -287,7 +287,8 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
 static CoglBool
 _cogl_pipeline_vertend_glsl_add_layer (CoglPipeline *pipeline,
                                        CoglPipelineLayer *layer,
-                                       unsigned long layers_difference)
+                                       unsigned long layers_difference,
+                                       CoglFramebuffer *framebuffer)
 {
   CoglPipelineShaderState *shader_state;
   CoglPipelineSnippetData snippet_data;
@@ -310,15 +311,18 @@ _cogl_pipeline_vertend_glsl_add_layer (CoglPipeline *pipeline,
           CoglPipelineLayer *authority =
             _cogl_pipeline_layer_get_authority (layer, state);
           CoglTextureUnit *unit = _cogl_get_texture_unit (unit_index);
+          CoglMatrixEntry *matrix_entry;
 
           _cogl_matrix_stack_set (unit->matrix_stack,
                                   &authority->big_state->matrix);
 
           _cogl_set_active_texture_unit (unit_index);
 
-          _cogl_matrix_stack_flush_to_gl_builtins (ctx,
-                                                   unit->matrix_stack,
+          matrix_entry = unit->matrix_stack->last_entry;
+          _cogl_matrix_entry_flush_to_gl_builtins (ctx,
+                                                   matrix_entry,
                                                    COGL_MATRIX_TEXTURE,
+                                                   framebuffer,
                                                    FALSE /* do flip */);
         }
     }

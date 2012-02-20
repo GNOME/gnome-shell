@@ -37,24 +37,28 @@
 
 #include "cogl-context.h"
 #include "cogl-context-private.h"
+#include "cogl-framebuffer-private.h"
 
 static void
-_cogl_pipeline_progend_fixed_pre_paint (CoglPipeline *pipeline)
+_cogl_pipeline_progend_fixed_pre_paint (CoglPipeline *pipeline,
+                                        CoglFramebuffer *framebuffer)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = framebuffer->context;
 
   if (pipeline->vertend != COGL_PIPELINE_VERTEND_FIXED)
     return;
 
-  if (ctx->current_projection_stack)
-    _cogl_matrix_stack_flush_to_gl_builtins (ctx,
-                                             ctx->current_projection_stack,
+  if (ctx->current_projection_entry)
+    _cogl_matrix_entry_flush_to_gl_builtins (ctx,
+                                             ctx->current_projection_entry,
                                              COGL_MATRIX_PROJECTION,
+                                             framebuffer,
                                              FALSE /* enable flip */);
-  if (ctx->current_modelview_stack)
-    _cogl_matrix_stack_flush_to_gl_builtins (ctx,
-                                             ctx->current_modelview_stack,
+  if (ctx->current_modelview_entry)
+    _cogl_matrix_entry_flush_to_gl_builtins (ctx,
+                                             ctx->current_modelview_entry,
                                              COGL_MATRIX_MODELVIEW,
+                                             framebuffer,
                                              FALSE /* enable flip */);
 }
 

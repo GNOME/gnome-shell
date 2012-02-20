@@ -143,6 +143,7 @@ _cogl_delete_gl_texture (GLuint gl_texture);
 
 void
 _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
+                               CoglFramebuffer *framebuffer,
                                CoglBool skip_gl_state,
                                int n_tex_coord_attribs);
 

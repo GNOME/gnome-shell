@@ -395,10 +395,11 @@ cogl_context_new (CoglDisplay *display,
     GE (context, glEnable (GL_ALPHA_TEST));
 #endif
 
-  _context->current_modelview_stack = NULL;
-  _context->current_projection_stack = NULL;
-  _cogl_matrix_stack_init_cache (&_context->builtin_flushed_projection);
-  _cogl_matrix_stack_init_cache (&_context->builtin_flushed_modelview);
+  _context->current_modelview_entry = NULL;
+  _context->current_projection_entry = NULL;
+  _cogl_matrix_entry_identity_init (&_context->identity_entry);
+  _cogl_matrix_entry_cache_init (&_context->builtin_flushed_projection);
+  _cogl_matrix_entry_cache_init (&_context->builtin_flushed_modelview);
 
   default_texture_bitmap =
     cogl_bitmap_new_for_data (_context,
@@ -429,7 +430,6 @@ cogl_context_new (CoglDisplay *display,
   cogl_object_unref (default_texture_bitmap);
 
   cogl_push_source (context->opaque_color_pipeline);
-  _cogl_pipeline_flush_gl_state (context->opaque_color_pipeline, FALSE, 0);
 
   context->atlases = NULL;
   g_hook_list_init (&context->atlas_reorganize_callbacks, sizeof (GHook));
@@ -525,12 +525,12 @@ _cogl_context_free (CoglContext *context)
   g_slist_free (context->texture_types);
   g_slist_free (context->buffer_types);
 
-  if (_context->current_modelview_stack)
-    cogl_object_unref (_context->current_modelview_stack);
-  if (_context->current_projection_stack)
-    cogl_object_unref (_context->current_projection_stack);
-  _cogl_matrix_stack_destroy_cache (&context->builtin_flushed_projection);
-  _cogl_matrix_stack_destroy_cache (&context->builtin_flushed_modelview);
+  if (_context->current_modelview_entry)
+    _cogl_matrix_entry_unref (_context->current_modelview_entry);
+  if (_context->current_projection_entry)
+    _cogl_matrix_entry_unref (_context->current_projection_entry);
+  _cogl_matrix_entry_cache_destroy (&context->builtin_flushed_projection);
+  _cogl_matrix_entry_cache_destroy (&context->builtin_flushed_modelview);
 
   cogl_pipeline_cache_free (context->pipeline_cache);
 
@@ -597,21 +597,21 @@ _cogl_context_update_features (CoglContext *context,
 }
 
 void
-_cogl_context_set_current_projection (CoglContext *context,
-                                      CoglMatrixStack *stack)
+_cogl_context_set_current_projection_entry (CoglContext *context,
+                                            CoglMatrixEntry *entry)
 {
-  cogl_object_ref (stack);
-  if (context->current_projection_stack)
-    cogl_object_unref (context->current_projection_stack);
-  context->current_projection_stack = stack;
+  _cogl_matrix_entry_ref (entry);
+  if (context->current_projection_entry)
+    _cogl_matrix_entry_unref (context->current_projection_entry);
+  context->current_projection_entry = entry;
 }
 
 void
-_cogl_context_set_current_modelview (CoglContext *context,
-                                     CoglMatrixStack *stack)
+_cogl_context_set_current_modelview_entry (CoglContext *context,
+                                           CoglMatrixEntry *entry)
 {
-  cogl_object_ref (stack);
-  if (context->current_modelview_stack)
-    cogl_object_unref (context->current_modelview_stack);
-  context->current_modelview_stack = stack;
+  _cogl_matrix_entry_ref (entry);
+  if (context->current_modelview_entry)
+    _cogl_matrix_entry_unref (context->current_modelview_entry);
+  context->current_modelview_entry = entry;
 }

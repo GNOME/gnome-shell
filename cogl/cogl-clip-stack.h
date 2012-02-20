@@ -28,6 +28,7 @@
 #include "cogl-matrix.h"
 #include "cogl-primitive.h"
 #include "cogl-framebuffer.h"
+#include "cogl-matrix-stack.h"
 
 /* The clip stack works like a GSList where only a pointer to the top
    of the stack is stored. The empty clip stack is represented simply
@@ -112,13 +113,13 @@ struct _CoglClipStack
 
 struct _CoglClipStackRect
 {
-  CoglClipStack     _parent_data;
+  CoglClipStack _parent_data;
 
   /* The rectangle for this clip */
-  float                  x0;
-  float                  y0;
-  float                  x1;
-  float                  y1;
+  float x0;
+  float y0;
+  float x1;
+  float y1;
 
   /* If this is true then the clip for this rectangle is entirely
      described by the scissor bounds. This implies that the rectangle
@@ -128,15 +129,15 @@ struct _CoglClipStackRect
      modelview matrix is that same as when a rectangle is added to the
      journal. In that case we can use the original clip coordinates
      and modify the rectangle instead. */
-  CoglBool               can_be_scissor;
+  CoglBool can_be_scissor;
 
   /* The matrix that was current when the clip was set */
-  CoglMatrix             matrix;
+  CoglMatrixEntry *matrix_entry;
 };
 
 struct _CoglClipStackWindowRect
 {
-  CoglClipStack     _parent_data;
+  CoglClipStack _parent_data;
 
   /* The window rect clip doesn't need any specific data because it
      just adds to the scissor clip */
@@ -144,12 +145,12 @@ struct _CoglClipStackWindowRect
 
 struct _CoglClipStackPath
 {
-  CoglClipStack     _parent_data;
+  CoglClipStack _parent_data;
 
   /* The matrix that was current when the clip was set */
-  CoglMatrix             matrix;
+  CoglMatrixEntry *matrix_entry;
 
-  CoglPath              *path;
+  CoglPath *path;
 };
 
 struct _CoglClipStackPrimitive
@@ -157,7 +158,7 @@ struct _CoglClipStackPrimitive
   CoglClipStack _parent_data;
 
   /* The matrix that was current when the clip was set */
-  CoglMatrix matrix;
+  CoglMatrixEntry *matrix_entry;
 
   CoglPrimitive *primitive;
 
@@ -180,12 +181,16 @@ _cogl_clip_stack_push_rectangle (CoglClipStack *stack,
                                  float y_1,
                                  float x_2,
                                  float y_2,
-                                 const CoglMatrix *modelview_matrix);
+                                 CoglMatrixEntry *modelview_entry,
+                                 CoglMatrixEntry *projection_entry,
+                                 const float *viewport);
 
 CoglClipStack *
 _cogl_clip_stack_push_from_path (CoglClipStack *stack,
                                  CoglPath *path,
-                                 const CoglMatrix *modelview_matrix);
+                                 CoglMatrixEntry *modelview_entry,
+                                 CoglMatrixEntry *projection_entry,
+                                 const float *viewport);
 
 CoglClipStack *
 _cogl_clip_stack_push_primitive (CoglClipStack *stack,
@@ -194,7 +199,9 @@ _cogl_clip_stack_push_primitive (CoglClipStack *stack,
                                  float bounds_y1,
                                  float bounds_x2,
                                  float bounds_y2,
-                                 const CoglMatrix *modelview_matrix);
+                                 CoglMatrixEntry *modelview_entry,
+                                 CoglMatrixEntry *projection_entry,
+                                 const float *viewport);
 
 CoglClipStack *
 _cogl_clip_stack_pop (CoglClipStack *stack);

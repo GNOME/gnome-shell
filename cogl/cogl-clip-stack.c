@@ -46,6 +46,7 @@
 #include "cogl-primitive-private.h"
 #include "cogl1-context.h"
 #include "cogl-offscreen.h"
+#include "cogl-matrix-stack.h"
 
 #ifndef GL_CLIP_PLANE0
 #define GL_CLIP_PLANE0 0x3000
@@ -113,9 +114,10 @@ set_clip_plane (CoglFramebuffer *framebuffer,
   /* Clip planes can only be used when a fixed function backend is in
      use so we know we can directly push this matrix to the builtin
      state */
-  _cogl_matrix_stack_flush_to_gl_builtins (ctx,
-                                           modelview_stack,
+  _cogl_matrix_entry_flush_to_gl_builtins (ctx,
+                                           modelview_stack->last_entry,
                                            COGL_MATRIX_MODELVIEW,
+                                           framebuffer,
                                            FALSE /* don't disable flip */);
 
   planef[0] = 0;
@@ -147,13 +149,12 @@ set_clip_plane (CoglFramebuffer *framebuffer,
 
 static void
 set_clip_planes (CoglFramebuffer *framebuffer,
+                 CoglMatrixEntry *modelview_entry,
                  float x_1,
-		 float y_1,
-		 float x_2,
-		 float y_2)
+                 float y_1,
+                 float x_2,
+                 float y_2)
 {
-  CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrix modelview_matrix;
   CoglMatrixStack *projection_stack =
     _cogl_framebuffer_get_projection_stack (framebuffer);
@@ -167,7 +168,7 @@ set_clip_planes (CoglFramebuffer *framebuffer,
   float vertex_br[4] = { x_2, y_2, 0, 1.0 };
 
   _cogl_matrix_stack_get (projection_stack, &projection_matrix);
-  _cogl_matrix_stack_get (modelview_stack, &modelview_matrix);
+  _cogl_matrix_entry_get (modelview_entry, &modelview_matrix);
 
   cogl_matrix_multiply (&modelview_projection,
                         &projection_matrix,
@@ -207,23 +208,24 @@ set_clip_planes (CoglFramebuffer *framebuffer,
 
 static void
 add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
+                            CoglMatrixEntry *modelview_entry,
                             float x_1,
                             float y_1,
                             float x_2,
                             float y_2,
                             CoglBool first)
 {
-  CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrixStack *projection_stack =
     _cogl_framebuffer_get_projection_stack (framebuffer);
   CoglContext *ctx = cogl_framebuffer_get_context (framebuffer);
 
-  /* This can be called from the journal code which doesn't flush
-     the matrix stacks between calls so we need to ensure they're
-     flushed now */
-  _cogl_context_set_current_projection (ctx, projection_stack);
-  _cogl_context_set_current_modelview (ctx, modelview_stack);
+  /* NB: This can be called while flushing the journal so we need
+   * to be very conservative with what state we change.
+   */
+
+  _cogl_context_set_current_projection_entry (ctx,
+                                              projection_stack->last_entry);
+  _cogl_context_set_current_modelview_entry (ctx, modelview_entry);
 
   if (first)
     {
@@ -256,21 +258,12 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
 	 rectangle are set will be valid */
       GE( ctx, glStencilOp (GL_DECR, GL_DECR, GL_DECR) );
 
-      _cogl_matrix_stack_push (projection_stack);
-      _cogl_matrix_stack_load_identity (projection_stack);
-
-      _cogl_matrix_stack_push (modelview_stack);
-      _cogl_matrix_stack_load_identity (modelview_stack);
-
-      _cogl_context_set_current_projection (ctx, projection_stack);
-      _cogl_context_set_current_modelview (ctx, modelview_stack);
+      _cogl_context_set_current_projection_entry (ctx, &ctx->identity_entry);
+      _cogl_context_set_current_modelview_entry (ctx, &ctx->identity_entry);
 
       _cogl_rectangle_immediate (framebuffer,
                                  ctx->stencil_pipeline,
                                  -1.0, -1.0, 1.0, 1.0);
-
-      _cogl_matrix_stack_pop (modelview_stack);
-      _cogl_matrix_stack_pop (projection_stack);
     }
 
   /* Restore the stencil mode */
@@ -285,6 +278,7 @@ typedef void (*SilhouettePaintCallback) (CoglFramebuffer *framebuffer,
 static void
 add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
                              SilhouettePaintCallback silhouette_callback,
+                             CoglMatrixEntry *modelview_entry,
                              float bounds_x1,
                              float bounds_y1,
                              float bounds_x2,
@@ -293,19 +287,19 @@ add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
                              CoglBool need_clear,
                              void *user_data)
 {
-  CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrixStack *projection_stack =
     _cogl_framebuffer_get_projection_stack (framebuffer);
   CoglContext *ctx = cogl_framebuffer_get_context (framebuffer);
 
-  /* This can be called from the clip stack code which doesn't flush
-     the matrix stacks between calls so we need to ensure they're
-     flushed now */
-  _cogl_context_set_current_projection (ctx, projection_stack);
-  _cogl_context_set_current_modelview (ctx, modelview_stack);
+  /* NB: This can be called while flushing the journal so we need
+   * to be very conservative with what state we change.
+   */
 
-  _cogl_pipeline_flush_gl_state (ctx->stencil_pipeline, FALSE, 0);
+  _cogl_context_set_current_projection_entry (ctx,
+                                              projection_stack->last_entry);
+  _cogl_context_set_current_modelview_entry (ctx, modelview_entry);
+
+  _cogl_pipeline_flush_gl_state (ctx->stencil_pipeline, framebuffer, FALSE, 0);
 
   GE( ctx, glEnable (GL_STENCIL_TEST) );
 
@@ -360,19 +354,13 @@ add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
       /* Decrement all of the bits twice so that only pixels where the
          value is 3 will remain */
 
-      _cogl_matrix_stack_push (projection_stack);
-      _cogl_matrix_stack_load_identity (projection_stack);
-
-      _cogl_matrix_stack_push (modelview_stack);
-      _cogl_matrix_stack_load_identity (modelview_stack);
+      _cogl_context_set_current_projection_entry (ctx, &ctx->identity_entry);
+      _cogl_context_set_current_modelview_entry (ctx, &ctx->identity_entry);
 
       _cogl_rectangle_immediate (framebuffer, ctx->stencil_pipeline,
                                  -1.0, -1.0, 1.0, 1.0);
       _cogl_rectangle_immediate (framebuffer, ctx->stencil_pipeline,
                                  -1.0, -1.0, 1.0, 1.0);
-
-      _cogl_matrix_stack_pop (modelview_stack);
-      _cogl_matrix_stack_pop (projection_stack);
     }
 
   GE (ctx, glStencilMask (~(GLuint) 0));
@@ -400,6 +388,7 @@ paint_path_silhouette (CoglFramebuffer *framebuffer,
 
 static void
 add_stencil_clip_path (CoglFramebuffer *framebuffer,
+                       CoglMatrixEntry *modelview_entry,
                        CoglPath *path,
                        CoglBool merge,
                        CoglBool need_clear)
@@ -407,6 +396,7 @@ add_stencil_clip_path (CoglFramebuffer *framebuffer,
   CoglPathData *data = path->data;
   add_stencil_clip_silhouette (framebuffer,
                                paint_path_silhouette,
+                               modelview_entry,
                                data->path_nodes_min.x,
                                data->path_nodes_min.y,
                                data->path_nodes_max.x,
@@ -432,6 +422,7 @@ paint_primitive_silhouette (CoglFramebuffer *framebuffer,
 
 static void
 add_stencil_clip_primitive (CoglFramebuffer *framebuffer,
+                            CoglMatrixEntry *modelview_entry,
                             CoglPrimitive *primitive,
                             float bounds_x1,
                             float bounds_y1,
@@ -442,6 +433,7 @@ add_stencil_clip_primitive (CoglFramebuffer *framebuffer,
 {
   add_stencil_clip_silhouette (framebuffer,
                                paint_primitive_silhouette,
+                               modelview_entry,
                                bounds_x1,
                                bounds_y1,
                                bounds_x2,
@@ -500,32 +492,49 @@ _cogl_clip_stack_push_entry (CoglClipStack *clip_stack,
   return entry;
 }
 
+static void
+get_transformed_corners (float x_1,
+                         float y_1,
+                         float x_2,
+                         float y_2,
+                         CoglMatrix *modelview,
+                         CoglMatrix *projection,
+                         const float *viewport,
+                         float *transformed_corners)
+{
+  int i;
+
+  transformed_corners[0] = x_1;
+  transformed_corners[1] = y_1;
+  transformed_corners[2] = x_2;
+  transformed_corners[3] = y_1;
+  transformed_corners[4] = x_2;
+  transformed_corners[5] = y_2;
+  transformed_corners[6] = x_1;
+  transformed_corners[7] = y_2;
+
+
+  /* Project the coordinates to window space coordinates */
+  for (i = 0; i < 4; i++)
+    {
+      float *v = transformed_corners + i * 2;
+      _cogl_transform_point (modelview, projection, viewport, v, v + 1);
+    }
+}
+
 /* Sets the window-space bounds of the entry based on the projected
    coordinates of the given rectangle */
 static void
 _cogl_clip_stack_entry_set_bounds (CoglClipStack *entry,
-                                   float x_1,
-                                   float y_1,
-                                   float x_2,
-                                   float y_2,
-                                   const CoglMatrix *modelview)
+                                   float *transformed_corners)
 {
-  CoglMatrix projection;
-  float viewport[4];
-  float verts[4 * 2] = { x_1, y_1, x_2, y_1, x_2, y_2, x_1, y_2 };
   float min_x = G_MAXFLOAT, min_y = G_MAXFLOAT;
   float max_x = -G_MAXFLOAT, max_y = -G_MAXFLOAT;
   int i;
 
-  cogl_get_projection_matrix (&projection);
-  cogl_get_viewport (viewport);
-
   for (i = 0; i < 4; i++)
     {
-      float *v = verts + i * 2;
-
-      /* Project the coordinates to window space coordinates */
-      _cogl_transform_point (modelview, &projection, viewport, v, v + 1);
+      float *v = transformed_corners + i * 2;
 
       if (v[0] > max_x)
         max_x = v[0];
@@ -570,11 +579,28 @@ _cogl_clip_stack_push_rectangle (CoglClipStack *stack,
                                  float y_1,
                                  float x_2,
                                  float y_2,
-                                 const CoglMatrix *modelview_matrix)
+                                 CoglMatrixEntry *modelview_entry,
+                                 CoglMatrixEntry *projection_entry,
+                                 const float *viewport)
 {
   CoglClipStackRect *entry;
-  CoglMatrix matrix_p;
-  float v[4];
+  CoglMatrix modelview;
+  CoglMatrix projection;
+  CoglMatrix modelview_projection;
+
+  /* Corners of the given rectangle in an clockwise order:
+   *  (0, 1)     (2, 3)
+   *
+   *
+   *
+   *  (6, 7)     (4, 5)
+   */
+  float rect[] = {
+    x_1, y_1,
+    x_2, y_1,
+    x_2, y_2,
+    x_1, y_2
+  };
 
   /* Make a new entry */
   entry = _cogl_clip_stack_push_entry (stack,
@@ -586,34 +612,46 @@ _cogl_clip_stack_push_rectangle (CoglClipStack *stack,
   entry->x1 = x_2;
   entry->y1 = y_2;
 
-  entry->matrix = *modelview_matrix;
+  entry->matrix_entry = _cogl_matrix_entry_ref (modelview_entry);
 
-  /* If the modelview meets these constraints then a transformed rectangle
-   * should still be a rectangle when it reaches screen coordinates.
+  _cogl_matrix_entry_get (modelview_entry, &modelview);
+  _cogl_matrix_entry_get (projection_entry, &projection);
+
+  cogl_matrix_multiply (&modelview_projection,
+                        &projection,
+                        &modelview);
+
+  /* Technically we could avoid the viewport transform at this point
+   * if we want to make this a bit faster. */
+  _cogl_transform_point (&modelview, &projection, viewport, &rect[0], &rect[1]);
+  _cogl_transform_point (&modelview, &projection, viewport, &rect[2], &rect[3]);
+  _cogl_transform_point (&modelview, &projection, viewport, &rect[4], &rect[5]);
+  _cogl_transform_point (&modelview, &projection, viewport, &rect[6], &rect[7]);
+
+  /* If the fully transformed rectangle isn't still axis aligned we
+   * can't handle it using a scissor.
    *
-   * FIXME: we are are making certain assumptions about the projection
-   * matrix a.t.m and should really be looking at the combined modelview
-   * and projection matrix.
-   * FIXME: we don't consider rotations that are a multiple of 90 degrees
-   * which could be quite common.
+   * We don't use an epsilon here since we only really aim to catch
+   * simple cases where the transform doesn't leave the rectangle screen
+   * aligned and don't mind some false positives.
    */
-  if (modelview_matrix->xy != 0 || modelview_matrix->xz != 0 ||
-      modelview_matrix->yx != 0 || modelview_matrix->yz != 0 ||
-      modelview_matrix->zx != 0 || modelview_matrix->zy != 0)
+  if (rect[0] != rect[6] ||
+      rect[1] != rect[3] ||
+      rect[2] != rect[4] ||
+      rect[7] != rect[5])
     {
       entry->can_be_scissor = FALSE;
+
       _cogl_clip_stack_entry_set_bounds ((CoglClipStack *) entry,
-                                         x_1, y_1, x_2, y_2, modelview_matrix);
+                                         rect);
     }
   else
     {
       CoglClipStack *base_entry = (CoglClipStack *) entry;
-
-      cogl_get_projection_matrix (&matrix_p);
-      cogl_get_viewport (v);
-
-      _cogl_transform_point (modelview_matrix, &matrix_p, v, &x_1, &y_1);
-      _cogl_transform_point (modelview_matrix, &matrix_p, v, &x_2, &y_2);
+      x_1 = rect[0];
+      y_1 = rect[1];
+      x_2 = rect[4];
+      y_2 = rect[5];
 
       /* Consider that the modelview matrix may flip the rectangle
        * along the x or y axis... */
@@ -637,7 +675,9 @@ _cogl_clip_stack_push_rectangle (CoglClipStack *stack,
 CoglClipStack *
 _cogl_clip_stack_push_from_path (CoglClipStack *stack,
                                  CoglPath *path,
-                                 const CoglMatrix *modelview_matrix)
+                                 CoglMatrixEntry *modelview_entry,
+                                 CoglMatrixEntry *projection_entry,
+                                 const float *viewport)
 {
   float x_1, y_1, x_2, y_2;
 
@@ -650,10 +690,15 @@ _cogl_clip_stack_push_from_path (CoglClipStack *stack,
     return _cogl_clip_stack_push_rectangle (stack,
                                             x_1, y_1,
                                             x_2, y_2,
-                                            modelview_matrix);
+                                            modelview_entry,
+                                            projection_entry,
+                                            viewport);
   else
     {
       CoglClipStackPath *entry;
+      CoglMatrix modelview;
+      CoglMatrix projection;
+      float transformed_corners[8];
 
       entry = _cogl_clip_stack_push_entry (stack,
                                            sizeof (CoglClipStackPath),
@@ -661,10 +706,18 @@ _cogl_clip_stack_push_from_path (CoglClipStack *stack,
 
       entry->path = cogl_path_copy (path);
 
-      entry->matrix = *modelview_matrix;
+      entry->matrix_entry = _cogl_matrix_entry_ref (modelview_entry);
 
+      _cogl_matrix_entry_get (modelview_entry, &modelview);
+      _cogl_matrix_entry_get (projection_entry, &projection);
+
+      get_transformed_corners (x_1, y_1, x_2, y_2,
+                               &modelview,
+                               &projection,
+                               viewport,
+                               transformed_corners);
       _cogl_clip_stack_entry_set_bounds ((CoglClipStack *) entry,
-                                         x_1, y_1, x_2, y_2, modelview_matrix);
+                                         transformed_corners);
 
       return (CoglClipStack *) entry;
     }
@@ -677,9 +730,14 @@ _cogl_clip_stack_push_primitive (CoglClipStack *stack,
                                  float bounds_y1,
                                  float bounds_x2,
                                  float bounds_y2,
-                                 const CoglMatrix *modelview_matrix)
+                                 CoglMatrixEntry *modelview_entry,
+                                 CoglMatrixEntry *projection_entry,
+                                 const float *viewport)
 {
   CoglClipStackPrimitive *entry;
+  CoglMatrix modelview;
+  CoglMatrix projection;
+  float transformed_corners[8];
 
   entry = _cogl_clip_stack_push_entry (stack,
                                        sizeof (CoglClipStackPrimitive),
@@ -687,18 +745,26 @@ _cogl_clip_stack_push_primitive (CoglClipStack *stack,
 
   entry->primitive = cogl_object_ref (primitive);
 
-  entry->matrix = *modelview_matrix;
+  entry->matrix_entry = _cogl_matrix_entry_ref (modelview_entry);
 
   entry->bounds_x1 = bounds_x1;
   entry->bounds_y1 = bounds_y1;
   entry->bounds_x2 = bounds_x2;
   entry->bounds_y2 = bounds_y2;
 
+  _cogl_matrix_entry_get (modelview_entry, &modelview);
+  _cogl_matrix_entry_get (modelview_entry, &projection);
+
+  get_transformed_corners (bounds_x1, bounds_y1, bounds_x2, bounds_y2,
+                           &modelview,
+                           &projection,
+                           viewport,
+                           transformed_corners);
+
   /* NB: this is referring to the bounds in window coordinates as opposed
    * to the bounds above in primitive local coordinates. */
   _cogl_clip_stack_entry_set_bounds ((CoglClipStack *) entry,
-                                     bounds_x1, bounds_y1, bounds_x2, bounds_y2,
-                                     modelview_matrix);
+                                     transformed_corners);
 
   return (CoglClipStack *) entry;
 }
@@ -726,23 +792,33 @@ _cogl_clip_stack_unref (CoglClipStack *entry)
       switch (entry->type)
         {
         case COGL_CLIP_STACK_RECT:
-          g_slice_free1 (sizeof (CoglClipStackRect), entry);
-          break;
-
+          {
+            CoglClipStackRect *rect = (CoglClipStackRect *) entry;
+            _cogl_matrix_entry_unref (rect->matrix_entry);
+            g_slice_free1 (sizeof (CoglClipStackRect), entry);
+            break;
+          }
         case COGL_CLIP_STACK_WINDOW_RECT:
           g_slice_free1 (sizeof (CoglClipStackWindowRect), entry);
           break;
 
         case COGL_CLIP_STACK_PATH:
-          cogl_object_unref (((CoglClipStackPath *) entry)->path);
-          g_slice_free1 (sizeof (CoglClipStackPath), entry);
-          break;
-
+          {
+            CoglClipStackPath *path_entry = (CoglClipStackPath *) entry;
+            _cogl_matrix_entry_unref (path_entry->matrix_entry);
+            cogl_object_unref (path_entry->path);
+            g_slice_free1 (sizeof (CoglClipStackPath), entry);
+            break;
+          }
         case COGL_CLIP_STACK_PRIMITIVE:
-          cogl_object_unref (((CoglClipStackPrimitive *) entry)->primitive);
-          g_slice_free1 (sizeof (CoglClipStackPrimitive), entry);
-          break;
-
+          {
+            CoglClipStackPrimitive *primitive_entry =
+              (CoglClipStackPrimitive *) entry;
+            _cogl_matrix_entry_unref (primitive_entry->matrix_entry);
+            cogl_object_unref (primitive_entry->primitive);
+            g_slice_free1 (sizeof (CoglClipStackPrimitive), entry);
+            break;
+          }
         default:
           g_assert_not_reached ();
         }
@@ -804,6 +880,7 @@ void
 _cogl_clip_stack_flush (CoglClipStack *stack,
                         CoglFramebuffer *framebuffer)
 {
+  CoglContext *ctx = framebuffer->context;
   int has_clip_planes;
   CoglBool using_clip_planes = FALSE;
   CoglBool using_stencil_buffer = FALSE;
@@ -811,11 +888,8 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
   int scissor_y0;
   int scissor_x1;
   int scissor_y1;
-  CoglMatrixStack *modelview_stack;
   CoglClipStack *entry;
   int scissor_y_start;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* If we have already flushed this state then we don't need to do
      anything */
@@ -829,9 +903,6 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
 
   ctx->current_clip_stack_valid = TRUE;
   ctx->current_clip_stack = _cogl_clip_stack_ref (stack);
-
-  modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (framebuffer);
 
   has_clip_planes =
     ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FOUR_CLIP_PLANES;
@@ -905,15 +976,11 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
 
               COGL_NOTE (CLIPPING, "Adding stencil clip for path");
 
-              _cogl_matrix_stack_push (modelview_stack);
-              _cogl_matrix_stack_set (modelview_stack, &path_entry->matrix);
-
               add_stencil_clip_path (framebuffer,
+                                     path_entry->matrix_entry,
                                      path_entry->path,
                                      using_stencil_buffer,
                                      TRUE);
-
-              _cogl_matrix_stack_pop (modelview_stack);
 
               using_stencil_buffer = TRUE;
               break;
@@ -925,10 +992,8 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
 
               COGL_NOTE (CLIPPING, "Adding stencil clip for primitive");
 
-              _cogl_matrix_stack_push (modelview_stack);
-              _cogl_matrix_stack_set (modelview_stack, &primitive_entry->matrix);
-
               add_stencil_clip_primitive (framebuffer,
+                                          primitive_entry->matrix_entry,
                                           primitive_entry->primitive,
                                           primitive_entry->bounds_x1,
                                           primitive_entry->bounds_y1,
@@ -936,8 +1001,6 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
                                           primitive_entry->bounds_y2,
                                           using_stencil_buffer,
                                           TRUE);
-
-              _cogl_matrix_stack_pop (modelview_stack);
 
               using_stencil_buffer = TRUE;
               break;
@@ -950,9 +1013,6 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
                  rectangle was entirely described by its scissor bounds */
               if (!rect->can_be_scissor)
                 {
-                  _cogl_matrix_stack_push (modelview_stack);
-                  _cogl_matrix_stack_set (modelview_stack, &rect->matrix);
-
                   /* If we support clip planes and we haven't already used
                      them then use that instead */
                   if (has_clip_planes)
@@ -961,6 +1021,7 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
                                  "Adding clip planes clip for rectangle");
 
                       set_clip_planes (framebuffer,
+                                       rect->matrix_entry,
                                        rect->x0,
                                        rect->y0,
                                        rect->x1,
@@ -974,6 +1035,7 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
                       COGL_NOTE (CLIPPING, "Adding stencil clip for rectangle");
 
                       add_stencil_clip_rectangle (framebuffer,
+                                                  rect->matrix_entry,
                                                   rect->x0,
                                                   rect->y0,
                                                   rect->x1,
@@ -981,8 +1043,6 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
                                                   !using_stencil_buffer);
                       using_stencil_buffer = TRUE;
                     }
-
-                  _cogl_matrix_stack_pop (modelview_stack);
                 }
               break;
             }

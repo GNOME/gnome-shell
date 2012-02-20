@@ -441,6 +441,7 @@ cogl_begin_gl (void)
    */
   pipeline = cogl_get_source ();
   _cogl_pipeline_flush_gl_state (pipeline,
+                                 cogl_get_draw_framebuffer (),
                                  FALSE,
                                  cogl_pipeline_get_n_layers (pipeline));
 

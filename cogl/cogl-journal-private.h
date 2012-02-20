@@ -67,13 +67,10 @@ typedef struct _CoglJournalEntry
 {
   CoglPipeline            *pipeline;
   int                      n_layers;
-  CoglMatrix               model_view;
+  CoglMatrixEntry         *modelview_entry;
   CoglClipStack           *clip_stack;
   /* Offset into ctx->logged_vertices */
   size_t                   array_offset;
-  /* XXX: These entries are pretty big now considering the padding in
-   * CoglPipelineFlushOptions and CoglMatrix, so we might need to optimize this
-   * later. */
 } CoglJournalEntry;
 
 CoglJournal *

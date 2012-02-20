@@ -1056,8 +1056,6 @@ fragend_add_layer_cb (CoglPipelineLayer *layer,
   CoglPipeline *pipeline = state->pipeline;
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
 
-  _COGL_GET_CONTEXT (ctx, FALSE);
-
   /* Either generate per layer code snippets or setup the
    * fixed function glTexEnv for each layer... */
   if (G_LIKELY (fragend->add_layer (pipeline,
@@ -1075,6 +1073,7 @@ fragend_add_layer_cb (CoglPipelineLayer *layer,
 
 typedef struct
 {
+  CoglFramebuffer *framebuffer;
   const CoglPipelineVertend *vertend;
   CoglPipeline *pipeline;
   unsigned long *layer_differences;
@@ -1092,13 +1091,12 @@ vertend_add_layer_cb (CoglPipelineLayer *layer,
   CoglPipeline *pipeline = state->pipeline;
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
 
-  _COGL_GET_CONTEXT (ctx, FALSE);
-
   /* Either enerate per layer code snippets or setup the
    * fixed function matrix uniforms for each layer... */
   if (G_LIKELY (vertend->add_layer (pipeline,
                                     layer,
-                                    state->layer_differences[unit_index])))
+                                    state->layer_differences[unit_index],
+                                    state->framebuffer)))
     state->added_layer = TRUE;
   else
     {
@@ -1161,6 +1159,7 @@ vertend_add_layer_cb (CoglPipelineLayer *layer,
  */
 void
 _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
+                               CoglFramebuffer *framebuffer,
                                CoglBool skip_gl_color,
                                int n_tex_coord_attribs)
 {
@@ -1330,6 +1329,7 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
                                        n_tex_coord_attribs)))
         continue;
 
+      state.framebuffer = framebuffer;
       state.vertend = vertend;
       state.pipeline = pipeline;
       state.layer_differences = layer_differences;
@@ -1407,7 +1407,7 @@ done:
      matrices */
   for (i = 0; i < COGL_PIPELINE_N_PROGENDS; i++)
     if (_cogl_pipeline_progends[i]->pre_paint)
-      _cogl_pipeline_progends[i]->pre_paint (pipeline);
+      _cogl_pipeline_progends[i]->pre_paint (pipeline, framebuffer);
 
   /* Handle the fact that OpenGL associates texture filter and wrap
    * modes with the texture objects not the texture units... */

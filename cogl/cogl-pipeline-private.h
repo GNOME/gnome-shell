@@ -39,6 +39,7 @@
 #include "cogl-boxed-value.h"
 #include "cogl-pipeline-snippet-private.h"
 #include "cogl-pipeline-state.h"
+#include "cogl-framebuffer.h"
 
 #include <glib.h>
 
@@ -583,7 +584,8 @@ typedef struct _CoglPipelineVertend
                      int n_tex_coord_attribs);
   CoglBool (*add_layer) (CoglPipeline *pipeline,
                          CoglPipelineLayer *layer,
-                         unsigned long layers_difference);
+                         unsigned long layers_difference,
+                         CoglFramebuffer *framebuffer);
   CoglBool (*end) (CoglPipeline *pipeline,
                    unsigned long pipelines_difference);
 
@@ -609,7 +611,7 @@ typedef struct
   /* This is called after all of the other functions whenever the
      pipeline is flushed, even if the pipeline hasn't changed since
      the last flush */
-  void (* pre_paint) (CoglPipeline *pipeline);
+  void (* pre_paint) (CoglPipeline *pipeline, CoglFramebuffer *framebuffer);
 } CoglPipelineProgend;
 
 typedef enum

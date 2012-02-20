@@ -1533,18 +1533,38 @@ _cogl_framebuffer_flush_dither_state (CoglFramebuffer *framebuffer)
     }
 }
 
+static CoglMatrixEntry *
+_cogl_framebuffer_get_modelview_entry (CoglFramebuffer *framebuffer)
+{
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  return modelview_stack->last_entry;
+}
+
 static void
 _cogl_framebuffer_flush_modelview_state (CoglFramebuffer *framebuffer)
 {
-  _cogl_context_set_current_modelview (framebuffer->context,
-                                       framebuffer->modelview_stack);
+  CoglMatrixEntry *modelview_entry =
+    _cogl_framebuffer_get_modelview_entry (framebuffer);
+  _cogl_context_set_current_modelview_entry (framebuffer->context,
+                                             modelview_entry);
+}
+
+static CoglMatrixEntry *
+_cogl_framebuffer_get_projection_entry (CoglFramebuffer *framebuffer)
+{
+  CoglMatrixStack *projection_stack =
+    _cogl_framebuffer_get_projection_stack (framebuffer);
+  return projection_stack->last_entry;
 }
 
 static void
 _cogl_framebuffer_flush_projection_state (CoglFramebuffer *framebuffer)
 {
-  _cogl_context_set_current_projection (framebuffer->context,
-                                        framebuffer->projection_stack);
+  CoglMatrixEntry *projection_entry =
+    _cogl_framebuffer_get_projection_entry (framebuffer);
+  _cogl_context_set_current_projection_entry (framebuffer->context,
+                                             projection_entry);
 }
 
 static void
@@ -2647,9 +2667,9 @@ void
 cogl_framebuffer_get_modelview_matrix (CoglFramebuffer *framebuffer,
                                        CoglMatrix *matrix)
 {
-  CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (framebuffer);
-  _cogl_matrix_stack_get (modelview_stack, matrix);
+  CoglMatrixEntry *modelview_entry =
+    _cogl_framebuffer_get_modelview_entry (framebuffer);
+  _cogl_matrix_entry_get (modelview_entry, matrix);
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
@@ -2672,9 +2692,9 @@ void
 cogl_framebuffer_get_projection_matrix (CoglFramebuffer *framebuffer,
                                         CoglMatrix *matrix)
 {
-  CoglMatrixStack *projection_stack =
-    _cogl_framebuffer_get_projection_stack (framebuffer);
-  _cogl_matrix_stack_get (projection_stack, matrix);
+  CoglMatrixEntry *projection_entry =
+    _cogl_framebuffer_get_projection_entry (framebuffer);
+  _cogl_matrix_entry_get (projection_entry, matrix);
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
@@ -2724,14 +2744,25 @@ cogl_framebuffer_push_rectangle_clip (CoglFramebuffer *framebuffer,
                                       float y_2)
 {
   CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-  CoglMatrix modelview_matrix;
-
-  cogl_framebuffer_get_modelview_matrix (framebuffer, &modelview_matrix);
+  CoglMatrixEntry *modelview_entry =
+    _cogl_framebuffer_get_modelview_entry (framebuffer);
+  CoglMatrixEntry *projection_entry =
+    _cogl_framebuffer_get_projection_entry (framebuffer);
+  /* XXX: It would be nicer if we stored the private viewport as a
+   * vec4 so we could avoid this redundant copy. */
+  float viewport[] = {
+      framebuffer->viewport_x,
+      framebuffer->viewport_y,
+      framebuffer->viewport_width,
+      framebuffer->viewport_height
+  };
 
   clip_state->stacks->data =
     _cogl_clip_stack_push_rectangle (clip_state->stacks->data,
                                      x_1, y_1, x_2, y_2,
-                                     &modelview_matrix);
+                                     modelview_entry,
+                                     projection_entry,
+                                     viewport);
 
   if (framebuffer->context->current_draw_buffer == framebuffer)
     framebuffer->context->current_draw_buffer_changes |=
@@ -2743,14 +2774,25 @@ cogl_framebuffer_push_path_clip (CoglFramebuffer *framebuffer,
                                  CoglPath *path)
 {
   CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-  CoglMatrix modelview_matrix;
-
-  cogl_framebuffer_get_modelview_matrix (framebuffer, &modelview_matrix);
+  CoglMatrixEntry *modelview_entry =
+    _cogl_framebuffer_get_modelview_entry (framebuffer);
+  CoglMatrixEntry *projection_entry =
+    _cogl_framebuffer_get_projection_entry (framebuffer);
+  /* XXX: It would be nicer if we stored the private viewport as a
+   * vec4 so we could avoid this redundant copy. */
+  float viewport[] = {
+      framebuffer->viewport_x,
+      framebuffer->viewport_y,
+      framebuffer->viewport_width,
+      framebuffer->viewport_height
+  };
 
   clip_state->stacks->data =
     _cogl_clip_stack_push_from_path (clip_state->stacks->data,
                                      path,
-                                     &modelview_matrix);
+                                     modelview_entry,
+                                     projection_entry,
+                                     viewport);
 
   if (framebuffer->context->current_draw_buffer == framebuffer)
     framebuffer->context->current_draw_buffer_changes |=
@@ -2766,16 +2808,27 @@ cogl_framebuffer_push_primitive_clip (CoglFramebuffer *framebuffer,
                                       float bounds_y2)
 {
   CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-  CoglMatrix modelview_matrix;
-
-  cogl_get_modelview_matrix (&modelview_matrix);
+  CoglMatrixEntry *modelview_entry =
+    _cogl_framebuffer_get_modelview_entry (framebuffer);
+  CoglMatrixEntry *projection_entry =
+    _cogl_framebuffer_get_projection_entry (framebuffer);
+  /* XXX: It would be nicer if we stored the private viewport as a
+   * vec4 so we could avoid this redundant copy. */
+  float viewport[] = {
+      framebuffer->viewport_x,
+      framebuffer->viewport_y,
+      framebuffer->viewport_width,
+      framebuffer->viewport_height
+  };
 
   clip_state->stacks->data =
     _cogl_clip_stack_push_primitive (clip_state->stacks->data,
                                      primitive,
                                      bounds_x1, bounds_y1,
                                      bounds_x2, bounds_y2,
-                                     &modelview_matrix);
+                                     modelview_entry,
+                                     projection_entry,
+                                     viewport);
 
   if (framebuffer->context->current_draw_buffer == framebuffer)
     framebuffer->context->current_draw_buffer_changes |=

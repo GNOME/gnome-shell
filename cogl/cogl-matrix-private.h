@@ -41,6 +41,13 @@ G_BEGIN_DECLS
 void
 _cogl_matrix_print (const CoglMatrix *matrix);
 
+void
+_cogl_matrix_prefix_print (const char *prefix, const CoglMatrix *matrix);
+
+void
+_cogl_matrix_init_from_matrix_without_inverse (CoglMatrix *matrix,
+                                               const CoglMatrix *src);
+
 G_END_DECLS
 
 #endif /* __COGL_MATRIX_PRIVATE_H */

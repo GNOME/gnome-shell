@@ -674,7 +674,10 @@ _cogl_flush_attributes_state (CoglFramebuffer *framebuffer,
       _cogl_pipeline_apply_legacy_state (pipeline);
     }
 
-  _cogl_pipeline_flush_gl_state (pipeline, skip_gl_color, n_tex_coord_attribs);
+  _cogl_pipeline_flush_gl_state (pipeline,
+                                 framebuffer,
+                                 skip_gl_color,
+                                 n_tex_coord_attribs);
 
   _cogl_bitmask_clear_all (&ctx->enable_builtin_attributes_tmp);
   _cogl_bitmask_clear_all (&ctx->enable_texcoord_attributes_tmp);

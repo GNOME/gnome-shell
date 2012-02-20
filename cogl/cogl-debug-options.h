@@ -185,3 +185,8 @@ OPT (CLIPPING,
      "clipping",
      N_("Trace clipping"),
      N_("Logs information about how Cogl is implementing clipping"))
+OPT (PERFORMANCE,
+     N_("Cogl Tracing"),
+     "performance",
+     N_("Trace performance concerns"),
+     N_("Tries to highlight sub-optimal Cogl usage."))

@@ -360,11 +360,38 @@ _cogl_matrix_multiply_array (CoglMatrix *result, const float *array)
  * Called by _cogl_matrix_print() to print a matrix or its inverse.
  */
 static void
-print_matrix_floats (const float m[16])
+print_matrix_floats (const char *prefix, const float m[16])
 {
   int i;
   for (i = 0;i < 4; i++)
-    g_print ("\t%f %f %f %f\n", m[i], m[4+i], m[8+i], m[12+i] );
+    g_print ("%s\t%f %f %f %f\n", prefix, m[i], m[4+i], m[8+i], m[12+i] );
+}
+
+void
+_cogl_matrix_prefix_print (const char *prefix, const CoglMatrix *matrix)
+{
+  if (!(matrix->flags & MAT_DIRTY_TYPE))
+    {
+      _COGL_RETURN_IF_FAIL (matrix->type < COGL_MATRIX_N_TYPES);
+      g_print ("%sMatrix type: %s, flags: %x\n",
+               prefix, types[matrix->type], (int)matrix->flags);
+    }
+  else
+    g_print ("%sMatrix type: DIRTY, flags: %x\n",
+             prefix, (int)matrix->flags);
+
+  print_matrix_floats (prefix, (float *)matrix);
+  g_print ("%sInverse: \n", prefix);
+  if (!(matrix->flags & MAT_DIRTY_INVERSE))
+    {
+      float prod[16];
+      print_matrix_floats (prefix, matrix->inv);
+      matrix_multiply4x4 (prod, (float *)matrix, matrix->inv);
+      g_print ("%sMat * Inverse:\n", prefix);
+      print_matrix_floats (prefix, prod);
+    }
+  else
+    g_print ("%s  - not available\n", prefix);
 }
 
 /*
@@ -373,27 +400,7 @@ print_matrix_floats (const float m[16])
 void
 _cogl_matrix_print (const CoglMatrix *matrix)
 {
-  if (!(matrix->flags & MAT_DIRTY_TYPE))
-    {
-      _COGL_RETURN_IF_FAIL (matrix->type < COGL_MATRIX_N_TYPES);
-      g_print ("Matrix type: %s, flags: %x\n",
-               types[matrix->type], (int)matrix->flags);
-    }
-  else
-    g_print ("Matrix type: DIRTY, flags: %x\n", (int)matrix->flags);
-
-  print_matrix_floats ((float *)matrix);
-  g_print ("Inverse: \n");
-  if (!(matrix->flags & MAT_DIRTY_INVERSE))
-    {
-      float prod[16];
-      print_matrix_floats (matrix->inv);
-      matrix_multiply4x4 (prod, (float *)matrix, matrix->inv);
-      g_print ("Mat * Inverse:\n");
-      print_matrix_floats (prod);
-    }
-  else
-    g_print ("  - not available\n");
+  _cogl_matrix_prefix_print ("", matrix);
 }
 
 /*
@@ -1657,6 +1664,15 @@ cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array)
 {
   _cogl_matrix_init_from_array (matrix, array);
   _COGL_MATRIX_DEBUG_PRINT (matrix);
+}
+
+void
+_cogl_matrix_init_from_matrix_without_inverse (CoglMatrix *matrix,
+                                               const CoglMatrix *src)
+{
+  memcpy (matrix, src, 16 * sizeof (float));
+  matrix->type = src->type;
+  matrix->flags = src->flags | MAT_DIRTY_INVERSE;
 }
 
 static void
