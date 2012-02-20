@@ -320,7 +320,15 @@ on_apps_tree_changed_cb (GMenuTree *tree,
 
   if (!gmenu_tree_load_sync (self->priv->apps_tree, &error))
     {
-      g_warning ("Failed to load apps: %s", error->message);
+      if (error)
+        {
+          g_warning ("Failed to load apps: %s", error->message);
+          g_error_free (error);
+        }
+      else
+        {
+          g_warning ("Failed to load apps");
+        }
       return;
     }
 
@@ -411,7 +419,15 @@ on_settings_tree_changed_cb (GMenuTree *tree,
   g_hash_table_remove_all (self->priv->setting_id_to_app);
   if (!gmenu_tree_load_sync (self->priv->settings_tree, &error))
     {
-      g_warning ("Failed to load settings: %s", error->message);
+      if (error)
+        {
+          g_warning ("Failed to load apps: %s", error->message);
+          g_error_free (error);
+        }
+      else
+        {
+          g_warning ("Failed to load apps");
+        }
       return;
     }
 
