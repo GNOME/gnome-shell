@@ -104,7 +104,7 @@ check_origin_and_protocol (NPP instance)
                           &location))
     goto out;
 
-  if (!NPVARIANT_IS_OBJECT (document))
+  if (!NPVARIANT_IS_OBJECT (location))
     goto out;
 
   hostname = get_string_property (instance,
