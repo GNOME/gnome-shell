@@ -78,6 +78,8 @@ color_content_paint_content (ClutterContent   *content,
   /* top-left */
   box.x1 = clutter_actor_box_get_x (&content_box);
   box.y1 = clutter_actor_box_get_y (&content_box);
+  box.x2 = box.x1 + logical.width;
+  box.y2 = box.y1 + logical.height;
   clutter_paint_node_add_rectangle (node, &box);
 
   /* top-right */
@@ -85,6 +87,8 @@ color_content_paint_content (ClutterContent   *content,
          + clutter_actor_box_get_width (&content_box)
          - logical.width;
   box.y1 = clutter_actor_box_get_y (&content_box);
+  box.x2 = box.x1 + logical.width;
+  box.y2 = box.y1 + logical.height;
   clutter_paint_node_add_rectangle (node, &box);
 
   /* bottom-right */
@@ -94,6 +98,8 @@ color_content_paint_content (ClutterContent   *content,
   box.y1 = clutter_actor_box_get_y (&content_box)
          + clutter_actor_box_get_height (&content_box)
          - logical.height;
+  box.x2 = box.x1 + logical.width;
+  box.y2 = box.y1 + logical.height;
   clutter_paint_node_add_rectangle (node, &box);
 
   /* bottom-left */
@@ -101,6 +107,8 @@ color_content_paint_content (ClutterContent   *content,
   box.y1 = clutter_actor_box_get_y (&content_box)
          + clutter_actor_box_get_height (&content_box)
          - logical.height;
+  box.x2 = box.x1 + logical.width;
+  box.y2 = box.y1 + logical.height;
   clutter_paint_node_add_rectangle (node, &box);
 
   /* center */
@@ -108,6 +116,8 @@ color_content_paint_content (ClutterContent   *content,
          + (clutter_actor_box_get_width (&content_box) - logical.width) / 2.0;
   box.y1 = clutter_actor_box_get_y (&content_box)
          + (clutter_actor_box_get_height (&content_box) - logical.height) / 2.0;
+  box.x2 = box.x1 + logical.width;
+  box.y2 = box.y1 + logical.height;
   clutter_paint_node_add_rectangle (node, &box);
 
   clutter_paint_node_add_child (root, node);
