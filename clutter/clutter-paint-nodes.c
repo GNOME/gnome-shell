@@ -701,13 +701,13 @@ static void
 clutter_text_node_draw (ClutterPaintNode *node)
 {
   ClutterTextNode *tnode = CLUTTER_TEXT_NODE (node);
-  PangoRectangle ink_extents;
+  PangoRectangle extents;
   guint i;
 
   if (node->operations == NULL)
     return;
 
-  pango_layout_get_pixel_extents (tnode->layout, &ink_extents, NULL);
+  pango_layout_get_pixel_extents (tnode->layout, NULL, &extents);
 
   for (i = 0; i < node->operations->len; i++)
     {
@@ -727,8 +727,8 @@ clutter_text_node_draw (ClutterPaintNode *node)
            * we clip the layout when drawin, to avoid spilling
            * it out
            */
-          if (ink_extents.width > op_width ||
-              ink_extents.height > op_height)
+          if (extents.width > op_width ||
+              extents.height > op_height)
             {
               cogl_clip_push_rectangle (op->op.texrect[0],
                                         op->op.texrect[1],
