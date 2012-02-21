@@ -254,7 +254,7 @@ emit_drag_motion (ClutterDragAction *action,
         {
           priv->emit_delayed_press = FALSE;
 
-          emit_drag_begin (action, actor, NULL);
+          emit_drag_begin (action, actor, event);
         }
       else
         return;
