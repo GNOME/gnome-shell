@@ -1,3 +1,6 @@
+#include <cogl/cogl.h>
+
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
 #include <clutter/clutter.h>
 
 #include "test-conform-common.h"
@@ -207,6 +210,8 @@ test_cogl_texture_pixmap_x11 (TestConformSimpleFixture *fixture,
       TestState state;
       guint idle_handler;
       guint paint_handler;
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
       state.frame_count = 0;
       state.stage = clutter_stage_new ();
@@ -214,7 +219,7 @@ test_cogl_texture_pixmap_x11 (TestConformSimpleFixture *fixture,
       state.display = clutter_x11_get_default_display ();
 
       state.pixmap = create_pixmap (&state);
-      state.tfp = cogl_texture_pixmap_x11_new (state.pixmap, TRUE);
+      state.tfp = cogl_texture_pixmap_x11_new (ctx, state.pixmap, TRUE, NULL);
 
       clutter_stage_set_color (CLUTTER_STAGE (state.stage), &stage_color);
 

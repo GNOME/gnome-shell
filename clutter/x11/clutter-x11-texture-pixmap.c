@@ -42,6 +42,8 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
+
 #include "clutter-x11-texture-pixmap.h"
 #include "clutter-x11.h"
 #include "clutter-backend-x11.h"
@@ -806,7 +808,6 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
   gboolean     new_pixmap = FALSE, new_pixmap_width = FALSE;
   gboolean     new_pixmap_height = FALSE, new_pixmap_depth = FALSE;
   CoglHandle   material;
-  CoglHandle   cogl_texture;
 
   ClutterX11TexturePixmapPrivate *priv;
 
@@ -897,11 +898,24 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
 
   if (pixmap)
     {
-      cogl_texture = cogl_texture_pixmap_x11_new (pixmap, FALSE);
-      clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (texture),
-                                        cogl_texture);
-      cogl_handle_unref (cogl_texture);
-      update_pixmap_damage_object (texture);
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      GError *error = NULL;
+      CoglTexturePixmapX11 *texture_pixmap =
+        cogl_texture_pixmap_x11_new (ctx, pixmap, FALSE, &error);
+      if (texture_pixmap)
+        {
+          clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (texture),
+                                            COGL_TEXTURE (texture_pixmap));
+          cogl_object_unref (texture_pixmap);
+          update_pixmap_damage_object (texture);
+        }
+      else
+        {
+          g_warning ("Failed to create CoglTexturePixmapX11: %s",
+                     error->message);
+          g_error_free (error);
+        }
     }
 
   /*
