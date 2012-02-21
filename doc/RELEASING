@@ -31,6 +31,22 @@ When making a new release;
 
     $ make check
 
+ - Test with all of the pipeline backends:
+
+    $ COGL_DEBUG=disable-arbfp make check
+    $ COGL_DEBUG=disable-arbfp,disable-fixed make check
+
+ - Test with the GLES2 driver:
+
+    $ COGL_RENDERER=EGL_XLIB COGL_DRIVER=gles2 \
+         bash -c 'for x in `./tests/conform/test-conformance -l`;
+                  do ./tests/conform/test-conformance -p $x > /dev/null \
+                  || echo "FAILED: $x"; done'
+
+   Note that some of these tests are currently known to fail. Please
+   make a note of these failures in the release notes and verify that
+   no new failures have appeared since the last release.
+
  - Test with Clutter:
 
    Since we haven't migrated all the Cogl unit tests from Clutter yet, you
