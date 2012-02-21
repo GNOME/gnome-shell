@@ -598,6 +598,9 @@ const ThumbnailsBox = new Lang.Class({
     },
 
     _clearDragPlaceholder: function() {
+        if (this._dropPlaceholderPos == -1)
+            return;
+
         this._dropPlaceholderPos = -1;
         this.actor.queue_relayout();
     },
@@ -635,8 +638,10 @@ const ThumbnailsBox = new Lang.Class({
             }
         }
 
-        this._dropPlaceholderPos = workspace;
-        this.actor.queue_relayout();
+        if (this._dropPlaceholderPos != workspace) {
+            this._dropPlaceholderPos = workspace;
+            this.actor.queue_relayout();
+        }
 
         if (workspace == -1)
             return DND.DragMotionResult.CONTINUE;
