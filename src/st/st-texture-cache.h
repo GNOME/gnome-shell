@@ -89,21 +89,6 @@ ClutterActor *st_texture_cache_load_gicon (StTextureCache *cache,
                                            GIcon          *icon,
                                            gint            size);
 
-ClutterActor *st_texture_cache_load_thumbnail (StTextureCache *cache,
-                                               int             size,
-                                               const char     *uri,
-                                               const char     *mimetype);
-
-ClutterActor *st_texture_cache_load_recent_thumbnail (StTextureCache    *cache,
-                                                      int                size,
-                                                      GtkRecentInfo     *info);
-
-void st_texture_cache_evict_thumbnail (StTextureCache *cache,
-                                       const char     *uri);
-
-void st_texture_cache_evict_recent_thumbnail (StTextureCache *cache,
-                                              GtkRecentInfo  *info);
-
 ClutterActor *st_texture_cache_load_uri_async (StTextureCache    *cache,
                                                const gchar       *uri,
                                                int                available_width,
