@@ -30,6 +30,8 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
+
 #include "clutter-config.h"
 
 #include "clutter-stage-cogl.h"
@@ -406,7 +408,9 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   if (may_use_clipped_redraw &&
       G_UNLIKELY ((clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS)))
     {
-      static CoglMaterial *outline = NULL;
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      static CoglPipeline *outline = NULL;
       cairo_rectangle_int_t *clip = &stage_cogl->bounding_redraw_clip;
       ClutterActor *actor = CLUTTER_ACTOR (wrapper);
       CoglHandle vbo;
@@ -424,8 +428,8 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
       if (outline == NULL)
         {
-          outline = cogl_material_new ();
-          cogl_material_set_color4ub (outline, 0xff, 0x00, 0x00, 0xff);
+          outline = cogl_pipeline_new (ctx);
+          cogl_pipeline_set_color4ub (outline, 0xff, 0x00, 0x00, 0xff);
         }
 
       vbo = cogl_vertex_buffer_new (4);

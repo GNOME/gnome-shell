@@ -43,6 +43,8 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
+
 #include <math.h>
 
 #include "clutter-desaturate-effect.h"
@@ -285,9 +287,11 @@ clutter_desaturate_effect_init (ClutterDesaturateEffect *self)
 
   if (G_UNLIKELY (klass->base_pipeline == NULL))
     {
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
       CoglSnippet *snippet;
 
-      klass->base_pipeline = cogl_pipeline_new ();
+      klass->base_pipeline = cogl_pipeline_new (ctx);
 
       snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
                                   desaturate_glsl_declarations,

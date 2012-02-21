@@ -70,7 +70,7 @@
 
 struct _ClutterDeformEffectPrivate
 {
-  CoglHandle back_material;
+  CoglPipeline *back_pipeline;
 
   gint x_tiles;
   gint y_tiles;
@@ -282,22 +282,22 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
   cogl_pipeline_set_depth_state (pipeline, &depth_state, NULL);
 
   /* enable backface culling if we have a back material */
-  if (priv->back_material != COGL_INVALID_HANDLE)
+  if (priv->back_pipeline != NULL)
     cogl_pipeline_set_cull_face_mode (pipeline,
                                       COGL_PIPELINE_CULL_FACE_MODE_BACK);
 
   /* draw the front */
-  if (material != COGL_INVALID_HANDLE)
+  if (material != NULL)
     cogl_framebuffer_draw_primitive (fb, pipeline, priv->primitive);
 
   /* draw the back */
-  if (priv->back_material != COGL_INVALID_HANDLE)
+  if (priv->back_pipeline != NULL)
     {
       CoglPipeline *back_pipeline;
 
       /* We probably shouldn't be modifying the user's material so
          instead we make a temporary copy */
-      back_pipeline = cogl_pipeline_copy (priv->back_material);
+      back_pipeline = cogl_pipeline_copy (priv->back_pipeline);
       cogl_pipeline_set_depth_state (back_pipeline, &depth_state, NULL);
       cogl_pipeline_set_cull_face_mode (pipeline,
                                         COGL_PIPELINE_CULL_FACE_MODE_FRONT);
@@ -309,7 +309,9 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
 
   if (G_UNLIKELY (priv->lines_primitive != NULL))
     {
-      CoglPipeline *lines_pipeline = cogl_pipeline_new ();
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      CoglPipeline *lines_pipeline = cogl_pipeline_new (ctx);
       cogl_pipeline_set_color4f (lines_pipeline, 1.0, 0, 0, 1.0);
       cogl_framebuffer_draw_primitive (fb, lines_pipeline,
                                        priv->lines_primitive);
@@ -482,14 +484,14 @@ clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
 }
 
 static inline void
-clutter_deform_effect_free_back_material (ClutterDeformEffect *self)
+clutter_deform_effect_free_back_pipeline (ClutterDeformEffect *self)
 {
   ClutterDeformEffectPrivate *priv = self->priv;
 
-  if (priv->back_material != NULL)
+  if (priv->back_pipeline != NULL)
     {
-      cogl_handle_unref (priv->back_material);
-      priv->back_material = COGL_INVALID_HANDLE;
+      cogl_object_unref (priv->back_pipeline);
+      priv->back_pipeline = NULL;
     }
 }
 
@@ -499,7 +501,7 @@ clutter_deform_effect_finalize (GObject *gobject)
   ClutterDeformEffect *self = CLUTTER_DEFORM_EFFECT (gobject);
 
   clutter_deform_effect_free_arrays (self);
-  clutter_deform_effect_free_back_material (self);
+  clutter_deform_effect_free_back_pipeline (self);
 
   G_OBJECT_CLASS (clutter_deform_effect_parent_class)->finalize (gobject);
 }
@@ -553,7 +555,7 @@ clutter_deform_effect_get_property (GObject    *gobject,
       break;
 
     case PROP_BACK_MATERIAL:
-      g_value_set_boxed (value, priv->back_material);
+      g_value_set_boxed (value, priv->back_pipeline);
       break;
 
     default:
@@ -641,7 +643,7 @@ clutter_deform_effect_init (ClutterDeformEffect *self)
                                             ClutterDeformEffectPrivate);
 
   self->priv->x_tiles = self->priv->y_tiles = DEFAULT_N_TILES;
-  self->priv->back_material = COGL_INVALID_HANDLE;
+  self->priv->back_pipeline = NULL;
 
   clutter_deform_effect_init_arrays (self);
 }
@@ -664,17 +666,18 @@ clutter_deform_effect_set_back_material (ClutterDeformEffect *effect,
                                          CoglHandle           material)
 {
   ClutterDeformEffectPrivate *priv;
+  CoglPipeline *pipeline = COGL_PIPELINE (material);
 
   g_return_if_fail (CLUTTER_IS_DEFORM_EFFECT (effect));
-  g_return_if_fail (material == COGL_INVALID_HANDLE || cogl_is_material (material));
+  g_return_if_fail (pipeline == NULL || cogl_is_pipeline (pipeline));
 
   priv = effect->priv;
 
-  clutter_deform_effect_free_back_material (effect);
+  clutter_deform_effect_free_back_pipeline (effect);
 
-  priv->back_material = material;
-  if (priv->back_material != COGL_INVALID_HANDLE)
-    cogl_handle_ref (priv->back_material);
+  priv->back_pipeline = material;
+  if (priv->back_pipeline != NULL)
+    cogl_object_ref (priv->back_pipeline);
 
   clutter_deform_effect_invalidate (effect);
 }
@@ -696,7 +699,7 @@ clutter_deform_effect_get_back_material (ClutterDeformEffect *effect)
 {
   g_return_val_if_fail (CLUTTER_IS_DEFORM_EFFECT (effect), NULL);
 
-  return effect->priv->back_material;
+  return effect->priv->back_pipeline;
 }
 
 /**

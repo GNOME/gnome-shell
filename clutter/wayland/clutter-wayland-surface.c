@@ -283,9 +283,11 @@ clutter_wayland_surface_paint (ClutterActor *self)
 
   if (G_UNLIKELY (priv->pipeline == NULL))
     {
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
       guint8 paint_opacity = clutter_actor_get_paint_opacity (self);
 
-      priv->pipeline = cogl_pipeline_new ();
+      priv->pipeline = cogl_pipeline_new (ctx);
       cogl_pipeline_set_color4ub (priv->pipeline,
                                   paint_opacity,
                                   paint_opacity,

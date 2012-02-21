@@ -2693,7 +2693,11 @@ _clutter_actor_draw_paint_volume_full (ClutterActor *self,
   CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
 
   if (outline == NULL)
-    outline = cogl_pipeline_new ();
+    {
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      outline = cogl_pipeline_new (ctx);
+    }
 
   _clutter_paint_volume_complete (pv);
 

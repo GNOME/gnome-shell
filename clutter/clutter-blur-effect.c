@@ -41,6 +41,8 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
+
 #include "clutter-blur-effect.h"
 
 #include "cogl/cogl.h"
@@ -239,8 +241,10 @@ clutter_blur_effect_init (ClutterBlurEffect *self)
   if (G_UNLIKELY (klass->base_pipeline == NULL))
     {
       CoglSnippet *snippet;
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
-      klass->base_pipeline = cogl_pipeline_new ();
+      klass->base_pipeline = cogl_pipeline_new (ctx);
 
       snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
                                   box_blur_glsl_declarations,
