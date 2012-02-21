@@ -138,9 +138,9 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
   if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT))
     {
       stage_cogl->swap_callback_id =
-        cogl_framebuffer_add_swap_buffers_callback (framebuffer,
-                                                    handle_swap_complete_cb,
-                                                    stage_cogl);
+        cogl_onscreen_add_swap_buffers_callback (stage_cogl->onscreen,
+                                                 handle_swap_complete_cb,
+                                                 stage_cogl);
     }
 
   return TRUE;
@@ -462,7 +462,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       int copy_area[4];
 
       /* XXX: It seems there will be a race here in that the stage
-       * window may be resized before the cogl_framebuffer_swap_region
+       * window may be resized before the cogl_onscreen_swap_region
        * is handled and so we may copy the wrong region. I can't
        * really see how we can handle this with the current state of X
        * but at least in this case a full redraw should be queued by
@@ -476,33 +476,32 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       copy_area[3] = clip->height;
 
       CLUTTER_NOTE (BACKEND,
-                    "cogl_framebuffer_swap_region (onscreen: %p, "
-                                                  "x: %d, y: %d, "
-                                                  "width: %d, height: %d)",
+                    "cogl_onscreen_swap_region (onscreen: %p, "
+                                                "x: %d, y: %d, "
+                                                "width: %d, height: %d)",
                     stage_cogl->onscreen,
                     copy_area[0], copy_area[1], copy_area[2], copy_area[3]);
 
 
       CLUTTER_TIMER_START (_clutter_uprof_context, blit_sub_buffer_timer);
 
-      cogl_framebuffer_swap_region (COGL_FRAMEBUFFER (stage_cogl->onscreen),
-                                    copy_area, 1);
+      cogl_onscreen_swap_region (stage_cogl->onscreen, copy_area, 1);
 
       CLUTTER_TIMER_STOP (_clutter_uprof_context, blit_sub_buffer_timer);
     }
   else
     {
-      CLUTTER_NOTE (BACKEND, "cogl_framebuffer_swap_buffers (onscreen: %p)",
+      CLUTTER_NOTE (BACKEND, "cogl_onscreen_swap_buffers (onscreen: %p)",
                     stage_cogl->onscreen);
 
-      /* If we have swap buffer events then
-       * cogl_framebuffer_swap_buffers will return immediately and we
-       * need to track that there is a swap in progress... */
+      /* If we have swap buffer events then cogl_onscreen_swap_buffers
+       * will return immediately and we need to track that there is a
+       * swap in progress... */
       if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
         stage_cogl->pending_swaps++;
 
       CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
-      cogl_framebuffer_swap_buffers (COGL_FRAMEBUFFER (stage_cogl->onscreen));
+      cogl_onscreen_swap_buffers (stage_cogl->onscreen);
       CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
     }
 

@@ -542,7 +542,7 @@ clutter_stage_win32_redraw (ClutterStageWindow *stage_window)
   cogl_flush ();
 
   if (stage_win32->onscreen)
-    cogl_framebuffer_swap_buffers (COGL_FRAMEBUFFER (stage_win32->onscreen));
+    cogl_onscreen_swap_buffers (COGL_FRAMEBUFFER (stage_win32->onscreen));
 }
 
 static CoglFramebuffer *
