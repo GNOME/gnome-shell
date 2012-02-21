@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-15 17:19+0000\n"
-"PO-Revision-Date: 2012-02-15 20:37+0100\n"
+"POT-Creation-Date: 2012-02-21 16:48+0000\n"
+"PO-Revision-Date: 2012-02-21 22:23+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -83,59 +83,67 @@ msgid "History for the looking glass dialog"
 msgstr "Zgodovina za pogovorno okno povečevalnega stekla"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "Internally used to store the last IM presence explicitly set by the user. The value here is from the TpConnectionPresenceType enumeration."
+msgstr "Uporabljeno za shranjevanje stanja prisotnosti na hipnem sporočanju na zahtevo uporabnika. Vrednost določa števec predmeta TpConnectionPresenceType."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "Internally used to store the last session presence status for the user. The value here is from the GsmPresenceStatus enumeration."
+msgstr "Uporabljeno za shranjevanje stanja prisotnosti zadnje seje uporabnika. Vrednost določa števec predmeta GsmPresenceStatus."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show the week date in the calendar"
 msgstr "Pokaži tedenski datum v koledarju"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Izbrana možnost določa prikaz ISO tedenski datum v koledarju."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Which keyboard to use"
 msgstr "Katera tipkovnica naj bo uporabljena?"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid "The type of keyboard to use."
 msgstr "Vrsta tipkovnice za uporabo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "Show time with seconds"
 msgstr "Pokaži čas s sekundami"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "If true, display seconds in time."
 msgstr "Izbrana možnost določi prikaz sekund v času."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Show date in clock"
 msgstr "Pokaži datum v uri"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "If true, display date in the clock, in addition to time."
 msgstr "Izbrana možnost določi, da je ob času prikazan tudi datum."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Framerate used for recording screencasts."
 msgstr "Hitrost sličic uporabljena za snemanje zaslonskega posnetka."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second."
 msgstr "Hitrost sličic shranjenega končnega zaslonskega posnetka v sličicah na sekundo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Uporabljen GStreamer cevovod za kodiranje zaslonskega posnetka."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 #, no-c-format
 msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
 msgstr "Določa cevovod programa GStreamer, ki se uporablja za kodiranje posnetkov. Ta sledi skladnji, ki se uporablja za gst-launch. Cevovod mora imeti nepovezano korito, kamor se posnetek snema. Običajno je za to namenjen nepovezan izvorni pomnilnik, katerega odvod se zapiše v odvodno datoteko. Vendar pa lahko cevovod ta korak naredi v lastni odvod - možnost se lahko uporabi pri pošiljanju odvoda na strežnik icecast preko shout2send ali podobno. Nedoločena ali prazna možnost se odrazi kot privzeti cevovod. Trenutno je to 'videorate ! vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' in omogoča snemanje v zapis WEBM z uporabo kodeka VP8. Vrednost %T se uporablja kot ročnik za ugibanje optimalnega števila niti na sistemu."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
 msgid "File extension used for storing the screencast"
 msgstr "Pripona datoteke uporabljene za shranjevanje zaslonskih posnetkov"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:28
 msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
 msgstr "Ime datoteke zaslonskega posnetka bo enoznačno ime, kateremu bo dodan datum in določena pripona. Pripona mora ustrezati zapisu zabojnika."
 
@@ -687,7 +695,7 @@ msgstr "Povrni glasnost"
 msgid "Mute"
 msgstr "Utišaj"
 
-#: ../js/ui/messageTray.js:2446
+#: ../js/ui/messageTray.js:2447
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -789,17 +797,17 @@ msgstr "Programi"
 msgid "Dash"
 msgstr "Armaturna plošča"
 
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:582
 msgid "Quit"
 msgstr "Končaj"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:604
+#: ../js/ui/panel.js:613
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:974
+#: ../js/ui/panel.js:983
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -1028,7 +1036,7 @@ msgid "Grant this time only"
 msgstr "Odobri le tokrat"
 
 #: ../js/ui/status/bluetooth.js:382
-#: ../js/ui/telepathyClient.js:1093
+#: ../js/ui/telepathyClient.js:1091
 msgid "Reject"
 msgstr "Zavrni"
 
@@ -1319,39 +1327,39 @@ msgid "Invitation"
 msgstr "Povabilo"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:273
+#: ../js/ui/telepathyClient.js:271
 msgid "Call"
 msgstr "Pokliči"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:289
+#: ../js/ui/telepathyClient.js:287
 msgid "File Transfer"
 msgstr "Prenos datotek"
 
-#: ../js/ui/telepathyClient.js:371
+#: ../js/ui/telepathyClient.js:369
 msgid "Subscription request"
 msgstr "Zahteva po naročilu"
 
-#: ../js/ui/telepathyClient.js:407
+#: ../js/ui/telepathyClient.js:405
 msgid "Connection error"
 msgstr "Napaka povezovanja"
 
-#: ../js/ui/telepathyClient.js:665
+#: ../js/ui/telepathyClient.js:663
 #, c-format
 msgid "%s is online."
 msgstr "%s je povezan."
 
-#: ../js/ui/telepathyClient.js:669
+#: ../js/ui/telepathyClient.js:667
 #, c-format
 msgid "%s is offline."
 msgstr "%s ni povezan."
 
-#: ../js/ui/telepathyClient.js:673
+#: ../js/ui/telepathyClient.js:671
 #, c-format
 msgid "%s is away."
 msgstr "%s je odsoten."
 
-#: ../js/ui/telepathyClient.js:676
+#: ../js/ui/telepathyClient.js:674
 #, c-format
 msgid "%s is busy."
 msgstr "%s je zaposlen."
@@ -1359,35 +1367,35 @@ msgstr "%s je zaposlen."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:889
+#: ../js/ui/telepathyClient.js:887
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Poslano <b>%A</b> ob <b>%X</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:895
+#: ../js/ui/telepathyClient.js:893
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Poslano <b>%A</b>, <b>%d. %Ba</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:900
+#: ../js/ui/telepathyClient.js:898
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Poslano <b>%A</b>, <b>%d. %Ba</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:942
+#: ../js/ui/telepathyClient.js:940
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s je sedaj znan kot v %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1044
+#: ../js/ui/telepathyClient.js:1042
 #, c-format
 msgid "Invitation to %s"
 msgstr "Povabilo v %s"
@@ -1395,37 +1403,37 @@ msgstr "Povabilo v %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1052
+#: ../js/ui/telepathyClient.js:1050
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s vas vabi, da se pridružite v %s"
 
-#: ../js/ui/telepathyClient.js:1054
-#: ../js/ui/telepathyClient.js:1133
-#: ../js/ui/telepathyClient.js:1231
+#: ../js/ui/telepathyClient.js:1052
+#: ../js/ui/telepathyClient.js:1131
+#: ../js/ui/telepathyClient.js:1229
 msgid "Decline"
 msgstr "Zavrni"
 
-#: ../js/ui/telepathyClient.js:1055
-#: ../js/ui/telepathyClient.js:1134
-#: ../js/ui/telepathyClient.js:1232
+#: ../js/ui/telepathyClient.js:1053
+#: ../js/ui/telepathyClient.js:1132
+#: ../js/ui/telepathyClient.js:1230
 msgid "Accept"
 msgstr "Sprejmi"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1085
+#: ../js/ui/telepathyClient.js:1083
 #, c-format
 msgid "Video call from %s"
 msgstr "%s želi vzpostaviti video klic"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1088
+#: ../js/ui/telepathyClient.js:1086
 #, c-format
 msgid "Call from %s"
 msgstr "%s kliče"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1095
+#: ../js/ui/telepathyClient.js:1093
 msgid "Answer"
 msgstr "Odgovori"
 
@@ -1434,129 +1442,129 @@ msgstr "Odgovori"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1127
+#: ../js/ui/telepathyClient.js:1125
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s pošilja %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1196
+#: ../js/ui/telepathyClient.js:1194
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s želi dovoljenje za pogled dosegljivosti"
 
-#: ../js/ui/telepathyClient.js:1289
+#: ../js/ui/telepathyClient.js:1287
 msgid "Network error"
 msgstr "Napaka omrežja"
 
-#: ../js/ui/telepathyClient.js:1291
+#: ../js/ui/telepathyClient.js:1289
 msgid "Authentication failed"
 msgstr "Overitev je spodletela"
 
-#: ../js/ui/telepathyClient.js:1293
+#: ../js/ui/telepathyClient.js:1291
 msgid "Encryption error"
 msgstr "Napaka šifriranja"
 
-#: ../js/ui/telepathyClient.js:1295
+#: ../js/ui/telepathyClient.js:1293
 msgid "Certificate not provided"
 msgstr "Potrdilo ni na voljo"
 
-#: ../js/ui/telepathyClient.js:1297
+#: ../js/ui/telepathyClient.js:1295
 msgid "Certificate untrusted"
 msgstr "Potrdilo ni zaupljivo"
 
-#: ../js/ui/telepathyClient.js:1299
+#: ../js/ui/telepathyClient.js:1297
 msgid "Certificate expired"
 msgstr "Potrdilo je preteklo"
 
-#: ../js/ui/telepathyClient.js:1301
+#: ../js/ui/telepathyClient.js:1299
 msgid "Certificate not activated"
 msgstr "Potrdilo ni potrjeno"
 
-#: ../js/ui/telepathyClient.js:1303
+#: ../js/ui/telepathyClient.js:1301
 msgid "Certificate hostname mismatch"
 msgstr "Neustrezno ime gostitelja potrdila"
 
-#: ../js/ui/telepathyClient.js:1305
+#: ../js/ui/telepathyClient.js:1303
 msgid "Certificate fingerprint mismatch"
 msgstr "Neustrezen prstni odtis potrdila"
 
-#: ../js/ui/telepathyClient.js:1307
+#: ../js/ui/telepathyClient.js:1305
 msgid "Certificate self-signed"
 msgstr "Potrdilo je samo-podpisano"
 
-#: ../js/ui/telepathyClient.js:1309
+#: ../js/ui/telepathyClient.js:1307
 msgid "Status is set to offline"
 msgstr "Stanje je nastavljeno na brez povezave"
 
-#: ../js/ui/telepathyClient.js:1311
+#: ../js/ui/telepathyClient.js:1309
 msgid "Encryption is not available"
 msgstr "Šifriranje ni na voljo."
 
-#: ../js/ui/telepathyClient.js:1313
+#: ../js/ui/telepathyClient.js:1311
 msgid "Certificate is invalid"
 msgstr "Potrdilo je neveljavno."
 
-#: ../js/ui/telepathyClient.js:1315
+#: ../js/ui/telepathyClient.js:1313
 msgid "Connection has been refused"
 msgstr "Povezava je zavrnjena."
 
-#: ../js/ui/telepathyClient.js:1317
+#: ../js/ui/telepathyClient.js:1315
 msgid "Connection can't be established"
 msgstr "Povezave ni mogoče vzpostaviti."
 
-#: ../js/ui/telepathyClient.js:1319
+#: ../js/ui/telepathyClient.js:1317
 msgid "Connection has been lost"
 msgstr "Povezava je prekinjena."
 
-#: ../js/ui/telepathyClient.js:1321
+#: ../js/ui/telepathyClient.js:1319
 msgid "This account is already connected to the server"
 msgstr "Račun je s strežnikom že povezan"
 
-#: ../js/ui/telepathyClient.js:1323
+#: ../js/ui/telepathyClient.js:1321
 msgid "Connection has been replaced by a new connection using the same resource"
 msgstr "Povezava je zamenjana z novo povezavo, ki uporablja isti vir."
 
-#: ../js/ui/telepathyClient.js:1325
+#: ../js/ui/telepathyClient.js:1323
 msgid "The account already exists on the server"
 msgstr "Račun na strežniku že obstaja"
 
-#: ../js/ui/telepathyClient.js:1327
+#: ../js/ui/telepathyClient.js:1325
 msgid "Server is currently too busy to handle the connection"
 msgstr "Strežnik je trenutno preveč zaposlen za upravljanje s povezavo."
 
-#: ../js/ui/telepathyClient.js:1329
+#: ../js/ui/telepathyClient.js:1327
 msgid "Certificate has been revoked"
 msgstr "Potrdilo je preklicano"
 
-#: ../js/ui/telepathyClient.js:1331
+#: ../js/ui/telepathyClient.js:1329
 msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "Potrdilo ne uporablja varnega algoritma ali pa uporablja šibko šifriranje."
 
-#: ../js/ui/telepathyClient.js:1333
+#: ../js/ui/telepathyClient.js:1331
 msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
 msgstr "Dolžina potrdila strežnika ali pa globina verige potrdila presega omejitev, ki je določena s šifrirno knjižnico."
 
-#: ../js/ui/telepathyClient.js:1335
+#: ../js/ui/telepathyClient.js:1333
 msgid "Internal error"
 msgstr "Notranja napaka"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1345
+#: ../js/ui/telepathyClient.js:1343
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Povezava z %s je spodletela"
 
-#: ../js/ui/telepathyClient.js:1354
+#: ../js/ui/telepathyClient.js:1352
 msgid "Reconnect"
 msgstr "Ponovno se poveži"
 
-#: ../js/ui/telepathyClient.js:1355
+#: ../js/ui/telepathyClient.js:1353
 msgid "Edit account"
 msgstr "Uredi račun"
 
-#: ../js/ui/telepathyClient.js:1401
+#: ../js/ui/telepathyClient.js:1399
 msgid "Unknown reason"
 msgstr "Neznan vzrok"
 
@@ -1693,7 +1701,7 @@ msgstr "Velika Britanija"
 msgid "Default"
 msgstr "Privzeto"
 
-#: ../src/shell-polkit-authentication-agent.c:332
+#: ../src/shell-polkit-authentication-agent.c:339
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Uporabnik je zavrnil pogovorno okno overitve"
 
