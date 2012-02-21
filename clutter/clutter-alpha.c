@@ -32,6 +32,12 @@
  * #ClutterAlpha is a class for calculating an floating point value
  * dependent only on the position of a #ClutterTimeline.
  *
+ * <warning>For newly written code, it is recommended to use the
+ * #ClutterTimeline:progress-mode property of #ClutterTimeline, or the
+ * clutter_timeline_set_progress_func() function instead of #ClutterAlpha.
+ * The #ClutterAlpha class will be deprecated in the future, and will not
+ * be available any more in the next major version of Clutter.</warning>
+ *
  * A #ClutterAlpha binds a #ClutterTimeline to a progress function which
  * translates the time T into an adimensional factor alpha. The factor can
  * then be used to drive a #ClutterBehaviour, which will translate the
