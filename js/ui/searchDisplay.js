@@ -173,10 +173,9 @@ const GridSearchResults = new Lang.Class({
 const SearchResults = new Lang.Class({
     Name: 'SearchResults',
 
-    _init: function(searchSystem, openSearchSystem) {
+    _init: function(searchSystem) {
         this._searchSystem = searchSystem;
         this._searchSystem.connect('search-updated', Lang.bind(this, this._updateResults));
-        this._openSearchSystem = openSearchSystem;
 
         this.actor = new St.BoxLayout({ name: 'searchResults',
                                         vertical: true });
@@ -215,53 +214,8 @@ const SearchResults = new Lang.Class({
         this._searchProvidersBox = new St.BoxLayout({ style_class: 'search-providers-box' });
         this.actor.add(this._searchProvidersBox);
 
-        this._openSearchProviders = [];
-        this._openSearchSystem.connect('changed', Lang.bind(this, this._updateOpenSearchProviderButtons));
-        this._updateOpenSearchProviderButtons();
-
         this._highlightDefault = false;
         this._defaultResult = null;
-    },
-
-    _updateOpenSearchProviderButtons: function() {
-        for (let i = 0; i < this._openSearchProviders.length; i++)
-            this._openSearchProviders[i].actor.destroy();
-        this._openSearchProviders = this._openSearchSystem.getProviders();
-        for (let i = 0; i < this._openSearchProviders.length; i++)
-            this._createOpenSearchProviderButton(this._openSearchProviders[i]);
-    },
-
-    _createOpenSearchProviderButton: function(provider) {
-        let button = new St.Button({ style_class: 'dash-search-button',
-                                     reactive: true,
-                                     can_focus: true,
-                                     x_fill: true,
-                                     y_align: St.Align.MIDDLE });
-        let bin = new St.Bin({ x_fill: false,
-                               x_align:St.Align.MIDDLE });
-        button.connect('clicked', Lang.bind(this, function() {
-            this._openSearchSystem.activateResult(provider.id);
-        }));
-        let title = new St.Label({ text: provider.name,
-                                   style_class: 'dash-search-button-label' });
-
-        button.label_actor = title;
-        bin.set_child(title);
-        button.set_child(bin);
-        provider.actor = button;
-
-        button.setSelected = function(selected) {
-            if (selected)
-                button.add_style_pseudo_class('selected');
-            else
-                button.remove_style_pseudo_class('selected');
-        };
-        button.activate = Lang.bind(this, function() {
-            this._openSearchSystem.activateResult(provider.id);
-        });
-        button.actor = button;
-
-        this._searchProvidersBox.add(button);
     },
 
     createProviderMeta: function(provider) {
@@ -323,8 +277,6 @@ const SearchResults = new Lang.Class({
 
     doSearch: function (searchString) {
         this._searchSystem.updateSearch(searchString);
-        let terms = this._searchSystem.getTerms();
-        this._openSearchSystem.setSearchTerms(terms);
     },
 
     _metaForProvider: function(provider) {

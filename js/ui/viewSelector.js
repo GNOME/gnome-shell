@@ -103,7 +103,6 @@ const SearchTab = new Lang.Class({
         this._searchTimeoutId = 0;
 
         this._searchSystem = new Search.SearchSystem();
-        this._openSearchSystem = new Search.OpenSearchSystem();
 
         this._entry = new St.Entry({ name: 'searchEntry',
                                      /* Translators: this is the text displayed
@@ -127,7 +126,7 @@ const SearchTab = new Lang.Class({
 
         this._iconClickedId = 0;
 
-        this._searchResults = new SearchDisplay.SearchResults(this._searchSystem, this._openSearchSystem);
+        this._searchResults = new SearchDisplay.SearchResults(this._searchSystem);
         this.parent(this._entry, this._searchResults.actor, _("Search"), 'edit-find');
 
         this._text.connect('text-changed', Lang.bind(this, this._onTextChanged));

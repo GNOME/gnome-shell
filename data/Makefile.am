@@ -10,11 +10,6 @@ desktop_DATA = gnome-shell.desktop gnome-shell-extension-prefs.desktop
 
 @INTLTOOL_DESKTOP_RULE@
 
-searchprovidersdir = $(pkgdatadir)/open-search-providers
-dist_searchproviders_DATA =				\
-	open-search-providers/google.xml		\
-	open-search-providers/wikipedia.xml
-
 introspectiondir = $(datadir)/dbus-1/interfaces
 introspection_DATA = org.gnome.ShellSearchProvider.xml
 

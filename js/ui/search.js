@@ -10,8 +10,6 @@ const Util = imports.misc.util;
 const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 
-const DISABLED_OPEN_SEARCH_PROVIDERS_KEY = 'disabled-open-search-providers';
-
 // Not currently referenced by the search API, but
 // this enumeration can be useful for provider
 // implementations.
@@ -168,99 +166,6 @@ const SearchProvider = new Lang.Class({
     }
 });
 Signals.addSignalMethods(SearchProvider.prototype);
-
-const OpenSearchSystem = new Lang.Class({
-    Name: 'OpenSearchSystem',
-
-    _init: function() {
-        this._providers = [];
-        global.settings.connect('changed::' + DISABLED_OPEN_SEARCH_PROVIDERS_KEY, Lang.bind(this, this._refresh));
-        this._refresh();
-    },
-
-    getProviders: function() {
-        let res = [];
-        for (let i = 0; i < this._providers.length; i++)
-            res.push({ id: i, name: this._providers[i].name });
-
-        return res;
-    },
-
-    setSearchTerms: function(terms) {
-        this._terms = terms;
-    },
-
-    _checkSupportedProviderLanguage: function(provider) {
-        if (provider.url.search(/{language}/) == -1)
-            return true;
-
-        let langs = GLib.get_language_names();
-
-        langs.push('en');
-        let lang = null;
-        for (let i = 0; i < langs.length; i++) {
-            for (let k = 0; k < provider.langs.length; k++) {
-                if (langs[i] == provider.langs[k])
-                    lang = langs[i];
-            }
-            if (lang)
-                break;
-        }
-        provider.lang = lang;
-        return lang != null;
-    },
-
-    activateResult: function(id, params) {
-        let searchTerms = this._terms.join(' ');
-
-        let url = this._providers[id].url.replace('{searchTerms}', encodeURIComponent(searchTerms));
-        if (url.match('{language}'))
-            url = url.replace('{language}', this._providers[id].lang);
-
-        try {
-            Gio.app_info_launch_default_for_uri(url, global.create_app_launch_context());
-        } catch (e) {
-            // TODO: remove this after glib will be removed from moduleset
-            // In the default jhbuild, gio is in our prefix but gvfs is not
-            Util.spawn(['gvfs-open', url])
-        }
-
-        Main.overview.hide();
-    },
-
-    _addProvider: function(fileName) {
-        let path = global.datadir + '/open-search-providers/' + fileName;
-        let source = Shell.get_file_contents_utf8_sync(path);
-        let [success, name, url, langs, icon_uri] = Shell.parse_search_provider(source);
-        let provider ={ name: name,
-                        url: url,
-                        id: this._providers.length,
-                        icon_uri: icon_uri,
-                        langs: langs };
-        if (this._checkSupportedProviderLanguage(provider)) {
-            this._providers.push(provider);
-            this.emit('changed');
-        }
-    },
-
-    _refresh: function() {
-        this._providers = [];
-        let names = global.settings.get_strv(DISABLED_OPEN_SEARCH_PROVIDERS_KEY);
-        let file = Gio.file_new_for_path(global.datadir + '/open-search-providers');
-        FileUtils.listDirAsync(file, Lang.bind(this, function(files) {
-            for (let i = 0; i < files.length; i++) {
-                let enabled = true;
-                let name = files[i].get_name();
-                for (let k = 0; k < names.length; k++)
-                    if (names[k] == name)
-                        enabled = false;
-                if (enabled)
-                    this._addProvider(name);
-            }
-        }));
-    }
-});
-Signals.addSignalMethods(OpenSearchSystem.prototype);
 
 const SearchSystem = new Lang.Class({
     Name: 'SearchSystem',
