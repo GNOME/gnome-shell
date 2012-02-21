@@ -65,7 +65,7 @@ void                        clutter_backend_set_font_options          (ClutterBa
                                                                        const cairo_font_options_t *options);
 const cairo_font_options_t *clutter_backend_get_font_options          (ClutterBackend             *backend);
 
-#if defined (COGL_ENABLE_EXPERIMENTAL_2_0_API) && defined (CLUTTER_ENABLE_EXPERIMENTAL_API)
+#if defined (COGL_ENABLE_EXPERIMENTAL_API) && defined (CLUTTER_ENABLE_EXPERIMENTAL_API)
 CoglContext                *clutter_backend_get_cogl_context          (ClutterBackend             *backend);
 #endif
 
