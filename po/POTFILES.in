@@ -12,7 +12,6 @@ js/ui/calendar.js
 js/ui/contactDisplay.js
 js/ui/dash.js
 js/ui/dateMenu.js
-js/ui/docDisplay.js
 js/ui/endSessionDialog.js
 js/ui/extensionSystem.js
 js/ui/keyboard.js
