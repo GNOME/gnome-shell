@@ -54,6 +54,8 @@ static void meta_shaped_texture_get_preferred_height (ClutterActor *self,
 
 static void meta_shaped_texture_dirty_mask (MetaShapedTexture *stex);
 
+static gboolean meta_shaped_texture_get_paint_volume (ClutterActor *self, ClutterPaintVolume *volume);
+
 G_DEFINE_TYPE (MetaShapedTexture, meta_shaped_texture,
                CLUTTER_TYPE_ACTOR);
 
@@ -94,6 +96,7 @@ meta_shaped_texture_class_init (MetaShapedTextureClass *klass)
   actor_class->get_preferred_height = meta_shaped_texture_get_preferred_height;
   actor_class->paint = meta_shaped_texture_paint;
   actor_class->pick = meta_shaped_texture_pick;
+  actor_class->get_paint_volume = meta_shaped_texture_get_paint_volume;
 
   g_type_class_add_private (klass, sizeof (MetaShapedTexturePrivate));
 }
@@ -550,6 +553,13 @@ meta_shaped_texture_get_preferred_height (ClutterActor *self,
 
   if (natural_height_p)
     *natural_height_p = priv->tex_height;
+}
+
+static gboolean
+meta_shaped_texture_get_paint_volume (ClutterActor *self,
+                                      ClutterPaintVolume *volume)
+{
+  return clutter_paint_volume_set_from_allocation (volume, self);
 }
 
 ClutterActor *
