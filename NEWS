@@ -1,3 +1,91 @@
+Cogl 1.9.6                                                         2012-02-21
+
+  • List of changes since Cogl 1.9.4
+
+  » New conformance tests or tests ported from Clutter:
+        test-offscreen
+        test-primitive
+        test-texture-3d
+  » New public experimental functions:
+        cogl_pipeline_get_layer_texture
+        cogl_primitive_copy
+        cogl_primitive_foreach_attribute
+        cogl_primitive_get_indices
+        cogl_pipeline_get_layer_{min,max}_filter
+  » Added cogl_kms_renderer_get_kms_fd to get the KMS file descriptor.
+  » Bug fixed in the KMS support where it would crash on cleanup if it
+    couldn't save the CRTC state.
+  » Bug fixed in the Wayland compositor support where it would leak
+    EGLImages when creating a texture from a buffer
+  » The swap_buffer callback in GLX is now delayed until
+    cogl_poll_dispatch is called so that apps can handle it more
+    predictably.
+  » Fixes for bugs with pipelines that are trying to use a layer with
+    a NULL texture.
+  » New cogl_framebuffer_* API for drawing directly to the framebuffer
+    without having to push the framebuffer. Ideally we want to move
+    towards this style of API in future with no global stacks.
+  » Most of the _EXP suffixes have been removed from the experimental
+    API symbols in the hope that the gtk-doc unstable annotation will
+    be enough to distinguish these.
+  » Add a COGL_DEBUG=winsys option
+  » CoglBuffer and CoglPrimitive now take an explicit CoglContext
+    argument in their constructor. We want to move towards getting rid
+    of the global context.
+  » Updates to the MSVC build support.
+  » Add cogl_pipeline_set_layer_null_texture(). This can be used for
+    base pipelines instead of having to create a dummy texture.
+  » Fix some bugs where Cogl was assuming there is a direct mapping
+    between the pipeline layer number and the GL texture unit number.
+  » In snippets, there are now always builtin sampler uniforms for
+    every layer of the pipeline. This makes it easier to write GLSL
+    that samples arbitrary units.
+  » The texture lookup snippet hook now gets passed the sampler for
+    the unit. The snippet can use this to sample the texture multiple
+    times.
+  » Some public constants for CoglPixelFormat have been removed
+    (COGL_UNPREMULT_MASK, COGL_UNORDERED_MASK and
+    COGL_PIXEL_FORMAT_{24,32}).
+  » 30-bit pixel formats added.
+  » COGL_DEBUG=wireframes now correctly renders primitives using
+    vertex shader snippets.
+  » cogl_framebuffer_swap_buffers and friends have been renamed to
+    cogl_onscreen_swap_buffers.
+  » If the experimental 2.0 API is requested, as far as possible the
+    headers for the 1.0 API are no longer included. Define
+    COGL_ENABLE_EXPERIMENTAL_API instead if you want to mix both APIs.
+
+  • List of bugs fixed since Cogl 1.9.4
+
+    https://bugzilla.gnome.org:
+
+    #660188 - Color corruption with software rendering at 30-bit color depth
+    #668385 - Missing G_END_DECLS in cogl-poll.h
+    #668856 - Do not look for GLES2-only GLSL prototypes on GL
+    #668913 - The journal for an offscreen doesn't get flushed when
+              cogl_texture_get_data is called
+    #669368 - Reading back texture fails with ‘Invalid operation’ + wrong image
+    #669785 - Build fixes for COGL master (1.9.x)
+
+  • Note the following conformance tests are currently failing with
+    the GLES2 driver but they were also failing in 1.9.4:
+    test_cogl_depth_test, test_cogl_sub_texture, test_cogl_texture_3d
+
+Many thanks to:
+
+  Robert Bragg
+  Chun-wei Fan
+  Damien Leone
+  Emmanuele Bassi
+  Jasper St. Pierre
+  Chao-Hsiung Liao
+  Gheyret Kenji
+  Ihar Hrachyshka
+  Kasia Bondarava
+  Kenneth Nielsen
+  Kjartan Maraas
+  Ryan Lortie
+
 Cogl 1.9.4                                                         2012-01-16
 
   • List of changes since Cogl 1.9.2
@@ -54,7 +142,7 @@ Cogl 1.9.4                                                         2012-01-16
     into their mainloop. For applications using a glib mainloop we've provided
     a GSource for convenience.
 
-  • List of bugs fixed since Cogl 1.8.0
+  • List of bugs fixed since Cogl 1.9.2
 
     https://bugzilla.gnome.org:
 
