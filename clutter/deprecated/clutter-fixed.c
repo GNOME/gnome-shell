@@ -31,6 +31,10 @@
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
+/* This file depends on the cogl-fixed api which isn't exposed when
+ * COGL_ENABLE_EXPERIMENTAL_2_0_API is defined...
+ */
+#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl.h>
 
 #include <glib-object.h>

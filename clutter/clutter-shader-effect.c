@@ -113,9 +113,13 @@
 #include "config.h"
 #endif
 
-#include "clutter-shader-effect.h"
-
+/* XXX: This file depends on the cogl_program_ api with has been
+ * removed for Cogl 2.0 so we undef COGL_ENABLE_EXPERIMENTAL_2_0_API
+ * for this file for now */
+#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include "cogl/cogl.h"
+
+#include "clutter-shader-effect.h"
 
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
@@ -418,7 +422,7 @@ clutter_shader_effect_paint_target (ClutterOffscreenEffect *effect)
 
   /* associate the program to the offscreen target material */
   material = clutter_offscreen_effect_get_target (effect);
-  cogl_material_set_user_program (material, priv->program);
+  cogl_pipeline_set_user_program (material, priv->program);
 
 out:
   /* paint the offscreen buffer */

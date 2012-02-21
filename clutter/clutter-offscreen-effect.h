@@ -31,6 +31,7 @@
 
 #include <cogl/cogl.h>
 #include <clutter/clutter-effect.h>
+#include <clutter/clutter-cogl-compat.h>
 
 G_BEGIN_DECLS
 

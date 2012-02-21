@@ -124,10 +124,10 @@ clutter_offscreen_effect_set_actor (ClutterActorMeta *meta,
   meta_class->set_actor (meta, actor);
 
   /* clear out the previous state */
-  if (priv->offscreen != COGL_INVALID_HANDLE)
+  if (priv->offscreen != NULL)
     {
       cogl_handle_unref (priv->offscreen);
-      priv->offscreen = COGL_INVALID_HANDLE;
+      priv->offscreen = NULL;
     }
 
   /* we keep a back pointer here, to avoid going through the ActorMeta */
@@ -162,7 +162,7 @@ update_fbo (ClutterEffect *effect, int fbo_width, int fbo_height)
 
   if (priv->fbo_width == fbo_width &&
       priv->fbo_height == fbo_height &&
-      priv->offscreen != COGL_INVALID_HANDLE)
+      priv->offscreen != NULL)
     return TRUE;
 
   if (priv->target == NULL)
@@ -181,15 +181,15 @@ update_fbo (ClutterEffect *effect, int fbo_width, int fbo_height)
                                        COGL_PIPELINE_FILTER_NEAREST);
     }
 
-  if (priv->texture != COGL_INVALID_HANDLE)
+  if (priv->texture != NULL)
     {
       cogl_handle_unref (priv->texture);
-      priv->texture = COGL_INVALID_HANDLE;
+      priv->texture = NULL;
     }
 
   priv->texture =
     clutter_offscreen_effect_create_texture (self, fbo_width, fbo_height);
-  if (priv->texture == COGL_INVALID_HANDLE)
+  if (priv->texture == NULL)
     return FALSE;
 
   cogl_pipeline_set_layer_texture (priv->target, 0, priv->texture);
@@ -197,11 +197,11 @@ update_fbo (ClutterEffect *effect, int fbo_width, int fbo_height)
   priv->fbo_width = fbo_width;
   priv->fbo_height = fbo_height;
 
-  if (priv->offscreen != COGL_INVALID_HANDLE)
+  if (priv->offscreen != NULL)
     cogl_handle_unref (priv->offscreen);
 
   priv->offscreen = cogl_offscreen_new_to_texture (priv->texture);
-  if (priv->offscreen == COGL_INVALID_HANDLE)
+  if (priv->offscreen == NULL)
     {
       g_warning ("%s: Unable to create an Offscreen buffer", G_STRLOC);
 
@@ -397,7 +397,7 @@ clutter_offscreen_effect_post_paint (ClutterEffect *effect)
   ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
   ClutterOffscreenEffectPrivate *priv = self->priv;
 
-  if (priv->offscreen == COGL_INVALID_HANDLE ||
+  if (priv->offscreen == NULL ||
       priv->target == NULL ||
       priv->actor == NULL)
     return;
@@ -508,7 +508,7 @@ CoglHandle
 clutter_offscreen_effect_get_texture (ClutterOffscreenEffect *effect)
 {
   g_return_val_if_fail (CLUTTER_IS_OFFSCREEN_EFFECT (effect),
-                        COGL_INVALID_HANDLE);
+                        NULL);
 
   return effect->priv->texture;
 }
@@ -574,7 +574,7 @@ clutter_offscreen_effect_create_texture (ClutterOffscreenEffect *effect,
                                          gfloat                  height)
 {
   g_return_val_if_fail (CLUTTER_IS_OFFSCREEN_EFFECT (effect),
-                        COGL_INVALID_HANDLE);
+                        NULL);
 
   return CLUTTER_OFFSCREEN_EFFECT_GET_CLASS (effect)->create_texture (effect,
                                                                       width,
@@ -610,7 +610,7 @@ clutter_offscreen_effect_get_target_size (ClutterOffscreenEffect *effect,
 
   priv = effect->priv;
 
-  if (priv->texture == COGL_INVALID_HANDLE)
+  if (priv->texture == NULL)
     return FALSE;
 
   if (width)

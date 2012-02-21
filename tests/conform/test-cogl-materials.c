@@ -1,5 +1,13 @@
 #include "config.h"
 
+/* XXX: we currently include config.h above as a hack so we can
+ * determine if we are running with GLES2 or not but since Clutter
+ * uses the experimental Cogl api that will also define
+ * COGL_ENABLE_EXPERIMENTAL_2_0_API. The cogl_material_ api isn't
+ * exposed if COGL_ENABLE_EXPERIMENTAL_2_0_API is defined though so we
+ * undef it before cogl.h is included */
+#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
+
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
 #include <string.h>

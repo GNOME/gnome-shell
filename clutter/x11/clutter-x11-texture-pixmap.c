@@ -801,13 +801,13 @@ void
 clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
                                        Pixmap                   pixmap)
 {
-  Window       root;
-  int          x, y;
-  unsigned int width, height, border_width, depth;
-  Status       status = 0;
-  gboolean     new_pixmap = FALSE, new_pixmap_width = FALSE;
-  gboolean     new_pixmap_height = FALSE, new_pixmap_depth = FALSE;
-  CoglHandle   material;
+  Window        root;
+  int           x, y;
+  unsigned int  width, height, border_width, depth;
+  Status        status = 0;
+  gboolean      new_pixmap = FALSE, new_pixmap_width = FALSE;
+  gboolean      new_pixmap_height = FALSE, new_pixmap_depth = FALSE;
+  CoglPipeline *pipeline;
 
   ClutterX11TexturePixmapPrivate *priv;
 
@@ -817,9 +817,10 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
 
   /* Get rid of the existing Cogl texture early because it may try to
      use the pixmap which we might destroy */
-  material = clutter_texture_get_cogl_material (CLUTTER_TEXTURE (texture));
-  if (material)
-    cogl_material_set_layer (material, 0, COGL_INVALID_HANDLE);
+  pipeline = (CoglPipeline *)
+    clutter_texture_get_cogl_material (CLUTTER_TEXTURE (texture));
+  if (pipeline)
+    cogl_pipeline_set_layer_texture (pipeline, 0, NULL);
 
   if (pixmap != None)
     {

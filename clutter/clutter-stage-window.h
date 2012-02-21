@@ -5,6 +5,18 @@
 #include <cogl/cogl.h>
 #include <cairo.h>
 
+/* XXX: Some of the private parts in this header expect the
+ * CoglFramebuffer typedef from Cogl, but its possible for this header
+ * to be included without the experimental Cogl api having been
+ * selected by defining COGL_ENABLE_EXPERIMENTAL_API or
+ * COGL_ENABLE_EXPERIMENTAL_2_0_API.
+ *
+ * We declare a  place holder type ourselves in this case...
+ */
+#ifndef COGL_ENABLE_EXPERIMENTAL_API
+typedef struct _CoglFramebuffer CoglFramebuffer;
+#endif
+
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_STAGE_WINDOW               (clutter_stage_window_get_type ())

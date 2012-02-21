@@ -118,6 +118,7 @@ source_h =					\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
 	$(srcdir)/clutter-util.h 		\
+	$(srcdir)/clutter-cogl-compat.h 	\
 	$(NULL)
 
 source_c = \

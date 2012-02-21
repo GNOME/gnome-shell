@@ -44,6 +44,17 @@
 #include "config.h"
 #endif
 
+/* This file depends on the glib enum types which aren't exposed
+ * by cogl.h when COGL_ENABLE_EXPERIMENTAL_2_0_API is defined.
+ *
+ * Undefining COGL_ENABLE_EXPERIMENTAL_2_0_API will still expose
+ * us experimental api but will also expose Cogl 1.x api too...
+ */
+#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
+#include <cogl/cogl.h>
+
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
+
 /* sadly, we are still using ClutterShader internally */
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
@@ -79,12 +90,12 @@ struct _ClutterTexturePrivate
   gint image_width;
   gint image_height;
 
-  CoglHandle material;
+  CoglPipeline *pipeline;
 
   ClutterActor *fbo_source;
   CoglHandle fbo_handle;
 
-  CoglHandle pick_material;
+  CoglPipeline *pick_pipeline;
 
   gchar *filename;
 
@@ -100,7 +111,7 @@ struct _ClutterTexturePrivate
   guint load_async_set : 1;  /* used to make load_async possible */
   guint pick_with_alpha : 1;
   guint pick_with_alpha_supported : 1;
-  guint seen_create_pick_material_warning : 1;
+  guint seen_create_pick_pipeline_warning : 1;
 };
 
 #define ASYNC_STATE_LOCKED      1
@@ -173,7 +184,7 @@ static guint        repaint_upload_func = 0;
 static GList       *upload_list = NULL;
 static GMutex       upload_list_mutex;
 
-static CoglMaterial *texture_template_material = NULL;
+static CoglPipeline *texture_template_pipeline = NULL;
 
 static void
 texture_fbo_free_resources (ClutterTexture *texture);
@@ -192,13 +203,13 @@ static const struct
 clutter_texture_quality_filters[] =
   {
     /* CLUTTER_TEXTURE_QUALITY_LOW */
-    { COGL_MATERIAL_FILTER_NEAREST, COGL_MATERIAL_FILTER_NEAREST },
+    { COGL_PIPELINE_FILTER_NEAREST, COGL_PIPELINE_FILTER_NEAREST },
 
     /* CLUTTER_TEXTURE_QUALITY_MEDIUM */
-    { COGL_MATERIAL_FILTER_LINEAR, COGL_MATERIAL_FILTER_LINEAR },
+    { COGL_PIPELINE_FILTER_LINEAR, COGL_PIPELINE_FILTER_LINEAR },
 
     /* CLUTTER_TEXTURE_QUALITY_HIGH */
-    { COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR, COGL_MATERIAL_FILTER_LINEAR }
+    { COGL_PIPELINE_FILTER_LINEAR_MIPMAP_LINEAR, COGL_PIPELINE_FILTER_LINEAR }
   };
 
 static inline void
@@ -220,12 +231,12 @@ texture_free_gl_resources (ClutterTexture *texture)
 {
   ClutterTexturePrivate *priv = texture->priv;
 
-  if (priv->material != COGL_INVALID_HANDLE)
+  if (priv->pipeline != NULL)
     {
       /* We want to keep the layer so that the filter settings will
          remain but we want to free its resources so we clear the
          texture handle */
-      cogl_material_set_layer (priv->material, 0, COGL_INVALID_HANDLE);
+      cogl_pipeline_set_layer_texture (priv->pipeline, 0, NULL);
     }
 }
 
@@ -238,14 +249,14 @@ clutter_texture_unrealize (ClutterActor *actor)
   texture = CLUTTER_TEXTURE(actor);
   priv = texture->priv;
 
-  if (priv->material == COGL_INVALID_HANDLE)
+  if (priv->pipeline == NULL)
     return;
 
   if (priv->fbo_source != NULL)
     {
       /* Free up our fbo handle and texture resources, realize will recreate */
-      cogl_handle_unref (priv->fbo_handle);
-      priv->fbo_handle = COGL_INVALID_HANDLE;
+      cogl_object_unref (priv->fbo_handle);
+      priv->fbo_handle = NULL;
       texture_free_gl_resources (texture);
       return;
     }
@@ -277,15 +288,15 @@ clutter_texture_realize (ClutterActor *actor)
                                         flags,
                                         COGL_PIXEL_FORMAT_RGBA_8888_PRE);
 
-      cogl_material_set_layer (priv->material, 0, tex);
+      cogl_pipeline_set_layer_texture (priv->pipeline, 0, tex);
 
       priv->fbo_handle = cogl_offscreen_new_to_texture (tex);
 
-      /* The material now has a reference to the texture so it will
+      /* The pipeline now has a reference to the texture so it will
          stick around */
-      cogl_handle_unref (tex);
+      cogl_object_unref (tex);
 
-      if (priv->fbo_handle == COGL_INVALID_HANDLE)
+      if (priv->fbo_handle == NULL)
         {
           g_warning ("%s: Offscreen texture creation failed", G_STRLOC);
 	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
@@ -582,37 +593,37 @@ gen_texcoords_and_draw_cogl_rectangle (ClutterActor *self)
 			              0, 0, t_w, t_h);
 }
 
-static CoglHandle
-create_pick_material (ClutterActor *self)
+static CoglPipeline *
+create_pick_pipeline (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
-  CoglHandle pick_material = cogl_material_copy (texture_template_material);
+  CoglPipeline *pick_pipeline = cogl_pipeline_copy (texture_template_pipeline);
   GError *error = NULL;
 
-  if (!cogl_material_set_layer_combine (pick_material, 0,
+  if (!cogl_pipeline_set_layer_combine (pick_pipeline, 0,
                                         "RGBA = "
                                         "  MODULATE (CONSTANT, TEXTURE[A])",
                                         &error))
     {
-      if (!priv->seen_create_pick_material_warning)
+      if (!priv->seen_create_pick_pipeline_warning)
         g_warning ("Error setting up texture combine for shaped "
                    "texture picking: %s", error->message);
-      priv->seen_create_pick_material_warning = TRUE;
+      priv->seen_create_pick_pipeline_warning = TRUE;
       g_error_free (error);
-      cogl_handle_unref (pick_material);
-      return COGL_INVALID_HANDLE;
+      cogl_object_unref (pick_pipeline);
+      return NULL;
     }
 
-  cogl_material_set_blend (pick_material,
+  cogl_pipeline_set_blend (pick_pipeline,
                            "RGBA = ADD (SRC_COLOR[RGBA], 0)",
                            NULL);
 
-  cogl_material_set_alpha_test_function (pick_material,
-                                         COGL_MATERIAL_ALPHA_FUNC_EQUAL,
+  cogl_pipeline_set_alpha_test_function (pick_pipeline,
+                                         COGL_PIPELINE_ALPHA_FUNC_EQUAL,
                                          1.0);
 
-  return pick_material;
+  return pick_pipeline;
 }
 
 static void
@@ -629,10 +640,10 @@ clutter_texture_pick (ClutterActor       *self,
     {
       CoglColor pick_color;
 
-      if (priv->pick_material == COGL_INVALID_HANDLE)
-        priv->pick_material = create_pick_material (self);
+      if (priv->pick_pipeline == NULL)
+        priv->pick_pipeline = create_pick_pipeline (self);
 
-      if (priv->pick_material == COGL_INVALID_HANDLE)
+      if (priv->pick_pipeline == NULL)
         {
           priv->pick_with_alpha_supported = FALSE;
           CLUTTER_ACTOR_CLASS (clutter_texture_parent_class)->pick (self,
@@ -640,7 +651,7 @@ clutter_texture_pick (ClutterActor       *self,
           return;
         }
 
-      if (priv->fbo_handle != COGL_INVALID_HANDLE)
+      if (priv->fbo_handle != NULL)
         update_fbo (self);
 
       cogl_color_init_from_4ub (&pick_color,
@@ -648,11 +659,11 @@ clutter_texture_pick (ClutterActor       *self,
                                 color->green,
                                 color->blue,
                                 0xff);
-      cogl_material_set_layer_combine_constant (priv->pick_material,
+      cogl_pipeline_set_layer_combine_constant (priv->pick_pipeline,
                                                 0, &pick_color);
-      cogl_material_set_layer (priv->pick_material, 0,
-                               clutter_texture_get_cogl_texture (texture));
-      cogl_set_source (priv->pick_material);
+      cogl_pipeline_set_layer_texture (priv->pick_pipeline, 0,
+                                       clutter_texture_get_cogl_texture (texture));
+      cogl_set_source (priv->pick_pipeline);
       gen_texcoords_and_draw_cogl_rectangle (self);
     }
   else
@@ -671,15 +682,15 @@ clutter_texture_paint (ClutterActor *self)
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
 
-  if (priv->fbo_handle != COGL_INVALID_HANDLE)
+  if (priv->fbo_handle != NULL)
     update_fbo (self);
 
-  cogl_material_set_color4ub (priv->material,
+  cogl_pipeline_set_color4ub (priv->pipeline,
 			      paint_opacity,
                               paint_opacity,
                               paint_opacity,
                               paint_opacity);
-  cogl_set_source (priv->material);
+  cogl_set_source (priv->pipeline);
 
   gen_texcoords_and_draw_cogl_rectangle (self);
 }
@@ -692,7 +703,7 @@ clutter_texture_get_paint_volume (ClutterActor       *self,
 
   priv = CLUTTER_TEXTURE (self)->priv;
 
-  if (priv->material == NULL)
+  if (priv->pipeline == NULL)
     return FALSE;
 
   if (priv->image_width == 0 || priv->image_height == 0)
@@ -713,7 +724,7 @@ clutter_texture_async_data_free (ClutterTextureAsyncData *data)
   g_free (data->load_filename);
 
   if (data->load_bitmap != NULL)
-    cogl_handle_unref (data->load_bitmap);
+    cogl_object_unref (data->load_bitmap);
 
   if (data->load_error != NULL)
     g_error_free (data->load_error);
@@ -771,16 +782,16 @@ clutter_texture_dispose (GObject *object)
 
   clutter_texture_async_load_cancel (texture);
 
-  if (priv->material != COGL_INVALID_HANDLE)
+  if (priv->pipeline != NULL)
     {
-      cogl_handle_unref (priv->material);
-      priv->material = COGL_INVALID_HANDLE;
+      cogl_object_unref (priv->pipeline);
+      priv->pipeline = NULL;
     }
 
-  if (priv->pick_material != COGL_INVALID_HANDLE)
+  if (priv->pick_pipeline != NULL)
     {
-      cogl_handle_unref (priv->pick_material);
-      priv->pick_material = COGL_INVALID_HANDLE;
+      cogl_object_unref (priv->pick_pipeline);
+      priv->pick_pipeline = NULL;
     }
 
   G_OBJECT_CLASS (clutter_texture_parent_class)->dispose (object);
@@ -1272,26 +1283,28 @@ clutter_texture_init (ClutterTexture *self)
   priv->repeat_x          = FALSE;
   priv->repeat_y          = FALSE;
   priv->sync_actor_size   = TRUE;
-  priv->fbo_handle        = COGL_INVALID_HANDLE;
-  priv->pick_material     = COGL_INVALID_HANDLE;
+  priv->fbo_handle        = NULL;
+  priv->pick_pipeline     = NULL;
   priv->keep_aspect_ratio = FALSE;
   priv->pick_with_alpha   = FALSE;
   priv->pick_with_alpha_supported = TRUE;
-  priv->seen_create_pick_material_warning = FALSE;
+  priv->seen_create_pick_pipeline_warning = FALSE;
 
-  if (G_UNLIKELY (texture_template_material == NULL))
+  if (G_UNLIKELY (texture_template_pipeline == NULL))
     {
       CoglPipeline *pipeline;
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
-      texture_template_material = cogl_material_new ();
-      pipeline = COGL_PIPELINE (texture_template_material);
+      texture_template_pipeline = cogl_pipeline_new (ctx);
+      pipeline = COGL_PIPELINE (texture_template_pipeline);
       cogl_pipeline_set_layer_null_texture (pipeline,
                                             0, /* layer_index */
                                             COGL_TEXTURE_TYPE_2D);
     }
 
-  g_assert (texture_template_material != NULL);
-  priv->material = cogl_material_copy (texture_template_material);
+  g_assert (texture_template_pipeline != NULL);
+  priv->pipeline = cogl_pipeline_copy (texture_template_pipeline);
 }
 
 /**
@@ -1310,9 +1323,9 @@ clutter_texture_init (ClutterTexture *self)
 CoglHandle
 clutter_texture_get_cogl_material (ClutterTexture *texture)
 {
-  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), COGL_INVALID_HANDLE);
+  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), NULL);
 
-  return texture->priv->material;
+  return texture->priv->pipeline;
 }
 
 /**
@@ -1336,23 +1349,55 @@ void
 clutter_texture_set_cogl_material (ClutterTexture *texture,
                                    CoglHandle cogl_material)
 {
+  CoglPipeline *cogl_pipeline = cogl_material;
   CoglHandle cogl_texture;
 
   g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
 
-  cogl_handle_ref (cogl_material);
+  cogl_object_ref (cogl_pipeline);
 
-  if (texture->priv->material)
-    cogl_handle_unref (texture->priv->material);
+  if (texture->priv->pipeline)
+    cogl_object_unref (texture->priv->pipeline);
 
-  texture->priv->material = cogl_material;
+  texture->priv->pipeline = cogl_pipeline;
 
-  /* XXX: We are re-asserting the first layer of the new material to ensure the
-   * priv state is in sync with the contents of the material. */
+  /* XXX: We are re-asserting the first layer of the new pipeline to ensure the
+   * priv state is in sync with the contents of the pipeline. */
   cogl_texture = clutter_texture_get_cogl_texture (texture);
   clutter_texture_set_cogl_texture (texture, cogl_texture);
-  /* XXX: If we add support for more material layers, this will need
+  /* XXX: If we add support for more pipeline layers, this will need
    * extending */
+}
+
+typedef struct _GetLayerState
+{
+  gboolean has_layer;
+  int first_layer;
+} GetLayerState;
+
+static gboolean
+layer_cb (CoglPipeline *pipeline, int layer, void *user_data)
+{
+  GetLayerState *state = user_data;
+
+  state->has_layer = TRUE;
+  state->first_layer = layer;
+
+  /* We only care about the first layer. */
+  return FALSE;
+}
+
+static gboolean
+get_first_layer_index (CoglPipeline *pipeline, int *layer_index)
+{
+  GetLayerState state = { FALSE };
+  cogl_pipeline_foreach_layer (pipeline,
+                               layer_cb,
+                               &state);
+  if (state.has_layer)
+    *layer_index = state.first_layer;
+
+  return state.has_layer;
 }
 
 /**
@@ -1377,27 +1422,16 @@ CoglHandle
 clutter_texture_get_cogl_texture (ClutterTexture *texture)
 {
   ClutterTexturePrivate *priv;
-  CoglMaterialLayerType layer_type;
-  const GList *layers;
-  int n_layers;
+  int layer_index;
 
-  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), COGL_INVALID_HANDLE);
+  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), NULL);
 
   priv = texture->priv;
 
-  layers = cogl_material_get_layers (priv->material);
-  if (layers == NULL)
-    return COGL_INVALID_HANDLE;
-
-  n_layers = g_list_length ((GList *)layers);
-  if (n_layers == 0)
-    return COGL_INVALID_HANDLE;
-
-  layer_type = cogl_material_layer_get_type (layers->data);
-  if (layer_type != COGL_MATERIAL_LAYER_TYPE_TEXTURE)
-    return COGL_INVALID_HANDLE;
-
-  return cogl_material_layer_get_texture (layers->data);
+  if (get_first_layer_index (priv->pipeline, &layer_index))
+    return cogl_pipeline_get_layer_texture (priv->pipeline, layer_index);
+  else
+    return NULL;
 }
 
 /**
@@ -1434,7 +1468,7 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
 
   /* Reference the new texture now in case it is the same one we are
      already using */
-  cogl_handle_ref (cogl_tex);
+  cogl_object_ref (cogl_tex);
 
   /* Remove FBO if exisiting */
   if (priv->fbo_source)
@@ -1444,15 +1478,15 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   texture_free_gl_resources (texture);
 
   /* Use the new texture */
-  if (priv->material == NULL)
-    priv->material = cogl_material_copy (texture_template_material);
+  if (priv->pipeline == NULL)
+    priv->pipeline = cogl_pipeline_copy (texture_template_pipeline);
 
-  g_assert (priv->material != NULL);
-  cogl_material_set_layer (priv->material, 0, cogl_tex);
+  g_assert (priv->pipeline != NULL);
+  cogl_pipeline_set_layer_texture (priv->pipeline, 0, cogl_tex);
 
-  /* The material now holds a reference to the texture so we can
+  /* The pipeline now holds a reference to the texture so we can
      safely release the reference we claimed above */
-  cogl_handle_unref (cogl_tex);
+  cogl_object_unref (cogl_tex);
 
   size_changed = (width != priv->image_width || height != priv->image_height);
   priv->image_width = width;
@@ -1515,7 +1549,7 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 			       GError            **error)
 {
   ClutterTexturePrivate *priv = texture->priv;
-  CoglHandle new_texture = COGL_INVALID_HANDLE;
+  CoglHandle new_texture = NULL;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
 
   if (priv->no_slice)
@@ -1531,7 +1565,7 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
                                             rowstride,
                                             data);
 
-  if (G_UNLIKELY (new_texture == COGL_INVALID_HANDLE))
+  if (G_UNLIKELY (new_texture == NULL))
     {
       GError *inner_error = NULL;
 
@@ -1554,7 +1588,7 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 
   clutter_texture_set_cogl_texture (texture, new_texture);
 
-  cogl_handle_unref (new_texture);
+  cogl_object_unref (new_texture);
 
   g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, NULL);
 
@@ -1752,7 +1786,7 @@ clutter_texture_async_load_complete (ClutterTexture *self,
                          cogl_texture_get_height (handle));
         }
 
-      cogl_handle_unref (handle);
+      cogl_object_unref (handle);
     }
 
   g_signal_emit (self, texture_signals[LOAD_FINISHED], 0, error);
@@ -2000,7 +2034,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
 			       GError        **error)
 {
   ClutterTexturePrivate *priv;
-  CoglHandle new_texture = COGL_INVALID_HANDLE;
+  CoglHandle new_texture = NULL;
   GError *internal_error = NULL;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
 
@@ -2020,7 +2054,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
                                             &internal_error);
 
   /* If COGL didn't give an error then make one up */
-  if (internal_error == NULL && new_texture == COGL_INVALID_HANDLE)
+  if (internal_error == NULL && new_texture == NULL)
     {
       g_set_error (&internal_error, CLUTTER_TEXTURE_ERROR,
                    CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
@@ -2042,7 +2076,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
 
   clutter_texture_set_cogl_texture (texture, new_texture);
 
-  cogl_handle_unref (new_texture);
+  cogl_object_unref (new_texture);
 
   g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, NULL);
 
@@ -2084,12 +2118,12 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
     {
       gint min_filter, mag_filter;
 
-      min_filter = mag_filter = COGL_MATERIAL_FILTER_LINEAR;
+      min_filter = mag_filter = COGL_PIPELINE_FILTER_LINEAR;
       clutter_texture_quality_to_filters (filter_quality,
                                           &min_filter,
                                           &mag_filter);
 
-      cogl_material_set_layer_filters (priv->material, 0,
+      cogl_pipeline_set_layer_filters (priv->pipeline, 0,
                                        min_filter, mag_filter);
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
@@ -2112,20 +2146,23 @@ ClutterTextureQuality
 clutter_texture_get_filter_quality (ClutterTexture *texture)
 {
   ClutterTexturePrivate *priv;
-  const GList *layers;
-  CoglMaterialFilter min_filter, mag_filter;
+  int layer_index;
+  CoglPipelineFilter min_filter, mag_filter;
   int i;
 
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), 0);
 
   priv = texture->priv;
 
-  layers = cogl_material_get_layers (priv->material);
-  if (layers == NULL)
+  if (get_first_layer_index (priv->pipeline, &layer_index))
+    {
+      min_filter = cogl_pipeline_get_layer_min_filter (priv->pipeline,
+                                                       layer_index);
+      mag_filter = cogl_pipeline_get_layer_mag_filter (priv->pipeline,
+                                                       layer_index);
+    }
+  else
     return CLUTTER_TEXTURE_QUALITY_MEDIUM;
-
-  min_filter = cogl_material_layer_get_min_filter (layers->data);
-  mag_filter = cogl_material_layer_get_mag_filter (layers->data);
 
   for (i = 0; i < G_N_ELEMENTS (clutter_texture_quality_filters); i++)
     if (clutter_texture_quality_filters[i].min_filter == min_filter
@@ -2160,7 +2197,7 @@ clutter_texture_get_max_tile_waste (ClutterTexture *texture)
 
   cogl_texture = clutter_texture_get_cogl_texture (texture);
 
-  if (cogl_texture == COGL_INVALID_HANDLE)
+  if (cogl_texture == NULL)
     return priv->no_slice ? -1 : COGL_TEXTURE_MAX_WASTE;
   else
     return cogl_texture_get_max_waste (cogl_texture);
@@ -2288,7 +2325,7 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
    * up having a texture even if we couldn't realize yet.
    */
   cogl_texture = clutter_texture_get_cogl_texture (texture);
-  if (cogl_texture == COGL_INVALID_HANDLE)
+  if (cogl_texture == NULL)
     {
       g_warning ("Failed to realize actor '%s'",
                  _clutter_actor_get_debug_name (CLUTTER_ACTOR (texture)));
@@ -2355,8 +2392,8 @@ on_fbo_source_size_change (GObject          *object,
       CoglHandle tex;
 
       /* tear down the FBO */
-      if (priv->fbo_handle != COGL_INVALID_HANDLE)
-        cogl_handle_unref (priv->fbo_handle);
+      if (priv->fbo_handle != NULL)
+        cogl_object_unref (priv->fbo_handle);
 
       texture_free_gl_resources (texture);
 
@@ -2370,15 +2407,15 @@ on_fbo_source_size_change (GObject          *object,
                                         flags,
                                         COGL_PIXEL_FORMAT_RGBA_8888_PRE);
 
-      cogl_material_set_layer (priv->material, 0, tex);
+      cogl_pipeline_set_layer_texture (priv->pipeline, 0, tex);
 
       priv->fbo_handle = cogl_offscreen_new_to_texture (tex);
 
-      /* The material now has a reference to the texture so it will
+      /* The pipeline now has a reference to the texture so it will
          stick around */
-      cogl_handle_unref (tex);
+      cogl_object_unref (tex);
 
-      if (priv->fbo_handle == COGL_INVALID_HANDLE)
+      if (priv->fbo_handle == NULL)
         {
           g_warning ("%s: Offscreen texture creation failed", G_STRLOC);
           return;
@@ -2652,10 +2689,10 @@ texture_fbo_free_resources (ClutterTexture *texture)
       priv->fbo_source = NULL;
     }
 
-  if (priv->fbo_handle != COGL_INVALID_HANDLE)
+  if (priv->fbo_handle != NULL)
     {
-      cogl_handle_unref (priv->fbo_handle);
-      priv->fbo_handle = COGL_INVALID_HANDLE;
+      cogl_object_unref (priv->fbo_handle);
+      priv->fbo_handle = NULL;
     }
 }
 
@@ -2809,7 +2846,7 @@ clutter_texture_get_pixel_format (ClutterTexture *texture)
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), COGL_PIXEL_FORMAT_ANY);
 
   cogl_texture = clutter_texture_get_cogl_texture (texture);
-  if (cogl_texture == COGL_INVALID_HANDLE)
+  if (cogl_texture == NULL)
     return COGL_PIXEL_FORMAT_ANY;
 
   return cogl_texture_get_format (cogl_texture);
@@ -3014,13 +3051,13 @@ clutter_texture_set_pick_with_alpha (ClutterTexture *texture,
   if (priv->pick_with_alpha == pick_with_alpha)
     return;
 
-  if (!pick_with_alpha && priv->pick_material != COGL_INVALID_HANDLE)
+  if (!pick_with_alpha && priv->pick_pipeline != NULL)
     {
-      cogl_handle_unref (priv->pick_material);
-      priv->pick_material = COGL_INVALID_HANDLE;
+      cogl_object_unref (priv->pick_pipeline);
+      priv->pick_pipeline = NULL;
     }
 
-  /* NB: the pick material is created lazily when we first pick */
+  /* NB: the pick pipeline is created lazily when we first pick */
   priv->pick_with_alpha = pick_with_alpha;
 
   /* NB: actors are expected to call clutter_actor_queue_redraw when
