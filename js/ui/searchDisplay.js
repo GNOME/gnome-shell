@@ -119,17 +119,24 @@ const GridSearchResults = new Lang.Class({
                 if (results.length == 0)
                     return;
 
-                let metas = provider.getResultMetas(results);
-                this.renderResults(metas);
+                if (provider.async) {
+                    provider.getResultMetasAsync(results,
+                                                 Lang.bind(this, this.renderResults));
+                } else {
+                    let metas = provider.getResultMetas(results);
+                    this.renderResults(metas);
+                }
             }));
         }));
         this._notDisplayedResult = [];
         this._terms = [];
+        this._pendingClear = false;
     },
 
     getResultsForDisplay: function() {
+        let alreadyVisible = this._pendingClear ? 0 : this._grid.visibleItemsCount();
         let canDisplay = this._grid.childrenInRow(this._width) * MAX_SEARCH_RESULTS_ROWS
-                         - this._grid.visibleItemsCount();
+                         - alreadyVisible;
 
         let numResults = Math.min(this._notDisplayedResult.length, canDisplay);
 
@@ -144,6 +151,7 @@ const GridSearchResults = new Lang.Class({
         // copy the lists
         this._notDisplayedResult = results.slice(0);
         this._terms = terms.slice(0);
+        this._pendingClear = true;
     },
 
     renderResults: function(metas) {
@@ -154,10 +162,9 @@ const GridSearchResults = new Lang.Class({
     },
 
     clear: function () {
-        this._terms = [];
-        this._notDisplayedResult = [];
         this._grid.removeAll();
         this.selectionIndex = -1;
+        this._pendingClear = false;
     },
 
     selectIndex: function (index) {
@@ -297,7 +304,8 @@ const SearchResults = new Lang.Class({
 
         this._providerMeta.push({ provider: provider,
                                   actor: providerBox,
-                                  resultDisplay: resultDisplay });
+                                  resultDisplay: resultDisplay,
+                                  hasPendingResults: false });
         this._content.add(providerBox);
     },
 
@@ -322,8 +330,8 @@ const SearchResults = new Lang.Class({
         }
     },
 
-    _clearDisplayForProvider: function(index) {
-        let meta = this._providerMeta[index];
+    _clearDisplayForProvider: function(provider) {
+        let meta = this._metaForProvider(provider);
         meta.resultDisplay.clear();
         meta.actor.hide();
     },
@@ -350,15 +358,58 @@ const SearchResults = new Lang.Class({
         return this._providerMeta[this._providers.indexOf(provider)];
     },
 
-    _updateCurrentResults: function(searchSystem, provider, results) {
+    _maybeSetInitialSelection: function() {
+        if (this._selectedOpenSearchButton > -1 || this._selectedProvider > -1)
+            return;
+
+        for (let i = 0; i < this._providerMeta.length; i++) {
+            let meta = this._providerMeta[i];
+            if (meta.hasPendingResults)
+                return;
+
+            if (meta.actor.visible)
+                break; // select this one!
+        }
+
+        this.selectDown(false);
+        this._initialSelectionSet = true;
+    },
+
+    _updateCurrentResults: function(searchSystem, results) {
         let terms = searchSystem.getTerms();
+        let [provider, providerResults] = results;
         let meta = this._metaForProvider(provider);
-        meta.resultDisplay.clear();
-        meta.actor.show();
-        meta.resultDisplay.setResults(providerResults, terms);
-        let displayResults = meta.resultDisplay.getResultsForDisplay();
-        meta.resultDisplay.renderResults(provider.getResultMetas(displayResults));
-        return true;
+        meta.hasPendingResults = false;
+        this._updateProviderResults(provider, providerResults, terms);
+    },
+
+    _updateProviderResults: function(provider, providerResults, terms) {
+        let meta = this._metaForProvider(provider);
+        if (providerResults.length == 0) {
+            this._clearDisplayForProvider(provider);
+            meta.resultDisplay.setResults([], []);
+        } else {
+            this._providerMetaResults[provider.title] = providerResults;
+            meta.resultDisplay.setResults(providerResults, terms);
+            let results = meta.resultDisplay.getResultsForDisplay();
+
+            if (provider.async) {
+                provider.getResultMetasAsync(results, Lang.bind(this,
+                    function(metas) {
+                        this._clearDisplayForProvider(provider);
+                        meta.actor.show();
+                        this._content.hide();
+                        meta.resultDisplay.renderResults(metas);
+                        this._maybeSetInitialSelection();
+                        this._content.show();
+                    }));
+            } else {
+                let metas = provider.getResultMetas(results);
+                this._clearDisplayForProvider(provider);
+                meta.actor.show();
+                meta.resultDisplay.renderResults(metas);
+            }
+        }
     },
 
     _updateResults: function(searchSystem, results) {
@@ -368,6 +419,7 @@ const SearchResults = new Lang.Class({
         } else {
             this._selectedOpenSearchButton = -1;
             this._updateOpenSearchButtonState();
+            this._selectedProvider = -1;
             this._statusText.hide();
         }
 
@@ -383,22 +435,13 @@ const SearchResults = new Lang.Class({
 
         for (let i = 0; i < results.length; i++) {
             let [provider, providerResults] = results[i];
-            if (providerResults.length == 0) {
-                this._clearDisplayForProvider(i);
-            } else {
-                this._providerMetaResults[provider.title] = providerResults;
-                this._clearDisplayForProvider(i);
-                let meta = this._metaForProvider(provider);
-                meta.actor.show();
-                meta.resultDisplay.setResults(providerResults, terms);
-                let displayResults = meta.resultDisplay.getResultsForDisplay();
-                meta.resultDisplay.renderResults(provider.getResultMetas(displayResults));
-            }
+            let meta = this._metaForProvider(provider);
+            meta.hasPendingResults = provider.async;
+            if (!meta.hasPendingResults)
+                this._updateProviderResults(provider, providerResults, terms);
         }
 
-        if (this._selectedOpenSearchButton == -1)
-            this.selectDown(false);
-
+        this._maybeSetInitialSelection();
         this._content.show();
 
         return true;

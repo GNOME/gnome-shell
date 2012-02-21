@@ -102,6 +102,11 @@ const SearchResultDisplay = new Lang.Class({
  * Subclass this object to add a new result type
  * to the search system, then call registerProvider()
  * in SearchSystem with an instance.
+ * By default, search is synchronous and uses the
+ * getInitialResultSet()/getSubsearchResultSet() methods.
+ * For asynchronous search, set the async property to true
+ * and implement getInitialResultSetAsync()/getSubsearchResultSetAsync()
+ * instead.
  */
 const SearchProvider = new Lang.Class({
     Name: 'SearchProvider',
@@ -109,42 +114,7 @@ const SearchProvider = new Lang.Class({
     _init: function(title) {
         this.title = title;
         this.searchSystem = null;
-        this.searchAsync  = false;
-    },
-
-    _asyncCancelled: function() {
-    },
-
-    startAsync: function() {
-        this.searchAsync = true;
-    },
-
-    tryCancelAsync: function() {
-        if (!this.searchAsync)
-            return;
-        this._asyncCancelled();
-        this.searchAsync = false;
-    },
-
-    /**
-     * addItems:
-     * @items: an array of result identifier strings representing
-     * items which match the last given search terms.
-     *
-     * This should be used for something that requires a bit more
-     * logic; it's designed to be an asyncronous way to add a result
-     * to the current search.
-     */
-    addItems: function(items) {
-        if (!this.searchSystem)
-            throw new Error('Search provider not registered');
-
-        if (!items.length)
-            return;
-
-        this.tryCancelAsync();
-
-        this.searchSystem.addProviderItems(this, items);
+        this.async = false;
     },
 
     /**
@@ -173,6 +143,18 @@ const SearchProvider = new Lang.Class({
     },
 
     /**
+     * getInitialResultSetAsync:
+     * @terms: Array of search terms, treated as logical AND
+     *
+     * Like getInitialResultSet(), but the method should return immediately
+     * without a return value - use SearchSystem.pushResults() when the
+     * corresponding results are ready.
+     */
+    getInitialResultSetAsync: function(terms) {
+        throw new Error('Not implemented');
+    },
+
+    /**
      * getSubsearchResultSet:
      * @previousResults: Array of item identifiers
      * @newTerms: Updated search terms
@@ -190,6 +172,19 @@ const SearchProvider = new Lang.Class({
     },
 
     /**
+     * getSubsearchResultSetAsync:
+     * @previousResults: Array of item identifiers
+     * @newTerms: Updated search terms
+     *
+     * Like getSubsearchResultSet(), but the method should return immediately
+     * without a return value - use SearchSystem.pushResults() when the
+     * corresponding results are ready.
+     */
+    getSubsearchResultSetAsync: function(previousResults, newTerms) {
+        throw new Error('Not implemented');
+    },
+
+    /**
      * getResultMetas:
      * @ids: Result identifier strings
      *
@@ -198,6 +193,19 @@ const SearchProvider = new Lang.Class({
      * with the same number of members as @ids
      */
     getResultMetas: function(ids) {
+        throw new Error('Not implemented');
+    },
+
+    /**
+     * getResultMetasAsync:
+     * @ids: Result identifier strings
+     * @callback: callback to pass the results to when ready
+     *
+     * Like getResultMetas(), but the method should return immediately
+     * without a return value - pass the results to the provided @callback
+     * when ready.
+     */
+    getResultMetasAsync: function(ids, callback) {
         throw new Error('Not implemented');
     },
 
@@ -369,8 +377,13 @@ const SearchSystem = new Lang.Class({
         this._previousResults = [];
     },
 
-    addProviderItems: function(provider, items) {
-        this.emit('search-updated', provider, items);
+    pushResults: function(provider, results) {
+        let i = this._providers.indexOf(provider);
+        if (i == -1)
+            return;
+
+        this._previousResults[i] = [provider, results];
+        this.emit('search-updated', this._previousResults[i]);
     },
 
     updateSearch: function(searchString) {
@@ -400,10 +413,14 @@ const SearchSystem = new Lang.Class({
         if (isSubSearch) {
             for (let i = 0; i < this._providers.length; i++) {
                 let [provider, previousResults] = this._previousResults[i];
-                provider.tryCancelAsync();
                 try {
-                    let providerResults = provider.getSubsearchResultSet(previousResults, terms);
-                    results.push([provider, providerResults]);
+                    if (provider.async) {
+                        provider.getSubsearchResultSetAsync(previousResults, terms);
+                        results.push([provider, []]);
+                    } else {
+                        let providerResults = provider.getSubsearchResultSet(previousResults, terms);
+                        results.push([provider, providerResults]);
+                    }
                 } catch (error) {
                     global.log ('A ' + error.name + ' has occured in ' + provider.title + ': ' + error.message);
                 }
@@ -411,10 +428,14 @@ const SearchSystem = new Lang.Class({
         } else {
             for (let i = 0; i < this._providers.length; i++) {
                 let provider = this._providers[i];
-                provider.tryCancelAsync();
                 try {
-                    let providerResults = provider.getInitialResultSet(terms);
-                    results.push([provider, providerResults]);
+                    if (provider.async) {
+                        provider.getInitialResultSetAsync(terms);
+                        results.push([provider, []]);
+                    } else {
+                        let providerResults = provider.getInitialResultSet(terms);
+                        results.push([provider, providerResults]);
+                    }
                 } catch (error) {
                     global.log ('A ' + error.name + ' has occured in ' + provider.title + ': ' + error.message);
                 }
