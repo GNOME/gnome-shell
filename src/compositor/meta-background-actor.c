@@ -28,6 +28,9 @@
 #define COGL_ENABLE_EXPERIMENTAL_API
 #include <cogl/cogl-texture-pixmap-x11.h>
 
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
+#include <clutter/clutter.h>
+
 #include <X11/Xatom.h>
 
 #include "cogl-utils.h"
@@ -539,9 +542,11 @@ meta_background_actor_update (MetaScreen *screen)
   if (root_pixmap_id != None)
     {
       CoglHandle texture;
+      CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      GError *error = NULL;
 
       meta_error_trap_push (display);
-      texture = cogl_texture_pixmap_x11_new (root_pixmap_id, FALSE);
+      texture = cogl_texture_pixmap_x11_new (ctx, root_pixmap_id, FALSE, &error);
       meta_error_trap_pop (display);
 
       if (texture != COGL_INVALID_HANDLE)
@@ -551,6 +556,12 @@ meta_background_actor_update (MetaScreen *screen)
 
           background->have_pixmap = True;
           return;
+        }
+      else
+        {
+          g_warning ("Failed to create background texture from pixmap: %s",
+                     error->message);
+          g_error_free (error);
         }
     }
 

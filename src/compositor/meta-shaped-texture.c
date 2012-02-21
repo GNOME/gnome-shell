@@ -25,13 +25,15 @@
 
 #include <config.h>
 
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
+#define COGL_ENABLE_EXPERIMENTAL_API
+
 #include <meta/meta-shaped-texture.h>
 #include "meta-texture-tower.h"
 #include "meta-texture-rectangle.h"
 
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
-#define COGL_ENABLE_EXPERIMENTAL_API
 #include <cogl/cogl-texture-pixmap-x11.h>
 #include <gdk/gdk.h> /* for gdk_rectangle_intersect() */
 #include <string.h>
@@ -708,7 +710,11 @@ meta_shaped_texture_set_pixmap (MetaShapedTexture *stex,
   priv->pixmap = pixmap;
 
   if (pixmap != None)
-    set_cogl_texture (stex, cogl_texture_pixmap_x11_new (pixmap, FALSE));
+    {
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      set_cogl_texture (stex, cogl_texture_pixmap_x11_new (ctx, pixmap, FALSE, NULL));
+    }
   else
     set_cogl_texture (stex, COGL_INVALID_HANDLE);
 
