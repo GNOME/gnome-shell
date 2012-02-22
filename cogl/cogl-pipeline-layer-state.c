@@ -35,6 +35,7 @@
 #include "cogl-util.h"
 #include "cogl-matrix.h"
 #include "cogl-snippet-private.h"
+#include "cogl-texture-private.h"
 
 #include "string.h"
 #if 0
