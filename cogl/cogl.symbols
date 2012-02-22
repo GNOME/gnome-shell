@@ -1,7 +1,7 @@
 #if 0
-;note: those with the _EXP suffix are defined as
-;the same symbols sans the _EXP suffix
-;(this may be subject to change!)
+/* note: those with the _EXP suffix are defined as */
+/* the same symbols sans the _EXP suffix */
+/* (this may be subject to change!) */
 #endif
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
@@ -57,26 +57,23 @@ cogl_bitmap_new_from_buffer
 
 cogl_blend_string_error_get_type
 cogl_blend_string_error_quark
-cogl_buffer_access_get_type
 cogl_buffer_bit_get_type
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_buffer_get_size
 cogl_buffer_get_update_hint
 #if 0
-;not implemented!
+/* not implemented! */
 cogl_buffer_get_usage_hint
 #endif
 cogl_buffer_map
 #endif
 
-cogl_buffer_map_hint_get_type
-
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_buffer_set_data
 cogl_buffer_set_update_hint
 #if 0
-;not implemented!
+/* not implemented! */
 cogl_buffer_set_usage_hint_EXP
 #endif
 #endif
@@ -86,8 +83,6 @@ cogl_buffer_target_get_type
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_buffer_unmap
 #endif
-
-cogl_buffer_update_hint_get_type
 
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_check_extension
@@ -215,7 +210,7 @@ cogl_euler_free
 cogl_euler_init
 cogl_euler_init_from_matrix
 #if 0
-;not yet implemented
+/* not yet implemented */
 cogl_euler_init_from_quaternion
 #endif
 #endif
@@ -241,7 +236,6 @@ cogl_foreach_feature
 cogl_flush
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
-cogl_framebuffer_add_swap_buffers_callback
 cogl_framebuffer_allocate
 cogl_framebuffer_clear4f
 cogl_framebuffer_clear
@@ -280,7 +274,6 @@ cogl_framebuffer_push_path_clip
 cogl_framebuffer_push_primitive_clip
 cogl_framebuffer_push_rectangle_clip
 cogl_framebuffer_push_scissor_clip
-cogl_framebuffer_remove_swap_buffers_callback
 cogl_framebuffer_resolve_samples
 cogl_framebuffer_resolve_samples_region
 cogl_framebuffer_rotate
@@ -291,12 +284,10 @@ cogl_framebuffer_set_modelview_matrix
 cogl_framebuffer_set_projection_matrix
 cogl_framebuffer_set_samples_per_pixel
 cogl_framebuffer_set_viewport
-cogl_framebuffer_swap_buffers
-cogl_framebuffer_swap_region
 cogl_framebuffer_transform
 cogl_framebuffer_translate
 cogl_framebuffer_vdraw_attributes
-cogl_framebuffer_vdraw_indexed_attributes
+/* cogl_framebuffer_vdraw_indexed_attributes */ /* Not Implemented! */
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
@@ -315,7 +306,7 @@ cogl_get_draw_framebuffer
 cogl_get_features
 cogl_get_modelview_matrix
 cogl_get_option_group
-cogl_get_path	;this is COGL 1.0 API
+cogl_get_path	/* this is COGL 1.0 API */
 cogl_get_proc_address
 cogl_get_projection_matrix
 
@@ -337,7 +328,7 @@ cogl_glib_source_new
 #endif
 
 #ifdef _COGL_SUPPORTS_GTYPE_INTEGRATION
-cogl_gtype_matrix_get_type
+/* cogl_gtype_matrix_get_type */ /* Not Implemented */
 #endif
 
 cogl_handle_get_type
@@ -370,7 +361,7 @@ cogl_is_buffer
 cogl_is_context
 cogl_is_index_buffer
 #if 0
-;not implemented!
+/* not implemented! */
 cogl_is_indices_array
 #endif
 #endif
@@ -557,13 +548,17 @@ cogl_offscreen_unref
 #endif
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
+cogl_onscreen_add_swap_buffers_callback
 #ifndef COGL_WINSYS_INTEGRATED
 cogl_onscreen_clutter_backend_set_size_CLUTTER
 #endif
 cogl_onscreen_hide
 cogl_onscreen_new
 cogl_onscreen_set_swap_throttled
+cogl_onscreen_remove_swap_buffers_callback
 cogl_onscreen_show
+cogl_onscreen_swap_buffers
+cogl_onscreen_swap_region
 cogl_onscreen_template_new_EXP
 cogl_onscreen_template_set_samples_per_pixel
 cogl_onscreen_template_set_swap_throttled
@@ -584,7 +579,7 @@ cogl_path_copy
 cogl_path_curve_to
 cogl_path_ellipse
 cogl_path_fill
-cogl_path_fill_preserve		;this is COGL 1.0 API
+cogl_path_fill_preserve		/* this is COGL 1.0 API */
 cogl_path_fill_rule_get_type
 cogl_path_get_fill_rule
 cogl_path_line
@@ -600,7 +595,7 @@ cogl_path_rel_move_to
 cogl_path_round_rectangle
 cogl_path_set_fill_rule
 cogl_path_stroke
-cogl_path_stroke_preserve	;this is COGL 1.0 API
+cogl_path_stroke_preserve	/* this is COGL 1.0 API */
 cogl_perspective
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
@@ -680,12 +675,12 @@ cogl_pipeline_set_user_program
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 #if 0
-;not implemented!
+/* not implemented! */
 cogl_pixel_buffer_new_EXP
 #endif
 cogl_pixel_buffer_new_with_size_EXP
 #if 0
-;not exported in the main APIs for now
+/* not exported in the main APIs for now */
 cogl_pixel_buffer_set_region_EXP
 #endif
 #endif
@@ -818,7 +813,7 @@ cogl_set_draw_buffer
 cogl_set_fog
 cogl_set_framebuffer
 cogl_set_modelview_matrix
-cogl_set_path	;this is COGL 1.0 API
+cogl_set_path	/* this is COGL 1.0 API */
 cogl_set_projection_matrix
 cogl_set_source
 cogl_set_source_color
@@ -1007,9 +1002,9 @@ cogl_xlib_set_display_EXP
 #endif
 
 #ifndef COGL_NO_EXPORT_UNDERSCORE 
-;probably these should not be exported at all, but anyways, for now...
-;eventually, this section should disappear (or cogl, cogl-pango, clutter et al
-;will link without the following)
+/* probably these should not be exported at all, but anyways, for now... */
+/* eventually, this section should disappear (or cogl, cogl-pango, clutter et al */
+/* will link without the following) */
 _cogl_atlas_add_reorganize_callback
 _cogl_atlas_copy_rectangle
 _cogl_atlas_new
