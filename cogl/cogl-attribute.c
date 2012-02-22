@@ -61,6 +61,7 @@ COGL_OBJECT_DEFINE (Attribute, attribute);
 
 static gboolean
 validate_cogl_attribute_name (const char *name,
+                              char **real_attribute_name,
                               CoglAttributeNameID *name_id,
                               gboolean *normalized,
                               int *texture_unit)
@@ -78,7 +79,10 @@ validate_cogl_attribute_name (const char *name,
       *normalized = TRUE;
     }
   else if (strcmp (name, "tex_coord_in") == 0)
-    *name_id = COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY;
+    {
+      *real_attribute_name = "cogl_tex_coord0_in";
+      *name_id = COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY;
+    }
   else if (strncmp (name, "tex_coord", strlen ("tex_coord")) == 0)
     {
       char *endptr;
@@ -86,7 +90,7 @@ validate_cogl_attribute_name (const char *name,
       if (strcmp (endptr, "_in") != 0)
 	{
 	  g_warning ("Texture coordinate attributes should either be named "
-                     "\"cogl_tex_coord\" or named with a texture unit index "
+                     "\"cogl_tex_coord_in\" or named with a texture unit index "
                      "like \"cogl_tex_coord2_in\"\n");
           return FALSE;
 	}
@@ -112,16 +116,18 @@ _cogl_attribute_register_attribute_name (CoglContext *context,
 {
   CoglAttributeNameState *name_state = g_new (CoglAttributeNameState, 1);
   int name_index = context->n_attribute_names++;
+  char *name_copy = g_strdup (name);
 
-  name_state->name = g_strdup (name);
+  name_state->name = NULL;
   name_state->name_index = name_index;
   if (strncmp (name, "cogl_", 5) == 0)
     {
       if (!validate_cogl_attribute_name (name,
+                                         &name_state->name,
                                          &name_state->name_id,
                                          &name_state->normalized_default,
                                          &name_state->texture_unit))
-      goto error;
+        goto error;
     }
   else
     {
@@ -130,8 +136,11 @@ _cogl_attribute_register_attribute_name (CoglContext *context,
       name_state->texture_unit = 0;
     }
 
+  if (name_state->name == NULL)
+    name_state->name = name_copy;
+
   g_hash_table_insert (context->attribute_name_states_hash,
-                       name_state->name, name_state);
+                       name_copy, name_state);
 
   if (G_UNLIKELY (context->attribute_name_index_map == NULL))
     context->attribute_name_index_map =
