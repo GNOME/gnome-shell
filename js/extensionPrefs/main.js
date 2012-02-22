@@ -150,7 +150,7 @@ const Application = new Lang.Class({
     _buildUI: function(app) {
         this._window = new Gtk.ApplicationWindow({ application: app,
                                                    window_position: Gtk.WindowPosition.CENTER,
-                                                   title: _("GNOME Shell Extensions Preferences") });
+                                                   title: _("GNOME Shell Extension Preferences") });
 
         this._window.set_size_request(600, 400);
 
