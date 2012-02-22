@@ -401,10 +401,14 @@ cogl_is_sub_texture_EXP
 cogl_is_texture
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
+#ifdef COGL_HAS_X11
+cogl_is_texture_pixmap_x11
+#endif
+
 cogl_is_texture_rectangle_EXP
 
 cogl_is_texture_2d_EXP
-cogl_is_texture_3d_EXP
+cogl_is_texture_3d
 #endif
 
 cogl_is_vertex_buffer
@@ -623,6 +627,8 @@ cogl_pipeline_get_depth_state
 cogl_pipeline_get_diffuse
 cogl_pipeline_get_emission
 cogl_pipeline_get_front_face_winding
+cogl_pipeline_get_layer_mag_filter
+cogl_pipeline_get_layer_min_filter
 cogl_pipeline_get_layer_point_sprite_coords_enabled
 cogl_pipeline_get_layer_texture
 cogl_pipeline_get_layer_wrap_mode_p
@@ -885,6 +891,14 @@ cogl_texture_new_from_sub_texture
 cogl_texture_new_with_size
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
+#ifdef COGL_HAS_X11
+cogl_texture_pixmap_x11_error_quark
+cogl_texture_pixmap_x11_is_using_tfp_extension
+cogl_texture_pixmap_x11_new
+cogl_texture_pixmap_x11_set_damage_object
+cogl_texture_pixmap_x11_update_area
+#endif
+
 cogl_texture_rectangle_new_with_size_EXP
 #endif
 
@@ -908,8 +922,8 @@ cogl_texture_2d_new_from_foreign_EXP
 cogl_texture_2d_new_with_size_EXP
 cogl_texture_2d_sliced_new_with_size
 
-cogl_texture_3d_new_from_data_EXP
-cogl_texture_3d_new_with_size_EXP
+cogl_texture_3d_new_from_data
+cogl_texture_3d_new_with_size
 #endif
 
 cogl_transform
