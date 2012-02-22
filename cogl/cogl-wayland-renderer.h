@@ -35,8 +35,6 @@
 
 G_BEGIN_DECLS
 
-#define cogl_wayland_renderer_set_foreign_display \
-  cogl_wayland_renderer_set_foreign_display_EXP
 /**
  * cogl_wayland_renderer_set_foreign_display:
  * @renderer: A #CoglRenderer
@@ -62,8 +60,6 @@ void
 cogl_wayland_renderer_set_foreign_display (CoglRenderer *renderer,
                                            struct wl_display *display);
 
-#define cogl_wayland_renderer_get_display \
-  cogl_wayland_renderer_get_display_EXP
 /**
  * cogl_wayland_renderer_get_display:
  * @renderer: A #CoglRenderer
@@ -87,8 +83,6 @@ cogl_wayland_renderer_set_foreign_display (CoglRenderer *renderer,
 struct wl_display *
 cogl_wayland_renderer_get_display (CoglRenderer *renderer);
 
-#define cogl_wayland_renderer_set_foreign_compositor \
-  cogl_wayland_renderer_set_foreign_compositor_EXP
 /**
  * cogl_wayland_renderer_set_foreign_compositor:
  * @renderer: A #CoglRenderer
@@ -108,8 +102,6 @@ void
 cogl_wayland_renderer_set_foreign_compositor (CoglRenderer *renderer,
                                               struct wl_compositor *compositor);
 
-#define cogl_wayland_renderer_get_compositor \
-  cogl_wayland_renderer_get_compositor_EXP
 /**
  * cogl_wayland_renderer_get_compositor:
  * @renderer: A #CoglRenderer
@@ -129,8 +121,6 @@ cogl_wayland_renderer_set_foreign_compositor (CoglRenderer *renderer,
 struct wl_compositor *
 cogl_wayland_renderer_get_compositor (CoglRenderer *renderer);
 
-#define cogl_wayland_renderer_set_foreign_shell \
-  cogl_wayland_renderer_set_foreign_shell_EXP
 /**
  * cogl_wayland_renderer_set_foreign_shell:
  * @renderer: A #CoglRenderer
@@ -150,8 +140,6 @@ void
 cogl_wayland_renderer_set_foreign_shell (CoglRenderer *renderer,
                                          struct wl_shell *shell);
 
-#define cogl_wayland_renderer_get_shell \
-  cogl_wayland_renderer_get_shell_EXP
 /**
  * cogl_wayland_renderer_get_shell:
  * @renderer: A #CoglRenderer
