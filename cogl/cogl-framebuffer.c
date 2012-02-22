@@ -65,6 +65,9 @@
 #ifndef GL_DEPTH_STENCIL
 #define GL_DEPTH_STENCIL        0x84F9
 #endif
+#ifndef GL_DEPTH24_STENCIL8
+#define GL_DEPTH24_STENCIL8     0x88F0
+#endif
 #ifndef GL_DEPTH_ATTACHMENT
 #define GL_DEPTH_ATTACHMENT     0x8D00
 #endif
@@ -100,9 +103,10 @@
 #endif
 
 typedef enum {
-  _TRY_DEPTH_STENCIL = 1L<<0,
-  _TRY_DEPTH         = 1L<<1,
-  _TRY_STENCIL       = 1L<<2
+  _TRY_DEPTH_STENCIL    = 1L<<0,
+  _TRY_DEPTH24_STENCIL8 = 1L<<1,
+  _TRY_DEPTH            = 1L<<2,
+  _TRY_STENCIL          = 1L<<3
 } TryFBOFlags;
 
 typedef struct _CoglFramebufferStackEntry
@@ -868,18 +872,21 @@ try_creating_fbo (CoglOffscreen *offscreen,
                                      tex_gl_target, tex_gl_handle,
                                      offscreen->texture_level));
 
-  if (flags & _TRY_DEPTH_STENCIL)
+  if (flags & (_TRY_DEPTH_STENCIL | _TRY_DEPTH24_STENCIL8))
     {
+      GLenum format = ((flags & _TRY_DEPTH_STENCIL) ?
+                       GL_DEPTH_STENCIL : GL_DEPTH24_STENCIL8);
+
       /* Create a renderbuffer for depth and stenciling */
       GE (ctx, glGenRenderbuffers (1, &gl_depth_stencil_handle));
       GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, gl_depth_stencil_handle));
       if (n_samples)
         GE (ctx, glRenderbufferStorageMultisampleIMG (GL_RENDERBUFFER,
                                                       n_samples,
-                                                      GL_DEPTH_STENCIL,
+                                                      format,
                                                       width, height));
       else
-        GE (ctx, glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_STENCIL,
+        GE (ctx, glRenderbufferStorage (GL_RENDERBUFFER, format,
                                         width, height));
       GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, 0));
       GE (ctx, glFramebufferRenderbuffer (GL_FRAMEBUFFER,
@@ -1009,6 +1016,9 @@ _cogl_offscreen_allocate (CoglOffscreen *offscreen,
           ((ctx->private_feature_flags &
             COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL) &&
            try_creating_fbo (offscreen, flags = _TRY_DEPTH_STENCIL)) ||
+          ((ctx->private_feature_flags &
+            COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL) &&
+           try_creating_fbo (offscreen, flags = _TRY_DEPTH24_STENCIL8)) ||
           try_creating_fbo (offscreen, flags = _TRY_DEPTH | _TRY_STENCIL) ||
           try_creating_fbo (offscreen, flags = _TRY_STENCIL) ||
           try_creating_fbo (offscreen, flags = _TRY_DEPTH) ||
