@@ -1006,10 +1006,9 @@ _cogl_offscreen_allocate (CoglOffscreen *offscreen,
     {
       if ((have_working_flags &&
            try_creating_fbo (offscreen, flags)) ||
-#ifdef HAVE_COGL_GL
-          (ctx->driver == COGL_DRIVER_GL &&
+          ((ctx->private_feature_flags &
+            COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL) &&
            try_creating_fbo (offscreen, flags = _TRY_DEPTH_STENCIL)) ||
-#endif
           try_creating_fbo (offscreen, flags = _TRY_DEPTH | _TRY_STENCIL) ||
           try_creating_fbo (offscreen, flags = _TRY_STENCIL) ||
           try_creating_fbo (offscreen, flags = _TRY_DEPTH) ||

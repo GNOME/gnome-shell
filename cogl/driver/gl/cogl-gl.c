@@ -266,6 +266,9 @@ _cogl_gl_update_features (CoglContext *context,
   if (context->glEGLImageTargetTexture2D)
     private_flags |= COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE;
 
+  if (_cogl_check_extension ("GL_EXT_packed_depth_stencil", gl_extensions))
+    private_flags |= COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL;
+
   /* Cache features */
   context->private_feature_flags |= private_flags;
   context->feature_flags |= flags;

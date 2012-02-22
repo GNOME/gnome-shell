@@ -105,7 +105,8 @@ typedef enum
   COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT = 1L<<3,
   COGL_PRIVATE_FEATURE_FOUR_CLIP_PLANES = 1L<<4,
   COGL_PRIVATE_FEATURE_PBOS = 1L<<5,
-  COGL_PRIVATE_FEATURE_VBOS = 1L<<6
+  COGL_PRIVATE_FEATURE_VBOS = 1L<<6,
+  COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL = 1L<<7
 } CoglPrivateFeatureFlags;
 
 /* Sometimes when evaluating pipelines, either during comparisons or
