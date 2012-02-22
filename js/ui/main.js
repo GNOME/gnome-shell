@@ -194,9 +194,16 @@ function start() {
                         for (let i = 0; i < children.length; i++)
                             children[i].allocate_preferred_size(flags);
                     });
-    let constraint = new Clutter.BindConstraint({ source: global.stage,
-                                                  coordinate: Clutter.BindCoordinate.SIZE });
-    uiGroup.add_constraint(constraint);
+    uiGroup.connect('get-preferred-width',
+                    function(actor, forHeight, alloc) {
+                        let width = global.stage.width;
+                        [alloc.min_size, alloc.natural_size] = [width, width];
+                    });
+    uiGroup.connect('get-preferred-height',
+                    function(actor, forWidth, alloc) {
+                        let height = global.stage.height;
+                        [alloc.min_size, alloc.natural_size] = [height, height];
+                    });
     global.window_group.reparent(uiGroup);
     global.overlay_group.reparent(uiGroup);
     global.stage.add_actor(uiGroup);
