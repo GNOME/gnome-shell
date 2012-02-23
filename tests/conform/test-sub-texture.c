@@ -271,7 +271,7 @@ validate_result (TestState *state)
   /* Get the texture data */
   p = texture_data = g_malloc (256 * 256 * 4);
   cogl_texture_get_data (COGL_TEXTURE (test_tex),
-                         COGL_PIXEL_FORMAT_RGBA_8888,
+                         COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                          256 * 4, texture_data);
 
   /* Verify the texture data */
