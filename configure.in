@@ -61,12 +61,21 @@ AC_CHECK_SIZEOF(__int64)
 ## byte order
 AC_C_BIGENDIAN
 
-GTK_MIN_VERSION=3.3.7
-GIO_MIN_VERSION=2.25.10
 CANBERRA_GTK=libcanberra-gtk3
 CANBERRA_GTK_VERSION=0.26
 
-MUTTER_PC_MODULES="gtk+-3.0 >= $GTK_MIN_VERSION gio-2.0 >= $GIO_MIN_VERSION pango >= 1.2.0 cairo >= 1.10.0 gsettings-desktop-schemas >= 3.3.0"
+CLUTTER_PACKAGE=clutter-1.0
+
+MUTTER_PC_MODULES="
+   gtk+-3.0 >= 3.3.7
+   gio-2.0 >= 2.5.10
+   pango >= 1.2.0
+   cairo >= 1.10.0
+   gsettings-desktop-schemas >= 3.3.0
+   xcomposite >= 0.2 xfixes xrender xdamage
+   $CLUTTER_PACKAGE >= 1.9.10
+   cogl-1.0 >= 1.9.6
+"
 
 GLIB_GSETTINGS
 
@@ -113,8 +122,8 @@ AM_GLIB_GNU_GETTEXT
 # GRegex requires Glib-2.14.0
 PKG_CHECK_MODULES(ALL, glib-2.0 >= 2.14.0)
 # gtk_window_set_icon_name requires gtk2+-2.6.0
-PKG_CHECK_MODULES(MUTTER_MESSAGE, gtk+-3.0 >= $GTK_MIN_VERSION)
-PKG_CHECK_MODULES(MUTTER_WINDOW_DEMO, gtk+-3.0 >= $GTK_MIN_VERSION)
+PKG_CHECK_MODULES(MUTTER_MESSAGE, gtk+-3.0)
+PKG_CHECK_MODULES(MUTTER_WINDOW_DEMO, gtk+-3.0)
 
 # Unconditionally use this dir to avoid a circular dep with gnomecc
 GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
@@ -164,31 +173,6 @@ else
   fi
 fi
 
-XCOMPOSITE_VERSION=0.2
-
-AC_MSG_CHECKING([Xcomposite >= $XCOMPOSITE_VERSION])
-if $PKG_CONFIG --atleast-version $XCOMPOSITE_VERSION xcomposite; then
-  MUTTER_PC_MODULES="$MUTTER_PC_MODULES xcomposite >= $XCOMPOSITE_VERSION xfixes xrender xdamage"
-  AC_DEFINE(HAVE_COMPOSITE_EXTENSIONS, 1, [Building with compositing manager support])
-  echo "Building with compositing manager"
-
-  ## force on render also
-  have_xrender=yes
-else
-  AC_MSG_ERROR([no. Mutter requires the Xcomposite extension to build.])
-fi
-
-CLUTTER_VERSION=1.9.10
-CLUTTER_PACKAGE=clutter-1.0
-AC_SUBST(CLUTTER_PACKAGE)
-if $PKG_CONFIG --atleast-version $CLUTTER_VERSION $CLUTTER_PACKAGE ; then
-  MUTTER_PC_MODULES="$MUTTER_PC_MODULES $CLUTTER_PACKAGE "
-  PKG_CHECK_MODULES(CLUTTER, $CLUTTER_PACKAGE)
-  AC_DEFINE(WITH_CLUTTER, , [Building with Clutter compositor])
-else
-  AC_MSG_ERROR([no. Mutter requires Clutter version $CLUTTER_VERSION.])
-fi
-
 INTROSPECTION_VERSION=0.9.5
 GOBJECT_INTROSPECTION_CHECK([$INTROSPECTION_VERSION])
 
@@ -219,6 +203,10 @@ if test x$have_xcursor = xyes; then
 fi
 
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
+
+# This is used for plugins
+AC_SUBST(CLUTTER_PACKAGE)
+PKG_CHECK_MODULES(CLUTTER, $CLUTTER_PACKAGE)
 
 AC_PATH_XTRA
 
