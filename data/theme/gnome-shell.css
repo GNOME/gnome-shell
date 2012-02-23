@@ -17,12 +17,16 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+/* Text Styles */
+
+/* default text style */
 stage {
     font-family: cantarell, sans-serif;
     font-size: 11pt;
     color: white;
 }
 
+/* links */
 .shell-link {
     color: #0000ff;
     text-decoration: underline;
@@ -32,8 +36,24 @@ stage {
     color: #0000e0;
 }
 
-.label-shadow {
-    color: rgba(0,0,0,0.5);
+/* small */
+.app-well-menu,
+.contact-details-status,
+.run-dialog-label,
+.run-dialog-error-label {
+    font-size: 9pt;
+}
+
+/* small bold */
+.dash-label,
+.window-caption,
+.switcher-list, 
+.source-title,
+.app-well-app > .overview-icon,
+.remove-favorite > .overview-icon,
+.search-result-content > .overview-icon {
+    font-size: 9pt;
+    font-weight: bold;
 }
 
 /* Scroll Bars */
@@ -351,6 +371,11 @@ StScrollBar StButton#vhandle:hover
     spacing: 4px;
 }
 
+/* used for the app menu header only */
+.label-shadow {
+    color: rgba(0,0,0,0.5);
+}
+
 .panel-button #appMenuIcon {
     app-icon-bottom-clip: 1px;
 }
@@ -496,8 +521,6 @@ StScrollBar StButton#vhandle:hover
 .window-caption {
     background: rgba(0,0,0,0.5);
     border-radius: 8px;
-    font-size: 9pt;
-    font-weight: bold;
     padding: 4px 12px;
     -shell-caption-spacing: 12px;
 }
@@ -679,8 +702,6 @@ StScrollBar StButton#vhandle:hover
     border-radius: 7px;
     padding: 4px 12px;
     background-color: rgba(0,0,0,0.5);
-    font-size: 0.9em;
-    font-weight: bold;
     text-align: center;
     -x-offset: 8px;
 }
@@ -752,8 +773,6 @@ StScrollBar StButton#vhandle:hover
     border-radius: 4px;
     padding: 3px;
     border: 1px rgba(0,0,0,0);
-    font-size: 8pt;
-    font-weight: bold;
     transition-duration: 100;
     text-align: center;
 }
@@ -770,10 +789,6 @@ StScrollBar StButton#vhandle:hover
     background-color: rgba(255,255,255,0.1);
     text-shadow: black 0px 2px 2px;
     transition-duration: 100;
-}
-
-.app-well-menu {
-    font-size: 9pt;
 }
 
 /* Contacts */
@@ -813,10 +828,6 @@ StScrollBar StButton#vhandle:hover
 .contact-details-alias {
     font-size: 18px;
     padding-bottom: 8px;
-}
-
-.contact-details-status {
-    font-size: 10pt;
 }
 
 .contact-details-status-icon {
@@ -1502,8 +1513,6 @@ StScrollBar StButton#vhandle:hover
 }
 
 .source-title {
-    font-size: 9pt;
-    font-weight: bold;
     padding-left: 4px;
 }
 
@@ -1523,9 +1532,6 @@ StScrollBar StButton#vhandle:hover
     border: 1px solid rgba(128,128,128,0.40);
     border-radius: 24px;
     padding: 20px;
-
-    font-size: 9pt;
-    color: white;
 }
 
 .switcher-list-item-container {
@@ -1679,13 +1685,6 @@ StScrollBar StButton#vhandle:hover
 }
 
 /* Run Dialog */
-.run-dialog-label {
-    font-size: 9pt;
-}
-
-.run-dialog-error-label {
-    font-size: 9pt;
-}
 
 .run-dialog-error-box {
     padding-top: 15px;
