@@ -66,6 +66,7 @@ source_h =					\
 	$(srcdir)/clutter-cairo-texture.h	\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-click-action.h	\
+	$(srcdir)/clutter-cogl-compat.h 	\
 	$(srcdir)/clutter-clone.h		\
 	$(srcdir)/clutter-color-static.h	\
 	$(srcdir)/clutter-color.h		\
@@ -118,7 +119,6 @@ source_h =					\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
 	$(srcdir)/clutter-util.h 		\
-	$(srcdir)/clutter-cogl-compat.h 	\
 	$(NULL)
 
 source_c = \
