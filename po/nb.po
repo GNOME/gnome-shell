@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.3.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-19 20:02+0100\n"
+"POT-Creation-Date: 2012-02-21 15:59+0100\n"
 "PO-Revision-Date: 2012-02-19 20:03+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
@@ -104,42 +104,54 @@ msgid "History for the looking glass dialog"
 msgstr "Historikk for forstørrelsesglass-dialogen"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid ""
+"Internally used to store the last IM presence explicitly set by the user. "
+"The value here is from the TpConnectionPresenceType enumeration."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid ""
+"Internally used to store the last session presence status for the user. The "
+"value here is from the GsmPresenceStatus enumeration."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show the week date in the calendar"
 msgstr "Vis dato for uken i kalender"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Viser ISO-ukedato i kalenderen hvis «true»."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Which keyboard to use"
 msgstr "Tastatur som skal brukes"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid "The type of keyboard to use."
 msgstr "Type tastatur som skal brukes."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "Show time with seconds"
 msgstr "Vis tid med sekunder"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "If true, display seconds in time."
 msgstr "Viser sekunder i klokken hvis «true»."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Show date in clock"
 msgstr "Vis dato i klokken"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "If true, display date in the clock, in addition to time."
 msgstr "Viser dato i tillegg til tid i klokken hvis «true»."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Framerate used for recording screencasts."
 msgstr "Bildefrekvens i bruk ved lagring av skjermvideoer."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -147,11 +159,11 @@ msgstr ""
 "Bildefrekvensen i den ferdige skjermvideoen tatt opp med GNOME Shells "
 "skjermvideoopptaker i bilder per sekund."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Gstreamer-kommandokø brukt til å kode skjermvideoen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 #, fuzzy, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -168,11 +180,11 @@ msgstr ""
 "Setter GStreamer-rør som brukes til å kode opptak. Den følger syntaksen som "
 "brukes for gst-launch. Røret må ha en..."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
 msgid "File extension used for storing the screencast"
 msgstr "Filendelse i bruk ved lagring av skjermvideo"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:28
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
