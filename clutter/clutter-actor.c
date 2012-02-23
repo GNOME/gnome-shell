@@ -2693,11 +2693,7 @@ _clutter_actor_draw_paint_volume_full (ClutterActor *self,
   CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
 
   if (outline == NULL)
-    {
-      CoglContext *ctx =
-        clutter_backend_get_cogl_context (clutter_get_default_backend ());
-      outline = cogl_pipeline_new (ctx);
-    }
+    outline = cogl_pipeline_new (ctx);
 
   _clutter_paint_volume_complete (pv);
 
@@ -2724,7 +2720,8 @@ _clutter_actor_draw_paint_volume_full (ClutterActor *self,
       line_ends[22] = pv->vertices[3]; line_ends[23] = pv->vertices[7];
     }
 
-  prim = cogl_primitive_new_p3 (ctx, COGL_VERTICES_MODE_LINES, n_vertices,
+  prim = cogl_primitive_new_p3 (ctx, COGL_VERTICES_MODE_LINES,
+                                n_vertices,
                                 (CoglVertexP3 *)line_ends);
 
   cogl_pipeline_set_color (outline, color);
