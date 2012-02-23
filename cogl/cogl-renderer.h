@@ -319,6 +319,62 @@ void
 cogl_renderer_remove_constraint (CoglRenderer *renderer,
                                  CoglRendererConstraint constraint);
 
+/**
+ * CoglDriver:
+ * @COGL_DRIVER_ANY: Implies no preference for which driver is used
+ * @COGL_DRIVER_GL: An OpenGL driver.
+ * @COGL_DRIVER_GLES1: An OpenGL ES 1.1 driver.
+ * @COGL_DRIVER_GLES2: An OpenGL ES 2.0 driver.
+ *
+ * Identifiers for underlying hardware drivers that may be used by
+ * Cogl for rendering.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+typedef enum
+{
+  COGL_DRIVER_ANY,
+  COGL_DRIVER_GL,
+  COGL_DRIVER_GLES1,
+  COGL_DRIVER_GLES2
+} CoglDriver;
+
+/**
+ * cogl_renderer_set_driver:
+ * @renderer: An unconnected #CoglRenderer
+ *
+ * Requests that Cogl should try to use a specific underlying driver
+ * for rendering.
+ *
+ * If you select an unsupported driver then cogl_renderer_connect()
+ * will fail and report an error. Most applications should not
+ * explicitly select a driver and should rely on Cogl automatically
+ * choosing the driver.
+ *
+ * This may only be called on an un-connected #CoglRenderer.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_renderer_set_driver (CoglRenderer *renderer,
+                          CoglDriver driver);
+
+/**
+ * cogl_renderer_get_driver:
+ * @renderer: A connected #CoglRenderer
+ *
+ * Queries what underlying driver is being used by Cogl.
+ *
+ * This may only be called on a connected #CoglRenderer.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+CoglDriver
+cogl_renderer_get_driver (CoglRenderer *renderer);
+
 G_END_DECLS
 
 #endif /* __COGL_RENDERER_H__ */

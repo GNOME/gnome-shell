@@ -42,6 +42,7 @@ struct _CoglRenderer
 {
   CoglObject _parent;
   gboolean connected;
+  CoglDriver driver_override;
   const CoglWinsysVtable *winsys_vtable;
   CoglWinsysID winsys_id_override;
   GList *constraints;

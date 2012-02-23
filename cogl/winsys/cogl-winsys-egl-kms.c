@@ -178,6 +178,8 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
       surfaceless_feature = COGL_EGL_WINSYS_FEATURE_SURFACELESS_GLES2;
       surfaceless_feature_name = "gles2";
       break;
+    case COGL_DRIVER_ANY:
+      g_return_val_if_reached (FALSE);
     }
 
   if (!(egl_renderer->private_features & surfaceless_feature))

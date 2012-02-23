@@ -245,7 +245,9 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
     driver_name = _cogl_config_driver;
 
 #ifdef HAVE_COGL_GL
-  if (driver_name == NULL || !g_ascii_strcasecmp (driver_name, "gl"))
+  if (renderer->driver_override == COGL_DRIVER_GL ||
+      (renderer->driver_override == COGL_DRIVER_ANY &&
+       (driver_name == NULL || !g_ascii_strcasecmp (driver_name, "gl"))))
     {
       renderer->driver = COGL_DRIVER_GL;
       libgl_name = COGL_GL_LIBNAME;
@@ -254,7 +256,9 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
 #endif
 
 #ifdef HAVE_COGL_GLES2
-  if (driver_name == NULL || !g_ascii_strcasecmp (driver_name, "gles2"))
+  if (renderer->driver_override == COGL_DRIVER_GLES2 ||
+      (renderer->driver_override == COGL_DRIVER_ANY &&
+       (driver_name == NULL || !g_ascii_strcasecmp (driver_name, "gles2"))))
     {
       renderer->driver = COGL_DRIVER_GLES2;
       libgl_name = COGL_GLES2_LIBNAME;
@@ -263,7 +267,9 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
 #endif
 
 #ifdef HAVE_COGL_GLES
-  if (driver_name == NULL || !g_ascii_strcasecmp (driver_name, "gles1"))
+  if (renderer->driver_override == COGL_DRIVER_GLES1 ||
+      (renderer->driver_override == COGL_DRIVER_ANY &&
+       (driver_name == NULL || !g_ascii_strcasecmp (driver_name, "gles1"))))
     {
       renderer->driver = COGL_DRIVER_GLES1;
       libgl_name = COGL_GLES1_LIBNAME;
@@ -505,3 +511,18 @@ cogl_renderer_remove_constraint (CoglRenderer *renderer,
                                          GUINT_TO_POINTER (constraint));
 }
 
+void
+cogl_renderer_set_driver (CoglRenderer *renderer,
+                          CoglDriver driver)
+{
+  _COGL_RETURN_IF_FAIL (!renderer->connected);
+  renderer->driver_override = driver;
+}
+
+CoglDriver
+cogl_renderer_get_driver (CoglRenderer *renderer)
+{
+  _COGL_RETURN_VAL_IF_FAIL (renderer->connected, 0);
+
+  return renderer->driver;
+}
