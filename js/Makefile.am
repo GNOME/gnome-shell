@@ -1,7 +1,9 @@
 
 EXTRA_DIST = misc/config.js.in
+CLEANFILES = misc/config.js
 
 misc/config.js: misc/config.js.in Makefile
+	[ -d $(@D) ] || $(mkdir_p) $(@D) ; \
 	sed -e "s|[@]PACKAGE_NAME@|$(PACKAGE_NAME)|g" \
 	    -e "s|[@]PACKAGE_VERSION@|$(PACKAGE_VERSION)|g" \
 	    -e "s|[@]GJS_VERSION@|$(GJS_VERSION)|g" \
