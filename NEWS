@@ -1,3 +1,44 @@
+3.3.90
+======
+
+* All other applications to implement search providers via D-Bus
+  [Florian; #663125, #670148]
+* Remove "Recent Items" search, as replaced by Documents search
+  [Florian; #663125]
+* Allow NetworkManager VPN plugins to use a shell-themed dialog
+  [Giovanni; #658484]
+* Port away from deprecated Clutter API [Jasper, Florian, Adel; #670034]
+  - StTooltip is removed
+  - StWidget is now a concrete class and can be instantiated
+  - st_container_destroy_children(), st_box_layout_insert_actor(),
+    and other functions removed in favor of new replacements in Clutter.
+* Use systemd for console/session handling when available [Lennart]
+* Visual improvements to contact search, padding, top panel, checkboxes
+  [Allan, Florian, Jakub; #669489, #669811, #669993]
+* Add a include_cursor parameter to Screenshot and ScreenshotWindow
+  D-Bus methods [Adel; #670086]
+* Add a "FlashArea" D-Bus method to do the screenshot flash without a
+  screenshot [Adel; #669660]
+* Build fixes [Adel, Giovanni, Jasper; #658484, #669637]
+* Misc bug fixes [Adel, Florian, Giovanni, Guillaume, Jasper, Jeff,
+  Marc-Antoine, Stef, Stefano, Will; #642135, #658484, #658908, #667694,
+  #669098, #669921, #669662, #669694, #669776, #669887, #669921, #670005,
+  #670006, #670319, #670418, #670489]
+
+Contributors:
+ Giovanni Campagna, Cosimo Cecchi, Allan Day, Guillaume Desmottes, Jeff Epler,
+ Stefano Facchini, Adel Gadllah, Florian Müllner, Marc-Antoine Perennou,
+ Jasper St. Pierre, Lennart Poettering, Jakub Steiner, Jasper St. Pierre,
+ Will Thompson, Stef Walter
+
+Translations:
+ Ihar Hrachyshka [be], Marek Černocký, Adam Matoušek [cz],
+ Kenneth Nielsen [dk], Daniel Mustieles [es], Mattias Põldaru [et],
+ Fran Diéguez [gl], Yaron Shahrabani [he], Luca Ferretti [it],
+ Baurzhan Muftakhidinov [kk], Aurimas Černius [lt], Kjartan Maraas [nb],
+ A S Alam [pa], Matej Urbančič [sl], Miroslav Nikolić [sr],
+ Praveen Illa [te], Chao-Hsiung Liao [zh_HK, zh_TW]
+
 3.3.5
 =====
 
