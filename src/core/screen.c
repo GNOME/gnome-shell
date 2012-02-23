@@ -200,7 +200,7 @@ meta_screen_class_init (MetaScreenClass *klass)
                   3,
                   G_TYPE_INT,
                   G_TYPE_INT,
-                  MUTTER_TYPE_MOTION_DIRECTION);
+                  META_TYPE_MOTION_DIRECTION);
 
   screen_signals[WINDOW_ENTERED_MONITOR] =
     g_signal_new ("window-entered-monitor",

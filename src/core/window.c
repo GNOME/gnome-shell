@@ -411,7 +411,7 @@ meta_window_class_init (MetaWindowClass *klass)
                                    g_param_spec_enum ("window-type",
                                                       "Window Type",
                                                       "The type of the window",
-                                                      MUTTER_TYPE_WINDOW_TYPE,
+                                                      META_TYPE_WINDOW_TYPE,
                                                       META_WINDOW_NORMAL,
                                                       G_PARAM_READABLE));
 
