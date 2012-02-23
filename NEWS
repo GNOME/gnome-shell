@@ -1,3 +1,73 @@
+Clutter 1.9.12                                                       2012-02-23
+===============================================================================
+
+  • List of changes since Clutter 1.9.10
+
+    - Add ClutterTimeline:repeat-count and deprecate :loop
+    The :repeat-count property supercedes the :loop property, and it
+    provides a way to specify the number of repeats that a timeline
+    should perform - with the option of specifying an "infinity" value.
+
+    - Add a progress mode for ClutterTimeline
+    This begins the "soft deprecation" of ClutterAlpha. Instead of
+    requiring a full object to compute an easing function out of a
+    linear progress coming from ClutterTimeline, we should have this
+    functionality on ClutterTimeline itself. Since ClutterAlpha is
+    still exposed in API that we cannot deprecate (such as virtual
+    functions) we cannot deprecate it fully, and we'll have to wait
+    until the 2.0 API bump to get rid of it.
+
+    - Fix ClutterBoxLayout allocation
+    Since the update of the box layout algorithm there have been a
+    bunch of regressions; now the layout works as intended.
+
+    - Improve the performance of the shader-based effect in Clutter
+    The effects shipped with Clutter now use the CoglSnippet API
+    internally, which allows efficient generation of the shader code;
+    they also ensure that the shader is generated once per class, and
+    shared across instances. These changes should improve performance
+    when using effects provided by Clutter.
+
+    - Update the internal usage of Cogl API
+    Clutter should strive to use the Cogl 2.0 API internally and not
+    mix the 1.0 and 2.0 API.
+
+    - Allow accessing Wayland input devices
+    This is a change that allows Clutter-based toolkits to interact
+    with Wayland in a meaningful way for operations like resize and
+    move.
+
+    - Add a convenience CLUTTER_BIND_ALL enumeration
+    This allows binding both position and size of an actor when using
+    a ClutterBindConstraint.
+
+    - Cally updates
+    Use the newly added API to reimplement focus tracking.
+
+    - Visual Studio project updates
+
+    - Add clutter_text_coords_to_position()
+    This method roundtrips the position_to_coords() one, and allows
+    retrieving the index of the character at the given actor-relative
+    coordinates.
+
+    - Documentation updates.
+
+    - Introspection annotation fixes.
+
+  • List of bugs fixed since Clutter 1.9.10
+
+    [bugzilla.gnome.org]
+    #669730 - actor: Fix and improve add_child_at_index()
+    #669291 - box layout bug when callin the clutter_actor_hide() function
+    #667540 - Desynchronized size between ClutterStageCogl and ClutterStageX11
+    #670433 - clutter-drop-action: annotation fixes for some signals
+    #670402 - CRITICAL warning when ClutterDragAction has threshold > 0
+
+    [bugzilla.clutter-project.org]
+    #2515 - Setting a non-default stage fullscreen before showing it doesn't work
+
+
 Clutter 1.9.10                                                       2012-02-06
 ===============================================================================
 
