@@ -74,6 +74,7 @@
 #include "clutter-cairo-texture.h"
 
 #include "clutter-actor-private.h"
+#include "clutter-color.h"
 #include "clutter-debug.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"

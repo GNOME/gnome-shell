@@ -30,9 +30,6 @@
 
 #include <clutter/clutter-types.h>
 #include <clutter/clutter-group.h>
-#include <clutter/clutter-color.h>
-#include <clutter/clutter-event.h>
-#include <cairo.h>
 
 G_BEGIN_DECLS
 
@@ -128,6 +125,9 @@ struct _ClutterPerspective
  * Fog settings used to create the depth cueing effect.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.10: The fog-related API in #ClutterStage has been
+ *   deprecated as well.
  */
 struct _ClutterFog
 {

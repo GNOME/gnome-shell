@@ -83,6 +83,7 @@
 #include "clutter-box.h"
 
 #include "clutter-actor-private.h"
+#include "clutter-color.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-marshal.h"
