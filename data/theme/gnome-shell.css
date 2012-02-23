@@ -19,6 +19,8 @@
 
 stage {
     font-family: cantarell, sans-serif;
+    font-size: 11pt;
+    color: white;
 }
 
 .shell-link {
@@ -118,8 +120,6 @@ StScrollBar StButton#vhandle:hover
 }
 
 .popup-menu {
-    color: #ffffff;
-    font-size: 10.5pt;
     min-width: 200px;
 }
 
@@ -158,8 +158,6 @@ StScrollBar StButton#vhandle:hover
 .popup-combo-menu {
     background-color: rgba(0,0,0,0.9);
     padding: 1em 0em;
-    color: #ffffff;
-    font-size: 10.5pt;
     border: 1px solid #5f5f5f;
     border-radius: 9px;
 }
@@ -265,7 +263,6 @@ StScrollBar StButton#vhandle:hover
 .dash-search-button, .notification-button, .notification-icon-button,
 .hotplug-notification-item, .hotplug-resident-eject-button,
 .modal-dialog-button {
-    color: white;
     border: 1px solid #8b8b8b;
     background-gradient-direction: vertical;
     background-gradient-start: rgba(255, 255, 255, 0.2);
@@ -296,9 +293,7 @@ StScrollBar StButton#vhandle:hover
 /* Panel */
 
 #panel {
-    color: #ffffff;
     background-color: black;
-    font-size: 10.5pt;
     font-weight: bold;
     height: 1.86em;
 }
@@ -432,8 +427,6 @@ StScrollBar StButton#vhandle:hover
     padding: .4em 0em;
     border-radius: 4px;
     border: 1px solid #5f5f5f;
-    color: #ffffff;
-    font-size: 10.5pt;
 }
 
 .status-chooser-status-item,
@@ -452,7 +445,6 @@ StScrollBar StButton#vhandle:hover
 }
 
 .window-caption {
-    color: white;
     spacing: 25px;
 }
 
@@ -535,7 +527,6 @@ StScrollBar StButton#vhandle:hover
 
 #viewSelector {
     spacing: 1em;
-    font-size: 12pt;
 }
 
 #viewSelectorTabBar {
@@ -549,6 +540,7 @@ StScrollBar StButton#vhandle:hover
 #searchEntry {
     padding: 4px 12px;
     border-radius: 17px;
+    font-size: 12pt;
     color: rgb(128, 128, 128);
     border: 2px solid rgba(245,245,245,0.2);
     background-gradient-start: rgba(5,5,6,0.1);
@@ -587,6 +579,7 @@ StScrollBar StButton#vhandle:hover
 
 .view-tab-title {
     color: #888a85;
+    font-size: 12pt;
     font-weight: bold;
     padding: 0px 0.75em;
     height: 1.5em;
@@ -626,7 +619,6 @@ StScrollBar StButton#vhandle:hover
 }
 
 .search-section-results {
-    color: #ffffff;
     padding: 6px;
 }
 
@@ -659,16 +651,10 @@ StScrollBar StButton#vhandle:hover
     width: 298px;
 }
 
-.dash-search-button-label {
-    color: white;
-    font-size: 11pt;
-}
-
 .dash-label {
     border-radius: 7px;
     padding: 4px 12px;
     background-color: rgba(0,0,0,0.5);
-    color: #ffffff;
     font-size: 0.9em;
     font-weight: bold;
     text-align: center;
@@ -704,7 +690,6 @@ StScrollBar StButton#vhandle:hover
 }
 
 .app-filter {
-    font-size: 10.5pt;
     font-weight: bold;
     height: 2.85em;
     color: #aaa;
@@ -751,7 +736,6 @@ StScrollBar StButton#vhandle:hover
     border: 1px rgba(0,0,0,0);
     font-size: 8pt;
     font-weight: bold;
-    color: white;
     transition-duration: 100;
     text-align: center;
 }
@@ -839,8 +823,6 @@ StScrollBar StButton#vhandle:hover
     padding: 4px;
     border: 2px solid grey;
     border-radius: 4px;
-
-    color: #ffffff;
 }
 
 #LookingGlassDialog > #Toolbar
@@ -880,14 +862,8 @@ StScrollBar StButton#vhandle:hover
     padding-bottom: 8px;
 }
 
-.lg-dialog StLabel
-{
-    color: #ffffff;
-}
-
 .lg-dialog StEntry
 {
-    color: #ffffff;
     selection-background-color: #bbbbbb;
     selected-color: #333333;
 }
@@ -964,7 +940,6 @@ StScrollBar StButton#vhandle:hover
     border: 2px solid grey;
     border-radius: 4px;
     padding: 6px;
-    color: #ffffff;
 }
 
 /* Calendar popup */
@@ -1043,7 +1018,6 @@ StScrollBar StButton#vhandle:hover
 
 .datemenu-date-label {
     padding: .4em 1.75em;
-    font-size: 10.5pt;
     color: #cccccc;
     font-weight: bold;
 }
@@ -1190,11 +1164,9 @@ StScrollBar StButton#vhandle:hover
     background-gradient-start: rgba(0,0,0,0.01);
     background-gradient-end: rgba(0,0,0,0.82);
     height: 36px;
-    color: white;
 }
 
 #notification {
-    font-size: 11pt;
     border-radius: 10px 10px 0px 0px;
     background: rgba(0,0,0,0.8);
     padding: 8px 8px 4px 8px;
@@ -1232,7 +1204,6 @@ StScrollBar StButton#vhandle:hover
 }
 
 .summary-boxpointer #summary-right-click-menu {
-    font-size: 10.5pt;
     padding-top: 12px;
     padding-bottom: 12px;
 }
@@ -1282,7 +1253,6 @@ StScrollBar StButton#vhandle:hover
 
 .notification-button {
     border-radius: 18px;
-    font-size: 11pt;
     padding: 4px 42px 5px;
 }
 
@@ -1312,7 +1282,6 @@ StScrollBar StButton#vhandle:hover
 .hotplug-notification-item {
     padding: 2px 10px;
     border-radius: 18px;
-    font-size: 10.5pt;
 }
 
 .hotplug-notification-item:focus {
@@ -1455,7 +1424,6 @@ StScrollBar StButton#vhandle:hover
 }
 
 .summary-source-button {
-    color: #fff;
     text-shadow: black 0px 2px 2px;
 }
 
@@ -1670,8 +1638,6 @@ StScrollBar StButton#vhandle:hover
 
 .modal-dialog-button {
     border-radius: 18px;
-    font-size: 11pt;
-    color: white;
 
     margin-left: 10px;
     margin-right: 10px;
@@ -1689,12 +1655,10 @@ StScrollBar StButton#vhandle:hover
 /* Run Dialog */
 .run-dialog-label {
     font-size: 9pt;
-    color: white;
 }
 
 .run-dialog-error-label {
     font-size: 9pt;
-    color: white;
 }
 
 .run-dialog-error-box {
@@ -1703,10 +1667,8 @@ StScrollBar StButton#vhandle:hover
 }
 
 .run-dialog-entry {
-    font-size: 10.5pt;
     font-weight: bold;
     width: 23em;
-    color: white;
     selection-background-color: white;
     selected-color: black;
 }
@@ -1748,8 +1710,6 @@ StScrollBar StButton#vhandle:hover
 }
 
 .end-session-dialog-description {
-    font-size: 10pt;
-    color: white;
     padding-left: 17px;
     width: 28em;
 }
@@ -1852,8 +1812,6 @@ StScrollBar StButton#vhandle:hover
 
 .show-processes-dialog-description,
 .mount-question-dialog-description {
-    font-size: 10pt;
-    color: white;
     padding-left: 17px;
     width: 28em;
 }
@@ -1923,11 +1881,6 @@ StScrollBar StButton#vhandle:hover
     font-size: 12pt;
     font-weight: bold;
     color: #666666;
-}
-
-.prompt-dialog-description {
-    font-size: 10pt;
-    color: white;
 }
 
 .prompt-dialog-password-label:ltr {
