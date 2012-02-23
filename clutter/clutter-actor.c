@@ -15743,7 +15743,7 @@ clutter_actor_iter_next (ClutterActorIter  *iter,
 }
 
 /**
- * clutter_actor_iter_next:
+ * clutter_actor_iter_prev:
  * @iter: a #ClutterActorIter
  * @child: (out): return location for a #ClutterActor
  *

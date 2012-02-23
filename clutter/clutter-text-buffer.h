@@ -30,15 +30,21 @@
 
 G_BEGIN_DECLS
 
-/* Maximum size of text buffer, in bytes */
-#define CLUTTER_TEXT_BUFFER_MAX_SIZE        G_MAXUSHORT
-
 #define CLUTTER_TYPE_TEXT_BUFFER            (clutter_text_buffer_get_type ())
 #define CLUTTER_TEXT_BUFFER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_TEXT_BUFFER, ClutterTextBuffer))
 #define CLUTTER_TEXT_BUFFER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_TEXT_BUFFER, ClutterTextBufferClass))
 #define CLUTTER_IS_TEXT_BUFFER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_TEXT_BUFFER))
 #define CLUTTER_IS_TEXT_BUFFER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_TEXT_BUFFER))
 #define CLUTTER_TEXT_BUFFER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_TEXT_BUFFER, ClutterTextBufferClass))
+
+/**
+ * CLUTTER_TEXT_BUFFER_MAX_SIZE:
+ *
+ * Maximum size of text buffer, in bytes.
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_TEXT_BUFFER_MAX_SIZE        G_MAXUSHORT
 
 typedef struct _ClutterTextBuffer            ClutterTextBuffer;
 typedef struct _ClutterTextBufferClass       ClutterTextBufferClass;

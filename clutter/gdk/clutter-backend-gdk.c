@@ -443,6 +443,19 @@ clutter_gdk_set_display (GdkDisplay *display)
   _foreign_dpy = g_object_ref (display);
 }
 
+/**
+ * clutter_gdk_disable_event_retrieval:
+ *
+ * Disable the event retrieval in Clutter.
+ *
+ * Callers of this function have to set up an event filter using the
+ * GDK API, and call clutter_gdk_handle_event().
+ *
+ * This function should only be used when embedding Clutter into
+ * a GDK based toolkit.
+ *
+ * Since: 1.10
+ */
 void
 clutter_gdk_disable_event_retrieval (void)
 {
