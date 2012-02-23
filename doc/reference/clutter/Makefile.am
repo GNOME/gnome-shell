@@ -65,11 +65,13 @@ IGNORE_HFILES = \
 	clutter-actor-private.h		\
 	clutter-backend-private.h	\
         clutter-bezier.h 		\
+	clutter-cogl-compat.h		\
 	clutter-color-static.h		\
 	clutter-config.h		\
 	clutter-debug.h 		\
 	clutter-deprecated.h 		\
 	clutter-device-manager-private.h	\
+	clutter-easing.h		\
 	clutter-enum-types.h 		\
 	clutter-event-translator.h	\
 	clutter-flatten-effect.h	\
