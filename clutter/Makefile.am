@@ -983,7 +983,7 @@ clutter_all_c_sources = \
 	$(cally_sources_c) \
 	$(built_source_c)
 
-TESTS_ENVIRONMENT = srcdir="$(srcdir)" clutter_all_c_sources="$(clutter_all_c_sources)"
+TESTS_ENVIRONMENT = srcdir="$(srcdir)" CLUTTER_BACKENDS="$(CLUTTER_BACKENDS)"
 if OS_LINUX
 TESTS = abicheck.sh
 endif
