@@ -201,7 +201,7 @@ test_cogl_path (TestUtilsGTestFixture *fixture,
   paint (&state);
   validate_result ();
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
 

@@ -432,6 +432,7 @@ GL_LIBRARY_DIRECTLY_LINKED=no
 
 enabled_drivers=""
 
+HAVE_GLES1=0
 AC_ARG_ENABLE(
   [gles1],
   [AC_HELP_STRING([--enable-gles1=@<:@no/yes@:>@], [Enable support for OpenGL-ES 1.1 @<:@default=no@:>@])],
@@ -450,6 +451,7 @@ AS_IF([test "x$enable_gles1" = "xyes"],
         AC_DEFINE([HAVE_COGL_GLES], 1, [Have GLES 1.1 for rendering])
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLES CLUTTER_COGL_HAS_GLES"
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLES1"
+        HAVE_GLES1=1
 
         PKG_CHECK_EXISTS([glesv1_cm],
           [COGL_PKG_REQUIRES_GL="$COGL_PKG_REQUIRES_GL glesv1_cm"
@@ -511,6 +513,7 @@ AS_IF([test "x$enable_gles1" = "xyes"],
           ])
       ])
 
+HAVE_GLES2=0
 AC_ARG_ENABLE(
   [gles2],
   [AC_HELP_STRING([--enable-gles2=@<:@no/yes@:>@], [Enable support for OpenGL-ES 2.0 @<:@default=no@:>@])],
@@ -528,6 +531,7 @@ AS_IF([test "x$enable_gles2" = "xyes"],
         AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GLES 2.0 for rendering])
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLES CLUTTER_COGL_HAS_GLES"
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLES2"
+        HAVE_GLES2=1
 
         PKG_CHECK_EXISTS([glesv2],
           [COGL_PKG_REQUIRES_GL="$COGL_PKG_REQUIRES_GL glesv2"
@@ -551,6 +555,7 @@ AS_IF([test "x$enable_gles2" = "xyes"],
         NEED_EGL=yes
       ])
 
+HAVE_GL=0
 AC_ARG_ENABLE(
   [gl],
   [AC_HELP_STRING([--enable-gl=@<:@no/yes@:>@], [Enable support for OpenGL @<:@default=yes@:>@])],
@@ -602,6 +607,7 @@ AS_IF([test "x$enable_gl" = "xyes"],
 
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GL"
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS CLUTTER_COGL_HAS_GL"
+        HAVE_GL=1
       ])
 
 AM_CONDITIONAL([COGL_DRIVER_GL_SUPPORTED], [test "x$enable_gl" = "xyes"])
@@ -623,8 +629,11 @@ AC_ARG_WITH([gles2-libname],
             [COGL_GLES2_LIBNAME="$withval"])
 
 AC_SUBST([COGL_GL_LIBNAME])
+AC_SUBST([HAVE_GL])
 AC_SUBST([COGL_GLES1_LIBNAME])
+AC_SUBST([HAVE_GLES1])
 AC_SUBST([COGL_GLES2_LIBNAME])
+AC_SUBST([HAVE_GLES2])
 
 if test "x$GL_LIBRARY_DIRECTLY_LINKED" = "xyes"; then
    AC_DEFINE([HAVE_DIRECTLY_LINKED_GL_LIBRARY], [1],
@@ -1126,6 +1135,7 @@ doc/reference/cogl-2.0-experimental/cogl-2.0-experimental-docs.xml
 examples/Makefile
 tests/Makefile
 tests/conform/Makefile
+tests/conform/config.env
 tests/conform/test-launcher.sh
 tests/data/Makefile
 po/Makefile.in

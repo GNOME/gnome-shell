@@ -161,6 +161,6 @@ test_cogl_texture_get_set_data (TestUtilsGTestFixture *fixture,
 
   g_signal_handler_disconnect (stage, paint_handler);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }

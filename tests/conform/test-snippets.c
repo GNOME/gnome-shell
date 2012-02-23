@@ -734,9 +734,9 @@ test_cogl_snippets (TestUtilsGTestFixture *fixture,
 
       run_tests (&state);
 
-      if (g_test_verbose ())
+      if (cogl_test_verbose ())
         g_print ("OK\n");
     }
-  else if (g_test_verbose ())
+  else if (cogl_test_verbose ())
     g_print ("Skipping\n");
 }

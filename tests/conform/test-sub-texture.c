@@ -317,7 +317,7 @@ test_cogl_sub_texture (TestUtilsGTestFixture *fixture,
 
   cogl_object_unref (state.tex);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
 

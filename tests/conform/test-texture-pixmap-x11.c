@@ -232,12 +232,12 @@ test_cogl_texture_pixmap_x11 (TestUtilsGTestFixture *fixture,
 
   XFreePixmap (state.display, state.pixmap);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 
 #else /* COGL_HAS_XLIB */
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
    g_print ("Skipping\n");
 
 #endif /* COGL_HAS_XLIB */

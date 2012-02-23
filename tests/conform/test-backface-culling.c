@@ -307,7 +307,7 @@ test_cogl_backface_culling (TestUtilsGTestFixture *fixture,
   cogl_handle_unref (state.offscreen_tex);
   cogl_handle_unref (state.texture);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
 

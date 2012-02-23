@@ -172,7 +172,7 @@ test_cogl_readpixels (TestUtilsGTestFixture *fixture,
                              (ClutterCallback) clutter_actor_destroy,
                              NULL);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
 

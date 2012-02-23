@@ -332,6 +332,6 @@ test_cogl_primitive (TestUtilsGTestFixture *fixture,
   test_paint (&state);
   test_copy (&state);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }

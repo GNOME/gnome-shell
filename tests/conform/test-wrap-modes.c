@@ -284,6 +284,6 @@ test_cogl_wrap_modes (TestUtilsGTestFixture *fixture,
 
   paint (&state);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }

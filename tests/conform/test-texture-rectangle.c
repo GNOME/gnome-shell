@@ -267,10 +267,10 @@ test_cogl_texture_rectangle (TestUtilsGTestFixture *fixture,
       g_source_remove (idle_source);
       g_signal_handler_disconnect (state.stage, paint_handler);
 
-      if (g_test_verbose ())
+      if (cogl_test_verbose ())
         g_print ("OK\n");
     }
-  else if (g_test_verbose ())
+  else if (cogl_test_verbose ())
     g_print ("Skipping\n");
 }
 

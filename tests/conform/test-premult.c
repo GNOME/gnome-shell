@@ -98,7 +98,7 @@ on_paint (ClutterActor *actor, TestState *state)
 
   /* If the user explicitly specifies an unmultiplied internal format then
    * Cogl shouldn't automatically premultiply the given texture data... */
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("make_texture (0xff00ff80, "
                             "src = RGBA_8888, internal = RGBA_8888)\n");
   tex = make_texture (0xff00ff80,
@@ -111,7 +111,7 @@ on_paint (ClutterActor *actor, TestState *state)
   /* If the user explicitly requests a premultiplied internal format and
    * gives unmultiplied src data then Cogl should always premultiply that
    * for us */
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("make_texture (0xff00ff80, "
                             "src = RGBA_8888, internal = RGBA_8888_PRE)\n");
   tex = make_texture (0xff00ff80,
@@ -125,7 +125,7 @@ on_paint (ClutterActor *actor, TestState *state)
    * by default Cogl should premultiply the given texture data...
    * (In the future there will be additional Cogl API to control this
    *  behaviour) */
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("make_texture (0xff00ff80, "
                             "src = RGBA_8888, internal = ANY)\n");
   tex = make_texture (0xff00ff80,
@@ -138,7 +138,7 @@ on_paint (ClutterActor *actor, TestState *state)
   /* If the user requests a premultiplied internal texture format and supplies
    * premultiplied source data, Cogl should never modify that source data...
    */
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("make_texture (0x80008080, "
                             "src = RGBA_8888_PRE, "
                             "internal = RGBA_8888_PRE)\n");
@@ -152,7 +152,7 @@ on_paint (ClutterActor *actor, TestState *state)
   /* If the user requests an unmultiplied internal texture format, but
    * supplies premultiplied source data, then Cogl should always
    * un-premultiply the source data... */
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("make_texture (0x80008080, "
                             "src = RGBA_8888_PRE, internal = RGBA_8888)\n");
   tex = make_texture (0x80008080,
@@ -166,7 +166,7 @@ on_paint (ClutterActor *actor, TestState *state)
    * source data then by default Cogl shouldn't modify the source data...
    * (In the future there will be additional Cogl API to control this
    *  behaviour) */
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("make_texture (0x80008080, "
                             "src = RGBA_8888_PRE, internal = ANY)\n");
   tex = make_texture (0x80008080,
@@ -180,13 +180,13 @@ on_paint (ClutterActor *actor, TestState *state)
    * Test cogl_texture_set_region() ....
    */
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("make_texture (0xDEADBEEF, "
                             "src = RGBA_8888, internal = RGBA_8888)\n");
   tex = make_texture (0xDEADBEEF,
                       COGL_PIXEL_FORMAT_RGBA_8888, /* src format */
                       COGL_PIXEL_FORMAT_RGBA_8888); /* internal format */
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("set_region (0xff00ff80, RGBA_8888)\n");
   tex_data = gen_tex_data (0xff00ff80);
   cogl_texture_set_region (tex,
@@ -204,13 +204,13 @@ on_paint (ClutterActor *actor, TestState *state)
   /* Updating a texture region for an unmultiplied texture using premultiplied
    * region data should result in Cogl unmultiplying the given region data...
    */
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("make_texture (0xDEADBEEF, "
                             "src = RGBA_8888, internal = RGBA_8888)\n");
   tex = make_texture (0xDEADBEEF,
                       COGL_PIXEL_FORMAT_RGBA_8888, /* src format */
                       COGL_PIXEL_FORMAT_RGBA_8888); /* internal format */
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("set_region (0x80008080, RGBA_8888_PRE)\n");
   tex_data = gen_tex_data (0x80008080);
   cogl_texture_set_region (tex,
@@ -226,14 +226,14 @@ on_paint (ClutterActor *actor, TestState *state)
                  0xff00ff80); /* expected */
 
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("make_texture (0xDEADBEEF, "
                             "src = RGBA_8888_PRE, "
                             "internal = RGBA_8888_PRE)\n");
   tex = make_texture (0xDEADBEEF,
                       COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* src format */
                       COGL_PIXEL_FORMAT_RGBA_8888_PRE); /* internal format */
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("set_region (0x80008080, RGBA_8888_PRE)\n");
   tex_data = gen_tex_data (0x80008080);
   cogl_texture_set_region (tex,
@@ -252,14 +252,14 @@ on_paint (ClutterActor *actor, TestState *state)
   /* Updating a texture region for a premultiplied texture using unmultiplied
    * region data should result in Cogl premultiplying the given region data...
    */
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("make_texture (0xDEADBEEF, "
                             "src = RGBA_8888_PRE, "
                             "internal = RGBA_8888_PRE)\n");
   tex = make_texture (0xDEADBEEF,
                       COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* src format */
                       COGL_PIXEL_FORMAT_RGBA_8888_PRE); /* internal format */
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("set_region (0xff00ff80, RGBA_8888)\n");
   tex_data = gen_tex_data (0xff00ff80);
   cogl_texture_set_region (tex,
@@ -322,7 +322,7 @@ test_cogl_premult (TestUtilsGTestFixture *fixture,
 
   g_source_remove (idle_source);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
 

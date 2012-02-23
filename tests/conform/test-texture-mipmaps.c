@@ -131,6 +131,6 @@ test_cogl_texture_mipmaps (TestUtilsGTestFixture *fixture,
 
   g_source_remove (idle_source);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }

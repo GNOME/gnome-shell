@@ -1,20 +1,17 @@
 #ifndef _TEST_UTILS_H_
 #define _TEST_UTILS_H_
 
-/* This fixture structure is allocated by glib, and before running
- * each test we get a callback to initialize it.
- *
- * Actually we don't use this currently, we instead manage our own
- * TestUtilsSharedState structure which also gets passed as a private
- * data argument to the same initialization callback. The advantage of
- * allocating our own shared state structure is that we can put data
- * in it before we start running anything.
- */
-typedef struct _TestUtilsGTestFixture
+typedef enum _TestRequirement
 {
-  /**/
-  int dummy;
-} TestUtilsGTestFixture;
+  TEST_REQUIREMENT_GL         = 1<<0,
+  TEST_REQUIREMENT_NPOT       = 1<<2,
+  TEST_REQUIREMENT_TEXTURE_3D = 1<<3
+} TestRequirement;
+
+/* For compatability since we used to use the glib gtester
+ * infrastructure and all our unit tests have an entry
+ * point with a first argument of this type... */
+typedef struct _TestUtilsGTestFixture TestUtilsGTestFixture;
 
 /* Stuff you put in here is setup once in main() and gets passed around to
  * all test functions and fixture setup/teardown functions in the data
@@ -24,19 +21,16 @@ typedef struct _TestUtilsSharedState
   int    *argc_addr;
   char ***argv_addr;
 
-  void (* todo_func) (TestUtilsGTestFixture *, void *data);
-
   CoglContext *ctx;
   CoglFramebuffer *fb;
 } TestUtilsSharedState;
 
 void
-test_utils_init (TestUtilsGTestFixture *fixture,
-                 const void *data);
+test_utils_init (TestUtilsSharedState *state,
+                 TestRequirement requirements);
 
 void
-test_utils_fini (TestUtilsGTestFixture *fixture,
-                 const void *data);
+test_utils_fini (TestUtilsSharedState *state);
 
 /*
  * test_utils_check_pixel:
@@ -111,5 +105,12 @@ test_utils_compare_pixel (const guint8 *screen_pixel, guint32 expected_pixel);
 CoglTexture *
 test_utils_create_color_texture (CoglContext *context,
                                  guint32 color);
+
+/* cogl_test_verbose:
+ *
+ * Queries if the user asked for verbose output or not.
+ */
+gboolean
+cogl_test_verbose (void);
 
 #endif /* _TEST_UTILS_H_ */

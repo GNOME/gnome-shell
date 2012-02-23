@@ -5,116 +5,45 @@
 #include <glib.h>
 #include <locale.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "test-utils.h"
 
-#if 0
-void
-skip_init (TestUtilsGTestFixture *fixture,
-           const void *data)
-{
-  /* void */
-}
-
-static void
-skip_test (TestUtilsGTestFixture *fixture,
-           const void *data)
-{
-  /* void */
-}
-
-void
-skip_fini (TestUtilsGTestFixture *fixture,
-           const void *data)
-{
-  /* void */
-}
-#endif
-
-static void
-run_todo_test (TestUtilsGTestFixture *fixture,
-               void *data)
-{
-#ifdef G_OS_UNIX
-  TestUtilsSharedState *state = data;
-
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
-    {
-      state->todo_func (fixture, data);
-      exit (0);
-    }
-
-  g_test_trap_assert_failed ();
-#endif
-}
-
-void
-verify_failure (TestUtilsGTestFixture *fixture,
-                void *data)
-{
-  g_assert (FALSE);
-}
-
 static TestUtilsSharedState *shared_state = NULL;
 
-/* This is a bit of sugar for adding new conformance tests:
- *
- * - It adds an extern function definition just to save maintaining a header
- *   that lists test entry points.
- * - It sets up callbacks for a fixture, which lets us share initialization
- *   code between tests. (see test-utils.c)
- * - It passes in a shared data pointer that is initialised once in main(),
- *   that gets passed to the fixture setup and test functions. (See the
- *   definition in test-utils.h)
- */
-#define ADD_TEST(NAMESPACE, FUNC)            G_STMT_START {             \
-  extern void FUNC (TestUtilsGTestFixture *, void *);                   \
-  g_test_add ("/conform" NAMESPACE "/" #FUNC,                           \
-	      TestUtilsGTestFixture,                                    \
-	      shared_state, /* data argument for test */                \
-	      test_utils_init,                                          \
-	      (void *)(FUNC),                                           \
-	      test_utils_fini);    } G_STMT_END
+/* A bit of sugar for adding new conformance tests */
+#define ADD_TEST(FUNC, REQUIREMENTS)  G_STMT_START {      \
+  extern void FUNC (TestUtilsGTestFixture *, void *);     \
+  if (strcmp (#FUNC, argv[1]) == 0)                       \
+    {                                                     \
+      test_utils_init (shared_state, REQUIREMENTS);       \
+      FUNC (NULL, shared_state);                          \
+      test_utils_fini (shared_state);                     \
+      exit (0);                                           \
+    }                                                     \
+} G_STMT_END
 
-/* this is a macro that conditionally executes a test if CONDITION
- * evaluates to TRUE; otherwise, it will put the test under the
- * "/skip" namespace and execute a dummy function that will always
- * pass.
- */
-#define ADD_CONDITIONAL_TEST(CONDITION, NAMESPACE, FUNC)   G_STMT_START {   \
-  if (!(CONDITION)) {                                                       \
-    g_test_add ("/skipped" NAMESPACE "/" #FUNC,                             \
-                TestUtilsGTestFixture,                                      \
-                shared_state, /* data argument for test */                  \
-                skip_init,                                                  \
-                skip_test,                                                  \
-                skip_fini);                                                 \
-  } else { ADD_TEST (NAMESPACE, FUNC); }     } G_STMT_END
-
-#define ADD_TODO_TEST(NAMESPACE, FUNC)              G_STMT_START {          \
-   extern void FUNC (TestUtilsGTestFixture *, void *);                      \
-   shared_state->todo_func = FUNC;                                          \
-   g_test_add ("/todo" NAMESPACE "/" #FUNC,                                 \
-              TestUtilsGTestFixture,                                        \
-              shared_state,                                                 \
-              test_utils_init,                                              \
-              (void *)(run_todo_test),                                      \
-              test_utils_fini);    } G_STMT_END
-
-#define UNPORTED_TEST(NAMESPACE, FUNC)
-
-gchar *
-clutter_test_get_data_file (const gchar *filename)
-{
-  return g_build_filename (TESTS_DATADIR, filename, NULL);
-}
+#define UNPORTED_TEST(FUNC)
 
 int
 main (int argc, char **argv)
 {
-  g_test_init (&argc, &argv, NULL);
+  int i;
 
-  g_test_bug_base ("http://bugzilla.gnome.org/show_bug.cgi?id=%s");
+  if (argc != 2)
+    {
+      g_printerr ("usage %s UNIT_TEST\n", argv[0]);
+      exit (1);
+    }
+
+  /* Just for convenience in case people try passing the wrapper
+   * filenames for the UNIT_TEST argument we normalize '-' characters
+   * to '_' characters... */
+  for (i = 0; argv[1][i]; i++)
+    {
+      if (argv[1][i] == '-')
+        argv[1][i] = '_';
+    }
 
   /* Initialise the state you need to share with everything.
    */
@@ -124,56 +53,53 @@ main (int argc, char **argv)
 
   /* This file is run through a sed script during the make step so the
    * lines containing the tests need to be formatted on a single line
-   * each. To comment out a test use the SKIP or TODO macros. Using
-   * #if 0 would break the script. */
+   * each.
+   */
 
-  /* sanity check for the test suite itself */
-  ADD_TODO_TEST ("/suite", verify_failure);
+  UNPORTED_TEST (test_cogl_object);
+  UNPORTED_TEST (test_cogl_fixed);
+  UNPORTED_TEST (test_cogl_materials);
+  ADD_TEST (test_cogl_pipeline_user_matrix, 0);
+  ADD_TEST (test_cogl_blend_strings, 0);
+  UNPORTED_TEST (test_cogl_premult);
+  UNPORTED_TEST (test_cogl_readpixels);
+  ADD_TEST (test_cogl_path, 0);
+  ADD_TEST (test_cogl_depth_test, 0);
+  ADD_TEST (test_cogl_color_mask, 0);
+  ADD_TEST (test_cogl_backface_culling, TEST_REQUIREMENT_NPOT);
 
-  UNPORTED_TEST ("/cogl", test_cogl_object);
-  UNPORTED_TEST ("/cogl", test_cogl_fixed);
-  UNPORTED_TEST ("/cogl", test_cogl_materials);
-  ADD_TEST ("/cogl", test_cogl_pipeline_user_matrix);
-  ADD_TEST ("/cogl", test_cogl_blend_strings);
-  UNPORTED_TEST ("/cogl", test_cogl_premult);
-  UNPORTED_TEST ("/cogl", test_cogl_readpixels);
-  ADD_TEST ("/cogl", test_cogl_path);
-  ADD_TEST ("/cogl", test_cogl_depth_test);
-  ADD_TEST ("/cogl", test_cogl_color_mask);
-  ADD_TEST ("/cogl", test_cogl_backface_culling);
+  ADD_TEST (test_cogl_sparse_pipeline, 0);
 
-  ADD_TEST ("/cogl/pipeline", test_cogl_sparse_pipeline);
+  UNPORTED_TEST (test_cogl_npot_texture);
+  UNPORTED_TEST (test_cogl_multitexture);
+  UNPORTED_TEST (test_cogl_texture_mipmaps);
+  ADD_TEST (test_cogl_sub_texture, TEST_REQUIREMENT_GL);
+  UNPORTED_TEST (test_cogl_pixel_array);
+  UNPORTED_TEST (test_cogl_texture_rectangle);
+  ADD_TEST (test_cogl_texture_3d, 0);
+  ADD_TEST (test_cogl_wrap_modes, 0);
+  UNPORTED_TEST (test_cogl_texture_pixmap_x11);
+  UNPORTED_TEST (test_cogl_texture_get_set_data);
+  UNPORTED_TEST (test_cogl_atlas_migration);
 
-  UNPORTED_TEST ("/cogl/texture", test_cogl_npot_texture);
-  UNPORTED_TEST ("/cogl/texture", test_cogl_multitexture);
-  UNPORTED_TEST ("/cogl/texture", test_cogl_texture_mipmaps);
-  ADD_TEST ("/cogl/texture", test_cogl_sub_texture);
-  UNPORTED_TEST ("/cogl/texture", test_cogl_pixel_array);
-  UNPORTED_TEST ("/cogl/texture", test_cogl_texture_rectangle);
-  ADD_TEST ("/cogl/texture", test_cogl_texture_3d);
-  ADD_TEST ("/cogl/texture", test_cogl_wrap_modes);
-  UNPORTED_TEST ("/cogl/texture", test_cogl_texture_pixmap_x11);
-  UNPORTED_TEST ("/cogl/texture", test_cogl_texture_get_set_data);
-  UNPORTED_TEST ("/cogl/texture", test_cogl_atlas_migration);
+  UNPORTED_TEST (test_cogl_vertex_buffer_contiguous);
+  UNPORTED_TEST (test_cogl_vertex_buffer_interleved);
+  UNPORTED_TEST (test_cogl_vertex_buffer_mutability);
 
-  UNPORTED_TEST ("/cogl/vertex-buffer", test_cogl_vertex_buffer_contiguous);
-  UNPORTED_TEST ("/cogl/vertex-buffer", test_cogl_vertex_buffer_interleved);
-  UNPORTED_TEST ("/cogl/vertex-buffer", test_cogl_vertex_buffer_mutability);
+  ADD_TEST (test_cogl_primitive, 0);
 
-  ADD_TEST ("/cogl/vertex-array", test_cogl_primitive);
+  ADD_TEST (test_cogl_just_vertex_shader, 0);
+  ADD_TEST (test_cogl_pipeline_uniforms, 0);
+  ADD_TEST (test_cogl_snippets, 0);
+  ADD_TEST (test_cogl_custom_attributes, 0);
 
-  ADD_TEST ("/cogl/shaders", test_cogl_just_vertex_shader);
-  ADD_TEST ("/cogl/shaders", test_cogl_pipeline_uniforms);
-  ADD_TEST ("/cogl/shaders", test_cogl_snippets);
-  ADD_TEST ("/cogl/shaders", test_cogl_custom_attributes);
+  ADD_TEST (test_cogl_bitmask, 0);
 
-  ADD_TEST ("/cogl/internal/bitmask", test_cogl_bitmask);
+  ADD_TEST (test_cogl_offscreen, 0);
 
-  ADD_TEST ("/cogl", test_cogl_offscreen);
+  UNPORTED_TEST (test_cogl_viewport);
 
-  /* left to the end because they aren't currently very orthogonal and tend to
-   * break subsequent tests! */
-  UNPORTED_TEST ("/cogl", test_cogl_viewport);
+  g_printerr ("Unknown test name \"%s\"\n", argv[1]);
 
-  return g_test_run ();
+  return 1;
 }

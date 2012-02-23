@@ -29,7 +29,7 @@ validate_result (TestState *state)
   GLubyte pixel[4];
   GLint y_off = 90;
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("y_off = %d\n", y_off);
 
   /* NB: We ignore the alpha, since we don't know if our render target is
@@ -44,7 +44,7 @@ validate_result (TestState *state)
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("pixel 0 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
   g_assert (pixel[RED] == 0 && pixel[GREEN] == 0 && pixel[BLUE] != 0);
 
@@ -53,7 +53,7 @@ validate_result (TestState *state)
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("pixel 1 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
   g_assert (pixel[RED] != 0 && pixel[GREEN] == 0 && pixel[BLUE] == 0);
 
@@ -62,7 +62,7 @@ validate_result (TestState *state)
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("pixel 2 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
   g_assert (pixel[RED] == 0 && pixel[GREEN] == 0 && pixel[BLUE] != 0);
 
@@ -71,7 +71,7 @@ validate_result (TestState *state)
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("pixel 3 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
   g_assert (pixel[GREEN] > pixel[RED] && pixel[GREEN] > pixel[BLUE]);
 
@@ -80,7 +80,7 @@ validate_result (TestState *state)
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("pixel 4 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
   g_assert (pixel[RED] > pixel[GREEN] && pixel[RED] > pixel[BLUE]);
 
@@ -251,7 +251,7 @@ test_cogl_vertex_buffer_contiguous (TestUtilsGTestFixture *fixture,
 
   g_source_remove (idle_source);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
 

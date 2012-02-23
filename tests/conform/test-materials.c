@@ -247,7 +247,7 @@ test_cogl_materials (TestUtilsGTestFixture *fixture,
 
   g_source_remove (idle_source);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
 

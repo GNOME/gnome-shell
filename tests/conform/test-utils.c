@@ -1,3 +1,4 @@
+#define COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl.h>
 #include <stdlib.h>
 
@@ -6,14 +7,18 @@
 #define FB_WIDTH 512
 #define FB_HEIGHT 512
 
+static gboolean cogl_test_is_verbose;
+
 void
-test_utils_init (TestUtilsGTestFixture *fixture,
-                 const void *data)
+test_utils_init (TestUtilsSharedState *state,
+                 TestRequirement requirements)
 {
-  TestUtilsSharedState *state = (TestUtilsSharedState *)data;
   static int counter = 0;
   GError *error = NULL;
   CoglOnscreen *onscreen = NULL;
+  CoglDisplay *display;
+  CoglRenderer *renderer;
+  gboolean missing_requirement = FALSE;
 
   if (counter != 0)
     g_critical ("We don't support running more than one test at a time\n"
@@ -24,11 +29,44 @@ test_utils_init (TestUtilsGTestFixture *fixture,
                 "$ make test-report");
   counter++;
 
+  if (g_getenv ("COGL_TEST_VERBOSE") || g_getenv ("V"))
+    cogl_test_is_verbose = TRUE;
+
+  if (g_getenv ("G_DEBUG"))
+    {
+      char *debug = g_strconcat (g_getenv ("G_DEBUG"), ",fatal-warnings", NULL);
+      g_setenv ("G_DEBUG", debug, TRUE);
+      g_free (debug);
+    }
+  else
+    g_setenv ("G_DEBUG", "fatal-warnings", TRUE);
+
   g_setenv ("COGL_X11_SYNC", "1", 0);
 
   state->ctx = cogl_context_new (NULL, &error);
   if (!state->ctx)
     g_critical ("Failed to create a CoglContext: %s", error->message);
+
+  display = cogl_context_get_display (state->ctx);
+  renderer = cogl_display_get_renderer (display);
+
+  if (requirements & TEST_REQUIREMENT_GL &&
+      cogl_renderer_get_driver (renderer) != COGL_DRIVER_GL)
+    {
+      missing_requirement = TRUE;
+    }
+
+  if (requirements & TEST_REQUIREMENT_NPOT &&
+      !cogl_has_feature (state->ctx, COGL_FEATURE_ID_TEXTURE_NPOT))
+    {
+      missing_requirement = TRUE;
+    }
+
+  if (requirements & TEST_REQUIREMENT_TEXTURE_3D &&
+      !cogl_has_feature (state->ctx, COGL_FEATURE_ID_TEXTURE_3D))
+    {
+      missing_requirement = TRUE;
+    }
 
   if (getenv  ("COGL_TEST_ONSCREEN"))
     {
@@ -62,14 +100,14 @@ test_utils_init (TestUtilsGTestFixture *fixture,
                             0, 0, 0, 1);
 
   cogl_push_framebuffer (state->fb);
+
+  if (missing_requirement)
+    g_print ("WARNING: Missing required feature[s] for this test\n");
 }
 
 void
-test_utils_fini (TestUtilsGTestFixture *fixture,
-                 const void *data)
+test_utils_fini (TestUtilsSharedState *state)
 {
-  const TestUtilsSharedState *state = (TestUtilsSharedState *)data;
-
   cogl_pop_framebuffer ();
 
   if (state->fb)
@@ -168,4 +206,10 @@ test_utils_create_color_texture (CoglContext *context,
                                           NULL);
 
   return COGL_TEXTURE (tex_2d);
+}
+
+gboolean
+cogl_test_verbose (void)
+{
+  return cogl_test_is_verbose;
 }

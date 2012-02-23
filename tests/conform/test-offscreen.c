@@ -194,6 +194,6 @@ test_cogl_offscreen (TestUtilsGTestFixture *fixture,
   test_paint (&state);
   test_flush (&state);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }

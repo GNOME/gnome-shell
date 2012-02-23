@@ -424,9 +424,9 @@ test_cogl_pipeline_uniforms (TestUtilsGTestFixture *fixture,
 
       destroy_state (&state);
 
-      if (g_test_verbose ())
+      if (cogl_test_verbose ())
         g_print ("OK\n");
     }
-  else if (g_test_verbose ())
+  else if (cogl_test_verbose ())
     g_print ("Skipping\n");
 }

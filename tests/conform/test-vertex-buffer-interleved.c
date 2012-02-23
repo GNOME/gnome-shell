@@ -48,7 +48,7 @@ validate_result (TestState *state)
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("pixel 0 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
   g_assert (pixel[RED] == 0 && pixel[GREEN] == 0 && pixel[BLUE] != 0);
 
@@ -156,7 +156,7 @@ test_cogl_vertex_buffer_interleved (TestUtilsGTestFixture *fixture,
 
   g_source_remove (idle_source);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
 

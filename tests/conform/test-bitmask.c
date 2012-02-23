@@ -181,6 +181,6 @@ test_cogl_bitmask (TestUtilsGTestFixture *fixture,
   for (i = 0; i < 1024; i++)
     g_assert_cmpint (_cogl_bitmask_get (&bitmask, i), ==, (i < 500));
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }

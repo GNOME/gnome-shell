@@ -286,10 +286,10 @@ test_cogl_texture_3d (TestUtilsGTestFixture *fixture,
 
       test_multi_texture (&state);
 
-      if (g_test_verbose ())
+      if (cogl_test_verbose ())
         g_print ("OK\n");
     }
-  else if (g_test_verbose ())
+  else if (cogl_test_verbose ())
     g_print ("Skipping\n");
 }
 

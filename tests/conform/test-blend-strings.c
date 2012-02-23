@@ -82,7 +82,7 @@ test_blend (TestState *state,
     {
       /* It's not strictly a test failure; you need a more capable GPU or
        * driver to test this blend string. */
-      if (g_test_verbose ())
+      if (cogl_test_verbose ())
 	{
 	  g_debug ("Failed to test blend string %s: %s",
 		   blend_string, error->message);
@@ -106,7 +106,7 @@ test_blend (TestState *state,
   y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
   x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     {
       g_print ("test_blend (%d, %d):\n%s\n", x, y, blend_string);
       g_print ("  src color = %02x, %02x, %02x, %02x\n", Sr, Sg, Sb, Sa);
@@ -276,7 +276,7 @@ test_tex_combine (TestState *state,
   y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
   x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     {
       g_print ("test_tex_combine (%d, %d):\n%s\n", x, y, combine_string);
       g_print ("  texture 0 color = 0x%08lX\n", (unsigned long)tex0_color);
@@ -422,7 +422,7 @@ test_cogl_blend_strings (TestUtilsGTestFixture *fixture,
 
   paint (&state);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
 

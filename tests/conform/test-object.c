@@ -80,7 +80,7 @@ test_cogl_object (TestUtilsGTestFixture *fixture,
   g_assert_cmpint (destroy1_count, ==, 2);
   g_assert_cmpint (destroy2_count, ==, 1);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
 

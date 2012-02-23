@@ -128,6 +128,6 @@ test_cogl_atlas_migration (TestUtilsGTestFixture *fixture,
   for (tex_num = 0; tex_num < N_TEXTURES; tex_num++)
     cogl_object_unref (textures[tex_num]);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }

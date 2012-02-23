@@ -324,7 +324,7 @@ test_cogl_pixel_array (TestUtilsGTestFixture *fixture,
                              (ClutterCallback) clutter_actor_destroy,
                              NULL);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
 

@@ -64,7 +64,7 @@ test_cogl_sparse_pipeline (TestUtilsGTestFixture *fixture,
      whether using an attribute with sparse texture coordinates will
      work */
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
 
