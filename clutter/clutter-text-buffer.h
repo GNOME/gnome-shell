@@ -44,20 +44,43 @@ typedef struct _ClutterTextBuffer            ClutterTextBuffer;
 typedef struct _ClutterTextBufferClass       ClutterTextBufferClass;
 typedef struct _ClutterTextBufferPrivate     ClutterTextBufferPrivate;
 
+/**
+ * ClutterTextBuffer:
+ *
+ * The <structname>ClutterTextBuffer</structname> structure contains private
+ * data and it should only be accessed using the provided API.
+ *
+ * Since: 1.10
+ */
 struct _ClutterTextBuffer
 {
+  /*< private >*/
   GObject parent_instance;
 
-  /*< private >*/
   ClutterTextBufferPrivate *priv;
 };
 
+/**
+ * ClutterTextBufferClass:
+ * @inserted_text: default handler for the #ClutterTextBuffer::inserted-text signal
+ * @deleted_text: default hanlder for the #ClutterTextBuffer::deleted-text signal
+ * @get_text: virtual function
+ * @get_length: virtual function
+ * @insert_text: virtual function
+ * @delete_text: virtual function
+ *
+ * The <structname>ClutterTextBufferClass</structname> structure contains
+ * only private data.
+ *
+ * Since: 1.10
+ */
 struct _ClutterTextBufferClass
 {
+  /*< private >*/
   GObjectClass parent_class;
 
+  /*< public >*/
   /* Signals */
-
   void         (*inserted_text)          (ClutterTextBuffer *buffer,
                                           guint              position,
                                           const gchar       *chars,
@@ -68,7 +91,6 @@ struct _ClutterTextBufferClass
                                           guint              n_chars);
 
   /* Virtual Methods */
-
   const gchar* (*get_text)               (ClutterTextBuffer *buffer,
                                           gsize             *n_bytes);
 
@@ -83,6 +105,7 @@ struct _ClutterTextBufferClass
                                           guint              position,
                                           guint              n_chars);
 
+  /*< private >*/
   /* Padding for future expansion */
   void (*_clutter_reserved1) (void);
   void (*_clutter_reserved2) (void);
