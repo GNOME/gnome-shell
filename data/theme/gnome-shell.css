@@ -693,12 +693,6 @@ StScrollBar StButton#vhandle:hover
     -shell-grid-vertical-item-size: 118px;
 }
 
-.contact-grid {
-    spacing: 36px;
-    -shell-grid-horizontal-item-size: 272px; /* 2 * -shell-grid-horizontal-item-size + spacing */
-    -shell-grid-vertical-item-size: 118px;
-}
-
 .icon-grid .overview-icon {
     icon-size: 96px;
 }
@@ -764,6 +758,32 @@ StScrollBar StButton#vhandle:hover
     text-align: center;
 }
 
+.app-well-app.running > .overview-icon {
+    text-shadow: black 0px 2px 2px;
+    background-image: url("running-indicator.svg");
+    background-size: contain;
+}
+
+.app-well-app:hover > .overview-icon,
+.remove-favorite:hover > .overview-icon,
+.search-result-content:hover > .overview-icon {
+    background-color: rgba(255,255,255,0.1);
+    text-shadow: black 0px 2px 2px;
+    transition-duration: 100;
+}
+
+.app-well-menu {
+    font-size: 9pt;
+}
+
+/* Contacts */
+
+.contact-grid {
+    spacing: 36px;
+    -shell-grid-horizontal-item-size: 272px; /* 2 * -shell-grid-horizontal-item-size + spacing */
+    -shell-grid-vertical-item-size: 118px;
+}
+
 .contact {
     width: 272px; /* Same width as two normal results + spacing */
     height: 118px; /* Aspect ratio = 1.75. Normal US business card ratio */
@@ -808,34 +828,16 @@ StScrollBar StButton#vhandle:hover
     transition-duration: 100;
 }
 
-.app-well-app.running > .overview-icon {
-    text-shadow: black 0px 2px 2px;
-    background-image: url("running-indicator.svg");
-    background-size: contain;
-}
-
 .contact:selected,
 .app-well-app:selected > .overview-icon,
 .search-result-content:selected > .overview-icon {
     background-color: rgba(255,255,255,0.33);
 }
 
-.app-well-app:hover > .overview-icon,
-.remove-favorite:hover > .overview-icon,
-.search-result-content:hover > .overview-icon {
-    background-color: rgba(255,255,255,0.1);
-    text-shadow: black 0px 2px 2px;
-    transition-duration: 100;
-}
-
 .contact:focus,
 .app-well-app:focus > .overview-icon,
 .search-result-content:focus > .overview-icon {
     border: 1px solid #cccccc;
-}
-
-.app-well-menu {
-    font-size: 9pt;
 }
 
 /* LookingGlass */
