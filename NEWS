@@ -1,3 +1,15 @@
+3.3.90
+======
+* Update for Cogl API changes [Robert]
+* Bug fixes [Adel, Jasper;  #659643]
+* Build fixes [Jasper, Owen]
+
+Contributors:
+ Robert Bragg, Adel Gadllah, Jasper St. Pierre, Owen Taylor
+
+Translations:
+ Ask H. Larsen [dk], Miroslav Nikolić [sr]
+
 3.3.5
 =====
 * MetaShapedTexture no longer is a ClutterTexture subclass [Jasper; #660941]
