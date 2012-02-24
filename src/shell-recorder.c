@@ -1163,9 +1163,8 @@ get_absolute_path (char *maybe_relative)
     path = g_strdup (maybe_relative);
   else
     {
-      char *cwd = g_get_current_dir ();
-      path = g_build_filename (cwd, maybe_relative, NULL);
-      g_free (cwd);
+      char *video_dir = g_get_user_special_dir (G_USER_DIRECTORY_VIDEOS);
+      path = g_build_filename (video_dir, maybe_relative, NULL);
     }
 
   return path;
@@ -1183,6 +1182,7 @@ recorder_open_outfile (ShellRecorder *recorder)
   const char *pattern;
   int flags;
   int outfile = -1;
+  char *path;
 
   recorder->count++;
 
@@ -1251,12 +1251,11 @@ recorder_open_outfile (ShellRecorder *recorder)
       if (recorder->filename_has_count)
         flags |= O_EXCL;
 
-      outfile = open (filename->str, flags, 0666);
+      path = get_absolute_path (filename->str);
+      outfile = open (path, flags, 0666);
       if (outfile != -1)
         {
-          char *path = get_absolute_path (filename->str);
           g_printerr ("Recording to %s\n", path);
-          g_free (path);
 
           g_string_free (filename, TRUE);
           goto out;
@@ -1286,6 +1285,8 @@ recorder_open_outfile (ShellRecorder *recorder)
     }
 
  out:
+  g_free (path);
+
   if (outfile != -1)
     recorder->unique = g_string_free (unique, FALSE);
   else
