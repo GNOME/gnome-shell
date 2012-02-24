@@ -534,21 +534,6 @@ impl_load_pixbuf_file (const char     *uri,
   return pixbuf;
 }
 
-static GIcon *
-icon_for_mimetype (const char *mimetype)
-{
-  char *content_type;
-  GIcon *icon;
-
-  content_type = g_content_type_from_mime_type (mimetype);
-  if (!content_type)
-    return NULL;
-
-  icon = g_content_type_get_icon (content_type);
-  g_free (content_type);
-  return icon;
-}
-
 static void
 load_pixbuf_thread (GSimpleAsyncResult *result,
                     GObject *object,
@@ -1569,67 +1554,6 @@ st_texture_cache_load_file_simple (StTextureCache *cache,
 }
 
 /**
- * st_texture_cache_load_from_data:
- * @cache: The texture cache instance
- * @data: Image data in PNG, GIF, etc format
- * @len: length of @data
- * @size: Size in pixels to use for the resulting texture
- * @error: Return location for error
- *
- * Synchronously creates an image from @data. The image is scaled down
- * to fit the available width and height dimensions, but the image is
- * never scaled up beyond its actual size. The pixbuf is rotated
- * according to the associated orientation setting.
- *
- * Return value: (transfer none): A new #ClutterActor with the image data loaded if it was
- *               generated succesfully, %NULL otherwise
- */
-ClutterActor *
-st_texture_cache_load_from_data (StTextureCache    *cache,
-                                 const guchar      *data,
-                                 gsize              len,
-                                 int                size,
-                                 GError           **error)
-{
-  ClutterTexture *texture;
-  CoglHandle texdata;
-  GdkPixbuf *pixbuf;
-  char *key;
-  char *checksum;
-
-  texture = create_default_texture (cache);
-  clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
-
-  checksum = g_compute_checksum_for_data (G_CHECKSUM_SHA1, data, len);
-  key = g_strdup_printf (CACHE_PREFIX_COMPRESSED_CHECKSUM "checksum=%s,size=%d", checksum, size);
-  g_free (checksum);
-
-  texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
-  if (texdata == NULL)
-    {
-      pixbuf = impl_load_pixbuf_data (data, len, size, size, error);
-      if (!pixbuf)
-        {
-          g_object_unref (texture);
-          g_free (key);
-          return NULL;
-        }
-
-      texdata = pixbuf_to_cogl_handle (pixbuf, TRUE);
-      g_object_unref (pixbuf);
-
-      set_texture_cogl_texture (texture, texdata);
-
-      g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), texdata);
-    }
-
-  g_free (key);
-
-  set_texture_cogl_texture (texture, texdata);
-  return CLUTTER_ACTOR (texture);
-}
-
-/**
  * st_texture_cache_load_from_raw:
  * @cache: a #StTextureCache
  * @data: (array length=len): raw pixel data
@@ -1687,49 +1611,6 @@ st_texture_cache_load_from_raw (StTextureCache    *cache,
 
   set_texture_cogl_texture (texture, texdata);
   return CLUTTER_ACTOR (texture);
-}
-
-static GIcon *
-icon_for_recent (GtkRecentInfo *info)
-{
-  const char *mimetype;
-
-  mimetype = gtk_recent_info_get_mime_type (info);
-  if (!mimetype)
-    {
-      return g_themed_icon_new (GTK_STOCK_FILE);
-    }
-
-  return icon_for_mimetype (mimetype);
-}
-
-static size_t
-pixbuf_byte_size (GdkPixbuf *pixbuf)
-{
-  /* This bit translated from gtk+/gdk-pixbuf/gdk-pixbuf.c:gdk_pixbuf_copy.  The comment
-   * there was:
-   *
-   * Calculate a semi-exact size.  Here we copy with full rowstrides;
-   * maybe we should copy each row individually with the minimum
-   * rowstride?
-   */
-  return (gdk_pixbuf_get_height (pixbuf) - 1) * gdk_pixbuf_get_rowstride (pixbuf) +
-    + gdk_pixbuf_get_width (pixbuf) * ((gdk_pixbuf_get_n_channels (pixbuf)* gdk_pixbuf_get_bits_per_sample (pixbuf) + 7) / 8);
-}
-
-/**
- * st_texture_cache_pixbuf_equal:
- *
- * Returns: %TRUE iff the given pixbufs are bytewise-equal
- */
-gboolean
-st_texture_cache_pixbuf_equal (StTextureCache *cache, GdkPixbuf *a, GdkPixbuf *b)
-{
-  size_t size_a = pixbuf_byte_size (a);
-  size_t size_b = pixbuf_byte_size (b);
-  if (size_a != size_b)
-    return FALSE;
-  return memcmp (gdk_pixbuf_get_pixels (a), gdk_pixbuf_get_pixels (b), size_a) == 0;
 }
 
 static StTextureCache *instance = NULL;

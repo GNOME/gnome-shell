@@ -110,11 +110,6 @@ cairo_surface_t *st_texture_cache_load_file_to_cairo_surface (StTextureCache *ca
 ClutterActor *st_texture_cache_load_file_simple (StTextureCache *cache,
                                                  const gchar    *file_path);
 
-ClutterActor *st_texture_cache_load_from_data (StTextureCache    *cache,
-                                               const guchar      *data,
-                                               gsize              len,
-                                               int                size,
-                                               GError           **error);
 ClutterActor *st_texture_cache_load_from_raw  (StTextureCache    *cache,
                                                const guchar      *data,
                                                gsize              len,
@@ -144,7 +139,5 @@ CoglHandle st_texture_cache_load (StTextureCache       *cache,
                                   StTextureCacheLoader  load,
                                   void                 *data,
                                   GError              **error);
-
-gboolean st_texture_cache_pixbuf_equal (StTextureCache *cache, GdkPixbuf *a, GdkPixbuf *b);
 
 #endif /* __ST_TEXTURE_CACHE_H__ */
