@@ -1214,16 +1214,18 @@ recorder_open_outfile (ShellRecorder *recorder)
                   break;
                 case 'd':
                   {
-                    /* Appends date as YYYYMMDD */
-                    GDate date;
-                    GTimeVal now;
-                    g_get_current_time (&now);
-                    g_date_clear (&date, 1);
-                    g_date_set_time_val (&date, &now);
-                    g_string_append_printf (filename, "%04d%02d%02d",
-                                            g_date_get_year (&date),
-                                            g_date_get_month (&date),
-                                            g_date_get_day (&date));
+                    /* Appends date according to locale */
+                    GDateTime *datetime = g_date_time_new_now_local ();
+                    char *date_str = g_date_time_format (datetime, "%0x");
+                    char *s;
+
+                    for (s = date_str; *s; s++)
+                      if (G_IS_DIR_SEPARATOR (*s))
+                          *s = '-';
+
+                    g_string_append (filename, date_str);
+                    g_free (date_str);
+                    g_date_time_unref (datetime);
                   }
                   break;
                 case 'u':
