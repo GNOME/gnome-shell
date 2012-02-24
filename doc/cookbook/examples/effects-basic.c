@@ -18,9 +18,7 @@ toggle_highlight (ClutterActor *actor,
 
   clutter_actor_meta_set_enabled (meta, !effect_enabled);
 
-  clutter_actor_queue_redraw (actor);
-
-  return TRUE;
+  return CLUTTER_EVENT_STOP;
 }
 
 int
@@ -59,7 +57,8 @@ main (int   argc,
   clutter_flow_layout_set_row_spacing (CLUTTER_FLOW_LAYOUT (layout_manager),
                                        10);
 
-  box = clutter_box_new (layout_manager);
+  box = clutter_actor_new ();
+  clutter_actor_set_layout_manager (box, layout_manager);
   width_constraint = clutter_bind_constraint_new (stage,
                                                   CLUTTER_BIND_WIDTH,
                                                   0.0);

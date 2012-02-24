@@ -38,24 +38,25 @@ main (int argc, char *argv[])
     return 1;
 
   stage = clutter_stage_new ();
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
   clutter_stage_set_title (CLUTTER_STAGE (stage), "btn");
+  clutter_actor_set_background_color (stage, &stage_color);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   layout = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_FILL,
                                    CLUTTER_BIN_ALIGNMENT_FILL);
 
-  box = clutter_box_new (layout);
+  box = clutter_actor_new ();
+  clutter_actor_set_layout_manager (box, layout);
   clutter_actor_set_position (box, 25, 25);
   clutter_actor_set_reactive (box, TRUE);
   clutter_actor_set_size (box, 100, 30);
 
   /* background for the button */
   rect = clutter_rectangle_new_with_color (&yellow);
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), rect);
+  clutter_actor_add_child (box, rect);
 
   /* text for the button */
   text = clutter_text_new_full ("Sans 10pt", "Hover me", &white);
-  clutter_text_set_line_alignment (CLUTTER_TEXT (text), PANGO_ALIGN_CENTER);
 
   /*
    * NB don't set the height, so the actor assumes the height of the text;
@@ -102,7 +103,7 @@ main (int argc, char *argv[])
   clutter_actor_add_constraint (stage, clutter_bind_constraint_new (box, CLUTTER_BIND_HEIGHT, 50.0));
   clutter_actor_add_constraint (stage, clutter_bind_constraint_new (box, CLUTTER_BIND_WIDTH, 50.0));
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
+  clutter_actor_add_child (stage, box);
 
   clutter_actor_show (stage);
 

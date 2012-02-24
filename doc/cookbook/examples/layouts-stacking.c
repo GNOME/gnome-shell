@@ -35,8 +35,9 @@ main (int argc, char *argv[])
   layout = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_CENTER,
                                    CLUTTER_BIN_ALIGNMENT_CENTER);
 
-  box = clutter_box_new (layout);
-  clutter_box_set_color (CLUTTER_BOX (box), &box_color);
+  box = clutter_actor_new ();
+  clutter_actor_set_layout_manager (box, layout);
+  clutter_actor_set_background_color (box, &box_color);
 
   texture = clutter_texture_new_from_file (filename, &error);
 
@@ -67,12 +68,11 @@ main (int argc, char *argv[])
                                                  (gfloat)(width * 0.5) - (STAGE_SIDE * 0.03125),
                                                  CLUTTER_GRAVITY_CENTER);
       clutter_actor_set_width (texture_copy, width);
-      clutter_container_add_actor (CLUTTER_CONTAINER (box), texture_copy);
+      clutter_actor_add_child (box, texture_copy);
     }
 
-  clutter_actor_add_constraint (box, clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.5));
-  clutter_actor_add_constraint (box, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.5));
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
+  clutter_actor_add_constraint (box, clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5));
+  clutter_actor_add_child (stage, box);
 
   clutter_actor_show (stage);
 

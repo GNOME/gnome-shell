@@ -323,7 +323,8 @@ cb_button_init (CbButton *self)
   layout = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_CENTER,
                                    CLUTTER_BIN_ALIGNMENT_CENTER);
 
-  priv->child = clutter_box_new (layout);
+  priv->child = clutter_actor_new ();
+  clutter_actor_set_layout_manager (priv->child, layout);
 
   /* set the parent of the ClutterBox to this instance */
   clutter_actor_add_child (CLUTTER_ACTOR (self), priv->child);
@@ -400,7 +401,7 @@ cb_button_set_background_color (CbButton           *self,
 {
   g_return_if_fail (CB_IS_BUTTON (self));
 
-  clutter_box_set_color (CLUTTER_BOX (self->priv->child), color);
+  clutter_actor_set_background_color (self->priv->child, color);
 }
 
 /**
