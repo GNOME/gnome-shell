@@ -1228,6 +1228,21 @@ recorder_open_outfile (ShellRecorder *recorder)
                     g_date_time_unref (datetime);
                   }
                   break;
+                case 't':
+                  {
+                    /* Appends time according to locale */
+                    GDateTime *datetime = g_date_time_new_now_local ();
+                    char *time_str = g_date_time_format (datetime, "%0X");
+                    char *s;
+
+                    for (s = time_str; *s; s++)
+                      if (G_IS_DIR_SEPARATOR (*s))
+                          *s = ':';
+
+                    g_string_append (filename, time_str);
+                    g_free (time_str);
+                    g_date_time_unref (datetime);
+                  }
                 case 'u':
                   if (recorder->unique)
                     g_string_append (filename, recorder->unique);
