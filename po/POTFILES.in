@@ -16,6 +16,7 @@ js/ui/endSessionDialog.js
 js/ui/extensionSystem.js
 js/ui/keyboard.js
 js/ui/lookingGlass.js
+js/ui/main.js
 js/ui/messageTray.js
 js/ui/networkAgent.js
 js/ui/notificationDaemon.js
