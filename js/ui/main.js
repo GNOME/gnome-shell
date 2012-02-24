@@ -110,7 +110,7 @@ function _initRecorder() {
         } else {
             // read the parameters from GSettings always in case they have changed
             recorder.set_framerate(recorderSettings.get_int('framerate'));
-            recorder.set_filename('shell-%d%u-%c.' + recorderSettings.get_string('file-extension'));
+            recorder.set_filename('Screencast at %d %t.' + recorderSettings.get_string('file-extension'));
             let pipeline = recorderSettings.get_string('pipeline');
 
             if (!pipeline.match(/^\s*$/))
