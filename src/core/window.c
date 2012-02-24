@@ -1167,6 +1167,8 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
   window->monitor = meta_screen_get_monitor_for_window (window->screen, window);
 
+  window->tile_match = NULL;
+
   if (window->override_redirect)
     {
       window->decorated = FALSE;
@@ -5022,6 +5024,9 @@ meta_window_move_resize_internal (MetaWindow          *window,
     }
 
   meta_window_foreach_transient (window, maybe_move_attached_dialog, NULL);
+
+  meta_stack_update_window_tile_matches (window->screen->stack,
+                                         window->screen->active_workspace);
 }
 
 /**
@@ -10711,4 +10716,100 @@ gboolean
 meta_window_is_attached_dialog (MetaWindow *window)
 {
   return window->attached;
+}
+
+/**
+ * meta_window_get_tile_match:
+ *
+ * Returns the matching tiled window on the same monitor as @window. This is
+ * the topmost tiled window in a complementary tile mode that is:
+ *
+ *  - on the same monitor;
+ *  - on the same workspace;
+ *  - spanning the remaining monitor width;
+ *  - there is no 3rd window stacked between both tiled windows that's
+ *    partially visible in the common edge.
+ *
+ * Return value: (transfer none) (allow-none): the matching tiled window or
+ * %NULL if it doesn't exist.
+ */
+MetaWindow *
+meta_window_get_tile_match (MetaWindow *window)
+{
+  return window->tile_match;
+}
+
+void
+meta_window_compute_tile_match (MetaWindow *window)
+{
+  MetaWindow *match;
+  MetaTileMode match_tile_mode;
+  MetaStack *stack;
+
+  window->tile_match = NULL;
+
+  if (window->shaded ||
+      window->minimized ||
+      !META_WINDOW_TILED_SIDE_BY_SIDE (window))
+    return;
+
+  if (META_WINDOW_TILED_LEFT (window))
+    match_tile_mode = META_TILE_RIGHT;
+  else if (META_WINDOW_TILED_RIGHT (window))
+    match_tile_mode = META_TILE_LEFT;
+
+  stack = window->screen->stack;
+
+  for (match = meta_stack_get_top (stack);
+       match;
+       match = meta_stack_get_below (stack, match, FALSE))
+    {
+      if (!match->shaded &&
+          !match->minimized &&
+          match->tile_mode == match_tile_mode &&
+          match->monitor == window->monitor &&
+          meta_window_get_workspace (match) == meta_window_get_workspace (window))
+        break;
+    }
+
+  if (match)
+    {
+      MetaWindow *above, *bottommost, *topmost;
+      MetaRectangle above_rect, bottommost_rect, topmost_rect;
+
+      if (meta_stack_windows_cmp (window->screen->stack, match, window) > 0)
+        {
+          topmost = match;
+          bottommost = window;
+        }
+      else
+        {
+          topmost = window;
+          bottommost = match;
+        }
+
+      meta_window_get_outer_rect (bottommost, &bottommost_rect);
+      meta_window_get_outer_rect (topmost, &topmost_rect);
+      /*
+       * If there's a window stacked in between which is partially visible
+       * behind the topmost tile we don't consider the tiles to match.
+       */
+      for (above = meta_stack_get_above (stack, bottommost, FALSE);
+           above && above != topmost;
+           above = meta_stack_get_above (stack, above, FALSE))
+        {
+          if (above->minimized ||
+              above->monitor != window->monitor ||
+              meta_window_get_workspace (above) != meta_window_get_workspace (window))
+            continue;
+
+          meta_window_get_outer_rect (above, &above_rect);
+
+          if (meta_rectangle_overlap (&above_rect, &bottommost_rect) &&
+              meta_rectangle_overlap (&above_rect, &topmost_rect))
+            return;
+        }
+
+      window->tile_match = match;
+    }
 }

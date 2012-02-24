@@ -169,4 +169,6 @@ MetaFrameType meta_window_get_frame_type (MetaWindow *window);
 
 cairo_region_t *meta_window_get_frame_bounds (MetaWindow *window);
 
+MetaWindow *meta_window_get_tile_match (MetaWindow *window);
+
 #endif

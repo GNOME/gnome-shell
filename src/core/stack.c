@@ -121,6 +121,7 @@ meta_stack_add (MetaStack  *stack,
               window->desc, window->stack_position);
   
   stack_sync_to_server (stack);
+  meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
 }
 
 void
@@ -156,6 +157,7 @@ meta_stack_remove (MetaStack  *stack,
                                      GUINT_TO_POINTER (window->frame->xwindow));
   
   stack_sync_to_server (stack);
+  meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
 }
 
 void
@@ -165,6 +167,7 @@ meta_stack_update_layer (MetaStack  *stack,
   stack->need_relayer = TRUE;
   
   stack_sync_to_server (stack);
+  meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
 }
 
 void
@@ -174,6 +177,7 @@ meta_stack_update_transient (MetaStack  *stack,
   stack->need_constrain = TRUE;
   
   stack_sync_to_server (stack);
+  meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
 }
 
 /* raise/lower within a layer */
@@ -185,6 +189,7 @@ meta_stack_raise (MetaStack  *stack,
                                           stack->n_positions - 1);
   
   stack_sync_to_server (stack);
+  meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
 }
 
 void
@@ -194,6 +199,7 @@ meta_stack_lower (MetaStack  *stack,
   meta_window_set_stack_position_no_sync (window, 0);
   
   stack_sync_to_server (stack);
+  meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
 }
 
 void
@@ -209,6 +215,26 @@ meta_stack_thaw (MetaStack *stack)
   
   stack->freeze_count -= 1;
   stack_sync_to_server (stack);
+  meta_stack_update_window_tile_matches (stack, NULL);
+}
+
+void
+meta_stack_update_window_tile_matches (MetaStack     *stack,
+                                       MetaWorkspace *workspace)
+{
+  GList *windows;
+
+  if (stack->freeze_count > 0)
+    return;
+
+  windows = meta_stack_list_windows (stack, workspace);
+  while (windows)
+    {
+      meta_window_compute_tile_match ((MetaWindow *) windows->data);
+      windows = windows->next;
+    }
+
+  g_list_free (windows);
 }
 
 static gboolean
@@ -1656,6 +1682,7 @@ meta_stack_set_positions (MetaStack *stack,
               "Reset the stack positions of (nearly) all windows\n");
 
   stack_sync_to_server (stack);
+  meta_stack_update_window_tile_matches (stack, NULL);
 }
 
 void
@@ -1718,4 +1745,6 @@ meta_window_set_stack_position (MetaWindow *window,
 {
   meta_window_set_stack_position_no_sync (window, position);
   stack_sync_to_server (window->screen->stack);
+  meta_stack_update_window_tile_matches (window->screen->stack,
+                                         window->screen->active_workspace);
 }

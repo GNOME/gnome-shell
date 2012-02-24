@@ -383,4 +383,6 @@ GList* meta_stack_get_positions (MetaStack *stack);
 void   meta_stack_set_positions (MetaStack *stack,
                                  GList     *windows);
 
+void meta_stack_update_window_tile_matches (MetaStack     *stack,
+                                            MetaWorkspace *workspace);
 #endif

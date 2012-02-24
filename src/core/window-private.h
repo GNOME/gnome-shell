@@ -410,6 +410,9 @@ struct _MetaWindow
 
   /* Focused window that is (directly or indirectly) attached to this one */
   MetaWindow *attached_focus_window;
+
+  /* The currently complementary tiled window, if any */
+  MetaWindow *tile_match;
 };
 
 struct _MetaWindowClass
@@ -662,5 +665,7 @@ void meta_window_propagate_focus_appearance (MetaWindow *window,
 
 gboolean meta_window_should_attach_to_parent (MetaWindow *window);
 gboolean meta_window_can_tile_side_by_side   (MetaWindow *window);
+
+void meta_window_compute_tile_match (MetaWindow *window);
 
 #endif
