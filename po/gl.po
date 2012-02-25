@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-23 10:34+0100\n"
-"PO-Revision-Date: 2012-02-23 10:34+0100\n"
+"POT-Creation-Date: 2012-02-25 13:51+0100\n"
+"PO-Revision-Date: 2012-02-25 13:52+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -726,6 +726,12 @@ msgstr "Ver fonte"
 #: ../js/ui/lookingGlass.js:834
 msgid "Web Page"
 msgstr "Páxina web"
+
+#. Translators: this is a filename used for screencast recording
+#: ../js/ui/main.js:115
+#, no-c-format
+msgid "Screencast from %d %t."
+msgstr "Screencast de %d %t."
 
 #: ../js/ui/messageTray.js:1197
 msgid "Open"
