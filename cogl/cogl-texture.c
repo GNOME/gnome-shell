@@ -177,7 +177,7 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
                                   GLenum          *out_glformat,
                                   GLenum          *out_gltype)
 {
-  CoglPixelFormat src_format = _cogl_bitmap_get_format (src_bmp);
+  CoglPixelFormat src_format = cogl_bitmap_get_format (src_bmp);
   CoglBitmap *dst_bmp;
 
   _COGL_GET_CONTEXT (ctx, NULL);
@@ -397,7 +397,7 @@ cogl_texture_new_from_file (const char        *filename,
   if (bmp == NULL)
     return NULL;
 
-  src_format = _cogl_bitmap_get_format (bmp);
+  src_format = cogl_bitmap_get_format (bmp);
 
   /* We know that the bitmap data is solely owned by this function so
      we can do the premult conversion in place. This avoids having to
@@ -621,9 +621,9 @@ cogl_texture_set_region_from_bitmap (CoglTexture *texture,
 {
   gboolean ret;
 
-  _COGL_RETURN_VAL_IF_FAIL ((_cogl_bitmap_get_width (bmp) - src_x)
+  _COGL_RETURN_VAL_IF_FAIL ((cogl_bitmap_get_width (bmp) - src_x)
                             >= dst_width, FALSE);
-  _COGL_RETURN_VAL_IF_FAIL ((_cogl_bitmap_get_height (bmp) - src_y)
+  _COGL_RETURN_VAL_IF_FAIL ((cogl_bitmap_get_height (bmp) - src_y)
                             >= dst_height, FALSE);
 
   /* Shortcut out early if the image is empty */
@@ -819,9 +819,9 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
   CoglFramebuffer *framebuffer;
   float viewport[4];
   CoglBitmap *alpha_bmp;
-  int target_width = _cogl_bitmap_get_width (target_bmp);
-  int target_height = _cogl_bitmap_get_height (target_bmp);
-  int target_rowstride = _cogl_bitmap_get_rowstride (target_bmp);
+  int target_width = cogl_bitmap_get_width (target_bmp);
+  int target_height = cogl_bitmap_get_height (target_bmp);
+  int target_rowstride = cogl_bitmap_get_rowstride (target_bmp);
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -1057,9 +1057,9 @@ texture_get_cb (CoglTexture *texture,
                 void        *user_data)
 {
   CoglTextureGetData *tg_data = user_data;
-  CoglPixelFormat format = _cogl_bitmap_get_format (tg_data->target_bmp);
+  CoglPixelFormat format = cogl_bitmap_get_format (tg_data->target_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
-  unsigned int rowstride = _cogl_bitmap_get_rowstride (tg_data->target_bmp);
+  unsigned int rowstride = cogl_bitmap_get_rowstride (tg_data->target_bmp);
   int subtexture_width = cogl_texture_get_width (texture);
   int subtexture_height = cogl_texture_get_height (texture);
 
@@ -1248,7 +1248,7 @@ cogl_texture_get_data (CoglTexture     *texture,
       if (new_bmp == NULL)
         return 0;
 
-      new_bmp_rowstride = _cogl_bitmap_get_rowstride (new_bmp);
+      new_bmp_rowstride = cogl_bitmap_get_rowstride (new_bmp);
       new_bmp_data = _cogl_bitmap_map (new_bmp, COGL_BUFFER_ACCESS_WRITE,
                                        COGL_BUFFER_MAP_HINT_DISCARD);
 

@@ -100,10 +100,10 @@ _cogl_texture_driver_prep_gl_for_pixels_download (int pixels_rowstride,
 static CoglBitmap *
 prepare_bitmap_alignment_for_upload (CoglBitmap *src_bmp)
 {
-  CoglPixelFormat format = _cogl_bitmap_get_format (src_bmp);
+  CoglPixelFormat format = cogl_bitmap_get_format (src_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
-  int src_rowstride = _cogl_bitmap_get_rowstride (src_bmp);
-  int width = _cogl_bitmap_get_width (src_bmp);
+  int src_rowstride = cogl_bitmap_get_rowstride (src_bmp);
+  int width = cogl_bitmap_get_width (src_bmp);
   int alignment = 1;
 
   if (src_rowstride == 0)
@@ -138,7 +138,7 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
 				             GLuint       source_gl_type)
 {
   guint8 *data;
-  CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
+  CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
   CoglBitmap *slice_bmp;
   int rowstride;
@@ -148,8 +148,8 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
   /* If we are copying a sub region of the source bitmap then we need
      to copy it because GLES does not support GL_UNPACK_ROW_LENGTH */
   if (src_x != 0 || src_y != 0 ||
-      width != _cogl_bitmap_get_width (source_bmp) ||
-      height != _cogl_bitmap_get_height (source_bmp))
+      width != cogl_bitmap_get_width (source_bmp) ||
+      height != cogl_bitmap_get_height (source_bmp))
     {
       rowstride = bpp * width;
       rowstride = (rowstride + 3) & ~3;
@@ -169,7 +169,7 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
   else
     {
       slice_bmp = prepare_bitmap_alignment_for_upload (source_bmp);
-      rowstride = _cogl_bitmap_get_rowstride (slice_bmp);
+      rowstride = cogl_bitmap_get_rowstride (slice_bmp);
     }
 
   /* Setup gl alignment to match rowstride and top-left corner */
@@ -200,18 +200,18 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
                                    GLuint       source_gl_format,
                                    GLuint       source_gl_type)
 {
-  CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
+  CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
   int rowstride;
-  int bmp_width = _cogl_bitmap_get_width (source_bmp);
-  int bmp_height = _cogl_bitmap_get_height (source_bmp);
+  int bmp_width = cogl_bitmap_get_width (source_bmp);
+  int bmp_height = cogl_bitmap_get_height (source_bmp);
   CoglBitmap *bmp;
   guint8 *data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   bmp = prepare_bitmap_alignment_for_upload (source_bmp);
-  rowstride = _cogl_bitmap_get_rowstride (bmp);
+  rowstride = cogl_bitmap_get_rowstride (bmp);
 
   /* Setup gl alignment to match rowstride and top-left corner */
   _cogl_texture_driver_prep_gl_for_pixels_upload (rowstride, bpp);
@@ -244,11 +244,11 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                                       GLuint       source_gl_format,
                                       GLuint       source_gl_type)
 {
-  CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
+  CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
-  int rowstride = _cogl_bitmap_get_rowstride (source_bmp);
-  int bmp_width = _cogl_bitmap_get_width (source_bmp);
-  int bmp_height = _cogl_bitmap_get_height (source_bmp);
+  int rowstride = cogl_bitmap_get_rowstride (source_bmp);
+  int bmp_width = cogl_bitmap_get_width (source_bmp);
+  int bmp_height = cogl_bitmap_get_height (source_bmp);
   guint8 *data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -282,7 +282,7 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                              NULL) );
 
       bmp = _cogl_bitmap_new_from_data (g_malloc (bpp * bmp_width * height),
-                                        _cogl_bitmap_get_format (source_bmp),
+                                        cogl_bitmap_get_format (source_bmp),
                                         bmp_width,
                                         height,
                                         bpp * bmp_width,

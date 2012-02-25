@@ -249,8 +249,8 @@ _cogl_texture_3d_new_from_bitmap (CoglContext *ctx,
   GLenum           gl_type;
   guint8          *data;
 
-  bmp_width = _cogl_bitmap_get_width (bmp);
-  bmp_format = _cogl_bitmap_get_format (bmp);
+  bmp_width = cogl_bitmap_get_width (bmp);
+  bmp_format = cogl_bitmap_get_format (bmp);
 
   internal_format = _cogl_texture_determine_internal_format (bmp_format,
                                                              internal_format);
@@ -285,7 +285,7 @@ _cogl_texture_3d_new_from_bitmap (CoglContext *ctx,
       (data = _cogl_bitmap_map (dst_bmp,
                                 COGL_BUFFER_ACCESS_READ, 0)))
     {
-      CoglPixelFormat format = _cogl_bitmap_get_format (dst_bmp);
+      CoglPixelFormat format = cogl_bitmap_get_format (dst_bmp);
       tex_3d->first_pixel.gl_format = gl_format;
       tex_3d->first_pixel.gl_type = gl_type;
       memcpy (tex_3d->first_pixel.data, data,

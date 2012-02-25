@@ -128,7 +128,53 @@ cogl_bitmap_new_with_size (CoglContext *context,
                            unsigned int height,
                            CoglPixelFormat format);
 
-#endif
+/**
+ * cogl_bitmap_get_format:
+ * @bitmap: A #CoglBitmap
+ *
+ * Return value: the #CoglPixelFormat that the data for the bitmap is in.
+ * Since: 1.10
+ * Stability: unstable
+ */
+CoglPixelFormat
+cogl_bitmap_get_format (CoglBitmap *bitmap);
+
+/**
+ * cogl_bitmap_get_width:
+ * @bitmap: A #CoglBitmap
+ *
+ * Return value: the width of the bitmap
+ * Since: 1.10
+ * Stability: unstable
+ */
+int
+cogl_bitmap_get_width (CoglBitmap *bitmap);
+
+/**
+ * cogl_bitmap_get_height:
+ * @bitmap: A #CoglBitmap
+ *
+ * Return value: the height of the bitmap
+ * Since: 1.10
+ * Stability: unstable
+ */
+int
+cogl_bitmap_get_height (CoglBitmap *bitmap);
+
+/**
+ * cogl_bitmap_get_rowstride:
+ * @bitmap: A #CoglBitmap
+ *
+ * Return value: the rowstride of the bitmap. This is the number of
+ *   bytes between the address of start of one row to the address of the
+ *   next row in the image.
+ * Since: 1.10
+ * Stability: unstable
+ */
+int
+cogl_bitmap_get_rowstride (CoglBitmap *bitmap);
+
+#endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 /**
  * cogl_bitmap_get_size_from_file:

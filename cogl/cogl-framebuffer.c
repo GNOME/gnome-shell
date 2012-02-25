@@ -1879,7 +1879,7 @@ _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
   if (source != COGL_READ_PIXELS_COLOR_BUFFER)
     return FALSE;
 
-  format = _cogl_bitmap_get_format (bitmap);
+  format = cogl_bitmap_get_format (bitmap);
 
   if (format != COGL_PIXEL_FORMAT_RGBA_8888_PRE &&
       format != COGL_PIXEL_FORMAT_RGBA_8888)
@@ -1960,8 +1960,8 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
 
   ctx = cogl_framebuffer_get_context (framebuffer);
 
-  width = _cogl_bitmap_get_width (bitmap);
-  height = _cogl_bitmap_get_height (bitmap);
+  width = cogl_bitmap_get_width (bitmap);
+  height = cogl_bitmap_get_height (bitmap);
 
   if (width == 1 && height == 1 && !framebuffer->clear_clip_dirty)
     {
@@ -1998,7 +1998,7 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
   if (!cogl_is_offscreen (framebuffer))
     y = framebuffer_height - y - height;
 
-  format = _cogl_bitmap_get_format (bitmap);
+  format = cogl_bitmap_get_format (bitmap);
 
   required_format = ctx->texture_driver->pixel_format_to_gl (format,
                                                              &gl_intformat,
@@ -2028,7 +2028,7 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
      because GLES does not support setting GL_ROW_LENGTH */
   if ((ctx->driver != COGL_DRIVER_GL &&
        (gl_format != GL_RGBA || gl_type != GL_UNSIGNED_BYTE ||
-        _cogl_bitmap_get_rowstride (bitmap) != 4 * width)) ||
+        cogl_bitmap_get_rowstride (bitmap) != 4 * width)) ||
       (required_format & ~COGL_PREMULT_BIT) != (format & ~COGL_PREMULT_BIT))
     {
       CoglBitmap *tmp_bmp;
@@ -2081,7 +2081,7 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       gboolean succeeded = FALSE;
       guint8 *pixels;
 
-      rowstride = _cogl_bitmap_get_rowstride (bitmap);
+      rowstride = cogl_bitmap_get_rowstride (bitmap);
 
       /* We match the premultiplied state of the target buffer to the
        * premultiplied state of the framebuffer so that it will get
@@ -2141,7 +2141,7 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       int rowstride;
       guint8 *pixels;
 
-      rowstride = _cogl_bitmap_get_rowstride (bitmap);
+      rowstride = cogl_bitmap_get_rowstride (bitmap);
       pixels = _cogl_bitmap_map (bitmap,
                                  COGL_BUFFER_ACCESS_READ |
                                  COGL_BUFFER_ACCESS_WRITE,

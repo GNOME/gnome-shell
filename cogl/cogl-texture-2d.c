@@ -228,11 +228,11 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
   _COGL_RETURN_VAL_IF_FAIL (bmp != NULL, COGL_INVALID_HANDLE);
 
   internal_format =
-    _cogl_texture_determine_internal_format (_cogl_bitmap_get_format (bmp),
+    _cogl_texture_determine_internal_format (cogl_bitmap_get_format (bmp),
                                              internal_format);
 
-  if (!_cogl_texture_2d_can_create (_cogl_bitmap_get_width (bmp),
-                                    _cogl_bitmap_get_height (bmp),
+  if (!_cogl_texture_2d_can_create (cogl_bitmap_get_width (bmp),
+                                    cogl_bitmap_get_height (bmp),
                                     internal_format))
     {
       g_set_error (error, COGL_TEXTURE_ERROR,
@@ -256,8 +256,8 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
       return NULL;
     }
 
-  tex_2d = _cogl_texture_2d_create_base (_cogl_bitmap_get_width (bmp),
-                                         _cogl_bitmap_get_height (bmp),
+  tex_2d = _cogl_texture_2d_create_base (cogl_bitmap_get_width (bmp),
+                                         cogl_bitmap_get_height (bmp),
                                          flags,
                                          internal_format);
 
@@ -267,7 +267,7 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
       (data = _cogl_bitmap_map (dst_bmp,
                                 COGL_BUFFER_ACCESS_READ, 0)))
     {
-      CoglPixelFormat format = _cogl_bitmap_get_format (dst_bmp);
+      CoglPixelFormat format = cogl_bitmap_get_format (dst_bmp);
       tex_2d->first_pixel.gl_format = gl_format;
       tex_2d->first_pixel.gl_type = gl_type;
       memcpy (tex_2d->first_pixel.data, data,
@@ -770,11 +770,11 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
       (data = _cogl_bitmap_map (bmp, COGL_BUFFER_ACCESS_READ, 0)))
     {
       CoglPixelFormat bpp =
-        _cogl_pixel_format_get_bytes_per_pixel (_cogl_bitmap_get_format (bmp));
+        _cogl_pixel_format_get_bytes_per_pixel (cogl_bitmap_get_format (bmp));
       tex_2d->first_pixel.gl_format = gl_format;
       tex_2d->first_pixel.gl_type = gl_type;
       memcpy (tex_2d->first_pixel.data,
-              data + _cogl_bitmap_get_rowstride (bmp) * src_y + bpp * src_x,
+              data + cogl_bitmap_get_rowstride (bmp) * src_y + bpp * src_x,
               bpp);
 
       _cogl_bitmap_unmap (bmp);

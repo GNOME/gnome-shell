@@ -124,21 +124,9 @@ _cogl_bitmap_get_size_from_file (const char *filename,
                                  int        *width,
                                  int        *height);
 
-CoglPixelFormat
-_cogl_bitmap_get_format (CoglBitmap *bitmap);
-
 void
 _cogl_bitmap_set_format (CoglBitmap *bitmap,
                          CoglPixelFormat format);
-
-int
-_cogl_bitmap_get_width (CoglBitmap *bitmap);
-
-int
-_cogl_bitmap_get_height (CoglBitmap *bitmap);
-
-int
-_cogl_bitmap_get_rowstride (CoglBitmap *bitmap);
 
 /* Maps the bitmap so that the pixels can be accessed directly or if
    the bitmap is just a memory bitmap then it just returns the pointer

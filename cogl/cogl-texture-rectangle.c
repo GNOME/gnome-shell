@@ -230,11 +230,11 @@ _cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), NULL);
 
   internal_format =
-    _cogl_texture_determine_internal_format (_cogl_bitmap_get_format (bmp),
+    _cogl_texture_determine_internal_format (cogl_bitmap_get_format (bmp),
                                              internal_format);
 
-  if (!_cogl_texture_rectangle_can_create (_cogl_bitmap_get_width (bmp),
-                                           _cogl_bitmap_get_height (bmp),
+  if (!_cogl_texture_rectangle_can_create (cogl_bitmap_get_width (bmp),
+                                           cogl_bitmap_get_height (bmp),
                                            internal_format,
                                            NULL))
     return NULL;
@@ -249,8 +249,8 @@ _cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
   if (dst_bmp == NULL)
     return NULL;
 
-  tex_rect = _cogl_texture_rectangle_create_base (_cogl_bitmap_get_width (bmp),
-                                                  _cogl_bitmap_get_height (bmp),
+  tex_rect = _cogl_texture_rectangle_create_base (cogl_bitmap_get_width (bmp),
+                                                  cogl_bitmap_get_height (bmp),
                                                   internal_format);
 
   ctx->texture_driver->gen (GL_TEXTURE_RECTANGLE_ARB, 1, &tex_rect->gl_texture);

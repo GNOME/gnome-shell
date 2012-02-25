@@ -360,15 +360,15 @@ _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
   gboolean         use_16;
   gboolean         need_premult;
 
-  src_format = _cogl_bitmap_get_format (src_bmp);
-  src_rowstride = _cogl_bitmap_get_rowstride (src_bmp);
-  dst_format = _cogl_bitmap_get_format (dst_bmp);
-  dst_rowstride = _cogl_bitmap_get_rowstride (dst_bmp);
-  width = _cogl_bitmap_get_width (src_bmp);
-  height = _cogl_bitmap_get_height (src_bmp);
+  src_format = cogl_bitmap_get_format (src_bmp);
+  src_rowstride = cogl_bitmap_get_rowstride (src_bmp);
+  dst_format = cogl_bitmap_get_format (dst_bmp);
+  dst_rowstride = cogl_bitmap_get_rowstride (dst_bmp);
+  width = cogl_bitmap_get_width (src_bmp);
+  height = cogl_bitmap_get_height (src_bmp);
 
-  _COGL_RETURN_VAL_IF_FAIL (width == _cogl_bitmap_get_width (dst_bmp), FALSE);
-  _COGL_RETURN_VAL_IF_FAIL (height == _cogl_bitmap_get_height (dst_bmp), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (width == cogl_bitmap_get_width (dst_bmp), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (height == cogl_bitmap_get_height (dst_bmp), FALSE);
 
   need_premult
     = ((src_format & COGL_PREMULT_BIT) != (dst_format & COGL_PREMULT_BIT) &&
@@ -476,8 +476,8 @@ _cogl_bitmap_convert (CoglBitmap *src_bmp,
   CoglBitmap *dst_bmp;
   int width, height;
 
-  width = _cogl_bitmap_get_width (src_bmp);
-  height = _cogl_bitmap_get_height (src_bmp);
+  width = cogl_bitmap_get_width (src_bmp);
+  height = cogl_bitmap_get_height (src_bmp);
   dst_bpp = _cogl_pixel_format_get_bytes_per_pixel (dst_format);
   dst_rowstride = (sizeof (guint8) * dst_bpp * width + 3) & ~3;
 
@@ -510,10 +510,10 @@ _cogl_bitmap_unpremult (CoglBitmap *bmp)
   int              width, height;
   int              rowstride;
 
-  format = _cogl_bitmap_get_format (bmp);
-  width = _cogl_bitmap_get_width (bmp);
-  height = _cogl_bitmap_get_height (bmp);
-  rowstride = _cogl_bitmap_get_rowstride (bmp);
+  format = cogl_bitmap_get_format (bmp);
+  width = cogl_bitmap_get_width (bmp);
+  height = cogl_bitmap_get_height (bmp);
+  rowstride = cogl_bitmap_get_rowstride (bmp);
 
   if ((data = _cogl_bitmap_map (bmp,
                                 COGL_BUFFER_ACCESS_READ |
@@ -576,10 +576,10 @@ _cogl_bitmap_premult (CoglBitmap *bmp)
   int              width, height;
   int              rowstride;
 
-  format = _cogl_bitmap_get_format (bmp);
-  width = _cogl_bitmap_get_width (bmp);
-  height = _cogl_bitmap_get_height (bmp);
-  rowstride = _cogl_bitmap_get_rowstride (bmp);
+  format = cogl_bitmap_get_format (bmp);
+  width = cogl_bitmap_get_width (bmp);
+  height = cogl_bitmap_get_height (bmp);
+  rowstride = cogl_bitmap_get_rowstride (bmp);
 
   if ((data = _cogl_bitmap_map (bmp,
                                 COGL_BUFFER_ACCESS_READ |

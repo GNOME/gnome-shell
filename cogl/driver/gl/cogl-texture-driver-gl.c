@@ -157,7 +157,7 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
 				             GLuint       source_gl_type)
 {
   guint8 *data;
-  CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
+  CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -165,7 +165,7 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
   data = _cogl_bitmap_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  prep_gl_for_pixels_upload_full (_cogl_bitmap_get_rowstride (source_bmp),
+  prep_gl_for_pixels_upload_full (cogl_bitmap_get_rowstride (source_bmp),
                                   0,
                                   src_x,
                                   src_y,
@@ -193,7 +193,7 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
                                    GLuint       source_gl_type)
 {
   guint8 *data;
-  CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
+  CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -201,15 +201,15 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
   data = _cogl_bitmap_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  prep_gl_for_pixels_upload_full (_cogl_bitmap_get_rowstride (source_bmp),
+  prep_gl_for_pixels_upload_full (cogl_bitmap_get_rowstride (source_bmp),
                                   0, 0, 0, bpp);
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
   GE( ctx, glTexImage2D (gl_target, 0,
                          internal_gl_format,
-                         _cogl_bitmap_get_width (source_bmp),
-                         _cogl_bitmap_get_height (source_bmp),
+                         cogl_bitmap_get_width (source_bmp),
+                         cogl_bitmap_get_height (source_bmp),
                          0,
                          source_gl_format,
                          source_gl_type,
@@ -230,7 +230,7 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                                       GLuint       source_gl_type)
 {
   guint8 *data;
-  CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
+  CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -238,8 +238,8 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
   data = _cogl_bitmap_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  prep_gl_for_pixels_upload_full (_cogl_bitmap_get_rowstride (source_bmp),
-                                  (_cogl_bitmap_get_height (source_bmp) /
+  prep_gl_for_pixels_upload_full (cogl_bitmap_get_rowstride (source_bmp),
+                                  (cogl_bitmap_get_height (source_bmp) /
                                    depth),
                                   0, 0, bpp);
 
@@ -248,7 +248,7 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
   GE( ctx, glTexImage3D (gl_target,
                          0, /* level */
                          internal_gl_format,
-                         _cogl_bitmap_get_width (source_bmp),
+                         cogl_bitmap_get_width (source_bmp),
                          height,
                          depth,
                          0,

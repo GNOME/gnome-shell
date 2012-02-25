@@ -187,8 +187,8 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
 
   if (need_x || need_y)
     {
-      int bmp_rowstride = _cogl_bitmap_get_rowstride (source_bmp);
-      CoglPixelFormat source_format = _cogl_bitmap_get_format (source_bmp);
+      int bmp_rowstride = cogl_bitmap_get_rowstride (source_bmp);
+      CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
       int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
       guint8 *bmp_data;
       const guint8 *src;
@@ -318,7 +318,7 @@ _cogl_texture_2d_sliced_upload_to_gl (CoglTexture2DSliced *tex_2ds,
   guint8          *waste_buf;
   CoglPixelFormat  bmp_format;
 
-  bmp_format = _cogl_bitmap_get_format (bmp);
+  bmp_format = cogl_bitmap_get_format (bmp);
 
   waste_buf = _cogl_texture_2d_sliced_allocate_waste_buffer (tex_2ds,
                                                              bmp_format);
@@ -406,7 +406,7 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
   guint8           *waste_buf;
   CoglPixelFormat   source_format;
 
-  source_format = _cogl_bitmap_get_format (source_bmp);
+  source_format = cogl_bitmap_get_format (source_bmp);
 
   waste_buf =
     _cogl_texture_2d_sliced_allocate_waste_buffer (tex_2ds, source_format);
@@ -884,8 +884,8 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap      *bmp,
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), NULL);
 
-  width = _cogl_bitmap_get_width (bmp);
-  height = _cogl_bitmap_get_height (bmp);
+  width = cogl_bitmap_get_width (bmp);
+  height = cogl_bitmap_get_height (bmp);
 
   /* Create new texture and fill with loaded data */
   tex_2ds = g_new0 (CoglTexture2DSliced, 1);

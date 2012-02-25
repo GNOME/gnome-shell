@@ -1810,7 +1810,7 @@ _cogl_journal_try_read_pixel (CoglJournal *journal,
   if (journal->fast_read_pixel_count > 50)
     return FALSE;
 
-  format = _cogl_bitmap_get_format (bitmap);
+  format = cogl_bitmap_get_format (bitmap);
 
   if (format != COGL_PIXEL_FORMAT_RGBA_8888_PRE &&
       format != COGL_PIXEL_FORMAT_RGBA_8888)

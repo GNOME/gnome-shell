@@ -104,10 +104,10 @@ CoglBitmap *
 _cogl_bitmap_copy (CoglBitmap *src_bmp)
 {
   CoglBitmap *dst_bmp;
-  CoglPixelFormat src_format = _cogl_bitmap_get_format (src_bmp);
+  CoglPixelFormat src_format = cogl_bitmap_get_format (src_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (src_format);
-  int width = _cogl_bitmap_get_width (src_bmp);
-  int height = _cogl_bitmap_get_height (src_bmp);
+  int width = cogl_bitmap_get_width (src_bmp);
+  int height = cogl_bitmap_get_height (src_bmp);
   int dst_rowstride = width * bpp;
 
   /* Round the rowstride up to the next nearest multiple of 4 bytes */
@@ -300,7 +300,7 @@ cogl_bitmap_new_with_size (CoglContext *context,
 }
 
 CoglPixelFormat
-_cogl_bitmap_get_format (CoglBitmap *bitmap)
+cogl_bitmap_get_format (CoglBitmap *bitmap)
 {
   return bitmap->format;
 }
@@ -313,27 +313,27 @@ _cogl_bitmap_set_format (CoglBitmap *bitmap,
 }
 
 int
-_cogl_bitmap_get_width (CoglBitmap *bitmap)
+cogl_bitmap_get_width (CoglBitmap *bitmap)
 {
   return bitmap->width;
+}
+
+int
+cogl_bitmap_get_height (CoglBitmap *bitmap)
+{
+  return bitmap->height;
+}
+
+int
+cogl_bitmap_get_rowstride (CoglBitmap *bitmap)
+{
+  return bitmap->rowstride;
 }
 
 GQuark
 cogl_bitmap_error_quark (void)
 {
   return g_quark_from_static_string ("cogl-bitmap-error-quark");
-}
-
-int
-_cogl_bitmap_get_height (CoglBitmap *bitmap)
-{
-  return bitmap->height;
-}
-
-int
-_cogl_bitmap_get_rowstride (CoglBitmap *bitmap)
-{
-  return bitmap->rowstride;
 }
 
 guint8 *

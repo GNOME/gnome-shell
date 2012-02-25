@@ -528,11 +528,11 @@ _cogl_atlas_texture_prepare_for_upload (CoglAtlasTexture *atlas_tex,
 
   override_bmp =
     _cogl_bitmap_new_shared (converted_bmp,
-                             _cogl_bitmap_get_format (converted_bmp) &
+                             cogl_bitmap_get_format (converted_bmp) &
                              ~COGL_PREMULT_BIT,
-                             _cogl_bitmap_get_width (converted_bmp),
-                             _cogl_bitmap_get_height (converted_bmp),
-                             _cogl_bitmap_get_rowstride (converted_bmp));
+                             cogl_bitmap_get_width (converted_bmp),
+                             cogl_bitmap_get_height (converted_bmp),
+                             cogl_bitmap_get_rowstride (converted_bmp));
 
   cogl_object_unref (converted_bmp);
 
@@ -739,9 +739,9 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), COGL_INVALID_HANDLE);
 
-  bmp_width = _cogl_bitmap_get_width (bmp);
-  bmp_height = _cogl_bitmap_get_height (bmp);
-  bmp_format = _cogl_bitmap_get_format (bmp);
+  bmp_width = cogl_bitmap_get_width (bmp);
+  bmp_height = cogl_bitmap_get_height (bmp);
+  bmp_format = cogl_bitmap_get_format (bmp);
 
   internal_format = _cogl_texture_determine_internal_format (bmp_format,
                                                              internal_format);
