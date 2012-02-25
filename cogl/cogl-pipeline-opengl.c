@@ -593,10 +593,9 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
         _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LOGIC_OPS);
       CoglPipelineLogicOpsState *logic_ops_state = &authority->big_state->logic_ops_state;
       CoglColorMask color_mask = logic_ops_state->color_mask;
-      CoglFramebuffer *draw_framebuffer = cogl_get_draw_framebuffer ();
 
-      if (draw_framebuffer)
-        color_mask &= draw_framebuffer->color_mask;
+      if (ctx->current_draw_buffer)
+        color_mask &= ctx->current_draw_buffer->color_mask;
 
       GE (ctx, glColorMask (!!(color_mask & COGL_COLOR_MASK_RED),
                             !!(color_mask & COGL_COLOR_MASK_GREEN),
@@ -616,7 +615,6 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
         GE( ctx, glDisable (GL_CULL_FACE) );
       else
         {
-          CoglFramebuffer *draw_framebuffer = cogl_get_draw_framebuffer ();
           gboolean invert_winding;
 
           GE( ctx, glEnable (GL_CULL_FACE) );
@@ -642,7 +640,7 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
           /* If we are painting to an offscreen framebuffer then we
              need to invert the winding of the front face because
              everything is painted upside down */
-          invert_winding = cogl_is_offscreen (draw_framebuffer);
+          invert_winding = cogl_is_offscreen (ctx->current_draw_buffer);
 
           switch (cull_face_state->front_winding)
             {

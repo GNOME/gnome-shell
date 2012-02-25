@@ -951,7 +951,7 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
   if (modelview_stack == NULL || projection_stack == NULL)
     return;
 
-  needs_flip = cogl_is_offscreen (cogl_get_draw_framebuffer ());
+  needs_flip = cogl_is_offscreen (ctx->current_draw_buffer);
 
 #ifdef HAVE_COGL_GLES2
   if (ctx->driver == COGL_DRIVER_GLES2)

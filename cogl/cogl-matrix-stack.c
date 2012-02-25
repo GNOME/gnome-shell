@@ -430,7 +430,7 @@ _cogl_matrix_stack_flush_to_gl_builtins (CoglContext *ctx,
         if (disable_flip)
           needs_flip = FALSE;
         else
-          needs_flip = cogl_is_offscreen (cogl_get_draw_framebuffer ());
+          needs_flip = cogl_is_offscreen (ctx->current_draw_buffer);
 
         cache = &ctx->builtin_flushed_projection;
       }
