@@ -118,6 +118,34 @@ convert_bind_target_to_gl_target (CoglBufferBindTarget target)
     }
 }
 
+static void *
+_cogl_buffer_bind_no_create (CoglBuffer *buffer,
+                             CoglBufferBindTarget target)
+{
+  CoglContext *ctx = buffer->context;
+
+  _COGL_RETURN_VAL_IF_FAIL (buffer != NULL, NULL);
+
+  /* Don't allow binding the buffer to multiple targets at the same time */
+  _COGL_RETURN_VAL_IF_FAIL (ctx->current_buffer[buffer->last_target] != buffer,
+                            NULL);
+
+  /* Don't allow nesting binds to the same target */
+  _COGL_RETURN_VAL_IF_FAIL (ctx->current_buffer[target] == NULL, NULL);
+
+  buffer->last_target = target;
+  ctx->current_buffer[target] = buffer;
+
+  if (buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
+    {
+      GLenum gl_target = convert_bind_target_to_gl_target (buffer->last_target);
+      GE( ctx, glBindBuffer (gl_target, buffer->gl_handle) );
+      return NULL;
+    }
+  else
+    return buffer->data;
+}
+
 static GLenum
 _cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
                                CoglBufferUpdateHint update_hint)
@@ -134,6 +162,25 @@ _cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
 #endif
 
   return GL_STATIC_DRAW;
+}
+
+static void
+bo_recreate_store (CoglBuffer *buffer)
+{
+  GLenum gl_target;
+  GLenum gl_enum;
+
+  /* This assumes the buffer is already bound */
+
+  gl_target = convert_bind_target_to_gl_target (buffer->last_target);
+  gl_enum = _cogl_buffer_hints_to_gl_enum (buffer->usage_hint,
+                                           buffer->update_hint);
+
+  GE( buffer->context, glBufferData (gl_target,
+                                     buffer->size,
+                                     NULL,
+                                     gl_enum) );
+  buffer->store_created = TRUE;
 }
 
 static void *
@@ -154,7 +201,7 @@ bo_map (CoglBuffer       *buffer,
     return NULL;
 
   target = buffer->last_target;
-  _cogl_buffer_bind (buffer, target);
+  _cogl_buffer_bind_no_create (buffer, target);
 
   gl_target = convert_bind_target_to_gl_target (target);
 
@@ -162,19 +209,7 @@ bo_map (CoglBuffer       *buffer,
    * lazily allows the user of the CoglBuffer to set a hint before the
    * store is created. */
   if (!buffer->store_created || (hints & COGL_BUFFER_MAP_HINT_DISCARD))
-    {
-      GLenum gl_enum;
-
-      gl_enum = _cogl_buffer_hints_to_gl_enum (buffer->usage_hint,
-                                               buffer->update_hint);
-
-
-      GE( ctx, glBufferData (gl_target,
-                             buffer->size,
-                             NULL,
-                             gl_enum) );
-      buffer->store_created = TRUE;
-    }
+    bo_recreate_store (buffer);
 
   GE_RET( data, ctx, glMapBuffer (gl_target,
                                   _cogl_buffer_access_to_gl_enum (access)) );
@@ -191,7 +226,7 @@ bo_unmap (CoglBuffer *buffer)
 {
   CoglContext *ctx = buffer->context;
 
-  _cogl_buffer_bind (buffer, buffer->last_target);
+  _cogl_buffer_bind_no_create (buffer, buffer->last_target);
 
   GE( ctx, glUnmapBuffer (convert_bind_target_to_gl_target
                           (buffer->last_target)) );
@@ -214,20 +249,6 @@ bo_set_data (CoglBuffer   *buffer,
   _cogl_buffer_bind (buffer, target);
 
   gl_target = convert_bind_target_to_gl_target (target);
-
-  /* create an empty store if we don't have one yet. creating the store
-   * lazily allows the user of the CoglBuffer to set a hint before the
-   * store is created. */
-  if (!buffer->store_created)
-    {
-      GLenum gl_enum = _cogl_buffer_hints_to_gl_enum (buffer->usage_hint,
-                                                      buffer->update_hint);
-      GE( ctx, glBufferData (gl_target,
-                             buffer->size,
-                             NULL,
-                             gl_enum) );
-      buffer->store_created = TRUE;
-    }
 
   GE( ctx, glBufferSubData (gl_target, offset, size, data) );
 
@@ -331,28 +352,18 @@ _cogl_buffer_access_to_gl_enum (CoglBufferAccess access)
 void *
 _cogl_buffer_bind (CoglBuffer *buffer, CoglBufferBindTarget target)
 {
-  CoglContext *ctx = buffer->context;
+  void *ret;
 
-  _COGL_RETURN_VAL_IF_FAIL (buffer != NULL, NULL);
+  ret = _cogl_buffer_bind_no_create (buffer, target);
 
-  /* Don't allow binding the buffer to multiple targets at the same time */
-  _COGL_RETURN_VAL_IF_FAIL (ctx->current_buffer[buffer->last_target] != buffer,
-                            NULL);
+  /* create an empty store if we don't have one yet. creating the store
+   * lazily allows the user of the CoglBuffer to set a hint before the
+   * store is created. */
+  if ((buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT) &&
+      !buffer->store_created)
+    bo_recreate_store (buffer);
 
-  /* Don't allow nesting binds to the same target */
-  _COGL_RETURN_VAL_IF_FAIL (ctx->current_buffer[target] == NULL, NULL);
-
-  buffer->last_target = target;
-  ctx->current_buffer[target] = buffer;
-
-  if (buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
-    {
-      GLenum gl_target = convert_bind_target_to_gl_target (buffer->last_target);
-      GE( ctx, glBindBuffer (gl_target, buffer->gl_handle) );
-      return NULL;
-    }
-  else
-    return buffer->data;
+  return ret;
 }
 
 void
