@@ -46,6 +46,7 @@
 
 #include <cogl/cogl-pipeline.h>
 #include <cogl/cogl-indices.h>
+#include <cogl/cogl-bitmap.h>
 
 G_BEGIN_DECLS
 
@@ -1244,6 +1245,39 @@ cogl_framebuffer_discard_buffers (CoglFramebuffer *framebuffer,
  */
 void
 cogl_framebuffer_finish (CoglFramebuffer *framebuffer);
+
+/**
+ * cogl_framebuffer_read_pixels_into_bitmap:
+ * @framebuffer: A #CoglFramebuffer
+ * @x: The x position to read from
+ * @y: The y position to read from
+ * @source: Identifies which auxillary buffer you want to read
+ *          (only COGL_READ_PIXELS_COLOR_BUFFER supported currently)
+ * @bitmap: The bitmap to store the results in.
+ *
+ * This reads a rectangle of pixels from the given framebuffer where
+ * position (0, 0) is the top left. The pixel at (x, y) is the first
+ * read, and a rectangle of pixels with the same size as the bitmap is
+ * read right and downwards from that point.
+ *
+ * Currently Cogl assumes that the framebuffer is in a premultiplied
+ * format so if the format of @bitmap is non-premultiplied it will
+ * convert it. To read the pixel values without any conversion you
+ * should either specify a format that doesn't use an alpha channel or
+ * use one of the formats ending in PRE.
+ *
+ * Return value: %TRUE if the read succeeded or %FALSE otherwise. The
+ *  function is only likely to fail if the bitmap points to a pixel
+ *  buffer and it could not be mapped.
+ * Since: 1.10
+ * Stability: unstable
+ */
+gboolean
+cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
+                                          int x,
+                                          int y,
+                                          CoglReadPixelsFlags source,
+                                          CoglBitmap *bitmap);
 
 /**
  * cogl_get_draw_framebuffer:

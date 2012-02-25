@@ -244,14 +244,6 @@ _cogl_framebuffer_flush_journal (CoglFramebuffer *framebuffer);
 void
 _cogl_framebuffer_flush_dependency_journals (CoglFramebuffer *framebuffer);
 
-gboolean
-_cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
-                                       int x,
-                                       int y,
-                                       CoglReadPixelsFlags source,
-                                       CoglPixelFormat format,
-                                       guint8 *pixel);
-
 void
 _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
                                CoglFramebuffer *read_buffer,

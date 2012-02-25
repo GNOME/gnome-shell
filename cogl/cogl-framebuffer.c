@@ -25,6 +25,8 @@
 #include "config.h"
 #endif
 
+#include <string.h>
+
 #include "cogl-debug.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
@@ -43,6 +45,7 @@
 #include "cogl-primitive-private.h"
 #include "cogl-offscreen.h"
 #include "cogl1-context.h"
+#include "cogl-private.h"
 
 #ifndef GL_FRAMEBUFFER
 #define GL_FRAMEBUFFER		0x8D40
@@ -1860,15 +1863,15 @@ cogl_framebuffer_get_context (CoglFramebuffer *framebuffer)
   return framebuffer->context;
 }
 
-gboolean
+static gboolean
 _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
                                        int x,
                                        int y,
                                        CoglReadPixelsFlags source,
-                                       CoglPixelFormat format,
-                                       guint8 *pixel)
+                                       CoglBitmap *bitmap)
 {
   gboolean found_intersection;
+  CoglPixelFormat format;
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_FAST_READ_PIXEL)))
     return FALSE;
@@ -1876,12 +1879,14 @@ _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
   if (source != COGL_READ_PIXELS_COLOR_BUFFER)
     return FALSE;
 
+  format = _cogl_bitmap_get_format (bitmap);
+
   if (format != COGL_PIXEL_FORMAT_RGBA_8888_PRE &&
       format != COGL_PIXEL_FORMAT_RGBA_8888)
     return FALSE;
 
   if (!_cogl_journal_try_read_pixel (framebuffer->journal,
-                                     x, y, format, pixel,
+                                     x, y, bitmap,
                                      &found_intersection))
     return FALSE;
 
@@ -1906,10 +1911,17 @@ _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
       y >= framebuffer->clear_clip_y0 &&
       y < framebuffer->clear_clip_y1)
     {
+      guint8 *pixel;
 
       /* we currently only care about cases where the premultiplied or
        * unpremultipled colors are equivalent... */
       if (framebuffer->clear_color_alpha != 1.0)
+        return FALSE;
+
+      pixel = _cogl_bitmap_map (bitmap,
+                                COGL_BUFFER_ACCESS_WRITE,
+                                COGL_BUFFER_MAP_HINT_DISCARD);
+      if (pixel == NULL)
         return FALSE;
 
       pixel[0] = framebuffer->clear_color_red * 255.0;
@@ -1917,10 +1929,248 @@ _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
       pixel[2] = framebuffer->clear_color_blue * 255.0;
       pixel[3] = framebuffer->clear_color_alpha * 255.0;
 
+      _cogl_bitmap_unmap (bitmap);
+
       return TRUE;
     }
 
   return FALSE;
+}
+
+gboolean
+cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
+                                          int x,
+                                          int y,
+                                          CoglReadPixelsFlags source,
+                                          CoglBitmap *bitmap)
+{
+  CoglContext *ctx;
+  int framebuffer_height;
+  CoglPixelFormat format;
+  CoglPixelFormat required_format;
+  GLenum gl_intformat;
+  GLenum gl_format;
+  GLenum gl_type;
+  gboolean pack_invert_set;
+  int width;
+  int height;
+
+  _COGL_RETURN_VAL_IF_FAIL (source == COGL_READ_PIXELS_COLOR_BUFFER, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (_cogl_is_framebuffer (framebuffer), FALSE);
+
+  ctx = cogl_framebuffer_get_context (framebuffer);
+
+  width = _cogl_bitmap_get_width (bitmap);
+  height = _cogl_bitmap_get_height (bitmap);
+
+  if (width == 1 && height == 1 && !framebuffer->clear_clip_dirty)
+    {
+      /* If everything drawn so far for this frame is still in the
+       * Journal then if all of the rectangles only have a flat
+       * opaque color we have a fast-path for reading a single pixel
+       * that avoids the relatively high cost of flushing primitives
+       * to be drawn on the GPU (considering how simple the geometry
+       * is in this case) and then blocking on the long GPU pipelines
+       * for the result.
+       */
+      if (_cogl_framebuffer_try_fast_read_pixel (framebuffer,
+                                                 x, y, source, bitmap))
+        return TRUE;
+    }
+
+  /* make sure any batched primitives get emitted to the GL driver
+   * before issuing our read pixels...
+   */
+  _cogl_framebuffer_flush_journal (framebuffer);
+
+  _cogl_framebuffer_flush_state (framebuffer,
+                                 framebuffer,
+                                 COGL_FRAMEBUFFER_STATE_BIND);
+
+  framebuffer_height = cogl_framebuffer_get_height (framebuffer);
+
+  /* The y co-ordinate should be given in OpenGL's coordinate system
+   * so 0 is the bottom row
+   *
+   * NB: all offscreen rendering is done upside down so no conversion
+   * is necissary in this case.
+   */
+  if (!cogl_is_offscreen (framebuffer))
+    y = framebuffer_height - y - height;
+
+  format = _cogl_bitmap_get_format (bitmap);
+
+  required_format = ctx->texture_driver->pixel_format_to_gl (format,
+                                                             &gl_intformat,
+                                                             &gl_format,
+                                                             &gl_type);
+
+  /* NB: All offscreen rendering is done upside down so there is no need
+   * to flip in this case... */
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_MESA_PACK_INVERT) &&
+      !cogl_is_offscreen (framebuffer))
+    {
+      GE (ctx, glPixelStorei (GL_PACK_INVERT_MESA, TRUE));
+      pack_invert_set = TRUE;
+    }
+  else
+    pack_invert_set = FALSE;
+
+  /* Under GLES only GL_RGBA with GL_UNSIGNED_BYTE as well as an
+     implementation specific format under
+     GL_IMPLEMENTATION_COLOR_READ_FORMAT_OES and
+     GL_IMPLEMENTATION_COLOR_READ_TYPE_OES is supported. We could try
+     to be more clever and check if the requested type matches that
+     but we would need some reliable functions to convert from GL
+     types to Cogl types. For now, lets just always read in
+     GL_RGBA/GL_UNSIGNED_BYTE and convert if necessary. We also need
+     to use this intermediate buffer if the rowstride has padding
+     because GLES does not support setting GL_ROW_LENGTH */
+  if ((ctx->driver != COGL_DRIVER_GL &&
+       (gl_format != GL_RGBA || gl_type != GL_UNSIGNED_BYTE ||
+        _cogl_bitmap_get_rowstride (bitmap) != 4 * width)) ||
+      (required_format & ~COGL_PREMULT_BIT) != (format & ~COGL_PREMULT_BIT))
+    {
+      CoglBitmap *tmp_bmp;
+      guint8 *tmp_data;
+      CoglPixelFormat read_format;
+      int bpp, rowstride;
+      int succeeded;
+
+      if (ctx->driver == COGL_DRIVER_GL)
+        read_format = required_format;
+      else
+        {
+          read_format = COGL_PIXEL_FORMAT_RGBA_8888;
+          gl_format = GL_RGBA;
+          gl_type = GL_UNSIGNED_BYTE;
+        }
+
+      if (COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (read_format))
+        read_format = ((read_format & ~COGL_PREMULT_BIT) |
+                       (framebuffer->format & COGL_PREMULT_BIT));
+
+      bpp = _cogl_pixel_format_get_bytes_per_pixel (read_format);
+      rowstride = (width * bpp + 3) & ~3;
+      tmp_data = g_malloc (rowstride * height);
+
+      tmp_bmp = _cogl_bitmap_new_from_data (tmp_data,
+                                            read_format,
+                                            width, height, rowstride,
+                                            (CoglBitmapDestroyNotify) g_free,
+                                            NULL);
+
+      ctx->texture_driver->prep_gl_for_pixels_download (rowstride, bpp);
+
+      GE( ctx, glReadPixels (x, y, width, height,
+                             gl_format, gl_type,
+                             tmp_data) );
+
+      succeeded = _cogl_bitmap_convert_into_bitmap (tmp_bmp, bitmap);
+
+      cogl_object_unref (tmp_bmp);
+
+      if (!succeeded)
+        return FALSE;
+    }
+  else
+    {
+      CoglBitmap *shared_bmp;
+      CoglPixelFormat bmp_format;
+      int bpp, rowstride;
+      gboolean succeeded = FALSE;
+      guint8 *pixels;
+
+      rowstride = _cogl_bitmap_get_rowstride (bitmap);
+
+      /* We match the premultiplied state of the target buffer to the
+       * premultiplied state of the framebuffer so that it will get
+       * converted to the right format below */
+      if (COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (format))
+        bmp_format = ((format & ~COGL_PREMULT_BIT) |
+                      (framebuffer->format & COGL_PREMULT_BIT));
+      else
+        bmp_format = format;
+
+      if (bmp_format != format)
+        shared_bmp = _cogl_bitmap_new_shared (bitmap,
+                                              bmp_format,
+                                              width, height,
+                                              rowstride);
+      else
+        shared_bmp = cogl_object_ref (bitmap);
+
+      bpp = _cogl_pixel_format_get_bytes_per_pixel (bmp_format);
+
+      ctx->texture_driver->prep_gl_for_pixels_download (rowstride, bpp);
+
+      pixels = _cogl_bitmap_bind (shared_bmp,
+                                  COGL_BUFFER_ACCESS_WRITE,
+                                  0 /* hints */);
+
+      GE( ctx, glReadPixels (x, y,
+                             width, height,
+                             gl_format, gl_type,
+                             pixels) );
+
+      _cogl_bitmap_unbind (shared_bmp);
+
+      /* Convert to the premult format specified by the caller
+         in-place. This will do nothing if the premult status is already
+         correct. */
+      if (_cogl_bitmap_convert_premult_status (shared_bmp, format))
+        succeeded = TRUE;
+
+      cogl_object_unref (shared_bmp);
+
+      if (!succeeded)
+        return FALSE;
+    }
+
+  /* Currently this function owns the pack_invert state and we don't want this
+   * to interfere with other Cogl components so all other code can assume that
+   * we leave the pack_invert state off. */
+  if (pack_invert_set)
+    GE (ctx, glPixelStorei (GL_PACK_INVERT_MESA, FALSE));
+
+  /* NB: All offscreen rendering is done upside down so there is no need
+   * to flip in this case... */
+  if (!cogl_is_offscreen (framebuffer) && !pack_invert_set)
+    {
+      guint8 *temprow;
+      int rowstride;
+      guint8 *pixels;
+
+      rowstride = _cogl_bitmap_get_rowstride (bitmap);
+      pixels = _cogl_bitmap_map (bitmap,
+                                 COGL_BUFFER_ACCESS_READ |
+                                 COGL_BUFFER_ACCESS_WRITE,
+                                 0 /* hints */);
+
+      if (pixels == NULL)
+        return FALSE;
+
+      temprow = g_alloca (rowstride * sizeof (guint8));
+
+      /* vertically flip the buffer in-place */
+      for (y = 0; y < height / 2; y++)
+        {
+          if (y != height - y - 1) /* skip center row */
+            {
+              memcpy (temprow,
+                      pixels + y * rowstride, rowstride);
+              memcpy (pixels + y * rowstride,
+                      pixels + (height - y - 1) * rowstride, rowstride);
+              memcpy (pixels + (height - y - 1) * rowstride,
+                      temprow,
+                      rowstride);
+            }
+        }
+
+      _cogl_bitmap_unmap (bitmap);
+    }
+
+  return TRUE;
 }
 
 void

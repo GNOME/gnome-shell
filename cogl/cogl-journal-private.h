@@ -105,8 +105,7 @@ gboolean
 _cogl_journal_try_read_pixel (CoglJournal *journal,
                               int x,
                               int y,
-                              CoglPixelFormat format,
-                              guint8 *pixel,
+                              CoglBitmap *bitmap,
                               gboolean *found_intersection);
 
 #endif /* __COGL_JOURNAL_PRIVATE_H */

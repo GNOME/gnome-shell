@@ -406,6 +406,7 @@ cogl_framebuffer_set_point_samples_per_pixel
 cogl_framebuffer_get_context
 cogl_framebuffer_clear
 cogl_framebuffer_clear4f
+cogl_framebuffer_read_pixels_into_bitmap
 
 <SUBSECTION>
 cogl_framebuffer_draw_primitive

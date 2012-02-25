@@ -1791,10 +1791,10 @@ gboolean
 _cogl_journal_try_read_pixel (CoglJournal *journal,
                               int x,
                               int y,
-                              CoglPixelFormat format,
-                              guint8 *pixel,
+                              CoglBitmap *bitmap,
                               gboolean *found_intersection)
 {
+  CoglPixelFormat format;
   int i;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -1809,6 +1809,8 @@ _cogl_journal_try_read_pixel (CoglJournal *journal,
    * up faster in the end. */
   if (journal->fast_read_pixel_count > 50)
     return FALSE;
+
+  format = _cogl_bitmap_get_format (bitmap);
 
   if (format != COGL_PIXEL_FORMAT_RGBA_8888_PRE &&
       format != COGL_PIXEL_FORMAT_RGBA_8888)
@@ -1832,6 +1834,7 @@ _cogl_journal_try_read_pixel (CoglJournal *journal,
       float *vertices = (float *)color + 1;
       float poly[16];
       CoglFramebuffer *framebuffer = journal->framebuffer;
+      guint8 *pixel;
 
       entry_to_screen_polygon (framebuffer, entry, vertices, poly);
 
@@ -1870,10 +1873,18 @@ _cogl_journal_try_read_pixel (CoglJournal *journal,
       if (color[3] != 0xff)
         return FALSE;
 
+      pixel = _cogl_bitmap_map (bitmap,
+                                COGL_BUFFER_ACCESS_WRITE,
+                                COGL_BUFFER_MAP_HINT_DISCARD);
+      if (pixel == NULL)
+        return FALSE;
+
       pixel[0] = color[0];
       pixel[1] = color[1];
       pixel[2] = color[2];
       pixel[3] = color[3];
+
+      _cogl_bitmap_unmap (bitmap);
 
       goto success;
     }
