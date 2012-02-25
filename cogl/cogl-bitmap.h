@@ -31,6 +31,7 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-buffer.h>
 #include <cogl/cogl-context.h>
+#include <cogl/cogl-pixel-buffer.h>
 
 G_BEGIN_DECLS
 
@@ -173,6 +174,20 @@ cogl_bitmap_get_height (CoglBitmap *bitmap);
  */
 int
 cogl_bitmap_get_rowstride (CoglBitmap *bitmap);
+
+/**
+ * cogl_bitmap_get_buffer:
+ * @bitmap: A #CoglBitmap
+ *
+ * Return value: the #CoglPixelBuffer that this buffer uses for
+ *   storage. Note that if the bitmap was created with
+ *   cogl_bitmap_new_from_file() then it will not actually be using a
+ *   pixel buffer and this function will return %NULL.
+ * Stability: unstable
+ * Since: 1.10
+ */
+CoglPixelBuffer *
+cogl_bitmap_get_buffer (CoglBitmap *bitmap);
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 

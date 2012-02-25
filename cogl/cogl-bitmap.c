@@ -330,6 +330,15 @@ cogl_bitmap_get_rowstride (CoglBitmap *bitmap)
   return bitmap->rowstride;
 }
 
+CoglPixelBuffer *
+cogl_bitmap_get_buffer (CoglBitmap *bitmap)
+{
+  while (bitmap->shared_bmp)
+    bitmap = bitmap->shared_bmp;
+
+  return COGL_PIXEL_BUFFER (bitmap->buffer);
+}
+
 GQuark
 cogl_bitmap_error_quark (void)
 {
