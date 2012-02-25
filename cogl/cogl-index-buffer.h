@@ -43,6 +43,8 @@ G_BEGIN_DECLS
  * FIXME
  */
 
+#define COGL_INDEX_BUFFER(buffer) ((CoglIndexBuffer*) buffer)
+
 typedef struct _CoglIndexBuffer	      CoglIndexBuffer;
 
 /**

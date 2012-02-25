@@ -48,6 +48,8 @@ G_BEGIN_DECLS
  * FIXME
  */
 
+#define COGL_ATTRIBUTE_BUFFER(buffer) ((CoglAttributeBuffer *)(buffer))
+
 /**
  * cogl_attribute_buffer_new:
  * @context: A #CoglContext

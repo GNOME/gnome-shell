@@ -35,8 +35,6 @@
 
 G_BEGIN_DECLS
 
-#define COGL_PIXEL_BUFFER(array)     ((CoglPixelBuffer *)(array))
-
 struct _CoglPixelBuffer
 {
   CoglBuffer            _parent;

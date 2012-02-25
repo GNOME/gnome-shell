@@ -44,6 +44,8 @@ G_BEGIN_DECLS
  * any of the symbols dissapear at a later date.
  */
 
+#define COGL_PIXEL_BUFFER(buffer) ((CoglPixelBuffer *)(buffer))
+
 #define cogl_pixel_buffer_new cogl_pixel_buffer_new_EXP
 #define cogl_pixel_buffer_new_with_size cogl_pixel_buffer_new_with_size_EXP
 #define cogl_is_pixel_buffer cogl_is_pixel_buffer_EXP
