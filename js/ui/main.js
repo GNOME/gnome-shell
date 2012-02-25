@@ -112,7 +112,7 @@ function _initRecorder() {
             recorder.set_framerate(recorderSettings.get_int('framerate'));
             /* Translators: this is a filename used for screencast recording */
             // xgettext:no-c-format
-            recorder.set_filename(_("Screencast at %d %t.") + recorderSettings.get_string('file-extension'));
+            recorder.set_filename(_("Screencast from %d %t.") + recorderSettings.get_string('file-extension'));
             let pipeline = recorderSettings.get_string('pipeline');
 
             if (!pipeline.match(/^\s*$/))
