@@ -497,62 +497,6 @@ cogl_texture_new_from_sub_texture (CoglTexture *full_texture,
                                              sub_width, sub_height));
 }
 
-CoglTexture *
-cogl_texture_new_from_buffer_EXP (CoglPixelBuffer    *buffer,
-                                  unsigned int        width,
-                                  unsigned int        height,
-                                  CoglTextureFlags    flags,
-                                  CoglPixelFormat     format,
-                                  CoglPixelFormat     internal_format,
-                                  unsigned int        rowstride,
-                                  const unsigned int  offset)
-{
-  CoglTexture *texture;
-  CoglBuffer *cogl_buffer;
-  CoglPixelBuffer *pixel_buffer;
-  CoglBitmap *bmp;
-
-  _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), NULL);
-
-  if (format == COGL_PIXEL_FORMAT_ANY)
-    return NULL;
-
-  cogl_buffer = COGL_BUFFER (buffer);
-  pixel_buffer = COGL_PIXEL_BUFFER (buffer);
-
-  /* Rowstride from CoglBuffer or even width * bpp if not given */
-  if (rowstride == 0)
-    rowstride = pixel_buffer->stride;
-  if (rowstride == 0)
-    rowstride = width * _cogl_pixel_format_get_bytes_per_pixel (format);
-
-  /* use the CoglBuffer height and width as last resort */
-  if (width == 0)
-    width = pixel_buffer->width;
-  if (height == 0)
-    height = pixel_buffer->height;
-  if (width == 0 || height == 0)
-    {
-      /* no width or height specified, neither at creation time (because the
-       * array was created by cogl_pixel_buffer_new()) nor when calling this
-       * function */
-      return NULL;
-    }
-
-  /* Wrap the buffer into a bitmap */
-  bmp = cogl_bitmap_new_from_buffer (cogl_buffer,
-                                     format,
-                                     width, height,
-                                     rowstride,
-                                     offset);
-
-  texture = cogl_texture_new_from_bitmap (bmp, flags, internal_format);
-
-  cogl_object_unref (bmp);
-
-  return texture;
-}
-
 unsigned int
 cogl_texture_get_width (CoglTexture *texture)
 {

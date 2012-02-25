@@ -30,6 +30,7 @@
 
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-buffer.h>
+#include <cogl/cogl-context.h>
 
 G_BEGIN_DECLS
 
@@ -91,6 +92,42 @@ cogl_bitmap_new_from_buffer (CoglBuffer *buffer,
                              int height,
                              int rowstride,
                              int offset);
+
+/**
+ * cogl_bitmap_new_with_size:
+ * @context: A #CoglContext
+ * @width: width of the bitmap in pixels
+ * @height: height of the bitmap in pixels
+ * @format: the format of the pixels the array will store
+ *
+ * Creates a new #CoglBitmap with the given width, height and format.
+ * The initial contents of the bitmap are undefined.
+ *
+ * The data for the bitmap will be stored in a newly created
+ * #CoglPixelBuffer. You can get a pointer to the pixel buffer using
+ * cogl_bitmap_get_pixel_buffer(). The #CoglBuffer API can then be
+ * used to fill the bitmap with data.
+ *
+ * <note>Cogl will try its best to provide a hardware array you can
+ * map, write into and effectively do a zero copy upload when creating
+ * a texture from it with cogl_texture_new_from_bitmap(). For various
+ * reasons, such arrays are likely to have a stride larger than width
+ * * bytes_per_pixel. The user must take the stride into account when
+ * writing into it. The stride can be retrieved with
+ * cogl_bitmap_get_rowstride().</note>
+ *
+ * Return value: a #CoglPixelBuffer representing the newly created array or
+ *               %NULL on failure
+ *
+ * Since: 1.10
+ * Stability: Unstable
+ */
+CoglBitmap *
+cogl_bitmap_new_with_size (CoglContext *context,
+                           unsigned int width,
+                           unsigned int height,
+                           CoglPixelFormat format);
+
 #endif
 
 /**

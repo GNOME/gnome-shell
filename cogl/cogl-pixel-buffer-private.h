@@ -40,11 +40,6 @@ G_BEGIN_DECLS
 struct _CoglPixelBuffer
 {
   CoglBuffer            _parent;
-
-  CoglPixelFormat       format;
-  unsigned int          width;
-  unsigned int          height;
-  unsigned int          stride;
 };
 
 G_END_DECLS

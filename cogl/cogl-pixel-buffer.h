@@ -54,34 +54,26 @@ G_BEGIN_DECLS
 typedef struct _CoglPixelBuffer CoglPixelBuffer;
 
 /**
- * cogl_pixel_buffer_new_with_size:
+ * cogl_pixel_buffer_new:
  * @context: A #CoglContext
- * @width: width of the pixel array in pixels
- * @height: height of the pixel array in pixels
- * @format: the format of the pixels the array will store
- * @stride: if not %NULL the function will return the stride of the array
- *          in bytes
+ * @size: The number of bytes to allocate for the pixel data.
+ * @data: An optional pointer to vertex data to upload immediately
  *
- * Creates a new array to store pixel data.
+ * Declares a new #CoglPixelBuffer of @size bytes to contain arrays of
+ * pixels. Once declared, data can be set using cogl_buffer_set_data()
+ * or by mapping it into the application's address space using
+ * cogl_buffer_map().
  *
- * <note>COGL will try its best to provide a hardware array you can map,
- * write into and effectively do a zero copy upload when creating a texture
- * from it with cogl_texture_new_from_buffer(). For various reasons, such
- * arrays are likely to have a stride larger than width * bytes_per_pixel. The
- * user must take the stride into account when writing into it.</note>
+ * If @data isn't %NULL then @size bytes will be read from @data and
+ * immediately copied into the new buffer.
  *
- * Return value: a #CoglPixelBuffer representing the newly created array or
- *               %NULL on failure
- *
- * Since: 1.2
- * Stability: Unstable
+ * Since: 1.10
+ * Stability: unstable
  */
 CoglPixelBuffer *
-cogl_pixel_buffer_new_with_size (CoglContext     *context,
-                                 unsigned int     width,
-                                 unsigned int     height,
-                                 CoglPixelFormat  format,
-                                 unsigned int    *stride);
+cogl_pixel_buffer_new (CoglContext *context,
+                       gsize size,
+                       const void *data);
 
 /**
  * cogl_is_pixel_buffer:

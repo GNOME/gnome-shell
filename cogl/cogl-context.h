@@ -38,9 +38,7 @@ typedef struct _CoglContext CoglContext;
 
 #include <cogl/cogl-defines.h>
 #include <cogl/cogl-display.h>
-#include <cogl/cogl-texture.h>
 #include <cogl/cogl-primitive.h>
-#include <cogl/cogl-framebuffer.h>
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
 #include <android/native_window.h>
 #endif

@@ -30,6 +30,7 @@
 
 #include "cogl-object-private.h"
 #include "cogl-attribute.h"
+#include "cogl-framebuffer.h"
 
 typedef enum
 {

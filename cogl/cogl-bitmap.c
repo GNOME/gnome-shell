@@ -30,6 +30,7 @@
 #include "cogl-private.h"
 #include "cogl-bitmap-private.h"
 #include "cogl-buffer-private.h"
+#include "cogl-pixel-buffer.h"
 
 #include <string.h>
 
@@ -262,6 +263,40 @@ cogl_bitmap_new_from_buffer (CoglBuffer *buffer,
   bmp->data = GINT_TO_POINTER (offset);
 
   return bmp;
+}
+
+CoglBitmap *
+cogl_bitmap_new_with_size (CoglContext *context,
+                           unsigned int width,
+                           unsigned int height,
+                           CoglPixelFormat format)
+{
+  CoglPixelBuffer *pixel_buffer;
+  CoglBitmap *bitmap;
+  unsigned int rowstride;
+
+  /* creating a buffer to store "any" format does not make sense */
+  if (G_UNLIKELY (format == COGL_PIXEL_FORMAT_ANY))
+    return NULL;
+
+  /* for now we fallback to cogl_pixel_buffer_new, later, we could ask
+   * libdrm a tiled buffer for instance */
+  rowstride = width * _cogl_pixel_format_get_bytes_per_pixel (format);
+
+  pixel_buffer = cogl_pixel_buffer_new (context, height * rowstride, NULL);
+
+  if (G_UNLIKELY (pixel_buffer == NULL))
+    return NULL;
+
+  bitmap = cogl_bitmap_new_from_buffer (COGL_BUFFER (pixel_buffer),
+                                        format,
+                                        width, height,
+                                        rowstride,
+                                        0 /* offset */);
+
+  cogl_object_unref (pixel_buffer);
+
+  return bitmap;
 }
 
 CoglPixelFormat

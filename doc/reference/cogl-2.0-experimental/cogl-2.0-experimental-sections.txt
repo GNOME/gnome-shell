@@ -679,11 +679,7 @@ cogl_buffer_set_data
 
 <SUBSECTION>
 cogl_pixel_buffer_new
-cogl_pixel_buffer_new_for_size
 cogl_is_pixel_buffer
-
-<SUBSECTION>
-cogl_texture_new_from_buffer
 
 <SUBSECTION Private>
 cogl_buffer_access_get_type

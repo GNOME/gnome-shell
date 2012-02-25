@@ -66,8 +66,10 @@ _cogl_pixel_buffer_free (CoglPixelBuffer *buffer);
 
 COGL_BUFFER_DEFINE (PixelBuffer, pixel_buffer)
 
-static CoglPixelBuffer *
-_cogl_pixel_buffer_new (CoglContext *context, unsigned int size)
+CoglPixelBuffer *
+cogl_pixel_buffer_new (CoglContext *context,
+                       gsize size,
+                       const void *data)
 {
   CoglPixelBuffer *pixel_buffer = g_slice_new0 (CoglPixelBuffer);
   CoglBuffer *buffer = COGL_BUFFER (pixel_buffer);
@@ -87,42 +89,15 @@ _cogl_pixel_buffer_new (CoglContext *context, unsigned int size)
                            COGL_BUFFER_USAGE_HINT_TEXTURE,
                            COGL_BUFFER_UPDATE_HINT_STATIC);
 
-  /* return COGL_INVALID_HANDLE; */
-  return _cogl_pixel_buffer_object_new (pixel_buffer);
-}
+  _cogl_pixel_buffer_object_new (pixel_buffer);
 
-CoglPixelBuffer *
-cogl_pixel_buffer_new_with_size (CoglContext    *context,
-                                 unsigned int    width,
-                                 unsigned int    height,
-                                 CoglPixelFormat format,
-                                 unsigned int   *rowstride)
-{
-  CoglPixelBuffer *buffer;
-  CoglPixelBuffer *pixel_buffer;
-  unsigned int stride;
+  if (data)
+    cogl_buffer_set_data (COGL_BUFFER (pixel_buffer),
+                          0,
+                          data,
+                          size);
 
-  /* creating a buffer to store "any" format does not make sense */
-  if (G_UNLIKELY (format == COGL_PIXEL_FORMAT_ANY))
-    return COGL_INVALID_HANDLE;
-
-  /* for now we fallback to cogl_pixel_buffer_new, later, we could ask
-   * libdrm a tiled buffer for instance */
-  stride = width * _cogl_pixel_format_get_bytes_per_pixel (format);
-  if (rowstride)
-    *rowstride = stride;
-
-  buffer = _cogl_pixel_buffer_new (context, height * stride);
-  if (G_UNLIKELY (buffer == COGL_INVALID_HANDLE))
-    return COGL_INVALID_HANDLE;
-
-  pixel_buffer = COGL_PIXEL_BUFFER (buffer);
-  pixel_buffer->width = width;
-  pixel_buffer->height = height;
-  pixel_buffer->format = format;
-  pixel_buffer->stride = stride;
-
-  return buffer;
+  return pixel_buffer;
 }
 
 static void
