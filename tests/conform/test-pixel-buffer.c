@@ -1,8 +1,7 @@
-#include <clutter/clutter.h>
 #include <cogl/cogl.h>
 #include <string.h>
 
-#include "test-conform-common.h"
+#include "test-utils.h"
 
 #define TILE_SIZE        32.0f
 
@@ -16,61 +15,52 @@ enum
 
 typedef struct test_tile
 {
-  ClutterColor color;
+  guint8 color[4];
   gfloat x, y;
-  CoglHandle buffer;
-  CoglHandle texture;
+  CoglBuffer *buffer;
+  CoglTexture *texture;
 } TestTile;
-
-static const ClutterColor
-buffer_colors[] =
-  {
-  };
-
-static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
 typedef struct _TestState
 {
-  ClutterActor *stage;
-  unsigned int frame;
-
   TestTile *tiles;
-
+  int width;
+  int height;
 } TestState;
 
-static CoglHandle
-create_texture_from_buffer (CoglHandle buffer)
+static CoglTexture *
+create_texture_from_bitmap (CoglBitmap *bitmap)
 {
-  CoglHandle texture;
+  CoglTexture *texture;
 
-  texture = cogl_texture_new_from_buffer (buffer,
-                                          TILE_SIZE, TILE_SIZE,
-                                          COGL_TEXTURE_NO_SLICING,
-                                          COGL_PIXEL_FORMAT_RGBA_8888,
-                                          COGL_PIXEL_FORMAT_RGBA_8888,
-                                          TILE_SIZE * 4,
-                                          0);
+  texture = cogl_texture_new_from_bitmap (bitmap,
+                                          COGL_TEXTURE_NONE,
+                                          COGL_PIXEL_FORMAT_RGBA_8888);
 
-  g_assert (texture != COGL_INVALID_HANDLE);
+  g_assert (texture != NULL);
 
   return texture;
 }
 
 static void
-create_map_tile (TestTile *tile)
+create_map_tile (CoglContext *context,
+                 TestTile *tile)
 {
-  CoglHandle buffer;
+  CoglBitmap *bitmap;
+  CoglBuffer *buffer;
   guchar *map;
   unsigned int i;
-  unsigned int stride = 0;
+  unsigned int stride;
   guint8 *line;
 
-  buffer = cogl_pixel_array_new_with_size (TILE_SIZE,
-                                           TILE_SIZE,
-                                           COGL_PIXEL_FORMAT_RGBA_8888,
-                                           &stride);
+  bitmap = cogl_bitmap_new_with_size (context,
+                                      TILE_SIZE,
+                                      TILE_SIZE,
+                                      COGL_PIXEL_FORMAT_RGBA_8888);
+  buffer = COGL_BUFFER (cogl_bitmap_get_buffer (bitmap));
+  stride = cogl_bitmap_get_rowstride (bitmap);
 
-  g_assert (cogl_is_pixel_array (buffer));
+  g_assert (cogl_is_pixel_buffer (buffer));
   g_assert (cogl_is_buffer (buffer));
 
   cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_DYNAMIC);
@@ -85,38 +75,45 @@ create_map_tile (TestTile *tile)
 
   line = g_alloca (TILE_SIZE * 4);
   for (i = 0; i < TILE_SIZE * 4; i += 4)
-    memcpy (line + i, &tile->color, 4);
+    memcpy (line + i, tile->color, 4);
 
   for (i = 0; i < TILE_SIZE; i++)
     memcpy (map + stride * i, line, TILE_SIZE * 4);
 
   cogl_buffer_unmap (buffer);
 
-  tile->buffer = buffer;
-  tile->texture = create_texture_from_buffer (tile->buffer);
+  tile->buffer = cogl_object_ref (buffer);
+  tile->texture = create_texture_from_bitmap (bitmap);
+
+  cogl_object_unref (bitmap);
 }
 
 #if 0
 static void
-create_set_region_tile (TestTile *tile)
+create_set_region_tile (CoglContext *context,
+                        TestTile *tile)
 {
-  CoglHandle buffer;
-  ClutterColor bottom_color;
+  CoglBitmap *bitmap;
+  CoglBuffer *buffer;
+  guint8 bottom_color[4];
   unsigned int rowstride = 0;
   guchar *data;
   unsigned int i;
 
-  buffer = cogl_pixel_array_with_size (TILE_SIZE,
-                                       TILE_SIZE,
-                                       COGL_PIXEL_FORMAT_RGBA_8888,
-                                       &rowstride);
+  bitmap = cogl_bitmap_new_with_size (context,
+                                      TILE_SIZE,
+                                      TILE_SIZE,
+                                      COGL_PIXEL_FORMAT_RGBA_8888);
+  buffer = COGL_BUFFER (cogl_bitmap_get_buffer (bitmap));
+  rowstride = cogl_bitmap_get_rowstride (bitmap);
 
-  g_assert (cogl_is_pixel_array (buffer));
+  g_assert (cogl_is_pixel_buffer (buffer));
   g_assert (cogl_is_buffer (buffer));
 
   /* while at it, set/get the hint */
-  cogl_buffer_set_hint (buffer, COGL_BUFFER_HINT_STATIC_TEXTURE);
-  g_assert (cogl_buffer_get_hint (buffer) == COGL_BUFFER_HINT_STATIC_TEXTURE);
+  cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_STATIC);
+  g_assert (cogl_buffer_get_update_hint (buffer) ==
+            COGL_BUFFER_UPDATE_HINT_STATIC);
 
   data = g_malloc (TILE_SIZE * TILE_SIZE * 4);
   /* create a buffer with the data we want to copy to the buffer */
@@ -129,44 +126,47 @@ create_set_region_tile (TestTile *tile)
                                 TILE_SIZE,
                                 0, 0);
 
-  bottom_color.red = tile->color.red;
-  bottom_color.green = tile->color.blue;
-  bottom_color.blue = tile->color.green;
-  bottom_color.alpha = tile->color.alpha;
+  memcpy (bottom_color, tile->color, 4);
   for (i = 0; i < TILE_SIZE / 2; i++)
-    memcpy (data + i, &bottom_color, 4);
+    memcpy (data + i, bottom_color, 4);
 
-  cogl_buffer_set_data (buffer, data, 0, TILE_SIZE * TILE_SIZE * 4 / 2);
+  cogl_buffer_set_data (buffer, 0, data, TILE_SIZE * TILE_SIZE * 4 / 2);
 
   g_free (data);
 
-  tile->buffer = buffer;
-  tile->texture = create_texture_from_buffer (tile->buffer);
+  tile->buffer = cogl_object_ref (buffer);
+  tile->texture = create_texture_from_bitmap (bitmap);
+
+  cogl_object_unref (bitmap);
 }
 #endif
 
 static void
-create_set_data_tile (TestTile *tile)
+create_set_data_tile (CoglContext *context,
+                      TestTile *tile)
 {
-  CoglHandle buffer;
+  CoglBitmap *bitmap;
+  CoglBuffer *buffer;
   unsigned int rowstride = 0;
   gboolean res;
   guchar *data;
   unsigned int i;
 
-  buffer = cogl_pixel_array_new_with_size (TILE_SIZE,
-                                           TILE_SIZE,
-                                           COGL_PIXEL_FORMAT_RGBA_8888,
-                                           &rowstride);
+  bitmap = cogl_bitmap_new_with_size (context,
+                                      TILE_SIZE,
+                                      TILE_SIZE,
+                                      COGL_PIXEL_FORMAT_RGBA_8888);
+  buffer = COGL_BUFFER (cogl_bitmap_get_buffer (bitmap));
+  rowstride = cogl_bitmap_get_rowstride (bitmap);
 
-  g_assert (cogl_is_pixel_array (buffer));
+  g_assert (cogl_is_pixel_buffer (buffer));
   g_assert (cogl_is_buffer (buffer));
   g_assert_cmpint (cogl_buffer_get_size (buffer), ==, rowstride * TILE_SIZE);
 
   /* create a buffer with the data we want to copy to the buffer */
   data = g_malloc (TILE_SIZE * TILE_SIZE * 4);
   for (i = 0; i < TILE_SIZE * TILE_SIZE * 4; i += 4)
-      memcpy (data + i, &tile->color, 4);
+      memcpy (data + i, tile->color, 4);
 
   /* FIXME: this doesn't consider the rowstride */
   res = cogl_buffer_set_data (buffer, 0, data, TILE_SIZE * TILE_SIZE * 4);
@@ -174,8 +174,10 @@ create_set_data_tile (TestTile *tile)
 
   g_free (data);
 
-  tile->buffer = buffer;
-  tile->texture = create_texture_from_buffer (tile->buffer);
+  tile->buffer = cogl_object_ref (buffer);
+  tile->texture = create_texture_from_bitmap (bitmap);
+
+  cogl_object_unref (bitmap);
 }
 
 static void
@@ -195,35 +197,16 @@ draw_frame (TestState *state)
 
 }
 
-static gboolean
+static void
 validate_tile (TestState *state,
                TestTile  *tile)
 {
-  int x, y;
-  guchar *pixels, *p;
-
-  p = pixels = clutter_stage_read_pixels (CLUTTER_STAGE (state->stage),
-                                          tile->x,
-                                          tile->y,
-                                          TILE_SIZE,
-                                          TILE_SIZE);
-
-  /* Check whether the center of each division is the right color */
-  for (y = 0; y < TILE_SIZE; y++)
-    for (x = 0; x < TILE_SIZE; x++)
-      {
-        if (p[0] != tile->color.red ||
-            p[1] != tile->color.green ||
-            p[2] != tile->color.blue ||
-            p[3] != tile->color.alpha)
-          {
-            return FALSE;
-          }
-
-        p += 4;
-      }
-
-  return TRUE;
+  test_utils_check_region (tile->x, tile->y,
+                           TILE_SIZE, TILE_SIZE,
+                           (tile->color[0] << 24) |
+                           (tile->color[1] << 16) |
+                           (tile->color[2] << 8) |
+                           0xff);
 }
 
 static void
@@ -232,44 +215,16 @@ validate_result (TestState *state)
   unsigned int i;
 
   for (i = 0; i < NB_TILES; i++)
-    g_assert (validate_tile (state, &state->tiles[i]));
-
-  /* comment this if you want to see what's being drawn */
-#if 1
-  clutter_main_quit ();
-#endif
-}
-
-static void
-on_paint (ClutterActor *actor, TestState *state)
-{
-  int frame_num;
-
-  draw_frame (state);
-
-  /* XXX: validate_result calls clutter_stage_read_pixels which will result in
-   * another paint run so to avoid infinite recursion we only aim to validate
-   * the first frame. */
-  frame_num = state->frame++;
-  if (frame_num == 1)
-    validate_result (state);
-}
-
-static gboolean
-queue_redraw (gpointer stage)
-{
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-
-  return TRUE;
+    validate_tile (state, &state->tiles[i]);
 }
 
 void
-test_cogl_pixel_array (TestUtilsGTestFixture *fixture,
-		       void *            data)
+test_cogl_pixel_buffer (TestUtilsGTestFixture *fixture,
+                        void *data)
 {
+  TestUtilsSharedState *shared_state = data;
   TestState state;
-  unsigned int idle_source;
-  unsigned int paint_handler, i;
+  int i;
   static TestTile tiles[NB_TILES] =
     {
         /*         color             x  y buffer tex */
@@ -284,45 +239,28 @@ test_cogl_pixel_array (TestUtilsGTestFixture *fixture,
         { { 0x7e, 0xff, 0x7e, 0xff }, 0.0f, TILE_SIZE, NULL, NULL }
     };
 
-  state.frame = 0;
+  state.width = cogl_framebuffer_get_width (shared_state->fb);
+  state.height = cogl_framebuffer_get_height (shared_state->fb);
+  cogl_ortho (0, state.width, /* left, right */
+              state.height, 0, /* bottom, top */
+              -1, 100 /* z near, far */);
 
-  state.stage = clutter_stage_get_default ();
-
-  create_map_tile (&tiles[TILE_MAP]);
+  create_map_tile (shared_state->ctx, &tiles[TILE_MAP]);
 #if 0
-  create_set_region_tile (&tiles[TILE_SET_REGION]);
+  create_set_region_tile (shared_state->ctx, &tiles[TILE_SET_REGION]);
 #endif
-  create_set_data_tile (&tiles[TILE_SET_DATA]);
+  create_set_data_tile (shared_state->ctx, &tiles[TILE_SET_DATA]);
 
   state.tiles = tiles;
 
-  clutter_stage_set_color (CLUTTER_STAGE (state.stage), &stage_color);
-
-  /* We force continuous redrawing of the stage, since we need to skip
-   * the first few frames, and we wont be doing anything else that
-   * will trigger redrawing. */
-  idle_source = g_idle_add (queue_redraw, state.stage);
-
-  paint_handler = g_signal_connect_after (state.stage, "paint",
-                                          G_CALLBACK (on_paint), &state);
-
-  clutter_actor_show_all (state.stage);
-
-  clutter_main ();
-
-  g_source_remove (idle_source);
-  g_signal_handler_disconnect (state.stage, paint_handler);
+  draw_frame (&state);
+  validate_result (&state);
 
   for (i = 0; i < NB_TILES; i++)
     {
-      cogl_handle_unref (state.tiles[i].buffer);
-      cogl_handle_unref (state.tiles[i].texture);
+      cogl_object_unref (state.tiles[i].buffer);
+      cogl_object_unref (state.tiles[i].texture);
     }
-
-  /* Remove all of the actors from the stage */
-  clutter_container_foreach (CLUTTER_CONTAINER (state.stage),
-                             (ClutterCallback) clutter_actor_destroy,
-                             NULL);
 
   if (cogl_test_verbose ())
     g_print ("OK\n");

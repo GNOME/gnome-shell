@@ -74,7 +74,7 @@ main (int argc, char **argv)
   UNPORTED_TEST (test_cogl_multitexture);
   UNPORTED_TEST (test_cogl_texture_mipmaps);
   ADD_TEST (test_cogl_sub_texture, TEST_REQUIREMENT_GL);
-  UNPORTED_TEST (test_cogl_pixel_array);
+  ADD_TEST (test_cogl_pixel_buffer, 0);
   UNPORTED_TEST (test_cogl_texture_rectangle);
   ADD_TEST (test_cogl_texture_3d, 0);
   ADD_TEST (test_cogl_wrap_modes, 0);
