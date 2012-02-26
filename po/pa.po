@@ -202,7 +202,7 @@ msgstr "ਵਰਕਸਪੇਸ %d"
 #: ../src/core/screen.c:741
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "ਡਿਸਪਲੇਅ '%2$s' ਉੱਤੇ ਸਕਰੀਨ %d ਗਲਤ ਹੈ\n"
+msgstr "ਡਿਸਪਲੇਅ '%2$s' ਉੱਤੇ ਸਕਰੀਨ %1$d ਗਲਤ ਹੈ\n"
 
 #: ../src/core/screen.c:757
 #, c-format
