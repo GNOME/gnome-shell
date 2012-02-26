@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-26 16:02+0300\n"
-"PO-Revision-Date: 2012-02-26 16:01+0300\n"
+"POT-Creation-Date: 2012-02-26 22:15+0300\n"
+"PO-Revision-Date: 2012-02-26 22:23+0300\n"
 "Last-Translator: Ігар Грачышка <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -774,6 +774,8 @@ msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr ""
+"Уласная спецыфікацыя колеру GTK мусіць змяшчаць назвы асноўнага і запаснога колераў "
+"у дужках, напрыклад, gtk:custom(foo,bar). Не ўдалося разабраць \"%s\""
 
 #: ../src/ui/theme.c:1235
 #, c-format
@@ -781,6 +783,8 @@ msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
 "_ are valid"
 msgstr ""
+"Хібны знак \"%c\" у параметры color_name спецыфікацыі gtk:custom, дазволеныя толькі A-Za-z0-9-"
+"_"
 
 #: ../src/ui/theme.c:1249
 #, c-format
@@ -788,6 +792,8 @@ msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
 "fit the format"
 msgstr ""
+"Фармат gtk:custom: \"gtk:custom(назва_колеру,запасны_колер)\"; \"%s\" не адпавядае "
+"фармату"
 
 #: ../src/ui/theme.c:1294
 #, c-format
@@ -989,7 +995,7 @@ msgstr "Не ўдалося загрузіць матыў аздаблення \
 #: ../src/ui/theme.c:5296 ../src/ui/theme.c:5303
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "Для матыва аздаблення \"%2$s\" не прызначана <%1$s>"
+msgstr "Для матыву аздаблення \"%2$s\" не прызначана <%1$s>"
 
 #: ../src/ui/theme.c:5311
 #, c-format
@@ -997,12 +1003,15 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
+"Стыль рамкі не вызначаны для вокнаў тыпу \"%s\" для матыву аздаблення \"%s\". Дадайце <window "
+"type=\"%s\" style_set=\"штосьці\"/>."
 
 #: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
+"Назвы канстантаў, вызначаных карыстальнікам, мусяць пачынацца з вялікай літары. \"%s\" не адпавядае гэтаму патрабаванню."
 
 #: ../src/ui/theme.c:5717 ../src/ui/theme.c:5779 ../src/ui/theme.c:5842
 #, c-format
@@ -1318,18 +1327,20 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3434
 #, c-format
 msgid "Bad version specification '%s'"
-msgstr ""
+msgstr "Хібная спецыфікацыя версіі \"%s\""
 
 #: ../src/ui/theme-parser.c:3507
 msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
 msgstr ""
+"Атрыбут \"version\" не можа быць ужыты ў metacity-theme-1.xml ці metacity-"
+"theme-2.xml"
 
 #: ../src/ui/theme-parser.c:3530
 #, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
-msgstr ""
+msgstr "Матыў аздаблення патрабуе версію %s, але апошняя версія матываў, якая падтрымліваецца, - гэта %d.%d"
 
 #: ../src/ui/theme-parser.c:3562
 #, c-format
