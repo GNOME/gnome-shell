@@ -719,7 +719,7 @@ const UserMenuButton = new Lang.Class({
         if (this._haveSuspend &&
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
             // Ensure we only suspend after the screensaver has activated
-            this._screenSaverProxy.SetActiveRemote(true, Lang.bind(this, function() {
+            this._screenSaverProxy.LockRemote(true, Lang.bind(this, function() {
                 this._upClient.suspend_sync(null);
             }));
         } else {
