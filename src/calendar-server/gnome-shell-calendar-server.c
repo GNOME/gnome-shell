@@ -991,7 +991,7 @@ stdin_channel_io_func (GIOChannel *source,
 {
   if (condition & G_IO_HUP)
     {
-      g_print ("gnome-shell-calendar-server[%d]: Got HUP on stdin - exiting\n",
+      g_debug ("gnome-shell-calendar-server[%d]: Got HUP on stdin - exiting\n",
                (gint) getpid ());
       g_main_loop_quit (loop);
     }
