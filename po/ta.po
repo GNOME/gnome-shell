@@ -2,13 +2,13 @@
 # Copyright (C) 2010 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Dr.T.Vasudevan <agnihot3@gmail.com>, 2010, 2011.
+# Dr.T.Vasudevan <agnihot3@gmail.com>, 2010, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-25 11:49+0530\n"
-"PO-Revision-Date: 2011-09-27 05:14+0530\n"
+"POT-Creation-Date: 2012-02-27 11:32+0530\n"
+"PO-Revision-Date: 2012-02-27 11:49+0530\n"
 "Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: ta\n"
@@ -28,12 +28,12 @@ msgstr "சாளர மேலாண்மை மற்றும் பயன்
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 msgid "Configure GNOME Shell Extensions"
-msgstr ""
+msgstr "க்னோம் ஷெல் நீட்சிகளை வடிவமை"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 #: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extension Preferences"
-msgstr ""
+msgstr "க்னோம் ஷெல் நீட்சி விருப்பங்கள்"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid ""
@@ -58,7 +58,6 @@ msgid "Framerate used for recording screencasts."
 msgstr "திரைநிகழ்வை பதிவு செய்ய சட்டவிகிதம் ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
-#, fuzzy
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
@@ -66,8 +65,9 @@ msgid ""
 "DisableExtension DBus methods on org.gnome.Shell."
 msgstr ""
 "க்னோம் ஷெல் நீட்சிகளுக்கு ஒரு யூயூஐடி பண்பு உண்டு. இந்த விசை எந்த நீட்சிகள் ஏற்றப்பட வேண்டும் "
-"என பட்டியலிடுகிறது. இரண்டு பட்டியலிலும் காணப்படும் நீட்சிகளுக்கு செயல்நீக்கிய நீட்சிகள் "
-"பட்டியலே ஆட்சி செய்யும்."
+"என பட்டியலிடுகிறது. ஏற்றப்பட வேண்டிய எந்த நீட்சியும் இந்த பட்டியலில் இருந்தே ஆகவேண்டும். org."
+"gnome.Shell. இல் உள்ள EnableExtension மற்றும் DisableExtension DBus முறைகளில் இந்த பட்டியலை "
+"நீங்கள் திருத்தலாம்."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
@@ -94,19 +94,23 @@ msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
 msgstr ""
+"பயனர் குறிப்பாக அமைத்த கடைசி ஐஎம் இருப்பு நிலையை சேமிக்க உள்ளே பயனாகும். இங்குள்ள மதிப்பு "
+"TpConnectionPresenceType கணக்கிடுதலில் இருந்து."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:12
 msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
 msgstr ""
+"பயனருக்கு கடைசி அமர்வின் இருப்பு நிலையை சேமிக்க உள்ளே பயனாகும். இங்குள்ள மதிப்பு "
+"GsmPresenceStatus கணக்கிடுதலில் இருந்து."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "List of desktop file IDs for favorite applications"
 msgstr "விருப்ப பயன்பாடுகளுக்கு மேல்மேசை கோப்பு அடையாளங்கள்."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
-#, fuzzy, no-c-format
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -125,8 +129,8 @@ msgstr ""
 "வெளியீட்டு கோப்பாக பதிவாகும். எனினும் குழாய் தன் வெளியீட்டை தானே கவனித்துக்கொள்ள இயலும். "
 "இது வெளியீட்டை ஐஸ்காஸ்ட் அல்லது ஷௌட்2சென்ட் போன்றவற்றுக்கு நேரடியாக அனுப்ப இயலும். அமைப்பை "
 "அன்செட் செய்தாலல்லது காலி மதிப்புக்கு அமைத்தாலும் முன்னிருப்பு குழாய் பயன்படுத்தப்படும். "
-"நடப்பில் இது ''videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! "
-"webmmux'  ஆகும்; இதுVP8 கோடக் ஐ பயன்படுத்தி WEBM க்கு பதிவுசெய்யும். கணினியில் "
+"நடப்பில் இது 'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux'  ஆகும்; இதுVP8 கோடக் ஐ "
+"பயன்படுத்தி WEBM க்கு பதிவுசெய்யும். கணினியில் "
 "பொருத்தமான இழை கணக்குக்கு ஊகம் செய்வதற்கு %T இடப்பிடிப்பானாக வேலை செய்யும்."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
@@ -202,15 +206,15 @@ msgstr "ஓபன்செர்ச் வழங்குவோர் செய�
 #: ../js/extensionPrefs/main.js:125
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
-msgstr ""
+msgstr "%s க்கு விருப்பங்கள் உரையாடலை ஏற்றுகையில் பிழை நேர்ந்தது:"
 
 #: ../js/extensionPrefs/main.js:165
 msgid "<b>Extension</b>"
-msgstr ""
+msgstr "<b>நீட்சி</b>"
 
 #: ../js/extensionPrefs/main.js:189
 msgid "Select an extension to configure using the combobox above."
-msgstr ""
+msgstr "மேலுள்ள கூட்டுப்பெட்டியை பயன்படுத்தி வடிவமைக்க ஒரு நீட்சியை தேர்ந்தெடுக்கவும்"
 
 #: ../js/gdm/loginDialog.js:624
 msgid "Session..."
@@ -556,13 +560,12 @@ msgid "%A %B %e, %Y"
 msgstr "%A %B %e, %Y"
 
 #: ../js/ui/endSessionDialog.js:61
-#, fuzzy, c-format
+#, c-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s யிலிருந்து வெளியேறு"
 
 #: ../js/ui/endSessionDialog.js:62
-#, fuzzy
 msgctxt "title"
 msgid "Log Out"
 msgstr "வெளியேறு"
@@ -590,13 +593,11 @@ msgid "Logging out of the system."
 msgstr "கணினியில் இருந்து வெளியேறுகிறது"
 
 #: ../js/ui/endSessionDialog.js:76
-#, fuzzy
 msgctxt "button"
 msgid "Log Out"
 msgstr "வெளியேறு"
 
 #: ../js/ui/endSessionDialog.js:81
-#, fuzzy
 msgctxt "title"
 msgid "Power Off"
 msgstr "மின்சக்தி நிறுத்தம்"
@@ -617,19 +618,16 @@ msgid "Powering off the system."
 msgstr "கணினி மின் நிறுத்தப்படுகிறது"
 
 #: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
-#, fuzzy
 msgctxt "button"
 msgid "Restart"
 msgstr "மறு துவக்கம்"
 
 #: ../js/ui/endSessionDialog.js:92
-#, fuzzy
 msgctxt "button"
 msgid "Power Off"
 msgstr "மின்சக்தி நிறுத்தம்"
 
 #: ../js/ui/endSessionDialog.js:98
-#, fuzzy
 msgctxt "title"
 msgid "Restart"
 msgstr "மறு துவக்கம்"
@@ -660,7 +658,7 @@ msgstr "'%s' ஐ எக்ஸ்டென்ஷன்ஸ்.க்னோம்.�
 
 #: ../js/ui/keyboard.js:322
 msgid "tray"
-msgstr ""
+msgstr "தட்டு"
 
 #: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
 msgid "Keyboard"
@@ -674,17 +672,15 @@ msgstr "நீட்சிகள் ஏதும் நிறுவப்பட�
 #: ../js/ui/lookingGlass.js:779
 #, c-format
 msgid "%s has not emitted any errors."
-msgstr ""
+msgstr "%s எந்த பிழையையும் வெளியிடவில்லை"
 
 #: ../js/ui/lookingGlass.js:785
-#, fuzzy
 msgid "Hide Errors"
-msgstr "பிழை"
+msgstr "பிழைகளை மறை"
 
 #: ../js/ui/lookingGlass.js:789 ../js/ui/lookingGlass.js:840
-#, fuzzy
 msgid "Show Errors"
-msgstr "பிழை"
+msgstr "பிழைகளை காட்டுக"
 
 #: ../js/ui/lookingGlass.js:798
 msgid "Enabled"
@@ -719,8 +715,8 @@ msgstr "இணைய பக்கம்"
 #. Translators: this is a filename used for screencast recording
 #: ../js/ui/main.js:115
 #, no-c-format
-msgid "Screencast from %d %t."
-msgstr ""
+msgid "Screencast from %d %t"
+msgstr "%d %t இலிருந்து ஸ்க்ரீண்காஸ்ட்"
 
 #: ../js/ui/messageTray.js:1197
 msgid "Open"
@@ -728,11 +724,11 @@ msgstr "திற"
 
 #: ../js/ui/messageTray.js:1214
 msgid "Unmute"
-msgstr ""
+msgstr "ஒலி நிறுத்தம் நீக்கு"
 
 #: ../js/ui/messageTray.js:1214
 msgid "Mute"
-msgstr ""
+msgstr "ஒலி நிறுத்தம்"
 
 #: ../js/ui/messageTray.js:2447
 msgid "System Information"
@@ -836,9 +832,8 @@ msgid "Dash"
 msgstr "டேஷ்போர்ட்"
 
 #: ../js/ui/panel.js:582
-#, fuzzy
 msgid "Quit"
-msgstr "%s லிருந்து வெளியேறு"
+msgstr "வெளியேறு"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
@@ -914,30 +909,27 @@ msgstr "பொருத்தமான விடைகள் இல்லை."
 
 #: ../js/ui/shellEntry.js:26
 msgid "Copy"
-msgstr ""
+msgstr "நகலெடு"
 
 #: ../js/ui/shellEntry.js:31
 msgid "Paste"
-msgstr ""
+msgstr "ஒட்டு"
 
 #: ../js/ui/shellEntry.js:77
-#, fuzzy
 msgid "Show Text"
-msgstr "(_d)  தேதியை காட்டுக"
+msgstr "உரையை காட்டுக"
 
 #: ../js/ui/shellEntry.js:79
-#, fuzzy
 msgid "Hide Text"
-msgstr "பெரிய உரை"
+msgstr "உரையை மறை"
 
 #: ../js/ui/shellMountOperation.js:271
 msgid "Wrong password, please try again"
 msgstr "தவறான கடவுச்சொல். தயை செய்து மீண்டும் முயற்சிக்கவும்"
 
 #: ../js/ui/status/accessibility.js:47
-#, fuzzy
 msgid "Accessibility"
-msgstr "காணல்"
+msgstr "அணுகல்"
 
 #: ../js/ui/status/accessibility.js:52
 msgid "Zoom"
@@ -1195,9 +1187,8 @@ msgid "Auto wireless"
 msgstr "தானியங்கி கம்பியில்லாத"
 
 #: ../js/ui/status/network.js:1541
-#, fuzzy
 msgid "Network"
-msgstr "வலையமைப்பு பிழை"
+msgstr "வலையமைப்பு "
 
 #: ../js/ui/status/network.js:1548
 msgid "Enable networking"
@@ -1241,7 +1232,7 @@ msgstr "வலைப்பின்னல் மேலாளர்"
 
 #: ../js/ui/status/power.js:59
 msgid "Battery"
-msgstr ""
+msgstr "மின்கலம்"
 
 #: ../js/ui/status/power.js:76
 msgid "Power Settings"
@@ -1536,13 +1527,11 @@ msgid "Connection has been lost"
 msgstr "இணைப்பு அற்றுப்போயிற்று"
 
 #: ../js/ui/telepathyClient.js:1319
-#, fuzzy
 msgid "This account is already connected to the server"
-msgstr "இந்த மூலம் ஏற்கனவே சேவையகத்துக்கு இணைக்கப்பட்டது"
+msgstr "இந்த கணக்கு ஏற்கனவே சேவையகத்துக்கு இணைக்கப்பட்டது"
 
 #: ../js/ui/telepathyClient.js:1321
-msgid ""
-"Connection has been replaced by a new connection using the same resource"
+msgid "Connection has been replaced by a new connection using the same resource"
 msgstr "இணைப்பு அதே முலத்துடன் புதிய இணைப்பால் மாற்றப்பட்டது."
 
 #: ../js/ui/telepathyClient.js:1323
@@ -1558,8 +1547,7 @@ msgid "Certificate has been revoked"
 msgstr "சான்றிதழ் ரத்து செய்யப்பட்டது"
 
 #: ../js/ui/telepathyClient.js:1329
-msgid ""
-"Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "சான்றிதழ் பாதுகாப்பில்லாத சைபர் அல்கோரிதத்தை பயன்படுத்துகிறது. இது மறையாக்கத்தில் "
 "பலகீனமானது."
@@ -1573,9 +1561,8 @@ msgstr ""
 "தாண்டியது."
 
 #: ../js/ui/telepathyClient.js:1333
-#, fuzzy
 msgid "Internal error"
-msgstr "இணைப்பு பிழை"
+msgstr "உள்ளார்ந்த பிழை"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
@@ -1666,15 +1653,17 @@ msgid ""
 "Sorry, no wisdom for you today:\n"
 "%s"
 msgstr ""
+"மன்னிக்க இன்றூ உங்களுக்கு பொன்மொழி இல்லை:\n"
+"%s"
 
 #: ../js/ui/wanda.js:128
 #, c-format
 msgid "%s the Oracle says"
-msgstr ""
+msgstr "%s அசரீரி சொல்லுகிறது"
 
 #: ../js/ui/wanda.js:168
 msgid "Your favorite Easter Egg"
-msgstr ""
+msgstr "உங்களுடைய அபிமான ஈஸ்டர் முட்டை"
 
 #: ../js/ui/windowAttentionHandler.js:33
 #, c-format
@@ -1732,7 +1721,7 @@ msgstr "பயனர் உறுதிப்படுத்தல் உரை�
 #. * nautilus
 #: ../src/shell-util.c:97
 msgid "Home"
-msgstr ""
+msgstr "இல்லம்"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
