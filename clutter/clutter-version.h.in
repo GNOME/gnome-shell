@@ -87,6 +87,84 @@ G_BEGIN_DECLS
                                  (CLUTTER_MINOR_VERSION << 16) | \
                                  (CLUTTER_MICRO_VERSION << 8))
 
+/* XXX - Every new stable minor release bump should add a macro here */
+
+/**
+ * CLUTTER_VERSION_1_0:
+ *
+ * A macro that evaluates to the 1.0 version of Clutter, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_VERSION_1_0     (G_ENCODE_VERSION (1, 0))
+
+/**
+ * CLUTTER_VERSION_1_2:
+ *
+ * A macro that evaluates to the 1.2 version of Clutter, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_VERSION_1_2     (G_ENCODE_VERSION (1, 2))
+
+/**
+ * CLUTTER_VERSION_1_4:
+ *
+ * A macro that evaluates to the 1.4 version of Clutter, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_VERSION_1_4     (G_ENCODE_VERSION (1, 4))
+
+/**
+ * CLUTTER_VERSION_1_6:
+ *
+ * A macro that evaluates to the 1.6 version of Clutter, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_VERSION_1_6     (G_ENCODE_VERSION (1, 6))
+
+/**
+ * CLUTTER_VERSION_1_8:
+ *
+ * A macro that evaluates to the 1.8 version of Clutter, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_VERSION_1_8     (G_ENCODE_VERSION (1, 8))
+
+/**
+ * CLUTTER_VERSION_1_10:
+ *
+ * A macro that evaluates to the 1.10 version of Clutter, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_VERSION_1_10    (G_ENCODE_VERSION (1, 10))
+
+/* evaluates to the current stable version; for development cycles,
+ * this means the next stable target
+ */
+#if (CLUTTER_MINOR_VERSION % 2)
+# define CLUTTER_VERSION_CUR_STABLE      (G_ENCODE_VERSION (CLUTTER_MAJOR_VERSION, CLUTTER_MINOR_VERSION + 1))
+#else
+# define CLUTTER_VERSION_CUR_STABLE      (G_ENCODE_VERSION (CLUTTER_MAJOR_VERSION, CLUTTER_MINOR_VERSION))
+#endif
+
+/* evaluates to the previous stable version */
+#if (CLUTTER_MINOR_VERSION % 2)
+# define CLUTTER_VERSION_PREV_STABLE     (G_ENCODE_VERSION (CLUTTER_MAJOR_VERSION, CLUTTER_MINOR_VERSION - 1))
+#else
+# define CLUTTER_VERSION_PREV_STABLE     (G_ENCODE_VERSION (CLUTTER_MAJOR_VERSION, CLUTTER_MINOR_VERSION - 2))
+#endif
+
 /**
  * CLUTTER_CHECK_VERSION:
  * @major: major version, like 1 in 1.2.3
@@ -100,58 +178,6 @@ G_BEGIN_DECLS
         (CLUTTER_MAJOR_VERSION > (major) || \
          (CLUTTER_MAJOR_VERSION == (major) && CLUTTER_MINOR_VERSION > (minor)) || \
          (CLUTTER_MAJOR_VERSION == (major) && CLUTTER_MINOR_VERSION == (minor) && CLUTTER_MICRO_VERSION >= (micro)))
-
-/**
- * CLUTTER_FLAVOUR:
- *
- * GL Windowing system used
- *
- * Since: 0.4
- *
- * Deprecated: 1.10: The macro evaluates to "deprecated" as Clutter can be
- *   compiled with multiple windowing system backends. Use the various
- *   CLUTTER_WINDOWING_* macros to detect the windowing system that Clutter
- *   is being compiled against, and the type check macros for the
- *   #ClutterBackend for a run-time check.
- */
-#define CLUTTER_FLAVOUR         "@CLUTTER_FLAVOUR@"
-
-/**
- * CLUTTER_COGL
- *
- * Cogl (internal GL abstraction utility library) backend. Can be "gl" or
- * "gles" currently
- *
- * Since: 0.4
- *
- * Deprecated: 1.10: The macro evaluates to "deprecated" as Cogl can be
- *   compiled against multiple GL implementations.
- */
-#define CLUTTER_COGL            "@CLUTTER_COGL@"
-
-/**
- * CLUTTER_STAGE_TYPE:
- *
- * The default GObject type for the Clutter stage. 
- *
- * Since: 0.8
- *
- * Deprecated: 1.10: The macro evaluates to "deprecated" as Clutter can
- *   be compiled against multiple windowing systems. You can use the
- *   CLUTTER_WINDOWING_* macros for compile-time checks, and the type
- *   check macros for run-time checks.
- */
-#define CLUTTER_STAGE_TYPE @CLUTTER_STAGE_TYPE@
-
-/**
- * CLUTTER_NO_FPU:
- *
- * Set to 1 if Clutter was built without FPU (i.e fixed math), 0 otherwise
- *
- * @Deprecated: 0.6: This macro is no longer defined (identical code is used
- *  regardless the presence of FPU).
- */
-#define CLUTTER_NO_FPU          CLUTTER_NO_FPU_MACRO_WAS_REMOVED
 
 /**
  * clutter_major_version:
