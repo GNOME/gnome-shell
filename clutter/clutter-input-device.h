@@ -89,9 +89,12 @@ void                    clutter_input_device_update_from_event  (ClutterInputDev
                                                                  ClutterEvent        *event,
                                                                  gboolean             update_stage);
 
+CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_input_device_grab               (ClutterInputDevice  *device,
                                                                  ClutterActor        *actor);
+CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_input_device_ungrab             (ClutterInputDevice  *device);
+CLUTTER_AVAILABLE_IN_1_10
 ClutterActor *          clutter_input_device_get_grabbed_actor  (ClutterInputDevice  *device);
 
 G_END_DECLS

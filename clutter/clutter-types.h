@@ -255,6 +255,7 @@ void                clutter_paint_volume_set_depth           (ClutterPaintVolume
 gfloat              clutter_paint_volume_get_depth           (const ClutterPaintVolume *pv);
 void                clutter_paint_volume_union               (ClutterPaintVolume       *pv,
                                                               const ClutterPaintVolume *another_pv);
+CLUTTER_AVAILABLE_IN_1_10
 void                clutter_paint_volume_union_box           (ClutterPaintVolume       *pv,
                                                               const ClutterActorBox    *box);
 

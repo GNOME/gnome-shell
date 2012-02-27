@@ -153,6 +153,7 @@ guint           clutter_script_load_from_data           (ClutterScript          
                                                          const gchar               *data,
                                                          gssize                     length,
                                                          GError                   **error);
+CLUTTER_AVAILABLE_IN_1_10
 guint           clutter_script_load_from_resource       (ClutterScript             *script,
                                                          const gchar               *resource_path,
                                                          GError                   **error);

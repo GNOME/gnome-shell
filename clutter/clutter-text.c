@@ -3881,7 +3881,7 @@ buffer_disconnect_signals (ClutterText *self)
  *
  * Return value: a new #ClutterText
  *
- * Since: 1.8
+ * Since: 1.10
  */
 ClutterActor *
 clutter_text_new_with_buffer (ClutterTextBuffer *buffer)
@@ -3899,7 +3899,7 @@ clutter_text_new_with_buffer (ClutterTextBuffer *buffer)
  *
  * Returns: (transfer none): A #GtkEntryBuffer object.
  *
- * Since: 1.8
+ * Since: 1.10
  */
 ClutterTextBuffer*
 clutter_text_get_buffer (ClutterText *self)
@@ -3917,7 +3917,7 @@ clutter_text_get_buffer (ClutterText *self)
  * Set the #ClutterTextBuffer object which holds the text for
  * this widget.
  *
- * Since: 1.8
+ * Since: 1.10
  */
 void
 clutter_text_set_buffer (ClutterText       *self,
