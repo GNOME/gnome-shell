@@ -16,13 +16,13 @@ units_sources =
 
 # animation tests
 units_sources += \
-	test-animator.c				\
-	test-behaviours.c			\
-	test-score.c				\
-	test-state.c				\
-	test-timeline.c				\
-	test-timeline-interpolate.c 		\
-	test-timeline-rewind.c 			\
+	animator.c			\
+	behaviours.c			\
+	score.c				\
+	state.c				\
+	timeline.c			\
+	timeline-interpolate.c 		\
+	timeline-rewind.c 		\
 	$(NULL)
 
 # cogl tests
@@ -48,39 +48,39 @@ units_sources += \
 
 # actors tests
 units_sources += \
-	test-actor-graph.c			\
-	test-actor-destroy.c			\
-	test-actor-invariants.c 		\
-	test-actor-iter.c			\
-	test-actor-layout.c			\
-	test-actor-size.c			\
-	test-anchors.c                  	\
-	test-binding-pool.c			\
-	test-cairo-texture.c    		\
-	test-group.c				\
-	test-offscreen-redirect.c		\
-	test-path.c 				\
-	test-paint-opacity.c 			\
-	test-pick.c 				\
-	test-shader-effect.c			\
-	test-rectangle.c 			\
-	test-texture-fbo.c			\
-	test-texture.c				\
-        test-text-cache.c               	\
-        test-text.c             		\
+	actor-anchors.c                	\
+	actor-graph.c			\
+	actor-destroy.c			\
+	actor-invariants.c 		\
+	actor-iter.c			\
+	actor-layout.c			\
+	actor-offscreen-redirect.c	\
+	actor-paint-opacity.c 		\
+	actor-pick.c 			\
+	actor-size.c			\
+	binding-pool.c			\
+	cairo-texture.c    		\
+	group.c				\
+	path.c 				\
+	rectangle.c 			\
+	shader-effect.c			\
+	texture-fbo.c			\
+	texture.c			\
+        text-cache.c               	\
+        text.c             		\
 	$(NULL)
 
 # objects tests
 units_sources += \
-	test-color.c				\
-	test-model.c				\
-	test-script-parser.c			\
-	test-units.c				\
+	color.c				\
+	model.c				\
+	script-parser.c			\
+	units.c				\
         $(NULL)
 
 # cally tests
 units_sources += \
-	test-cally-text.c			\
+	cally-text.c			\
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(units_sources)
