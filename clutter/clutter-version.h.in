@@ -32,7 +32,42 @@
  * @short_description: Versioning utility macros
  *
  * Clutter offers a set of macros for checking the version of the library
- * an application was linked to.
+ * at compile time; it also provides a function to perform the same check
+ * at run time.
+ *
+ * Clutter adds version information to both API deprecations and additions;
+ * by definining the macros %CLUTTER_VERSION_MIN_REQUIRED and
+ * %CLUTTER_VERSION_MAX_ALLOWED, you can specify the range of Clutter versions
+ * whose API you want to use. Functions that were deprecated before, or
+ * introduced after, this range will trigger compiler warnings. For instance,
+ * if we define the following symbols:
+ *
+ * |[
+ *   CLUTTER_VERSION_MIN_REQUIRED = CLUTTER_VERSION_1_6
+ *   CLUTTER_VERSION_MAX_ALLOWED  = CLUTTER_VERSION_1_8
+ * ]|
+ *
+ * and we have the following functions annotated in the Clutter headers:
+ *
+ * |[
+ *   void clutter_function_A (void) CLUTTER_DEPRECATED_IN_1_4;
+ *   void clutter_function_B (void) CLUTTER_DEPRECATED_IN_1_6;
+ *   void clutter_function_C (void) CLUTTER_AVAILABLE_IN_1_8;
+ *   void clutter_function_D (void) CLUTTER_AVAILABLE_IN_1_10;
+ * ]|
+ *
+ * then any application code using the functions above will get the output:
+ *
+ * |[
+ *   clutter_function_A: deprecation warning
+ *   clutter_function_B: no warning
+ *   clutter_function_C: no warning
+ *   clutter_function_D: symbol not available warning
+ * ]|
+ *
+ * It is possible to disable the compiler warnings by defining the macro
+ * %CLUTTER_DISABLE_DEPRECATION_WARNINGS before including the clutter.h
+ * header.
  */
 
 #ifndef __CLUTTER_VERSION_H__
