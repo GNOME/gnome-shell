@@ -172,8 +172,8 @@ filter_odd_rows (ClutterModel     *model,
 }
 
 void
-test_list_model_filter (TestConformSimpleFixture *fixture,
-                        gconstpointer             data)
+list_model_filter (TestConformSimpleFixture *fixture,
+                   gconstpointer             data)
 {
   ModelData test_data = { NULL, 0 };
   ClutterModelIter *iter;
@@ -260,8 +260,8 @@ test_list_model_filter (TestConformSimpleFixture *fixture,
 }
 
 void
-test_list_model_iterate (TestConformSimpleFixture *fixture,
-                         gconstpointer             data)
+list_model_iterate (TestConformSimpleFixture *fixture,
+                    gconstpointer             data)
 {
   ModelData test_data = { NULL, 0 };
   ClutterModelIter *iter;
@@ -335,8 +335,8 @@ test_list_model_iterate (TestConformSimpleFixture *fixture,
 }
 
 void
-test_list_model_populate (TestConformSimpleFixture *fixture,
-                          gconstpointer             data)
+list_model_populate (TestConformSimpleFixture *fixture,
+                     gconstpointer             data)
 {
   ModelData test_data = { NULL, 0 };
   gint i;
@@ -366,8 +366,8 @@ test_list_model_populate (TestConformSimpleFixture *fixture,
 }
 
 void
-test_list_model_from_script (TestConformSimpleFixture *fixture,
-                             gconstpointer dummy)
+list_model_from_script (TestConformSimpleFixture *fixture,
+                        gconstpointer dummy)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *model;
@@ -383,11 +383,7 @@ test_list_model_from_script (TestConformSimpleFixture *fixture,
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
 
-#if GLIB_CHECK_VERSION (2, 20, 0)
   g_assert_no_error (error);
-#else
-  g_assert (error == NULL);
-#endif /* GLIB_CHECK_VERSION (2, 20, 0) */
 
   model = clutter_script_get_object (script, "test-model");
 
@@ -465,8 +461,8 @@ on_row_changed (ClutterModel *model,
 }
 
 void
-test_list_model_row_changed (TestConformSimpleFixture *fixture,
-                             gconstpointer             data)
+list_model_row_changed (TestConformSimpleFixture *fixture,
+                        gconstpointer             data)
 {
   ChangedData test_data = { NULL, NULL, 0, 0 };
   GValue value = { 0, };

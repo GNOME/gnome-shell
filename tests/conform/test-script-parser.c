@@ -115,8 +115,8 @@ test_group_init (TestGroup *self)
 }
 
 void
-test_script_child (TestConformSimpleFixture *fixture,
-                   gconstpointer dummy)
+script_child (TestConformSimpleFixture *fixture,
+              gconstpointer dummy)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *container, *actor;
@@ -165,8 +165,8 @@ test_script_child (TestConformSimpleFixture *fixture,
 }
 
 void
-test_script_single (TestConformSimpleFixture *fixture,
-                    gconstpointer dummy)
+script_single (TestConformSimpleFixture *fixture,
+               gconstpointer dummy)
 {
   ClutterScript *script = clutter_script_new ();
   ClutterColor color = { 0, };
@@ -203,8 +203,8 @@ test_script_single (TestConformSimpleFixture *fixture,
 }
 
 void
-test_script_implicit_alpha (TestConformSimpleFixture *fixture,
-                            gconstpointer dummy)
+script_implicit_alpha (TestConformSimpleFixture *fixture,
+                       gconstpointer dummy)
 {
   ClutterScript *script = clutter_script_new ();
   ClutterTimeline *timeline;
@@ -242,8 +242,8 @@ test_script_implicit_alpha (TestConformSimpleFixture *fixture,
 }
 
 void
-test_script_object_property (TestConformSimpleFixture *fixture,
-                             gconstpointer dummy)
+script_object_property (TestConformSimpleFixture *fixture,
+                        gconstpointer dummy)
 {
   ClutterScript *script = clutter_script_new ();
   ClutterLayoutManager *manager;
@@ -273,8 +273,8 @@ test_script_object_property (TestConformSimpleFixture *fixture,
 }
 
 void
-test_script_named_object (TestConformSimpleFixture *fixture,
-                          gconstpointer dummy)
+script_named_object (TestConformSimpleFixture *fixture,
+                     gconstpointer dummy)
 {
   ClutterScript *script = clutter_script_new ();
   ClutterLayoutManager *manager;
@@ -305,8 +305,8 @@ test_script_named_object (TestConformSimpleFixture *fixture,
 }
 
 void
-test_script_animation (TestConformSimpleFixture *fixture,
-                       gconstpointer dummy)
+script_animation (TestConformSimpleFixture *fixture,
+                  gconstpointer dummy)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *animation = NULL;
@@ -332,8 +332,8 @@ test_script_animation (TestConformSimpleFixture *fixture,
 }
 
 void
-test_script_layout_property (TestConformSimpleFixture *fixture,
-                             gconstpointer dummy G_GNUC_UNUSED)
+script_layout_property (TestConformSimpleFixture *fixture,
+                        gconstpointer dummy G_GNUC_UNUSED)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *manager, *container, *actor1, *actor2;

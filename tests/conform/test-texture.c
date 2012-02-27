@@ -29,8 +29,8 @@ make_texture (void)
 }
 
 void
-test_texture_pick_with_alpha (TestConformSimpleFixture *fixture,
-                              gconstpointer data)
+texture_pick_with_alpha (TestConformSimpleFixture *fixture,
+                         gconstpointer data)
 {
   ClutterTexture *tex = CLUTTER_TEXTURE (clutter_texture_new ());
   ClutterStage *stage = CLUTTER_STAGE (clutter_stage_new ());

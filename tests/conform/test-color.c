@@ -4,8 +4,8 @@
 #include "test-conform-common.h"
 
 void
-test_color_hls_roundtrip (TestConformSimpleFixture *fixture,
-                          gconstpointer data)
+color_hls_roundtrip (TestConformSimpleFixture *fixture,
+                     gconstpointer data)
 {
   ClutterColor color;
   gfloat hue, luminance, saturation;
@@ -73,8 +73,8 @@ test_color_hls_roundtrip (TestConformSimpleFixture *fixture,
 }
 
 void
-test_color_from_string_invalid (TestConformSimpleFixture *fixture,
-                                gconstpointer data)
+color_from_string_invalid (TestConformSimpleFixture *fixture,
+                           gconstpointer data)
 {
   ClutterColor color;
 
@@ -89,8 +89,8 @@ test_color_from_string_invalid (TestConformSimpleFixture *fixture,
 }
 
 void
-test_color_from_string_valid (TestConformSimpleFixture *fixture,
-                              gconstpointer data)
+color_from_string_valid (TestConformSimpleFixture *fixture,
+                         gconstpointer data)
 {
   ClutterColor color;
 
@@ -238,8 +238,8 @@ test_color_from_string_valid (TestConformSimpleFixture *fixture,
 }
 
 void
-test_color_to_string (TestConformSimpleFixture *fixture,
-                      gconstpointer data)
+color_to_string (TestConformSimpleFixture *fixture,
+                 gconstpointer data)
 {
   ClutterColor color;
   gchar *str;
@@ -256,8 +256,8 @@ test_color_to_string (TestConformSimpleFixture *fixture,
 }
 
 void
-test_color_operators (TestConformSimpleFixture *fixture,
-                      gconstpointer data)
+color_operators (TestConformSimpleFixture *fixture,
+                 gconstpointer data)
 {
   ClutterColor op1, op2;
   ClutterColor res;

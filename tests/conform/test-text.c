@@ -450,7 +450,7 @@ validate_markup_attributes (ClutterText   *text,
 }
 
 void
-idempotent_use_markup (void)
+text_idempotent_use_markup (void)
 {
   ClutterText *text;
   const char *contents = "foo <b>bar</b>";

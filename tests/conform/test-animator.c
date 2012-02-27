@@ -3,8 +3,8 @@
 #include "test-conform-common.h"
 
 void
-test_animator_multi_properties (TestConformSimpleFixture *fixture,
-                                gconstpointer dummy)
+animator_multi_properties (TestConformSimpleFixture *fixture,
+                           gconstpointer dummy)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *animator = NULL, *foo = NULL;
@@ -106,7 +106,7 @@ test_animator_multi_properties (TestConformSimpleFixture *fixture,
 }
 
 void
-test_animator_properties (TestConformSimpleFixture *fixture,
+animator_properties (TestConformSimpleFixture *fixture,
                           gconstpointer dummy)
 {
   ClutterScript *script = clutter_script_new ();
@@ -169,8 +169,8 @@ test_animator_properties (TestConformSimpleFixture *fixture,
 }
 
 void
-test_animator_base (TestConformSimpleFixture *fixture,
-                    gconstpointer dummy)
+animator_base (TestConformSimpleFixture *fixture,
+               gconstpointer dummy)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *animator = NULL;

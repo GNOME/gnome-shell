@@ -9,7 +9,7 @@
 #include "test-conform-common.h"
 
 void
-test_rect_set_size (TestConformSimpleFixture *fixture,
+rectangle_set_size (TestConformSimpleFixture *fixture,
 		    gconstpointer data)
 {
   ClutterActor *rect = clutter_rectangle_new ();
@@ -33,7 +33,7 @@ test_rect_set_size (TestConformSimpleFixture *fixture,
 }
 
 void
-test_rect_set_color (TestConformSimpleFixture *fixture,
+rectangle_set_color (TestConformSimpleFixture *fixture,
 		     gconstpointer data)
 {
   ClutterActor *rect = clutter_rectangle_new ();

@@ -182,7 +182,7 @@ delay_cb (gpointer data)
 }
 
 void
-test_timeline (TestConformSimpleFixture *fixture,
+timeline_base (TestConformSimpleFixture *fixture,
 	       gconstpointer data)
 {
   ClutterTimeline *timeline_1;
@@ -320,8 +320,8 @@ test_timeline (TestConformSimpleFixture *fixture,
 }
 
 void
-markers_from_script (TestConformSimpleFixture *fixture,
-                     gconstpointer data)
+timeline_markers_from_script (TestConformSimpleFixture *fixture,
+                              gconstpointer data)
 {
   ClutterScript *script = clutter_script_new ();
   ClutterTimeline *timeline;

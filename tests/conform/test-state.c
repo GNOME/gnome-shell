@@ -3,8 +3,8 @@
 #include "test-conform-common.h"
 
 void
-test_state_base (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
-                 gconstpointer dummy G_GNUC_UNUSED)
+state_base (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
+            gconstpointer dummy G_GNUC_UNUSED)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *state = NULL;

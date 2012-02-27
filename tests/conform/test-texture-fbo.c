@@ -169,8 +169,8 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_texture_fbo (TestConformSimpleFixture *fixture,
-                  gconstpointer data)
+texture_fbo (TestConformSimpleFixture *fixture,
+             gconstpointer data)
 {
   TestState state;
   ClutterActor *actor;

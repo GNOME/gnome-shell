@@ -2,8 +2,8 @@
 #include "test-conform-common.h"
 
 void
-test_group_depth_sorting (TestConformSimpleFixture *fixture,
-                          gconstpointer data)
+group_depth_sorting (TestConformSimpleFixture *fixture,
+                     gconstpointer data)
 {
   ClutterActor *group;
   ClutterActor *child, *test;

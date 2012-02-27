@@ -64,7 +64,7 @@ static const struct
 static const gint n_behaviour_tests = G_N_ELEMENTS (behaviour_tests);
 
 void
-test_behaviours (TestConformSimpleFixture *fixture,
+behaviours_base (TestConformSimpleFixture *fixture,
                  gconstpointer dummy)
 {
   BehaviourFixture b_fixture;

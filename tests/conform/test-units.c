@@ -4,8 +4,8 @@
 #include "test-conform-common.h"
 
 void
-test_units_cache (TestConformSimpleFixture *fixture,
-                  gconstpointer data)
+units_cache (TestConformSimpleFixture *fixture,
+             gconstpointer data)
 {
   ClutterUnits units;
   ClutterSettings *settings;
@@ -29,8 +29,8 @@ test_units_cache (TestConformSimpleFixture *fixture,
 }
 
 void
-test_units_constructors (TestConformSimpleFixture *fixture,
-                         gconstpointer data)
+units_constructors (TestConformSimpleFixture *fixture,
+                    gconstpointer data)
 {
   ClutterUnits units, units_cm;
 
@@ -57,8 +57,8 @@ test_units_constructors (TestConformSimpleFixture *fixture,
 }
 
 void
-test_units_string (TestConformSimpleFixture *fixture,
-                   gconstpointer data)
+units_string (TestConformSimpleFixture *fixture,
+              gconstpointer data)
 {
   ClutterUnits units;
   gchar *string;

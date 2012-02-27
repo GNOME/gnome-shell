@@ -43,7 +43,7 @@ on_timeline_completed (ClutterScore    *score,
 }
 
 void
-test_score (TestConformSimpleFixture *fixture,
+score_base (TestConformSimpleFixture *fixture,
             gconstpointer data)
 {
   ClutterScore    *score;

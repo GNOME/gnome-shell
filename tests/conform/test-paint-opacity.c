@@ -4,8 +4,8 @@
 #include "test-conform-common.h"
 
 void
-test_label_opacity (TestConformSimpleFixture *fixture,
-                    gpointer                  dummy)
+opacity_label (TestConformSimpleFixture *fixture,
+               gpointer                  dummy)
 {
   ClutterActor *stage;
   ClutterActor *label;
@@ -43,8 +43,8 @@ test_label_opacity (TestConformSimpleFixture *fixture,
 }
 
 void
-test_rectangle_opacity (TestConformSimpleFixture *fixture,
-                        gpointer                  dummy)
+opacity_rectangle (TestConformSimpleFixture *fixture,
+                   gpointer                  dummy)
 {
   ClutterActor *stage;
   ClutterActor *rect;
@@ -77,8 +77,8 @@ test_rectangle_opacity (TestConformSimpleFixture *fixture,
 }
 
 void
-test_paint_opacity (TestConformSimpleFixture *fixture,
-                    gpointer                  dummy)
+opacity_paint (TestConformSimpleFixture *fixture,
+               gpointer                  dummy)
 {
   ClutterActor *stage, *group1, *group2;
   ClutterActor *label, *rect;

@@ -262,8 +262,8 @@ on_activate (KeyGroup     *key_group,
 }
 
 void
-test_binding_pool (TestConformSimpleFixture *fixture,
-                   gconstpointer             data)
+binding_pool (TestConformSimpleFixture *fixture,
+              gconstpointer             data)
 {
   KeyGroup *key_group = g_object_new (TYPE_KEY_GROUP, NULL);
 

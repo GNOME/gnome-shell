@@ -161,8 +161,8 @@ idle_cb (gpointer data)
 }
 
 void
-test_clutter_cairo_texture (TestConformSimpleFixture *fixture,
-                            gconstpointer data)
+texture_cairo (TestConformSimpleFixture *fixture,
+               gconstpointer data)
 {
   TestState state;
   unsigned int idle_source;
