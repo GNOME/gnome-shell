@@ -233,6 +233,7 @@ source_c_priv = \
 deprecated_h = \
 	$(srcdir)/deprecated/clutter-actor.h			\
 	$(srcdir)/deprecated/clutter-animatable.h		\
+	$(srcdir)/deprecated/clutter-animation.h		\
 	$(srcdir)/deprecated/clutter-backend.h			\
 	$(srcdir)/deprecated/clutter-behaviour.h 		\
 	$(srcdir)/deprecated/clutter-behaviour-depth.h 		\

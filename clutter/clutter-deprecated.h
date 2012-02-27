@@ -5,6 +5,7 @@
 
 #include "deprecated/clutter-actor.h"
 #include "deprecated/clutter-animatable.h"
+#include "deprecated/clutter-animation.h"
 #include "deprecated/clutter-backend.h"
 #include "deprecated/clutter-behaviour.h"
 #include "deprecated/clutter-behaviour-depth.h"

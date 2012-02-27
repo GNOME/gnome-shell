@@ -50,6 +50,7 @@
 #endif
 
 #include "clutter-animatable.h"
+#include "clutter-interval.h"
 #include "clutter-debug.h"
 #include "clutter-private.h"
 

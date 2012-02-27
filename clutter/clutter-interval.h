@@ -29,7 +29,7 @@
 #ifndef __CLUTTER_INTERVAL_H__
 #define __CLUTTER_INTERVAL_H__
 
-#include <glib-object.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
@@ -40,7 +40,6 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_INTERVAL_CLASS(klass)        (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_INTERVAL))
 #define CLUTTER_INTERVAL_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_INTERVAL, ClutterIntervalClass))
 
-typedef struct _ClutterInterval                 ClutterInterval;
 typedef struct _ClutterIntervalPrivate          ClutterIntervalPrivate;
 typedef struct _ClutterIntervalClass            ClutterIntervalClass;
 
