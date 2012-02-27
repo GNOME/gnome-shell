@@ -8,6 +8,7 @@ const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+const Atk = imports.gi.Atk;
 
 const Params = imports.misc.params;
 const Util = imports.misc.util;
@@ -55,6 +56,11 @@ const DateMenuButton = new Lang.Class({
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             menuAlignment = 1.0 - menuAlignment;
         this.parent(menuAlignment);
+
+        // At this moment calendar menu is not keyboard navigable at
+        // all (so not accessible), so it doesn't make sense to set as
+        // role ATK_ROLE_MENU like other elements of the panel.
+        this.actor.accessible_role = Atk.Role.LABEL;
 
         this._clock = new St.Label();
         this.actor.add_actor(this._clock);

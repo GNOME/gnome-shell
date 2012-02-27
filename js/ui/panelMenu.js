@@ -6,6 +6,7 @@ const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const Atk = imports.gi.Atk;
 
 const Main = imports.ui.main;
 const Params = imports.misc.params;
@@ -99,7 +100,8 @@ const Button = new Lang.Class({
     _init: function(menuAlignment, nameText, dontCreateMenu) {
         this.parent({ reactive: true,
                       can_focus: true,
-                      track_hover: true });
+                      track_hover: true,
+                      accessible_role: Atk.Role.MENU });
 
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('key-press-event', Lang.bind(this, this._onSourceKeyPress));

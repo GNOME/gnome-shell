@@ -9,6 +9,7 @@ const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const Atk = imports.gi.Atk;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
@@ -41,7 +42,8 @@ const PopupBaseMenuItem = new Lang.Class({
         this.actor = new Shell.GenericContainer({ style_class: 'popup-menu-item',
                                                   reactive: params.reactive,
                                                   track_hover: params.reactive,
-                                                  can_focus: params.reactive });
+                                                  can_focus: params.reactive,
+                                                  accessible_role: Atk.Role.MENU_ITEM});
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
@@ -711,7 +713,8 @@ const Switch = new Lang.Class({
     Name: 'Switch',
 
     _init: function(state) {
-        this.actor = new St.Bin({ style_class: 'toggle-switch' });
+        this.actor = new St.Bin({ style_class: 'toggle-switch',
+                                  accessible_role: Atk.Role.CHECK_BOX});
         // Translators: this MUST be either "toggle-switch-us"
         // (for toggle switches containing the English words
         // "ON" and "OFF") or "toggle-switch-intl" (for toggle
@@ -744,6 +747,9 @@ const PopupSwitchMenuItem = new Lang.Class({
         this.label = new St.Label({ text: text });
         this._switch = new Switch(active);
 
+        this.actor.accessible_role = Atk.Role.CHECK_MENU_ITEM;
+        this.actor.label_actor = this.label;
+
         this.addActor(this.label);
 
         this._statusBin = new St.Bin({ x_align: St.Align.END });
@@ -762,10 +768,12 @@ const PopupSwitchMenuItem = new Lang.Class({
             this._statusBin.child = this._statusLabel;
             this.actor.reactive = false;
             this.actor.can_focus = false;
+            this.actor.accessible_role = Atk.Role.MENU_ITEM;
         } else {
             this._statusBin.child = this._switch.actor;
             this.actor.reactive = true;
             this.actor.can_focus = true;
+            this.actor.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         }
     },
 

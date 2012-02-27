@@ -9,6 +9,7 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Tp = imports.gi.TelepathyGLib;
 const UPowerGlib = imports.gi.UPowerGlib;
+const Atk = imports.gi.Atk;
 
 const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
@@ -432,6 +433,8 @@ const UserMenuButton = new Lang.Class({
 
     _init: function() {
         this.parent(0.0);
+
+        this.actor.accessible_role = Atk.Role.MENU;
 
         let box = new St.BoxLayout({ name: 'panelUserMenu' });
         this.actor.add_actor(box);

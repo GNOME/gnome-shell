@@ -11,6 +11,7 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Signals = imports.signals;
+const Atk = imports.gi.Atk;
 
 const Config = imports.misc.config;
 const CtrlAltTab = imports.ui.ctrlAltTab;
@@ -249,6 +250,8 @@ const AppMenuButton = new Lang.Class({
 
     _init: function(menuManager) {
         this.parent(0.0, null, true);
+
+        this.actor.accessible_role = Atk.Role.MENU;
 
         this._startingApps = [];
 
@@ -601,6 +604,7 @@ const ActivitiesButton = new Lang.Class({
 
     _init: function() {
         this.parent(0.0);
+        this.actor.accessible_role = Atk.Role.TOGGLE_BUTTON;
 
         let container = new Shell.GenericContainer();
         container.connect('get-preferred-width', Lang.bind(this, this._containerGetPreferredWidth));
