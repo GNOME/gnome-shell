@@ -26,6 +26,7 @@
 #include "deprecated/clutter-shader.h"
 #include "deprecated/clutter-stage-manager.h"
 #include "deprecated/clutter-stage.h"
+#include "deprecated/clutter-texture.h"
 #include "deprecated/clutter-timeline.h"
 #include "deprecated/clutter-timeout-pool.h"
 

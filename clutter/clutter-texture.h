@@ -127,9 +127,6 @@ ClutterActor *       clutter_texture_new                    (void);
 ClutterActor *       clutter_texture_new_from_file          (const gchar            *filename,
                                                              GError                **error);
 
-CLUTTER_DEPRECATED_FOR(ClutterOffscreenEffect)
-ClutterActor *       clutter_texture_new_from_actor         (ClutterActor           *actor);
-
 gboolean             clutter_texture_set_from_file          (ClutterTexture         *texture,
                                                              const gchar            *filename,
                                                              GError                **error);
@@ -151,14 +148,6 @@ gboolean             clutter_texture_set_area_from_rgb_data (ClutterTexture     
                                                              gint                    height,
                                                              gint                    rowstride,
                                                              gint                    bpp,
-                                                             ClutterTextureFlags     flags,
-                                                             GError                **error);
-
-CLUTTER_DEPRECATED
-gboolean              clutter_texture_set_from_yuv_data     (ClutterTexture         *texture,
-                                                             const guchar           *data,
-                                                             gint                    width,
-                                                             gint                    height,
                                                              ClutterTextureFlags     flags,
                                                              GError                **error);
 
