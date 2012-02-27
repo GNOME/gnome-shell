@@ -148,7 +148,7 @@ const SearchTab = new Lang.Class({
 
         this._entry.connect('notify::mapped', Lang.bind(this, this._onMapped));
 
-        global.stage.connect('notify::key-focus', Lang.bind(this, this._updateCursorVisibility));
+        global.stage.connect('notify::key-focus', Lang.bind(this, this._onStageKeyFocusChanged));
 
         this._capturedEventId = 0;
 
@@ -199,9 +199,16 @@ const SearchTab = new Lang.Class({
         this._text.set_selection(0, 0);
     },
 
-    _updateCursorVisibility: function() {
+    _onStageKeyFocusChanged: function() {
         let focus = global.stage.get_key_focus();
         this._text.set_cursor_visible(focus == this._text);
+
+        if (focus != this._entry && focus != this._text) {
+            if (this._searchResults.actor.contains(focus))
+                this._entry.add_style_pseudo_class('focus');
+            else
+                this._entry.remove_style_pseudo_class('focus');
+        }
     },
 
     _onMapped: function() {
