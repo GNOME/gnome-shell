@@ -149,6 +149,11 @@ char  *st_describe_actor       (ClutterActor *actor);
 void   st_set_slow_down_factor (gfloat factor);
 gfloat st_get_slow_down_factor (void);
 
+/* accessibility methods */
+void                  st_widget_set_accessible_role      (StWidget *widget,
+                                                          AtkRole   role);
+AtkRole               st_widget_get_accessible_role      (StWidget *widget);
+
 G_END_DECLS
 
 #endif /* __ST_WIDGET_H__ */

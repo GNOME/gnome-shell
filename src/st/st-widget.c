@@ -43,6 +43,7 @@
 #include "st-widget-accessible.h"
 
 #include <gtk/gtk.h>
+#include <atk/atk-enum-types.h>
 
 /*
  * Forward declaration for sake of StWidgetChild
@@ -66,6 +67,7 @@ struct _StWidgetPrivate
   gboolean      can_focus : 1;
 
   AtkObject *accessible;
+  AtkRole accessible_role;
 
   ClutterActor *label_actor;
 
@@ -99,7 +101,8 @@ enum
   PROP_TRACK_HOVER,
   PROP_HOVER,
   PROP_CAN_FOCUS,
-  PROP_LABEL_ACTOR
+  PROP_LABEL_ACTOR,
+  PROP_ACCESSIBLE_ROLE
 };
 
 enum
@@ -176,6 +179,10 @@ st_widget_set_property (GObject      *gobject,
       st_widget_set_label_actor (actor, g_value_get_object (value));
       break;
 
+    case PROP_ACCESSIBLE_ROLE:
+      st_widget_set_accessible_role (actor, g_value_get_enum (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -227,6 +234,10 @@ st_widget_get_property (GObject    *gobject,
 
     case PROP_LABEL_ACTOR:
       g_value_set_object (value, priv->label_actor);
+      break;
+
+    case PROP_ACCESSIBLE_ROLE:
+      g_value_set_enum (value, st_widget_get_accessible_role (actor));
       break;
 
     default:
@@ -917,6 +928,20 @@ st_widget_class_init (StWidgetClass *klass)
                                                         "Label that identifies this widget",
                                                         CLUTTER_TYPE_ACTOR,
                                                         ST_PARAM_READWRITE));
+  /**
+   * StWidget:accessible-role:
+   *
+   * The accessible role of this object
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_ACCESSIBLE_ROLE,
+                                   g_param_spec_enum ("accessible-role",
+                                                      "Accessible Role",
+                                                      "The accessible role of this object",
+                                                      ATK_TYPE_ROLE,
+                                                      ATK_ROLE_INVALID,
+                                                      G_PARAM_READWRITE));
+
 
   /**
    * StWidget::style-changed:
@@ -2160,6 +2185,65 @@ st_widget_set_label_actor (StWidget     *widget,
     }
 }
 
+/**
+ * st_widget_set_accessible_role:
+ * @widget: widget to set the accessible role for
+ * @role: The role to use
+ *
+ * This method sets @role as the accessible role for @widget. This
+ * role describes what kind of user interface element @widget is and
+ * is provided so that assistive technologies know how to present
+ * @widget to the user.
+ *
+ * Usually you will have no need to set the accessible role for an
+ * object, as this information is extracted from the context of the
+ * object (ie: a #StButton has by default a push button role). This
+ * method is only required when you need to redefine the role
+ * currently associated with the widget, for instance if it is being
+ * used in an unusual way (ie: a #StButton used as a togglebutton), or
+ * if a generic object is used directly (ie: a container as a menu
+ * item).
+ *
+ * If @role is #ATK_ROLE_INVALID, the role will not be changed
+ * and the accessible's default role will be used instead.
+ */
+void
+st_widget_set_accessible_role (StWidget *widget,
+                               AtkRole   role)
+{
+  g_return_if_fail (ST_IS_WIDGET (widget));
+
+  widget->priv->accessible_role = role;
+
+  g_object_notify (G_OBJECT (widget), "accessible-role");
+}
+
+
+/**
+ * st_widget_get_accessible_role:
+ * @widget: widget to get the accessible role for
+ *
+ * Gets the #AtkRole for this widget. See
+ * st_widget_set_accessible_role() for more information.
+ *
+ * Return value: accessible #AtkRole for this widget
+ */
+AtkRole
+st_widget_get_accessible_role (StWidget *widget)
+{
+  AtkObject *accessible = NULL;
+  AtkRole role = ATK_ROLE_INVALID;
+
+  g_return_val_if_fail (ST_IS_WIDGET (widget), ATK_ROLE_INVALID);
+
+  if (widget->priv->accessible_role != ATK_ROLE_INVALID)
+    role = widget->priv->accessible_role;
+  else if (widget->priv->accessible != NULL)
+    role = atk_object_get_role (accessible);
+
+  return role;
+}
+
 /******************************************************************************/
 /*************************** ACCESSIBILITY SUPPORT ****************************/
 /******************************************************************************/
@@ -2174,6 +2258,7 @@ static void st_widget_accessible_dispose    (GObject *gobject);
 static AtkStateSet *st_widget_accessible_ref_state_set (AtkObject *obj);
 static void         st_widget_accessible_initialize    (AtkObject *obj,
                                                         gpointer   data);
+static AtkRole      st_widget_accessible_get_role      (AtkObject *obj);
 
 /* Private methods */
 static void on_pseudo_class_notify (GObject    *gobject,
@@ -2241,6 +2326,7 @@ st_widget_accessible_class_init (StWidgetAccessibleClass *klass)
 
   atk_class->ref_state_set = st_widget_accessible_ref_state_set;
   atk_class->initialize = st_widget_accessible_initialize;
+  atk_class->get_role = st_widget_accessible_get_role;
 
   g_type_class_add_private (gobject_class, sizeof (StWidgetAccessiblePrivate));
 }
@@ -2331,6 +2417,24 @@ st_widget_accessible_ref_state_set (AtkObject *obj)
     atk_state_set_remove_state (result, ATK_STATE_FOCUSABLE);
 
   return result;
+}
+
+static AtkRole
+st_widget_accessible_get_role (AtkObject *obj)
+{
+  StWidget *widget = NULL;
+
+  g_return_val_if_fail (ST_IS_WIDGET_ACCESSIBLE (obj), ATK_ROLE_INVALID);
+
+  widget = ST_WIDGET (atk_gobject_accessible_get_object (ATK_GOBJECT_ACCESSIBLE (obj)));
+
+  if (widget == NULL)
+    return ATK_ROLE_INVALID;
+
+  if (widget->priv->accessible_role != ATK_ROLE_INVALID)
+    return widget->priv->accessible_role;
+
+  return ATK_OBJECT_CLASS (st_widget_accessible_parent_class)->get_role (obj);
 }
 
 static void
