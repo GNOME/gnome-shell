@@ -115,16 +115,6 @@ GType clutter_cairo_texture_get_type (void) G_GNUC_CONST;
 ClutterActor *  clutter_cairo_texture_new                       (guint                  width,
                                                                  guint                  height);
 
-CLUTTER_DEPRECATED_FOR(clutter_cairo_texture_invalidate_rectangle)
-cairo_t *       clutter_cairo_texture_create_region             (ClutterCairoTexture   *self,
-                                                                 gint                   x_offset,
-                                                                 gint                   y_offset,
-                                                                 gint                   width,
-                                                                 gint                   height);
-
-CLUTTER_DEPRECATED_FOR(clutter_cairo_texture_invalidate)
-cairo_t *       clutter_cairo_texture_create                    (ClutterCairoTexture   *self);
-
 void            clutter_cairo_texture_set_surface_size          (ClutterCairoTexture   *self,
                                                                  guint                  width,
                                                                  guint                  height);
