@@ -680,7 +680,7 @@ compare_nodes (CallbackData *data)
 }
 
 void
-test_path (TestConformSimpleFixture *fixture,
+path_base (TestConformSimpleFixture *fixture,
            gconstpointer _data)
 {
   CallbackData data;

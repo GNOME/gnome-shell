@@ -139,13 +139,13 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/actor", actor_container_signals);
   TEST_CONFORM_SIMPLE ("/actor", actor_destruction);
   TEST_CONFORM_SIMPLE ("/actor", actor_anchors);
-  TEST_CONFORM_SIMPLE ("/actor", actor_picking);
+  TEST_CONFORM_SIMPLE ("/actor", actor_pick);
   TEST_CONFORM_SIMPLE ("/actor", actor_fixed_size);
   TEST_CONFORM_SIMPLE ("/actor", actor_preferred_size);
-  TEST_CONFORM_SIMPLE ("/actor", basic_layout);
-  TEST_CONFORM_SIMPLE ("/actor", margin_layout);
-  TEST_CONFORM_SIMPLE ("/actor", test_offscreen_redirect);
-  TEST_CONFORM_SIMPLE ("/actor", test_shader_effect);
+  TEST_CONFORM_SIMPLE ("/actor", actor_basic_layout);
+  TEST_CONFORM_SIMPLE ("/actor", actor_margin_layout);
+  TEST_CONFORM_SIMPLE ("/actor", actor_offscreen_redirect);
+  TEST_CONFORM_SIMPLE ("/actor", actor_shader_effect);
 
   TEST_CONFORM_SIMPLE ("/actor/iter", actor_iter_traverse_children);
   TEST_CONFORM_SIMPLE ("/actor/iter", actor_iter_traverse_remove);
@@ -187,7 +187,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/texture", texture_fbo);
   TEST_CONFORM_SIMPLE ("/texture/cairo", texture_cairo);
 
-  TEST_CONFORM_SIMPLE ("/path", test_path);
+  TEST_CONFORM_SIMPLE ("/path", path_base);
 
   TEST_CONFORM_SIMPLE ("/binding-pool", binding_pool);
 

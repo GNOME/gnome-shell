@@ -240,7 +240,7 @@ on_timeout (gpointer data)
 }
 
 void
-actor_picking (void)
+actor_pick (void)
 {
   int y, x;
   State state;

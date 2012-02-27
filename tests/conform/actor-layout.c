@@ -204,8 +204,8 @@ test_state_run (TestState *state)
 }
 
 void
-basic_layout (TestConformSimpleFixture *fixture,
-              gconstpointer data)
+actor_basic_layout (TestConformSimpleFixture *fixture,
+                    gconstpointer data)
 {
   ClutterActor *stage = clutter_stage_new ();
   ClutterActor *vase;
@@ -248,8 +248,8 @@ basic_layout (TestConformSimpleFixture *fixture,
 }
 
 void
-margin_layout (TestConformSimpleFixture *fixture,
-               gconstpointer data)
+actor_margin_layout (TestConformSimpleFixture *fixture,
+                     gconstpointer data)
 {
   ClutterActor *stage = clutter_stage_new ();
   ClutterActor *vase;

@@ -233,8 +233,8 @@ paint_cb (ClutterActor *stage)
 }
 
 void
-test_shader_effect (TestConformSimpleFixture *fixture,
-                    gconstpointer data)
+actor_shader_effect (TestConformSimpleFixture *fixture,
+                     gconstpointer data)
 {
   ClutterActor *stage;
   ClutterActor *rect;

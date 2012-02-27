@@ -57,13 +57,13 @@ units_sources += \
 	actor-offscreen-redirect.c	\
 	actor-paint-opacity.c 		\
 	actor-pick.c 			\
+	actor-shader-effect.c		\
 	actor-size.c			\
 	binding-pool.c			\
 	cairo-texture.c    		\
 	group.c				\
 	path.c 				\
 	rectangle.c 			\
-	shader-effect.c			\
 	texture-fbo.c			\
 	texture.c			\
         text-cache.c               	\

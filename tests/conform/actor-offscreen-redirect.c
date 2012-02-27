@@ -294,8 +294,8 @@ timeout_cb (gpointer user_data)
 }
 
 void
-test_offscreen_redirect (TestConformSimpleFixture *fixture,
-                         gconstpointer test_data)
+actor_offscreen_redirect (TestConformSimpleFixture *fixture,
+                          gconstpointer test_data)
 {
   if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
     {
