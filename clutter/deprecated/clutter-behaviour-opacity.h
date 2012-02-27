@@ -95,16 +95,16 @@ struct _ClutterBehaviourOpacityClass
 
 GType clutter_behaviour_opacity_get_type (void) G_GNUC_CONST;
 
-CLUTTER_DEPRECATED_FOR(clutter_actor_animate and ClutterActor:opacity)
+CLUTTER_DEPRECATED_IN_1_6_FOR(clutter_actor_animate and ClutterActor:opacity)
 ClutterBehaviour *clutter_behaviour_opacity_new (ClutterAlpha *alpha,
                                                  guint8        opacity_start,
                                                  guint8        opacity_end);
 
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void clutter_behaviour_opacity_set_bounds (ClutterBehaviourOpacity *behaviour,
                                            guint8                   opacity_start,
                                            guint8                   opacity_end);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void clutter_behaviour_opacity_get_bounds (ClutterBehaviourOpacity *behaviour,
                                            guint8                  *opacity_start,
                                            guint8                  *opacity_end);

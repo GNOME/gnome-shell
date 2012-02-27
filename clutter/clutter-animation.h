@@ -135,11 +135,11 @@ ClutterInterval     *clutter_animation_get_interval    (ClutterAnimation     *an
                                                         const gchar          *property_name);
 void                 clutter_animation_completed       (ClutterAnimation     *animation);
 
-CLUTTER_DEPRECATED_FOR(clutter_timeline_set_progress_mode and clutter_animation_set_timeline)
+CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_animation_set_timeline)
 void                 clutter_animation_set_alpha       (ClutterAnimation     *animation,
                                                         ClutterAlpha         *alpha);
 
-CLUTTER_DEPRECATED_FOR(clutter_animation_get_timeline and clutter_timeline_get_progress_mode)
+CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_animation_get_timeline)
 ClutterAlpha *       clutter_animation_get_alpha       (ClutterAnimation     *animation);
 
 ClutterAnimation *   clutter_actor_animate               (ClutterActor         *actor,
@@ -168,13 +168,13 @@ ClutterAnimation *   clutter_actor_animate_with_timelinev (ClutterActor         
 ClutterAnimation *   clutter_actor_get_animation          (ClutterActor         *actor);
 void                 clutter_actor_detach_animation       (ClutterActor         *actor);
 
-CLUTTER_DEPRECATED_FOR(clutter_actor_animate_with_timeline)
+CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_actor_animate_with_timeline)
 ClutterAnimation *   clutter_actor_animate_with_alpha    (ClutterActor         *actor,
                                                           ClutterAlpha         *alpha,
                                                           const gchar          *first_property_name,
                                                           ...) G_GNUC_NULL_TERMINATED;
 
-CLUTTER_DEPRECATED_FOR(clutter_actor_animate_with_timelinev)
+CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_actor_animate_with_timelinev)
 ClutterAnimation *   clutter_actor_animate_with_alphav    (ClutterActor         *actor,
                                                            ClutterAlpha         *alpha,
                                                            gint                  n_properties,

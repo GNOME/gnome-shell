@@ -78,37 +78,37 @@ struct _ClutterBehaviourRotateClass
 
 GType clutter_behaviour_rotate_get_type (void) G_GNUC_CONST;
 
-CLUTTER_DEPRECATED_FOR(clutter_actor_animate)
+CLUTTER_DEPRECATED_IN_1_6_FOR(clutter_actor_animate)
 ClutterBehaviour *     clutter_behaviour_rotate_new           (ClutterAlpha           *alpha,
                                                                ClutterRotateAxis       axis,
                                                                ClutterRotateDirection  direction,
                                                                gdouble                 angle_start,
                                                                gdouble                 angle_end);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void                   clutter_behaviour_rotate_get_center    (ClutterBehaviourRotate *rotate,
 							       gint                   *x,
 							       gint                   *y,
 							       gint                   *z);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void                   clutter_behaviour_rotate_set_center    (ClutterBehaviourRotate *rotate,
 							       gint                    x,
 							       gint                    y,
 							       gint                    z);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 ClutterRotateAxis      clutter_behaviour_rotate_get_axis      (ClutterBehaviourRotate *rotate);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void                   clutter_behaviour_rotate_set_axis      (ClutterBehaviourRotate *rotate,
                                                                ClutterRotateAxis       axis);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 ClutterRotateDirection clutter_behaviour_rotate_get_direction (ClutterBehaviourRotate *rotate);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void                   clutter_behaviour_rotate_set_direction (ClutterBehaviourRotate *rotate,
                                                                ClutterRotateDirection  direction);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void                   clutter_behaviour_rotate_get_bounds    (ClutterBehaviourRotate *rotate,
                                                                gdouble                *angle_start,
                                                                gdouble                *angle_end);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void                   clutter_behaviour_rotate_set_bounds    (ClutterBehaviourRotate *rotate,
                                                                gdouble                 angle_start,
                                                                gdouble                 angle_end);

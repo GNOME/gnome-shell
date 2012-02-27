@@ -81,16 +81,16 @@ struct _ClutterBehaviourDepthClass
 
 GType             clutter_behaviour_depth_get_type (void) G_GNUC_CONST;
 
-CLUTTER_DEPRECATED_FOR(clutter_actor_animate and ClutterActor:depth)
+CLUTTER_DEPRECATED_IN_1_6_FOR(clutter_actor_animate and ClutterActor:depth)
 ClutterBehaviour *clutter_behaviour_depth_new      (ClutterAlpha *alpha,
                                                     gint          depth_start,
                                                     gint          depth_end);
 
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void clutter_behaviour_depth_set_bounds (ClutterBehaviourDepth *behaviour,
                                          gint                   depth_start,
                                          gint                   depth_end);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void clutter_behaviour_depth_get_bounds (ClutterBehaviourDepth *behaviour,
                                          gint                  *depth_start,
                                          gint                  *depth_end);

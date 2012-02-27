@@ -1029,7 +1029,7 @@ clutter_backend_get_double_click_distance (ClutterBackend *backend)
  *
  * Since: 0.4
  *
- * Deprecated: Use #ClutterSettings:font-dpi instead
+ * Deprecated: 1.4: Use #ClutterSettings:font-dpi instead
  */
 void
 clutter_backend_set_resolution (ClutterBackend *backend,

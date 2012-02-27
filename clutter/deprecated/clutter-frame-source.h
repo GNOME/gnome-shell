@@ -32,12 +32,12 @@
 
 G_BEGIN_DECLS
 
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 guint clutter_frame_source_add (guint          fps,
 				GSourceFunc    func,
 				gpointer       data);
 
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 guint clutter_frame_source_add_full (gint           priority,
 				     guint          fps,
 				     GSourceFunc    func,

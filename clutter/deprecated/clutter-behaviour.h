@@ -136,31 +136,31 @@ struct _ClutterBehaviourClass
 
 GType clutter_behaviour_get_type (void) G_GNUC_CONST;
 
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void          clutter_behaviour_apply          (ClutterBehaviour            *behave,
                                                 ClutterActor                *actor);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void          clutter_behaviour_remove         (ClutterBehaviour            *behave,
                                                 ClutterActor                *actor);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void          clutter_behaviour_remove_all     (ClutterBehaviour            *behave);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void          clutter_behaviour_actors_foreach (ClutterBehaviour            *behave,
                                                 ClutterBehaviourForeachFunc  func,
                                                 gpointer                     data);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 gint          clutter_behaviour_get_n_actors   (ClutterBehaviour            *behave);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 ClutterActor *clutter_behaviour_get_nth_actor  (ClutterBehaviour            *behave,
 						gint                         index_);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 GSList *      clutter_behaviour_get_actors     (ClutterBehaviour            *behave);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 ClutterAlpha *clutter_behaviour_get_alpha      (ClutterBehaviour            *behave);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 void          clutter_behaviour_set_alpha      (ClutterBehaviour            *behave,
                                                 ClutterAlpha                *alpha);
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_6
 gboolean      clutter_behaviour_is_applied     (ClutterBehaviour            *behave,
 						ClutterActor                *actor);
 

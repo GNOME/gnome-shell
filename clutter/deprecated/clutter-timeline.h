@@ -26,14 +26,14 @@
 
 G_BEGIN_DECLS
 
-CLUTTER_DEPRECATED_FOR(clutter_timeline_new)
+CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_timeline_new)
 ClutterTimeline *               clutter_timeline_clone                  (ClutterTimeline          *timeline);
 
-CLUTTER_DEPRECATED_FOR(clutter_timeline_set_repeat_count)
+CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_timeline_set_repeat_count)
 void                            clutter_timeline_set_loop               (ClutterTimeline          *timeline,
                                                                          gboolean                  loop);
 
-CLUTTER_DEPRECATED_FOR(clutter_timeline_get_repeat_count)
+CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_timeline_get_repeat_count)
 gboolean                        clutter_timeline_get_loop               (ClutterTimeline          *timeline);
 
 G_END_DECLS

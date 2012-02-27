@@ -77,13 +77,13 @@ struct _ClutterParamSpecFixed
 
 GType        clutter_param_fixed_get_type (void) G_GNUC_CONST;
 
-CLUTTER_DEPRECATED_FOR(g_value_set_int)
+CLUTTER_DEPRECATED_IN_1_10_FOR(g_value_set_int)
 void         clutter_value_set_fixed      (GValue       *value,
                                            CoglFixed     fixed_);
-CLUTTER_DEPRECATED_FOR(g_value_get_int)
+CLUTTER_DEPRECATED_IN_1_10_FOR(g_value_get_int)
 CoglFixed    clutter_value_get_fixed      (const GValue *value);
 
-CLUTTER_DEPRECATED_FOR(g_param_spec_int)
+CLUTTER_DEPRECATED_IN_1_10_FOR(g_param_spec_int)
 GParamSpec * clutter_param_spec_fixed     (const gchar  *name,
                                            const gchar  *nick,
                                            const gchar  *blurb,
