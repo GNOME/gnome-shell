@@ -187,13 +187,13 @@ const SearchTab = new Lang.Class({
         // incorrectly when we remove focus
         // (https://bugzilla.gnome.org/show_bug.cgi?id=636341) */
         if (this._text.text != '')
-            this._reset();
+            this.reset();
     },
 
-    _reset: function () {
-        this._text.text = '';
-
+    reset: function () {
         global.stage.set_key_focus(null);
+
+        this._entry.text = '';
 
         this._text.set_cursor_visible(true);
         this._text.set_selection(0, 0);
@@ -252,7 +252,7 @@ const SearchTab = new Lang.Class({
             if (this._iconClickedId == 0) {
                 this._iconClickedId = this._entry.connect('secondary-icon-clicked',
                     Lang.bind(this, function() {
-                        this._reset();
+                        this.reset();
                     }));
             }
             this._activate();
@@ -280,7 +280,7 @@ const SearchTab = new Lang.Class({
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.Escape) {
             if (this._isActivated()) {
-                this._reset();
+                this.reset();
                 return true;
             }
         } else if (this.active) {
@@ -305,7 +305,7 @@ const SearchTab = new Lang.Class({
                 // the user clicked outside after activating the entry, but
                 // with no search term entered and no keyboard button pressed
                 // - cancel the search
-                this._reset();
+                this.reset();
             }
         }
 
@@ -536,7 +536,10 @@ const ViewSelector = new Lang.Class({
         let symbol = event.get_key_symbol();
 
         if (symbol == Clutter.Escape) {
-            Main.overview.hide();
+            if (this._searchTab.active)
+                this._searchTab.reset();
+            else
+                Main.overview.hide();
             return true;
         } else if (Clutter.keysym_to_unicode(symbol) ||
                    (symbol == Clutter.BackSpace && this._searchTab.active)) {
