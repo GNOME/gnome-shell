@@ -73,6 +73,7 @@
 #include "clutter-layout-manager.h"
 #include "clutter-layout-meta.h"
 #include "clutter-list-model.h"
+#include "clutter-macros.h"
 #include "clutter-main.h"
 #include "clutter-media.h"
 #include "clutter-model.h"

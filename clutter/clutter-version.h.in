@@ -23,6 +23,10 @@
  *
  */
 
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
+
 /**
  * SECTION:clutter-version
  * @short_description: Versioning utility macros

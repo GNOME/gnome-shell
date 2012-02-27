@@ -30,35 +30,10 @@
 
 #include <cairo.h>
 
+#include <clutter/clutter-macros.h>
 #include <clutter/clutter-enums.h>
 
 G_BEGIN_DECLS
-
-/* these macros are used to mark deprecated functions, and thus have to be
- * exposed in a public header.
- *
- * do *not* use them in other libraries depending on Clutter: use G_DEPRECATED
- * and G_DEPRECATED_FOR, or use your own wrappers around them.
- */
-#ifdef CLUTTER_DISABLE_DEPRECATION_WARNINGS
-#define CLUTTER_DEPRECATED
-#define CLUTTER_DEPRECATED_FOR(f)
-#else
-#define CLUTTER_DEPRECATED G_DEPRECATED
-#define CLUTTER_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f)
-#endif
-
-/* some structures are meant to be opaque and still be allocated on the stack;
- * in order to avoid people poking at their internals, we use this macro to
- * ensure that users don't accidentally access a struct private members.
- *
- * we use the CLUTTER_COMPILATION define to allow us easier access, though.
- */
-#ifdef CLUTTER_COMPILATION
-#define CLUTTER_PRIVATE_FIELD(x)        x
-#else
-#define CLUTTER_PRIVATE_FIELD(x)        clutter_private_ ## x
-#endif
 
 #define CLUTTER_TYPE_ACTOR_BOX          (clutter_actor_box_get_type ())
 #define CLUTTER_TYPE_FOG                (clutter_fog_get_type ())
