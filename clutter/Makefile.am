@@ -114,12 +114,11 @@ source_h =					\
 	$(srcdir)/clutter-state.h		\
 	$(srcdir)/clutter-table-layout.h	\
 	$(srcdir)/clutter-texture.h 		\
-	$(srcdir)/clutter-text.h			\
+	$(srcdir)/clutter-text.h		\
 	$(srcdir)/clutter-text-buffer.h		\
 	$(srcdir)/clutter-timeline.h 		\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
-	$(srcdir)/clutter-util.h 		\
 	$(NULL)
 
 source_c = \
@@ -258,6 +257,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-texture.h			\
 	$(srcdir)/deprecated/clutter-timeline.h 		\
 	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
+	$(srcdir)/deprecated/clutter-util.h 			\
 	$(NULL)
 
 # deprecated source code

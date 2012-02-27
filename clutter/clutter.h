@@ -97,7 +97,6 @@
 #include "clutter-text.h"
 #include "clutter-timeline.h"
 #include "clutter-units.h"
-#include "clutter-util.h"
 #include "clutter-version.h"
 
 #include "clutter-enum-types.h"

@@ -36,7 +36,7 @@
 
 #include <glib/gi18n-lib.h>
 
-#include "clutter-util.h"
+#include "deprecated/clutter-util.h"
 #include "clutter-main.h"
 
 /**

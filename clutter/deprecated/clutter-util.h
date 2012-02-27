@@ -32,7 +32,7 @@
 
 G_BEGIN_DECLS
 
-CLUTTER_DEPRECATED
+CLUTTER_DEPRECATED_IN_1_2
 gint clutter_util_next_p2 (gint a);
 
 G_END_DECLS
