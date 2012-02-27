@@ -444,6 +444,7 @@ clutter_actor_get_transformation_matrix
 clutter_actor_get_paint_volume
 clutter_actor_get_paint_box
 clutter_actor_get_transformed_paint_volume
+clutter_actor_get_default_paint_volume
 
 <SUBSECTION>
 clutter_actor_set_anchor_point

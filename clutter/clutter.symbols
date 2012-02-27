@@ -90,6 +90,7 @@ clutter_actor_get_clip
 clutter_actor_get_clip_to_allocation
 clutter_actor_get_constraint
 clutter_actor_get_constraints
+clutter_actor_get_default_paint_volume
 clutter_actor_get_depth
 clutter_actor_get_effect
 clutter_actor_get_effects

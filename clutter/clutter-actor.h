@@ -454,6 +454,7 @@ void                            clutter_actor_get_background_color              
 const ClutterPaintVolume *      clutter_actor_get_paint_volume                  (ClutterActor               *self);
 const ClutterPaintVolume *      clutter_actor_get_transformed_paint_volume      (ClutterActor               *self,
                                                                                  ClutterActor               *relative_to_ancestor);
+const ClutterPaintVolume *      clutter_actor_get_default_paint_volume          (ClutterActor               *self);
 
 /* Events */
 void                            clutter_actor_set_reactive                      (ClutterActor               *actor,
