@@ -147,15 +147,6 @@ const Button = new Lang.Class({
         if (!this.menu)
             return;
 
-        if (!this.menu.isOpen) {
-            // Setting the max-height won't do any good if the minimum height of the
-            // menu is higher then the screen; it's useful if part of the menu is
-            // scrollable so the minimum height is smaller than the natural height
-            let monitor = Main.layoutManager.primaryMonitor;
-            this.menu.actor.style = ('max-height: ' +
-                                     Math.round(monitor.height - Main.panel.actor.height) +
-                                     'px;');
-        }
         this.menu.toggle();
     },
 
@@ -198,6 +189,14 @@ const Button = new Lang.Class({
             this.actor.add_style_pseudo_class('active');
         else
             this.actor.remove_style_pseudo_class('active');
+
+        // Setting the max-height won't do any good if the minimum height of the
+        // menu is higher then the screen; it's useful if part of the menu is
+        // scrollable so the minimum height is smaller than the natural height
+        let monitor = Main.layoutManager.primaryMonitor;
+        this.menu.actor.style = ('max-height: ' +
+                                 Math.round(monitor.height - Main.panel.actor.height) +
+                                 'px;');
     },
 
     destroy: function() {
