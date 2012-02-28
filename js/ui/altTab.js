@@ -562,7 +562,8 @@ const SwitcherList = new Lang.Class({
         this._list.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this._list.connect('allocate', Lang.bind(this, this._allocate));
 
-        this._scrollView = new St.ScrollView({ style_class: 'hfade' });
+        this._scrollView = new St.ScrollView({ style_class: 'hfade',
+                                               enable_mouse_scrolling: false });
         this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER);
 
         let scrollBox = new St.BoxLayout();
