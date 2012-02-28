@@ -280,18 +280,6 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
        to copy it from the custom uniform in the vertex shader */
     g_string_append (shader_state->source,
                      "  cogl_point_size_out = cogl_point_size_in;\n");
-  /* On regular OpenGL we'll just flush the point size builtin */
-  else if (pipelines_difference & COGL_PIPELINE_STATE_POINT_SIZE)
-    {
-      CoglPipeline *authority =
-        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_POINT_SIZE);
-
-      if (ctx->point_size_cache != authority->big_state->point_size)
-        {
-          GE( ctx, glPointSize (authority->big_state->point_size) );
-          ctx->point_size_cache = authority->big_state->point_size;
-        }
-    }
 
   return TRUE;
 }
@@ -507,6 +495,19 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
       shader_state->header = NULL;
       shader_state->source = NULL;
       shader_state->gl_shader = shader;
+    }
+
+  if (ctx->driver == COGL_DRIVER_GL &&
+      (pipelines_difference & COGL_PIPELINE_STATE_POINT_SIZE))
+    {
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_POINT_SIZE);
+
+      if (ctx->point_size_cache != authority->big_state->point_size)
+        {
+          GE( ctx, glPointSize (authority->big_state->point_size) );
+          ctx->point_size_cache = authority->big_state->point_size;
+        }
     }
 
   return TRUE;
