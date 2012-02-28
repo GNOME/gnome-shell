@@ -1,18 +1,22 @@
+# Ihar Hrachyshka <ihar.hrachyshka@gmail.com>, 2011.
+# Kasia Bondarava <kasia.bondarava@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-14 21:50+0300\n"
-"PO-Revision-Date: 2012-02-14 21:52+0300\n"
-"Last-Translator: Ігар Грачышка <ihar.hrachyshka@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-02-27 08:20+0000\n"
+"PO-Revision-Date: 2012-02-28 21:45+0300\n"
+"Last-Translator: Kasia Bondarava <kasia.bondarava@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
-"Language: be\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Pootle 2.1.6\n"
+"Language: be\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Virtaal 0.7.0\n"
+"X-Project-Style: gnome\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -24,8 +28,8 @@ msgstr "Кіраванне вокнамі і пуск праграм"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 #: ../js/extensionPrefs/main.js:153
-msgid "GNOME Shell Extensions Preferences"
-msgstr "Настройкі пашырэнняў абалонкі GNOME"
+msgid "GNOME Shell Extension Preferences"
+msgstr "Настройкі пашырэння абалонкі GNOME"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
@@ -34,12 +38,15 @@ msgstr "Настройкі пашырэнняў абалонкі GNOME"
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
+"Уключыць унутраныя прылады, прыдатныя для распрацоўшчыкаў і тэстараў, для "
+"Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
+"Дазваляе доступ да ўнутраных адладачных і маніторынгавых прылад для дыялогу Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Uuids of extensions to enable"
@@ -52,10 +59,15 @@ msgid ""
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension DBus methods on org.gnome.Shell."
 msgstr ""
+"Пашырэнні абалонкі GNOME маюць уласцівасць uuid; у гэтым ключы пералічаны "
+"пашырэнні, якія неабходна загрузіць. Усе пашырэнні, якія вы хочаце "
+"загрузіць, трэба ўпісаць у гэты спіс. Вы таксама можаце кіраваць гэтым "
+"спісам метадамі DBus EnableExtension і DisableExtension паслугі org.gnome."
+"Shell."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid "Whether to collect stats about applications usage"
-msgstr ""
+msgstr "Ці збіраць статыстыку пра выкарыстанне праграм"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid ""
@@ -64,76 +76,102 @@ msgid ""
 "want to disable this for privacy reasons. Please note that doing so won't "
 "remove already saved data."
 msgstr ""
+"Абалонка звычайна назірае за актыўнымі праграмамі, каб вызначыць найбольш "
+"папулярныя (напрыклад, сярод стартараў). Магчыма, вы захочаце выключыць гэты "
+"параметр з прычынаў прыватнасці, хоць гэтыя даныя "
+"і захоўваюцца прыватна. Звярніце ўвагу, што гэта не прывядзе да выдалення "
+"ўжо захаваных даных."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "List of desktop file IDs for favorite applications"
-msgstr ""
+msgstr "Спіс ідэнтыфікатараў артыкульных файлаў стала для ўпадабаных праграм"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
+"Праграмы з адпаведнымі ідэнтыфікатарамі будуць паказаны ў абшары "
+"ўпадабаных праграм."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "disabled OpenSearch providers"
-msgstr ""
+msgstr "выключаныя правайдары OpenSearch"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "History for command (Alt-F2) dialog"
-msgstr ""
+msgstr "Журнал загаднага дыялогу (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "History for the looking glass dialog"
-msgstr ""
+msgstr "Журнал дыялогу Looking Glass"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:12
-msgid "Show the week date in the calendar"
+msgid ""
+"Internally used to store the last IM presence explicitly set by the user. "
+"The value here is from the TpConnectionPresenceType enumeration."
 msgstr ""
+"Выкарыстоўваецца ўнутры сістэмы для захавання апошняга стану прысутнасці камунікатара, "
+"настаўленага асабіста карыстальнікам. Гэта значэнне - адно з пераліку "
+"TpConnectionPresenceType."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid "If true, display the ISO week date in the calendar."
+msgid ""
+"Internally used to store the last session presence status for the user. The "
+"value here is from the GsmPresenceStatus enumeration."
 msgstr ""
+"Выкарыстоўваецца ўнутры сістэмы для захавання апошняга стану прысутнасці камунікатара "
+"карыстальніка. Гэта значэнне - з пераліку GsmPresenceStatus."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
-msgid "Which keyboard to use"
-msgstr ""
+msgid "Show the week date in the calendar"
+msgstr "Паказваць тыдзень у календары"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
-msgid "The type of keyboard to use."
-msgstr ""
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Калі ўключана, паказваць тыдзень у календары ў ISO-фармаце."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show time with seconds"
-msgstr ""
+msgid "Which keyboard to use"
+msgstr "Ужываная клавіятура"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:17
-msgid "If true, display seconds in time."
-msgstr ""
+msgid "The type of keyboard to use."
+msgstr "Від ужыванай клавіятуры."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
-msgid "Show date in clock"
-msgstr ""
+msgid "Show time with seconds"
+msgstr "Паказваць час з секундамі"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
-msgid "If true, display date in the clock, in addition to time."
-msgstr ""
+msgid "If true, display seconds in time."
+msgstr "Калі ўключана, паказваць час з секундамі."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
-msgid "Framerate used for recording screencasts."
-msgstr ""
+msgid "Show date in clock"
+msgstr "Паказваць дату на гадзінніку"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Калі ўключана, паказваць на гадзінніку дату разам з часам."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "Framerate used for recording screencasts."
+msgstr "Частата змены кадраў для запісу скрынкасту."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid "The gstreamer pipeline used to encode the screencast"
-msgstr ""
+"Частата змены кадраў выніковага скрынкасту, запісанага пры дапамозе абалонкі "
+"GNOME (кадраў на секунду)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "Канвеер gstreamer для кадавання скрынкастаў"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -147,17 +185,30 @@ msgid ""
 "using the VP8 codec. %T is used as a placeholder for a guess at the optimal "
 "thread count on the system."
 msgstr ""
+"Настаўляе канвеер GStreamer для кадавання запісаў. Ён прытрымліваецца "
+"сінтаксіса gst-launch. Неабходна, каб з боку элемента канвеера, дзе "
+"запісваецца відэа, не было нічога падлучана. Звычайна ён будзе мець "
+"непадлучаны ўваход; вывад з гэтага боку будзе запісаны ў файл вываду. Аднак, "
+"канвеер таксама можа самастойна абслугоўваць свой вывад. Напрыклад, гэта можа "
+"спатрэбіцца для пасылкі вываду на icecast-сервер пры дапамозе shout2send ці "
+"пад. Калі не настаўлена ці настаўлена пустое значэнне, будзе ўжыты "
+"прадвызначаны канвеер. Цяпер выкарыстоўваецца \"vp8enc quality=8 speed=6 "
+"threads=%T ! queue ! webmmux\" і запісвае ў WEBM з дапамогай кодэка VP8. %T "
+"ўжываецца ў якасці замены аптымальнай для сістэмы колькасці ніцяў."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
 msgid "File extension used for storing the screencast"
-msgstr ""
+msgstr "Пашырэнне файла для захавання скрынкасту"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:28
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
+"Назва файла для запісаных скрынкастаў будзе ўнікальнай назвай, створанай на "
+"аснове бягучай даты з такім пашырэннем. Яго неабходна змяніць у выпадку "
+"запісу ў іншым фармаце кантэйнера."
 
 #: ../js/extensionPrefs/main.js:125
 #, c-format
@@ -171,6 +222,8 @@ msgstr "<b>Пашырэнне</b>"
 #: ../js/extensionPrefs/main.js:189
 msgid "Select an extension to configure using the combobox above."
 msgstr ""
+"Абярыце пашырэнне, каб настроіць графу з выплыўным спісам, якая знаходзіцца "
+"вышэй."
 
 #: ../js/gdm/loginDialog.js:624
 msgid "Session..."
@@ -246,19 +299,19 @@ msgstr "Усе"
 msgid "APPLICATIONS"
 msgstr "ПРАГРАМЫ"
 
-#: ../js/ui/appDisplay.js:366
+#: ../js/ui/appDisplay.js:371
 msgid "SETTINGS"
 msgstr "НАСТРОЙКІ"
 
-#: ../js/ui/appDisplay.js:666
+#: ../js/ui/appDisplay.js:676
 msgid "New Window"
 msgstr "Новае акно"
 
-#: ../js/ui/appDisplay.js:669
+#: ../js/ui/appDisplay.js:679
 msgid "Remove from Favorites"
 msgstr "Выдаліць са спіса ўпадабанага"
 
-#: ../js/ui/appDisplay.js:670
+#: ../js/ui/appDisplay.js:680
 msgid "Add to Favorites"
 msgstr "Дадаць у спіс упадабанага"
 
@@ -515,10 +568,6 @@ msgstr "%a %l:%M %p"
 msgid "%A %B %e, %Y"
 msgstr "%A, %e %B, %Y"
 
-#: ../js/ui/docDisplay.js:13
-msgid "RECENT ITEMS"
-msgstr "НЯДАЎНЯЕ"
-
 #: ../js/ui/endSessionDialog.js:61
 #, c-format
 msgctxt "title"
@@ -682,6 +731,12 @@ msgstr "Паглядзець выточны код"
 msgid "Web Page"
 msgstr "Сеціўная старонка"
 
+#. Translators: this is a filename used for screencast recording
+#: ../js/ui/main.js:115
+#, no-c-format
+msgid "Screencast from %d %t"
+msgstr "Скрынкаст %d %t"
+
 #: ../js/ui/messageTray.js:1197
 msgid "Open"
 msgstr "Адкрыць"
@@ -694,7 +749,7 @@ msgstr "Вярнуць гук"
 msgid "Mute"
 msgstr "Абязгучыць"
 
-#: ../js/ui/messageTray.js:2446
+#: ../js/ui/messageTray.js:2447
 msgid "System Information"
 msgstr "Сістэмная інфармацыя"
 
@@ -740,8 +795,8 @@ msgstr "Для бесправадной сеткі патрэбная ідэнт
 #: ../js/ui/networkAgent.js:330
 #, c-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"'%s'."
+"Passwords or encryption keys are required to access the wireless network '%"
+"s'."
 msgstr ""
 "Для доступу да бесправадной сеткі \"%s\" патрэбны пароль або ключы "
 "шыфравання."
@@ -795,21 +850,21 @@ msgstr "Праграмы"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:226
+#: ../js/ui/overview.js:228
 msgid "Dash"
 msgstr "Прыборная дошка"
 
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:582
 msgid "Quit"
 msgstr "Выйсці"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:604
+#: ../js/ui/panel.js:613
 msgid "Activities"
 msgstr "Заняткі"
 
-#: ../js/ui/panel.js:974
+#: ../js/ui/panel.js:983
 msgid "Top Bar"
 msgstr "Верхняя панэль"
 
@@ -867,11 +922,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Увядзіце загад:"
 
-#: ../js/ui/searchDisplay.js:333
+#: ../js/ui/searchDisplay.js:349
 msgid "Searching..."
 msgstr "Пошук..."
 
-#: ../js/ui/searchDisplay.js:356
+#: ../js/ui/searchDisplay.js:417
 msgid "No matching results."
 msgstr "Нічога адпаведнага не знойдзена."
 
@@ -1030,7 +1085,7 @@ msgstr "Заўсёды даваць дазвол"
 msgid "Grant this time only"
 msgstr "Даць дазвол аднойчы"
 
-#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1098
+#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1091
 msgid "Reject"
 msgstr "Адмовіць"
 
@@ -1306,44 +1361,44 @@ msgstr "Мікрафон"
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:225
+#: ../js/ui/telepathyClient.js:220
 msgid "Invitation"
 msgstr "Запрашэнне"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:278
+#: ../js/ui/telepathyClient.js:271
 msgid "Call"
 msgstr "Званок"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:294
+#: ../js/ui/telepathyClient.js:287
 msgid "File Transfer"
 msgstr "Перадача файла"
 
-#: ../js/ui/telepathyClient.js:376
+#: ../js/ui/telepathyClient.js:369
 msgid "Subscription request"
 msgstr "Запыт на падпіску"
 
-#: ../js/ui/telepathyClient.js:412
+#: ../js/ui/telepathyClient.js:405
 msgid "Connection error"
 msgstr "Памылка злучэння"
 
-#: ../js/ui/telepathyClient.js:670
+#: ../js/ui/telepathyClient.js:663
 #, c-format
 msgid "%s is online."
 msgstr "%s у сетцы."
 
-#: ../js/ui/telepathyClient.js:674
+#: ../js/ui/telepathyClient.js:667
 #, c-format
 msgid "%s is offline."
 msgstr "%s па-за сеткай."
 
-#: ../js/ui/telepathyClient.js:678
+#: ../js/ui/telepathyClient.js:671
 #, c-format
 msgid "%s is away."
 msgstr "%s далёка ад камп'ютара."
 
-#: ../js/ui/telepathyClient.js:681
+#: ../js/ui/telepathyClient.js:674
 #, c-format
 msgid "%s is busy."
 msgstr "%s мае пільныя справы."
@@ -1351,35 +1406,35 @@ msgstr "%s мае пільныя справы."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:894
+#: ../js/ui/telepathyClient.js:887
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Адпраўлена ў <b>%X</b>, <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:900
+#: ../js/ui/telepathyClient.js:893
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Адпраўлена ў <b>%A</b>, <b>%d %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:905
+#: ../js/ui/telepathyClient.js:898
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Адпраўлена ў <b>%A</b>, <b>%d %B</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:947
+#: ../js/ui/telepathyClient.js:940
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s змяніў імя на %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1049
+#: ../js/ui/telepathyClient.js:1042
 #, c-format
 msgid "Invitation to %s"
 msgstr "Запрашэнне ў %s"
@@ -1387,35 +1442,35 @@ msgstr "Запрашэнне ў %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1057
+#: ../js/ui/telepathyClient.js:1050
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "Удзельнік %s запрашае вас далучыцца да %s"
 
-#: ../js/ui/telepathyClient.js:1059 ../js/ui/telepathyClient.js:1138
-#: ../js/ui/telepathyClient.js:1236
+#: ../js/ui/telepathyClient.js:1052 ../js/ui/telepathyClient.js:1131
+#: ../js/ui/telepathyClient.js:1229
 msgid "Decline"
 msgstr "Адмовіцца"
 
-#: ../js/ui/telepathyClient.js:1060 ../js/ui/telepathyClient.js:1139
-#: ../js/ui/telepathyClient.js:1237
+#: ../js/ui/telepathyClient.js:1053 ../js/ui/telepathyClient.js:1132
+#: ../js/ui/telepathyClient.js:1230
 msgid "Accept"
 msgstr "Прыняць"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1090
+#: ../js/ui/telepathyClient.js:1083
 #, c-format
 msgid "Video call from %s"
 msgstr "Відэазванок ад %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1093
+#: ../js/ui/telepathyClient.js:1086
 #, c-format
 msgid "Call from %s"
 msgstr "Званок ад %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1100
+#: ../js/ui/telepathyClient.js:1093
 msgid "Answer"
 msgstr "Адказаць"
 
@@ -1424,108 +1479,108 @@ msgstr "Адказаць"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1132
+#: ../js/ui/telepathyClient.js:1125
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s пасылае вам %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1201
+#: ../js/ui/telepathyClient.js:1194
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s просіць дазволу на прагляд вашага сеткавага стану"
 
-#: ../js/ui/telepathyClient.js:1294
+#: ../js/ui/telepathyClient.js:1287
 msgid "Network error"
 msgstr "Сеткавая памылка"
 
-#: ../js/ui/telepathyClient.js:1296
+#: ../js/ui/telepathyClient.js:1289
 msgid "Authentication failed"
 msgstr "Няўдалая ідэнтыфікацыя"
 
-#: ../js/ui/telepathyClient.js:1298
+#: ../js/ui/telepathyClient.js:1291
 msgid "Encryption error"
 msgstr "Памылка шыфравання"
 
-#: ../js/ui/telepathyClient.js:1300
+#: ../js/ui/telepathyClient.js:1293
 msgid "Certificate not provided"
 msgstr "Сертыфікат не пададзены"
 
-#: ../js/ui/telepathyClient.js:1302
+#: ../js/ui/telepathyClient.js:1295
 msgid "Certificate untrusted"
 msgstr "Сертыфікат не заслугоўвае даверу"
 
-#: ../js/ui/telepathyClient.js:1304
+#: ../js/ui/telepathyClient.js:1297
 msgid "Certificate expired"
 msgstr "Сертыфікат састарэў"
 
-#: ../js/ui/telepathyClient.js:1306
+#: ../js/ui/telepathyClient.js:1299
 msgid "Certificate not activated"
 msgstr "Сертыфікат не актывізаваны"
 
-#: ../js/ui/telepathyClient.js:1308
+#: ../js/ui/telepathyClient.js:1301
 msgid "Certificate hostname mismatch"
 msgstr "Назва камп'ютара ў сертыфікаце не адпавядае патрэбнай"
 
-#: ../js/ui/telepathyClient.js:1310
+#: ../js/ui/telepathyClient.js:1303
 msgid "Certificate fingerprint mismatch"
 msgstr "Адбітак сертыфіката не адпавядае патрэбнаму"
 
-#: ../js/ui/telepathyClient.js:1312
+#: ../js/ui/telepathyClient.js:1305
 msgid "Certificate self-signed"
 msgstr "Сертыфікат уласнаручна падпісаны"
 
-#: ../js/ui/telepathyClient.js:1314
+#: ../js/ui/telepathyClient.js:1307
 msgid "Status is set to offline"
 msgstr "Уключаны рэжым па-за сеткай"
 
-#: ../js/ui/telepathyClient.js:1316
+#: ../js/ui/telepathyClient.js:1309
 msgid "Encryption is not available"
 msgstr "Шыфраванне недаступнае"
 
-#: ../js/ui/telepathyClient.js:1318
+#: ../js/ui/telepathyClient.js:1311
 msgid "Certificate is invalid"
 msgstr "Хібны сертыфікат"
 
-#: ../js/ui/telepathyClient.js:1320
+#: ../js/ui/telepathyClient.js:1313
 msgid "Connection has been refused"
 msgstr "Адмоўлена ў злучэнні"
 
-#: ../js/ui/telepathyClient.js:1322
+#: ../js/ui/telepathyClient.js:1315
 msgid "Connection can't be established"
 msgstr "Не ўдалося ўсталяваць злучэнне"
 
-#: ../js/ui/telepathyClient.js:1324
+#: ../js/ui/telepathyClient.js:1317
 msgid "Connection has been lost"
 msgstr "Злучэнне страчана"
 
-#: ../js/ui/telepathyClient.js:1326
+#: ../js/ui/telepathyClient.js:1319
 msgid "This account is already connected to the server"
 msgstr "Гэты конт ужо злучаны з серверам"
 
-#: ../js/ui/telepathyClient.js:1328
+#: ../js/ui/telepathyClient.js:1321
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "Злучэнне заменена новым для таго ж самага рэсурсу"
 
-#: ../js/ui/telepathyClient.js:1330
+#: ../js/ui/telepathyClient.js:1323
 msgid "The account already exists on the server"
 msgstr "Такі конт ужо існуе на серверы"
 
-#: ../js/ui/telepathyClient.js:1332
+#: ../js/ui/telepathyClient.js:1325
 msgid "Server is currently too busy to handle the connection"
 msgstr "Сервер надта заняты і не можа абслужыць гэта злучэнне"
 
-#: ../js/ui/telepathyClient.js:1334
+#: ../js/ui/telepathyClient.js:1327
 msgid "Certificate has been revoked"
 msgstr "Сертыфікат быў адкліканы"
 
-#: ../js/ui/telepathyClient.js:1336
+#: ../js/ui/telepathyClient.js:1329
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "Для сертыфіката выкарыстаны слабы або небяспечны алгарытм шыфравання"
 
-#: ../js/ui/telepathyClient.js:1338
+#: ../js/ui/telepathyClient.js:1331
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1533,26 +1588,26 @@ msgstr ""
 "Даўжыня сертыфіката сервера або глыбіня яго ланцуга перавышае абмежаванне, "
 "выстаўленае крыптаграфічнай бібліятэкай"
 
-#: ../js/ui/telepathyClient.js:1340
+#: ../js/ui/telepathyClient.js:1333
 msgid "Internal error"
 msgstr "Унутраная памылка"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1350
+#: ../js/ui/telepathyClient.js:1343
 #, c-format
 msgid "Connection to %s failed"
 msgstr "не ўдалося злучыцца з %s"
 
-#: ../js/ui/telepathyClient.js:1359
+#: ../js/ui/telepathyClient.js:1352
 msgid "Reconnect"
 msgstr "Перазлучыцца"
 
-#: ../js/ui/telepathyClient.js:1360
+#: ../js/ui/telepathyClient.js:1353
 msgid "Edit account"
 msgstr "Рэдагаваць конт"
 
-#: ../js/ui/telepathyClient.js:1406
+#: ../js/ui/telepathyClient.js:1399
 msgid "Unknown reason"
 msgstr "Невядомая прычына"
 
@@ -1689,7 +1744,7 @@ msgstr "Злучанае Каралеўства"
 msgid "Default"
 msgstr "Прадвызначана"
 
-#: ../src/shell-polkit-authentication-agent.c:332
+#: ../src/shell-polkit-authentication-agent.c:339
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Карыстальнік праігнараваў дыялогавае акенца ідэнтыфікацыі"
 
