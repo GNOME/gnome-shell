@@ -10182,22 +10182,72 @@ clutter_actor_add_child_internal (ClutterActor              *self,
 
   if (child->priv->parent != NULL)
     {
-      g_warning ("Cannot set a parent on an actor which has a parent. "
-		 "You must use clutter_actor_remove_child() first.");
+      g_warning ("The actor '%s' already has a parent, '%s'. You must "
+                 "use clutter_actor_remove_child() first.",
+                 _clutter_actor_get_debug_name (child),
+                 _clutter_actor_get_debug_name (child->priv->parent));
       return;
     }
 
   if (CLUTTER_ACTOR_IS_TOPLEVEL (child))
     {
-      g_warning ("Cannot set a parent on a toplevel actor\n");
+      g_warning ("The actor '%s' is a top-level actor, and cannot be "
+                 "a child of another actor.",
+                 _clutter_actor_get_debug_name (child));
       return;
     }
 
+#if 0
+  /* XXX - this check disallows calling methods that change the stacking
+   * order within the destruction sequence, by triggering a critical
+   * warning first, and leaving the actor in an undefined state, which
+   * then ends up being caught by an assertion.
+   *
+   * the reproducible sequence is:
+   *
+   *   - actor gets destroyed;
+   *   - another actor, linked to the first, will try to change the
+   *     stacking order of the first actor;
+   *   - changing the stacking order is a composite operation composed
+   *     by the following steps:
+   *     1. ref() the child;
+   *     2. remove_child_internal(), which removes the reference;
+   *     3. add_child_internal(), which adds a reference;
+   *   - the state of the actor is not changed between (2) and (3), as
+   *     it could be an expensive recomputation;
+   *   - if (3) bails out, then the actor is in an undefined state, but
+   *     still alive;
+   *   - the destruction sequence terminates, but the actor is unparented
+   *     while its state indicates being parented instead.
+   *   - assertion failure.
+   *
+   * the obvious fix would be to decompose each set_child_*_sibling()
+   * method into proper remove_child()/add_child(), with state validation;
+   * this may cause excessive work, though, and trigger a cascade of other
+   * bugs in code that assumes that a change in the stacking order is an
+   * atomic operation.
+   *
+   * another potential fix is to just remove this check here, and let
+   * code doing stacking order changes inside the destruction sequence
+   * of an actor continue doing the work.
+   *
+   * the third fix is to silently bail out early from every
+   * set_child_*_sibling() and set_child_at_index() method, and avoid
+   * doing work.
+   *
+   * I have a preference for the second solution, since it involves the
+   * least amount of work, and the least amount of code duplication.
+   *
+   * see bug: https://bugzilla.gnome.org/show_bug.cgi?id=670647
+   */
   if (CLUTTER_ACTOR_IN_DESTRUCTION (child))
     {
-      g_warning ("Cannot set a parent currently being destroyed");
+      g_warning ("The actor '%s' is currently being destroyed, and "
+                 "cannot be added as a child of another actor.",
+                 _clutter_actor_get_debug_name (child));
       return;
     }
+#endif
 
   create_meta = (flags & ADD_CHILD_CREATE_META) != 0;
   emit_parent_set = (flags & ADD_CHILD_EMIT_PARENT_SET) != 0;
