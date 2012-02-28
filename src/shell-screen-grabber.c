@@ -107,6 +107,7 @@ shell_screen_grabber_grab (ShellScreenGrabber *grabber,
       GLubyte *mapped_data;
       GLint old_swap_bytes, old_lsb_first, old_row_length, old_skip_pixels, old_skip_rows, old_alignment;
       GLint old_pack_invert = GL_FALSE;
+      GLint vp_size[4];
       guchar *src_row, *dest_row;
       int i;
 
@@ -165,6 +166,10 @@ shell_screen_grabber_grab (ShellScreenGrabber *grabber,
           pf_glBindBufferARB (GL_PIXEL_PACK_BUFFER_ARB, grabber->pixel_buffer);
         }
 
+      /* In OpenGL, (x,y) specifies the bottom-left corner rather than the
+       * top-left */
+      glGetIntegerv (GL_VIEWPORT, vp_size);
+      y = vp_size[3] - (y + height);
       glReadPixels (x, y, width, height, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 
       mapped_data = pf_glMapBufferARB (GL_PIXEL_PACK_BUFFER_ARB, GL_READ_ONLY_ARB);
