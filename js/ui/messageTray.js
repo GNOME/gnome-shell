@@ -15,6 +15,7 @@ const St = imports.gi.St;
 
 const BoxPointer = imports.ui.boxpointer;
 const GnomeSession = imports.misc.gnomeSession;
+const GrabHelper = imports.ui.grabHelper;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const Params = imports.misc.params;
@@ -213,147 +214,6 @@ const URLHighlighter = new Lang.Class({
         return -1;
     }
 });
-
-const FocusGrabber = new Lang.Class({
-    Name: 'FocusGrabber',
-
-    _init: function() {
-        this.actor = null;
-
-        this._hasFocus = false;
-        // We use this._prevFocusedWindow and this._prevKeyFocusActor to return the
-        // focus where it previously belonged after a focus grab, unless the user
-        // has explicitly changed that.
-        this._prevFocusedWindow = null;
-        this._prevKeyFocusActor = null;
-
-        this._focusActorChangedId = 0;
-        this._stageInputModeChangedId = 0;
-        this._capturedEventId = 0;
-        this._togglingFocusGrabMode = false;
-
-        Main.overview.connect('showing', Lang.bind(this,
-            function() {
-                this._toggleFocusGrabMode();
-            }));
-        Main.overview.connect('hidden', Lang.bind(this,
-            function() {
-                this._toggleFocusGrabMode();
-            }));
-    },
-
-    grabFocus: function(actor) {
-        if (this._hasFocus)
-            return;
-
-        this.actor = actor;
-
-        this._prevFocusedWindow = global.display.focus_window;
-        this._prevKeyFocusActor = global.stage.get_key_focus();
-
-        if (global.stage_input_mode == Shell.StageInputMode.NONREACTIVE ||
-            global.stage_input_mode == Shell.StageInputMode.NORMAL)
-            global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
-
-        // Use captured-event to notice clicks outside the focused actor
-        // without consuming them.
-        this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
-
-        this._stageInputModeChangedId = global.connect('notify::stage-input-mode', Lang.bind(this, this._stageInputModeChanged));
-        this._focusActorChangedId = global.stage.connect('notify::key-focus', Lang.bind(this, this._focusActorChanged));
-
-        this._hasFocus = true;
-
-        if (!this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false))
-            this.actor.grab_key_focus();
-
-        this.emit('focus-grabbed');
-    },
-
-    _focusActorChanged: function() {
-        let focusedActor = global.stage.get_key_focus();
-        if (!focusedActor || !this.actor.contains(focusedActor)) {
-            this._prevKeyFocusActor = null;
-            this.ungrabFocus();
-        }
-    },
-
-    _stageInputModeChanged: function() {
-        this.ungrabFocus();
-    },
-
-    _onCapturedEvent: function(actor, event) {
-        let source = event.get_source();
-        switch (event.type()) {
-            case Clutter.EventType.BUTTON_PRESS:
-                if (!this.actor.contains(source) &&
-                    !Main.layoutManager.keyboardBox.contains(source))
-                    this.emit('button-pressed', source);
-                break;
-            case Clutter.EventType.KEY_PRESS:
-                let symbol = event.get_key_symbol();
-                if (symbol == Clutter.Escape) {
-                    this.emit('escape-pressed');
-                    return true;
-                }
-                break;
-        }
-
-        return false;
-    },
-
-    ungrabFocus: function() {
-        if (!this._hasFocus)
-            return;
-
-        if (this._focusActorChangedId > 0) {
-            global.stage.disconnect(this._focusActorChangedId);
-            this._focusActorChangedId = 0;
-        }
-
-        if (this._stageInputModeChangedId) {
-            global.disconnect(this._stageInputModeChangedId);
-            this._stageInputModeChangedId = 0;
-        }
-
-        if (this._capturedEventId > 0) {
-            global.stage.disconnect(this._capturedEventId);
-            this._capturedEventId = 0;
-        }
-
-        this._hasFocus = false;
-        this.emit('focus-ungrabbed');
-
-        if (this._prevFocusedWindow && !global.display.focus_window) {
-            global.display.set_input_focus_window(this._prevFocusedWindow, false, global.get_current_time());
-            this._prevFocusedWindow = null;
-        }
-        if (this._prevKeyFocusActor) {
-            global.stage.set_key_focus(this._prevKeyFocusActor);
-            this._prevKeyFocusActor = null;
-        } else {
-            // We don't want to keep any actor inside the previously focused actor focused.
-            let focusedActor = global.stage.get_key_focus();
-            if (focusedActor && this.actor.contains(focusedActor))
-                global.stage.set_key_focus(null);
-        }
-        if (!this._togglingFocusGrabMode)
-            this.actor = null;
-    },
-
-    // Because we grab focus differently in the overview
-    // and in the main view, we need to change how it is
-    // done when we move between the two.
-    _toggleFocusGrabMode: function() {
-        if (this._hasFocus) {
-            this._togglingFocusGrabMode = true;
-            this.ungrabFocus();
-            this.grabFocus(this.actor);
-            this._togglingFocusGrabMode = false;
-        }
-    }
-});
-Signals.addSignalMethods(FocusGrabber.prototype);
 
 // Notification:
 // @source: the notification's Source
@@ -1492,20 +1352,9 @@ const MessageTray = new Lang.Class({
 
         this.idleMonitor = Shell.IdleMonitor.get();
 
-        this._focusGrabber = new FocusGrabber();
-        this._focusGrabber.connect('focus-grabbed', Lang.bind(this,
-            function() {
-                if (this._summaryBoxPointer.bin.child)
-                    this._lock();
-            }));
-        this._focusGrabber.connect('focus-ungrabbed', Lang.bind(this, this._unlock));
-        this._focusGrabber.connect('button-pressed', Lang.bind(this,
-           function(focusGrabber, source) {
-               if (this._clickedSummaryItem && !this._clickedSummaryItem.actor.contains(source))
-                   this._unsetClickedSummaryItem();
-               this._focusGrabber.ungrabFocus();
-           }));
-        this._focusGrabber.connect('escape-pressed', Lang.bind(this, this._escapeTray));
+        this._grabHelper = new GrabHelper.GrabHelper(this.actor);
+        this._grabHelper.addActor(this._summaryBoxPointer.actor);
+        this._grabHelper.addActor(this.actor);
 
         Main.layoutManager.keyboardBox.connect('notify::hover', Lang.bind(this, this._onKeyboardHoverChanged));
 
@@ -1551,23 +1400,13 @@ const MessageTray = new Lang.Class({
             function() {
                 this._overviewVisible = true;
                 this.actor.add_style_pseudo_class('overview');
-                if (this._locked) {
-                    this._unsetClickedSummaryItem();
-                    this._unlock();
-                } else {
-                    this._updateState();
-                }
+                this._updateState();
             }));
         Main.overview.connect('hiding', Lang.bind(this,
             function() {
                 this._overviewVisible = false;
                 this.actor.remove_style_pseudo_class('overview');
-                if (this._locked) {
-                    this._unsetClickedSummaryItem();
-                    this._unlock();
-                } else {
-                    this._updateState();
-                }
+                this._updateState();
             }));
 
         this._isScreenLocked = false;
@@ -1681,7 +1520,7 @@ const MessageTray = new Lang.Class({
             needUpdate = true;
         }
         if (this._clickedSummaryItem == summaryItemToRemove) {
-            this._unsetClickedSummaryItem();
+            this._setClickedSummaryItem(null);
             needUpdate = true;
         }
 
@@ -1776,17 +1615,12 @@ const MessageTray = new Lang.Class({
     },
 
     _onSummaryItemClicked: function(summaryItem, button) {
-        if (summaryItem.source.handleSummaryClick())
-            this._unsetClickedSummaryItem();
-        else if (!this._clickedSummaryItem ||
-                 this._clickedSummaryItem != summaryItem ||
-                 this._clickedSummaryItemMouseButton != button) {
-            this._clickedSummaryItem = summaryItem;
-            this._clickedSummaryItemMouseButton = button;
-
-            summaryItem.source.emit('summary-item-clicked', button);
+        if (summaryItem.source.handleSummaryClick()) {
+            this._setClickedSummaryItem(null);
+        } else if (!this._clickedSummaryItem) {
+            this._setClickedSummaryItem(summaryItem, button);
         } else {
-            this._unsetClickedSummaryItem();
+            this._setClickedSummaryItem(null);
         }
 
         this._updateState();
@@ -1918,6 +1752,8 @@ const MessageTray = new Lang.Class({
         this._unlock();
         this._pointerInTray = false;
         this._pointerInSummary = false;
+        this._traySummoned = false;
+        this._setClickedSummaryItem(null);
         this._updateNotificationTimeout(0);
         this._updateState();
     },
@@ -2223,7 +2059,8 @@ const MessageTray = new Lang.Class({
     },
 
     _hideNotification: function() {
-        this._focusGrabber.ungrabFocus();
+        this._grabHelper.ungrab({ actor: this._notification.actor });
+
         if (this._notificationExpandedId) {
             this._notification.disconnect(this._notificationExpandedId);
             this._notificationExpandedId = 0;
@@ -2255,7 +2092,8 @@ const MessageTray = new Lang.Class({
     _expandNotification: function(autoExpanding) {
         // Don't grab focus in notifications that are auto-expanded.
         if (!autoExpanding)
-            this._focusGrabber.grabFocus(this._notification.actor);
+            this._grabHelper.grab({ actor: this._notification.actor,
+                                    grabFocus: true });
 
         if (!this._notificationExpandedId)
             this._notificationExpandedId =
@@ -2284,7 +2122,8 @@ const MessageTray = new Lang.Class({
     // We use this function to grab focus when the user moves the pointer
     // to a notification with CRITICAL urgency that was already auto-expanded.
     _ensureNotificationFocused: function() {
-        this._focusGrabber.grabFocus(this._notification.actor);
+        this._grabHelper.grab({ actor: this._notification.actor,
+                                grabFocus: true });
     },
 
     _showSummary: function() {
@@ -2331,16 +2170,10 @@ const MessageTray = new Lang.Class({
             this._summaryBoxPointer.bin.child = this._clickedSummaryItem.rightClickMenu;
         }
 
-        this._focusGrabber.grabFocus(this._summaryBoxPointer.bin.child);
-
-        this._clickedSummaryItemAllocationChangedId =
-            this._clickedSummaryItem.actor.connect('allocation-changed',
-                                                   Lang.bind(this, this._adjustSummaryBoxPointerPosition));
-        // _clickedSummaryItem.actor can change absolute position without changing allocation
-        this._summaryMotionId = this._summary.connect('allocation-changed',
-                                                      Lang.bind(this, this._adjustSummaryBoxPointerPosition));
-        this._trayMotionId = Main.layoutManager.trayBox.connect('notify::anchor-y',
-                                                                Lang.bind(this, this._adjustSummaryBoxPointerPosition));
+        this._grabHelper.grab({ actor: this._summaryBoxPointer.bin.child,
+                                grabFocus: true,
+                                onUngrab: Lang.bind(this, this._onSummaryBoxPointerUngrabbed) });
+        this._lock();
 
         this._summaryBoxPointer.actor.opacity = 0;
         this._summaryBoxPointer.actor.show();
@@ -2357,7 +2190,6 @@ const MessageTray = new Lang.Class({
         if (this._summaryBoxPointerItem.notificationStack.get_n_children() == 0)
             this._hideSummaryBoxPointer();
         this._adjustSummaryBoxPointerPosition();
-
     },
 
     _adjustSummaryBoxPointerPosition: function() {
@@ -2367,8 +2199,13 @@ const MessageTray = new Lang.Class({
         this._summaryBoxPointer.setPosition(this._clickedSummaryItem.actor, 0);
     },
 
-    _unsetClickedSummaryItem: function() {
-        if (this._clickedSummaryItemAllocationChangedId) {
+    _setClickedSummaryItem: function(item, button) {
+        if (item == this._clickedSummaryItem &&
+            button == this._clickedSummaryItemMouseButton)
+            return;
+
+        if (this._clickedSummaryItem) {
+            this._clickedSummaryItem.actor.remove_style_pseudo_class('selected');
             this._clickedSummaryItem.actor.disconnect(this._clickedSummaryItemAllocationChangedId);
             this._summary.disconnect(this._summaryMotionId);
             Main.layoutManager.trayBox.disconnect(this._trayMotionId);
@@ -2377,33 +2214,46 @@ const MessageTray = new Lang.Class({
             this._trayMotionId = 0;
         }
 
-        if (this._clickedSummaryItem)
-            this._clickedSummaryItem.actor.remove_style_pseudo_class('selected');
-        this._clickedSummaryItem = null;
-        this._clickedSummaryItemMouseButton = -1;
+        this._clickedSummaryItem = item;
+        this._clickedSummaryItemMouseButton = button;
+
+        if (this._clickedSummaryItem) {
+            this._clickedSummaryItem.source.emit('summary-item-clicked', button);
+            this._clickedSummaryItem.actor.add_style_pseudo_class('selected');
+            this._clickedSummaryItemAllocationChangedId =
+                this._clickedSummaryItem.actor.connect('allocation-changed',
+                                                       Lang.bind(this, this._adjustSummaryBoxPointerPosition));
+            // _clickedSummaryItem.actor can change absolute position without changing allocation
+            this._summaryMotionId = this._summary.connect('allocation-changed',
+                                                          Lang.bind(this, this._adjustSummaryBoxPointerPosition));
+            this._trayMotionId = Main.layoutManager.trayBox.connect('notify::anchor-y',
+                                                                    Lang.bind(this, this._adjustSummaryBoxPointerPosition));
+        }
     },
 
-    _hideSummaryBoxPointer: function() {
-        // We should be sure to hide the box pointer if all notifications in it are destroyed while
-        // it is hiding, so that we don't show an an animation of an empty blob being hidden.
-        if (this._summaryBoxPointerState == State.HIDING &&
-            this._summaryBoxPointerItem.notificationStack.get_n_children() == 0) {
-            this._summaryBoxPointer.actor.hide();
-            return;
-        }
-
+    _onSummaryBoxPointerUngrabbed: function() {
         this._summaryBoxPointerState = State.HIDING;
-        // Unset this._clickedSummaryItem if we are no longer showing the summary
-        if (this._summaryState != State.SHOWN)
-            this._unsetClickedSummaryItem();
+        this._setClickedSummaryItem(null);
+        this._unlock();
 
-        this._focusGrabber.ungrabFocus();
         if (this._summaryBoxPointerItem.source.notifications.length == 0) {
             this._summaryBoxPointer.actor.hide();
             this._hideSummaryBoxPointerCompleted();
         } else {
             this._summaryBoxPointer.hide(BoxPointer.PopupAnimation.FULL, Lang.bind(this, this._hideSummaryBoxPointerCompleted));
         }
+    },
+
+    _hideSummaryBoxPointer: function() {
+        // We should be sure to hide the box pointer if all notifications in it are destroyed while
+        // it is hiding, so that we don't show an animation of an empty blob being hidden.
+        if (this._summaryBoxPointerState == State.HIDING &&
+            this._summaryBoxPointerItem.notificationStack.get_n_children() == 0) {
+            this._summaryBoxPointer.actor.hide();
+            return;
+        }
+
+        this._grabHelper.ungrab({ actor: this._summaryBoxPointer.bin.child });
     },
 
     _hideSummaryBoxPointerCompleted: function() {
