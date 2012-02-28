@@ -1182,7 +1182,6 @@ recorder_open_outfile (ShellRecorder *recorder)
   const char *pattern;
   int flags;
   int outfile = -1;
-  char *path = NULL;
 
   recorder->count++;
 
@@ -1194,6 +1193,7 @@ recorder_open_outfile (ShellRecorder *recorder)
     {
       GString *filename = g_string_new (NULL);
       const char *p;
+      char *path;
 
       for (p = pattern; *p; p++)
         {
@@ -1275,6 +1275,7 @@ recorder_open_outfile (ShellRecorder *recorder)
           g_printerr ("Recording to %s\n", path);
 
           g_string_free (filename, TRUE);
+          g_free (path);
           goto out;
         }
 
@@ -1283,6 +1284,7 @@ recorder_open_outfile (ShellRecorder *recorder)
         {
           g_warning ("Cannot open output file '%s': %s", filename->str, g_strerror (errno));
           g_string_free (filename, TRUE);
+          g_free (path);
           goto out;
         }
 
@@ -1293,16 +1295,17 @@ recorder_open_outfile (ShellRecorder *recorder)
            */
           g_warning ("Name collision with existing file for '%s'", filename->str);
           g_string_free (filename, TRUE);
+          g_free (path);
           goto out;
         }
 
       g_string_free (filename, TRUE);
+      g_free (path);
 
       increment_unique (unique);
     }
 
  out:
-  g_free (path);
 
   if (outfile != -1)
     recorder->unique = g_string_free (unique, FALSE);
