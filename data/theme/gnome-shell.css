@@ -842,16 +842,13 @@ StScrollBar StButton#vhandle:hover
     transition-duration: 100;
 }
 
+.contact:focus,
+.app-well-app:focus > .overview-icon,
+.search-result-content:focus > .overview-icon,
 .contact:selected,
 .app-well-app:selected > .overview-icon,
 .search-result-content:selected > .overview-icon {
     background-color: rgba(255,255,255,0.33);
-}
-
-.contact:focus,
-.app-well-app:focus > .overview-icon,
-.search-result-content:focus > .overview-icon {
-    border: 1px solid #cccccc;
 }
 
 /* LookingGlass */
