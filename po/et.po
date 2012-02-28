@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-18 00:47+0000\n"
-"PO-Revision-Date: 2012-02-18 02:56+0200\n"
+"POT-Creation-Date: 2012-02-28 13:56+0000\n"
+"PO-Revision-Date: 2012-02-28 17:43+0200\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
 "Language: et\n"
@@ -31,7 +31,7 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Aknahaldur ja rakenduste käivitaja"
 
-msgid "GNOME Shell Extensions Preferences"
+msgid "GNOME Shell Extension Preferences"
 msgstr "GNOME Shelli laienduste eelistused"
 
 msgid "Configure GNOME Shell Extensions"
@@ -92,6 +92,20 @@ msgstr "Käsudialoogi (Alt-F2) ajalugu"
 # suurendusklaasidialoog? miks ka mitte :)
 msgid "History for the looking glass dialog"
 msgstr "Otsingudialoogi ajalugu"
+
+msgid ""
+"Internally used to store the last IM presence explicitly set by the user. "
+"The value here is from the TpConnectionPresenceType enumeration."
+msgstr ""
+"Kasutatakse kasutaja poolt viimati vahetult määratud kiirsuhtluse oleku "
+"salvestamiseks. See väärtus pärineb TpConnectionPresenceType nummerdusest."
+
+msgid ""
+"Internally used to store the last session presence status for the user. The "
+"value here is from the GsmPresenceStatus enumeration."
+msgstr ""
+"Kasutatakse kasutaja poolt viimati vahetult määratud kiirsuhtluse oleku "
+"salvestamiseks. See väärtus pärineb GsmPresenceStatus nummerdusest."
 
 msgid "Show the week date in the calendar"
 msgstr "Kalendris näidatakse kuupäeva nädalavormingus"
@@ -448,9 +462,6 @@ msgstr "%a, %l:%M %p"
 msgid "%A %B %e, %Y"
 msgstr "%A, %d. %B %Y"
 
-msgid "RECENT ITEMS"
-msgstr "HILJUTISED DOKUMENDID"
-
 #, c-format
 msgctxt "title"
 msgid "Log Out %s"
@@ -577,6 +588,11 @@ msgstr "Kuva lähtekoodi"
 
 msgid "Web Page"
 msgstr "Veebileht"
+
+#. Translators: this is a filename used for screencast recording
+#, no-c-format
+msgid "Screencast from %d %t"
+msgstr "Ekraanipilt %d %t"
 
 msgid "Open"
 msgstr "Ava"
