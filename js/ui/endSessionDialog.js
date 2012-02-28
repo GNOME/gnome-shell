@@ -505,7 +505,7 @@ const EndSessionDialog = new Lang.Class({
         this._type = type;
 
         if (!(this._type in DialogContent)) {
-            invocation.report_dbus_error('org.gnome.Shell.ModalDialog.TypeError',
+            invocation.return_dbus_error('org.gnome.Shell.ModalDialog.TypeError',
                                          "Unknown dialog type requested");
             return;
         }
@@ -521,7 +521,7 @@ const EndSessionDialog = new Lang.Class({
         this._updateButtons();
 
         if (!this.open(timestamp)) {
-            invocation.report_dbus_error('org.gnome.Shell.ModalDialog.GrabError',
+            invocation.return_dbus_error('org.gnome.Shell.ModalDialog.GrabError',
                                          "Cannot grab pointer and keyboard");
             return;
         }
