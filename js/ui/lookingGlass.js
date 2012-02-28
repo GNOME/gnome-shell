@@ -1140,7 +1140,7 @@ const LookingGlass = new Lang.Class({
     // Handle key events which are relevant for all tabs of the LookingGlass
     _globalKeyPressEvent : function(actor, event) {
         let symbol = event.get_key_symbol();
-        let modifierState = Shell.get_event_state(event);
+        let modifierState = event.get_state();
         if (symbol == Clutter.Escape) {
             if (this._objInspector.actor.visible) {
                 this._objInspector.close();

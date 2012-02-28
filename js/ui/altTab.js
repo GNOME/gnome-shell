@@ -265,7 +265,7 @@ const AltTabPopup = new Lang.Class({
 
     _keyPressEvent : function(actor, event) {
         let keysym = event.get_key_symbol();
-        let event_state = Shell.get_event_state(event);
+        let event_state = event.get_state();
         let backwards = event_state & Clutter.ModifierType.SHIFT_MASK;
         let action = global.display.get_keybinding_action(event.get_key_code(), event_state);
 

@@ -242,7 +242,7 @@ const RunDialog = new Lang.Class({
             let symbol = e.get_key_symbol();
             if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
                 this.popModal();
-                if (Shell.get_event_state(e) & Clutter.ModifierType.CONTROL_MASK)
+                if (e.get_state() & Clutter.ModifierType.CONTROL_MASK)
                     this._run(o.get_text(), true);
                 else
                     this._run(o.get_text(), false);

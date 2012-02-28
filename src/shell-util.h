@@ -25,9 +25,6 @@ char    *shell_util_normalize_and_casefold     (const char       *str);
 char    *shell_util_format_date                (const char       *format,
                                                 gint64            time_ms);
 
-ClutterModifierType
-         shell_get_event_state                 (ClutterEvent     *event);
-
 void     shell_write_soup_message_to_stream    (GOutputStream    *stream,
                                                 SoupMessage      *message,
                                                 GError          **error);

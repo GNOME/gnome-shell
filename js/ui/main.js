@@ -572,7 +572,7 @@ function _globalKeyPressHandler(actor, event) {
 
     let symbol = event.get_key_symbol();
     let keyCode = event.get_key_code();
-    let modifierState = Shell.get_event_state(event);
+    let modifierState = event.get_state();
 
     // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
     let action = global.display.get_keybinding_action(keyCode, modifierState);

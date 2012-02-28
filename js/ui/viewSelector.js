@@ -511,7 +511,7 @@ const ViewSelector = new Lang.Class({
     },
 
     _onStageKeyPress: function(actor, event) {
-        let modifiers = Shell.get_event_state(event);
+        let modifiers = event.get_state();
         let symbol = event.get_key_symbol();
 
         if (symbol == Clutter.Escape) {

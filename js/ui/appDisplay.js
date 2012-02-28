@@ -339,7 +339,7 @@ const AppSearchProvider = new Lang.Class({
                                         timestamp: 0 });
 
         let event = Clutter.get_current_event();
-        let modifiers = event ? Shell.get_event_state(event) : 0;
+        let modifiers = event ? event.get_state() : 0;
         let openNewWindow = modifiers & Clutter.ModifierType.CONTROL_MASK;
 
         if (openNewWindow)
@@ -584,7 +584,7 @@ const AppWellIcon = new Lang.Class({
 
     _onActivate: function (event) {
         this.emit('launching');
-        let modifiers = Shell.get_event_state(event);
+        let modifiers = event.get_state();
 
         if (this._onActivateOverride) {
             this._onActivateOverride(event);

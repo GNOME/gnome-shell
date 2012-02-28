@@ -233,7 +233,7 @@ const CtrlAltTabPopup = new Lang.Class({
 
     _keyPressEvent : function(actor, event) {
         let keysym = event.get_key_symbol();
-        let shift = (Shell.get_event_state(event) & Clutter.ModifierType.SHIFT_MASK);
+        let shift = (event.get_state() & Clutter.ModifierType.SHIFT_MASK);
         if (shift && keysym == Clutter.KEY_Tab)
             keysym = Clutter.ISO_Left_Tab;
 
