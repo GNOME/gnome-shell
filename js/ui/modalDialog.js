@@ -87,6 +87,7 @@ const ModalDialog = new Lang.Class({
                                  y_align: St.Align.START });
 
         this._buttonLayout = new St.BoxLayout({ style_class: 'modal-dialog-button-box',
+                                                visible:     false,
                                                 vertical:    false });
         this._dialogLayout.add(this._buttonLayout,
                                { expand:  true,
@@ -107,6 +108,8 @@ const ModalDialog = new Lang.Class({
 
         this._buttonLayout.destroy_all_children();
         this._actionKeys = {};
+
+        this._buttonLayout.visible = (buttons.length > 0);
 
         for (let i = 0; i < buttons.length; i++) {
             let buttonInfo = buttons[i];
