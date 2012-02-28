@@ -1163,7 +1163,7 @@ get_absolute_path (char *maybe_relative)
     path = g_strdup (maybe_relative);
   else
     {
-      char *video_dir = g_get_user_special_dir (G_USER_DIRECTORY_VIDEOS);
+      const char *video_dir = g_get_user_special_dir (G_USER_DIRECTORY_VIDEOS);
       path = g_build_filename (video_dir, maybe_relative, NULL);
     }
 
@@ -1182,7 +1182,7 @@ recorder_open_outfile (ShellRecorder *recorder)
   const char *pattern;
   int flags;
   int outfile = -1;
-  char *path;
+  char *path = NULL;
 
   recorder->count++;
 
