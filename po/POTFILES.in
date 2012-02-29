@@ -15,6 +15,7 @@ js/ui/dateMenu.js
 js/ui/endSessionDialog.js
 js/ui/extensionSystem.js
 js/ui/keyboard.js
+js/ui/keyringPrompt.js
 js/ui/lookingGlass.js
 js/ui/main.js
 js/ui/messageTray.js
@@ -45,6 +46,7 @@ src/main.c
 src/shell-app.c
 src/shell-app-system.c
 src/shell-global.c
+src/shell-keyring-prompt.c
 src/shell-mobile-providers.c
 src/shell-polkit-authentication-agent.c
 src/shell-util.c
