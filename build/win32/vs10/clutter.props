@@ -188,6 +188,8 @@ copy ..\..\..\clutter\clutter-layout-meta.h $(CopyDir)\include\clutter-$(Clutter
 
 copy ..\..\..\clutter\clutter-list-model.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
+copy ..\..\..\clutter\clutter-macros.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
 copy ..\..\..\clutter\clutter-main.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-marshal.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
@@ -240,8 +242,6 @@ copy ..\..\..\clutter\clutter-types.h $(CopyDir)\include\clutter-$(ClutterApiVer
 
 copy ..\..\..\clutter\clutter-units.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
-copy ..\..\..\clutter\clutter-util.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
-
 copy ..\..\..\clutter\clutter-version.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\win32\clutter-win32.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
@@ -250,6 +250,10 @@ copy ..\..\..\clutter\win32\clutter-win32.h $(CopyDir)\include\clutter-$(Clutter
 mkdir $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
 
 copy ..\..\..\clutter\deprecated\clutter-actor.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
+
+copy ..\..\..\clutter\deprecated\clutter-animatable.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
+
+copy ..\..\..\clutter\deprecated\clutter-animation.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
 
 copy ..\..\..\clutter\deprecated\clutter-backend.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
 
@@ -268,6 +272,8 @@ copy ..\..\..\clutter\deprecated\clutter-behaviour-rotate.h $(CopyDir)\include\c
 copy ..\..\..\clutter\deprecated\clutter-behaviour-scale.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
 
 copy ..\..\..\clutter\deprecated\clutter-box.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
+
+copy ..\..\..\clutter\deprecated\clutter-cairo-texture.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
 
 copy ..\..\..\clutter\deprecated\clutter-container.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
 
@@ -289,9 +295,15 @@ copy ..\..\..\clutter\deprecated\clutter-shader.h $(CopyDir)\include\clutter-$(C
 
 copy ..\..\..\clutter\deprecated\clutter-stage.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
 
+copy ..\..\..\clutter\deprecated\clutter-stage-manager.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
+
+copy ..\..\..\clutter\deprecated\clutter-texture.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
+
 copy ..\..\..\clutter\deprecated\clutter-timeline.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
 
 copy ..\..\..\clutter\deprecated\clutter-timeout-pool.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
+
+copy ..\..\..\clutter\deprecated\clutter-util.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
 
 
 mkdir $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
