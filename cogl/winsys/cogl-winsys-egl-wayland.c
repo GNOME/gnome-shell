@@ -37,6 +37,7 @@
 #include "cogl-winsys-egl-private.h"
 #include "cogl-renderer-private.h"
 #include "cogl-onscreen-private.h"
+#include "cogl-wayland-renderer.h"
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 
