@@ -30,121 +30,25 @@
 
 #include <string.h>
 
-/* TO rgba */
+#define component_type guint8
+/* We want to specially optimise the packing when we are converting
+   to/from an 8-bit type so that it won't do anything. That way for
+   example if we are just doing a swizzle conversion then the inner
+   loop for the conversion will be really simple */
+#define UNPACK_BYTE(b) (b)
+#define PACK_BYTE(b) (b)
+#include "cogl-bitmap-packing.h"
+#undef PACK_BYTE
+#undef UNPACK_BYTE
+#undef component_type
 
-inline static void
-_cogl_g_to_rgba (const guint8 *src, guint8 *dst)
-{
-  dst[0] = src[0];
-  dst[1] = src[0];
-  dst[2] = src[0];
-  dst[3] = 255;
-}
-
-inline static void
-_cogl_rgb_to_rgba (const guint8 *src, guint8 *dst)
-{
-  dst[0] = src[0];
-  dst[1] = src[1];
-  dst[2] = src[2];
-  dst[3] = 255;
-}
-
-inline static void
-_cogl_bgr_to_rgba (const guint8 *src, guint8 *dst)
-{
-  dst[0] = src[2];
-  dst[1] = src[1];
-  dst[2] = src[0];
-  dst[3] = 255;
-}
-
-inline static void
-_cogl_bgra_to_rgba (const guint8 *src, guint8 *dst)
-{
-  dst[0] = src[2];
-  dst[1] = src[1];
-  dst[2] = src[0];
-  dst[3] = src[3];
-}
-
-inline static void
-_cogl_argb_to_rgba (const guint8 *src, guint8 *dst)
-{
-  dst[0] = src[1];
-  dst[1] = src[2];
-  dst[2] = src[3];
-  dst[3] = src[0];
-}
-
-inline static void
-_cogl_abgr_to_rgba (const guint8 *src, guint8 *dst)
-{
-  dst[0] = src[3];
-  dst[1] = src[2];
-  dst[2] = src[1];
-  dst[3] = src[0];
-}
-
-inline static void
-_cogl_rgba_to_rgba (const guint8 *src, guint8 *dst)
-{
-  dst[0] = src[0];
-  dst[1] = src[1];
-  dst[2] = src[2];
-  dst[3] = src[3];
-}
-
-/* FROM rgba */
-
-inline static void
-_cogl_rgba_to_g (const guint8 *src, guint8 *dst)
-{
-  dst[0] = (src[0] + src[1] + src[2]) / 3;
-}
-
-inline static void
-_cogl_rgba_to_rgb (const guint8 *src, guint8 *dst)
-{
-  dst[0] = src[0];
-  dst[1] = src[1];
-  dst[2] = src[2];
-}
-
-inline static void
-_cogl_rgba_to_bgr (const guint8 *src, guint8 *dst)
-{
-  dst[0] = src[2];
-  dst[1] = src[1];
-  dst[2] = src[0];
-}
-
-inline static void
-_cogl_rgba_to_bgra (const guint8 *src, guint8 *dst)
-{
-  dst[0] = src[2];
-  dst[1] = src[1];
-  dst[2] = src[0];
-  dst[3] = src[3];
-}
-
-inline static void
-_cogl_rgba_to_argb (const guint8 *src, guint8 *dst)
-{
-  dst[0] = src[3];
-  dst[1] = src[0];
-  dst[2] = src[1];
-  dst[3] = src[2];
-}
-
-inline static void
-_cogl_rgba_to_abgr (const guint8 *src, guint8 *dst)
-{
-  dst[0] = src[3];
-  dst[1] = src[2];
-  dst[2] = src[1];
-  dst[3] = src[0];
-}
+#define component_type guint16
+#define UNPACK_BYTE(b) (((b) * 65535 + 127) / 255)
+#define PACK_BYTE(b) (((b) * 255 + 32767) / 65535)
+#include "cogl-bitmap-packing.h"
+#undef PACK_BYTE
+#undef UNPACK_BYTE
+#undef component_type
 
 /* (Un)Premultiplication */
 
@@ -300,30 +204,6 @@ _cogl_premult_alpha_last_four_pixels_sse2 (guint8 *p)
 #endif /* COGL_USE_PREMULT_SSE2 */
 
 static gboolean
-_cogl_bitmap_fallback_can_convert (CoglPixelFormat src, CoglPixelFormat dst)
-{
-  if (src == dst)
-    return FALSE;
-
-  switch (src & ~COGL_PREMULT_BIT)
-    {
-    case COGL_PIXEL_FORMAT_G_8:
-    case COGL_PIXEL_FORMAT_RGB_888:
-    case COGL_PIXEL_FORMAT_BGR_888:
-    case COGL_PIXEL_FORMAT_RGBA_8888:
-    case COGL_PIXEL_FORMAT_BGRA_8888:
-    case COGL_PIXEL_FORMAT_ARGB_8888:
-    case COGL_PIXEL_FORMAT_ABGR_8888:
-      return TRUE;
-
-    default:
-      return FALSE;
-    }
-
-  return TRUE;
-}
-
-static gboolean
 _cogl_bitmap_fallback_can_premult (CoglPixelFormat format)
 {
   switch (format & ~COGL_PREMULT_BIT)
@@ -339,6 +219,54 @@ _cogl_bitmap_fallback_can_premult (CoglPixelFormat format)
     }
 }
 
+static gboolean
+_cogl_bitmap_needs_short_temp_buffer (CoglPixelFormat format)
+{
+  /* If the format is using more than 8 bits per component then we'll
+     unpack into a 16-bit per component buffer instead of 8-bit so we
+     won't lose as much precision. If we ever add support for formats
+     with more than 16 bits for at least one of the components then we
+     should probably do something else here, maybe convert to
+     floats */
+  switch (format)
+    {
+    case COGL_PIXEL_FORMAT_ANY:
+    case COGL_PIXEL_FORMAT_YUV:
+      g_assert_not_reached ();
+
+    case COGL_PIXEL_FORMAT_A_8:
+    case COGL_PIXEL_FORMAT_RGB_565:
+    case COGL_PIXEL_FORMAT_RGBA_4444:
+    case COGL_PIXEL_FORMAT_RGBA_5551:
+    case COGL_PIXEL_FORMAT_G_8:
+    case COGL_PIXEL_FORMAT_RGB_888:
+    case COGL_PIXEL_FORMAT_BGR_888:
+    case COGL_PIXEL_FORMAT_RGBA_8888:
+    case COGL_PIXEL_FORMAT_BGRA_8888:
+    case COGL_PIXEL_FORMAT_ARGB_8888:
+    case COGL_PIXEL_FORMAT_ABGR_8888:
+    case COGL_PIXEL_FORMAT_RGBA_8888_PRE:
+    case COGL_PIXEL_FORMAT_BGRA_8888_PRE:
+    case COGL_PIXEL_FORMAT_ARGB_8888_PRE:
+    case COGL_PIXEL_FORMAT_ABGR_8888_PRE:
+    case COGL_PIXEL_FORMAT_RGBA_4444_PRE:
+    case COGL_PIXEL_FORMAT_RGBA_5551_PRE:
+      return FALSE;
+
+    case COGL_PIXEL_FORMAT_RGBA_1010102:
+    case COGL_PIXEL_FORMAT_BGRA_1010102:
+    case COGL_PIXEL_FORMAT_ARGB_2101010:
+    case COGL_PIXEL_FORMAT_ABGR_2101010:
+    case COGL_PIXEL_FORMAT_RGBA_1010102_PRE:
+    case COGL_PIXEL_FORMAT_BGRA_1010102_PRE:
+    case COGL_PIXEL_FORMAT_ARGB_2101010_PRE:
+    case COGL_PIXEL_FORMAT_ABGR_2101010_PRE:
+      return TRUE;
+    }
+
+  g_assert_not_reached ();
+}
+
 CoglBitmap *
 _cogl_bitmap_fallback_convert (CoglBitmap      *src_bmp,
                                CoglPixelFormat  dst_format)
@@ -347,33 +275,30 @@ _cogl_bitmap_fallback_convert (CoglBitmap      *src_bmp,
   guint8          *dst_data;
   guint8          *src;
   guint8          *dst;
-  int              src_bpp;
+  void            *tmp_row;
   int              dst_bpp;
   int              src_rowstride;
   int              dst_rowstride;
-  int              x,y;
-  guint8           temp_rgba[4] = {0,0,0,0};
+  int              y;
   int              width, height;
   CoglPixelFormat  src_format;
+  gboolean         use_16;
 
   src_format = _cogl_bitmap_get_format (src_bmp);
   src_rowstride = _cogl_bitmap_get_rowstride (src_bmp);
   width = _cogl_bitmap_get_width (src_bmp);
   height = _cogl_bitmap_get_height (src_bmp);
 
-  /* Make sure conversion supported */
-  if (!_cogl_bitmap_fallback_can_convert (src_format, dst_format))
-    return NULL;
-
   src_data = _cogl_bitmap_map (src_bmp, COGL_BUFFER_ACCESS_READ, 0);
   if (src_data == NULL)
     return NULL;
 
-  src_bpp = _cogl_pixel_format_get_bytes_per_pixel (src_format);
+  use_16 = _cogl_bitmap_needs_short_temp_buffer (dst_format);
+
   dst_bpp = _cogl_pixel_format_get_bytes_per_pixel (dst_format);
 
   /* Initialize destination bitmap */
-  dst_rowstride = sizeof(guint8) * dst_bpp * width;
+  dst_rowstride = (sizeof(guint8) * dst_bpp * width + 3) & ~3;
   /* Copy the premult bit if the new format has an alpha channel */
   if (COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (dst_format))
     dst_format = ((src_format & COGL_PREMULT_BIT) |
@@ -381,6 +306,9 @@ _cogl_bitmap_fallback_convert (CoglBitmap      *src_bmp,
 
   /* Allocate a new buffer to hold converted data */
   dst_data = g_malloc (height * dst_rowstride);
+  /* and a buffer to hold a temporary RGBA row */
+  tmp_row = g_malloc (width *
+                      (use_16 ? sizeof (guint16) : sizeof (guint8)) * 4);
 
   /* FIXME: Optimize */
   for (y = 0; y < height; y++)
@@ -388,57 +316,20 @@ _cogl_bitmap_fallback_convert (CoglBitmap      *src_bmp,
       src = src_data + y * src_rowstride;
       dst = dst_data + y * dst_rowstride;
 
-      for (x = 0; x < width; x++)
-	{
-	  /* FIXME: Would be nice to at least remove this inner
-           * branching, but not sure it can be done without
-           * rewriting of the whole loop */
-          switch (src_format & ~COGL_PREMULT_BIT)
-	    {
-	    case COGL_PIXEL_FORMAT_G_8:
-	      _cogl_g_to_rgba (src, temp_rgba); break;
-	    case COGL_PIXEL_FORMAT_RGB_888:
-	      _cogl_rgb_to_rgba (src, temp_rgba); break;
-	    case COGL_PIXEL_FORMAT_BGR_888:
-	      _cogl_bgr_to_rgba (src, temp_rgba); break;
-	    case COGL_PIXEL_FORMAT_RGBA_8888:
-	      _cogl_rgba_to_rgba (src, temp_rgba); break;
-	    case COGL_PIXEL_FORMAT_BGRA_8888:
-	      _cogl_bgra_to_rgba (src, temp_rgba); break;
-	    case COGL_PIXEL_FORMAT_ARGB_8888:
-	      _cogl_argb_to_rgba (src, temp_rgba); break;
-	    case COGL_PIXEL_FORMAT_ABGR_8888:
-	      _cogl_abgr_to_rgba (src, temp_rgba); break;
-	    default:
-	      break;
-	    }
+      if (use_16)
+        _cogl_unpack_guint16 (src_format, src, tmp_row, width);
+      else
+        _cogl_unpack_guint8 (src_format, src, tmp_row, width);
 
-	  switch (dst_format & ~COGL_PREMULT_BIT)
-	    {
-	    case COGL_PIXEL_FORMAT_G_8:
-	      _cogl_rgba_to_g (temp_rgba, dst); break;
-	    case COGL_PIXEL_FORMAT_RGB_888:
-	      _cogl_rgba_to_rgb (temp_rgba, dst); break;
-	    case COGL_PIXEL_FORMAT_BGR_888:
-	      _cogl_rgba_to_bgr (temp_rgba, dst); break;
-	    case COGL_PIXEL_FORMAT_RGBA_8888:
-	      _cogl_rgba_to_rgba (temp_rgba, dst); break;
-	    case COGL_PIXEL_FORMAT_BGRA_8888:
-	      _cogl_rgba_to_bgra (temp_rgba, dst); break;
-	    case COGL_PIXEL_FORMAT_ARGB_8888:
-	      _cogl_rgba_to_argb (temp_rgba, dst); break;
-	    case COGL_PIXEL_FORMAT_ABGR_8888:
-	      _cogl_rgba_to_abgr (temp_rgba, dst); break;
-	    default:
-	      break;
-	    }
-
-	  src += src_bpp;
-	  dst += dst_bpp;
-	}
+      if (use_16)
+        _cogl_pack_guint16 (dst_format, tmp_row, dst, width);
+      else
+        _cogl_pack_guint8 (dst_format, tmp_row, dst, width);
     }
 
   _cogl_bitmap_unmap (src_bmp);
+
+  g_free (tmp_row);
 
   return _cogl_bitmap_new_from_data (dst_data,
                                      dst_format,
