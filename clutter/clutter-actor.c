@@ -109,9 +109,9 @@
  *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
  * </xi:include>
  *   </programlisting></informalexample>
- *   <figure id="bin-layout">
+ *   <figure id="actor-example-image">
  *     <title>Actors</title>
- *     <graphic fileref="test-actor.png" format="PNG"/>
+ *     <graphic fileref="actor-example.png" format="PNG"/>
  *   </figure>
  * </refsect2>
  *

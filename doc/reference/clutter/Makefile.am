@@ -117,6 +117,7 @@ EXTRA_HFILES = \
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
 HTML_IMAGES = \
 	actor-box.png \
+	actor-example.png \
 	animator-key-frames.png \
 	bin-layout.png \
 	box-layout.png \
@@ -126,8 +127,7 @@ HTML_IMAGES = \
 	flow-layout-horizontal.png \
 	flow-layout-vertical.png \
 	path-alpha-func.png \
-	offscreen-redirect.png \
-	test-actor.png
+	offscreen-redirect.png
 
 # SVG used to generate the images above
 SVG_IMAGES = \
