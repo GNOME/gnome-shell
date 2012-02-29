@@ -95,16 +95,14 @@ test_actor_main (int argc, char *argv[])
   vase = clutter_actor_new ();
   clutter_actor_set_name (vase, "vase");
   clutter_actor_set_layout_manager (vase, clutter_box_layout_new ());
-  clutter_actor_set_margin_top (vase, 18);
-  clutter_actor_set_margin_bottom (vase, 18);
-  clutter_actor_set_margin_left (vase, 6);
-  clutter_actor_set_margin_right (vase, 6);
+  clutter_actor_set_background_color (vase, CLUTTER_COLOR_LightSkyBlue);
   clutter_actor_add_constraint (vase, clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5));
   clutter_actor_add_child (stage, vase);
 
   flowers[0] = clutter_actor_new ();
   clutter_actor_set_name (flowers[0], "flower.1");
   clutter_actor_set_size (flowers[0], SIZE, SIZE);
+  clutter_actor_set_margin_left (flowers[0], 12);
   clutter_actor_set_background_color (flowers[0], CLUTTER_COLOR_Red);
   clutter_actor_set_reactive (flowers[0], TRUE);
   clutter_actor_add_child (vase, flowers[0]);
@@ -115,6 +113,10 @@ test_actor_main (int argc, char *argv[])
   flowers[1] = clutter_actor_new ();
   clutter_actor_set_name (flowers[1], "flower.2");
   clutter_actor_set_size (flowers[1], SIZE, SIZE);
+  clutter_actor_set_margin_top (flowers[1], 12);
+  clutter_actor_set_margin_left (flowers[1], 6);
+  clutter_actor_set_margin_right (flowers[1], 6);
+  clutter_actor_set_margin_bottom (flowers[1], 12);
   clutter_actor_set_background_color (flowers[1], CLUTTER_COLOR_Yellow);
   clutter_actor_set_reactive (flowers[1], TRUE);
   clutter_actor_add_child (vase, flowers[1]);
@@ -129,6 +131,7 @@ test_actor_main (int argc, char *argv[])
   flowers[2] = clutter_actor_new ();
   clutter_actor_set_name (flowers[2], "flower.3");
   clutter_actor_set_size (flowers[2], SIZE, SIZE);
+  clutter_actor_set_margin_right (flowers[2], 12);
   clutter_actor_set_background_color (flowers[2], CLUTTER_COLOR_Green);
   clutter_actor_set_reactive (flowers[2], TRUE);
   clutter_actor_add_child (vase, flowers[2]);
