@@ -668,6 +668,7 @@ cally_actor_get_extents (AtkComponent *component,
   gint          top_level_x, top_level_y;
   gfloat        f_width, f_height;
   ClutterVertex verts[4];
+  ClutterActor  *stage = NULL;
 
   g_return_if_fail (CALLY_IS_ACTOR (component));
 
@@ -675,6 +676,12 @@ cally_actor_get_extents (AtkComponent *component,
   actor = CALLY_GET_CLUTTER_ACTOR (cally_actor);
 
   if (actor == NULL) /* actor is defunct */
+    return;
+
+  /* If the actor is not placed in any stage, we can't compute the
+   * extents */
+  stage = clutter_actor_get_stage (actor);
+  if (stage == NULL)
     return;
 
   clutter_actor_get_abs_allocation_vertices (actor, verts);
