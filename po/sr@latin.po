@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-25 00:17+0000\n"
-"PO-Revision-Date: 2012-02-25 08:49+0200\n"
+"POT-Creation-Date: 2012-02-26 17:09+0000\n"
+"PO-Revision-Date: 2012-02-29 11:26+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -733,8 +733,9 @@ msgstr "Internet stranica"
 #. Translators: this is a filename used for screencast recording
 #: ../js/ui/main.js:115
 #, no-c-format
-msgid "Screencast from %d %t."
-msgstr "Zapis ekrana sa %d %t."
+#| msgid "Screencast from %d %t."
+msgid "Screencast from %d %t"
+msgstr "Zapis ekrana sa %d %t"
 
 #: ../js/ui/messageTray.js:1197
 msgid "Open"
