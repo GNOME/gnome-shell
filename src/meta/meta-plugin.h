@@ -39,15 +39,7 @@
 #define META_IS_PLUGIN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_PLUGIN))
 #define META_PLUGIN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_PLUGIN, MetaPluginClass))
 
-/**
- * MetaPlugin: (skip)
- *
- */
 typedef struct _MetaPlugin        MetaPlugin;
-/**
- * MetaPluginClass: (skip)
- *
- */
 typedef struct _MetaPluginClass   MetaPluginClass;
 typedef struct _MetaPluginVersion MetaPluginVersion;
 typedef struct _MetaPluginInfo    MetaPluginInfo;
@@ -105,6 +97,10 @@ struct _MetaPluginClass
 
   /* General XEvent filter. This is fired *before* meta itself handles
    * an event. Return TRUE to block any further processing.
+   */
+  /**
+   * MetaPluginClass::xevent_filter:
+   * @event: (type xlib.XEvent):
    */
   gboolean (*xevent_filter) (MetaPlugin       *plugin,
                              XEvent           *event);
