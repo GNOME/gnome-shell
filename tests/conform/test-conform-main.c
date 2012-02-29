@@ -81,9 +81,7 @@ main (int argc, char **argv)
   UNPORTED_TEST (test_cogl_texture_pixmap_x11);
   UNPORTED_TEST (test_cogl_texture_get_set_data);
   UNPORTED_TEST (test_cogl_atlas_migration);
-  /* This doesn't currently work on GLES because there is no fallback
-     conversion to/from alpha-only */
-  ADD_TEST (test_cogl_read_alpha_texture, TEST_REQUIREMENT_GL);
+  ADD_TEST (test_cogl_read_texture_formats, 0);
 
   UNPORTED_TEST (test_cogl_vertex_buffer_contiguous);
   UNPORTED_TEST (test_cogl_vertex_buffer_interleved);
