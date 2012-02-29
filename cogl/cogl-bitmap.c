@@ -85,7 +85,8 @@ _cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
 {
   /* Do we need to unpremultiply? */
   if ((bmp->format & COGL_PREMULT_BIT) > 0 &&
-      (dst_format & COGL_PREMULT_BIT) == 0)
+      (dst_format & COGL_PREMULT_BIT) == 0 &&
+      COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (dst_format))
     /* Try unpremultiplying using imaging library */
     return (_cogl_bitmap_unpremult (bmp)
             /* ... or try fallback */
@@ -93,6 +94,7 @@ _cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
 
   /* Do we need to premultiply? */
   if ((bmp->format & COGL_PREMULT_BIT) == 0 &&
+      COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (bmp->format) &&
       (dst_format & COGL_PREMULT_BIT) > 0)
     /* Try premultiplying using imaging library */
     return (_cogl_bitmap_premult (bmp)

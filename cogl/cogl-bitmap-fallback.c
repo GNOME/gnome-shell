@@ -375,7 +375,7 @@ _cogl_bitmap_fallback_convert (CoglBitmap      *src_bmp,
   /* Initialize destination bitmap */
   dst_rowstride = sizeof(guint8) * dst_bpp * width;
   /* Copy the premult bit if the new format has an alpha channel */
-  if ((dst_format & COGL_A_BIT))
+  if (COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (dst_format))
     dst_format = ((src_format & COGL_PREMULT_BIT) |
                   (dst_format & ~COGL_PREMULT_BIT));
 

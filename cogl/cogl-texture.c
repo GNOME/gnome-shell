@@ -160,8 +160,7 @@ _cogl_texture_determine_internal_format (CoglPixelFormat src_format,
    * this. */
   if (dst_format == COGL_PIXEL_FORMAT_ANY)
     {
-      if ((src_format & COGL_A_BIT) &&
-          src_format != COGL_PIXEL_FORMAT_A_8)
+      if (COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (src_format))
         return src_format | COGL_PREMULT_BIT;
       else
         return src_format;
@@ -1231,7 +1230,7 @@ cogl_texture_get_data (CoglTexture     *texture,
 
   /* We can assume that whatever data GL gives us will have the
      premult status of the original texture */
-  if ((closest_format & COGL_A_BIT))
+  if (COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (closest_format))
     closest_format = ((closest_format & ~COGL_PREMULT_BIT) |
                       (texture_format & COGL_PREMULT_BIT));
 

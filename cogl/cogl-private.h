@@ -102,6 +102,18 @@ _cogl_pixel_format_get_bytes_per_pixel (CoglPixelFormat format);
 gboolean
 _cogl_pixel_format_is_endian_dependant (CoglPixelFormat format);
 
+/*
+ * COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT(format):
+ * @format: a #CoglPixelFormat
+ *
+ * Returns TRUE if the pixel format can take a premult bit. This is
+ * currently true for all formats that have an alpha channel except
+ * COGL_PIXEL_FORMAT_A_8 (because that doesn't have any other
+ * components to multiply by the alpha).
+ */
+#define COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT(format) \
+  (((format) & COGL_A_BIT) && (format) != COGL_PIXEL_FORMAT_A_8)
+
 G_END_DECLS
 
 #endif /* __COGL_PRIVATE_H__ */

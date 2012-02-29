@@ -438,7 +438,7 @@ _cogl_read_pixels_with_rowstride (int x,
   bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
   bmp_format = format;
 
-  if ((format & COGL_A_BIT))
+  if (COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (format & COGL_A_BIT))
     {
       /* We match the premultiplied state of the target buffer to the
        * premultiplied state of the framebuffer so that it will get
