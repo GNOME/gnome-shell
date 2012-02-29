@@ -865,9 +865,7 @@ clutter.vsenums_c:
 	rm clutter.vsenums_c
 
 EXTRA_DIST += \
-	clutter-version.h.win32	\
 	clutter-config.h.win32	\
-	clutter-version.h.win32.in	\
 	clutter.symbols	\
 	$(NULL)
 

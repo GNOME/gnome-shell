@@ -29,13 +29,6 @@ copy ..\..\..\clutter\clutter-config.h.win32 ..\..\..\clutter\clutter-config.h
 :DONE_CLUTTER_CONFIG_H
 
 
-if exist ..\..\..\clutter\clutter-version.h goto DONE_CLUTTER_VERSION_H
-
-copy ..\..\..\clutter\clutter-version.h.win32 ..\..\..\clutter\clutter-version.h
-
-:DONE_CLUTTER_VERSION_H
-
-
 if exist ..\..\..\clutter\clutter-marshal.h goto DONE_CLUTTER_MARSHAL_H
 
 cd ..\..\..\clutter

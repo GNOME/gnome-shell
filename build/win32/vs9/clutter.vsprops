@@ -77,10 +77,6 @@ if exist ..\..\..\clutter\clutter-config.h goto DONE_CLUTTER_CONFIG_H&#x0D;&#x0A
 copy ..\..\..\clutter\clutter-config.h.win32 ..\..\..\clutter\clutter-config.h&#x0D;&#x0A;
 :DONE_CLUTTER_CONFIG_H&#x0D;&#x0A;
 
-if exist ..\..\..\clutter\clutter-version.h goto DONE_CLUTTER_VERSION_H&#x0D;&#x0A;
-copy ..\..\..\clutter\clutter-version.h.win32 ..\..\..\clutter\clutter-version.h&#x0D;&#x0A;
-:DONE_CLUTTER_VERSION_H&#x0D;&#x0A;
-
 if exist ..\..\..\clutter\clutter-marshal.h goto DONE_CLUTTER_MARSHAL_H&#x0D;&#x0A;
 cd ..\..\..\clutter&#x0D;&#x0A;
 $(GlibEtcInstallRoot)\bin\glib-genmarshal --prefix=_clutter_marshal --header clutter-marshal.list &gt; clutter-marshal.h&#x0D;&#x0A;
