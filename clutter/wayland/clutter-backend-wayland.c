@@ -215,6 +215,8 @@ clutter_backend_wayland_get_renderer (ClutterBackend  *backend,
 
   renderer = cogl_renderer_new ();
 
+  cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_EGL_WAYLAND);
+
   cogl_wayland_renderer_set_foreign_display (renderer,
                                              backend_wayland->wayland_display);
   cogl_wayland_renderer_set_foreign_compositor (renderer,

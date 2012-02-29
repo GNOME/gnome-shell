@@ -269,6 +269,12 @@ clutter_backend_real_create_context (ClutterBackend  *backend,
   if (backend->cogl_renderer == NULL)
     goto error;
 
+  /* If the application is trying to act as a Wayland compositor then
+     it needs to have an EGL-based renderer backend */
+  if (_wayland_compositor_display)
+    cogl_renderer_add_constraint (backend->cogl_renderer,
+                                  COGL_RENDERER_CONSTRAINT_USES_EGL);
+
   CLUTTER_NOTE (BACKEND, "Connecting the renderer");
   if (!cogl_renderer_connect (backend->cogl_renderer, &internal_error))
     goto error;

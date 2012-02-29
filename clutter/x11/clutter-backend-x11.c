@@ -697,6 +697,8 @@ clutter_backend_x11_get_renderer (ClutterBackend  *backend,
 
   renderer = cogl_renderer_new ();
 
+  cogl_renderer_add_constraint (renderer, COGL_RENDERER_CONSTRAINT_USES_X11);
+
   /* set the display object we're using */
   cogl_xlib_renderer_set_foreign_display (renderer, xdisplay);
 
