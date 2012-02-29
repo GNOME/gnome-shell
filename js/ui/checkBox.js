@@ -93,5 +93,9 @@ const CheckBox = new Lang.Class({
 
     setLabel: function(label) {
         this._container.label.set_text(label);
+    },
+
+    getLabelActor: function() {
+        return this._container.label;
     }
 });
