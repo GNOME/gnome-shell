@@ -290,6 +290,7 @@ StScrollBar StButton#vhandle:hover
 .hotplug-notification-item,
 .hotplug-resident-eject-button,
 .modal-dialog-button {
+    font-weight: bold;
     border: 1px solid #8b8b8b;
     background-gradient-direction: vertical;
     background-gradient-start: rgba(255, 255, 255, 0.2);
@@ -1674,6 +1675,7 @@ StScrollBar StButton#vhandle:hover
 
 .modal-dialog-button-box {
     spacing: 21px;
+    padding-top: 50px;
 }
 
 .modal-dialog-button {
@@ -1729,9 +1731,8 @@ StScrollBar StButton#vhandle:hover
 }
 
 .end-session-dialog-subject {
-    padding-top: 10px;
     padding-left: 17px;
-    padding-bottom: 30px;
+    padding-bottom: 20px;
 }
 
 .end-session-dialog-subject:rtl {
