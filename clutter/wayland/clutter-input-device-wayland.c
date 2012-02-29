@@ -40,6 +40,7 @@
 #include "evdev/clutter-xkb-utils.h"
 #include "clutter-input-device-wayland.h"
 #include "clutter-backend-wayland.h"
+#include "clutter-stage-private.h"
 
 #include "cogl/clutter-stage-cogl.h"
 
