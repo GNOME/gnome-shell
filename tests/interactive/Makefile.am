@@ -8,7 +8,6 @@ UNIT_TESTS = \
 	test-scale.c \
         test-actors.c \
         test-actor-clone.c \
-	test-behave.c \
 	test-shader-effects.c \
 	test-depth.c \
 	test-threads.c \
