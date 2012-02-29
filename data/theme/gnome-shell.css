@@ -1651,12 +1651,20 @@ StScrollBar StButton#vhandle:hover
 }
 
 /* Modal Dialogs */
+
+/* Dialog Subject Text Style */
+.show-processes-dialog-subject,
+.mount-question-dialog-subject,
+.end-session-dialog-subject {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #999999;
+}
+
 .modal-dialog {
-    font-size: 12pt;
     border-radius: 24px;
     background-color: rgba(0.0, 0.0, 0.0, 0.9);
     border: 2px solid #868686;
-    color: #babdb6;
 
     padding-right: 42px;
     padding-left: 42px;
@@ -1721,9 +1729,6 @@ StScrollBar StButton#vhandle:hover
 }
 
 .end-session-dialog-subject {
-    font-size: 12pt;
-    font-weight: bold;
-    color: #666666;
     padding-top: 10px;
     padding-left: 17px;
     padding-bottom: 30px;
@@ -1751,6 +1756,7 @@ StScrollBar StButton#vhandle:hover
 }
 
 .end-session-dialog-shutdown-icon {
+    color: #bebebe;
     width: 32px;
     height: 32px;
 }
@@ -1817,9 +1823,6 @@ StScrollBar StButton#vhandle:hover
 
 .show-processes-dialog-subject,
 .mount-question-dialog-subject {
-    font-size: 12pt;
-    font-weight: bold;
-    color: #666666;
     padding-top: 10px;
     padding-left: 17px;
     padding-bottom: 6px;
