@@ -215,8 +215,6 @@ meta_window_finalize (GObject *object)
 
   meta_icon_cache_free (&window->icon_cache);
 
-  meta_prefs_remove_listener (prefs_changed_callback, window);
-
   g_free (window->sm_client_id);
   g_free (window->wm_client_machine);
   g_free (window->startup_id);
@@ -1894,6 +1892,8 @@ meta_window_unmanage (MetaWindow  *window,
 #endif
 
   meta_error_trap_pop (window->display);
+
+  meta_prefs_remove_listener (prefs_changed_callback, window);
 
   g_signal_emit (window, window_signals[UNMANAGED], 0);
 
