@@ -81,6 +81,10 @@ struct _ClutterWaylandSurfaceClass
                                gint y,
                                gint width,
                                gint height);
+
+  /*< private >*/
+  /* padding for future expansion */
+  gpointer _padding_dummy[8];
 };
 
 GType clutter_wayland_surface_get_type (void) G_GNUC_CONST;
