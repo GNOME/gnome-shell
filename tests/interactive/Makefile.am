@@ -12,7 +12,6 @@ UNIT_TESTS = \
 	test-threads.c \
 	test-script.c \
 	test-grab.c \
-	test-shader.c \
 	test-cogl-shader-arbfp.c \
 	test-cogl-shader-glsl.c \
 	test-animator.c \
