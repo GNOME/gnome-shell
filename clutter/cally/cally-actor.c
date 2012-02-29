@@ -118,7 +118,6 @@ static void cally_actor_finalize   (GObject *obj);
 static AtkObject*            cally_actor_get_parent          (AtkObject *obj);
 static gint                  cally_actor_get_index_in_parent (AtkObject *obj);
 static AtkStateSet*          cally_actor_ref_state_set       (AtkObject *obj);
-static const gchar*          cally_actor_get_name            (AtkObject *obj);
 static gint                  cally_actor_get_n_children      (AtkObject *obj);
 static AtkObject*            cally_actor_ref_child           (AtkObject *obj,
                                                              gint       i);
@@ -283,7 +282,6 @@ cally_actor_class_init (CallyActorClass *klass)
   gobject_class->finalize = cally_actor_finalize;
 
   /* AtkObject */
-  class->get_name            = cally_actor_get_name;
   class->get_parent          = cally_actor_get_parent;
   class->get_index_in_parent = cally_actor_get_index_in_parent;
   class->ref_state_set       = cally_actor_ref_state_set;
@@ -343,29 +341,6 @@ cally_actor_finalize (GObject *obj)
 }
 
 /* AtkObject */
-
-static const gchar*
-cally_actor_get_name (AtkObject *obj)
-{
-  const gchar* name = NULL;
-
-  g_return_val_if_fail (CALLY_IS_ACTOR (obj), NULL);
-
-  name = ATK_OBJECT_CLASS (cally_actor_parent_class)->get_name (obj);
-  if (name == NULL)
-    {
-      CallyActor *cally_actor = NULL;
-      ClutterActor *actor = NULL;
-
-      cally_actor = CALLY_ACTOR (obj);
-      actor = CALLY_GET_CLUTTER_ACTOR (cally_actor);
-      if (actor == NULL) /* State is defunct */
-        name = NULL;
-      else
-        name = clutter_actor_get_name (actor);
-    }
-  return name;
-}
 
 static AtkObject *
 cally_actor_get_parent (AtkObject *obj)
