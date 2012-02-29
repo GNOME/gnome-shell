@@ -222,7 +222,7 @@ INTROSPECTION_GIRS = Meta-$(api_version).gir
 
 Meta-$(api_version).gir: libmutter.la
 @META_GIR@_INCLUDES = GObject-2.0 GDesktopEnums-3.0 Gdk-3.0 Gtk-3.0 Clutter-1.0 xlib-2.0 xfixes-4.0
-@META_GIR@_PACKAGES = clutter-1.0 gtk+-3.0
+@META_GIR@_EXPORT_PACKAGES = libmutter
 @META_GIR@_CFLAGS = $(INCLUDES)
 @META_GIR@_LIBS = libmutter.la
 @META_GIR@_FILES =				\
