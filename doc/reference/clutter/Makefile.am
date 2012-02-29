@@ -124,10 +124,10 @@ HTML_IMAGES = \
 	constraints-example.png \
         easing-modes.png \
 	event-flow.png \
-	flow-layout-horizontal.png \
-	flow-layout-vertical.png \
+	flow-layout.png \
 	path-alpha-func.png \
-	offscreen-redirect.png
+	offscreen-redirect.png \
+	table-layout.png
 
 # SVG used to generate the images above
 SVG_IMAGES = \

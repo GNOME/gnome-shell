@@ -67,6 +67,12 @@
  * #ClutterTableLayout:easing-mode and #ClutterTableLayout:easing-duration
  * properties and their accessor functions.
  *
+ * <figure id="table-layout-image">
+ *   <title>Table layout</title>
+ *   <para>The image shows a #ClutterTableLayout.</para>
+ *   <graphic fileref="table-layout.png" format="PNG"/>
+ * </figure>
+ *
  * #ClutterTableLayout is available since Clutter 1.4
  */
 

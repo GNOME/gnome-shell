@@ -48,20 +48,12 @@
  *   in both columns and rows.</para></listitem>
  * </itemizedlist>
  *
- * <figure id="flow-layout-horizontal">
+ * <figure id="flow-layout-image">
  *   <title>Horizontal flow layout</title>
  *   <para>The image shows a #ClutterFlowLayout with the
  *   #ClutterFlowLayout:orientation propert set to
  *   %CLUTTER_FLOW_HORIZONTAL.</para>
- *   <graphic fileref="flow-layout-horizontal.png" format="PNG"/>
- * </figure>
- *
- * <figure id="flow-layout-vertical">
- *   <title>Vertical flow layout</title>
- *   <para>The image shows a #ClutterFlowLayout with the
- *   #ClutterFlowLayout:orientation propert set to
- *   %CLUTTER_FLOW_VERTICAL.</para>
- *   <graphic fileref="flow-layout-vertical.png" format="PNG"/>
+ *   <graphic fileref="flow-layout.png" format="PNG"/>
  * </figure>
  *
  * #ClutterFlowLayout is available since Clutter 1.2
