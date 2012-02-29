@@ -400,7 +400,7 @@ _cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
 {
   CoglPixelFormat required_format;
   GLenum glintformat;
-  GLenum glformat;
+  GLenum glformat = 0;
   GLenum gltype;
 
   required_format = format;
@@ -521,6 +521,10 @@ _cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
       g_assert_not_reached ();
       break;
     }
+
+  /* All of the pixel formats are handled above so if this hits then
+     we've been given an invalid pixel format */
+  g_assert (glformat != 0);
 
   if (out_glintformat != NULL)
     *out_glintformat = glintformat;
