@@ -218,15 +218,6 @@ shell_perf_log_init (void)
 }
 
 static void
-muted_log_handler (const char     *log_domain,
-                   GLogLevelFlags  log_level,
-                   const char     *message,
-                   gpointer        data)
-{
-  /* Intentionally empty to discard message */
-}
-
-static void
 default_log_handler (const char     *log_domain,
                      GLogLevelFlags  log_level,
                      const char     *message,
@@ -320,18 +311,6 @@ main (int argc, char **argv)
 #if HAVE_BLUETOOTH
   g_irepository_prepend_search_path (BLUETOOTH_DIR);
 #endif
-
-  /* Disable debug spew from various libraries */
-  g_log_set_handler ("Gvc", G_LOG_LEVEL_DEBUG,
-                     muted_log_handler, NULL);
-  g_log_set_handler ("AccountsService", G_LOG_LEVEL_DEBUG,
-                     muted_log_handler, NULL);
-  g_log_set_handler ("Bluetooth", G_LOG_LEVEL_DEBUG | G_LOG_LEVEL_MESSAGE,
-                     muted_log_handler, NULL);
-  g_log_set_handler ("tp-glib/proxy", G_LOG_LEVEL_DEBUG,
-                     muted_log_handler, NULL);
-  g_log_set_handler ("GnomeShellBrowserPlugin", G_LOG_LEVEL_DEBUG,
-                     muted_log_handler, NULL);
 
   /* Turn on telepathy-glib debugging but filter it out in
    * default_log_handler. This handler also exposes all the logs over D-Bus
