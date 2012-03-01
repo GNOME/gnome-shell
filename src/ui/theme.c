@@ -74,84 +74,6 @@ static void hls_to_rgb			(gdouble	 *h,
  */
 static MetaTheme *meta_current_theme = NULL;
 
-static GdkPixbuf *
-colorize_pixbuf (GdkPixbuf *orig,
-                 GdkRGBA   *new_color)
-{
-  GdkPixbuf *pixbuf;
-  double intensity;
-  int x, y;
-  const guchar *src;
-  guchar *dest;
-  int orig_rowstride;
-  int dest_rowstride;
-  int width, height;
-  gboolean has_alpha;
-  const guchar *src_pixels;
-  guchar *dest_pixels;
-
-  pixbuf = gdk_pixbuf_new (gdk_pixbuf_get_colorspace (orig), gdk_pixbuf_get_has_alpha (orig),
-                           gdk_pixbuf_get_bits_per_sample (orig),
-                           gdk_pixbuf_get_width (orig), gdk_pixbuf_get_height (orig));
-
-  if (pixbuf == NULL)
-    return NULL;
-
-  orig_rowstride = gdk_pixbuf_get_rowstride (orig);
-  dest_rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-  width = gdk_pixbuf_get_width (pixbuf);
-  height = gdk_pixbuf_get_height (pixbuf);
-  has_alpha = gdk_pixbuf_get_has_alpha (orig);
-  src_pixels = gdk_pixbuf_get_pixels (orig);
-  dest_pixels = gdk_pixbuf_get_pixels (pixbuf);
-
-  for (y = 0; y < height; y++)
-    {
-      src = src_pixels + y * orig_rowstride;
-      dest = dest_pixels + y * dest_rowstride;
-
-      for (x = 0; x < width; x++)
-        {
-          double dr, dg, db;
-
-          intensity = INTENSITY (src[0], src[1], src[2]) / 255.0;
-
-          if (intensity <= 0.5)
-            {
-              /* Go from black at intensity = 0.0 to new_color at intensity = 0.5 */
-              dr = new_color->red * intensity * 2.0;
-              dg = new_color->green * intensity * 2.0;
-              db = new_color->blue * intensity * 2.0;
-            }
-          else
-            {
-              /* Go from new_color at intensity = 0.5 to white at intensity = 1.0 */
-              dr = new_color->red + (1.0 - new_color->red) * (intensity - 0.5) * 2.0;
-              dg = new_color->green + (1.0 - new_color->green) * (intensity - 0.5) * 2.0;
-              db = new_color->blue + (1.0 - new_color->blue) * (intensity - 0.5) * 2.0;
-            }
-
-          dest[0] = CLAMP_UCHAR (255 * dr);
-          dest[1] = CLAMP_UCHAR (255 * dg);
-          dest[2] = CLAMP_UCHAR (255 * db);
-
-          if (has_alpha)
-            {
-              dest[3] = src[3];
-              src += 4;
-              dest += 4;
-            }
-          else
-            {
-              src += 3;
-              dest += 3;
-            }
-        }
-    }
-
-  return pixbuf;
-}
-
 static void
 color_composite (const GdkRGBA *bg,
                  const GdkRGBA *fg,
@@ -3093,12 +3015,6 @@ meta_draw_op_free (MetaDrawOp *op)
       if (op->data.image.pixbuf)
         g_object_unref (G_OBJECT (op->data.image.pixbuf));
 
-      if (op->data.image.colorize_spec)
-        meta_color_spec_free (op->data.image.colorize_spec);
-
-      if (op->data.image.colorize_cache_pixbuf)
-        g_object_unref (G_OBJECT (op->data.image.colorize_cache_pixbuf));
-
       meta_draw_spec_free (op->data.image.x);
       meta_draw_spec_free (op->data.image.y);
       meta_draw_spec_free (op->data.image.width);
@@ -3171,299 +3087,6 @@ meta_draw_op_free (MetaDrawOp *op)
     }
 
   g_free (op);
-}
-
-static GdkPixbuf*
-pixbuf_tile (GdkPixbuf *tile,
-             int        width,
-             int        height)
-{
-  GdkPixbuf *pixbuf;
-  int tile_width;
-  int tile_height;
-  int i, j;
-
-  tile_width = gdk_pixbuf_get_width (tile);
-  tile_height = gdk_pixbuf_get_height (tile);
-
-  pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
-                           gdk_pixbuf_get_has_alpha (tile),
-                           8, width, height);
-
-  i = 0;
-  while (i < width)
-    {
-      j = 0;
-      while (j < height)
-        {
-          int w, h;
-
-          w = MIN (tile_width, width - i);
-          h = MIN (tile_height, height - j);
-
-          gdk_pixbuf_copy_area (tile,
-                                0, 0,
-                                w, h,
-                                pixbuf,
-                                i, j);
-
-          j += tile_height;
-        }
-
-      i += tile_width;
-    }
-
-  return pixbuf;
-}
-
-static GdkPixbuf *
-replicate_rows (GdkPixbuf  *src,
-                int         src_x,
-                int         src_y,
-                int         width,
-                int         height)
-{
-  unsigned int n_channels = gdk_pixbuf_get_n_channels (src);
-  unsigned int src_rowstride = gdk_pixbuf_get_rowstride (src);
-  unsigned char *pixels = (gdk_pixbuf_get_pixels (src) + src_y * src_rowstride + src_x
-                           * n_channels);
-  unsigned char *dest_pixels;
-  GdkPixbuf *result;
-  unsigned int dest_rowstride;
-  int i;
-
-  result = gdk_pixbuf_new (GDK_COLORSPACE_RGB, n_channels == 4, 8,
-                           width, height);
-  dest_rowstride = gdk_pixbuf_get_rowstride (result);
-  dest_pixels = gdk_pixbuf_get_pixels (result);
-
-  for (i = 0; i < height; i++)
-    memcpy (dest_pixels + dest_rowstride * i, pixels, n_channels * width);
-
-  return result;
-}
-
-static GdkPixbuf *
-replicate_cols (GdkPixbuf  *src,
-                int         src_x,
-                int         src_y,
-                int         width,
-                int         height)
-{
-  unsigned int n_channels = gdk_pixbuf_get_n_channels (src);
-  unsigned int src_rowstride = gdk_pixbuf_get_rowstride (src);
-  unsigned char *pixels = (gdk_pixbuf_get_pixels (src) + src_y * src_rowstride + src_x
-                           * n_channels);
-  unsigned char *dest_pixels;
-  GdkPixbuf *result;
-  unsigned int dest_rowstride;
-  int i, j;
-
-  result = gdk_pixbuf_new (GDK_COLORSPACE_RGB, n_channels == 4, 8,
-                           width, height);
-  dest_rowstride = gdk_pixbuf_get_rowstride (result);
-  dest_pixels = gdk_pixbuf_get_pixels (result);
-
-  for (i = 0; i < height; i++)
-    {
-      unsigned char *p = dest_pixels + dest_rowstride * i;
-      unsigned char *q = pixels + src_rowstride * i;
-
-      unsigned char r = *(q++);
-      unsigned char g = *(q++);
-      unsigned char b = *(q++);
-
-      if (n_channels == 4)
-        {
-          unsigned char a;
-
-          a = *(q++);
-
-          for (j = 0; j < width; j++)
-            {
-              *(p++) = r;
-              *(p++) = g;
-              *(p++) = b;
-              *(p++) = a;
-            }
-        }
-      else
-        {
-          for (j = 0; j < width; j++)
-            {
-              *(p++) = r;
-              *(p++) = g;
-              *(p++) = b;
-            }
-        }
-    }
-
-  return result;
-}
-
-static GdkPixbuf*
-scale_pixbuf (GdkPixbuf             *src,
-              MetaImageFillType      fill_type,
-              int                    width,
-              int                    height,
-              gboolean               vertical_stripes,
-              gboolean               horizontal_stripes)
-{
-  GdkPixbuf *pixbuf;
-  GdkPixbuf *temp_pixbuf;
-
-  pixbuf = NULL;
-
-  pixbuf = src;
-
-  if (gdk_pixbuf_get_width (pixbuf) == width &&
-      gdk_pixbuf_get_height (pixbuf) == height)
-    {
-      g_object_ref (G_OBJECT (pixbuf));
-    }
-  else
-    {
-      if (fill_type == META_IMAGE_FILL_TILE)
-        {
-          pixbuf = pixbuf_tile (pixbuf, width, height);
-        }
-      else
-        {
-    	  int src_h, src_w, dest_h, dest_w;
-          src_h = gdk_pixbuf_get_height (src);
-          src_w = gdk_pixbuf_get_width (src);
-
-          /* prefer to replicate_cols if possible, as that
-           * is faster (no memory reads)
-           */
-          if (horizontal_stripes)
-            {
-              dest_w = gdk_pixbuf_get_width (src);
-              dest_h = height;
-            }
-          else if (vertical_stripes)
-            {
-              dest_w = width;
-              dest_h = gdk_pixbuf_get_height (src);
-            }
-
-          else
-            {
-              dest_w = width;
-              dest_h = height;
-            }
-
-          if (dest_w == src_w && dest_h == src_h)
-            {
-              temp_pixbuf = src;
-              g_object_ref (G_OBJECT (temp_pixbuf));
-            }
-          else
-            {
-              temp_pixbuf = gdk_pixbuf_scale_simple (src,
-                                                     dest_w, dest_h,
-                                                     GDK_INTERP_BILINEAR);
-            }
-
-          /* prefer to replicate_cols if possible, as that
-           * is faster (no memory reads)
-           */
-          if (horizontal_stripes)
-            {
-              pixbuf = replicate_cols (temp_pixbuf, 0, 0, width, height);
-              g_object_unref (G_OBJECT (temp_pixbuf));
-            }
-          else if (vertical_stripes)
-            {
-              pixbuf = replicate_rows (temp_pixbuf, 0, 0, width, height);
-              g_object_unref (G_OBJECT (temp_pixbuf));
-            }
-          else
-            {
-              pixbuf = temp_pixbuf;
-            }
-        }
-    }
-
-  return pixbuf;
-}
-
-static GdkPixbuf*
-draw_op_as_pixbuf (const MetaDrawOp    *op,
-                   GtkStyleContext     *context,
-                   const MetaDrawInfo  *info,
-                   int                  width,
-                   int                  height)
-{
-  /* Try to get the op as a pixbuf, assuming w/h in the op
-   * matches the width/height passed in. return NULL
-   * if the op can't be converted to an equivalent pixbuf.
-   */
-  GdkPixbuf *pixbuf;
-
-  pixbuf = NULL;
-
-  switch (op->type)
-    {
-    case META_DRAW_IMAGE:
-      {
-        if (op->data.image.colorize_spec)
-          {
-            GdkRGBA color;
-
-            meta_color_spec_render (op->data.image.colorize_spec,
-                                    context, &color);
-
-            if (op->data.image.colorize_cache_pixbuf == NULL ||
-                op->data.image.colorize_cache_pixel != GDK_COLOR_RGB (color))
-              {
-                if (op->data.image.colorize_cache_pixbuf)
-                  g_object_unref (G_OBJECT (op->data.image.colorize_cache_pixbuf));
-
-                /* const cast here */
-                ((MetaDrawOp*)op)->data.image.colorize_cache_pixbuf =
-                  colorize_pixbuf (op->data.image.pixbuf,
-                                   &color);
-                ((MetaDrawOp*)op)->data.image.colorize_cache_pixel =
-                  GDK_COLOR_RGB (color);
-              }
-
-            if (op->data.image.colorize_cache_pixbuf)
-              {
-                pixbuf = scale_pixbuf (op->data.image.colorize_cache_pixbuf,
-                                       op->data.image.fill_type,
-                                       width, height,
-                                       op->data.image.vertical_stripes,
-                                       op->data.image.horizontal_stripes);
-              }
-          }
-        else
-          {
-            pixbuf = scale_pixbuf (op->data.image.pixbuf,
-                                   op->data.image.fill_type,
-                                   width, height,
-                                   op->data.image.vertical_stripes,
-                                   op->data.image.horizontal_stripes);
-          }
-        break;
-      }
-    case META_DRAW_TINT:
-    case META_DRAW_ICON:
-    case META_DRAW_LINE:
-    case META_DRAW_RECTANGLE:
-    case META_DRAW_ARC:
-    case META_DRAW_CLIP:
-    case META_DRAW_GRADIENT:
-    case META_DRAW_GTK_ARROW:
-    case META_DRAW_GTK_BOX:
-    case META_DRAW_GTK_VLINE:
-    case META_DRAW_TITLE:
-    case META_DRAW_OP_LIST:
-    case META_DRAW_TILE:
-      break;
-    }
-
-  return pixbuf;
 }
 
 static void
@@ -3805,13 +3428,12 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
     case META_DRAW_IMAGE:
       {
         int rx, ry, rwidth, rheight;
-        GdkPixbuf *pixbuf;
 
-        if (op->data.image.pixbuf)
-          {
-            env->object_width = gdk_pixbuf_get_width (op->data.image.pixbuf);
-            env->object_height = gdk_pixbuf_get_height (op->data.image.pixbuf);
-          }
+        if (op->data.image.pixbuf == NULL)
+          break;
+
+        env->object_width = gdk_pixbuf_get_width (op->data.image.pixbuf);
+        env->object_height = gdk_pixbuf_get_height (op->data.image.pixbuf);
 
         rx = parse_x_position_unchecked (op->data.image.x, env);
         ry = parse_y_position_unchecked (op->data.image.y, env);
@@ -3819,37 +3441,11 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rwidth = parse_size_unchecked (op->data.image.width, env);
         rheight = parse_size_unchecked (op->data.image.height, env);
 
-        if (op->data.image.colorize_spec == NULL)
-          {
-            draw_image (cr,
-                        op->data.image.pixbuf,
-                        op->data.image.fill_type,
-                        op->data.image.alpha_spec,
-                        rx, ry, rwidth, rheight);
-          }
-        else
-          {
-            pixbuf = draw_op_as_pixbuf (op, style_gtk, info,
-                                        rwidth, rheight);
-
-            gdk_cairo_set_source_pixbuf (cr, pixbuf, rx, ry);
-
-            if (op->data.image.alpha_spec)
-              {
-                cairo_translate (cr, rx, ry);
-                cairo_scale (cr, rwidth, rheight);
-
-                cairo_pattern_t *pattern = meta_alpha_gradient_spec_pattern (op->data.image.alpha_spec);
-                cairo_mask (cr, pattern);
-                cairo_pattern_destroy (pattern);
-              }
-            else
-              {
-                cairo_paint (cr);
-              }
-
-            g_object_unref (G_OBJECT (pixbuf));
-          }
+        draw_image (cr,
+                    op->data.image.pixbuf,
+                    op->data.image.fill_type,
+                    op->data.image.alpha_spec,
+                    rx, ry, rwidth, rheight);
       }
       break;
 
