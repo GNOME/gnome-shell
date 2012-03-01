@@ -1189,10 +1189,8 @@ meta_color_spec_new_from_string (const char *str,
   MetaColorSpec *spec;
 
   spec = NULL;
-
-  if (str[0] == 'g' && str[1] == 't' && str[2] == 'k' && str[3] == ':' &&
-      str[4] == 'c' && str[5] == 'u' && str[6] == 's' && str[7] == 't' &&
-      str[8] == 'o' && str[9] == 'm')
+  
+  if (strncmp (str, "gtk:custom", 10) == 0)
     {
       const char *color_name_start, *fallback_str_start, *end;
       char *color_name;
@@ -1267,7 +1265,7 @@ meta_color_spec_new_from_string (const char *str,
       spec->data.gtkcustom.color_name = color_name;
       spec->data.gtkcustom.fallback = fallback;
     }
-  else if (str[0] == 'g' && str[1] == 't' && str[2] == 'k' && str[3] == ':')
+  else if (strncmp (str, "gtk:", 4) == 0)
     {
       /* GTK color */
       const char *bracket;
@@ -1334,8 +1332,7 @@ meta_color_spec_new_from_string (const char *str,
       spec->data.gtk.component = component;
       g_assert (spec->data.gtk.component < META_GTK_COLOR_LAST);
     }
-  else if (str[0] == 'b' && str[1] == 'l' && str[2] == 'e' && str[3] == 'n' &&
-           str[4] == 'd' && str[5] == '/')
+  else if (strncmp (str, "blend/", 6) == 0)
     {
       /* blend */
       char **split;
@@ -1403,8 +1400,7 @@ meta_color_spec_new_from_string (const char *str,
       spec->data.blend.background = bg;
       spec->data.blend.foreground = fg;
     }
-  else if (str[0] == 's' && str[1] == 'h' && str[2] == 'a' && str[3] == 'd' &&
-           str[4] == 'e' && str[5] == '/')
+  else if (strncmp (str, "shade/", 6) == 0)
     {
       /* shade */
       char **split;
@@ -1701,20 +1697,12 @@ op_from_string (const char *p,
       return POS_OP_MOD;
 
     case '`':
-      if (p[0] == '`' &&
-          p[1] == 'm' &&
-          p[2] == 'a' &&
-          p[3] == 'x' &&
-          p[4] == '`')
+      if (strncmp (p, "`max`", 5) == 0)
         {
           *len = 5;
           return POS_OP_MAX;
         }
-      else if (p[0] == '`' &&
-               p[1] == 'm' &&
-               p[2] == 'i' &&
-               p[3] == 'n' &&
-               p[4] == '`')
+      else if (strncmp (p, "`min`", 5) == 0)
         {
           *len = 5;
           return POS_OP_MIN;
