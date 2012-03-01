@@ -430,13 +430,11 @@ const InstallExtensionDialog = new Lang.Class({
     },
 
     _onInstallButtonPressed: function(button, event) {
-        let extension = { uuid: this._uuid,
-                          state: ExtensionState.DOWNLOADING,
-                          error: '' };
+        let state = { uuid: this._uuid,
+                      state: ExtensionState.DOWNLOADING,
+                      error: '' };
 
-        ExtensionUtils.extensions[this._uuid] = extension;
-
-        _signals.emit('extension-state-changed', extension);
+        _signals.emit('extension-state-changed', state);
 
         let params = { version_tag: this._version_tag,
                        shell_version: Config.PACKAGE_VERSION,
