@@ -49,6 +49,7 @@ test_sources = \
 	test-texture-3d.c \
 	test-sparse-pipeline.c \
 	test-read-texture-formats.c \
+	test-write-texture-formats.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)

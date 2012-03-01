@@ -82,6 +82,7 @@ main (int argc, char **argv)
   UNPORTED_TEST (test_cogl_texture_get_set_data);
   UNPORTED_TEST (test_cogl_atlas_migration);
   ADD_TEST (test_cogl_read_texture_formats, 0);
+  ADD_TEST (test_cogl_write_texture_formats, 0);
 
   UNPORTED_TEST (test_cogl_vertex_buffer_contiguous);
   UNPORTED_TEST (test_cogl_vertex_buffer_interleved);
