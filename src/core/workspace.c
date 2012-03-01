@@ -999,18 +999,6 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
 
   /* We're all done, YAAY!  Record that everything has been validated. */
   workspace->work_areas_invalid = FALSE;
-
-  {
-    /*
-     * Notify the compositor that the workspace geometry has changed.
-     */
-    MetaScreen     *screen = workspace->screen;
-    MetaDisplay    *display = meta_screen_get_display (screen);
-    MetaCompositor *comp = meta_display_get_compositor (display);
-
-    if (comp)
-      meta_compositor_update_workspace_geometry (comp, workspace);
-  }
 }
 
 static gboolean

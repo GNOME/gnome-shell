@@ -872,29 +872,6 @@ meta_compositor_unmaximize_window (MetaCompositor    *compositor,
 }
 
 void
-meta_compositor_update_workspace_geometry (MetaCompositor *compositor,
-                                           MetaWorkspace  *workspace)
-{
-#if 0
-  /* FIXME -- should do away with this function in favour of MetaWorkspace
-   * signal.
-   */
-  MetaScreen     *screen = meta_workspace_get_screen (workspace);
-  MetaCompScreen *info;
-  MetaPluginManager *mgr;
-
-  DEBUG_TRACE ("meta_compositor_update_workspace_geometry\n");
-  info = meta_screen_get_compositor_data (screen);
-  mgr  = info->plugin_mgr;
-
-  if (!mgr || !workspace)
-    return;
-
-  meta_plugin_manager_update_workspace (mgr, workspace);
-#endif
-}
-
-void
 meta_compositor_switch_workspace (MetaCompositor     *compositor,
                                   MetaScreen         *screen,
                                   MetaWorkspace      *from,

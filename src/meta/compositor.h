@@ -153,8 +153,6 @@ void meta_compositor_set_updates          (MetaCompositor *compositor,
                                            MetaWindow     *window,
                                            gboolean        updates);
 
-void meta_compositor_update_workspace_geometry (MetaCompositor *compositor,
-                                                MetaWorkspace  *workspace);
 void meta_compositor_sync_stack                (MetaCompositor *compositor,
                                                 MetaScreen     *screen,
                                                 GList          *stack);

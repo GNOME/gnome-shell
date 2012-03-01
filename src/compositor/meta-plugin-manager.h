@@ -66,10 +66,6 @@ gboolean meta_plugin_manager_event_maximize    (MetaPluginManager *mgr,
                                                 gint               target_y,
                                                 gint               target_width,
                                                 gint               target_height);
-void     meta_plugin_manager_update_workspaces (MetaPluginManager *mgr);
-
-void meta_plugin_manager_update_workspace (MetaPluginManager *mgr,
-                                           MetaWorkspace     *w);
 
 gboolean meta_plugin_manager_switch_workspace (MetaPluginManager   *mgr,
                                                gint                 from,
