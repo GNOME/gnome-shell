@@ -356,181 +356,6 @@ get_monitor_edges (int which_monitor_set, int which_strut_set)
   return ret;
 }
 
-#if 0
-static void
-test_merge_regions ()
-{
-  /* logarithmically distributed random number of struts (range?)
-   * logarithmically distributed random size of struts (up to screen size???)
-   * uniformly distributed location of center of struts (within screen)
-   * merge all regions that are possible
-   * print stats on problem setup
-   *   number of (non-completely-occluded?) struts 
-   *   percentage of screen covered
-   *   length of resulting non-minimal spanning set
-   *   length of resulting minimal spanning set
-   * print stats on merged regions:
-   *   number boxes merged
-   *   number of those merges that were of the form A contains B
-   *   number of those merges that were of the form A partially contains B
-   *   number of those merges that were of the form A is adjacent to B
-   */
-
-  GList* region;
-  GList* compare;
-  int num_contains, num_merged, num_part_contains, num_adjacent;
-
-  num_contains = num_merged = num_part_contains = num_adjacent = 0;
-  compare = region = get_screen_region (2);
-  g_assert (region);
-
-  printf ("Merging stats:\n");
-  printf ("  Length of initial list: %d\n", g_list_length (region));
-#ifdef PRINT_DEBUG
-  char rect1[RECT_LENGTH], rect2[RECT_LENGTH];
-  char region_list[(RECT_LENGTH + 2) * g_list_length (region)];
-  meta_rectangle_region_to_string (region, ", ", region_list);
-  printf ("  Initial rectangles: %s\n", region_list);
-#endif
-
-  while (compare && compare->next)
-    {
-      MetaRectangle *a = compare->data;
-      GList *other = compare->next;
-
-      g_assert (a->width > 0 && a->height > 0);
-
-      while (other)
-        {
-          MetaRectangle *b = other->data;
-          GList *delete_me = NULL;
-
-          g_assert (b->width > 0 && b->height > 0);
-
-#ifdef PRINT_DEBUG
-          printf ("    -- Comparing %s to %s --\n",
-                  meta_rectangle_to_string (a, rect1),
-                  meta_rectangle_to_string (b, rect2));
-#endif
-
-          /* If a contains b, just remove b */
-          if (meta_rectangle_contains_rect (a, b))
-            {
-              delete_me = other;
-              num_contains++;
-              num_merged++;
-            }
-          /* If b contains a, just remove a */
-          else if (meta_rectangle_contains_rect (a, b))
-            {
-              delete_me = compare;
-              num_contains++;
-              num_merged++;
-            }
-          /* If a and b might be mergeable horizontally */
-          else if (a->y == b->y && a->height == b->height)
-            {
-              /* If a and b overlap */
-              if (meta_rectangle_overlap (a, b))
-                {
-                  int new_x = MIN (a->x, b->x);
-                  a->width = MAX (a->x + a->width, b->x + b->width) - new_x;
-                  a->x = new_x;
-                  delete_me = other;
-                  num_part_contains++;
-                  num_merged++;
-                }
-              /* If a and b are adjacent */
-              else if (a->x + a->width == b->x || a->x == b->x + b->width)
-                {
-                  int new_x = MIN (a->x, b->x);
-                  a->width = MAX (a->x + a->width, b->x + b->width) - new_x;
-                  a->x = new_x;
-                  delete_me = other;
-                  num_adjacent++;
-                  num_merged++;
-                }
-            }
-          /* If a and b might be mergeable vertically */
-          else if (a->x == b->x && a->width == b->width)
-            {
-              /* If a and b overlap */
-              if (meta_rectangle_overlap (a, b))
-                {
-                  int new_y = MIN (a->y, b->y);
-                  a->height = MAX (a->y + a->height, b->y + b->height) - new_y;
-                  a->y = new_y;
-                  delete_me = other;
-                  num_part_contains++;
-                  num_merged++;
-                }
-              /* If a and b are adjacent */
-              else if (a->y + a->height == b->y || a->y == b->y + b->height)
-                {
-                  int new_y = MIN (a->y, b->y);
-                  a->height = MAX (a->y + a->height, b->y + b->height) - new_y;
-                  a->y = new_y;
-                  delete_me = other;
-                  num_adjacent++;
-                  num_merged++;
-                }
-            }
-
-          other = other->next;
-
-          /* Delete any rectangle in the list that is no longer wanted */
-          if (delete_me != NULL)
-            {
-#ifdef PRINT_DEBUG
-              MetaRectangle *bla = delete_me->data;
-              printf ("    Deleting rect %s\n",
-                      meta_rectangle_to_string (bla, rect1));
-#endif
-
-              /* Deleting the rect we're compare others to is a little tricker */
-              if (compare == delete_me)
-                {
-                  compare = compare->next;
-                  other = compare->next;
-                  a = compare->data;
-                }
-
-              /* Okay, we can free it now */
-              g_free (delete_me->data);
-              region = g_list_delete_link (region, delete_me);
-            }
-
-#ifdef PRINT_DEBUG
-          char region_list[(RECT_LENGTH + 2) * g_list_length (region)];
-          meta_rectangle_region_to_string (region, ", ", region_list);
-          printf ("      After comparison, new list is: %s\n", region_list);
-#endif
-        }
-
-      compare = compare->next;
-    }
-
-  printf ("  Num rectangles contained in others          : %d\n", 
-          num_contains);
-  printf ("  Num rectangles partially contained in others: %d\n", 
-          num_part_contains);
-  printf ("  Num rectangles adjacent to others           : %d\n", 
-          num_adjacent);
-  printf ("  Num rectangles merged with others           : %d\n",
-          num_merged);
-#ifdef PRINT_DEBUG
-  char region_list2[(RECT_LENGTH + 2) * g_list_length (region)];
-  meta_rectangle_region_to_string (region, ", ", region_list2);
-  printf ("  Final rectangles: %s\n", region_list2);
-#endif
-
-  meta_rectangle_free_spanning_set (region);
-  region = NULL;
-
-  printf ("%s passed.\n", G_STRFUNC);
-}
-#endif
-
 static void
 verify_lists_are_equal (GList *code, GList *answer)
 {
@@ -634,14 +459,6 @@ test_regions_okay ()
   tmp = g_list_prepend (tmp, new_meta_rect ( 900,   20,  700, 1080)); /* 756000 */
   tmp = g_list_prepend (tmp, new_meta_rect (   0,   20,  700, 1130)); /* 791000 */
   tmp = g_list_prepend (tmp, new_meta_rect (   0,   20, 1600,  505)); /* 808000 */
-#if 0
-  printf ("Got to here...\n");
-  char region_list[(RECT_LENGTH+2) * g_list_length (region)];
-  char tmp_list[   (RECT_LENGTH+2) * g_list_length (tmp)];
-  meta_rectangle_region_to_string (region, ", ", region_list);
-  meta_rectangle_region_to_string (region, ", ", tmp_list);
-  printf ("%s vs. %s\n", region_list, tmp_list);
-#endif
   verify_lists_are_equal (region, tmp);
   meta_rectangle_free_list_and_elements (tmp);
   meta_rectangle_free_list_and_elements (region);
@@ -1093,15 +910,6 @@ test_find_onscreen_edges ()
   tmp = g_list_prepend (tmp, new_screen_edge ( 380, 1150, 0,   50, left));
   tmp = g_list_prepend (tmp, new_screen_edge (   0,   20, 0, 1180, left));
 
-#if 0
-  #define FUDGE 50 /* number of edges */
-  char big_buffer1[(EDGE_LENGTH+2)*FUDGE], big_buffer2[(EDGE_LENGTH+2)*FUDGE];
-  meta_rectangle_edge_list_to_string (edges, "\n ", big_buffer1);
-  meta_rectangle_edge_list_to_string (tmp,   "\n ", big_buffer2);
-  printf("Generated edge list:\n %s\nComparison edges list:\n %s\n", 
-         big_buffer1, big_buffer2);
-#endif
-
   verify_edge_lists_are_equal (edges, tmp);
   meta_rectangle_free_list_and_elements (tmp);
   meta_rectangle_free_list_and_elements (edges);
@@ -1182,14 +990,6 @@ test_find_nonintersected_monitor_edges ()
   tmp = NULL;
   tmp = g_list_prepend (tmp, new_monitor_edge ( 800,   20, 0, 1080, right));
   tmp = g_list_prepend (tmp, new_monitor_edge ( 800,   20, 0, 1180, left));
-#if 0
-  #define FUDGE 50
-  char big_buffer1[(EDGE_LENGTH+2)*FUDGE], big_buffer2[(EDGE_LENGTH+2)*FUDGE];
-  meta_rectangle_edge_list_to_string (edges, "\n ", big_buffer1);
-  meta_rectangle_edge_list_to_string (tmp,   "\n ", big_buffer2);
-  printf("Generated edge list:\n %s\nComparison edges list:\n %s\n", 
-         big_buffer1, big_buffer2);
-#endif
   verify_edge_lists_are_equal (edges, tmp);
   meta_rectangle_free_list_and_elements (tmp);
   meta_rectangle_free_list_and_elements (edges);

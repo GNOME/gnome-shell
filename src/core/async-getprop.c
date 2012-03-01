@@ -407,24 +407,7 @@ async_get_property_handler (Display *dpy,
            * via the standard X mechanism, so don't do anything about
            * it, other than store it in task->error.
            */
-          {
-#if 0
-            xError error;
-#endif
-            
-            task->error = BadImplementation;
-
-#if 0
-            error.sequenceNumber = task->request_seq;
-            error.type = X_Error;
-            error.majorCode = X_GetProperty;
-            error.minorCode = 0;
-            error.errorCode = BadImplementation;
-
-            _XError (dpy, &error);
-#endif
-          }
-
+          task->error = BadImplementation;
           nbytes = netbytes = 0L;
           break;
         }

@@ -465,29 +465,6 @@ border_only_cb (GtkAction           *action,
   gtk_widget_show_all (window);
 }
 
-#if 0
-static void
-changing_icon_cb (GtkAction           *action,
-                  gpointer             callback_data)
-{
-  GtkWidget *window;
-  GtkWidget *vbox;
-  GtkWidget *label;
-  
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window), "Changing Icon");
-  
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-
-  gtk_container_add (GTK_CONTAINER (window), vbox);
-
-  label = gtk_label_new ("This window has an icon that changes over time");
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-  
-  gtk_widget_show_all (window);
-}
-#endif
-
 static gboolean
 focus_in_event_cb (GtkWidget *window,
                    GdkEvent  *event,
