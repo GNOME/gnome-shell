@@ -94,8 +94,8 @@ colorize_pixbuf (GdkPixbuf *orig,
   guchar *dest_pixels;
 
   pixbuf = gdk_pixbuf_new (gdk_pixbuf_get_colorspace (orig), gdk_pixbuf_get_has_alpha (orig),
-			   gdk_pixbuf_get_bits_per_sample (orig),
-			   gdk_pixbuf_get_width (orig), gdk_pixbuf_get_height (orig));
+                           gdk_pixbuf_get_bits_per_sample (orig),
+                           gdk_pixbuf_get_width (orig), gdk_pixbuf_get_height (orig));
 
   if (pixbuf == NULL)
     return NULL;
@@ -795,19 +795,19 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
                              &n_right, &fgeom->above_rect))
         continue;
       else if (strip_button (left_func_rects, left_bg_rects,
-                        &n_left, &fgeom->stick_rect))
+                             &n_left, &fgeom->stick_rect))
         continue;
       else if (strip_button (right_func_rects, right_bg_rects,
                              &n_right, &fgeom->stick_rect))
         continue;
       else if (strip_button (left_func_rects, left_bg_rects,
-                        &n_left, &fgeom->shade_rect))
+                             &n_left, &fgeom->shade_rect))
         continue;
       else if (strip_button (right_func_rects, right_bg_rects,
                              &n_right, &fgeom->shade_rect))
         continue;
       else if (strip_button (left_func_rects, left_bg_rects,
-                        &n_left, &fgeom->min_rect))
+                             &n_left, &fgeom->min_rect))
         continue;
       else if (strip_button (right_func_rects, right_bg_rects,
                              &n_right, &fgeom->min_rect))
@@ -926,12 +926,11 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
               rect->clickable.width = button_width;
             }
 
-            rect->clickable.y = 0;
-            rect->clickable.height = button_height + button_y;
-          }
-        else
-          g_memmove (&(rect->clickable), &(rect->visible), sizeof(rect->clickable));
-
+          rect->clickable.y = 0;
+          rect->clickable.height = button_height + button_y;
+        }
+      else
+        g_memmove (&(rect->clickable), &(rect->visible), sizeof(rect->clickable));
 
       x = rect->visible.x + rect->visible.width + layout->button_border.right;
       if (left_buttons_has_spacer[i])
@@ -3067,7 +3066,7 @@ meta_draw_op_free (MetaDrawOp *op)
         g_object_unref (G_OBJECT (op->data.image.pixbuf));
 
       if (op->data.image.colorize_spec)
-	meta_color_spec_free (op->data.image.colorize_spec);
+        meta_color_spec_free (op->data.image.colorize_spec);
 
       if (op->data.image.colorize_cache_pixbuf)
         g_object_unref (G_OBJECT (op->data.image.colorize_cache_pixbuf));
@@ -3478,9 +3477,9 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
 
     case META_DRAW_IMAGE:
       {
-	if (op->data.image.colorize_spec)
-	  {
-	    GdkRGBA color;
+        if (op->data.image.colorize_spec)
+          {
+            GdkRGBA color;
 
             meta_color_spec_render (op->data.image.colorize_spec,
                                     context, &color);
@@ -3508,16 +3507,16 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
                                                  op->data.image.vertical_stripes,
                                                  op->data.image.horizontal_stripes);
               }
-	  }
-	else
-	  {
-	    pixbuf = scale_and_alpha_pixbuf (op->data.image.pixbuf,
+          }
+        else
+          {
+            pixbuf = scale_and_alpha_pixbuf (op->data.image.pixbuf,
                                              op->data.image.alpha_spec,
                                              op->data.image.fill_type,
                                              width, height,
                                              op->data.image.vertical_stripes,
                                              op->data.image.horizontal_stripes);
-	  }
+          }
         break;
       }
     case META_DRAW_ICON:
@@ -4016,8 +4015,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         d_rect.height = parse_size_unchecked (op->data.op_list.height, env);
 
         meta_draw_op_list_draw_with_style (op->data.op_list.op_list,
-                                           style_gtk, cr, info,
-                                d_rect);
+                                           style_gtk, cr, info, d_rect);
       }
       break;
 
@@ -4054,8 +4052,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
             while (tile.y < (ry + rheight))
               {
                 meta_draw_op_list_draw_with_style (op->data.tile.op_list,
-                                                   style_gtk, cr, info,
-                                        tile);
+                                                   style_gtk, cr, info, tile);
 
                 tile.y += tile.height;
               }
