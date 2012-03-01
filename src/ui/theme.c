@@ -4139,18 +4139,6 @@ meta_draw_op_list_draw_with_style  (const MetaDrawOpList *op_list,
 
   fill_env (&env, info, rect);
 
-  /* FIXME this can be optimized, potentially a lot, by
-   * compressing multiple ops when possible. For example,
-   * anything convertible to a pixbuf can be composited
-   * client-side, and putting a color tint over a pixbuf
-   * can be done without creating the solid-color pixbuf.
-   *
-   * To implement this my plan is to have the idea of a
-   * compiled draw op (with the string expressions already
-   * evaluated), we make an array of those, and then fold
-   * adjacent items when possible.
-   */
-
   cairo_save (cr);
 
   for (i = 0; i < op_list->n_ops; i++)
