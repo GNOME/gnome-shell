@@ -6537,6 +6537,14 @@ _clutter_actor_finish_queue_redraw (ClutterActor *self,
   ClutterPaintVolume *pv;
   gboolean clipped;
 
+  /* Remove queue entry early in the process, otherwise a new
+     queue_redraw() during signal handling could put back this
+     object in the stage redraw list (but the entry is freed as
+     soon as we return from this function, causing a segfault
+     later)
+  */
+  priv->queue_redraw_entry = NULL;
+
   /* If we've been explicitly passed a clip volume then there's
    * nothing more to calculate, but otherwise the only thing we know
    * is that the change is constrained to the given actor.
@@ -6595,8 +6603,6 @@ _clutter_actor_finish_queue_redraw (ClutterActor *self,
    */
   if (G_LIKELY (clipped))
     _clutter_actor_set_queue_redraw_clip (self, NULL);
-
-  priv->queue_redraw_entry = NULL;
 }
 
 static void
