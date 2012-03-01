@@ -103,8 +103,6 @@ function uninstallExtensionFromUUID(uuid) {
     _signals.emit('extension-state-changed', extension);
 
     delete ExtensionUtils.extensions[uuid];
-    delete extensionStateObjs[uuid];
-    delete errors[uuid];
 
     FileUtils.recursivelyDeleteDir(Gio.file_new_for_path(extension.path));
 
