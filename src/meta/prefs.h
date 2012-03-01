@@ -128,14 +128,6 @@ int         meta_prefs_get_cursor_size       (void);
 gboolean    meta_prefs_get_compositing_manager (void);
 gboolean    meta_prefs_get_force_fullscreen  (void);
 
-/**
- * meta_prefs_set_compositing_manager:
- * @whether %TRUE to turn on, %FALSE to turn off.
- *
- * Sets whether the compositor is turned on.
- */
-void meta_prefs_set_compositing_manager (gboolean whether);
-
 void meta_prefs_set_force_fullscreen (gboolean whether);
 
 gboolean meta_prefs_get_workspaces_only_on_primary (void);
