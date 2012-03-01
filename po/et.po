@@ -13,247 +13,33 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=mutter&component=general\n"
-"POT-Creation-Date: 2011-03-07 23:35+0000\n"
-"PO-Revision-Date: 2012-02-29 10:42+0200\n"
+"product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-03-01 09:25+0000\n"
+"PO-Revision-Date: 2012-02-29 12:54+0200\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
+"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
-"Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-msgid "Switch to workspace 1"
-msgstr "Lülitumine 1. tööalale"
-
-msgid "Switch to workspace 2"
-msgstr "Lülitumine 2. tööalale"
-
-msgid "Switch to workspace 3"
-msgstr "Lülitumine 3. tööalale"
-
-msgid "Switch to workspace 4"
-msgstr "Lülitumine 4. tööalale"
-
-msgid "Switch to workspace 5"
-msgstr "Lülitumine 5. tööalale"
-
-msgid "Switch to workspace 6"
-msgstr "Lülitumine 6. tööalale"
-
-msgid "Switch to workspace 7"
-msgstr "Lülitumine 7. tööalale"
-
-msgid "Switch to workspace 8"
-msgstr "Lülitumine 8. tööalale"
-
-msgid "Switch to workspace 9"
-msgstr "Lülitumine 9. tööalale"
-
-msgid "Switch to workspace 10"
-msgstr "Lülitumine 10. tööalale"
-
-msgid "Switch to workspace 11"
-msgstr "Lülitumine 11. tööalale"
-
-msgid "Switch to workspace 12"
-msgstr "Lülitumine 12. tööalale"
-
-msgid "Switch to workspace on the left of the current workspace"
-msgstr "Lülitumine sellest tööalast vasakul olevale tööalale"
-
-msgid "Switch to workspace on the right of the current workspace"
-msgstr "Lülitumine sellest tööalast paremal olevale tööalale"
-
-msgid "Switch to workspace above the current workspace"
-msgstr "Lülitumine selle tööala kohal olevale tööalale"
-
-msgid "Switch to workspace below the current workspace"
-msgstr "Lülitumine selle tööala all olevale tööalale"
-
-msgid "Move between windows of an application, using a popup window"
-msgstr "Liigu rakenduse akende vahel, hüpikaknaga"
-
-msgid "Move backward between windows of an application, using a popup window"
-msgstr "Liigu rakenduse akende vahel tagasisuunas, hüpikaknaga"
-
-msgid "Move between windows, using a popup window"
-msgstr "Liigu akende vahel, hüpikaknaga"
-
-msgid "Move backward between windows, using a popup window"
-msgstr "Liigu akende vahel tagasisuunas, hüpikaknaga"
-
-msgid "Move between panels and the desktop, using a popup window"
-msgstr "Liigu paneelide ja töölaua vahel, hüpikaknaga"
-
-msgid "Move backward between panels and the desktop, using a popup window"
-msgstr "Liigu tagasisuunas paneelide ja töölaua vahel, hüpikaknaga"
-
-msgid "Move between windows of an application immediately"
-msgstr "Liigu koheselt rakenduse akende vahel"
-
-msgid "Move backward between windows of an application immediately"
-msgstr "Liigu koheselt rakenduse akende vahel tagasisuunas"
-
-msgid "Move between windows immediately"
-msgstr "Liigu koheselt akende vahel"
-
-msgid "Move backward between windows immediately"
-msgstr "Liigu koheselt akende vahel tagasisuunas"
-
-msgid "Move between panels and the desktop immediately"
-msgstr "Liigu koheselt paneeli ja töölaua vahel"
-
-msgid "Move backward between panels and the desktop immediately"
-msgstr "Liigu koheselt tagasisuunas paneelide ja töölaua vahel"
-
-msgid "Hide all normal windows and set focus to the desktop"
-msgstr "Peida kõik tavalised aknad ja fokuseeri töölaud"
-
-msgid "Show the panel's main menu"
-msgstr "Paneeli peamenüü näitamine"
-
-msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "Paneeli dialoogi \"Käivita rakendus\" näitamine"
-
-msgid "Start or stop recording the session"
-msgstr "Seansi salvestamise käivitamine või seiskamine"
-
-msgid "Take a screenshot"
-msgstr "Ekraanipildi võtmine"
-
-msgid "Take a screenshot of a window"
-msgstr "Ekraanipildi võtmine aknast"
-
-msgid "Run a terminal"
-msgstr "Terminali käivitamine"
-
-msgid "Activate the window menu"
-msgstr "Aknamenüü aktiveerimine"
-
-msgid "Toggle fullscreen mode"
-msgstr "Täisekraanivaate sisse- ja väljalülitamine"
-
-msgid "Toggle maximization state"
-msgstr "Maksimeeritud oleku sisse- ja väljalülitamine"
-
-msgid "Toggle whether a window will always be visible over other windows"
-msgstr "Lüliti määrab, kas aken on alati teiste akende kohal nähtav"
-
-msgid "Maximize window"
-msgstr "Akna maksimeerimine"
-
-msgid "Restore window"
-msgstr "Taasta akna suurus"
-
-msgid "Toggle shaded state"
-msgstr "Varjatud oleku lüliti"
-
-msgid "Minimize window"
-msgstr "Akna minimeerimine"
-
-msgid "Close window"
-msgstr "Akna sulgemine"
-
-msgid "Move window"
-msgstr "Teisalda aken"
-
-msgid "Resize window"
-msgstr "Muuda akna suurust"
-
-msgid "Toggle whether window is on all workspaces or just one"
-msgstr "Lüliti määrab, kas aken on kõigil tööaladel või ainult ühel"
-
-msgid "Move window to workspace 1"
-msgstr "Akna tõstmine 1. tööalale"
-
-msgid "Move window to workspace 2"
-msgstr "Akna tõstmine 2. tööalale"
-
-msgid "Move window to workspace 3"
-msgstr "Akna tõstmine 3. tööalale"
-
-msgid "Move window to workspace 4"
-msgstr "Akna tõstmine 4. tööalale"
-
-msgid "Move window to workspace 5"
-msgstr "Akna tõstmine 5. tööalale"
-
-msgid "Move window to workspace 6"
-msgstr "Akna tõstmine 6. tööalale"
-
-msgid "Move window to workspace 7"
-msgstr "Akna tõstmine 7. tööalale"
-
-msgid "Move window to workspace 8"
-msgstr "Akna tõstmine 8. tööalale"
-
-msgid "Move window to workspace 9"
-msgstr "Akna tõstmine 9. tööalale"
-
-msgid "Move window to workspace 10"
-msgstr "Akna tõstmine 10. tööalale"
-
-msgid "Move window to workspace 11"
-msgstr "Akna tõstmine 11. tööalale"
-
-msgid "Move window to workspace 12"
-msgstr "Akna tõstmine 12. tööalale"
-
-msgid "Move window one workspace to the left"
-msgstr "Akna tõstmine ühe tööala võrra vasakule"
-
-msgid "Move window one workspace to the right"
-msgstr "Akna tõstmine ühe tööala võrra paremale"
-
-msgid "Move window one workspace up"
-msgstr "Akna tõstmine ühe tööala võrra ülespoole"
-
-msgid "Move window one workspace down"
-msgstr "Akna tõstmine ühe tööala võrra allapoole"
-
-msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "Tõsta aken, kui seda katab teine aken, muul juhul vii tahapoole"
-
-msgid "Raise window above other windows"
-msgstr "Akna tõstmine teiste akende kohale"
-
-msgid "Lower window below other windows"
-msgstr "Saada aken teiste taha"
-
-msgid "Maximize window vertically"
-msgstr "Maksimeeri aken vertikaalselt"
-
-msgid "Maximize window horizontally"
-msgstr "Maksimeeri aken horisontaalselt"
-
-msgid "Move window to north-west (top left) corner"
-msgstr "Akna tõstmine ekraani loodepoolsesse (ülemisse vasakusse) nurka"
-
-msgid "Move window to north-east (top right) corner"
-msgstr "Akna tõstmine ekraani kirdepoolsesse (ülemisse paremasse) nurka"
-
-msgid "Move window to south-west (bottom left) corner"
-msgstr "Akna tõstmine ekraani edelapoolsesse (alumisse vasakusse) nurka"
-
-msgid "Move window to south-east (bottom right) corner"
-msgstr "Akna tõstmine ekraani kagupoolsesse (alumisse paremasse) nurka"
-
-msgid "Move window to north (top) side of screen"
-msgstr "Akna tõstmine ekraani põhjapoolsesse (ülemisse) serva"
-
-msgid "Move window to south (bottom) side of screen"
-msgstr "Akna tõstmine ekraani lõunapoolsesse (alumisse) serva"
-
-msgid "Move window to east (right) side of screen"
-msgstr "Akna tõstmine ekraani idapoolsesse (paremasse) serva"
-
-msgid "Move window to west (left) side of screen"
-msgstr "Akna tõstmine ekraani läänepoolsesse (vasakusse) serva"
-
-msgid "Move window to center of screen"
-msgstr "Akna tõstmine ekraani keskele"
+msgid "Windows"
+msgstr "Aknad"
+
+msgid "View split on left"
+msgstr "Vaade poolitatakse vasakult"
+
+msgid "View split on right"
+msgstr "Vaade poolitatakse paremalt"
+
+#. This probably means that a non-WM compositor like xcompmgr is running;
+#. * we have no way to get it to exit
+#, c-format
+msgid ""
+"Another compositing manager is already running on screen %i on display \"%s"
+"\"."
+msgstr "Teine komposiithaldur juba töötab ekraani %i kuval \"%s\"."
 
 msgid "Bell event"
 msgstr "Helina sündmus"
@@ -262,10 +48,12 @@ msgstr "Helina sündmus"
 msgid "Unknown window information request: %d"
 msgstr "Tundmatu aknateabe päring: %d"
 
-#. Translators: %s is a window title
 #, c-format
 msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> ei vasta."
+
+msgid "Application is not responding."
+msgstr "Rakendus ei vasta."
 
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
@@ -293,27 +81,6 @@ msgid ""
 msgstr ""
 "Mõni teine programm juba kasutab klahvi %s koos muuteklahvidega %x "
 "kiirklahvina\n"
-
-#. Displayed when a keybinding which is
-#. * supposed to launch a program fails.
-#.
-#, c-format
-msgid ""
-"There was an error running <tt>%s</tt>:\n"
-"\n"
-"%s"
-msgstr ""
-"<tt>%s</tt> käivitamisel esines viga:\n"
-"\n"
-"%s"
-
-#, c-format
-msgid "No command %d has been defined.\n"
-msgstr "Käsku %d pole defineeritud.\n"
-
-#, c-format
-msgid "No terminal command has been defined.\n"
-msgstr "Terminalikäsku pole defineeritud.\n"
 
 msgid "Disable connection to session manager"
 msgstr "Seansihalduriga ühendumise keelamine"
@@ -364,39 +131,6 @@ msgstr "Versiooni printimine"
 msgid "Comma-separated list of compositor plugins"
 msgstr "Komaga eraldatud nimekiri komposiitmontaaži pluginatest"
 
-#.
-#. * We found it, but it was invalid.  Complain.
-#. *
-#. * FIXME: This replicates the original behaviour, but in the future
-#. * we might consider reverting invalid keys to their original values.
-#. * (We know the old value, so we can look up a suitable string in
-#. * the symtab.)
-#. *
-#. * (Empty comment follows so the translators don't see this.)
-#.
-#.
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "GConf võtme '%s' väärtus on vigane\n"
-
-#, c-format
-msgid "%d stored in GConf key %s is out of range %d to %d\n"
-msgstr ""
-"%d, mis on salvestatud GConf võtmes %s, on väljaspool piirkonda %d - %d\n"
-
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "GConf-i võti \"%s\" on määratud vigase tüübiga\n"
-
-#, c-format
-msgid "GConf key %s is already in use and can't be used to override %s\n"
-msgstr ""
-"GConfi võti %s on juba kasutusel ja sellega ei saa tühistada võtit %s\n"
-
-#, c-format
-msgid "Can't override GConf key, %s not found\n"
-msgstr "GConfi võtit pole võimalik tühistada, võtit %s ei leitud\n"
-
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -405,8 +139,8 @@ msgstr ""
 "ei pruugi õigesti käituda.\n"
 
 #, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Fondi kirjeldust \"%s\" GConf võtmest %s ei saa töödelda\n"
+msgid "Could not parse font description \"%s\" from GSettings key %s\n"
+msgstr "Fondi kirjeldust \"%s\" GSettings võtmest %s pole võimalik töödelda\n"
 
 #, c-format
 msgid ""
@@ -417,14 +151,6 @@ msgstr ""
 "modifikaatoriks\n"
 
 #, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "Viga tööalade arvuks %d määramisel: %s\n"
-
-#, c-format
-msgid "Workspace %d"
-msgstr "Tööala %d"
-
-#, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
@@ -433,16 +159,8 @@ msgstr ""
 "\"\n"
 
 #, c-format
-msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Viga tööalale %d nime \"%s\" määramisel: %s\n"
-
-#, c-format
-msgid "Error setting live hidden windows status status: %s\n"
-msgstr "Viga varjus elushoitavate akende oleku määramisel: %s\n"
-
-#, c-format
-msgid "Error setting no tab popup status: %s\n"
-msgstr ""
+msgid "Workspace %d"
+msgstr "Tööala %d"
 
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
@@ -540,10 +258,6 @@ msgstr "Aknahalduri hoiatus: "
 msgid "Window manager error: "
 msgstr "Aknahalduri viga: "
 
-#. Translators: This is the title used on dialog boxes
-msgid "Mutter"
-msgstr "Mutter"
-
 #. first time through
 #, c-format
 msgid ""
@@ -582,6 +296,12 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Vigane WM_TRANSIENT_FOR aknale 0x%lx määratud %s jaoks.\n"
 
 #, c-format
+msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
+msgstr ""
+"WM_TRANSIENT_FOR aknale 0x%lx määratud %s jaoks tekitaks tsüklilise "
+"korduse.\n"
+
+#, c-format
 msgid ""
 "Window 0x%lx has property %s\n"
 "that was expected to have type %s format %d\n"
@@ -604,18 +324,8 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "Omadus %s aknal 0x%lx sisaldab vigast UTF-8 %d kirjele nimekirjas\n"
 
-msgid "Attach modal dialogs"
-msgstr "Modaaldialoogide kinnistamine"
-
-msgid ""
-"Determines whether hidden windows (i.e., minimized windows and windows on "
-"other workspaces than the current one) should be kept alive."
-msgstr ""
-"Määrab, kas varjatud aknaid (nt minimeeritud ja teistel tööaladel aknad) "
-"hoitakse elus."
-
-msgid "Live Hidden Windows"
-msgstr "Varjatud akende aktiivsus"
+msgid "Mutter"
+msgstr "Mutter"
 
 msgid "Modifier to use for extended window management operations"
 msgstr "Laiendatud aknaoperatsioonide korral kasutatav muuteklahv"
@@ -632,6 +342,9 @@ msgstr ""
 "klahv\". Eeldatavasti määratakse selle seose väärtuseks vaikimisi või tühi "
 "sõne."
 
+msgid "Attach modal dialogs"
+msgstr "Modaaldialoogide kinnistamine"
+
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -639,6 +352,64 @@ msgid ""
 msgstr ""
 "Kui märgitud, siis eraldi tiitliribade asemel on moodaalsed dialoogid "
 "emaakna tiitliribade küljes ning liiguvad koos emaaknaga."
+
+msgid "Live Hidden Windows"
+msgstr "Varjatud akende aktiivsus"
+
+msgid ""
+"Determines whether hidden windows (i.e., minimized windows and windows on "
+"other workspaces than the current one) should be kept alive."
+msgstr ""
+"Määrab, kas varjatud aknaid (nt minimeeritud ja teistel tööaladel aknad) "
+"hoitakse elus."
+
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "Akna ümberpaigutamine selle lohistamisel ekraani serva"
+
+msgid ""
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
+msgstr ""
+"Kui märgitud, siis akna lohistamine ekraani külgservale maksimeerib selle "
+"vertikaalselt ja laius katab pool saadaolevast laiusest. Akna lohistamine "
+"ekraani ülaserva maksimeerib akna täielikult."
+
+msgid "Workspaces only on primary"
+msgstr "Tööalad ainult peamisel"
+
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"Määrab, kas tööalade vahetamine mõjutab kõiki aknaid kõigil monitoridel või "
+"ainult aknaid peamisel monitoril."
+
+msgid "No tab popup"
+msgstr "Tabulaatoril pole hüpikakent"
+
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr ""
+"Kui märgitud, siis on hüpikaken ja esiletõstmise raam keelatud akende "
+"vahetamisel."
+
+msgid "Draggable border width"
+msgstr "Lohistatava äärise laius."
+
+msgid ""
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
+msgstr ""
+"Lohistatava äärise laius. Kui kujunduse nähtavatest ääristest ei piisa, "
+"lisatakse puuduoleva osa jaoks nähtamatu ääris."
+
+msgid "Select window from tab popup"
+msgstr "Akna valimine tabulaatori hüpikaknalt"
+
+msgid "Cancel tab popup"
+msgstr "Tabulaatori hüpikakna katkestamine"
 
 #, c-format
 msgid "Usage: %s\n"
@@ -876,6 +647,30 @@ msgstr "Raami geomeetria ei määra nuppude suurust"
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Värviüleminekus peaks olema vähemalt kaks värvi"
+
+#, c-format
+msgid ""
+"GTK custom color specification must have color name and fallback in "
+"parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
+msgstr ""
+"GTK kohandatud värvi määrang peab sisaldama sulgudes värvi nimetust ning "
+"varuvärvi, nt gtk:custom(foo,bar); väärtust \"%s\" pole võimalik töödelda"
+
+#, c-format
+msgid ""
+"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
+"_ are valid"
+msgstr ""
+"gtk:custom color_name parameetris sobimatu märk '%c', lubatud on ainult A-Za-"
+"z0-9-_"
+
+#, c-format
+msgid ""
+"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
+"fit the format"
+msgstr ""
+"Gtk:custom vorming on \"gtk:custom(värvi_nimi,varuvärv)\", \"%s\" ei sobi "
+"selle vorminguga"
 
 #, c-format
 msgid ""
@@ -1511,25 +1306,3 @@ msgstr "y väärtus oli %d, oodati väärtust %d"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d koordinaatide avaldis töödeldi %g sekundiga (keskmine %g sekundit)\n"
-
-#~ msgid ""
-#~ "Don't make fullscreen windows that are maximized and have no decorations"
-#~ msgstr "Ei tehta maksimeeritud ilma raamita täisekraanaknaid."
-
-#~ msgid "Whether window popup/frame should be shown when cycling windows."
-#~ msgstr "Kas hüpikakent/raami näidatakse akende vahetamisel."
-
-#~ msgid "Internal argument for GObject introspection"
-#~ msgstr "GObject enesevaatluse siseargument"
-
-#~ msgid "Failed to restart: %s\n"
-#~ msgstr "Tõrge taaskäivitamisel: %s\n"
-
-#~ msgid "Error setting clutter plugin list: %s\n"
-#~ msgstr "Viga clutteri pluginate nimekirja määramisel: %s\n"
-
-#~ msgid "Clutter Plugins"
-#~ msgstr "Clutteri pluginad"
-
-#~ msgid "Plugins to load for the Clutter-based compositing manager."
-#~ msgstr "Clutteril põhineva komposiitmontaažihalduri laadimise pluginad."
