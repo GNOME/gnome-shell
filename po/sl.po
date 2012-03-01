@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-28 20:10+0000\n"
-"PO-Revision-Date: 2012-02-28 22:03+0100\n"
+"POT-Creation-Date: 2012-03-01 19:49+0000\n"
+"PO-Revision-Date: 2012-03-01 21:28+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -184,7 +184,7 @@ msgstr "Ali je ni na seznamu?"
 
 #: ../js/gdm/loginDialog.js:1020
 #: ../js/ui/endSessionDialog.js:419
-#: ../js/ui/extensionSystem.js:401
+#: ../js/ui/extensionSystem.js:399
 #: ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175
 #: ../js/ui/status/bluetooth.js:462
@@ -455,7 +455,7 @@ msgid "CONTACTS"
 msgstr "Stiki"
 
 #: ../js/ui/dash.js:229
-#: ../js/ui/messageTray.js:1204
+#: ../js/ui/messageTray.js:1206
 msgid "Remove"
 msgstr "Odstrani"
 
@@ -611,11 +611,11 @@ msgstr[3] "Sistem se bo samodejno ponovno zagnal čez %d sekunde."
 msgid "Restarting the system."
 msgstr "Ponoven zagon sistema."
 
-#: ../js/ui/extensionSystem.js:405
+#: ../js/ui/extensionSystem.js:403
 msgid "Install"
 msgstr "Namesti"
 
-#: ../js/ui/extensionSystem.js:409
+#: ../js/ui/extensionSystem.js:407
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Ali naj se razširitev '%s'  namesti preko povezave z extensions.gnome.org?"
@@ -628,6 +628,15 @@ msgstr "sistemska vrstica"
 #: ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Tipkovnica"
+
+#: ../js/ui/keyringPrompt.js:85
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Geslo:"
+
+#: ../js/ui/keyringPrompt.js:101
+msgid "Type again:"
+msgstr "Vpišite znova:"
 
 #: ../js/ui/lookingGlass.js:725
 msgid "No extensions installed"
@@ -680,24 +689,24 @@ msgid "Web Page"
 msgstr "Spletna stran"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:115
+#: ../js/ui/main.js:116
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Screencast z %d %t"
 
-#: ../js/ui/messageTray.js:1197
+#: ../js/ui/messageTray.js:1199
 msgid "Open"
 msgstr "Odpri"
 
-#: ../js/ui/messageTray.js:1214
+#: ../js/ui/messageTray.js:1216
 msgid "Unmute"
 msgstr "Povrni glasnost"
 
-#: ../js/ui/messageTray.js:1214
+#: ../js/ui/messageTray.js:1216
 msgid "Mute"
 msgstr "Utišaj"
 
-#: ../js/ui/messageTray.js:2447
+#: ../js/ui/messageTray.js:2449
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -799,17 +808,17 @@ msgstr "Programi"
 msgid "Dash"
 msgstr "Armaturna plošča"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:583
 msgid "Quit"
 msgstr "Končaj"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:613
+#: ../js/ui/panel.js:614
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:983
+#: ../js/ui/panel.js:987
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -849,10 +858,6 @@ msgstr "Overi"
 #: ../js/ui/polkitAuthenticationAgent.js:260
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Dejanje je spodletelo. Poskusite znova."
-
-#: ../js/ui/polkitAuthenticationAgent.js:272
-msgid "Password:"
-msgstr "Geslo:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -1651,7 +1656,7 @@ msgstr "Riba %s pravi"
 msgid "Your favorite Easter Egg"
 msgstr "Vaše priljubljeno velikonočno jajce"
 
-#: ../js/ui/windowAttentionHandler.js:33
+#: ../js/ui/windowAttentionHandler.js:19
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' storitev je pripravljena"
@@ -1682,11 +1687,11 @@ msgstr[3] "%u dovodi naprave"
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
 
-#: ../src/main.c:262
+#: ../src/main.c:253
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: ../src/main.c:268
+#: ../src/main.c:259
 msgid "Mode used by GDM for login screen"
 msgstr "Način uporabljen v GDM za prijavni naslov"
 
@@ -1694,6 +1699,14 @@ msgstr "Način uporabljen v GDM za prijavni naslov"
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Zaganjanje '%s' je spodletelo"
+
+#: ../src/shell-keyring-prompt.c:708
+msgid "Passwords do not match."
+msgstr "Gesli se ne skladata."
+
+#: ../src/shell-keyring-prompt.c:716
+msgid "Password cannot be blank"
+msgstr "Geslo ne more biti prazno"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
