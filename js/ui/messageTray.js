@@ -261,7 +261,9 @@ const FocusGrabber = new Lang.Class({
 
         this._hasFocus = true;
 
-        this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+        if (!this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false))
+            this.actor.grab_key_focus();
+
         this.emit('focus-grabbed');
     },
 
