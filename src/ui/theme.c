@@ -3405,42 +3405,6 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
 
   switch (op->type)
     {
-    case META_DRAW_TINT:
-      {
-        GdkRGBA color;
-        guint32 rgba;
-        gboolean has_alpha;
-
-        meta_color_spec_render (op->data.rectangle.color_spec,
-                                context,
-                                &color);
-
-        has_alpha =
-          op->data.tint.alpha_spec &&
-          (op->data.tint.alpha_spec->n_alphas > 1 ||
-           op->data.tint.alpha_spec->alphas[0] != 0xff);
-
-        pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
-                                 has_alpha,
-                                 8, width, height);
-
-        if (!has_alpha)
-          {
-            rgba = GDK_COLOR_RGBA (color);
-
-            gdk_pixbuf_fill (pixbuf, rgba);
-          }
-        else if (op->data.tint.alpha_spec->n_alphas == 1)
-          {
-            rgba = GDK_COLOR_RGBA (color);
-            rgba &= ~0xff;
-            rgba |= op->data.tint.alpha_spec->alphas[0];
-
-            gdk_pixbuf_fill (pixbuf, rgba);
-          }
-      }
-      break;
-
     case META_DRAW_IMAGE:
       {
         if (op->data.image.colorize_spec)
@@ -3483,6 +3447,7 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
           }
         break;
       }
+    case META_DRAW_TINT:
     case META_DRAW_ICON:
     case META_DRAW_LINE:
     case META_DRAW_RECTANGLE:
@@ -3801,41 +3766,23 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
     case META_DRAW_TINT:
       {
         int rx, ry, rwidth, rheight;
-        gboolean needs_alpha;
-
-        needs_alpha = op->data.tint.alpha_spec &&
-          (op->data.tint.alpha_spec->n_alphas > 1 ||
-           op->data.tint.alpha_spec->alphas[0] != 0xff);
 
         rx = parse_x_position_unchecked (op->data.tint.x, env);
         ry = parse_y_position_unchecked (op->data.tint.y, env);
         rwidth = parse_size_unchecked (op->data.tint.width, env);
         rheight = parse_size_unchecked (op->data.tint.height, env);
 
-        if (!needs_alpha)
-          {
-            meta_color_spec_render (op->data.tint.color_spec,
-                                    style_gtk, &color);
-            gdk_cairo_set_source_rgba (cr, &color);
+        meta_color_spec_render (op->data.tint.color_spec,
+                                style_gtk, &color);
 
-            cairo_rectangle (cr, rx, ry, rwidth, rheight);
-            cairo_fill (cr);
-          }
-        else
-          {
-            GdkPixbuf *pixbuf;
+        if (op->data.tint.alpha_spec &&
+            op->data.tint.alpha_spec->n_alphas == 1)
+          color.alpha = op->data.tint.alpha_spec->alphas[0];
 
-            pixbuf = draw_op_as_pixbuf (op, style_gtk, info,
-                                        rwidth, rheight);
+        gdk_cairo_set_source_rgba (cr, &color);
 
-            if (pixbuf)
-              {
-                gdk_cairo_set_source_pixbuf (cr, pixbuf, rx, ry);
-                cairo_paint (cr);
-
-                g_object_unref (G_OBJECT (pixbuf));
-              }
-          }
+        cairo_rectangle (cr, rx, ry, rwidth, rheight);
+        cairo_fill (cr);
       }
       break;
 
