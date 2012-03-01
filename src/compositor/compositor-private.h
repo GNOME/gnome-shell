@@ -55,9 +55,6 @@ struct _MetaCompScreen
 };
 
 void meta_switch_workspace_completed (MetaScreen    *screen);
-void meta_set_stage_input_region     (MetaScreen    *screen,
-                                      XserverRegion  region);
-void meta_empty_stage_input_region   (MetaScreen    *screen);
 
 gboolean meta_begin_modal_for_plugin (MetaScreen       *screen,
                                       MetaPlugin       *plugin,

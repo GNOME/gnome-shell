@@ -246,35 +246,6 @@ void
 meta_plugin_destroy_completed (MetaPlugin      *plugin,
                                MetaWindowActor *actor);
 
-ClutterActor *
-meta_plugin_get_overlay_group (MetaPlugin *plugin);
-
-ClutterActor *
-meta_plugin_get_window_group (MetaPlugin *plugin);
-
-ClutterActor *
-meta_plugin_get_background_actor (MetaPlugin *plugin);
-
-ClutterActor *
-meta_plugin_get_stage (MetaPlugin *plugin);
-
-void
-meta_plugin_query_screen_size (MetaPlugin *plugin,
-                               int        *width,
-                               int        *height);
-
-void
-meta_plugin_set_stage_reactive (MetaPlugin *plugin,
-                                gboolean    reactive);
-
-void
-meta_plugin_set_stage_input_area (MetaPlugin *plugin,
-                                  gint x, gint y, gint width, gint height);
-
-void
-meta_plugin_set_stage_input_region (MetaPlugin   *plugin,
-                                    XserverRegion region);
-
 /**
  * MetaModalOptions:
  * @META_MODAL_POINTER_ALREADY_GRABBED: if set the pointer is already
@@ -300,8 +271,6 @@ void
 meta_plugin_end_modal (MetaPlugin *plugin,
                        guint32     timestamp);
 
-GList *     meta_plugin_get_window_actors (MetaPlugin *plugin);
-Display *   meta_plugin_get_xdisplay      (MetaPlugin *plugin);
 MetaScreen *meta_plugin_get_screen        (MetaPlugin *plugin);
 
 void

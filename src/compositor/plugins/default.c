@@ -284,7 +284,8 @@ on_switch_workspace_effect_complete (ClutterTimeline *timeline, gpointer data)
 {
   MetaPlugin               *plugin  = META_PLUGIN (data);
   MetaDefaultPluginPrivate *priv = META_DEFAULT_PLUGIN (plugin)->priv;
-  GList        *l     = meta_plugin_get_window_actors (plugin);
+  MetaScreen *screen = meta_plugin_get_screen (plugin);
+  GList *l = meta_get_window_actors (screen);
 
   while (l)
     {
@@ -317,6 +318,7 @@ switch_workspace (MetaPlugin *plugin,
                   gint from, gint to,
                   MetaMotionDirection direction)
 {
+  MetaScreen *screen;
   MetaDefaultPluginPrivate *priv = META_DEFAULT_PLUGIN (plugin)->priv;
   GList        *l;
   ClutterActor *workspace0  = clutter_group_new ();
@@ -325,11 +327,13 @@ switch_workspace (MetaPlugin *plugin,
   int           screen_width, screen_height;
   ClutterAnimation *animation;
 
-  stage = meta_plugin_get_stage (plugin);
+  screen = meta_plugin_get_screen (plugin);
+  stage = CLUTTER (meta_get_stage_for_screen (screen));
 
-  meta_plugin_query_screen_size (plugin,
-					      &screen_width,
-					      &screen_height);
+  meta_screen_get_size (screen,
+                        &screen_width,
+                        &screen_height);
+
   clutter_actor_set_anchor_point (workspace1,
                                   screen_width,
                                   screen_height);
@@ -348,7 +352,7 @@ switch_workspace (MetaPlugin *plugin,
       return;
     }
 
-  l = g_list_last (meta_plugin_get_window_actors (plugin));
+  l = g_list_last (meta_get_window_actors (screen));
 
   while (l)
     {

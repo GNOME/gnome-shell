@@ -263,38 +263,6 @@ meta_plugin_get_info (MetaPlugin *plugin)
   return NULL;
 }
 
-ClutterActor *
-meta_plugin_get_overlay_group (MetaPlugin *plugin)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-
-  return meta_get_overlay_group_for_screen (priv->screen);
-}
-
-ClutterActor *
-meta_plugin_get_stage (MetaPlugin *plugin)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-
-  return meta_get_stage_for_screen (priv->screen);
-}
-
-ClutterActor *
-meta_plugin_get_window_group (MetaPlugin *plugin)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-
-  return meta_get_window_group_for_screen (priv->screen);
-}
-
-ClutterActor *
-meta_plugin_get_background_actor (MetaPlugin *plugin)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-
-  return meta_get_background_actor_for_screen (priv->screen);
-}
-
 /**
  * _meta_plugin_effect_started:
  * @plugin: the plugin
@@ -315,7 +283,7 @@ meta_plugin_switch_workspace_completed (MetaPlugin *plugin)
 {
   MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
-  MetaScreen *screen = meta_plugin_get_screen (plugin);
+  MetaScreen *screen = priv->screen;
 
   if (priv->running-- < 0)
     {
@@ -389,80 +357,6 @@ meta_plugin_destroy_completed (MetaPlugin      *plugin,
   meta_plugin_window_effect_completed (plugin, actor, META_PLUGIN_DESTROY);
 }
 
-void
-meta_plugin_query_screen_size (MetaPlugin *plugin,
-                               int        *width,
-                               int        *height)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-
-  meta_screen_get_size (priv->screen, width, height);
-}
-
-void
-meta_plugin_set_stage_reactive (MetaPlugin *plugin,
-                                gboolean    reactive)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-  MetaScreen  *screen  = priv->screen;
-
-  if (reactive)
-    meta_set_stage_input_region (screen, None);
-  else
-    meta_empty_stage_input_region (screen);
-}
-
-void
-meta_plugin_set_stage_input_area (MetaPlugin *plugin,
-                                  gint x, gint y, gint width, gint height)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-  MetaScreen   *screen  = priv->screen;
-  MetaDisplay  *display = meta_screen_get_display (screen);
-  Display      *xdpy    = meta_display_get_xdisplay (display);
-  XRectangle    rect;
-  XserverRegion region;
-
-  rect.x = x;
-  rect.y = y;
-  rect.width = width;
-  rect.height = height;
-
-  region = XFixesCreateRegion (xdpy, &rect, 1);
-  meta_set_stage_input_region (screen, region);
-  XFixesDestroyRegion (xdpy, region);
-}
-
-void
-meta_plugin_set_stage_input_region (MetaPlugin   *plugin,
-                                    XserverRegion region)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-  MetaScreen  *screen  = priv->screen;
-
-  meta_set_stage_input_region (screen, region);
-}
-
-/**
- * meta_plugin_get_window_actors:
- * @plugin: A #MetaPlugin
- *
- * This function returns all of the #MetaWindowActor objects referenced by Mutter, including
- * override-redirect windows.  The returned list is a snapshot of Mutter's current
- * stacking order, with the topmost window last.
- *
- * The 'restacked' signal of #MetaScreen signals when this value has changed.
- *
- * Returns: (transfer none) (element-type MetaWindowActor): Windows in stacking order, topmost last
- */
-GList *
-meta_plugin_get_window_actors (MetaPlugin *plugin)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-
-  return meta_get_window_actors (priv->screen);
-}
-
 /**
  * meta_plugin_begin_modal:
  * @plugin: a #MetaPlugin
@@ -519,16 +413,6 @@ meta_plugin_end_modal (MetaPlugin *plugin,
   MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
   meta_end_modal_for_plugin (priv->screen, plugin, timestamp);
-}
-
-Display *
-meta_plugin_get_xdisplay (MetaPlugin *plugin)
-{
-  MetaPluginPrivate *priv    = META_PLUGIN (plugin)->priv;
-  MetaDisplay       *display = meta_screen_get_display (priv->screen);
-  Display           *xdpy    = meta_display_get_xdisplay (display);
-
-  return xdpy;
 }
 
 /**
