@@ -212,7 +212,7 @@ GTK_DOC_CHECK([1.15], [--flavour no-tmpl])
 # minimum/yes/maximum are the same, however.
 AC_ARG_ENABLE(compile_warnings,
   AS_HELP_STRING([--enable-compile-warnings=@<:@no/minimum/yes/maximum/error@:>@],[Turn on compiler warnings]),,
-  enable_compile_warnings=maximum)
+  enable_compile_warnings=error)
 
 changequote(,)dnl
 if test "$enable_compile_warnings" != no ; then
