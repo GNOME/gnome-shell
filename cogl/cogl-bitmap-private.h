@@ -87,6 +87,10 @@ CoglBitmap *
 _cogl_bitmap_convert (CoglBitmap *bmp,
 		      CoglPixelFormat   dst_format);
 
+gboolean
+_cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
+                                  CoglBitmap *dst_bmp);
+
 CoglBitmap *
 _cogl_bitmap_from_file (const char *filename,
 			GError     **error);
@@ -101,7 +105,7 @@ gboolean
 _cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
                                      CoglPixelFormat  dst_format);
 
-void
+gboolean
 _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     CoglBitmap *dst,
 			     int         src_x,

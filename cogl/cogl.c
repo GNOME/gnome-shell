@@ -484,7 +484,7 @@ _cogl_read_pixels_with_rowstride (int x,
       (gl_format != GL_RGBA || gl_type != GL_UNSIGNED_BYTE ||
        rowstride != 4 * width))
     {
-      CoglBitmap *tmp_bmp, *dst_bmp;
+      CoglBitmap *tmp_bmp;
       guint8 *tmp_data = g_malloc (width * height * 4);
 
       tmp_bmp = _cogl_bitmap_new_from_data (tmp_data,
@@ -500,19 +500,7 @@ _cogl_read_pixels_with_rowstride (int x,
                              GL_RGBA, GL_UNSIGNED_BYTE,
                              tmp_data) );
 
-      /* CoglBitmap doesn't currently have a way to convert without
-         allocating its own buffer so we have to copy the data
-         again */
-      if ((dst_bmp = _cogl_bitmap_convert (tmp_bmp, format)))
-        {
-          _cogl_bitmap_copy_subregion (dst_bmp,
-                                       bmp,
-                                       0, 0,
-                                       0, 0,
-                                       width, height);
-          cogl_object_unref (dst_bmp);
-        }
-      else
+      if (!_cogl_bitmap_convert_into_bitmap (tmp_bmp, bmp))
         {
           /* FIXME: there's no way to report an error here so we'll
              just have to leave the data initialised */

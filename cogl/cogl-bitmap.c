@@ -128,7 +128,7 @@ _cogl_bitmap_copy (CoglBitmap *src_bmp)
   return dst_bmp;
 }
 
-void
+gboolean
 _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     CoglBitmap *dst,
 			     int         src_x,
@@ -142,9 +142,12 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
   guint8 *dstdata;
   int    bpp;
   int    line;
+  gboolean succeeded = FALSE;
 
   /* Intended only for fast copies when format is equal! */
-  g_assert (src->format == dst->format);
+  g_assert ((src->format & ~COGL_PREMULT_BIT) ==
+            (dst->format & ~COGL_PREMULT_BIT));
+
   bpp = _cogl_pixel_format_get_bytes_per_pixel (src->format);
 
   if ((srcdata = _cogl_bitmap_map (src, COGL_BUFFER_ACCESS_READ, 0)))
@@ -161,11 +164,15 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
               dstdata += dst->rowstride;
             }
 
+          succeeded = TRUE;
+
           _cogl_bitmap_unmap (dst);
         }
 
       _cogl_bitmap_unmap (src);
     }
+
+  return succeeded;
 }
 
 gboolean

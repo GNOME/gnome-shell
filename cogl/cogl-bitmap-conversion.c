@@ -342,28 +342,33 @@ _cogl_bitmap_needs_short_temp_buffer (CoglPixelFormat format)
   g_assert_not_reached ();
 }
 
-CoglBitmap *
-_cogl_bitmap_convert (CoglBitmap      *src_bmp,
-                      CoglPixelFormat  dst_format)
+gboolean
+_cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
+                                  CoglBitmap *dst_bmp)
 {
   guint8          *src_data;
   guint8          *dst_data;
   guint8          *src;
   guint8          *dst;
   void            *tmp_row;
-  int              dst_bpp;
   int              src_rowstride;
   int              dst_rowstride;
   int              y;
   int              width, height;
   CoglPixelFormat  src_format;
+  CoglPixelFormat  dst_format;
   gboolean         use_16;
   gboolean         need_premult;
 
   src_format = _cogl_bitmap_get_format (src_bmp);
   src_rowstride = _cogl_bitmap_get_rowstride (src_bmp);
+  dst_format = _cogl_bitmap_get_format (dst_bmp);
+  dst_rowstride = _cogl_bitmap_get_rowstride (dst_bmp);
   width = _cogl_bitmap_get_width (src_bmp);
   height = _cogl_bitmap_get_height (src_bmp);
+
+  _COGL_RETURN_VAL_IF_FAIL (width == _cogl_bitmap_get_width (dst_bmp), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (height == _cogl_bitmap_get_height (dst_bmp), FALSE);
 
   need_premult
     = ((src_format & COGL_PREMULT_BIT) != (dst_format & COGL_PREMULT_BIT) &&
@@ -376,32 +381,44 @@ _cogl_bitmap_convert (CoglBitmap      *src_bmp,
   if ((src_format & ~COGL_PREMULT_BIT) == (dst_format & ~COGL_PREMULT_BIT) &&
       (!need_premult || _cogl_bitmap_can_premult (dst_format)))
     {
-      CoglBitmap *dst_bmp = _cogl_bitmap_copy (src_bmp);
+      if (!_cogl_bitmap_copy_subregion (src_bmp, dst_bmp,
+                                        0, 0, /* src_x / src_y */
+                                        0, 0, /* dst_x / dst_y */
+                                        width, height))
+        return FALSE;
 
-      if (need_premult &&
-          !_cogl_bitmap_convert_premult_status (dst_bmp, dst_format))
+      if (need_premult)
         {
-          cogl_object_unref (dst_bmp);
-          return NULL;
+          if ((dst_format & COGL_PREMULT_BIT))
+            {
+              if (!_cogl_bitmap_premult (dst_bmp))
+                return FALSE;
+            }
+          else
+            {
+              if (!_cogl_bitmap_unpremult (dst_bmp))
+                return FALSE;
+            }
         }
 
-      return dst_bmp;
+      return TRUE;
     }
 
   src_data = _cogl_bitmap_map (src_bmp, COGL_BUFFER_ACCESS_READ, 0);
   if (src_data == NULL)
-    return NULL;
+    return FALSE;
+  dst_data = _cogl_bitmap_map (dst_bmp,
+                               COGL_BUFFER_ACCESS_WRITE,
+                               COGL_BUFFER_MAP_HINT_DISCARD);
+  if (dst_data == NULL)
+    {
+      _cogl_bitmap_unmap (src_bmp);
+      return FALSE;
+    }
 
   use_16 = _cogl_bitmap_needs_short_temp_buffer (dst_format);
 
-  dst_bpp = _cogl_pixel_format_get_bytes_per_pixel (dst_format);
-
-  /* Initialize destination bitmap */
-  dst_rowstride = (sizeof(guint8) * dst_bpp * width + 3) & ~3;
-
-  /* Allocate a new buffer to hold converted data */
-  dst_data = g_malloc (height * dst_rowstride);
-  /* and a buffer to hold a temporary RGBA row */
+  /* Allocate a buffer to hold a temporary RGBA row */
   tmp_row = g_malloc (width *
                       (use_16 ? sizeof (guint16) : sizeof (guint8)) * 4);
 
@@ -442,14 +459,45 @@ _cogl_bitmap_convert (CoglBitmap      *src_bmp,
     }
 
   _cogl_bitmap_unmap (src_bmp);
+  _cogl_bitmap_unmap (dst_bmp);
 
   g_free (tmp_row);
 
-  return _cogl_bitmap_new_from_data (dst_data,
-                                     dst_format,
-                                     width, height, dst_rowstride,
-                                     (CoglBitmapDestroyNotify) g_free,
-                                     NULL);
+  return TRUE;
+}
+
+CoglBitmap *
+_cogl_bitmap_convert (CoglBitmap *src_bmp,
+                      CoglPixelFormat dst_format)
+{
+  int dst_bpp;
+  int dst_rowstride;
+  guint8 *dst_data;
+  CoglBitmap *dst_bmp;
+  int width, height;
+
+  width = _cogl_bitmap_get_width (src_bmp);
+  height = _cogl_bitmap_get_height (src_bmp);
+  dst_bpp = _cogl_pixel_format_get_bytes_per_pixel (dst_format);
+  dst_rowstride = (sizeof (guint8) * dst_bpp * width + 3) & ~3;
+
+  /* Allocate a new buffer to hold converted data */
+  dst_data = g_malloc (height * dst_rowstride);
+
+  dst_bmp = _cogl_bitmap_new_from_data (dst_data,
+                                        dst_format,
+                                        width, height,
+                                        dst_rowstride,
+                                        (CoglBitmapDestroyNotify) g_free,
+                                        NULL);
+
+  if (!_cogl_bitmap_convert_into_bitmap (src_bmp, dst_bmp))
+    {
+      cogl_object_unref (dst_bmp);
+      return NULL;
+    }
+
+  return dst_bmp;
 }
 
 gboolean
