@@ -567,6 +567,7 @@ const AppWellIcon = new Lang.Class({
 
         this.actor.set_hover(true);
         this._menu.popup();
+        this._menuManager.ignoreRelease();
 
         return false;
     },

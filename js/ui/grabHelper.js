@@ -92,6 +92,14 @@ const GrabHelper = new Lang.Class({
         return this._grabStack[this._grabStack.length - 1] || {};
     },
 
+    get grabbed() {
+        return this._grabStack.length > 0;
+    },
+
+    get grabStack() {
+        return this._grabStack;
+    },
+
     _findStackIndex: function(actor) {
         if (!actor)
             return -1;
@@ -152,6 +160,7 @@ const GrabHelper = new Lang.Class({
         params = Params.parse(params, { actor: null,
                                         modal: false,
                                         grabFocus: false,
+                                        focus: null,
                                         onUngrab: null });
 
         let focus = global.stage.key_focus;
@@ -169,7 +178,9 @@ const GrabHelper = new Lang.Class({
         if (params.grabFocus && !this._takeFocusGrab(hadFocus))
             return false;
 
-        if (hadFocus || params.grabFocus)
+        if (params.focus)
+            params.focus.grab_key_focus();
+        else if (hadFocus || params.grabFocus)
             _navigateActor(newFocus);
 
         this._grabStack.push(params);
