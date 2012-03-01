@@ -8,6 +8,8 @@
 #include "clutter-stage-window.h"
 #include "clutter-private.h"
 
+#define clutter_stage_window_get_type   _clutter_stage_window_get_type
+
 typedef ClutterStageWindowIface ClutterStageWindowInterface;
 
 G_DEFINE_INTERFACE (ClutterStageWindow, clutter_stage_window, G_TYPE_OBJECT);

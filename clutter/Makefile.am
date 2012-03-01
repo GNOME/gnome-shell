@@ -110,7 +110,6 @@ source_h =					\
 	$(srcdir)/clutter-snap-constraint.h	\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-stage-manager.h	\
-	$(srcdir)/clutter-stage-window.h	\
 	$(srcdir)/clutter-state.h		\
 	$(srcdir)/clutter-table-layout.h	\
 	$(srcdir)/clutter-texture.h 		\
@@ -218,6 +217,7 @@ source_h_priv = \
 	$(srcdir)/clutter-settings-private.h		\
 	$(srcdir)/clutter-stage-manager-private.h	\
 	$(srcdir)/clutter-stage-private.h		\
+	$(srcdir)/clutter-stage-window.h		\
 	$(NULL)
 
 # private source code; these should not be introspected

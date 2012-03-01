@@ -1,30 +1,17 @@
 #ifndef __CLUTTER_STAGE_WINDOW_H__
 #define __CLUTTER_STAGE_WINDOW_H__
 
-#include <clutter/clutter-actor.h>
 #include <cogl/cogl.h>
-#include <cairo.h>
-
-/* XXX: Some of the private parts in this header expect the
- * CoglFramebuffer typedef from Cogl, but its possible for this header
- * to be included without the experimental Cogl api having been
- * selected by defining COGL_ENABLE_EXPERIMENTAL_API or
- * COGL_ENABLE_EXPERIMENTAL_2_0_API.
- *
- * We declare a  place holder type ourselves in this case...
- */
-#ifndef COGL_ENABLE_EXPERIMENTAL_API
-typedef struct _CoglFramebuffer CoglFramebuffer;
-#endif
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_STAGE_WINDOW               (clutter_stage_window_get_type ())
+#define CLUTTER_TYPE_STAGE_WINDOW               (_clutter_stage_window_get_type ())
 #define CLUTTER_STAGE_WINDOW(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE_WINDOW, ClutterStageWindow))
 #define CLUTTER_IS_STAGE_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_STAGE_WINDOW))
 #define CLUTTER_STAGE_WINDOW_GET_IFACE(obj)     (G_TYPE_INSTANCE_GET_INTERFACE ((obj), CLUTTER_TYPE_STAGE_WINDOW, ClutterStageWindowIface))
 
-/**
+/*
  * ClutterStageWindow: (skip)
  *
  * <structname>ClutterStageWindow</structname> is an opaque structure
@@ -35,7 +22,7 @@ G_BEGIN_DECLS
 typedef struct _ClutterStageWindow      ClutterStageWindow; /* dummy */
 typedef struct _ClutterStageWindowIface ClutterStageWindowIface;
 
-/**
+/*
  * ClutterStageWindowIface: (skip)
  *
  * The interface implemented by backends for stage windows
@@ -91,7 +78,7 @@ struct _ClutterStageWindowIface
   gboolean          (* can_clip_redraws)        (ClutterStageWindow *stage_window);
 };
 
-GType clutter_stage_window_get_type (void) G_GNUC_CONST;
+GType _clutter_stage_window_get_type (void) G_GNUC_CONST;
 
 ClutterActor *    _clutter_stage_window_get_wrapper        (ClutterStageWindow *window);
 
