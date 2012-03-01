@@ -102,6 +102,7 @@ const Lightbox = new Lang.Class({
 
     show: function() {
         if (this._fadeInTime) {
+            this.shown = false;
             this.actor.opacity = 0;
             Tweener.addTween(this.actor,
                              { opacity: 255 * this._fadeFactor,

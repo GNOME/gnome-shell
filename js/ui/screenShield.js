@@ -61,6 +61,7 @@ const ScreenShield = new Lang.Class({
             this._lightbox.show();
         } else {
             let lightboxWasShown = this._lightbox.shown;
+            log("this._lightbox.shown " + this._lightbox.shown);
             this._lightbox.hide();
             if (lightboxWasShown && this._settings.get_boolean(LOCK_ENABLED_KEY)) {
                 this._background.show();
