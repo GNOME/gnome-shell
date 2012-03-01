@@ -25,16 +25,6 @@
       </_description>
     </key>
 
-    <key name="live-hidden-windows" type="b">
-      <default>false</default>
-      <_summary>Live Hidden Windows</_summary>
-      <_description>
-        Determines whether hidden windows (i.e., minimized windows and
-        windows on other workspaces than the current one) should be kept
-        alive.
-      </_description>
-    </key>
-
     <key name="edge-tiling" type="b">
       <default>false</default>
       <_summary>Enable edge tiling when dropping windows on screen edges</_summary>

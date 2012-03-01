@@ -64,7 +64,6 @@ typedef enum
   META_PREF_RESIZE_WITH_RIGHT_BUTTON,
   META_PREF_EDGE_TILING,
   META_PREF_FORCE_FULLSCREEN,
-  META_PREF_LIVE_HIDDEN_WINDOWS,
   META_PREF_WORKSPACES_ONLY_ON_PRIMARY,
   META_PREF_NO_TAB_POPUP,
   META_PREF_DRAGGABLE_BORDER_WIDTH
@@ -138,9 +137,6 @@ gboolean    meta_prefs_get_force_fullscreen  (void);
 void meta_prefs_set_compositing_manager (gboolean whether);
 
 void meta_prefs_set_force_fullscreen (gboolean whether);
-
-gboolean meta_prefs_get_live_hidden_windows (void);
-void     meta_prefs_set_live_hidden_windows (gboolean whether);
 
 gboolean meta_prefs_get_workspaces_only_on_primary (void);
 
