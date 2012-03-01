@@ -303,6 +303,8 @@ static gboolean
 gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
                                   XEvent     *xev)
 {
+  MetaScreen *screen = meta_plugin_get_screen (plugin);
+  ClutterStage *stage = CLUTTER_STAGE (meta_get_stage_for_screen (screen));
 
   GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
 #ifdef GLX_INTEL_swap_event
@@ -323,7 +325,7 @@ gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
 #endif
 
   if ((xev->xany.type == EnterNotify || xev->xany.type == LeaveNotify)
-      && xev->xcrossing.window == clutter_x11_get_stage_window (CLUTTER_STAGE (meta_plugin_get_stage (plugin))))
+      && xev->xcrossing.window == clutter_x11_get_stage_window (stage))
     {
       /* If the pointer enters a child of the stage window (eg, a
        * trayicon), we want to consider it to still be in the stage,

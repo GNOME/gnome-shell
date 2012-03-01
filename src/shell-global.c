@@ -562,14 +562,18 @@ void
 shell_global_set_stage_input_mode (ShellGlobal         *global,
                                    ShellStageInputMode  mode)
 {
+  MetaScreen *screen;
+
   g_return_if_fail (SHELL_IS_GLOBAL (global));
 
+  screen = meta_plugin_get_screen (global->plugin);
+
   if (mode == SHELL_STAGE_INPUT_MODE_NONREACTIVE || global->gtk_grab_active)
-    meta_plugin_set_stage_reactive (global->plugin, FALSE);
+    meta_empty_stage_input_region (screen);
   else if (mode == SHELL_STAGE_INPUT_MODE_FULLSCREEN || !global->input_region)
-    meta_plugin_set_stage_reactive (global->plugin, TRUE);
+    meta_set_stage_input_region (screen, None);
   else
-    meta_plugin_set_stage_input_region (global->plugin, global->input_region);
+    meta_set_stage_input_region (screen, global->input_region);
 
   if (mode == SHELL_STAGE_INPUT_MODE_FOCUSED)
     shell_global_focus_stage (global);
@@ -1020,7 +1024,7 @@ _shell_global_set_plugin (ShellGlobal *global,
   global->gdk_screen = gdk_display_get_screen (global->gdk_display,
                                                meta_screen_get_screen_number (global->meta_screen));
 
-  global->stage = CLUTTER_STAGE (meta_plugin_get_stage (plugin));
+  global->stage = CLUTTER_STAGE (meta_get_stage_for_screen (global->meta_screen));
   global->stage_xwindow = clutter_x11_get_stage_window (global->stage);
   global->stage_gdk_window = gdk_x11_window_foreign_new_for_display (global->gdk_display,
                                                                      global->stage_xwindow);
