@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-28 18:49+0000\n"
-"PO-Revision-Date: 2012-02-28 20:53+0200\n"
+"POT-Creation-Date: 2012-03-01 11:29+0000\n"
+"PO-Revision-Date: 2012-03-01 13:10+0200\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
 "Language: et\n"
@@ -552,6 +552,12 @@ msgstr "salv"
 msgid "Keyboard"
 msgstr "Klaviatuur"
 
+msgid "Password:"
+msgstr "Parool:"
+
+msgid "Type again:"
+msgstr "Sisesta uuesti:"
+
 msgid "No extensions installed"
 msgstr "Ühtegi laiendust pole paigaldatud"
 
@@ -720,9 +726,6 @@ msgstr "Autendi"
 #. * for instance.
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Kahjuks see ei sobinud. Palun proovi uuesti."
-
-msgid "Password:"
-msgstr "Parool:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -1365,6 +1368,12 @@ msgstr "Sisselogimise kuval kasutatav GDM-i režiim"
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "'%s' käivitamine nurjus"
+
+msgid "Passwords do not match."
+msgstr "Paroolid ei kattu."
+
+msgid "Password cannot be blank"
+msgstr "Parool ei saa olla tühi"
 
 msgid "United Kingdom"
 msgstr "Suurbritannia"
