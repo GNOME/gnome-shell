@@ -200,15 +200,11 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
       if (_cogl_texture_needs_premult_conversion (src_format,
                                                   dst_format))
         {
-          dst_bmp = _cogl_bitmap_copy (src_bmp);
+          dst_bmp = _cogl_bitmap_convert (src_bmp,
+                                          src_format ^ COGL_PREMULT_BIT);
 
-          if (!_cogl_bitmap_convert_premult_status (dst_bmp,
-                                                    src_format ^
-                                                    COGL_PREMULT_BIT))
-            {
-              cogl_object_unref (dst_bmp);
-              return NULL;
-            }
+          if (dst_bmp == NULL)
+            return NULL;
         }
       else
         dst_bmp = cogl_object_ref (src_bmp);
@@ -236,8 +232,7 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
                                                                 out_gltype);
 
       if (closest_format != src_format)
-        dst_bmp = _cogl_bitmap_convert_format_and_premult (src_bmp,
-                                                           closest_format);
+        dst_bmp = _cogl_bitmap_convert (src_bmp, closest_format);
       else
         dst_bmp = cogl_object_ref (src_bmp);
     }
@@ -1302,8 +1297,7 @@ cogl_texture_get_data (CoglTexture     *texture,
       int new_bmp_rowstride;
 
       /* Convert to requested format */
-      new_bmp = _cogl_bitmap_convert_format_and_premult (target_bmp,
-                                                         format);
+      new_bmp = _cogl_bitmap_convert (target_bmp, format);
 
       /* Free intermediate data and return if failed */
       cogl_object_unref (target_bmp);

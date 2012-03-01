@@ -203,6 +203,81 @@ _cogl_premult_alpha_last_four_pixels_sse2 (guint8 *p)
 
 #endif /* COGL_USE_PREMULT_SSE2 */
 
+static void
+_cogl_bitmap_premult_unpacked_span_guint8 (guint8 *data,
+                                           int width)
+{
+#ifdef COGL_USE_PREMULT_SSE2
+
+  /* Process 4 pixels at a time */
+  while (width >= 4)
+    {
+      _cogl_premult_alpha_last_four_pixels_sse2 (data);
+      data += 4 * 4;
+      width -= 4;
+    }
+
+  /* If there are any pixels left we will fall through and
+     handle them below */
+
+#endif /* COGL_USE_PREMULT_SSE2 */
+
+  while (width-- > 0)
+    {
+      _cogl_premult_alpha_last (data);
+      data += 4;
+    }
+}
+
+static void
+_cogl_bitmap_unpremult_unpacked_span_guint8 (guint8 *data,
+                                             int width)
+{
+  int x;
+
+  for (x = 0; x < width; x++)
+    {
+      if (data[3] == 0)
+        _cogl_unpremult_alpha_0 (data);
+      else
+        _cogl_unpremult_alpha_last (data);
+      data += 4;
+    }
+}
+
+static void
+_cogl_bitmap_unpremult_unpacked_span_guint16 (guint16 *data,
+                                              int width)
+{
+  while (width-- > 0)
+    {
+      guint16 alpha = data[3];
+
+      if (alpha == 0)
+        memset (data, 0, sizeof (guint16) * 3);
+      else
+        {
+          data[0] = (data[0] * 65535) / alpha;
+          data[1] = (data[1] * 65535) / alpha;
+          data[2] = (data[2] * 65535) / alpha;
+        }
+    }
+}
+
+static void
+_cogl_bitmap_premult_unpacked_span_guint16 (guint16 *data,
+                                            int width)
+{
+  while (width-- > 0)
+    {
+      guint16 alpha = data[3];
+
+      data[0] = (data[0] * alpha) / 65535;
+      data[1] = (data[1] * alpha) / 65535;
+      data[2] = (data[2] * alpha) / 65535;
+    }
+}
+
 static gboolean
 _cogl_bitmap_can_premult (CoglPixelFormat format)
 {
@@ -283,11 +358,35 @@ _cogl_bitmap_convert (CoglBitmap      *src_bmp,
   int              width, height;
   CoglPixelFormat  src_format;
   gboolean         use_16;
+  gboolean         need_premult;
 
   src_format = _cogl_bitmap_get_format (src_bmp);
   src_rowstride = _cogl_bitmap_get_rowstride (src_bmp);
   width = _cogl_bitmap_get_width (src_bmp);
   height = _cogl_bitmap_get_height (src_bmp);
+
+  need_premult
+    = ((src_format & COGL_PREMULT_BIT) != (dst_format & COGL_PREMULT_BIT) &&
+       src_format != COGL_PIXEL_FORMAT_A_8 &&
+       dst_format != COGL_PIXEL_FORMAT_A_8 &&
+       (src_format & dst_format & COGL_A_BIT));
+
+  /* If the base format is the same then we can just copy the bitmap
+     instead */
+  if ((src_format & ~COGL_PREMULT_BIT) == (dst_format & ~COGL_PREMULT_BIT) &&
+      (!need_premult || _cogl_bitmap_can_premult (dst_format)))
+    {
+      CoglBitmap *dst_bmp = _cogl_bitmap_copy (src_bmp);
+
+      if (need_premult &&
+          !_cogl_bitmap_convert_premult_status (dst_bmp, dst_format))
+        {
+          cogl_object_unref (dst_bmp);
+          return NULL;
+        }
+
+      return dst_bmp;
+    }
 
   src_data = _cogl_bitmap_map (src_bmp, COGL_BUFFER_ACCESS_READ, 0);
   if (src_data == NULL)
@@ -299,10 +398,6 @@ _cogl_bitmap_convert (CoglBitmap      *src_bmp,
 
   /* Initialize destination bitmap */
   dst_rowstride = (sizeof(guint8) * dst_bpp * width + 3) & ~3;
-  /* Copy the premult bit if the new format has an alpha channel */
-  if (COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (dst_format))
-    dst_format = ((src_format & COGL_PREMULT_BIT) |
-                  (dst_format & ~COGL_PREMULT_BIT));
 
   /* Allocate a new buffer to hold converted data */
   dst_data = g_malloc (height * dst_rowstride);
@@ -320,6 +415,25 @@ _cogl_bitmap_convert (CoglBitmap      *src_bmp,
         _cogl_unpack_guint16 (src_format, src, tmp_row, width);
       else
         _cogl_unpack_guint8 (src_format, src, tmp_row, width);
+
+      /* Handle premultiplication */
+      if (need_premult)
+        {
+          if (dst_format & COGL_PREMULT_BIT)
+            {
+              if (use_16)
+                _cogl_bitmap_premult_unpacked_span_guint16 (tmp_row, width);
+              else
+                _cogl_bitmap_premult_unpacked_span_guint8 (tmp_row, width);
+            }
+          else
+            {
+              if (use_16)
+                _cogl_bitmap_unpremult_unpacked_span_guint16 (tmp_row, width);
+              else
+                _cogl_bitmap_unpremult_unpacked_span_guint8 (tmp_row, width);
+            }
+        }
 
       if (use_16)
         _cogl_pack_guint16 (dst_format, tmp_row, dst, width);
@@ -378,16 +492,7 @@ _cogl_bitmap_unpremult (CoglBitmap *bmp)
             }
         }
       else
-        {
-          for (x = 0; x < width; x++)
-            {
-              if (p[3] == 0)
-                _cogl_unpremult_alpha_0 (p);
-              else
-                _cogl_unpremult_alpha_last (p);
-              p += 4;
-            }
-        }
+        _cogl_bitmap_unpremult_unpacked_span_guint8 (p, width);
     }
 
   _cogl_bitmap_unmap (bmp);
@@ -434,30 +539,7 @@ _cogl_bitmap_premult (CoglBitmap *bmp)
             }
         }
       else
-        {
-          x = width;
-
-#ifdef COGL_USE_PREMULT_SSE2
-
-          /* Process 4 pixels at a time */
-          while (x >= 4)
-            {
-              _cogl_premult_alpha_last_four_pixels_sse2 (p);
-              p += 4 * 4;
-              x -= 4;
-            }
-
-          /* If there are any pixels left we will fall through and
-             handle them below */
-
-#endif /* COGL_USE_PREMULT_SSE2 */
-
-          while (x-- > 0)
-            {
-              _cogl_premult_alpha_last (p);
-              p += 4;
-            }
-        }
+        _cogl_bitmap_premult_unpacked_span_guint8 (p, width);
     }
 
   _cogl_bitmap_unmap (bmp);

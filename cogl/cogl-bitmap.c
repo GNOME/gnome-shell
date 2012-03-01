@@ -100,61 +100,6 @@ _cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
 }
 
 CoglBitmap *
-_cogl_bitmap_convert_format_and_premult (CoglBitmap *bmp,
-                                         CoglPixelFormat   dst_format)
-{
-  CoglPixelFormat src_format = _cogl_bitmap_get_format (bmp);
-  CoglBitmap *dst_bmp;
-
-  /* Is base format different (not considering premult status)? */
-  if ((src_format & ~COGL_PREMULT_BIT) !=
-      (dst_format & ~COGL_PREMULT_BIT))
-    {
-      if ((dst_bmp = _cogl_bitmap_convert (bmp, dst_format)) == NULL)
-        return NULL;
-    }
-  else
-    {
-      int rowstride = _cogl_bitmap_get_rowstride (bmp);
-      int height = _cogl_bitmap_get_height (bmp);
-      guint8 *data;
-
-      /* Copy the bitmap so that we can premultiply in-place */
-
-      if ((data = _cogl_bitmap_map (bmp, COGL_BUFFER_ACCESS_READ, 0)) == NULL)
-        return NULL;
-
-      dst_bmp = _cogl_bitmap_new_from_data (g_memdup (data, height * rowstride),
-                                            src_format,
-                                            _cogl_bitmap_get_width (bmp),
-                                            height,
-                                            rowstride,
-                                            (CoglBitmapDestroyNotify) g_free,
-                                            NULL);
-
-      _cogl_bitmap_unmap (bmp);
-    }
-
-  src_format = _cogl_bitmap_get_format (dst_bmp);
-
-  /* We only need to do a premult conversion if both formats have an
-     alpha channel. If we're converting from RGB to RGBA then the
-     alpha will have been filled with 255 so the premult won't do
-     anything or if we are converting from RGBA to RGB we're losing
-     information so either converting or not will be wrong for
-     transparent pixels */
-  if ((src_format & COGL_A_BIT) == COGL_A_BIT &&
-      (dst_format & COGL_A_BIT) == COGL_A_BIT &&
-      !_cogl_bitmap_convert_premult_status (dst_bmp, dst_format))
-    {
-      cogl_object_unref (dst_bmp);
-      return NULL;
-    }
-
-  return dst_bmp;
-}
-
-CoglBitmap *
 _cogl_bitmap_copy (CoglBitmap *src_bmp)
 {
   CoglBitmap *dst_bmp;

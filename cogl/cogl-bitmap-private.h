@@ -101,10 +101,6 @@ gboolean
 _cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
                                      CoglPixelFormat  dst_format);
 
-CoglBitmap *
-_cogl_bitmap_convert_format_and_premult (CoglBitmap *bmp,
-                                         CoglPixelFormat   dst_format);
-
 void
 _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     CoglBitmap *dst,
