@@ -104,6 +104,14 @@ const GrabHelper = new Lang.Class({
         return this._grabStack[this._grabStack.length - 1] || {};
     },
 
+    get grabbed() {
+        return this._grabStack.length > 0;
+    },
+
+    get grabStack() {
+        return this._grabStack;
+    },
+
     _findStackIndex: function(actor) {
         if (!actor)
             return -1;

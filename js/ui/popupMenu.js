@@ -12,6 +12,7 @@ const St = imports.gi.St;
 const Atk = imports.gi.Atk;
 
 const BoxPointer = imports.ui.boxpointer;
+const GrabHelper = imports.ui.grabHelper;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
@@ -1213,7 +1214,6 @@ const PopupMenu = new Lang.Class({
         this.actor = this._boxPointer.actor;
         this.actor._delegate = this;
         this.actor.style_class = 'popup-menu-boxpointer';
-        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
 
         this._boxWrapper = new Shell.GenericContainer();
         this._boxWrapper.connect('get-preferred-width', Lang.bind(this, this._boxGetPreferredWidth));
@@ -1241,15 +1241,6 @@ const PopupMenu = new Lang.Class({
 
     _boxAllocate: function (actor, box, flags) {
         this.box.allocate(box, flags);
-    },
-
-    _onKeyPressEvent: function(actor, event) {
-        if (event.get_key_symbol() == Clutter.Escape) {
-            this.close(BoxPointer.PopupAnimation.FULL);
-            return true;
-        }
-
-        return false;
     },
 
     setArrowOrigin: function(origin) {
@@ -1546,21 +1537,11 @@ const PopupComboMenu = new Lang.Class({
 
         this.actor = this.box;
         this.actor._delegate = this;
-        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
         this.actor.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
         sourceActor.connect('style-changed',
                             Lang.bind(this, this._onSourceActorStyleChanged));
         this._activeItemPos = -1;
         global.focus_manager.add_group(this.actor);
-    },
-
-    _onKeyPressEvent: function(actor, event) {
-        if (event.get_key_symbol() == Clutter.Escape) {
-            this.close(BoxPointer.PopupAnimation.FULL);
-            return true;
-        }
-
-        return false;
     },
 
     _onKeyFocusIn: function(actor) {
@@ -2053,17 +2034,8 @@ const PopupMenuManager = new Lang.Class({
 
     _init: function(owner) {
         this._owner = owner;
-        this.grabbed = false;
-
-        this._eventCaptureId = 0;
-        this._enterEventId = 0;
-        this._leaveEventId = 0;
-        this._keyFocusNotifyId = 0;
-        this._activeMenu = null;
+        this._grabHelper = new GrabHelper.GrabHelper(owner.actor);
         this._menus = [];
-        this._menuStack = [];
-        this._preGrabInputMode = null;
-        this._grabbedFromKeynav = false;
     },
 
     addMenu: function(menu, position) {
@@ -2082,6 +2054,8 @@ const PopupMenuManager = new Lang.Class({
 
         let source = menu.sourceActor;
         if (source) {
+            if (!menu.blockSourceEvents)
+                this._grabHelper.addActor(source);
             menudata.enterId = source.connect('enter-event', Lang.bind(this, function() { this._onMenuSourceEnter(menu); }));
             menudata.focusInId = source.connect('key-focus-in', Lang.bind(this, function() { this._onMenuSourceEnter(menu); }));
         }
@@ -2094,7 +2068,7 @@ const PopupMenuManager = new Lang.Class({
 
     removeMenu: function(menu) {
         if (menu == this._activeMenu)
-            this._closeMenu();
+            this._closeMenu(menu);
 
         let position = this._findMenu(menu);
         if (position == -1) // not a menu we manage
@@ -2111,79 +2085,25 @@ const PopupMenuManager = new Lang.Class({
         if (menudata.focusInId)
             menu.sourceActor.disconnect(menudata.focusInId);
 
+        if (menu.sourceActor)
+            this._grabHelper.removeActor(menu.sourceActor);
         this._menus.splice(position, 1);
     },
 
-    _grab: function() {
-        Main.pushModal(this._owner.actor);
-
-        this._eventCaptureId = global.stage.connect('captured-event', Lang.bind(this, this._onEventCapture));
-        // captured-event doesn't see enter/leave events
-        this._enterEventId = global.stage.connect('enter-event', Lang.bind(this, this._onEventCapture));
-        this._leaveEventId = global.stage.connect('leave-event', Lang.bind(this, this._onEventCapture));
-        this._keyFocusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
-
-        this.grabbed = true;
-    },
-
-    _ungrab: function() {
-        global.stage.disconnect(this._eventCaptureId);
-        this._eventCaptureId = 0;
-        global.stage.disconnect(this._enterEventId);
-        this._enterEventId = 0;
-        global.stage.disconnect(this._leaveEventId);
-        this._leaveEventId = 0;
-        global.stage.disconnect(this._keyFocusNotifyId);
-        this._keyFocusNotifyId = 0;
-
-        this.grabbed = false;
-        Main.popModal(this._owner.actor);
+    get activeMenu() {
+        let actor = this._grabHelper.currentGrab.actor;
+        if (actor)
+            return actor._delegate;
+        else
+            return null;
     },
 
     _onMenuOpenState: function(menu, open) {
         if (open) {
-            if (this._activeMenu && this._activeMenu.isChildMenu(menu)) {
-                this._menuStack.push(this._activeMenu);
-                menu.actor.grab_key_focus();
-            }
-            this._activeMenu = menu;
+            this._grabHelper.grab({ actor: menu.actor, modal: true,
+                                    onUngrab: Lang.bind(this, this._closeMenu, menu) });
         } else {
-            if (this._menuStack.length > 0) {
-                this._activeMenu = this._menuStack.pop();
-                if (menu.sourceActor)
-                    menu.sourceActor.grab_key_focus();
-                this._didPop = true;
-            }
-        }
-
-        // Check what the focus was before calling pushModal/popModal
-        let focus = global.stage.key_focus;
-        let hadFocus = focus && this._activeMenuContains(focus);
-
-        if (open) {
-            if (!this.grabbed) {
-                this._preGrabInputMode = global.stage_input_mode;
-                this._grabbedFromKeynav = hadFocus;
-                this._grab();
-            }
-
-            if (hadFocus)
-                focus.grab_key_focus();
-            else
-                menu.actor.grab_key_focus();
-        } else if (menu == this._activeMenu) {
-            if (this.grabbed)
-                this._ungrab();
-            this._activeMenu = null;
-
-            if (this._grabbedFromKeynav) {
-                if (this._preGrabInputMode == Shell.StageInputMode.FOCUSED)
-                    global.stage_input_mode = Shell.StageInputMode.FOCUSED;
-                if (hadFocus && menu.sourceActor)
-                    menu.sourceActor.grab_key_focus();
-                else if (focus)
-                    focus.grab_key_focus();
-            }
+            this._grabHelper.ungrab({ actor: menu.actor });
         }
     },
 
@@ -2195,85 +2115,35 @@ const PopupMenuManager = new Lang.Class({
         this.removeMenu(childMenu);
     },
 
-    // change the currently-open menu without dropping grab
     _changeMenu: function(newMenu) {
-        if (this._activeMenu) {
-            // _onOpenMenuState will drop the grab if it sees
-            // this._activeMenu being closed; so clear _activeMenu
-            // before closing it to keep that from happening
-            let oldMenu = this._activeMenu;
-            this._activeMenu = null;
-            for (let i = this._menuStack.length - 1; i >= 0; i--)
-                this._menuStack[i].close(BoxPointer.PopupAnimation.FADE);
-            oldMenu.close(BoxPointer.PopupAnimation.FADE);
-            newMenu.open(BoxPointer.PopupAnimation.FADE);
-        } else
-            newMenu.open(BoxPointer.PopupAnimation.FULL);
+        if (this.activeMenu) {
+            this._closeMenu(this.activeMenu);
+            newMenu.open(false);
+        } else {
+            newMenu.open(true);
+        }
     },
 
     _onMenuSourceEnter: function(menu) {
-        if (!this.grabbed || menu == this._activeMenu)
+        if (!this._grabHelper.grabbed)
             return false;
 
-        if (this._activeMenu && this._activeMenu.isChildMenu(menu))
+        if (this._grabHelper.isActorGrabbed(menu.actor))
             return false;
 
-        if (this._menuStack.indexOf(menu) != -1)
-            return false;
-
-        if (this._menuStack.length > 0 && this._menuStack[0].isChildMenu(menu))
+        let isChildMenu = this._grabHelper.grabStack.some(function(grab) {
+            let existingMenu = grab.actor._delegate;
+            return existingMenu.isChildMenu(menu);
+        });
+        if (isChildMenu)
             return false;
 
         this._changeMenu(menu);
         return false;
     },
 
-    _onKeyFocusChanged: function() {
-        if (!this.grabbed || !this._activeMenu)
-            return;
-
-        let focus = global.stage.key_focus;
-        if (focus) {
-            if (this._activeMenuContains(focus))
-                return;
-            if (this._menuStack.length > 0)
-                return;
-            if (focus._delegate && focus._delegate.menu &&
-                this._findMenu(focus._delegate.menu) != -1)
-                return;
-        }
-
-        this._closeMenu();
-    },
-
     _onMenuDestroy: function(menu) {
         this.removeMenu(menu);
-    },
-
-    _activeMenuContains: function(actor) {
-        return this._activeMenu != null
-                && (this._activeMenu.actor.contains(actor) ||
-                    (this._activeMenu.sourceActor && this._activeMenu.sourceActor.contains(actor)));
-    },
-
-    _eventIsOnActiveMenu: function(event) {
-        return this._activeMenuContains(event.get_source());
-    },
-
-    _shouldBlockEvent: function(event) {
-        let src = event.get_source();
-
-        if (this._activeMenu != null && this._activeMenu.actor.contains(src))
-            return false;
-
-        for (let i = 0; i < this._menus.length; i++) {
-            let menu = this._menus[i].menu;
-            if (menu.sourceActor && !menu.blockSourceEvents && menu.sourceActor.contains(src)) {
-                return false;
-            }
-        }
-
-        return true;
     },
 
     _findMenu: function(item) {
@@ -2285,41 +2155,7 @@ const PopupMenuManager = new Lang.Class({
         return -1;
     },
 
-    _onEventCapture: function(actor, event) {
-        if (!this.grabbed)
-            return false;
-
-        if (this._owner.menuEventFilter &&
-            this._owner.menuEventFilter(event))
-            return true;
-
-        if (this._didPop) {
-            this._didPop = false;
-            return true;
-        }
-
-        let activeMenuContains = this._eventIsOnActiveMenu(event);
-        let eventType = event.type();
-
-        if (eventType == Clutter.EventType.BUTTON_RELEASE) {
-            if (activeMenuContains) {
-                return false;
-            } else {
-                this._closeMenu();
-                return true;
-            }
-        } else if (eventType == Clutter.EventType.BUTTON_PRESS && !activeMenuContains) {
-            this._closeMenu();
-            return true;
-        } else if (!this._shouldBlockEvent(event)) {
-            return false;
-        }
-
-        return true;
-    },
-
-    _closeMenu: function() {
-        if (this._activeMenu != null)
-            this._activeMenu.close(BoxPointer.PopupAnimation.FULL);
+    _closeMenu: function(menu) {
+        menu.close(BoxPointer.PopupAnimation.FULL);
     }
 });
