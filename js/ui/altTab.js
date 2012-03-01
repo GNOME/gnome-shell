@@ -813,14 +813,6 @@ const SwitcherList = new Lang.Class({
 
         let primary = Main.layoutManager.primaryMonitor;
         let parentRightPadding = this.actor.get_parent().get_theme_node().get_padding(St.Side.RIGHT);
-        if (this.actor.allocation.x2 == primary.x + primary.width - parentRightPadding) {
-            if (this._squareItems)
-                childWidth = childHeight;
-            else {
-                let [childMin, childNat] = children[0].get_preferred_width(childHeight);
-                childWidth = childMin;
-            }
-        }
 
         for (let i = 0; i < children.length; i++) {
             if (this._items.indexOf(children[i]) != -1) {
