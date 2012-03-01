@@ -83,40 +83,19 @@ _cogl_bitmap_new_shared (CoglBitmap      *shared_bmp,
                          int              height,
                          int              rowstride);
 
-gboolean
-_cogl_bitmap_can_convert (CoglPixelFormat src, CoglPixelFormat dst);
-
-gboolean
-_cogl_bitmap_can_unpremult (CoglPixelFormat format);
-
-gboolean
-_cogl_bitmap_can_premult (CoglPixelFormat format);
-
 CoglBitmap *
 _cogl_bitmap_convert (CoglBitmap *bmp,
 		      CoglPixelFormat   dst_format);
-CoglBitmap *
-_cogl_bitmap_fallback_convert (CoglBitmap *bmp,
-			       CoglPixelFormat   dst_format);
-
-gboolean
-_cogl_bitmap_unpremult (CoglBitmap *dst_bmp);
-
-gboolean
-_cogl_bitmap_fallback_unpremult (CoglBitmap *dst_bmp);
-
-gboolean
-_cogl_bitmap_premult (CoglBitmap *dst_bmp);
-
-gboolean
-_cogl_bitmap_fallback_premult (CoglBitmap *dst_bmp);
 
 CoglBitmap *
 _cogl_bitmap_from_file (const char *filename,
 			GError     **error);
 
-CoglBitmap *
-_cogl_bitmap_fallback_from_file (const char *filename);
+gboolean
+_cogl_bitmap_unpremult (CoglBitmap *dst_bmp);
+
+gboolean
+_cogl_bitmap_premult (CoglBitmap *dst_bmp);
 
 gboolean
 _cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,

@@ -203,7 +203,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-util.c 				\
 	$(srcdir)/cogl-bitmap-private.h 		\
 	$(srcdir)/cogl-bitmap.c 			\
-	$(srcdir)/cogl-bitmap-fallback.c 		\
+	$(srcdir)/cogl-bitmap-conversion.c 		\
 	$(srcdir)/cogl-primitives-private.h 		\
 	$(srcdir)/cogl-primitives.h 			\
 	$(srcdir)/cogl-primitives.c 			\

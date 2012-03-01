@@ -37,43 +37,6 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #endif
 
-gboolean
-_cogl_bitmap_can_convert (CoglPixelFormat src, CoglPixelFormat dst)
-{
-  return FALSE;
-}
-
-gboolean
-_cogl_bitmap_can_unpremult (CoglPixelFormat format)
-{
-  return FALSE;
-}
-
-gboolean
-_cogl_bitmap_can_premult (CoglPixelFormat format)
-{
-  return FALSE;
-}
-
-CoglBitmap *
-_cogl_bitmap_convert (CoglBitmap *bmp,
-		      CoglPixelFormat   dst_format)
-{
-  return NULL;
-}
-
-gboolean
-_cogl_bitmap_unpremult (CoglBitmap *dst_bmp)
-{
-  return FALSE;
-}
-
-gboolean
-_cogl_bitmap_premult (CoglBitmap *dst_bmp)
-{
-  return FALSE;
-}
-
 #ifdef USE_QUARTZ
 
 gboolean

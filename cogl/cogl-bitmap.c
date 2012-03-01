@@ -87,19 +87,14 @@ _cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
   if ((bmp->format & COGL_PREMULT_BIT) > 0 &&
       (dst_format & COGL_PREMULT_BIT) == 0 &&
       COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (dst_format))
-    /* Try unpremultiplying using imaging library */
-    return (_cogl_bitmap_unpremult (bmp)
-            /* ... or try fallback */
-            || _cogl_bitmap_fallback_unpremult (bmp));
+    return _cogl_bitmap_unpremult (bmp);
 
   /* Do we need to premultiply? */
   if ((bmp->format & COGL_PREMULT_BIT) == 0 &&
       COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (bmp->format) &&
       (dst_format & COGL_PREMULT_BIT) > 0)
     /* Try premultiplying using imaging library */
-    return (_cogl_bitmap_premult (bmp)
-            /* ... or try fallback */
-            || _cogl_bitmap_fallback_premult (bmp));
+    return _cogl_bitmap_premult (bmp);
 
   return TRUE;
 }
@@ -115,14 +110,8 @@ _cogl_bitmap_convert_format_and_premult (CoglBitmap *bmp,
   if ((src_format & ~COGL_PREMULT_BIT) !=
       (dst_format & ~COGL_PREMULT_BIT))
     {
-      /* Try converting using imaging library */
       if ((dst_bmp = _cogl_bitmap_convert (bmp, dst_format)) == NULL)
-        {
-          /* ... or try fallback */
-          if ((dst_bmp = _cogl_bitmap_fallback_convert (bmp,
-                                                        dst_format)) == NULL)
-            return NULL;
-        }
+        return NULL;
     }
   else
     {
@@ -292,22 +281,9 @@ CoglBitmap *
 cogl_bitmap_new_from_file (const char  *filename,
                            GError     **error)
 {
-  CoglBitmap *bmp;
-
   _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
 
-  if ((bmp = _cogl_bitmap_from_file (filename, error)) == NULL)
-    {
-      /* Try fallback */
-      if ((bmp = _cogl_bitmap_fallback_from_file (filename))
-          && error && *error)
-        {
-          g_error_free (*error);
-          *error = NULL;
-        }
-    }
-
-  return bmp;
+  return _cogl_bitmap_from_file (filename, error);
 }
 
 CoglBitmap *

@@ -204,7 +204,7 @@ _cogl_premult_alpha_last_four_pixels_sse2 (guint8 *p)
 #endif /* COGL_USE_PREMULT_SSE2 */
 
 static gboolean
-_cogl_bitmap_fallback_can_premult (CoglPixelFormat format)
+_cogl_bitmap_can_premult (CoglPixelFormat format)
 {
   switch (format & ~COGL_PREMULT_BIT)
     {
@@ -268,8 +268,8 @@ _cogl_bitmap_needs_short_temp_buffer (CoglPixelFormat format)
 }
 
 CoglBitmap *
-_cogl_bitmap_fallback_convert (CoglBitmap      *src_bmp,
-                               CoglPixelFormat  dst_format)
+_cogl_bitmap_convert (CoglBitmap      *src_bmp,
+                      CoglPixelFormat  dst_format)
 {
   guint8          *src_data;
   guint8          *dst_data;
@@ -339,7 +339,7 @@ _cogl_bitmap_fallback_convert (CoglBitmap      *src_bmp,
 }
 
 gboolean
-_cogl_bitmap_fallback_unpremult (CoglBitmap *bmp)
+_cogl_bitmap_unpremult (CoglBitmap *bmp)
 {
   guint8          *p, *data;
   int              x,y;
@@ -353,7 +353,7 @@ _cogl_bitmap_fallback_unpremult (CoglBitmap *bmp)
   rowstride = _cogl_bitmap_get_rowstride (bmp);
 
   /* If we can premult that implies we can un-premult too... */
-  if (!_cogl_bitmap_fallback_can_premult (format))
+  if (!_cogl_bitmap_can_premult (format))
     return FALSE;
 
   if ((data = _cogl_bitmap_map (bmp,
@@ -398,7 +398,7 @@ _cogl_bitmap_fallback_unpremult (CoglBitmap *bmp)
 }
 
 gboolean
-_cogl_bitmap_fallback_premult (CoglBitmap *bmp)
+_cogl_bitmap_premult (CoglBitmap *bmp)
 {
   guint8          *p, *data;
   int              x,y;
@@ -412,7 +412,7 @@ _cogl_bitmap_fallback_premult (CoglBitmap *bmp)
   rowstride = _cogl_bitmap_get_rowstride (bmp);
 
   /* Make sure format supported for un-premultiplication */
-  if (!_cogl_bitmap_fallback_can_premult (format))
+  if (!_cogl_bitmap_can_premult (format))
     return FALSE;
 
   if ((data = _cogl_bitmap_map (bmp,
@@ -465,11 +465,4 @@ _cogl_bitmap_fallback_premult (CoglBitmap *bmp)
   _cogl_bitmap_set_format (bmp, format | COGL_PREMULT_BIT);
 
   return TRUE;
-}
-
-CoglBitmap *
-_cogl_bitmap_fallback_from_file (const char  *filename)
-{
-  /* FIXME: use jpeglib, libpng, etc. manually maybe */
-  return FALSE;
 }
