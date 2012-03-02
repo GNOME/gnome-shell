@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-11 16:09+0200\n"
+"POT-Creation-Date: 2012-03-02 23:20+0200\n"
 "PO-Revision-Date: 2011-12-11 16:16+0300\n"
 "Last-Translator: Korostil Daniel <ted.korostiled@gmail.com>\n"
 "Language-Team: translation@linux.org.ua\n"
@@ -15,8 +15,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Virtaal 0.6.1\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -28,6 +28,12 @@ msgid "Window management and application launching"
 msgstr "Керування вікнами та запуск програм"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Увімкнути внутрішні засоби, які будуть корисними для розробників і "
+"випробування при натисненні Alt-F2"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
@@ -35,21 +41,11 @@ msgstr ""
 "Надає доступ до внутрішніх засобів зневаджування та спостереження через Alt-"
 "F2."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Увімкнути внутрішні засоби, які будуть корисними для розробників і "
-"випробування при натисненні Alt-F2"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
-msgid "File extension used for storing the screencast"
-msgstr "Розширення файла для зберігання трансляції з екрана"
+msgid "Uuids of extensions to enable"
+msgstr "Увімкнути розширення Uuids"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
-msgid "Framerate used for recording screencasts."
-msgstr "Частота кадрів для запису трансляцій з екрана."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
@@ -62,31 +58,96 @@ msgstr ""
 "орудувати цим переліком через способи EnableExtension і DisableExtension "
 "DBus DisableExtension DBus на org.gnome.Shell."
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Whether to collect stats about applications usage"
+msgstr "Чи потрібно збирати статистику про вживаність програм "
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-msgid "History for command (Alt-F2) dialog"
-msgstr "Історія для команд (Alt-F2)"
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"Shell зазвичай показує активні програми, щоб продемонструвати найуживаніші "
+"(наприклад, у пускачі). Поки ці дані будуть утримуватись закритими, ви "
+"можете забажати вимкнути це через особисті мотиви. Будь ласка, завважте, це "
+"не вилучить уже збережені дані."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-msgid "History for the looking glass dialog"
-msgstr "Історія для пошуку дзеркальних діалогів"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "If true, display date in the clock, in addition to time."
-msgstr "Якщо це так, дата буде показуватись у годиннику разом з часом."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display seconds in time."
-msgstr "Якщо це так, буде показано секунди в часі."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid "If true, display the ISO week date in the calendar."
-msgstr "Якщо це так, буде показано дні тижня у календарі згідно з ISO."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Перелічити ідентифікатори файла стільниці для улюблених програм"
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Програми, які відповідають цьому ідентифікатору, буде показано в ділянці "
+"улюбленого."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "disabled OpenSearch providers"
+msgstr "вимкнено постачальника OpenSearch"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "History for command (Alt-F2) dialog"
+msgstr "Історія для команд (Alt-F2)"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "History for the looking glass dialog"
+msgstr "Історія для пошуку дзеркальних діалогів"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "Show the week date in the calendar"
+msgstr "Показати дні тижня в календарі"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Якщо це так, буде показано дні тижня у календарі згідно з ISO."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Which keyboard to use"
+msgstr "Яку клавіатуру використовувати"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "The type of keyboard to use."
+msgstr "Тип клавіатури."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show time with seconds"
+msgstr "Показати час з секундами"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "If true, display seconds in time."
+msgstr "Якщо це так, буде показано секунди в часі."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid "Show date in clock"
+msgstr "Показати дату в годиннику"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Якщо це так, дата буде показуватись у годиннику разом з часом."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid "Framerate used for recording screencasts."
+msgstr "Частота кадрів для запису трансляцій з екрана."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"Частота кадрів кінцевої трансляції з екрана записано в записувачі GNOME "
+"Shell як «frames-per-second»."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr ""
+"Канал даних GStreamer використовується для кодування транcляції з екрана"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -111,27 +172,11 @@ msgstr ""
 "webmmux» і записує у WEBM, використовуючи кодек VP8. %T використовується як "
 "заповнювач для гостей в оптимальній кількості потоків на систему."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
-msgid "Show date in clock"
-msgstr "Показати дату в годиннику"
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
+msgid "File extension used for storing the screencast"
+msgstr "Розширення файла для зберігання трансляції з екрана"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
-msgid "Show the week date in the calendar"
-msgstr "Показати дні тижня в календарі"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show time with seconds"
-msgstr "Показати час з секундами"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Програми, які відповідають цьому ідентифікатору, буде показано в ділянці "
-"улюбленого."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -140,51 +185,6 @@ msgstr ""
 "Назва файла для запису трансляції з екрана буде унікальною, яка основана на "
 "даті, та буде використовувати це розширення. Слід змінити це, коли записуєте "
 "в різні формати контейнера. "
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr ""
-"Частота кадрів кінцевої трансляції з екрана записано в записувачі GNOME "
-"Shell як «frames-per-second»."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
-msgid "The gstreamer pipeline used to encode the screencast"
-msgstr ""
-"Канал даних GStreamer використовується для кодування транcляції з екрана"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-"Shell зазвичай показує активні програми, щоб продемонструвати найуживаніші "
-"(наприклад, у пускачі). Поки ці дані будуть утримуватись закритими, ви "
-"можете забажати вимкнути це через особисті мотиви. Будь ласка, завважте, це "
-"не вилучить уже збережені дані."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid "The type of keyboard to use."
-msgstr "Тип клавіатури."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid "Uuids of extensions to enable"
-msgstr "Увімкнути розширення Uuids"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
-msgid "Whether to collect stats about applications usage"
-msgstr "Чи потрібно збирати статистику про вживаність програм "
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
-msgid "Which keyboard to use"
-msgstr "Яку клавіатуру використовувати"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
-msgid "disabled OpenSearch providers"
-msgstr "вимкнено постачальника OpenSearch"
 
 #: ../js/gdm/loginDialog.js:623
 msgid "Session..."
