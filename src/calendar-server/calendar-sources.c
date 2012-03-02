@@ -31,9 +31,9 @@
 #include <string.h>
 #include <gconf/gconf-client.h>
 #define HANDLE_LIBICAL_MEMORY
-#include <libecal/e-cal.h>
+#include <libecal/e-cal-client.h>
 #include <libedataserver/e-source-list.h>
-#include <libedataserverui/e-passwords.h>
+#include <libedataserverui/e-client-utils.h>
 
 #undef CALENDAR_ENABLE_DEBUG
 #include "calendar-debug.h"
@@ -60,7 +60,7 @@ typedef struct _CalendarSourceData CalendarSourceData;
 
 struct _CalendarSourceData
 {
-  ECalSourceType   source_type;
+  ECalClientSourceType source_type;
   CalendarSources *sources;
   guint            changed_signal;
 
@@ -88,7 +88,7 @@ static void calendar_sources_class_init (CalendarSourcesClass *klass);
 static void calendar_sources_init       (CalendarSources      *sources);
 static void calendar_sources_finalize   (GObject             *object);
 
-static void backend_died_cb (ECal *client, CalendarSourceData *source_data);
+static void backend_died_cb (EClient *client, CalendarSourceData *source_data);
 static void calendar_sources_esource_list_changed (ESourceList        *source_list,
                                                    CalendarSourceData *source_data);
 
@@ -172,12 +172,12 @@ calendar_sources_init (CalendarSources *sources)
 {
   sources->priv = CALENDAR_SOURCES_GET_PRIVATE (sources);
 
-  sources->priv->appointment_sources.source_type    = E_CAL_SOURCE_TYPE_EVENT;
+  sources->priv->appointment_sources.source_type    = E_CAL_CLIENT_SOURCE_TYPE_EVENTS;
   sources->priv->appointment_sources.sources        = sources;
   sources->priv->appointment_sources.changed_signal = signals [APPOINTMENT_SOURCES_CHANGED];
   sources->priv->appointment_sources.timeout_id     = 0;
 
-  sources->priv->task_sources.source_type    = E_CAL_SOURCE_TYPE_TODO;
+  sources->priv->task_sources.source_type    = E_CAL_CLIENT_SOURCE_TYPE_TASKS;
   sources->priv->task_sources.sources        = sources;
   sources->priv->task_sources.changed_signal = signals [TASK_SOURCES_CHANGED];
   sources->priv->task_sources.timeout_id     = 0;
@@ -295,30 +295,14 @@ is_source_selected (ESource *esource,
   return FALSE;
 }
 
-static char *
-auth_func_cb (ECal       *ecal,
-	      const char *prompt,
-	      const char *key,
-	      gpointer    user_data)
-{
-	ESource *source;
-	const gchar *auth_domain;
-	const gchar *component_name;
-
-	source = e_cal_get_source (ecal);
-	auth_domain = e_source_get_property (source, "auth-domain");
-	component_name = auth_domain ? auth_domain : "Calendar";
-
-	return e_passwords_get_password (component_name, key);
-}
-
 /* The clients are just created here but not loaded */
-static ECal *
-get_ecal_from_source (ESource        *esource,
-		      ECalSourceType  source_type,
-		      GSList         *existing_clients)
+static ECalClient *
+get_ecal_from_source (ESource              *esource,
+		      ECalClientSourceType  source_type,
+		      GSList               *existing_clients)
 {
-  ECal *retval;
+  ECalClient *retval;
+  GError *error = NULL;
 
   if (existing_clients)
     {
@@ -326,9 +310,9 @@ get_ecal_from_source (ESource        *esource,
 
       for (l = existing_clients; l; l = l->next)
 	{
-	  ECal *client = E_CAL (l->data);
+	  EClient *client = E_CLIENT (l->data);
 
-	  if (e_source_equal (esource, e_cal_get_source (client)))
+	  if (e_source_equal (esource, e_client_get_source (client)))
 	    {
 	      dprintf ("        load_esource: found existing source ... returning that\n");
 
@@ -337,16 +321,19 @@ get_ecal_from_source (ESource        *esource,
 	}
     }
 
-  retval = e_cal_new (esource, source_type);
+  retval = e_cal_client_new (esource, source_type, &error);
   if (!retval)
     {
-      g_warning ("Could not load source '%s' from '%s'\n",
+      g_warning ("Could not load source '%s' from '%s': %s",
 		 e_source_peek_name (esource),
-		 e_source_peek_relative_uri (esource));
+		 e_source_peek_relative_uri (esource),
+		 error->message);
+      g_clear_error(&error);
       return NULL;
     }
 
-  e_cal_set_auth_func (retval, auth_func_cb, NULL);
+  g_signal_connect (retval, "authenticate",
+		    G_CALLBACK (e_client_utils_authenticate_handler), NULL);
 
   return retval;
 }
@@ -399,13 +386,13 @@ debug_dump_ecal_list (GSList *ecal_list)
   dprintf ("Loaded clients:\n");
   for (l = ecal_list; l; l = l->next)
     {
-      ECal    *client = l->data;
-      ESource *source = e_cal_get_source (client);
+      EClient *client = l->data;
+      ESource *source = e_client_get_source (client);
 
       dprintf ("  %s %s %s\n",
 	       e_source_peek_uid (source),
 	       e_source_peek_name (source),
-	       e_cal_get_uri (client));
+	       e_client_get_uri (client));
     }
 #endif
 }
@@ -426,7 +413,7 @@ backend_restart (gpointer data)
 }
 
 static void
-backend_died_cb (ECal *client, CalendarSourceData *source_data)
+backend_died_cb (EClient *client, CalendarSourceData *source_data)
 {
   const char *uristr;
 
@@ -436,7 +423,7 @@ backend_died_cb (ECal *client, CalendarSourceData *source_data)
       g_slist_free (source_data->clients);
       source_data->clients = NULL;
     }
-  uristr = e_cal_get_uri (client);
+  uristr = e_client_get_uri (client);
   g_warning ("The calendar backend for %s has crashed.", uristr);
 
   if (source_data->timeout_id != 0)
@@ -472,8 +459,8 @@ calendar_sources_load_esource_list (CalendarSourceData *source_data)
       esources = e_source_group_peek_sources (l->data);
       for (s = esources; s; s = s->next)
 	{
-	  ESource *esource = E_SOURCE (s->data);
-	  ECal    *client;
+	  ESource    *esource = E_SOURCE (s->data);
+	  ECalClient *client;
 
 	  dprintf ("      type = '%s' uid = '%s', name = '%s', relative uri = '%s': \n",
                    source_data->source_type == E_CAL_SOURCE_TYPE_EVENT ? "appointment" : "task",
@@ -510,7 +497,7 @@ calendar_sources_load_esource_list (CalendarSourceData *source_data)
    * were already there before) */
   for (l = source_data->clients; l; l = l->next)
     {
-      g_signal_connect (G_OBJECT (l->data), "backend_died",
+      g_signal_connect (G_OBJECT (l->data), "backend-died",
                         G_CALLBACK (backend_died_cb), source_data);
     }
 

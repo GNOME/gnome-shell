@@ -36,7 +36,7 @@
 #include <gio/gio.h>
 
 #define HANDLE_LIBICAL_MEMORY
-#include <libecal/e-cal.h>
+#include <libecal/e-cal-client.h>
 #include <libecal/e-cal-time-util.h>
 #include <libecal/e-cal-recur.h>
 #include <libecal/e-cal-system-timezone.h>
@@ -250,27 +250,27 @@ get_ical_completed_time (icalcomponent *ical,
 }
 
 static char *
-get_source_color (ECal *esource)
+get_source_color (ECalClient *esource)
 {
   ESource *source;
 
-  g_return_val_if_fail (E_IS_CAL (esource), NULL);
+  g_return_val_if_fail (E_IS_CAL_CLIENT (esource), NULL);
 
-  source = e_cal_get_source (esource);
+  source = e_client_get_source (E_CLIENT (esource));
 
   return g_strdup (e_source_peek_color_spec (source));
 }
 
 static gchar *
-get_source_uri (ECal *esource)
+get_source_uri (ECalClient *esource)
 {
     ESource *source;
     gchar   *string;
     gchar  **list;
 
-    g_return_val_if_fail (E_IS_CAL (esource), NULL);
+    g_return_val_if_fail (E_IS_CAL_CLIENT (esource), NULL);
 
-    source = e_cal_get_source (esource);
+    source = e_client_get_source (E_CLIENT (esource));
     string = g_strdup (e_source_get_uri (source));
     if (string) {
         list = g_strsplit (string, ":", 2);
@@ -358,7 +358,7 @@ calendar_appointment_free (CalendarAppointment *appointment)
 static void
 calendar_appointment_init (CalendarAppointment  *appointment,
                            icalcomponent        *ical,
-                           ECal                 *cal,
+                           ECalClient           *cal,
                            icaltimezone         *default_zone)
 {
   appointment->uid          = get_ical_uid (ical);
@@ -376,14 +376,14 @@ calendar_appointment_init (CalendarAppointment  *appointment,
 
 static icaltimezone *
 resolve_timezone_id (const char *tzid,
-                     ECal       *source)
+                     ECalClient *source)
 {
   icaltimezone *retval;
 
   retval = icaltimezone_get_builtin_timezone_from_tzid (tzid);
   if (!retval)
     {
-      e_cal_get_timezone (source, tzid, &retval, NULL);
+      e_cal_client_get_timezone_sync (source, tzid, &retval, NULL, NULL);
     }
 
   return retval;
@@ -410,7 +410,7 @@ calendar_appointment_collect_occurrence (ECalComponent  *component,
 static void
 calendar_appointment_generate_occurrences (CalendarAppointment *appointment,
                                            icalcomponent       *ical,
-                                           ECal                *cal,
+                                           ECalClient          *cal,
                                            time_t               start,
                                            time_t               end,
                                            icaltimezone        *default_zone)
@@ -439,7 +439,7 @@ calendar_appointment_generate_occurrences (CalendarAppointment *appointment,
 
 static CalendarAppointment *
 calendar_appointment_new (icalcomponent        *ical,
-                          ECal                 *cal,
+                          ECalClient           *cal,
                           icaltimezone         *default_zone)
 {
   CalendarAppointment *appointment;
@@ -535,12 +535,12 @@ invalidate_cache (App *app)
 }
 
 static void
-on_objects_added (ECalView *view,
-                  GList    *objects,
-                  gpointer  user_data)
+on_objects_added (ECalClientView *view,
+                  GSList         *objects,
+                  gpointer        user_data)
 {
   App *app = user_data;
-  GList *l;
+  GSList *l;
 
   print_debug ("%s for calendar", G_STRFUNC);
 
@@ -561,9 +561,9 @@ on_objects_added (ECalView *view,
 }
 
 static void
-on_objects_modified (ECalView *view,
-                     GList    *objects,
-                     gpointer  user_data)
+on_objects_modified (ECalClientView *view,
+                     GSList         *objects,
+                     gpointer        user_data)
 {
   App *app = user_data;
   print_debug ("%s for calendar", G_STRFUNC);
@@ -572,9 +572,9 @@ on_objects_modified (ECalView *view,
 }
 
 static void
-on_objects_removed (ECalView *view,
-                    GList    *uids,
-                    gpointer  user_data)
+on_objects_removed (ECalClientView *view,
+                    GSList         *uids,
+                    gpointer        user_data)
 {
   App *app = user_data;
   print_debug ("%s for calendar", G_STRFUNC);
@@ -596,11 +596,11 @@ app_load_events (App *app)
   /* nuke existing views */
   for (ll = app->live_views; ll != NULL; ll = ll->next)
     {
-      ECalView *view = E_CAL_VIEW (ll->data);
+      ECalClientView *view = E_CAL_CLIENT_VIEW (ll->data);
       g_signal_handlers_disconnect_by_func (view, on_objects_added, app);
       g_signal_handlers_disconnect_by_func (view, on_objects_modified, app);
       g_signal_handlers_disconnect_by_func (view, on_objects_removed, app);
-      e_cal_view_stop (view);
+      e_cal_client_view_stop (view, NULL);
       g_object_unref (view);
     }
   g_list_free (app->live_views);
@@ -619,23 +619,16 @@ app_load_events (App *app)
   sources = calendar_sources_get_appointment_sources (app->sources);
   for (l = sources; l != NULL; l = l->next)
     {
-      ECal *cal = E_CAL (l->data);
+      ECalClient *cal = E_CAL_CLIENT (l->data);
       GError *error;
       gchar *query;
-      GList *objects;
-      GList *j;
-      ECalView *view;
+      GSList *objects, *j;
+      ECalClientView *view;
+
+      e_cal_client_set_default_timezone (cal, app->zone);
 
       error = NULL;
-      if (!e_cal_set_default_timezone (cal, app->zone, &error))
-        {
-          g_printerr ("Error setting timezone on calendar: %s\n", error->message);
-          g_error_free (error);
-          continue;
-        }
-
-      error = NULL;
-      if (!e_cal_open (cal, TRUE, &error))
+      if (!e_client_open_sync (E_CLIENT (cal), TRUE, NULL, &error))
         {
           g_printerr ("Error opening calendar: %s\n", error->message);
           g_error_free (error);
@@ -648,10 +641,11 @@ app_load_events (App *app)
                                until_iso8601);
       error = NULL;
       objects = NULL;
-      if (!e_cal_get_object_list (cal,
-                                  query,
-                                  &objects,
-                                  &error))
+      if (!e_cal_client_get_object_list_sync (cal,
+					      query,
+					      &objects,
+					      NULL, /* cancellable */
+					      &error))
         {
           g_printerr ("Error querying calendar: %s\n", error->message);
           g_error_free (error);
@@ -677,13 +671,14 @@ app_load_events (App *app)
           g_hash_table_insert (app->appointments, g_strdup (appointment->uid), appointment);
         }
 
-      e_cal_free_object_list (objects);
+      e_cal_client_free_icalcomp_slist (objects);
 
       error = NULL;
-      if (!e_cal_get_query (cal,
-                            query,
-                            &view,
-                            &error))
+      if (!e_cal_client_get_view_sync (cal,
+				       query,
+				       &view,
+				       NULL, /* cancellable */
+				       &error))
         {
           g_printerr ("Error setting up live-query on calendar: %s\n", error->message);
           g_error_free (error);
@@ -702,7 +697,7 @@ app_load_events (App *app)
                             "objects-removed",
                             G_CALLBACK (on_objects_removed),
                             app);
-          e_cal_view_start (view);
+          e_cal_client_view_start (view, NULL);
           app->live_views = g_list_prepend (app->live_views, view);
         }
 
@@ -752,11 +747,11 @@ app_free (App *app)
   GList *ll;
   for (ll = app->live_views; ll != NULL; ll = ll->next)
     {
-      ECalView *view = E_CAL_VIEW (ll->data);
+      ECalClientView *view = E_CAL_CLIENT_VIEW (ll->data);
       g_signal_handlers_disconnect_by_func (view, on_objects_added, app);
       g_signal_handlers_disconnect_by_func (view, on_objects_modified, app);
       g_signal_handlers_disconnect_by_func (view, on_objects_removed, app);
-      e_cal_view_stop (view);
+      e_cal_client_view_stop (view, NULL);
       g_object_unref (view);
     }
   g_list_free (app->live_views);
