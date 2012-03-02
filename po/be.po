@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-27 08:20+0000\n"
-"PO-Revision-Date: 2012-02-28 21:45+0300\n"
+"POT-Creation-Date: 2012-02-29 22:27+0000\n"
+"PO-Revision-Date: 2012-03-02 12:18+0300\n"
 "Last-Translator: Kasia Bondarava <kasia.bondarava@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -46,7 +46,8 @@ msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
-"Дазваляе доступ да ўнутраных адладачных і маніторынгавых прылад для дыялогу Alt-F2."
+"Дазваляе доступ да ўнутраных адладачных і маніторынгавых прылад для дыялогу "
+"Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Uuids of extensions to enable"
@@ -78,9 +79,8 @@ msgid ""
 msgstr ""
 "Абалонка звычайна назірае за актыўнымі праграмамі, каб вызначыць найбольш "
 "папулярныя (напрыклад, сярод стартараў). Магчыма, вы захочаце выключыць гэты "
-"параметр з прычынаў прыватнасці, хоць гэтыя даныя "
-"і захоўваюцца прыватна. Звярніце ўвагу, што гэта не прывядзе да выдалення "
-"ўжо захаваных даных."
+"параметр з прычынаў прыватнасці, хоць гэтыя даныя і захоўваюцца прыватна. "
+"Звярніце ўвагу, што гэта не прывядзе да выдалення ўжо захаваных даных."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -91,8 +91,8 @@ msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
-"Праграмы з адпаведнымі ідэнтыфікатарамі будуць паказаны ў абшары "
-"ўпадабаных праграм."
+"Праграмы з адпаведнымі ідэнтыфікатарамі будуць паказаны ў абшары ўпадабаных "
+"праграм."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "disabled OpenSearch providers"
@@ -111,17 +111,17 @@ msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
 msgstr ""
-"Выкарыстоўваецца ўнутры сістэмы для захавання апошняга стану прысутнасці камунікатара, "
-"настаўленага асабіста карыстальнікам. Гэта значэнне - адно з пераліку "
-"TpConnectionPresenceType."
+"Выкарыстоўваецца ўнутры сістэмы для захавання апошняга стану прысутнасці "
+"камунікатара, настаўленага асабіста карыстальнікам. Гэта значэнне - адно з "
+"пераліку TpConnectionPresenceType."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
 msgstr ""
-"Выкарыстоўваецца ўнутры сістэмы для захавання апошняга стану прысутнасці камунікатара "
-"карыстальніка. Гэта значэнне - з пераліку GsmPresenceStatus."
+"Выкарыстоўваецца ўнутры сістэмы для захавання апошняга стану прысутнасці "
+"камунікатара карыстальніка. Гэта значэнне - з пераліку GsmPresenceStatus."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show the week date in the calendar"
@@ -189,12 +189,12 @@ msgstr ""
 "сінтаксіса gst-launch. Неабходна, каб з боку элемента канвеера, дзе "
 "запісваецца відэа, не было нічога падлучана. Звычайна ён будзе мець "
 "непадлучаны ўваход; вывад з гэтага боку будзе запісаны ў файл вываду. Аднак, "
-"канвеер таксама можа самастойна абслугоўваць свой вывад. Напрыклад, гэта можа "
-"спатрэбіцца для пасылкі вываду на icecast-сервер пры дапамозе shout2send ці "
-"пад. Калі не настаўлена ці настаўлена пустое значэнне, будзе ўжыты "
-"прадвызначаны канвеер. Цяпер выкарыстоўваецца \"vp8enc quality=8 speed=6 "
-"threads=%T ! queue ! webmmux\" і запісвае ў WEBM з дапамогай кодэка VP8. %T "
-"ўжываецца ў якасці замены аптымальнай для сістэмы колькасці ніцяў."
+"канвеер таксама можа самастойна абслугоўваць свой вывад. Напрыклад, гэта "
+"можа спатрэбіцца для пасылкі вываду на icecast-сервер пры дапамозе "
+"shout2send ці пад. Калі не настаўлена ці настаўлена пустое значэнне, будзе "
+"ўжыты прадвызначаны канвеер. Цяпер выкарыстоўваецца \"vp8enc quality=8 "
+"speed=6 threads=%T ! queue ! webmmux\" і запісвае ў WEBM з дапамогай кодэка "
+"VP8. %T ўжываецца ў якасці замены аптымальнай для сістэмы колькасці ніцяў."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:27
 msgid "File extension used for storing the screencast"
@@ -683,6 +683,14 @@ msgstr "трэй"
 msgid "Keyboard"
 msgstr "Клавіятура"
 
+#: ../js/ui/keyringPrompt.js:85 ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Пароль:"
+
+#: ../js/ui/keyringPrompt.js:101
+msgid "Type again:"
+msgstr "Паўтарыце пароль:"
+
 #: ../js/ui/lookingGlass.js:725
 msgid "No extensions installed"
 msgstr "Няма ўсталяваных пашырэнняў"
@@ -732,7 +740,7 @@ msgid "Web Page"
 msgstr "Сеціўная старонка"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:115
+#: ../js/ui/main.js:116
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Скрынкаст %d %t"
@@ -854,17 +862,17 @@ msgstr "Праграмы"
 msgid "Dash"
 msgstr "Прыборная дошка"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:583
 msgid "Quit"
 msgstr "Выйсці"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:613
+#: ../js/ui/panel.js:614
 msgid "Activities"
 msgstr "Заняткі"
 
-#: ../js/ui/panel.js:983
+#: ../js/ui/panel.js:987
 msgid "Top Bar"
 msgstr "Верхняя панэль"
 
@@ -904,10 +912,6 @@ msgstr "Ідэнтыфікаваць"
 #: ../js/ui/polkitAuthenticationAgent.js:260
 msgid "Sorry, that didn't work. Please try again."
 msgstr "На жаль, ідэнтыфікацыя не адбылася. Паўтарыце спробу."
-
-#: ../js/ui/polkitAuthenticationAgent.js:272
-msgid "Password:"
-msgstr "Пароль:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -1694,7 +1698,7 @@ msgstr "Так сказаў Вяшчун %s"
 msgid "Your favorite Easter Egg"
 msgstr "Ваша ўлюбёнае велікоднае яйка"
 
-#: ../js/ui/windowAttentionHandler.js:33
+#: ../js/ui/windowAttentionHandler.js:19
 #, c-format
 msgid "'%s' is ready"
 msgstr "\"%s\" гатова"
@@ -1735,6 +1739,14 @@ msgstr "Рэжым, які выкарыстоўвае GDM для экрана ў
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Не ўдалося запусціць \"%s\""
+
+#: ../src/shell-keyring-prompt.c:708
+msgid "Passwords do not match."
+msgstr "Паролі адрозніваюцца."
+
+#: ../src/shell-keyring-prompt.c:716
+msgid "Password cannot be blank"
+msgstr "Пароль не можа быць пустым"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
