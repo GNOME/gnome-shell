@@ -279,7 +279,7 @@ _cogl_bitmap_premult_unpacked_span_guint16 (guint16 *data,
 }
 
 static gboolean
-_cogl_bitmap_can_premult (CoglPixelFormat format)
+_cogl_bitmap_can_fast_premult (CoglPixelFormat format)
 {
   switch (format & ~COGL_PREMULT_BIT)
     {
@@ -379,7 +379,7 @@ _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
   /* If the base format is the same then we can just copy the bitmap
      instead */
   if ((src_format & ~COGL_PREMULT_BIT) == (dst_format & ~COGL_PREMULT_BIT) &&
-      (!need_premult || _cogl_bitmap_can_premult (dst_format)))
+      (!need_premult || _cogl_bitmap_can_fast_premult (dst_format)))
     {
       if (!_cogl_bitmap_copy_subregion (src_bmp, dst_bmp,
                                         0, 0, /* src_x / src_y */
@@ -504,6 +504,7 @@ gboolean
 _cogl_bitmap_unpremult (CoglBitmap *bmp)
 {
   guint8          *p, *data;
+  guint16         *tmp_row;
   int              x,y;
   CoglPixelFormat  format;
   int              width, height;
@@ -514,34 +515,49 @@ _cogl_bitmap_unpremult (CoglBitmap *bmp)
   height = _cogl_bitmap_get_height (bmp);
   rowstride = _cogl_bitmap_get_rowstride (bmp);
 
-  /* If we can premult that implies we can un-premult too... */
-  if (!_cogl_bitmap_can_premult (format))
-    return FALSE;
-
   if ((data = _cogl_bitmap_map (bmp,
                                 COGL_BUFFER_ACCESS_READ |
                                 COGL_BUFFER_ACCESS_WRITE,
                                 0)) == NULL)
     return FALSE;
 
+  /* If we can't directly unpremult the data inline then we'll
+     allocate a temporary row and unpack the data. This assumes if we
+     can fast premult then we can also fast unpremult */
+  if (_cogl_bitmap_can_fast_premult (format))
+    tmp_row = NULL;
+  else
+    tmp_row = g_malloc (sizeof (guint16) * 4 * width);
+
   for (y = 0; y < height; y++)
     {
       p = (guint8*) data + y * rowstride;
 
-      if (format & COGL_AFIRST_BIT)
+      if (tmp_row)
         {
-          for (x = 0; x < width; x++)
-            {
-              if (p[0] == 0)
-                _cogl_unpremult_alpha_0 (p);
-              else
-                _cogl_unpremult_alpha_first (p);
-              p += 4;
-            }
+          _cogl_unpack_guint16 (format, p, tmp_row, width);
+          _cogl_bitmap_unpremult_unpacked_span_guint16 (tmp_row, width);
+          _cogl_pack_guint16 (format, tmp_row, p, width);
         }
       else
-        _cogl_bitmap_unpremult_unpacked_span_guint8 (p, width);
+        {
+          if (format & COGL_AFIRST_BIT)
+            {
+              for (x = 0; x < width; x++)
+                {
+                  if (p[0] == 0)
+                    _cogl_unpremult_alpha_0 (p);
+                  else
+                    _cogl_unpremult_alpha_first (p);
+                  p += 4;
+                }
+            }
+          else
+            _cogl_bitmap_unpremult_unpacked_span_guint8 (p, width);
+        }
     }
+
+  g_free (tmp_row);
 
   _cogl_bitmap_unmap (bmp);
 
@@ -554,6 +570,7 @@ gboolean
 _cogl_bitmap_premult (CoglBitmap *bmp)
 {
   guint8          *p, *data;
+  guint16         *tmp_row;
   int              x,y;
   CoglPixelFormat  format;
   int              width, height;
@@ -564,31 +581,45 @@ _cogl_bitmap_premult (CoglBitmap *bmp)
   height = _cogl_bitmap_get_height (bmp);
   rowstride = _cogl_bitmap_get_rowstride (bmp);
 
-  /* Make sure format supported for un-premultiplication */
-  if (!_cogl_bitmap_can_premult (format))
-    return FALSE;
-
   if ((data = _cogl_bitmap_map (bmp,
                                 COGL_BUFFER_ACCESS_READ |
                                 COGL_BUFFER_ACCESS_WRITE,
                                 0)) == NULL)
     return FALSE;
 
+  /* If we can't directly premult the data inline then we'll allocate
+     a temporary row and unpack the data. */
+  if (_cogl_bitmap_can_fast_premult (format))
+    tmp_row = NULL;
+  else
+    tmp_row = g_malloc (sizeof (guint16) * 4 * width);
+
   for (y = 0; y < height; y++)
     {
       p = (guint8*) data + y * rowstride;
 
-      if (format & COGL_AFIRST_BIT)
+      if (tmp_row)
         {
-          for (x = 0; x < width; x++)
-            {
-              _cogl_premult_alpha_first (p);
-              p += 4;
-            }
+          _cogl_unpack_guint16 (format, p, tmp_row, width);
+          _cogl_bitmap_premult_unpacked_span_guint16 (tmp_row, width);
+          _cogl_pack_guint16 (format, tmp_row, p, width);
         }
       else
-        _cogl_bitmap_premult_unpacked_span_guint8 (p, width);
+        {
+          if (format & COGL_AFIRST_BIT)
+            {
+              for (x = 0; x < width; x++)
+                {
+                  _cogl_premult_alpha_first (p);
+                  p += 4;
+                }
+            }
+          else
+            _cogl_bitmap_premult_unpacked_span_guint8 (p, width);
+        }
     }
+
+  g_free (tmp_row);
 
   _cogl_bitmap_unmap (bmp);
 
