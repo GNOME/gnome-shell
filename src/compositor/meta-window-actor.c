@@ -123,14 +123,9 @@ enum
   PROP_META_WINDOW = 1,
   PROP_META_SCREEN,
   PROP_X_WINDOW,
-  PROP_X_WINDOW_ATTRIBUTES,
   PROP_NO_SHADOW,
   PROP_SHADOW_CLASS
 };
-
-#define DEFAULT_SHADOW_RADIUS 12
-#define DEFAULT_SHADOW_X_OFFSET 0
-#define DEFAULT_SHADOW_Y_OFFSET 8
 
 static void meta_window_actor_dispose    (GObject *object);
 static void meta_window_actor_finalize   (GObject *object);
