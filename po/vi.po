@@ -10,8 +10,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-02-29 22:27+0000\n"
-"PO-Revision-Date: 2012-03-03 22:52+0700\n"
-"Last-Translator: Ngô Chin <ndtrung4419@gmail.com>\n"
+"PO-Revision-Date: 2012-03-03 22:59+0700\n"
+"Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,11 +30,11 @@ msgstr "Quản lý cửa sổ và chạy ứng dụng"
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 #: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extension Preferences"
-msgstr ""
+msgstr "Tuỳ thích phần mở rộng GNOME Shell"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
-msgstr ""
+msgstr "Cấu hình phần mở rộng GNOME Shell"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -107,12 +107,16 @@ msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
 msgstr ""
+"Dùng để lưu nội bộ sự hiện diện IM lần cuối do người dùng đặt. Giá trị ở đây "
+"từ enumeration TpConnectionPresenceType."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
 msgstr ""
+"Dùng để lưu nội bộ sự hiện diện IM lần cuối do người dùng đặt. Giá trị ở đây "
+"từ enumeration GsmPresenceStatus."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show the week date in the calendar"
@@ -163,7 +167,7 @@ msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Ống dẫn gstreamer để thu screencast"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:26
-#, fuzzy, no-c-format
+#, no-c-format
 #| msgid ""
 #| "Sets the GStreamer pipeline used to encode recordings. It follows the "
 #| "syntax used for gst-launch. The pipeline should have an unconnected sink "
@@ -193,10 +197,9 @@ msgstr ""
 "source pad không kết nối; đầu ra từ pad sẽ được ghi vào tập tin kết quả. Tuy "
 "nhiên ống dẫn có thể tự lưu đầu ra riêng - có thể hữu dụng để gửi kết quả "
 "đến máy chủ icecast thông qua shout2send hoặc tương tự. Nếu bỏ chọn hoặc đặt "
-"giá trị rỗng, ống dẫn mặc định sẽ được dùng, hiện thời là 'videorate ! "
-"vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' và lưu ở dạng WEBM "
-"dùng VP8 codec. %T được dùng để thế chỗ cho số thread dự đoán tối ưu cho hệ "
-"thống."
+"giá trị rỗng, ống dẫn mặc định sẽ được dùng, hiện thời là vp8enc quality=8 "
+"speed=6 threads=%T ! queue ! webmmux' và lưu ở dạng WEBM dùng VP8 codec. %T "
+"được dùng để thế chỗ cho số thread dự đoán tối ưu cho hệ thống."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:27
 msgid "File extension used for storing the screencast"
@@ -215,15 +218,15 @@ msgstr ""
 #: ../js/extensionPrefs/main.js:125
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
-msgstr ""
+msgstr "Lỗi nạp hộp thoại tuỳ thích cho %s:"
 
 #: ../js/extensionPrefs/main.js:165
 msgid "<b>Extension</b>"
-msgstr ""
+msgstr "<b>Phần mở rộng</b>"
 
 #: ../js/extensionPrefs/main.js:189
 msgid "Select an extension to configure using the combobox above."
-msgstr ""
+msgstr "Chọn phần mở rộng để cấu hình dùng hộp chọn."
 
 #: ../js/gdm/loginDialog.js:624
 msgid "Session..."
@@ -676,7 +679,7 @@ msgstr "Mật khẩu:"
 
 #: ../js/ui/keyringPrompt.js:101
 msgid "Type again:"
-msgstr ""
+msgstr "Nhập lại:"
 
 #: ../js/ui/lookingGlass.js:725
 msgid "No extensions installed"
@@ -730,7 +733,7 @@ msgstr "Trang Web"
 #: ../js/ui/main.js:116
 #, no-c-format
 msgid "Screencast from %d %t"
-msgstr ""
+msgstr "Screencast from %d %t"
 
 #: ../js/ui/messageTray.js:1197
 msgid "Open"
@@ -938,10 +941,9 @@ msgid "Wrong password, please try again"
 msgstr "Nhập sai mật khẩu, xin hãy thử lại"
 
 #: ../js/ui/status/accessibility.js:47
-#, fuzzy
 #| msgid "Visibility"
 msgid "Accessibility"
-msgstr "Tầm nhìn"
+msgstr "Khả năng truy cập"
 
 #: ../js/ui/status/accessibility.js:52
 msgid "Zoom"
@@ -1199,10 +1201,9 @@ msgid "Auto wireless"
 msgstr "Mạng không dây tự động"
 
 #: ../js/ui/status/network.js:1541
-#, fuzzy
 #| msgid "Network error"
 msgid "Network"
-msgstr "Lỗi mạng"
+msgstr "Mạng"
 
 #: ../js/ui/status/network.js:1548
 msgid "Enable networking"
@@ -1246,7 +1247,7 @@ msgstr "Trình quản lý mạng"
 
 #: ../js/ui/status/power.js:59
 msgid "Battery"
-msgstr ""
+msgstr "Pin"
 
 #: ../js/ui/status/power.js:76
 msgid "Power Settings"
@@ -1537,10 +1538,9 @@ msgid "Connection has been lost"
 msgstr "Mất kết nối"
 
 #: ../js/ui/telepathyClient.js:1319
-#, fuzzy
 #| msgid "This resource is already connected to the server"
 msgid "This account is already connected to the server"
-msgstr "Tài nguyên này đã kết nối đến máy chủ"
+msgstr "Tài khoản này đã kết nối đến máy chủ"
 
 #: ../js/ui/telepathyClient.js:1321
 msgid ""
@@ -1573,10 +1573,9 @@ msgstr ""
 "giới hạn của thư viện mật mã"
 
 #: ../js/ui/telepathyClient.js:1333
-#, fuzzy
 #| msgid "Connection error"
 msgid "Internal error"
-msgstr "Lỗi kết nối"
+msgstr "Lỗi nội bộ"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
@@ -1718,14 +1717,13 @@ msgid "Failed to launch '%s'"
 msgstr "Lỗi chạy '%s'"
 
 #: ../src/shell-keyring-prompt.c:708
-#, fuzzy
 #| msgid "Does not match"
 msgid "Passwords do not match."
-msgstr "Không khớp"
+msgstr "Mật khẩu không khớp"
 
 #: ../src/shell-keyring-prompt.c:716
 msgid "Password cannot be blank"
-msgstr ""
+msgstr "Mật khẩu không thể không có"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
