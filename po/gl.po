@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-25 13:51+0100\n"
-"PO-Revision-Date: 2012-02-25 13:52+0100\n"
+"POT-Creation-Date: 2012-03-04 19:40+0100\n"
+"PO-Revision-Date: 2012-03-04 19:40+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -252,7 +252,7 @@ msgid "Not listed?"
 msgstr "Non está na lista?"
 
 #: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
-#: ../js/ui/extensionSystem.js:401 ../js/ui/networkAgent.js:153
+#: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "Cancelar"
@@ -266,8 +266,8 @@ msgstr "Iniciar sesión"
 msgid "Login Window"
 msgstr "Xanela de inicio de sesión"
 
-#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:581
-#: ../js/ui/userMenu.js:583 ../js/ui/userMenu.js:652
+#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:591
+#: ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:662
 msgid "Suspend"
 msgstr "Suspender"
 
@@ -513,7 +513,7 @@ msgstr "Desconectado"
 msgid "CONTACTS"
 msgstr "CONTACTOS"
 
-#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1204
+#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1206
 msgid "Remove"
 msgstr "Quitar"
 
@@ -662,11 +662,11 @@ msgstr[1] "O seu computador reiniciarase automaticamente en %d segundos."
 msgid "Restarting the system."
 msgstr "Reiniciando o sistema."
 
-#: ../js/ui/extensionSystem.js:405
+#: ../js/ui/extensionSystem.js:403
 msgid "Install"
 msgstr "Instalar"
 
-#: ../js/ui/extensionSystem.js:409
+#: ../js/ui/extensionSystem.js:407
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Desexa descargar e instalar «%s» desde extensions.gnome.org?"
@@ -678,6 +678,14 @@ msgstr "área de notificación"
 #: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Teclado"
+
+#: ../js/ui/keyringPrompt.js:85 ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Contrasinal:"
+
+#: ../js/ui/keyringPrompt.js:101
+msgid "Type again:"
+msgstr "Escriba de novo:"
 
 #: ../js/ui/lookingGlass.js:725
 msgid "No extensions installed"
@@ -728,24 +736,24 @@ msgid "Web Page"
 msgstr "Páxina web"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:115
+#: ../js/ui/main.js:116
 #, no-c-format
-msgid "Screencast from %d %t."
-msgstr "Screencast de %d %t."
+msgid "Screencast from %d %t"
+msgstr "Screencast desde %d %t"
 
-#: ../js/ui/messageTray.js:1197
+#: ../js/ui/messageTray.js:1199
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:1214
+#: ../js/ui/messageTray.js:1216
 msgid "Unmute"
 msgstr "Desactivar silencio"
 
-#: ../js/ui/messageTray.js:1214
+#: ../js/ui/messageTray.js:1216
 msgid "Mute"
 msgstr "Silenciar"
 
-#: ../js/ui/messageTray.js:2447
+#: ../js/ui/messageTray.js:2449
 msgid "System Information"
 msgstr "Información do sistema"
 
@@ -848,17 +856,17 @@ msgstr "Aplicativos"
 msgid "Dash"
 msgstr "Taboleiro"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:583
 msgid "Quit"
 msgstr "Saír"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:613
+#: ../js/ui/panel.js:614
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/panel.js:983
+#: ../js/ui/panel.js:987
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -898,10 +906,6 @@ msgstr "Autenticar"
 #: ../js/ui/polkitAuthenticationAgent.js:260
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Desculpe, iso non funcionou. Ténteo de novo."
-
-#: ../js/ui/polkitAuthenticationAgent.js:272
-msgid "Password:"
-msgstr "Contrasinal:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -1617,39 +1621,39 @@ msgstr "Inactivo"
 msgid "Unavailable"
 msgstr "Non dispoñíbel"
 
-#: ../js/ui/userMenu.js:579 ../js/ui/userMenu.js:583 ../js/ui/userMenu.js:653
+#: ../js/ui/userMenu.js:589 ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:663
 msgid "Power Off..."
 msgstr "Apagar…"
 
-#: ../js/ui/userMenu.js:615
+#: ../js/ui/userMenu.js:625
 msgid "Notifications"
 msgstr "Notificacións"
 
-#: ../js/ui/userMenu.js:623
+#: ../js/ui/userMenu.js:633
 msgid "Online Accounts"
 msgstr "Contas en liña"
 
-#: ../js/ui/userMenu.js:627
+#: ../js/ui/userMenu.js:637
 msgid "System Settings"
 msgstr "Opcións do sistema"
 
-#: ../js/ui/userMenu.js:634
+#: ../js/ui/userMenu.js:644
 msgid "Lock Screen"
 msgstr "Bloquear a pantalla"
 
-#: ../js/ui/userMenu.js:639
+#: ../js/ui/userMenu.js:649
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:654
 msgid "Log Out..."
 msgstr "Saír da sesión…"
 
-#: ../js/ui/userMenu.js:672
+#: ../js/ui/userMenu.js:682
 msgid "Your chat status will be set to busy"
 msgstr "O seu estado do chat estabelecerase a «ocupado»"
 
-#: ../js/ui/userMenu.js:673
+#: ../js/ui/userMenu.js:683
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1688,7 +1692,7 @@ msgstr "%s o oráculo dí"
 msgid "Your favorite Easter Egg"
 msgstr "A súa mensaxe oculta favorita"
 
-#: ../js/ui/windowAttentionHandler.js:33
+#: ../js/ui/windowAttentionHandler.js:19
 #, c-format
 msgid "'%s' is ready"
 msgstr "«%s» está preparado"
@@ -1715,11 +1719,11 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/main.c:262
+#: ../src/main.c:253
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: ../src/main.c:268
+#: ../src/main.c:259
 msgid "Mode used by GDM for login screen"
 msgstr "Modo usado por GDM para a pantalla de inicio"
 
@@ -1727,6 +1731,14 @@ msgstr "Modo usado por GDM para a pantalla de inicio"
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Produciuse un fallo ao iniciar «%s»"
+
+#: ../src/shell-keyring-prompt.c:708
+msgid "Passwords do not match."
+msgstr "Os contrasinais non coinciden."
+
+#: ../src/shell-keyring-prompt.c:716
+msgid "Password cannot be blank"
+msgstr "O contrasinal non pode estar baleiro"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
