@@ -1,6 +1,6 @@
 # Vietnamese translation for Metacity.
 # Copyright © 2009 GNOME i18n Project for Vietnamese.
-# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2002-2004, 2007, 2008, 2011.
+# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2002-2004, 2007, 2008, 2011-2012.
 # Clytie Siddall <clytie@riverland.net.au>, 2005-2009.
 #
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-12-13 13:41+0000\n"
-"PO-Revision-Date: 2012-03-04 11:29+0700\n"
+"PO-Revision-Date: 2012-03-04 11:34+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -21,17 +21,16 @@ msgstr ""
 
 #: ../src/50-mutter-windows.xml.in.h:1
 msgid "View split on left"
-msgstr ""
+msgstr "Phân đôi bên trái"
 
 #: ../src/50-mutter-windows.xml.in.h:2
 msgid "View split on right"
-msgstr ""
+msgstr "Phân đôi bên phải"
 
 #: ../src/50-mutter-windows.xml.in.h:3
-#, fuzzy
 #| msgid "_Windows"
 msgid "Windows"
-msgstr "_Cửa sổ"
+msgstr "Cửa sổ"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
@@ -164,10 +163,10 @@ msgstr ""
 "có thể sẽ xử sự không đúng.\n"
 
 #: ../src/core/prefs.c:1142
-#, fuzzy, c-format
+#, c-format
 #| msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
-msgstr "Không thể phân tách mô tả phông chữ « %s » từ khóa GConf « %s ».\n"
+msgstr "Không thể phân tích mô tả phông \"%s\" từ khóa GSettings \"%s\"\n"
 
 #: ../src/core/prefs.c:1208
 #, c-format
@@ -399,7 +398,7 @@ msgstr "Gắn hộp thoại cách thức"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:2
 msgid "Cancel tab popup"
-msgstr ""
+msgstr "Huỷ tab popup"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid ""
@@ -413,7 +412,7 @@ msgstr ""
 msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
-msgstr ""
+msgstr "Xác định có bỏ qua popup và khung tô sáng khi xoay vòng cửa sổ không."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
 msgid ""
@@ -429,7 +428,7 @@ msgstr "Độ rông biên có thể kéo"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
+msgstr "Bật lợp cạnh khi thả cửa sổ trên cạnh màn hình"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
@@ -437,6 +436,9 @@ msgid ""
 "vertically and resizes them horizontally to cover half of the available "
 "area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
+"Nếu bật, thả cửa sổ trên cạnh dọc màn hình sẽ phóng tối đa cửa sổ theo chiều "
+"dọc và điều chỉnh chiều ngang phủ hết nửa màn hình. Thả cửa sổ trên đỉnh màn "
+"hình sẽ phóng to toàn màn hình."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Live Hidden Windows"
@@ -448,13 +450,12 @@ msgstr "Phím bổ trợ dùng cho chức năng quản lý cửa sổ mở rộn
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "No tab popup"
-msgstr ""
+msgstr "Không tab popup"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:12
-#, fuzzy
 #| msgid "Move between windows with popup"
 msgid "Select window from tab popup"
-msgstr "Di chuyển giữa các cửa sổ với cửa sổ bật lên"
+msgstr "Chọn cửa sổ từ tab popup"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid ""
@@ -960,7 +961,7 @@ msgstr "Biểu thức tọa độ có biến hoặc hằng lạ « %s »."
 #: ../src/ui/theme.c:2506
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
-msgstr "Bộ phân tách biểu thức tọa độ đã tràn bộ đệm."
+msgstr "Bộ phân tích biểu thức tọa độ đã tràn bộ đệm."
 
 #: ../src/ui/theme.c:2535
 #, c-format
@@ -1622,7 +1623,7 @@ msgstr "giá trị y là «%d», mong đợi giá trị «%d»"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
-"phân tách «%d» biểu thức tọa độ trong vòng %g giây (%g giây trung bình).\n"
+"phân tích \"%d\" biểu thức tọa độ trong vòng %g giây (%g giây trung bình).\n"
 
 #~ msgid "Switch to workspace 1"
 #~ msgstr "Chuyển sang vùng làm việc 1"
