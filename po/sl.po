@@ -35,7 +35,7 @@ msgstr "Posebne vrednosti za razhroščevanje:"
 #: ../cogl/cogl-debug.c:179
 #: ../cogl/cogl-debug.c:181
 msgid "Enables all non-behavioural debug options"
-msgstr ""
+msgstr "Omogoči vse ne-vedenjske možnosti razhroščevanja"
 
 #: ../cogl/cogl-debug.c:225
 msgid "Cogl debugging flags to set"
@@ -85,17 +85,20 @@ msgid "Trace Texture Slicing"
 msgstr "Sledi porezavi tekstur"
 
 #: ../cogl/cogl-debug-options.h:33
+#, fuzzy
 msgid "debug the creation of texture slices"
 msgstr ""
 
+# Texture atlas - atlas tekstur??
 #: ../cogl/cogl-debug-options.h:37
 #, fuzzy
 msgid "Trace Atlas Textures"
 msgstr "Sledi teksturam za tlakovanje"
 
 #: ../cogl/cogl-debug-options.h:38
+#, fuzzy
 msgid "Debug texture atlas management"
-msgstr ""
+msgstr "Razhroščevanje upravljanja atlasnih tekstur"
 
 #: ../cogl/cogl-debug-options.h:42
 #, fuzzy
@@ -133,7 +136,7 @@ msgstr "Sledi matrikam"
 #: ../cogl/cogl-debug-options.h:58
 #, fuzzy
 msgid "Trace all matrix manipulation"
-msgstr "Sledi vsem operacijam nad matrikami"
+msgstr "Sledi vsem opravilom nad matrikami"
 
 #: ../cogl/cogl-debug-options.h:63
 #, fuzzy
@@ -141,18 +144,19 @@ msgid "Trace Misc Drawing"
 msgstr "Sledi risanju"
 
 #: ../cogl/cogl-debug-options.h:64
+#, fuzzy
 msgid "Trace some misc drawing operations"
-msgstr ""
+msgstr "Prepoznaj nekatera risarska dejanja"
 
 #: ../cogl/cogl-debug-options.h:68
 #, fuzzy
 msgid "Trace Pango Renderer"
-msgstr "Sledi upodobitvi Pango"
+msgstr "Sledi izrisovalniku Pango"
 
 #: ../cogl/cogl-debug-options.h:69
 #, fuzzy
 msgid "Trace the Cogl Pango renderer"
-msgstr "Sledi upodobljevalnik Pango Cogl"
+msgstr "Sledi izrisovalniku Pango Cogl"
 
 #: ../cogl/cogl-debug-options.h:73
 #, fuzzy
@@ -160,34 +164,34 @@ msgid "Trace CoglTexturePixmap backend"
 msgstr "Sledi zaledju CoglTexturePixmap"
 
 #: ../cogl/cogl-debug-options.h:74
+#, fuzzy
 msgid "Trace the Cogl texture pixmap backend"
-msgstr ""
+msgstr "Prepoznaj zaledje sličic teksture Cogl"
 
 #: ../cogl/cogl-debug-options.h:76
 #: ../cogl/cogl-debug-options.h:81
 #, fuzzy
 msgid "Visualize"
-msgstr "Vizualiziraj"
+msgstr "Predoči"
 
 #: ../cogl/cogl-debug-options.h:78
-#, fuzzy
 msgid "Outline rectangles"
 msgstr "Oriši pravokotnike"
 
 #: ../cogl/cogl-debug-options.h:79
 #, fuzzy
 msgid "Add wire outlines for all rectangular geometry"
-msgstr "Dodaj žične orise za vso pravokotno geometrijo"
+msgstr "Dodaj žični oris vsem pravokotnim predmetom"
 
 #: ../cogl/cogl-debug-options.h:83
 #, fuzzy
 msgid "Show wireframes"
-msgstr "Pokaži mreževino"
+msgstr "Pokaži orisani okvir"
 
 #: ../cogl/cogl-debug-options.h:84
 #, fuzzy
 msgid "Add wire outlines for all geometry"
-msgstr "Dodaj žične orise za vse geometrične like"
+msgstr "Dodaj žični oris vsem predmetom"
 
 #: ../cogl/cogl-debug-options.h:86
 #: ../cogl/cogl-debug-options.h:91
@@ -220,32 +224,32 @@ msgstr ""
 #: ../cogl/cogl-debug-options.h:93
 #, fuzzy
 msgid "Disable GL Vertex Buffers"
-msgstr "Onemogoči medpomnilnike vozlišč GL"
+msgstr "Onemogoči medpomnilnik točk GL"
 
 #: ../cogl/cogl-debug-options.h:94
 #, fuzzy
 msgid "Disable use of OpenGL vertex buffer objects"
-msgstr "Onemogoči uporabo predmetov medpomnilnika vrhov OpenGL"
+msgstr "Onemogoči uporabo predmetov medpomnilnika točk OpenGL"
 
 #: ../cogl/cogl-debug-options.h:98
 #, fuzzy
 msgid "Disable GL Pixel Buffers"
-msgstr "Onemogoči medpomnilnike slik. točk GL"
+msgstr "Onemogoči medpomnilnik sličic GL"
 
 #: ../cogl/cogl-debug-options.h:99
 #, fuzzy
 msgid "Disable use of OpenGL pixel buffer objects"
-msgstr "Onemogoči uporabo predmetov medpomnilnika slikovnih točk OpenGL"
+msgstr "Onemogoči uporabo predmetov medpomnilnika sličic OpenGL"
 
 #: ../cogl/cogl-debug-options.h:103
 #, fuzzy
 msgid "Disable software rect transform"
-msgstr "Onemogoči programsko transformacijo pravokotnikov"
+msgstr "Onemogoči programsko preoblikovanje pravokotnikov"
 
 #: ../cogl/cogl-debug-options.h:104
 #, fuzzy
 msgid "Use the GPU to transform rectangular geometry"
-msgstr "Uporabi grafično procesno enoto (GPU) za transformacije pravokotne geometrije"
+msgstr "Uporabi grafično procesno enoto (GPU) za pravokotnih predmetov"
 
 #: ../cogl/cogl-debug-options.h:106
 #, fuzzy
@@ -255,11 +259,11 @@ msgstr "Specialist Cogl"
 #: ../cogl/cogl-debug-options.h:108
 #, fuzzy
 msgid "Dump atlas images"
-msgstr "Izvrzi slike za tlakovanje"
+msgstr "Izriši slike za tlakovanje"
 
 #: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
-msgstr ""
+msgstr "Izpiši spremembe v atlasne teksture v slikovno datoteko"
 
 #: ../cogl/cogl-debug-options.h:113
 #, fuzzy
@@ -267,12 +271,14 @@ msgid "Disable texture atlasing"
 msgstr "Onemogoči tlakovanje s teksturami"
 
 #: ../cogl/cogl-debug-options.h:114
+#, fuzzy
 msgid "Disable use of texture atlasing"
-msgstr ""
+msgstr "Onemogoči uporabo izrisovanja atlasnih tekstur"
 
 #: ../cogl/cogl-debug-options.h:118
+#, fuzzy
 msgid "Disable sharing the texture atlas between text and images"
-msgstr ""
+msgstr "Onemogoči souporabo atlasnih tekstur med besedilom in slikami"
 
 #: ../cogl/cogl-debug-options.h:119
 msgid "When this is set the glyph cache will always use a separate texture for its atlas. Otherwise it will try to share the atlas with images."
@@ -289,9 +295,8 @@ msgid "Disable texturing any primitives"
 msgstr "Onemogoči teksturiranje primitivov."
 
 #: ../cogl/cogl-debug-options.h:129
-#, fuzzy
 msgid "Disable arbfp"
-msgstr "Onemogoči arbf"
+msgstr "Onemogoči arbfp"
 
 #: ../cogl/cogl-debug-options.h:130
 #, fuzzy
@@ -309,12 +314,10 @@ msgid "Disable use of the fixed function pipeline backend"
 msgstr "Onemogoči uporabo zaledja cevovoda fiksne funkcije"
 
 #: ../cogl/cogl-debug-options.h:139
-#, fuzzy
 msgid "Disable GLSL"
 msgstr "Onemogoči GLSL"
 
 #: ../cogl/cogl-debug-options.h:140
-#, fuzzy
 msgid "Disable use of GLSL"
 msgstr "Onemogoči uporabo GLSL"
 
