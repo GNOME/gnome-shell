@@ -630,7 +630,8 @@ app_load_events (App *app)
       error = NULL;
       if (!e_client_open_sync (E_CLIENT (cal), TRUE, NULL, &error))
         {
-          g_printerr ("Error opening calendar: %s\n", error->message);
+          g_warning ("Error opening calendar %s: %s\n",
+		     e_client_get_uri (E_CLIENT (cal)), error->message);
           g_error_free (error);
           continue;
         }
@@ -647,7 +648,8 @@ app_load_events (App *app)
 					      NULL, /* cancellable */
 					      &error))
         {
-          g_printerr ("Error querying calendar: %s\n", error->message);
+          g_warning ("Error querying calendar %s: %s\n",
+		     e_client_get_uri (E_CLIENT (cal)), error->message);
           g_error_free (error);
           g_free (query);
           continue;
@@ -680,7 +682,7 @@ app_load_events (App *app)
 				       NULL, /* cancellable */
 				       &error))
         {
-          g_printerr ("Error setting up live-query on calendar: %s\n", error->message);
+          g_warning ("Error setting up live-query on calendar: %s\n", error->message);
           g_error_free (error);
         }
       else
