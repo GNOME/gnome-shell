@@ -6444,7 +6444,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   NULL, NULL,
                   _clutter_marshal_VOID__BOXED_FLAGS,
                   G_TYPE_NONE, 2,
-                  CLUTTER_TYPE_ACTOR_BOX,
+                  CLUTTER_TYPE_ACTOR_BOX | G_SIGNAL_TYPE_STATIC_SCOPE,
                   CLUTTER_TYPE_ALLOCATION_FLAGS);
 }
 
