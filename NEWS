@@ -1,3 +1,45 @@
+Clutter 1.9.14                                                       2012-03-05
+===============================================================================
+
+  • List of changes since Clutter 1.9.12
+
+    - Support custom versioning boundaries for the API
+    Now that GLib provides macros for changing the minimum required and
+    maximum allowed version of a library, Clutter can respect the
+    boundaries expressed using CLUTTER_VERSION_MIN_REQUIRED and
+    CLUTTER_VERSION_MAX_ALLOWED.
+
+    - Add version information to deprecations
+
+    - Move all deprecated symbols to separate header files
+
+    - Documentation and annotation fixes.
+
+    - Accessibility fixes in Cally
+    Do not use ClutterActor:name as the accessible name, and do not
+    provide the extents of an accessible object if the actor to which
+    it refers is not on screen.
+
+    - Updates to the Wayland compositor and client support
+    Clutter now allows being used for creating hybrid Wayland/X11
+    compositors, working with KMS and evdev directly.
+
+    - Translation updates: Bulgarian, Ukranian, Galician, Uyghur, Belarusian,
+    Brazilian Portuguese, Telugu, Slovenian, Assamese, Serbian.
+
+  • List of bug fixes since Clutter 1.9.12
+
+    [bugzilla.gnome.org]
+    #670680 - "make check" assumes gdk backend will be built
+
+Many thanks to:
+
+  Robert Bragg, Neil Roberts, Alejandro Piñeiro, Chun-wei Fan,
+  Alexander Shopov, Daniel Korostil, Daniel Mustieles, Fran Diéguez,
+  Gheyret Kenji, Giovanni Campagna, Ihar Hrachyshka, Jonh Wendell,
+  Krishnababu Krothapalli, Matej Urbančič, Nilamdyuti Goswami,
+  Мирослав Николић
+
 Clutter 1.9.12                                                       2012-02-23
 ===============================================================================
 
