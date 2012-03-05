@@ -289,6 +289,13 @@ features).
 Release Notes for Clutter 1.10
 -------------------------------------------------------------------------------
 
+• The ClutterActorBox parameter of the ClutterActor::allocation-changed
+  signal is now marked as G_SIGNAL_TYPE_STATIC_SCOPE.
+
+• The clutter-stage-window.h header is not installed any more; this header
+  was never meant to be public in the first place, and nothing could have
+  been implementing the ClutterStageWindow interface and use it with Clutter.
+
 • ClutterActor will call its unmap() implementation when it is removed from
   its parent. This may happen after the ClutterActor::destroy signal has been
   emitted, i.e. during its dispose(). Prior to 1.10, calling the
