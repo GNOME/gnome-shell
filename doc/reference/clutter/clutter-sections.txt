@@ -1317,6 +1317,7 @@ CLUTTER_INIT_ERROR
 CLUTTER_DEPRECATED
 CLUTTER_DEPRECATED_FOR
 CLUTTER_PRIVATE_FIELD
+CLUTTER_VAR
 clutter_init_error_quark
 clutter_base_init
 clutter_redraw
@@ -1425,6 +1426,9 @@ ClutterWaylandSurfaceClass
 clutter_wayland_surface_new
 clutter_wayland_surface_attach_buffer
 clutter_wayland_surface_damage_buffer
+clutter_wayland_surface_get_cogl_texture
+clutter_wayland_surface_get_surface
+clutter_wayland_surface_set_surface
 <SUBSECTION Standard>
 CLUTTER_WAYLAND_IS_SURFACE
 CLUTTER_WAYLAND_IS_SURFACE_CLASS
