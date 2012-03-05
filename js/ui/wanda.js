@@ -17,7 +17,7 @@ const FISH_NAME = 'wanda';
 const FISH_SPEED = 300;
 const FISH_COMMAND = 'fortune';
 
-const GNOME_PANEL_PIXMAPDIR = '../gnome-panel/pixmaps';
+const GNOME_PANEL_PIXMAPDIR = '../gnome-panel/fish';
 const FISH_GROUP = 'Fish Animation';
 
 const MAGIC_FISH_KEY = 'free the fish';
