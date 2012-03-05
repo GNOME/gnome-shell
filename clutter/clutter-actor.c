@@ -3178,41 +3178,6 @@ add_or_remove_flatten_effect (ClutterActor *self)
 }
 
 static void
-clutter_actor_paint_node (ClutterActor     *actor,
-                          ClutterPaintNode *root)
-{
-  ClutterActorPrivate *priv = actor->priv;
-
-  if (priv->bg_color_set)
-    {
-      ClutterPaintNode *node;
-      ClutterColor bg_color;
-
-      bg_color = priv->bg_color;
-      bg_color.alpha = clutter_actor_get_paint_opacity_internal (actor)
-                     * priv->bg_color.alpha
-                     / 255;
-
-      node = clutter_color_node_new (&bg_color);
-      clutter_paint_node_set_name (node, "backgroundColor");
-      clutter_paint_node_add_rectangle (node, &priv->allocation);
-      clutter_paint_node_add_child (root, node);
-      clutter_paint_node_unref (node);
-    }
-
-  if (priv->content != NULL)
-    _clutter_content_paint_content (priv->content, actor, root);
-
-  if (CLUTTER_ACTOR_GET_CLASS (actor)->paint_node != NULL)
-    CLUTTER_ACTOR_GET_CLASS (actor)->paint_node (actor, root);
-
-  if (clutter_paint_node_get_n_children (root) == 0)
-    return;
-
-  _clutter_paint_node_paint (root);
-}
-
-static void
 clutter_actor_real_paint (ClutterActor *actor)
 {
   ClutterActorPrivate *priv = actor->priv;
@@ -3232,6 +3197,60 @@ clutter_actor_real_paint (ClutterActor *actor)
 
       clutter_actor_paint (iter);
     }
+}
+
+static gboolean
+clutter_actor_paint_node (ClutterActor     *actor,
+                          ClutterPaintNode *root)
+{
+  ClutterActorPrivate *priv = actor->priv;
+
+  if (priv->bg_color_set &&
+      !clutter_color_equal (&priv->bg_color, CLUTTER_COLOR_Transparent))
+    {
+      ClutterPaintNode *node;
+      ClutterColor bg_color;
+      ClutterActorBox box;
+
+      box.x1 = 0.f;
+      box.y1 = 0.f;
+      box.x2 = clutter_actor_box_get_width (&priv->allocation);
+      box.y2 = clutter_actor_box_get_height (&priv->allocation);
+
+      bg_color = priv->bg_color;
+      bg_color.alpha = clutter_actor_get_paint_opacity_internal (actor)
+                     * priv->bg_color.alpha
+                     / 255;
+
+      node = clutter_color_node_new (&bg_color);
+      clutter_paint_node_set_name (node, "backgroundColor");
+      clutter_paint_node_add_rectangle (node, &box);
+      clutter_paint_node_add_child (root, node);
+      clutter_paint_node_unref (node);
+    }
+
+  if (priv->content != NULL)
+    _clutter_content_paint_content (priv->content, actor, root);
+
+  if (CLUTTER_ACTOR_GET_CLASS (actor)->paint_node != NULL)
+    CLUTTER_ACTOR_GET_CLASS (actor)->paint_node (actor, root);
+
+  if (clutter_paint_node_get_n_children (root) == 0)
+    return FALSE;
+
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (CLUTTER_HAS_DEBUG (PAINT))
+    {
+      /* dump the tree only if we have one */
+      _clutter_paint_node_dump_tree (root);
+    }
+#endif /* CLUTTER_ENABLE_DEBUG */
+
+  _clutter_paint_node_paint (root);
+
+  CLUTTER_ACTOR_GET_CLASS (actor)->paint (actor);
+
+  return TRUE;
 }
 
 /**
@@ -3510,6 +3529,7 @@ clutter_actor_continue_paint (ClutterActor *self)
       if (_clutter_context_get_pick_mode () == CLUTTER_PICK_NONE)
         {
           ClutterPaintNode *dummy;
+          gboolean emit_paint;
 
           /* XXX - this will go away in 2.0, when we can get rid of this
            * stuff and switch to a pure retained render tree of PaintNodes
@@ -3517,24 +3537,17 @@ clutter_actor_continue_paint (ClutterActor *self)
            */
           dummy = _clutter_dummy_node_new ();
           clutter_paint_node_set_name (dummy, "Root");
-          clutter_actor_paint_node (self, dummy);
-
-          if (clutter_paint_node_get_n_children (dummy) != 0)
-            {
-#ifdef CLUTTER_ENABLE_DEBUG
-              if (CLUTTER_HAS_DEBUG (PAINT))
-                {
-                  /* dump the tree only if we have one */
-                  _clutter_paint_node_dump_tree (dummy);
-                }
-#endif /* CLUTTER_ENABLE_DEBUG */
-
-              _clutter_paint_node_paint (dummy);
-            }
-
+          emit_paint = !clutter_actor_paint_node (self, dummy);
           clutter_paint_node_unref (dummy);
 
-          g_signal_emit (self, actor_signals[PAINT], 0);
+          if (emit_paint || CLUTTER_ACTOR_IS_TOPLEVEL (self))
+            g_signal_emit (self, actor_signals[PAINT], 0);
+          else
+            {
+              CLUTTER_NOTE (PAINT, "The actor '%s' painted using PaintNodes, "
+                                   "skipping the emission of the paint signal.",
+                                   _clutter_actor_get_debug_name (self));
+            }
         }
       else
         {
@@ -17586,10 +17599,13 @@ clutter_actor_get_content_box (ClutterActor    *self,
   if (!clutter_actor_has_allocation (self))
     return;
 
+  box->x1 = 0.f;
+  box->y1 = 0.f;
+  box->x2 = priv->allocation.x2 - priv->allocation.x1;
+  box->y2 = priv->allocation.y2 - priv->allocation.y1;
+
   if (priv->content == NULL)
     return;
-
-  *box = priv->allocation;
 
   /* no need to do any more work */
   if (priv->content_gravity == CLUTTER_CONTENT_GRAVITY_RESIZE_FILL)
