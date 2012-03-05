@@ -33,7 +33,6 @@ units_sources += \
 	test-cogl-multitexture.c        	\
 	test-cogl-npot-texture.c        	\
 	test-cogl-object.c			\
-	test-cogl-pixel-buffer.c		\
 	test-cogl-premult.c			\
 	test-cogl-readpixels.c			\
 	test-cogl-texture-get-set-data.c 	\
