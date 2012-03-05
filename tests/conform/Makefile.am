@@ -167,3 +167,4 @@ DISTCLEANFILES += ../../build/win32/vs9/test-conformance-cogl.vcproj	\
 # we override the clean-generic target to clean up the wrappers so
 # we cannot use CLEANFILES
 clean-generic: clean-wrappers
+	$(QUIET_RM)rm -f .log
