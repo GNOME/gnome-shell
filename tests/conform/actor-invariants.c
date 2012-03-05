@@ -123,6 +123,48 @@ actor_mapped (TestConformSimpleFixture *fixture,
 }
 
 void
+actor_visibility_not_recursive (TestConformSimpleFixture *fixture,
+                                gconstpointer             data)
+{
+  ClutterActor *actor, *group;
+  ClutterActor *stage;
+
+  stage = clutter_stage_new ();
+  group = clutter_actor_new ();
+  actor = clutter_actor_new ();
+
+  clutter_actor_hide (group); /* don't show, so won't map */
+  clutter_actor_hide (actor); /* don't show, so won't map */
+
+  g_assert (!(CLUTTER_ACTOR_IS_VISIBLE (stage)));
+  g_assert (!(CLUTTER_ACTOR_IS_VISIBLE (group)));
+  g_assert (!(CLUTTER_ACTOR_IS_VISIBLE (actor)));
+
+  clutter_actor_add_child (stage, group);
+  clutter_actor_add_child (group, actor);
+
+  clutter_actor_show (actor);
+  g_assert (CLUTTER_ACTOR_IS_VISIBLE (actor));
+  g_assert (!CLUTTER_ACTOR_IS_VISIBLE (group));
+  g_assert (!CLUTTER_ACTOR_IS_VISIBLE (stage));
+
+  clutter_actor_show (stage);
+  g_assert (CLUTTER_ACTOR_IS_VISIBLE (actor));
+  g_assert (!CLUTTER_ACTOR_IS_VISIBLE (group));
+  g_assert (CLUTTER_ACTOR_IS_VISIBLE (stage));
+
+  clutter_actor_hide (actor);
+  clutter_actor_hide (group);
+  clutter_actor_hide (stage);
+  g_assert (!CLUTTER_ACTOR_IS_VISIBLE (actor));
+
+  clutter_actor_show (stage);
+  g_assert (!CLUTTER_ACTOR_IS_VISIBLE (actor));
+
+  clutter_actor_destroy (stage);
+}
+
+void
 actor_realize_not_recursive (TestConformSimpleFixture *fixture,
                              gconstpointer             data)
 {

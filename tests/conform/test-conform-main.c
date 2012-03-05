@@ -152,6 +152,7 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/actor/invariants", actor_initial_state);
   TEST_CONFORM_SIMPLE ("/actor/invariants", actor_shown_not_parented);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", actor_visibility_not_recursive);
   TEST_CONFORM_SIMPLE ("/actor/invariants", actor_realized);
   TEST_CONFORM_SIMPLE ("/actor/invariants", actor_realize_not_recursive);
   TEST_CONFORM_SIMPLE ("/actor/invariants", actor_map_recursive);
