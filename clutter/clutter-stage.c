@@ -790,15 +790,25 @@ clutter_stage_unrealize (ClutterActor *self)
 }
 
 static void
-clutter_stage_show (ClutterActor *self)
+clutter_stage_show_all (ClutterActor *self)
 {
-  ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
   ClutterActorIter iter;
   ClutterActor *child;
 
+  /* we don't do a recursive show_all(), to maintain the old
+   * invariants from ClutterGroup
+   */
   clutter_actor_iter_init (&iter, self);
   while (clutter_actor_iter_next (&iter, &child))
     clutter_actor_show (child);
+
+  clutter_actor_show (self);
+}
+
+static void
+clutter_stage_show (ClutterActor *self)
+{
+  ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->show (self);
 
@@ -811,18 +821,28 @@ clutter_stage_show (ClutterActor *self)
 }
 
 static void
-clutter_stage_hide (ClutterActor *self)
+clutter_stage_hide_all (ClutterActor *self)
 {
-  ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
   ClutterActorIter iter;
   ClutterActor *child;
 
-  g_assert (priv->impl != NULL);
-  _clutter_stage_window_hide (priv->impl);
+  clutter_actor_hide (self);
 
+  /* we don't do a recursive hide_all(), to maintain the old invariants
+   * from ClutterGroup
+   */
   clutter_actor_iter_init (&iter, self);
   while (clutter_actor_iter_next (&iter, &child))
-    clutter_actor_show (child);
+    clutter_actor_hide (child);
+}
+
+static void
+clutter_stage_hide (ClutterActor *self)
+{
+  ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+
+  g_assert (priv->impl != NULL);
+  _clutter_stage_window_hide (priv->impl);
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->hide (self);
 }
@@ -1844,7 +1864,9 @@ clutter_stage_class_init (ClutterStageClass *klass)
   actor_class->realize = clutter_stage_realize;
   actor_class->unrealize = clutter_stage_unrealize;
   actor_class->show = clutter_stage_show;
+  actor_class->show_all = clutter_stage_show_all;
   actor_class->hide = clutter_stage_hide;
+  actor_class->hide_all = clutter_stage_hide_all;
   actor_class->queue_relayout = clutter_stage_real_queue_relayout;
   actor_class->queue_redraw = clutter_stage_real_queue_redraw;
   actor_class->apply_transform = clutter_stage_real_apply_transform;
