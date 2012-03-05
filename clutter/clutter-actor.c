@@ -2113,9 +2113,14 @@ clutter_actor_real_allocate (ClutterActor           *self,
   clutter_actor_maybe_layout_children (self, box, flags);
 
   if (changed)
-    g_signal_emit (self, actor_signals[ALLOCATION_CHANGED], 0,
-                   &priv->allocation,
-                   priv->allocation_flags);
+    {
+      ClutterActorBox signal_box = priv->allocation;
+      ClutterAllocationFlags signal_flags = priv->allocation_flags;
+
+      g_signal_emit (self, actor_signals[ALLOCATION_CHANGED], 0,
+                     &signal_box,
+                     signal_flags);
+    }
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -7981,9 +7986,14 @@ clutter_actor_set_allocation (ClutterActor           *self,
   clutter_actor_maybe_layout_children (self, box, flags);
 
   if (changed)
-    g_signal_emit (self, actor_signals[ALLOCATION_CHANGED], 0,
-                   &priv->allocation,
-                   priv->allocation_flags);
+    {
+      ClutterActorBox signal_box = priv->allocation;
+      ClutterAllocationFlags signal_flags = priv->allocation_flags;
+
+      g_signal_emit (self, actor_signals[ALLOCATION_CHANGED], 0,
+                     &signal_box,
+                     signal_flags);
+    }
 
   g_object_thaw_notify (G_OBJECT (self));
 }
