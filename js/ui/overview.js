@@ -126,7 +126,10 @@ const Overview = new Lang.Class({
 
         this._spacing = 0;
 
+        /* Translators: This is the main view to select
+           activities. See also note for "Activities" string. */
         this._group = new St.Widget({ name: 'overview',
+                                      accessible_name: _("Overview"),
                                       reactive: true });
         this._group._delegate = this;
         this._group.connect('style-changed',
