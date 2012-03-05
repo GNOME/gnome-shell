@@ -230,7 +230,7 @@ actor_show_on_set_parent (TestConformSimpleFixture *fixture,
                 NULL);
 
   g_assert (!(CLUTTER_ACTOR_IS_VISIBLE (actor)));
-  g_assert (show_on_set_parent == TRUE);
+  g_assert (show_on_set_parent);
 
   clutter_actor_add_child (group, actor);
   g_object_get (actor,
@@ -238,7 +238,7 @@ actor_show_on_set_parent (TestConformSimpleFixture *fixture,
                 NULL);
 
   g_assert (CLUTTER_ACTOR_IS_VISIBLE (actor));
-  g_assert (show_on_set_parent == TRUE);
+  g_assert (show_on_set_parent);
 
   g_object_ref (actor);
   clutter_actor_remove_child (group, actor);
@@ -249,10 +249,35 @@ actor_show_on_set_parent (TestConformSimpleFixture *fixture,
   g_assert (!CLUTTER_ACTOR_IS_REALIZED (actor));
   g_assert (!CLUTTER_ACTOR_IS_MAPPED (actor));
   g_assert (CLUTTER_ACTOR_IS_VISIBLE (actor));
-  g_assert (show_on_set_parent == TRUE);
+  g_assert (show_on_set_parent);
 
   clutter_actor_destroy (actor);
   clutter_actor_destroy (group);
+
+  actor = clutter_actor_new ();
+  clutter_actor_add_child (stage, actor);
+  clutter_actor_hide (actor);
+  g_object_get (actor,
+                "show-on-set-parent", &show_on_set_parent,
+                NULL);
+  g_assert (!CLUTTER_ACTOR_IS_VISIBLE (actor));
+  g_assert (!CLUTTER_ACTOR_IS_MAPPED (actor));
+  g_assert (show_on_set_parent);
+
+  clutter_actor_destroy (actor);
+
+  actor = clutter_actor_new ();
+  clutter_actor_hide (actor);
+  clutter_actor_add_child (stage, actor);
+  g_object_get (actor,
+                "show-on-set-parent", &show_on_set_parent,
+                NULL);
+  g_assert (!CLUTTER_ACTOR_IS_VISIBLE (actor));
+  g_assert (!CLUTTER_ACTOR_IS_MAPPED (actor));
+  g_assert (!show_on_set_parent);
+
+  clutter_actor_destroy (actor);
+
   clutter_actor_destroy (stage);
 }
 
