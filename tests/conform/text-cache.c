@@ -28,7 +28,7 @@ struct _CallbackData
 };
 
 static void
-on_paint (ClutterActor *label, CallbackData *data)
+on_paint (ClutterActor *stage, CallbackData *data)
 {
   PangoLayout *new_layout;
 
@@ -269,7 +269,7 @@ text_cache (void)
 
   data.test_layout = make_layout_like_label (CLUTTER_TEXT (data.label));
 
-  g_signal_connect (data.label, "paint", G_CALLBACK (on_paint), &data);
+  g_signal_connect (data.stage, "paint", G_CALLBACK (on_paint), &data);
 
   clutter_container_add (CLUTTER_CONTAINER (data.stage), data.label, NULL);
 
