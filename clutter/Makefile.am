@@ -310,7 +310,7 @@ EXTRA_DIST += clutter-config.h.in
 
 # version header
 DISTCLEANFILES += clutter-version.h
-EXTRA_DIST += clutter-version.h.in
+EXTRA_DIST += clutter-version.h.in clutter-version.h
 
 # key symbol update script
 EXTRA_DIST += clutter-keysyms-update.pl
@@ -763,7 +763,6 @@ DISTCLEANFILES += $(pc_files)
 clutter_include_HEADERS = $(source_h) $(top_srcdir)/clutter/clutter.h
 nodist_clutter_include_HEADERS = \
 	$(top_builddir)/clutter/clutter-config.h \
-	$(top_builddir)/clutter/clutter-version.h \
 	$(built_source_h)
 
 clutter_deprecated_HEADERS = $(deprecated_h)
