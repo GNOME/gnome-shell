@@ -181,7 +181,7 @@ const Indicator = new Lang.Class({
 
         // update connected property
         if (device.can_connect)
-            item._connectedMenuitem.setToggleState(device.connected);
+            item._connectedMenuItem.setToggleState(device.connected);
     },
 
     _createDeviceItem: function(device) {
