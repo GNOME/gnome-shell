@@ -1,3 +1,56 @@
+Cogl 1.9.8                                                         2012-03-05
+
+  • List of changes since Cogl 1.9.6
+
+  » Various Visual Studio build fixes
+  » Correctly check for GL_EXT_packed_depth_stencil and support using
+    GL_OES_packed_depth_stencil on GLES2
+  » Correctly handle pre-multiplied alpha conversions when reading
+    back texture data.
+  » Added cogl_renderer_{get,set}_driver functions so the underlying
+    driver can be chosen programmatically.
+  » Revamped the conformance testing framework so that it
+    automatically runs every test against GLES2 as well as GL and also
+    against all of the pipeline backends and with npot textures
+    disabled.
+  » Add a conformance test for reading back an RGBA texture as
+    alpha-only
+  » Added support for converting between all of Cogl's supported pixel
+    formats including pre-multiplied alpha conversions.
+  » Added conformance tests for converting to and from all of the
+    supported formats.
+  » Added a public cogl_framebuffer_read_pixels_into_bitmap()
+    function which will effective read into a CoglPixelBuffer.
+  » CoglPixelBuffer was changed to no longer have associated width,
+    height and format information and instead we will rely on
+    CoglBitmap to track that informations. The relationship is
+    analogous how CoglAttributes relate to CoglAttributeBuffers
+    and means for example that a CoglPixelBuffer could now be used
+    to hold multiple images.
+  » Added public cogl_bitmap_get_{width,height,format,rowstride} api
+  » Added a public accessor for the underlying pixel buffer of a
+    CoglBitmap.
+  » Added various missing cast macros for some buffer objects.
+  » Ported the Clutter based test-pixel-buffer test to be standalone.
+
+  • List of bugs fixed since Cogl 1.9.6
+
+    https://bugzilla.gnome.org:
+
+    #666184 - framebuffer: Enable a single depth and stencil buffer for GLES
+    #670793 - Don't use cogl_get_draw_framebuffer when flushing pipeline state
+    #671016 - INVALID_ENUM errors in gnome-shell
+
+Many thanks to:
+
+  Neil Roberts
+  Chun-wei Fan
+  Daniel Korostil
+  Martin Srebotnjak
+  Matej Urbančič
+  Matic Gradišer
+  Мирослав Николић
+
 Cogl 1.9.6                                                         2012-02-21
 
   • List of changes since Cogl 1.9.4
@@ -121,8 +174,8 @@ Cogl 1.9.4                                                         2012-01-16
   » We added an experimental CoglSnippets api aiming to greatly simplify how
     developers can incorporate snippets of GLSL code into the pipeline. This is
     a feature that has been on the drawing board for a long time so we're
-    really happy that it's finally here. 
-    
+    really happy that it's finally here.
+
     *** We'd really love to see people start to play with the snippets API and
     tell us how they get on. The plan is for this API to replace all need for
     developers to use the CoglProgram and CoglShader apis which are rather poor
