@@ -10,402 +10,393 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-24 14:44+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=clutter\n"
+"POT-Creation-Date: 2012-03-05 23:14+0000\n"
 "PO-Revision-Date: 2012-03-04 20:51+0100\n"
 "Last-Translator: filmsi\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
+"%100==4 ? 3 : 0);\n"
 "X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../cogl/cogl-debug.c:172
+#: cogl/cogl-debug.c:172
 msgid "Supported debug values:"
 msgstr "Podprte vrednosti razhroščevanja:"
 
-#: ../cogl/cogl-debug.c:177
+#: cogl/cogl-debug.c:177
 msgid "Special debug values:"
 msgstr "Posebne vrednosti za razhroščevanje:"
 
-#: ../cogl/cogl-debug.c:179
-#: ../cogl/cogl-debug.c:181
+#: cogl/cogl-debug.c:179 cogl/cogl-debug.c:181
 msgid "Enables all non-behavioural debug options"
 msgstr "Omogoči vse ne-vedenjske možnosti razhroščevanja"
 
-#: ../cogl/cogl-debug.c:225
+#: cogl/cogl-debug.c:225
 msgid "Cogl debugging flags to set"
 msgstr "Zastavice razhroščevanja Cogl za nastavljanje"
 
-#: ../cogl/cogl-debug.c:227
+#: cogl/cogl-debug.c:227
 msgid "Cogl debugging flags to unset"
 msgstr "Zastavice razhroščevanja Cogl za odstranitev"
 
-#: ../cogl/cogl-debug.c:276
+#: cogl/cogl-debug.c:276
 msgid "Cogl Options"
 msgstr "Možnosti Cogl"
 
-#: ../cogl/cogl-debug.c:277
+#: cogl/cogl-debug.c:277
 msgid "Show Cogl options"
 msgstr "Pokaži možnosti Cogl"
 
-#: ../cogl/cogl-debug-options.h:25
-#: ../cogl/cogl-debug-options.h:30
-#: ../cogl/cogl-debug-options.h:35
-#: ../cogl/cogl-debug-options.h:40
-#: ../cogl/cogl-debug-options.h:45
-#: ../cogl/cogl-debug-options.h:50
-#: ../cogl/cogl-debug-options.h:55
-#: ../cogl/cogl-debug-options.h:61
-#: ../cogl/cogl-debug-options.h:66
-#: ../cogl/cogl-debug-options.h:71
-#: ../cogl/cogl-debug-options.h:158
-#: ../cogl/cogl-debug-options.h:163
-#: ../cogl/cogl-debug-options.h:168
-#: ../cogl/cogl-debug-options.h:184
+#: cogl/cogl-debug-options.h:25 cogl/cogl-debug-options.h:30
+#: cogl/cogl-debug-options.h:35 cogl/cogl-debug-options.h:40
+#: cogl/cogl-debug-options.h:45 cogl/cogl-debug-options.h:50
+#: cogl/cogl-debug-options.h:55 cogl/cogl-debug-options.h:61
+#: cogl/cogl-debug-options.h:66 cogl/cogl-debug-options.h:71
+#: cogl/cogl-debug-options.h:158 cogl/cogl-debug-options.h:163
+#: cogl/cogl-debug-options.h:168 cogl/cogl-debug-options.h:184
 #, fuzzy
 msgid "Cogl Tracing"
 msgstr "Sledenje Cogl"
 
-#: ../cogl/cogl-debug-options.h:27
+#: cogl/cogl-debug-options.h:27
 msgid "CoglObject references"
 msgstr "Sklici predmetov CoglObject"
 
-#: ../cogl/cogl-debug-options.h:28
+#: cogl/cogl-debug-options.h:28
 msgid "Debug ref counting issues for CoglObjects"
 msgstr ""
 
-#: ../cogl/cogl-debug-options.h:32
+#: cogl/cogl-debug-options.h:32
 #, fuzzy
 msgid "Trace Texture Slicing"
 msgstr "Sledi porezavi tekstur"
 
-#: ../cogl/cogl-debug-options.h:33
-#, fuzzy
+#: cogl/cogl-debug-options.h:33
 msgid "debug the creation of texture slices"
 msgstr ""
 
 # Texture atlas - atlas tekstur??
-#: ../cogl/cogl-debug-options.h:37
+#: cogl/cogl-debug-options.h:37
 #, fuzzy
 msgid "Trace Atlas Textures"
 msgstr "Sledi teksturam za tlakovanje"
 
-#: ../cogl/cogl-debug-options.h:38
+#: cogl/cogl-debug-options.h:38
 #, fuzzy
 msgid "Debug texture atlas management"
 msgstr "Razhroščevanje upravljanja atlasnih tekstur"
 
-#: ../cogl/cogl-debug-options.h:42
+#: cogl/cogl-debug-options.h:42
 #, fuzzy
 msgid "Trace Blend Strings"
 msgstr "Sledi nizom zlivanja"
 
-#: ../cogl/cogl-debug-options.h:43
+#: cogl/cogl-debug-options.h:43
 #, fuzzy
 msgid "Debug CoglBlendString parsing"
 msgstr "Razhrošči razčlenitev CoglBlendString"
 
-#: ../cogl/cogl-debug-options.h:47
+#: cogl/cogl-debug-options.h:47
 #, fuzzy
 msgid "Trace Journal"
 msgstr "Sledi dnevniku"
 
-#: ../cogl/cogl-debug-options.h:48
+#: cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
 msgstr ""
 
-#: ../cogl/cogl-debug-options.h:52
+#: cogl/cogl-debug-options.h:52
 #, fuzzy
 msgid "Trace Batching"
 msgstr "Sledi paketni obdelavi"
 
-#: ../cogl/cogl-debug-options.h:53
+#: cogl/cogl-debug-options.h:53
 msgid "Show how geometry is being batched in the journal"
 msgstr ""
 
-#: ../cogl/cogl-debug-options.h:57
+#: cogl/cogl-debug-options.h:57
 #, fuzzy
 msgid "Trace matrices"
 msgstr "Sledi matrikam"
 
-#: ../cogl/cogl-debug-options.h:58
+#: cogl/cogl-debug-options.h:58
 #, fuzzy
 msgid "Trace all matrix manipulation"
 msgstr "Sledi vsem opravilom nad matrikami"
 
-#: ../cogl/cogl-debug-options.h:63
+#: cogl/cogl-debug-options.h:63
 #, fuzzy
 msgid "Trace Misc Drawing"
 msgstr "Sledi risanju"
 
-#: ../cogl/cogl-debug-options.h:64
+#: cogl/cogl-debug-options.h:64
 #, fuzzy
 msgid "Trace some misc drawing operations"
 msgstr "Prepoznaj nekatera risarska dejanja"
 
-#: ../cogl/cogl-debug-options.h:68
+#: cogl/cogl-debug-options.h:68
 #, fuzzy
 msgid "Trace Pango Renderer"
 msgstr "Sledi izrisovalniku Pango"
 
-#: ../cogl/cogl-debug-options.h:69
+#: cogl/cogl-debug-options.h:69
 #, fuzzy
 msgid "Trace the Cogl Pango renderer"
 msgstr "Sledi izrisovalniku Pango Cogl"
 
-#: ../cogl/cogl-debug-options.h:73
+#: cogl/cogl-debug-options.h:73
 #, fuzzy
 msgid "Trace CoglTexturePixmap backend"
 msgstr "Sledi zaledju CoglTexturePixmap"
 
-#: ../cogl/cogl-debug-options.h:74
+#: cogl/cogl-debug-options.h:74
 #, fuzzy
 msgid "Trace the Cogl texture pixmap backend"
 msgstr "Prepoznaj zaledje sličic teksture Cogl"
 
-#: ../cogl/cogl-debug-options.h:76
-#: ../cogl/cogl-debug-options.h:81
+#: cogl/cogl-debug-options.h:76 cogl/cogl-debug-options.h:81
 #, fuzzy
 msgid "Visualize"
 msgstr "Predoči"
 
-#: ../cogl/cogl-debug-options.h:78
+#: cogl/cogl-debug-options.h:78
 msgid "Outline rectangles"
 msgstr "Oriši pravokotnike"
 
-#: ../cogl/cogl-debug-options.h:79
+#: cogl/cogl-debug-options.h:79
 #, fuzzy
 msgid "Add wire outlines for all rectangular geometry"
 msgstr "Dodaj žični oris vsem pravokotnim predmetom"
 
-#: ../cogl/cogl-debug-options.h:83
+#: cogl/cogl-debug-options.h:83
 #, fuzzy
 msgid "Show wireframes"
 msgstr "Pokaži orisani okvir"
 
-#: ../cogl/cogl-debug-options.h:84
+#: cogl/cogl-debug-options.h:84
 #, fuzzy
 msgid "Add wire outlines for all geometry"
 msgstr "Dodaj žični oris vsem predmetom"
 
-#: ../cogl/cogl-debug-options.h:86
-#: ../cogl/cogl-debug-options.h:91
-#: ../cogl/cogl-debug-options.h:96
-#: ../cogl/cogl-debug-options.h:101
-#: ../cogl/cogl-debug-options.h:111
-#: ../cogl/cogl-debug-options.h:116
-#: ../cogl/cogl-debug-options.h:122
-#: ../cogl/cogl-debug-options.h:127
-#: ../cogl/cogl-debug-options.h:132
-#: ../cogl/cogl-debug-options.h:137
-#: ../cogl/cogl-debug-options.h:142
-#: ../cogl/cogl-debug-options.h:147
-#: ../cogl/cogl-debug-options.h:153
-#: ../cogl/cogl-debug-options.h:173
-#: ../cogl/cogl-debug-options.h:178
+#: cogl/cogl-debug-options.h:86 cogl/cogl-debug-options.h:91
+#: cogl/cogl-debug-options.h:96 cogl/cogl-debug-options.h:101
+#: cogl/cogl-debug-options.h:111 cogl/cogl-debug-options.h:116
+#: cogl/cogl-debug-options.h:122 cogl/cogl-debug-options.h:127
+#: cogl/cogl-debug-options.h:132 cogl/cogl-debug-options.h:137
+#: cogl/cogl-debug-options.h:142 cogl/cogl-debug-options.h:147
+#: cogl/cogl-debug-options.h:153 cogl/cogl-debug-options.h:173
+#: cogl/cogl-debug-options.h:178
 #, fuzzy
 msgid "Root Cause"
 msgstr "Korenski vzrok"
 
-#: ../cogl/cogl-debug-options.h:88
+#: cogl/cogl-debug-options.h:88
 #, fuzzy
 msgid "Disable Journal batching"
 msgstr "Onemogoči paketno delo Journala"
 
-#: ../cogl/cogl-debug-options.h:89
+#: cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
 msgstr ""
 
-#: ../cogl/cogl-debug-options.h:93
+#: cogl/cogl-debug-options.h:93
 #, fuzzy
 msgid "Disable GL Vertex Buffers"
 msgstr "Onemogoči medpomnilnik točk GL"
 
-#: ../cogl/cogl-debug-options.h:94
+#: cogl/cogl-debug-options.h:94
 #, fuzzy
 msgid "Disable use of OpenGL vertex buffer objects"
 msgstr "Onemogoči uporabo predmetov medpomnilnika točk OpenGL"
 
-#: ../cogl/cogl-debug-options.h:98
+#: cogl/cogl-debug-options.h:98
 #, fuzzy
 msgid "Disable GL Pixel Buffers"
 msgstr "Onemogoči medpomnilnik sličic GL"
 
-#: ../cogl/cogl-debug-options.h:99
+#: cogl/cogl-debug-options.h:99
 #, fuzzy
 msgid "Disable use of OpenGL pixel buffer objects"
 msgstr "Onemogoči uporabo predmetov medpomnilnika sličic OpenGL"
 
-#: ../cogl/cogl-debug-options.h:103
+#: cogl/cogl-debug-options.h:103
 #, fuzzy
 msgid "Disable software rect transform"
 msgstr "Onemogoči programsko preoblikovanje pravokotnikov"
 
-#: ../cogl/cogl-debug-options.h:104
+#: cogl/cogl-debug-options.h:104
 #, fuzzy
 msgid "Use the GPU to transform rectangular geometry"
 msgstr "Uporabi grafično procesno enoto (GPU) za pravokotnih predmetov"
 
-#: ../cogl/cogl-debug-options.h:106
+#: cogl/cogl-debug-options.h:106
 #, fuzzy
 msgid "Cogl Specialist"
 msgstr "Specialist Cogl"
 
-#: ../cogl/cogl-debug-options.h:108
+#: cogl/cogl-debug-options.h:108
 #, fuzzy
 msgid "Dump atlas images"
 msgstr "Izriši slike za tlakovanje"
 
-#: ../cogl/cogl-debug-options.h:109
+#: cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
 msgstr "Izpiši spremembe v atlasne teksture v slikovno datoteko"
 
-#: ../cogl/cogl-debug-options.h:113
+#: cogl/cogl-debug-options.h:113
 #, fuzzy
 msgid "Disable texture atlasing"
 msgstr "Onemogoči tlakovanje s teksturami"
 
-#: ../cogl/cogl-debug-options.h:114
+#: cogl/cogl-debug-options.h:114
 #, fuzzy
 msgid "Disable use of texture atlasing"
 msgstr "Onemogoči uporabo izrisovanja atlasnih tekstur"
 
-#: ../cogl/cogl-debug-options.h:118
+#: cogl/cogl-debug-options.h:118
 #, fuzzy
 msgid "Disable sharing the texture atlas between text and images"
 msgstr "Onemogoči souporabo atlasnih tekstur med besedilom in slikami"
 
-#: ../cogl/cogl-debug-options.h:119
-msgid "When this is set the glyph cache will always use a separate texture for its atlas. Otherwise it will try to share the atlas with images."
+#: cogl/cogl-debug-options.h:119
+msgid ""
+"When this is set the glyph cache will always use a separate texture for its "
+"atlas. Otherwise it will try to share the atlas with images."
 msgstr ""
 
-#: ../cogl/cogl-debug-options.h:124
+#: cogl/cogl-debug-options.h:124
 #, fuzzy
 msgid "Disable texturing"
 msgstr "Onemogoči teksturiranje"
 
-#: ../cogl/cogl-debug-options.h:125
+#: cogl/cogl-debug-options.h:125
 #, fuzzy
 msgid "Disable texturing any primitives"
 msgstr "Onemogoči teksturiranje primitivov."
 
-#: ../cogl/cogl-debug-options.h:129
+#: cogl/cogl-debug-options.h:129
 msgid "Disable arbfp"
 msgstr "Onemogoči arbfp"
 
-#: ../cogl/cogl-debug-options.h:130
+#: cogl/cogl-debug-options.h:130
 #, fuzzy
 msgid "Disable use of ARB fragment programs"
 msgstr "Onemogoči uporabo fragmentarnih programov ARB"
 
-#: ../cogl/cogl-debug-options.h:134
+#: cogl/cogl-debug-options.h:134
 #, fuzzy
 msgid "Disable fixed"
 msgstr "Onemogoči fiksno"
 
-#: ../cogl/cogl-debug-options.h:135
+#: cogl/cogl-debug-options.h:135
 #, fuzzy
 msgid "Disable use of the fixed function pipeline backend"
 msgstr "Onemogoči uporabo zaledja cevovoda fiksne funkcije"
 
-#: ../cogl/cogl-debug-options.h:139
+#: cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
 msgstr "Onemogoči GLSL"
 
-#: ../cogl/cogl-debug-options.h:140
+#: cogl/cogl-debug-options.h:140
 msgid "Disable use of GLSL"
 msgstr "Onemogoči uporabo GLSL"
 
-#: ../cogl/cogl-debug-options.h:144
+#: cogl/cogl-debug-options.h:144
 #, fuzzy
 msgid "Disable blending"
 msgstr "Onemogoči zlivanje"
 
-#: ../cogl/cogl-debug-options.h:145
+#: cogl/cogl-debug-options.h:145
 #, fuzzy
 msgid "Disable use of blending"
 msgstr "Onemogoči uporabo zlivanja"
 
-#: ../cogl/cogl-debug-options.h:149
+#: cogl/cogl-debug-options.h:149
 #, fuzzy
 msgid "Disable non-power-of-two textures"
 msgstr "Onemogoči nekvadratne teksture"
 
-#: ../cogl/cogl-debug-options.h:150
-msgid "Makes Cogl think that the GL driver doesn't support NPOT textures so that it will create sliced textures or textures with waste instead."
+#: cogl/cogl-debug-options.h:150
+msgid ""
+"Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
+"will create sliced textures or textures with waste instead."
 msgstr ""
 
-#: ../cogl/cogl-debug-options.h:155
+#: cogl/cogl-debug-options.h:155
 #, fuzzy
 msgid "Disable software clipping"
 msgstr "Onemogoči porezavo programja"
 
-#: ../cogl/cogl-debug-options.h:156
+#: cogl/cogl-debug-options.h:156
 #, fuzzy
 msgid "Disables Cogl's attempts to clip some rectangles in software."
 msgstr "Onemogoči poskuse Cogl, da poreže nekatere pravokotnike v programju."
 
-#: ../cogl/cogl-debug-options.h:160
+#: cogl/cogl-debug-options.h:160
 #, fuzzy
 msgid "Show source"
 msgstr "Prikaži vir/izvorno kodo"
 
-#: ../cogl/cogl-debug-options.h:161
+#: cogl/cogl-debug-options.h:161
 #, fuzzy
 msgid "Show generated ARBfp/GLSL source code"
 msgstr "Pokaži tvorjeno izvorno kodo ARBfp/GLSL"
 
-#: ../cogl/cogl-debug-options.h:165
+#: cogl/cogl-debug-options.h:165
 #, fuzzy
 msgid "Trace some OpenGL"
 msgstr "Sledi OpenGL"
 
-#: ../cogl/cogl-debug-options.h:166
+#: cogl/cogl-debug-options.h:166
 #, fuzzy
 msgid "Traces some select OpenGL calls"
 msgstr "Sledi nekaterim izbranim klicem OpenGL"
 
-#: ../cogl/cogl-debug-options.h:170
+#: cogl/cogl-debug-options.h:170
 #, fuzzy
 msgid "Trace offscreen support"
 msgstr "Sledi podpori zunaj zaslona"
 
-#: ../cogl/cogl-debug-options.h:171
+#: cogl/cogl-debug-options.h:171
 #, fuzzy
 msgid "Debug offscreen support"
 msgstr "Razhrošči podporo zunaj zaslona"
 
-#: ../cogl/cogl-debug-options.h:175
+#: cogl/cogl-debug-options.h:175
 #, fuzzy
 msgid "Disable program caches"
 msgstr "Onemogoči medpomnilnike programa"
 
-#: ../cogl/cogl-debug-options.h:176
+#: cogl/cogl-debug-options.h:176
 msgid "Disable fallback caches for arbfp and glsl programs"
 msgstr ""
 
-#: ../cogl/cogl-debug-options.h:180
+#: cogl/cogl-debug-options.h:180
 #, fuzzy
 msgid "Disable read pixel optimization"
 msgstr "Onemogoči optimizacijo branja slik. točk"
 
-#: ../cogl/cogl-debug-options.h:181
+#: cogl/cogl-debug-options.h:181
 #, fuzzy
-msgid "Disable optimization for reading 1px for simple scenes of opaque rectangles"
-msgstr "Onemogoči optimizacijo branja ene slikovne točke za enostavne prizore s prekrivnimi pravokotniki"
+msgid ""
+"Disable optimization for reading 1px for simple scenes of opaque rectangles"
+msgstr ""
+"Onemogoči optimizacijo branja ene slikovne točke za enostavne prizore s "
+"prekrivnimi pravokotniki"
 
-#: ../cogl/cogl-debug-options.h:186
+#: cogl/cogl-debug-options.h:186
 #, fuzzy
 msgid "Trace clipping"
 msgstr "Sledi porezavi"
 
-#: ../cogl/cogl-debug-options.h:187
+#: cogl/cogl-debug-options.h:187
 #, fuzzy
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Beleži podatke, kako Cogl uveljavlja porezovanje"
-
