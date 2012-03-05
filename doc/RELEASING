@@ -21,7 +21,7 @@ When making a new release;
 
  - Run:
 
-     $ ./autogen.sh --enable-gtk-doc --enable-profile --enable-gles1 --enable-gles2 --enable-gl --enable-xlib-egl-platform --enable-glx
+     $ ./autogen.sh --enable-gtk-doc --enable-profile --enable-gles1 --enable-gles2 --enable-gl --enable-xlib-egl-platform --enable-wayland-egl-platform --enable-glx --enable-wayland-egl-server
      $ make all
      $ make install
 

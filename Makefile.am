@@ -26,6 +26,8 @@ DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-gles2 \
 	--enable-gl \
 	--enable-xlib-egl-platform \
-	--enable-glx
+	--enable-wayland-egl-platform \
+	--enable-glx \
+	--enable-wayland-egl-server
 
 include $(top_srcdir)/build/autotools/Makefile.am.release
