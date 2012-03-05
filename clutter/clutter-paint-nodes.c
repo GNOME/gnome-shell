@@ -1177,7 +1177,7 @@ clutter_layer_node_new (const CoglMatrix        *projection,
                                              COGL_TEXTURE_NO_SLICING,
                                              COGL_PIXEL_FORMAT_RGBA_8888_PRE);
 
-  res->offscreen = cogl_offscreen_new_to_texture (res->texture);
+  res->offscreen = COGL_FRAMEBUFFER (cogl_offscreen_new_to_texture (res->texture));
   if (res->offscreen == NULL)
     {
       g_critical ("%s: Unable to create an offscreen buffer", G_STRLOC);
