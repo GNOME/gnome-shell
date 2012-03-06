@@ -924,6 +924,7 @@ clutter_rectangle_set_border_color
 clutter_rectangle_set_border_width
 clutter_rectangle_set_color
 clutter_redraw
+clutter_repaint_flags_get_type
 clutter_request_mode_get_type
 clutter_rotate_axis_get_type
 clutter_rotate_direction_get_type
@@ -957,6 +958,7 @@ clutter_script_error_quark
 clutter_script_get_object
 clutter_script_get_objects
 clutter_script_get_states
+clutter_script_get_translation_domain
 clutter_script_get_type
 clutter_script_get_type_from_name
 clutter_script_list_objects
@@ -965,6 +967,7 @@ clutter_script_load_from_file
 clutter_script_load_from_resource
 clutter_script_lookup_filename
 clutter_script_new
+clutter_script_set_translation_domain
 clutter_script_unmerge_objects
 clutter_scroll_direction_get_type
 clutter_settings_get_default
