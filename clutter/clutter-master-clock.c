@@ -46,6 +46,19 @@
 #define CLUTTER_IS_MASTER_CLOCK_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_MASTER_CLOCK))
 #define CLUTTER_MASTER_CLASS_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_MASTER_CLOCK, ClutterMasterClockClass))
 
+#ifdef CLUTTER_ENABLE_DEBUG
+#define clutter_warn_if_over_budget(master_clock,start_time,section)    G_STMT_START  { \
+  gint64 __delta = g_get_monotonic_time () - start_time;                                \
+  gint64 __budget = master_clock->remaining_budget;                                     \
+  if (__budget > 0 && __delta >= __budget) {                                            \
+    _clutter_diagnostic_message ("%s took %" G_GINT64_FORMAT " microseconds "           \
+                                 "over a budget of %" G_GINT64_FORMAT " microseconds",  \
+                                 section, __delta, __budget);                           \
+  }                                                                     } G_STMT_END
+#else
+#define clutter_warn_if_over_budget(master_clock,start_time,section)
+#endif
+
 typedef struct _ClutterClockSource              ClutterClockSource;
 typedef struct _ClutterMasterClockClass         ClutterMasterClockClass;
 
@@ -61,6 +74,11 @@ struct _ClutterMasterClock
 
   /* the previous state of the clock, in usecs, used to compute the delta */
   gint64 prev_tick;
+
+#ifdef CLUTTER_ENABLE_DEBUG
+  gint64 frame_budget;
+  gint64 remaining_budget;
+#endif
 
   /* an idle source, used by the Master Clock to queue
    * a redraw on the stage and drive the animations
@@ -242,6 +260,9 @@ master_clock_process_events (ClutterMasterClock *master_clock,
                              GSList             *stages)
 {
   GSList *l;
+#ifdef CLUTTER_ENABLE_DEBUG
+  gint64 start = g_get_monotonic_time ();
+#endif
 
   CLUTTER_STATIC_TIMER (master_event_process,
                         "Master Clock",
@@ -263,6 +284,13 @@ master_clock_process_events (ClutterMasterClock *master_clock,
     }
 
   CLUTTER_TIMER_STOP (_clutter_uprof_context, master_event_process);
+
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (_clutter_diagnostic_enabled ())
+    clutter_warn_if_over_budget (master_clock, start, "Event processing");
+
+  master_clock->remaining_budget -= (g_get_monotonic_time () - start);
+#endif
 }
 
 /*
@@ -277,6 +305,9 @@ static void
 master_clock_advance_timelines (ClutterMasterClock *master_clock)
 {
   GSList *timelines, *l;
+#ifdef CLUTTER_ENABLE_DEBUG
+  gint64 start = g_get_monotonic_time ();
+#endif
 
   CLUTTER_STATIC_TIMER (master_timeline_advance,
                         "Master Clock",
@@ -316,6 +347,13 @@ master_clock_advance_timelines (ClutterMasterClock *master_clock)
 
   g_slist_foreach (timelines, (GFunc) g_object_unref, NULL);
   g_slist_free (timelines);
+
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (_clutter_diagnostic_enabled ())
+    clutter_warn_if_over_budget (master_clock, start, "Animations");
+
+  master_clock->remaining_budget -= (g_get_monotonic_time () - start);
+#endif
 }
 
 static gboolean
@@ -324,6 +362,9 @@ master_clock_update_stages (ClutterMasterClock *master_clock,
 {
   gboolean stages_updated = FALSE;
   GSList *l;
+#ifdef CLUTTER_ENABLE_DEBUG
+  gint64 start = g_get_monotonic_time ();
+#endif
 
   _clutter_run_repaint_functions (CLUTTER_REPAINT_FLAGS_PRE_PAINT);
 
@@ -346,6 +387,13 @@ master_clock_update_stages (ClutterMasterClock *master_clock,
     }
 
   _clutter_run_repaint_functions (CLUTTER_REPAINT_FLAGS_POST_PAINT);
+
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (_clutter_diagnostic_enabled ())
+    clutter_warn_if_over_budget (master_clock, start, "Updating the stage");
+
+  master_clock->remaining_budget -= (g_get_monotonic_time () - start);
+#endif
 
   return stages_updated;
 }
@@ -444,6 +492,10 @@ clutter_clock_dispatch (GSource     *source,
   /* Get the time to use for this frame */
   master_clock->cur_tick = g_source_get_time (source);
 
+#ifdef CLUTTER_ENABLE_DEBUG
+  master_clock->remaining_budget = master_clock->frame_budget;
+#endif
+
   /* We need to protect ourselves against stages being destroyed during
    * event handling
    */
@@ -511,6 +563,8 @@ clutter_master_clock_init (ClutterMasterClock *self)
 
   self->idle = FALSE;
   self->ensure_next_iteration = FALSE;
+
+  self->frame_budget = G_USEC_PER_SEC / 60;
 
   g_source_set_priority (source, CLUTTER_PRIORITY_REDRAW);
   g_source_set_can_recurse (source, FALSE);
@@ -608,4 +662,3 @@ _clutter_master_clock_ensure_next_iteration (ClutterMasterClock *master_clock)
 
   master_clock->ensure_next_iteration = TRUE;
 }
-
