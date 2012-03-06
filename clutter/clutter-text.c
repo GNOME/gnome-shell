@@ -2005,6 +2005,7 @@ clutter_text_paint (ClutterActor *self)
   guint8 real_opacity;
   gint text_x = priv->text_x;
   gboolean clip_set = FALSE;
+  gboolean bg_color_set = FALSE;
   guint n_chars;
 
   /* Note that if anything in this paint method changes it needs to be
@@ -2021,6 +2022,23 @@ clutter_text_paint (ClutterActor *self)
     return;
 
   clutter_actor_get_allocation_box (self, &alloc);
+
+  g_object_get (self, "background-color-set", &bg_color_set, NULL);
+  if (bg_color_set)
+    {
+      ClutterColor bg_color;
+
+      clutter_actor_get_background_color (self, &bg_color);
+      bg_color.alpha = clutter_actor_get_paint_opacity (self)
+                     * bg_color.alpha
+                     / 255;
+
+      cogl_set_source_color4ub (bg_color.red,
+                                bg_color.green,
+                                bg_color.blue,
+                                bg_color.alpha);
+      cogl_rectangle (0, 0, alloc.x2 - alloc.x1, alloc.y2 - alloc.y1);
+    }
 
   if (priv->editable && priv->single_line_mode)
     layout = clutter_text_create_layout (text, -1, -1);
