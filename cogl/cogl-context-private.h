@@ -50,6 +50,7 @@
 #include "cogl-sampler-cache-private.h"
 #include "cogl-gpu-info-private.h"
 #include "cogl-gl-header.h"
+#include "cogl-framebuffer-private.h"
 
 typedef struct
 {
@@ -179,6 +180,12 @@ struct _CoglContext
   unsigned long     current_draw_buffer_changes;
   CoglFramebuffer  *current_draw_buffer;
   CoglFramebuffer  *current_read_buffer;
+
+  gboolean have_last_offscreen_allocate_flags;
+  CoglOffscreenAllocateFlags last_offscreen_allocate_flags;
+
+  CoglGLES2Context *current_gles2_context;
+  GQueue gles2_context_stack;
 
   /* Primitives */
   CoglPath         *current_path;

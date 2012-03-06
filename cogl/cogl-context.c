@@ -159,7 +159,7 @@ cogl_context_new (CoglDisplay *display,
 #endif
 
   /* Allocate context memory */
-  context = g_malloc (sizeof (CoglContext));
+  context = g_malloc0 (sizeof (CoglContext));
 
   /* Convert the context into an object immediately in case any of the
      code below wants to verify that the context pointer is a valid
@@ -308,6 +308,8 @@ cogl_context_new (CoglDisplay *display,
   context->current_read_buffer = NULL;
   context->current_draw_buffer_state_flushed = 0;
   context->current_draw_buffer_changes = COGL_FRAMEBUFFER_STATE_ALL;
+
+  g_queue_init (&context->gles2_context_stack);
 
   context->journal_flush_attributes_array =
     g_array_new (TRUE, FALSE, sizeof (CoglAttribute *));
@@ -477,6 +479,8 @@ _cogl_context_free (CoglContext *context)
 
   if (context->blit_texture_pipeline)
     cogl_object_unref (context->blit_texture_pipeline);
+
+  g_warn_if_fail (context->gles2_context_stack.length == 0);
 
   if (context->journal_flush_attributes_array)
     g_array_free (context->journal_flush_attributes_array, TRUE);

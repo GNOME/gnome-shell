@@ -231,14 +231,14 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
                             NULL);
   if (egl_display->dummy_surface == EGL_NO_SURFACE)
     {
-      error_message= "Unable to eglMakeCurrent with dummy surface";
+      error_message= "Unable to create dummy window surface";
       goto fail;
     }
 
-  if (!eglMakeCurrent (egl_renderer->edpy,
-                       egl_display->dummy_surface,
-                       egl_display->dummy_surface,
-                       egl_display->egl_context))
+  if (!_cogl_winsys_egl_make_current (display,
+                                      egl_display->dummy_surface,
+                                      egl_display->dummy_surface,
+                                      egl_display->egl_context))
     {
       error_message = "Unable to eglMakeCurrent with dummy surface";
       goto fail;

@@ -166,16 +166,32 @@ struct _CoglFramebuffer
   CoglBool            clear_clip_dirty;
 };
 
+typedef enum {
+  COGL_OFFSCREEN_ALLOCATE_FLAG_DEPTH_STENCIL    = 1L<<0,
+  COGL_OFFSCREEN_ALLOCATE_FLAG_DEPTH24_STENCIL8 = 1L<<1,
+  COGL_OFFSCREEN_ALLOCATE_FLAG_DEPTH            = 1L<<2,
+  COGL_OFFSCREEN_ALLOCATE_FLAG_STENCIL          = 1L<<3
+} CoglOffscreenAllocateFlags;
+
+typedef struct _CoglGLFramebuffer
+{
+  GLuint fbo_handle;
+  GList *renderbuffers;
+  int samples_per_pixel;
+} CoglGLFramebuffer;
+
 struct _CoglOffscreen
 {
   CoglFramebuffer  _parent;
-  GLuint          fbo_handle;
-  GSList          *renderbuffers;
+
+  CoglGLFramebuffer gl_framebuffer;
 
   CoglTexture    *texture;
   int             texture_level;
   int             texture_level_width;
   int             texture_level_height;
+
+  CoglOffscreenAllocateFlags allocation_flags;
 
   /* FIXME: _cogl_offscreen_new_to_texture_full should be made to use
    * fb->config to configure if we want a depth or stencil buffer so
@@ -399,5 +415,18 @@ _cogl_framebuffer_draw_indexed_attributes (CoglFramebuffer *framebuffer,
                                            CoglAttribute **attributes,
                                            int n_attributes,
                                            CoglDrawFlags flags);
+
+gboolean
+_cogl_framebuffer_try_creating_gl_fbo (CoglContext *ctx,
+                                       CoglTexture *texture,
+                                       int texture_level,
+                                       int texture_level_width,
+                                       int texture_level_height,
+                                       CoglFramebufferConfig *config,
+                                       CoglOffscreenAllocateFlags flags,
+                                       CoglGLFramebuffer *gl_framebuffer);
+
+void
+_cogl_gl_framebuffer_bind (CoglFramebuffer *framebuffer, GLenum target);
 
 #endif /* __COGL_FRAMEBUFFER_PRIVATE_H */

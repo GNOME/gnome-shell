@@ -140,10 +140,10 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
       goto fail;
     }
 
-  if (!eglMakeCurrent (egl_renderer->edpy,
-                       egl_display->egl_surface,
-                       egl_display->egl_surface,
-                       egl_display->egl_context))
+  if (!_cogl_winsys_egl_make_current (display,
+                                      egl_display->egl_surface,
+                                      egl_display->egl_surface,
+                                      egl_display->egl_context))
     {
       error_message = "Unable to eglMakeCurrent with egl surface";
       goto fail;

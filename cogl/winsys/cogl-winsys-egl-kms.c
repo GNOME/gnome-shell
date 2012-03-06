@@ -541,10 +541,10 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglDisplayEGL *egl_display = display->winsys;
 
-  if (!eglMakeCurrent (egl_renderer->edpy,
-                       EGL_NO_SURFACE,
-                       EGL_NO_SURFACE,
-                       egl_display->egl_context))
+  if (!_cogl_winsys_egl_make_current (display,
+                                      EGL_NO_SURFACE,
+                                      EGL_NO_SURFACE,
+                                      egl_display->egl_context))
     {
       g_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,

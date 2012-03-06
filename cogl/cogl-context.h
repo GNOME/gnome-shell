@@ -203,6 +203,9 @@ cogl_is_context (void *object);
  * @COGL_FEATURE_ID_SWAP_BUFFERS_EVENT:
  *     Available if the window system supports reporting an event
  *     for swap buffer completions.
+ * @COGL_FEATURE_ID_GLES2_CONTEXT: Whether creating new GLES2 contexts is
+ *    suported.
+ *
  *
  * All the capabilities that can vary between different GPUs supported
  * by Cogl. Applications that depend on any of these features should explicitly
@@ -230,6 +233,7 @@ typedef enum _CoglFeatureID
   COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE,
   COGL_FEATURE_ID_MIRRORED_REPEAT,
   COGL_FEATURE_ID_SWAP_BUFFERS_EVENT,
+  COGL_FEATURE_ID_GLES2_CONTEXT,
 
   /*< private > */
   _COGL_N_FEATURE_IDS

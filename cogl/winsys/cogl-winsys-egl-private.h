@@ -113,13 +113,18 @@ typedef struct _CoglDisplayEGL
   CoglBool found_egl_config;
   CoglBool stencil_disabled;
 
+  EGLSurface current_read_surface;
+  EGLSurface current_draw_surface;
+  EGLContext current_context;
+
   /* Platform specific display data */
   void *platform;
 } CoglDisplayEGL;
 
 typedef struct _CoglContextEGL
 {
-  EGLSurface current_surface;
+  EGLSurface saved_draw_surface;
+  EGLSurface saved_read_surface;
 } CoglContextEGL;
 
 typedef struct _CoglOnscreenEGL
@@ -132,6 +137,12 @@ typedef struct _CoglOnscreenEGL
 
 const CoglWinsysVtable *
 _cogl_winsys_egl_get_vtable (void);
+
+EGLBoolean
+_cogl_winsys_egl_make_current (CoglDisplay *display,
+                               EGLSurface draw,
+                               EGLSurface read,
+                               EGLContext context);
 
 #ifdef EGL_KHR_image_base
 EGLImageKHR

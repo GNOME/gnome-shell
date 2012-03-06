@@ -103,6 +103,12 @@ struct {
     COGL_FEATURE_ID_MIRRORED_REPEAT,
     "Mirrored repeat wrap modes",
     "Mirrored repeat wrap modes"
+  },
+  {
+    COGL_FEATURE_ID_GLES2_CONTEXT,
+    "GLES2 API integration supported",
+    "Support for creating a GLES2 context for using the GLES2 API in a "
+      "way that's integrated with Cogl."
   }
 };
 
