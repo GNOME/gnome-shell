@@ -3,29 +3,6 @@
 #include <clutter/clutter.h>
 
 static void
-on_entry_paint (ClutterActor *actor,
-                gpointer      data)
-{
-  ClutterActorBox allocation = { 0, };
-  gfloat width, height;
-
-  clutter_actor_get_allocation_box (actor, &allocation);
-  clutter_actor_box_clamp_to_pixel (&allocation);
-  clutter_actor_box_get_size (&allocation, &width, &height);
-
-  cogl_set_source_color4ub (255, 255, 255, 24);
-#if 0
-  /* this spills over to the next actor in the paint cycle, and retains
-   * the same source color
-   */
-  cogl_path_round_rectangle (0, 0, width, height, 4.0, 1.0);
-  cogl_path_stroke ();
-#else
-  cogl_rectangle (0, 0, width, height);
-#endif
-}
-
-static void
 on_entry_activate (ClutterText *text,
                    gpointer     data)
 {
@@ -252,12 +229,10 @@ create_entry (const ClutterColor *color,
   clutter_text_set_cursor_color (CLUTTER_TEXT (retval), &selection);
   clutter_text_set_max_length (CLUTTER_TEXT (retval), max_length);
   clutter_text_set_selected_text_color (CLUTTER_TEXT (retval), &selected_text);
+  clutter_actor_set_background_color (retval, CLUTTER_COLOR_LightGray);
 
   g_signal_connect (retval, "activate",
                     G_CALLBACK (on_entry_activate),
-                    NULL);
-  g_signal_connect (retval, "paint",
-                    G_CALLBACK (on_entry_paint),
                     NULL);
   g_signal_connect (retval, "captured-event",
                     G_CALLBACK (on_captured_event),
@@ -303,7 +278,7 @@ test_text_field_main (gint    argc,
                                     "y-expand", FALSE,
                                     NULL);
 
-  entry = create_entry (CLUTTER_COLOR_LightGray, "<i>some</i> text", 0, 0);
+  entry = create_entry (CLUTTER_COLOR_Black, "<i>some</i> text", 0, 0);
   clutter_actor_add_child (box, entry);
   clutter_layout_manager_child_set (table, CLUTTER_CONTAINER (box), entry,
                                     "row", 0,
@@ -323,7 +298,7 @@ test_text_field_main (gint    argc,
                                     "y-expand", FALSE,
                                     NULL);
 
-  entry = create_entry (CLUTTER_COLOR_LightGray, "password", '*', 8);
+  entry = create_entry (CLUTTER_COLOR_Black, "password", '*', 8);
   clutter_actor_add_child (box, entry);
   clutter_layout_manager_child_set (table, CLUTTER_CONTAINER (box), entry,
                                     "row", 1,
