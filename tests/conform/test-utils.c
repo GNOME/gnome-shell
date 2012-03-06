@@ -11,7 +11,7 @@ static gboolean cogl_test_is_verbose;
 
 void
 test_utils_init (TestUtilsSharedState *state,
-                 TestRequirement requirements)
+                 TestFlags flags)
 {
   static int counter = 0;
   GError *error = NULL;
@@ -50,20 +50,25 @@ test_utils_init (TestUtilsSharedState *state,
   display = cogl_context_get_display (state->ctx);
   renderer = cogl_display_get_renderer (display);
 
-  if (requirements & TEST_REQUIREMENT_GL &&
+  if (flags & TEST_REQUIREMENT_GL &&
       cogl_renderer_get_driver (renderer) != COGL_DRIVER_GL)
     {
       missing_requirement = TRUE;
     }
 
-  if (requirements & TEST_REQUIREMENT_NPOT &&
+  if (flags & TEST_REQUIREMENT_NPOT &&
       !cogl_has_feature (state->ctx, COGL_FEATURE_ID_TEXTURE_NPOT))
     {
       missing_requirement = TRUE;
     }
 
-  if (requirements & TEST_REQUIREMENT_TEXTURE_3D &&
+  if (flags & TEST_REQUIREMENT_TEXTURE_3D &&
       !cogl_has_feature (state->ctx, COGL_FEATURE_ID_TEXTURE_3D))
+    {
+      missing_requirement = TRUE;
+    }
+
+  if (flags & TEST_KNOWN_FAILURE)
     {
       missing_requirement = TRUE;
     }

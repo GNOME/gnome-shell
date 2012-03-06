@@ -7,12 +7,13 @@
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #endif
 
-typedef enum _TestRequirement
+typedef enum _TestFlags
 {
-  TEST_REQUIREMENT_GL         = 1<<0,
+  TEST_KNOWN_FAILURE          = 1<<0,
+  TEST_REQUIREMENT_GL         = 1<<1,
   TEST_REQUIREMENT_NPOT       = 1<<2,
   TEST_REQUIREMENT_TEXTURE_3D = 1<<3
-} TestRequirement;
+} TestFlags;
 
 /* For compatability since we used to use the glib gtester
  * infrastructure and all our unit tests have an entry
@@ -33,7 +34,7 @@ typedef struct _TestUtilsSharedState
 
 void
 test_utils_init (TestUtilsSharedState *state,
-                 TestRequirement requirements);
+                 TestFlags flags);
 
 void
 test_utils_fini (TestUtilsSharedState *state);
