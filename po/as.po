@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the cogl package.
 #
 # ngoswami <ngoswami@redhat.com>, 2011.
-# Nilamdyuti Goswami <ngoswami@redhat.com>, 2011.
+# Nilamdyuti Goswami <ngoswami@redhat.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=clutter\n"
 "POT-Creation-Date: 2012-03-05 23:14+0000\n"
-"PO-Revision-Date: 2011-09-06 11:42+0530\n"
+"PO-Revision-Date: 2012-03-06 21:03+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: as_IN <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -22,15 +22,15 @@ msgstr ""
 
 #: cogl/cogl-debug.c:172
 msgid "Supported debug values:"
-msgstr ""
+msgstr "সমৰ্থিত ডিবাগ মানসমূহ:"
 
 #: cogl/cogl-debug.c:177
 msgid "Special debug values:"
-msgstr ""
+msgstr "বিশেষ ডিবাগ মানসমূহ:"
 
 #: cogl/cogl-debug.c:179 cogl/cogl-debug.c:181
 msgid "Enables all non-behavioural debug options"
-msgstr ""
+msgstr "সকলো অ-ব্যৱহাৰী ডিভাগ বিকল্পসমূহ সামৰ্থবান কৰে"
 
 #: cogl/cogl-debug.c:225
 msgid "Cogl debugging flags to set"
@@ -56,107 +56,107 @@ msgstr "Cogl বিকল্পসমূহ দেখুৱাওক"
 #: cogl/cogl-debug-options.h:158 cogl/cogl-debug-options.h:163
 #: cogl/cogl-debug-options.h:168 cogl/cogl-debug-options.h:184
 msgid "Cogl Tracing"
-msgstr ""
+msgstr "Cogl অনুকৰণ"
 
 #: cogl/cogl-debug-options.h:27
 msgid "CoglObject references"
-msgstr ""
+msgstr "CoglObject প্ৰসংগসমূহ"
 
 #: cogl/cogl-debug-options.h:28
 msgid "Debug ref counting issues for CoglObjects"
-msgstr ""
+msgstr "CoglObjects ৰ বাবে ref গণনা বিষয়সমূহ ডিবাগ কৰক"
 
 #: cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
-msgstr ""
+msgstr "গাঁথনি স্লাইচিং অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:33
 msgid "debug the creation of texture slices"
-msgstr ""
+msgstr "বাং স্লাইচৰ সৃষ্টি ডিবাগ কৰক"
 
 #: cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
-msgstr ""
+msgstr "ভূচিত্ৰাৱলীৰ গাঁথনি অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:38
 msgid "Debug texture atlas management"
-msgstr ""
+msgstr "গাঁথনি ভূচিত্ৰাৱলী ব্যৱস্থাপনা ডিবাগ কৰক"
 
 #: cogl/cogl-debug-options.h:42
 msgid "Trace Blend Strings"
-msgstr ""
+msgstr "মিশ্ৰণ স্ট্ৰিংসমূহ অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:43
 msgid "Debug CoglBlendString parsing"
-msgstr ""
+msgstr "CoglBlendString বিশ্লেষণ ডিবাগ কৰক"
 
 #: cogl/cogl-debug-options.h:47
 msgid "Trace Journal"
-msgstr ""
+msgstr "আলোচনী অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
-msgstr ""
+msgstr "আলোচনীৰ সকলো জ্যামিতি দৰ্শন কৰক"
 
 #: cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
-msgstr ""
+msgstr "চাম অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:53
 msgid "Show how geometry is being batched in the journal"
-msgstr ""
+msgstr "আলোচনীত কিধৰণে জ্যামিতি চাম কৰা হৈছে দেখুৱাওক"
 
 #: cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
-msgstr ""
+msgstr "আধাৰসমূহ অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:58
 msgid "Trace all matrix manipulation"
-msgstr ""
+msgstr "সকলো আধাৰ পৰিৱৰ্তন অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:63
 msgid "Trace Misc Drawing"
-msgstr ""
+msgstr "বিভিন্ন অঙ্কণ অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:64
 msgid "Trace some misc drawing operations"
-msgstr ""
+msgstr "কিছুমান বিভিন্ন অঙ্কণ কাৰ্যসমূহ অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:68
 msgid "Trace Pango Renderer"
-msgstr ""
+msgstr "Pango ৰেণ্ডাৰাৰ অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:69
 msgid "Trace the Cogl Pango renderer"
-msgstr ""
+msgstr "Cogl Pango ৰেণ্ডাৰাৰ অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:73
 msgid "Trace CoglTexturePixmap backend"
-msgstr ""
+msgstr "CoglTexturePixmap বেকএণ্ড অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:74
 msgid "Trace the Cogl texture pixmap backend"
-msgstr ""
+msgstr "Cogl গাঁথনি pixmap বেকএণ্ড অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:76 cogl/cogl-debug-options.h:81
 msgid "Visualize"
-msgstr ""
+msgstr "কল্পনা কৰক"
 
 #: cogl/cogl-debug-options.h:78
 msgid "Outline rectangles"
-msgstr ""
+msgstr "সাৰাংশ আয়তসমূহ"
 
 #: cogl/cogl-debug-options.h:79
 msgid "Add wire outlines for all rectangular geometry"
-msgstr ""
+msgstr "সকলো আয়তীয় জ্যামিতিৰ বাবে তাঁৰ সাৰাংশসমূহ যোগ কৰক"
 
 #: cogl/cogl-debug-options.h:83
 msgid "Show wireframes"
-msgstr ""
+msgstr "তাঁৰফ্ৰেইমসমূহ দেখুৱাওক"
 
 #: cogl/cogl-debug-options.h:84
 msgid "Add wire outlines for all geometry"
-msgstr ""
+msgstr "সকলো জ্যামিতিৰ বাবে তাঁৰ সাৰাংশসমূহ যোগ কৰক"
 
 #: cogl/cogl-debug-options.h:86 cogl/cogl-debug-options.h:91
 #: cogl/cogl-debug-options.h:96 cogl/cogl-debug-options.h:101
@@ -167,173 +167,181 @@ msgstr ""
 #: cogl/cogl-debug-options.h:153 cogl/cogl-debug-options.h:173
 #: cogl/cogl-debug-options.h:178
 msgid "Root Cause"
-msgstr ""
+msgstr "মূল কাৰণ"
 
 #: cogl/cogl-debug-options.h:88
 msgid "Disable Journal batching"
-msgstr ""
+msgstr "আলোচনী চাম অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
-msgstr ""
+msgstr "Cogl আলোচনীত জ্যামিতিৰ চাম অসামৰ্থবান কৰক।"
 
 #: cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
-msgstr ""
+msgstr "GL শীৰ্ষবিন্দু বাফাৰসমূহ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:94
 msgid "Disable use of OpenGL vertex buffer objects"
-msgstr ""
+msgstr "OpenGL শীৰ্ষবিন্দু বাফাৰ অবজেক্টসমূহৰ ব্যৱহাৰ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:98
 msgid "Disable GL Pixel Buffers"
-msgstr ""
+msgstr "GL পিক্সেল বাফাৰসমূহৰ ব্যৱহাৰ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:99
 msgid "Disable use of OpenGL pixel buffer objects"
-msgstr ""
+msgstr "OpenGL পিক্সেল বাফাৰসমূহৰ ব্যৱহাৰ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:103
 msgid "Disable software rect transform"
-msgstr ""
+msgstr "চফ্টৱেৰ ৰেক্ট পৰিৱৰ্তন অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:104
 msgid "Use the GPU to transform rectangular geometry"
-msgstr ""
+msgstr "আয়তীয় জ্যামিতি পৰিৱৰ্তন কৰিবলে GPU ব্যৱহাৰ কৰক"
 
 #: cogl/cogl-debug-options.h:106
 msgid "Cogl Specialist"
-msgstr ""
+msgstr "Cogl বিশেষজ্ঞ"
 
 #: cogl/cogl-debug-options.h:108
 msgid "Dump atlas images"
-msgstr ""
+msgstr "ভূচিত্ৰাৱলী ছবিসমূহ ডাম্প কৰক"
 
 #: cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
-msgstr ""
+msgstr "এটা ছবি নথিপত্ৰলে গাঁথনি ভূচিত্ৰাৱলী পৰিৱৰ্তনসমূহ ডাম্প কৰক"
 
 #: cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
-msgstr ""
+msgstr "গাঁথনি ভূচিত্ৰাৱলী অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:114
 msgid "Disable use of texture atlasing"
-msgstr ""
+msgstr "গাঁথনি ভূচিত্ৰাৱলীৰ ব্যৱহাৰ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
-msgstr ""
+msgstr "লিখনী আৰু ছবিসমূহৰ মাজৰ গাঁথনি ভূচিত্ৰাৱলী অংশীদাৰী অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:119
 msgid ""
 "When this is set the glyph cache will always use a separate texture for its "
 "atlas. Otherwise it will try to share the atlas with images."
 msgstr ""
+"যেতিয়া ইয়াক সংহতি কৰা হয় গ্লিফ ক্যাশে ইয়াৰ ভূচিত্ৰাৱলীৰ বাবে সদায় এটা পৃথক "
+"গাঁথনি ব্যৱহাৰ কৰিব। "
+"নহলে ই ভুচিত্ৰাৱলীক ছবিসমূহৰ সৈতে অংশীদাৰী কৰাৰ চেষ্টা কৰিব।"
 
 #: cogl/cogl-debug-options.h:124
 msgid "Disable texturing"
-msgstr ""
+msgstr "গাঁথনি অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:125
 msgid "Disable texturing any primitives"
-msgstr ""
+msgstr "কোনো আদিমৰ গাঁথনিকৰণ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:129
 msgid "Disable arbfp"
-msgstr ""
+msgstr "arbfp অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:130
 msgid "Disable use of ARB fragment programs"
-msgstr ""
+msgstr "ARB অংশ প্ৰগ্ৰাসমূহৰ ব্যৱহাৰ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:134
 msgid "Disable fixed"
-msgstr ""
+msgstr "অসামৰ্থবান ঠিক কৰা হল"
 
 #: cogl/cogl-debug-options.h:135
 msgid "Disable use of the fixed function pipeline backend"
-msgstr ""
+msgstr "ঠিক কৰা ফলন পাইপলাইন বেকএণ্ডৰ ব্যৱহাৰ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
-msgstr ""
+msgstr "GLSL অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:140
 msgid "Disable use of GLSL"
-msgstr ""
+msgstr "GLSL ৰ ব্যৱহাৰ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:144
 msgid "Disable blending"
-msgstr ""
+msgstr "মিশ্ৰণ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:145
 msgid "Disable use of blending"
-msgstr ""
+msgstr "মিশ্ৰণৰ ব্যৱহাৰ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:149
 msgid "Disable non-power-of-two textures"
-msgstr ""
+msgstr "non-power-of-two গাঁথনি অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:150
 msgid ""
 "Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
 "will create sliced textures or textures with waste instead."
 msgstr ""
+"Cogl এ ভাৱিবলে লয় যে GL ড্ৰাইভাৰে NPOT গাঁথনি সমৰ্থন নকৰে যাতে ই স্লাইচ্ড গাঁথনি "
+"অথবা আবৰ্জনাৰ সৈতে "
+"গাঁথনিসমূহ সৃষ্টি কৰে।"
 
 #: cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
-msgstr ""
+msgstr "চফ্টৱেৰ ক্লিপিং অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:156
 msgid "Disables Cogl's attempts to clip some rectangles in software."
-msgstr ""
+msgstr "চফ্টৱেৰত কিছুমান আয়ত ক্লিপ কৰাৰ Cogl ৰ চেষ্টা অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:160
 msgid "Show source"
-msgstr ""
+msgstr "উৎস দেখুৱাওক"
 
 #: cogl/cogl-debug-options.h:161
 msgid "Show generated ARBfp/GLSL source code"
-msgstr ""
+msgstr "সৃজন কৰা ARBfp/GLSL উৎস ক'ড দেখুৱাওক"
 
 #: cogl/cogl-debug-options.h:165
 msgid "Trace some OpenGL"
-msgstr ""
+msgstr "কিছুমান OpenGL অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:166
 msgid "Traces some select OpenGL calls"
-msgstr ""
+msgstr "কিছুমান নিৰ্বাচিত OpenGL কলসমূহ অনুকৰণ কৰে"
 
 #: cogl/cogl-debug-options.h:170
 msgid "Trace offscreen support"
-msgstr ""
+msgstr "অফস্ক্ৰিণ সমৰ্থন অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:171
 msgid "Debug offscreen support"
-msgstr ""
+msgstr "অপস্ক্ৰিন সমৰ্থন ডিবাগ কৰক"
 
 #: cogl/cogl-debug-options.h:175
 msgid "Disable program caches"
-msgstr ""
+msgstr "প্ৰগ্ৰাম ক্যাশসমূহ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:176
 msgid "Disable fallback caches for arbfp and glsl programs"
-msgstr ""
+msgstr "arbfp আৰু glsl প্ৰগ্ৰামসমূহৰ বাবে ফলবেক ক্যাশসমূহ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:180
 msgid "Disable read pixel optimization"
-msgstr ""
+msgstr "পঢ়া পিক্সেল অনুকূলীকৰণ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:181
 msgid ""
 "Disable optimization for reading 1px for simple scenes of opaque rectangles"
 msgstr ""
+"অস্বচ্ছ আয়তসমূহৰ সাধাৰণ ছবিসমূহৰ বাবে 1px পঢ়াৰ অনুকূলীকৰণ অসামৰ্থবান কৰক"
 
 #: cogl/cogl-debug-options.h:186
 msgid "Trace clipping"
-msgstr ""
+msgstr "ক্লিপিং অনুকৰণ কৰক"
 
 #: cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
-msgstr ""
+msgstr "Cogl এ কিধৰণে ক্লিপিং প্ৰণয়ন কৰি আছে তাৰ বিষয়ে তথ্য লগ কৰে"
+
