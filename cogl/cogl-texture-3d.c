@@ -395,12 +395,6 @@ cogl_texture_3d_new_from_data (CoglContext *context,
   return ret;
 }
 
-GQuark
-cogl_texture_3d_error_quark (void)
-{
-  return g_quark_from_static_string ("cogl-texture-3d-error-quark");
-}
-
 static int
 _cogl_texture_3d_get_max_waste (CoglTexture *tex)
 {

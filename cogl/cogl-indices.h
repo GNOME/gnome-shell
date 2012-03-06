@@ -126,6 +126,20 @@ cogl_indices_set_offset (CoglIndices *indices,
 CoglIndices *
 cogl_get_rectangle_indices (CoglContext *context, int n_rectangles);
 
+/**
+ * cogl_is_indices:
+ * @object: A #CoglObject pointer
+ *
+ * Gets whether the given object references a #CoglIndices.
+ *
+ * Return value: %TRUE if the object references a #CoglIndices
+ *   and %FALSE otherwise.
+ * Since: 1.10
+ * Stability: unstable
+ */
+gboolean
+cogl_is_indices (void *object);
+
 G_END_DECLS
 
 #endif /* __COGL_INDICES_H__ */

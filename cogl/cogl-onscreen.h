@@ -380,6 +380,20 @@ void
 cogl_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
                                             unsigned int id);
 
+/**
+ * cogl_is_onscreen:
+ * @object: A #CoglObject pointer
+ *
+ * Gets whether the given object references a #CoglOnscreen.
+ *
+ * Return value: %TRUE if the object references a #CoglOnscreen
+ *   and %FALSE otherwise.
+ * Since: 1.10
+ * Stability: unstable
+ */
+gboolean
+cogl_is_onscreen (void *object);
+
 G_END_DECLS
 
 #endif /* __COGL_ONSCREEN_H */

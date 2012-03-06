@@ -102,8 +102,8 @@ cogl_program_attach_shader (CoglHandle program_handle,
   if (!cogl_is_program (program_handle) || !cogl_is_shader (shader_handle))
     return;
 
-  program = _cogl_program_pointer_from_handle (program_handle);
-  shader = _cogl_shader_pointer_from_handle (shader_handle);
+  program = program_handle;
+  shader = shader_handle;
 
   /* Only one shader is allowed if the type is ARBfp */
   if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
@@ -158,7 +158,7 @@ cogl_program_get_uniform_location (CoglHandle handle,
   if (!cogl_is_program (handle))
     return -1;
 
-  program = _cogl_program_pointer_from_handle (handle);
+  program = handle;
 
   /* We can't just ask the GL program object for the uniform location
      directly because it will change every time the program is linked

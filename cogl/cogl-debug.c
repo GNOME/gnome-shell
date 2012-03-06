@@ -30,6 +30,7 @@
 
 #include "cogl-private.h"
 #include "cogl-debug.h"
+#include "cogl1-context.h"
 
 /* XXX: If you add a debug option, please also add an option
  * definition to cogl-debug-options.h. This will enable us - for

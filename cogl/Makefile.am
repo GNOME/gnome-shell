@@ -67,6 +67,7 @@ cogl_1_public_h = \
 	$(srcdir)/cogl-offscreen.h 		\
 	$(srcdir)/cogl-primitives.h 		\
 	$(srcdir)/cogl-path.h 			\
+	$(srcdir)/cogl-path-functions.h         \
 	$(srcdir)/cogl-shader.h 		\
 	$(srcdir)/cogl-texture.h 		\
 	$(srcdir)/cogl-types.h 			\
@@ -89,7 +90,6 @@ cogl_experimental_h = \
 	$(srcdir)/cogl-pipeline-layer-state.h 	\
 	$(srcdir)/cogl-snippet.h		\
 	$(srcdir)/cogl2-path.h 			\
-	$(srcdir)/cogl2-clip-state.h		\
 	$(srcdir)/cogl-index-buffer.h 		\
 	$(srcdir)/cogl-attribute-buffer.h 	\
 	$(srcdir)/cogl-indices.h 		\
@@ -219,8 +219,6 @@ cogl_sources_c = \
 	$(srcdir)/cogl-clip-state-private.h		\
 	$(srcdir)/cogl-clip-state.h			\
 	$(srcdir)/cogl-clip-state.c			\
-	$(srcdir)/cogl2-clip-state.h 			\
-	$(srcdir)/cogl2-clip-state.c 			\
 	$(srcdir)/cogl-feature-private.h                \
 	$(srcdir)/cogl-feature-private.c                \
 	$(srcdir)/cogl-fixed.c		    		\
@@ -382,6 +380,7 @@ cogl_sources_c += \
 	$(srcdir)/cogl-glx-renderer-private.h \
 	$(srcdir)/cogl-glx-display-private.h \
 	$(srcdir)/winsys/cogl-winsys-glx-feature-functions.h \
+	$(srcdir)/winsys/cogl-winsys-glx-private.h \
 	$(srcdir)/winsys/cogl-winsys-glx.c
 endif
 if SUPPORT_WGL
@@ -390,6 +389,7 @@ cogl_experimental_h += \
 
 cogl_sources_c += \
 	$(srcdir)/cogl-win32-renderer.c \
+	$(srcdir)/winsys/cogl-winsys-wgl-private.h \
 	$(srcdir)/winsys/cogl-winsys-wgl.c \
 	$(srcdir)/winsys/cogl-winsys-wgl-feature-functions.h
 endif
@@ -435,6 +435,7 @@ cogl_sources_c += \
 endif
 if SUPPORT_SDL
 cogl_sources_c += \
+       $(srcdir)/winsys/cogl-winsys-sdl-private.h \
        $(srcdir)/winsys/cogl-winsys-sdl.c
 endif
 

@@ -451,7 +451,7 @@ _cogl_pipeline_get_blend_enabled (CoglPipeline *pipeline)
   return authority->blend_enable;
 }
 
-gboolean
+static gboolean
 _cogl_pipeline_blend_enable_equal (CoglPipeline *authority0,
                                    CoglPipeline *authority1)
 {
@@ -844,7 +844,7 @@ cogl_pipeline_get_alpha_test_reference (CoglPipeline *pipeline)
   return authority->big_state->alpha_state.alpha_func_reference;
 }
 
-GLenum
+static GLenum
 arg_to_gl_blend_factor (CoglBlendStringArgument *arg)
 {
   if (arg->source.is_zero)
@@ -914,7 +914,7 @@ arg_to_gl_blend_factor (CoglBlendStringArgument *arg)
   return GL_ONE;
 }
 
-void
+static void
 setup_blend_state (CoglBlendStringStatement *statement,
                    GLenum *blend_equation,
                    GLint *blend_src_factor,

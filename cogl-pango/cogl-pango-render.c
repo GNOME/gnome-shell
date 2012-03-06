@@ -94,7 +94,7 @@ typedef struct
   float x1, y1, x2, y2;
 } CoglPangoRendererSliceCbData;
 
-void
+static void
 cogl_pango_renderer_slice_cb (CoglTexture *texture,
                               const float *slice_coords,
                               const float *virtual_coords,

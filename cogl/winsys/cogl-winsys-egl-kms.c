@@ -46,6 +46,7 @@
 #include "cogl-renderer-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-onscreen-private.h"
+#include "cogl-kms-renderer.h"
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 

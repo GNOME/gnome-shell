@@ -49,6 +49,7 @@
 #include "cogl-pipeline-state-private.h"
 #include "cogl-attribute-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-pipeline-progend-glsl-private.h"
 
 #ifdef HAVE_COGL_GLES2
 

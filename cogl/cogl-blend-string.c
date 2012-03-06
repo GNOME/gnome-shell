@@ -950,6 +950,10 @@ struct _TestString
   CoglBlendStringContext context;
 };
 
+/* FIXME: this should probably be moved to a unit test */
+int
+_cogl_blend_string_test (void);
+
 int
 _cogl_blend_string_test (void)
 {

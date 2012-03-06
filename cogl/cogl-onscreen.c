@@ -35,9 +35,9 @@
 
 static void _cogl_onscreen_free (CoglOnscreen *onscreen);
 
-COGL_OBJECT_INTERNAL_DEFINE_WITH_CODE (Onscreen, onscreen,
-                                       _cogl_onscreen_class.virt_unref =
-                                       _cogl_framebuffer_unref);
+COGL_OBJECT_DEFINE_WITH_CODE (Onscreen, onscreen,
+                              _cogl_onscreen_class.virt_unref =
+                              _cogl_framebuffer_unref);
 
 static void
 _cogl_onscreen_init_from_template (CoglOnscreen *onscreen,

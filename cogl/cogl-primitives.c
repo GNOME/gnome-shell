@@ -39,6 +39,7 @@
 #include "cogl-meta-texture.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl1-context.h"
+#include "cogl-primitives-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -899,7 +900,7 @@ typedef struct _AppendTexCoordsState
   float *vertices_out;
 } AppendTexCoordsState;
 
-gboolean
+static gboolean
 append_tex_coord_attributes_cb (CoglPipeline *pipeline,
                                 int layer_index,
                                 void *user_data)

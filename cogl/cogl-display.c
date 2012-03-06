@@ -42,12 +42,6 @@ static void _cogl_display_free (CoglDisplay *display);
 
 COGL_OBJECT_DEFINE (Display, display);
 
-GQuark
-cogl_display_error_quark (void)
-{
-  return g_quark_from_static_string ("cogl-display-error-quark");
-}
-
 static const CoglWinsysVtable *
 _cogl_display_get_winsys (CoglDisplay *display)
 {

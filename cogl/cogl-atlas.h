@@ -94,4 +94,7 @@ _cogl_atlas_remove_reorganize_callback (CoglAtlas            *atlas,
                                         GHookFunc             post_callback,
                                         void                 *user_data);
 
+gboolean
+_cogl_is_atlas (void *object);
+
 #endif /* __COGL_ATLAS_H */

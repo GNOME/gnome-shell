@@ -182,12 +182,6 @@ _cogl_##type_name##_object_new (Cogl##TypeName *new_obj)                \
   _cogl_object_##type_name##_inc ();                                    \
   _COGL_OBJECT_DEBUG_NEW (TypeName, obj);                               \
   return new_obj;                                                       \
-}                                                                       \
-                                                                        \
-Cogl##TypeName *                                                        \
-_cogl_##type_name##_pointer_from_handle (CoglHandle handle)             \
-{                                                                       \
-  return handle;                                                        \
 }
 
 #define COGL_OBJECT_DEFINE_WITH_CODE(TypeName, type_name, code)         \

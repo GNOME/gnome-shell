@@ -244,6 +244,12 @@ dump_pipeline_cb (CoglNode *node, void *user_data)
   return TRUE;
 }
 
+/* This function is just here to be called from GDB so we don't really
+   want to put a declaration in a header and we just add it here to
+   avoid a warning */
+void
+_cogl_debug_dump_pipelines_dot_file (const char *filename);
+
 void
 _cogl_debug_dump_pipelines_dot_file (const char *filename)
 {

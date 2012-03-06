@@ -561,15 +561,6 @@ cogl_set_projection_matrix (CoglMatrix *matrix)
   cogl_framebuffer_set_projection_matrix (cogl_get_draw_framebuffer (), matrix);
 }
 
-CoglClipState *
-_cogl_get_clip_state (void)
-{
-  CoglFramebuffer *framebuffer;
-
-  framebuffer = cogl_get_draw_framebuffer ();
-  return _cogl_framebuffer_get_clip_state (framebuffer);
-}
-
 GQuark
 _cogl_driver_error_quark (void)
 {

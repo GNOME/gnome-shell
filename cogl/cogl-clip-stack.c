@@ -422,7 +422,7 @@ paint_primitive_silhouette (void *user_data)
                                     COGL_DRAW_SKIP_LEGACY_STATE);
 }
 
-void
+static void
 add_stencil_clip_primitive (CoglFramebuffer *framebuffer,
                             CoglPrimitive *primitive,
                             float bounds_x1,

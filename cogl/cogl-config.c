@@ -29,6 +29,7 @@
 #endif
 
 #include "cogl-debug.h"
+#include "cogl-config-private.h"
 
 #include <glib.h>
 

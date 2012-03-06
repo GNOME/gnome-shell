@@ -39,12 +39,6 @@ static void _cogl_onscreen_template_free (CoglOnscreenTemplate *onscreen_templat
 
 COGL_OBJECT_DEFINE (OnscreenTemplate, onscreen_template);
 
-GQuark
-cogl_onscreen_template_error_quark (void)
-{
-  return g_quark_from_static_string ("cogl-onscreen-template-error-quark");
-}
-
 static void
 _cogl_onscreen_template_free (CoglOnscreenTemplate *onscreen_template)
 {

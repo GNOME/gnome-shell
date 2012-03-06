@@ -1311,6 +1311,20 @@ typedef enum { /*< prefix=COGL_FRAMEBUFFER_ERROR >*/
   COGL_FRAMEBUFFER_ERROR_ALLOCATE
 } CoglFramebufferError;
 
+/**
+ * cogl_is_framebuffer:
+ * @object: A #CoglObject pointer
+ *
+ * Gets whether the given object references a #CoglFramebuffer.
+ *
+ * Return value: %TRUE if the object references a #CoglFramebuffer
+ *   and %FALSE otherwise.
+ * Since: 1.10
+ * Stability: unstable
+ */
+gboolean
+cogl_is_framebuffer (void *object);
+
 G_END_DECLS
 
 #endif /* __COGL_FRAMEBUFFER_H */

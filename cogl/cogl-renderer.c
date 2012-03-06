@@ -62,19 +62,18 @@
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT
 #include "cogl-winsys-egl-null-private.h"
 #endif
+#ifdef COGL_HAS_GLX_SUPPORT
+#include "cogl-winsys-glx-private.h"
+#endif
+#ifdef COGL_HAS_WGL_SUPPORT
+#include "cogl-winsys-wgl-private.h"
+#endif
+#ifdef COGL_HAS_SDL_SUPPORT
+#include "cogl-winsys-sdl-private.h"
+#endif
 
 #if COGL_HAS_XLIB_SUPPORT
 #include "cogl-xlib-renderer.h"
-#endif
-
-#ifdef COGL_HAS_GLX_SUPPORT
-extern const CoglWinsysVtable *_cogl_winsys_glx_get_vtable (void);
-#endif
-#ifdef COGL_HAS_WGL_SUPPORT
-extern const CoglWinsysVtable *_cogl_winsys_wgl_get_vtable (void);
-#endif
-#ifdef COGL_HAS_SDL_SUPPORT
-extern const CoglWinsysVtable *_cogl_winsys_sdl_get_vtable (void);
 #endif
 
 typedef const CoglWinsysVtable *(*CoglWinsysVtableGetter) (void);

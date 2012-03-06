@@ -147,4 +147,7 @@ _cogl_matrix_stack_check_and_update_cache (CoglMatrixStack *stack,
 void
 _cogl_matrix_stack_destroy_cache (CoglMatrixStackCache *cache);
 
+gboolean
+_cogl_is_matrix_stack (void *object);
+
 #endif /* __COGL_MATRIX_STACK_H */

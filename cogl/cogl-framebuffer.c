@@ -142,7 +142,7 @@ cogl_framebuffer_error_quark (void)
 }
 
 gboolean
-_cogl_is_framebuffer (void *object)
+cogl_is_framebuffer (void *object)
 {
   CoglObject *obj = object;
 
@@ -1177,8 +1177,8 @@ _cogl_set_framebuffers (CoglFramebuffer *draw_buffer,
   CoglFramebuffer *current_draw_buffer;
   CoglFramebuffer *current_read_buffer;
 
-  _COGL_RETURN_IF_FAIL (_cogl_is_framebuffer (draw_buffer));
-  _COGL_RETURN_IF_FAIL (_cogl_is_framebuffer (read_buffer));
+  _COGL_RETURN_IF_FAIL (cogl_is_framebuffer (draw_buffer));
+  _COGL_RETURN_IF_FAIL (cogl_is_framebuffer (read_buffer));
 
   current_draw_buffer = cogl_get_draw_framebuffer ();
   current_read_buffer = _cogl_get_read_framebuffer ();
@@ -1244,8 +1244,8 @@ _cogl_push_framebuffers (CoglFramebuffer *draw_buffer,
   CoglContext *ctx;
   CoglFramebuffer *old_draw_buffer, *old_read_buffer;
 
-  _COGL_RETURN_IF_FAIL (_cogl_is_framebuffer (draw_buffer));
-  _COGL_RETURN_IF_FAIL (_cogl_is_framebuffer (read_buffer));
+  _COGL_RETURN_IF_FAIL (cogl_is_framebuffer (draw_buffer));
+  _COGL_RETURN_IF_FAIL (cogl_is_framebuffer (read_buffer));
 
   ctx = draw_buffer->context;
   _COGL_RETURN_IF_FAIL (ctx != NULL);
@@ -1956,7 +1956,7 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
   int height;
 
   _COGL_RETURN_VAL_IF_FAIL (source == COGL_READ_PIXELS_COLOR_BUFFER, FALSE);
-  _COGL_RETURN_VAL_IF_FAIL (_cogl_is_framebuffer (framebuffer), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_framebuffer (framebuffer), FALSE);
 
   ctx = cogl_framebuffer_get_context (framebuffer);
 
@@ -3139,13 +3139,13 @@ cogl_framebuffer_draw_indexed_attributes (CoglFramebuffer *framebuffer,
 }
 
 void
-cogl_vdraw_indexed_attributes (CoglFramebuffer *framebuffer,
-                               CoglPipeline *pipeline,
-                               CoglVerticesMode mode,
-                               int first_vertex,
-                               int n_vertices,
-                               CoglIndices *indices,
-                               ...)
+cogl_framebuffer_vdraw_indexed_attributes (CoglFramebuffer *framebuffer,
+                                           CoglPipeline *pipeline,
+                                           CoglVerticesMode mode,
+                                           int first_vertex,
+                                           int n_vertices,
+                                           CoglIndices *indices,
+                                           ...)
 {
   va_list ap;
   int n_attributes;

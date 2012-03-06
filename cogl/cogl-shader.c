@@ -130,7 +130,7 @@ cogl_shader_source (CoglHandle   handle,
   if (!cogl_is_shader (handle))
     return;
 
-  shader = _cogl_shader_pointer_from_handle (handle);
+  shader = handle;
 
 #ifdef HAVE_COGL_GL
   if (strncmp (source, "!!ARBfp1.0", 10) == 0)
@@ -399,7 +399,7 @@ cogl_shader_get_info_log (CoglHandle handle)
   if (!cogl_is_shader (handle))
     return NULL;
 
-  shader = _cogl_shader_pointer_from_handle (handle);
+  shader = handle;
 
 #ifdef HAVE_COGL_GL
   if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
@@ -450,7 +450,7 @@ cogl_shader_get_type (CoglHandle  handle)
       return COGL_SHADER_TYPE_VERTEX;
     }
 
-  shader = _cogl_shader_pointer_from_handle (handle);
+  shader = handle;
   return shader->type;
 }
 
@@ -466,7 +466,7 @@ cogl_shader_is_compiled (CoglHandle handle)
   if (!cogl_is_shader (handle))
     return FALSE;
 
-  shader = _cogl_shader_pointer_from_handle (handle);
+  shader = handle;
 
 #ifdef HAVE_COGL_GL
   if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)

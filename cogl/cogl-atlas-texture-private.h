@@ -74,4 +74,7 @@ void
 _cogl_atlas_texture_remove_reorganize_callback (GHookFunc callback,
                                                 void *user_data);
 
+gboolean
+_cogl_is_atlas_texture (void *object);
+
 #endif /* __COGL_ATLAS_TEXTURE_H */

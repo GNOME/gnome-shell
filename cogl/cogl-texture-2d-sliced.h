@@ -99,4 +99,18 @@ cogl_texture_2d_sliced_new_with_size (CoglContext *ctx,
                                       CoglPixelFormat internal_format,
                                       GError **error);
 
+/**
+ * cogl_is_texture_2d_sliced:
+ * @object: A #CoglObject pointer
+ *
+ * Gets whether the given object references a #CoglTexture2dSliced.
+ *
+ * Return value: %TRUE if the object references a #CoglTexture2dSliced
+ *   and %FALSE otherwise.
+ * Since: 1.10
+ * Stability: unstable
+ */
+gboolean
+cogl_is_texture_2d_sliced (void *object);
+
 #endif /* __COGL_TEXURE_2D_SLICED_H */

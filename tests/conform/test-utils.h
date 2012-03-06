@@ -1,6 +1,12 @@
 #ifndef _TEST_UTILS_H_
 #define _TEST_UTILS_H_
 
+/* We don't really care about functions that are defined without a
+   header for the unit tests so we can just disable it here */
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wmissing-declarations"
+#endif
+
 typedef enum _TestRequirement
 {
   TEST_REQUIREMENT_GL         = 1<<0,

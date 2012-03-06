@@ -124,7 +124,6 @@
  */
 #ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl2-path.h>
-#include <cogl/cogl2-clip-state.h>
 #endif
 
 /*

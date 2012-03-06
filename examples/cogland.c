@@ -128,7 +128,7 @@ static GSourceFuncs wayland_event_source_funcs =
   NULL
 };
 
-GSource *
+static GSource *
 wayland_event_source_new (struct wl_event_loop *loop)
 {
   WaylandEventSource *source;

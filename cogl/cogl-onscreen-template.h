@@ -88,6 +88,20 @@ cogl_onscreen_template_set_swap_throttled (
                                           CoglOnscreenTemplate *onscreen_template,
                                           gboolean throttled);
 
+/**
+ * cogl_is_onscreen_template:
+ * @object: A #CoglObject pointer
+ *
+ * Gets whether the given object references a #CoglOnscreenTemplate.
+ *
+ * Return value: %TRUE if the object references a #CoglOnscreenTemplate
+ *   and %FALSE otherwise.
+ * Since: 1.10
+ * Stability: unstable
+ */
+gboolean
+cogl_is_onscreen_template (void *object);
+
 G_END_DECLS
 
 #endif /* __COGL_ONSCREEN_TEMPLATE_H__ */

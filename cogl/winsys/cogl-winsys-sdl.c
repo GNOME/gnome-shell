@@ -36,6 +36,7 @@
 #include "cogl-onscreen-template-private.h"
 #include "cogl-context-private.h"
 #include "cogl-onscreen-private.h"
+#include "cogl-winsys-sdl-private.h"
 
 typedef struct _CoglRendererSdl
 {

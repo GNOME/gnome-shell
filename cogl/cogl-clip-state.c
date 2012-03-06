@@ -38,12 +38,8 @@
 #include "cogl-journal-private.h"
 #include "cogl-util.h"
 #include "cogl-matrix-private.h"
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
-#include <cogl/cogl2-clip-state.h>
-#else
-#include <cogl/cogl-clip-state.h>
-#endif
+#include "cogl-clip-state.h"
+#include "cogl1-context.h"
 
 void
 cogl_clip_push_window_rectangle (int x_offset,
@@ -92,7 +88,8 @@ void
 cogl_clip_push_from_path_preserve (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  cogl2_clip_push_from_path (ctx->current_path);
+  cogl_framebuffer_push_path_clip (cogl_get_draw_framebuffer (),
+                                   ctx->current_path);
 }
 
 #undef cogl_clip_push_from_path
@@ -101,7 +98,7 @@ cogl_clip_push_from_path (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_clip_push_from_path (ctx->current_path);
+  cogl_clip_push_from_path_preserve ();
 
   cogl_object_unref (ctx->current_path);
   ctx->current_path = cogl2_path_new ();

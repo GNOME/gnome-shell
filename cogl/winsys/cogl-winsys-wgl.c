@@ -44,6 +44,7 @@
 #include "cogl-private.h"
 #include "cogl-feature-private.h"
 #include "cogl-win32-renderer.h"
+#include "cogl-winsys-wgl-private.h"
 
 typedef struct _CoglRendererWgl
 {

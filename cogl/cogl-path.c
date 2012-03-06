@@ -36,6 +36,29 @@
 #include <math.h>
 
 #undef cogl_path_set_fill_rule
+#undef cogl_path_get_fill_rule
+#undef cogl_path_fill
+#undef cogl_path_fill_preserve
+#undef cogl_path_stroke
+#undef cogl_path_stroke_preserve
+#undef cogl_path_move_to
+#undef cogl_path_rel_move_to
+#undef cogl_path_line_to
+#undef cogl_path_rel_line_to
+#undef cogl_path_close
+#undef cogl_path_new
+#undef cogl_path_line
+#undef cogl_path_polyline
+#undef cogl_path_polygon
+#undef cogl_path_rectangle
+#undef cogl_path_arc
+#undef cogl_path_ellipse
+#undef cogl_path_round_rectangle
+#undef cogl_path_curve_to
+#undef cogl_path_rel_curve_to
+
+#include "cogl-path-functions.h"
+
 void
 cogl_path_set_fill_rule (CoglPathFillRule fill_rule)
 {
@@ -44,7 +67,6 @@ cogl_path_set_fill_rule (CoglPathFillRule fill_rule)
   cogl2_path_set_fill_rule (ctx->current_path, fill_rule);
 }
 
-#undef cogl_path_get_fill_rule
 CoglPathFillRule
 cogl_path_get_fill_rule (void)
 {
@@ -53,7 +75,6 @@ cogl_path_get_fill_rule (void)
   return cogl2_path_get_fill_rule (ctx->current_path);
 }
 
-#undef cogl_path_fill
 void
 cogl_path_fill (void)
 {
@@ -65,7 +86,6 @@ cogl_path_fill (void)
   ctx->current_path = cogl2_path_new ();
 }
 
-#undef cogl_path_fill_preserve
 void
 cogl_path_fill_preserve (void)
 {
@@ -74,7 +94,6 @@ cogl_path_fill_preserve (void)
   cogl2_path_fill (ctx->current_path);
 }
 
-#undef cogl_path_stroke
 void
 cogl_path_stroke (void)
 {
@@ -86,7 +105,6 @@ cogl_path_stroke (void)
   ctx->current_path = cogl2_path_new ();
 }
 
-#undef cogl_path_stroke_preserve
 void
 cogl_path_stroke_preserve (void)
 {
@@ -95,7 +113,6 @@ cogl_path_stroke_preserve (void)
   cogl2_path_stroke (ctx->current_path);
 }
 
-#undef cogl_path_move_to
 void
 cogl_path_move_to (float x,
                    float y)
@@ -105,7 +122,6 @@ cogl_path_move_to (float x,
   cogl2_path_move_to (ctx->current_path, x, y);
 }
 
-#undef cogl_path_rel_move_to
 void
 cogl_path_rel_move_to (float x,
                        float y)
@@ -115,7 +131,6 @@ cogl_path_rel_move_to (float x,
   cogl2_path_rel_move_to (ctx->current_path, x, y);
 }
 
-#undef cogl_path_line_to
 void
 cogl_path_line_to (float x,
                    float y)
@@ -125,7 +140,6 @@ cogl_path_line_to (float x,
   cogl2_path_line_to (ctx->current_path, x, y);
 }
 
-#undef cogl_path_rel_line_to
 void
 cogl_path_rel_line_to (float x,
                        float y)
@@ -135,7 +149,6 @@ cogl_path_rel_line_to (float x,
   cogl2_path_rel_line_to (ctx->current_path, x, y);
 }
 
-#undef cogl_path_close
 void
 cogl_path_close (void)
 {
@@ -144,7 +157,6 @@ cogl_path_close (void)
   cogl2_path_close (ctx->current_path);
 }
 
-#undef cogl_path_new
 void
 cogl_path_new (void)
 {
@@ -154,7 +166,6 @@ cogl_path_new (void)
   ctx->current_path = cogl2_path_new ();
 }
 
-#undef cogl_path_line
 void
 cogl_path_line (float x_1,
 	        float y_1,
@@ -166,7 +177,6 @@ cogl_path_line (float x_1,
   cogl2_path_line (ctx->current_path, x_1, y_1, x_2, y_2);
 }
 
-#undef cogl_path_polyline
 void
 cogl_path_polyline (const float *coords,
 	            int num_points)
@@ -176,7 +186,6 @@ cogl_path_polyline (const float *coords,
   cogl2_path_polyline (ctx->current_path, coords, num_points);
 }
 
-#undef cogl_path_polygon
 void
 cogl_path_polygon (const float *coords,
 	           int num_points)
@@ -186,7 +195,6 @@ cogl_path_polygon (const float *coords,
   cogl2_path_polygon (ctx->current_path, coords, num_points);
 }
 
-#undef cogl_path_rectangle
 void
 cogl_path_rectangle (float x_1,
                      float y_1,
@@ -198,7 +206,6 @@ cogl_path_rectangle (float x_1,
   cogl2_path_rectangle (ctx->current_path, x_1, y_1, x_2, y_2);
 }
 
-#undef cogl_path_arc
 void
 cogl_path_arc (float center_x,
                float center_y,
@@ -218,7 +225,6 @@ cogl_path_arc (float center_x,
                   angle_2);
 }
 
-#undef cogl_path_ellipse
 void
 cogl_path_ellipse (float center_x,
                    float center_y,
@@ -234,7 +240,6 @@ cogl_path_ellipse (float center_x,
                       radius_y);
 }
 
-#undef cogl_path_round_rectangle
 void
 cogl_path_round_rectangle (float x_1,
                            float y_1,
@@ -249,7 +254,6 @@ cogl_path_round_rectangle (float x_1,
                               x_1, y_1, x_2, y_2, radius, arc_step);
 }
 
-#undef cogl_path_curve_to
 void
 cogl_path_curve_to (float x_1,
                     float y_1,
@@ -264,7 +268,6 @@ cogl_path_curve_to (float x_1,
                        x_1, y_2, x_2, y_2, x_3, y_3);
 }
 
-#undef cogl_path_rel_curve_to
 void
 cogl_path_rel_curve_to (float x_1,
                         float y_1,

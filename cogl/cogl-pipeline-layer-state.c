@@ -36,6 +36,7 @@
 #include "cogl-matrix.h"
 #include "cogl-snippet-private.h"
 #include "cogl-texture-private.h"
+#include "cogl-pipeline-layer-state-private.h"
 
 #include "string.h"
 #if 0
@@ -361,7 +362,7 @@ cogl_pipeline_set_layer_null_texture (CoglPipeline *pipeline,
   _cogl_pipeline_set_layer_texture_data (pipeline, layer_index, NULL);
 }
 
-void
+static void
 _cogl_pipeline_set_layer_wrap_modes (CoglPipeline        *pipeline,
                                      CoglPipelineLayer   *layer,
                                      CoglPipelineLayer   *authority,

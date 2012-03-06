@@ -31,6 +31,7 @@
 #include "cogl-context-private.h"
 #include "cogl-feature-private.h"
 #include "cogl-renderer-private.h"
+#include "cogl-private.h"
 
 gboolean
 _cogl_gles_update_features (CoglContext *context,

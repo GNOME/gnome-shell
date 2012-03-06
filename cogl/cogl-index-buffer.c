@@ -73,14 +73,6 @@ _cogl_index_buffer_free (CoglIndexBuffer *indices)
   g_slice_free (CoglIndexBuffer, indices);
 }
 
-gboolean
-cogl_index_buffer_allocate (CoglIndexBuffer *indices,
-                            GError *error)
-{
-  /* TODO */
-  return TRUE;
-}
-
 /* XXX: do we want a convenience function like this as an alternative
  * to using cogl_buffer_set_data? The advantage of this is that we can
  * track meta data such as the indices type and max_index_value for a

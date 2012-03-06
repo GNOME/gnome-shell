@@ -109,4 +109,7 @@ _cogl_journal_try_read_pixel (CoglJournal *journal,
                               CoglBitmap *bitmap,
                               gboolean *found_intersection);
 
+gboolean
+_cogl_is_journal (void *object);
+
 #endif /* __COGL_JOURNAL_PRIVATE_H */

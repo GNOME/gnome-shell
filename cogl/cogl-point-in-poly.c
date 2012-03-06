@@ -39,6 +39,7 @@
 #endif
 
 #include "cogl-util.h"
+#include "cogl-point-in-poly-private.h"
 
 #include <glib.h>
 

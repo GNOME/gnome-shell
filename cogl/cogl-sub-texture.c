@@ -237,8 +237,7 @@ cogl_sub_texture_new (CoglContext *ctx,
      instead. */
   if (cogl_is_sub_texture (next_texture))
     {
-      CoglSubTexture *other_sub_tex =
-        _cogl_sub_texture_pointer_from_handle (next_texture);
+      CoglSubTexture *other_sub_tex = COGL_SUB_TEXTURE (next_texture);
       full_texture = other_sub_tex->full_texture;
       sub_x += other_sub_tex->sub_x;
       sub_y += other_sub_tex->sub_y;

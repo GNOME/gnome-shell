@@ -189,6 +189,20 @@ cogl_wayland_display_set_compositor_display (CoglDisplay *display,
                                           struct wl_display *wayland_display);
 #endif
 
+/**
+ * cogl_is_display:
+ * @object: A #CoglObject pointer
+ *
+ * Gets whether the given object references a #CoglDisplay.
+ *
+ * Return value: %TRUE if the object references a #CoglDisplay
+ *   and %FALSE otherwise.
+ * Since: 1.10
+ * Stability: unstable
+ */
+gboolean
+cogl_is_display (void *object);
+
 G_END_DECLS
 
 #endif /* __COGL_DISPLAY_H__ */

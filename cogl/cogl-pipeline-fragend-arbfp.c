@@ -792,7 +792,7 @@ _cogl_pipeline_fragend_arbfp_add_layer (CoglPipeline *pipeline,
   return TRUE;
 }
 
-gboolean
+static gboolean
 _cogl_pipeline_fragend_arbfp_passthrough (CoglPipeline *pipeline)
 {
   CoglPipelineShaderState *shader_state = get_shader_state (pipeline);

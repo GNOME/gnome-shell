@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007,2008,2009,2010 Intel Corporation.
+ * Copyright (C) 2012 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,16 +21,10 @@
  *
  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#ifndef __COGL_WINSYS_SDL_PRIVATE_H
+#define __COGL_WINSYS_SDL_PRIVATE_H
 
-#include "cogl-clip-state-private.h"
-#include "cogl-framebuffer-private.h"
-#include "cogl-journal-private.h"
+const CoglWinsysVtable *
+_cogl_winsys_sdl_get_vtable (void);
 
-void
-cogl2_clip_push_from_path (CoglPath *path)
-{
-  cogl_framebuffer_push_path_clip (cogl_get_draw_framebuffer (), path);
-}
+#endif /* __COGL_WINSYS_SDL_PRIVATE_H */

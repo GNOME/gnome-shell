@@ -123,7 +123,7 @@ typedef gboolean (*CoglJournalBatchTest) (CoglJournalEntry *entry0,
 
 static void _cogl_journal_free (CoglJournal *journal);
 
-COGL_OBJECT_DEFINE (Journal, journal);
+COGL_OBJECT_INTERNAL_DEFINE (Journal, journal);
 
 static void
 _cogl_journal_free (CoglJournal *journal)

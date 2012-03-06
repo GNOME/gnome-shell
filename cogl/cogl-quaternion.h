@@ -251,6 +251,24 @@ void
 cogl_quaternion_init_from_euler (CoglQuaternion *quaternion,
                                  const CoglEuler *euler);
 
+void
+cogl_quaternion_init_from_quaternion (CoglQuaternion *quaternion,
+                                      CoglQuaternion *src);
+
+/**
+ * cogl_quaternion_init_from_matrix:
+ * @quaternion: A Cogl Quaternion
+ * @matrix: A rotation matrix with which to initialize the quaternion
+ *
+ * Initializes a quaternion from a rotation matrix.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_quaternion_init_from_matrix (CoglQuaternion *quaternion,
+                                  const CoglMatrix *matrix);
+
 /**
  * cogl_quaternion_equal:
  * @v1: A #CoglQuaternion

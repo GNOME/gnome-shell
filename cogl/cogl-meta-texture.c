@@ -136,7 +136,7 @@ setup_padded_spans (CoglSpan *spans,
  * together callbacks corresponding to the same underlying slice
  * together.
  */
-void
+static void
 create_grid_and_repeat_cb (CoglTexture *slice_texture,
                            const float *slice_texture_coords,
                            const float *meta_coords,

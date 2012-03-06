@@ -88,12 +88,6 @@ _cogl_pipeline_progends[MAX (COGL_PIPELINE_N_PROGENDS, 1)];
 
 COGL_OBJECT_DEFINE (Pipeline, pipeline);
 
-GQuark
-_cogl_pipeline_error_quark (void)
-{
-  return g_quark_from_static_string ("cogl-pipeline-error-quark");
-}
-
 /*
  * This initializes the first pipeline owned by the Cogl context. All
  * subsequently instantiated pipelines created via the cogl_pipeline_new()

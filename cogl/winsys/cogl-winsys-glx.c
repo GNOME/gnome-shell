@@ -47,6 +47,7 @@
 #include "cogl-swap-chain-private.h"
 #include "cogl-xlib-renderer.h"
 #include "cogl-util.h"
+#include "cogl-winsys-glx-private.h"
 
 #include <stdlib.h>
 #include <sys/types.h>

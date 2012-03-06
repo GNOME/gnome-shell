@@ -58,8 +58,6 @@ struct _CoglProgramUniform
   unsigned int dirty : 1;
 };
 
-CoglProgram *_cogl_program_pointer_from_handle (CoglHandle handle);
-
 /* Internal function to flush the custom uniforms for the given use
    program. This assumes the target GL program is already bound. The
    gl_program still needs to be passed so that CoglProgram can query

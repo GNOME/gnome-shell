@@ -47,6 +47,7 @@
 #include "cogl-shader-private.h"
 #include "cogl-program-private.h"
 #include "cogl-pipeline-cache.h"
+#include "cogl-pipeline-fragend-glsl-private.h"
 
 #include <glib.h>
 
@@ -998,7 +999,7 @@ add_alpha_test_snippet (CoglPipeline *pipeline,
 
 #endif /*  HAVE_COGL_GLES2 */
 
-gboolean
+static gboolean
 _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
                                  unsigned long pipelines_difference)
 {

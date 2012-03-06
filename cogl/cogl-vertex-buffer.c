@@ -144,7 +144,7 @@ cogl_vertex_buffer_get_n_vertices (CoglHandle handle)
   if (!cogl_is_vertex_buffer (handle))
     return 0;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
 
   return buffer->n_vertices;
 }
@@ -451,7 +451,7 @@ cogl_vertex_buffer_add (CoglHandle         handle,
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
   buffer->dirty_attributes = TRUE;
 
   cogl_attribute_name = canonize_attribute_name (attribute_name);
@@ -577,7 +577,7 @@ cogl_vertex_buffer_delete (CoglHandle handle,
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
   buffer->dirty_attributes = TRUE;
 
   /* The submit function works by diffing between submitted_attributes
@@ -618,7 +618,7 @@ set_attribute_enable (CoglHandle handle,
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
   buffer->dirty_attributes = TRUE;
 
   /* NB: If a buffer is currently being edited, then there can be two seperate
@@ -1469,7 +1469,7 @@ cogl_vertex_buffer_submit (CoglHandle handle)
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
 
   cogl_vertex_buffer_submit_real (buffer);
 }
@@ -1647,7 +1647,7 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
 
   update_primitive_and_draw (buffer, mode, first, count, NULL);
 }
@@ -1683,8 +1683,7 @@ cogl_vertex_buffer_indices_get_type (CoglHandle indices_handle)
   if (!cogl_is_vertex_buffer_indices (indices_handle))
     return COGL_INDICES_TYPE_UNSIGNED_SHORT;
 
-  buffer_indices =
-    _cogl_vertex_buffer_indices_pointer_from_handle (indices_handle);
+  buffer_indices = indices_handle;
 
   return cogl_indices_get_type (buffer_indices->indices);
 }
@@ -1711,13 +1710,12 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
 
   if (!cogl_is_vertex_buffer_indices (indices_handle))
     return;
 
-  buffer_indices =
-    _cogl_vertex_buffer_indices_pointer_from_handle (indices_handle);
+  buffer_indices = indices_handle;
 
   update_primitive_and_draw (buffer, mode, indices_offset, count,
                              buffer_indices);

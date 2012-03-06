@@ -60,6 +60,12 @@ static CoglQuaternion identity_quaternion =
   1.0,  0.0, 0.0, 0.0,
 };
 
+/* This function is just here to be called from GDB so we don't really
+   want to put a declaration in a header and we just add it here to
+   avoid a warning */
+void
+_cogl_quaternion_print (CoglQuaternion *quarternion);
+
 void
 _cogl_quaternion_print (CoglQuaternion *quaternion)
 {
@@ -240,15 +246,6 @@ cogl_quaternion_init_from_quaternion (CoglQuaternion *quaternion,
 #define COGL_MATRIX_READ(MATRIX, ROW, COLUMN) \
   (((const float *)matrix)[COLUMN * 4 + ROW])
 
-/**
- * cogl_quaternion_init_from_matrix:
- * @quaternion: A Cogl Quaternion
- * @matrix: A rotation matrix with which to initialize the quaternion
- *
- * Initializes a quaternion from a rotation matrix.
- *
- * Since: 1.4
- */
 void
 cogl_quaternion_init_from_matrix (CoglQuaternion *quaternion,
                                   const CoglMatrix *matrix)
