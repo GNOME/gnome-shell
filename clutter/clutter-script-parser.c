@@ -1089,6 +1089,54 @@ clutter_script_parser_parse_end (JsonParser *parser)
 }
 
 gboolean
+_clutter_script_parse_translatable_string (ClutterScript *script,
+                                           JsonNode      *node,
+                                           char         **str)
+{
+  JsonObject *obj;
+  const char *string, *domain;
+  const char *res;
+  gboolean translatable;
+
+  if (!JSON_NODE_HOLDS_OBJECT (node))
+    return FALSE;
+
+  obj = json_node_get_object (node);
+  if (!(json_object_has_member (obj, "translatable") &&
+        json_object_has_member (obj, "string")))
+    return FALSE;
+
+  translatable = json_object_get_boolean_member (obj, "translatable");
+
+  string = json_object_get_string_member (obj, "string");
+  if (string == NULL || *string == '\0')
+    return FALSE;
+
+  if (json_object_has_member (obj, "domain"))
+    domain = json_object_get_string_member (obj, "domain");
+  else
+    domain = NULL;
+
+  if (domain == NULL || *domain == '\0')
+    domain = clutter_script_get_translation_domain (script);
+
+  if (translatable)
+    {
+      if (domain != NULL && *domain != '\0')
+        res = g_dgettext (domain, string);
+      else
+        res = gettext (string);
+    }
+  else
+    res = string;
+
+  if (str != NULL)
+    *str = g_strdup (res);
+
+  return TRUE;
+}
+
+gboolean
 _clutter_script_parse_node (ClutterScript *script,
                             GValue        *value,
                             const gchar   *name,
@@ -1200,6 +1248,16 @@ _clutter_script_parse_node (ClutterScript *script,
               if (_clutter_script_parse_color (script, node, &color))
                 {
                   g_value_set_boxed (value, &color);
+                  return TRUE;
+                }
+            }
+          else if (p_type == G_TYPE_STRING)
+            {
+              char *str = NULL;
+
+              if (_clutter_script_parse_translatable_string (script, node, &str))
+                {
+                  g_value_take_string (value, str);
                   return TRUE;
                 }
             }

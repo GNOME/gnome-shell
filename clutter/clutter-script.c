@@ -256,6 +256,7 @@ enum
 
   PROP_FILENAME_SET,
   PROP_FILENAME,
+  PROP_TRANSLATION_DOMAIN,
 
   PROP_LAST
 };
@@ -277,6 +278,8 @@ struct _ClutterScriptPrivate
   GHashTable *states;
 
   gchar **search_paths;
+
+  gchar *translation_domain;
 
   gchar *filename;
   guint is_filename : 1;
@@ -385,8 +388,29 @@ clutter_script_finalize (GObject *gobject)
   g_strfreev (priv->search_paths);
   g_free (priv->filename);
   g_hash_table_destroy (priv->states);
+  g_free (priv->translation_domain);
 
   G_OBJECT_CLASS (clutter_script_parent_class)->finalize (gobject);
+}
+
+static void
+clutter_script_set_property (GObject      *gobject,
+                             guint         prop_id,
+                             const GValue *value,
+                             GParamSpec   *pspec)
+{
+  ClutterScript *script = CLUTTER_SCRIPT (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_TRANSLATION_DOMAIN:
+      clutter_script_set_translation_domain (script, g_value_get_string (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
 }
 
 static void
@@ -402,9 +426,15 @@ clutter_script_get_property (GObject    *gobject,
     case PROP_FILENAME_SET:
       g_value_set_boolean (value, script->priv->is_filename);
       break;
+
     case PROP_FILENAME:
       g_value_set_string (value, script->priv->filename);
       break;
+
+    case PROP_TRANSLATION_DOMAIN:
+      g_value_set_string (value, script->priv->translation_domain);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -451,6 +481,25 @@ clutter_script_class_init (ClutterScriptClass *klass)
                          NULL,
                          CLUTTER_PARAM_READABLE);
 
+  /**
+   * ClutterScript:translation-domain:
+   *
+   * The translation domain, used to localize strings marked as translatable
+   * inside a UI definition.
+   *
+   * If #ClutterScript:translation-domain is set to %NULL, #ClutterScript
+   * will use gettext(), otherwise g_dgettext() will be used.
+   *
+   * Since: 1.10
+   */
+  obj_props[PROP_TRANSLATION_DOMAIN] =
+    g_param_spec_string ("translation-domain",
+                         P_("Translation Domain"),
+                         P_("The translation domain used to localize string"),
+                         NULL,
+                         CLUTTER_PARAM_READWRITE);
+
+  gobject_class->set_property = clutter_script_set_property;
   gobject_class->get_property = clutter_script_get_property;
   gobject_class->finalize = clutter_script_finalize;
 
@@ -1437,6 +1486,50 @@ clutter_script_get_states (ClutterScript *script,
     name = "__clutter_script_default_state";
 
   return g_hash_table_lookup (script->priv->states, name);
+}
+
+/**
+ * clutter_script_set_translation_domain:
+ * @script: a #ClutterScript
+ * @domain: (allow-none): the translation domain, or %NULL
+ *
+ * Sets the translation domain for @script.
+ *
+ * Since: 1.10
+ */
+void
+clutter_script_set_translation_domain (ClutterScript *script,
+                                       const gchar   *domain)
+{
+  g_return_if_fail (CLUTTER_IS_SCRIPT (script));
+
+  if (g_strcmp0 (domain, script->priv->translation_domain) == 0)
+    return;
+
+  g_free (script->priv->translation_domain);
+  script->priv->translation_domain = g_strdup (domain);
+
+  g_object_notify_by_pspec (G_OBJECT (script), obj_props[PROP_TRANSLATION_DOMAIN]);
+}
+
+/**
+ * clutter_script_get_translation_domain:
+ * @script: a #ClutterScript
+ *
+ * Retrieves the translation domain set using
+ * clutter_script_set_translation_domain().
+ *
+ * Return value: (transfer none): the translation domain, if any is set,
+ *   or %NULL
+ *
+ * Since: 1.10
+ */
+const gchar *
+clutter_script_get_translation_domain (ClutterScript *script)
+{
+  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), NULL);
+
+  return script->priv->translation_domain;
 }
 
 /*

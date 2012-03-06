@@ -2,7 +2,7 @@
   "My Scene" : {
     "id" : "main-stage",
     "type" : "ClutterStage",
-    "title" : "ClutterScript test",
+    "title" : { "translatable" : true, "string" : "ClutterScript test" },
     "color" : "white",
     "signals" : [
       { "name" : "key-press-event", "handler" : "clutter_main_quit" },
@@ -62,7 +62,7 @@
         "type" : "ClutterText",
         "x" : 50,
         "y" : 200,
-        "text" : "Clutter\tScript",
+        "text" : { "translatable" : true, "string" : "Clutter Script" },
         "font-name" : "Sans 24px",
         "color" : "black",
         "line-alignment" : "center",
