@@ -50,6 +50,7 @@ test_sources = \
 	test-sparse-pipeline.c \
 	test-read-texture-formats.c \
 	test-write-texture-formats.c \
+	test-point-size.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)

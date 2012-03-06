@@ -99,6 +99,8 @@ main (int argc, char **argv)
 
   ADD_TEST (test_cogl_offscreen, 0);
 
+  ADD_TEST (test_cogl_point_size, 0);
+
   UNPORTED_TEST (test_cogl_viewport);
 
   g_printerr ("Unknown test name \"%s\"\n", argv[1]);
