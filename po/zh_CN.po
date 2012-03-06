@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-25 07:55+0000\n"
+"POT-Creation-Date: 2012-03-03 10:21+0000\n"
 "PO-Revision-Date: 2012-02-25 16:02+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -239,7 +239,7 @@ msgid "Not listed?"
 msgstr "未列出？"
 
 #: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
-#: ../js/ui/extensionSystem.js:401 ../js/ui/networkAgent.js:153
+#: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "取消"
@@ -253,8 +253,8 @@ msgstr "登录"
 msgid "Login Window"
 msgstr "登录窗口"
 
-#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:581
-#: ../js/ui/userMenu.js:583 ../js/ui/userMenu.js:652
+#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:591
+#: ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:662
 msgid "Suspend"
 msgstr "挂起"
 
@@ -500,7 +500,7 @@ msgstr "离线"
 msgid "CONTACTS"
 msgstr "联系人"
 
-#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1204
+#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1206
 msgid "Remove"
 msgstr "移除"
 
@@ -643,11 +643,11 @@ msgstr[0] "系统将在 %d 秒后自动重启。"
 msgid "Restarting the system."
 msgstr "重启系统。"
 
-#: ../js/ui/extensionSystem.js:405
+#: ../js/ui/extensionSystem.js:403
 msgid "Install"
 msgstr "安装"
 
-#: ../js/ui/extensionSystem.js:409
+#: ../js/ui/extensionSystem.js:407
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "从 extensions.gnome.org 下载并安装 %s？"
@@ -659,6 +659,14 @@ msgstr "托盘"
 #: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "键盘"
+
+#: ../js/ui/keyringPrompt.js:85 ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "密码："
+
+#: ../js/ui/keyringPrompt.js:101
+msgid "Type again:"
+msgstr ""
 
 #: ../js/ui/lookingGlass.js:725
 msgid "No extensions installed"
@@ -709,24 +717,25 @@ msgid "Web Page"
 msgstr "网页"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:115
-#, no-c-format
-msgid "Screencast from %d %t."
+#: ../js/ui/main.js:116
+#, fuzzy, no-c-format
+#| msgid "Screencast from %d %t."
+msgid "Screencast from %d %t"
 msgstr "%d %t 的屏幕录像。"
 
-#: ../js/ui/messageTray.js:1197
+#: ../js/ui/messageTray.js:1199
 msgid "Open"
 msgstr "打开"
 
-#: ../js/ui/messageTray.js:1214
+#: ../js/ui/messageTray.js:1216
 msgid "Unmute"
 msgstr "取消静音"
 
-#: ../js/ui/messageTray.js:1214
+#: ../js/ui/messageTray.js:1216
 msgid "Mute"
 msgstr "静音"
 
-#: ../js/ui/messageTray.js:2447
+#: ../js/ui/messageTray.js:2449
 msgid "System Information"
 msgstr "系统信息"
 
@@ -827,17 +836,17 @@ msgstr "应用程序"
 msgid "Dash"
 msgstr "Dash"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:583
 msgid "Quit"
 msgstr "退出"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:613
+#: ../js/ui/panel.js:614
 msgid "Activities"
 msgstr "活动"
 
-#: ../js/ui/panel.js:983
+#: ../js/ui/panel.js:987
 msgid "Top Bar"
 msgstr "顶栏"
 
@@ -877,10 +886,6 @@ msgstr "认证"
 #: ../js/ui/polkitAuthenticationAgent.js:260
 msgid "Sorry, that didn't work. Please try again."
 msgstr "抱歉，您的输入有误。请重试。"
-
-#: ../js/ui/polkitAuthenticationAgent.js:272
-msgid "Password:"
-msgstr "密码："
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -1585,39 +1590,39 @@ msgstr "空闲"
 msgid "Unavailable"
 msgstr "不可用"
 
-#: ../js/ui/userMenu.js:579 ../js/ui/userMenu.js:583 ../js/ui/userMenu.js:653
+#: ../js/ui/userMenu.js:589 ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:663
 msgid "Power Off..."
 msgstr "关机..."
 
-#: ../js/ui/userMenu.js:615
+#: ../js/ui/userMenu.js:625
 msgid "Notifications"
 msgstr "提示"
 
-#: ../js/ui/userMenu.js:623
+#: ../js/ui/userMenu.js:633
 msgid "Online Accounts"
 msgstr "在线帐户"
 
-#: ../js/ui/userMenu.js:627
+#: ../js/ui/userMenu.js:637
 msgid "System Settings"
 msgstr "系统设置"
 
-#: ../js/ui/userMenu.js:634
+#: ../js/ui/userMenu.js:644
 msgid "Lock Screen"
 msgstr "锁定"
 
-#: ../js/ui/userMenu.js:639
+#: ../js/ui/userMenu.js:649
 msgid "Switch User"
 msgstr "切换用户"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:654
 msgid "Log Out..."
 msgstr "注销..."
 
-#: ../js/ui/userMenu.js:672
+#: ../js/ui/userMenu.js:682
 msgid "Your chat status will be set to busy"
 msgstr "您的聊天状态将被设置为忙碌"
 
-#: ../js/ui/userMenu.js:673
+#: ../js/ui/userMenu.js:683
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1655,7 +1660,7 @@ msgstr "预言家 %s 说"
 msgid "Your favorite Easter Egg"
 msgstr "您最爱的彩蛋"
 
-#: ../js/ui/windowAttentionHandler.js:33
+#: ../js/ui/windowAttentionHandler.js:19
 #, c-format
 msgid "'%s' is ready"
 msgstr "%s 已就绪"
@@ -1680,11 +1685,11 @@ msgstr[0] "%u 个输入"
 msgid "System Sounds"
 msgstr "系统声音"
 
-#: ../src/main.c:262
+#: ../src/main.c:253
 msgid "Print version"
 msgstr "打印版本"
 
-#: ../src/main.c:268
+#: ../src/main.c:259
 msgid "Mode used by GDM for login screen"
 msgstr "GDM 用于登录屏幕的模式"
 
@@ -1692,6 +1697,16 @@ msgstr "GDM 用于登录屏幕的模式"
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "启动 %s 失败"
+
+#: ../src/shell-keyring-prompt.c:708
+#, fuzzy
+#| msgid "Does not match"
+msgid "Passwords do not match."
+msgstr "不同"
+
+#: ../src/shell-keyring-prompt.c:716
+msgid "Password cannot be blank"
+msgstr ""
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
