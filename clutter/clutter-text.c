@@ -990,9 +990,9 @@ clutter_text_ensure_cursor_position (ClutterText *self)
                                    &cursor_height);
 
   cursor_pos.x      = x;
-  cursor_pos.y      = y;
+  cursor_pos.y      = y + 2;
   cursor_pos.width  = priv->cursor_size;
-  cursor_pos.height = cursor_height - 2;
+  cursor_pos.height = cursor_height - 4;
 
   x_changed      = priv->cursor_pos.x != cursor_pos.x;
   y_changed      = priv->cursor_pos.y != cursor_pos.y;
