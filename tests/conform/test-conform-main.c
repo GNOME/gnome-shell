@@ -100,6 +100,8 @@ main (int argc, char **argv)
   ADD_TEST (test_cogl_offscreen, 0);
 
   ADD_TEST (test_cogl_point_size, 0);
+  ADD_TEST (test_cogl_point_sprite,
+            TEST_KNOWN_FAILURE | TEST_REQUIREMENT_POINT_SPRITE);
 
   UNPORTED_TEST (test_cogl_viewport);
 

@@ -68,6 +68,12 @@ test_utils_init (TestUtilsSharedState *state,
       missing_requirement = TRUE;
     }
 
+  if (flags & TEST_REQUIREMENT_POINT_SPRITE &&
+      !cogl_has_feature (state->ctx, COGL_FEATURE_ID_POINT_SPRITE))
+    {
+      missing_requirement = TRUE;
+    }
+
   if (flags & TEST_KNOWN_FAILURE)
     {
       missing_requirement = TRUE;

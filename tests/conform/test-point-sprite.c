@@ -1,0 +1,129 @@
+#include <cogl/cogl2-experimental.h>
+
+#include "test-utils.h"
+
+#define POINT_SIZE 8
+
+static const CoglVertexP2T2
+point =
+  {
+    POINT_SIZE, POINT_SIZE,
+    0.0f, 0.0f
+  };
+
+static const guint8
+tex_data[3 * 2 * 2] =
+  {
+    0x00, 0x00, 0xff, 0x00, 0xff, 0x00,
+    0x00, 0xff, 0xff, 0xff, 0x00, 0x00
+  };
+
+void
+test_cogl_point_sprite (TestUtilsGTestFixture *fixture,
+                        void *data)
+{
+  TestUtilsSharedState *shared_state = data;
+  CoglContext *ctx = shared_state->ctx;
+  int fb_width = cogl_framebuffer_get_width (shared_state->fb);
+  int fb_height = cogl_framebuffer_get_height (shared_state->fb);
+  CoglPrimitive *prim;
+  GError *error = NULL;
+  CoglTexture2D *tex_2d;
+  CoglPipeline *pipeline, *solid_pipeline;
+  gboolean res;
+
+  cogl_framebuffer_orthographic (shared_state->fb,
+                                 0, 0, /* x_1, y_1 */
+                                 fb_width, /* x_2 */
+                                 fb_height /* y_2 */,
+                                 -1, 100 /* near/far */);
+
+  cogl_framebuffer_clear4f (shared_state->fb,
+                            COGL_BUFFER_BIT_COLOR,
+                            1.0f, 1.0f, 1.0f, 1.0f);
+
+  tex_2d = cogl_texture_2d_new_from_data (ctx,
+                                          2, 2, /* width/height */
+                                          COGL_PIXEL_FORMAT_RGB_888,
+                                          COGL_PIXEL_FORMAT_ANY,
+                                          6, /* row stride */
+                                          tex_data,
+                                          &error);
+  g_assert (tex_2d != NULL);
+  g_assert (error == NULL);
+
+  pipeline = cogl_pipeline_new (ctx);
+  cogl_pipeline_set_layer_texture (pipeline, 0, COGL_TEXTURE (tex_2d));
+
+  res = cogl_pipeline_set_layer_point_sprite_coords_enabled (pipeline,
+                                                             /* layer_index */
+                                                             0,
+                                                             /* enable */
+                                                             TRUE,
+                                                             &error);
+  g_assert (res == TRUE);
+  g_assert (error == NULL);
+
+  cogl_pipeline_set_layer_filters (pipeline,
+                                   0, /* layer_index */
+                                   COGL_PIPELINE_FILTER_NEAREST,
+                                   COGL_PIPELINE_FILTER_NEAREST);
+  cogl_pipeline_set_point_size (pipeline, POINT_SIZE);
+
+  prim = cogl_primitive_new_p2t2 (ctx,
+                                  COGL_VERTICES_MODE_POINTS,
+                                  1, /* n_vertices */
+                                  &point);
+
+  cogl_framebuffer_draw_primitive (shared_state->fb,
+                                   pipeline,
+                                   prim);
+
+  /* Render the primitive again without point sprites to make sure
+     disabling it works */
+  solid_pipeline = cogl_pipeline_copy (pipeline);
+  cogl_pipeline_set_layer_point_sprite_coords_enabled (solid_pipeline,
+                                                       /* layer_index */
+                                                       0,
+                                                       /* enable */
+                                                       FALSE,
+                                                       &error);
+  cogl_framebuffer_push_matrix (shared_state->fb);
+  cogl_framebuffer_translate (shared_state->fb,
+                              POINT_SIZE * 2, /* x */
+                              0.0f, /* y */
+                              0.0f /* z */);
+  cogl_framebuffer_draw_primitive (shared_state->fb,
+                                   solid_pipeline,
+                                   prim);
+  cogl_framebuffer_pop_matrix (shared_state->fb);
+
+  cogl_object_unref (prim);
+  cogl_object_unref (solid_pipeline);
+  cogl_object_unref (pipeline);
+  cogl_object_unref (tex_2d);
+
+  test_utils_check_pixel (POINT_SIZE - POINT_SIZE / 4,
+                          POINT_SIZE - POINT_SIZE / 4,
+                          0x0000ffff);
+  test_utils_check_pixel (POINT_SIZE + POINT_SIZE / 4,
+                          POINT_SIZE - POINT_SIZE / 4,
+                          0x00ff00ff);
+  test_utils_check_pixel (POINT_SIZE - POINT_SIZE / 4,
+                          POINT_SIZE + POINT_SIZE / 4,
+                          0x00ffffff);
+  test_utils_check_pixel (POINT_SIZE + POINT_SIZE / 4,
+                          POINT_SIZE + POINT_SIZE / 4,
+                          0xff0000ff);
+
+  /* When rendering without the point sprites all of the texture
+     coordinates should be 0,0 so it should get the top-left texel
+     which is blue */
+  test_utils_check_region (POINT_SIZE * 3 - POINT_SIZE / 2 + 1,
+                           POINT_SIZE - POINT_SIZE / 2 + 1,
+                           POINT_SIZE - 2, POINT_SIZE - 2,
+                           0x0000ffff);
+
+  if (cogl_test_verbose ())
+    g_print ("OK\n");
+}

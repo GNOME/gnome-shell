@@ -51,6 +51,7 @@ test_sources = \
 	test-read-texture-formats.c \
 	test-write-texture-formats.c \
 	test-point-size.c \
+	test-point-sprite.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)

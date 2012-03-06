@@ -9,10 +9,11 @@
 
 typedef enum _TestFlags
 {
-  TEST_KNOWN_FAILURE          = 1<<0,
-  TEST_REQUIREMENT_GL         = 1<<1,
-  TEST_REQUIREMENT_NPOT       = 1<<2,
-  TEST_REQUIREMENT_TEXTURE_3D = 1<<3
+  TEST_KNOWN_FAILURE            = 1<<0,
+  TEST_REQUIREMENT_GL           = 1<<1,
+  TEST_REQUIREMENT_NPOT         = 1<<2,
+  TEST_REQUIREMENT_TEXTURE_3D   = 1<<3,
+  TEST_REQUIREMENT_POINT_SPRITE = 1<<4
 } TestFlags;
 
 /* For compatability since we used to use the glib gtester
