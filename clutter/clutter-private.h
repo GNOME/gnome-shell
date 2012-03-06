@@ -232,7 +232,7 @@ gboolean _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
                                                const GValue          *handler_return,
                                                gpointer               dummy);
 
-void _clutter_run_repaint_functions (void);
+void _clutter_run_repaint_functions (ClutterRepaintFlags flags);
 
 void _clutter_constraint_update_allocation (ClutterConstraint *constraint,
                                             ClutterActor      *actor,

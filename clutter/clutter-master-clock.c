@@ -359,9 +359,9 @@ clutter_clock_dispatch (GSource     *source,
   stages = clutter_stage_manager_list_stages (stage_manager);
   g_slist_foreach (stages, (GFunc) g_object_ref, NULL);
 
-  CLUTTER_TIMER_START (_clutter_uprof_context, master_event_process);
-
   master_clock->idle = FALSE;
+
+  CLUTTER_TIMER_START (_clutter_uprof_context, master_event_process);
 
   /* Process queued events */
   for (l = stages; l != NULL; l = l->next)
@@ -378,7 +378,7 @@ clutter_clock_dispatch (GSource     *source,
 
   _clutter_master_clock_advance (master_clock);
 
-  _clutter_run_repaint_functions ();
+  _clutter_run_repaint_functions (CLUTTER_REPAINT_FLAGS_PRE_PAINT);
 
   /* Update any stage that needs redraw/relayout after the clock
    * is advanced.
@@ -397,6 +397,8 @@ clutter_clock_dispatch (GSource     *source,
       if (_clutter_stage_get_pending_swaps (l->data) == 0)
         stages_updated |= _clutter_stage_do_update (l->data);
     }
+
+  _clutter_run_repaint_functions (CLUTTER_REPAINT_FLAGS_POST_PAINT);
 
   /* The master clock goes idle if no stages were updated and falls back
    * to polling for timeline progressions... */

@@ -19,9 +19,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
- *
- *
  */
+
 /**
  * SECTION:clutter-main
  * @short_description: Various 'global' clutter functions.
@@ -3310,6 +3309,7 @@ clutter_get_font_map (void)
 typedef struct _ClutterRepaintFunction
 {
   guint id;
+  ClutterRepaintFlags flags;
   GSourceFunc func;
   gpointer data;
   GDestroyNotify notify;
@@ -3368,20 +3368,31 @@ clutter_threads_remove_repaint_func (guint handle_id)
  * @notify: function to be called when removing the repaint
  *    function, or %NULL
  *
- * Adds a function to be called whenever Clutter is repainting a Stage.
+ * Adds a function to be called whenever Clutter is processing a new
+ * frame.
+ *
  * If the function returns %FALSE it is automatically removed from the
  * list of repaint functions and will not be called again.
  *
  * This function is guaranteed to be called from within the same thread
- * that called clutter_main(), and while the Clutter lock is being held.
+ * that called clutter_main(), and while the Clutter lock is being held;
+ * the function will be called within the main loop, so it is imperative
+ * that it does not block, otherwise the frame time budget may be lost.
  *
  * A repaint function is useful to ensure that an update of the scenegraph
  * is performed before the scenegraph is repainted; for instance, uploading
- * a frame from a video into a #ClutterTexture.
+ * a frame from a video into a #ClutterTexture. By default, a repaint
+ * function added using this function will be invoked prior to the frame
+ * being processed.
+ *
+ * Adding a repaint function does not automatically ensure that a new
+ * frame will be queued.
  *
  * When the repaint function is removed (either because it returned %FALSE
  * or because clutter_threads_remove_repaint_func() has been called) the
  * @notify function will be called, if any is set.
+ *
+ * See also: clutter_threads_add_repaint_func_full()
  *
  * Return value: the ID (greater than 0) of the repaint function. You
  *   can use the returned integer to remove the repaint function by
@@ -3393,6 +3404,55 @@ guint
 clutter_threads_add_repaint_func (GSourceFunc    func,
                                   gpointer       data,
                                   GDestroyNotify notify)
+{
+  return clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_PRE_PAINT,
+                                                func,
+                                                data, notify);
+}
+
+/**
+ * clutter_threads_add_repaint_func_full:
+ * @flags: flags for the repaint function
+ * @func: the function to be called within the paint cycle
+ * @data: data to be passed to the function, or %NULL
+ * @notify: function to be called when removing the repaint
+ *    function, or %NULL
+ *
+ * Adds a function to be called whenever Clutter is processing a new
+ * frame.
+ *
+ * If the function returns %FALSE it is automatically removed from the
+ * list of repaint functions and will not be called again.
+ *
+ * This function is guaranteed to be called from within the same thread
+ * that called clutter_main(), and while the Clutter lock is being held;
+ * the function will be called within the main loop, so it is imperative
+ * that it does not block, otherwise the frame time budget may be lost.
+ *
+ * A repaint function is useful to ensure that an update of the scenegraph
+ * is performed before the scenegraph is repainted; for instance, uploading
+ * a frame from a video into a #ClutterTexture. The @flags passed to this
+ * function will determine the section of the frame processing that will
+ * result in @func being called.
+ *
+ * Adding a repaint function does not automatically ensure that a new
+ * frame will be queued.
+ *
+ * When the repaint function is removed (either because it returned %FALSE
+ * or because clutter_threads_remove_repaint_func() has been called) the
+ * @notify function will be called, if any is set.
+ *
+ * Return value: the ID (greater than 0) of the repaint function. You
+ *   can use the returned integer to remove the repaint function by
+ *   calling clutter_threads_remove_repaint_func().
+ *
+ * Since: 1.10
+ */
+guint
+clutter_threads_add_repaint_func_full (ClutterRepaintFlags flags,
+                                       GSourceFunc         func,
+                                       gpointer            data,
+                                       GDestroyNotify      notify)
 {
   ClutterMainContext *context;
   ClutterRepaintFunction *repaint_func;
@@ -3406,6 +3466,9 @@ clutter_threads_add_repaint_func (GSourceFunc    func,
   repaint_func = g_slice_new (ClutterRepaintFunction);
 
   repaint_func->id = context->last_repaint_id++;
+
+  /* mask out QUEUE_REDRAW_ON_ADD, since we're going to consume it */
+  repaint_func->flags = flags & ~CLUTTER_REPAINT_FLAGS_QUEUE_REDRAW_ON_ADD;
   repaint_func->func = func;
   repaint_func->data = data;
   repaint_func->notify = notify;
@@ -3415,20 +3478,27 @@ clutter_threads_add_repaint_func (GSourceFunc    func,
 
   _clutter_context_unlock ();
 
+  if ((flags & CLUTTER_REPAINT_FLAGS_QUEUE_REDRAW_ON_ADD) != 0)
+    {
+      ClutterMasterClock *master_clock = _clutter_master_clock_get_default ();
+
+      _clutter_master_clock_ensure_next_iteration (master_clock);
+    }
+
   return repaint_func->id;
 }
 
 /*
  * _clutter_run_repaint_functions:
+ * @flags: only run the repaint functions matching the passed flags
  *
  * Executes the repaint functions added using the
  * clutter_threads_add_repaint_func() function.
  *
- * Must be called before calling _clutter_stage_do_paint() and
- * with the Clutter thread lock held.
+ * Must be called with the Clutter thread lock held.
  */
 void
-_clutter_run_repaint_functions (void)
+_clutter_run_repaint_functions (ClutterRepaintFlags flags)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
   ClutterRepaintFunction *repaint_func;
@@ -3455,7 +3525,10 @@ _clutter_run_repaint_functions (void)
 
       g_list_free (l);
 
-      res = repaint_func->func (repaint_func->data);
+      if ((repaint_func->flags & flags) != 0)
+        res = repaint_func->func (repaint_func->data);
+      else
+        res = TRUE;
 
       if (res)
         reinvoke_list = g_list_prepend (reinvoke_list, repaint_func);
