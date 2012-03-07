@@ -10,6 +10,7 @@ clutter/clutter-bind-constraint.c
 clutter/clutter-binding-pool.c
 clutter/clutter-bin-layout.c
 clutter/clutter-box-layout.c
+clutter/clutter-brightness-contrast-effect.c
 clutter/clutter-cairo-texture.c
 clutter/clutter-child-meta.c
 clutter/clutter-click-action.c
