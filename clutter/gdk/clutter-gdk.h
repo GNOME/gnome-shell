@@ -41,6 +41,7 @@
 
 G_BEGIN_DECLS
 
+GdkDisplay *    clutter_gdk_get_default_display         (void);
 void            clutter_gdk_set_display                 (GdkDisplay   *display);
 
 GdkWindow *     clutter_gdk_get_stage_window            (ClutterStage *stage);
