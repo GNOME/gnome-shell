@@ -913,9 +913,11 @@ AC_ARG_ENABLE([maintainer-flags],
 MAINTAINER_COMPILER_FLAGS="$MAINTAINER_COMPILER_FLAGS
                            -Wall -Wcast-align -Wuninitialized
                            -Wno-strict-aliasing -Wempty-body -Wformat
-                           -Wformat-security -Winit-self
+                           -Wformat-security -Wformat-nonliteral -Winit-self
                            -Wdeclaration-after-statement -Wvla
-                           -Wpointer-arith"
+                           -Wpointer-arith -Wmissing-declarations
+                           -Waggregate-returns -Wcast-align
+                           -Wredundant-decls"
 
 AS_CASE([$enable_maintainer_flags],
         [yes],
