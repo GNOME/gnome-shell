@@ -2882,7 +2882,6 @@ _cogl_pipeline_get_layer_state_for_fragment_codegen (CoglContext *context)
   CoglPipelineLayerState state =
     (COGL_PIPELINE_LAYER_STATE_COMBINE |
      COGL_PIPELINE_LAYER_STATE_TEXTURE_TYPE |
-     COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS |
      COGL_PIPELINE_LAYER_STATE_UNIT |
      COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS);
 
