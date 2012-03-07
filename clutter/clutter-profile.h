@@ -51,8 +51,13 @@ void    _clutter_profile_resume         (void);
 
 #else /* CLUTTER_ENABLE_PROFILE */
 
-#define CLUTTER_STATIC_TIMER(A,B,C,D,E) extern void _clutter_dummy_decl (void)
-#define CLUTTER_STATIC_COUNTER(A,B,C,D) extern void _clutter_dummy_decl (void)
+#ifdef __COUNTER__
+#define CLUTTER_STATIC_TIMER(A,B,C,D,E) extern void G_PASTE (_clutter_dummy_decl, __COUNTER__) (void)
+#define CLUTTER_STATIC_COUNTER(A,B,C,D) extern void G_PASTE (_clutter_dummy_decl, __COUNTER__) (void)
+#else
+#define CLUTTER_STATIC_TIMER(A,B,C,D,E) extern void G_PASTE (_clutter_dummy_decl, __LINE__) (void)
+#define CLUTTER_STATIC_TIMER(A,B,C,D,E) extern void G_PASTE (_clutter_dummy_decl, __LINE__) (void)
+#endif
 #define CLUTTER_COUNTER_INC(A,B)        G_STMT_START { } G_STMT_END
 #define CLUTTER_COUNTER_DEC(A,B)        G_STMT_START { } G_STMT_END
 #define CLUTTER_TIMER_START(A,B)        G_STMT_START { } G_STMT_END
