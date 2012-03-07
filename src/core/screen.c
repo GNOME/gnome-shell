@@ -1492,7 +1492,7 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
   /* If deleting a workspace before the current workspace, the active
    * workspace index changes, so we need to update that hint */
   if (active_index_changed)
-      meta_screen_set_active_workspace_hint (workspace->screen);
+      meta_screen_set_active_workspace_hint (screen);
 
   l = next;
   while (l)
