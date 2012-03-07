@@ -546,9 +546,9 @@ clutter_snap_constraint_set_edges (ClutterSnapConstraint *constraint,
  * Since: 1.6
  */
 void
-clutter_snap_constraint_get_edge (ClutterSnapConstraint *constraint,
-                                  ClutterSnapEdge       *from_edge,
-                                  ClutterSnapEdge       *to_edge)
+clutter_snap_constraint_get_edges (ClutterSnapConstraint *constraint,
+                                   ClutterSnapEdge       *from_edge,
+                                   ClutterSnapEdge       *to_edge)
 {
   g_return_if_fail (CLUTTER_IS_SNAP_CONSTRAINT (constraint));
 
