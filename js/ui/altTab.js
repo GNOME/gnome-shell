@@ -9,6 +9,7 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const Atk = imports.gi.Atk;
 
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
@@ -518,6 +519,7 @@ const AltTabPopup = new Lang.Class({
                                                         })
                          });
         this._thumbnails = null;
+        this._appSwitcher._items[this._currentApp].remove_accessible_state (Atk.StateType.EXPANDED);
     },
 
     _createThumbnails : function() {
@@ -538,6 +540,8 @@ const AltTabPopup = new Lang.Class({
                            transition: 'easeOutQuad',
                            onComplete: Lang.bind(this, function () { this.thumbnailsVisible = true; })
                          });
+
+        this._appSwitcher._items[this._currentApp].add_accessible_state (Atk.StateType.EXPANDED);
     }
 });
 
@@ -637,6 +641,8 @@ const SwitcherList = new Lang.Class({
         bbox.label_actor = label;
 
         this._items.push(bbox);
+
+        return bbox;
     },
 
     _onItemClicked: function (index) {
@@ -1017,7 +1023,7 @@ const AppSwitcher = new Lang.Class({
 
     _addIcon : function(appIcon) {
         this.icons.push(appIcon);
-        this.addItem(appIcon.actor, appIcon.label);
+        let item = this.addItem(appIcon.actor, appIcon.label);
 
         let n = this._arrows.length;
         let arrow = new St.DrawingArea({ style_class: 'switcher-arrow' });
@@ -1027,6 +1033,8 @@ const AppSwitcher = new Lang.Class({
 
         if (appIcon.cachedWindows.length == 1)
             arrow.hide();
+        else
+            item.add_accessible_state (Atk.StateType.EXPANDABLE);
     }
 });
 
