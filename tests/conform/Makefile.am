@@ -155,7 +155,7 @@ test_conformance_CPPFLAGS = \
 	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS \
 	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\"
 
-test_conformance_CFLAGS = -g $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
+test_conformance_CFLAGS = -g $(CLUTTER_CFLAGS)
 
 test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
 
