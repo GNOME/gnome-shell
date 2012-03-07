@@ -143,6 +143,7 @@
 
 #include "clutter-actor.h"
 #include "clutter-actor-meta-private.h"
+#include "clutter-private.h"
 
 G_DEFINE_ABSTRACT_TYPE (ClutterConstraint,
                         clutter_constraint,

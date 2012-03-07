@@ -61,8 +61,8 @@ typedef struct ClutterFeatures
 
 static ClutterFeatures* __features = NULL;
 
-ClutterFeatureFlags
-_clutter_features_from_cogl (guint cogl_flags)
+static ClutterFeatureFlags
+clutter_features_from_cogl (guint cogl_flags)
 {
   ClutterFeatureFlags clutter_flags = 0;
   
@@ -107,7 +107,7 @@ _clutter_feature_init (GError **error)
   if (!_clutter_backend_create_context (context->backend, error))
     return FALSE;
 
-  __features->flags = (_clutter_features_from_cogl (cogl_get_features ())
+  __features->flags = (clutter_features_from_cogl (cogl_get_features ())
                     | _clutter_backend_get_features (context->backend));
 
   __features->features_set = TRUE;

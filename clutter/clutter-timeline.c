@@ -97,6 +97,8 @@
 #include "config.h"
 #endif
 
+#include "clutter-timeline.h"
+
 #include "clutter-debug.h"
 #include "clutter-easing.h"
 #include "clutter-enum-types.h"
@@ -105,7 +107,8 @@
 #include "clutter-master-clock.h"
 #include "clutter-private.h"
 #include "clutter-scriptable.h"
-#include "clutter-timeline.h"
+
+#include "deprecated/clutter-timeline.h"
 
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 

@@ -160,6 +160,8 @@
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
 
+#include "deprecated/clutter-animation.h"
+
 enum
 {
   PROP_0,

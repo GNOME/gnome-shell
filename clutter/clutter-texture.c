@@ -71,8 +71,9 @@
 #include "clutter-scriptable.h"
 #include "clutter-stage-private.h"
 
-#include "clutter-shader.h"
-#include "clutter-util.h"
+#include "deprecated/clutter-shader.h"
+#include "deprecated/clutter-texture.h"
+#include "deprecated/clutter-util.h"
 
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 

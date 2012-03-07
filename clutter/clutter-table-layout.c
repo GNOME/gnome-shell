@@ -189,6 +189,8 @@ enum
   PROP_EASING_DURATION
 };
 
+GType clutter_table_child_get_type (void);
+
 G_DEFINE_TYPE (ClutterTableChild,
                clutter_table_child,
                CLUTTER_TYPE_LAYOUT_META);

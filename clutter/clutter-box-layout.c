@@ -157,6 +157,8 @@ enum
 
 static GParamSpec *obj_props[PROP_LAST] = { NULL, };
 
+GType clutter_box_child_get_type (void);
+
 G_DEFINE_TYPE (ClutterBoxChild,
                clutter_box_child,
                CLUTTER_TYPE_LAYOUT_META);

@@ -1,5 +1,7 @@
 #include <glib.h>
 
+#include "clutter-event.h"
+
 /* Code below from GDK, which contains following comment:
  *
  * Thanks to Markus G. Kuhn <mkuhn@acm.org> for the ksysym<->Unicode

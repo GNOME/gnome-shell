@@ -119,11 +119,11 @@ clutter_deform_effect_real_deform_vertex (ClutterDeformEffect *effect,
              G_OBJECT_TYPE_NAME (effect));
 }
 
-void
-_clutter_deform_effect_deform_vertex (ClutterDeformEffect *effect,
-                                      gfloat               width,
-                                      gfloat               height,
-                                      CoglTextureVertex   *vertex)
+static void
+clutter_deform_effect_deform_vertex (ClutterDeformEffect *effect,
+                                     gfloat               width,
+                                     gfloat               height,
+                                     CoglTextureVertex   *vertex)
 {
   CLUTTER_DEFORM_EFFECT_GET_CLASS (effect)->deform_vertex (effect,
                                                            width, height,
@@ -241,9 +241,9 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
 
               cogl_color_init_from_4ub (&vertex.color, 255, 255, 255, opacity);
 
-              _clutter_deform_effect_deform_vertex (self,
-                                                    width, height,
-                                                    &vertex);
+              clutter_deform_effect_deform_vertex (self,
+                                                   width, height,
+                                                   &vertex);
 
               vertex_out = verts + i * (priv->x_tiles + 1) + j;
 

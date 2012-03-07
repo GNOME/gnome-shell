@@ -47,6 +47,8 @@
 #include "clutter-private.h"
 #include "clutter-version.h"  
 
+#include "deprecated/clutter-stage-manager.h"
+
 enum
 {
   PROP_0,

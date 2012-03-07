@@ -319,7 +319,7 @@ property_info_free (gpointer data)
     }
 }
 
-void
+static void
 signal_info_free (gpointer data)
 {
   if (G_LIKELY (data))

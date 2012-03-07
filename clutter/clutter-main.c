@@ -102,7 +102,7 @@
 #include "clutter-config.h"
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
-#include "clutter-event.h"
+#include "clutter-event-private.h"
 #include "clutter-feature.h"
 #include "clutter-frame-source.h"
 #include "clutter-main.h"

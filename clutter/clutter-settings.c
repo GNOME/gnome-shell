@@ -30,6 +30,7 @@
 #endif /* HAVE_PANGO_FT2 */
 
 #include "clutter-debug.h"
+#include "clutter-settings-private.h"
 #include "clutter-private.h"
 
 #define DEFAULT_FONT_NAME       "Sans 12"

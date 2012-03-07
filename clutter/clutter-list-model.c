@@ -94,6 +94,8 @@ struct _ClutterListModelIter
 
 
 
+GType clutter_list_model_iter_get_type (void);
+
 /*
  * ClutterListModel
  */

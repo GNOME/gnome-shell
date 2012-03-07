@@ -36,8 +36,10 @@
 
 #include <glib/gi18n-lib.h>
 
-#include "deprecated/clutter-util.h"
 #include "clutter-main.h"
+#include "clutter-private.h"
+
+#include "deprecated/clutter-util.h"
 
 /**
  * clutter_util_next_p2:

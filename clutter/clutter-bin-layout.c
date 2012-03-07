@@ -153,6 +153,8 @@ enum
 static GParamSpec *layer_props[PROP_LAYER_LAST] = { NULL, };
 static GParamSpec *bin_props[PROP_LAST] = { NULL, };
 
+GType clutter_bin_layer_get_type (void);
+
 G_DEFINE_TYPE (ClutterBinLayer,
                clutter_bin_layer,
                CLUTTER_TYPE_LAYOUT_META);

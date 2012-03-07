@@ -29,9 +29,11 @@
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
-#include "clutter-frame-source.h"
-#include "clutter-timeout-interval.h"
+#include "clutter-main.h"
 #include "clutter-private.h"
+
+#include "deprecated/clutter-frame-source.h"
+#include "deprecated/clutter-timeout-interval.h"
 
 typedef struct _ClutterFrameSource ClutterFrameSource;
 

@@ -42,6 +42,8 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
+
 #include "clutter-backend-private.h"
 #include "clutter-debug.h"
 #include "clutter-event-private.h"
