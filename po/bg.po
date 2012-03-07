@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-28 07:35+0200\n"
-"PO-Revision-Date: 2012-02-27 19:28+0200\n"
+"POT-Creation-Date: 2012-03-07 06:52+0200\n"
+"PO-Revision-Date: 2012-03-07 06:52+0200\n"
 "Last-Translator: Ivaylo Valkov <ivaylo@e-valkov.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -251,7 +251,7 @@ msgid "Not listed?"
 msgstr "Липсва в списъка?"
 
 #: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
-#: ../js/ui/extensionSystem.js:401 ../js/ui/networkAgent.js:153
+#: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "Отказване"
@@ -265,8 +265,8 @@ msgstr "Регистриране"
 msgid "Login Window"
 msgstr "Екран за идентификация"
 
-#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:581
-#: ../js/ui/userMenu.js:583 ../js/ui/userMenu.js:652
+#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:591
+#: ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:662
 msgid "Suspend"
 msgstr "Приспиване"
 
@@ -512,7 +512,7 @@ msgstr "Извън мрежата"
 msgid "CONTACTS"
 msgstr "КОНТАКТИ"
 
-#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1204
+#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1206
 msgid "Remove"
 msgstr "Изтриване"
 
@@ -666,11 +666,11 @@ msgstr[1] "Системата ще се рестартира автоматич�
 msgid "Restarting the system."
 msgstr "Рестартиране на системата."
 
-#: ../js/ui/extensionSystem.js:405
+#: ../js/ui/extensionSystem.js:403
 msgid "Install"
 msgstr "Инсталиране"
 
-#: ../js/ui/extensionSystem.js:409
+#: ../js/ui/extensionSystem.js:407
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Да се изтегли и инсталира ли „%s“ от from extensions.gnome.org?"
@@ -682,6 +682,14 @@ msgstr "област за уведомяване"
 #: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Клавиатура"
+
+#: ../js/ui/keyringPrompt.js:85 ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Парола:"
+
+#: ../js/ui/keyringPrompt.js:101
+msgid "Type again:"
+msgstr "Въведете отново:"
 
 #: ../js/ui/lookingGlass.js:725
 msgid "No extensions installed"
@@ -732,24 +740,24 @@ msgid "Web Page"
 msgstr "Домашна страница"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:115
+#: ../js/ui/main.js:116
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Запис от %d %t."
 
-#: ../js/ui/messageTray.js:1197
+#: ../js/ui/messageTray.js:1199
 msgid "Open"
 msgstr "Отваряне"
 
-#: ../js/ui/messageTray.js:1214
+#: ../js/ui/messageTray.js:1216
 msgid "Unmute"
 msgstr "Пускане на звука"
 
-#: ../js/ui/messageTray.js:1214
+#: ../js/ui/messageTray.js:1216
 msgid "Mute"
 msgstr "Заглушаване"
 
-#: ../js/ui/messageTray.js:2447
+#: ../js/ui/messageTray.js:2449
 msgid "System Information"
 msgstr "Информация за системата"
 
@@ -852,17 +860,17 @@ msgstr "Програми"
 msgid "Dash"
 msgstr "Най-ползвани"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:583
 msgid "Quit"
 msgstr "Спиране на програмата"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:613
+#: ../js/ui/panel.js:614
 msgid "Activities"
 msgstr "Дейности"
 
-#: ../js/ui/panel.js:983
+#: ../js/ui/panel.js:987
 msgid "Top Bar"
 msgstr "Горна лента"
 
@@ -902,10 +910,6 @@ msgstr "Удостоверяване"
 #: ../js/ui/polkitAuthenticationAgent.js:260
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Действието не беше успешно. Опитайте отново."
-
-#: ../js/ui/polkitAuthenticationAgent.js:272
-msgid "Password:"
-msgstr "Парола:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -1617,39 +1621,39 @@ msgstr "Бездействие"
 msgid "Unavailable"
 msgstr "Недостъпно"
 
-#: ../js/ui/userMenu.js:579 ../js/ui/userMenu.js:583 ../js/ui/userMenu.js:653
+#: ../js/ui/userMenu.js:589 ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:663
 msgid "Power Off..."
 msgstr "Изключване..."
 
-#: ../js/ui/userMenu.js:615
+#: ../js/ui/userMenu.js:625
 msgid "Notifications"
 msgstr "Известяване"
 
-#: ../js/ui/userMenu.js:623
+#: ../js/ui/userMenu.js:633
 msgid "Online Accounts"
 msgstr "Мрежови регистрации"
 
-#: ../js/ui/userMenu.js:627
+#: ../js/ui/userMenu.js:637
 msgid "System Settings"
 msgstr "Настройки на системата"
 
-#: ../js/ui/userMenu.js:634
+#: ../js/ui/userMenu.js:644
 msgid "Lock Screen"
 msgstr "Заключване на екрана"
 
-#: ../js/ui/userMenu.js:639
+#: ../js/ui/userMenu.js:649
 msgid "Switch User"
 msgstr "Смяна на потребител"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:654
 msgid "Log Out..."
 msgstr "Изход…"
 
-#: ../js/ui/userMenu.js:672
+#: ../js/ui/userMenu.js:682
 msgid "Your chat status will be set to busy"
 msgstr "Състоянието ви ще се зададе да е „Зает“"
 
-#: ../js/ui/userMenu.js:673
+#: ../js/ui/userMenu.js:683
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1688,7 +1692,7 @@ msgstr "А пророчицата рече «%s»"
 msgid "Your favorite Easter Egg"
 msgstr "Любимото ви великденско яйце"
 
-#: ../js/ui/windowAttentionHandler.js:33
+#: ../js/ui/windowAttentionHandler.js:19
 #, c-format
 msgid "'%s' is ready"
 msgstr "Програмата „%s“ е готова за употреба"
@@ -1715,11 +1719,11 @@ msgstr[1] "%u входа"
 msgid "System Sounds"
 msgstr "Системни звуци"
 
-#: ../src/main.c:262
+#: ../src/main.c:253
 msgid "Print version"
 msgstr "Показване на версията"
 
-#: ../src/main.c:268
+#: ../src/main.c:259
 msgid "Mode used by GDM for login screen"
 msgstr "Режим използван от GDM за екрана за влизане"
 
@@ -1727,6 +1731,14 @@ msgstr "Режим използван от GDM за екрана за влиза
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Неуспех при стартиране на „%s“"
+
+#: ../src/shell-keyring-prompt.c:708
+msgid "Passwords do not match."
+msgstr "Паролите не съвпадат."
+
+#: ../src/shell-keyring-prompt.c:716
+msgid "Password cannot be blank"
+msgstr "Не може да не попълнете паролата"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
