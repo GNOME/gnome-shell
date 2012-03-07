@@ -303,9 +303,9 @@ clutter_backend_x11_create_keymap (ClutterBackendX11 *backend_x11)
     }
 }
 
-gboolean
-_clutter_backend_x11_pre_parse (ClutterBackend  *backend,
-                                GError         **error)
+static gboolean
+clutter_backend_x11_pre_parse (ClutterBackend  *backend,
+                               GError         **error)
 {
   const gchar *env_string;
 
@@ -336,9 +336,9 @@ _clutter_backend_x11_pre_parse (ClutterBackend  *backend,
   return TRUE;
 }
 
-gboolean
-_clutter_backend_x11_post_parse (ClutterBackend  *backend,
-                                 GError         **error)
+static gboolean
+clutter_backend_x11_post_parse (ClutterBackend  *backend,
+                                GError         **error)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterSettings *settings;
@@ -804,8 +804,8 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
 
   backend_class->stage_window_type = CLUTTER_TYPE_STAGE_X11;
 
-  backend_class->pre_parse = _clutter_backend_x11_pre_parse;
-  backend_class->post_parse = _clutter_backend_x11_post_parse;
+  backend_class->pre_parse = clutter_backend_x11_pre_parse;
+  backend_class->post_parse = clutter_backend_x11_post_parse;
   backend_class->add_options = clutter_backend_x11_add_options;
   backend_class->get_features = clutter_backend_x11_get_features;
 
