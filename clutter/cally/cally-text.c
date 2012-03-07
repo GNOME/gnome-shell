@@ -216,13 +216,13 @@ struct _CallyTextPrivate
   gint selection_bound;
 
   /* text_changed::insert stuff */
-  gchar *signal_name_insert;
+  const gchar *signal_name_insert;
   gint position_insert;
   gint length_insert;
   guint insert_idle_handler;
 
   /* text_changed::delete stuff */
-  gchar *signal_name_delete;
+  const gchar *signal_name_delete;
   gint position_delete;
   gint length_delete;
 
