@@ -44,8 +44,8 @@ struct _ClutterKeymapX11
 
   ClutterBackend *backend;
 
-  gint min_keycode;
-  gint max_keycode;
+  int min_keycode;
+  int max_keycode;
 
   ClutterModifierType modmap[8];
 
@@ -450,7 +450,7 @@ _clutter_keymap_x11_translate_key_state (ClutterKeymapX11    *keymap,
 
 gboolean
 _clutter_keymap_x11_get_is_modifier (ClutterKeymapX11 *keymap,
-                                     guint             keycode)
+                                     gint              keycode)
 {
   g_return_val_if_fail (CLUTTER_IS_KEYMAP_X11 (keymap), FALSE);
 

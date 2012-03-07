@@ -46,7 +46,7 @@ gint     _clutter_keymap_x11_translate_key_state (ClutterKeymapX11    *keymap,
                                                   ClutterModifierType  modifier_state,
                                                   ClutterModifierType *mods_p);
 gboolean _clutter_keymap_x11_get_is_modifier     (ClutterKeymapX11    *keymap,
-                                                  guint                keycode);
+                                                  gint                 keycode);
 
 G_END_DECLS
 
