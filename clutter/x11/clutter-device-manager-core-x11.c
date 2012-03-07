@@ -256,8 +256,8 @@ translate_key_event (ClutterBackendX11       *backend_x11,
   if (n != NoSymbol)
     {
       event->key.unicode_value = g_utf8_get_char_validated (buffer, n);
-      if ((event->key.unicode_value != -1) &&
-          (event->key.unicode_value != -2))
+      if ((event->key.unicode_value != (gunichar) -1) &&
+          (event->key.unicode_value != (gunichar) -2))
         goto out;
     }
   else
