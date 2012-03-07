@@ -50,9 +50,6 @@
 #include "cally-root.h"
 #include "cally-stage.h"
 
-static void cally_util_class_init (CallyUtilClass	*klass);
-static void cally_util_init       (CallyUtil *cally_util);
-
 /* atkutil.h */
 
 static guint                 cally_util_add_global_event_listener    (GSignalEmissionHook listener,

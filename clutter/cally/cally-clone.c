@@ -73,9 +73,6 @@
 #include "cally-clone.h"
 #include "cally-actor-private.h"
 
-static void cally_clone_class_init (CallyCloneClass *klass);
-static void cally_clone_init       (CallyClone *clone);
-
 /* AtkObject */
 static void                  cally_clone_real_initialize (AtkObject *obj,
                                                           gpointer   data);

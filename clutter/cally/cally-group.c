@@ -41,8 +41,6 @@
 #include "cally-group.h"
 #include "cally-actor-private.h"
 
-static void       cally_group_class_init      (CallyGroupClass *klass);
-static void       cally_group_init            (CallyGroup *group);
 static gint       cally_group_get_n_children  (AtkObject *obj);
 static AtkObject* cally_group_ref_child       (AtkObject *obj,
                                               gint       i);

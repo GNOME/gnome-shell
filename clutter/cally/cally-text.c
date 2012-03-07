@@ -73,8 +73,6 @@
 
 #include "clutter-main.h"
 
-static void cally_text_class_init (CallyTextClass *klass);
-static void cally_text_init       (CallyText *cally_text);
 static void cally_text_finalize   (GObject *obj);
 
 /* AtkObject */

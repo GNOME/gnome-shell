@@ -108,8 +108,6 @@ struct _CallyActorActionInfo
   GDestroyNotify notify;
 };
 
-static void cally_actor_class_init (CallyActorClass *klass);
-static void cally_actor_init       (CallyActor *cally_actor);
 static void cally_actor_initialize (AtkObject *obj,
                                    gpointer   data);
 static void cally_actor_finalize   (GObject *obj);

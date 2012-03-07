@@ -38,9 +38,6 @@
 #include "cally-stage.h"
 #include "cally-actor-private.h"
 
-static void cally_stage_class_init (CallyStageClass *klass);
-static void cally_stage_init       (CallyStage      *stage);
-
 /* AtkObject.h */
 static void                  cally_stage_real_initialize (AtkObject *obj,
                                                           gpointer   data);

@@ -34,9 +34,6 @@
 #include "cally-texture.h"
 #include "cally-actor-private.h"
 
-static void cally_texture_class_init (CallyTextureClass *klass);
-static void cally_texture_init       (CallyTexture *texture);
-
 /* AtkObject */
 static void                  cally_texture_real_initialize (AtkObject *obj,
                                                            gpointer   data);

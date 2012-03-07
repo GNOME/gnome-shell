@@ -39,8 +39,6 @@
 #include "cally-root.h"
 
 /* GObject */
-static void cally_root_class_init (CallyRootClass *klass);
-static void cally_root_init       (CallyRoot *root);
 static void cally_root_finalize   (GObject *object);
 
 /* AtkObject.h */
