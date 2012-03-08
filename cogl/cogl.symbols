@@ -5,7 +5,6 @@
 #endif
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
-cogl2_clip_push_from_path
 cogl2_path_arc
 cogl2_path_close
 cogl2_path_curve_to
@@ -48,11 +47,25 @@ cogl_attribute_type_get_type
 cogl_begin_gl
 cogl_bitmap_error_get_type
 cogl_bitmap_error_quark
+
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
+cogl_bitmap_get_buffer
+cogl_bitmap_get_format
+cogl_bitmap_get_height
+cogl_bitmap_get_rowstride
+#endif
+
 cogl_bitmap_get_size_from_file
+
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
+cogl_bitmap_get_width
+#endif
+
 cogl_bitmap_new_from_file
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_bitmap_new_from_buffer
+cogl_bitmap_new_with_size
 #endif
 
 cogl_blend_string_error_get_type
@@ -274,6 +287,7 @@ cogl_framebuffer_push_path_clip
 cogl_framebuffer_push_primitive_clip
 cogl_framebuffer_push_rectangle_clip
 cogl_framebuffer_push_scissor_clip
+cogl_framebuffer_read_pixels_into_bitmap
 cogl_framebuffer_resolve_samples
 cogl_framebuffer_resolve_samples_region
 cogl_framebuffer_rotate
@@ -674,11 +688,7 @@ cogl_pipeline_set_user_program
 #endif
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
-#if 0
-/* not implemented! */
 cogl_pixel_buffer_new_EXP
-#endif
-cogl_pixel_buffer_new_with_size_EXP
 #if 0
 /* not exported in the main APIs for now */
 cogl_pixel_buffer_set_region_EXP
@@ -787,6 +797,7 @@ cogl_rectangle_with_texture_coords
 cogl_renderer_add_constraint
 cogl_renderer_check_onscreen_template
 cogl_renderer_connect
+cogl_renderer_get_driver
 cogl_renderer_get_n_fragment_texture_units
 #endif
 
@@ -797,6 +808,7 @@ cogl_renderer_error_quark
 cogl_renderer_get_winsys_id
 cogl_renderer_new
 cogl_renderer_remove_constraint
+cogl_renderer_set_driver
 cogl_renderer_set_winsys_id
 #endif
 
@@ -874,10 +886,6 @@ cogl_texture_get_rowstride
 cogl_texture_get_width
 cogl_texture_is_sliced
 cogl_texture_new_from_bitmap
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
-cogl_texture_new_from_buffer_EXP
-#endif
 
 cogl_texture_new_from_data
 cogl_texture_new_from_file
@@ -976,8 +984,12 @@ cogl_winsys_feature_get_type
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
 cogl_wayland_onscreen_resize
-cogl_wayland_renderer_get_compositor_EXP
-cogl_wayland_renderer_get_display_EXP
+cogl_wayland_renderer_get_compositor
+cogl_wayland_renderer_get_display
+cogl_wayland_renderer_get_shell
+cogl_wayland_renderer_set_foreign_compositor
+cogl_wayland_renderer_set_foreign_display
+cogl_wayland_renderer_set_foreign_shell
 cogl_wayland_texture_2d_new_from_buffer_EXP
 #endif
 
