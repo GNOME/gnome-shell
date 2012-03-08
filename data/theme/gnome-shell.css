@@ -251,7 +251,7 @@ StScrollBar StButton#vhandle:hover
 }
 
 .popup-menu-icon {
-    icon-size: 16px;
+    icon-size: 1.09em;
 }
 
 /* Switches */
@@ -479,7 +479,7 @@ StScrollBar StButton#vhandle:hover
 }
 
 .system-status-icon {
-    icon-size: 16px;
+    icon-size: 1.09em;
 }
 
 /* Overview */
@@ -617,7 +617,7 @@ StScrollBar StButton#vhandle:hover
 }
 
 .search-entry-icon {
-    icon-size: 16px;
+    icon-size: 1em;
     color: #8d8f8a;
 }
 
