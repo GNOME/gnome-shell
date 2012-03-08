@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-03-06 00:22+0000\n"
-"PO-Revision-Date: 2012-03-07 20:16+0100\n"
+"PO-Revision-Date: 2012-03-08 21:35+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -75,7 +75,7 @@ msgstr "Sklici predmetov CoglObject"
 
 #: ../cogl/cogl-debug-options.h:28
 msgid "Debug ref counting issues for CoglObjects"
-msgstr ""
+msgstr "Razhroščevanje sklicev števca napak predmetov CoglObjects"
 
 #: ../cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
@@ -85,19 +85,15 @@ msgstr "Sledi porezavi tekstur"
 msgid "debug the creation of texture slices"
 msgstr "razhroščevanje ustvarjanja porezav teksture"
 
-# trace image = izris slike?
-# trace (s cogl) = sledenje
-# texture atlas = zbirka tekstur
 #: ../cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
-msgstr "Sledi teksturam zbirke"
+msgstr "Sledi teksturam nabora"
 
 #: ../cogl/cogl-debug-options.h:38
 msgid "Debug texture atlas management"
-msgstr "Razhroščevanje upravljanja zbirke tekstur"
+msgstr "Razhroščevanje upravljanja nabora tekstur"
 
 #: ../cogl/cogl-debug-options.h:42
-#, fuzzy
 msgid "Trace Blend Strings"
 msgstr "Sledi nizom zlivanja"
 
@@ -225,52 +221,46 @@ msgid "Use the GPU to transform rectangular geometry"
 msgstr "Uporabi GPE za preoblikovanje geometrije pravokotnih predmetov"
 
 #: ../cogl/cogl-debug-options.h:106
-#, fuzzy
 msgid "Cogl Specialist"
 msgstr "Specialist Cogl"
 
 #: ../cogl/cogl-debug-options.h:108
-#, fuzzy
 msgid "Dump atlas images"
-msgstr "Izriši slike zbirke"
+msgstr "Izriši slike nabora tekstur"
 
 #: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
-msgstr "Izriši spremembe zbirke tekstur v slikovno datoteko"
+msgstr "Izriši spremembe nabora tekstur v slikovno datoteko"
 
 #: ../cogl/cogl-debug-options.h:113
-#, fuzzy
 msgid "Disable texture atlasing"
-msgstr "Onemogoči zbiranje tekstur"
+msgstr "Onemogoči zbiranje nabora tekstur"
 
 #: ../cogl/cogl-debug-options.h:114
 msgid "Disable use of texture atlasing"
-msgstr "Onemogoči uporabo zbiranja tekstur"
+msgstr "Onemogoči uporabo zbiranja nabora tekstur"
 
 #: ../cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
-msgstr "Onemogoči souporabo zbirke tekstur med besedilom in slikami"
+msgstr "Onemogoči souporabo nabora tekstur med besedilom in slikami"
 
 #: ../cogl/cogl-debug-options.h:119
 msgid "When this is set the glyph cache will always use a separate texture for its atlas. Otherwise it will try to share the atlas with images."
-msgstr "Izbrana možnost omogoča uporabo predpomnenja pismenk v ločeni zbirki tekstur. Sicer bo zbirka souporabljena med pismenkami in slikami."
+msgstr "Izbrana možnost omogoča uporabo predpomnjenja pismenk v ločenem naboru tekstur. Sicer bo nabor souporabljen med pismenkami in slikami."
 
 #: ../cogl/cogl-debug-options.h:124
-#, fuzzy
 msgid "Disable texturing"
-msgstr "Onemogoči sestavljanje zbirke"
+msgstr "Onemogoči sestavljanje nabora"
 
 #: ../cogl/cogl-debug-options.h:125
-#, fuzzy
 msgid "Disable texturing any primitives"
-msgstr "Onemogoči teksturiranje primitivov."
+msgstr "Onemogoči teksturiranje primitivov"
 
 #: ../cogl/cogl-debug-options.h:129
 msgid "Disable arbfp"
 msgstr "Onemogoči arbfp"
 
 #: ../cogl/cogl-debug-options.h:130
-#, fuzzy
 msgid "Disable use of ARB fragment programs"
 msgstr "Onemogoči uporabo fragmentarnih programov ARB"
 
@@ -291,12 +281,10 @@ msgid "Disable use of GLSL"
 msgstr "Onemogoči uporabo GLSL"
 
 #: ../cogl/cogl-debug-options.h:144
-#, fuzzy
 msgid "Disable blending"
 msgstr "Onemogoči zlivanje"
 
 #: ../cogl/cogl-debug-options.h:145
-#, fuzzy
 msgid "Disable use of blending"
 msgstr "Onemogoči uporabo zlivanja"
 
@@ -306,7 +294,7 @@ msgstr "Onemogoči nekvadratne teksture"
 
 #: ../cogl/cogl-debug-options.h:150
 msgid "Makes Cogl think that the GL driver doesn't support NPOT textures so that it will create sliced textures or textures with waste instead."
-msgstr ""
+msgstr "Vsili nastavitev, da gonilnik GL ne podpira tekstur NPOT in bo zato program Cogl ustvaril razrezane teksture."
 
 #: ../cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
@@ -333,7 +321,6 @@ msgid "Traces some select OpenGL calls"
 msgstr "Sledi nekaterim izbranim klicem OpenGL"
 
 #: ../cogl/cogl-debug-options.h:170
-#, fuzzy
 msgid "Trace offscreen support"
 msgstr "Sledi podpori zunaj zaslona"
 
@@ -347,7 +334,7 @@ msgstr "Onemogoči predpomnilnike programa"
 
 #: ../cogl/cogl-debug-options.h:176
 msgid "Disable fallback caches for arbfp and glsl programs"
-msgstr ""
+msgstr "Onemogoči zasilne predpomnilnike za programe arbfp in glsl"
 
 #: ../cogl/cogl-debug-options.h:180
 msgid "Disable read pixel optimization"
