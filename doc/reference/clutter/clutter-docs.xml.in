@@ -122,6 +122,12 @@
     </chapter>
 
     <chapter>
+      <title>Content</title>
+
+      <xi:include href="xml/clutter-canvas.xml"/>
+    </chapter>
+
+    <chapter>
       <title>Paint Objects</title>
 
       <xi:include href="xml/clutter-paint-node.xml"/>

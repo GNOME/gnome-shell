@@ -65,6 +65,7 @@ source_h =					\
 	$(srcdir)/clutter-box-layout.h		\
 	$(srcdir)/clutter-brightness-contrast-effect.h	\
 	$(srcdir)/clutter-cairo-texture.h	\
+	$(srcdir)/clutter-canvas.h		\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-click-action.h	\
 	$(srcdir)/clutter-cogl-compat.h 	\
@@ -145,6 +146,7 @@ source_c = \
 	$(srcdir)/clutter-box-layout.c		\
 	$(srcdir)/clutter-brightness-contrast-effect.c	\
 	$(srcdir)/clutter-cairo-texture.c       \
+	$(srcdir)/clutter-canvas.c		\
 	$(srcdir)/clutter-child-meta.c		\
 	$(srcdir)/clutter-click-action.c	\
 	$(srcdir)/clutter-clone.c		\

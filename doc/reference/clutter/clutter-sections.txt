@@ -3132,3 +3132,20 @@ clutter_text_node_get_type
 clutter_clip_node_get_type
 clutter_layer_node_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-canvas</FILE>
+ClutterCanvas
+ClutterCanvasClass
+clutter_canvas_new
+clutter_canvas_set_size
+<SUBSECTION Standard>
+CLUTTER_TYPE_CANVAS
+CLUTTER_CANVAS
+CLUTTER_CANVAS_CLASS
+CLUTTER_IS_CANVAS
+CLUTTER_IS_CANVAS_CLASS
+<SUBSECTION Private>
+ClutterCanvasPrivate
+clutter_canvas_get_type
+</SECTION>
