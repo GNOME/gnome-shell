@@ -87,6 +87,7 @@ clutter_image_paint_content (ClutterContent   *content,
                              ClutterPaintNode *root)
 {
   ClutterImagePrivate *priv = CLUTTER_IMAGE (content)->priv;
+  ClutterScalingFilter min_f, mag_f;
   ClutterPaintNode *node;
   ClutterActorBox box;
   ClutterColor color;
@@ -97,13 +98,14 @@ clutter_image_paint_content (ClutterContent   *content,
 
   clutter_actor_get_content_box (actor, &box);
   paint_opacity = clutter_actor_get_paint_opacity (actor);
+  clutter_actor_get_content_scaling_filters (actor, &min_f, &mag_f);
 
   color.red = paint_opacity;
   color.green = paint_opacity;
   color.blue = paint_opacity;
   color.alpha = paint_opacity;
 
-  node = clutter_texture_node_new (priv->texture, &color);
+  node = clutter_texture_node_new (priv->texture, &color, min_f, mag_f);
   clutter_paint_node_set_name (node, "Image");
   clutter_paint_node_add_rectangle (node, &box);
   clutter_paint_node_add_child (root, node);

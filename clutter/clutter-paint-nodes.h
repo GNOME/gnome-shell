@@ -71,7 +71,9 @@ typedef struct _ClutterTextureNodeClass         ClutterTextureNodeClass;
 GType clutter_texture_node_get_type (void) G_GNUC_CONST;
 
 ClutterPaintNode *      clutter_texture_node_new        (CoglTexture           *texture,
-                                                         const ClutterColor    *color);
+                                                         const ClutterColor    *color,
+                                                         ClutterScalingFilter   min_filter,
+                                                         ClutterScalingFilter   mag_filter);
 
 #define CLUTTER_TYPE_CLIP_NODE                  (clutter_clip_node_get_type ())
 #define CLUTTER_CLIP_NODE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_CLIP_NODE, ClutterClipNode))

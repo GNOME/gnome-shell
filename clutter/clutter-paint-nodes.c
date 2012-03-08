@@ -609,10 +609,30 @@ clutter_texture_node_init (ClutterTextureNode *self)
   pnode->pipeline = cogl_pipeline_copy (default_texture_pipeline);
 }
 
+static CoglPipelineFilter
+clutter_scaling_filter_to_cogl_pipeline_filter (ClutterScalingFilter filter)
+{
+  switch (filter)
+    {
+    case CLUTTER_SCALING_FILTER_NEAREST:
+      return COGL_PIPELINE_FILTER_NEAREST;
+
+    case CLUTTER_SCALING_FILTER_LINEAR:
+      return COGL_PIPELINE_FILTER_LINEAR;
+
+    case CLUTTER_SCALING_FILTER_BILINEAR:
+      return COGL_PIPELINE_FILTER_LINEAR_MIPMAP_LINEAR;
+    }
+
+  return COGL_PIPELINE_FILTER_LINEAR;
+}
+
 /**
  * clutter_texture_node_new:
- * @texture: (allow-none): a #CoglTexture
- * @color: (allow-none): a #ClutterColor
+ * @texture: a #CoglTexture
+ * @color: a #ClutterColor
+ * @min_filter: the minification filter for the texture
+ * @mag_filter: the magnification filter for the texture
  *
  * Creates a new #ClutterPaintNode that will paint the passed @texture.
  *
@@ -625,30 +645,32 @@ clutter_texture_node_init (ClutterTextureNode *self)
  * Since: 1.10
  */
 ClutterPaintNode *
-clutter_texture_node_new (CoglTexture        *texture,
-                          const ClutterColor *color)
+clutter_texture_node_new (CoglTexture          *texture,
+                          const ClutterColor   *color,
+                          ClutterScalingFilter  min_filter,
+                          ClutterScalingFilter  mag_filter)
 {
   ClutterPipelineNode *tnode;
+  CoglColor cogl_color;
+  CoglPipelineFilter min_f, mag_f;
 
-  g_return_val_if_fail (texture == NULL || cogl_is_texture (texture), NULL);
+  g_return_val_if_fail (cogl_is_texture (texture), NULL);
 
   tnode = _clutter_paint_node_internal (CLUTTER_TYPE_TEXTURE_NODE);
 
-  if (texture != NULL)
-    cogl_pipeline_set_layer_texture (tnode->pipeline, 0, texture);
+  cogl_pipeline_set_layer_texture (tnode->pipeline, 0, texture);
 
-  if (color != NULL)
-    {
-      CoglColor cogl_color;
+  min_f = clutter_scaling_filter_to_cogl_pipeline_filter (min_filter);
+  mag_f = clutter_scaling_filter_to_cogl_pipeline_filter (mag_filter);
+  cogl_pipeline_set_layer_filters (tnode->pipeline, 0, min_f, mag_f);
 
-      cogl_color_init_from_4ub (&cogl_color,
-                                color->red,
-                                color->green,
-                                color->blue,
-                                color->alpha);
-      cogl_color_premultiply (&cogl_color);
-      cogl_pipeline_set_color (tnode->pipeline, &cogl_color);
-    }
+  cogl_color_init_from_4ub (&cogl_color,
+                            color->red,
+                            color->green,
+                            color->blue,
+                            color->alpha);
+  cogl_color_premultiply (&cogl_color);
+  cogl_pipeline_set_color (tnode->pipeline, &cogl_color);
 
   return (ClutterPaintNode *) tnode;
 }

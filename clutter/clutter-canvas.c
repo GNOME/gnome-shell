@@ -293,6 +293,7 @@ clutter_canvas_paint_content (ClutterContent   *content,
   ClutterActorBox box;
   ClutterColor color;
   guint8 paint_opacity;
+  ClutterScalingFilter min_f, mag_f;
 
   if (self->priv->buffer == NULL)
     return;
@@ -305,13 +306,14 @@ clutter_canvas_paint_content (ClutterContent   *content,
 
   clutter_actor_get_content_box (actor, &box);
   paint_opacity = clutter_actor_get_paint_opacity (actor);
+  clutter_actor_get_content_scaling_filters (actor, &min_f, &mag_f);
 
   color.red = paint_opacity;
   color.green = paint_opacity;
   color.blue = paint_opacity;
   color.alpha = paint_opacity;
 
-  node = clutter_texture_node_new (texture, &color);
+  node = clutter_texture_node_new (texture, &color, min_f, mag_f);
   cogl_object_unref (texture);
 
   clutter_paint_node_set_name (node, "Canvas");
