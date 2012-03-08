@@ -45,6 +45,16 @@
       </_description>
     </key>
 
+    <key name="dynamic-workspaces" type="b">
+      <default>false</default>
+      <_summary>Workspaces are managed dynamically</_summary>
+      <_description>
+        Determines whether workspaces are managed dynamically or
+        whether there's a static number of workspaces (determined
+        by the num-workspaces key in org.gnome.desktop.wm.preferences).
+      </_description>
+    </key>
+
     <key name="workspaces-only-on-primary" type="b">
       <default>false</default>
       <_summary>Workspaces only on primary</_summary>

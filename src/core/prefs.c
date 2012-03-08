@@ -82,6 +82,7 @@ static int num_workspaces = 4;
 static GDesktopTitlebarAction action_double_click_titlebar = G_DESKTOP_TITLEBAR_ACTION_TOGGLE_MAXIMIZE;
 static GDesktopTitlebarAction action_middle_click_titlebar = G_DESKTOP_TITLEBAR_ACTION_LOWER;
 static GDesktopTitlebarAction action_right_click_titlebar = G_DESKTOP_TITLEBAR_ACTION_MENU;
+static gboolean dynamic_workspaces = FALSE;
 static gboolean application_based = FALSE;
 static gboolean disable_workarounds = FALSE;
 static gboolean auto_raise = FALSE;
@@ -279,6 +280,13 @@ static MetaBoolPreference preferences_bool[] =
         META_PREF_TITLEBAR_FONT, /* note! shares a pref */
       },
       &use_system_font,
+    },
+    {
+      { "dynamic-workspaces",
+        SCHEMA_MUTTER,
+        META_PREF_DYNAMIC_WORKSPACES,
+      },
+      &dynamic_workspaces,
     },
     {
       { "application-based",
@@ -1496,6 +1504,12 @@ int
 meta_prefs_get_num_workspaces (void)
 {
   return num_workspaces;
+}
+
+gboolean
+meta_prefs_get_dynamic_workspaces (void)
+{
+  return dynamic_workspaces;
 }
 
 gboolean

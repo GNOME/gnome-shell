@@ -47,6 +47,7 @@ typedef enum
   META_PREF_THEME,
   META_PREF_TITLEBAR_FONT,
   META_PREF_NUM_WORKSPACES,
+  META_PREF_DYNAMIC_WORKSPACES,
   META_PREF_APPLICATION_BASED,
   META_PREF_KEYBINDINGS,
   META_PREF_DISABLE_WORKAROUNDS,
@@ -94,6 +95,7 @@ const char*                 meta_prefs_get_theme              (void);
 /* returns NULL if GTK default should be used */
 const PangoFontDescription* meta_prefs_get_titlebar_font      (void);
 int                         meta_prefs_get_num_workspaces     (void);
+gboolean                    meta_prefs_get_dynamic_workspaces (void);
 gboolean                    meta_prefs_get_application_based  (void);
 gboolean                    meta_prefs_get_disable_workarounds (void);
 gboolean                    meta_prefs_get_auto_raise         (void);
