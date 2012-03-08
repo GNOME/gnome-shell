@@ -921,12 +921,7 @@ load_gicon_with_colors (StTextureCache    *cache,
 
   info = gtk_icon_theme_lookup_by_gicon (theme, icon, size, GTK_ICON_LOOKUP_USE_BUILTIN);
   if (info == NULL)
-    {
-      /* gah, the icon doesn't exist. Return a blank texture that will never load */
-      texture = CLUTTER_ACTOR (create_default_texture (cache));
-      clutter_actor_set_size (texture, size, size);
-      return texture;
-    }
+    return NULL;
 
   gicon_string = g_icon_to_string (icon);
   /* A return value of NULL indicates that the icon can not be serialized,
@@ -1233,8 +1228,16 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
       texture = load_gicon_with_colors (cache, themed, size,
                                         st_theme_node_get_icon_colors (theme_node));
       g_object_unref (themed);
+      if (texture == NULL)
+        {
+          /* We don't have an equivalent of image-missing
+           * for the symbolic icon theme, so just create a blank
+           * actor. */
+          texture = clutter_actor_new ();
+          clutter_actor_set_size (texture, size, size);
+        }
 
-      return CLUTTER_ACTOR (texture);
+      return texture;
       break;
     case ST_ICON_FULLCOLOR:
       themed = g_themed_icon_new_with_default_fallbacks (name);
@@ -1246,8 +1249,7 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
           texture = load_gicon_with_colors (cache, themed, size, NULL);
           g_object_unref (themed);
         }
-
-      return CLUTTER_ACTOR (texture);
+      return texture;
       break;
     default:
       g_assert_not_reached ();
