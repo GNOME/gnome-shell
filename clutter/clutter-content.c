@@ -173,6 +173,8 @@ clutter_content_invalidate (ClutterContent *content)
 
   g_return_if_fail (CLUTTER_IS_CONTENT (content));
 
+  CLUTTER_CONTENT_GET_IFACE (content)->invalidate (content);
+
   actors = g_object_get_qdata (G_OBJECT (content), quark_content_actors);
   if (actors == NULL)
     return;
@@ -186,8 +188,6 @@ clutter_content_invalidate (ClutterContent *content)
 
       clutter_actor_queue_redraw (actor);
     }
-
-  CLUTTER_CONTENT_GET_IFACE (content)->invalidate (content);
 }
 
 /*< private >

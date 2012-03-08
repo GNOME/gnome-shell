@@ -115,12 +115,12 @@ clutter_cairo_context_draw_marshaller (GClosure     *closure,
 
   cairo_save (cr);
 
-  _clutter_marshal_BOOLEAN__BOXED (closure,
-                                   return_value,
-                                   n_param_values,
-                                   param_values,
-                                   invocation_hint,
-                                   marshal_data);
+  _clutter_marshal_BOOLEAN__BOXED_INT_INT (closure,
+                                           return_value,
+                                           n_param_values,
+                                           param_values,
+                                           invocation_hint,
+                                           marshal_data);
 
   cairo_restore (cr);
 }
@@ -238,6 +238,8 @@ clutter_canvas_class_init (ClutterCanvasClass *klass)
    * ClutterCanvas::draw:
    * @canvas: the #ClutterCanvas that emitted the signal
    * @cr: the Cairo context used to draw
+   * @width: the width of the @canvas
+   * @height: the height of the @canvas
    *
    * The #ClutterCanvas::draw signal is emitted each time a canvas is
    * invalidated.
@@ -258,8 +260,10 @@ clutter_canvas_class_init (ClutterCanvasClass *klass)
                   G_STRUCT_OFFSET (ClutterCanvasClass, draw),
                   _clutter_boolean_handled_accumulator, NULL,
                   clutter_cairo_context_draw_marshaller,
-                  G_TYPE_BOOLEAN, 1,
-                  CAIRO_GOBJECT_TYPE_CONTEXT);
+                  G_TYPE_BOOLEAN, 3,
+                  CAIRO_GOBJECT_TYPE_CONTEXT,
+                  G_TYPE_INT,
+                  G_TYPE_INT);
 
   gobject_class->set_property = clutter_canvas_set_property;
   gobject_class->get_property = clutter_canvas_get_property;
@@ -372,7 +376,9 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
 
   self->priv->cr = cr = cairo_create (surface);
 
-  g_signal_emit (self, canvas_signals[DRAW], 0, cr, &res);
+  g_signal_emit (self, canvas_signals[DRAW], 0,
+                 cr, priv->width, priv->height,
+                 &res);
 
   self->priv->cr = NULL;
   cairo_destroy (cr);

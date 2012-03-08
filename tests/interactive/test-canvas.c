@@ -5,9 +5,10 @@
 
 static gboolean
 draw_clock (ClutterCanvas *canvas,
-            cairo_t       *cr)
+            cairo_t       *cr,
+            int            width,
+            int            height)
 {
-  float width, height;
   GDateTime *now;
   float hours, minutes, seconds;
   ClutterColor color;
@@ -31,9 +32,6 @@ draw_clock (ClutterCanvas *canvas,
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
   /* scale the modelview to the size of the surface */
-  clutter_content_get_preferred_size (CLUTTER_CONTENT (canvas),
-                                      &width,
-                                      &height);
   cairo_scale (cr, width, height);
 
   cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
@@ -107,6 +105,9 @@ test_canvas_main (int argc, char *argv[])
   actor = clutter_actor_new ();
   clutter_actor_set_content (actor, canvas);
   clutter_actor_add_child (stage, actor);
+
+  /* the actor now owns the canvas */
+  g_object_unref (canvas);
 
   /* bind the size of the actor to that of the stage */
   clutter_actor_add_constraint (actor, clutter_bind_constraint_new (stage, CLUTTER_BIND_SIZE, 0));

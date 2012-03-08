@@ -73,7 +73,9 @@ struct _ClutterCanvasClass
 
   /*< public >*/
   gboolean (* draw) (ClutterCanvas *canvas,
-                     cairo_t       *cr);
+                     cairo_t       *cr,
+                     int            width,
+                     int            height);
 
   /*< private >*/
   gpointer _padding[16];
