@@ -1611,7 +1611,8 @@ selection_paint (ClutterText *self)
           cogl_path_fill (selection_path);
 
           /* Paint selected text */
-          cogl_clip_push_from_path (selection_path);
+          cogl_framebuffer_push_path_clip (cogl_get_draw_framebuffer (),
+                                           selection_path);
           cogl_object_unref (selection_path);
 
           if (priv->selected_text_color_set)
