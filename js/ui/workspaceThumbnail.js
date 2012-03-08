@@ -610,6 +610,9 @@ const ThumbnailsBox = new Lang.Class({
         if (!source.realWindow && !source.shellWorkspaceLaunch)
             return DND.DragMotionResult.CONTINUE;
 
+        if (!Meta.prefs_get_dynamic_workspaces())
+            return DND.DragMotionResult.CONTINUE;
+
         let spacing = this.actor.get_theme_node().get_length('spacing');
         let thumbHeight = this._porthole.height * this._scale;
 

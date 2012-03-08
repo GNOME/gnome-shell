@@ -38,6 +38,7 @@ const XdndHandler = imports.ui.xdndHandler;
 const StatusIconDispatcher = imports.ui.statusIconDispatcher;
 const Util = imports.misc.util;
 
+const OVERRIDES_SCHEMA = 'org.gnome.shell.overrides';
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
 DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 
@@ -71,6 +72,7 @@ let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
 let _gdmCssStylesheet = null;
+let _overridesSettings = null;
 
 let background = null;
 
@@ -250,6 +252,9 @@ function start() {
         Scripting.runPerfScript(module, perfOutput);
     }
 
+    _overridesSettings = new Gio.Settings({ schema: OVERRIDES_SCHEMA });
+    _overridesSettings.connect('changed::dynamic-workspaces', _queueCheckWorkspaces);
+
     global.screen.connect('notify::n-workspaces', _nWorkspacesChanged);
 
     global.screen.connect('window-entered-monitor', _windowEnteredMonitor);
@@ -273,6 +278,11 @@ const LAST_WINDOW_GRACE_TIME = 1000;
 function _checkWorkspaces() {
     let i;
     let emptyWorkspaces = [];
+
+    if (!Meta.prefs_get_dynamic_workspaces()) {
+        _checkWorkspacesId = 0;
+        return false;
+    }
 
     for (i = 0; i < _workspaces.length; i++) {
         let lastRemoved = _workspaces[i]._lastRemovedWindow;
