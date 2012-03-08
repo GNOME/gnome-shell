@@ -119,6 +119,8 @@ copy ..\..\..\clutter\clutter-blur-effect.h $(CopyDir)\include\clutter-$(Clutter
 
 copy ..\..\..\clutter\clutter-box-layout.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
+copy ..\..\..\clutter\clutter-brightness-contrast-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
 copy ..\..\..\clutter\clutter-cairo-texture.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-child-meta.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
@@ -126,6 +128,8 @@ copy ..\..\..\clutter\clutter-child-meta.h $(CopyDir)\include\clutter-$(ClutterA
 copy ..\..\..\clutter\clutter-click-action.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-clone.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-cogl-compat.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-color-static.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 

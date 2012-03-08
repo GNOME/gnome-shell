@@ -129,10 +129,12 @@ copy ..\..\..\clutter\clutter-binding-pool.h $(OutDir)\include\clutter-$(Clutter
 copy ..\..\..\clutter\clutter-bin-layout.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-blur-effect.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-box-layout.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
+copy ..\..\..\clutter\clutter-brightness-contrast-effect.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-cairo-texture.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-child-meta.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-click-action.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-clone.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
+copy ..\..\..\clutter\clutter-cogl-compat.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-color-static.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-color.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-colorize-effect.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
