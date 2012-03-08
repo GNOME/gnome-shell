@@ -90,6 +90,9 @@ struct _ClutterContentIface
 
 GType clutter_content_get_type (void) G_GNUC_CONST;
 
+gboolean        clutter_content_get_preferred_size      (ClutterContent *content,
+                                                         gfloat         *width,
+                                                         gfloat         *height);
 void            clutter_content_invalidate              (ClutterContent *content);
 
 G_END_DECLS

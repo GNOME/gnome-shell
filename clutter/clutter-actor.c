@@ -3205,6 +3205,9 @@ clutter_actor_paint_node (ClutterActor     *actor,
 {
   ClutterActorPrivate *priv = actor->priv;
 
+  if (root == NULL)
+    return FALSE;
+
   if (priv->bg_color_set &&
       !clutter_color_equal (&priv->bg_color, CLUTTER_COLOR_Transparent))
     {
@@ -17614,9 +17617,9 @@ clutter_actor_get_content_box (ClutterActor    *self,
   /* if the content does not have a preferred size then there is
    * no point in computing the content box
    */
-  if (!_clutter_content_get_preferred_size (priv->content,
-                                            &content_w,
-                                            &content_h))
+  if (!clutter_content_get_preferred_size (priv->content,
+                                           &content_w,
+                                           &content_h))
     return;
 
   clutter_actor_box_get_size (&priv->allocation, &alloc_w, &alloc_h);

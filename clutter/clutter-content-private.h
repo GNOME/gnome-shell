@@ -29,10 +29,6 @@
 
 G_BEGIN_DECLS
 
-gboolean        _clutter_content_get_preferred_size     (ClutterContent   *content,
-                                                         gfloat           *width,
-                                                         gfloat           *height);
-
 void            _clutter_content_attached               (ClutterContent   *content,
                                                          ClutterActor     *actor);
 void            _clutter_content_detached               (ClutterContent   *content,

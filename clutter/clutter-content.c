@@ -275,8 +275,8 @@ _clutter_content_paint_content (ClutterContent   *content,
   CLUTTER_CONTENT_GET_IFACE (content)->paint_content (content, actor, node);
 }
 
-/*< private >
- * _clutter_content_get_preferred_size:
+/**
+ * clutter_content_get_preferred_size:
  * @content: a #ClutterContent
  * @width: (out): return location for the natural width of the content
  * @height: (out): return location for the natural height of the content
@@ -289,12 +289,16 @@ _clutter_content_paint_content (ClutterContent   *content,
  *
  * Return value: %TRUE if the content has a preferred size, and %FALSE
  *   otherwise
+ *
+ * Since: 1.10
  */
 gboolean
-_clutter_content_get_preferred_size (ClutterContent *content,
-                                     gfloat         *width,
-                                     gfloat         *height)
+clutter_content_get_preferred_size (ClutterContent *content,
+                                    gfloat         *width,
+                                    gfloat         *height)
 {
+  g_return_val_if_fail (CLUTTER_IS_CONTENT (content), FALSE);
+
   return CLUTTER_CONTENT_GET_IFACE (content)->get_preferred_size (content,
                                                                   width,
                                                                   height);
