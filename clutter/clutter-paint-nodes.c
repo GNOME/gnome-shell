@@ -104,8 +104,6 @@ struct _ClutterRootNode
   CoglMatrix modelview;
 };
 
-GType _clutter_root_node_get_type (void) G_GNUC_CONST;
-
 G_DEFINE_TYPE (ClutterRootNode, clutter_root_node, CLUTTER_TYPE_PAINT_NODE)
 
 static gboolean
@@ -198,8 +196,6 @@ typedef struct _ClutterTransformNode {
 
 typedef struct _ClutterPaintNodeClass   ClutterTransformNodeClass;
 
-GType _clutter_transform_node_get_type (void) G_GNUC_CONST;
-
 G_DEFINE_TYPE (ClutterTransformNode, clutter_transform_node, CLUTTER_TYPE_PAINT_NODE)
 
 static gboolean
@@ -268,8 +264,6 @@ struct _ClutterDummyNode
 {
   ClutterPaintNode parent_instance;
 };
-
-GType _clutter_dummy_node_get_type (void) G_GNUC_CONST;
 
 G_DEFINE_TYPE (ClutterDummyNode, clutter_dummy_node, CLUTTER_TYPE_PAINT_NODE)
 
