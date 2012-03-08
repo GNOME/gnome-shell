@@ -480,6 +480,14 @@ void                            clutter_actor_set_content_gravity               
 CLUTTER_AVAILABLE_IN_1_10
 ClutterContentGravity           clutter_actor_get_content_gravity               (ClutterActor               *self);
 CLUTTER_AVAILABLE_IN_1_10
+void                            clutter_actor_set_content_scaling_filters       (ClutterActor               *self,
+                                                                                 ClutterScalingFilter        min_filter,
+                                                                                 ClutterScalingFilter        mag_filter);
+CLUTTER_AVAILABLE_IN_1_10
+void                            clutter_actor_get_content_scaling_filters       (ClutterActor               *self,
+                                                                                 ClutterScalingFilter       *min_filter,
+                                                                                 ClutterScalingFilter       *mag_filter);
+CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_get_content_box                   (ClutterActor               *self,
                                                                                  ClutterActorBox            *box);
 CLUTTER_AVAILABLE_IN_1_10

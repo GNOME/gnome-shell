@@ -166,7 +166,9 @@
  *   clutter_actor_get_allocation_box (actor, &box);
  *
  *   /&ast; the cogl_texture variable is set elsewhere &ast;/
- *   node = clutter_texture_node_new (cogl_texture, CLUTTER_COLOR_White);
+ *   node = clutter_texture_node_new (cogl_texture, CLUTTER_COLOR_White,
+ *                                    CLUTTER_SCALING_FILTER_BILINEAR,
+ *                                    CLUTTER_SCALING_FILTER_LINEAR);
  *
  *   /&ast; paint the content of the node using the allocation &ast;/
  *   clutter_paint_node_add_rectangle (node, &box);
@@ -588,6 +590,8 @@ struct _ClutterActorPrivate
   ClutterContent *content;
 
   ClutterContentGravity content_gravity;
+  ClutterScalingFilter min_filter;
+  ClutterScalingFilter mag_filter;
 
   /* used when painting, to update the paint volume */
   ClutterEffect *current_effect;
@@ -754,6 +758,8 @@ enum
   PROP_CONTENT,
   PROP_CONTENT_GRAVITY,
   PROP_CONTENT_BOX,
+  PROP_MINIFICATION_FILTER,
+  PROP_MAGNIFICATION_FILTER,
 
   PROP_LAST
 };
@@ -4471,6 +4477,18 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_content_gravity (actor, g_value_get_enum (value));
       break;
 
+    case PROP_MINIFICATION_FILTER:
+      clutter_actor_set_content_scaling_filters (actor,
+                                                 g_value_get_enum (value),
+                                                 actor->priv->mag_filter);
+      break;
+
+    case PROP_MAGNIFICATION_FILTER:
+      clutter_actor_set_content_scaling_filters (actor,
+                                                 actor->priv->min_filter,
+                                                 g_value_get_enum (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -4884,6 +4902,14 @@ clutter_actor_get_property (GObject    *object,
         clutter_actor_get_content_box (actor, &box);
         g_value_set_boxed (value, &box);
       }
+      break;
+
+    case PROP_MINIFICATION_FILTER:
+      g_value_set_enum (value, priv->min_filter);
+      break;
+
+    case PROP_MAGNIFICATION_FILTER:
+      g_value_set_enum (value, priv->mag_filter);
       break;
 
     default:
@@ -6352,6 +6378,22 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         CLUTTER_TYPE_ACTOR_BOX,
                         CLUTTER_PARAM_READABLE);
 
+  obj_props[PROP_MINIFICATION_FILTER] =
+    g_param_spec_enum ("minification-filter",
+                       P_("Minification Filter"),
+                       P_("The filter used when reducing the size of the content"),
+                       CLUTTER_TYPE_SCALING_FILTER,
+                       CLUTTER_SCALING_FILTER_LINEAR,
+                       CLUTTER_PARAM_READWRITE);
+
+  obj_props[PROP_MAGNIFICATION_FILTER] =
+    g_param_spec_enum ("magnification-filter",
+                       P_("Magnification Filter"),
+                       P_("The filter used when increasing the size of the content"),
+                       CLUTTER_TYPE_SCALING_FILTER,
+                       CLUTTER_SCALING_FILTER_LINEAR,
+                       CLUTTER_PARAM_READWRITE);
+
   g_object_class_install_properties (object_class, PROP_LAST, obj_props);
 
   /**
@@ -6937,6 +6979,8 @@ clutter_actor_init (ClutterActor *self)
    * the easiest thing to compute.
    */
   priv->content_gravity = CLUTTER_CONTENT_GRAVITY_RESIZE_FILL;
+  priv->min_filter = CLUTTER_SCALING_FILTER_LINEAR;
+  priv->mag_filter = CLUTTER_SCALING_FILTER_LINEAR;
 }
 
 /**
@@ -17744,4 +17788,78 @@ clutter_actor_get_content_box (ClutterActor    *self,
         }
       break;
     }
+}
+
+/**
+ * clutter_actor_set_content_scaling_filters:
+ * @self: a #ClutterActor
+ * @min_filter: FIXME
+ * @mag_filter: FIXME
+ *
+ * FIXME
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_set_content_scaling_filters (ClutterActor         *self,
+                                           ClutterScalingFilter  min_filter,
+                                           ClutterScalingFilter  mag_filter)
+{
+  ClutterActorPrivate *priv;
+  gboolean changed;
+  GObject *obj;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+  obj = G_OBJECT (self);
+
+  g_object_freeze_notify (obj);
+
+  changed = FALSE;
+
+  if (priv->min_filter != min_filter)
+    {
+      priv->min_filter = min_filter;
+      changed = TRUE;
+
+      g_object_notify_by_pspec (obj, obj_props[PROP_MINIFICATION_FILTER]);
+    }
+
+  if (priv->mag_filter != mag_filter)
+    {
+      priv->mag_filter = mag_filter;
+      changed = TRUE;
+
+      g_object_notify_by_pspec (obj, obj_props[PROP_MAGNIFICATION_FILTER]);
+    }
+
+  if (changed)
+    clutter_actor_queue_redraw (self);
+
+  g_object_thaw_notify (obj);
+}
+
+/**
+ * clutter_actor_get_content_scaling_filters:
+ * @self: a #ClutterActor
+ * @min_filter: (out): FIXME
+ * @mag_filter: (out): FIXME
+ *
+ * FIXME
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_get_content_scaling_filters (ClutterActor         *self,
+                                           ClutterScalingFilter *min_filter,
+                                           ClutterScalingFilter *mag_filter)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (min_filter != NULL)
+    *min_filter = self->priv->min_filter;
+
+  if (mag_filter != NULL)
+    *mag_filter = self->priv->mag_filter;
 }
