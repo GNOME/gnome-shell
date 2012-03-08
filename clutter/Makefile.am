@@ -90,6 +90,7 @@ source_h =					\
 	$(srcdir)/clutter-flow-layout.h		\
 	$(srcdir)/clutter-gesture-action.h 	\
 	$(srcdir)/clutter-group.h 		\
+	$(srcdir)/clutter-image.h		\
 	$(srcdir)/clutter-input-device.h	\
         $(srcdir)/clutter-interval.h            \
 	$(srcdir)/clutter-keysyms.h 		\
@@ -167,6 +168,7 @@ source_c = \
 	$(srcdir)/clutter-flatten-effect.c	\
 	$(srcdir)/clutter-flow-layout.c		\
 	$(srcdir)/clutter-gesture-action.c 	\
+	$(srcdir)/clutter-image.c		\
 	$(srcdir)/clutter-input-device.c	\
 	$(srcdir)/clutter-interval.c            \
 	$(srcdir)/clutter-keysyms-table.c	\
