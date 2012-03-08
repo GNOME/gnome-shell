@@ -564,7 +564,9 @@ clutter_master_clock_init (ClutterMasterClock *self)
   self->idle = FALSE;
   self->ensure_next_iteration = FALSE;
 
+#ifdef CLUTTER_ENABLE_DEBUG
   self->frame_budget = G_USEC_PER_SEC / 60;
+#endif
 
   g_source_set_priority (source, CLUTTER_PRIORITY_REDRAW);
   g_source_set_can_recurse (source, FALSE);
