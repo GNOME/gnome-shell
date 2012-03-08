@@ -113,6 +113,8 @@ copy ..\..\..\cogl\cogl-primitives.h $(CopyDir)\include\cogl-$(CoglApiVersion)\c
 
 copy ..\..\..\cogl\cogl-path.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
+copy ..\..\..\cogl\cogl-path-functions.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+
 copy ..\..\..\cogl\cogl-pipeline-layer-state.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-pipeline-state.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
@@ -178,9 +180,9 @@ copy ..\..\..\cogl\cogl-context.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-win32-renderer.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
-copy ..\..\..\cogl\cogl2-path.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+copy ..\..\..\cogl\cogl1-context.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
-copy ..\..\..\cogl\cogl2-clip-state.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+copy ..\..\..\cogl\cogl2-path.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl2-experimental.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 

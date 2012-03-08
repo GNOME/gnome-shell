@@ -132,6 +132,7 @@ copy ..\..\..\cogl\cogl-offscreen.h $(OutDir)\include\cogl-$(CoglApiVersion)\cog
 copy ..\..\..\cogl\cogl-onscreen.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-primitives.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-path.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
+copy ..\..\..\cogl\cogl-path-functions.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-pipeline-layer-state.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-pipeline-state.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-pixel-buffer.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
@@ -164,8 +165,8 @@ copy ..\..\..\cogl\cogl-onscreen-template.h $(OutDir)\include\cogl-$(CoglApiVers
 copy ..\..\..\cogl\cogl-display.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-context.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-win32-renderer.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
+copy ..\..\..\cogl\cogl1-context.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl2-path.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
-copy ..\..\..\cogl\cogl2-clip-state.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl2-experimental.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 
 mkdir $(OutDir)\share\cogl-$(CoglApiVersion)\tests&#x0D;&#x0A;
