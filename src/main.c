@@ -163,6 +163,8 @@ shell_prefs_init (void)
 {
   meta_prefs_override_preference_schema ("attach-modal-dialogs",
                                          OVERRIDES_SCHEMA);
+  meta_prefs_override_preference_schema ("dynamic-workspaces",
+                                         OVERRIDES_SCHEMA);
   meta_prefs_override_preference_schema ("workspaces-only-on-primary",
                                          OVERRIDES_SCHEMA);
   meta_prefs_override_preference_schema ("button-layout",
