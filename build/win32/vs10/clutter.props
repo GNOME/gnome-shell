@@ -11,9 +11,9 @@
     <ReleaseLibBuildDefines>$(LibBuildDefines);G_DISABLE_ASSERT;G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS</ReleaseLibBuildDefines>
     <ClutterBuildDefines>$(BaseBuildDef);G_LOG_DOMAIN="Clutter";CLUTTER_PREFIX="../";CLUTTER_LIBDIR="../lib";CLUTTER_DATADIR="../share";CLUTTER_LOCALEDIR="../share/locale";CLUTTER_SYSCONFDIR="../etc"</ClutterBuildDefines>
     <ClutterDisableDeprecationWarnings>CLUTTER_DISABLE_DEPRECATION_WARNINGS;GLIB_DISABLE_DEPRECATION_WARNINGS</ClutterDisableDeprecationWarnings>
-    <CallyTestDefs>$(BaseWinBuildDef);PREFIXDIR="/some/dummy/dir;$(ClutterDisableDeprecationWarnings)"</CallyTestDefs>
+    <CallyTestDefs>$(BaseWinBuildDef);PREFIXDIR="/some/dummy/dir";$(ClutterDisableDeprecationWarnings)</CallyTestDefs>
     <TestProgDef>$(BaseBuildDef);TESTS_DATADIR="../share/clutter-$(ClutterApiVersion)/data"</TestProgDef>
-    <TestPerfProgDef>$(BaseBuildDef);TESTS_DATA_DIR=\"../share/clutter-$(ClutterApiVersion)/data\;$(ClutterDisableDeprecationWarnings)"</TestPerfProgDef>
+    <TestPerfProgDef>$(BaseBuildDef);TESTS_DATA_DIR="../share/clutter-$(ClutterApiVersion)/data";$(ClutterDisableDeprecationWarnings)</TestPerfProgDef>
     <PreBuildCmd>
 if exist ..\..\..\config.h goto DONE_CONFIG_H
 
