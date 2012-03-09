@@ -1149,6 +1149,18 @@ typedef enum {
   CLUTTER_CONTENT_GRAVITY_RESIZE_ASPECT
 } ClutterContentGravity;
 
+/**
+ * ClutterScalingFilter:
+ * @CLUTTER_SCALING_FILTER_LINEAR: Linear interpolation filter
+ * @CLUTTER_SCALING_FILTER_NEAREST: Nearest neighbor interpolation filter
+ * @CLUTTER_SCALING_FILTER_BILINEAR: Bilinear minification filter; this
+ *   filter enables mipmap generation.
+ *
+ * The scaling filters to be used with the #ClutterActor:minification-filter
+ * and #ClutterActor:magnification-filter properties.
+ *
+ * Since: 1.10
+ */
 typedef enum {
   CLUTTER_SCALING_FILTER_LINEAR,
   CLUTTER_SCALING_FILTER_NEAREST,

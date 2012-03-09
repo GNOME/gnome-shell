@@ -22,6 +22,17 @@
  *   Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
+/**
+ * SECTION:clutter-image
+ * @Title: ClutterImage
+ * @Short_Description: Image data content
+ *
+ * #ClutterImage is a #ClutterContent implementation that displays
+ * image data.
+ *
+ * #ClutterImage is available since Clutter 1.10.
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -141,9 +152,10 @@ clutter_content_iface_init (ClutterContentIface *iface)
 /**
  * clutter_image_new:
  *
- * FIXME
+ * Creates a new #ClutterImage instance.
  *
- * Return value: (transfer full): FIXME
+ * Return value: (transfer full): the newly created #ClutterImage instance.
+ *   Use g_object_unref() when done.
  *
  * Since: 1.10
  */
@@ -153,6 +165,30 @@ clutter_image_new (void)
   return g_object_new (CLUTTER_TYPE_IMAGE, NULL);
 }
 
+/**
+ * clutter_image_set_data:
+ * @image: a #ClutterImage
+ * @data: (array): the image data, as an array of bytes
+ * @pixel_format: the Cogl pixel format of the image data
+ * @width: the width of the image data
+ * @height: the height of the image data
+ * @row_stride: the length of each row inside @data
+ * @error: return location for a #GError, or %NULL
+ *
+ * Sets the image data to be display by @image.
+ *
+ * If the image data was successfully loaded, the @image will be invalidated.
+ *
+ * In case of error, the @error value will be set, and this function will
+ * return %FALSE.
+ *
+ * The image data is copied in texture memory.
+ *
+ * Return value: %TRUE if the image data was successfully loaded,
+ *   and %FALSE otherwise.
+ *
+ * Since: 1.10
+ */
 gboolean
 clutter_image_set_data (ClutterImage     *image,
                         const guint8     *data,

@@ -17793,10 +17793,15 @@ clutter_actor_get_content_box (ClutterActor    *self,
 /**
  * clutter_actor_set_content_scaling_filters:
  * @self: a #ClutterActor
- * @min_filter: FIXME
- * @mag_filter: FIXME
+ * @min_filter: the minification filter for the content
+ * @mag_filter: the magnification filter for the content
  *
- * FIXME
+ * Sets the minification and magnification filter to be applied when
+ * scaling the #ClutterActor:content of a #ClutterActor.
+ *
+ * The #ClutterActor:minification-filter will be used when reducing
+ * the size of the content; the #ClutterActor:magnification-filter
+ * will be used when increasing the size of the content.
  *
  * Since: 1.10
  */
@@ -17843,10 +17848,12 @@ clutter_actor_set_content_scaling_filters (ClutterActor         *self,
 /**
  * clutter_actor_get_content_scaling_filters:
  * @self: a #ClutterActor
- * @min_filter: (out): FIXME
- * @mag_filter: (out): FIXME
+ * @min_filter: (out) (allow-none): return location for the minification
+ *   filter, or %NULL
+ * @mag_filter: (out) (allow-none): return location for the magnification
+ *   filter, or %NULL
  *
- * FIXME
+ * Retrieves the values set using clutter_actor_set_content_scaling_filters().
  *
  * Since: 1.10
  */
