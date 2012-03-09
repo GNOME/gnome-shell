@@ -328,7 +328,7 @@ switch_workspace (MetaPlugin *plugin,
   ClutterAnimation *animation;
 
   screen = meta_plugin_get_screen (plugin);
-  stage = CLUTTER (meta_get_stage_for_screen (screen));
+  stage = meta_get_stage_for_screen (screen);
 
   meta_screen_get_size (screen,
                         &screen_width,
