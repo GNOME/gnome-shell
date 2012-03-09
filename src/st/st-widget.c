@@ -8,6 +8,7 @@
  * Copyright 2009 Abderrahim Kitouni
  * Copyright 2009, 2010 Florian Müllner
  * Copyright 2010 Adel Gadllah
+ * Copyright 2012 Igalia, S.L.
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -68,6 +69,7 @@ struct _StWidgetPrivate
 
   AtkObject *accessible;
   AtkRole accessible_role;
+  AtkStateSet *local_state_set;
 
   ClutterActor *label_actor;
 
@@ -303,6 +305,7 @@ st_widget_finalize (GObject *gobject)
 
   g_free (priv->style_class);
   g_free (priv->pseudo_class);
+  g_object_unref (priv->local_state_set);
 
   G_OBJECT_CLASS (st_widget_parent_class)->finalize (gobject);
 }
@@ -1435,6 +1438,7 @@ st_widget_init (StWidget *actor)
   actor->priv = priv = ST_WIDGET_GET_PRIVATE (actor);
   priv->is_stylable = TRUE;
   priv->transition_animation = NULL;
+  priv->local_state_set = atk_state_set_new ();
 
   /* connect style changed */
   g_signal_connect (actor, "notify::name", G_CALLBACK (st_widget_name_notify), NULL);
@@ -2244,6 +2248,63 @@ st_widget_get_accessible_role (StWidget *widget)
   return role;
 }
 
+static void
+notify_accessible_state_change (StWidget     *widget,
+                                AtkStateType  state,
+                                gboolean      value)
+{
+  if (widget->priv->accessible != NULL)
+    atk_object_notify_state_change (widget->priv->accessible, state, value);
+}
+
+/**
+ * st_widget_add_accessible_state:
+ * @widget: A #StWidget
+ * @state: #AtkStateType state to add
+ *
+ * This method adds @state as one of the accessible states for
+ * @widget. The list of states of a widget describes the current state
+ * of user interface element @widget and is provided so that assistive
+ * technologies know how to present @widget to the user.
+ *
+ * Usually you will have no need to add accessible states for an
+ * object, as the accessible object can extract most of the states
+ * from the object itself (ie: a #StButton knows when it is pressed).
+ * This method is only required when one cannot extract the
+ * information automatically from the object itself (i.e.: a generic
+ * container used as a toggle menu item will not automatically include
+ * the toggled state).
+ *
+ */
+void
+st_widget_add_accessible_state (StWidget    *widget,
+                                AtkStateType state)
+{
+  g_return_if_fail (ST_IS_WIDGET (widget));
+
+  if (atk_state_set_add_state (widget->priv->local_state_set, state))
+    notify_accessible_state_change (widget, state, TRUE);
+}
+
+/**
+ * st_widget_remove_accessible_state:
+ * @widget: A #StWidget
+ * @state: #AtkState state to remove
+ *
+ * This method removes @state as on of the accessible states for
+ * @widget. See st_widget_add_accessible_state() for more information.
+ *
+ */
+void
+st_widget_remove_accessible_state (StWidget    *widget,
+                                   AtkStateType state)
+{
+  g_return_if_fail (ST_IS_WIDGET (widget));
+
+  if (atk_state_set_remove_state (widget->priv->local_state_set, state))
+    notify_accessible_state_change (widget, state, FALSE);
+}
+
 /******************************************************************************/
 /*************************** ACCESSIBILITY SUPPORT ****************************/
 /******************************************************************************/
@@ -2351,7 +2412,6 @@ st_widget_accessible_dispose (GObject *gobject)
     }
 }
 
-
 static void
 st_widget_accessible_initialize (AtkObject *obj,
                                  gpointer   data)
@@ -2382,6 +2442,7 @@ static AtkStateSet *
 st_widget_accessible_ref_state_set (AtkObject *obj)
 {
   AtkStateSet *result = NULL;
+  AtkStateSet *aux_set = NULL;
   ClutterActor *actor = NULL;
   StWidget *widget = NULL;
   StWidgetAccessible *self = NULL;
@@ -2415,6 +2476,15 @@ st_widget_accessible_ref_state_set (AtkObject *obj)
     atk_state_set_add_state (result, ATK_STATE_FOCUSABLE);
   else
     atk_state_set_remove_state (result, ATK_STATE_FOCUSABLE);
+
+  /* We add the states added externally if required */
+  if (!atk_state_set_is_empty (widget->priv->local_state_set))
+    {
+      aux_set = atk_state_set_or_sets (result, widget->priv->local_state_set);
+
+      g_object_unref (result); /* previous result will not be used */
+      result = aux_set;
+    }
 
   return result;
 }

@@ -150,9 +150,13 @@ void   st_set_slow_down_factor (gfloat factor);
 gfloat st_get_slow_down_factor (void);
 
 /* accessibility methods */
-void                  st_widget_set_accessible_role      (StWidget *widget,
-                                                          AtkRole   role);
-AtkRole               st_widget_get_accessible_role      (StWidget *widget);
+void                  st_widget_set_accessible_role      (StWidget    *widget,
+                                                          AtkRole      role);
+AtkRole               st_widget_get_accessible_role      (StWidget    *widget);
+void                  st_widget_add_accessible_state     (StWidget    *widget,
+                                                          AtkStateType state);
+void                  st_widget_remove_accessible_state  (StWidget    *widget,
+                                                          AtkStateType state);
 
 G_END_DECLS
 
