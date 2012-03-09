@@ -17618,6 +17618,8 @@ clutter_actor_get_content_gravity (ClutterActor *self)
  *
  * Retrieves the bounding box for the #ClutterContent of @self.
  *
+ * The bounding box is relative to the actor's allocation.
+ *
  * If no #ClutterContent is set for @self, or if @self has not been
  * allocated yet, then the result is undefined.
  *
@@ -17666,7 +17668,8 @@ clutter_actor_get_content_box (ClutterActor    *self,
                                            &content_h))
     return;
 
-  clutter_actor_box_get_size (&priv->allocation, &alloc_w, &alloc_h);
+  alloc_w = box->x2;
+  alloc_h = box->y2;
 
   switch (priv->content_gravity)
     {
@@ -17768,24 +17771,49 @@ clutter_actor_get_content_box (ClutterActor    *self,
       break;
 
     case CLUTTER_CONTENT_GRAVITY_RESIZE_ASPECT:
-      if (content_w >= content_h && content_h > 0)
-        {
-          double ratio = content_w / content_h;
+      {
+        double r_c = content_w / content_h;
+        double r_a = alloc_w / alloc_h;
 
-          box->x2 = box->x1 + alloc_w;
+        if (r_c >= 1.0)
+          {
+            if (r_a >= 1.0)
+              {
+                box->x1 = 0.f;
+                box->x2 = alloc_w;
 
-          box->y1 += ceilf ((alloc_h - (alloc_h / ratio)) / 2.0);
-          box->y2 = box->y1 + (alloc_h / ratio);
-        }
-      else if (content_h > content_w && content_w > 0)
-        {
-          double ratio = content_h / content_w;
+                box->y1 = (alloc_h - (alloc_w * r_c)) / 2.0f;
+                box->y2 = box->y1 + (alloc_w * r_c);
+              }
+            else
+              {
+                box->y1 = 0.f;
+                box->y2 = alloc_h;
 
-          box->x1 += ceilf ((alloc_w - (alloc_w / ratio)) / 2.0);
-          box->x2 = box->x2 + (alloc_w / ratio);
+                box->x1 = (alloc_w - (alloc_h * r_c)) / 2.0f;
+                box->x2 = box->x1 + (alloc_h * r_c);
+              }
+          }
+        else
+          {
+            if (r_a >= 1.0)
+              {
+                box->y1 = 0.f;
+                box->y2 = alloc_h;
 
-          box->y2 = box->x1 + alloc_h;
-        }
+                box->x1 = (alloc_w - (alloc_h * r_c)) / 2.0f;
+                box->x2 = box->x1 + (alloc_h * r_c);
+              }
+            else
+              {
+                box->x1 = 0.f;
+                box->x2 = alloc_w;
+
+                box->y1 = (alloc_h - (alloc_w * r_c)) / 2.0f;
+                box->y2 = box->y1 + (alloc_w * r_c);
+              }
+          }
+      }
       break;
     }
 }

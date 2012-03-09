@@ -28,9 +28,11 @@ static int cur_gravity = 0;
 
 static void
 on_clicked (ClutterClickAction *action,
-            ClutterActor       *actor)
+            ClutterActor       *actor,
+            ClutterText        *label)
 {
   clutter_actor_set_content_gravity (actor, gravities[cur_gravity].gravity);
+  clutter_text_set_text (label, gravities[cur_gravity].name);
 
   cur_gravity += 1;
 
@@ -47,7 +49,7 @@ test_image_box_describe (void)
 G_MODULE_EXPORT int
 test_image_box_main (int argc, char *argv[])
 {
-  ClutterActor *stage, *box;
+  ClutterActor *stage, *box, *text;
   ClutterContent *image;
   ClutterAction *action;
   GdkPixbuf *pixbuf;
@@ -57,7 +59,7 @@ test_image_box_main (int argc, char *argv[])
 
   stage = clutter_stage_new ();
   clutter_actor_set_name (stage, "Stage");
-  clutter_stage_set_title (CLUTTER_STAGE (stage), "Content");
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Content Box");
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
   clutter_actor_show (stage);
@@ -85,12 +87,20 @@ test_image_box_main (int argc, char *argv[])
                           NULL);
   g_object_unref (pixbuf);
 
-  clutter_actor_set_content_gravity (box, CLUTTER_CONTENT_GRAVITY_TOP_LEFT);
+  clutter_actor_set_content_scaling_filters (box,
+                                             CLUTTER_SCALING_FILTER_BILINEAR,
+                                             CLUTTER_SCALING_FILTER_LINEAR);
+  clutter_actor_set_content_gravity (box, gravities[n_gravities - 1].gravity);
   clutter_actor_set_content (box, image);
   g_object_unref (image);
 
+  text = clutter_text_new ();
+  clutter_text_set_text (CLUTTER_TEXT (text), gravities[n_gravities - 1].name);
+  clutter_actor_add_constraint (text, clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5));
+  clutter_actor_add_child (stage, text);
+
   action = clutter_click_action_new ();
-  g_signal_connect (action, "clicked", G_CALLBACK (on_clicked), NULL);
+  g_signal_connect (action, "clicked", G_CALLBACK (on_clicked), text);
   clutter_actor_set_reactive (box, TRUE);
   clutter_actor_add_action (box, action);
 
