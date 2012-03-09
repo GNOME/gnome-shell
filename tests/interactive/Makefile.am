@@ -64,6 +64,10 @@ if X11_TESTS
 UNIT_TESTS += test-pixmap.c
 endif
 
+if PIXBUF_TESTS
+UNIT_TESTS += test-image.c
+endif
+
 if OS_WIN32
 SHEXT =
 else
@@ -150,14 +154,14 @@ common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
 noinst_PROGRAMS = test-interactive
 
 test_interactive_SOURCES = test-main.c test-unit-names.h $(UNIT_TESTS)
-test_interactive_CFLAGS = $(CLUTTER_CFLAGS)
+test_interactive_CFLAGS = $(CLUTTER_CFLAGS) $(GDK_PIXBUF_CFLAGS)
 test_interactive_CPPFLAGS = \
 	-DTESTS_DATADIR=\""$(abs_top_srcdir)/tests/data"\" \
 	-DG_DISABLE_SINGLE_INCLUDES \
 	-DGLIB_DISABLE_DEPRECATION_WARNINGS \
 	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS
 test_interactive_LDFLAGS = -export-dynamic
-test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd) -lm
+test_interactive_LDADD = $(CLUTTER_LIBS) $(GDK_PIXBUF_LIBS) $(common_ldadd) -lm
 
 EXTRA_DIST = \
 	wrapper.sh.in			\
