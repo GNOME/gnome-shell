@@ -761,6 +761,33 @@ X11_EXTS=${X11_EXTS#* }
 
 AC_CACHE_SAVE
 
+dnl === Enable GDK-Pixbuf in tests ============================================
+
+m4_define([pixbuf_default], [yes])
+AC_ARG_ENABLE([gdk-pixbuf],
+              [AS_HELP_STRING([--enable-gdk-pixbuf=@<:@no/yes@:>@],
+                              [Enable tests using GDK-Pixbuf @<:@default=]pixbuf_default[@:>@])],
+              [enable_pixbuf=$enable_val],
+              [enable_pixbuf=pixbuf_default])
+
+AS_CASE([$enable_pixbuf],
+
+        [yes],
+        [
+          PKG_CHECK_MODULES([GDK_PIXBUF], [gdk-pixbuf-2.0])
+          AC_SUBST(GDK_PIXBUF_CFLAGS)
+          AC_SUBST(GDK_PIXBUF_LIBS)
+          pixbuf_tests=yes
+        ],
+
+        [no],
+        [
+          pixbuf_tests=no
+        ]
+)
+
+AM_CONDITIONAL([PIXBUF_TESTS], [test "x$pixbuf_tests" = "xyes"])
+
 dnl === Enable debug level ====================================================
 
 m4_define([debug_default], [m4_if(m4_eval(clutter_minor_version % 2), [1], [yes], [minimum])])
@@ -1125,6 +1152,7 @@ echo " • Extra:"
 echo "        Build introspection data: ${enable_introspection}"
 echo "        Build conformance test suite: ${enable_conformance}"
 echo "        Build X11-specific tests: ${x11_tests}"
+echo "        Build tests using GDK-Pixbuf: ${pixbuf_tests}"
 
 # Clutter backend related flags
 echo ""
@@ -1146,7 +1174,6 @@ if test "x$SUPPORT_X11" = "x1"; then
 echo ""
 echo "     - X11 backend options:"
 echo "        Enabled extensions: ${X11_EXTS}"
-echo "        Build X11-specific tests: ${x11_tests}"
 fi
 
 if test "x$SUPPORT_CEX100" = "x1"; then
