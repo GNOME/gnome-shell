@@ -6,8 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Clutter\n"
-"Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?product=clutter\n"
-"POT-Creation-Date: 2011-10-22 15:47+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
+"product=clutter\n"
+"POT-Creation-Date: 2012-03-09 16:01+0100\n"
 "PO-Revision-Date: 2011-10-22 15:48+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Yaron Shahrabani <sh.yaron@gmail.com>\n"
@@ -1215,8 +1216,9 @@ msgstr ""
 #. * it isn't default:LTR or default:RTL it will not work.
 #.
 #: ../clutter/clutter-main.c:713
+#: clutter/clutter-main.c:763
 msgid "default:LTR"
-msgstr ""
+msgstr "default:RTL"
 
 #: ../clutter/clutter-main.c:1524
 msgid "Show frames per second"
