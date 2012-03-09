@@ -79,7 +79,7 @@ static const struct {
 static const unsigned int n_gl_errors = G_N_ELEMENTS (gl_errors);
 
 const char *
-cogl_gl_error_to_string (GLenum error_code)
+_cogl_gl_error_to_string (GLenum error_code)
 {
   int i;
 

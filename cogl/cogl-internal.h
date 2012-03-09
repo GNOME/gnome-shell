@@ -33,7 +33,7 @@
 #ifdef COGL_GL_DEBUG
 
 const char *
-cogl_gl_error_to_string (GLenum error_code);
+_cogl_gl_error_to_string (GLenum error_code);
 
 #define GE(ctx, x)                      G_STMT_START {  \
   GLenum __err;                                         \
@@ -43,7 +43,7 @@ cogl_gl_error_to_string (GLenum error_code);
       g_warning ("%s: GL error (%d): %s\n",             \
                  G_STRLOC,                              \
                  __err,                                 \
-                 cogl_gl_error_to_string (__err));      \
+                 _cogl_gl_error_to_string (__err));     \
     }                                   } G_STMT_END
 
 #define GE_RET(ret, ctx, x)             G_STMT_START {  \
@@ -54,7 +54,7 @@ cogl_gl_error_to_string (GLenum error_code);
       g_warning ("%s: GL error (%d): %s\n",             \
                  G_STRLOC,                              \
                  __err,                                 \
-                 cogl_gl_error_to_string (__err));      \
+                 _cogl_gl_error_to_string (__err));     \
     }                                   } G_STMT_END
 
 #else /* !COGL_GL_DEBUG */
