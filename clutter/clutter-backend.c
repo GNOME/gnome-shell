@@ -55,6 +55,10 @@
 #include "clutter-stage-window.h"
 #include "clutter-version.h"
 
+#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+#include "wayland/clutter-wayland-compositor.h"
+#endif /* HAVE_CLUTTER_WAYLAND_COMPOSITOR */
+
 #include <cogl/cogl.h>
 
 #ifdef CLUTTER_INPUT_X11

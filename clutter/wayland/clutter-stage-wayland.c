@@ -36,6 +36,7 @@
 #include "clutter-stage-window.h"
 #include "clutter-stage-private.h"
 #include "clutter-event-private.h"
+#include "clutter-wayland.h"
 #include <cogl/cogl.h>
 #include <cogl/cogl-wayland-client.h>
 

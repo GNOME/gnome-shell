@@ -47,6 +47,7 @@
 #include "clutter-stage-manager.h"
 #include "clutter-xkb-utils.h"
 #include "clutter-backend-private.h"
+#include "clutter-evdev.h"
 
 #include "clutter-device-manager-evdev.h"
 

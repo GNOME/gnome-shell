@@ -34,6 +34,7 @@
 
 #include "../clutter-event.h"
 #include "../clutter-main.h"
+#include "clutter-event-wayland.h"
 
 typedef struct _ClutterEventSourceWayland
 {
