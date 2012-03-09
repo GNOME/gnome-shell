@@ -65,7 +65,9 @@ UNIT_TESTS += test-pixmap.c
 endif
 
 if PIXBUF_TESTS
-UNIT_TESTS += test-image.c
+UNIT_TESTS += \
+	test-image.c \
+	test-image-box.c
 endif
 
 if OS_WIN32
