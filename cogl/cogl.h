@@ -124,6 +124,8 @@
  */
 #ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl2-path.h>
+/* This header will be removed in Cogl 1.12 */
+#include <cogl/cogl2-compatibility.h>
 #endif
 
 /*
