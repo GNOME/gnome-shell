@@ -2028,6 +2028,9 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
                                             &final,
                                             pspec,
                                             is_fixed);
+
+
+	  g_value_unset (&final);
         }
 
       property_name = va_arg (var_args, gchar*);
