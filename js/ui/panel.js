@@ -635,10 +635,12 @@ const ActivitiesButton = new Lang.Class({
         Main.overview.connect('showing', Lang.bind(this, function() {
             this.actor.add_style_pseudo_class('overview');
             this._escapeMenuGrab();
+            this.actor.add_accessible_state (Atk.StateType.CHECKED);
         }));
         Main.overview.connect('hiding', Lang.bind(this, function() {
             this.actor.remove_style_pseudo_class('overview');
             this._escapeMenuGrab();
+            this.actor.remove_accessible_state (Atk.StateType.CHECKED);
         }));
 
         this._xdndTimeOut = 0;
