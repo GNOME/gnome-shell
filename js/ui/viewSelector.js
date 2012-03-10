@@ -292,6 +292,15 @@ const SearchTab = new Lang.Class({
                 return true;
             }
         } else if (this.active) {
+            let arrowNext, nextDirection;
+            if (entry.get_text_direction() == Clutter.TextDirection.RTL) {
+                arrowNext = Clutter.Left;
+                nextDirection = Gtk.DirectionType.LEFT;
+            } else {
+                arrowNext = Clutter.Right;
+                nextDirection = Gtk.DirectionType.RIGHT;
+            }
+
             if (symbol == Clutter.Tab) {
                 this._searchResults.navigateFocus(Gtk.DirectionType.TAB_FORWARD);
                 return true;
@@ -299,6 +308,12 @@ const SearchTab = new Lang.Class({
                 this._focusTrap.can_focus = false;
                 this._searchResults.navigateFocus(Gtk.DirectionType.TAB_BACKWARD);
                 this._focusTrap.can_focus = true;
+                return true;
+            } else if (symbol == Clutter.Down) {
+                this._searchResults.navigateFocus(Gtk.DirectionType.DOWN);
+                return true;
+            } else if (symbol == arrowNext && this._text.position == -1) {
+                this._searchResults.navigateFocus(nextDirection);
                 return true;
             }
         }

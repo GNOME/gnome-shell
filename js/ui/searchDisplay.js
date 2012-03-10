@@ -266,6 +266,7 @@ const SearchResults = new Lang.Class({
         button.activate = Lang.bind(this, function() {
             this._openSearchSystem.activateResult(provider.id);
         });
+        button.actor = button;
 
         this._searchProvidersBox.add(button);
     },
@@ -450,13 +451,21 @@ const SearchResults = new Lang.Class({
     },
 
     navigateFocus: function(direction) {
-        if (direction == Gtk.DirectionType.TAB_FORWARD && this._defaultResult) {
+        let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
+        if (direction == Gtk.DirectionType.TAB_BACKWARD ||
+            direction == (rtl ? Gtk.DirectionType.RIGHT
+                              : Gtk.DirectionType.LEFT) ||
+            direction == Gtk.DirectionType.UP) {
+            this.actor.navigate_focus(null, direction, false);
+            return;
+        }
+
+        let from = this._defaultResult ? this._defaultResult.actor : null;
+        this.actor.navigate_focus(from, direction, false);
+        if (this._defaultResult) {
             // The default result appears focused, so navigate directly to the
             // next result.
-            this.actor.navigate_focus(null, direction, false);
             this.actor.navigate_focus(global.stage.key_focus, direction, false);
-        } else {
-            this.actor.navigate_focus(null, direction, false);
         }
     }
 });
