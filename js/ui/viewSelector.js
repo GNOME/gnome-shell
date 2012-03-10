@@ -201,14 +201,15 @@ const SearchTab = new Lang.Class({
 
     _onStageKeyFocusChanged: function() {
         let focus = global.stage.get_key_focus();
-        this._text.set_cursor_visible(focus == this._text);
+        let appearFocused = (this._entry.contains(focus) ||
+                             this._searchResults.actor.contains(focus));
 
-        if (focus != this._entry && focus != this._text) {
-            if (this._searchResults.actor.contains(focus))
-                this._entry.add_style_pseudo_class('focus');
-            else
-                this._entry.remove_style_pseudo_class('focus');
-        }
+        this._text.set_cursor_visible(appearFocused);
+
+        if (appearFocused)
+            this._entry.add_style_pseudo_class('focus');
+        else
+            this._entry.remove_style_pseudo_class('focus');
     },
 
     _onMapped: function() {
