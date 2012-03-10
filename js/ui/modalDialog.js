@@ -10,6 +10,7 @@ const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const Atk = imports.gi.Atk;
 
 const Params = imports.misc.params;
 
@@ -42,7 +43,8 @@ const ModalDialog = new Lang.Class({
 
         this._group = new St.Widget({ visible: false,
                                       x: 0,
-                                      y: 0 });
+                                      y: 0,
+                                      accessible_role: Atk.Role.DIALOG });
         Main.uiGroup.add_actor(this._group);
 
         let constraint = new Clutter.BindConstraint({ source: global.stage,
