@@ -273,6 +273,7 @@ meta_frames_init (MetaFrames *frames)
 
   frames->style_variants = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                   g_free, g_object_unref);
+  update_style_contexts (frames);
 
   gtk_widget_set_double_buffered (GTK_WIDGET (frames), FALSE);
 
