@@ -21,6 +21,19 @@ const Wanda = imports.ui.wanda;
 const WorkspacesView = imports.ui.workspacesView;
 
 
+const FocusTrap = new Lang.Class({
+    Name: 'FocusTrap',
+    Extends: St.Widget,
+
+    vfunc_navigate_focus: function(from, direction) {
+        if (direction == Gtk.DirectionType.TAB_FORWARD ||
+            direction == Gtk.DirectionType.TAB_BACKWARD)
+            return this.parent(from, direction);
+        return false;
+    }
+});
+
+
 const ViewSelector = new Lang.Class({
     Name: 'ViewSelector',
 
@@ -94,17 +107,11 @@ const ViewSelector = new Lang.Class({
 
         // Since the entry isn't inside the results container we install this
         // dummy widget as the last results container child so that we can
-        // include the entry in the keynav tab path...
-        this._focusTrap = new St.Bin({ can_focus: true });
+        // include the entry in the keynav tab path
+        this._focusTrap = new FocusTrap({ can_focus: true });
         this._focusTrap.connect('key-focus-in', Lang.bind(this, function() {
             this._entry.grab_key_focus();
         }));
-        // ... but make it unfocusable using arrow keys keynav by making its
-        // bounding box always contain the possible focus source's bounding
-        // box since StWidget's keynav logic won't ever select it as a target
-        // in that case.
-        this._focusTrap.add_constraint(new Clutter.BindConstraint({ source: this._searchResults.actor,
-                                                                    coordinate: Clutter.BindCoordinate.ALL }));
         this._searchResults.actor.add_actor(this._focusTrap);
 
         global.focus_manager.add_group(this._searchResults.actor);
