@@ -348,8 +348,11 @@ const SearchResults = new Lang.Class({
             if (meta.hasPendingResults)
                 return;
 
+            if (!meta.actor.visible)
+                continue;
+
             let firstResult = meta.resultDisplay.getFirstResult();
-            if (firstResult && firstResult.actor.visible) {
+            if (firstResult) {
                 newDefaultResult = firstResult;
                 break; // select this one!
             }
@@ -436,7 +439,7 @@ const SearchResults = new Lang.Class({
     },
 
     activateDefault: function() {
-        if (this._defaultResult && this._defaultResult.actor.visible)
+        if (this._defaultResult)
             this._defaultResult.activate();
     },
 
