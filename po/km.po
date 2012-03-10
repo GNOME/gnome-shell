@@ -1,0 +1,351 @@
+# translation of cogl.master.po to Khmer
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2012.
+# Seng Sutha <sutha@khmeros.info>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: cogl.master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-01-09 19:05+0000\n"
+"PO-Revision-Date: 2012-01-24 11:14+0700\n"
+"Last-Translator: Seng Sutha <sutha@khmeros.info>\n"
+"Language-Team: Khmer <supprot@khmeros.info>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: WordForge 0.8 RC1\n"
+"X-Language: km-KH\n"
+
+#: ../cogl/cogl-debug.c:172
+msgid "Supported debug values:"
+msgstr "បំបាត់​កំហុស​តម្លៃ​ដែល​បាន​គាំទ្រ ៖"
+
+#: ../cogl/cogl-debug.c:177
+msgid "Special debug values:"
+msgstr "បំបាត់​កំហុស​តម្លៃ​ពិសេស ៖"
+
+#: ../cogl/cogl-debug.c:179 ../cogl/cogl-debug.c:181
+msgid "Enables all non-behavioural debug options"
+msgstr "បើក​​គ្រប់​ជម្រើស​បំបាត់​កំហុស​​​នៃ​ឥរិយា​ដែល​គ្មាន​ទាំងអស់"
+
+#: ../cogl/cogl-debug.c:225
+msgid "Cogl debugging flags to set"
+msgstr "ទង់​ជាតិ​បំបាត់​កំហុស​​ Cogl ត្រូវ​កំណត់"
+
+#: ../cogl/cogl-debug.c:227
+msgid "Cogl debugging flags to unset"
+msgstr "ទង់ជាតិ​បំបាត់​កំហុស​មិន​ត្រូវ​កំណត់"
+
+#: ../cogl/cogl-debug.c:276
+msgid "Cogl Options"
+msgstr "ជម្រើស​របស់ Cogl"
+
+#: ../cogl/cogl-debug.c:277
+msgid "Show Cogl options"
+msgstr "បង្ហាញ​ជម្រើស​របស់ Cogl"
+
+#: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
+#: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
+#: ../cogl/cogl-debug-options.h:45 ../cogl/cogl-debug-options.h:50
+#: ../cogl/cogl-debug-options.h:55 ../cogl/cogl-debug-options.h:61
+#: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
+#: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
+#: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+msgid "Cogl Tracing"
+msgstr "ការ​តាមដាន​​នៃ Cogl"
+
+#: ../cogl/cogl-debug-options.h:27
+msgid "CoglObject references"
+msgstr "សេចក្ដី​យោង​របស់ CoglObject"
+
+#: ../cogl/cogl-debug-options.h:28
+msgid "Debug ref counting issues for CoglObjects"
+msgstr "បំបាត់​កំហុស​បញ្ហា​អំពី​ការ​រាប់​​​សេចក្ដី​យោង​សម្រាប់ CoglObjects"
+
+#: ../cogl/cogl-debug-options.h:32
+#, fuzzy
+msgid "Trace Texture Slicing"
+msgstr "ដាន​ក្នុង​ការ​កាត់​ជា​បន្ទះ​នៃ​​វាយនភាព"
+
+#: ../cogl/cogl-debug-options.h:33
+msgid "debug the creation of texture slices"
+msgstr "បំបាត់​កំហុស​ក្នុង​ការ​​កាត់​ជា​បន្ទះ​នៃ​វាយនភាព"
+
+#: ../cogl/cogl-debug-options.h:37
+msgid "Trace Atlas Textures"
+msgstr "ដាន​វាយនភាព​សៀវភៅ​ផែនទី​"
+
+#: ../cogl/cogl-debug-options.h:38
+#, fuzzy
+msgid "Debug texture atlas management"
+msgstr "បំបាត់​កំហុស​ការ​គ្រប់គ្រង​សៀវភៅ​ផែនទី​​​នៃ​វាយនភាព"
+
+#: ../cogl/cogl-debug-options.h:42
+msgid "Trace Blend Strings"
+msgstr "ដាន​ល្បាយ​ខ្សែ​អក្សរ"
+
+#: ../cogl/cogl-debug-options.h:43
+msgid "Debug CoglBlendString parsing"
+msgstr "កំហុស​ក្នុង​ការ​ញែក CoglBlendString"
+
+#: ../cogl/cogl-debug-options.h:47
+msgid "Trace Journal"
+msgstr "ដាន​ទិនានុប្បវត្តិ​"
+
+#: ../cogl/cogl-debug-options.h:48
+msgid "View all the geometry passing through the journal"
+msgstr "មើល​គ្រប់​ការ​​ហុច​ធរណីមាត្រ​ទាំងអស់​តាម​ទិនានុប្បវត្តិ"
+
+#: ../cogl/cogl-debug-options.h:52
+msgid "Trace Batching"
+msgstr "ការ​ដាក់​ដាន​ជា​ក្រុម"
+
+#: ../cogl/cogl-debug-options.h:53
+msgid "Show how geometry is being batched in the journal"
+msgstr "បង្ហាញ​របៀប​ធរណីមាត្រ​ត្រូវ​បាន​ដាក់​ចំនួយ​ច្រើន​ក្នុង​ទិនានុប្បវត្តិ"
+
+#: ../cogl/cogl-debug-options.h:57
+msgid "Trace matrices"
+msgstr "ដាន​ម៉ាទ្រីស"
+
+#: ../cogl/cogl-debug-options.h:58
+msgid "Trace all matrix manipulation"
+msgstr "ដាន​គ្រប់​ការ​ធ្វើ​ម៉ាទ្រីស​ទាំងអស់"
+
+#: ../cogl/cogl-debug-options.h:63
+msgid "Trace Misc Drawing"
+msgstr "ដាន​គំនូរ​ផ្សេងៗ"
+
+#: ../cogl/cogl-debug-options.h:64
+msgid "Trace some misc drawing operations"
+msgstr "ដាន​ក្នុង​ការ​ប្រតិបត្តិ​ការ​គំនូរ​ផ្សេង​មួយ​ចំនួន"
+
+#: ../cogl/cogl-debug-options.h:68
+msgid "Trace Pango Renderer"
+msgstr "ដាន​កម្មវិធី​បង្ហាញ Pango"
+
+#: ../cogl/cogl-debug-options.h:69
+msgid "Trace the Cogl Pango renderer"
+msgstr "ដាន​កម្មវិធី​បង្ហាញ Cogl Pango"
+
+#: ../cogl/cogl-debug-options.h:73
+msgid "Trace CoglTexturePixmap backend"
+msgstr "ដាន​កម្មវិធី​ខាងក្រោយ CoglTexturePixmap"
+
+#: ../cogl/cogl-debug-options.h:74
+msgid "Trace the Cogl texture pixmap backend"
+msgstr "ដាន​កម្មវិធី​ខាងក្រោយ Cogl texture pixmap"
+
+#: ../cogl/cogl-debug-options.h:76 ../cogl/cogl-debug-options.h:81
+msgid "Visualize"
+msgstr "ធ្វើ​ឲ្យ​មើល​ឃើញ"
+
+#: ../cogl/cogl-debug-options.h:78
+msgid "Outline rectangles"
+msgstr "ចតុកោណ​របស់​​គ្រោង"
+
+#: ../cogl/cogl-debug-options.h:79
+msgid "Add wire outlines for all rectangular geometry"
+msgstr "បន្ថែម​គ្រោង​ខ្សែ​សម្រាប់​ធរណីមាត្រ​ដែល​​​ជា​ចតុកោណ​ទាំងអស់"
+
+#: ../cogl/cogl-debug-options.h:83
+msgid "Show wireframes"
+msgstr "បង្ហាញ wireframes"
+
+#: ../cogl/cogl-debug-options.h:84
+msgid "Add wire outlines for all geometry"
+msgstr "បន្ថែម​​គ្រោង​ខ្សែ​សម្រាប់​ធរណីមាត្រ​ទាំងអស់"
+
+#: ../cogl/cogl-debug-options.h:86 ../cogl/cogl-debug-options.h:91
+#: ../cogl/cogl-debug-options.h:96 ../cogl/cogl-debug-options.h:101
+#: ../cogl/cogl-debug-options.h:111 ../cogl/cogl-debug-options.h:116
+#: ../cogl/cogl-debug-options.h:122 ../cogl/cogl-debug-options.h:127
+#: ../cogl/cogl-debug-options.h:132 ../cogl/cogl-debug-options.h:137
+#: ../cogl/cogl-debug-options.h:142 ../cogl/cogl-debug-options.h:147
+#: ../cogl/cogl-debug-options.h:153 ../cogl/cogl-debug-options.h:173
+#: ../cogl/cogl-debug-options.h:178
+msgid "Root Cause"
+msgstr "មូលហេតុ Root"
+
+#: ../cogl/cogl-debug-options.h:88
+msgid "Disable Journal batching"
+msgstr "បិទ​ការ​ដាក់​​​​ទិនានុប្បវត្តិ​ជា​ក្រុម"
+
+#: ../cogl/cogl-debug-options.h:89
+msgid "Disable batching of geometry in the Cogl Journal."
+msgstr "បិទ​ការ​ដាក់​ធរណីមាត្រ​ជា​ក្រុម​នៅ​ក្នុង​ទិនានុប្បវត្តិ​របស់ Cogl ។"
+
+#: ../cogl/cogl-debug-options.h:93
+msgid "Disable GL Vertex Buffers"
+msgstr "បិទ​អង្គ​ចងចាំ​បណ្ដោះ​អាសន្ន​ផ្នែក​ខាងលើ​​របស់ GL"
+
+#: ../cogl/cogl-debug-options.h:94
+msgid "Disable use of OpenGL vertex buffer objects"
+msgstr ""
+"បិទ​ការ​ប្រើប្រាស់​នៃ​​វត្ថុ​​​អង្គ​​​ចងចាំ​បណ្ដោះអាសន្ន​ផ្នែក​ខាងលើ​របស់ "
+"OpenGL"
+
+#: ../cogl/cogl-debug-options.h:98
+msgid "Disable GL Pixel Buffers"
+msgstr "បិទ​អង្គ​ចងចាំ​បណ្ដោះអាសន្ន​ភីកសែល​របស់ GL"
+
+#: ../cogl/cogl-debug-options.h:99
+msgid "Disable use of OpenGL pixel buffer objects"
+msgstr "បិទ​ការ​ប្រើប្រាស់​វត្ថុ​អង្គ​ចងចាំ​បណ្ដោះអាសន្ន​​ភីកសែល​របស់ OpenGL"
+
+#: ../cogl/cogl-debug-options.h:103
+msgid "Disable software rect transform"
+msgstr "បិទ​​ការ​ប្លែង​ដែល​​ជា​ចតុកោណ​​​របស់​​កម្មវិធី ។"
+
+#: ../cogl/cogl-debug-options.h:104
+msgid "Use the GPU to transform rectangular geometry"
+msgstr "ប្រើ GPU ដើម្បី​ប្លែង​ធរណីមាត្រ​ដែល​​ជា​ចតុកោណ"
+
+#: ../cogl/cogl-debug-options.h:106
+msgid "Cogl Specialist"
+msgstr "អ្នក​ឯកទេស Cogl"
+
+#: ../cogl/cogl-debug-options.h:108
+msgid "Dump atlas images"
+msgstr "បោះបង់​រូបភាព​នៃ​សៀវភៅ​ផែន​ទី"
+
+#: ../cogl/cogl-debug-options.h:109
+msgid "Dump texture atlas changes to an image file"
+msgstr "បោះបង់​ការ​ផ្លាស់ប្ដូរ​សៀវភៅ​ផែនទី​​វាយនភាព​ទៅកាន់​ឯកសារ​រូបភាព"
+
+#: ../cogl/cogl-debug-options.h:113
+msgid "Disable texture atlasing"
+msgstr "បិទ​​ការ​ដាក់​​សៀវភៅ​ផែនទី​នៃ​វាយនភាព"
+
+#: ../cogl/cogl-debug-options.h:114
+msgid "Disable use of texture atlasing"
+msgstr "បិទ​ការ​ប្រើប្រាស់​នៃ​​ការ​ដាក់​សៀវភៅ​ផែន​ទី​នៃ​វាយនភាព"
+
+#: ../cogl/cogl-debug-options.h:118
+msgid "Disable sharing the texture atlas between text and images"
+msgstr "បិទ​ការ​ចែករំលែក​​សៀវភៅ​ផែនទី​នៃ​វាយនភាព​រវាង​អត្ថបទ និង​រូបភាព"
+
+#: ../cogl/cogl-debug-options.h:119
+#, fuzzy
+msgid ""
+"When this is set the glyph cache will always use a separate texture for its "
+"atlas. Otherwise it will try to share the atlas with images."
+msgstr ""
+"នៅ​ពេល​វា​ត្រូវ​បាន​កំណត់​ឃ្លាំង​សម្ងាត់​របស់ glyph "
+"នឹង​ប្រើ​វាយនភាព​​បំបែក​សម្រាប់​សៀវភៅ​ផែនទី​ជានិច្ច ។ ម្យ៉ាងទៀត "
+"វា​នឹង​ចែករំលែក​សៀវភៅ​ផែន​ទី​​ជាមួយ​រូបភាព ។"
+
+#: ../cogl/cogl-debug-options.h:124
+msgid "Disable texturing"
+msgstr "បិទ​ការ​ធ្វើ​វាយនភាព"
+
+#: ../cogl/cogl-debug-options.h:125
+msgid "Disable texturing any primitives"
+msgstr "បិទ​ការ​ធ្វើ​វាយនភាព​​ជា​ដំបូង​មួយ​ចំនួន"
+
+#: ../cogl/cogl-debug-options.h:129
+msgid "Disable arbfp"
+msgstr "បិទ arbfp"
+
+#: ../cogl/cogl-debug-options.h:130
+msgid "Disable use of ARB fragment programs"
+msgstr "បិទ​ការ​ប្រើប្រាស់​កម្មវិធី​បំណែក​របស់ ARB"
+
+#: ../cogl/cogl-debug-options.h:134
+msgid "Disable fixed"
+msgstr "បិទ​ថេរ"
+
+#: ../cogl/cogl-debug-options.h:135
+#, fuzzy
+msgid "Disable use of the fixed function pipeline backend"
+msgstr "បិទ​ការ​ប្រើ​ប្រាស់​កម្មវិធី​ខាងក្រោយ pipeline នៃ​មុខងារ​ថេរ"
+
+#: ../cogl/cogl-debug-options.h:139
+msgid "Disable GLSL"
+msgstr "បិទ GLSL"
+
+#: ../cogl/cogl-debug-options.h:140
+msgid "Disable use of GLSL"
+msgstr "បិទ​ការ​ប្រើប្រាស់​នៃ GLSL"
+
+#: ../cogl/cogl-debug-options.h:144
+msgid "Disable blending"
+msgstr "បិទ​ការ​លាយ"
+
+#: ../cogl/cogl-debug-options.h:145
+msgid "Disable use of blending"
+msgstr "បិទ​ការ​ប្រើប្រាស់​នៃ​ការ​លាយ"
+
+#: ../cogl/cogl-debug-options.h:149
+msgid "Disable non-power-of-two textures"
+msgstr "បិទ​វាយនភាព​ពីរ​ដែល​គ្មាន​ថាមពល"
+
+#: ../cogl/cogl-debug-options.h:150
+msgid ""
+"Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
+"will create sliced textures or textures with waste instead."
+msgstr ""
+"ការ​ធ្វើ​ឲ្យ Cogl ស្គាល់​ថា​កម្មវិធី​បញ្ជា​របស់ GL មិន​គាំទ្រ​វាយនភាព​របស់ "
+"NPOT ទេ ដូច្នោះ​វា​នឹង​បង្កើត​វាយនភាព​ដែល​​បាន​ចែក​ជា​ផ្នែក "
+"ឬ​វាយនភាព​ដែល​មាន​ភាព​ខ្ជះខ្ជាយ​ ។"
+
+#: ../cogl/cogl-debug-options.h:155
+msgid "Disable software clipping"
+msgstr "បិទ​ការ​កាត់​​កម្មវិធី"
+
+#: ../cogl/cogl-debug-options.h:156
+msgid "Disables Cogl's attempts to clip some rectangles in software."
+msgstr ""
+"បិទ​ការ​ប៉ុនប៉ង​របស់ Cogl ដើម្បី​កាត់​ចតុកោណ​មួយ​ចំនួន​នៅ​ក្នុង​កម្មវិធី ។"
+
+#: ../cogl/cogl-debug-options.h:160
+msgid "Show source"
+msgstr "បង្ហាញ​ប្រភព"
+
+#: ../cogl/cogl-debug-options.h:161
+msgid "Show generated ARBfp/GLSL source code"
+msgstr "បង្ហាញ​កូដ​ប្រភព​របស់ ARBfp/GLSL ដែល​បាន​បង្កើត"
+
+#: ../cogl/cogl-debug-options.h:165
+msgid "Trace some OpenGL"
+msgstr "ដាន OpenGL មួយ​ចំនួន"
+
+#: ../cogl/cogl-debug-options.h:166
+msgid "Traces some select OpenGL calls"
+msgstr "ដាន​ជ្រើស​ការ​ហៅ OpenGL មួយ​ចំនួន"
+
+#: ../cogl/cogl-debug-options.h:170
+msgid "Trace offscreen support"
+msgstr "ការ​គាំទ្រ offscreen ​ដាន"
+
+#: ../cogl/cogl-debug-options.h:171
+msgid "Debug offscreen support"
+msgstr "បំបាត់​កំហុស​ការ​គាំទ្រ offscreen"
+
+#: ../cogl/cogl-debug-options.h:175
+msgid "Disable program caches"
+msgstr "បិទ​ឃ្លាំង​សម្ងាត់​របស់​កម្មវិធី"
+
+#: ../cogl/cogl-debug-options.h:176
+msgid "Disable fallback caches for arbfp and glsl programs"
+msgstr "បិទ​ឃ្លាំង​សម្ងាត់​របស់ fallback សម្រាប់​កម្មវិធី arbfp និង glsl"
+
+#: ../cogl/cogl-debug-options.h:180
+msgid "Disable read pixel optimization"
+msgstr "បិទ​ការ​អាន​ការ​ធ្វើ​ឲ្យ​ភីសែល​ល្អប្រសើរ"
+
+#: ../cogl/cogl-debug-options.h:181
+msgid "Disable optimization for reading 1px for simple scenes of opaque rectangles"
+msgstr ""
+"បិទ​ការ​ធ្វើ​ឲ្យ​ល្អ​​ប្រសើរ​ក្នុង​ការ​អាន ១ ភីសែល  "
+"រូបភាព​សាមញ្ញ​នៃ​​ចតុកោណ​ស្រអាប់"
+
+#: ../cogl/cogl-debug-options.h:186
+msgid "Trace clipping"
+msgstr "ការ​កាត់​ដាន"
+
+#: ../cogl/cogl-debug-options.h:187
+msgid "Logs information about how Cogl is implementing clipping"
+msgstr "ព័ត៌មាន​​កំណត់​ហេតុ​អំពី​របៀប​ Cogl ប្រតិបត្តិ​ការ​កាត់"
