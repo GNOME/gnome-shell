@@ -6,7 +6,7 @@
 # Changwoo Ryu <cwryu@debian.org>, 2003, 2004, 2005, 2006, 2007, 2008, 2009.
 #
 # Updated in mutter:
-# Changwoo Ryu <cwryu@debian.org>, 2011.
+# Changwoo Ryu <cwryu@debian.org>, 2011-2012.
 #
 #
 # 주의:
@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-10 12:42+0000\n"
-"PO-Revision-Date: 2011-09-24 08:21+0900\n"
+"POT-Creation-Date: 2011-12-13 13:41+0000\n"
+"PO-Revision-Date: 2012-03-10 23:40+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -28,324 +28,30 @@ msgstr ""
 "Language: Korean\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+#: ../src/50-mutter-windows.xml.in.h:1
+msgid "View split on left"
+msgstr "왼쪽 절반 뷰"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "View split on right"
+msgstr "오른쪽 절반 뷰"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Windows"
+msgstr "창"
+
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:487
+#: ../src/compositor/compositor.c:492
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
-msgstr "다른 창 구성 관리 프로그램이 이미 디스플레이 \"%2$s\" 화면 %1$i번에서 실행 중입니다."
-
-#: ../src/core/all-keybindings.h:88
-msgid "Switch to workspace 1"
-msgstr "1번째 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:90
-msgid "Switch to workspace 2"
-msgstr "2번째 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:92
-msgid "Switch to workspace 3"
-msgstr "3번째 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:94
-msgid "Switch to workspace 4"
-msgstr "4번째 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:96
-msgid "Switch to workspace 5"
-msgstr "5번째 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:98
-msgid "Switch to workspace 6"
-msgstr "6번째 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:100
-msgid "Switch to workspace 7"
-msgstr "7번째 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:102
-msgid "Switch to workspace 8"
-msgstr "8번째 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:104
-msgid "Switch to workspace 9"
-msgstr "9번째 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:106
-msgid "Switch to workspace 10"
-msgstr "10번째 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:108
-msgid "Switch to workspace 11"
-msgstr "11번째 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:110
-msgid "Switch to workspace 12"
-msgstr "12번째 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:122
-msgid "Switch to workspace on the left of the current workspace"
-msgstr "현재 작업 공간의 왼쪽 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:126
-msgid "Switch to workspace on the right of the current workspace"
-msgstr "현재 작업 공간의 오른쪽 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:130
-msgid "Switch to workspace above the current workspace"
-msgstr "현재 작업 공간의 위 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:134
-msgid "Switch to workspace below the current workspace"
-msgstr "현재 작업 공간의 아래 작업 공간으로 이동"
-
-#: ../src/core/all-keybindings.h:150
-msgid "Move between windows of an application, using a popup window"
-msgstr "한 프로그램의 창 사이에서 팝업을 통해 전환"
-
-#: ../src/core/all-keybindings.h:153
-msgid "Move backward between windows of an application, using a popup window"
-msgstr "한 개 프로그램의 창 사이에서 반대 방향으로 팝업을 통해 전환"
-
-#: ../src/core/all-keybindings.h:157
-msgid "Move between windows, using a popup window"
-msgstr "창 사이에서 팝업을 통해 전환"
-
-#: ../src/core/all-keybindings.h:160
-msgid "Move backward between windows, using a popup window"
-msgstr "창 사이에서 팝업을 통해 반대 방향으로 전환"
-
-#: ../src/core/all-keybindings.h:163
-msgid "Move between panels and the desktop, using a popup window"
-msgstr "패널과 바탕 화면 사이에서 팝업으로 전환"
-
-#: ../src/core/all-keybindings.h:166
-msgid "Move backward between panels and the desktop, using a popup window"
-msgstr "패널과 바탕 화면 사이에서 반대 방향으로 팝업을 통해 전환"
-
-#: ../src/core/all-keybindings.h:171
-msgid "Move between windows of an application immediately"
-msgstr "한 개 프로그램의 창 사이에서 바로 전환"
-
-#: ../src/core/all-keybindings.h:174
-msgid "Move backward between windows of an application immediately"
-msgstr "한 개 프로그램의 창 사이에서 바로 반대 방향으로 전환"
-
-#: ../src/core/all-keybindings.h:177
-msgid "Move between windows immediately"
-msgstr "창 사이에서 바로 전환"
-
-#: ../src/core/all-keybindings.h:180
-msgid "Move backward between windows immediately"
-msgstr "창 사이에서 바로 반대 방향으로 전환"
-
-#: ../src/core/all-keybindings.h:183
-msgid "Move between panels and the desktop immediately"
-msgstr "패널과 바탕 화면 사이에서 바로 전환"
-
-#: ../src/core/all-keybindings.h:186
-msgid "Move backward between panels and the desktop immediately"
-msgstr "패널과 바탕 화면 사이에서 반대 방향으로 바로 전환"
-
-#: ../src/core/all-keybindings.h:203
-msgid "Hide all normal windows and set focus to the desktop"
-msgstr "모든 창을 숨기고 바탕 화면에 포커스"
-
-#: ../src/core/all-keybindings.h:206
-msgid "Show the panel's main menu"
-msgstr "패널 메인 메뉴 표시"
-
-#: ../src/core/all-keybindings.h:209
-msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "패널의 \"프로그램 실행\" 대화 상자 표시"
-
-#: ../src/core/all-keybindings.h:211
-msgid "Start or stop recording the session"
-msgstr "이 세션 기록을 시작 혹으 중지"
-
-#: ../src/core/all-keybindings.h:252
-msgid "Take a screenshot"
-msgstr "스크린샷 찍기"
-
-#: ../src/core/all-keybindings.h:254
-msgid "Take a screenshot of a window"
-msgstr "창 스크린샷 찍기"
-
-#: ../src/core/all-keybindings.h:256
-msgid "Run a terminal"
-msgstr "터미널 실행"
-
-#: ../src/core/all-keybindings.h:271
-msgid "Activate the window menu"
-msgstr "창 메뉴 활성"
-
-#: ../src/core/all-keybindings.h:274
-msgid "Toggle fullscreen mode"
-msgstr "전체 화면 모드 토글"
-
-#: ../src/core/all-keybindings.h:276
-msgid "Toggle maximization state"
-msgstr "창 최대화 토글"
-
-#: ../src/core/all-keybindings.h:278
-msgid "Toggle whether a window will always be visible over other windows"
-msgstr "창을 항상 다른 창 위에 보이도록 만들 지 토글"
-
-#: ../src/core/all-keybindings.h:280
-msgid "Maximize window"
-msgstr "창 최대화"
-
-#: ../src/core/all-keybindings.h:282
-msgid "Restore window"
-msgstr "창 복귀"
-
-#: ../src/core/all-keybindings.h:284
-msgid "Toggle shaded state"
-msgstr "창 숨기기 토글"
-
-#: ../src/core/all-keybindings.h:286
-msgid "Minimize window"
-msgstr "창 최소화"
-
-#: ../src/core/all-keybindings.h:288
-msgid "Close window"
-msgstr "창 닫기"
-
-#: ../src/core/all-keybindings.h:290
-msgid "Move window"
-msgstr "창을 옮기기"
-
-#: ../src/core/all-keybindings.h:292
-msgid "Resize window"
-msgstr "창 크기 조절"
-
-#: ../src/core/all-keybindings.h:295
-msgid "Toggle whether window is on all workspaces or just one"
-msgstr "창을 모든 작업 공간에 둘 지 아니면 한 작업 공간에 둘 지 토글"
-
-#: ../src/core/all-keybindings.h:299
-msgid "Move window to workspace 1"
-msgstr "창을 1번째 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:302
-msgid "Move window to workspace 2"
-msgstr "창을 2번째 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:305
-msgid "Move window to workspace 3"
-msgstr "창을 3번째 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:308
-msgid "Move window to workspace 4"
-msgstr "창을 4번째 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:311
-msgid "Move window to workspace 5"
-msgstr "창을 5번째 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:314
-msgid "Move window to workspace 6"
-msgstr "창을 6번째 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:317
-msgid "Move window to workspace 7"
-msgstr "창을 7번째 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:320
-msgid "Move window to workspace 8"
-msgstr "창을 8번째 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:323
-msgid "Move window to workspace 9"
-msgstr "창을 9번째 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:326
-msgid "Move window to workspace 10"
-msgstr "창을 2번째 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:329
-msgid "Move window to workspace 11"
-msgstr "창을 11번째 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:332
-msgid "Move window to workspace 12"
-msgstr "창을 12번째 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:344
-msgid "Move window one workspace to the left"
-msgstr "창을 왼쪽의 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:347
-msgid "Move window one workspace to the right"
-msgstr "창을 오른쪽의 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:350
-msgid "Move window one workspace up"
-msgstr "창을 위의 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:353
-msgid "Move window one workspace down"
-msgstr "창을 아래의 작업 공간으로 옮기기"
-
-#: ../src/core/all-keybindings.h:356
-msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "다른 창에 덮여 있으면 창을 올리고, 덮여 있지 않으면 창 내리기"
-
-#: ../src/core/all-keybindings.h:358
-msgid "Raise window above other windows"
-msgstr "창을 다른창 위로 올리기"
-
-#: ../src/core/all-keybindings.h:360
-msgid "Lower window below other windows"
-msgstr "창을 다른창 아래로 내리기"
-
-#: ../src/core/all-keybindings.h:364
-msgid "Maximize window vertically"
-msgstr "창 세로로 최대화"
-
-#: ../src/core/all-keybindings.h:368
-msgid "Maximize window horizontally"
-msgstr "창 가로로 최대화"
-
-#: ../src/core/all-keybindings.h:372
-msgid "Move window to north-west (top left) corner"
-msgstr "창을 화면 왼쪽 위 구석으로 옮기기"
-
-#: ../src/core/all-keybindings.h:375
-msgid "Move window to north-east (top right) corner"
-msgstr "창을 화면 오른쪽 위 구석으로 옮기기"
-
-#: ../src/core/all-keybindings.h:378
-msgid "Move window to south-west (bottom left) corner"
-msgstr "창을 화면 왼쪽 아래 구석으로 옮기기"
-
-#: ../src/core/all-keybindings.h:381
-msgid "Move window to south-east (bottom right) corner"
-msgstr "창을 화면 오른쪽 아래 구석으로 옮기기"
-
-#: ../src/core/all-keybindings.h:385
-msgid "Move window to north (top) side of screen"
-msgstr "창을 화면 위쪽 가장자리로 옮기기"
-
-#: ../src/core/all-keybindings.h:388
-msgid "Move window to south (bottom) side of screen"
-msgstr "창을 화면 아래쪽 가장자리로 옮기기"
-
-#: ../src/core/all-keybindings.h:391
-msgid "Move window to east (right) side of screen"
-msgstr "창을 화면 오른쪽 가장자리로 옮기기"
-
-#: ../src/core/all-keybindings.h:394
-msgid "Move window to west (left) side of screen"
-msgstr "창을 화면 왼쪽 가장자리로 옮기기"
-
-#: ../src/core/all-keybindings.h:397
-msgid "Move window to center of screen"
-msgstr "창을 화면 가운데로 옮기기"
-
-#: ../src/core/bell.c:310
+msgstr ""
+"다른 창 구성 관리 프로그램이 이미 디스플레이 \"%2$s\" 화면 %1$i번에서 실행 중"
+"입니다."
+
+#: ../src/core/bell.c:307
 msgid "Bell event"
 msgstr "삑소리 이벤트"
 
@@ -387,7 +93,7 @@ msgstr "콤포짓에 필요한 %s 확장 기능이 없습니다"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X 윈도 시스템 디스플레이 '%s'을(를) 여는데 실패하였습니다\n"
 
-#: ../src/core/keybindings.c:759
+#: ../src/core/keybindings.c:852
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -395,29 +101,6 @@ msgid ""
 msgstr ""
 "다른 프로그램에서 이미 단축키로 변경 키 %2$x와(과) 키 %1$s을(를) 사용하고 있"
 "습니다\n"
-
-#. Displayed when a keybinding which is
-#. * supposed to launch a program fails.
-#.
-#: ../src/core/keybindings.c:2523
-#, c-format
-msgid ""
-"There was an error running <tt>%s</tt>:\n"
-"\n"
-"%s"
-msgstr ""
-"<tt>%s</tt> 명령을 실행하는 중 오류가 발생했습니다:\n"
-"%s."
-
-#: ../src/core/keybindings.c:2613
-#, c-format
-msgid "No command %d has been defined.\n"
-msgstr "명령 %d이(가) 정의되지 않았습니다.\n"
-
-#: ../src/core/keybindings.c:3625
-#, c-format
-msgid "No terminal command has been defined.\n"
-msgstr "터미널 명령을 정의하지 않았습니다.\n"
 
 #: ../src/core/main.c:206
 msgid "Disable connection to session manager"
@@ -479,47 +162,7 @@ msgstr "버전을 출력합니다"
 msgid "Comma-separated list of compositor plugins"
 msgstr "컴포짓 플러그인의 목록, 쉼표로 구분"
 
-#.
-#. * We found it, but it was invalid.  Complain.
-#. *
-#. * FIXME: This replicates the original behaviour, but in the future
-#. * we might consider reverting invalid keys to their original values.
-#. * (We know the old value, so we can look up a suitable string in
-#. * the symtab.)
-#. *
-#. * (Empty comment follows so the translators don't see this.)
-#.
-#.
-#: ../src/core/prefs.c:550 ../src/core/prefs.c:711
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "GConf 키 '%s'이(가) 잘못된 값으로 설정되어 있습니다\n"
-
-#: ../src/core/prefs.c:637 ../src/core/prefs.c:880
-#, c-format
-msgid "%d stored in GConf key %s is out of range %d to %d\n"
-msgstr ""
-"GConf 키 %2$s에 저장된 %1$d은(는) %3$d에서 %4$d 사이의 범위를 벗어납니다\n"
-
-#: ../src/core/prefs.c:681 ../src/core/prefs.c:758 ../src/core/prefs.c:806
-#: ../src/core/prefs.c:870 ../src/core/prefs.c:1331 ../src/core/prefs.c:1347
-#: ../src/core/prefs.c:1364 ../src/core/prefs.c:1380
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "\"%s\" GConf 키가 잘못된 형식으로 설정되어 있습니다\n"
-
-#: ../src/core/prefs.c:1210
-#, c-format
-msgid "GConf key %s is already in use and can't be used to override %s\n"
-msgstr ""
-"\"%s\" GConf 키가 이미 사용 중이므로 %s 키를 대신하는데 사용될 수 없습니다\n"
-
-#: ../src/core/prefs.c:1269
-#, c-format
-msgid "Can't override GConf key, %s not found\n"
-msgstr "GConf 키를 대신할 수 없습니다. %s 키가 있습니다\n"
-
-#: ../src/core/prefs.c:1454
+#: ../src/core/prefs.c:1067
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -527,12 +170,12 @@ msgstr ""
 "응용 프로그램에 대한 임시 방편을 막았습니다. 몇몇 응용프로그램들이 제대로 동"
 "작하지 않을것입니다.\n"
 
-#: ../src/core/prefs.c:1531
+#: ../src/core/prefs.c:1142
 #, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "GConf 키 %2$s에서 글꼴 지정 \"%1$s\"을(를) 분석할 수 없습니다\n"
+msgid "Could not parse font description \"%s\" from GSettings key %s\n"
+msgstr "GSettings 키 %2$s에서 글꼴 지정 \"%1$s\"을(를) 분석할 수 없습니다\n"
 
-#: ../src/core/prefs.c:1593
+#: ../src/core/prefs.c:1208
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -541,17 +184,7 @@ msgstr ""
 "설정 데이터베이스에서 찾은 \"%s\"이(가) 마우스 단추 변경 키의 올바른 값이 아"
 "닙니다\n"
 
-#: ../src/core/prefs.c:2028
-#, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "작업 공간의 수를 %d(으)로 설정하는 중 오류: %s\n"
-
-#: ../src/core/prefs.c:2212 ../src/core/prefs.c:2714
-#, c-format
-msgid "Workspace %d"
-msgstr "작업 공간 %d"
-
-#: ../src/core/prefs.c:2244 ../src/core/prefs.c:2422
+#: ../src/core/prefs.c:1720
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -560,46 +193,38 @@ msgstr ""
 "설정 데이터베이스에서 찾은 \"%s\"이(가) 단축키 \"%s\"에 대한 올바른 값이 아닙"
 "니다\n"
 
-#: ../src/core/prefs.c:2795
+#: ../src/core/prefs.c:1817
 #, c-format
-msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "작업 공간 %d의 이름을 \"%s\"(으)로 설정하는 중 오류: %s\n"
+msgid "Workspace %d"
+msgstr "작업 공간 %d"
 
-#: ../src/core/prefs.c:3009
-#, c-format
-msgid "Error setting live hidden windows status status: %s\n"
-msgstr "실행 중인 숨긴 창 상태를 설정하는 중 오류: %s\n"
-
-#: ../src/core/prefs.c:3044
-#, c-format
-msgid "Error setting no tab popup status: %s\n"
-msgstr "탭 없음 팝업 상태를 설정하는 중 오류: %s\n"
-
-#: ../src/core/screen.c:663
+#: ../src/core/screen.c:741
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "디스플레이 '%2$s'의 화면 %1$d은(는) 잘못되었습니다\n"
 
-#: ../src/core/screen.c:679
+#: ../src/core/screen.c:757
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
-msgstr "디스플레이 \"%2$s\"의 화면 %1$d에 이미 창 관리자가 실행되고 있습니다. 현재 창 관리자를 무시하는 --replace 옵션을 써보십시오.\n"
+msgstr ""
+"디스플레이 \"%2$s\"의 화면 %1$d에 이미 창 관리자가 실행되고 있습니다. 현재 "
+"창 관리자를 무시하는 --replace 옵션을 써보십시오.\n"
 
-#: ../src/core/screen.c:706
+#: ../src/core/screen.c:784
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "디스플레이 \"%2$s\"의 화면 %1$d에 창 관리 선택을 가질 수 없습니다\n"
 
-#: ../src/core/screen.c:761
+#: ../src/core/screen.c:839
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 "디스플레이 \"%2$s\"의 화면 %1$d은(는) 이미 창 관리자가 실행되고 있습니다\n"
 
-#: ../src/core/screen.c:946
+#: ../src/core/screen.c:1024
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "디스플레이 \"%2$s\"의 화면 %1$d을(를) 떼어 놓을수 없습니다\n"
@@ -679,30 +304,24 @@ msgstr "로그 파일 %s을(를) 엽니다\n"
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "머터가 자세한 모드 지원 없이 컴파일 되었습니다\n"
 
-#: ../src/core/util.c:286
+#: ../src/core/util.c:290
 msgid "Window manager: "
 msgstr "창 관리자: "
 
-#: ../src/core/util.c:434
+#: ../src/core/util.c:438
 msgid "Bug in window manager: "
 msgstr "창 관리자의 벌레: "
 
-#: ../src/core/util.c:467
+#: ../src/core/util.c:471
 msgid "Window manager warning: "
 msgstr "창 관리자 주의: "
 
-#: ../src/core/util.c:495
+#: ../src/core/util.c:499
 msgid "Window manager error: "
 msgstr "장 관리자 오류: "
 
-#. Translators: This is the title used on dialog boxes
-#: ../src/core/util.c:632 ../src/mutter.desktop.in.h:1
-#: ../src/mutter-wm.desktop.in.h:1
-msgid "Mutter"
-msgstr "머터"
-
 #. first time through
-#: ../src/core/window.c:6959
+#: ../src/core/window.c:7145
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -718,12 +337,14 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7622
+#: ../src/core/window.c:7808
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr "%s 창에서 크기 변경이 불가능하다는 MWM 힌트를 설정했지만, 최소 크기 %d x %d 및 최대 크기 %d x %d(으)로 설정했습니다. 앞뒤가 맞지 않습니다.\n"
+msgstr ""
+"%s 창에서 크기 변경이 불가능하다는 MWM 힌트를 설정했지만, 최소 크기 %d x %d "
+"및 최대 크기 %d x %d(으)로 설정했습니다. 앞뒤가 맞지 않습니다.\n"
 
 #: ../src/core/window-props.c:309
 #, c-format
@@ -736,12 +357,12 @@ msgstr "응용 프로그램이 가짜 _NET_WM_PID %lu을(를) 설정하였습니
 msgid "%s (on %s)"
 msgstr "%s (%s에서)"
 
-#: ../src/core/window-props.c:1488
+#: ../src/core/window-props.c:1481
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "%2$s에 대해 WM_TRANSIENT_FOR 0x%1$lx 창이 잘못되었습니다.\n"
 
-#: ../src/core/window-props.c:1500
+#: ../src/core/window-props.c:1492
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "%2$s에 대해 WM_TRANSIENT_FOR 0x%1$lx 창은 무한 반복입니다.\n"
@@ -774,11 +395,19 @@ msgstr ""
 "창 0x%2$lx의 등록 정보 %1$s은(는) 목록안의 항목 %3$d에 잘못된 UTF-8을 포함하"
 "고 있습니다\n"
 
-#: ../src/mutter.schemas.in.h:1
+#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "머터"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:1
 msgid "Attach modal dialogs"
 msgstr "모달 대화 상자 부착"
 
-#: ../src/mutter.schemas.in.h:2
+#: ../src/org.gnome.mutter.gschema.xml.in.h:2
+msgid "Cancel tab popup"
+msgstr "탭 팝업 취소"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
@@ -786,7 +415,13 @@ msgstr ""
 "숨긴 창을 (예를 들어 최소화한 창과 현재가 아닌 다른 작업 공간의 창) 실행 상태"
 "로 두어야 할지 지정합니다."
 
-#: ../src/mutter.schemas.in.h:3
+#: ../src/org.gnome.mutter.gschema.xml.in.h:4
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr "팝업 및 강조 프레임을 창 전환 목록에 사용하지 않게 만들지 여부를 결정합니다."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:5
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
@@ -794,25 +429,46 @@ msgstr ""
 "작업 공간을 전환할 때 모든 모니터의 창에 대해 할지 주 모니터의 창에서만 할지 "
 "결정합니다."
 
-#: ../src/mutter.schemas.in.h:4
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid "Draggable border width"
 msgstr "마우스로 끌 수 있는 가장자리의 너비"
 
-#: ../src/mutter.schemas.in.h:5
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "창을 화면 가장자리에 끌어 놓을 때 가장자리에 맞춰 격자로 만들기"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+msgid ""
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
+msgstr "참이면, 세로 방향 화면 가장자리에 창을 놓았을 때 세로 방향으로 최대화하고 가로 방향으로 화면을 절반을 차지하도록 크기를 바꿉니다. 화면 위 가장자리에 창을 놓으면 전체 화면으로 만듭니다."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Live Hidden Windows"
 msgstr "실행 중인 숨긴 창"
 
-#: ../src/mutter.schemas.in.h:6
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid "Modifier to use for extended window management operations"
 msgstr "창 관리 작업을 할 때 사용할 변경 키"
 
-#: ../src/mutter.schemas.in.h:7
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+msgid "No tab popup"
+msgstr "탭 팝업 없음"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid "Select window from tab popup"
+msgstr "탭 팝업에서 창 선택"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
-msgstr "마우스로 끌 수 있는 가장자리의 너비. 테마의 가장자리가 이보다 작은 경우, 투명한 가장자리가 부족한 양만큼 추가됩니다."
+msgstr ""
+"마우스로 끌 수 있는 가장자리의 너비. 테마의 가장자리가 이보다 작은 경우, 투명"
+"한 가장자리가 부족한 양만큼 추가됩니다."
 
-#: ../src/mutter.schemas.in.h:8
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -824,7 +480,7 @@ msgstr ""
 "기본값은 \"윈도우 키\"입니다. 보통 이 키 바인딩은 기본값이거나 빈 문자열입니"
 "다."
 
-#: ../src/mutter.schemas.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -833,7 +489,7 @@ msgstr ""
 "참이면 모달 대화 상자에서 별도의 제목 표시줄을 표시하지 않고 상위 창의 제목 "
 "표시줄에 붙어서 상위 창과 함께 움직입니다."
 
-#: ../src/mutter.schemas.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "Workspaces only on primary"
 msgstr "주 모니터에서만 작업 공간"
 
@@ -842,47 +498,47 @@ msgstr "주 모니터에서만 작업 공간"
 msgid "Usage: %s\n"
 msgstr "사용법: %s\n"
 
-#: ../src/ui/frames.c:1123
+#: ../src/ui/frames.c:1157
 msgid "Close Window"
 msgstr "창 닫기"
 
-#: ../src/ui/frames.c:1126
+#: ../src/ui/frames.c:1160
 msgid "Window Menu"
 msgstr "창 메뉴"
 
-#: ../src/ui/frames.c:1129
+#: ../src/ui/frames.c:1163
 msgid "Minimize Window"
 msgstr "창 최소화"
 
-#: ../src/ui/frames.c:1132
+#: ../src/ui/frames.c:1166
 msgid "Maximize Window"
 msgstr "창 최대화"
 
-#: ../src/ui/frames.c:1135
+#: ../src/ui/frames.c:1169
 msgid "Restore Window"
 msgstr "창 복귀"
 
-#: ../src/ui/frames.c:1138
+#: ../src/ui/frames.c:1172
 msgid "Roll Up Window"
 msgstr "창 말아올리기"
 
-#: ../src/ui/frames.c:1141
+#: ../src/ui/frames.c:1175
 msgid "Unroll Window"
 msgstr "창 펼치기"
 
-#: ../src/ui/frames.c:1144
+#: ../src/ui/frames.c:1178
 msgid "Keep Window On Top"
 msgstr "창을 맨 위에 두기"
 
-#: ../src/ui/frames.c:1147
+#: ../src/ui/frames.c:1181
 msgid "Remove Window From Top"
 msgstr "창을 맨 위에서 빼기"
 
-#: ../src/ui/frames.c:1150
+#: ../src/ui/frames.c:1184
 msgid "Always On Visible Workspace"
 msgstr "항상 현재 작업 공간에 놓기"
 
-#: ../src/ui/frames.c:1153
+#: ../src/ui/frames.c:1187
 msgid "Put Window On Only One Workspace"
 msgstr "창을 한 개 작업 공간에만 두기"
 
@@ -1123,57 +779,67 @@ msgstr "단추의 가로세로 비 %g이(가) 적당하지 않습니다"
 msgid "Frame geometry does not specify size of buttons"
 msgstr "프레임 위치가 단추의 크기로 지정되지 않았습니다"
 
-#: ../src/ui/theme.c:1060
+#: ../src/ui/theme.c:1067
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "서서히 변하는 색으로 지정하려면 최소 2색이 필요합니다"
 
-#: ../src/ui/theme.c:1205
+#: ../src/ui/theme.c:1219
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
-msgstr "GTK 사용자 지정 색상 지정은 색 이름과 대체할 색을 괄호 안에 써야 합니다. 예를 들어: gtk:custom(foo,bar). \"%s\"을(를) 분석할 수 없습니다"
-
-#: ../src/ui/theme.c:1221
-#, c-format
-msgid ""
-"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
-"_ are valid"
-msgstr "gtk:custom의 color_name 파라미터 안에 잘못된 문자 '%c'. A-Za-z0-9-_ 문자만 허용합니다."
+msgstr ""
+"GTK 사용자 지정 색상 지정은 색 이름과 대체할 색을 괄호 안에 써야 합니다. 예"
+"를 들어: gtk:custom(foo,bar). \"%s\"을(를) 분석할 수 없습니다"
 
 #: ../src/ui/theme.c:1235
 #, c-format
 msgid ""
+"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
+"_ are valid"
+msgstr ""
+"gtk:custom의 color_name 파라미터 안에 잘못된 문자 '%c'. A-Za-z0-9-_ 문자만 허"
+"용합니다."
+
+#: ../src/ui/theme.c:1249
+#, c-format
+msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
 "fit the format"
-msgstr "gtk:custom 형식은 \"gtk:custom(색이름,대체색)\"입니다, \"%s\"(은)는 형식에 맞지 않습니다"
+msgstr ""
+"gtk:custom 형식은 \"gtk:custom(색이름,대체색)\"입니다, \"%s\"(은)는 형식에 맞"
+"지 않습니다"
 
-#: ../src/ui/theme.c:1271
+#: ../src/ui/theme.c:1294
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
-msgstr "GTK 색상 지정은 중괄호안에 있어야 합니다. 예를 들어: gtk:fg[NORMAL], 여기서 NORMAL이 값입니다. \"%s\"을(를) 분석할 수 없습니다."
+msgstr ""
+"GTK 색상 지정은 중괄호안에 있어야 합니다. 예를 들어: gtk:fg[NORMAL], 여기서 "
+"NORMAL이 값입니다. \"%s\"을(를) 분석할 수 없습니다."
 
-#: ../src/ui/theme.c:1285
+#: ../src/ui/theme.c:1308
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr "GTK 색상 지정은 값 뒤에 중괄호로 닫혀 있어야 합니다. 예를 들어: gtk:fg[NORMAL], 여기서 NORMAL은 값입니다. \"%s\"을(를) 분석할 수 없습니다."
+msgstr ""
+"GTK 색상 지정은 값 뒤에 중괄호로 닫혀 있어야 합니다. 예를 들어: gtk:fg"
+"[NORMAL], 여기서 NORMAL은 값입니다. \"%s\"을(를) 분석할 수 없습니다."
 
-#: ../src/ui/theme.c:1296
+#: ../src/ui/theme.c:1319
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "색상 지정의 \"%s\" 값을 이해할 수 없습니다"
 
-#: ../src/ui/theme.c:1309
+#: ../src/ui/theme.c:1332
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "색상 지정의 색상 구성요소 \"%s\"을(를) 이해할 수 없습니다"
 
-#: ../src/ui/theme.c:1339
+#: ../src/ui/theme.c:1361
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1182,17 +848,17 @@ msgstr ""
 "섞기 형식은 \"blend/bg_color/fg_color/alpha\"입니다, \"%s\"은(는) 형식에 맞"
 "지 않습니다"
 
-#: ../src/ui/theme.c:1350
+#: ../src/ui/theme.c:1372
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "색상 섞기에서 알파 값 \"%s\"을(를) 분석할 수 없습니다"
 
-#: ../src/ui/theme.c:1360
+#: ../src/ui/theme.c:1382
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "색상 섞기에서 알파 값 \"%s\"은(는) 0.0 과 1.0사이의 값이 아닙니다"
 
-#: ../src/ui/theme.c:1407
+#: ../src/ui/theme.c:1429
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -1200,39 +866,39 @@ msgstr ""
 "그림자 형식은 \"shade/base_color/format\"입니다, \"%s\"(은)는 형식에 맞지 않"
 "습니다"
 
-#: ../src/ui/theme.c:1418
+#: ../src/ui/theme.c:1440
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "그림자색에서 그림자 인자 \"%s\"(을)를 해석할 수 없습니다"
 
-#: ../src/ui/theme.c:1428
+#: ../src/ui/theme.c:1450
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "그림자색에서 그림자 인자 \"%s\"(은)는 음수입니다"
 
-#: ../src/ui/theme.c:1457
+#: ../src/ui/theme.c:1479
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "색상 \"%s\"을(를) 해석할 수 없습니다"
 
-#: ../src/ui/theme.c:1768
+#: ../src/ui/theme.c:1790
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "좌표식에 허용되지 않는 문자 '%s'(이)가 포함되어 있습니다"
 
-#: ../src/ui/theme.c:1795
+#: ../src/ui/theme.c:1817
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "좌표식에 분석할 수 없는 부동소수점 숫자 '%s'이(가) 포함되어 있습니다"
 
-#: ../src/ui/theme.c:1809
+#: ../src/ui/theme.c:1831
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "좌표식에 분석할 수 없는 정수 '%s'이(가) 포함되어 있습니다"
 
-#: ../src/ui/theme.c:1931
+#: ../src/ui/theme.c:1953
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -1240,39 +906,39 @@ msgid ""
 msgstr ""
 "좌표식에 이 글자 시작부분에 알 수 없는 연산자가 포함되어 있습니다: \"%s\""
 
-#: ../src/ui/theme.c:1988
+#: ../src/ui/theme.c:2010
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "좌표식이 비어있거나 이해할 수 없습니다"
 
-#: ../src/ui/theme.c:2099 ../src/ui/theme.c:2109 ../src/ui/theme.c:2143
+#: ../src/ui/theme.c:2121 ../src/ui/theme.c:2131 ../src/ui/theme.c:2165
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "좌표식의 결과 값이 0로 나누었습니다"
 
-#: ../src/ui/theme.c:2151
+#: ../src/ui/theme.c:2173
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "좌표식에서 부동소수점 수에 나머지 연산을 하려 합니다"
 
-#: ../src/ui/theme.c:2207
+#: ../src/ui/theme.c:2229
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "좌표식에서 피연산자가 들어갈 곳에 연산자 \"%s\"이(가) 있습니다"
 
-#: ../src/ui/theme.c:2216
+#: ../src/ui/theme.c:2238
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "좌표식에서 연산자가 들어갈 곳에 피연산자가 있습니다"
 
-#: ../src/ui/theme.c:2224
+#: ../src/ui/theme.c:2246
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "좌표식에서 피연산자 대신에 연산자로 끝나있습니다"
 
-#: ../src/ui/theme.c:2234
+#: ../src/ui/theme.c:2256
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1281,37 +947,37 @@ msgstr ""
 "좌표식에서 피연산자가 없는 연산자 \"%2$c\"다음에 연산자 \"%1$c\"이(가) 있습니"
 "다"
 
-#: ../src/ui/theme.c:2385 ../src/ui/theme.c:2430
+#: ../src/ui/theme.c:2407 ../src/ui/theme.c:2452
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "좌표식에 알 수 없는 변수나 상수 \"%s\"이(가) 있습니다"
 
-#: ../src/ui/theme.c:2484
+#: ../src/ui/theme.c:2506
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "좌표 계산 파서의 버퍼가 크기를 넘어갔습니다."
 
-#: ../src/ui/theme.c:2513
+#: ../src/ui/theme.c:2535
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "좌표식에 닫는 괄호는 있지만 여는 괄호가 없습니다"
 
-#: ../src/ui/theme.c:2577
+#: ../src/ui/theme.c:2599
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "좌표식에 여는 괄호는 있지만 닫는 괄호가 없습니다"
 
-#: ../src/ui/theme.c:2588
+#: ../src/ui/theme.c:2610
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "좌표식에 어떠한 연산자나 피연산자가 없습니다"
 
-#: ../src/ui/theme.c:2800 ../src/ui/theme.c:2820 ../src/ui/theme.c:2840
+#: ../src/ui/theme.c:2822 ../src/ui/theme.c:2842 ../src/ui/theme.c:2862
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "테마가 오류 값을 내는 표현식이 들어 있습니다: %s\n"
 
-#: ../src/ui/theme.c:4511
+#: ../src/ui/theme.c:4533
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1320,7 +986,7 @@ msgstr ""
 "이 프레임 스타일에는 <button function=\"%s\" style=\"%s\" draw_ops=\"whatever"
 "\"/>가 지정되어야 합니다"
 
-#: ../src/ui/theme.c:5044 ../src/ui/theme.c:5069
+#: ../src/ui/theme.c:5066 ../src/ui/theme.c:5091
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -1328,18 +994,18 @@ msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" state=\"whatever\"/> 가 없습니"
 "다"
 
-#: ../src/ui/theme.c:5117
+#: ../src/ui/theme.c:5139
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "테마 \"%s\"을(를) 읽을 수 없습니다: %s\n"
 
-#: ../src/ui/theme.c:5253 ../src/ui/theme.c:5260 ../src/ui/theme.c:5267
-#: ../src/ui/theme.c:5274 ../src/ui/theme.c:5281
+#: ../src/ui/theme.c:5275 ../src/ui/theme.c:5282 ../src/ui/theme.c:5289
+#: ../src/ui/theme.c:5296 ../src/ui/theme.c:5303
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "테마 \"%2$s\"의 <%1$s>(이)가 설정되지 않았습니다"
 
-#: ../src/ui/theme.c:5289
+#: ../src/ui/theme.c:5311
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1348,13 +1014,14 @@ msgstr ""
 "테마 \"%2$s\"의 창 형식 \"%1$s\"에 대한 프레임 스타일이 없습니다,<window "
 "type=\"%3$s\" style_set=\"whatever\"/> 엘리먼트를 추가하십시오"
 
-#: ../src/ui/theme.c:5728 ../src/ui/theme.c:5790 ../src/ui/theme.c:5853
+#: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "사용자 정의 상수는 대문자로 시작되어야 합니다. \"%s\"은(는) 그렇지 않습니다."
+msgstr ""
+"사용자 정의 상수는 대문자로 시작되어야 합니다. \"%s\"은(는) 그렇지 않습니다."
 
-#: ../src/ui/theme.c:5736 ../src/ui/theme.c:5798 ../src/ui/theme.c:5861
+#: ../src/ui/theme.c:5717 ../src/ui/theme.c:5779 ../src/ui/theme.c:5842
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "상수 \"%s\"은(는) 이미 지정되어 있습니다"
@@ -1795,101 +1462,101 @@ msgstr "'열기' 아이콘이 들어 있는 데모 단추입니다"
 msgid "This is a demo button with a 'quit' icon"
 msgstr "'끝내기' 아이콘이 들어 있는 데모 단추입니다"
 
-#: ../src/ui/theme-viewer.c:253
+#: ../src/ui/theme-viewer.c:248
 msgid "This is a sample message in a sample dialog"
 msgstr "예제 대화 상자의 예제 메시지입니다"
 
-#: ../src/ui/theme-viewer.c:336
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "가짜 메뉴 항목 %d\n"
 
-#: ../src/ui/theme-viewer.c:371
+#: ../src/ui/theme-viewer.c:363
 msgid "Border-only window"
 msgstr "테두리만 있는 창"
 
-#: ../src/ui/theme-viewer.c:373
+#: ../src/ui/theme-viewer.c:365
 msgid "Bar"
 msgstr "모음"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:382
 msgid "Normal Application Window"
 msgstr "보통 프로그램 창"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:386
 msgid "Dialog Box"
 msgstr "대화 상자"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:390
 msgid "Modal Dialog Box"
 msgstr "모달 대화 상자"
 
-#: ../src/ui/theme-viewer.c:402
+#: ../src/ui/theme-viewer.c:394
 msgid "Utility Palette"
 msgstr "도구 팔레트"
 
-#: ../src/ui/theme-viewer.c:406
+#: ../src/ui/theme-viewer.c:398
 msgid "Torn-off Menu"
 msgstr "떼어내기 메뉴"
 
-#: ../src/ui/theme-viewer.c:410
+#: ../src/ui/theme-viewer.c:402
 msgid "Border"
 msgstr "테두리"
 
-#: ../src/ui/theme-viewer.c:414
+#: ../src/ui/theme-viewer.c:406
 msgid "Attached Modal Dialog"
 msgstr "부착한 모달 대화 상자"
 
-#: ../src/ui/theme-viewer.c:747
+#: ../src/ui/theme-viewer.c:739
 #, c-format
 msgid "Button layout test %d"
 msgstr "단추 배치 테스트 %d"
 
-#: ../src/ui/theme-viewer.c:776
+#: ../src/ui/theme-viewer.c:768
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "창 프레임 하나를 그리는 데 %g ms"
 
-#: ../src/ui/theme-viewer.c:821
+#: ../src/ui/theme-viewer.c:813
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "사용법: metacity-theme-viewer [테마이름]\n"
 
-#: ../src/ui/theme-viewer.c:828
+#: ../src/ui/theme-viewer.c:820
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "테마를 읽어들이는 데 오류가 발생했습니다: %s\n"
 
-#: ../src/ui/theme-viewer.c:834
+#: ../src/ui/theme-viewer.c:826
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "\"%s\" 테마를 읽어들이는 데 %g초\n"
 
-#: ../src/ui/theme-viewer.c:878
+#: ../src/ui/theme-viewer.c:870
 msgid "Normal Title Font"
 msgstr "보통 제목 글꼴"
 
-#: ../src/ui/theme-viewer.c:884
+#: ../src/ui/theme-viewer.c:876
 msgid "Small Title Font"
 msgstr "작은 제목 글꼴"
 
-#: ../src/ui/theme-viewer.c:890
+#: ../src/ui/theme-viewer.c:882
 msgid "Large Title Font"
 msgstr "큰 제목 글꼴"
 
-#: ../src/ui/theme-viewer.c:895
+#: ../src/ui/theme-viewer.c:887
 msgid "Button Layouts"
 msgstr "단추 배치"
 
-#: ../src/ui/theme-viewer.c:900
+#: ../src/ui/theme-viewer.c:892
 msgid "Benchmark"
 msgstr "벤치마크"
 
-#: ../src/ui/theme-viewer.c:952
+#: ../src/ui/theme-viewer.c:944
 msgid "Window Title Goes Here"
 msgstr "창 제목이 여기에 들어갑니다"
 
-#: ../src/ui/theme-viewer.c:1055
+#: ../src/ui/theme-viewer.c:1047
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1900,61 +1567,39 @@ msgstr ""
 "g ms). 그리고 X 서버 리소스까지 포함해 실제 시간으로 %g 초가 걸렸습니다 (한 "
 "프레임에 %g ms).\n"
 
-#: ../src/ui/theme-viewer.c:1274
+#: ../src/ui/theme-viewer.c:1266
 msgid "position expression test returned TRUE but set error"
 msgstr "위치 표현식 테스트가 참을 리턴했지만 오류가 발생했습니다"
 
-#: ../src/ui/theme-viewer.c:1276
+#: ../src/ui/theme-viewer.c:1268
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "위치 표현식 테스트가 거짓을 리턴했지만 오류가 발생하지 않았습니다"
 
-#: ../src/ui/theme-viewer.c:1280
+#: ../src/ui/theme-viewer.c:1272
 msgid "Error was expected but none given"
 msgstr "오류가 발생해야 하지만 발생하지 않았습니다"
 
-#: ../src/ui/theme-viewer.c:1282
+#: ../src/ui/theme-viewer.c:1274
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "오류 %d번이 발생해야 하지만 오류 %d번이 발생했습니다"
 
-#: ../src/ui/theme-viewer.c:1288
+#: ../src/ui/theme-viewer.c:1280
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "오류가 발생하면 안 되지만 오류 한 개가 발생했습니다: %s"
 
-#: ../src/ui/theme-viewer.c:1292
+#: ../src/ui/theme-viewer.c:1284
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "가로값이 %d입니다. 와야 하는 값은 %d입니다"
 
-#: ../src/ui/theme-viewer.c:1295
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "세로값이 %d입니다. 와야 하는 값은 %d입니다"
 
-#: ../src/ui/theme-viewer.c:1360
+#: ../src/ui/theme-viewer.c:1352
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d개의 좌표 표현식을 %g초에 파싱했습니다 (평균 %g초)\n"
-
-#~ msgid ""
-#~ "Don't make fullscreen windows that are maximized and have no decorations"
-#~ msgstr "최대화하고 창 관리 인터페이스가 없는 전체 화면 창을 만들지 않습니다"
-
-#~ msgid "Whether window popup/frame should be shown when cycling windows."
-#~ msgstr "다음 창으로 이동할 때 창 팝업 및 프레임을 표시할지 여부."
-
-#~ msgid "Internal argument for GObject introspection"
-#~ msgstr "GObject introspection의 내부 인수"
-
-#~ msgid "Failed to restart: %s\n"
-#~ msgstr "다시 시작 실패: %s\n"
-
-#~ msgid "Error setting clutter plugin list: %s\n"
-#~ msgstr "클러터 플러그인 목록을 설정하는 중 오류: %s\n"
-
-#~ msgid "Clutter Plugins"
-#~ msgstr "클러터 플러그인"
-
-#~ msgid "Plugins to load for the Clutter-based compositing manager."
-#~ msgstr "클러터 기반 컴포짓 관리자에서 읽어들일 플러그인."
