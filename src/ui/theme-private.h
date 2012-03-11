@@ -969,7 +969,6 @@ void           meta_draw_op_free (MetaDrawOp          *op);
 
 void           meta_draw_op_draw_with_style (const MetaDrawOp    *op,
                                              GtkStyleContext     *style_gtk,
-                                             GtkWidget           *widget,
                                              cairo_t             *cr,
                                              const MetaDrawInfo  *info,
                                              /* logical region being drawn */
@@ -980,7 +979,6 @@ void            meta_draw_op_list_ref   (MetaDrawOpList       *op_list);
 void            meta_draw_op_list_unref (MetaDrawOpList       *op_list);
 void            meta_draw_op_list_draw_with_style  (const MetaDrawOpList *op_list,
                                                     GtkStyleContext      *style_gtk,
-                                                    GtkWidget            *widget,
                                                     cairo_t              *cr,
                                                     const MetaDrawInfo   *info,
                                                     MetaRectangle         rect);
@@ -1011,7 +1009,6 @@ void            meta_frame_style_unref (MetaFrameStyle *style);
 
 void meta_frame_style_draw_with_style (MetaFrameStyle          *style,
                                        GtkStyleContext         *style_gtk,
-                                       GtkWidget               *widget,
                                        cairo_t                 *cr,
                                        const MetaFrameGeometry *fgeom,
                                        int                      client_width,
@@ -1063,7 +1060,6 @@ void meta_theme_draw_frame (MetaTheme              *theme,
 
 void meta_theme_draw_frame_with_style (MetaTheme              *theme,
                                        GtkStyleContext        *style_gtk,
-                                       GtkWidget              *widget,
                                        cairo_t                *cr,
                                        MetaFrameType           type,
                                        MetaFrameFlags          flags,

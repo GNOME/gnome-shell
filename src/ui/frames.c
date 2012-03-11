@@ -2196,7 +2196,6 @@ meta_frames_paint (MetaFrames   *frames,
                    MetaUIFrame  *frame,
                    cairo_t      *cr)
 {
-  GtkWidget *widget;
   MetaFrameFlags flags;
   MetaFrameType type;
   GdkPixbuf *mini_icon;
@@ -2209,7 +2208,6 @@ meta_frames_paint (MetaFrames   *frames,
   MetaGrabOp grab_op;
   Display *display;
   
-  widget = GTK_WIDGET (frames);
   display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 
   for (i = 0; i < META_BUTTON_TYPE_LAST; i++)
@@ -2308,7 +2306,6 @@ meta_frames_paint (MetaFrames   *frames,
 
   meta_theme_draw_frame_with_style (meta_theme_get_current (),
                                     frame->style,
-                                    widget,
                                     cr,
                                     type,
                                     flags,
