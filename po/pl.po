@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-10 23:02+0100\n"
-"PO-Revision-Date: 2012-03-10 23:03+0100\n"
+"POT-Creation-Date: 2012-03-11 23:19+0100\n"
+"PO-Revision-Date: 2012-03-11 23:20+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -156,7 +156,7 @@ msgstr "Wyświetla wersję"
 msgid "Comma-separated list of compositor plugins"
 msgstr "Lista wtyczek składania oddzielonych przecinkami"
 
-#: ../src/core/prefs.c:1069
+#: ../src/core/prefs.c:1077
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -164,14 +164,14 @@ msgstr ""
 "Obejścia dla błędnie działających programów są wyłączone. Niektóre z nich "
 "mogą się więc zachowywać w sposób nieprzewidywalny.\n"
 
-#: ../src/core/prefs.c:1144
+#: ../src/core/prefs.c:1152
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "Nie można przetworzyć opisu czcionki \"%s\", powiązanego z kluczem GSettings "
 "%s\n"
 
-#: ../src/core/prefs.c:1210
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -180,7 +180,7 @@ msgstr ""
 "Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje "
 "prawidłowo modyfikatora przycisku myszy\n"
 
-#: ../src/core/prefs.c:1722
+#: ../src/core/prefs.c:1736
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -189,7 +189,7 @@ msgstr ""
 "Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje "
 "prawidłowo skrótu klawiszowego \"%s\"\n"
 
-#: ../src/core/prefs.c:1819
+#: ../src/core/prefs.c:1833
 #, c-format
 msgid "Workspace %d"
 msgstr "Obszar roboczy %d"
@@ -462,10 +462,24 @@ msgstr ""
 "ekranu spowoduje ich całkowitą maksymalizację."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
+msgid "Workspaces are managed dynamically"
+msgstr "Dynamiczne zarządzanie obszarami roboczymi"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+"Określa, czy obszary robocze są zarządzane dynamicznie, czy istnieje "
+"statyczna liczba obszarów (określona przez klucz \"num-workspaces\" w org."
+"gnome.desktop.wm.preferences)."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "Workspaces only on primary"
 msgstr "Obszary robocze tylko na pierwszym"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
@@ -473,11 +487,11 @@ msgstr ""
 "Określa, czy przełączanie obszarów roboczych powinno być wykonywane dla "
 "okien na wszystkich monitorach, czy tylko dla okien na pierwszym monitorze."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "No tab popup"
-msgstr "Bez wyskakujących kart"
+msgstr "Bez wyskakującego okna dla tabulacji"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
@@ -485,11 +499,11 @@ msgstr ""
 "Określa, czy wyłączyć użycie wyskakującej, wyróżnionej ramki podczas "
 "przełączania między oknami."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "Szerokość krawędzi możliwej do przenoszenia"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -498,13 +512,13 @@ msgstr ""
 "krawędzie motywu nie są dostateczne, to zostaną dodane niewidoczne "
 "krawędzie, aby spełnić tę wartość."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Select window from tab popup"
-msgstr "Wybór okna z karty wyskakującej"
+msgstr "Wybór okna z wyskakującego okna dla tabulacji"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Cancel tab popup"
-msgstr "Anulowanie karty wyskakującej"
+msgstr "Anulowanie wyskakującego okna dla tabulacji"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
