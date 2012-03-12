@@ -3257,7 +3257,10 @@ clutter_actor_paint_node (ClutterActor     *actor,
 
   _clutter_paint_node_paint (root);
 
+#if 0
+  /* XXX: Uncomment this when we disable emitting the paint signal */
   CLUTTER_ACTOR_GET_CLASS (actor)->paint (actor);
+#endif
 
   return TRUE;
 }
@@ -3538,15 +3541,20 @@ clutter_actor_continue_paint (ClutterActor *self)
       if (_clutter_context_get_pick_mode () == CLUTTER_PICK_NONE)
         {
           ClutterPaintNode *dummy;
-          gboolean emit_paint;
+          gboolean emit_paint = TRUE;
 
           /* XXX - this will go away in 2.0, when we can get rid of this
            * stuff and switch to a pure retained render tree of PaintNodes
-           * for the entire frame, starting from the Stage.
+           * for the entire frame, starting from the Stage; the paint()
+           * virtual function can then be called directly.
            */
           dummy = _clutter_dummy_node_new ();
           clutter_paint_node_set_name (dummy, "Root");
-          emit_paint = !clutter_actor_paint_node (self, dummy);
+
+          /* XXX - for 1.12, we use the return value of paint_node() to
+           * set the emit_paint variable.
+           */
+          clutter_actor_paint_node (self, dummy);
           clutter_paint_node_unref (dummy);
 
           if (emit_paint || CLUTTER_ACTOR_IS_TOPLEVEL (self))
