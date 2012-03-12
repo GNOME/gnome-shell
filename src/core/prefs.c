@@ -1628,6 +1628,9 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_DRAGGABLE_BORDER_WIDTH:
       return "DRAGGABLE_BORDER_WIDTH";
+
+    case META_PREF_DYNAMIC_WORKSPACES:
+      return "DYNAMIC_WORKSPACES";
     }
 
   return "(unknown)";
