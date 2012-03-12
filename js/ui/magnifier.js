@@ -16,6 +16,7 @@ const Params = imports.misc.params;
 
 const MOUSE_POLL_FREQUENCY = 50;
 const CROSSHAIRS_CLIP_SIZE = [100, 100];
+const NO_CHANGE = 0.0;
 
 // Settings
 const APPLICATIONS_SCHEMA       = 'org.gnome.desktop.a11y.applications';
@@ -24,6 +25,12 @@ const SHOW_KEY                  = 'screen-magnifier-enabled';
 const MAGNIFIER_SCHEMA          = 'org.gnome.desktop.a11y.magnifier';
 const SCREEN_POSITION_KEY       = 'screen-position';
 const MAG_FACTOR_KEY            = 'mag-factor';
+const BRIGHT_RED_KEY            = 'brightness-red';
+const BRIGHT_GREEN_KEY          = 'brightness-green';
+const BRIGHT_BLUE_KEY           = 'brightness-blue';
+const CONTRAST_RED_KEY          = 'contrast-red';
+const CONTRAST_GREEN_KEY        = 'contrast-green';
+const CONTRAST_BLUE_KEY         = 'contrast-blue';
 const LENS_MODE_KEY             = 'lens-mode';
 const CLAMP_MODE_KEY            = 'scroll-at-edges';
 const MOUSE_TRACKING_KEY        = 'mouse-tracking';
@@ -443,6 +450,17 @@ const Magnifier = new Lang.Class({
             aPref = this._settings.get_enum(MOUSE_TRACKING_KEY);
             if (aPref)
                 zoomRegion.setMouseTrackingMode(aPref);
+
+            let bc = {};
+            bc.r = this._settings.get_double(BRIGHT_RED_KEY);
+            bc.g = this._settings.get_double(BRIGHT_GREEN_KEY);
+            bc.b = this._settings.get_double(BRIGHT_BLUE_KEY);
+            zoomRegion.setBrightness(bc);
+
+            bc.r = this._settings.get_double(CONTRAST_RED_KEY);
+            bc.g = this._settings.get_double(CONTRAST_GREEN_KEY);
+            bc.b = this._settings.get_double(CONTRAST_BLUE_KEY);
+            zoomRegion.setContrast(bc);
         }
 
         let showCrosshairs = this._settings.get_boolean(SHOW_CROSS_HAIRS_KEY);
@@ -464,6 +482,20 @@ const Magnifier = new Lang.Class({
                                Lang.bind(this, this._updateClampMode));
         this._settings.connect('changed::' + MOUSE_TRACKING_KEY,
                                Lang.bind(this, this._updateMouseTrackingMode));
+
+        this._settings.connect('changed::' + BRIGHT_RED_KEY,
+                               Lang.bind(this, this._updateBrightness));
+        this._settings.connect('changed::' + BRIGHT_GREEN_KEY,
+                               Lang.bind(this, this._updateBrightness));
+        this._settings.connect('changed::' + BRIGHT_BLUE_KEY,
+                               Lang.bind(this, this._updateBrightness));
+
+        this._settings.connect('changed::' + CONTRAST_RED_KEY,
+                               Lang.bind(this, this._updateContrast));
+        this._settings.connect('changed::' + CONTRAST_GREEN_KEY,
+                               Lang.bind(this, this._updateContrast));
+        this._settings.connect('changed::' + CONTRAST_BLUE_KEY,
+                               Lang.bind(this, this._updateContrast));
 
         this._settings.connect('changed::' + SHOW_CROSS_HAIRS_KEY,
                                Lang.bind(this, function() {
@@ -540,7 +572,29 @@ const Magnifier = new Lang.Class({
                 this._settings.get_enum(MOUSE_TRACKING_KEY)
             );
         }
-    }
+    },
+
+    _updateBrightness: function() {
+        // Applies only to the first zoom region.
+        if (this._zoomRegions.length) {
+            let brightness = {};
+            brightness.r = this._settings.get_double(BRIGHT_RED_KEY);
+            brightness.g = this._settings.get_double(BRIGHT_GREEN_KEY);
+            brightness.b = this._settings.get_double(BRIGHT_BLUE_KEY);
+            this._zoomRegions[0].setBrightness(brightness);
+        }
+    },
+
+    _updateContrast: function() {
+        // Applies only to the first zoom region.
+        if (this._zoomRegions.length) {
+            let contrast = {};
+            contrast.r = this._settings.get_double(CONTRAST_RED_KEY);
+            contrast.g = this._settings.get_double(CONTRAST_GREEN_KEY);
+            contrast.b = this._settings.get_double(CONTRAST_BLUE_KEY);
+            this._zoomRegions[0].setContrast(contrast);
+        }
+    },
 });
 Signals.addSignalMethods(Magnifier.prototype);
 
@@ -554,6 +608,8 @@ const ZoomRegion = new Lang.Class({
         this._clampScrollingAtEdges = false;
         this._lensMode = false;
         this._screenPosition = GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN;
+        this._brightness = { r: NO_CHANGE, g: NO_CHANGE, b: NO_CHANGE };
+        this._contrast = { r: NO_CHANGE, g: NO_CHANGE, b: NO_CHANGE };
 
         this._magView = null;
         this._background = null;
@@ -879,6 +935,66 @@ const ZoomRegion = new Lang.Class({
         }
     },
 
+    /**
+     * setBrightness:
+     * Alter the brightness of the magnified view.
+     * @brightness  Object containing the contrast for the red, green,
+     *              and blue channels.  Values of 0.0 represent "standard"
+     *              brightness (no change), whereas values less or greater than
+     *              0.0 indicate decreased or incresaed brightness, respectively.
+     */
+    setBrightness: function(brightness) {
+        this._brightness.r = brightness.r;
+        this._brightness.g = brightness.g;
+        this._brightness.b = brightness.b;
+        if (this._magShaderEffects)
+            this._magShaderEffects.setBrightness(this._brightness);
+    },
+
+    /**
+     * getBrightness:
+     * Retrive the current brightness of the Zoom Region.
+     * @return  Object containing the brightness change for the red, green,
+     *          and blue channels.
+     */
+    getBrightness: function() {
+        let brightness = {};
+        brightness.r = this._brightness.r;
+        brightness.g = this._brightness.g;
+        brightness.b = this._brightness.b;
+        return brightness;
+    },
+
+    /**
+     * setContrast:
+     * Alter the contrast of the magnified view.
+     * @contrast    Object containing the contrast for the red, green,
+     *              and blue channels.  Values of 0.0 represent "standard"
+     *              contrast (no change), whereas values less or greater than
+     *              0.0 indicate decreased or incresaed contrast, respectively.
+     */
+    setContrast: function(contrast) {
+        this._contrast.r = contrast.r;
+        this._contrast.g = contrast.g;
+        this._contrast.b = contrast.b;
+        if (this._magShaderEffects)
+            this._magShaderEffects.setContrast(this._contrast);
+    },
+
+    /**
+     * getContrast:
+     * Retreive the contrast of the magnified view.
+     * @return  Object containing the contrast for the red, green,
+     *          and blue channels.
+     */
+    getContrast: function() {
+        let contrast = {};
+        contrast.r = this._contrast.r;
+        contrast.g = this._contrast.g;
+        contrast.b = this._contrast.b;
+        return contrast;
+    },
+
     //// Private methods ////
 
     _createActors: function() {
@@ -917,6 +1033,11 @@ const ZoomRegion = new Lang.Class({
             this._crossHairsActor = this._crossHairs.addToZoomRegion(this, this._mouseActor);
         else
             this._crossHairsActor = null;
+
+        // Contrast and brightness effects.
+        this._magShaderEffects = new MagShaderEffects(this._uiGroupClone);
+        this._magShaderEffects.setBrightness(this._brightness);
+        this._magShaderEffects.setContrast(this._contrast);
     },
 
     _destroyActors: function() {
@@ -925,6 +1046,8 @@ const ZoomRegion = new Lang.Class({
         if (this._crossHairs)
             this._crossHairs.removeFromParent(this._crossHairsActor);
 
+        this._magShaderEffects.destroyEffects();
+        this._magShaderEffects = null;
         this._magView.destroy();
         this._magView = null;
         this._background = null;
@@ -1431,5 +1554,113 @@ const Crosshairs = new Lang.Class({
         this._horizRightHair.set_position(right, (groupHeight - thickness) / 2);
         this._vertTopHair.set_position((groupWidth - thickness) / 2, top);
         this._vertBottomHair.set_position((groupWidth - thickness) / 2, bottom);
+    }
+});
+
+const MagShaderEffects = new Lang.Class({
+    Name: 'MagShaderEffects',
+
+    _init: function(uiGroupClone) {
+        this._brightnessContrast = new Clutter.BrightnessContrastEffect();
+        this._brightnessContrast.set_enabled(false);
+
+        this._magView = uiGroupClone;
+        this._magView.add_effect(this._brightnessContrast);
+    },
+
+    /**
+     * destroyEffects:
+     * Remove contrast and brightness effects from the magnified view, and
+     * lose the reference to the actor they were applied to.  Don't use this
+     * object after calling this.
+     */
+    destroyEffects: function() {
+        this._magView.clear_effects();
+        this._brightnessContrast = null;
+        this._magView = null;
+    },
+
+    /**
+     * setBrightness:
+     * Set the brightness of the magnified view.
+     * @brightness: Object containing the brightness for the red, green,
+     *              and blue channels.  Values of 0.0 represent "standard"
+     *              brightness (no change), whereas values less or greater than
+     *              0.0 indicate decreased or incresaed brightness,
+     *              respectively.
+     */
+    setBrightness: function(brightness) {
+        let bRed = brightness.r;
+        let bGreen = brightness.g;
+        let bBlue = brightness.b;
+        this._brightnessContrast.set_brightness_full(bRed, bGreen, bBlue);
+
+        // Enable the effect if the brightness OR contrast change are such that
+        // it modifies the brightness and/or contrast.
+        let [cRed, cGreen, cBlue] = this._brightnessContrast.get_contrast();
+        this._brightnessContrast.set_enabled(
+            (bRed != NO_CHANGE || bGreen != NO_CHANGE || bBlue != NO_CHANGE ||
+             cRed != NO_CHANGE || cGreen != NO_CHANGE || cBlue != NO_CHANGE)
+        );
+    },
+
+    /**
+     * getBrightness:
+     * Retrieve current brightness of the magnified view.
+     * @return: Object containing the brightness for the red, green,
+     *          and blue channels.  Values of 0.0 represent "standard" 
+     *          brightness (no change), whereas values less or greater than
+     *          0.0 indicate decreased or incresaed brightness, respectively.
+     */
+    getBrightness: function() {
+        let result = {};
+        let [bRed, bGreen, bBlue] = this._brightnessContrast.get_brightness();
+        result.r = bRed;
+        result.g = bGreen;
+        result.b = bBlue;
+
+        return result;
+    },
+
+    /**
+     * Set the contrast of the magnified view.
+     * @contrast:   Object containing the contrast for the red, green,
+     *              and blue channels.  Values of 0.0 represent "standard"
+     *              contrast (no change), whereas values less or greater than
+     *              0.0 indicate decreased or incresaed contrast, respectively.
+     */
+    setContrast: function(contrast) {
+        let cRed = contrast.r;
+        let cGreen = contrast.g;
+        let cBlue = contrast.b;
+
+        this._brightnessContrast.set_contrast_full(cRed, cGreen, cBlue);
+
+        // Enable the effect if the contrast OR brightness change are such that
+        // it modifies the brightness and/or contrast.
+        // should be able to use Clutter.color_equal(), but that complains of
+        // a null first argument.
+        let [bRed, bGreen, bBlue] = this._brightnessContrast.get_brightness();
+        this._brightnessContrast.set_enabled(
+             cRed != NO_CHANGE || cGreen != NO_CHANGE || cBlue != NO_CHANGE ||
+             bRed != NO_CHANGE || bGreen != NO_CHANGE || bBlue != NO_CHANGE
+        );
+    },
+
+    /**
+     * Retrieve current contrast of the magnified view.
+     * @return: Object containing the contrast for the red, green,
+     *          and blue channels.  Values of 0.0 represent "standard"
+     *          contrast (no change), whereas values less or greater than
+     *          0.0 indicate decreased or incresaed contrast, respectively.
+     */
+    getContrast: function() {
+        let resutl = {};
+        let [cRed, cGreen, cBlue] = this._brightnessContrast.get_contrast();
+        result.r = cRed;
+        result.g = cGreen;
+        result.b = cBlue;
+
+        return result;
     }
 });
