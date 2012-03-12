@@ -141,7 +141,7 @@ const AltTabPopup = new Lang.Class({
 
         let screen = global.screen;
         let display = screen.get_display();
-        let windows = display.get_tab_list(Meta.TabList.NORMAL, screen,
+        let windows = display.get_tab_list(Meta.TabList.NORMAL_ALL, screen,
                                            screen.get_active_workspace());
 
         // windows is only the windows on the current workspace. For
