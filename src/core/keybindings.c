@@ -3019,6 +3019,8 @@ tab_op_from_tab_type (MetaTabList type)
       return META_GRAB_OP_KEYBOARD_TABBING_DOCK;
     case META_TAB_LIST_GROUP:
       return META_GRAB_OP_KEYBOARD_TABBING_GROUP;
+    case META_TAB_LIST_NORMAL_ALL:
+      break;
     }
 
   g_assert_not_reached ();
@@ -3037,6 +3039,8 @@ cycle_op_from_tab_type (MetaTabList type)
       return META_GRAB_OP_KEYBOARD_ESCAPING_DOCK;
     case META_TAB_LIST_GROUP:
       return META_GRAB_OP_KEYBOARD_ESCAPING_GROUP;
+    case META_TAB_LIST_NORMAL_ALL:
+      break;
     }
 
   g_assert_not_reached ();

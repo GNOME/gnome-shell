@@ -33,7 +33,8 @@ typedef enum
 {
   META_TAB_LIST_NORMAL,
   META_TAB_LIST_DOCKS,
-  META_TAB_LIST_GROUP
+  META_TAB_LIST_GROUP,
+  META_TAB_LIST_NORMAL_ALL
 } MetaTabList;
 
 typedef enum
