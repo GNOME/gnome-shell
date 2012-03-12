@@ -79,6 +79,8 @@ _clutter_paint_node_init_types (void)
   cogl_pipeline_set_layer_null_texture (default_texture_pipeline, 0,
                                         COGL_TEXTURE_TYPE_2D);
   cogl_pipeline_set_color (default_texture_pipeline, &cogl_color);
+  cogl_pipeline_set_layer_wrap_mode (default_texture_pipeline, 0,
+                                     COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
 }
 
 /*
