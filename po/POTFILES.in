@@ -27,6 +27,7 @@ clutter/clutter-event.c
 clutter/clutter-flow-layout.c
 clutter/clutter-gesture-action.c
 clutter/clutter-input-device.c
+clutter/clutter-image.c
 clutter/clutter-interval.c
 clutter/clutter-layout-manager.c
 clutter/clutter-layout-meta.c
