@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter 3.3.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-28 17:38+0100\n"
-"PO-Revision-Date: 2012-01-28 17:38+0100\n"
+"POT-Creation-Date: 2012-03-12 18:54+0100\n"
+"PO-Revision-Date: 2012-03-12 18:54+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "Language: \n"
@@ -148,7 +148,7 @@ msgstr "Skriv versjonsnummer"
 msgid "Comma-separated list of compositor plugins"
 msgstr "Kommaseparert liste av tillegg for compositor"
 
-#: ../src/core/prefs.c:1069
+#: ../src/core/prefs.c:1077
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -156,12 +156,12 @@ msgstr ""
 "Funksjonalitet for å gå rundt ødelagte programmer er deaktivert. Noen "
 "programmer vil kanskje ikke oppføre seg korrekt.\n"
 
-#: ../src/core/prefs.c:1144
+#: ../src/core/prefs.c:1152
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Kunne ikke tolke skriftbeskrivelsen «%s» fra GSettings-nøkkel %s\n"
 
-#: ../src/core/prefs.c:1210
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -170,7 +170,7 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for endring av "
 "musknapp\n"
 
-#: ../src/core/prefs.c:1722
+#: ../src/core/prefs.c:1739
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -179,7 +179,7 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for "
 "tastaturbinding «%s»\n"
 
-#: ../src/core/prefs.c:1819
+#: ../src/core/prefs.c:1836
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
@@ -307,7 +307,7 @@ msgid "Window manager error: "
 msgstr "Feil i vindushåndterer: "
 
 #. first time through
-#: ../src/core/window.c:7219
+#: ../src/core/window.c:7224
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -323,7 +323,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7882
+#: ../src/core/window.c:7887
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -443,10 +443,21 @@ msgstr ""
 "fullstendig."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
+msgid "Workspaces are managed dynamically"
+msgstr "Arbeidsområder håndteres dynamisk"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr "Bestemmer om arbeidsområder skal håndteres dynamisk eller om det er et fast antall arbeidsområder (bestemt av num-workspaces nøkkelen i org.gnome.desktop.wm.preferences)."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "Workspaces only on primary"
 msgstr "Arbeidsområder kun på primær skjerm"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
@@ -454,11 +465,11 @@ msgstr ""
 "Bestemmer om bytting mellom arbeidsområder skal skje for vinduer på alle "
 "skjermer eller kun på primær skjerm."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "No tab popup"
 msgstr "Ingen tabulatordialog"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
@@ -466,11 +477,11 @@ msgstr ""
 "Bestemmer om bruk av dialog og uthevingsramme skal slås av for bytting "
 "mellom vinduer."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "Bredde på drakant"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -478,11 +489,11 @@ msgstr ""
 "Total mengde med drakant. Hvis temas synlige kanter ikke er nok vil usynlige "
 "kanter legges til for å imøtekomme denne verdien."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Select window from tab popup"
 msgstr "Fjern vindu fra tabulatordialog"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Cancel tab popup"
 msgstr "Avbryt tabulatordialog"
 
@@ -491,47 +502,47 @@ msgstr "Avbryt tabulatordialog"
 msgid "Usage: %s\n"
 msgstr " Bruk: %s\n"
 
-#: ../src/ui/frames.c:1157
+#: ../src/ui/frames.c:1158
 msgid "Close Window"
 msgstr "Lukk vindu"
 
-#: ../src/ui/frames.c:1160
+#: ../src/ui/frames.c:1161
 msgid "Window Menu"
 msgstr "Vindumeny"
 
-#: ../src/ui/frames.c:1163
+#: ../src/ui/frames.c:1164
 msgid "Minimize Window"
 msgstr "Minimer vindu"
 
-#: ../src/ui/frames.c:1166
+#: ../src/ui/frames.c:1167
 msgid "Maximize Window"
 msgstr "Maksimer vindu"
 
-#: ../src/ui/frames.c:1169
+#: ../src/ui/frames.c:1170
 msgid "Restore Window"
 msgstr "Gjenopprett vindu"
 
-#: ../src/ui/frames.c:1172
+#: ../src/ui/frames.c:1173
 msgid "Roll Up Window"
 msgstr "Rull opp vindu"
 
-#: ../src/ui/frames.c:1175
+#: ../src/ui/frames.c:1176
 msgid "Unroll Window"
 msgstr "Rull ned vindu"
 
-#: ../src/ui/frames.c:1178
+#: ../src/ui/frames.c:1179
 msgid "Keep Window On Top"
 msgstr "Plasser vindu i forgrunnen"
 
-#: ../src/ui/frames.c:1181
+#: ../src/ui/frames.c:1182
 msgid "Remove Window From Top"
 msgstr "Fjern vindu fra forgrunnen"
 
-#: ../src/ui/frames.c:1184
+#: ../src/ui/frames.c:1185
 msgid "Always On Visible Workspace"
 msgstr "Alltid på synlig arbeidsområde"
 
-#: ../src/ui/frames.c:1187
+#: ../src/ui/frames.c:1188
 msgid "Put Window On Only One Workspace"
 msgstr "Plasser vindu kun på ett arbeidsområde"
 
