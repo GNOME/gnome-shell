@@ -4,36 +4,36 @@
 #
 # Andraž Tori <andraz.tori1@guest.arnes.si>, 2000.
 # Matjaž Horvat <m@owca.info>, 2006.
-# Matej Urbančič <mateju@svn.gnome.org>, 2007 - 2011.
+# Matej Urbančič <mateju@svn.gnome.org>, 2007 - 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-12-16 13:21+0000\n"
-"PO-Revision-Date: 2011-12-16 21:47+0100\n"
+"POT-Creation-Date: 2012-03-12 09:11+0000\n"
+"PO-Revision-Date: 2012-03-12 12:10+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
+msgid "Windows"
+msgstr "Okna"
+
+#: ../src/50-mutter-windows.xml.in.h:2
 msgid "View split on left"
 msgstr "Poglej razdelek na levi"
 
-#: ../src/50-mutter-windows.xml.in.h:2
+#: ../src/50-mutter-windows.xml.in.h:3
 msgid "View split on right"
 msgstr "Poglej razdelek na desni"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-msgid "Windows"
-msgstr "Okna"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
@@ -143,27 +143,27 @@ msgstr "Izpiši različico"
 msgid "Comma-separated list of compositor plugins"
 msgstr "Z vejico ločen seznam vstavkov sestavljanja"
 
-#: ../src/core/prefs.c:1067
+#: ../src/core/prefs.c:1077
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "Obhodi za pokvarjene programe so onemogočeni. Nekateri programi se morda ne bodo odzivali na pričakovan način.\n"
 
-#: ../src/core/prefs.c:1142
+#: ../src/core/prefs.c:1152
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Ni mogoče razčleniti opisa pisave \"%s\" iz ključa GSettings %s\n"
 
-#: ../src/core/prefs.c:1208
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "\"%s\", najden v podatkovni zbirki nastavitev, ni veljaven spremenilnik za miškine gumbe.\n"
 
-#: ../src/core/prefs.c:1720
+#: ../src/core/prefs.c:1739
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "\"%s\", najden v podatkovni zbirki nastavitev, ni veljaven ključ za tipkovno bližnjico \"%s\"\n"
 
 # G:1 K:0 O:0
-#: ../src/core/prefs.c:1817
+#: ../src/core/prefs.c:1836
 #, c-format
 msgid "Workspace %d"
 msgstr "Delovna površina %d"
@@ -288,7 +288,7 @@ msgid "Window manager error: "
 msgstr "Napaka upravljalnika oken: "
 
 #. first time through
-#: ../src/core/window.c:7180
+#: ../src/core/window.c:7224
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LEADER kot je zavedeno v ICCCM.\n"
@@ -300,7 +300,7 @@ msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LE
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7843
+#: ../src/core/window.c:7887
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Okno %s določi namig MWM, ki pove, da ni mogoče spremeniti velikosti, hkrati pa določi najmanjšo velikost na %d x %d in največjo na %d x %d; vrednost ni smiselna.\n"
@@ -356,28 +356,28 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:1
+msgid "Modifier to use for extended window management operations"
+msgstr "Spremenilnik, ki naj se uporabi za upravljanje oken"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:2
+msgid "This key will initiate the \"overlay\", which is a combination window overview and application launching system. The default is intended to be the \"Windows key\" on PC hardware. It's expected that this binding either the default or set to the empty string."
+msgstr "Ta vrednost določa \"prevleko\", ki združuje predogled okna in zaganjalnik programa. Vrednost je zamišljena kot \"ključ oken\" na strojni opremi računalnika. Pričakovano je, da je vrednost določena privzeto ali pa ni določena."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
 msgstr "Pripni modalna pogovorna okna"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:2
-msgid "Cancel tab popup"
-msgstr "Prekliči pojavni zavihek"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:3
-msgid "Determines whether hidden windows (i.e., minimized windows and windows on other workspaces than the current one) should be kept alive."
-msgstr "Določa ali naj se skrita okna (skrčena okna in okna na drugih delovnih površinah) ohranjajo odprta."
-
 #: ../src/org.gnome.mutter.gschema.xml.in.h:4
-msgid "Determines whether the use of popup and highlight frame should be disabled for window cycling."
-msgstr "Določa ali naj bo uporaba pojavnih zavihkov in poudarjanja onemogočena med kroženjem oken."
+msgid "When true, instead of having independent titlebars, modal dialogs appear attached to the titlebar of the parent window and are moved together with the parent window."
+msgstr "Izbrana možnost omogoči, da je namesto samostojnih nazivnih vrstic, na to mesto pripeto modalno pogovorno okno, ki se premika z nadrejenim oknom."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid "Determines whether workspace switching should happen for windows on all monitors or only for windows on the primary monitor."
-msgstr "Določa ali naj se delovne površine preklapljajo na vseh zaslonih ali le na prvem, glavnem zaslonu."
+msgid "Live Hidden Windows"
+msgstr "Ohranjena skrita okna"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid "Draggable border width"
-msgstr "Prilagodljiva obroba pravokotnika"
+msgid "Determines whether hidden windows (i.e., minimized windows and windows on other workspaces than the current one) should be kept alive."
+msgstr "Določa ali naj se skrita okna (skrčena okna in okna na drugih delovnih površinah) ohranjajo odprta."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -388,87 +388,95 @@ msgid "If enabled, dropping windows on vertical screen edges maximizes them vert
 msgstr "Izbrana možnost omogoča, da se okna, ki se dotaknejo navpičnih robov zaslona razpeta po navpični osi in razširjena na polovično širino. Dotik vrhnjega roba razpne okno čez cel zaslon."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
-msgid "Live Hidden Windows"
-msgstr "Ohranjena skrita okna"
+msgid "Workspaces are managed dynamically"
+msgstr "Število delovnih površin je spremenljivo"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:10
-msgid "Modifier to use for extended window management operations"
-msgstr "Spremenilnik, ki naj se uporabi za upravljanje oken"
+msgid "Determines whether workspaces are managed dynamically or whether there's a static number of workspaces (determined by the num-workspaces key in org.gnome.desktop.wm.preferences)."
+msgstr "Možnost določa ali je število delovnih površin spremenljivo ali pa je to število stalno (določenih s ključem števila delovnih površin med možnostmi v org.gnome.desktop.wm.preferences)."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:11
+msgid "Workspaces only on primary"
+msgstr "Delovne površine le na prvem zaslonu"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid "Determines whether workspace switching should happen for windows on all monitors or only for windows on the primary monitor."
+msgstr "Določa ali naj se delovne površine preklapljajo na vseh zaslonih ali le na prvem, glavnem zaslonu."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "No tab popup"
 msgstr "Brez pojavnih zavihkov"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
-msgid "Select window from tab popup"
-msgstr "Izbor okna iz pojavnega zavihka"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid "Determines whether the use of popup and highlight frame should be disabled for window cycling."
+msgstr "Določa ali naj bo uporaba pojavnih zavihkov in poudarjanja onemogočena med kroženjem oken."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr "Prilagodljiva obroba pravokotnika"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "The amount of total draggable borders. If the theme's visible borders are not enough, invisible borders will be added to meet this value."
 msgstr "Delež skupne prilagodljive obrobe. V kolikor vidni robovi teme niso dovolj, so dodane nevidne obrobe, za dodatno prilagajanje."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
-msgid "This key will initiate the \"overlay\", which is a combination window overview and application launching system. The default is intended to be the \"Windows key\" on PC hardware. It's expected that this binding either the default or set to the empty string."
-msgstr "Ta vrednost določa \"prevleko\", ki združuje predogled okna in zaganjalnik programa. Vrednost je zamišljena kot \"ključ oken\" na strojni opremi računalnika. Pričakovano je, da je vrednost določena privzeto ali pa ni določena."
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Select window from tab popup"
+msgstr "Izbor okna iz pojavnega zavihka"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
-msgid "When true, instead of having independent titlebars, modal dialogs appear attached to the titlebar of the parent window and are moved together with the parent window."
-msgstr "Izbrana možnost omogoči, da je namesto samostojnih nazivnih vrstic, na to mesto pripeto modalno pogovorno okno, ki se premika z nadrejenim oknom."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
-msgid "Workspaces only on primary"
-msgstr "Delovne površine le na prvem zaslonu"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid "Cancel tab popup"
+msgstr "Prekliči pojavni zavihek"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Uporaba: %s\n"
 
-#: ../src/ui/frames.c:1157
+#: ../src/ui/frames.c:1158
 msgid "Close Window"
 msgstr "Zapri okno"
 
 # G:1 K:1 O:0
-#: ../src/ui/frames.c:1160
+#: ../src/ui/frames.c:1161
 msgid "Window Menu"
 msgstr "Meni okna"
 
 # G:0 K:1 O:0
-#: ../src/ui/frames.c:1163
+#: ../src/ui/frames.c:1164
 msgid "Minimize Window"
 msgstr "Skrči okno"
 
-#: ../src/ui/frames.c:1166
+#: ../src/ui/frames.c:1167
 msgid "Maximize Window"
 msgstr "Razpni okno"
 
-#: ../src/ui/frames.c:1169
+#: ../src/ui/frames.c:1170
 msgid "Restore Window"
 msgstr "Obnovi okno"
 
 # G:2 K:0 O:0
-#: ../src/ui/frames.c:1172
+#: ../src/ui/frames.c:1173
 msgid "Roll Up Window"
 msgstr "Zavij okno"
 
-#: ../src/ui/frames.c:1175
+#: ../src/ui/frames.c:1176
 msgid "Unroll Window"
 msgstr "Odvij okno"
 
-#: ../src/ui/frames.c:1178
+#: ../src/ui/frames.c:1179
 msgid "Keep Window On Top"
 msgstr "Ohrani okno na vrhu"
 
-#: ../src/ui/frames.c:1181
+#: ../src/ui/frames.c:1182
 msgid "Remove Window From Top"
 msgstr "Odstrani okno z vrha"
 
 # G:1 K:0 O:0
-#: ../src/ui/frames.c:1184
+#: ../src/ui/frames.c:1185
 msgid "Always On Visible Workspace"
 msgstr "Vedno na vidni delovni površini"
 
-#: ../src/ui/frames.c:1187
+#: ../src/ui/frames.c:1188
 msgid "Put Window On Only One Workspace"
 msgstr "Postavi okno na samo eno delovno površino"
 
