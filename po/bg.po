@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-08 15:18+0200\n"
-"PO-Revision-Date: 2012-01-08 15:18+0200\n"
+"POT-Creation-Date: 2012-03-12 06:45+0200\n"
+"PO-Revision-Date: 2012-03-12 06:45+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -22,16 +22,16 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
+msgid "Windows"
+msgstr "Прозорци"
+
+#: ../src/50-mutter-windows.xml.in.h:2
 msgid "View split on left"
 msgstr "Изглед разделен отляво"
 
-#: ../src/50-mutter-windows.xml.in.h:2
+#: ../src/50-mutter-windows.xml.in.h:3
 msgid "View split on right"
 msgstr "Изглед разделен отдясно"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-msgid "Windows"
-msgstr "Прозорци"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
@@ -156,7 +156,7 @@ msgstr "Отпечатване на версията на програмата"
 msgid "Comma-separated list of compositor plugins"
 msgstr "Списък с приставки за мениджъра за наслагването разделени с „,“"
 
-#: ../src/core/prefs.c:1069
+#: ../src/core/prefs.c:1077
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -164,14 +164,14 @@ msgstr ""
 "Триковете за развалените програми са изключени. Някои програми могат да са с "
 "неправилно поведение.\n"
 
-#: ../src/core/prefs.c:1144
+#: ../src/core/prefs.c:1152
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "Описанието на шрифт „%s“ от ключа на GSettings — %s, не може да бъде "
 "анализирано\n"
 
-#: ../src/core/prefs.c:1210
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -180,7 +180,7 @@ msgstr ""
 "„%s“, който е открит в базата от данни с настройките, не е валиден "
 "модификатор на бутон на мишката\n"
 
-#: ../src/core/prefs.c:1722
+#: ../src/core/prefs.c:1739
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -189,7 +189,7 @@ msgstr ""
 "Низът „%s“ открит в базата от данни с настройки е невалиден за стойност на "
 "клавишната комбинация „%s“\n"
 
-#: ../src/core/prefs.c:1819
+#: ../src/core/prefs.c:1836
 #, c-format
 msgid "Workspace %d"
 msgstr "Работен плот %d"
@@ -319,7 +319,7 @@ msgid "Window manager error: "
 msgstr "Грешка от мениджъра на прозорци: "
 
 #. first time through
-#: ../src/core/window.c:7180
+#: ../src/core/window.c:7224
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -335,7 +335,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7843
+#: ../src/core/window.c:7887
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -398,40 +398,46 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:1
+msgid "Modifier to use for extended window management operations"
+msgstr ""
+"Модификатор, който да се ползва за допълнителните действия по прозорците"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:2
+msgid ""
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
+msgstr ""
+"Този клавиш стартира наслагването, което е комбинация от прозорец и система "
+"за стартиране на програми. Стандартно клавишът е „Windows“ при системите "
+"съвместими с PC. Очаква се да е или стандартната стойност или празен низ."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
 msgstr "Прилепени модални диалогови прозорци"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:2
-msgid "Cancel tab popup"
-msgstr "Без изскачащ прозорец при обхождане"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:4
+msgid ""
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
+msgstr ""
+"Когато е ключът е истина, модалните диалогови прозорци прилепват към "
+"заглавната лента на родителския си прозорец и се местят с него, вместо да са "
+"отделни и да имат собствена заглавна лента."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:3
+#: ../src/org.gnome.mutter.gschema.xml.in.h:5
+msgid "Live Hidden Windows"
+msgstr "Обновяване на скритите прозорци"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
 msgstr ""
 "Дали скритите прозорци (т.е. минимизираните или на другите плотове) да се "
 "обновяват."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:4
-msgid ""
-"Determines whether the use of popup and highlight frame should be disabled "
-"for window cycling."
-msgstr ""
-"Дали отбелязването на рамка и изскачащият прозорец при обхождане на "
-"прозорците да се изключат."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid ""
-"Determines whether workspace switching should happen for windows on all "
-"monitors or only for windows on the primary monitor."
-msgstr ""
-"Дали смяната на работни плотове да се извършва на всички монитори или само "
-"на основния."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid "Draggable border width"
-msgstr "Широчина на границата за влачене"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -451,23 +457,48 @@ msgstr ""
 "максимзират изцяло."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
-msgid "Live Hidden Windows"
-msgstr "Обновяване на скритите прозорци"
+msgid "Workspaces are managed dynamically"
+msgstr "Динамично управление на работните места"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:10
-msgid "Modifier to use for extended window management operations"
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
 msgstr ""
-"Модификатор, който да се ползва за допълнителните действия по прозорците"
+"Определя дали се ползва динамично управление на работните места или броят им "
+"е установено число (зададено чрез ключа „num-workspaces“ в org.gnome.desktop."
+"wm.preferences)."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:11
+msgid "Workspaces only on primary"
+msgstr "Работни плотове само на основния монитор"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"Дали смяната на работни плотове да се извършва на всички монитори или само "
+"на основния."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "No tab popup"
 msgstr "Без изскачащ прозорец при обхождане"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
-msgid "Select window from tab popup"
-msgstr "Избиране при обхождане чрез изскачащ прозорец"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr ""
+"Дали отбелязването на рамка и изскачащият прозорец при обхождане на "
+"прозорците да се изключат."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr "Широчина на границата за влачене"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -475,77 +506,60 @@ msgstr ""
 "Общ размер на границите за влачене. Ако видимите граници на темата са по-"
 "малки, се добавят невидими граници, за да се достигне тази величина."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
-msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
-msgstr ""
-"Този клавиш стартира наслагването, което е комбинация от прозорец и система "
-"за стартиране на програми. Стандартно клавишът е „Windows“ при системите "
-"съвместими с PC. Очаква се да е или стандартната стойност или празен низ."
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Select window from tab popup"
+msgstr "Избиране при обхождане чрез изскачащ прозорец"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
-msgid ""
-"When true, instead of having independent titlebars, modal dialogs appear "
-"attached to the titlebar of the parent window and are moved together with "
-"the parent window."
-msgstr ""
-"Когато е ключът е истина, модалните диалогови прозорци прилепват към "
-"заглавната лента на родителския си прозорец и се местят с него, вместо да са "
-"отделни и да имат собствена заглавна лента."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
-msgid "Workspaces only on primary"
-msgstr "Работни плотове само на основния монитор"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid "Cancel tab popup"
+msgstr "Без изскачащ прозорец при обхождане"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Употреба: %s\n"
 
-#: ../src/ui/frames.c:1157
+#: ../src/ui/frames.c:1158
 msgid "Close Window"
 msgstr "Затваряне на прозореца"
 
-#: ../src/ui/frames.c:1160
+#: ../src/ui/frames.c:1161
 msgid "Window Menu"
 msgstr "Меню за прозорците"
 
-#: ../src/ui/frames.c:1163
+#: ../src/ui/frames.c:1164
 msgid "Minimize Window"
 msgstr "Минимизиране на прозореца"
 
-#: ../src/ui/frames.c:1166
+#: ../src/ui/frames.c:1167
 msgid "Maximize Window"
 msgstr "Максимизиране на прозореца"
 
-#: ../src/ui/frames.c:1169
+#: ../src/ui/frames.c:1170
 msgid "Restore Window"
 msgstr "Възстановяване на прозорец"
 
-#: ../src/ui/frames.c:1172
+#: ../src/ui/frames.c:1173
 msgid "Roll Up Window"
 msgstr "Навиване на прозореца"
 
-#: ../src/ui/frames.c:1175
+#: ../src/ui/frames.c:1176
 msgid "Unroll Window"
 msgstr "Развиване на прозореца"
 
-#: ../src/ui/frames.c:1178
+#: ../src/ui/frames.c:1179
 msgid "Keep Window On Top"
 msgstr "Прозорецът да е отгоре"
 
-#: ../src/ui/frames.c:1181
+#: ../src/ui/frames.c:1182
 msgid "Remove Window From Top"
 msgstr "Прозорецът да не е само отгоре"
 
-#: ../src/ui/frames.c:1184
+#: ../src/ui/frames.c:1185
 msgid "Always On Visible Workspace"
 msgstr "Винаги на видимия работен плот"
 
-#: ../src/ui/frames.c:1187
+#: ../src/ui/frames.c:1188
 msgid "Put Window On Only One Workspace"
 msgstr "Прозорецът да се появява само на едно работен плот"
 
@@ -1623,301 +1637,3 @@ msgstr "стойността y бе %d, а се очакваше %d"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d координатен израз обработен за %g секунди (%g секунди средно)\n"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Превключване към работен плот 1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Превключване към работен плот 2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Превключване към работен плот 3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Превключване към работен плот 4"
-
-#~ msgid "Switch to workspace 5"
-#~ msgstr "Превключване към работен плот 5"
-
-#~ msgid "Switch to workspace 6"
-#~ msgstr "Превключване към работен плот 6"
-
-#~ msgid "Switch to workspace 7"
-#~ msgstr "Превключване към работен плот 7"
-
-#~ msgid "Switch to workspace 8"
-#~ msgstr "Превключване към работен плот 8"
-
-#~ msgid "Switch to workspace 9"
-#~ msgstr "Превключване към работен плот 9"
-
-#~ msgid "Switch to workspace 10"
-#~ msgstr "Превключване към работен плот 10"
-
-#~ msgid "Switch to workspace 11"
-#~ msgstr "Превключване към работен плот 11"
-
-#~ msgid "Switch to workspace 12"
-#~ msgstr "Превключване към работен плот 12"
-
-#~ msgid "Switch to workspace on the left of the current workspace"
-#~ msgstr "Превключване към работния плот вляво"
-
-#~ msgid "Switch to workspace on the right of the current workspace"
-#~ msgstr "Превключване към работния плот вдясно"
-
-#~ msgid "Switch to workspace above the current workspace"
-#~ msgstr "Превключване към работния плот отгоре"
-
-#~ msgid "Switch to workspace below the current workspace"
-#~ msgstr "Превключване към работния плот отдолу"
-
-#~ msgid "Move between windows of an application, using a popup window"
-#~ msgstr ""
-#~ "Преместване на фокуса между прозорците на едно приложение, като се "
-#~ "използва изскачащ прозорец"
-
-#~ msgid ""
-#~ "Move backward between windows of an application, using a popup window"
-#~ msgstr ""
-#~ "Преместване на фокуса между прозорците на едно приложение в обратен ред, "
-#~ "като се използва изскачащ прозорец"
-
-#~ msgid "Move between windows, using a popup window"
-#~ msgstr ""
-#~ "Преместване на фокуса между прозорците, като се използва изскачащ прозорец"
-
-#~ msgid "Move backward between windows, using a popup window"
-#~ msgstr ""
-#~ "Преместване на фокуса между прозорците в обратен ред, като се използва "
-#~ "изскачащ прозорец"
-
-#~ msgid "Move between panels and the desktop, using a popup window"
-#~ msgstr ""
-#~ "Преместване на фокуса между панелите и работния плот, като се използва "
-#~ "изскачащ прозорец"
-
-#~ msgid "Move backward between panels and the desktop, using a popup window"
-#~ msgstr ""
-#~ "Преместване на фокуса между панелите и работния плот в обратен ред, като "
-#~ "се използва изскачащ прозорец"
-
-#~ msgid "Move between windows of an application immediately"
-#~ msgstr "Незабавно преместване на фокуса между прозорците на едно приложение"
-
-#~ msgid "Move backward between windows of an application immediately"
-#~ msgstr ""
-#~ "Незабавно преместване на фокуса между прозорците на едно приложение в "
-#~ "обратен ред"
-
-#~ msgid "Move between windows immediately"
-#~ msgstr "Незабавно преместване на фокуса между прозорците "
-
-#~ msgid "Move backward between windows immediately"
-#~ msgstr "Незабавно преместване на фокуса между прозорците в обратен ред"
-
-#~ msgid "Move between panels and the desktop immediately"
-#~ msgstr "Незабавно преместване на фокуса между панелите и работния плот"
-
-#~ msgid "Move backward between panels and the desktop immediately"
-#~ msgstr ""
-#~ "Незабавно преместване на фокуса между панелите и работния плот в обратен "
-#~ "ред"
-
-#~ msgid "Hide all normal windows and set focus to the desktop"
-#~ msgstr "Скриване на всички прозорци и фокусиране на работния плот"
-
-#~ msgid "Show the panel's main menu"
-#~ msgstr "Показване на основното меню на панела"
-
-#~ msgid "Show the panel's \"Run Application\" dialog box"
-#~ msgstr "Показване на диалоговия прозорец на панела „Стартиране на програма“"
-
-#~ msgid "Start or stop recording the session"
-#~ msgstr "Начало или край на запис на сесия"
-
-#~ msgid "Take a screenshot"
-#~ msgstr "Снимане на екрана"
-
-#~ msgid "Take a screenshot of a window"
-#~ msgstr "Снимка на отделен прозорец"
-
-#~ msgid "Run a terminal"
-#~ msgstr "Стартиране на терминал"
-
-#~ msgid "Activate the window menu"
-#~ msgstr "Активиране на менюто за прозорците"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Превключване на режима за цял екран"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Превключване на състоянието на максимизиране"
-
-#~ msgid "Toggle whether a window will always be visible over other windows"
-#~ msgstr "Превключване на видимостта на прозореца над другите прозорци"
-
-#~ msgid "Maximize window"
-#~ msgstr "Максимизиране на прозорец"
-
-#~ msgid "Restore window"
-#~ msgstr "Възстановяване на прозорец"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Превключване на състоянието на навиване"
-
-#~ msgid "Minimize window"
-#~ msgstr "Минимизиране на прозореца"
-
-#~ msgid "Close window"
-#~ msgstr "Затваряне на прозореца"
-
-#~ msgid "Move window"
-#~ msgstr "Преместване на прозорец"
-
-#~ msgid "Resize window"
-#~ msgstr "Оразмеряване на прозорец"
-
-#~ msgid "Toggle whether window is on all workspaces or just one"
-#~ msgstr "Превключване на появата на прозореца на всички работни плотове"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Преместване на прозореца в работен плот 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Преместване на прозореца в работен плот 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Преместване на прозореца в работен плот 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Преместване на прозореца в работен плот 4"
-
-#~ msgid "Move window to workspace 5"
-#~ msgstr "Преместване на прозореца в работен плот 5"
-
-#~ msgid "Move window to workspace 6"
-#~ msgstr "Преместване на прозореца в работен плот 6"
-
-#~ msgid "Move window to workspace 7"
-#~ msgstr "Преместване на прозореца в работен плот 7"
-
-#~ msgid "Move window to workspace 8"
-#~ msgstr "Преместване на прозореца в работен плот 8"
-
-#~ msgid "Move window to workspace 9"
-#~ msgstr "Преместване на прозореца на работен плот 9"
-
-#~ msgid "Move window to workspace 10"
-#~ msgstr "Преместване на прозореца в работен плот 10"
-
-#~ msgid "Move window to workspace 11"
-#~ msgstr "Преместване на прозореца в работен плот 11"
-
-#~ msgid "Move window to workspace 12"
-#~ msgstr "Преместване на прозореца в работен плот 12"
-
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Преместване на прозореца един работен плот наляво"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Преместване на прозореца един работен плот надясно"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Преместване на прозореца един работен плот нагоре"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Преместване на прозореца един работен плот надолу"
-
-#~ msgid "Raise window if it's covered by another window, otherwise lower it"
-#~ msgstr "Ако прозорецът е под друг, го издига, иначе го понижава"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Издигане на прозореца над другите"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Понижаване на прозореца под другите прозорци"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Максимизиране прозореца вертикално"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Максимизиране на прозореца хоризонтално"
-
-#~ msgid "Move window to north-west (top left) corner"
-#~ msgstr ""
-#~ "Преместване на прозореца в северозападния (горния ляв) ъгъл на екрана"
-
-#~ msgid "Move window to north-east (top right) corner"
-#~ msgstr ""
-#~ "Преместване на прозореца в североизточния (горния десен) ъгъл на екрана"
-
-#~ msgid "Move window to south-west (bottom left) corner"
-#~ msgstr "Преместване на прозореца в югозападния (долния ляв) ъгъл на екрана"
-
-#~ msgid "Move window to south-east (bottom right) corner"
-#~ msgstr ""
-#~ "Преместване на прозореца в югоизточния (долния десен) ъгъл на екрана"
-
-#~ msgid "Move window to north (top) side of screen"
-#~ msgstr "Преместване на прозореца в северния (горния) край на екрана"
-
-#~ msgid "Move window to south (bottom) side of screen"
-#~ msgstr "Преместване на прозореца в южния (долния) край на екрана"
-
-#~ msgid "Move window to east (right) side of screen"
-#~ msgstr "Преместване на прозореца в източния (десния) край на екрана"
-
-#~ msgid "Move window to west (left) side of screen"
-#~ msgstr "Преместване на прозореца в западния (левия) край на екрана"
-
-#~ msgid "Move window to center of screen"
-#~ msgstr "Преместване на прозореца в средата на екрана"
-
-#~ msgid ""
-#~ "There was an error running <tt>%s</tt>:\n"
-#~ "\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Имаше грешка при изпълнението на <tt>%s</tt>:\n"
-#~ "\n"
-#~ "%s"
-
-#~ msgid "No command %d has been defined.\n"
-#~ msgstr "Не е дефинирана команда %d.\n"
-
-#~ msgid "No terminal command has been defined.\n"
-#~ msgstr "Не е дефинирана команда за терминал.\n"
-
-#~ msgid "GConf key '%s' is set to an invalid value\n"
-#~ msgstr "Ключът на GConf — „%s“ е с невалидна стойност\n"
-
-#~ msgid "%d stored in GConf key %s is out of range %d to %d\n"
-#~ msgstr ""
-#~ "Стойността %d записана в ключа на GConf — „%s“ е извън обхвата от %d÷%d\n"
-
-#~ msgid "GConf key \"%s\" is set to an invalid type\n"
-#~ msgstr "Ключът на GConf — „%s“ е от невалиден вид\n"
-
-#~ msgid "GConf key %s is already in use and can't be used to override %s\n"
-#~ msgstr ""
-#~ "Ключът на GConf — „%s“ вече се използва и чрез него не могат да се "
-#~ "заменят настройките зададени в „%s“\n"
-
-#~ msgid "Can't override GConf key, %s not found\n"
-#~ msgstr "Не може да се замени стойността на ключа на GConf, „%s“ липсва\n"
-
-#~ msgid "Error setting number of workspaces to %d: %s\n"
-#~ msgstr "Грешка при задаване на броя на работни плотове да е %d: %s\n"
-
-#~ msgid "Error setting name for workspace %d to \"%s\": %s\n"
-#~ msgstr "Грешка при задаване на името на работния плот %d да е „%s“: %s\n"
-
-#~ msgid "Error setting live hidden windows status status: %s\n"
-#~ msgstr ""
-#~ "Грешка при задаване на състоянието обновяването на скритите прозорци: %s\n"
-
-#~ msgid "Error setting no tab popup status: %s\n"
-#~ msgstr ""
-#~ "Грешка при задаване на показването на изскачащите прозорци при обхождане: "
-#~ "%s\n"
