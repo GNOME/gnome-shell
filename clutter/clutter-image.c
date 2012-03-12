@@ -30,12 +30,18 @@
  * #ClutterImage is a #ClutterContent implementation that displays
  * image data.
  *
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-image-box.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ *
  * #ClutterImage is available since Clutter 1.10.
  */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
 
 #include "clutter-image.h"
 
@@ -225,4 +231,23 @@ clutter_image_set_data (ClutterImage     *image,
   clutter_content_invalidate (CLUTTER_CONTENT (image));
 
   return TRUE;
+}
+
+/**
+ * clutter_image_get_texture:
+ * @image: a #ClutterImage
+ *
+ * Retrieves a pointer to the Cogl texture used by @image.
+ *
+ * Return value: (transfer none): a pointer to the Cogl texture, or %NULL
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+CoglTexture *
+clutter_image_get_texture (ClutterImage *image)
+{
+  g_return_val_if_fail (CLUTTER_IS_IMAGE (image), NULL);
+
+  return image->priv->texture;
 }

@@ -3157,6 +3157,7 @@ ClutterImageClass
 ClutterImageError
 clutter_image_new
 clutter_image_set_data
+clutter_image_get_texture
 <SUBSECTION Standard>
 CLUTTER_TYPE_IMAGE
 CLUTTER_IMAGE

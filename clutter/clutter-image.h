@@ -96,6 +96,10 @@ gboolean                clutter_image_set_data          (ClutterImage     *image
                                                          guint             row_stride,
                                                          GError          **error);
 
+#if defined(COGL_ENABLE_EXPERIMENTAL_API) && defined(CLUTTER_ENABLE_EXPERIMENTAL_API)
+CoglTexture *           clutter_image_get_texture       (ClutterImage     *image);
+#endif
+
 G_END_DECLS
 
 #endif /* __CLUTTER_IMAGE_H__ */

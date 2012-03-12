@@ -731,6 +731,7 @@ clutter_group_new
 clutter_group_remove_all
 clutter_image_error_get_type
 clutter_image_error_quark
+clutter_image_get_texture
 clutter_image_get_type
 clutter_image_new
 clutter_image_set_data
