@@ -88,16 +88,22 @@ GQuark clutter_image_error_quark (void);
 GType clutter_image_get_type (void) G_GNUC_CONST;
 
 ClutterContent *        clutter_image_new               (void);
-gboolean                clutter_image_set_data          (ClutterImage     *image,
-                                                         const guint8     *data,
-                                                         CoglPixelFormat   pixel_format,
-                                                         guint             width,
-                                                         guint             height,
-                                                         guint             row_stride,
-                                                         GError          **error);
+gboolean                clutter_image_set_data          (ClutterImage                 *image,
+                                                         const guint8                 *data,
+                                                         CoglPixelFormat               pixel_format,
+                                                         guint                         width,
+                                                         guint                         height,
+                                                         guint                         row_stride,
+                                                         GError                      **error);
+gboolean                clutter_image_set_area          (ClutterImage                 *image,
+                                                         const guint8                 *data,
+                                                         CoglPixelFormat               pixel_format,
+                                                         const cairo_rectangle_int_t  *rect,
+                                                         guint                         row_stride,
+                                                         GError                      **error);
 
 #if defined(COGL_ENABLE_EXPERIMENTAL_API) && defined(CLUTTER_ENABLE_EXPERIMENTAL_API)
-CoglTexture *           clutter_image_get_texture       (ClutterImage     *image);
+CoglTexture *           clutter_image_get_texture       (ClutterImage                 *image);
 #endif
 
 G_END_DECLS

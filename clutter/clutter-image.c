@@ -234,10 +234,102 @@ clutter_image_set_data (ClutterImage     *image,
 }
 
 /**
+ * clutter_image_set_area:
+ * @image: a #ClutterImage
+ * @data: (array): the image data, as an array of bytes
+ * @pixel_format: the Cogl pixel format of the image data
+ * @rect: a rectangle indicating the area that should be set
+ * @row_stride: the length of each row inside @data
+ * @error: return location for a #GError, or %NULL
+ *
+ * Sets the image data to be display by @image, using @rect to indicate
+ * the position and size of the image data to be set.
+ *
+ * If the @image does not have any image data set when this function is
+ * called, a new texture will be created with the size of the width and
+ * height of the rectangle, i.e. calling this function on a newly created
+ * #ClutterImage will be the equivalent of calling clutter_image_set_data().
+ *
+ * If the image data was successfully loaded, the @image will be invalidated.
+ *
+ * In case of error, the @error value will be set, and this function will
+ * return %FALSE.
+ *
+ * The image data is copied in texture memory.
+ *
+ * Return value: %TRUE if the image data was successfully loaded,
+ *   and %FALSE otherwise.
+ *
+ * Since: 1.10
+ */
+gboolean
+clutter_image_set_area (ClutterImage                 *image,
+                        const guint8                 *data,
+                        CoglPixelFormat               pixel_format,
+                        const cairo_rectangle_int_t  *area,
+                        guint                         row_stride,
+                        GError                      **error)
+{
+  ClutterImagePrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_IMAGE (image), FALSE);
+  g_return_val_if_fail (data != NULL, FALSE);
+  g_return_val_if_fail (area != NULL, FALSE);
+
+  priv = image->priv;
+
+  if (priv->texture == NULL)
+    {
+      priv->texture = cogl_texture_new_from_data (area->width,
+                                                  area->height,
+                                                  COGL_TEXTURE_NONE,
+                                                  pixel_format,
+                                                  COGL_PIXEL_FORMAT_ANY,
+                                                  row_stride,
+                                                  data);
+    }
+  else
+    {
+      gboolean res;
+
+      res = cogl_texture_set_region (priv->texture,
+                                     0, 0,
+                                     area->x, area->y,
+                                     area->width, area->height,
+                                     area->width, area->height,
+                                     pixel_format,
+                                     row_stride,
+                                     data);
+
+      if (!res)
+        {
+          cogl_object_unref (priv->texture);
+          priv->texture = NULL;
+        }
+    }
+
+  if (priv->texture == NULL)
+    {
+      g_set_error_literal (error, CLUTTER_IMAGE_ERROR,
+                           CLUTTER_IMAGE_ERROR_INVALID_DATA,
+                           _("Unable to load image data"));
+      return FALSE;
+    }
+
+  clutter_content_invalidate (CLUTTER_CONTENT (image));
+
+  return TRUE;
+}
+
+/**
  * clutter_image_get_texture:
  * @image: a #ClutterImage
  *
  * Retrieves a pointer to the Cogl texture used by @image.
+ *
+ * If you change the contents of the returned Cogl texture you will need
+ * to manually invalidate the @image with clutter_content_invalidate()
+ * in order to update the actors using @image as their content.
  *
  * Return value: (transfer none): a pointer to the Cogl texture, or %NULL
  *
