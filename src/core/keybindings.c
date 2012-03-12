@@ -2644,18 +2644,14 @@ handle_move_to_corner_backend (MetaDisplay    *display,
   MetaRectangle outer;
   int orig_x, orig_y;
   int new_x, new_y;
-  int frame_width, frame_height;
 
   meta_window_get_work_area_all_monitors (window, &work_area);
   meta_window_get_outer_rect (window, &outer);
   meta_window_get_position (window, &orig_x, &orig_y);
 
-  frame_width = (window->frame ? window->frame->child_x : 0);
-  frame_height = (window->frame ? window->frame->child_y : 0);
-
   if (xchange) {
     new_x = work_area.x + (to_right ?
-            (work_area.width + frame_width) - outer.width :
+            work_area.width - outer.width :
             0);
   } else {
     new_x = orig_x;
@@ -2663,18 +2659,16 @@ handle_move_to_corner_backend (MetaDisplay    *display,
 
   if (ychange) {
     new_y = work_area.y + (to_bottom ?
-            (work_area.height + frame_height) - outer.height :
+            work_area.height - outer.height :
             0);
   } else {
     new_y = orig_y;
   }
 
-  meta_window_move_resize (window,
-          FALSE,
-          new_x,
-          new_y,
-          window->rect.width,
-          window->rect.height);
+  meta_window_move_frame (window,
+                          TRUE,
+                          new_x,
+                          new_y);
 }
 
 static void
