@@ -158,7 +158,7 @@ cogl_is_context (void *object);
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_2_0_API */
 
-/* XXX: not guarded by the EXPERIMENTAL_2_0_API defines to avoid
+/* XXX: not guarded by the EXPERIMENTAL_API defines to avoid
  * upsetting glib-mkenums, but this can still be considered implicitly
  * experimental since it's only useable with experimental API... */
 /**
@@ -236,7 +236,7 @@ typedef enum _CoglFeatureID
 } CoglFeatureID;
 
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
 
 /**
  * cogl_has_feature:
@@ -309,7 +309,7 @@ cogl_foreach_feature (CoglContext *context,
                       CoglFeatureCallback callback,
                       void *user_data);
 
-#endif /* COGL_ENABLE_EXPERIMENTAL_2_0_API */
+#endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 G_END_DECLS
 
