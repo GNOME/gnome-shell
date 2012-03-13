@@ -168,6 +168,7 @@ copy ..\..\..\cogl\cogl-win32-renderer.h $(OutDir)\include\cogl-$(CoglApiVersion
 copy ..\..\..\cogl\cogl1-context.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl2-path.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl2-experimental.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
+copy ..\..\..\cogl\cogl2-compatibility.h $(OutDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
 
 mkdir $(OutDir)\share\cogl-$(CoglApiVersion)\tests&#x0D;&#x0A;
 copy ..\..\..\tests\data\valgrind.suppressions $(OutDir)\share\cogl-$(CoglApiVersion)\tests&#x0D;&#x0A;
