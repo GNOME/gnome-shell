@@ -4,7 +4,6 @@
 /* (this may be subject to change!) */
 #endif
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 /* cogl2_clip_push_from_path is only for 1.10.x*/
 cogl2_clip_push_from_path
 
@@ -27,7 +26,6 @@ cogl2_path_rel_move_to
 cogl2_path_round_rectangle
 cogl2_path_set_fill_rule
 cogl2_path_stroke
-#endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
 cogl_android_set_native_window_EXP
@@ -37,45 +35,31 @@ cogl_angle_cos
 cogl_angle_sin
 cogl_angle_tan
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_attribute_new
-#endif
-
 cogl_attribute_buffer_new
 cogl_attribute_get_buffer
 cogl_attribute_get_normalized
 cogl_attribute_set_buffer
 cogl_attribute_set_normalized
 cogl_attribute_type_get_type
+
 cogl_begin_gl
+
 cogl_bitmap_error_get_type
 cogl_bitmap_error_quark
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_bitmap_get_buffer
 cogl_bitmap_get_format
 cogl_bitmap_get_height
 cogl_bitmap_get_rowstride
-#endif
-
 cogl_bitmap_get_size_from_file
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_bitmap_get_width
-#endif
-
 cogl_bitmap_new_from_file
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_bitmap_new_from_buffer
 cogl_bitmap_new_with_size
-#endif
-
 cogl_blend_string_error_get_type
 cogl_blend_string_error_quark
-cogl_buffer_bit_get_type
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
+cogl_buffer_bit_get_type
 cogl_buffer_get_size
 cogl_buffer_get_update_hint
 #if 0
@@ -83,22 +67,14 @@ cogl_buffer_get_update_hint
 cogl_buffer_get_usage_hint
 #endif
 cogl_buffer_map
-#endif
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_buffer_set_data
 cogl_buffer_set_update_hint
 #if 0
 /* not implemented! */
 cogl_buffer_set_usage_hint_EXP
 #endif
-#endif
-
 cogl_buffer_target_get_type
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_buffer_unmap
-#endif
 
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_check_extension
@@ -122,9 +98,7 @@ cogl_clip_push_rectangle
 
 cogl_clip_push_window_rect
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_clip_push_primitive
-#endif
 
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_clip_push_window_rectangle
@@ -132,13 +106,11 @@ cogl_clip_stack_restore
 cogl_clip_stack_save
 #endif
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 #ifndef COGL_WINSYS_INTEGRATED
 cogl_clutter_check_extension_CLUTTER
 cogl_clutter_winsys_has_feature_CLUTTER
 #ifdef COGL_HAS_XLIB
 cogl_clutter_winsys_xlib_get_visual_info_CLUTTER
-#endif
 #endif
 #endif
 
@@ -178,7 +150,6 @@ cogl_color_set_red_byte
 cogl_color_set_red_float
 cogl_color_unpremultiply
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 
 #ifdef COGL_HAS_EGL_SUPPORT
 cogl_egl_context_get_egl_display
@@ -186,12 +157,10 @@ cogl_egl_context_get_egl_display
 
 cogl_context_get_display
 cogl_context_new
-#endif
 
 cogl_create_program
 cogl_create_shader
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_depth_state_get_range
 cogl_depth_state_get_test_enabled
 cogl_depth_state_get_test_function
@@ -201,25 +170,22 @@ cogl_depth_state_set_test_enabled
 cogl_depth_state_set_test_function
 cogl_depth_state_set_range
 cogl_depth_state_set_write_enabled
-#endif
-
 cogl_depth_test_function_get_type
+
 cogl_disable_fog
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_display_get_renderer
 cogl_display_new
 cogl_display_setup
-#endif
 
 cogl_double_to_fixed
 cogl_double_to_int
 cogl_double_to_uint
 
 cogl_end_gl
+
 cogl_error_get_type
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_euler_copy
 cogl_euler_equal
 cogl_euler_free
@@ -228,7 +194,6 @@ cogl_euler_init_from_matrix
 #if 0
 /* not yet implemented */
 cogl_euler_init_from_quaternion
-#endif
 #endif
 
 cogl_features_available
@@ -243,15 +208,13 @@ cogl_fixed_pow2
 cogl_fixed_sin
 cogl_fixed_sqrt
 cogl_fixed_tan
+
 cogl_fog_mode_get_type
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_foreach_feature
-#endif
 
 cogl_flush
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_framebuffer_allocate
 cogl_framebuffer_clear4f
 cogl_framebuffer_clear
@@ -305,39 +268,27 @@ cogl_framebuffer_transform
 cogl_framebuffer_translate
 cogl_framebuffer_vdraw_attributes
 /* cogl_framebuffer_vdraw_indexed_attributes */ /* Not Implemented! */
-#endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
 cogl_gdl_display_set_plane
 #endif
 
 cogl_frustum
+
 cogl_get_backface_culling_enabled
 cogl_get_bitmasks
 cogl_get_depth_test_enabled
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_get_draw_framebuffer
-#endif
-
 cogl_get_features
 cogl_get_modelview_matrix
 cogl_get_option_group
 cogl_get_path	/* this is COGL 1.0 API */
 cogl_get_proc_address
 cogl_get_projection_matrix
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_get_rectangle_indices
-#endif
-
 cogl_get_source
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_get_static_identity_quaternion
 cogl_get_static_zero_quaternion
-#endif
-
 cogl_get_viewport
 
 #ifdef COGL_HAS_GLIB_SUPPORT
@@ -352,9 +303,9 @@ cogl_handle_get_type
 cogl_handle_ref
 cogl_handle_unref
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_has_feature
 cogl_has_features
+
 cogl_index_buffer_new
 cogl_indices_get_buffer
 cogl_indices_get_offset
@@ -362,18 +313,11 @@ cogl_indices_get_type
 cogl_indices_new
 cogl_indices_new_for_buffer
 cogl_indices_set_offset
-#endif
-
 cogl_indices_type_get_type
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_is_attribute
-#endif
-
 cogl_is_attribute_buffer
 cogl_is_bitmap
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_is_buffer
 cogl_is_context
 cogl_is_index_buffer
@@ -381,44 +325,24 @@ cogl_is_index_buffer
 /* not implemented! */
 cogl_is_indices_array
 #endif
-#endif
-
 cogl_is_material
 cogl_is_offscreen 
 cogl_is_path
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_is_pipeline
 cogl_is_pixel_buffer_EXP
 cogl_is_primitive
-#endif
-
 cogl_is_program
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_is_renderer
-#endif
-
 cogl_is_shader
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_is_snippet
 cogl_is_sub_texture_EXP
-#endif
-
 cogl_is_texture
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 #ifdef COGL_HAS_X11
 cogl_is_texture_pixmap_x11
 #endif
-
 cogl_is_texture_rectangle_EXP
-
 cogl_is_texture_2d_EXP
 cogl_is_texture_3d
-#endif
-
 cogl_is_vertex_buffer
 cogl_is_vertex_buffer_indices
 
@@ -426,22 +350,13 @@ cogl_is_vertex_buffer_indices
 cogl_kms_renderer_get_kms_fd
 #endif
 
-
 cogl_material_alpha_func_get_type
 cogl_material_copy
 cogl_material_filter_get_type
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_material_foreach_layer
-#endif
-
 cogl_material_get_ambient
 cogl_material_get_color
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_material_get_depth_state
-#endif
-
 cogl_material_get_diffuse
 cogl_material_get_emission
 cogl_material_get_layers
@@ -464,11 +379,9 @@ cogl_material_layer_get_wrap_mode_t
 cogl_material_layer_type_get_type
 cogl_material_new
 cogl_material_remove_layer
-
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_material_ref
 #endif
-
 cogl_material_set_alpha_test_function
 cogl_material_set_ambient
 cogl_material_set_ambient_and_diffuse
@@ -477,11 +390,7 @@ cogl_material_set_blend_constant
 cogl_material_set_color
 cogl_material_set_color4f
 cogl_material_set_color4ub
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_material_set_depth_state
-#endif
-
 cogl_material_set_diffuse
 cogl_material_set_emission
 cogl_material_set_layer
@@ -498,12 +407,11 @@ cogl_material_set_point_size
 cogl_material_set_shininess
 cogl_material_set_specular
 cogl_material_set_user_program
-
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_material_unref
 #endif
-
 cogl_material_wrap_mode_get_type
+
 cogl_matrix_copy
 cogl_matrix_equal
 cogl_matrix_free
@@ -512,51 +420,32 @@ cogl_matrix_get_array
 cogl_matrix_get_inverse
 cogl_matrix_init_from_array
 cogl_matrix_is_identity
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_matrix_init_from_quaternion
-#endif
-
 cogl_matrix_init_identity
 cogl_matrix_look_at
 cogl_matrix_multiply
-
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_matrix_ortho
 #endif
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_matrix_orthographic
-#endif
-
 cogl_matrix_perspective
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_matrix_project_points
-#endif
-
 cogl_matrix_rotate
 cogl_matrix_scale
 cogl_matrix_transform_point
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_matrix_transform_points
-#endif
-
 cogl_matrix_translate
 cogl_matrix_transpose
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_matrix_view_2d_in_frustum
 cogl_matrix_view_2d_in_perspective
 
 cogl_meta_texture_foreach_in_region
-#endif
 
 cogl_object_get_user_data
 cogl_object_ref
 cogl_object_set_user_data
 cogl_object_unref
+
 cogl_offscreen_new_to_texture
 
 #ifndef COGL_DISABLE_DEPRECATED
@@ -564,7 +453,6 @@ cogl_offscreen_ref
 cogl_offscreen_unref
 #endif
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_onscreen_add_swap_buffers_callback
 #ifndef COGL_WINSYS_INTEGRATED
 cogl_onscreen_clutter_backend_set_size_CLUTTER
@@ -579,17 +467,9 @@ cogl_onscreen_swap_region
 cogl_onscreen_template_new_EXP
 cogl_onscreen_template_set_samples_per_pixel
 cogl_onscreen_template_set_swap_throttled
-#ifdef COGL_HAS_WIN32_SUPPORT
-cogl_win32_onscreen_get_window
-cogl_win32_onscreen_set_foreign_window
-#endif
-#ifdef COGL_HAS_X11
-cogl_x11_onscreen_get_visual_xid
-cogl_x11_onscreen_set_foreign_window_xid
-#endif
-#endif
 
 cogl_ortho
+
 cogl_path_arc
 cogl_path_close
 cogl_path_copy
@@ -613,21 +493,14 @@ cogl_path_round_rectangle
 cogl_path_set_fill_rule
 cogl_path_stroke
 cogl_path_stroke_preserve	/* this is COGL 1.0 API */
+
 cogl_perspective
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_pipeline_add_layer_snippet
 cogl_pipeline_add_snippet
-#endif
-
 cogl_pipeline_cache_free
 cogl_pipeline_cache_new
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_pipeline_copy
-#endif
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_pipeline_foreach_layer
 cogl_pipeline_get_alpha_test_function
 cogl_pipeline_get_alpha_test_reference
@@ -688,31 +561,26 @@ cogl_pipeline_set_uniform_matrix
 cogl_pipeline_set_uniform_1f
 cogl_pipeline_set_uniform_1i
 cogl_pipeline_set_user_program
-#endif
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_pixel_buffer_new_EXP
 #if 0
 /* not exported in the main APIs for now */
 cogl_pixel_buffer_set_region_EXP
 #endif
-#endif
+cogl_pixel_format_get_type
 
 cogl_poll_dispatch
 cogl_poll_get_info
 
-cogl_pixel_format_get_type
 cogl_polygon
 
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_pop_draw_buffer
 #endif
-
 cogl_pop_framebuffer
 cogl_pop_matrix
 cogl_pop_source
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_primitive_copy
 cogl_primitive_foreach_attribute
 cogl_primitive_get_first_vertex
@@ -734,7 +602,6 @@ cogl_primitive_set_first_vertex
 cogl_primitive_set_indices_EXP
 cogl_primitive_set_mode
 cogl_primitive_set_n_vertices_EXP
-#endif
 
 cogl_program_attach_shader
 cogl_program_get_uniform_location
@@ -745,7 +612,6 @@ cogl_program_set_uniform_int
 cogl_program_set_uniform_matrix
 cogl_program_set_uniform_1f
 cogl_program_set_uniform_1i
-
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_program_uniform_float
 cogl_program_uniform_int
@@ -753,11 +619,17 @@ cogl_program_uniform_matrix
 cogl_program_uniform_1f
 cogl_program_uniform_1i
 #endif
-
 cogl_program_unref
 cogl_program_use
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
+#ifndef COGL_DISABLE_DEPRECATED
+cogl_push_draw_buffer
+#endif
+
+cogl_push_framebuffer
+cogl_push_matrix
+cogl_push_source
+
 cogl_quaternion_copy
 cogl_quaternion_dot_product
 cogl_quaternion_equal
@@ -779,52 +651,38 @@ cogl_quaternion_normalize
 cogl_quaternion_pow
 cogl_quaternion_slerp
 cogl_quaternion_squad
-#endif
 
-#ifndef COGL_DISABLE_DEPRECATED
-cogl_push_draw_buffer
-#endif
-
-cogl_push_framebuffer
-cogl_push_matrix
-cogl_push_source
 cogl_read_pixels
 cogl_read_pixels_flags_get_type
+
 cogl_rectangle
 cogl_rectangles
 cogl_rectangles_with_texture_coords
 cogl_rectangle_with_multitexture_coords
 cogl_rectangle_with_texture_coords
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_renderer_add_constraint
 cogl_renderer_check_onscreen_template
 cogl_renderer_connect
 cogl_renderer_get_driver
 cogl_renderer_get_n_fragment_texture_units
-#endif
-
 cogl_renderer_error_get_type
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_renderer_error_quark
 cogl_renderer_get_winsys_id
 cogl_renderer_new
 cogl_renderer_remove_constraint
 cogl_renderer_set_driver
 cogl_renderer_set_winsys_id
-#endif
 
 cogl_rotate
+
 cogl_scale
+
 cogl_set_backface_culling_enabled
-
 cogl_set_depth_test_enabled
-
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_set_draw_buffer
 #endif
-
 cogl_set_fog
 cogl_set_framebuffer
 cogl_set_modelview_matrix
@@ -836,24 +694,20 @@ cogl_set_source_color4f
 cogl_set_source_color4ub
 cogl_set_source_texture
 cogl_set_viewport
+
 cogl_shader_compile
 cogl_shader_get_info_log
 cogl_shader_get_type
 cogl_shader_is_compiled
-
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_shader_ref
 #endif
-
 cogl_shader_source
-
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_shader_unref
 #endif
-
 cogl_shader_type_get_type
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_snippet_get_declarations
 cogl_snippet_get_hook
 cogl_snippet_get_post
@@ -864,19 +718,15 @@ cogl_snippet_set_declarations
 cogl_snippet_set_post
 cogl_snippet_set_pre
 cogl_snippet_set_replace
-#endif
 
 cogl_sqrti
 
 cogl_sub_texture_get_parent
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_sub_texture_new_EXP
 
 cogl_swap_chain_new_EXP
 cogl_swap_chain_set_has_alpha_EXP
 cogl_swap_chain_set_length_EXP
-#endif
 
 cogl_texture_error_quark
 cogl_texture_flags_get_type
@@ -889,14 +739,11 @@ cogl_texture_get_rowstride
 cogl_texture_get_width
 cogl_texture_is_sliced
 cogl_texture_new_from_bitmap
-
 cogl_texture_new_from_data
 cogl_texture_new_from_file
 cogl_texture_new_from_foreign
 cogl_texture_new_from_sub_texture
 cogl_texture_new_with_size
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 #ifdef COGL_HAS_X11
 cogl_texture_pixmap_x11_error_quark
 cogl_texture_pixmap_x11_is_using_tfp_extension
@@ -904,38 +751,25 @@ cogl_texture_pixmap_x11_new
 cogl_texture_pixmap_x11_set_damage_object
 cogl_texture_pixmap_x11_update_area
 #endif
-
 cogl_texture_rectangle_new_with_size_EXP
-#endif
-
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_texture_ref
 #endif
-
 cogl_texture_set_region
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_texture_set_region_from_bitmap_EXP
-#endif
-
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_texture_unref
 #endif
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_texture_2d_new_from_data_EXP
 cogl_texture_2d_new_from_foreign_EXP
 cogl_texture_2d_new_with_size_EXP
 cogl_texture_2d_sliced_new_with_size
-
 cogl_texture_3d_new_from_data
 cogl_texture_3d_new_with_size
-#endif
 
 cogl_transform
 cogl_translate
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 cogl_vector3_add
 cogl_vector3_copy
 cogl_vector3_cross_product
@@ -952,7 +786,6 @@ cogl_vector3_magnitude
 cogl_vector3_multiply_scalar
 cogl_vector3_normalize
 cogl_vector3_subtract
-#endif
 
 cogl_vertex_buffer_add
 cogl_vertex_buffer_delete
@@ -965,13 +798,10 @@ cogl_vertex_buffer_indices_get_for_quads
 cogl_vertex_buffer_indices_get_type
 cogl_vertex_buffer_indices_new
 cogl_vertex_buffer_new
-
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_vertex_buffer_ref
 #endif
-
 cogl_vertex_buffer_submit
-
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_vertex_buffer_unref
 #endif
@@ -984,7 +814,6 @@ cogl_viewport
 
 cogl_winsys_feature_get_type
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
 cogl_wayland_onscreen_resize
 cogl_wayland_renderer_get_compositor
@@ -997,6 +826,8 @@ cogl_wayland_texture_2d_new_from_buffer_EXP
 #endif
 
 #ifdef COGL_HAS_WIN32_SUPPORT
+cogl_win32_onscreen_get_window
+cogl_win32_onscreen_set_foreign_window
 cogl_win32_renderer_add_filter_EXP
 cogl_win32_renderer_handle_event_EXP
 cogl_win32_renderer_remove_filter_EXP
@@ -1014,6 +845,10 @@ cogl_xlib_renderer_set_event_retrieval_enabled
 cogl_xlib_renderer_set_foreign_display_EXP
 cogl_xlib_set_display_EXP
 #endif
+
+#ifdef COGL_HAS_X11
+cogl_x11_onscreen_get_visual_xid
+cogl_x11_onscreen_set_foreign_window_xid
 #endif
 
 #ifndef COGL_NO_EXPORT_UNDERSCORE 
