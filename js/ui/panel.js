@@ -303,7 +303,7 @@ const AppMenuButton = new Lang.Class({
 
         let tracker = Shell.WindowTracker.get_default();
         let appSys = Shell.AppSystem.get_default();
-        tracker.connect('notify::focus-app', Lang.bind(this, this._sync));
+        tracker.connect('notify::focus-app', Lang.bind(this, this._focusAppChanged));
         appSys.connect('app-state-changed', Lang.bind(this, this._onAppStateChanged));
 
         global.window_manager.connect('switch-workspace', Lang.bind(this, this._sync));
@@ -479,16 +479,9 @@ const AppMenuButton = new Lang.Class({
         this._sync();
     },
 
-    _sync: function() {
+    _focusAppChanged: function() {
         let tracker = Shell.WindowTracker.get_default();
-        let lastStartedApp = null;
-        let workspace = global.screen.get_active_workspace();
-        for (let i = 0; i < this._startingApps.length; i++)
-            if (this._startingApps[i].is_on_workspace(workspace))
-                lastStartedApp = this._startingApps[i];
-
         let focusedApp = tracker.focus_app;
-
         if (!focusedApp) {
             // If the app has just lost focus to the panel, pretend
             // nothing happened; otherwise you can't keynav to the
@@ -496,6 +489,17 @@ const AppMenuButton = new Lang.Class({
             if (global.stage_input_mode == Shell.StageInputMode.FOCUSED)
                 return;
         }
+        this._sync();
+    },
+
+    _sync: function() {
+        let tracker = Shell.WindowTracker.get_default();
+        let focusedApp = tracker.focus_app;
+        let lastStartedApp = null;
+        let workspace = global.screen.get_active_workspace();
+        for (let i = 0; i < this._startingApps.length; i++)
+            if (this._startingApps[i].is_on_workspace(workspace))
+                lastStartedApp = this._startingApps[i];
 
         let targetApp = focusedApp != null ? focusedApp : lastStartedApp;
 
