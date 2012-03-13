@@ -28,6 +28,7 @@
 #include "cogl-util.h"
 #include "cogl-internal.h"
 #include "cogl-bitmap-private.h"
+#include "cogl-context-private.h"
 
 #include <string.h>
 
@@ -166,17 +167,11 @@ _cogl_bitmap_get_size_from_file (const char *filename,
   return FALSE;
 }
 
-static void
-_cogl_bitmap_unref_pixbuf (guint8 *pixels,
-                           void *pixbuf)
-{
-  g_object_unref (pixbuf);
-}
-
 CoglBitmap *
 _cogl_bitmap_from_file (const char   *filename,
 			GError      **error)
 {
+  static CoglUserDataKey pixbuf_key;
   GdkPixbuf        *pixbuf;
   gboolean          has_alpha;
   GdkColorspace     color_space;
@@ -186,6 +181,9 @@ _cogl_bitmap_from_file (const char   *filename,
   int               rowstride;
   int               bits_per_sample;
   int               n_channels;
+  CoglBitmap       *bmp;
+
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, FALSE);
 
@@ -233,13 +231,19 @@ _cogl_bitmap_from_file (const char   *filename,
      to read past the end of bpp*width on the last row even if the
      rowstride is much larger so we don't need to worry about
      GdkPixbuf's semantics that it may under-allocate the buffer. */
-  return _cogl_bitmap_new_from_data (gdk_pixbuf_get_pixels (pixbuf),
-                                     pixel_format,
-                                     width,
-                                     height,
-                                     rowstride,
-                                     _cogl_bitmap_unref_pixbuf,
-                                     pixbuf);
+  bmp = cogl_bitmap_new_for_data (ctx,
+                                  width,
+                                  height,
+                                  pixel_format,
+                                  rowstride,
+                                  gdk_pixbuf_get_pixels (pixbuf));
+
+  cogl_object_set_user_data (COGL_OBJECT (bmp),
+                             &pixbuf_key,
+                             pixbuf,
+                             g_object_unref);
+
+  return bmp;
 }
 
 #else

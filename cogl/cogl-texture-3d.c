@@ -353,18 +353,26 @@ cogl_texture_3d_new_from_data (CoglContext *context,
      recommends avoiding this situation. */
   if (image_stride % rowstride != 0)
     {
+      guint8 *bmp_data;
+      int bmp_rowstride;
       int z, y;
-      int bmp_rowstride =
-        _cogl_pixel_format_get_bytes_per_pixel (format) * width;
-      guint8 *bmp_data = g_malloc (bmp_rowstride * height * depth);
 
-      bitmap = _cogl_bitmap_new_from_data (bmp_data,
-                                           format,
-                                           width,
-                                           depth * height,
-                                           bmp_rowstride,
-                                           (CoglBitmapDestroyNotify) g_free,
-                                           NULL /* destroy_fn_data */);
+      bitmap = _cogl_bitmap_new_with_malloc_buffer (context,
+                                                    width,
+                                                    depth * height,
+                                                    format);
+
+      bmp_data = _cogl_bitmap_map (bitmap,
+                                   COGL_BUFFER_ACCESS_WRITE,
+                                   COGL_BUFFER_MAP_HINT_DISCARD);
+
+      if (bmp_data == NULL)
+        {
+          cogl_object_unref (bitmap);
+          return NULL;
+        }
+
+      bmp_rowstride = cogl_bitmap_get_rowstride (bitmap);
 
       /* Copy all of the images in */
       for (z = 0; z < depth; z++)
@@ -373,15 +381,16 @@ cogl_texture_3d_new_from_data (CoglContext *context,
                               bmp_rowstride * y),
                   data + z * image_stride + rowstride * y,
                   bmp_rowstride);
+
+      _cogl_bitmap_unmap (bitmap);
     }
   else
-    bitmap = _cogl_bitmap_new_from_data ((guint8 *) data,
-                                         format,
-                                         width,
-                                         image_stride / rowstride * depth,
-                                         rowstride,
-                                         NULL, /* destroy_fn */
-                                         NULL /* destroy_fn_data */);
+    bitmap = cogl_bitmap_new_for_data (context,
+                                       width,
+                                       image_stride / rowstride * depth,
+                                       format,
+                                       rowstride,
+                                       (guint8 *) data);
 
   ret = _cogl_texture_3d_new_from_bitmap (context,
                                           bitmap,

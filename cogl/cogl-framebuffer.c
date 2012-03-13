@@ -2036,9 +2036,9 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       (required_format & ~COGL_PREMULT_BIT) != (format & ~COGL_PREMULT_BIT))
     {
       CoglBitmap *tmp_bmp;
-      guint8 *tmp_data;
       CoglPixelFormat read_format;
       int bpp, rowstride;
+      guint8 *tmp_data;
       int succeeded;
 
       if (ctx->driver == COGL_DRIVER_GL)
@@ -2054,21 +2054,23 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
         read_format = ((read_format & ~COGL_PREMULT_BIT) |
                        (framebuffer->format & COGL_PREMULT_BIT));
 
+      tmp_bmp = _cogl_bitmap_new_with_malloc_buffer (ctx,
+                                                     width, height,
+                                                     read_format);
       bpp = _cogl_pixel_format_get_bytes_per_pixel (read_format);
-      rowstride = (width * bpp + 3) & ~3;
-      tmp_data = g_malloc (rowstride * height);
-
-      tmp_bmp = _cogl_bitmap_new_from_data (tmp_data,
-                                            read_format,
-                                            width, height, rowstride,
-                                            (CoglBitmapDestroyNotify) g_free,
-                                            NULL);
+      rowstride = cogl_bitmap_get_rowstride (tmp_bmp);
 
       ctx->texture_driver->prep_gl_for_pixels_download (rowstride, bpp);
+
+      tmp_data = _cogl_bitmap_bind (tmp_bmp,
+                                    COGL_BUFFER_ACCESS_WRITE,
+                                    COGL_BUFFER_MAP_HINT_DISCARD);
 
       GE( ctx, glReadPixels (x, y, width, height,
                              gl_format, gl_type,
                              tmp_data) );
+
+      _cogl_bitmap_unbind (tmp_bmp);
 
       succeeded = _cogl_bitmap_convert_into_bitmap (tmp_bmp, bitmap);
 

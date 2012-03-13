@@ -158,6 +158,11 @@ cogl_context_new (CoglDisplay *display,
   /* Allocate context memory */
   context = g_malloc (sizeof (CoglContext));
 
+  /* Convert the context into an object immediately in case any of the
+     code below wants to verify that the context pointer is a valid
+     object */
+  _cogl_context_object_new (context);
+
   /* XXX: Gross hack!
    * Currently everything in Cogl just assumes there is a default
    * context which it can access via _COGL_GET_CONTEXT() including
@@ -380,12 +385,11 @@ cogl_context_new (CoglDisplay *display,
   _cogl_matrix_stack_init_cache (&_context->builtin_flushed_modelview);
 
   default_texture_bitmap =
-    _cogl_bitmap_new_from_data (default_texture_data,
-                                COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                1, 1, /* width/height */
-                                4, /* rowstride */
-                                NULL, /* destroy function */
-                                NULL /* destroy function data */);
+    cogl_bitmap_new_for_data (_context,
+                              1, 1, /* width/height */
+                              COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                              4, /* rowstride */
+                              default_texture_data);
 
   /* Create default textures used for fall backs */
   context->default_gl_texture_2d_tex =
@@ -430,7 +434,7 @@ cogl_context_new (CoglDisplay *display,
       cogl_has_feature (context, COGL_FEATURE_ID_POINT_SPRITE))
     GE (context, glEnable (GL_POINT_SPRITE));
 
-  return _cogl_context_object_new (context);
+  return context;
 }
 
 static void

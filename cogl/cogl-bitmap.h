@@ -130,6 +130,34 @@ cogl_bitmap_new_with_size (CoglContext *context,
                            CoglPixelFormat format);
 
 /**
+ * cogl_bitmap_new_for_data:
+ * @context: A #CoglContext
+ * @width: The width of the bitmap.
+ * @height: The height of the bitmap.
+ * @format: The format of the pixel data.
+ * @rowstride: The rowstride of the bitmap (the number of bytes from
+ *   the start of one row of the bitmap to the next).
+ * @data: A pointer to the data. The bitmap will take ownership of this data.
+ *
+ * Creates a bitmap using some existing data. The data is not copied
+ * so the application must keep the buffer alive for the lifetime of
+ * the #CoglBitmap. This can be used for example with
+ * cogl_framebuffer_read_pixels_into_bitmap() to read data directly
+ * into an application buffer with the specified rowstride.
+ *
+ * Return value: A new #CoglBitmap.
+ * Since: 1.10
+ * Stability: unstable
+ */
+CoglBitmap *
+cogl_bitmap_new_for_data (CoglContext *context,
+                          int width,
+                          int height,
+                          CoglPixelFormat format,
+                          int rowstride,
+                          guint8 *data);
+
+/**
  * cogl_bitmap_get_format:
  * @bitmap: A #CoglBitmap
  *

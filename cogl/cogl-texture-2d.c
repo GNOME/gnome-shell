@@ -313,12 +313,11 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
     rowstride = width * _cogl_pixel_format_get_bytes_per_pixel (format);
 
   /* Wrap the data into a bitmap */
-  bmp = _cogl_bitmap_new_from_data ((guint8 *)data,
-                                    format,
-                                    width,
-                                    height,
-                                    rowstride,
-                                    NULL, NULL);
+  bmp = cogl_bitmap_new_for_data (ctx,
+                                  width, height,
+                                  format,
+                                  rowstride,
+                                  (guint8 *) data);
 
   tex =_cogl_texture_2d_new_from_bitmap (bmp, COGL_TEXTURE_NONE,
                                          internal_format,

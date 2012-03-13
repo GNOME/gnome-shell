@@ -27,6 +27,7 @@
 
 #include "cogl-private.h"
 #include "cogl-bitmap-private.h"
+#include "cogl-context-private.h"
 
 #include <string.h>
 
@@ -470,26 +471,17 @@ CoglBitmap *
 _cogl_bitmap_convert (CoglBitmap *src_bmp,
                       CoglPixelFormat dst_format)
 {
-  int dst_bpp;
-  int dst_rowstride;
-  guint8 *dst_data;
   CoglBitmap *dst_bmp;
   int width, height;
 
+  _COGL_GET_CONTEXT (ctx, NULL);
+
   width = cogl_bitmap_get_width (src_bmp);
   height = cogl_bitmap_get_height (src_bmp);
-  dst_bpp = _cogl_pixel_format_get_bytes_per_pixel (dst_format);
-  dst_rowstride = (sizeof (guint8) * dst_bpp * width + 3) & ~3;
 
-  /* Allocate a new buffer to hold converted data */
-  dst_data = g_malloc (height * dst_rowstride);
-
-  dst_bmp = _cogl_bitmap_new_from_data (dst_data,
-                                        dst_format,
-                                        width, height,
-                                        dst_rowstride,
-                                        (CoglBitmapDestroyNotify) g_free,
-                                        NULL);
+  dst_bmp = _cogl_bitmap_new_with_malloc_buffer (ctx,
+                                                 width, height,
+                                                 dst_format);
 
   if (!_cogl_bitmap_convert_into_bitmap (src_bmp, dst_bmp))
     {

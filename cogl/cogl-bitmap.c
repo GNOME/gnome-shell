@@ -31,6 +31,7 @@
 #include "cogl-bitmap-private.h"
 #include "cogl-buffer-private.h"
 #include "cogl-pixel-buffer.h"
+#include "cogl-context-private.h"
 
 #include <string.h>
 
@@ -43,8 +44,6 @@ struct _CoglBitmap
   int                      rowstride;
 
   guint8                  *data;
-  CoglBitmapDestroyNotify  destroy_fn;
-  void                    *destroy_fn_data;
 
   gboolean                 mapped;
   gboolean                 bound;
@@ -67,9 +66,6 @@ _cogl_bitmap_free (CoglBitmap *bmp)
 {
   g_assert (!bmp->mapped);
   g_assert (!bmp->bound);
-
-  if (bmp->destroy_fn)
-    bmp->destroy_fn (bmp->data, bmp->destroy_fn_data);
 
   if (bmp->shared_bmp)
     cogl_object_unref (bmp->shared_bmp);
@@ -105,20 +101,15 @@ _cogl_bitmap_copy (CoglBitmap *src_bmp)
 {
   CoglBitmap *dst_bmp;
   CoglPixelFormat src_format = cogl_bitmap_get_format (src_bmp);
-  int bpp = _cogl_pixel_format_get_bytes_per_pixel (src_format);
   int width = cogl_bitmap_get_width (src_bmp);
   int height = cogl_bitmap_get_height (src_bmp);
-  int dst_rowstride = width * bpp;
 
-  /* Round the rowstride up to the next nearest multiple of 4 bytes */
-  dst_rowstride = (dst_rowstride + 3) & ~3;
+  _COGL_GET_CONTEXT (ctx, NULL);
 
-  dst_bmp = _cogl_bitmap_new_from_data (g_malloc (dst_rowstride * height),
-                                        src_format,
-                                        width, height,
-                                        dst_rowstride,
-                                        (CoglBitmapDestroyNotify) g_free,
-                                        NULL);
+  dst_bmp =
+    _cogl_bitmap_new_with_malloc_buffer (ctx,
+                                         width, height,
+                                         src_format);
 
   _cogl_bitmap_copy_subregion (src_bmp,
                                dst_bmp,
@@ -185,23 +176,23 @@ cogl_bitmap_get_size_from_file (const char *filename,
 }
 
 CoglBitmap *
-_cogl_bitmap_new_from_data (guint8                  *data,
-                            CoglPixelFormat          format,
-                            int                      width,
-                            int                      height,
-                            int                      rowstride,
-                            CoglBitmapDestroyNotify  destroy_fn,
-                            void                    *destroy_fn_data)
+cogl_bitmap_new_for_data (CoglContext *context,
+                          int width,
+                          int height,
+                          CoglPixelFormat format,
+                          int rowstride,
+                          guint8 *data)
 {
-  CoglBitmap *bmp = g_slice_new (CoglBitmap);
+  CoglBitmap *bmp;
 
+  g_return_val_if_fail (cogl_is_context (context), NULL);
+
+  bmp = g_slice_new (CoglBitmap);
   bmp->format = format;
   bmp->width = width;
   bmp->height = height;
   bmp->rowstride = rowstride;
   bmp->data = data;
-  bmp->destroy_fn = destroy_fn;
-  bmp->destroy_fn_data = destroy_fn_data;
   bmp->mapped = FALSE;
   bmp->bound = FALSE;
   bmp->shared_bmp = NULL;
@@ -211,19 +202,46 @@ _cogl_bitmap_new_from_data (guint8                  *data,
 }
 
 CoglBitmap *
+_cogl_bitmap_new_with_malloc_buffer (CoglContext *context,
+                                     unsigned int width,
+                                     unsigned int height,
+                                     CoglPixelFormat format)
+{
+  static CoglUserDataKey bitmap_free_key;
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
+  int rowstride = ((width * bpp) + 3) & ~3;
+  guint8 *data = g_malloc (rowstride * height);
+  CoglBitmap *bitmap;
+
+  bitmap = cogl_bitmap_new_for_data (context,
+                                     width, height,
+                                     format,
+                                     rowstride,
+                                     data);
+  cogl_object_set_user_data (COGL_OBJECT (bitmap),
+                             &bitmap_free_key,
+                             data,
+                             g_free);
+
+  return bitmap;
+}
+
+CoglBitmap *
 _cogl_bitmap_new_shared (CoglBitmap              *shared_bmp,
                          CoglPixelFormat          format,
                          int                      width,
                          int                      height,
                          int                      rowstride)
 {
-  CoglBitmap *bmp = _cogl_bitmap_new_from_data (NULL, /* data */
-                                                format,
-                                                width,
-                                                height,
-                                                rowstride,
-                                                NULL, /* destroy_fn */
-                                                NULL /* destroy_fn_data */);
+  CoglBitmap *bmp;
+
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  bmp = cogl_bitmap_new_for_data (ctx,
+                                  width, height,
+                                  format,
+                                  rowstride,
+                                  NULL /* data */);
 
   bmp->shared_bmp = cogl_object_ref (shared_bmp);
 
@@ -251,13 +269,11 @@ cogl_bitmap_new_from_buffer (CoglBuffer *buffer,
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), NULL);
 
-  bmp = _cogl_bitmap_new_from_data (NULL, /* data */
-                                    format,
-                                    width,
-                                    height,
-                                    rowstride,
-                                    NULL, /* destroy_fn */
-                                    NULL /* destroy_fn_data */);
+  bmp = cogl_bitmap_new_for_data (buffer->context,
+                                  width, height,
+                                  format,
+                                  rowstride,
+                                  NULL /* data */);
 
   bmp->buffer = cogl_object_ref (buffer);
   bmp->data = GINT_TO_POINTER (offset);

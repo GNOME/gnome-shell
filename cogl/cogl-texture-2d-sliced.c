@@ -175,6 +175,8 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
 {
   gboolean need_x, need_y;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   /* If the x_span is sliced and the upload touches the
      rightmost pixels then fill the waste with copies of the
      pixels */
@@ -222,15 +224,13 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
               src += bmp_rowstride;
             }
 
-          waste_bmp =
-            _cogl_bitmap_new_from_data (waste_buf,
-                                        source_format,
-                                        x_span->waste,
-                                        y_iter->intersect_end -
-                                        y_iter->intersect_start,
-                                        x_span->waste * bpp,
-                                        NULL,
-                                        NULL);
+          waste_bmp = cogl_bitmap_new_for_data (ctx,
+                                                x_span->waste,
+                                                y_iter->intersect_end -
+                                                y_iter->intersect_start,
+                                                source_format,
+                                                x_span->waste * bpp,
+                                                waste_buf);
 
           cogl_texture_set_region_from_bitmap (COGL_TEXTURE (slice_tex),
                                                0, /* src_x */
@@ -279,14 +279,12 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
                 }
             }
 
-          waste_bmp =
-            _cogl_bitmap_new_from_data (waste_buf,
-                                        source_format,
-                                        copy_width,
-                                        y_span->waste,
-                                        copy_width * bpp,
-                                        NULL,
-                                        NULL);
+          waste_bmp = cogl_bitmap_new_for_data (ctx,
+                                                copy_width,
+                                                y_span->waste,
+                                                source_format,
+                                                copy_width * bpp,
+                                                waste_buf);
 
           cogl_texture_set_region_from_bitmap (COGL_TEXTURE (slice_tex),
                                                0, /* src_x */

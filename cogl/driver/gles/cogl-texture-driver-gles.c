@@ -151,15 +151,10 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
       width != cogl_bitmap_get_width (source_bmp) ||
       height != cogl_bitmap_get_height (source_bmp))
     {
-      rowstride = bpp * width;
-      rowstride = (rowstride + 3) & ~3;
       slice_bmp =
-        _cogl_bitmap_new_from_data (g_malloc (height * rowstride),
-                                    source_format,
-                                    width, height,
-                                    rowstride,
-                                    (CoglBitmapDestroyNotify) g_free,
-                                    NULL);
+        _cogl_bitmap_new_with_malloc_buffer (ctx,
+                                             width, height,
+                                             source_format);
       _cogl_bitmap_copy_subregion (source_bmp,
                                    slice_bmp,
                                    src_x, src_y,
@@ -167,10 +162,9 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
                                    width, height);
     }
   else
-    {
-      slice_bmp = prepare_bitmap_alignment_for_upload (source_bmp);
-      rowstride = cogl_bitmap_get_rowstride (slice_bmp);
-    }
+    slice_bmp = prepare_bitmap_alignment_for_upload (source_bmp);
+
+  rowstride = cogl_bitmap_get_rowstride (slice_bmp);
 
   /* Setup gl alignment to match rowstride and top-left corner */
   _cogl_texture_driver_prep_gl_for_pixels_upload (rowstride, bpp);
@@ -263,6 +257,7 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
     {
       CoglBitmap *bmp;
       int image_height = bmp_height / depth;
+      CoglPixelFormat source_bmp_format = cogl_bitmap_get_format (source_bmp);
       int i;
 
       _cogl_texture_driver_prep_gl_for_pixels_upload (bmp_width * bpp, bpp);
@@ -281,13 +276,10 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                              source_gl_type,
                              NULL) );
 
-      bmp = _cogl_bitmap_new_from_data (g_malloc (bpp * bmp_width * height),
-                                        cogl_bitmap_get_format (source_bmp),
-                                        bmp_width,
-                                        height,
-                                        bpp * bmp_width,
-                                        (CoglBitmapDestroyNotify) g_free,
-                                        NULL);
+      bmp = _cogl_bitmap_new_with_malloc_buffer (ctx,
+                                                 bmp_width,
+                                                 height,
+                                                 source_bmp_format);
 
       for (i = 0; i < depth; i++)
         {

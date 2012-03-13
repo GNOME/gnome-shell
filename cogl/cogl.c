@@ -376,12 +376,13 @@ cogl_read_pixels (int x,
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
   CoglBitmap *bitmap;
 
-  bitmap = _cogl_bitmap_new_from_data (pixels,
-                                       format,
-                                       width, height,
-                                       bpp * width, /* rowstride */
-                                       NULL, /* destroy_fn */
-                                       NULL /* destroy_fn_data */);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  bitmap = cogl_bitmap_new_for_data (ctx,
+                                     width, height,
+                                     format,
+                                     bpp * width, /* rowstride */
+                                     pixels);
   cogl_framebuffer_read_pixels_into_bitmap (_cogl_get_read_framebuffer (),
                                             x, y,
                                             source,

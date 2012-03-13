@@ -329,6 +329,8 @@ cogl_texture_new_from_data (unsigned int      width,
   CoglBitmap *bmp;
   CoglTexture *tex;
 
+  _COGL_GET_CONTEXT (ctx, NULL);
+
   if (format == COGL_PIXEL_FORMAT_ANY)
     return NULL;
 
@@ -340,12 +342,11 @@ cogl_texture_new_from_data (unsigned int      width,
     rowstride = width * _cogl_pixel_format_get_bytes_per_pixel (format);
 
   /* Wrap the data into a bitmap */
-  bmp = _cogl_bitmap_new_from_data ((guint8 *) data,
-                                    format,
-                                    width,
-                                    height,
-                                    rowstride,
-                                    NULL, NULL);
+  bmp = cogl_bitmap_new_for_data (ctx,
+                                  width, height,
+                                  format,
+                                  rowstride,
+                                  (guint8 *) data);
 
   tex = cogl_texture_new_from_bitmap (bmp, flags, internal_format);
 
@@ -663,6 +664,8 @@ cogl_texture_set_region (CoglTexture     *texture,
   CoglBitmap *source_bmp;
   gboolean    ret;
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   _COGL_RETURN_VAL_IF_FAIL ((width - src_x) >= dst_width, FALSE);
   _COGL_RETURN_VAL_IF_FAIL ((height - src_y) >= dst_height, FALSE);
 
@@ -675,13 +678,11 @@ cogl_texture_set_region (CoglTexture     *texture,
     rowstride = _cogl_pixel_format_get_bytes_per_pixel (format) * width;
 
   /* Init source bitmap */
-  source_bmp = _cogl_bitmap_new_from_data ((guint8 *) data,
-                                           format,
-                                           width,
-                                           height,
-                                           rowstride,
-                                           NULL, /* destroy_fn */
-                                           NULL); /* destroy_fn_data */
+  source_bmp = cogl_bitmap_new_for_data (ctx,
+                                         width, height,
+                                         format,
+                                         rowstride,
+                                         (guint8 *) data);
 
   ret = cogl_texture_set_region_from_bitmap (texture,
                                              src_x, src_y,
@@ -712,7 +713,6 @@ do_texture_draw_and_read (CoglTexture *texture,
                           CoglBitmap  *target_bmp,
                           float       *viewport)
 {
-  int         bpp;
   float       rx1, ry1;
   float       rx2, ry2;
   float       tx1, ty1;
@@ -721,7 +721,7 @@ do_texture_draw_and_read (CoglTexture *texture,
   CoglBitmap  *rect_bmp;
   unsigned int  tex_width, tex_height;
 
-  bpp = _cogl_pixel_format_get_bytes_per_pixel (COGL_PIXEL_FORMAT_RGBA_8888);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   tex_width = cogl_texture_get_width (texture);
   tex_height = cogl_texture_get_height (texture);
@@ -748,8 +748,6 @@ do_texture_draw_and_read (CoglTexture *texture,
         {
           int width;
           int height;
-          int rowstride;
-          guint8 *data;
 
           /* Rectangle X coords */
           rx1 = rx2;
@@ -757,7 +755,6 @@ do_texture_draw_and_read (CoglTexture *texture,
 
           width = rx2 - rx1;
           height = ry2 - ry1;
-          rowstride = width * bpp;
 
           /* Normalized texture X coords */
           tx1 = tx2;
@@ -770,24 +767,17 @@ do_texture_draw_and_read (CoglTexture *texture,
                                               tx1, ty1,
                                               tx2, ty2);
 
-          data = g_malloc (height * rowstride);
-
           /* Read into a temporary bitmap */
-          rect_bmp =
-            _cogl_bitmap_new_from_data (data,
-                                        COGL_PIXEL_FORMAT_RGBA_8888,
-                                        width,
-                                        height,
-                                        rowstride,
-                                        (CoglBitmapDestroyNotify) g_free,
-                                        NULL);
+          rect_bmp = _cogl_bitmap_new_with_malloc_buffer
+                                              (ctx,
+                                               width, height,
+                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE);
 
-          cogl_read_pixels (viewport[0], viewport[1],
-                            width,
-                            height,
-                            COGL_READ_PIXELS_COLOR_BUFFER,
-                            COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                            data);
+          cogl_framebuffer_read_pixels_into_bitmap
+                                   (cogl_get_draw_framebuffer (),
+                                    viewport[0], viewport[1],
+                                    COGL_READ_PIXELS_COLOR_BUFFER,
+                                    rect_bmp);
 
           /* Copy to target bitmap */
           _cogl_bitmap_copy_subregion (rect_bmp,
@@ -900,15 +890,12 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
                                        COGL_BUFFER_MAP_HINT_DISCARD)) == NULL)
         return FALSE;
 
-      srcdata = g_malloc (alpha_rowstride * target_height);
-
       /* Create temp bitmap for alpha values */
-      alpha_bmp = _cogl_bitmap_new_from_data (srcdata,
-                                              COGL_PIXEL_FORMAT_RGBA_8888,
-                                              target_width, target_height,
-                                              alpha_rowstride,
-                                              (CoglBitmapDestroyNotify) g_free,
-                                              NULL);
+      alpha_bmp =
+        _cogl_bitmap_new_with_malloc_buffer (ctx,
+                                             target_width,
+                                             target_height,
+                                             COGL_PIXEL_FORMAT_RGBA_8888);
 
       /* Draw alpha values into RGB channels */
       cogl_pipeline_set_layer_combine (ctx->texture_download_pipeline,
@@ -919,6 +906,10 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
       do_texture_draw_and_read (texture, alpha_bmp, viewport);
 
       /* Copy temp R to target A */
+
+      srcdata = _cogl_bitmap_map (alpha_bmp,
+                                  COGL_BUFFER_ACCESS_READ,
+                                  0 /* hints */);
 
       for (y=0; y<target_height; ++y)
         {
@@ -931,6 +922,8 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
           srcdata += alpha_rowstride;
           dstdata += target_rowstride;
         }
+
+      _cogl_bitmap_unmap (alpha_bmp);
 
       _cogl_bitmap_unmap (target_bmp);
 
@@ -976,12 +969,11 @@ get_texture_bits_via_offscreen (CoglTexture    *texture,
 
   framebuffer = COGL_FRAMEBUFFER (offscreen);
 
-  bitmap = _cogl_bitmap_new_from_data (dst_bits,
-                                       dst_format,
-                                       width, height,
-                                       dst_rowstride,
-                                       NULL, /* destroy_fn */
-                                       NULL /* destroy_fn_data */);
+  bitmap = cogl_bitmap_new_for_data (ctx,
+                                     width, height,
+                                     dst_format,
+                                     dst_rowstride,
+                                     dst_bits);
   cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
                                             x, y,
                                             COGL_READ_PIXELS_COLOR_BUFFER,
@@ -1125,7 +1117,6 @@ cogl_texture_get_data (CoglTexture     *texture,
   int              bpp;
   int              byte_size;
   CoglPixelFormat  closest_format;
-  int              closest_bpp;
   GLenum           closest_gl_format;
   GLenum           closest_gl_type;
   CoglBitmap      *target_bmp;
@@ -1160,7 +1151,6 @@ cogl_texture_get_data (CoglTexture     *texture,
     ctx->texture_driver->find_best_gl_get_data_format (format,
                                                        &closest_gl_format,
                                                        &closest_gl_type);
-  closest_bpp = _cogl_pixel_format_get_bytes_per_pixel (closest_format);
 
   /* We can assume that whatever data GL gives us will have the
      premult status of the original texture */
@@ -1171,24 +1161,16 @@ cogl_texture_get_data (CoglTexture     *texture,
   /* Is the requested format supported? */
   if (closest_format == format)
     /* Target user data directly */
-    target_bmp = _cogl_bitmap_new_from_data (data,
-                                             format,
-                                             tex_width,
-                                             tex_height,
-                                             rowstride,
-                                             NULL, NULL);
+    target_bmp = cogl_bitmap_new_for_data (ctx,
+                                           tex_width,
+                                           tex_height,
+                                           format,
+                                           rowstride,
+                                           data);
   else
-    {
-      int target_rowstride = tex_width * closest_bpp;
-      guint8 *target_data = g_malloc (tex_height * target_rowstride);
-      target_bmp = _cogl_bitmap_new_from_data (target_data,
-                                               closest_format,
-                                               tex_width,
-                                               tex_height,
-                                               target_rowstride,
-                                               (CoglBitmapDestroyNotify) g_free,
-                                               NULL);
-    }
+    target_bmp = _cogl_bitmap_new_with_malloc_buffer (ctx,
+                                                      tex_width, tex_height,
+                                                      closest_format);
 
   tg_data.orig_width = tex_width;
   tg_data.orig_height = tex_height;
@@ -1236,12 +1218,11 @@ cogl_texture_get_data (CoglTexture     *texture,
       gboolean result;
 
       /* Convert to requested format directly into the user's buffer */
-      new_bmp = _cogl_bitmap_new_from_data (data,
-                                            format,
-                                            tex_width, tex_height,
-                                            rowstride,
-                                            NULL, /* destroy_fn */
-                                            NULL /* destroy_fn_data */);
+      new_bmp = cogl_bitmap_new_for_data (ctx,
+                                          tex_width, tex_height,
+                                          format,
+                                          rowstride,
+                                          data);
       result = _cogl_bitmap_convert_into_bitmap (target_bmp, new_bmp);
 
       if (!result)
