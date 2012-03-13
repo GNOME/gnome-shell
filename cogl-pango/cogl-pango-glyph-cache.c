@@ -129,6 +129,8 @@ cogl_pango_glyph_cache_new (gboolean use_mipmapping)
 
   cache->has_dirty_glyphs = FALSE;
 
+  cache->using_global_atlas = FALSE;
+
   cache->use_mipmapping = use_mipmapping;
 
   return cache;
