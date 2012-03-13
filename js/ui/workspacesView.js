@@ -509,6 +509,7 @@ const WorkspacesDisplay = new Lang.Class({
         this._inDrag = false;
         this._cancelledDrag = false;
 
+        this._controlsInitiallyHovered = false;
         this._alwaysZoomOut = false;
         this._zoomOut = false;
         this._zoomFraction = 0;
@@ -543,6 +544,19 @@ const WorkspacesDisplay = new Lang.Class({
     },
 
     show: function() {
+        if(!this._alwaysZoomOut) {
+            let [mouseX, mouseY] = global.get_pointer();
+            let [x, y] = this._controls.get_transformed_position();
+            let [width, height] = this._controls.get_transformed_size();
+            let visibleWidth = this._controls.get_theme_node().get_length('visible-width');
+            let rtl = (Clutter.get_default_text_direction () == Clutter.TextDirection.RTL);
+            if(rtl)
+                x = x + width - visibleWidth;
+            if(mouseX > x - 0.5 && mouseX < x + visibleWidth + 0.5 &&
+               mouseY > y - 0.5 && mouseY < y + height + 0.5)
+                this._controlsInitiallyHovered = true;
+        }
+
         this._zoomOut = this._alwaysZoomOut;
         this._zoomFraction = this._alwaysZoomOut ? 1 : 0;
         this._updateZoom();
@@ -590,6 +604,9 @@ const WorkspacesDisplay = new Lang.Class({
     hide: function() {
         this._controls.hide();
         this._thumbnailsBox.hide();
+
+        if (!this._alwaysZoomOut)
+            this.zoomFraction = 0;
 
         if (this._restackedNotifyId > 0){
             global.screen.disconnect(this._restackedNotifyId);
@@ -996,7 +1013,10 @@ const WorkspacesDisplay = new Lang.Class({
     },
 
     _onControlsHoverChanged: function() {
-        this._updateZoom();
+        if(!this._controls.hover)
+            this._controlsInitiallyHovered = false;
+        if(!this._controlsInitiallyHovered)
+            this._updateZoom();
     },
 
     _dragBegin: function() {
