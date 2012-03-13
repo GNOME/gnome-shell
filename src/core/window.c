@@ -4550,6 +4550,10 @@ meta_window_update_monitor (MetaWindow *window)
       if (old)
         g_signal_emit_by_name (window->screen, "window-left-monitor", old->number, window);
       g_signal_emit_by_name (window->screen, "window-entered-monitor", window->monitor->number, window);
+
+      /* If we're changing monitors, we need to update the has_maximize_func flag,
+       * as the working area has changed. */
+      recalc_window_features (window);
     }
 }
 
@@ -8004,6 +8008,23 @@ recalc_window_features (MetaWindow *window)
       window->has_move_func = FALSE;
       window->has_resize_func = FALSE;
       window->has_maximize_func = FALSE;
+    }
+
+  if (window->has_maximize_func)
+    {
+      MetaRectangle work_area;
+      MetaFrameBorders borders;
+      int min_frame_width, min_frame_height;
+
+      meta_window_get_work_area_current_monitor (window, &work_area);
+      meta_frame_calc_borders (window->frame, &borders);
+
+      min_frame_width = window->size_hints.min_width + borders.visible.left + borders.visible.right;
+      min_frame_height = window->size_hints.min_height + borders.visible.top + borders.visible.bottom;
+
+      if (min_frame_width >= work_area.width ||
+          min_frame_height >= work_area.height)
+        window->has_maximize_func = FALSE;
     }
 
   meta_topic (META_DEBUG_WINDOW_OPS,
