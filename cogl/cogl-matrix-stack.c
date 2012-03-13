@@ -110,8 +110,11 @@ _cogl_matrix_stack_top_mutable (CoglMatrixStack *stack,
   state->push_count -= 1;
 
   g_array_set_size (stack->stack, stack->stack->len + 1);
-  new_top = &g_array_index (stack->stack, CoglMatrixState,
-                            stack->stack->len - 1);
+  /* if g_array_set_size reallocs we need to get state
+   * pointer again */
+  state = &g_array_index (stack->stack, CoglMatrixState,
+                            stack->stack->len - 2);
+  new_top = _cogl_matrix_stack_top(stack);
   _cogl_matrix_state_init (new_top);
 
   if (initialize)
