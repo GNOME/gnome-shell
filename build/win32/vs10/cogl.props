@@ -192,7 +192,7 @@ copy ..\..\..\cogl\cogl2-compatibility.h $(CopyDir)\include\cogl-$(CoglApiVersio
     <GenerateCoglDef>
          echo EXPORTS &gt; ..\..\..\cogl\cogl.def
 
-         cl -EP -DCOGL_ENABLE_EXPERIMENTAL_API -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def
+         cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def
 
      </GenerateCoglDef>
     <GenerateCoglPangoDef>
