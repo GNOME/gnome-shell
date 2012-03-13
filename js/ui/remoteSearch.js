@@ -59,13 +59,13 @@ function loadRemoteSearchProvidersFromDir(dir, addProviderCallback) {
             if (!keyfile.has_group(KEY_FILE_GROUP))
                 continue;
 
-            let remoteProvider;
+            let remoteProvider, title;
             try {
                 let group = KEY_FILE_GROUP;
-                let title = keyfile.get_locale_string(group, 'Title', null);
                 let icon = keyfile.get_string(group, 'Icon');
                 let busName = keyfile.get_string(group, 'BusName');
                 let objectPath = keyfile.get_string(group, 'ObjectPath');
+                title = keyfile.get_locale_string(group, 'Title', null);
 
                 remoteProvider = new RemoteSearchProvider(title,
                                                           icon,
