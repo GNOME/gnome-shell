@@ -317,10 +317,11 @@ const AppMenuButton = new Lang.Class({
 
         this._visible = true;
         this.actor.show();
-        this.actor.reactive = true;
 
         if (!this._targetIsCurrent)
             return;
+
+        this.actor.reactive = true;
 
         Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor,
