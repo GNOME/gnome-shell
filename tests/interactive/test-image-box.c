@@ -65,12 +65,11 @@ test_image_box_main (int argc, char *argv[])
   clutter_actor_show (stage);
 
   box = clutter_actor_new ();
-  clutter_actor_set_name (box, "Grid");
+  clutter_actor_set_name (box, "Image");
   clutter_actor_set_margin_top (box, 12);
   clutter_actor_set_margin_right (box, 12);
   clutter_actor_set_margin_bottom (box, 12);
   clutter_actor_set_margin_left (box, 12);
-  clutter_actor_set_layout_manager (box, clutter_flow_layout_new (CLUTTER_FLOW_HORIZONTAL));
   clutter_actor_add_constraint (box, clutter_bind_constraint_new (stage, CLUTTER_BIND_SIZE, 0.0));
   clutter_actor_add_child (stage, box);
 
