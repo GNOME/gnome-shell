@@ -573,7 +573,7 @@ place_window_if_needed(MetaWindow     *window,
                  META_MAXIMIZE_VERTICAL : 0), &info->current);
 
           /* maximization may have changed frame geometry */
-          if (window->frame && !window->fullscreen)
+          if (!window->fullscreen)
             meta_frame_calc_borders (window->frame, info->borders);
 
           if (window->fullscreen_after_placement)

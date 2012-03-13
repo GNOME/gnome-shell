@@ -322,9 +322,14 @@ void
 meta_frame_calc_borders (MetaFrame        *frame,
                          MetaFrameBorders *borders)
 {
-  meta_ui_get_frame_borders (frame->window->screen->ui,
-                             frame->xwindow,
-                             borders);
+  /* Save on if statements and potential uninitialized values
+   * in callers -- if there's no frame, then zero the borders. */
+  if (frame == NULL)
+    meta_frame_borders_clear (borders);
+  else
+    meta_ui_get_frame_borders (frame->window->screen->ui,
+                               frame->xwindow,
+                               borders);
 }
 
 void

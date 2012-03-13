@@ -3704,6 +3704,7 @@ meta_window_can_tile_side_by_side (MetaWindow *window)
 {
   const MetaMonitorInfo *monitor;
   MetaRectangle tile_area;
+  MetaFrameBorders borders;
 
   if (!meta_window_can_tile_maximized (window))
     return FALSE;
@@ -3717,15 +3718,10 @@ meta_window_can_tile_side_by_side (MetaWindow *window)
 
   tile_area.width /= 2;
 
-  if (window->frame)
-    {
-      MetaFrameBorders borders;
+  meta_frame_calc_borders (window->frame, &borders);
 
-      meta_frame_calc_borders (window->frame, &borders);
-
-      tile_area.width  -= (borders.visible.left + borders.visible.right);
-      tile_area.height -= (borders.visible.top + borders.visible.bottom);
-    }
+  tile_area.width  -= (borders.visible.left + borders.visible.right);
+  tile_area.height -= (borders.visible.top + borders.visible.bottom);
 
   return tile_area.width >= window->size_hints.min_width &&
          tile_area.height >= window->size_hints.min_height;
@@ -4646,9 +4642,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
               is_user_action ? " (user move/resize)" : "",
               old_rect.x, old_rect.y, old_rect.width, old_rect.height);
 
-  if (window->frame)
-    meta_frame_calc_borders (window->frame,
-                             &borders);
+  meta_frame_calc_borders (window->frame,
+                           &borders);
 
   new_rect.x = root_x_nw;
   new_rect.y = root_y_nw;
@@ -5109,20 +5104,18 @@ meta_window_move_frame (MetaWindow  *window,
 {
   int x = root_x_nw;
   int y = root_y_nw;
+  MetaFrameBorders borders;
 
-  if (window->frame)
-    {
-      MetaFrameBorders borders;
-      meta_frame_calc_borders (window->frame, &borders);
+  meta_frame_calc_borders (window->frame, &borders);
 
-      /* root_x_nw and root_y_nw correspond to where the top of
-       * the visible frame should be. Offset by the distance between
-       * the origin of the window and the origin of the enclosing
-       * window decorations.
-       */
-      x += window->frame->child_x - borders.invisible.left;
-      y += window->frame->child_y - borders.invisible.top;
-    }
+  /* root_x_nw and root_y_nw correspond to where the top of
+   * the visible frame should be. Offset by the distance between
+   * the origin of the window and the origin of the enclosing
+   * window decorations.
+   */
+  x += window->frame->child_x - borders.invisible.left;
+  y += window->frame->child_y - borders.invisible.top;
+
   meta_window_move (window, user_op, x, y);
 }
 
@@ -5171,18 +5164,17 @@ meta_window_move_resize_frame (MetaWindow  *window,
                                int          w,
                                int          h)
 {
-  if (window->frame)
-    {
-      MetaFrameBorders borders;
-      meta_frame_calc_borders (window->frame, &borders);
-      /* offset by the distance between the origin of the window
-       * and the origin of the enclosing window decorations ( + border)
-       */
-      root_x_nw += borders.visible.left;
-      root_y_nw += borders.visible.top;
-      w -= borders.visible.left + borders.visible.right;
-      h -= borders.visible.top + borders.visible.bottom;
-    }
+  MetaFrameBorders borders;
+
+  meta_frame_calc_borders (window->frame, &borders);
+  /* offset by the distance between the origin of the window
+   * and the origin of the enclosing window decorations ( + border)
+   */
+  root_x_nw += borders.visible.left;
+  root_y_nw += borders.visible.top;
+  w -= borders.visible.left + borders.visible.right;
+  h -= borders.visible.top + borders.visible.bottom;
+
   meta_window_move_resize (window, user_op, root_x_nw, root_y_nw, w, h);
 }
 
@@ -5814,22 +5806,18 @@ meta_window_get_net_wm_desktop (MetaWindow *window)
 static void
 update_net_frame_extents (MetaWindow *window)
 {
-  unsigned long data[4] = { 0, 0, 0, 0 };
+  unsigned long data[4];
+  MetaFrameBorders borders;
 
-  if (window->frame)
-    {
-      MetaFrameBorders borders;
-
-      meta_frame_calc_borders (window->frame, &borders);
-      /* Left */
-      data[0] = borders.visible.left;
-      /* Right */
-      data[1] = borders.visible.right;
-      /* Top */
-      data[2] = borders.visible.top;
-      /* Bottom */
-      data[3] = borders.visible.bottom;
-    }
+  meta_frame_calc_borders (window->frame, &borders);
+  /* Left */
+  data[0] = borders.visible.left;
+  /* Right */
+  data[1] = borders.visible.right;
+  /* Top */
+  data[2] = borders.visible.top;
+  /* Bottom */
+  data[3] = borders.visible.bottom;
 
   meta_topic (META_DEBUG_GEOMETRY,
               "Setting _NET_FRAME_EXTENTS on managed window 0x%lx "

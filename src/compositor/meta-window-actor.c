@@ -1616,24 +1616,16 @@ meta_window_actor_update_bounding_region_and_borders (MetaWindowActor *self,
                                                       int              height)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  MetaFrame *frame;
   MetaFrameBorders borders;
   cairo_rectangle_int_t bounding_rectangle;
 
-  bounding_rectangle.x = 0;
-  bounding_rectangle.y = 0;
+  meta_frame_calc_borders (priv->window->frame, &borders);
 
-  frame = priv->window->frame;
-  if (frame != NULL)
-    {
-      meta_frame_calc_borders (frame, &borders);
+  bounding_rectangle.x = borders.invisible.left;
+  bounding_rectangle.y = borders.invisible.top;
 
-      bounding_rectangle.x = borders.invisible.left;
-      bounding_rectangle.y = borders.invisible.top;
-
-      width -= borders.invisible.left + borders.invisible.right;
-      height -= borders.invisible.top + borders.invisible.bottom;
-    }
+  width -= borders.invisible.left + borders.invisible.right;
+  height -= borders.invisible.top + borders.invisible.bottom;
 
   bounding_rectangle.width = width;
   bounding_rectangle.height = height;
@@ -2163,10 +2155,7 @@ check_needs_reshape (MetaWindowActor *self)
   meta_shaped_texture_set_shape_region (META_SHAPED_TEXTURE (priv->actor), NULL);
   meta_window_actor_clear_shape_region (self);
 
-  if (priv->window->frame)
-    meta_frame_calc_borders (priv->window->frame, &borders);
-  else
-    meta_frame_borders_clear (&borders);
+  meta_frame_calc_borders (priv->window->frame, &borders);
 
   region = meta_window_get_frame_bounds (priv->window);
   if (region != NULL)
