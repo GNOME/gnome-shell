@@ -760,7 +760,11 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
 DISTCLEANFILES += $(pc_files)
 
-clutter_include_HEADERS = $(source_h) $(top_srcdir)/clutter/clutter.h
+clutter_include_HEADERS = \
+	$(source_h) \
+	$(top_srcdir)/clutter/clutter.h \
+	$(top_builddir)/clutter/clutter-version.h
+
 nodist_clutter_include_HEADERS = \
 	$(top_builddir)/clutter/clutter-config.h \
 	$(built_source_h)
