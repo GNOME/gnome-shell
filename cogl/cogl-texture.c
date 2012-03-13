@@ -1129,10 +1129,6 @@ cogl_texture_get_data (CoglTexture     *texture,
   GLenum           closest_gl_format;
   GLenum           closest_gl_type;
   CoglBitmap      *target_bmp;
-  CoglBitmap      *new_bmp;
-  guint8          *src;
-  guint8          *dst;
-  int              y;
   int              tex_width;
   int              tex_height;
   CoglPixelFormat  texture_format;
@@ -1236,41 +1232,26 @@ cogl_texture_get_data (CoglTexture     *texture,
   /* Was intermediate used? */
   if (closest_format != format)
     {
-      guint8 *new_bmp_data;
-      int new_bmp_rowstride;
+      CoglBitmap *new_bmp;
+      gboolean result;
 
-      /* Convert to requested format */
-      new_bmp = _cogl_bitmap_convert (target_bmp, format);
+      /* Convert to requested format directly into the user's buffer */
+      new_bmp = _cogl_bitmap_new_from_data (data,
+                                            format,
+                                            tex_width, tex_height,
+                                            rowstride,
+                                            NULL, /* destroy_fn */
+                                            NULL /* destroy_fn_data */);
+      result = _cogl_bitmap_convert_into_bitmap (target_bmp, new_bmp);
 
-      /* Free intermediate data and return if failed */
-      cogl_object_unref (target_bmp);
+      if (!result)
+        /* Return failure after cleaning up */
+        byte_size = 0;
 
-      if (new_bmp == NULL)
-        return 0;
-
-      new_bmp_rowstride = cogl_bitmap_get_rowstride (new_bmp);
-      new_bmp_data = _cogl_bitmap_map (new_bmp, COGL_BUFFER_ACCESS_WRITE,
-                                       COGL_BUFFER_MAP_HINT_DISCARD);
-
-      if (new_bmp_data == NULL)
-        {
-          cogl_object_unref (new_bmp);
-          return 0;
-        }
-
-      /* Copy to user buffer */
-      for (y = 0; y < tex_height; ++y)
-        {
-          src = new_bmp_data + y * new_bmp_rowstride;
-          dst = data + y * rowstride;
-          memcpy (dst, src, tex_width * bpp);
-        }
-
-      _cogl_bitmap_unmap (new_bmp);
-
-      /* Free converted data */
       cogl_object_unref (new_bmp);
     }
+
+  cogl_object_unref (target_bmp);
 
   return byte_size;
 }
