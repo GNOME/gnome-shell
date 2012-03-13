@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
 "&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-12-13 13:41+0000\n"
-"PO-Revision-Date: 2012-02-19 15:54+0200\n"
+"POT-Creation-Date: 2012-03-11 21:56+0000\n"
+"PO-Revision-Date: 2012-03-13 08:36+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -23,17 +23,16 @@ msgstr ""
 "X-Project-Style: gnome\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
+msgid "Windows"
+msgstr "Прозори"
+
+#: ../src/50-mutter-windows.xml.in.h:2
 msgid "View split on left"
 msgstr "Прикажите поделу на лево"
 
-#: ../src/50-mutter-windows.xml.in.h:2
+#: ../src/50-mutter-windows.xml.in.h:3
 msgid "View split on right"
 msgstr "Прикажите поделу на десно"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#| msgid "_Windows"
-msgid "Windows"
-msgstr "Прозори"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
@@ -79,12 +78,12 @@ msgstr "_Сачекај"
 msgid "_Force Quit"
 msgstr "_Приморај излаз"
 
-#: ../src/core/display.c:365
+#: ../src/core/display.c:361
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Недостаје потребан композитни додатак %s"
 
-#: ../src/core/display.c:431
+#: ../src/core/display.c:427
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Нисам успео да отворим екран „%s“ Икс система прозора\n"
@@ -135,7 +134,7 @@ msgstr ""
 "Не могу да пронђем тему! Проверите да %s постоји и да садржи уобичајне "
 "теме.\n"
 
-#: ../src/core/mutter.c:42
+#: ../src/core/mutter.c:40
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -150,15 +149,15 @@ msgstr ""
 "НЕ постоји никаква гаранција; чак ни гаранција о ТРЖИШНОЈ ВРЕДНОСТИ или "
 "ПРИЛАГОЂЕНОСТИ ОДРЕЂЕНОЈ НАМЕНИ.\n"
 
-#: ../src/core/mutter.c:56
+#: ../src/core/mutter.c:54
 msgid "Print version"
 msgstr "Исписује издање"
 
-#: ../src/core/mutter.c:62
+#: ../src/core/mutter.c:60
 msgid "Comma-separated list of compositor plugins"
 msgstr "Списак додатака раздвојених зарезом"
 
-#: ../src/core/prefs.c:1067
+#: ../src/core/prefs.c:1077
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -166,13 +165,12 @@ msgstr ""
 "Компромиси за лоше програме су искључени. Неке апликације се могу понашати "
 "чудно.\n"
 
-#: ../src/core/prefs.c:1142
+#: ../src/core/prefs.c:1152
 #, c-format
-#| msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Не могу да обрадим опис „%s“ из кључа „%s“ у Гномовим подешавањима\n"
 
-#: ../src/core/prefs.c:1208
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -181,24 +179,24 @@ msgstr ""
 "„%s“ је пронађен у бази подешавања што није исправна вредност која мења "
 "понашање тастера миша\n"
 
-#: ../src/core/prefs.c:1720
+#: ../src/core/prefs.c:1736
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "„%s“ из базе са подешавањима није исправна комбинација тастера „%s“\n"
 
-#: ../src/core/prefs.c:1817
+#: ../src/core/prefs.c:1833
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. радни простор"
 
-#: ../src/core/screen.c:741
+#: ../src/core/screen.c:730
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Приказ %d на екрану „%s“ није исправан\n"
 
-#: ../src/core/screen.c:757
+#: ../src/core/screen.c:746
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -207,18 +205,18 @@ msgstr ""
 "Приказ %d на екрану „%s“ већ има управника прозора; покушајте да користите --"
 "replace опцију да замените тренутног управника прозора.\n"
 
-#: ../src/core/screen.c:784
+#: ../src/core/screen.c:773
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Не могу да добијем избор управника прозора на приказу %d еркана „%s“\n"
 
-#: ../src/core/screen.c:839
+#: ../src/core/screen.c:828
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Приказ %d на екрану „%s“ већ има управника прозора\n"
 
-#: ../src/core/screen.c:1024
+#: ../src/core/screen.c:1013
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не могу да отпустим приказ %d на екрану „%s“\n"
@@ -315,7 +313,7 @@ msgid "Window manager error: "
 msgstr "Грешка управника прозора: "
 
 #. first time through
-#: ../src/core/window.c:7145
+#: ../src/core/window.c:7224
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -331,7 +329,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7808
+#: ../src/core/window.c:7887
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -393,14 +391,40 @@ msgid "Mutter"
 msgstr "Матер"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:1
+msgid "Modifier to use for extended window management operations"
+msgstr "Тастер који се користи за проширене радње управника прозорима"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:2
+msgid ""
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
+msgstr ""
+"Овај кључ покреће преклапање (overlay), које комбинује преглед прозора и "
+"покретач програма. Подразумевано је намењен као „Windows key“ (кључ прозора) "
+"за компоненте рачунара. Очекује се да ово везује или подразумевани или низ "
+"празних знакова."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
 msgstr "Прилагање модалних прозорчића"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:2
-msgid "Cancel tab popup"
-msgstr "Отказивање језичка искакања"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:4
+msgid ""
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
+msgstr ""
+"Када је изабрано, уместо независних линија наслова, модални прозорчићи се "
+"појављују приложени на линију алата матичног прозора и бивају премештани "
+"заједно са матичним прозором."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:3
+#: ../src/org.gnome.mutter.gschema.xml.in.h:5
+msgid "Live Hidden Windows"
+msgstr "Одржавање скривених прозора"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
@@ -408,29 +432,10 @@ msgstr ""
 "Одређује да ли да скривени прозори (нпр. умањени прозори или прозори на "
 "другој радној површи) остану покренути."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:4
-msgid ""
-"Determines whether the use of popup and highlight frame should be disabled "
-"for window cycling."
-msgstr ""
-"Одређује да ли ће употреба оквира искакања и истицања бити приказана за "
-"кретање по прозорима."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid ""
-"Determines whether workspace switching should happen for windows on all "
-"monitors or only for windows on the primary monitor."
-msgstr ""
-"Одређује да ли пребацивање радног простора треба да се деси за прозоре на "
-"свим мониторима или само за прозоре на главном монитору."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid "Draggable border width"
-msgstr "Ширина ивице за превлачење"
-
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "Укључује поплочавање ивице приликом отпуштања прозора на ивицама екрана"
+msgstr ""
+"Укључује поплочавање ивице приликом отпуштања прозора на ивицама екрана"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
@@ -443,23 +448,48 @@ msgstr ""
 "Отпуштање прозора на горњој ивици екрана увећава их у потпуности."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
-msgid "Live Hidden Windows"
-msgstr "Одржавање скривених прозора"
+msgid "Workspaces are managed dynamically"
+msgstr "Радним просторима се управља динамички"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:10
-msgid "Modifier to use for extended window management operations"
-msgstr "Тастер који се користи за проширене радње управника прозорима"
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+"Одређује да ли се радним просторима управља динамички или ће постојати "
+"стални број радних простора (одређен бројем радних простора у "
+"„org.gnome.desktop.wm.preferences“)."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:11
+msgid "Workspaces only on primary"
+msgstr "Радни простори само на примарне"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"Одређује да ли пребацивање радног простора треба да се деси за прозоре на "
+"свим мониторима или само за прозоре на главном монитору."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "No tab popup"
 msgstr "Без искакања језичка"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
-#| msgid "Remove Window From Top"
-msgid "Select window from tab popup"
-msgstr "Бира прозор из језичка искакања"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr ""
+"Одређује да ли ће употреба оквира искакања и истицања бити приказана за "
+"кретање по прозорима."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr "Ширина ивице за превлачење"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -467,78 +497,60 @@ msgstr ""
 "Износ укупне ивице за превлачење. Ако видљиве ивице теме нису довољне, биће "
 "додате невидљиве ивице за достизање ове вредности."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
-msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
-msgstr ""
-"Овај кључ покреће преклапање (overlay), које комбинује преглед прозора и "
-"покретач програма. Подразумевано је намењен као „Windows key“ (кључ прозора) "
-"за компоненте рачунара. Очекује се да ово везује или подразумевани или низ "
-"празних знакова."
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Select window from tab popup"
+msgstr "Бира прозор из језичка искакања"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
-msgid ""
-"When true, instead of having independent titlebars, modal dialogs appear "
-"attached to the titlebar of the parent window and are moved together with "
-"the parent window."
-msgstr ""
-"Када је изабрано, уместо независних линија наслова, модални прозорчићи се "
-"појављују приложени на линију алата матичног прозора и бивају премештани "
-"заједно са матичним прозором."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
-msgid "Workspaces only on primary"
-msgstr "Радни простори само на примарне"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid "Cancel tab popup"
+msgstr "Отказивање језичка искакања"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Употреба: %s\n"
 
-#: ../src/ui/frames.c:1157
+#: ../src/ui/frames.c:1158
 msgid "Close Window"
 msgstr "Затвори прозор"
 
-#: ../src/ui/frames.c:1160
+#: ../src/ui/frames.c:1161
 msgid "Window Menu"
 msgstr "Изборник прозора"
 
-#: ../src/ui/frames.c:1163
+#: ../src/ui/frames.c:1164
 msgid "Minimize Window"
 msgstr "Умањи прозор"
 
-#: ../src/ui/frames.c:1166
+#: ../src/ui/frames.c:1167
 msgid "Maximize Window"
 msgstr "Увећај прозор"
 
-#: ../src/ui/frames.c:1169
+#: ../src/ui/frames.c:1170
 msgid "Restore Window"
 msgstr "Врати величину прозора"
 
-#: ../src/ui/frames.c:1172
+#: ../src/ui/frames.c:1173
 msgid "Roll Up Window"
 msgstr "Замотај прозор"
 
-#: ../src/ui/frames.c:1175
+#: ../src/ui/frames.c:1176
 msgid "Unroll Window"
 msgstr "Одмотај прозор"
 
-#: ../src/ui/frames.c:1178
+#: ../src/ui/frames.c:1179
 msgid "Keep Window On Top"
 msgstr "Постави прозор изнад осталих"
 
-#: ../src/ui/frames.c:1181
+#: ../src/ui/frames.c:1182
 msgid "Remove Window From Top"
 msgstr "Уклони прозор са врха"
 
-#: ../src/ui/frames.c:1184
+#: ../src/ui/frames.c:1185
 msgid "Always On Visible Workspace"
 msgstr "Увек на приказаној радној површи"
 
-#: ../src/ui/frames.c:1187
+#: ../src/ui/frames.c:1188
 msgid "Put Window On Only One Workspace"
 msgstr "Постави прозор само на једну радну површ"
 
