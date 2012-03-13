@@ -5,6 +5,9 @@
 #endif
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
+/* cogl2_clip_push_from_path is only for 1.10.x*/
+cogl2_clip_push_from_path
+
 cogl2_path_arc
 cogl2_path_close
 cogl2_path_curve_to
