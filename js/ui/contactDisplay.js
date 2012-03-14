@@ -5,6 +5,7 @@ const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+const Atk = imports.gi.Atk;
 
 const Util = imports.misc.util;
 const IconGrid = imports.ui.iconGrid;
@@ -30,7 +31,8 @@ const Contact = new Lang.Class({
         this.actor = new St.Bin({ style_class: 'contact',
                                   reactive: true,
                                   can_focus: true,
-                                  track_hover: true });
+                                  track_hover: true,
+                                  accessible_role: Atk.Role.PUSH_BUTTON });
 
         let content = new St.BoxLayout( { style_class: 'contact-content',
                                           vertical: false });
@@ -68,6 +70,8 @@ const Contact = new Lang.Class({
                                   y_fill: false,
                                   x_align: St.Align.START,
                                   y_align: St.Align.START });
+
+        this.actor.label_actor = aliasLabel;
 
         let presence = this._createPresence(this.individual.presence_type);
         details.add(presence, { x_fill: false,
