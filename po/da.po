@@ -16,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-20 23:16+0100\n"
+"POT-Creation-Date: 2012-03-14 10:36+0100\n"
 "PO-Revision-Date: 2012-02-18 14:59+0100\n"
-"Last-Translator: Kenneth Nielsen <k.nielsen81@gmail.com>\n"
+"Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
@@ -35,15 +35,20 @@ msgid "Window management and application launching"
 msgstr "Vindueshåndtering og åbning af programmer"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
+#: ../js/extensionPrefs/main.js:153
+msgid "GNOME Shell Extension Preferences"
+msgstr "Udvidelsesmodulindstillinger for GNOME Shell"
+
+#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
 msgstr "Konfigurér udvidelsesmoduler til GNOME Shell"
 
-#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
-#: ../js/extensionPrefs/main.js:153
-msgid "GNOME Shell Extensions Preferences"
-msgstr "Udvidelsesmodulindstillinger for GNOME Shell"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Aktivér interne værktøjer, som er nyttige for udviklere og testere fra Alt-F2"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
@@ -51,20 +56,11 @@ msgstr ""
 "Tillad adgang til interne fejlsøgnings- og overvågningsværktøjer med brug af "
 "dialogen Alt-F2."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Aktivér interne værktøjer, som er nyttige for udviklere og testere fra Alt-F2"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
-msgid "File extension used for storing the screencast"
-msgstr "Filendelse til at gemme skærmoptagelser"
+msgid "Uuids of extensions to enable"
+msgstr "Uuid'er for udvidelser der aktiveres"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
-msgid "Framerate used for recording screencasts."
-msgstr "Billedfrekvens brugt til skærmoptagelser."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
@@ -76,43 +72,111 @@ msgstr ""
 "skal være i denne liste. Du kan også redigere denne liste med DBus-metoderne "
 "EnableExtension og DisableExtension ved org.shell.Shell."
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Whether to collect stats about applications usage"
+msgstr "Om der skal indsamles statistik om programmers brug"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"Shell'ens overvåger normalt aktive programmer for at kunne vise de mest "
+"brugte (f.eks. i genveje). Selvom disse data er holdt private, vil du "
+"muligvis ønske at deaktivere dem af private grunde. Bemærk at selvom du gør "
+"dette, vil det ikke fjerne de allerede gemte data."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Liste over skrivebordsfil-id'er til favoritprogrammer"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Programmerne som passer til disse identifikatorer vil blive vist i "
+"favoritområdet."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "disabled OpenSearch providers"
+msgstr "deaktiverede OpenSearch-udbydere"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "History for command (Alt-F2) dialog"
 msgstr "Historik for kommandodialogen (Alt-F2)"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "History for the looking glass dialog"
 msgstr "Historik for looking glass-dialogen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "If true, display date in the clock, in addition to time."
-msgstr "Hvis sand vises datoen i uret, som tillæg til tiden."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display seconds in time."
-msgstr "Hvis sand vises sekunder i klokkeslæt."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid "If true, display the ISO week date in the calendar."
-msgstr "Hvis sand vises ISO-ugenummeret i kalenderen."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
 msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
 msgstr ""
+"Brugt internt til at gemme den seneste IM-tilstedeværelse angivet direkte af "
+"brugeren. Værdien er er fra tællingen TpConnectionPresenceType."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
 msgstr ""
+"Brugt internt til at gemme den seneste tilstand for sessionstilstedeværelse "
+"for brugeren. Værdien her er fra tællingen GsmPresenceStatus."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid "List of desktop file IDs for favorite applications"
-msgstr "Liste over skrivebordsfil-id'er til favoritprogrammer"
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Show the week date in the calendar"
+msgstr "Vis ugenummer i kalenderen"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Hvis sand vises ISO-ugenummeret i kalenderen."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Which keyboard to use"
+msgstr "Hvilket tastatur bruges"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "The type of keyboard to use."
+msgstr "Tastaturtypen som bruges."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid "Show time with seconds"
+msgstr "Vis tid med sekunder"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid "If true, display seconds in time."
+msgstr "Hvis sand vises sekunder i klokkeslæt."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid "Show date in clock"
+msgstr "Vis dato i uret"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Hvis sand vises datoen i uret, som tillæg til tiden."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "Framerate used for recording screencasts."
+msgstr "Billedfrekvens brugt til skærmoptagelser."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"Billedfrekvensen på den endelige skærmoptagelse, optaget af GNOME-Shells "
+"skærmoptager i billeder-per-sekund."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "Datakanalen for Gstreamer bruges til indkodning af skærmoptagelsen"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -137,27 +201,11 @@ msgstr ""
 "webmmux\" og optager i WEBM-formatet med VP8-codec'et. %T bruges som "
 "pladsholder for et gæt om det optimale trådantal på systemet."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show date in clock"
-msgstr "Vis dato i uret"
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
+msgid "File extension used for storing the screencast"
+msgstr "Filendelse til at gemme skærmoptagelser"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
-msgid "Show the week date in the calendar"
-msgstr "Vis ugenummer i kalenderen"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
-msgid "Show time with seconds"
-msgstr "Vis tid med sekunder"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Programmerne som passer til disse identifikatorer vil blive vist i "
-"favoritområdet."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:28
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -166,50 +214,6 @@ msgstr ""
 "Filnavnet på skærmoptagelser vil være et unikt filnavn baseret på dags dato "
 "og bruge denne endelse. Det skal ændres når der optages i et andet "
 "containerformat."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr ""
-"Billedfrekvensen på den endelige skærmoptagelse, optaget af GNOME-Shells "
-"skærmoptager i billeder-per-sekund."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid "The gstreamer pipeline used to encode the screencast"
-msgstr "Datakanalen for Gstreamer bruges til indkodning af skærmoptagelsen"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-"Shell'ens overvåger normalt aktive programmer for at kunne vise de mest "
-"brugte (f.eks. i genveje). Selvom disse data er holdt private, vil du "
-"muligvis ønske at deaktivere dem af private grunde. Bemærk at selvom du gør "
-"dette, vil det ikke fjerne de allerede gemte data."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
-msgid "The type of keyboard to use."
-msgstr "Tastaturtypen som bruges."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
-msgid "Uuids of extensions to enable"
-msgstr "Uuid'er for udvidelser der aktiveres"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
-msgid "Whether to collect stats about applications usage"
-msgstr "Om der skal indsamles statistik om programmers brug"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
-msgid "Which keyboard to use"
-msgstr "Hvilket tastatur bruges"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:28
-msgid "disabled OpenSearch providers"
-msgstr "deaktiverede OpenSearch-udbydere"
 
 #: ../js/extensionPrefs/main.js:125
 #, c-format
@@ -248,7 +252,7 @@ msgid "Not listed?"
 msgstr "Ikke listet?"
 
 #: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
-#: ../js/ui/extensionSystem.js:401 ../js/ui/networkAgent.js:153
+#: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "Annullér"
@@ -262,8 +266,8 @@ msgstr "Log ind"
 msgid "Login Window"
 msgstr "Indlogningsvindue"
 
-#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:581
-#: ../js/ui/userMenu.js:583 ../js/ui/userMenu.js:652
+#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:591
+#: ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:662
 msgid "Suspend"
 msgstr "Hviletilstand"
 
@@ -299,19 +303,19 @@ msgstr "Alle"
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
-#: ../js/ui/appDisplay.js:366
+#: ../js/ui/appDisplay.js:371
 msgid "SETTINGS"
 msgstr "INDSTILLINGER"
 
-#: ../js/ui/appDisplay.js:666
+#: ../js/ui/appDisplay.js:676
 msgid "New Window"
 msgstr "Nyt vindue"
 
-#: ../js/ui/appDisplay.js:669
+#: ../js/ui/appDisplay.js:679
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:670
+#: ../js/ui/appDisplay.js:680
 msgid "Add to Favorites"
 msgstr "Føj til favoritter"
 
@@ -484,32 +488,32 @@ msgstr "Denne uge"
 msgid "Next week"
 msgstr "Næste uge"
 
-#: ../js/ui/contactDisplay.js:63 ../js/ui/notificationDaemon.js:486
+#: ../js/ui/contactDisplay.js:64 ../js/ui/notificationDaemon.js:486
 #: ../js/ui/status/power.js:215 ../src/shell-app.c:372
 msgid "Unknown"
 msgstr "Ukendt"
 
-#: ../js/ui/contactDisplay.js:84 ../js/ui/userMenu.js:127
+#: ../js/ui/contactDisplay.js:85 ../js/ui/userMenu.js:127
 msgid "Available"
 msgstr "Tilgængelig"
 
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:136
+#: ../js/ui/contactDisplay.js:90 ../js/ui/userMenu.js:136
 msgid "Away"
 msgstr "Ikke tilstede"
 
-#: ../js/ui/contactDisplay.js:93 ../js/ui/userMenu.js:130
+#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:130
 msgid "Busy"
 msgstr "Optaget"
 
-#: ../js/ui/contactDisplay.js:97
+#: ../js/ui/contactDisplay.js:98
 msgid "Offline"
 msgstr "Offline"
 
-#: ../js/ui/contactDisplay.js:148
+#: ../js/ui/contactDisplay.js:149
 msgid "CONTACTS"
 msgstr "KONTAKTER"
 
-#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1204
+#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1207
 msgid "Remove"
 msgstr "Fjern"
 
@@ -567,10 +571,6 @@ msgstr "%a %l:%M %p"
 #: ../js/ui/dateMenu.js:211
 msgid "%A %B %e, %Y"
 msgstr "%A, %e. %B %Y"
-
-#: ../js/ui/docDisplay.js:13
-msgid "RECENT ITEMS"
-msgstr "SENESTE ELEMENTER"
 
 #: ../js/ui/endSessionDialog.js:61
 #, c-format
@@ -660,11 +660,11 @@ msgstr[1] "Systemet vil genstarte automatisk om %d sekunder."
 msgid "Restarting the system."
 msgstr "Genstarter systemet."
 
-#: ../js/ui/extensionSystem.js:405
+#: ../js/ui/extensionSystem.js:403
 msgid "Install"
 msgstr "Installér"
 
-#: ../js/ui/extensionSystem.js:409
+#: ../js/ui/extensionSystem.js:407
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Hent og installér \"%s\" fra extensions.gnome.org?"
@@ -676,6 +676,14 @@ msgstr "statusfelt"
 #: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Tastatur"
+
+#: ../js/ui/keyringPrompt.js:85 ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Adgangskode:"
+
+#: ../js/ui/keyringPrompt.js:101
+msgid "Type again:"
+msgstr "Indtast igen:"
 
 #: ../js/ui/lookingGlass.js:725
 msgid "No extensions installed"
@@ -725,19 +733,25 @@ msgstr "Vis kilde"
 msgid "Web Page"
 msgstr "Webside"
 
-#: ../js/ui/messageTray.js:1197
+#. Translators: this is a filename used for screencast recording
+#: ../js/ui/main.js:118
+#, no-c-format
+msgid "Screencast from %d %t"
+msgstr "Skærmoptagelse fra %d %t"
+
+#: ../js/ui/messageTray.js:1200
 msgid "Open"
 msgstr "Åbn"
 
-#: ../js/ui/messageTray.js:1214
+#: ../js/ui/messageTray.js:1217
 msgid "Unmute"
 msgstr "Slå lyd til"
 
-#: ../js/ui/messageTray.js:1214
+#: ../js/ui/messageTray.js:1217
 msgid "Mute"
 msgstr "Slå lyd fra"
 
-#: ../js/ui/messageTray.js:2447
+#: ../js/ui/messageTray.js:2450
 msgid "System Information"
 msgstr "Systeminformation"
 
@@ -836,21 +850,21 @@ msgstr "Programmer"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:226
+#: ../js/ui/overview.js:228
 msgid "Dash"
 msgstr "Favoritområde"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:583
 msgid "Quit"
 msgstr "Afslut"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:613
+#: ../js/ui/panel.js:614
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:983
+#: ../js/ui/panel.js:987
 msgid "Top Bar"
 msgstr "Toppanel"
 
@@ -891,10 +905,6 @@ msgstr "Godkend"
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Beklager, godkendelse mislykkedes. Prøv igen."
 
-#: ../js/ui/polkitAuthenticationAgent.js:272
-msgid "Password:"
-msgstr "Adgangskode:"
-
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
@@ -908,11 +918,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Indtast en kommando:"
 
-#: ../js/ui/searchDisplay.js:333
+#: ../js/ui/searchDisplay.js:331
 msgid "Searching..."
 msgstr "Søger..."
 
-#: ../js/ui/searchDisplay.js:356
+#: ../js/ui/searchDisplay.js:413
 msgid "No matching results."
 msgstr "Ingen resultater fundet."
 
@@ -1070,7 +1080,7 @@ msgstr "Giv altid adgang"
 msgid "Grant this time only"
 msgstr "Giv kun lov denne gang"
 
-#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1093
+#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1091
 msgid "Reject"
 msgstr "Afvis"
 
@@ -1347,39 +1357,39 @@ msgid "Invitation"
 msgstr "Invitation"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:273
+#: ../js/ui/telepathyClient.js:271
 msgid "Call"
 msgstr "Opkald"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:289
+#: ../js/ui/telepathyClient.js:287
 msgid "File Transfer"
 msgstr "Filoverførsel"
 
-#: ../js/ui/telepathyClient.js:371
+#: ../js/ui/telepathyClient.js:369
 msgid "Subscription request"
 msgstr "Godkendelsesforespørgsel"
 
-#: ../js/ui/telepathyClient.js:407
+#: ../js/ui/telepathyClient.js:405
 msgid "Connection error"
 msgstr "Forbindelsesfejl"
 
-#: ../js/ui/telepathyClient.js:665
+#: ../js/ui/telepathyClient.js:663
 #, c-format
 msgid "%s is online."
 msgstr "%s er online."
 
-#: ../js/ui/telepathyClient.js:669
+#: ../js/ui/telepathyClient.js:667
 #, c-format
 msgid "%s is offline."
 msgstr "%s er offline."
 
-#: ../js/ui/telepathyClient.js:673
+#: ../js/ui/telepathyClient.js:671
 #, c-format
 msgid "%s is away."
 msgstr "%s er ikke til stede."
 
-#: ../js/ui/telepathyClient.js:676
+#: ../js/ui/telepathyClient.js:674
 #, c-format
 msgid "%s is busy."
 msgstr "%s er optaget."
@@ -1387,35 +1397,35 @@ msgstr "%s er optaget."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:889
+#: ../js/ui/telepathyClient.js:887
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Sendt <b>%A</b> kl. <b>%H:%M</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:895
+#: ../js/ui/telepathyClient.js:893
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Sendt <b>%A</b> den <b>%e. %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:900
+#: ../js/ui/telepathyClient.js:898
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Sendt <b>%A</b> den <b>%e. %B</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:942
+#: ../js/ui/telepathyClient.js:940
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s kalder sig nu %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1044
+#: ../js/ui/telepathyClient.js:1042
 #, c-format
 msgid "Invitation to %s"
 msgstr "Invitation til %s"
@@ -1423,35 +1433,35 @@ msgstr "Invitation til %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1052
+#: ../js/ui/telepathyClient.js:1050
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s inviterer dig til at deltage i %s"
 
-#: ../js/ui/telepathyClient.js:1054 ../js/ui/telepathyClient.js:1133
-#: ../js/ui/telepathyClient.js:1231
+#: ../js/ui/telepathyClient.js:1052 ../js/ui/telepathyClient.js:1131
+#: ../js/ui/telepathyClient.js:1229
 msgid "Decline"
 msgstr "Afvis"
 
-#: ../js/ui/telepathyClient.js:1055 ../js/ui/telepathyClient.js:1134
-#: ../js/ui/telepathyClient.js:1232
+#: ../js/ui/telepathyClient.js:1053 ../js/ui/telepathyClient.js:1132
+#: ../js/ui/telepathyClient.js:1230
 msgid "Accept"
 msgstr "Acceptér"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1085
+#: ../js/ui/telepathyClient.js:1083
 #, c-format
 msgid "Video call from %s"
 msgstr "Videoopkald fra %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1088
+#: ../js/ui/telepathyClient.js:1086
 #, c-format
 msgid "Call from %s"
 msgstr "Opkald fra %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1095
+#: ../js/ui/telepathyClient.js:1093
 msgid "Answer"
 msgstr "Svar"
 
@@ -1460,111 +1470,111 @@ msgstr "Svar"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1127
+#: ../js/ui/telepathyClient.js:1125
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s sender dig %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1196
+#: ../js/ui/telepathyClient.js:1194
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s vil gerne have tilladelse til at se, når du er online"
 
-#: ../js/ui/telepathyClient.js:1289
+#: ../js/ui/telepathyClient.js:1287
 msgid "Network error"
 msgstr "Netværksfejl"
 
-#: ../js/ui/telepathyClient.js:1291
+#: ../js/ui/telepathyClient.js:1289
 msgid "Authentication failed"
 msgstr "Godkendelse mislykkedes"
 
-#: ../js/ui/telepathyClient.js:1293
+#: ../js/ui/telepathyClient.js:1291
 msgid "Encryption error"
 msgstr "Krypteringsfejl"
 
-#: ../js/ui/telepathyClient.js:1295
+#: ../js/ui/telepathyClient.js:1293
 msgid "Certificate not provided"
 msgstr "Certifikat ikke angivet"
 
-#: ../js/ui/telepathyClient.js:1297
+#: ../js/ui/telepathyClient.js:1295
 msgid "Certificate untrusted"
 msgstr "Utroværdigt certifikat"
 
-#: ../js/ui/telepathyClient.js:1299
+#: ../js/ui/telepathyClient.js:1297
 msgid "Certificate expired"
 msgstr "Certifikat udløbet"
 
-#: ../js/ui/telepathyClient.js:1301
+#: ../js/ui/telepathyClient.js:1299
 msgid "Certificate not activated"
 msgstr "Certifikat ikke aktiveret"
 
-#: ../js/ui/telepathyClient.js:1303
+#: ../js/ui/telepathyClient.js:1301
 msgid "Certificate hostname mismatch"
 msgstr "Certifikat-værtsnavn stemmer ikke"
 
-#: ../js/ui/telepathyClient.js:1305
+#: ../js/ui/telepathyClient.js:1303
 msgid "Certificate fingerprint mismatch"
 msgstr "Certifikat-fingeraftryk stemmer ikke"
 
-#: ../js/ui/telepathyClient.js:1307
+#: ../js/ui/telepathyClient.js:1305
 msgid "Certificate self-signed"
 msgstr "Certifikat selv-underskrevet"
 
-#: ../js/ui/telepathyClient.js:1309
+#: ../js/ui/telepathyClient.js:1307
 msgid "Status is set to offline"
 msgstr "Status er angivet til offline"
 
-#: ../js/ui/telepathyClient.js:1311
+#: ../js/ui/telepathyClient.js:1309
 msgid "Encryption is not available"
 msgstr "Kryptering er ikke tilgængelig"
 
-#: ../js/ui/telepathyClient.js:1313
+#: ../js/ui/telepathyClient.js:1311
 msgid "Certificate is invalid"
 msgstr "Ugyldigt certifikat"
 
-#: ../js/ui/telepathyClient.js:1315
+#: ../js/ui/telepathyClient.js:1313
 msgid "Connection has been refused"
 msgstr "Forbindelse er blevet afvist"
 
-#: ../js/ui/telepathyClient.js:1317
+#: ../js/ui/telepathyClient.js:1315
 msgid "Connection can't be established"
 msgstr "Forbindelse kan ikke oprettes"
 
-#: ../js/ui/telepathyClient.js:1319
+#: ../js/ui/telepathyClient.js:1317
 msgid "Connection has been lost"
 msgstr "Forbindelse er mistet"
 
-#: ../js/ui/telepathyClient.js:1321
+#: ../js/ui/telepathyClient.js:1319
 msgid "This account is already connected to the server"
 msgstr "Denne konto er allerede forbundet til serveren"
 
-#: ../js/ui/telepathyClient.js:1323
+#: ../js/ui/telepathyClient.js:1321
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Forbindelsen er blevet erstattet af en ny forbindelse, som bruger samme "
 "ressource"
 
-#: ../js/ui/telepathyClient.js:1325
+#: ../js/ui/telepathyClient.js:1323
 msgid "The account already exists on the server"
 msgstr "Kontoen findes allerede på serveren"
 
-#: ../js/ui/telepathyClient.js:1327
+#: ../js/ui/telepathyClient.js:1325
 msgid "Server is currently too busy to handle the connection"
 msgstr "Serveren er i øjeblikket for travl til at behandle forbindelsen"
 
-#: ../js/ui/telepathyClient.js:1329
+#: ../js/ui/telepathyClient.js:1327
 msgid "Certificate has been revoked"
 msgstr "Certifikat er blevet påberåbt"
 
-#: ../js/ui/telepathyClient.js:1331
+#: ../js/ui/telepathyClient.js:1329
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Certifikat bruger en usikker cipher-algoritme eller er kryptografisk svag"
 
-#: ../js/ui/telepathyClient.js:1333
+#: ../js/ui/telepathyClient.js:1331
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1572,26 +1582,26 @@ msgstr ""
 "Længden på servercertifikatet, eller dybden af servercertifikat-kæden, "
 "overskrider grænsen, som er fastsat af det kryptografiske-programbibliotek"
 
-#: ../js/ui/telepathyClient.js:1335
+#: ../js/ui/telepathyClient.js:1333
 msgid "Internal error"
 msgstr "Intern fejl"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1345
+#: ../js/ui/telepathyClient.js:1343
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Forbindelse til %s mislykkedes"
 
-#: ../js/ui/telepathyClient.js:1354
+#: ../js/ui/telepathyClient.js:1352
 msgid "Reconnect"
 msgstr "Forbind igen"
 
-#: ../js/ui/telepathyClient.js:1355
+#: ../js/ui/telepathyClient.js:1353
 msgid "Edit account"
 msgstr "Redigér konto"
 
-#: ../js/ui/telepathyClient.js:1401
+#: ../js/ui/telepathyClient.js:1399
 msgid "Unknown reason"
 msgstr "Ukendt årsag"
 
@@ -1607,39 +1617,39 @@ msgstr "Tomgang"
 msgid "Unavailable"
 msgstr "Utilgængelig"
 
-#: ../js/ui/userMenu.js:579 ../js/ui/userMenu.js:583 ../js/ui/userMenu.js:653
+#: ../js/ui/userMenu.js:589 ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:663
 msgid "Power Off..."
 msgstr "Sluk..."
 
-#: ../js/ui/userMenu.js:615
+#: ../js/ui/userMenu.js:625
 msgid "Notifications"
 msgstr "Beskeder"
 
-#: ../js/ui/userMenu.js:623
+#: ../js/ui/userMenu.js:633
 msgid "Online Accounts"
 msgstr "Online konti"
 
-#: ../js/ui/userMenu.js:627
+#: ../js/ui/userMenu.js:637
 msgid "System Settings"
 msgstr "Systemindstillinger"
 
-#: ../js/ui/userMenu.js:634
+#: ../js/ui/userMenu.js:644
 msgid "Lock Screen"
 msgstr "Lås skærm"
 
-#: ../js/ui/userMenu.js:639
+#: ../js/ui/userMenu.js:649
 msgid "Switch User"
 msgstr "Skift bruger"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:654
 msgid "Log Out..."
 msgstr "Log ud..."
 
-#: ../js/ui/userMenu.js:672
+#: ../js/ui/userMenu.js:682
 msgid "Your chat status will be set to busy"
 msgstr "Din chat-status vil blive angivet som optaget"
 
-#: ../js/ui/userMenu.js:673
+#: ../js/ui/userMenu.js:683
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1678,7 +1688,7 @@ msgstr "Oraklet %s siger"
 msgid "Your favorite Easter Egg"
 msgstr "Dit yndlingspåskeæg"
 
-#: ../js/ui/windowAttentionHandler.js:33
+#: ../js/ui/windowAttentionHandler.js:19
 #, c-format
 msgid "'%s' is ready"
 msgstr "\"%s\" er klar"
@@ -1705,11 +1715,11 @@ msgstr[1] "%u inputs"
 msgid "System Sounds"
 msgstr "Systemlyde"
 
-#: ../src/main.c:262
+#: ../src/main.c:255
 msgid "Print version"
 msgstr "Udskriv version"
 
-#: ../src/main.c:268
+#: ../src/main.c:261
 msgid "Mode used by GDM for login screen"
 msgstr "Tilstand brugt af GDM til indlogningskærm"
 
@@ -1717,6 +1727,14 @@ msgstr "Tilstand brugt af GDM til indlogningskærm"
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Kunne ikke køre \"%s\""
+
+#: ../src/shell-keyring-prompt.c:708
+msgid "Passwords do not match."
+msgstr "Adgangskoder er ikke ens."
+
+#: ../src/shell-keyring-prompt.c:716
+msgid "Password cannot be blank"
+msgstr "Adgangskode må ikke være tom"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
@@ -1751,6 +1769,9 @@ msgstr "Filsystem"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "RECENT ITEMS"
+#~ msgstr "SENESTE ELEMENTER"
 
 #~ msgid ""
 #~ "GNOME Shell extensions have a uuid property; this key lists extensions "
