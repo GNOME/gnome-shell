@@ -75,7 +75,7 @@ typedef struct _CoglBuffer CoglBuffer;
  * Stability: unstable
  */
 gboolean
-cogl_is_buffer (const void *object);
+cogl_is_buffer (void *object);
 
 /**
  * cogl_buffer_get_size:

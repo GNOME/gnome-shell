@@ -85,7 +85,7 @@ _cogl_buffer_register_buffer_type (const CoglObjectClass *klass)
 }
 
 gboolean
-cogl_is_buffer (const void *object)
+cogl_is_buffer (void *object)
 {
   const CoglHandleObject *obj = object;
   GSList *l;
