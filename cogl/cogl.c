@@ -51,10 +51,6 @@
 #include "cogl1-context.h"
 #include "cogl-offscreen.h"
 
-#ifndef GL_PACK_INVERT_MESA
-#define GL_PACK_INVERT_MESA 0x8758
-#endif
-
 #ifdef COGL_GL_DEBUG
 /* GL error to string conversion */
 static const struct {

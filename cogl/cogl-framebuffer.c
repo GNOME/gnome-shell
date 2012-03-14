@@ -104,6 +104,10 @@
 #ifndef GL_TEXTURE_SAMPLES_IMG
 #define GL_TEXTURE_SAMPLES_IMG            0x9136
 #endif
+#ifndef GL_PACK_INVERT_MESA
+#define GL_PACK_INVERT_MESA 0x8758
+#endif
+
 
 typedef enum {
   _TRY_DEPTH_STENCIL    = 1L<<0,
