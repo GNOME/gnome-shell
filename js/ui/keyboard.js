@@ -269,6 +269,11 @@ const Keyboard = new Lang.Class({
 
         this._addKeys();
 
+        // Keys should be layout according to the group, not the
+        // locale; as Caribou already provides the expected layout,
+        // this means enforcing LTR for all locales.
+        this.actor.text_direction = Clutter.TextDirection.LTR;
+
         this._keyboardNotifyId = this._keyboard.connect('notify::active-group', Lang.bind(this, this._onGroupChanged));
         this._focusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
 
