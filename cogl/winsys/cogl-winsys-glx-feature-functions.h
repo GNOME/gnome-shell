@@ -89,7 +89,15 @@ COGL_WINSYS_FEATURE_BEGIN (copy_sub_buffer,
                            "copy_sub_buffer\0",
                            0,
                            0,
+/* We initially assumed that copy_sub_buffer is synchronized on
+ * which is only the case for a subset of GPUs for example it is not
+ * synchronized on INTEL gen6 and gen7, so we remove this assumption
+ * for now
+ */
+#if 0
                            COGL_WINSYS_FEATURE_SWAP_REGION_SYNCHRONIZED)
+#endif
+                           0)
 COGL_WINSYS_FEATURE_FUNCTION (void, glXCopySubBuffer,
                               (Display *dpy,
                                GLXDrawable drawable,
