@@ -350,7 +350,7 @@ gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
   if (_shell_global_check_xdnd_event (shell_plugin->global, xev))
     return TRUE;
 
-  return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;
+  return FALSE;
 }
 
 static gboolean
