@@ -1296,6 +1296,7 @@ clutter_threads_add_timeout_full
 clutter_threads_add_frame_source
 clutter_threads_add_frame_source_full
 clutter_threads_add_repaint_func
+ClutterRepaintFlags
 clutter_threads_add_repaint_func_full
 clutter_threads_remove_repaint_func
 
@@ -1460,6 +1461,7 @@ clutter_gdk_get_stage_from_window
 clutter_gdk_get_stage_window
 clutter_gdk_handle_event
 clutter_gdk_set_display
+clutter_gdk_get_default_display
 clutter_gdk_set_stage_foreign
 </SECTION>
 
@@ -1571,6 +1573,8 @@ clutter_script_get_states
 <SUBSECTION>
 clutter_script_get_type_from_name
 clutter_get_script_id
+clutter_script_get_translation_domain
+clutter_script_set_translation_domain
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_SCRIPT
