@@ -289,6 +289,12 @@ features).
 Release Notes for Clutter 1.10
 -------------------------------------------------------------------------------
 
+• The ClutterActor::paint, ClutterActor::queue-redraw, and
+  ClutterActor::queue-relayout signals are now annotated as not allowing
+  signal emission hooks; this enables some optimization inside GLib, and
+  given the amount of emissions these three signals have, we want to get
+  through all the fast paths we can.
+
 • The ClutterActorBox parameter of the ClutterActor::allocation-changed
   signal is now marked as G_SIGNAL_TYPE_STATIC_SCOPE.
 
