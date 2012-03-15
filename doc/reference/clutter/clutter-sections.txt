@@ -1899,6 +1899,8 @@ clutter_interval_get_final_value
 clutter_interval_peek_final_value
 clutter_interval_set_interval
 clutter_interval_get_interval
+clutter_interval_set_initial
+clutter_interval_set_final
 
 <SUBSECTION>
 clutter_interval_validate

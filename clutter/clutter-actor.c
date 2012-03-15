@@ -253,7 +253,7 @@
  * clutter_actor_set_position (actor, 200, 200);
  * clutter_actor_restore_easing_state (actor);
  *   </programlisting></informalexample>
- *   will tween the actor to the (200, 200) coordinates using the default
+ *   <para>will tween the actor to the (200, 200) coordinates using the default
  *   easing mode and duration of a new easing state. The example above is
  *   equivalent to the following code:</para>
  *   <informalexample><programlisting>
