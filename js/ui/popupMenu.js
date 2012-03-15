@@ -446,6 +446,7 @@ const PopupAlternatingMenuItem = new Lang.Class({
         this.label = new St.Label({ text: text });
         this.state = PopupAlternatingMenuItemState.DEFAULT;
         this.addActor(this.label);
+        this.actor.label_actor = this.label;
 
         this.actor.connect('notify::mapped', Lang.bind(this, this._onMapped));
     },
@@ -1602,6 +1603,10 @@ const PopupComboMenu = new Lang.Class({
         this._activeItemPos = position;
     },
 
+    getActiveItem: function() {
+        return this._getMenuItems()[this._activeItemPos];
+    },
+
     setItemVisible: function(position, visible) {
         if (!visible && position == this._activeItemPos) {
             log('Trying to hide the active menu item.');
@@ -1622,6 +1627,8 @@ const PopupComboBoxMenuItem = new Lang.Class({
 
     _init: function (params) {
         this.parent(params);
+
+        this.actor.accessible_role = Atk.Role.COMBO_BOX;
 
         this._itemBox = new Shell.Stack();
         this.addActor(this._itemBox);
@@ -1719,6 +1726,11 @@ const PopupComboBoxMenuItem = new Lang.Class({
                          Lang.bind(this, this._itemActivated, position));
     },
 
+    checkAccessibleLabel: function() {
+        let activeItem = this._menu.getActiveItem();
+        this.actor.label_actor = activeItem.label;
+    },
+
     setActiveItem: function(position) {
         let item = this._items[position];
         if (!item)
@@ -1729,6 +1741,8 @@ const PopupComboBoxMenuItem = new Lang.Class({
         this._activeItemPos = position;
         for (let i = 0; i < this._items.length; i++)
             this._items[i].visible = (i == this._activeItemPos);
+
+        this.checkAccessibleLabel();
     },
 
     setItemVisible: function(position, visible) {

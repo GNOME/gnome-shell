@@ -57,6 +57,7 @@ const IMStatusItem = new Lang.Class({
             this._icon.icon_name = iconName;
 
         this.label = new St.Label({ text: label });
+        this.actor.label_actor = this.label;
         this.addActor(this.label);
     }
 });
