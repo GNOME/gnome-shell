@@ -126,7 +126,7 @@ clutter_transition_completed (ClutterTimeline *timeline)
 {
   ClutterTransitionPrivate *priv = CLUTTER_TRANSITION (timeline)->priv;
 
-  if (priv->remove_on_complete)
+  if (priv->animatable != NULL && priv->remove_on_complete)
     {
       int n_repeats, cur_repeat;
 
@@ -137,6 +137,7 @@ clutter_transition_completed (ClutterTimeline *timeline)
         {
           clutter_transition_detach (CLUTTER_TRANSITION (timeline),
                                      priv->animatable);
+          g_clear_object (&priv->animatable);
           g_object_unref (timeline);
         }
     }
