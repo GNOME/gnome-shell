@@ -33,6 +33,7 @@ clutter/clutter-layout-meta.c
 clutter/clutter-main.c
 clutter/clutter-media.c
 clutter/clutter-path-constraint.c
+clutter/clutter-property-transition.c
 clutter/clutter-script.c
 clutter/clutter-settings.c
 clutter/clutter-shader-effect.c
@@ -47,6 +48,7 @@ clutter/clutter-text-buffer.c
 clutter/clutter-text.c
 clutter/clutter-texture.c
 clutter/clutter-timeline.c
+clutter/clutter-transition.c
 clutter/clutter-units.c
 clutter/deprecated/clutter-behaviour.c
 clutter/deprecated/clutter-behaviour-depth.c
