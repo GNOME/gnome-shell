@@ -481,9 +481,7 @@ st_icon_update (StIcon *icon)
   if (priv->gicon)
     {
       priv->pending_texture = st_texture_cache_load_gicon (cache,
-                                                           (priv->icon_type != ST_ICON_APPLICATION &&
-                                                            priv->icon_type != ST_ICON_DOCUMENT) ?
-                                                           theme_node : NULL,
+                                                           theme_node,
                                                            priv->gicon,
                                                            priv->icon_size);
     }

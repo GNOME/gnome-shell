@@ -1149,22 +1149,12 @@ st_texture_cache_load_sliced_image (StTextureCache    *cache,
  * StIconType:
  * @ST_ICON_SYMBOLIC: a symbolic (ie, mostly monochrome) icon
  * @ST_ICON_FULLCOLOR: a full-color icon
- * @ST_ICON_APPLICATION: a full-color icon, which is expected
- *   to be an application icon
- * @ST_ICON_DOCUMENT: a full-color icon, which is expected
- *   to be a document (MIME type) icon
  *
  * Describes what style of icon is desired in a call to
  * st_texture_cache_load_icon_name() or st_texture_cache_load_gicon().
  * Use %ST_ICON_SYMBOLIC for symbolic icons (eg, for the panel and
  * much of the rest of the shell chrome) or %ST_ICON_FULLCOLOR for a
  * full-color icon.
- *
- * If you know that the requested icon is either an application icon
- * or a document type icon, you should use %ST_ICON_APPLICATION or
- * %ST_ICON_DOCUMENT, which may do a better job of selecting the
- * correct theme icon for those types. If you are unsure what kind of
- * icon you are loading, use %ST_ICON_FULLCOLOR.
  */
 
 /* generates names like g_themed_icon_new_with_default_fallbacks(),
@@ -1236,31 +1226,6 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
 
   switch (icon_type)
     {
-    case ST_ICON_APPLICATION:
-      themed = g_themed_icon_new (name);
-      texture = load_gicon_with_colors (cache, themed, size, NULL);
-      g_object_unref (themed);
-      if (texture == NULL)
-        {
-          themed = g_themed_icon_new ("application-x-executable");
-          texture = load_gicon_with_colors (cache, themed, size, NULL);
-          g_object_unref (themed);
-        }
-      return CLUTTER_ACTOR (texture);
-      break;
-    case ST_ICON_DOCUMENT:
-      themed = g_themed_icon_new (name);
-      texture = load_gicon_with_colors (cache, themed, size, NULL);
-      g_object_unref (themed);
-      if (texture == NULL)
-        {
-          themed = g_themed_icon_new ("x-office-document");
-          texture = load_gicon_with_colors (cache, themed, size, NULL);
-          g_object_unref (themed);
-        }
-
-      return CLUTTER_ACTOR (texture);
-      break;
     case ST_ICON_SYMBOLIC:
       names = symbolic_names_for_icon (name);
       themed = g_themed_icon_new_from_names (names, -1);
