@@ -140,6 +140,8 @@
       <title>High Level API</title>
 
       <xi:include href="xml/clutter-interval.xml"/>
+      <xi:include href="xml/clutter-transition.xml"/>
+      <xi:include href="xml/clutter-property-transition.xml"/>
       <xi:include href="xml/clutter-animation.xml"/>
       <xi:include href="xml/clutter-animatable.xml"/>
       <xi:include href="xml/clutter-animator.xml"/>

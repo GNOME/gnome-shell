@@ -50,6 +50,7 @@ clutter_offscreen_effect_get_type
 clutter_page_turn_effect_get_type
 clutter_path_constraint_get_type
 clutter_path_get_type
+clutter_property_transition_get_type
 clutter_rectangle_get_type
 clutter_score_get_type
 clutter_scriptable_get_type
@@ -67,3 +68,4 @@ clutter_text_buffer_get_type
 clutter_text_get_type
 clutter_texture_get_type
 clutter_timeline_get_type
+clutter_transition_get_type

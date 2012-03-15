@@ -2930,6 +2930,47 @@ clutter_drop_action_get_type
 </SECTION>
 
 <SECTION>
+<FILE>clutter-transition</FILE>
+ClutterTransition
+ClutterTransitionClass
+clutter_transition_set_interval
+clutter_transition_get_interval
+clutter_transition_set_animatable
+clutter_transition_get_animatable
+clutter_transition_set_remove_on_complete
+clutter_transition_get_remove_on_complete
+<SUBSECTION Standard>
+CLUTTER_TYPE_TRANSITION
+CLUTTER_TRANSITION
+CLUTTER_TRANSITION_CLASS
+CLUTTER_IS_TRANSITION
+CLUTTER_IS_TRANSITION_CLASS
+CLUTTER_TRANSITION_GET_CLASS
+<SUBSECTION Private>
+ClutterTransitionPrivate
+clutter_transition_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-property-transition</FILE>
+ClutterPropertyTransition
+ClutterPropertyTransitionClass
+clutter_property_transition_new
+clutter_property_transition_set_property_name
+clutter_property_transition_get_property_name
+<SUBSECTION Standard>
+CLUTTER_TYPE_PROPERTY_TRANSITION
+CLUTTER_PROPERTY_TRANSITION
+CLUTTER_PROPERTY_TRANSITION_CLASS
+CLUTTER_IS_PROPERTY_TRANSITION
+CLUTTER_IS_PROPERTY_TRANSITION_CLASS
+CLUTTER_PROPERTY_TRANSITION_GET_CLASS
+<SUBSECTION Private>
+ClutterPropertyTransitionPrivate
+clutter_property_transition_get_type
+</SECTION>
+
+<SECTION>
 <FILE>clutter-text-buffer</FILE>
 CLUTTER_TEXT_BUFFER_MAX_SIZE
 ClutterTextBuffer
