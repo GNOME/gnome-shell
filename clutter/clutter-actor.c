@@ -6253,7 +6253,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
     g_signal_new (I_("queue-redraw"),
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST |
-                  G_SIGNAL_NO_RECURSE |
                   G_SIGNAL_NO_HOOKS,
 		  G_STRUCT_OFFSET (ClutterActorClass, queue_redraw),
 		  NULL, NULL,
@@ -6282,7 +6281,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
     g_signal_new (I_("queue-relayout"),
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST |
-                  G_SIGNAL_NO_RECURSE |
                   G_SIGNAL_NO_HOOKS,
 		  G_STRUCT_OFFSET (ClutterActorClass, queue_relayout),
 		  NULL, NULL,
@@ -6571,7 +6569,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
     g_signal_new (I_("paint"),
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST |
-                  G_SIGNAL_NO_RECURSE |
                   G_SIGNAL_NO_HOOKS,
                   G_STRUCT_OFFSET (ClutterActorClass, paint),
                   NULL, NULL,
