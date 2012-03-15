@@ -643,19 +643,37 @@ void                            clutter_actor_get_transformation_matrix         
                                                                                  CoglMatrix                 *matrix);
 
 /* Implicit animations */
+CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_save_easing_state                 (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_restore_easing_state              (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_set_easing_mode                   (ClutterActor               *self,
                                                                                  ClutterAnimationMode        mode);
+CLUTTER_AVAILABLE_IN_1_10
 ClutterAnimationMode            clutter_actor_get_easing_mode                   (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_set_easing_duration               (ClutterActor               *self,
                                                                                  guint                       msecs);
+CLUTTER_AVAILABLE_IN_1_10
 guint                           clutter_actor_get_easing_duration               (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_set_easing_delay                  (ClutterActor               *self,
                                                                                  guint                       msecs);
+CLUTTER_AVAILABLE_IN_1_10
 guint                           clutter_actor_get_easing_delay                  (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_1_10
 ClutterTransition *             clutter_actor_get_transition                    (ClutterActor               *self,
                                                                                  const char                 *name);
+CLUTTER_AVAILABLE_IN_1_10
+void                            clutter_actor_add_transition                    (ClutterActor               *self,
+                                                                                 const char                 *name,
+                                                                                 ClutterTransition          *transition);
+CLUTTER_AVAILABLE_IN_1_10
+void                            clutter_actor_remove_transition                 (ClutterActor               *self,
+                                                                                 const char                 *name);
+CLUTTER_AVAILABLE_IN_1_10
+void                            clutter_actor_remove_all_transitions            (ClutterActor               *self);
 
 G_END_DECLS
 

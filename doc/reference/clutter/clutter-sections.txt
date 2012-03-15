@@ -464,6 +464,9 @@ clutter_actor_get_easing_mode
 clutter_actor_set_easing_delay
 clutter_actor_get_easing_delay
 clutter_actor_get_transition
+clutter_actor_add_transition
+clutter_actor_remove_transition
+clutter_actor_remove_all_transitions
 
 <SUBSECTION>
 clutter_actor_set_reactive

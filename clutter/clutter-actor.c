@@ -16614,9 +16614,23 @@ typedef struct _TransitionClosure
 {
   ClutterActor *actor;
   ClutterTransition *transition;
-  GParamSpec *property;
+  gchar *name;
   gulong completed_id;
 } TransitionClosure;
+
+static void
+transition_closure_free (gpointer data)
+{
+  if (G_LIKELY (data != NULL))
+    {
+      TransitionClosure *clos = data;
+
+      g_signal_handler_disconnect (clos->transition, clos->completed_id);
+      g_free (clos->name);
+
+      g_slice_free (TransitionClosure, clos);
+    }
+}
 
 static void
 on_transition_completed (ClutterTransition *transition,
@@ -16626,11 +16640,8 @@ on_transition_completed (ClutterTransition *transition,
 
   info = _clutter_actor_get_animation_info (clos->actor);
 
-  g_hash_table_remove (info->transitions, clos->property->name);
-
-  g_signal_handler_disconnect (transition, clos->completed_id);
-
-  g_slice_free (TransitionClosure, clos);
+  /* this will take care of cleaning clos for us */
+  g_hash_table_remove (info->transitions, clos->name);
 }
 
 void
@@ -16638,7 +16649,7 @@ _clutter_actor_update_transition (ClutterActor *actor,
                                   GParamSpec   *pspec,
                                   ...)
 {
-  ClutterTransition *transition;
+  TransitionClosure *clos;
   ClutterInterval *interval;
   const ClutterAnimationInfo *info;
   va_list var_args;
@@ -16652,8 +16663,8 @@ _clutter_actor_update_transition (ClutterActor *actor,
   if (info->transitions == NULL)
     return;
 
-  transition = g_hash_table_lookup (info->transitions, pspec->name);
-  if (transition == NULL)
+  clos = g_hash_table_lookup (info->transitions, pspec->name);
+  if (clos == NULL)
     return;
 
   va_start (var_args, pspec);
@@ -16673,11 +16684,11 @@ _clutter_actor_update_transition (ClutterActor *actor,
       goto out;
     }
 
-  interval = clutter_transition_get_interval (transition);
+  interval = clutter_transition_get_interval (clos->transition);
   clutter_interval_set_initial_value (interval, &initial);
   clutter_interval_set_final_value (interval, &final);
 
-  clutter_timeline_rewind (CLUTTER_TIMELINE (transition));
+  clutter_timeline_rewind (CLUTTER_TIMELINE (clos->transition));
 
 out:
   g_value_unset (&initial);
@@ -16704,6 +16715,7 @@ _clutter_actor_create_transition (ClutterActor *actor,
   ClutterAnimationInfo *info;
   ClutterTransition *res = NULL;
   gboolean call_restore = FALSE;
+  TransitionClosure *clos;
   va_list var_args;
 
   info = _clutter_actor_get_animation_info (actor);
@@ -16715,19 +16727,20 @@ _clutter_actor_create_transition (ClutterActor *actor,
     }
 
   if (info->transitions == NULL)
-    info->transitions = g_hash_table_new (g_str_hash, g_str_equal);
+    info->transitions = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                               NULL,
+                                               transition_closure_free);
 
   va_start (var_args, pspec);
 
-  res = g_hash_table_lookup (info->transitions, pspec->name);
-  if (res == NULL)
+  clos = g_hash_table_lookup (info->transitions, pspec->name);
+  if (clos == NULL)
     {
       ClutterInterval *interval;
       GValue initial = G_VALUE_INIT;
       GValue final = G_VALUE_INIT;
       GType ptype;
       char *error;
-      TransitionClosure *clos;
 
       ptype = G_PARAM_SPEC_VALUE_TYPE (pspec);
 
@@ -16764,24 +16777,10 @@ _clutter_actor_create_transition (ClutterActor *actor,
       clutter_transition_set_interval (res, interval);
       clutter_transition_set_remove_on_complete (res, TRUE);
 
-      clutter_timeline_set_delay (CLUTTER_TIMELINE (res),
-                                  info->cur_state->easing_delay);
-      clutter_timeline_set_duration (CLUTTER_TIMELINE (res),
-                                     info->cur_state->easing_duration);
-      clutter_timeline_set_progress_mode (CLUTTER_TIMELINE (res),
-                                          info->cur_state->easing_mode);
-
-      clos = g_slice_new (TransitionClosure);
-      clos->actor = actor;
-      clos->transition = res;
-      clos->property = pspec;
-      clos->completed_id =
-        g_signal_connect (res, "completed",
-                          G_CALLBACK (on_transition_completed),
-                          clos);
-
-      g_hash_table_insert (info->transitions, (gpointer) pspec->name, res);
+      clutter_actor_add_transition (actor, pspec->name, res);
     }
+  else
+    res = clos->transition;
 
 out:
   if (call_restore)
@@ -16790,6 +16789,130 @@ out:
   va_end (var_args);
 
   return res;
+}
+
+/**
+ * clutter_actor_add_transition:
+ * @self: a #ClutterActor
+ * @name: the name of the transition to add
+ * @transition: the #ClutterTransition to add
+ *
+ * Adds a @transition to the #ClutterActor's list of animations.
+ *
+ * The @name string is a per-actor unique identifier of the @transition: only
+ * one #ClutterTransition can be associated to the specified @name.
+ *
+ * The @transition will be given the easing duration, mode, and delay
+ * associated to the actor's current easing state; it is possible to modify
+ * these values after calling clutter_actor_add_transition().
+ *
+ * This function is usually called implicitly when modifying an animatable
+ * property.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_add_transition (ClutterActor      *self,
+                              const char        *name,
+                              ClutterTransition *transition)
+{
+  ClutterTimeline *timeline;
+  TransitionClosure *clos;
+  ClutterAnimationInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (name != NULL);
+  g_return_if_fail (CLUTTER_IS_TRANSITION (transition));
+
+  info = _clutter_actor_get_animation_info (self);
+
+  if (info->cur_state == NULL)
+    {
+      g_warning ("No easing state is defined for the actor '%s'; you "
+                 "must call clutter_actor_save_easing_state() before "
+                 "calling clutter_actor_add_transition().",
+                 _clutter_actor_get_debug_name (self));
+      return;
+    }
+
+  if (info->transitions == NULL)
+    info->transitions = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                               NULL,
+                                               transition_closure_free);
+
+  if (g_hash_table_lookup (info->transitions, name) != NULL)
+    {
+      g_warning ("A transition with name '%s' already exists for "
+                 "the actor '%s'",
+                 name,
+                 _clutter_actor_get_debug_name (self));
+      return;
+    }
+
+  timeline = CLUTTER_TIMELINE (transition);
+
+  clutter_timeline_set_delay (timeline, info->cur_state->easing_delay);
+  clutter_timeline_set_duration (timeline, info->cur_state->easing_duration);
+  clutter_timeline_set_progress_mode (timeline, info->cur_state->easing_mode);
+
+  clos = g_slice_new (TransitionClosure);
+  clos->actor = self;
+  clos->transition = transition;
+  clos->name = g_strdup (name);
+  clos->completed_id = g_signal_connect (timeline, "completed",
+                                         G_CALLBACK (on_transition_completed),
+                                         clos);
+
+  g_hash_table_insert (info->transitions, clos->name, clos);
+}
+
+/**
+ * clutter_actor_remove_transition:
+ * @self: a #ClutterActor
+ * @name: the name of the transition to remove
+ *
+ * Removes the transition stored inside a #ClutterActor using @name
+ * identifier.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_remove_transition (ClutterActor *self,
+                                 const char   *name)
+{
+  const ClutterAnimationInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (name != NULL);
+
+  info = _clutter_actor_get_animation_info_or_defaults (self);
+
+  if (info->transitions == NULL)
+    return;
+
+  g_hash_table_remove (info->transitions, name);
+}
+
+/**
+ * clutter_actor_remove_all_transitions:
+ * @self: a #ClutterActor
+ *
+ * Removes all transitions associated to @self.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_remove_all_transitions (ClutterActor *self)
+{
+  const ClutterAnimationInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  info = _clutter_actor_get_animation_info_or_defaults (self);
+  if (info->transitions == NULL)
+    return;
+
+  g_hash_table_remove_all (info->transitions);
 }
 
 /**
