@@ -781,7 +781,6 @@ AS_IF([test "x$enable_kms_egl_platform" == "xyes"],
                          [
                            COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gbm"
                            COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES libdrm"
-                           COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gl"
                          ],
                          [AC_MSG_ERROR([Unable to locate required kms libraries])])
 
