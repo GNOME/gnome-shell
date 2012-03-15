@@ -1458,7 +1458,7 @@ again:
   g_hash_table_remove_all (priv->properties);
 
   /* if the animator is already running reinitialize internal iterators */
-  if (clutter_timeline_is_playing (priv->timeline))
+  if (priv->timeline != NULL && clutter_timeline_is_playing (priv->timeline))
     animation_animator_started (priv->timeline, animator);
 }
 
