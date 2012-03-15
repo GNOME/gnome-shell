@@ -17132,7 +17132,11 @@ clutter_actor_get_transition (ClutterActor *self,
   if (info->transitions == NULL)
     return NULL;
 
-  return g_hash_table_lookup (info->transitions, name);
+  clos = g_hash_table_lookup (info->transitions, name);
+  if (clos == NULL)
+    return NULL;
+
+  return clos->transition;
 }
 
 /**
