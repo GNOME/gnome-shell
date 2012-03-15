@@ -405,6 +405,9 @@ clutter_actor_get_content
 ClutterContentGravity
 clutter_actor_set_content_gravity
 clutter_actor_get_content_gravity
+ClutterScalingFilter
+clutter_actor_get_content_scaling_filters
+clutter_actor_set_content_scaling_filters
 clutter_actor_get_content_box
 clutter_actor_set_clip
 clutter_actor_remove_clip
@@ -447,14 +450,6 @@ clutter_actor_iter_next
 clutter_actor_iter_prev
 clutter_actor_iter_remove
 clutter_actor_iter_destroy
-
-<SUBSECTION>
-clutter_actor_set_anchor_point
-clutter_actor_get_anchor_point
-clutter_actor_set_anchor_point_from_gravity
-clutter_actor_get_anchor_point_gravity
-clutter_actor_move_anchor_point
-clutter_actor_move_anchor_point_from_gravity
 
 <SUBSECTION>
 clutter_actor_save_easing_state
@@ -3031,6 +3026,7 @@ clutter_text_buffer_get_type
 <FILE>clutter-content</FILE>
 ClutterContent
 ClutterContentIface
+clutter_content_get_preferred_size
 clutter_content_invalidate
 <SUBSECTION Standard>
 CLUTTER_TYPE_CONTENT
@@ -3145,6 +3141,7 @@ CLUTTER_CANVAS
 CLUTTER_CANVAS_CLASS
 CLUTTER_IS_CANVAS
 CLUTTER_IS_CANVAS_CLASS
+CLUTTER_CANVAS_GET_CLASS
 <SUBSECTION Private>
 ClutterCanvasPrivate
 clutter_canvas_get_type
@@ -3154,6 +3151,7 @@ clutter_canvas_get_type
 <FILE>clutter-image</FILE>
 ClutterImage
 ClutterImageClass
+CLUTTER_IMAGE_ERROR
 ClutterImageError
 clutter_image_new
 clutter_image_set_data
@@ -3165,7 +3163,7 @@ CLUTTER_IMAGE
 CLUTTER_IMAGE_CLASS
 CLUTTER_IS_IMAGE
 CLUTTER_IS_IMAGE_CLASS
-CLUTTER_IMAGE_ERROR
+CLUTTER_IMAGE_GET_CLASS
 <SUBSECTION Private>
 ClutterImagePrivate
 clutter_image_get_type

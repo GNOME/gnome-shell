@@ -41,12 +41,28 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_IMAGE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_IMAGE))
 #define CLUTTER_IMAGE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_IMAGE, ClutterImageClass))
 
+/**
+ * CLUTTER_IMAGE_ERROR:
+ *
+ * Error domain for the #ClutterImageError enumeration.
+ *
+ * Since: 1.10
+ */
 #define CLUTTER_IMAGE_ERROR             (clutter_image_error_quark ())
 
 typedef struct _ClutterImage           ClutterImage;
 typedef struct _ClutterImagePrivate    ClutterImagePrivate;
 typedef struct _ClutterImageClass      ClutterImageClass;
 
+/**
+ * ClutterImageError:
+ * @CLUTTER_IMAGE_ERROR_INVALID_DATA: Invalid data passed to the
+ *   clutter_image_set_data() function.
+ *
+ * Error enumeration for #ClutterImage.
+ *
+ * Since: 1.10
+ */
 typedef enum {
   CLUTTER_IMAGE_ERROR_INVALID_DATA
 } ClutterImageError;
