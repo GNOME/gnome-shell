@@ -36,7 +36,7 @@ const DashItemContainer = new Lang.Class({
                            Lang.bind(this, this._allocate));
         this.actor._delegate = this;
 
-        this._label = null;
+        this.label = null;
 
         this.child = null;
         this._childScale = 1;
@@ -91,32 +91,32 @@ const DashItemContainer = new Lang.Class({
     },
 
     showLabel: function() {
-        if (this._label == null)
+        if (this.label == null)
             return;
 
-        this._label.opacity = 0;
-        this._label.show();
+        this.label.opacity = 0;
+        this.label.show();
 
         let [stageX, stageY] = this.actor.get_transformed_position();
 
         let itemHeight = this.actor.allocation.y2 - this.actor.allocation.y1;
 
-        let labelHeight = this._label.get_height();
+        let labelHeight = this.label.get_height();
         let yOffset = Math.floor((itemHeight - labelHeight) / 2)
 
         let y = stageY + yOffset;
 
-        let node = this._label.get_theme_node();
+        let node = this.label.get_theme_node();
         let xOffset = node.get_length('-x-offset');
 
         let x;
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-            x = stageX - this._label.get_width() - xOffset;
+            x = stageX - this.label.get_width() - xOffset;
         else
             x = stageX + this.actor.get_width() + xOffset;
 
-        this._label.set_position(x, y);
-        Tweener.addTween(this._label,
+        this.label.set_position(x, y);
+        Tweener.addTween(this.label,
                          { opacity: 255,
                            time: DASH_ITEM_LABEL_SHOW_TIME,
                            transition: 'easeOutQuad',
@@ -124,22 +124,22 @@ const DashItemContainer = new Lang.Class({
     },
 
     setLabelText: function(text) {
-        if (this._label == null)
-            this._label = new St.Label({ style_class: 'dash-label'});
+        if (this.label == null)
+            this.label = new St.Label({ style_class: 'dash-label'});
 
-        this._label.set_text(text);
-        Main.layoutManager.addChrome(this._label);
-        this._label.hide();
+        this.label.set_text(text);
+        Main.layoutManager.addChrome(this.label);
+        this.label.hide();
     },
 
     hideLabel: function () {
-        this._label.opacity = 255;
-        Tweener.addTween(this._label,
+        this.label.opacity = 255;
+        Tweener.addTween(this.label,
                          { opacity: 0,
                            time: DASH_ITEM_LABEL_HIDE_TIME,
                            transition: 'easeOutQuad',
                            onComplete: Lang.bind(this, function() {
-                               this._label.hide();
+                               this.label.hide();
                            })
                          });
     },
