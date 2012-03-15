@@ -126,12 +126,19 @@ clutter_transition_completed (ClutterTimeline *timeline)
 {
   ClutterTransitionPrivate *priv = CLUTTER_TRANSITION (timeline)->priv;
 
-  if (priv->remove_on_complete &&
-      clutter_timeline_get_repeat_count (timeline) != 0)
+  if (priv->remove_on_complete)
     {
-      clutter_transition_detach (CLUTTER_TRANSITION (timeline),
-                                 priv->animatable);
-      g_object_unref (timeline);
+      int n_repeats, cur_repeat;
+
+      n_repeats = clutter_timeline_get_repeat_count (timeline);
+      cur_repeat = clutter_timeline_get_current_repeat (timeline);
+
+      if (n_repeats == 0 || cur_repeat == n_repeats)
+        {
+          clutter_transition_detach (CLUTTER_TRANSITION (timeline),
+                                     priv->animatable);
+          g_object_unref (timeline);
+        }
     }
 }
 
