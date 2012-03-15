@@ -60,6 +60,8 @@ typedef struct _ClutterAnimator         ClutterAnimator;
 typedef struct _ClutterInterval         ClutterInterval;
 typedef struct _ClutterState            ClutterState;
 typedef struct _ClutterTimeline         ClutterTimeline;
+typedef struct _ClutterTransition       ClutterTransition;
+typedef struct _ClutterPropertyTransition       ClutterPropertyTransition;
 
 typedef struct _ClutterAction           ClutterAction;
 typedef struct _ClutterConstraint       ClutterConstraint;
