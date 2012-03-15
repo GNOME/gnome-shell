@@ -651,6 +651,9 @@ ClutterAnimationMode            clutter_actor_get_easing_mode                   
 void                            clutter_actor_set_easing_duration               (ClutterActor               *self,
                                                                                  guint                       msecs);
 guint                           clutter_actor_get_easing_duration               (ClutterActor               *self);
+void                            clutter_actor_set_easing_delay                  (ClutterActor               *self,
+                                                                                 guint                       msecs);
+guint                           clutter_actor_get_easing_delay                  (ClutterActor               *self);
 ClutterTransition *             clutter_actor_get_transition                    (ClutterActor               *self,
                                                                                  const char                 *name);
 

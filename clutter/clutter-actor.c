@@ -16764,6 +16764,8 @@ _clutter_actor_create_transition (ClutterActor *actor,
       clutter_transition_set_interval (res, interval);
       clutter_transition_set_remove_on_complete (res, TRUE);
 
+      clutter_timeline_set_delay (CLUTTER_TIMELINE (res),
+                                  info->cur_state->easing_delay);
       clutter_timeline_set_duration (CLUTTER_TIMELINE (res),
                                      info->cur_state->easing_duration);
       clutter_timeline_set_progress_mode (CLUTTER_TIMELINE (res),
@@ -16907,6 +16909,63 @@ clutter_actor_get_easing_mode (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_set_easing_delay:
+ * @self: a #ClutterActor
+ * @msecs: the delay before the start of the tweening, in milliseconds
+ *
+ * Sets the delay that should be applied before tweening animatable
+ * properties.
+ *
+ * Calling this function will implicitly call
+ * clutter_actor_save_easing_state() if no previous calls to
+ * that function were made.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_set_easing_delay (ClutterActor *self,
+                                guint         msecs)
+{
+  ClutterAnimationInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  info = _clutter_actor_get_animation_info (self);
+
+  if (info->states == NULL)
+    clutter_actor_save_easing_state (self);
+
+  if (info->cur_state->easing_delay != msecs)
+    info->cur_state->easing_delay = msecs;
+}
+
+/**
+ * clutter_actor_get_easing_delay:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the delay that should be applied when tweening animatable
+ * properties.
+ *
+ * Return value: a delay, in milliseconds
+ *
+ * Since: 1.10
+ */
+guint
+clutter_actor_get_easing_delay (ClutterActor *self)
+{
+  const ClutterAnimationInfo *info;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
+
+  info = _clutter_actor_get_animation_info_or_defaults (self);
+
+  if (info->cur_state != NULL)
+    return info->cur_state->easing_delay;
+
+  return 0;
+}
+
+/**
  * clutter_actor_get_transition:
  * @self: a #ClutterActor
  * @name: the name of the transition
@@ -16977,6 +17036,7 @@ clutter_actor_save_easing_state (ClutterActor *self)
 
   new_state.easing_mode = CLUTTER_EASE_OUT_CUBIC;
   new_state.easing_duration = 250;
+  new_state.easing_delay = 0;
 
   g_array_append_val (info->states, new_state);
 

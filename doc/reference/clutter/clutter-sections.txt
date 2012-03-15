@@ -455,6 +455,17 @@ clutter_actor_move_anchor_point
 clutter_actor_move_anchor_point_from_gravity
 
 <SUBSECTION>
+clutter_actor_save_easing_state
+clutter_actor_restore_easing_state
+clutter_actor_set_easing_duration
+clutter_actor_get_easing_duration
+clutter_actor_set_easing_mode
+clutter_actor_get_easing_mode
+clutter_actor_set_easing_delay
+clutter_actor_get_easing_delay
+clutter_actor_get_transition
+
+<SUBSECTION>
 clutter_actor_set_reactive
 clutter_actor_get_reactive
 clutter_actor_set_shader

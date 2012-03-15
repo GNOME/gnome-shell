@@ -213,6 +213,7 @@ ClutterTransformInfo *          _clutter_actor_get_transform_info               
 
 typedef struct _AState {
   guint easing_duration;
+  guint easing_delay;
   ClutterAnimationMode easing_mode;
 } AState;
 
