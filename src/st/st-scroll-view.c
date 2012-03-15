@@ -387,7 +387,6 @@ st_scroll_view_get_preferred_width (ClutterActor *actor,
       break;
     }
 
-  account_for_vscrollbar = priv->vscrollbar_policy != GTK_POLICY_NEVER;
   if (account_for_vscrollbar)
     {
       float sb_width = get_scrollbar_width (ST_SCROLL_VIEW (actor), for_height);
