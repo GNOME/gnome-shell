@@ -117,6 +117,7 @@ source_h =					\
 	$(srcdir)/clutter-text.h		\
 	$(srcdir)/clutter-text-buffer.h		\
 	$(srcdir)/clutter-timeline.h 		\
+	$(srcdir)/clutter-transition.h		\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
 	$(NULL)
@@ -187,8 +188,9 @@ source_c = \
 	$(srcdir)/clutter-state.c		\
 	$(srcdir)/clutter-table-layout.c	\
 	$(srcdir)/clutter-texture.c 		\
-	$(srcdir)/clutter-text.c			\
+	$(srcdir)/clutter-text.c		\
 	$(srcdir)/clutter-text-buffer.c		\
+	$(srcdir)/clutter-transition.c		\
 	$(srcdir)/clutter-timeline.c 		\
 	$(srcdir)/clutter-units.c		\
 	$(srcdir)/clutter-util.c 		\

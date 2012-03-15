@@ -96,6 +96,7 @@
 #include "clutter-texture.h"
 #include "clutter-text.h"
 #include "clutter-timeline.h"
+#include "clutter-transition.h"
 #include "clutter-units.h"
 #include "clutter-version.h"
 
