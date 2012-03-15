@@ -16,9 +16,11 @@ animate_color (ClutterActor *actor,
   else
     end_color = CLUTTER_COLOR_Red;
 
-  clutter_actor_animate (actor, CLUTTER_LINEAR, 500,
-                         "background-color", end_color,
-                         NULL);
+  clutter_actor_save_easing_state (actor);
+  clutter_actor_set_easing_duration (actor, 500);
+  clutter_actor_set_easing_mode (actor, CLUTTER_LINEAR);
+  clutter_actor_set_background_color (actor, end_color);
+  clutter_actor_restore_easing_state (actor);
 
   toggled = !toggled;
 
@@ -38,41 +40,46 @@ on_crossing (ClutterActor *actor,
   else
     depth = 0.0;
 
-  clutter_actor_animate (actor, CLUTTER_EASE_OUT_BOUNCE, 500,
-                         "depth", depth,
-                         NULL);
+  clutter_actor_save_easing_state (actor);
+  clutter_actor_set_easing_duration (actor, 500);
+  clutter_actor_set_easing_mode (actor, CLUTTER_EASE_OUT_BOUNCE);
+  clutter_actor_set_depth (actor, depth);
+  clutter_actor_restore_easing_state (actor);
 
   return CLUTTER_EVENT_STOP;
 }
 
 static void
-restore_actor (ClutterActor *actor)
+on_transition_complete (ClutterTransition *transition,
+                        ClutterActor      *actor)
 {
-  clutter_actor_set_rotation (actor, CLUTTER_Y_AXIS, 0.0,
-                              SIZE / 2.0,
-                              0.f,
-                              0.f);
-  clutter_actor_set_reactive (actor, TRUE);
+  clutter_actor_save_easing_state (actor);
+  clutter_actor_set_easing_duration (actor, 250);
+
+  clutter_actor_set_rotation (actor, CLUTTER_Y_AXIS, 0.0f,
+                              SIZE / 2.0f, 0.f, 0.f);
+
+  clutter_actor_restore_easing_state (actor);
 }
 
 static gboolean
 animate_rotation (ClutterActor *actor,
                   ClutterEvent *event)
 {
-  ClutterVertex center;
+  ClutterTransition *transition;
 
-  center.x = SIZE / 2.0;
-  center.y = 0.f;
-  center.z = 0.f;
+  clutter_actor_save_easing_state (actor);
+  clutter_actor_set_easing_duration (actor, 1000);
 
-  clutter_actor_animate (actor, CLUTTER_EASE_OUT_EXPO, 500,
-                         "fixed::reactive", FALSE,
-                         "fixed::rotation-center-y", &center,
-                         "rotation-angle-y", 360.0,
-                         "signal-swapped-after::completed",
-                           G_CALLBACK (restore_actor),
-                           actor,
-                         NULL);
+  clutter_actor_set_rotation (actor, CLUTTER_Y_AXIS, 360.0,
+                              SIZE / 2.0f, 0.f, 0.f);
+
+  transition = clutter_actor_get_transition (actor, "rotation-angle-y");
+  g_signal_connect (transition, "completed",
+                    G_CALLBACK (on_transition_complete),
+                    actor);
+
+  clutter_actor_restore_easing_state (actor);
 
   return CLUTTER_EVENT_STOP;
 }
