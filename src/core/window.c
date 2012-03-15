@@ -57,7 +57,9 @@
 #include <X11/extensions/Xcomposite.h>
 
 /* Windows that unmaximize to a size bigger than that fraction of the workarea
- * will be scaled down to that size (while maintaining aspect ratio) */
+ * will be scaled down to that size (while maintaining aspect ratio).
+ * Windows that cover an area greater then this size are automaximized on map.
+ */
 #define MAX_UNMAXIMIZED_WINDOW_AREA .8
 
 static int destroying_windows_disallowed = 0;
@@ -3013,7 +3015,20 @@ meta_window_show (MetaWindow *window)
     }
 
   if (!window->placed)
-    meta_window_force_placement (window);
+    {
+      if (window->showing_for_first_time)
+        {
+          MetaRectangle work_area;
+          meta_window_get_work_area_for_monitor (window, window->monitor->number, &work_area);
+          /* Automaximize windows that map with a size > MAX_UNMAXIMIZED_WINDOW_AREA of the work area */
+          if (window->rect.width * window->rect.height > work_area.width * work_area.height * MAX_UNMAXIMIZED_WINDOW_AREA)
+            {
+              window->maximize_horizontally_after_placement = TRUE;
+              window->maximize_vertically_after_placement = TRUE;
+            }
+        }
+      meta_window_force_placement (window);
+    }
 
   if (needs_stacking_adjustment)
     {
