@@ -1344,9 +1344,7 @@ const MessageTray = new Lang.Class({
         this._presence = new GnomeSession.Presence(Lang.bind(this, function(proxy, error) {
             this._onStatusChanged(proxy.status);
         }));
-        this._userStatus = GnomeSession.PresenceStatus.AVAILABLE;
         this._busy = false;
-        this._backFromAway = false;
         this._presence.connectSignal('StatusChanged', Lang.bind(this, function(proxy, senderName, [status]) {
             this._onStatusChanged(status);
         }));
@@ -1391,6 +1389,12 @@ const MessageTray = new Lang.Class({
         this._expandedSummaryItem = null;
         this._summaryItemTitleWidth = 0;
         this._pointerBarrier = 0;
+
+        this._unseenNotifications = [];
+        this._idleMonitorWatchId = 0;
+        this._backFromAway = false;
+
+        this.idleMonitor = new Shell.IdleMonitor();
 
         // To simplify the summary item animation code, we pretend
         // that there's an invisible SummaryItem to the left of the
@@ -1635,6 +1639,10 @@ const MessageTray = new Lang.Class({
     },
 
     _onNotificationDestroy: function(notification) {
+        let unseenNotificationsIndex = this._unseenNotifications.indexOf(notification);
+        if (unseenNotificationsIndex != -1)
+            this._unseenNotifications.splice(unseenNotificationsIndex, 1);
+
         if (this._notification == notification && (this._notificationState == State.SHOWN || this._notificationState == State.SHOWING)) {
             this._updateNotificationTimeout(0);
             this._notificationRemoved = true;
@@ -1918,16 +1926,10 @@ const MessageTray = new Lang.Class({
     },
 
     _onStatusChanged: function(status) {
-        this._backFromAway = (this._userStatus == GnomeSession.PresenceStatus.IDLE && this._userStatus != status);
-        this._userStatus = status;
-
         if (status == GnomeSession.PresenceStatus.BUSY) {
             // remove notification and allow the summary to be closed now
             this._updateNotificationTimeout(0);
-            if (this._summaryTimeoutId) {
-                Mainloop.source_remove(this._summaryTimeoutId);
-                this._summaryTimeoutId = 0;
-            }
+            this._unsetSummaryTimeout();
             this._busy = true;
         } else if (status != GnomeSession.PresenceStatus.IDLE) {
             // We preserve the previous value of this._busy if the status turns to IDLE
@@ -1957,6 +1959,7 @@ const MessageTray = new Lang.Class({
             this._pointerInTray = false;
             this._pointerInSummary = false;
             this._updateNotificationTimeout(0);
+            this._unsetSummaryTimeout();
             this._updateState();
         }
         return false;
@@ -1967,6 +1970,7 @@ const MessageTray = new Lang.Class({
         this._pointerInTray = false;
         this._pointerInSummary = false;
         this._updateNotificationTimeout(0);
+        this._unsetSummaryTimeout();
         this._updateState();
     },
 
@@ -2012,15 +2016,13 @@ const MessageTray = new Lang.Class({
                               || notificationsVisible;
 
         if (this._summaryState == State.HIDDEN && !mustHideSummary) {
-            if (this._backFromAway) {
-                // Immediately set this to false, so that we don't schedule a timeout later
-                this._backFromAway = false;
-                if (!this._busy)
-                    this._showSummary(LONGER_SUMMARY_TIMEOUT);
-            } else if (notificationsDone && this._newSummaryItems.length > 0 && !this._busy) {
-                this._showSummary(SUMMARY_TIMEOUT);
-            } else if (summarySummoned) {
+            if (summarySummoned) {
                 this._showSummary(0);
+            } else if (notificationsDone && !this._busy) {
+                if (this._backFromAway && this._unseenNotifications.length > 0)
+                    this._showSummary(LONGER_SUMMARY_TIMEOUT);
+                else if (this._newSummaryItems.length > 0)
+                    this._showSummary(SUMMARY_TIMEOUT);
             }
         } else if (this._summaryState == State.SHOWN) {
             if (!summaryPinned || mustHideSummary)
@@ -2109,8 +2111,32 @@ const MessageTray = new Lang.Class({
                     });
     },
 
+    _onIdleMonitorWatch: function(monitor, id, userBecameIdle) {
+        this.idleMonitor.remove_watch(this._idleMonitorWatchId);
+        this._idleMonitorWatchId = 0;
+
+        if (userBecameIdle) {
+            // The user became idle, which means the user was active while the notifications were
+            // shown and we can unset this._unseenNotifications .
+            this._unseenNotiications = [];
+        } else if (this._unseenNotifications.length == 1 && this._unseenNotifications[0] == this._notification) {
+            // The user became active while the only notification in this._unseenNotifications is being shown
+            // as this._notification , so we can unset this._unseenNotifications .
+            this._unseenNotifications = [];
+        } else {
+            // The user became active and we have one or more unseen notifications. We should show
+            // the message tray to the user to inform the user about the missed notifications.
+            this._backFromAway = true;
+            this._updateState();
+       }
+    },
+
     _showNotification: function() {
         this._notification = this._notificationQueue.shift();
+        this._unseenNotifications.push(this._notification);
+        if (this._idleMonitorWatchId == 0)
+            this._idleMonitorWatchId = this.idleMonitor.add_watch(1000,
+                                                                  Lang.bind(this, this._onIdleMonitorWatch));
         this._notificationClickedId = this._notification.connect('done-displaying',
                                                                  Lang.bind(this, this._escapeTray));
         this._notificationBin.child = this._notification.actor;
@@ -2187,6 +2213,13 @@ const MessageTray = new Lang.Class({
             this._notificationTimeoutId =
                 Mainloop.timeout_add(timeout,
                                      Lang.bind(this, this._notificationTimeout));
+    },
+
+    _unsetSummaryTimeout: function(timeout) {
+        if (this._summaryTimeoutId) {
+            Mainloop.source_remove(this._summaryTimeoutId);
+            this._summaryTimeoutId = 0;
+        }
     },
 
     _notificationTimeout: function() {
@@ -2272,6 +2305,7 @@ const MessageTray = new Lang.Class({
     },
 
     _showSummary: function(timeout) {
+        this._updateSeenSummaryItems();
         this._summaryBin.opacity = 0;
         this._summaryBin.y = this.actor.height;
         this._tween(this._summaryBin, '_summaryState', State.SHOWN,
@@ -2286,8 +2320,6 @@ const MessageTray = new Lang.Class({
     },
 
     _showSummaryCompleted: function(timeout) {
-        this._newSummaryItems = [];
-
         if (timeout != 0) {
             this._summaryTimeoutId =
                 Mainloop.timeout_add(timeout * 1000,
@@ -2302,6 +2334,7 @@ const MessageTray = new Lang.Class({
     },
 
     _hideSummary: function() {
+        this._updateSeenSummaryItems();
         this._tween(this._summaryBin, '_summaryState', State.HIDDEN,
                     { opacity: 0,
                       time: ANIMATION_TIME,
@@ -2309,11 +2342,18 @@ const MessageTray = new Lang.Class({
                       onComplete: this._hideSummaryCompleted,
                       onCompleteScope: this,
                     });
-        this._newSummaryItems = [];
     },
 
     _hideSummaryCompleted: function() {
         this._setExpandedSummaryItem(null);
+    },
+
+    _updateSeenSummaryItems: function() {
+        if (this._backFromAway) {
+            this._backFromAway = false;
+            this._unseenNotifications = [];
+        }
+        this._newSummaryItems = [];
     },
 
     _showSummaryBoxPointer: function() {
