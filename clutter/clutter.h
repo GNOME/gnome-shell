@@ -82,6 +82,7 @@
 #include "clutter-page-turn-effect.h"
 #include "clutter-path-constraint.h"
 #include "clutter-path.h"
+#include "clutter-property-transition.h"
 #include "clutter-scriptable.h"
 #include "clutter-script.h"
 #include "clutter-settings.h"
