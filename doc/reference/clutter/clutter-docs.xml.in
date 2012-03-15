@@ -125,6 +125,7 @@
       <title>Content</title>
 
       <xi:include href="xml/clutter-canvas.xml"/>
+      <xi:include href="xml/clutter-image.xml"/>
     </chapter>
 
     <chapter>

@@ -30,9 +30,11 @@
  * #ClutterImage is a #ClutterContent implementation that displays
  * image data.
  *
+ * <informalexample><programlisting>
  * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-image-box.c">
  *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
  * </xi:include>
+ * </programlisting></informalexample>
  *
  * #ClutterImage is available since Clutter 1.10.
  */
