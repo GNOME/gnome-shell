@@ -164,6 +164,9 @@ void                  st_widget_add_accessible_state     (StWidget    *widget,
                                                           AtkStateType state);
 void                  st_widget_remove_accessible_state  (StWidget    *widget,
                                                           AtkStateType state);
+void                  st_widget_set_accessible_name      (StWidget    *widget,
+                                                          const gchar *name);
+const gchar *         st_widget_get_accessible_name      (StWidget    *widget);
 
 G_END_DECLS
 

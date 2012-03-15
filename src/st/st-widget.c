@@ -72,6 +72,7 @@ struct _StWidgetPrivate
   AtkStateSet *local_state_set;
 
   ClutterActor *label_actor;
+  gchar        *accessible_name;
 
   /* Even though Clutter has first_child/last_child properties,
    * we need to keep track of the old first/last children so
@@ -104,7 +105,8 @@ enum
   PROP_HOVER,
   PROP_CAN_FOCUS,
   PROP_LABEL_ACTOR,
-  PROP_ACCESSIBLE_ROLE
+  PROP_ACCESSIBLE_ROLE,
+  PROP_ACCESSIBLE_NAME
 };
 
 enum
@@ -185,6 +187,10 @@ st_widget_set_property (GObject      *gobject,
       st_widget_set_accessible_role (actor, g_value_get_enum (value));
       break;
 
+    case PROP_ACCESSIBLE_NAME:
+      st_widget_set_accessible_name (actor, g_value_get_string (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -240,6 +246,10 @@ st_widget_get_property (GObject    *gobject,
 
     case PROP_ACCESSIBLE_ROLE:
       g_value_set_enum (value, st_widget_get_accessible_role (actor));
+      break;
+
+    case PROP_ACCESSIBLE_NAME:
+      g_value_set_string (value, priv->accessible_name);
       break;
 
     default:
@@ -306,6 +316,7 @@ st_widget_finalize (GObject *gobject)
   g_free (priv->style_class);
   g_free (priv->pseudo_class);
   g_object_unref (priv->local_state_set);
+  g_free (priv->accessible_name);
 
   G_OBJECT_CLASS (st_widget_parent_class)->finalize (gobject);
 }
@@ -945,6 +956,19 @@ st_widget_class_init (StWidgetClass *klass)
                                                       ATK_ROLE_INVALID,
                                                       G_PARAM_READWRITE));
 
+
+  /**
+   * StWidget:accessible-name:
+   *
+   * Object instance's name for assistive technology access.
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_ACCESSIBLE_NAME,
+                                   g_param_spec_string ("accessible-name",
+                                                        "Accessible name",
+                                                        "Object instance's name for assistive technology access.",
+                                                        NULL,
+                                                        ST_PARAM_READWRITE));
 
   /**
    * StWidget::style-changed:
@@ -2191,6 +2215,52 @@ st_widget_set_label_actor (StWidget     *widget,
 }
 
 /**
+ * st_widget_set_accessible_name:
+ * @widget: widget to set the accessible name for
+ * @name: (allow-none): a character string to be set as the accessible name
+ *
+ * This method sets @name as the accessible name for @widget.
+ *
+ * Usually you will have no need to set the accessible name for an
+ * object, as usually there is a label for most of the interface
+ * elements. So in general it is better to just use
+ * @st_widget_set_label_actor. This method is only required when you
+ * need to set an accessible name and there is no available label
+ * object.
+ *
+ */
+void
+st_widget_set_accessible_name (StWidget    *widget,
+                               const gchar *name)
+{
+  g_return_if_fail (ST_IS_WIDGET (widget));
+
+  if (widget->priv->accessible_name != NULL)
+    g_free (widget->priv->accessible_name);
+
+  widget->priv->accessible_name = g_strdup (name);
+  g_object_notify (G_OBJECT (widget), "accessible-name");
+}
+
+/**
+ * st_widget_get_accessible_name:
+ * @widget: widget to get the accessible name for
+ *
+ * Gets the accessible name for this widget. See
+ * st_widget_set_accessible_name() for more information.
+ *
+ * Return value: a character string representing the accessible name
+ * of the widget.
+ */
+const gchar *
+st_widget_get_accessible_name (StWidget    *widget)
+{
+  g_return_val_if_fail (ST_IS_WIDGET (widget), NULL);
+
+  return widget->priv->accessible_name;
+}
+
+/**
  * st_widget_set_accessible_role:
  * @widget: widget to set the accessible role for
  * @role: The role to use
@@ -2377,6 +2447,28 @@ st_widget_get_accessible (ClutterActor *actor)
   return widget->priv->accessible;
 }
 
+static const gchar *
+st_widget_accessible_get_name (AtkObject *obj)
+{
+  const gchar* name = NULL;
+
+  g_return_val_if_fail (ST_IS_WIDGET_ACCESSIBLE (obj), NULL);
+
+  name = ATK_OBJECT_CLASS (st_widget_accessible_parent_class)->get_name (obj);
+  if (name == NULL)
+    {
+      StWidget *widget = NULL;
+
+      widget = ST_WIDGET (atk_gobject_accessible_get_object (ATK_GOBJECT_ACCESSIBLE (obj)));
+
+      if (widget == NULL)
+        name = NULL;
+      else
+        name = widget->priv->accessible_name;
+    }
+
+  return name;
+}
 
 static void
 st_widget_accessible_class_init (StWidgetAccessibleClass *klass)
@@ -2389,6 +2481,7 @@ st_widget_accessible_class_init (StWidgetAccessibleClass *klass)
   atk_class->ref_state_set = st_widget_accessible_ref_state_set;
   atk_class->initialize = st_widget_accessible_initialize;
   atk_class->get_role = st_widget_accessible_get_role;
+  atk_class->get_name = st_widget_accessible_get_name;
 
   g_type_class_add_private (gobject_class, sizeof (StWidgetAccessiblePrivate));
 }
@@ -2414,6 +2507,14 @@ st_widget_accessible_dispose (GObject *gobject)
 }
 
 static void
+on_accessible_name_notify (GObject    *gobject,
+                           GParamSpec *pspec,
+                           AtkObject  *accessible)
+{
+  g_object_notify (G_OBJECT (accessible), "accessible-name");
+}
+
+static void
 st_widget_accessible_initialize (AtkObject *obj,
                                  gpointer   data)
 {
@@ -2429,6 +2530,10 @@ st_widget_accessible_initialize (AtkObject *obj,
 
   g_signal_connect (data, "notify::label-actor",
                     G_CALLBACK (on_label_notify),
+                    obj);
+
+  g_signal_connect (data, "notify::accessible-name",
+                    G_CALLBACK (on_accessible_name_notify),
                     obj);
 
   /* Check the cached selected state and notify the first selection.
