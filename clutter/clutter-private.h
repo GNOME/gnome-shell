@@ -265,6 +265,13 @@ typedef enum _ClutterCullResult
   CLUTTER_CULL_RESULT_PARTIAL
 } ClutterCullResult;
 
+gboolean        _clutter_has_progress_function  (GType gtype);
+gboolean        _clutter_run_progress_function  (GType gtype,
+                                                 const GValue *initial,
+                                                 const GValue *final,
+                                                 gdouble progress,
+                                                 GValue *retval);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_PRIVATE_H__ */

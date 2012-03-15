@@ -287,6 +287,34 @@ ClutterMargin * clutter_margin_new      (void) G_GNUC_MALLOC;
 ClutterMargin * clutter_margin_copy     (const ClutterMargin *margin_);
 void            clutter_margin_free     (ClutterMargin       *margin_);
 
+/**
+ * ClutterProgressFunc:
+ * @a: the initial value of an interval
+ * @b: the final value of an interval
+ * @progress: the progress factor, between 0 and 1
+ * @retval: the value used to store the progress
+ *
+ * Prototype of the progress function used to compute the value
+ * between the two ends @a and @b of an interval depending on
+ * the value of @progress.
+ *
+ * The #GValue in @retval is already initialized with the same
+ * type as @a and @b.
+ *
+ * This function will be called by #ClutterInterval if the
+ * type of the values of the interval was registered using
+ * clutter_interval_register_progress_func().
+ *
+ * Return value: %TRUE if the function successfully computed
+ *   the value and stored it inside @retval
+ *
+ * Since: 1.0
+ */
+typedef gboolean (* ClutterProgressFunc) (const GValue *a,
+                                          const GValue *b,
+                                          gdouble       progress,
+                                          GValue       *retval);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_TYPES_H__ */

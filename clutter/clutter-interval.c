@@ -63,14 +63,6 @@
 #include "clutter-private.h"
 #include "clutter-units.h"
 
-typedef struct
-{
-  GType value_type;
-  ClutterProgressFunc func;
-} ProgressData;
-
-static GHashTable *progress_funcs = NULL;
-
 enum
 {
   PROP_0,
@@ -195,23 +187,15 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
 
   value_type = clutter_interval_get_value_type (interval);
 
-  if (G_UNLIKELY (progress_funcs != NULL))
+  if (_clutter_has_progress_function (value_type))
     {
-      ProgressData *p_data;
-
-      p_data =
-        g_hash_table_lookup (progress_funcs, GUINT_TO_POINTER (value_type));
-
-      /* if we have a progress function, and that function was
-       * successful in computing the progress, then we bail out
-       * as fast as we can
-       */
-      if (p_data != NULL)
-        {
-          retval = p_data->func (initial, final, factor, value);
-          if (retval)
-            return retval;
-        }
+      retval = _clutter_run_progress_function (value_type,
+                                               initial,
+                                               final,
+                                               factor,
+                                               value);
+      if (retval)
+        return TRUE;
     }
 
   switch (G_TYPE_FUNDAMENTAL (value_type))
@@ -413,16 +397,44 @@ clutter_interval_init (ClutterInterval *self)
   priv->values = g_malloc0 (sizeof (GValue) * N_VALUES);
 }
 
-static void
-clutter_interval_set_interval_valist (ClutterInterval *interval,
-                                      va_list          var_args)
+static inline void
+clutter_interval_set_value_internal (ClutterInterval *interval,
+                                     gint             index_,
+                                     const GValue    *value)
+{
+  ClutterIntervalPrivate *priv = interval->priv;
+
+  g_assert (index_ >= INITIAL && index_ <= RESULT);
+
+  if (G_IS_VALUE (&priv->values[index_]))
+    g_value_unset (&priv->values[index_]);
+
+  g_value_init (&priv->values[index_], priv->value_type);
+  g_value_copy (value, &priv->values[index_]);
+}
+
+static inline void
+clutter_interval_get_value_internal (ClutterInterval *interval,
+                                     gint             index_,
+                                     GValue          *value)
+{
+  ClutterIntervalPrivate *priv = interval->priv;
+
+  g_assert (index_ >= INITIAL && index_ <= RESULT);
+
+  g_value_copy (&priv->values[index_], value);
+}
+
+static gboolean
+clutter_interval_set_initial_internal (ClutterInterval *interval,
+                                       va_list         *args)
 {
   GType gtype = interval->priv->value_type;
   GValue value = { 0, };
   gchar *error;
 
   /* initial value */
-  G_VALUE_COLLECT_INIT (&value, gtype, var_args, 0, &error);
+  G_VALUE_COLLECT_INIT (&value, gtype, *args, 0, &error);
 
   if (error)
     {
@@ -433,26 +445,42 @@ clutter_interval_set_interval_valist (ClutterInterval *interval,
        * undefined behaviour
        */
       g_free (error);
-      return;
+      return FALSE;
     }
 
-  clutter_interval_set_initial_value (interval, &value);
+  clutter_interval_set_value_internal (interval, INITIAL, &value);
   g_value_unset (&value);
 
-  /* final value */
-  G_VALUE_COLLECT_INIT (&value, gtype, var_args, 0, &error);
+  return TRUE;
+}
+
+static gboolean
+clutter_interval_set_final_internal (ClutterInterval *interval,
+                                     va_list         *args)
+{
+  GType gtype = interval->priv->value_type;
+  GValue value = { 0, };
+  gchar *error;
+
+  /* initial value */
+  G_VALUE_COLLECT_INIT (&value, gtype, *args, 0, &error);
 
   if (error)
     {
       g_warning ("%s: %s", G_STRLOC, error);
 
-      /* see above */
+      /* we leak the value here as it might not be in a valid state
+       * given the error and calling g_value_unset() might lead to
+       * undefined behaviour
+       */
       g_free (error);
-      return;
+      return FALSE;
     }
 
-  clutter_interval_set_final_value (interval, &value);
+  clutter_interval_set_value_internal (interval, FINAL, &value);
   g_value_unset (&value);
+
+  return TRUE;
 }
 
 static void
@@ -524,7 +552,13 @@ clutter_interval_new (GType gtype,
   retval = g_object_new (CLUTTER_TYPE_INTERVAL, "value-type", gtype, NULL);
 
   va_start (args, gtype);
-  clutter_interval_set_interval_valist (retval, args);
+
+  if (!clutter_interval_set_initial_internal (retval, &args))
+    goto out;
+
+  clutter_interval_set_final_internal (retval, &args);
+
+out:
   va_end (args);
 
   return retval;
@@ -616,34 +650,6 @@ clutter_interval_get_value_type (ClutterInterval *interval)
   return interval->priv->value_type;
 }
 
-static inline void
-clutter_interval_set_value_internal (ClutterInterval *interval,
-                                     gint             index_,
-                                     const GValue    *value)
-{
-  ClutterIntervalPrivate *priv = interval->priv;
-
-  g_assert (index_ >= INITIAL && index_ <= RESULT);
-
-  if (G_IS_VALUE (&priv->values[index_]))
-    g_value_unset (&priv->values[index_]);
-
-  g_value_init (&priv->values[index_], priv->value_type);
-  g_value_copy (value, &priv->values[index_]);
-}
-
-static inline void
-clutter_interval_get_value_internal (ClutterInterval *interval,
-                                     gint             index_,
-                                     GValue          *value)
-{
-  ClutterIntervalPrivate *priv = interval->priv;
-
-  g_assert (index_ >= INITIAL && index_ <= RESULT);
-
-  g_value_copy (&priv->values[index_], value);
-}
-
 /**
  * clutter_interval_set_initial_value:
  * @interval: a #ClutterInterval
@@ -651,6 +657,8 @@ clutter_interval_get_value_internal (ClutterInterval *interval,
  *
  * Sets the initial value of @interval to @value. The value is copied
  * inside the #ClutterInterval.
+ *
+ * Rename to: clutter_interval_set_initial
  *
  * Since: 1.0
  */
@@ -668,6 +676,33 @@ clutter_interval_set_initial_value (ClutterInterval *interval,
   g_return_if_fail (G_VALUE_TYPE (value) == priv->value_type);
 
   clutter_interval_set_value_internal (interval, INITIAL, value);
+}
+
+/**
+ * clutter_interval_set_initial: (skip)
+ * @interval: a #ClutterInterval
+ * @...: the initial value of the interval.
+ *
+ * Variadic arguments version of clutter_interval_set_initial_value().
+ *
+ * This function is meant as a convenience for the C API.
+ *
+ * Language bindings should use clutter_interval_set_initial_value()
+ * instead.
+ *
+ * Since: 1.10
+ */
+void
+clutter_interval_set_initial (ClutterInterval *interval,
+                              ...)
+{
+  va_list args;
+
+  g_return_if_fail (CLUTTER_IS_INTERVAL (interval));
+
+  va_start (args, interval);
+  clutter_interval_set_initial_internal (interval, &args);
+  va_end (args);
 }
 
 /**
@@ -721,6 +756,8 @@ clutter_interval_peek_initial_value (ClutterInterval *interval)
  * Sets the final value of @interval to @value. The value is
  * copied inside the #ClutterInterval.
  *
+ * Rename to: clutter_interval_set_final
+ *
  * Since: 1.0
  */
 void
@@ -760,6 +797,32 @@ clutter_interval_get_final_value (ClutterInterval *interval,
   g_return_if_fail (value != NULL);
 
   clutter_interval_get_value_internal (interval, FINAL, value);
+}
+
+/**
+ * clutter_interval_set_final: (skip)
+ * @interval: a #ClutterInterval
+ * @...: the final value of the interval
+ *
+ * Variadic arguments version of clutter_interval_set_final_value().
+ *
+ * This function is meant as a convenience for the C API.
+ *
+ * Language bindings should use clutter_interval_set_final_value() instead.
+ *
+ * Since: 1.10
+ */
+void
+clutter_interval_set_final (ClutterInterval *interval,
+                            ...)
+{
+  va_list args;
+
+  g_return_if_fail (CLUTTER_IS_INTERVAL (interval));
+
+  va_start (args, interval);
+  clutter_interval_set_final_internal (interval, &args);
+  va_end (args);
 }
 
 /**
@@ -812,7 +875,13 @@ clutter_interval_set_interval (ClutterInterval *interval,
   g_return_if_fail (interval->priv->value_type != G_TYPE_INVALID);
 
   va_start (args, interval);
-  clutter_interval_set_interval_valist (interval, args);
+
+  if (!clutter_interval_set_initial_internal (interval, &args))
+    goto out;
+
+  clutter_interval_set_final_internal (interval, &args);
+
+out:
   va_end (args);
 }
 
@@ -940,82 +1009,4 @@ clutter_interval_compute (ClutterInterval *interval,
     return interval->priv->values + RESULT;
 
   return NULL;
-}
-
-/**
- * clutter_interval_register_progress_func: (skip)
- * @value_type: a #GType
- * @func: a #ClutterProgressFunc, or %NULL to unset a previously
- *   set progress function
- *
- * Sets the progress function for a given @value_type, like:
- *
- * |[
- *   clutter_interval_register_progress_func (MY_TYPE_FOO,
- *                                            my_foo_progress);
- * ]|
- *
- * Whenever a #ClutterInterval instance using the default
- * #ClutterInterval::compute_value implementation is set as an
- * interval between two #GValue of type @value_type, it will call
- * @func to establish the value depending on the given progress,
- * for instance:
- *
- * |[
- *   static gboolean
- *   my_int_progress (const GValue *a,
- *                    const GValue *b,
- *                    gdouble       progress,
- *                    GValue       *retval)
- *   {
- *     gint ia = g_value_get_int (a);
- *     gint ib = g_value_get_int (b);
- *     gint res = factor * (ib - ia) + ia;
- *
- *     g_value_set_int (retval, res);
- *
- *     return TRUE;
- *   }
- *
- *   clutter_interval_register_progress_func (G_TYPE_INT, my_int_progress);
- * ]|
- *
- * To unset a previously set progress function of a #GType, pass %NULL
- * for @func.
- *
- * Since: 1.0
- */
-void
-clutter_interval_register_progress_func (GType               value_type,
-                                         ClutterProgressFunc func)
-{
-  ProgressData *progress_func;
-
-  g_return_if_fail (value_type != G_TYPE_INVALID);
-
-  if (G_UNLIKELY (progress_funcs == NULL))
-    progress_funcs = g_hash_table_new (NULL, NULL);
-
-  progress_func =
-    g_hash_table_lookup (progress_funcs, GUINT_TO_POINTER (value_type));
-  if (G_UNLIKELY (progress_func))
-    {
-      if (func == NULL)
-        {
-          g_hash_table_remove (progress_funcs, GUINT_TO_POINTER (value_type));
-          g_slice_free (ProgressData, progress_func);
-        }
-      else
-        progress_func->func = func;
-    }
-  else
-    {
-      progress_func = g_slice_new (ProgressData);
-      progress_func->value_type = value_type;
-      progress_func->func = func;
-
-      g_hash_table_replace (progress_funcs,
-                            GUINT_TO_POINTER (value_type),
-                            progress_func);
-    }
 }
