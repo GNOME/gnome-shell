@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: metacity.gnome-2-26\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-12-13 13:41+0000\n"
-"PO-Revision-Date: 2012-02-26 09:45+0530\n"
+"POT-Creation-Date: 2012-03-11 21:56+0000\n"
+"PO-Revision-Date: 2012-03-15 07:19+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -29,17 +29,16 @@ msgstr ""
 "Language: pa\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
+msgid "Windows"
+msgstr "ਵਿੰਡੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:2
 msgid "View split on left"
 msgstr "ਖੱਬੇ ਪਾਸੇ ਵੰਡ ਵੇਖੋ"
 
-#: ../src/50-mutter-windows.xml.in.h:2
+#: ../src/50-mutter-windows.xml.in.h:3
 msgid "View split on right"
 msgstr "ਸੱਜੇ ਪਾਸੇ ਵੰਡ ਵੇਖੋ"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#| msgid "_Windows"
-msgid "Windows"
-msgstr "ਵਿੰਡੋ"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
@@ -86,12 +85,12 @@ msgstr "ਉਡੀਕੋ(_W)"
 msgid "_Force Quit"
 msgstr "ਧੱਕੇ ਨਾਲ ਬੰਦ(_F)"
 
-#: ../src/core/display.c:365
+#: ../src/core/display.c:361
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "ਕੰਪੋਜ਼ਿਸ਼ਨਿੰਗ ਲਈ %s ਐਕਸਟੈਨਸ਼ਨ ਗੁੰਮ ਹੈ"
 
-#: ../src/core/display.c:431
+#: ../src/core/display.c:427
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X ਵਿੰਡੋ ਸਿਸਟਮ ਡਿਸਪਲੇਅ '%s' ਨੂੰ ਖੋਲਣ ਵਿੱਚ ਅਸਮਰਥ\n"
@@ -140,7 +139,7 @@ msgid ""
 msgstr ""
 "ਥੀਮ ਨਹੀ ਲੱਭ ਸਕਿਆ! ਯਕੀਨੀ ਬਣਾਓ ਕਿ %s ਮੌਜੂਦ ਹੈ ਅਤੇ ਇਸ ਵਿਚ ਵਰਤਣ ਵਾਲੇ ਥੀਮ ਹਨ।\n"
 
-#: ../src/core/mutter.c:42
+#: ../src/core/mutter.c:40
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -154,15 +153,15 @@ msgstr ""
 "ਇਹ ਮੁਫਤ ਸਾਫਟਵੇਅਰ ਹੈ; ਉਤਾਰਾ ਹਾਲਤਾਂ ਲਈ ਸਰੋਤ ਵੇਖੋ।\n"
 "ਇਸ ਦੀ ਕੋਈ ਗਰੰਟੀ ਨਹੀ; ਇਥੋਂ ਤੱਕ ਕਿ ਖਰੀਦਦਾਰੀ ਜਾਂ ਖਾਸ ਮਕਸਦ ਦੀ ਪੂਰਤੀ ਲਈ ਵੀ।\n"
 
-#: ../src/core/mutter.c:56
+#: ../src/core/mutter.c:54
 msgid "Print version"
 msgstr "ਵਰਜਨ ਛਾਪੋ"
 
-#: ../src/core/mutter.c:62
+#: ../src/core/mutter.c:60
 msgid "Comma-separated list of compositor plugins"
 msgstr "ਕਾਮਿਆਂ ਨਾਲ ਵੱਖ ਕੀਤੀ ਕੰਪੋਜ਼ਿਤਰ ਪਲੱਗਇਨ ਦੀ ਲਿਸਟ"
 
-#: ../src/core/prefs.c:1067
+#: ../src/core/prefs.c:1077
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -170,14 +169,13 @@ msgstr ""
 "ਖਰਾਬ ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਜੁਗਾੜ ਬੰਦ ਕੀਤਾ ਹੈ। ਕੁਝ ਐਪਲੀਕੇਸ਼ਨ ਚੰਗੀ ਤਰਾਂ ਕੰਮ ਨਹੀਂ ਕਰ ਸਕਦੇ "
 "ਹਨ।\n"
 
-#: ../src/core/prefs.c:1142
+#: ../src/core/prefs.c:1152
 #, c-format
-#| msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "GSettings ਸਵਿੱਚ \"%2$s\" ਤੋਂ ਫੋਂਟ ਵੇਰਵੇ \"%1$s\" ਨੂੰ ਪਾਰਸ ਨਹੀਂ ਕਰ ਸਕਿਆ\n"
 
-#: ../src/core/prefs.c:1208
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -185,7 +183,7 @@ msgid ""
 msgstr ""
 "ਸੰਰਚਨਾ ਡਾਟਾਬੇਸ ਵਿੱਚ ਲੱਭੀ ਹੋਈ \"%s\" ਮਾਊਸ ਬਟਨ ਸੋਧਕ ਲਈ ਯੋਗ ਕੀਮਤ ਨਹੀਂ ਹੈ\n"
 
-#: ../src/core/prefs.c:1720
+#: ../src/core/prefs.c:1736
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -194,17 +192,17 @@ msgstr ""
 "ਸੰਰਚਨਾ ਡਾਟਾਬੇਸ ਵਿੱਚ  ਲੱਭੀ ਹੋਈ \"%s\" ਸਵਿੱਚ-ਬਾਈਡਿੰਗ \"%s\" ਲਈ ਯੋਗ ਕੀਮਤ ਨਹੀਂ "
 "ਹੈ\n"
 
-#: ../src/core/prefs.c:1817
+#: ../src/core/prefs.c:1833
 #, c-format
 msgid "Workspace %d"
 msgstr "ਵਰਕਸਪੇਸ %d"
 
-#: ../src/core/screen.c:741
+#: ../src/core/screen.c:730
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "ਡਿਸਪਲੇਅ '%2$s' ਉੱਤੇ ਸਕਰੀਨ %1$d ਗਲਤ ਹੈ\n"
 
-#: ../src/core/screen.c:757
+#: ../src/core/screen.c:746
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -214,18 +212,18 @@ msgstr ""
 "--replace "
 "ਮੌਜੂਦਾ ਵਿੰਡੋ ਮੈਨੇਜਰ ਵਰਤੋਂ।\n"
 
-#: ../src/core/screen.c:784
+#: ../src/core/screen.c:773
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "ਡਿਸਪਲੇਅ \"%2$s\" %1$d ਸਕਰੀਨ ਉੱਤੇ ਵਿੰਡੋ ਮੈਨੇਜਰ ਚੋਣ ਉਪਲੱਬਧ ਨਹੀਂ ਹੋ ਸਕੀ\n"
 
-#: ../src/core/screen.c:839
+#: ../src/core/screen.c:828
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "ਡਿਸਪਲੇਅ \"%2$s\" ਉੱਤੇ ਸਕਰੀਨ %1$d ਕੋਲ ਪਹਿਲਾਂ ਹੀ ਵਿੰਡੋ ਮੈਨੇਜਰ ਹੈ\n"
 
-#: ../src/core/screen.c:1024
+#: ../src/core/screen.c:1013
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ਡਿਸਪਲੇਅ \"%2$s\" ਉੱਤੇ ਸਕਰੀਨ %1$d ਰੀਲਿਜ਼ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ\n"
@@ -323,7 +321,7 @@ msgid "Window manager error: "
 msgstr "ਵਿੰਡੋ ਮੈਨੇਜਰ ਗਲਤੀ: "
 
 #. first time through
-#: ../src/core/window.c:7145
+#: ../src/core/window.c:7224
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -339,7 +337,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7808
+#: ../src/core/window.c:7887
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -401,14 +399,41 @@ msgid "Mutter"
 msgstr "ਮੱਟਰ"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:1
+msgid "Modifier to use for extended window management operations"
+msgstr "ਵਾਧੂ ਵਿੰਡੋ ਪਰਬੰਧ ਓਪਰੇਸ਼ਨਾਂ ਲਈ ਵਰਤਣ ਵਾਸਤੇ ਮੋਡੀਫਾਇਰ"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:2
+msgid ""
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
+msgstr ""
+"ਇਹ ਸਵਿੱਚ \"ਓਵਰਲੇ\" ਸ਼ੁਰੂ ਕਰਦੀ ਹੈ, ਜੋ ਕਿ ਵਿੰਡੋ ਸੰਖੇਪ ਤੇ ਐਪਲੀਕੇਸ਼ਨ ਚਲਾਉਣ ਸਿਸਟਮ "
+"ਦੀ ਜੋੜ ਹੈ। "
+"ਡਿਫਾਲਟ ਇਹ PC ਹਾਰਡਵੇਅਰ ਉੱਤੇ \"ਵਿੰਡੋਜ਼ ਸਵਿੱਚ\" ਨਾਲ ਵਰਤਣ ਲਈ ਹੈ। ਇਹ ਉਮੀਦ ਕੀਤੀ "
+"ਜਾਂਦੀ ਹੈ ਕਿ "
+"ਜਾਂ ਤਾਂ ਡਿਫਾਲਟ ਬਾਈਡਿੰਗ ਰੱਖੀ ਜਾਵੇ ਜਾਂ ਖਾਲੀ ਲਾਈਨ ਵਰਤੀ ਜਾਵੇ।"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
 msgstr "ਮਾਡਲ ਡਾਈਲਾਗ ਅਟੈਚਮੈਂਟ"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:2
-msgid "Cancel tab popup"
-msgstr "ਟੈਬ ਪੋਪਅੱਪ ਰੱਦ ਕਰੋ"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:4
+msgid ""
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
+msgstr ""
+"ਜਦੋਂ ਸਹੀਂ ਹੋਵੇ ਤਾਂ ਵੱਖ ਵੱਖ ਟਾਈਟਲਬਾਰ ਦੀ ਬਜਾਏ, ਮਾਡਲ ਡਾਈਲਾਗ ਮੁੱਢਲੀ ਵਿੰਡੋ ਦੇ "
+"ਟਾਈਟਲ ਬਾਰ ਨਾਲ "
+"ਜੁੜਿਆ ਉਭਰੇਗਾ ਤੇ ਮੁੱਢਲੀ ਵਿੰਡੋ ਨਾਲ ਹੀ ਹਿੱਲੇਗਾ।"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:3
+#: ../src/org.gnome.mutter.gschema.xml.in.h:5
+msgid "Live Hidden Windows"
+msgstr "ਲੁਕਵੀਆਂ ਵਿੰਡੋਜ਼ ਲਾਈਵ"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
@@ -416,26 +441,6 @@ msgstr ""
 "ਦੱਸੋ ਕਿ ਕੀ ਲੁਕਵੀਆਂ ਵਿੰਡੋਜ਼ ਚਾਲੂ ਰੱਖਣੀਆਂ ਹਨ (ਜਿਵੇਂ ਕਿ ਘੱਟੋ-ਘੱਟ ਕੀਤੀ ਵਿੰਡੋਜ਼ ਤੇ "
 "ਮੌਜੂਦਾ ਵਰਕਸਪੇਸ ਤੋਂ "
 "ਬਿਨਾਂ ਹੋਰ ਤੋਂ ਵਿੰਡੋਜ਼)।"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:4
-msgid ""
-"Determines whether the use of popup and highlight frame should be disabled "
-"for window cycling."
-msgstr ""
-"ਜਾਣੋ ਕਿ ਕੀ ਪੋਪਅੱਪ ਅਤੇ ਹਾਈਲਾਈਟ ਫਰੇਮ ਦੀ ਵਰਤੋਂ ਨੂੰ ਵਿੰਡੋਜ਼ ਦੇ ਚੱਕਰ ਦੌਰਾਨ ਬੰਦ "
-"ਕਰਨਾ ਹੈ।"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid ""
-"Determines whether workspace switching should happen for windows on all "
-"monitors or only for windows on the primary monitor."
-msgstr ""
-"ਕੀ ਵਰਕਸਪੇਸ ਬਦਲਣਾ ਸਭ ਮਾਨੀਟਰ ਦੀਆਂ ਵਿੰਡੋ ਲਈ ਹੋਵੇ ਜਾਂ ਕੇਵਲ ਪ੍ਰਾਇਮਰੀ ਮਾਨੀਟਰ ਦੀਆਂ "
-"ਵਿੰਡੋ ਲਈ ਹੀ "
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid "Draggable border width"
-msgstr "ਡਰੈਗ ਹੋਣ ਯੋਗ ਬਾਰਡਰ ਚੌੜਾਈ"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -450,27 +455,52 @@ msgstr ""
 "ਜੇ ਚਾਲੂ ਕੀਤਾ ਤਾਂ ਵਿੰਡੋਜ਼ ਨੂੰ ਖੜ੍ਹਵੀਂ ਸਕਰੀਨ ਬਾਹੀ ਉੱਤੇ ਲੈ ਜਾਣ ਨਾਲ ਉਹ ਖੜ੍ਹਵੇਂ "
 "ਰੂਪ ਵਿੱਚ ਵੱਧ ਤੋਂ ਵੱਧ "
 "ਕਰਦਾ ਹੈ ਅਤੇ ਖਿਤਿਜੀ (ਹਰੀਜੱਟਲ) ਰੂਪ ਵਿੱਚ ਉਪਲੱਬਧ ਖੇਤਰ ਵਿੱਚ ਅੱਧੇ ਥਾਂ ਲਈ ਮੁੜ-ਆਕਾਰ "
-"ਕਰਦਾ ਹੈ। ਵਿੰਡੋਜ਼ ਨੂੰ ਉੱਤੇ ਸਕਰੀਨ ਬਾਹੀ ਵਿੱਚ ਲੈ ਕੇ ਜਾਣ ਨਾਲ ਉਹ ਪੂਰੀ ਤਰ੍ਹਾਂ ਵੱਧ "
-"ਤੋਂ ਵੱਧ ਹੁੰਦਾ ਹੈ।"
+"ਕਰਦਾ ਹੈ। ਵਿੰਡੋਜ਼ "
+"ਨੂੰ ਉੱਤੇ ਸਕਰੀਨ ਬਾਹੀ ਵਿੱਚ ਲੈ ਕੇ ਜਾਣ ਨਾਲ ਉਹ ਪੂਰੀ ਤਰ੍ਹਾਂ ਵੱਧ ਤੋਂ ਵੱਧ ਹੁੰਦਾ ਹੈ।"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
-msgid "Live Hidden Windows"
-msgstr "ਲੁਕਵੀਆਂ ਵਿੰਡੋਜ਼ ਲਾਈਵ"
+msgid "Workspaces are managed dynamically"
+msgstr "ਵਰਕਸਪੇਸ ਦਾ ਪਰਬੰਧ ਚਲਵੇਂ ਰੂਪ ਵਿੱਚ ਕੀਤਾ ਜਾਂਦਾ ਹੈ"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:10
-msgid "Modifier to use for extended window management operations"
-msgstr "ਵਾਧੂ ਵਿੰਡੋ ਪਰਬੰਧ ਓਪਰੇਸ਼ਨਾਂ ਲਈ ਵਰਤਣ ਵਾਸਤੇ ਮੋਡੀਫਾਇਰ"
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+"ਦੱਸੋ ਕਿ ਕੀ ਵਰਕਸਪੇਸ ਨੂੰ ਚਲਵੇਂ ਰੂਪ ਵਿੱਚ ਰੱਖਣਾ ਹੈ ਜਾਂ ਵਰਕਸਪੇਸ ਦੀ ਗਿਣਤੀ ਸਥਿਰ ਹੋਵੇ "
+"(ਜੋ ਕਿ org."
+"gnome.desktop.wm.preferences ਵਿੱਚ num-workspaces ਕੁੰਜੀ ਰਾਹੀਂ ਦੱਸੀ ਜਾਂਦੀ ਹੈ)।"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:11
+msgid "Workspaces only on primary"
+msgstr "ਵਰਕਸਪੇਸ ਕੇਵਲ ਪ੍ਰਾਇਮਰੀ ਉੱਤੇ ਹੀ"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"ਕੀ ਵਰਕਸਪੇਸ ਬਦਲਣਾ ਸਭ ਮਾਨੀਟਰ ਦੀਆਂ ਵਿੰਡੋ ਲਈ ਹੋਵੇ ਜਾਂ ਕੇਵਲ ਪ੍ਰਾਇਮਰੀ ਮਾਨੀਟਰ ਦੀਆਂ "
+"ਵਿੰਡੋ ਲਈ ਹੀ "
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "No tab popup"
 msgstr "ਕੋਈ ਟੈਬ ਪੋਪਅੱਪ ਨਹੀਂ"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
-#| msgid "Remove Window From Top"
-msgid "Select window from tab popup"
-msgstr "ਟੈਬ ਪੋਪਅੱਪ ਤੋਂ ਵਿੰਡੋ ਚੁਣੋ"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr ""
+"ਜਾਣੋ ਕਿ ਕੀ ਪੋਪਅੱਪ ਅਤੇ ਹਾਈਲਾਈਟ ਫਰੇਮ ਦੀ ਵਰਤੋਂ ਨੂੰ ਵਿੰਡੋਜ਼ ਦੇ ਚੱਕਰ ਦੌਰਾਨ ਬੰਦ "
+"ਕਰਨਾ ਹੈ।"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr "ਡਰੈਗ ਹੋਣ ਯੋਗ ਬਾਰਡਰ ਚੌੜਾਈ"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -479,79 +509,60 @@ msgstr ""
 "ਅਦਿੱਖ ਬਾਰਡਰ "
 "ਨੂੰ ਇਹ ਮੁੱਲ ਦੇ ਬਰਾਬਰ ਕਰਨ ਲਈ ਵਧਾਇਆ ਜਾਵੇਗਾ।"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
-msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
-msgstr ""
-"ਇਹ ਸਵਿੱਚ \"ਓਵਰਲੇ\" ਸ਼ੁਰੂ ਕਰਦੀ ਹੈ, ਜੋ ਕਿ ਵਿੰਡੋ ਸੰਖੇਪ ਤੇ ਐਪਲੀਕੇਸ਼ਨ ਚਲਾਉਣ ਸਿਸਟਮ "
-"ਦੀ ਜੋੜ ਹੈ। "
-"ਡਿਫਾਲਟ ਇਹ PC ਹਾਰਡਵੇਅਰ ਉੱਤੇ \"ਵਿੰਡੋਜ਼ ਸਵਿੱਚ\" ਨਾਲ ਵਰਤਣ ਲਈ ਹੈ। ਇਹ ਉਮੀਦ ਕੀਤੀ "
-"ਜਾਂਦੀ ਹੈ ਕਿ "
-"ਜਾਂ ਤਾਂ ਡਿਫਾਲਟ ਬਾਈਡਿੰਗ ਰੱਖੀ ਜਾਵੇ ਜਾਂ ਖਾਲੀ ਲਾਈਨ ਵਰਤੀ ਜਾਵੇ।"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Select window from tab popup"
+msgstr "ਟੈਬ ਪੋਪਅੱਪ ਤੋਂ ਵਿੰਡੋ ਚੁਣੋ"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
-msgid ""
-"When true, instead of having independent titlebars, modal dialogs appear "
-"attached to the titlebar of the parent window and are moved together with "
-"the parent window."
-msgstr ""
-"ਜਦੋਂ ਸਹੀਂ ਹੋਵੇ ਤਾਂ ਵੱਖ ਵੱਖ ਟਾਈਟਲਬਾਰ ਦੀ ਬਜਾਏ, ਮਾਡਲ ਡਾਈਲਾਗ ਮੁੱਢਲੀ ਵਿੰਡੋ ਦੇ "
-"ਟਾਈਟਲ ਬਾਰ ਨਾਲ "
-"ਜੁੜਿਆ ਉਭਰੇਗਾ ਤੇ ਮੁੱਢਲੀ ਵਿੰਡੋ ਨਾਲ ਹੀ ਹਿੱਲੇਗਾ।"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
-msgid "Workspaces only on primary"
-msgstr "ਵਰਕਸਪੇਸ ਕੇਵਲ ਪ੍ਰਾਇਮਰੀ ਉੱਤੇ ਹੀ"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid "Cancel tab popup"
+msgstr "ਟੈਬ ਪੋਪਅੱਪ ਰੱਦ ਕਰੋ"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "ਵਰਤੋਂ: %s\n"
 
-#: ../src/ui/frames.c:1157
+#: ../src/ui/frames.c:1158
 msgid "Close Window"
 msgstr "ਵਿੰਡੋ ਬੰਦ ਕਰੋ"
 
-#: ../src/ui/frames.c:1160
+#: ../src/ui/frames.c:1161
 msgid "Window Menu"
 msgstr "ਵਿੰਡੋ ਮੇਨੂ"
 
-#: ../src/ui/frames.c:1163
+#: ../src/ui/frames.c:1164
 msgid "Minimize Window"
 msgstr "ਵਿੰਡੋ ਘੱਟੋ-ਘੱਟ"
 
-#: ../src/ui/frames.c:1166
+#: ../src/ui/frames.c:1167
 msgid "Maximize Window"
 msgstr "ਵਿੰਡੋ ਵੱਧੋ-ਵੱਧ"
 
-#: ../src/ui/frames.c:1169
+#: ../src/ui/frames.c:1170
 msgid "Restore Window"
 msgstr "ਵਿੰਡੋ ਮੁੜ-ਸਟੋਰ"
 
-#: ../src/ui/frames.c:1172
+#: ../src/ui/frames.c:1173
 msgid "Roll Up Window"
 msgstr "ਵਿੰਡੋ ਸਮੇਟੋ"
 
-#: ../src/ui/frames.c:1175
+#: ../src/ui/frames.c:1176
 msgid "Unroll Window"
 msgstr "ਵਿੰਡੋ ਫੈਲਾਓ"
 
-#: ../src/ui/frames.c:1178
+#: ../src/ui/frames.c:1179
 msgid "Keep Window On Top"
 msgstr "ਵਿੰਡੋ ਉੱਤੇ ਰੱਖੋ"
 
-#: ../src/ui/frames.c:1181
+#: ../src/ui/frames.c:1182
 msgid "Remove Window From Top"
 msgstr "ਵਿੰਡੋ ਉੱਤੇ ਤੋਂ ਹਟਾਓ"
 
-#: ../src/ui/frames.c:1184
+#: ../src/ui/frames.c:1185
 msgid "Always On Visible Workspace"
 msgstr "ਹਮੇਸ਼ਾ ਉਪਲੱਬਧ ਵਰਕਸਪੇਸ 'ਚ"
 
-#: ../src/ui/frames.c:1187
+#: ../src/ui/frames.c:1188
 msgid "Put Window On Only One Workspace"
 msgstr "ਵਿੰਡੋ ਨੂੰ ਸਿਰਫ਼ ਇੱਕ ਵਰਕਸਪੇਸ ਉੱਤੇ ਰੱਖੋ"
 
