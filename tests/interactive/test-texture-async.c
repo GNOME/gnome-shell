@@ -92,6 +92,8 @@ gboolean task (gpointer user_data)
   for (i = 0; i < 3; i++)
     {
       clutter_actor_set_position (image[i], 50 + i * 100, 0 + i * 50);
+      clutter_actor_set_depth (image[i], -2500);
+
       clone[i] = clutter_clone_new (image[i]);
       g_signal_connect (image[i], "size-change",
                         G_CALLBACK (size_change_cb), clone[i]);
@@ -101,10 +103,10 @@ gboolean task (gpointer user_data)
 
   for (i = 0; i < 3; i++)
     {
-      clutter_actor_set_depth (image[i], -2500);
-      clutter_actor_animate (image[i], CLUTTER_LINEAR, 5000,
-                             "depth", 0.0,
-                             NULL);
+      clutter_actor_save_easing_state (image[i]);
+      clutter_actor_set_easing_duration (image[i], 5000);
+      clutter_actor_set_depth (image[i], 0);
+      clutter_actor_restore_easing_state (image[i]);
     }
 
   return FALSE;
