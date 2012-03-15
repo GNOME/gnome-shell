@@ -17122,6 +17122,7 @@ ClutterTransition *
 clutter_actor_get_transition (ClutterActor *self,
                               const char   *name)
 {
+  TransitionClosure *clos;
   const ClutterAnimationInfo *info;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
