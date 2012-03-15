@@ -642,6 +642,18 @@ void                            clutter_actor_apply_relative_transform_to_point 
 void                            clutter_actor_get_transformation_matrix         (ClutterActor               *self,
                                                                                  CoglMatrix                 *matrix);
 
+/* Implicit animations */
+void                            clutter_actor_save_easing_state                 (ClutterActor               *self);
+void                            clutter_actor_restore_easing_state              (ClutterActor               *self);
+void                            clutter_actor_set_easing_mode                   (ClutterActor               *self,
+                                                                                 ClutterAnimationMode        mode);
+ClutterAnimationMode            clutter_actor_get_easing_mode                   (ClutterActor               *self);
+void                            clutter_actor_set_easing_duration               (ClutterActor               *self,
+                                                                                 guint                       msecs);
+guint                           clutter_actor_get_easing_duration               (ClutterActor               *self);
+ClutterTransition *             clutter_actor_get_transition                    (ClutterActor               *self,
+                                                                                 const char                 *name);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_H__ */

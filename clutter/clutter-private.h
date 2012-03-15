@@ -75,6 +75,8 @@ typedef struct _ClutterMainContext      ClutterMainContext;
 #define CLUTTER_PARAM_WRITABLE  (G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS)
 #define CLUTTER_PARAM_READWRITE (G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS)
 
+#define CLUTTER_PARAM_ANIMATABLE        (1 << G_PARAM_USER_SHIFT)
+
 /* automagic interning of a static string */
 #define I_(str)  (g_intern_static_string ((str)))
 

@@ -113,6 +113,7 @@ typedef struct _SizeRequest             SizeRequest;
 
 typedef struct _ClutterLayoutInfo       ClutterLayoutInfo;
 typedef struct _ClutterTransformInfo    ClutterTransformInfo;
+typedef struct _ClutterAnimationInfo    ClutterAnimationInfo;
 
 /* Internal helper struct to represent a point that can be stored in
    either direct pixel coordinates or as a fraction of the actor's
@@ -202,10 +203,38 @@ struct _ClutterTransformInfo
 
   /* anchor point */
   AnchorCoord anchor;
+
+  /* depth */
+  gfloat depth;
 };
 
 const ClutterTransformInfo *    _clutter_actor_get_transform_info_or_defaults   (ClutterActor *self);
 ClutterTransformInfo *          _clutter_actor_get_transform_info               (ClutterActor *self);
+
+typedef struct _AState {
+  guint easing_duration;
+  ClutterAnimationMode easing_mode;
+} AState;
+
+struct _ClutterAnimationInfo
+{
+  GArray *states;
+  AState *cur_state;
+
+  GHashTable *transitions;
+};
+
+const ClutterAnimationInfo *    _clutter_actor_get_animation_info_or_defaults   (ClutterActor *self);
+ClutterAnimationInfo *          _clutter_actor_get_animation_info               (ClutterActor *self);
+
+ClutterTransition *             _clutter_actor_create_transition                (ClutterActor *self,
+                                                                                 GParamSpec   *pspec,
+                                                                                 ...);
+ClutterTransition *             _clutter_actor_get_transition                   (ClutterActor *self,
+                                                                                 GParamSpec   *pspec);
+void                            _clutter_actor_update_transition                (ClutterActor *self,
+                                                                                 GParamSpec   *pspec,
+                                                                                 ...);
 
 gboolean      _clutter_actor_foreach_child              (ClutterActor *self,
                                                          ClutterForeachCallback callback,

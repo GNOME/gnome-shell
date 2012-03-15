@@ -6,7 +6,7 @@
  * Authored By Matthew Allum  <mallum@openedhand.com>
  *
  * Copyright (C) 2006, 2007, 2008 OpenedHand Ltd
- * Copyright (C) 2009, 2010 Intel Corp
+ * Copyright (C) 2009, 2010, 2011, 2012 Intel Corp
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -239,6 +239,50 @@
  *                        NULL);
  *   </programlisting></informalexample>
  * </refsect2>
+ *
+ * <refsect2 id="ClutterActor-animatable-properties">
+ *   <title>Animatable properties</title>
+ *   <para>Certain properties on #ClutterActor are marked as "animatable";
+ *   these properties will be automatically tweened between the current
+ *   value and the new value when one is set.</para>
+ *   <para>For backward compatibility, animatable properties will only be
+ *   tweened if the easing duration is greater than 0, or if a new easing
+ *   state is set, for instance the following example:</para>
+ *   <informalexample><programlisting>
+ * clutter_actor_save_easing_state (actor);
+ * clutter_actor_set_position (actor, 200, 200);
+ * clutter_actor_restore_easing_state (actor);
+ *   </programlisting></informalexample>
+ *   will tween the actor to the (200, 200) coordinates using the default
+ *   easing mode and duration of a new easing state. The example above is
+ *   equivalent to the following code:</para>
+ *   <informalexample><programlisting>
+ * clutter_actor_set_easing_mode (actor, CLUTTER_EASE_OUT_CUBIC);
+ * clutter_actor_set_easing_duration (actor, 250);
+ * clutter_actor_set_position (actor, 200, 200);
+ * clutter_actor_restore_easing_state (actor);
+ *   </programlisting></informalexample>
+ *   <para>It is possible to nest easing states to tween animatable
+ *   properties using different modes and durations, for instance:</para>
+ *   <informalexample><programlisting>
+ * clutter_actor_save_easing_state (actor); /&ast; outer state &ast;/
+ *
+ * /&ast; set the duration of the animation to 2 seconds and change position &ast;/
+ * clutter_actor_set_easing_duration (actor, 2000);
+ * clutter_actor_set_position (actor, 0, 0);
+ *
+ * clutter_actor_save_easing_state (actor); /&ast; inner state &ast;/
+ *
+ * /&ast; set the duration of the animation to 5 seconds and change depth and opacity &ast;/
+ * clutter_actor_set_easing_duration (actor, 5000);
+ * clutter_actor_set_depth (actor, 200);
+ * clutter_actor_set_opacity (actor, 0);
+ *
+ * clutter_actor_restore_easing_state (actor);
+ *
+ * clutter_actor_restore_easing_state (actor);
+ *   </programlisting></informalexample>
+ * </refsect2>
  */
 
 /**
@@ -320,7 +364,9 @@
 
 #include <math.h>
 
-#include "cogl/cogl.h"
+#include <gobject/gvaluecollector.h>
+
+#include <cogl/cogl.h>
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #define CLUTTER_ENABLE_EXPERIMENTAL_API
@@ -345,9 +391,12 @@
 #include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
 #include "clutter-profile.h"
+#include "clutter-property-transition.h"
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
 #include "clutter-stage-private.h"
+#include "clutter-timeline.h"
+#include "clutter-transition.h"
 #include "clutter-units.h"
 
 #include "deprecated/clutter-actor.h"
@@ -396,9 +445,6 @@ struct _ClutterActorPrivate
    */
   ClutterActorBox allocation;
   ClutterAllocationFlags allocation_flags;
-
-  /* depth */
-  gfloat z;
 
   /* clip, in actor coordinates */
   cairo_rectangle_t clip;
@@ -712,6 +758,9 @@ static ClutterPaintVolume *_clutter_actor_get_paint_volume_mutable (ClutterActor
 
 static guint8   clutter_actor_get_paint_opacity_internal        (ClutterActor *self);
 
+static inline void clutter_actor_set_background_color_internal (ClutterActor *self,
+                                                                const ClutterColor *color);
+
 static void on_layout_manager_changed (ClutterLayoutManager *manager,
                                        ClutterActor         *self);
 
@@ -727,6 +776,7 @@ static void on_layout_manager_changed (ClutterLayoutManager *manager,
 static GQuark quark_shader_data = 0;
 static GQuark quark_actor_layout_info = 0;
 static GQuark quark_actor_transform_info = 0;
+static GQuark quark_actor_animation_info = 0;
 
 G_DEFINE_TYPE_WITH_CODE (ClutterActor,
                          clutter_actor,
@@ -2569,8 +2619,8 @@ clutter_actor_real_apply_transform (ClutterActor *self,
                              priv->allocation.y1,
                              0.0);
 
-      if (priv->z)
-        cogl_matrix_translate (transform, 0, 0, priv->z);
+      if (info->depth)
+        cogl_matrix_translate (transform, 0, 0, info->depth);
 
       /*
        * because the rotation involves translations, we must scale
@@ -3588,6 +3638,8 @@ static const ClutterTransformInfo default_transform_info = {
   1.0, 1.0, { 0, },     /* scale */
 
   { 0, },               /* anchor */
+
+  0.0,                  /* depth */
 };
 
 /*< private >
@@ -3705,6 +3757,60 @@ clutter_actor_set_rotation_angle_internal (ClutterActor      *self,
   clutter_actor_queue_redraw (self);
 }
 
+static inline void
+clutter_actor_set_rotation_angle (ClutterActor      *self,
+                                  ClutterRotateAxis  axis,
+                                  gdouble            angle)
+{
+  ClutterTransformInfo *info;
+
+  info = _clutter_actor_get_transform_info (self);
+
+  if (clutter_actor_get_easing_duration (self) != 0)
+    {
+      ClutterTransition *transition;
+      GParamSpec *pspec = NULL;
+      double *cur_angle_p = NULL;
+
+      switch (axis)
+        {
+        case CLUTTER_X_AXIS:
+          cur_angle_p = &info->rx_angle;
+          pspec = obj_props[PROP_ROTATION_ANGLE_X];
+          break;
+
+        case CLUTTER_Y_AXIS:
+          cur_angle_p = &info->ry_angle;
+          pspec = obj_props[PROP_ROTATION_ANGLE_Y];
+          break;
+
+        case CLUTTER_Z_AXIS:
+          cur_angle_p = &info->rz_angle;
+          pspec = obj_props[PROP_ROTATION_ANGLE_Z];
+          break;
+        }
+
+      g_assert (pspec != NULL);
+      g_assert (cur_angle_p != NULL);
+
+      transition = _clutter_actor_get_transition (self, pspec);
+      if (transition == NULL)
+        {
+          transition = _clutter_actor_create_transition (self, pspec,
+                                                         *cur_angle_p,
+                                                         angle);
+          clutter_timeline_start (CLUTTER_TIMELINE (transition));
+        }
+      else
+        _clutter_actor_update_transition (self, pspec, angle);
+
+      self->priv->transform_valid = FALSE;
+      clutter_actor_queue_redraw (self);
+    }
+  else
+    clutter_actor_set_rotation_angle_internal (self, axis, angle);
+}
+
 /*< private >
  * clutter_actor_set_rotation_center_internal:
  * @self: a #ClutterActor
@@ -3762,6 +3868,50 @@ clutter_actor_set_rotation_center_internal (ClutterActor        *self,
   clutter_actor_queue_redraw (self);
 }
 
+static void
+clutter_actor_animate_scale_factor (ClutterActor *self,
+                                    double        old_factor,
+                                    double        new_factor,
+                                    GParamSpec   *pspec)
+{
+  ClutterTransition *transition;
+
+  transition = _clutter_actor_get_transition (self, pspec);
+  if (transition == NULL)
+    {
+      transition = _clutter_actor_create_transition (self, pspec,
+                                                     old_factor,
+                                                     new_factor);
+      clutter_timeline_start (CLUTTER_TIMELINE (transition));
+    }
+  else
+    _clutter_actor_update_transition (self, pspec, new_factor);
+
+
+  self->priv->transform_valid = FALSE;
+  clutter_actor_queue_redraw (self);
+}
+
+static void
+clutter_actor_set_scale_factor_internal (ClutterActor *self,
+                                         double factor,
+                                         GParamSpec *pspec)
+{
+  GObject *obj = G_OBJECT (self);
+  ClutterTransformInfo *info;
+
+  info = _clutter_actor_get_transform_info (self);
+
+  if (pspec == obj_props[PROP_SCALE_X])
+    info->scale_x = factor;
+  else
+    info->scale_y = factor;
+
+  self->priv->transform_valid = FALSE;
+  clutter_actor_queue_redraw (self);
+  g_object_notify_by_pspec (obj, pspec);
+}
+
 static inline void
 clutter_actor_set_scale_factor (ClutterActor      *self,
                                 ClutterRotateAxis  axis,
@@ -3769,6 +3919,7 @@ clutter_actor_set_scale_factor (ClutterActor      *self,
 {
   GObject *obj = G_OBJECT (self);
   ClutterTransformInfo *info;
+  GParamSpec *pspec;
 
   info = _clutter_actor_get_transform_info (self);
 
@@ -3777,22 +3928,26 @@ clutter_actor_set_scale_factor (ClutterActor      *self,
   switch (axis)
     {
     case CLUTTER_X_AXIS:
-      info->scale_x = factor;
-      g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_X]);
+      pspec = obj_props[PROP_SCALE_X];
+
+      if (clutter_actor_get_easing_duration (self) != 0)
+        clutter_actor_animate_scale_factor (self, info->scale_x, factor, pspec);
+      else
+        clutter_actor_set_scale_factor_internal (self, factor, pspec);
       break;
 
     case CLUTTER_Y_AXIS:
-      info->scale_y = factor;
-      g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_Y]);
+      pspec = obj_props[PROP_SCALE_Y];
+
+      if (clutter_actor_get_easing_duration (self) != 0)
+        clutter_actor_animate_scale_factor (self, info->scale_y, factor, pspec);
+      else
+        clutter_actor_set_scale_factor_internal (self, factor, pspec);
       break;
 
     default:
       g_assert_not_reached ();
     }
-
-  self->priv->transform_valid = FALSE;
-
-  clutter_actor_queue_redraw (self);
 
   g_object_thaw_notify (obj);
 }
@@ -4047,21 +4202,21 @@ clutter_actor_set_property (GObject      *object,
       break;
 
     case PROP_ROTATION_ANGLE_X:
-      clutter_actor_set_rotation_angle_internal (actor,
-                                                 CLUTTER_X_AXIS,
-                                                 g_value_get_double (value));
+      clutter_actor_set_rotation_angle (actor,
+                                        CLUTTER_X_AXIS,
+                                        g_value_get_double (value));
       break;
 
     case PROP_ROTATION_ANGLE_Y:
-      clutter_actor_set_rotation_angle_internal (actor,
-                                                 CLUTTER_Y_AXIS,
-                                                 g_value_get_double (value));
+      clutter_actor_set_rotation_angle (actor,
+                                        CLUTTER_Y_AXIS,
+                                        g_value_get_double (value));
       break;
 
     case PROP_ROTATION_ANGLE_Z:
-      clutter_actor_set_rotation_angle_internal (actor,
-                                                 CLUTTER_Z_AXIS,
-                                                 g_value_get_double (value));
+      clutter_actor_set_rotation_angle (actor,
+                                        CLUTTER_Z_AXIS,
+                                        g_value_get_double (value));
       break;
 
     case PROP_ROTATION_CENTER_X:
@@ -4899,6 +5054,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   quark_shader_data = g_quark_from_static_string ("-clutter-actor-shader-data");
   quark_actor_layout_info = g_quark_from_static_string ("-clutter-actor-layout-info");
   quark_actor_transform_info = g_quark_from_static_string ("-clutter-actor-transform-info");
+  quark_actor_animation_info = g_quark_from_static_string ("-clutter-actor-animation-info");
 
   object_class->constructor = clutter_actor_constructor;
   object_class->set_property = clutter_actor_set_property;
@@ -4934,6 +5090,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * X coordinate of the actor in pixels. If written, forces a fixed
    * position for the actor. If read, returns the fixed position if any,
    * otherwise the allocation if available, otherwise 0.
+   *
+   * The #ClutterActor:x property is animatable.
    */
   obj_props[PROP_X] =
     g_param_spec_float ("x",
@@ -4941,7 +5099,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("X coordinate of the actor"),
                         -G_MAXFLOAT, G_MAXFLOAT,
                         0.0,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:y:
@@ -4949,6 +5109,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * Y coordinate of the actor in pixels. If written, forces a fixed
    * position for the actor.  If read, returns the fixed position if
    * any, otherwise the allocation if available, otherwise 0.
+   *
+   * The #ClutterActor:y property is animatable.
    */
   obj_props[PROP_Y] =
     g_param_spec_float ("y",
@@ -4956,7 +5118,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Y coordinate of the actor"),
                         -G_MAXFLOAT, G_MAXFLOAT,
                         0.0,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:width:
@@ -4964,6 +5128,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * Width of the actor (in pixels). If written, forces the minimum and
    * natural size request of the actor to the given width. If read, returns
    * the allocated width if available, otherwise the width request.
+   *
+   * The #ClutterActor:width property is animatable.
    */
   obj_props[PROP_WIDTH] =
     g_param_spec_float ("width",
@@ -4971,7 +5137,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Width of the actor"),
                         0.0, G_MAXFLOAT,
                         0.0,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:height:
@@ -4979,6 +5147,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * Height of the actor (in pixels).  If written, forces the minimum and
    * natural size request of the actor to the given height. If read, returns
    * the allocated height if available, otherwise the height request.
+   *
+   * The #ClutterActor:height property is animatable.
    */
   obj_props[PROP_HEIGHT] =
     g_param_spec_float ("height",
@@ -4986,7 +5156,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Height of the actor"),
                         0.0, G_MAXFLOAT,
                         0.0,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:fixed-x:
@@ -5253,7 +5425,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor:depth:
    *
-   * The position of the actor on the Z axis
+   * The position of the actor on the Z axis.
+   *
+   * The #ClutterActor:depth property is relative to the parent's
+   * modelview matrix.
+   *
+   * The #ClutterActor:depth property is animatable.
    *
    * Since: 0.6
    */
@@ -5263,13 +5440,17 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Position on the Z axis"),
                         -G_MAXFLOAT, G_MAXFLOAT,
                         0.0,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:opacity:
    *
    * Opacity of an actor, between 0 (fully transparent) and
    * 255 (fully opaque)
+   *
+   * The #ClutterActor:opacity property is animatable.
    */
   obj_props[PROP_OPACITY] =
     g_param_spec_uint ("opacity",
@@ -5277,7 +5458,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                        P_("Opacity of an actor"),
                        0, 255,
                        255,
-                       CLUTTER_PARAM_READWRITE);
+                       G_PARAM_READWRITE |
+                       G_PARAM_STATIC_STRINGS |
+                       CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:offscreen-redirect:
@@ -5401,7 +5584,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor:scale-x:
    *
-   * The horizontal scale of the actor
+   * The horizontal scale of the actor.
+   *
+   * The #ClutterActor:scale-x property is animatable.
    *
    * Since: 0.6
    */
@@ -5411,12 +5596,16 @@ clutter_actor_class_init (ClutterActorClass *klass)
                          P_("Scale factor on the X axis"),
                          0.0, G_MAXDOUBLE,
                          1.0,
-                         CLUTTER_PARAM_READWRITE);
+                         G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS |
+                         CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:scale-y:
    *
-   * The vertical scale of the actor
+   * The vertical scale of the actor.
+   *
+   * The #ClutterActor:scale-y property is animatable.
    *
    * Since: 0.6
    */
@@ -5426,7 +5615,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                          P_("Scale factor on the Y axis"),
                          0.0, G_MAXDOUBLE,
                          1.0,
-                         CLUTTER_PARAM_READWRITE);
+                         G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS |
+                         CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:scale-center-x:
@@ -5476,7 +5667,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor:rotation-angle-x:
    *
-   * The rotation angle on the X axis
+   * The rotation angle on the X axis.
+   *
+   * The #ClutterActor:rotation-angle-x property is animatable.
    *
    * Since: 0.6
    */
@@ -5486,12 +5679,16 @@ clutter_actor_class_init (ClutterActorClass *klass)
                          P_("The rotation angle on the X axis"),
                          -G_MAXDOUBLE, G_MAXDOUBLE,
                          0.0,
-                         CLUTTER_PARAM_READWRITE);
+                         G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS |
+                         CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:rotation-angle-y:
    *
    * The rotation angle on the Y axis
+   *
+   * The #ClutterActor:rotation-angle-y property is animatable.
    *
    * Since: 0.6
    */
@@ -5501,12 +5698,16 @@ clutter_actor_class_init (ClutterActorClass *klass)
                          P_("The rotation angle on the Y axis"),
                          -G_MAXDOUBLE, G_MAXDOUBLE,
                          0.0,
-                         CLUTTER_PARAM_READWRITE);
+                         G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS |
+                         CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:rotation-angle-z:
    *
    * The rotation angle on the Z axis
+   *
+   * The #ClutterActor:rotation-angle-z property is animatable.
    *
    * Since: 0.6
    */
@@ -5516,7 +5717,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                          P_("The rotation angle on the Z axis"),
                          -G_MAXDOUBLE, G_MAXDOUBLE,
                          0.0,
-                         CLUTTER_PARAM_READWRITE);
+                         G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS |
+                         CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:rotation-center-x:
@@ -5869,6 +6072,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * Paints a solid fill of the actor's allocation using the specified
    * color.
    *
+   * The #ClutterActor:background-color property is animatable.
+   *
    * Since: 1.10
    */
   obj_props[PROP_BACKGROUND_COLOR] =
@@ -5876,7 +6081,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                               P_("Background color"),
                               P_("The actor's background color"),
                               CLUTTER_COLOR_Transparent,
-                              CLUTTER_PARAM_READWRITE);
+                              G_PARAM_READWRITE |
+                              G_PARAM_STATIC_STRINGS |
+                              CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:first-child:
@@ -8528,8 +8735,8 @@ clutter_actor_set_size (ClutterActor *self,
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  clutter_actor_set_width_internal (self, width);
-  clutter_actor_set_height_internal (self, height);
+  clutter_actor_set_width (self, width);
+  clutter_actor_set_height (self, height);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -8852,11 +9059,34 @@ clutter_actor_set_width (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  g_object_freeze_notify (G_OBJECT (self));
+  if (clutter_actor_get_easing_duration (self) != 0)
+    {
+      ClutterTransition *transition;
 
-  clutter_actor_set_width_internal (self, width);
+      transition = _clutter_actor_get_transition (self, obj_props[PROP_WIDTH]);
+      if (transition == NULL)
+        {
+          float old_width = clutter_actor_get_width (self);
 
-  g_object_thaw_notify (G_OBJECT (self));
+          transition = _clutter_actor_create_transition (self,
+                                                         obj_props[PROP_WIDTH],
+                                                         old_width,
+                                                         width);
+          clutter_timeline_start (CLUTTER_TIMELINE (transition));
+        }
+      else
+        _clutter_actor_update_transition (self, obj_props[PROP_WIDTH], width);
+
+      clutter_actor_queue_relayout (self);
+    }
+  else
+    {
+      g_object_freeze_notify (G_OBJECT (self));
+
+      clutter_actor_set_width_internal (self, width);
+
+      g_object_thaw_notify (G_OBJECT (self));
+    }
 }
 
 /**
@@ -8880,11 +9110,78 @@ clutter_actor_set_height (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  g_object_freeze_notify (G_OBJECT (self));
+  if (clutter_actor_get_easing_duration (self) != 0)
+    {
+      ClutterTransition *transition;
 
-  clutter_actor_set_height_internal (self, height);
+      transition = _clutter_actor_get_transition (self, obj_props[PROP_HEIGHT]);
+      if (transition ==  NULL)
+        {
+          float old_height = clutter_actor_get_height (self);
 
-  g_object_thaw_notify (G_OBJECT (self));
+          transition = _clutter_actor_create_transition (self,
+                                                         obj_props[PROP_HEIGHT],
+                                                         old_height,
+                                                         height);
+          clutter_timeline_start (CLUTTER_TIMELINE (transition));
+        }
+      else
+        _clutter_actor_update_transition (self, obj_props[PROP_HEIGHT], height);
+
+      clutter_actor_queue_relayout (self);
+    }
+  else
+    {
+      g_object_freeze_notify (G_OBJECT (self));
+
+      clutter_actor_set_height_internal (self, height);
+
+      g_object_thaw_notify (G_OBJECT (self));
+    }
+}
+
+static inline void
+clutter_actor_set_x_internal (ClutterActor *self,
+                              float         x)
+{
+  ClutterActorPrivate *priv = self->priv;
+  ClutterLayoutInfo *linfo;
+  ClutterActorBox old = { 0, };
+
+  linfo = _clutter_actor_get_layout_info (self);
+
+  if (priv->position_set && linfo->fixed_x == x)
+    return;
+
+  clutter_actor_store_old_geometry (self, &old);
+
+  linfo->fixed_x = x;
+  clutter_actor_set_fixed_position_set (self, TRUE);
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
+
+  clutter_actor_queue_relayout (self);
+}
+
+static inline void
+clutter_actor_set_y_internal (ClutterActor *self,
+                              float         y)
+{
+  ClutterActorPrivate *priv = self->priv;
+  ClutterLayoutInfo *linfo;
+  ClutterActorBox old = { 0, };
+
+  linfo = _clutter_actor_get_layout_info (self);
+
+  if (priv->position_set && linfo->fixed_y == y)
+    return;
+
+  clutter_actor_store_old_geometry (self, &old);
+
+  linfo->fixed_y = y;
+  clutter_actor_set_fixed_position_set (self, TRUE);
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
 }
 
 /**
@@ -8897,33 +9194,41 @@ clutter_actor_set_height (ClutterActor *self,
  * Overrides any layout manager and forces a fixed position for
  * the actor.
  *
+ * The #ClutterActor:x property is animatable.
+ *
  * Since: 0.6
  */
 void
 clutter_actor_set_x (ClutterActor *self,
                      gfloat        x)
 {
-  ClutterActorBox old = { 0, };
-  ClutterActorPrivate *priv;
-  ClutterLayoutInfo *info;
+  const ClutterLayoutInfo *linfo;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
+  linfo = _clutter_actor_get_layout_info_or_defaults (self);
 
-  info = _clutter_actor_get_layout_info (self);
+  if (clutter_actor_get_easing_duration (self) != 0)
+    {
+      ClutterTransition *transition;
 
-  if (priv->position_set && info->fixed_x == x)
-    return;
+      transition = _clutter_actor_get_transition (self, obj_props[PROP_X]);
+      if (transition == NULL)
+        {
+          transition = _clutter_actor_create_transition (self,
+                                                         obj_props[PROP_X],
+                                                         linfo->fixed_x,
+                                                         x);
 
-  clutter_actor_store_old_geometry (self, &old);
+          clutter_timeline_start (CLUTTER_TIMELINE (transition));
+        }
+      else
+        _clutter_actor_update_transition (self, obj_props[PROP_X], x);
 
-  info->fixed_x = x;
-  clutter_actor_set_fixed_position_set (self, TRUE);
-
-  clutter_actor_notify_if_geometry_changed (self, &old);
-
-  clutter_actor_queue_relayout (self);
+      clutter_actor_queue_relayout (self);
+    }
+  else
+    clutter_actor_set_x_internal (self, x);
 }
 
 /**
@@ -8936,31 +9241,41 @@ clutter_actor_set_x (ClutterActor *self,
  * Overrides any layout manager and forces a fixed position for
  * the actor.
  *
+ * The #ClutterActor:y property is animatable.
+ *
  * Since: 0.6
  */
 void
 clutter_actor_set_y (ClutterActor *self,
                      gfloat        y)
 {
-  ClutterActorBox old = { 0, };
-  ClutterActorPrivate *priv;
-  ClutterLayoutInfo *info;
+  const ClutterLayoutInfo *linfo;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
+  linfo = _clutter_actor_get_layout_info_or_defaults (self);
 
-  info = _clutter_actor_get_layout_info (self);
+  if (clutter_actor_get_easing_duration (self) != 0)
+    {
+      ClutterTransition *transition;
 
-  if (priv->position_set && info->fixed_y == y)
-    return;
+      transition = _clutter_actor_get_transition (self, obj_props[PROP_Y]);
+      if (transition == NULL)
+        {
+          transition = _clutter_actor_create_transition (self,
+                                                         obj_props[PROP_Y],
+                                                         linfo->fixed_y,
+                                                         y);
 
-  clutter_actor_store_old_geometry (self, &old);
+          clutter_timeline_start (CLUTTER_TIMELINE (transition));
+        }
+      else
+        _clutter_actor_update_transition (self, obj_props[PROP_Y], y);
 
-  info->fixed_y = y;
-  clutter_actor_set_fixed_position_set (self, TRUE);
-
-  clutter_actor_notify_if_geometry_changed (self, &old);
+      clutter_actor_queue_relayout (self);
+    }
+  else
+    clutter_actor_set_y_internal (self, y);
 
   clutter_actor_queue_relayout (self);
 }
@@ -9071,6 +9386,9 @@ clutter_actor_get_y (ClutterActor *self)
  * the scale center and the anchor point. The scale center is
  * unchanged by this function and defaults to 0,0.
  *
+ * The #ClutterActor:scale-x and #ClutterActor:scale-y properties are
+ * animatable.
+ *
  * Since: 0.2
  */
 void
@@ -9099,6 +9417,9 @@ clutter_actor_set_scale (ClutterActor *self,
  * Scales an actor with the given factors around the given center
  * point. The center point is specified in pixels relative to the
  * anchor point (usually the top left corner of the actor).
+ *
+ * The #ClutterActor:scale-x and #ClutterActor:scale-y properties
+ * are animatable.
  *
  * Since: 1.0
  */
@@ -9134,6 +9455,9 @@ clutter_actor_set_scale_full (ClutterActor *self,
  * directions in #ClutterGravity. For example, setting it to north
  * will cause the top of the actor to remain unchanged and the rest of
  * the actor to expand left, right and downwards.
+ *
+ * The #ClutterActor:scale-x and #ClutterActor:scale-y properties are
+ * animatable.
  *
  * Since: 1.0
  */
@@ -9260,23 +9584,11 @@ clutter_actor_get_scale_gravity (ClutterActor *self)
   return clutter_anchor_coord_get_gravity (&info->scale_center);
 }
 
-/**
- * clutter_actor_set_opacity:
- * @self: A #ClutterActor
- * @opacity: New opacity value for the actor.
- *
- * Sets the actor's opacity, with zero being completely transparent and
- * 255 (0xff) being fully opaque.
- */
-void
-clutter_actor_set_opacity (ClutterActor *self,
-			   guint8        opacity)
+static inline void
+clutter_actor_set_opacity_internal (ClutterActor *self,
+                                    guint8        opacity)
 {
-  ClutterActorPrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  priv = self->priv;
+  ClutterActorPrivate *priv = self->priv;
 
   if (priv->opacity != opacity)
     {
@@ -9295,6 +9607,48 @@ clutter_actor_set_opacity (ClutterActor *self,
 
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_OPACITY]);
     }
+}
+
+/**
+ * clutter_actor_set_opacity:
+ * @self: A #ClutterActor
+ * @opacity: New opacity value for the actor.
+ *
+ * Sets the actor's opacity, with zero being completely transparent and
+ * 255 (0xff) being fully opaque.
+ *
+ * The #ClutterActor:opacity property is animatable.
+ */
+void
+clutter_actor_set_opacity (ClutterActor *self,
+			   guint8        opacity)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (clutter_actor_get_easing_duration (self) != 0)
+    {
+      ClutterTransition *transition;
+
+      transition = _clutter_actor_get_transition (self, obj_props[PROP_OPACITY]);
+      if (transition == NULL)
+        {
+          transition = _clutter_actor_create_transition (self,
+                                                         obj_props[PROP_OPACITY],
+                                                         priv->opacity,
+                                                         opacity);
+          clutter_timeline_start (CLUTTER_TIMELINE (transition));
+        }
+      else
+        _clutter_actor_update_transition (self, obj_props[PROP_OPACITY], opacity);
+
+      clutter_actor_queue_redraw (self);
+    }
+  else
+    clutter_actor_set_opacity_internal (self, opacity);
 }
 
 /*
@@ -9552,6 +9906,32 @@ clutter_actor_get_gid (ClutterActor *self)
   return self->priv->id;
 }
 
+static inline void
+clutter_actor_set_depth_internal (ClutterActor *self,
+                                  float         depth)
+{
+  ClutterTransformInfo *info;
+
+  info = _clutter_actor_get_transform_info (self);
+
+  if (info->depth != depth)
+    {
+      /* Sets Z value - XXX 2.0: should we invert? */
+      info->depth = depth;
+
+      self->priv->transform_valid = FALSE;
+
+      /* FIXME - remove this crap; sadly, there are still containers
+       * in Clutter that depend on this utter brain damage
+       */
+      clutter_container_sort_depth_order (CLUTTER_CONTAINER (self));
+
+      clutter_actor_queue_redraw (self);
+
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_DEPTH]);
+    }
+}
+
 /**
  * clutter_actor_set_depth:
  * @self: a #ClutterActor
@@ -9566,28 +9946,31 @@ void
 clutter_actor_set_depth (ClutterActor *self,
                          gfloat        depth)
 {
-  ClutterActorPrivate *priv;
+  const ClutterTransformInfo *tinfo;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
+  tinfo = _clutter_actor_get_transform_info_or_defaults (self);
 
-  if (priv->z != depth)
+  if (clutter_actor_get_easing_duration (self) != 0)
     {
-      /* Sets Z value - XXX 2.0: should we invert? */
-      priv->z = depth;
+      ClutterTransition *transition;
 
-      priv->transform_valid = FALSE;
-
-      /* FIXME - remove this crap; sadly, there are still containers
-       * in Clutter that depend on this utter brain damage
-       */
-      clutter_container_sort_depth_order (CLUTTER_CONTAINER (self));
+      transition = _clutter_actor_get_transition (self, obj_props[PROP_DEPTH]);
+      if (transition == NULL)
+        {
+          transition = _clutter_actor_create_transition (self, obj_props[PROP_DEPTH],
+                                                         tinfo->depth,
+                                                         depth);
+          clutter_timeline_start (CLUTTER_TIMELINE (transition));
+        }
+      else
+        _clutter_actor_update_transition (self, obj_props[PROP_DEPTH], depth);
 
       clutter_actor_queue_redraw (self);
-
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_DEPTH]);
     }
+  else
+    clutter_actor_set_depth_internal (self, depth);
 }
 
 /**
@@ -9601,9 +9984,9 @@ clutter_actor_set_depth (ClutterActor *self,
 gfloat
 clutter_actor_get_depth (ClutterActor *self)
 {
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), -1);
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.0);
 
-  return self->priv->z;
+  return _clutter_actor_get_transform_info_or_defaults (self)->depth;
 }
 
 /**
@@ -9648,7 +10031,7 @@ clutter_actor_set_rotation (ClutterActor      *self,
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  clutter_actor_set_rotation_angle_internal (self, axis, angle);
+  clutter_actor_set_rotation_angle (self, axis, angle);
   clutter_actor_set_rotation_center_internal (self, axis, &v);
 
   g_object_thaw_notify (G_OBJECT (self));
@@ -9960,8 +10343,12 @@ insert_child_at_depth (ClutterActor *self,
                        gpointer      dummy G_GNUC_UNUSED)
 {
   ClutterActor *iter;
+  float child_depth;
 
   child->priv->parent = self;
+
+  child_depth =
+    _clutter_actor_get_transform_info_or_defaults (child)->depth;
 
   /* special-case the first child */
   if (self->priv->n_children == 0)
@@ -9982,7 +10369,12 @@ insert_child_at_depth (ClutterActor *self,
        iter != NULL;
        iter = iter->priv->next_sibling)
     {
-      if (iter->priv->z > child->priv->z)
+      float iter_depth;
+
+      iter_depth =
+        _clutter_actor_get_transform_info_or_defaults (iter)->depth;
+
+      if (iter_depth > child_depth)
         break;
     }
 
@@ -12165,21 +12557,126 @@ clutter_actor_get_initial_state (ClutterAnimatable *animatable,
   g_free (p_name);
 }
 
+/*
+ * clutter_actor_set_animatable_property:
+ * @actor: a #ClutterActor
+ * @prop_id: the paramspec id
+ * @value: the value to set
+ * @pspec: the paramspec
+ *
+ * Sets values of animatable properties.
+ *
+ * This is a variant of clutter_actor_set_property() that gets called
+ * by the #ClutterAnimatable implementation of #ClutterActor for the
+ * properties with the %CLUTTER_PARAM_ANIMATABLE flag set on their
+ * #GParamSpec.
+ *
+ * Unlike the implementation of #GObjectClass.set_property(), this
+ * function will not update the interval if a transition involving an
+ * animatable property is in progress - this avoids cycles with the
+ * transition API calling the public API.
+ */
+static void
+clutter_actor_set_animatable_property (ClutterActor *actor,
+                                       guint         prop_id,
+                                       const GValue *value,
+                                       GParamSpec   *pspec)
+{
+  switch (prop_id)
+    {
+    case PROP_X:
+      clutter_actor_set_x_internal (actor, g_value_get_float (value));
+      break;
+
+    case PROP_Y:
+      clutter_actor_set_y_internal (actor, g_value_get_float (value));
+      break;
+
+    case PROP_WIDTH:
+      clutter_actor_set_width_internal (actor, g_value_get_float (value));
+      break;
+
+    case PROP_HEIGHT:
+      clutter_actor_set_height_internal (actor, g_value_get_float (value));
+      break;
+
+    case PROP_DEPTH:
+      clutter_actor_set_depth_internal (actor, g_value_get_float (value));
+      break;
+
+    case PROP_OPACITY:
+      clutter_actor_set_opacity_internal (actor, g_value_get_uint (value));
+      break;
+
+    case PROP_BACKGROUND_COLOR:
+      clutter_actor_set_background_color_internal (actor, clutter_value_get_color (value));
+      break;
+
+    case PROP_SCALE_X:
+      clutter_actor_set_scale_factor_internal (actor,
+                                               g_value_get_double (value),
+                                               pspec);
+      break;
+
+    case PROP_SCALE_Y:
+      clutter_actor_set_scale_factor_internal (actor,
+                                               g_value_get_double (value),
+                                               pspec);
+      break;
+
+    case PROP_ROTATION_ANGLE_X:
+      clutter_actor_set_rotation_angle_internal (actor,
+                                                 CLUTTER_X_AXIS,
+                                                 g_value_get_double (value));
+      break;
+
+    case PROP_ROTATION_ANGLE_Y:
+      clutter_actor_set_rotation_angle_internal (actor,
+                                                 CLUTTER_Y_AXIS,
+                                                 g_value_get_double (value));
+      break;
+
+    case PROP_ROTATION_ANGLE_Z:
+      clutter_actor_set_rotation_angle_internal (actor,
+                                                 CLUTTER_Z_AXIS,
+                                                 g_value_get_double (value));
+      break;
+
+    default:
+      g_object_set_property (G_OBJECT (actor), pspec->name, value);
+      break;
+    }
+}
+
 static void
 clutter_actor_set_final_state (ClutterAnimatable *animatable,
                                const gchar       *property_name,
                                const GValue      *final)
 {
+  ClutterActor *actor = CLUTTER_ACTOR (animatable);
   ClutterActorMeta *meta = NULL;
   gchar *p_name = NULL;
 
-  meta = get_meta_from_animation_property (CLUTTER_ACTOR (animatable),
+  meta = get_meta_from_animation_property (actor,
                                            property_name,
                                            &p_name);
   if (meta != NULL)
     g_object_set_property (G_OBJECT (meta), p_name, final);
   else
-    g_object_set_property (G_OBJECT (animatable), property_name, final);
+    {
+      GObjectClass *obj_class = G_OBJECT_GET_CLASS (animatable);
+      GParamSpec *pspec;
+
+      pspec = g_object_class_find_property (obj_class, property_name);
+
+      if ((pspec->flags & CLUTTER_PARAM_ANIMATABLE) != 0)
+        {
+          /* XXX - I'm going to the special hell for this */
+          clutter_actor_set_animatable_property (actor, pspec->param_id, final, pspec);
+        }
+      else
+        g_object_set_property (G_OBJECT (animatable), property_name, final);
+    }
 
   g_free (p_name);
 }
@@ -15636,6 +16133,27 @@ clutter_actor_get_margin_right (ClutterActor *self)
   return _clutter_actor_get_layout_info_or_defaults (self)->margin.right;
 }
 
+static inline void
+clutter_actor_set_background_color_internal (ClutterActor *self,
+                                             const ClutterColor *color)
+{
+  ClutterActorPrivate *priv = self->priv;
+  GObject *obj;
+
+  if (priv->bg_color_set && clutter_color_equal (color, &priv->bg_color))
+    return;
+
+  obj = G_OBJECT (self);
+
+  priv->bg_color = *color;
+  priv->bg_color_set = TRUE;
+
+  clutter_actor_queue_redraw (self);
+
+  g_object_notify_by_pspec (obj, obj_props[PROP_BACKGROUND_COLOR_SET]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_BACKGROUND_COLOR]);
+}
+
 /**
  * clutter_actor_set_background_color:
  * @self: a #ClutterActor
@@ -15650,6 +16168,8 @@ clutter_actor_get_margin_right (ClutterActor *self)
  * To check whether an actor has a background color, you can use the
  * #ClutterActor:background-color-set actor property.
  *
+ * The #ClutterActor:background-color property is animatable.
+ *
  * Since: 1.10
  */
 void
@@ -15657,31 +16177,43 @@ clutter_actor_set_background_color (ClutterActor       *self,
                                     const ClutterColor *color)
 {
   ClutterActorPrivate *priv;
+  GObject *obj;
+  GParamSpec *bg_color_pspec;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  obj = G_OBJECT (self);
 
   priv = self->priv;
 
   if (color == NULL)
     {
       priv->bg_color_set = FALSE;
-      g_object_notify_by_pspec (G_OBJECT (self),
-                                obj_props[PROP_BACKGROUND_COLOR_SET]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_BACKGROUND_COLOR_SET]);
+      clutter_actor_queue_redraw (self);
       return;
     }
 
-  if (priv->bg_color_set && clutter_color_equal (color, &priv->bg_color))
-    return;
+  bg_color_pspec = obj_props[PROP_BACKGROUND_COLOR];
+  if (clutter_actor_get_easing_duration (self) != 0)
+    {
+      ClutterTransition *transition;
 
-  priv->bg_color = *color;
-  priv->bg_color_set = TRUE;
+      transition = _clutter_actor_get_transition (self, bg_color_pspec);
+      if (transition == NULL)
+        {
+          transition = _clutter_actor_create_transition (self, bg_color_pspec,
+                                                         &priv->bg_color,
+                                                         color);
+          clutter_timeline_start (CLUTTER_TIMELINE (transition));
+        }
+      else
+        _clutter_actor_update_transition (self, bg_color_pspec, color);
 
-  clutter_actor_queue_redraw (self);
-
-  g_object_notify_by_pspec (G_OBJECT (self),
-                            obj_props[PROP_BACKGROUND_COLOR_SET]);
-  g_object_notify_by_pspec (G_OBJECT (self),
-                            obj_props[PROP_BACKGROUND_COLOR]);
+      clutter_actor_queue_redraw (self);
+    }
+  else
+    clutter_actor_set_background_color_internal (self, color);
 }
 
 /**
@@ -16005,4 +16537,478 @@ clutter_actor_iter_destroy (ClutterActorIter *iter)
 
       ri->age += 1;
     }
+}
+
+static const ClutterAnimationInfo default_animation_info = {
+  NULL,         /* transitions */
+  NULL,         /* states */
+  NULL,         /* cur_state */
+};
+
+static void
+clutter_animation_info_free (gpointer data)
+{
+  if (data != NULL)
+    {
+      ClutterAnimationInfo *info = data;
+
+      if (info->transitions != NULL)
+        g_hash_table_unref (info->transitions);
+
+      if (info->states != NULL)
+        g_array_unref (info->states);
+
+      g_slice_free (ClutterAnimationInfo, info);
+    }
+}
+
+const ClutterAnimationInfo *
+_clutter_actor_get_animation_info_or_defaults (ClutterActor *self)
+{
+  const ClutterAnimationInfo *res;
+  GObject *obj = G_OBJECT (self);
+
+  res = g_object_get_qdata (obj, quark_actor_animation_info);
+  if (res != NULL)
+    return res;
+
+  return &default_animation_info;
+}
+
+ClutterAnimationInfo *
+_clutter_actor_get_animation_info (ClutterActor *self)
+{
+  GObject *obj = G_OBJECT (self);
+  ClutterAnimationInfo *res;
+
+  res = g_object_get_qdata (obj, quark_actor_animation_info);
+  if (res == NULL)
+    {
+      res = g_slice_new (ClutterAnimationInfo);
+
+      *res = default_animation_info;
+
+      g_object_set_qdata_full (obj, quark_actor_animation_info,
+                               res,
+                               clutter_animation_info_free);
+    }
+
+  return res;
+}
+
+ClutterTransition *
+_clutter_actor_get_transition (ClutterActor *actor,
+                               GParamSpec   *pspec)
+{
+  const ClutterAnimationInfo *info;
+
+  info = _clutter_actor_get_animation_info_or_defaults (actor);
+
+  if (info->transitions == NULL)
+    return NULL;
+
+  return g_hash_table_lookup (info->transitions, pspec->name);
+}
+
+typedef struct _TransitionClosure
+{
+  ClutterActor *actor;
+  ClutterTransition *transition;
+  GParamSpec *property;
+  gulong completed_id;
+} TransitionClosure;
+
+static void
+on_transition_completed (ClutterTransition *transition,
+                         TransitionClosure *clos)
+{
+  ClutterAnimationInfo *info;
+
+  info = _clutter_actor_get_animation_info (clos->actor);
+
+  g_hash_table_remove (info->transitions, clos->property->name);
+
+  g_signal_handler_disconnect (transition, clos->completed_id);
+
+  g_slice_free (TransitionClosure, clos);
+}
+
+void
+_clutter_actor_update_transition (ClutterActor *actor,
+                                  GParamSpec   *pspec,
+                                  ...)
+{
+  ClutterTransition *transition;
+  ClutterInterval *interval;
+  const ClutterAnimationInfo *info;
+  va_list var_args;
+  GType ptype;
+  GValue initial = G_VALUE_INIT;
+  GValue final = G_VALUE_INIT;
+  char *error = NULL;
+
+  info = _clutter_actor_get_animation_info_or_defaults (actor);
+
+  if (info->transitions == NULL)
+    return;
+
+  transition = g_hash_table_lookup (info->transitions, pspec->name);
+  if (transition == NULL)
+    return;
+
+  va_start (var_args, pspec);
+
+  ptype = G_PARAM_SPEC_VALUE_TYPE (pspec);
+
+  g_value_init (&initial, ptype);
+  clutter_animatable_get_initial_state (CLUTTER_ANIMATABLE (actor),
+                                        pspec->name,
+                                        &initial);
+
+  G_VALUE_COLLECT_INIT (&final, ptype, var_args, 0, &error);
+  if (error != NULL)
+    {
+      g_critical ("%s: %s", G_STRLOC, error);
+      g_free (error);
+      goto out;
+    }
+
+  interval = clutter_transition_get_interval (transition);
+  clutter_interval_set_initial_value (interval, &initial);
+  clutter_interval_set_final_value (interval, &final);
+
+  clutter_timeline_rewind (CLUTTER_TIMELINE (transition));
+
+out:
+  g_value_unset (&initial);
+  g_value_unset (&final);
+
+  va_end (var_args);
+}
+
+/*< private >*
+ * _clutter_actor_create_transition:
+ * @actor: a #ClutterActor
+ * @pspec: the property used for the transition
+ * @...: initial and final state
+ *
+ * Creates a #ClutterTransition for the property represented by @pspec.
+ *
+ * Return value: a #ClutterTransition
+ */
+ClutterTransition *
+_clutter_actor_create_transition (ClutterActor *actor,
+                                  GParamSpec   *pspec,
+                                  ...)
+{
+  ClutterAnimationInfo *info;
+  ClutterTransition *res = NULL;
+  gboolean call_restore = FALSE;
+  va_list var_args;
+
+  info = _clutter_actor_get_animation_info (actor);
+
+  if (info->states == NULL)
+    {
+      clutter_actor_save_easing_state (actor);
+      call_restore = TRUE;
+    }
+
+  if (info->transitions == NULL)
+    info->transitions = g_hash_table_new (g_str_hash, g_str_equal);
+
+  va_start (var_args, pspec);
+
+  res = g_hash_table_lookup (info->transitions, pspec->name);
+  if (res == NULL)
+    {
+      ClutterInterval *interval;
+      GValue initial = G_VALUE_INIT;
+      GValue final = G_VALUE_INIT;
+      GType ptype;
+      char *error;
+      TransitionClosure *clos;
+
+      ptype = G_PARAM_SPEC_VALUE_TYPE (pspec);
+
+      G_VALUE_COLLECT_INIT (&initial, ptype,
+                            var_args, 0,
+                            &error);
+      if (error != NULL)
+        {
+          g_critical ("%s: %s", G_STRLOC, error);
+          g_free (error);
+          goto out;
+        }
+
+      G_VALUE_COLLECT_INIT (&final, ptype,
+                            var_args, 0,
+                            &error);
+
+      if (error != NULL)
+        {
+          g_critical ("%s: %s", G_STRLOC, error);
+          g_value_unset (&initial);
+          g_free (error);
+          goto out;
+        }
+
+      interval = clutter_interval_new_with_values (ptype, &initial, &final);
+
+      g_value_unset (&initial);
+      g_value_unset (&final);
+
+      res = clutter_property_transition_new (CLUTTER_ANIMATABLE (actor),
+                                             pspec->name);
+
+      clutter_transition_set_interval (res, interval);
+      clutter_transition_set_remove_on_complete (res, TRUE);
+
+      clutter_timeline_set_duration (CLUTTER_TIMELINE (res),
+                                     info->cur_state->easing_duration);
+      clutter_timeline_set_progress_mode (CLUTTER_TIMELINE (res),
+                                          info->cur_state->easing_mode);
+
+      clos = g_slice_new (TransitionClosure);
+      clos->actor = actor;
+      clos->transition = res;
+      clos->property = pspec;
+      clos->completed_id =
+        g_signal_connect (res, "completed",
+                          G_CALLBACK (on_transition_completed),
+                          clos);
+
+      g_hash_table_insert (info->transitions, (gpointer) pspec->name, res);
+    }
+
+out:
+  if (call_restore)
+    clutter_actor_restore_easing_state (actor);
+
+  va_end (var_args);
+
+  return res;
+}
+
+/**
+ * clutter_actor_set_easing_duration:
+ * @self: a #ClutterActor
+ * @msecs: the duration of the easing, or %NULL
+ *
+ * Sets the duration of the tweening for animatable properties
+ * of @self for the current easing state.
+ *
+ * Calling this function will implicitly call
+ * clutter_actor_save_easing_state() if no previous call to
+ * that function was made.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_set_easing_duration (ClutterActor *self,
+                                   guint         msecs)
+{
+  ClutterAnimationInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  info = _clutter_actor_get_animation_info (self);
+
+  if (info->states == NULL)
+    clutter_actor_save_easing_state (self);
+
+  if (info->cur_state->easing_duration != msecs)
+    info->cur_state->easing_duration = msecs;
+}
+
+/**
+ * clutter_actor_get_easing_duration:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the duration of the tweening for animatable
+ * properties of @self for the current easing state.
+ *
+ * Return value: the duration of the tweening, in milliseconds
+ *
+ * Since: 1.10
+ */
+guint
+clutter_actor_get_easing_duration (ClutterActor *self)
+{
+  const ClutterAnimationInfo *info;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
+
+  info = _clutter_actor_get_animation_info_or_defaults (self);
+
+  if (info->cur_state != NULL)
+    return info->cur_state->easing_duration;
+
+  return 0;
+}
+
+/**
+ * clutter_actor_set_easing_mode:
+ * @self: a #ClutterActor
+ * @mode: an easing mode, excluding %CLUTTER_CUSTOM_MODE
+ *
+ * Sets the easing mode for the tweening of animatable properties
+ * of @self.
+ *
+ * Calling this function will implicitly call
+ * clutter_actor_save_easing_state() if no previous calls to
+ * that function were made.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_set_easing_mode (ClutterActor         *self,
+                               ClutterAnimationMode  mode)
+{
+  ClutterAnimationInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (mode != CLUTTER_CUSTOM_MODE);
+  g_return_if_fail (mode < CLUTTER_ANIMATION_LAST);
+
+  info = _clutter_actor_get_animation_info (self);
+
+  if (info->states == NULL)
+    clutter_actor_save_easing_state (self);
+
+  if (info->cur_state->easing_mode != mode)
+    info->cur_state->easing_mode = mode;
+}
+
+/**
+ * clutter_actor_get_easing_mode:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the easing mode for the tweening of animatable properties
+ * of @self for the current easing state.
+ *
+ * Return value: an easing mode
+ *
+ * Since: 1.10
+ */
+ClutterAnimationMode
+clutter_actor_get_easing_mode (ClutterActor *self)
+{
+  const ClutterAnimationInfo *info;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), CLUTTER_EASE_OUT_CUBIC);
+
+  info = _clutter_actor_get_animation_info_or_defaults (self);
+
+  if (info->cur_state != NULL)
+    return info->cur_state->easing_mode;
+
+  return CLUTTER_EASE_OUT_CUBIC;
+}
+
+/**
+ * clutter_actor_get_transition:
+ * @self: a #ClutterActor
+ * @name: the name of the transition
+ *
+ * Retrieves the #ClutterTransition of a #ClutterActor by using the
+ * transition @name.
+ *
+ * Transitions created for animatable properties use the name of the
+ * property itself, for instance the code below:
+ *
+ * |[
+ *   clutter_actor_set_easing_duration (actor, 1000);
+ *   clutter_actor_set_rotation (actor, CLUTTER_Y_AXIS, 360.0, x, y, z);
+ *
+ *   transition = clutter_actor_get_transition (actor, "rotation-angle-y");
+ *   g_signal_connect (transition, "completed",
+ *                     G_CALLBACK (on_transition_complete),
+ *                     actor);
+ * ]|
+ *
+ * will call the <function>on_transition_complete</function> callback when
+ * the transition is complete.
+ *
+ * Return value: (transfer none): a #ClutterTransition, or %NULL is none
+ *   was found to match the passed name; the returned instance is owned
+ *   by Clutter and it should not be freed
+ *
+ * Since: 1.10
+ */
+ClutterTransition *
+clutter_actor_get_transition (ClutterActor *self,
+                              const char   *name)
+{
+  const ClutterAnimationInfo *info;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+  g_return_val_if_fail (name != NULL, NULL);
+
+  info = _clutter_actor_get_animation_info_or_defaults (self);
+
+  if (info->transitions == NULL)
+    return NULL;
+
+  return g_hash_table_lookup (info->transitions, name);
+}
+
+/**
+ * clutter_actor_save_easing_state:
+ * @self: a #ClutterActor
+ *
+ * Saves the current easing state for animatable properties, and creates
+ * a new state with the default values for easing mode and duration.
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_save_easing_state (ClutterActor *self)
+{
+  ClutterAnimationInfo *info;
+  AState new_state;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  info = _clutter_actor_get_animation_info (self);
+
+  if (info->states == NULL)
+    info->states = g_array_new (FALSE, FALSE, sizeof (AState));
+
+  new_state.easing_mode = CLUTTER_EASE_OUT_CUBIC;
+  new_state.easing_duration = 250;
+
+  g_array_append_val (info->states, new_state);
+
+  info->cur_state = &g_array_index (info->states, AState, info->states->len - 1);
+}
+
+/**
+ * clutter_actor_restore_easing_state:
+ * @self: a #ClutterActor
+ *
+ * Restores the easing state as it was prior to a call to
+ * clutter_actor_save_easing_state().
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_restore_easing_state (ClutterActor *self)
+{
+  ClutterAnimationInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  info = _clutter_actor_get_animation_info (self);
+
+  if (info->states == NULL)
+    {
+      g_critical ("The function clutter_actor_restore_easing_state() has "
+                  "called without a previous call to "
+                  "clutter_actor_save_easing_state().");
+      return;
+    }
+
+  g_array_remove_index (info->states, info->states->len - 1);
+  info->cur_state = &g_array_index (info->states, AState, info->states->len - 1);
 }
