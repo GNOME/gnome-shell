@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-02-29 22:27+0000\n"
-"PO-Revision-Date: 2012-03-11 21:00+0300\n"
+"PO-Revision-Date: 2012-03-15 13:04+0300\n"
 "Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1668,7 +1668,7 @@ msgstr "Ваше любимое «пасхальное яйцо»"
 #: ../js/ui/windowAttentionHandler.js:19
 #, c-format
 msgid "'%s' is ready"
-msgstr "Окно «%s» готово к использованию"
+msgstr "Окно «%s» ожидает"
 
 #. translators:
 #. * The number of sound outputs on a particular device
