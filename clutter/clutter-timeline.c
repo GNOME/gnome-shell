@@ -2174,3 +2174,57 @@ clutter_timeline_get_progress_mode (ClutterTimeline *timeline)
 
   return timeline->priv->progress_mode;
 }
+
+/**
+ * clutter_timeline_get_duration_hint:
+ * @timeline: a #ClutterTimeline
+ *
+ * Retrieves the full duration of the @timeline, taking into account the
+ * current value of the #ClutterTimeline:repeat-count property.
+ *
+ * If the #ClutterTimeline:repeat-count property is set to -1, this function
+ * will return %G_MAXINT64.
+ *
+ * The returned value is to be considered a hint, and it's only valid
+ * as long as the @timeline hasn't been changed.
+ *
+ * Return value: the full duration of the #ClutterTimeline
+ *
+ * Since: 1.10
+ */
+gint64
+clutter_timeline_get_duration_hint (ClutterTimeline *timeline)
+{
+  ClutterTimelinePrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
+
+  priv = timeline->priv;
+
+  if (priv->repeat_count == 0)
+    return priv->duration;
+  else if (priv->repeat_count < 0)
+    return G_MAXINT64;
+  else
+    return priv->repeat_count * priv->duration;
+}
+
+/**
+ * clutter_timeline_get_current_repeat:
+ * @timeline: a #ClutterTimeline
+ *
+ * Retrieves the current repeat for a timeline.
+ *
+ * Repeats start at 0.
+ *
+ * Return value: the current repeat
+ *
+ * Since: 1.10
+ */
+gint
+clutter_timeline_get_current_repeat (ClutterTimeline *timeline)
+{
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
+
+  return timeline->priv->current_repeat;
+}

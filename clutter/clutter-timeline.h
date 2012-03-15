@@ -169,6 +169,11 @@ void                            clutter_timeline_set_progress_mode      (Clutter
 CLUTTER_AVAILABLE_IN_1_10
 ClutterAnimationMode            clutter_timeline_get_progress_mode      (ClutterTimeline          *timeline);
 
+CLUTTER_AVAILABLE_IN_1_10
+gint64                          clutter_timeline_get_duration_hint      (ClutterTimeline          *timeline);
+CLUTTER_AVAILABLE_IN_1_10
+gint                            clutter_timeline_get_current_repeat     (ClutterTimeline          *timeline);
+
 G_END_DECLS
 
 #endif /* _CLUTTER_TIMELINE_H__ */
