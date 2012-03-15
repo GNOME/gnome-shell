@@ -55,7 +55,8 @@ UNIT_TESTS = \
 	test-state-script.c \
 	test-drop.c \
 	test-devices.c \
-	test-actor.c
+	test-actor.c \
+	test-transitions.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c
