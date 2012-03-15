@@ -28,10 +28,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
+#define COGL_ENABLE_EXPERIMENTAL_API
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
-#include <GL/glx.h>
-#include <GL/glxext.h>
 #include <gjs/gjs.h>
 #include <meta/display.h>
 #include <meta/meta-plugin.h>
@@ -99,6 +99,7 @@ struct _GnomeShellPlugin
   int glx_error_base;
   int glx_event_base;
   guint have_swap_event : 1;
+  CoglContext *cogl_context;
 
   ShellGlobal *global;
 };
@@ -139,30 +140,59 @@ gnome_shell_plugin_init (GnomeShellPlugin *shell_plugin)
 {
 }
 
-static void
-gnome_shell_plugin_start (MetaPlugin *plugin)
+static gboolean
+gnome_shell_plugin_has_swap_event (GnomeShellPlugin *shell_plugin)
 {
-  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
+  MetaPlugin *plugin = META_PLUGIN (shell_plugin);
+  CoglDisplay *cogl_display =
+    cogl_context_get_display (shell_plugin->cogl_context);
+  CoglRenderer *renderer = cogl_display_get_renderer (cogl_display);
+  const char * (* query_extensions_string) (Display *dpy, int screen);
+  Bool (* query_extension) (Display *dpy, int *error, int *event);
   MetaScreen *screen;
   MetaDisplay *display;
   Display *xdisplay;
-  GError *error = NULL;
-  int status;
   const char *glx_extensions;
-  GjsContext *gjs_context;
+
+  /* We will only get swap events if Cogl is using GLX */
+  if (cogl_renderer_get_winsys_id (renderer) != COGL_WINSYS_ID_GLX)
+    return FALSE;
 
   screen = meta_plugin_get_screen (plugin);
   display = meta_screen_get_display (screen);
 
   xdisplay = meta_display_get_xdisplay (display);
 
-  glXQueryExtension (xdisplay,
-                     &shell_plugin->glx_error_base,
-                     &shell_plugin->glx_event_base);
+  query_extensions_string =
+    (void *) cogl_get_proc_address ("glXQueryExtensionsString");
+  query_extension =
+    (void *) cogl_get_proc_address ("glXQueryExtension");
 
-  glx_extensions = glXQueryExtensionsString (xdisplay,
-                                             meta_screen_get_screen_number (screen));
-  shell_plugin->have_swap_event = strstr (glx_extensions, "GLX_INTEL_swap_event") != NULL;
+  query_extension (xdisplay,
+                   &shell_plugin->glx_error_base,
+                   &shell_plugin->glx_event_base);
+
+  glx_extensions =
+    query_extensions_string (xdisplay,
+                             meta_screen_get_screen_number (screen));
+
+  return strstr (glx_extensions, "GLX_INTEL_swap_event") != NULL;
+}
+
+static void
+gnome_shell_plugin_start (MetaPlugin *plugin)
+{
+  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
+  GError *error = NULL;
+  int status;
+  GjsContext *gjs_context;
+  ClutterBackend *backend;
+
+  backend = clutter_get_default_backend ();
+  shell_plugin->cogl_context = clutter_backend_get_cogl_context (backend);
+
+  shell_plugin->have_swap_event =
+    gnome_shell_plugin_has_swap_event (shell_plugin);
 
   shell_perf_log_define_event (shell_perf_log_get_default (),
                                "glx.swapComplete",

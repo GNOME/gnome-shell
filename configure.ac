@@ -53,7 +53,7 @@ if $PKG_CONFIG --exists gstreamer-1.0 '>=' $GSTREAMER_MIN_VERSION ; then
    AC_MSG_RESULT(yes)
    build_recorder=true
    recorder_modules="gstreamer-1.0 gstreamer-base-1.0 x11 gtk+-3.0"
-   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules clutter-1.0 xfixes gl)
+   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules clutter-1.0 xfixes)
 else
    AC_MSG_RESULT(no)
 fi
@@ -88,7 +88,6 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-unix-2.0 >= $GIO_MIN_VERSION
 			       libgnome-menu-3.0 >= $GNOME_MENUS_REQUIRED_VERSION
                                $recorder_modules
                                gdk-x11-3.0 libsoup-2.4
-                               gl
 			       clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
 			       clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
                                libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_MIN_VERSION
