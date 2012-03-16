@@ -96,8 +96,6 @@ typedef struct _CoglJournalFlushState
 {
   CoglJournal         *journal;
 
-  CoglFramebuffer     *framebuffer;
-
   CoglAttributeBuffer *attribute_buffer;
   GArray              *attributes;
   int                  current_attribute;
@@ -143,9 +141,17 @@ _cogl_journal_free (CoglJournal *journal)
 }
 
 CoglJournal *
-_cogl_journal_new (void)
+_cogl_journal_new (CoglFramebuffer *framebuffer)
 {
   CoglJournal *journal = g_slice_new0 (CoglJournal);
+
+  /* The journal keeps a pointer back to the framebuffer because there
+     is effectively a 1:1 mapping between journals and framebuffers.
+     However, to avoid a circular reference the journal doesn't take a
+     reference unless it is non-empty. The framebuffer has a special
+     unref implementation to ensure that the journal is flushed when
+     the journal is the only thing keeping it alive */
+  journal->framebuffer = framebuffer;
 
   journal->entries = g_array_new (FALSE, FALSE, sizeof (CoglJournalEntry));
   journal->vertices = g_array_new (FALSE, FALSE, sizeof (float));
@@ -270,6 +276,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
                                            void             *data)
 {
   CoglJournalFlushState *state = data;
+  CoglFramebuffer *framebuffer = state->journal->framebuffer;
   CoglAttribute **attributes;
   CoglDrawFlags draw_flags = (COGL_DRAW_SKIP_JOURNAL_FLUSH |
                               COGL_DRAW_SKIP_PIPELINE_VALIDATION |
@@ -305,7 +312,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
   if (ctx->driver == COGL_DRIVER_GL)
     {
       /* XXX: it's rather evil that we sneak in the GL_QUADS enum here... */
-      _cogl_framebuffer_draw_attributes (state->framebuffer,
+      _cogl_framebuffer_draw_attributes (framebuffer,
                                          state->pipeline,
                                          GL_QUADS,
                                          state->current_vertex, batch_len * 4,
@@ -320,7 +327,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
         {
           CoglVerticesMode mode = COGL_VERTICES_MODE_TRIANGLES;
           int first_vertex = state->current_vertex * 6 / 4;
-          _cogl_framebuffer_draw_indexed_attributes (state->framebuffer,
+          _cogl_framebuffer_draw_indexed_attributes (framebuffer,
                                                      state->pipeline,
                                                      mode,
                                                      first_vertex,
@@ -332,7 +339,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
         }
       else
         {
-          _cogl_framebuffer_draw_attributes (state->framebuffer,
+          _cogl_framebuffer_draw_attributes (framebuffer,
                                              state->pipeline,
                                              COGL_VERTICES_MODE_TRIANGLE_FAN,
                                              state->current_vertex, 4,
@@ -379,7 +386,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
 
       loop_attributes[0] = attributes[0]; /* we just want the position */
       for (i = 0; i < batch_len; i++)
-        _cogl_framebuffer_draw_attributes (state->framebuffer,
+        _cogl_framebuffer_draw_attributes (framebuffer,
                                            outline,
                                            COGL_VERTICES_MODE_LINE_LOOP,
                                            4 * i + state->current_vertex, 4,
@@ -576,7 +583,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
                                              void             *data)
 {
   CoglJournalFlushState   *state = data;
-  CoglContext             *ctx = state->framebuffer->context;
+  CoglContext             *ctx = state->journal->framebuffer->context;
   gsize                    stride;
   int                      i;
   CoglAttribute          **attribute_entry;
@@ -711,7 +718,7 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING:  clip stack batch len = %d\n", batch_len);
 
-  _cogl_clip_stack_flush (batch_start->clip_stack, state->framebuffer);
+  _cogl_clip_stack_flush (batch_start->clip_stack, state->journal->framebuffer);
 
   /* XXX: Because we are manually flushing clip state here we need to
    * make sure that the clip state gets updated the next time we flush
@@ -1254,6 +1261,9 @@ _cogl_journal_discard (CoglJournal *journal)
 {
   int i;
 
+  if (journal->entries->len <= 0)
+    return;
+
   for (i = 0; i < journal->entries->len; i++)
     {
       CoglJournalEntry *entry =
@@ -1269,11 +1279,7 @@ _cogl_journal_discard (CoglJournal *journal)
 
   /* The journal only holds a reference to the framebuffer while the
      journal is not empty */
-  if (journal->framebuffer)
-    {
-      cogl_object_unref (journal->framebuffer);
-      journal->framebuffer = NULL;
-    }
+  cogl_object_unref (journal->framebuffer);
 }
 
 /* Note: A return value of FALSE doesn't mean 'no' it means
@@ -1349,8 +1355,7 @@ _cogl_journal_all_entries_within_bounds (CoglJournal *journal,
  * is undefined.
  */
 void
-_cogl_journal_flush (CoglJournal *journal,
-                     CoglFramebuffer *framebuffer)
+_cogl_journal_flush (CoglJournal *journal)
 {
   CoglJournalFlushState state;
   int                   i;
@@ -1366,31 +1371,25 @@ _cogl_journal_flush (CoglJournal *journal,
   if (journal->entries->len == 0)
     return;
 
-  /* Something has gone wrong if we're using a different framebuffer
-     to flush than the one that was current when the entries were
-     added */
-  _COGL_RETURN_IF_FAIL (framebuffer == journal->framebuffer);
-
   /* The entries in this journal may depend on images in other
    * framebuffers which may require that we flush the journals
    * associated with those framebuffers before we can flush
    * this journal... */
-  _cogl_framebuffer_flush_dependency_journals (framebuffer);
+  _cogl_framebuffer_flush_dependency_journals (journal->framebuffer);
 
   /* Note: we start the timer after flushing dependency journals so
    * that the timer isn't started recursively. */
   COGL_TIMER_START (_cogl_uprof_context, flush_timer);
 
-  state.framebuffer = framebuffer;
-  cogl_push_framebuffer (framebuffer);
+  cogl_push_framebuffer (journal->framebuffer);
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING: journal len = %d\n", journal->entries->len);
 
   /* NB: the journal deals with flushing the modelview stack and clip
      state manually */
-  _cogl_framebuffer_flush_state (framebuffer,
-                                 framebuffer,
+  _cogl_framebuffer_flush_state (journal->framebuffer,
+                                 journal->framebuffer,
                                  COGL_FRAMEBUFFER_STATE_ALL &
                                  ~(COGL_FRAMEBUFFER_STATE_MODELVIEW |
                                    COGL_FRAMEBUFFER_STATE_CLIP));
@@ -1399,9 +1398,11 @@ _cogl_journal_flush (CoglJournal *journal,
 
   state.attributes = ctx->journal_flush_attributes_array;
 
-  modelview_stack = _cogl_framebuffer_get_modelview_stack (framebuffer);
+  modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (journal->framebuffer);
   state.modelview_stack = modelview_stack;
-  state.projection_stack = _cogl_framebuffer_get_projection_stack (framebuffer);
+  state.projection_stack =
+    _cogl_framebuffer_get_projection_stack (journal->framebuffer);
 
   if (G_UNLIKELY ((COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SOFTWARE_CLIP)) == 0))
     {
@@ -1516,11 +1517,9 @@ _cogl_journal_log_quad (CoglJournal  *journal,
 
   /* If the framebuffer was previously empty then we'll take a
      reference to the current framebuffer. This reference will be
-     removed when the journal is flushed. FIXME: This should probably
-     be being passed a pointer to the framebuffer from further up so
-     that we don't have to rely on the global framebuffer stack */
+     removed when the journal is flushed */
   if (journal->vertices->len == 0)
-    journal->framebuffer = cogl_object_ref (cogl_get_draw_framebuffer ());
+    cogl_object_ref (journal->framebuffer);
 
   /* The vertex data is logged into a separate array. The data needs
      to be copied into a vertex array before it's given to GL so we
@@ -1611,13 +1610,8 @@ _cogl_journal_log_quad (CoglJournal  *journal,
                                          add_framebuffer_deps_cb,
                                          journal->framebuffer);
 
-  /* XXX: It doesn't feel very nice that in this case we just assume
-   * that the journal is associated with the current framebuffer. I
-   * think a journal->framebuffer reference would seem nicer here but
-   * the reason we don't have that currently is that it would
-   * introduce a circular reference. */
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_BATCHING)))
-    _cogl_framebuffer_flush_journal (journal->framebuffer);
+    _cogl_journal_flush (journal);
 
   COGL_TIMER_STOP (_cogl_uprof_context, log_timer);
 }

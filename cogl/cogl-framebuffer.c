@@ -189,7 +189,7 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
   /* Initialise the clip stack */
   _cogl_clip_state_init (&framebuffer->clip_state);
 
-  framebuffer->journal = _cogl_journal_new ();
+  framebuffer->journal = _cogl_journal_new (framebuffer);
 
   /* Ensure we know the framebuffer->clear_color* members can't be
    * referenced for our fast-path read-pixel optimization (see
@@ -633,7 +633,7 @@ _cogl_framebuffer_remove_all_dependencies (CoglFramebuffer *framebuffer)
 void
 _cogl_framebuffer_flush_journal (CoglFramebuffer *framebuffer)
 {
-  _cogl_journal_flush (framebuffer->journal, framebuffer);
+  _cogl_journal_flush (framebuffer->journal);
 }
 
 void

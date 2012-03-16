@@ -562,7 +562,7 @@ _cogl_flush_attributes_state (CoglFramebuffer *framebuffer,
   CoglContext *ctx = framebuffer->context;
 
   if (!(flags & COGL_DRAW_SKIP_JOURNAL_FLUSH))
-    _cogl_journal_flush (framebuffer->journal, framebuffer);
+    _cogl_journal_flush (framebuffer->journal);
 
   layers_state.unit = 0;
   layers_state.options.flags = 0;

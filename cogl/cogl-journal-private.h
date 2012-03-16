@@ -77,7 +77,7 @@ typedef struct _CoglJournalEntry
 } CoglJournalEntry;
 
 CoglJournal *
-_cogl_journal_new (void);
+_cogl_journal_new (CoglFramebuffer *framebuffer);
 
 void
 _cogl_journal_log_quad (CoglJournal  *journal,
@@ -89,8 +89,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
                         unsigned int  tex_coords_len);
 
 void
-_cogl_journal_flush (CoglJournal *journal,
-                     CoglFramebuffer *framebuffer);
+_cogl_journal_flush (CoglJournal *journal);
 
 void
 _cogl_journal_discard (CoglJournal *journal);
