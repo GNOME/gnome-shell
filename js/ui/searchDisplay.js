@@ -5,6 +5,7 @@ const Lang = imports.lang;
 const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;
+const Atk = imports.gi.Atk;
 
 const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
@@ -33,12 +34,13 @@ const SearchResult = new Lang.Class({
             content = new St.Bin({ style_class: 'search-result-content',
                                    reactive: true,
                                    can_focus: true,
-                                   track_hover: true });
+                                   track_hover: true,
+                                   accessible_role: Atk.Role.PUSH_BUTTON });
             let icon = new IconGrid.BaseIcon(this.metaInfo['name'],
                                              { createIcon: this.metaInfo['createIcon'] });
             content.set_child(icon.actor);
             this._dragActorSource = icon.icon;
-            this.actor.label_actor = icon.label;
+            content.label_actor = icon.label;
         } else {
             if (content._delegate && content._delegate.getDragActorSource)
                 this._dragActorSource = content._delegate.getDragActorSource();
