@@ -24,7 +24,7 @@
 
 /**
  * SECTION:clutter-actor
- * @short_description: Base abstract class for all visual stage actors.
+ * @short_description: The basic element of the scene graph 
  *
  * The ClutterActor class is the basic element of the scene graph in Clutter,
  * and it encapsulates the position, size, and transformations of a node in
