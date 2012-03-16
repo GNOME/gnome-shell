@@ -554,18 +554,12 @@ const UserMenuButton = new Lang.Class({
 
     _updateLogout: function() {
         let allowLogout = !this._lockdownSettings.get_boolean(DISABLE_LOG_OUT_KEY);
-        if (allowLogout)
-            this._logoutItem.actor.show();
-        else
-            this._logoutItem.actor.hide();
+        this._logoutItem.actor.visible = allowLogout;
     },
 
     _updateLockScreen: function() {
         let allowLockScreen = !this._lockdownSettings.get_boolean(DISABLE_LOCK_SCREEN_KEY);
-        if (allowLockScreen)
-            this._lockScreenItem.actor.show();
-        else
-            this._lockScreenItem.actor.hide();
+        this._logoutItem.actor.visible = allowLockScreen;
     },
 
     _updateHaveShutdown: function() {
@@ -584,10 +578,7 @@ const UserMenuButton = new Lang.Class({
         if (!this._suspendOrPowerOffItem)
             return;
 
-        if (!this._haveShutdown && !this._haveSuspend)
-            this._suspendOrPowerOffItem.actor.hide();
-        else
-            this._suspendOrPowerOffItem.actor.show();
+        this._suspendOrPowerOffItem.actor.visible = this._haveShutdown || this._haveSuspend;
 
         // If we can't suspend show Power Off... instead
         // and disable the alt key

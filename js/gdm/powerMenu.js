@@ -60,10 +60,8 @@ const PowerMenuButton = new Lang.Class({
     },
 
     _updateVisibility: function() {
-        if (!this._haveSuspend && !this._haveShutdown && !this._haveRestart)
-            this.actor.hide();
-        else
-            this.actor.show();
+        let shouldBeVisible = (this._haveSuspend || this._haveShutdown || this._haveRestart);
+        this.actor.visible = shouldBeVisible;
     },
 
     _updateHaveShutdown: function() {
@@ -76,11 +74,7 @@ const PowerMenuButton = new Lang.Class({
                     else
                         this._haveShutdown = false;
 
-                    if (this._haveShutdown)
-                        this._powerOffItem.actor.show();
-                    else
-                        this._powerOffItem.actor.hide();
-
+                    this._powerOffItem.actor.visible = this._haveShutdown;
                     this._updateVisibility();
                 }));
         } else {
@@ -91,12 +85,7 @@ const PowerMenuButton = new Lang.Class({
                     else
                         this._haveShutdown = false;
 
-                    if (this._haveShutdown) {
-                        this._powerOffItem.actor.show();
-                    } else {
-                        this._powerOffItem.actor.hide();
-                    }
-
+                    this._powerOffItem.actor.visible = this._haveShutdown;
                     this._updateVisibility();
                 }));
         }
@@ -112,11 +101,7 @@ const PowerMenuButton = new Lang.Class({
                     else
                         this._haveRestart = false;
 
-                    if (this._haveRestart)
-                        this._restartItem.actor.show();
-                    else
-                        this._restartItem.actor.hide();
-
+                    this._restartItem.actor.visible = this._haveRestart;
                     this._updateVisibility();
                 }));
         } else {
@@ -127,12 +112,7 @@ const PowerMenuButton = new Lang.Class({
                     else
                         this._haveRestart = false;
 
-                    if (this._haveRestart) {
-                        this._restartItem.actor.show();
-                    } else {
-                        this._restartItem.actor.hide();
-                    }
-
+                    this._restartItem.actor.visible = this._haveRestart;
                     this._updateVisibility();
                 }));
         }
@@ -140,12 +120,7 @@ const PowerMenuButton = new Lang.Class({
 
     _updateHaveSuspend: function() {
         this._haveSuspend = this._upClient.get_can_suspend();
-
-        if (this._haveSuspend)
-            this._suspendItem.actor.show();
-        else
-            this._suspendItem.actor.hide();
-
+        this._suspendItem.actor.visible = this._haveSuspend;
         this._updateVisibility();
     },
 

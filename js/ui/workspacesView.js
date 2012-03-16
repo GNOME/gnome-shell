@@ -844,10 +844,7 @@ const WorkspacesDisplay = new Lang.Class({
                         if (!primaryView)
                             return;
                         primaryView.actor.opacity = opacity;
-                        if (opacity == 0)
-                            primaryView.actor.hide();
-                        else
-                            primaryView.actor.show();
+                        primaryView.actor.visible = opacity != 0;
                     }));
         }));
     },

@@ -707,10 +707,7 @@ const NMDeviceWired = new Lang.Class({
         // the device
         // we can do it here because addConnection and removeConnection
         // both call _createSection at some point
-        if (this._connections.length <= 1)
-            this.section.actor.hide();
-        else
-            this.section.actor.show();
+        this.section.actor.visible = this._connections.length <= 1;
     },
 
     _createAutomaticConnection: function() {
@@ -1038,13 +1035,8 @@ const NMDeviceWireless = new Lang.Class({
     },
 
     setEnabled: function(enabled) {
-        if (enabled) {
-            this.statusItem.actor.show();
-            this.section.actor.show();
-        } else {
-            this.statusItem.actor.hide();
-            this.section.actor.hide();
-        }
+        this.statusItem.actor.visible = enabled;
+        this.section.actor.visible = enabled;
     },
 
     activate: function() {

@@ -149,13 +149,9 @@ const Indicator = new Lang.Class({
                 }
             }
         }
-        if (showInput) {
-            this._inputTitle.actor.show();
-            this._inputSlider.actor.show();
-        } else {
-            this._inputTitle.actor.hide();
-            this._inputSlider.actor.hide();
-        }
+
+        this._inputTitle.actor.visible = showInput;
+        this._inputSlider.actor.visible = showInput;
     },
 
     _volumeToIcon: function(volume) {

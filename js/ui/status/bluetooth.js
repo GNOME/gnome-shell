@@ -106,10 +106,7 @@ const Indicator = new Lang.Class({
             /* TRANSLATORS: this means that bluetooth was disabled by hardware rfkill */
             this._killswitch.setStatus(_("hardware disabled"));
 
-        if (has_adapter)
-            this.actor.show();
-        else
-            this.actor.hide();
+        this.actor.visible = has_adapter;
 
         if (on) {
             this._discoverable.actor.show();

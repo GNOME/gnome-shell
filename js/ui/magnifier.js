@@ -1228,10 +1228,7 @@ const Crosshairs = new Lang.Class({
                     crosshairsActor = new Clutter.Clone({ source: this._actor });
                     this._clones.push(crosshairsActor);
                 }
-                if (this._actor.visible)
-                    crosshairsActor.show();
-                else
-                    crosshairsActor.hide();
+                crosshairsActor.visible = this._actor.visible;
 
                 container.add_actor(crosshairsActor);
                 container.raise_child(magnifiedMouse, crosshairsActor);
