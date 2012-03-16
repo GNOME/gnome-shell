@@ -179,6 +179,8 @@ struct _ClutterActor
  *   sub-classes to advertise whether they need an offscreen redirect
  *   to get the correct opacity. See
  *   clutter_actor_set_offscreen_redirect() for details.
+ * @paint_node: virtual function for creating paint nodes and attaching
+ *   them to the render tree
  *
  * Base class for actors.
  */
