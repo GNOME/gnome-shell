@@ -17,10 +17,10 @@ typedef struct _TestState
 static void
 draw_path_at (int x, int y)
 {
-  cogl_push_matrix ();
-  cogl_translate (x * BLOCK_SIZE, y * BLOCK_SIZE, 0.0f);
+  cogl_framebuffer_push_matrix (fb);
+  cogl_framebuffer_translate (fb, x * BLOCK_SIZE, y * BLOCK_SIZE, 0.0f);
   cogl_path_fill ();
-  cogl_pop_matrix ();
+  cogl_framebuffer_pop_matrix (fb);
 }
 
 static void
@@ -33,12 +33,12 @@ check_block (int block_x, int block_y, int block_mask)
      filled. The bits from 0->3 represent the top left, top right,
      bottom left and bottom right respectively */
 
-  cogl_read_pixels (block_x * BLOCK_SIZE,
-                    block_y * BLOCK_SIZE,
-                    BLOCK_SIZE, BLOCK_SIZE,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    (guint8 *)data);
+  cogl_framebuffer_read_pixels (fb,
+                                block_x * BLOCK_SIZE,
+                                block_y * BLOCK_SIZE,
+                                BLOCK_SIZE, BLOCK_SIZE,
+                                COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                (guint8 *)data);
 
   for (qy = 0; qy < 2; qy++)
     for (qx = 0; qx < 2; qx++)
@@ -188,17 +188,22 @@ validate_result ()
 }
 
 void
-test_cogl_path (TestUtilsGTestFixture *fixture,
-                void *data)
+test_path (void)
 {
-  TestUtilsSharedState *shared_state = data;
   TestState state;
 
-  cogl_ortho (0, cogl_framebuffer_get_width (shared_state->fb), /* left, right */
-              cogl_framebuffer_get_height (shared_state->fb), 0, /* bottom, top */
-              -1, 100 /* z near, far */);
+  cogl_framebuffer_orthographic (fb,
+                                 0, 0,
+                                 cogl_framebuffer_get_width (fb),
+                                 cogl_framebuffer_get_height (fb),
+                                 -1,
+                                 100);
 
+  /* XXX: we have to push/pop a framebuffer since this test currently
+   * uses the legacy cogl_rectangle() api. */
+  cogl_push_framebuffer (fb);
   paint (&state);
+  cogl_pop_framebuffer ();
   validate_result ();
 
   if (cogl_test_verbose ())

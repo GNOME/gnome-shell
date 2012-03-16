@@ -17,18 +17,18 @@
 
 typedef struct _TestState
 {
-  CoglContext *ctx;
-  CoglFramebuffer *fb;
-  CoglHandle texture;
+  CoglTexture *texture;
   CoglFramebuffer *offscreen;
-  CoglHandle offscreen_tex;
+  CoglTexture *offscreen_tex;
   int width, height;
 } TestState;
 
 static void
-validate_part (int xnum, int ynum, gboolean shown)
+validate_part (CoglFramebuffer *framebuffer,
+               int xnum, int ynum, gboolean shown)
 {
-  test_utils_check_region (xnum * TEXTURE_RENDER_SIZE + TEST_INSET,
+  test_utils_check_region (framebuffer,
+                           xnum * TEXTURE_RENDER_SIZE + TEST_INSET,
                            ynum * TEXTURE_RENDER_SIZE + TEST_INSET,
                            TEXTURE_RENDER_SIZE - TEST_INSET * 2,
                            TEXTURE_RENDER_SIZE - TEST_INSET * 2,
@@ -44,24 +44,30 @@ validate_part (int xnum, int ynum, gboolean shown)
 #define CULL_FACE_MODE(draw_num)   (((draw_num) & 0x0c) >> 2)
 
 static void
-paint_test_backface_culling (TestState *state)
+paint_test_backface_culling (TestState *state,
+                             CoglFramebuffer *framebuffer)
 {
   int draw_num;
-  CoglPipeline *base_pipeline = cogl_pipeline_new (state->ctx);
-  CoglColor clear_color;
+  CoglPipeline *base_pipeline = cogl_pipeline_new (ctx);
 
-  cogl_ortho (0, state->width, /* left, right */
-              state->height, 0, /* bottom, top */
-              -1, 100 /* z near, far */);
+  cogl_framebuffer_orthographic (framebuffer,
+                                 0, 0,
+                                 state->width,
+                                 state->height,
+                                 -1,
+                                 100);
 
-  cogl_color_init_from_4ub (&clear_color, 0x00, 0x00, 0x00, 0xff);
-  cogl_clear (&clear_color, COGL_BUFFER_BIT_COLOR | COGL_BUFFER_BIT_STENCIL);
+  cogl_framebuffer_clear4f (framebuffer,
+                            COGL_BUFFER_BIT_COLOR | COGL_BUFFER_BIT_STENCIL,
+                            0, 0, 0, 1);
 
   cogl_pipeline_set_layer_texture (base_pipeline, 0, state->texture);
 
   cogl_pipeline_set_layer_filters (base_pipeline, 0,
                                    COGL_PIPELINE_FILTER_NEAREST,
                                    COGL_PIPELINE_FILTER_NEAREST);
+
+  cogl_push_framebuffer (framebuffer);
 
   /* Render the scene sixteen times to test all of the combinations of
      cull face mode, legacy state and winding orders */
@@ -144,11 +150,13 @@ paint_test_backface_culling (TestState *state)
       cogl_object_unref (pipeline);
     }
 
+  cogl_pop_framebuffer ();
+
   cogl_object_unref (base_pipeline);
 }
 
 static void
-validate_result (int y_offset)
+validate_result (CoglFramebuffer *framebuffer, int y_offset)
 {
   int draw_num;
 
@@ -193,26 +201,29 @@ validate_result (int y_offset)
         }
 
       /* Front-facing texture */
-      validate_part (0, y_offset + draw_num, !cull_front);
+      validate_part (framebuffer,
+                     0, y_offset + draw_num, !cull_front);
       /* Front-facing texture with flipped tex coords */
-      validate_part (1, y_offset + draw_num, !cull_front);
+      validate_part (framebuffer,
+                     1, y_offset + draw_num, !cull_front);
       /* Back-facing texture */
-      validate_part (2, y_offset + draw_num, !cull_back);
+      validate_part (framebuffer,
+                     2, y_offset + draw_num, !cull_back);
       /* Front-facing texture polygon */
-      validate_part (3, y_offset + draw_num, !cull_front);
+      validate_part (framebuffer,
+                     3, y_offset + draw_num, !cull_front);
       /* Back-facing texture polygon */
-      validate_part (4, y_offset + draw_num, !cull_back);
+      validate_part (framebuffer,
+                     4, y_offset + draw_num, !cull_back);
     }
 }
 
 static void
 paint (TestState *state)
 {
-  float stage_viewport[4];
-  CoglMatrix stage_projection;
-  CoglMatrix stage_modelview;
+  CoglPipeline *pipeline;
 
-  paint_test_backface_culling (state);
+  paint_test_backface_culling (state, fb);
 
   /*
    * Now repeat the test but rendered to an offscreen
@@ -220,40 +231,28 @@ paint (TestState *state)
    * always run to an offscreen buffer but we might as well have this
    * check anyway in case it is being run with COGL_TEST_ONSCREEN=1
    */
+  paint_test_backface_culling (state, state->offscreen);
 
-  cogl_get_viewport (stage_viewport);
-  cogl_get_projection_matrix (&stage_projection);
-  cogl_get_modelview_matrix (&stage_modelview);
+  /* Copy the result of the offscreen rendering for validation and
+   * also so we can have visual feedback. */
+  pipeline = cogl_pipeline_new (ctx);
+  cogl_pipeline_set_layer_texture (pipeline, 0, state->offscreen_tex);
+  cogl_framebuffer_draw_rectangle (fb,
+                                   pipeline,
+                                   0, TEXTURE_RENDER_SIZE * 16,
+                                   state->width,
+                                   state->height + TEXTURE_RENDER_SIZE * 16);
+  cogl_object_unref (pipeline);
 
-  cogl_push_framebuffer (state->offscreen);
-
-  cogl_set_viewport (stage_viewport[0],
-                     stage_viewport[1],
-                     stage_viewport[2],
-                     stage_viewport[3]);
-  cogl_set_projection_matrix (&stage_projection);
-  cogl_set_modelview_matrix (&stage_modelview);
-
-  paint_test_backface_culling (state);
-
-  cogl_pop_framebuffer ();
-
-  /* Incase we want feedback of what was drawn offscreen we draw it
-   * to the stage... */
-  cogl_set_source_texture (state->offscreen_tex);
-  cogl_rectangle (0, TEXTURE_RENDER_SIZE * 16,
-                  stage_viewport[2],
-                  stage_viewport[3] + TEXTURE_RENDER_SIZE * 16);
-
-  validate_result (0);
-  validate_result (16);
+  validate_result (fb, 0);
+  validate_result (fb, 16);
 }
 
-static CoglHandle
+static CoglTexture *
 make_texture (void)
 {
   guchar *tex_data, *p;
-  CoglHandle tex;
+  CoglTexture *tex;
 
   tex_data = g_malloc (TEXTURE_SIZE * TEXTURE_SIZE * 4);
 
@@ -279,19 +278,15 @@ make_texture (void)
 }
 
 void
-test_cogl_backface_culling (TestUtilsGTestFixture *fixture,
-                            void *data)
+test_backface_culling (void)
 {
-  TestUtilsSharedState *shared_state = data;
   TestState state;
-  CoglHandle tex;
+  CoglTexture *tex;
 
-  state.ctx = shared_state->ctx;
-  state.fb = shared_state->fb;
-  state.width = cogl_framebuffer_get_width (shared_state->fb);
-  state.height = cogl_framebuffer_get_height (shared_state->fb);
+  state.width = cogl_framebuffer_get_width (fb);
+  state.height = cogl_framebuffer_get_height (fb);
 
-  state.offscreen = COGL_INVALID_HANDLE;
+  state.offscreen = NULL;
 
   state.texture = make_texture ();
 
@@ -304,8 +299,8 @@ test_cogl_backface_culling (TestUtilsGTestFixture *fixture,
   paint (&state);
 
   cogl_object_unref (state.offscreen);
-  cogl_handle_unref (state.offscreen_tex);
-  cogl_handle_unref (state.texture);
+  cogl_object_unref (state.offscreen_tex);
+  cogl_object_unref (state.texture);
 
   if (cogl_test_verbose ())
     g_print ("OK\n");

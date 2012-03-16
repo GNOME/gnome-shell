@@ -60,7 +60,7 @@ test_blend (TestState *state,
   int x_off;
 
   /* First write out the destination color without any blending... */
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
   cogl_pipeline_set_color4ub (pipeline, Dr, Dg, Db, Da);
   cogl_pipeline_set_blend (pipeline, "RGBA = ADD (SRC_COLOR, 0)", NULL);
   cogl_set_source (pipeline);
@@ -74,7 +74,7 @@ test_blend (TestState *state,
    * Now blend a rectangle over our well defined destination:
    */
 
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
   cogl_pipeline_set_color4ub (pipeline, Sr, Sg, Sb, Sa);
 
   status = cogl_pipeline_set_blend (pipeline, blend_string, &error);
@@ -118,7 +118,7 @@ test_blend (TestState *state,
         g_print ("  blend constant = UNUSED\n");
     }
 
-  test_utils_check_pixel (x_off, y_off, expected_result);
+  test_utils_check_pixel (fb, x_off, y_off, expected_result);
 
 
   /*
@@ -171,10 +171,10 @@ test_blend (TestState *state,
 
   /* See what we got... */
 
-  test_utils_check_pixel (x_off, y_off, expected_result);
+  test_utils_check_pixel (fb, x_off, y_off, expected_result);
 }
 
-static CoglHandle
+static CoglTexture *
 make_texture (guint32 color)
 {
   guchar *tex_data, *p;
@@ -182,7 +182,7 @@ make_texture (guint32 color)
   guint8 g = MASK_GREEN (color);
   guint8 b = MASK_BLUE (color);
   guint8 a = MASK_ALPHA (color);
-  CoglHandle tex;
+  CoglTexture *tex;
 
   tex_data = g_malloc (QUAD_WIDTH * QUAD_WIDTH * 4);
 
@@ -219,7 +219,7 @@ test_tex_combine (TestState *state,
                   const char *combine_string,
                   guint32 expected_result)
 {
-  CoglHandle tex0, tex1;
+  CoglTexture *tex0, *tex1;
 
   /* combine constant - when applicable */
   guint8 Cr = MASK_RED (combine_constant);
@@ -268,8 +268,8 @@ test_tex_combine (TestState *state,
                   y * QUAD_WIDTH + QUAD_WIDTH);
 
   cogl_handle_unref (material);
-  cogl_handle_unref (tex0);
-  cogl_handle_unref (tex1);
+  cogl_object_unref (tex0);
+  cogl_object_unref (tex1);
 
   /* See what we got... */
 
@@ -288,7 +288,7 @@ test_tex_combine (TestState *state,
         g_print ("  combine constant = UNUSED\n");
     }
 
-  test_utils_check_pixel (x_off, y_off, expected_result);
+  test_utils_check_pixel (fb, x_off, y_off, expected_result);
 }
 
 static void
@@ -408,19 +408,21 @@ paint (TestState *state)
 }
 
 void
-test_cogl_blend_strings (TestUtilsGTestFixture *fixture,
-                         void *data)
+test_blend_strings (void)
 {
-  TestUtilsSharedState *shared_state = data;
   TestState state;
 
-  state.ctx = shared_state->ctx;
+  cogl_framebuffer_orthographic (fb, 0, 0,
+                                 cogl_framebuffer_get_width (fb),
+                                 cogl_framebuffer_get_height (fb),
+                                 -1,
+                                 100);
 
-  cogl_ortho (0, cogl_framebuffer_get_width (shared_state->fb), /* left, right */
-              cogl_framebuffer_get_height (shared_state->fb), 0, /* bottom, top */
-              -1, 100 /* z near, far */);
-
+  /* XXX: we have to push/pop a framebuffer since this test currently
+   * uses the legacy cogl_rectangle() api. */
+  cogl_push_framebuffer (fb);
   paint (&state);
+  cogl_pop_framebuffer ();
 
   if (cogl_test_verbose ())
     g_print ("OK\n");

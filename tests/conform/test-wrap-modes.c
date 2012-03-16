@@ -7,7 +7,6 @@
 
 typedef struct _TestState
 {
-  CoglContext *ctx;
   int width;
   int height;
   CoglTexture *texture;
@@ -46,7 +45,7 @@ create_pipeline (TestState *state,
 {
   CoglPipeline *pipeline;
 
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
   cogl_pipeline_set_layer_texture (pipeline, 0, state->texture);
   cogl_pipeline_set_layer_filters (pipeline, 0,
                                    COGL_PIPELINE_FILTER_NEAREST,
@@ -58,7 +57,7 @@ create_pipeline (TestState *state,
 }
 
 static CoglPipelineWrapMode
-test_wrap_modes[] =
+wrap_modes[] =
   {
     COGL_PIPELINE_WRAP_MODE_REPEAT,
     COGL_PIPELINE_WRAP_MODE_REPEAT,
@@ -84,22 +83,25 @@ draw_tests (TestState *state)
 {
   int i;
 
-  for (i = 0; i < G_N_ELEMENTS (test_wrap_modes); i += 2)
+  for (i = 0; i < G_N_ELEMENTS (wrap_modes); i += 2)
     {
       CoglPipelineWrapMode wrap_mode_s, wrap_mode_t;
       CoglPipeline *pipeline;
 
       /* Create a separate pipeline for each pair of wrap modes so
          that we can verify whether the batch splitting works */
-      wrap_mode_s = test_wrap_modes[i];
-      wrap_mode_t = test_wrap_modes[i + 1];
+      wrap_mode_s = wrap_modes[i];
+      wrap_mode_t = wrap_modes[i + 1];
       pipeline = create_pipeline (state, wrap_mode_s, wrap_mode_t);
-      cogl_set_source (pipeline);
-      cogl_handle_unref (pipeline);
       /* Render the pipeline at four times the size of the texture */
-      cogl_rectangle_with_texture_coords (i * TEX_SIZE, 0,
-                                          (i + 2) * TEX_SIZE, TEX_SIZE * 2,
-                                          0, 0, 2, 2);
+      cogl_framebuffer_draw_textured_rectangle (fb,
+                                                pipeline,
+                                                i * TEX_SIZE,
+                                                0,
+                                                (i + 2) * TEX_SIZE,
+                                                TEX_SIZE * 2,
+                                                0, 0, 2, 2);
+      cogl_object_unref (pipeline);
     }
 }
 
@@ -116,16 +118,16 @@ draw_tests_polygon (TestState *state)
 {
   int i;
 
-  for (i = 0; i < G_N_ELEMENTS (test_wrap_modes); i += 2)
+  for (i = 0; i < G_N_ELEMENTS (wrap_modes); i += 2)
     {
       CoglPipelineWrapMode wrap_mode_s, wrap_mode_t;
       CoglPipeline *pipeline;
 
-      wrap_mode_s = test_wrap_modes[i];
-      wrap_mode_t = test_wrap_modes[i + 1];
+      wrap_mode_s = wrap_modes[i];
+      wrap_mode_t = wrap_modes[i + 1];
       pipeline = create_pipeline (state, wrap_mode_s, wrap_mode_t);
       cogl_set_source (pipeline);
-      cogl_handle_unref (pipeline);
+      cogl_object_unref (pipeline);
       cogl_push_matrix ();
       cogl_translate (TEX_SIZE * i, 0.0f, 0.0f);
       /* Render the pipeline at four times the size of the texture */
@@ -151,16 +153,16 @@ draw_tests_vbo (TestState *state)
                           &vertices[0].tx);
   cogl_vertex_buffer_submit (vbo);
 
-  for (i = 0; i < G_N_ELEMENTS (test_wrap_modes); i += 2)
+  for (i = 0; i < G_N_ELEMENTS (wrap_modes); i += 2)
     {
       CoglPipelineWrapMode wrap_mode_s, wrap_mode_t;
       CoglPipeline *pipeline;
 
-      wrap_mode_s = test_wrap_modes[i];
-      wrap_mode_t = test_wrap_modes[i + 1];
+      wrap_mode_s = wrap_modes[i];
+      wrap_mode_t = wrap_modes[i + 1];
       pipeline = create_pipeline (state, wrap_mode_s, wrap_mode_t);
       cogl_set_source (pipeline);
-      cogl_handle_unref (pipeline);
+      cogl_object_unref (pipeline);
       cogl_push_matrix ();
       cogl_translate (TEX_SIZE * i, 0.0f, 0.0f);
       /* Render the pipeline at four times the size of the texture */
@@ -177,18 +179,17 @@ validate_set (TestState *state, int offset)
   guint8 data[TEX_SIZE * 2 * TEX_SIZE * 2 * 4], *p;
   int x, y, i;
 
-  for (i = 0; i < G_N_ELEMENTS (test_wrap_modes); i += 2)
+  for (i = 0; i < G_N_ELEMENTS (wrap_modes); i += 2)
     {
       CoglPipelineWrapMode wrap_mode_s, wrap_mode_t;
 
-      wrap_mode_s = test_wrap_modes[i];
-      wrap_mode_t = test_wrap_modes[i + 1];
+      wrap_mode_s = wrap_modes[i];
+      wrap_mode_t = wrap_modes[i + 1];
 
-      cogl_read_pixels (i * TEX_SIZE, offset * TEX_SIZE * 2,
-                        TEX_SIZE * 2, TEX_SIZE * 2,
-                        COGL_READ_PIXELS_COLOR_BUFFER,
-                        COGL_PIXEL_FORMAT_RGBA_8888,
-                        data);
+      cogl_framebuffer_read_pixels (fb, i * TEX_SIZE, offset * TEX_SIZE * 2,
+                                    TEX_SIZE * 2, TEX_SIZE * 2,
+                                    COGL_PIXEL_FORMAT_RGBA_8888,
+                                    data);
 
       p = data;
 
@@ -237,7 +238,7 @@ paint (TestState *state)
   /* Draw the tests first with a non atlased texture */
   state->texture = create_texture (COGL_TEXTURE_NO_ATLAS);
   draw_tests (state);
-  cogl_handle_unref (state->texture);
+  cogl_object_unref (state->texture);
 
   /* Draw the tests again with a possible atlased texture. This should
      end up testing software repeats */
@@ -246,7 +247,7 @@ paint (TestState *state)
   cogl_translate (0.0f, TEX_SIZE * 2.0f, 0.0f);
   draw_tests (state);
   cogl_pop_matrix ();
-  cogl_handle_unref (state->texture);
+  cogl_object_unref (state->texture);
 
   /* Draw the tests using cogl_polygon */
   state->texture = create_texture (COGL_TEXTURE_NO_ATLAS);
@@ -254,7 +255,7 @@ paint (TestState *state)
   cogl_translate (0.0f, TEX_SIZE * 4.0f, 0.0f);
   draw_tests_polygon (state);
   cogl_pop_matrix ();
-  cogl_handle_unref (state->texture);
+  cogl_object_unref (state->texture);
 
   /* Draw the tests using a vertex buffer */
   state->texture = create_texture (COGL_TEXTURE_NO_ATLAS);
@@ -262,27 +263,31 @@ paint (TestState *state)
   cogl_translate (0.0f, TEX_SIZE * 6.0f, 0.0f);
   draw_tests_vbo (state);
   cogl_pop_matrix ();
-  cogl_handle_unref (state->texture);
+  cogl_object_unref (state->texture);
 
   validate_result (state);
 }
 
 void
-test_cogl_wrap_modes (TestUtilsGTestFixture *fixture,
-                      void *data)
+test_wrap_modes (void)
 {
-  TestUtilsSharedState *shared_state = data;
   TestState state;
 
-  state.ctx = shared_state->ctx;
-  state.width = cogl_framebuffer_get_width (shared_state->fb);
-  state.height = cogl_framebuffer_get_height (shared_state->fb);
+  state.width = cogl_framebuffer_get_width (fb);
+  state.height = cogl_framebuffer_get_height (fb);
 
-  cogl_ortho (0, state.width, /* left, right */
-              state.height, 0, /* bottom, top */
-              -1, 100 /* z near, far */);
+  cogl_framebuffer_orthographic (fb,
+                                 0, 0,
+                                 state.width,
+                                 state.height,
+                                 -1,
+                                 100);
 
+  /* XXX: we have to push/pop a framebuffer since this test currently
+   * uses the legacy cogl_vertex_buffer_draw() api. */
+  cogl_push_framebuffer (fb);
   paint (&state);
+  cogl_pop_framebuffer ();
 
   if (cogl_test_verbose ())
     g_print ("OK\n");

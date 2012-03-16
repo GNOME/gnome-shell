@@ -8,8 +8,6 @@
 
 typedef struct _TestState
 {
-  CoglContext *ctx;
-
   CoglPipeline *pipeline_red;
   CoglPipeline *pipeline_green;
   CoglPipeline *pipeline_blue;
@@ -92,7 +90,7 @@ create_pipeline_for_shader (TestState *state, const char *shader_source)
   CoglHandle shader;
   CoglHandle program;
 
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
 
   shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
   cogl_shader_source (shader, shader_source);
@@ -179,9 +177,8 @@ destroy_state (TestState *state)
 static void
 paint_pipeline (CoglPipeline *pipeline, int pos)
 {
-  cogl_push_source (pipeline);
-  cogl_rectangle (pos * 10, 0, pos * 10 + 10, 10);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb, pipeline,
+                                   pos * 10, 0, pos * 10 + 10, 10);
 }
 
 static void
@@ -343,10 +340,7 @@ paint_long_pipeline (TestState *state)
 static void
 paint (TestState *state)
 {
-  CoglColor color;
-
-  cogl_color_init_from_4ub (&color, 0, 0, 0, 255);
-  cogl_clear (&color, COGL_BUFFER_BIT_COLOR);
+  cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 
   paint_color_pipelines (state);
   paint_matrix_pipeline (state->matrix_pipeline);
@@ -357,7 +351,7 @@ paint (TestState *state)
 static void
 check_pos (int pos, guint32 color)
 {
-  test_utils_check_pixel (pos * 10 + 5, 5, color);
+  test_utils_check_pixel (fb, pos * 10 + 5, 5, color);
 }
 
 static void
@@ -387,26 +381,21 @@ validate_long_pipeline_result (void)
 }
 
 void
-test_cogl_pipeline_uniforms (TestUtilsGTestFixture *fixture,
-                             void *user_data)
+test_pipeline_uniforms (void)
 {
-  TestUtilsSharedState *shared_state = user_data;
-
   /* If shaders aren't supported then we can't run the test */
   if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
     {
       TestState state;
 
-      state.ctx = shared_state->ctx;
-
       init_state (&state);
 
-      cogl_ortho (/* left, right */
-                  0, cogl_framebuffer_get_width (shared_state->fb),
-                  /* bottom, top */
-                  cogl_framebuffer_get_height (shared_state->fb), 0,
-                  /* z near, far */
-                  -1, 100);
+      cogl_framebuffer_orthographic (fb,
+                                     0, 0,
+                                     cogl_framebuffer_get_width (fb),
+                                     cogl_framebuffer_get_height (fb),
+                                     -1,
+                                     100);
 
       paint (&state);
       validate_result ();

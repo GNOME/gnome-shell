@@ -1491,15 +1491,16 @@ _cogl_journal_log_quad (CoglJournal  *journal,
                         const float  *tex_coords,
                         unsigned int  tex_coords_len)
 {
-  gsize            stride;
-  int               next_vert;
-  float            *v;
-  int               i;
-  int               next_entry;
-  guint32           disable_layers;
+  CoglFramebuffer *framebuffer = journal->framebuffer;
+  gsize stride;
+  int next_vert;
+  float *v;
+  int i;
+  int next_entry;
+  guint32 disable_layers;
   CoglJournalEntry *entry;
-  CoglPipeline     *final_pipeline;
-  CoglClipStack    *clip_stack;
+  CoglPipeline *final_pipeline;
+  CoglClipStack *clip_stack;
   CoglPipelineFlushOptions flush_options;
   COGL_STATIC_TIMER (log_timer,
                      "Mainloop", /* parent */
@@ -1507,15 +1508,13 @@ _cogl_journal_log_quad (CoglJournal  *journal,
                      "The time spent logging in the Cogl journal",
                      0 /* no application private data */);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   COGL_TIMER_START (_cogl_uprof_context, log_timer);
 
   /* If the framebuffer was previously empty then we'll take a
      reference to the current framebuffer. This reference will be
      removed when the journal is flushed */
   if (journal->vertices->len == 0)
-    cogl_object_ref (journal->framebuffer);
+    cogl_object_ref (framebuffer);
 
   /* The vertex data is logged into a separate array. The data needs
      to be copied into a vertex array before it's given to GL so we
@@ -1594,17 +1593,18 @@ _cogl_journal_log_quad (CoglJournal  *journal,
 
   entry->pipeline = _cogl_pipeline_journal_ref (final_pipeline);
 
-  clip_stack = _cogl_framebuffer_get_clip_stack (journal->framebuffer);
+  clip_stack = _cogl_framebuffer_get_clip_stack (framebuffer);
   entry->clip_stack = _cogl_clip_stack_ref (clip_stack);
 
   if (G_UNLIKELY (final_pipeline != pipeline))
     cogl_handle_unref (final_pipeline);
 
-  cogl_get_modelview_matrix (&entry->model_view);
+  cogl_framebuffer_get_modelview_matrix (framebuffer,
+                                         &entry->model_view);
 
   _cogl_pipeline_foreach_layer_internal (pipeline,
                                          add_framebuffer_deps_cb,
-                                         journal->framebuffer);
+                                         framebuffer);
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_BATCHING)))
     _cogl_journal_flush (journal);

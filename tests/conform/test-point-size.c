@@ -37,30 +37,28 @@ verify_point_size (CoglFramebuffer *fb,
         gboolean in_point = x >= 1 && x <= 2 && y >= 1 && y <= 2;
         guint32 expected_pixel = in_point ? 0x00ff00ff : 0xff0000ff;
 
-        test_utils_check_pixel (calc_coord_offset (x_pos, x, point_size),
+        test_utils_check_pixel (fb,
+                                calc_coord_offset (x_pos, x, point_size),
                                 calc_coord_offset (y_pos, y, point_size),
                                 expected_pixel);
       }
 }
 
 void
-test_cogl_point_size (TestUtilsGTestFixture *fixture,
-                      void *data)
+test_point_size (void)
 {
-  TestUtilsSharedState *shared_state = data;
-  CoglContext *ctx = shared_state->ctx;
-  int fb_width = cogl_framebuffer_get_width (shared_state->fb);
-  int fb_height = cogl_framebuffer_get_height (shared_state->fb);
+  int fb_width = cogl_framebuffer_get_width (fb);
+  int fb_height = cogl_framebuffer_get_height (fb);
   int point_size;
   int x_pos;
 
-  cogl_framebuffer_orthographic (shared_state->fb,
+  cogl_framebuffer_orthographic (fb,
                                  0, 0, /* x_1, y_1 */
                                  fb_width, /* x_2 */
                                  fb_height /* y_2 */,
                                  -1, 100 /* near/far */);
 
-  cogl_framebuffer_clear4f (shared_state->fb,
+  cogl_framebuffer_clear4f (fb,
                             COGL_BUFFER_BIT_COLOR,
                             1.0f, 0.0f, 0.0f, 1.0f);
 
@@ -81,7 +79,7 @@ test_cogl_point_size (TestUtilsGTestFixture *fixture,
 
       cogl_pipeline_set_point_size (pipeline, point_size);
       cogl_pipeline_set_color4ub (pipeline, 0, 255, 0, 255);
-      cogl_framebuffer_draw_primitive (shared_state->fb,
+      cogl_framebuffer_draw_primitive (fb,
                                        pipeline,
                                        prim);
 
@@ -93,7 +91,7 @@ test_cogl_point_size (TestUtilsGTestFixture *fixture,
   for (x_pos = 0, point_size = MAX_POINT_SIZE;
        point_size >= 4;
        x_pos += POINT_BOX_SIZE, point_size /= 2)
-    verify_point_size (shared_state->fb,
+    verify_point_size (fb,
                        x_pos + POINT_BOX_SIZE / 2,
                        POINT_BOX_SIZE / 2,
                        point_size);

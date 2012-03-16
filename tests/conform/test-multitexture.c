@@ -173,7 +173,7 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_cogl_multitexture (TestUtilsGTestFixture *fixture,
+test_multitexture (TestUtilsGTestFixture *fixture,
                         void *data)
 {
   TestState state;

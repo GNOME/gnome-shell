@@ -6,10 +6,10 @@
 
 typedef struct _TestState
 {
-  CoglContext *ctx;
+  int paddiing;
 } TestState;
 
-static CoglHandle
+static CoglTexture *
 create_dummy_texture (void)
 {
   /* Create a dummy 1x1 green texture to replace the color from the
@@ -28,7 +28,7 @@ static void
 paint_legacy (TestState *state)
 {
   CoglHandle material = cogl_material_new ();
-  CoglHandle tex;
+  CoglTexture *tex;
   CoglColor color;
   GError *error = NULL;
   CoglHandle shader, program;
@@ -44,7 +44,7 @@ paint_legacy (TestState *state)
      constant green color provided by a texture */
   tex = create_dummy_texture ();
   cogl_material_set_layer (material, 0, tex);
-  cogl_handle_unref (tex);
+  cogl_object_unref (tex);
   if (!cogl_material_set_layer_combine (material, 0,
                                         "RGBA=REPLACE(TEXTURE)",
                                         &error))
@@ -97,8 +97,8 @@ paint_legacy (TestState *state)
 static void
 paint (TestState *state)
 {
-  CoglPipeline *pipeline = cogl_pipeline_new (state->ctx);
-  CoglHandle tex;
+  CoglPipeline *pipeline = cogl_pipeline_new (ctx);
+  CoglTexture *tex;
   CoglColor color;
   GError *error = NULL;
   CoglHandle shader, program;
@@ -114,7 +114,7 @@ paint (TestState *state)
      constant green color provided by a texture */
   tex = create_dummy_texture ();
   cogl_pipeline_set_layer_texture (pipeline, 0, tex);
-  cogl_handle_unref (tex);
+  cogl_object_unref (tex);
   if (!cogl_pipeline_set_layer_combine (pipeline, 0,
                                         "RGBA=REPLACE(TEXTURE)",
                                         &error))
@@ -166,35 +166,40 @@ paint (TestState *state)
 }
 
 static void
-validate_result (void)
+validate_result (CoglFramebuffer *framebuffer)
 {
   /* Non-shader version */
-  test_utils_check_pixel (25, 25, 0x00ff0000);
+  test_utils_check_pixel (framebuffer, 25, 25, 0x00ff0000);
   /* Shader version */
-  test_utils_check_pixel (75, 25, 0x00ff0000);
+  test_utils_check_pixel (framebuffer, 75, 25, 0x00ff0000);
 }
 
 void
-test_cogl_just_vertex_shader (TestUtilsGTestFixture *fixture,
-                              void *data)
+test_just_vertex_shader (void)
 {
-  TestUtilsSharedState *shared_state = data;
   TestState state;
 
-  state.ctx = shared_state->ctx;
-
-  cogl_ortho (0, cogl_framebuffer_get_width (shared_state->fb), /* left, right */
-              cogl_framebuffer_get_height (shared_state->fb), 0, /* bottom, top */
-              -1, 100 /* z near, far */);
+  cogl_framebuffer_orthographic (fb,
+                                 0, 0,
+                                 cogl_framebuffer_get_width (fb),
+                                 cogl_framebuffer_get_height (fb),
+                                 -1,
+                                 100);
 
   /* If shaders aren't supported then we can't run the test */
   if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
     {
+      /* XXX: we have to push/pop a framebuffer since this test currently
+       * uses the legacy cogl_rectangle() api. */
+      cogl_push_framebuffer (fb);
+
       paint_legacy (&state);
-      validate_result ();
+      validate_result (fb);
 
       paint (&state);
-      validate_result ();
+      validate_result (fb);
+
+      cogl_pop_framebuffer ();
 
       if (cogl_test_verbose ())
         g_print ("OK\n");

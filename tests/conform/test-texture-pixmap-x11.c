@@ -198,7 +198,7 @@ queue_redraw (gpointer stage)
 #endif /* COGL_HAS_XLIB */
 
 void
-test_cogl_texture_pixmap_x11 (TestUtilsGTestFixture *fixture,
+test_texture_pixmap_x11 (TestUtilsGTestFixture *fixture,
                               void *data)
 {
 #ifdef COGL_HAS_XLIB

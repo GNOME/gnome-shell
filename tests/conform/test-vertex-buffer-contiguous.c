@@ -152,7 +152,7 @@ queue_redraw (gpointer stage)
 
 
 void
-test_cogl_vertex_buffer_contiguous (TestUtilsGTestFixture *fixture,
+test_vertex_buffer_contiguous (TestUtilsGTestFixture *fixture,
 		                    void *data)
 {
   TestState state;

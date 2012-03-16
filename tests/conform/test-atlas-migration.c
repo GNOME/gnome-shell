@@ -99,7 +99,7 @@ verify_texture (CoglHandle texture, int size)
 }
 
 void
-test_cogl_atlas_migration (TestUtilsGTestFixture *fixture,
+test_atlas_migration (TestUtilsGTestFixture *fixture,
                            void *data)
 {
   CoglHandle textures[N_TEXTURES];

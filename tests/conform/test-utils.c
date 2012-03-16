@@ -9,9 +9,11 @@
 
 static gboolean cogl_test_is_verbose;
 
+CoglContext *ctx;
+CoglFramebuffer *fb;
+
 void
-test_utils_init (TestUtilsSharedState *state,
-                 TestFlags flags)
+test_utils_init (TestFlags flags)
 {
   static int counter = 0;
   GError *error = NULL;
@@ -43,11 +45,11 @@ test_utils_init (TestUtilsSharedState *state,
 
   g_setenv ("COGL_X11_SYNC", "1", 0);
 
-  state->ctx = cogl_context_new (NULL, &error);
-  if (!state->ctx)
+  ctx = cogl_context_new (NULL, &error);
+  if (!ctx)
     g_critical ("Failed to create a CoglContext: %s", error->message);
 
-  display = cogl_context_get_display (state->ctx);
+  display = cogl_context_get_display (ctx);
   renderer = cogl_display_get_renderer (display);
 
   if (flags & TEST_REQUIREMENT_GL &&
@@ -57,19 +59,19 @@ test_utils_init (TestUtilsSharedState *state,
     }
 
   if (flags & TEST_REQUIREMENT_NPOT &&
-      !cogl_has_feature (state->ctx, COGL_FEATURE_ID_TEXTURE_NPOT))
+      !cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT))
     {
       missing_requirement = TRUE;
     }
 
   if (flags & TEST_REQUIREMENT_TEXTURE_3D &&
-      !cogl_has_feature (state->ctx, COGL_FEATURE_ID_TEXTURE_3D))
+      !cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_3D))
     {
       missing_requirement = TRUE;
     }
 
   if (flags & TEST_REQUIREMENT_POINT_SPRITE &&
-      !cogl_has_feature (state->ctx, COGL_FEATURE_ID_POINT_SPRITE))
+      !cogl_has_feature (ctx, COGL_FEATURE_ID_POINT_SPRITE))
     {
       missing_requirement = TRUE;
     }
@@ -81,13 +83,13 @@ test_utils_init (TestUtilsSharedState *state,
 
   if (getenv  ("COGL_TEST_ONSCREEN"))
     {
-      onscreen = cogl_onscreen_new (state->ctx, 640, 480);
-      state->fb = COGL_FRAMEBUFFER (onscreen);
+      onscreen = cogl_onscreen_new (ctx, 640, 480);
+      fb = COGL_FRAMEBUFFER (onscreen);
     }
   else
     {
       CoglHandle offscreen;
-      CoglHandle tex = cogl_texture_2d_new_with_size (state->ctx,
+      CoglHandle tex = cogl_texture_2d_new_with_size (ctx,
                                                       FB_WIDTH, FB_HEIGHT,
                                                       COGL_PIXEL_FORMAT_ANY,
                                                       &error);
@@ -95,37 +97,33 @@ test_utils_init (TestUtilsSharedState *state,
         g_critical ("Failed to allocate texture: %s", error->message);
 
       offscreen = cogl_offscreen_new_to_texture (tex);
-      state->fb = COGL_FRAMEBUFFER (offscreen);
+      fb = COGL_FRAMEBUFFER (offscreen);
     }
 
-  if (!cogl_framebuffer_allocate (state->fb, &error))
+  if (!cogl_framebuffer_allocate (fb, &error))
     g_critical ("Failed to allocate framebuffer: %s", error->message);
 
   if (onscreen)
     cogl_onscreen_show (onscreen);
 
-  cogl_framebuffer_clear4f (state->fb,
+  cogl_framebuffer_clear4f (fb,
                             COGL_BUFFER_BIT_COLOR |
                             COGL_BUFFER_BIT_DEPTH |
                             COGL_BUFFER_BIT_STENCIL,
                             0, 0, 0, 1);
-
-  cogl_push_framebuffer (state->fb);
 
   if (missing_requirement)
     g_print ("WARNING: Missing required feature[s] for this test\n");
 }
 
 void
-test_utils_fini (TestUtilsSharedState *state)
+test_utils_fini (void)
 {
-  cogl_pop_framebuffer ();
+  if (fb)
+    cogl_object_unref (fb);
 
-  if (state->fb)
-    cogl_object_unref (state->fb);
-
-  if (state->ctx)
-    cogl_object_unref (state->ctx);
+  if (ctx)
+    cogl_object_unref (ctx);
 }
 
 static gboolean
@@ -156,38 +154,42 @@ test_utils_compare_pixel (const guint8 *screen_pixel, guint32 expected_pixel)
 }
 
 void
-test_utils_check_pixel (int x, int y, guint32 expected_pixel)
+test_utils_check_pixel (CoglFramebuffer *fb,
+                        int x, int y, guint32 expected_pixel)
 {
   guint8 pixel[4];
 
-  cogl_read_pixels (x, y, 1, 1, COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    pixel);
+  cogl_framebuffer_read_pixels (fb,
+                                x, y, 1, 1,
+                                COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                pixel);
 
   test_utils_compare_pixel (pixel, expected_pixel);
 }
 
 void
-test_utils_check_pixel_rgb (int x, int y, int r, int g, int b)
+test_utils_check_pixel_rgb (CoglFramebuffer *fb,
+                            int x, int y, int r, int g, int b)
 {
-  test_utils_check_pixel (x, y, (r << 24) | (g << 16) | (b << 8));
+  test_utils_check_pixel (fb, x, y, (r << 24) | (g << 16) | (b << 8));
 }
 
 void
-test_utils_check_region (int x, int y,
+test_utils_check_region (CoglFramebuffer *fb,
+                         int x, int y,
                          int width, int height,
                          guint32 expected_rgba)
 {
   guint8 *pixels, *p;
 
   pixels = p = g_malloc (width * height * 4);
-  cogl_read_pixels (x,
-                    y,
-                    width,
-                    height,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888,
-                    p);
+  cogl_framebuffer_read_pixels (fb,
+                                x,
+                                y,
+                                width,
+                                height,
+                                COGL_PIXEL_FORMAT_RGBA_8888,
+                                p);
 
   /* Check whether the center of each division is the right color */
   for (y = 0; y < height; y++)

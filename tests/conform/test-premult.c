@@ -287,7 +287,7 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_cogl_premult (TestUtilsGTestFixture *fixture,
+test_premult (TestUtilsGTestFixture *fixture,
                    void *data)
 {
   TestState state;

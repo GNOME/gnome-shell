@@ -126,7 +126,7 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_cogl_vertex_buffer_mutability (TestUtilsGTestFixture *fixture,
+test_vertex_buffer_mutability (TestUtilsGTestFixture *fixture,
 		                    void *data)
 {
   TestState state;

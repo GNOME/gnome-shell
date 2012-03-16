@@ -139,12 +139,8 @@ test_write_int (CoglContext *context,
 }
 
 void
-test_cogl_write_texture_formats (TestUtilsGTestFixture *fixture,
-                                void *data)
+test_write_texture_formats (void)
 {
-  TestUtilsSharedState *shared_state = data;
-  CoglContext *ctx = shared_state->ctx;
-
   test_write_byte (ctx, COGL_PIXEL_FORMAT_A_8, 0x34, 0x00000034);
 #if 0
   /* I'm not sure what's the right value to put here because Nvidia

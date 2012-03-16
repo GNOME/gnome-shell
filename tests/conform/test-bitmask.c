@@ -91,8 +91,7 @@ verify_bits (const CoglBitmask *bitmask,
 }
 
 void
-test_cogl_bitmask (TestUtilsGTestFixture *fixture,
-                   void *data)
+test_bitmask (void)
 {
   CoglBitmask bitmask;
   CoglBitmask other_bitmask;

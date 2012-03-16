@@ -39,7 +39,7 @@ destroy2_cb (void *user_data)
 }
 
 void
-test_cogl_object (TestUtilsGTestFixture *fixture,
+test_object (TestUtilsGTestFixture *fixture,
                   void *data)
 {
   CoglPath *path;

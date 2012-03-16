@@ -6,8 +6,6 @@
 
 typedef struct _TestState
 {
-  CoglContext *ctx;
-  CoglFramebuffer *fb;
   CoglPipeline *pipeline;
 } TestState;
 
@@ -45,7 +43,7 @@ test_float_verts (TestState *state, int offset_x, int offset_y)
       { 15, 0, /**/ 0, 1, 0, 1 }
     };
 
-  buffer = cogl_attribute_buffer_new (state->ctx,
+  buffer = cogl_attribute_buffer_new (ctx,
                                       sizeof (float_verts), float_verts);
   attributes[0] = cogl_attribute_new (buffer,
                                       "cogl_position_in",
@@ -60,10 +58,10 @@ test_float_verts (TestState *state, int offset_x, int offset_y)
                                       4, /* n_components */
                                       COGL_ATTRIBUTE_TYPE_FLOAT);
 
-  cogl_push_matrix ();
-  cogl_translate (offset_x, offset_y, 0.0f);
+  cogl_framebuffer_push_matrix (fb);
+  cogl_framebuffer_translate (fb, offset_x, offset_y, 0.0f);
 
-  cogl_framebuffer_draw_attributes (state->fb,
+  cogl_framebuffer_draw_attributes (fb,
                                     state->pipeline,
                                     COGL_VERTICES_MODE_TRIANGLES,
                                     0, /* first_vertex */
@@ -71,14 +69,14 @@ test_float_verts (TestState *state, int offset_x, int offset_y)
                                     attributes,
                                     2 /* n_attributes */);
 
-  cogl_pop_matrix ();
+  cogl_framebuffer_pop_matrix (fb);
 
   cogl_object_unref (attributes[1]);
   cogl_object_unref (attributes[0]);
   cogl_object_unref (buffer);
 
-  test_utils_check_pixel (offset_x + 5, offset_y + 5, 0xff0000ff);
-  test_utils_check_pixel (offset_x + 15, offset_y + 5, 0x00ff00ff);
+  test_utils_check_pixel (fb, offset_x + 5, offset_y + 5, 0xff0000ff);
+  test_utils_check_pixel (fb, offset_x + 15, offset_y + 5, 0x00ff00ff);
 }
 
 static void
@@ -105,7 +103,7 @@ test_byte_verts (TestState *state, int offset_x, int offset_y)
       { 0, 0, /**/ 0, 0, 1, 1 },
     };
 
-  buffer = cogl_attribute_buffer_new (state->ctx,
+  buffer = cogl_attribute_buffer_new (ctx,
                                       sizeof (norm_verts), norm_verts);
   attributes[0] = cogl_attribute_new (buffer,
                                       "cogl_position_in",
@@ -121,10 +119,10 @@ test_byte_verts (TestState *state, int offset_x, int offset_y)
                                       COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
   cogl_attribute_set_normalized (attributes[1], TRUE);
 
-  cogl_push_matrix ();
-  cogl_translate (offset_x, offset_y, 0.0f);
+  cogl_framebuffer_push_matrix (fb);
+  cogl_framebuffer_translate (fb, offset_x, offset_y, 0.0f);
 
-  cogl_framebuffer_draw_attributes (state->fb,
+  cogl_framebuffer_draw_attributes (fb,
                                     state->pipeline,
                                     COGL_VERTICES_MODE_TRIANGLES,
                                     0, /* first_vertex */
@@ -135,7 +133,7 @@ test_byte_verts (TestState *state, int offset_x, int offset_y)
   cogl_object_unref (attributes[1]);
 
   /* Test again with unnormalized attributes */
-  unnorm_buffer = cogl_attribute_buffer_new (state->ctx,
+  unnorm_buffer = cogl_attribute_buffer_new (ctx,
                                              sizeof (unnorm_verts),
                                              unnorm_verts);
   attributes[1] = cogl_attribute_new (unnorm_buffer,
@@ -145,9 +143,9 @@ test_byte_verts (TestState *state, int offset_x, int offset_y)
                                       4, /* n_components */
                                       COGL_ATTRIBUTE_TYPE_BYTE);
 
-  cogl_translate (20, 0, 0);
+  cogl_framebuffer_translate (fb, 20, 0, 0);
 
-  cogl_framebuffer_draw_attributes (state->fb,
+  cogl_framebuffer_draw_attributes (fb,
                                     state->pipeline,
                                     COGL_VERTICES_MODE_TRIANGLES,
                                     0, /* first_vertex */
@@ -155,16 +153,16 @@ test_byte_verts (TestState *state, int offset_x, int offset_y)
                                     attributes,
                                     2 /* n_attributes */);
 
-  cogl_pop_matrix ();
+  cogl_framebuffer_pop_matrix (fb);
 
   cogl_object_unref (attributes[0]);
   cogl_object_unref (attributes[1]);
   cogl_object_unref (buffer);
   cogl_object_unref (unnorm_buffer);
 
-  test_utils_check_pixel (offset_x + 5, offset_y + 5, 0xff0000ff);
-  test_utils_check_pixel (offset_x + 15, offset_y + 5, 0x00ff00ff);
-  test_utils_check_pixel (offset_x + 25, offset_y + 5, 0x0000ffff);
+  test_utils_check_pixel (fb, offset_x + 5, offset_y + 5, 0xff0000ff);
+  test_utils_check_pixel (fb, offset_x + 15, offset_y + 5, 0x00ff00ff);
+  test_utils_check_pixel (fb, offset_x + 25, offset_y + 5, 0x0000ffff);
 }
 
 static void
@@ -182,7 +180,7 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
       { -5, -1 }
     };
 
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
   snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX_TRANSFORM,
                               "attribute vec2 pos;",
                               NULL);
@@ -195,7 +193,7 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
 
   cogl_pipeline_set_color4ub (pipeline, 255, 0, 0, 255);
 
-  buffer = cogl_attribute_buffer_new (state->ctx,
+  buffer = cogl_attribute_buffer_new (ctx,
                                       sizeof (short_verts), short_verts);
   attributes[0] = cogl_attribute_new (buffer,
                                       "pos",
@@ -204,10 +202,13 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
                                       2, /* n_components */
                                       COGL_ATTRIBUTE_TYPE_SHORT);
 
-  cogl_push_matrix ();
-  cogl_translate (offset_x + 10.0f, offset_y + 10.0f, 0.0f);
+  cogl_framebuffer_push_matrix (fb);
+  cogl_framebuffer_translate (fb,
+                              offset_x + 10.0f,
+                              offset_y + 10.0f,
+                              0.0f);
 
-  cogl_framebuffer_draw_attributes (state->fb,
+  cogl_framebuffer_draw_attributes (fb,
                                     pipeline,
                                     COGL_VERTICES_MODE_TRIANGLES,
                                     0, /* first_vertex */
@@ -215,7 +216,7 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
                                     attributes,
                                     1 /* n_attributes */);
 
-  cogl_pop_matrix ();
+  cogl_framebuffer_pop_matrix (fb);
 
   cogl_object_unref (attributes[0]);
 
@@ -230,10 +231,13 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
   pipeline2 = cogl_pipeline_copy (pipeline);
   cogl_pipeline_set_color4ub (pipeline2, 0, 255, 0, 255);
 
-  cogl_push_matrix ();
-  cogl_translate (offset_x + 10.0f - 65525.0f, offset_y - 65525, 0.0f);
+  cogl_framebuffer_push_matrix (fb);
+  cogl_framebuffer_translate (fb,
+                              offset_x + 10.0f - 65525.0f,
+                              offset_y - 65525,
+                              0.0f);
 
-  cogl_framebuffer_draw_attributes (state->fb,
+  cogl_framebuffer_draw_attributes (fb,
                                     pipeline2,
                                     COGL_VERTICES_MODE_TRIANGLES,
                                     0, /* first_vertex */
@@ -241,7 +245,7 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
                                     attributes,
                                     1 /* n_attributes */);
 
-  cogl_pop_matrix ();
+  cogl_framebuffer_pop_matrix (fb);
 
   cogl_object_unref (attributes[0]);
 
@@ -249,17 +253,14 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
   cogl_object_unref (pipeline);
   cogl_object_unref (buffer);
 
-  test_utils_check_pixel (offset_x + 5, offset_y + 5, 0xff0000ff);
-  test_utils_check_pixel (offset_x + 15, offset_y + 5, 0x00ff00ff);
+  test_utils_check_pixel (fb, offset_x + 5, offset_y + 5, 0xff0000ff);
+  test_utils_check_pixel (fb, offset_x + 15, offset_y + 5, 0x00ff00ff);
 }
 
 static void
 paint (TestState *state)
 {
-  CoglColor color;
-
-  cogl_color_init_from_4ub (&color, 0, 0, 0, 255);
-  cogl_clear (&color, COGL_BUFFER_BIT_COLOR);
+  cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 
   test_float_verts (state, 0, 0);
   test_byte_verts (state, 0, 10);
@@ -267,28 +268,22 @@ paint (TestState *state)
 }
 
 void
-test_cogl_custom_attributes (TestUtilsGTestFixture *fixture,
-                             void *user_data)
+test_custom_attributes (void)
 {
-  TestUtilsSharedState *shared_state = user_data;
-
   /* If shaders aren't supported then we can't run the test */
   if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
     {
       CoglSnippet *snippet;
       TestState state;
-      state.fb = shared_state->fb;
 
-      state.ctx = shared_state->ctx;
+      cogl_framebuffer_orthographic (fb,
+                                     0, 0,
+                                     cogl_framebuffer_get_width (fb),
+                                     cogl_framebuffer_get_height (fb),
+                                     -1,
+                                     100);
 
-      cogl_ortho (/* left, right */
-                  0, cogl_framebuffer_get_width (shared_state->fb),
-                  /* bottom, top */
-                  cogl_framebuffer_get_height (shared_state->fb), 0,
-                  /* z near, far */
-                  -1, 100);
-
-      state.pipeline = cogl_pipeline_new (state.ctx);
+      state.pipeline = cogl_pipeline_new (ctx);
       snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX,
                                   "attribute vec4 color;",
                                   "cogl_color_out = color;");

@@ -103,7 +103,7 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_cogl_texture_mipmaps (TestUtilsGTestFixture *fixture,
+test_texture_mipmaps (TestUtilsGTestFixture *fixture,
                            void *data)
 {
   TestState state;

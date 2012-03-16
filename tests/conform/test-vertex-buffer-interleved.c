@@ -83,7 +83,7 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_cogl_vertex_buffer_interleved (TestUtilsGTestFixture *fixture,
+test_vertex_buffer_interleved (TestUtilsGTestFixture *fixture,
 		                    void *data)
 {
   TestState state;

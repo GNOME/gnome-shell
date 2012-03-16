@@ -6,10 +6,8 @@
 
 typedef struct _TestState
 {
-  CoglContext *ctx;
   int fb_width;
   int fb_height;
-  CoglFramebuffer *fb;
 } TestState;
 
 #define PRIM_COLOR 0xff00ffff
@@ -178,7 +176,7 @@ test_paint (TestState *state)
                                     COGL_PIXEL_FORMAT_ANY,
                                     6, /* rowstride */
                                     tex_data);
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
   cogl_pipeline_set_color4ub (pipeline,
                               (PRIM_COLOR >> 24) & 0xff,
                               (PRIM_COLOR >> 16) & 0xff,
@@ -192,14 +190,14 @@ test_paint (TestState *state)
       CoglPrimitive *prim;
       guint32 expected_color = PRIM_COLOR;
 
-      prim = test_prim_funcs[i] (state->ctx, &expected_color);
+      prim = test_prim_funcs[i] (ctx, &expected_color);
 
-      cogl_push_matrix ();
-      cogl_translate (i * 10, 0, 0);
-      cogl_framebuffer_draw_primitive (state->fb, pipeline, prim);
-      cogl_pop_matrix ();
+      cogl_framebuffer_push_matrix (fb);
+      cogl_framebuffer_translate (fb, i * 10, 0, 0);
+      cogl_framebuffer_draw_primitive (fb, pipeline, prim);
+      cogl_framebuffer_pop_matrix (fb);
 
-      test_utils_check_pixel (i * 10 + 2, 2, expected_color);
+      test_utils_check_pixel (fb, i * 10 + 2, 2, expected_color);
 
       cogl_object_unref (prim);
     }
@@ -236,7 +234,7 @@ test_copy (TestState *state)
 {
   static const guint16 indices_data[2] = { 1, 2 };
   CoglAttributeBuffer *buffer =
-    cogl_attribute_buffer_new (state->ctx, 100, NULL);
+    cogl_attribute_buffer_new (ctx, 100, NULL);
   CoglAttribute *attributes[N_ATTRIBS];
   CoglAttribute *attributes_a[N_ATTRIBS], *attributes_b[N_ATTRIBS];
   CoglAttribute **p;
@@ -261,7 +259,7 @@ test_copy (TestState *state)
                                                attributes,
                                                N_ATTRIBS);
 
-  indices = cogl_indices_new (state->ctx,
+  indices = cogl_indices_new (ctx,
                               COGL_INDICES_TYPE_UNSIGNED_SHORT,
                               indices_data,
                               2 /* n_indices */);
@@ -314,20 +312,19 @@ test_copy (TestState *state)
 }
 
 void
-test_cogl_primitive (TestUtilsGTestFixture *fixture,
-                     void *data)
+test_primitive (void)
 {
-  TestUtilsSharedState *shared_state = data;
   TestState state;
 
-  state.ctx = shared_state->ctx;
-  state.fb_width = cogl_framebuffer_get_width (shared_state->fb);
-  state.fb_height = cogl_framebuffer_get_height (shared_state->fb);
-  state.fb = shared_state->fb;
+  state.fb_width = cogl_framebuffer_get_width (fb);
+  state.fb_height = cogl_framebuffer_get_height (fb);
 
-  cogl_ortho (0, state.fb_width, /* left, right */
-              state.fb_height, 0, /* bottom, top */
-              -1, 100 /* z near, far */);
+  cogl_framebuffer_orthographic (fb,
+                                 0, 0,
+                                 state.fb_width,
+                                 state.fb_height,
+                                 -1,
+                                 100);
 
   test_paint (&state);
   test_copy (&state);

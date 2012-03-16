@@ -990,7 +990,13 @@ cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
  * @primitive: A #CoglPrimitive geometry object
  *
  * Draws the given @primitive geometry to the specified destination
- * @framebuffer using the graphics processing pipeline described by @pipeline.
+ * @framebuffer using the graphics processing state described by @pipeline.
+ *
+ * This drawing api doesn't support high-level meta texture types such
+ * as #CoglTexture2DSliced so it is the user's responsibility to
+ * ensure that only low-level textures that can be directly sampled by
+ * a GPU such as #CoglTexture2D, #CoglTextureRectangle or #CoglTexture3D
+ * are associated with layers of the given @pipeline.
  *
  * <note>This api doesn't support any of the legacy global state options such
  * as cogl_set_depth_test_enabled(), cogl_set_backface_culling_enabled() or
@@ -1025,6 +1031,12 @@ cogl_framebuffer_draw_primitive (CoglFramebuffer *framebuffer,
  * be drawn, such as positions, colors and normals and should be %NULL
  * terminated.
  *
+ * This drawing api doesn't support high-level meta texture types such
+ * as #CoglTexture2DSliced so it is the user's responsibility to
+ * ensure that only low-level textures that can be directly sampled by
+ * a GPU such as #CoglTexture2D, #CoglTextureRectangle or #CoglTexture3D
+ * are associated with layers of the given @pipeline.
+ *
  * Stability: unstable
  * Since: 1.10
  */
@@ -1058,6 +1070,12 @@ cogl_framebuffer_vdraw_attributes (CoglFramebuffer *framebuffer,
  * The list of #CoglAttribute<!-- -->s define the attributes of the vertices to
  * be drawn, such as positions, colors and normals and the number of attributes
  * is given as @n_attributes.
+ *
+ * This drawing api doesn't support high-level meta texture types such
+ * as #CoglTexture2DSliced so it is the user's responsibility to
+ * ensure that only low-level textures that can be directly sampled by
+ * a GPU such as #CoglTexture2D, #CoglTextureRectangle or #CoglTexture3D
+ * are associated with layers of the given @pipeline.
  *
  * <note>This api doesn't support any of the legacy global state options such
  * as cogl_set_depth_test_enabled(), cogl_set_backface_culling_enabled() or
@@ -1107,14 +1125,20 @@ cogl_framebuffer_draw_attributes (CoglFramebuffer *framebuffer,
  * multiple entries in the index array can refer back to a single
  * shared vertex.
  *
- * <note>The @indices array must at least be as long @first_vertex +
- * @n_vertices otherwise the GPU will overrun the indices array when
+ * <note>The @indices array must be at least as long as @first_vertex
+ * + @n_vertices otherwise the GPU will overrun the indices array when
  * looking up vertex data.</note>
  *
  * Since it's very common to want to draw a run of rectangles using
  * indices to avoid duplicating vertex data you can use
  * cogl_get_rectangle_indices() to get a set of indices that can be
  * shared.
+ *
+ * This drawing api doesn't support high-level meta texture types such
+ * as #CoglTexture2DSliced so it is the user's responsibility to
+ * ensure that only low-level textures that can be directly sampled by
+ * a GPU such as #CoglTexture2D, #CoglTextureRectangle or
+ * #CoglTexture3D are associated with layers of the given @pipeline.
  *
  * <note>This api doesn't support any of the legacy global state
  * options such as cogl_set_depth_test_enabled(),
@@ -1166,14 +1190,20 @@ cogl_framebuffer_vdraw_indexed_attributes (CoglFramebuffer *framebuffer,
  * multiple entries in the index array can refer back to a single
  * shared vertex.
  *
- * <note>The @indices array must at least be as long @first_vertex +
- * @n_vertices otherwise the GPU will overrun the indices array when
+ * <note>The @indices array must be at least as long as @first_vertex
+ * + @n_vertices otherwise the GPU will overrun the indices array when
  * looking up vertex data.</note>
  *
  * Since it's very common to want to draw a run of rectangles using
  * indices to avoid duplicating vertex data you can use
  * cogl_get_rectangle_indices() to get a set of indices that can be
  * shared.
+ *
+ * This drawing api doesn't support high-level meta texture types such
+ * as #CoglTexture2DSliced so it is the user's responsibility to
+ * ensure that only low-level textures that can be directly sampled by
+ * a GPU such as #CoglTexture2D, #CoglTextureRectangle or
+ * #CoglTexture3D are associated with layers of the given @pipeline.
  *
  * <note>This api doesn't support any of the legacy global state
  * options such as cogl_set_depth_test_enabled(),
@@ -1192,6 +1222,278 @@ cogl_framebuffer_draw_indexed_attributes (CoglFramebuffer *framebuffer,
                                           CoglAttribute **attributes,
                                           int n_attributes);
 
+/**
+ * cogl_framebuffer_draw_rectangle:
+ * @framebuffer: A destination #CoglFramebuffer
+ * @pipeline: A #CoglPipeline state object
+ * @x_1: X coordinate of the top-left corner
+ * @y_1: Y coordinate of the top-left corner
+ * @x_2: X coordinate of the bottom-right corner
+ * @y_2: Y coordinate of the bottom-right corner
+ *
+ * Draws a rectangle to @framebuffer with the given @pipeline state
+ * and with the top left corner positioned at (@x_1, @y_1) and the
+ * bottom right corner positioned at (@x_2, @y_2).
+ *
+ * <note>The position is the position before the rectangle has been
+ * transformed by the model-view matrix and the projection
+ * matrix.</note>
+ *
+ * <note>If you want to describe a rectangle with a texture mapped on
+ * it then you can use
+ * cogl_framebuffer_draw_textured_rectangle().<note>
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_draw_rectangle (CoglFramebuffer *framebuffer,
+                                 CoglPipeline *pipeline,
+                                 float x_1,
+                                 float y_1,
+                                 float x_2,
+                                 float y_2);
+
+/**
+ * cogl_framebuffer_draw_textured_rectangle:
+ * @framebuffer: A destination #CoglFramebuffer
+ * @pipeline: A #CoglPipeline state object
+ * @x_1: x coordinate upper left on screen.
+ * @y_1: y coordinate upper left on screen.
+ * @x_2: x coordinate lower right on screen.
+ * @y_2: y coordinate lower right on screen.
+ * @s_1: S texture coordinate of the top-left coorner
+ * @t_1: T texture coordinate of the top-left coorner
+ * @s_2: S texture coordinate of the bottom-right coorner
+ * @t_2: T texture coordinate of the bottom-right coorner
+ *
+ * Draws a textured rectangle to @framebuffer using the given
+ * @pipeline state with the top left corner positioned at (@x_1, @y_1)
+ * and the bottom right corner positioned at (@x_2, @y_2). The top
+ * left corner will have texture coordinates of (@s_1, @t_1) and the
+ * bottom right corner will have texture coordinates of (@s_2, @t_2).
+ *
+ * <note>The position is the position before the rectangle has been
+ * transformed by the model-view matrix and the projection
+ * matrix.</note>
+ *
+ * This is a high level drawing api that can handle any kind of
+ * #CoglMetaTexture texture such as #CoglTexture2DSliced textures
+ * which may internally be comprised of multiple low-level textures.
+ * This is unlike low-level drawing apis such as
+ * cogl_framebuffer_draw_primitive() or
+ * cogl_framebuffer_draw_attributes() which only support low level
+ * texture types that are directly supported by GPUs such as
+ * #CoglTexture2D.
+ *
+ * <note>The given texture coordinates will only be used for the first
+ * texture layer of the pipeline and if your pipeline has more than
+ * one layer then all other layers will have default texture
+ * coordinates of @s_1=0.0 @t_1=0.0 @s_2=1.0 @t_2=1.0 </note>
+ *
+ * The given texture coordinates should always be normalized such that
+ * (0, 0) corresponds to the top left and (1, 1) corresponds to the
+ * bottom right. To map an entire texture across the rectangle pass
+ * in @s_1=%0, @t_1=%0, @s_2=%1, @t_2=%1.
+ *
+ * <note>Even if you have associated a #CoglTextureRectangle texture
+ * with one of your @pipeline layers which normally implies working
+ * with non-normalized texture coordinates this api should still be
+ * passed normalized texture coordinates.</note>
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_draw_textured_rectangle (CoglFramebuffer *framebuffer,
+                                          CoglPipeline *pipeline,
+                                          float x_1,
+                                          float y_1,
+                                          float x_2,
+                                          float y_2,
+                                          float s_1,
+                                          float t_1,
+                                          float s_2,
+                                          float t_2);
+
+/**
+ * cogl_framebuffer_draw_multitextured_rectangle:
+ * @framebuffer: A destination #CoglFramebuffer
+ * @pipeline: A #CoglPipeline state object
+ * @x_1: x coordinate upper left on screen.
+ * @y_1: y coordinate upper left on screen.
+ * @x_2: x coordinate lower right on screen.
+ * @y_2: y coordinate lower right on screen.
+ * @tex_coords: (in) (array) (transfer none): An array containing groups of
+ *   4 float values: [s_1, t_1, s_2, t_2] that are interpreted as two texture
+ *   coordinates; one for the top left texel, and one for the bottom right
+ *   texel. Each value should be between 0.0 and 1.0, where the coordinate
+ *   (0.0, 0.0) represents the top left of the texture, and (1.0, 1.0) the
+ *   bottom right.
+ * @tex_coords_len: The length of the @tex_coords array. (For one layer
+ *   and one group of texture coordinates, this would be 4)
+ *
+ * Draws a textured rectangle to @framebuffer with the given @pipeline
+ * state with the top left corner positioned at (@x_1, @y_1) and the
+ * bottom right corner positioned at (@x_2, @y_2). As a pipeline may
+ * contain multiple texture layers this interface lets you supply
+ * texture coordinates for each layer of the pipeline.
+ *
+ * <note>The position is the position before the rectangle has been
+ * transformed by the model-view matrix and the projection
+ * matrix.</note>
+ *
+ * This is a high level drawing api that can handle any kind of
+ * #CoglMetaTexture texture for the first layer such as
+ * #CoglTexture2DSliced textures which may internally be comprised of
+ * multiple low-level textures.  This is unlike low-level drawing apis
+ * such as cogl_framebuffer_draw_primitive() or
+ * cogl_framebuffer_draw_attributes() which only support low level
+ * texture types that are directly supported by GPUs such as
+ * #CoglTexture2D.
+ *
+ * <note>This api can not currently handle multiple high-level meta
+ * texture layers. The first layer may be a high level meta texture
+ * such as #CoglTexture2DSliced but all other layers much be low
+ * level textures such as #CoglTexture2D and additionally they
+ * should be textures that can be sampled using normalized coordinates
+ * (so not #CoglTextureRectangle textures).</note>
+ *
+ * The top left texture coordinate for layer 0 of any pipeline will be
+ * (tex_coords[0], tex_coords[1]) and the bottom right coordinate will
+ * be (tex_coords[2], tex_coords[3]). The coordinates for layer 1
+ * would be (tex_coords[4], tex_coords[5]) (tex_coords[6],
+ * tex_coords[7]) and so on...
+ *
+ * The given texture coordinates should always be normalized such that
+ * (0, 0) corresponds to the top left and (1, 1) corresponds to the
+ * bottom right. To map an entire texture across the rectangle pass
+ * in tex_coords[0]=%0, tex_coords[1]=%0, tex_coords[2]=%1,
+ * tex_coords[3]=%1.
+ *
+ * <note>Even if you have associated a #CoglTextureRectangle texture
+ * which normally implies working with non-normalized texture
+ * coordinates this api should still be passed normalized texture
+ * coordinates.</note>
+ *
+ * The first pair of coordinates are for the first layer (with the
+ * smallest layer index) and if you supply less texture coordinates
+ * than there are layers in the current source material then default
+ * texture coordinates (0.0, 0.0, 1.0, 1.0) are generated.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_draw_multitextured_rectangle (CoglFramebuffer *framebuffer,
+                                               CoglPipeline *pipeline,
+                                               float x_1,
+                                               float y_1,
+                                               float x_2,
+                                               float y_2,
+                                               const float *tex_coords,
+                                               int tex_coords_len);
+
+/**
+ * cogl_framebuffer_draw_rectangles:
+ * @framebuffer: A destination #CoglFramebuffer
+ * @pipeline: A #CoglPipeline state object
+ * @coordinates: (in) (array) (transfer none): an array of coordinates
+ *   containing groups of 4 float values: [x_1, y_1, x_2, y_2] that are
+ *   interpreted as two position coordinates; one for the top left of
+ *   the rectangle (x1, y1), and one for the bottom right of the
+ *   rectangle (x2, y2).
+ * @n_rectangles: number of rectangles defined in @coordinates.
+ *
+ * Draws a series of rectangles to @framebuffer with the given
+ * @pipeline state in the same way that
+ * cogl_framebuffer_draw_rectangle() does.
+ *
+ * The top left corner of the first rectangle is positioned at
+ * (coordinates[0], coordinates[1]) and the bottom right corner is
+ * positioned at (coordinates[2], coordinates[3]). The positions for
+ * the second rectangle are (coordinates[4], coordinates[5]) and
+ * (coordinates[6], coordinates[7]) and so on...
+ *
+ * <note>The position is the position before the rectangle has been
+ * transformed by the model-view matrix and the projection
+ * matrix.</note>
+ *
+ * As a general rule for better performance its recommended to use
+ * this this API instead of calling
+ * cogl_framebuffer_draw_textured_rectangle() separately for multiple
+ * rectangles if all of the rectangles will be drawn together with the
+ * same @pipeline state.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_draw_rectangles (CoglFramebuffer *framebuffer,
+                                  CoglPipeline *pipeline,
+                                  const float *verts,
+                                  unsigned int n_rects);
+
+/**
+ * cogl_framebuffer_draw_textured_rectangles:
+ * @framebuffer: A destination #CoglFramebuffer
+ * @pipeline: A #CoglPipeline state object
+ * @coordinates: (in) (array) (transfer none): an array containing
+ *   groups of 8 float values: [x_1, y_1, x_2, y_2, s_1, t_1, s_2, t_2]
+ *   that have the same meaning as the arguments for
+ *   cogl_framebuffer_draw_textured_rectangle().
+ * @n_rectangles: number of rectangles to @coordinates to draw
+ *
+ * Draws a series of rectangles to @framebuffer with the given
+ * @pipeline state in the same way that
+ * cogl_framebuffer_draw_textured_rectangle() does.
+ *
+ * <note>The position is the position before the rectangle has been
+ * transformed by the model-view matrix and the projection
+ * matrix.</note>
+ *
+ * This is a high level drawing api that can handle any kind of
+ * #CoglMetaTexture texture such as #CoglTexture2DSliced textures
+ * which may internally be comprised of multiple low-level textures.
+ * This is unlike low-level drawing apis such as
+ * cogl_framebuffer_draw_primitive() or
+ * cogl_framebuffer_draw_attributes() which only support low level
+ * texture types that are directly supported by GPUs such as
+ * #CoglTexture2D.
+ *
+ * The top left corner of the first rectangle is positioned at
+ * (coordinates[0], coordinates[1]) and the bottom right corner is
+ * positioned at (coordinates[2], coordinates[3]). The top left
+ * texture coordinate is (coordinates[4], coordinates[5]) and the
+ * bottom right texture coordinate is (coordinates[6],
+ * coordinates[7]). The coordinates for subsequent rectangles
+ * are defined similarly by the subsequent coordinates.
+ *
+ * As a general rule for better performance its recommended to use
+ * this this API instead of calling
+ * cogl_framebuffer_draw_textured_rectangle() separately for multiple
+ * rectangles if all of the rectangles will be drawn together with the
+ * same @pipeline state.
+ *
+ * The given texture coordinates should always be normalized such that
+ * (0, 0) corresponds to the top left and (1, 1) corresponds to the
+ * bottom right. To map an entire texture across the rectangle pass
+ * in tex_coords[0]=%0, tex_coords[1]=%0, tex_coords[2]=%1,
+ * tex_coords[3]=%1.
+ *
+ * <note>Even if you have associated a #CoglTextureRectangle texture
+ * which normally implies working with non-normalized texture
+ * coordinates this api should still be passed normalized texture
+ * coordinates.</note>
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_draw_textured_rectangles (CoglFramebuffer *framebuffer,
+                                           CoglPipeline *pipeline,
+                                           const float *coordinates,
+                                           unsigned int n_rectangles);
 
 /* XXX: Should we take an n_buffers + buffer id array instead of using
  * the CoglBufferBits type which doesn't seem future proof? */

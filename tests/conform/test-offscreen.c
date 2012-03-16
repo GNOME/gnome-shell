@@ -8,7 +8,6 @@
 
 typedef struct _TestState
 {
-  CoglContext *context;
   int fb_width;
   int fb_height;
 } TestState;
@@ -33,7 +32,7 @@ check_quadrant (TestState *state,
   width -= 4;
   height -= 4;
 
-  test_utils_check_region (x, y, width, height, expected_rgba);
+  test_utils_check_region (fb, x, y, width, height, expected_rgba);
 }
 
 static void
@@ -41,9 +40,9 @@ test_paint (TestState *state)
 {
   CoglTexture2D *tex_2d;
   CoglTexture *tex;
-  CoglHandle offscreen;
+  CoglOffscreen *offscreen;
 
-  tex_2d = cogl_texture_2d_new_with_size (state->context,
+  tex_2d = cogl_texture_2d_new_with_size (ctx,
                                           state->fb_width,
                                           state->fb_height,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
@@ -66,11 +65,11 @@ test_paint (TestState *state)
   cogl_translate (0.5, 0.5, 0);
   cogl_scale (-0.5, 0.5, 1);
 
-  cogl_push_framebuffer (offscreen);
+  cogl_push_framebuffer (COGL_FRAMEBUFFER (offscreen));
 
   /* Cogl should release the last reference when we call cogl_pop_framebuffer()
    */
-  cogl_handle_unref (offscreen);
+  cogl_object_unref (offscreen);
 
   /* Setup something other than the identity matrix for the modelview so we can
    * verify it gets restored when we call cogl_pop_framebuffer () */
@@ -116,7 +115,7 @@ test_flush (TestState *state)
 {
   CoglTexture2D *tex_2d;
   CoglTexture *tex;
-  CoglHandle offscreen;
+  CoglOffscreen *offscreen;
   CoglColor clear_color;
   int i;
 
@@ -126,7 +125,7 @@ test_flush (TestState *state)
          the contents of the texture will automatically flush the
          journal */
 
-      tex_2d = cogl_texture_2d_new_with_size (state->context,
+      tex_2d = cogl_texture_2d_new_with_size (ctx,
                                               16, 16, /* width/height */
                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                               NULL);
@@ -134,7 +133,7 @@ test_flush (TestState *state)
 
       offscreen = cogl_offscreen_new_to_texture (tex);
 
-      cogl_push_framebuffer (offscreen);
+      cogl_push_framebuffer (COGL_FRAMEBUFFER (offscreen));
 
       cogl_color_init_from_4ub (&clear_color, 0, 0, 0, 255);
       cogl_clear (&clear_color, COGL_BUFFER_BIT_COLOR);
@@ -144,7 +143,8 @@ test_flush (TestState *state)
 
       if (i == 0)
         /* First time check using read pixels on the offscreen */
-        test_utils_check_region (1, 1, 15, 15, 0xff0000ff);
+        test_utils_check_region (COGL_FRAMEBUFFER (offscreen),
+                                 1, 1, 15, 15, 0xff0000ff);
       else if (i == 1)
         {
           guint8 data[16 * 4 * 16];
@@ -169,30 +169,32 @@ test_flush (TestState *state)
           /* Third time try drawing the texture to the screen */
           cogl_set_source_texture (tex);
           cogl_rectangle (-1, -1, 1, 1);
-          test_utils_check_region (2, 2, /* x/y */
+          test_utils_check_region (fb,
+                                   2, 2, /* x/y */
                                    state->fb_width - 4,
                                    state->fb_height - 4,
                                    0xff0000ff);
         }
 
       cogl_object_unref (tex_2d);
-      cogl_handle_unref (offscreen);
+      cogl_object_unref (offscreen);
     }
 }
 
 void
-test_cogl_offscreen (TestUtilsGTestFixture *fixture,
-                     void *data)
+test_offscreen (void)
 {
-  TestUtilsSharedState *shared_state = data;
   TestState state;
 
-  state.context = shared_state->ctx;
-  state.fb_width = cogl_framebuffer_get_width (shared_state->fb);
-  state.fb_height = cogl_framebuffer_get_height (shared_state->fb);
+  state.fb_width = cogl_framebuffer_get_width (fb);
+  state.fb_height = cogl_framebuffer_get_height (fb);
 
+  /* XXX: we have to push/pop a framebuffer since this test currently
+   * uses the legacy cogl_rectangle() api. */
+  cogl_push_framebuffer (fb);
   test_paint (&state);
   test_flush (&state);
+  cogl_pop_framebuffer ();
 
   if (cogl_test_verbose ())
     g_print ("OK\n");

@@ -46,6 +46,7 @@
 #include "cogl-offscreen.h"
 #include "cogl1-context.h"
 #include "cogl-private.h"
+#include "cogl-primitives-private.h"
 
 #ifndef GL_FRAMEBUFFER
 #define GL_FRAMEBUFFER		0x8D40
@@ -3243,4 +3244,152 @@ cogl_framebuffer_draw_primitive (CoglFramebuffer *framebuffer,
 {
   _cogl_framebuffer_draw_primitive (framebuffer, pipeline, primitive,
                                     COGL_DRAW_SKIP_LEGACY_STATE);
+}
+
+void
+cogl_framebuffer_draw_rectangle (CoglFramebuffer *framebuffer,
+                                 CoglPipeline *pipeline,
+                                 float x_1,
+                                 float y_1,
+                                 float x_2,
+                                 float y_2)
+{
+  const float position[4] = {x_1, y_1, x_2, y_2};
+  CoglMultiTexturedRect rect;
+
+  /* XXX: All the _*_rectangle* APIs normalize their input into an array of
+   * _CoglMultiTexturedRect rectangles and pass these on to our work horse;
+   * _cogl_framebuffer_draw_multitextured_rectangles.
+   */
+
+  rect.position = position;
+  rect.tex_coords = NULL;
+  rect.tex_coords_len = 0;
+
+  _cogl_framebuffer_draw_multitextured_rectangles (framebuffer,
+                                                   pipeline,
+                                                   &rect,
+                                                   1,
+                                                   TRUE);
+}
+
+void
+cogl_framebuffer_draw_textured_rectangle (CoglFramebuffer *framebuffer,
+                                          CoglPipeline *pipeline,
+                                          float x_1,
+                                          float y_1,
+                                          float x_2,
+                                          float y_2,
+                                          float s_1,
+                                          float t_1,
+                                          float s_2,
+                                          float t_2)
+{
+  const float position[4] = {x_1, y_1, x_2, y_2};
+  const float tex_coords[4] = {s_1, t_1, s_2, t_2};
+  CoglMultiTexturedRect rect;
+
+  /* XXX: All the _*_rectangle* APIs normalize their input into an array of
+   * CoglMultiTexturedRect rectangles and pass these on to our work horse;
+   * _cogl_framebuffer_draw_multitextured_rectangles.
+   */
+
+  rect.position = position;
+  rect.tex_coords = tex_coords;
+  rect.tex_coords_len = 4;
+
+  _cogl_framebuffer_draw_multitextured_rectangles (framebuffer,
+                                                   pipeline,
+                                                   &rect,
+                                                   1,
+                                                   TRUE);
+}
+
+void
+cogl_framebuffer_draw_multitextured_rectangle (CoglFramebuffer *framebuffer,
+                                               CoglPipeline *pipeline,
+                                               float x_1,
+                                               float y_1,
+                                               float x_2,
+                                               float y_2,
+                                               const float *tex_coords,
+                                               int tex_coords_len)
+{
+  const float position[4] = {x_1, y_1, x_2, y_2};
+  CoglMultiTexturedRect rect;
+
+  /* XXX: All the _*_rectangle* APIs normalize their input into an array of
+   * CoglMultiTexturedRect rectangles and pass these on to our work horse;
+   * _cogl_framebuffer_draw_multitextured_rectangles.
+   */
+
+  rect.position = position;
+  rect.tex_coords = tex_coords;
+  rect.tex_coords_len = tex_coords_len;
+
+  _cogl_framebuffer_draw_multitextured_rectangles (framebuffer,
+                                                   pipeline,
+                                                   &rect,
+                                                   1,
+                                                   TRUE);
+}
+
+void
+cogl_framebuffer_draw_rectangles (CoglFramebuffer *framebuffer,
+                                  CoglPipeline *pipeline,
+                                  const float *coordinates,
+                                  unsigned int n_rectangles)
+{
+  CoglMultiTexturedRect *rects;
+  int i;
+
+  /* XXX: All the _*_rectangle* APIs normalize their input into an array of
+   * CoglMultiTexturedRect rectangles and pass these on to our work horse;
+   * _cogl_framebuffer_draw_multitextured_rectangles.
+   */
+
+  rects = g_alloca (n_rectangles * sizeof (CoglMultiTexturedRect));
+
+  for (i = 0; i < n_rectangles; i++)
+    {
+      rects[i].position = &coordinates[i * 4];
+      rects[i].tex_coords = NULL;
+      rects[i].tex_coords_len = 0;
+    }
+
+  _cogl_framebuffer_draw_multitextured_rectangles (framebuffer,
+                                                   pipeline,
+                                                   rects,
+                                                   n_rectangles,
+                                                   TRUE);
+}
+
+void
+cogl_framebuffer_draw_textured_rectangles (CoglFramebuffer *framebuffer,
+                                           CoglPipeline *pipeline,
+                                           const float *coordinates,
+                                           unsigned int n_rectangles)
+{
+  CoglMultiTexturedRect *rects;
+  int i;
+
+  /* XXX: All the _*_rectangle* APIs normalize their input into an array of
+   * _CoglMultiTexturedRect rectangles and pass these on to our work horse;
+   * _cogl_framebuffer_draw_multitextured_rectangles.
+   */
+
+  rects = g_alloca (n_rectangles * sizeof (CoglMultiTexturedRect));
+
+  for (i = 0; i < n_rectangles; i++)
+    {
+      rects[i].position = &coordinates[i * 8];
+      rects[i].tex_coords = &coordinates[i * 8 + 4];
+      rects[i].tex_coords_len = 4;
+    }
+
+  _cogl_framebuffer_draw_multitextured_rectangles (framebuffer,
+                                                   pipeline,
+                                                   rects,
+                                                   n_rectangles,
+                                                   TRUE);
 }

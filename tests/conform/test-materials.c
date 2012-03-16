@@ -218,7 +218,7 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_cogl_materials (TestUtilsGTestFixture *fixture,
+test_materials (TestUtilsGTestFixture *fixture,
                      void *data)
 {
   TestState state;

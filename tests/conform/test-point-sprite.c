@@ -19,26 +19,23 @@ tex_data[3 * 2 * 2] =
   };
 
 void
-test_cogl_point_sprite (TestUtilsGTestFixture *fixture,
-                        void *data)
+test_point_sprite (void)
 {
-  TestUtilsSharedState *shared_state = data;
-  CoglContext *ctx = shared_state->ctx;
-  int fb_width = cogl_framebuffer_get_width (shared_state->fb);
-  int fb_height = cogl_framebuffer_get_height (shared_state->fb);
+  int fb_width = cogl_framebuffer_get_width (fb);
+  int fb_height = cogl_framebuffer_get_height (fb);
   CoglPrimitive *prim;
   GError *error = NULL;
   CoglTexture2D *tex_2d;
   CoglPipeline *pipeline, *solid_pipeline;
   gboolean res;
 
-  cogl_framebuffer_orthographic (shared_state->fb,
+  cogl_framebuffer_orthographic (fb,
                                  0, 0, /* x_1, y_1 */
                                  fb_width, /* x_2 */
                                  fb_height /* y_2 */,
                                  -1, 100 /* near/far */);
 
-  cogl_framebuffer_clear4f (shared_state->fb,
+  cogl_framebuffer_clear4f (fb,
                             COGL_BUFFER_BIT_COLOR,
                             1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -75,7 +72,7 @@ test_cogl_point_sprite (TestUtilsGTestFixture *fixture,
                                   1, /* n_vertices */
                                   &point);
 
-  cogl_framebuffer_draw_primitive (shared_state->fb,
+  cogl_framebuffer_draw_primitive (fb,
                                    pipeline,
                                    prim);
 
@@ -88,38 +85,43 @@ test_cogl_point_sprite (TestUtilsGTestFixture *fixture,
                                                        /* enable */
                                                        FALSE,
                                                        &error);
-  cogl_framebuffer_push_matrix (shared_state->fb);
-  cogl_framebuffer_translate (shared_state->fb,
+  cogl_framebuffer_push_matrix (fb);
+  cogl_framebuffer_translate (fb,
                               POINT_SIZE * 2, /* x */
                               0.0f, /* y */
                               0.0f /* z */);
-  cogl_framebuffer_draw_primitive (shared_state->fb,
+  cogl_framebuffer_draw_primitive (fb,
                                    solid_pipeline,
                                    prim);
-  cogl_framebuffer_pop_matrix (shared_state->fb);
+  cogl_framebuffer_pop_matrix (fb);
 
   cogl_object_unref (prim);
   cogl_object_unref (solid_pipeline);
   cogl_object_unref (pipeline);
   cogl_object_unref (tex_2d);
 
-  test_utils_check_pixel (POINT_SIZE - POINT_SIZE / 4,
+  test_utils_check_pixel (fb,
+                          POINT_SIZE - POINT_SIZE / 4,
                           POINT_SIZE - POINT_SIZE / 4,
                           0x0000ffff);
-  test_utils_check_pixel (POINT_SIZE + POINT_SIZE / 4,
+  test_utils_check_pixel (fb,
+                          POINT_SIZE + POINT_SIZE / 4,
                           POINT_SIZE - POINT_SIZE / 4,
                           0x00ff00ff);
-  test_utils_check_pixel (POINT_SIZE - POINT_SIZE / 4,
+  test_utils_check_pixel (fb,
+                          POINT_SIZE - POINT_SIZE / 4,
                           POINT_SIZE + POINT_SIZE / 4,
                           0x00ffffff);
-  test_utils_check_pixel (POINT_SIZE + POINT_SIZE / 4,
+  test_utils_check_pixel (fb,
+                          POINT_SIZE + POINT_SIZE / 4,
                           POINT_SIZE + POINT_SIZE / 4,
                           0xff0000ff);
 
   /* When rendering without the point sprites all of the texture
      coordinates should be 0,0 so it should get the top-left texel
      which is blue */
-  test_utils_check_region (POINT_SIZE * 3 - POINT_SIZE / 2 + 1,
+  test_utils_check_region (fb,
+                           POINT_SIZE * 3 - POINT_SIZE / 2 + 1,
                            POINT_SIZE - POINT_SIZE / 2 + 1,
                            POINT_SIZE - 2, POINT_SIZE - 2,
                            0x0000ffff);

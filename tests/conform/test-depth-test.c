@@ -18,7 +18,7 @@
 
 typedef struct _TestState
 {
-  CoglContext *ctx;
+  int padding;
 } TestState;
 
 typedef struct
@@ -36,13 +36,14 @@ static gboolean
 draw_rectangle (TestState *state,
                 int x,
                 int y,
-                TestDepthState *rect_state)
+                TestDepthState *rect_state,
+                gboolean legacy_mode)
 {
   guint8 Cr = MASK_RED (rect_state->color);
   guint8 Cg = MASK_GREEN (rect_state->color);
   guint8 Cb = MASK_BLUE (rect_state->color);
   guint8 Ca = MASK_ALPHA (rect_state->color);
-  CoglHandle pipeline;
+  CoglPipeline *pipeline;
   CoglDepthState depth_state;
 
   cogl_depth_state_init (&depth_state);
@@ -53,24 +54,40 @@ draw_rectangle (TestState *state,
                               rect_state->range_near,
                               rect_state->range_far);
 
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
   if (!cogl_pipeline_set_depth_state (pipeline, &depth_state, NULL))
     {
       cogl_object_unref (pipeline);
       return FALSE;
     }
 
-  cogl_pipeline_set_color4ub (pipeline, Cr, Cg, Cb, Ca);
+  if (!legacy_mode)
+    {
+      cogl_pipeline_set_color4ub (pipeline, Cr, Cg, Cb, Ca);
 
-  cogl_set_source (pipeline);
-
-  cogl_push_matrix ();
-  cogl_translate (0, 0, rect_state->depth);
-  cogl_rectangle (x * QUAD_WIDTH,
-                  y * QUAD_WIDTH,
-                  x * QUAD_WIDTH + QUAD_WIDTH,
-                  y * QUAD_WIDTH + QUAD_WIDTH);
-  cogl_pop_matrix ();
+      cogl_framebuffer_push_matrix (fb);
+      cogl_framebuffer_translate (fb, 0, 0, rect_state->depth);
+      cogl_framebuffer_draw_rectangle (fb,
+                                       pipeline,
+                                       x * QUAD_WIDTH,
+                                       y * QUAD_WIDTH,
+                                       x * QUAD_WIDTH + QUAD_WIDTH,
+                                       y * QUAD_WIDTH + QUAD_WIDTH);
+      cogl_framebuffer_pop_matrix (fb);
+    }
+  else
+    {
+      cogl_push_framebuffer (fb);
+      cogl_push_matrix ();
+      cogl_set_source_color4ub (Cr, Cg, Cb, Ca);
+      cogl_translate (0, 0, rect_state->depth);
+      cogl_rectangle (x * QUAD_WIDTH,
+                      y * QUAD_WIDTH,
+                      x * QUAD_WIDTH + QUAD_WIDTH,
+                      y * QUAD_WIDTH + QUAD_WIDTH);
+      cogl_pop_matrix ();
+      cogl_pop_framebuffer ();
+    }
 
   cogl_object_unref (pipeline);
 
@@ -84,23 +101,25 @@ test_depth (TestState *state,
             TestDepthState *rect0_state,
             TestDepthState *rect1_state,
             TestDepthState *rect2_state,
+            gboolean legacy_mode,
             guint32 expected_result)
 {
   gboolean missing_feature = FALSE;
 
   if (rect0_state)
-    missing_feature |= !draw_rectangle (state, x, y, rect0_state);
+    missing_feature |= !draw_rectangle (state, x, y, rect0_state, legacy_mode);
   if (rect1_state)
-    missing_feature |= !draw_rectangle (state, x, y, rect1_state);
+    missing_feature |= !draw_rectangle (state, x, y, rect1_state, legacy_mode);
   if (rect2_state)
-    missing_feature |= !draw_rectangle (state, x, y, rect2_state);
+    missing_feature |= !draw_rectangle (state, x, y, rect2_state, legacy_mode);
 
   /* We don't consider it an error that we can't test something
    * the driver doesn't support. */
   if (missing_feature)
     return;
 
-  test_utils_check_pixel (x * QUAD_WIDTH + (QUAD_WIDTH / 2),
+  test_utils_check_pixel (fb,
+                          x * QUAD_WIDTH + (QUAD_WIDTH / 2),
                           y * QUAD_WIDTH + (QUAD_WIDTH / 2),
                           expected_result);
 }
@@ -142,27 +161,32 @@ paint (TestState *state)
 
     test_depth (state, 0, 0, /* position */
                 &rect0_state, &rect1_state, &rect2_state,
+                FALSE, /* legacy mode */
                 0x00ff00ff); /* expected */
 
     rect2_state.test_function = COGL_DEPTH_TEST_FUNCTION_ALWAYS;
     test_depth (state, 1, 0, /* position */
                 &rect0_state, &rect1_state, &rect2_state,
+                FALSE, /* legacy mode */
                 0x0000ffff); /* expected */
 
     rect2_state.test_function = COGL_DEPTH_TEST_FUNCTION_LESS;
     test_depth (state, 2, 0, /* position */
                 &rect0_state, &rect1_state, &rect2_state,
+                FALSE, /* legacy mode */
                 0x0000ffff); /* expected */
 
     rect2_state.test_function = COGL_DEPTH_TEST_FUNCTION_GREATER;
     test_depth (state, 3, 0, /* position */
                 &rect0_state, &rect1_state, &rect2_state,
+                FALSE, /* legacy mode */
                 0x00ff00ff); /* expected */
 
     rect0_state.test_enable = TRUE;
     rect1_state.write_enable = FALSE;
     test_depth (state, 4, 0, /* position */
                 &rect0_state, &rect1_state, &rect2_state,
+                FALSE, /* legacy mode */
                 0x0000ffff); /* expected */
   }
 
@@ -191,6 +215,7 @@ paint (TestState *state)
 
     test_depth (state, 0, 1, /* position */
                 &rect0_state, &rect1_state, NULL,
+                FALSE, /* legacy mode */
                 0xff0000ff); /* expected */
   }
 
@@ -220,26 +245,26 @@ paint (TestState *state)
     cogl_set_depth_test_enabled (TRUE);
     test_depth (state, 0, 2, /* position */
                 &rect0_state, &rect1_state, NULL,
+                TRUE, /* legacy mode */
                 0xff0000ff); /* expected */
     cogl_set_depth_test_enabled (FALSE);
     test_depth (state, 1, 2, /* position */
                 &rect0_state, &rect1_state, NULL,
+                TRUE, /* legacy mode */
                 0x00ff00ff); /* expected */
   }
 }
 
 void
-test_cogl_depth_test (TestUtilsGTestFixture *fixture,
-                      void *data)
+test_depth_test (void)
 {
-  TestUtilsSharedState *shared_state = data;
   TestState state;
 
-  state.ctx = shared_state->ctx;
-
-  cogl_ortho (0, cogl_framebuffer_get_width (shared_state->fb), /* left, right */
-              cogl_framebuffer_get_height (shared_state->fb), 0, /* bottom, top */
-              -1, 100 /* z near, far */);
+  cogl_framebuffer_orthographic (fb, 0, 0,
+                                 cogl_framebuffer_get_width (fb),
+                                 cogl_framebuffer_get_height (fb),
+                                 -1,
+                                 100);
 
   paint (&state);
 

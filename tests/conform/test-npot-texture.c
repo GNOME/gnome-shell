@@ -188,7 +188,7 @@ make_texture (void)
 }
 
 void
-test_cogl_npot_texture (TestUtilsGTestFixture *fixture,
+test_npot_texture (TestUtilsGTestFixture *fixture,
                         void *data)
 {
   TestState state;

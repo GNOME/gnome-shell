@@ -147,7 +147,7 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_cogl_readpixels (TestUtilsGTestFixture *fixture,
+test_readpixels (TestUtilsGTestFixture *fixture,
                       void *data)
 {
   unsigned int idle_source;

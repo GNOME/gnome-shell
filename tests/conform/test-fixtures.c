@@ -3,7 +3,7 @@
 #include <cogl/cogl.h>
 
 void
-test_cogl_simple_rig (void)
+test_simple_rig (void)
 {
   ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
   stage = clutter_stage_get_default ();

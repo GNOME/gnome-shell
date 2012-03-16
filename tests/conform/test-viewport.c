@@ -385,7 +385,7 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_cogl_viewport (TestUtilsGTestFixture *fixture,
+test_viewport (TestUtilsGTestFixture *fixture,
                     void *data)
 {
   unsigned int idle_source;

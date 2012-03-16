@@ -237,7 +237,7 @@ check_rectangle_extension (void)
 }
 
 void
-test_cogl_texture_rectangle (TestUtilsGTestFixture *fixture,
+test_texture_rectangle (TestUtilsGTestFixture *fixture,
                              void *data)
 {
   TestState state;

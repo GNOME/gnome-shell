@@ -6,8 +6,7 @@
 
 typedef struct _TestState
 {
-  CoglContext *ctx;
-  CoglFramebuffer *fb;
+  int padding;
 } TestState;
 
 typedef void (* SnippetTestFunc) (TestState *state);
@@ -16,7 +15,7 @@ static CoglPipeline *
 create_texture_pipeline (TestState *state)
 {
   CoglPipeline *pipeline;
-  CoglHandle tex;
+  CoglTexture *tex;
   static const guint8 tex_data[] =
     {
       0xff, 0x00, 0x00, 0xff, /* red */  0x00, 0xff, 0x00, 0xff, /* green */
@@ -30,7 +29,7 @@ create_texture_pipeline (TestState *state)
                                     8, /* rowstride */
                                     tex_data);
 
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
 
   cogl_pipeline_set_layer_texture (pipeline, 0, tex);
 
@@ -38,7 +37,7 @@ create_texture_pipeline (TestState *state)
                                    COGL_PIPELINE_FILTER_NEAREST,
                                    COGL_PIPELINE_FILTER_NEAREST);
 
-  cogl_handle_unref (tex);
+  cogl_object_unref (tex);
 
   return pipeline;
 }
@@ -50,7 +49,7 @@ simple_fragment_snippet (TestState *state)
   CoglSnippet *snippet;
 
   /* Simple fragment snippet */
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
 
   cogl_pipeline_set_color4ub (pipeline, 255, 0, 0, 255);
 
@@ -60,13 +59,11 @@ simple_fragment_snippet (TestState *state)
   cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_object_unref (snippet);
 
-  cogl_push_source (pipeline);
-  cogl_rectangle (0, 0, 10, 10);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb, pipeline, 0, 0, 10, 10);
 
   cogl_object_unref (pipeline);
 
-  test_utils_check_pixel (5, 5, 0xffff00ff);
+  test_utils_check_pixel (fb, 5, 5, 0xffff00ff);
 }
 
 static void
@@ -76,7 +73,7 @@ simple_vertex_snippet (TestState *state)
   CoglSnippet *snippet;
 
   /* Simple vertex snippet */
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
 
   cogl_pipeline_set_color4ub (pipeline, 255, 0, 0, 255);
 
@@ -86,13 +83,11 @@ simple_vertex_snippet (TestState *state)
   cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_object_unref (snippet);
 
-  cogl_push_source (pipeline);
-  cogl_rectangle (10, 0, 20, 10);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb, pipeline, 10, 0, 20, 10);
 
   cogl_object_unref (pipeline);
 
-  test_utils_check_pixel (15, 5, 0xff00ffff);
+  test_utils_check_pixel (fb, 15, 5, 0xff00ffff);
 }
 
 static void
@@ -104,7 +99,7 @@ shared_uniform (TestState *state)
 
   /* Snippets sharing a uniform across the vertex and fragment
      hooks */
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
 
   location = cogl_pipeline_get_uniform_location (pipeline, "a_value");
   cogl_pipeline_set_uniform_1f (pipeline, location, 0.25f);
@@ -122,13 +117,13 @@ shared_uniform (TestState *state)
   cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_object_unref (snippet);
 
-  cogl_push_source (pipeline);
-  cogl_rectangle (20, 0, 30, 10);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb,
+                                   pipeline,
+                                   20, 0, 30, 10);
 
   cogl_object_unref (pipeline);
 
-  test_utils_check_pixel (25, 5, 0xff0080ff);
+  test_utils_check_pixel (fb, 25, 5, 0xff0080ff);
 }
 
 static void
@@ -140,7 +135,7 @@ lots_snippets (TestState *state)
   int i;
 
   /* Lots of snippets on one pipeline */
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
 
   cogl_pipeline_set_color4ub (pipeline, 0, 0, 0, 255);
 
@@ -168,13 +163,11 @@ lots_snippets (TestState *state)
       g_free (declarations);
     }
 
-  cogl_push_source (pipeline);
-  cogl_rectangle (30, 0, 40, 10);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb, pipeline, 30, 0, 40, 10);
 
   cogl_object_unref (pipeline);
 
-  test_utils_check_pixel (35, 5, 0x19334cff);
+  test_utils_check_pixel (fb, 35, 5, 0x19334cff);
 }
 
 static void
@@ -185,7 +178,7 @@ shared_variable_pre_post (TestState *state)
 
   /* Test that the pre string can declare variables used by the post
      string */
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
 
   cogl_pipeline_set_color4ub (pipeline, 255, 255, 255, 255);
 
@@ -196,13 +189,11 @@ shared_variable_pre_post (TestState *state)
   cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_object_unref (snippet);
 
-  cogl_push_source (pipeline);
-  cogl_rectangle (40, 0, 50, 10);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb, pipeline, 40, 0, 50, 10);
 
   cogl_object_unref (pipeline);
 
-  test_utils_check_pixel (45, 5, 0xff0000ff);
+  test_utils_check_pixel (fb, 45, 5, 0xff0000ff);
 }
 
 static void
@@ -223,24 +214,20 @@ test_pipeline_caching (TestState *state)
                               "   unrelated pipelines */",
                               "cogl_color_out = vec4 (0.0, 1.0, 0.0, 1.0);\n");
 
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
   cogl_pipeline_add_snippet (pipeline, snippet);
-  cogl_push_source (pipeline);
-  cogl_rectangle (50, 0, 60, 10);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb, pipeline, 50, 0, 60, 10);
   cogl_object_unref (pipeline);
 
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
   cogl_pipeline_add_snippet (pipeline, snippet);
-  cogl_push_source (pipeline);
-  cogl_rectangle (60, 0, 70, 10);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb, pipeline, 60, 0, 70, 10);
   cogl_object_unref (pipeline);
 
   cogl_object_unref (snippet);
 
-  test_utils_check_pixel (55, 5, 0x00ff00ff);
-  test_utils_check_pixel (65, 5, 0x00ff00ff);
+  test_utils_check_pixel (fb, 55, 5, 0x00ff00ff);
+  test_utils_check_pixel (fb, 65, 5, 0x00ff00ff);
 }
 
 static void
@@ -260,16 +247,14 @@ test_replace_string (TestState *state)
   cogl_snippet_set_post (snippet,
                          "cogl_color_out += vec4 (0.5, 0.0, 0.0, 1.0);");
 
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
   cogl_pipeline_add_snippet (pipeline, snippet);
-  cogl_push_source (pipeline);
-  cogl_rectangle (70, 0, 80, 10);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb, pipeline, 70, 0, 80, 10);
   cogl_object_unref (pipeline);
 
   cogl_object_unref (snippet);
 
-  test_utils_check_pixel (75, 5, 0x808000ff);
+  test_utils_check_pixel (fb, 75, 5, 0x808000ff);
 }
 
 static void
@@ -288,15 +273,15 @@ test_texture_lookup_hook (TestState *state)
 
   pipeline = create_texture_pipeline (state);
   cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
-  cogl_push_source (pipeline);
-  cogl_rectangle_with_texture_coords (80, 0, 90, 10,
-                                      0, 0, 0, 0);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_textured_rectangle (fb,
+                                            pipeline,
+                                            80, 0, 90, 10,
+                                            0, 0, 0, 0);
   cogl_object_unref (pipeline);
 
   cogl_object_unref (snippet);
 
-  test_utils_check_pixel (85, 5, 0x00ffffff);
+  test_utils_check_pixel (fb, 85, 5, 0x00ffffff);
 }
 
 static void
@@ -317,14 +302,12 @@ test_multiple_samples (TestState *state)
 
   pipeline = create_texture_pipeline (state);
   cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
-  cogl_push_source (pipeline);
-  cogl_rectangle (0, 0, 10, 10);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb, pipeline, 0, 0, 10, 10);
   cogl_object_unref (pipeline);
 
   cogl_object_unref (snippet);
 
-  test_utils_check_pixel (5, 5, 0xffff00ff);
+  test_utils_check_pixel (fb, 5, 5, 0xffff00ff);
 }
 
 static void
@@ -339,15 +322,15 @@ test_replace_lookup_hook (TestState *state)
 
   pipeline = create_texture_pipeline (state);
   cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
-  cogl_push_source (pipeline);
-  cogl_rectangle_with_texture_coords (90, 0, 100, 10,
-                                      0, 0, 0, 0);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_textured_rectangle (fb,
+                                            pipeline,
+                                            90, 0, 100, 10,
+                                            0, 0, 0, 0);
   cogl_object_unref (pipeline);
 
   cogl_object_unref (snippet);
 
-  test_utils_check_pixel (95, 5, 0x0000ffff);
+  test_utils_check_pixel (fb, 95, 5, 0x0000ffff);
 }
 
 static void
@@ -372,13 +355,13 @@ test_replace_snippet (TestState *state)
   cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_object_unref (snippet);
 
-  cogl_push_source (pipeline);
-  cogl_rectangle_with_texture_coords (100, 0, 110, 10,
-                                      0, 0, 0, 0);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_textured_rectangle (fb,
+                                            pipeline,
+                                            100, 0, 110, 10,
+                                            0, 0, 0, 0);
   cogl_object_unref (pipeline);
 
-  test_utils_check_pixel (105, 5, 0xff0000ff);
+  test_utils_check_pixel (fb, 105, 5, 0xff0000ff);
 }
 
 static void
@@ -404,13 +387,13 @@ test_replace_fragment_layer (TestState *state)
                                    "A = REPLACE(PREVIOUS)",
                                    NULL);
 
-  cogl_push_source (pipeline);
-  cogl_rectangle_with_texture_coords (110, 0, 120, 10,
-                                      0, 0, 0, 0);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_textured_rectangle (fb,
+                                            pipeline,
+                                            110, 0, 120, 10,
+                                            0, 0, 0, 0);
   cogl_object_unref (pipeline);
 
-  test_utils_check_pixel (115, 5, 0xff00ffff);
+  test_utils_check_pixel (fb, 115, 5, 0xff00ffff);
 }
 
 static void
@@ -420,7 +403,7 @@ test_modify_fragment_layer (TestState *state)
   CoglSnippet *snippet;
 
   /* Test modifying the fragment layer code */
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
 
   cogl_pipeline_set_uniform_1f (pipeline,
                                 cogl_pipeline_get_uniform_location (pipeline,
@@ -433,13 +416,13 @@ test_modify_fragment_layer (TestState *state)
   cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
   cogl_object_unref (snippet);
 
-  cogl_push_source (pipeline);
-  cogl_rectangle_with_texture_coords (120, 0, 130, 10,
-                                      0, 0, 0, 0);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_textured_rectangle (fb,
+                                            pipeline,
+                                            120, 0, 130, 10,
+                                            0, 0, 0, 0);
   cogl_object_unref (pipeline);
 
-  test_utils_check_pixel (125, 5, 0xff80ffff);
+  test_utils_check_pixel (fb, 125, 5, 0xff80ffff);
 }
 
 static void
@@ -462,13 +445,13 @@ test_modify_vertex_layer (TestState *state)
   cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
   cogl_object_unref (snippet);
 
-  cogl_push_source (pipeline);
-  cogl_rectangle_with_texture_coords (130, 0, 140, 10,
-                                      0, 0, 0, 0);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_textured_rectangle (fb,
+                                            pipeline,
+                                            130, 0, 140, 10,
+                                            0, 0, 0, 0);
   cogl_object_unref (pipeline);
 
-  test_utils_check_pixel (135, 5, 0xffff00ff);
+  test_utils_check_pixel (fb, 135, 5, 0xffff00ff);
 }
 
 static void
@@ -492,13 +475,13 @@ test_replace_vertex_layer (TestState *state)
   cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
   cogl_object_unref (snippet);
 
-  cogl_push_source (pipeline);
-  cogl_rectangle_with_texture_coords (140, 0, 150, 10,
-                                      0, 0, 0, 0);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_textured_rectangle (fb,
+                                            pipeline,
+                                            140, 0, 150, 10,
+                                            0, 0, 0, 0);
   cogl_object_unref (pipeline);
 
-  test_utils_check_pixel (145, 5, 0x00ff00ff);
+  test_utils_check_pixel (fb, 145, 5, 0x00ff00ff);
 }
 
 static void
@@ -514,7 +497,7 @@ test_vertex_transform_hook (TestState *state)
 
   cogl_matrix_init_identity (&identity_matrix);
 
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
 
   cogl_pipeline_set_color4ub (pipeline, 255, 0, 255, 255);
 
@@ -527,7 +510,7 @@ test_vertex_transform_hook (TestState *state)
   cogl_object_unref (snippet);
 
   /* Copy the current projection matrix to a uniform */
-  cogl_get_projection_matrix (&matrix);
+  cogl_framebuffer_get_projection_matrix (fb, &matrix);
   location = cogl_pipeline_get_uniform_location (pipeline, "pmat");
   cogl_pipeline_set_uniform_matrix (pipeline,
                                     location,
@@ -538,17 +521,15 @@ test_vertex_transform_hook (TestState *state)
 
   /* Replace the real projection matrix with the identity. This should
      mess up the drawing unless the snippet replacement is working */
-  cogl_set_projection_matrix (&identity_matrix);
+  cogl_framebuffer_set_projection_matrix (fb, &identity_matrix);
 
-  cogl_push_source (pipeline);
-  cogl_rectangle (150, 0, 160, 10);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb, pipeline, 150, 0, 160, 10);
   cogl_object_unref (pipeline);
 
   /* Restore the projection matrix */
-  cogl_set_projection_matrix (&matrix);
+  cogl_framebuffer_set_projection_matrix (fb, &matrix);
 
-  test_utils_check_pixel (155, 5, 0xff00ffff);
+  test_utils_check_pixel (fb, 155, 5, 0xff00ffff);
 }
 
 static void
@@ -564,7 +545,7 @@ test_snippet_order (TestState *state)
      sections in the same order as they were added. Therefore the r
      component should be taken from the the second snippet and the g
      component from the first */
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
 
   cogl_pipeline_set_color4ub (pipeline, 0, 0, 0, 255);
 
@@ -583,12 +564,10 @@ test_snippet_order (TestState *state)
   cogl_pipeline_add_snippet (pipeline, snippet);
   cogl_object_unref (snippet);
 
-  cogl_push_source (pipeline);
-  cogl_rectangle (160, 0, 170, 10);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb, pipeline, 160, 0, 170, 10);
   cogl_object_unref (pipeline);
 
-  test_utils_check_pixel (165, 5, 0x80ff00ff);
+  test_utils_check_pixel (fb, 165, 5, 0x80ff00ff);
 }
 
 static void
@@ -609,26 +588,24 @@ test_naming_texture_units (TestState *state)
                             "texture2D (cogl_sampler100, vec2 (0.0, 0.0)) + "
                             "texture2D (cogl_sampler200, vec2 (0.0, 0.0));");
 
-  tex1 = test_utils_create_color_texture (state->ctx, 0xff0000ff);
-  tex2 = test_utils_create_color_texture (state->ctx, 0x00ff00ff);
+  tex1 = test_utils_create_color_texture (ctx, 0xff0000ff);
+  tex2 = test_utils_create_color_texture (ctx, 0x00ff00ff);
 
-  pipeline = cogl_pipeline_new (state->ctx);
+  pipeline = cogl_pipeline_new (ctx);
 
   cogl_pipeline_set_layer_texture (pipeline, 100, tex1);
   cogl_pipeline_set_layer_texture (pipeline, 200, tex2);
 
   cogl_pipeline_add_snippet (pipeline, snippet);
 
-  cogl_push_source (pipeline);
-  cogl_rectangle (0, 0, 10, 10);
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb, pipeline, 0, 0, 10, 10);
 
   cogl_object_unref (pipeline);
   cogl_object_unref (snippet);
   cogl_object_unref (tex1);
   cogl_object_unref (tex2);
 
-  test_utils_check_pixel (5, 5, 0xffff00ff);
+  test_utils_check_pixel (fb, 5, 5, 0xffff00ff);
 }
 
 static void
@@ -703,7 +680,7 @@ run_tests (TestState *state)
 
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
-      cogl_framebuffer_clear4f (state->fb,
+      cogl_framebuffer_clear4f (fb,
                                 COGL_BUFFER_BIT_COLOR,
                                 0, 0, 0, 1);
 
@@ -712,25 +689,19 @@ run_tests (TestState *state)
 }
 
 void
-test_cogl_snippets (TestUtilsGTestFixture *fixture,
-                    void *user_data)
+test_snippets (void)
 {
-  TestUtilsSharedState *shared_state = user_data;
-
   /* If shaders aren't supported then we can't run the test */
   if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
     {
       TestState state;
 
-      state.ctx = shared_state->ctx;
-      state.fb = shared_state->fb;
-
-      cogl_ortho (/* left, right */
-                  0, cogl_framebuffer_get_width (shared_state->fb),
-                  /* bottom, top */
-                  cogl_framebuffer_get_height (shared_state->fb), 0,
-                  /* z near, far */
-                  -1, 100);
+      cogl_framebuffer_orthographic (fb,
+                                     0, 0,
+                                     cogl_framebuffer_get_width (fb),
+                                     cogl_framebuffer_get_height (fb),
+                                     -1,
+                                     100);
 
       run_tests (&state);
 

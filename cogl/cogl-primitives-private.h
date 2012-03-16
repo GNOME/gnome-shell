@@ -40,6 +40,21 @@ _cogl_rectangle_immediate (CoglFramebuffer *framebuffer,
                            float x_2,
                            float y_2);
 
+typedef struct _CoglMultiTexturedRect
+{
+  const float *position; /* x0,y0,x1,y1 */
+  const float *tex_coords; /* (tx0,ty0,tx1,ty1)(tx0,ty0,tx1,ty1)(... */
+  int tex_coords_len; /* number of floats in tex_coords? */
+} CoglMultiTexturedRect;
+
+void
+_cogl_framebuffer_draw_multitextued_rectangles (
+                                        CoglFramebuffer *framebuffer,
+                                        CoglPipeline *pipeline,
+                                        CoglMultiTexturedRect *rects,
+                                        int n_rects,
+                                        gboolean disable_legacy_state);
+
 G_END_DECLS
 
 #endif /* __COGL_PRIMITIVES_PRIVATE_H */

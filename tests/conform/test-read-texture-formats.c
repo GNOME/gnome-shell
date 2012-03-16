@@ -142,13 +142,11 @@ test_read_int (CoglTexture2D *tex_2d,
 }
 
 void
-test_cogl_read_texture_formats (TestUtilsGTestFixture *fixture,
-                                void *data)
+test_read_texture_formats (void)
 {
-  TestUtilsSharedState *shared_state = data;
   CoglTexture2D *tex_2d;
 
-  tex_2d = cogl_texture_2d_new_from_data (shared_state->ctx,
+  tex_2d = cogl_texture_2d_new_from_data (ctx,
                                           1, 1, /* width / height */
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,

@@ -9,16 +9,14 @@
 
 #include "test-utils.h"
 
-static TestUtilsSharedState *shared_state = NULL;
-
 /* A bit of sugar for adding new conformance tests */
 #define ADD_TEST(FUNC, REQUIREMENTS)  G_STMT_START {      \
-  extern void FUNC (TestUtilsGTestFixture *, void *);     \
+  extern void FUNC (void);                                \
   if (strcmp (#FUNC, argv[1]) == 0)                       \
     {                                                     \
-      test_utils_init (shared_state, REQUIREMENTS);       \
-      FUNC (NULL, shared_state);                          \
-      test_utils_fini (shared_state);                     \
+      test_utils_init (REQUIREMENTS);                     \
+      FUNC ();                                            \
+      test_utils_fini ();                                 \
       exit (0);                                           \
     }                                                     \
 } G_STMT_END
@@ -45,65 +43,59 @@ main (int argc, char **argv)
         argv[1][i] = '_';
     }
 
-  /* Initialise the state you need to share with everything.
-   */
-  shared_state = g_new0 (TestUtilsSharedState, 1);
-  shared_state->argc_addr = &argc;
-  shared_state->argv_addr = &argv;
-
   /* This file is run through a sed script during the make step so the
    * lines containing the tests need to be formatted on a single line
    * each.
    */
 
-  UNPORTED_TEST (test_cogl_object);
-  UNPORTED_TEST (test_cogl_fixed);
-  UNPORTED_TEST (test_cogl_materials);
-  ADD_TEST (test_cogl_pipeline_user_matrix, 0);
-  ADD_TEST (test_cogl_blend_strings, 0);
-  UNPORTED_TEST (test_cogl_premult);
-  UNPORTED_TEST (test_cogl_readpixels);
-  ADD_TEST (test_cogl_path, 0);
-  ADD_TEST (test_cogl_depth_test, 0);
-  ADD_TEST (test_cogl_color_mask, 0);
-  ADD_TEST (test_cogl_backface_culling, TEST_REQUIREMENT_NPOT);
+  UNPORTED_TEST (test_object);
+  UNPORTED_TEST (test_fixed);
+  UNPORTED_TEST (test_materials);
+  ADD_TEST (test_pipeline_user_matrix, 0);
+  ADD_TEST (test_blend_strings, 0);
+  UNPORTED_TEST (test_premult);
+  UNPORTED_TEST (test_readpixels);
+  ADD_TEST (test_path, 0);
+  ADD_TEST (test_depth_test, 0);
+  ADD_TEST (test_color_mask, 0);
+  ADD_TEST (test_backface_culling, TEST_REQUIREMENT_NPOT);
 
-  ADD_TEST (test_cogl_sparse_pipeline, 0);
+  ADD_TEST (test_sparse_pipeline, 0);
 
-  UNPORTED_TEST (test_cogl_npot_texture);
-  UNPORTED_TEST (test_cogl_multitexture);
-  UNPORTED_TEST (test_cogl_texture_mipmaps);
-  ADD_TEST (test_cogl_sub_texture, 0);
-  ADD_TEST (test_cogl_pixel_buffer, 0);
-  UNPORTED_TEST (test_cogl_texture_rectangle);
-  ADD_TEST (test_cogl_texture_3d, 0);
-  ADD_TEST (test_cogl_wrap_modes, 0);
-  UNPORTED_TEST (test_cogl_texture_pixmap_x11);
-  UNPORTED_TEST (test_cogl_texture_get_set_data);
-  UNPORTED_TEST (test_cogl_atlas_migration);
-  ADD_TEST (test_cogl_read_texture_formats, 0);
-  ADD_TEST (test_cogl_write_texture_formats, 0);
+  UNPORTED_TEST (test_npot_texture);
+  UNPORTED_TEST (test_multitexture);
+  UNPORTED_TEST (test_texture_mipmaps);
+  ADD_TEST (test_sub_texture, 0);
+  ADD_TEST (test_pixel_buffer, 0);
+  UNPORTED_TEST (test_texture_rectangle);
+  ADD_TEST (test_texture_3d, 0);
+  ADD_TEST (test_wrap_modes, 0);
+  UNPORTED_TEST (test_texture_pixmap_x11);
+  UNPORTED_TEST (test_texture_get_set_data);
+  UNPORTED_TEST (test_atlas_migration);
+  ADD_TEST (test_read_texture_formats, 0);
+  ADD_TEST (test_write_texture_formats, 0);
 
-  UNPORTED_TEST (test_cogl_vertex_buffer_contiguous);
-  UNPORTED_TEST (test_cogl_vertex_buffer_interleved);
-  UNPORTED_TEST (test_cogl_vertex_buffer_mutability);
+  UNPORTED_TEST (test_vertex_buffer_contiguous);
+  UNPORTED_TEST (test_vertex_buffer_interleved);
+  UNPORTED_TEST (test_vertex_buffer_mutability);
 
-  ADD_TEST (test_cogl_primitive, 0);
+  ADD_TEST (test_primitive, 0);
 
-  ADD_TEST (test_cogl_just_vertex_shader, 0);
-  ADD_TEST (test_cogl_pipeline_uniforms, 0);
-  ADD_TEST (test_cogl_snippets, 0);
-  ADD_TEST (test_cogl_custom_attributes, 0);
+  ADD_TEST (test_just_vertex_shader, 0);
+  ADD_TEST (test_pipeline_uniforms, 0);
+  ADD_TEST (test_snippets, 0);
+  ADD_TEST (test_custom_attributes, 0);
 
-  ADD_TEST (test_cogl_bitmask, 0);
+  ADD_TEST (test_bitmask, 0);
 
-  ADD_TEST (test_cogl_offscreen, 0);
+  ADD_TEST (test_offscreen, 0);
 
-  ADD_TEST (test_cogl_point_size, 0);
-  ADD_TEST (test_cogl_point_sprite,
+  ADD_TEST (test_point_size, 0);
+  ADD_TEST (test_point_sprite,
             TEST_KNOWN_FAILURE | TEST_REQUIREMENT_POINT_SPRITE);
 
-  UNPORTED_TEST (test_cogl_viewport);
+  UNPORTED_TEST (test_viewport);
 
   g_printerr ("Unknown test name \"%s\"\n", argv[1]);
 

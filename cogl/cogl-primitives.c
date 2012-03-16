@@ -48,6 +48,7 @@
 
 typedef struct _TextureSlicedQuadState
 {
+  CoglFramebuffer *framebuffer;
   CoglPipeline *pipeline;
   CoglTexture *main_texture;
   float tex_virtual_origin_x;
@@ -77,7 +78,7 @@ log_quad_sub_textures_cb (CoglTexture *texture,
                           void *user_data)
 {
   TextureSlicedQuadState *state = user_data;
-  CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
+  CoglFramebuffer *framebuffer = state->framebuffer;
   CoglTexture *texture_override;
   float quad_coords[4];
 
@@ -189,8 +190,9 @@ validate_first_layer_cb (CoglPipeline *pipeline,
  */
 /* TODO: support multitexturing */
 static void
-_cogl_texture_quad_multiple_primitives (CoglTexture *texture,
+_cogl_texture_quad_multiple_primitives (CoglFramebuffer *framebuffer,
                                         CoglPipeline *pipeline,
+                                        CoglTexture *texture,
                                         int layer_index,
                                         const float *position,
                                         float tx_1,
@@ -206,8 +208,6 @@ _cogl_texture_quad_multiple_primitives (CoglTexture *texture,
   ValidateFirstLayerState validate_first_layer_state;
   CoglPipelineWrapMode wrap_s, wrap_t;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   wrap_s = cogl_pipeline_get_layer_wrap_mode_s (pipeline, layer_index);
   wrap_t = cogl_pipeline_get_layer_wrap_mode_t (pipeline, layer_index);
 
@@ -216,6 +216,7 @@ _cogl_texture_quad_multiple_primitives (CoglTexture *texture,
                                validate_first_layer_cb,
                                &validate_first_layer_state);
 
+  state.framebuffer = framebuffer;
   state.main_texture = texture;
 
   if (validate_first_layer_state.override_pipeline)
@@ -431,17 +432,15 @@ validate_tex_coords_cb (CoglPipeline *pipeline,
  *   require repeating.
  */
 static gboolean
-_cogl_multitexture_quad_single_primitive (const float  *position,
+_cogl_multitexture_quad_single_primitive (CoglFramebuffer *framebuffer,
                                           CoglPipeline *pipeline,
+                                          const float  *position,
                                           const float  *user_tex_coords,
-                                          int           user_tex_coords_len)
+                                          int user_tex_coords_len)
 {
   int n_layers = cogl_pipeline_get_n_layers (pipeline);
   ValidateTexCoordsState state;
   float *final_tex_coords = alloca (sizeof (float) * 4 * n_layers);
-  CoglFramebuffer *framebuffer;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   state.i = -1;
   state.n_layers = n_layers;
@@ -461,7 +460,6 @@ _cogl_multitexture_quad_single_primitive (const float  *position,
   if (state.override_pipeline)
     pipeline = state.override_pipeline;
 
-  framebuffer = cogl_get_draw_framebuffer ();
   _cogl_journal_log_quad (framebuffer->journal,
                           position,
                           pipeline,
@@ -478,6 +476,7 @@ _cogl_multitexture_quad_single_primitive (const float  *position,
 
 typedef struct _ValidateLayerState
 {
+  CoglContext *ctx;
   int i;
   int first_layer;
   CoglPipeline *override_source;
@@ -585,8 +584,6 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
           static gboolean warning_seen = FALSE;
           CoglTexture2D *tex_2d;
 
-          _COGL_GET_CONTEXT (ctx, FALSE);
-
           if (!warning_seen)
             g_warning ("Skipping layer %d of your pipeline consisting of "
                        "a sliced texture (unsuported for multi texturing)",
@@ -594,7 +591,7 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
           warning_seen = TRUE;
 
           /* Note: currently only 2D textures can be sliced. */
-          tex_2d = ctx->default_gl_texture_2d_tex;
+          tex_2d = state->ctx->default_gl_texture_2d_tex;
           cogl_pipeline_set_layer_texture (pipeline, layer_index,
                                            COGL_TEXTURE (tex_2d));
           return TRUE;
@@ -629,29 +626,25 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
   return TRUE;
 }
 
-struct _CoglMutiTexturedRect
+void
+_cogl_framebuffer_draw_multitextured_rectangles (
+                                        CoglFramebuffer *framebuffer,
+                                        CoglPipeline *pipeline,
+                                        CoglMultiTexturedRect *rects,
+                                        int n_rects,
+                                        gboolean disable_legacy_state)
 {
-  const float *position; /* x0,y0,x1,y1 */
-  const float *tex_coords; /* (tx0,ty0,tx1,ty1)(tx0,ty0,tx1,ty1)(... */
-  int          tex_coords_len; /* number of floats in tex_coords? */
-};
-
-static void
-_cogl_rectangles_with_multitexture_coords (
-                                        struct _CoglMutiTexturedRect *rects,
-                                        int                           n_rects)
-{
-  CoglPipeline *original_pipeline, *pipeline;
+  CoglContext *ctx = framebuffer->context;
+  CoglPipeline *original_pipeline;
   ValidateLayerState state;
   int i;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  pipeline = original_pipeline = cogl_get_source ();
+  original_pipeline = pipeline;
 
   /*
    * Validate all the layers of the current source pipeline...
    */
+  state.ctx = ctx;
   state.i = -1;
   state.first_layer = 0;
   state.override_source = NULL;
@@ -663,13 +656,16 @@ _cogl_rectangles_with_multitexture_coords (
   if (state.override_source)
     pipeline = state.override_source;
 
-  if (G_UNLIKELY (ctx->legacy_state_set) &&
-      _cogl_get_enable_legacy_state ())
+  if (!disable_legacy_state)
     {
-      /* If we haven't already made a pipeline copy */
-      if (pipeline == original_pipeline)
-        pipeline = cogl_pipeline_copy (pipeline);
-      _cogl_pipeline_apply_legacy_state (pipeline);
+      if (G_UNLIKELY (ctx->legacy_state_set) &&
+          _cogl_get_enable_legacy_state ())
+        {
+          /* If we haven't already made a pipeline copy */
+          if (pipeline == original_pipeline)
+            pipeline = cogl_pipeline_copy (pipeline);
+          _cogl_pipeline_apply_legacy_state (pipeline);
+        }
     }
 
   /*
@@ -685,8 +681,9 @@ _cogl_rectangles_with_multitexture_coords (
       if (!state.all_use_sliced_quad_fallback)
         {
           gboolean success =
-            _cogl_multitexture_quad_single_primitive (rects[i].position,
+            _cogl_multitexture_quad_single_primitive (framebuffer,
                                                       pipeline,
+                                                      rects[i].position,
                                                       rects[i].tex_coords,
                                                       rects[i].tex_coords_len);
 
@@ -710,8 +707,9 @@ _cogl_rectangles_with_multitexture_coords (
 
       COGL_NOTE (DRAW, "Drawing Tex Quad (Multi-Prim Mode)");
 
-      _cogl_texture_quad_multiple_primitives (texture,
+      _cogl_texture_quad_multiple_primitives (framebuffer,
                                               pipeline,
+                                              texture,
                                               state.first_layer,
                                               rects[i].position,
                                               tex_coords[0],
@@ -724,19 +722,31 @@ _cogl_rectangles_with_multitexture_coords (
     cogl_object_unref (pipeline);
 }
 
+static void
+_cogl_rectangles_with_multitexture_coords (
+                                        CoglMultiTexturedRect *rects,
+                                        int n_rects)
+{
+  _cogl_framebuffer_draw_multitextured_rectangles (cogl_get_draw_framebuffer (),
+                                                   cogl_get_source (),
+                                                   rects,
+                                                   n_rects,
+                                                   FALSE);
+}
+
 void
 cogl_rectangles (const float *verts,
                  unsigned int n_rects)
 {
-  struct _CoglMutiTexturedRect *rects;
+  CoglMultiTexturedRect *rects;
   int i;
 
   /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
-   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * CoglMultiTexturedRect rectangles and pass these on to our work horse;
    * _cogl_rectangles_with_multitexture_coords.
    */
 
-  rects = g_alloca (n_rects * sizeof (struct _CoglMutiTexturedRect));
+  rects = g_alloca (n_rects * sizeof (CoglMultiTexturedRect));
 
   for (i = 0; i < n_rects; i++)
     {
@@ -752,15 +762,15 @@ void
 cogl_rectangles_with_texture_coords (const float *verts,
                                      unsigned int n_rects)
 {
-  struct _CoglMutiTexturedRect *rects;
+  CoglMultiTexturedRect *rects;
   int i;
 
   /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
-   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * CoglMultiTexturedRect rectangles and pass these on to our work horse;
    * _cogl_rectangles_with_multitexture_coords.
    */
 
-  rects = g_alloca (n_rects * sizeof (struct _CoglMutiTexturedRect));
+  rects = g_alloca (n_rects * sizeof (CoglMultiTexturedRect));
 
   for (i = 0; i < n_rects; i++)
     {
@@ -784,10 +794,10 @@ cogl_rectangle_with_texture_coords (float x_1,
 {
   const float position[4] = {x_1, y_1, x_2, y_2};
   const float tex_coords[4] = {tx_1, ty_1, tx_2, ty_2};
-  struct _CoglMutiTexturedRect rect;
+  CoglMultiTexturedRect rect;
 
   /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
-   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * CoglMultiTexturedRect rectangles and pass these on to our work horse;
    * _cogl_rectangles_with_multitexture_coords.
    */
 
@@ -807,10 +817,10 @@ cogl_rectangle_with_multitexture_coords (float        x_1,
                                          int          user_tex_coords_len)
 {
   const float position[4] = {x_1, y_1, x_2, y_2};
-  struct _CoglMutiTexturedRect rect;
+  CoglMultiTexturedRect rect;
 
   /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
-   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * CoglMultiTexturedRect rectangles and pass these on to our work horse;
    * _cogl_rectangles_with_multitexture_coords.
    */
 
@@ -828,10 +838,10 @@ cogl_rectangle (float x_1,
                 float y_2)
 {
   const float position[4] = {x_1, y_1, x_2, y_2};
-  struct _CoglMutiTexturedRect rect;
+  CoglMultiTexturedRect rect;
 
   /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
-   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * CoglMultiTexturedRect rectangles and pass these on to our work horse;
    * _cogl_rectangles_with_multitexture_coords.
    */
 
@@ -854,6 +864,7 @@ _cogl_rectangle_immediate (CoglFramebuffer *framebuffer,
      through the journal. This should only be used in cases where the
      code might be called while the journal is already being flushed
      such as when flushing the clip state */
+  CoglContext *ctx = framebuffer->context;
   float vertices[8] =
     {
       x_1, y_1,
@@ -863,8 +874,6 @@ _cogl_rectangle_immediate (CoglFramebuffer *framebuffer,
     };
   CoglAttributeBuffer *attribute_buffer;
   CoglAttribute *attributes[1];
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   attribute_buffer =
     cogl_attribute_buffer_new (ctx, sizeof (vertices), vertices);

@@ -141,7 +141,7 @@ paint_cb (void)
 }
 
 void
-test_cogl_texture_get_set_data (TestUtilsGTestFixture *fixture,
+test_texture_get_set_data (TestUtilsGTestFixture *fixture,
                                 void *data)
 {
   ClutterActor *stage;
