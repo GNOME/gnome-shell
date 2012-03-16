@@ -105,7 +105,7 @@ test_canvas_main (int argc, char *argv[])
   actor = clutter_actor_new ();
   clutter_actor_set_content (actor, canvas);
   clutter_actor_set_content_scaling_filters (actor,
-                                             CLUTTER_SCALING_FILTER_BILINEAR,
+                                             CLUTTER_SCALING_FILTER_TRILINEAR,
                                              CLUTTER_SCALING_FILTER_LINEAR);
   clutter_actor_add_child (stage, actor);
 

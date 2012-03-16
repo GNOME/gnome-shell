@@ -87,7 +87,7 @@ test_image_box_main (int argc, char *argv[])
   g_object_unref (pixbuf);
 
   clutter_actor_set_content_scaling_filters (box,
-                                             CLUTTER_SCALING_FILTER_BILINEAR,
+                                             CLUTTER_SCALING_FILTER_TRILINEAR,
                                              CLUTTER_SCALING_FILTER_LINEAR);
   clutter_actor_set_content_gravity (box, gravities[n_gravities - 1].gravity);
   clutter_actor_set_content (box, image);

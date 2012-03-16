@@ -167,7 +167,7 @@
  *
  *   /&ast; the cogl_texture variable is set elsewhere &ast;/
  *   node = clutter_texture_node_new (cogl_texture, CLUTTER_COLOR_White,
- *                                    CLUTTER_SCALING_FILTER_BILINEAR,
+ *                                    CLUTTER_SCALING_FILTER_TRILINEAR,
  *                                    CLUTTER_SCALING_FILTER_LINEAR);
  *
  *   /&ast; paint the content of the node using the allocation &ast;/

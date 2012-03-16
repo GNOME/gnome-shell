@@ -1153,8 +1153,9 @@ typedef enum {
  * ClutterScalingFilter:
  * @CLUTTER_SCALING_FILTER_LINEAR: Linear interpolation filter
  * @CLUTTER_SCALING_FILTER_NEAREST: Nearest neighbor interpolation filter
- * @CLUTTER_SCALING_FILTER_BILINEAR: Bilinear minification filter; this
- *   filter enables mipmap generation.
+ * @CLUTTER_SCALING_FILTER_TRILINEAR: Trilinear minification filter, with
+ *   mipmap generation; this filter linearly interpolates on every axis,
+ *   as well as between mipmap levels.
  *
  * The scaling filters to be used with the #ClutterActor:minification-filter
  * and #ClutterActor:magnification-filter properties.
@@ -1164,7 +1165,7 @@ typedef enum {
 typedef enum {
   CLUTTER_SCALING_FILTER_LINEAR,
   CLUTTER_SCALING_FILTER_NEAREST,
-  CLUTTER_SCALING_FILTER_BILINEAR
+  CLUTTER_SCALING_FILTER_TRILINEAR
 } ClutterScalingFilter;
 
 G_END_DECLS

@@ -622,7 +622,7 @@ clutter_scaling_filter_to_cogl_pipeline_filter (ClutterScalingFilter filter)
     case CLUTTER_SCALING_FILTER_LINEAR:
       return COGL_PIPELINE_FILTER_LINEAR;
 
-    case CLUTTER_SCALING_FILTER_BILINEAR:
+    case CLUTTER_SCALING_FILTER_TRILINEAR:
       return COGL_PIPELINE_FILTER_LINEAR_MIPMAP_LINEAR;
     }
 
