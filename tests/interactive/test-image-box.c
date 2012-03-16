@@ -31,8 +31,13 @@ on_clicked (ClutterClickAction *action,
             ClutterActor       *actor,
             ClutterText        *label)
 {
+  gchar *str;
+
   clutter_actor_set_content_gravity (actor, gravities[cur_gravity].gravity);
-  clutter_text_set_text (label, gravities[cur_gravity].name);
+
+  str = g_strconcat ("Content gravity: ", gravities[cur_gravity].name, NULL);
+  clutter_text_set_text (label, str);
+  g_free (str);
 
   cur_gravity += 1;
 
@@ -53,6 +58,7 @@ test_image_box_main (int argc, char *argv[])
   ClutterContent *image;
   ClutterAction *action;
   GdkPixbuf *pixbuf;
+  gchar *str;
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return EXIT_FAILURE;
@@ -93,10 +99,16 @@ test_image_box_main (int argc, char *argv[])
   clutter_actor_set_content (box, image);
   g_object_unref (image);
 
+  str = g_strconcat ("Content gravity: ",
+                     gravities[n_gravities - 1].name,
+                     NULL);
+
   text = clutter_text_new ();
-  clutter_text_set_text (CLUTTER_TEXT (text), gravities[n_gravities - 1].name);
+  clutter_text_set_text (CLUTTER_TEXT (text), str);
   clutter_actor_add_constraint (text, clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5));
   clutter_actor_add_child (stage, text);
+
+  g_free (str);
 
   action = clutter_click_action_new ();
   g_signal_connect (action, "clicked", G_CALLBACK (on_clicked), text);
