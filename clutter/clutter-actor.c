@@ -17655,9 +17655,6 @@ clutter_actor_get_content_box (ClutterActor    *self,
 
   priv = self->priv;
 
-  if (!clutter_actor_has_allocation (self))
-    return;
-
   box->x1 = 0.f;
   box->y1 = 0.f;
   box->x2 = priv->allocation.x2 - priv->allocation.x1;
