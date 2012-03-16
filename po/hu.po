@@ -1,5 +1,5 @@
 # Hungarian translation of mutter
-# Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 Free Software Foundation, Inc.
 # This file is distributed under the same license as the mutter package.
 #
 # Andras Timar <timar at gnome dot hu>, 2002, 2003.
@@ -9,17 +9,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
-"cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-12-13 13:41+0000\n"
-"PO-Revision-Date: 2012-02-29 03:35+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-16 16:42+0100\n"
+"PO-Revision-Date: 2012-03-16 16:43+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
-"Language-Team: Magyar <gnome-hu-list at gnome dot org>\n"
+"Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
@@ -31,7 +30,6 @@ msgid "View split on right"
 msgstr "Jobb oldali felosztás megjelenítése"
 
 #: ../src/50-mutter-windows.xml.in.h:3
-#| msgid "_Windows"
 msgid "Windows"
 msgstr "Ablakok"
 
@@ -80,12 +78,12 @@ msgstr "Vá_rakozás"
 msgid "_Force Quit"
 msgstr "_Erőltetett kilépés"
 
-#: ../src/core/display.c:365
+#: ../src/core/display.c:387
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Hiányzik a kompozit ablakkezeléshez szükséges %s kiterjesztés"
 
-#: ../src/core/display.c:431
+#: ../src/core/display.c:453
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nem sikerült megnyitni a(z) „%s” X Window rendszer képernyőt\n"
@@ -130,13 +128,12 @@ msgstr "Témakönyvtár beolvasása sikertelen: %s\n"
 
 #: ../src/core/main.c:520
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Nem található téma! Bizonyosodjon meg róla hogy a(z) %s létezik és "
 "tartalmazza a szokásos témákat.\n"
 
-#: ../src/core/mutter.c:42
+#: ../src/core/mutter.c:40
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -151,15 +148,15 @@ msgstr ""
 "NINCS garancia; még az ELADHATÓSÁGRA vagy EGY ADOTT CÉLRA VALÓ ALKALMASSÁGRA "
 "vonatkozólag sem.\n"
 
-#: ../src/core/mutter.c:56
+#: ../src/core/mutter.c:54
 msgid "Print version"
 msgstr "Verzió kinyomtatása"
 
-#: ../src/core/mutter.c:62
+#: ../src/core/mutter.c:60
 msgid "Comma-separated list of compositor plugins"
 msgstr "Kompozitáló bővítmények vesszőkkel elválasztott listája"
 
-#: ../src/core/prefs.c:1067
+#: ../src/core/prefs.c:1077
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -167,15 +164,14 @@ msgstr ""
 "A hibás alkalmazások hibáinak megkerülése nincs engedélyezve. Néhány "
 "alkalmazás lehet, hogy nem fog helyesen működni.\n"
 
-#: ../src/core/prefs.c:1142
+#: ../src/core/prefs.c:1152
 #, c-format
-#| msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "Nem sikerült feldolgozni a(z) „%s” betűkészlet leírását a(z) „%s” GSettings "
 "kulcsból\n"
 
-#: ../src/core/prefs.c:1208
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -184,7 +180,7 @@ msgstr ""
 "A konfigurációs adatbázisban talált „%s” érvénytelen érték az egérgomb "
 "módosítóhoz\n"
 
-#: ../src/core/prefs.c:1720
+#: ../src/core/prefs.c:1739
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -193,17 +189,17 @@ msgstr ""
 "A konfigurációs adatbázisban talált „%s” nem érvényes érték a következő "
 "billentyűkombinációhoz: „%s”\n"
 
-#: ../src/core/prefs.c:1817
+#: ../src/core/prefs.c:1836
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. munkaterület"
 
-#: ../src/core/screen.c:741
+#: ../src/core/screen.c:730
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A(z) %d képernyő a(z) „%s” megjelenítőn érvénytelen\n"
 
-#: ../src/core/screen.c:757
+#: ../src/core/screen.c:746
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -212,20 +208,19 @@ msgstr ""
 "A(z) %d képernyő a(z) „%s” megjelenítőn már rendelkezik egy ablakkezelővel; "
 "próbálja a --replace opcióval helyettesíteni a jelenlegi ablakkezelőt.\n"
 
-#: ../src/core/screen.c:784
+#: ../src/core/screen.c:773
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
-"Nem sikerült beolvasni az ablakkezelő kiválasztását a(z) %d képernyőn a(z) „%"
-"s” megjelenítőn\n"
+"Nem sikerült beolvasni az ablakkezelő kiválasztását a(z) %d képernyőn a(z) "
+"„%s” megjelenítőn\n"
 
-#: ../src/core/screen.c:839
+#: ../src/core/screen.c:828
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "A(z) %d képernyőnek a(z) „%s” megjelenítőn már van ablakkezelője\n"
 
-#: ../src/core/screen.c:1024
+#: ../src/core/screen.c:1013
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nem sikerült elengedni a(z) %d képernyőt a(z) „%s” kijelzőn\n"
@@ -258,8 +253,7 @@ msgstr "Nem sikerült feldolgozni a mentett munkamenet fájlt: %s\n"
 #: ../src/core/session.c:1185
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr ""
-"A <mutter_session> attribútum megjelent, de már van munkamenet-azonosító"
+msgstr "A <mutter_session> attribútum megjelent, de már van munkamenet-azonosító"
 
 #: ../src/core/session.c:1198 ../src/core/session.c:1273
 #: ../src/core/session.c:1305 ../src/core/session.c:1377
@@ -324,7 +318,7 @@ msgid "Window manager error: "
 msgstr "Hibaüzenet az ablakkezelőtől: "
 
 #. first time through
-#: ../src/core/window.c:7145
+#: ../src/core/window.c:7269
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -340,11 +334,11 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7808
+#: ../src/core/window.c:7932
 #, c-format
 msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
+"%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
 "A(z) %s ablak egy MWM javaslatot állít be, ami szerint nem méretezhető át, "
 "de mégis %d x %d minimális és %d x %d maximális értéket ad meg, amelynek így "
@@ -364,14 +358,13 @@ msgstr "%s (ezen: %s)"
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
-"Érvénytelen WM_TRANSIENT_FOR ablak (0x%lx) került megadásra a következőhöz: %"
-"s.\n"
+"Érvénytelen WM_TRANSIENT_FOR ablak (0x%lx) került megadásra a következőhöz: "
+"%s.\n"
 
 #: ../src/core/window-props.c:1492
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
-msgstr ""
-"A WM_TRANSIENT_FOR ablak (0x%lx) ciklust hozna létre a következőhöz: %s.\n"
+msgstr "A WM_TRANSIENT_FOR ablak (0x%lx) ciklust hozna létre a következőhöz: %s.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -391,13 +384,11 @@ msgstr ""
 #: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
-"A(z) %s tulajdonság a 0x%lx ablakon érvénytelen UTF-8 adatot tartalmazott\n"
+msgstr "A(z) %s tulajdonság a 0x%lx ablakon érvénytelen UTF-8 adatot tartalmazott\n"
 
 #: ../src/core/xprops.c:494
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "A(z) %s tulajdonság a 0x%lx ablakon érvénytelen UTF-8 adatot tartalmazott a "
 "lista %d. elemében\n"
@@ -439,14 +430,21 @@ msgstr ""
 "monitor ablakaihoz történjen meg."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:6
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr "A munkaterületek dinamikusan vannak-e kezelve, vagy a számuk rögzített (ezt a num-workspaces kulcs adja meg az org.gnome.desktop.wm.preferences fájlban)."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Draggable border width"
 msgstr "Húzható szegély szélessége"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:7
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Szélek csempézésének engedélyezése ablakok képernyőszélekre ejtésekor"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
 "vertically and resizes them horizontally to cover half of the available "
@@ -457,24 +455,23 @@ msgstr ""
 "felét fogják elfoglalni. Az ablakok felső képernyőszélre ejtése teljesen "
 "maximalizálja azokat."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid "Live Hidden Windows"
 msgstr "Élő rejtett ablakok"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "Modifier to use for extended window management operations"
 msgstr "A kiterjesztett ablakkezelési műveletekhez használandó módosító"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
 msgid "No tab popup"
 msgstr "Nincs tab felugró"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
-#| msgid "Remove Window From Top"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Select window from tab popup"
 msgstr "Ablakok kiválasztása tab billentyűre felugró ablakból"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -483,7 +480,7 @@ msgstr ""
 "elegendők, akkor láthatatlan szegélyek kerülnek hozzáadásra ezen érték "
 "eléréséhez."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -494,7 +491,7 @@ msgstr ""
 "alkalmazásindító rendszer. Az alapértelmezés a „Windows” billentyű PC "
 "hardver esetén. Ezt vagy az alapértelmezetten, vagy üresen kell hagyni."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -504,7 +501,11 @@ msgstr ""
 "hanem a szülőablak címsorához csatolva jelennek meg, és a szülőablakkal "
 "együtt kerülnek mozgatásra."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Workspaces are managed dynamically"
+msgstr "Munkaterületek dinamikus kezelése"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Workspaces only on primary"
 msgstr "Munkaterületek csak az elsődlegese"
 
@@ -512,50 +513,6 @@ msgstr "Munkaterületek csak az elsődlegese"
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Használat: %s\n"
-
-#: ../src/ui/frames.c:1157
-msgid "Close Window"
-msgstr "Ablak bezárása"
-
-#: ../src/ui/frames.c:1160
-msgid "Window Menu"
-msgstr "Ablak menü"
-
-#: ../src/ui/frames.c:1163
-msgid "Minimize Window"
-msgstr "Ablak minimalizálása"
-
-#: ../src/ui/frames.c:1166
-msgid "Maximize Window"
-msgstr "Ablak maximalizálása"
-
-#: ../src/ui/frames.c:1169
-msgid "Restore Window"
-msgstr "Ablak visszaállítása"
-
-#: ../src/ui/frames.c:1172
-msgid "Roll Up Window"
-msgstr "Ablak felgördítése"
-
-#: ../src/ui/frames.c:1175
-msgid "Unroll Window"
-msgstr "Ablak lenyitása"
-
-#: ../src/ui/frames.c:1178
-msgid "Keep Window On Top"
-msgstr "Ablak legfelül tartása"
-
-#: ../src/ui/frames.c:1181
-msgid "Remove Window From Top"
-msgstr "Ablak eltávolítása legfelülről"
-
-#: ../src/ui/frames.c:1184
-msgid "Always On Visible Workspace"
-msgstr "Mindig a látható munkaterületen"
-
-#: ../src/ui/frames.c:1187
-msgid "Put Window On Only One Workspace"
-msgstr "Ablak kirakása csak egy munkaterületre"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:69
@@ -876,10 +833,8 @@ msgstr "A(z) „%s” alfa érték a kevert színben nem 0.0 és 1.0 között va
 
 #: ../src/ui/theme.c:1429
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"Az árnyék formátuma: „shade/base_color/factor”, „%s” nem felel meg ennek"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "Az árnyék formátuma: „shade/base_color/factor”, „%s” nem felel meg ennek"
 
 #: ../src/ui/theme.c:1440
 #, c-format
@@ -938,15 +893,12 @@ msgstr "A koordinátakifejezés nullával való osztást okozott"
 
 #: ../src/ui/theme.c:2173
 #, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
-"A koordinátakifejezés mod operátort próbált használni lebegőpontos számon"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "A koordinátakifejezés mod operátort próbált használni lebegőpontos számon"
 
 #: ../src/ui/theme.c:2229
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "A koordinátakifejezésben egy operandus helyén „%s” operátor volt"
 
 #: ../src/ui/theme.c:2238
@@ -991,8 +943,7 @@ msgstr "A koordinátakifejezésben kezdő zárójel szerepelt záró nélkül"
 #: ../src/ui/theme.c:2610
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
-"A koordinátakifejezésben úgy tűnik nincsenek sem operátorok, sem operandusok"
+msgstr "A koordinátakifejezésben úgy tűnik nincsenek sem operátorok, sem operandusok"
 
 #: ../src/ui/theme.c:2822 ../src/ui/theme.c:2842 ../src/ui/theme.c:2862
 #, c-format
@@ -1010,10 +961,8 @@ msgstr ""
 
 #: ../src/ui/theme.c:5066 ../src/ui/theme.c:5091
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"Hiányzó <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"bármi\"/> elem"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Hiányzó <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"bármi\"/> elem"
 
 #: ../src/ui/theme.c:5139
 #, c-format
@@ -1037,8 +986,7 @@ msgstr ""
 
 #: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "A felhasználó által meghatározott konstansoknak nagybetűvel kell kezdődniük, "
 "a(z) „%s” nem ilyen"
@@ -1079,8 +1027,7 @@ msgstr "„%s” nem értelmezhető egész számként"
 #: ../src/ui/theme-parser.c:603 ../src/ui/theme-parser.c:658
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr ""
-"Nem lehetett „%s” zárókaraktereket értelmezni a(z) „%s” karakterláncban"
+msgstr "Nem lehetett „%s” zárókaraktereket értelmezni a(z) „%s” karakterláncban"
 
 #: ../src/ui/theme-parser.c:613
 #, c-format
@@ -1268,8 +1215,7 @@ msgstr "„%s” funkció ismeretlen a gombhoz"
 #: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr ""
-"A(z) „%s” gombfunkció nem létezik ebben a verzióban (%d, szükséges: %d)"
+msgstr "A(z) „%s” gombfunkció nem létezik ebben a verzióban (%d, szükséges: %d)"
 
 #: ../src/ui/theme-parser.c:2994
 #, c-format
@@ -1279,8 +1225,7 @@ msgstr "„%s” állapot ismeretlen a gombhoz"
 #: ../src/ui/theme-parser.c:3002
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr ""
-"A keretstílusnak már van gombja a(z) „%s” funkcióra a(z) „%s” állapotban"
+msgstr "A keretstílusnak már van gombja a(z) „%s” funkcióra a(z) „%s” állapotban"
 
 #: ../src/ui/theme-parser.c:3073
 #, c-format
@@ -1313,8 +1258,7 @@ msgstr ""
 
 #: ../src/ui/theme-parser.c:3161
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 "A(z) <%s> elemnek nem szabadna „resize” attribútummal rendelkeznie a teljes "
 "méretű állapothoz"
@@ -1322,8 +1266,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
-"%s állapothoz, %s átméretezéshez és %s fókuszhoz már meg van határozva stílus"
+msgstr "%s állapothoz, %s átméretezéshez és %s fókuszhoz már meg van határozva stílus"
 
 #: ../src/ui/theme-parser.c:3186 ../src/ui/theme-parser.c:3197
 #: ../src/ui/theme-parser.c:3208 ../src/ui/theme-parser.c:3233
@@ -1373,8 +1316,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3530
 #, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
-msgstr ""
-"A téma a(z) %s verziót igényli, de az utolsó támogatott témaverzió %d.%d"
+msgstr "A téma a(z) %s verziót igényli, de az utolsó támogatott témaverzió %d.%d"
 
 #: ../src/ui/theme-parser.c:3562
 #, c-format
@@ -1383,10 +1325,8 @@ msgstr "A téma legkülső eleme <metacity_theme> kell legyen, nem pedig <%s>"
 
 #: ../src/ui/theme-parser.c:3582
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
-"A(z) <%s> elem nem megengedett egy name/author/date/description elemen belül"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "A(z) <%s> elem nem megengedett egy name/author/date/description elemen belül"
 
 #: ../src/ui/theme-parser.c:3587
 #, c-format
@@ -1395,10 +1335,8 @@ msgstr "A(z) <%s> elem nem megengedett egy <constant> elemen belül"
 
 #: ../src/ui/theme-parser.c:3599
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-"<%s> elem nem megengedett egy distance/border/aspect_ratio elemen belül"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "<%s> elem nem megengedett egy distance/border/aspect_ratio elemen belül"
 
 #: ../src/ui/theme-parser.c:3621
 #, c-format
@@ -1603,8 +1541,7 @@ msgstr "a pozíció kifejezés teszt IGAZ értéket adott vissza, de hiba tört�
 
 #: ../src/ui/theme-viewer.c:1268
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
-"a pozíció kifejezés teszt HAMIS értéket adott vissza, de nem történt hiba"
+msgstr "a pozíció kifejezés teszt HAMIS értéket adott vissza, de nem történt hiba"
 
 #: ../src/ui/theme-viewer.c:1272
 msgid "Error was expected but none given"
@@ -1636,6 +1573,39 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "A %d koordináta kifejezések %g másodperc alatt lettek feldolgozva (átlagosan "
 "%g másodperc)\n"
+
+#~ msgid "Close Window"
+#~ msgstr "Ablak bezárása"
+
+#~ msgid "Window Menu"
+#~ msgstr "Ablak menü"
+
+#~ msgid "Minimize Window"
+#~ msgstr "Ablak minimalizálása"
+
+#~ msgid "Maximize Window"
+#~ msgstr "Ablak maximalizálása"
+
+#~ msgid "Restore Window"
+#~ msgstr "Ablak visszaállítása"
+
+#~ msgid "Roll Up Window"
+#~ msgstr "Ablak felgördítése"
+
+#~ msgid "Unroll Window"
+#~ msgstr "Ablak lenyitása"
+
+#~ msgid "Keep Window On Top"
+#~ msgstr "Ablak legfelül tartása"
+
+#~ msgid "Remove Window From Top"
+#~ msgstr "Ablak eltávolítása legfelülről"
+
+#~ msgid "Always On Visible Workspace"
+#~ msgstr "Mindig a látható munkaterületen"
+
+#~ msgid "Put Window On Only One Workspace"
+#~ msgstr "Ablak kirakása csak egy munkaterületre"
 
 #~ msgid "Switch to workspace 1"
 #~ msgstr "Átváltás az 1. munkaterületre"
@@ -1916,3 +1886,4 @@ msgstr ""
 
 #~ msgid "Error setting no tab popup status: %s\n"
 #~ msgstr "Hiba a nincs tab felugró állapot beállításakor: %s\n"
+
