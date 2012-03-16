@@ -33,9 +33,12 @@ const PowerMenuButton = new Lang.Class({
 
     _init: function() {
         this.parent('system-shutdown', null);
-        this._consoleKitManager = new ConsoleKit.ConsoleKitManager();
-        this._systemdLoginManager = new Systemd.SystemdLoginManager();
         this._upClient = new UPowerGlib.Client();
+
+        if (Systemd.haveSystemd())
+            this._systemdLoginManager = new Systemd.SystemdLoginManager();
+        else
+            this._consoleKitManager = new ConsoleKit.ConsoleKitManager();
 
         this._createSubMenu();
 
