@@ -9476,6 +9476,8 @@ clutter_actor_set_y_internal (ClutterActor *self,
   clutter_actor_set_fixed_position_set (self, TRUE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
+
+  clutter_actor_queue_relayout (self);
 }
 
 /**
@@ -12969,7 +12971,7 @@ clutter_actor_set_final_state (ClutterAnimatable *animatable,
           clutter_actor_set_animatable_property (actor, pspec->param_id, final, pspec);
         }
       else
-        g_object_set_property (G_OBJECT (animatable), property_name, final);
+        g_object_set_property (G_OBJECT (animatable), pspec->name, final);
     }
 
   g_free (p_name);
