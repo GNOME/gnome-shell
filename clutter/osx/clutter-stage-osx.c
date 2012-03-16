@@ -368,6 +368,7 @@ clutter_stage_osx_show (ClutterStageWindow *stage_window,
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
   BOOL isViewHidden;
+  NSPoint nspoint;
 
   CLUTTER_OSX_POOL_ALLOC();
 
@@ -389,6 +390,28 @@ clutter_stage_osx_show (ClutterStageWindow *stage_window,
     [self->window makeKeyAndOrderFront: nil];
   else
     [self->window orderFront: nil];
+
+  /* If the window is placed directly under the mouse pointer, Quartz will
+   * not send a NSMouseEntered event; we can easily synthesize one ourselves
+   * though.
+   */
+  nspoint = [self->window mouseLocationOutsideOfEventStream];
+  if ([self->window mouse:nspoint inRect:[self->view frame]])
+    {
+      NSEvent *event;
+
+      event = [NSEvent enterExitEventWithType: NSMouseEntered
+                                     location: NSMakePoint(0, 0)
+                                modifierFlags: 0
+                                    timestamp: 0
+                                 windowNumber: [self->window windowNumber]
+                                      context: NULL
+                                  eventNumber: 0
+                               trackingNumber: [self->view trackingRect]
+                                     userData: nil];
+
+      [NSApp postEvent:event atStart:NO];
+    }
 
   [self->view setHidden:isViewHidden];
   [self->window setExcludedFromWindowsMenu:NO];
