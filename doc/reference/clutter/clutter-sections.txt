@@ -3046,16 +3046,6 @@ clutter_paint_node_unref
 clutter_paint_node_set_name
 <SUBSECTION>
 clutter_paint_node_add_child
-clutter_paint_node_remove_child
-clutter_paint_node_replace_child
-clutter_paint_node_remove_all
-clutter_paint_node_get_n_children
-<SUBSECTION>
-clutter_paint_node_get_first_child
-clutter_paint_node_get_next_sibling
-clutter_paint_node_get_previous_sibling
-clutter_paint_node_get_last_child
-clutter_paint_node_get_parent
 <SUBSECTION>
 clutter_paint_node_add_rectangle
 clutter_paint_node_add_texture_rectangle
@@ -3097,36 +3087,28 @@ clutter_text_node_new
 ClutterClipNode
 ClutterClipNodeClass
 clutter_clip_node_new
-<SUBSECTION>
-ClutterLayerNode
-ClutterLayerNodeClass
-clutter_layer_node_new
 <SUBSECTION Standard>
 CLUTTER_TYPE_COLOR_NODE
 CLUTTER_TYPE_TEXTURE_NODE
 CLUTTER_TYPE_PIPELINE_NODE
 CLUTTER_TYPE_TEXT_NODE
 CLUTTER_TYPE_CLIP_NODE
-CLUTTER_TYPE_LAYER_NODE
 CLUTTER_COLOR_NODE
 CLUTTER_TEXTURE_NODE
 CLUTTER_PIPELINE_NODE
 CLUTTER_TEXT_NODE
 CLUTTER_CLIP_NODE
-CLUTTER_LAYER_NODE
 CLUTTER_IS_COLOR_NODE
 CLUTTER_IS_TEXTURE_NODE
 CLUTTER_IS_PIPELINE_NODE
 CLUTTER_IS_TEXT_NODE
 CLUTTER_IS_CLIP_NODE
-CLUTTER_IS_LAYER_NODE
 <SUBSECTION Private>
 clutter_color_node_get_type
 clutter_texture_node_get_type
 clutter_pipeline_node_get_type
 clutter_text_node_get_type
 clutter_clip_node_get_type
-clutter_layer_node_get_type
 </SECTION>
 
 <SECTION>

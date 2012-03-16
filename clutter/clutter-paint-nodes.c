@@ -165,7 +165,7 @@ _clutter_root_node_new (CoglFramebuffer    *framebuffer,
 {
   ClutterRootNode *res;
 
-  res = _clutter_paint_node_internal (_clutter_root_node_get_type ());
+  res = _clutter_paint_node_create (_clutter_root_node_get_type ());
 
   cogl_color_init_from_4ub (&res->clear_color,
                             clear_color->red,
@@ -242,7 +242,7 @@ _clutter_transform_node_new (const CoglMatrix *modelview)
 {
   ClutterTransformNode *res;
 
-  res = _clutter_paint_node_internal (_clutter_transform_node_get_type ());
+  res = _clutter_paint_node_create (_clutter_transform_node_get_type ());
 
   if (modelview != NULL)
     res->modelview = *modelview;
@@ -291,7 +291,7 @@ clutter_dummy_node_init (ClutterDummyNode *self)
 ClutterPaintNode *
 _clutter_dummy_node_new (void)
 {
-  return _clutter_paint_node_internal (_clutter_dummy_node_get_type ());
+  return _clutter_paint_node_create (_clutter_dummy_node_get_type ());
 }
 
 /*
@@ -474,7 +474,7 @@ clutter_pipeline_node_new (CoglPipeline *pipeline)
 
   g_return_val_if_fail (pipeline == NULL || cogl_is_pipeline (pipeline), NULL);
 
-  res = _clutter_paint_node_internal (CLUTTER_TYPE_PIPELINE_NODE);
+  res = _clutter_paint_node_create (CLUTTER_TYPE_PIPELINE_NODE);
 
   if (pipeline != NULL)
     res->pipeline = cogl_object_ref (pipeline);
@@ -546,7 +546,7 @@ clutter_color_node_new (const ClutterColor *color)
 {
   ClutterPipelineNode *cnode;
 
-  cnode = _clutter_paint_node_internal (CLUTTER_TYPE_COLOR_NODE);
+  cnode = _clutter_paint_node_create (CLUTTER_TYPE_COLOR_NODE);
 
   if (color != NULL)
     {
@@ -658,7 +658,7 @@ clutter_texture_node_new (CoglTexture          *texture,
 
   g_return_val_if_fail (cogl_is_texture (texture), NULL);
 
-  tnode = _clutter_paint_node_internal (CLUTTER_TYPE_TEXTURE_NODE);
+  tnode = _clutter_paint_node_create (CLUTTER_TYPE_TEXTURE_NODE);
 
   cogl_pipeline_set_layer_texture (tnode->pipeline, 0, texture);
 
@@ -856,7 +856,7 @@ clutter_text_node_new (PangoLayout        *layout,
 
   g_return_val_if_fail (layout == NULL || PANGO_IS_LAYOUT (layout), NULL);
 
-  res = _clutter_paint_node_internal (CLUTTER_TYPE_TEXT_NODE);
+  res = _clutter_paint_node_create (CLUTTER_TYPE_TEXT_NODE);
 
   if (layout != NULL)
     res->layout = g_object_ref (layout);
@@ -991,12 +991,14 @@ clutter_clip_node_init (ClutterClipNode *self)
 ClutterPaintNode *
 clutter_clip_node_new (void)
 {
-  return _clutter_paint_node_internal (CLUTTER_TYPE_CLIP_NODE);
+  return _clutter_paint_node_create (CLUTTER_TYPE_CLIP_NODE);
 }
 
 /*
- * ClutterLayerNode
+ * ClutterLayerNode (private)
  */
+
+#define clutter_layer_node_get_type     _clutter_layer_node_get_type
 
 struct _ClutterLayerNode
 {
@@ -1152,7 +1154,7 @@ clutter_layer_node_init (ClutterLayerNode *self)
   cogl_matrix_init_identity (&self->projection);
 }
 
-/**
+/*
  * clutter_layer_node_new:
  * @projection: the projection matrix to use to set up the layer
  * @viewport: (type cairo.Rectangle): the viewport to use to set up the layer
@@ -1172,16 +1174,16 @@ clutter_layer_node_init (ClutterLayerNode *self)
  * Since: 1.10
  */
 ClutterPaintNode *
-clutter_layer_node_new (const CoglMatrix        *projection,
-                        const cairo_rectangle_t *viewport,
-                        float                    width,
-                        float                    height,
-                        guint8                   opacity)
+_clutter_layer_node_new (const CoglMatrix        *projection,
+                         const cairo_rectangle_t *viewport,
+                         float                    width,
+                         float                    height,
+                         guint8                   opacity)
 {
   ClutterLayerNode *res;
   CoglColor color;
 
-  res = _clutter_paint_node_internal (CLUTTER_TYPE_LAYER_NODE);
+  res = _clutter_paint_node_create (CLUTTER_TYPE_LAYER_NODE);
 
   res->projection = *projection;
   res->viewport = *viewport;
@@ -1203,7 +1205,7 @@ clutter_layer_node_new (const CoglMatrix        *projection,
       cogl_object_unref (res->texture);
       res->texture = NULL;
 
-      goto out;;
+      goto out;
     }
 
   cogl_color_init_from_4ub (&color, opacity, opacity, opacity, opacity);

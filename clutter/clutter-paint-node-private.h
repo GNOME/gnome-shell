@@ -101,7 +101,7 @@ void                    _clutter_paint_operation_clip_path              (const C
 void                    _clutter_paint_operation_paint_primitive        (const ClutterPaintOperation *op);
 
 void                    _clutter_paint_node_init_types                  (void);
-gpointer                _clutter_paint_node_internal                    (GType gtype);
+gpointer                _clutter_paint_node_create                      (GType gtype);
 
 ClutterPaintNode *      _clutter_root_node_new                          (CoglFramebuffer             *framebuffer,
                                                                          const ClutterColor          *clear_color,
@@ -112,6 +112,54 @@ ClutterPaintNode *      _clutter_dummy_node_new                         (void);
 
 void                    _clutter_paint_node_paint                       (ClutterPaintNode            *root);
 void                    _clutter_paint_node_dump_tree                   (ClutterPaintNode            *root);
+
+G_GNUC_INTERNAL
+void                    clutter_paint_node_remove_child                 (ClutterPaintNode      *node,
+                                                                         ClutterPaintNode      *child);
+G_GNUC_INTERNAL
+void                    clutter_paint_node_replace_child                (ClutterPaintNode      *node,
+                                                                         ClutterPaintNode      *old_child,
+                                                                         ClutterPaintNode      *new_child);
+G_GNUC_INTERNAL
+void                    clutter_paint_node_remove_all                   (ClutterPaintNode      *node);
+
+G_GNUC_INTERNAL
+guint                   clutter_paint_node_get_n_children               (ClutterPaintNode      *node);
+
+G_GNUC_INTERNAL
+ClutterPaintNode *      clutter_paint_node_get_first_child              (ClutterPaintNode      *node);
+G_GNUC_INTERNAL
+ClutterPaintNode *      clutter_paint_node_get_previous_sibling         (ClutterPaintNode      *node);
+G_GNUC_INTERNAL
+ClutterPaintNode *      clutter_paint_node_get_next_sibling             (ClutterPaintNode      *node);
+G_GNUC_INTERNAL
+ClutterPaintNode *      clutter_paint_node_get_last_child               (ClutterPaintNode      *node);
+G_GNUC_INTERNAL
+ClutterPaintNode *      clutter_paint_node_get_parent                   (ClutterPaintNode      *node);
+
+#define CLUTTER_TYPE_LAYER_NODE                 (_clutter_layer_node_get_type ())
+#define CLUTTER_LAYER_NODE(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_LAYER_NODE, ClutterLayerNode))
+#define CLUTTER_IS_LAYER_NODE(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_LAYER_NODE))
+
+/*
+ * ClutterLayerNode:
+ *
+ * The <structname>ClutterLayerNode</structname> structure is an opaque
+ * type whose members cannot be directly accessed.
+ *
+ * Since: 1.10
+ */
+typedef struct _ClutterLayerNode                ClutterLayerNode;
+typedef struct _ClutterLayerNodeClass           ClutterLayerNodeClass;
+
+GType _clutter_layer_node_get_type (void) G_GNUC_CONST;
+
+ClutterPaintNode *      _clutter_layer_node_new         (const CoglMatrix        *projection,
+                                                         const cairo_rectangle_t *viewport,
+                                                         float                    width,
+                                                         float                    height,
+                                                         guint8                   opacity);
+
 
 G_END_DECLS
 

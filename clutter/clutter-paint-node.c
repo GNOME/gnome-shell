@@ -1105,8 +1105,17 @@ _clutter_paint_node_dump_tree (ClutterPaintNode *node)
 #endif /* CLUTTER_ENABLE_DEBUG */
 }
 
+/*< private >
+ * _clutter_paint_node_create:
+ * @gtype: a #ClutterPaintNode type
+ *
+ * Creates a new #ClutterPaintNode instance using @gtype
+ *
+ * Return value: (transfer full): the newly created #ClutterPaintNode
+ *   sub-class instance; use clutter_paint_node_unref() when done
+ */
 gpointer
-_clutter_paint_node_internal (GType gtype)
+_clutter_paint_node_create (GType gtype)
 {
   g_return_val_if_fail (g_type_is_a (gtype, CLUTTER_TYPE_PAINT_NODE), NULL);
 

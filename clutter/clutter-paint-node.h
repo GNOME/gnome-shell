@@ -51,21 +51,6 @@ void                    clutter_paint_node_set_name                     (Clutter
 
 void                    clutter_paint_node_add_child                    (ClutterPaintNode      *node,
                                                                          ClutterPaintNode      *child);
-void                    clutter_paint_node_remove_child                 (ClutterPaintNode      *node,
-                                                                         ClutterPaintNode      *child);
-void                    clutter_paint_node_replace_child                (ClutterPaintNode      *node,
-                                                                         ClutterPaintNode      *old_child,
-                                                                         ClutterPaintNode      *new_child);
-void                    clutter_paint_node_remove_all                   (ClutterPaintNode      *node);
-
-guint                   clutter_paint_node_get_n_children               (ClutterPaintNode      *node);
-
-ClutterPaintNode *      clutter_paint_node_get_first_child              (ClutterPaintNode      *node);
-ClutterPaintNode *      clutter_paint_node_get_previous_sibling         (ClutterPaintNode      *node);
-ClutterPaintNode *      clutter_paint_node_get_next_sibling             (ClutterPaintNode      *node);
-ClutterPaintNode *      clutter_paint_node_get_last_child               (ClutterPaintNode      *node);
-ClutterPaintNode *      clutter_paint_node_get_parent                   (ClutterPaintNode      *node);
-
 void                    clutter_paint_node_add_rectangle                (ClutterPaintNode      *node,
                                                                          const ClutterActorBox *rect);
 void                    clutter_paint_node_add_texture_rectangle        (ClutterPaintNode      *node,
