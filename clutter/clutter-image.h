@@ -100,10 +100,14 @@ struct _ClutterImageClass
   gpointer _padding[16];
 };
 
+CLUTTER_AVAILABLE_IN_1_10
 GQuark clutter_image_error_quark (void);
+CLUTTER_AVAILABLE_IN_1_10
 GType clutter_image_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_10
 ClutterContent *        clutter_image_new               (void);
+CLUTTER_AVAILABLE_IN_1_10
 gboolean                clutter_image_set_data          (ClutterImage                 *image,
                                                          const guint8                 *data,
                                                          CoglPixelFormat               pixel_format,
@@ -111,6 +115,7 @@ gboolean                clutter_image_set_data          (ClutterImage           
                                                          guint                         height,
                                                          guint                         row_stride,
                                                          GError                      **error);
+CLUTTER_AVAILABLE_IN_1_10
 gboolean                clutter_image_set_area          (ClutterImage                 *image,
                                                          const guint8                 *data,
                                                          CoglPixelFormat               pixel_format,
@@ -119,6 +124,7 @@ gboolean                clutter_image_set_area          (ClutterImage           
                                                          GError                      **error);
 
 #if defined(COGL_ENABLE_EXPERIMENTAL_API) && defined(CLUTTER_ENABLE_EXPERIMENTAL_API)
+CLUTTER_AVAILABLE_IN_1_10
 CoglTexture *           clutter_image_get_texture       (ClutterImage                 *image);
 #endif
 

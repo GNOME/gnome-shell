@@ -93,16 +93,23 @@ struct _ClutterTransitionClass
   gpointer _padding[8];
 };
 
+CLUTTER_AVAILABLE_IN_1_10
 GType clutter_transition_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_transition_set_interval                 (ClutterTransition *transition,
                                                                          ClutterInterval   *interval);
+CLUTTER_AVAILABLE_IN_1_10
 ClutterInterval *       clutter_transition_get_interval                 (ClutterTransition *transition);
+CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_transition_set_animatable               (ClutterTransition *transition,
                                                                          ClutterAnimatable *animatable);
+CLUTTER_AVAILABLE_IN_1_10
 ClutterAnimatable *     clutter_transition_get_animatable               (ClutterTransition *transition);
+CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_transition_set_remove_on_complete       (ClutterTransition *transition,
                                                                          gboolean           remove_complete);
+CLUTTER_AVAILABLE_IN_1_10
 gboolean                clutter_transition_get_remove_on_complete       (ClutterTransition *transition);
 
 G_END_DECLS
