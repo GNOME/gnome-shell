@@ -42,6 +42,7 @@
 #include <pango/pango.h>
 #include <cogl/cogl.h>
 
+#include "clutter-actor-private.h"
 #include "clutter-color.h"
 #include "clutter-debug.h"
 #include "clutter-private.h"
@@ -265,6 +266,8 @@ typedef struct _ClutterPaintNodeClass   ClutterDummyNodeClass;
 struct _ClutterDummyNode
 {
   ClutterPaintNode parent_instance;
+
+  ClutterActor *actor;
 };
 
 G_DEFINE_TYPE (ClutterDummyNode, clutter_dummy_node, CLUTTER_TYPE_PAINT_NODE)
@@ -275,12 +278,37 @@ clutter_dummy_node_pre_draw (ClutterPaintNode *node)
   return TRUE;
 }
 
+static JsonNode *
+clutter_dummy_node_serialize (ClutterPaintNode *node)
+{
+  ClutterDummyNode *dnode = (ClutterDummyNode *) node;
+  JsonBuilder *builder;
+  JsonNode *res;
+
+  if (dnode->actor == NULL)
+    return json_node_new (JSON_NODE_NULL);
+
+  builder = json_builder_new ();
+  json_builder_begin_object (builder);
+
+  json_builder_set_member_name (builder, "actor");
+  json_builder_add_string_value (builder, _clutter_actor_get_debug_name (dnode->actor));
+
+  json_builder_end_object (builder);
+
+  res = json_builder_get_root (builder);
+  g_object_unref (builder);
+
+  return res;
+}
+
 static void
 clutter_dummy_node_class_init (ClutterDummyNodeClass *klass)
 {
   ClutterPaintNodeClass *node_class = CLUTTER_PAINT_NODE_CLASS (klass);
 
   node_class->pre_draw = clutter_dummy_node_pre_draw;
+  node_class->serialize = clutter_dummy_node_serialize;
 }
 
 static void
@@ -289,9 +317,15 @@ clutter_dummy_node_init (ClutterDummyNode *self)
 }
 
 ClutterPaintNode *
-_clutter_dummy_node_new (void)
+_clutter_dummy_node_new (ClutterActor *actor)
 {
-  return _clutter_paint_node_create (_clutter_dummy_node_get_type ());
+  ClutterPaintNode *res;
+
+  res = _clutter_paint_node_create (_clutter_dummy_node_get_type ());
+
+  ((ClutterDummyNode *) res)->actor = actor;
+
+  return res;
 }
 
 /*

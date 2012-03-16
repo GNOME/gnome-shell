@@ -2056,24 +2056,24 @@ clutter_actor_notify_if_geometry_changed (ClutterActor          *self,
     }
   else
     {
-      gfloat xu, yu;
-      gfloat widthu, heightu;
+      gfloat x, y;
+      gfloat width, height;
 
-      xu = priv->allocation.x1;
-      yu = priv->allocation.y1;
-      widthu = priv->allocation.x2 - priv->allocation.x1;
-      heightu = priv->allocation.y2 - priv->allocation.y1;
+      x = priv->allocation.x1;
+      y = priv->allocation.y1;
+      width = priv->allocation.x2 - priv->allocation.x1;
+      height = priv->allocation.y2 - priv->allocation.y1;
 
-      if (xu != old->x1)
+      if (x != old->x1)
         g_object_notify_by_pspec (obj, obj_props[PROP_X]);
 
-      if (yu != old->y1)
+      if (y != old->y1)
         g_object_notify_by_pspec (obj, obj_props[PROP_Y]);
 
-      if (widthu != (old->x2 - old->x1))
+      if (width != (old->x2 - old->x1))
         g_object_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
 
-      if (heightu != (old->y2 - old->y1))
+      if (height != (old->y2 - old->y1))
         g_object_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
     }
 
@@ -2129,7 +2129,9 @@ clutter_actor_set_allocation_internal (ClutterActor           *self,
   priv->needs_height_request = FALSE;
   priv->needs_allocation = FALSE;
 
-  if (x1_changed || y1_changed || x2_changed || y2_changed || flags_changed)
+  if (x1_changed || y1_changed ||
+      x2_changed || y2_changed ||
+      flags_changed)
     {
       CLUTTER_NOTE (LAYOUT, "Allocation for '%s' changed",
                     _clutter_actor_get_debug_name (self));
@@ -3541,30 +3543,22 @@ clutter_actor_continue_paint (ClutterActor *self)
       if (_clutter_context_get_pick_mode () == CLUTTER_PICK_NONE)
         {
           ClutterPaintNode *dummy;
-          gboolean emit_paint = TRUE;
 
           /* XXX - this will go away in 2.0, when we can get rid of this
            * stuff and switch to a pure retained render tree of PaintNodes
            * for the entire frame, starting from the Stage; the paint()
            * virtual function can then be called directly.
            */
-          dummy = _clutter_dummy_node_new ();
+          dummy = _clutter_dummy_node_new (self);
           clutter_paint_node_set_name (dummy, "Root");
 
           /* XXX - for 1.12, we use the return value of paint_node() to
-           * set the emit_paint variable.
+           * decide whether we should emit the ::paint signal.
            */
           clutter_actor_paint_node (self, dummy);
           clutter_paint_node_unref (dummy);
 
-          if (emit_paint || CLUTTER_ACTOR_IS_TOPLEVEL (self))
-            g_signal_emit (self, actor_signals[PAINT], 0);
-          else
-            {
-              CLUTTER_NOTE (PAINT, "The actor '%s' painted using PaintNodes, "
-                                   "skipping the emission of the paint signal.",
-                                   _clutter_actor_get_debug_name (self));
-            }
+          g_signal_emit (self, actor_signals[PAINT], 0);
         }
       else
         {
@@ -8154,6 +8148,16 @@ clutter_actor_update_constraints (ClutterActor    *self,
           _clutter_constraint_update_allocation (constraint,
                                                  self,
                                                  allocation);
+
+          CLUTTER_NOTE (LAYOUT,
+                        "Allocation of '%s' after constraint '%s': "
+                        "{ %.2f, %.2f, %.2f, %.2f }",
+                        _clutter_actor_get_debug_name (self),
+                        _clutter_actor_meta_get_debug_name (meta),
+                        allocation->x1,
+                        allocation->y1,
+                        allocation->x2,
+                        allocation->y2);
         }
     }
 }
@@ -8371,6 +8375,9 @@ clutter_actor_allocate (ClutterActor           *self,
     flags |= CLUTTER_ABSOLUTE_ORIGIN_CHANGED;
 
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IN_RELAYOUT);
+
+  CLUTTER_NOTE (LAYOUT, "Calling %s::allocate()",
+                _clutter_actor_get_debug_name (self));
 
   klass = CLUTTER_ACTOR_GET_CLASS (self);
   klass->allocate (self, &real_allocation, flags);

@@ -108,7 +108,7 @@ ClutterPaintNode *      _clutter_root_node_new                          (CoglFra
                                                                          CoglBufferBit                clear_flags,
                                                                          const CoglMatrix            *matrix);
 ClutterPaintNode *      _clutter_transform_node_new                     (const CoglMatrix            *matrix);
-ClutterPaintNode *      _clutter_dummy_node_new                         (void);
+ClutterPaintNode *      _clutter_dummy_node_new                         (ClutterActor                *actor);
 
 void                    _clutter_paint_node_paint                       (ClutterPaintNode            *root);
 void                    _clutter_paint_node_dump_tree                   (ClutterPaintNode            *root);
