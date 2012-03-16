@@ -3,21 +3,22 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Anish A <aneesh.nl@gmail.com>, 2010, 2011.
 # Mohammed Sadiq <sadiqpkp@gmail.com>, 2012.
+# Praveen Arimbrathodiyil <pravi.a@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-11 12:24+0530\n"
-"PO-Revision-Date: 2011-01-23 13:02+0530\n"
-"Last-Translator: Anish A <aneesh.nl@gmail.com>\n"
-"Language-Team: Swatantra Malayalam Computing<discuss@lists.smc.org.in>\n"
-"Language: ml\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-03-16 05:03+0000\n"
+"PO-Revision-Date: 2012-03-16 18:19+0530\n"
+"Last-Translator: Praveen Arimbrathodiyil <pravi.a@gmail.com>\n"
+"Language-Team: Swatantra Malayalam Computing <discuss@lists.smc.org.in>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ml\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-DamnedLies-Scope: partial\n"
 "X-Generator: Virtaal 0.5.2\n"
+"X-DamnedLies-Scope: partial\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -28,162 +29,141 @@ msgid "Window management and application launching"
 msgstr ""
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
-msgid "Configure GNOME Shell Extensions"
-msgstr ""
+#: ../js/extensionPrefs/main.js:153
+#, fuzzy
+msgid "GNOME Shell Extension Preferences"
+msgstr "ഗ്നോ മിഴിയ്ക്കുള്ള മുന്‍ഗണനകള്‍"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
-#: ../js/extensionPrefs/main.js:153
-msgid "GNOME Shell Extension Preferences"
-msgstr ""
+#, fuzzy
+msgid "Configure GNOME Shell Extensions"
+msgstr "_സെക്യൂര്‍ ഷെല്‍ ചാവി ക്രമികരിക്കുക..."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
-msgid ""
-"Allows access to internal debugging and monitoring tools using the Alt-F2 "
-"dialog."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:3
-msgid "File extension used for storing the screencast"
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
 msgstr ""
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+#, fuzzy
+msgid "Uuids of extensions to enable"
+msgstr "ടൂള്‍ബാര്‍ സജ്ജമാക്കുന്നതിനുള്ള ഒരു ഫ്ളാഗ്"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
-msgid "Framerate used for recording screencasts."
+msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should be loaded. Any extension that wants to be loaded needs to be in this list. You can also manipulate this list with the EnableExtension and DisableExtension DBus methods on org.gnome.Shell."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
-msgid ""
-"GNOME Shell extensions have a uuid property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
-"DisableExtension DBus methods on org.gnome.Shell."
+msgid "Whether to collect stats about applications usage"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-msgid "History for command (Alt-F2) dialog"
+msgid "The shell normally monitors active applications in order to present the most used ones (e.g. in launchers). While this data will be kept private, you may want to disable this for privacy reasons. Please note that doing so won't remove already saved data."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-msgid "History for the looking glass dialog"
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "If true, display date in the clock, in addition to time."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display seconds in time."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid "If true, display the ISO week date in the calendar."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
-msgid ""
-"Internally used to store the last IM presence explicitly set by the user. "
-"The value here is from the TpConnectionPresenceType enumeration."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
-msgid ""
-"Internally used to store the last session presence status for the user. The "
-"value here is from the GsmPresenceStatus enumeration."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#, fuzzy
+msgid "disabled OpenSearch providers"
+msgstr "OpenSearch വെബ്സൈറ്റ് ചേര്‍ക്കുക"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "History for command (Alt-F2) dialog"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "History for the looking glass dialog"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "Internally used to store the last IM presence explicitly set by the user. The value here is from the TpConnectionPresenceType enumeration."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "Internally used to store the last session presence status for the user. The value here is from the GsmPresenceStatus enumeration."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#, fuzzy
+msgid "Show the week date in the calendar"
+msgstr "കലണ്ടറില്‍ ആഴ്ചയുടെ എണ്ണം കാണിക്കുക"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
-#, no-c-format
-msgid ""
-"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
-"used for gst-launch. The pipeline should have an unconnected sink pad where "
-"the recorded video is recorded. It will normally have a unconnected source "
-"pad; output from that pad will be written into the output file. However the "
-"pipeline can also take care of its own output - this might be used to send "
-"the output to an icecast server via shout2send or similar. When unset or set "
-"to an empty value, the default pipeline will be used. This is currently "
-"'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM "
-"using the VP8 codec. %T is used as a placeholder for a guess at the optimal "
-"thread count on the system."
+msgid "If true, display the ISO week date in the calendar."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show date in clock"
-msgstr "ഘടികാരത്തില്‍ തിയതി കാണിക്കുക"
+#, fuzzy
+msgid "Which keyboard to use"
+msgstr "ഏതു് കാഷ് ഡയറക്ടറി ഉപയോഗിക്കണം എന്നു് നിഷ്കര്‍ഷിക്കുക"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:17
-msgid "Show the week date in the calendar"
-msgstr ""
+#, fuzzy
+msgid "The type of keyboard to use."
+msgstr "ഉപയോഗിക്കുന്നതിനുളള ഏതു് തരം ഓഡിയോ ഔട്ട്പുട്ട്"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "Show time with seconds"
 msgstr "സമയം സെക്കന്റ് ഉള്‍പ്പെടെ കാണിക്കുക"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
+#, fuzzy
+msgid "If true, display seconds in time."
+msgstr "ശരി (ട്രൂ) എങ്കില്‍, സെക്കന്‍ഡുകളും സമയത്തില് കാണിക്കുക."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
-msgid ""
-"The filename for recorded screencasts will be a unique filename based on the "
-"current date, and use this extension. It should be changed when recording to "
-"a different container format."
-msgstr ""
+msgid "Show date in clock"
+msgstr "ഘടികാരത്തില്‍ തിയതി കാണിക്കുക"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr ""
+#, fuzzy
+msgid "If true, display date in the clock, in addition to time."
+msgstr "ശരി (ട്രൂ) എങ്കില്‍,ഘടികാരത്തില്‍ സമയത്തിനു പുറമെ തീയതിയും കാണിക്കുക"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid "The gstreamer pipeline used to encode the screencast"
+msgid "Framerate used for recording screencasts."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
+msgid "The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:24
-msgid "The type of keyboard to use."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
-msgid "Uuids of extensions to enable"
+msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:26
-msgid "Whether to collect stats about applications usage"
+#, no-c-format
+msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:27
-msgid "Which keyboard to use"
+msgid "File extension used for storing the screencast"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:28
-msgid "disabled OpenSearch providers"
+msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
 msgstr ""
 
 #: ../js/extensionPrefs/main.js:125
-#, c-format
+#, fuzzy, c-format
 msgid "There was an error loading the preferences dialog for %s:"
-msgstr ""
+msgstr "കീബോര്‍ഡ് മുന്‍ഗണനകളുടെ ഡയലോഗ് തുറക്കുമ്പോള്‍ തകരാര്‍ : %s"
 
 #: ../js/extensionPrefs/main.js:165
+#, fuzzy
 msgid "<b>Extension</b>"
-msgstr ""
+msgstr "എക്സ്റ്റെന്‍ഷന്‍"
 
 #: ../js/extensionPrefs/main.js:189
 msgid "Select an extension to configure using the combobox above."
@@ -191,46 +171,52 @@ msgstr ""
 
 #: ../js/gdm/loginDialog.js:624
 msgid "Session..."
-msgstr ""
+msgstr "പ്രവര്‍ത്തനവേള"
 
 #: ../js/gdm/loginDialog.js:786
 msgctxt "title"
 msgid "Sign In"
-msgstr ""
+msgstr "അകത്തുകയറുക"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
 #: ../js/gdm/loginDialog.js:831
+#, fuzzy
 msgid "(or swipe finger)"
-msgstr ""
+msgstr "റീഡറില്‍ വിരല്‍ സ്വൈപ്പ് ചെയ്യുക"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
 #: ../js/gdm/loginDialog.js:852
+#, fuzzy
 msgid "Not listed?"
-msgstr ""
+msgstr "< ലഭ്യമല്ല >"
 
-#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
-#: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
-#: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
+#: ../js/gdm/loginDialog.js:1020
+#: ../js/ui/endSessionDialog.js:419
+#: ../js/ui/extensionSystem.js:399
+#: ../js/ui/networkAgent.js:153
+#: ../js/ui/polkitAuthenticationAgent.js:175
+#: ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "വേണ്ട"
 
 #: ../js/gdm/loginDialog.js:1025
 msgctxt "button"
 msgid "Sign In"
-msgstr ""
+msgstr "അകത്തുകയറുക"
 
 #: ../js/gdm/loginDialog.js:1377
-#, fuzzy
 msgid "Login Window"
-msgstr "പുതിയ വിന്‍ഡോ"
+msgstr "പ്രവേശന ജാലകം"
 
-#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:591
-#: ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:662
+#: ../js/gdm/powerMenu.js:152
+#: ../js/ui/userMenu.js:595
+#: ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:666
 msgid "Suspend"
-msgstr ""
+msgstr "താത്കാലികമായി നിര്‍ത്തുക"
 
 #: ../js/gdm/powerMenu.js:157
 msgid "Restart"
@@ -238,17 +224,17 @@ msgstr "പുനരാരംഭിക്കുക"
 
 #: ../js/gdm/powerMenu.js:162
 msgid "Power Off"
-msgstr ""
+msgstr "നിര്‍ത്തുക"
 
 #: ../js/misc/util.js:92
 msgid "Command not found"
-msgstr ""
+msgstr "ആജ്ഞ കണ്ടില്ല"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
 #: ../js/misc/util.js:119
 msgid "Could not parse command:"
-msgstr ""
+msgstr "ആജ്ഞ പ്രാവര്‍ത്തികമാക്കാന്‍ സാധ്യമായില്ല:"
 
 #: ../js/misc/util.js:127
 #, c-format
@@ -256,48 +242,48 @@ msgid "Execution of '%s' failed:"
 msgstr "'%s' നടപ്പിലാക്കുന്നതില്‍ പരാജയപ്പെട്ടു:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:251
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "എല്ലാം"
 
-#: ../js/ui/appDisplay.js:310
+#: ../js/ui/appDisplay.js:314
 msgid "APPLICATIONS"
 msgstr "പ്രയോഗങ്ങള്‍"
 
-#: ../js/ui/appDisplay.js:371
+#: ../js/ui/appDisplay.js:375
 msgid "SETTINGS"
 msgstr "ക്രമീകരണങ്ങള്‍"
 
-#: ../js/ui/appDisplay.js:676
+#: ../js/ui/appDisplay.js:680
 msgid "New Window"
 msgstr "പുതിയ വിന്‍ഡോ"
 
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:683
 msgid "Remove from Favorites"
-msgstr ""
+msgstr "ഇഷ്ടപ്പെട്ടവയില്‍ നിന്നും നീക്കം ചെയ്യുക"
 
-#: ../js/ui/appDisplay.js:680
+#: ../js/ui/appDisplay.js:684
 msgid "Add to Favorites"
-msgstr ""
+msgstr "ഇഷ്ടപ്പെട്ടവയിലേക്ക് ചേര്‍ക്കുക"
 
 #: ../js/ui/appFavorites.js:87
 #, c-format
 msgid "%s has been added to your favorites."
-msgstr ""
+msgstr "%s നിങ്ങള്‍ക്കിഷ്ടപ്പെട്ടവയിലേക്ക് ചേര്‍ത്തിട്ടുണ്ട്."
 
 #: ../js/ui/appFavorites.js:118
 #, c-format
 msgid "%s has been removed from your favorites."
-msgstr ""
+msgstr "%s നിങ്ങള്‍ക്കിഷ്ടപ്പെട്ടവയില്‍ നിന്നും നീക്കം ചെയ്തിട്ടുണ്ട്."
 
 #: ../js/ui/autorunManager.js:265
 msgid "Removable Devices"
-msgstr ""
+msgstr "നീക്കം ചെയ്യാവുന്ന ഡിവൈസുകള്‍"
 
 #: ../js/ui/autorunManager.js:560
 #, c-format
 msgid "Open with %s"
-msgstr ""
+msgstr "%s ഉപയോഗിച്ചു തുറക്കുക"
 
 #: ../js/ui/autorunManager.js:586
 msgid "Eject"
@@ -307,10 +293,9 @@ msgstr "പുറന്തള്ളുക"
 #. * Keep it short, best if you can use less then 10 characters
 #.
 #: ../js/ui/calendar.js:62
-#, fuzzy
 msgctxt "event list time"
 msgid "All Day"
-msgstr "എല്ലാം"
+msgstr "ദിനം മുഴുവനും"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:67
@@ -419,8 +404,9 @@ msgstr "ശ"
 
 #. Translators: Text to show if there are no events
 #: ../js/ui/calendar.js:681
+#, fuzzy
 msgid "Nothing Scheduled"
-msgstr ""
+msgstr "ഒന്നും ചെയ്യേണ്ടതില്ല"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:697
@@ -450,88 +436,94 @@ msgstr "ഈ ആഴ്ച"
 msgid "Next week"
 msgstr "അടുത്ത ആഴ്ച"
 
-#: ../js/ui/contactDisplay.js:64 ../js/ui/notificationDaemon.js:486
-#: ../js/ui/status/power.js:215 ../src/shell-app.c:372
+#: ../js/ui/contactDisplay.js:66
+#: ../js/ui/notificationDaemon.js:486
+#: ../js/ui/status/power.js:215
+#: ../src/shell-app.c:372
 msgid "Unknown"
 msgstr "അജ്ഞാതം"
 
-#: ../js/ui/contactDisplay.js:85 ../js/ui/userMenu.js:127
+#: ../js/ui/contactDisplay.js:89
+#: ../js/ui/userMenu.js:129
 msgid "Available"
 msgstr "ലഭ്യമാണ്"
 
-#: ../js/ui/contactDisplay.js:90 ../js/ui/userMenu.js:136
+#: ../js/ui/contactDisplay.js:94
+#: ../js/ui/userMenu.js:138
 msgid "Away"
-msgstr ""
+msgstr "വിദൂരെയാണ്"
 
-#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:130
+#: ../js/ui/contactDisplay.js:98
+#: ../js/ui/userMenu.js:132
 msgid "Busy"
 msgstr "തിരക്കിലാണ്"
 
-#: ../js/ui/contactDisplay.js:98
+#: ../js/ui/contactDisplay.js:102
 msgid "Offline"
-msgstr ""
+msgstr "ഓഫ്​ലൈന്‍"
 
-#: ../js/ui/contactDisplay.js:149
+#: ../js/ui/contactDisplay.js:153
+#, fuzzy
 msgid "CONTACTS"
-msgstr ""
+msgstr "വിലാസങ്ങള്‍"
 
-#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1207
+#: ../js/ui/dash.js:229
+#: ../js/ui/messageTray.js:1207
 msgid "Remove"
 msgstr "നീക്കം ചെയ്യുക"
 
-#: ../js/ui/dateMenu.js:97
-#, fuzzy
+#: ../js/ui/dateMenu.js:103
 msgid "Date and Time Settings"
-msgstr "സിസ്റ്റം ക്രമീകരണങ്ങള്‍"
+msgstr "തീയതി,സമയ ക്രമീകരണങ്ങള്‍"
 
-#: ../js/ui/dateMenu.js:123
+#: ../js/ui/dateMenu.js:129
 msgid "Open Calendar"
 msgstr "കലണ്ടര്‍ തുറക്കുക"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:187
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/dateMenu.js:182
+#: ../js/ui/dateMenu.js:188
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:186
+#: ../js/ui/dateMenu.js:192
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:193
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:200
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:195
+#: ../js/ui/dateMenu.js:201
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:199
+#: ../js/ui/dateMenu.js:205
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:200
+#: ../js/ui/dateMenu.js:206
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:211
+#: ../js/ui/dateMenu.js:217
 msgid "%A %B %e, %Y"
 msgstr "%A %B %e, %Y"
 
@@ -551,17 +543,17 @@ msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 
 #: ../js/ui/endSessionDialog.js:65
-#, c-format
+#, fuzzy, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] ""
+msgstr[0] "നിങ്ങള്‍ %s നിമിഷത്തിനുള്ളില്‍ സ്വയമേ പുറത്ത് കടക്കുന്നതാണു്."
 msgstr[1] ""
 
 #: ../js/ui/endSessionDialog.js:70
-#, c-format
+#, fuzzy, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] ""
+msgstr[0] "നിങ്ങള്‍ %s നിമിഷത്തിനുള്ളില്‍ സ്വയമേ പുറത്ത് കടക്കുന്നതാണു്."
 msgstr[1] ""
 
 #: ../js/ui/endSessionDialog.js:74
@@ -576,32 +568,34 @@ msgstr "പുറത്ത് കടക്കുക"
 #: ../js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Power Off"
-msgstr ""
+msgstr "നിര്‍ത്തുക"
 
 #: ../js/ui/endSessionDialog.js:82
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 
 #: ../js/ui/endSessionDialog.js:84
-#, c-format
+#, fuzzy, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] ""
+msgstr[0] "സിസ്റ്റം %s നിമിഷത്തിനുള്ളില്‍ സ്വയമേ ഹൈബര്‍ണേറ്റ് ചെയ്യപ്പെടുന്നതാണു്."
 msgstr[1] ""
 
 #: ../js/ui/endSessionDialog.js:88
+#, fuzzy
 msgid "Powering off the system."
-msgstr ""
+msgstr "സിസ്റ്റം കിളിവാതില്‍ കാണിക്കുക"
 
-#: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:90
+#: ../js/ui/endSessionDialog.js:107
 msgctxt "button"
 msgid "Restart"
-msgstr "പുനരാരംഭിക്കുക"
+msgstr "പുനരാരംഭിക്കൂ"
 
 #: ../js/ui/endSessionDialog.js:92
 msgctxt "button"
 msgid "Power Off"
-msgstr ""
+msgstr "നിര്‍ത്തുക"
 
 #: ../js/ui/endSessionDialog.js:98
 msgctxt "title"
@@ -610,13 +604,13 @@ msgstr "പുനരാരംഭിക്കുക"
 
 #: ../js/ui/endSessionDialog.js:99
 msgid "Click Restart to quit these applications and restart the system."
-msgstr ""
+msgstr "ഈ പ്രയോഗങ്ങള്‍ നിറുത്തി സിസ്റ്റം പുനരാരംഭിക്കുവാന്‍ പുനരാരംഭിക്കൂ അമര്‍ത്തുക"
 
 #: ../js/ui/endSessionDialog.js:101
-#, c-format
+#, fuzzy, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] ""
+msgstr[0] "സിസ്റ്റം %s നിമിഷത്തിനുള്ളില്‍ സ്വയമേ ഹൈബര്‍ണേറ്റ് ചെയ്യപ്പെടുന്നതാണു്."
 msgstr[1] ""
 
 #: ../js/ui/endSessionDialog.js:105
@@ -632,16 +626,18 @@ msgstr "ഇന്‍സ്റ്റോള്‍"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "extensions.gnome.org ഇല്‍ നിന്നും '%s' ഡൗണ്‍ലോട് ചെയ്ത് ഇന്‍സ്റ്റോള്‍ ചെയ്യേണമോ?"
 
-#: ../js/ui/keyboard.js:322
+#: ../js/ui/keyboard.js:327
 #, fuzzy
 msgid "tray"
-msgstr "വിണ്ടും ശ്രമിക്കുക"
+msgstr "ഔട്ട്പുട്ട് ട്രേ"
 
-#: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:544
+#: ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "കീബോര്‍ഡ്"
 
-#: ../js/ui/keyringPrompt.js:85 ../js/ui/polkitAuthenticationAgent.js:272
+#: ../js/ui/keyringPrompt.js:85
+#: ../js/ui/polkitAuthenticationAgent.js:272
 msgid "Password:"
 msgstr "രഹസ്യവാക്ക്:"
 
@@ -650,20 +646,22 @@ msgid "Type again:"
 msgstr "വീണ്ടും അമര്‍ത്തുക:"
 
 #: ../js/ui/lookingGlass.js:725
+#, fuzzy
 msgid "No extensions installed"
-msgstr ""
+msgstr "ടെംപ്ളേറ്റുകള്‍ ഇന്‍സ്റ്റോള്‍ ചെയ്തിട്ടില്ല"
 
 #. Translators: argument is an extension UUID.
 #: ../js/ui/lookingGlass.js:779
 #, c-format
 msgid "%s has not emitted any errors."
-msgstr ""
+msgstr "%s ഒരു പിശകും കാണിച്ചുട്ടില്ല."
 
 #: ../js/ui/lookingGlass.js:785
 msgid "Hide Errors"
 msgstr "പിശകുകള്‍ മറച്ചുവെക്കുക"
 
-#: ../js/ui/lookingGlass.js:789 ../js/ui/lookingGlass.js:840
+#: ../js/ui/lookingGlass.js:789
+#: ../js/ui/lookingGlass.js:840
 msgid "Show Errors"
 msgstr "പിശകുകള്‍ കാണിക്കുക"
 
@@ -673,7 +671,8 @@ msgstr "പ്രവര്‍ത്തനക്ഷമമാക്കി"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:801 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:801
+#: ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "പ്രവര്‍ത്തനരഹിതമാക്കി"
 
@@ -698,10 +697,10 @@ msgid "Web Page"
 msgstr "വെബ് താള്‍"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:116
-#, no-c-format
+#: ../js/ui/main.js:118
+#, fuzzy, no-c-format
 msgid "Screencast from %d %t"
-msgstr ""
+msgstr "വസ്തുത (നിന്ന് ‌%s)"
 
 #: ../js/ui/messageTray.js:1200
 msgid "Open"
@@ -710,25 +709,27 @@ msgstr "തുറക്കുക"
 #: ../js/ui/messageTray.js:1217
 #, fuzzy
 msgid "Unmute"
-msgstr "മിനുട്ട്"
+msgstr "ശബ്ദം നിര്‍ത്തുക/%s ശബ്ദം തുടരുക"
 
 #: ../js/ui/messageTray.js:1217
 msgid "Mute"
 msgstr "നിശബ്ദമാക്കുക"
 
-#: ../js/ui/messageTray.js:2450
+#: ../js/ui/messageTray.js:2490
 #, fuzzy
 msgid "System Information"
-msgstr "സിസ്റ്റം ക്രമീകരണങ്ങള്‍"
+msgstr "സിസ്റ്റത്തെക്കുറിച്ചുള്ള വിവരം"
 
 #: ../js/ui/networkAgent.js:148
 #, fuzzy
 msgid "Connect"
-msgstr "ബന്ധം"
+msgstr "ബന്ധം സ്ഥാപിക്കുക"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:243 ../js/ui/networkAgent.js:255
-#: ../js/ui/networkAgent.js:282 ../js/ui/networkAgent.js:302
+#: ../js/ui/networkAgent.js:243
+#: ../js/ui/networkAgent.js:255
+#: ../js/ui/networkAgent.js:282
+#: ../js/ui/networkAgent.js:302
 #: ../js/ui/networkAgent.js:312
 msgid "Password: "
 msgstr "നിശബ്ദമാക്കുക: "
@@ -736,74 +737,79 @@ msgstr "നിശബ്ദമാക്കുക: "
 #. static WEP
 #: ../js/ui/networkAgent.js:248
 msgid "Key: "
-msgstr ""
+msgstr "കീ: "
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:280 ../js/ui/networkAgent.js:298
+#: ../js/ui/networkAgent.js:280
+#: ../js/ui/networkAgent.js:298
 msgid "Username: "
-msgstr ""
+msgstr "ഉപയോക്തൃ നാമം: "
 
 #: ../js/ui/networkAgent.js:286
+#, fuzzy
 msgid "Identity: "
-msgstr ""
+msgstr "ഐഡന്റിറ്റി"
 
 #: ../js/ui/networkAgent.js:288
+#, fuzzy
 msgid "Private key password: "
-msgstr ""
+msgstr "_സ്വകാര്യ കീ അടയാളവാക്ക്:"
 
 #: ../js/ui/networkAgent.js:300
 msgid "Service: "
-msgstr ""
+msgstr "സേവനം:"
 
 #: ../js/ui/networkAgent.js:329
 msgid "Authentication required by wireless network"
-msgstr ""
+msgstr "വയര്‍ലെസ്സ് ശൃംഖല നിങ്ങളെ തിരിച്ചറിയണം"
 
 #: ../js/ui/networkAgent.js:330
-#, c-format
-msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"'%s'."
-msgstr ""
+#, fuzzy, c-format
+msgid "Passwords or encryption keys are required to access the wireless network '%s'."
+msgstr "വയര്‍ലെസ് നെറ്റ്‌വര്‍ക്ക് '%s'-ലേക്ക് പ്രവേശിക്കുന്നതിനായി അടയാളവാക്കുകള്‍ അല്ലെങ്കില്‍ എന്‍ക്രിപ്ഷന്‍ കീകള്‍ ആവശ്യമുണ്ടു്."
 
 #: ../js/ui/networkAgent.js:334
+#, fuzzy
 msgid "Wired 802.1X authentication"
-msgstr ""
+msgstr "വയര്‍ഡ് 802.1X ആധികാരികത"
 
 #: ../js/ui/networkAgent.js:336
 msgid "Network name: "
-msgstr ""
+msgstr "നെറ്റ്​വര്‍ക്ക് പേര്: "
 
 #: ../js/ui/networkAgent.js:341
+#, fuzzy
 msgid "DSL authentication"
-msgstr ""
+msgstr "DSL ആധികാരികത ഉറപ്പാക്കല്‍"
 
 #: ../js/ui/networkAgent.js:348
 msgid "PIN code required"
-msgstr ""
+msgstr "PIN കോട് ആവശ്യമാണ്"
 
 #: ../js/ui/networkAgent.js:349
+#, fuzzy
 msgid "PIN code is needed for the mobile broadband device"
-msgstr ""
+msgstr "മൊബൈല്‍ ബ്രോഡ്ബാന്‍ഡ് ഉപകരണത്തിന് പിന്‍ കോഡ് ആവശ്യമുണ്ടു്"
 
 #: ../js/ui/networkAgent.js:350
 msgid "PIN: "
 msgstr "PIN: "
 
 #: ../js/ui/networkAgent.js:356
+#, fuzzy
 msgid "Mobile broadband network password"
-msgstr ""
+msgstr "മൊബൈല്‍ ബ്രോഡ്ബാന്‍ഡ് നെറ്റ്‌വര്‍ക്കിനുള്ള അടയാളവാക്ക്"
 
 #: ../js/ui/networkAgent.js:357
-#, c-format
+#, fuzzy, c-format
 msgid "A password is required to connect to '%s'."
-msgstr ""
+msgstr "'%s'-ലേക്കു് ബന്ധപ്പെടുന്നതിനായി ഒരു അടയാളവാക്ക് ആവശ്യമുണ്ടു്."
 
 #: ../js/ui/overview.js:90
 msgid "Undo"
-msgstr ""
+msgstr "വേണ്ട"
 
 #: ../js/ui/overview.js:199
 msgid "Windows"
@@ -819,48 +825,52 @@ msgstr "പ്രയോഗങ്ങള്‍"
 msgid "Dash"
 msgstr "ഡാഷ്"
 
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:586
 msgid "Quit"
 msgstr "നിര്‍ത്തുക"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:618
 msgid "Activities"
 msgstr "പ്രവര്‍ത്തനങ്ങള്‍"
 
-#: ../js/ui/panel.js:987
+#: ../js/ui/panel.js:993
+#, fuzzy
 msgid "Top Bar"
-msgstr ""
+msgstr "സ്ഥാനപ്പട്ട"
 
 #: ../js/ui/placeDisplay.js:115
-#, c-format
+#, fuzzy, c-format
 msgid "Failed to unmount '%s'"
-msgstr ""
+msgstr "%V അണ്‍മൌണ്ടു് ചെയ്യാന്‍ കഴിഞ്ഞില്ല."
 
 #: ../js/ui/placeDisplay.js:118
 msgid "Retry"
 msgstr "വിണ്ടും ശ്രമിക്കുക"
 
 #: ../js/ui/placeDisplay.js:156
+#, fuzzy
 msgid "Connect to..."
-msgstr ""
+msgstr "സര്‍വറിലേക്കു് കണക്ടു് ചെയ്യുക"
 
 #: ../js/ui/placeDisplay.js:367
+#, fuzzy
 msgid "PLACES & DEVICES"
-msgstr ""
+msgstr "ഹാര്‍ഡ്‍വയര്‍ ഡിവൈസുകള്‍"
 
 #: ../js/ui/polkitAuthenticationAgent.js:71
 msgid "Authentication Required"
-msgstr ""
+msgstr "തിരിച്ചറിയണം"
 
 #: ../js/ui/polkitAuthenticationAgent.js:109
+#, fuzzy
 msgid "Administrator"
-msgstr ""
+msgstr "അഡ്മിനിസ്ട്രേറ്റര്‍"
 
 #: ../js/ui/polkitAuthenticationAgent.js:179
 msgid "Authenticate"
-msgstr ""
+msgstr "തിരിച്ചറിയുക"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
@@ -868,29 +878,31 @@ msgstr ""
 #. * for instance.
 #: ../js/ui/polkitAuthenticationAgent.js:260
 msgid "Sorry, that didn't work. Please try again."
-msgstr ""
+msgstr "ക്ഷമിക്കണം, അതു ശരിയല്ല. ദയവായി വീണ്ടും ശ്രമിക്കുക."
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:720
+#: ../js/ui/popupMenu.js:724
+#, fuzzy
 msgid "toggle-switch-us"
-msgstr ""
+msgstr "യു എസ് 84-key"
 
 #: ../js/ui/runDialog.js:205
+#, fuzzy
 msgid "Please enter a command:"
-msgstr ""
+msgstr "ദയവായി പ്രോക്സി അടയാളവാക്കു് നല്‍കുക"
 
 #: ../js/ui/searchDisplay.js:331
-#, fuzzy
 msgid "Searching..."
-msgstr "തിരയല്‍"
+msgstr "തിരയുന്നു..."
 
 #: ../js/ui/searchDisplay.js:413
+#, fuzzy
 msgid "No matching results."
-msgstr ""
+msgstr "പൊരുത്തമുള്ള ഫലങ്ങളൊന്നുമില്ല"
 
 #: ../js/ui/shellEntry.js:26
 msgid "Copy"
@@ -898,7 +910,7 @@ msgstr "പകര്‍ത്തുക"
 
 #: ../js/ui/shellEntry.js:31
 msgid "Paste"
-msgstr ""
+msgstr "ഒട്ടിയ്ക്കുക"
 
 #: ../js/ui/shellEntry.js:77
 msgid "Show Text"
@@ -913,93 +925,109 @@ msgid "Wrong password, please try again"
 msgstr "തെറ്റായ രഹസ്യവാക്ക്, വീണ്ടും ശ്രമിക്കുക"
 
 #: ../js/ui/status/accessibility.js:47
+#, fuzzy
 msgid "Accessibility"
-msgstr ""
+msgstr "ആക്സസിബിളിറ്റി"
 
 #: ../js/ui/status/accessibility.js:52
 msgid "Zoom"
-msgstr ""
+msgstr "വലുതാക്കുക"
 
 #. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
 #: ../js/ui/status/accessibility.js:63
+#, fuzzy
 msgid "Screen Keyboard"
-msgstr ""
+msgstr "ഓണ്‍ സ്ക്രീന്‍ കീബോര്‍ഡ്"
 
 #: ../js/ui/status/accessibility.js:67
+#, fuzzy
 msgid "Visual Alerts"
-msgstr ""
+msgstr "ഹീബ്രൂ വിഷ്വല്‍"
 
 #: ../js/ui/status/accessibility.js:70
+#, fuzzy
 msgid "Sticky Keys"
-msgstr ""
+msgstr "സ്റ്റിക്കി കീകള്‍"
 
 #: ../js/ui/status/accessibility.js:73
+#, fuzzy
 msgid "Slow Keys"
-msgstr ""
+msgstr "സ്ലോ കീകള്‍"
 
 #: ../js/ui/status/accessibility.js:76
+#, fuzzy
 msgid "Bounce Keys"
-msgstr ""
+msgstr "ബൌണ്‍സ് കീകള്‍"
 
 #: ../js/ui/status/accessibility.js:79
+#, fuzzy
 msgid "Mouse Keys"
-msgstr ""
+msgstr "മൌസ് കീകള്‍"
 
 #: ../js/ui/status/accessibility.js:83
+#, fuzzy
 msgid "Universal Access Settings"
-msgstr ""
+msgstr "സാര്‍വ്വജനികലഭ്യതാ സജ്ജീകരണങ്ങള്‍"
 
 #: ../js/ui/status/accessibility.js:117
+#, fuzzy
 msgid "High Contrast"
-msgstr ""
+msgstr "ചലച്ചിത്രത്തിന്റെ തെളിച്ചം"
 
 #: ../js/ui/status/accessibility.js:154
+#, fuzzy
 msgid "Large Text"
-msgstr ""
+msgstr "വലുപ്പത്തിലുളള ടെകസ്റ്റിന്റെ ശൈലി"
 
-#: ../js/ui/status/bluetooth.js:31 ../js/ui/status/bluetooth.js:35
-#: ../js/ui/status/bluetooth.js:258 ../js/ui/status/bluetooth.js:341
-#: ../js/ui/status/bluetooth.js:371 ../js/ui/status/bluetooth.js:407
-#: ../js/ui/status/bluetooth.js:436 ../js/ui/status/network.js:893
+#: ../js/ui/status/bluetooth.js:31
+#: ../js/ui/status/bluetooth.js:35
+#: ../js/ui/status/bluetooth.js:258
+#: ../js/ui/status/bluetooth.js:341
+#: ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:407
+#: ../js/ui/status/bluetooth.js:436
+#: ../js/ui/status/network.js:893
 msgid "Bluetooth"
 msgstr "ബ്ളുടൂത്ത്"
 
 #: ../js/ui/status/bluetooth.js:48
 msgid "Visibility"
-msgstr ""
+msgstr "കാഴ്ച"
 
 #: ../js/ui/status/bluetooth.js:62
 msgid "Send Files to Device..."
-msgstr ""
+msgstr "ഉപകരണത്തിലേക്ക് ഫൈല്‍ അയക്കുക..."
 
 #: ../js/ui/status/bluetooth.js:63
 msgid "Set up a New Device..."
-msgstr ""
+msgstr "പുതിയ ഒരു ഉപകരണം സജ്ജമാക്കുക..."
 
 #: ../js/ui/status/bluetooth.js:87
 msgid "Bluetooth Settings"
 msgstr "ബ്ളുടൂത്ത് ക്രമീകരണങ്ങള്‍"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/network.js:256
+#: ../js/ui/status/bluetooth.js:107
+#: ../js/ui/status/network.js:256
+#, fuzzy
 msgid "hardware disabled"
-msgstr ""
+msgstr "നിര്‍ജ്ജീവമാക്കിയ"
 
 #: ../js/ui/status/bluetooth.js:203
 msgid "Connection"
 msgstr "ബന്ധം"
 
-#: ../js/ui/status/bluetooth.js:214 ../js/ui/status/network.js:491
-#, fuzzy
+#: ../js/ui/status/bluetooth.js:214
+#: ../js/ui/status/network.js:491
 msgid "disconnecting..."
-msgstr "ബന്ധം"
+msgstr "വിഛേദിക്കുന്നു..."
 
-#: ../js/ui/status/bluetooth.js:227 ../js/ui/status/network.js:497
-#, fuzzy
+#: ../js/ui/status/bluetooth.js:227
+#: ../js/ui/status/network.js:497
 msgid "connecting..."
-msgstr "ബന്ധം"
+msgstr "ബന്ധിപ്പിയ്ക്കുന്നു...."
 
 #: ../js/ui/status/bluetooth.js:245
 msgid "Send Files..."
@@ -1007,11 +1035,12 @@ msgstr "ഫയലുകള്‍ അയയ്ക്കുക..."
 
 #: ../js/ui/status/bluetooth.js:250
 msgid "Browse Files..."
-msgstr ""
+msgstr "ഫയലുകള്‍ നോക്കുക..."
 
 #: ../js/ui/status/bluetooth.js:259
+#, fuzzy
 msgid "Error browsing device"
-msgstr ""
+msgstr "ഉപകരണം %s അടയ്ക്കുന്നതില്‍ പിശക്"
 
 #: ../js/ui/status/bluetooth.js:260
 #, c-format
@@ -1026,75 +1055,82 @@ msgstr "കീബോര്‍ഡ് ക്രമീകരണങ്ങള്‍"
 msgid "Mouse Settings"
 msgstr "മൗസ് ക്രമീകരണങ്ങള്‍"
 
-#: ../js/ui/status/bluetooth.js:276 ../js/ui/status/volume.js:59
+#: ../js/ui/status/bluetooth.js:276
+#: ../js/ui/status/volume.js:59
 msgid "Sound Settings"
 msgstr "ശബ്ദത്തിന്റെ ക്രമീകരണങ്ങള്‍"
 
 #: ../js/ui/status/bluetooth.js:372
-#, c-format
+#, fuzzy, c-format
 msgid "Authorization request from %s"
-msgstr ""
+msgstr "'%s' അനുവാദം ചോദിയ്ക്കുന്നു"
 
 #: ../js/ui/status/bluetooth.js:378
-#, c-format
+#, fuzzy, c-format
 msgid "Device %s wants access to the service '%s'"
-msgstr ""
+msgstr "%s ഉപകരണത്തിനു് '%s' സേവനത്തിനുള്ള അനുവാദം ആവശ്യമുണ്ടു്."
 
 #: ../js/ui/status/bluetooth.js:380
 msgid "Always grant access"
-msgstr ""
+msgstr "എപ്പോഴും അനുമതി നല്‍കുക"
 
 #: ../js/ui/status/bluetooth.js:381
+#, fuzzy
 msgid "Grant this time only"
-msgstr ""
+msgstr "ഈ പണിയറയില്‍ മാത്രം (_O)"
 
-#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1091
+#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/telepathyClient.js:1091
 msgid "Reject"
 msgstr "നിരസിക്കു"
 
 #: ../js/ui/status/bluetooth.js:408
-#, c-format
+#, fuzzy, c-format
 msgid "Pairing confirmation for %s"
-msgstr ""
+msgstr "'%s'-നുള്ള ജോടി ഉറപ്പിക്കല്‍"
 
-#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:444
-#, c-format
+#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:444
+#, fuzzy, c-format
 msgid "Device %s wants to pair with this computer"
-msgstr ""
+msgstr "'%s' ഉപകരണത്തിനു് ഈ കമ്പ്യൂട്ടറുമായി ജോടി ചേരണം"
 
 #: ../js/ui/status/bluetooth.js:415
-#, c-format
+#, fuzzy, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
-msgstr ""
+msgstr "'%s' എന്ന പിന്‍ %s ഉപകരണത്തിലുള്ളതുമായി ചേരുന്നു എന്നു് ദയവായി ഉറപ്പാക്കുക."
 
 #: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
-msgstr ""
+msgstr "ചേ‌ര്‍ച്ചകള്‍"
 
 #: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
-msgstr ""
+msgstr "ചേരുന്നില്ല"
 
 #: ../js/ui/status/bluetooth.js:437
-#, c-format
+#, fuzzy, c-format
 msgid "Pairing request for %s"
-msgstr ""
+msgstr "'%s'-നുള്ള ജോടി ആവശ്യപ്പെടുന്നു"
 
 #: ../js/ui/status/bluetooth.js:445
+#, fuzzy
 msgid "Please enter the PIN mentioned on the device."
-msgstr ""
+msgstr "%s ഉപകരണത്തില്‍ പറഞ്ഞിരിക്കുന്ന പിന്‍ ദയവായി നല്‍കുക."
 
 #: ../js/ui/status/bluetooth.js:461
 msgid "OK"
 msgstr "ശരി"
 
 #: ../js/ui/status/keyboard.js:68
+#, fuzzy
 msgid "Show Keyboard Layout"
-msgstr ""
+msgstr "കീബോര്‍ഡ് വിന്യാസ സൂചകം"
 
 #: ../js/ui/status/keyboard.js:73
+#, fuzzy
 msgid "Region and Language Settings"
-msgstr ""
+msgstr "സമയത്തിനും തീയതിയ്കും ഉളള സജ്ജീകരണങ്ങള്‍"
 
 #: ../js/ui/status/network.js:96
 msgid "<unknown>"
@@ -1108,24 +1144,27 @@ msgstr "പ്രവര്‍ത്തനരഹിതമാക്കി"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
 #: ../js/ui/status/network.js:489
+#, fuzzy
 msgid "unmanaged"
-msgstr ""
+msgstr "കൈകാര്യം ചെയ്തിട്ടില്ലാത്തതു്"
 
 #. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:500
+#, fuzzy
 msgid "authentication required"
-msgstr ""
+msgstr "ആധികാരികത ഉറപ്പ് വരുത്തല്‍ ആവശ്യമുണ്ട്"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
 #: ../js/ui/status/network.js:510
+#, fuzzy
 msgid "firmware missing"
-msgstr ""
+msgstr "നഷ്ടപ്പെട്ട വ്യംജകം"
 
 #. Translators: this is for wired network devices that are physically disconnected
 #: ../js/ui/status/network.js:517
 msgid "cable unplugged"
-msgstr ""
+msgstr "കേബിള്‍ ഊരി"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
@@ -1134,46 +1173,53 @@ msgid "unavailable"
 msgstr "ലഭ്യമല്ല"
 
 #: ../js/ui/status/network.js:524
-#, fuzzy
 msgid "connection failed"
 msgstr "ബന്ധം പരാജയപ്പെട്ടു"
 
-#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1505
+#: ../js/ui/status/network.js:585
+#: ../js/ui/status/network.js:1505
 msgid "More..."
 msgstr "കൂടുതല്‍..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:621 ../js/ui/status/network.js:1440
+#: ../js/ui/status/network.js:621
+#: ../js/ui/status/network.js:1440
+#, fuzzy
 msgid "Connected (private)"
-msgstr ""
+msgstr "സ്വകാര്യമായ വൃത്തിയുള്ളത്"
 
 #: ../js/ui/status/network.js:696
+#, fuzzy
 msgid "Auto Ethernet"
-msgstr ""
+msgstr "കിട്ടിയ ഇതര്‍നെറ്റ്"
 
 #: ../js/ui/status/network.js:757
+#, fuzzy
 msgid "Auto broadband"
-msgstr ""
+msgstr "മൊബൈല്‍ ബ്രോഡ്ബാന്‍ഡ് (%s)"
 
 #: ../js/ui/status/network.js:760
+#, fuzzy
 msgid "Auto dial-up"
-msgstr ""
+msgstr "താള് സജ്ജീകരണം"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:879 ../js/ui/status/network.js:1452
-#, c-format
+#: ../js/ui/status/network.js:879
+#: ../js/ui/status/network.js:1452
+#, fuzzy, c-format
 msgid "Auto %s"
-msgstr ""
+msgstr "ഓട്ടോ %s"
 
 #: ../js/ui/status/network.js:881
 #, fuzzy
 msgid "Auto bluetooth"
-msgstr "ബ്ളുടൂത്ത്"
+msgstr "- ബ്ലൂടൂത് ലഘുപ്രയോഗം"
 
 #: ../js/ui/status/network.js:1454
+#, fuzzy
 msgid "Auto wireless"
-msgstr ""
+msgstr "വയര്‍ലെസ്സ് കീബോര്‍ഡ്"
 
 #: ../js/ui/status/network.js:1541
 msgid "Network"
@@ -1185,46 +1231,48 @@ msgstr "നെറ്റ്​വര്‍ക്കിങ് പ്രവര്�
 
 #: ../js/ui/status/network.js:1560
 msgid "Wired"
-msgstr ""
+msgstr "വയര്‍ഡ്"
 
 #: ../js/ui/status/network.js:1571
 msgid "Wireless"
-msgstr ""
+msgstr "വയര്‍ലെസ്സ്"
 
 #: ../js/ui/status/network.js:1581
+#, fuzzy
 msgid "Mobile broadband"
-msgstr ""
+msgstr "മുബൈല്‍ ബ്രോഡ്ബാന്റ്"
 
 #: ../js/ui/status/network.js:1591
 #, fuzzy
 msgid "VPN Connections"
-msgstr "ബന്ധം"
+msgstr "_VPN കണക്ഷനുകള്‍"
 
 #: ../js/ui/status/network.js:1602
 #, fuzzy
 msgid "Network Settings"
-msgstr "ഊര്‍ജ്ജ ക്രമീകരണങ്ങള്‍"
+msgstr "നെറ്റ്‌വറ്‍ക്ക് സജ്ജീകരണങ്ങള്‍"
 
 #: ../js/ui/status/network.js:1739
-#, fuzzy
 msgid "Connection failed"
-msgstr "ബന്ധം"
+msgstr "കണക്ഷന്‍ പരാജയപ്പെട്ടു"
 
 #: ../js/ui/status/network.js:1740
+#, fuzzy
 msgid "Activation of network connection failed"
-msgstr ""
+msgstr "പിശക്: കണക്ഷന്‍ സജീവമാക്കല്‍ പരാജയപ്പെട്ടു."
 
 #: ../js/ui/status/network.js:1993
+#, fuzzy
 msgid "Networking is disabled"
-msgstr ""
+msgstr "വയര്‍ലെസ് സജ്ജമല്ല"
 
 #: ../js/ui/status/network.js:2117
 msgid "Network Manager"
-msgstr ""
+msgstr "നെറ്റ്‌വര്‍ക്ക് മാനേജര്‍"
 
 #: ../js/ui/status/power.js:59
 msgid "Battery"
-msgstr ""
+msgstr "ബാറ്ററി"
 
 #: ../js/ui/status/power.js:76
 msgid "Power Settings"
@@ -1268,7 +1316,8 @@ msgid_plural "%d minutes remaining"
 msgstr[0] "%d മിനുട്ട് ബാക്കി"
 msgstr[1] "%d മിനുട്ടുകള്‍ ബാക്കി"
 
-#: ../js/ui/status/power.js:116 ../js/ui/status/power.js:186
+#: ../js/ui/status/power.js:116
+#: ../js/ui/status/power.js:186
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
@@ -1304,7 +1353,7 @@ msgstr "സെല്‍ ഫോണ്‍"
 
 #: ../js/ui/status/power.js:209
 msgid "Media player"
-msgstr ""
+msgstr "മീഡിയ പ്ലേയര്‍"
 
 #: ../js/ui/status/power.js:211
 msgid "Tablet"
@@ -1315,9 +1364,10 @@ msgid "Computer"
 msgstr "കമ്പ്യൂട്ടര്‍"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:25 ../js/ui/status/volume.js:39
+#: ../js/ui/status/volume.js:25
+#: ../js/ui/status/volume.js:39
 msgid "Volume"
-msgstr ""
+msgstr "ഒച്ച"
 
 #: ../js/ui/status/volume.js:51
 msgid "Microphone"
@@ -1327,37 +1377,38 @@ msgstr "മൈക്രോഫോണ്‍"
 #. system-users for now as Empathy does.
 #: ../js/ui/telepathyClient.js:220
 msgid "Invitation"
-msgstr ""
+msgstr "ക്ഷണം"
 
 #. We got the TpContact
 #: ../js/ui/telepathyClient.js:271
-#, fuzzy
 msgid "Call"
 msgstr "വിളിക്കുക"
 
 #. We got the TpContact
 #: ../js/ui/telepathyClient.js:287
+#, fuzzy
 msgid "File Transfer"
-msgstr ""
+msgstr "ഫയല്‍ സ്ഥലം മാറ്റുക"
 
 #: ../js/ui/telepathyClient.js:369
+#, fuzzy
 msgid "Subscription request"
-msgstr ""
+msgstr "വരിക്കാരനാകാനുള്ള അപേക്ഷ"
 
 #: ../js/ui/telepathyClient.js:405
 #, fuzzy
 msgid "Connection error"
-msgstr "ബന്ധം"
+msgstr "കണക്ഷന്‍ സ്വീകരിക്കുന്നതില്‍ പിശക് : %s"
 
 #: ../js/ui/telepathyClient.js:663
-#, c-format
+#, fuzzy, c-format
 msgid "%s is online."
-msgstr ""
+msgstr "ബട്ടണ്‍ ഓണ്‍ലൈന്‍ ആണു്"
 
 #: ../js/ui/telepathyClient.js:667
-#, c-format
+#, fuzzy, c-format
 msgid "%s is offline."
-msgstr ""
+msgstr "റിപ്പോസിറ്ററി ഓഫ് ലൈന്‍ ആണ്"
 
 #: ../js/ui/telepathyClient.js:671
 #, c-format
@@ -1373,23 +1424,23 @@ msgstr "%s തിരക്കിലാണ്."
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
 #: ../js/ui/telepathyClient.js:887
-#, no-c-format
+#, fuzzy, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
-msgstr ""
+msgstr "എപ്പോഴും മുകളില്‍ (_T)"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
 #: ../js/ui/telepathyClient.js:893
-#, no-c-format
+#, fuzzy, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
-msgstr ""
+msgstr "പണിയിടത്തില്‌"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
 #: ../js/ui/telepathyClient.js:898
-#, no-c-format
+#, fuzzy, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-msgstr ""
+msgstr "പണിയിടത്തില്‌"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1411,34 +1462,36 @@ msgstr "%s ലേക്കുള്ള ക്ഷണം"
 #: ../js/ui/telepathyClient.js:1050
 #, c-format
 msgid "%s is inviting you to join %s"
-msgstr ""
+msgstr "%s നിങ്ങളെ %sഇലേക്കു ചേരാന്‍ ക്ഷണിക്കുന്നുണ്ട്"
 
-#: ../js/ui/telepathyClient.js:1052 ../js/ui/telepathyClient.js:1131
+#: ../js/ui/telepathyClient.js:1052
+#: ../js/ui/telepathyClient.js:1131
 #: ../js/ui/telepathyClient.js:1229
 msgid "Decline"
 msgstr "നിരസിക്കുക"
 
-#: ../js/ui/telepathyClient.js:1053 ../js/ui/telepathyClient.js:1132
+#: ../js/ui/telepathyClient.js:1053
+#: ../js/ui/telepathyClient.js:1132
 #: ../js/ui/telepathyClient.js:1230
 msgid "Accept"
 msgstr "സ്വീകരിക്കുക"
 
 #. translators: argument is a contact name like Alice for example.
 #: ../js/ui/telepathyClient.js:1083
-#, c-format
+#, fuzzy, c-format
 msgid "Video call from %s"
-msgstr ""
+msgstr "എവിടെ നിന്നുള്ള കോള്‍"
 
 #. translators: argument is a contact name like Alice for example.
 #: ../js/ui/telepathyClient.js:1086
-#, c-format
+#, fuzzy, c-format
 msgid "Call from %s"
-msgstr ""
+msgstr "%s-ല്‍ നിന്നുള്ള കോള്‍"
 
 #. translators: this is a button label (verb), not a noun
 #: ../js/ui/telepathyClient.js:1093
 msgid "Answer"
-msgstr ""
+msgstr "എടുക്കുക"
 
 #. To translators: The first parameter is
 #. * the contact's alias and the second one is the
@@ -1446,9 +1499,9 @@ msgstr ""
 #. * like: "Alice is sending you test.ogg"
 #.
 #: ../js/ui/telepathyClient.js:1125
-#, c-format
+#, fuzzy, c-format
 msgid "%s is sending you %s"
-msgstr ""
+msgstr "%s നിങ്ങളെ ക്ഷണിച്ചിരിയ്ക്കുന്നു"
 
 #. To translators: The parameter is the contact's alias
 #: ../js/ui/telepathyClient.js:1194
@@ -1457,76 +1510,91 @@ msgid "%s would like permission to see when you are online"
 msgstr ""
 
 #: ../js/ui/telepathyClient.js:1287
+#, fuzzy
 msgid "Network error"
-msgstr ""
+msgstr "ശൃംഖലയില്‍ പിഴവു്"
 
 #: ../js/ui/telepathyClient.js:1289
+#, fuzzy
 msgid "Authentication failed"
-msgstr ""
+msgstr " തിരിച്ചറിയല്‍ പ്രക്രിയ പരാജയപ്പെട്ടു"
 
 #: ../js/ui/telepathyClient.js:1291
+#, fuzzy
 msgid "Encryption error"
-msgstr ""
+msgstr "എന്‍ക്രിപ്ഷനില്‍ പിശകു്"
 
 #: ../js/ui/telepathyClient.js:1293
+#, fuzzy
 msgid "Certificate not provided"
-msgstr ""
+msgstr "സാക്ഷ്യപത്രം നല്‍കിയില്ല"
 
 #: ../js/ui/telepathyClient.js:1295
+#, fuzzy
 msgid "Certificate untrusted"
-msgstr ""
+msgstr "സാക്ഷ്യംപത്രം വിശ്വാസമില്ലാത്തു്"
 
 #: ../js/ui/telepathyClient.js:1297
+#, fuzzy
 msgid "Certificate expired"
-msgstr ""
+msgstr "സാക്ഷ്യപത്രം കാലാവധി തീര്‍ന്നതു്"
 
 #: ../js/ui/telepathyClient.js:1299
+#, fuzzy
 msgid "Certificate not activated"
-msgstr ""
+msgstr "സാക്ഷ്യപത്രം സജീകമാക്കാത്തതു്"
 
 #: ../js/ui/telepathyClient.js:1301
+#, fuzzy
 msgid "Certificate hostname mismatch"
-msgstr ""
+msgstr "സാക്ഷ്യപത്രത്തിലെ ഹോസ്റ്റിന്റെ പേരു് പൊരുത്തമില്ല"
 
 #: ../js/ui/telepathyClient.js:1303
+#, fuzzy
 msgid "Certificate fingerprint mismatch"
-msgstr ""
+msgstr "സാക്ഷ്യപത്രത്തിലെ ഒപ്പു് പൊരുത്തമില്ല"
 
 #: ../js/ui/telepathyClient.js:1305
+#, fuzzy
 msgid "Certificate self-signed"
-msgstr ""
+msgstr "സാക്ഷ്യപത്രം സ്വയം ഒപ്പിട്ടതാണു്"
 
 #: ../js/ui/telepathyClient.js:1307
+#, fuzzy
 msgid "Status is set to offline"
-msgstr ""
+msgstr "സിസ്റ്റം ഘടികാരം UTC യിലേക്ക് സെറ്റ് ചെയ്തിരിക്കുകയാണോ?"
 
 #: ../js/ui/telepathyClient.js:1309
+#, fuzzy
 msgid "Encryption is not available"
-msgstr ""
+msgstr "ഉപയോക്താവു് ലഭ്യമല്ല"
 
 #: ../js/ui/telepathyClient.js:1311
+#, fuzzy
 msgid "Certificate is invalid"
-msgstr ""
+msgstr "() ഒരു സാധുതയില്ലാത്ത വ്യംജകം ആകുന്നു"
 
 #: ../js/ui/telepathyClient.js:1313
+#, fuzzy
 msgid "Connection has been refused"
-msgstr ""
+msgstr "നെറ്റ്‌വര്‍ക്ക് കണക്ഷന്‍ വിഛേദിച്ചിരിക്കുന്നു."
 
 #: ../js/ui/telepathyClient.js:1315
+#, fuzzy
 msgid "Connection can't be established"
-msgstr ""
+msgstr "%d ഫയല്‍ ചേര്‍ക്കുവാന്‍ സാധിക്കുന്നു (%s)"
 
 #: ../js/ui/telepathyClient.js:1317
+#, fuzzy
 msgid "Connection has been lost"
-msgstr ""
+msgstr "നെറ്റ്‌വര്‍ക്ക് കണക്ഷന്‍ വിഛേദിച്ചിരിക്കുന്നു."
 
 #: ../js/ui/telepathyClient.js:1319
 msgid "This account is already connected to the server"
 msgstr ""
 
 #: ../js/ui/telepathyClient.js:1321
-msgid ""
-"Connection has been replaced by a new connection using the same resource"
+msgid "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 
 #: ../js/ui/telepathyClient.js:1323
@@ -1538,30 +1606,28 @@ msgid "Server is currently too busy to handle the connection"
 msgstr ""
 
 #: ../js/ui/telepathyClient.js:1327
+#, fuzzy
 msgid "Certificate has been revoked"
-msgstr ""
+msgstr "<b>ഈ ചാവി പിന്‍വലിച്ചതാണു് </b>"
 
 #: ../js/ui/telepathyClient.js:1329
-msgid ""
-"Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 
 #: ../js/ui/telepathyClient.js:1331
-msgid ""
-"The length of the server certificate, or the depth of the server certificate "
-"chain, exceed the limits imposed by the cryptography library"
+msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
 msgstr ""
 
 #: ../js/ui/telepathyClient.js:1333
 msgid "Internal error"
-msgstr ""
+msgstr "ആന്തരിക പിശക്"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
 #: ../js/ui/telepathyClient.js:1343
 #, fuzzy, c-format
 msgid "Connection to %s failed"
-msgstr "ബന്ധം"
+msgstr "സെഷനിലേക്ക് കണക്ഷന്‍ ലഭിക്കുന്നതില്‍ പരാജയം: %s"
 
 #: ../js/ui/telepathyClient.js:1352
 #, fuzzy
@@ -1569,63 +1635,63 @@ msgid "Reconnect"
 msgstr "നിരസിക്കു"
 
 #: ../js/ui/telepathyClient.js:1353
-#, fuzzy
 msgid "Edit account"
-msgstr "എന്റെ അക്കൌണ്ട്"
+msgstr "അക്കൌണ്ട് ചിട്ടപ്പെടുത്തുക"
 
 #: ../js/ui/telepathyClient.js:1399
 msgid "Unknown reason"
 msgstr "അജ്ഞാതമായ കാരണം"
 
-#: ../js/ui/userMenu.js:133
+#: ../js/ui/userMenu.js:135
 msgid "Hidden"
-msgstr ""
+msgstr "മറഞ്ഞ"
 
-#: ../js/ui/userMenu.js:139
+#: ../js/ui/userMenu.js:141
+#, fuzzy
 msgid "Idle"
-msgstr ""
+msgstr "പ്രവര്‍ത്തനത്തിലല്ല"
 
-#: ../js/ui/userMenu.js:142
+#: ../js/ui/userMenu.js:144
 msgid "Unavailable"
 msgstr "ലഭ്യമല്ല"
 
-#: ../js/ui/userMenu.js:589 ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:663
+#: ../js/ui/userMenu.js:593
+#: ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:667
 msgid "Power Off..."
-msgstr ""
+msgstr "നിര്‍ത്തുക..."
 
-#: ../js/ui/userMenu.js:625
+#: ../js/ui/userMenu.js:629
 msgid "Notifications"
-msgstr ""
-
-#: ../js/ui/userMenu.js:633
-#, fuzzy
-msgid "Online Accounts"
-msgstr "എന്റെ അക്കൌണ്ട്"
+msgstr "അറിയിപ്പുകള്‍"
 
 #: ../js/ui/userMenu.js:637
+#, fuzzy
+msgid "Online Accounts"
+msgstr "അക്കൌണ്ടുകളുടെ പട്ടിക"
+
+#: ../js/ui/userMenu.js:641
 msgid "System Settings"
 msgstr "സിസ്റ്റം ക്രമീകരണങ്ങള്‍"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:648
 msgid "Lock Screen"
 msgstr "സ്ക്രീന്‍ പൂട്ടുക"
 
-#: ../js/ui/userMenu.js:649
+#: ../js/ui/userMenu.js:653
 msgid "Switch User"
 msgstr "ഉപയോക്താവിനെ മാറ്റുക"
 
-#: ../js/ui/userMenu.js:654
+#: ../js/ui/userMenu.js:658
 msgid "Log Out..."
 msgstr "പുറത്ത് കടക്കുക..."
 
-#: ../js/ui/userMenu.js:682
+#: ../js/ui/userMenu.js:686
 msgid "Your chat status will be set to busy"
 msgstr ""
 
-#: ../js/ui/userMenu.js:683
-msgid ""
-"Notifications are now disabled, including chat messages. Your online status "
-"has been adjusted to let others know that you might not see their messages."
+#: ../js/ui/userMenu.js:687
+msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
 msgstr ""
 
 #. Translators: this is the text displayed
@@ -1633,10 +1699,12 @@ msgstr ""
 #. active; it should not exceed ~30
 #. characters.
 #: ../js/ui/viewSelector.js:113
+#, fuzzy
 msgid "Type to search..."
-msgstr ""
+msgstr "ടൈപ്പു് ചെയ്തു് തിരച്ചില്‍ തുടങ്ങാം..."
 
-#: ../js/ui/viewSelector.js:131 ../src/shell-util.c:252
+#: ../js/ui/viewSelector.js:131
+#: ../src/shell-util.c:252
 msgid "Search"
 msgstr "തിരയല്‍"
 
@@ -1648,9 +1716,9 @@ msgid ""
 msgstr ""
 
 #: ../js/ui/wanda.js:128
-#, c-format
+#, fuzzy, c-format
 msgid "%s the Oracle says"
-msgstr ""
+msgstr "%s എന്ന മീന്‍ പറയുന്നു:"
 
 #: ../js/ui/wanda.js:168
 msgid "Your favorite Easter Egg"
@@ -1667,8 +1735,8 @@ msgstr "'%s' തയ്യാറാണ്"
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u ഔട്ട്പുട്ട്"
+msgstr[1] "%u ഔട്ട്പുട്ടുകള്‍"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -1676,37 +1744,39 @@ msgstr[1] ""
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u ഇന്‍പുട്ട്"
+msgstr[1] "%u ഇന്‍പുട്ടുകള്‍"
 
 #: ../src/gvc/gvc-mixer-control.c:1408
 msgid "System Sounds"
 msgstr "സിസ്റ്റം ശബ്ദങ്ങള്‍"
 
-#: ../src/main.c:253
+#: ../src/main.c:255
+#, fuzzy
 msgid "Print version"
-msgstr ""
+msgstr "പ്റിന്റ് ചെയ്യുവാനുള്ള വേറ്‍ഷന്‍"
 
-#: ../src/main.c:259
+#: ../src/main.c:261
 msgid "Mode used by GDM for login screen"
 msgstr ""
 
 #: ../src/shell-app.c:617
-#, c-format
+#, fuzzy, c-format
 msgid "Failed to launch '%s'"
-msgstr ""
+msgstr "ലഭ്യമാക്കുന്നതില്‍ പരാജയം:"
 
 #: ../src/shell-keyring-prompt.c:708
 msgid "Passwords do not match."
 msgstr "രഹസ്യവാക്കുകള്‍ സമാനമല്ല."
 
 #: ../src/shell-keyring-prompt.c:716
+#, fuzzy
 msgid "Password cannot be blank"
-msgstr ""
+msgstr "എന്തെങ്കിലും അടയാളവാക്കു് രേഖപ്പെടുത്തേണ്ടതാണ്"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
-msgstr ""
+msgstr "യുണൈറ്റഡ് കിങ്ഡം"
 
 #: ../src/shell-mobile-providers.c:526
 msgid "Default"
@@ -1720,7 +1790,7 @@ msgstr ""
 #. * nautilus
 #: ../src/shell-util.c:97
 msgid "Home"
-msgstr ""
+msgstr "വീട്"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
@@ -1763,21 +1833,25 @@ msgstr "%1$s: %2$s"
 #~ msgstr "നിങ്ങളുടെ കമ്പ്യൂട്ടര്‍ തിരയുക"
 
 #~ msgid "%d minute ago"
+
 #~ msgid_plural "%d minutes ago"
 #~ msgstr[0] "%d മിനിറ്റ് മുന്‍പ്"
 #~ msgstr[1] "%d മിനിറ്റുകള്‍ക്ക് മുന്‍പ്"
 
 #~ msgid "%d hour ago"
+
 #~ msgid_plural "%d hours ago"
 #~ msgstr[0] "%d മണിക്കൂര്‍ മുന്‍പ്"
 #~ msgstr[1] "%d മണിക്കൂറുകള്‍ മുന്‍പ്"
 
 #~ msgid "%d day ago"
+
 #~ msgid_plural "%d days ago"
 #~ msgstr[0] "%d ദിവസം മുന്‍പ്"
 #~ msgstr[1] "%d ദിവസങ്ങള്‍ക്ക് മുന്‍പ്"
 
 #~ msgid "%d week ago"
+
 #~ msgid_plural "%d weeks ago"
 #~ msgstr[0] "%d ആഴ്ച മുന്‍പ്"
 #~ msgstr[1] "%d ആഴ്ചകള്‍ക്ക് മുന്‍പ്"
