@@ -165,6 +165,8 @@ const IMStatusChooserItem = new Lang.Class({
                                  Lang.bind(this, this._IMAccountsChanged));
         this._accountMgr.connect('account-removed',
                                  Lang.bind(this, this._IMAccountsChanged));
+        this._accountMgr.connect('account-validity-changed',
+                                 Lang.bind(this, this._IMAccountsChanged));
         this._accountMgr.prepare_async(null, Lang.bind(this,
             function(mgr) {
                 let [presence, status, msg] = mgr.get_most_available_presence();
