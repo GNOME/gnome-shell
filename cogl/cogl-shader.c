@@ -384,6 +384,7 @@ _cogl_shader_compile_real (CoglHandle handle,
           g_warning ("Failed to compile GLSL program:\nsrc:\n%s\nerror:\n%s\n",
                      shader->source,
                      log);
+          g_free (log);
         }
 #endif
     }
