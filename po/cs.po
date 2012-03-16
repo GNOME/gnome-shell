@@ -5,14 +5,16 @@
 # Andre Klapper <ak-47@gmx.net>, 2009.
 # Petr Kovar <pknbe@volny.cz>, 2009, 2010, 2011.
 # Adam Matoušek <adydas95@gmail.com>, 2012 
+# Marek Černocký <marek@manet.cz>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-10 10:52+0000\n"
-"PO-Revision-Date: 2012-02-13 15:48+0100\n"
-"Last-Translator: Adam Matoušek <adydas95@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-02-29 22:27+0000\n"
+"PO-Revision-Date: 2012-03-16 21:54+0100\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,8 +32,8 @@ msgid "Window management and application launching"
 msgstr "Správa oken a spouštění aplikací"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
-#: ../js/extensionPrefs/main.js:154
-msgid "GNOME Shell Extensions Preferences"
+#: ../js/extensionPrefs/main.js:153
+msgid "GNOME Shell Extension Preferences"
 msgstr "Předvolby rozšíření GNOME Shell"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
@@ -43,32 +45,56 @@ msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr "Povolit přes Alt-F2 vnitřní nástroje určené pro vývojáře a testery"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
-msgstr "Poskytuje přístup k vnitřním ladicím a monitorovacím nástrojům pomocí okna ovládaného přes Alt-F2."
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Poskytuje přístup k vnitřním ladicím a monitorovacím nástrojům pomocí okna "
+"ovládaného přes Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Uuids of extensions to enable"
 msgstr "Uuid rozšíření, která se mají zapnout"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
-msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should be loaded. Any extension that wants to be loaded needs to be in this list. You can also manipulate this list with the EnableExtension and DisableExtension DBus methods on org.gnome.Shell."
-msgstr "Rozšíření GNOME Shell mají vlastnost uuid; tento klíč je seznamem rozšíření, která by měla být načítána. Každé rozšíření, které má být načítáno, musí být na tomto seznamu. S tímto seznamem můžete pracovat také pomocí metod EnableExtension a DisableExtension sběrnice DBus na org.gnome.Shell."
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension DBus methods on org.gnome.Shell."
+msgstr ""
+"Rozšíření GNOME Shell mají vlastnost uuid; tento klíč je seznamem rozšíření, "
+"která by měla být načítána. Každé rozšíření, které má být načítáno, musí být "
+"na tomto seznamu. S tímto seznamem můžete pracovat také pomocí metod "
+"EnableExtension a DisableExtension sběrnice DBus na org.gnome.Shell."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid "Whether to collect stats about applications usage"
 msgstr "Zda sbírat statistická data o používání aplikací"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-msgid "The shell normally monitors active applications in order to present the most used ones (e.g. in launchers). While this data will be kept private, you may want to disable this for privacy reasons. Please note that doing so won't remove already saved data."
-msgstr "Program GNOME Shell obvykle sleduje aktivní aplikace, aby mohl nabídnout ty nejpoužívanější (např. ve spouštěčích). Data budou uchovávána v soukromí, přesto ale můžete z důvodu ochrany soukromí tuto funkci zakázat. Vezměte prosím v potaz skutečnost, že zakázaní funkce neodstraní již uložená data."
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"Program GNOME Shell obvykle sleduje aktivní aplikace, aby mohl nabídnout ty "
+"nejpoužívanější (např. ve spouštěčích). Data budou uchovávána v soukromí, "
+"přesto ale můžete z důvodu ochrany soukromí tuto funkci zakázat. Vezměte "
+"prosím v potaz skutečnost, že zakázaní funkce neodstraní již uložená data."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Seznam ID souborů desktop oblíbených aplikací"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
-msgstr "Aplikace odpovídající těmto identifikátorům budou zobrazeny oblasti oblíbených."
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Aplikace odpovídající těmto identifikátorům budou zobrazeny oblasti "
+"oblíbených."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "disabled OpenSearch providers"
@@ -83,74 +109,122 @@ msgid "History for the looking glass dialog"
 msgstr "Historie dialogového okna „looking glass“ (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid ""
+"Internally used to store the last IM presence explicitly set by the user. "
+"The value here is from the TpConnectionPresenceType enumeration."
+msgstr ""
+"Interně používáno k uchování posledního stavu přítomnosti uživatele, který "
+"byl ručně nastaven v rychlé komunikaci. Tato hodnota pochází z výčtu "
+"TpConnectionPresenceType."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid ""
+"Internally used to store the last session presence status for the user. The "
+"value here is from the GsmPresenceStatus enumeration."
+msgstr ""
+"Interně používáno k uchování posledního stavu přítomnosti uživatele v "
+"sezení. Tato hodnota pochází z výčtu GsmPresenceStatus."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show the week date in the calendar"
 msgstr "Zobrazovat v kalendáři čísla týdnů"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Je-li zapnuto, zobrazovat v kalendáři čísla týdnů dle ISO."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Which keyboard to use"
 msgstr "Která klávesnice se má používat"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid "The type of keyboard to use."
 msgstr "Typ klávesnice, který se má používat."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "Show time with seconds"
 msgstr "Zobrazovat čas včetně sekund"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "If true, display seconds in time."
 msgstr "Je-li zapnuto, zobrazovat čas včetně sekund."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Show date in clock"
 msgstr "Zobrazovat v hodinách datum"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "If true, display date in the clock, in addition to time."
 msgstr "Je-li zapnuto, zobrazovat v hodinách kromě času i datum."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Framerate used for recording screencasts."
 msgstr "Frekvence snímků při nahrávání dění na obrazovce."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
-msgid "The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second."
-msgstr "Frekvence snímků za sekundu výsledné nahrávky dění na obrazovce, která byla nahrána záznamovým programem GNOME Shell."
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"Frekvence snímků za sekundu výsledné nahrávky dění na obrazovce, která byla "
+"nahrána záznamovým programem GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Roura systému gstreamer určená ke kódování nahrávky dění na obrazovce"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 #, no-c-format
-msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
-msgstr "Nastavuje rouru systému GStreamer určenou ke kódování nahrávek. Respektuje syntax gst-launch. Roura by měla mít nepřipojený cíl, ve kterém se video nahrává. Obvykle má nepřipojený zdroj; výstup z takového zdroje bude zapisován do výstupního souboru. Roura je ale schopna zabezpečit i vlastní výstup, což lze využít při odeslání výstupu na server icecast přes shout2send apod. Není-li nastaveno nebo je-li nastaveno na prázdnou hodnotu, bude použita výchozí roura. Aktuálně to je „vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux“ s nahráváním do WEBM s kodekem VP8. %T je použito jako zástupný symbol odhadu nejvhodnějšího počtu vláken na systému."
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM "
+"using the VP8 codec. %T is used as a placeholder for a guess at the optimal "
+"thread count on the system."
+msgstr ""
+"Nastavuje rouru systému GStreamer určenou ke kódování nahrávek. Respektuje "
+"syntax gst-launch. Roura by měla mít nepřipojený cíl, ve kterém se video "
+"nahrává. Obvykle má nepřipojený zdroj; výstup z takového zdroje bude "
+"zapisován do výstupního souboru. Roura je ale schopna zabezpečit i vlastní "
+"výstup, což lze využít při odeslání výstupu na server icecast přes "
+"shout2send apod. Není-li nastaveno nebo je-li nastaveno na prázdnou hodnotu, "
+"bude použita výchozí roura. Aktuálně to je „vp8enc quality=8 speed=6 threads="
+"%T ! queue ! webmmux“ s nahráváním do WEBM s kodekem VP8. %T je použito jako "
+"zástupný symbol odhadu nejvhodnějšího počtu vláken na systému."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
 msgid "File extension used for storing the screencast"
 msgstr "Přípona souboru s nahrávkou dění na obrazovce"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
-msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
-msgstr "Název souboru nahraných dění na obrazovce se bude sestávat z jedinečného názvu vycházejícího z aktuálního data a bude používat tuto příponu. Při nahrávání do jiného formátu kontejneru by měla být provedena úprava pravidel."
+#: ../data/org.gnome.shell.gschema.xml.in.h:28
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"Název souboru nahraných dění na obrazovce se bude sestávat z jedinečného "
+"názvu vycházejícího z aktuálního data a bude používat tuto příponu. Při "
+"nahrávání do jiného formátu kontejneru by měla být provedena úprava pravidel."
 
-#: ../js/extensionPrefs/main.js:126
+#: ../js/extensionPrefs/main.js:125
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
-msgstr "Při načítání dialogového okna s vlastnostmi rozšíření %s se vyskytla chyba:"
+msgstr ""
+"Při načítání dialogového okna s vlastnostmi rozšíření %s se vyskytla chyba:"
 
-#: ../js/extensionPrefs/main.js:166
+#: ../js/extensionPrefs/main.js:165
 msgid "<b>Extension</b>"
 msgstr "<b>Rozšíření</b>"
 
-#: ../js/extensionPrefs/main.js:190
+#: ../js/extensionPrefs/main.js:189
 msgid "Select an extension to configure using the combobox above."
-msgstr "Pomocí rozbalovacího seznamu výše zvolte rozšíření, které chete nastavit."
+msgstr ""
+"Pomocí rozbalovacího seznamu výše zvolte rozšíření, které chete nastavit."
 
 #: ../js/gdm/loginDialog.js:624
 msgid "Session..."
@@ -174,12 +248,9 @@ msgstr "(nebo otiskněte prst)"
 msgid "Not listed?"
 msgstr "Nejste na seznamu?"
 
-#: ../js/gdm/loginDialog.js:1020
-#: ../js/ui/endSessionDialog.js:419
-#: ../js/ui/extensionSystem.js:401
-#: ../js/ui/networkAgent.js:145
-#: ../js/ui/polkitAuthenticationAgent.js:175
-#: ../js/ui/status/bluetooth.js:462
+#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
+#: ../js/ui/extensionSystem.js:401 ../js/ui/networkAgent.js:153
+#: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -192,18 +263,16 @@ msgstr "Přihlásit se"
 msgid "Login Window"
 msgstr "Přihlašovací okno"
 
-#: ../js/gdm/powerMenu.js:113
-#: ../js/ui/userMenu.js:581
-#: ../js/ui/userMenu.js:583
-#: ../js/ui/userMenu.js:652
+#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:581
+#: ../js/ui/userMenu.js:583 ../js/ui/userMenu.js:652
 msgid "Suspend"
 msgstr "Uspat do paměti"
 
-#: ../js/gdm/powerMenu.js:118
+#: ../js/gdm/powerMenu.js:157
 msgid "Restart"
 msgstr "Restartovat"
 
-#: ../js/gdm/powerMenu.js:123
+#: ../js/gdm/powerMenu.js:162
 msgid "Power Off"
 msgstr "Vypnout"
 
@@ -231,19 +300,19 @@ msgstr "Všechny"
 msgid "APPLICATIONS"
 msgstr "APLIKACE"
 
-#: ../js/ui/appDisplay.js:366
+#: ../js/ui/appDisplay.js:371
 msgid "SETTINGS"
 msgstr "NASTAVENÍ"
 
-#: ../js/ui/appDisplay.js:666
+#: ../js/ui/appDisplay.js:676
 msgid "New Window"
 msgstr "Nové okno"
 
-#: ../js/ui/appDisplay.js:669
+#: ../js/ui/appDisplay.js:679
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
-#: ../js/ui/appDisplay.js:670
+#: ../js/ui/appDisplay.js:680
 msgid "Add to Favorites"
 msgstr "Přidat mezi oblíbené"
 
@@ -417,25 +486,20 @@ msgstr "Tento týden"
 msgid "Next week"
 msgstr "Následující týden"
 
-#: ../js/ui/contactDisplay.js:63
-#: ../js/ui/notificationDaemon.js:486
-#: ../js/ui/status/power.js:215
-#: ../src/shell-app.c:372
+#: ../js/ui/contactDisplay.js:63 ../js/ui/notificationDaemon.js:486
+#: ../js/ui/status/power.js:215 ../src/shell-app.c:372
 msgid "Unknown"
 msgstr "Neznámé"
 
-#: ../js/ui/contactDisplay.js:84
-#: ../js/ui/userMenu.js:127
+#: ../js/ui/contactDisplay.js:84 ../js/ui/userMenu.js:127
 msgid "Available"
 msgstr "Přítomen"
 
-#: ../js/ui/contactDisplay.js:89
-#: ../js/ui/userMenu.js:136
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:136
 msgid "Away"
 msgstr "Nepřítomen"
 
-#: ../js/ui/contactDisplay.js:93
-#: ../js/ui/userMenu.js:130
+#: ../js/ui/contactDisplay.js:93 ../js/ui/userMenu.js:130
 msgid "Busy"
 msgstr "Zaneprázdněn"
 
@@ -447,8 +511,7 @@ msgstr "Odpojen"
 msgid "CONTACTS"
 msgstr "KONTAKTY"
 
-#: ../js/ui/dash.js:229
-#: ../js/ui/messageTray.js:1204
+#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1204
 msgid "Remove"
 msgstr "Odstranit"
 
@@ -516,10 +579,6 @@ msgstr "%A, %l:%M %p"
 msgid "%A %B %e, %Y"
 msgstr "%A, %e. %B, %Y"
 
-#: ../js/ui/docDisplay.js:13
-msgid "RECENT ITEMS"
-msgstr "NEDÁVNÉ POLOŽKY"
-
 #: ../js/ui/endSessionDialog.js:61
 #, c-format
 msgctxt "title"
@@ -533,7 +592,8 @@ msgstr "Odhlášení"
 
 #: ../js/ui/endSessionDialog.js:63
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr "Tyto aplikace ukončíte a ze systému se odhlásíte kliknutím na Odhlásit."
+msgstr ""
+"Tyto aplikace ukončíte a ze systému se odhlásíte kliknutím na Odhlásit."
 
 #: ../js/ui/endSessionDialog.js:65
 #, c-format
@@ -581,8 +641,7 @@ msgstr[2] "Systém bude automaticky vypnut za %d sekund."
 msgid "Powering off the system."
 msgstr "Vypínání systému."
 
-#: ../js/ui/endSessionDialog.js:90
-#: ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
 msgctxt "button"
 msgid "Restart"
 msgstr "Restartovat"
@@ -626,10 +685,17 @@ msgstr "Stáhnout a nainstalovat „%s“ z extensions.gnome.org?"
 msgid "tray"
 msgstr "panel"
 
-#: ../js/ui/keyboard.js:539
-#: ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Klávesnice"
+
+#: ../js/ui/keyringPrompt.js:85 ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Heslo:"
+
+#: ../js/ui/keyringPrompt.js:101
+msgid "Type again:"
+msgstr "Napište znovu:"
 
 #: ../js/ui/lookingGlass.js:725
 msgid "No extensions installed"
@@ -645,8 +711,7 @@ msgstr "Rozšíření %s nevyvolalo žádné chyby."
 msgid "Hide Errors"
 msgstr "Skrývat chyby"
 
-#: ../js/ui/lookingGlass.js:789
-#: ../js/ui/lookingGlass.js:840
+#: ../js/ui/lookingGlass.js:789 ../js/ui/lookingGlass.js:840
 msgid "Show Errors"
 msgstr "Zobrazovat chyby"
 
@@ -656,8 +721,7 @@ msgstr "Povoleno"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:801
-#: ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:801 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Zakázáno"
 
@@ -681,6 +745,12 @@ msgstr "Zobrazit zdroj"
 msgid "Web Page"
 msgstr "Webová stránka"
 
+#. Translators: this is a filename used for screencast recording
+#: ../js/ui/main.js:116
+#, no-c-format
+msgid "Screencast from %d %t"
+msgstr "Záznam obrazovky z %d %t"
+
 #: ../js/ui/messageTray.js:1197
 msgid "Open"
 msgstr "Otevřít"
@@ -693,86 +763,87 @@ msgstr "Zrušit ztlumení"
 msgid "Mute"
 msgstr "Ztlumit"
 
-#: ../js/ui/messageTray.js:2446
+#: ../js/ui/messageTray.js:2447
 msgid "System Information"
 msgstr "Informace o systému"
 
-#: ../js/ui/networkAgent.js:140
+#: ../js/ui/networkAgent.js:148
 msgid "Connect"
 msgstr "Připojit"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:235
-#: ../js/ui/networkAgent.js:247
-#: ../js/ui/networkAgent.js:274
-#: ../js/ui/networkAgent.js:294
-#: ../js/ui/networkAgent.js:304
+#: ../js/ui/networkAgent.js:243 ../js/ui/networkAgent.js:255
+#: ../js/ui/networkAgent.js:282 ../js/ui/networkAgent.js:302
+#: ../js/ui/networkAgent.js:312
 msgid "Password: "
 msgstr "Heslo: "
 
 #. static WEP
-#: ../js/ui/networkAgent.js:240
+#: ../js/ui/networkAgent.js:248
 msgid "Key: "
 msgstr "Klíč: "
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:272
-#: ../js/ui/networkAgent.js:290
+#: ../js/ui/networkAgent.js:280 ../js/ui/networkAgent.js:298
 msgid "Username: "
 msgstr "Uživatelské jméno: "
 
-#: ../js/ui/networkAgent.js:278
+#: ../js/ui/networkAgent.js:286
 msgid "Identity: "
 msgstr "Indentita: "
 
-#: ../js/ui/networkAgent.js:280
+#: ../js/ui/networkAgent.js:288
 msgid "Private key password: "
 msgstr "Heslo soukromého klíče: "
 
-#: ../js/ui/networkAgent.js:292
+#: ../js/ui/networkAgent.js:300
 msgid "Service: "
 msgstr "Služba: "
 
-#: ../js/ui/networkAgent.js:321
+#: ../js/ui/networkAgent.js:329
 msgid "Authentication required by wireless network"
 msgstr "K bezdrátové síti je vyžadováno ověření"
 
-#: ../js/ui/networkAgent.js:322
+#: ../js/ui/networkAgent.js:330
 #, c-format
-msgid "Passwords or encryption keys are required to access the wireless network '%s'."
-msgstr "Pro přístup k bezdrátové síti „%s“ jsou vyžadována hesla nebo šifrovací klíče."
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"'%s'."
+msgstr ""
+"Pro přístup k bezdrátové síti „%s“ jsou vyžadována hesla nebo šifrovací "
+"klíče."
 
-#: ../js/ui/networkAgent.js:326
+#: ../js/ui/networkAgent.js:334
 msgid "Wired 802.1X authentication"
 msgstr "Ověření drátového připojení 802.1X"
 
-#: ../js/ui/networkAgent.js:328
+#: ../js/ui/networkAgent.js:336
 msgid "Network name: "
 msgstr "Název sítě: "
 
-#: ../js/ui/networkAgent.js:333
+#: ../js/ui/networkAgent.js:341
 msgid "DSL authentication"
 msgstr "Ověření DSL"
 
-#: ../js/ui/networkAgent.js:340
+#: ../js/ui/networkAgent.js:348
 msgid "PIN code required"
 msgstr "Požadován kód PIN"
 
-#: ../js/ui/networkAgent.js:341
+#: ../js/ui/networkAgent.js:349
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Pro mobilní širokopásmové zařízení je vyžadován kód PIN"
 
-#: ../js/ui/networkAgent.js:342
+#: ../js/ui/networkAgent.js:350
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/networkAgent.js:348
+#: ../js/ui/networkAgent.js:356
 msgid "Mobile broadband network password"
 msgstr "Heslo k mobilní širokopásmové síti"
 
-#: ../js/ui/networkAgent.js:349
+#: ../js/ui/networkAgent.js:357
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Pro připojení k „%s“ je vyžadováno heslo."
@@ -791,22 +862,21 @@ msgstr "Aplikace"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:226
+#: ../js/ui/overview.js:228
 msgid "Dash"
 msgstr "Oblíbené"
 
-#: ../js/ui/panel.js:572
-#| msgid "Quit %s"
+#: ../js/ui/panel.js:583
 msgid "Quit"
 msgstr "Ukončit"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:603
+#: ../js/ui/panel.js:614
 msgid "Activities"
 msgstr "Činnosti"
 
-#: ../js/ui/panel.js:971
+#: ../js/ui/panel.js:987
 msgid "Top Bar"
 msgstr "Horní lišta"
 
@@ -847,10 +917,6 @@ msgstr "Ověřit"
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Ověření bohužel nebylo úspěšné. Zkuste to prosím znovu."
 
-#: ../js/ui/polkitAuthenticationAgent.js:272
-msgid "Password:"
-msgstr "Heslo:"
-
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
@@ -864,11 +930,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Zadejte prosím příkaz:"
 
-#: ../js/ui/searchDisplay.js:333
+#: ../js/ui/searchDisplay.js:349
 msgid "Searching..."
 msgstr "Hledá se…"
 
-#: ../js/ui/searchDisplay.js:356
+#: ../js/ui/searchDisplay.js:417
 msgid "No matching results."
 msgstr "Neodpovídá ani jeden z výsledků."
 
@@ -893,7 +959,6 @@ msgid "Wrong password, please try again"
 msgstr "Špatné heslo, zkuste to prosím znovu"
 
 #: ../js/ui/status/accessibility.js:47
-#| msgid "Visibility"
 msgid "Accessibility"
 msgstr "Zpřístupnění"
 
@@ -940,14 +1005,10 @@ msgstr "Vysoký kontrast"
 msgid "Large Text"
 msgstr "Styl velkého textu"
 
-#: ../js/ui/status/bluetooth.js:31
-#: ../js/ui/status/bluetooth.js:35
-#: ../js/ui/status/bluetooth.js:258
-#: ../js/ui/status/bluetooth.js:341
-#: ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:407
-#: ../js/ui/status/bluetooth.js:436
-#: ../js/ui/status/network.js:893
+#: ../js/ui/status/bluetooth.js:31 ../js/ui/status/bluetooth.js:35
+#: ../js/ui/status/bluetooth.js:258 ../js/ui/status/bluetooth.js:341
+#: ../js/ui/status/bluetooth.js:371 ../js/ui/status/bluetooth.js:407
+#: ../js/ui/status/bluetooth.js:436 ../js/ui/status/network.js:893
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -968,8 +1029,7 @@ msgid "Bluetooth Settings"
 msgstr "Nastavit Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:107
-#: ../js/ui/status/network.js:256
+#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/network.js:256
 msgid "hardware disabled"
 msgstr "zařízení zakázáno"
 
@@ -977,13 +1037,11 @@ msgstr "zařízení zakázáno"
 msgid "Connection"
 msgstr "Připojení"
 
-#: ../js/ui/status/bluetooth.js:214
-#: ../js/ui/status/network.js:491
+#: ../js/ui/status/bluetooth.js:214 ../js/ui/status/network.js:491
 msgid "disconnecting..."
 msgstr "odpojování…"
 
-#: ../js/ui/status/bluetooth.js:227
-#: ../js/ui/status/network.js:497
+#: ../js/ui/status/bluetooth.js:227 ../js/ui/status/network.js:497
 msgid "connecting..."
 msgstr "připojování…"
 
@@ -1012,8 +1070,7 @@ msgstr "Nastavení klávesnice"
 msgid "Mouse Settings"
 msgstr "Nastavení myši"
 
-#: ../js/ui/status/bluetooth.js:276
-#: ../js/ui/status/volume.js:59
+#: ../js/ui/status/bluetooth.js:276 ../js/ui/status/volume.js:59
 msgid "Sound Settings"
 msgstr "Nastavení zvuku"
 
@@ -1035,8 +1092,7 @@ msgstr "Vždy udělovat přístup"
 msgid "Grant this time only"
 msgstr "Udělit pouze tentokrát"
 
-#: ../js/ui/status/bluetooth.js:382
-#: ../js/ui/telepathyClient.js:1098
+#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1091
 msgid "Reject"
 msgstr "Odmítnout"
 
@@ -1045,8 +1101,7 @@ msgstr "Odmítnout"
 msgid "Pairing confirmation for %s"
 msgstr "Potvrzení spárování pro %s"
 
-#: ../js/ui/status/bluetooth.js:414
-#: ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:444
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Zařízení %s se chce spárovat s tímto počítačem"
@@ -1126,15 +1181,13 @@ msgstr "nedostupné"
 msgid "connection failed"
 msgstr "připojení selhalo"
 
-#: ../js/ui/status/network.js:585
-#: ../js/ui/status/network.js:1505
+#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1505
 msgid "More..."
 msgstr "Více…"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:621
-#: ../js/ui/status/network.js:1440
+#: ../js/ui/status/network.js:621 ../js/ui/status/network.js:1440
 msgid "Connected (private)"
 msgstr "Připojení (soukromé)"
 
@@ -1151,8 +1204,7 @@ msgid "Auto dial-up"
 msgstr "Automatické vytáčené"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:879
-#: ../js/ui/status/network.js:1452
+#: ../js/ui/status/network.js:879 ../js/ui/status/network.js:1452
 #, c-format
 msgid "Auto %s"
 msgstr "Automatické %s"
@@ -1166,7 +1218,6 @@ msgid "Auto wireless"
 msgstr "Automatické bezdrátové"
 
 #: ../js/ui/status/network.js:1541
-#| msgid "Network error"
 msgid "Network"
 msgstr "Síť"
 
@@ -1260,8 +1311,7 @@ msgstr[0] "zbývá %d minuta"
 msgstr[1] "zbývají %d minuty"
 msgstr[2] "zbývá %d minut"
 
-#: ../js/ui/status/power.js:116
-#: ../js/ui/status/power.js:186
+#: ../js/ui/status/power.js:116 ../js/ui/status/power.js:186
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
@@ -1308,8 +1358,7 @@ msgid "Computer"
 msgstr "Počítač"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:25
-#: ../js/ui/status/volume.js:39
+#: ../js/ui/status/volume.js:25 ../js/ui/status/volume.js:39
 msgid "Volume"
 msgstr "Hlasitost"
 
@@ -1319,44 +1368,44 @@ msgstr "Mikrofon"
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:225
+#: ../js/ui/telepathyClient.js:220
 msgid "Invitation"
 msgstr "Pozvání"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:278
+#: ../js/ui/telepathyClient.js:271
 msgid "Call"
 msgstr "Hovor"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:294
+#: ../js/ui/telepathyClient.js:287
 msgid "File Transfer"
 msgstr "Přenos souborů"
 
-#: ../js/ui/telepathyClient.js:376
+#: ../js/ui/telepathyClient.js:369
 msgid "Subscription request"
 msgstr "Požadavek na přihlášení"
 
-#: ../js/ui/telepathyClient.js:412
+#: ../js/ui/telepathyClient.js:405
 msgid "Connection error"
 msgstr "Chyba připojení"
 
-#: ../js/ui/telepathyClient.js:670
+#: ../js/ui/telepathyClient.js:663
 #, c-format
 msgid "%s is online."
 msgstr "Kontakt %s je připojen."
 
-#: ../js/ui/telepathyClient.js:674
+#: ../js/ui/telepathyClient.js:667
 #, c-format
 msgid "%s is offline."
 msgstr "Kontakt %s je odpojen."
 
-#: ../js/ui/telepathyClient.js:678
+#: ../js/ui/telepathyClient.js:671
 #, c-format
 msgid "%s is away."
 msgstr "Kontakt %s je nepřítomen."
 
-#: ../js/ui/telepathyClient.js:681
+#: ../js/ui/telepathyClient.js:674
 #, c-format
 msgid "%s is busy."
 msgstr "Kontakt %s je zaneprázdněn."
@@ -1364,35 +1413,35 @@ msgstr "Kontakt %s je zaneprázdněn."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:894
+#: ../js/ui/telepathyClient.js:887
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Čas odeslání: <b>%X</b>, den odeslání: <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:900
+#: ../js/ui/telepathyClient.js:893
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Den odeslání: <b>%A</b>, <b>%e. %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:905
+#: ../js/ui/telepathyClient.js:898
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Den odeslání: <b>%A</b>, <b>%e. %B</b> %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:947
+#: ../js/ui/telepathyClient.js:940
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s je teď znám jako %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1049
+#: ../js/ui/telepathyClient.js:1042
 #, c-format
 msgid "Invitation to %s"
 msgstr "Pozvánka na připojení k %s"
@@ -1400,37 +1449,35 @@ msgstr "Pozvánka na připojení k %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1057
+#: ../js/ui/telepathyClient.js:1050
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s vás zve do %s"
 
-#: ../js/ui/telepathyClient.js:1059
-#: ../js/ui/telepathyClient.js:1138
-#: ../js/ui/telepathyClient.js:1236
+#: ../js/ui/telepathyClient.js:1052 ../js/ui/telepathyClient.js:1131
+#: ../js/ui/telepathyClient.js:1229
 msgid "Decline"
 msgstr "Odmítnout"
 
-#: ../js/ui/telepathyClient.js:1060
-#: ../js/ui/telepathyClient.js:1139
-#: ../js/ui/telepathyClient.js:1237
+#: ../js/ui/telepathyClient.js:1053 ../js/ui/telepathyClient.js:1132
+#: ../js/ui/telepathyClient.js:1230
 msgid "Accept"
 msgstr "Přijmout"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1090
+#: ../js/ui/telepathyClient.js:1083
 #, c-format
 msgid "Video call from %s"
 msgstr "Videohovor od %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1093
+#: ../js/ui/telepathyClient.js:1086
 #, c-format
 msgid "Call from %s"
 msgstr "Hovor od %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1100
+#: ../js/ui/telepathyClient.js:1093
 msgid "Answer"
 msgstr "Zvednout"
 
@@ -1439,131 +1486,137 @@ msgstr "Zvednout"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1132
+#: ../js/ui/telepathyClient.js:1125
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s vám posílá %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1201
+#: ../js/ui/telepathyClient.js:1194
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s vás žádá o oprávnění vidět, že jste dostupní"
 
-#: ../js/ui/telepathyClient.js:1294
+#: ../js/ui/telepathyClient.js:1287
 msgid "Network error"
 msgstr "Chyba sítě"
 
-#: ../js/ui/telepathyClient.js:1296
+#: ../js/ui/telepathyClient.js:1289
 msgid "Authentication failed"
 msgstr "Ověření selhalo"
 
-#: ../js/ui/telepathyClient.js:1298
+#: ../js/ui/telepathyClient.js:1291
 msgid "Encryption error"
 msgstr "Chyba šifrování"
 
-#: ../js/ui/telepathyClient.js:1300
+#: ../js/ui/telepathyClient.js:1293
 msgid "Certificate not provided"
 msgstr "Certifikát neposkytnut"
 
-#: ../js/ui/telepathyClient.js:1302
+#: ../js/ui/telepathyClient.js:1295
 msgid "Certificate untrusted"
 msgstr "Nedůvěryhodný certifikát"
 
-#: ../js/ui/telepathyClient.js:1304
+#: ../js/ui/telepathyClient.js:1297
 msgid "Certificate expired"
 msgstr "Platnost certifikátu vypršela"
 
-#: ../js/ui/telepathyClient.js:1306
+#: ../js/ui/telepathyClient.js:1299
 msgid "Certificate not activated"
 msgstr "Certifikát není aktivován"
 
-#: ../js/ui/telepathyClient.js:1308
+#: ../js/ui/telepathyClient.js:1301
 msgid "Certificate hostname mismatch"
 msgstr "Název počítače certifikátu nesouhlasí"
 
-#: ../js/ui/telepathyClient.js:1310
+#: ../js/ui/telepathyClient.js:1303
 msgid "Certificate fingerprint mismatch"
 msgstr "Otisk prstu certifikátu nesouhlasí"
 
-#: ../js/ui/telepathyClient.js:1312
+#: ../js/ui/telepathyClient.js:1305
 msgid "Certificate self-signed"
 msgstr "Certifikát je podepsán sám sebou"
 
-#: ../js/ui/telepathyClient.js:1314
+#: ../js/ui/telepathyClient.js:1307
 msgid "Status is set to offline"
 msgstr "Stav nastaven na „Odhlášen“"
 
-#: ../js/ui/telepathyClient.js:1316
+#: ../js/ui/telepathyClient.js:1309
 msgid "Encryption is not available"
 msgstr "Šifrování není dostupné"
 
-#: ../js/ui/telepathyClient.js:1318
+#: ../js/ui/telepathyClient.js:1311
 msgid "Certificate is invalid"
 msgstr "Certifikát je neplatný"
 
-#: ../js/ui/telepathyClient.js:1320
+#: ../js/ui/telepathyClient.js:1313
 msgid "Connection has been refused"
 msgstr "Spojení bylo odmítnuto"
 
-#: ../js/ui/telepathyClient.js:1322
+#: ../js/ui/telepathyClient.js:1315
 msgid "Connection can't be established"
 msgstr "Spojení nemohlo bát navázáno"
 
-#: ../js/ui/telepathyClient.js:1324
+#: ../js/ui/telepathyClient.js:1317
 msgid "Connection has been lost"
 msgstr "Spojení bylo ztraceno"
 
-#: ../js/ui/telepathyClient.js:1326
-#| msgid "This resource is already connected to the server"
+#: ../js/ui/telepathyClient.js:1319
 msgid "This account is already connected to the server"
 msgstr "Tento účet je již připojen k serveru"
 
-#: ../js/ui/telepathyClient.js:1328
-msgid "Connection has been replaced by a new connection using the same resource"
+#: ../js/ui/telepathyClient.js:1321
+msgid ""
+"Connection has been replaced by a new connection using the same resource"
 msgstr "Spojení bylo nahrazeno novým spojením, které používá stejný zdroj"
 
-#: ../js/ui/telepathyClient.js:1330
+#: ../js/ui/telepathyClient.js:1323
 msgid "The account already exists on the server"
 msgstr "Takový účet již na serveru existuje"
 
-#: ../js/ui/telepathyClient.js:1332
+#: ../js/ui/telepathyClient.js:1325
 msgid "Server is currently too busy to handle the connection"
 msgstr "Server je právě příliš zaneprázdněn na to, aby obsloužil spojení"
 
-#: ../js/ui/telepathyClient.js:1334
+#: ../js/ui/telepathyClient.js:1327
 msgid "Certificate has been revoked"
 msgstr "Certifikát byl odvolán"
 
-#: ../js/ui/telepathyClient.js:1336
-msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr "Certifikát používá nepříliš bezpečný šifrovací algoritmus nebo je z kryptografického hlediska slabý"
+#: ../js/ui/telepathyClient.js:1329
+msgid ""
+"Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgstr ""
+"Certifikát používá nepříliš bezpečný šifrovací algoritmus nebo je z "
+"kryptografického hlediska slabý"
 
-#: ../js/ui/telepathyClient.js:1338
-msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
-msgstr "Délka certifikátu serveru nebo délka zřetězených certifikátů serveru přesáhla omezení dané kryptografickou knihovnou"
+#: ../js/ui/telepathyClient.js:1331
+msgid ""
+"The length of the server certificate, or the depth of the server certificate "
+"chain, exceed the limits imposed by the cryptography library"
+msgstr ""
+"Délka certifikátu serveru nebo délka zřetězených certifikátů serveru "
+"přesáhla omezení dané kryptografickou knihovnou"
 
-#: ../js/ui/telepathyClient.js:1340
-#| msgid "Connection error"
+#: ../js/ui/telepathyClient.js:1333
 msgid "Internal error"
 msgstr "Vnitřní chyba"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1350
+#: ../js/ui/telepathyClient.js:1343
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Připojení k „%s“ selhalo"
 
-#: ../js/ui/telepathyClient.js:1359
+#: ../js/ui/telepathyClient.js:1352
 msgid "Reconnect"
 msgstr "Znovu připojit"
 
-#: ../js/ui/telepathyClient.js:1360
+#: ../js/ui/telepathyClient.js:1353
 msgid "Edit account"
 msgstr "Upravit účet"
 
-#: ../js/ui/telepathyClient.js:1406
+#: ../js/ui/telepathyClient.js:1399
 msgid "Unknown reason"
 msgstr "Neznámý důvod"
 
@@ -1579,9 +1632,7 @@ msgstr "Nečinný"
 msgid "Unavailable"
 msgstr "Nedostupný"
 
-#: ../js/ui/userMenu.js:579
-#: ../js/ui/userMenu.js:583
-#: ../js/ui/userMenu.js:653
+#: ../js/ui/userMenu.js:579 ../js/ui/userMenu.js:583 ../js/ui/userMenu.js:653
 msgid "Power Off..."
 msgstr "Vypnout…"
 
@@ -1614,8 +1665,12 @@ msgid "Your chat status will be set to busy"
 msgstr "Váš stav v konverzacích byl nastaven na „Zaneprázdněn“"
 
 #: ../js/ui/userMenu.js:673
-msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
-msgstr "Upozornění jsou nyní vypnuta, včetně zpráv v konverzacích. Váš stav on-line byl změněn tak, aby ostatní věděli, že si jejich zprávy nemusíte přečíst."
+msgid ""
+"Notifications are now disabled, including chat messages. Your online status "
+"has been adjusted to let others know that you might not see their messages."
+msgstr ""
+"Upozornění jsou nyní vypnuta, včetně zpráv v konverzacích. Váš stav on-line "
+"byl změněn tak, aby ostatní věděli, že si jejich zprávy nemusíte přečíst."
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1625,8 +1680,7 @@ msgstr "Upozornění jsou nyní vypnuta, včetně zpráv v konverzacích. Váš 
 msgid "Type to search..."
 msgstr "Vyhledávejte psaním…"
 
-#: ../js/ui/viewSelector.js:131
-#: ../src/shell-util.c:244
+#: ../js/ui/viewSelector.js:131 ../src/shell-util.c:252
 msgid "Search"
 msgstr "Hledat"
 
@@ -1648,7 +1702,7 @@ msgstr "%s říká Prorok"
 msgid "Your favorite Easter Egg"
 msgstr "Vaše oblíbené velikonoční vajíčko"
 
-#: ../js/ui/windowAttentionHandler.js:33
+#: ../js/ui/windowAttentionHandler.js:19
 #, c-format
 msgid "'%s' is ready"
 msgstr "Připraveno „%s“"
@@ -1690,6 +1744,14 @@ msgstr "Režim použitý GDM pro přihlašovací obrazovku"
 msgid "Failed to launch '%s'"
 msgstr "Nelze spustit „%s“"
 
+#: ../src/shell-keyring-prompt.c:708
+msgid "Passwords do not match."
+msgstr "Hesla si neodpovídají."
+
+#: ../src/shell-keyring-prompt.c:716
+msgid "Password cannot be blank"
+msgstr "Heslo nemůže být prázdné."
+
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
 msgstr "Spojené království"
@@ -1698,19 +1760,19 @@ msgstr "Spojené království"
 msgid "Default"
 msgstr "Výchozí"
 
-#: ../src/shell-polkit-authentication-agent.c:332
+#: ../src/shell-polkit-authentication-agent.c:339
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialogové okno ověření bylo uživatelem zrušeno"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:89
+#: ../src/shell-util.c:97
 msgid "Home"
 msgstr "Domovská složka"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:98
+#: ../src/shell-util.c:106
 msgid "File System"
 msgstr "Systém souborů"
 
@@ -1719,7 +1781,7 @@ msgstr "Systém souborů"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:294
+#: ../src/shell-util.c:302
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
