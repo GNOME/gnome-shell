@@ -1381,8 +1381,6 @@ _cogl_journal_flush (CoglJournal *journal)
    * that the timer isn't started recursively. */
   COGL_TIMER_START (_cogl_uprof_context, flush_timer);
 
-  cogl_push_framebuffer (journal->framebuffer);
-
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING: journal len = %d\n", journal->entries->len);
 
@@ -1464,8 +1462,6 @@ _cogl_journal_flush (CoglJournal *journal)
   cogl_object_unref (state.attribute_buffer);
 
   _cogl_journal_discard (journal);
-
-  cogl_pop_framebuffer ();
 
   COGL_TIMER_STOP (_cogl_uprof_context, flush_timer);
 }
