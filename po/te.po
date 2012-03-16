@@ -2,23 +2,37 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) 2011 Swecha Telugu Localisation Team <localization@swecha.net>.
-# A Mohan Vamsee <mohan.arza@ymail.com>, 2011.
+# A Mohan Vamsee(Swecha Team)) <mohan.arza@ymail.com>, 2011, 2012.
+# Sasi Bhushan Boddepalli <sasi@swecha.net>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.gnome-2-26\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-10-24 21:07+0000\n"
-"PO-Revision-Date: 2009-03-11 13:29+0530\n"
-"Last-Translator: A Mohan Vamsee <mohan.arza@ymail.com>\n"
+"POT-Creation-Date: 2012-03-15 21:29+0000\n"
+"PO-Revision-Date: 2012-03-16 17:03+0530\n"
+"Last-Translator: Sasi Bhushan Boddepalli <sasi@swecha.net>\n"
 "Language-Team: Telugu <indlinux-telugu@lists.sourceforge.net>\n"
-"Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: te\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "\n"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#| msgid "_Windows"
+msgid "Windows"
+msgstr "గవాక్షములు"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "View split on left"
+msgstr "ఎడమ వైపు స్ప్లిట్ చూడండి"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "View split on right"
+msgstr "కుడి వైపు  స్ప్లిట్ చూడండి"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
@@ -29,316 +43,7 @@ msgid ""
 "\"."
 msgstr "మరొక కూర్పునకు నిర్వహించేది  ప్రదర్శన పై %i తెరపైన   ముందుగానే జరుగుచున్నది \"%s\"."
 
-#: ../src/core/all-keybindings.h:88
-msgid "Switch to workspace 1"
-msgstr "పనిప్రదేశము 1 కి మారుము"
-
-#: ../src/core/all-keybindings.h:90
-msgid "Switch to workspace 2"
-msgstr "పనిప్రదేశము 2 కి మారుము"
-
-#: ../src/core/all-keybindings.h:92
-msgid "Switch to workspace 3"
-msgstr "పనిప్రదేశము 3 కి మారుము"
-
-#: ../src/core/all-keybindings.h:94
-msgid "Switch to workspace 4"
-msgstr "పనిప్రదేశము 4 కి మారుము"
-
-#: ../src/core/all-keybindings.h:96
-msgid "Switch to workspace 5"
-msgstr "పనిప్రదేశము 5 కి మారుము"
-
-#: ../src/core/all-keybindings.h:98
-msgid "Switch to workspace 6"
-msgstr "పనిప్రదేశము 6 కి మారుము"
-
-#: ../src/core/all-keybindings.h:100
-msgid "Switch to workspace 7"
-msgstr "పనిప్రదేశము 7 కి మారుము"
-
-#: ../src/core/all-keybindings.h:102
-msgid "Switch to workspace 8"
-msgstr "పనిప్రదేశము 8 కి మారుము"
-
-#: ../src/core/all-keybindings.h:104
-msgid "Switch to workspace 9"
-msgstr "పనిప్రదేశము 9 కి మారుము"
-
-#: ../src/core/all-keybindings.h:106
-msgid "Switch to workspace 10"
-msgstr "పనిప్రదేశము 10 కి మారుము"
-
-#: ../src/core/all-keybindings.h:108
-msgid "Switch to workspace 11"
-msgstr "పనిప్రదేశము 11 కి మారుము"
-
-#: ../src/core/all-keybindings.h:110
-msgid "Switch to workspace 12"
-msgstr "పనిప్రదేశము 12 కి మారుము"
-
-#: ../src/core/all-keybindings.h:122
-msgid "Switch to workspace on the left of the current workspace"
-msgstr "ప్రస్తుత పనిప్రదేశమునకు ఎడమ భాగములోవున్న పనిప్రదేశమునకు మారుము"
-
-#: ../src/core/all-keybindings.h:126
-msgid "Switch to workspace on the right of the current workspace"
-msgstr "ప్రస్తుత పనిప్రదేశమునకు కుడి భాగములోవున్న పనిప్రదేశమునకు మారుము"
-
-#: ../src/core/all-keybindings.h:130
-msgid "Switch to workspace above the current workspace"
-msgstr "ప్రస్తుత పనిప్రదేశమునకు పై భాగములోవున్న పనిప్రదేశమునకు మారుము"
-
-#: ../src/core/all-keybindings.h:134
-msgid "Switch to workspace below the current workspace"
-msgstr "ప్రస్తుత పనిప్రదేశమునకు క్రింద భాగములోవున్న పనిప్రదేశమునకు మారుము"
-
-#: ../src/core/all-keybindings.h:150
-msgid "Move between windows of an application, using a popup window"
-msgstr "ప్రత్యక్షమయే విండోని ఉపయోగించి కార్యక్షేత్రము యొక్క విండోల మథ్యకు జరుపుము"
-
-#: ../src/core/all-keybindings.h:153
-msgid "Move backward between windows of an application, using a popup window"
-msgstr "ప్రత్యక్షమయే విండోని ఉపయోగించి కార్యక్షేత్రము యొక్క విండోల మథ్యనుండి వెనక్కి జరుపుము"
-
-#: ../src/core/all-keybindings.h:157
-msgid "Move between windows, using a popup window"
-msgstr "ప్రత్యక్షమయే విండోని ఉపయోగించి విండోల మథ్యకు జరుపుము"
-
-#: ../src/core/all-keybindings.h:160
-msgid "Move backward between windows, using a popup window"
-msgstr "ప్రత్యక్షమయే విండోని ఉపయోగించి విండోల మథ్యనుండి వెనక్కి జరుపుము"
-
-#: ../src/core/all-keybindings.h:163
-msgid "Move between panels and the desktop, using a popup window"
-msgstr "ప్రత్యక్షమయే విండోని ఉపయోగించి ప్యానల్లు మరియు రంగస్థలము మథ్యకు జరుపుము"
-
-#: ../src/core/all-keybindings.h:166
-msgid "Move backward between panels and the desktop, using a popup window"
-msgstr "ప్రత్యక్షమయే విండోని ఉపయోగించి ప్యానల్లు మరియు రంగస్థలము మథ్య నుండి వెనక్కి జరుపుము"
-
-#: ../src/core/all-keybindings.h:171
-msgid "Move between windows of an application immediately"
-msgstr "అతిత్వరగా కార్యక్షేత్రము యొక్క విండోల మథ్యకు జరుపుము"
-
-#: ../src/core/all-keybindings.h:174
-msgid "Move backward between windows of an application immediately"
-msgstr "అతిత్వరగా కార్యక్షేత్రము యొక్క విండోల మథ్య నుండి వెనక్కి జరుపుము"
-
-#: ../src/core/all-keybindings.h:177
-msgid "Move between windows immediately"
-msgstr "అతిత్వరగా విండోల మథ్యకు జరుపుము"
-
-#: ../src/core/all-keybindings.h:180
-msgid "Move backward between windows immediately"
-msgstr "అతిత్వరగా విండోల మథ్య నుండి వెనక్కి జరుపుము"
-
-#: ../src/core/all-keybindings.h:183
-msgid "Move between panels and the desktop immediately"
-msgstr "అతిత్వరగా ప్యానల్లు మరియు రంగస్థలం మథ్యకు జరుపుము"
-
-#: ../src/core/all-keybindings.h:186
-msgid "Move backward between panels and the desktop immediately"
-msgstr "అతిత్వరగా ప్యానల్లు మరియు రంగస్థలం మథ్య నుండి వెనక్కి జరుపుము"
-
-#: ../src/core/all-keybindings.h:203
-msgid "Hide all normal windows and set focus to the desktop"
-msgstr "సాధారణ విండోలను దాచివుంచి రంగస్థలం యొక్క కేంద్రమును సరిచేయుము"
-
-#: ../src/core/all-keybindings.h:206
-msgid "Show the panel's main menu"
-msgstr "ప్యానల్ యొక్క ముఖ్య జాబితాను చూపించుము"
-
-#: ../src/core/all-keybindings.h:209
-msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "పానల్ యొక్క \"కార్యక్షేత్రమును జరుపుట\" అను వివరణ పేటికను చూపించుము"
-
-#: ../src/core/all-keybindings.h:211
-msgid "Start or stop recording the session"
-msgstr "సమకూర్పును వాయుట మొదలపెట్టుము లేక ఆపివేయుము"
-
-#: ../src/core/all-keybindings.h:252
-msgid "Take a screenshot"
-msgstr "తెరఛాయాచిత్రమును తీసుకొనుము"
-
-#: ../src/core/all-keybindings.h:254
-msgid "Take a screenshot of a window"
-msgstr "విండో యొక్క తెరఛాయాచిత్రమును తీసుకొనుము"
-
-#: ../src/core/all-keybindings.h:256
-msgid "Run a terminal"
-msgstr "అగ్రమును నడుపుము"
-
-#: ../src/core/all-keybindings.h:271
-msgid "Activate the window menu"
-msgstr "విండో జాబితాను క్రియాశీలపరుచుము"
-
-#: ../src/core/all-keybindings.h:274
-msgid "Toggle fullscreen mode"
-msgstr "పూర్తితెర సంవిధానమును మార్చుము"
-
-#: ../src/core/all-keybindings.h:276
-msgid "Toggle maximization state"
-msgstr "పెద్దదిగాచేయు స్థితిని మార్చుము"
-
-#: ../src/core/all-keybindings.h:278
-msgid "Toggle whether a window will always be visible over other windows"
-msgstr "ఒక విండో ఇతర విండోలపై గోచరించునో లేదో మార్చి చూడుము"
-
-#: ../src/core/all-keybindings.h:280
-msgid "Maximize window"
-msgstr "విండోని పెద్దదిగా చేయుము"
-
-#: ../src/core/all-keybindings.h:282
-msgid "Restore window"
-msgstr "విండోని పునఃస్ధాపించు"
-
-#: ../src/core/all-keybindings.h:284
-msgid "Toggle shaded state"
-msgstr "మూసివున్న స్ధితిని మార్చుము"
-
-#: ../src/core/all-keybindings.h:286
-msgid "Minimize window"
-msgstr "విండోని చిన్నదిగా చేయుము"
-
-#: ../src/core/all-keybindings.h:288
-msgid "Close window"
-msgstr "గవాక్షమును మూయుము"
-
-#: ../src/core/all-keybindings.h:290
-msgid "Move window"
-msgstr "విండోని జరుపుము"
-
-#: ../src/core/all-keybindings.h:292
-msgid "Resize window"
-msgstr "విండోని పునఃపరిమాణించుము"
-
-#: ../src/core/all-keybindings.h:295
-msgid "Toggle whether window is on all workspaces or just one"
-msgstr "విండో అన్ని పనిప్రదేశములపైన లేక ఒకదానిపైన మాత్రమే ఉన్నదా లేదా మార్చి చుడుము"
-
-#: ../src/core/all-keybindings.h:299
-msgid "Move window to workspace 1"
-msgstr "విండోని పనిప్రదేశము 1 నకు జరుపుము"
-
-#: ../src/core/all-keybindings.h:302
-msgid "Move window to workspace 2"
-msgstr "విండోని పనిప్రదేశము 2 నకు జరుపుము"
-
-#: ../src/core/all-keybindings.h:305
-msgid "Move window to workspace 3"
-msgstr "విండోని పనిప్రదేశము 3 నకు  జరుపుము"
-
-#: ../src/core/all-keybindings.h:308
-msgid "Move window to workspace 4"
-msgstr "విండోని పనిప్రదేశము 4 నకు  జరుపుము"
-
-#: ../src/core/all-keybindings.h:311
-msgid "Move window to workspace 5"
-msgstr "విండోని పనిప్రదేశము 5 నకు జరుపుము"
-
-#: ../src/core/all-keybindings.h:314
-msgid "Move window to workspace 6"
-msgstr "విండోని పనిప్రదేశము 6 నకు  జరుపుము"
-
-#: ../src/core/all-keybindings.h:317
-msgid "Move window to workspace 7"
-msgstr "విండోని పనిప్రదేశము 7 నకు  జరుపుము"
-
-#: ../src/core/all-keybindings.h:320
-msgid "Move window to workspace 8"
-msgstr "విండోని పనిప్రదేశము 8 నకు  జరుపుము"
-
-#: ../src/core/all-keybindings.h:323
-msgid "Move window to workspace 9"
-msgstr "విండోని పనిప్రదేశము 9 నకు  జరుపుము"
-
-#: ../src/core/all-keybindings.h:326
-msgid "Move window to workspace 10"
-msgstr "విండోని పనిప్రదేశము 10 నకు  జరుపుము"
-
-#: ../src/core/all-keybindings.h:329
-msgid "Move window to workspace 11"
-msgstr "విండోని పనిప్రదేశము 11 నకు  జరుపుము"
-
-#: ../src/core/all-keybindings.h:332
-msgid "Move window to workspace 12"
-msgstr "విండోని పనిప్రదేశము 12 నకు  జరుపుము"
-
-#: ../src/core/all-keybindings.h:344
-msgid "Move window one workspace to the left"
-msgstr "విండో ఒక పనిప్రదేశమును ఎడమ భాగమునకు జరుపుము"
-
-#: ../src/core/all-keybindings.h:347
-msgid "Move window one workspace to the right"
-msgstr "విండో ఒక పనిప్రదేశమును కుడి భాగమునకు జరుపుము"
-
-#: ../src/core/all-keybindings.h:350
-msgid "Move window one workspace up"
-msgstr "విండో ఒక పనిప్రదేశమును పై భాగమునకు జరుపుము"
-
-#: ../src/core/all-keybindings.h:353
-msgid "Move window one workspace down"
-msgstr "విండో ఒక పనిప్రదేశమును క్రింది భాగమునకు జరుపుము"
-
-#: ../src/core/all-keybindings.h:356
-msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr ""
-"ఒకవేళ విండోను వేరొక విండో చేత  మూసివున్నచో దానిని వెలుపలికి తీసుకురమ్ము లేనిచో లోనికి తీసుకువెళ్ళుము"
-
-#: ../src/core/all-keybindings.h:358
-msgid "Raise window above other windows"
-msgstr "విండోని ఇతర విండోల వెలుపలికి తీసుకొనిరమ్ము"
-
-#: ../src/core/all-keybindings.h:360
-msgid "Lower window below other windows"
-msgstr "విండోని ఇతర విండోల లోపలికి తీసుకొనివెళ్ళుమ్ము"
-
-#: ../src/core/all-keybindings.h:364
-msgid "Maximize window vertically"
-msgstr "విండోని నిలువుగా పెద్దది చేయుము"
-
-#: ../src/core/all-keybindings.h:368
-msgid "Maximize window horizontally"
-msgstr "విండోని అడ్డంగా పెద్దది చేయుము"
-
-#: ../src/core/all-keybindings.h:372
-msgid "Move window to north-west (top left) corner"
-msgstr "విండోని ఉత్తర-పడమర (ఎడమ పైభాగము)పు మూలలోనికి జరుపుము"
-
-#: ../src/core/all-keybindings.h:375
-msgid "Move window to north-east (top right) corner"
-msgstr "విండోని ఉత్తర-తూర్పు (కుడి పైభాగము)పు మూలలోనికి జరుపుము"
-
-#: ../src/core/all-keybindings.h:378
-msgid "Move window to south-west (bottom left) corner"
-msgstr "విండోని దక్షిన-పడమర (ఎడమ క్రిందభాగము)పు మూలలోనికి జరుపుము"
-
-#: ../src/core/all-keybindings.h:381
-msgid "Move window to south-east (bottom right) corner"
-msgstr "విండోని దక్షిన-తూర్పు (కుడి క్రిందభాగము)పు మూలలోనికి జరుపుము"
-
-#: ../src/core/all-keybindings.h:385
-msgid "Move window to north (top) side of screen"
-msgstr "విండోని తెరకు ఉత్తర (పై) భాగమునికి జరుపుము"
-
-#: ../src/core/all-keybindings.h:388
-msgid "Move window to south (bottom) side of screen"
-msgstr "విండోని తెరకు దక్షిన (క్రింద) భాగమునికి జరుపుము"
-
-#: ../src/core/all-keybindings.h:391
-msgid "Move window to east (right) side of screen"
-msgstr "విండోని తెరకు తూర్పు(కుడి) భాగమునికి జరుపుము"
-
-#: ../src/core/all-keybindings.h:394
-msgid "Move window to west (left) side of screen"
-msgstr "విండోని తెరకు  పడమర(ఎడమ) భాగమునికి జరుపుము"
-
-#: ../src/core/all-keybindings.h:397
-msgid "Move window to center of screen"
-msgstr "విండోని తెర మథ్యకు జరుపుము"
-
-#: ../src/core/bell.c:310
+#: ../src/core/bell.c:307
 msgid "Bell event"
 msgstr "బెళ్ సన్నివేశము"
 
@@ -372,46 +77,22 @@ msgstr "ఆగుము(_W)"
 msgid "_Force Quit"
 msgstr "బలవంతముగా త్యజించుము(_F)"
 
-#: ../src/core/display.c:365
+#: ../src/core/display.c:387
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "కూర్పునకు తొలిగించిన %s పొడిగింపు అవసరమున్నది"
 
-#: ../src/core/display.c:431
+#: ../src/core/display.c:453
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X విండో సిస్టమ్ ప్రదర్శన '%s'ను తెరుచుట విఫలమైనది\n"
 
-#: ../src/core/keybindings.c:759
+#: ../src/core/keybindings.c:852
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "కీ %sని ముందుగానే %x మార్పుచేయునవి తో పాటు  వేరొక కార్యక్రమము బంధించున్నదిగా  ఉపయోగిస్తుంది\n"
-
-#. Displayed when a keybinding which is
-#. * supposed to launch a program fails.
-#.
-#: ../src/core/keybindings.c:2524
-#, c-format
-msgid ""
-"There was an error running <tt>%s</tt>:\n"
-"\n"
-"%s"
-msgstr ""
-"<tt>%s</tt>:\n"
-"అను తప్పిదము జరుగుతుండెడది\n"
-"%s"
-
-#: ../src/core/keybindings.c:2614
-#, c-format
-msgid "No command %d has been defined.\n"
-msgstr "ఏ ఆదేశము %d ని ర్వచించలేకపోయినది.\n"
-
-#: ../src/core/keybindings.c:3626
-#, c-format
-msgid "No terminal command has been defined.\n"
-msgstr "ఏ అగ్రపు ఆదేశం నిర్వచించలేకపోయినది.\n"
 
 #: ../src/core/main.c:206
 msgid "Disable connection to session manager"
@@ -450,7 +131,7 @@ msgstr ""
 "వైవిద్యాంశమును కనుగొనలేకపోవుచున్నది! %s మరియు సాధారణ వైవిద్యాంశములు కలిగివున్నవో లేవో  "
 "నిర్దారించుకొనుము.\n"
 
-#: ../src/core/mutter.c:42
+#: ../src/core/mutter.c:40
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -465,53 +146,15 @@ msgstr ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 
-#: ../src/core/mutter.c:56
+#: ../src/core/mutter.c:54
 msgid "Print version"
 msgstr "వివరణము ముద్రించు"
 
-#: ../src/core/mutter.c:62
+#: ../src/core/mutter.c:60
 msgid "Comma-separated list of compositor plugins"
 msgstr "కామ-కూర్పుచేయు ప్లగ్ - ఇన్‌ల వేరుచేయబడిన జాబిత"
 
-#.
-#. * We found it, but it was invalid.  Complain.
-#. *
-#. * FIXME: This replicates the original behaviour, but in the future
-#. * we might consider reverting invalid keys to their original values.
-#. * (We know the old value, so we can look up a suitable string in
-#. * the symtab.)
-#. *
-#. * (Empty comment follows so the translators don't see this.)
-#.
-#.
-#: ../src/core/prefs.c:550 ../src/core/prefs.c:711
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "జికాంఫ్ కీ '%s'ను నిస్సారమైన విలువగా మార్పుచేసెను\n"
-
-#: ../src/core/prefs.c:637 ../src/core/prefs.c:880
-#, c-format
-msgid "%d stored in GConf key %s is out of range %d to %d\n"
-msgstr "భద్రపరిచిన %d జికాంఫ్ కీ %sలో  %d నుండి  %d పరిథిని మించినది\n"
-
-#: ../src/core/prefs.c:681 ../src/core/prefs.c:758 ../src/core/prefs.c:806
-#: ../src/core/prefs.c:870 ../src/core/prefs.c:1331 ../src/core/prefs.c:1347
-#: ../src/core/prefs.c:1364 ../src/core/prefs.c:1380
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "జికాంఫ్ కీ \"%s\"ను నిస్సారమైన రకముగా మార్పుచేసెను\n"
-
-#: ../src/core/prefs.c:1210
-#, c-format
-msgid "GConf key %s is already in use and can't be used to override %s\n"
-msgstr "జికాంఫ్ కీ %s ముందుగానే ఉపయోగములోనున్నది  మరియు రద్దుచేయుటకు %sను ఉపయోగించబడదు\n"
-
-#: ../src/core/prefs.c:1269
-#, c-format
-msgid "Can't override GConf key, %s not found\n"
-msgstr "జికాంఫ్ కీ రద్దుచేయుట కుదరదు, %s కనిపెట్టబడలేదు\n"
-
-#: ../src/core/prefs.c:1454
+#: ../src/core/prefs.c:1077
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -519,56 +162,37 @@ msgstr ""
 "విరిగిన కార్యక్షేత్రములకు చుట్టుప్రక్కలపనిచేయువాటిని నిరుపయోగపరిచెను. కొన్ని కార్యక్షేత్రములు సరైన రీతిలో "
 "వ్యవహరించకపోవచ్చు.\n"
 
-#: ../src/core/prefs.c:1531
+#: ../src/core/prefs.c:1152
 #, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
+#| msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "%s జికాన్‌ఫ్ కీ నుండి \"%s\" పార్స్ అక్షరశైలి వివరించలేకపోవుచున్నది\n"
 
-#: ../src/core/prefs.c:1593
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "మోస్ బటన్‌  మార్చునదికి రూపకరించిన దత్తాంశస్థానములో కనుగొనిన \"%s\"కు విలువలేదు\n"
 
-#: ../src/core/prefs.c:2028
-#, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "పనిప్రదేశముల సంఖ్యను %dకి అమర్చుతున్నప్పుడు కలిగిన దోషము: %s\n"
-
-#: ../src/core/prefs.c:2212 ../src/core/prefs.c:2714
-#, c-format
-msgid "Workspace %d"
-msgstr "%d పనిప్రదేశము"
-
-#: ../src/core/prefs.c:2244 ../src/core/prefs.c:2422
+#: ../src/core/prefs.c:1739
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "కీబంధించునదికి రూపకరించిన దత్తాంశస్థానములో కనుగొనిన \"%s\"కు విలువలేదు\"%s\"\n"
 
-#: ../src/core/prefs.c:2795
+#: ../src/core/prefs.c:1836
 #, c-format
-msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "%d పనిప్రదేశమునకు \"%s\"అను నామము అమరిస్తున్నప్పుడు కలిగిన దోషము: %s\n"
+msgid "Workspace %d"
+msgstr "%d పనిప్రదేశము"
 
-#: ../src/core/prefs.c:3009
-#, c-format
-msgid "Error setting live hidden windows status status: %s\n"
-msgstr " దాగివున్న విండోల సుస్థితిని అమరిస్తున్నప్పుడు కలిగిన దోషము: %s\n"
-
-#: ../src/core/prefs.c:3044
-#, c-format
-msgid "Error setting no tab popup status: %s\n"
-msgstr "ఏ టాబ్ ప్రత్యక్షమవ్వని సుస్థితిని అమరిస్తున్నప్పుడు కలిగిన దోషము: %s\n"
-
-#: ../src/core/screen.c:741
+#: ../src/core/screen.c:730
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "%d తెర '%s' ప్రదర్శనపై నిస్సారమైనది\n"
 
-#: ../src/core/screen.c:757
+#: ../src/core/screen.c:746
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -577,18 +201,18 @@ msgstr ""
 "%d తెర ముందుగానే విండో నిర్వాహిక కలిగివున్న \"%s\" ప్రదర్శనపై ఉన్నది; ప్రస్తుత విండో నిర్వాహికను --"
 "పునఃస్థాపించు ఇచ్చాపూర్వకముచేత  పునఃస్థాపించుటకు ప్రయత్నించుము.\n"
 
-#: ../src/core/screen.c:784
+#: ../src/core/screen.c:773
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "%d తెర పై \"%s\" ప్రదర్శనపు విండో నిర్వాహికను ఎంపిక సంపాదించుటలేదు\n"
 
-#: ../src/core/screen.c:839
+#: ../src/core/screen.c:828
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "%d తెర \"%s\" ప్రదర్శనపై  ముందుగానే ఒక విండో నిర్వాహికను కలిగివున్నది\n"
 
-#: ../src/core/screen.c:1024
+#: ../src/core/screen.c:1013
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "%d తెరని \"%s\" ప్రదర్శనపై విడుదలచేయబడుటలేదు\n"
@@ -686,7 +310,7 @@ msgid "Window manager error: "
 msgstr "విండో నిర్వాహిక దోషము: "
 
 #. first time through
-#: ../src/core/window.c:7082
+#: ../src/core/window.c:7269
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -702,14 +326,14 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7745
+#: ../src/core/window.c:7932
 #, c-format
 msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
-"%d x %d and max size %d x %d; this doesn't make much sense.\n"
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"%s విండోని పునఃపరిమానించుట కుదరదని తెలియజేయుటకు MWM సూచనను అమర్చినది, కాని కనిష్ఠ పరిమాణం %d x "
-"%d మరియు గనిష్ఠ పరిమాణం %d x %d ను అమర్చినది; ఇది అర్దవంతమైనదికాదు.\n"
+"%s విండోని పునఃపరిమానించుట కుదరదని తెలియజేయుటకు MWM సూచనను అమర్చినది, కాని కనిష్ఠ పరిమాణం %d x %"
+"d మరియు గనిష్ఠ పరిమాణం %d x %d ను అమర్చినది; ఇది అర్దవంతమైనదికాదు.\n"
 
 #: ../src/core/window-props.c:309
 #, c-format
@@ -762,47 +386,11 @@ msgstr ""
 msgid "Mutter"
 msgstr "మట్టర్"
 
-#: ../src/mutter.schemas.in.h:1
-msgid "Attach modal dialogs"
-msgstr "మోడల్ వివరణములను జతచేయుము"
-
-#: ../src/mutter.schemas.in.h:2
-msgid ""
-"Determines whether hidden windows (i.e., minimized windows and windows on "
-"other workspaces than the current one) should be kept alive."
-msgstr ""
-"దాగివున్న విండోలను (అనగా చిన్నవిగా చేసిన విండోలు మరియువేరొక పనిప్రదేశముల పైనున్న విండోలు) వెలికి "
-"తీయవలయునోలేదో వివరిస్తుంది."
-
-#: ../src/mutter.schemas.in.h:3
-msgid ""
-"Determines whether workspace switching should happen for windows on all "
-"monitors or only for windows on the primary monitor."
-msgstr ""
-"పనిప్రదేశములను మార్చుట ప్రాథమిక దర్శిని పై ఉన్న విండోలకు మాత్రమేన లేకఅన్ని పనిప్రదేశములపైనున్న విండోలకు "
-"కూడా అమలవుతుందో లేదో అనేది వివరిస్తుంది"
-
-#: ../src/mutter.schemas.in.h:4
-msgid "Draggable border width"
-msgstr "కదుల్చుటకు వీలుగా ఉన్న సరిహద్దు వెడల్పు"
-
-#: ../src/mutter.schemas.in.h:5
-msgid "Live Hidden Windows"
-msgstr "చలనం కలిగిన దాగిన విండోలు"
-
-#: ../src/mutter.schemas.in.h:6
+#: ../src/org.gnome.mutter.gschema.xml.in.h:1
 msgid "Modifier to use for extended window management operations"
 msgstr "పొడిగించినటువంటి విండో నిర్వాహణ కార్యముల కొఱకు మార్చుదానిని ఉపయోగించెదము"
 
-#: ../src/mutter.schemas.in.h:7
-msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
-"not enough, invisible borders will be added to meet this value."
-msgstr ""
-"అన్ని కదల్చబడుటకు వీలుగావున్న సరిహద్దుల మొత్తం. వైవిద్వాంశముపు దర్శనీయమైన సరిహద్దులుసరిపోనిచో, ఈ "
-"విలువకు చేరుటకు అగోచరమైన సరిహద్దులను జోడించబడును"
-
-#: ../src/mutter.schemas.in.h:8
+#: ../src/org.gnome.mutter.gschema.xml.in.h:2
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -813,7 +401,11 @@ msgstr ""
 "PC హార్డ్ వేర్ పై \"విండోస్ కీ\"అనునిది అప్రమేయముగా వుండుటకు ఆశ చూపుతున్నది.ఈ బంధనమును "
 "అప్రమేయముగా లేక ఖాళీ పదబంధముగా అమర్చుటకు ఊహించబడినది"
 
-#: ../src/mutter.schemas.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:3
+msgid "Attach modal dialogs"
+msgstr "మోడల్ వివరణములను జతచేయుము"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:4
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -822,58 +414,92 @@ msgstr ""
 "నిజమైనప్పుడు దేనికిదానికి శీర్షికపట్టాలకు బదులుగా మూలపు విండో యొక్క శీర్షికపట్టాకు మోడల్ పట్టాలు జతపరిచినవి "
 "దర్శనమిస్తాయిమరియు అవి మూలపు విండోతో కలిపి జరపబడెను."
 
-#: ../src/mutter.schemas.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:5
+msgid "Live Hidden Windows"
+msgstr "చలనం కలిగిన దాగిన విండోలు"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
+msgid ""
+"Determines whether hidden windows (i.e., minimized windows and windows on "
+"other workspaces than the current one) should be kept alive."
+msgstr ""
+"దాగివున్న విండోలను (అనగా చిన్నవిగా చేసిన విండోలు మరియువేరొక పనిప్రదేశముల పైనున్న విండోలు) వెలికి "
+"తీయవలయునోలేదో వివరిస్తుంది."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "తెర అంచులలో విండోస్ పడుతున్నప్పుడు అంచు దళము పరచుట ప్రారంభించు"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+msgid ""
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
+msgstr ""
+"ఎనేబుల్ చేస్తే, నిలువు తెర అంచులలో విండోస్ పడుతున్నపుడు నిలువుగా వాటిని పెంచుకుంటుంది మరియు "
+"అందుబాటులో ప్రాంతం సగం కవర్ చేయడానికి అడ్డంగా వాటిని పెంచుకుంటుంది. టాప్ స్క్రీన్ అంచున విండోస్ "
+"పదుతున్నపుడు  పూర్తిగా వాటిని పెంచుకుంటుంది."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+msgid "Workspaces are managed dynamically"
+msgstr "పని చేసే స్థలాలు గతికంగా నిర్వహింపబడ్డాయి."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+"పని చేసేస్థలాలు  గతికంగా నిర్వహించారా  లేదో లేదా పని చేసేస్థలాలు ఒక స్టాటిక్ సంఖ్య (org.gnome.desktop."
+"wm.అభీష్టాల లో num-workspaces కీ ద్వారా గుర్తిస్తారు) ఉందో లేదో నిర్ణయిస్తుంది."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "Workspaces only on primary"
 msgstr "పనిప్రదేశములు ప్రాథమికము పైనే వుండును"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"పనిప్రదేశములను మార్చుట ప్రాథమిక దర్శిని పై ఉన్న విండోలకు మాత్రమేన లేకఅన్ని పనిప్రదేశములపైనున్న విండోలకు "
+"కూడా అమలవుతుందో లేదో అనేది వివరిస్తుంది"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "No tab popup"
+msgstr "పాపప్ టాబ్ లేదు."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr "పాప్అప్ మరియు హైలైట్ ఫ్రేమ్ యొక్క ఉపయోగం విండో సైక్లింగ్ కోసం డిసేబుల్ చేయాలి లేదో నిర్ణయిస్తుంది."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr "కదుల్చుటకు వీలుగా ఉన్న సరిహద్దు వెడల్పు"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+msgid ""
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
+msgstr ""
+"అన్ని కదల్చబడుటకు వీలుగావున్న సరిహద్దుల మొత్తం. వైవిద్వాంశముపు దర్శనీయమైన సరిహద్దులుసరిపోనిచో, ఈ "
+"విలువకు చేరుటకు అగోచరమైన సరిహద్దులను జోడించబడును"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+#| msgid "Remove Window From Top"
+msgid "Select window from tab popup"
+msgstr "పాప్అప్ టాబ్ నుండి విండో ఎంచుకోండి"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid "Cancel tab popup"
+msgstr "టాబ్ పాప్అప్ రద్దు"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "వుపయోగించుము: %s\n"
-
-#: ../src/ui/frames.c:1157
-msgid "Close Window"
-msgstr "గవాక్షమును మూసివేయు"
-
-#: ../src/ui/frames.c:1160
-msgid "Window Menu"
-msgstr "విండో జాబితా"
-
-#: ../src/ui/frames.c:1163
-msgid "Minimize Window"
-msgstr "విండోని చిన్నదిగాచేయుము"
-
-#: ../src/ui/frames.c:1166
-msgid "Maximize Window"
-msgstr "విండోని పెద్దదిగాచేయుము"
-
-#: ../src/ui/frames.c:1169
-msgid "Restore Window"
-msgstr "విండోని పునఃప్రస్థాపించుము"
-
-#: ../src/ui/frames.c:1172
-msgid "Roll Up Window"
-msgstr "విండోని ఎగువకు మడువుము"
-
-#: ../src/ui/frames.c:1175
-msgid "Unroll Window"
-msgstr "విండోని మడువవద్దు"
-
-#: ../src/ui/frames.c:1178
-msgid "Keep Window On Top"
-msgstr "విండోని పైన వుంచుము"
-
-#: ../src/ui/frames.c:1181
-msgid "Remove Window From Top"
-msgstr "పైనుంచి విండోని తీసివేయుము"
-
-#: ../src/ui/frames.c:1184
-msgid "Always On Visible Workspace"
-msgstr "ఎల్లప్పుడూ గోచరించు పనిప్రదేశముపైనే"
-
-#: ../src/ui/frames.c:1187
-msgid "Put Window On Only One Workspace"
-msgstr "ఒక పనిప్రదేశము పైన మాత్రమే విండోని ఉంచుము"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:69
@@ -1782,101 +1408,101 @@ msgstr "ఇది 'తెరువుము'అను  ప్రతిమతో 
 msgid "This is a demo button with a 'quit' icon"
 msgstr "ఇది 'త్యజించు'అను  ప్రతిమతో కూడివున్న మచ్చునకు ఒక బటన్"
 
-#: ../src/ui/theme-viewer.c:253
+#: ../src/ui/theme-viewer.c:248
 msgid "This is a sample message in a sample dialog"
 msgstr "ఇది మచ్చుకకు ఒక వివిరణములో మచ్చుకకు ఒక సందేశం"
 
-#: ../src/ui/theme-viewer.c:336
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "జాబితాలోని బూటకపు అంశము %d\n"
 
-#: ../src/ui/theme-viewer.c:371
+#: ../src/ui/theme-viewer.c:363
 msgid "Border-only window"
 msgstr "సరిహద్దు మాత్రమే కలిగిన విండో"
 
-#: ../src/ui/theme-viewer.c:373
+#: ../src/ui/theme-viewer.c:365
 msgid "Bar"
 msgstr "పట్టీ"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:382
 msgid "Normal Application Window"
 msgstr "సాధారణ కార్యక్షేత్రపు విండో"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:386
 msgid "Dialog Box"
 msgstr "వివరణ పేటిక"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:390
 msgid "Modal Dialog Box"
 msgstr "మోడల్ వివరణ పేటిక"
 
-#: ../src/ui/theme-viewer.c:402
+#: ../src/ui/theme-viewer.c:394
 msgid "Utility Palette"
 msgstr "వర్ణపలకపు సౌలభ్యం"
 
-#: ../src/ui/theme-viewer.c:406
+#: ../src/ui/theme-viewer.c:398
 msgid "Torn-off Menu"
 msgstr "మూసివేయు జాబితా"
 
-#: ../src/ui/theme-viewer.c:410
+#: ../src/ui/theme-viewer.c:402
 msgid "Border"
 msgstr "సరిహద్దు"
 
-#: ../src/ui/theme-viewer.c:414
+#: ../src/ui/theme-viewer.c:406
 msgid "Attached Modal Dialog"
 msgstr "జోడించిన మోడల్ వివరణ"
 
-#: ../src/ui/theme-viewer.c:747
+#: ../src/ui/theme-viewer.c:739
 #, c-format
 msgid "Button layout test %d"
 msgstr "బటన్ కూర్పు పరీక్ష %d"
 
-#: ../src/ui/theme-viewer.c:776
+#: ../src/ui/theme-viewer.c:768
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "ఒక విండో చట్రమును గీయుట కొఱకు  %g మిల్లిసెకన్‌ల సమయము పడుతుంది"
 
-#: ../src/ui/theme-viewer.c:821
+#: ../src/ui/theme-viewer.c:813
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "ఉపయోగం: మెటాసిటీ-వైవిద్వాంశం-చూపించునది [THEMENAME]\n"
 
-#: ../src/ui/theme-viewer.c:828
+#: ../src/ui/theme-viewer.c:820
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "వైవిద్వాంశమును బర్తీచేయుచున్నప్పుడు కలిగిన దోషము: %s\n"
 
-#: ../src/ui/theme-viewer.c:834
+#: ../src/ui/theme-viewer.c:826
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "\"%s\" అను  వైవిద్వాంశము %g సెకన్‌లలో బర్తీచేయబడినది\n"
 
-#: ../src/ui/theme-viewer.c:878
+#: ../src/ui/theme-viewer.c:870
 msgid "Normal Title Font"
 msgstr "సాధారణ శీర్షిక అక్షరశైలి"
 
-#: ../src/ui/theme-viewer.c:884
+#: ../src/ui/theme-viewer.c:876
 msgid "Small Title Font"
 msgstr "చిన్న శీర్షిక అక్షరశైలి"
 
-#: ../src/ui/theme-viewer.c:890
+#: ../src/ui/theme-viewer.c:882
 msgid "Large Title Font"
 msgstr "పెద్ద శీర్షిక అక్షరశైలి"
 
-#: ../src/ui/theme-viewer.c:895
+#: ../src/ui/theme-viewer.c:887
 msgid "Button Layouts"
 msgstr "బటన్ కూర్పులు"
 
-#: ../src/ui/theme-viewer.c:900
+#: ../src/ui/theme-viewer.c:892
 msgid "Benchmark"
 msgstr "బెంచ్‌మార్క్"
 
-#: ../src/ui/theme-viewer.c:952
+#: ../src/ui/theme-viewer.c:944
 msgid "Window Title Goes Here"
 msgstr "విండో శీర్షిక ఇక్కడ నడుస్తోంది"
 
-#: ../src/ui/theme-viewer.c:1055
+#: ../src/ui/theme-viewer.c:1047
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1886,42 +1512,347 @@ msgstr ""
 "%d చట్రములను %g క్లైంట్ భాగపు సెకన్‌లలో(ఒక చట్రమునకు %g సెకన్‌లు)మరియు %g సెకన్‌ల గోడపు గడియారము "
 "సమయము తో పాటుగా x సేవిక వనరులను చిత్రీకరించెను(ఒక చట్రమునకు %g సెకన్‌లు)\n"
 
-#: ../src/ui/theme-viewer.c:1274
+#: ../src/ui/theme-viewer.c:1266
 msgid "position expression test returned TRUE but set error"
 msgstr "స్థానపు వైఖరి పరీక్ష TRUE అని తేల్చినది కాని దోషమును చూపించలేదు"
 
-#: ../src/ui/theme-viewer.c:1276
+#: ../src/ui/theme-viewer.c:1268
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "స్థానపు వైఖరి పరీక్ష FALSE అని తేల్చినది కాని దోషమును చూపించలేదు"
 
-#: ../src/ui/theme-viewer.c:1280
+#: ../src/ui/theme-viewer.c:1272
 msgid "Error was expected but none given"
 msgstr "దోషమును ఊహించెను కాని ఏమి ఇవ్వలేదు"
 
-#: ../src/ui/theme-viewer.c:1282
+#: ../src/ui/theme-viewer.c:1274
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "%d దోషమును ఊహించెను కాని %d ఇచ్చినది"
 
-#: ../src/ui/theme-viewer.c:1288
+#: ../src/ui/theme-viewer.c:1280
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "దోషమును ఊహించలేదు కాని ఒకటటి పునరాగమించినది: %s"
 
-#: ../src/ui/theme-viewer.c:1292
+#: ../src/ui/theme-viewer.c:1284
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x విలువ %d అని ఉండెడది, %d ఊహించబడినది"
 
-#: ../src/ui/theme-viewer.c:1295
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y విలువ %d అని ఉండెడది, %d ఊహించబడినది"
 
-#: ../src/ui/theme-viewer.c:1360
+#: ../src/ui/theme-viewer.c:1352
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d అనుకరించు వైఖరిలను %g సెకన్‌లలో పార్స్ చేయబడినవి(సగటుగా %g సెకన్‌లు)\n"
+
+#~ msgid "Switch to workspace 1"
+#~ msgstr "పనిప్రదేశము 1 కి మారుము"
+
+#~ msgid "Switch to workspace 2"
+#~ msgstr "పనిప్రదేశము 2 కి మారుము"
+
+#~ msgid "Switch to workspace 3"
+#~ msgstr "పనిప్రదేశము 3 కి మారుము"
+
+#~ msgid "Switch to workspace 4"
+#~ msgstr "పనిప్రదేశము 4 కి మారుము"
+
+#~ msgid "Switch to workspace 5"
+#~ msgstr "పనిప్రదేశము 5 కి మారుము"
+
+#~ msgid "Switch to workspace 6"
+#~ msgstr "పనిప్రదేశము 6 కి మారుము"
+
+#~ msgid "Switch to workspace 7"
+#~ msgstr "పనిప్రదేశము 7 కి మారుము"
+
+#~ msgid "Switch to workspace 8"
+#~ msgstr "పనిప్రదేశము 8 కి మారుము"
+
+#~ msgid "Switch to workspace 9"
+#~ msgstr "పనిప్రదేశము 9 కి మారుము"
+
+#~ msgid "Switch to workspace 10"
+#~ msgstr "పనిప్రదేశము 10 కి మారుము"
+
+#~ msgid "Switch to workspace 11"
+#~ msgstr "పనిప్రదేశము 11 కి మారుము"
+
+#~ msgid "Switch to workspace 12"
+#~ msgstr "పనిప్రదేశము 12 కి మారుము"
+
+#~ msgid "Switch to workspace on the left of the current workspace"
+#~ msgstr "ప్రస్తుత పనిప్రదేశమునకు ఎడమ భాగములోవున్న పనిప్రదేశమునకు మారుము"
+
+#~ msgid "Switch to workspace on the right of the current workspace"
+#~ msgstr "ప్రస్తుత పనిప్రదేశమునకు కుడి భాగములోవున్న పనిప్రదేశమునకు మారుము"
+
+#~ msgid "Switch to workspace above the current workspace"
+#~ msgstr "ప్రస్తుత పనిప్రదేశమునకు పై భాగములోవున్న పనిప్రదేశమునకు మారుము"
+
+#~ msgid "Switch to workspace below the current workspace"
+#~ msgstr "ప్రస్తుత పనిప్రదేశమునకు క్రింద భాగములోవున్న పనిప్రదేశమునకు మారుము"
+
+#~ msgid "Move between windows of an application, using a popup window"
+#~ msgstr "ప్రత్యక్షమయే విండోని ఉపయోగించి కార్యక్షేత్రము యొక్క విండోల మథ్యకు జరుపుము"
+
+#~ msgid ""
+#~ "Move backward between windows of an application, using a popup window"
+#~ msgstr "ప్రత్యక్షమయే విండోని ఉపయోగించి కార్యక్షేత్రము యొక్క విండోల మథ్యనుండి వెనక్కి జరుపుము"
+
+#~ msgid "Move between windows, using a popup window"
+#~ msgstr "ప్రత్యక్షమయే విండోని ఉపయోగించి విండోల మథ్యకు జరుపుము"
+
+#~ msgid "Move backward between windows, using a popup window"
+#~ msgstr "ప్రత్యక్షమయే విండోని ఉపయోగించి విండోల మథ్యనుండి వెనక్కి జరుపుము"
+
+#~ msgid "Move between panels and the desktop, using a popup window"
+#~ msgstr "ప్రత్యక్షమయే విండోని ఉపయోగించి ప్యానల్లు మరియు రంగస్థలము మథ్యకు జరుపుము"
+
+#~ msgid "Move backward between panels and the desktop, using a popup window"
+#~ msgstr "ప్రత్యక్షమయే విండోని ఉపయోగించి ప్యానల్లు మరియు రంగస్థలము మథ్య నుండి వెనక్కి జరుపుము"
+
+#~ msgid "Move between windows of an application immediately"
+#~ msgstr "అతిత్వరగా కార్యక్షేత్రము యొక్క విండోల మథ్యకు జరుపుము"
+
+#~ msgid "Move backward between windows of an application immediately"
+#~ msgstr "అతిత్వరగా కార్యక్షేత్రము యొక్క విండోల మథ్య నుండి వెనక్కి జరుపుము"
+
+#~ msgid "Move between windows immediately"
+#~ msgstr "అతిత్వరగా విండోల మథ్యకు జరుపుము"
+
+#~ msgid "Move backward between windows immediately"
+#~ msgstr "అతిత్వరగా విండోల మథ్య నుండి వెనక్కి జరుపుము"
+
+#~ msgid "Move between panels and the desktop immediately"
+#~ msgstr "అతిత్వరగా ప్యానల్లు మరియు రంగస్థలం మథ్యకు జరుపుము"
+
+#~ msgid "Move backward between panels and the desktop immediately"
+#~ msgstr "అతిత్వరగా ప్యానల్లు మరియు రంగస్థలం మథ్య నుండి వెనక్కి జరుపుము"
+
+#~ msgid "Hide all normal windows and set focus to the desktop"
+#~ msgstr "సాధారణ విండోలను దాచివుంచి రంగస్థలం యొక్క కేంద్రమును సరిచేయుము"
+
+#~ msgid "Show the panel's main menu"
+#~ msgstr "ప్యానల్ యొక్క ముఖ్య జాబితాను చూపించుము"
+
+#~ msgid "Show the panel's \"Run Application\" dialog box"
+#~ msgstr "పానల్ యొక్క \"కార్యక్షేత్రమును జరుపుట\" అను వివరణ పేటికను చూపించుము"
+
+#~ msgid "Start or stop recording the session"
+#~ msgstr "సమకూర్పును వాయుట మొదలపెట్టుము లేక ఆపివేయుము"
+
+#~ msgid "Take a screenshot"
+#~ msgstr "తెరఛాయాచిత్రమును తీసుకొనుము"
+
+#~ msgid "Take a screenshot of a window"
+#~ msgstr "విండో యొక్క తెరఛాయాచిత్రమును తీసుకొనుము"
+
+#~ msgid "Run a terminal"
+#~ msgstr "అగ్రమును నడుపుము"
+
+#~ msgid "Activate the window menu"
+#~ msgstr "విండో జాబితాను క్రియాశీలపరుచుము"
+
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "పూర్తితెర సంవిధానమును మార్చుము"
+
+#~ msgid "Toggle maximization state"
+#~ msgstr "పెద్దదిగాచేయు స్థితిని మార్చుము"
+
+#~ msgid "Toggle whether a window will always be visible over other windows"
+#~ msgstr "ఒక విండో ఇతర విండోలపై గోచరించునో లేదో మార్చి చూడుము"
+
+#~ msgid "Maximize window"
+#~ msgstr "విండోని పెద్దదిగా చేయుము"
+
+#~ msgid "Restore window"
+#~ msgstr "విండోని పునఃస్ధాపించు"
+
+#~ msgid "Toggle shaded state"
+#~ msgstr "మూసివున్న స్ధితిని మార్చుము"
+
+#~ msgid "Minimize window"
+#~ msgstr "విండోని చిన్నదిగా చేయుము"
+
+#~ msgid "Close window"
+#~ msgstr "గవాక్షమును మూయుము"
+
+#~ msgid "Move window"
+#~ msgstr "విండోని జరుపుము"
+
+#~ msgid "Resize window"
+#~ msgstr "విండోని పునఃపరిమాణించుము"
+
+#~ msgid "Toggle whether window is on all workspaces or just one"
+#~ msgstr "విండో అన్ని పనిప్రదేశములపైన లేక ఒకదానిపైన మాత్రమే ఉన్నదా లేదా మార్చి చుడుము"
+
+#~ msgid "Move window to workspace 1"
+#~ msgstr "విండోని పనిప్రదేశము 1 నకు జరుపుము"
+
+#~ msgid "Move window to workspace 2"
+#~ msgstr "విండోని పనిప్రదేశము 2 నకు జరుపుము"
+
+#~ msgid "Move window to workspace 3"
+#~ msgstr "విండోని పనిప్రదేశము 3 నకు  జరుపుము"
+
+#~ msgid "Move window to workspace 4"
+#~ msgstr "విండోని పనిప్రదేశము 4 నకు  జరుపుము"
+
+#~ msgid "Move window to workspace 5"
+#~ msgstr "విండోని పనిప్రదేశము 5 నకు జరుపుము"
+
+#~ msgid "Move window to workspace 6"
+#~ msgstr "విండోని పనిప్రదేశము 6 నకు  జరుపుము"
+
+#~ msgid "Move window to workspace 7"
+#~ msgstr "విండోని పనిప్రదేశము 7 నకు  జరుపుము"
+
+#~ msgid "Move window to workspace 8"
+#~ msgstr "విండోని పనిప్రదేశము 8 నకు  జరుపుము"
+
+#~ msgid "Move window to workspace 9"
+#~ msgstr "విండోని పనిప్రదేశము 9 నకు  జరుపుము"
+
+#~ msgid "Move window to workspace 10"
+#~ msgstr "విండోని పనిప్రదేశము 10 నకు  జరుపుము"
+
+#~ msgid "Move window to workspace 11"
+#~ msgstr "విండోని పనిప్రదేశము 11 నకు  జరుపుము"
+
+#~ msgid "Move window to workspace 12"
+#~ msgstr "విండోని పనిప్రదేశము 12 నకు  జరుపుము"
+
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "విండో ఒక పనిప్రదేశమును ఎడమ భాగమునకు జరుపుము"
+
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "విండో ఒక పనిప్రదేశమును కుడి భాగమునకు జరుపుము"
+
+#~ msgid "Move window one workspace up"
+#~ msgstr "విండో ఒక పనిప్రదేశమును పై భాగమునకు జరుపుము"
+
+#~ msgid "Move window one workspace down"
+#~ msgstr "విండో ఒక పనిప్రదేశమును క్రింది భాగమునకు జరుపుము"
+
+#~ msgid "Raise window if it's covered by another window, otherwise lower it"
+#~ msgstr ""
+#~ "ఒకవేళ విండోను వేరొక విండో చేత  మూసివున్నచో దానిని వెలుపలికి తీసుకురమ్ము లేనిచో లోనికి తీసుకువెళ్ళుము"
+
+#~ msgid "Raise window above other windows"
+#~ msgstr "విండోని ఇతర విండోల వెలుపలికి తీసుకొనిరమ్ము"
+
+#~ msgid "Lower window below other windows"
+#~ msgstr "విండోని ఇతర విండోల లోపలికి తీసుకొనివెళ్ళుమ్ము"
+
+#~ msgid "Maximize window vertically"
+#~ msgstr "విండోని నిలువుగా పెద్దది చేయుము"
+
+#~ msgid "Maximize window horizontally"
+#~ msgstr "విండోని అడ్డంగా పెద్దది చేయుము"
+
+#~ msgid "Move window to north-west (top left) corner"
+#~ msgstr "విండోని ఉత్తర-పడమర (ఎడమ పైభాగము)పు మూలలోనికి జరుపుము"
+
+#~ msgid "Move window to north-east (top right) corner"
+#~ msgstr "విండోని ఉత్తర-తూర్పు (కుడి పైభాగము)పు మూలలోనికి జరుపుము"
+
+#~ msgid "Move window to south-west (bottom left) corner"
+#~ msgstr "విండోని దక్షిన-పడమర (ఎడమ క్రిందభాగము)పు మూలలోనికి జరుపుము"
+
+#~ msgid "Move window to south-east (bottom right) corner"
+#~ msgstr "విండోని దక్షిన-తూర్పు (కుడి క్రిందభాగము)పు మూలలోనికి జరుపుము"
+
+#~ msgid "Move window to north (top) side of screen"
+#~ msgstr "విండోని తెరకు ఉత్తర (పై) భాగమునికి జరుపుము"
+
+#~ msgid "Move window to south (bottom) side of screen"
+#~ msgstr "విండోని తెరకు దక్షిన (క్రింద) భాగమునికి జరుపుము"
+
+#~ msgid "Move window to east (right) side of screen"
+#~ msgstr "విండోని తెరకు తూర్పు(కుడి) భాగమునికి జరుపుము"
+
+#~ msgid "Move window to west (left) side of screen"
+#~ msgstr "విండోని తెరకు  పడమర(ఎడమ) భాగమునికి జరుపుము"
+
+#~ msgid "Move window to center of screen"
+#~ msgstr "విండోని తెర మథ్యకు జరుపుము"
+
+#~ msgid ""
+#~ "There was an error running <tt>%s</tt>:\n"
+#~ "\n"
+#~ "%s"
+#~ msgstr ""
+#~ "<tt>%s</tt>:\n"
+#~ "అను తప్పిదము జరుగుతుండెడది\n"
+#~ "%s"
+
+#~ msgid "No command %d has been defined.\n"
+#~ msgstr "ఏ ఆదేశము %d ని ర్వచించలేకపోయినది.\n"
+
+#~ msgid "No terminal command has been defined.\n"
+#~ msgstr "ఏ అగ్రపు ఆదేశం నిర్వచించలేకపోయినది.\n"
+
+#~ msgid "GConf key '%s' is set to an invalid value\n"
+#~ msgstr "జికాంఫ్ కీ '%s'ను నిస్సారమైన విలువగా మార్పుచేసెను\n"
+
+#~ msgid "%d stored in GConf key %s is out of range %d to %d\n"
+#~ msgstr "భద్రపరిచిన %d జికాంఫ్ కీ %sలో  %d నుండి  %d పరిథిని మించినది\n"
+
+#~ msgid "GConf key \"%s\" is set to an invalid type\n"
+#~ msgstr "జికాంఫ్ కీ \"%s\"ను నిస్సారమైన రకముగా మార్పుచేసెను\n"
+
+#~ msgid "GConf key %s is already in use and can't be used to override %s\n"
+#~ msgstr "జికాంఫ్ కీ %s ముందుగానే ఉపయోగములోనున్నది  మరియు రద్దుచేయుటకు %sను ఉపయోగించబడదు\n"
+
+#~ msgid "Can't override GConf key, %s not found\n"
+#~ msgstr "జికాంఫ్ కీ రద్దుచేయుట కుదరదు, %s కనిపెట్టబడలేదు\n"
+
+#~ msgid "Error setting number of workspaces to %d: %s\n"
+#~ msgstr "పనిప్రదేశముల సంఖ్యను %dకి అమర్చుతున్నప్పుడు కలిగిన దోషము: %s\n"
+
+#~ msgid "Error setting name for workspace %d to \"%s\": %s\n"
+#~ msgstr "%d పనిప్రదేశమునకు \"%s\"అను నామము అమరిస్తున్నప్పుడు కలిగిన దోషము: %s\n"
+
+#~ msgid "Error setting live hidden windows status status: %s\n"
+#~ msgstr " దాగివున్న విండోల సుస్థితిని అమరిస్తున్నప్పుడు కలిగిన దోషము: %s\n"
+
+#~ msgid "Error setting no tab popup status: %s\n"
+#~ msgstr "ఏ టాబ్ ప్రత్యక్షమవ్వని సుస్థితిని అమరిస్తున్నప్పుడు కలిగిన దోషము: %s\n"
+
+#~ msgid "Close Window"
+#~ msgstr "గవాక్షమును మూసివేయు"
+
+#~ msgid "Window Menu"
+#~ msgstr "విండో జాబితా"
+
+#~ msgid "Minimize Window"
+#~ msgstr "విండోని చిన్నదిగాచేయుము"
+
+#~ msgid "Maximize Window"
+#~ msgstr "విండోని పెద్దదిగాచేయుము"
+
+#~ msgid "Restore Window"
+#~ msgstr "విండోని పునఃప్రస్థాపించుము"
+
+#~ msgid "Roll Up Window"
+#~ msgstr "విండోని ఎగువకు మడువుము"
+
+#~ msgid "Unroll Window"
+#~ msgstr "విండోని మడువవద్దు"
+
+#~ msgid "Keep Window On Top"
+#~ msgstr "విండోని పైన వుంచుము"
+
+#~ msgid "Always On Visible Workspace"
+#~ msgstr "ఎల్లప్పుడూ గోచరించు పనిప్రదేశముపైనే"
+
+#~ msgid "Put Window On Only One Workspace"
+#~ msgstr "ఒక పనిప్రదేశము పైన మాత్రమే విండోని ఉంచుము"
 
 #~ msgid "Window Management"
 #~ msgstr "విండో నిర్వహణ"
