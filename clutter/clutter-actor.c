@@ -17516,7 +17516,14 @@ clutter_actor_restore_easing_state (ClutterActor *self)
     }
 
   g_array_remove_index (info->states, info->states->len - 1);
-  info->cur_state = &g_array_index (info->states, AState, info->states->len - 1);
+
+  if (info->states->len > 0)
+    info->cur_state = &g_array_index (info->states, AState, info->states->len - 1);
+  else
+    {
+      g_array_unref (info->states);
+      info->states = NULL;
+    }
 }
 
 /**
