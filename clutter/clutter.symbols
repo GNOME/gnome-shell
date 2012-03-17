@@ -1413,6 +1413,7 @@ clutter_vertex_copy
 clutter_vertex_equal
 clutter_vertex_free
 clutter_vertex_get_type
+clutter_vertex_init
 clutter_vertex_new
 #ifdef CLUTTER_WINDOWING_WAYLAND
 clutter_wayland_get_egl_display

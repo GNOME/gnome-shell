@@ -122,8 +122,28 @@ struct _ClutterVertex
   gfloat z;
 };
 
+/**
+ * CLUTTER_VERTEX_INIT:
+ * @x: the X coordinate of the vertex
+ * @y: the Y coordinate of the vertex
+ * @z: the Z coordinate of the vertex
+ *
+ * A simple macro for initializing a #ClutterVertex when declaring it, e.g.:
+ *
+ * |[
+ *   ClutterVertext v = CLUTTER_VERTEX_INIT (x, y, z);
+ * ]|
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_VERTEX_INIT(x,y,z)      { (x), (y), (z) }
+
 GType          clutter_vertex_get_type (void) G_GNUC_CONST;
 ClutterVertex *clutter_vertex_new      (gfloat               x,
+                                        gfloat               y,
+                                        gfloat               z);
+void           clutter_vertex_init     (ClutterVertex       *vertex,
+                                        gfloat               x,
                                         gfloat               y,
                                         gfloat               z);
 ClutterVertex *clutter_vertex_copy     (const ClutterVertex *vertex);

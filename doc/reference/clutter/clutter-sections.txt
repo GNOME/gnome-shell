@@ -546,7 +546,9 @@ clutter_actor_box_union
 
 <SUBSECTION>
 ClutterVertex
+CLUTTER_VERTEX_INIT
 clutter_vertex_new
+clutter_vertex_init
 clutter_vertex_copy
 clutter_vertex_free
 clutter_vertex_equal

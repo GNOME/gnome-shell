@@ -13297,11 +13297,33 @@ clutter_vertex_new (gfloat x,
   ClutterVertex *vertex;
 
   vertex = g_slice_new (ClutterVertex);
+  clutter_vertex_init (vertex, x, y, z);
+
+  return vertex;
+}
+
+/**
+ * clutter_vertex_init:
+ * @vertex: a #ClutterVertex
+ * @x: X coordinate
+ * @y: Y coordinate
+ * @z: Z coordinate
+ *
+ * Initializes @vertex with the given coordinates.
+ *
+ * Since: 1.10
+ */
+void
+clutter_vertex_init (ClutterVertex *vertex,
+                     gfloat         x,
+                     gfloat         y,
+                     gfloat         z)
+{
+  g_return_if_fail (vertex != NULL);
+
   vertex->x = x;
   vertex->y = y;
   vertex->z = z;
-
-  return vertex;
 }
 
 /**
