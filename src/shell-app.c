@@ -332,7 +332,9 @@ shell_app_get_faded_icon (ShellApp *app, int size)
   if (!app->entry)
     return window_backed_app_get_icon (app, size);
 
-  cache_key = g_strdup_printf ("faded-icon:%s,size=%d", shell_app_get_id (app), size);
+  /* Use icon: prefix so that we get evicted from the cache on
+   * icon theme changes. */
+  cache_key = g_strdup_printf ("icon:%s,size=%d,faded", shell_app_get_id (app), size);
   data.app = app;
   data.size = size;
   texture = st_texture_cache_load (st_texture_cache_get_default (),

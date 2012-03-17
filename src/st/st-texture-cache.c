@@ -26,7 +26,7 @@
 #include <string.h>
 #include <glib.h>
 
-#define CACHE_PREFIX_GICON "gicon:"
+#define CACHE_PREFIX_ICON "icon:"
 #define CACHE_PREFIX_URI "uri:"
 #define CACHE_PREFIX_URI_FOR_CAIRO "uri-for-cairo:"
 #define CACHE_PREFIX_RAW_CHECKSUM "raw-checksum:"
@@ -112,7 +112,7 @@ st_texture_cache_evict_icons (StTextureCache *cache)
        * for GIcons even when they aren't named icons, but it's not
        * worth the complexity of parsing the key and calling
        * g_icon_new_for_string(); icon theme changes aren't normal */
-      if (g_str_has_prefix (cache_key, "gicon:"))
+      if (g_str_has_prefix (cache_key, CACHE_PREFIX_ICON))
         g_hash_table_iter_remove (&iter);
     }
 }
@@ -933,7 +933,7 @@ load_gicon_with_colors (StTextureCache    *cache,
   if (colors)
     {
       /* This raises some doubts about the practice of using string keys */
-      key = g_strdup_printf (CACHE_PREFIX_GICON "icon=%s,size=%d,colors=%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x",
+      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d,colors=%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x",
                              gicon_string, size,
                              colors->foreground.red, colors->foreground.blue, colors->foreground.green, colors->foreground.alpha,
                              colors->warning.red, colors->warning.blue, colors->warning.green, colors->warning.alpha,
@@ -942,7 +942,7 @@ load_gicon_with_colors (StTextureCache    *cache,
     }
   else
     {
-      key = g_strdup_printf (CACHE_PREFIX_GICON "icon=%s,size=%d",
+      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d",
                              gicon_string, size);
     }
   g_free (gicon_string);
