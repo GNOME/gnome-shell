@@ -63,7 +63,7 @@ G_DEFINE_TYPE(StTextureCache, st_texture_cache, G_TYPE_OBJECT);
  * definitely don't want.  Skip that by setting 0 opacity.
  */
 static ClutterTexture *
-create_default_texture (StTextureCache *self)
+create_default_texture (void)
 {
   ClutterTexture * texture = CLUTTER_TEXTURE (clutter_texture_new ());
   g_object_set (texture, "keep-aspect-ratio", TRUE, "opacity", 0, NULL);
@@ -871,7 +871,7 @@ create_texture_and_ensure_request (StTextureCache        *cache,
   AsyncTextureLoadData *pending;
   gboolean had_pending;
 
-  *texture = (ClutterActor *) create_default_texture (cache);
+  *texture = (ClutterActor *) create_default_texture ();
   clutter_actor_set_size (*texture, size, size);
 
   texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
@@ -1006,7 +1006,7 @@ load_from_pixbuf (GdkPixbuf *pixbuf)
   int width = gdk_pixbuf_get_width (pixbuf);
   int height = gdk_pixbuf_get_height (pixbuf);
 
-  texture = create_default_texture (st_texture_cache_get_default ());
+  texture = create_default_texture ();
 
   clutter_actor_set_size (CLUTTER_ACTOR (texture), width, height);
 
@@ -1279,7 +1279,7 @@ st_texture_cache_load_uri_async (StTextureCache *cache,
   ClutterTexture *texture;
   AsyncTextureLoadData *data;
 
-  texture = create_default_texture (cache);
+  texture = create_default_texture ();
 
   data = g_new0 (AsyncTextureLoadData, 1);
   data->cache = cache;
@@ -1406,7 +1406,7 @@ st_texture_cache_load_uri_sync (StTextureCache *cache,
   if (texdata == COGL_INVALID_HANDLE)
     return NULL;
 
-  texture = create_default_texture (cache);
+  texture = create_default_texture ();
   set_texture_cogl_texture (texture, texdata);
   cogl_handle_unref (texdata);
 
@@ -1552,7 +1552,7 @@ st_texture_cache_load_from_raw (StTextureCache    *cache,
   char *key;
   char *checksum;
 
-  texture = create_default_texture (cache);
+  texture = create_default_texture ();
   clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
 
   /* In theory, two images of with different width and height could have the same
