@@ -10764,10 +10764,7 @@ meta_window_compute_tile_match (MetaWindow *window)
       !META_WINDOW_TILED_SIDE_BY_SIDE (window))
     return;
 
-  if (META_WINDOW_TILED_LEFT (window))
-    match_tile_mode = META_TILE_RIGHT;
-  else if (META_WINDOW_TILED_RIGHT (window))
-    match_tile_mode = META_TILE_LEFT;
+  match_tile_mode = window->tile_mode;
 
   stack = window->screen->stack;
 
