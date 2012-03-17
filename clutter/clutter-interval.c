@@ -430,7 +430,7 @@ clutter_interval_set_initial_internal (ClutterInterval *interval,
                                        va_list         *args)
 {
   GType gtype = interval->priv->value_type;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
   gchar *error;
 
   /* initial value */
@@ -459,7 +459,7 @@ clutter_interval_set_final_internal (ClutterInterval *interval,
                                      va_list         *args)
 {
   GType gtype = interval->priv->value_type;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
   gchar *error;
 
   /* initial value */
@@ -488,7 +488,7 @@ clutter_interval_get_interval_valist (ClutterInterval *interval,
                                       va_list          var_args)
 {
   GType gtype = interval->priv->value_type;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
   gchar *error;
 
   /* initial value */

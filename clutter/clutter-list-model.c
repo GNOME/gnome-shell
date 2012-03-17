@@ -112,7 +112,7 @@ clutter_list_model_iter_get_value (ClutterModelIter *iter,
   ClutterListModelIter *iter_default;
   GValue *values;
   GValue *iter_value;
-  GValue real_value = { 0, };
+  GValue real_value = G_VALUE_INIT;
   gboolean converted = FALSE;
 
   iter_default = CLUTTER_LIST_MODEL_ITER (iter);
@@ -165,7 +165,7 @@ clutter_list_model_iter_set_value (ClutterModelIter *iter,
   ClutterListModelIter *iter_default;
   GValue *values;
   GValue *iter_value;
-  GValue real_value = { 0, };
+  GValue real_value = G_VALUE_INIT;
   gboolean converted = FALSE;
 
   iter_default = CLUTTER_LIST_MODEL_ITER (iter);

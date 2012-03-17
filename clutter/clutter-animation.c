@@ -822,8 +822,8 @@ clutter_animation_bind (ClutterAnimation *animation,
   GParamSpec *pspec;
   ClutterInterval *interval;
   GType type;
-  GValue initial = { 0, };
-  GValue real_final = { 0, };
+  GValue initial = G_VALUE_INIT;
+  GValue real_final = G_VALUE_INIT;
 
   g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), NULL);
   g_return_val_if_fail (property_name != NULL, NULL);
@@ -1138,7 +1138,7 @@ on_timeline_frame (ClutterTimeline  *timeline,
     {
       const gchar *p_name = p->data;
       ClutterInterval *interval;
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       gboolean apply;
 
       interval = g_hash_table_lookup (priv->properties, p_name);
@@ -1765,7 +1765,7 @@ clutter_animation_setup_property (ClutterAnimation *animation,
                                   gboolean          is_fixed)
 {
   ClutterAnimationPrivate *priv = animation->priv;
-  GValue real_value = { 0, };
+  GValue real_value = G_VALUE_INIT;
 
   if (pspec->flags & G_PARAM_CONSTRUCT_ONLY)
     {
@@ -1831,7 +1831,7 @@ done:
   if (G_LIKELY (!is_fixed))
     {
       ClutterInterval *interval;
-      GValue cur_value = { 0, };
+      GValue cur_value = G_VALUE_INIT;
 
       g_value_init (&cur_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
 
@@ -1972,7 +1972,7 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
   while (property_name != NULL)
     {
       GParamSpec *pspec;
-      GValue final = { 0, };
+      GValue final = G_VALUE_INIT;
       gchar *error = NULL;
       gboolean is_fixed = FALSE;
       GConnectFlags flags;

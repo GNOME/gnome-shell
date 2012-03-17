@@ -786,8 +786,13 @@ static gboolean
 clutter_binding_entry_invoke (ClutterBindingEntry *entry,
                               GObject             *gobject)
 {
-  GValue params[4] = { { 0, }, { 0, }, { 0, }, { 0, } };
-  GValue result = { 0, };
+  GValue params[4] = {
+    G_VALUE_INIT,
+    G_VALUE_INIT,
+    G_VALUE_INIT,
+    G_VALUE_INIT
+  };
+  GValue result = G_VALUE_INIT;
   gboolean retval = TRUE;
 
   g_value_init (&params[0], G_TYPE_OBJECT);

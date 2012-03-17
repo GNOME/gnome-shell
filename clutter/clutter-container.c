@@ -1241,7 +1241,7 @@ clutter_container_child_set (ClutterContainer *container,
   name = first_prop;
   while (name)
     {
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       gchar *error = NULL;
       GParamSpec *pspec;
     
@@ -1389,7 +1389,7 @@ clutter_container_child_get (ClutterContainer *container,
   name = first_prop;
   while (name)
     {
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       gchar *error = NULL;
       GParamSpec *pspec;
     

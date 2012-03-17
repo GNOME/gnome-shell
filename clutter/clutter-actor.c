@@ -12280,7 +12280,7 @@ parse_units (ClutterActor   *self,
              ParseDimension  dimension,
              JsonNode       *node)
 {
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
   gfloat retval = 0;
 
   if (JSON_NODE_TYPE (node) != JSON_NODE_VALUE)

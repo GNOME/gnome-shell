@@ -980,7 +980,7 @@ clutter_layout_manager_child_set (ClutterLayoutManager *manager,
   pname = first_property;
   while (pname)
     {
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       GParamSpec *pspec;
       gchar *error;
       gboolean res;
@@ -1120,7 +1120,7 @@ clutter_layout_manager_child_get (ClutterLayoutManager *manager,
   pname = first_property;
   while (pname)
     {
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       GParamSpec *pspec;
       gchar *error;
       gboolean res;

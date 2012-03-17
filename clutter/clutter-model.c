@@ -2006,7 +2006,7 @@ clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
   
   while (column != -1)
     {
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       gchar *error = NULL;
       GType col_type;
 
@@ -2172,7 +2172,7 @@ clutter_model_iter_get_valist (ClutterModelIter *iter,
 
   while (column != -1)
     {
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       gchar *error = NULL;
       GType col_type;
 

@@ -434,8 +434,8 @@ clutter_alpha_get_alpha (ClutterAlpha *alpha)
     }
   else if (priv->closure)
     {
-      GValue params = { 0, };
-      GValue result_value = { 0, };
+      GValue params = G_VALUE_INIT;
+      GValue result_value = G_VALUE_INIT;
 
       g_object_ref (alpha);
 

@@ -683,7 +683,7 @@ animation_animator_new_frame (ClutterTimeline  *timeline,
       /* only change values if we active (delayed start) */
       if (sub_progress >= 0.0 && sub_progress <= 1.0)
         {
-          GValue tmp_value = { 0, };
+          GValue tmp_value = G_VALUE_INIT;
           GType int_type;
 
           g_value_init (&tmp_value, G_VALUE_TYPE (&start_key->value));
@@ -801,7 +801,7 @@ animation_animator_started (ClutterTimeline *timeline,
 
         if (property_iter->ease_in)
           {
-            GValue tmp_value = { 0, };
+            GValue tmp_value = G_VALUE_INIT;
             GType int_type;
 
             int_type = clutter_interval_get_value_type (property_iter->interval);
@@ -1202,7 +1202,7 @@ clutter_animator_set (ClutterAnimator *animator,
     {
       GParamSpec *pspec;
       GObjectClass *klass;
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       gchar *error = NULL;
 
       g_return_if_fail (object);

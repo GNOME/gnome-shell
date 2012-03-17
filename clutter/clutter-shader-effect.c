@@ -679,7 +679,7 @@ clutter_shader_effect_set_uniform_valist (ClutterShaderEffect *effect,
                                           gsize                n_values,
                                           va_list             *args)
 {
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   if (value_type == CLUTTER_TYPE_SHADER_INT)
     {

@@ -1143,7 +1143,7 @@ _clutter_script_parse_node (ClutterScript *script,
                             JsonNode      *node,
                             GParamSpec    *pspec)
 {
-  GValue node_value = { 0, };
+  GValue node_value = G_VALUE_INIT;
   gboolean retval = FALSE;
 
   g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), FALSE);
@@ -1662,7 +1662,7 @@ apply_layout_properties (ClutterScript    *script,
   for (l = properties; l != NULL; l = l->next)
     {
       PropertyInfo *pinfo = l->data;
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       gboolean res = FALSE;
       const gchar *name;
 
@@ -1762,7 +1762,7 @@ apply_child_properties (ClutterScript    *script,
   for (l = properties; l != NULL; l = l->next)
     {
       PropertyInfo *pinfo = l->data;
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       gboolean res = FALSE;
       const gchar *name;
 

@@ -339,7 +339,7 @@ clutter_state_key_new (State       *state,
 {
   ClutterStatePrivate *priv = state->clutter_state->priv;
   ClutterStateKey *state_key;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   state_key = g_slice_new0 (ClutterStateKey);
 
@@ -600,7 +600,7 @@ clutter_state_new_frame (ClutterTimeline *timeline,
                   if (key->is_animatable)
                     {
                       ClutterAnimatable *animatable;
-                      GValue value = { 0, };
+                      GValue value = G_VALUE_INIT;
                       gboolean res;
 
                       animatable = CLUTTER_ANIMATABLE (key->object);
@@ -735,7 +735,7 @@ clutter_state_change (ClutterState *state,
       for (k = new_state->keys; k != NULL; k = k->next)
         {
           ClutterStateKey *key = k->data;
-          GValue initial = { 0, };
+          GValue initial = G_VALUE_INIT;
 
           /* Reset the pre-pre-delay - this is only used for setting keys
            * during transitions.
@@ -985,7 +985,7 @@ clutter_state_set (ClutterState *state,
   while (object != NULL)
     {
       GParamSpec *pspec;
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       gchar *error = NULL;
       gboolean is_delayed = FALSE;
 
@@ -1095,7 +1095,7 @@ clutter_state_set_key_internal (ClutterState    *state,
       else
         {
           /* Set the ClutterInterval associated with the state */
-          GValue initial = { 0, };
+          GValue initial = G_VALUE_INIT;
           gdouble progress = clutter_timeline_get_progress (priv->timeline);
 
           g_value_init (&initial,
