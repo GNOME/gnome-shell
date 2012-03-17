@@ -17241,10 +17241,6 @@ clutter_actor_remove_all_transitions (ClutterActor *self)
  * Sets the duration of the tweening for animatable properties
  * of @self for the current easing state.
  *
- * Calling this function will implicitly call
- * clutter_actor_save_easing_state() if no previous call to
- * that function was made.
- *
  * Since: 1.10
  */
 void
@@ -17257,8 +17253,12 @@ clutter_actor_set_easing_duration (ClutterActor *self,
 
   info = _clutter_actor_get_animation_info (self);
 
-  if (info->states == NULL)
-    clutter_actor_save_easing_state (self);
+  if (info->cur_state == NULL)
+    {
+      g_warning ("You must call clutter_actor_save_easing_state() prior "
+                 "to calling clutter_actor_set_easing_duration().");
+      return;
+    }
 
   if (info->cur_state->easing_duration != msecs)
     info->cur_state->easing_duration = msecs;
@@ -17298,10 +17298,6 @@ clutter_actor_get_easing_duration (ClutterActor *self)
  * Sets the easing mode for the tweening of animatable properties
  * of @self.
  *
- * Calling this function will implicitly call
- * clutter_actor_save_easing_state() if no previous calls to
- * that function were made.
- *
  * Since: 1.10
  */
 void
@@ -17316,8 +17312,12 @@ clutter_actor_set_easing_mode (ClutterActor         *self,
 
   info = _clutter_actor_get_animation_info (self);
 
-  if (info->states == NULL)
-    clutter_actor_save_easing_state (self);
+  if (info->cur_state == NULL)
+    {
+      g_warning ("You must call clutter_actor_save_easing_state() prior "
+                 "to calling clutter_actor_set_easing_mode().");
+      return;
+    }
 
   if (info->cur_state->easing_mode != mode)
     info->cur_state->easing_mode = mode;
@@ -17357,10 +17357,6 @@ clutter_actor_get_easing_mode (ClutterActor *self)
  * Sets the delay that should be applied before tweening animatable
  * properties.
  *
- * Calling this function will implicitly call
- * clutter_actor_save_easing_state() if no previous calls to
- * that function were made.
- *
  * Since: 1.10
  */
 void
@@ -17373,8 +17369,12 @@ clutter_actor_set_easing_delay (ClutterActor *self,
 
   info = _clutter_actor_get_animation_info (self);
 
-  if (info->states == NULL)
-    clutter_actor_save_easing_state (self);
+  if (info->cur_state == NULL)
+    {
+      g_warning ("You must call clutter_actor_save_easing_state() prior "
+                 "to calling clutter_actor_set_easing_delay().");
+      return;
+    }
 
   if (info->cur_state->easing_delay != msecs)
     info->cur_state->easing_delay = msecs;
