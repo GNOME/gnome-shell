@@ -38,10 +38,8 @@ struct _StTextureCachePrivate
 
   /* Things that were loaded with a cache policy != NONE */
   GHashTable *keyed_cache; /* char * -> CoglTexture* */
-  /* Presently this is used to de-duplicate requests for GIcons,
-   * it could in theory be extended to async URL loading and other
-   * cases too.
-   */
+
+  /* Presently this is used to de-duplicate requests for GIcons and async URIs. */
   GHashTable *outstanding_requests; /* char * -> AsyncTextureLoadData * */
 };
 
@@ -833,13 +831,12 @@ st_texture_cache_load (StTextureCache       *cache,
 }
 
 /**
- * create_texture_and_ensure_request:
+ * ensure_request:
  * @cache:
  * @key: A cache key
- * @size: Size in pixels
  * @policy: Cache policy
  * @request: (out): If no request is outstanding, one will be created and returned here
- * @texture: (out): A new texture, also added to the request
+ * @texture: A texture to be added to the request
  *
  * Check for any outstanding load for the data represented by @key.  If there
  * is already a request pending, append it to that request to avoid loading
@@ -848,26 +845,22 @@ st_texture_cache_load (StTextureCache       *cache,
  * Returns: %TRUE iff there is already a request pending
  */
 static gboolean
-create_texture_and_ensure_request (StTextureCache        *cache,
-                                   const char            *key,
-                                   guint                  size,
-                                   StTextureCachePolicy   policy,
-                                   AsyncTextureLoadData **request,
-                                   ClutterActor         **texture)
+ensure_request (StTextureCache        *cache,
+                const char            *key,
+                StTextureCachePolicy   policy,
+                AsyncTextureLoadData **request,
+                ClutterActor          *texture)
 {
   CoglHandle texdata;
   AsyncTextureLoadData *pending;
   gboolean had_pending;
-
-  *texture = (ClutterActor *) create_default_texture ();
-  clutter_actor_set_size (*texture, size, size);
 
   texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
 
   if (texdata != NULL)
     {
       /* We had this cached already, just set the texture and we're done. */
-      set_texture_cogl_texture (CLUTTER_TEXTURE (*texture), texdata);
+      set_texture_cogl_texture (CLUTTER_TEXTURE (texture), texdata);
       return TRUE;
     }
 
@@ -885,7 +878,7 @@ create_texture_and_ensure_request (StTextureCache        *cache,
    *request = pending;
 
   /* Regardless of whether there was a pending request, prepend our texture here. */
-  (*request)->textures = g_slist_prepend ((*request)->textures, g_object_ref (*texture));
+  (*request)->textures = g_slist_prepend ((*request)->textures, g_object_ref (texture));
 
   return had_pending;
 }
@@ -935,7 +928,10 @@ load_gicon_with_colors (StTextureCache    *cache,
     }
   g_free (gicon_string);
 
-  if (create_texture_and_ensure_request (cache, key, size, policy, &request, &texture))
+  texture = (ClutterActor *) create_default_texture ();
+  clutter_actor_set_size (texture, size, size);
+
+  if (ensure_request (cache, key, policy, &request, texture))
     {
       /* If there's an outstanding request, we've just added ourselves to it */
       g_free (key);
@@ -1263,20 +1259,36 @@ st_texture_cache_load_uri_async (StTextureCache *cache,
                                  int             available_width,
                                  int             available_height)
 {
-  ClutterTexture *texture;
-  AsyncTextureLoadData *data;
+  ClutterActor *texture;
+  AsyncTextureLoadData *request;
+  StTextureCachePolicy policy;
+  gchar *key;
 
-  texture = create_default_texture ();
+  key = g_strconcat (CACHE_PREFIX_URI, uri, NULL);
 
-  data = g_new0 (AsyncTextureLoadData, 1);
-  data->cache = cache;
-  data->key = g_strconcat (CACHE_PREFIX_URI, uri, NULL);
-  data->policy = ST_TEXTURE_CACHE_POLICY_NONE;
-  data->uri = g_strdup (uri);
-  data->width = available_width;
-  data->height = available_height;
-  data->textures = g_slist_prepend (data->textures, g_object_ref (texture));
-  load_texture_async (cache, data);
+  policy = ST_TEXTURE_CACHE_POLICY_NONE; /* XXX */
+
+  texture = (ClutterActor *) create_default_texture ();
+
+  if (ensure_request (cache, key, policy, &request, texture))
+    {
+      /* If there's an outstanding request, we've just added ourselves to it */
+      g_free (key);
+    }
+  else
+    {
+      /* Else, make a new request */
+
+      request->cache = cache;
+      /* Transfer ownership of key */
+      request->key = key;
+      request->uri = g_strdup (uri);
+      request->policy = policy;
+      request->width = available_width;
+      request->height = available_height;
+
+      load_texture_async (cache, request);
+    }
 
   return CLUTTER_ACTOR (texture);
 }
