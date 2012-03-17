@@ -4158,6 +4158,30 @@ clutter_actor_set_scale_center (ClutterActor      *self,
 }
 
 static inline void
+clutter_actor_set_scale_gravity (ClutterActor   *self,
+                                 ClutterGravity  gravity)
+{
+  ClutterTransformInfo *info;
+  GObject *obj;
+
+  info = _clutter_actor_get_transform_info (self);
+  obj = G_OBJECT (self);
+
+  if (gravity == CLUTTER_GRAVITY_NONE)
+    clutter_anchor_coord_set_units (&info->scale_center, 0, 0, 0);
+  else
+    clutter_anchor_coord_set_gravity (&info->scale_center, gravity);
+
+  self->priv->transform_valid = FALSE;
+
+  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_CENTER_X]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_CENTER_Y]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_GRAVITY]);
+
+  clutter_actor_queue_redraw (self);
+}
+
+static inline void
 clutter_actor_set_anchor_coord (ClutterActor      *self,
                                 ClutterRotateAxis  axis,
                                 gfloat             coord)
@@ -4326,18 +4350,7 @@ clutter_actor_set_property (GObject      *object,
       break;
 
     case PROP_SCALE_GRAVITY:
-      {
-        const ClutterTransformInfo *info;
-        ClutterGravity gravity;
-
-        info = _clutter_actor_get_transform_info_or_defaults (actor);
-        gravity = g_value_get_enum (value);
-
-        clutter_actor_set_scale_with_gravity (actor,
-                                              info->scale_x,
-                                              info->scale_y,
-                                              gravity);
-      }
+      clutter_actor_set_scale_gravity (actor, g_value_get_enum (value));
       break;
 
     case PROP_CLIP:
@@ -9770,35 +9783,15 @@ clutter_actor_set_scale_with_gravity (ClutterActor   *self,
                                       gdouble         scale_y,
                                       ClutterGravity  gravity)
 {
-  ClutterTransformInfo *info;
-  GObject *obj;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  obj = G_OBJECT (self);
+  g_object_freeze_notify (G_OBJECT (self));
 
-  g_object_freeze_notify (obj);
+  clutter_actor_set_scale_factor (self, CLUTTER_X_AXIS, scale_x);
+  clutter_actor_set_scale_factor (self, CLUTTER_Y_AXIS, scale_y);
+  clutter_actor_set_scale_gravity (self, gravity);
 
-  info = _clutter_actor_get_transform_info (self);
-  info->scale_x = scale_x;
-  info->scale_y = scale_y;
-
-  if (gravity == CLUTTER_GRAVITY_NONE)
-    clutter_anchor_coord_set_units (&info->scale_center, 0, 0, 0);
-  else
-    clutter_anchor_coord_set_gravity (&info->scale_center, gravity);
-
-  self->priv->transform_valid = FALSE;
-
-  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_X]);
-  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_Y]);
-  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_CENTER_X]);
-  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_CENTER_Y]);
-  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_GRAVITY]);
-
-  clutter_actor_queue_redraw (self);
-
-  g_object_thaw_notify (obj);
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
