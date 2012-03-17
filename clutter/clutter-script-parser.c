@@ -1094,7 +1094,7 @@ _clutter_script_parse_translatable_string (ClutterScript *script,
                                            char         **str)
 {
   JsonObject *obj;
-  const char *string, *domain;
+  const char *string, *domain, *context;
   const char *res;
   gboolean translatable;
 
@@ -1112,6 +1112,11 @@ _clutter_script_parse_translatable_string (ClutterScript *script,
   if (string == NULL || *string == '\0')
     return FALSE;
 
+  if (json_object_has_member (obj, "context"))
+    context = json_object_get_string_member (obj, "context");
+  else
+    context = NULL;
+
   if (json_object_has_member (obj, "domain"))
     domain = json_object_get_string_member (obj, "domain");
   else
@@ -1122,10 +1127,10 @@ _clutter_script_parse_translatable_string (ClutterScript *script,
 
   if (translatable)
     {
-      if (domain != NULL && *domain != '\0')
-        res = g_dgettext (domain, string);
+      if (context != NULL && *context != '\0')
+        res = g_dpgettext2 (domain, context, string)
       else
-        res = gettext (string);
+        res = g_dgettext (domain, string);
     }
   else
     res = string;
