@@ -31,12 +31,12 @@ function Presence(initCallback, cancellable) {
 // change at runtime (changes always come in the form
 // of new inhibitors)
 const InhibitorIface = <interface name="org.gnome.SessionManager.Inhibitor">
-<property name="app_id" type="s" access="read" />
-<property name="client_id" type="s" access="read" />
-<property name="reason" type="s" access="read" />
-<property name="flags" type="u" access="read" />
-<property name="toplevel_xid" type="u" access="read" />
-<property name="cookie" type="u" access="read" />
+<method name="GetAppId">
+    <arg type="s" direction="out" />
+</method>
+<method name="GetReason">
+    <arg type="s" direction="out" />
+</method>
 </interface>;
 
 var InhibitorProxy = Gio.DBusProxy.makeProxyWrapper(InhibitorIface);

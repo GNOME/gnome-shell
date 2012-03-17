@@ -116,10 +116,10 @@ const DialogContent = {
 };
 
 function findAppFromInhibitor(inhibitor) {
-    let desktopFile = inhibitor.app_id;
+    let [desktopFile] = inhibitor.GetAppIdSync();
 
     if (!GLib.str_has_suffix(desktopFile, '.desktop'))
-      desktopFile += '.desktop';
+        desktopFile += '.desktop';
 
     let candidateDesktopFiles = [];
 
@@ -482,7 +482,8 @@ const EndSessionDialog = new Lang.Class({
         let app = findAppFromInhibitor(inhibitor);
 
         if (app) {
-            let item = new ListItem(app, inhibitor.reason);
+            let [reason] = inhibitor.GetReasonSync();
+            let item = new ListItem(app, reason);
             item.connect('activate',
                          Lang.bind(this, function() {
                              this.close(global.get_current_time());
