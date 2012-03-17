@@ -121,25 +121,7 @@ function findAppFromInhibitor(inhibitor) {
     if (!GLib.str_has_suffix(desktopFile, '.desktop'))
         desktopFile += '.desktop';
 
-    let candidateDesktopFiles = [];
-
-    candidateDesktopFiles.push(desktopFile);
-    candidateDesktopFiles.push('gnome-' + desktopFile);
-
-    let appSystem = Shell.AppSystem.get_default();
-    let app = null;
-    for (let i = 0; i < candidateDesktopFiles.length; i++) {
-        try {
-            app = appSystem.lookup_app(candidateDesktopFiles[i]);
-
-            if (app)
-                break;
-        } catch(e) {
-            // ignore errors
-        }
-    }
-
-    return app;
+    return Shell.AppSystem.get_default().lookup_heuristic_basename(desktopFile);
 }
 
 const ListItem = new Lang.Class({
