@@ -901,25 +901,6 @@ _st_entry_set_icon (StEntry       *entry,
   clutter_actor_queue_relayout (CLUTTER_ACTOR (entry));
 }
 
-static void
-_st_entry_set_icon_from_file (StEntry       *entry,
-                              ClutterActor **icon,
-                              const gchar   *filename)
-{
-  ClutterActor *new_icon = NULL;
-
-  if (filename)
-    {
-      StTextureCache *cache;
-
-      cache = st_texture_cache_get_default ();
-
-      new_icon = (ClutterActor*) st_texture_cache_load_file_simple (cache, filename);
-    }
-
-  _st_entry_set_icon  (entry, icon, new_icon);
-}
-
 /**
  * st_entry_set_primary_icon:
  * @entry: a #StEntry
@@ -958,48 +939,6 @@ st_entry_set_secondary_icon (StEntry      *entry,
   priv = entry->priv;
 
   _st_entry_set_icon (entry, &priv->secondary_icon, icon);
-}
-
-/**
- * st_entry_set_primary_icon_from_file:
- * @entry: a #StEntry
- * @filename: (allow-none): filename of an icon
- *
- * Set the primary icon of the entry to the given filename
- */
-void
-st_entry_set_primary_icon_from_file (StEntry     *entry,
-                                     const gchar *filename)
-{
-  StEntryPrivate *priv;
-
-  g_return_if_fail (ST_IS_ENTRY (entry));
-
-  priv = entry->priv;
-
-  _st_entry_set_icon_from_file (entry, &priv->primary_icon, filename);
-
-}
-
-/**
- * st_entry_set_secondary_icon_from_file:
- * @entry: a #StEntry
- * @filename: (allow-none): filename of an icon
- *
- * Set the primary icon of the entry to the given filename
- */
-void
-st_entry_set_secondary_icon_from_file (StEntry     *entry,
-                                       const gchar *filename)
-{
-  StEntryPrivate *priv;
-
-  g_return_if_fail (ST_IS_ENTRY (entry));
-
-  priv = entry->priv;
-
-  _st_entry_set_icon_from_file (entry, &priv->secondary_icon, filename);
-
 }
 
 /******************************************************************************/
