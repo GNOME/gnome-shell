@@ -94,21 +94,11 @@ ClutterActor *st_texture_cache_load_uri_async (StTextureCache    *cache,
                                                int                available_width,
                                                int                available_height);
 
-ClutterActor *st_texture_cache_load_uri_sync (StTextureCache       *cache,
-                                              StTextureCachePolicy  policy,
-                                              const gchar          *uri,
-                                              int                   available_width,
-                                              int                   available_height,
-                                              GError              **error);
-
 CoglHandle    st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
                                                           const gchar    *file_path);
 
 cairo_surface_t *st_texture_cache_load_file_to_cairo_surface (StTextureCache *cache,
                                                               const gchar    *file_path);
-
-ClutterActor *st_texture_cache_load_file_simple (StTextureCache *cache,
-                                                 const gchar    *file_path);
 
 ClutterActor *st_texture_cache_load_from_raw  (StTextureCache    *cache,
                                                const guchar      *data,

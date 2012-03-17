@@ -1360,47 +1360,6 @@ out:
 }
 
 /**
- * st_texture_cache_load_uri_sync:
- *
- * @cache: The texture cache instance
- * @policy: Requested lifecycle of cached data
- * @uri: uri of the image file from which to create a pixbuf
- * @available_width: available width for the image, can be -1 if not limited
- * @available_height: available height for the image, can be -1 if not limited
- * @error: Return location for error
- *
- * Synchronously load an image from a uri.  The image is scaled down to fit the
- * available width and height imensions, but the image is never scaled up beyond
- * its actual size. The pixbuf is rotated according to the associated orientation
- * setting.
- *
- * Return value: (transfer none): A new #ClutterActor with the image file loaded if it was
- *               generated succesfully, %NULL otherwise
- */
-ClutterActor *
-st_texture_cache_load_uri_sync (StTextureCache *cache,
-                                StTextureCachePolicy policy,
-                                const gchar       *uri,
-                                int                available_width,
-                                int                available_height,
-                                GError            **error)
-{
-  CoglHandle texdata;
-  ClutterTexture *texture;
-
-  texdata = st_texture_cache_load_uri_sync_to_cogl_texture (cache, policy, uri, available_width, available_height, error);
-
-  if (texdata == COGL_INVALID_HANDLE)
-    return NULL;
-
-  texture = create_default_texture ();
-  set_texture_cogl_texture (texture, texdata);
-  cogl_handle_unref (texdata);
-
-  return CLUTTER_ACTOR (texture);
-}
-
-/**
  * st_texture_cache_load_file_to_cogl_texture:
  * @cache: A #StTextureCache
  * @file_path: Path to a file in supported image format
@@ -1472,39 +1431,6 @@ st_texture_cache_load_file_to_cairo_surface (StTextureCache *cache,
       return NULL;
     }
   return surface;
-}
-
-/**
- * st_texture_cache_load_file_simple:
- * @cache: A #StTextureCache
- * @file_path: Filesystem path
- *
- * Synchronously load an image into a texture.  The texture will be cached
- * indefinitely.  On error, this function returns an empty texture and prints a warning.
- *
- * Returns: (transfer none): A new #ClutterTexture
- */
-ClutterActor *
-st_texture_cache_load_file_simple (StTextureCache *cache,
-                                   const gchar    *file_path)
-{
-  GFile *file;
-  char *uri;
-  ClutterActor *texture;
-  GError *error = NULL;
-
-  file = g_file_new_for_path (file_path);
-  uri = g_file_get_uri (file);
-
-  texture = st_texture_cache_load_uri_sync (cache, ST_TEXTURE_CACHE_POLICY_FOREVER,
-                                            uri, -1, -1, &error);
-  if (texture == NULL)
-    {
-      g_warning ("Failed to load %s: %s", file_path, error->message);
-      g_clear_error (&error);
-      texture = clutter_texture_new ();
-    }
-  return texture;
 }
 
 /**
