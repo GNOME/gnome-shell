@@ -522,7 +522,10 @@ clutter_actor_set_shader_param_int
 
 <SUBSECTION>
 ClutterActorBox
+CLUTTER_ACTOR_BOX_INIT
 clutter_actor_box_new
+clutter_actor_box_init
+clutter_actor_box_init_rect
 clutter_actor_box_copy
 clutter_actor_box_free
 clutter_actor_box_equal

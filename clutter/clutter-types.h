@@ -151,11 +151,39 @@ struct _ClutterActorBox
   gfloat y2;
 };
 
+/**
+ * CLUTTER_ACTOR_BOX_INIT:
+ * @x_1: the X coordinate of the top left corner
+ * @y_1: the Y coordinate of the top left corner
+ * @x_2: the X coordinate of the bottom right corner
+ * @y_2: the Y coordinate of the bottom right corner
+ *
+ * A simple macro for initializing a #ClutterActorBox when declaring
+ * it, e.g.:
+ *
+ * |[
+ *   ClutterActorBox box = CLUTTER_ACTOR_BOX_INIT (0, 0, 400, 600);
+ * ]|
+ *
+ * Since: 1.10
+ */
+#define CLUTTER_ACTOR_BOX_INIT(x_1,y_1,x_2,y_2)         { (x_1), (y_1), (x_2), (y_2) }
+
 GType            clutter_actor_box_get_type      (void) G_GNUC_CONST;
 ClutterActorBox *clutter_actor_box_new           (gfloat                 x_1,
                                                   gfloat                 y_1,
                                                   gfloat                 x_2,
                                                   gfloat                 y_2);
+void             clutter_actor_box_init          (ClutterActorBox       *box,
+                                                  gfloat                 x_1,
+                                                  gfloat                 y_1,
+                                                  gfloat                 x_2,
+                                                  gfloat                 y_2);
+void             clutter_actor_box_init_rect     (ClutterActorBox       *box,
+                                                  gfloat                 x,
+                                                  gfloat                 y,
+                                                  gfloat                 width,
+                                                  gfloat                 height);
 ClutterActorBox *clutter_actor_box_copy          (const ClutterActorBox *box);
 void             clutter_actor_box_free          (ClutterActorBox       *box);
 gboolean         clutter_actor_box_equal         (const ClutterActorBox *box_a,

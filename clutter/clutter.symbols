@@ -58,6 +58,8 @@ clutter_actor_box_get_type
 clutter_actor_box_get_width
 clutter_actor_box_get_x
 clutter_actor_box_get_y
+clutter_actor_box_init_rect
+clutter_actor_box_init
 clutter_actor_box_interpolate
 clutter_actor_box_new
 clutter_actor_box_set_origin
