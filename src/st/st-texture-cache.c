@@ -233,8 +233,7 @@ rgba_from_clutter (GdkRGBA      *rgba,
 }
 
 static GdkPixbuf *
-impl_load_pixbuf_gicon (GIcon        *icon,
-                        GtkIconInfo  *info,
+impl_load_pixbuf_gicon (GtkIconInfo  *info,
                         int           size,
                         StIconColors *colors,
                         GError      **error)
@@ -296,7 +295,6 @@ typedef struct {
   StTextureCache *cache;
   StTextureCachePolicy policy;
   char *key;
-  char *checksum;
 
   gboolean enforced_square;
 
@@ -304,11 +302,8 @@ typedef struct {
   guint height;
   GSList *textures;
 
-  GIcon *icon;
-  char *mimetype;
   GtkIconInfo *icon_info;
   StIconColors *colors;
-  GtkRecentInfo *recent_info;
   char *uri;
 } AsyncTextureLoadData;
 
@@ -317,24 +312,17 @@ texture_load_data_destroy (gpointer p)
 {
   AsyncTextureLoadData *data = p;
 
-  if (data->icon)
+  if (data->icon_info)
     {
-      g_object_unref (data->icon);
       gtk_icon_info_free (data->icon_info);
       if (data->colors)
         st_icon_colors_unref (data->colors);
     }
   else if (data->uri)
     g_free (data->uri);
-  else if (data->recent_info)
-    gtk_recent_info_unref (data->recent_info);
 
   if (data->key)
     g_free (data->key);
-  if (data->checksum)
-    g_free (data->checksum);
-  if (data->mimetype)
-    g_free (data->mimetype);
 
   if (data->textures)
     g_slist_free_full (data->textures, (GDestroyNotify) g_object_unref);
@@ -548,8 +536,8 @@ load_pixbuf_thread (GSimpleAsyncResult *result,
 
   if (data->uri)
     pixbuf = impl_load_pixbuf_file (data->uri, data->width, data->height, &error);
-  else if (data->icon)
-    pixbuf = impl_load_pixbuf_gicon (data->icon, data->icon_info, data->width, data->colors, &error);
+  else if (data->icon_info)
+    pixbuf = impl_load_pixbuf_gicon (data->icon_info, data->width, data->colors, &error);
   else
     g_assert_not_reached ();
 
@@ -960,7 +948,6 @@ load_gicon_with_colors (StTextureCache    *cache,
       /* Transfer ownership of key */
       request->key = key;
       request->policy = policy;
-      request->icon = g_object_ref (icon);
       request->colors = colors ? st_icon_colors_ref (colors) : NULL;
       request->icon_info = info;
       request->width = request->height = size;
