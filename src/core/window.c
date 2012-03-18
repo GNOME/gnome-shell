@@ -10754,17 +10754,20 @@ void
 meta_window_compute_tile_match (MetaWindow *window)
 {
   MetaWindow *match;
-  MetaTileMode match_tile_mode;
   MetaStack *stack;
+  MetaTileMode match_tile_mode = META_TILE_NONE;
 
   window->tile_match = NULL;
 
-  if (window->shaded ||
-      window->minimized ||
-      !META_WINDOW_TILED_SIDE_BY_SIDE (window))
+  if (window->shaded || window->minimized)
     return;
 
-  match_tile_mode = window->tile_mode;
+  if (META_WINDOW_TILED_LEFT (window))
+    match_tile_mode = META_TILE_RIGHT;
+  else if (META_WINDOW_TILED_RIGHT (window))
+    match_tile_mode = META_TILE_LEFT;
+  else
+    return;
 
   stack = window->screen->stack;
 
