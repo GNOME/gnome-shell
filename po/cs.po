@@ -3,336 +3,347 @@
 # This file is distributed under the same license as the cogl package.
 #
 # Marek Černocký <marek@manet.cz>, 2011.
+# Adam Matoušek <adydas95@gmail.com>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter\n"
-"POT-Creation-Date: 2012-03-05 23:14+0000\n"
-"PO-Revision-Date: 2011-09-02 22:42+0200\n"
-"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-10-14 16:04+0000\n"
+"PO-Revision-Date: 2012-02-24 19:57+0100\n"
+"Last-Translator: Adam Matoušek <adydas95@gmail.com>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
-"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: cogl/cogl-debug.c:172
+#: ../cogl/cogl-debug.c:154
 msgid "Supported debug values:"
-msgstr ""
+msgstr "Podporované ladicí hodnoty:"
 
-#: cogl/cogl-debug.c:177
+#: ../cogl/cogl-debug.c:159
 msgid "Special debug values:"
-msgstr ""
+msgstr "Speciální ladicí hodnoty:"
 
-#: cogl/cogl-debug.c:179 cogl/cogl-debug.c:181
+#: ../cogl/cogl-debug.c:161
+#: ../cogl/cogl-debug.c:163
 msgid "Enables all non-behavioural debug options"
 msgstr ""
 
-#: cogl/cogl-debug.c:225
+#: ../cogl/cogl-debug.c:207
 msgid "Cogl debugging flags to set"
 msgstr "Ladicí příznaky Cogl, které se mají nastavit"
 
-#: cogl/cogl-debug.c:227
+#: ../cogl/cogl-debug.c:209
 msgid "Cogl debugging flags to unset"
 msgstr "Ladicí příznaky Cogl, jejichž nastavení se má zrušit"
 
-#: cogl/cogl-debug.c:276
+#: ../cogl/cogl-debug.c:258
 msgid "Cogl Options"
 msgstr "Přepínače Cogl"
 
-#: cogl/cogl-debug.c:277
+#: ../cogl/cogl-debug.c:259
 msgid "Show Cogl options"
 msgstr "Zobrazit přepínače Cogl"
 
-#: cogl/cogl-debug-options.h:25 cogl/cogl-debug-options.h:30
-#: cogl/cogl-debug-options.h:35 cogl/cogl-debug-options.h:40
-#: cogl/cogl-debug-options.h:45 cogl/cogl-debug-options.h:50
-#: cogl/cogl-debug-options.h:55 cogl/cogl-debug-options.h:61
-#: cogl/cogl-debug-options.h:66 cogl/cogl-debug-options.h:71
-#: cogl/cogl-debug-options.h:158 cogl/cogl-debug-options.h:163
-#: cogl/cogl-debug-options.h:168 cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:25
+#: ../cogl/cogl-debug-options.h:30
+#: ../cogl/cogl-debug-options.h:35
+#: ../cogl/cogl-debug-options.h:40
+#: ../cogl/cogl-debug-options.h:45
+#: ../cogl/cogl-debug-options.h:50
+#: ../cogl/cogl-debug-options.h:55
+#: ../cogl/cogl-debug-options.h:61
+#: ../cogl/cogl-debug-options.h:66
+#: ../cogl/cogl-debug-options.h:71
+#: ../cogl/cogl-debug-options.h:158
+#: ../cogl/cogl-debug-options.h:163
+#: ../cogl/cogl-debug-options.h:168
+#: ../cogl/cogl-debug-options.h:184
 msgid "Cogl Tracing"
-msgstr ""
+msgstr "Sledování Cogl"
 
-#: cogl/cogl-debug-options.h:27
+#: ../cogl/cogl-debug-options.h:27
 msgid "CoglObject references"
-msgstr ""
+msgstr "Odkazy CoglObject"
 
-#: cogl/cogl-debug-options.h:28
+#: ../cogl/cogl-debug-options.h:28
 msgid "Debug ref counting issues for CoglObjects"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:32
+#: ../cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
-msgstr ""
+msgstr "Sledovat plátování textur"
 
-#: cogl/cogl-debug-options.h:33
+#: ../cogl/cogl-debug-options.h:33
 msgid "debug the creation of texture slices"
-msgstr ""
+msgstr "ladit tvorbu texturových plátů"
 
-#: cogl/cogl-debug-options.h:37
+#: ../cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
-msgstr ""
+msgstr "Sledovat atlasové textury"
 
-#: cogl/cogl-debug-options.h:38
+#: ../cogl/cogl-debug-options.h:38
 msgid "Debug texture atlas management"
-msgstr ""
+msgstr "Ladit správu texturového atlasu"
 
-#: cogl/cogl-debug-options.h:42
+#: ../cogl/cogl-debug-options.h:42
 msgid "Trace Blend Strings"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:43
+#: ../cogl/cogl-debug-options.h:43
 msgid "Debug CoglBlendString parsing"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:47
+#: ../cogl/cogl-debug-options.h:47
 msgid "Trace Journal"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:48
+#: ../cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:52
+#: ../cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:53
+#: ../cogl/cogl-debug-options.h:53
 msgid "Show how geometry is being batched in the journal"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:57
+#: ../cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
-msgstr ""
+msgstr "Sledovat matice"
 
-#: cogl/cogl-debug-options.h:58
+#: ../cogl/cogl-debug-options.h:58
 msgid "Trace all matrix manipulation"
-msgstr ""
+msgstr "Sledovat veškerou manipulaci s maticemi"
 
-#: cogl/cogl-debug-options.h:63
+#: ../cogl/cogl-debug-options.h:63
 msgid "Trace Misc Drawing"
-msgstr ""
+msgstr "Sledovat různá kreslení"
 
-#: cogl/cogl-debug-options.h:64
+#: ../cogl/cogl-debug-options.h:64
 msgid "Trace some misc drawing operations"
-msgstr ""
+msgstr "Sledovat některé různorodé kreslící operace"
 
-#: cogl/cogl-debug-options.h:68
+#: ../cogl/cogl-debug-options.h:68
 msgid "Trace Pango Renderer"
-msgstr ""
+msgstr "Sledovat vykreslování Pango"
 
-#: cogl/cogl-debug-options.h:69
+#: ../cogl/cogl-debug-options.h:69
 msgid "Trace the Cogl Pango renderer"
-msgstr ""
+msgstr "Sledovat vykreslování Cogl Pango"
 
-#: cogl/cogl-debug-options.h:73
+#: ../cogl/cogl-debug-options.h:73
 msgid "Trace CoglTexturePixmap backend"
-msgstr ""
+msgstr "Sledovat výkonné jádro CoglTexturePixmap"
 
-#: cogl/cogl-debug-options.h:74
+#: ../cogl/cogl-debug-options.h:74
 msgid "Trace the Cogl texture pixmap backend"
-msgstr ""
+msgstr "Sledovat výkoné jádro pixmapových textur Cogl"
 
-#: cogl/cogl-debug-options.h:76 cogl/cogl-debug-options.h:81
+#: ../cogl/cogl-debug-options.h:76
+#: ../cogl/cogl-debug-options.h:81
 msgid "Visualize"
-msgstr ""
+msgstr "Vizualizovat"
 
-#: cogl/cogl-debug-options.h:78
+#: ../cogl/cogl-debug-options.h:78
 msgid "Outline rectangles"
-msgstr ""
+msgstr "Obrysové obdélníky"
 
-#: cogl/cogl-debug-options.h:79
+#: ../cogl/cogl-debug-options.h:79
 msgid "Add wire outlines for all rectangular geometry"
-msgstr ""
+msgstr "Přidat drátěný obrys ke všem obdélníkům"
 
-#: cogl/cogl-debug-options.h:83
+#: ../cogl/cogl-debug-options.h:83
 msgid "Show wireframes"
-msgstr ""
+msgstr "Drátěné zobrazení"
 
-#: cogl/cogl-debug-options.h:84
+#: ../cogl/cogl-debug-options.h:84
 msgid "Add wire outlines for all geometry"
-msgstr ""
+msgstr "Přidat drátěný obrys ke všem útvarům"
 
-#: cogl/cogl-debug-options.h:86 cogl/cogl-debug-options.h:91
-#: cogl/cogl-debug-options.h:96 cogl/cogl-debug-options.h:101
-#: cogl/cogl-debug-options.h:111 cogl/cogl-debug-options.h:116
-#: cogl/cogl-debug-options.h:122 cogl/cogl-debug-options.h:127
-#: cogl/cogl-debug-options.h:132 cogl/cogl-debug-options.h:137
-#: cogl/cogl-debug-options.h:142 cogl/cogl-debug-options.h:147
-#: cogl/cogl-debug-options.h:153 cogl/cogl-debug-options.h:173
-#: cogl/cogl-debug-options.h:178
+#: ../cogl/cogl-debug-options.h:86
+#: ../cogl/cogl-debug-options.h:91
+#: ../cogl/cogl-debug-options.h:96
+#: ../cogl/cogl-debug-options.h:101
+#: ../cogl/cogl-debug-options.h:111
+#: ../cogl/cogl-debug-options.h:116
+#: ../cogl/cogl-debug-options.h:122
+#: ../cogl/cogl-debug-options.h:127
+#: ../cogl/cogl-debug-options.h:132
+#: ../cogl/cogl-debug-options.h:137
+#: ../cogl/cogl-debug-options.h:142
+#: ../cogl/cogl-debug-options.h:147
+#: ../cogl/cogl-debug-options.h:153
+#: ../cogl/cogl-debug-options.h:173
+#: ../cogl/cogl-debug-options.h:178
 msgid "Root Cause"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:88
+#: ../cogl/cogl-debug-options.h:88
 msgid "Disable Journal batching"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:89
+#: ../cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
 msgstr ""
 
-#: cogl/cogl-debug-options.h:93
+#: ../cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:94
+#: ../cogl/cogl-debug-options.h:94
 msgid "Disable use of OpenGL vertex buffer objects"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:98
+#: ../cogl/cogl-debug-options.h:98
 msgid "Disable GL Pixel Buffers"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:99
+#: ../cogl/cogl-debug-options.h:99
 msgid "Disable use of OpenGL pixel buffer objects"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:103
+#: ../cogl/cogl-debug-options.h:103
 msgid "Disable software rect transform"
-msgstr ""
+msgstr "Zakázat softwarovou transformaci obdélníků"
 
-#: cogl/cogl-debug-options.h:104
+#: ../cogl/cogl-debug-options.h:104
 msgid "Use the GPU to transform rectangular geometry"
-msgstr ""
+msgstr "Použít grafický adaptér k transformacím obdélníků"
 
-#: cogl/cogl-debug-options.h:106
+#: ../cogl/cogl-debug-options.h:106
 msgid "Cogl Specialist"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:108
+#: ../cogl/cogl-debug-options.h:108
 msgid "Dump atlas images"
-msgstr ""
+msgstr "Ukládat obrázky atlasu"
 
-#: cogl/cogl-debug-options.h:109
+#: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
-msgstr ""
+msgstr "Ukládat změny texturového atlasu do obrázkového souboru"
 
-#: cogl/cogl-debug-options.h:113
+#: ../cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
-msgstr ""
+msgstr "Zakázat atlasování textur"
 
-#: cogl/cogl-debug-options.h:114
+#: ../cogl/cogl-debug-options.h:114
 msgid "Disable use of texture atlasing"
-msgstr ""
+msgstr "Zakázat tvorbu atlasu z textur"
 
-#: cogl/cogl-debug-options.h:118
+#: ../cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
-msgstr ""
+msgstr "Zakázat sdílení texturového atlasu mezi textem a obrázky"
 
-#: cogl/cogl-debug-options.h:119
-msgid ""
-"When this is set the glyph cache will always use a separate texture for its "
-"atlas. Otherwise it will try to share the atlas with images."
-msgstr ""
+#: ../cogl/cogl-debug-options.h:119
+msgid "When this is set the glyph cache will always use a separate texture for its atlas. Otherwise it will try to share the atlas with images."
+msgstr "Pokud je nastaveno, paměť znaků bude vždy používat oddělenou texturu pro svůj atlas. V opačném případě se bude snažit sdílet atlas s obrázky."
 
-#: cogl/cogl-debug-options.h:124
+#: ../cogl/cogl-debug-options.h:124
 msgid "Disable texturing"
-msgstr ""
+msgstr "Zakázat potažení texturami"
 
-#: cogl/cogl-debug-options.h:125
+#: ../cogl/cogl-debug-options.h:125
 msgid "Disable texturing any primitives"
-msgstr ""
+msgstr "Zakázat potažení texturami u všech primitiv"
 
-#: cogl/cogl-debug-options.h:129
+#: ../cogl/cogl-debug-options.h:129
 msgid "Disable arbfp"
-msgstr ""
+msgstr "Zakázat arbfp"
 
-#: cogl/cogl-debug-options.h:130
+#: ../cogl/cogl-debug-options.h:130
 msgid "Disable use of ARB fragment programs"
-msgstr ""
+msgstr "Zakázat použití fragmentovacích programů ARB"
 
-#: cogl/cogl-debug-options.h:134
+#: ../cogl/cogl-debug-options.h:134
 msgid "Disable fixed"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:135
+#: ../cogl/cogl-debug-options.h:135
 msgid "Disable use of the fixed function pipeline backend"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:139
+#: ../cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
-msgstr ""
+msgstr "Zakázat GLSL"
 
-#: cogl/cogl-debug-options.h:140
+#: ../cogl/cogl-debug-options.h:140
 msgid "Disable use of GLSL"
-msgstr ""
+msgstr "Zakázat používaní GLSL"
 
-#: cogl/cogl-debug-options.h:144
+#: ../cogl/cogl-debug-options.h:144
 msgid "Disable blending"
-msgstr ""
+msgstr "Zakázat mísení"
 
-#: cogl/cogl-debug-options.h:145
+#: ../cogl/cogl-debug-options.h:145
 msgid "Disable use of blending"
-msgstr ""
+msgstr "Zakázat použití mísení (blending)"
 
-#: cogl/cogl-debug-options.h:149
+#: ../cogl/cogl-debug-options.h:149
 msgid "Disable non-power-of-two textures"
-msgstr ""
+msgstr "Zakázat textury typu NPOT"
 
-#: cogl/cogl-debug-options.h:150
-msgid ""
-"Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
-"will create sliced textures or textures with waste instead."
-msgstr ""
+#: ../cogl/cogl-debug-options.h:150
+msgid "Makes Cogl think that the GL driver doesn't support NPOT textures so that it will create sliced textures or textures with waste instead."
+msgstr "Cogl bude pracovat, jako by ovladač GL nepodporoval textury s rozměry různými od mocnin dvojky. Textury se buď rozdělí na pláty nebo bude vznikat prázdný prostor."
 
-#: cogl/cogl-debug-options.h:155
+#: ../cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
-msgstr ""
+msgstr "Zakázat softwarové ořezávání"
 
-#: cogl/cogl-debug-options.h:156
+#: ../cogl/cogl-debug-options.h:156
 msgid "Disables Cogl's attempts to clip some rectangles in software."
-msgstr ""
+msgstr "Zákázat pokusy o softwarový ořez některých obdélníků"
 
-#: cogl/cogl-debug-options.h:160
+#: ../cogl/cogl-debug-options.h:160
 msgid "Show source"
-msgstr ""
+msgstr "Zobrazit zdrojový kód"
 
-#: cogl/cogl-debug-options.h:161
+#: ../cogl/cogl-debug-options.h:161
 msgid "Show generated ARBfp/GLSL source code"
-msgstr ""
+msgstr "Zobrazit vytvořený zdrojový kód ARBfp/GLSL"
 
-#: cogl/cogl-debug-options.h:165
+#: ../cogl/cogl-debug-options.h:165
 msgid "Trace some OpenGL"
-msgstr ""
+msgstr "Sledovat něco z OpenGL"
 
-#: cogl/cogl-debug-options.h:166
+#: ../cogl/cogl-debug-options.h:166
 msgid "Traces some select OpenGL calls"
-msgstr ""
+msgstr "Sledovat některá vybraná volání OpenGL"
 
-#: cogl/cogl-debug-options.h:170
+#: ../cogl/cogl-debug-options.h:170
 msgid "Trace offscreen support"
-msgstr ""
+msgstr "Sledovat podporu mimoobrazovkového vykreslování"
 
-#: cogl/cogl-debug-options.h:171
+#: ../cogl/cogl-debug-options.h:171
 msgid "Debug offscreen support"
-msgstr ""
+msgstr "Ladit podporu mimoobrazovkévého vykreslování (offscreen)"
 
-#: cogl/cogl-debug-options.h:175
+#: ../cogl/cogl-debug-options.h:175
 msgid "Disable program caches"
-msgstr ""
+msgstr "Zakázat mezipaměť programů"
 
-#: cogl/cogl-debug-options.h:176
+#: ../cogl/cogl-debug-options.h:176
 msgid "Disable fallback caches for arbfp and glsl programs"
-msgstr ""
+msgstr "Zakázat nouzovou mezipaměť pro programy arbfp a glsl"
 
-#: cogl/cogl-debug-options.h:180
+#: ../cogl/cogl-debug-options.h:180
 msgid "Disable read pixel optimization"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:181
-msgid ""
-"Disable optimization for reading 1px for simple scenes of opaque rectangles"
+#: ../cogl/cogl-debug-options.h:181
+msgid "Disable optimization for reading 1px for simple scenes of opaque rectangles"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:186
+#: ../cogl/cogl-debug-options.h:186
 msgid "Trace clipping"
-msgstr ""
+msgstr "Sledovat ořezávání"
 
-#: cogl/cogl-debug-options.h:187
+#: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
-msgstr ""
+msgstr "Zapisovat informace, jak Cogl provádí ořezy"
