@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Cogl = imports.gi.Cogl;
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
 
@@ -25,8 +26,30 @@ scroll.add_actor(vbox);
 
 let tbox = null;
 
-function addTestCase(image, size, backgroundSize) {
-    let obin = new St.Bin({ style: 'border: 3px solid green;' });
+function addTestCase(image, size, backgroundSize, useCairo) {
+    // Using a border in CSS forces cairo rendering.
+    // To get a border using cogl, we paint a border using
+    // paint signal hacks.
+
+    let obin = new St.Bin();
+    if (useCairo)
+        obin.style = 'border: 3px solid green;';
+    else
+        obin.connect_after('paint', function(actor) {
+            Cogl.set_source_color4f(0, 1, 0, 1);
+
+            let geom = actor.get_allocation_geometry();
+            let width = 3;
+
+            // clockwise order
+            Cogl.rectangle(0, 0, geom.width, width);
+            Cogl.rectangle(geom.width - width, width,
+                           geom.width, geom.height);
+            Cogl.rectangle(0, geom.height,
+                           geom.width - width, geom.height - width);
+            Cogl.rectangle(0, geom.height - width,
+                           width, width);
+        });
     tbox.add(obin);
 
     let bin = new St.Bin({ style_class: 'background-image-' + image,
@@ -39,13 +62,13 @@ function addTestCase(image, size, backgroundSize) {
                          });
     obin.set_child(bin);
 
-    bin.set_child(new St.Label({ text: backgroundSize,
+    bin.set_child(new St.Label({ text: backgroundSize + (useCairo ? ' (cairo)' : ' (cogl)'),
                                  style: 'font-size: 15px;'
                                         + 'text-align: center;'
                                }));
 }
 
-function addTestLine(image, size, backgroundSizes) {
+function addTestLine(image, size, backgroundSizes, useCairo) {
     vbox.add(new St.Label({ text: image + '.svg / ' + size.width + '×' + size.height,
                             style: 'font-size: 15px;'
                                    + 'text-align: center;'
@@ -57,7 +80,9 @@ function addTestLine(image, size, backgroundSizes) {
     if (backgroundSizes.length == 2)
         addTestCase(image, size, "auto");
     for each (let s in backgroundSizes)
-        addTestCase(image, size, s);
+        addTestCase(image, size, s, false);
+    for each (let s in backgroundSizes)
+        addTestCase(image, size, s, true);
 }
 
 let size1 = { width: 200, height: 200 }
