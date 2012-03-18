@@ -8,12 +8,13 @@ const UI = imports.testcommon.ui;
 
 UI.init();
 let stage = Clutter.Stage.get_default();
+stage.user_resizable = true;
 stage.width = 1024;
 stage.height = 768;
 
-let vbox = new St.BoxLayout({ width: stage.width,
-                              height: stage.height,
-                              style: 'background: #ffee88;' });
+let vbox = new St.BoxLayout({ style: 'background: #ffee88;' });
+vbox.add_constraint(new Clutter.BindConstraint({ source: stage,
+                                                 coordinate: Clutter.BindCoordinate.SIZE }));
 stage.add_actor(vbox);
 
 let scroll = new St.ScrollView();
@@ -52,9 +53,10 @@ function addTestCase(image, size, backgroundSize, useCairo) {
         });
     tbox.add(obin);
 
+    let [width, height] = size;
     let bin = new St.Bin({ style_class: 'background-image-' + image,
-                           width: size.width,
-                           height: size.height,
+                           width: width,
+                           height: height,
                            style: 'border: 1px solid transparent;'
                                   + 'background-size: ' + backgroundSize + ';',
                            x_fill: true,
@@ -68,8 +70,11 @@ function addTestCase(image, size, backgroundSize, useCairo) {
                                }));
 }
 
-function addTestLine(image, size, backgroundSizes, useCairo) {
-    vbox.add(new St.Label({ text: image + '.svg / ' + size.width + '×' + size.height,
+function addTestLine(image, size, useCairo) {
+    const backgroundSizes = ["auto", "contain", "cover", "200px 200px", "100px 100px", "100px 200px"];
+
+    let [width, height] = size;
+    vbox.add(new St.Label({ text: image + '.svg / ' + width + '×' + height,
                             style: 'font-size: 15px;'
                                    + 'text-align: center;'
                           }));
@@ -77,37 +82,22 @@ function addTestLine(image, size, backgroundSizes, useCairo) {
     tbox = new St.BoxLayout({ style: 'spacing: 20px;' });
     vbox.add(tbox);
 
-    if (backgroundSizes.length == 2)
-        addTestCase(image, size, "auto");
     for each (let s in backgroundSizes)
         addTestCase(image, size, s, false);
     for each (let s in backgroundSizes)
         addTestCase(image, size, s, true);
 }
 
-let size1 = { width: 200, height: 200 }
-let size2 = { width: 250, height: 250 }
-let size3 = { width: 100, height: 100 }
+function addTestImage(image) {
+    const containerSizes = [[100, 100], [200, 200], [250, 250], [100, 250], [250, 100]];
 
-// fixed size
-addTestLine('200-200', size1, ["200px 200px", "100px 100px", "100px 200px"]);
+    for each (let size in containerSizes)
+        addTestLine(image, size);
+}
 
-// same size
-addTestLine('200-200', size1, ["contain", "cover"]);
-// smaller
-addTestLine('200-200', size2, ["contain", "cover"]);
-// larger
-addTestLine('200-200', size3, ["contain", "cover"]);
-
-
-addTestLine('200-100', size1, ["contain", "cover"]);
-addTestLine('200-100', size2, ["contain", "cover"]);
-addTestLine('200-100', size3, ["contain", "cover"]);
-
-
-addTestLine('100-200', size1, ["contain", "cover"]);
-addTestLine('100-200', size2, ["contain", "cover"]);
-addTestLine('100-200', size3, ["contain", "cover"]);
+addTestImage ('200-200');
+addTestImage ('200-100');
+addTestImage ('100-200');
 
 stage.show();
 Clutter.main();
