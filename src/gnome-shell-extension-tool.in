@@ -68,11 +68,11 @@ function init() {
 }
 
 function enable() {
-    Main.panel._rightBox.insert_actor(button, 0);
+    Main.panel._rightBox.insert_child_at_index(button, 0);
 }
 
 function disable() {
-    Main.panel._rightBox.remove_actor(button);
+    Main.panel._rightBox.remove_child(button);
 }
 """,
 
