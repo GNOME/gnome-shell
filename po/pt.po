@@ -1,15 +1,15 @@
 # cogl's portuguese translation.
-# Copyright © 2011 cogl
+# Copyright © 2011, 2012 cogl
 # This file is distributed under the same license as the cogl package.
-# Duarte Loreto <happyguy_pt@hotmail.com>, 2011.
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2011, 2012.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 3.2\n"
+"Project-Id-Version: 3.4\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-03-05 23:14+0000\n"
-"PO-Revision-Date: 2011-09-11 00:55+0000\n"
+"POT-Creation-Date: 2012-03-18 13:45+0000\n"
+"PO-Revision-Date: 2012-03-18 13:55+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "Language: pt\n"
@@ -17,320 +17,326 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: cogl/cogl-debug.c:172
+#: ../cogl/cogl-debug.c:173
 msgid "Supported debug values:"
-msgstr ""
+msgstr "Valores de depuração suportados:"
 
-#: cogl/cogl-debug.c:177
+#: ../cogl/cogl-debug.c:178
 msgid "Special debug values:"
-msgstr ""
+msgstr "Valores de depuração especiais:"
 
-#: cogl/cogl-debug.c:179 cogl/cogl-debug.c:181
+#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
 msgid "Enables all non-behavioural debug options"
-msgstr ""
+msgstr "Activa todas as opções de depuração não-comportamentais"
 
-#: cogl/cogl-debug.c:225
+#: ../cogl/cogl-debug.c:226
 msgid "Cogl debugging flags to set"
 msgstr "Parâmetros de depuração Cogl a definir"
 
-#: cogl/cogl-debug.c:227
+#: ../cogl/cogl-debug.c:228
 msgid "Cogl debugging flags to unset"
 msgstr "Parâmetros de depuração Cogl a desactivar"
 
-#: cogl/cogl-debug.c:276
+#: ../cogl/cogl-debug.c:277
 msgid "Cogl Options"
 msgstr "Opções Cogl"
 
-#: cogl/cogl-debug.c:277
+#: ../cogl/cogl-debug.c:278
 msgid "Show Cogl options"
 msgstr "Apresentar as opções do Cogl"
 
-#: cogl/cogl-debug-options.h:25 cogl/cogl-debug-options.h:30
-#: cogl/cogl-debug-options.h:35 cogl/cogl-debug-options.h:40
-#: cogl/cogl-debug-options.h:45 cogl/cogl-debug-options.h:50
-#: cogl/cogl-debug-options.h:55 cogl/cogl-debug-options.h:61
-#: cogl/cogl-debug-options.h:66 cogl/cogl-debug-options.h:71
-#: cogl/cogl-debug-options.h:158 cogl/cogl-debug-options.h:163
-#: cogl/cogl-debug-options.h:168 cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
+#: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
+#: ../cogl/cogl-debug-options.h:45 ../cogl/cogl-debug-options.h:50
+#: ../cogl/cogl-debug-options.h:55 ../cogl/cogl-debug-options.h:61
+#: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
+#: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
+#: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
 msgid "Cogl Tracing"
-msgstr ""
+msgstr "Acompanhamento Cogl"
 
-#: cogl/cogl-debug-options.h:27
+#: ../cogl/cogl-debug-options.h:27
 msgid "CoglObject references"
-msgstr ""
+msgstr "Referências CoglObject"
 
-#: cogl/cogl-debug-options.h:28
+#: ../cogl/cogl-debug-options.h:28
 msgid "Debug ref counting issues for CoglObjects"
-msgstr ""
+msgstr "Depurar problemas de contagem de referências para CoglObjects"
 
-#: cogl/cogl-debug-options.h:32
+#: ../cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
-msgstr ""
+msgstr "Acompanhar Fatiamento de Texturas"
 
-#: cogl/cogl-debug-options.h:33
+#: ../cogl/cogl-debug-options.h:33
 msgid "debug the creation of texture slices"
-msgstr ""
+msgstr "Depurar a criação de fatias de texturas"
 
-#: cogl/cogl-debug-options.h:37
+#: ../cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
-msgstr ""
+msgstr "Acompanhar Texturas Atlas"
 
-#: cogl/cogl-debug-options.h:38
+#: ../cogl/cogl-debug-options.h:38
 msgid "Debug texture atlas management"
-msgstr ""
+msgstr "Depurar a gestão de texturas atlas"
 
-#: cogl/cogl-debug-options.h:42
+#: ../cogl/cogl-debug-options.h:42
 msgid "Trace Blend Strings"
-msgstr ""
+msgstr "Acompanhar Mistura de Expressões"
 
-#: cogl/cogl-debug-options.h:43
+#: ../cogl/cogl-debug-options.h:43
 msgid "Debug CoglBlendString parsing"
-msgstr ""
+msgstr "Depurar o processamento de CoglBlendString"
 
-#: cogl/cogl-debug-options.h:47
+#: ../cogl/cogl-debug-options.h:47
 msgid "Trace Journal"
-msgstr ""
+msgstr "Diário de Acompanhamento"
 
-#: cogl/cogl-debug-options.h:48
+#: ../cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
-msgstr ""
+msgstr "Visualizar toda a geometria a passar pelo diário"
 
-#: cogl/cogl-debug-options.h:52
+#: ../cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
-msgstr ""
+msgstr "Acompanhar Lotes"
 
-#: cogl/cogl-debug-options.h:53
+#: ../cogl/cogl-debug-options.h:53
 msgid "Show how geometry is being batched in the journal"
-msgstr ""
+msgstr "Apresentar como a geometria é loteada no diário"
 
-#: cogl/cogl-debug-options.h:57
+#: ../cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
-msgstr ""
+msgstr "Acompanhar matrizes"
 
-#: cogl/cogl-debug-options.h:58
+#: ../cogl/cogl-debug-options.h:58
 msgid "Trace all matrix manipulation"
-msgstr ""
+msgstr "Acompanhar todas as manipulações de matrizes"
 
-#: cogl/cogl-debug-options.h:63
+#: ../cogl/cogl-debug-options.h:63
 msgid "Trace Misc Drawing"
-msgstr ""
+msgstr "Acompanhar Miscelânea de Desenhos"
 
-#: cogl/cogl-debug-options.h:64
+#: ../cogl/cogl-debug-options.h:64
 msgid "Trace some misc drawing operations"
-msgstr ""
+msgstr "Acompanhar algumas operações de desenhos"
 
-#: cogl/cogl-debug-options.h:68
+#: ../cogl/cogl-debug-options.h:68
 msgid "Trace Pango Renderer"
-msgstr ""
+msgstr "Acompanhar Renderizador Pango"
 
-#: cogl/cogl-debug-options.h:69
+#: ../cogl/cogl-debug-options.h:69
 msgid "Trace the Cogl Pango renderer"
-msgstr ""
+msgstr "Acompanhar o renderizador Pango do Cogl"
 
-#: cogl/cogl-debug-options.h:73
+#: ../cogl/cogl-debug-options.h:73
 msgid "Trace CoglTexturePixmap backend"
-msgstr ""
+msgstr "Acompanhar o motor de CoglTexturePixmap"
 
-#: cogl/cogl-debug-options.h:74
+#: ../cogl/cogl-debug-options.h:74
 msgid "Trace the Cogl texture pixmap backend"
-msgstr ""
+msgstr "Acompanhar o motor de imagens de texturas do Cogl"
 
-#: cogl/cogl-debug-options.h:76 cogl/cogl-debug-options.h:81
+#: ../cogl/cogl-debug-options.h:76 ../cogl/cogl-debug-options.h:81
 msgid "Visualize"
-msgstr ""
+msgstr "Visualizar"
 
-#: cogl/cogl-debug-options.h:78
+#: ../cogl/cogl-debug-options.h:78
 msgid "Outline rectangles"
-msgstr ""
+msgstr "Delimitar rectângulos"
 
-#: cogl/cogl-debug-options.h:79
+#: ../cogl/cogl-debug-options.h:79
 msgid "Add wire outlines for all rectangular geometry"
-msgstr ""
+msgstr "Adicionar delimitações a todas as geometrias rectangulares"
 
-#: cogl/cogl-debug-options.h:83
+#: ../cogl/cogl-debug-options.h:83
 msgid "Show wireframes"
-msgstr ""
+msgstr "Apresentar contornos"
 
-#: cogl/cogl-debug-options.h:84
+#: ../cogl/cogl-debug-options.h:84
 msgid "Add wire outlines for all geometry"
-msgstr ""
+msgstr "Adicionar contornos para todas as geometrias"
 
-#: cogl/cogl-debug-options.h:86 cogl/cogl-debug-options.h:91
-#: cogl/cogl-debug-options.h:96 cogl/cogl-debug-options.h:101
-#: cogl/cogl-debug-options.h:111 cogl/cogl-debug-options.h:116
-#: cogl/cogl-debug-options.h:122 cogl/cogl-debug-options.h:127
-#: cogl/cogl-debug-options.h:132 cogl/cogl-debug-options.h:137
-#: cogl/cogl-debug-options.h:142 cogl/cogl-debug-options.h:147
-#: cogl/cogl-debug-options.h:153 cogl/cogl-debug-options.h:173
-#: cogl/cogl-debug-options.h:178
+#: ../cogl/cogl-debug-options.h:86 ../cogl/cogl-debug-options.h:91
+#: ../cogl/cogl-debug-options.h:96 ../cogl/cogl-debug-options.h:101
+#: ../cogl/cogl-debug-options.h:111 ../cogl/cogl-debug-options.h:116
+#: ../cogl/cogl-debug-options.h:122 ../cogl/cogl-debug-options.h:127
+#: ../cogl/cogl-debug-options.h:132 ../cogl/cogl-debug-options.h:137
+#: ../cogl/cogl-debug-options.h:142 ../cogl/cogl-debug-options.h:147
+#: ../cogl/cogl-debug-options.h:153 ../cogl/cogl-debug-options.h:173
+#: ../cogl/cogl-debug-options.h:178
 msgid "Root Cause"
-msgstr ""
+msgstr "Motivo Inicial"
 
-#: cogl/cogl-debug-options.h:88
+#: ../cogl/cogl-debug-options.h:88
 msgid "Disable Journal batching"
-msgstr ""
+msgstr "Desactivar Loteamento no Diário"
 
-#: cogl/cogl-debug-options.h:89
+#: ../cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
-msgstr ""
+msgstr "Desactivar o loteamento da geometria no Diário Cogl."
 
-#: cogl/cogl-debug-options.h:93
+#: ../cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
-msgstr ""
+msgstr "Desactivar Buffers GL Vertex"
 
-#: cogl/cogl-debug-options.h:94
+#: ../cogl/cogl-debug-options.h:94
 msgid "Disable use of OpenGL vertex buffer objects"
-msgstr ""
+msgstr "Desactivar a utilização de objectos de buffer vertex OpenGL"
 
-#: cogl/cogl-debug-options.h:98
+#: ../cogl/cogl-debug-options.h:98
 msgid "Disable GL Pixel Buffers"
-msgstr ""
+msgstr "Desactivar Buffer de Pixels GL"
 
-#: cogl/cogl-debug-options.h:99
+#: ../cogl/cogl-debug-options.h:99
 msgid "Disable use of OpenGL pixel buffer objects"
-msgstr ""
+msgstr "Desactivar a utilização de objectos de buffer de pixels OpenGL"
 
-#: cogl/cogl-debug-options.h:103
+#: ../cogl/cogl-debug-options.h:103
 msgid "Disable software rect transform"
-msgstr ""
+msgstr "Desactivar a transformação de rectângulos pela aplicação"
 
-#: cogl/cogl-debug-options.h:104
+#: ../cogl/cogl-debug-options.h:104
 msgid "Use the GPU to transform rectangular geometry"
-msgstr ""
+msgstr "Utilizar o Processador Gráfico para transformar geometria rectangular"
 
-#: cogl/cogl-debug-options.h:106
+#: ../cogl/cogl-debug-options.h:106
 msgid "Cogl Specialist"
-msgstr ""
+msgstr "Especialista Cogl"
 
-#: cogl/cogl-debug-options.h:108
+#: ../cogl/cogl-debug-options.h:108
 msgid "Dump atlas images"
-msgstr ""
+msgstr "Despejar imagens atlas"
 
-#: cogl/cogl-debug-options.h:109
+#: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
-msgstr ""
+msgstr "Despejar alterações de texturas atlas num ficheiro de imagem"
 
-#: cogl/cogl-debug-options.h:113
+#: ../cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
-msgstr ""
+msgstr "Desactivar atlas de texturas"
 
-#: cogl/cogl-debug-options.h:114
+#: ../cogl/cogl-debug-options.h:114
 msgid "Disable use of texture atlasing"
-msgstr ""
+msgstr "Desactivar a utilização de atlas de texturas"
 
-#: cogl/cogl-debug-options.h:118
+#: ../cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
-msgstr ""
+msgstr "Desactivar a partilha de texturas atlas entre texto e imagens"
 
-#: cogl/cogl-debug-options.h:119
+#: ../cogl/cogl-debug-options.h:119
 msgid ""
 "When this is set the glyph cache will always use a separate texture for its "
 "atlas. Otherwise it will try to share the atlas with images."
 msgstr ""
+"Quando definido, a cache de glifos irá utilizar sempre uma textura separada "
+"para o seu atlas. Caso contrário, tentará partilhar o atlas com as imagens."
 
-#: cogl/cogl-debug-options.h:124
+#: ../cogl/cogl-debug-options.h:124
 msgid "Disable texturing"
-msgstr ""
+msgstr "Desactivar texturas"
 
-#: cogl/cogl-debug-options.h:125
+#: ../cogl/cogl-debug-options.h:125
 msgid "Disable texturing any primitives"
-msgstr ""
+msgstr "Desactivar texturas de quaisquer primitivas"
 
-#: cogl/cogl-debug-options.h:129
+#: ../cogl/cogl-debug-options.h:129
 msgid "Disable arbfp"
-msgstr ""
+msgstr "Desactivar arbfp"
 
-#: cogl/cogl-debug-options.h:130
+#: ../cogl/cogl-debug-options.h:130
 msgid "Disable use of ARB fragment programs"
-msgstr ""
+msgstr "Desactivar a utilização de aplicações de fragmentos ARB"
 
-#: cogl/cogl-debug-options.h:134
+#: ../cogl/cogl-debug-options.h:134
 msgid "Disable fixed"
-msgstr ""
+msgstr "Desactivar fixa"
 
-#: cogl/cogl-debug-options.h:135
+#: ../cogl/cogl-debug-options.h:135
 msgid "Disable use of the fixed function pipeline backend"
-msgstr ""
+msgstr "Desactivar a utilização do motor de canal de função fixa"
 
-#: cogl/cogl-debug-options.h:139
+#: ../cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
-msgstr ""
+msgstr "Desactivar GLSL"
 
-#: cogl/cogl-debug-options.h:140
+#: ../cogl/cogl-debug-options.h:140
 msgid "Disable use of GLSL"
-msgstr ""
+msgstr "Desactivar a utilização do GLSL"
 
-#: cogl/cogl-debug-options.h:144
+#: ../cogl/cogl-debug-options.h:144
 msgid "Disable blending"
-msgstr ""
+msgstr "Desactivar mistura"
 
-#: cogl/cogl-debug-options.h:145
+#: ../cogl/cogl-debug-options.h:145
 msgid "Disable use of blending"
-msgstr ""
+msgstr "Desactivar a utilização de mistura"
 
-#: cogl/cogl-debug-options.h:149
+#: ../cogl/cogl-debug-options.h:149
 msgid "Disable non-power-of-two textures"
-msgstr ""
+msgstr "Desactivar texturas que não sejam potência-de-dois"
 
-#: cogl/cogl-debug-options.h:150
+#: ../cogl/cogl-debug-options.h:150
 msgid ""
 "Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
 "will create sliced textures or textures with waste instead."
 msgstr ""
+"Faz o Cogl pensar que o controlador GL não suporta texturas Potência-de-dois "
+"pelo que irá criar texturas fatiadas ou texturas com desperdício."
 
-#: cogl/cogl-debug-options.h:155
+#: ../cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
-msgstr ""
+msgstr "Desactivar corte por aplicação"
 
-#: cogl/cogl-debug-options.h:156
+#: ../cogl/cogl-debug-options.h:156
 msgid "Disables Cogl's attempts to clip some rectangles in software."
-msgstr ""
+msgstr "Desactiva a tentativa do Cogl de cortar na aplicação alguns rectângulos."
 
-#: cogl/cogl-debug-options.h:160
+#: ../cogl/cogl-debug-options.h:160
 msgid "Show source"
-msgstr ""
+msgstr "Apresentar fonte"
 
-#: cogl/cogl-debug-options.h:161
+#: ../cogl/cogl-debug-options.h:161
 msgid "Show generated ARBfp/GLSL source code"
-msgstr ""
+msgstr "Apresenta o código fonte ARBfp/GLSL gerado"
 
-#: cogl/cogl-debug-options.h:165
+#: ../cogl/cogl-debug-options.h:165
 msgid "Trace some OpenGL"
-msgstr ""
+msgstr "Acompanhar algum OpenGL"
 
-#: cogl/cogl-debug-options.h:166
+#: ../cogl/cogl-debug-options.h:166
 msgid "Traces some select OpenGL calls"
-msgstr ""
+msgstr "Acompanha algumas chamadas OpenGL seleccionadas"
 
-#: cogl/cogl-debug-options.h:170
+#: ../cogl/cogl-debug-options.h:170
 msgid "Trace offscreen support"
-msgstr ""
+msgstr "Acompanhar suporte fora do ecrã"
 
-#: cogl/cogl-debug-options.h:171
+#: ../cogl/cogl-debug-options.h:171
 msgid "Debug offscreen support"
-msgstr ""
+msgstr "Depurar suporte fora do ecrã"
 
-#: cogl/cogl-debug-options.h:175
+#: ../cogl/cogl-debug-options.h:175
 msgid "Disable program caches"
-msgstr ""
+msgstr "Desactivar caches da aplicação"
 
-#: cogl/cogl-debug-options.h:176
+#: ../cogl/cogl-debug-options.h:176
 msgid "Disable fallback caches for arbfp and glsl programs"
-msgstr ""
+msgstr "Desactivar caches de recurso para aplicações arbfp e glsl"
 
-#: cogl/cogl-debug-options.h:180
+#: ../cogl/cogl-debug-options.h:180
 msgid "Disable read pixel optimization"
-msgstr ""
+msgstr "Desactivar optimização de pixel lido"
 
-#: cogl/cogl-debug-options.h:181
+#: ../cogl/cogl-debug-options.h:181
 msgid ""
 "Disable optimization for reading 1px for simple scenes of opaque rectangles"
 msgstr ""
+"Desactivar a optimização para leitura de 1px de cenas simples de rectângulos opacos"
 
-#: cogl/cogl-debug-options.h:186
+#: ../cogl/cogl-debug-options.h:186
 msgid "Trace clipping"
-msgstr ""
+msgstr "Acompanhar corte"
 
-#: cogl/cogl-debug-options.h:187
+#: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
-msgstr ""
+msgstr "Regista informação sobre como o Cogl está a implementar o corte"
+
