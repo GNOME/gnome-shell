@@ -791,6 +791,7 @@ enum
   ENTER_EVENT,
   LEAVE_EVENT,
   ALLOCATION_CHANGED,
+  TRANSITIONS_COMPLETED,
 
   LAST_SIGNAL
 };
@@ -6958,6 +6959,24 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   G_TYPE_NONE, 2,
                   CLUTTER_TYPE_ACTOR_BOX | G_SIGNAL_TYPE_STATIC_SCOPE,
                   CLUTTER_TYPE_ALLOCATION_FLAGS);
+
+  /**
+   * ClutterActor::transitions-completed:
+   * @actor: a #ClutterActor
+   *
+   * The ::transitions-completed signal is emitted once all transitions
+   * involving @actor are complete.
+   *
+   * Since: 1.10
+   */
+  actor_signals[TRANSITIONS_COMPLETED] =
+    g_signal_new (I_("transitions-completed"),
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  _clutter_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -16954,12 +16973,25 @@ static void
 on_transition_completed (ClutterTransition *transition,
                          TransitionClosure *clos)
 {
+  ClutterActor *actor = clos->actor;
   ClutterAnimationInfo *info;
 
-  info = _clutter_actor_get_animation_info (clos->actor);
+  info = _clutter_actor_get_animation_info (actor);
 
   /* this will take care of cleaning clos for us */
   g_hash_table_remove (info->transitions, clos->name);
+
+  /* if it's the last transition then we clean up */
+  if (g_hash_table_size (info->transitions) == 0)
+    {
+      g_hash_table_unref (info->transitions);
+      info->transitions = NULL;
+
+      CLUTTER_NOTE (ANIMATION, "Transitions for '%s' completed",
+                    _clutter_actor_get_debug_name (actor));
+
+      g_signal_emit (actor, actor_signals[TRANSITIONS_COMPLETED], 0);
+    }
 }
 
 void
