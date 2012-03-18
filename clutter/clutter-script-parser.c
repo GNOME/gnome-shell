@@ -1128,7 +1128,7 @@ _clutter_script_parse_translatable_string (ClutterScript *script,
   if (translatable)
     {
       if (context != NULL && *context != '\0')
-        res = g_dpgettext2 (domain, context, string)
+        res = g_dpgettext2 (domain, context, string);
       else
         res = g_dgettext (domain, string);
     }
