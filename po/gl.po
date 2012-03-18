@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-19 00:01+0100\n"
-"PO-Revision-Date: 2012-03-19 00:02+0100\n"
+"POT-Creation-Date: 2012-03-19 00:17+0100\n"
+"PO-Revision-Date: 2012-03-19 00:17+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -1054,15 +1054,15 @@ msgstr "O dispositivo solicitado non pode explorarse, o erro é «%s»"
 
 #: ../js/ui/status/bluetooth.js:268
 msgid "Keyboard Settings"
-msgstr "Opcións do teclado"
+msgstr "Preferencias do teclado"
 
 #: ../js/ui/status/bluetooth.js:271
 msgid "Mouse Settings"
-msgstr "Opcións do rato"
+msgstr "Preferencias do rato"
 
 #: ../js/ui/status/bluetooth.js:276 ../js/ui/status/volume.js:59
 msgid "Sound Settings"
-msgstr "Opcións do son"
+msgstr "Preferencias do son"
 
 #: ../js/ui/status/bluetooth.js:372
 #, c-format
@@ -1635,7 +1635,7 @@ msgstr "Contas en liña"
 
 #: ../js/ui/userMenu.js:643
 msgid "System Settings"
-msgstr "Opcións do sistema"
+msgstr "Preferencias do sistema"
 
 #: ../js/ui/userMenu.js:650
 msgid "Lock Screen"
