@@ -409,6 +409,29 @@ _clutter_keymap_x11_get_caps_lock_state (ClutterKeymapX11 *keymap)
   return keymap->caps_lock_state;
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
+/* XXX - yes, I know that XKeycodeToKeysym() has been deprecated; hopefully,
+ * this code will never get run on any decent system that is also able to
+ * run Clutter. I just don't want to copy the implementation inside GDK for
+ * a fallback path.
+ */
+static int
+translate_keysym (ClutterKeymapX11 *keymap,
+                  guint             hardware_keycode)
+{
+  ClutterBackendX11 *backend_x11;
+  gint retval;
+
+  backend_x11 = CLUTTER_BACKEND_X11 (keymap->backend);
+
+  retval = XKeycodeToKeysym (backend_x11->xdpy, hardware_keycode, 0);
+
+  return retval;
+}
+
+G_GNUC_END_IGNORE_DEPRECATIONS
+
 gint
 _clutter_keymap_x11_translate_key_state (ClutterKeymapX11    *keymap,
                                          guint                hardware_keycode,
@@ -440,7 +463,7 @@ _clutter_keymap_x11_translate_key_state (ClutterKeymapX11    *keymap,
     }
   else
 #endif /* HAVE_XKB */
-    retval = XKeycodeToKeysym (backend_x11->xdpy, hardware_keycode, 0);
+    retval = translate_keysym (keymap, hardware_keycode);
 
   if (mods_p)
     *mods_p = unconsumed_modifiers;
