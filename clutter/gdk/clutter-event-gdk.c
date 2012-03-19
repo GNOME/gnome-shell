@@ -258,6 +258,9 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       event->scroll.direction = gdk_event->scroll.direction;
       clutter_event_set_device (event, device);
       clutter_event_set_source_device (event, source_device);
+      clutter_event_set_scroll_delta (event,
+                                      gdk_event->scroll.delta_x,
+                                      gdk_event->scroll.delta_y);
       break;
 
     case GDK_WINDOW_STATE:

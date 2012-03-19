@@ -68,7 +68,8 @@ struct _ClutterStageGdkClass
    GDK_KEY_RELEASE_MASK |	     \
    GDK_BUTTON_PRESS_MASK |	     \
    GDK_BUTTON_RELEASE_MASK |	     \
-   GDK_POINTER_MOTION_MASK)
+   GDK_POINTER_MOTION_MASK |         \
+   GDK_SCROLL_MASK)
 
 GType _clutter_stage_gdk_get_type (void) G_GNUC_CONST;
 
