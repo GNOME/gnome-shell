@@ -108,7 +108,7 @@ typedef struct _CoglFramebuffer CoglFramebuffer;
  * since Cogl will automatically allocate a framebuffer when it first gets
  * used.  The disadvantage of relying on automatic allocation is that the
  * program will abort with an error message if there is an error during
- * automatic allocation.<note>
+ * automatic allocation.</note>
  *
  * Return value: %TRUE if there were no error allocating the framebuffer, else %FALSE.
  * Since: 1.8
