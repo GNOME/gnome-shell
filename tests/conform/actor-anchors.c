@@ -380,9 +380,9 @@ test_scale_center (TestState *state)
       g_assert (scale_x == 4.0);
       g_assert (scale_y == 2.0);
       g_assert (gravity == gravities[i].gravity);
-      assert_notifications (NOTIFY_SCALE_X | NOTIFY_SCALE_Y
-                            | NOTIFY_SCALE_CENTER_X | NOTIFY_SCALE_CENTER_Y
-                            | NOTIFY_SCALE_GRAVITY);
+      assert_notifications (NOTIFY_SCALE_CENTER_X |
+                            NOTIFY_SCALE_CENTER_Y |
+                            NOTIFY_SCALE_GRAVITY);
       assert_coords (state,
                      100 - gravities[i].x_pos * 3,
                      200 - gravities[i].y_pos,
