@@ -396,6 +396,7 @@ cogl_framebuffer_get_context
 cogl_framebuffer_clear
 cogl_framebuffer_clear4f
 cogl_framebuffer_read_pixels_into_bitmap
+cogl_framebuffer_read_pixels
 
 <SUBSECTION>
 cogl_framebuffer_draw_primitive

@@ -1280,6 +1280,54 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
                                           CoglBitmap *bitmap);
 
 /**
+ * cogl_framebuffer_read_pixels:
+ * @framebuffer: A #CoglFramebuffer
+ * @x: The x position to read from
+ * @y: The y position to read from
+ * @width: The width of the region of rectangles to read
+ * @height: The height of the region of rectangles to read
+ * @format: The pixel format to store the data in
+ * @pixels: The address of the buffer to store the data in
+ *
+ * This is a convenience wrapper around
+ * cogl_framebuffer_read_pixels_into_bitmap() which allocates a
+ * temporary #CoglBitmap to read pixel data directly into the given
+ * buffer. The rowstride of the buffer is assumed to be the width of
+ * the region times the bytes per pixel of the format. The source for
+ * the data is always taken from the color buffer. If you want to use
+ * any other rowstride or source, please use the
+ * cogl_framebuffer_read_pixels_into_bitmap() function directly.
+ *
+ * The implementation of the function looks like this:
+ *
+ * |[
+ * bitmap = cogl_bitmap_new_for_data (context,
+ *                                    width, height,
+ *                                    format,
+ *                                    /<!-- -->* rowstride *<!-- -->/
+ *                                    bpp * width,
+ *                                    pixels);
+ * cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
+ *                                           x, y,
+ *                                           COGL_READ_PIXELS_COLOR_BUFFER,
+ *                                           bitmap);
+ * cogl_object_unref (bitmap);
+ * ]|
+ *
+ * Return value: %TRUE if the read succeeded or %FALSE otherwise.
+ * Since: 1.10
+ * Stability: unstable
+ */
+gboolean
+cogl_framebuffer_read_pixels (CoglFramebuffer *framebuffer,
+                              int x,
+                              int y,
+                              int width,
+                              int height,
+                              CoglPixelFormat format,
+                              guint8 *pixels);
+
+/**
  * cogl_get_draw_framebuffer:
  *
  * Gets the current #CoglFramebuffer as set using

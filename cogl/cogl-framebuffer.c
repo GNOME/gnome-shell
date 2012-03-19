@@ -2179,6 +2179,33 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
   return TRUE;
 }
 
+gboolean
+cogl_framebuffer_read_pixels (CoglFramebuffer *framebuffer,
+                              int x,
+                              int y,
+                              int width,
+                              int height,
+                              CoglPixelFormat format,
+                              guint8 *pixels)
+{
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
+  CoglBitmap *bitmap;
+  gboolean ret;
+
+  bitmap = cogl_bitmap_new_for_data (framebuffer->context,
+                                     width, height,
+                                     format,
+                                     bpp * width, /* rowstride */
+                                     pixels);
+  ret = cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
+                                                  x, y,
+                                                  COGL_READ_PIXELS_COLOR_BUFFER,
+                                                  bitmap);
+  cogl_object_unref (bitmap);
+
+  return ret;
+}
+
 void
 _cogl_blit_framebuffer (unsigned int src_x,
                         unsigned int src_y,
