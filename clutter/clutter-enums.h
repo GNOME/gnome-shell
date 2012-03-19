@@ -730,8 +730,12 @@ typedef enum { /*< prefix=CLUTTER >*/
  * @CLUTTER_SCROLL_DOWN: Scroll down
  * @CLUTTER_SCROLL_LEFT: Scroll left
  * @CLUTTER_SCROLL_RIGHT: Scroll right
+ * @CLUTTER_SCROLL_SMOOTH: Precise scrolling delta (available in 1.10)
  *
  * Direction of a pointer scroll event.
+ *
+ * The %CLUTTER_SCROLL_SMOOTH value implies that the #ClutterScrollEvent
+ * has precise scrolling delta information.
  *
  * Since: 0.4
  */
@@ -739,7 +743,8 @@ typedef enum { /*< prefix=CLUTTER_SCROLL >*/
   CLUTTER_SCROLL_UP,
   CLUTTER_SCROLL_DOWN,
   CLUTTER_SCROLL_LEFT,
-  CLUTTER_SCROLL_RIGHT
+  CLUTTER_SCROLL_RIGHT,
+  CLUTTER_SCROLL_SMOOTH
 } ClutterScrollDirection;
 
 /**

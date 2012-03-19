@@ -49,6 +49,9 @@ typedef struct _ClutterEventPrivate {
   ClutterInputDevice *device;
   ClutterInputDevice *source_device;
 
+  gdouble delta_x;
+  gdouble delta_y;
+
   gpointer platform_data;
 } ClutterEventPrivate;
 
@@ -514,6 +517,72 @@ clutter_event_set_related (ClutterEvent *event,
 }
 
 /**
+ * clutter_event_set_scroll_delta:
+ * @event: a #ClutterEvent of type %CLUTTER_SCROLL
+ * @dx: delta on the horizontal axis
+ * @dy: delta on the vertical axis
+ *
+ * Sets the precise scrolling information of @event.
+ *
+ * Since: 1.10
+ */
+void
+clutter_event_set_scroll_delta (ClutterEvent *event,
+                                gdouble       dx,
+                                gdouble       dy)
+{
+  g_return_if_fail (event != NULL);
+  g_return_if_fail (event->type == CLUTTER_SCROLL);
+
+  if (!is_event_allocated (event))
+    return;
+
+  event->scroll.direction = CLUTTER_SCROLL_SMOOTH;
+
+  ((ClutterEventPrivate *) event)->delta_x = dx;
+  ((ClutterEventPrivate *) event)->delta_y = dy;
+}
+
+/**
+ * clutter_event_get_scroll_delta:
+ * @event: a #ClutterEvent of type %CLUTTER_SCROLL
+ * @dx: (out): return location for the delta on the horizontal axis
+ * @dy: (out): return location for the delta on the vertical axis
+ *
+ * Retrieves the precise scrolling information of @event.
+ *
+ * The @event has to have a #ClutterScrollEvent.direction value
+ * of %CLUTTER_SCROLL_SMOOTH.
+ *
+ * Since: 1.10
+ */
+void
+clutter_event_get_scroll_delta (const ClutterEvent *event,
+                                gdouble            *dx,
+                                gdouble            *dy)
+{
+  gdouble delta_x, delta_y;
+
+  g_return_if_fail (event != NULL);
+  g_return_if_fail (event->type == CLUTTER_SCROLL);
+  g_return_if_fail (event->scroll.direction == CLUTTER_SCROLL_SMOOTH);
+
+  delta_x = delta_y = 0;
+
+  if (is_event_allocated (event))
+    {
+      delta_x = ((ClutterEventPrivate *) event)->delta_x;
+      delta_y = ((ClutterEventPrivate *) event)->delta_y;
+    }
+
+  if (dx != NULL)
+    *dx = delta_x;
+
+  if (dy != NULL)
+    *dy = delta_y;
+}
+
+/**
  * clutter_event_get_scroll_direction:
  * @event: a #ClutterEvent of type %CLUTTER_SCROLL
  *
@@ -970,6 +1039,8 @@ clutter_event_copy (const ClutterEvent *event)
 
       new_real_event->device = real_event->device;
       new_real_event->source_device = real_event->source_device;
+      new_real_event->delta_x = real_event->delta_x;
+      new_real_event->delta_y = real_event->delta_y;
     }
 
   device = clutter_event_get_device (event);

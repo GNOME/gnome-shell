@@ -629,6 +629,7 @@ clutter_event_get_key_code
 clutter_event_get_key_symbol
 clutter_event_get_key_unicode
 clutter_event_get_related
+clutter_event_get_scroll_delta
 clutter_event_get_scroll_direction
 clutter_event_get_source
 clutter_event_get_source_device
@@ -647,6 +648,7 @@ clutter_event_set_key_code
 clutter_event_set_key_symbol
 clutter_event_set_key_unicode
 clutter_event_set_related
+clutter_event_set_scroll_delta
 clutter_event_set_scroll_direction
 clutter_event_set_source
 clutter_event_set_source_device
