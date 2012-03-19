@@ -100,6 +100,7 @@ struct _ClutterBackendX11
 
   ClutterDeviceManager *device_manager;
   gboolean has_xinput;
+  int xi_minor;
 
   XSettingsClient *xsettings;
   Window xsettings_xwin;

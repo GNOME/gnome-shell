@@ -5,6 +5,9 @@
 
 G_BEGIN_DECLS
 
+void            _clutter_event_set_pointer_emulated     (ClutterEvent       *event,
+                                                         gboolean            is_emulated);
+
 /* Reinjecting queued events for processing */
 void            _clutter_process_event                  (ClutterEvent       *event);
 

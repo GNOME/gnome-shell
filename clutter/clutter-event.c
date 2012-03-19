@@ -53,6 +53,8 @@ typedef struct _ClutterEventPrivate {
   gdouble delta_y;
 
   gpointer platform_data;
+
+  guint is_pointer_emulated : 1;
 } ClutterEventPrivate;
 
 static GHashTable *all_events = NULL;
@@ -106,6 +108,16 @@ _clutter_event_set_platform_data (ClutterEvent *event,
     return;
 
   ((ClutterEventPrivate *) event)->platform_data = data;
+}
+
+void
+_clutter_event_set_pointer_emulated (ClutterEvent *event,
+                                     gboolean      is_emulated)
+{
+  if (!is_event_allocated (event))
+    return;
+
+  ((ClutterEventPrivate *) event)->is_pointer_emulated = !!is_emulated;
 }
 
 /**

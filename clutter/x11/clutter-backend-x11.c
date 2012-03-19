@@ -255,6 +255,8 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
                                   "backend", backend_x11,
                                   "opcode", event_base,
                                   NULL);
+
+                  backend_x11->xi_minor = minor;
                 }
               else
 #endif /* HAVE_XINPUT_2 */
@@ -267,6 +269,7 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
                                   "event-base", first_event,
                                   NULL);
 
+                  backend_x11->xi_minor = -1;
                 }
             }
         }
@@ -279,6 +282,8 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
             g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_X11,
                           "backend", backend_x11,
                           NULL);
+
+          backend_x11->xi_minor = -1;
         }
 
       backend = CLUTTER_BACKEND (backend_x11);
