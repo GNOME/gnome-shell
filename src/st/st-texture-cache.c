@@ -1216,7 +1216,7 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
           /* We don't have an equivalent of image-missing
            * for the symbolic icon theme, so just create a blank
            * actor. */
-          texture = clutter_actor_new ();
+          texture = (ClutterActor *) create_default_texture ();
           clutter_actor_set_size (texture, size, size);
         }
 
