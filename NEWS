@@ -1,3 +1,67 @@
+Clutter 1.9.16                                                       2012-03-19
+===============================================================================
+
+  • Clutter 1.10.0, release-candidate 1
+
+  • List of changes since Clutter 1.9.14
+
+    - Support implicit animatable properties
+    Various properties of ClutterActor can now be implicitly animated when
+    using the public setters, instead of going through the animation API;
+    this is an opt-in mechanism for the 1.x API series.
+
+    - Introduce paint nodes
+    ClutterPaintNode is an element of the render tree; it is used to store
+    the pipeline state and the geometry to be drawn. Actors have the ability
+    to be painted using the paint nodes by overriding the paint_node() virtual
+    function instead of the paint() virtual function. For the 1.x API series
+    the render tree will be consumed per-actor, but the plan is to build a
+    full tree as the authoritative source for the 2.x API series.
+
+    - Support Content delegates
+    ClutterContent is an interface that allows creating classes that will
+    painted in place of an actor's paint() virtual function. Clutter provides
+    two content types: Canvas, a Cairo-based immediate canvas for drawing the
+    contents of an actor; and Image, a content that will paint image data.
+
+    - ClutterText improvements
+    The caret of editable text actors is now centered, and the background
+    color will be respected when painting the actor.
+
+    - Support for the XInput 2.2 extension
+    Clutter will now relay touch events coming from the X server, as well
+    as precise scrolling delta, for devices with those two capabilities.
+    The support is still experimental, and limited to the X11 platform for
+    the time being.
+
+    - Translation updates
+    Slovenian, Assamese, Bulgarian, Spanish, Galician, Belarusian, Traditional
+    Chinese (Hong Kong and Taiwan), British English, Hebrew, Polish, Catalan,
+    Khmer, Russian, Finnish, Odia, Brazilian Portuguese, Danish, Lithuanian,
+    Portuguese, Czech, Swedish, French.
+
+  • List of bugs fixes since Clutter 1.9.14
+
+    [bugzilla.gnome.org]
+    #655491 - Text cursor/caret theming
+    #668801 - [NSApp finishLaunching]; missing in OSX backend
+    #656156 - Add lightness, brightness, and contrast effects
+    #671736 - Provide translations for "default:LTR" for RTL locales
+    #671779 - gdk: add new device types (GDK_SOURCE_TOUCHSCREEN,
+              GDK_SOURCE_TOUCHPAD)
+    #672316 - Flickering/redraw issues in multi stage
+
+Many thanks to:
+
+  Piotr Drąg, Chun-wei Fan, Daniel Mustieles, Fran Diéguez, Matej Urbančič,
+  Nilamdyuti Goswami, Alexander Shopov, Bruce Cowan, Florian Müllner,
+  Gil Forcada, Ihar Hrachyshka, Stefano Facchini, Мирослав Николић,
+  Adam Matoušek, Antonio Fernandes C. Neto, Aurimas Černius, Bruno Brouard,
+  Carles Ferrando, Chao-Hsiung Liao, Daniel Nylander,  Duarte Loreto,
+  Jasper St. Pierre, Joseph Scheuhammer, Kenneth Nielsen, Khoem Sokhem,
+  Lionel Landwerlin, ManojKumar Giri, Marek Černocký, Timo Jyrinki,
+  Tristan Van Berkom, Yuri Myasoedov
+
 Clutter 1.9.14                                                       2012-03-05
 ===============================================================================
 
