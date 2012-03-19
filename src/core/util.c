@@ -921,6 +921,7 @@ meta_later_remove (guint later_id)
            * repaint func run and get removed
            */
           destroy_later (later);
+          return;
         }
     }
 }
