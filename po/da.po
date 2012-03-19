@@ -12,14 +12,14 @@
 #
 # Konventioner:
 #
-# Når man multitasker mellem flere vinduer, vises der (afhængigt af indstillingerne) et popup-vindue med ikoner for de forskellige programmer. Dette vindue kaldes navigationsvinduet.
+# Når man multitasker mellem flere vinduer, vises der (afhængigt af indstillingerne) et pop op-vindue med ikoner for de forskellige programmer. Dette vindue kaldes navigationsvinduet.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-20 22:37+0100\n"
-"PO-Revision-Date: 2012-02-18 00:07+0100\n"
+"POT-Creation-Date: 2012-03-19 09:54+0100\n"
+"PO-Revision-Date: 2012-03-19 09:48+0100\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -83,12 +83,12 @@ msgstr "_Vent"
 msgid "_Force Quit"
 msgstr "_Tving til at afslutte"
 
-#: ../src/core/display.c:361
+#: ../src/core/display.c:387
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Manglende %s-udvidelse som kræves til komposition"
 
-#: ../src/core/display.c:427
+#: ../src/core/display.c:453
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Kunne ikke åbne X Window System-terminalen \"%s\"\n"
@@ -161,7 +161,7 @@ msgstr "Vis version"
 msgid "Comma-separated list of compositor plugins"
 msgstr "Kommaadskilt liste af komposit-udvidelsesmoduler"
 
-#: ../src/core/prefs.c:1069
+#: ../src/core/prefs.c:1077
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -169,13 +169,13 @@ msgstr ""
 "Omgåelser for ødelagte programmer deaktiveret. Nogle programmer opfører sig "
 "måske ikke korrekt.\n"
 
-#: ../src/core/prefs.c:1144
+#: ../src/core/prefs.c:1152
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "Kunne ikke fortolke skrifttypebeskrivelsen \"%s\" fra GSettings-nøglen %s\n"
 
-#: ../src/core/prefs.c:1210
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -184,7 +184,7 @@ msgstr ""
 "\"%s\" fundet i konfigurationsdatabasen er ikke en gyldig værdi som "
 "museknapsmodifikation\n"
 
-#: ../src/core/prefs.c:1722
+#: ../src/core/prefs.c:1739
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -193,7 +193,7 @@ msgstr ""
 "\"%s\" fundet i konfigurationsdatabasen er ikke en gyldig værdi for "
 "tastebindingen \"%s\"\n"
 
-#: ../src/core/prefs.c:1819
+#: ../src/core/prefs.c:1836
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbejdsområde %d"
@@ -323,7 +323,7 @@ msgid "Window manager error: "
 msgstr "Vindueshåndteringsfejl: "
 
 #. first time through
-#: ../src/core/window.c:7224
+#: ../src/core/window.c:7266
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -339,7 +339,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7887
+#: ../src/core/window.c:7931
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -435,16 +435,26 @@ msgstr ""
 "eller kun for vinduer på den primære skærm."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:6
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+"Afgør om arbejdsområderne håndteres dynamisk, eller om der er et statisk "
+"antal arbejdsområder (angivet med nøglen num-workspaces i org.gnome.desktop."
+"wm.preferences)."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Draggable border width"
 msgstr "Bredde af den trækbare kant"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:7
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Aktivér maksimering eller halvmaksimering når vinduer slippes over "
 "skærmranden"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
 "vertically and resizes them horizontally to cover half of the available "
@@ -455,23 +465,23 @@ msgstr ""
 "tilgængelige område. Vinduer, der slippes på øverste skærmrand, maksimeres "
 "helt."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid "Live Hidden Windows"
 msgstr "Levende skjulte vinduer"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "Modifier to use for extended window management operations"
 msgstr "Modifikationstast til brug for udvidede vindueshåndteringsoperationer"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
 msgid "No tab popup"
 msgstr "Ingen tab-pop-op"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Select window from tab popup"
 msgstr "Vælg vindue fra tab-pop-op"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -479,7 +489,7 @@ msgstr ""
 "Samlet mængde kant der kan trækkes. Hvis temaets synlige grænser ikke er "
 "nok, så vil usynlige kanter blive tilføjet for at møde denne værdi."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -491,7 +501,7 @@ msgstr ""
 "\"Windows\"-tasten. Det forventes at denne binding enten har "
 "standardværdien, eller er sat til den tomme streng."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -501,7 +511,11 @@ msgstr ""
 "ophavsvinduet og flyttes sammen med dette, frem for at have uafhængige "
 "titellinjer."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Workspaces are managed dynamically"
+msgstr "Arbejdsområder håndteres dynamisk"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Workspaces only on primary"
 msgstr "Arbejdsområder kun på primær skærm"
 
@@ -509,51 +523,6 @@ msgstr "Arbejdsområder kun på primær skærm"
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Brug: %s\n"
-
-#: ../src/ui/frames.c:1157
-msgid "Close Window"
-msgstr "Luk vindue"
-
-#: ../src/ui/frames.c:1160
-msgid "Window Menu"
-msgstr "Vinduesmenu"
-
-#: ../src/ui/frames.c:1163
-msgid "Minimize Window"
-msgstr "Minimér vindue"
-
-#: ../src/ui/frames.c:1166
-msgid "Maximize Window"
-msgstr "Maksimér vindue"
-
-#: ../src/ui/frames.c:1169
-msgid "Restore Window"
-msgstr "Gendan vindue"
-
-# roll up = sørg for at kun vindues-headeren er synlig.
-#: ../src/ui/frames.c:1172
-msgid "Roll Up Window"
-msgstr "Rul vinduet op"
-
-#: ../src/ui/frames.c:1175
-msgid "Unroll Window"
-msgstr "Rul vinduet ned"
-
-#: ../src/ui/frames.c:1178
-msgid "Keep Window On Top"
-msgstr "Behold vinduet øverst"
-
-#: ../src/ui/frames.c:1181
-msgid "Remove Window From Top"
-msgstr "Fjern vinduet fra toppen"
-
-#: ../src/ui/frames.c:1184
-msgid "Always On Visible Workspace"
-msgstr "Altid på synligt arbejdsområde"
-
-#: ../src/ui/frames.c:1187
-msgid "Put Window On Only One Workspace"
-msgstr "Vis vindue på kun ét arbejdsområde"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:69
@@ -1620,6 +1589,40 @@ msgstr "y-værdi var %d, %d var forventet"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d koordinatudtryk fortolket på %g sekunder (%g sekunder i gennemsnit)\n"
+
+#~ msgid "Close Window"
+#~ msgstr "Luk vindue"
+
+#~ msgid "Window Menu"
+#~ msgstr "Vinduesmenu"
+
+#~ msgid "Minimize Window"
+#~ msgstr "Minimér vindue"
+
+#~ msgid "Maximize Window"
+#~ msgstr "Maksimér vindue"
+
+#~ msgid "Restore Window"
+#~ msgstr "Gendan vindue"
+
+# roll up = sørg for at kun vindues-headeren er synlig.
+#~ msgid "Roll Up Window"
+#~ msgstr "Rul vinduet op"
+
+#~ msgid "Unroll Window"
+#~ msgstr "Rul vinduet ned"
+
+#~ msgid "Keep Window On Top"
+#~ msgstr "Behold vinduet øverst"
+
+#~ msgid "Remove Window From Top"
+#~ msgstr "Fjern vinduet fra toppen"
+
+#~ msgid "Always On Visible Workspace"
+#~ msgstr "Altid på synligt arbejdsområde"
+
+#~ msgid "Put Window On Only One Workspace"
+#~ msgstr "Vis vindue på kun ét arbejdsområde"
 
 #~ msgid "Switch to workspace 1"
 #~ msgstr "Skift til arbejdsområde 1"
