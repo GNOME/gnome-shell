@@ -2611,6 +2611,12 @@ _clutter_process_event_details (ClutterActor        *stage,
           break;
         }
 
+      case CLUTTER_TOUCH_BEGIN:
+      case CLUTTER_TOUCH_UPDATE:
+      case CLUTTER_TOUCH_END:
+      case CLUTTER_TOUCH_CANCEL:
+        break;
+
       case CLUTTER_STAGE_STATE:
         /* fullscreen / focus - forward to stage */
         event->any.source = stage;
@@ -2618,6 +2624,9 @@ _clutter_process_event_details (ClutterActor        *stage,
         break;
 
       case CLUTTER_CLIENT_MESSAGE:
+        break;
+
+      case CLUTTER_EVENT_LAST:
         break;
     }
 }

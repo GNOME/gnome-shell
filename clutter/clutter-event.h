@@ -113,6 +113,9 @@ typedef struct _ClutterMotionEvent      ClutterMotionEvent;
 typedef struct _ClutterScrollEvent      ClutterScrollEvent;
 typedef struct _ClutterStageStateEvent  ClutterStageStateEvent;
 typedef struct _ClutterCrossingEvent    ClutterCrossingEvent;
+typedef struct _ClutterTouchEvent       ClutterTouchEvent;
+
+typedef struct _ClutterEventSequence    ClutterEventSequence;
 
 /**
  * ClutterAnyEvent:
@@ -330,6 +333,54 @@ struct _ClutterStageStateEvent
 };
 
 /**
+ * ClutterTouchEvent:
+ * @type: event type
+ * @time: event time
+ * @flags: event flags
+ * @stage: event source stage
+ * @source: event source actor (unused)
+ * @x: the X coordinate of the pointer, relative to the stage
+ * @y: the Y coordinate of the pointer, relative to the stage
+ * @axes: @x and @y, translated to the axes of @device, or %NULL
+ * @state: (type ClutterModifierType): a bit-mask representing the state
+ *   of modifier keys (e.g. Control, Shift, and Alt) and the pointer
+ *   buttons. See #ClutterModifierType
+ * @sequence: the event sequence that this event belongs to
+ * @device: the device that originated the event
+ *
+ * Used for touch events.
+ *
+ * The @type field will be one of %CLUTTER_TOUCH_BEGIN, %CLUTTER_TOUCH_END,
+ * %CLUTTER_TOUCH_UPDATE, or %CLUTTER_TOUCH_CANCEL.
+ *
+ * Touch events are grouped into sequences; each touch sequence will begin
+ * with a %CLUTTER_TOUCH_BEGIN event, progress with %CLUTTER_TOUCH_UPDATE
+ * events, and end either with a %CLUTTER_TOUCH_END event or with a
+ * %CLUTTER_TOUCH_CANCEL event.
+ *
+ * With multi-touch capable devices there can be multiple event sequence
+ * running at the same time.
+ *
+ * Since: 1.10
+ */
+struct _ClutterTouchEvent
+{
+  ClutterEventType type;
+  guint32 time;
+  ClutterEventFlags flags;
+  ClutterStage *stage;
+  ClutterActor *source;
+
+  gfloat x;
+  gfloat y;
+  guint state;
+  ClutterEventSequence *sequence;
+  ClutterModifierType modifier_state;
+  gdouble *axes;
+  ClutterInputDevice *device;
+};
+
+/**
  * ClutterEvent:
  *
  * Generic event wrapper.
@@ -348,6 +399,7 @@ union _ClutterEvent
   ClutterScrollEvent scroll;
   ClutterStageStateEvent stage_state;
   ClutterCrossingEvent crossing;
+  ClutterTouchEvent touch;
 };
 
 GType clutter_event_get_type (void) G_GNUC_CONST;
@@ -428,6 +480,9 @@ CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_event_get_scroll_delta          (const ClutterEvent     *event,
                                                                  gdouble                *dx,
                                                                  gdouble                *dy);
+
+CLUTTER_AVAILABLE_IN_1_10
+ClutterEventSequence *  clutter_event_get_event_sequence        (const ClutterEvent     *event);
 
 guint32                 clutter_keysym_to_unicode               (guint                   keyval);
 CLUTTER_AVAILABLE_IN_1_10

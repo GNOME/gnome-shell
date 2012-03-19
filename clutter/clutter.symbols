@@ -622,6 +622,7 @@ clutter_event_get_coords
 clutter_event_get_device
 clutter_event_get_device_id
 clutter_event_get_device_type
+clutter_event_get_event_sequence
 clutter_event_get_flags
 clutter_event_free
 clutter_event_get

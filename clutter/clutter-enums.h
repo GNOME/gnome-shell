@@ -703,6 +703,16 @@ typedef enum { /*< flags prefix=CLUTTER_EVENT >*/
  * @CLUTTER_DESTROY_NOTIFY: Destroy notification event
  * @CLUTTER_CLIENT_MESSAGE: Client message event
  * @CLUTTER_DELETE: Stage delete event
+ * @CLUTTER_TOUCH_BEGIN: A new touch event sequence has started;
+ *   event added in 1.10
+ * @CLUTTER_TOUCH_UPDATE: A touch event sequence has been updated;
+ *   event added in 1.10
+ * @CLUTTER_TOUCH_END: A touch event sequence has finished;
+ *   event added in 1.10
+ * @CLUTTER_TOUCH_CANCEL: A touch event sequence has been canceled;
+ *   event added in 1.10
+ * @CLUTTER_EVENT_LAST: Marks the end of the #ClutterEventType enumeration;
+ *   added in 1.10
  *
  * Types of events.
  *
@@ -721,7 +731,13 @@ typedef enum { /*< prefix=CLUTTER >*/
   CLUTTER_STAGE_STATE,
   CLUTTER_DESTROY_NOTIFY,
   CLUTTER_CLIENT_MESSAGE,
-  CLUTTER_DELETE
+  CLUTTER_DELETE,
+  CLUTTER_TOUCH_BEGIN,
+  CLUTTER_TOUCH_UPDATE,
+  CLUTTER_TOUCH_END,
+  CLUTTER_TOUCH_CANCEL,
+
+  CLUTTER_EVENT_LAST            /* helper */
 } ClutterEventType;
 
 /**

@@ -185,6 +185,12 @@ clutter_event_get_state (const ClutterEvent *event)
     case CLUTTER_BUTTON_RELEASE:
       return event->button.modifier_state;
 
+    case CLUTTER_TOUCH_BEGIN:
+    case CLUTTER_TOUCH_UPDATE:
+    case CLUTTER_TOUCH_END:
+    case CLUTTER_TOUCH_CANCEL:
+      return event->touch.modifier_state;
+
     case CLUTTER_MOTION:
       return event->motion.modifier_state;
 
@@ -229,6 +235,13 @@ clutter_event_set_state (ClutterEvent        *event,
       event->motion.modifier_state = state;
       break;
 
+    case CLUTTER_TOUCH_BEGIN:
+    case CLUTTER_TOUCH_UPDATE:
+    case CLUTTER_TOUCH_END:
+    case CLUTTER_TOUCH_CANCEL:
+      event->touch.modifier_state = state;
+      break;
+
     case CLUTTER_SCROLL:
       event->scroll.modifier_state = state;
       break;
@@ -268,6 +281,7 @@ clutter_event_get_coords (const ClutterEvent *event,
     case CLUTTER_DESTROY_NOTIFY:
     case CLUTTER_CLIENT_MESSAGE:
     case CLUTTER_DELETE:
+    case CLUTTER_EVENT_LAST:
       break;
 
     case CLUTTER_ENTER:
@@ -285,6 +299,14 @@ clutter_event_get_coords (const ClutterEvent *event,
     case CLUTTER_MOTION:
       event_x = event->motion.x;
       event_y = event->motion.y;
+      break;
+
+    case CLUTTER_TOUCH_BEGIN:
+    case CLUTTER_TOUCH_UPDATE:
+    case CLUTTER_TOUCH_END:
+    case CLUTTER_TOUCH_CANCEL:
+      event_x = event->touch.x;
+      event_y = event->touch.y;
       break;
 
     case CLUTTER_SCROLL:
@@ -326,6 +348,7 @@ clutter_event_set_coords (ClutterEvent *event,
     case CLUTTER_DESTROY_NOTIFY:
     case CLUTTER_CLIENT_MESSAGE:
     case CLUTTER_DELETE:
+    case CLUTTER_EVENT_LAST:
       break;
 
     case CLUTTER_ENTER:
@@ -343,6 +366,14 @@ clutter_event_set_coords (ClutterEvent *event,
     case CLUTTER_MOTION:
       event->motion.x = x;
       event->motion.y = y;
+      break;
+
+    case CLUTTER_TOUCH_BEGIN:
+    case CLUTTER_TOUCH_UPDATE:
+    case CLUTTER_TOUCH_END:
+    case CLUTTER_TOUCH_CANCEL:
+      event->touch.x = x;
+      event->touch.y = y;
       break;
 
     case CLUTTER_SCROLL:
@@ -813,6 +844,32 @@ clutter_event_set_key_unicode (ClutterEvent *event,
 }
 
 /**
+ * clutter_event_get_event_sequence:
+ * @event: a #ClutterEvent of type %CLUTTER_TOUCH_BEGIN,
+ *   %CLUTTER_TOUCH_UPDATE, %CLUTTER_TOUCH_END, or
+ *   %CLUTTER_TOUCH_CANCEL
+ *
+ * Retrieves the #ClutterEventSequence of @event.
+ *
+ * Return value: (transfer none): the event sequence, or %NULL
+ *
+ * Since: 1.10
+ */
+ClutterEventSequence *
+clutter_event_get_event_sequence (const ClutterEvent *event)
+{
+  g_return_val_if_fail (event != NULL, NULL);
+
+  if (event->type == CLUTTER_TOUCH_BEGIN ||
+      event->type == CLUTTER_TOUCH_UPDATE ||
+      event->type == CLUTTER_TOUCH_END ||
+      event->type == CLUTTER_TOUCH_CANCEL)
+    return event->touch.sequence;
+
+  return NULL;
+}
+
+/**
  * clutter_event_get_device_id:
  * @event: a clutter event 
  *
@@ -890,6 +947,7 @@ clutter_event_set_device (ClutterEvent       *event,
     case CLUTTER_DESTROY_NOTIFY:
     case CLUTTER_CLIENT_MESSAGE:
     case CLUTTER_DELETE:
+    case CLUTTER_EVENT_LAST:
       break;
 
     case CLUTTER_ENTER:
@@ -908,6 +966,13 @@ clutter_event_set_device (ClutterEvent       *event,
 
     case CLUTTER_SCROLL:
       event->scroll.device = device;
+      break;
+
+    case CLUTTER_TOUCH_BEGIN:
+    case CLUTTER_TOUCH_UPDATE:
+    case CLUTTER_TOUCH_END:
+    case CLUTTER_TOUCH_CANCEL:
+      event->touch.device = device;
       break;
 
     case CLUTTER_KEY_PRESS:
@@ -954,6 +1019,7 @@ clutter_event_get_device (const ClutterEvent *event)
     case CLUTTER_DESTROY_NOTIFY:
     case CLUTTER_CLIENT_MESSAGE:
     case CLUTTER_DELETE:
+    case CLUTTER_EVENT_LAST:
       break;
 
     case CLUTTER_ENTER:
@@ -972,6 +1038,13 @@ clutter_event_get_device (const ClutterEvent *event)
 
     case CLUTTER_SCROLL:
       device = event->scroll.device;
+      break;
+
+    case CLUTTER_TOUCH_BEGIN:
+    case CLUTTER_TOUCH_UPDATE:
+    case CLUTTER_TOUCH_END:
+    case CLUTTER_TOUCH_CANCEL:
+      device = event->touch.device;
       break;
 
     case CLUTTER_KEY_PRESS:
@@ -1068,6 +1141,15 @@ clutter_event_copy (const ClutterEvent *event)
                                            sizeof (gdouble) * n_axes);
       break;
 
+    case CLUTTER_TOUCH_BEGIN:
+    case CLUTTER_TOUCH_UPDATE:
+    case CLUTTER_TOUCH_END:
+    case CLUTTER_TOUCH_CANCEL:
+      if (event->touch.axes != NULL)
+        new_event->touch.axes = g_memdup (event->motion.axes,
+                                          sizeof (gdouble) * n_axes);
+      break;
+
     default:
       break;
     }
@@ -1106,6 +1188,13 @@ clutter_event_free (ClutterEvent *event)
 
         case CLUTTER_SCROLL:
           g_free (event->scroll.axes);
+          break;
+
+        case CLUTTER_TOUCH_BEGIN:
+        case CLUTTER_TOUCH_UPDATE:
+        case CLUTTER_TOUCH_END:
+        case CLUTTER_TOUCH_CANCEL:
+          g_free (event->touch.axes);
           break;
 
         default:
@@ -1372,6 +1461,7 @@ clutter_event_get_axes (const ClutterEvent *event,
     case CLUTTER_LEAVE:
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
+    case CLUTTER_EVENT_LAST:
       break;
 
     case CLUTTER_SCROLL:
@@ -1381,6 +1471,13 @@ clutter_event_get_axes (const ClutterEvent *event,
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
       retval = event->button.axes;
+      break;
+
+    case CLUTTER_TOUCH_BEGIN:
+    case CLUTTER_TOUCH_UPDATE:
+    case CLUTTER_TOUCH_END:
+    case CLUTTER_TOUCH_CANCEL:
+      retval = event->touch.axes;
       break;
 
     case CLUTTER_MOTION:
