@@ -341,11 +341,11 @@ struct _ClutterStageStateEvent
  * @source: event source actor (unused)
  * @x: the X coordinate of the pointer, relative to the stage
  * @y: the Y coordinate of the pointer, relative to the stage
- * @axes: @x and @y, translated to the axes of @device, or %NULL
- * @state: (type ClutterModifierType): a bit-mask representing the state
+ * @sequence: the event sequence that this event belongs to
+ * @modifier_state: (type ClutterModifierType): a bit-mask representing the state
  *   of modifier keys (e.g. Control, Shift, and Alt) and the pointer
  *   buttons. See #ClutterModifierType
- * @sequence: the event sequence that this event belongs to
+ * @axes: reserved 
  * @device: the device that originated the event
  *
  * Used for touch events.
@@ -373,10 +373,9 @@ struct _ClutterTouchEvent
 
   gfloat x;
   gfloat y;
-  guint state;
   ClutterEventSequence *sequence;
   ClutterModifierType modifier_state;
-  gdouble *axes;
+  gdouble *axes; /* reserved */
   ClutterInputDevice *device;
 };
 
