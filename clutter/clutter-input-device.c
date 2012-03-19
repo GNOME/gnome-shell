@@ -1444,3 +1444,99 @@ clutter_input_device_keycode_to_evdev (ClutterInputDevice *device,
                                            hardware_keycode,
                                            evdev_keycode);
 }
+
+void
+_clutter_input_device_add_scroll_info (ClutterInputDevice     *device,
+                                       guint                   index_,
+                                       ClutterScrollDirection  direction,
+                                       gdouble                 increment)
+{
+  ClutterScrollInfo info;
+
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+  g_return_if_fail (index_ < clutter_input_device_get_n_axes (device));
+
+  info.axis_id = index_;
+  info.direction = direction;
+  info.increment = increment;
+  info.last_value_valid = FALSE;
+
+  if (device->scroll_info == NULL)
+    {
+      device->scroll_info = g_array_new (FALSE,
+                                         FALSE,
+                                         sizeof (ClutterScrollInfo));
+    }
+
+  g_array_append_val (device->scroll_info, info);
+}
+
+gboolean
+_clutter_input_device_get_scroll_delta (ClutterInputDevice     *device,
+                                        guint                   index_,
+                                        gdouble                 value,
+                                        ClutterScrollDirection *direction_p,
+                                        gdouble                *delta_p)
+{
+  guint i;
+
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), FALSE);
+  g_return_val_if_fail (index_ < clutter_input_device_get_n_axes (device), FALSE);
+
+  if (device->scroll_info == NULL)
+    return FALSE;
+
+  for (i = 0; i < device->scroll_info->len; i++)
+    {
+      ClutterScrollInfo *info = &g_array_index (device->scroll_info,
+                                                ClutterScrollInfo,
+                                                i);
+
+      if (info->axis_id == index_)
+        {
+          if (direction_p != NULL)
+            *direction_p = info->direction;
+
+          if (delta_p != NULL)
+            *delta_p = 0.0;
+
+          if (info->last_value_valid)
+            {
+              if (delta_p != NULL)
+                {
+                  *delta_p = (value - info->last_value)
+                           / info->increment;
+                }
+
+              info->last_value = value;
+            }
+          else
+            {
+              info->last_value = value;
+              info->last_value_valid = TRUE;
+            }
+
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+void
+_clutter_input_device_reset_scroll_info (ClutterInputDevice *device)
+{
+  guint i;
+
+  if (device->scroll_info == NULL)
+    return;
+
+  for (i = 0; i < device->scroll_info->len; i++)
+    {
+      ClutterScrollInfo *info = &g_array_index (device->scroll_info,
+                                                ClutterScrollInfo,
+                                                i);
+
+      info->last_value_valid = FALSE;
+    }
+}

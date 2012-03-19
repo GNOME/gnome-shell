@@ -154,6 +154,32 @@ translate_device_classes (Display             *xdisplay,
                                     (XIValuatorClassInfo *) class_info);
           break;
 
+#ifdef XINPUT_2_2
+        case XIScrollClass:
+          {
+            XIScrollClassInfo *scroll_info = (XIScrollClassInfo *) class_info;
+            ClutterScrollDirection direction;
+
+            if (scroll_info->scroll_type == XIScrollTypeVertical)
+              direction = CLUTTER_SCROLL_DOWN;
+            else
+              direction = CLUTTER_SCROLL_RIGHT;
+
+            CLUTTER_NOTE (BACKEND, "Scroll valuator %d: %s, increment: %f",
+                          scroll_info->number,
+                          scroll_info->scroll_type == XIScrollTypeVertical
+                            ? "vertical"
+                            : "horizontal",
+                          scroll_info->increment);
+
+            _clutter_input_device_add_scroll_info (device,
+                                                   scroll_info->number,
+                                                   direction,
+                                                   scroll_info->increment);
+          }
+          break;
+#endif /* XINPUT_2_2 */
+
         default:
           break;
         }
@@ -541,6 +567,51 @@ translate_axes (ClutterInputDevice *device,
   return retval;
 }
 
+static gdouble
+scroll_valuators_changed (ClutterInputDevice *device,
+                          XIValuatorState    *valuators,
+                          gdouble            *dx_p,
+                          gdouble            *dy_p)
+{
+  gboolean retval = FALSE;
+  guint n_axes, n_val, i;
+  double *values;
+
+  n_axes = clutter_input_device_get_n_axes (device);
+  values = valuators->values;
+
+  *dx_p = *dy_p = 0.0;
+
+  n_val = 0;
+
+  for (i = 0; i < MIN (valuators->mask_len * 8, n_axes); i++)
+    {
+      ClutterScrollDirection direction;
+      gdouble delta;
+
+      if (!XIMaskIsSet (valuators->mask, i))
+        continue;
+
+      if (_clutter_input_device_get_scroll_delta (device, i,
+                                                  values[n_val],
+                                                  &direction,
+                                                  &delta))
+        {
+          retval = TRUE;
+
+          if (direction == CLUTTER_SCROLL_UP ||
+              direction == CLUTTER_SCROLL_DOWN)
+            *dx_p = delta;
+          else
+            *dy_p = delta;
+        }
+
+      n_val += 1;
+    }
+
+  return retval;
+}
+
 static ClutterTranslateReturn
 clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                                             gpointer                native,
@@ -793,6 +864,44 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
     case XI_Motion:
       {
         XIDeviceEvent *xev = (XIDeviceEvent *) xi_event;
+        gdouble delta_x, delta_y;
+
+        source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
+                                             GINT_TO_POINTER (xev->sourceid));
+
+        if (scroll_valuators_changed (source_device,
+                                      &xev->valuators,
+                                      &delta_x, &delta_y))
+          {
+            event->scroll.type = event->type = CLUTTER_SCROLL;
+            event->scroll.direction = CLUTTER_SCROLL_SMOOTH;
+
+            event->scroll.stage = stage;
+            event->scroll.time = xev->time;
+            event->scroll.x = xev->event_x;
+            event->scroll.y = xev->event_y;
+            event->scroll.modifier_state =
+              _clutter_input_device_xi2_translate_state (&xev->mods,
+                                                         &xev->buttons);
+
+            clutter_event_set_scroll_delta (event, delta_x, delta_y);
+            clutter_event_set_source_device (event, source_device);
+
+            device = g_hash_table_lookup (manager_xi2->devices_by_id,
+                                          GINT_TO_POINTER (xev->deviceid));
+            clutter_event_set_device (event, device);
+
+            CLUTTER_NOTE (EVENT,
+                          "smooth scroll: win:0x%x device:%s (x:%.2f, y:%.2f, delta:%f, %f)",
+                          (unsigned int) stage_x11->xwin,
+                          event->scroll.device->device_name,
+                          event->scroll.x,
+                          event->scroll.y,
+                          delta_x, delta_y);
+
+            retval = CLUTTER_TRANSLATE_QUEUE;
+            break;
+          }
 
         event->motion.type = event->type = CLUTTER_MOTION;
 
@@ -805,8 +914,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
           _clutter_input_device_xi2_translate_state (&xev->mods,
                                                      &xev->buttons);
 
-        source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
-                                             GINT_TO_POINTER (xev->sourceid));
         clutter_event_set_source_device (event, source_device);
 
         device = g_hash_table_lookup (manager_xi2->devices_by_id,

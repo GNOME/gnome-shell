@@ -50,6 +50,16 @@ typedef struct _ClutterKeyInfo
   ClutterModifierType modifiers;
 } ClutterKeyInfo;
 
+typedef struct _ClutterScrollInfo
+{
+  guint axis_id;
+  ClutterScrollDirection direction;
+  gdouble increment;
+
+  gdouble last_value;
+  guint last_value_valid : 1;
+} ClutterScrollInfo;
+
 struct _ClutterInputDevice
 {
   GObject parent_instance;
@@ -101,6 +111,8 @@ struct _ClutterInputDevice
 
   guint n_keys;
   GArray *keys;
+
+  GArray *scroll_info;
 
   guint has_cursor : 1;
   guint is_enabled : 1;
@@ -169,6 +181,17 @@ gboolean        _clutter_input_device_translate_axis            (ClutterInputDev
                                                                  guint                 index_,
                                                                  gdouble               value,
                                                                  gdouble              *axis_value);
+
+void            _clutter_input_device_add_scroll_info           (ClutterInputDevice   *device,
+                                                                 guint                 index_,
+                                                                 ClutterScrollDirection direction,
+                                                                 gdouble               increment);
+void            _clutter_input_device_reset_scroll_info         (ClutterInputDevice   *device);
+gboolean        _clutter_input_device_get_scroll_delta          (ClutterInputDevice   *device,
+                                                                 guint                 index_,
+                                                                 gdouble               value,
+                                                                 ClutterScrollDirection *direction_p,
+                                                                 gdouble                *delta_p);
 
 G_END_DECLS
 
