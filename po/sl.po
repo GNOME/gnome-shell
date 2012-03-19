@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-01 19:49+0000\n"
-"PO-Revision-Date: 2012-03-01 21:28+0100\n"
+"POT-Creation-Date: 2012-03-19 14:09+0000\n"
+"PO-Revision-Date: 2012-03-19 15:20+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -183,7 +183,7 @@ msgid "Not listed?"
 msgstr "Ali je ni na seznamu?"
 
 #: ../js/gdm/loginDialog.js:1020
-#: ../js/ui/endSessionDialog.js:419
+#: ../js/ui/endSessionDialog.js:401
 #: ../js/ui/extensionSystem.js:399
 #: ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175
@@ -200,18 +200,18 @@ msgstr "Prijava"
 msgid "Login Window"
 msgstr "Prijavno okno"
 
-#: ../js/gdm/powerMenu.js:152
-#: ../js/ui/userMenu.js:581
-#: ../js/ui/userMenu.js:583
-#: ../js/ui/userMenu.js:652
+#: ../js/gdm/powerMenu.js:155
+#: ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:599
+#: ../js/ui/userMenu.js:668
 msgid "Suspend"
 msgstr "Zaustavi"
 
-#: ../js/gdm/powerMenu.js:157
+#: ../js/gdm/powerMenu.js:160
 msgid "Restart"
 msgstr "Zaženi znova"
 
-#: ../js/gdm/powerMenu.js:162
+#: ../js/gdm/powerMenu.js:165
 msgid "Power Off"
 msgstr "Izklop"
 
@@ -231,27 +231,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Izvedba '%s' je spodletela:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:251
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "Vse"
 
-#: ../js/ui/appDisplay.js:310
+#: ../js/ui/appDisplay.js:314
 msgid "APPLICATIONS"
 msgstr "Programi"
 
-#: ../js/ui/appDisplay.js:371
+#: ../js/ui/appDisplay.js:375
 msgid "SETTINGS"
 msgstr "NASTAVITVE"
 
-#: ../js/ui/appDisplay.js:676
+#: ../js/ui/appDisplay.js:680
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:683
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:680
+#: ../js/ui/appDisplay.js:684
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
@@ -424,93 +424,93 @@ msgstr "Ta teden"
 msgid "Next week"
 msgstr "Naslednji teden"
 
-#: ../js/ui/contactDisplay.js:63
+#: ../js/ui/contactDisplay.js:66
 #: ../js/ui/notificationDaemon.js:486
 #: ../js/ui/status/power.js:215
-#: ../src/shell-app.c:372
+#: ../src/shell-app.c:374
 msgid "Unknown"
 msgstr "Neznano"
 
-#: ../js/ui/contactDisplay.js:84
-#: ../js/ui/userMenu.js:127
+#: ../js/ui/contactDisplay.js:89
+#: ../js/ui/userMenu.js:129
 msgid "Available"
 msgstr "Na voljo"
 
-#: ../js/ui/contactDisplay.js:89
-#: ../js/ui/userMenu.js:136
+#: ../js/ui/contactDisplay.js:94
+#: ../js/ui/userMenu.js:138
 msgid "Away"
 msgstr "Odsotno"
 
-#: ../js/ui/contactDisplay.js:93
-#: ../js/ui/userMenu.js:130
+#: ../js/ui/contactDisplay.js:98
+#: ../js/ui/userMenu.js:132
 msgid "Busy"
 msgstr "Zaposleno"
 
-#: ../js/ui/contactDisplay.js:97
+#: ../js/ui/contactDisplay.js:102
 msgid "Offline"
 msgstr "Nepovezano"
 
-#: ../js/ui/contactDisplay.js:148
+#: ../js/ui/contactDisplay.js:153
 msgid "CONTACTS"
 msgstr "Stiki"
 
 #: ../js/ui/dash.js:229
-#: ../js/ui/messageTray.js:1206
+#: ../js/ui/messageTray.js:1207
 msgid "Remove"
 msgstr "Odstrani"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:103
 msgid "Date and Time Settings"
 msgstr "Nastavitve časa in datuma"
 
-#: ../js/ui/dateMenu.js:123
+#: ../js/ui/dateMenu.js:129
 msgid "Open Calendar"
 msgstr "Odpri koledar"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:187
 msgid "%a %b %e, %R:%S"
 msgstr "%a. %e. %b., %R:%S"
 
-#: ../js/ui/dateMenu.js:182
+#: ../js/ui/dateMenu.js:188
 msgid "%a %b %e, %R"
 msgstr "%a, %e. %b., %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:186
+#: ../js/ui/dateMenu.js:192
 msgid "%a %R:%S"
 msgstr "%a. %R:%S"
 
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:193
 msgid "%a %R"
 msgstr "%a. %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:200
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:195
+#: ../js/ui/dateMenu.js:201
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:199
+#: ../js/ui/dateMenu.js:205
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:200
+#: ../js/ui/dateMenu.js:206
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:211
+#: ../js/ui/dateMenu.js:217
 msgid "%A %B %e, %Y"
 msgstr "%a, %e. %b., %R"
 
@@ -620,11 +620,11 @@ msgstr "Namesti"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Ali naj se razširitev '%s'  namesti preko povezave z extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:322
+#: ../js/ui/keyboard.js:327
 msgid "tray"
 msgstr "sistemska vrstica"
 
-#: ../js/ui/keyboard.js:539
+#: ../js/ui/keyboard.js:544
 #: ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Tipkovnica"
@@ -689,24 +689,24 @@ msgid "Web Page"
 msgstr "Spletna stran"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:116
+#: ../js/ui/main.js:118
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Screencast z %d %t"
 
-#: ../js/ui/messageTray.js:1199
+#: ../js/ui/messageTray.js:1200
 msgid "Open"
 msgstr "Odpri"
 
-#: ../js/ui/messageTray.js:1216
+#: ../js/ui/messageTray.js:1217
 msgid "Unmute"
 msgstr "Povrni glasnost"
 
-#: ../js/ui/messageTray.js:1216
+#: ../js/ui/messageTray.js:1217
 msgid "Mute"
 msgstr "Utišaj"
 
-#: ../js/ui/messageTray.js:2449
+#: ../js/ui/messageTray.js:2490
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -794,31 +794,35 @@ msgstr "Za povezavo z omrežjem '%s' je zahtevano geslo."
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: ../js/ui/overview.js:199
+#: ../js/ui/overview.js:132
+msgid "Overview"
+msgstr "Pregled"
+
+#: ../js/ui/overview.js:202
 msgid "Windows"
 msgstr "Okna"
 
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Applications"
 msgstr "Programi"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:228
+#: ../js/ui/overview.js:231
 msgid "Dash"
-msgstr "Armaturna plošča"
+msgstr "Pregledna plošča"
 
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:591
 msgid "Quit"
 msgstr "Končaj"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:623
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:987
+#: ../js/ui/panel.js:998
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -864,7 +868,7 @@ msgstr "Dejanje je spodletelo. Poskusite znova."
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:720
+#: ../js/ui/popupMenu.js:724
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -872,11 +876,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Vnos ukaza:"
 
-#: ../js/ui/searchDisplay.js:349
+#: ../js/ui/searchDisplay.js:331
 msgid "Searching..."
 msgstr "Iskanje ..."
 
-#: ../js/ui/searchDisplay.js:417
+#: ../js/ui/searchDisplay.js:413
 msgid "No matching results."
 msgstr "Ni zadetkov iskanja"
 
@@ -1575,53 +1579,53 @@ msgstr "Uredi račun"
 msgid "Unknown reason"
 msgstr "Neznan vzrok"
 
-#: ../js/ui/userMenu.js:133
+#: ../js/ui/userMenu.js:135
 msgid "Hidden"
 msgstr "Skrito"
 
-#: ../js/ui/userMenu.js:139
+#: ../js/ui/userMenu.js:141
 msgid "Idle"
 msgstr "Nedejavno"
 
-#: ../js/ui/userMenu.js:142
+#: ../js/ui/userMenu.js:144
 msgid "Unavailable"
 msgstr "Nedostopno"
 
-#: ../js/ui/userMenu.js:579
-#: ../js/ui/userMenu.js:583
-#: ../js/ui/userMenu.js:653
+#: ../js/ui/userMenu.js:595
+#: ../js/ui/userMenu.js:599
+#: ../js/ui/userMenu.js:669
 msgid "Power Off..."
 msgstr "Izklop ..."
 
-#: ../js/ui/userMenu.js:615
+#: ../js/ui/userMenu.js:631
 msgid "Notifications"
 msgstr "Obvestila"
 
-#: ../js/ui/userMenu.js:623
+#: ../js/ui/userMenu.js:639
 msgid "Online Accounts"
 msgstr "Spletni računi"
 
-#: ../js/ui/userMenu.js:627
+#: ../js/ui/userMenu.js:643
 msgid "System Settings"
 msgstr "Sistemske nastavitve"
 
-#: ../js/ui/userMenu.js:634
+#: ../js/ui/userMenu.js:650
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
-#: ../js/ui/userMenu.js:639
+#: ../js/ui/userMenu.js:655
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:660
 msgid "Log Out..."
 msgstr "Odjava ..."
 
-#: ../js/ui/userMenu.js:672
+#: ../js/ui/userMenu.js:688
 msgid "Your chat status will be set to busy"
 msgstr "Stanje vašega klepeta bo nastavljeno na zasedeno"
 
-#: ../js/ui/userMenu.js:673
+#: ../js/ui/userMenu.js:689
 msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
 msgstr "Obveščanje je zdaj onemogočeno, vključno s sporočili klepeta. Vaše stanje povezanosti se je prilagodilo, da bodo drugi vedeli, da njihovih sporočil morda ne boste opazili."
 
@@ -1687,15 +1691,15 @@ msgstr[3] "%u dovodi naprave"
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
 
-#: ../src/main.c:253
+#: ../src/main.c:255
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: ../src/main.c:259
+#: ../src/main.c:261
 msgid "Mode used by GDM for login screen"
 msgstr "Način uporabljen v GDM za prijavni naslov"
 
-#: ../src/shell-app.c:617
+#: ../src/shell-app.c:619
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Zaganjanje '%s' je spodletelo"
