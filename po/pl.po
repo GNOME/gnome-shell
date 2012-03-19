@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-03 21:35+0100\n"
-"PO-Revision-Date: 2012-03-03 21:36+0100\n"
+"POT-Creation-Date: 2012-03-19 18:59+0100\n"
+"PO-Revision-Date: 2012-03-19 19:00+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -30,15 +30,21 @@ msgid "Window management and application launching"
 msgstr "Zarządzanie oknami i uruchamianiem programów"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
-msgid "Configure GNOME Shell Extensions"
-msgstr "Konfiguracja rozszerzeń powłoki GNOME"
-
-#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 #: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extension Preferences"
 msgstr "Preferencje rozszerzenia powłoki GNOME"
 
+#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
+msgid "Configure GNOME Shell Extensions"
+msgstr "Konfiguracja rozszerzeń powłoki GNOME"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Włącza wewnętrzne narzędzia przydatne programistom i testerom w oknie "
+"dialogowym Alt-F2"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
@@ -46,21 +52,11 @@ msgstr ""
 "Umożliwia dostęp do wewnętrznych narzędzi debugowania i monitorowania "
 "używając okna dialogowego Alt-F2."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Włącza wewnętrzne narzędzia przydatne programistom i testerom w oknie "
-"dialogowym Alt-F2"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
-msgid "File extension used for storing the screencast"
-msgstr "Rozszerzenie pliku używane do przechowywania nagrań pulpitu"
+msgid "Uuids of extensions to enable"
+msgstr "Lista UUID rozszerzeń do włączenia"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
-msgid "Framerate used for recording screencasts."
-msgstr "Liczba klatek na sekundę do nagrywania pulpitu."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
@@ -73,31 +69,47 @@ msgstr ""
 "listą za pomocą metod EnableExtension i DisableExtension usługi D-Bus na org."
 "gnome.Shell."
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Whether to collect stats about applications usage"
+msgstr "Określa, czy zbierać statystyki o użyciu programów"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"Powłoka zwykle monitoruje aktywne programy, aby przedstawiać najczęściej "
+"używane (np. aktywatory programów). Mimo, że te dane nie są publiczne, można "
+"wyłączyć je z powodu prywatności. Proszę zauważyć, że wyłączenie nie "
+"spowoduje usunięcia już zapisanych danych."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Lista identyfikatorów plików .desktop ulubionych programów"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Programy odpowiadające tym identyfikatorom będą wyświetlane w obszarze "
+"ulubionych."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "disabled OpenSearch providers"
+msgstr "Wyłączeni dostawcy OpenSearch"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "History for command (Alt-F2) dialog"
 msgstr "Historia okna dialogowego poleceń (Alt-F2)"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "History for the looking glass dialog"
 msgstr "Historia okna dialogowego looking glass"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "If true, display date in the clock, in addition to time."
-msgstr ""
-"Jeśli jest ustawione na \"true\", to wyświetla datę w zegarze, dodatkowo do "
-"czasu."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display seconds in time."
-msgstr "Jeśli jest ustawione na \"true\", to wyświetla sekundy w zegarze."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid "If true, display the ISO week date in the calendar."
-msgstr ""
-"Jeśli jest ustawione na \"true\", to wyświetla dzień tygodnia w formacie ISO "
-"w kalendarzu."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
 msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
@@ -106,7 +118,7 @@ msgstr ""
 "ustawionego przez użytkownika. Wartość pochodzi ze spisu "
 "TpConnectionPresenceType."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
@@ -114,11 +126,57 @@ msgstr ""
 "Używane wewnętrznie do przechowywania ostatniego stanu obecności dla "
 "użytkownika. Wartość pochodzi ze spisu GsmPresenceStatus."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid "List of desktop file IDs for favorite applications"
-msgstr "Lista identyfikatorów plików .desktop ulubionych programów"
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Show the week date in the calendar"
+msgstr "Wyświetlanie dnia tygodnia w kalendarzu"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "If true, display the ISO week date in the calendar."
+msgstr ""
+"Jeśli jest ustawione na \"true\", to wyświetla dzień tygodnia w formacie ISO "
+"w kalendarzu."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Which keyboard to use"
+msgstr "Której klawiatury używać"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "The type of keyboard to use."
+msgstr "Typ używanej klawiatury."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid "Show time with seconds"
+msgstr "Wyświetlanie czasu z sekundami"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid "If true, display seconds in time."
+msgstr "Jeśli jest ustawione na \"true\", to wyświetla sekundy w zegarze."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid "Show date in clock"
+msgstr "Wyświetlanie daty w zegarze"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid "If true, display date in the clock, in addition to time."
+msgstr ""
+"Jeśli jest ustawione na \"true\", to wyświetla datę w zegarze, dodatkowo do "
+"czasu."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "Framerate used for recording screencasts."
+msgstr "Liczba klatek na sekundę do nagrywania pulpitu."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr "Liczba klatek na sekundę wynikowego nagrania pulpitu."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "Potok biblioteki GStreamer używany do zakodowania nagrania pulpitu"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -142,27 +200,11 @@ msgstr ""
 "threads=%T ! queue ! webmmux\" i nagrywa do formatu WebM używając kodeka "
 "VP8. %T jest zamieniane na odgadniętą optymalną liczbę wątków dla komputera."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show date in clock"
-msgstr "Wyświetlanie daty w zegarze"
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
+msgid "File extension used for storing the screencast"
+msgstr "Rozszerzenie pliku używane do przechowywania nagrań pulpitu"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
-msgid "Show the week date in the calendar"
-msgstr "Wyświetlanie dnia tygodnia w kalendarzu"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
-msgid "Show time with seconds"
-msgstr "Wyświetlanie czasu z sekundami"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Programy odpowiadające tym identyfikatorom będą wyświetlane w obszarze "
-"ulubionych."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:28
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -171,48 +213,6 @@ msgstr ""
 "Nazwa pliku dla nagrań pulpitu będzie unikalną nazwą opartą na bieżącej "
 "dacie, i używającej tego rozszerzenia. Rozszerzenie powinno zostać "
 "zmienione, aby nagrywać w innym formacie kontenera."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr "Liczba klatek na sekundę wynikowego nagrania pulpitu."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid "The gstreamer pipeline used to encode the screencast"
-msgstr "Potok biblioteki GStreamer używany do zakodowania nagrania pulpitu"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-"Powłoka zwykle monitoruje aktywne programy, aby przedstawiać najczęściej "
-"używane (np. aktywatory programów). Mimo, że te dane nie są publiczne, można "
-"wyłączyć je z powodu prywatności. Proszę zauważyć, że wyłączenie nie "
-"spowoduje usunięcia już zapisanych danych."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
-msgid "The type of keyboard to use."
-msgstr "Typ używanej klawiatury."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
-msgid "Uuids of extensions to enable"
-msgstr "Lista UUID rozszerzeń do włączenia"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
-msgid "Whether to collect stats about applications usage"
-msgstr "Określa, czy zbierać statystyki o użyciu programów"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
-msgid "Which keyboard to use"
-msgstr "Której klawiatury używać"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:28
-msgid "disabled OpenSearch providers"
-msgstr "Wyłączeni dostawcy OpenSearch"
 
 #: ../js/extensionPrefs/main.js:125
 #, c-format
@@ -252,7 +252,7 @@ msgstr "(lub przeciągnięcie palca)"
 msgid "Not listed?"
 msgstr "Inny użytkownik?"
 
-#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
+#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:401
 #: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
@@ -267,16 +267,16 @@ msgstr "Zaloguj"
 msgid "Login Window"
 msgstr "Okno logowania"
 
-#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:591
-#: ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:662
+#: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
 msgid "Suspend"
 msgstr "Uśpij"
 
-#: ../js/gdm/powerMenu.js:157
+#: ../js/gdm/powerMenu.js:160
 msgid "Restart"
 msgstr "Uruchom ponownie"
 
-#: ../js/gdm/powerMenu.js:162
+#: ../js/gdm/powerMenu.js:165
 msgid "Power Off"
 msgstr "Wyłącz komputer"
 
@@ -296,27 +296,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Wykonanie polecenia \"%s\" się nie powiodło:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:251
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "Wszystkie"
 
-#: ../js/ui/appDisplay.js:310
+#: ../js/ui/appDisplay.js:314
 msgid "APPLICATIONS"
 msgstr "Programy"
 
-#: ../js/ui/appDisplay.js:371
+#: ../js/ui/appDisplay.js:375
 msgid "SETTINGS"
 msgstr "Ustawienia"
 
-#: ../js/ui/appDisplay.js:676
+#: ../js/ui/appDisplay.js:680
 msgid "New Window"
 msgstr "Nowe okno"
 
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:683
 msgid "Remove from Favorites"
 msgstr "Usuń z ulubionych"
 
-#: ../js/ui/appDisplay.js:680
+#: ../js/ui/appDisplay.js:684
 msgid "Add to Favorites"
 msgstr "Dodaj do ulubionych"
 
@@ -489,87 +489,87 @@ msgstr "Ten tydzień"
 msgid "Next week"
 msgstr "Następny tydzień"
 
-#: ../js/ui/contactDisplay.js:63 ../js/ui/notificationDaemon.js:486
-#: ../js/ui/status/power.js:215 ../src/shell-app.c:372
+#: ../js/ui/contactDisplay.js:66 ../js/ui/notificationDaemon.js:486
+#: ../js/ui/status/power.js:215 ../src/shell-app.c:374
 msgid "Unknown"
 msgstr "Nieznane"
 
-#: ../js/ui/contactDisplay.js:84 ../js/ui/userMenu.js:127
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:129
 msgid "Available"
 msgstr "Dostępny"
 
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:136
+#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:138
 msgid "Away"
 msgstr "Nieobecny"
 
-#: ../js/ui/contactDisplay.js:93 ../js/ui/userMenu.js:130
+#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:132
 msgid "Busy"
 msgstr "Zajęty"
 
-#: ../js/ui/contactDisplay.js:97
+#: ../js/ui/contactDisplay.js:102
 msgid "Offline"
 msgstr "Offline"
 
-#: ../js/ui/contactDisplay.js:148
+#: ../js/ui/contactDisplay.js:153
 msgid "CONTACTS"
 msgstr "Kontakty"
 
-#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1206
+#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1207
 msgid "Remove"
 msgstr "Usuń"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:103
 msgid "Date and Time Settings"
 msgstr "Ustawienia daty i czasu"
 
-#: ../js/ui/dateMenu.js:123
+#: ../js/ui/dateMenu.js:129
 msgid "Open Calendar"
 msgstr "Otwórz kalendarz"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:187
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R:%S"
 
-#: ../js/ui/dateMenu.js:182
+#: ../js/ui/dateMenu.js:188
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:186
+#: ../js/ui/dateMenu.js:192
 msgid "%a %R:%S"
 msgstr "%a, %R:%S"
 
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:193
 msgid "%a %R"
 msgstr "%a, %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:200
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:195
+#: ../js/ui/dateMenu.js:201
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:199
+#: ../js/ui/dateMenu.js:205
 msgid "%a %l:%M:%S %p"
 msgstr "%a, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:200
+#: ../js/ui/dateMenu.js:206
 msgid "%a %l:%M %p"
 msgstr "%a, %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:211
+#: ../js/ui/dateMenu.js:217
 msgid "%A %B %e, %Y"
 msgstr "%A, %e %B %Y"
 
@@ -676,11 +676,11 @@ msgstr "Zainstaluj"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Pobrać i zainstalować \"%s\" z witryny extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:322
+#: ../js/ui/keyboard.js:327
 msgid "tray"
 msgstr "Ikona"
 
-#: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:544 ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Klawiatura"
 
@@ -741,24 +741,24 @@ msgid "Web Page"
 msgstr "Strona WWW"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:116
+#: ../js/ui/main.js:118
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Nagranie ekranu z %d %t"
 
-#: ../js/ui/messageTray.js:1199
+#: ../js/ui/messageTray.js:1200
 msgid "Open"
 msgstr "Otwórz"
 
-#: ../js/ui/messageTray.js:1216
+#: ../js/ui/messageTray.js:1217
 msgid "Unmute"
 msgstr "Anuluj wyciszenie"
 
-#: ../js/ui/messageTray.js:1216
+#: ../js/ui/messageTray.js:1217
 msgid "Mute"
 msgstr "Wycisz"
 
-#: ../js/ui/messageTray.js:2449
+#: ../js/ui/messageTray.js:2490
 msgid "System Information"
 msgstr "Informacje systemowe"
 
@@ -847,31 +847,35 @@ msgstr "Do połączenia z siecią \"%s\" wymagane jest hasło."
 msgid "Undo"
 msgstr "Cofnij"
 
-#: ../js/ui/overview.js:199
+#: ../js/ui/overview.js:132
+msgid "Overview"
+msgstr "Podgląd"
+
+#: ../js/ui/overview.js:202
 msgid "Windows"
 msgstr "Okna"
 
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Applications"
 msgstr "Programy"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:228
+#: ../js/ui/overview.js:231
 msgid "Dash"
 msgstr "Ulubione"
 
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:591
 msgid "Quit"
 msgstr "Zakończ"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:623
 msgid "Activities"
 msgstr "Podgląd"
 
-#: ../js/ui/panel.js:987
+#: ../js/ui/panel.js:998
 msgid "Top Bar"
 msgstr "Górny pasek"
 
@@ -917,7 +921,7 @@ msgstr "To nie zadziałało. Proszę spróbować ponownie."
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:720
+#: ../js/ui/popupMenu.js:724
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -925,11 +929,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Proszę wprowadzić polecenie:"
 
-#: ../js/ui/searchDisplay.js:349
+#: ../js/ui/searchDisplay.js:331
 msgid "Searching..."
 msgstr "Wyszukiwanie..."
 
-#: ../js/ui/searchDisplay.js:417
+#: ../js/ui/searchDisplay.js:413
 msgid "No matching results."
 msgstr "Brak wyników."
 
@@ -1616,51 +1620,51 @@ msgstr "Modyfikuj konto"
 msgid "Unknown reason"
 msgstr "Nieznana przyczyna"
 
-#: ../js/ui/userMenu.js:133
+#: ../js/ui/userMenu.js:135
 msgid "Hidden"
 msgstr "Ukryty"
 
-#: ../js/ui/userMenu.js:139
+#: ../js/ui/userMenu.js:141
 msgid "Idle"
 msgstr "Bezczynny"
 
-#: ../js/ui/userMenu.js:142
+#: ../js/ui/userMenu.js:144
 msgid "Unavailable"
 msgstr "Niedostępny"
 
-#: ../js/ui/userMenu.js:589 ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:663
+#: ../js/ui/userMenu.js:595 ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:669
 msgid "Power Off..."
 msgstr "Wyłącz komputer..."
 
-#: ../js/ui/userMenu.js:625
+#: ../js/ui/userMenu.js:631
 msgid "Notifications"
 msgstr "Powiadomienia"
 
-#: ../js/ui/userMenu.js:633
+#: ../js/ui/userMenu.js:639
 msgid "Online Accounts"
 msgstr "Konta online"
 
-#: ../js/ui/userMenu.js:637
+#: ../js/ui/userMenu.js:643
 msgid "System Settings"
 msgstr "Ustawienia systemu"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:650
 msgid "Lock Screen"
 msgstr "Zablokuj ekran"
 
-#: ../js/ui/userMenu.js:649
+#: ../js/ui/userMenu.js:655
 msgid "Switch User"
 msgstr "Przełącz użytkownika"
 
-#: ../js/ui/userMenu.js:654
+#: ../js/ui/userMenu.js:660
 msgid "Log Out..."
 msgstr "Wyloguj się..."
 
-#: ../js/ui/userMenu.js:682
+#: ../js/ui/userMenu.js:688
 msgid "Your chat status will be set to busy"
 msgstr "Stan komunikatora zostanie ustawiony na \"zajęty\""
 
-#: ../js/ui/userMenu.js:683
+#: ../js/ui/userMenu.js:689
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1729,15 +1733,15 @@ msgstr[2] "%u wejść"
 msgid "System Sounds"
 msgstr "Dźwięki systemowe"
 
-#: ../src/main.c:253
+#: ../src/main.c:255
 msgid "Print version"
 msgstr "Wyświetla wersję"
 
-#: ../src/main.c:259
+#: ../src/main.c:261
 msgid "Mode used by GDM for login screen"
 msgstr "Tryb używany przez GDM dla ekranu logowania"
 
-#: ../src/shell-app.c:617
+#: ../src/shell-app.c:619
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Uruchomienie \"%s\" się nie powiodło"
