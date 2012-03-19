@@ -716,9 +716,27 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
                                                [Define to 1 if XInput is available])
                                    ])
 
+                  clutter_save_LIBS="$LIBS"
+                  LIBS="$LIBS -lXi"
+
+                  AC_CHECK_FUNC([XIAllowTouchEvents],
+                                [
+                                  AC_CHECK_MEMBER([XIScrollClassInfo.number],
+                                                  [
+                                                    have_xinput_2_2=yes
+                                                    AC_DEFINE([XINPUT_2_2], [1], [Define to 1 if XInput 2.2 is available])
+                                                  ],
+                                                  [have_xinput_2_2=no],
+                                                  [[#include <X11/extensions/XInput2.h>]])])
+
+                  LIBS="$clutter_save_LIBS"
+
                   X11_LIBS="$X11_LIBS $XINPUT_LIBS"
                   X11_PC_FILES="$X11_PC_FILES xi"
-                  X11_EXTS="$X11_EXTS xi"
+
+                  AS_IF([test "x$have_xinput_2_2" = "xyes"],
+                        [X11_EXTS="$X11_EXTS xi2.2"],
+                        [X11_EXTS="$X11_EXTS xi2.0"])
                 ],
 
                 [no],
