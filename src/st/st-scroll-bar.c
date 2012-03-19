@@ -444,14 +444,12 @@ st_scroll_bar_scroll_event (ClutterActor       *actor,
                             ClutterScrollEvent *event)
 {
   StScrollBarPrivate *priv = ST_SCROLL_BAR (actor)->priv;
-  gdouble lower, step, upper, value, delta_x, delta_y;
+  gdouble step, value, delta_x, delta_y;
 
   if (priv->adjustment)
     {
       g_object_get (priv->adjustment,
-                    "lower", &lower,
                     "step-increment", &step,
-                    "upper", &upper,
                     "value", &value,
                     NULL);
     }
@@ -472,17 +470,11 @@ st_scroll_bar_scroll_event (ClutterActor       *actor,
       break;
     case CLUTTER_SCROLL_UP:
     case CLUTTER_SCROLL_LEFT:
-      if (value == lower)
-        return FALSE;
-      else
-        st_adjustment_set_value (priv->adjustment, value - step);
+      st_adjustment_set_value (priv->adjustment, value - step);
       break;
     case CLUTTER_SCROLL_DOWN:
     case CLUTTER_SCROLL_RIGHT:
-      if (value == upper)
-        return FALSE;
-      else
-        st_adjustment_set_value (priv->adjustment, value + step);
+      st_adjustment_set_value (priv->adjustment, value + step);
       break;
     }
 
