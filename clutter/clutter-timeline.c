@@ -989,8 +989,6 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
                     (long) priv->elapsed_time,
                     (long) priv->msecs_delta);
 
-      priv->current_repeat += 1;
-
       if (priv->is_playing &&
           (priv->repeat_count == 0 ||
            priv->repeat_count == priv->current_repeat))
@@ -1006,6 +1004,8 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
         }
 
       g_signal_emit (timeline, timeline_signals[COMPLETED], 0);
+
+      priv->current_repeat += 1;
 
       if (priv->auto_reverse)
         {
