@@ -687,7 +687,7 @@ st_scroll_view_scroll_event (ClutterActor       *self,
                              ClutterScrollEvent *event)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (self)->priv;
-  gdouble lower, value, upper, step;
+  gdouble lower, value, upper, step, hvalue, vvalue, delta_x, delta_y;
 
   /* don't handle scroll events if requested not to */
   if (!priv->mouse_scroll)
@@ -695,6 +695,16 @@ st_scroll_view_scroll_event (ClutterActor       *self,
 
   switch (event->direction)
     {
+    case CLUTTER_SCROLL_SMOOTH:
+      clutter_event_get_scroll_delta ((ClutterEvent *)event,
+                                      &delta_x, &delta_y);
+      g_object_get (priv->hadjustment,
+                    "value", &hvalue,
+                    NULL);
+      g_object_get (priv->vadjustment,
+                    "value", &vvalue,
+                    NULL);
+      break;
     case CLUTTER_SCROLL_UP:
     case CLUTTER_SCROLL_DOWN:
       g_object_get (priv->vadjustment,
@@ -717,6 +727,10 @@ st_scroll_view_scroll_event (ClutterActor       *self,
 
   switch (event->direction)
     {
+    case CLUTTER_SCROLL_SMOOTH:
+      st_adjustment_set_value (priv->hadjustment, hvalue + delta_x);
+      st_adjustment_set_value (priv->vadjustment, vvalue + delta_y);
+      break;
     case CLUTTER_SCROLL_UP:
       if (value == lower)
         return FALSE;
