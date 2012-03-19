@@ -120,28 +120,13 @@ const _Draggable = new Lang.Class({
             return false;
 
         this._buttonDown = true;
-        // special case St.Button: grabbing the pointer would mess up the
-        // internal state, so we start the drag manually on hover change
-        if (this.actor instanceof St.Button)
-            this.actor.connect('notify::hover',
-                               Lang.bind(this, this._onButtonHoverChanged));
-        else
-            this._grabActor();
+        this._grabActor();
 
         let [stageX, stageY] = event.get_coords();
         this._dragStartX = stageX;
         this._dragStartY = stageY;
 
         return false;
-    },
-
-    _onButtonHoverChanged: function(button) {
-        if (button.hover || !button.pressed)
-            return;
-
-        button.fake_release();
-        this.startDrag(this._dragStartX, this._dragStartY,
-                       global.get_current_time());
     },
 
     _grabActor: function() {
@@ -231,6 +216,13 @@ const _Draggable = new Lang.Class({
     startDrag: function (stageX, stageY, time) {
         currentDraggable = this;
         this._dragInProgress = true;
+
+        // Special-case St.Button: the pointer grab messes with the internal
+        // state, so force a reset to a reasonable state here
+        if (this.actor instanceof St.Button) {
+            this.actor.fake_release();
+            this.actor.hover = false;
+        }
 
         this.emit('drag-begin', time);
         if (this._onEventId)
