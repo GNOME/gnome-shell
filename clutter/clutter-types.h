@@ -59,15 +59,16 @@ typedef struct _ClutterActorIter        ClutterActorIter;
 typedef struct _ClutterPaintNode        ClutterPaintNode;
 typedef struct _ClutterContent          ClutterContent; /* dummy */
 
-typedef struct _ClutterAlpha            ClutterAlpha;
-typedef struct _ClutterAnimatable       ClutterAnimatable; /* dummy */
-typedef struct _ClutterAnimator         ClutterAnimator;
-typedef struct _ClutterInterval         ClutterInterval;
-typedef struct _ClutterState            ClutterState;
-typedef struct _ClutterTimeline         ClutterTimeline;
-typedef struct _ClutterTransition       ClutterTransition;
+typedef struct _ClutterAlpha            	ClutterAlpha;
+typedef struct _ClutterAnimator         	ClutterAnimator;
+typedef struct _ClutterState            	ClutterState;
+typedef struct _ClutterInterval         	ClutterInterval;
+typedef struct _ClutterAnimatable       	ClutterAnimatable; /* dummy */
+typedef struct _ClutterTimeline         	ClutterTimeline;
+typedef struct _ClutterTransition       	ClutterTransition;
 typedef struct _ClutterPropertyTransition       ClutterPropertyTransition;
 typedef struct _ClutterKeyframeTransition       ClutterKeyframeTransition;
+typedef struct _ClutterTransitionGroup		ClutterTransitionGroup;
 
 typedef struct _ClutterAction           ClutterAction;
 typedef struct _ClutterConstraint       ClutterConstraint;

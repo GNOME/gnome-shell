@@ -123,6 +123,7 @@ source_h =					\
 	$(srcdir)/clutter-text.h		\
 	$(srcdir)/clutter-text-buffer.h		\
 	$(srcdir)/clutter-timeline.h 		\
+	$(srcdir)/clutter-transition-group.h	\
 	$(srcdir)/clutter-transition.h		\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
@@ -203,6 +204,7 @@ source_c = \
 	$(srcdir)/clutter-texture.c 		\
 	$(srcdir)/clutter-text.c		\
 	$(srcdir)/clutter-text-buffer.c		\
+	$(srcdir)/clutter-transition-group.c	\
 	$(srcdir)/clutter-transition.c		\
 	$(srcdir)/clutter-timeline.c 		\
 	$(srcdir)/clutter-units.c		\

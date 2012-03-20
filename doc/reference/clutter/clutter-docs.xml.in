@@ -155,6 +155,7 @@
       <xi:include href="xml/clutter-transition.xml"/>
       <xi:include href="xml/clutter-property-transition.xml"/>
       <xi:include href="xml/clutter-keyframe-transition.xml"/>
+      <xi:include href="xml/clutter-transition-group.xml"/>
     </chapter>
 
     <chapter>

@@ -3243,3 +3243,23 @@ CLUTTER_KEYFRAME_TRANSITION_GET_CLASS
 ClutterKeyframeTransitionPrivate
 clutter_keyframe_transition_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-transition-group</FILE>
+ClutterTransitionGroup
+ClutterTransitionGroupClass
+clutter_transition_group_new
+clutter_transition_group_add_transition
+clutter_transition_group_remove_transition
+clutter_transition_group_remove_all
+<SUBSECTION Standard>
+CLUTTER_TYPE_TRANSITION_GROUP
+CLUTTER_TRANSITION_GROUP
+CLUTTER_TRANSITION_GROUP_CLASS
+CLUTTER_IS_TRANSITION_GROUP
+CLUTTER_IS_TRANSITION_GROUP_CLASS
+CLUTTER_TRANSITION_GROUP_GET_CLASS
+<SUBSECTION Private>
+ClutterTransitionGroupPrivate
+clutter_transition_group_get_type
+</SECTION>

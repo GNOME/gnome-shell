@@ -73,3 +73,4 @@ clutter_text_get_type
 clutter_texture_get_type
 clutter_timeline_get_type
 clutter_transition_get_type
+clutter_transition_group_get_type
