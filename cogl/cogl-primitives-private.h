@@ -48,7 +48,7 @@ typedef struct _CoglMultiTexturedRect
 } CoglMultiTexturedRect;
 
 void
-_cogl_framebuffer_draw_multitextued_rectangles (
+_cogl_framebuffer_draw_multitextured_rectangles (
                                         CoglFramebuffer *framebuffer,
                                         CoglPipeline *pipeline,
                                         CoglMultiTexturedRect *rects,
