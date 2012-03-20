@@ -3180,8 +3180,7 @@ add_or_remove_flatten_effect (ClutterActor *self)
           /* Destroy the effect so that it will lose its fbo cache of
              the actor */
           _clutter_actor_remove_effect_internal (self, priv->flatten_effect);
-          g_object_unref (priv->flatten_effect);
-          priv->flatten_effect = NULL;
+          g_clear_object (&priv->flatten_effect);
         }
     }
 }
@@ -15907,7 +15906,7 @@ clutter_actor_set_layout_manager (ClutterActor         *self,
                                             G_CALLBACK (on_layout_manager_changed),
                                             self);
       clutter_layout_manager_set_container (priv->layout_manager, NULL);
-      g_object_unref (priv->layout_manager);
+      g_clear_object (&priv->layout_manager);
     }
 
   priv->layout_manager = manager;
@@ -17599,7 +17598,7 @@ clutter_actor_set_content (ClutterActor   *self,
   if (priv->content != NULL)
     {
       _clutter_content_detached (priv->content, self);
-      g_object_unref (priv->content);
+      g_clear_object (&priv->content);
     }
 
   priv->content = content;
