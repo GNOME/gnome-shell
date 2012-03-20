@@ -81,7 +81,9 @@
 #endif
 
 #ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+#include <cogl/cogl-wayland-server.h>
 #include <wayland-server.h>
+#include "wayland/clutter-wayland-compositor.h"
 #endif
 
 G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT);

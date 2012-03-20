@@ -48,8 +48,7 @@
 #include "clutter-backend.h"
 
 #include <cogl/cogl.h>
-
-#include <wayland-server.h>
+#include <cogl/cogl-wayland-server.h>
 
 enum
 {

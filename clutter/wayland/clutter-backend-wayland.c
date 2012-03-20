@@ -51,6 +51,7 @@
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <cogl/cogl.h>
+#include <cogl/cogl-wayland-client.h>
 
 #define clutter_backend_wayland_get_type     _clutter_backend_wayland_get_type
 

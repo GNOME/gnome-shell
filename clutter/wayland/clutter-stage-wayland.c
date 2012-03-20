@@ -30,12 +30,14 @@
 
 #include <glib.h>
 
+#include "clutter-wayland.h"
 #include "clutter-stage-wayland.h"
 #include "clutter-backend-wayland.h"
 #include "clutter-stage-window.h"
 #include "clutter-stage-private.h"
 #include "clutter-event-private.h"
 #include <cogl/cogl.h>
+#include <cogl/cogl-wayland-client.h>
 
 static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;
 
