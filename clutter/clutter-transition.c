@@ -360,7 +360,7 @@ clutter_transition_get_interval (ClutterTransition *transition)
  * and will call the #ClutterTransitionClass.attached() virtual function.
  *
  * If an existing #ClutterAnimatable is attached to @transition, the
- * reference will be released, and the #ClutterTransitionClas.detached()
+ * reference will be released, and the #ClutterTransitionClass.detached()
  * virtual function will be called.
  *
  * Since: 1.10
