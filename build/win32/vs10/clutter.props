@@ -2,6 +2,8 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
     <GlibEtcInstallRoot>..\..\..\..\vs10\$(Platform)</GlibEtcInstallRoot>
+    <GlibMkEnumsPath>..\..\..\vs10\$(Platform)</GlibMkEnumsPath>
+	<GlibGenMarshalPath>..\..\..\vs10\$(Platform)</GlibGenMarshalPath>
     <ClutterApiVersion>1.0</ClutterApiVersion>
     <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
     <BaseWinBuildDef>_WIN32_WINNT=0x0500</BaseWinBuildDef>
@@ -33,7 +35,7 @@ if exist ..\..\..\clutter\clutter-marshal.h goto DONE_CLUTTER_MARSHAL_H
 
 cd ..\..\..\clutter
 
-$(GlibEtcInstallRoot)\bin\glib-genmarshal --prefix=_clutter_marshal --header clutter-marshal.list &gt; clutter-marshal.h
+$(GlibGenMarshalPath)\bin\glib-genmarshal --prefix=_clutter_marshal --header clutter-marshal.list &gt; clutter-marshal.h
 
 cd ..\build\win32\vs10
 
@@ -46,7 +48,7 @@ cd ..\..\..\clutter
 
 echo #include "clutter-marshal.h" &gt; clutter-marshal.c
 
-$(GlibEtcInstallRoot)\bin\glib-genmarshal --prefix=_clutter_marshal --body clutter-marshal.list &gt;&gt; clutter-marshal.c
+$(GlibGenMarshalPath)\bin\glib-genmarshal --prefix=_clutter_marshal --body clutter-marshal.list &gt;&gt; clutter-marshal.c
 
 cd ..\build\win32\vs10
 
@@ -123,6 +125,8 @@ copy ..\..\..\clutter\clutter-brightness-contrast-effect.h $(CopyDir)\include\cl
 
 copy ..\..\..\clutter\clutter-cairo-texture.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
+copy ..\..\..\clutter\clutter-canvas.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
 copy ..\..\..\clutter\clutter-child-meta.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-click-action.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
@@ -137,9 +141,11 @@ copy ..\..\..\clutter\clutter-color.h $(CopyDir)\include\clutter-$(ClutterApiVer
 
 copy ..\..\..\clutter\clutter-colorize-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
+copy ..\..\..\clutter\clutter-config.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
 copy ..\..\..\clutter\clutter-constraint.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
-copy ..\..\..\clutter\clutter-config.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+copy ..\..\..\clutter\clutter-content.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-container.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
@@ -173,6 +179,8 @@ copy ..\..\..\clutter\clutter-gesture-action.h $(CopyDir)\include\clutter-$(Clut
 
 copy ..\..\..\clutter\clutter-group.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
+copy ..\..\..\clutter\clutter-image.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
 copy ..\..\..\clutter\clutter-input-device.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-interval.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
@@ -199,9 +207,15 @@ copy ..\..\..\clutter\clutter-offscreen-effect.h $(CopyDir)\include\clutter-$(Cl
 
 copy ..\..\..\clutter\clutter-page-turn-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
+copy ..\..\..\clutter\clutter-paint-node.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-paint-nodes.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
 copy ..\..\..\clutter\clutter-path-constraint.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-path.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-property-transition.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-script.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
@@ -234,6 +248,8 @@ copy ..\..\..\clutter\clutter-text.h $(CopyDir)\include\clutter-$(ClutterApiVers
 copy ..\..\..\clutter\clutter-text-buffer.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-timeline.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-transition.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-types.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
@@ -364,6 +380,12 @@ copy ..\..\..\clutter\cally\cally-util.h $(CopyDir)\include\clutter-$(ClutterApi
   <ItemGroup>
     <BuildMacro Include="GlibEtcInstallRoot">
       <Value>$(GlibEtcInstallRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GlibMkEnumsPath">
+      <Value>$(GlibMkEnumsPath)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GlibGenMarshalPath">
+      <Value>$(GlibGenMarshalPath)</Value>
     </BuildMacro>
     <BuildMacro Include="ClutterApiVersion">
       <Value>$(ClutterApiVersion)</Value>
