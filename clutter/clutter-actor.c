@@ -17124,8 +17124,7 @@ _clutter_actor_create_transition (ClutterActor *actor,
       g_value_unset (&initial);
       g_value_unset (&final);
 
-      res = clutter_property_transition_new (CLUTTER_ANIMATABLE (actor),
-                                             pspec->name);
+      res = clutter_property_transition_new (pspec->name);
 
       clutter_transition_set_interval (res, interval);
       clutter_transition_set_remove_on_complete (res, TRUE);
@@ -17209,6 +17208,8 @@ clutter_actor_add_transition (ClutterActor      *self,
                  _clutter_actor_get_debug_name (self));
       return;
     }
+
+  clutter_transition_set_animatable (transition, CLUTTER_ANIMATABLE (self));
 
   timeline = CLUTTER_TIMELINE (transition);
 

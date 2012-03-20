@@ -97,6 +97,7 @@ clutter_property_transition_compute_value (ClutterTransition *transition,
   GValue value = G_VALUE_INIT;
   gboolean res;
 
+  /* if we have a GParamSpec we also have an animatable instance */
   if (priv->pspec == NULL)
     return;
 
@@ -210,10 +211,9 @@ clutter_property_transition_init (ClutterPropertyTransition *self)
 
 /**
  * clutter_property_transition_new:
- * @animatable: (allow-none): a #ClutterAnimatable, or %NULL
  * @property_name: (allow-none): a property of @animatable, or %NULL
  *
- * Creates a new #ClutterPropertyTransition for @animatable.
+ * Creates a new #ClutterPropertyTransition.
  *
  * Return value: (transfer full): the newly created #ClutterPropertyTransition.
  *   Use g_object_unref() when done
@@ -221,11 +221,9 @@ clutter_property_transition_init (ClutterPropertyTransition *self)
  * Since: 1.10
  */
 ClutterTransition *
-clutter_property_transition_new (ClutterAnimatable *animatable,
-                                 const char        *property_name)
+clutter_property_transition_new (const char *property_name)
 {
   return g_object_new (CLUTTER_TYPE_PROPERTY_TRANSITION,
-                       "animatable", animatable,
                        "property-name", property_name,
                        NULL);
 }
