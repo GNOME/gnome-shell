@@ -3957,7 +3957,6 @@ clutter_actor_set_rotation_angle (ClutterActor      *self,
           transition = _clutter_actor_create_transition (self, pspec,
                                                          *cur_angle_p,
                                                          angle);
-          clutter_timeline_start (CLUTTER_TIMELINE (transition));
         }
       else
         _clutter_actor_update_transition (self, pspec, angle);
@@ -4040,7 +4039,6 @@ clutter_actor_animate_scale_factor (ClutterActor *self,
       transition = _clutter_actor_create_transition (self, pspec,
                                                      old_factor,
                                                      new_factor);
-      clutter_timeline_start (CLUTTER_TIMELINE (transition));
     }
   else
     _clutter_actor_update_transition (self, pspec, new_factor);
@@ -9405,7 +9403,6 @@ clutter_actor_set_width (ClutterActor *self,
                                                          obj_props[PROP_WIDTH],
                                                          old_width,
                                                          width);
-          clutter_timeline_start (CLUTTER_TIMELINE (transition));
         }
       else
         _clutter_actor_update_transition (self, obj_props[PROP_WIDTH], width);
@@ -9456,7 +9453,6 @@ clutter_actor_set_height (ClutterActor *self,
                                                          obj_props[PROP_HEIGHT],
                                                          old_height,
                                                          height);
-          clutter_timeline_start (CLUTTER_TIMELINE (transition));
         }
       else
         _clutter_actor_update_transition (self, obj_props[PROP_HEIGHT], height);
@@ -9554,8 +9550,6 @@ clutter_actor_set_x (ClutterActor *self,
                                                          obj_props[PROP_X],
                                                          linfo->fixed_x,
                                                          x);
-
-          clutter_timeline_start (CLUTTER_TIMELINE (transition));
         }
       else
         _clutter_actor_update_transition (self, obj_props[PROP_X], x);
@@ -9601,8 +9595,6 @@ clutter_actor_set_y (ClutterActor *self,
                                                          obj_props[PROP_Y],
                                                          linfo->fixed_y,
                                                          y);
-
-          clutter_timeline_start (CLUTTER_TIMELINE (transition));
         }
       else
         _clutter_actor_update_transition (self, obj_props[PROP_Y], y);
@@ -9955,7 +9947,6 @@ clutter_actor_set_opacity (ClutterActor *self,
                                                          obj_props[PROP_OPACITY],
                                                          priv->opacity,
                                                          opacity);
-          clutter_timeline_start (CLUTTER_TIMELINE (transition));
         }
       else
         _clutter_actor_update_transition (self, obj_props[PROP_OPACITY], opacity);
@@ -10277,7 +10268,6 @@ clutter_actor_set_depth (ClutterActor *self,
           transition = _clutter_actor_create_transition (self, obj_props[PROP_DEPTH],
                                                          tinfo->depth,
                                                          depth);
-          clutter_timeline_start (CLUTTER_TIMELINE (transition));
         }
       else
         _clutter_actor_update_transition (self, obj_props[PROP_DEPTH], depth);
@@ -16542,7 +16532,6 @@ clutter_actor_set_background_color (ClutterActor       *self,
           transition = _clutter_actor_create_transition (self, bg_color_pspec,
                                                          &priv->bg_color,
                                                          color);
-          clutter_timeline_start (CLUTTER_TIMELINE (transition));
         }
       else
         _clutter_actor_update_transition (self, bg_color_pspec, color);
@@ -16962,7 +16951,12 @@ transition_closure_free (gpointer data)
     {
       TransitionClosure *clos = data;
 
+      if (clutter_timeline_is_playing (CLUTTER_TIMELINE (clos->transition)))
+        clutter_timeline_stop (CLUTTER_TIMELINE (clos->transition));
+
       g_signal_handler_disconnect (clos->transition, clos->completed_id);
+
+      g_object_unref (clos->transition);
       g_free (clos->name);
 
       g_slice_free (TransitionClosure, clos);
@@ -16979,7 +16973,17 @@ on_transition_completed (ClutterTransition *transition,
   info = _clutter_actor_get_animation_info (actor);
 
   /* this will take care of cleaning clos for us */
-  g_hash_table_remove (info->transitions, clos->name);
+  if (clutter_transition_get_remove_on_complete (transition))
+    {
+      /* we take a reference here because removing the closure
+       * will release the reference on the transition, and we
+       * want the transition to survive the signal emission;
+       * the master clock will release the laste reference at
+       * the end of the frame processing.
+       */
+      g_object_ref (transition);
+      g_hash_table_remove (info->transitions, clos->name);
+    }
 
   /* if it's the last transition then we clean up */
   if (g_hash_table_size (info->transitions) == 0)
@@ -17127,7 +17131,11 @@ _clutter_actor_create_transition (ClutterActor *actor,
       clutter_transition_set_interval (res, interval);
       clutter_transition_set_remove_on_complete (res, TRUE);
 
+      /* this will start the transition as well */
       clutter_actor_add_transition (actor, pspec->name, res);
+
+      /* the actor now owns the transition */
+      g_object_unref (res);
     }
   else
     res = clos->transition;
@@ -17155,6 +17163,10 @@ out:
  * The @transition will be given the easing duration, mode, and delay
  * associated to the actor's current easing state; it is possible to modify
  * these values after calling clutter_actor_add_transition().
+ *
+ * The @transition will be started once added.
+ *
+ * This function will take a reference on the @transition.
  *
  * This function is usually called implicitly when modifying an animatable
  * property.
@@ -17207,13 +17219,14 @@ clutter_actor_add_transition (ClutterActor      *self,
 
   clos = g_slice_new (TransitionClosure);
   clos->actor = self;
-  clos->transition = transition;
+  clos->transition = g_object_ref (transition);
   clos->name = g_strdup (name);
   clos->completed_id = g_signal_connect (timeline, "completed",
                                          G_CALLBACK (on_transition_completed),
                                          clos);
 
   g_hash_table_insert (info->transitions, clos->name, clos);
+  clutter_timeline_start (timeline);
 }
 
 /**
@@ -17223,6 +17236,11 @@ clutter_actor_add_transition (ClutterActor      *self,
  *
  * Removes the transition stored inside a #ClutterActor using @name
  * identifier.
+ *
+ * If the transition is currently in progress, it will be stopped.
+ *
+ * This function releases the reference acquired when the transition
+ * was added to the #ClutterActor.
  *
  * Since: 1.10
  */
