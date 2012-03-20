@@ -9,4 +9,4 @@ do
   TESTS="$TESTS wrappers/`basename $i`"
 done
 
-exec gtester "$@" $TESTS
+G_DEBUG=gc-friendly MALLOC_CHECK_=2 MALLOC_PERTURB_=$((${RANDOM:-256} % 256)) gtester "$@" $TESTS
