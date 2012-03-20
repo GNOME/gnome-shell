@@ -32,6 +32,9 @@
  * The Clutter Wayland compositor API is available since Clutter 1.8
  */
 
+#ifndef __CLUTTER_WAYLAND_COMPOSITOR_H__
+#define __CLUTTER_WAYLAND_COMPOSITOR_H__
+
 #include <wayland-server.h>
 #include <clutter/wayland/clutter-wayland-surface.h>
 
@@ -41,3 +44,5 @@ void
 clutter_wayland_set_compositor_display (struct wl_display *display);
 
 G_END_DECLS
+
+#endif /* __CLUTTER_WAYLAND_COMPOSITOR_H__ */
