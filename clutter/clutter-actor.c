@@ -213,6 +213,76 @@
  *   returning %CLUTTER_EVENT_PROPAGATE.</para>
  * </refsect2>
  *
+ * <refsect2 id="ClutterActor-animation">
+ *   <title>Animation</title>
+ *   <para>Animation is a core concept of modern user interfaces; Clutter
+ *   provides a complete and powerful animation framework that automatically
+ *   tweens the actor's state without requiring direct, frame by frame
+ *   manipulation from your application code.</para>
+ *   <formalpara>
+ *     <title>Implicit animations</title>
+ *     <para>The implicit animation model of Clutter assumes that all the
+ *     changes in an actor state should be gradual and asynchronous; Clutter
+ *     will automatically transition an actor's property change between the
+ *     current state and the desired one without manual intervention.</para>
+ *     <para>By default, in the 1.0 API series, the transition happens with
+ *     a duration of zero milliseconds, and the implicit animation is an
+ *     opt in feature to retain backwards compatibility. In order to enable
+ *     implicit animations, it is necessary to change the easing state of
+ *     an actor by using clutter_actor_save_easing_state():</para>
+ *     <informalexample><programlisting>
+ * /&ast; assume that the actor is currently positioned at (100, 100) &ast;/
+ * clutter_actor_save_easing_state (actor);
+ * clutter_actor_set_position (actor, 500, 500);
+ * clutter_actor_restore_easing_state (actor);
+ *     </programlisting></informalexample>
+ *     <para>The example above will trigger an implicit animation of the
+ *     actor between its current position to a new position.</para>
+ *     <para>It is possible to animate multiple properties of an actor
+ *     at the same time, and you can animate multiple actors at the same
+ *     time as well, for instance:</para>
+ *     <informalexample><programlisting>
+ * /&ast; animate the actor's opacity and depth &ast;/
+ * clutter_actor_save_easing_state (actor);
+ * clutter_actor_set_opacity (actor, 0);
+ * clutter_actor_set_depth (actor, -100);
+ * clutter_actor_restore_easing_state (actor);
+ *
+ * /&ast; animate another actor's opacity &ast;/
+ * clutter_actor_save_easing_state (another_actor);
+ * clutter_actor_set_opacity (another_actor, 255);
+ * clutter_actor_set_depth (another_actor, 100);
+ * clutter_actor_restore_easing_state (another_actor);
+ *     </programlisting></informalexample>
+ *     <para>Implicit animations use a default duration of 250 milliseconds,
+ *     and a default easing mode of %CLUTTER_EASE_OUT_CUBIC, unless you call
+ *     clutter_actor_set_easing_mode() and clutter_actor_set_easing_duration()
+ *     after changing the easing state of the actor.</para>
+ *   </formalpara>
+ *   <formalpara>
+ *     <title>Explicit animations</title>
+ *     <para>The explicit animation model supported by Clutter requires that
+ *     you create a #ClutterTransition object, and set the initial and
+ *     final values. The transition will not start unless you add it to the
+ *     #ClutterActor.</para>
+ *     <informalexample><programlisting>
+ * ClutterTransition *transition;
+ *
+ * transition = clutter_property_transition_new ("opacity");
+ * clutter_timeline_set_duration (CLUTTER_TIMELINE (transition), 3000);
+ * clutter_timeline_set_repeat_count (CLUTTER_TIMELINE (transition), 2);
+ * clutter_timeline_set_auto_reverse (CLUTTER_TIMELINE (transition), TRUE);
+ * clutter_transition_set_interval (transition, clutter_interval_new (G_TYPE_UINT, 255, 0));
+ *
+ * clutter_actor_add_transition (actor, "animate-opacity", transition);
+ *     </programlisting></informalexample>
+ *     <para>The example above will animate the #ClutterActor:opacity property
+ *     of an actor between fully opaque and fully transparent, and back, over
+ *     a span of 3 seconds. The animation does not begin until it is added to
+ *     the actor.</para>
+ *   </formalpara>
+ * </refsect2>
+ *
  * <refsect2 id="ClutterActor-subclassing">
  *   <title>Implementing an actor</title>
  *   <para>Careful consideration should be given when deciding to implement
@@ -263,7 +333,7 @@
  *   the valid units and syntax.</para>
  * </refsect2>
  *
- * <refsect2 id="ClutterActor-animating">
+ * <refsect2 id="ClutterActor-custom-animatable-properties">
  *   <title>Custom animatable properties</title>
  *   <para>#ClutterActor allows accessing properties of #ClutterAction
  *   and #ClutterConstraint instances associated to an actor instance
