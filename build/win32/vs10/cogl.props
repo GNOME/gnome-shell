@@ -2,6 +2,7 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
     <GlibEtcInstallRoot>..\..\..\..\vs10\$(Platform)</GlibEtcInstallRoot>
+	<GlibMkEnumsPath>..\..\..\vs10\$(Platform)</GlibMkEnumsPath>
     <CoglApiVersion>1.0</CoglApiVersion>
     <BaseBuildDefines>_WIN32_WINNT=0x0500;COGL_ENABLE_DEBUG</BaseBuildDefines>
     <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;$(BaseBuildDefines)</LibBuildDefines>
@@ -41,7 +42,7 @@ copy ..\..\..\config.h.win32 ..\..\..\config.h
 
 cd ..
 
-gen-enums.bat $(GlibEtcInstallRoot)
+gen-enums.bat $(GlibMkEnumsPath)
 
 cd .\vs10
 
@@ -228,6 +229,9 @@ copy ..\..\..\cogl\cogl2-compatibility.h $(CopyDir)\include\cogl-$(CoglApiVersio
   <ItemGroup>
     <BuildMacro Include="GlibEtcInstallRoot">
       <Value>$(GlibEtcInstallRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GlibEtcInstallRoot">
+      <Value>$(GlibMkEnumsPath)</Value>
     </BuildMacro>
     <BuildMacro Include="CoglApiVersion">
       <Value>$(CoglApiVersion)</Value>
