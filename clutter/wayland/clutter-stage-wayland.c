@@ -160,8 +160,11 @@ clutter_stage_wayland_resize (ClutterStageWindow *stage_window,
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
 
   /* Resize preserving top left */
-  cogl_wayland_onscreen_resize (stage_cogl->onscreen, width, height, 0, 0);
-  _clutter_stage_window_redraw (stage_window);
+  if (stage_cogl->onscreen)
+    {
+      cogl_wayland_onscreen_resize (stage_cogl->onscreen, width, height, 0, 0);
+      _clutter_stage_window_redraw (stage_window);
+    }
 }
 
 static void
