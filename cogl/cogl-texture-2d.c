@@ -46,7 +46,7 @@
 #include <math.h>
 
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
-#include <wayland-server.h>
+#include "cogl-wayland-server.h"
 #endif
 
 static void _cogl_texture_2d_free (CoglTexture2D *tex_2d);

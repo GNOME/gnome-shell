@@ -1,4 +1,5 @@
 #include <cogl/cogl.h>
+#include <cogl/cogl-wayland-server.h>
 #include <glib.h>
 #include <stdio.h>
 #include <sys/time.h>

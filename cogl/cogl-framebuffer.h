@@ -34,10 +34,6 @@
 #include <windows.h>
 #endif /* COGL_HAS_WIN32_SUPPORT */
 
-#if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
-#include <wayland-client.h>
-#endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
-
 #ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl2-path.h>
 #else

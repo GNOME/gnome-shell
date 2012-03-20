@@ -105,9 +105,6 @@
 #if defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
 #include <cogl/cogl-kms-renderer.h>
 #endif
-#if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
-#include <cogl/cogl-wayland-renderer.h>
-#endif
 #if COGL_HAS_WIN32_SUPPORT
 #include <cogl/cogl-win32-renderer.h>
 #endif

@@ -395,9 +395,14 @@ cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-wgl.c \
 	$(srcdir)/winsys/cogl-winsys-wgl-feature-functions.h
 endif
+if SUPPORT_WAYLAND_EGL_SERVER
+cogl_experimental_h += \
+	$(srcdir)/cogl-wayland-server.h
+endif
 if SUPPORT_EGL_PLATFORM_WAYLAND
 cogl_experimental_h += \
-	$(srcdir)/cogl-wayland-renderer.h
+	$(srcdir)/cogl-wayland-renderer.h \
+	$(srcdir)/cogl-wayland-client.h
 cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-egl-wayland.c \
 	$(srcdir)/winsys/cogl-winsys-egl-wayland-private.h
