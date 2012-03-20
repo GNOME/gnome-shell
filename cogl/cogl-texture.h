@@ -293,7 +293,7 @@ cogl_texture_get_format (CoglTexture *texture);
  * internally since underlying drivers are free to use a different
  * format</note>
  *
- * </note>This API is only here for backwards compatibility and
+ * <note>This API is only here for backwards compatibility and
  * shouldn't be used in new code. In particular please don't be
  * mislead to pass the returned value to cogl_texture_get_data() for
  * the rowstride, since you should be passing the rowstride you desire

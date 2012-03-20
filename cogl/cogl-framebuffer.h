@@ -467,7 +467,7 @@ cogl_framebuffer_frustum (CoglFramebuffer *framebuffer,
  * Replaces the current projection matrix with an orthographic projection
  * matrix.
  *
- * Since: 1.0
+ * Since: 1.10
  * Stability: unstable
  */
 void
@@ -1241,7 +1241,7 @@ cogl_framebuffer_draw_indexed_attributes (CoglFramebuffer *framebuffer,
  *
  * <note>If you want to describe a rectangle with a texture mapped on
  * it then you can use
- * cogl_framebuffer_draw_textured_rectangle().<note>
+ * cogl_framebuffer_draw_textured_rectangle().</note>
  *
  * Since: 1.10
  * Stability: unstable
