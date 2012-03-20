@@ -70,6 +70,8 @@ struct _ClutterPaintNodeClass
   JsonNode*(* serialize) (ClutterPaintNode *node);
 };
 
+#define PAINT_OP_INIT   { PAINT_OP_INVALID }
+
 typedef enum {
   PAINT_OP_INVALID = 0,
   PAINT_OP_TEX_RECT,

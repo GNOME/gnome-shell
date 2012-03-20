@@ -846,7 +846,7 @@ void
 clutter_paint_node_add_rectangle (ClutterPaintNode      *node,
                                   const ClutterActorBox *rect)
 {
-  ClutterPaintOperation operation;
+  ClutterPaintOperation operation = PAINT_OP_INIT;
 
   g_return_if_fail (CLUTTER_IS_PAINT_NODE (node));
   g_return_if_fail (rect != NULL);
@@ -878,7 +878,7 @@ clutter_paint_node_add_texture_rectangle (ClutterPaintNode      *node,
                                           float                  x_2,
                                           float                  y_2)
 {
-  ClutterPaintOperation operation;
+  ClutterPaintOperation operation = PAINT_OP_INIT;
 
   g_return_if_fail (CLUTTER_IS_PAINT_NODE (node));
   g_return_if_fail (rect != NULL);
@@ -906,7 +906,7 @@ void
 clutter_paint_node_add_path (ClutterPaintNode *node,
                              CoglPath         *path)
 {
-  ClutterPaintOperation operation;
+  ClutterPaintOperation operation = PAINT_OP_INIT;
 
   g_return_if_fail (CLUTTER_IS_PAINT_NODE (node));
   g_return_if_fail (cogl_is_path (path));
@@ -933,7 +933,7 @@ void
 clutter_paint_node_add_primitive (ClutterPaintNode *node,
                                   CoglPrimitive    *primitive)
 {
-  ClutterPaintOperation operation;
+  ClutterPaintOperation operation = PAINT_OP_INIT;
 
   g_return_if_fail (CLUTTER_IS_PAINT_NODE (node));
   g_return_if_fail (cogl_is_primitive (primitive));
