@@ -1,7 +1,87 @@
+3.3.92
+======
+* Add shell-dialogs for GNOME Keyring prompts [Stef; #652459, #652460, #671034]
+* When the user returns from idle, bring up the message tray if there were
+  messages while they were away [Marina; #643014]
+* https://live.gnome.org/EveryDetailMatters
+  - Make the workspace thumbnails clickable all the way to the edge of the
+    screen [Stefano; #643319]
+  - Don't slide out the workspace thumbnails if the mouse is over them when
+    entering the overview [Joost, #651092]
+  - Fix placeholder jumps while dragging a dash item [Joost; #651842]
+  - Don't favorite apps if they are dropped back at the same position
+    [Jean-Philippe; #656333]
+  - To avoid confusion, don't allow removing running apps from favorites
+    [Florian; #644853]
+  - Fix creation of new workspaces by dragging application launchers
+    [Stefano; #664202]
+  - Make it easier to drag dash items without triggering the menu
+    [Florian; #637103]
+* Accessibility [Alejandro]
+  - Add StWidget API for easily adding accessible states and setting roles,
+    names [#668366, #667432, #671378]
+  - Set accessibility information on UI elements
+    [#644255, #667432, #668361, #672047, #670308, #670312, #670719, #671404]
+* Improve key-navigation in the overview [Rui, Florian; #663901]
+* Key navigation bug fixes [Rui, Florian; #662493, #663437, #665215, #671998]
+* Honor a 'org.gnome.shell.overrides.dynamic-workspaces' setting that
+  determines whether the workspace count is dynamic and unsaved in GSettings
+  or static and saved. [Florian; #671568]
+* Avoid saving user presence to GSettings when not necessary
+  [Florian; #665701, #668214]
+* Save screencasts in the users Videos/ directory [Adel; #670749]
+  Use a "human readable" filename [Florian, Adel, Ray; #670753]
+* Allow dragging from the empty part of the top panel to unmaximize a window
+  [Florian; #666359]
+* Fix hangs that could occur when switching away to a VT [Ray; #653833]
+* Fix problems with installing from extensions.gnome.org [Giovanni; #671134]
+* Fix locking the screen when suspending via menu [David, Gert; #670820]
+* Fix browser plugin with Konqueror and Opera [Jasper]
+* Fix shell restart not to bring up failure screen [Giovanni; #648384]
+* Reorganize and clean up CSS theming [Allan; #668209]
+* Improve appearance of modal dialogs [Allan, Florian; #670227, #668209]
+* Update the calendar code to use ECalClient [Giovanni; #671177]
+* Update jhbuild script to use the main moduleset [Owen, Will; #668440]
+* StTextureCache: code cleanup, evict unused icons, merge together
+  simulataneous requests for the same icon [Jasper; #670771, #671656, #672273]
+* Clean up St for recent Clutter changes and fix bugs. StContainer and
+  StGroup are removed [Jasper, Florian; #670034, #670640, #670904]
+* Code cleanup [Adel, Jasper, Rui; #613194, #671086, #671103]
+* Misc bug fixes
+  [Adel, Colin G, Cosimo, Florian, Giovanni, Jasper, Marius, Rui, Stefano;
+  #651130, #658946, #667552, #670076, #671001, #670979, #671410, #671411,
+  #671556, #671656, #671657, #672011, #672024, #672240, #672265, #672270,
+  #672321, #672326, #672413, #672471]
+
+Contributors:
+ Jean-Philippe Braun, Giovanni Campagna, Cosimo Cecchi, Allan Day,
+ Stefano Facchini, David Foerster, Adel Gadllah, Marius Gedminas,
+ Colin Guthrie, Gert Michael Kulyk, William Lachance, Rui Matos,
+ Florian Müllner, Alejandro Piñeiro, Jan Alexander Steffens,
+ Jasper St. Pierre, Ray Strode, Owen Taylor, Joost Verdoorn, Stef Walter,
+ Marina Zhurakhinskaya
+
+Translations:
+ Nilamdyuti Goswami [as], Ihar Hrachyshka, Kasia Bondarava [be],
+ Alexander Shopov, Ivaylo Valkov [bg], Gil Forcada [ca], Marek Černocký [cz],
+ Mario Blättermann [de], Kris Thomsen [dk], Bruce Cowan [en_GB],
+ Kristjan Schmidt [eo], Daniel Mustieles [es], Mattias Põldaru [et],
+ Inaki Larranaga Murgoitio [eu], Arash Mousavi [fa], Timo Jyrinki [fi],
+ Bruno Brouard [fr], Fran Diéguez [gl], Sweta Kothari [gu],
+ Yaron Shahrabani [he], Gabor Kelemen [hu], Jiro Matsuzawa [ja],
+ Baurzhan Muftakhidinov [kk], Seong-ho Cho [ko], Žygimantas Beručka [lt],
+ Anita Reitere [lv], Anish A, Praveen Arimbrathodiyil, Mohammed Sadiq [ml],
+ fKjartan Maraas [nb], Wouter Bolsterlee [nl], A S Alam [pa], Piotr Drąg [pl],
+ Duarte Loreto [pt], Jonh Wendell [pt_BR], Yuri Myasoedov [ru],
+ Matej Urbančič [sl], Miroslav Nikolić [sr], Tirumurti Vasudevan [ta],
+ Sasi Bhushan, Krishnababu Krothapalli [te], Daniel Korostil [uk],
+ Nguyễn Thái Ngọc Duy [vi], YunQiang Su, Yinghua Wang [zh_CN],
+ Chao-Hsiung Liao [zh_HK, zh_TW]
+
 3.3.90
 ======
 
-* All other applications to implement search providers via D-Bus
+* Allow other applications to implement search providers via D-Bus
   [Florian; #663125, #670148]
 * Remove "Recent Items" search, as replaced by Documents search
   [Florian; #663125]
