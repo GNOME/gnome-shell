@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-19 00:17+0100\n"
-"PO-Revision-Date: 2012-03-19 00:17+0100\n"
+"POT-Creation-Date: 2012-03-20 13:57+0100\n"
+"PO-Revision-Date: 2012-03-20 13:58+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -842,17 +842,21 @@ msgstr "Requírese un contrasinal para conectarse a «%s»."
 msgid "Undo"
 msgstr "Desfacer"
 
-#: ../js/ui/overview.js:199
+#: ../js/ui/overview.js:132
+msgid "Overview"
+msgstr "Vista xeral"
+
+#: ../js/ui/overview.js:202
 msgid "Windows"
 msgstr "Xanelas"
 
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Applications"
 msgstr "Aplicativos"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:228
+#: ../js/ui/overview.js:231
 msgid "Dash"
 msgstr "Taboleiro"
 
