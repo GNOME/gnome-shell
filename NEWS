@@ -1,3 +1,42 @@
+3.3.92
+======
+* Automaximize large windows on map [Adel; #671677]
+* When unmaximizing windows, make sure the unminimized size
+  is signficantly less than the maximized size [Adel; #671677]
+* Don't offer maximize option for windows larger than the screen
+  [Jasper; #643606]
+* Always focus the window immediately underneath without restacking
+  when closing a window [Jasper; #620744]
+* Avoid drawing shadows when two windows are tiled together [Rui; #643075]
+* Remove tooltips for window decorations [Florian; #645101]
+* Add org.gnome.mutter.dynamic-workspaces GSetting - when this is set
+  to true, workspace counts are never saved to GSettings, avoiding
+  pointless disk traffic for GNOME dynamic workspaces [Florian; #671568]
+* Add ::grab-op-begin, ::grab-op-end signals to MetaDisplay [Jasper; #670658]
+* Add meta_display_get_ignored_modifier_mask() [Florian; #665215]
+* Remove pointless wrapper methods on MetaPlugin [Jasper; #671103]
+* Fix frame drawing with 3.3.x GTK+ releases [Florian; #671796]
+* Build fixes [Jasper, Rico, Rui]
+* Misc bug fixes [Damien, Jasper, Lionel, Marius, Owen, Rui;
+  #661256, #667437, #671601, #671087, #672374]
+
+Contributors:
+ Stefano Facchini, Adel Gadllah, Lionel Landwerlin, Mariusz Libera,
+ Rui Matos, Florian Müllner, Jasper St. Pierre, Damien Radtke, Owen Taylor,
+ Rico Tzschichholz
+
+Translations:
+ Nilamdyuti Goswami [as], Ihar Hrachyshka [be], Alexander Shopov [bg],
+ David Planella [ca], Carles Ferrando [ca@valencia], Kenneth Nielsen [dk],
+ Bruce Cowan [en_GB], Daniel Mustieles [es], Mattias Põldaru [et],
+ Inaki Larranaga Murgoitio [eu], Timo Jyrinki [fi], Fran Diéguez [gl],
+ Gabor Kelemen [hu], Changwoo Ryu [ko], Anita Reitere [lv],
+ Kjartan Maraas [nb], Wouter Bolsterlee [nl], A S Alam [pa], Piotr Drąg [pl],
+ Duarte Loreto [pt], Yuri Myasoedov [ru], Daniel Nylander [se],
+ Matej Urbančič [sl], Miroslav Nikolić [sr], Tirumurti Vasudevan [ta],
+ Sasi Bhushan [te], Daniel Korostil [uk], Nguyễn Thái Ngọc Duy [vi],
+ YunQiang Su [zh_CN], Chao-Hsiung Liao [zh_HK, zh_TW]
+
 3.3.90
 ======
 * Update for Cogl API changes [Robert]
