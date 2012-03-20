@@ -268,11 +268,14 @@ CoglBitmap *
 _cogl_bitmap_from_file (const char  *filename,
 			GError     **error)
 {
+  static CoglUserDataKey bitmap_data_key;
   CoglBitmap *bmp;
   int      stb_pixel_format;
   int      width;
   int      height;
   guint8  *pixels;
+
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, FALSE);
 
@@ -284,14 +287,14 @@ _cogl_bitmap_from_file (const char  *filename,
     return FALSE;
 
   /* Store bitmap info */
-  bmp = _cogl_bitmap_new_from_data (g_memdup (pixels, height * width * 4),
-                                    COGL_PIXEL_FORMAT_RGBA_8888,
-                                    width, height,
-                                    width * 4,
-                                    (CoglBitmapDestroyNotify) g_free,
-                                    NULL);
-
-  free (pixels);
+  bmp = cogl_bitmap_new_for_data (ctx,
+                                  width, height,
+                                  COGL_PIXEL_FORMAT_RGBA_8888,
+                                  width * 4, /* rowstride */
+                                  pixels);
+  /* Register a destroy function so the pixel data will be freed
+     automatically when the bitmap object is destroyed */
+  cogl_object_set_user_data (COGL_OBJECT (bmp), &bitmap_data_key, pixels, free);
 
   return bmp;
 }
