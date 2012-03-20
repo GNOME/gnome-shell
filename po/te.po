@@ -28,12 +28,12 @@ msgstr "గ్నోమ్ షెల్"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
-msgstr "కిటికీ నిర్వాహణ మరియు అనువర్తనము ప్రారంభించుట"
+msgstr "విండో నిర్వాహణ మరియు అనువర్తనము ప్రారంభించుట"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 #: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extension Preferences"
-msgstr "గ్నోమ్ షెల్ పొడిగింతల ప్రాధాన్యతలు "
+msgstr "గ్నోమ్ షెల్ పొడిగింతల అభీష్టాలు "
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
@@ -88,11 +88,11 @@ msgstr "ప్రియమైన అనువర్తనాల కోసం డ
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
-msgstr "ఈ గుర్తింపకాలకు అనుగుణమైన అనువర్తనాలు ప్రియమైన ప్రదేశములో చూపించబడతాయి."
+msgstr "ఈ గుర్తింపకాలకు అనుగుణమైన అనువర్తనాలు ప్రియమైన ప్రదేశములో ప్రదర్శించబడతాయి."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "disabled OpenSearch providers"
-msgstr "బహిరంగశోధన సమకూర్పకాలను అచేతపరుచు"
+msgstr "బహిరంగఅన్వేషణ సమకూర్పకాలను అచేతపరుచు"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "History for command (Alt-F2) dialog"
@@ -124,7 +124,7 @@ msgstr "క్యాలెండరులో వారపు తేదీని 
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "If true, display the ISO week date in the calendar."
-msgstr "ఒకవేళ నిజమైతే, క్యాలెండరులో ISO వారము తేదీని చూపిస్తుంది."
+msgstr "ఒకవేళ నిజమైతే, క్యాలెండరులో ISO వారము తేదీని ప్రదర్శిస్తుంది."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Which keyboard to use"
@@ -140,7 +140,7 @@ msgstr "సమయమును సెకన్లతో సహా చూపిం
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "If true, display seconds in time."
-msgstr "ఒకవేళ నిజమైతే, సమయము నందు సెకన్లను చూపించు"
+msgstr "ఒకవేళ నిజమైతే, సమయము నందు సెకన్లను ప్రదర్శించు"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Show date in clock"
@@ -148,7 +148,7 @@ msgstr "గడియారములో తేదీని చూపించు"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "If true, display date in the clock, in addition to time."
-msgstr "ఒకవేళ నిజమైతే, సమయానికి అదనంగా గడియారము నందు తేదీని చూపించు."
+msgstr "ఒకవేళ నిజమైతే, సమయానికి అదనంగా గడియారము నందు తేదీని ప్రదర్శించు."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Framerate used for recording screencasts."
@@ -217,7 +217,7 @@ msgstr "పైన ఉన్న కోంబోపెట్టెను వాడ
 
 #: ../js/gdm/loginDialog.js:624
 msgid "Session..."
-msgstr "చర్యాకాలం..."
+msgstr "సెషన్..."
 
 #: ../js/gdm/loginDialog.js:786
 msgctxt "title"
@@ -250,7 +250,7 @@ msgstr "ప్రవేశించండి"
 
 #: ../js/gdm/loginDialog.js:1377
 msgid "Login Window"
-msgstr "ప్రవేశ కిటికీ"
+msgstr "ప్రవేశ విండో"
 
 #: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
 #: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
@@ -295,7 +295,7 @@ msgstr "అమరికలు"
 
 #: ../js/ui/appDisplay.js:680
 msgid "New Window"
-msgstr "కొత్త కిటికీ"
+msgstr "కొత్త విండో"
 
 #: ../js/ui/appDisplay.js:683
 msgid "Remove from Favorites"
@@ -830,7 +830,7 @@ msgstr "పర్యావలోకనం"
 
 #: ../js/ui/overview.js:202
 msgid "Windows"
-msgstr "కిటికీలు"
+msgstr "విండోలు"
 
 #: ../js/ui/overview.js:205
 msgid "Applications"
@@ -908,7 +908,7 @@ msgstr "దయచేసి ఒక ఆదేశమును ప్రవేశప
 
 #: ../js/ui/searchDisplay.js:331
 msgid "Searching..."
-msgstr "శోధిస్తున్నది..."
+msgstr "అన్వేషిస్తోంది..."
 
 #: ../js/ui/searchDisplay.js:413
 msgid "No matching results."
@@ -924,11 +924,11 @@ msgstr "అతికించు"
 
 #: ../js/ui/shellEntry.js:77
 msgid "Show Text"
-msgstr "పాఠ్యం చూపించు"
+msgstr "పాఠం చూపించు"
 
 #: ../js/ui/shellEntry.js:79
 msgid "Hide Text"
-msgstr "పాఠ్యం దాయి"
+msgstr "పాఠం దాయి"
 
 #: ../js/ui/shellMountOperation.js:271
 msgid "Wrong password, please try again"
@@ -979,7 +979,7 @@ msgstr "అధిక వ్యత్యాసం"
 
 #: ../js/ui/status/accessibility.js:154
 msgid "Large Text"
-msgstr "అతిపెద్ద పాఠ్యము"
+msgstr "అతిపెద్ద పాఠము"
 
 #: ../js/ui/status/bluetooth.js:31 ../js/ui/status/bluetooth.js:35
 #: ../js/ui/status/bluetooth.js:258 ../js/ui/status/bluetooth.js:341
@@ -1649,11 +1649,11 @@ msgstr ""
 #. characters.
 #: ../js/ui/viewSelector.js:113
 msgid "Type to search..."
-msgstr "శోధించుటకు టైపు చేయండి..."
+msgstr "అన్వేషించుటకు టైపు చేయండి..."
 
 #: ../js/ui/viewSelector.js:131 ../src/shell-util.c:252
 msgid "Search"
-msgstr "శోధించు"
+msgstr "అన్వేషించు"
 
 #: ../js/ui/wanda.js:124
 #, c-format
