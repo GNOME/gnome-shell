@@ -1,3 +1,60 @@
+Cogl 1.10.0                                                        2012-03-20
+
+  • List of changes since Cogl 1.9.8
+
+  » Add cogl_framebuffer_draw_[*_]rectangle functions. These can be
+    used as a replacement for cogl_rectangle in the 2.0 API to avoid
+    the global framebuffer stack.
+  » Fixed flushing the point size with the GL driver when using GLSL.
+  » Added the missing cogl_is_onscreen and cogl_is_framebuffer functions.
+  » Added cogl_quaternion_init_from_quaternion and
+    cogl_quaternion_init_from_matrix to the public headers.
+  » Make cogl_has_feature available when only
+    COGL_ENABLE_EXPERIMENTAL_API is defined.
+  » Add cogl_framebuffer_read_pixels. This is a convenience wrapper
+    around cogl_framebuffer_read_pixels_into_bitmap to read directly
+    into an application's buffer.
+  » Added a public cogl_bitmap_new_for_data function. This can be used
+    for example to call cogl_framebuffer_read_pixels_into_bitmap to
+    read directly into an application's buffer with an unusual
+    rowstride.
+  » Visual Studio build fixes
+  » Translation updates
+
+  • List of bugs fixed since Cogl 1.9.8
+
+    https://bugzilla.gnome.org:
+
+    #669122 - Clipped redraws and tearing
+    #671984 - cogl glyph cache uses uninitialised variable.
+    #671985 - cogl matrix stack has a use after realloc
+    #672038 - Move the fallback define for GL_PACK_INVERT_MESA
+    #672174 - cogl_path_curve_to second parameter ignored
+    #672243 - Drive by leak fix when code spelunking
+
+Many thanks to:
+
+  Chun-wei Fan
+  Robert Bragg
+  Dave Airlie
+  Matej Urbančič
+  Adam Matoušek
+  Adel Gadllah
+  Alexander Shopov
+  Bruce Cowan
+  Daniel Nylander
+  Dénes Almási
+  Duarte Loreto
+  Enrico Nicoletto
+  Fran Diéguez
+  Khoem Sokhem
+  Nilamdyuti Goswami
+  Piotr Drąg
+  Ray Strode
+  Ryan Lortie
+  Yuri Myasoedov
+  甘霖
+
 Cogl 1.9.8                                                         2012-03-05
 
   • List of changes since Cogl 1.9.6
