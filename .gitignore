@@ -56,11 +56,11 @@ depcomp
 /doc/reference/cogl-2.0-experimental/html
 /doc/reference/cogl-2.0-experimental/tmpl
 /doc/reference/cogl-2.0-experimental/xml
-/doc/reference/cogl-2.0-experimental/cogl.args
-/doc/reference/cogl-2.0-experimental/cogl.hierarchy
-/doc/reference/cogl-2.0-experimental/cogl.interfaces
-/doc/reference/cogl-2.0-experimental/cogl.prerequisites
-/doc/reference/cogl-2.0-experimental/cogl.signals
+/doc/reference/cogl-2.0-experimental/cogl-2.0-experimental.args
+/doc/reference/cogl-2.0-experimental/cogl-2.0-experimental.hierarchy
+/doc/reference/cogl-2.0-experimental/cogl-2.0-experimental.interfaces
+/doc/reference/cogl-2.0-experimental/cogl-2.0-experimental.prerequisites
+/doc/reference/cogl-2.0-experimental/cogl-2.0-experimental.signals
 /doc/reference/cogl-2.0-experimental/cogl-2.0-experimental-docs.xml
 /doc/reference/cogl-2.0-experimental/*.stamp
 /doc/reference/cogl-2.0-experimental/*.bak
@@ -70,6 +70,7 @@ depcomp
 /examples/cogl-msaa
 /examples/cogl-x11-foreign
 /examples/cogl-x11-tfp
+/examples/cogland
 gtk-doc.make
 install-sh
 libtool
@@ -82,6 +83,7 @@ TAGS
 /tests/conform/test-launcher.sh
 /tests/interactive/wrapper.sh
 /tests/conform/*.bat
+/tests/conform/config.env
 /po/POTFILES
 /po/*.gmo
 /po/Makefile.in.in
