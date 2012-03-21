@@ -108,7 +108,6 @@ typedef struct _DimensionData {
   gfloat final_size;
 
   guint expand  : 1;
-  guint shrink  : 1;
   guint visible : 1;
 } DimensionData;
 
