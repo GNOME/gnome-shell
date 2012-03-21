@@ -821,7 +821,6 @@ calculate_col_widths (ClutterTableLayout *self,
        child = clutter_actor_get_next_sibling (child))
     {
       ClutterTableChild *meta;
-      DimensionData *col;
       gfloat c_min, c_pref;
       gfloat min_width, pref_width;
       gint start_col, end_col;
@@ -838,7 +837,6 @@ calculate_col_widths (ClutterTableLayout *self,
       if (meta->col_span < 2)
         continue;
 
-      col = &columns[meta->col];
       start_col = meta->col;
       end_col = meta->col + meta->col_span - 1;
 
@@ -856,9 +854,9 @@ calculate_col_widths (ClutterTableLayout *self,
           if (columns[i].expand)
             n_expand++;
 
-          if (!col->visible)
+          if (!columns[i].visible)
             {
-              col->visible = TRUE;
+              columns[i].visible = TRUE;
               priv->visible_cols += 1;
             }
         }
