@@ -34,17 +34,19 @@ on_drag_end (ClutterDragAction   *action,
   /* check if we're at the viewport edges */
   if (viewport_x > 0)
     {
-      clutter_actor_animate (viewport, CLUTTER_EASE_OUT_BOUNCE, 250,
-                             "x", 0.0,
-                             NULL);
+      clutter_actor_save_easing_state (viewport);
+      clutter_actor_set_easing_mode (viewport, CLUTTER_EASE_OUT_BOUNCE);
+      clutter_actor_set_x (viewport, 0);
+      clutter_actor_restore_easing_state (viewport);
       return;
     }
 
   if (viewport_x < (-1.0f * (RECT_WIDTH * (N_RECTS - 1))))
     {
-      clutter_actor_animate (viewport, CLUTTER_EASE_OUT_BOUNCE, 250,
-                             "x", (-1.0f * (RECT_WIDTH * (N_RECTS - 1))),
-                             NULL);
+      clutter_actor_save_easing_state (viewport);
+      clutter_actor_set_easing_mode (viewport, CLUTTER_EASE_OUT_BOUNCE);
+      clutter_actor_set_x (viewport, -1.0f * (RECT_WIDTH * (N_RECTS - 1)));
+      clutter_actor_restore_easing_state (viewport);
       return;
     }
 
@@ -60,9 +62,9 @@ on_drag_end (ClutterDragAction   *action,
   /* sanity check on the children number */
   child_visible = CLAMP (child_visible, 0, N_RECTS);
 
-  clutter_actor_animate (viewport, CLUTTER_EASE_OUT_QUAD, 250,
-                         "x", (-1.0f * RECT_WIDTH * child_visible),
-                         NULL);
+  clutter_actor_save_easing_state (viewport);
+  clutter_actor_set_x (viewport, -1.0f * RECT_WIDTH * child_visible);
+  clutter_actor_restore_easing_state (viewport);
 }
 
 G_MODULE_EXPORT int
