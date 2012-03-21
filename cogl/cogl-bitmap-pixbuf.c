@@ -68,6 +68,9 @@ _cogl_bitmap_from_file (const char  *filename,
   guint8 *out_data;
   CGColorSpaceRef color_space;
   CGContextRef bitmap_context;
+  CoglBitmap *bmp;
+
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   g_assert (filename != NULL);
   g_assert (error == NULL || *error == NULL);
@@ -123,8 +126,13 @@ _cogl_bitmap_from_file (const char  *filename,
     }
 
   /* allocate buffer big enough to hold pixel data */
-  rowstride = 4 * width;
-  out_data = g_malloc0 (height * rowstride);
+  bmp = _cogl_bitmap_new_with_malloc_buffer (ctx,
+                                             width, height,
+                                             COGL_PIXEL_FORMAT_ARGB_8888);
+  rowstride = cogl_bitmap_get_rowstride (bmp);
+  out_data = _cogl_bitmap_map (bmp,
+                               COGL_BUFFER_ACCESS_WRITE,
+                               COGL_BUFFER_MAP_HINT_DISCARD);
 
   /* render to buffer */
   color_space = CGColorSpaceCreateWithName (kCGColorSpaceGenericRGB);
@@ -143,13 +151,10 @@ _cogl_bitmap_from_file (const char  *filename,
   CGImageRelease (image);
   CGContextRelease (bitmap_context);
 
+  _cogl_bitmap_unmap (bmp);
+
   /* store bitmap info */
-  return _cogl_bitmap_new_from_data (out_data,
-                                     COGL_PIXEL_FORMAT_ARGB_8888,
-                                     width, height,
-                                     rowstride,
-                                     (CoglBitmapDestroyNotify) g_free,
-                                     NULL);
+  return bmp;
 }
 
 #elif defined(USE_GDKPIXBUF)
