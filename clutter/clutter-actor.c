@@ -280,6 +280,40 @@
  *     of an actor between fully opaque and fully transparent, and back, over
  *     a span of 3 seconds. The animation does not begin until it is added to
  *     the actor.</para>
+ *     <para>The explicit animation API should also be used when using custom
+ *     animatable properties for #ClutterAction, #ClutterConstraint, and
+ *     #ClutterEffect instances associated to an actor; see the section on
+ *     <ulink linkend="ClutterActor-custom-animatable-properties">custom
+ *     animatable properties below</ulink> for an example.</para>
+ *     <para>Finally, explicit animations are useful for creating animations
+ *     that run continuously, for instance:</para>
+ *     <informalexample><programlisting>
+ * /&ast; this animation will pulse the actor's opacity continuously &ast;/
+ * ClutterTransition *transition;
+ * ClutterInterval *interval;
+ *
+ * transition = clutter_property_transition_new ("opacity");
+ *
+ * /&ast; we want to animate the opacity between 0 and 255 &ast;/
+ * internal = clutter_interval_new (G_TYPE_UINT, 0, 255);
+ * clutter_transition_set_interval (transition, interval);
+ *
+ * /&ast; over a one second duration, running an infinite amount of times &ast;/
+ * clutter_timeline_set_duration (CLUTTER_TIMELINE (transition), 1000);
+ * clutter_timeline_set_repeat_count (CLUTTER_TIMELINE (transition), -1);
+ *
+ * /&ast; we want to fade in and out, so we need to auto-reverse the transition &ast;/
+ * clutter_timeline_set_auto_reverse (CLUTTER_TIMELINE (transition), TRUE);
+ *
+ * /&ast; and we want to use an easing function that eases both in and out &ast;/
+ * clutter_timeline_set_progress_mode (CLUTTER_TIMELINE (transition),
+ *                                     CLUTTER_EASE_IN_OUT_CUBIC);
+ *
+ * /&ast; add the transition to the desired actor; this will
+ *  &ast; start the animation.
+ *  &ast;/
+ * clutter_actor_add_transition (actor, "opacityAnimation", transition);
+ *     </programlisting></informalexample>
  *   </formalpara>
  * </refsect2>
  *
@@ -335,9 +369,9 @@
  *
  * <refsect2 id="ClutterActor-custom-animatable-properties">
  *   <title>Custom animatable properties</title>
- *   <para>#ClutterActor allows accessing properties of #ClutterAction
- *   and #ClutterConstraint instances associated to an actor instance
- *   for animation purposes.</para>
+ *   <para>#ClutterActor allows accessing properties of #ClutterAction,
+ *   #ClutterEffect, and #ClutterConstraint instances associated to an actor
+ *   instance for animation purposes.</para>
  *   <para>In order to access a specific #ClutterAction or a #ClutterConstraint
  *   property it is necessary to set the #ClutterActorMeta:name property on the
  *   given action or constraint.</para>
@@ -358,8 +392,7 @@
  *   <para>The example below animates a #ClutterBindConstraint applied to an
  *   actor using clutter_actor_animate(). The <emphasis>rect</emphasis> has
  *   a binding constraint for the <emphasis>origin</emphasis> actor, and in
- *   its initial state is fully transparent and overlapping the actor to
- *   which is bound to. </para>
+ *   its initial state is overlapping the actor to which is bound to.</para>
  *   <informalexample><programlisting>
  * constraint = clutter_bind_constraint_new (origin, CLUTTER_BIND_X, 0.0);
  * clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), "bind-x");
@@ -369,67 +402,59 @@
  * clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), "bind-y");
  * clutter_actor_add_constraint (rect, constraint);
  *
- * clutter_actor_set_reactive (rect, TRUE);
- * clutter_actor_set_opacity (rect, 0);
+ * clutter_actor_set_reactive (origin, TRUE);
  *
- * g_signal_connect (rect, "button-press-event",
+ * g_signal_connect (origin, "button-press-event",
  *                   G_CALLBACK (on_button_press),
- *                   NULL);
+ *                   rect);
  *   </programlisting></informalexample>
  *   <para>On button press, the rectangle "slides" from behind the actor to
- *   which is bound to, using the #ClutterBindConstraint:offset property and
- *   the #ClutterActor:opacity property.</para>
+ *   which is bound to, using the #ClutterBindConstraint:offset property to
+ *   achieve the effect:</para>
  *   <informalexample><programlisting>
- * float new_offset = clutter_actor_get_width (origin) + h_padding;
+ * gboolean
+ * on_button_press (ClutterActor *origin,
+ *                  ClutterEvent *event,
+ *                  ClutterActor *rect)
+ * {
+ *   ClutterTransition *transition;
+ *   ClutterInterval *interval;
  *
- * clutter_actor_animate (rect, CLUTTER_EASE_OUT_CUBIC, 500,
- *                        "opacity", 255,
- *                        "@constraints.bind-x.offset", new_offset,
- *                        NULL);
- *   </programlisting></informalexample>
- * </refsect2>
+ *   /&ast; the offset that we want to apply; this will make the actor
+ *    &ast; slide in from behind the origin and rest at the right of
+ *    &ast; the origin, plus a padding value.
+ *    &ast;/
+ *   float new_offset = clutter_actor_get_width (origin) + h_padding;
  *
- * <refsect2 id="ClutterActor-animatable-properties">
- *   <title>Animatable properties</title>
- *   <para>Certain properties on #ClutterActor are marked as "animatable";
- *   these properties will be automatically tweened between the current
- *   value and the new value when one is set.</para>
- *   <para>For backward compatibility, animatable properties will only be
- *   tweened if the easing duration is greater than 0, or if a new easing
- *   state is set, for instance the following example:</para>
- *   <informalexample><programlisting>
- * clutter_actor_save_easing_state (actor);
- * clutter_actor_set_position (actor, 200, 200);
- * clutter_actor_restore_easing_state (actor);
- *   </programlisting></informalexample>
- *   <para>will tween the actor to the (200, 200) coordinates using the default
- *   easing mode and duration of a new easing state. The example above is
- *   equivalent to the following code:</para>
- *   <informalexample><programlisting>
- * clutter_actor_set_easing_mode (actor, CLUTTER_EASE_OUT_CUBIC);
- * clutter_actor_set_easing_duration (actor, 250);
- * clutter_actor_set_position (actor, 200, 200);
- * clutter_actor_restore_easing_state (actor);
- *   </programlisting></informalexample>
- *   <para>It is possible to nest easing states to tween animatable
- *   properties using different modes and durations, for instance:</para>
- *   <informalexample><programlisting>
- * clutter_actor_save_easing_state (actor); /&ast; outer state &ast;/
+ *   /&ast; the property we wish to animate; the "@constraints" section
+ *    &ast; tells Clutter to check inside the constraints associated
+ *    &ast; with the actor; the "bind-x" section is the name of the
+ *    &ast; constraint; and the "offset" is the name of the property
+ *    &ast; on the constraint.
+ *    &ast;/
+ *   const char *prop = "@constraints.bind-x.offset";
  *
- * /&ast; set the duration of the animation to 2 seconds and change position &ast;/
- * clutter_actor_set_easing_duration (actor, 2000);
- * clutter_actor_set_position (actor, 0, 0);
+ *   /&ast; create a new transition for the given property &ast;/
+ *   transition = clutter_property_transition_new (prop);
  *
- * clutter_actor_save_easing_state (actor); /&ast; inner state &ast;/
+ *   /&ast; set the easing mode and duration &ast;/
+ *   clutter_timeline_set_progress_mode (CLUTTER_TIMELINE (transition),
+ *                                       CLUTTER_EASE_OUT_CUBIC);
+ *   clutter_timeline_set_duration (CLUTTER_TIMELINE (transition), 500);
  *
- * /&ast; set the duration of the animation to 5 seconds and change depth and opacity &ast;/
- * clutter_actor_set_easing_duration (actor, 5000);
- * clutter_actor_set_depth (actor, 200);
- * clutter_actor_set_opacity (actor, 0);
+ *   /&ast; create the interval with the initial and final values &ast;/
+ *   interval = clutter_interval_new (G_TYPE_FLOAT, 0, new_offset);
+ *   clutter_transition_set_interval (transition, interval);
  *
- * clutter_actor_restore_easing_state (actor);
+ *   /&ast; add the transition to the actor; this causes the animation
+ *    &ast; to start. the name "offsetAnimation" can be used to retrieve
+ *    &ast; the transition later.
+ *    &ast;/
+ *   clutter_actor_add_transition (rect, "offsetAnimation", transition);
  *
- * clutter_actor_restore_easing_state (actor);
+ *   /&ast; we handled the event &ast;/
+ *   return CLUTTER_EVENT_STOP;
+ * }
  *   </programlisting></informalexample>
  * </refsect2>
  */
