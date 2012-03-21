@@ -166,6 +166,15 @@ _cogl_texture_determine_internal_format (CoglPixelFormat src_format,
         return src_format;
     }
   else
+    /* XXX: It might be nice to make this match the component ordering
+       of the source format when the formats are otherwise the same
+       because on GL there is no way to specify the ordering of the
+       internal format. However when using GLES with the
+       GL_EXT_texture_format_BGRA8888 the order of the internal format
+       becomes important because it must exactly match the format of
+       the uploaded data. That means that if someone creates a texture
+       with some RGBA data and then later tries to upload BGRA data we
+       do actually have to swizzle the components */
     return dst_format;
 }
 

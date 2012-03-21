@@ -69,6 +69,22 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
       gltype = GL_UNSIGNED_BYTE;
       break;
 
+    case COGL_PIXEL_FORMAT_BGRA_8888:
+    case COGL_PIXEL_FORMAT_BGRA_8888_PRE:
+      /* There is an extension to support this format */
+      if ((context->private_feature_flags &
+           COGL_PRIVATE_FEATURE_TEXTURE_FORMAT_BGRA8888))
+        {
+          /* For some reason the extension says you have to specify
+             BGRA for the internal format too */
+          glintformat = GL_BGRA_EXT;
+          glformat = GL_BGRA_EXT;
+          gltype = GL_UNSIGNED_BYTE;
+          required_format = format;
+          break;
+        }
+      /* flow through */
+
       /* Just one 24-bit ordering supported */
     case COGL_PIXEL_FORMAT_RGB_888:
     case COGL_PIXEL_FORMAT_BGR_888:
@@ -81,8 +97,6 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
       /* Just one 32-bit ordering supported */
     case COGL_PIXEL_FORMAT_RGBA_8888:
     case COGL_PIXEL_FORMAT_RGBA_8888_PRE:
-    case COGL_PIXEL_FORMAT_BGRA_8888:
-    case COGL_PIXEL_FORMAT_BGRA_8888_PRE:
     case COGL_PIXEL_FORMAT_ARGB_8888:
     case COGL_PIXEL_FORMAT_ARGB_8888_PRE:
     case COGL_PIXEL_FORMAT_ABGR_8888:
@@ -275,6 +289,9 @@ _cogl_driver_update_features (CoglContext *context,
 
   if (_cogl_check_extension ("GL_OES_packed_depth_stencil", gl_extensions))
     private_flags |= COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL;
+
+  if (_cogl_check_extension ("GL_EXT_texture_format_BGRA8888", gl_extensions))
+    private_flags |= COGL_PRIVATE_FEATURE_TEXTURE_FORMAT_BGRA8888;
 
   /* Cache features */
   context->private_feature_flags |= private_flags;
