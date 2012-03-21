@@ -173,10 +173,35 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
   return self;
 }
 
+- (void) dealloc
+{
+  if (trackingRect)
+    {
+      [self removeTrackingRect:trackingRect];
+      trackingRect = 0;
+    }
+
+  [super dealloc];
+}
+
+- (NSTrackingRectTag) trackingRect
+{
+  return tracking_rect;
+}
+
+- (ClutterActor *) clutterStage
+{
+  return stage_osx->wrapper;
+}
+
 - (void) drawRect: (NSRect) bounds
 {
-  _clutter_stage_do_paint (CLUTTER_STAGE (self->stage_osx->wrapper), NULL);
+  ClutterActor *stage = [self clutterStage];
+
+  _clutter_stage_do_paint (CLUTTER_STAGE (stage), NULL);
+
   cogl_flush ();
+
   [[self openGLContext] flushBuffer];
 }
 
@@ -194,7 +219,12 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 
 - (BOOL) isOpaque
 {
-  if (clutter_stage_get_use_alpha (CLUTTER_STAGE (self->stage_osx->wrapper)))
+  ClutterActor *stage = [self clutterStage];
+
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
+   return YES;
+
+  if (clutter_stage_get_use_alpha (CLUTTER_STAGE (stage)))
     return NO;
 
   return YES;
@@ -202,9 +232,13 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 
 - (void) reshape
 {
+  ClutterActor *stage;
+
   stage_osx->requisition_width = [self bounds].size.width;
   stage_osx->requisition_height = [self bounds].size.height;
-  clutter_actor_set_size (CLUTTER_ACTOR (self->stage_osx->wrapper),
+
+  stage = [self clutterStage];
+  clutter_actor_set_size (stage,
                           stage_osx->requisition_width,
                           stage_osx->requisition_height);
 
@@ -219,7 +253,7 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 
 #define EVENT_HANDLER(event) \
 -(void)event:(NSEvent *) theEvent { \
-  _clutter_event_osx_put (theEvent, self->stage_osx->wrapper);  \
+  _clutter_event_osx_put (theEvent, stage_osx->wrapper);  \
 }
 
 EVENT_HANDLER(mouseDown)
@@ -396,7 +430,7 @@ clutter_stage_osx_show (ClutterStageWindow *stage_window,
    * though.
    */
   nspoint = [self->window mouseLocationOutsideOfEventStream];
-  if ([self->window mouse:nspoint inRect:[self->view frame]])
+  if ([self->view mouse:nspoint inRect:[self->view frame]])
     {
       NSEvent *event;
 
