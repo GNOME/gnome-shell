@@ -1147,6 +1147,7 @@ tests/Makefile
 tests/conform/Makefile
 tests/conform/config.env
 tests/conform/test-launcher.sh
+tests/micro-perf/Makefile
 tests/data/Makefile
 po/Makefile.in
 )

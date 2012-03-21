@@ -1,4 +1,4 @@
-SUBDIRS = conform data
+SUBDIRS = conform micro-perf data
 
 DIST_SUBDIRS = conform data
 
