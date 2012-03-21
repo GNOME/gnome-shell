@@ -1001,12 +1001,8 @@ calculate_col_widths (ClutterTableLayout *self,
             {
               if (columns[i].expand)
                 {
-                  if (n_expand)
-                    columns[i].final_size = columns[i].pref_size
-                                          + (extra_width / n_expand);
-                  else
-                    columns[i].final_size = columns[i].pref_size
-                                          + (extra_width / priv->n_cols);
+                  columns[i].final_size = columns[i].pref_size
+                                        + (extra_width / n_expand);
                 }
               else
                 columns[i].final_size = columns[i].pref_size;
@@ -1289,12 +1285,8 @@ calculate_row_heights (ClutterTableLayout *self,
             {
               if (rows[i].expand)
                 {
-                  if (n_expand)
-                    rows[i].final_size = rows[i].pref_size
-                                       + (extra_height / n_expand);
-                  else
-                    rows[i].final_size = rows[i].pref_size
-                                       + (extra_height / priv->n_rows);
+                  rows[i].final_size = rows[i].pref_size
+                                     + (extra_height / n_expand);
                 }
               else
                 rows[i].final_size = rows[i].pref_size;
