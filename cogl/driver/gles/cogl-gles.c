@@ -293,6 +293,9 @@ _cogl_driver_update_features (CoglContext *context,
   if (_cogl_check_extension ("GL_EXT_texture_format_BGRA8888", gl_extensions))
     private_flags |= COGL_PRIVATE_FEATURE_TEXTURE_FORMAT_BGRA8888;
 
+  if (_cogl_check_extension ("GL_EXT_unpack_subimage", gl_extensions))
+    private_flags |= COGL_PRIVATE_FEATURE_UNPACK_SUBIMAGE;
+
   /* Cache features */
   context->private_feature_flags |= private_flags;
   context->feature_flags |= flags;

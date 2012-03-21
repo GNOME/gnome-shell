@@ -52,6 +52,18 @@
 #define GL_MAX_3D_TEXTURE_SIZE_OES 0x8073
 #endif
 
+/* This extension isn't available for GLES 1.1 so these won't be
+   defined */
+#ifndef GL_UNPACK_ROW_LENGTH
+#define GL_UNPACK_ROW_LENGTH 0x0CF2
+#endif
+#ifndef GL_UNPACK_SKIP_ROWS
+#define GL_UNPACK_SKIP_ROWS 0x0CF3
+#endif
+#ifndef GL_UNPACK_SKIP_PIXELS
+#define GL_UNPACK_SKIP_PIXELS 0x0CF4
+#endif
+
 static void
 _cogl_texture_driver_gen (CoglContext *ctx,
                           GLenum gl_target,
@@ -83,11 +95,38 @@ _cogl_texture_driver_gen (CoglContext *ctx,
 }
 
 static void
-_cogl_texture_driver_prep_gl_for_pixels_upload (CoglContext *context,
+prep_gl_for_pixels_upload_full (CoglContext *ctx,
+                                int pixels_rowstride,
+                                int pixels_src_x,
+                                int pixels_src_y,
+                                int pixels_bpp)
+{
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_UNPACK_SUBIMAGE))
+    {
+      GE( ctx, glPixelStorei (GL_UNPACK_ROW_LENGTH,
+                              pixels_rowstride / pixels_bpp) );
+
+      GE( ctx, glPixelStorei (GL_UNPACK_SKIP_PIXELS, pixels_src_x) );
+      GE( ctx, glPixelStorei (GL_UNPACK_SKIP_ROWS, pixels_src_y) );
+    }
+  else
+    {
+      g_assert (pixels_src_x == 0);
+      g_assert (pixels_src_y == 0);
+    }
+
+  _cogl_texture_prep_gl_alignment_for_pixels_upload (pixels_rowstride);
+}
+
+static void
+_cogl_texture_driver_prep_gl_for_pixels_upload (CoglContext *ctx,
                                                 int pixels_rowstride,
                                                 int pixels_bpp)
 {
-  _cogl_texture_prep_gl_alignment_for_pixels_upload (pixels_rowstride);
+  prep_gl_for_pixels_upload_full (ctx,
+                                  pixels_rowstride,
+                                  0, 0, /* src_x/y */
+                                  pixels_bpp);
 }
 
 static void
@@ -108,7 +147,8 @@ prepare_bitmap_alignment_for_upload (CoglContext *ctx,
   int width = cogl_bitmap_get_width (src_bmp);
   int alignment = 1;
 
-  if (src_rowstride == 0)
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_UNPACK_SUBIMAGE) ||
+      src_rowstride == 0)
     return cogl_object_ref (src_bmp);
 
   /* Work out the alignment of the source rowstride */
@@ -146,11 +186,13 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
   CoglBitmap *slice_bmp;
   int rowstride;
 
-  /* If we are copying a sub region of the source bitmap then we need
-     to copy it because GLES does not support GL_UNPACK_ROW_LENGTH */
-  if (src_x != 0 || src_y != 0 ||
-      width != cogl_bitmap_get_width (source_bmp) ||
-      height != cogl_bitmap_get_height (source_bmp))
+  /* If we have the GL_EXT_unpack_subimage extension then we can
+     upload from subregions directly. Otherwise we may need to copy
+     the bitmap */
+  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_UNPACK_SUBIMAGE) &&
+      (src_x != 0 || src_y != 0 ||
+       width != cogl_bitmap_get_width (source_bmp) ||
+       height != cogl_bitmap_get_height (source_bmp)))
     {
       slice_bmp =
         _cogl_bitmap_new_with_malloc_buffer (ctx,
@@ -168,7 +210,7 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
   rowstride = cogl_bitmap_get_rowstride (slice_bmp);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  _cogl_texture_driver_prep_gl_for_pixels_upload (ctx, rowstride, bpp);
+  prep_gl_for_pixels_upload_full (ctx, rowstride, src_x, src_y, bpp);
 
   data = _cogl_bitmap_bind (slice_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
