@@ -357,7 +357,7 @@ StScrollBar StButton#vhandle:hover
 }
 
 .panel-corner {
-    -panel-corner-radius: 10px;
+    -panel-corner-radius: 6px;
     -panel-corner-background-color: black;
     -panel-corner-border-width: 2px;
     -panel-corner-border-color: transparent;
@@ -409,7 +409,7 @@ StScrollBar StButton#vhandle:hover
 .panel-button:active,
 .panel-button:overview,
 .panel-button:focus {
-    border-image: url("panel-button-border.svg") 10 10 0 2;
+    border-image: url("panel-button-border.svg") 6 10 0 2;
     background-image: url("panel-button-highlight-wide.svg");
     color: white;
     text-shadow: black 0px 2px 2px;

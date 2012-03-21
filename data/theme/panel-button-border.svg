@@ -9,7 +9,7 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="21"
+   width="17"
    height="10"
    id="svg2"
    version="1.1"
@@ -66,9 +66,9 @@
     <rect
        style="opacity:0.8;fill:#ffffff;fill-opacity:1;stroke-width:0.43599999;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect3796"
-       width="3"
+       width="7"
        height="2"
-       x="9"
+       x="5"
        y="8" />
   </g>
 </svg>
