@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity ru\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-12-13 13:41+0000\n"
-"PO-Revision-Date: 2012-03-11 20:40+0300\n"
+"POT-Creation-Date: 2012-03-15 21:29+0000\n"
+"PO-Revision-Date: 2012-03-21 22:26+0300\n"
 "Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,17 +22,16 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
+msgid "Windows"
+msgstr "Окна"
+
+#: ../src/50-mutter-windows.xml.in.h:2
 msgid "View split on left"
 msgstr "Разделитель слева"
 
-#: ../src/50-mutter-windows.xml.in.h:2
+#: ../src/50-mutter-windows.xml.in.h:3
 msgid "View split on right"
 msgstr "Разделитель справа"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#| msgid "_Windows"
-msgid "Windows"
-msgstr "Окна"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
@@ -71,12 +70,12 @@ msgstr "_Подождать"
 msgid "_Force Quit"
 msgstr "Завер_шить"
 
-#: ../src/core/display.c:365
+#: ../src/core/display.c:387
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Отсутствует расширение %s, требуемое для композиции"
 
-#: ../src/core/display.c:431
+#: ../src/core/display.c:453
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Не удалось открыть дисплей «%s» системы X Window\n"
@@ -120,7 +119,7 @@ msgstr "Не удалось прочитать каталог тем: %s\n"
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "Не удалось найти тему! Убедитесь, что «%s» существует и содержит обычные темы.\n"
 
-#: ../src/core/mutter.c:42
+#: ../src/core/mutter.c:40
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -133,60 +132,59 @@ msgstr ""
 "Это — свободное программное обеспечение; условия копирования указаны в исходном тексте.\n"
 "Распространяется без каких-либо гарантий, в том числе и БЕЗ гарантий потребительской стоимости и пригодности для выполнения каких бы то ни было определённых задач.\n"
 
-#: ../src/core/mutter.c:56
+#: ../src/core/mutter.c:54
 msgid "Print version"
 msgstr "Вывести версию"
 
-#: ../src/core/mutter.c:62
+#: ../src/core/mutter.c:60
 msgid "Comma-separated list of compositor plugins"
 msgstr "Список модулей, разделённых запятыми"
 
-#: ../src/core/prefs.c:1067
+#: ../src/core/prefs.c:1077
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "Устранение недоделок для сломанных приложений отключено. Некоторые приложения могут работать неправильно.\n"
 
-#: ../src/core/prefs.c:1142
+#: ../src/core/prefs.c:1152
 #, c-format
-#| msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Не удалось разобрать описание шрифта «%s» из ключа GSettings %s\n"
 
-#: ../src/core/prefs.c:1208
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "Значение «%s» из базы данных настроек является недопустимым значением для модификатора кнопки мыши\n"
 
-#: ../src/core/prefs.c:1720
+#: ../src/core/prefs.c:1739
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "Значение «%s» из базы данных настроек является недопустимым значением для комбинации клавиш «%s»\n"
 
-#: ../src/core/prefs.c:1817
+#: ../src/core/prefs.c:1836
 #, c-format
 msgid "Workspace %d"
 msgstr "Рабочее место %d"
 
-#: ../src/core/screen.c:741
+#: ../src/core/screen.c:730
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Недопустимый экран %d дисплея «%s»\n"
 
-#: ../src/core/screen.c:757
+#: ../src/core/screen.c:746
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
 msgstr "У экрана %d дисплея «%s» уже есть менеджер окон. Попробуйте использовать параметр --replace, чтобы заместить текущий менеджер окон.\n"
 
-#: ../src/core/screen.c:784
+#: ../src/core/screen.c:773
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Не удалось выбрать менеджер окон на экране %d дисплея «%s»\n"
 
-#: ../src/core/screen.c:839
+#: ../src/core/screen.c:828
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "У экрана %d дисплея «%s» уже есть менеджер окон\n"
 
-#: ../src/core/screen.c:1024
+#: ../src/core/screen.c:1013
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не удалось освободить экран %d дисплея «%s»\n"
@@ -283,7 +281,7 @@ msgid "Window manager error: "
 msgstr "Ошибка менеджера окон: "
 
 #. first time through
-#: ../src/core/window.c:7145
+#: ../src/core/window.c:7269
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Окно %s установило на себя значение SM_CLIENT_ID вместо окна с значением WM_CLIENT_LEADER, как это определено в ICCCM.\n"
@@ -295,7 +293,7 @@ msgstr "Окно %s установило на себя значение SM_CLIEN
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7808
+#: ../src/core/window.c:7932
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Окно %s установило подсказку MWM, определяющую, что его размер не меняется, но установило минимальный размер %d × %d и максимальный размер %d × %d, что не имеет смысла.\n"
@@ -351,28 +349,28 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:1
+msgid "Modifier to use for extended window management operations"
+msgstr "Модификатор для использования дополнительных действий управления окнами"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:2
+msgid "This key will initiate the \"overlay\", which is a combination window overview and application launching system. The default is intended to be the \"Windows key\" on PC hardware. It's expected that this binding either the default or set to the empty string."
+msgstr "Этот ключ инициирует перекрытие (обзор окон и система запуска приложений). Для обычных ПК используется клавиша «Windows». Ожидается, что значение этой привязки будет иметь значение по умолчанию или будет пустой строкой."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
 msgstr "Прикреплять модальные диалоговые окна"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:2
-msgid "Cancel tab popup"
-msgstr "Отменить всплывающую табуляцию"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:3
-msgid "Determines whether hidden windows (i.e., minimized windows and windows on other workspaces than the current one) should be kept alive."
-msgstr "Определяет, должны ли существовать скрытые окна (например, минимизированные окна и окна, находящиеся на другом рабочем месте)."
-
 #: ../src/org.gnome.mutter.gschema.xml.in.h:4
-msgid "Determines whether the use of popup and highlight frame should be disabled for window cycling."
-msgstr "Определяет, нужно ли отключить использование всплывающей области для циклического переключения окон."
+msgid "When true, instead of having independent titlebars, modal dialogs appear attached to the titlebar of the parent window and are moved together with the parent window."
+msgstr "Если установлено, вместо независимых заголовков окон модальные диалоговые окна будут прикрепляться к заголовку родительского окна и перемещаться вместе с родительским окном."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid "Determines whether workspace switching should happen for windows on all monitors or only for windows on the primary monitor."
-msgstr "Определяет, должно ли переключение рабочего места происходить для окон на всех мониторах или только для окон на главном мониторе."
+msgid "Live Hidden Windows"
+msgstr "Существование скрытых окон"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid "Draggable border width"
-msgstr "Ширина рамки перетаскивания"
+msgid "Determines whether hidden windows (i.e., minimized windows and windows on other workspaces than the current one) should be kept alive."
+msgstr "Определяет, должны ли существовать скрытые окна (например, минимизированные окна и окна, находящиеся на другом рабочем месте)."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -383,86 +381,49 @@ msgid "If enabled, dropping windows on vertical screen edges maximizes them vert
 msgstr "Если включено, то перемещение окна к вертикальным границам экрана разворачивает окно по вертикали и изменяет горизонтальный размер окна, покрывая половину доступного места. Перемещение окна к верхней части экрана полностью разворачивает окно."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
-msgid "Live Hidden Windows"
-msgstr "Существование скрытых окон"
+msgid "Workspaces are managed dynamically"
+msgstr "Рабочие места управляются динамически"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:10
-msgid "Modifier to use for extended window management operations"
-msgstr "Модификатор для использования дополнительных действий управления окнами"
+msgid "Determines whether workspaces are managed dynamically or whether there's a static number of workspaces (determined by the num-workspaces key in org.gnome.desktop.wm.preferences)."
+msgstr "Определяет, управляются ли рабочие места автоматически или количество рабочих место постоянно (количество задаётся ключом в org.gnome.desktop.wm.preferences)."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:11
+msgid "Workspaces only on primary"
+msgstr "Рабочие места только на главном окне"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid "Determines whether workspace switching should happen for windows on all monitors or only for windows on the primary monitor."
+msgstr "Определяет, должно ли переключение рабочего места происходить для окон на всех мониторах или только для окон на главном мониторе."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "No tab popup"
 msgstr "Без всплывающей табуляции"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
-#| msgid "Remove Window From Top"
-msgid "Select window from tab popup"
-msgstr "Выбор окна из всплывающей табуляции"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid "Determines whether the use of popup and highlight frame should be disabled for window cycling."
+msgstr "Определяет, нужно ли отключить использование всплывающей области для циклического переключения окон."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr "Ширина рамки перетаскивания"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "The amount of total draggable borders. If the theme's visible borders are not enough, invisible borders will be added to meet this value."
 msgstr "Общая ширина рамок для перетаскивания. Если видимых рамок темы недостаточно, то до этого значения будут добавлены невидимые рамки."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
-msgid "This key will initiate the \"overlay\", which is a combination window overview and application launching system. The default is intended to be the \"Windows key\" on PC hardware. It's expected that this binding either the default or set to the empty string."
-msgstr "Этот ключ инициирует перекрытие (обзор окон и система запуска приложений). Для обычных ПК используется клавиша «Windows». Ожидается, что значение этой привязки будет иметь значение по умолчанию или будет пустой строкой."
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Select window from tab popup"
+msgstr "Выбор окна из всплывающей табуляции"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
-msgid "When true, instead of having independent titlebars, modal dialogs appear attached to the titlebar of the parent window and are moved together with the parent window."
-msgstr "Если установлено, вместо независимых заголовков окон модальные диалоговые окна будут прикрепляться к заголовку родительского окна и перемещаться вместе с родительским окном."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
-msgid "Workspaces only on primary"
-msgstr "Рабочие места только на главном окне"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid "Cancel tab popup"
+msgstr "Отменить всплывающую табуляцию"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Применение: %s\n"
-
-#: ../src/ui/frames.c:1157
-msgid "Close Window"
-msgstr "Закрыть окно"
-
-#: ../src/ui/frames.c:1160
-msgid "Window Menu"
-msgstr "Меню окна"
-
-#: ../src/ui/frames.c:1163
-msgid "Minimize Window"
-msgstr "Свернуть окно"
-
-#: ../src/ui/frames.c:1166
-msgid "Maximize Window"
-msgstr "Развернуть окно на весь экран"
-
-#: ../src/ui/frames.c:1169
-msgid "Restore Window"
-msgstr "Восстановить окно"
-
-#: ../src/ui/frames.c:1172
-msgid "Roll Up Window"
-msgstr "Скрутить окно в полоску"
-
-#: ../src/ui/frames.c:1175
-msgid "Unroll Window"
-msgstr "Раскатать окно"
-
-#: ../src/ui/frames.c:1178
-msgid "Keep Window On Top"
-msgstr "Сохранять окно на переднем плане"
-
-#: ../src/ui/frames.c:1181
-msgid "Remove Window From Top"
-msgstr "Убрать с переднего плана"
-
-#: ../src/ui/frames.c:1184
-msgid "Always On Visible Workspace"
-msgstr "Всегда на видимом рабочем месте"
-
-#: ../src/ui/frames.c:1187
-msgid "Put Window On Only One Workspace"
-msgstr "Помещать только на одно рабочее место"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:69
@@ -1472,6 +1433,39 @@ msgstr "значение y было %d, а ожидалось %d"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d координатных выражений разобрано за %g секунд (в среднем %g c)\n"
+
+#~ msgid "Close Window"
+#~ msgstr "Закрыть окно"
+
+#~ msgid "Window Menu"
+#~ msgstr "Меню окна"
+
+#~ msgid "Minimize Window"
+#~ msgstr "Свернуть окно"
+
+#~ msgid "Maximize Window"
+#~ msgstr "Развернуть окно на весь экран"
+
+#~ msgid "Restore Window"
+#~ msgstr "Восстановить окно"
+
+#~ msgid "Roll Up Window"
+#~ msgstr "Скрутить окно в полоску"
+
+#~ msgid "Unroll Window"
+#~ msgstr "Раскатать окно"
+
+#~ msgid "Keep Window On Top"
+#~ msgstr "Сохранять окно на переднем плане"
+
+#~ msgid "Remove Window From Top"
+#~ msgstr "Убрать с переднего плана"
+
+#~ msgid "Always On Visible Workspace"
+#~ msgstr "Всегда на видимом рабочем месте"
+
+#~ msgid "Put Window On Only One Workspace"
+#~ msgstr "Помещать только на одно рабочее место"
 
 #~ msgid "Switch to workspace 1"
 #~ msgstr "Переключиться на рабочее место 1"
