@@ -44,6 +44,9 @@ void                    _clutter_master_clock_remove_timeline           (Clutter
 void                    _clutter_master_clock_start_running             (ClutterMasterClock *master_clock);
 void                    _clutter_master_clock_ensure_next_iteration     (ClutterMasterClock *master_clock);
 
+void                    _clutter_timeline_advance                       (ClutterTimeline    *timeline,
+                                                                         gint64              tick_time);
+gint64                  _clutter_timeline_get_delta                     (ClutterTimeline    *timeline);
 void                    _clutter_timeline_do_tick                       (ClutterTimeline    *timeline,
                                                                          gint64              tick_time);
 

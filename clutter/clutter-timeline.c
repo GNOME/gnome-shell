@@ -875,6 +875,8 @@ emit_frame_signal (ClutterTimeline *timeline)
   /* see bug https://bugzilla.gnome.org/show_bug.cgi?id=654066 */
   gint elapsed = (gint) priv->elapsed_time;
 
+  CLUTTER_NOTE (SCHEDULER, "Emitting ::new-frame signal on timeline[%p]", timeline);
+
   g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0, elapsed);
 }
 
@@ -923,7 +925,7 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
 
   g_object_ref (timeline);
 
-  CLUTTER_NOTE (SCHEDULER, "Timeline [%p] activated (cur: %ld)\n",
+  CLUTTER_NOTE (SCHEDULER, "Timeline [%p] activated (elapsed time: %ld)\n",
                 timeline,
                 (long) priv->elapsed_time);
 
@@ -1577,7 +1579,25 @@ clutter_timeline_get_delta (ClutterTimeline *timeline)
   return timeline->priv->msecs_delta;
 }
 
-/*
+void
+_clutter_timeline_advance (ClutterTimeline *timeline,
+                           gint64           tick_time)
+{
+  ClutterTimelinePrivate *priv = timeline->priv;
+
+  g_object_ref (timeline);
+
+  priv->msecs_delta = tick_time;
+  priv->is_playing = TRUE;
+
+  clutter_timeline_do_frame (timeline);
+
+  priv->is_playing = FALSE;
+
+  g_object_unref (timeline);
+}
+
+/*< private >
  * clutter_timeline_do_tick
  * @timeline: a #ClutterTimeline
  * @tick_time: time of advance
@@ -1592,8 +1612,6 @@ _clutter_timeline_do_tick (ClutterTimeline *timeline,
                            gint64           tick_time)
 {
   ClutterTimelinePrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
 
   priv = timeline->priv;
 
