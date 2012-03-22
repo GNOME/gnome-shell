@@ -31,14 +31,6 @@
 G_BEGIN_DECLS
 
 gboolean
-_cogl_gl_update_features (CoglContext *context,
-                          GError **error);
-
-gboolean
-_cogl_gles_update_features (CoglContext *context,
-                            GError **error);
-
-gboolean
 _cogl_check_extension (const char *name, const char *ext);
 
 void

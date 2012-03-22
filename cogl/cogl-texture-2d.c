@@ -120,10 +120,11 @@ _cogl_texture_2d_can_create (unsigned int width,
        !_cogl_util_is_pot (height)))
     return FALSE;
 
-  ctx->texture_driver->pixel_format_to_gl (internal_format,
-                                           &gl_intformat,
-                                           NULL,
-                                           &gl_type);
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          internal_format,
+                                          &gl_intformat,
+                                          NULL,
+                                          &gl_type);
 
   /* Check that the driver can create a texture with that size */
   if (!ctx->texture_driver->size_supported (GL_TEXTURE_2D,
@@ -192,10 +193,11 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
       return NULL;
     }
 
-  internal_format = ctx->texture_driver->pixel_format_to_gl (internal_format,
-                                                             &gl_intformat,
-                                                             &gl_format,
-                                                             &gl_type);
+  internal_format = ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                                            internal_format,
+                                                            &gl_intformat,
+                                                            &gl_format,
+                                                            &gl_type);
 
   tex_2d = _cogl_texture_2d_create_base (width, height, COGL_TEXTURE_NONE,
                                          internal_format);
@@ -382,8 +384,9 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
 
       /* If we can query GL for the actual pixel format then we'll ignore
          the passed in format and use that. */
-      if (!ctx->texture_driver->pixel_format_from_gl_internal (gl_int_format,
-                                                               &format))
+      if (!ctx->driver_vtable->pixel_format_from_gl_internal (ctx,
+                                                              gl_int_format,
+                                                              &format))
         return COGL_INVALID_HANDLE;
     }
   else
@@ -391,10 +394,11 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
     {
       /* Otherwise we'll assume we can derive the GL format from the
          passed in format */
-      ctx->texture_driver->pixel_format_to_gl (format,
-                                               &gl_int_format,
-                                               NULL,
-                                               NULL);
+      ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                              format,
+                                              &gl_int_format,
+                                              NULL,
+                                              NULL);
     }
 
   /* Note: We always trust the given width and height without querying
@@ -812,10 +816,11 @@ _cogl_texture_2d_get_data (CoglTexture     *tex,
 
   bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
 
-  ctx->texture_driver->pixel_format_to_gl (format,
-                                           NULL, /* internal format */
-                                           &gl_format,
-                                           &gl_type);
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          format,
+                                          NULL, /* internal format */
+                                          &gl_format,
+                                          &gl_type);
 
   ctx->texture_driver->prep_gl_for_pixels_download (rowstride, bpp);
 

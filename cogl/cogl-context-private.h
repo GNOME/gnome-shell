@@ -41,6 +41,7 @@
 #include "cogl-buffer-private.h"
 #include "cogl-bitmask.h"
 #include "cogl-atlas.h"
+#include "cogl-driver.h"
 #include "cogl-texture-driver.h"
 #include "cogl-pipeline-cache.h"
 #include "cogl-texture-2d.h"
@@ -62,7 +63,8 @@ struct _CoglContext
 
   CoglDriver driver;
 
-  /* vtable for the texture driver functions */
+  /* vtables for the driver functions */
+  const CoglDriverVtable *driver_vtable;
   const CoglTextureDriver *texture_driver;
 
   /* Features cache */

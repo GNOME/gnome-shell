@@ -61,9 +61,11 @@
 
 #ifdef HAVE_COGL_GL
 extern const CoglTextureDriver _cogl_texture_driver_gl;
+extern const CoglDriverVtable _cogl_driver_gl;
 #endif
 #if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GLES2)
 extern const CoglTextureDriver _cogl_texture_driver_gles;
+extern const CoglDriverVtable _cogl_driver_gles;
 #endif
 
 static void _cogl_context_free (CoglContext *context);
@@ -203,18 +205,11 @@ cogl_context_new (CoglDisplay *display,
      lot throughout Cogl */
   context->driver = display->renderer->driver;
 
-  winsys = _cogl_context_get_winsys (context);
-  if (!winsys->context_init (context, error))
-    {
-      cogl_object_unref (display);
-      g_free (context);
-      return NULL;
-    }
-
   switch (context->driver)
     {
 #ifdef HAVE_COGL_GL
     case COGL_DRIVER_GL:
+      context->driver_vtable = &_cogl_driver_gl;
       context->texture_driver = &_cogl_texture_driver_gl;
       break;
 #endif
@@ -222,12 +217,21 @@ cogl_context_new (CoglDisplay *display,
 #if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GLES2)
     case COGL_DRIVER_GLES1:
     case COGL_DRIVER_GLES2:
+      context->driver_vtable = &_cogl_driver_gles;
       context->texture_driver = &_cogl_texture_driver_gles;
       break;
 #endif
 
     default:
       g_assert_not_reached ();
+    }
+
+  winsys = _cogl_context_get_winsys (context);
+  if (!winsys->context_init (context, error))
+    {
+      cogl_object_unref (display);
+      g_free (context);
+      return NULL;
     }
 
   context->attribute_name_states_hash =
@@ -578,16 +582,7 @@ gboolean
 _cogl_context_update_features (CoglContext *context,
                                GError **error)
 {
-#ifdef HAVE_COGL_GL
-  if (context->driver == COGL_DRIVER_GL)
-    return _cogl_gl_update_features (context, error);
-#endif
-
-#if defined(HAVE_COGL_GLES) || defined(HAVE_COGL_GLES2)
-  return _cogl_gles_update_features (context, error);
-#endif
-
-  g_assert_not_reached ();
+  return context->driver_vtable->update_features (context, error);
 }
 
 void

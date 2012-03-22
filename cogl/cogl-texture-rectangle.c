@@ -128,10 +128,11 @@ _cogl_texture_rectangle_can_create (unsigned int width,
       return FALSE;
     }
 
-  ctx->texture_driver->pixel_format_to_gl (internal_format,
-                                           &gl_intformat,
-                                           NULL,
-                                           &gl_type);
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          internal_format,
+                                          &gl_intformat,
+                                          NULL,
+                                          &gl_type);
 
   /* Check that the driver can create a texture with that size */
   if (!ctx->texture_driver->size_supported (GL_TEXTURE_RECTANGLE_ARB,
@@ -196,10 +197,11 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
                                            internal_format, error))
     return NULL;
 
-  internal_format = ctx->texture_driver->pixel_format_to_gl (internal_format,
-                                                             &gl_intformat,
-                                                             &gl_format,
-                                                             &gl_type);
+  internal_format = ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                                            internal_format,
+                                                            &gl_intformat,
+                                                            &gl_format,
+                                                            &gl_type);
 
   tex_rect = _cogl_texture_rectangle_create_base (width, height,
                                                   internal_format);
@@ -320,8 +322,9 @@ _cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
 
       /* If we can query GL for the actual pixel format then we'll ignore
          the passed in format and use that. */
-      if (!ctx->texture_driver->pixel_format_from_gl_internal (gl_int_format,
-                                                               &format))
+      if (!ctx->driver_vtable->pixel_format_from_gl_internal (ctx,
+                                                              gl_int_format,
+                                                              &format))
         return NULL;
     }
   else
@@ -329,10 +332,11 @@ _cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
     {
       /* Otherwise we'll assume we can derive the GL format from the
          passed in format */
-      ctx->texture_driver->pixel_format_to_gl (format,
-                                               &gl_int_format,
-                                               NULL,
-                                               NULL);
+      ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                              format,
+                                              &gl_int_format,
+                                              NULL,
+                                              NULL);
     }
 
   /* Note: We always trust the given width and height without querying
@@ -532,10 +536,11 @@ _cogl_texture_rectangle_get_data (CoglTexture     *tex,
 
   bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
 
-  ctx->texture_driver->pixel_format_to_gl (format,
-                                           NULL, /* internal format */
-                                           &gl_format,
-                                           &gl_type);
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          format,
+                                          NULL, /* internal format */
+                                          &gl_format,
+                                          &gl_type);
 
   ctx->texture_driver->prep_gl_for_pixels_download (rowstride, bpp);
 

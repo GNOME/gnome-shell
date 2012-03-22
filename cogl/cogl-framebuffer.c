@@ -2005,10 +2005,11 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
 
   format = cogl_bitmap_get_format (bitmap);
 
-  required_format = ctx->texture_driver->pixel_format_to_gl (format,
-                                                             &gl_intformat,
-                                                             &gl_format,
-                                                             &gl_type);
+  required_format = ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                                            format,
+                                                            &gl_intformat,
+                                                            &gl_format,
+                                                            &gl_type);
 
   /* NB: All offscreen rendering is done upside down so there is no need
    * to flip in this case... */

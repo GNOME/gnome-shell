@@ -167,10 +167,11 @@ _cogl_texture_3d_can_create (CoglContext *ctx,
       return FALSE;
     }
 
-  ctx->texture_driver->pixel_format_to_gl (internal_format,
-                                           &gl_intformat,
-                                           NULL,
-                                           &gl_type);
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          internal_format,
+                                          &gl_intformat,
+                                          NULL,
+                                          &gl_type);
 
   /* Check that the driver can create a texture with that size */
   if (!ctx->texture_driver->size_supported_3d (GL_TEXTURE_3D,
@@ -213,10 +214,11 @@ cogl_texture_3d_new_with_size (CoglContext *ctx,
                                     error))
     return NULL;
 
-  internal_format = ctx->texture_driver->pixel_format_to_gl (internal_format,
-                                                             &gl_intformat,
-                                                             &gl_format,
-                                                             &gl_type);
+  internal_format = ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                                            internal_format,
+                                                            &gl_intformat,
+                                                            &gl_format,
+                                                            &gl_type);
 
   tex_3d = _cogl_texture_3d_create_base (ctx,
                                          width, height, depth,

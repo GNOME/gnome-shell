@@ -177,10 +177,11 @@ _cogl_atlas_get_initial_size (CoglPixelFormat format,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  ctx->texture_driver->pixel_format_to_gl (format,
-                                           &gl_intformat,
-                                           NULL, /* gl_format */
-                                           &gl_type);
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          format,
+                                          &gl_intformat,
+                                          NULL, /* gl_format */
+                                          &gl_type);
 
   /* At least on Intel hardware, the texture size will be rounded up
      to at least 1MB so we might as well try to aim for that as an
@@ -217,10 +218,11 @@ _cogl_atlas_create_map (CoglPixelFormat          format,
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  ctx->texture_driver->pixel_format_to_gl (format,
-                                           &gl_intformat,
-                                           NULL, /* gl_format */
-                                           &gl_type);
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          format,
+                                          &gl_intformat,
+                                          NULL, /* gl_format */
+                                          &gl_type);
 
   /* Keep trying increasingly larger atlases until we can fit all of
      the textures */

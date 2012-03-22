@@ -353,190 +353,6 @@ _cogl_texture_driver_try_setting_gl_border_color (
 }
 
 static gboolean
-_cogl_texture_driver_pixel_format_from_gl_internal (GLenum gl_int_format,
-                                                    CoglPixelFormat  *out_format)
-{
-  /* It doesn't really matter we convert to exact same
-     format (some have no cogl match anyway) since format
-     is re-matched against cogl when getting or setting
-     texture image data.
-  */
-
-  switch (gl_int_format)
-    {
-    case GL_ALPHA: case GL_ALPHA4: case GL_ALPHA8:
-    case GL_ALPHA12: case GL_ALPHA16:
-
-      *out_format = COGL_PIXEL_FORMAT_A_8;
-      return TRUE;
-
-    case GL_LUMINANCE: case GL_LUMINANCE4: case GL_LUMINANCE8:
-    case GL_LUMINANCE12: case GL_LUMINANCE16:
-
-      *out_format = COGL_PIXEL_FORMAT_G_8;
-      return TRUE;
-
-    case GL_RGB: case GL_RGB4: case GL_RGB5: case GL_RGB8:
-    case GL_RGB10: case GL_RGB12: case GL_RGB16: case GL_R3_G3_B2:
-
-      *out_format = COGL_PIXEL_FORMAT_RGB_888;
-      return TRUE;
-
-    case GL_RGBA: case GL_RGBA2: case GL_RGBA4: case GL_RGB5_A1:
-    case GL_RGBA8: case GL_RGB10_A2: case GL_RGBA12: case GL_RGBA16:
-
-      *out_format = COGL_PIXEL_FORMAT_RGBA_8888;
-      return TRUE;
-    }
-
-  return FALSE;
-}
-
-static CoglPixelFormat
-_cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
-                                         GLenum          *out_glintformat,
-                                         GLenum          *out_glformat,
-                                         GLenum          *out_gltype)
-{
-  CoglPixelFormat required_format;
-  GLenum glintformat;
-  GLenum glformat = 0;
-  GLenum gltype;
-
-  required_format = format;
-
-  /* Find GL equivalents */
-  switch (format)
-    {
-    case COGL_PIXEL_FORMAT_A_8:
-      glintformat = GL_ALPHA;
-      glformat = GL_ALPHA;
-      gltype = GL_UNSIGNED_BYTE;
-      break;
-    case COGL_PIXEL_FORMAT_G_8:
-      glintformat = GL_LUMINANCE;
-      glformat = GL_LUMINANCE;
-      gltype = GL_UNSIGNED_BYTE;
-      break;
-
-    case COGL_PIXEL_FORMAT_RGB_888:
-      glintformat = GL_RGB;
-      glformat = GL_RGB;
-      gltype = GL_UNSIGNED_BYTE;
-      break;
-    case COGL_PIXEL_FORMAT_BGR_888:
-      glintformat = GL_RGB;
-      glformat = GL_BGR;
-      gltype = GL_UNSIGNED_BYTE;
-      break;
-    case COGL_PIXEL_FORMAT_RGBA_8888:
-    case COGL_PIXEL_FORMAT_RGBA_8888_PRE:
-      glintformat = GL_RGBA;
-      glformat = GL_RGBA;
-      gltype = GL_UNSIGNED_BYTE;
-      break;
-    case COGL_PIXEL_FORMAT_BGRA_8888:
-    case COGL_PIXEL_FORMAT_BGRA_8888_PRE:
-      glintformat = GL_RGBA;
-      glformat = GL_BGRA;
-      gltype = GL_UNSIGNED_BYTE;
-      break;
-
-      /* The following two types of channel ordering
-       * have no GL equivalent unless defined using
-       * system word byte ordering */
-    case COGL_PIXEL_FORMAT_ARGB_8888:
-    case COGL_PIXEL_FORMAT_ARGB_8888_PRE:
-      glintformat = GL_RGBA;
-      glformat = GL_BGRA;
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-      gltype = GL_UNSIGNED_INT_8_8_8_8;
-#else
-      gltype = GL_UNSIGNED_INT_8_8_8_8_REV;
-#endif
-      break;
-
-    case COGL_PIXEL_FORMAT_ABGR_8888:
-    case COGL_PIXEL_FORMAT_ABGR_8888_PRE:
-      glintformat = GL_RGBA;
-      glformat = GL_RGBA;
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-      gltype = GL_UNSIGNED_INT_8_8_8_8;
-#else
-      gltype = GL_UNSIGNED_INT_8_8_8_8_REV;
-#endif
-      break;
-
-    case COGL_PIXEL_FORMAT_RGBA_1010102:
-    case COGL_PIXEL_FORMAT_RGBA_1010102_PRE:
-      glintformat = GL_RGBA;
-      glformat = GL_RGBA;
-      gltype = GL_UNSIGNED_INT_10_10_10_2;
-      break;
-
-    case COGL_PIXEL_FORMAT_BGRA_1010102:
-    case COGL_PIXEL_FORMAT_BGRA_1010102_PRE:
-      glintformat = GL_RGBA;
-      glformat = GL_BGRA;
-      gltype = GL_UNSIGNED_INT_10_10_10_2;
-      break;
-
-    case COGL_PIXEL_FORMAT_ABGR_2101010:
-    case COGL_PIXEL_FORMAT_ABGR_2101010_PRE:
-      glintformat = GL_RGBA;
-      glformat = GL_RGBA;
-      gltype = GL_UNSIGNED_INT_2_10_10_10_REV;
-      break;
-
-    case COGL_PIXEL_FORMAT_ARGB_2101010:
-    case COGL_PIXEL_FORMAT_ARGB_2101010_PRE:
-      glintformat = GL_RGBA;
-      glformat = GL_BGRA;
-      gltype = GL_UNSIGNED_INT_2_10_10_10_REV;
-      break;
-
-      /* The following three types of channel ordering
-       * are always defined using system word byte
-       * ordering (even according to GLES spec) */
-    case COGL_PIXEL_FORMAT_RGB_565:
-      glintformat = GL_RGB;
-      glformat = GL_RGB;
-      gltype = GL_UNSIGNED_SHORT_5_6_5;
-      break;
-    case COGL_PIXEL_FORMAT_RGBA_4444:
-    case COGL_PIXEL_FORMAT_RGBA_4444_PRE:
-      glintformat = GL_RGBA;
-      glformat = GL_RGBA;
-      gltype = GL_UNSIGNED_SHORT_4_4_4_4;
-      break;
-    case COGL_PIXEL_FORMAT_RGBA_5551:
-    case COGL_PIXEL_FORMAT_RGBA_5551_PRE:
-      glintformat = GL_RGBA;
-      glformat = GL_RGBA;
-      gltype = GL_UNSIGNED_SHORT_5_5_5_1;
-      break;
-
-    case COGL_PIXEL_FORMAT_ANY:
-    case COGL_PIXEL_FORMAT_YUV:
-      g_assert_not_reached ();
-      break;
-    }
-
-  /* All of the pixel formats are handled above so if this hits then
-     we've been given an invalid pixel format */
-  g_assert (glformat != 0);
-
-  if (out_glintformat != NULL)
-    *out_glintformat = glintformat;
-  if (out_glformat != NULL)
-    *out_glformat = glformat;
-  if (out_gltype != NULL)
-    *out_gltype = gltype;
-
-  return required_format;
-}
-
-static gboolean
 _cogl_texture_driver_allows_foreign_gl_target (GLenum gl_target)
 {
   /* GL_ARB_texture_rectangle textures are supported if they are
@@ -561,16 +377,17 @@ _cogl_texture_driver_gl_generate_mipmaps (GLenum gl_target)
 }
 
 static CoglPixelFormat
-_cogl_texture_driver_find_best_gl_get_data_format (
-                                             CoglPixelFormat  format,
-                                             GLenum          *closest_gl_format,
-                                             GLenum          *closest_gl_type)
+_cogl_texture_driver_find_best_gl_get_data_format
+                                            (CoglContext *context,
+                                             CoglPixelFormat format,
+                                             GLenum *closest_gl_format,
+                                             GLenum *closest_gl_type)
 {
-  /* Find closest format that's supported by GL */
-  return _cogl_texture_driver_pixel_format_to_gl (format,
-                                                  NULL, /* don't need */
-                                                  closest_gl_format,
-                                                  closest_gl_type);
+  return context->driver_vtable->pixel_format_to_gl (context,
+                                                     format,
+                                                     NULL, /* don't need */
+                                                     closest_gl_format,
+                                                     closest_gl_type);
 }
 
 const CoglTextureDriver
@@ -586,8 +403,6 @@ _cogl_texture_driver_gl =
     _cogl_texture_driver_size_supported,
     _cogl_texture_driver_size_supported_3d,
     _cogl_texture_driver_try_setting_gl_border_color,
-    _cogl_texture_driver_pixel_format_from_gl_internal,
-    _cogl_texture_driver_pixel_format_to_gl,
     _cogl_texture_driver_allows_foreign_gl_target,
     _cogl_texture_driver_gl_generate_mipmaps,
     _cogl_texture_driver_find_best_gl_get_data_format

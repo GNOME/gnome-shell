@@ -639,10 +639,11 @@ _cogl_texture_2d_sliced_slices_create (CoglContext *ctx,
       slices_for_size = _cogl_pot_slices_for_size;
     }
 
-  ctx->texture_driver->pixel_format_to_gl (format,
-                                           &gl_intformat,
-                                           NULL,
-                                           &gl_type);
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          format,
+                                          &gl_intformat,
+                                          NULL,
+                                          &gl_type);
 
   /* Negative number means no slicing forced by the user */
   if (tex_2ds->max_waste <= -1)

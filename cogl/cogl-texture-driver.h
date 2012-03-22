@@ -161,22 +161,6 @@ struct _CoglTextureDriver
                                    const GLfloat *transparent_color);
 
   /*
-   * XXX: this should live in cogl/{gl,gles}/cogl.c
-   */
-  gboolean
-  (* pixel_format_from_gl_internal) (GLenum            gl_int_format,
-                                     CoglPixelFormat  *out_format);
-
-  /*
-   * XXX: this should live in cogl/{gl,gles}/cogl.c
-   */
-  CoglPixelFormat
-  (* pixel_format_to_gl) (CoglPixelFormat  format,
-                          GLenum          *out_glintformat,
-                          GLenum          *out_glformat,
-                          GLenum          *out_gltype);
-
-  /*
    * It may depend on the driver as to what texture targets may be used when
    * creating a foreign texture. E.g. OpenGL supports ARB_texture_rectangle
    * but GLES doesn't
@@ -199,7 +183,8 @@ struct _CoglTextureDriver
    * destination has another format.
    */
   CoglPixelFormat
-  (* find_best_gl_get_data_format) (CoglPixelFormat  format,
+  (* find_best_gl_get_data_format) (CoglContext     *context,
+                                    CoglPixelFormat  format,
                                     GLenum          *closest_gl_format,
                                     GLenum          *closest_gl_type);
 };
