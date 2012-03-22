@@ -123,6 +123,7 @@ struct _CoglTextureDriver
    * this function that it uses internally. */
   void
   (* prep_gl_for_pixels_download) (CoglContext *ctx,
+                                   int image_width,
                                    int pixels_rowstride,
                                    int pixels_bpp);
 

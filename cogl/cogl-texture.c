@@ -274,12 +274,29 @@ _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride)
 }
 
 void
-_cogl_texture_prep_gl_alignment_for_pixels_download (int pixels_rowstride)
+_cogl_texture_prep_gl_alignment_for_pixels_download (int bpp,
+                                                     int width,
+                                                     int rowstride)
 {
+  int alignment;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  GE( ctx, glPixelStorei (GL_PACK_ALIGNMENT,
-                          calculate_alignment (pixels_rowstride)) );
+  /* If no padding is needed then we can always use an alignment of 1.
+   * We want to do this even though it is equivalent to the alignment
+   * of the rowstride because the Intel driver in Mesa currently has
+   * an optimisation when reading data into a PBO that only works if
+   * the alignment is exactly 1.
+   *
+   * https://bugs.freedesktop.org/show_bug.cgi?id=46632
+   */
+
+  if (rowstride == bpp * width)
+    alignment = 1;
+  else
+    alignment = calculate_alignment (rowstride);
+
+  GE( ctx, glPixelStorei (GL_PACK_ALIGNMENT, alignment) );
 }
 
 /* FIXME: wrap modes should be set on pipelines not textures */

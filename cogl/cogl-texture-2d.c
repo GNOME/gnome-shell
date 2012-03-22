@@ -832,7 +832,10 @@ _cogl_texture_2d_get_data (CoglTexture     *tex,
                                           &gl_format,
                                           &gl_type);
 
-  ctx->texture_driver->prep_gl_for_pixels_download (ctx, rowstride, bpp);
+  ctx->texture_driver->prep_gl_for_pixels_download (ctx,
+                                                    rowstride,
+                                                    tex_2d->width,
+                                                    bpp);
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,

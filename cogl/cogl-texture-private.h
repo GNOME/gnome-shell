@@ -246,7 +246,9 @@ void
 _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);
 
 void
-_cogl_texture_prep_gl_alignment_for_pixels_download (int pixels_rowstride);
+_cogl_texture_prep_gl_alignment_for_pixels_download (int bpp,
+                                                     int width,
+                                                     int rowstride);
 
 /* Utility function to use as a fallback for getting the data of any
    texture via the framebuffer */

@@ -116,6 +116,7 @@ _cogl_texture_driver_prep_gl_for_pixels_upload (CoglContext *ctx,
  * a larger destination buffer */
 static void
 prep_gl_for_pixels_download_full (CoglContext *ctx,
+                                  int image_width,
                                   int pixels_rowstride,
                                   int image_height,
                                   int pixels_src_x,
@@ -130,15 +131,23 @@ prep_gl_for_pixels_download_full (CoglContext *ctx,
   if (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_3D))
     GE( ctx, glPixelStorei (GL_PACK_IMAGE_HEIGHT, image_height) );
 
-  _cogl_texture_prep_gl_alignment_for_pixels_download (pixels_rowstride);
+  _cogl_texture_prep_gl_alignment_for_pixels_download (pixels_bpp,
+                                                       image_width,
+                                                       pixels_rowstride);
 }
 
 static void
 _cogl_texture_driver_prep_gl_for_pixels_download (CoglContext *ctx,
+                                                      int image_width,
                                                   int pixels_rowstride,
                                                   int pixels_bpp)
 {
-  prep_gl_for_pixels_download_full (ctx, pixels_rowstride, 0, 0, 0, pixels_bpp);
+  prep_gl_for_pixels_download_full (ctx,
+                                    pixels_rowstride,
+                                    image_width,
+                                    0 /* image height */,
+                                    0, 0, /* pixels_src_x/y */
+                                    pixels_bpp);
 }
 
 static void

@@ -132,9 +132,12 @@ _cogl_texture_driver_prep_gl_for_pixels_upload (CoglContext *ctx,
 static void
 _cogl_texture_driver_prep_gl_for_pixels_download (CoglContext *ctx,
                                                   int pixels_rowstride,
+                                                  int image_width,
                                                   int pixels_bpp)
 {
-  _cogl_texture_prep_gl_alignment_for_pixels_download (pixels_rowstride);
+  _cogl_texture_prep_gl_alignment_for_pixels_download (pixels_bpp,
+                                                       image_width,
+                                                       pixels_rowstride);
 }
 
 static CoglBitmap *
