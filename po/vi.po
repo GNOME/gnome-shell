@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-29 22:27+0000\n"
+"POT-Creation-Date: 2012-03-19 14:09+0000\n"
 "PO-Revision-Date: 2012-03-03 22:59+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -168,18 +168,6 @@ msgstr "Ống dẫn gstreamer để thu screencast"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:26
 #, no-c-format
-#| msgid ""
-#| "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#| "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#| "pad where the recorded video is recorded. It will normally have a "
-#| "unconnected source pad; output from that pad will be written into the "
-#| "output file. However the pipeline can also take care of its own output - "
-#| "this might be used to send the output to an icecast server via shout2send "
-#| "or similar. When unset or set to an empty value, the default pipeline "
-#| "will be used. This is currently 'videorate ! vp8enc quality=10 speed=2 "
-#| "threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T "
-#| "is used as a placeholder for a guess at the optimal thread count on the "
-#| "system."
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -250,8 +238,8 @@ msgstr "(hoặc quẹt ngón tay)"
 msgid "Not listed?"
 msgstr "Không có trong danh sách?"
 
-#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
-#: ../js/ui/extensionSystem.js:401 ../js/ui/networkAgent.js:153
+#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:401
+#: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "Thôi"
@@ -265,16 +253,16 @@ msgstr "Đăng nhập"
 msgid "Login Window"
 msgstr "Cửa sổ đặt nhập"
 
-#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:581
-#: ../js/ui/userMenu.js:583 ../js/ui/userMenu.js:652
+#: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
 msgid "Suspend"
 msgstr "Ngưng"
 
-#: ../js/gdm/powerMenu.js:157
+#: ../js/gdm/powerMenu.js:160
 msgid "Restart"
 msgstr "Khởi động lại"
 
-#: ../js/gdm/powerMenu.js:162
+#: ../js/gdm/powerMenu.js:165
 msgid "Power Off"
 msgstr "Tắt máy"
 
@@ -294,27 +282,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Lỗi thực hiện '%s':"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:251
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "Tất cả"
 
-#: ../js/ui/appDisplay.js:310
+#: ../js/ui/appDisplay.js:314
 msgid "APPLICATIONS"
 msgstr "ỨNG DỤNG"
 
-#: ../js/ui/appDisplay.js:371
+#: ../js/ui/appDisplay.js:375
 msgid "SETTINGS"
 msgstr "THIẾT LẬP"
 
-#: ../js/ui/appDisplay.js:676
+#: ../js/ui/appDisplay.js:680
 msgid "New Window"
 msgstr "Cửa sổ mới"
 
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:683
 msgid "Remove from Favorites"
 msgstr "Bỏ đánh dấu ưa thích"
 
-#: ../js/ui/appDisplay.js:680
+#: ../js/ui/appDisplay.js:684
 msgid "Add to Favorites"
 msgstr "Đánh dấu ưa thích"
 
@@ -487,87 +475,87 @@ msgstr "Tuần này"
 msgid "Next week"
 msgstr "Tuần tới"
 
-#: ../js/ui/contactDisplay.js:63 ../js/ui/notificationDaemon.js:486
-#: ../js/ui/status/power.js:215 ../src/shell-app.c:372
+#: ../js/ui/contactDisplay.js:66 ../js/ui/notificationDaemon.js:486
+#: ../js/ui/status/power.js:215 ../src/shell-app.c:374
 msgid "Unknown"
 msgstr "Không biết"
 
-#: ../js/ui/contactDisplay.js:84 ../js/ui/userMenu.js:127
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:129
 msgid "Available"
 msgstr "Có mặt"
 
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:136
+#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:138
 msgid "Away"
 msgstr "Vắng mặt"
 
-#: ../js/ui/contactDisplay.js:93 ../js/ui/userMenu.js:130
+#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:132
 msgid "Busy"
 msgstr "Bận"
 
-#: ../js/ui/contactDisplay.js:97
+#: ../js/ui/contactDisplay.js:102
 msgid "Offline"
 msgstr "Ngoại tuyến"
 
-#: ../js/ui/contactDisplay.js:148
+#: ../js/ui/contactDisplay.js:153
 msgid "CONTACTS"
 msgstr "LIÊN LẠC"
 
-#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1204
+#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1207
 msgid "Remove"
 msgstr "Loại bỏ"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:103
 msgid "Date and Time Settings"
 msgstr "Thiết lập ngày giờ"
 
-#: ../js/ui/dateMenu.js:123
+#: ../js/ui/dateMenu.js:129
 msgid "Open Calendar"
 msgstr "Mở lịch"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:187
 msgid "%a %b %e, %R:%S"
 msgstr "%a %R:%S, %e %b"
 
-#: ../js/ui/dateMenu.js:182
+#: ../js/ui/dateMenu.js:188
 msgid "%a %b %e, %R"
 msgstr "%a %R, %e %b"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:186
+#: ../js/ui/dateMenu.js:192
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:193
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:200
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:195
+#: ../js/ui/dateMenu.js:201
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:199
+#: ../js/ui/dateMenu.js:205
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:200
+#: ../js/ui/dateMenu.js:206
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:211
+#: ../js/ui/dateMenu.js:217
 msgid "%A %B %e, %Y"
 msgstr "%A %e %B, %Y"
 
@@ -656,20 +644,20 @@ msgstr[0] "Hệ thống sẽ tự động khởi động lại sau %d giây."
 msgid "Restarting the system."
 msgstr "Khởi động lại hệ thống."
 
-#: ../js/ui/extensionSystem.js:405
+#: ../js/ui/extensionSystem.js:403
 msgid "Install"
 msgstr "Cài đặt"
 
-#: ../js/ui/extensionSystem.js:409
+#: ../js/ui/extensionSystem.js:407
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Tải và cài đặt '%s' từ extensions.gnome.org chứ?"
 
-#: ../js/ui/keyboard.js:322
+#: ../js/ui/keyboard.js:327
 msgid "tray"
 msgstr "khay"
 
-#: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:544 ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Bàn phím"
 
@@ -730,24 +718,24 @@ msgid "Web Page"
 msgstr "Trang Web"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:116
+#: ../js/ui/main.js:118
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Screencast from %d %t"
 
-#: ../js/ui/messageTray.js:1197
+#: ../js/ui/messageTray.js:1200
 msgid "Open"
 msgstr "Mở"
 
-#: ../js/ui/messageTray.js:1214
+#: ../js/ui/messageTray.js:1217
 msgid "Unmute"
 msgstr "Ngừng im lặng"
 
-#: ../js/ui/messageTray.js:1214
+#: ../js/ui/messageTray.js:1217
 msgid "Mute"
 msgstr "Im lặng"
 
-#: ../js/ui/messageTray.js:2447
+#: ../js/ui/messageTray.js:2490
 msgid "System Information"
 msgstr "Thông tin hệ thống"
 
@@ -793,8 +781,8 @@ msgstr "Mạng không dây cần xác thực"
 #: ../js/ui/networkAgent.js:330
 #, c-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"'%s'."
+"Passwords or encryption keys are required to access the wireless network '%"
+"s'."
 msgstr "Cần mật mã hoặc khoá mã để truy cập mạng không dây '%s'"
 
 #: ../js/ui/networkAgent.js:334
@@ -834,31 +822,35 @@ msgstr "Cần mật khẩu để kết nối đến '%s'."
 msgid "Undo"
 msgstr "Hoàn lại"
 
-#: ../js/ui/overview.js:199
+#: ../js/ui/overview.js:132
+msgid "Overview"
+msgstr ""
+
+#: ../js/ui/overview.js:202
 msgid "Windows"
 msgstr "Cửa sổ"
 
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Applications"
 msgstr "Ứng dụng"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:228
+#: ../js/ui/overview.js:231
 msgid "Dash"
 msgstr "Neo ứng dụng"
 
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:591
 msgid "Quit"
 msgstr "Thoát"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:623
 msgid "Activities"
 msgstr "Hoạt động"
 
-#: ../js/ui/panel.js:987
+#: ../js/ui/panel.js:998
 msgid "Top Bar"
 msgstr "Thanh đỉnh"
 
@@ -904,7 +896,7 @@ msgstr "Rất tiếc, không được. Vui lòng thử lại."
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:720
+#: ../js/ui/popupMenu.js:724
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -912,11 +904,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Vui lòng nhập lệnh:"
 
-#: ../js/ui/searchDisplay.js:349
+#: ../js/ui/searchDisplay.js:331
 msgid "Searching..."
 msgstr "Đang tìm..."
 
-#: ../js/ui/searchDisplay.js:417
+#: ../js/ui/searchDisplay.js:413
 msgid "No matching results."
 msgstr "Không tìm thấy."
 
@@ -941,7 +933,6 @@ msgid "Wrong password, please try again"
 msgstr "Nhập sai mật khẩu, xin hãy thử lại"
 
 #: ../js/ui/status/accessibility.js:47
-#| msgid "Visibility"
 msgid "Accessibility"
 msgstr "Khả năng truy cập"
 
@@ -1201,7 +1192,6 @@ msgid "Auto wireless"
 msgstr "Mạng không dây tự động"
 
 #: ../js/ui/status/network.js:1541
-#| msgid "Network error"
 msgid "Network"
 msgstr "Mạng"
 
@@ -1538,7 +1528,6 @@ msgid "Connection has been lost"
 msgstr "Mất kết nối"
 
 #: ../js/ui/telepathyClient.js:1319
-#| msgid "This resource is already connected to the server"
 msgid "This account is already connected to the server"
 msgstr "Tài khoản này đã kết nối đến máy chủ"
 
@@ -1573,7 +1562,6 @@ msgstr ""
 "giới hạn của thư viện mật mã"
 
 #: ../js/ui/telepathyClient.js:1333
-#| msgid "Connection error"
 msgid "Internal error"
 msgstr "Lỗi nội bộ"
 
@@ -1596,51 +1584,51 @@ msgstr "Sửa tài khoản"
 msgid "Unknown reason"
 msgstr "Lý do không biết"
 
-#: ../js/ui/userMenu.js:133
+#: ../js/ui/userMenu.js:135
 msgid "Hidden"
 msgstr "Ẩn"
 
-#: ../js/ui/userMenu.js:139
+#: ../js/ui/userMenu.js:141
 msgid "Idle"
 msgstr "Nhàn rỗi"
 
-#: ../js/ui/userMenu.js:142
+#: ../js/ui/userMenu.js:144
 msgid "Unavailable"
 msgstr "Không có mặt"
 
-#: ../js/ui/userMenu.js:579 ../js/ui/userMenu.js:583 ../js/ui/userMenu.js:653
+#: ../js/ui/userMenu.js:595 ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:669
 msgid "Power Off..."
 msgstr "Tắt máy..."
 
-#: ../js/ui/userMenu.js:615
+#: ../js/ui/userMenu.js:631
 msgid "Notifications"
 msgstr "Thông báo"
 
-#: ../js/ui/userMenu.js:623
+#: ../js/ui/userMenu.js:639
 msgid "Online Accounts"
 msgstr "Tài khoản trực tuyến"
 
-#: ../js/ui/userMenu.js:627
+#: ../js/ui/userMenu.js:643
 msgid "System Settings"
 msgstr "Thiết lập hệ thống"
 
-#: ../js/ui/userMenu.js:634
+#: ../js/ui/userMenu.js:650
 msgid "Lock Screen"
 msgstr "Khoá màn hình"
 
-#: ../js/ui/userMenu.js:639
+#: ../js/ui/userMenu.js:655
 msgid "Switch User"
 msgstr "Chuyển người dùng"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:660
 msgid "Log Out..."
 msgstr "Đăng xuất..."
 
-#: ../js/ui/userMenu.js:672
+#: ../js/ui/userMenu.js:688
 msgid "Your chat status will be set to busy"
 msgstr "Trạng thái nhắn tin của bạn sẽ được đặt là bận"
 
-#: ../js/ui/userMenu.js:673
+#: ../js/ui/userMenu.js:689
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1703,21 +1691,20 @@ msgstr[0] "%u đầu vào"
 msgid "System Sounds"
 msgstr "Âm thanh hệ thống"
 
-#: ../src/main.c:262
+#: ../src/main.c:255
 msgid "Print version"
 msgstr "In phiên bản"
 
-#: ../src/main.c:268
+#: ../src/main.c:261
 msgid "Mode used by GDM for login screen"
 msgstr "Chể độ dùng bởi GDM cho màn hình đăng nhập"
 
-#: ../src/shell-app.c:617
+#: ../src/shell-app.c:619
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Lỗi chạy '%s'"
 
 #: ../src/shell-keyring-prompt.c:708
-#| msgid "Does not match"
 msgid "Passwords do not match."
 msgstr "Mật khẩu không khớp"
 
