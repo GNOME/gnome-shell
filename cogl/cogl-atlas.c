@@ -196,7 +196,8 @@ _cogl_atlas_get_initial_size (CoglPixelFormat format,
   /* Some platforms might not support this large size so we'll
      decrease the size until it can */
   while (size > 1 &&
-         !ctx->texture_driver->size_supported (GL_TEXTURE_2D,
+         !ctx->texture_driver->size_supported (ctx,
+                                               GL_TEXTURE_2D,
                                                gl_intformat,
                                                gl_type,
                                                size, size))
@@ -226,7 +227,8 @@ _cogl_atlas_create_map (CoglPixelFormat          format,
 
   /* Keep trying increasingly larger atlases until we can fit all of
      the textures */
-  while (ctx->texture_driver->size_supported (GL_TEXTURE_2D,
+  while (ctx->texture_driver->size_supported (ctx,
+                                              GL_TEXTURE_2D,
                                               gl_intformat,
                                               gl_type,
                                               map_width, map_height))

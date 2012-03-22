@@ -651,7 +651,8 @@ _cogl_texture_2d_sliced_slices_create (CoglContext *ctx,
       CoglSpan span;
 
       /* Check if size supported else bail out */
-      if (!ctx->texture_driver->size_supported (GL_TEXTURE_2D,
+      if (!ctx->texture_driver->size_supported (ctx,
+                                                GL_TEXTURE_2D,
                                                 gl_intformat,
                                                 gl_type,
                                                 max_width,
@@ -685,7 +686,8 @@ _cogl_texture_2d_sliced_slices_create (CoglContext *ctx,
   else
     {
       /* Decrease the size of largest slice until supported by GL */
-      while (!ctx->texture_driver->size_supported (GL_TEXTURE_2D,
+      while (!ctx->texture_driver->size_supported (ctx,
+                                                   GL_TEXTURE_2D,
                                                    gl_intformat,
                                                    gl_type,
                                                    max_width,

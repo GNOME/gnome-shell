@@ -53,13 +53,12 @@
 #endif
 
 static void
-_cogl_texture_driver_gen (GLenum   gl_target,
-                          GLsizei  n,
-                          GLuint  *textures)
+_cogl_texture_driver_gen (CoglContext *ctx,
+                          GLenum gl_target,
+                          GLsizei n,
+                          GLuint *textures)
 {
   unsigned int i;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   GE (ctx, glGenTextures (n, textures));
 
@@ -84,21 +83,24 @@ _cogl_texture_driver_gen (GLenum   gl_target,
 }
 
 static void
-_cogl_texture_driver_prep_gl_for_pixels_upload (int pixels_rowstride,
+_cogl_texture_driver_prep_gl_for_pixels_upload (CoglContext *context,
+                                                int pixels_rowstride,
                                                 int pixels_bpp)
 {
   _cogl_texture_prep_gl_alignment_for_pixels_upload (pixels_rowstride);
 }
 
 static void
-_cogl_texture_driver_prep_gl_for_pixels_download (int pixels_rowstride,
+_cogl_texture_driver_prep_gl_for_pixels_download (CoglContext *ctx,
+                                                  int pixels_rowstride,
                                                   int pixels_bpp)
 {
   _cogl_texture_prep_gl_alignment_for_pixels_download (pixels_rowstride);
 }
 
 static CoglBitmap *
-prepare_bitmap_alignment_for_upload (CoglBitmap *src_bmp)
+prepare_bitmap_alignment_for_upload (CoglContext *ctx,
+                                     CoglBitmap *src_bmp)
 {
   CoglPixelFormat format = cogl_bitmap_get_format (src_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
@@ -124,7 +126,8 @@ prepare_bitmap_alignment_for_upload (CoglBitmap *src_bmp)
 }
 
 static void
-_cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
+_cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
+                                             GLenum       gl_target,
                                              GLuint       gl_handle,
                                              gboolean     is_foreign,
                                              int          src_x,
@@ -143,8 +146,6 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
   CoglBitmap *slice_bmp;
   int rowstride;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   /* If we are copying a sub region of the source bitmap then we need
      to copy it because GLES does not support GL_UNPACK_ROW_LENGTH */
   if (src_x != 0 || src_y != 0 ||
@@ -162,12 +163,12 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
                                    width, height);
     }
   else
-    slice_bmp = prepare_bitmap_alignment_for_upload (source_bmp);
+    slice_bmp = prepare_bitmap_alignment_for_upload (ctx, source_bmp);
 
   rowstride = cogl_bitmap_get_rowstride (slice_bmp);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  _cogl_texture_driver_prep_gl_for_pixels_upload (rowstride, bpp);
+  _cogl_texture_driver_prep_gl_for_pixels_upload (ctx, rowstride, bpp);
 
   data = _cogl_bitmap_bind (slice_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
@@ -186,7 +187,8 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
 }
 
 static void
-_cogl_texture_driver_upload_to_gl (GLenum       gl_target,
+_cogl_texture_driver_upload_to_gl (CoglContext *ctx,
+                                   GLenum       gl_target,
                                    GLuint       gl_handle,
                                    gboolean     is_foreign,
                                    CoglBitmap  *source_bmp,
@@ -202,13 +204,11 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
   CoglBitmap *bmp;
   guint8 *data;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  bmp = prepare_bitmap_alignment_for_upload (source_bmp);
+  bmp = prepare_bitmap_alignment_for_upload (ctx, source_bmp);
   rowstride = cogl_bitmap_get_rowstride (bmp);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  _cogl_texture_driver_prep_gl_for_pixels_upload (rowstride, bpp);
+  _cogl_texture_driver_prep_gl_for_pixels_upload (ctx, rowstride, bpp);
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
@@ -228,7 +228,8 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
 }
 
 static void
-_cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
+_cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
+                                      GLenum       gl_target,
                                       GLuint       gl_handle,
                                       gboolean     is_foreign,
                                       GLint        height,
@@ -245,8 +246,6 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
   int bmp_height = cogl_bitmap_get_height (source_bmp);
   guint8 *data;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
   /* If the rowstride or image height can't be specified with just
@@ -260,7 +259,7 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
       CoglPixelFormat source_bmp_format = cogl_bitmap_get_format (source_bmp);
       int i;
 
-      _cogl_texture_driver_prep_gl_for_pixels_upload (bmp_width * bpp, bpp);
+      _cogl_texture_driver_prep_gl_for_pixels_upload (ctx, bmp_width * bpp, bpp);
 
       /* Initialize the texture with empty data and then upload each
          image with a sub-region update */
@@ -314,7 +313,7 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
     {
       data = _cogl_bitmap_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
-      _cogl_texture_driver_prep_gl_for_pixels_upload (rowstride, bpp);
+      _cogl_texture_driver_prep_gl_for_pixels_upload (ctx, rowstride, bpp);
 
       GE( ctx, glTexImage3D (gl_target,
                              0, /* level */
@@ -335,25 +334,25 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
  * fallback to a generic render + readpixels approach to downloading
  * texture data. (See _cogl_texture_draw_and_read() ) */
 static gboolean
-_cogl_texture_driver_gl_get_tex_image (GLenum  gl_target,
-                                       GLenum  dest_gl_format,
-                                       GLenum  dest_gl_type,
+_cogl_texture_driver_gl_get_tex_image (CoglContext *ctx,
+                                       GLenum gl_target,
+                                       GLenum dest_gl_format,
+                                       GLenum dest_gl_type,
                                        guint8 *dest)
 {
   return FALSE;
 }
 
 static gboolean
-_cogl_texture_driver_size_supported_3d (GLenum gl_target,
+_cogl_texture_driver_size_supported_3d (CoglContext *ctx,
+                                        GLenum gl_target,
                                         GLenum gl_format,
                                         GLenum gl_type,
-                                        int    width,
-                                        int    height,
-                                        int    depth)
+                                        int width,
+                                        int height,
+                                        int depth)
 {
   GLint max_size;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   /* GLES doesn't support a proxy texture target so let's at least
      check whether the size is greater than
@@ -364,15 +363,14 @@ _cogl_texture_driver_size_supported_3d (GLenum gl_target,
 }
 
 static gboolean
-_cogl_texture_driver_size_supported (GLenum gl_target,
+_cogl_texture_driver_size_supported (CoglContext *ctx,
+                                     GLenum gl_target,
                                      GLenum gl_format,
                                      GLenum gl_type,
-                                     int    width,
-                                     int    height)
+                                     int width,
+                                     int height)
 {
   GLint max_size;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   /* GLES doesn't support a proxy texture target so let's at least
      check whether the size is greater than GL_MAX_TEXTURE_SIZE */
@@ -382,15 +380,17 @@ _cogl_texture_driver_size_supported (GLenum gl_target,
 }
 
 static void
-_cogl_texture_driver_try_setting_gl_border_color (
-                                              GLuint   gl_target,
-                                              const GLfloat *transparent_color)
+_cogl_texture_driver_try_setting_gl_border_color
+                                            (CoglContext *ctx,
+                                             GLuint gl_target,
+                                             const GLfloat *transparent_color)
 {
   /* FAIL! */
 }
 
 static gboolean
-_cogl_texture_driver_allows_foreign_gl_target (GLenum gl_target)
+_cogl_texture_driver_allows_foreign_gl_target (CoglContext *ctx,
+                                               GLenum gl_target)
 {
   /* Allow 2-dimensional textures only */
   if (gl_target != GL_TEXTURE_2D)
@@ -399,10 +399,9 @@ _cogl_texture_driver_allows_foreign_gl_target (GLenum gl_target)
 }
 
 static void
-_cogl_texture_driver_gl_generate_mipmaps (GLenum gl_target)
+_cogl_texture_driver_gl_generate_mipmaps (CoglContext *ctx,
+                                          GLenum gl_target)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   if (ctx->driver == COGL_DRIVER_GLES2)
     GE( ctx, glGenerateMipmap (gl_target) );
 }

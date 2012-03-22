@@ -135,7 +135,8 @@ _cogl_texture_rectangle_can_create (unsigned int width,
                                           &gl_type);
 
   /* Check that the driver can create a texture with that size */
-  if (!ctx->texture_driver->size_supported (GL_TEXTURE_RECTANGLE_ARB,
+  if (!ctx->texture_driver->size_supported (ctx,
+                                            GL_TEXTURE_RECTANGLE_ARB,
                                             gl_intformat,
                                             gl_type,
                                             width,
@@ -206,7 +207,10 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
   tex_rect = _cogl_texture_rectangle_create_base (width, height,
                                                   internal_format);
 
-  ctx->texture_driver->gen (GL_TEXTURE_RECTANGLE_ARB, 1, &tex_rect->gl_texture);
+  ctx->texture_driver->gen (ctx,
+                            GL_TEXTURE_RECTANGLE_ARB,
+                            1, /* num textures */
+                            &tex_rect->gl_texture);
   _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
                                    tex_rect->gl_texture,
                                    tex_rect->is_foreign);
@@ -255,8 +259,12 @@ _cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
                                                   cogl_bitmap_get_height (bmp),
                                                   internal_format);
 
-  ctx->texture_driver->gen (GL_TEXTURE_RECTANGLE_ARB, 1, &tex_rect->gl_texture);
-  ctx->texture_driver->upload_to_gl (GL_TEXTURE_RECTANGLE_ARB,
+  ctx->texture_driver->gen (ctx,
+                            GL_TEXTURE_RECTANGLE_ARB,
+                            1, /* num textures */
+                            &tex_rect->gl_texture);
+  ctx->texture_driver->upload_to_gl (ctx,
+                                     GL_TEXTURE_RECTANGLE_ARB,
                                      tex_rect->gl_texture,
                                      FALSE,
                                      dst_bmp,
@@ -288,7 +296,8 @@ _cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  if (!ctx->texture_driver->allows_foreign_gl_target (GL_TEXTURE_RECTANGLE_ARB))
+  if (!ctx->texture_driver->allows_foreign_gl_target (ctx,
+                                                      GL_TEXTURE_RECTANGLE_ARB))
     return NULL;
 
   /* Make sure it is a valid GL texture object */
@@ -506,7 +515,8 @@ _cogl_texture_rectangle_set_region (CoglTexture    *tex,
                                           &gl_type);
 
   /* Send data to GL */
-  ctx->texture_driver->upload_subregion_to_gl (GL_TEXTURE_RECTANGLE_ARB,
+  ctx->texture_driver->upload_subregion_to_gl (ctx,
+                                               GL_TEXTURE_RECTANGLE_ARB,
                                                tex_rect->gl_texture,
                                                FALSE,
                                                src_x, src_y,
@@ -542,12 +552,13 @@ _cogl_texture_rectangle_get_data (CoglTexture     *tex,
                                           &gl_format,
                                           &gl_type);
 
-  ctx->texture_driver->prep_gl_for_pixels_download (rowstride, bpp);
+  ctx->texture_driver->prep_gl_for_pixels_download (ctx, rowstride, bpp);
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
                                    tex_rect->gl_texture,
                                    tex_rect->is_foreign);
-  return ctx->texture_driver->gl_get_tex_image (GL_TEXTURE_RECTANGLE_ARB,
+  return ctx->texture_driver->gl_get_tex_image (ctx,
+                                                GL_TEXTURE_RECTANGLE_ARB,
                                                 gl_format,
                                                 gl_type,
                                                 data);

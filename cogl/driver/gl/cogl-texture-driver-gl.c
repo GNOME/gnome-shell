@@ -46,13 +46,12 @@
 #include <math.h>
 
 static void
-_cogl_texture_driver_gen (GLenum   gl_target,
-                          GLsizei  n,
-                          GLuint  *textures)
+_cogl_texture_driver_gen (CoglContext *ctx,
+                          GLenum gl_target,
+                          GLsizei n,
+                          GLuint *textures)
 {
   unsigned int i;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   GE (ctx, glGenTextures (n, textures));
 
@@ -86,14 +85,13 @@ _cogl_texture_driver_gen (GLenum   gl_target,
 /* OpenGL - unlike GLES - can upload a sub region of pixel data from a larger
  * source buffer */
 static void
-prep_gl_for_pixels_upload_full (int pixels_rowstride,
+prep_gl_for_pixels_upload_full (CoglContext *ctx,
+                                int pixels_rowstride,
                                 int image_height,
                                 int pixels_src_x,
                                 int pixels_src_y,
                                 int pixels_bpp)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   GE( ctx, glPixelStorei (GL_UNPACK_ROW_LENGTH,
                           pixels_rowstride / pixels_bpp) );
 
@@ -107,23 +105,23 @@ prep_gl_for_pixels_upload_full (int pixels_rowstride,
 }
 
 static void
-_cogl_texture_driver_prep_gl_for_pixels_upload (int pixels_rowstride,
+_cogl_texture_driver_prep_gl_for_pixels_upload (CoglContext *ctx,
+                                                int pixels_rowstride,
                                                 int pixels_bpp)
 {
-  prep_gl_for_pixels_upload_full (pixels_rowstride, 0, 0, 0, pixels_bpp);
+  prep_gl_for_pixels_upload_full (ctx, pixels_rowstride, 0, 0, 0, pixels_bpp);
 }
 
 /* OpenGL - unlike GLES - can download pixel data into a sub region of
  * a larger destination buffer */
 static void
-prep_gl_for_pixels_download_full (int pixels_rowstride,
+prep_gl_for_pixels_download_full (CoglContext *ctx,
+                                  int pixels_rowstride,
                                   int image_height,
                                   int pixels_src_x,
                                   int pixels_src_y,
                                   int pixels_bpp)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   GE( ctx, glPixelStorei (GL_PACK_ROW_LENGTH, pixels_rowstride / pixels_bpp) );
 
   GE( ctx, glPixelStorei (GL_PACK_SKIP_PIXELS, pixels_src_x) );
@@ -136,14 +134,16 @@ prep_gl_for_pixels_download_full (int pixels_rowstride,
 }
 
 static void
-_cogl_texture_driver_prep_gl_for_pixels_download (int pixels_rowstride,
+_cogl_texture_driver_prep_gl_for_pixels_download (CoglContext *ctx,
+                                                  int pixels_rowstride,
                                                   int pixels_bpp)
 {
-  prep_gl_for_pixels_download_full (pixels_rowstride, 0, 0, 0, pixels_bpp);
+  prep_gl_for_pixels_download_full (ctx, pixels_rowstride, 0, 0, 0, pixels_bpp);
 }
 
 static void
-_cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
+_cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
+                                             GLenum       gl_target,
                                              GLuint       gl_handle,
                                              gboolean     is_foreign,
                                              int          src_x,
@@ -160,12 +160,11 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
   CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   data = _cogl_bitmap_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  prep_gl_for_pixels_upload_full (cogl_bitmap_get_rowstride (source_bmp),
+  prep_gl_for_pixels_upload_full (ctx,
+                                  cogl_bitmap_get_rowstride (source_bmp),
                                   0,
                                   src_x,
                                   src_y,
@@ -184,7 +183,8 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
 }
 
 static void
-_cogl_texture_driver_upload_to_gl (GLenum       gl_target,
+_cogl_texture_driver_upload_to_gl (CoglContext *ctx,
+                                   GLenum       gl_target,
                                    GLuint       gl_handle,
                                    gboolean     is_foreign,
                                    CoglBitmap  *source_bmp,
@@ -196,12 +196,11 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
   CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   data = _cogl_bitmap_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  prep_gl_for_pixels_upload_full (cogl_bitmap_get_rowstride (source_bmp),
+  prep_gl_for_pixels_upload_full (ctx,
+                                  cogl_bitmap_get_rowstride (source_bmp),
                                   0, 0, 0, bpp);
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
@@ -219,7 +218,8 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
 }
 
 static void
-_cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
+_cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
+                                      GLenum       gl_target,
                                       GLuint       gl_handle,
                                       gboolean     is_foreign,
                                       GLint        height,
@@ -233,12 +233,11 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
   CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   data = _cogl_bitmap_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  prep_gl_for_pixels_upload_full (cogl_bitmap_get_rowstride (source_bmp),
+  prep_gl_for_pixels_upload_full (ctx,
+                                  cogl_bitmap_get_rowstride (source_bmp),
                                   (cogl_bitmap_get_height (source_bmp) /
                                    depth),
                                   0, 0, bpp);
@@ -260,13 +259,12 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
 }
 
 static gboolean
-_cogl_texture_driver_gl_get_tex_image (GLenum  gl_target,
-                                       GLenum  dest_gl_format,
-                                       GLenum  dest_gl_type,
+_cogl_texture_driver_gl_get_tex_image (CoglContext *ctx,
+                                       GLenum gl_target,
+                                       GLenum dest_gl_format,
+                                       GLenum dest_gl_type,
                                        guint8 *dest)
 {
-  _COGL_GET_CONTEXT (ctx, FALSE);
-
   GE (ctx, glGetTexImage (gl_target,
                           0, /* level */
                           dest_gl_format,
@@ -276,17 +274,16 @@ _cogl_texture_driver_gl_get_tex_image (GLenum  gl_target,
 }
 
 static gboolean
-_cogl_texture_driver_size_supported_3d (GLenum gl_target,
+_cogl_texture_driver_size_supported_3d (CoglContext *ctx,
+                                        GLenum gl_target,
                                         GLenum gl_format,
                                         GLenum gl_type,
-                                        int    width,
-                                        int    height,
-                                        int    depth)
+                                        int width,
+                                        int height,
+                                        int depth)
 {
   GLenum proxy_target;
   GLint new_width = 0;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   if (gl_target == GL_TEXTURE_3D)
     proxy_target = GL_PROXY_TEXTURE_3D;
@@ -306,16 +303,15 @@ _cogl_texture_driver_size_supported_3d (GLenum gl_target,
 }
 
 static gboolean
-_cogl_texture_driver_size_supported (GLenum gl_target,
+_cogl_texture_driver_size_supported (CoglContext *ctx,
+                                     GLenum gl_target,
                                      GLenum gl_format,
                                      GLenum gl_type,
-                                     int    width,
-                                     int    height)
+                                     int width,
+                                     int height)
 {
   GLenum proxy_target;
   GLint new_width = 0;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   if (gl_target == GL_TEXTURE_2D)
     proxy_target = GL_PROXY_TEXTURE_2D;
@@ -339,12 +335,11 @@ _cogl_texture_driver_size_supported (GLenum gl_target,
 }
 
 static void
-_cogl_texture_driver_try_setting_gl_border_color (
-                                              GLuint   gl_target,
-                                              const GLfloat *transparent_color)
+_cogl_texture_driver_try_setting_gl_border_color
+                                       (CoglContext *ctx,
+                                        GLuint gl_target,
+                                        const GLfloat *transparent_color)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   /* Use a transparent border color so that we can leave the
      color buffer alone when using texture co-ordinates
      outside of the texture */
@@ -353,7 +348,8 @@ _cogl_texture_driver_try_setting_gl_border_color (
 }
 
 static gboolean
-_cogl_texture_driver_allows_foreign_gl_target (GLenum gl_target)
+_cogl_texture_driver_allows_foreign_gl_target (CoglContext *ctx,
+                                               GLenum gl_target)
 {
   /* GL_ARB_texture_rectangle textures are supported if they are
      created from foreign because some chipsets have trouble with
@@ -369,10 +365,9 @@ _cogl_texture_driver_allows_foreign_gl_target (GLenum gl_target)
 }
 
 static void
-_cogl_texture_driver_gl_generate_mipmaps (GLenum gl_target)
+_cogl_texture_driver_gl_generate_mipmaps (CoglContext *ctx,
+                                          GLenum gl_target)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   GE( ctx, glGenerateMipmap (gl_target) );
 }
 

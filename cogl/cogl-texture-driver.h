@@ -34,9 +34,10 @@ struct _CoglTextureDriver
    * the driver will not allocate room for the mipmap tree.
    */
   void
-  (* gen) (GLenum   gl_target,
-           GLsizei  n,
-           GLuint  *textures);
+  (* gen) (CoglContext *ctx,
+           GLenum gl_target,
+           GLsizei n,
+           GLuint *textures);
 
   /*
    * This sets up the glPixelStore state for an upload to a destination with
@@ -46,7 +47,8 @@ struct _CoglTextureDriver
    * buffer which is why this interface is limited. The GL driver has a more
    * flexible version of this function that is uses internally */
   void
-  (* prep_gl_for_pixels_upload) (int pixels_rowstride,
+  (* prep_gl_for_pixels_upload) (CoglContext *ctx,
+                                 int pixels_rowstride,
                                  int pixels_bpp);
 
   /*
@@ -63,18 +65,19 @@ struct _CoglTextureDriver
    * XXX: sorry for the ridiculous number of arguments :-(
    */
   void
-  (* upload_subregion_to_gl) (GLenum       gl_target,
-                              GLuint       gl_handle,
-                              gboolean     is_foreign,
-                              int          src_x,
-                              int          src_y,
-                              int          dst_x,
-                              int          dst_y,
-                              int          width,
-                              int          height,
-                              CoglBitmap  *source_bmp,
-                              GLuint       source_gl_format,
-                              GLuint       source_gl_type);
+  (* upload_subregion_to_gl) (CoglContext *ctx,
+                              GLenum gl_target,
+                              GLuint gl_handle,
+                              gboolean is_foreign,
+                              int src_x,
+                              int src_y,
+                              int dst_x,
+                              int dst_y,
+                              int width,
+                              int height,
+                              CoglBitmap *source_bmp,
+                              GLuint source_gl_format,
+                              GLuint source_gl_type);
 
   /*
    * Replaces the contents of the GL texture with the entire bitmap. On
@@ -83,13 +86,14 @@ struct _CoglTextureDriver
    * alignment value because there is no GL_UNPACK_ROW_LENGTH
    */
   void
-  (* upload_to_gl) (GLenum       gl_target,
-                    GLuint       gl_handle,
-                    gboolean     is_foreign,
-                    CoglBitmap  *source_bmp,
-                    GLint        internal_gl_format,
-                    GLuint       source_gl_format,
-                    GLuint       source_gl_type);
+  (* upload_to_gl) (CoglContext *ctx,
+                    GLenum gl_target,
+                    GLuint gl_handle,
+                    gboolean is_foreign,
+                    CoglBitmap *source_bmp,
+                    GLint internal_gl_format,
+                    GLuint source_gl_format,
+                    GLuint source_gl_type);
 
   /*
    * Replaces the contents of the GL texture with the entire bitmap. The
@@ -99,15 +103,16 @@ struct _CoglTextureDriver
    * height of the bitmap by the depth.
    */
   void
-  (* upload_to_gl_3d) (GLenum       gl_target,
-                       GLuint       gl_handle,
-                       gboolean     is_foreign,
-                       GLint        height,
-                       GLint        depth,
-                       CoglBitmap  *source_bmp,
-                       GLint        internal_gl_format,
-                       GLuint       source_gl_format,
-                       GLuint       source_gl_type);
+  (* upload_to_gl_3d) (CoglContext *ctx,
+                       GLenum gl_target,
+                       GLuint gl_handle,
+                       gboolean is_foreign,
+                       GLint height,
+                       GLint depth,
+                       CoglBitmap *source_bmp,
+                       GLint internal_gl_format,
+                       GLuint source_gl_format,
+                       GLuint source_gl_type);
 
   /*
    * This sets up the glPixelStore state for an download to a destination with
@@ -117,7 +122,8 @@ struct _CoglTextureDriver
    * destination buffer, the GL driver has a more flexible version of
    * this function that it uses internally. */
   void
-  (* prep_gl_for_pixels_download) (int pixels_rowstride,
+  (* prep_gl_for_pixels_download) (CoglContext *ctx,
+                                   int pixels_rowstride,
                                    int pixels_bpp);
 
   /*
@@ -128,36 +134,39 @@ struct _CoglTextureDriver
    * _cogl_texture_draw_and_read () )
    */
   gboolean
-  (* gl_get_tex_image) (GLenum  gl_target,
-                        GLenum  dest_gl_format,
-                        GLenum  dest_gl_type,
+  (* gl_get_tex_image) (CoglContext *ctx,
+                        GLenum gl_target,
+                        GLenum dest_gl_format,
+                        GLenum dest_gl_type,
                         guint8 *dest);
 
   /*
    * It may depend on the driver as to what texture sizes are supported...
    */
   gboolean
-  (* size_supported) (GLenum gl_target,
+  (* size_supported) (CoglContext *ctx,
+                      GLenum gl_target,
                       GLenum gl_format,
                       GLenum gl_type,
-                      int    width,
-                      int    height);
+                      int width,
+                      int height);
 
   gboolean
-  (* size_supported_3d) (GLenum gl_target,
+  (* size_supported_3d) (CoglContext *ctx,
+                         GLenum gl_target,
                          GLenum gl_format,
                          GLenum gl_type,
-                         int    width,
-                         int    height,
-                         int    depth);
+                         int width,
+                         int height,
+                         int depth);
 
   /*
    * This driver abstraction is needed because GLES doesn't support setting
    * a texture border color.
    */
   void
-  (* try_setting_gl_border_color) (
-                                   GLuint         gl_target,
+  (* try_setting_gl_border_color) (CoglContext *ctx,
+                                   GLuint gl_target,
                                    const GLfloat *transparent_color);
 
   /*
@@ -166,7 +175,8 @@ struct _CoglTextureDriver
    * but GLES doesn't
    */
   gboolean
-  (* allows_foreign_gl_target) (GLenum gl_target);
+  (* allows_foreign_gl_target) (CoglContext *ctx,
+                                GLenum gl_target);
 
   /*
    * glGenerateMipmap semantics may need to be emulated for some
@@ -174,7 +184,8 @@ struct _CoglTextureDriver
    * number of known texels.
    */
   void
-  (* gl_generate_mipmaps) (GLenum texture_target);
+  (* gl_generate_mipmaps) (CoglContext *ctx,
+                           GLenum texture_target);
 
   /*
    * The driver may impose constraints on what formats can be used to store
@@ -184,9 +195,9 @@ struct _CoglTextureDriver
    */
   CoglPixelFormat
   (* find_best_gl_get_data_format) (CoglContext     *context,
-                                    CoglPixelFormat  format,
-                                    GLenum          *closest_gl_format,
-                                    GLenum          *closest_gl_type);
+                                    CoglPixelFormat format,
+                                    GLenum *closest_gl_format,
+                                    GLenum *closest_gl_type);
 };
 
 #endif /* __COGL_TEXTURE_DRIVER_H */

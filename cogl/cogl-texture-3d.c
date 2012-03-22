@@ -174,7 +174,8 @@ _cogl_texture_3d_can_create (CoglContext *ctx,
                                           &gl_type);
 
   /* Check that the driver can create a texture with that size */
-  if (!ctx->texture_driver->size_supported_3d (GL_TEXTURE_3D,
+  if (!ctx->texture_driver->size_supported_3d (ctx,
+                                               GL_TEXTURE_3D,
                                                gl_intformat,
                                                gl_type,
                                                width,
@@ -224,7 +225,7 @@ cogl_texture_3d_new_with_size (CoglContext *ctx,
                                          width, height, depth,
                                          internal_format);
 
-  ctx->texture_driver->gen (GL_TEXTURE_3D, 1, &tex_3d->gl_texture);
+  ctx->texture_driver->gen (ctx, GL_TEXTURE_3D, 1, &tex_3d->gl_texture);
   _cogl_bind_gl_texture_transient (GL_TEXTURE_3D,
                                    tex_3d->gl_texture,
                                    FALSE);
@@ -296,9 +297,10 @@ _cogl_texture_3d_new_from_bitmap (CoglContext *ctx,
       _cogl_bitmap_unmap (dst_bmp);
     }
 
-  ctx->texture_driver->gen (GL_TEXTURE_3D, 1, &tex_3d->gl_texture);
+  ctx->texture_driver->gen (ctx, GL_TEXTURE_3D, 1, &tex_3d->gl_texture);
 
-  ctx->texture_driver->upload_to_gl_3d (GL_TEXTURE_3D,
+  ctx->texture_driver->upload_to_gl_3d (ctx,
+                                        GL_TEXTURE_3D,
                                         tex_3d->gl_texture,
                                         FALSE, /* is_foreign */
                                         height,
@@ -510,7 +512,7 @@ _cogl_texture_3d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
          available we'll fallback to temporarily enabling
          GL_GENERATE_MIPMAP and reuploading the first pixel */
       if (cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
-        ctx->texture_driver->gl_generate_mipmaps (GL_TEXTURE_3D);
+        ctx->texture_driver->gl_generate_mipmaps (ctx, GL_TEXTURE_3D);
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
       else if (ctx->driver != COGL_DRIVER_GLES2)
         {
