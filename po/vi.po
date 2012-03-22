@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: metacity GNOME 2.26\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-12-13 13:41+0000\n"
+"POT-Creation-Date: 2012-03-15 21:29+0000\n"
 "PO-Revision-Date: 2012-03-04 11:34+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -20,17 +20,16 @@ msgstr ""
 "X-Generator: LocFactoryEditor 1.8\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
+msgid "Windows"
+msgstr "Cửa sổ"
+
+#: ../src/50-mutter-windows.xml.in.h:2
 msgid "View split on left"
 msgstr "Phân đôi bên trái"
 
-#: ../src/50-mutter-windows.xml.in.h:2
+#: ../src/50-mutter-windows.xml.in.h:3
 msgid "View split on right"
 msgstr "Phân đôi bên phải"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#| msgid "_Windows"
-msgid "Windows"
-msgstr "Cửa sổ"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
@@ -74,12 +73,12 @@ msgstr "_Chờ"
 msgid "_Force Quit"
 msgstr "_Buộc thoát"
 
-#: ../src/core/display.c:365
+#: ../src/core/display.c:387
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Thiếu phần mở rộng %s cần thiết để tổng hợp"
 
-#: ../src/core/display.c:431
+#: ../src/core/display.c:453
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Lỗi mở bộ trình bày Hệ thống Cửa sổ X \"%s\".\n"
@@ -90,8 +89,7 @@ msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
-"Một chương trình khác đã dùng phím « %s » với phím bổ trợ «%x» như là tổ "
-"hợp.\n"
+"Một chương trình khác đã dùng phím « %s » với phím bổ trợ «%x» như là tổ hợp.\n"
 
 #: ../src/core/main.c:206
 msgid "Disable connection to session manager"
@@ -130,7 +128,7 @@ msgstr ""
 "Không tìm thấy sắc thái. Hãy bảo đảm %s tồn tại và chứa những sắc thái bình "
 "thường.\n"
 
-#: ../src/core/mutter.c:42
+#: ../src/core/mutter.c:40
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -146,15 +144,15 @@ msgstr ""
 "KHÔNG CÓ BẢO HÀNH GÌ CẢ, THẬM CHÍ KHÔNG CÓ BẢO ĐẢM ĐƯỢC NGỤ Ý KHẢ NĂNG BÁN "
 "HAY KHẢ NĂNG LÀM ĐƯỢC VIỆC DỨT KHOÁT.\n"
 
-#: ../src/core/mutter.c:56
+#: ../src/core/mutter.c:54
 msgid "Print version"
 msgstr "In phiên bản"
 
-#: ../src/core/mutter.c:62
+#: ../src/core/mutter.c:60
 msgid "Comma-separated list of compositor plugins"
 msgstr "Danh sách phần bổ sung tổng hợp cách nhau bằng dấu phẩy"
 
-#: ../src/core/prefs.c:1067
+#: ../src/core/prefs.c:1077
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -162,41 +160,40 @@ msgstr ""
 "Khả năng chỉnh sửa cho các ứng dụng không theo chuẩn đã đã tắt. Vài ứng dụng "
 "có thể sẽ xử sự không đúng.\n"
 
-#: ../src/core/prefs.c:1142
+#: ../src/core/prefs.c:1152
 #, c-format
-#| msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Không thể phân tích mô tả phông \"%s\" từ khóa GSettings \"%s\"\n"
 
-#: ../src/core/prefs.c:1208
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
-"Tìm thấy « %s » trong cơ sở dữ liệu cấu hình không phải giá trị hợp lệ cho "
-"bộ biến đổi nút chuột.\n"
+"Tìm thấy « %s » trong cơ sở dữ liệu cấu hình không phải giá trị hợp lệ cho bộ "
+"biến đổi nút chuột.\n"
 
-#: ../src/core/prefs.c:1720
+#: ../src/core/prefs.c:1739
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
-"Tìm thấy « %s » trong cơ sở dữ liệu cấu hình không phải giá trị hợp lệ cho "
-"tổ hợp phím « %s ».\n"
+"Tìm thấy « %s » trong cơ sở dữ liệu cấu hình không phải giá trị hợp lệ cho tổ "
+"hợp phím « %s ».\n"
 
-#: ../src/core/prefs.c:1817
+#: ../src/core/prefs.c:1836
 #, c-format
 msgid "Workspace %d"
 msgstr "Vùng làm việc %d"
 
-#: ../src/core/screen.c:741
+#: ../src/core/screen.c:730
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Màn hình %d trên bộ trình bày « %s » không hợp lệ.\n"
 
-#: ../src/core/screen.c:757
+#: ../src/core/screen.c:746
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -205,7 +202,7 @@ msgstr ""
 "Màn hình %d trên bộ trình bày « %s » đã có bộ quản lý cửa sổ rồi; hãy thử "
 "dùng tùy chọn «--replace» để _thay thế_ bộ quản lý cửa sổ đang dùng.\n"
 
-#: ../src/core/screen.c:784
+#: ../src/core/screen.c:773
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -213,12 +210,12 @@ msgstr ""
 "Không thể lấy vùng chọn bộ quản lý cửa sổ trên Màn hình %d trên bộ trình bày "
 "« %s ».\n"
 
-#: ../src/core/screen.c:839
+#: ../src/core/screen.c:828
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Màn hình %d trên bộ trình bày « %s » đã có bộ quản lý cửa sổ.\n"
 
-#: ../src/core/screen.c:1024
+#: ../src/core/screen.c:1013
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Không thể giải phóng Màn hình %d trên bộ trình bày « %s ».\n"
@@ -315,14 +312,14 @@ msgid "Window manager error: "
 msgstr "Lỗi bộ quản lý cửa sổ: "
 
 #. first time through
-#: ../src/core/window.c:7145
+#: ../src/core/window.c:7269
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
-"Cửa sổ « %s » tự đặt « SM_CLIENT_ID » cho chính nó, thay vì đặt trên cửa sổ "
-"« WM_CLIENT_LEADER » như quy định trong ICCCM.\n"
+"Cửa sổ « %s » tự đặt « SM_CLIENT_ID » cho chính nó, thay vì đặt trên cửa sổ « "
+"WM_CLIENT_LEADER » như quy định trong ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -331,11 +328,11 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7808
+#: ../src/core/window.c:7932
 #, c-format
 msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
-"%d x %d and max size %d x %d; this doesn't make much sense.\n"
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
 "Cửa sổ %s đặt gợi ý MWM rằng nó không thể bị thay đổi kích thước, nhưng đặt "
 "kích thước tối thiểu %d x %d và tối đa %d x %d; không hợp lý lắm.\n"
@@ -385,46 +382,53 @@ msgstr "Thuộc tính « %s » trên cửa sổ « 0x%lx » chứa chuỗi UTF-8
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"Thuộc tính « %s » trên cửa sổ « 0x%lx » chứa chuỗi UTF-8 sai cho mục %d "
-"trong danh sách.\n"
+"Thuộc tính « %s » trên cửa sổ « 0x%lx » chứa chuỗi UTF-8 sai cho mục %d trong "
+"danh sách.\n"
 
 #: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:1
+msgid "Modifier to use for extended window management operations"
+msgstr "Phím bổ trợ dùng cho chức năng quản lý cửa sổ mở rộng"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:2
+msgid ""
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
+msgstr ""
+"Phím này kích hoạt \"overlay\", một tổ hợp tổng quát cửa sổ và hệ thống chạy "
+"ứng dụng. Mặc định là \"phím Windows\" trên phần cứng PC. Chứa một tổ hợp "
+"phím, hoặc mặc định, hoặc chuỗi rỗng."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
 msgstr "Gắn hộp thoại cách thức"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:2
-msgid "Cancel tab popup"
-msgstr "Huỷ tab popup"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:4
+msgid ""
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
+msgstr ""
+"Nếu đúng (true), thay vì hiện thanh tiêu đề độc lập, hộp thoại cách thức sẽ "
+"xuất hiện gắn với thanh tiêu đề của cửa sổ cha và được di chuyển cùng với "
+"cửa sổ cha."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:3
+#: ../src/org.gnome.mutter.gschema.xml.in.h:5
+msgid "Live Hidden Windows"
+msgstr "Cửa sổ ẩn sống"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
 msgstr ""
 "Xác định có giữ cửa sổ ẩn (ví dụ cửa sổ thu nhỏ, và cửa sổ ở vùng làm việc "
 "khác) không."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:4
-msgid ""
-"Determines whether the use of popup and highlight frame should be disabled "
-"for window cycling."
-msgstr "Xác định có bỏ qua popup và khung tô sáng khi xoay vòng cửa sổ không."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid ""
-"Determines whether workspace switching should happen for windows on all "
-"monitors or only for windows on the primary monitor."
-msgstr ""
-"Xác định chuyển vùng làm việc cho cửa sổ trên mọi màn hình hay chỉ trên màn "
-"hình chính."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid "Draggable border width"
-msgstr "Độ rông biên có thể kéo"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -441,23 +445,43 @@ msgstr ""
 "hình sẽ phóng to toàn màn hình."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
-msgid "Live Hidden Windows"
-msgstr "Cửa sổ ẩn sống"
+msgid "Workspaces are managed dynamically"
+msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:10
-msgid "Modifier to use for extended window management operations"
-msgstr "Phím bổ trợ dùng cho chức năng quản lý cửa sổ mở rộng"
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:11
+msgid "Workspaces only on primary"
+msgstr "Vùng làm việc chỉ trên màn hình chính"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"Xác định chuyển vùng làm việc cho cửa sổ trên mọi màn hình hay chỉ trên màn "
+"hình chính."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "No tab popup"
 msgstr "Không tab popup"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
-#| msgid "Move between windows with popup"
-msgid "Select window from tab popup"
-msgstr "Chọn cửa sổ từ tab popup"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr "Xác định có bỏ qua popup và khung tô sáng khi xoay vòng cửa sổ không."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr "Độ rông biên có thể kéo"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -465,79 +489,18 @@ msgstr ""
 "Kích thước biên có thể kéo. Nếu biên thấy được của sắc thái không đủ, biên "
 "vô hình sẽ được thêm vào để thoả mãn giá trị này."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
-msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
-msgstr ""
-"Phím này kích hoạt \"overlay\", một tổ hợp tổng quát cửa sổ và hệ thống chạy "
-"ứng dụng. Mặc định là \"phím Windows\" trên phần cứng PC. Chứa một tổ hợp "
-"phím, hoặc mặc định, hoặc chuỗi rỗng."
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Select window from tab popup"
+msgstr "Chọn cửa sổ từ tab popup"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
-msgid ""
-"When true, instead of having independent titlebars, modal dialogs appear "
-"attached to the titlebar of the parent window and are moved together with "
-"the parent window."
-msgstr ""
-"Nếu đúng (true), thay vì hiện thanh tiêu đề độc lập, hộp thoại cách thức sẽ "
-"xuất hiện gắn với thanh tiêu đề của cửa sổ cha và được di chuyển cùng với "
-"cửa sổ cha."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
-msgid "Workspaces only on primary"
-msgstr "Vùng làm việc chỉ trên màn hình chính"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid "Cancel tab popup"
+msgstr "Huỷ tab popup"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Cách dùng: %s\n"
-
-#: ../src/ui/frames.c:1157
-msgid "Close Window"
-msgstr "Đóng cửa sổ"
-
-#: ../src/ui/frames.c:1160
-msgid "Window Menu"
-msgstr "Trình đơn cửa sổ"
-
-#: ../src/ui/frames.c:1163
-msgid "Minimize Window"
-msgstr "Thu nhỏ cửa sổ"
-
-#: ../src/ui/frames.c:1166
-msgid "Maximize Window"
-msgstr "Phóng to cửa sổ"
-
-#: ../src/ui/frames.c:1169
-msgid "Restore Window"
-msgstr "Phục hồi Cửa sổ"
-
-#: ../src/ui/frames.c:1172
-msgid "Roll Up Window"
-msgstr "Cuộn cửa sổ lên"
-
-#: ../src/ui/frames.c:1175
-msgid "Unroll Window"
-msgstr "Thả cửa sổ xuống"
-
-#: ../src/ui/frames.c:1178
-msgid "Keep Window On Top"
-msgstr "Giữ cửa sổ ở trên cùng"
-
-#: ../src/ui/frames.c:1181
-msgid "Remove Window From Top"
-msgstr "Thôi giữ cửa sổ ở trên cùng"
-
-#: ../src/ui/frames.c:1184
-msgid "Always On Visible Workspace"
-msgstr "Luôn nằm trong vùng làm việc có thể thấy"
-
-#: ../src/ui/frames.c:1187
-msgid "Put Window On Only One Workspace"
-msgstr "Đặt cửa sổ trên chỉ một vùng làm việc"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:69
@@ -821,8 +784,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"Lời ghi rõ màu GTK phải có trạng thái nằm trong ngoặc, v.d. «gtk:fg"
-"[NORMAL]», NORMAL (bình thường) là trạng thái; không thể phân tích « %s »."
+"Lời ghi rõ màu GTK phải có trạng thái nằm trong ngoặc, v.d. «gtk:fg[NORMAL]», "
+"NORMAL (bình thường) là trạng thái; không thể phân tích « %s »."
 
 #: ../src/ui/theme.c:1308
 #, c-format
@@ -849,8 +812,8 @@ msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
-"Dạng pha trộn là «blend/bg_color/fg_color/alpha», « %s » không tuân theo "
-"dạng thức đó."
+"Dạng pha trộn là «blend/bg_color/fg_color/alpha», « %s » không tuân theo dạng "
+"thức đó."
 
 #: ../src/ui/theme.c:1372
 #, c-format
@@ -867,8 +830,8 @@ msgstr "Giá trị alpha « %s » trong màu pha trộn không nằm giữa 0.0 
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
-"Dạng thức bóng là « shade/base_color/factor » (bóng/màu cơ bản/hệ số), « %s "
-"» không tuân theo dạng thức đó."
+"Dạng thức bóng là « shade/base_color/factor » (bóng/màu cơ bản/hệ số), « %s » "
+"không tuân theo dạng thức đó."
 
 #: ../src/ui/theme.c:1440
 #, c-format
@@ -950,8 +913,8 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
-"Biểu thức tọa độ có toán tử «%c» theo sau toán tử «%c» mà không có toán hạng "
-"ở giữa."
+"Biểu thức tọa độ có toán tử «%c» theo sau toán tử «%c» mà không có toán hạng ở "
+"giữa."
 
 #: ../src/ui/theme.c:2407 ../src/ui/theme.c:2452
 #, c-format
@@ -1081,8 +1044,8 @@ msgstr "Không thể phân tích « %s » thành số với điểm phù động
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr ""
-"Giá trị luận lý phải là « đúng » (true) hoặc « sai » (false), không thể là « "
-"%s »."
+"Giá trị luận lý phải là « đúng » (true) hoặc « sai » (false), không thể là « %s "
+"»."
 
 #: ../src/ui/theme-parser.c:735
 #, c-format
@@ -1295,8 +1258,8 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
-"Nên có thuộc tính «resize» (đổi cỡ) trên phần tử <%s> cho trạng thái phóng "
-"to/đánh bóng."
+"Nên có thuộc tính «resize» (đổi cỡ) trên phần tử <%s> cho trạng thái phóng to/"
+"đánh bóng."
 
 #: ../src/ui/theme-parser.c:3161
 #, c-format
@@ -1310,8 +1273,7 @@ msgstr ""
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr ""
-"Kiểu dạng đã được xác định cho trạng thái « %s » đổi cỡ « %s » tiêu điểm « "
-"%s »."
+"Kiểu dạng đã được xác định cho trạng thái « %s » đổi cỡ « %s » tiêu điểm « %s »."
 
 #: ../src/ui/theme-parser.c:3186 ../src/ui/theme-parser.c:3197
 #: ../src/ui/theme-parser.c:3208 ../src/ui/theme-parser.c:3233
@@ -1334,8 +1296,8 @@ msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Không thể có hai «draw_ops» trong một phần tử <button> (sắc thái xác định "
-"một «draw_ops» và có một phần tử <draw_ops>, hoặc xác định cả hai phần tử)."
+"Không thể có hai «draw_ops» trong một phần tử <button> (sắc thái xác định một "
+"«draw_ops» và có một phần tử <draw_ops>, hoặc xác định cả hai phần tử)."
 
 #: ../src/ui/theme-parser.c:3370
 msgid ""
@@ -1624,6 +1586,39 @@ msgstr "giá trị y là «%d», mong đợi giá trị «%d»"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "phân tích \"%d\" biểu thức tọa độ trong vòng %g giây (%g giây trung bình).\n"
+
+#~ msgid "Close Window"
+#~ msgstr "Đóng cửa sổ"
+
+#~ msgid "Window Menu"
+#~ msgstr "Trình đơn cửa sổ"
+
+#~ msgid "Minimize Window"
+#~ msgstr "Thu nhỏ cửa sổ"
+
+#~ msgid "Maximize Window"
+#~ msgstr "Phóng to cửa sổ"
+
+#~ msgid "Restore Window"
+#~ msgstr "Phục hồi Cửa sổ"
+
+#~ msgid "Roll Up Window"
+#~ msgstr "Cuộn cửa sổ lên"
+
+#~ msgid "Unroll Window"
+#~ msgstr "Thả cửa sổ xuống"
+
+#~ msgid "Keep Window On Top"
+#~ msgstr "Giữ cửa sổ ở trên cùng"
+
+#~ msgid "Remove Window From Top"
+#~ msgstr "Thôi giữ cửa sổ ở trên cùng"
+
+#~ msgid "Always On Visible Workspace"
+#~ msgstr "Luôn nằm trong vùng làm việc có thể thấy"
+
+#~ msgid "Put Window On Only One Workspace"
+#~ msgstr "Đặt cửa sổ trên chỉ một vùng làm việc"
 
 #~ msgid "Switch to workspace 1"
 #~ msgstr "Chuyển sang vùng làm việc 1"
@@ -2124,8 +2119,7 @@ msgstr ""
 #~ "thể dùng chung với «cái chuông hình» để cho phép «bíp» câm."
 
 #~ msgid "Disable misfeatures that are required by old or broken applications"
-#~ msgstr ""
-#~ "Tắt «tính năng sai» là cần thiết đối với các ứng dụng cũ hay bị hỏng"
+#~ msgstr "Tắt «tính năng sai» là cần thiết đối với các ứng dụng cũ hay bị hỏng"
 
 #~ msgid "Enable Visual Bell"
 #~ msgstr "Bật Chuông hình"
@@ -2146,8 +2140,8 @@ msgstr ""
 #~ "If true, ignore the titlebar_font option, and use the standard "
 #~ "application font for window titles."
 #~ msgstr ""
-#~ "Nếu bật, bỏ qua tùy chọn «titlebar_font», và dùng phông chữ ứng dụng "
-#~ "chuẩn cho tựa đề cửa sổ."
+#~ "Nếu bật, bỏ qua tùy chọn «titlebar_font», và dùng phông chữ ứng dụng chuẩn "
+#~ "cho tựa đề cửa sổ."
 
 #~ msgid ""
 #~ "If true, metacity will give the user less feedback by using wireframes, "
@@ -2235,8 +2229,8 @@ msgstr ""
 #~ "nhiều hành vi khác nhau (v.d. nhấn vào vùng khách, di chuyển hay thay đổi "
 #~ "kích cỡ của cửa sổ) bình thường cũng nâng cửa sổ lên (như một hiệu ứng "
 #~ "khác). Đặt tuỳ chọn này thành sai sẽ tháo chức năng nâng lên ra các hành "
-#~ "vi người dùng khác, và bỏ qua các yêu cầu nâng lên của ứng dụng. Xem lỗi "
-#~ "« http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6 ». Ngay cả khi tuỳ "
+#~ "vi người dùng khác, và bỏ qua các yêu cầu nâng lên của ứng dụng. Xem lỗi « "
+#~ "http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6 ». Ngay cả khi tuỳ "
 #~ "chọn này bị sai, cửa sổ vẫn còn có thể được nâng lên bằng cách Alt-nhấn "
 #~ "vào bất cứ nơi nào trên cửa sổ, bằng cách nhấn vào một cách thông thường "
 #~ "vào trang trí cửa sổ, hoặc do thông điệp đặc biệt từ bộ dàn trang, v.d. "
@@ -2276,17 +2270,17 @@ msgstr ""
 #~ "Cho Metacity biết cách thực hiện cái hiển thị khi có chuông từ hệ thống "
 #~ "hoặc từ ứng dụng khác. Hiện thời chỉ có hai gia trị hợp lệ là "
 #~ "«fullscreen» (toàn màn hình), làm chớp trắng-đen toàn màn hình, và "
-#~ "«frame_flash» (khung chớp) làm chớp thanh tựa đề của ứng dụng rung "
-#~ "chuông. Nếu không biết ứng dụng nào rung chuông (trường hợp thường khi là "
-#~ "«chuông hệ thống»), tựa đề ứng dụng đang có tiêu điểm sẽ chớp."
+#~ "«frame_flash» (khung chớp) làm chớp thanh tựa đề của ứng dụng rung chuông. "
+#~ "Nếu không biết ứng dụng nào rung chuông (trường hợp thường khi là «chuông "
+#~ "hệ thống»), tựa đề ứng dụng đang có tiêu điểm sẽ chớp."
 
 #~ msgid ""
 #~ "The /apps/metacity/global_keybindings/run_command_N keys define "
 #~ "keybindings that correspond to these commands. Pressing the keybinding "
 #~ "for run_command_N will execute command_N."
 #~ msgstr ""
-#~ "Những khóa «/apps/metacity/global_keybindings/run_command_N» định nghĩa "
-#~ "tổ hợp phím tương ứng với những lệnh này. Hãy nhấn phím tổ hợp của "
+#~ "Những khóa «/apps/metacity/global_keybindings/run_command_N» định nghĩa tổ "
+#~ "hợp phím tương ứng với những lệnh này. Hãy nhấn phím tổ hợp của "
 #~ "«run_command_N» để thực hiện «command_N»."
 
 #~ msgid ""
@@ -2294,9 +2288,9 @@ msgstr ""
 #~ "a keybinding which causes the command specified by this setting to be "
 #~ "invoked."
 #~ msgstr ""
-#~ "Những khóa «/apps/metacity/global_keybindings/run_command_screenshot» "
-#~ "định nghĩa tổ hợp phím, khi được nhấn, sẽ thực hiện lệnh được ghi trong "
-#~ "khóa này."
+#~ "Những khóa «/apps/metacity/global_keybindings/run_command_screenshot» định "
+#~ "nghĩa tổ hợp phím, khi được nhấn, sẽ thực hiện lệnh được ghi trong khóa "
+#~ "này."
 
 #~ msgid ""
 #~ "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
@@ -2352,9 +2346,8 @@ msgstr ""
 #~ "Chế độ tiêu điểm cửa sổ chỉ ra cách cửa sổ được kích hoạt. Nó có thể có "
 #~ "ba giá trị sau: «nhắp» (click) nghĩa là cửa sổ được nhấn để nhận tiêu "
 #~ "điểm, «luộn thuộm» (sloppy) nghĩa là cửa sổ nhận tiêu điểm nếu con chuột "
-#~ "đi ngang qua cửa sổ, và «chuột» (mouse) nghĩa là cửa sổ nhận tiêu điểm "
-#~ "khi con chuột đi vào cửa sổ và mất tiêu điểm khi con chuột rời khỏi cửa "
-#~ "sổ."
+#~ "đi ngang qua cửa sổ, và «chuột» (mouse) nghĩa là cửa sổ nhận tiêu điểm khi "
+#~ "con chuột đi vào cửa sổ và mất tiêu điểm khi con chuột rời khỏi cửa sổ."
 
 #~ msgid "The window screenshot command"
 #~ msgstr "Lệnh chụp hình cửa sổ"
@@ -2572,8 +2565,8 @@ msgstr ""
 #~ "cỡ của cửa sổ) bình thường có hiệu ứng khác là nâng cửa sổ lên. Rất "
 #~ "khuyên bạn không đặt tùy chọn này thành sai (false), mà sẽ gỡ hành động "
 #~ "nâng lên ra các hành động người dùng khác, và bỏ qua các yêu cầu nâng lên "
-#~ "được làm bởi ứng dụng. Xem vấn đề « http://bugzilla.gnome.org/show_bug."
-#~ "cgi?id=445447#c6 »."
+#~ "được làm bởi ứng dụng. Xem vấn đề « http://bugzilla.gnome.org/show_bug.cgi?"
+#~ "id=445447#c6 »."
 
 #~ msgid "Move backwards between panels and the desktop with popup"
 #~ msgstr "Di chuyển lùi lại giữa các bảng và màn hình nền với cửa sổ bật lên"
@@ -2665,11 +2658,11 @@ msgstr ""
 #~ "will be no keybinding for this action."
 #~ msgstr ""
 #~ "Tổ hợp phím chuyển qua vùng làm việc dưới vùng làm việc hiện thời. Dạng "
-#~ "thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường, và cả những từ viết "
-#~ "tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là "
-#~ "chuỗi đặc biệt «disabled» thì sẽ không có tổ hợp phím nào thực hiện hành "
-#~ "động này."
+#~ "thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1"
+#~ "\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường, và cả những từ viết tắt "
+#~ "như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi "
+#~ "đặc biệt «disabled» thì sẽ không có tổ hợp phím nào thực hiện hành động "
+#~ "này."
 
 #~ msgid ""
 #~ "The keybinding that switches to the workspace on the left of the current "
@@ -2712,8 +2705,8 @@ msgstr ""
 #~ "Tổ hợp phím chuyển qua vùng làm việc 1. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding that switches to workspace 10. The format looks like \"&lt;"
@@ -2726,8 +2719,8 @@ msgstr ""
 #~ "Tổ hợp phím chuyển qua vùng làm việc 10. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding that switches to workspace 11. The format looks like \"&lt;"
@@ -2740,8 +2733,8 @@ msgstr ""
 #~ "Tổ hợp phím chuyển qua vùng làm việc 11. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding that switches to workspace 12. The format looks like \"&lt;"
@@ -2754,8 +2747,8 @@ msgstr ""
 #~ "Tổ hợp phím chuyển qua vùng làm việc 12. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding that switches to workspace 2. The format looks like \"&lt;"
@@ -2768,8 +2761,8 @@ msgstr ""
 #~ "Tổ hợp phím chuyển qua vùng làm việc 2. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding that switches to workspace 3. The format looks like \"&lt;"
@@ -2782,8 +2775,8 @@ msgstr ""
 #~ "Tổ hợp phím chuyển qua vùng làm việc 3. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding that switches to workspace 4. The format looks like \"&lt;"
@@ -2796,8 +2789,8 @@ msgstr ""
 #~ "Tổ hợp phím chuyển qua vùng làm việc 4. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding that switches to workspace 5. The format looks like \"&lt;"
@@ -2810,8 +2803,8 @@ msgstr ""
 #~ "Tổ hợp phím chuyển qua vùng làm việc 5. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding that switches to workspace 6. The format looks like \"&lt;"
@@ -2824,8 +2817,8 @@ msgstr ""
 #~ "Tổ hợp phím chuyển qua vùng làm việc 6. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding that switches to workspace 7. The format looks like \"&lt;"
@@ -2838,8 +2831,8 @@ msgstr ""
 #~ "Tổ hợp phím chuyển qua vùng làm việc 7. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding that switches to workspace 8. The format looks like \"&lt;"
@@ -2852,8 +2845,8 @@ msgstr ""
 #~ "Tổ hợp phím chuyển qua vùng làm việc 8. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding that switches to workspace 9. The format looks like \"&lt;"
@@ -2866,8 +2859,8 @@ msgstr ""
 #~ "Tổ hợp phím chuyển qua vùng làm việc 9. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding used to activate the window menu. The format looks like "
@@ -2880,8 +2873,8 @@ msgstr ""
 #~ "Tổ hợp phím hoạt hóa trình đơn cửa sổ. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding used to close a window. The format looks like \"&lt;"
@@ -2905,12 +2898,12 @@ msgstr ""
 #~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 #~ "then there will be no keybinding for this action."
 #~ msgstr ""
-#~ "Tổ hợp phím để vào «chế độ di chuyển» và bắt đầu di chuyển cửa sổ bằng "
-#~ "bàn phím. Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường, và cả những "
-#~ "từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn "
-#~ "là chuỗi đặc biệt «disabled» thì sẽ không có tổ hợp phím nào thực hiện "
-#~ "hành động này."
+#~ "Tổ hợp phím để vào «chế độ di chuyển» và bắt đầu di chuyển cửa sổ bằng bàn "
+#~ "phím. Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;"
+#~ "Alt&gt;F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường, và cả những từ "
+#~ "viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là "
+#~ "chuỗi đặc biệt «disabled» thì sẽ không có tổ hợp phím nào thực hiện hành "
+#~ "động này."
 
 #~ msgid ""
 #~ "The keybinding used to enter \"resize mode\" and begin resizing a window "
@@ -2936,11 +2929,11 @@ msgstr ""
 #~ "then there will be no keybinding for this action."
 #~ msgstr ""
 #~ "Tổ hợp phím dùng để ẩn mọi cửa sổ thường và đặt tiêu điểm cho nền. Dạng "
-#~ "thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường, và cả những từ viết "
-#~ "tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là "
-#~ "chuỗi đặc biệt «disabled» thì sẽ không có tổ hợp phím nào thực hiện hành "
-#~ "động này."
+#~ "thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1"
+#~ "\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường, và cả những từ viết tắt "
+#~ "như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi "
+#~ "đặc biệt «disabled» thì sẽ không có tổ hợp phím nào thực hiện hành động "
+#~ "này."
 
 #~ msgid ""
 #~ "The keybinding used to maximize a window. The format looks like \"&lt;"
@@ -2953,8 +2946,8 @@ msgstr ""
 #~ "Tổ hợp phím dùng để phóng to cửa sổ. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding used to minimize a window. The format looks like \"&lt;"
@@ -2967,8 +2960,8 @@ msgstr ""
 #~ "Tổ hợp phím dùng để thu nhỏ cửa sổ. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding used to move a window one workspace down. The format looks "
@@ -2993,11 +2986,11 @@ msgstr ""
 #~ "keybinding for this action."
 #~ msgstr ""
 #~ "Tổ hợp phím dùng để di chuyển cửa sổ qua vùng làm việc bên trái. Dạng "
-#~ "thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường, và cả những từ viết "
-#~ "tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là "
-#~ "chuỗi đặc biệt «disabled» thì sẽ không có tổ hợp phím nào thực hiện hành "
-#~ "động này."
+#~ "thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1"
+#~ "\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường, và cả những từ viết tắt "
+#~ "như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi "
+#~ "đặc biệt «disabled» thì sẽ không có tổ hợp phím nào thực hiện hành động "
+#~ "này."
 
 #~ msgid ""
 #~ "The keybinding used to move a window one workspace to the right. The "
@@ -3008,11 +3001,11 @@ msgstr ""
 #~ "keybinding for this action."
 #~ msgstr ""
 #~ "Tổ hợp phím dùng để di chuyển cửa sổ qua vùng làm việc bên phải. Dạng "
-#~ "thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường, và cả những từ viết "
-#~ "tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là "
-#~ "chuỗi đặc biệt «disabled» thì sẽ không có tổ hợp phím nào thực hiện hành "
-#~ "động này."
+#~ "thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1"
+#~ "\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường, và cả những từ viết tắt "
+#~ "như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi "
+#~ "đặc biệt «disabled» thì sẽ không có tổ hợp phím nào thực hiện hành động "
+#~ "này."
 
 #~ msgid ""
 #~ "The keybinding used to move a window one workspace up. The format looks "
@@ -3208,8 +3201,8 @@ msgstr ""
 #~ "và màn hình làm việc, dùng cửa sổ bật lên. Dạng thức kiểu như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Trình phân tích hiểu "
 #~ "cả chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between panels and the "
@@ -3223,8 +3216,8 @@ msgstr ""
 #~ "màn hình làm việc, không dùng cửa sổ bật lên. Dạng thức kiểu như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Trình phân tích hiểu "
 #~ "cả chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between windows of an "
@@ -3276,8 +3269,8 @@ msgstr ""
 #~ "lên. Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;"
 #~ "Alt&gt;F1\". Trình phân tích hiểu cả chữ hoa lẫn chữ thường, và cả những "
 #~ "từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn "
-#~ "là chuỗi đặc biệt«disabled» thì sẽ không có tổ hợp phím nào thực hiện "
-#~ "hành động này."
+#~ "là chuỗi đặc biệt«disabled» thì sẽ không có tổ hợp phím nào thực hiện hành "
+#~ "động này."
 
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between windows, using a "
@@ -3322,8 +3315,8 @@ msgstr ""
 #~ "làm việc, không dùng cửa sổ bật lên. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding used to move focus between windows of an application "
@@ -3340,8 +3333,8 @@ msgstr ""
 #~ "Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;"
 #~ "Alt&gt;F1\". Bộ phân tách hiểu cả chữ hoa lẫn chữ thường,  và cả những từ "
 #~ "viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùychọn là "
-#~ "chuỗi « disabled » (tắt) thì sẽ không có phím nóng nào thực hiện hành "
-#~ "động này."
+#~ "chuỗi « disabled » (tắt) thì sẽ không có phím nóng nào thực hiện hành động "
+#~ "này."
 
 #~ msgid ""
 #~ "The keybinding used to move focus between windows of an application, "
@@ -3452,8 +3445,8 @@ msgstr ""
 #~ "Tổ hợp phím để bật tắt trạng thái đánh bóng. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có phím nóng nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có phím nóng nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding used to toggle whether the window is on all workspaces or "
@@ -3467,8 +3460,8 @@ msgstr ""
 #~ "vùng làm việc. Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;"
 #~ "Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường, và "
 #~ "cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt "
-#~ "tùy chọn là chuỗi đặc biệt «disabled» thì sẽ không có tổ hợp phím nào "
-#~ "thực hiện hành động này."
+#~ "tùy chọn là chuỗi đặc biệt «disabled» thì sẽ không có tổ hợp phím nào thực "
+#~ "hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding used to unmaximize a window. The format looks like \"&lt;"
@@ -3510,8 +3503,8 @@ msgstr ""
 #~ "Tổ hợp phím dùng để gọi một thiết bị cuối. Dạng thức tương tự như \"&lt;"
 #~ "Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả "
 #~ "chữ hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
-#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì "
-#~ "sẽ không có tổ hợp phím nào thực hiện hành động này."
+#~ "\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi đặc biệt «disabled» thì sẽ "
+#~ "không có tổ hợp phím nào thực hiện hành động này."
 
 #~ msgid ""
 #~ "The keybinding which invokes the panel's screenshot utility to take a "
@@ -3603,10 +3596,10 @@ msgstr ""
 
 #~ msgid ""
 #~ "This keybinding moves a window into the east (right) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1\". The parser is fairly liberal and allows lower or upper case, and "
-#~ "also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-#~ "set the option to the special string \"disabled\", then there will be no "
+#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
+#~ "the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
 #~ msgstr ""
 #~ "Phím tắt để đặt cửa sổ theo hướng đông (bên phải) màn hình. Dạng thức "
@@ -3687,10 +3680,10 @@ msgstr ""
 
 #~ msgid ""
 #~ "This keybinding moves a window into the west (left) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1\". The parser is fairly liberal and allows lower or upper case, and "
-#~ "also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-#~ "set the option to the special string \"disabled\", then there will be no "
+#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
+#~ "the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
 #~ msgstr ""
 #~ "Phím tắt để đặt cửa sổ theo hướng tây (bên trái) màn hình. Dạng thức "
@@ -3774,8 +3767,8 @@ msgstr ""
 #~ "Cannot specify both button_width/button_height and aspect ratio for "
 #~ "buttons"
 #~ msgstr ""
-#~ "Không thể xác định cả « button_width/button_height » (rộng/cao nút) lẫn "
-#~ "tỷ lệ hình thể đều của cái nút."
+#~ "Không thể xác định cả « button_width/button_height » (rộng/cao nút) lẫn tỷ "
+#~ "lệ hình thể đều của cái nút."
 
 #~ msgid "No \"top\" attribute on element <%s>"
 #~ msgstr "Không có thuộc tính «top» (đính) trong phần tử <%s>."
@@ -3820,8 +3813,7 @@ msgstr ""
 #~ msgstr "Không có thuộc tính «start_angle» (góc bắt đầu) trong phần tử <%s>."
 
 #~ msgid "No \"extent_angle\" attribute on element <%s>"
-#~ msgstr ""
-#~ "Không có thuộc tính «extent_angle» (góc phạm vi) trong phần tử <%s>."
+#~ msgstr "Không có thuộc tính «extent_angle» (góc phạm vi) trong phần tử <%s>."
 
 #~ msgid "No \"alpha\" attribute on element <%s>"
 #~ msgstr "Không có thuộc tính «alpha» (anfa) trong phần tử <%s>."
