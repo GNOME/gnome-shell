@@ -293,7 +293,8 @@
  * clutter_timeline_set_duration (CLUTTER_TIMELINE (transition), 3000);
  * clutter_timeline_set_repeat_count (CLUTTER_TIMELINE (transition), 2);
  * clutter_timeline_set_auto_reverse (CLUTTER_TIMELINE (transition), TRUE);
- * clutter_transition_set_interval (transition, clutter_interval_new (G_TYPE_UINT, 255, 0));
+ * clutter_transition_set_from (transition, G_TYPE_UINT, 255);
+ * clutter_transition_set_to (transition, G_TYPE_UINT, 0);
  *
  * clutter_actor_add_transition (actor, "animate-opacity", transition);
  *     </programlisting></informalexample>
@@ -316,8 +317,8 @@
  * transition = clutter_property_transition_new ("opacity");
  *
  * /&ast; we want to animate the opacity between 0 and 255 &ast;/
- * internal = clutter_interval_new (G_TYPE_UINT, 0, 255);
- * clutter_transition_set_interval (transition, interval);
+ * clutter_transition_set_from (transition, G_TYPE_UINT, 0);
+ * clutter_transition_set_to (transition, G_TYPE_UINT, 255);
  *
  * /&ast; over a one second duration, running an infinite amount of times &ast;/
  * clutter_timeline_set_duration (CLUTTER_TIMELINE (transition), 1000);
