@@ -256,19 +256,21 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
   return dst_bmp;
 }
 
+static inline int
+calculate_alignment (int rowstride)
+{
+  int alignment = 1 << (_cogl_util_ffs (rowstride) - 1);
+
+  return MIN (alignment, 8);
+}
+
 void
 _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (!(pixels_rowstride & 0x7))
-    GE( ctx, glPixelStorei (GL_UNPACK_ALIGNMENT, 8) );
-  else if (!(pixels_rowstride & 0x3))
-    GE( ctx, glPixelStorei (GL_UNPACK_ALIGNMENT, 4) );
-  else if (!(pixels_rowstride & 0x1))
-    GE( ctx, glPixelStorei (GL_UNPACK_ALIGNMENT, 2) );
-  else
-    GE( ctx, glPixelStorei (GL_UNPACK_ALIGNMENT, 1) );
+  GE( ctx, glPixelStorei (GL_UNPACK_ALIGNMENT,
+                          calculate_alignment (pixels_rowstride)) );
 }
 
 void
@@ -276,14 +278,8 @@ _cogl_texture_prep_gl_alignment_for_pixels_download (int pixels_rowstride)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (!(pixels_rowstride & 0x7))
-    GE( ctx, glPixelStorei (GL_PACK_ALIGNMENT, 8) );
-  else if (!(pixels_rowstride & 0x3))
-    GE( ctx, glPixelStorei (GL_PACK_ALIGNMENT, 4) );
-  else if (!(pixels_rowstride & 0x1))
-    GE( ctx, glPixelStorei (GL_PACK_ALIGNMENT, 2) );
-  else
-    GE( ctx, glPixelStorei (GL_PACK_ALIGNMENT, 1) );
+  GE( ctx, glPixelStorei (GL_PACK_ALIGNMENT,
+                          calculate_alignment (pixels_rowstride)) );
 }
 
 /* FIXME: wrap modes should be set on pipelines not textures */
