@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-20 13:57+0100\n"
-"PO-Revision-Date: 2012-03-20 13:58+0100\n"
+"PO-Revision-Date: 2012-03-22 20:17+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -1020,7 +1020,7 @@ msgstr "Configurar un dispositivo novo…"
 
 #: ../js/ui/status/bluetooth.js:87
 msgid "Bluetooth Settings"
-msgstr "Preferencias de Bluetooth"
+msgstr "Preferencias do Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
 #: ../js/ui/status/bluetooth.js:107 ../js/ui/status/network.js:256
@@ -1237,7 +1237,7 @@ msgstr "Conexións VPN"
 
 #: ../js/ui/status/network.js:1602
 msgid "Network Settings"
-msgstr "Opcións da rede"
+msgstr "Preferencias da rede"
 
 #: ../js/ui/status/network.js:1739
 msgid "Connection failed"
