@@ -101,6 +101,21 @@ void                    clutter_transition_set_interval                 (Clutter
                                                                          ClutterInterval   *interval);
 CLUTTER_AVAILABLE_IN_1_10
 ClutterInterval *       clutter_transition_get_interval                 (ClutterTransition *transition);
+CLUTTER_AVAILABLE_IN_1_12
+void                    clutter_transition_set_from_value               (ClutterTransition *transition,
+                                                                         const GValue      *value);
+CLUTTER_AVAILABLE_IN_1_12
+void                    clutter_transition_set_to_value                 (ClutterTransition *transition,
+                                                                         const GValue      *value);
+CLUTTER_AVAILABLE_IN_1_12
+void                    clutter_transition_set_from                     (ClutterTransition *transition,
+                                                                         GType              value_type,
+                                                                         ...);
+CLUTTER_AVAILABLE_IN_1_12
+void                    clutter_transition_set_to                       (ClutterTransition *transition,
+                                                                         GType              value_type,
+                                                                         ...);
+
 CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_transition_set_animatable               (ClutterTransition *transition,
                                                                          ClutterAnimatable *animatable);

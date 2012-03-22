@@ -42,6 +42,8 @@
 #include "clutter-private.h"
 #include "clutter-timeline.h"
 
+#include <gobject/gvaluecollector.h>
+
 struct _ClutterTransitionPrivate
 {
   ClutterInterval *interval;
@@ -456,4 +458,236 @@ clutter_transition_get_remove_on_complete (ClutterTransition *transition)
   g_return_val_if_fail (CLUTTER_IS_TRANSITION (transition), FALSE);
 
   return transition->priv->remove_on_complete;
+}
+
+typedef void (* IntervalSetFunc) (ClutterInterval *interval,
+                                  const GValue    *value);
+
+static inline void
+clutter_transition_set_value (ClutterTransition *transition,
+                              IntervalSetFunc    interval_set_func,
+                              const GValue      *value)
+{
+  ClutterTransitionPrivate *priv = transition->priv;
+  GType interval_type;
+
+  if (priv->interval == NULL)
+    {
+      priv->interval = clutter_interval_new_with_values (G_VALUE_TYPE (value),
+                                                         value,
+                                                         value);
+      g_object_ref_sink (priv->interval);
+      return;
+    }
+
+  interval_type = clutter_interval_get_value_type (priv->interval);
+
+  if (!g_type_is_a (G_VALUE_TYPE (value), interval_type))
+    {
+      if (g_value_type_compatible (G_VALUE_TYPE (value), interval_type))
+        {
+          interval_set_func (priv->interval, value);
+          return;
+        }
+
+      if (g_value_type_transformable (G_VALUE_TYPE (value), interval_type))
+        {
+          GValue transform = G_VALUE_INIT;
+
+          g_value_init (&transform, interval_type);
+          if (g_value_transform (value, &transform))
+            interval_set_func (priv->interval, &transform);
+          else
+            {
+              g_warning ("%s: Unable to convert a value of type '%s' into "
+                         "the value type '%s' of the interval used by the "
+                         "transition.",
+                         G_STRLOC,
+                         g_type_name (G_VALUE_TYPE (value)),
+                         g_type_name (interval_type));
+            }
+
+          g_value_unset (&transform);
+        }
+    }
+  else
+    interval_set_func (priv->interval, value);
+}
+
+/**
+ * clutter_transition_set_from_value:
+ * @transition: a #ClutterTransition
+ * @value: a #GValue with the initial value of the transition
+ *
+ * Sets the initial value of the transition.
+ *
+ * This is a convenience function that will either create the
+ * #ClutterInterval used by @transition, or will update it if
+ * the #ClutterTransition:interval is already set.
+ *
+ * This function will copy the contents of @value, so it is
+ * safe to call g_value_unset() after it returns.
+ *
+ * If @transition already has a #ClutterTransition:interval set,
+ * then @value must hold the same type, or a transformable type,
+ * as the interval's #ClutterInterval:value-type property.
+ *
+ * This function is meant to be used by language bindings.
+ *
+ * Rename to: clutter_transition_set_from
+ *
+ * Since: 1.12
+ */
+void
+clutter_transition_set_from_value (ClutterTransition *transition,
+                                   const GValue      *value)
+{
+  g_return_if_fail (CLUTTER_IS_TRANSITION (transition));
+  g_return_if_fail (G_IS_VALUE (value));
+
+  clutter_transition_set_value (transition,
+                                clutter_interval_set_initial_value,
+                                value);
+}
+
+/**
+ * clutter_transition_set_to_value:
+ * @transition: a #ClutterTransition
+ * @value: a #GValue with the final value of the transition
+ *
+ * Sets the final value of the transition.
+ *
+ * This is a convenience function that will either create the
+ * #ClutterInterval used by @transition, or will update it if
+ * the #ClutterTransition:interval is already set.
+ *
+ * This function will copy the contents of @value, so it is
+ * safe to call g_value_unset() after it returns.
+ *
+ * If @transition already has a #ClutterTransition:interval set,
+ * then @value must hold the same type, or a transformable type,
+ * as the interval's #ClutterInterval:value-type property.
+ *
+ * This function is meant to be used by language bindings.
+ *
+ * Rename to: clutter_transition_set_to
+ *
+ * Since: 1.12
+ */
+void
+clutter_transition_set_to_value (ClutterTransition *transition,
+                                 const GValue      *value)
+{
+  g_return_if_fail (CLUTTER_IS_TRANSITION (transition));
+  g_return_if_fail (G_IS_VALUE (value));
+
+  clutter_transition_set_value (transition,
+                                clutter_interval_set_final_value,
+                                value);
+}
+
+/**
+ * clutter_transition_set_from: (skip)
+ * @transition: a #ClutterTransition
+ * @value_type: the type of the value to set
+ * @...: the initial value
+ *
+ * Sets the initial value of the transition.
+ *
+ * This is a convenience function that will either create the
+ * #ClutterInterval used by @transition, or will update it if
+ * the #ClutterTransition:interval is already set.
+ *
+ * If @transition already has a #ClutterTransition:interval set,
+ * then @value must hold the same type, or a transformable type,
+ * as the interval's #ClutterInterval:value-type property.
+ *
+ * This is a convenience function for the C API; language bindings
+ * should use clutter_transition_set_from_value() instead.
+ *
+ * Since: 1.12
+ */
+void
+clutter_transition_set_from (ClutterTransition *transition,
+                             GType              value_type,
+                             ...)
+{
+  GValue value = G_VALUE_INIT;
+  gchar *error = NULL;
+  va_list args;
+
+  g_return_if_fail (CLUTTER_IS_TRANSITION (transition));
+  g_return_if_fail (value_type != G_TYPE_INVALID);
+
+  va_start (args, value_type);
+
+  G_VALUE_COLLECT_INIT (&value, value_type, args, 0, &error);
+
+  va_end (args);
+
+  if (error != NULL)
+    {
+      g_warning ("%s: %s", G_STRLOC, error);
+      g_free (error);
+      return;
+    }
+
+  clutter_transition_set_value (transition,
+                                clutter_interval_set_initial_value,
+                                &value);
+
+  g_value_unset (&value);
+}
+
+/**
+ * clutter_transition_set_to: (skip)
+ * @transition: a #ClutterTransition
+ * @value_type: the type of the value to set
+ * @...: the final value
+ *
+ * Sets the final value of the transition.
+ *
+ * This is a convenience function that will either create the
+ * #ClutterInterval used by @transition, or will update it if
+ * the #ClutterTransition:interval is already set.
+ *
+ * If @transition already has a #ClutterTransition:interval set,
+ * then @value must hold the same type, or a transformable type,
+ * as the interval's #ClutterInterval:value-type property.
+ *
+ * This is a convenience function for the C API; language bindings
+ * should use clutter_transition_set_to_value() instead.
+ *
+ * Since: 1.12
+ */
+void
+clutter_transition_set_to (ClutterTransition *transition,
+                           GType              value_type,
+                           ...)
+{
+  GValue value = G_VALUE_INIT;
+  gchar *error = NULL;
+  va_list args;
+
+  g_return_if_fail (CLUTTER_IS_TRANSITION (transition));
+  g_return_if_fail (value_type != G_TYPE_INVALID);
+
+  va_start (args, value_type);
+
+  G_VALUE_COLLECT_INIT (&value, value_type, args, 0, &error);
+
+  va_end (args);
+
+  if (error != NULL)
+    {
+      g_warning ("%s: %s", G_STRLOC, error);
+      g_free (error);
+      return;
+    }
+
+  clutter_transition_set_value (transition,
+                                clutter_interval_set_final_value,
+                                &value);
+
+  g_value_unset (&value);
 }
