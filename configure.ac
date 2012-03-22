@@ -857,7 +857,7 @@ AS_CASE([$enable_deprecated],
 
         [yes],
         [
-          CLUTTER_DEPRECATED_CFLAGS="-DGLIB_DISABLE_DEPRECATION_WARNINGS -DCLUTTER_DISABLE_DEPRECATION_WARNINGS"
+          CLUTTER_DEPRECATED_CFLAGS="-DGLIB_DISABLE_DEPRECATION_WARNINGS"
         ],
 
         [AC_MSG_ERROR([Unknown argument for --enable-deprecated])]
