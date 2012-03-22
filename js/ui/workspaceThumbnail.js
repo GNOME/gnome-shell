@@ -667,7 +667,7 @@ const ThumbnailsBox = new Lang.Class({
         if (this._dropWorkspace != -1)
             return this._thumbnails[this._dropWorkspace].handleDragOverInternal(source, time);
         else if (this._dropPlaceholderPos != -1)
-            return DND.DragMotionResult.MOVE_DROP;
+            return source.realWindow ? DND.DragMotionResult.MOVE_DROP : DND.DragMotionResult.COPY_DROP;
         else
             return DND.DragMotionResult.CONTINUE;
     },
