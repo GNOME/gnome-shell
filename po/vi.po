@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-03-19 14:09+0000\n"
-"PO-Revision-Date: 2012-03-03 22:59+0700\n"
+"PO-Revision-Date: 2012-03-22 10:42+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -824,7 +824,7 @@ msgstr "Hoàn lại"
 
 #: ../js/ui/overview.js:132
 msgid "Overview"
-msgstr ""
+msgstr "Tổng quan"
 
 #: ../js/ui/overview.js:202
 msgid "Windows"
