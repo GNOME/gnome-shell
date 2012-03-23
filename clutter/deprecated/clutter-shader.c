@@ -766,7 +766,7 @@ clutter_shader_set_uniform (ClutterShader *shader,
                             const GValue  *value)
 {
   ClutterShaderPrivate *priv;
-  GLint                 location = 0;
+  int                   location = 0;
   gsize                 size;
 
   g_return_if_fail (CLUTTER_IS_SHADER (shader));
@@ -785,7 +785,7 @@ clutter_shader_set_uniform (ClutterShader *shader,
 
   if (CLUTTER_VALUE_HOLDS_SHADER_FLOAT (value))
     {
-      const GLfloat *floats;
+      const float *floats;
 
       floats = clutter_value_get_shader_float (value, &size);
       cogl_program_set_uniform_float (priv->program,
@@ -801,7 +801,7 @@ clutter_shader_set_uniform (ClutterShader *shader,
     }
   else if (CLUTTER_VALUE_HOLDS_SHADER_MATRIX (value))
     {
-      const GLfloat *matrix;
+      const float *matrix;
 
       matrix = clutter_value_get_shader_matrix (value, &size);
       cogl_program_set_uniform_matrix (priv->program,
@@ -809,7 +809,7 @@ clutter_shader_set_uniform (ClutterShader *shader,
     }
   else if (G_VALUE_HOLDS_FLOAT (value))
     {
-      GLfloat float_val = g_value_get_float (value);
+      float float_val = g_value_get_float (value);
 
       cogl_program_set_uniform_float (priv->program,
                                       location, 1, 1, &float_val);

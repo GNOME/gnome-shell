@@ -26,8 +26,8 @@ typedef struct _TestState
 static void
 validate_result (TestState *state)
 {
-  GLubyte pixel[4];
-  GLint y_off = 90;
+  guint8 pixel[4];
+  int y_off = 90;
 
   if (g_test_verbose ())
     g_print ("y_off = %d\n", y_off);
@@ -102,7 +102,7 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_vertex_buffer_enable (state->buffer, "gl_Color::blue");
   cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
   cogl_vertex_buffer_draw (state->buffer,
-			   GL_TRIANGLE_STRIP, /* mode */
+			   COGL_VERTICES_MODE_TRIANGLE_STRIP, /* mode */
 			   0, /* first */
 			   3); /* count */
 
@@ -113,7 +113,7 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_vertex_buffer_disable (state->buffer, "gl_Color::blue");
   cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
   cogl_vertex_buffer_draw (state->buffer,
-			   GL_TRIANGLE_STRIP, /* mode */
+			   COGL_VERTICES_MODE_TRIANGLE_STRIP, /* mode */
 			   0, /* first */
 			   3); /* count */
 
@@ -124,7 +124,7 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_vertex_buffer_enable (state->buffer, "gl_Color::blue");
   cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
   cogl_vertex_buffer_draw (state->buffer,
-			   GL_TRIANGLE_STRIP, /* mode */
+			   COGL_VERTICES_MODE_TRIANGLE_STRIP, /* mode */
 			   0, /* first */
 			   3); /* count */
 
@@ -134,7 +134,7 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_set_source (state->material);
   cogl_material_set_color4ub (state->material, 0xff, 0xff, 0xff, 0xff);
   cogl_vertex_buffer_draw (state->buffer,
-                           GL_TRIANGLE_STRIP, /* mode */
+                           COGL_VERTICES_MODE_TRIANGLE_STRIP, /* mode */
                            0, /* first */
                            3); /* count */
 
@@ -197,19 +197,19 @@ test_cogl_vertex_buffer_contiguous (TestConformSimpleFixture *fixture,
   cogl_material_set_layer (state.material, 0, state.texture);
 
   {
-    GLfloat triangle_verts[3][2] =
+    float triangle_verts[3][2] =
       {
 	{0.0,	0.0},
 	{100.0, 100.0},
 	{0.0,	100.0}
       };
-    GLbyte triangle_colors[3][4] =
+    guint8 triangle_colors[3][4] =
       {
 	{0x00, 0x00, 0xff, 0xff}, /* blue */
 	{0x00, 0x00, 0xff, 0x00}, /* transparent blue */
 	{0x00, 0x00, 0xff, 0x00}  /* transparent blue */
       };
-    GLfloat triangle_tex_coords[3][2] =
+    float triangle_tex_coords[3][2] =
       {
         {0.0, 0.0},
         {1.0, 1.0},
@@ -219,21 +219,21 @@ test_cogl_vertex_buffer_contiguous (TestConformSimpleFixture *fixture,
     cogl_vertex_buffer_add (state.buffer,
 			    "gl_Vertex",
 			    2, /* n components */
-			    GL_FLOAT,
+                            COGL_ATTRIBUTE_TYPE_FLOAT,
 			    FALSE, /* normalized */
 			    0, /* stride */
 			    triangle_verts);
     cogl_vertex_buffer_add (state.buffer,
 			    "gl_Color::blue",
 			    4, /* n components */
-			    GL_UNSIGNED_BYTE,
+			    COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE,
 			    FALSE, /* normalized */
 			    0, /* stride */
 			    triangle_colors);
     cogl_vertex_buffer_add (state.buffer,
 			    "gl_MultiTexCoord0",
 			    2, /* n components */
-			    GL_FLOAT,
+			    COGL_ATTRIBUTE_TYPE_FLOAT,
 			    FALSE, /* normalized */
 			    0, /* stride */
 			    triangle_tex_coords);

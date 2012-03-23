@@ -30,6 +30,20 @@ static TestConformGLFunctions gl_functions;
 #define MASK_BLUE(COLOR)  ((COLOR & 0xff00) >> 8)
 #define MASK_ALPHA(COLOR) (COLOR & 0xff)
 
+#ifndef GL_VERSION
+#define GL_VERSION 0x1F02
+#endif
+
+#ifndef GL_MAX_TEXTURE_IMAGE_UNITS
+#define GL_MAX_TEXTURE_IMAGE_UNITS 0x8872
+#endif
+#ifndef GL_MAX_VERTEX_ATTRIBS
+#define GL_MAX_VERTEX_ATTRIBS 0x8869
+#endif
+#ifndef GL_MAX_TEXTURE_UNITS
+#define GL_MAX_TEXTURE_UNITS 0x84E2
+#endif
+
 typedef struct _TestState
 {
   ClutterGeometry stage_geom;
@@ -39,9 +53,9 @@ typedef struct _TestState
 static void
 check_pixel (TestState *state, int x, int y, guint32 color)
 {
-  GLint y_off;
-  GLint x_off;
-  GLubyte pixel[4];
+  int y_off;
+  int x_off;
+  guint8 pixel[4];
   guint8 r = MASK_RED (color);
   guint8 g = MASK_GREEN (color);
   guint8 b = MASK_BLUE (color);
@@ -163,7 +177,7 @@ test_using_all_layers (TestState *state, int x, int y)
   guint8 red_pixel[] = { 0xff, 0x00, 0x00, 0xff };
   CoglHandle white_texture;
   CoglHandle red_texture;
-  GLint n_layers;
+  int n_layers;
   int i;
 
   /* Create a material that uses the maximum number of layers. All but
@@ -185,7 +199,7 @@ test_using_all_layers (TestState *state, int x, int y)
 #ifdef COGL_HAS_GLES2
   if (using_gles2_driver ())
     {
-      GLint n_image_units, n_attribs;
+      int n_image_units, n_attribs;
       /* GLES 2 doesn't have GL_MAX_TEXTURE_UNITS and it uses
          GL_MAX_TEXTURE_IMAGE_UNITS instead */
       gl_functions.glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS, &n_image_units);

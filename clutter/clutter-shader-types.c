@@ -82,19 +82,19 @@ static GTypeFundamentalInfo shader_matrix_finfo = { 0, };
 struct _ClutterShaderFloat
 {
   gint    size;
-  GLfloat value[4];
+  float   value[4];
 };
 
 struct _ClutterShaderInt
 {
   gint  size;
-  GLint value[4];
+  int   value[4];
 };
 
 struct _ClutterShaderMatrix
 {
   gint    size;
-  GLfloat value[16];
+  float   value[16];
 };
 
 static gpointer
@@ -436,7 +436,7 @@ clutter_value_set_shader_int (GValue     *value,
   shader_int->size = size;
 
   for (i = 0; i < size; i++)
-    shader_int->value[i] = (GLint) ints[i];
+    shader_int->value[i] = ints[i];
 }
 
 /**

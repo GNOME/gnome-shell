@@ -27,7 +27,7 @@ typedef struct _TestState
 
 
 static void
-check_pixel (GLubyte *pixel, guint32 color)
+check_pixel (guint8 *pixel, guint32 color)
 {
   guint8 r = MASK_RED (color);
   guint8 g = MASK_GREEN (color);

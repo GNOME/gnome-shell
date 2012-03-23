@@ -12,20 +12,49 @@ typedef struct _TestState
   ClutterActor *stage;
 } TestState;
 
+#ifndef GL_EXTENSIONS
+#define GL_EXTENSIONS 0x1F03
+#endif
+#ifndef GL_TEXTURE_RECTANGLE_ARB
+#define GL_TEXTURE_RECTANGLE_ARB 0x84F5
+#endif
+#ifndef GL_UNPACK_ROW_LENGTH
+#define GL_UNPACK_ROW_LENGTH 0x0CF2
+#endif
+#ifndef GL_UNPACK_ALIGNMENT
+#define GL_UNPACK_ALIGNMENT 0x0CF5
+#endif
+#ifndef GL_UNPACK_SKIP_ROWS
+#define GL_UNPACK_SKIP_ROWS 0x0CF3
+#endif
+#ifndef GL_UNPACK_SKIP_PIXELS
+#define GL_UNPACK_SKIP_PIXELS 0x0CF4
+#endif
+#ifndef GL_RGBA
+#define GL_RGBA 0x1908
+#endif
+#ifndef GL_UNSIGNED_BYTE
+#define GL_UNSIGNED_BYTE 0x1401
+#endif
+#ifndef GL_NO_ERROR
+#define GL_NO_ERROR 0x0
+#endif
+#ifndef GL_TEXTURE_BINDING_RECTANGLE_ARB
+#define GL_TEXTURE_BINDING_RECTANGLE_ARB 0x84F6
+#endif
+
 static CoglHandle
 create_source_rect (void)
 {
-#ifdef GL_TEXTURE_RECTANGLE_ARB
-
   int x, y;
-  GLint prev_unpack_row_length;
-  GLint prev_unpack_alignment;
-  GLint prev_unpack_skip_rows;
-  GLint prev_unpack_skip_pixles;
-  GLint prev_rectangle_binding;
+  int prev_unpack_row_length;
+  int prev_unpack_alignment;
+  int prev_unpack_skip_rows;
+  int prev_unpack_skip_pixles;
+  int prev_rectangle_binding;
   guint8 *data = g_malloc (256 * 256 * 4), *p = data;
   CoglHandle tex;
-  GLuint gl_tex;
+  guint gl_tex;
 
   for (y = 0; y < 256; y++)
     for (x = 0; x < 256; x++)
@@ -78,12 +107,6 @@ create_source_rect (void)
                                        COGL_PIXEL_FORMAT_RGBA_8888);
 
   return tex;
-
-#else /* GL_TEXTURE_RECTANGLE_ARB */
-
-  return COGL_INVALID_HANDLE;
-
-#endif /* GL_TEXTURE_RECTANGLE_ARB */
 }
 
 static CoglHandle
@@ -116,7 +139,7 @@ create_source_2d (void)
 static void
 draw_frame (TestState *state)
 {
-  GLuint gl_tex;
+  guint gl_tex;
   CoglHandle tex_rect = create_source_rect ();
   CoglHandle material_rect = cogl_material_new ();
   CoglHandle tex_2d = create_source_2d ();

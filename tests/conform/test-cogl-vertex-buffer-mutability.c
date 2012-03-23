@@ -20,8 +20,8 @@ typedef struct _TestState
 static void
 validate_result (TestState *state)
 {
-  GLubyte pixel[4];
-  GLint y_off = 90;
+  guint8 pixel[4];
+  int y_off = 90;
 
   /* NB: We ignore the alpha, since we don't know if our render target is
    * RGB or RGBA */
@@ -61,13 +61,13 @@ validate_result (TestState *state)
 static void
 on_paint (ClutterActor *actor, TestState *state)
 {
-  GLfloat triangle_verts[3][2] =
+  float triangle_verts[3][2] =
     {
       {100.0, 0.0},
       {200.0, 100.0},
       {100.0, 100.0}
     };
-  GLbyte triangle_colors[3][4] =
+  guint8 triangle_colors[3][4] =
     {
       {0x00, 0xff, 0x00, 0xff}, /* blue */
       {0x00, 0xff, 0x00, 0x00}, /* transparent blue */
@@ -83,7 +83,7 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_vertex_buffer_add (state->buffer,
 			  "gl_Vertex",
 			  2, /* n components */
-			  GL_FLOAT,
+			  COGL_ATTRIBUTE_TYPE_FLOAT,
 			  FALSE, /* normalized */
 			  0, /* stride */
 			  triangle_verts);
@@ -91,7 +91,7 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_vertex_buffer_submit (state->buffer);
 
   cogl_vertex_buffer_draw (state->buffer,
-			   GL_TRIANGLE_STRIP, /* mode */
+			   COGL_VERTICES_MODE_TRIANGLE_STRIP, /* mode */
 			   0, /* first */
 			   3); /* count */
 
@@ -102,7 +102,7 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_vertex_buffer_add (state->buffer,
 			  "gl_Color",
 			  4, /* n components */
-			  GL_UNSIGNED_BYTE,
+                          COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE,
 			  FALSE, /* normalized */
 			  0, /* stride */
 			  triangle_colors);
@@ -110,7 +110,7 @@ on_paint (ClutterActor *actor, TestState *state)
 
   cogl_translate (100, 0, 0);
   cogl_vertex_buffer_draw (state->buffer,
-			   GL_TRIANGLE_STRIP, /* mode */
+			   COGL_VERTICES_MODE_TRIANGLE_STRIP, /* mode */
 			   0, /* first */
 			   3); /* count */
 
@@ -154,13 +154,13 @@ test_cogl_vertex_buffer_mutability (TestConformSimpleFixture *fixture,
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);
 
   {
-    GLfloat triangle_verts[3][2] =
+    float triangle_verts[3][2] =
       {
 	{0.0,	0.0},
 	{100.0, 100.0},
 	{0.0,	100.0}
       };
-    GLbyte triangle_colors[3][4] =
+    guint8 triangle_colors[3][4] =
       {
 	{0x00, 0x00, 0xff, 0xff}, /* blue */
 	{0x00, 0x00, 0xff, 0x00}, /* transparent blue */
@@ -170,14 +170,14 @@ test_cogl_vertex_buffer_mutability (TestConformSimpleFixture *fixture,
     cogl_vertex_buffer_add (state.buffer,
 			    "gl_Vertex",
 			    2, /* n components */
-			    GL_FLOAT,
+                            COGL_ATTRIBUTE_TYPE_FLOAT,
 			    FALSE, /* normalized */
 			    0, /* stride */
 			    triangle_verts);
     cogl_vertex_buffer_add (state.buffer,
 			    "gl_Color",
 			    4, /* n components */
-			    GL_UNSIGNED_BYTE,
+                            COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE,
 			    FALSE, /* normalized */
 			    0, /* stride */
 			    triangle_colors);

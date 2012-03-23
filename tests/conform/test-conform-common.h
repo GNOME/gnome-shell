@@ -27,19 +27,19 @@ typedef struct _TestConformTodo
 
 typedef struct _TestConformGLFunctions
 {
-  const GLubyte * (* glGetString) (GLenum name);
-  void (* glGetIntegerv) (GLenum pname, GLint *params);
-  void (* glPixelStorei) (GLenum pname, GLint param);
-  void (* glBindTexture) (GLenum target, GLuint texture);
-  void (* glGenTextures) (GLsizei n, GLuint *textures);
-  GLenum (* glGetError) (void);
-  void (* glDeleteTextures) (GLsizei n, const GLuint *textures);
-  void (* glTexImage2D) (GLenum target, GLint level,
-                         GLint internalFormat,
-                         GLsizei width, GLsizei height,
-                         GLint border, GLenum format, GLenum type,
-                         const GLvoid *pixels);
-  void (* glTexParameteri) (GLenum target, GLenum pname, GLint param);
+  const guint8 * (* glGetString) (guint name);
+  void (* glGetIntegerv) (guint pname, int *params);
+  void (* glPixelStorei) (guint pname, int param);
+  void (* glBindTexture) (guint target, guint texture);
+  void (* glGenTextures) (int n, guint *textures);
+  guint (* glGetError) (void);
+  void (* glDeleteTextures) (int n, const guint *textures);
+  void (* glTexImage2D) (guint target, int level,
+                         int internalFormat,
+                         int width, int height,
+                         int border, guint format, guint type,
+                         const void *pixels);
+  void (* glTexParameteri) (guint target, guint pname, int param);
 } TestConformGLFunctions;
 
 void test_conform_get_gl_functions (TestConformGLFunctions *functions);

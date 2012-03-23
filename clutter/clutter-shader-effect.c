@@ -132,7 +132,7 @@ typedef struct _ShaderUniform
   gchar *name;
   GType type;
   GValue value;
-  GLint location;
+  int location;
 } ShaderUniform;
 
 struct _ClutterShaderEffectPrivate
@@ -229,7 +229,7 @@ clutter_shader_effect_update_uniforms (ClutterShaderEffect *effect)
 
       if (CLUTTER_VALUE_HOLDS_SHADER_FLOAT (&uniform->value))
         {
-          const GLfloat *floats;
+          const float *floats;
 
           floats = clutter_value_get_shader_float (&uniform->value, &size);
           cogl_program_set_uniform_float (priv->program, uniform->location,
@@ -238,7 +238,7 @@ clutter_shader_effect_update_uniforms (ClutterShaderEffect *effect)
         }
       else if (CLUTTER_VALUE_HOLDS_SHADER_INT (&uniform->value))
         {
-          const GLint *ints;
+          const int *ints;
 
           ints = clutter_value_get_shader_int (&uniform->value, &size);
           cogl_program_set_uniform_int (priv->program, uniform->location,
@@ -247,7 +247,7 @@ clutter_shader_effect_update_uniforms (ClutterShaderEffect *effect)
         }
       else if (CLUTTER_VALUE_HOLDS_SHADER_MATRIX (&uniform->value))
         {
-          const GLfloat *matrix;
+          const float *matrix;
 
           matrix = clutter_value_get_shader_matrix (&uniform->value, &size);
           cogl_program_set_uniform_matrix (priv->program, uniform->location,
@@ -257,7 +257,7 @@ clutter_shader_effect_update_uniforms (ClutterShaderEffect *effect)
         }
       else if (G_VALUE_HOLDS_FLOAT (&uniform->value))
         {
-          const GLfloat float_val = g_value_get_float (&uniform->value);
+          const float float_val = g_value_get_float (&uniform->value);
 
           cogl_program_set_uniform_float (priv->program, uniform->location,
                                           1, 1,
@@ -265,8 +265,8 @@ clutter_shader_effect_update_uniforms (ClutterShaderEffect *effect)
         }
       else if (G_VALUE_HOLDS_DOUBLE (&uniform->value))
         {
-          const GLfloat float_val =
-            (GLfloat) g_value_get_double (&uniform->value);
+          const float float_val =
+            (float) g_value_get_double (&uniform->value);
 
           cogl_program_set_uniform_float (priv->program, uniform->location,
                                           1, 1,
@@ -274,7 +274,7 @@ clutter_shader_effect_update_uniforms (ClutterShaderEffect *effect)
         }
       else if (G_VALUE_HOLDS_INT (&uniform->value))
         {
-          const GLint int_val = g_value_get_int (&uniform->value);
+          const int int_val = g_value_get_int (&uniform->value);
 
           cogl_program_set_uniform_int (priv->program, uniform->location,
                                         1, 1,

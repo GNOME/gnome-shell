@@ -1368,7 +1368,7 @@ read_pixels_to_file (char *filename_stem,
                      int   width,
                      int   height)
 {
-  GLubyte *data;
+  guint8 *data;
   cairo_surface_t *surface;
   static int read_count = 0;
   char *filename = g_strdup_printf ("%s-%05d.png",

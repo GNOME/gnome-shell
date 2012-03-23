@@ -20,21 +20,16 @@ typedef struct _TestState
 
 typedef struct _InterlevedVertex
 {
-  GLfloat x;
-  GLfloat y;
-
-  GLubyte r;
-  GLubyte g;
-  GLubyte b;
-  GLubyte a;
+  float x, y;
+  guint8 r, g, b, a;
 } InterlevedVertex;
 
 
 static void
 validate_result (TestState *state)
 {
-  GLubyte pixel[4];
-  GLint y_off = 90;
+  guint8 pixel[4];
+  int y_off = 90;
 
   /* NB: We ignore the alpha, since we don't know if our render target is
    * RGB or RGBA */
@@ -67,7 +62,7 @@ on_paint (ClutterActor *actor, TestState *state)
 {
   /* Draw a faded blue triangle */
   cogl_vertex_buffer_draw (state->buffer,
-			   GL_TRIANGLE_STRIP, /* mode */
+                           COGL_VERTICES_MODE_TRIANGLE_STRIP, /* mode */
 			   0, /* first */
 			   3); /* count */
 
@@ -134,14 +129,14 @@ test_cogl_vertex_buffer_interleved (TestConformSimpleFixture *fixture,
     cogl_vertex_buffer_add (state.buffer,
 			    "gl_Vertex",
 			    2, /* n components */
-			    GL_FLOAT,
+                            COGL_ATTRIBUTE_TYPE_FLOAT,
 			    FALSE, /* normalized */
                             12, /* stride */
 			    &verts[0].x);
     cogl_vertex_buffer_add (state.buffer,
                             "gl_Color",
 			    4, /* n components */
-			    GL_UNSIGNED_BYTE,
+			    COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE,
 			    FALSE, /* normalized */
 			    12, /* stride */
 			    &verts[0].r);
