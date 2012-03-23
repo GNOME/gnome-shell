@@ -26,6 +26,7 @@
 
 #include "cogl-handle.h"
 #include "cogl-shader.h"
+#include "cogl-gl-header.h"
 
 typedef struct _CoglShader CoglShader;
 

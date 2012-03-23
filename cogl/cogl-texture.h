@@ -207,12 +207,12 @@ cogl_texture_new_from_data (unsigned int      width,
  * Since: 0.8
  */
 CoglTexture *
-cogl_texture_new_from_foreign (GLuint          gl_handle,
-                               GLenum          gl_target,
-                               GLuint          width,
-                               GLuint          height,
-                               GLuint          x_pot_waste,
-                               GLuint          y_pot_waste,
+cogl_texture_new_from_foreign (unsigned int gl_handle,
+                               unsigned int gl_target,
+                               unsigned int width,
+                               unsigned int height,
+                               unsigned int x_pot_waste,
+                               unsigned int y_pot_waste,
                                CoglPixelFormat format);
 
 /**
@@ -353,8 +353,8 @@ cogl_texture_is_sliced (CoglTexture *texture);
  */
 gboolean
 cogl_texture_get_gl_texture (CoglTexture *texture,
-                             GLuint      *out_gl_handle,
-                             GLenum      *out_gl_target);
+                             unsigned int *out_gl_handle,
+                             unsigned int *out_gl_target);
 
 /**
  * cogl_texture_get_data:

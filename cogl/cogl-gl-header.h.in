@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007,2008,2009,2010 Intel Corporation.
+ * Copyright (C) 2012 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,25 +21,19 @@
  *
  */
 
-#if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
-#error "Only <cogl/cogl.h> can be included directly."
+#if !defined(CLUTTER_COMPILATION)
+#error "cogl-gl-header.h should only be included when compiling Cogl"
 #endif
 
-#ifndef __COGL_DEFINES_H__
-#define __COGL_DEFINES_H__
+#ifndef __COGL_GL_HEADER_H__
+#define __COGL_GL_HEADER_H__
 
-#include <glib.h>
+#include "cogl-defines.h"
 
-G_BEGIN_DECLS
+@COGL_GL_HEADER_INCLUDES@
 
-@COGL_DEFINES@
-
-#ifdef COGL_HAS_EGL_SUPPORT
-@COGL_EGL_INCLUDES@
-#define NativeDisplayType EGLNativeDisplayType
-#define NativeWindowType EGLNativeWindowType
+#ifndef GL_OES_EGL_image
+#define GLeglImageOES void *
 #endif
 
-G_END_DECLS
-
-#endif
+#endif /* __COGL_GL_HEADER_H__ */

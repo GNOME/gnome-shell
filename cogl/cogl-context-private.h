@@ -49,6 +49,7 @@
 #include "cogl-texture-rectangle.h"
 #include "cogl-sampler-cache-private.h"
 #include "cogl-gpu-info-private.h"
+#include "cogl-gl-header.h"
 
 typedef struct
 {

@@ -26,6 +26,7 @@
 #define __COGL_SAMPLER_CACHE_PRIVATE_H
 
 #include "cogl-context.h"
+#include "cogl-gl-header.h"
 
 /* GL_ALWAYS is just used here as a value that is known not to clash
  * with any valid GL wrap modes.

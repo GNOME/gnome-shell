@@ -25,6 +25,7 @@
 #define __COGL_INTERNAL_H
 
 #include "cogl-bitmask.h"
+#include "cogl-gl-header.h"
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include <X11/Xutil.h>

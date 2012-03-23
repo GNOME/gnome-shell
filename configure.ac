@@ -1120,6 +1120,7 @@ cogl/Makefile
 cogl/cogl-1.0.pc
 cogl/cogl-2.0-experimental.pc
 cogl/cogl-defines.h
+cogl/cogl-gl-header.h
 cogl/cogl.rc
 cogl-pango/Makefile
 cogl-pango/cogl-pango-1.0.pc

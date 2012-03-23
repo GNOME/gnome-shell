@@ -33,6 +33,7 @@
 #include "cogl-object-private.h"
 #include "cogl-buffer.h"
 #include "cogl-context.h"
+#include "cogl-gl-header.h"
 
 G_BEGIN_DECLS
 

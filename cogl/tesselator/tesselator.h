@@ -35,6 +35,7 @@
 /* This just includes the defines needed by the tesselator code */
 
 #include "cogl/cogl-defines.h"
+#include "cogl/cogl-gl-header.h"
 
 typedef struct GLUtesselator GLUtesselator;
 
