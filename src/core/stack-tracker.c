@@ -394,6 +394,8 @@ meta_stack_tracker_free (MetaStackTracker *tracker)
   g_queue_foreach (tracker->queued_requests, (GFunc)meta_stack_op_free, NULL);
   g_queue_free (tracker->queued_requests);
   tracker->queued_requests = NULL;
+
+  g_free (tracker);
 }
 
 static void
