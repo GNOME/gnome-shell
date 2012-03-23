@@ -41,7 +41,7 @@ const XKBIndicator = new Lang.Class({
     Extends: PanelMenu.Button,
 
     _init: function() {
-        this.parent(0.0);
+        this.parent(0.0, _("Keyboard"));
 
         this._container = new Shell.GenericContainer();
         this._container.connect('get-preferred-width', Lang.bind(this, this._containerGetPreferredWidth));
