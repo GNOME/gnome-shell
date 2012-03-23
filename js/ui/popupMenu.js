@@ -546,6 +546,10 @@ const PopupSliderMenuItem = new Lang.Class({
         this._slider.connect('repaint', Lang.bind(this, this._sliderRepaint));
         this.actor.connect('button-press-event', Lang.bind(this, this._startDragging));
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
+        this.actor.connect('notify::mapped', Lang.bind(this, function() {
+            if (!this.actor.mapped)
+                this._endDragging();
+        }));
 
         this._releaseId = this._motionId = 0;
         this._dragging = false;
