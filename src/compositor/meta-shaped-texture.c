@@ -250,7 +250,6 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
       int i;
       int n_rects;
       int stride;
-      GLenum paint_gl_target;
 
       /* If we have no shape region and no (or an empty) overlay region, we
        * don't need to create a full mask texture, so quit early. */
@@ -293,26 +292,14 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
 
       install_overlay_path (stex, mask_data, tex_width, tex_height, stride);
 
-      cogl_texture_get_gl_texture (paint_tex, NULL, &paint_gl_target);
-
-#ifdef GL_TEXTURE_RECTANGLE_ARB
-      if (paint_gl_target == GL_TEXTURE_RECTANGLE_ARB)
-        {
-          priv->mask_texture
-            = meta_texture_rectangle_new (tex_width, tex_height,
-                                          0, /* flags */
-                                          /* data format */
-                                          COGL_PIXEL_FORMAT_A_8,
-                                          /* internal GL format */
-                                          GL_ALPHA,
-                                          /* internal cogl format */
-                                          COGL_PIXEL_FORMAT_A_8,
-                                          /* rowstride */
-                                          stride,
-                                          mask_data);
-        }
+      if (meta_texture_rectangle_check (paint_tex))
+        priv->mask_texture = meta_texture_rectangle_new (tex_width, tex_height,
+                                                         COGL_PIXEL_FORMAT_A_8,
+                                                         COGL_PIXEL_FORMAT_A_8,
+                                                         stride,
+                                                         mask_data,
+                                                         NULL /* error */);
       else
-#endif /* GL_TEXTURE_RECTANGLE_ARB */
         {
 	  /* Note: we don't allow slicing for this texture because we
            * need to use it with multi-texturing which doesn't support

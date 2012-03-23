@@ -30,15 +30,17 @@
 
 G_BEGIN_DECLS
 
-CoglHandle
+CoglTexture *
 meta_texture_rectangle_new (unsigned int width,
                             unsigned int height,
-                            CoglTextureFlags flags,
                             CoglPixelFormat format,
-                            GLenum internal_gl_format,
-                            GLenum internal_format,
+                            CoglPixelFormat internal_format,
                             unsigned int rowstride,
-                            const guint8 *data);
+                            const guint8 *data,
+                            GError **error);
+
+gboolean
+meta_texture_rectangle_check (CoglTexture *texture);
 
 G_END_DECLS
 
