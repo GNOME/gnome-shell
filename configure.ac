@@ -487,7 +487,7 @@ AM_CONDITIONAL(USE_TSLIB, [test "x$have_tslib" = "xyes"])
 AM_CONDITIONAL(USE_EVDEV, [test "x$have_evdev" = "xyes"])
 AM_CONDITIONAL(USE_GLD,   [test "x$have_gdl" = "xyes"])
 
-AM_CONDITIONAL(NEED_XKB_UTILS, [test "x$have_evdev" = "xyes" -O "x$SUPPORT_WAYLAND" = "x1"])
+AM_CONDITIONAL(NEED_XKB_UTILS, [test "x$have_evdev" = "xyes" -o "x$SUPPORT_WAYLAND" = "x1"])
 
 dnl Instead of using AM_CFLAGS to ensure
 dnl COGL_ENABLE_EXPERIMENTAL_2_0_API is defined while compiling clutter

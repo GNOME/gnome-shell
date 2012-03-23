@@ -583,7 +583,7 @@ clutterevdev_include_HEADERS = $(evdev_h)
 endif # SUPPORT_EVDEV
 
 if NEED_XKB_UTILS
-backend_source_c_priv += $(srcdir)/evdev/clutter-xkb-utils.c
+backend_source_c += $(srcdir)/evdev/clutter-xkb-utils.c
 backend_source_h_priv += $(srcdir)/evdev/clutter-xkb-utils.h
 endif
 
@@ -623,7 +623,6 @@ egl_source_c = $(srcdir)/egl/clutter-backend-eglnative.c
 # Wayland backend rules
 if SUPPORT_WAYLAND
 backend_source_h_priv += \
-       $(srcdir)/evdev/clutter-xkb-utils.h                     \
        $(srcdir)/wayland/clutter-backend-wayland.h             \
        $(srcdir)/wayland/clutter-stage-wayland.h               \
        $(srcdir)/wayland/clutter-event-wayland.h               \
@@ -631,7 +630,6 @@ backend_source_h_priv += \
        $(srcdir)/wayland/clutter-device-manager-wayland.h
 
 backend_source_c += \
-       $(srcdir)/evdev/clutter-xkb-utils.c                     \
        $(srcdir)/wayland/clutter-backend-wayland.c             \
        $(srcdir)/wayland/clutter-stage-wayland.c               \
        $(srcdir)/wayland/clutter-event-wayland.c               \
