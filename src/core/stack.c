@@ -257,16 +257,17 @@ void
 meta_stack_update_window_tile_matches (MetaStack     *stack,
                                        MetaWorkspace *workspace)
 {
-  GList *windows;
+  GList *windows, *tmp;
 
   if (stack->freeze_count > 0)
     return;
 
   windows = meta_stack_list_windows (stack, workspace);
-  while (windows)
+  tmp = windows;
+  while (tmp)
     {
-      meta_window_compute_tile_match ((MetaWindow *) windows->data);
-      windows = windows->next;
+      meta_window_compute_tile_match ((MetaWindow *) tmp->data);
+      tmp = tmp->next;
     }
 
   g_list_free (windows);
