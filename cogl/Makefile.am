@@ -358,6 +358,8 @@ cogl_sources_c = \
 	$(srcdir)/gl-prototypes/cogl-glsl-functions.h	\
 	$(srcdir)/cogl-memory-stack-private.h		\
 	$(srcdir)/cogl-memory-stack.c			\
+	$(srcdir)/cogl-magazine-private.h		\
+	$(srcdir)/cogl-magazine.c			\
 	$(NULL)
 
 if USE_GLIB
