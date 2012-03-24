@@ -1,3 +1,4 @@
+#undef CLUTTER_COMPILATION
 #include <cogl/cogl.h>
 
 #include "test-utils.h"

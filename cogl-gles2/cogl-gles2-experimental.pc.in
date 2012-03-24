@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+apiversion=@COGL_API_VERSION@
+requires=cogl2
+
+Name: CoglGLES2
+Description: Cogl OpenGL ES 2.0 frontend api
+Version: @COGL_VERSION@
+Libs: -L${libdir} -lcogl-gles2
+Cflags: -I${includedir}/cogl-gles2
+Requires: ${requires}

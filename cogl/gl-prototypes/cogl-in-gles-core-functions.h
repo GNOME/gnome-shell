@@ -106,7 +106,7 @@ COGL_EXT_BEGIN (vbos, 1, 5,
                 "ARB\0",
                 "vertex_buffer_object\0")
 COGL_EXT_FUNCTION (void, glGenBuffers,
-                   (GLuint		 n,
+                   (GLsizei		 n,
                     GLuint		*buffers))
 COGL_EXT_FUNCTION (void, glBindBuffer,
                    (GLenum		 target,
