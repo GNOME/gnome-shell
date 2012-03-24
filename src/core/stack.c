@@ -189,7 +189,7 @@ meta_stack_raise (MetaStack  *stack,
   int max_stack_position = window->stack_position;
   MetaWorkspace *workspace;
 
-  g_assert (stack->added == NULL);
+  stack_ensure_sorted (stack);
 
   workspace = meta_window_get_workspace (window);
   for (l = stack->sorted; l; l = l->next)
@@ -217,7 +217,7 @@ meta_stack_lower (MetaStack  *stack,
   int min_stack_position = window->stack_position;
   MetaWorkspace *workspace;
 
-  g_assert (stack->added == NULL);
+  stack_ensure_sorted (stack);
 
   workspace = meta_window_get_workspace (window);
   for (l = stack->sorted; l; l = l->next)
