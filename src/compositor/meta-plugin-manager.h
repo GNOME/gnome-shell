@@ -77,4 +77,9 @@ gboolean _meta_plugin_xevent_filter (MetaPlugin *plugin,
 
 void     meta_plugin_manager_confirm_display_change (MetaPluginManager *mgr);
 
+gboolean meta_plugin_manager_show_tile_preview (MetaPluginManager *mgr,
+                                                MetaWindow        *window,
+                                                MetaRectangle     *tile_rect,
+                                                int                tile_monitor_number);
+gboolean meta_plugin_manager_hide_tile_preview (MetaPluginManager *mgr);
 #endif
