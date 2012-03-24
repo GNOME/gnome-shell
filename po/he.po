@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-02 14:20+0200\n"
-"PO-Revision-Date: 2012-03-02 14:22+0200\n"
+"POT-Creation-Date: 2012-03-24 19:09+0200\n"
+"PO-Revision-Date: 2012-03-24 19:10+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: he\n"
@@ -183,7 +183,7 @@ msgid "Not listed?"
 msgstr "לא רשום?"
 
 #: ../js/gdm/loginDialog.js:1020
-#: ../js/ui/endSessionDialog.js:419
+#: ../js/ui/endSessionDialog.js:401
 #: ../js/ui/extensionSystem.js:399
 #: ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175
@@ -200,18 +200,18 @@ msgstr "כניסה"
 msgid "Login Window"
 msgstr "חלון כניסה"
 
-#: ../js/gdm/powerMenu.js:152
-#: ../js/ui/userMenu.js:581
-#: ../js/ui/userMenu.js:583
-#: ../js/ui/userMenu.js:652
+#: ../js/gdm/powerMenu.js:155
+#: ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:599
+#: ../js/ui/userMenu.js:668
 msgid "Suspend"
 msgstr "השהיה"
 
-#: ../js/gdm/powerMenu.js:157
+#: ../js/gdm/powerMenu.js:160
 msgid "Restart"
 msgstr "הפעלה מחדש"
 
-#: ../js/gdm/powerMenu.js:162
+#: ../js/gdm/powerMenu.js:165
 msgid "Power Off"
 msgstr "כיבוי"
 
@@ -231,27 +231,27 @@ msgid "Execution of '%s' failed:"
 msgstr "ההרצה של '%s' נכשלה:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:251
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "הכול"
 
-#: ../js/ui/appDisplay.js:310
+#: ../js/ui/appDisplay.js:314
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:371
+#: ../js/ui/appDisplay.js:375
 msgid "SETTINGS"
 msgstr "הגדרות"
 
-#: ../js/ui/appDisplay.js:676
+#: ../js/ui/appDisplay.js:680
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:683
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:680
+#: ../js/ui/appDisplay.js:684
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
@@ -424,93 +424,93 @@ msgstr "השבוע"
 msgid "Next week"
 msgstr "בשבוע הבא"
 
-#: ../js/ui/contactDisplay.js:63
+#: ../js/ui/contactDisplay.js:66
 #: ../js/ui/notificationDaemon.js:486
 #: ../js/ui/status/power.js:215
-#: ../src/shell-app.c:372
+#: ../src/shell-app.c:374
 msgid "Unknown"
 msgstr "לא ידוע"
 
-#: ../js/ui/contactDisplay.js:84
-#: ../js/ui/userMenu.js:127
+#: ../js/ui/contactDisplay.js:89
+#: ../js/ui/userMenu.js:129
 msgid "Available"
 msgstr "זמין"
 
-#: ../js/ui/contactDisplay.js:89
-#: ../js/ui/userMenu.js:136
+#: ../js/ui/contactDisplay.js:94
+#: ../js/ui/userMenu.js:138
 msgid "Away"
 msgstr "מרוחק"
 
-#: ../js/ui/contactDisplay.js:93
-#: ../js/ui/userMenu.js:130
+#: ../js/ui/contactDisplay.js:98
+#: ../js/ui/userMenu.js:132
 msgid "Busy"
 msgstr "עסוק"
 
-#: ../js/ui/contactDisplay.js:97
+#: ../js/ui/contactDisplay.js:102
 msgid "Offline"
 msgstr "מנותק"
 
-#: ../js/ui/contactDisplay.js:148
+#: ../js/ui/contactDisplay.js:153
 msgid "CONTACTS"
 msgstr "אנשי קשר"
 
 #: ../js/ui/dash.js:229
-#: ../js/ui/messageTray.js:1206
+#: ../js/ui/messageTray.js:1207
 msgid "Remove"
 msgstr "הסרה"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:103
 msgid "Date and Time Settings"
 msgstr "הגדרות תאריך ושעה"
 
-#: ../js/ui/dateMenu.js:123
+#: ../js/ui/dateMenu.js:129
 msgid "Open Calendar"
 msgstr "פתיחת היומן"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:187
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/dateMenu.js:182
+#: ../js/ui/dateMenu.js:188
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:186
+#: ../js/ui/dateMenu.js:192
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:193
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:200
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:195
+#: ../js/ui/dateMenu.js:201
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:199
+#: ../js/ui/dateMenu.js:205
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:200
+#: ../js/ui/dateMenu.js:206
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:211
+#: ../js/ui/dateMenu.js:217
 msgid "%A %B %e, %Y"
 msgstr "%A ה־%e ב%B, %Y"
 
@@ -616,11 +616,11 @@ msgstr "התקנה"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "הורדה והתקנה של '%s' מ־extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:322
+#: ../js/ui/keyboard.js:327
 msgid "tray"
 msgstr "מגש מערכת"
 
-#: ../js/ui/keyboard.js:539
+#: ../js/ui/keyboard.js:544
 #: ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "מקלדת"
@@ -685,24 +685,24 @@ msgid "Web Page"
 msgstr "דף אינטרנט"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:116
+#: ../js/ui/main.js:118
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "צילום מסך מהקובץ %d %t"
 
-#: ../js/ui/messageTray.js:1199
+#: ../js/ui/messageTray.js:1200
 msgid "Open"
 msgstr "פתיחה"
 
-#: ../js/ui/messageTray.js:1216
+#: ../js/ui/messageTray.js:1217
 msgid "Unmute"
 msgstr "ביטול ההשתקה"
 
-#: ../js/ui/messageTray.js:1216
+#: ../js/ui/messageTray.js:1217
 msgid "Mute"
 msgstr "השתקה"
 
-#: ../js/ui/messageTray.js:2449
+#: ../js/ui/messageTray.js:2490
 msgid "System Information"
 msgstr "פרטי המערכת"
 
@@ -790,31 +790,35 @@ msgstr "נדרשת ססמה כדי להתחבר אל '%s'."
 msgid "Undo"
 msgstr "ביטול"
 
-#: ../js/ui/overview.js:199
+#: ../js/ui/overview.js:132
+msgid "Overview"
+msgstr "סקירה"
+
+#: ../js/ui/overview.js:202
 msgid "Windows"
 msgstr "חלונות"
 
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Applications"
 msgstr "יישומים"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:228
+#: ../js/ui/overview.js:231
 msgid "Dash"
 msgstr "חלונית"
 
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:591
 msgid "Quit"
 msgstr "יציאה"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:623
 msgid "Activities"
 msgstr "פעילויות"
 
-#: ../js/ui/panel.js:987
+#: ../js/ui/panel.js:998
 msgid "Top Bar"
 msgstr "הסרגל העליון"
 
@@ -860,7 +864,7 @@ msgstr "פעולה זו לא הצליחה, נא לנסות שוב. עמך הסל
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:720
+#: ../js/ui/popupMenu.js:724
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -868,11 +872,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "נא להזין פקודה:"
 
-#: ../js/ui/searchDisplay.js:349
+#: ../js/ui/searchDisplay.js:332
 msgid "Searching..."
 msgstr "בחיפוש..."
 
-#: ../js/ui/searchDisplay.js:417
+#: ../js/ui/searchDisplay.js:414
 msgid "No matching results."
 msgstr "אין תוצאות תואמות."
 
@@ -1567,53 +1571,53 @@ msgstr "עריכת חשבון"
 msgid "Unknown reason"
 msgstr "סיבה לא ידועה"
 
-#: ../js/ui/userMenu.js:133
+#: ../js/ui/userMenu.js:135
 msgid "Hidden"
 msgstr "מוסתר"
 
-#: ../js/ui/userMenu.js:139
+#: ../js/ui/userMenu.js:141
 msgid "Idle"
 msgstr "בהמתנה"
 
-#: ../js/ui/userMenu.js:142
+#: ../js/ui/userMenu.js:144
 msgid "Unavailable"
 msgstr "לא זמין"
 
-#: ../js/ui/userMenu.js:579
-#: ../js/ui/userMenu.js:583
-#: ../js/ui/userMenu.js:653
+#: ../js/ui/userMenu.js:595
+#: ../js/ui/userMenu.js:599
+#: ../js/ui/userMenu.js:669
 msgid "Power Off..."
 msgstr "כיבוי..."
 
-#: ../js/ui/userMenu.js:615
+#: ../js/ui/userMenu.js:631
 msgid "Notifications"
 msgstr "התרעות"
 
-#: ../js/ui/userMenu.js:623
+#: ../js/ui/userMenu.js:639
 msgid "Online Accounts"
 msgstr "חשבונות מקוונים"
 
-#: ../js/ui/userMenu.js:627
+#: ../js/ui/userMenu.js:643
 msgid "System Settings"
 msgstr "הגדרות המערכת"
 
-#: ../js/ui/userMenu.js:634
+#: ../js/ui/userMenu.js:650
 msgid "Lock Screen"
 msgstr "נעילת המסך"
 
-#: ../js/ui/userMenu.js:639
+#: ../js/ui/userMenu.js:655
 msgid "Switch User"
 msgstr "החלפת משתמש"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:660
 msgid "Log Out..."
 msgstr "ניתוק..."
 
-#: ../js/ui/userMenu.js:672
+#: ../js/ui/userMenu.js:688
 msgid "Your chat status will be set to busy"
 msgstr "מצב הצ׳אט שלך יוגדר ל'עסוק'"
 
-#: ../js/ui/userMenu.js:673
+#: ../js/ui/userMenu.js:689
 msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
 msgstr "ההתרעות כבויות כעת, לרבות הודעות צ׳אט. המצב המקוון שלך הותאם כדי לבשר לאחרים שיתכן שהודעותיהם לא יתקבלו באופן מיידי."
 
@@ -1677,15 +1681,15 @@ msgstr[2] "2 קלטים"
 msgid "System Sounds"
 msgstr "צלילי מערכת"
 
-#: ../src/main.c:253
+#: ../src/main.c:255
 msgid "Print version"
 msgstr "Print version"
 
-#: ../src/main.c:259
+#: ../src/main.c:261
 msgid "Mode used by GDM for login screen"
 msgstr "המצב בו GDM יעשה שימוש לצורך מסך הכניסה"
 
-#: ../src/shell-app.c:617
+#: ../src/shell-app.c:619
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "אירע כשל בטעינת '%s'"
