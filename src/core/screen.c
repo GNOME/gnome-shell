@@ -762,7 +762,6 @@ meta_screen_new (MetaDisplay *display,
 
   screen->tab_popup = NULL;
   screen->ws_popup = NULL;
-  screen->tile_preview = NULL;
 
   screen->tile_preview_timeout_id = 0;
 
@@ -868,9 +867,6 @@ meta_screen_free (MetaScreen *screen,
   if (screen->tile_preview_timeout_id)
     g_source_remove (screen->tile_preview_timeout_id);
 
-  if (screen->tile_preview)
-    meta_tile_preview_free (screen->tile_preview);
-  
   g_free (screen->screen_name);
 
   g_object_unref (screen);
@@ -1677,26 +1673,13 @@ meta_screen_workspace_popup_destroy (MetaScreen *screen)
 }
 
 static gboolean
-meta_screen_tile_preview_update_timeout (gpointer data)
+meta_screen_update_tile_preview_timeout (gpointer data)
 {
   MetaScreen *screen = data;
   MetaWindow *window = screen->display->grab_window;
   gboolean needs_preview = FALSE;
 
   screen->tile_preview_timeout_id = 0;
-
-  if (!screen->tile_preview)
-    {
-      Window xwindow;
-      gulong create_serial;
-
-      screen->tile_preview = meta_tile_preview_new (screen->number);
-      xwindow = meta_tile_preview_get_xwindow (screen->tile_preview,
-                                               &create_serial);
-      meta_stack_tracker_record_add (screen->stack_tracker,
-                                     xwindow,
-                                     create_serial);
-    }
 
   if (window)
     {
@@ -1722,12 +1705,16 @@ meta_screen_tile_preview_update_timeout (gpointer data)
   if (needs_preview)
     {
       MetaRectangle tile_rect;
+      int monitor;
 
+      monitor = meta_window_get_current_tile_monitor_number (window);
       meta_window_get_current_tile_area (window, &tile_rect);
-      meta_tile_preview_show (screen->tile_preview, &tile_rect);
+      meta_compositor_show_tile_preview (screen->display->compositor,
+                                         screen, window, &tile_rect, monitor);
     }
   else
-    meta_tile_preview_hide (screen->tile_preview);
+    meta_compositor_hide_tile_preview (screen->display->compositor,
+                                       screen);
 
   return FALSE;
 }
@@ -1735,7 +1722,7 @@ meta_screen_tile_preview_update_timeout (gpointer data)
 #define TILE_PREVIEW_TIMEOUT_MS 200
 
 void
-meta_screen_tile_preview_update (MetaScreen *screen,
+meta_screen_update_tile_preview (MetaScreen *screen,
                                  gboolean    delay)
 {
   if (delay)
@@ -1745,7 +1732,7 @@ meta_screen_tile_preview_update (MetaScreen *screen,
 
       screen->tile_preview_timeout_id =
         g_timeout_add (TILE_PREVIEW_TIMEOUT_MS,
-                       meta_screen_tile_preview_update_timeout,
+                       meta_screen_update_tile_preview_timeout,
                        screen);
     }
   else
@@ -1753,18 +1740,18 @@ meta_screen_tile_preview_update (MetaScreen *screen,
       if (screen->tile_preview_timeout_id > 0)
         g_source_remove (screen->tile_preview_timeout_id);
 
-      meta_screen_tile_preview_update_timeout ((gpointer)screen);
+      meta_screen_update_tile_preview_timeout ((gpointer)screen);
     }
 }
 
 void
-meta_screen_tile_preview_hide (MetaScreen *screen)
+meta_screen_hide_tile_preview (MetaScreen *screen)
 {
   if (screen->tile_preview_timeout_id > 0)
     g_source_remove (screen->tile_preview_timeout_id);
 
-  if (screen->tile_preview)
-    meta_tile_preview_hide (screen->tile_preview);
+  meta_compositor_hide_tile_preview (screen->display->compositor,
+                                     screen);
 }
 
 MetaWindow*

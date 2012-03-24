@@ -1431,9 +1431,6 @@ meta_window_new (MetaDisplay   *display,
   if (!window->override_redirect)
     meta_stack_add (window->screen->stack,
                     window);
-  else if (window->screen->tile_preview != NULL &&
-           meta_tile_preview_get_xwindow (window->screen->tile_preview, NULL) == xwindow)
-    window->layer = META_LAYER_NORMAL;
   else
     window->layer = META_LAYER_OVERRIDE_REDIRECT; /* otherwise set by MetaStack */
 
@@ -3684,7 +3681,7 @@ meta_window_tile (MetaWindow *window)
     directions = META_MAXIMIZE_VERTICAL;
 
   meta_window_maximize_internal (window, directions, NULL);
-  meta_screen_tile_preview_update (window->screen, FALSE);
+  meta_screen_update_tile_preview (window->screen, FALSE);
 
   if (window->display->compositor)
     {
@@ -9278,7 +9275,7 @@ update_move (MetaWindow  *window,
    * trigger it unwittingly, e.g. when shaking loose the window or moving
    * it to another monitor.
    */
-  meta_screen_tile_preview_update (window->screen,
+  meta_screen_update_tile_preview (window->screen,
                                    window->tile_mode != META_TILE_NONE);
 
   meta_window_get_client_root_coords (window, &old);
@@ -10034,6 +10031,20 @@ meta_window_get_work_area_all_monitors (MetaWindow    *window,
               window->desc, area->x, area->y, area->width, area->height);
 }
 
+int
+meta_window_get_current_tile_monitor_number (MetaWindow *window)
+{
+  int tile_monitor_number = window->tile_monitor_number;
+
+  if (tile_monitor_number < 0)
+    {
+      meta_warning ("%s called with an invalid monitor number; using 0 instead\n", G_STRFUNC);
+      tile_monitor_number = 0;
+    }
+
+  return tile_monitor_number;
+}
+
 void
 meta_window_get_current_tile_area (MetaWindow    *window,
                                    MetaRectangle *tile_area)
@@ -10042,12 +10053,7 @@ meta_window_get_current_tile_area (MetaWindow    *window,
 
   g_return_if_fail (window->tile_mode != META_TILE_NONE);
 
-  tile_monitor_number = window->tile_monitor_number;
-  if (tile_monitor_number < 0)
-    {
-      meta_warning ("%s called with an invalid monitor number; using 0 instead\n", G_STRFUNC);
-      tile_monitor_number = 0;
-    }
+  tile_monitor_number = meta_window_get_current_tile_monitor_number (window);
 
   meta_window_get_work_area_for_monitor (window, tile_monitor_number, tile_area);
 

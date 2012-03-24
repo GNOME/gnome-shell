@@ -158,6 +158,11 @@ struct _MetaPluginClass
                             gint                to,
                             MetaMotionDirection direction);
 
+  void (*show_tile_preview) (MetaPlugin      *plugin,
+                             MetaWindow      *window,
+                             MetaRectangle   *tile_rect,
+                             int              tile_monitor_number);
+  void (*hide_tile_preview) (MetaPlugin      *plugin);
 
   /**
    * MetaPluginClass::kill_window_effects:
