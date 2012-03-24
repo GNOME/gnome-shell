@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-30 10:48+0200\n"
-"PO-Revision-Date: 2011-12-30 10:49+0200\n"
+"POT-Creation-Date: 2012-03-24 19:08+0200\n"
+"PO-Revision-Date: 2012-03-24 19:08+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "Language: he\n"
@@ -68,12 +68,12 @@ msgstr "ה_מתנה"
 msgid "_Force Quit"
 msgstr "_אילוץ סגירה"
 
-#: ../src/core/display.c:361
+#: ../src/core/display.c:387
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Missing %s extension required for compositing"
 
-#: ../src/core/display.c:427
+#: ../src/core/display.c:453
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Failed to open X Window System display '%s'\n"
@@ -138,26 +138,26 @@ msgstr "Print version"
 msgid "Comma-separated list of compositor plugins"
 msgstr "Comma-separated list of compositor plugins"
 
-#: ../src/core/prefs.c:1069
+#: ../src/core/prefs.c:1077
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 
-#: ../src/core/prefs.c:1144
+#: ../src/core/prefs.c:1152
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Could not parse font description \"%s\" from GSettings key %s\n"
 
-#: ../src/core/prefs.c:1210
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 
-#: ../src/core/prefs.c:1722
+#: ../src/core/prefs.c:1739
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 
-#: ../src/core/prefs.c:1819
+#: ../src/core/prefs.c:1836
 #, c-format
 msgid "Workspace %d"
 msgstr "סביבת עבודה %d"
@@ -279,7 +279,7 @@ msgid "Window manager error: "
 msgstr "Window manager error: "
 
 #. first time through
-#: ../src/core/window.c:7180
+#: ../src/core/window.c:7266
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
@@ -291,7 +291,7 @@ msgstr "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADE
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7843
+#: ../src/core/window.c:7931
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
@@ -367,46 +367,54 @@ msgid "Determines whether workspace switching should happen for windows on all m
 msgstr "Determines whether workspace switching should happen for windows on all monitors or only for windows on the primary monitor."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:6
+msgid "Determines whether workspaces are managed dynamically or whether there's a static number of workspaces (determined by the num-workspaces key in org.gnome.desktop.wm.preferences)."
+msgstr "Determines whether workspaces are managed dynamically or whether there's a static number of workspaces (determined by the num-workspaces key in org.gnome.desktop.wm.preferences)."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Draggable border width"
 msgstr "Draggable border width"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:7
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Enable edge tiling when dropping windows on screen edges"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "If enabled, dropping windows on vertical screen edges maximizes them vertically and resizes them horizontally to cover half of the available area. Dropping windows on the top screen edge maximizes them completely."
 msgstr "If enabled, dropping windows on vertical screen edges maximizes them vertically and resizes them horizontally to cover half of the available area. Dropping windows on the top screen edge maximizes them completely."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid "Live Hidden Windows"
 msgstr "Live Hidden Windows"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "Modifier to use for extended window management operations"
 msgstr "Modifier to use for extended window management operations"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
 msgid "No tab popup"
 msgstr "No tab popup"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Select window from tab popup"
 msgstr "Select window from tab popup"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid "The amount of total draggable borders. If the theme's visible borders are not enough, invisible borders will be added to meet this value."
 msgstr "The amount of total draggable borders. If the theme's visible borders are not enough, invisible borders will be added to meet this value."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "This key will initiate the \"overlay\", which is a combination window overview and application launching system. The default is intended to be the \"Windows key\" on PC hardware. It's expected that this binding either the default or set to the empty string."
 msgstr "This key will initiate the \"overlay\", which is a combination window overview and application launching system. The default is intended to be the \"Windows key\" on PC hardware. It's expected that this binding either the default or set to the empty string."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "When true, instead of having independent titlebars, modal dialogs appear attached to the titlebar of the parent window and are moved together with the parent window."
 msgstr "When true, instead of having independent titlebars, modal dialogs appear attached to the titlebar of the parent window and are moved together with the parent window."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Workspaces are managed dynamically"
+msgstr "Workspaces are managed dynamically"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Workspaces only on primary"
 msgstr "Workspaces only on primary"
 
@@ -414,50 +422,6 @@ msgstr "Workspaces only on primary"
 #, c-format
 msgid "Usage: %s\n"
 msgstr "שימוש: %s\n"
-
-#: ../src/ui/frames.c:1157
-msgid "Close Window"
-msgstr "סגור חלון"
-
-#: ../src/ui/frames.c:1160
-msgid "Window Menu"
-msgstr "תפריט חלון"
-
-#: ../src/ui/frames.c:1163
-msgid "Minimize Window"
-msgstr "מזער חלון"
-
-#: ../src/ui/frames.c:1166
-msgid "Maximize Window"
-msgstr "הגדל חלון"
-
-#: ../src/ui/frames.c:1169
-msgid "Restore Window"
-msgstr "שחזר חלון"
-
-#: ../src/ui/frames.c:1172
-msgid "Roll Up Window"
-msgstr "גלול חלון מעלה"
-
-#: ../src/ui/frames.c:1175
-msgid "Unroll Window"
-msgstr "בטל גלילה"
-
-#: ../src/ui/frames.c:1178
-msgid "Keep Window On Top"
-msgstr "שמור על החלון גלוי"
-
-#: ../src/ui/frames.c:1181
-msgid "Remove Window From Top"
-msgstr "בטל שמירת החלון גלוי"
-
-#: ../src/ui/frames.c:1184
-msgid "Always On Visible Workspace"
-msgstr "הראה בכל סביבות העבודה"
-
-#: ../src/ui/frames.c:1187
-msgid "Put Window On Only One Workspace"
-msgstr "הראה את החלון על סביבת עבודה אחת בלבד"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:69
@@ -1467,6 +1431,39 @@ msgstr "y value was %d, %d was expected"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+
+#~ msgid "Close Window"
+#~ msgstr "סגור חלון"
+
+#~ msgid "Window Menu"
+#~ msgstr "תפריט חלון"
+
+#~ msgid "Minimize Window"
+#~ msgstr "מזער חלון"
+
+#~ msgid "Maximize Window"
+#~ msgstr "הגדל חלון"
+
+#~ msgid "Restore Window"
+#~ msgstr "שחזר חלון"
+
+#~ msgid "Roll Up Window"
+#~ msgstr "גלול חלון מעלה"
+
+#~ msgid "Unroll Window"
+#~ msgstr "בטל גלילה"
+
+#~ msgid "Keep Window On Top"
+#~ msgstr "שמור על החלון גלוי"
+
+#~ msgid "Remove Window From Top"
+#~ msgstr "בטל שמירת החלון גלוי"
+
+#~ msgid "Always On Visible Workspace"
+#~ msgstr "הראה בכל סביבות העבודה"
+
+#~ msgid "Put Window On Only One Workspace"
+#~ msgstr "הראה את החלון על סביבת עבודה אחת בלבד"
 
 #~ msgid "Switch to workspace 1"
 #~ msgstr "מעבר למרחב עבודה 1"
