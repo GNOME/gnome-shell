@@ -121,4 +121,12 @@ void meta_compositor_sync_screen_size          (MetaCompositor *compositor,
 void meta_compositor_flash_screen              (MetaCompositor *compositor,
                                                 MetaScreen     *screen);
 
+void meta_compositor_show_tile_preview (MetaCompositor *compositor,
+                                        MetaScreen     *screen,
+                                        MetaWindow     *window,
+                                        MetaRectangle  *tile_rect,
+                                        int             tile_monitor_number);
+void meta_compositor_hide_tile_preview (MetaCompositor *compositor,
+                                        MetaScreen     *screen);
+
 #endif /* META_COMPOSITOR_H */
