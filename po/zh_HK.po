@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-08 16:24+0800\n"
-"PO-Revision-Date: 2012-03-08 16:24+0800\n"
+"POT-Creation-Date: 2012-03-25 08:18+0800\n"
+"PO-Revision-Date: 2012-03-25 08:19+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
 "Language: \n"
@@ -210,7 +210,7 @@ msgstr "(或是滑過手指)"
 msgid "Not listed?"
 msgstr "沒有列出來？"
 
-#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
+#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:401
 #: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
@@ -225,16 +225,16 @@ msgstr "登入"
 msgid "Login Window"
 msgstr "登入視窗"
 
-#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:591
-#: ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:662
+#: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
 msgid "Suspend"
 msgstr "暫停"
 
-#: ../js/gdm/powerMenu.js:157
+#: ../js/gdm/powerMenu.js:160
 msgid "Restart"
 msgstr "重新啟動"
 
-#: ../js/gdm/powerMenu.js:162
+#: ../js/gdm/powerMenu.js:165
 msgid "Power Off"
 msgstr "關閉電源"
 
@@ -254,27 +254,27 @@ msgid "Execution of '%s' failed:"
 msgstr "執行「%s」失敗："
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:251
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "全部"
 
-#: ../js/ui/appDisplay.js:310
+#: ../js/ui/appDisplay.js:314
 msgid "APPLICATIONS"
 msgstr "程式集"
 
-#: ../js/ui/appDisplay.js:371
+#: ../js/ui/appDisplay.js:375
 msgid "SETTINGS"
 msgstr "設定值"
 
-#: ../js/ui/appDisplay.js:676
+#: ../js/ui/appDisplay.js:680
 msgid "New Window"
 msgstr "新視窗"
 
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:683
 msgid "Remove from Favorites"
 msgstr "自喜好中移除"
 
-#: ../js/ui/appDisplay.js:680
+#: ../js/ui/appDisplay.js:684
 msgid "Add to Favorites"
 msgstr "加入喜好"
 
@@ -447,87 +447,87 @@ msgstr "本週"
 msgid "Next week"
 msgstr "下週"
 
-#: ../js/ui/contactDisplay.js:63 ../js/ui/notificationDaemon.js:486
-#: ../js/ui/status/power.js:215 ../src/shell-app.c:372
+#: ../js/ui/contactDisplay.js:66 ../js/ui/notificationDaemon.js:486
+#: ../js/ui/status/power.js:215 ../src/shell-app.c:374
 msgid "Unknown"
 msgstr "不明"
 
-#: ../js/ui/contactDisplay.js:84 ../js/ui/userMenu.js:127
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:129
 msgid "Available"
 msgstr "有空"
 
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:136
+#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:138
 msgid "Away"
 msgstr "離開"
 
-#: ../js/ui/contactDisplay.js:93 ../js/ui/userMenu.js:130
+#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:132
 msgid "Busy"
 msgstr "忙碌"
 
-#: ../js/ui/contactDisplay.js:97
+#: ../js/ui/contactDisplay.js:102
 msgid "Offline"
 msgstr "離線"
 
-#: ../js/ui/contactDisplay.js:148
+#: ../js/ui/contactDisplay.js:153
 msgid "CONTACTS"
 msgstr "聯絡人"
 
-#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1206
+#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1207
 msgid "Remove"
 msgstr "移除"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:103
 msgid "Date and Time Settings"
 msgstr "日期與時刻設定值"
 
-#: ../js/ui/dateMenu.js:123
+#: ../js/ui/dateMenu.js:129
 msgid "Open Calendar"
 msgstr "開啟行事曆"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:187
 msgid "%a %b %e, %R:%S"
 msgstr "%m月%e日(%a), %R:%S"
 
-#: ../js/ui/dateMenu.js:182
+#: ../js/ui/dateMenu.js:188
 msgid "%a %b %e, %R"
 msgstr "%m月%e日(%a), %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:186
+#: ../js/ui/dateMenu.js:192
 msgid "%a %R:%S"
 msgstr "(%a) %R:%S"
 
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:193
 msgid "%a %R"
 msgstr "(%a) %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:200
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%m月%e日(%a), %p %l:%M:%S"
 
-#: ../js/ui/dateMenu.js:195
+#: ../js/ui/dateMenu.js:201
 msgid "%a %b %e, %l:%M %p"
 msgstr "%m月%e日(%a), %p %l:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:199
+#: ../js/ui/dateMenu.js:205
 msgid "%a %l:%M:%S %p"
 msgstr "(%a) %p %l:%M:%S"
 
-#: ../js/ui/dateMenu.js:200
+#: ../js/ui/dateMenu.js:206
 msgid "%a %l:%M %p"
 msgstr "(%a) %p %l:%M"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:211
+#: ../js/ui/dateMenu.js:217
 msgid "%A %B %e, %Y"
 msgstr "%Y年%m月%e日%A"
 
@@ -624,11 +624,11 @@ msgstr "安裝"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "是否從 extensions.gnome.org 下載並安裝「%s」？"
 
-#: ../js/ui/keyboard.js:322
+#: ../js/ui/keyboard.js:327
 msgid "tray"
 msgstr "系統匣"
 
-#: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:544 ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "鍵盤"
 
@@ -689,24 +689,24 @@ msgid "Web Page"
 msgstr "網頁"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:116
+#: ../js/ui/main.js:118
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Screencast from %d %t"
 
-#: ../js/ui/messageTray.js:1199
+#: ../js/ui/messageTray.js:1200
 msgid "Open"
 msgstr "開啟"
 
-#: ../js/ui/messageTray.js:1216
+#: ../js/ui/messageTray.js:1217
 msgid "Unmute"
 msgstr "取消靜音"
 
-#: ../js/ui/messageTray.js:1216
+#: ../js/ui/messageTray.js:1217
 msgid "Mute"
 msgstr "靜音"
 
-#: ../js/ui/messageTray.js:2449
+#: ../js/ui/messageTray.js:2490
 msgid "System Information"
 msgstr "系統資訊"
 
@@ -793,31 +793,35 @@ msgstr "連線至「%s」需要密碼。"
 msgid "Undo"
 msgstr "復原"
 
-#: ../js/ui/overview.js:199
+#: ../js/ui/overview.js:132
+msgid "Overview"
+msgstr "概覽"
+
+#: ../js/ui/overview.js:202
 msgid "Windows"
 msgstr "視窗"
 
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Applications"
 msgstr "應用程式"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:228
+#: ../js/ui/overview.js:231
 msgid "Dash"
 msgstr "Dash"
 
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:591
 msgid "Quit"
 msgstr "結束"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:623
 msgid "Activities"
 msgstr "概覽 "
 
-#: ../js/ui/panel.js:987
+#: ../js/ui/panel.js:998
 msgid "Top Bar"
 msgstr "頂端列"
 
@@ -863,7 +867,7 @@ msgstr "抱歉，那樣無法運作。請再試一次。"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:720
+#: ../js/ui/popupMenu.js:724
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
@@ -871,11 +875,11 @@ msgstr "toggle-switch-us"
 msgid "Please enter a command:"
 msgstr "請輸入指令："
 
-#: ../js/ui/searchDisplay.js:349
+#: ../js/ui/searchDisplay.js:332
 msgid "Searching..."
 msgstr "搜尋中…"
 
-#: ../js/ui/searchDisplay.js:417
+#: ../js/ui/searchDisplay.js:414
 msgid "No matching results."
 msgstr "沒有相符的結果。"
 
@@ -1549,51 +1553,51 @@ msgstr "編輯帳號"
 msgid "Unknown reason"
 msgstr "不明原因"
 
-#: ../js/ui/userMenu.js:133
+#: ../js/ui/userMenu.js:135
 msgid "Hidden"
 msgstr "隱藏"
 
-#: ../js/ui/userMenu.js:139
+#: ../js/ui/userMenu.js:141
 msgid "Idle"
 msgstr "閒置"
 
-#: ../js/ui/userMenu.js:142
+#: ../js/ui/userMenu.js:144
 msgid "Unavailable"
 msgstr "沒空"
 
-#: ../js/ui/userMenu.js:589 ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:663
+#: ../js/ui/userMenu.js:595 ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:669
 msgid "Power Off..."
 msgstr "關閉電源…"
 
-#: ../js/ui/userMenu.js:625
+#: ../js/ui/userMenu.js:631
 msgid "Notifications"
 msgstr "通知"
 
-#: ../js/ui/userMenu.js:633
+#: ../js/ui/userMenu.js:639
 msgid "Online Accounts"
 msgstr "網上帳號"
 
-#: ../js/ui/userMenu.js:637
+#: ../js/ui/userMenu.js:643
 msgid "System Settings"
 msgstr "系統設定值"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:650
 msgid "Lock Screen"
 msgstr "鎖定畫面"
 
-#: ../js/ui/userMenu.js:649
+#: ../js/ui/userMenu.js:655
 msgid "Switch User"
 msgstr "切換使用者"
 
-#: ../js/ui/userMenu.js:654
+#: ../js/ui/userMenu.js:660
 msgid "Log Out..."
 msgstr "登出…"
 
-#: ../js/ui/userMenu.js:682
+#: ../js/ui/userMenu.js:688
 msgid "Your chat status will be set to busy"
 msgstr "你的聊天狀態會設為忙碌"
 
-#: ../js/ui/userMenu.js:683
+#: ../js/ui/userMenu.js:689
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1654,15 +1658,15 @@ msgstr[0] "%u 輸入"
 msgid "System Sounds"
 msgstr "系統音效"
 
-#: ../src/main.c:253
+#: ../src/main.c:255
 msgid "Print version"
 msgstr "顯示版本"
 
-#: ../src/main.c:259
+#: ../src/main.c:261
 msgid "Mode used by GDM for login screen"
 msgstr "GDM 在登入畫面使用的模式"
 
-#: ../src/shell-app.c:617
+#: ../src/shell-app.c:619
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "無法啟動「%s」"
