@@ -65,6 +65,7 @@ on_screenshot_written (GObject *source,
                                &screenshot_data->screenshot_area);
 
   cairo_surface_destroy (screenshot_data->image);
+  g_object_unref (screenshot_data->screenshot);
   g_free (screenshot_data->filename);
   g_free (screenshot_data);
 }
@@ -262,7 +263,7 @@ shell_screenshot_screenshot (ShellScreenshot *screenshot,
   ClutterActor *stage;
   _screenshot_data *data = g_new0 (_screenshot_data, 1);
 
-  data->screenshot = screenshot;
+  data->screenshot = g_object_ref (screenshot);
   data->filename = g_strdup (filename);
   data->callback = callback;
   data->include_cursor = include_cursor;
@@ -301,7 +302,7 @@ shell_screenshot_screenshot_area (ShellScreenshot *screenshot,
   ClutterActor *stage;
   _screenshot_data *data = g_new0 (_screenshot_data, 1);
 
-  data->screenshot = screenshot;
+  data->screenshot = g_object_ref (screenshot);
   data->filename = g_strdup (filename);
   data->screenshot_area.x = x;
   data->screenshot_area.y = y;
@@ -350,7 +351,7 @@ shell_screenshot_screenshot_window (ShellScreenshot *screenshot,
   MetaRectangle rect;
   cairo_rectangle_int_t clip;
 
-  screenshot_data->screenshot = screenshot;
+  screenshot_data->screenshot = g_object_ref (screenshot);
   screenshot_data->filename = g_strdup (filename);
   screenshot_data->callback = callback;
 
