@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-03-19 14:09+0000\n"
-"PO-Revision-Date: 2012-03-21 22:20+0300\n"
+"PO-Revision-Date: 2012-03-25 21:29+0300\n"
 "Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -472,11 +472,11 @@ msgstr "Открыть календарь"
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:187
 msgid "%a %b %e, %R:%S"
-msgstr "%a %b %e, %R:%S"
+msgstr "%a, %e %b, %R:%S"
 
 #: ../js/ui/dateMenu.js:188
 msgid "%a %b %e, %R"
-msgstr "%a %b %e, %R"
+msgstr "%a, %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
@@ -492,17 +492,17 @@ msgstr "%a %R"
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:200
 msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a %b %e, %l:%M:%S %p"
+msgstr "%a, %e %b, %l:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:201
 msgid "%a %b %e, %l:%M %p"
-msgstr "%a %b %e, %l:%M %p"
+msgstr "%a, %e %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:205
 msgid "%a %l:%M:%S %p"
-msgstr "%a %l:%M:%S %p"
+msgstr "%a, %l:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:206
 msgid "%a %l:%M %p"
@@ -513,7 +513,7 @@ msgstr "%a, %H:%M"
 #.
 #: ../js/ui/dateMenu.js:217
 msgid "%A %B %e, %Y"
-msgstr "%A %B %e, %Y"
+msgstr "%A, %e %B, %Y"
 
 #: ../js/ui/endSessionDialog.js:61
 #, c-format
