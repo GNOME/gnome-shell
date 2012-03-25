@@ -19,20 +19,10 @@
  *  - ShellGtkEmbed is created for the ShellEmbeddedWindow
  *  - actor is added to a stage
  *
- * Ideally, the way it would work is that the GtkWindow is mapped
- * if and only if both:
+ * The way it works is that the GtkWindow is mapped if and only if both:
  *
- * - GTK_WIDGET_VISIBLE (window) [widget has been shown]
+ * - gtk_widget_visible (window) [widget has been shown]
  * - Actor is mapped [actor and all parents visible, actor in stage]
- *
- * Implementing this perfectly is not currently possible, due to problems
- * in Clutter, see:
- *
- * http://bugzilla.openedhand.com/show_bug.cgi?id=1138
- *
- * So until that is fixed we use the "realized" state of the ClutterActor
- * as a stand-in for the ideal mapped state, this will work as long
- * as the ClutterActor and all its parents are in fact visible.
  */
 
 G_DEFINE_TYPE (ShellEmbeddedWindow, shell_embedded_window, GTK_TYPE_WINDOW);
@@ -232,7 +222,7 @@ _shell_embedded_window_set_actor (ShellEmbeddedWindow  *window,
   window->priv->actor = actor;
 
   if (actor &&
-      CLUTTER_ACTOR_IS_REALIZED (actor) &&
+      CLUTTER_ACTOR_IS_MAPPED (actor) &&
       gtk_widget_get_visible (GTK_WIDGET (window)))
     gtk_widget_map (GTK_WIDGET (window));
 }
@@ -272,7 +262,7 @@ _shell_embedded_window_allocate (ShellEmbeddedWindow *window,
 }
 
 void
-_shell_embedded_window_realize (ShellEmbeddedWindow *window)
+_shell_embedded_window_map (ShellEmbeddedWindow *window)
 {
   g_return_if_fail (SHELL_IS_EMBEDDED_WINDOW (window));
 
@@ -281,7 +271,7 @@ _shell_embedded_window_realize (ShellEmbeddedWindow *window)
 }
 
 void
-_shell_embedded_window_unrealize (ShellEmbeddedWindow *window)
+_shell_embedded_window_unmap (ShellEmbeddedWindow *window)
 {
   g_return_if_fail (SHELL_IS_EMBEDDED_WINDOW (window));
 

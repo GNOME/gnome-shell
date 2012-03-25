@@ -199,23 +199,23 @@ shell_gtk_embed_allocate (ClutterActor          *actor,
 }
 
 static void
-shell_gtk_embed_realize (ClutterActor *actor)
+shell_gtk_embed_map (ClutterActor *actor)
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
 
-  _shell_embedded_window_realize (embed->priv->window);
+  _shell_embedded_window_map (embed->priv->window);
 
-  CLUTTER_ACTOR_CLASS (shell_gtk_embed_parent_class)->realize (actor);
+  CLUTTER_ACTOR_CLASS (shell_gtk_embed_parent_class)->map (actor);
 }
 
 static void
-shell_gtk_embed_unrealize (ClutterActor *actor)
+shell_gtk_embed_unmap (ClutterActor *actor)
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
 
-  _shell_embedded_window_unrealize (embed->priv->window);
+  _shell_embedded_window_unmap (embed->priv->window);
 
-  CLUTTER_ACTOR_CLASS (shell_gtk_embed_parent_class)->unrealize (actor);
+  CLUTTER_ACTOR_CLASS (shell_gtk_embed_parent_class)->unmap (actor);
 }
 
 static void
@@ -243,8 +243,8 @@ shell_gtk_embed_class_init (ShellGtkEmbedClass *klass)
   actor_class->get_preferred_width = shell_gtk_embed_get_preferred_width;
   actor_class->get_preferred_height = shell_gtk_embed_get_preferred_height;
   actor_class->allocate = shell_gtk_embed_allocate;
-  actor_class->realize = shell_gtk_embed_realize;
-  actor_class->unrealize = shell_gtk_embed_unrealize;
+  actor_class->map = shell_gtk_embed_map;
+  actor_class->unmap = shell_gtk_embed_unmap;
 
   g_object_class_install_property (object_class,
                                    PROP_WINDOW,

@@ -14,7 +14,7 @@ void _shell_embedded_window_allocate (ShellEmbeddedWindow *window,
 				      int                  width,
 				      int                  height);
 
-void _shell_embedded_window_realize   (ShellEmbeddedWindow *window);
-void _shell_embedded_window_unrealize (ShellEmbeddedWindow *window);
+void _shell_embedded_window_map (ShellEmbeddedWindow *window);
+void _shell_embedded_window_unmap (ShellEmbeddedWindow *window);
 
 #endif /* __SHELL_EMBEDDED_WINDOW_PRIVATE_H__ */
