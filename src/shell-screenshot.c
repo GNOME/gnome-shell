@@ -42,17 +42,9 @@ typedef struct _screenshot_data {
 G_DEFINE_TYPE(ShellScreenshot, shell_screenshot, G_TYPE_OBJECT);
 
 static void
-shell_screenshot_finalize (GObject *gobject)
-{
-
-}
-
-static void
 shell_screenshot_class_init (ShellScreenshotClass *screenshot_class)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (screenshot_class);
-
-  gobject_class->finalize = shell_screenshot_finalize;
+  (void) screenshot_class;
 }
 
 static void
