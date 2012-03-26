@@ -1,3 +1,20 @@
+3.4.0
+=====
+* Don't crash when taking screenshots [Jasper; #672775]
+* Fix dialog-resizing problem [Florian; #672543]
+
+Contributors:
+ Florian Müllner, Jasper St. Pierre
+
+Translations:
+ Khaled Hosny, Abderrahim Kitouni [ar], Ihar Hrachyshka [be],
+ Alexander Shopov [bg], Marek Černocký [cz], Jiri Grönroos, Timo Jyrinki [fi],
+ Bruno Brouard [fr], Fran Diéguez [gl], Yaron Shahrabani [he],
+ Gabor Kelemen [hu], Jiro Matsuzawa [ja], Kenneth Nielsen [dk],
+ Mattias Põldaru [et], Changwoo Ryu [kr], Rudolfs Mazurs [lv],
+ Jonh Wendell [pt_BR], Yuri Myasoedov[ru], Daniel Korostil [uk],
+ Nguyễn Thái Ngọc Duy [vi], Chao-Hsiung Liao [zh_HK, zh_TW]
+
 3.3.92
 ======
 * Add shell-dialogs for GNOME Keyring prompts [Stef; #652459, #652460, #671034]
