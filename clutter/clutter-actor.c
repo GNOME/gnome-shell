@@ -11761,6 +11761,11 @@ clutter_actor_set_child_above_sibling (ClutterActor *self,
   if (sibling != NULL)
     g_return_if_fail (sibling->priv->parent == self);
 
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (self) ||
+      CLUTTER_ACTOR_IN_DESTRUCTION (child) ||
+      (sibling != NULL && CLUTTER_ACTOR_IN_DESTRUCTION (sibling)))
+    return;
+
   /* we don't want to change the state of child, or emit signals, or
    * regenerate ChildMeta instances here, but we still want to follow
    * the correct sequence of steps encoded in remove_child() and
@@ -11807,6 +11812,11 @@ clutter_actor_set_child_below_sibling (ClutterActor *self,
   if (sibling != NULL)
     g_return_if_fail (sibling->priv->parent == self);
 
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (self) ||
+      CLUTTER_ACTOR_IN_DESTRUCTION (child) ||
+      (sibling != NULL && CLUTTER_ACTOR_IN_DESTRUCTION (sibling)))
+    return;
+
   /* see the comment in set_child_above_sibling() */
   g_object_ref (child);
   clutter_actor_remove_child_internal (self, child, 0);
@@ -11841,6 +11851,10 @@ clutter_actor_set_child_at_index (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (child));
   g_return_if_fail (child->priv->parent == self);
   g_return_if_fail (index_ <= self->priv->n_children);
+
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (self) ||
+      CLUTTER_ACTOR_IN_DESTRUCTION (child))
+    return;
 
   g_object_ref (child);
   clutter_actor_remove_child_internal (self, child, 0);
