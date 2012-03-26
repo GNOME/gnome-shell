@@ -810,20 +810,10 @@ update_font_options (GtkSettings  *settings,
                      ClutterStage *stage)
 {
   StThemeContext *context;
-  ClutterBackend *backend;
   gint dpi;
-  gint hinting;
-  gchar *hint_style_str;
-  cairo_hint_style_t hint_style = CAIRO_HINT_STYLE_NONE;
-  gint antialias;
-  cairo_antialias_t antialias_mode = CAIRO_ANTIALIAS_NONE;
-  cairo_font_options_t *options;
 
   g_object_get (settings,
                 "gtk-xft-dpi", &dpi,
-                "gtk-xft-antialias", &antialias,
-                "gtk-xft-hinting", &hinting,
-                "gtk-xft-hintstyle", &hint_style_str,
                 NULL);
 
   context = st_theme_context_get_for_stage (stage);
@@ -833,48 +823,6 @@ update_font_options (GtkSettings  *settings,
     st_theme_context_set_resolution (context, dpi / 1024);
   else
     st_theme_context_set_default_resolution (context);
-
-  /* Clutter (as of 0.9) passes comprehensively wrong font options
-   * override whatever set_font_flags() did above.
-   *
-   * http://bugzilla.openedhand.com/show_bug.cgi?id=1456
-   */
-  backend = clutter_get_default_backend ();
-  options = cairo_font_options_create ();
-
-  cairo_font_options_set_hint_metrics (options, CAIRO_HINT_METRICS_ON);
-
-  if (hinting >= 0 && !hinting)
-    {
-      hint_style = CAIRO_HINT_STYLE_NONE;
-    }
-  else if (hint_style_str)
-    {
-      if (strcmp (hint_style_str, "hintnone") == 0)
-        hint_style = CAIRO_HINT_STYLE_NONE;
-      else if (strcmp (hint_style_str, "hintslight") == 0)
-        hint_style = CAIRO_HINT_STYLE_SLIGHT;
-      else if (strcmp (hint_style_str, "hintmedium") == 0)
-        hint_style = CAIRO_HINT_STYLE_MEDIUM;
-      else if (strcmp (hint_style_str, "hintfull") == 0)
-        hint_style = CAIRO_HINT_STYLE_FULL;
-    }
-
-  g_free (hint_style_str);
-
-  cairo_font_options_set_hint_style (options, hint_style);
-
-  /* We don't want to turn on subpixel anti-aliasing; since Clutter
-   * doesn't currently have the code to support ARGB masks,
-   * generating them then squashing them back to A8 is pointless.
-   */
-  antialias_mode = (antialias < 0 || antialias) ? CAIRO_ANTIALIAS_GRAY
-                                                : CAIRO_ANTIALIAS_NONE;
-
-  cairo_font_options_set_antialias (options, antialias_mode);
-
-  clutter_backend_set_font_options (backend, options);
-  cairo_font_options_destroy (options);
 }
 
 static void
@@ -902,12 +850,6 @@ shell_fonts_init (ClutterStage *stage)
   settings = gtk_settings_get_default ();
   g_object_connect (settings,
                     "signal::notify::gtk-xft-dpi",
-                    G_CALLBACK (settings_notify_cb), stage,
-                    "signal::notify::gtk-xft-antialias",
-                    G_CALLBACK (settings_notify_cb), stage,
-                    "signal::notify::gtk-xft-hinting",
-                    G_CALLBACK (settings_notify_cb), stage,
-                    "signal::notify::gtk-xft-hintstyle",
                     G_CALLBACK (settings_notify_cb), stage,
                     NULL);
   update_font_options (settings, stage);
