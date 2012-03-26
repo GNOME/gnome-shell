@@ -1,16 +1,15 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Young-Ho Cha <ganadist@gmail.com>, 2009.
-# Changwoo Ryu <cwryu@debian.org>, 2011.
+# Changwoo Ryu <cwryu@debian.org>, 2011-2012.
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-10 01:15+0000\n"
-"PO-Revision-Date: 2012-03-10 15:54+0900\n"
-"Last-Translator: Seong-ho Cho <darkcircle.0426@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-03-19 14:09+0000\n"
+"PO-Revision-Date: 2012-03-27 01:36+0900\n"
+"Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -234,7 +233,7 @@ msgstr "(또는 지문을 문지르십시오)"
 msgid "Not listed?"
 msgstr "목록에 없습니까?"
 
-#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
+#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:401
 #: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
@@ -249,16 +248,16 @@ msgstr "로그인"
 msgid "Login Window"
 msgstr "로그인 창"
 
-#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:591
-#: ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:662
+#: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
 msgid "Suspend"
 msgstr "절전"
 
-#: ../js/gdm/powerMenu.js:157
+#: ../js/gdm/powerMenu.js:160
 msgid "Restart"
 msgstr "다시 시작"
 
-#: ../js/gdm/powerMenu.js:162
+#: ../js/gdm/powerMenu.js:165
 msgid "Power Off"
 msgstr "컴퓨터 끄기"
 
@@ -278,27 +277,27 @@ msgid "Execution of '%s' failed:"
 msgstr "'%s' 실행이 실패했습니다:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:251
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "모두"
 
-#: ../js/ui/appDisplay.js:310
+#: ../js/ui/appDisplay.js:314
 msgid "APPLICATIONS"
 msgstr "프로그램"
 
-#: ../js/ui/appDisplay.js:371
+#: ../js/ui/appDisplay.js:375
 msgid "SETTINGS"
 msgstr "설정"
 
-#: ../js/ui/appDisplay.js:676
+#: ../js/ui/appDisplay.js:680
 msgid "New Window"
 msgstr "새 창"
 
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:683
 msgid "Remove from Favorites"
 msgstr "즐겨찾기에서 제거"
 
-#: ../js/ui/appDisplay.js:680
+#: ../js/ui/appDisplay.js:684
 msgid "Add to Favorites"
 msgstr "즐겨찾기에 추가"
 
@@ -471,28 +470,28 @@ msgstr "이번주"
 msgid "Next week"
 msgstr "다음주"
 
-#: ../js/ui/contactDisplay.js:63 ../js/ui/notificationDaemon.js:486
-#: ../js/ui/status/power.js:215 ../src/shell-app.c:372
+#: ../js/ui/contactDisplay.js:66 ../js/ui/notificationDaemon.js:486
+#: ../js/ui/status/power.js:215 ../src/shell-app.c:374
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: ../js/ui/contactDisplay.js:84 ../js/ui/userMenu.js:127
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:129
 msgid "Available"
 msgstr "대화 가능"
 
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:136
+#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:138
 msgid "Away"
 msgstr "자리 비움"
 
-#: ../js/ui/contactDisplay.js:93 ../js/ui/userMenu.js:130
+#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:132
 msgid "Busy"
 msgstr "다른 용무 중"
 
-#: ../js/ui/contactDisplay.js:97
+#: ../js/ui/contactDisplay.js:102
 msgid "Offline"
 msgstr "오프라인"
 
-#: ../js/ui/contactDisplay.js:148
+#: ../js/ui/contactDisplay.js:153
 msgid "CONTACTS"
 msgstr "연락처"
 
@@ -500,58 +499,58 @@ msgstr "연락처"
 msgid "Remove"
 msgstr "제거"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:103
 msgid "Date and Time Settings"
 msgstr "날짜 및 시각 설정"
 
-#: ../js/ui/dateMenu.js:123
+#: ../js/ui/dateMenu.js:129
 msgid "Open Calendar"
 msgstr "달력 열기"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:187
 msgid "%a %b %e, %R:%S"
 msgstr "%b %e일 (%a), %R:%S"
 
-#: ../js/ui/dateMenu.js:182
+#: ../js/ui/dateMenu.js:188
 msgid "%a %b %e, %R"
 msgstr "%b %e일 (%a), %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:186
+#: ../js/ui/dateMenu.js:192
 msgid "%a %R:%S"
 msgstr "(%a) %R:%S"
 
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:193
 msgid "%a %R"
 msgstr "(%a) %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:200
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%b %e일 (%a), %p %l:%M:%S"
 
-#: ../js/ui/dateMenu.js:195
+#: ../js/ui/dateMenu.js:201
 msgid "%a %b %e, %l:%M %p"
 msgstr "%b %e일 (%a), %p %l:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:199
+#: ../js/ui/dateMenu.js:205
 msgid "%a %l:%M:%S %p"
 msgstr "(%a) %p %l:%M:%S"
 
-#: ../js/ui/dateMenu.js:200
+#: ../js/ui/dateMenu.js:206
 msgid "%a %l:%M %p"
 msgstr "(%a) %p %l:%M"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:211
+#: ../js/ui/dateMenu.js:217
 msgid "%A %B %e, %Y"
 msgstr "%Y년 %B %e일 %A"
 
@@ -649,11 +648,11 @@ msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr ""
 "extensions.gnome.org 사이트에서 '%s' 확장을 다운로드해 설치하시겠습니까?"
 
-#: ../js/ui/keyboard.js:322
+#: ../js/ui/keyboard.js:327
 msgid "tray"
 msgstr "트레이"
 
-#: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:544 ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "키보드"
 
@@ -714,7 +713,7 @@ msgid "Web Page"
 msgstr "웹페이지"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:116
+#: ../js/ui/main.js:118
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "%d %t의 스크린캐스트"
@@ -731,7 +730,7 @@ msgstr "음소거 해제"
 msgid "Mute"
 msgstr "음소거"
 
-#: ../js/ui/messageTray.js:2450
+#: ../js/ui/messageTray.js:2490
 msgid "System Information"
 msgstr "시스템 정보"
 
@@ -818,31 +817,35 @@ msgstr "'%s'에 연결하려면 암호가 필요합니다."
 msgid "Undo"
 msgstr "실행 취소"
 
-#: ../js/ui/overview.js:199
+#: ../js/ui/overview.js:132
+msgid "Overview"
+msgstr "개요"
+
+#: ../js/ui/overview.js:202
 msgid "Windows"
 msgstr "창"
 
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Applications"
 msgstr "프로그램"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:228
+#: ../js/ui/overview.js:231
 msgid "Dash"
 msgstr "대시보드"
 
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:591
 msgid "Quit"
 msgstr "끝내기"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:623
 msgid "Activities"
 msgstr "현재 활동"
 
-#: ../js/ui/panel.js:987
+#: ../js/ui/panel.js:998
 msgid "Top Bar"
 msgstr "위 막대"
 
@@ -888,7 +891,7 @@ msgstr "죄송합니다. 동작하지 않았습니다. 다시 시도하십시오
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:720
+#: ../js/ui/popupMenu.js:724
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -896,11 +899,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "명령을 입력하십시오:"
 
-#: ../js/ui/searchDisplay.js:349
+#: ../js/ui/searchDisplay.js:331
 msgid "Searching..."
 msgstr "검색하는 중..."
 
-#: ../js/ui/searchDisplay.js:417
+#: ../js/ui/searchDisplay.js:413
 msgid "No matching results."
 msgstr "일치하는 결과가 없습니다."
 
@@ -1577,51 +1580,51 @@ msgstr "계정 편집"
 msgid "Unknown reason"
 msgstr "알 수 없는 이유"
 
-#: ../js/ui/userMenu.js:133
+#: ../js/ui/userMenu.js:135
 msgid "Hidden"
 msgstr "감춤"
 
-#: ../js/ui/userMenu.js:139
+#: ../js/ui/userMenu.js:141
 msgid "Idle"
 msgstr "입력 없음"
 
-#: ../js/ui/userMenu.js:142
+#: ../js/ui/userMenu.js:144
 msgid "Unavailable"
 msgstr "사용 불가"
 
-#: ../js/ui/userMenu.js:589 ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:663
+#: ../js/ui/userMenu.js:595 ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:669
 msgid "Power Off..."
 msgstr "컴퓨터 끄기..."
 
-#: ../js/ui/userMenu.js:625
+#: ../js/ui/userMenu.js:631
 msgid "Notifications"
 msgstr "알림"
 
-#: ../js/ui/userMenu.js:633
+#: ../js/ui/userMenu.js:639
 msgid "Online Accounts"
 msgstr "온라인 계정"
 
-#: ../js/ui/userMenu.js:637
+#: ../js/ui/userMenu.js:643
 msgid "System Settings"
 msgstr "시스템 설정"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:650
 msgid "Lock Screen"
 msgstr "화면 잠그기"
 
-#: ../js/ui/userMenu.js:649
+#: ../js/ui/userMenu.js:655
 msgid "Switch User"
 msgstr "사용자 바꾸기"
 
-#: ../js/ui/userMenu.js:654
+#: ../js/ui/userMenu.js:660
 msgid "Log Out..."
 msgstr "로그아웃..."
 
-#: ../js/ui/userMenu.js:682
+#: ../js/ui/userMenu.js:688
 msgid "Your chat status will be set to busy"
 msgstr "대화 가능 상태가 다른 용무 중으로 설정됩니다"
 
-#: ../js/ui/userMenu.js:683
+#: ../js/ui/userMenu.js:689
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1686,15 +1689,15 @@ msgid "System Sounds"
 msgstr "시스템 소리"
 
 # 커맨드라인 옵션 설명
-#: ../src/main.c:253
+#: ../src/main.c:255
 msgid "Print version"
 msgstr "버전을 표시합니다"
 
-#: ../src/main.c:259
+#: ../src/main.c:261
 msgid "Mode used by GDM for login screen"
 msgstr "GDM에서 로그인 화면에 사용할 모드"
 
-#: ../src/shell-app.c:617
+#: ../src/shell-app.c:619
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "'%s' 실행에 실패했습니다"
