@@ -16,3 +16,9 @@ pkglib_LTLIBRARIES = default.la
 install-exec-hook:
 	-rm $(DESTDIR)$(pkglibdir)/*.a
 	-rm $(DESTDIR)$(pkglibdir)/*.la
+
+# Since we removed the .la file, 'make uninstall' doesn't work properly,
+# since it counts on libtool to remove the .la files, so just kill the
+# .so file manually.
+uninstall-local:
+	-rm -f $(DESTDIR)$(pkglibdir)/default.so
