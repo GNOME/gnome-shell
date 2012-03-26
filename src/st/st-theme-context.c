@@ -28,7 +28,6 @@
 struct _StThemeContext {
   GObject parent;
 
-  double resolution;
   PangoFontDescription *font;
   StThemeNode *root_node;
   StTheme *theme;
@@ -38,7 +37,6 @@ struct _StThemeContextClass {
   GObjectClass parent_class;
 };
 
-#define DEFAULT_RESOLUTION 96.
 #define DEFAULT_FONT "sans-serif 10"
 
 enum
@@ -93,7 +91,6 @@ st_theme_context_class_init (StThemeContextClass *klass)
 static void
 st_theme_context_init (StThemeContext *context)
 {
-  context->resolution = DEFAULT_RESOLUTION;
   context->font = pango_font_description_from_string (DEFAULT_FONT);
 
   g_signal_connect (st_texture_cache_get_default (),
@@ -230,66 +227,6 @@ st_theme_context_get_theme (StThemeContext *context)
   g_return_val_if_fail (ST_IS_THEME_CONTEXT (context), NULL);
 
   return context->theme;
-}
-
-/**
- * st_theme_context_set_resolution:
- * @context: a #StThemeContext
- * @resolution: resolution of the context (number of pixels in an "inch")
- *
- * Sets the resolution of the theme context. This is the scale factor
- * used to convert between points and the length units pt, in, and cm.
- * This does not necessarily need to correspond to the actual number
- * resolution of the device. A value of 72. means that points and
- * pixels are identical. The default value is 96.
- */
-void
-st_theme_context_set_resolution (StThemeContext *context,
-                                 double          resolution)
-{
-  g_return_if_fail (ST_IS_THEME_CONTEXT (context));
-
-  if (resolution == context->resolution)
-    return;
-
-  context->resolution = resolution;
-  st_theme_context_changed (context);
-}
-
-/**
- * st_theme_context_set_default_resolution:
- * @context: a #StThemeContext
- *
- * Sets the resolution of the theme context to the default value of 96.
- * See st_theme_context_set_resolution().
- */
-void
-st_theme_context_set_default_resolution (StThemeContext *context)
-{
-  g_return_if_fail (ST_IS_THEME_CONTEXT (context));
-
-  if (context->resolution == DEFAULT_RESOLUTION)
-    return;
-
-  context->resolution = DEFAULT_RESOLUTION;
-  st_theme_context_changed (context);
-}
-
-/**
- * st_theme_context_get_resolution:
- * @context: a #StThemeContext
- *
- * Gets the current resolution of the theme context.
- * See st_theme_context_set_resolution().
- *
- * Return value: the resolution (in dots-per-"inch")
- */
-double
-st_theme_context_get_resolution (StThemeContext *context)
-{
-  g_return_val_if_fail (ST_IS_THEME_CONTEXT (context), DEFAULT_RESOLUTION);
-
-  return context->resolution;
 }
 
 /**

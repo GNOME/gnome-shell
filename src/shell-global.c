@@ -806,37 +806,8 @@ global_stage_after_paint (ClutterStage *stage,
 }
 
 static void
-update_font_options (GtkSettings  *settings,
-                     ClutterStage *stage)
-{
-  StThemeContext *context;
-  gint dpi;
-
-  g_object_get (settings,
-                "gtk-xft-dpi", &dpi,
-                NULL);
-
-  context = st_theme_context_get_for_stage (stage);
-
-  if (dpi != -1)
-    /* GTK stores resolution as 1024 * dots/inch */
-    st_theme_context_set_resolution (context, dpi / 1024);
-  else
-    st_theme_context_set_default_resolution (context);
-}
-
-static void
-settings_notify_cb (GtkSettings *settings,
-                    GParamSpec  *pspec,
-                    gpointer     data)
-{
-  update_font_options (settings, CLUTTER_STAGE (data));
-}
-
-static void
 shell_fonts_init (ClutterStage *stage)
 {
-  GtkSettings *settings;
   CoglPangoFontMap *fontmap;
 
   /* Disable text mipmapping; it causes problems on pre-GEM Intel
@@ -846,13 +817,6 @@ shell_fonts_init (ClutterStage *stage)
    */
   fontmap = COGL_PANGO_FONT_MAP (clutter_get_font_map ());
   cogl_pango_font_map_set_use_mipmapping (fontmap, FALSE);
-
-  settings = gtk_settings_get_default ();
-  g_object_connect (settings,
-                    "signal::notify::gtk-xft-dpi",
-                    G_CALLBACK (settings_notify_cb), stage,
-                    NULL);
-  update_font_options (settings, stage);
 }
 
 /* This is an IBus workaround. The flow of events with IBus is that every time
