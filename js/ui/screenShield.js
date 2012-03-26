@@ -37,8 +37,8 @@ const ScreenShield = new Lang.Class({
 
         this._settings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
 
-        this._group = new St.Group({ x: 0,
-                                     y: 0 });
+        this._group = new St.Widget({ x: 0,
+                                      y: 0 });
         Main.uiGroup.add_actor(this._group);
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.POSITION | Clutter.BindCoordinate.SIZE });
