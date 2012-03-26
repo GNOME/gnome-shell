@@ -1,3 +1,16 @@
+3.4.0
+=====
+* Fix crash when a full-screen window is opened [Jasper; #672797]
+* Fix memory leaks [Pavel; #672640]
+
+Contributors:
+ Jasper St. Pierre, Pavel Vasin
+
+Translations:
+ Marek Černocký, Petr Kovar [cz], Bruno Brouard [fr], Sweta Kothari [gu],
+ Yaron Shahrabani [he], Changwoo Ryu [kr], Enrico Nicoletto [pt_BR],
+ Yuri Myasoedov [ru], Muhammet Kara [tr], Nguyễn Thái Ngọc Duy [vi]
+
 3.3.92
 ======
 * Automaximize large windows on map [Adel; #671677]
