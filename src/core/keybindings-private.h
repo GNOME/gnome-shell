@@ -29,6 +29,7 @@
 #ifndef META_KEYBINDINGS_PRIVATE_H
 #define META_KEYBINDINGS_PRIVATE_H
 
+#include <gio/gio.h>
 #include <meta/keybindings.h>
 
 struct _MetaKeyHandler
@@ -73,7 +74,7 @@ void     meta_display_process_mapping_event (MetaDisplay *display,
                                              XEvent      *event);
 
 gboolean meta_prefs_add_keybinding          (const char           *name,
-                                             const char           *schema,
+                                             GSettings            *settings,
                                              MetaKeyBindingAction  action,
                                              MetaKeyBindingFlags   flags);
 

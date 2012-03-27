@@ -1660,7 +1660,7 @@ meta_key_pref_free (MetaKeyPref *pref)
   update_binding (pref, NULL);
 
   g_free (pref->name);
-  g_free (pref->schema);
+  g_object_unref (pref->settings);
 
   g_free (pref);
 }
@@ -1920,13 +1920,13 @@ meta_prefs_get_visual_bell_type (void)
 
 gboolean
 meta_prefs_add_keybinding (const char           *name,
-                           const char           *schema,
+                           GSettings            *settings,
                            MetaKeyBindingAction  action,
                            MetaKeyBindingFlags   flags)
 {
   MetaKeyPref  *pref;
-  GSettings    *settings;
   char        **strokes;
+  guint         id;
 
   if (g_hash_table_lookup (key_bindings, name))
     {
@@ -1934,19 +1934,9 @@ meta_prefs_add_keybinding (const char           *name,
       return FALSE;
     }
 
-  settings = SETTINGS (schema);
-  if (settings == NULL)
-    {
-      settings = g_settings_new (schema);
-      if ((flags & META_KEY_BINDING_BUILTIN) != 0)
-        g_signal_connect (settings, "changed",
-                          G_CALLBACK (bindings_changed), NULL);
-      g_hash_table_insert (settings_schemas, g_strdup (schema), settings);
-    }
-
   pref = g_new0 (MetaKeyPref, 1);
   pref->name = g_strdup (name);
-  pref->schema = g_strdup (schema);
+  pref->settings = g_object_ref (settings);
   pref->action = action;
   pref->bindings = NULL;
   pref->add_shift = (flags & META_KEY_BINDING_REVERSES) != 0;
@@ -1959,9 +1949,17 @@ meta_prefs_add_keybinding (const char           *name,
 
   g_hash_table_insert (key_bindings, g_strdup (name), pref);
 
-  if (!pref->builtin)
+  if (pref->builtin)
     {
-      guint id;
+      if (g_object_get_data (G_OBJECT (settings), "changed-signal") == NULL)
+        {
+          id = g_signal_connect (settings, "changed",
+                                 G_CALLBACK (bindings_changed), NULL);
+          g_object_set_data (G_OBJECT (settings), "changed-signal", GUINT_TO_POINTER (id));
+        }
+    }
+  else
+    {
       char *changed_signal = g_strdup_printf ("changed::%s", name);
       id = g_signal_connect (settings, changed_signal,
                              G_CALLBACK (bindings_changed), NULL);
@@ -1979,7 +1977,6 @@ gboolean
 meta_prefs_remove_keybinding (const char *name)
 {
   MetaKeyPref *pref;
-  GSettings   *settings;
   guint        id;
 
   pref = g_hash_table_lookup (key_bindings, name);
@@ -1995,9 +1992,8 @@ meta_prefs_remove_keybinding (const char *name)
       return FALSE;
     }
 
-  settings = SETTINGS (pref->schema);
-  id = GPOINTER_TO_UINT (g_object_steal_data (G_OBJECT (settings), name));
-  g_signal_handler_disconnect (settings, id);
+  id = GPOINTER_TO_UINT (g_object_steal_data (G_OBJECT (pref->settings), name));
+  g_signal_handler_disconnect (pref->settings, id);
 
   g_hash_table_remove (key_bindings, name);
 

@@ -30,6 +30,7 @@
 #include <meta/types.h>
 #include <pango/pango-font.h>
 #include <gdesktop-enums.h>
+#include <gio/gio.h>
 
 /* Keep in sync with GSettings schemas! */
 typedef enum
@@ -271,7 +272,7 @@ typedef struct _MetaKeyHandler MetaKeyHandler;
 typedef struct
 {
   char *name;
-  char *schema;
+  GSettings *settings;
 
   MetaKeyBindingAction action;
 

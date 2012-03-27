@@ -129,7 +129,7 @@ MetaGrabOp meta_display_get_grab_op (MetaDisplay *display);
 
 gboolean meta_display_add_keybinding    (MetaDisplay         *display,
                                          const char          *name,
-                                         const char          *schema,
+                                         GSettings           *settings,
                                          MetaKeyBindingFlags  flags,
                                          MetaKeyHandlerFunc   handler,
                                          gpointer             user_data,
