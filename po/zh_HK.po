@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: cogl 2.0.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-03-05 23:14+0000\n"
-"PO-Revision-Date: 2012-01-30 19:14+0800\n"
+"POT-Creation-Date: 2012-03-27 11:51+0800\n"
+"PO-Revision-Date: 2012-03-27 11:51+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
 "Language: \n"
@@ -17,324 +17,320 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: cogl/cogl-debug.c:172
+#: ../cogl/cogl-debug.c:173
 msgid "Supported debug values:"
 msgstr "支援的除錯數值："
 
-#: cogl/cogl-debug.c:177
+#: ../cogl/cogl-debug.c:178
 msgid "Special debug values:"
 msgstr "特殊的除錯數值："
 
-#: cogl/cogl-debug.c:179 cogl/cogl-debug.c:181
+#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
 msgid "Enables all non-behavioural debug options"
 msgstr "啟用所有非行為性的除錯選項"
 
-#: cogl/cogl-debug.c:225
+#: ../cogl/cogl-debug.c:226
 msgid "Cogl debugging flags to set"
 msgstr "準備設定的 Cogl 偵錯旗標"
 
-#: cogl/cogl-debug.c:227
+#: ../cogl/cogl-debug.c:228
 msgid "Cogl debugging flags to unset"
 msgstr "準備去除的 Cogl 偵錯旗標"
 
-#: cogl/cogl-debug.c:276
+#: ../cogl/cogl-debug.c:277
 msgid "Cogl Options"
 msgstr "Cogl 選項"
 
-#: cogl/cogl-debug.c:277
+#: ../cogl/cogl-debug.c:278
 msgid "Show Cogl options"
 msgstr "顯示 Cogl 選項"
 
-#: cogl/cogl-debug-options.h:25 cogl/cogl-debug-options.h:30
-#: cogl/cogl-debug-options.h:35 cogl/cogl-debug-options.h:40
-#: cogl/cogl-debug-options.h:45 cogl/cogl-debug-options.h:50
-#: cogl/cogl-debug-options.h:55 cogl/cogl-debug-options.h:61
-#: cogl/cogl-debug-options.h:66 cogl/cogl-debug-options.h:71
-#: cogl/cogl-debug-options.h:158 cogl/cogl-debug-options.h:163
-#: cogl/cogl-debug-options.h:168 cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
+#: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
+#: ../cogl/cogl-debug-options.h:45 ../cogl/cogl-debug-options.h:50
+#: ../cogl/cogl-debug-options.h:55 ../cogl/cogl-debug-options.h:61
+#: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
+#: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
+#: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
 msgid "Cogl Tracing"
 msgstr "Cogl 追蹤"
 
-#: cogl/cogl-debug-options.h:27
+#: ../cogl/cogl-debug-options.h:27
 msgid "CoglObject references"
 msgstr "CoglObject 參照"
 
-#: cogl/cogl-debug-options.h:28
+#: ../cogl/cogl-debug-options.h:28
 msgid "Debug ref counting issues for CoglObjects"
 msgstr "CoglObjects 的除錯參考持續問題"
 
-#: cogl/cogl-debug-options.h:32
+#: ../cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
 msgstr "追蹤材質切割"
 
-#: cogl/cogl-debug-options.h:33
+#: ../cogl/cogl-debug-options.h:33
 msgid "debug the creation of texture slices"
 msgstr "材質切割建立的除錯"
 
-#: cogl/cogl-debug-options.h:37
+#: ../cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
 msgstr "追蹤圖集材質"
 
-#: cogl/cogl-debug-options.h:38
+#: ../cogl/cogl-debug-options.h:38
 msgid "Debug texture atlas management"
 msgstr "除錯材質圖集管理"
 
-#: cogl/cogl-debug-options.h:42
+#: ../cogl/cogl-debug-options.h:42
 msgid "Trace Blend Strings"
 msgstr "追蹤混合字串"
 
-#: cogl/cogl-debug-options.h:43
+#: ../cogl/cogl-debug-options.h:43
 msgid "Debug CoglBlendString parsing"
 msgstr "除錯 CoglBlendString 解析"
 
-#: cogl/cogl-debug-options.h:47
+#: ../cogl/cogl-debug-options.h:47
 msgid "Trace Journal"
 msgstr "追蹤日誌"
 
-#: cogl/cogl-debug-options.h:48
+#: ../cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
 msgstr "檢視所有通過日誌的位置大小"
 
-#: cogl/cogl-debug-options.h:52
+#: ../cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
 msgstr "追蹤批次"
 
-#: cogl/cogl-debug-options.h:53
+#: ../cogl/cogl-debug-options.h:53
 msgid "Show how geometry is being batched in the journal"
 msgstr "顯示日誌中批次的幾何大小如何"
 
-#: cogl/cogl-debug-options.h:57
+#: ../cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
 msgstr "追蹤矩陣"
 
-#: cogl/cogl-debug-options.h:58
+#: ../cogl/cogl-debug-options.h:58
 msgid "Trace all matrix manipulation"
 msgstr "追蹤所有的矩陣操作"
 
-#: cogl/cogl-debug-options.h:63
+#: ../cogl/cogl-debug-options.h:63
 msgid "Trace Misc Drawing"
 msgstr "追蹤雜項繪製"
 
-#: cogl/cogl-debug-options.h:64
+#: ../cogl/cogl-debug-options.h:64
 msgid "Trace some misc drawing operations"
 msgstr "追蹤某些繪製操作"
 
-#: cogl/cogl-debug-options.h:68
+#: ../cogl/cogl-debug-options.h:68
 msgid "Trace Pango Renderer"
 msgstr "追蹤 Pango 繪製器"
 
-#: cogl/cogl-debug-options.h:69
+#: ../cogl/cogl-debug-options.h:69
 msgid "Trace the Cogl Pango renderer"
 msgstr "追蹤 Cogl Pango 繪製器"
 
-#: cogl/cogl-debug-options.h:73
+#: ../cogl/cogl-debug-options.h:73
 msgid "Trace CoglTexturePixmap backend"
 msgstr "追蹤 CoglTexturePixmap 後端"
 
-#: cogl/cogl-debug-options.h:74
+#: ../cogl/cogl-debug-options.h:74
 msgid "Trace the Cogl texture pixmap backend"
 msgstr "追蹤 Cogl Pango 材質點陣圖後端"
 
-#: cogl/cogl-debug-options.h:76 cogl/cogl-debug-options.h:81
+#: ../cogl/cogl-debug-options.h:76 ../cogl/cogl-debug-options.h:81
 msgid "Visualize"
 msgstr "視覺化"
 
-#: cogl/cogl-debug-options.h:78
+#: ../cogl/cogl-debug-options.h:78
 msgid "Outline rectangles"
 msgstr "矩形外框"
 
-#: cogl/cogl-debug-options.h:79
+#: ../cogl/cogl-debug-options.h:79
 msgid "Add wire outlines for all rectangular geometry"
 msgstr "為所有的矩形位置大小加入線框"
 
-#: cogl/cogl-debug-options.h:83
+#: ../cogl/cogl-debug-options.h:83
 msgid "Show wireframes"
 msgstr "顯示線框"
 
-#: cogl/cogl-debug-options.h:84
+#: ../cogl/cogl-debug-options.h:84
 msgid "Add wire outlines for all geometry"
 msgstr "為所有的位置大小加入線框"
 
-#: cogl/cogl-debug-options.h:86 cogl/cogl-debug-options.h:91
-#: cogl/cogl-debug-options.h:96 cogl/cogl-debug-options.h:101
-#: cogl/cogl-debug-options.h:111 cogl/cogl-debug-options.h:116
-#: cogl/cogl-debug-options.h:122 cogl/cogl-debug-options.h:127
-#: cogl/cogl-debug-options.h:132 cogl/cogl-debug-options.h:137
-#: cogl/cogl-debug-options.h:142 cogl/cogl-debug-options.h:147
-#: cogl/cogl-debug-options.h:153 cogl/cogl-debug-options.h:173
-#: cogl/cogl-debug-options.h:178
-#, fuzzy
+#: ../cogl/cogl-debug-options.h:86 ../cogl/cogl-debug-options.h:91
+#: ../cogl/cogl-debug-options.h:96 ../cogl/cogl-debug-options.h:101
+#: ../cogl/cogl-debug-options.h:111 ../cogl/cogl-debug-options.h:116
+#: ../cogl/cogl-debug-options.h:122 ../cogl/cogl-debug-options.h:127
+#: ../cogl/cogl-debug-options.h:132 ../cogl/cogl-debug-options.h:137
+#: ../cogl/cogl-debug-options.h:142 ../cogl/cogl-debug-options.h:147
+#: ../cogl/cogl-debug-options.h:153 ../cogl/cogl-debug-options.h:173
+#: ../cogl/cogl-debug-options.h:178
 msgid "Root Cause"
-msgstr "根窗格"
+msgstr "根本原因"
 
-#: cogl/cogl-debug-options.h:88
+#: ../cogl/cogl-debug-options.h:88
 msgid "Disable Journal batching"
 msgstr "停用日誌批次"
 
-#: cogl/cogl-debug-options.h:89
+#: ../cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
 msgstr "停用 Cogl 日誌中位置大小的批次。"
 
-#: cogl/cogl-debug-options.h:93
+#: ../cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
 msgstr "停用 GL 頂端緩衝區"
 
-#: cogl/cogl-debug-options.h:94
+#: ../cogl/cogl-debug-options.h:94
 msgid "Disable use of OpenGL vertex buffer objects"
 msgstr "停用 OpenGL 頂端緩衝區物件的使用"
 
-#: cogl/cogl-debug-options.h:98
+#: ../cogl/cogl-debug-options.h:98
 msgid "Disable GL Pixel Buffers"
 msgstr "停用 GL 像素緩衝區"
 
-#: cogl/cogl-debug-options.h:99
+#: ../cogl/cogl-debug-options.h:99
 msgid "Disable use of OpenGL pixel buffer objects"
 msgstr "停用 OpenGL 像素緩衝區物件的使用"
 
-#: cogl/cogl-debug-options.h:103
+#: ../cogl/cogl-debug-options.h:103
 msgid "Disable software rect transform"
 msgstr "停用軟件矩形變形"
 
-#: cogl/cogl-debug-options.h:104
+#: ../cogl/cogl-debug-options.h:104
 msgid "Use the GPU to transform rectangular geometry"
 msgstr "使用 GPU 來轉變矩形位置大小"
 
-#: cogl/cogl-debug-options.h:106
+#: ../cogl/cogl-debug-options.h:106
 msgid "Cogl Specialist"
 msgstr "Cogl 專家"
 
-#: cogl/cogl-debug-options.h:108
+#: ../cogl/cogl-debug-options.h:108
 msgid "Dump atlas images"
 msgstr "傾印圖集影像"
 
-#: cogl/cogl-debug-options.h:109
+#: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
 msgstr "將材質圖集更改傾印到影像檔案"
 
-#: cogl/cogl-debug-options.h:113
+#: ../cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
 msgstr "停用材質圖集"
 
-#: cogl/cogl-debug-options.h:114
+#: ../cogl/cogl-debug-options.h:114
 msgid "Disable use of texture atlasing"
 msgstr "停用材質圖集的使用"
 
-#: cogl/cogl-debug-options.h:118
+#: ../cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
 msgstr "停用在文字與影像間分享材質圖集"
 
-#: cogl/cogl-debug-options.h:119
+#: ../cogl/cogl-debug-options.h:119
 msgid ""
 "When this is set the glyph cache will always use a separate texture for its "
 "atlas. Otherwise it will try to share the atlas with images."
-msgstr ""
-"當這些設為圖表快取將會永遠為個別材質使用圖集。否則它會嘗試與影像分享圖集。"
+msgstr "當這些設為圖表快取將會永遠為個別材質使用圖集。否則它會嘗試與影像分享圖集。"
 
-#: cogl/cogl-debug-options.h:124
+#: ../cogl/cogl-debug-options.h:124
 msgid "Disable texturing"
 msgstr "停用材質"
 
-#: cogl/cogl-debug-options.h:125
+#: ../cogl/cogl-debug-options.h:125
 msgid "Disable texturing any primitives"
 msgstr "停用任何原型的材質"
 
-#: cogl/cogl-debug-options.h:129
+#: ../cogl/cogl-debug-options.h:129
 msgid "Disable arbfp"
 msgstr "停用 arbfp"
 
-#: cogl/cogl-debug-options.h:130
+#: ../cogl/cogl-debug-options.h:130
 msgid "Disable use of ARB fragment programs"
 msgstr "停用 ARB 片段程式的使用"
 
-#: cogl/cogl-debug-options.h:134
+#: ../cogl/cogl-debug-options.h:134
 msgid "Disable fixed"
 msgstr "停用修正"
 
-#: cogl/cogl-debug-options.h:135
+#: ../cogl/cogl-debug-options.h:135
 msgid "Disable use of the fixed function pipeline backend"
 msgstr "停用修正函數導管後端的使用"
 
-#: cogl/cogl-debug-options.h:139
+#: ../cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
 msgstr "停用 GLSL"
 
-#: cogl/cogl-debug-options.h:140
+#: ../cogl/cogl-debug-options.h:140
 msgid "Disable use of GLSL"
 msgstr "停用 GLSL的使用"
 
-#: cogl/cogl-debug-options.h:144
+#: ../cogl/cogl-debug-options.h:144
 msgid "Disable blending"
 msgstr "停用混合"
 
-#: cogl/cogl-debug-options.h:145
+#: ../cogl/cogl-debug-options.h:145
 msgid "Disable use of blending"
 msgstr "停用混合的使用"
 
-#: cogl/cogl-debug-options.h:149
+#: ../cogl/cogl-debug-options.h:149
 msgid "Disable non-power-of-two textures"
 msgstr "停用 non-power-of-two 材質"
 
-#: cogl/cogl-debug-options.h:150
+#: ../cogl/cogl-debug-options.h:150
 msgid ""
 "Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
 "will create sliced textures or textures with waste instead."
-msgstr ""
-"讓 Cogl 認為 GL 驅動程式不支援 NPOT 材質，如此它會建立切割的材質或耗費的材質"
-"來代替。"
+msgstr "讓 Cogl 認為 GL 驅動程式不支援 NPOT 材質，如此它會建立切割的材質或耗費的材質來代替。"
 
-#: cogl/cogl-debug-options.h:155
+#: ../cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
 msgstr "停用軟件剪裁"
 
-#: cogl/cogl-debug-options.h:156
+#: ../cogl/cogl-debug-options.h:156
 msgid "Disables Cogl's attempts to clip some rectangles in software."
 msgstr "停用 Cogl 在軟件中嘗試剪裁某些矩形。"
 
-#: cogl/cogl-debug-options.h:160
+#: ../cogl/cogl-debug-options.h:160
 msgid "Show source"
 msgstr "顯示來源"
 
-#: cogl/cogl-debug-options.h:161
+#: ../cogl/cogl-debug-options.h:161
 msgid "Show generated ARBfp/GLSL source code"
 msgstr "顯示產生的 ARBfp/GLSL 原始碼"
 
-#: cogl/cogl-debug-options.h:165
+#: ../cogl/cogl-debug-options.h:165
 msgid "Trace some OpenGL"
 msgstr "追蹤某些 OpenGL"
 
-#: cogl/cogl-debug-options.h:166
+#: ../cogl/cogl-debug-options.h:166
 msgid "Traces some select OpenGL calls"
 msgstr "追蹤某些選取的 OpenGL 呼叫"
 
-#: cogl/cogl-debug-options.h:170
+#: ../cogl/cogl-debug-options.h:170
 msgid "Trace offscreen support"
 msgstr "追蹤螢幕外支援"
 
-#: cogl/cogl-debug-options.h:171
+#: ../cogl/cogl-debug-options.h:171
 msgid "Debug offscreen support"
 msgstr "除錯螢幕外支援"
 
-#: cogl/cogl-debug-options.h:175
+#: ../cogl/cogl-debug-options.h:175
 msgid "Disable program caches"
 msgstr "停用程式快取"
 
-#: cogl/cogl-debug-options.h:176
+#: ../cogl/cogl-debug-options.h:176
 msgid "Disable fallback caches for arbfp and glsl programs"
 msgstr "停用 arbfp 和 glsl 程式的後備快取"
 
-#: cogl/cogl-debug-options.h:180
+#: ../cogl/cogl-debug-options.h:180
 msgid "Disable read pixel optimization"
 msgstr "停用讀取像素最佳化"
 
-#: cogl/cogl-debug-options.h:181
+#: ../cogl/cogl-debug-options.h:181
 msgid ""
 "Disable optimization for reading 1px for simple scenes of opaque rectangles"
-msgstr ""
+msgstr "停用不透明矩形的簡單場景讀取 1px 的最佳化"
 
-#: cogl/cogl-debug-options.h:186
+#: ../cogl/cogl-debug-options.h:186
 msgid "Trace clipping"
 msgstr "追蹤剪裁"
 
-#: cogl/cogl-debug-options.h:187
+#: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "關於 Cogl 如何實作剪裁的紀錄資訊"
