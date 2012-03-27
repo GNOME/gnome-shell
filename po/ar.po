@@ -841,7 +841,7 @@ msgstr "الشريط"
 
 #: ../js/ui/panel.js:591
 msgid "Quit"
-msgstr "انْهِ"
+msgstr "أنْهِ"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
