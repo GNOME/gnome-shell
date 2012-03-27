@@ -150,8 +150,6 @@ struct _SizeRequest
  * @fixed_x: the fixed position of the actor, set using clutter_actor_set_x()
  * @fixed_y: the fixed position of the actor, set using clutter_actor_set_y()
  * @margin: the composed margin of the actor
- * @x_expand: whether the actor should expand horizontally
- * @y_expand: whether the actor should expand vertically
  * @x_align: the horizontal alignment, if the actor expands horizontally
  * @y_align: the vertical alignment, if the actor expands vertically
  * @min_width: the minimum width, set using clutter_actor_set_min_width()
@@ -168,9 +166,6 @@ struct _ClutterLayoutInfo
   float fixed_y;
 
   ClutterMargin margin;
-
-  guint x_expand : 1;
-  guint y_expand : 1;
 
   guint x_align : 4;
   guint y_align : 4;
