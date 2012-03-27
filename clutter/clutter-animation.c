@@ -1601,7 +1601,7 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
   if (priv->alpha != NULL)
     cur_timeline = clutter_alpha_get_timeline (priv->alpha);
   else
-    cur_timeline = NULL;
+    cur_timeline = priv->timeline;
 
   if (cur_timeline == timeline)
     return;
@@ -1621,10 +1621,19 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
   priv->timeline_completed_id = 0;
   priv->timeline_frame_id = 0;
 
+  /* Release previously set timeline if any */
+  g_clear_object (&priv->timeline);
+
   if (priv->alpha != NULL)
     clutter_alpha_set_timeline (priv->alpha, timeline);
   else
-    priv->timeline = timeline;
+    {
+      /* Hold a reference to the timeline if it's not reffed by the priv->alpha */
+      priv->timeline = timeline;
+
+      if (priv->timeline)
+	g_object_ref (priv->timeline);
+    }
 
   g_object_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_TIMELINE]);
   g_object_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_DURATION]);
@@ -1632,8 +1641,6 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
 
   if (timeline != NULL)
     {
-      g_object_ref (timeline);
-
       priv->timeline_started_id =
         g_signal_connect (timeline, "started",
                           G_CALLBACK (on_timeline_started),
