@@ -181,6 +181,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-private.h			\
 	$(srcdir)/cogl-debug.h 				\
 	$(srcdir)/cogl-debug-options.h			\
+	$(srcdir)/cogl-gpu-info.c			\
+	$(srcdir)/cogl-gpu-info-private.h		\
 	$(srcdir)/cogl-handle.h 			\
 	$(srcdir)/cogl-context-private.h		\
 	$(srcdir)/cogl-context.c			\

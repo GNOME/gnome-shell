@@ -47,6 +47,27 @@
 #define COGL_EXPORT
 #endif
 
+/* Macros to handle compacting a 3-component version number into an
+   int for quick comparison. This assumes all of the components are
+   <= 1023 */
+#define COGL_VERSION_COMPONENT_BITS 10
+#define COGL_VERSION_MAX_COMPONENT_VALUE \
+  ((1 << COGL_VERSION_COMPONENT_BITS) - 1)
+
+#define COGL_VERSION_ENCODE(major, minor, micro)        \
+  (((major) << (COGL_VERSION_COMPONENT_BITS * 2)) |     \
+   ((minor) << COGL_VERSION_COMPONENT_BITS)             \
+   | (micro))
+
+#define COGL_VERSION_GET_MAJOR(version) \
+  (((version) >> 20) & COGL_VERSION_MAX_COMPONENT_VALUE)
+
+#define COGL_VERSION_GET_MINOR(version) \
+  (((version) >> 10) & COGL_VERSION_MAX_COMPONENT_VALUE)
+
+#define COGL_VERSION_GET_MICRO(version) \
+  ((version) & COGL_VERSION_MAX_COMPONENT_VALUE)
+
 int
 _cogl_util_next_p2 (int a);
 

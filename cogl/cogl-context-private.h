@@ -48,6 +48,7 @@
 #include "cogl-texture-3d.h"
 #include "cogl-texture-rectangle.h"
 #include "cogl-sampler-cache-private.h"
+#include "cogl-gpu-info-private.h"
 
 typedef struct
 {
@@ -63,6 +64,10 @@ struct _CoglContext
   CoglDisplay *display;
 
   CoglDriver driver;
+
+  /* Information about the GPU and driver which we can use to
+     determine certain workarounds */
+  CoglGpuInfo gpu;
 
   /* vtables for the driver functions */
   const CoglDriverVtable *driver_vtable;
