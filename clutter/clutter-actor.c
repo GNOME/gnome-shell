@@ -17605,6 +17605,7 @@ clutter_actor_restore_easing_state (ClutterActor *self)
     {
       g_array_unref (info->states);
       info->states = NULL;
+      info->cur_state = NULL;
     }
 }
 
