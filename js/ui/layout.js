@@ -781,10 +781,13 @@ const Chrome = new Lang.Class({
 
     _actorReparented: function(actor, oldParent) {
         let newParent = actor.get_parent();
-        if (!newParent)
+        if (!newParent) {
             this._untrackActor(actor);
-        else
+        } else {
+            let i = this._findActor(actor);
+            let actorData = this._trackedActors[i];
             actorData.isToplevel = (newParent == Main.uiGroup);
+        }
     },
 
     _updateVisibility: function() {
