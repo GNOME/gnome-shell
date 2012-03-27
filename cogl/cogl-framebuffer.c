@@ -1942,6 +1942,97 @@ _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
   return FALSE;
 }
 
+static gboolean
+_cogl_framebuffer_slow_read_pixels_workaround (CoglFramebuffer *framebuffer,
+                                               int x,
+                                               int y,
+                                               CoglReadPixelsFlags source,
+                                               CoglBitmap *bitmap)
+{
+  CoglContext *ctx;
+  CoglPixelFormat format;
+  CoglBitmap *pbo;
+  int width;
+  int height;
+  gboolean res;
+
+  _COGL_RETURN_VAL_IF_FAIL (source & COGL_READ_PIXELS_COLOR_BUFFER, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_framebuffer (framebuffer), FALSE);
+
+  ctx = cogl_framebuffer_get_context (framebuffer);
+
+  width = cogl_bitmap_get_width (bitmap);
+  height = cogl_bitmap_get_height (bitmap);
+  format = cogl_bitmap_get_format (bitmap);
+
+  pbo = cogl_bitmap_new_with_size (ctx, width, height, format);
+  if (pbo == NULL)
+    return FALSE;
+
+  /* Read into the pbo. We need to disable the flipping because the
+     blit fast path in the driver does not work with
+     GL_PACK_INVERT_MESA is set */
+  res = cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
+                                                  x, y,
+                                                  source |
+                                                  COGL_READ_PIXELS_NO_FLIP,
+                                                  pbo);
+
+  if (res)
+    {
+      guint8 *dst;
+
+      /* Copy the pixels back into application's buffer */
+      dst = _cogl_bitmap_map (bitmap,
+                              COGL_BUFFER_ACCESS_WRITE,
+                              COGL_BUFFER_MAP_HINT_DISCARD);
+
+      if (dst == NULL)
+        res = FALSE;
+      else
+        {
+          const guint8 *src;
+
+          src = _cogl_bitmap_map (pbo,
+                                  COGL_BUFFER_ACCESS_READ,
+                                  0 /* hints */);
+          if (src == NULL)
+            res = FALSE;
+          else
+            {
+              int src_rowstride = cogl_bitmap_get_rowstride (pbo);
+              int dst_rowstride = cogl_bitmap_get_rowstride (bitmap);
+              int to_copy =
+                _cogl_pixel_format_get_bytes_per_pixel (format) * width;
+              int y;
+
+              /* If the framebuffer is onscreen we need to flip the
+                 data while copying */
+              if (!cogl_is_offscreen (framebuffer))
+                {
+                  src += src_rowstride * (height - 1);
+                  src_rowstride = -src_rowstride;
+                }
+
+              for (y = 0; y < height; y++)
+                {
+                  memcpy (dst, src, to_copy);
+                  dst += dst_rowstride;
+                  src += src_rowstride;
+                }
+
+              _cogl_bitmap_unmap (pbo);
+            }
+
+          _cogl_bitmap_unmap (bitmap);
+        }
+    }
+
+  cogl_object_unref (pbo);
+
+  return res;
+}
+
 gboolean
 cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
                                           int x,
@@ -1960,7 +2051,7 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
   int width;
   int height;
 
-  _COGL_RETURN_VAL_IF_FAIL (source == COGL_READ_PIXELS_COLOR_BUFFER, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (source & COGL_READ_PIXELS_COLOR_BUFFER, FALSE);
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_framebuffer (framebuffer), FALSE);
 
   if (!cogl_framebuffer_allocate (framebuffer, NULL))
@@ -1970,6 +2061,7 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
 
   width = cogl_bitmap_get_width (bitmap);
   height = cogl_bitmap_get_height (bitmap);
+  format = cogl_bitmap_get_format (bitmap);
 
   if (width == 1 && height == 1 && !framebuffer->clear_clip_dirty)
     {
@@ -1985,6 +2077,32 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
                                                  x, y, source, bitmap))
         return TRUE;
     }
+
+  /* Workaround for cases where its faster to read into a temporary
+   * PBO. This is only worth doing if:
+   *
+   * • The GPU is an Intel GPU. In that case there is a known
+   *   fast-path when reading into a PBO that will use the blitter
+   *   instead of the Mesa fallback code. The driver bug will only be
+   *   set if this is the case.
+   * • We're not already reading into a PBO.
+   * • The target format is BGRA. The fast-path blit does not get hit
+   *   otherwise.
+   * • The size of the data is not trivially small. This isn't a
+   *   requirement to hit the fast-path blit but intuitively it feels
+   *   like if the amount of data is too small then the cost of
+   *   allocating a PBO will outweigh the cost of temporarily
+   *   converting the data to floats.
+   */
+  if ((ctx->gpu.driver_bugs &
+       COGL_GPU_INFO_DRIVER_BUG_MESA_46631_SLOW_READ_PIXELS) &&
+      (width > 8 || height > 8) &&
+      (format & ~COGL_PREMULT_BIT) == COGL_PIXEL_FORMAT_BGRA_8888 &&
+      cogl_bitmap_get_buffer (bitmap) == NULL)
+    return _cogl_framebuffer_slow_read_pixels_workaround (framebuffer,
+                                                          x, y,
+                                                          source,
+                                                          bitmap);
 
   /* make sure any batched primitives get emitted to the GL driver
    * before issuing our read pixels...
@@ -2006,8 +2124,6 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
   if (!cogl_is_offscreen (framebuffer))
     y = framebuffer_height - y - height;
 
-  format = cogl_bitmap_get_format (bitmap);
-
   required_format = ctx->driver_vtable->pixel_format_to_gl (ctx,
                                                             format,
                                                             &gl_intformat,
@@ -2017,6 +2133,7 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
   /* NB: All offscreen rendering is done upside down so there is no need
    * to flip in this case... */
   if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_MESA_PACK_INVERT) &&
+      (source & COGL_READ_PIXELS_NO_FLIP) == 0 &&
       !cogl_is_offscreen (framebuffer))
     {
       GE (ctx, glPixelStorei (GL_PACK_INVERT_MESA, TRUE));
@@ -2152,7 +2269,9 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
 
   /* NB: All offscreen rendering is done upside down so there is no need
    * to flip in this case... */
-  if (!cogl_is_offscreen (framebuffer) && !pack_invert_set)
+  if (!cogl_is_offscreen (framebuffer) &&
+      (source & COGL_READ_PIXELS_NO_FLIP) == 0 &&
+      !pack_invert_set)
     {
       guint8 *temprow;
       int rowstride;

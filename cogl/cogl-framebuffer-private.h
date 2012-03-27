@@ -93,6 +93,16 @@ typedef enum _CoglFramebufferState
 
 #define COGL_FRAMEBUFFER_STATE_ALL ((1<<COGL_FRAMEBUFFER_STATE_INDEX_MAX) - 1)
 
+/* Private flags that can internally be added to CoglReadPixelsFlags */
+typedef enum
+{
+  /* If this is set then the data will not be flipped to compensate
+     for GL's upside-down coordinate system but instead will be left
+     in whatever order GL gives us (which will depend on whether the
+     framebuffer is offscreen or not) */
+  COGL_READ_PIXELS_NO_FLIP = 1L << 30
+} CoglPrivateReadPixelsFlags;
+
 struct _CoglFramebuffer
 {
   CoglObject          _parent;
