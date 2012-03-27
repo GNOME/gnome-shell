@@ -771,6 +771,11 @@ struct _ClutterActorPrivate
   guint is_dirty                    : 1;
   guint bg_color_set                : 1;
   guint content_box_valid           : 1;
+  guint x_expand_set                : 1;
+  guint y_expand_set                : 1;
+  guint needs_compute_expand        : 1;
+  guint needs_x_expand              : 1;
+  guint needs_y_expand              : 1;
 };
 
 enum
@@ -864,6 +869,8 @@ enum
 
   PROP_LAYOUT_MANAGER,
 
+  PROP_X_EXPAND,
+  PROP_Y_EXPAND,
   PROP_X_ALIGN,
   PROP_Y_ALIGN,
   PROP_MARGIN_TOP,
@@ -981,6 +988,8 @@ static inline void clutter_actor_set_background_color_internal (ClutterActor *se
 
 static void on_layout_manager_changed (ClutterLayoutManager *manager,
                                        ClutterActor         *self);
+
+static inline void clutter_actor_queue_compute_expand (ClutterActor *self);
 
 /* Helper macro which translates by the anchor coord, applies the
    given transformation and then translates back */
@@ -1606,6 +1615,17 @@ clutter_actor_show (ClutterActor *self)
 
   set_show_on_set_parent (self, TRUE);
 
+  /* if we're showing a child that needs to expand, or may
+   * expand, then we need to recompute the expand flags for
+   * its parent as well
+   */
+  if (priv->needs_compute_expand ||
+      priv->needs_x_expand ||
+      priv->needs_y_expand)
+    {
+      clutter_actor_queue_compute_expand (self);
+    }
+
   g_signal_emit (self, actor_signals[SHOW], 0);
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
 
@@ -1700,6 +1720,17 @@ clutter_actor_hide (ClutterActor *self)
   g_object_freeze_notify (G_OBJECT (self));
 
   set_show_on_set_parent (self, FALSE);
+
+  /* if we're hiding a child that needs to expand, or may
+   * expand, then we need to recompute the expand flags for
+   * its parent as well
+   */
+  if (priv->needs_compute_expand ||
+      priv->needs_x_expand ||
+      priv->needs_y_expand)
+    {
+      clutter_actor_queue_compute_expand (self);
+    }
 
   g_signal_emit (self, actor_signals[HIDE], 0);
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
@@ -3901,6 +3932,19 @@ clutter_actor_remove_child_internal (ClutterActor                 *self,
 
   self->priv->age += 1;
 
+  /* if the child that got removed was visible and set to
+   * expand then we want to reset the parent's state in
+   * case the child was the only thing that was making it
+   * expand.
+   */
+  if (CLUTTER_ACTOR_IS_VISIBLE (child) &&
+      (child->priv->needs_compute_expand ||
+       child->priv->needs_x_expand ||
+       child->priv->needs_y_expand))
+    {
+      clutter_actor_queue_compute_expand (self);
+    }
+
   /* clutter_actor_reparent() will emit ::parent-set for us */
   if (emit_parent_set && !CLUTTER_ACTOR_IN_REPARENT (child))
     g_signal_emit (child, actor_signals[PARENT_SET], 0, self);
@@ -4581,6 +4625,14 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_layout_manager (actor, g_value_get_object (value));
       break;
 
+    case PROP_X_EXPAND:
+      clutter_actor_set_x_expand (actor, g_value_get_boolean (value));
+      break;
+
+    case PROP_Y_EXPAND:
+      clutter_actor_set_y_expand (actor, g_value_get_boolean (value));
+      break;
+
     case PROP_X_ALIGN:
       clutter_actor_set_x_align (actor, g_value_get_enum (value));
       break;
@@ -4977,6 +5029,24 @@ clutter_actor_get_property (GObject    *object,
 
     case PROP_LAYOUT_MANAGER:
       g_value_set_object (value, priv->layout_manager);
+      break;
+
+    case PROP_X_EXPAND:
+      {
+        const ClutterLayoutInfo *info;
+
+        info = _clutter_actor_get_layout_info_or_defaults (actor);
+        g_value_set_boolean (value, info->x_expand);
+      }
+      break;
+
+    case PROP_Y_EXPAND:
+      {
+        const ClutterLayoutInfo *info;
+
+        info = _clutter_actor_get_layout_info_or_defaults (actor);
+        g_value_set_boolean (value, info->y_expand);
+      }
       break;
 
     case PROP_X_ALIGN:
@@ -6367,12 +6437,44 @@ clutter_actor_class_init (ClutterActorClass *klass)
                          CLUTTER_TYPE_LAYOUT_MANAGER,
                          CLUTTER_PARAM_READWRITE);
 
+  /**
+   * ClutterActor:x-expand:
+   *
+   * Whether a layout manager should assign more space to the actor on
+   * the X axis.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_X_EXPAND] =
+    g_param_spec_boolean ("x-expand",
+                          P_("X Expand"),
+                          P_("Whether extra horizontal space should be assigned to the actor"),
+                          FALSE,
+                          G_PARAM_READWRITE |
+                          G_PARAM_STATIC_STRINGS);
+
+  /**
+   * ClutterActor:y-expand:
+   *
+   * Whether a layout manager should assign more space to the actor on
+   * the Y axis.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_Y_EXPAND] =
+    g_param_spec_boolean ("y-expand",
+                          P_("Y Expand"),
+                          P_("Whether extra vertical space should be assigned to the actor"),
+                          FALSE,
+                          G_PARAM_READWRITE |
+                          G_PARAM_STATIC_STRINGS);
 
   /**
    * ClutterActor:x-align:
    *
    * The alignment of an actor on the X axis, if the actor has been given
-   * extra space for its allocation.
+   * extra space for its allocation. See also the #ClutterActor:x-expand
+   * property.
    *
    * Since: 1.10
    */
@@ -7218,6 +7320,15 @@ clutter_actor_init (ClutterActor *self)
   priv->content_gravity = CLUTTER_CONTENT_GRAVITY_RESIZE_FILL;
   priv->min_filter = CLUTTER_SCALING_FILTER_LINEAR;
   priv->mag_filter = CLUTTER_SCALING_FILTER_LINEAR;
+
+  /* this flag will be set to TRUE if the actor gets a child
+   * or if the [xy]-expand flags are explicitly set; until
+   * then, the actor does not need to expand.
+   *
+   * this also allows us to avoid computing the expand flag
+   * when building up a scene.
+   */
+  priv->needs_compute_expand = FALSE;
 }
 
 /**
@@ -11254,6 +11365,23 @@ clutter_actor_add_child_internal (ClutterActor              *self,
    */
   if (self->priv->internal_child)
     CLUTTER_SET_PRIVATE_FLAGS (child, CLUTTER_INTERNAL_CHILD);
+
+  /* children may cause their parent to expand, if they are set
+   * to expand; if a child is not expanded then it cannot change
+   * its parent's state. any further change later on will queue
+   * an expand state check.
+   *
+   * this check, with the initial state of the needs_compute_expand
+   * flag set to FALSE, should avoid recomputing the expand flags
+   * state while building the actor tree.
+   */
+  if (CLUTTER_ACTOR_IS_VISIBLE (child) &&
+      (child->priv->needs_compute_expand ||
+       child->priv->needs_x_expand ||
+       child->priv->needs_y_expand))
+    {
+      clutter_actor_queue_compute_expand (self);
+    }
 
   /* clutter_actor_reparent() will emit ::parent-set for us */
   if (emit_parent_set && !CLUTTER_ACTOR_IN_REPARENT (child))
@@ -16028,6 +16156,7 @@ static const ClutterLayoutInfo default_layout_info = {
   { 0, 0, 0, 0 },               /* margin */
   CLUTTER_ACTOR_ALIGN_FILL,     /* x-align */
   CLUTTER_ACTOR_ALIGN_FILL,     /* y-align */
+  FALSE, FALSE,                 /* expand */
   CLUTTER_SIZE_INIT_ZERO,       /* minimum */
   CLUTTER_SIZE_INIT_ZERO,       /* natural */
 };
@@ -18091,4 +18220,290 @@ clutter_actor_get_content_scaling_filters (ClutterActor         *self,
 
   if (mag_filter != NULL)
     *mag_filter = self->priv->mag_filter;
+}
+
+/*
+ * clutter_actor_queue_compute_expand:
+ * @self: a #ClutterActor
+ *
+ * Invalidates the needs_x_expand and needs_y_expand flags on @self
+ * and its parents up to the top-level actor.
+ *
+ * This function also queues a relayout if anything changed.
+ */
+static inline void
+clutter_actor_queue_compute_expand (ClutterActor *self)
+{
+  ClutterActor *parent;
+  gboolean changed;
+
+  if (self->priv->needs_compute_expand)
+    return;
+
+  changed = FALSE;
+  parent = self;
+  while (parent != NULL)
+    {
+      if (!parent->priv->needs_compute_expand)
+        {
+          parent->priv->needs_compute_expand = TRUE;
+          changed = TRUE;
+        }
+
+      parent = parent->priv->parent;
+    }
+
+  if (changed)
+    clutter_actor_queue_relayout (self);
+}
+
+/**
+ * clutter_actor_set_x_expand:
+ * @self: a #ClutterActor
+ * @expand: whether the actor should expand horizontally
+ *
+ * Sets whether a #ClutterActor should expand horizontally; this means
+ * that layout manager should allocate extra space for the actor, if
+ * possible.
+ *
+ * Setting an actor to expand will also make all its parent expand, so
+ * that it's possible to build an actor tree and only set this flag on
+ * its leaves and not on every single actor.
+ *
+ * Since: 1.12
+ */
+void
+clutter_actor_set_x_expand (ClutterActor *self,
+                            gboolean      expand)
+{
+  ClutterLayoutInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  expand = !!expand;
+
+  info = _clutter_actor_get_layout_info (self);
+  if (info->x_expand != expand)
+    {
+      info->x_expand = expand;
+
+      self->priv->x_expand_set = TRUE;
+
+      clutter_actor_queue_compute_expand (self);
+
+      g_object_notify_by_pspec (G_OBJECT (self),
+                                obj_props[PROP_X_EXPAND]);
+    }
+}
+
+/**
+ * clutter_actor_get_x_expand:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the value set with clutter_actor_set_x_expand().
+ *
+ * See also: clutter_actor_needs_x_expand()
+ *
+ * Return value: %TRUE if the actor has been set to expand
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_actor_get_x_expand (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  return _clutter_actor_get_layout_info_or_defaults (self)->x_expand;
+}
+
+/**
+ * clutter_actor_set_y_expand:
+ * @self: a #ClutterActor
+ * @expand: whether the actor should expand vertically
+ *
+ * Sets whether a #ClutterActor should expand horizontally; this means
+ * that layout manager should allocate extra space for the actor, if
+ * possible.
+ *
+ * Setting an actor to expand will also make all its parent expand, so
+ * that it's possible to build an actor tree and only set this flag on
+ * its leaves and not on every single actor.
+ *
+ * Since: 1.12
+ */
+void
+clutter_actor_set_y_expand (ClutterActor *self,
+                            gboolean      expand)
+{
+  ClutterLayoutInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  expand = !!expand;
+
+  info = _clutter_actor_get_layout_info (self);
+  if (info->y_expand != expand)
+    {
+      info->y_expand = expand;
+
+      self->priv->y_expand_set = TRUE;
+
+      clutter_actor_queue_compute_expand (self);
+
+      g_object_notify_by_pspec (G_OBJECT (self),
+                                obj_props[PROP_Y_EXPAND]);
+    }
+}
+
+/**
+ * clutter_actor_get_y_expand:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the value set with clutter_actor_set_y_expand().
+ *
+ * See also: clutter_actor_needs_y_expand()
+ *
+ * Return value: %TRUE if the actor has been set to expand
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_actor_get_y_expand (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  return _clutter_actor_get_layout_info_or_defaults (self)->y_expand;
+}
+
+static void
+clutter_actor_compute_expand_recursive (ClutterActor *self,
+                                        gboolean     *x_expand_p,
+                                        gboolean     *y_expand_p)
+{
+  ClutterActorIter iter;
+  ClutterActor *child;
+  gboolean x_expand, y_expand;
+
+  x_expand = y_expand = FALSE;
+
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
+    {
+      x_expand = x_expand || clutter_actor_needs_x_expand (child);
+      y_expand = y_expand || clutter_actor_needs_y_expand (child);
+    }
+
+  *x_expand_p = x_expand;
+  *y_expand_p = y_expand;
+}
+
+static void
+clutter_actor_compute_expand (ClutterActor *self)
+{
+  if (self->priv->needs_compute_expand)
+    {
+      const ClutterLayoutInfo *info;
+      gboolean x_expand, y_expand;
+
+      info = _clutter_actor_get_layout_info_or_defaults (self);
+
+      if (self->priv->x_expand_set)
+        x_expand = info->x_expand;
+      else
+        x_expand = FALSE;
+
+      if (self->priv->y_expand_set)
+        y_expand = info->y_expand;
+      else
+        y_expand = FALSE;
+
+      /* we don't need to recurse down to the children if the
+       * actor has been forcibly set to expand
+       */
+      if (!(self->priv->x_expand_set && self->priv->y_expand_set))
+        {
+          if (self->priv->n_children != 0)
+            {
+              gboolean *x_expand_p, *y_expand_p;
+              gboolean ignored = FALSE;
+
+              x_expand_p = self->priv->x_expand_set ? &ignored : &x_expand;
+              y_expand_p = self->priv->y_expand_set ? &ignored : &y_expand;
+
+              clutter_actor_compute_expand_recursive (self,
+                                                      x_expand_p,
+                                                      y_expand_p);
+            }
+        }
+
+      self->priv->needs_compute_expand = FALSE;
+      self->priv->needs_x_expand = (x_expand != FALSE);
+      self->priv->needs_y_expand = (y_expand != FALSE);
+    }
+}
+
+/**
+ * clutter_actor_needs_x_expand:
+ * @self: a #ClutterActor
+ *
+ * Checks whether an actor, or any of its children, is set to expand
+ * horizontally.
+ *
+ * This function should only be called by layout managers that can
+ * assign extra space to their children.
+ *
+ * If you want to know whether the actor was explicitly set to expand,
+ * use clutter_actor_get_y_expand().
+ *
+ * Return value: %TRUE if the actor should expand
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_actor_needs_x_expand (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+    return FALSE;
+
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
+    return FALSE;
+
+  clutter_actor_compute_expand (self);
+
+  return self->priv->needs_x_expand;
+}
+
+/**
+ * clutter_actor_needs_y_expand:
+ * @self: a #ClutterActor
+ *
+ * Checks whether an actor, or any of its children, is set to expand
+ * vertically.
+ *
+ * This function should only be called by layout managers that can
+ * assign extra space to their children.
+ *
+ * If you want to know whether the actor was explicitly set to expand,
+ * use clutter_actor_get_y_expand().
+ *
+ * Return value: %TRUE if the actor should expand
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_actor_needs_y_expand (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+    return FALSE;
+
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
+    return FALSE;
+
+  clutter_actor_compute_expand (self);
+
+  return self->priv->needs_x_expand;
 }

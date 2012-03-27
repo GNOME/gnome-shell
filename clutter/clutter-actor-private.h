@@ -147,15 +147,14 @@ struct _SizeRequest
 
 /*< private >
  * ClutterLayoutInfo:
- * @fixed_x: the fixed position of the actor, set using clutter_actor_set_x()
- * @fixed_y: the fixed position of the actor, set using clutter_actor_set_y()
+ * @fixed_pos: the fixed position of the actor
  * @margin: the composed margin of the actor
  * @x_align: the horizontal alignment, if the actor expands horizontally
  * @y_align: the vertical alignment, if the actor expands vertically
- * @min_width: the minimum width, set using clutter_actor_set_min_width()
- * @min_height: the minimum height, set using clutter_actor_set_min_height()
- * @natural_width: the natural width, set using clutter_actor_set_natural_width()
- * @natural_height: the natural height, set using clutter_actor_set_natural_height()
+ * @x_expand: whether the actor should expand horizontally
+ * @y_expand: whether the actor should expand vertically
+ * @minimum: the fixed minimum size
+ * @natural: the fixed natural size
  *
  * Ancillary layout information for an actor.
  */
@@ -168,6 +167,9 @@ struct _ClutterLayoutInfo
 
   guint x_align : 4;
   guint y_align : 4;
+
+  guint x_expand : 1;
+  guint y_expand : 1;
 
   ClutterSize minimum;
   ClutterSize natural;

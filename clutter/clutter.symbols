@@ -152,8 +152,10 @@ clutter_actor_get_transition
 clutter_actor_get_type
 clutter_actor_get_width
 clutter_actor_get_x_align
+clutter_actor_get_x_expand
 clutter_actor_get_x
 clutter_actor_get_y_align
+clutter_actor_get_y_expand
 clutter_actor_get_y
 clutter_actor_get_z_rotation_gravity
 clutter_actor_grab_key_focus
@@ -190,6 +192,8 @@ clutter_actor_meta_set_name
 clutter_actor_move_anchor_point
 clutter_actor_move_anchor_point_from_gravity
 clutter_actor_move_by
+clutter_actor_needs_x_expand
+clutter_actor_needs_y_expand
 clutter_actor_new
 clutter_actor_paint
 clutter_actor_pop_internal
@@ -260,8 +264,10 @@ clutter_actor_set_size
 clutter_actor_set_text_direction
 clutter_actor_set_width
 clutter_actor_set_x_align
+clutter_actor_set_x_expand
 clutter_actor_set_x
 clutter_actor_set_y_align
+clutter_actor_set_y_expand
 clutter_actor_set_y
 clutter_actor_set_z_rotation_from_gravity
 clutter_actor_should_pick_paint
