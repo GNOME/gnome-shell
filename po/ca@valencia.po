@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-03-27 22:13+0200\n"
-"PO-Revision-Date: 2012-03-20 01:15+0100\n"
+"POT-Creation-Date: 2012-03-27 22:14+0200\n"
+"PO-Revision-Date: 2012-03-25 23:15+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca-XV\n"
@@ -33,19 +33,19 @@ msgstr "Habilita totes les opcions de depuració que no tinguen comportament"
 
 #: ../cogl/cogl-debug.c:226
 msgid "Cogl debugging flags to set"
-msgstr "Senyaladors de depuració del Cogl a definir"
+msgstr "Senyaladors de depuració de la Cogl a definir"
 
 #: ../cogl/cogl-debug.c:228
 msgid "Cogl debugging flags to unset"
-msgstr "Senyaladors de depuració del Cogl dels quals desfer-ne la definició"
+msgstr "Senyaladors de depuració de la Cogl dels quals desfer-ne la definició"
 
 #: ../cogl/cogl-debug.c:277
 msgid "Cogl Options"
-msgstr "Opcions del Cogl"
+msgstr "Opcions de la Cogl"
 
 #: ../cogl/cogl-debug.c:278
 msgid "Show Cogl options"
-msgstr "Mostra les opcions del Cogl"
+msgstr "Mostra les opcions de la Cogl"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -91,11 +91,11 @@ msgstr "Depura l'anàlisi de les CoglBlendString"
 
 #: ../cogl/cogl-debug-options.h:47
 msgid "Trace Journal"
-msgstr "Traça el registre"
+msgstr "Traça el diari"
 
 #: ../cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
-msgstr "Visualitza tota la geometria que passa a través del registre"
+msgstr "Visualitza tota la geometria que passa a través del diari"
 
 #: ../cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
@@ -103,7 +103,7 @@ msgstr "Traça els lots"
 
 #: ../cogl/cogl-debug-options.h:53
 msgid "Show how geometry is being batched in the journal"
-msgstr "Mostra com la geometria és tracta per lots en el registre"
+msgstr "Mostra com la geometria és tracta per lots en el diari"
 
 #: ../cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
@@ -135,7 +135,7 @@ msgstr "Traça el rerefons de la CoglTexturePixmap"
 
 #: ../cogl/cogl-debug-options.h:74
 msgid "Trace the Cogl texture pixmap backend"
-msgstr "Traça el rerefons de textures de mapa de píxels de la Cogl"
+msgstr "Traça el rerefons de textures del mapa de píxels de la Cogl"
 
 #: ../cogl/cogl-debug-options.h:76 ../cogl/cogl-debug-options.h:81
 msgid "Visualize"
@@ -170,13 +170,12 @@ msgstr "Causa arrel"
 
 #: ../cogl/cogl-debug-options.h:88
 msgid "Disable Journal batching"
-msgstr "Inhabilita el processament per lots del registre"
+msgstr "Inhabilita el processament per lots del diari"
 
 #: ../cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
 msgstr ""
-"Inhabilita el processament per lots de la geometria en el registre de la "
-"Cogl."
+"Inhabilita el processament per lots de la geometria en el diari de la Cogl."
 
 #: ../cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
@@ -241,7 +240,7 @@ msgstr "Inhabilita la texturització"
 
 #: ../cogl/cogl-debug-options.h:125
 msgid "Disable texturing any primitives"
-msgstr "Inhabilita les primitives de texturització"
+msgstr "Inhabilita qualsevol primitiva de texturització"
 
 #: ../cogl/cogl-debug-options.h:129
 msgid "Disable arbfp"
@@ -261,11 +260,11 @@ msgstr "Inhabilita l'ús del conducte de rerefons de la funció fixe"
 
 #: ../cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
-msgstr "Inhabilita l'GLSL"
+msgstr "Inhabilita el GLSL"
 
 #: ../cogl/cogl-debug-options.h:140
 msgid "Disable use of GLSL"
-msgstr "Inhabilita l'ús de l'GLSL"
+msgstr "Inhabilita l'ús del GLSL"
 
 #: ../cogl/cogl-debug-options.h:144
 msgid "Disable blending"
@@ -299,7 +298,7 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:160
 msgid "Show source"
-msgstr "Mostra la font"
+msgstr "Mostra el codi font"
 
 #: ../cogl/cogl-debug-options.h:161
 msgid "Show generated ARBfp/GLSL source code"
