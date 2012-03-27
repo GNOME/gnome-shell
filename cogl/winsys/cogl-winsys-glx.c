@@ -79,7 +79,6 @@ typedef struct _CoglOnscreenGLX
   CoglOnscreenXlib _parent;
   GLXDrawable glxwin;
   guint32 last_swap_vsync_counter;
-  GList *swap_callbacks;
   gboolean pending_swap_notify;
 } CoglOnscreenGLX;
 
