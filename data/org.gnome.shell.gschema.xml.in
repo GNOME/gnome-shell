@@ -64,6 +64,7 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
     <child name="clock" schema="org.gnome.shell.clock"/>
     <child name="calendar" schema="org.gnome.shell.calendar"/>
     <child name="recorder" schema="org.gnome.shell.recorder"/>
+    <child name="keybindings" schema="org.gnome.shell.keybindings"/>
     <child name="keyboard" schema="org.gnome.shell.keyboard"/>
   </schema>
 
@@ -76,6 +77,17 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
         If true, display the ISO week date in the calendar.
       </_description>
       </key>
+  </schema>
+
+  <schema id="org.gnome.shell.keybindings" path="/org/gnome/shell/keybindings/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="open-application-menu" type="as">
+      <default>["&lt;Super&gt;F10"]</default>
+      <_summary>Keybinding to open the application menu</_summary>
+      <_description>
+        Keybinding to open the application menu.
+      </_description>
+    </key>
   </schema>
 
   <schema id="org.gnome.shell.keyboard" path="/org/gnome/shell/keyboard/"

@@ -13,6 +13,7 @@ const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
+const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 const WINDOW_ANIMATION_TIME = 0.25;
 const DIM_TIME = 0.500;
 const UNDIM_TIME = 0.250;
@@ -134,6 +135,10 @@ const WindowManager = new Lang.Class({
                                             Lang.bind(this, this._startAppSwitcher));
         Meta.keybindings_set_custom_handler('switch-panels',
                                             Lang.bind(this, this._startA11ySwitcher));
+        global.display.add_keybinding('open-application-menu',
+                                      SHELL_KEYBINDINGS_SCHEMA,
+                                      Meta.KeyBindingFlags.NONE,
+                                      Lang.bind(this, this._openAppMenu));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
@@ -545,6 +550,10 @@ const WindowManager = new Lang.Class({
         let modifiers = binding.get_modifiers();
         let backwards = modifiers & Meta.VirtualModifier.SHIFT_MASK;
         Main.ctrlAltTabManager.popup(backwards, binding.get_mask());
+    },
+
+    _openAppMenu : function(display, screen, window, event, binding) {
+        Main.panel.openAppMenu();
     },
 
     _showWorkspaceSwitcher : function(display, screen, window, binding) {
