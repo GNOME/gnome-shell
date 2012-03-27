@@ -177,8 +177,18 @@ key_release_cb (ClutterActor     *actor,
       break;
 
     case CLUTTER_KEY_v:
-      toggle = clutter_box_layout_get_vertical (layout);
-      clutter_box_layout_set_vertical (layout, !toggle);
+      {
+        ClutterOrientation orientation;
+
+        orientation = clutter_box_layout_get_orientation (layout);
+
+        if (orientation == CLUTTER_ORIENTATION_HORIZONTAL)
+          orientation = CLUTTER_ORIENTATION_VERTICAL;
+        else
+          orientation = CLUTTER_ORIENTATION_HORIZONTAL;
+
+        clutter_box_layout_set_orientation (layout, orientation);
+      }
       break;
 
     case CLUTTER_KEY_h:

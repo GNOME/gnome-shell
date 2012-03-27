@@ -105,7 +105,8 @@ struct _ClutterBoxLayoutPrivate
   gulong easing_mode;
   guint easing_duration;
 
-  guint is_vertical    : 1;
+  ClutterOrientation orientation;
+
   guint is_pack_start  : 1;
   guint is_animating   : 1;
   guint use_animations : 1;
@@ -151,6 +152,7 @@ enum
   PROP_USE_ANIMATIONS,
   PROP_EASING_MODE,
   PROP_EASING_DURATION,
+  PROP_ORIENTATION,
 
   PROP_LAST
 };
@@ -476,7 +478,7 @@ clutter_box_layout_set_container (ClutterLayoutManager *layout,
       /* we need to change the :request-mode of the container
        * to match the orientation
        */
-      request_mode = priv->is_vertical
+      request_mode = priv->orientation == CLUTTER_ORIENTATION_VERTICAL
                    ? CLUTTER_REQUEST_HEIGHT_FOR_WIDTH
                    : CLUTTER_REQUEST_WIDTH_FOR_HEIGHT;
       clutter_actor_set_request_mode (CLUTTER_ACTOR (priv->container),
@@ -497,7 +499,7 @@ get_preferred_width (ClutterBoxLayout *self,
   ClutterBoxLayoutPrivate *priv = self->priv;
   ClutterActor *child;
   gint n_children = 0;
-  gboolean is_rtl;
+  gboolean is_rtl, is_vertical;
 
   if (min_width_p)
     *min_width_p = 0;
@@ -505,7 +507,7 @@ get_preferred_width (ClutterBoxLayout *self,
   if (natural_width_p)
     *natural_width_p = 0;
 
-  if (!priv->is_vertical)
+  if (priv->orientation == CLUTTER_ORIENTATION_HORIZONTAL)
     {
       ClutterTextDirection text_dir;
 
@@ -514,6 +516,8 @@ get_preferred_width (ClutterBoxLayout *self,
     }
   else
     is_rtl = FALSE;
+
+  is_vertical = priv->orientation == CLUTTER_ORIENTATION_VERTICAL;
 
   for (child = (is_rtl) ? clutter_actor_get_last_child (container)
                         : clutter_actor_get_first_child (container);
@@ -529,13 +533,11 @@ get_preferred_width (ClutterBoxLayout *self,
       n_children++;
 
       clutter_actor_get_preferred_width (child,
-                                         (!priv->is_vertical)
-                                           ? for_height
-                                           : -1,
+                                         !is_vertical ? for_height : -1,
                                          &child_min,
                                          &child_nat);
 
-      if (priv->is_vertical)
+      if (is_vertical)
         {
           if (min_width_p)
             *min_width_p = MAX (child_min, *min_width_p);
@@ -554,7 +556,7 @@ get_preferred_width (ClutterBoxLayout *self,
     }
 
 
-  if (!priv->is_vertical && n_children > 1)
+  if (!is_vertical && n_children > 1)
     {
       if (min_width_p)
         *min_width_p += priv->spacing * (n_children - 1);
@@ -574,7 +576,7 @@ get_preferred_height (ClutterBoxLayout *self,
   ClutterBoxLayoutPrivate *priv = self->priv;
   ClutterActor *child;
   gint n_children = 0;
-  gboolean is_rtl;
+  gboolean is_rtl, is_vertical;
 
   if (min_height_p)
     *min_height_p = 0;
@@ -582,7 +584,7 @@ get_preferred_height (ClutterBoxLayout *self,
   if (natural_height_p)
     *natural_height_p = 0;
 
-  if (!priv->is_vertical)
+  if (priv->orientation == CLUTTER_ORIENTATION_HORIZONTAL)
     {
       ClutterTextDirection text_dir;
 
@@ -591,6 +593,8 @@ get_preferred_height (ClutterBoxLayout *self,
     }
   else
     is_rtl = FALSE;
+
+  is_vertical = priv->orientation == CLUTTER_ORIENTATION_VERTICAL;
 
   for (child = (is_rtl) ? clutter_actor_get_last_child (container)
                         : clutter_actor_get_first_child (container);
@@ -606,13 +610,11 @@ get_preferred_height (ClutterBoxLayout *self,
       n_children++;
 
       clutter_actor_get_preferred_height (child,
-                                          (priv->is_vertical)
-                                            ? for_width
-                                            : -1,
+                                          is_vertical ? for_width : -1,
                                           &child_min,
                                           &child_nat);
 
-      if (!priv->is_vertical)
+      if (!is_vertical)
         {
           if (min_height_p)
             *min_height_p = MAX (child_min, *min_height_p);
@@ -630,7 +632,7 @@ get_preferred_height (ClutterBoxLayout *self,
         }
     }
 
-  if (priv->is_vertical && n_children > 1)
+  if (is_vertical && n_children > 1)
     {
       if (min_height_p)
         *min_height_p += priv->spacing * (n_children - 1);
@@ -935,7 +937,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
 
   sizes = g_newa (RequestedSize, nvis_children);
 
-  if (priv->is_vertical)
+  if (priv->orientation == CLUTTER_ORIENTATION_VERTICAL)
     size = box->y2 - box->y1 - (nvis_children - 1) * priv->spacing;
   else
     size = box->x2 - box->x1 - (nvis_children - 1) * priv->spacing;
@@ -950,7 +952,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
-      if (priv->is_vertical)
+      if (priv->orientation == CLUTTER_ORIENTATION_VERTICAL)
         clutter_actor_get_preferred_height (child,
                                             box->x2 - box->x1,
                                             &sizes[i].minimum_size,
@@ -966,19 +968,31 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
       if (sizes[i].minimum_size < 0)
         g_error ("ClutterBoxLayout child %s minimum %s: %f < 0 for %s %f",
                  _clutter_actor_get_debug_name (child),
-                 priv->is_vertical ? "height" : "width",
+                 priv->orientation == CLUTTER_ORIENTATION_VERTICAL
+                   ? "height"
+                   : "width",
                  sizes[i].minimum_size,
-                 priv->is_vertical ? "width" : "height",
-                 priv->is_vertical ? box->x2 - box->x1 : box->y2 - box->y1);
+                 priv->orientation == CLUTTER_ORIENTATION_VERTICAL
+                   ? "width"
+                   : "height",
+                 priv->orientation == CLUTTER_ORIENTATION_VERTICAL
+                   ? box->x2 - box->x1
+                   : box->y2 - box->y1);
 
       if (sizes[i].natural_size < sizes[i].minimum_size)
         g_error ("ClutterBoxLayout child %s natural %s: %f < minimum %f for %s %f",
                  _clutter_actor_get_debug_name (child),
-                 priv->is_vertical ? "height" : "width",
+                 priv->orientation == CLUTTER_ORIENTATION_VERTICAL
+                   ? "height"
+                   : "width",
                  sizes[i].natural_size,
                  sizes[i].minimum_size,
-                 priv->is_vertical ? "width" : "height",
-                 priv->is_vertical ? box->x2 - box->x1 : box->y2 - box->y1);
+                 priv->orientation == CLUTTER_ORIENTATION_VERTICAL
+                   ? "width"
+                   : "height",
+                 priv->orientation == CLUTTER_ORIENTATION_VERTICAL
+                   ? box->x2 - box->x1
+                   : box->y2 - box->y1);
 
       size -= sizes[i].minimum_size;
 
@@ -992,7 +1006,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
       /* If were homogenous we still need to run the above loop to get the
        * minimum sizes for children that are not going to fill
        */
-      if (priv->is_vertical)
+      if (priv->orientation == CLUTTER_ORIENTATION_VERTICAL)
         size = box->y2 - box->y1 - (nvis_children - 1) * priv->spacing;
       else
         size = box->x2 - box->x1 - (nvis_children - 1) * priv->spacing;
@@ -1017,7 +1031,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
         extra = 0;
     }
 
-  if (!priv->is_vertical)
+  if (priv->orientation == CLUTTER_ORIENTATION_HORIZONTAL)
     {
       ClutterTextDirection text_dir;
 
@@ -1028,7 +1042,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
     is_rtl = FALSE;
 
   /* Allocate child positions. */
-  if (priv->is_vertical)
+  if (priv->orientation == CLUTTER_ORIENTATION_VERTICAL)
     {
       child_allocation.x1 = box->x1;
       child_allocation.x2 = MAX (1.0, box->x2 - box->x1);
@@ -1091,7 +1105,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
         }
 
       /* Assign the child's position. */
-      if (priv->is_vertical)
+      if (priv->orientation == CLUTTER_ORIENTATION_VERTICAL)
         {
           if (box_child->y_fill)
             {
@@ -1116,7 +1130,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
               y += child_size + priv->spacing;
             }
         }
-      else /* !priv->is_vertical */
+      else /* CLUTTER_ORIENTATION_HORIZONTAL */
         {
           if (box_child->x_fill)
             {
@@ -1206,6 +1220,10 @@ clutter_box_layout_set_property (GObject      *gobject,
       clutter_box_layout_set_vertical (self, g_value_get_boolean (value));
       break;
 
+    case PROP_ORIENTATION:
+      clutter_box_layout_set_orientation (self, g_value_get_enum (value));
+      break;
+
     case PROP_HOMOGENEOUS:
       clutter_box_layout_set_homogeneous (self, g_value_get_boolean (value));
       break;
@@ -1247,7 +1265,12 @@ clutter_box_layout_get_property (GObject    *gobject,
   switch (prop_id)
     {
     case PROP_VERTICAL:
-      g_value_set_boolean (value, priv->is_vertical);
+      g_value_set_boolean (value,
+                           priv->orientation == CLUTTER_ORIENTATION_VERTICAL);
+      break;
+
+    case PROP_ORIENTATION:
+      g_value_set_enum (value, priv->orientation);
       break;
 
     case PROP_HOMOGENEOUS:
@@ -1305,6 +1328,8 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    * alongside the Y axis, instead of alongside the X axis
    *
    * Since: 1.2
+   *
+   * Deprecated: 1.12: Use #ClutterBoxLayout:orientation instead.
    */
   obj_props[PROP_VERTICAL] =
     g_param_spec_boolean ("vertical",
@@ -1312,7 +1337,26 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
                           P_("Whether the layout should be vertical, "
                              "rather than horizontal"),
                           FALSE,
-                          CLUTTER_PARAM_READWRITE);
+                          G_PARAM_READWRITE |
+                          G_PARAM_STATIC_STRINGS |
+                          G_PARAM_DEPRECATED);
+
+  /**
+   * ClutterBoxLayout:orientation:
+   *
+   * The orientation of the #ClutterBoxLayout, either horizontal
+   * or vertical
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_ORIENTATION] =
+    g_param_spec_enum ("orientation",
+                       P_("Orientation"),
+                       P_("The orientation of the layout"),
+                       CLUTTER_TYPE_ORIENTATION,
+                       CLUTTER_ORIENTATION_HORIZONTAL,
+                       G_PARAM_READWRITE |
+                       G_PARAM_STATIC_STRINGS);
 
   /**
    * ClutterBoxLayout:homogeneous:
@@ -1427,7 +1471,7 @@ clutter_box_layout_init (ClutterBoxLayout *layout)
 
   layout->priv = priv = CLUTTER_BOX_LAYOUT_GET_PRIVATE (layout);
 
-  priv->is_vertical = FALSE;
+  priv->orientation = CLUTTER_ORIENTATION_HORIZONTAL;
   priv->is_homogeneous = FALSE;
   priv->is_pack_start = FALSE;
   priv->spacing = 0;
@@ -1519,36 +1563,64 @@ clutter_box_layout_get_spacing (ClutterBoxLayout *layout)
  * the Y axis, instead of horizontally alongside the X axis
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12: Use clutter_box_layout_set_orientation() instead.
  */
 void
 clutter_box_layout_set_vertical (ClutterBoxLayout *layout,
                                  gboolean          vertical)
 {
+  ClutterOrientation new_orientation, old_orientation;
+
+  g_return_if_fail (CLUTTER_IS_BOX_LAYOUT (layout));
+
+  old_orientation = layout->priv->orientation;
+  new_orientation = vertical
+                  ? CLUTTER_ORIENTATION_VERTICAL
+                  : CLUTTER_ORIENTATION_HORIZONTAL;
+  clutter_box_layout_set_orientation (layout, new_orientation);
+
+  if (old_orientation != new_orientation)
+    g_object_notify_by_pspec (G_OBJECT (layout), obj_props[PROP_VERTICAL]);
+}
+
+/**
+ * clutter_box_layout_set_orientation:
+ * @layout: a #ClutterBoxLayout
+ * @orientation: the orientation of the #ClutterBoxLayout
+ *
+ * Sets the orientation of the #ClutterBoxLayout layout manager.
+ *
+ * Since: 1.12
+ */
+void
+clutter_box_layout_set_orientation (ClutterBoxLayout   *layout,
+                                    ClutterOrientation  orientation)
+{
   ClutterBoxLayoutPrivate *priv;
+  ClutterLayoutManager *manager;
 
   g_return_if_fail (CLUTTER_IS_BOX_LAYOUT (layout));
 
   priv = layout->priv;
 
-  if (priv->is_vertical != vertical)
+  if (priv->orientation == orientation)
+    return;
+
+  priv->orientation = orientation;
+
+  manager = CLUTTER_LAYOUT_MANAGER (layout);
+
+  if (priv->use_animations)
     {
-      ClutterLayoutManager *manager;
-
-      priv->is_vertical = vertical ? TRUE : FALSE;
-
-      manager = CLUTTER_LAYOUT_MANAGER (layout);
-
-      if (priv->use_animations)
-        {
-          clutter_layout_manager_begin_animation (manager,
-                                                  priv->easing_duration,
-                                                  priv->easing_mode);
-        }
-      else
-        clutter_layout_manager_layout_changed (manager);
-
-      g_object_notify (G_OBJECT (layout), "vertical");
+      clutter_layout_manager_begin_animation (manager,
+                                              priv->easing_duration,
+                                              priv->easing_mode);
     }
+  else
+    clutter_layout_manager_layout_changed (manager);
+
+  g_object_notify_by_pspec (G_OBJECT (layout), obj_props[PROP_ORIENTATION]);
 }
 
 /**
@@ -1562,13 +1634,34 @@ clutter_box_layout_set_vertical (ClutterBoxLayout *layout,
  *   vertically, and %FALSE otherwise
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12: Use clutter_box_layout_get_orientation() instead
  */
 gboolean
 clutter_box_layout_get_vertical (ClutterBoxLayout *layout)
 {
   g_return_val_if_fail (CLUTTER_IS_BOX_LAYOUT (layout), FALSE);
 
-  return layout->priv->is_vertical;
+  return layout->priv->orientation == CLUTTER_ORIENTATION_VERTICAL;
+}
+
+/**
+ * clutter_box_layout_get_orientation:
+ * @layout: a #ClutterBoxLayout
+ *
+ * Retrieves the orientation of the @layout.
+ *
+ * Return value: the orientation of the layout
+ *
+ * Since: 1.12
+ */
+ClutterOrientation
+clutter_box_layout_get_orientation (ClutterBoxLayout *layout)
+{
+  g_return_val_if_fail (CLUTTER_IS_BOX_LAYOUT (layout),
+                        CLUTTER_ORIENTATION_HORIZONTAL);
+
+  return layout->priv->orientation;
 }
 
 /**

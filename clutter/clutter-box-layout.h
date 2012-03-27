@@ -79,59 +79,68 @@ struct _ClutterBoxLayoutClass
 
 GType clutter_box_layout_get_type (void) G_GNUC_CONST;
 
-ClutterLayoutManager *clutter_box_layout_new                 (void);
+ClutterLayoutManager *  clutter_box_layout_new                 (void);
 
-void                  clutter_box_layout_set_spacing         (ClutterBoxLayout    *layout,
-                                                              guint                spacing);
-guint                 clutter_box_layout_get_spacing         (ClutterBoxLayout    *layout);
-void                  clutter_box_layout_set_vertical        (ClutterBoxLayout    *layout,
-                                                              gboolean             vertical);
-gboolean              clutter_box_layout_get_vertical        (ClutterBoxLayout    *layout);
-void                  clutter_box_layout_set_homogeneous     (ClutterBoxLayout    *layout,
-                                                              gboolean             homogeneous);
-gboolean              clutter_box_layout_get_homogeneous     (ClutterBoxLayout    *layout);
-void                  clutter_box_layout_set_pack_start      (ClutterBoxLayout    *layout,
-                                                              gboolean             pack_start);
-gboolean              clutter_box_layout_get_pack_start      (ClutterBoxLayout    *layout);
+CLUTTER_AVAILABLE_IN_1_12
+void                    clutter_box_layout_set_orientation      (ClutterBoxLayout    *layout,
+                                                                 ClutterOrientation   orientation);
+CLUTTER_AVAILABLE_IN_1_12
+ClutterOrientation      clutter_box_layout_get_orientation      (ClutterBoxLayout    *layout);
 
-void                  clutter_box_layout_pack                (ClutterBoxLayout    *layout,
-                                                              ClutterActor        *actor,
-                                                              gboolean             expand,
-                                                              gboolean             x_fill,
-                                                              gboolean             y_fill,
-                                                              ClutterBoxAlignment  x_align,
-                                                              ClutterBoxAlignment  y_align);
-void                  clutter_box_layout_set_alignment       (ClutterBoxLayout    *layout,
-                                                              ClutterActor        *actor,
-                                                              ClutterBoxAlignment  x_align,
-                                                              ClutterBoxAlignment  y_align);
-void                  clutter_box_layout_get_alignment       (ClutterBoxLayout    *layout,
-                                                              ClutterActor        *actor,
-                                                              ClutterBoxAlignment *x_align,
-                                                              ClutterBoxAlignment *y_align);
-void                  clutter_box_layout_set_fill            (ClutterBoxLayout    *layout,
-                                                              ClutterActor        *actor,
-                                                              gboolean             x_fill,
-                                                              gboolean             y_fill);
-void                  clutter_box_layout_get_fill            (ClutterBoxLayout    *layout,
-                                                              ClutterActor        *actor,
-                                                              gboolean            *x_fill,
-                                                              gboolean            *y_fill);
-void                  clutter_box_layout_set_expand          (ClutterBoxLayout    *layout,
-                                                              ClutterActor        *actor,
-                                                              gboolean             expand);
-gboolean              clutter_box_layout_get_expand          (ClutterBoxLayout    *layout,
-                                                              ClutterActor        *actor);
+void                    clutter_box_layout_set_spacing          (ClutterBoxLayout    *layout,
+                                                                 guint                spacing);
+guint                   clutter_box_layout_get_spacing          (ClutterBoxLayout    *layout);
+void                    clutter_box_layout_set_homogeneous      (ClutterBoxLayout    *layout,
+                                                                 gboolean             homogeneous);
+gboolean                clutter_box_layout_get_homogeneous      (ClutterBoxLayout    *layout);
+void                    clutter_box_layout_set_pack_start       (ClutterBoxLayout    *layout,
+                                                                 gboolean             pack_start);
+gboolean                clutter_box_layout_get_pack_start       (ClutterBoxLayout    *layout);
 
-void                  clutter_box_layout_set_use_animations  (ClutterBoxLayout    *layout,
-                                                              gboolean             animate);
-gboolean              clutter_box_layout_get_use_animations  (ClutterBoxLayout    *layout);
-void                  clutter_box_layout_set_easing_mode     (ClutterBoxLayout    *layout,
-                                                              gulong               mode);
-gulong                clutter_box_layout_get_easing_mode     (ClutterBoxLayout    *layout);
-void                  clutter_box_layout_set_easing_duration (ClutterBoxLayout    *layout,
-                                                              guint                msecs);
-guint                 clutter_box_layout_get_easing_duration (ClutterBoxLayout    *layout);
+CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_box_layout_set_orientation)
+void                    clutter_box_layout_set_vertical         (ClutterBoxLayout    *layout,
+                                                                 gboolean             vertical);
+CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_box_layout_get_orientation)
+gboolean                clutter_box_layout_get_vertical         (ClutterBoxLayout    *layout);
+
+void                    clutter_box_layout_pack                 (ClutterBoxLayout    *layout,
+                                                                 ClutterActor        *actor,
+                                                                 gboolean             expand,
+                                                                 gboolean             x_fill,
+                                                                 gboolean             y_fill,
+                                                                 ClutterBoxAlignment  x_align,
+                                                                 ClutterBoxAlignment  y_align);
+void                    clutter_box_layout_set_alignment        (ClutterBoxLayout    *layout,
+                                                                 ClutterActor        *actor,
+                                                                 ClutterBoxAlignment  x_align,
+                                                                 ClutterBoxAlignment  y_align);
+void                    clutter_box_layout_get_alignment        (ClutterBoxLayout    *layout,
+                                                                 ClutterActor        *actor,
+                                                                 ClutterBoxAlignment *x_align,
+                                                                 ClutterBoxAlignment *y_align);
+void                    clutter_box_layout_set_fill             (ClutterBoxLayout    *layout,
+                                                                 ClutterActor        *actor,
+                                                                 gboolean             x_fill,
+                                                                 gboolean             y_fill);
+void                    clutter_box_layout_get_fill             (ClutterBoxLayout    *layout,
+                                                                 ClutterActor        *actor,
+                                                                 gboolean            *x_fill,
+                                                                 gboolean            *y_fill);
+void                    clutter_box_layout_set_expand           (ClutterBoxLayout    *layout,
+                                                                 ClutterActor        *actor,
+                                                                 gboolean             expand);
+gboolean                clutter_box_layout_get_expand           (ClutterBoxLayout    *layout,
+                                                                 ClutterActor        *actor);
+
+void                    clutter_box_layout_set_use_animations   (ClutterBoxLayout    *layout,
+                                                                 gboolean             animate);
+gboolean                clutter_box_layout_get_use_animations   (ClutterBoxLayout    *layout);
+void                    clutter_box_layout_set_easing_mode      (ClutterBoxLayout    *layout,
+                                                                 gulong               mode);
+gulong                  clutter_box_layout_get_easing_mode      (ClutterBoxLayout    *layout);
+void                    clutter_box_layout_set_easing_duration  (ClutterBoxLayout    *layout,
+                                                                 guint                msecs);
+guint                   clutter_box_layout_get_easing_duration  (ClutterBoxLayout    *layout);
 
 G_END_DECLS
 

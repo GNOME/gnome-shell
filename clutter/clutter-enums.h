@@ -1199,6 +1199,20 @@ typedef enum {
   CLUTTER_SCALING_FILTER_TRILINEAR
 } ClutterScalingFilter;
 
+/**
+ * ClutterOrientation:
+ * @CLUTTER_ORIENTATION_HORIZONTAL: An horizontal orientation
+ * @CLUTTER_ORIENTATION_VERTICAL: A vertical orientation
+ *
+ * Represents the orientation of actors or layout managers.
+ *
+ * Since: 1.12
+ */
+typedef enum {
+  CLUTTER_ORIENTATION_HORIZONTAL,
+  CLUTTER_ORIENTATION_VERTICAL
+} ClutterOrientation;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ENUMS_H__ */
