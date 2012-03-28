@@ -258,6 +258,27 @@
  *     and a default easing mode of %CLUTTER_EASE_OUT_CUBIC, unless you call
  *     clutter_actor_set_easing_mode() and clutter_actor_set_easing_duration()
  *     after changing the easing state of the actor.</para>
+ *     <para>It is important to note that if you modify the state on an
+ *     animatable property while a transition is in flight, the transition's
+ *     final value will be updated, as well as its duration and progress
+ *     mode by using the current easing state; for instance, in the following
+ *     example:</para>
+ *     <informalexample><programlisting>
+ * clutter_actor_save_easing_state (actor);
+ * clutter_actor_set_x (actor, 200);
+ * clutter_actor_restore_easing_state (actor);
+ *
+ * clutter_actor_save_easing_state (actor);
+ * clutter_actor_set_x (actor, 100);
+ * clutter_actor_restore_easing_state (actor);
+ *     </programlisting></informalexample>
+ *     <para>the first call to clutter_actor_set_x() will begin a transition
+ *     of the #ClutterActor:x property to the value of 200; the second call
+ *     to clutter_actor_set_x() will change the transition's final value to
+ *     100.</para>
+ *     <para>It is possible to retrieve the #ClutterTransition used by the
+ *     animatable properties by using clutter_actor_get_transition() and using
+ *     the property name as the transition name.</para>
  *   </formalpara>
  *   <formalpara>
  *     <title>Explicit animations</title>
