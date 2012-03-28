@@ -17003,6 +17003,7 @@ _clutter_actor_update_transition (ClutterActor *actor,
                                   ...)
 {
   TransitionClosure *clos;
+  ClutterTimeline *timeline;
   ClutterInterval *interval;
   const ClutterAnimationInfo *info;
   va_list var_args;
@@ -17019,6 +17020,8 @@ _clutter_actor_update_transition (ClutterActor *actor,
   clos = g_hash_table_lookup (info->transitions, pspec->name);
   if (clos == NULL)
     return;
+
+  timeline = CLUTTER_TIMELINE (clos->transition);
 
   va_start (var_args, pspec);
 
@@ -17041,7 +17044,17 @@ _clutter_actor_update_transition (ClutterActor *actor,
   clutter_interval_set_initial_value (interval, &initial);
   clutter_interval_set_final_value (interval, &final);
 
-  clutter_timeline_rewind (CLUTTER_TIMELINE (clos->transition));
+  /* if we're updating with an easing duration of zero milliseconds,
+   * we just jump the timeline to the end and let it run its course
+   */
+  if (info->cur_state == NULL || info->cur_state->easing_duration == 0)
+    {
+      guint duration = clutter_timeline_get_duration (timeline);
+
+      clutter_timeline_advance (timeline, duration);
+    }
+  else
+    clutter_timeline_rewind (timeline);
 
 out:
   g_value_unset (&initial);
