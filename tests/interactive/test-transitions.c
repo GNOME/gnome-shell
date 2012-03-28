@@ -81,11 +81,15 @@ on_button_press (ClutterActor       *actor,
 
       cur_mode = easing_modes[current_mode].mode;
 
+      clutter_actor_save_easing_state (rectangle);
+
       /* tween the actor using the current easing mode */
       clutter_actor_set_easing_mode (rectangle, cur_mode);
       clutter_actor_set_easing_duration (rectangle, duration * 1000);
 
       clutter_actor_set_position (rectangle, event->x, event->y);
+
+      clutter_actor_restore_easing_state (rectangle);
     }
 
   return TRUE;
