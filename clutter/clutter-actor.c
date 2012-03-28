@@ -17068,14 +17068,27 @@ _clutter_actor_update_transition (ClutterActor *actor,
   /* if we're updating with an easing duration of zero milliseconds,
    * we just jump the timeline to the end and let it run its course
    */
-  if (info->cur_state == NULL || info->cur_state->easing_duration == 0)
+  if (info->cur_state != NULL &&
+      info->cur_state->easing_duration != 0)
+    {
+      guint cur_duration = clutter_timeline_get_duration (timeline);
+      ClutterAnimationMode cur_mode =
+        clutter_timeline_get_progress_mode (timeline);
+
+      if (cur_duration != info->cur_state->easing_duration)
+        clutter_timeline_set_duration (timeline, info->cur_state->easing_duration);
+
+      if (cur_mode != info->cur_state->easing_mode)
+        clutter_timeline_set_progress_mode (timeline, info->cur_state->easing_mode);
+
+      clutter_timeline_rewind (timeline);
+    }
+  else
     {
       guint duration = clutter_timeline_get_duration (timeline);
 
       clutter_timeline_advance (timeline, duration);
     }
-  else
-    clutter_timeline_rewind (timeline);
 
 out:
   g_value_unset (&initial);
