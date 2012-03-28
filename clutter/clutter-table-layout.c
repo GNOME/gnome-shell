@@ -861,7 +861,7 @@ calculate_col_widths (ClutterTableLayout *self,
             }
 
           if (!columns[i].expand)
-            columns[i].expand = meta->x_fill;
+            columns[i].expand = meta->x_expand;
         }
       min_width += priv->col_spacing * (meta->col_span - 1);
       pref_width += priv->col_spacing * (meta->col_span - 1);
@@ -915,8 +915,6 @@ calculate_col_widths (ClutterTableLayout *self,
                 }
             }
         }
-
-
     }
 
   /* calculate final widths */
@@ -1135,7 +1133,7 @@ calculate_row_heights (ClutterTableLayout *self,
             }
 
           if (!rows[i].expand)
-            rows[i].expand = meta->y_fill;
+            rows[i].expand = meta->y_expand;
         }
 
       min_height += priv->row_spacing * (meta->row_span - 1);
@@ -1200,7 +1198,6 @@ calculate_row_heights (ClutterTableLayout *self,
                 }
             }
         }
-
     }
 
   /* calculate final heights */
