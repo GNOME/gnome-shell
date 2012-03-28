@@ -5,8 +5,7 @@
 static gboolean is_expanded = FALSE;
 
 static void
-on_animation_complete (ClutterAnimation *animation,
-                       ClutterActor     *actor)
+on_rect_transitions_completed (ClutterActor *actor)
 {
   is_expanded = !is_expanded;
 
@@ -24,8 +23,8 @@ on_clicked (ClutterClickAction *action,
   gfloat old_x, old_y, new_x, new_y;
   gfloat old_width, old_height, new_width, new_height;
   gdouble new_angle;
-  ClutterVertex vertex = { 0, };
-  ClutterColor new_color = { 0, };
+  const ClutterColor *new_color;
+  guint8 new_opacity;
 
   clutter_actor_get_position (actor, &old_x, &old_y);
   clutter_actor_get_size (actor, &old_width, &old_height);
@@ -41,10 +40,9 @@ on_clicked (ClutterClickAction *action,
       new_height = old_height + 200;
       new_angle = 360.0;
 
-      new_color.red = 0xdd;
-      new_color.green = 0x44;
-      new_color.blue = 0xdd;
-      new_color.alpha = 0xff;
+      new_color = CLUTTER_COLOR_DarkScarletRed;
+
+      new_opacity = 255;
     }
   else
     {
@@ -54,30 +52,33 @@ on_clicked (ClutterClickAction *action,
       new_height = old_height - 200;
       new_angle = 0.0;
 
-      new_color.red = 0x44;
-      new_color.green = 0xdd;
-      new_color.blue = 0x44;
-      new_color.alpha = 0x88;
+      new_color = CLUTTER_COLOR_LightOrange;
+
+      new_opacity = 128;
     }
 
-  vertex.x = new_width / 2;
-  vertex.y = new_height / 2;
-  vertex.z = 0.0;
+  clutter_actor_save_easing_state (actor);
+  clutter_actor_set_easing_mode (actor, CLUTTER_EASE_IN_EXPO);
+  clutter_actor_set_easing_duration (actor, 2000);
 
-  animation =
-    clutter_actor_animate (actor, CLUTTER_EASE_IN_EXPO, 2000,
-                           "x", new_x,
-                           "y", new_y,
-                           "width", new_width,
-                           "height", new_height,
-                           "color", &new_color,
-                           "rotation-angle-z", new_angle,
-                           "fixed::rotation-center-z", &vertex,
-                           "fixed::reactive", FALSE,
-                           NULL);
-  g_signal_connect (animation,
-                    "completed", G_CALLBACK (on_animation_complete),
-                    actor);
+  clutter_actor_set_position (actor, new_x, new_y);
+  clutter_actor_set_size (actor, new_width, new_height);
+  clutter_actor_set_background_color (actor, new_color);
+  clutter_actor_set_rotation (actor, CLUTTER_Z_AXIS, new_angle,
+                              new_width / 2.0f,
+                              new_height / 2.0f,
+                              0.0f);
+  clutter_actor_set_reactive (actor, FALSE);
+
+  /* animate the opacity halfway through, with a different pacing */
+  clutter_actor_save_easing_state (actor);
+  clutter_actor_set_easing_mode (actor, CLUTTER_LINEAR);
+  clutter_actor_set_easing_delay (actor, 1000);
+  clutter_actor_set_easing_duration (actor, 1000);
+  clutter_actor_set_opacity (actor, new_opacity);
+  clutter_actor_restore_easing_state (actor);
+
+  clutter_actor_restore_easing_state (actor);
 }
 
 G_MODULE_EXPORT int
@@ -95,15 +96,19 @@ test_animation_main (int argc, char *argv[])
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Animation");
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  rect = clutter_rectangle_new_with_color (&rect_color);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
+  rect = clutter_actor_new ();
+  clutter_actor_set_background_color (rect, CLUTTER_COLOR_LightOrange);
+  clutter_actor_add_child (stage, rect);
   clutter_actor_set_size (rect, 50, 50);
   clutter_actor_set_anchor_point (rect, 25, 25);
   clutter_actor_set_position (rect,
                               clutter_actor_get_width (stage) / 2,
                               clutter_actor_get_height (stage) / 2);
-  clutter_actor_set_opacity (rect, 0x88);
+  clutter_actor_set_opacity (rect, 128);
   clutter_actor_set_reactive (rect, TRUE);
+  g_signal_connect (rect, "transitions-completed",
+                    G_CALLBACK (on_rect_transitions_completed),
+                    NULL);
 
   action = clutter_click_action_new ();
   g_signal_connect (action, "clicked", G_CALLBACK (on_clicked), NULL);
@@ -119,5 +124,5 @@ test_animation_main (int argc, char *argv[])
 G_MODULE_EXPORT const char *
 test_animation_describe (void)
 {
-  return "Simple clutter_actor_animate() demo";
+  return "Simple animation demo";
 }
