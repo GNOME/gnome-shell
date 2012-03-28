@@ -9473,7 +9473,25 @@ clutter_actor_set_width (ClutterActor *self,
 
   if (_clutter_actor_get_transition (self, obj_props[PROP_WIDTH]) == NULL)
     {
-      float cur_size = clutter_actor_get_width (self);
+      float cur_size;
+
+      /* minor optimization: if we don't have a duration
+       * then we can skip the get_width() below, to avoid
+       * the chance of going through get_preferred_width()
+       * just to jump to a new desired width.
+       */
+      if (clutter_actor_get_easing_duration (self) == 0)
+        {
+          g_object_freeze_notify (G_OBJECT (self));
+
+          clutter_actor_set_width_internal (self, width);
+
+          g_object_thaw_notify (G_OBJECT (self));
+
+          return;
+        }
+      else
+        cur_size = clutter_actor_get_width (self);
 
       _clutter_actor_create_transition (self,
                                         obj_props[PROP_WIDTH],
@@ -9509,7 +9527,21 @@ clutter_actor_set_height (ClutterActor *self,
 
   if (_clutter_actor_get_transition (self, obj_props[PROP_HEIGHT]) == NULL)
     {
-      float cur_size = clutter_actor_get_height (self);
+      float cur_size;
+
+      /* see the comment in clutter_actor_set_width() above */
+      if (clutter_actor_get_easing_duration (self) == 0)
+        {
+          g_object_freeze_notify (G_OBJECT (self));
+
+          clutter_actor_set_height_internal (self, height);
+
+          g_object_thaw_notify (G_OBJECT (self));
+
+          return;
+        }
+      else
+        cur_size = clutter_actor_get_height (self);
 
       _clutter_actor_create_transition (self,
                                         obj_props[PROP_HEIGHT],
