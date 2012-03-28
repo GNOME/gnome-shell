@@ -529,9 +529,11 @@ const WorkspacesDisplay = new Lang.Class({
             this._updateAlwaysZoom();
         }));
 
+        global.screen.connect('notify::n-workspaces',
+                              Lang.bind(this, this._workspacesChanged));
+
         this._switchWorkspaceNotifyId = 0;
 
-        this._nWorkspacesChangedId = 0;
         this._itemDragBeginId = 0;
         this._itemDragCancelledId = 0;
         this._itemDragEndId = 0;
@@ -570,9 +572,6 @@ const WorkspacesDisplay = new Lang.Class({
             global.screen.connect('restacked',
                                   Lang.bind(this, this._onRestacked));
 
-        if (this._nWorkspacesChangedId == 0)
-            this._nWorkspacesChangedId = global.screen.connect('notify::n-workspaces',
-                                                               Lang.bind(this, this._workspacesChanged));
         if (this._itemDragBeginId == 0)
             this._itemDragBeginId = Main.overview.connect('item-drag-begin',
                                                           Lang.bind(this, this._dragBegin));
@@ -925,18 +924,15 @@ const WorkspacesDisplay = new Lang.Class({
     },
 
     _workspacesChanged: function() {
-        let oldNumWorkspaces = this._workspaces[0].length;
-        let newNumWorkspaces = global.screen.n_workspaces;
-        let active = global.screen.get_active_workspace_index();
-
-        if (oldNumWorkspaces == newNumWorkspaces)
-            return;
-
         this._updateAlwaysZoom();
         this._updateZoom();
 
         if (this._workspacesViews == null)
             return;
+
+        let oldNumWorkspaces = this._workspaces[0].length;
+        let newNumWorkspaces = global.screen.n_workspaces;
+        let active = global.screen.get_active_workspace_index();
 
         let lostWorkspaces = [];
         if (newNumWorkspaces > oldNumWorkspaces) {
