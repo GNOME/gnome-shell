@@ -75,6 +75,10 @@ on_button_press (ClutterActor       *actor,
       clutter_text_set_text (CLUTTER_TEXT (easing_mode_label), text);
       g_free (text);
     }
+  else if (event->button == CLUTTER_BUTTON_MIDDLE)
+    {
+      clutter_actor_set_position (rectangle, event->x, event->y);
+    }
   else if (event->button == CLUTTER_BUTTON_PRIMARY)
     {
       ClutterAnimationMode cur_mode;
@@ -92,7 +96,7 @@ on_button_press (ClutterActor       *actor,
       clutter_actor_restore_easing_state (rectangle);
     }
 
-  return TRUE;
+  return CLUTTER_EVENT_STOP;
 }
 
 static gboolean
