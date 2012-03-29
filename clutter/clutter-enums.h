@@ -467,6 +467,9 @@ typedef enum {
  * The alignment policies available on each axis for #ClutterBinLayout
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12: Use #ClutterActorAlign and the #ClutterActor
+ *   API instead
  */
 typedef enum {
   CLUTTER_BIN_ALIGNMENT_FIXED,

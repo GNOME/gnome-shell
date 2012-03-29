@@ -257,6 +257,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-behaviour-path.h 		\
 	$(srcdir)/deprecated/clutter-behaviour-rotate.h 	\
 	$(srcdir)/deprecated/clutter-behaviour-scale.h 		\
+	$(srcdir)/deprecated/clutter-bin-layout.h		\
 	$(srcdir)/deprecated/clutter-box.h			\
 	$(srcdir)/deprecated/clutter-cairo-texture.h		\
 	$(srcdir)/deprecated/clutter-container.h		\

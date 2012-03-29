@@ -69,10 +69,10 @@
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include "deprecated/clutter-container.h"
+#include "deprecated/clutter-bin-layout.h"
 
 #include "clutter-actor-private.h"
 #include "clutter-animatable.h"
-#include "clutter-bin-layout.h"
 #include "clutter-child-meta.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
@@ -600,6 +600,9 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
    * by the #ClutterBinLayout
    *
    * Since: 1.2
+   *
+   * Deprecated: 1.12: Use the #ClutterActor:x-expand and the
+   *   #ClutterActor:x-align properties on #ClutterActor instead.
    */
   bin_props[PROP_X_ALIGN] =
     g_param_spec_enum ("x-align",
@@ -617,6 +620,9 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
    * by the #ClutterBinLayout
    *
    * Since: 1.2
+   *
+   * Deprecated: 1.12: Use the #ClutterActor:y-expand and the
+   *   #ClutterActor:y-align properties on #ClutterActor instead.
    */
   bin_props[PROP_Y_ALIGN] =
     g_param_spec_enum ("y-align",
@@ -687,6 +693,9 @@ clutter_bin_layout_new (ClutterBinAlignment x_align,
  * be set as the default alignment policies
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12: Use the #ClutterActor:x-align and
+ *   #ClutterActor:y-align properties of #ClutterActor instead.
  */
 void
 clutter_bin_layout_set_alignment (ClutterBinLayout    *self,
@@ -745,6 +754,9 @@ clutter_bin_layout_set_alignment (ClutterBinLayout    *self,
  * instead
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12: Use the #ClutterActor:x-align and the
+ *   #ClutterActor:y-align properties of #ClutterActor instead.
  */
 void
 clutter_bin_layout_get_alignment (ClutterBinLayout    *self,
@@ -811,6 +823,8 @@ clutter_bin_layout_get_alignment (ClutterBinLayout    *self,
  * #ClutterBinLayout
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12: Use clutter_actor_add_child() instead.
  */
 void
 clutter_bin_layout_add (ClutterBinLayout    *self,
