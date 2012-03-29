@@ -15801,15 +15801,25 @@ _clutter_actor_foreach_child (ClutterActor           *self,
                               ClutterForeachCallback  callback,
                               gpointer                user_data)
 {
-  ClutterActorPrivate *priv = self->priv;
   ClutterActor *iter;
   gboolean cont;
 
-  for (cont = TRUE, iter = priv->first_child;
-       cont && iter != NULL;
-       iter = iter->priv->next_sibling)
+  if (self->priv->first_child == NULL)
+    return TRUE;
+
+  cont = TRUE;
+  iter = self->priv->first_child;
+
+  /* we use this form so that it's safe to change the children
+   * list while iterating it
+   */
+  while (cont && iter != NULL)
     {
+      ClutterActor *next = iter->priv->next_sibling;
+
       cont = callback (iter, user_data);
+
+      iter = next;
     }
 
   return cont;
