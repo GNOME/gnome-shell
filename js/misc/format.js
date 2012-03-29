@@ -1,5 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Shell = imports.gi.Shell;
+
 /*
  * This function is intended to extend the String object and provide
  * an String.format API for string formatting.
@@ -17,10 +19,15 @@ function format() {
     let i = 0;
     let args = arguments;
 
-    return str.replace(/%([0-9]+)?(?:\.([0-9]+))?(.)/g, function (str, widthGroup, precisionGroup, genericGroup) {
+    return str.replace(/%(I+)?([0-9]+)?(?:\.([0-9]+))?(.)/g, function (str, flagsGroup, widthGroup, precisionGroup, genericGroup) {
 
                     if (precisionGroup != '' && genericGroup != 'f')
                         throw new Error("Precision can only be specified for 'f'");
+
+                    let hasAlternativeIntFlag = (flagsGroup.indexOf('I') != -1);
+
+                    if (hasAlternativeIntFlag && genericGroup != 'd')
+                        throw new Error("Alternative output digits can only be specfied for 'd'");
 
                     let fillChar = (widthGroup[0] == '0') ? '0' : ' ';
                     let width = parseInt(widthGroup, 10) || 0;
@@ -41,7 +48,11 @@ function format() {
                             s = args[i++].toString();
                             break;
                         case 'd':
-                            s = parseInt(args[i++]).toString();
+                            let intV = parseInt(args[i++]);
+                            if (hasAlternativeIntFlag)
+                                s = Shell.format_int_alternative_output(intV);
+                            else
+                                s = intV.toString();
                             break;
                         case 'x':
                             s = parseInt(args[i++]).toString(16);
