@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <gmodule.h>
 #include <cairo.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <clutter/clutter.h>
 
 static const ClutterColor bg_color = { 0xcc, 0xcc, 0xcc, 0x99 };
@@ -8,14 +9,20 @@ static const ClutterColor bg_color = { 0xcc, 0xcc, 0xcc, 0x99 };
 static gboolean is_expanded = FALSE;
 
 static gboolean
-draw_background (ClutterCairoTexture *texture,
-                 cairo_t             *cr)
+on_canvas_draw (ClutterCanvas *canvas,
+                cairo_t      *cr,
+                gint          width,
+                gint          height)
 {
   cairo_pattern_t *pat;
   gfloat x, y;
-  guint width, height;
 
-  clutter_cairo_texture_get_surface_size (texture, &width, &height);
+  g_print (G_STRLOC ": Painting at %d x %d\n", width, height);
+
+  cairo_save (cr);
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+  cairo_restore (cr);
 
 #define BG_ROUND_RADIUS         12
 
@@ -74,8 +81,8 @@ on_box_enter (ClutterActor *box,
               ClutterEvent *event,
               ClutterActor *emblem)
 {
+  /* we ease the opacity linearly */
   clutter_actor_save_easing_state (emblem);
-  clutter_actor_set_easing_duration (emblem, 150);
   clutter_actor_set_easing_mode (emblem, CLUTTER_LINEAR);
   clutter_actor_set_opacity (emblem, 255);
   clutter_actor_restore_easing_state (emblem);
@@ -89,7 +96,6 @@ on_box_leave (ClutterActor *box,
               ClutterActor *emblem)
 {
   clutter_actor_save_easing_state (emblem);
-  clutter_actor_set_easing_duration (emblem, 150);
   clutter_actor_set_easing_mode (emblem, CLUTTER_LINEAR);
   clutter_actor_set_opacity (emblem, 0);
   clutter_actor_restore_easing_state (emblem);
@@ -98,10 +104,11 @@ on_box_leave (ClutterActor *box,
 }
 
 static void
-on_rect_clicked (ClutterClickAction *action,
-                 ClutterActor       *rect,
-                 ClutterActor       *box)
+on_emblem_clicked (ClutterClickAction *action,
+                   ClutterActor       *emblem,
+                   ClutterActor       *box)
 {
+  /* we add a little bounce to the resizing of the box */
   clutter_actor_save_easing_state (box);
   clutter_actor_set_easing_mode (box, CLUTTER_EASE_OUT_BOUNCE);
   clutter_actor_set_easing_duration (box, 500);
@@ -117,10 +124,10 @@ on_rect_clicked (ClutterClickAction *action,
 }
 
 static gboolean
-on_rect_long_press (ClutterClickAction    *action,
-                    ClutterActor          *rect,
-                    ClutterLongPressState  state,
-                    ClutterActor          *box)
+on_emblem_long_press (ClutterClickAction    *action,
+                      ClutterActor          *emblem,
+                      ClutterLongPressState  state,
+                      ClutterActor          *box)
 {
   switch (state)
     {
@@ -141,136 +148,161 @@ on_rect_long_press (ClutterClickAction    *action,
 }
 
 static void
-on_box_allocation_changed (ClutterActor           *box,
-                           const ClutterActorBox  *allocation,
-                           ClutterAllocationFlags  flags,
-                           ClutterActor           *background)
+redraw_canvas (ClutterActor  *actor,
+               ClutterCanvas *canvas)
 {
-  gfloat new_width, new_height;
-
-  clutter_actor_box_get_size (allocation, &new_width, &new_height);
-  clutter_cairo_texture_set_surface_size (CLUTTER_CAIRO_TEXTURE (background),
-                                          new_width,
-                                          new_height);
-  clutter_cairo_texture_invalidate (CLUTTER_CAIRO_TEXTURE (background));
+  /* we want to invalidate the canvas and redraw its contents
+   * only when the size changes at the end of the animation,
+   * to avoid drawing all the states inbetween
+   */
+  clutter_canvas_set_size (canvas,
+                           clutter_actor_get_width (actor),
+                           clutter_actor_get_height (actor));
 }
 
 G_MODULE_EXPORT int
 test_bin_layout_main (int argc, char *argv[])
 {
-  ClutterActor *stage, *box, *rect;
+  ClutterActor *stage, *box, *bg, *icon, *emblem, *label;
   ClutterLayoutManager *layout;
-  ClutterColor stage_color = { 0xe0, 0xf2, 0xfc, 0xff };
+  ClutterContent *canvas, *image;
   ClutterColor *color;
   ClutterAction *action;
+  GdkPixbuf *pixbuf;
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
+  /* prepare the stage */
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "BinLayout");
-  clutter_actor_set_background_color (stage, &stage_color);
+  clutter_actor_set_background_color (stage, CLUTTER_COLOR_Aluminium2);
   clutter_actor_set_size (stage, 640, 480);
+  clutter_actor_show (stage);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
+  /* this is our BinLayout, with its default alignments */
   layout = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_CENTER,
                                    CLUTTER_BIN_ALIGNMENT_CENTER);
 
-  box = clutter_box_new (layout);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
+  /* the main container; this actor will use the BinLayout to lay
+   * out its children; we use the anchor point to keep it centered
+   * on the same position even when we change its size
+   */
+  box = clutter_actor_new ();
+  clutter_actor_set_layout_manager (box, layout);
   clutter_actor_set_anchor_point_from_gravity (box, CLUTTER_GRAVITY_CENTER);
   clutter_actor_set_position (box, 320, 240);
   clutter_actor_set_reactive (box, TRUE);
   clutter_actor_set_name (box, "box");
+  clutter_actor_add_child (stage, box);
 
-  /* the contents of the texture are created every time the allocation
-   * of the box changes, to keep the background's size the same as the
-   * box's size
+  /* the background is drawn using a canvas content */
+  canvas = clutter_canvas_new ();
+  g_signal_connect (canvas, "draw", G_CALLBACK (on_canvas_draw), NULL);
+  clutter_canvas_set_size (CLUTTER_CANVAS (canvas), 200, 200);
+
+  /* this is the background actor; we want it to fill the whole
+   * of the allocation given to it by its parent
    */
-  rect = clutter_cairo_texture_new (100, 100);
-  g_signal_connect (rect, "draw", G_CALLBACK (draw_background), NULL);
+  bg = clutter_actor_new ();
+  clutter_actor_set_name (bg, "background");
+  clutter_actor_set_size (bg, 200, 200);
+  clutter_actor_set_content (bg, canvas);
+  clutter_actor_set_x_expand (bg, TRUE);
+  clutter_actor_set_y_expand (bg, TRUE);
+  clutter_actor_set_x_align (bg, CLUTTER_ACTOR_ALIGN_FILL);
+  clutter_actor_set_y_align (bg, CLUTTER_ACTOR_ALIGN_FILL);
+  clutter_actor_add_child (box, bg);
+  /* we use the ::transitions-completed signal to get notification
+   * of the end of the sizing animation; this allows us to redraw
+   * the canvas only once the animation has stopped
+   */
+  g_signal_connect (box, "transitions-completed",
+                    G_CALLBACK (redraw_canvas),
+                    canvas);
 
-  /* first method: use clutter_box_pack() */
-  clutter_box_pack (CLUTTER_BOX (box), rect,
-                    "x-align", CLUTTER_BIN_ALIGNMENT_FILL,
-                    "y-align", CLUTTER_BIN_ALIGNMENT_FILL,
-                    NULL);
+  /* we use GdkPixbuf to load an image from our data directory */
+  pixbuf = gdk_pixbuf_new_from_file (TESTS_DATADIR G_DIR_SEPARATOR_S "redhand.png", NULL);
+  image = clutter_image_new ();
+  clutter_image_set_data (CLUTTER_IMAGE (image),
+                          gdk_pixbuf_get_pixels (pixbuf),
+                          gdk_pixbuf_get_has_alpha (pixbuf)
+                            ? COGL_PIXEL_FORMAT_RGBA_8888
+                            : COGL_PIXEL_FORMAT_RGB_888,
+                          gdk_pixbuf_get_width (pixbuf),
+                          gdk_pixbuf_get_height (pixbuf),
+                          gdk_pixbuf_get_rowstride (pixbuf),
+                          NULL);
+  g_object_unref (pixbuf);
 
-  clutter_actor_lower_bottom (rect);
-  clutter_actor_set_name (rect, "background");
-  g_signal_connect (box, "allocation-changed",
-                    G_CALLBACK (on_box_allocation_changed),
-                    rect);
-
-  {
-    ClutterActor *tex;
-    GError *error;
-    gchar *file;
-
-    error = NULL;
-    file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
-    tex = clutter_texture_new_from_file (file, &error);
-    if (error)
-      g_error ("Unable to create texture: %s", error->message);
-
-    clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (tex), TRUE);
-
-    /* second method: use clutter_bin_layout_add() */
-    clutter_bin_layout_add (CLUTTER_BIN_LAYOUT (layout), tex,
-                            CLUTTER_BIN_ALIGNMENT_CENTER,
-                            CLUTTER_BIN_ALIGNMENT_CENTER);
-
-    clutter_actor_raise (tex, rect);
-    clutter_actor_set_width (tex, 175);
-    clutter_actor_set_name (tex, "texture");
-
-    g_free (file);
-  }
+  /* this is the icon; it's going to be centered inside the box actor.
+   * we use the content gravity to keep the aspect ratio of the image,
+   * and the scaling filters to get a better result when scaling the
+   * image down.
+   */
+  icon = clutter_actor_new ();
+  clutter_actor_set_name (icon, "icon");
+  clutter_actor_set_size (icon, 196, 196);
+  clutter_actor_set_x_expand (icon, TRUE);
+  clutter_actor_set_y_expand (icon, TRUE);
+  clutter_actor_set_x_align (icon, CLUTTER_ACTOR_ALIGN_CENTER);
+  clutter_actor_set_y_align (icon, CLUTTER_ACTOR_ALIGN_CENTER);
+  clutter_actor_set_content_gravity (icon, CLUTTER_CONTENT_GRAVITY_RESIZE_ASPECT);
+  clutter_actor_set_content_scaling_filters (icon,
+                                             CLUTTER_SCALING_FILTER_TRILINEAR,
+                                             CLUTTER_SCALING_FILTER_LINEAR);
+  clutter_actor_set_content (icon, image);
+  clutter_actor_add_child (box, icon);
 
   color = clutter_color_new (g_random_int_range (0, 255),
                              g_random_int_range (0, 255),
                              g_random_int_range (0, 255),
                              224);
 
-  rect = clutter_rectangle_new_with_color (color);
+  /* this is the emblem: a small rectangle with a random color, that we
+   * want to put in the bottom right corner
+   */
+  emblem = clutter_actor_new ();
+  clutter_actor_set_name (emblem, "emblem");
+  clutter_actor_set_size (emblem, 48, 48);
+  clutter_actor_set_background_color (emblem, color);
+  clutter_actor_set_x_expand (emblem, TRUE);
+  clutter_actor_set_y_expand (emblem, TRUE);
+  clutter_actor_set_x_align (emblem, CLUTTER_ACTOR_ALIGN_END);
+  clutter_actor_set_y_align (emblem, CLUTTER_ACTOR_ALIGN_END);
+  clutter_actor_set_reactive (emblem, TRUE);
+  clutter_actor_set_opacity (emblem, 0);
+  clutter_actor_add_child (box, emblem);
+  clutter_color_free (color);
 
-  /* third method: container_add() and set_alignment() */
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), rect);
-  clutter_bin_layout_set_alignment (CLUTTER_BIN_LAYOUT (layout), rect,
-                                    CLUTTER_BIN_ALIGNMENT_END,
-                                    CLUTTER_BIN_ALIGNMENT_END);
-
-  clutter_actor_set_size (rect, 50, 50);
-  clutter_actor_set_opacity (rect, 0);
-  clutter_actor_set_reactive (rect, TRUE);
-  clutter_actor_raise_top (rect);
-  clutter_actor_set_name (rect, "emblem");
-
+  /* when clicking on the emblem, we want to perform an action */
   action = clutter_click_action_new ();
-  clutter_actor_add_action (rect, action);
-  g_signal_connect (action, "clicked", G_CALLBACK (on_rect_clicked), box);
-  g_signal_connect (action, "long-press", G_CALLBACK (on_rect_long_press), box);
+  clutter_actor_add_action (emblem, action);
+  g_signal_connect (action, "clicked", G_CALLBACK (on_emblem_clicked), box);
+  g_signal_connect (action, "long-press", G_CALLBACK (on_emblem_long_press), box);
+
+  /* whenever the pointer enters the box, we show the emblem; we hide
+   * the emblem when the pointer leaves the box
+   */
   g_signal_connect (box,
                     "enter-event", G_CALLBACK (on_box_enter),
-                    rect);
+                    emblem);
   g_signal_connect (box,
                     "leave-event", G_CALLBACK (on_box_leave),
-                    rect);
+                    emblem);
 
-  rect = clutter_text_new ();
-  clutter_text_set_text (CLUTTER_TEXT (rect), "A simple test");
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), rect);
-  clutter_bin_layout_set_alignment (CLUTTER_BIN_LAYOUT (layout), rect,
-                                    CLUTTER_BIN_ALIGNMENT_CENTER,
-                                    CLUTTER_BIN_ALIGNMENT_START);
-  clutter_actor_raise_top (rect);
-  clutter_actor_set_name (rect, "text");
-
-  clutter_actor_show_all (stage);
+  /* a label, that we want to position at the top and center of the box */
+  label = clutter_text_new ();
+  clutter_actor_set_name (label, "text");
+  clutter_text_set_text (CLUTTER_TEXT (label), "A simple test");
+  clutter_actor_set_x_expand (label, TRUE);
+  clutter_actor_set_x_align (label, CLUTTER_ACTOR_ALIGN_CENTER);
+  clutter_actor_set_y_expand (label, TRUE);
+  clutter_actor_set_y_align (label, CLUTTER_ACTOR_ALIGN_START);
+  clutter_actor_add_child (box, label);
 
   clutter_main ();
-
-  clutter_color_free (color);
 
   return EXIT_SUCCESS;
 }

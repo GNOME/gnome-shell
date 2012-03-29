@@ -40,7 +40,6 @@ UNIT_TESTS = \
 	test-cairo-clock.c \
 	test-cairo-flowers.c \
 	test-cogl-vertex-buffer.c \
-	test-bin-layout.c \
 	test-flow-layout.c \
 	test-box-layout.c \
 	test-stage-sizing.c \
@@ -67,6 +66,7 @@ endif
 
 if PIXBUF_TESTS
 UNIT_TESTS += \
+	test-bin-layout.c \
 	test-image.c \
 	test-image-box.c
 endif
