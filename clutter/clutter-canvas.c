@@ -333,7 +333,7 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
   gboolean res;
   cairo_t *cr;
 
-  g_assert (priv->width >= 0 && priv->width >= 0);
+  g_assert (priv->width > 0 && priv->width > 0);
 
   if (priv->buffer == NULL)
     {
@@ -411,7 +411,7 @@ clutter_canvas_invalidate (ClutterContent *content)
       priv->buffer = NULL;
     }
 
-  if (priv->width < 0 || priv->height < 0)
+  if (priv->width <= 0 || priv->height <= 0)
     return;
 
   clutter_canvas_emit_draw (self);
