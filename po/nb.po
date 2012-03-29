@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.3.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-12 18:59+0100\n"
-"PO-Revision-Date: 2012-03-12 18:59+0100\n"
+"POT-Creation-Date: 2012-03-29 09:52+0200\n"
+"PO-Revision-Date: 2012-03-29 09:52+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -229,7 +229,7 @@ msgstr "(eller dra finger)"
 msgid "Not listed?"
 msgstr "Ikke listet?"
 
-#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
+#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:401
 #: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
@@ -244,16 +244,16 @@ msgstr "Logg inn"
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
-#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:591
-#: ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:662
+#: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
 msgid "Suspend"
 msgstr "Hvilemodus"
 
-#: ../js/gdm/powerMenu.js:157
+#: ../js/gdm/powerMenu.js:160
 msgid "Restart"
 msgstr "Start på nytt"
 
-#: ../js/gdm/powerMenu.js:162
+#: ../js/gdm/powerMenu.js:165
 msgid "Power Off"
 msgstr "Slå av"
 
@@ -273,27 +273,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:251
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:310
+#: ../js/ui/appDisplay.js:314
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
-#: ../js/ui/appDisplay.js:371
+#: ../js/ui/appDisplay.js:375
 msgid "SETTINGS"
 msgstr "INNSTILLINGER"
 
-#: ../js/ui/appDisplay.js:676
+#: ../js/ui/appDisplay.js:680
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:683
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:680
+#: ../js/ui/appDisplay.js:684
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
@@ -466,28 +466,28 @@ msgstr "Denne uken"
 msgid "Next week"
 msgstr "Neste uke"
 
-#: ../js/ui/contactDisplay.js:64 ../js/ui/notificationDaemon.js:486
-#: ../js/ui/status/power.js:215 ../src/shell-app.c:372
+#: ../js/ui/contactDisplay.js:66 ../js/ui/notificationDaemon.js:486
+#: ../js/ui/status/power.js:215 ../src/shell-app.c:374
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: ../js/ui/contactDisplay.js:85 ../js/ui/userMenu.js:127
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:129
 msgid "Available"
 msgstr "Tilgjengelig"
 
-#: ../js/ui/contactDisplay.js:90 ../js/ui/userMenu.js:136
+#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:138
 msgid "Away"
 msgstr "Borte"
 
-#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:130
+#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:132
 msgid "Busy"
 msgstr "Opptatt"
 
-#: ../js/ui/contactDisplay.js:98
+#: ../js/ui/contactDisplay.js:102
 msgid "Offline"
 msgstr "Frakoblet"
 
-#: ../js/ui/contactDisplay.js:149
+#: ../js/ui/contactDisplay.js:153
 msgid "CONTACTS"
 msgstr "KONTAKTER"
 
@@ -495,58 +495,58 @@ msgstr "KONTAKTER"
 msgid "Remove"
 msgstr "Fjern"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:103
 msgid "Date and Time Settings"
 msgstr "Innstillinger for dato og klokkeslett"
 
-#: ../js/ui/dateMenu.js:123
+#: ../js/ui/dateMenu.js:129
 msgid "Open Calendar"
 msgstr "Åpne kalender"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:187
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R.%S"
 
-#: ../js/ui/dateMenu.js:182
+#: ../js/ui/dateMenu.js:188
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:186
+#: ../js/ui/dateMenu.js:192
 msgid "%a %R:%S"
 msgstr "%a %R.%S"
 
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:193
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:200
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %p"
 
-#: ../js/ui/dateMenu.js:195
+#: ../js/ui/dateMenu.js:201
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:199
+#: ../js/ui/dateMenu.js:205
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %p"
 
-#: ../js/ui/dateMenu.js:200
+#: ../js/ui/dateMenu.js:206
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:211
+#: ../js/ui/dateMenu.js:217
 msgid "%A %B %e, %Y"
 msgstr "%a %e %B, %Y"
 
@@ -651,11 +651,11 @@ msgstr "Installer"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Last ned og installer «%s» fra extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:322
+#: ../js/ui/keyboard.js:327
 msgid "tray"
 msgstr "varslingsområde"
 
-#: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:544 ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -733,7 +733,7 @@ msgstr "Fjern demping"
 msgid "Mute"
 msgstr "Demp"
 
-#: ../js/ui/messageTray.js:2450
+#: ../js/ui/messageTray.js:2490
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -822,31 +822,35 @@ msgstr "Et passord kreves for å koble til «%s»."
 msgid "Undo"
 msgstr "Angre"
 
-#: ../js/ui/overview.js:199
+#: ../js/ui/overview.js:132
+msgid "Overview"
+msgstr "Oversikt"
+
+#: ../js/ui/overview.js:202
 msgid "Windows"
 msgstr "Vinduer"
 
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Applications"
 msgstr "Programmer"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:228
+#: ../js/ui/overview.js:231
 msgid "Dash"
 msgstr "Favoritter"
 
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:591
 msgid "Quit"
 msgstr "Avslutt"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:623
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:987
+#: ../js/ui/panel.js:998
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -892,7 +896,7 @@ msgstr "Beklager, det virket ikke. Vennligst prøv igjen."
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:720
+#: ../js/ui/popupMenu.js:724
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -900,11 +904,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Oppgi en kommando:"
 
-#: ../js/ui/searchDisplay.js:331
+#: ../js/ui/searchDisplay.js:332
 msgid "Searching..."
 msgstr "Søker …"
 
-#: ../js/ui/searchDisplay.js:413
+#: ../js/ui/searchDisplay.js:414
 msgid "No matching results."
 msgstr "Ingen treff."
 
@@ -1586,51 +1590,51 @@ msgstr "Rediger konto"
 msgid "Unknown reason"
 msgstr "Ukjent årsak"
 
-#: ../js/ui/userMenu.js:133
+#: ../js/ui/userMenu.js:135
 msgid "Hidden"
 msgstr "Skjult"
 
-#: ../js/ui/userMenu.js:139
+#: ../js/ui/userMenu.js:141
 msgid "Idle"
 msgstr "Ledig"
 
-#: ../js/ui/userMenu.js:142
+#: ../js/ui/userMenu.js:144
 msgid "Unavailable"
 msgstr "Ikke tilgjengelig"
 
-#: ../js/ui/userMenu.js:589 ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:663
+#: ../js/ui/userMenu.js:595 ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:669
 msgid "Power Off..."
 msgstr "Slå av …"
 
-#: ../js/ui/userMenu.js:625
+#: ../js/ui/userMenu.js:631
 msgid "Notifications"
 msgstr "Varslinger"
 
-#: ../js/ui/userMenu.js:633
+#: ../js/ui/userMenu.js:639
 msgid "Online Accounts"
 msgstr "Kontoer på nettet"
 
-#: ../js/ui/userMenu.js:637
+#: ../js/ui/userMenu.js:643
 msgid "System Settings"
 msgstr "Systeminnstillinger"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:650
 msgid "Lock Screen"
 msgstr "Lås skjerm"
 
-#: ../js/ui/userMenu.js:649
+#: ../js/ui/userMenu.js:655
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#: ../js/ui/userMenu.js:654
+#: ../js/ui/userMenu.js:660
 msgid "Log Out..."
 msgstr "Logg ut …"
 
-#: ../js/ui/userMenu.js:682
+#: ../js/ui/userMenu.js:688
 msgid "Your chat status will be set to busy"
 msgstr "Din pratestatus vil bli satt til opptatt"
 
-#: ../js/ui/userMenu.js:683
+#: ../js/ui/userMenu.js:689
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1704,7 +1708,7 @@ msgstr "Skriv ut versjon"
 msgid "Mode used by GDM for login screen"
 msgstr "Modus som brukes av GDM for innloggingsskjermen"
 
-#: ../src/shell-app.c:617
+#: ../src/shell-app.c:619
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Klarte ikke å starte «%s»"
