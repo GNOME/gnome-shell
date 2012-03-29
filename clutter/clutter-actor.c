@@ -7952,6 +7952,22 @@ effective_align (ClutterActorAlign    align,
   return res;
 }
 
+/*< private >
+ * _clutter_actor_get_effective_x_align:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the effective horizontal alignment, taking into
+ * consideration the text direction of @self.
+ *
+ * Return value: the effective horizontal alignment
+ */
+ClutterActorAlign
+_clutter_actor_get_effective_x_align (ClutterActor *self)
+{
+  return effective_align (clutter_actor_get_x_align (self),
+                          clutter_actor_get_text_direction (self));
+}
+
 static inline void
 adjust_for_margin (float  margin_start,
                    float  margin_end,

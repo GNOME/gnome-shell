@@ -295,6 +295,8 @@ void    _clutter_actor_shader_pre_paint         (ClutterActor *actor,
                                                  gboolean      repeat);
 void    _clutter_actor_shader_post_paint        (ClutterActor *actor);
 
+ClutterActorAlign       _clutter_actor_get_effective_x_align    (ClutterActor *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_PRIVATE_H__ */
