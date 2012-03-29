@@ -74,7 +74,11 @@ on_box_enter (ClutterActor *box,
               ClutterEvent *event,
               ClutterActor *emblem)
 {
+  clutter_actor_save_easing_state (emblem);
+  clutter_actor_set_easing_duration (emblem, 150);
+  clutter_actor_set_easing_mode (emblem, CLUTTER_LINEAR);
   clutter_actor_set_opacity (emblem, 255);
+  clutter_actor_restore_easing_state (emblem);
 
   return CLUTTER_EVENT_STOP;
 }
@@ -84,7 +88,11 @@ on_box_leave (ClutterActor *box,
               ClutterEvent *event,
               ClutterActor *emblem)
 {
+  clutter_actor_save_easing_state (emblem);
+  clutter_actor_set_easing_duration (emblem, 150);
+  clutter_actor_set_easing_mode (emblem, CLUTTER_LINEAR);
   clutter_actor_set_opacity (emblem, 0);
+  clutter_actor_restore_easing_state (emblem);
 
   return CLUTTER_EVENT_STOP;
 }
@@ -94,10 +102,16 @@ on_rect_clicked (ClutterClickAction *action,
                  ClutterActor       *rect,
                  ClutterActor       *box)
 {
+  clutter_actor_save_easing_state (box);
+  clutter_actor_set_easing_mode (box, CLUTTER_EASE_OUT_BOUNCE);
+  clutter_actor_set_easing_duration (box, 500);
+
   if (!is_expanded)
     clutter_actor_set_size (box, 400, 400);
   else
     clutter_actor_set_size (box, 200, 200);
+
+  clutter_actor_restore_easing_state (box);
 
   is_expanded = !is_expanded;
 }
@@ -167,8 +181,6 @@ test_bin_layout_main (int argc, char *argv[])
   clutter_actor_set_anchor_point_from_gravity (box, CLUTTER_GRAVITY_CENTER);
   clutter_actor_set_position (box, 320, 240);
   clutter_actor_set_reactive (box, TRUE);
-  clutter_actor_set_easing_mode (box, CLUTTER_EASE_OUT_BOUNCE);
-  clutter_actor_set_easing_duration (box, 500);
   clutter_actor_set_name (box, "box");
 
   /* the contents of the texture are created every time the allocation
@@ -233,8 +245,6 @@ test_bin_layout_main (int argc, char *argv[])
   clutter_actor_set_reactive (rect, TRUE);
   clutter_actor_raise_top (rect);
   clutter_actor_set_name (rect, "emblem");
-  clutter_actor_set_easing_duration (rect, 150);
-  clutter_actor_set_easing_mode (rect, CLUTTER_LINEAR);
 
   action = clutter_click_action_new ();
   clutter_actor_add_action (rect, action);
