@@ -96,7 +96,7 @@
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include "deprecated/clutter-container.h"
 
-#include "clutter-actor.h"
+#include "clutter-actor-private.h"
 #include "clutter-animatable.h"
 #include "clutter-bin-layout.h"
 #include "clutter-child-meta.h"
@@ -423,6 +423,27 @@ get_bin_alignment_factor (ClutterBinAlignment alignment)
   return 0.0;
 }
 
+static gdouble
+get_actor_align_factor (ClutterActorAlign alignment)
+{
+  switch (alignment)
+    {
+    case CLUTTER_ACTOR_ALIGN_CENTER:
+      return 0.5;
+
+    case CLUTTER_ACTOR_ALIGN_START:
+      return 0.0;
+
+    case CLUTTER_ACTOR_ALIGN_END:
+      return 1.0;
+
+    case CLUTTER_ACTOR_ALIGN_FILL:
+      return 0.0;
+    }
+
+  return 0.0;
+}
+
 static void
 clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
                              ClutterContainer       *container,
@@ -466,10 +487,33 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
       child_alloc.x2 = available_w;
       child_alloc.y2 = available_h;
 
-      x_fill = (layer->x_align == CLUTTER_BIN_ALIGNMENT_FILL);
-      y_fill = (layer->y_align == CLUTTER_BIN_ALIGNMENT_FILL);
-      x_align = get_bin_alignment_factor (layer->x_align);
-      y_align = get_bin_alignment_factor (layer->y_align);
+      if (clutter_actor_needs_x_expand (child))
+        {
+          ClutterActorAlign align;
+
+          align = _clutter_actor_get_effective_x_align (child);
+          x_fill = align == CLUTTER_ACTOR_ALIGN_FILL;
+          x_align = get_actor_align_factor (align);
+        }
+      else
+        {
+          x_fill = (layer->x_align == CLUTTER_BIN_ALIGNMENT_FILL);
+          x_align = get_bin_alignment_factor (layer->x_align);
+        }
+
+      if (clutter_actor_needs_y_expand (child))
+        {
+          ClutterActorAlign align;
+
+          align = clutter_actor_get_y_align (child);
+          y_fill = align == CLUTTER_ACTOR_ALIGN_FILL;
+          y_align = get_actor_align_factor (align);
+        }
+      else
+        {
+          y_fill = (layer->y_align == CLUTTER_BIN_ALIGNMENT_FILL);
+          y_align = get_bin_alignment_factor (layer->y_align);
+        }
 
       clutter_actor_allocate_align_fill (child, &child_alloc,
                                          x_align, y_align,
