@@ -705,6 +705,7 @@ struct _ClutterActorPrivate
   /* delegate object used to paint the contents of this actor */
   ClutterContent *content;
 
+  ClutterActorBox content_box;
   ClutterContentGravity content_gravity;
   ClutterScalingFilter min_filter;
   ClutterScalingFilter mag_filter;
@@ -768,6 +769,7 @@ struct _ClutterActorPrivate
      queued without an effect. */
   guint is_dirty                    : 1;
   guint bg_color_set                : 1;
+  guint content_box_valid           : 1;
 };
 
 enum
@@ -2259,7 +2261,10 @@ clutter_actor_set_allocation_internal (ClutterActor           *self,
 
       /* if the allocation changes, so does the content box */
       if (priv->content != NULL)
-        g_object_notify_by_pspec (obj, obj_props[PROP_CONTENT_BOX]);
+        {
+          priv->content_box_valid = FALSE;
+          g_object_notify_by_pspec (obj, obj_props[PROP_CONTENT_BOX]);
+        }
 
       retval = TRUE;
     }
@@ -6443,6 +6448,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * that have a preferred size, and if the preferred size is smaller than
    * the actor's allocation.
    *
+   * The #ClutterActor:content-gravity property is animatable.
+   *
    * Since: 1.10
    */
   obj_props[PROP_CONTENT_GRAVITY] =
@@ -6471,7 +6478,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Content Box"),
                         P_("The bounding box of the actor's content"),
                         CLUTTER_TYPE_ACTOR_BOX,
-                        CLUTTER_PARAM_READABLE);
+                        G_PARAM_READABLE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
 
   obj_props[PROP_MINIFICATION_FILTER] =
     g_param_spec_enum ("minification-filter",
@@ -12321,6 +12330,23 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
 }
 
 static void
+clutter_actor_store_content_box (ClutterActor *self,
+                                 const ClutterActorBox *box)
+{
+  if (box != NULL)
+    {
+      self->priv->content_box = *box;
+      self->priv->content_box_valid = TRUE;
+    }
+  else
+    self->priv->content_box_valid = FALSE;
+
+  clutter_actor_queue_redraw (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONTENT_BOX]);
+}
+
+static void
 clutter_container_iface_init (ClutterContainerIface *iface)
 {
   /* we don't override anything, as ClutterContainer already has a default
@@ -13003,6 +13029,10 @@ clutter_actor_set_animatable_property (ClutterActor *actor,
       clutter_actor_set_rotation_angle_internal (actor,
                                                  CLUTTER_Z_AXIS,
                                                  g_value_get_double (value));
+      break;
+
+    case PROP_CONTENT_BOX:
+      clutter_actor_store_content_box (actor, g_value_get_boxed (value));
       break;
 
     default:
@@ -17002,9 +17032,12 @@ transition_closure_free (gpointer data)
   if (G_LIKELY (data != NULL))
     {
       TransitionClosure *clos = data;
+      ClutterTimeline *timeline;
 
-      if (clutter_timeline_is_playing (CLUTTER_TIMELINE (clos->transition)))
-        clutter_timeline_stop (CLUTTER_TIMELINE (clos->transition));
+      timeline = CLUTTER_TIMELINE (clos->transition);
+
+      if (clutter_timeline_is_playing (timeline))
+        clutter_timeline_stop (timeline);
 
       g_signal_handler_disconnect (clos->transition, clos->completed_id);
 
@@ -17021,6 +17054,9 @@ on_transition_completed (ClutterTransition *transition,
 {
   ClutterActor *actor = clos->actor;
   ClutterAnimationInfo *info;
+
+  /* reset the caches used by animations */
+  clutter_actor_store_content_box (actor, NULL);
 
   info = _clutter_actor_get_animation_info (actor);
 
@@ -17787,6 +17823,8 @@ clutter_actor_get_content (ClutterActor *self)
  * See the description of the #ClutterActor:content-gravity property for
  * more information.
  *
+ * The #ClutterActor:content-gravity property is animatable.
+ *
  * Since: 1.10
  */
 void
@@ -17802,12 +17840,37 @@ clutter_actor_set_content_gravity (ClutterActor *self,
   if (priv->content_gravity == gravity)
     return;
 
-  priv->content_gravity = gravity;
+  priv->content_box_valid = FALSE;
+
+  if (_clutter_actor_get_transition (self, obj_props[PROP_CONTENT_BOX]) == NULL)
+    {
+      ClutterActorBox from_box, to_box;
+
+      clutter_actor_get_content_box (self, &from_box);
+
+      priv->content_gravity = gravity;
+
+      clutter_actor_get_content_box (self, &to_box);
+
+      _clutter_actor_create_transition (self, obj_props[PROP_CONTENT_BOX],
+                                        &from_box,
+                                        &to_box);
+    }
+  else
+    {
+      ClutterActorBox to_box;
+
+      priv->content_gravity = gravity;
+
+      clutter_actor_get_content_box (self, &to_box);
+
+      _clutter_actor_update_transition (self, obj_props[PROP_CONTENT_BOX],
+                                        &to_box);
+    }
 
   clutter_actor_queue_redraw (self);
 
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONTENT_GRAVITY]);
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONTENT_BOX]);
 }
 
 /**
@@ -17870,11 +17933,17 @@ clutter_actor_get_content_box (ClutterActor    *self,
   box->x2 = priv->allocation.x2 - priv->allocation.x1;
   box->y2 = priv->allocation.y2 - priv->allocation.y1;
 
-  if (priv->content == NULL)
-    return;
+  if (priv->content_box_valid)
+    {
+      *box = priv->content_box;
+      return;
+    }
 
   /* no need to do any more work */
   if (priv->content_gravity == CLUTTER_CONTENT_GRAVITY_RESIZE_FILL)
+    return;
+
+  if (priv->content == NULL)
     return;
 
   /* if the content does not have a preferred size then there is

@@ -33,7 +33,9 @@ on_clicked (ClutterClickAction *action,
 {
   gchar *str;
 
+  clutter_actor_save_easing_state (actor);
   clutter_actor_set_content_gravity (actor, gravities[cur_gravity].gravity);
+  clutter_actor_restore_easing_state (actor);
 
   str = g_strconcat ("Content gravity: ", gravities[cur_gravity].name, NULL);
   clutter_text_set_text (label, str);
