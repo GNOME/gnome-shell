@@ -1685,7 +1685,7 @@ msgstr ""
 #: ../js/ui/wanda.js:128
 #, c-format
 msgid "%s the Oracle says"
-msgstr "Az orákulum ezt mondja: %s"
+msgstr "%s az orákulum ezt mondja"
 
 #: ../js/ui/wanda.js:168
 msgid "Your favorite Easter Egg"
