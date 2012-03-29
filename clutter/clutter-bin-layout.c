@@ -51,36 +51,10 @@
  *
  * <example id="example-clutter-bin-layout">
  *  <title>How to pack actors inside a BinLayout</title>
- *  <para>The following code shows how to build a composite actor with
- *  a texture and a background, and add controls overlayed on top. The
- *  background is set to fill the whole allocation, whilst the texture
- *  is centered; there is a control in the top right corner and a label
- *  in the bottom, filling out the whole allocated width.</para>
  *  <programlisting>
- *  ClutterLayoutManager *manager;
- *  ClutterActor *box;
- *
- *  /&ast; create the layout first &ast;/
- *  layout = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_CENTER,
- *                                   CLUTTER_BIN_ALIGNMENT_CENTER);
- *  box = clutter_box_new (layout); /&ast; then the container &ast;/
- *
- *  /&ast; we can use the layout object to add actors &ast;/
- *  clutter_bin_layout_add (CLUTTER_BIN_LAYOUT (layout), background,
- *                          CLUTTER_BIN_ALIGNMENT_FILL,
- *                          CLUTTER_BIN_ALIGNMENT_FILL);
- *  clutter_bin_layout_add (CLUTTER_BIN_LAYOUT (layout), icon,
- *                          CLUTTER_BIN_ALIGNMENT_CENTER,
- *                          CLUTTER_BIN_ALIGNMENT_CENTER);
- *
- *  /&ast; align to the bottom left &ast;/
- *  clutter_bin_layout_add (CLUTTER_BIN_LAYOUT (layout), label,
- *                          CLUTTER_BIN_ALIGNMENT_START,
- *                          CLUTTER_BIN_ALIGNMENT_END);
- *  /&ast; align to the top right &ast;/
- *  clutter_bin_layout_add (CLUTTER_BIN_LAYOUT (layout), button,
- *                          CLUTTER_BIN_ALIGNMENT_END,
- *                          CLUTTER_BIN_ALIGNMENT_START);
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-bin-layout.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
  *  </programlisting>
  * </example>
  *
