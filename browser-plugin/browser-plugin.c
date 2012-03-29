@@ -41,7 +41,7 @@
       "It can be used only by extensions.gnome.org"
 #define PLUGIN_MIME_STRING "application/x-gnome-shell-integration::Gnome Shell Integration Dummy Content-Type";
 
-#define PLUGIN_API_VERSION 3
+#define PLUGIN_API_VERSION 4
 
 typedef struct {
   GDBusProxy *proxy;
@@ -548,11 +548,9 @@ plugin_enable_extension (PluginObject *obj,
 
 static gboolean
 plugin_install_extension (PluginObject *obj,
-                          NPString      uuid,
-                          NPString      version_tag)
+                          NPString      uuid)
 {
   gchar *uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
-  gchar *version_tag_str;
 
   if (!uuid_is_valid (uuid_str))
     {
@@ -560,14 +558,9 @@ plugin_install_extension (PluginObject *obj,
       return FALSE;
     }
 
-  version_tag_str = g_strndup (version_tag.UTF8Characters,
-                               version_tag.UTF8Length);
-
   g_dbus_proxy_call (obj->proxy,
                      "InstallRemoteExtension",
-                     g_variant_new ("(ss)",
-                                    uuid_str,
-                                    version_tag_str),
+                     g_variant_new ("(s)", uuid_str),
                      G_DBUS_CALL_FLAGS_NONE,
                      -1, /* timeout */
                      NULL, /* cancellable */
@@ -575,7 +568,6 @@ plugin_install_extension (PluginObject *obj,
                      NULL /* user_data */);
 
   g_free (uuid_str);
-  g_free (version_tag_str);
 
   return TRUE;
 }
@@ -804,11 +796,9 @@ plugin_object_invoke (NPObject        *npobj,
   else if (name == install_extension_id)
     {
       if (!NPVARIANT_IS_STRING(args[0])) return FALSE;
-      if (!NPVARIANT_IS_STRING(args[1])) return FALSE;
 
       return plugin_install_extension (obj,
-                                       NPVARIANT_TO_STRING(args[0]),
-                                       NPVARIANT_TO_STRING(args[1]));
+                                       NPVARIANT_TO_STRING(args[0]));
     }
   else if (name == uninstall_extension_id)
     {

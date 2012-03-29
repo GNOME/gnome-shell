@@ -58,7 +58,6 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
 </method>
 <method name="InstallRemoteExtension">
     <arg type="s" direction="in" name="uuid"/>
-    <arg type="s" direction="in" name="version"/>
 </method>
 <method name="UninstallExtension">
     <arg type="s" direction="in" name="uuid"/>
@@ -254,8 +253,8 @@ const GnomeShell = new Lang.Class({
         return extension.errors;
     },
 
-    InstallRemoteExtension: function(uuid, version_tag) {
-        ExtensionSystem.installExtensionFromUUID(uuid, version_tag);
+    InstallRemoteExtension: function(uuid) {
+        ExtensionSystem.installExtensionFromUUID(uuid);
     },
 
     UninstallExtension: function(uuid) {

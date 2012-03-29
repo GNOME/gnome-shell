@@ -69,18 +69,16 @@ const disconnect = Lang.bind(_signals, _signals.disconnect);
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
 
-function installExtensionFromUUID(uuid, version_tag) {
+function installExtensionFromUUID(uuid) {
     let params = { uuid: uuid,
-                   version_tag: version_tag,
-                   shell_version: Config.PACKAGE_VERSION,
-                   api_version: API_VERSION.toString() };
+                   shell_version: Config.PACKAGE_VERSION };
 
     let message = Soup.form_request_new_from_hash('GET', REPOSITORY_URL_INFO, params);
 
     _httpSession.queue_message(message,
                                function(session, message) {
                                    let info = JSON.parse(message.response_body.data);
-                                   let dialog = new InstallExtensionDialog(uuid, version_tag, info.name);
+                                   let dialog = new InstallExtensionDialog(uuid, info.name);
                                    dialog.open(global.get_current_time());
                                });
 }
@@ -389,11 +387,10 @@ const InstallExtensionDialog = new Lang.Class({
     Name: 'InstallExtensionDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(uuid, version_tag, name) {
+    _init: function(uuid, name) {
         this.parent({ styleClass: 'extension-dialog' });
 
         this._uuid = uuid;
-        this._version_tag = version_tag;
         this._name = name;
 
         this.setButtons([{ label: _("Cancel"),
@@ -434,9 +431,7 @@ const InstallExtensionDialog = new Lang.Class({
 
         _signals.emit('extension-state-changed', state);
 
-        let params = { version_tag: this._version_tag,
-                       shell_version: Config.PACKAGE_VERSION,
-                       api_version: API_VERSION.toString() };
+        let params = { shell_version: Config.PACKAGE_VERSION };
 
         let url = REPOSITORY_URL_DOWNLOAD.format(this._uuid);
         let message = Soup.form_request_new_from_hash('GET', url, params);
