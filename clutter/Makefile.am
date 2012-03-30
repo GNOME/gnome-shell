@@ -138,6 +138,7 @@ source_c = \
 	$(srcdir)/clutter-animation.c		\
 	$(srcdir)/clutter-animator.c		\
 	$(srcdir)/clutter-backend.c		\
+	$(srcdir)/clutter-base-types.c		\
 	$(srcdir)/clutter-bezier.c		\
 	$(srcdir)/clutter-bind-constraint.c	\
 	$(srcdir)/clutter-binding-pool.c	\
