@@ -4626,7 +4626,7 @@ clutter_actor_get_property (GObject    *object,
         const ClutterLayoutInfo *info;
 
         info = _clutter_actor_get_layout_info_or_defaults (actor);
-        g_value_set_float (value, info->fixed_x);
+        g_value_set_float (value, info->fixed_pos.x);
       }
       break;
 
@@ -4635,7 +4635,7 @@ clutter_actor_get_property (GObject    *object,
         const ClutterLayoutInfo *info;
 
         info = _clutter_actor_get_layout_info_or_defaults (actor);
-        g_value_set_float (value, info->fixed_y);
+        g_value_set_float (value, info->fixed_pos.y);
       }
       break;
 
@@ -8796,8 +8796,8 @@ clutter_actor_move_by (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   info = _clutter_actor_get_layout_info_or_defaults (self);
-  x = info->fixed_x;
-  y = info->fixed_y;
+  x = info->fixed_pos.x;
+  y = info->fixed_pos.y;
 
   clutter_actor_set_position (self, x + dx, y + dy);
 }
@@ -9578,12 +9578,12 @@ clutter_actor_set_x_internal (ClutterActor *self,
 
   linfo = _clutter_actor_get_layout_info (self);
 
-  if (priv->position_set && linfo->fixed_x == x)
+  if (priv->position_set && linfo->fixed_pos.x == x)
     return;
 
   clutter_actor_store_old_geometry (self, &old);
 
-  linfo->fixed_x = x;
+  linfo->fixed_pos.x = x;
   clutter_actor_set_fixed_position_set (self, TRUE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
@@ -9601,12 +9601,12 @@ clutter_actor_set_y_internal (ClutterActor *self,
 
   linfo = _clutter_actor_get_layout_info (self);
 
-  if (priv->position_set && linfo->fixed_y == y)
+  if (priv->position_set && linfo->fixed_pos.y == y)
     return;
 
   clutter_actor_store_old_geometry (self, &old);
 
-  linfo->fixed_y = y;
+  linfo->fixed_pos.y = y;
   clutter_actor_set_fixed_position_set (self, TRUE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
@@ -9717,7 +9717,7 @@ clutter_actor_get_x (ClutterActor *self)
 
           info = _clutter_actor_get_layout_info_or_defaults (self);
 
-          return info->fixed_x;
+          return info->fixed_pos.x;
         }
       else
         return 0;
@@ -9765,7 +9765,7 @@ clutter_actor_get_y (ClutterActor *self)
 
           info = _clutter_actor_get_layout_info_or_defaults (self);
 
-          return info->fixed_y;
+          return info->fixed_pos.y;
         }
       else
         return 0;
@@ -15817,8 +15817,7 @@ clutter_actor_get_layout_manager (ClutterActor *self)
 }
 
 static const ClutterLayoutInfo default_layout_info = {
-  0.f,                          /* fixed-x */
-  0.f,                          /* fixed-y */
+  CLUTTER_POINT_INIT_ZERO,      /* fixed-pos */
   { 0, 0, 0, 0 },               /* margin */
   CLUTTER_ACTOR_ALIGN_FILL,     /* x-align */
   CLUTTER_ACTOR_ALIGN_FILL,     /* y-align */

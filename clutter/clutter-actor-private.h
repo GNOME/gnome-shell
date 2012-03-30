@@ -162,8 +162,7 @@ struct _SizeRequest
 struct _ClutterLayoutInfo
 {
   /* fixed position coordinates */
-  float fixed_x;
-  float fixed_y;
+  ClutterPoint fixed_pos;
 
   ClutterMargin margin;
 
