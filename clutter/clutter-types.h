@@ -367,6 +367,9 @@ typedef gboolean (* ClutterProgressFunc) (const GValue *a,
                                           gdouble       progress,
                                           GValue       *retval);
 
+void clutter_interval_register_progress_func (GType               value_type,
+                                              ClutterProgressFunc func);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_TYPES_H__ */

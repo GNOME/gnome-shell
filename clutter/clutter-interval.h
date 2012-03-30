@@ -133,9 +133,6 @@ gboolean         clutter_interval_compute_value      (ClutterInterval *interval,
 const GValue *   clutter_interval_compute            (ClutterInterval *interval,
                                                       gdouble          factor);
 
-void clutter_interval_register_progress_func (GType               value_type,
-                                              ClutterProgressFunc func);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_INTERVAL_H__ */
