@@ -169,10 +169,8 @@ struct _ClutterLayoutInfo
   guint x_align : 4;
   guint y_align : 4;
 
-  float min_width;
-  float min_height;
-  float natural_width;
-  float natural_height;
+  ClutterSize minimum;
+  ClutterSize natural;
 };
 
 const ClutterLayoutInfo *       _clutter_actor_get_layout_info_or_defaults      (ClutterActor *self);

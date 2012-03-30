@@ -4648,7 +4648,7 @@ clutter_actor_get_property (GObject    *object,
         const ClutterLayoutInfo *info;
 
         info = _clutter_actor_get_layout_info_or_defaults (actor);
-        g_value_set_float (value, info->min_width);
+        g_value_set_float (value, info->minimum.width);
       }
       break;
 
@@ -4657,7 +4657,7 @@ clutter_actor_get_property (GObject    *object,
         const ClutterLayoutInfo *info;
 
         info = _clutter_actor_get_layout_info_or_defaults (actor);
-        g_value_set_float (value, info->min_height);
+        g_value_set_float (value, info->minimum.height);
       }
       break;
 
@@ -4666,7 +4666,7 @@ clutter_actor_get_property (GObject    *object,
         const ClutterLayoutInfo *info;
 
         info = _clutter_actor_get_layout_info_or_defaults (actor);
-        g_value_set_float (value, info->natural_width);
+        g_value_set_float (value, info->natural.width);
       }
       break;
 
@@ -4675,7 +4675,7 @@ clutter_actor_get_property (GObject    *object,
         const ClutterLayoutInfo *info;
 
         info = _clutter_actor_get_layout_info_or_defaults (actor);
-        g_value_set_float (value, info->natural_height);
+        g_value_set_float (value, info->natural.height);
       }
       break;
 
@@ -7949,10 +7949,10 @@ clutter_actor_get_preferred_width (ClutterActor *self,
   if (priv->min_width_set && priv->natural_width_set)
     {
       if (min_width_p != NULL)
-        *min_width_p = info->min_width + (info->margin.left + info->margin.right);
+        *min_width_p = info->minimum.width + (info->margin.left + info->margin.right);
 
       if (natural_width_p != NULL)
-        *natural_width_p = info->natural_width + (info->margin.left + info->margin.right);
+        *natural_width_p = info->natural.width + (info->margin.left + info->margin.right);
 
       return;
     }
@@ -8025,12 +8025,12 @@ clutter_actor_get_preferred_width (ClutterActor *self,
   if (!priv->min_width_set)
     request_min_width = cached_size_request->min_size;
   else
-    request_min_width = info->min_width;
+    request_min_width = info->minimum.width;
 
   if (!priv->natural_width_set)
     request_natural_width = cached_size_request->natural_size;
   else
-    request_natural_width = info->natural_width;
+    request_natural_width = info->natural.width;
 
   if (min_width_p)
     *min_width_p = request_min_width;
@@ -8082,10 +8082,10 @@ clutter_actor_get_preferred_height (ClutterActor *self,
   if (priv->min_height_set && priv->natural_height_set)
     {
       if (min_height_p != NULL)
-        *min_height_p = info->min_height + (info->margin.top + info->margin.bottom);
+        *min_height_p = info->minimum.height + (info->margin.top + info->margin.bottom);
 
       if (natural_height_p != NULL)
-        *natural_height_p = info->natural_height + (info->margin.top + info->margin.bottom);
+        *natural_height_p = info->natural.height + (info->margin.top + info->margin.bottom);
 
       return;
     }
@@ -8157,12 +8157,12 @@ clutter_actor_get_preferred_height (ClutterActor *self,
   if (!priv->min_height_set)
     request_min_height = cached_size_request->min_size;
   else
-    request_min_height = info->min_height;
+    request_min_height = info->minimum.height;
 
   if (!priv->natural_height_set)
     request_natural_height = cached_size_request->natural_size;
   else
-    request_natural_height = info->natural_height;
+    request_natural_height = info->natural.height;
 
   if (min_height_p)
     *min_height_p = request_min_height;
@@ -8821,14 +8821,14 @@ clutter_actor_set_min_width (ClutterActor *self,
 
   info = _clutter_actor_get_layout_info (self);
 
-  if (priv->min_width_set && min_width == info->min_width)
+  if (priv->min_width_set && min_width == info->minimum.width)
     return;
 
   g_object_freeze_notify (G_OBJECT (self));
 
   clutter_actor_store_old_geometry (self, &old);
 
-  info->min_width = min_width;
+  info->minimum.width = min_width;
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_WIDTH]);
   clutter_actor_set_min_width_set (self, TRUE);
 
@@ -8859,14 +8859,14 @@ clutter_actor_set_min_height (ClutterActor *self,
 
   info = _clutter_actor_get_layout_info (self);
 
-  if (priv->min_height_set && min_height == info->min_height)
+  if (priv->min_height_set && min_height == info->minimum.height)
     return;
 
   g_object_freeze_notify (G_OBJECT (self));
 
   clutter_actor_store_old_geometry (self, &old);
 
-  info->min_height = min_height;
+  info->minimum.height = min_height;
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_HEIGHT]);
   clutter_actor_set_min_height_set (self, TRUE);
 
@@ -8896,14 +8896,14 @@ clutter_actor_set_natural_width (ClutterActor *self,
 
   info = _clutter_actor_get_layout_info (self);
 
-  if (priv->natural_width_set && natural_width == info->natural_width)
+  if (priv->natural_width_set && natural_width == info->natural.width)
     return;
 
   g_object_freeze_notify (G_OBJECT (self));
 
   clutter_actor_store_old_geometry (self, &old);
 
-  info->natural_width = natural_width;
+  info->natural.width = natural_width;
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_WIDTH]);
   clutter_actor_set_natural_width_set (self, TRUE);
 
@@ -8933,14 +8933,14 @@ clutter_actor_set_natural_height (ClutterActor *self,
 
   info = _clutter_actor_get_layout_info (self);
 
-  if (priv->natural_height_set && natural_height == info->natural_height)
+  if (priv->natural_height_set && natural_height == info->natural.height)
     return;
 
   g_object_freeze_notify (G_OBJECT (self));
 
   clutter_actor_store_old_geometry (self, &old);
 
-  info->natural_height = natural_height;
+  info->natural.height = natural_height;
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_HEIGHT]);
   clutter_actor_set_natural_height_set (self, TRUE);
 
@@ -15821,8 +15821,8 @@ static const ClutterLayoutInfo default_layout_info = {
   { 0, 0, 0, 0 },               /* margin */
   CLUTTER_ACTOR_ALIGN_FILL,     /* x-align */
   CLUTTER_ACTOR_ALIGN_FILL,     /* y-align */
-  0.f, 0.f,                     /* min_width, natural_width */
-  0.f, 0.f,                     /* natual_width, natural_height */
+  CLUTTER_SIZE_INIT_ZERO,       /* minimum */
+  CLUTTER_SIZE_INIT_ZERO,       /* natural */
 };
 
 static void
