@@ -400,7 +400,14 @@ const ObjInspector = new Lang.Class({
         button.connect('clicked', Lang.bind(this, this.close));
         hbox.add(button);
         if (typeof(obj) == typeof({})) {
+            let properties = [];
             for (let propName in obj) {
+                properties.push(propName);
+            }
+            properties.sort();
+
+            for (let i = 0; i < properties.length; i++) {
+                let propName = properties[i];
                 let valueStr;
                 let link;
                 try {
