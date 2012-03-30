@@ -1,4 +1,5 @@
 #!/usr/bin/env gjs
+// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
@@ -28,7 +29,7 @@ function main() {
 
     let app = new Gtk.Application({ application_id: 'org.gnome.Shell.GtkApplicationTest' });
     app.connect('activate', function() {
-	print ("Activated");
+        print ("Activated");
     });
 
     let action = new Gio.SimpleAction({ name: 'one' });
@@ -91,12 +92,11 @@ function main() {
     let window = null;
 
     app.connect_after('startup', function(app) {
-	app.set_app_menu(menu);
-
-	window = new Gtk.ApplicationWindow({ title: "Test Application", application: app });
+        app.set_app_menu(menu);
+        window = new Gtk.ApplicationWindow({ title: "Test Application", application: app });
     });
     app.connect('activate', function(app) {
-	window.present();
+        window.present();
     });
 
     app.run(null);
