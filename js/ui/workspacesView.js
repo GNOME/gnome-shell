@@ -72,6 +72,7 @@ const WorkspacesView = new Lang.Class({
             this._workspaces[w].actor.reparent(this.actor);
         this._workspaces[activeWorkspaceIndex].actor.raise_top();
 
+        this._extraWorkspaces = [];
         this._updateExtraWorkspaces();
 
         // Position/scale the desktop windows and their children after the
@@ -83,8 +84,6 @@ const WorkspacesView = new Lang.Class({
                                  Lang.bind(this, function() {
                 for (let w = 0; w < this._workspaces.length; w++)
                     this._workspaces[w].zoomToOverview();
-                if (!this._extraWorkspaces)
-                    return;
                 for (let w = 0; w < this._extraWorkspaces.length; w++)
                     this._extraWorkspaces[w].zoomToOverview();
         }));
@@ -124,7 +123,6 @@ const WorkspacesView = new Lang.Class({
         if (!this._settings.get_boolean('workspaces-only-on-primary'))
             return;
 
-        this._extraWorkspaces = [];
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {
             if (i == Main.layoutManager.primaryIndex)
@@ -139,12 +137,9 @@ const WorkspacesView = new Lang.Class({
     },
 
     _destroyExtraWorkspaces: function() {
-        if (!this._extraWorkspaces)
-            return;
-
         for (let m = 0; m < this._extraWorkspaces.length; m++)
             this._extraWorkspaces[m].destroy();
-        this._extraWorkspaces = null;
+        this._extraWorkspaces = [];
     },
 
     setGeometry: function(x, y, width, height, spacing) {
@@ -191,8 +186,6 @@ const WorkspacesView = new Lang.Class({
 
         for (let w = 0; w < this._workspaces.length; w++)
             this._workspaces[w].zoomFromOverview();
-        if (!this._extraWorkspaces)
-            return;
         for (let w = 0; w < this._extraWorkspaces.length; w++)
             this._extraWorkspaces[w].zoomFromOverview();
     },
@@ -204,8 +197,6 @@ const WorkspacesView = new Lang.Class({
     syncStacking: function(stackIndices) {
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].syncStacking(stackIndices);
-        if (!this._extraWorkspaces)
-            return;
         for (let i = 0; i < this._extraWorkspaces.length; i++)
             this._extraWorkspaces[i].syncStacking(stackIndices);
     },
@@ -376,9 +367,6 @@ const WorkspacesView = new Lang.Class({
             this._firstDragMotion = false;
             for (let i = 0; i < this._workspaces.length; i++)
                 this._workspaces[i].setReservedSlot(dragEvent.dragActor._delegate);
-            if (!this._extraWorkspaces)
-                return DND.DragMotionResult.CONTINUE;
-
             for (let i = 0; i < this._extraWorkspaces.length; i++)
                 this._extraWorkspaces[i].setReservedSlot(dragEvent.dragActor._delegate);
         }
@@ -392,9 +380,6 @@ const WorkspacesView = new Lang.Class({
 
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setReservedSlot(null);
-
-        if (!this._extraWorkspaces)
-            return;
         for (let i = 0; i < this._extraWorkspaces.length; i++)
             this._extraWorkspaces[i].setReservedSlot(null);
     },
