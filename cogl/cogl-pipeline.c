@@ -106,7 +106,6 @@ _cogl_pipeline_init_default_pipeline (void)
   CoglPipelineLightingState *lighting_state = &big_state->lighting_state;
   CoglPipelineAlphaFuncState *alpha_state = &big_state->alpha_state;
   CoglPipelineBlendState *blend_state = &big_state->blend_state;
-  CoglDepthState *depth_state = &big_state->depth_state;
   CoglPipelineLogicOpsState *logic_ops_state = &big_state->logic_ops_state;
   CoglPipelineCullFaceState *cull_face_state = &big_state->cull_face_state;
   CoglPipelineUniformsState *uniforms_state = &big_state->uniforms_state;
@@ -210,12 +209,7 @@ _cogl_pipeline_init_default_pipeline (void)
 
   big_state->user_program = COGL_INVALID_HANDLE;
 
-  /* The same as the GL defaults */
-  depth_state->test_enabled = FALSE;
-  depth_state->test_function = COGL_DEPTH_TEST_FUNCTION_LESS;
-  depth_state->write_enabled = TRUE;
-  depth_state->range_near = 0;
-  depth_state->range_far = 1;
+  cogl_depth_state_init (&big_state->depth_state);
 
   big_state->point_size = 1.0f;
 
