@@ -1963,6 +1963,9 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
   _COGL_RETURN_VAL_IF_FAIL (source == COGL_READ_PIXELS_COLOR_BUFFER, FALSE);
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_framebuffer (framebuffer), FALSE);
 
+  if (!cogl_framebuffer_allocate (framebuffer, NULL))
+    return FALSE;
+
   ctx = cogl_framebuffer_get_context (framebuffer);
 
   width = cogl_bitmap_get_width (bitmap);

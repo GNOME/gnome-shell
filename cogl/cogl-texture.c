@@ -965,6 +965,7 @@ get_texture_bits_via_offscreen (CoglTexture    *texture,
   CoglOffscreen *offscreen;
   CoglFramebuffer *framebuffer;
   CoglBitmap *bitmap;
+  gboolean ret;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -986,15 +987,15 @@ get_texture_bits_via_offscreen (CoglTexture    *texture,
                                      dst_format,
                                      dst_rowstride,
                                      dst_bits);
-  cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
-                                            x, y,
-                                            COGL_READ_PIXELS_COLOR_BUFFER,
-                                            bitmap);
+  ret = cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
+                                                  x, y,
+                                                  COGL_READ_PIXELS_COLOR_BUFFER,
+                                                  bitmap);
   cogl_object_unref (bitmap);
 
   cogl_object_unref (framebuffer);
 
-  return TRUE;
+  return ret;
 }
 
 static gboolean
