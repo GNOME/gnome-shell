@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cogl\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter\n"
-"POT-Creation-Date: 2012-03-15 07:30+0100\n"
-"PO-Revision-Date: 2012-03-15 07:33+0100\n"
+"POT-Creation-Date: 2012-04-01 20:22+0200\n"
+"PO-Revision-Date: 2012-04-01 20:24+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: \n"
@@ -27,7 +27,7 @@ msgstr "Speciella felsökningsvärden:"
 #: ../cogl/cogl-debug.c:180
 #: ../cogl/cogl-debug.c:182
 msgid "Enables all non-behavioural debug options"
-msgstr ""
+msgstr "Aktiverar alla icke-beteendesakliga felsökningsflaggor"
 
 #: ../cogl/cogl-debug.c:226
 msgid "Cogl debugging flags to set"
@@ -211,7 +211,7 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:104
 msgid "Use the GPU to transform rectangular geometry"
-msgstr ""
+msgstr "Använd grafikprocessorn för att transformera rektangulär geometri"
 
 #: ../cogl/cogl-debug-options.h:106
 msgid "Cogl Specialist"
@@ -303,7 +303,7 @@ msgstr "Visa källkod"
 
 #: ../cogl/cogl-debug-options.h:161
 msgid "Show generated ARBfp/GLSL source code"
-msgstr ""
+msgstr "Visa genererad ARBfp/GLSL-källkod"
 
 #: ../cogl/cogl-debug-options.h:165
 msgid "Trace some OpenGL"
