@@ -1,335 +1,51 @@
-# Esperanto translation for mutter
+# Esperanto translation for mutter.
 # Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the mutter package.
 # Michael MORONI < >, 2011.
-# Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2011.
+# Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2011, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-04-05 06:28+0000\n"
-"PO-Revision-Date: 2011-04-19 18:44+0200\n"
+"POT-Creation-Date: 2012-03-15 21:29+0000\n"
+"PO-Revision-Date: 2012-04-01 17:14+0200\n"
 "Last-Translator: Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>\n"
-"Language-Team: Esperanto <ubuntu-l10n-eo@lists.launchpad.net>\n"
-"Language: eo\n"
+"Language-Team: Esperanto <gnome-l10n-eo@lists.launchpad.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: eo\n"
 "X-Launchpad-Export-Date: 2011-04-19 16:32+0000\n"
 "X-Generator: Launchpad (build 12847)\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../src/core/all-keybindings.h:88
-msgid "Switch to workspace 1"
-msgstr "Ŝalti al laborspaco 1"
+#: ../src/50-mutter-windows.xml.in.h:1
+msgid "Windows"
+msgstr "Fenestroj"
 
-#: ../src/core/all-keybindings.h:90
-msgid "Switch to workspace 2"
-msgstr "Ŝalti al laborspaco 2"
-
-#: ../src/core/all-keybindings.h:92
-msgid "Switch to workspace 3"
-msgstr "Ŝalti al laborspaco 3"
-
-#: ../src/core/all-keybindings.h:94
-msgid "Switch to workspace 4"
-msgstr "Ŝalti al laborspaco 4"
-
-#: ../src/core/all-keybindings.h:96
-msgid "Switch to workspace 5"
-msgstr "Ŝalti al laborspaco 5"
-
-#: ../src/core/all-keybindings.h:98
-msgid "Switch to workspace 6"
-msgstr "Ŝalti al laborspaco 6"
-
-#: ../src/core/all-keybindings.h:100
-msgid "Switch to workspace 7"
-msgstr "Ŝalti al laborspaco 7"
-
-#: ../src/core/all-keybindings.h:102
-msgid "Switch to workspace 8"
-msgstr "Ŝalti al laborspaco 8"
-
-#: ../src/core/all-keybindings.h:104
-msgid "Switch to workspace 9"
-msgstr "Ŝalti al laborspaco 9"
-
-#: ../src/core/all-keybindings.h:106
-msgid "Switch to workspace 10"
-msgstr "Ŝalti al laborspaco 10"
-
-#: ../src/core/all-keybindings.h:108
-msgid "Switch to workspace 11"
-msgstr "Ŝalti al laborspaco 11"
-
-#: ../src/core/all-keybindings.h:110
-msgid "Switch to workspace 12"
-msgstr "Ŝalti al laborspaco 12"
-
-#: ../src/core/all-keybindings.h:122
-msgid "Switch to workspace on the left of the current workspace"
-msgstr "Ŝalti al la laborspaco maldekstre de la aktuala laborspaco"
-
-#: ../src/core/all-keybindings.h:126
-msgid "Switch to workspace on the right of the current workspace"
-msgstr "Ŝalti al la laborspaco dekstre de la aktuala laborspaco"
-
-#: ../src/core/all-keybindings.h:130
-msgid "Switch to workspace above the current workspace"
-msgstr "Ŝalti al laborspaco super la aktuala laborspaco"
-
-#: ../src/core/all-keybindings.h:134
-msgid "Switch to workspace below the current workspace"
-msgstr "Ŝalti al laborspaco sub la aktuala laborspaco"
-
-#: ../src/core/all-keybindings.h:150
-msgid "Move between windows of an application, using a popup window"
-msgstr "Moviĝi inter fenestroj de aplikaĵo, uzante ŝprucfenestron"
-
-#: ../src/core/all-keybindings.h:153
-msgid "Move backward between windows of an application, using a popup window"
-msgstr "Moviĝi malantaŭen inter fenestroj de aplikaĵo, uzante ŝprucfenestron"
-
-#: ../src/core/all-keybindings.h:157
-msgid "Move between windows, using a popup window"
-msgstr "Moviĝi inter fenestroj, uzante ŝprucfenestron"
-
-#: ../src/core/all-keybindings.h:160
-msgid "Move backward between windows, using a popup window"
-msgstr "Moviĝi malantaŭen inter fenestroj, uzante ŝprucfenestron"
-
-#: ../src/core/all-keybindings.h:163
-msgid "Move between panels and the desktop, using a popup window"
-msgstr "Moviĝi inter paneloj kaj labortablo, uzante ŝprucfenestron"
-
-#: ../src/core/all-keybindings.h:166
-msgid "Move backward between panels and the desktop, using a popup window"
-msgstr "Moviĝi malantaŭen inter paneloj kaj labortablo, uzante ŝprucfenestron"
-
-#: ../src/core/all-keybindings.h:171
-msgid "Move between windows of an application immediately"
-msgstr "Moviĝi tuj inter fenestroj de aplikaĵo"
-
-#: ../src/core/all-keybindings.h:174
-msgid "Move backward between windows of an application immediately"
-msgstr "Moviĝi tuj malantaŭen inter fenestroj de aplikaĵo"
-
-#: ../src/core/all-keybindings.h:177
-msgid "Move between windows immediately"
-msgstr "Moviĝi tuj inter fenestroj"
-
-#: ../src/core/all-keybindings.h:180
-msgid "Move backward between windows immediately"
-msgstr "Moviĝi tuj malantaŭen inter fenestroj"
-
-#: ../src/core/all-keybindings.h:183
-msgid "Move between panels and the desktop immediately"
-msgstr "Moviĝi tuj inter paneloj kaj labortablo"
-
-#: ../src/core/all-keybindings.h:186
-msgid "Move backward between panels and the desktop immediately"
-msgstr "Moviĝi tuj malantaŭen inter paneloj kaj labortablo"
-
-#: ../src/core/all-keybindings.h:203
-msgid "Hide all normal windows and set focus to the desktop"
-msgstr "Kaŝi ĉiujn normalajn fenestrojn kaj enfokusigi la labortablon"
-
-#: ../src/core/all-keybindings.h:206
-msgid "Show the panel's main menu"
-msgstr "Montri la ĉefmenuon de la panelo"
-
-#: ../src/core/all-keybindings.h:209
-msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "Montri la dialogujon \"Ruli aplikaĵon\" de la panelo"
-
-#: ../src/core/all-keybindings.h:211
-msgid "Start or stop recording the session"
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "View split on left"
 msgstr ""
 
-#: ../src/core/all-keybindings.h:252
-msgid "Take a screenshot"
-msgstr "Fari ekrankopion"
-
-#: ../src/core/all-keybindings.h:254
-msgid "Take a screenshot of a window"
-msgstr "Ekrankopii fenestron"
-
-#: ../src/core/all-keybindings.h:256
-msgid "Run a terminal"
-msgstr "Ruli terminalon"
-
-#: ../src/core/all-keybindings.h:271
-msgid "Activate the window menu"
-msgstr "Aktivigi la fenestromenuon"
-
-#: ../src/core/all-keybindings.h:274
-msgid "Toggle fullscreen mode"
-msgstr "Baskuligi tutekranan reĝimon"
-
-#: ../src/core/all-keybindings.h:276
-msgid "Toggle maximization state"
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "View split on right"
 msgstr ""
 
-#: ../src/core/all-keybindings.h:278
-msgid "Toggle whether a window will always be visible over other windows"
+#. This probably means that a non-WM compositor like xcompmgr is running;
+#. * we have no way to get it to exit
+#: ../src/compositor/compositor.c:492
+#, c-format
+#| msgid ""
+#| "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Another compositing manager is already running on screen %i on display \"%s"
+"\"."
 msgstr ""
+"Alia kunmetanta administrilo jam rulas sur ekrano \"%i\" de montrilo \"%s\"."
 
-#: ../src/core/all-keybindings.h:280
-msgid "Maximize window"
-msgstr "Maksimumigi la fenestron"
-
-#: ../src/core/all-keybindings.h:282
-msgid "Restore window"
-msgstr "Restaŭri fenestron"
-
-#: ../src/core/all-keybindings.h:284
-msgid "Toggle shaded state"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:286
-msgid "Minimize window"
-msgstr "Minimumigi fenestron"
-
-#: ../src/core/all-keybindings.h:288
-msgid "Close window"
-msgstr "Fermi la fenestron"
-
-#: ../src/core/all-keybindings.h:290
-msgid "Move window"
-msgstr "Movi la fenestron"
-
-#: ../src/core/all-keybindings.h:292
-msgid "Resize window"
-msgstr "Ŝanĝi la fenestrograndon"
-
-#: ../src/core/all-keybindings.h:295
-msgid "Toggle whether window is on all workspaces or just one"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:299
-msgid "Move window to workspace 1"
-msgstr "Movi la fenestron al laborspaco 1"
-
-#: ../src/core/all-keybindings.h:302
-msgid "Move window to workspace 2"
-msgstr "Movi la fenestron al laborspaco 2"
-
-#: ../src/core/all-keybindings.h:305
-msgid "Move window to workspace 3"
-msgstr "Movi la fenestron al laborspaco 3"
-
-#: ../src/core/all-keybindings.h:308
-msgid "Move window to workspace 4"
-msgstr "Movi la fenestron al laborspaco 4"
-
-#: ../src/core/all-keybindings.h:311
-msgid "Move window to workspace 5"
-msgstr "Movi la fenestron al laborspaco 5"
-
-#: ../src/core/all-keybindings.h:314
-msgid "Move window to workspace 6"
-msgstr "Movi la fenestron al laborspaco 6"
-
-#: ../src/core/all-keybindings.h:317
-msgid "Move window to workspace 7"
-msgstr "Movi la fenestron al laborspaco 7"
-
-#: ../src/core/all-keybindings.h:320
-msgid "Move window to workspace 8"
-msgstr "Movi la fenestron al laborspaco 8"
-
-#: ../src/core/all-keybindings.h:323
-msgid "Move window to workspace 9"
-msgstr "Movi la fenestron al laborspaco 9"
-
-#: ../src/core/all-keybindings.h:326
-msgid "Move window to workspace 10"
-msgstr "Movi la fenestron al laborspaco 10"
-
-#: ../src/core/all-keybindings.h:329
-msgid "Move window to workspace 11"
-msgstr "Movi la fenestron al laborspaco 11"
-
-#: ../src/core/all-keybindings.h:332
-msgid "Move window to workspace 12"
-msgstr "Movi la fenestron al laborspaco 12"
-
-#: ../src/core/all-keybindings.h:344
-msgid "Move window one workspace to the left"
-msgstr "Movi la fenestron al la maldekstra laborspaco"
-
-#: ../src/core/all-keybindings.h:347
-msgid "Move window one workspace to the right"
-msgstr "Movi la fenestron al la dekstra laborspaco"
-
-#: ../src/core/all-keybindings.h:350
-msgid "Move window one workspace up"
-msgstr "Movi la fenestron al la supra laborspaco"
-
-#: ../src/core/all-keybindings.h:353
-msgid "Move window one workspace down"
-msgstr "Movi la fenestron al la suba laborspaco"
-
-#: ../src/core/all-keybindings.h:356
-msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:358
-msgid "Raise window above other windows"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:360
-msgid "Lower window below other windows"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:364
-msgid "Maximize window vertically"
-msgstr "Vertikale maksimumigi la fenestron"
-
-#: ../src/core/all-keybindings.h:368
-msgid "Maximize window horizontally"
-msgstr "Horizontale maksimumigi la fenestron"
-
-#: ../src/core/all-keybindings.h:372
-msgid "Move window to north-west (top left) corner"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:375
-msgid "Move window to north-east (top right) corner"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:378
-msgid "Move window to south-west (bottom left) corner"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:381
-msgid "Move window to south-east (bottom right) corner"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:385
-msgid "Move window to north (top) side of screen"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:388
-msgid "Move window to south (bottom) side of screen"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:391
-msgid "Move window to east (right) side of screen"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:394
-msgid "Move window to west (left) side of screen"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:397
-msgid "Move window to center of screen"
-msgstr ""
-
-#: ../src/core/bell.c:310
+#: ../src/core/bell.c:307
 msgid "Bell event"
 msgstr "Sonoril-evento"
 
@@ -338,37 +54,41 @@ msgstr "Sonoril-evento"
 msgid "Unknown window information request: %d"
 msgstr "Nekonata peto pri fenestra informo: %d"
 
-#. Translators: %s is a window title
-#: ../src/core/delete.c:94
+#: ../src/core/delete.c:111
 #, c-format
 msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> ne respondas."
 
-#: ../src/core/delete.c:99
+#: ../src/core/delete.c:114
+#| msgid "<tt>%s</tt> is not responding."
+msgid "Application is not responding."
+msgstr "Aplikaĵo ne respondas."
+
+#: ../src/core/delete.c:119
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr ""
+msgstr "Vi povas elekti ĉu atendi iomete por la aplikaĵo aŭ perforte ĉesi ĝin."
 
-#: ../src/core/delete.c:108
+#: ../src/core/delete.c:126
 msgid "_Wait"
 msgstr "_Atendi"
 
-#: ../src/core/delete.c:108
+#: ../src/core/delete.c:126
 msgid "_Force Quit"
 msgstr "Per_forta eliro"
 
-#: ../src/core/display.c:365
+#: ../src/core/display.c:387
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Aldonaĵo %s necesanta por kompostado mankas"
 
-#: ../src/core/display.c:431
+#: ../src/core/display.c:453
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Malsukcesis malfermi jenan vidigon de fenestra sistemo X: '%s'\n"
 
-#: ../src/core/keybindings.c:759
+#: ../src/core/keybindings.c:852
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -376,37 +96,13 @@ msgid ""
 msgstr ""
 "Iu alia programo jam uzas la klavon %s kun modifiloj %x kiel bindaĵon\n"
 
-#. Displayed when a keybinding which is
-#. * supposed to launch a program fails.
-#.
-#: ../src/core/keybindings.c:2468
-#, c-format
-msgid ""
-"There was an error running <tt>%s</tt>:\n"
-"\n"
-"%s"
-msgstr ""
-"Okazis eraro lanĉante <tt>%s</tt>:\n"
-"\n"
-"%s"
-
-#: ../src/core/keybindings.c:2558
-#, c-format
-msgid "No command %d has been defined.\n"
-msgstr "Neniu komando %d estis difinita.\n"
-
-#: ../src/core/keybindings.c:3570
-#, c-format
-msgid "No terminal command has been defined.\n"
-msgstr "Neniu terminala komando estis difinita.\n"
-
 #: ../src/core/main.c:206
 msgid "Disable connection to session manager"
 msgstr "Elŝalti konekton al la seancoadministrilo"
 
 #: ../src/core/main.c:212
 msgid "Replace the running window manager"
-msgstr "Anstataŭigi la nun ruliĝantan fenestromastrumilon"
+msgstr "Anstataŭigi la nun ruliĝantan fenestromastrumilon"
 
 #: ../src/core/main.c:218
 msgid "Specify session management ID"
@@ -424,12 +120,12 @@ msgstr "Pravalorizi la seancon el konservita dosiero"
 msgid "Make X calls synchronous"
 msgstr "Fari X-vokojn sinkrone"
 
-#: ../src/core/main.c:506
+#: ../src/core/main.c:504
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Malsukcesis skani etosan dosierujon %s\n"
 
-#: ../src/core/main.c:522
+#: ../src/core/main.c:520
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -437,7 +133,7 @@ msgstr ""
 "Ne eblis trovi ian etoson! Certigu, ke %s ekzistas kaj enhavas la ordinarajn "
 "etosojn.\n"
 
-#: ../src/core/mutter.c:42
+#: ../src/core/mutter.c:40
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -446,55 +142,21 @@ msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
+"Mutero %s\n"
+"Kopirajto (C) 2001-%d Havoc PENNIGTON, Red Hat, Inc., kaj aliaj\n"
+"Ĉi tio estas libera programaro; rigardu la fontkodon por pli da informoj.\n"
+"Ekzistas neniu GARANTIO; nek por NEGOCEBLO nek por ADAPTADO AL IU APARTA "
+"CELO.\n"
 
-#: ../src/core/mutter.c:56
+#: ../src/core/mutter.c:54
 msgid "Print version"
 msgstr "Pres-versio"
 
-#: ../src/core/mutter.c:62
+#: ../src/core/mutter.c:60
 msgid "Comma-separated list of compositor plugins"
 msgstr ""
 
-#.
-#. * We found it, but it was invalid.  Complain.
-#. *
-#. * FIXME: This replicates the original behaviour, but in the future
-#. * we might consider reverting invalid keys to their original values.
-#. * (We know the old value, so we can look up a suitable string in
-#. * the symtab.)
-#. *
-#. * (Empty comment follows so the translators don't see this.)
-#.
-#.
-#: ../src/core/prefs.c:543 ../src/core/prefs.c:704
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "La GConf-ŝlosilo '%s' havas ne-validan valoron.\n"
-
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:873
-#, c-format
-msgid "%d stored in GConf key %s is out of range %d to %d\n"
-msgstr ""
-"La valoro %d de la GConf-ŝlosilo %s estas ekster intervalo de %d ĝis %d\n"
-
-#: ../src/core/prefs.c:674 ../src/core/prefs.c:751 ../src/core/prefs.c:799
-#: ../src/core/prefs.c:863 ../src/core/prefs.c:1324 ../src/core/prefs.c:1340
-#: ../src/core/prefs.c:1357 ../src/core/prefs.c:1373
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "La GConf-ŝlosilo \"%s\" havas nevalidan valoron.\n"
-
-#: ../src/core/prefs.c:1203
-#, c-format
-msgid "GConf key %s is already in use and can't be used to override %s\n"
-msgstr ""
-
-#: ../src/core/prefs.c:1262
-#, c-format
-msgid "Can't override GConf key, %s not found\n"
-msgstr ""
-
-#: ../src/core/prefs.c:1447
+#: ../src/core/prefs.c:1077
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -502,31 +164,23 @@ msgstr ""
 "Provizoraj solvoj por rompitaj aplikaĵoj estas elŝaltitaj. Kelkaj aplikaĵoj "
 "povus ruli malkorekte.\n"
 
-#: ../src/core/prefs.c:1524
+#: ../src/core/prefs.c:1152
 #, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Ne eblis analizi la tiparan difinon \"%s\" de la GConf-ŝlosilo %s.\n"
+#| msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgid "Could not parse font description \"%s\" from GSettings key %s\n"
+msgstr ""
+"Ne eblis analizi la tiparan priskribon \"%s\" de la GSettings-ŝlosilo %s\n"
 
-#: ../src/core/prefs.c:1586
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
-"Valoro \"%s\", trovita en la agorda datenbanko, ne estas valida valoro kiel "
-"mus-butona modifilo.\n"
+"Valoro \"%s\", trovita en la agorda datenbazo, ne estas valida valoro kiel "
+"mus-butona modifilo\n"
 
-#: ../src/core/prefs.c:2016
-#, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "Eraro ŝanĝante la nombron da labortabloj al %d: %s\n"
-
-#: ../src/core/prefs.c:2200 ../src/core/prefs.c:2702
-#, c-format
-msgid "Workspace %d"
-msgstr "Laborspaco %d"
-
-#: ../src/core/prefs.c:2232 ../src/core/prefs.c:2410
+#: ../src/core/prefs.c:1739
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -535,100 +189,90 @@ msgstr ""
 "%s trovita en la agordara datumbazo ne estas valida valoro por klavokombino "
 "\"%s\"\n"
 
-#: ../src/core/prefs.c:2783
+#: ../src/core/prefs.c:1836
 #, c-format
-msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Eraro agordante la nomon por la laborspaco %d al \"%s\": %s\n"
+msgid "Workspace %d"
+msgstr "Laborspaco %d"
 
-#: ../src/core/prefs.c:2997
-#, c-format
-msgid "Error setting live hidden windows status status: %s\n"
-msgstr ""
-
-#: ../src/core/prefs.c:3032
-#, c-format
-msgid "Error setting no tab popup status: %s\n"
-msgstr ""
-
-#: ../src/core/screen.c:624
+#: ../src/core/screen.c:730
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Ekrano %d en vidigo '%s' estas nevalida\n"
+msgstr "Ekrano %d en vidigilo '%s' estas nevalida\n"
 
-#: ../src/core/screen.c:640
+#: ../src/core/screen.c:746
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"Ekrano %d en montrilo \"%s\" jam havas fenestroadministrilon; provi uzi "
+"Ekrano %d en vidigilo \"%s\" jam havas fenestroadministrilon; provi uzi "
 "opcion --replace por anstataŭigi la nunan fenestroadministrilon.\n"
 
-#: ../src/core/screen.c:667
+#: ../src/core/screen.c:773
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
-"Neeblas akiri fenestroadministrilan elekton ĉe ekrano %d, montrilo “%s”\n"
+"Neeblas akiri fenestroadministrilan elekton ĉe ekrano %d, vidigilo “%s”\n"
 
-#: ../src/core/screen.c:722
+#: ../src/core/screen.c:828
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr ""
+msgstr "Ekrano %d sur vidigilo \"%s\" jam havas fenestroadministrilon\n"
 
-#: ../src/core/screen.c:907
+#: ../src/core/screen.c:1013
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr ""
+msgstr "Ne eblas liberigi ekranon %d sur ekrano \"%s\"\n"
 
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#: ../src/core/session.c:843 ../src/core/session.c:850
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Ne eblis krei dosierujon '%s': %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:860
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Ne eblis malfermi sesian dosieron '%s' por skribado: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1001
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Eraro dum skribado al seanca dosiero '%s': %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1006
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Eraro dum fermado de seanca dosiero '%s': %s\n"
 
-#: ../src/core/session.c:1130
+#: ../src/core/session.c:1136
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Malsuksesis analizi konservitan seancan dosieron: %s\n"
 
-#: ../src/core/session.c:1179
+#: ../src/core/session.c:1185
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "Atributo <mutter_session> aperis sed ni jam havas la seancoidentigilon"
 
-#: ../src/core/session.c:1192 ../src/core/session.c:1267
-#: ../src/core/session.c:1299 ../src/core/session.c:1371
-#: ../src/core/session.c:1431
+#: ../src/core/session.c:1198 ../src/core/session.c:1273
+#: ../src/core/session.c:1305 ../src/core/session.c:1377
+#: ../src/core/session.c:1437
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Nekonata atributo %s ĉe elemento <%s>"
 
-#: ../src/core/session.c:1209
+#: ../src/core/session.c:1215
 #, c-format
 msgid "nested <window> tag"
-msgstr ""
+msgstr "ingita elemento <window>"
 
-#: ../src/core/session.c:1451
+#: ../src/core/session.c:1457
 #, c-format
 msgid "Unknown element %s"
 msgstr "Nekonata elemento %s"
 
-#: ../src/core/session.c:1803
+#: ../src/core/session.c:1809
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -652,32 +296,26 @@ msgstr ""
 #: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
-msgstr "Mutero estis kompilita sen subteno por eksplicita reĝimo\n"
+msgstr "Mutero estis kompilita sen subteno por eksplicita reĝimo\n"
 
-#: ../src/core/util.c:286
+#: ../src/core/util.c:290
 msgid "Window manager: "
 msgstr "Fenestroadministrilo: "
 
-#: ../src/core/util.c:434
+#: ../src/core/util.c:438
 msgid "Bug in window manager: "
 msgstr "Cimo en fenestroadministrilo: "
 
-#: ../src/core/util.c:467
+#: ../src/core/util.c:471
 msgid "Window manager warning: "
 msgstr "Fenestroadministrila atentigo: "
 
-#: ../src/core/util.c:495
+#: ../src/core/util.c:499
 msgid "Window manager error: "
 msgstr "Fenestroadministrila eraro: "
 
-#. Translators: This is the title used on dialog boxes
-#: ../src/core/util.c:615 ../src/mutter.desktop.in.h:1
-#: ../src/mutter-wm.desktop.in.h:1
-msgid "Mutter"
-msgstr "Mutero"
-
 #. first time through
-#: ../src/core/window.c:6849
+#: ../src/core/window.c:7269
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -691,7 +329,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7512
+#: ../src/core/window.c:7932
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -708,9 +346,14 @@ msgstr ""
 msgid "%s (on %s)"
 msgstr "%s (ĉe %s)"
 
-#: ../src/core/window-props.c:1482
+#: ../src/core/window-props.c:1481
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr ""
+
+#: ../src/core/window-props.c:1492
+#, c-format
+msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr ""
 
 #: ../src/core/xprops.c:155
@@ -726,7 +369,7 @@ msgstr ""
 #: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "Eco %s ĉe fenestro 0x%lx enhavis nevalidan UTF-8\n"
+msgstr "Eco %s ĉe fenestro 0x%lx enhavis nevalidan UTF-8\n"
 
 #: ../src/core/xprops.c:494
 #, c-format
@@ -734,31 +377,15 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 
-#: ../src/mutter.schemas.in.h:1
-msgid "Attach modal dialogs"
-msgstr ""
+#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutero"
 
-#: ../src/mutter.schemas.in.h:2
-msgid ""
-"Determines whether hidden windows (i.e., minimized windows and windows on "
-"other workspaces than the current one) should be kept alive."
-msgstr ""
-
-#: ../src/mutter.schemas.in.h:3
-msgid ""
-"Determines whether workspace switching should happen for windows on all "
-"monitors or only for windows on the primary monitor."
-msgstr ""
-
-#: ../src/mutter.schemas.in.h:4
-msgid "Live Hidden Windows"
-msgstr ""
-
-#: ../src/mutter.schemas.in.h:5
+#: ../src/org.gnome.mutter.gschema.xml.in.h:1
 msgid "Modifier to use for extended window management operations"
 msgstr ""
 
-#: ../src/mutter.schemas.in.h:6
+#: ../src/org.gnome.mutter.gschema.xml.in.h:2
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -766,65 +393,92 @@ msgid ""
 "default or set to the empty string."
 msgstr ""
 
-#: ../src/mutter.schemas.in.h:7
+#: ../src/org.gnome.mutter.gschema.xml.in.h:3
+msgid "Attach modal dialogs"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:4
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
 "the parent window."
 msgstr ""
 
-#: ../src/mutter.schemas.in.h:8
+#: ../src/org.gnome.mutter.gschema.xml.in.h:5
+msgid "Live Hidden Windows"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
+msgid ""
+"Determines whether hidden windows (i.e., minimized windows and windows on "
+"other workspaces than the current one) should be kept alive."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+msgid ""
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+msgid "Workspaces are managed dynamically"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "Workspaces only on primary"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "No tab popup"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+msgid ""
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+#| msgid "Remove Window From Top"
+msgid "Select window from tab popup"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid "Cancel tab popup"
 msgstr ""
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Uzo: %s\n"
-
-#: ../src/ui/frames.c:1099
-msgid "Close Window"
-msgstr "Fermi la fenestron"
-
-#: ../src/ui/frames.c:1102
-msgid "Window Menu"
-msgstr "Fenestra menuo"
-
-#: ../src/ui/frames.c:1105
-msgid "Minimize Window"
-msgstr "Minimumigi la fenestron"
-
-#: ../src/ui/frames.c:1108
-msgid "Maximize Window"
-msgstr "Maksimumigi la fenestron"
-
-#: ../src/ui/frames.c:1111
-msgid "Restore Window"
-msgstr "Restaŭri fenestron"
-
-#: ../src/ui/frames.c:1114
-msgid "Roll Up Window"
-msgstr ""
-
-#: ../src/ui/frames.c:1117
-msgid "Unroll Window"
-msgstr ""
-
-#: ../src/ui/frames.c:1120
-msgid "Keep Window On Top"
-msgstr "Teni la fenstron malfone"
-
-#: ../src/ui/frames.c:1123
-msgid "Remove Window From Top"
-msgstr "Forigi la fenestron de la malfono"
-
-#: ../src/ui/frames.c:1126
-msgid "Always On Visible Workspace"
-msgstr ""
-
-#: ../src/ui/frames.c:1129
-msgid "Put Window On Only One Workspace"
-msgstr ""
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:69
@@ -1025,240 +679,261 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:255
+#: ../src/ui/theme.c:253
 msgid "top"
 msgstr "supre"
 
-#: ../src/ui/theme.c:257
+#: ../src/ui/theme.c:255
 msgid "bottom"
 msgstr "malsupre"
 
-#: ../src/ui/theme.c:259
+#: ../src/ui/theme.c:257
 msgid "left"
 msgstr "maldekstre"
 
-#: ../src/ui/theme.c:261
+#: ../src/ui/theme.c:259
 msgid "right"
 msgstr "dekstre"
 
-#: ../src/ui/theme.c:288
+#: ../src/ui/theme.c:286
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr ""
 
-#: ../src/ui/theme.c:307
+#: ../src/ui/theme.c:305
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:344
+#: ../src/ui/theme.c:342
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr ""
 
-#: ../src/ui/theme.c:356
+#: ../src/ui/theme.c:354
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr ""
 
-#: ../src/ui/theme.c:1064
+#: ../src/ui/theme.c:1067
 #, c-format
 msgid "Gradients should have at least two colors"
+msgstr "Gradientoj havu minimume du kolorojn"
+
+#: ../src/ui/theme.c:1219
+#, c-format
+msgid ""
+"GTK custom color specification must have color name and fallback in "
+"parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:1202
+#: ../src/ui/theme.c:1235
+#, c-format
+msgid ""
+"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
+"_ are valid"
+msgstr ""
+
+#: ../src/ui/theme.c:1249
+#, c-format
+msgid ""
+"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
+"fit the format"
+msgstr ""
+
+#: ../src/ui/theme.c:1294
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:1216
+#: ../src/ui/theme.c:1308
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:1227
+#: ../src/ui/theme.c:1319
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr ""
 
-#: ../src/ui/theme.c:1240
+#: ../src/ui/theme.c:1332
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr ""
 
-#: ../src/ui/theme.c:1270
+#: ../src/ui/theme.c:1361
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
 
-#: ../src/ui/theme.c:1281
+#: ../src/ui/theme.c:1372
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr ""
 
-#: ../src/ui/theme.c:1291
+#: ../src/ui/theme.c:1382
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr ""
 
-#: ../src/ui/theme.c:1338
+#: ../src/ui/theme.c:1429
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 
-#: ../src/ui/theme.c:1349
+#: ../src/ui/theme.c:1440
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr ""
 
-#: ../src/ui/theme.c:1359
+#: ../src/ui/theme.c:1450
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr ""
 
-#: ../src/ui/theme.c:1388
+#: ../src/ui/theme.c:1479
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Ne eblis analizi koloron \"%s\""
 
-#: ../src/ui/theme.c:1646
+#: ../src/ui/theme.c:1790
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr ""
 
-#: ../src/ui/theme.c:1673
+#: ../src/ui/theme.c:1817
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
 
-#: ../src/ui/theme.c:1687
+#: ../src/ui/theme.c:1831
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 
-#: ../src/ui/theme.c:1809
+#: ../src/ui/theme.c:1953
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:1866
+#: ../src/ui/theme.c:2010
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr ""
 
-#: ../src/ui/theme.c:1977 ../src/ui/theme.c:1987 ../src/ui/theme.c:2021
+#: ../src/ui/theme.c:2121 ../src/ui/theme.c:2131 ../src/ui/theme.c:2165
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr ""
 
-#: ../src/ui/theme.c:2029
+#: ../src/ui/theme.c:2173
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 
-#: ../src/ui/theme.c:2085
+#: ../src/ui/theme.c:2229
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 
-#: ../src/ui/theme.c:2094
+#: ../src/ui/theme.c:2238
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
 
-#: ../src/ui/theme.c:2102
+#: ../src/ui/theme.c:2246
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 
-#: ../src/ui/theme.c:2112
+#: ../src/ui/theme.c:2256
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
 
-#: ../src/ui/theme.c:2263 ../src/ui/theme.c:2308
+#: ../src/ui/theme.c:2407 ../src/ui/theme.c:2452
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:2362
+#: ../src/ui/theme.c:2506
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr ""
 
-#: ../src/ui/theme.c:2391
+#: ../src/ui/theme.c:2535
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 
-#: ../src/ui/theme.c:2455
+#: ../src/ui/theme.c:2599
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 
-#: ../src/ui/theme.c:2466
+#: ../src/ui/theme.c:2610
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 
-#: ../src/ui/theme.c:2676 ../src/ui/theme.c:2696 ../src/ui/theme.c:2716
+#: ../src/ui/theme.c:2822 ../src/ui/theme.c:2842 ../src/ui/theme.c:2862
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr ""
 
-#: ../src/ui/theme.c:4410
+#: ../src/ui/theme.c:4533
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
 
-#: ../src/ui/theme.c:4940 ../src/ui/theme.c:4965
+#: ../src/ui/theme.c:5066 ../src/ui/theme.c:5091
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 
-#: ../src/ui/theme.c:5013
+#: ../src/ui/theme.c:5139
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Ŝargo de la etoso \"%s\" fiaskis: %s\n"
 
-#: ../src/ui/theme.c:5149 ../src/ui/theme.c:5156 ../src/ui/theme.c:5163
-#: ../src/ui/theme.c:5170 ../src/ui/theme.c:5177
+#: ../src/ui/theme.c:5275 ../src/ui/theme.c:5282 ../src/ui/theme.c:5289
+#: ../src/ui/theme.c:5296 ../src/ui/theme.c:5303
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:5185
+#: ../src/ui/theme.c:5311
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
 
-#: ../src/ui/theme.c:5635 ../src/ui/theme.c:5697 ../src/ui/theme.c:5760
+#: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 
-#: ../src/ui/theme.c:5643 ../src/ui/theme.c:5705 ../src/ui/theme.c:5768
+#: ../src/ui/theme.c:5717 ../src/ui/theme.c:5779 ../src/ui/theme.c:5842
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr ""
@@ -1362,7 +1037,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:1264
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Nekonata tipo \"%s\" ĉe elemento <%s>"
+msgstr "Nekonata tipo \"%s\" ĉe elemento <%s>"
 
 #: ../src/ui/theme-parser.c:1275
 #, c-format
@@ -1393,17 +1068,17 @@ msgstr ""
 #: ../src/ui/theme-parser.c:1450
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr ""
+msgstr "Distanco \"%s\" estas nekonata"
 
 #: ../src/ui/theme-parser.c:1495
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr ""
+msgstr "Proporcio \"%s\" estas nekonata"
 
 #: ../src/ui/theme-parser.c:1557
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr ""
+msgstr "Bordero \"%s\" estas nekonata"
 
 #: ../src/ui/theme-parser.c:1868
 #, c-format
@@ -1469,7 +1144,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:2972
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr ""
+msgstr "Nekonata buton-funkcio \"%s\""
 
 #: ../src/ui/theme-parser.c:2982
 #, c-format
@@ -1479,7 +1154,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:2994
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr ""
+msgstr "Nekonata buton-stato \"%s\""
 
 #: ../src/ui/theme-parser.c:3002
 #, c-format
@@ -1489,12 +1164,12 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3073
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
+msgstr "»%s« ne estas valida valoro por la atributo »focus«"
 
 #: ../src/ui/theme-parser.c:3082
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
+msgstr "»%s« ne estas valida valoro por la atributo »state«"
 
 #: ../src/ui/theme-parser.c:3092
 #, c-format
@@ -1504,7 +1179,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3113 ../src/ui/theme-parser.c:3136
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
+msgstr "»%s« ne estas valida valoro por la atributo »resize«"
 
 #: ../src/ui/theme-parser.c:3147
 #, c-format
@@ -1641,7 +1316,7 @@ msgstr "_Ilo"
 
 #: ../src/ui/theme-viewer.c:103
 msgid "_Splashscreen"
-msgstr ""
+msgstr "_Salutŝildo"
 
 #: ../src/ui/theme-viewer.c:104
 msgid "_Top dock"
@@ -1665,7 +1340,7 @@ msgstr ""
 
 #: ../src/ui/theme-viewer.c:109
 msgid "Des_ktop"
-msgstr ""
+msgstr "_Labortablo"
 
 #: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
@@ -1679,101 +1354,101 @@ msgstr ""
 msgid "This is a demo button with a 'quit' icon"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:253
+#: ../src/ui/theme-viewer.c:248
 msgid "This is a sample message in a sample dialog"
-msgstr ""
+msgstr "Ĉi tio estas ekzempla mesaĝo en ekzempla dialogo"
 
-#: ../src/ui/theme-viewer.c:336
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:370
+#: ../src/ui/theme-viewer.c:363
 msgid "Border-only window"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:372
+#: ../src/ui/theme-viewer.c:365
 msgid "Bar"
 msgstr "Breto"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:382
 msgid "Normal Application Window"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:386
 msgid "Dialog Box"
 msgstr "Dialogujo"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:390
 msgid "Modal Dialog Box"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:401
+#: ../src/ui/theme-viewer.c:394
 msgid "Utility Palette"
-msgstr ""
+msgstr "Ilar-palatro"
 
-#: ../src/ui/theme-viewer.c:405
+#: ../src/ui/theme-viewer.c:398
 msgid "Torn-off Menu"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:409
+#: ../src/ui/theme-viewer.c:402
 msgid "Border"
 msgstr "Bordero"
 
-#: ../src/ui/theme-viewer.c:413
+#: ../src/ui/theme-viewer.c:406
 msgid "Attached Modal Dialog"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:744
+#: ../src/ui/theme-viewer.c:739
 #, c-format
 msgid "Button layout test %d"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:773
+#: ../src/ui/theme-viewer.c:768
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:818
+#: ../src/ui/theme-viewer.c:813
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:825
+#: ../src/ui/theme-viewer.c:820
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Eraro dum ŝargado de etoso: %s\n"
 
-#: ../src/ui/theme-viewer.c:831
+#: ../src/ui/theme-viewer.c:826
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr ""
+msgstr "Ŝargis etoson \"%s\" post %g sekundoj\n"
 
-#: ../src/ui/theme-viewer.c:875
+#: ../src/ui/theme-viewer.c:870
 msgid "Normal Title Font"
-msgstr ""
+msgstr "Normala titoltiparo"
 
-#: ../src/ui/theme-viewer.c:881
+#: ../src/ui/theme-viewer.c:876
 msgid "Small Title Font"
-msgstr ""
+msgstr "Malgranda titoltiparo"
+
+#: ../src/ui/theme-viewer.c:882
+msgid "Large Title Font"
+msgstr "Alta titoltiparo"
 
 #: ../src/ui/theme-viewer.c:887
-msgid "Large Title Font"
-msgstr ""
+msgid "Button Layouts"
+msgstr "Aranĝo de la butonoj"
 
 #: ../src/ui/theme-viewer.c:892
-msgid "Button Layouts"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:897
 msgid "Benchmark"
 msgstr "Taksotestado"
 
-#: ../src/ui/theme-viewer.c:949
+#: ../src/ui/theme-viewer.c:944
 msgid "Window Title Goes Here"
-msgstr ""
+msgstr "Ĉi tie aperos la fenstrotitolo"
 
-#: ../src/ui/theme-viewer.c:1055
+#: ../src/ui/theme-viewer.c:1047
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1781,42 +1456,274 @@ msgid ""
 "frame)\n"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:1274
+#: ../src/ui/theme-viewer.c:1266
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:1276
+#: ../src/ui/theme-viewer.c:1268
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:1280
+#: ../src/ui/theme-viewer.c:1272
 msgid "Error was expected but none given"
-msgstr ""
+msgstr "Eraro %d estas atendita, sed ne estas transdonita"
 
-#: ../src/ui/theme-viewer.c:1282
+#: ../src/ui/theme-viewer.c:1274
 #, c-format
 msgid "Error %d was expected but %d given"
-msgstr ""
+msgstr "Eraro %d estas atendita, sed %d estas donita"
 
-#: ../src/ui/theme-viewer.c:1288
+#: ../src/ui/theme-viewer.c:1280
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:1292
+#: ../src/ui/theme-viewer.c:1284
 #, c-format
 msgid "x value was %d, %d was expected"
-msgstr ""
+msgstr "X-valoro estis %d, %d estis atendita"
 
-#: ../src/ui/theme-viewer.c:1295
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr ""
+msgstr "Y-valoro estis %d, %d estis atendita"
 
-#: ../src/ui/theme-viewer.c:1360
+#: ../src/ui/theme-viewer.c:1352
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
+
+#~ msgid "Switch to workspace 1"
+#~ msgstr "Ŝalti al laborspaco 1"
+
+#~ msgid "Switch to workspace 2"
+#~ msgstr "Ŝalti al laborspaco 2"
+
+#~ msgid "Switch to workspace 3"
+#~ msgstr "Ŝalti al laborspaco 3"
+
+#~ msgid "Switch to workspace 4"
+#~ msgstr "Ŝalti al laborspaco 4"
+
+#~ msgid "Switch to workspace 5"
+#~ msgstr "Ŝalti al laborspaco 5"
+
+#~ msgid "Switch to workspace 6"
+#~ msgstr "Ŝalti al laborspaco 6"
+
+#~ msgid "Switch to workspace 7"
+#~ msgstr "Ŝalti al laborspaco 7"
+
+#~ msgid "Switch to workspace 8"
+#~ msgstr "Ŝalti al laborspaco 8"
+
+#~ msgid "Switch to workspace 9"
+#~ msgstr "Ŝalti al laborspaco 9"
+
+#~ msgid "Switch to workspace 10"
+#~ msgstr "Ŝalti al laborspaco 10"
+
+#~ msgid "Switch to workspace 11"
+#~ msgstr "Ŝalti al laborspaco 11"
+
+#~ msgid "Switch to workspace 12"
+#~ msgstr "Ŝalti al laborspaco 12"
+
+#~ msgid "Switch to workspace on the left of the current workspace"
+#~ msgstr "Ŝalti al la laborspaco maldekstre de la aktuala laborspaco"
+
+#~ msgid "Switch to workspace on the right of the current workspace"
+#~ msgstr "Ŝalti al la laborspaco dekstre de la aktuala laborspaco"
+
+#~ msgid "Switch to workspace above the current workspace"
+#~ msgstr "Ŝalti al laborspaco super la aktuala laborspaco"
+
+#~ msgid "Switch to workspace below the current workspace"
+#~ msgstr "Ŝalti al laborspaco sub la aktuala laborspaco"
+
+#~ msgid "Move between windows of an application, using a popup window"
+#~ msgstr "Moviĝi inter fenestroj de aplikaĵo, uzante ŝprucfenestron"
+
+#~ msgid ""
+#~ "Move backward between windows of an application, using a popup window"
+#~ msgstr ""
+#~ "Moviĝi malantaŭen inter fenestroj de aplikaĵo, uzante ŝprucfenestron"
+
+#~ msgid "Move between windows, using a popup window"
+#~ msgstr "Moviĝi inter fenestroj, uzante ŝprucfenestron"
+
+#~ msgid "Move backward between windows, using a popup window"
+#~ msgstr "Moviĝi malantaŭen inter fenestroj, uzante ŝprucfenestron"
+
+#~ msgid "Move between panels and the desktop, using a popup window"
+#~ msgstr "Moviĝi inter paneloj kaj labortablo, uzante ŝprucfenestron"
+
+#~ msgid "Move backward between panels and the desktop, using a popup window"
+#~ msgstr ""
+#~ "Moviĝi malantaŭen inter paneloj kaj labortablo, uzante ŝprucfenestron"
+
+#~ msgid "Move between windows of an application immediately"
+#~ msgstr "Moviĝi tuj inter fenestroj de aplikaĵo"
+
+#~ msgid "Move backward between windows of an application immediately"
+#~ msgstr "Moviĝi tuj malantaŭen inter fenestroj de aplikaĵo"
+
+#~ msgid "Move between windows immediately"
+#~ msgstr "Moviĝi tuj inter fenestroj"
+
+#~ msgid "Move backward between windows immediately"
+#~ msgstr "Moviĝi tuj malantaŭen inter fenestroj"
+
+#~ msgid "Move between panels and the desktop immediately"
+#~ msgstr "Moviĝi tuj inter paneloj kaj labortablo"
+
+#~ msgid "Move backward between panels and the desktop immediately"
+#~ msgstr "Moviĝi tuj malantaŭen inter paneloj kaj labortablo"
+
+#~ msgid "Hide all normal windows and set focus to the desktop"
+#~ msgstr "Kaŝi ĉiujn normalajn fenestrojn kaj enfokusigi la labortablon"
+
+#~ msgid "Show the panel's main menu"
+#~ msgstr "Montri la ĉefmenuon de la panelo"
+
+#~ msgid "Show the panel's \"Run Application\" dialog box"
+#~ msgstr "Montri la dialogujon \"Ruli aplikaĵon\" de la panelo"
+
+#~ msgid "Take a screenshot"
+#~ msgstr "Fari ekrankopion"
+
+#~ msgid "Take a screenshot of a window"
+#~ msgstr "Ekrankopii fenestron"
+
+#~ msgid "Run a terminal"
+#~ msgstr "Ruli terminalon"
+
+#~ msgid "Activate the window menu"
+#~ msgstr "Aktivigi la fenestromenuon"
+
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "Baskuligi tutekranan reĝimon"
+
+#~ msgid "Maximize window"
+#~ msgstr "Maksimumigi la fenestron"
+
+#~ msgid "Restore window"
+#~ msgstr "Restaŭri fenestron"
+
+#~ msgid "Minimize window"
+#~ msgstr "Minimumigi fenestron"
+
+#~ msgid "Close window"
+#~ msgstr "Fermi la fenestron"
+
+#~ msgid "Move window"
+#~ msgstr "Movi la fenestron"
+
+#~ msgid "Resize window"
+#~ msgstr "Ŝanĝi la fenestrograndon"
+
+#~ msgid "Move window to workspace 1"
+#~ msgstr "Movi la fenestron al laborspaco 1"
+
+#~ msgid "Move window to workspace 2"
+#~ msgstr "Movi la fenestron al laborspaco 2"
+
+#~ msgid "Move window to workspace 3"
+#~ msgstr "Movi la fenestron al laborspaco 3"
+
+#~ msgid "Move window to workspace 4"
+#~ msgstr "Movi la fenestron al laborspaco 4"
+
+#~ msgid "Move window to workspace 5"
+#~ msgstr "Movi la fenestron al laborspaco 5"
+
+#~ msgid "Move window to workspace 6"
+#~ msgstr "Movi la fenestron al laborspaco 6"
+
+#~ msgid "Move window to workspace 7"
+#~ msgstr "Movi la fenestron al laborspaco 7"
+
+#~ msgid "Move window to workspace 8"
+#~ msgstr "Movi la fenestron al laborspaco 8"
+
+#~ msgid "Move window to workspace 9"
+#~ msgstr "Movi la fenestron al laborspaco 9"
+
+#~ msgid "Move window to workspace 10"
+#~ msgstr "Movi la fenestron al laborspaco 10"
+
+#~ msgid "Move window to workspace 11"
+#~ msgstr "Movi la fenestron al laborspaco 11"
+
+#~ msgid "Move window to workspace 12"
+#~ msgstr "Movi la fenestron al laborspaco 12"
+
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "Movi la fenestron al la maldekstra laborspaco"
+
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "Movi la fenestron al la dekstra laborspaco"
+
+#~ msgid "Move window one workspace up"
+#~ msgstr "Movi la fenestron al la supra laborspaco"
+
+#~ msgid "Move window one workspace down"
+#~ msgstr "Movi la fenestron al la suba laborspaco"
+
+#~ msgid "Maximize window vertically"
+#~ msgstr "Vertikale maksimumigi la fenestron"
+
+#~ msgid "Maximize window horizontally"
+#~ msgstr "Horizontale maksimumigi la fenestron"
+
+#~ msgid ""
+#~ "There was an error running <tt>%s</tt>:\n"
+#~ "\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Okazis eraro lanĉante <tt>%s</tt>:\n"
+#~ "\n"
+#~ "%s"
+
+#~ msgid "No command %d has been defined.\n"
+#~ msgstr "Neniu komando %d estis difinita.\n"
+
+#~ msgid "No terminal command has been defined.\n"
+#~ msgstr "Neniu terminala komando estis difinita.\n"
+
+#~ msgid "GConf key '%s' is set to an invalid value\n"
+#~ msgstr "La GConf-ŝlosilo '%s' havas ne-validan valoron.\n"
+
+#~ msgid "%d stored in GConf key %s is out of range %d to %d\n"
+#~ msgstr ""
+#~ "La valoro %d de la GConf-ŝlosilo %s estas ekster intervalo de %d ĝis %d\n"
+
+#~ msgid "GConf key \"%s\" is set to an invalid type\n"
+#~ msgstr "La GConf-ŝlosilo \"%s\" havas nevalidan valoron.\n"
+
+#~ msgid "Error setting number of workspaces to %d: %s\n"
+#~ msgstr "Eraro ŝanĝante la nombron da labortabloj al %d: %s\n"
+
+#~ msgid "Error setting name for workspace %d to \"%s\": %s\n"
+#~ msgstr "Eraro agordante la nomon por la laborspaco %d al \"%s\": %s\n"
+
+#~ msgid "Close Window"
+#~ msgstr "Fermi la fenestron"
+
+#~ msgid "Window Menu"
+#~ msgstr "Fenestra menuo"
+
+#~ msgid "Minimize Window"
+#~ msgstr "Minimumigi la fenestron"
+
+#~ msgid "Maximize Window"
+#~ msgstr "Maksimumigi la fenestron"
+
+#~ msgid "Restore Window"
+#~ msgstr "Restaŭri fenestron"
+
+#~ msgid "Keep Window On Top"
+#~ msgstr "Teni la fenstron malfone"
 
 #~ msgid ""
 #~ "Don't make fullscreen windows that are maximized and have no decorations"
