@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-03-19 14:09+0000\n"
-"PO-Revision-Date: 2012-03-25 21:29+0300\n"
+"PO-Revision-Date: 2012-04-01 13:59+0300\n"
 "Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -811,7 +811,7 @@ msgstr "Приборная панель"
 
 #: ../js/ui/panel.js:591
 msgid "Quit"
-msgstr "Закончить"
+msgstr "Закрыть"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
