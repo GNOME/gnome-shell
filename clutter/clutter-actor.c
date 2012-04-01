@@ -788,6 +788,9 @@ enum
   PROP_WIDTH,
   PROP_HEIGHT,
 
+  PROP_POSITION,
+  PROP_SIZE,
+
   /* Then the rest of these size-related properties are the "actual"
    * underlying properties set or gotten by X, Y, WIDTH, HEIGHT
    */
@@ -2165,13 +2168,16 @@ clutter_actor_notify_if_geometry_changed (ClutterActor          *self,
     {
       g_object_notify_by_pspec (obj, obj_props[PROP_X]);
       g_object_notify_by_pspec (obj, obj_props[PROP_Y]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_POSITION]);
       g_object_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
       g_object_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_SIZE]);
     }
   else if (priv->needs_width_request || priv->needs_height_request)
     {
       g_object_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
       g_object_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_SIZE]);
     }
   else
     {
@@ -2184,16 +2190,28 @@ clutter_actor_notify_if_geometry_changed (ClutterActor          *self,
       height = priv->allocation.y2 - priv->allocation.y1;
 
       if (x != old->x1)
-        g_object_notify_by_pspec (obj, obj_props[PROP_X]);
+        {
+          g_object_notify_by_pspec (obj, obj_props[PROP_X]);
+          g_object_notify_by_pspec (obj, obj_props[PROP_POSITION]);
+        }
 
       if (y != old->y1)
-        g_object_notify_by_pspec (obj, obj_props[PROP_Y]);
+        {
+          g_object_notify_by_pspec (obj, obj_props[PROP_Y]);
+          g_object_notify_by_pspec (obj, obj_props[PROP_POSITION]);
+        }
 
       if (width != (old->x2 - old->x1))
-        g_object_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
+        {
+          g_object_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
+          g_object_notify_by_pspec (obj, obj_props[PROP_SIZE]);
+        }
 
       if (height != (old->y2 - old->y1))
-        g_object_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
+        {
+          g_object_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
+          g_object_notify_by_pspec (obj, obj_props[PROP_SIZE]);
+        }
     }
 
   g_object_thaw_notify (obj);
@@ -4334,12 +4352,34 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_y (actor, g_value_get_float (value));
       break;
 
+    case PROP_POSITION:
+      {
+        const ClutterPoint *pos = g_value_get_boxed (value);
+
+        if (pos != NULL)
+          clutter_actor_set_position (actor, pos->x, pos->y);
+        else
+          clutter_actor_set_fixed_position_set (actor, FALSE);
+      }
+      break;
+
     case PROP_WIDTH:
       clutter_actor_set_width (actor, g_value_get_float (value));
       break;
 
     case PROP_HEIGHT:
       clutter_actor_set_height (actor, g_value_get_float (value));
+      break;
+
+    case PROP_SIZE:
+      {
+        const ClutterSize *size = g_value_get_boxed (value);
+
+        if (size != NULL)
+          clutter_actor_set_size (actor, size->width, size->height);
+        else
+          clutter_actor_set_size (actor, -1, -1);
+      }
       break;
 
     case PROP_FIXED_X:
@@ -4613,12 +4653,34 @@ clutter_actor_get_property (GObject    *object,
       g_value_set_float (value, clutter_actor_get_y (actor));
       break;
 
+    case PROP_POSITION:
+      {
+        ClutterPoint position;
+
+        clutter_point_init (&position,
+                            clutter_actor_get_x (actor),
+                            clutter_actor_get_y (actor));
+        g_value_set_boxed (value, &position);
+      }
+      break;
+
     case PROP_WIDTH:
       g_value_set_float (value, clutter_actor_get_width (actor));
       break;
 
     case PROP_HEIGHT:
       g_value_set_float (value, clutter_actor_get_height (actor));
+      break;
+
+    case PROP_SIZE:
+      {
+        ClutterSize size;
+
+        clutter_size_init (&size,
+                           clutter_actor_get_width (actor),
+                           clutter_actor_get_height (actor));
+        g_value_set_boxed (value, &size);
+      }
       break;
 
     case PROP_FIXED_X:
@@ -5437,6 +5499,28 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         CLUTTER_PARAM_ANIMATABLE);
 
   /**
+   * ClutterActor:position:
+   *
+   * The position of the origin of the actor.
+   *
+   * This property is a shorthand for setting and getting the
+   * #ClutterActor:x and #ClutterActor:y properties at the same
+   * time.
+   *
+   * The #ClutterActor:position property is animatable.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_POSITION] =
+    g_param_spec_boxed ("position",
+                        P_("Position"),
+                        P_("The position of the origin of the actor"),
+                        CLUTTER_TYPE_POINT,
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
+
+  /**
    * ClutterActor:width:
    *
    * Width of the actor (in pixels). If written, forces the minimum and
@@ -5470,6 +5554,27 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Height of the actor"),
                         0.0, G_MAXFLOAT,
                         0.0,
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
+
+  /**
+   * ClutterActor:size:
+   *
+   * The size of the actor.
+   *
+   * This property is a shorthand for setting and getting the
+   * #ClutterActor:width and #ClutterActor:height at the same time.
+   *
+   * The #ClutterActor:size property is animatable.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_SIZE] =
+    g_param_spec_boxed ("size",
+                        P_("Size"),
+                        P_("The size of the actor"),
+                        CLUTTER_TYPE_SIZE,
                         G_PARAM_READWRITE |
                         G_PARAM_STATIC_STRINGS |
                         CLUTTER_PARAM_ANIMATABLE);
@@ -8716,14 +8821,29 @@ clutter_actor_set_position (ClutterActor *self,
 			    gfloat        x,
 			    gfloat        y)
 {
+  ClutterPoint new_position;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  g_object_freeze_notify (G_OBJECT (self));
+  clutter_point_init (&new_position, x, y);
 
-  clutter_actor_set_x (self, x);
-  clutter_actor_set_y (self, y);
+  if (_clutter_actor_get_transition (self, obj_props[PROP_POSITION]) == NULL)
+    {
+      ClutterPoint cur_position;
 
-  g_object_thaw_notify (G_OBJECT (self));
+      cur_position.x = clutter_actor_get_x (self);
+      cur_position.y = clutter_actor_get_y (self);
+
+      _clutter_actor_create_transition (self, obj_props[PROP_POSITION],
+                                        &cur_position,
+                                        &new_position);
+    }
+  else
+    _clutter_actor_update_transition (self,
+                                      obj_props[PROP_POSITION],
+                                      &new_position);
+
+  clutter_actor_queue_relayout (self);
 }
 
 /**
@@ -9139,6 +9259,22 @@ clutter_actor_set_height_internal (ClutterActor *self,
     }
 }
 
+static void
+clutter_actor_set_size_internal (ClutterActor      *self,
+                                 const ClutterSize *size)
+{
+  if (size != NULL)
+    {
+      clutter_actor_set_width_internal (self, size->width);
+      clutter_actor_set_height_internal (self, size->height);
+    }
+  else
+    {
+      clutter_actor_set_width_internal (self, -1);
+      clutter_actor_set_height_internal (self, -1);
+    }
+}
+
 /**
  * clutter_actor_set_size:
  * @self: A #ClutterActor
@@ -9161,14 +9297,47 @@ clutter_actor_set_size (ClutterActor *self,
 			gfloat        width,
 			gfloat        height)
 {
+  ClutterSize new_size;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  g_object_freeze_notify (G_OBJECT (self));
+  clutter_size_init (&new_size, width, height);
 
-  clutter_actor_set_width (self, width);
-  clutter_actor_set_height (self, height);
+  if (_clutter_actor_get_transition (self, obj_props[PROP_SIZE]) == NULL)
+    {
+      /* minor optimization: if we don't have a duration then we can
+       * skip the get_size() below, to avoid the chance of going through
+       * get_preferred_width() and get_preferred_height() just to jump to
+       * a new desired size
+       */
+      if (clutter_actor_get_easing_duration (self) == 0)
+        {
+          g_object_freeze_notify (G_OBJECT (self));
 
-  g_object_thaw_notify (G_OBJECT (self));
+          clutter_actor_set_size_internal (self, &new_size);
+
+          g_object_thaw_notify (G_OBJECT (self));
+
+          return;
+        }
+      else
+        {
+          ClutterSize cur_size;
+
+          clutter_size_init (&cur_size,
+                             clutter_actor_get_width (self),
+                             clutter_actor_get_height (self));
+
+         _clutter_actor_create_transition (self,
+                                           obj_props[PROP_SIZE],
+                                           &cur_size,
+                                           &new_size);
+        }
+    }
+  else
+    _clutter_actor_update_transition (self, obj_props[PROP_SIZE], &new_size);
+
+  clutter_actor_queue_relayout (self);
 }
 
 /**
@@ -9608,6 +9777,35 @@ clutter_actor_set_y_internal (ClutterActor *self,
 
   linfo->fixed_pos.y = y;
   clutter_actor_set_fixed_position_set (self, TRUE);
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
+
+  clutter_actor_queue_relayout (self);
+}
+
+static void
+clutter_actor_set_position_internal (ClutterActor       *self,
+                                     const ClutterPoint *position)
+{
+  ClutterActorPrivate *priv = self->priv;
+  ClutterLayoutInfo *linfo;
+  ClutterActorBox old = { 0, };
+
+  linfo = _clutter_actor_get_layout_info (self);
+
+  if (priv->position_set &&
+      clutter_point_equals (position, &linfo->fixed_pos))
+    return;
+
+  clutter_actor_store_old_geometry (self, &old);
+
+  if (position != NULL)
+    {
+      linfo->fixed_pos = *position;
+      clutter_actor_set_fixed_position_set (self, TRUE);
+    }
+  else
+    clutter_actor_set_fixed_position_set (self, FALSE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
 
@@ -12985,12 +13183,20 @@ clutter_actor_set_animatable_property (ClutterActor *actor,
       clutter_actor_set_y_internal (actor, g_value_get_float (value));
       break;
 
+    case PROP_POSITION:
+      clutter_actor_set_position_internal (actor, g_value_get_boxed (value));
+      break;
+
     case PROP_WIDTH:
       clutter_actor_set_width_internal (actor, g_value_get_float (value));
       break;
 
     case PROP_HEIGHT:
       clutter_actor_set_height_internal (actor, g_value_get_float (value));
+      break;
+
+    case PROP_SIZE:
+      clutter_actor_set_size_internal (actor, g_value_get_boxed (value));
       break;
 
     case PROP_DEPTH:
