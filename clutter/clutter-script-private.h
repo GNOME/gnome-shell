@@ -130,6 +130,13 @@ gboolean _clutter_script_parse_color       (ClutterScript   *script,
                                             ClutterColor    *color);
 GObject *_clutter_script_parse_alpha       (ClutterScript   *script,
                                             JsonNode        *node);
+gboolean _clutter_script_parse_point       (ClutterScript   *script,
+                                            JsonNode        *node,
+                                            ClutterPoint    *point);
+gboolean _clutter_script_parse_size        (ClutterScript   *script,
+                                            JsonNode        *node,
+                                            ClutterSize     *size);
+
 gboolean _clutter_script_parse_translatable_string (ClutterScript *script,
                                                     JsonNode      *node,
                                                     char         **str);

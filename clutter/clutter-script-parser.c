@@ -492,6 +492,114 @@ _clutter_script_parse_color (ClutterScript *script,
   return FALSE;
 }
 
+static gboolean
+parse_point_from_array (JsonArray    *array,
+                        ClutterPoint *point)
+{
+  if (json_array_get_length (array) != 2)
+    return FALSE;
+
+  point->x = json_array_get_double_element (array, 0);
+  point->y = json_array_get_double_element (array, 1);
+
+  return TRUE;
+}
+
+static gboolean
+parse_point_from_object (JsonObject   *object,
+                         ClutterPoint *point)
+{
+  if (json_object_has_member (object, "x"))
+    point->x = json_object_get_double_member (object, "x");
+  else
+    point->x = 0.f;
+
+  if (json_object_has_member (object, "y"))
+    point->y = json_object_get_double_member (object, "y");
+  else
+    point->y = 0.f;
+
+  return TRUE;
+}
+
+gboolean
+_clutter_script_parse_point (ClutterScript *script,
+                             JsonNode      *node,
+                             ClutterPoint  *point)
+{
+  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), FALSE);
+  g_return_val_if_fail (node != NULL, FALSE);
+  g_return_val_if_fail (point != NULL, FALSE);
+
+  switch (JSON_NODE_TYPE (node))
+    {
+    case JSON_NODE_ARRAY:
+      return parse_point_from_array (json_node_get_array (node), point);
+
+    case JSON_NODE_OBJECT:
+      return parse_point_from_object (json_node_get_object (node), point);
+
+    default:
+      break;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+parse_size_from_array (JsonArray   *array,
+                       ClutterSize *size)
+{
+  if (json_array_get_length (array) != 2)
+    return FALSE;
+
+  size->width = json_array_get_double_element (array, 0);
+  size->height = json_array_get_double_element (array, 1);
+
+  return TRUE;
+}
+
+static gboolean
+parse_size_from_object (JsonObject  *object,
+                        ClutterSize *size)
+{
+  if (json_object_has_member (object, "width"))
+    size->width = json_object_get_double_member (object, "width");
+  else
+    size->width = 0.f;
+
+  if (json_object_has_member (object, "height"))
+    size->height = json_object_get_double_member (object, "height");
+  else
+    size->height = 0.f;
+
+  return TRUE;
+}
+
+gboolean
+_clutter_script_parse_size (ClutterScript *script,
+                            JsonNode      *node,
+                            ClutterSize   *size)
+{
+  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), FALSE);
+  g_return_val_if_fail (node != NULL, FALSE);
+  g_return_val_if_fail (size != NULL, FALSE);
+
+  switch (JSON_NODE_TYPE (node))
+    {
+    case JSON_NODE_ARRAY:
+      return parse_size_from_array (json_node_get_array (node), size);
+
+    case JSON_NODE_OBJECT:
+      return parse_size_from_object (json_node_get_object (node), size);
+
+    default:
+      break;
+    }
+
+  return FALSE;
+}
+
 const gchar *
 _clutter_script_get_id_from_node (JsonNode *node)
 {
@@ -1256,6 +1364,26 @@ _clutter_script_parse_node (ClutterScript *script,
                   return TRUE;
                 }
             }
+          else if (p_type == CLUTTER_TYPE_POINT)
+            {
+              ClutterPoint point = CLUTTER_POINT_INIT_ZERO;
+
+              if (_clutter_script_parse_point (script, node, &point))
+                {
+                  g_value_set_boxed (value, &point);
+                  return TRUE;
+                }
+            }
+          else if (p_type == CLUTTER_TYPE_SIZE)
+            {
+              ClutterSize size = CLUTTER_SIZE_INIT_ZERO;
+
+              if (_clutter_script_parse_size (script, node, &size))
+                {
+                  g_value_set_boxed (value, &size);
+                  return TRUE;
+                }
+            }
           else if (p_type == G_TYPE_STRING)
             {
               char *str = NULL;
@@ -1310,6 +1438,26 @@ _clutter_script_parse_node (ClutterScript *script,
               if (_clutter_script_parse_color (script, node, &color))
                 {
                   g_value_set_boxed (value, &color);
+                  return TRUE;
+                }
+            }
+          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_POINT))
+            {
+              ClutterPoint point = CLUTTER_POINT_INIT_ZERO;
+
+              if (_clutter_script_parse_point (script, node, &point))
+                {
+                  g_value_set_boxed (value, &point);
+                  return TRUE;
+                }
+            }
+          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_SIZE))
+            {
+              ClutterSize size = CLUTTER_SIZE_INIT_ZERO;
+
+              if (_clutter_script_parse_size (script, node, &size))
+                {
+                  g_value_set_boxed (value, &size);
                   return TRUE;
                 }
             }

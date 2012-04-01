@@ -26,10 +26,8 @@
         "color" : "#00ff00ff",
         "border-width" : 5,
         "border-color" : "#00cc00ff",
-        "x" : 200,
-        "y" : 50,
-        "width" : 100,
-        "height" : 100,
+        "position" : [ 200.0, 50.0 ],
+        "size" : { "width" : 100.0, "height" : 100.0 },
         "depth" : -200.0,
         "reactive" : true,
         "signals" : [
@@ -40,8 +38,7 @@
         "id" : "red-hand",
         "type" : "ClutterTexture",
         "filename" : "redhand.png",
-        "x" : 100,
-        "y" : 100,
+        "position" : { "x" : 100.0, "y" : 100.0 },
         "width" : "20 mm",
         "keep-aspect-ratio" : true,
         "anchor-x" : "5 em",
@@ -53,8 +50,7 @@
         "id" : "red-hand-clone",
         "type" : "ClutterClone",
         "source" : "red-hand",
-        "x" : 250,
-        "y" : 150,
+        "position" : [ 250.0, 150.0 ],
         "opacity" : 100
       },
       {
