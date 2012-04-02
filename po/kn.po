@@ -2,353 +2,46 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Shankar Prasad <svenkate@redhat.com>, 2008, 2011.
+# Shankar Prasad <svenkate@redhat.com>, 2008, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
-"cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-21 19:31+0000\n"
-"PO-Revision-Date: 2011-04-02 20:59+0530\n"
-"Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-03-15 21:29+0000\n"
+"PO-Revision-Date: 2012-04-02 14:42+0530\n"
+"Last-Translator: s\n"
 "Language-Team: Kannada <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.1\n"
+"X-Generator: Lokalize 1.2\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"Language: kn\n"
 
-#: ../src/core/all-keybindings.h:88
-msgid "Switch to workspace 1"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 1 ಕ್ಕೆ ಬದಲಾಯಿಸು"
+#: ../src/50-mutter-windows.xml.in.h:1
+#| msgid "_Windows"
+msgid "Windows"
+msgstr "ಕಿಟಕಿಗಳು"
 
-#: ../src/core/all-keybindings.h:90
-msgid "Switch to workspace 2"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 2 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:92
-msgid "Switch to workspace 3"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 3 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:94
-msgid "Switch to workspace 4"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 4 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:96
-msgid "Switch to workspace 5"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 5 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:98
-msgid "Switch to workspace 6"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 6 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:100
-msgid "Switch to workspace 7"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 7 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:102
-msgid "Switch to workspace 8"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 8 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:104
-msgid "Switch to workspace 9"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 9 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:106
-msgid "Switch to workspace 10"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 10 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:108
-msgid "Switch to workspace 11"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 11 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:110
-msgid "Switch to workspace 12"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 12 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:122
-#| msgid "Switch to workspace on the left"
-msgid "Switch to workspace on the left of the current workspace"
-msgstr "ಪ್ರಸಕ್ತ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಎಡಭಾಗದಲ್ಲಿನ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:126
-#| msgid "Switch to workspace on the right"
-msgid "Switch to workspace on the right of the current workspace"
-msgstr "ಪ್ರಸಕ್ತ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಬಲಭಾಗದಲ್ಲಿನ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:130
-#| msgid "Switch to workspace above this one"
-msgid "Switch to workspace above the current workspace"
-msgstr "ಪ್ರಸಕ್ತ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಮೇಲ್ಭಾಗದಲ್ಲಿನ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:134
-#| msgid "Switch to workspace below this one"
-msgid "Switch to workspace below the current workspace"
-msgstr "ಪ್ರಸಕ್ತ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಕೆಳಭಾಗದಲ್ಲಿನ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:150
-msgid "Move between windows of an application, using a popup window"
-msgstr "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ಒಂದು ಅನ್ವಯದ ವಿಂಡೋಗಳ ನಡುವೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:153
-msgid "Move backward between windows of an application, using a popup window"
-msgstr ""
-"ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ಒಂದು ಅನ್ವಯದ ವಿಂಡೋಗಳ ನಡುವೆ ಹಿಂದಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:157
-#| msgid "Move between windows of an application immediately"
-msgid "Move between windows, using a popup window"
-msgstr "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ವಿಂಡೋಗಳ ನಡುವೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:160
-msgid "Move backward between windows, using a popup window"
-msgstr "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ವಿಂಡೋಗಳ ನಡುವೆ ಹಿಂದಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:163
-msgid "Move between panels and the desktop, using a popup window"
-msgstr "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ಫಲಕಗಳು ಹಾಗು ಗಣಕತೆರೆಯ ನಡುವೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:166
-msgid "Move backward between panels and the desktop, using a popup window"
-msgstr ""
-"ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ಫಲಕಗಳು ಹಾಗು ಗಣಕತೆರೆಯ ನಡುವೆ ಹಿಂದಕ್ಕೆ "
-"ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:171
-msgid "Move between windows of an application immediately"
-msgstr "ಒಂದು ಅನ್ವಯದ ವಿಂಡೋಗಳ ನಡುವೆ ತಕ್ಷಣ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:174
-#| msgid "Move between windows of an application immediately"
-msgid "Move backward between windows of an application immediately"
-msgstr "ಒಂದು ಅನ್ವಯದ ವಿಂಡೋಗಳ ನಡುವೆ ತಕ್ಷಣ ಹಿಂದಕ್ಕೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:177
-msgid "Move between windows immediately"
-msgstr "ವಿಂಡೋಗಳ ನಡುವೆ ತಕ್ಷಣ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:180
-#| msgid "Move backwards between windows immediately"
-msgid "Move backward between windows immediately"
-msgstr "ವಿಂಡೋಗಳ ನಡುವೆ ತಕ್ಷಣ ಹಿಂದಕ್ಕೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:183
-msgid "Move between panels and the desktop immediately"
-msgstr "ಫಲಕ ಹಾಗು ಗಣಕತೆರೆಗಳ ನಡುವೆ ತಕ್ಷಣ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:186
-msgid "Move backward between panels and the desktop immediately"
-msgstr "ಫಲಕ ಹಾಗು ಗಣಕತೆರೆಗಳ ನಡುವೆ ತಕ್ಷಣ ಹಿಂದಕ್ಕೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:203
-msgid "Hide all normal windows and set focus to the desktop"
-msgstr "ಎಲ್ಲಾ ಸಾಮಾನ್ಯ ವಿಂಡೊಗಳನ್ನು ಅಡಗಿಸು ಹಾಗು ಗಣಕತೆರೆಯ ಮೇಲೆ ಗಮನವನ್ನು ಕೇಂದ್ರೀಕರಿಸು"
-
-#: ../src/core/all-keybindings.h:206
-#| msgid "Show the panel menu"
-msgid "Show the panel's main menu"
-msgstr "ಫಲಕದ ಮುಖ್ಯ ಮೆನುವನ್ನು ತೋರಿಸು"
-
-#: ../src/core/all-keybindings.h:209
-msgid "Show the panel's \"Run Application\" dialog box"
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "View split on left"
 msgstr ""
 
-#: ../src/core/all-keybindings.h:211
-msgid "Start or stop recording the session"
-msgstr "ಅಧಿವೇಶನವನ್ನು ರೆಕಾರ್ಡಿಂಗ್ ಮಾಡುವುದನ್ನು ಆರಂಭಿಸು ಅಥವ ನಿಲ್ಲಿಸು"
-
-#: ../src/core/all-keybindings.h:252
-msgid "Take a screenshot"
-msgstr "ಒಂದು ತೆರೆಚಿತ್ರವನ್ನು ತೆಗೆ"
-
-#: ../src/core/all-keybindings.h:254
-msgid "Take a screenshot of a window"
-msgstr "ಒಂದು ವಿಂಡೊದ ತೆರೆಚಿತ್ರವನ್ನು ತೆಗೆ"
-
-#: ../src/core/all-keybindings.h:256
-msgid "Run a terminal"
-msgstr "ಟರ್ಮಿನಲ್‍ನಲ್ಲಿ ಚಲಾಯಿಸು"
-
-#: ../src/core/all-keybindings.h:271
-#| msgid "Activate window menu"
-msgid "Activate the window menu"
-msgstr "ವಿಂಡೊ ಮೆನುವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸು"
-
-#: ../src/core/all-keybindings.h:274
-msgid "Toggle fullscreen mode"
-msgstr "ಪೂರ್ಣತೆರೆಯ ಕ್ರಮಕ್ಕೆ ಟಾಗಲ್ ಮಾಡು"
-
-#: ../src/core/all-keybindings.h:276
-msgid "Toggle maximization state"
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "View split on right"
 msgstr ""
 
-#: ../src/core/all-keybindings.h:278
-msgid "Toggle whether a window will always be visible over other windows"
+#. This probably means that a non-WM compositor like xcompmgr is running;
+#. * we have no way to get it to exit
+#: ../src/compositor/compositor.c:492
+#, c-format
+msgid ""
+"Another compositing manager is already running on screen %i on display \"%s"
+"\"."
 msgstr ""
 
-#: ../src/core/all-keybindings.h:280
-msgid "Maximize window"
-msgstr "ವಿಂಡೊವನು ಹಿಗ್ಗಿಸು"
-
-#: ../src/core/all-keybindings.h:282
-#| msgid "Resize window"
-msgid "Restore window"
-msgstr "ವಿಂಡೊವನ್ನು ಮರಳಿ ಸ್ಥಾಪಿಸು"
-
-#: ../src/core/all-keybindings.h:284
-msgid "Toggle shaded state"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:286
-msgid "Minimize window"
-msgstr "ವಿಂಡೊವನು ಕುಗ್ಗಿಸು"
-
-#: ../src/core/all-keybindings.h:288
-msgid "Close window"
-msgstr "ವಿಂಡೊವನ್ನು ಮುಚ್ಚು"
-
-#: ../src/core/all-keybindings.h:290
-msgid "Move window"
-msgstr "ವಿಂಡೊವನ್ನು ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:292
-msgid "Resize window"
-msgstr "ವಿಂಡೊವನ್ನು ಮರುಗಾತ್ರಿಸು"
-
-#: ../src/core/all-keybindings.h:295
-msgid "Toggle whether window is on all workspaces or just one"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:299
-msgid "Move window to workspace 1"
-msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 1 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:302
-msgid "Move window to workspace 2"
-msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 2 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:305
-msgid "Move window to workspace 3"
-msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 3 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:308
-msgid "Move window to workspace 4"
-msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 4 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:311
-msgid "Move window to workspace 5"
-msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 5 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:314
-msgid "Move window to workspace 6"
-msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 6 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:317
-msgid "Move window to workspace 7"
-msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 7 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:320
-msgid "Move window to workspace 8"
-msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 8 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:323
-msgid "Move window to workspace 9"
-msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 9 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:326
-msgid "Move window to workspace 10"
-msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 10 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:329
-msgid "Move window to workspace 11"
-msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 11 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:332
-msgid "Move window to workspace 12"
-msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 12 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#: ../src/core/all-keybindings.h:344
-msgid "Move window one workspace to the left"
-msgstr "ವಿಂಡೋವನ್ನು ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದ ಎಡಕ್ಕೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:347
-msgid "Move window one workspace to the right"
-msgstr "ವಿಂಡೋವನ್ನು ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದ ಬಲಕ್ಕೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:350
-msgid "Move window one workspace up"
-msgstr "ವಿಂಡೋವನ್ನು ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದ ಮೇಲಕ್ಕೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:353
-msgid "Move window one workspace down"
-msgstr "ವಿಂಡೋವನ್ನು ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದ ಕೆಳಗೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:356
-msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr ""
-
-#: ../src/core/all-keybindings.h:358
-msgid "Raise window above other windows"
-msgstr "ವಿಂಡೊವನ್ನು ಇತರೆ ವಿಂಡೋಗಳಿಗಿಂತ ಎತ್ತರಿಸು"
-
-#: ../src/core/all-keybindings.h:360
-msgid "Lower window below other windows"
-msgstr "ಇತರೆ ವಿಂಡೊಗಳ ಅಡಿಯಲ್ಲಿರುವ ವಿಂಡೊ"
-
-#: ../src/core/all-keybindings.h:364
-msgid "Maximize window vertically"
-msgstr "ವಿಂಡೊವನ್ನು ಲಂಬವಾಗಿ ಹಿಗ್ಗಿಸು"
-
-#: ../src/core/all-keybindings.h:368
-msgid "Maximize window horizontally"
-msgstr "ವಿಂಡೊವನ್ನು ಸಮತಲವಾಗಿ ಹಿಗ್ಗಿಸು"
-
-#: ../src/core/all-keybindings.h:372
-#| msgid "Move window to north-west corner"
-msgid "Move window to north-west (top left) corner"
-msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಉತ್ತರ-ಪಶ್ಚಿಮ (ಮೇಲಿನ ಎಡಭಾಗ) ಮೂಲೆಗೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:375
-#| msgid "Move window to north-east corner"
-msgid "Move window to north-east (top right) corner"
-msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಉತ್ತರ-ಪೂರ್ವ (ಮೇಲಿನ ಬಲಭಾಗ) ಮೂಲೆಗೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:378
-#| msgid "Move window to south-west corner"
-msgid "Move window to south-west (bottom left) corner"
-msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ದಕ್ಷಿಣ-ಪಶ್ಚಿಮ (ಕೆಳಗಿನ ಎಡಭಾಗ) ಮೂಲೆಗೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:381
-#| msgid "Move window to south-east corner"
-msgid "Move window to south-east (bottom right) corner"
-msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ದಕ್ಷಿಣ-ಪೂರ್ವ (ಕೆಳಗಿನ ಬಲಭಾಗ) ಮೂಲೆಗೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:385
-#| msgid "Move window to north side of screen"
-msgid "Move window to north (top) side of screen"
-msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಉತ್ತರ (ಮೇಲೆ) ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:388
-#| msgid "Move window to south side of screen"
-msgid "Move window to south (bottom) side of screen"
-msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ದಕ್ಷಿಣ (ಕೆಳಗೆ) ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:391
-#| msgid "Move window to east side of screen"
-msgid "Move window to east (right) side of screen"
-msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಪೂರ್ವ (ಬಲ) ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:394
-#| msgid "Move window to west side of screen"
-msgid "Move window to west (left) side of screen"
-msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಪಶ್ಚಿಮ (ಎಡ) ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
-
-#: ../src/core/all-keybindings.h:397
-#| msgid "Move window to east side of screen"
-msgid "Move window to center of screen"
-msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಮಧ್ಯ ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
-
-#: ../src/core/bell.c:310
+#: ../src/core/bell.c:307
 msgid "Bell event"
 msgstr ""
 
@@ -357,70 +50,46 @@ msgstr ""
 msgid "Unknown window information request: %d"
 msgstr "ಗೊತ್ತಿರದ ವಿಂಡೊ ಮಾಹಿತಿಯ ಮನವಿ: %d"
 
-#. Translators: %s is a window title
-#: ../src/core/delete.c:94
+#: ../src/core/delete.c:111
 #, c-format
-#| msgid "\"%s\" is not responding."
 msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತಿಲ್ಲ."
 
-#: ../src/core/delete.c:99
+#: ../src/core/delete.c:114
+#| msgid "<tt>%s</tt> is not responding."
+msgid "Application is not responding."
+msgstr "ಅನ್ವಯವು ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತಿಲ್ಲ."
+
+#: ../src/core/delete.c:119
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
 
-#: ../src/core/delete.c:108
+#: ../src/core/delete.c:126
 msgid "_Wait"
 msgstr "ನಿರೀಕ್ಷಿಸು(_W)"
 
-#: ../src/core/delete.c:108
+#: ../src/core/delete.c:126
 msgid "_Force Quit"
 msgstr "ಬಲವಂತವಾಗಿ ಮುಚ್ಚು(_F)"
 
-#: ../src/core/display.c:365
+#: ../src/core/display.c:387
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr ""
 
-#: ../src/core/display.c:431
+#: ../src/core/display.c:453
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X ವಿಂಡೊ ಗಣಕ ಪ್ರದರ್ಶಕ '%s' ಅನ್ನು ತೆರೆಯುವಲ್ಲಿ ವಿಫಲತೆ\n"
 
-#: ../src/core/keybindings.c:759
+#: ../src/core/keybindings.c:852
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
-
-#. Displayed when a keybinding which is
-#. * supposed to launch a program fails.
-#.
-#: ../src/core/keybindings.c:2468
-#, c-format
-#| msgid ""
-#| "There was an error running \"%s\":\n"
-#| "%s."
-msgid ""
-"There was an error running <tt>%s</tt>:\n"
-"\n"
-"%s"
-msgstr ""
-"<tt>%s</tt> ಅನ್ನು ಚಲಾಯಿಸುವಲ್ಲಿ ದೋಷ ಎದುರಾಗಿದೆ:\n"
-"\n"
-"%s"
-
-#: ../src/core/keybindings.c:2558
-#, c-format
-msgid "No command %d has been defined.\n"
-msgstr "ಯಾವುದೆ %d ಆಜ್ಞೆಯು ಸೂಚಿತಗೊಂಡಿಲ್ಲ.\n"
-
-#: ../src/core/keybindings.c:3570
-#, c-format
-msgid "No terminal command has been defined.\n"
-msgstr "ಯಾವುದೆ ಟರ್ಮಿನಲ್ ಆಜ್ಞೆಯು ಸೂಚಿತಗೊಂಡಿಲ್ಲ.\n"
 
 #: ../src/core/main.c:206
 msgid "Disable connection to session manager"
@@ -446,26 +115,22 @@ msgstr "ಉಳಿಸಿದ ಕಡತದಿಂದ ಅಧಿವೇಶನವನ್�
 msgid "Make X calls synchronous"
 msgstr "X ಕರೆಗಳನ್ನು ಮೇಳೈಸುವಂತೆ ಮಾಡಿ"
 
-#: ../src/core/main.c:506
+#: ../src/core/main.c:504
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "ಥೀಮ್‍ಗಳನ್ನು ಶೋಧಿಸುವಲ್ಲಿ ಕೋಶವನ್ನು ವಿಫಲಗೊಂಡಿದೆ: %s\n"
 
-#: ../src/core/main.c:522
+#: ../src/core/main.c:520
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
-"ಥೀಮ್‍ಗಳನ್ನು ಪತ್ತೆ ಮಾಡಲಾಗಲಿಲ್ಲ! %s ವು ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ ಹಾಗು ರೂಢಿಯ ಥೀಮ್‍ಗಳನ್ನು ಹೊಂದಿದೆ "
+"ಥೀಮ್‍ಗಳನ್ನು ಪತ್ತೆ ಮಾಡಲಾಗಲಿಲ್ಲ! %s ವು ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ ಹಾಗು ರೂಢಿಯ ಥೀಮ್‍ಗಳನ್ನು "
+"ಹೊಂದಿದೆ "
 "ಎಂದು ಖಚಿತ ಪಡಿಸಿಕೊಳ್ಳಿ.\n"
 
-#: ../src/core/mutter.c:42
+#: ../src/core/mutter.c:40
 #, c-format
-#| msgid ""
-#| "metacity %s\n"
-#| "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
-#| "This is free software; see the source for copying conditions.\n"
-#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "mutter %s\n"
 "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
@@ -479,179 +144,121 @@ msgstr ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 
-#: ../src/core/mutter.c:56
+#: ../src/core/mutter.c:54
 msgid "Print version"
 msgstr "ಮುದ್ರಿಸಬಹುದಾದ ಆವೃತ್ತಿ"
 
-#: ../src/core/mutter.c:62
+#: ../src/core/mutter.c:60
 msgid "Comma-separated list of compositor plugins"
 msgstr ""
 
-#.
-#. * We found it, but it was invalid.  Complain.
-#. *
-#. * FIXME: This replicates the original behaviour, but in the future
-#. * we might consider reverting invalid keys to their original values.
-#. * (We know the old value, so we can look up a suitable string in
-#. * the symtab.)
-#. *
-#. * (Empty comment follows so the translators don't see this.)
-#.
-#.
-#: ../src/core/prefs.c:543 ../src/core/prefs.c:704
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "GConf ಕೀಲಿ \"%s\" ಯು ಒಂದು ಮಾನ್ಯವಾದ ಮೌಲ್ಯಕ್ಕೆ ಹೊಂದಿಸಲ್ಪಟ್ಟಿಲ್ಲ\n"
-
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:873
-#, c-format
-msgid "%d stored in GConf key %s is out of range %d to %d\n"
-msgstr ""
-
-#: ../src/core/prefs.c:674 ../src/core/prefs.c:751 ../src/core/prefs.c:799
-#: ../src/core/prefs.c:863 ../src/core/prefs.c:1324 ../src/core/prefs.c:1340
-#: ../src/core/prefs.c:1357 ../src/core/prefs.c:1373
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "GConf ಕೀಲಿ \"%s\" ಯು ಒಂದು ಮಾನ್ಯವಾದ ಬಗೆಗೆ ಹೊಂದಿಸಲ್ಪಟ್ಟಿಲ್ಲ\n"
-
-#: ../src/core/prefs.c:1203
-#, c-format
-msgid "GConf key %s is already in use and can't be used to override %s\n"
-msgstr ""
-"%s ಎಂಬ GConf ಕೀಲಿಯು ಈಗಾಗಲೆ ಬಳಕೆಯಲ್ಲಿದೆ ಹಾಗು ಅದನ್ನು %s ಅನ್ನು ಅತಿಕ್ರಮಿಸಲು ಬಳಸಲು "
-"ಸಾಧ್ಯವಿಲ್ಲ\n"
-
-#: ../src/core/prefs.c:1262
-#, c-format
-msgid "Can't override GConf key, %s not found\n"
-msgstr "GConf ಕೀಲಿಯನ್ನು ಅತಿಕ್ರಮಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ, %s ಕಂಡುಬಂದಿಲ್ಲ\n"
-
-#: ../src/core/prefs.c:1447
+#: ../src/core/prefs.c:1077
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
 
-#: ../src/core/prefs.c:1524
-#, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
+#: ../src/core/prefs.c:1152
+#, fuzzy, c-format
+#| msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "ಅಕ್ಷರಶೈಲಿ ವಿವರಣೆ \"%s\" ಅನ್ನು  GConf ಕೀಲಿ %s ಇಂದ ಪಾರ್ಸ್ ಮಾಡಲಾಗಿಲ್ಲ\n"
 
-#: ../src/core/prefs.c:1586
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
 
-#: ../src/core/prefs.c:2016
-#, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರಗಳ ಸಂಖ್ಯೆಯನ್ನು %d ಗೆ ಹೊಂದಿಸುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ: %s\n"
-
-#: ../src/core/prefs.c:2200 ../src/core/prefs.c:2702
-#, c-format
-msgid "Workspace %d"
-msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ %d"
-
-#: ../src/core/prefs.c:2232 ../src/core/prefs.c:2410
+#: ../src/core/prefs.c:1739
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
 
-#: ../src/core/prefs.c:2783
+#: ../src/core/prefs.c:1836
 #, c-format
-msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr ""
+msgid "Workspace %d"
+msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ %d"
 
-#: ../src/core/prefs.c:2997
-#, c-format
-msgid "Error setting live hidden windows status status: %s\n"
-msgstr ""
-
-#: ../src/core/prefs.c:3032
-#, c-format
-msgid "Error setting no tab popup status: %s\n"
-msgstr ""
-
-#: ../src/core/screen.c:623
+#: ../src/core/screen.c:730
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr ""
 
-#: ../src/core/screen.c:639
+#: ../src/core/screen.c:746
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
 
-#: ../src/core/screen.c:666
+#: ../src/core/screen.c:773
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 
-#: ../src/core/screen.c:721
+#: ../src/core/screen.c:828
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 
-#: ../src/core/screen.c:906
+#: ../src/core/screen.c:1013
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr ""
 
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#: ../src/core/session.c:843 ../src/core/session.c:850
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "ಕೋಶ '%s' ಅನ್ನು ಸೃಜಿಸಲಾಗಲಿಲ್ಲ: %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:860
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "ಅಧಿವೇಶನ ಕಡತ '%s' ಅನ್ನು ಬರೆಯಲು ತೆಗೆಯಲಾಗಿಲ್ಲ: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1001
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "ಅಧಿವೇಶನ ಕಡತ '%s' ಅನ್ನು ಬರೆಯುವಲ್ಲಿ ದೋಷ: %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1006
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "ಅಧಿವೇಶನ ಕಡತ '%s' ಅನ್ನು ಮುಚ್ಚುವಲ್ಲಿ ದೋಷ: %s\n"
 
-#: ../src/core/session.c:1130
+#: ../src/core/session.c:1136
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "ಉಳಿಸಲಾದ ಅಧಿವೇಶನ ಕಡತವನ್ನು ಪಾರ್ಸ್ ಮಾಡುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ: %s\n"
 
-#: ../src/core/session.c:1179
+#: ../src/core/session.c:1185
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr ""
 
-#: ../src/core/session.c:1192 ../src/core/session.c:1267
-#: ../src/core/session.c:1299 ../src/core/session.c:1371
-#: ../src/core/session.c:1431
+#: ../src/core/session.c:1198 ../src/core/session.c:1273
+#: ../src/core/session.c:1305 ../src/core/session.c:1377
+#: ../src/core/session.c:1437
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "ಗೊತ್ತಿರದ ಗುಣವಿಶೇಷ %s, <%s> ಘಟಕದಲ್ಲಿ"
 
-#: ../src/core/session.c:1209
+#: ../src/core/session.c:1215
 #, c-format
 msgid "nested <window> tag"
 msgstr ""
 
-#: ../src/core/session.c:1451
+#: ../src/core/session.c:1457
 #, c-format
 msgid "Unknown element %s"
 msgstr "ಗೊತ್ತಿರದ %s ಘಟಕ"
 
-#: ../src/core/session.c:1803
+#: ../src/core/session.c:1809
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -677,30 +284,24 @@ msgstr "ದಾಖಲೆ ಕಡತ %s ಅನ್ನು ತೆರೆಯಲಾಗಿ
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr ""
 
-#: ../src/core/util.c:286
+#: ../src/core/util.c:290
 msgid "Window manager: "
 msgstr "ವಿಂಡೊ ವ್ಯವಸ್ಥಾಪಕ: "
 
-#: ../src/core/util.c:434
+#: ../src/core/util.c:438
 msgid "Bug in window manager: "
 msgstr "ವಿಂಡೊ ವ್ಯವಸ್ಥಾಪಕದಲ್ಲಿ ಒಂದು ತೊಂದರೆ: "
 
-#: ../src/core/util.c:467
+#: ../src/core/util.c:471
 msgid "Window manager warning: "
 msgstr "ವಿಂಡೊ ವ್ಯವಸ್ಥಾಪಕ ಎಚ್ಚರಿಕೆ: "
 
-#: ../src/core/util.c:495
+#: ../src/core/util.c:499
 msgid "Window manager error: "
 msgstr "ವಿಂಡೊ ವ್ಯವಸ್ಥಾಪಕ ದೋಷ: "
 
-#. Translators: This is the title used on dialog boxes
-#: ../src/core/util.c:615 ../src/mutter.desktop.in.h:1
-#: ../src/mutter-wm.desktop.in.h:1
-msgid "Mutter"
-msgstr "Mutter"
-
 #. first time through
-#: ../src/core/window.c:6752
+#: ../src/core/window.c:7269
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -714,7 +315,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7415
+#: ../src/core/window.c:7932
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -731,9 +332,14 @@ msgstr ""
 msgid "%s (on %s)"
 msgstr "%s (%s ನಲ್ಲಿ)"
 
-#: ../src/core/window-props.c:1479
+#: ../src/core/window-props.c:1481
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr ""
+
+#: ../src/core/window-props.c:1492
+#, c-format
+msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr ""
 
 #: ../src/core/xprops.c:155
@@ -753,34 +359,19 @@ msgstr ""
 
 #: ../src/core/xprops.c:494
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-
-#: ../src/mutter.schemas.in.h:1
-msgid "Attach modal dialogs"
-msgstr ""
-
-#: ../src/mutter.schemas.in.h:2
 msgid ""
-"Determines whether hidden windows (i.e., minimized windows and windows on "
-"other workspaces than the current one) should be kept alive."
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 
-#: ../src/mutter.schemas.in.h:3
-msgid ""
-"Determines whether workspace switching should happen for windows on all "
-"monitors or only for windows on the primary monitor."
-msgstr ""
+#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
 
-#: ../src/mutter.schemas.in.h:4
-msgid "Live Hidden Windows"
-msgstr ""
-
-#: ../src/mutter.schemas.in.h:5
+#: ../src/org.gnome.mutter.gschema.xml.in.h:1
 msgid "Modifier to use for extended window management operations"
 msgstr ""
 
-#: ../src/mutter.schemas.in.h:6
+#: ../src/org.gnome.mutter.gschema.xml.in.h:2
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -788,66 +379,93 @@ msgid ""
 "default or set to the empty string."
 msgstr ""
 
-#: ../src/mutter.schemas.in.h:7
+#: ../src/org.gnome.mutter.gschema.xml.in.h:3
+msgid "Attach modal dialogs"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:4
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
 "the parent window."
 msgstr ""
 
-#: ../src/mutter.schemas.in.h:8
+#: ../src/org.gnome.mutter.gschema.xml.in.h:5
+msgid "Live Hidden Windows"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
+msgid ""
+"Determines whether hidden windows (i.e., minimized windows and windows on "
+"other workspaces than the current one) should be kept alive."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+msgid ""
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+msgid "Workspaces are managed dynamically"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "Workspaces only on primary"
 msgstr "ಪ್ರಾಥಮಿಕದಲ್ಲಿ ಇರುವ ಕಾರ್ಯಕ್ಷೇತ್ರಗಳು ಮಾತ್ರ"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "No tab popup"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+msgid ""
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+#, fuzzy
+#| msgid "Remove Window From Top"
+msgid "Select window from tab popup"
+msgstr "ವಿಂಡೊ ಅನ್ನು ಮೇಲ್ಭಾಗದಿಂದ ತೆಗೆದು ಹಾಕು"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid "Cancel tab popup"
+msgstr ""
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "ಬಳಕೆ: %s\n"
-
-#: ../src/ui/frames.c:1099
-msgid "Close Window"
-msgstr "ವಿಂಡೊವನ್ನು ಮುಚ್ಚು"
-
-#: ../src/ui/frames.c:1102
-msgid "Window Menu"
-msgstr "ವಿಂಡೊ ಮೆನು"
-
-#: ../src/ui/frames.c:1105
-msgid "Minimize Window"
-msgstr "ವಿಂಡೊವನ್ನು ಕುಗ್ಗಿಸು"
-
-#: ../src/ui/frames.c:1108
-msgid "Maximize Window"
-msgstr "ವಿಂಡೊವನ್ನು ಹಿಗ್ಗಿಸು"
-
-#: ../src/ui/frames.c:1111
-#| msgid "Resize window"
-msgid "Restore Window"
-msgstr "ವಿಂಡೊವನ್ನು ಮರಳಿ ಸ್ಥಾಪಿಸು"
-
-#: ../src/ui/frames.c:1114
-msgid "Roll Up Window"
-msgstr "ವಿಂಡೊವನ್ನು ಉರುಳಿಸಿ"
-
-#: ../src/ui/frames.c:1117
-msgid "Unroll Window"
-msgstr "ವಿಂಡೊವನ್ನು ಸುತ್ತಿ"
-
-#: ../src/ui/frames.c:1120
-msgid "Keep Window On Top"
-msgstr "ವಿಂಡೊ ಅನ್ನು ಮೇಲ್ಭಾಗದಲ್ಲಿ ಇರಿಸು"
-
-#: ../src/ui/frames.c:1123
-msgid "Remove Window From Top"
-msgstr "ವಿಂಡೊ ಅನ್ನು ಮೇಲ್ಭಾಗದಿಂದ ತೆಗೆದು ಹಾಕು"
-
-#: ../src/ui/frames.c:1126
-msgid "Always On Visible Workspace"
-msgstr "ಯಾವಾಗಲೂ ಕಾಣಿಸುವ ಕಾರ್ಯಕ್ಷೇತ್ರದಲ್ಲಿ"
-
-#: ../src/ui/frames.c:1129
-msgid "Put Window On Only One Workspace"
-msgstr "ವಿಂಡೊವನ್ನು ಕೇವಲ ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದಲ್ಲಿ ಇರಿಸು"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:69
@@ -933,7 +551,6 @@ msgstr "ಮುಚ್ಚು(_C)"
 
 #: ../src/ui/menu.c:204
 #, c-format
-#| msgid "Workspace %d"
 msgid "Workspace %d%n"
 msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ %d%n"
 
@@ -1049,200 +666,224 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:255
+#: ../src/ui/theme.c:253
 msgid "top"
 msgstr "ಮೇಲ್ಭಾಗ"
 
-#: ../src/ui/theme.c:257
+#: ../src/ui/theme.c:255
 msgid "bottom"
 msgstr "ಕೆಳಭಾಗ"
 
-#: ../src/ui/theme.c:259
+#: ../src/ui/theme.c:257
 msgid "left"
 msgstr "ಎಡಭಾಗ"
 
-#: ../src/ui/theme.c:261
+#: ../src/ui/theme.c:259
 msgid "right"
 msgstr "ಬಲಭಾಗ"
 
-#: ../src/ui/theme.c:288
+#: ../src/ui/theme.c:286
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "ಚೌಕಟ್ಟಿನ ಜ್ಯಾಮಿತಿಯು \"%s\" ಆಯಾಮವನ್ನು ಸೂಚಿಸುವುದಿಲ್ಲ"
 
-#: ../src/ui/theme.c:307
+#: ../src/ui/theme.c:305
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "ಚೌಕಟ್ಟಿನ ಜ್ಯಾಮಿತಿಯು \"%s\" ಆಯಾಮವನ್ನು \"%s\" ಅಂಚಿಗಾಗಿ ಸೂಚಿಸುವುದಿಲ್ಲ"
 
-#: ../src/ui/theme.c:344
+#: ../src/ui/theme.c:342
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr ""
 
-#: ../src/ui/theme.c:356
+#: ../src/ui/theme.c:354
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "ಚೌಕಟ್ಟಿನ ಜ್ಯಾಮಿತಿಯು ಗುಂಡಿಗಳ ಗಾತ್ರವನ್ನು ಸೂಚಿಸುವುದಿಲ್ಲ"
 
-#: ../src/ui/theme.c:1064
+#: ../src/ui/theme.c:1067
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr ""
 
-#: ../src/ui/theme.c:1202
+#: ../src/ui/theme.c:1219
+#, c-format
+msgid ""
+"GTK custom color specification must have color name and fallback in "
+"parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
+msgstr ""
+
+#: ../src/ui/theme.c:1235
+#, c-format
+msgid ""
+"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
+"_ are valid"
+msgstr ""
+
+#: ../src/ui/theme.c:1249
+#, c-format
+msgid ""
+"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
+"fit the format"
+msgstr ""
+
+#: ../src/ui/theme.c:1294
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:1216
+#: ../src/ui/theme.c:1308
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:1227
+#: ../src/ui/theme.c:1319
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr ""
 
-#: ../src/ui/theme.c:1240
+#: ../src/ui/theme.c:1332
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr ""
 
-#: ../src/ui/theme.c:1270
+#: ../src/ui/theme.c:1361
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
 
-#: ../src/ui/theme.c:1281
+#: ../src/ui/theme.c:1372
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr ""
 
-#: ../src/ui/theme.c:1291
+#: ../src/ui/theme.c:1382
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr ""
 
-#: ../src/ui/theme.c:1338
+#: ../src/ui/theme.c:1429
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 
-#: ../src/ui/theme.c:1349
+#: ../src/ui/theme.c:1440
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr ""
 
-#: ../src/ui/theme.c:1359
+#: ../src/ui/theme.c:1450
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr ""
 
-#: ../src/ui/theme.c:1388
+#: ../src/ui/theme.c:1479
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:1646
+#: ../src/ui/theme.c:1790
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr ""
 
-#: ../src/ui/theme.c:1673
+#: ../src/ui/theme.c:1817
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
 
-#: ../src/ui/theme.c:1687
+#: ../src/ui/theme.c:1831
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 
-#: ../src/ui/theme.c:1809
+#: ../src/ui/theme.c:1953
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:1866
+#: ../src/ui/theme.c:2010
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr ""
 
-#: ../src/ui/theme.c:1977 ../src/ui/theme.c:1987 ../src/ui/theme.c:2021
+#: ../src/ui/theme.c:2121 ../src/ui/theme.c:2131 ../src/ui/theme.c:2165
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr ""
 
-#: ../src/ui/theme.c:2029
+#: ../src/ui/theme.c:2173
 #, c-format
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 
-#: ../src/ui/theme.c:2085
+#: ../src/ui/theme.c:2229
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 
-#: ../src/ui/theme.c:2094
+#: ../src/ui/theme.c:2238
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
 
-#: ../src/ui/theme.c:2102
+#: ../src/ui/theme.c:2246
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 
-#: ../src/ui/theme.c:2112
+#: ../src/ui/theme.c:2256
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
 
-#: ../src/ui/theme.c:2263 ../src/ui/theme.c:2308
+#: ../src/ui/theme.c:2407 ../src/ui/theme.c:2452
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:2362
+#: ../src/ui/theme.c:2506
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr ""
 
-#: ../src/ui/theme.c:2391
+#: ../src/ui/theme.c:2535
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 
-#: ../src/ui/theme.c:2455
+#: ../src/ui/theme.c:2599
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 
-#: ../src/ui/theme.c:2466
+#: ../src/ui/theme.c:2610
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 
-#: ../src/ui/theme.c:2676 ../src/ui/theme.c:2696 ../src/ui/theme.c:2716
+#: ../src/ui/theme.c:2822 ../src/ui/theme.c:2842 ../src/ui/theme.c:2862
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr ""
 
-#: ../src/ui/theme.c:4410
+#: ../src/ui/theme.c:4533
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1251,38 +892,42 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> ವು ಈ ಚೌಕಟ್ಟಿನ "
 "ಶೈಲಿಗೆ ಸೂಚಿತಗೊಳ್ಳಬೇಕು"
 
-#: ../src/ui/theme.c:4940 ../src/ui/theme.c:4965
+#: ../src/ui/theme.c:5066 ../src/ui/theme.c:5091
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> ಕಾಣುತ್ತಿಲ್ಲ"
+"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> "
+"ಕಾಣುತ್ತಿಲ್ಲ"
 
-#: ../src/ui/theme.c:5013
+#: ../src/ui/theme.c:5139
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "\"%s\" ಥೀಮನ್ನು ಲೋಡ್‍ ಮಾಡಲು ವಿಫಲಗೊಂಡಿದೆ: %s\n"
 
-#: ../src/ui/theme.c:5149 ../src/ui/theme.c:5156 ../src/ui/theme.c:5163
-#: ../src/ui/theme.c:5170 ../src/ui/theme.c:5177
+#: ../src/ui/theme.c:5275 ../src/ui/theme.c:5282 ../src/ui/theme.c:5289
+#: ../src/ui/theme.c:5296 ../src/ui/theme.c:5303
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:5185
+#: ../src/ui/theme.c:5311
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
 
-#: ../src/ui/theme.c:5635 ../src/ui/theme.c:5697 ../src/ui/theme.c:5760
+#: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
-"ಬಳಕೆದಾರರಿಂದ ಸೂಚಿತಗೊಂಡ ಸ್ಥಿರಾಂಕಗಳು ಕ್ಯಾಪಿಟಲ್ ಅಕ್ಷರಗಳಿಂದ ಆರಂಭಗೊಳ್ಳಬೇಕು; ಆದರೆ \"%s\" "
+"ಬಳಕೆದಾರರಿಂದ ಸೂಚಿತಗೊಂಡ ಸ್ಥಿರಾಂಕಗಳು ಕ್ಯಾಪಿಟಲ್ ಅಕ್ಷರಗಳಿಂದ ಆರಂಭಗೊಳ್ಳಬೇಕು; ಆದರೆ \"%"
+"s\" "
 "ಹೊಂದಿಲ್ಲ"
 
-#: ../src/ui/theme.c:5643 ../src/ui/theme.c:5705 ../src/ui/theme.c:5768
+#: ../src/ui/theme.c:5717 ../src/ui/theme.c:5779 ../src/ui/theme.c:5842
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "\"%s\" ಸ್ತಿರಾಂಕವು ಈಗಾಗಲೆ ಸೂಚಿತಗೊಂಡಿದೆ"
@@ -1292,7 +937,6 @@ msgstr "\"%s\" ಸ್ತಿರಾಂಕವು ಈಗಾಗಲೆ ಸೂಚಿತ
 #.
 #: ../src/ui/theme-parser.c:236
 #, c-format
-#| msgid "No \"x\" attribute on element <%s>"
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "\"%s\" ಗುಣ ವಿಶೇಷವು <%s> ಘಟಕದಲ್ಲಿ ಇಲ್ಲ"
 
@@ -1540,7 +1184,8 @@ msgstr ""
 
 #: ../src/ui/theme-parser.c:3161
 #, c-format
-msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 
 #: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
@@ -1596,7 +1241,8 @@ msgstr ""
 
 #: ../src/ui/theme-parser.c:3582
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "<%s> ಘಟಕಕ್ಕೆ ಒಂದು ಹೆಸರು/ಲೇಖಕ/ದಿನಾಂಕ/ವಿವರಣೆಯ ಒಳಗೆ ಇರಲು ಅನುಮತಿ ಇಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:3587
@@ -1606,7 +1252,8 @@ msgstr "<%s> ಘಟಕಕ್ಕೆ ಒಂದು <constant> ಘಟಕದ ಒಳ�
 
 #: ../src/ui/theme-parser.c:3599
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 
 #: ../src/ui/theme-parser.c:3621
@@ -1637,7 +1284,6 @@ msgstr "<%s> ಘಟಕದ ಒಳಗೆ ಯಾವುದೆ ಪಠ್ಯಕ್ಕ�
 #: ../src/ui/theme-parser.c:4050 ../src/ui/theme-parser.c:4062
 #: ../src/ui/theme-parser.c:4074
 #, c-format
-#| msgid "<name> specified twice for this theme"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> ಈ ಪರಿಸರವಿನ್ಯಾಸ ಎರಡು ಬಾರಿ ಸೂಚಿಸಲ್ಪಟ್ಟಿದೆ"
 
@@ -1647,12 +1293,10 @@ msgid "Failed to find a valid file for theme %s\n"
 msgstr "%s ಥೀಮ್‍ಗೆ ಒಂದು ಮಾನ್ಯವಾದ ಕಡತವನ್ನು ಪತ್ತೆ ಮಾಡುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ\n"
 
 #: ../src/ui/theme-viewer.c:99
-#| msgid "/_Windows"
 msgid "_Windows"
 msgstr "ವಿಂಡೋಗಳು (_W)"
 
 #: ../src/ui/theme-viewer.c:100
-#| msgid "Dialog Box"
 msgid "_Dialog"
 msgstr "ಸಂವಾದ (_D)"
 
@@ -1669,32 +1313,26 @@ msgid "_Splashscreen"
 msgstr "ಎರಚುತೆರೆ (_S)"
 
 #: ../src/ui/theme-viewer.c:104
-#| msgid "/Windows/_Top dock"
 msgid "_Top dock"
 msgstr "ಮೇಲ್ಭಾಗ ಡಾಕ್ (_T)"
 
 #: ../src/ui/theme-viewer.c:105
-#| msgid "/Windows/_Bottom dock"
 msgid "_Bottom dock"
 msgstr "ಕೆಳಭಾಗದ ಡಾಕ್ (_B)"
 
 #: ../src/ui/theme-viewer.c:106
-#| msgid "/Windows/_Left dock"
 msgid "_Left dock"
 msgstr "ಎಡಬದಿಯ ಡಾಕ್ (_L)"
 
 #: ../src/ui/theme-viewer.c:107
-#| msgid "/Windows/_Right dock"
 msgid "_Right dock"
 msgstr "ಬಲಬದಿಯ ಡಾಕ್ (_R)"
 
 #: ../src/ui/theme-viewer.c:108
-#| msgid "/Windows/_All docks"
 msgid "_All docks"
 msgstr "ಎಲ್ಲಾ ಡಾಕ್‌ಗಳು (_A)"
 
 #: ../src/ui/theme-viewer.c:109
-#| msgid "Desktop"
 msgid "Des_ktop"
 msgstr "ಗಣಕತೆರೆ (_k)"
 
@@ -1710,101 +1348,101 @@ msgstr "'ತೆರೆ' ಚಿಹ್ನೆಯನ್ನು ಹೊಂದಿರು�
 msgid "This is a demo button with a 'quit' icon"
 msgstr "'ತ್ಯಜಿಸು' ಚಿಹ್ನೆಯನ್ನು ಹೊಂದಿರುವ ಒಂದು ಪ್ರಾಯೋಗಿಕ ಗುಂಡಿ"
 
-#: ../src/ui/theme-viewer.c:253
+#: ../src/ui/theme-viewer.c:248
 msgid "This is a sample message in a sample dialog"
 msgstr "ಇದು ಒಂದು ಸಂವಾದದ ನಮೂನೆಯಲ್ಲಿರುವ ಒಂದು ಸಂದೇಶದ ನಮೂನೆ"
 
-#: ../src/ui/theme-viewer.c:336
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "ನಕಲಿ ಮೆನು ಅಂಶ %d\n"
 
-#: ../src/ui/theme-viewer.c:370
+#: ../src/ui/theme-viewer.c:363
 msgid "Border-only window"
 msgstr "ಅಂಚು ಮಾತ್ರ ಇರುವ ವಿಂಡೊ"
 
-#: ../src/ui/theme-viewer.c:372
+#: ../src/ui/theme-viewer.c:365
 msgid "Bar"
 msgstr "ಪಟ್ಟಿ"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:382
 msgid "Normal Application Window"
 msgstr "ಸಾಮಾನ್ಯ ಅನ್ವಯ ವಿಂಡೊ"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:386
 msgid "Dialog Box"
 msgstr "ಸಂವಾದ ಪೆಟ್ಟಿಗೆ"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:390
 msgid "Modal Dialog Box"
 msgstr "ಮೋಡಲ್ ಸಂವಾದ ಚೌಕ"
 
-#: ../src/ui/theme-viewer.c:401
+#: ../src/ui/theme-viewer.c:394
 msgid "Utility Palette"
 msgstr "ಸವಲತ್ತು ಫಲಕ"
 
-#: ../src/ui/theme-viewer.c:405
+#: ../src/ui/theme-viewer.c:398
 msgid "Torn-off Menu"
 msgstr "ಹರಿಯಲ್ಪಟ್ಟ ಮೆನು"
 
-#: ../src/ui/theme-viewer.c:409
+#: ../src/ui/theme-viewer.c:402
 msgid "Border"
 msgstr "ಅಂಚು"
 
-#: ../src/ui/theme-viewer.c:413
+#: ../src/ui/theme-viewer.c:406
 msgid "Attached Modal Dialog"
 msgstr "ಲಗತ್ತಿಸಲಾದ ಮೋಡಲ್ ಸಂವಾದ"
 
-#: ../src/ui/theme-viewer.c:744
+#: ../src/ui/theme-viewer.c:739
 #, c-format
 msgid "Button layout test %d"
 msgstr "ಗುಂಡಿ ಲೇಔಟ್ ಪರೀಕ್ಷೆ %d"
 
-#: ../src/ui/theme-viewer.c:773
+#: ../src/ui/theme-viewer.c:768
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:818
+#: ../src/ui/theme-viewer.c:813
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "ಬಳಕೆ: metacity-theme-viewer [THEMENAME]\n"
 
-#: ../src/ui/theme-viewer.c:825
+#: ../src/ui/theme-viewer.c:820
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "ಥೀಮ್ ಅನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ: %s\n"
 
-#: ../src/ui/theme-viewer.c:831
+#: ../src/ui/theme-viewer.c:826
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "\"%s\" ಥೀಮ್ %g ಸೆಕೆಂಡ್‍ಗಳಲ್ಲಿ ಲೋಡ್ ಆಗಿದೆ\n"
 
-#: ../src/ui/theme-viewer.c:875
+#: ../src/ui/theme-viewer.c:870
 msgid "Normal Title Font"
 msgstr "ಸಾಮಾನ್ಯ ಶೀರ್ಷಿಕೆ ಅಕ್ಷರಶೈಲಿ"
 
-#: ../src/ui/theme-viewer.c:881
+#: ../src/ui/theme-viewer.c:876
 msgid "Small Title Font"
 msgstr "ಚಿಕ್ಕದಾದ ಶೀರ್ಷಿಕೆ ಅಕ್ಷರಶೈಲಿ"
 
-#: ../src/ui/theme-viewer.c:887
+#: ../src/ui/theme-viewer.c:882
 msgid "Large Title Font"
 msgstr "ದೊಡ್ಡದಾದ ಶೀರ್ಷಿಕೆ ಅಕ್ಷರಶೈಲಿ"
 
-#: ../src/ui/theme-viewer.c:892
+#: ../src/ui/theme-viewer.c:887
 msgid "Button Layouts"
 msgstr "ಗುಂಡಿಗಳ ಲೇಔಟ್"
 
-#: ../src/ui/theme-viewer.c:897
+#: ../src/ui/theme-viewer.c:892
 msgid "Benchmark"
 msgstr "ಮೈಲಿಗಲ್ಲು"
 
-#: ../src/ui/theme-viewer.c:949
+#: ../src/ui/theme-viewer.c:944
 msgid "Window Title Goes Here"
 msgstr "ವಿಂಡೊ ಶೀರ್ಷಿಕೆಯು ಹೀಗೆ ಇರುತ್ತದೆ"
 
-#: ../src/ui/theme-viewer.c:1055
+#: ../src/ui/theme-viewer.c:1047
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1812,42 +1450,348 @@ msgid ""
 "frame)\n"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:1274
+#: ../src/ui/theme-viewer.c:1266
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:1276
+#: ../src/ui/theme-viewer.c:1268
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:1280
+#: ../src/ui/theme-viewer.c:1272
 msgid "Error was expected but none given"
 msgstr "ದೋಷವನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು ಆದರೆ ಯಾವುದೂ ಕಂಡು ಬಂದಿಲ್ಲ"
 
-#: ../src/ui/theme-viewer.c:1282
+#: ../src/ui/theme-viewer.c:1274
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "ದೋಷ %d ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು ಆದರೆ %d ಅನ್ನು ನೀಡಲಾಗಿದೆ"
 
-#: ../src/ui/theme-viewer.c:1288
+#: ../src/ui/theme-viewer.c:1280
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:1292
+#: ../src/ui/theme-viewer.c:1284
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x ಮೌಲ್ಯವು %d ಆಗಿದೆ, %d ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು"
 
-#: ../src/ui/theme-viewer.c:1295
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y ಮೌಲ್ಯವು %d ಆಗಿದೆ, %d ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು"
 
-#: ../src/ui/theme-viewer.c:1360
+#: ../src/ui/theme-viewer.c:1352
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
+
+#~ msgid "Switch to workspace 1"
+#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 1 ಕ್ಕೆ ಬದಲಾಯಿಸು"
+
+#~ msgid "Switch to workspace 2"
+#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 2 ಕ್ಕೆ ಬದಲಾಯಿಸು"
+
+#~ msgid "Switch to workspace 3"
+#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 3 ಕ್ಕೆ ಬದಲಾಯಿಸು"
+
+#~ msgid "Switch to workspace 4"
+#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 4 ಕ್ಕೆ ಬದಲಾಯಿಸು"
+
+#~ msgid "Switch to workspace 5"
+#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 5 ಕ್ಕೆ ಬದಲಾಯಿಸು"
+
+#~ msgid "Switch to workspace 6"
+#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 6 ಕ್ಕೆ ಬದಲಾಯಿಸು"
+
+#~ msgid "Switch to workspace 7"
+#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 7 ಕ್ಕೆ ಬದಲಾಯಿಸು"
+
+#~ msgid "Switch to workspace 8"
+#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 8 ಕ್ಕೆ ಬದಲಾಯಿಸು"
+
+#~ msgid "Switch to workspace 9"
+#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 9 ಕ್ಕೆ ಬದಲಾಯಿಸು"
+
+#~ msgid "Switch to workspace 10"
+#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 10 ಕ್ಕೆ ಬದಲಾಯಿಸು"
+
+#~ msgid "Switch to workspace 11"
+#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 11 ಕ್ಕೆ ಬದಲಾಯಿಸು"
+
+#~ msgid "Switch to workspace 12"
+#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 12 ಕ್ಕೆ ಬದಲಾಯಿಸು"
+
+#~| msgid "Switch to workspace on the left"
+#~ msgid "Switch to workspace on the left of the current workspace"
+#~ msgstr "ಪ್ರಸಕ್ತ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಎಡಭಾಗದಲ್ಲಿನ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
+
+#~| msgid "Switch to workspace on the right"
+#~ msgid "Switch to workspace on the right of the current workspace"
+#~ msgstr "ಪ್ರಸಕ್ತ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಬಲಭಾಗದಲ್ಲಿನ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
+
+#~| msgid "Switch to workspace above this one"
+#~ msgid "Switch to workspace above the current workspace"
+#~ msgstr "ಪ್ರಸಕ್ತ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಮೇಲ್ಭಾಗದಲ್ಲಿನ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
+
+#~| msgid "Switch to workspace below this one"
+#~ msgid "Switch to workspace below the current workspace"
+#~ msgstr "ಪ್ರಸಕ್ತ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಕೆಳಭಾಗದಲ್ಲಿನ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
+
+#~ msgid "Move between windows of an application, using a popup window"
+#~ msgstr ""
+#~ "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ಒಂದು ಅನ್ವಯದ ವಿಂಡೋಗಳ ನಡುವೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid ""
+#~ "Move backward between windows of an application, using a popup window"
+#~ msgstr ""
+#~ "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ಒಂದು ಅನ್ವಯದ ವಿಂಡೋಗಳ ನಡುವೆ ಹಿಂದಕ್ಕೆ "
+#~ "ಸ್ಥಳಾಂತರಿಸು"
+
+#~| msgid "Move between windows of an application immediately"
+#~ msgid "Move between windows, using a popup window"
+#~ msgstr "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ವಿಂಡೋಗಳ ನಡುವೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move backward between windows, using a popup window"
+#~ msgstr "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ವಿಂಡೋಗಳ ನಡುವೆ ಹಿಂದಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move between panels and the desktop, using a popup window"
+#~ msgstr ""
+#~ "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ಫಲಕಗಳು ಹಾಗು ಗಣಕತೆರೆಯ ನಡುವೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move backward between panels and the desktop, using a popup window"
+#~ msgstr ""
+#~ "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ಫಲಕಗಳು ಹಾಗು ಗಣಕತೆರೆಯ ನಡುವೆ ಹಿಂದಕ್ಕೆ "
+#~ "ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move between windows of an application immediately"
+#~ msgstr "ಒಂದು ಅನ್ವಯದ ವಿಂಡೋಗಳ ನಡುವೆ ತಕ್ಷಣ ಜರುಗಿಸು"
+
+#~| msgid "Move between windows of an application immediately"
+#~ msgid "Move backward between windows of an application immediately"
+#~ msgstr "ಒಂದು ಅನ್ವಯದ ವಿಂಡೋಗಳ ನಡುವೆ ತಕ್ಷಣ ಹಿಂದಕ್ಕೆ ಜರುಗಿಸು"
+
+#~ msgid "Move between windows immediately"
+#~ msgstr "ವಿಂಡೋಗಳ ನಡುವೆ ತಕ್ಷಣ ಜರುಗಿಸು"
+
+#~| msgid "Move backwards between windows immediately"
+#~ msgid "Move backward between windows immediately"
+#~ msgstr "ವಿಂಡೋಗಳ ನಡುವೆ ತಕ್ಷಣ ಹಿಂದಕ್ಕೆ ಜರುಗಿಸು"
+
+#~ msgid "Move between panels and the desktop immediately"
+#~ msgstr "ಫಲಕ ಹಾಗು ಗಣಕತೆರೆಗಳ ನಡುವೆ ತಕ್ಷಣ ಜರುಗಿಸು"
+
+#~ msgid "Move backward between panels and the desktop immediately"
+#~ msgstr "ಫಲಕ ಹಾಗು ಗಣಕತೆರೆಗಳ ನಡುವೆ ತಕ್ಷಣ ಹಿಂದಕ್ಕೆ ಜರುಗಿಸು"
+
+#~ msgid "Hide all normal windows and set focus to the desktop"
+#~ msgstr ""
+#~ "ಎಲ್ಲಾ ಸಾಮಾನ್ಯ ವಿಂಡೊಗಳನ್ನು ಅಡಗಿಸು ಹಾಗು ಗಣಕತೆರೆಯ ಮೇಲೆ ಗಮನವನ್ನು ಕೇಂದ್ರೀಕರಿಸು"
+
+#~| msgid "Show the panel menu"
+#~ msgid "Show the panel's main menu"
+#~ msgstr "ಫಲಕದ ಮುಖ್ಯ ಮೆನುವನ್ನು ತೋರಿಸು"
+
+#~ msgid "Start or stop recording the session"
+#~ msgstr "ಅಧಿವೇಶನವನ್ನು ರೆಕಾರ್ಡಿಂಗ್ ಮಾಡುವುದನ್ನು ಆರಂಭಿಸು ಅಥವ ನಿಲ್ಲಿಸು"
+
+#~ msgid "Take a screenshot"
+#~ msgstr "ಒಂದು ತೆರೆಚಿತ್ರವನ್ನು ತೆಗೆ"
+
+#~ msgid "Take a screenshot of a window"
+#~ msgstr "ಒಂದು ವಿಂಡೊದ ತೆರೆಚಿತ್ರವನ್ನು ತೆಗೆ"
+
+#~ msgid "Run a terminal"
+#~ msgstr "ಟರ್ಮಿನಲ್‍ನಲ್ಲಿ ಚಲಾಯಿಸು"
+
+#~| msgid "Activate window menu"
+#~ msgid "Activate the window menu"
+#~ msgstr "ವಿಂಡೊ ಮೆನುವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸು"
+
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "ಪೂರ್ಣತೆರೆಯ ಕ್ರಮಕ್ಕೆ ಟಾಗಲ್ ಮಾಡು"
+
+#~ msgid "Maximize window"
+#~ msgstr "ವಿಂಡೊವನು ಹಿಗ್ಗಿಸು"
+
+#~| msgid "Resize window"
+#~ msgid "Restore window"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಮರಳಿ ಸ್ಥಾಪಿಸು"
+
+#~ msgid "Minimize window"
+#~ msgstr "ವಿಂಡೊವನು ಕುಗ್ಗಿಸು"
+
+#~ msgid "Close window"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಮುಚ್ಚು"
+
+#~ msgid "Move window"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಜರುಗಿಸು"
+
+#~ msgid "Resize window"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಮರುಗಾತ್ರಿಸು"
+
+#~ msgid "Move window to workspace 1"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 1 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move window to workspace 2"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 2 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move window to workspace 3"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 3 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move window to workspace 4"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 4 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move window to workspace 5"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 5 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move window to workspace 6"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 6 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move window to workspace 7"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 7 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move window to workspace 8"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 8 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move window to workspace 9"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 9 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move window to workspace 10"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 10 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move window to workspace 11"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 11 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move window to workspace 12"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 12 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
+
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "ವಿಂಡೋವನ್ನು ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದ ಎಡಕ್ಕೆ ಜರುಗಿಸು"
+
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "ವಿಂಡೋವನ್ನು ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದ ಬಲಕ್ಕೆ ಜರುಗಿಸು"
+
+#~ msgid "Move window one workspace up"
+#~ msgstr "ವಿಂಡೋವನ್ನು ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದ ಮೇಲಕ್ಕೆ ಜರುಗಿಸು"
+
+#~ msgid "Move window one workspace down"
+#~ msgstr "ವಿಂಡೋವನ್ನು ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದ ಕೆಳಗೆ ಜರುಗಿಸು"
+
+#~ msgid "Raise window above other windows"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಇತರೆ ವಿಂಡೋಗಳಿಗಿಂತ ಎತ್ತರಿಸು"
+
+#~ msgid "Lower window below other windows"
+#~ msgstr "ಇತರೆ ವಿಂಡೊಗಳ ಅಡಿಯಲ್ಲಿರುವ ವಿಂಡೊ"
+
+#~ msgid "Maximize window vertically"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಲಂಬವಾಗಿ ಹಿಗ್ಗಿಸು"
+
+#~ msgid "Maximize window horizontally"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಸಮತಲವಾಗಿ ಹಿಗ್ಗಿಸು"
+
+#~| msgid "Move window to north-west corner"
+#~ msgid "Move window to north-west (top left) corner"
+#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಉತ್ತರ-ಪಶ್ಚಿಮ (ಮೇಲಿನ ಎಡಭಾಗ) ಮೂಲೆಗೆ ಜರುಗಿಸು"
+
+#~| msgid "Move window to north-east corner"
+#~ msgid "Move window to north-east (top right) corner"
+#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಉತ್ತರ-ಪೂರ್ವ (ಮೇಲಿನ ಬಲಭಾಗ) ಮೂಲೆಗೆ ಜರುಗಿಸು"
+
+#~| msgid "Move window to south-west corner"
+#~ msgid "Move window to south-west (bottom left) corner"
+#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ದಕ್ಷಿಣ-ಪಶ್ಚಿಮ (ಕೆಳಗಿನ ಎಡಭಾಗ) ಮೂಲೆಗೆ ಜರುಗಿಸು"
+
+#~| msgid "Move window to south-east corner"
+#~ msgid "Move window to south-east (bottom right) corner"
+#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ದಕ್ಷಿಣ-ಪೂರ್ವ (ಕೆಳಗಿನ ಬಲಭಾಗ) ಮೂಲೆಗೆ ಜರುಗಿಸು"
+
+#~| msgid "Move window to north side of screen"
+#~ msgid "Move window to north (top) side of screen"
+#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಉತ್ತರ (ಮೇಲೆ) ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
+
+#~| msgid "Move window to south side of screen"
+#~ msgid "Move window to south (bottom) side of screen"
+#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ದಕ್ಷಿಣ (ಕೆಳಗೆ) ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
+
+#~| msgid "Move window to east side of screen"
+#~ msgid "Move window to east (right) side of screen"
+#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಪೂರ್ವ (ಬಲ) ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
+
+#~| msgid "Move window to west side of screen"
+#~ msgid "Move window to west (left) side of screen"
+#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಪಶ್ಚಿಮ (ಎಡ) ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
+
+#~| msgid "Move window to east side of screen"
+#~ msgid "Move window to center of screen"
+#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಮಧ್ಯ ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
+
+#~| msgid ""
+#~| "There was an error running \"%s\":\n"
+#~| "%s."
+#~ msgid ""
+#~ "There was an error running <tt>%s</tt>:\n"
+#~ "\n"
+#~ "%s"
+#~ msgstr ""
+#~ "<tt>%s</tt> ಅನ್ನು ಚಲಾಯಿಸುವಲ್ಲಿ ದೋಷ ಎದುರಾಗಿದೆ:\n"
+#~ "\n"
+#~ "%s"
+
+#~ msgid "No command %d has been defined.\n"
+#~ msgstr "ಯಾವುದೆ %d ಆಜ್ಞೆಯು ಸೂಚಿತಗೊಂಡಿಲ್ಲ.\n"
+
+#~ msgid "No terminal command has been defined.\n"
+#~ msgstr "ಯಾವುದೆ ಟರ್ಮಿನಲ್ ಆಜ್ಞೆಯು ಸೂಚಿತಗೊಂಡಿಲ್ಲ.\n"
+
+#~ msgid "GConf key '%s' is set to an invalid value\n"
+#~ msgstr "GConf ಕೀಲಿ \"%s\" ಯು ಒಂದು ಮಾನ್ಯವಾದ ಮೌಲ್ಯಕ್ಕೆ ಹೊಂದಿಸಲ್ಪಟ್ಟಿಲ್ಲ\n"
+
+#~ msgid "GConf key \"%s\" is set to an invalid type\n"
+#~ msgstr "GConf ಕೀಲಿ \"%s\" ಯು ಒಂದು ಮಾನ್ಯವಾದ ಬಗೆಗೆ ಹೊಂದಿಸಲ್ಪಟ್ಟಿಲ್ಲ\n"
+
+#~ msgid "GConf key %s is already in use and can't be used to override %s\n"
+#~ msgstr ""
+#~ "%s ಎಂಬ GConf ಕೀಲಿಯು ಈಗಾಗಲೆ ಬಳಕೆಯಲ್ಲಿದೆ ಹಾಗು ಅದನ್ನು %s ಅನ್ನು ಅತಿಕ್ರಮಿಸಲು ಬಳಸಲು "
+#~ "ಸಾಧ್ಯವಿಲ್ಲ\n"
+
+#~ msgid "Can't override GConf key, %s not found\n"
+#~ msgstr "GConf ಕೀಲಿಯನ್ನು ಅತಿಕ್ರಮಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ, %s ಕಂಡುಬಂದಿಲ್ಲ\n"
+
+#~ msgid "Error setting number of workspaces to %d: %s\n"
+#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರಗಳ ಸಂಖ್ಯೆಯನ್ನು %d ಗೆ ಹೊಂದಿಸುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ: %s\n"
+
+#~ msgid "Close Window"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಮುಚ್ಚು"
+
+#~ msgid "Window Menu"
+#~ msgstr "ವಿಂಡೊ ಮೆನು"
+
+#~ msgid "Minimize Window"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕುಗ್ಗಿಸು"
+
+#~ msgid "Maximize Window"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಹಿಗ್ಗಿಸು"
+
+#~| msgid "Resize window"
+#~ msgid "Restore Window"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಮರಳಿ ಸ್ಥಾಪಿಸು"
+
+#~ msgid "Roll Up Window"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಉರುಳಿಸಿ"
+
+#~ msgid "Unroll Window"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಸುತ್ತಿ"
+
+#~ msgid "Keep Window On Top"
+#~ msgstr "ವಿಂಡೊ ಅನ್ನು ಮೇಲ್ಭಾಗದಲ್ಲಿ ಇರಿಸು"
+
+#~ msgid "Always On Visible Workspace"
+#~ msgstr "ಯಾವಾಗಲೂ ಕಾಣಿಸುವ ಕಾರ್ಯಕ್ಷೇತ್ರದಲ್ಲಿ"
+
+#~ msgid "Put Window On Only One Workspace"
+#~ msgstr "ವಿಂಡೊವನ್ನು ಕೇವಲ ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದಲ್ಲಿ ಇರಿಸು"
 
 #~ msgid "Window Management"
 #~ msgstr "ವಿಂಡೊ ನಿರ್ವಹಣೆ"
