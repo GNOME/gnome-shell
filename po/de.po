@@ -4,14 +4,15 @@
 # Wolfgang Stöggl <c72578@yahoo.de>, 2011.
 # Viktor Nyberg <greenscandic@googlemail.com>, 2011.
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2012.
+# Christian Kirbach <Christian.Kirbach@googlemail.com>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-23 13:53+0000\n"
-"PO-Revision-Date: 2012-03-24 20:41+0100\n"
+"POT-Creation-Date: 2012-03-27 21:13+0000\n"
+"PO-Revision-Date: 2012-04-01 12:39+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -58,7 +59,7 @@ msgstr "Cogl-Einstellungen anzeigen"
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
 msgid "Cogl Tracing"
-msgstr ""
+msgstr "Cogl-Tracing"
 
 #: ../cogl/cogl-debug-options.h:27
 msgid "CoglObject references"
@@ -70,7 +71,7 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
-msgstr ""
+msgstr "Textur-Slicing verfolgen"
 
 #: ../cogl/cogl-debug-options.h:33
 msgid "debug the creation of texture slices"
@@ -78,23 +79,23 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
-msgstr ""
+msgstr "Atlas-Texturen verfolgen"
 
 #: ../cogl/cogl-debug-options.h:38
 msgid "Debug texture atlas management"
-msgstr ""
+msgstr "Textur-Atlas-Verwaltung Diagnostizieren"
 
 #: ../cogl/cogl-debug-options.h:42
 msgid "Trace Blend Strings"
-msgstr ""
+msgstr "Blend-Strings verfolgen"
 
 #: ../cogl/cogl-debug-options.h:43
 msgid "Debug CoglBlendString parsing"
-msgstr ""
+msgstr "Vearbeitung von CoglBlendString diagnostizieren"
 
 #: ../cogl/cogl-debug-options.h:47
 msgid "Trace Journal"
-msgstr ""
+msgstr "Journal verfolgen"
 
 #: ../cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
@@ -102,7 +103,7 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
-msgstr ""
+msgstr "Batching verfolgen"
 
 #: ../cogl/cogl-debug-options.h:53
 msgid "Show how geometry is being batched in the journal"
@@ -118,11 +119,11 @@ msgstr "Alle Matrix-Manipulationen verfolgen"
 
 #: ../cogl/cogl-debug-options.h:63
 msgid "Trace Misc Drawing"
-msgstr ""
+msgstr "Zeichnung verfolgen"
 
 #: ../cogl/cogl-debug-options.h:64
 msgid "Trace some misc drawing operations"
-msgstr ""
+msgstr "Einige Zeichenvorgänge verfolgen"
 
 #: ../cogl/cogl-debug-options.h:68
 msgid "Trace Pango Renderer"
@@ -134,11 +135,11 @@ msgstr "Den Cogl Pango-Renderer verfolgen"
 
 #: ../cogl/cogl-debug-options.h:73
 msgid "Trace CoglTexturePixmap backend"
-msgstr ""
+msgstr "CoglTexturePixmap-Backend verfolgen"
 
 #: ../cogl/cogl-debug-options.h:74
 msgid "Trace the Cogl texture pixmap backend"
-msgstr ""
+msgstr "Das Cogl Textur-pixmap-Backend verfolgen"
 
 #: ../cogl/cogl-debug-options.h:76 ../cogl/cogl-debug-options.h:81
 msgid "Visualize"
@@ -169,11 +170,11 @@ msgstr "Umrandungen zu allen geometrischen Formen hinzufügen"
 #: ../cogl/cogl-debug-options.h:153 ../cogl/cogl-debug-options.h:173
 #: ../cogl/cogl-debug-options.h:178
 msgid "Root Cause"
-msgstr ""
+msgstr "Hauptursache"
 
 #: ../cogl/cogl-debug-options.h:88
 msgid "Disable Journal batching"
-msgstr ""
+msgstr "Journal-Stapelung ausschalten"
 
 #: ../cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
@@ -207,27 +208,27 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:106
 msgid "Cogl Specialist"
-msgstr ""
+msgstr "Cogl-Spezialist"
 
 #: ../cogl/cogl-debug-options.h:108
 msgid "Dump atlas images"
-msgstr ""
+msgstr "Atlas-Bilder ausgeben"
 
 #: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
-msgstr ""
+msgstr "Änderungen am Textur-Atlas in eine Bilddatei ausgeben"
 
 #: ../cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
-msgstr ""
+msgstr "Textur-Atlasing ausschalten"
 
 #: ../cogl/cogl-debug-options.h:114
 msgid "Disable use of texture atlasing"
-msgstr ""
+msgstr "Verwendung des Textur-Atlasing ausschalten"
 
 #: ../cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
-msgstr ""
+msgstr "Teilen des Textur-Atlas zwischen Text und Bildern deaktivieren"
 
 #: ../cogl/cogl-debug-options.h:119
 msgid ""
@@ -280,7 +281,7 @@ msgstr "Blending nicht verwenden"
 
 #: ../cogl/cogl-debug-options.h:149
 msgid "Disable non-power-of-two textures"
-msgstr ""
+msgstr "Nicht-Zweierpotenz-Texturen deaktivieren"
 
 #: ../cogl/cogl-debug-options.h:150
 msgid ""
@@ -307,19 +308,19 @@ msgstr "Erstellten ARBFP/GLSL-Quelltext anzeigen"
 
 #: ../cogl/cogl-debug-options.h:165
 msgid "Trace some OpenGL"
-msgstr ""
+msgstr "OpenGL verfolgen"
 
 #: ../cogl/cogl-debug-options.h:166
 msgid "Traces some select OpenGL calls"
-msgstr ""
+msgstr "Einige OpenGL-Aufrufe verfolgen"
 
 #: ../cogl/cogl-debug-options.h:170
 msgid "Trace offscreen support"
-msgstr ""
+msgstr "Offscreen-Unterstützung verfolgen"
 
 #: ../cogl/cogl-debug-options.h:171
 msgid "Debug offscreen support"
-msgstr ""
+msgstr "Offscreen-Unterstützung diagnostizieren"
 
 #: ../cogl/cogl-debug-options.h:175
 msgid "Disable program caches"
@@ -340,8 +341,8 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:186
 msgid "Trace clipping"
-msgstr ""
+msgstr "Clipping verfolgen"
 
 #: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
-msgstr ""
+msgstr "Protokolliert Informationen, wie Cogl Clipping implementiert"
