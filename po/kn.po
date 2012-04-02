@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-03-30 17:59+0000\n"
-"PO-Revision-Date: 2012-04-02 18:09+0530\n"
+"PO-Revision-Date: 2012-04-02 18:29+0530\n"
 "Last-Translator: s\n"
 "Language-Team: Kannada <kn@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -665,7 +665,7 @@ msgstr "ನಿಮ್ಮ ವ್ಯವಸ್ಥೆಯನ್ನು ಮರಳಿ ಆ
 
 #: ../js/ui/extensionSystem.js:403
 msgid "Install"
-msgstr ""
+msgstr "ಅನುಸ್ಥಾಪಿಸು"
 
 #: ../js/ui/extensionSystem.js:407
 #, c-format
@@ -673,10 +673,9 @@ msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr ""
 
 #: ../js/ui/keyboard.js:327
-#, fuzzy
 #| msgid "Retry"
 msgid "tray"
-msgstr "ಮರಳಿ ಆರಂಭಿಸು"
+msgstr "ಟ್ರೇ"
 
 #: ../js/ui/keyboard.js:544 ../js/ui/status/power.js:203
 msgid "Keyboard"
@@ -684,11 +683,11 @@ msgstr "ಕೀಲಿಮಣೆ"
 
 #: ../js/ui/keyringPrompt.js:85 ../js/ui/polkitAuthenticationAgent.js:272
 msgid "Password:"
-msgstr ""
+msgstr "ದಾಟುಪದ:"
 
 #: ../js/ui/keyringPrompt.js:101
 msgid "Type again:"
-msgstr ""
+msgstr "ಇನ್ನೊಮ್ಮೆ ನಮೂದಿಸಿ:"
 
 #: ../js/ui/lookingGlass.js:732
 msgid "No extensions installed"
@@ -701,16 +700,14 @@ msgid "%s has not emitted any errors."
 msgstr ""
 
 #: ../js/ui/lookingGlass.js:792
-#, fuzzy
 #| msgid "Error"
 msgid "Hide Errors"
-msgstr "ದೋಷ"
+msgstr "ದೋಷಗಳನ್ನು ಅಡಗಿಸು"
 
 #: ../js/ui/lookingGlass.js:796 ../js/ui/lookingGlass.js:847
-#, fuzzy
 #| msgid "Error"
 msgid "Show Errors"
-msgstr "ದೋಷ"
+msgstr "ದೋಷಗಳನ್ನು ತೋರಿಸು"
 
 #: ../js/ui/lookingGlass.js:805
 msgid "Enabled"
@@ -732,7 +729,7 @@ msgstr "ಹಳೆಯದಾಗಿದೆ"
 
 #: ../js/ui/lookingGlass.js:814
 msgid "Downloading"
-msgstr ""
+msgstr "ಇಳಿಸಿಕೊಳ್ಳಲಾಗುತ್ತಿದೆ"
 
 #: ../js/ui/lookingGlass.js:835
 msgid "View Source"
@@ -750,7 +747,7 @@ msgstr ""
 
 #: ../js/ui/messageTray.js:1200
 msgid "Open"
-msgstr ""
+msgstr "ತೆರೆ"
 
 #: ../js/ui/messageTray.js:1217
 #, fuzzy
@@ -760,43 +757,41 @@ msgid "Unmute"
 msgstr "ನಿಮಿಷ"
 
 #: ../js/ui/messageTray.js:1217
-#, fuzzy
 #| msgid "Mouse"
 msgid "Mute"
-msgstr "ಮೌಸ್"
+msgstr "ಮೂಕಗೊಳಿಸು"
 
 #: ../js/ui/messageTray.js:2490
 msgid "System Information"
 msgstr "ವ್ಯವಸ್ಥೆಯ ಮಾಹಿತಿ"
 
 #: ../js/ui/networkAgent.js:148
-#, fuzzy
 #| msgid "Connection"
 msgid "Connect"
-msgstr "ಸಂಪರ್ಕ"
+msgstr "ಸಂಪರ್ಕ ಜೋಡಿಸು"
 
 #. Cisco LEAP
 #: ../js/ui/networkAgent.js:243 ../js/ui/networkAgent.js:255
 #: ../js/ui/networkAgent.js:282 ../js/ui/networkAgent.js:302
 #: ../js/ui/networkAgent.js:312
 msgid "Password: "
-msgstr ""
+msgstr "ದಾಟುಪದ: "
 
 #. static WEP
 #: ../js/ui/networkAgent.js:248
 msgid "Key: "
-msgstr ""
+msgstr "ಕೀಲಿ: "
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
 #: ../js/ui/networkAgent.js:280 ../js/ui/networkAgent.js:298
 msgid "Username: "
-msgstr ""
+msgstr "ಬಳಕೆದಾರ ಹೆಸರು: "
 
 #: ../js/ui/networkAgent.js:286
 msgid "Identity: "
-msgstr ""
+msgstr "ಗುರುತು: "
 
 #: ../js/ui/networkAgent.js:288
 msgid "Private key password: "
@@ -804,7 +799,7 @@ msgstr ""
 
 #: ../js/ui/networkAgent.js:300
 msgid "Service: "
-msgstr ""
+msgstr "ಸೇವೆ: "
 
 #: ../js/ui/networkAgent.js:329
 msgid "Authentication required by wireless network"
@@ -823,11 +818,11 @@ msgstr ""
 
 #: ../js/ui/networkAgent.js:336
 msgid "Network name: "
-msgstr ""
+msgstr "ಜಾಲಬಂಧದ ಹೆಸರು: "
 
 #: ../js/ui/networkAgent.js:341
 msgid "DSL authentication"
-msgstr ""
+msgstr "DSL ದೃಢೀಕರಣ"
 
 #: ../js/ui/networkAgent.js:348
 msgid "PIN code required"
@@ -839,7 +834,7 @@ msgstr ""
 
 #: ../js/ui/networkAgent.js:350
 msgid "PIN: "
-msgstr ""
+msgstr "PIN: "
 
 #: ../js/ui/networkAgent.js:356
 msgid "Mobile broadband network password"
@@ -856,7 +851,7 @@ msgstr "ರದ್ದುಗೊಳಿಸು"
 
 #: ../js/ui/overview.js:132
 msgid "Overview"
-msgstr ""
+msgstr "ಅವಲೋಕನ"
 
 #: ../js/ui/overview.js:202
 msgid "Windows"
@@ -873,10 +868,9 @@ msgid "Dash"
 msgstr ""
 
 #: ../js/ui/panel.js:592
-#, fuzzy
 #| msgid "Quit %s"
 msgid "Quit"
-msgstr "%s ಇಂದ ನಿರ್ಗಮಿಸು"
+msgstr "ನಿರ್ಗಮಿಸು"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
@@ -907,15 +901,15 @@ msgstr "PLACES & DEVICES"
 
 #: ../js/ui/polkitAuthenticationAgent.js:71
 msgid "Authentication Required"
-msgstr ""
+msgstr "ದೃಢೀಕರಣದ ಅಗತ್ಯವಿದೆ"
 
 #: ../js/ui/polkitAuthenticationAgent.js:109
 msgid "Administrator"
-msgstr ""
+msgstr "ವ್ಯವಸ್ಥಾಪಕ"
 
 #: ../js/ui/polkitAuthenticationAgent.js:179
 msgid "Authenticate"
-msgstr ""
+msgstr "ದೃಢೀಕರಿಸು"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
@@ -948,31 +942,29 @@ msgstr "ಯಾವುದೆ ಫಲಿತಾಂಶಗಳು ತಾಳೆಯಾಗ�
 
 #: ../js/ui/shellEntry.js:26
 msgid "Copy"
-msgstr ""
+msgstr "ಪ್ರತಿಮಾಡು"
 
 #: ../js/ui/shellEntry.js:31
 msgid "Paste"
-msgstr ""
+msgstr "ಅಂಟಿಸು"
 
 #: ../js/ui/shellEntry.js:77
 msgid "Show Text"
-msgstr ""
+msgstr "ಪಠ್ಯವನ್ನು ತೋರಿಸು"
 
 #: ../js/ui/shellEntry.js:79
-#, fuzzy
 #| msgid "Large Text"
 msgid "Hide Text"
-msgstr "ದೊಡ್ಡ ಪಠ್ಯ"
+msgstr "ಪಠ್ಯವನ್ನು ಅಡಗಿಸು"
 
 #: ../js/ui/shellMountOperation.js:271
 msgid "Wrong password, please try again"
-msgstr ""
+msgstr "ಗುಪ್ತಪದ ತಪ್ಪಾಗಿದೆ; ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸು"
 
 #: ../js/ui/status/accessibility.js:47
-#, fuzzy
 #| msgid "Visibility"
 msgid "Accessibility"
-msgstr "ಗೋಚರಿಕೆ"
+msgstr "ನಿಲುಕಣೆ"
 
 #: ../js/ui/status/accessibility.js:52
 msgid "Zoom"
@@ -1033,10 +1025,9 @@ msgid "Send Files to Device..."
 msgstr "ಸಾಧನಕ್ಕೆ ಕಡತಗಳನ್ನು ಕಳುಹಿಸಿ..."
 
 #: ../js/ui/status/bluetooth.js:63
-#, fuzzy
 #| msgid "Setup a New Device..."
 msgid "Set up a New Device..."
-msgstr "ಒಂದು ಹೊಸ ಸಾಧನವನ್ನು ಸಿದ್ಧಗೊಳಿಸಿ..."
+msgstr "ಒಂದು ಹೊಸ ಸಾಧನವನ್ನು ಸಿದ್ಧಗೊಳಿಸು..."
 
 #: ../js/ui/status/bluetooth.js:87
 msgid "Bluetooth Settings"
@@ -1058,10 +1049,9 @@ msgid "disconnecting..."
 msgstr "ಇದಕ್ಕೆ ಸಂಪರ್ಕ ಜೋಡಿಸಿ..."
 
 #: ../js/ui/status/bluetooth.js:227 ../js/ui/status/network.js:497
-#, fuzzy
 #| msgid "Connection"
 msgid "connecting..."
-msgstr "ಸಂಪರ್ಕ"
+msgstr "ಸಂಪರ್ಕ ಹೊಂದಲಾಗುತ್ತಿದೆ..."
 
 #: ../js/ui/status/bluetooth.js:245
 msgid "Send Files..."
@@ -1155,16 +1145,14 @@ msgid "Show Keyboard Layout"
 msgstr ""
 
 #: ../js/ui/status/keyboard.js:73
-#, fuzzy
 #| msgid "Date and Time Settings"
 msgid "Region and Language Settings"
-msgstr "ದಿನಾಂಕ ಹಾಗು ಸಮಯದ ಸಿದ್ಧತೆಗಳು"
+msgstr "ಪ್ರದೇಶ ಮತ್ತು ಭಾಷೆ ಸಿದ್ಧತೆಗಳು"
 
 #: ../js/ui/status/network.js:96
-#, fuzzy
 #| msgid "Unknown"
 msgid "<unknown>"
-msgstr "ಗೊತ್ತಿರದ"
+msgstr "<ಗೊತ್ತಿರದ>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
 #: ../js/ui/status/network.js:278
@@ -1182,7 +1170,7 @@ msgstr ""
 #. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:500
 msgid "authentication required"
-msgstr ""
+msgstr "ದೃಢೀಕರಣದ ಅಗತ್ಯವಿದೆ"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
@@ -1198,20 +1186,18 @@ msgstr ""
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
 #: ../js/ui/status/network.js:522
-#, fuzzy
 #| msgid "Available"
 msgid "unavailable"
-msgstr "ಲಭ್ಯ"
+msgstr "ಅಲಭ್ಯ"
 
 #: ../js/ui/status/network.js:524
-#, fuzzy
 #| msgid "Connection"
 msgid "connection failed"
-msgstr "ಸಂಪರ್ಕ"
+msgstr "ಸಂಪರ್ಕ ವಿಫಲಗೊಂಡಿದೆ"
 
 #: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1505
 msgid "More..."
-msgstr ""
+msgstr "ಇನ್ನಷ್ಟು..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
@@ -1249,14 +1235,13 @@ msgid "Auto wireless"
 msgstr ""
 
 #: ../js/ui/status/network.js:1541
-#, fuzzy
 #| msgid "Next week"
 msgid "Network"
-msgstr "ಮುಂದಿನ ವಾರ"
+msgstr "ಜಾಲಬಂಧ"
 
 #: ../js/ui/status/network.js:1548
 msgid "Enable networking"
-msgstr ""
+msgstr "ಜಾಲಬಂಧವನ್ನು ಅನುಗೊಳಿಸು"
 
 #: ../js/ui/status/network.js:1560
 msgid "Wired"
@@ -1264,29 +1249,26 @@ msgstr ""
 
 #: ../js/ui/status/network.js:1571
 msgid "Wireless"
-msgstr ""
+msgstr "ತಂತಿರಹಿತ"
 
 #: ../js/ui/status/network.js:1581
 msgid "Mobile broadband"
-msgstr ""
+msgstr "ಮೊಬೈಲ್ ಬ್ರಾಡ್‌ಬ್ಯಾಂಡ್"
 
 #: ../js/ui/status/network.js:1591
-#, fuzzy
 #| msgid "Connection"
 msgid "VPN Connections"
-msgstr "ಸಂಪರ್ಕ"
+msgstr "VPN ಸಂಪರ್ಕಗಳು"
 
 #: ../js/ui/status/network.js:1602
-#, fuzzy
 #| msgid "Power Settings"
 msgid "Network Settings"
-msgstr "ವಿದ್ಯುಚ್ಛಕ್ತಿ ಸಿದ್ಧತೆಗಳು"
+msgstr "ಜಾಲಬಂಧ ಸಿದ್ಧತೆಗಳು"
 
 #: ../js/ui/status/network.js:1739
-#, fuzzy
 #| msgid "Connection"
 msgid "Connection failed"
-msgstr "ಸಂಪರ್ಕ"
+msgstr "ಸಂಪರ್ಕವು ವಿಫಲಗೊಂಡಿದೆ"
 
 #: ../js/ui/status/network.js:1740
 msgid "Activation of network connection failed"
@@ -1302,7 +1284,7 @@ msgstr ""
 
 #: ../js/ui/status/power.js:59
 msgid "Battery"
-msgstr ""
+msgstr "ಬ್ಯಾಟರಿ"
 
 #: ../js/ui/status/power.js:76
 msgid "Power Settings"
@@ -1350,7 +1332,7 @@ msgstr[1] "%d ನಿಮಿಷಗಳು ಬಾಕಿ ಇವೆ"
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #: ../js/ui/status/power.js:193
 msgid "AC adapter"
@@ -1405,31 +1387,28 @@ msgstr "ಮೈಕ್ರೊಫೋನ್"
 #. system-users for now as Empathy does.
 #: ../js/ui/telepathyClient.js:220
 msgid "Invitation"
-msgstr ""
+msgstr "ಆಹ್ವಾನ"
 
 #. We got the TpContact
 #: ../js/ui/telepathyClient.js:271
-#, fuzzy
 #| msgid "Cancel"
 msgid "Call"
-msgstr "ರದ್ದು ಮಾಡು"
+msgstr "ಕರೆ"
 
 #. We got the TpContact
 #: ../js/ui/telepathyClient.js:287
 msgid "File Transfer"
-msgstr ""
+msgstr "ಕಡತದ ವರ್ಗಾವಣೆ"
 
 #: ../js/ui/telepathyClient.js:369
-#, fuzzy
 #| msgid "Authorization request from %s"
 msgid "Subscription request"
-msgstr "%s ಇಂದ ದೃಢೀಕರಣ ದೋಷ"
+msgstr "ಚಂದಾದಾರಿಕೆ ಮನವಿ"
 
 #: ../js/ui/telepathyClient.js:405
-#, fuzzy
 #| msgid "Connection"
 msgid "Connection error"
-msgstr "ಸಂಪರ್ಕ"
+msgstr "ಸಂಪರ್ಕ ದೋಷ"
 
 #: ../js/ui/telepathyClient.js:663
 #, c-format
@@ -1455,10 +1434,10 @@ msgstr "%s\" ಕಾರ್ಯನಿರತವಾಗಿದ್ದಾರೆ."
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
 #: ../js/ui/telepathyClient.js:887
-#, fuzzy, no-c-format
+#, no-c-format
 #| msgid "Sent at %X on %A"
 msgid "Sent at <b>%X</b> on <b>%A</b>"
-msgstr "%X ಕ್ಕೆ %A ರಂದು ಕಳುಹಿಸಲಾಗಿದೆ"
+msgstr "<b>%A</b>  ರಂದು <b>%X</b> ಗೆ ಕಳುಹಿಸಲಾಗಿದೆ"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
@@ -1499,12 +1478,12 @@ msgstr ""
 #: ../js/ui/telepathyClient.js:1052 ../js/ui/telepathyClient.js:1131
 #: ../js/ui/telepathyClient.js:1229
 msgid "Decline"
-msgstr ""
+msgstr "ತಿರಸ್ಕರಿಸು"
 
 #: ../js/ui/telepathyClient.js:1053 ../js/ui/telepathyClient.js:1132
 #: ../js/ui/telepathyClient.js:1230
 msgid "Accept"
-msgstr ""
+msgstr "ಅಂಗೀಕರಿಸು"
 
 #. translators: argument is a contact name like Alice for example.
 #: ../js/ui/telepathyClient.js:1083
@@ -1521,7 +1500,7 @@ msgstr ""
 #. translators: this is a button label (verb), not a noun
 #: ../js/ui/telepathyClient.js:1093
 msgid "Answer"
-msgstr ""
+msgstr "ಉತ್ತರ"
 
 #. To translators: The first parameter is
 #. * the contact's alias and the second one is the
@@ -1538,108 +1517,116 @@ msgstr ""
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr ""
+"ನೀವು ಯಾವಾಗ ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ಇರುತ್ತೀರಿ ಎಂದು ತಿಳಿಯಲು %s ರವರು ನಿಮ್ಮ ಅನುಮತಿಯನ್ನು "
+"ಕೋರಿದ್ದಾರೆ"
 
 #: ../js/ui/telepathyClient.js:1287
 msgid "Network error"
-msgstr ""
+msgstr "ಜಾಲಬಂಧದ ದೋಷ"
 
 #: ../js/ui/telepathyClient.js:1289
 msgid "Authentication failed"
-msgstr ""
+msgstr "ದೃಢೀಕರಣವು ವಿಫಲಗೊಂಡಿದೆ"
 
 #: ../js/ui/telepathyClient.js:1291
 msgid "Encryption error"
-msgstr ""
+msgstr "ಗೂಢಲಿಪೀಕರಣ ದೋಷ"
 
 #: ../js/ui/telepathyClient.js:1293
 msgid "Certificate not provided"
-msgstr ""
+msgstr "ಪ್ರಮಾಣಪತ್ರವನ್ನು ಒದಗಿಸಲಾಗಿಲ್ಲ"
 
 #: ../js/ui/telepathyClient.js:1295
 msgid "Certificate untrusted"
-msgstr ""
+msgstr "ಪ್ರಮಾಣಪತ್ರವನ್ನು ನಂಬಲಾಗಿಲ್ಲ"
 
 #: ../js/ui/telepathyClient.js:1297
 msgid "Certificate expired"
-msgstr ""
+msgstr "ಪ್ರಮಾಣಪತ್ರದ ಕಾಲಾವಧಿ ತೀರಿದೆ"
 
 #: ../js/ui/telepathyClient.js:1299
 msgid "Certificate not activated"
-msgstr ""
+msgstr "ಪ್ರಮಾಣಪತ್ರವು ಸಕ್ರಿಯಗೊಂಡಿಲ್ಲ"
 
 #: ../js/ui/telepathyClient.js:1301
 msgid "Certificate hostname mismatch"
-msgstr ""
+msgstr "ಪ್ರಮಾಣಪತ್ರದ ಅತಿಥೇಯದ ಹೆಸರು ತಾಳೆಯಾಗುತ್ತಿಲ್ಲ"
 
 #: ../js/ui/telepathyClient.js:1303
 msgid "Certificate fingerprint mismatch"
-msgstr ""
+msgstr "ಪ್ರಮಾಣಪತ್ರದ ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ತಾಳೆಯಾಗುತ್ತಿಲ್ಲ"
 
 #: ../js/ui/telepathyClient.js:1305
 msgid "Certificate self-signed"
-msgstr ""
+msgstr "ಪ್ರಮಾಣಪತ್ರವು ಸ್ವತಃ ಸೈನ್ ಮಾಡಲ್ಪಟ್ಟಿದೆ"
 
 #: ../js/ui/telepathyClient.js:1307
-#, fuzzy
 #| msgid "%s is offline."
 msgid "Status is set to offline"
-msgstr "%s ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿದ್ದಾರೆ."
+msgstr "ಸ್ಥಿತಿಯನ್ನು ಆಫ್‌ಲೈನ್‌ ಎಂದು ಸೂಚಿಸಿದ್ದಾರೆ."
 
 #: ../js/ui/telepathyClient.js:1309
 msgid "Encryption is not available"
-msgstr ""
+msgstr "ಗೂಢಲಿಪೀಕರಣ ಲಭ್ಯವಿಲ್ಲ"
 
 #: ../js/ui/telepathyClient.js:1311
 msgid "Certificate is invalid"
-msgstr ""
+msgstr "ಪ್ರಮಾಣಪತ್ರವು ಅಮಾನ್ಯವಾಗಿದೆ"
 
 #: ../js/ui/telepathyClient.js:1313
 msgid "Connection has been refused"
-msgstr ""
+msgstr "ಸಂಪರ್ಕವನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ"
 
 #: ../js/ui/telepathyClient.js:1315
 msgid "Connection can't be established"
-msgstr ""
+msgstr "ಸಂಪರ್ಕವನ್ನು ಸಾಧಿಸಲಾಗಿಲ್ಲ"
 
 #: ../js/ui/telepathyClient.js:1317
 msgid "Connection has been lost"
-msgstr ""
+msgstr "ಸಂಪರ್ಕವು ಕಡಿದು ಹೋಗಿದೆ"
 
 #: ../js/ui/telepathyClient.js:1319
 msgid "This account is already connected to the server"
-msgstr ""
+msgstr "ಈ ಖಾತೆಯು ಈಗಾಗಲೆ ಪರಿಚಾರಕದೊಂದಿಗೆ ಸಂಪರ್ಕ ಜೋಡಿಸಲಾಗಿದೆ"
 
 #: ../js/ui/telepathyClient.js:1321
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
+"ಒಂದು ಹೊಸ ಸಂಪರ್ಕದಿಂದ ಈ ಸಂಪರ್ಕವನ್ನು ಇದೇ ಸಂಪನ್ಮೂಲವನ್ನು ಬಳಸಿಕೊಂಡು ಬದಲಾಯಿಸಲಾಗಿದೆ"
 
 #: ../js/ui/telepathyClient.js:1323
 msgid "The account already exists on the server"
-msgstr ""
+msgstr "ಖಾತೆಯು ಈಗಾಗಲೆ ಪರಿಚಾರಕದಲ್ಲಿ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ"
 
 #: ../js/ui/telepathyClient.js:1325
 msgid "Server is currently too busy to handle the connection"
-msgstr ""
+msgstr "ಪರಿಚಾರಕಕ್ಕೆ ಬಿಡುವಿಲ್ಲದ ಕಾರಣ ಸಂಪರ್ಕವನ್ನು ನಿಭಾಯಿಸಲಾಗುತ್ತಿಲ್ಲ"
 
 #: ../js/ui/telepathyClient.js:1327
 msgid "Certificate has been revoked"
-msgstr ""
+msgstr "ಪ್ರಮಾಣಪತ್ರವನ್ನು ಹಿಂದಕ್ಕೆ ತೆಗೆದುಕೊಳ್ಳಲಾಗಿದೆ"
 
 #: ../js/ui/telepathyClient.js:1329
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
+"ಪ್ರಮಾಣಪತ್ರವು ಅಸುರಕ್ಷಿತವಾದ ಸಿಫರ್ ಅಲ್ಗಾರಿತಮ್ ಅನ್ನು ಬಳಸುತ್ತದೆ ಅಥವ ದುರ್ಬಲ "
+"ಗೂಢಲಿಪೀಕರಣವನ್ನು "
+"ಹೊಂದಿದೆ"
 
 #: ../js/ui/telepathyClient.js:1331
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
 msgstr ""
+"ಪರಿಚಾರಕ ಪ್ರಮಾಣಪತ್ರದ ಉದ್ದ ಅಥವ ಪರಿಚಾರಕ ಪ್ರಮಾಣಪತ್ರ ಸರಣಿಯ ಆಳವು ಕ್ರಿಪ್ಟೋಗ್ರಫಿ "
+"ಲೈಬ್ರರಿಯಿಂದ "
+"ನಿಗದಿ ಪಡಿಸಲಾದ ಮಿತಿಗಳನ್ನು ಮೀರಿದೆ."
 
 #: ../js/ui/telepathyClient.js:1333
 msgid "Internal error"
-msgstr ""
+msgstr "ಆಂತರಿಕ ತಪ್ಪು"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
@@ -1650,52 +1637,46 @@ msgid "Connection to %s failed"
 msgstr "'%s' ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ:"
 
 #: ../js/ui/telepathyClient.js:1352
-#, fuzzy
 #| msgid "Reject"
 msgid "Reconnect"
-msgstr "ತಿರಸ್ಕರಿಸು"
+msgstr "ಮರಳಿ ಸಂಪರ್ಕ ಜೋಡಿಸು"
 
 #: ../js/ui/telepathyClient.js:1353
-#, fuzzy
 #| msgid "My Account"
 msgid "Edit account"
-msgstr "ನನ್ನ ಖಾತೆ"
+msgstr "ಖಾತೆಯನ್ನು ಸಂಪಾದಿಸು"
 
 #: ../js/ui/telepathyClient.js:1399
-#, fuzzy
 #| msgid "Unknown"
 msgid "Unknown reason"
-msgstr "ಗೊತ್ತಿರದ"
+msgstr "ಅಜ್ಞಾತ ಕಾರಣ"
 
 #: ../js/ui/userMenu.js:135
 msgid "Hidden"
-msgstr ""
+msgstr "ಅಡಗಿಸಲಾದ"
 
 #: ../js/ui/userMenu.js:141
 msgid "Idle"
-msgstr ""
+msgstr "ಜಡ"
 
 #: ../js/ui/userMenu.js:144
-#, fuzzy
 #| msgid "Available"
 msgid "Unavailable"
-msgstr "ಲಭ್ಯ"
+msgstr "ಅಲಭ್ಯ"
 
 #: ../js/ui/userMenu.js:595 ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:669
 msgid "Power Off..."
-msgstr ""
+msgstr "ಸ್ಥಗಿತಗೊಳಿಸು..."
 
 #: ../js/ui/userMenu.js:631
-#, fuzzy
 #| msgid "Applications"
 msgid "Notifications"
-msgstr "ಅನ್ವಯಗಳು"
+msgstr "ಸೂಚನೆಗಳು"
 
 #: ../js/ui/userMenu.js:639
-#, fuzzy
 #| msgid "My Account"
 msgid "Online Accounts"
-msgstr "ನನ್ನ ಖಾತೆ"
+msgstr "ಅಂತರಜಾಲದಲ್ಲಿನ ಖಾತೆಗಳು"
 
 #: ../js/ui/userMenu.js:643
 msgid "System Settings"
@@ -1780,7 +1761,7 @@ msgstr "ವ್ಯವಸ್ಥೆಯ ಧ್ವನಿಗಳು"
 
 #: ../src/main.c:255
 msgid "Print version"
-msgstr ""
+msgstr "ಮುದ್ರಿಸಬಹುದಾದ ಆವೃತ್ತಿ"
 
 #: ../src/main.c:261
 msgid "Mode used by GDM for login screen"
@@ -1793,10 +1774,9 @@ msgid "Failed to launch '%s'"
 msgstr "'%s' ಅನ್ನು ಅವರೋಹಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 #: ../src/shell-keyring-prompt.c:708
-#, fuzzy
 #| msgid "Does not match"
 msgid "Passwords do not match."
-msgstr "ತಾಳೆಯಾಗುತ್ತಿಲ್ಲ"
+msgstr "ದಾಟುಪದಗಳು ತಾಳೆಯಾಗುವುದಿಲ್ಲ."
 
 #: ../src/shell-keyring-prompt.c:716
 msgid "Password cannot be blank"
@@ -1804,11 +1784,11 @@ msgstr ""
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
-msgstr ""
+msgstr "ಯುನೈಟೆಡ್ ಕಿಂಗ್‌ಡಮ್"
 
 #: ../src/shell-mobile-providers.c:526
 msgid "Default"
-msgstr ""
+msgstr "ಪೂರ್ವನಿಯೋಜಿತ"
 
 #: ../src/shell-polkit-authentication-agent.c:339
 msgid "Authentication dialog was dismissed by the user"
@@ -1817,10 +1797,9 @@ msgstr ""
 #. Translators: this is the same string as the one found in
 #. * nautilus
 #: ../src/shell-util.c:97
-#, fuzzy
 #| msgid "Volume"
 msgid "Home"
-msgstr "ಧ್ವನಿ ಪ್ರಮಾಣ"
+msgstr "ನೆಲೆ"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
