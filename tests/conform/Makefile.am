@@ -17,7 +17,6 @@ unported_test_sources = \
 	test-multitexture.c \
 	test-npot-texture.c \
 	test-object.c \
-	test-premult.c \
 	test-readpixels.c \
 	test-texture-get-set-data.c \
 	test-texture-mipmaps.c \
@@ -40,6 +39,7 @@ test_sources = \
 	test-pipeline-user-matrix.c \
 	test-pipeline-uniforms.c \
 	test-pixel-buffer.c \
+	test-premult.c \
 	test-snippets.c \
 	test-wrap-modes.c \
 	test-sub-texture.c \

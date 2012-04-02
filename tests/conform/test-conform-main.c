@@ -53,7 +53,7 @@ main (int argc, char **argv)
   UNPORTED_TEST (test_materials);
   ADD_TEST (test_pipeline_user_matrix, 0);
   ADD_TEST (test_blend_strings, 0);
-  UNPORTED_TEST (test_premult);
+  ADD_TEST (test_premult, 0);
   UNPORTED_TEST (test_readpixels);
   ADD_TEST (test_path, 0);
   ADD_TEST (test_depth_test, 0);
