@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-03-30 17:59+0000\n"
-"PO-Revision-Date: 2012-04-02 18:29+0530\n"
+"PO-Revision-Date: 2012-04-03 17:33+0530\n"
 "Last-Translator: s\n"
 "Language-Team: Kannada <kn@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -30,11 +30,11 @@ msgstr "ವಿಂಡೊ ನಿರ್ವಹಣೆ ಹಾಗು ಅನ್ವಯವ
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 #: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extension Preferences"
-msgstr ""
+msgstr "GNOME ಶೆಲ್ ಎಕ್ಸ್‍ಟೆನ್ಶನ್ಸ್‍ ಆದ್ಯತೆಗಳು"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
-msgstr ""
+msgstr "GNOME ಶೆಲ್ ಎಕ್ಸ್‍ಟೆನ್ಶನ್ಸ್‍ ಅನ್ನು ಸಂರಚಿಸಿ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -52,10 +52,9 @@ msgstr ""
 "ನಿಲುಕಿಸಿಕೊಳ್ಳಲು ಅನುವುಮಾಡಿಕೊಡುತ್ತದೆ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
-#, fuzzy
 #| msgid "Uuids of extensions to disable"
 msgid "Uuids of extensions to enable"
-msgstr "ಅಶಕ್ತಗೊಳಿಸಬೇಕಿರುವ Uuidಗಳ ವಿಸ್ತರಣೆಗಳು"
+msgstr "ಸಕ್ರಿಯಗೊಳಿಸಬೇಕಿರುವ ವಿಸ್ತರಣೆಗಳ Uuidಗಳು"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid ""
@@ -122,19 +121,19 @@ msgstr "true ಆದಲ್ಲಿ, ಕ್ಯಾಲೆಂಡರಿನಲ್ಲಿ I
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Keybinding to open the application menu"
-msgstr ""
+msgstr "ಅನ್ವಯಗಳ ಮೆನುವನ್ನು ತೆರೆಯಬೇಕಿರುವ ಕೀಲಿಬೈಂಡಿಂಗ್"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid "Keybinding to open the application menu."
-msgstr ""
+msgstr "ಅನ್ವಯಗಳ ಮೆನುವನ್ನು ತೆರೆಯಬೇಕಿರುವ ಕೀಲಿಬೈಂಡಿಂಗ್."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "Which keyboard to use"
-msgstr ""
+msgstr "ಯಾವ ಕೀಲಿಮಣೆಯನ್ನು ಬಳಸಬೇಕಿದೆ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The type of keyboard to use."
-msgstr ""
+msgstr "ಬಳಸಬೇಕಿರುವ ಕೀಲಿಮಣೆಯ ಬಗೆ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Show time with seconds"
@@ -202,7 +201,7 @@ msgstr ""
 #: ../js/extensionPrefs/main.js:125
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
-msgstr ""
+msgstr "%s ಗಾಗಿ ಆದ್ಯತೆಗಳ ಸಂವಾದವನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ:"
 
 #: ../js/extensionPrefs/main.js:165
 msgid "<b>Extension</b>"
@@ -211,6 +210,7 @@ msgstr "<b>ವಿಸ್ತರಣೆ</b>"
 #: ../js/extensionPrefs/main.js:189
 msgid "Select an extension to configure using the combobox above."
 msgstr ""
+"ಮೇಲಿನ ಸಂಯೋಜನಾಚೌಕವನ್ನು ಬಳಸಿಕೊಂಡು ಸಂರಚಿಸಬೇಕಿರುವ ಒಂದು ವಿಸ್ತರಣೆಯನ್ನು ಆರಿಸಿ."
 
 #: ../js/gdm/loginDialog.js:624
 #| msgid "Searching..."
@@ -220,13 +220,13 @@ msgstr "ಅಧಿವೇಶನ..."
 #: ../js/gdm/loginDialog.js:786
 msgctxt "title"
 msgid "Sign In"
-msgstr ""
+msgstr "ಒಳ ಪ್ರವೇಶಿಸಿ"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
 #: ../js/gdm/loginDialog.js:831
 msgid "(or swipe finger)"
-msgstr ""
+msgstr "(ಅಥವ ನಿಮ್ಮ ಬೆರಳನ್ನು ಉಜ್ಜಿ)"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
@@ -244,7 +244,7 @@ msgstr "ರದ್ದು ಮಾಡು"
 #: ../js/gdm/loginDialog.js:1025
 msgctxt "button"
 msgid "Sign In"
-msgstr ""
+msgstr "ಒಳಗೆ ಪ್ರವೇಶಿಸು"
 
 #: ../js/gdm/loginDialog.js:1377
 #| msgid "New Window"
@@ -254,7 +254,7 @@ msgstr "ಪ್ರವೇಶದ ಕಿಟಕಿ"
 #: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
 #: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
 msgid "Suspend"
-msgstr ""
+msgstr "ಅಮಾನತ್ತಿನಲ್ಲಿಡು"
 
 #: ../js/gdm/powerMenu.js:160
 msgid "Restart"
@@ -262,7 +262,7 @@ msgstr "ಮರಳಿ ಆರಂಭಿಸು"
 
 #: ../js/gdm/powerMenu.js:165
 msgid "Power Off"
-msgstr ""
+msgstr "ಸ್ಥಗಿತಗೊಳಿಸು"
 
 #: ../js/misc/util.js:92
 msgid "Command not found"
@@ -290,7 +290,7 @@ msgstr "APPLICATIONS"
 
 #: ../js/ui/appDisplay.js:375
 msgid "SETTINGS"
-msgstr ""
+msgstr "SETTINGS"
 
 #: ../js/ui/appDisplay.js:680
 msgid "New Window"
@@ -316,7 +316,7 @@ msgstr "%s ಅನ್ನು ನಿಮ್ಮ ಅಚ್ಚುಮೆಚ್ಚಿನ�
 
 #: ../js/ui/autorunManager.js:265
 msgid "Removable Devices"
-msgstr ""
+msgstr "ತೆಗೆದುಹಾಕಬಹುದಾದ ಸಾಧನಗಳು"
 
 #: ../js/ui/autorunManager.js:560
 #, c-format
@@ -497,7 +497,7 @@ msgstr "ಆಫ್‌ಲೈನ್"
 
 #: ../js/ui/contactDisplay.js:153
 msgid "CONTACTS"
-msgstr ""
+msgstr "CONTACTS"
 
 #: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1207
 msgid "Remove"
@@ -577,20 +577,20 @@ msgstr ""
 "ಈ ಅನ್ವಯದಿಂದ ನಿರ್ಗಮಿಸಿ ನಂತರ ವ್ಯವಸ್ಥೆಯಿಂದ ನಿರ್ಗಮಿಸಲು ನಿರ್ಗಮಿಸು ಅನ್ನು ಒತ್ತಿ."
 
 #: ../js/ui/endSessionDialog.js:65
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s will be logged out automatically in %d seconds."
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s ರವರು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನಿರ್ಗಮಿಸಲ್ಪಡುತ್ತಾರೆ."
+msgstr[0] "%s ರವರು %d ಸೆಕೆಂಡಿನಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನಿರ್ಗಮಿಸುತ್ತಾರೆ."
 msgstr[1] "%s ರವರು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನಿರ್ಗಮಿಸಲ್ಪಡುತ್ತಾರೆ."
 
 #: ../js/ui/endSessionDialog.js:70
-#, fuzzy, c-format
+#, c-format
 #| msgid "You will be logged out automatically in %d seconds."
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "ನೀವು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನಿರ್ಗಮಿಸಲ್ಪಡುತ್ತಾರೆ."
-msgstr[1] "ನೀವು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನಿರ್ಗಮಿಸಲ್ಪಡುತ್ತಾರೆ."
+msgstr[0] "ನೀವು %d ಸೆಕೆಂಡಿನಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನಿರ್ಗಮಿಸಲ್ಪಡುತ್ತೀರಿ."
+msgstr[1] "ನೀವು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನಿರ್ಗಮಿಸಲ್ಪಡುತ್ತೀರಿ."
 
 #: ../js/ui/endSessionDialog.js:74
 msgid "Logging out of the system."
@@ -605,31 +605,28 @@ msgstr "ನಿರ್ಗಮಿಸು"
 #: ../js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Power Off"
-msgstr ""
+msgstr "ಸ್ಥಗಿತಗೊಳಿಸು"
 
 #: ../js/ui/endSessionDialog.js:82
-#, fuzzy
 #| msgid "Click Log Out to quit these applications and log out of the system."
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
-"ಈ ಅನ್ವಯದಿಂದ ನಿರ್ಗಮಿಸಿ ನಂತರ ವ್ಯವಸ್ಥೆಯಿಂದ ನಿರ್ಗಮಿಸಲು ನಿರ್ಗಮಿಸು ಅನ್ನು ಒತ್ತಿ."
+"ಈ ಅನ್ವಯದಿಂದ ನಿರ್ಗಮಿಸಿ ನಂತರ ವ್ಯವಸ್ಥೆಯಿಂದ ನಿರ್ಗಮಿಸಲು ಸ್ಥಗಿತಗೊಳಿಸು ಅನ್ನು ಒತ್ತಿ."
 
 #: ../js/ui/endSessionDialog.js:84
-#, fuzzy, c-format
+#, c-format
 #| msgid "The system will restart automatically in %d seconds."
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "ವ್ಯವಸ್ಥೆಯು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರಳಿ ಆರಂಭಗೊಳ್ಳುತ್ತದೆ."
-msgstr[1] "ವ್ಯವಸ್ಥೆಯು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರಳಿ ಆರಂಭಗೊಳ್ಳುತ್ತದೆ."
+msgstr[0] "ವ್ಯವಸ್ಥೆಯು %d ಸೆಕೆಂಡಿನಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸ್ಥಗಿತಗೊಳ್ಳುತ್ತದೆ."
+msgstr[1] "ವ್ಯವಸ್ಥೆಯು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸ್ಥಗಿತಗೊಳ್ಳುತ್ತದೆ."
 
 #: ../js/ui/endSessionDialog.js:88
-#, fuzzy
 #| msgid "Logging out of the system."
 msgid "Powering off the system."
-msgstr "ವ್ಯವಸ್ಥೆಯಿಂದ ನಿರ್ಗಮಿಸಲಾಗುತ್ತಿದೆ."
+msgstr "ವ್ಯವಸ್ಥೆಯನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲಾಗುತ್ತಿದೆ."
 
 #: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
-#, fuzzy
 #| msgid "Restart"
 msgctxt "button"
 msgid "Restart"
@@ -638,7 +635,7 @@ msgstr "ಮರಳಿ ಆರಂಭಿಸು"
 #: ../js/ui/endSessionDialog.js:92
 msgctxt "button"
 msgid "Power Off"
-msgstr ""
+msgstr "ಸ್ಥಗಿತಗೊಳಿಸು"
 
 #: ../js/ui/endSessionDialog.js:98
 #| msgid "Restart"
@@ -652,11 +649,11 @@ msgstr ""
 "ಈ ಅನ್ವಯದಿಂದ ನಿರ್ಗಮಿಸಿ ಗಣಕವನ್ನು ಮರಳಿ ಅರಂಭಿಸಲು ಮರಳಿ ಆರಂಭಿಸು ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ."
 
 #: ../js/ui/endSessionDialog.js:101
-#, fuzzy, c-format
+#, c-format
 #| msgid "The system will restart automatically in %d seconds."
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "ವ್ಯವಸ್ಥೆಯು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರಳಿ ಆರಂಭಗೊಳ್ಳುತ್ತದೆ."
+msgstr[0] "ವ್ಯವಸ್ಥೆಯು %d ಸೆಕೆಂಡಿನಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರಳಿ ಆರಂಭಗೊಳ್ಳುತ್ತದೆ."
 msgstr[1] "ವ್ಯವಸ್ಥೆಯು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರಳಿ ಆರಂಭಗೊಳ್ಳುತ್ತದೆ."
 
 #: ../js/ui/endSessionDialog.js:105
@@ -671,6 +668,7 @@ msgstr "ಅನುಸ್ಥಾಪಿಸು"
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr ""
+"'%s' ಅನ್ನು extensions.gnome.org ಇಂದ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿಕೊಂಡು ಅನುಸ್ಥಾಪಿಸಬೇಕೆ?"
 
 #: ../js/ui/keyboard.js:327
 #| msgid "Retry"
@@ -697,7 +695,7 @@ msgstr "ಯಾವುದು ವಿಸ್ತರಣೆಗಳನ್ನು ಅನು�
 #: ../js/ui/lookingGlass.js:786
 #, c-format
 msgid "%s has not emitted any errors."
-msgstr ""
+msgstr "%s ಯಾವುದೆ ದೋಷಗಳನ್ನು ತೋರಿಸಿಲ್ಲ."
 
 #: ../js/ui/lookingGlass.js:792
 #| msgid "Error"
@@ -743,18 +741,17 @@ msgstr "ಜಾಲ ಪುಟ"
 #: ../js/ui/main.js:118
 #, no-c-format
 msgid "Screencast from %d %t"
-msgstr ""
+msgstr "%d %t ಇಂದ ತೆರೆಚಲನಚಿತ್ರ"
 
 #: ../js/ui/messageTray.js:1200
 msgid "Open"
 msgstr "ತೆರೆ"
 
 #: ../js/ui/messageTray.js:1217
-#, fuzzy
 #| msgid "minute"
 #| msgid_plural "minutes"
 msgid "Unmute"
-msgstr "ನಿಮಿಷ"
+msgstr ""
 
 #: ../js/ui/messageTray.js:1217
 #| msgid "Mouse"
@@ -795,7 +792,7 @@ msgstr "ಗುರುತು: "
 
 #: ../js/ui/networkAgent.js:288
 msgid "Private key password: "
-msgstr ""
+msgstr "ಖಾಸಗಿ ಕೀಲಿ ದಾಟುಪದ: "
 
 #: ../js/ui/networkAgent.js:300
 msgid "Service: "
@@ -803,7 +800,7 @@ msgstr "ಸೇವೆ: "
 
 #: ../js/ui/networkAgent.js:329
 msgid "Authentication required by wireless network"
-msgstr ""
+msgstr "ತಂತಿರಹಿತ ಜಾಲಬಂಧಕ್ಕಾಗಿ ದೃಢೀಕರಣದ ಅಗತ್ಯವಿದೆ"
 
 #: ../js/ui/networkAgent.js:330
 #, c-format
@@ -811,10 +808,12 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network '%"
 "s'."
 msgstr ""
+"ತಂತಿರಹಿತ ಜಾಲಬಂಧ '%s' ಅನ್ನು ನಿಲುಕಿಸಿಕೊಳ್ಳಲು ದಾಟುಪದಗಳು ಅಥವ ಗೂಢಲಿಪೀಕರಣ ಕೀಲಿಗಳ "
+"ಅಗತ್ಯವಿದೆ."
 
 #: ../js/ui/networkAgent.js:334
 msgid "Wired 802.1X authentication"
-msgstr ""
+msgstr "ವೈರ್ಡ್ 802.1X ದೃಢೀಕರಣ"
 
 #: ../js/ui/networkAgent.js:336
 msgid "Network name: "
@@ -826,11 +825,11 @@ msgstr "DSL ದೃಢೀಕರಣ"
 
 #: ../js/ui/networkAgent.js:348
 msgid "PIN code required"
-msgstr ""
+msgstr "PIN ಕೋಡ್ ಅಗತ್ಯವಿದೆ"
 
 #: ../js/ui/networkAgent.js:349
 msgid "PIN code is needed for the mobile broadband device"
-msgstr ""
+msgstr "ಮೊಬೈಲ್ ಬ್ರಾಡ್‌ಬ್ಯಾಂಡ್‌ ಸಾಧನಕ್ಕಾಗಿ PIN ಕೋಡ್‌ ಅಗತ್ಯವಿದೆ"
 
 #: ../js/ui/networkAgent.js:350
 msgid "PIN: "
@@ -838,12 +837,12 @@ msgstr "PIN: "
 
 #: ../js/ui/networkAgent.js:356
 msgid "Mobile broadband network password"
-msgstr ""
+msgstr "ಮೊಬೈಲ್ ಬ್ರಾಡ್‌ಬ್ಯಾಂಡ್ ಜಾಲಬಂಧ ಗುಪ್ತಪದ"
 
 #: ../js/ui/networkAgent.js:357
 #, c-format
 msgid "A password is required to connect to '%s'."
-msgstr ""
+msgstr "'%s' ನೊಂದಿಗೆ ಸಂಪರ್ಕಸಾಧಿಸಲು ದಾಟುಪದದ ಅಗತ್ಯವಿದೆ."
 
 #: ../js/ui/overview.js:90
 msgid "Undo"
@@ -865,7 +864,7 @@ msgstr "ಅನ್ವಯಗಳು"
 #. the left of the overview
 #: ../js/ui/overview.js:231
 msgid "Dash"
-msgstr ""
+msgstr "ಡ್ಯಾಶ್"
 
 #: ../js/ui/panel.js:592
 #| msgid "Quit %s"
@@ -880,7 +879,7 @@ msgstr "ಚಟುವಟಿಕೆಗಳು"
 
 #: ../js/ui/panel.js:999
 msgid "Top Bar"
-msgstr ""
+msgstr "ಮೇಲಿನ ಪಟ್ಟಿ"
 
 #: ../js/ui/placeDisplay.js:115
 #, c-format
@@ -917,7 +916,7 @@ msgstr "ದೃಢೀಕರಿಸು"
 #. * for instance.
 #: ../js/ui/polkitAuthenticationAgent.js:260
 msgid "Sorry, that didn't work. Please try again."
-msgstr ""
+msgstr "ಕ್ಷಮಿಸು, ಅದು ಕೆಲಸ ಮಾಡಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ."
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -1036,17 +1035,16 @@ msgstr "ಬ್ಲೂಟೂತ್ ಸಿದ್ಧತೆಗಳು"
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
 #: ../js/ui/status/bluetooth.js:107 ../js/ui/status/network.js:256
 msgid "hardware disabled"
-msgstr ""
+msgstr "ಯಂತ್ರಾಂಶವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
 
 #: ../js/ui/status/bluetooth.js:203
 msgid "Connection"
 msgstr "ಸಂಪರ್ಕ"
 
 #: ../js/ui/status/bluetooth.js:214 ../js/ui/status/network.js:491
-#, fuzzy
 #| msgid "Connect to..."
 msgid "disconnecting..."
-msgstr "ಇದಕ್ಕೆ ಸಂಪರ್ಕ ಜೋಡಿಸಿ..."
+msgstr "ಸಂಪರ್ಕ ಕಡಿದುಹಾಕಲಾಗುತ್ತಿದೆ..."
 
 #: ../js/ui/status/bluetooth.js:227 ../js/ui/status/network.js:497
 #| msgid "Connection"
@@ -1142,7 +1140,7 @@ msgstr "ಸರಿ"
 
 #: ../js/ui/status/keyboard.js:68
 msgid "Show Keyboard Layout"
-msgstr ""
+msgstr "ಕೀಲಿಮಣೆ ವಿನ್ಯಾಸವನ್ನು ತೋರಿಸು"
 
 #: ../js/ui/status/keyboard.js:73
 #| msgid "Date and Time Settings"
@@ -1156,16 +1154,15 @@ msgstr "<ಗೊತ್ತಿರದ>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
 #: ../js/ui/status/network.js:278
-#, fuzzy
 #| msgid "Disabled"
 msgid "disabled"
-msgstr "ಅಶಕ್ತಗೊಳಿಸಲಾಗಿದೆ"
+msgstr "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
 #: ../js/ui/status/network.js:489
 msgid "unmanaged"
-msgstr ""
+msgstr "ನೋಡಿಕೊಳ್ಳದಿರುವ"
 
 #. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:500
@@ -1176,12 +1173,12 @@ msgstr "ದೃಢೀಕರಣದ ಅಗತ್ಯವಿದೆ"
 #. module, which is missing
 #: ../js/ui/status/network.js:510
 msgid "firmware missing"
-msgstr ""
+msgstr "ಫರ್ಮ್-ವೇರ್ ಕಾಣಿಸುತ್ತಿಲ್ಲ"
 
 #. Translators: this is for wired network devices that are physically disconnected
 #: ../js/ui/status/network.js:517
 msgid "cable unplugged"
-msgstr ""
+msgstr "ಕೇಬಲ್‌ ಅನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿದೆ"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
@@ -1203,36 +1200,35 @@ msgstr "ಇನ್ನಷ್ಟು..."
 #. and we cannot access its settings (including the name)
 #: ../js/ui/status/network.js:621 ../js/ui/status/network.js:1440
 msgid "Connected (private)"
-msgstr ""
+msgstr "ಸಂಪರ್ಕಿತಗೊಂಡಿದೆ (ಖಾಸಗಿ)"
 
 #: ../js/ui/status/network.js:696
 msgid "Auto Ethernet"
-msgstr ""
+msgstr "ಸ್ವಯಂ-ಎತರ್ನೆಟ್"
 
 #: ../js/ui/status/network.js:757
 msgid "Auto broadband"
-msgstr ""
+msgstr "ಸ್ವಯಂ-ಬ್ರಾಡ್‌ಬ್ಯಾಂಡ್"
 
 #: ../js/ui/status/network.js:760
 msgid "Auto dial-up"
-msgstr ""
+msgstr "ಸ್ವಯಂ ಡಯಲ್-ಅಪ್"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
 #: ../js/ui/status/network.js:879 ../js/ui/status/network.js:1452
-#, fuzzy, c-format
+#, c-format
 #| msgid "Quit %s"
 msgid "Auto %s"
-msgstr "%s ಇಂದ ನಿರ್ಗಮಿಸು"
+msgstr "ಸ್ವಯಂ %s"
 
 #: ../js/ui/status/network.js:881
-#, fuzzy
 #| msgid "Bluetooth"
 msgid "Auto bluetooth"
-msgstr "ಬ್ಲೂಟೂತ್"
+msgstr "ಸ್ವಯಂ ಬ್ಲೂಟೂತ್"
 
 #: ../js/ui/status/network.js:1454
 msgid "Auto wireless"
-msgstr ""
+msgstr "ಸ್ವಯಂ ತಂತಿರಹಿತ"
 
 #: ../js/ui/status/network.js:1541
 #| msgid "Next week"
@@ -1245,7 +1241,7 @@ msgstr "ಜಾಲಬಂಧವನ್ನು ಅನುಗೊಳಿಸು"
 
 #: ../js/ui/status/network.js:1560
 msgid "Wired"
-msgstr ""
+msgstr "ತಂತಿಯುಕ್ತ"
 
 #: ../js/ui/status/network.js:1571
 msgid "Wireless"
@@ -1272,15 +1268,15 @@ msgstr "ಸಂಪರ್ಕವು ವಿಫಲಗೊಂಡಿದೆ"
 
 #: ../js/ui/status/network.js:1740
 msgid "Activation of network connection failed"
-msgstr ""
+msgstr "ಜಾಲಬಂಧ ಸಂಪರ್ಕವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ"
 
 #: ../js/ui/status/network.js:1993
 msgid "Networking is disabled"
-msgstr ""
+msgstr "ಜಾಲಬಂಧವು ವಿಫಲಗೊಂಡಿದೆ"
 
 #: ../js/ui/status/network.js:2117
 msgid "Network Manager"
-msgstr ""
+msgstr "ನೆಟ್‌ವರ್ಕ್ ಮ್ಯಾನೇಜರ್"
 
 #: ../js/ui/status/power.js:59
 msgid "Battery"
@@ -1294,7 +1290,7 @@ msgstr "ವಿದ್ಯುಚ್ಛಕ್ತಿ ಸಿದ್ಧತೆಗಳು"
 #. to estimate battery life
 #: ../js/ui/status/power.js:98
 msgid "Estimating..."
-msgstr ""
+msgstr "ಊಹಿಸಲಾಗುತ್ತಿದೆ..."
 
 #: ../js/ui/status/power.js:105
 #, c-format
@@ -1444,28 +1440,28 @@ msgstr "<b>%A</b>  ರಂದು <b>%X</b> ಗೆ ಕಳುಹಿಸಲಾಗಿ�
 #: ../js/ui/telepathyClient.js:893
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
-msgstr ""
+msgstr "<b>%A</b>, <b>%B %d</b> ರಂದು ಕಳುಹಿಸಲಾಗಿದೆ"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
 #: ../js/ui/telepathyClient.js:898
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-msgstr ""
+msgstr "%A</b>, <b>%B %d</b>, %Y ರಂದು ಕಳುಹಿಸಲಾಗಿದೆ"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
 #: ../js/ui/telepathyClient.js:940
 #, c-format
 msgid "%s is now known as %s"
-msgstr ""
+msgstr "%s ಈಗ %s ಆಗಿದ್ದಾರೆ"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
 #: ../js/ui/telepathyClient.js:1042
 #, c-format
 msgid "Invitation to %s"
-msgstr ""
+msgstr "%s ಗಾಗಿನ ಆಹ್ವಾನ"
 
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
@@ -1473,7 +1469,7 @@ msgstr ""
 #: ../js/ui/telepathyClient.js:1050
 #, c-format
 msgid "%s is inviting you to join %s"
-msgstr ""
+msgstr "%s ನಿಮ್ಮನ್ನು %s ಗೆ ಸೇರುವಂತೆ ಆಹ್ವಾನಿಸುತ್ತಿದ್ದಾರೆ"
 
 #: ../js/ui/telepathyClient.js:1052 ../js/ui/telepathyClient.js:1131
 #: ../js/ui/telepathyClient.js:1229
@@ -1489,13 +1485,13 @@ msgstr "ಅಂಗೀಕರಿಸು"
 #: ../js/ui/telepathyClient.js:1083
 #, c-format
 msgid "Video call from %s"
-msgstr ""
+msgstr "%s ಇಂದ ವೀಡಿಯೊ ಕರೆ ಬಂದಿದೆ"
 
 #. translators: argument is a contact name like Alice for example.
 #: ../js/ui/telepathyClient.js:1086
 #, c-format
 msgid "Call from %s"
-msgstr ""
+msgstr "%s ಇಂದ ಕರೆ ಬಂದಿದೆ"
 
 #. translators: this is a button label (verb), not a noun
 #: ../js/ui/telepathyClient.js:1093
@@ -1510,7 +1506,7 @@ msgstr "ಉತ್ತರ"
 #: ../js/ui/telepathyClient.js:1125
 #, c-format
 msgid "%s is sending you %s"
-msgstr ""
+msgstr "%s ರವರು ನಿಮಗೆ %s ಅನ್ನು ಕಳುಹಿಸುತ್ತಿದ್ದಾರೆ"
 
 #. To translators: The parameter is the contact's alias
 #: ../js/ui/telepathyClient.js:1194
@@ -1631,10 +1627,10 @@ msgstr "ಆಂತರಿಕ ತಪ್ಪು"
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
 #: ../js/ui/telepathyClient.js:1343
-#, fuzzy, c-format
+#, c-format
 #| msgid "Execution of '%s' failed:"
 msgid "Connection to %s failed"
-msgstr "'%s' ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ:"
+msgstr "%s ಗಾಗಿನ ಸಂಪರ್ಕವು ವಿಫಲಗೊಂಡಿದೆ"
 
 #: ../js/ui/telepathyClient.js:1352
 #| msgid "Reject"
@@ -1696,7 +1692,7 @@ msgstr "ನಿರ್ಗಮಿಸಿ..."
 
 #: ../js/ui/userMenu.js:688
 msgid "Your chat status will be set to busy"
-msgstr ""
+msgstr "ನಿಮ್ಮ ಹರಟೆಯ ಸ್ಥಿತಿಯನ್ನು ಕಾರ್ಯನಿರತರಾಗಿದ್ದಾರೆ ಎಂದು ಬದಲಾಯಿಸಲಾಗಿದೆ."
 
 #: ../js/ui/userMenu.js:689
 msgid ""
@@ -1722,15 +1718,17 @@ msgid ""
 "Sorry, no wisdom for you today:\n"
 "%s"
 msgstr ""
+"ಕ್ಷಮಿಸಿ, ನಿಮಗಾಗಿ ಯಾವುದೆ ವಿವೇಕವಾಣಿ ಇಲ್ಲ :\n"
+"%s"
 
 #: ../js/ui/wanda.js:128
 #, c-format
 msgid "%s the Oracle says"
-msgstr ""
+msgstr "%s Oracle ಹೇಳುವಂತೆ"
 
 #: ../js/ui/wanda.js:168
 msgid "Your favorite Easter Egg"
-msgstr ""
+msgstr "ನಿಮ್ಮ ಮೆಚ್ಚಿನ ಈಸ್ಟರ್ ಮೊಟ್ಟೆ"
 
 #: ../js/ui/windowAttentionHandler.js:19
 #, c-format
@@ -1765,13 +1763,13 @@ msgstr "ಮುದ್ರಿಸಬಹುದಾದ ಆವೃತ್ತಿ"
 
 #: ../src/main.c:261
 msgid "Mode used by GDM for login screen"
-msgstr ""
+msgstr "ಪ್ರವೇಶದ ತೆರೆಗಾಗಿ GDM ಬಳಸಿದ ಪ್ರಕಾರ"
 
 #: ../src/shell-app.c:619
-#, fuzzy, c-format
+#, c-format
 #| msgid "Failed to unmount '%s'"
 msgid "Failed to launch '%s'"
-msgstr "'%s' ಅನ್ನು ಅವರೋಹಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
+msgstr "'%s' ಅನ್ನು ಆರಂಭಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ"
 
 #: ../src/shell-keyring-prompt.c:708
 #| msgid "Does not match"
@@ -1780,7 +1778,7 @@ msgstr "ದಾಟುಪದಗಳು ತಾಳೆಯಾಗುವುದಿಲ್�
 
 #: ../src/shell-keyring-prompt.c:716
 msgid "Password cannot be blank"
-msgstr ""
+msgstr "ದಾಟುಪದವು ಖಾಲಿ ಇರುವಂತಿಲ್ಲ"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
@@ -1792,7 +1790,7 @@ msgstr "ಪೂರ್ವನಿಯೋಜಿತ"
 
 #: ../src/shell-polkit-authentication-agent.c:339
 msgid "Authentication dialog was dismissed by the user"
-msgstr ""
+msgstr "ದೃಢೀಕರಣದ ಸಂವಾದವನ್ನು ಬಳಕೆದಾರರಿಂದ ತಿರಸ್ಕರಿಸಲಾಗಿದೆ"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
