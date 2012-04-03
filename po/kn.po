@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-03-30 17:59+0000\n"
-"PO-Revision-Date: 2012-04-03 17:33+0530\n"
+"PO-Revision-Date: 2012-04-03 17:44+0530\n"
 "Last-Translator: s\n"
 "Language-Team: Kannada <kn@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -837,7 +837,7 @@ msgstr "PIN: "
 
 #: ../js/ui/networkAgent.js:356
 msgid "Mobile broadband network password"
-msgstr "ಮೊಬೈಲ್ ಬ್ರಾಡ್‌ಬ್ಯಾಂಡ್ ಜಾಲಬಂಧ ಗುಪ್ತಪದ"
+msgstr "ಮೊಬೈಲ್ ಬ್ರಾಡ್‌ಬ್ಯಾಂಡ್ ಜಾಲಬಂಧ ದಾಟುಪದ"
 
 #: ../js/ui/networkAgent.js:357
 #, c-format
@@ -958,7 +958,7 @@ msgstr "ಪಠ್ಯವನ್ನು ಅಡಗಿಸು"
 
 #: ../js/ui/shellMountOperation.js:271
 msgid "Wrong password, please try again"
-msgstr "ಗುಪ್ತಪದ ತಪ್ಪಾಗಿದೆ; ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸು"
+msgstr "ದಾಟುಪದ ತಪ್ಪಾಗಿದೆ; ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸು"
 
 #: ../js/ui/status/accessibility.js:47
 #| msgid "Visibility"
