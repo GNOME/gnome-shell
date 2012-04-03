@@ -1070,6 +1070,8 @@ upload_vertices (CoglJournal *journal,
   float *vout;
   int entry_num;
   int i;
+  CoglMatrixEntry *last_modelview_entry = NULL;
+  CoglMatrix modelview;
 
   g_assert (needed_vbo_len);
 
@@ -1107,7 +1109,6 @@ upload_vertices (CoglJournal *journal,
       else
         {
           float v[8];
-          CoglMatrix modelview;
 
           v[0] = vin[0];
           v[1] = vin[1];
@@ -1118,7 +1119,8 @@ upload_vertices (CoglJournal *journal,
           v[6] = vin[array_stride];
           v[7] = vin[1];
 
-          _cogl_matrix_entry_get (entry->modelview_entry, &modelview);
+          if (entry->modelview_entry != last_modelview_entry)
+            _cogl_matrix_entry_get (entry->modelview_entry, &modelview);
           cogl_matrix_transform_points (&modelview,
                                         2, /* n_components */
                                         sizeof (float) * 2, /* stride_in */
