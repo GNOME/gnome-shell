@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-03-15 21:29+0000\n"
-"PO-Revision-Date: 2012-04-02 14:42+0530\n"
+"PO-Revision-Date: 2012-04-03 15:42+0530\n"
 "Last-Translator: s\n"
 "Language-Team: Kannada <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,11 +26,11 @@ msgstr "ಕಿಟಕಿಗಳು"
 
 #: ../src/50-mutter-windows.xml.in.h:2
 msgid "View split on left"
-msgstr ""
+msgstr "ಎಡಭಾಗದಲ್ಲಿ ಸೀಳನ್ನು ನೋಡು"
 
 #: ../src/50-mutter-windows.xml.in.h:3
 msgid "View split on right"
-msgstr ""
+msgstr "ಬಲಭಾಗದಲ್ಲಿ ಸೀಳನ್ನು ನೋಡು"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
@@ -40,10 +40,12 @@ msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr ""
+"ಬೇರೊಂದು ಕಂಪೋಸಿಟಿಂಗ್ ವ್ಯವಸ್ಥಾಪಕವು ಈಗಾಗಲೆ %i ತೆರೆಯಲ್ಲಿನ \"%s \" ಪ್ರದರ್ಶಕದಲ್ಲಿ "
+"ಚಾಲನೆಯಲ್ಲಿದೆ."
 
 #: ../src/core/bell.c:307
 msgid "Bell event"
-msgstr ""
+msgstr "ಘಂಟೆಯ ಶಬ್ಧ"
 
 #: ../src/core/core.c:157
 #, c-format
@@ -65,6 +67,8 @@ msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
+"ಅನ್ವಯವು ಮುಂದುವರೆಯುವ ವರೆಗೆ ಕೊಂಚ ಸಮಯ ನೀವು ಕಾಯಬಹುದು ಅಥವ ಅದು ಸಂಪೂರ್ಣವಾಗಿ ಮುಚ್ಚಿ "
+"ಹೋಗುವಂತೆ ಒತ್ತಾಯಿಸಬಹುದು."
 
 #: ../src/core/delete.c:126
 msgid "_Wait"
@@ -77,7 +81,7 @@ msgstr "ಬಲವಂತವಾಗಿ ಮುಚ್ಚು(_F)"
 #: ../src/core/display.c:387
 #, c-format
 msgid "Missing %s extension required for compositing"
-msgstr ""
+msgstr "ಕಂಪೋಸಿಟಿಂಗ್ ಮಾಡಲು ಅಗತ್ಯವಿರುವ %s ವಿಸ್ತರಣೆಯು ಕಾಣಿಸುತ್ತಿಲ್ಲ"
 
 #: ../src/core/display.c:453
 #, c-format
@@ -157,12 +161,16 @@ msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
+"ಹಾಳಾದ ಅನ್ವಯಗಳಿಗಾಗಿನ ಪರ್ಯಾಯ ಮಾರ್ಗಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ. ಕೆಲವು ಅನ್ವಯಗಳು "
+"ಸರಿಯಾಗಿ ಕೆಲಸ ಮಾಡದೆ ಇರಬಹುದು.\n"
 
 #: ../src/core/prefs.c:1152
-#, fuzzy, c-format
+#, c-format
 #| msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
-msgstr "ಅಕ್ಷರಶೈಲಿ ವಿವರಣೆ \"%s\" ಅನ್ನು  GConf ಕೀಲಿ %s ಇಂದ ಪಾರ್ಸ್ ಮಾಡಲಾಗಿಲ್ಲ\n"
+msgstr ""
+"\"%s\" ಎಂಬ ಅಕ್ಷರಶೈಲಿ ವಿವರಣೆಯನ್ನು  %s ಎಂಬ GSettings ಕೀಲಿಯಿಂದ ಇಂದ ಪಾರ್ಸ್ "
+"ಮಾಡಲಾಗಿಲ್ಲ\n"
 
 #: ../src/core/prefs.c:1218
 #, c-format
@@ -170,6 +178,8 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
+"ಸಂರಚನಾ ದತ್ತಸಂಚಯದಲ್ಲಿ ಕಂಡುಬಂದಂತಹ \"%s\" ಮೌಸ್ ಗುಂಡಿಯ ಮಾರ್ಪಡಕಕ್ಕಾಗಿ ಒಂದು "
+"ಮಾನ್ಯವಾದ ಮೌಲ್ಯವಲ್ಲ\n"
 
 #: ../src/core/prefs.c:1739
 #, c-format
@@ -177,6 +187,8 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
+"ಸಂರಚನಾ ದತ್ತಸಂಚಯದಲ್ಲಿ ಕಂಡುಬಂದಂತಹ \"%s\" ಕೀಲಿಬೈಂಡಿಂಗ್ \"%s\" ಗೆ ಒಂದು ಮಾನ್ಯವಾದ "
+"ಮೌಲ್ಯವಲ್ಲ\n"
 
 #: ../src/core/prefs.c:1836
 #, c-format
@@ -186,7 +198,7 @@ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ %d"
 #: ../src/core/screen.c:730
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr ""
+msgstr "%d ತೆರೆಯು ಅಮಾನ್ಯವಾಗಿದೆ ( '%s' ಪ್ರದರ್ಶಕದಲ್ಲಿನ)\n"
 
 #: ../src/core/screen.c:746
 #, c-format
@@ -453,14 +465,13 @@ msgid ""
 msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:17
-#, fuzzy
 #| msgid "Remove Window From Top"
 msgid "Select window from tab popup"
-msgstr "ವಿಂಡೊ ಅನ್ನು ಮೇಲ್ಭಾಗದಿಂದ ತೆಗೆದು ಹಾಕು"
+msgstr "ಟ್ಯಾಬ್ ಪುಟಿಕೆಯಿಂದ ಕಿಟಕಿಯನ್ನು ಆರಿಸು"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Cancel tab popup"
-msgstr ""
+msgstr "ಟ್ಯಾಬ್ ಪುಟಿಕೆಯನ್ನು ರದ್ದುಗೊಳಿಸು"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
@@ -705,7 +716,7 @@ msgstr "ಚೌಕಟ್ಟಿನ ಜ್ಯಾಮಿತಿಯು ಗುಂಡಿ�
 #: ../src/ui/theme.c:1067
 #, c-format
 msgid "Gradients should have at least two colors"
-msgstr ""
+msgstr "ಏರಿಳಿತ ಪ್ರಮಾಣಗಳನ್ನು ಕನಿಷ್ಟ ಎರಡು ಬಣ್ಣಗಳನ್ನು ಹೊಂದಿರಬೇಕು"
 
 #: ../src/ui/theme.c:1219
 #, c-format
@@ -788,7 +799,7 @@ msgstr ""
 #: ../src/ui/theme.c:1479
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr ""
+msgstr "\"%s\" ಬಣ್ಣವನ್ನು ಪಾರ್ಸ್ ಮಾಡಲಾಗಿಲ್ಲ"
 
 #: ../src/ui/theme.c:1790
 #, c-format
