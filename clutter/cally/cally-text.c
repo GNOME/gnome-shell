@@ -78,7 +78,6 @@ static void cally_text_finalize   (GObject *obj);
 /* AtkObject */
 static void                   cally_text_real_initialize (AtkObject *obj,
                                                           gpointer   data);
-static const gchar *          cally_text_get_name        (AtkObject *obj);
 static AtkStateSet*           cally_text_ref_state_set   (AtkObject *obj);
 
 /* atkaction */
@@ -240,7 +239,6 @@ cally_text_class_init (CallyTextClass *klass)
   gobject_class->finalize = cally_text_finalize;
 
   class->initialize = cally_text_real_initialize;
-  class->get_name   = cally_text_get_name;
   class->ref_state_set = cally_text_ref_state_set;
 
   cally_class->notify_clutter = cally_text_notify_clutter;
@@ -346,29 +344,6 @@ cally_text_real_initialize(AtkObject *obj,
     obj->role = ATK_ROLE_PASSWORD_TEXT;
   else
     obj->role = ATK_ROLE_TEXT;
-}
-
-static const gchar *
-cally_text_get_name (AtkObject *obj)
-{
-  const gchar *name;
-
-  g_return_val_if_fail (CALLY_IS_ACTOR (obj), NULL);
-
-  name = ATK_OBJECT_CLASS (cally_text_parent_class)->get_name (obj);
-  if (name == NULL)
-    {
-      ClutterActor *actor = NULL;
-
-      actor = CALLY_GET_CLUTTER_ACTOR (obj);
-
-      if (actor == NULL) /* State is defunct */
-        name = NULL;
-      else
-        name = clutter_text_get_text (CLUTTER_TEXT (actor));
-    }
-
-  return name;
 }
 
 static AtkStateSet*
