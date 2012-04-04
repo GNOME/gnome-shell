@@ -221,11 +221,10 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
   return _cogl_texture_2d_handle_new (tex_2d);
 }
 
-CoglHandle
-_cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
-                                  CoglTextureFlags flags,
-                                  CoglPixelFormat  internal_format,
-                                  GError         **error)
+CoglTexture2D *
+cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
+                                 CoglPixelFormat internal_format,
+                                 GError **error)
 {
   CoglTexture2D *tex_2d;
   CoglBitmap    *dst_bmp;
@@ -301,9 +300,6 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
 
   cogl_object_unref (dst_bmp);
 
-  _cogl_texture_2d_set_auto_mipmap (COGL_TEXTURE (tex_2d),
-                                    !(flags & COGL_TEXTURE_NO_AUTO_MIPMAP));
-
   return _cogl_texture_2d_handle_new (tex_2d);
 }
 
@@ -334,7 +330,7 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
                                   rowstride,
                                   (guint8 *) data);
 
-  tex =_cogl_texture_2d_new_from_bitmap (bmp, COGL_TEXTURE_NONE,
+  tex = cogl_texture_2d_new_from_bitmap (bmp,
                                          internal_format,
                                          error);
 

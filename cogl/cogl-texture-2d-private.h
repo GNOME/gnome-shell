@@ -53,12 +53,6 @@ struct _CoglTexture2D
   CoglTexturePixel first_pixel;
 };
 
-CoglHandle
-_cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
-                                  CoglTextureFlags flags,
-                                  CoglPixelFormat  internal_format,
-                                  GError         **error);
-
 #if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
 /* NB: The reason we require the width, height and format to be passed
  * even though they may seem redundant is because GLES 1/2 don't

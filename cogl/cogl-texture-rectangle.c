@@ -229,9 +229,9 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
 }
 
 CoglTextureRectangle *
-_cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
-                                         CoglTextureFlags flags,
-                                         CoglPixelFormat  internal_format)
+cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
+                                        CoglPixelFormat internal_format,
+                                        GError **error)
 {
   CoglTextureRectangle *tex_rect;
   CoglBitmap           *dst_bmp;
@@ -251,7 +251,7 @@ _cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
   if (!_cogl_texture_rectangle_can_create (cogl_bitmap_get_width (bmp),
                                            cogl_bitmap_get_height (bmp),
                                            internal_format,
-                                           NULL))
+                                           error))
     return NULL;
 
   dst_bmp = _cogl_texture_prepare_for_upload (bmp,

@@ -112,12 +112,12 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
  * @height: height of texture in pixels
  * @format: the #CoglPixelFormat the buffer is stored in in RAM
  * @internal_format: the #CoglPixelFormat that will be used for storing
- *    the buffer on the GPU. If COGL_PIXEL_FORMAT_ANY is given then a
+ *    the buffer on the GPU. If %COGL_PIXEL_FORMAT_ANY is given then a
  *    premultiplied format similar to the format of the source data will
  *    be used. The default blending equations of Cogl expect premultiplied
  *    color data; the main use of passing a non-premultiplied format here
  *    is if you have non-premultiplied source data and are going to adjust
- *    the blend mode (see cogl_material_set_blend()) or use the data for
+ *    the blend mode (see cogl_pipeline_set_blend()) or use the data for
  *    something other than straight blending.
  * @rowstride: the memory offset in bytes between the starts of
  *    scanlines in @data. A value of 0 will make Cogl automatically
@@ -151,6 +151,44 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
                                int rowstride,
                                const guint8 *data,
                                GError **error);
+
+/**
+ * cogl_texture_2d_new_from_bitmap:
+ * @bitmap: A #CoglBitmap
+ * @internal_format: the #CoglPixelFormat that will be used for storing
+ *    the buffer on the GPU. If %COGL_PIXEL_FORMAT_ANY is given then a
+ *    premultiplied format similar to the format of the source data will
+ *    be used. The default blending equations of Cogl expect premultiplied
+ *    color data; the main use of passing a non-premultiplied format here
+ *    is if you have non-premultiplied source data and are going to adjust
+ *    the blend mode (see cogl_pipeline_set_blend()) or use the data for
+ *    something other than straight blending.
+ * @error: A #GError for exceptions
+ *
+ * Creates a new #CoglTexture2D texture based on data residing in a
+ * bitmap. These are unlike sliced textures for example which may be
+ * comprised of multiple internal textures, or atlas textures where
+ * Cogl has to modify texture coordinates before they may be used by
+ * the GPU.
+ *
+ * <note>Many GPUs only support power of two sizes for #CoglTexture2D
+ * textures. You can check support for non power of two textures by
+ * checking for the %COGL_FEATURE_ID_TEXTURE_NPOT feature via
+ * cogl_has_feature().</note>
+ *
+ * Returns: A newly allocated #CoglTexture2D, or if the size is not
+ *          supported (because it is too large or a non-power-of-two
+ *          size that the hardware doesn't support) it will return
+ *          %NULL and set @error.
+ *
+ * Since: 2.0
+ * Stability: unstable
+ */
+CoglTexture2D *
+cogl_texture_2d_new_from_bitmap (CoglBitmap *bitmap,
+                                 CoglPixelFormat internal_format,
+                                 GError **error);
+
 
 #define cogl_texture_2d_new_from_foreign cogl_texture_2d_new_from_foreign_EXP
 /**

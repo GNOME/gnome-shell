@@ -397,23 +397,22 @@ cogl_context_new (CoglDisplay *display,
 
   /* Create default textures used for fall backs */
   context->default_gl_texture_2d_tex =
-    _cogl_texture_2d_new_from_bitmap (default_texture_bitmap,
-                                      COGL_TEXTURE_NONE,
-                                      /* internal format */
-                                      COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                      NULL);
+    cogl_texture_2d_new_from_bitmap (default_texture_bitmap,
+                                     /* internal format */
+                                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                     NULL);
   /* If 3D or rectangle textures aren't supported then these should
      just silently return NULL */
   context->default_gl_texture_3d_tex =
-    _cogl_texture_3d_new_from_bitmap (default_texture_bitmap,
-                                      1, /* height */
-                                      1, /* depth */
-                                      COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                      NULL);
+    cogl_texture_3d_new_from_bitmap (default_texture_bitmap,
+                                     1, /* height */
+                                     1, /* depth */
+                                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                     NULL);
   context->default_gl_texture_rect_tex =
-    _cogl_texture_rectangle_new_from_bitmap (default_texture_bitmap,
-                                             COGL_TEXTURE_NONE,
-                                             COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+    cogl_texture_rectangle_new_from_bitmap (default_texture_bitmap,
+                                            COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                            NULL);
 
   cogl_object_unref (default_texture_bitmap);
 

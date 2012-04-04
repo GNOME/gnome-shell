@@ -293,9 +293,9 @@ _cogl_atlas_create_texture (CoglAtlas *atlas,
                                             width * bpp,
                                             clear_data);
 
-      tex = _cogl_texture_2d_new_from_bitmap (clear_bmp, COGL_TEXTURE_NONE,
-                                              atlas->texture_format,
-                                              NULL);
+      tex = cogl_texture_2d_new_from_bitmap (clear_bmp,
+                                             atlas->texture_format,
+                                             NULL);
       cogl_object_unref (clear_bmp);
 
       g_free (clear_data);

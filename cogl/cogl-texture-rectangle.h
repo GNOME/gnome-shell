@@ -87,7 +87,7 @@ cogl_is_texture_rectangle (void *object);
  * @internal_format: The desired internal texture format
  * @error: An optional GError pointer for reporting exceptions
  *
- * Allocates a new #CoglRectangle texture with a given @width, @height
+ * Allocates a new #CoglTextureRectangle texture with a given @width, @height
  * and @internal_format. This texture is a low-level texture that
  * the GPU can sample from directly unlike high-level textures such
  * as #CoglTexture2DSliced and #CoglAtlasTexture.
@@ -112,6 +112,38 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
                                       int height,
                                       CoglPixelFormat internal_format,
                                       GError **error);
+
+/**
+ * cogl_texture_rectangle_new_from_bitmap:
+ * @bitmap: A #CoglBitmap
+ * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
+ *    texture
+ * @error: A return location for a GError or %NULL
+ *
+ * Allocates a new #CoglTextureRectangle texture which will be
+ * initialized with the pixel data from @bitmap. Internally the data
+ * will be stored in the format given by @internal_format. This
+ * texture is a low-level texture that the GPU can sample from
+ * directly unlike high-level textures such as #CoglTexture2DSliced
+ * and #CoglAtlasTexture.
+ *
+ * <note>If you want to sample from a rectangle texture from GLSL you
+ * should use the sampler2DRect sampler type.</note>
+ *
+ * <note>Applications wanting to use #CoglTextureRectangle should
+ * first check for the %COGL_FEATURE_ID_TEXTURE_RECTANGLE feature
+ * using cogl_has_feature().</note>
+ *
+ * Returns: A pointer to a newly allocated #CoglRectangle texture
+ *          or if the size was too large or there wasn't enough memory
+ *          %NULL is returned and @error set.
+ * Since: 2.0
+ * Stability: unstable
+ */
+CoglTextureRectangle *
+cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bitmap,
+                                        CoglPixelFormat internal_format,
+                                        GError **error);
 
 G_END_DECLS
 

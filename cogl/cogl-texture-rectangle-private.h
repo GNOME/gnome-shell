@@ -49,11 +49,6 @@ struct _CoglTextureRectangle
 };
 
 CoglTextureRectangle *
-_cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
-                                         CoglTextureFlags flags,
-                                         CoglPixelFormat  internal_format);
-
-CoglTextureRectangle *
 _cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
                                           GLuint width,
                                           GLuint height,

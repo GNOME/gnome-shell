@@ -55,36 +55,4 @@ struct _CoglTexture3D
   CoglTexturePixel first_pixel;
 };
 
-/*
- * cogl_texture_3d_new_from_bitmap:
- * @bmp_handle: A #CoglBitmap object.
- * @height: height of the texture in pixels.
- * @depth: depth of the texture in pixels.
- * @internal_format: the #CoglPixelFormat that will be used for storing
- *    the buffer on the GPU. If COGL_PIXEL_FORMAT_ANY is given then a
- *    premultiplied format similar to the format of the source data will
- *    be used. The default blending equations of Cogl expect premultiplied
- *    color data; the main use of passing a non-premultiplied format here
- *    is if you have non-premultiplied source data and are going to adjust
- *    the blend mode (see cogl_pipeline_set_blend()) or use the data for
- *    something other than straight blending.
- * @error: A GError return location.
- *
- * Creates a new 3D texture and initializes it with the images in
- * @bmp_handle. The images are assumed to be packed together after one
- * another in the increasing y axis. The height of individual image is
- * given as @height and the number of images is given in @depth. The
- * actual height of the bitmap can be larger than @height × @depth. In
- * this case it assumes there is padding between the images.
- *
- * Return value: the newly created texture or %NULL if
- *   there was an error.
- */
-CoglTexture3D *
-_cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
-                                  unsigned int height,
-                                  unsigned int depth,
-                                  CoglPixelFormat internal_format,
-                                  GError **error);
-
 #endif /* __COGL_TEXTURE_3D_PRIVATE_H */

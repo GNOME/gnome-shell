@@ -53,6 +53,7 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl1-context.h"
 #include "cogl-sub-texture.h"
+#include "cogl-primitive-texture.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -373,6 +374,7 @@ cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
                               CoglPixelFormat  internal_format)
 {
   CoglTexture *tex;
+  CoglTexture2D *tex_2d;
 
   /* First try putting the texture in the atlas */
   if ((tex = _cogl_atlas_texture_new_from_bitmap (bitmap,
@@ -381,11 +383,15 @@ cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
     return tex;
 
   /* If that doesn't work try a fast path 2D texture */
-  if ((tex = _cogl_texture_2d_new_from_bitmap (bitmap,
-                                               flags,
-                                               internal_format,
-                                               NULL)))
-    return tex;
+  if ((tex_2d = cogl_texture_2d_new_from_bitmap (bitmap,
+                                                 internal_format,
+                                                 NULL)))
+    {
+      cogl_primitive_texture_set_auto_mipmap (COGL_PRIMITIVE_TEXTURE (tex_2d),
+                                              !(flags &
+                                                COGL_TEXTURE_NO_AUTO_MIPMAP));
+      return COGL_TEXTURE (tex_2d);
+    }
 
   /* Otherwise create a sliced texture */
   return

@@ -245,11 +245,11 @@ cogl_texture_3d_new_with_size (CoglContext *ctx,
 }
 
 CoglTexture3D *
-_cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
-                                  unsigned int height,
-                                  unsigned int depth,
-                                  CoglPixelFormat internal_format,
-                                  GError **error)
+cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
+                                 unsigned int height,
+                                 unsigned int depth,
+                                 CoglPixelFormat internal_format,
+                                 GError **error)
 {
   CoglTexture3D   *tex_3d;
   CoglBitmap      *dst_bmp;
@@ -407,11 +407,11 @@ cogl_texture_3d_new_from_data (CoglContext *context,
                                        rowstride,
                                        (guint8 *) data);
 
-  ret = _cogl_texture_3d_new_from_bitmap (bitmap,
-                                          height,
-                                          depth,
-                                          internal_format,
-                                          error);
+  ret = cogl_texture_3d_new_from_bitmap (bitmap,
+                                         height,
+                                         depth,
+                                         internal_format,
+                                         error);
 
   cogl_object_unref (bitmap);
 

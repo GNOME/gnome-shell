@@ -88,12 +88,12 @@ cogl_texture_3d_new_with_size (CoglContext *context,
  * @depth: depth of the texture in pixels.
  * @format: the #CoglPixelFormat the buffer is stored in in RAM
  * @internal_format: the #CoglPixelFormat that will be used for storing
- *    the buffer on the GPU. If COGL_PIXEL_FORMAT_ANY is given then a
+ *    the buffer on the GPU. If %COGL_PIXEL_FORMAT_ANY is given then a
  *    premultiplied format similar to the format of the source data will
  *    be used. The default blending equations of Cogl expect premultiplied
  *    color data; the main use of passing a non-premultiplied format here
  *    is if you have non-premultiplied source data and are going to adjust
- *    the blend mode (see cogl_material_set_blend()) or use the data for
+ *    the blend mode (see cogl_pipeline_set_blend()) or use the data for
  *    something other than straight blending.
  * @rowstride: the memory offset in bytes between the starts of
  *    scanlines in @data or 0 to infer it from the width and format
@@ -130,6 +130,40 @@ cogl_texture_3d_new_from_data (CoglContext *context,
                                int image_stride,
                                const guint8 *data,
                                GError **error);
+
+/**
+ * cogl_texture_3d_new_from_bitmap:
+ * @bitmap: A #CoglBitmap object.
+ * @height: height of the texture in pixels.
+ * @depth: depth of the texture in pixels.
+ * @internal_format: the #CoglPixelFormat that will be used for storing
+ *    the buffer on the GPU. If %COGL_PIXEL_FORMAT_ANY is given then a
+ *    premultiplied format similar to the format of the source data will
+ *    be used. The default blending equations of Cogl expect premultiplied
+ *    color data; the main use of passing a non-premultiplied format here
+ *    is if you have non-premultiplied source data and are going to adjust
+ *    the blend mode (see cogl_pipeline_set_blend()) or use the data for
+ *    something other than straight blending.
+ * @error: A GError return location.
+ *
+ * Creates a new 3D texture and initializes it with the images in
+ * @bitmap. The images are assumed to be packed together after one
+ * another in the increasing y axis. The height of individual image is
+ * given as @height and the number of images is given in @depth. The
+ * actual height of the bitmap can be larger than @height × @depth. In
+ * this case it assumes there is padding between the images.
+ *
+ * Return value: the newly created texture or %NULL if
+ *   there was an error.
+ * Since: 2.0
+ * Stability: unstable
+ */
+CoglTexture3D *
+cogl_texture_3d_new_from_bitmap (CoglBitmap *bitmap,
+                                 unsigned int height,
+                                 unsigned int depth,
+                                 CoglPixelFormat internal_format,
+                                 GError **error);
 
 /**
  * cogl_is_texture_3d:
