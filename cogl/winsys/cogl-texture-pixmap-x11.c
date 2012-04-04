@@ -1009,6 +1009,7 @@ _cogl_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
 static const CoglTextureVtable
 cogl_texture_pixmap_x11_vtable =
   {
+    FALSE, /* not primitive */
     _cogl_texture_pixmap_x11_set_region,
     _cogl_texture_pixmap_x11_get_data,
     _cogl_texture_pixmap_x11_foreach_sub_texture_in_region,
@@ -1027,5 +1028,6 @@ cogl_texture_pixmap_x11_vtable =
     _cogl_texture_pixmap_x11_get_width,
     _cogl_texture_pixmap_x11_get_height,
     _cogl_texture_pixmap_x11_get_type,
-    NULL /* is_foreign */
+    NULL, /* is_foreign */
+    NULL /* set_auto_mipmap */
   };

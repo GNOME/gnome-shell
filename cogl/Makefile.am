@@ -108,6 +108,7 @@ cogl_experimental_h = \
 	$(srcdir)/cogl-texture-2d-sliced.h      \
 	$(srcdir)/cogl-sub-texture.h            \
 	$(srcdir)/cogl-meta-texture.h		\
+	$(srcdir)/cogl-primitive-texture.h	\
 	$(srcdir)/cogl-depth-state.h 		\
 	$(srcdir)/cogl-buffer.h 		\
 	$(srcdir)/cogl-pixel-buffer.h		\
@@ -310,6 +311,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-atlas-texture-private.h          \
 	$(srcdir)/cogl-atlas-texture.c                  \
 	$(srcdir)/cogl-meta-texture.c			\
+	$(srcdir)/cogl-primitive-texture.c		\
 	$(srcdir)/cogl-blit.h				\
 	$(srcdir)/cogl-blit.c				\
 	$(srcdir)/cogl-spans.h				\

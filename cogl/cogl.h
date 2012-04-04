@@ -89,6 +89,7 @@
 #include <cogl/cogl-texture-2d-sliced.h>
 #include <cogl/cogl-sub-texture.h>
 #include <cogl/cogl-meta-texture.h>
+#include <cogl/cogl-primitive-texture.h>
 #include <cogl/cogl-index-buffer.h>
 #include <cogl/cogl-attribute-buffer.h>
 #include <cogl/cogl-indices.h>

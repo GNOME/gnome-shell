@@ -58,6 +58,8 @@ struct _CoglTextureVtable
   /* Virtual functions that must be implemented for a texture
      backend */
 
+  gboolean is_primitive;
+
   /* This should update the specified sub region of the texture with a
      sub region of the given bitmap. The bitmap is not converted
      before being passed so the implementation is expected to call
@@ -126,6 +128,10 @@ struct _CoglTextureVtable
   CoglTextureType (* get_type) (CoglTexture *tex);
 
   gboolean (* is_foreign) (CoglTexture *tex);
+
+  /* Only needs to be implemented if is_primitive == TRUE */
+  void (* set_auto_mipmap) (CoglTexture *texture,
+                            gboolean value);
 };
 
 struct _CoglTexture

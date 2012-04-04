@@ -99,6 +99,15 @@ _cogl_texture_3d_free (CoglTexture3D *tex_3d)
   _cogl_texture_free (COGL_TEXTURE (tex_3d));
 }
 
+static void
+_cogl_texture_3d_set_auto_mipmap (CoglTexture *tex,
+                                  gboolean value)
+{
+  CoglTexture3D *tex_3d = COGL_TEXTURE_3D (tex);
+
+  tex_3d->auto_mipmap = value;
+}
+
 static CoglTexture3D *
 _cogl_texture_3d_create_base (CoglContext *ctx,
                               int width,
@@ -609,6 +618,7 @@ _cogl_texture_3d_get_type (CoglTexture *tex)
 static const CoglTextureVtable
 cogl_texture_3d_vtable =
   {
+    TRUE, /* primitive */
     _cogl_texture_3d_set_region,
     _cogl_texture_3d_get_data,
     NULL, /* foreach_sub_texture_in_region */
@@ -627,5 +637,6 @@ cogl_texture_3d_vtable =
     _cogl_texture_3d_get_width,
     _cogl_texture_3d_get_height,
     _cogl_texture_3d_get_type,
-    NULL /* is_foreign */
+    NULL, /* is_foreign */
+    _cogl_texture_3d_set_auto_mipmap
   };

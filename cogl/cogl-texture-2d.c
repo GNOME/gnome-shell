@@ -138,10 +138,18 @@ _cogl_texture_2d_can_create (unsigned int width,
   return TRUE;
 }
 
+static void
+_cogl_texture_2d_set_auto_mipmap (CoglTexture *tex,
+                                  gboolean value)
+{
+  CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
+
+  tex_2d->auto_mipmap = value;
+}
+
 static CoglTexture2D *
 _cogl_texture_2d_create_base (unsigned int     width,
                               unsigned int     height,
-                              CoglTextureFlags flags,
                               CoglPixelFormat  internal_format)
 {
   CoglTexture2D *tex_2d = g_new (CoglTexture2D, 1);
@@ -152,7 +160,7 @@ _cogl_texture_2d_create_base (unsigned int     width,
   tex_2d->width = width;
   tex_2d->height = height;
   tex_2d->mipmaps_dirty = TRUE;
-  tex_2d->auto_mipmap = (flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0;
+  tex_2d->auto_mipmap = TRUE;
 
   /* We default to GL_LINEAR for both filters */
   tex_2d->min_filter = GL_LINEAR;
@@ -200,7 +208,7 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
                                                             &gl_format,
                                                             &gl_type);
 
-  tex_2d = _cogl_texture_2d_create_base (width, height, COGL_TEXTURE_NONE,
+  tex_2d = _cogl_texture_2d_create_base (width, height,
                                          internal_format);
 
   ctx->texture_driver->gen (ctx, GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
@@ -262,7 +270,6 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
 
   tex_2d = _cogl_texture_2d_create_base (cogl_bitmap_get_width (bmp),
                                          cogl_bitmap_get_height (bmp),
-                                         flags,
                                          internal_format);
 
   /* Keep a copy of the first pixel so that if glGenerateMipmap isn't
@@ -293,6 +300,9 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
   tex_2d->gl_format = gl_intformat;
 
   cogl_object_unref (dst_bmp);
+
+  _cogl_texture_2d_set_auto_mipmap (COGL_TEXTURE (tex_2d),
+                                    !(flags & COGL_TEXTURE_NO_AUTO_MIPMAP));
 
   return _cogl_texture_2d_handle_new (tex_2d);
 }
@@ -432,8 +442,8 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
 
   /* Create new texture */
   tex_2d = _cogl_texture_2d_create_base (width, height,
-                                         COGL_TEXTURE_NO_AUTO_MIPMAP,
                                          format);
+  _cogl_texture_2d_set_auto_mipmap (COGL_TEXTURE (tex_2d), FALSE);
 
   /* Setup bitmap info */
   tex_2d->is_foreign = TRUE;
@@ -474,7 +484,7 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
                         COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE,
                         NULL);
 
-  tex_2d = _cogl_texture_2d_create_base (width, height, COGL_TEXTURE_NONE,
+  tex_2d = _cogl_texture_2d_create_base (width, height,
                                          format);
 
   ctx->texture_driver->gen (ctx, GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
@@ -877,6 +887,7 @@ _cogl_texture_2d_get_type (CoglTexture *tex)
 static const CoglTextureVtable
 cogl_texture_2d_vtable =
   {
+    TRUE, /* primitive */
     _cogl_texture_2d_set_region,
     _cogl_texture_2d_get_data,
     NULL, /* foreach_sub_texture_in_region */
@@ -895,5 +906,6 @@ cogl_texture_2d_vtable =
     _cogl_texture_2d_get_width,
     _cogl_texture_2d_get_height,
     _cogl_texture_2d_get_type,
-    _cogl_texture_2d_is_foreign
+    _cogl_texture_2d_is_foreign,
+    _cogl_texture_2d_set_auto_mipmap
   };

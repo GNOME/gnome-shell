@@ -152,6 +152,14 @@ _cogl_texture_rectangle_can_create (unsigned int width,
   return TRUE;
 }
 
+static void
+_cogl_texture_rectangle_set_auto_mipmap (CoglTexture *tex,
+                                         gboolean value)
+{
+  /* Rectangle textures currently never support mipmapping so there's
+     no point in doing anything here */
+}
+
 static CoglTextureRectangle *
 _cogl_texture_rectangle_create_base (unsigned int     width,
                                      unsigned int     height,
@@ -604,6 +612,7 @@ _cogl_texture_rectangle_get_type (CoglTexture *tex)
 static const CoglTextureVtable
 cogl_texture_rectangle_vtable =
   {
+    TRUE, /* primitive */
     _cogl_texture_rectangle_set_region,
     _cogl_texture_rectangle_get_data,
     NULL, /* foreach_sub_texture_in_region */
@@ -622,5 +631,6 @@ cogl_texture_rectangle_vtable =
     _cogl_texture_rectangle_get_width,
     _cogl_texture_rectangle_get_height,
     _cogl_texture_rectangle_get_type,
-    _cogl_texture_rectangle_is_foreign
+    _cogl_texture_rectangle_is_foreign,
+    _cogl_texture_rectangle_set_auto_mipmap
   };

@@ -345,6 +345,14 @@ cogl_meta_texture_foreach_in_region
 </SECTION>
 
 <SECTION>
+<FILE>cogl-primitive-texture</FILE>
+<TITLE>Low-level primitive textures</TITLE>
+CoglPrimitiveTexture
+cogl_is_primitive_texture
+cogl_primitive_texture_set_auto_mipmap
+</SECTION>
+
+<SECTION>
 <FILE>cogl-sub-texture</FILE>
 <TITLE>Sub Textures</TITLE>
 CoglSubTexture

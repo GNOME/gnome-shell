@@ -817,6 +817,7 @@ _cogl_atlas_texture_get_type (CoglTexture *tex)
 static const CoglTextureVtable
 cogl_atlas_texture_vtable =
   {
+    FALSE, /* not primitive */
     _cogl_atlas_texture_set_region,
     NULL, /* get_data */
     _cogl_atlas_texture_foreach_sub_texture_in_region,
@@ -835,5 +836,6 @@ cogl_atlas_texture_vtable =
     _cogl_atlas_texture_get_width,
     _cogl_atlas_texture_get_height,
     _cogl_atlas_texture_get_type,
-    NULL /* is_foreign */
+    NULL, /* is_foreign */
+    NULL /* set_auto_mipmap */
   };
