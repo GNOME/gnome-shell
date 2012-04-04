@@ -22,6 +22,8 @@
 #ifndef __CLUTTER_OSX_H__
 #define __CLUTTER_OSX_H__
 
+#import <AppKit/AppKit.h>
+
 #include <clutter/clutter-stage.h>
 
 @class NSEvent;

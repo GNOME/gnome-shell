@@ -23,8 +23,13 @@
 #ifndef __CLUTTER_BACKEND_OSX_H__
 #define __CLUTTER_BACKEND_OSX_H__
 
+#import <AppKit/AppKit.h>
+#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+
+#include <glib.h>
+
 #include "clutter-backend-private.h"
-#include "clutter-device-manager.h"
 
 @class NSOpenGLPixelFormat, NSOpenGLContext;
 

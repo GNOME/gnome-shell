@@ -22,15 +22,13 @@
  */
 #include "config.h"
 
-#include "clutter-osx.h"
-#include "clutter-stage-osx.h"
-#include "clutter-backend-osx.h"
+#import "clutter-osx.h"
+#import "clutter-stage-osx.h"
+#import "clutter-backend-osx.h"
 
 #include "clutter-debug.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
-
-#import <AppKit/AppKit.h>
 
 enum
 {
@@ -153,7 +151,8 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 @interface ClutterGLView : NSOpenGLView
 {
   ClutterStageOSX *stage_osx;
-  NSTrackingRectTag tracking_rect;
+
+  NSTrackingRectTag trackingRect;
 }
 - (void) drawRect: (NSRect) bounds;
 @end
@@ -164,10 +163,10 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
   if ((self = [super initWithFrame:aFrame pixelFormat:aFormat]) != nil)
     {
       self->stage_osx = aStage;
-      tracking_rect = [self addTrackingRect:[self bounds]
-                                      owner:self
-                                   userData:NULL
-                               assumeInside:NO];
+      trackingRect = [self addTrackingRect:[self bounds]
+                                     owner:self
+                                  userData:NULL
+                              assumeInside:NO];
     }
 
   return self;
@@ -186,12 +185,12 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 
 - (NSTrackingRectTag) trackingRect
 {
-  return tracking_rect;
+  return trackingRect;
 }
 
 - (ClutterActor *) clutterStage
 {
-  return stage_osx->wrapper;
+  return (ClutterActor *) stage_osx->wrapper;
 }
 
 - (void) drawRect: (NSRect) bounds
@@ -242,11 +241,11 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
                           stage_osx->requisition_width,
                           stage_osx->requisition_height);
 
-  [self removeTrackingRect:tracking_rect];
-  tracking_rect = [self addTrackingRect:[self bounds]
-                                  owner:self
-                               userData:NULL
-                           assumeInside:NO];
+  [self removeTrackingRect:trackingRect];
+  trackingRect = [self addTrackingRect:[self bounds]
+                                 owner:self
+                              userData:NULL
+                          assumeInside:NO];
 }
 
 /* Simply forward all events that reach our view to clutter. */

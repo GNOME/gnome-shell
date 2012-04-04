@@ -22,16 +22,15 @@
  */
 #include "config.h"
 
-#include "clutter-osx.h"
-
-#include "clutter-backend-osx.h"
-#include "clutter-device-manager-osx.h"
-#include "clutter-shader.h"
-#include "clutter-stage-osx.h"
-#include "clutter-event-loop-osx.h"
+#import "clutter-osx.h"
+#import "clutter-backend-osx.h"
+#import "clutter-device-manager-osx.h"
+#import "clutter-stage-osx.h"
+#import "clutter-event-loop-osx.h"
 
 #include "clutter-debug.h"
 #include "clutter-private.h"
+#include "clutter-shader.h"
 #include "clutter-stage-private.h"
 
 #include "cogl/cogl.h"
