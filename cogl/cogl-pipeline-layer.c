@@ -170,21 +170,13 @@ _cogl_pipeline_layer_init_multi_property_sparse_state (
     case COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS:
     case COGL_PIPELINE_LAYER_STATE_USER_MATRIX:
     case COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT:
+    case COGL_PIPELINE_LAYER_STATE_SAMPLER:
       g_return_if_reached ();
 
     /* XXX: technically we could probably even consider these as
      * single property state-groups from the pov that currently the
      * corresponding property setters always update all of the values
      * at the same time. */
-    case COGL_PIPELINE_LAYER_STATE_FILTERS:
-      layer->min_filter = authority->min_filter;
-      layer->mag_filter = authority->mag_filter;
-      break;
-    case COGL_PIPELINE_LAYER_STATE_WRAP_MODES:
-      layer->wrap_mode_s = authority->wrap_mode_s;
-      layer->wrap_mode_t = authority->wrap_mode_t;
-      layer->wrap_mode_p = authority->wrap_mode_p;
-      break;
     case COGL_PIPELINE_LAYER_STATE_COMBINE:
       {
         int n_args;
@@ -576,16 +568,10 @@ _cogl_pipeline_layer_equal (CoglPipelineLayer *layer0,
                           _cogl_pipeline_layer_combine_constant_equal))
     return FALSE;
 
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_FILTERS &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX,
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_SAMPLER &&
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_SAMPLER_INDEX,
                           authorities0, authorities1,
-                          _cogl_pipeline_layer_filters_equal))
-    return FALSE;
-
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_WRAP_MODES &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_WRAP_MODES_INDEX,
-                          authorities0, authorities1,
-                          _cogl_pipeline_layer_wrap_modes_equal))
+                          _cogl_pipeline_layer_sampler_equal))
     return FALSE;
 
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_USER_MATRIX &&
@@ -657,12 +643,8 @@ _cogl_pipeline_init_default_layers (void)
   layer->texture = NULL;
   layer->texture_type = COGL_TEXTURE_TYPE_2D;
 
-  layer->mag_filter = COGL_PIPELINE_FILTER_LINEAR;
-  layer->min_filter = COGL_PIPELINE_FILTER_LINEAR;
-
-  layer->wrap_mode_s = COGL_PIPELINE_WRAP_MODE_AUTOMATIC;
-  layer->wrap_mode_t = COGL_PIPELINE_WRAP_MODE_AUTOMATIC;
-  layer->wrap_mode_p = COGL_PIPELINE_WRAP_MODE_AUTOMATIC;
+  layer->sampler_cache_entry =
+    _cogl_sampler_cache_get_default_entry (ctx->sampler_cache);
 
   layer->big_state = big_state;
   layer->has_big_state = TRUE;

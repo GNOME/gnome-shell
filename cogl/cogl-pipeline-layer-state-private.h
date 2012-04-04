@@ -63,12 +63,8 @@ _cogl_pipeline_layer_combine_constant_equal (CoglPipelineLayer *authority0,
                                              CoglPipelineLayer *authority1);
 
 gboolean
-_cogl_pipeline_layer_filters_equal (CoglPipelineLayer *authority0,
+_cogl_pipeline_layer_sampler_equal (CoglPipelineLayer *authority0,
                                     CoglPipelineLayer *authority1);
-
-gboolean
-_cogl_pipeline_layer_wrap_modes_equal (CoglPipelineLayer *authority0,
-                                       CoglPipelineLayer *authority1);
 
 gboolean
 _cogl_pipeline_layer_user_matrix_equal (CoglPipelineLayer *authority0,
@@ -102,14 +98,9 @@ _cogl_pipeline_layer_hash_texture_data_state (CoglPipelineLayer *authority,
                                               CoglPipelineHashState *state);
 
 void
-_cogl_pipeline_layer_hash_filters_state (CoglPipelineLayer *authority,
+_cogl_pipeline_layer_hash_sampler_state (CoglPipelineLayer *authority,
                                          CoglPipelineLayer **authorities,
                                          CoglPipelineHashState *state);
-
-void
-_cogl_pipeline_layer_hash_wrap_modes_state (CoglPipelineLayer *authority,
-                                            CoglPipelineLayer **authorities,
-                                            CoglPipelineHashState *state);
 
 void
 _cogl_pipeline_layer_hash_combine_state (CoglPipelineLayer *authority,

@@ -363,19 +363,15 @@ cogl_pipeline_set_layer_null_texture (CoglPipeline *pipeline,
 }
 
 static void
-_cogl_pipeline_set_layer_wrap_modes (CoglPipeline        *pipeline,
-                                     CoglPipelineLayer   *layer,
-                                     CoglPipelineLayer   *authority,
-                                     CoglPipelineWrapModeInternal wrap_mode_s,
-                                     CoglPipelineWrapModeInternal wrap_mode_t,
-                                     CoglPipelineWrapModeInternal wrap_mode_p)
+_cogl_pipeline_set_layer_sampler_state (CoglPipeline *pipeline,
+                                        CoglPipelineLayer *layer,
+                                        CoglPipelineLayer *authority,
+                                        const CoglSamplerCacheEntry *state)
 {
-  CoglPipelineLayer     *new;
-  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayer *new;
+  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_SAMPLER;
 
-  if (authority->wrap_mode_s == wrap_mode_s &&
-      authority->wrap_mode_t == wrap_mode_t &&
-      authority->wrap_mode_p == wrap_mode_p)
+  if (authority->sampler_cache_entry == state)
     return;
 
   new = _cogl_pipeline_layer_pre_change_notify (pipeline, layer, change);
@@ -394,9 +390,7 @@ _cogl_pipeline_set_layer_wrap_modes (CoglPipeline        *pipeline,
           CoglPipelineLayer *old_authority =
             _cogl_pipeline_layer_get_authority (parent, change);
 
-          if (old_authority->wrap_mode_s == wrap_mode_s &&
-              old_authority->wrap_mode_t == wrap_mode_t &&
-              old_authority->wrap_mode_p == wrap_mode_p)
+          if (old_authority->sampler_cache_entry == state)
             {
               layer->differences &= ~change;
 
@@ -409,9 +403,7 @@ _cogl_pipeline_set_layer_wrap_modes (CoglPipeline        *pipeline,
         }
     }
 
-  layer->wrap_mode_s = wrap_mode_s;
-  layer->wrap_mode_t = wrap_mode_t;
-  layer->wrap_mode_p = wrap_mode_p;
+  layer->sampler_cache_entry = state;
 
   /* If we weren't previously the authority on this state then we need
    * to extended our differences mask and so it's possible that some
@@ -424,17 +416,17 @@ _cogl_pipeline_set_layer_wrap_modes (CoglPipeline        *pipeline,
     }
 }
 
-static CoglPipelineWrapModeInternal
+static CoglSamplerCacheWrapMode
 public_to_internal_wrap_mode (CoglPipelineWrapMode mode)
 {
-  return (CoglPipelineWrapModeInternal)mode;
+  return (CoglSamplerCacheWrapMode)mode;
 }
 
 static CoglPipelineWrapMode
-internal_to_public_wrap_mode (CoglPipelineWrapModeInternal internal_mode)
+internal_to_public_wrap_mode (CoglSamplerCacheWrapMode internal_mode)
 {
   _COGL_RETURN_VAL_IF_FAIL (internal_mode !=
-                        COGL_PIPELINE_WRAP_MODE_INTERNAL_CLAMP_TO_BORDER,
+                        COGL_SAMPLER_CACHE_WRAP_MODE_CLAMP_TO_BORDER,
                         COGL_PIPELINE_WRAP_MODE_AUTOMATIC);
   return (CoglPipelineWrapMode)internal_mode;
 }
@@ -444,11 +436,14 @@ cogl_pipeline_set_layer_wrap_mode_s (CoglPipeline *pipeline,
                                      int layer_index,
                                      CoglPipelineWrapMode mode)
 {
-  CoglPipelineLayerState       change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayerState       change = COGL_PIPELINE_LAYER_STATE_SAMPLER;
   CoglPipelineLayer           *layer;
   CoglPipelineLayer           *authority;
-  CoglPipelineWrapModeInternal internal_mode =
+  CoglSamplerCacheWrapMode     internal_mode =
     public_to_internal_wrap_mode (mode);
+  const CoglSamplerCacheEntry *sampler_state;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
@@ -464,22 +459,33 @@ cogl_pipeline_set_layer_wrap_mode_s (CoglPipeline *pipeline,
    * state we want to change */
   authority = _cogl_pipeline_layer_get_authority (layer, change);
 
-  _cogl_pipeline_set_layer_wrap_modes (pipeline, layer, authority,
-                                       internal_mode,
-                                       authority->wrap_mode_t,
-                                       authority->wrap_mode_p);
+  sampler_state =
+    _cogl_sampler_cache_update_wrap_modes (ctx->sampler_cache,
+                                           authority->sampler_cache_entry,
+                                           internal_mode,
+                                           authority->sampler_cache_entry->
+                                           wrap_mode_t,
+                                           authority->sampler_cache_entry->
+                                           wrap_mode_p);
+  _cogl_pipeline_set_layer_sampler_state (pipeline,
+                                          layer,
+                                          authority,
+                                          sampler_state);
 }
 
 void
-cogl_pipeline_set_layer_wrap_mode_t (CoglPipeline        *pipeline,
-                                     int                  layer_index,
+cogl_pipeline_set_layer_wrap_mode_t (CoglPipeline *pipeline,
+                                     int layer_index,
                                      CoglPipelineWrapMode mode)
 {
-  CoglPipelineLayerState       change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayerState       change = COGL_PIPELINE_LAYER_STATE_SAMPLER;
   CoglPipelineLayer           *layer;
   CoglPipelineLayer           *authority;
-  CoglPipelineWrapModeInternal internal_mode =
+  CoglSamplerCacheWrapMode     internal_mode =
     public_to_internal_wrap_mode (mode);
+  const CoglSamplerCacheEntry *sampler_state;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
@@ -495,10 +501,18 @@ cogl_pipeline_set_layer_wrap_mode_t (CoglPipeline        *pipeline,
    * state we want to change */
   authority = _cogl_pipeline_layer_get_authority (layer, change);
 
-  _cogl_pipeline_set_layer_wrap_modes (pipeline, layer, authority,
-                                       authority->wrap_mode_s,
-                                       internal_mode,
-                                       authority->wrap_mode_p);
+  sampler_state =
+    _cogl_sampler_cache_update_wrap_modes (ctx->sampler_cache,
+                                           authority->sampler_cache_entry,
+                                           authority->sampler_cache_entry->
+                                           wrap_mode_s,
+                                           internal_mode,
+                                           authority->sampler_cache_entry->
+                                           wrap_mode_p);
+  _cogl_pipeline_set_layer_sampler_state (pipeline,
+                                          layer,
+                                          authority,
+                                          sampler_state);
 }
 
 /* The rationale for naming the third texture coordinate 'p' instead
@@ -514,15 +528,18 @@ cogl_pipeline_set_layer_wrap_mode_t (CoglPipeline        *pipeline,
    the w component conflicts with the w component of a position
    vertex.  */
 void
-cogl_pipeline_set_layer_wrap_mode_p (CoglPipeline        *pipeline,
-                                     int                  layer_index,
+cogl_pipeline_set_layer_wrap_mode_p (CoglPipeline *pipeline,
+                                     int layer_index,
                                      CoglPipelineWrapMode mode)
 {
-  CoglPipelineLayerState       change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayerState       change = COGL_PIPELINE_LAYER_STATE_SAMPLER;
   CoglPipelineLayer           *layer;
   CoglPipelineLayer           *authority;
-  CoglPipelineWrapModeInternal internal_mode =
+  CoglSamplerCacheWrapMode     internal_mode =
     public_to_internal_wrap_mode (mode);
+  const CoglSamplerCacheEntry *sampler_state;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
@@ -538,22 +555,33 @@ cogl_pipeline_set_layer_wrap_mode_p (CoglPipeline        *pipeline,
    * state we want to change */
   authority = _cogl_pipeline_layer_get_authority (layer, change);
 
-  _cogl_pipeline_set_layer_wrap_modes (pipeline, layer, authority,
-                                       authority->wrap_mode_s,
-                                       authority->wrap_mode_t,
-                                       internal_mode);
+  sampler_state =
+    _cogl_sampler_cache_update_wrap_modes (ctx->sampler_cache,
+                                           authority->sampler_cache_entry,
+                                           authority->sampler_cache_entry->
+                                           wrap_mode_s,
+                                           authority->sampler_cache_entry->
+                                           wrap_mode_t,
+                                           internal_mode);
+  _cogl_pipeline_set_layer_sampler_state (pipeline,
+                                          layer,
+                                          authority,
+                                          sampler_state);
 }
 
 void
-cogl_pipeline_set_layer_wrap_mode (CoglPipeline        *pipeline,
-                                   int                  layer_index,
+cogl_pipeline_set_layer_wrap_mode (CoglPipeline *pipeline,
+                                   int layer_index,
                                    CoglPipelineWrapMode mode)
 {
-  CoglPipelineLayerState       change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayerState       change = COGL_PIPELINE_LAYER_STATE_SAMPLER;
   CoglPipelineLayer           *layer;
   CoglPipelineLayer           *authority;
-  CoglPipelineWrapModeInternal internal_mode =
+  CoglSamplerCacheWrapMode     internal_mode =
     public_to_internal_wrap_mode (mode);
+  const CoglSamplerCacheEntry *sampler_state;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
@@ -569,20 +597,27 @@ cogl_pipeline_set_layer_wrap_mode (CoglPipeline        *pipeline,
    * state we want to change */
   authority = _cogl_pipeline_layer_get_authority (layer, change);
 
-  _cogl_pipeline_set_layer_wrap_modes (pipeline, layer, authority,
-                                       internal_mode,
-                                       internal_mode,
-                                       internal_mode);
+  sampler_state =
+    _cogl_sampler_cache_update_wrap_modes (ctx->sampler_cache,
+                                           authority->sampler_cache_entry,
+                                           internal_mode,
+                                           internal_mode,
+                                           internal_mode);
+  _cogl_pipeline_set_layer_sampler_state (pipeline,
+                                          layer,
+                                          authority,
+                                          sampler_state);
   /* XXX: I wonder if we should really be duplicating the mode into
-   * the 'r' wrap mode too? */
+   * the 'p' wrap mode too? */
 }
 
 /* FIXME: deprecate this API */
 CoglPipelineWrapMode
 _cogl_pipeline_layer_get_wrap_mode_s (CoglPipelineLayer *layer)
 {
-  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_SAMPLER;
   CoglPipelineLayer     *authority;
+  const CoglSamplerCacheEntry *sampler_state;
 
   _COGL_RETURN_VAL_IF_FAIL (_cogl_is_pipeline_layer (layer), FALSE);
 
@@ -590,7 +625,8 @@ _cogl_pipeline_layer_get_wrap_mode_s (CoglPipelineLayer *layer)
    * state we want to change */
   authority = _cogl_pipeline_layer_get_authority (layer, change);
 
-  return internal_to_public_wrap_mode (authority->wrap_mode_s);
+  sampler_state = authority->sampler_cache_entry;
+  return internal_to_public_wrap_mode (sampler_state->wrap_mode_s);
 }
 
 CoglPipelineWrapMode
@@ -616,8 +652,9 @@ cogl_pipeline_get_layer_wrap_mode_s (CoglPipeline *pipeline, int layer_index)
 CoglPipelineWrapMode
 _cogl_pipeline_layer_get_wrap_mode_t (CoglPipelineLayer *layer)
 {
-  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_SAMPLER;
   CoglPipelineLayer     *authority;
+  const CoglSamplerCacheEntry *sampler_state;
 
   _COGL_RETURN_VAL_IF_FAIL (_cogl_is_pipeline_layer (layer), FALSE);
 
@@ -625,7 +662,8 @@ _cogl_pipeline_layer_get_wrap_mode_t (CoglPipelineLayer *layer)
    * state we want to change */
   authority = _cogl_pipeline_layer_get_authority (layer, change);
 
-  return internal_to_public_wrap_mode (authority->wrap_mode_t);
+  sampler_state = authority->sampler_cache_entry;
+  return internal_to_public_wrap_mode (sampler_state->wrap_mode_t);
 }
 
 CoglPipelineWrapMode
@@ -650,11 +688,13 @@ cogl_pipeline_get_layer_wrap_mode_t (CoglPipeline *pipeline, int layer_index)
 CoglPipelineWrapMode
 _cogl_pipeline_layer_get_wrap_mode_p (CoglPipelineLayer *layer)
 {
-  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_SAMPLER;
   CoglPipelineLayer     *authority =
     _cogl_pipeline_layer_get_authority (layer, change);
+  const CoglSamplerCacheEntry *sampler_state;
 
-  return internal_to_public_wrap_mode (authority->wrap_mode_p);
+  sampler_state = authority->sampler_cache_entry;
+  return internal_to_public_wrap_mode (sampler_state->wrap_mode_p);
 }
 
 CoglPipelineWrapMode
@@ -677,17 +717,17 @@ cogl_pipeline_get_layer_wrap_mode_p (CoglPipeline *pipeline, int layer_index)
 
 void
 _cogl_pipeline_layer_get_wrap_modes (CoglPipelineLayer *layer,
-                                     CoglPipelineWrapModeInternal *wrap_mode_s,
-                                     CoglPipelineWrapModeInternal *wrap_mode_t,
-                                     CoglPipelineWrapModeInternal *wrap_mode_p)
+                                     CoglSamplerCacheWrapMode *wrap_mode_s,
+                                     CoglSamplerCacheWrapMode *wrap_mode_t,
+                                     CoglSamplerCacheWrapMode *wrap_mode_p)
 {
   CoglPipelineLayer *authority =
     _cogl_pipeline_layer_get_authority (layer,
-                                        COGL_PIPELINE_LAYER_STATE_WRAP_MODES);
+                                        COGL_PIPELINE_LAYER_STATE_SAMPLER);
 
-  *wrap_mode_s = authority->wrap_mode_s;
-  *wrap_mode_t = authority->wrap_mode_t;
-  *wrap_mode_p = authority->wrap_mode_p;
+  *wrap_mode_s = authority->sampler_cache_entry->wrap_mode_s;
+  *wrap_mode_t = authority->sampler_cache_entry->wrap_mode_t;
+  *wrap_mode_p = authority->sampler_cache_entry->wrap_mode_p;
 }
 
 gboolean
@@ -989,45 +1029,14 @@ _cogl_pipeline_layer_combine_constant_equal (CoglPipelineLayer *authority0,
 }
 
 gboolean
-_cogl_pipeline_layer_filters_equal (CoglPipelineLayer *authority0,
+_cogl_pipeline_layer_sampler_equal (CoglPipelineLayer *authority0,
                                     CoglPipelineLayer *authority1)
 {
-  if (authority0->mag_filter != authority1->mag_filter)
-    return FALSE;
-  if (authority0->min_filter != authority1->min_filter)
-    return FALSE;
-
-  return TRUE;
-}
-
-static gboolean
-compare_wrap_mode_equal (CoglPipelineWrapMode wrap_mode0,
-                         CoglPipelineWrapMode wrap_mode1)
-{
-  /* We consider AUTOMATIC to be equivalent to CLAMP_TO_EDGE because
-     the primitives code is expected to override this to something
-     else if it wants it to be behave any other way */
-  if (wrap_mode0 == COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
-    wrap_mode0 = COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE;
-  if (wrap_mode1 == COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
-    wrap_mode1 = COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE;
-
-  return wrap_mode0 == wrap_mode1;
-}
-
-gboolean
-_cogl_pipeline_layer_wrap_modes_equal (CoglPipelineLayer *authority0,
-                                       CoglPipelineLayer *authority1)
-{
-  if (!compare_wrap_mode_equal (authority0->wrap_mode_s,
-                                authority1->wrap_mode_s) ||
-      !compare_wrap_mode_equal (authority0->wrap_mode_t,
-                                authority1->wrap_mode_t) ||
-      !compare_wrap_mode_equal (authority0->wrap_mode_p,
-                                authority1->wrap_mode_p))
-    return FALSE;
-
-  return TRUE;
+  /* We compare the actual sampler objects rather than just the entry
+     pointers because two states with different values can lead to the
+     same state in GL terms when AUTOMATIC is used as a wrap mode */
+  return (authority0->sampler_cache_entry->sampler_object ==
+          authority1->sampler_cache_entry->sampler_object);
 }
 
 gboolean
@@ -1500,10 +1509,10 @@ _cogl_pipeline_layer_get_filters (CoglPipelineLayer *layer,
 {
   CoglPipelineLayer *authority =
     _cogl_pipeline_layer_get_authority (layer,
-                                        COGL_PIPELINE_LAYER_STATE_FILTERS);
+                                        COGL_PIPELINE_LAYER_STATE_SAMPLER);
 
-  *min_filter = authority->min_filter;
-  *mag_filter = authority->mag_filter;
+  *min_filter = authority->sampler_cache_entry->min_filter;
+  *mag_filter = authority->sampler_cache_entry->mag_filter;
 }
 
 void
@@ -1521,10 +1530,10 @@ _cogl_pipeline_get_layer_filters (CoglPipeline *pipeline,
 
   authority =
     _cogl_pipeline_layer_get_authority (layer,
-                                        COGL_PIPELINE_LAYER_STATE_FILTERS);
+                                        COGL_PIPELINE_LAYER_STATE_SAMPLER);
 
-  *min_filter = authority->min_filter;
-  *mag_filter = authority->mag_filter;
+  *min_filter = authority->sampler_cache_entry->min_filter;
+  *mag_filter = authority->sampler_cache_entry->mag_filter;
 }
 
 CoglPipelineFilter
@@ -1560,9 +1569,9 @@ _cogl_pipeline_layer_get_min_filter (CoglPipelineLayer *layer)
 
   authority =
     _cogl_pipeline_layer_get_authority (layer,
-                                        COGL_PIPELINE_LAYER_STATE_FILTERS);
+                                        COGL_PIPELINE_LAYER_STATE_SAMPLER);
 
-  return authority->min_filter;
+  return authority->sampler_cache_entry->min_filter;
 }
 
 CoglPipelineFilter
@@ -1574,9 +1583,9 @@ _cogl_pipeline_layer_get_mag_filter (CoglPipelineLayer *layer)
 
   authority =
     _cogl_pipeline_layer_get_authority (layer,
-                                        COGL_PIPELINE_LAYER_STATE_FILTERS);
+                                        COGL_PIPELINE_LAYER_STATE_SAMPLER);
 
-  return authority->mag_filter;
+  return authority->sampler_cache_entry->mag_filter;
 }
 
 void
@@ -1585,10 +1594,12 @@ cogl_pipeline_set_layer_filters (CoglPipeline      *pipeline,
                                  CoglPipelineFilter min_filter,
                                  CoglPipelineFilter mag_filter)
 {
-  CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_FILTERS;
-  CoglPipelineLayer     *layer;
-  CoglPipelineLayer     *authority;
-  CoglPipelineLayer     *new;
+  CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_SAMPLER;
+  CoglPipelineLayer *layer;
+  CoglPipelineLayer *authority;
+  const CoglSamplerCacheEntry *sampler_state;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
@@ -1604,52 +1615,27 @@ cogl_pipeline_set_layer_filters (CoglPipeline      *pipeline,
    * state we want to change */
   authority = _cogl_pipeline_layer_get_authority (layer, state);
 
-  if (authority->min_filter == min_filter &&
-      authority->mag_filter == mag_filter)
-    return;
+  sampler_state =
+    _cogl_sampler_cache_update_filters (ctx->sampler_cache,
+                                        authority->sampler_cache_entry,
+                                        min_filter,
+                                        mag_filter);
+  _cogl_pipeline_set_layer_sampler_state (pipeline,
+                                          layer,
+                                          authority,
+                                          sampler_state);
+}
 
-  new = _cogl_pipeline_layer_pre_change_notify (pipeline, layer, state);
-  if (new != layer)
-    layer = new;
-  else
-    {
-      /* If the original layer we found is currently the authority on
-       * the state we are changing see if we can revert to one of our
-       * ancestors being the authority. */
-      if (layer == authority &&
-          _cogl_pipeline_layer_get_parent (authority) != NULL)
-        {
-          CoglPipelineLayer *parent =
-            _cogl_pipeline_layer_get_parent (authority);
-          CoglPipelineLayer *old_authority =
-            _cogl_pipeline_layer_get_authority (parent, state);
+const CoglSamplerCacheEntry *
+_cogl_pipeline_layer_get_sampler_state (CoglPipelineLayer *layer)
+{
+  CoglPipelineLayer *authority;
 
-          if (old_authority->min_filter == min_filter &&
-              old_authority->mag_filter == mag_filter)
-            {
-              layer->differences &= ~state;
+  authority =
+    _cogl_pipeline_layer_get_authority (layer,
+                                        COGL_PIPELINE_LAYER_STATE_SAMPLER);
 
-              g_assert (layer->owner == pipeline);
-              if (layer->differences == 0)
-                _cogl_pipeline_prune_empty_layer_difference (pipeline,
-                                                             layer);
-              return;
-            }
-        }
-    }
-
-  layer->min_filter = min_filter;
-  layer->mag_filter = mag_filter;
-
-  /* If we weren't previously the authority on this state then we need
-   * to extended our differences mask and so it's possible that some
-   * of our ancestry will now become redundant, so we aim to reparent
-   * ourselves if that's true... */
-  if (layer != authority)
-    {
-      layer->differences |= state;
-      _cogl_pipeline_layer_prune_redundant_ancestry (layer);
-    }
+  return authority->sampler_cache_entry;
 }
 
 void
@@ -1688,31 +1674,14 @@ _cogl_pipeline_layer_hash_texture_data_state (CoglPipelineLayer *authority,
 }
 
 void
-_cogl_pipeline_layer_hash_filters_state (CoglPipelineLayer *authority,
+_cogl_pipeline_layer_hash_sampler_state (CoglPipelineLayer *authority,
                                          CoglPipelineLayer **authorities,
                                          CoglPipelineHashState *state)
 {
-  unsigned int hash = state->hash;
-  hash = _cogl_util_one_at_a_time_hash (hash, &authority->mag_filter,
-                                        sizeof (authority->mag_filter));
-  hash = _cogl_util_one_at_a_time_hash (hash, &authority->min_filter,
-                                        sizeof (authority->min_filter));
-  state->hash = hash;
-}
-
-void
-_cogl_pipeline_layer_hash_wrap_modes_state (CoglPipelineLayer *authority,
-                                            CoglPipelineLayer **authorities,
-                                            CoglPipelineHashState *state)
-{
-  unsigned int hash = state->hash;
-  hash = _cogl_util_one_at_a_time_hash (hash, &authority->wrap_mode_s,
-                                        sizeof (authority->wrap_mode_s));
-  hash = _cogl_util_one_at_a_time_hash (hash, &authority->wrap_mode_t,
-                                        sizeof (authority->wrap_mode_t));
-  hash = _cogl_util_one_at_a_time_hash (hash, &authority->wrap_mode_p,
-                                        sizeof (authority->wrap_mode_p));
-  state->hash = hash;
+  state->hash =
+    _cogl_util_one_at_a_time_hash (state->hash,
+                                   &authority->sampler_cache_entry,
+                                   sizeof (authority->sampler_cache_entry));
 }
 
 void

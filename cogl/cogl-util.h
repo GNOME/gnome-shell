@@ -96,10 +96,10 @@ _cogl_util_is_pot (unsigned int num)
  */
 static inline unsigned int
 _cogl_util_one_at_a_time_hash (unsigned int hash,
-                               void *key,
+                               const void *key,
                                size_t bytes)
 {
-  unsigned char *p = key;
+  const unsigned char *p = key;
   int i;
 
   for (i = 0; i < bytes; i++)

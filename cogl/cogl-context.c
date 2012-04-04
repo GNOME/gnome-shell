@@ -252,6 +252,8 @@ cogl_context_new (CoglDisplay *display,
   /* Initialise the driver specific state */
   _cogl_init_feature_overrides (context);
 
+  _context->sampler_cache = _cogl_sampler_cache_new (_context);
+
   _cogl_pipeline_init_default_pipeline ();
   _cogl_pipeline_init_default_layers ();
   _cogl_pipeline_init_state_hash_functions ();
@@ -522,6 +524,7 @@ _cogl_context_free (CoglContext *context)
 
   cogl_pipeline_cache_free (context->pipeline_cache);
 
+  _cogl_sampler_cache_free (context->sampler_cache);
 
   _cogl_destroy_texture_units ();
 

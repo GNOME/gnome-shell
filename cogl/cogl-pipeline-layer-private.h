@@ -35,6 +35,7 @@
 #include "cogl-pipeline-layer-state.h"
 #include "cogl-internal.h"
 #include "cogl-pipeline-snippet-private.h"
+#include "cogl-sampler-cache-private.h"
 
 #include <glib.h>
 
@@ -49,21 +50,6 @@
 typedef struct _CoglPipelineLayer     CoglPipelineLayer;
 #define COGL_PIPELINE_LAYER(OBJECT) ((CoglPipelineLayer *)OBJECT)
 
-/* GL_ALWAYS is just used here as a value that is known not to clash
- * with any valid GL wrap modes.
- *
- * XXX: keep the values in sync with the CoglPipelineWrapMode enum
- * so no conversion is actually needed.
- */
-typedef enum _CoglPipelineWrapModeInternal
-{
-  COGL_PIPELINE_WRAP_MODE_INTERNAL_REPEAT = GL_REPEAT,
-  COGL_PIPELINE_WRAP_MODE_INTERNAL_MIRRORED_REPEAT = GL_MIRRORED_REPEAT,
-  COGL_PIPELINE_WRAP_MODE_INTERNAL_CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE,
-  COGL_PIPELINE_WRAP_MODE_INTERNAL_CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER,
-  COGL_PIPELINE_WRAP_MODE_INTERNAL_AUTOMATIC = GL_ALWAYS
-} CoglPipelineWrapModeInternal;
-
 /* XXX: should I rename these as
  * COGL_PIPELINE_LAYER_STATE_INDEX_XYZ... ?
  */
@@ -73,8 +59,7 @@ typedef enum
   COGL_PIPELINE_LAYER_STATE_UNIT_INDEX,
   COGL_PIPELINE_LAYER_STATE_TEXTURE_TYPE_INDEX,
   COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA_INDEX,
-  COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX,
-  COGL_PIPELINE_LAYER_STATE_WRAP_MODES_INDEX,
+  COGL_PIPELINE_LAYER_STATE_SAMPLER_INDEX,
   COGL_PIPELINE_LAYER_STATE_COMBINE_INDEX,
   COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT_INDEX,
   COGL_PIPELINE_LAYER_STATE_USER_MATRIX_INDEX,
@@ -103,10 +88,8 @@ typedef enum
     1L<<COGL_PIPELINE_LAYER_STATE_TEXTURE_TYPE_INDEX,
   COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA =
     1L<<COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA_INDEX,
-  COGL_PIPELINE_LAYER_STATE_FILTERS =
-    1L<<COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX,
-  COGL_PIPELINE_LAYER_STATE_WRAP_MODES =
-    1L<<COGL_PIPELINE_LAYER_STATE_WRAP_MODES_INDEX,
+  COGL_PIPELINE_LAYER_STATE_SAMPLER =
+    1L<<COGL_PIPELINE_LAYER_STATE_SAMPLER_INDEX,
 
   COGL_PIPELINE_LAYER_STATE_COMBINE =
     1L<<COGL_PIPELINE_LAYER_STATE_COMBINE_INDEX,
@@ -146,9 +129,7 @@ typedef enum
    COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS)
 
 #define COGL_PIPELINE_LAYER_STATE_MULTI_PROPERTY \
-  (COGL_PIPELINE_LAYER_STATE_FILTERS | \
-   COGL_PIPELINE_LAYER_STATE_WRAP_MODES | \
-   COGL_PIPELINE_LAYER_STATE_COMBINE | \
+  (COGL_PIPELINE_LAYER_STATE_COMBINE | \
    COGL_PIPELINE_LAYER_STATE_VERTEX_SNIPPETS | \
    COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS)
 
@@ -267,12 +248,7 @@ struct _CoglPipelineLayer
      backends. */
   CoglTextureType            texture_type;
 
-  CoglPipelineFilter         mag_filter;
-  CoglPipelineFilter         min_filter;
-
-  CoglPipelineWrapModeInternal wrap_mode_s;
-  CoglPipelineWrapModeInternal wrap_mode_t;
-  CoglPipelineWrapModeInternal wrap_mode_p;
+  const CoglSamplerCacheEntry *sampler_cache_entry;
 
   /* Infrequent differences aren't currently tracked in
    * a separate, dynamically allocated structure as they are
@@ -341,14 +317,17 @@ _cogl_pipeline_layer_pre_paint (CoglPipelineLayer *layerr);
 
 void
 _cogl_pipeline_layer_get_wrap_modes (CoglPipelineLayer *layer,
-                                     CoglPipelineWrapModeInternal *wrap_mode_s,
-                                     CoglPipelineWrapModeInternal *wrap_mode_t,
-                                     CoglPipelineWrapModeInternal *wrap_mode_r);
+                                     CoglSamplerCacheWrapMode *wrap_mode_s,
+                                     CoglSamplerCacheWrapMode *wrap_mode_t,
+                                     CoglSamplerCacheWrapMode *wrap_mode_r);
 
 void
 _cogl_pipeline_layer_get_filters (CoglPipelineLayer *layer,
                                   CoglPipelineFilter *min_filter,
                                   CoglPipelineFilter *mag_filter);
+
+const CoglSamplerCacheEntry *
+_cogl_pipeline_layer_get_sampler_state (CoglPipelineLayer *layer);
 
 void
 _cogl_pipeline_get_layer_filters (CoglPipeline *pipeline,

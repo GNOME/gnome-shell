@@ -47,6 +47,7 @@
 #include "cogl-texture-2d.h"
 #include "cogl-texture-3d.h"
 #include "cogl-texture-rectangle.h"
+#include "cogl-sampler-cache-private.h"
 
 typedef struct
 {
@@ -251,6 +252,8 @@ struct _CoglContext
   gboolean          buffer_map_fallback_in_use;
 
   CoglWinsysRectangleState rectangle_state;
+
+  CoglSamplerCache *sampler_cache;
 
   /* FIXME: remove these when we remove the last xlib based clutter
    * backend. they should be tracked as part of the renderer but e.g.

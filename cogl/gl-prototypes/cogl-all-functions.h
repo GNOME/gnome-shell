@@ -210,3 +210,22 @@ COGL_EXT_FUNCTION (void, glFramebufferTexture2DMultisampleIMG,
                     GLint            level,
                     GLsizei          samples))
 COGL_EXT_END ()
+
+COGL_EXT_BEGIN (ARB_sampler_objects, 255, 255,
+                0, /* not in either GLES */
+                "ARB:\0",
+                "sampler_objects\0")
+COGL_EXT_FUNCTION (void, glGenSamplers,
+                   (GLsizei count,
+                    GLuint *samplers))
+COGL_EXT_FUNCTION (void, glDeleteSamplers,
+                   (GLsizei count,
+                    const GLuint *samplers))
+COGL_EXT_FUNCTION (void, glBindSampler,
+                   (GLuint unit,
+                    GLuint sampler))
+COGL_EXT_FUNCTION (void, glSamplerParameteri,
+                   (GLuint sampler,
+                    GLenum pname,
+                    GLint param))
+COGL_EXT_END ()

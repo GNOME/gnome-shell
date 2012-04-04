@@ -2572,10 +2572,8 @@ _cogl_pipeline_init_layer_state_hash_functions (void)
     _cogl_pipeline_layer_hash_texture_type_state;
   layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA_INDEX] =
     _cogl_pipeline_layer_hash_texture_data_state;
-  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX] =
-    _cogl_pipeline_layer_hash_filters_state;
-  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_WRAP_MODES_INDEX] =
-    _cogl_pipeline_layer_hash_wrap_modes_state;
+  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_SAMPLER_INDEX] =
+    _cogl_pipeline_layer_hash_sampler_state;
   layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_COMBINE_INDEX] =
     _cogl_pipeline_layer_hash_combine_state;
   layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT_INDEX] =
@@ -2593,7 +2591,7 @@ _cogl_pipeline_init_layer_state_hash_functions (void)
     _cogl_pipeline_layer_hash_fragment_snippets_state;
 
   /* So we get a big error if we forget to update this code! */
-  g_assert (COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT == 11);
+  g_assert (COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT == 10);
 }
 
 static gboolean

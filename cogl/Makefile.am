@@ -288,6 +288,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-material-compat.c		\
 	$(srcdir)/cogl-program.c			\
 	$(srcdir)/cogl-program-private.h		\
+	$(srcdir)/cogl-sampler-cache.c			\
+	$(srcdir)/cogl-sampler-cache-private.h		\
 	$(srcdir)/cogl-blend-string.c			\
 	$(srcdir)/cogl-blend-string.h			\
 	$(srcdir)/cogl-debug.c				\

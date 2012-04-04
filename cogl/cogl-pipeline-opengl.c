@@ -844,6 +844,16 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
       unit->texture_storage_changed = FALSE;
     }
 
+  if ((layers_difference & COGL_PIPELINE_LAYER_STATE_SAMPLER) &&
+      (ctx->private_feature_flags & COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS))
+    {
+      const CoglSamplerCacheEntry *sampler_state;
+
+      sampler_state = _cogl_pipeline_layer_get_sampler_state (layer);
+
+      GE( ctx, glBindSampler (unit_index, sampler_state->sampler_object) );
+    }
+
   /* Under GLES2 the fragment shader will use gl_PointCoord instead of
      replacing the texture coordinates */
 #if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GL)
@@ -904,7 +914,7 @@ static void
 _cogl_pipeline_layer_forward_wrap_modes (CoglPipelineLayer *layer,
                                          CoglTexture *texture)
 {
-  CoglPipelineWrapModeInternal wrap_mode_s, wrap_mode_t, wrap_mode_p;
+  CoglSamplerCacheWrapMode wrap_mode_s, wrap_mode_t, wrap_mode_p;
   GLenum gl_wrap_mode_s, gl_wrap_mode_t, gl_wrap_mode_p;
 
   if (texture == NULL)
@@ -926,17 +936,17 @@ _cogl_pipeline_layer_forward_wrap_modes (CoglPipelineLayer *layer,
      will break if the application tries to use different modes in
      different layers using the same texture. */
 
-  if (wrap_mode_s == COGL_PIPELINE_WRAP_MODE_INTERNAL_AUTOMATIC)
+  if (wrap_mode_s == COGL_SAMPLER_CACHE_WRAP_MODE_AUTOMATIC)
     gl_wrap_mode_s = GL_CLAMP_TO_EDGE;
   else
     gl_wrap_mode_s = wrap_mode_s;
 
-  if (wrap_mode_t == COGL_PIPELINE_WRAP_MODE_INTERNAL_AUTOMATIC)
+  if (wrap_mode_t == COGL_SAMPLER_CACHE_WRAP_MODE_AUTOMATIC)
     gl_wrap_mode_t = GL_CLAMP_TO_EDGE;
   else
     gl_wrap_mode_t = wrap_mode_t;
 
-  if (wrap_mode_p == COGL_PIPELINE_WRAP_MODE_INTERNAL_AUTOMATIC)
+  if (wrap_mode_p == COGL_SAMPLER_CACHE_WRAP_MODE_AUTOMATIC)
     gl_wrap_mode_p = GL_CLAMP_TO_EDGE;
   else
     gl_wrap_mode_p = wrap_mode_p;
@@ -952,8 +962,10 @@ _cogl_pipeline_layer_forward_wrap_modes (CoglPipelineLayer *layer,
  * the filter and repeat modes whenever we use a texture since it may
  * be referenced by multiple pipelines with different modes.
  *
- * XXX: GL_ARB_sampler_objects fixes this in OpenGL so we should
- * eventually look at using this extension when available.
+ * This function is bypassed in favour of sampler objects if
+ * GL_ARB_sampler_objects is advertised. This fallback won't work if
+ * the same texture is bound to multiple layers with different sampler
+ * state.
  */
 static void
 foreach_texture_unit_update_filter_and_wrap_modes (void)
@@ -1399,7 +1411,8 @@ done:
 
   /* Handle the fact that OpenGL associates texture filter and wrap
    * modes with the texture objects not the texture units... */
-  foreach_texture_unit_update_filter_and_wrap_modes ();
+  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS))
+    foreach_texture_unit_update_filter_and_wrap_modes ();
 
   /* If this pipeline has more than one layer then we always need
    * to make sure we rebind the texture for unit 1.

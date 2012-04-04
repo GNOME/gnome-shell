@@ -453,6 +453,9 @@ _cogl_driver_update_features (CoglContext *ctx,
   if (_cogl_check_extension ("GL_EXT_packed_depth_stencil", gl_extensions))
     private_flags |= COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL;
 
+  if (ctx->glGenSamplers)
+    private_flags |= COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS;
+
   /* Cache features */
   ctx->private_feature_flags |= private_flags;
   ctx->feature_flags |= flags;
