@@ -961,7 +961,7 @@ MAINTAINER_COMPILER_FLAGS="$MAINTAINER_COMPILER_FLAGS
                            -Wformat-security -Wformat-nonliteral -Winit-self
                            -Wdeclaration-after-statement -Wvla
                            -Wpointer-arith -Wmissing-declarations
-                           -Waggregate-returns -Wcast-align
+                           -Wcast-align
                            -Wredundant-decls"
 
 AS_CASE([$enable_maintainer_flags],
