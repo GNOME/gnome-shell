@@ -38,6 +38,10 @@
 struct _CoglBitmap
 {
   CoglHandleObject         _parent;
+
+  /* Pointer back to the context that this bitmap was created with */
+  CoglContext             *context;
+
   CoglPixelFormat          format;
   int                      width;
   int                      height;
@@ -73,6 +77,9 @@ _cogl_bitmap_free (CoglBitmap *bmp)
   if (bmp->buffer)
     cogl_object_unref (bmp->buffer);
 
+  if (bmp->context)
+    cogl_object_unref (bmp->context);
+
   g_slice_free (CoglBitmap, bmp);
 }
 
@@ -104,10 +111,8 @@ _cogl_bitmap_copy (CoglBitmap *src_bmp)
   int width = cogl_bitmap_get_width (src_bmp);
   int height = cogl_bitmap_get_height (src_bmp);
 
-  _COGL_GET_CONTEXT (ctx, NULL);
-
   dst_bmp =
-    _cogl_bitmap_new_with_malloc_buffer (ctx,
+    _cogl_bitmap_new_with_malloc_buffer (src_bmp->context,
                                          width, height,
                                          src_format);
 
@@ -188,6 +193,7 @@ cogl_bitmap_new_for_data (CoglContext *context,
   g_return_val_if_fail (cogl_is_context (context), NULL);
 
   bmp = g_slice_new (CoglBitmap);
+  bmp->context = cogl_object_ref (context);
   bmp->format = format;
   bmp->width = width;
   bmp->height = height;
@@ -235,9 +241,7 @@ _cogl_bitmap_new_shared (CoglBitmap              *shared_bmp,
 {
   CoglBitmap *bmp;
 
-  _COGL_GET_CONTEXT (ctx, NULL);
-
-  bmp = cogl_bitmap_new_for_data (ctx,
+  bmp = cogl_bitmap_new_for_data (shared_bmp->context,
                                   width, height,
                                   format,
                                   rowstride,
@@ -473,4 +477,10 @@ _cogl_bitmap_unbind (CoglBitmap *bitmap)
     _cogl_buffer_unbind (bitmap->buffer);
   else
     _cogl_bitmap_unmap (bitmap);
+}
+
+CoglContext *
+_cogl_bitmap_get_context (CoglBitmap *bitmap)
+{
+  return bitmap->context;
 }

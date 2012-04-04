@@ -230,10 +230,11 @@ _cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
   GLenum                gl_intformat;
   GLenum                gl_format;
   GLenum                gl_type;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
+  CoglContext          *ctx;
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), NULL);
+
+  ctx = _cogl_bitmap_get_context (bmp);
 
   internal_format =
     _cogl_texture_determine_internal_format (cogl_bitmap_get_format (bmp),

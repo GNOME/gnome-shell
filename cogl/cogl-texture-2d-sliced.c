@@ -880,10 +880,11 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap      *bmp,
   GLenum               gl_format;
   GLenum               gl_type;
   int                  width, height;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
+  CoglContext         *ctx;
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), NULL);
+
+  ctx = _cogl_bitmap_get_context (bmp);
 
   width = cogl_bitmap_get_width (bmp);
   height = cogl_bitmap_get_height (bmp);

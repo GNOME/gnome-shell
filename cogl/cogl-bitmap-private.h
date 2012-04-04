@@ -142,4 +142,7 @@ _cogl_bitmap_bind (CoglBitmap *bitmap,
 void
 _cogl_bitmap_unbind (CoglBitmap *bitmap);
 
+CoglContext *
+_cogl_bitmap_get_context (CoglBitmap *bitmap);
+
 #endif /* __COGL_BITMAP_H */

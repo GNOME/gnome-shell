@@ -81,8 +81,7 @@ struct _CoglTexture3D
  *   there was an error.
  */
 CoglTexture3D *
-_cogl_texture_3d_new_from_bitmap (CoglContext *context,
-                                  CoglBitmap *bmp,
+_cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
                                   unsigned int height,
                                   unsigned int depth,
                                   CoglPixelFormat internal_format,

@@ -735,8 +735,6 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
   int bmp_height;
   CoglPixelFormat bmp_format;
 
-  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
-
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), COGL_INVALID_HANDLE);
 
   bmp_width = cogl_bitmap_get_width (bmp);

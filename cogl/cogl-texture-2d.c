@@ -225,10 +225,11 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
   GLenum         gl_format;
   GLenum         gl_type;
   guint8        *data;
-
-  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+  CoglContext   *ctx;
 
   _COGL_RETURN_VAL_IF_FAIL (bmp != NULL, COGL_INVALID_HANDLE);
+
+  ctx = _cogl_bitmap_get_context (bmp);
 
   internal_format =
     _cogl_texture_determine_internal_format (cogl_bitmap_get_format (bmp),
