@@ -315,9 +315,15 @@ cogl_texture_new_with_size (unsigned int     width,
                                                      internal_format,
                                                      NULL));
 
-  /* If it fails resort to sliced textures */
-  if (tex == NULL)
+  if (tex)
     {
+      gboolean auto_mipmap = !(flags & COGL_TEXTURE_NO_AUTO_MIPMAP);
+      cogl_primitive_texture_set_auto_mipmap (COGL_PRIMITIVE_TEXTURE (tex),
+                                              auto_mipmap);
+    }
+  else
+    {
+      /* If it fails resort to sliced textures */
       int max_waste = flags & COGL_TEXTURE_NO_SLICING ? -1 : COGL_TEXTURE_MAX_WASTE;
       tex = COGL_TEXTURE (cogl_texture_2d_sliced_new_with_size (ctx,
                                                                 width,

@@ -44,6 +44,7 @@
 #include "cogl-spans.h"
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-opengl-private.h"
+#include "cogl-primitive-texture.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -881,6 +882,7 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap      *bmp,
   GLenum               gl_type;
   int                  width, height;
   CoglContext         *ctx;
+  int                  i;
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), NULL);
 
@@ -920,6 +922,18 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap      *bmp,
     goto error;
 
   cogl_object_unref (dst_bmp);
+
+  if ((flags & COGL_TEXTURE_NO_AUTO_MIPMAP))
+    for (i = 0; i < tex_2ds->slice_textures->len; i++)
+      {
+        CoglPrimitiveTexture *slice_tex;
+
+        slice_tex = g_array_index (tex_2ds->slice_textures,
+                                   CoglPrimitiveTexture *,
+                                   i);
+
+        cogl_primitive_texture_set_auto_mipmap (slice_tex, FALSE);
+      }
 
   return _cogl_texture_2d_sliced_handle_new (tex_2ds);
 
