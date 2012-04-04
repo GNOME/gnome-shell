@@ -25,6 +25,7 @@ const SHOW_KEY                  = 'screen-magnifier-enabled';
 const MAGNIFIER_SCHEMA          = 'org.gnome.desktop.a11y.magnifier';
 const SCREEN_POSITION_KEY       = 'screen-position';
 const MAG_FACTOR_KEY            = 'mag-factor';
+const INVERT_LIGHTNESS_KEY      = 'invert-lightness';
 const BRIGHT_RED_KEY            = 'brightness-red';
 const BRIGHT_GREEN_KEY          = 'brightness-green';
 const BRIGHT_BLUE_KEY           = 'brightness-blue';
@@ -451,6 +452,10 @@ const Magnifier = new Lang.Class({
             if (aPref)
                 zoomRegion.setMouseTrackingMode(aPref);
 
+            aPref = this._settings.get_boolean(INVERT_LIGHTNESS_KEY);
+            if (aPref)
+                zoomRegion.setInvertLightness(aPref);
+
             let bc = {};
             bc.r = this._settings.get_double(BRIGHT_RED_KEY);
             bc.g = this._settings.get_double(BRIGHT_GREEN_KEY);
@@ -482,6 +487,9 @@ const Magnifier = new Lang.Class({
                                Lang.bind(this, this._updateClampMode));
         this._settings.connect('changed::' + MOUSE_TRACKING_KEY,
                                Lang.bind(this, this._updateMouseTrackingMode));
+
+        this._settings.connect('changed::' + INVERT_LIGHTNESS_KEY,
+                               Lang.bind(this, this._updateInvertLightness));
 
         this._settings.connect('changed::' + BRIGHT_RED_KEY,
                                Lang.bind(this, this._updateBrightness));
@@ -574,6 +582,15 @@ const Magnifier = new Lang.Class({
         }
     },
 
+    _updateInvertLightness: function() {
+        // Applies only to the first zoom region.
+        if (this._zoomRegions.length) {
+            this._zoomRegions[0].setInvertLightness(
+                this._settings.get_boolean(INVERT_LIGHTNESS_KEY)
+            );
+        }
+    },
+
     _updateBrightness: function() {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
@@ -608,6 +625,7 @@ const ZoomRegion = new Lang.Class({
         this._clampScrollingAtEdges = false;
         this._lensMode = false;
         this._screenPosition = GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN;
+        this._invertLightness = false;
         this._brightness = { r: NO_CHANGE, g: NO_CHANGE, b: NO_CHANGE };
         this._contrast = { r: NO_CHANGE, g: NO_CHANGE, b: NO_CHANGE };
 
@@ -936,6 +954,26 @@ const ZoomRegion = new Lang.Class({
     },
 
     /**
+     * setInvertLightness:
+     * Set whether to invert the lightness of the magnified view.
+     * @flag    Boolean to either invert brightness (true), or not (false).
+     */
+    setInvertLightness: function(flag) {
+        this._invertLightness = flag;
+        if (this._magShaderEffects)
+            this._magShaderEffects.setInvertLightness(this._invertLightness);
+    },
+
+    /**
+     * getInvertLightness:
+     * Retrieve whether the lightness is inverted.
+     * @return    Boolean indicating inversion (true), or not (false).
+     */
+    getInvertLightness: function() {
+        return this._invertLightness;
+    },
+
+    /**
      * setBrightness:
      * Alter the brightness of the magnified view.
      * @brightness  Object containing the contrast for the red, green,
@@ -1036,6 +1074,7 @@ const ZoomRegion = new Lang.Class({
 
         // Contrast and brightness effects.
         this._magShaderEffects = new MagShaderEffects(this._uiGroupClone);
+        this._magShaderEffects.setInvertLightness(this._invertLightness);
         this._magShaderEffects.setBrightness(this._brightness);
         this._magShaderEffects.setContrast(this._contrast);
     },
@@ -1561,10 +1600,13 @@ const MagShaderEffects = new Lang.Class({
     Name: 'MagShaderEffects',
 
     _init: function(uiGroupClone) {
+        this._inverse = new Shell.InvertLightnessEffect();
         this._brightnessContrast = new Clutter.BrightnessContrastEffect();
+        this._inverse.set_enabled(false);
         this._brightnessContrast.set_enabled(false);
 
         this._magView = uiGroupClone;
+        this._magView.add_effect(this._inverse);
         this._magView.add_effect(this._brightnessContrast);
     },
 
@@ -1577,7 +1619,26 @@ const MagShaderEffects = new Lang.Class({
     destroyEffects: function() {
         this._magView.clear_effects();
         this._brightnessContrast = null;
+        this._inverse = null;
         this._magView = null;
+    },
+
+    /**
+     * setInvertLightness:
+     * Enable/disable invert lightness effect.
+     * @invertFlag:     Enabled flag.
+     */
+    setInvertLightness: function(invertFlag) {
+        this._inverse.set_enabled(invertFlag);
+    },
+
+    /**
+     * getInvertLightness:
+     * Report whether the inversion effect is enabled.
+     * @return:     Boolean.
+     */
+    getInvertLightness: function() {
+        return this._inverse.get_enabled();
     },
 
     /**
