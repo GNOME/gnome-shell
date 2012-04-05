@@ -44,7 +44,6 @@ enum
 {
   PROP_0,
   PROP_SCREEN,
-  PROP_DISABLED,
   PROP_DEBUG_MODE,
 };
 
@@ -54,7 +53,6 @@ struct _MetaPluginPrivate
 
   gint          running;
 
-  gboolean      disabled : 1;
   gboolean      debug    : 1;
 };
 
@@ -70,9 +68,6 @@ meta_plugin_set_property (GObject      *object,
     {
     case PROP_SCREEN:
       priv->screen = g_value_get_object (value);
-      break;
-    case PROP_DISABLED:
-      priv->disabled = g_value_get_boolean (value);
       break;
     case PROP_DEBUG_MODE:
       priv->debug = g_value_get_boolean (value);
@@ -95,9 +90,6 @@ meta_plugin_get_property (GObject    *object,
     {
     case PROP_SCREEN:
       g_value_set_object (value, priv->screen);
-      break;
-    case PROP_DISABLED:
-      g_value_set_boolean (value, priv->disabled);
       break;
     case PROP_DEBUG_MODE:
       g_value_set_boolean (value, priv->debug);
@@ -126,14 +118,6 @@ meta_plugin_class_init (MetaPluginClass *klass)
                                                         G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
-				   PROP_DISABLED,
-				   g_param_spec_boolean ("disabled",
-                                                      "Plugin disabled",
-                                                      "Plugin disabled",
-                                                      FALSE,
-                                                      G_PARAM_READWRITE));
-
-  g_object_class_install_property (gobject_class,
 				   PROP_DEBUG_MODE,
 				   g_param_spec_boolean ("debug-mode",
                                                       "Debug Mode",
@@ -150,14 +134,6 @@ meta_plugin_init (MetaPlugin *self)
   MetaPluginPrivate *priv;
 
   self->priv = priv = META_PLUGIN_GET_PRIVATE (self);
-}
-
-gboolean
-meta_plugin_disabled (MetaPlugin *plugin)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-
-  return priv->disabled;
 }
 
 gboolean
