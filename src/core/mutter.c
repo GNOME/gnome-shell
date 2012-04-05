@@ -80,11 +80,7 @@ main (int argc, char **argv)
     }
 
   if (plugin)
-    {
-      MetaPluginManager *mgr;
-      mgr = meta_plugin_manager_get_default ();
-      meta_plugin_manager_load (mgr, plugin);
-    }
+    meta_plugin_manager_load (plugin);
 
   meta_init ();
   return meta_run ();

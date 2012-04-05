@@ -52,7 +52,6 @@ struct _MetaPluginPrivate
   MetaScreen   *screen;
 
   gint          running;
-
   gboolean      debug    : 1;
 };
 
@@ -331,20 +330,4 @@ meta_plugin_get_screen (MetaPlugin *plugin)
   MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
   return priv->screen;
-}
-
-/**
- * meta_plugin_type_register:
- * @plugin_type: a #MetaPlugin type
- *
- * Register @plugin_type as a compositor plugin type to be used.
- * You must call this before calling meta_init().
- */
-void
-meta_plugin_type_register (GType plugin_type)
-{
-  MetaPluginManager *plugin_manager;
-
-  plugin_manager = meta_plugin_manager_get_default ();
-  meta_plugin_manager_register (plugin_manager, plugin_type);
 }

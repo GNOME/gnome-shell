@@ -557,9 +557,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
 
   clutter_actor_hide (info->hidden_group);
 
-  info->plugin_mgr =
-    meta_plugin_manager_get (screen);
-  meta_plugin_manager_initialize (info->plugin_mgr);
+  info->plugin_mgr = meta_plugin_manager_new (screen);
 
   /*
    * Delay the creation of the overlay window as long as we can, to avoid
