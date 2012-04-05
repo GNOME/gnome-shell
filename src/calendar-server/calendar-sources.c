@@ -463,7 +463,7 @@ calendar_sources_load_esource_list (CalendarSourceData *source_data)
 	  ECalClient *client;
 
 	  dprintf ("      type = '%s' uid = '%s', name = '%s', relative uri = '%s': \n",
-                   source_data->source_type == E_CAL_SOURCE_TYPE_EVENT ? "appointment" : "task",
+                   source_data->source_type == E_CAL_CLIENT_SOURCE_TYPE_EVENTS ? "appointment" : "task",
 		   e_source_peek_uid (esource),
 		   e_source_peek_name (esource),
 		   e_source_peek_relative_uri (esource));
@@ -504,7 +504,7 @@ calendar_sources_load_esource_list (CalendarSourceData *source_data)
   if (emit_signal) 
     {
       dprintf ("Emitting %s-sources-changed signal\n",
-	       source_data->source_type == E_CAL_SOURCE_TYPE_EVENT ? "appointment" : "task");
+	       source_data->source_type == E_CAL_CLIENT_SOURCE_TYPE_EVENTS ? "appointment" : "task");
       g_signal_emit (source_data->sources, source_data->changed_signal, 0);
     }
 
