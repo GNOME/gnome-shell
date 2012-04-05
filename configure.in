@@ -113,9 +113,6 @@ AC_ARG_ENABLE(shape,
                  [disable mutter's use of the shaped window extension]),,
   enable_shape=auto)
 
-## try definining HAVE_BACKTRACE
-AC_CHECK_HEADERS(execinfo.h, [AC_CHECK_FUNCS(backtrace)])
-
 AM_GLIB_GNU_GETTEXT
 
 ## here we get the flags we'll actually use

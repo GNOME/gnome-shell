@@ -47,37 +47,6 @@ meta_topic_real_valist (MetaDebugTopic topic,
                         va_list        args);
 #endif
 
-#ifdef HAVE_BACKTRACE
-#include <execinfo.h>
-void
-meta_print_backtrace (void)
-{
-  void *bt[500];
-  int bt_size;
-  int i;
-  char **syms;
-  
-  bt_size = backtrace (bt, 500);
-
-  syms = backtrace_symbols (bt, bt_size);
-  
-  i = 0;
-  while (i < bt_size)
-    {
-      meta_verbose ("  %s\n", syms[i]);
-      ++i;
-    }
-
-  free (syms);
-}
-#else
-void
-meta_print_backtrace (void)
-{
-  meta_verbose ("Not compiled with backtrace support\n");
-}
-#endif
-
 static gint verbose_topics = 0;
 static gboolean is_debugging = FALSE;
 static gboolean replace_current = FALSE;
@@ -441,8 +410,6 @@ meta_bug (const char *format, ...)
   fflush (out);
   
   g_free (str);
-
-  meta_print_backtrace ();
   
   /* stop us in a debugger */
   abort ();

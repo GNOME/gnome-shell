@@ -5332,7 +5332,6 @@ timestamp_too_old (MetaDisplay *display,
       meta_warning ("Got a request to focus %s with a timestamp of 0.  This "
                     "shouldn't happen!\n",
                     window ? window->desc : "the no_focus_window");
-      meta_print_backtrace ();
       *timestamp = meta_display_get_current_time_roundtrip (display);
       return FALSE;
     }
