@@ -3018,7 +3018,7 @@ meta_window_show (MetaWindow *window)
 
   if (!window->placed)
     {
-      if (window->showing_for_first_time)
+      if (window->showing_for_first_time && window->has_maximize_func)
         {
           MetaRectangle work_area;
           meta_window_get_work_area_for_monitor (window, window->monitor->number, &work_area);
