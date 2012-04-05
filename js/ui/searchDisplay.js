@@ -407,6 +407,7 @@ const SearchResults = new Lang.Class({
                 meta.resultDisplay.renderResults(metas);
             }
         }
+        this._maybeSetInitialSelection();
     },
 
     _updateResults: function(searchSystem, results) {
@@ -433,7 +434,6 @@ const SearchResults = new Lang.Class({
                 this._updateProviderResults(provider, providerResults, terms);
         }
 
-        this._maybeSetInitialSelection();
         this._content.show();
 
         return true;
