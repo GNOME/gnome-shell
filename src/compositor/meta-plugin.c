@@ -96,20 +96,7 @@ meta_plugin_constructed (GObject *object)
 {
   meta_plugin_set_features (META_PLUGIN (object));
 
-  if (G_OBJECT_CLASS (meta_plugin_parent_class)->constructed)
-      G_OBJECT_CLASS (meta_plugin_parent_class)->constructed (object);
-}
-
-static void
-meta_plugin_dispose (GObject *object)
-{
-  G_OBJECT_CLASS (meta_plugin_parent_class)->dispose (object);
-}
-
-static void
-meta_plugin_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (meta_plugin_parent_class)->finalize (object);
+  G_OBJECT_CLASS (meta_plugin_parent_class)->constructed (object);
 }
 
 static void
@@ -172,8 +159,6 @@ meta_plugin_class_init (MetaPluginClass *klass)
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
 
   gobject_class->constructed     = meta_plugin_constructed;
-  gobject_class->finalize        = meta_plugin_finalize;
-  gobject_class->dispose         = meta_plugin_dispose;
   gobject_class->set_property    = meta_plugin_set_property;
   gobject_class->get_property    = meta_plugin_get_property;
 
