@@ -50,11 +50,11 @@
 
 #define CALENDAR_SOURCES_EVO_DIR                          "/apps/evolution"
 #define CALENDAR_SOURCES_APPOINTMENT_SOURCES_KEY          CALENDAR_SOURCES_EVO_DIR "/calendar/sources"
-#define CALENDAR_SOURCES_SELECTED_APPOINTMENT_SOURCES_DIR CALENDAR_SOURCES_EVO_DIR "/calendar/display"
-#define CALENDAR_SOURCES_SELECTED_APPOINTMENT_SOURCES_KEY CALENDAR_SOURCES_SELECTED_APPOINTMENT_SOURCES_DIR "/selected_calendars"
 #define CALENDAR_SOURCES_TASK_SOURCES_KEY                 CALENDAR_SOURCES_EVO_DIR "/tasks/sources"
-#define CALENDAR_SOURCES_SELECTED_TASK_SOURCES_DIR        CALENDAR_SOURCES_EVO_DIR "/calendar/tasks"
-#define CALENDAR_SOURCES_SELECTED_TASK_SOURCES_KEY        CALENDAR_SOURCES_SELECTED_TASK_SOURCES_DIR "/selected_tasks"
+
+#define CALENDAR_SELECTED_SOURCES_SCHEMA                  "org.gnome.evolution.calendar"
+#define CALENDAR_SOURCES_SELECTED_APPOINTMENT_SOURCES_KEY "selected-calendars"
+#define CALENDAR_SOURCES_SELECTED_TASK_SOURCES_KEY        "selected-tasks"
 
 typedef struct _CalendarSourceData CalendarSourceData;
 
@@ -65,11 +65,10 @@ struct _CalendarSourceData
   guint            changed_signal;
 
   GSList          *clients;
-  GSList          *selected_sources;
+  char           **selected_sources;
   ESourceList     *esource_list;
 
-  guint            selected_sources_listener;
-  char            *selected_sources_dir;
+  guint            selected_sources_handler_id;
 
   guint            timeout_id;
 
@@ -82,6 +81,7 @@ struct _CalendarSourcesPrivate
   CalendarSourceData  task_sources;
 
   GConfClient        *gconf_client;
+  GSettings          *settings;
 };
 
 static void calendar_sources_class_init (CalendarSourcesClass *klass);
@@ -183,6 +183,7 @@ calendar_sources_init (CalendarSources *sources)
   sources->priv->task_sources.timeout_id     = 0;
 
   sources->priv->gconf_client = gconf_client_get_default ();
+  sources->priv->settings = g_settings_new (CALENDAR_SELECTED_SOURCES_SCHEMA);
 }
 
 static void
@@ -193,21 +194,11 @@ calendar_sources_finalize_source_data (CalendarSources    *sources,
     {
       GSList *l;
 
-      if (source_data->selected_sources_dir)
+      if (source_data->selected_sources_handler_id)
 	{
-	  gconf_client_remove_dir (sources->priv->gconf_client,
-				   source_data->selected_sources_dir,
-				   NULL);
-
-	  g_free (source_data->selected_sources_dir);
-	  source_data->selected_sources_dir = NULL;
-	}
-
-      if (source_data->selected_sources_listener)
-	{
-	  gconf_client_notify_remove (sources->priv->gconf_client,
-				      source_data->selected_sources_listener);
-	  source_data->selected_sources_listener = 0;
+          g_signal_handler_disconnect (sources->priv->settings,
+                                       source_data->selected_sources_handler_id);
+	  source_data->selected_sources_handler_id = 0;
 	}
 
       for (l = source_data->clients; l; l = l->next)
@@ -229,9 +220,7 @@ calendar_sources_finalize_source_data (CalendarSources    *sources,
 	}
       source_data->esource_list = NULL;
 
-      for (l = source_data->selected_sources; l; l = l->next)
-	g_free (l->data);
-      g_slist_free (source_data->selected_sources);
+      g_strfreev (source_data->selected_sources);
       source_data->selected_sources = NULL;
 
       if (source_data->timeout_id != 0)
@@ -256,6 +245,10 @@ calendar_sources_finalize (GObject *object)
     g_object_unref (sources->priv->gconf_client);
   sources->priv->gconf_client = NULL;
 
+  if (sources->priv->settings)
+    g_object_unref (sources->priv->settings);
+  sources->priv->settings = NULL;
+
   if (G_OBJECT_CLASS (parent_class)->finalize)
     G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -277,18 +270,16 @@ calendar_sources_get (void)
 
 static gboolean
 is_source_selected (ESource *esource,
-		    GSList  *selected_sources)
+                    char  **selected_sources)
 {
   const char *uid;
-  GSList     *l;
+  char      **source;
 
   uid = e_source_peek_uid (esource);
 
-  for (l = selected_sources; l; l = l->next)
+  for (source = selected_sources; *source; source++)
     {
-      const char *source = l->data;
-
-      if (!strcmp (source, uid))
+      if (!strcmp (*source, uid))
 	return TRUE;
     }
 
@@ -361,17 +352,15 @@ compare_ecal_lists (GSList *a,
 }
 
 static inline void
-debug_dump_selected_sources (GSList *selected_sources)
+debug_dump_selected_sources (char **selected_sources)
 {
 #ifdef CALENDAR_ENABLE_DEBUG
-  GSList *l;
+  char **source;
 
   dprintf ("Selected sources:\n");
-  for (l = selected_sources; l; l = l->next)
+  for (source = selected_sources; *source; source++)
     {
-      char *source = l->data;
-
-      dprintf ("  %s\n", source);
+      dprintf ("  %s\n", *source);
     }
   dprintf ("\n");
 #endif
@@ -522,34 +511,14 @@ calendar_sources_esource_list_changed (ESourceList        *source_list,
 }
 
 static void
-calendar_sources_selected_sources_notify (GConfClient        *client,
-					  guint               cnx_id,
-					  GConfEntry         *entry,
+calendar_sources_selected_sources_notify (GSettings          *settings,
+                                          const gchar        *key,
 					  CalendarSourceData *source_data)
 {
-  GSList *l;
+  dprintf ("Selected sources key (%s) changed, reloading\n", key);
 
-  if (!entry->value ||
-      entry->value->type != GCONF_VALUE_LIST ||
-      gconf_value_get_list_type (entry->value) != GCONF_VALUE_STRING)
-    return;
-
-  dprintf ("Selected sources key (%s) changed, reloading\n", entry->key);
-
-  for (l = source_data->selected_sources; l; l = l->next)
-    g_free (l->data);
-  source_data->selected_sources = NULL;
-
-  for (l = gconf_value_get_list (entry->value); l; l = l->next)
-    {
-      const char *source = gconf_value_get_string (l->data);
-
-      source_data->selected_sources = 
-	g_slist_prepend (source_data->selected_sources,
-			 g_strdup (source));
-    }
-  source_data->selected_sources =
-    g_slist_reverse (source_data->selected_sources);
+  g_strfreev (source_data->selected_sources);
+  source_data->selected_sources = g_settings_get_strv (settings, key);
 
   calendar_sources_load_esource_list (source_data);
 }
@@ -558,45 +527,27 @@ static void
 calendar_sources_load_sources (CalendarSources    *sources,
 			       CalendarSourceData *source_data,
 			       const char         *sources_key,
-			       const char         *selected_sources_key,
-			       const char         *selected_sources_dir)
+			       const char         *selected_sources_key)
 {
   GConfClient *gconf_client;
-  GError      *error;
+  GSettings   *settings;
+  char        *signal_name;
 
   dprintf ("---------------------------\n");
   dprintf ("Loading sources:\n");
   dprintf ("  sources_key: %s\n", sources_key);
   dprintf ("  selected_sources_key: %s\n", selected_sources_key);
-  dprintf ("  selected_sources_dir: %s\n", selected_sources_dir);
 
   gconf_client = sources->priv->gconf_client;
+  settings = sources->priv->settings;
 
-  error = NULL;
-  source_data->selected_sources = gconf_client_get_list (gconf_client,
-							 selected_sources_key,
-							 GCONF_VALUE_STRING,
-							 &error);
-  if (error)
-    {
-      g_warning ("Failed to get selected sources from '%s': %s\n",
-		 selected_sources_key,
-		 error->message);
-      g_error_free (error);
-      return;
-    }
+  source_data->selected_sources = g_settings_get_strv (settings, selected_sources_key);
 
-  gconf_client_add_dir (gconf_client,
-			selected_sources_dir,
-			GCONF_CLIENT_PRELOAD_NONE,
-			NULL);
-  source_data->selected_sources_dir = g_strdup (selected_sources_dir);
-
-  source_data->selected_sources_listener =
-    gconf_client_notify_add (gconf_client,
-			     selected_sources_dir,
-			     (GConfClientNotifyFunc) calendar_sources_selected_sources_notify,
-			     source_data, NULL, NULL);
+  signal_name = g_strconcat ("changed::", selected_sources_key, NULL);
+  source_data->selected_sources_handler_id =
+    g_signal_connect (settings, signal_name,
+                      G_CALLBACK (calendar_sources_selected_sources_notify), source_data);
+  g_free (signal_name);
 
   source_data->esource_list = e_source_list_new_for_gconf (gconf_client, sources_key);
   g_signal_connect (source_data->esource_list, "changed",
@@ -620,8 +571,7 @@ calendar_sources_get_appointment_sources (CalendarSources *sources)
       calendar_sources_load_sources (sources,
 				     &sources->priv->appointment_sources,
 				     CALENDAR_SOURCES_APPOINTMENT_SOURCES_KEY,
-				     CALENDAR_SOURCES_SELECTED_APPOINTMENT_SOURCES_KEY,
-				     CALENDAR_SOURCES_SELECTED_APPOINTMENT_SOURCES_DIR);
+				     CALENDAR_SOURCES_SELECTED_APPOINTMENT_SOURCES_KEY);
     }
   
   return sources->priv->appointment_sources.clients;
@@ -637,8 +587,7 @@ calendar_sources_get_task_sources (CalendarSources *sources)
       calendar_sources_load_sources (sources,
 				     &sources->priv->task_sources,
 				     CALENDAR_SOURCES_TASK_SOURCES_KEY,
-				     CALENDAR_SOURCES_SELECTED_TASK_SOURCES_KEY,
-				     CALENDAR_SOURCES_SELECTED_TASK_SOURCES_DIR);
+				     CALENDAR_SOURCES_SELECTED_TASK_SOURCES_KEY);
     }
 
   return sources->priv->task_sources.clients;
