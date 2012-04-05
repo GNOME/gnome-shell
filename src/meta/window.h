@@ -81,6 +81,16 @@ typedef enum
   META_MAXIMIZE_VERTICAL   = 1 << 1
 } MetaMaximizeFlags;
 
+/**
+ * MetaWindowClientType:
+ * @META_WINDOW_CLIENT_TYPE_WAYLAND: A Wayland based window
+ * @META_WINDOW_CLIENT_TYPE_X11: An X11 based window
+ */
+typedef enum {
+  META_WINDOW_CLIENT_TYPE_WAYLAND,
+  META_WINDOW_CLIENT_TYPE_X11
+} MetaWindowClientType;
+
 #define META_TYPE_WINDOW            (meta_window_get_type ())
 #define META_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_WINDOW, MetaWindow))
 #define META_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_WINDOW, MetaWindowClass))

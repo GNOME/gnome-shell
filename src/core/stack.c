@@ -52,7 +52,7 @@
 
 #define WINDOW_IN_STACK(w) (w->stack_position >= 0)
 
-static void stack_sync_to_server (MetaStack *stack);
+static void stack_sync_to_xserver (MetaStack *stack);
 static void meta_window_set_stack_position_no_sync (MetaWindow *window,
                                                     int         position);
 static void stack_do_window_deletions (MetaStack *stack);
@@ -71,14 +71,14 @@ meta_stack_new (MetaScreen *screen)
   stack = g_new (MetaStack, 1);
 
   stack->screen = screen;
-  stack->windows = g_array_new (FALSE, FALSE, sizeof (Window));
+  stack->xwindows = g_array_new (FALSE, FALSE, sizeof (Window));
 
   stack->sorted = NULL;
   stack->added = NULL;
   stack->removed = NULL;
 
   stack->freeze_count = 0;
-  stack->last_root_children_stacked = NULL;
+  stack->last_all_root_children_stacked = NULL;
 
   stack->n_positions = 0;
 
@@ -89,17 +89,34 @@ meta_stack_new (MetaScreen *screen)
   return stack;
 }
 
+static void
+free_last_all_root_children_stacked_cache (MetaStack *stack)
+{
+  unsigned int i;
+
+  for (i = 0; i < stack->last_all_root_children_stacked->len; i++)
+    {
+      MetaStackWindow *window = &g_array_index (stack->last_all_root_children_stacked, MetaStackWindow, i);
+      if (window->any.type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+        g_object_remove_weak_pointer (G_OBJECT (window->wayland.meta_window),
+                                      (gpointer *)&window->wayland.meta_window);
+    }
+
+  g_array_free (stack->last_all_root_children_stacked, TRUE);
+  stack->last_all_root_children_stacked = NULL;
+}
+
 void
 meta_stack_free (MetaStack *stack)
 {
-  g_array_free (stack->windows, TRUE);
+  g_array_free (stack->xwindows, TRUE);
 
   g_list_free (stack->sorted);
   g_list_free (stack->added);
   g_list_free (stack->removed);
 
-  if (stack->last_root_children_stacked)
-    g_array_free (stack->last_root_children_stacked, TRUE);
+  if (stack->last_all_root_children_stacked)
+    free_last_all_root_children_stacked_cache (stack);
   
   g_free (stack);
 }
@@ -121,7 +138,7 @@ meta_stack_add (MetaStack  *stack,
               "Window %s has stack_position initialized to %d\n",
               window->desc, window->stack_position);
   
-  stack_sync_to_server (stack);
+  stack_sync_to_xserver (stack);
   meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
 }
 
@@ -157,7 +174,7 @@ meta_stack_remove (MetaStack  *stack,
     stack->removed = g_list_prepend (stack->removed,
                                      GUINT_TO_POINTER (window->frame->xwindow));
   
-  stack_sync_to_server (stack);
+  stack_sync_to_xserver (stack);
   meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
 }
 
@@ -167,7 +184,7 @@ meta_stack_update_layer (MetaStack  *stack,
 {
   stack->need_relayer = TRUE;
   
-  stack_sync_to_server (stack);
+  stack_sync_to_xserver (stack);
   meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
 }
 
@@ -177,7 +194,7 @@ meta_stack_update_transient (MetaStack  *stack,
 {
   stack->need_constrain = TRUE;
   
-  stack_sync_to_server (stack);
+  stack_sync_to_xserver (stack);
   meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
 }
 
@@ -206,7 +223,7 @@ meta_stack_raise (MetaStack  *stack,
 
   meta_window_set_stack_position_no_sync (window, max_stack_position);
 
-  stack_sync_to_server (stack);
+  stack_sync_to_xserver (stack);
   meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
 }
 
@@ -234,7 +251,7 @@ meta_stack_lower (MetaStack  *stack,
 
   meta_window_set_stack_position_no_sync (window, min_stack_position);
   
-  stack_sync_to_server (stack);
+  stack_sync_to_xserver (stack);
   meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
 }
 
@@ -250,7 +267,7 @@ meta_stack_thaw (MetaStack *stack)
   g_return_if_fail (stack->freeze_count > 0);
   
   stack->freeze_count -= 1;
-  stack_sync_to_server (stack);
+  stack_sync_to_xserver (stack);
   meta_stack_update_window_tile_matches (stack, NULL);
 }
 
@@ -829,7 +846,7 @@ stack_do_window_deletions (MetaStack *stack)
       /* We go from the end figuring removals are more
        * likely to be recent.
        */
-      i = stack->windows->len;
+      i = stack->xwindows->len;
       while (i > 0)
         {
           --i;
@@ -840,9 +857,9 @@ stack_do_window_deletions (MetaStack *stack)
            * both the window->xwindow and window->frame->xwindow
            * in the removal list.
            */
-          if (xwindow == g_array_index (stack->windows, Window, i))
+          if (xwindow == g_array_index (stack->xwindows, Window, i))
             {
-              g_array_remove_index (stack->windows, i);
+              g_array_remove_index (stack->xwindows, i);
               goto next;
             }
         }
@@ -871,10 +888,10 @@ stack_do_window_additions (MetaStack *stack)
                   "Adding %d windows to sorted list\n",
                   n_added);
       
-      old_size = stack->windows->len;
-      g_array_set_size (stack->windows, old_size + n_added);
+      old_size = stack->xwindows->len;
+      g_array_set_size (stack->xwindows, old_size + n_added);
       
-      end = &g_array_index (stack->windows, Window, old_size);
+      end = &g_array_index (stack->xwindows, Window, old_size);
 
       /* stack->added has the most recent additions at the
        * front of the list, so we need to reverse it
@@ -1029,6 +1046,102 @@ stack_ensure_sorted (MetaStack *stack)
   stack_do_resort (stack);
 }
 
+static MetaStackWindow *
+find_top_most_managed_window (MetaScreen *screen,
+                              const MetaStackWindow *ignore)
+{
+  MetaStackTracker *stack_tracker = screen->stack_tracker;
+  MetaStackWindow *windows;
+  int n_windows;
+  int i;
+
+  meta_stack_tracker_get_stack (stack_tracker,
+                                &windows, &n_windows);
+
+  /* Children are in order from bottom to top. We want to
+   * find the topmost managed child, then configure
+   * our window to be above it.
+   */
+  for (i = n_windows -1; i >= 0; i--)
+    {
+      MetaStackWindow *other_window = &windows[i];
+
+      if (other_window->any.type == ignore->any.type &&
+          ((other_window->any.type == META_WINDOW_CLIENT_TYPE_X11 &&
+            other_window->x11.xwindow == ignore->x11.xwindow) ||
+           other_window->wayland.meta_window == ignore->wayland.meta_window))
+        {
+          /* Do nothing. This means we're already the topmost managed
+           * window, but it DOES NOT mean we are already just above
+           * the topmost managed window. This is important because if
+           * an override redirect window is up, and we map a new
+           * managed window, the new window is probably above the old
+           * popup by default, and we want to push it below that
+           * popup. So keep looking for a sibling managed window
+           * to be moved below.
+           */
+        }
+      else
+        {
+          if (other_window->any.type == META_WINDOW_CLIENT_TYPE_X11)
+            {
+              MetaWindow *other = meta_display_lookup_x_window (screen->display,
+                                                                other_window->x11.xwindow);
+
+              if (other != NULL && !other->override_redirect)
+                return other_window;
+            }
+          else
+            {
+              /* All wayland windows are currently considered "managed"
+               * TODO: consider wayland pop-up windows like override
+               * redirect windows here. */
+              return other_window;
+            }
+        }
+    }
+
+  return NULL;
+}
+
+/* When moving an X window we sometimes need an X based sibling.
+ *
+ * If the given sibling is X based this function returns it back
+ * otherwise it searches downwards looking for the nearest X window.
+ *
+ * If no X based sibling could be found return NULL. */
+static MetaStackWindow *
+find_x11_sibling_downwards (MetaScreen *screen,
+                            MetaStackWindow *sibling)
+{
+  MetaStackTracker *stack_tracker = screen->stack_tracker;
+  MetaStackWindow *windows;
+  int n_windows;
+  int i;
+
+  if (sibling->any.type == META_WINDOW_CLIENT_TYPE_X11)
+    return sibling;
+
+  meta_stack_tracker_get_stack (stack_tracker,
+                                &windows, &n_windows);
+
+  /* NB: Children are in order from bottom to top and we
+   * want to search downwards for the nearest X window.
+   */
+
+  for (i = n_windows - 1; i >= 0; i--)
+    if (meta_stack_window_equal (&windows[i], sibling))
+      break;
+
+  for (; i >= 0; i--)
+    {
+      if (windows[i].any.type == META_WINDOW_CLIENT_TYPE_X11)
+        return &windows[i];
+    }
+
+  return NULL;
+}
+
 /**
  * raise_window_relative_to_managed_windows:
  *
@@ -1053,82 +1166,72 @@ stack_ensure_sorted (MetaStack *stack)
  */
 static void
 raise_window_relative_to_managed_windows (MetaScreen *screen,
-                                          Window      xwindow)
+                                          const MetaStackWindow *window)
 {
+  gulong serial = 0;
+  MetaStackWindow *sibling;
 
-  Window *children;
-  int n_children;
-  int i;
-
-  meta_stack_tracker_get_stack (screen->stack_tracker,
-                                &children, &n_children);
-
-  /* Children are in order from bottom to top. We want to
-   * find the topmost managed child, then configure
-   * our window to be above it.
-   */
-  i = n_children - 1;
-  while (i >= 0)
+  sibling = find_top_most_managed_window (screen, window);
+  if (!sibling)
     {
-      if (children[i] == xwindow)
+      if (window->any.type == META_WINDOW_CLIENT_TYPE_X11)
         {
-          /* Do nothing. This means we're already the topmost managed
-           * window, but it DOES NOT mean we are already just above
-           * the topmost managed window. This is important because if
-           * an override redirect window is up, and we map a new
-           * managed window, the new window is probably above the old
-           * popup by default, and we want to push it below that
-           * popup. So keep looking for a sibling managed window
-           * to be moved below.
-           */
+          serial = XNextRequest (screen->display->xdisplay);
+          meta_error_trap_push (screen->display);
+          XLowerWindow (screen->display->xdisplay,
+                        window->x11.xwindow);
+          meta_error_trap_pop (screen->display);
         }
-      else
-        {
-          MetaWindow *other = meta_display_lookup_x_window (screen->display,
-                                                            children[i]);
-          if (other != NULL && !other->override_redirect)
-            {
-              XWindowChanges changes;
 
-              /* children[i] is the topmost managed child */
+      /* No sibling to use, just lower ourselves to the bottom
+       * to be sure we're below any override redirect windows.
+           */
+      meta_stack_tracker_record_lower (screen->stack_tracker,
+                                       window,
+                                       serial);
+      return;
+        }
+
+  /* window is the topmost managed child */
               meta_topic (META_DEBUG_STACK,
                           "Moving 0x%lx above topmost managed child window 0x%lx\n",
-                          xwindow, children[i]);
+              window->any.type == META_WINDOW_CLIENT_TYPE_X11 ? window->x11.xwindow: 0,
+              sibling->any.type == META_WINDOW_CLIENT_TYPE_X11 ? sibling->x11.xwindow: 0);
 
-              changes.sibling = children[i];
+  if (window->any.type == META_WINDOW_CLIENT_TYPE_X11)
+    {
+      XWindowChanges changes;
+      MetaStackWindow *x11_sibling = find_x11_sibling_downwards (screen, sibling);
+      serial = XNextRequest (screen->display->xdisplay);
+
+      if (x11_sibling)
+        {
+          changes.sibling = x11_sibling->x11.xwindow;
               changes.stack_mode = Above;
 
               meta_error_trap_push (screen->display);
-              meta_stack_tracker_record_raise_above (screen->stack_tracker,
-                                                     xwindow,
-                                                     children[i],
-                                                     XNextRequest (screen->display->xdisplay));
               XConfigureWindow (screen->display->xdisplay,
-                                xwindow,
+                            window->x11.xwindow,
                                 CWSibling | CWStackMode,
                                 &changes);
               meta_error_trap_pop (screen->display);
-
-              break;
-            }
         }
-
-      --i;
-    }
-
-  if (i < 0)
+      else
     {
       /* No sibling to use, just lower ourselves to the bottom
        * to be sure we're below any override redirect windows.
        */
       meta_error_trap_push (screen->display);
-      meta_stack_tracker_record_lower (screen->stack_tracker,
-                                       xwindow,
-                                       XNextRequest (screen->display->xdisplay));
       XLowerWindow (screen->display->xdisplay,
-                    xwindow);
+                        window->x11.xwindow);
       meta_error_trap_pop (screen->display);
     }
+}
+
+  meta_stack_tracker_record_raise_above (screen->stack_tracker,
+                                         window,
+                                         sibling,
+                                         serial);
 }
 
 /**
@@ -1145,13 +1248,16 @@ raise_window_relative_to_managed_windows (MetaScreen *screen,
  * job of computing the minimal set of stacking requests needed.
  */
 static void
-stack_sync_to_server (MetaStack *stack)
+stack_sync_to_xserver (MetaStack *stack)
 {
-  GArray *stacked;
-  GArray *root_children_stacked;
+  GArray *x11_stacked;
+  GArray *x11_root_children_stacked;
+  GArray *all_root_children_stacked; /* wayland OR x11 */
   GList *tmp;
-  GArray *all_hidden;
+  GArray *x11_hidden;
+  GArray *x11_hidden_stack_windows;
   int n_override_redirect = 0;
+  MetaStackWindow guard_stack_window;
   
   /* Bail out if frozen */
   if (stack->freeze_count > 0)
@@ -1166,13 +1272,17 @@ stack_sync_to_server (MetaStack *stack)
    * _NET hints, and "root_children_stacked" is in top-to-bottom
    * order for XRestackWindows()
    */
-  stacked = g_array_new (FALSE, FALSE, sizeof (Window));
-  root_children_stacked = g_array_new (FALSE, FALSE, sizeof (Window));
-  all_hidden = g_array_new (FALSE, FALSE, sizeof (Window));
+  x11_stacked = g_array_new (FALSE, FALSE, sizeof (Window));
+
+  all_root_children_stacked = g_array_new (FALSE, FALSE, sizeof (MetaStackWindow));
+  x11_root_children_stacked = g_array_new (FALSE, FALSE, sizeof (Window));
+
+  x11_hidden_stack_windows = g_array_new (FALSE, FALSE, sizeof (MetaStackWindow));
+  x11_hidden = g_array_new (FALSE, FALSE, sizeof (Window));
 
   /* The screen guard window sits above all hidden windows and acts as
    * a barrier to input reaching these windows. */
-  g_array_append_val (all_hidden, stack->screen->guard_window);
+  g_array_append_val (x11_hidden, stack->screen->guard_window);
 
   meta_topic (META_DEBUG_STACK, "Top to bottom: ");
   meta_push_no_msg_prefix ();
@@ -1181,6 +1291,9 @@ stack_sync_to_server (MetaStack *stack)
     {
       MetaWindow *w = tmp->data;
       Window top_level_window;
+      MetaStackWindow stack_window;
+
+      stack_window.any.type = w->client_type;
       
       meta_topic (META_DEBUG_STACK, "%u:%d - %s ",
 		  w->layer, w->stack_position, w->desc);
@@ -1189,60 +1302,93 @@ stack_sync_to_server (MetaStack *stack)
       if (w->override_redirect)
 	n_override_redirect++;
       else
-	g_array_prepend_val (stacked, w->xwindow);
+	g_array_prepend_val (x11_stacked, w->xwindow);
       
       if (w->frame)
 	top_level_window = w->frame->xwindow;
       else
 	top_level_window = w->xwindow;
 
+      if (w->client_type == META_WINDOW_CLIENT_TYPE_X11)
+        stack_window.x11.xwindow = top_level_window;
+      else
+        stack_window.wayland.meta_window = w;
+
       /* We don't restack hidden windows along with the rest, though they are
        * reflected in the _NET hints. Hidden windows all get pushed below
        * the screens fullscreen guard_window. */
       if (w->hidden)
 	{
-	  g_array_append_val (all_hidden, top_level_window);
+          if (w->client_type == META_WINDOW_CLIENT_TYPE_X11)
+            {
+              MetaStackWindow stack_window;
+
+              stack_window.any.type = META_WINDOW_CLIENT_TYPE_X11;
+              stack_window.x11.xwindow = top_level_window;
+
+              g_array_append_val (x11_hidden_stack_windows, stack_window);
+              g_array_append_val (x11_hidden, top_level_window);
+            }
 	  continue;
 	}
 
+      g_array_append_val (all_root_children_stacked, stack_window);
+
       /* build XRestackWindows() array from top to bottom */
-      g_array_append_val (root_children_stacked, top_level_window);
+      if (w->client_type == META_WINDOW_CLIENT_TYPE_X11)
+        g_array_append_val (x11_root_children_stacked, top_level_window);
+      else
+        {
+          MetaStackWindow *new;
+
+          /* So we can determine later if a cached stack window is
+           * stale because the corresponding window has been freed we
+           * associate a weak pointer with the new window. */
+          new = &g_array_index (all_root_children_stacked, MetaStackWindow, all_root_children_stacked->len - 1);
+          g_object_add_weak_pointer (G_OBJECT (new->wayland.meta_window),
+                                     (gpointer *)&new->wayland.meta_window);
+        }
     }
 
   meta_topic (META_DEBUG_STACK, "\n");
   meta_pop_no_msg_prefix ();
 
-  /* All windows should be in some stacking order */
-  if (stacked->len != stack->windows->len - n_override_redirect)
+  /* All X windows should be in some stacking order */
+  if (x11_stacked->len != stack->xwindows->len - n_override_redirect)
     meta_bug ("%u windows stacked, %u windows exist in stack\n",
-              stacked->len, stack->windows->len);
+              x11_stacked->len, stack->xwindows->len);
   
   /* Sync to server */
 
   meta_topic (META_DEBUG_STACK, "Restacking %u windows\n",
-              root_children_stacked->len);
+              all_root_children_stacked->len);
   
   meta_error_trap_push (stack->screen->display);
 
-  if (stack->last_root_children_stacked == NULL)
+  if (stack->last_all_root_children_stacked == NULL)
     {
       /* Just impose our stack, we don't know the previous state.
        * This involves a ton of circulate requests and may flicker.
        */
       meta_topic (META_DEBUG_STACK, "Don't know last stack state, restacking everything\n");
 
-      if (root_children_stacked->len > 0)
+      if (all_root_children_stacked->len > 1)
         {
-          meta_stack_tracker_record_restack_windows (stack->screen->stack_tracker,
-                                                     (Window *) root_children_stacked->data,
-                                                     root_children_stacked->len,
-                                                     XNextRequest (stack->screen->display->xdisplay));
+          gulong serial = 0;
+          if (x11_root_children_stacked->len > 1)
+            {
+              serial = XNextRequest (stack->screen->display->xdisplay);
           XRestackWindows (stack->screen->display->xdisplay,
-                           (Window *) root_children_stacked->data,
-                           root_children_stacked->len);
+                               (Window *) x11_root_children_stacked->data,
+                               x11_root_children_stacked->len);
+            }
+          meta_stack_tracker_record_restack_windows (stack->screen->stack_tracker,
+                                                     (MetaStackWindow *) all_root_children_stacked->data,
+                                                     all_root_children_stacked->len,
+                                                     serial);
         }
     }
-  else if (root_children_stacked->len > 0)
+  else if (all_root_children_stacked->len > 0)
     {
       /* Try to do minimal window moves to get the stack in order */
       /* A point of note: these arrays include frames not client windows,
@@ -1250,28 +1396,34 @@ stack_sync_to_server (MetaStack *stack)
        * was saved, then we may have inefficiency, but I don't think things
        * break...
        */
-      const Window *old_stack = (Window *) stack->last_root_children_stacked->data;
-      const Window *new_stack = (Window *) root_children_stacked->data;
-      const int old_len = stack->last_root_children_stacked->len;
-      const int new_len = root_children_stacked->len;
-      const Window *oldp = old_stack;
-      const Window *newp = new_stack;
-      const Window *old_end = old_stack + old_len;
-      const Window *new_end = new_stack + new_len;
-      Window last_window = None;
-      
+      const MetaStackWindow *old_stack = (MetaStackWindow *) stack->last_all_root_children_stacked->data;
+      const MetaStackWindow *new_stack = (MetaStackWindow *) all_root_children_stacked->data;
+      const int old_len = stack->last_all_root_children_stacked->len;
+      const int new_len = all_root_children_stacked->len;
+      const MetaStackWindow *oldp = old_stack;
+      const MetaStackWindow *newp = new_stack;
+      const MetaStackWindow *old_end = old_stack + old_len;
+      const MetaStackWindow *new_end = new_stack + new_len;
+      Window last_xwindow = None;
+      const MetaStackWindow *last_window = NULL;
+
       while (oldp != old_end &&
              newp != new_end)
         {
-          if (*oldp == *newp)
+          if (meta_stack_window_equal (oldp, newp))
             {
               /* Stacks are the same here, move on */
               ++oldp;
-              last_window = *newp;
+              if (newp->any.type == META_WINDOW_CLIENT_TYPE_X11)
+                last_xwindow = newp->x11.xwindow;
+              last_window = newp;
               ++newp;
             }
-          else if (meta_display_lookup_x_window (stack->screen->display,
-                                                 *oldp) == NULL)
+          else if ((oldp->any.type == META_WINDOW_CLIENT_TYPE_X11 &&
+                    meta_display_lookup_x_window (stack->screen->display,
+                                                  oldp->x11.xwindow) == NULL) ||
+                   (oldp->any.type == META_WINDOW_CLIENT_TYPE_WAYLAND &&
+                    oldp->wayland.meta_window == NULL))
             {
               /* *oldp is no longer known to us (probably destroyed),
                * so we can just skip it
@@ -1280,75 +1432,161 @@ stack_sync_to_server (MetaStack *stack)
             }
           else
             {
-              /* Move *newp below last_window */
-              if (last_window == None)
+              /* Move *newp below the last_window */
+              if (!last_window)
                 {
-                  meta_topic (META_DEBUG_STACK, "Using window 0x%lx as topmost (but leaving it in-place)\n", *newp);
+                  meta_topic (META_DEBUG_STACK, "Using window 0x%lx as topmost (but leaving it in-place)\n",
+                              newp->x11.xwindow);
 
-                  raise_window_relative_to_managed_windows (stack->screen,
-                                                            *newp);
+                  raise_window_relative_to_managed_windows (stack->screen, newp);
+                }
+              else if (newp->any.type == META_WINDOW_CLIENT_TYPE_X11 &&
+                       last_xwindow == None)
+                {
+                  /* In this case we have an X window that we need to
+                   * put below a wayland window and this is the
+                   * topmost X window. */
+                  
+                  /* In X terms (because this is the topmost X window)
+                   * we want to
+                   * raise_window_relative_to_managed_windows() to
+                   * ensure the X window is below override-redirect
+                   * pop-up windows.
+                   *
+                   * In Wayland terms we just want to ensure
+                   * newp is lowered below last_window (which
+                   * notably doesn't require an X request because we
+                   * know last_window isn't an X window).
+                   */
+
+                  raise_window_relative_to_managed_windows (stack->screen, newp);
+
+                  meta_stack_tracker_record_lower_below (stack->screen->stack_tracker,
+                                                         newp, last_window,
+                                                         0); /* no x request serial */
                 }
               else
                 {
-                  /* This means that if last_window is dead, but not
+                  gulong serial = 0;
+
+                  /* This means that if last_xwindow is dead, but not
                    * *newp, then we fail to restack *newp; but on
-                   * unmanaging last_window, we'll fix it up.
+                   * unmanaging last_xwindow, we'll fix it up.
                    */
                   
-                  XWindowChanges changes;
+                  meta_topic (META_DEBUG_STACK, "Placing window 0x%lx below 0x%lx\n",
+                              newp->any.type == META_WINDOW_CLIENT_TYPE_X11 ? newp->x11.xwindow : 0,
+                              last_xwindow);
 
-                  changes.sibling = last_window;
+                  if (newp->any.type == META_WINDOW_CLIENT_TYPE_X11)
+                    {
+                  XWindowChanges changes;
+                      serial = XNextRequest (stack->screen->display->xdisplay);
+
+                      changes.sibling = last_xwindow;
                   changes.stack_mode = Below;
 
-                  meta_topic (META_DEBUG_STACK, "Placing window 0x%lx below 0x%lx\n",
-                              *newp, last_window);
-
-                  meta_stack_tracker_record_lower_below (stack->screen->stack_tracker,
-                                                         *newp, last_window,
-                                                         XNextRequest (stack->screen->display->xdisplay));
                   XConfigureWindow (stack->screen->display->xdisplay,
-                                    *newp,
+                                        newp->x11.xwindow,
                                     CWSibling | CWStackMode,
                                     &changes);
                 }
 
-              last_window = *newp;
+                  meta_stack_tracker_record_lower_below (stack->screen->stack_tracker,
+                                                         newp, last_window,
+                                                         serial);
+                }
+
+              if (newp->any.type == META_WINDOW_CLIENT_TYPE_X11)
+                last_xwindow = newp->x11.xwindow;
+              last_window = newp;
               ++newp;
             }
         }
 
       if (newp != new_end)
         {
+          const MetaStackWindow *x_ref;
+          unsigned long serial = 0;
+
           /* Restack remaining windows */
           meta_topic (META_DEBUG_STACK, "Restacking remaining %d windows\n",
                         (int) (new_end - newp));
+
+          /* rewind until we find the last stacked X window that we can use
+           * as a reference point for re-stacking remaining X windows */
+          if (newp != new_stack)
+            for (x_ref = newp - 1;
+                 x_ref->any.type != META_WINDOW_CLIENT_TYPE_X11 && x_ref > new_stack;
+                 x_ref--)
+              ;
+          else
+            x_ref = new_stack;
+
+          /* If we didn't find an X window looking backwards then walk forwards
+           * through the remaining windows to find the first remaining X window
+           * instead. */
+          if (x_ref->any.type != META_WINDOW_CLIENT_TYPE_X11)
+            {
+              for (x_ref = newp;
+                   x_ref->any.type != META_WINDOW_CLIENT_TYPE_X11 && x_ref > new_stack;
+                   x_ref++)
+                ;
+            }
+
+          /* If there are any X windows remaining unstacked then restack them */
+          if (x_ref->any.type == META_WINDOW_CLIENT_TYPE_X11)
+            {
+              int i;
+
+              for (i = x11_root_children_stacked->len - 1; i; i--)
+                {
+                  Window *reference = &g_array_index (x11_root_children_stacked, Window, i);
+
+                  if (*reference == x_ref->x11.xwindow)
+                    {
+                      int n = x11_root_children_stacked->len - i;
+
+                      /* There's no point restacking if there's only one X window */
+                      if (n == 1)
+                        break;
+
+                      serial = XNextRequest (stack->screen->display->xdisplay);
+                      XRestackWindows (stack->screen->display->xdisplay,
+                                       reference, n);
+                      break;
+                    }
+                }
+            }
+
           /* We need to include an already-stacked window
            * in the restack call, so we get in the proper position
            * with respect to it.
            */
           if (newp != new_stack)
-            --newp;
+            newp = MIN (newp - 1, x_ref);
           meta_stack_tracker_record_restack_windows (stack->screen->stack_tracker,
-                                                     (Window *) newp, new_end - newp,
-                                                     XNextRequest (stack->screen->display->xdisplay));
-          XRestackWindows (stack->screen->display->xdisplay,
-                           (Window *) newp, new_end - newp);
+                                                     newp, new_end - newp,
+                                                     serial);
         }
     }
 
-  /* Push hidden windows to the bottom of the stack under the guard window */
+  /* Push hidden X windows to the bottom of the stack under the guard window */
+  guard_stack_window.any.type = META_WINDOW_CLIENT_TYPE_X11;
+  guard_stack_window.x11.xwindow = stack->screen->guard_window;
   meta_stack_tracker_record_lower (stack->screen->stack_tracker,
-                                   stack->screen->guard_window,
+                                   &guard_stack_window,
                                    XNextRequest (stack->screen->display->xdisplay));
   XLowerWindow (stack->screen->display->xdisplay, stack->screen->guard_window);
   meta_stack_tracker_record_restack_windows (stack->screen->stack_tracker,
-                                             (Window *)all_hidden->data,
-                                             all_hidden->len,
+                                             (MetaStackWindow *)x11_hidden_stack_windows->data,
+                                             x11_hidden_stack_windows->len,
                                              XNextRequest (stack->screen->display->xdisplay));
   XRestackWindows (stack->screen->display->xdisplay,
-		   (Window *)all_hidden->data,
-		   all_hidden->len);
-  g_array_free (all_hidden, TRUE);
+		   (Window *)x11_hidden->data,
+		   x11_hidden->len);
+  g_array_free (x11_hidden, TRUE);
+  g_array_free (x11_hidden_stack_windows, TRUE);
 
   meta_error_trap_pop (stack->screen->display);
   /* on error, a window was destroyed; it should eventually
@@ -1363,21 +1601,23 @@ stack_sync_to_server (MetaStack *stack)
                    stack->screen->display->atom__NET_CLIENT_LIST,
                    XA_WINDOW,
                    32, PropModeReplace,
-                   (unsigned char *)stack->windows->data,
-                   stack->windows->len);
+                   (unsigned char *)stack->xwindows->data,
+                   stack->xwindows->len);
   XChangeProperty (stack->screen->display->xdisplay,
                    stack->screen->xroot,
                    stack->screen->display->atom__NET_CLIENT_LIST_STACKING,
                    XA_WINDOW,
                    32, PropModeReplace,
-                   (unsigned char *)stacked->data,
-                   stacked->len);
+                   (unsigned char *)x11_stacked->data,
+                   x11_stacked->len);
 
-  g_array_free (stacked, TRUE);
+  g_array_free (x11_stacked, TRUE);
 
-  if (stack->last_root_children_stacked)
-    g_array_free (stack->last_root_children_stacked, TRUE);
-  stack->last_root_children_stacked = root_children_stacked;
+  if (stack->last_all_root_children_stacked)
+    free_last_all_root_children_stacked_cache (stack);
+  stack->last_all_root_children_stacked = all_root_children_stacked;
+
+  g_array_free (x11_root_children_stacked, TRUE);
 
   /* That was scary... */
 }
@@ -1738,7 +1978,7 @@ meta_stack_set_positions (MetaStack *stack,
   meta_topic (META_DEBUG_STACK,
               "Reset the stack positions of (nearly) all windows\n");
 
-  stack_sync_to_server (stack);
+  stack_sync_to_xserver (stack);
   meta_stack_update_window_tile_matches (stack, NULL);
 }
 
@@ -1801,7 +2041,7 @@ meta_window_set_stack_position (MetaWindow *window,
                                 int         position)
 {
   meta_window_set_stack_position_no_sync (window, position);
-  stack_sync_to_server (window->screen->stack);
+  stack_sync_to_xserver (window->screen->stack);
   meta_stack_update_window_tile_matches (window->screen->stack,
                                          window->screen->active_workspace);
 }

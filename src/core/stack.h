@@ -60,7 +60,7 @@ struct _MetaStack
    * A sequence of all the Windows (X handles, not MetaWindows) of the windows
    * we manage, sorted in order.  Suitable to be passed into _NET_CLIENT_LIST.
    */
-  GArray *windows;
+  GArray *xwindows;
 
   /** The MetaWindows of the windows we manage, sorted in order. */
   GList *sorted;
@@ -99,7 +99,7 @@ struct _MetaStack
    * The last-known stack of all windows, bottom to top.  We cache it here
    * so that subsequent times we'll be able to do incremental moves.
    */
-  GArray *last_root_children_stacked;
+  GArray *last_all_root_children_stacked;
 
   /**
    * Number of stack positions; same as the length of added, but

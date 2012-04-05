@@ -80,10 +80,6 @@ typedef enum {
   _NET_WM_BYPASS_COMPOSITOR_HINT_OFF = 2,
 } MetaBypassCompositorHintValue;
 
-typedef enum {
-  META_WINDOW_CLIENT_TYPE_WAYLAND,
-  META_WINDOW_CLIENT_TYPE_X11
-} MetaWindowClientType;
 
 struct _MetaWindow
 {

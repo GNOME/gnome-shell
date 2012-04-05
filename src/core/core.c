@@ -269,6 +269,8 @@ meta_core_lower_beneath_grab_window (Display *xdisplay,
   MetaDisplay *display;
   MetaScreen *screen;
   MetaWindow *grab_window;
+  MetaStackWindow stack_window;
+  MetaStackWindow stack_sibling;
 
   display = meta_display_for_x_display (xdisplay);
   screen = meta_display_screen_for_xwindow (display, xwindow);
@@ -281,9 +283,13 @@ meta_core_lower_beneath_grab_window (Display *xdisplay,
   changes.sibling = grab_window->frame ? grab_window->frame->xwindow
                                        : grab_window->xwindow;
 
+  stack_window.any.type = META_WINDOW_CLIENT_TYPE_X11;
+  stack_window.x11.xwindow = xwindow;
+  stack_sibling.any.type = META_WINDOW_CLIENT_TYPE_X11;
+  stack_sibling.x11.xwindow = changes.sibling;
   meta_stack_tracker_record_lower_below (screen->stack_tracker,
-                                         xwindow,
-                                         changes.sibling,
+                                         &stack_window,
+                                         &stack_sibling,
                                          XNextRequest (screen->display->xdisplay));
 
   meta_error_trap_push (display);

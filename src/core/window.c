@@ -1144,6 +1144,16 @@ meta_window_new_shared (MetaDisplay         *display,
   if (window->decorated)
     meta_window_ensure_frame (window);
 
+  if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+    {
+      MetaStackWindow stack_window;
+      stack_window.any.type = META_WINDOW_CLIENT_TYPE_WAYLAND;
+      stack_window.wayland.meta_window = window;
+      meta_stack_tracker_record_add (window->screen->stack_tracker,
+                                     &stack_window,
+                                     0);
+    }
+
   meta_window_grab_keys (window);
   if (window->type != META_WINDOW_DOCK && !window->override_redirect)
     {
@@ -1831,6 +1841,16 @@ meta_window_unmanage (MetaWindow  *window,
   GList *tmp;
 
   meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
+
+  if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+    {
+      MetaStackWindow stack_window;
+      stack_window.any.type = META_WINDOW_CLIENT_TYPE_WAYLAND;
+      stack_window.wayland.meta_window = window;
+      meta_stack_tracker_record_remove (window->screen->stack_tracker,
+                                        &stack_window,
+                                        0);
+    }
 
   if (window->display->compositor)
     {
