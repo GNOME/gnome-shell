@@ -223,9 +223,7 @@ meta_plugin_manager_kill_switch_workspace (MetaPluginManager *plugin_mgr)
       MetaPlugin        *plugin = l->data;
       MetaPluginClass   *klass = META_PLUGIN_GET_CLASS (plugin);
 
-      if (!meta_plugin_disabled (plugin)
-          && (meta_plugin_features (plugin) & META_PLUGIN_SWITCH_WORKSPACE)
-	  && klass->kill_switch_workspace)
+      if (!meta_plugin_disabled (plugin) && klass->kill_switch_workspace)
         klass->kill_switch_workspace (plugin);
 
       l = l->next;
@@ -258,16 +256,14 @@ meta_plugin_manager_event_simple (MetaPluginManager *plugin_mgr,
       MetaPlugin        *plugin = l->data;
       MetaPluginClass   *klass = META_PLUGIN_GET_CLASS (plugin);
 
-      if (!meta_plugin_disabled (plugin) &&
-          (meta_plugin_features (plugin) & event))
+      if (!meta_plugin_disabled (plugin))
         {
-          retval = TRUE;
-
           switch (event)
             {
             case META_PLUGIN_MINIMIZE:
               if (klass->minimize)
                 {
+                  retval = TRUE;
                   meta_plugin_manager_kill_window_effects (
 		      plugin_mgr,
 		      actor);
@@ -279,6 +275,7 @@ meta_plugin_manager_event_simple (MetaPluginManager *plugin_mgr,
             case META_PLUGIN_MAP:
               if (klass->map)
                 {
+                  retval = TRUE;
                   meta_plugin_manager_kill_window_effects (
 		      plugin_mgr,
 		      actor);
@@ -290,6 +287,7 @@ meta_plugin_manager_event_simple (MetaPluginManager *plugin_mgr,
             case META_PLUGIN_DESTROY:
               if (klass->destroy)
                 {
+                  retval = TRUE;
                   _meta_plugin_effect_started (plugin);
                   klass->destroy (plugin, actor);
                 }
@@ -335,16 +333,14 @@ meta_plugin_manager_event_maximize (MetaPluginManager *plugin_mgr,
       MetaPlugin        *plugin = l->data;
       MetaPluginClass   *klass = META_PLUGIN_GET_CLASS (plugin);
 
-      if (!meta_plugin_disabled (plugin) &&
-          (meta_plugin_features (plugin) & event))
+      if (!meta_plugin_disabled (plugin))
         {
-          retval = TRUE;
-
           switch (event)
             {
             case META_PLUGIN_MAXIMIZE:
               if (klass->maximize)
                 {
+                  retval = TRUE;
                   meta_plugin_manager_kill_window_effects (
 		      plugin_mgr,
 		      actor);
@@ -358,6 +354,7 @@ meta_plugin_manager_event_maximize (MetaPluginManager *plugin_mgr,
             case META_PLUGIN_UNMAXIMIZE:
               if (klass->unmaximize)
                 {
+                  retval = TRUE;
                   meta_plugin_manager_kill_window_effects (
 		      plugin_mgr,
 		      actor);
@@ -405,17 +402,13 @@ meta_plugin_manager_switch_workspace (MetaPluginManager   *plugin_mgr,
       MetaPlugin        *plugin = l->data;
       MetaPluginClass   *klass = META_PLUGIN_GET_CLASS (plugin);
 
-      if (!meta_plugin_disabled (plugin) &&
-          (meta_plugin_features (plugin) & META_PLUGIN_SWITCH_WORKSPACE))
+      if (!meta_plugin_disabled (plugin) && klass->switch_workspace)
         {
-          if (klass->switch_workspace)
-            {
-              retval = TRUE;
-              meta_plugin_manager_kill_switch_workspace (plugin_mgr);
+          retval = TRUE;
+          meta_plugin_manager_kill_switch_workspace (plugin_mgr);
 
-              _meta_plugin_effect_started (plugin);
-              klass->switch_workspace (plugin, from, to, direction);
-            }
+          _meta_plugin_effect_started (plugin);
+          klass->switch_workspace (plugin, from, to, direction);
         }
 
       l = l->next;

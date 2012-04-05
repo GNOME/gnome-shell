@@ -44,7 +44,6 @@ enum
 {
   PROP_0,
   PROP_SCREEN,
-  PROP_FEATURES,
   PROP_DISABLED,
   PROP_DEBUG_MODE,
 };
@@ -52,52 +51,12 @@ enum
 struct _MetaPluginPrivate
 {
   MetaScreen   *screen;
-  gulong        features;
 
   gint          running;
 
   gboolean      disabled : 1;
   gboolean      debug    : 1;
 };
-
-static void
-meta_plugin_set_features (MetaPlugin *plugin)
-{
-  MetaPluginPrivate  *priv     = plugin->priv;
-  MetaPluginClass    *klass    = META_PLUGIN_GET_CLASS (plugin);
-
-  priv->features = 0;
-
-  /*
-   * Feature flags: identify events that the plugin can handle; a plugin can
-   * handle one or more events.
-   */
-  if (klass->minimize)
-    priv->features |= META_PLUGIN_MINIMIZE;
-
-  if (klass->maximize)
-    priv->features |= META_PLUGIN_MAXIMIZE;
-
-  if (klass->unmaximize)
-    priv->features |= META_PLUGIN_UNMAXIMIZE;
-
-  if (klass->map)
-    priv->features |= META_PLUGIN_MAP;
-
-  if (klass->destroy)
-    priv->features |= META_PLUGIN_DESTROY;
-
-  if (klass->switch_workspace)
-    priv->features |= META_PLUGIN_SWITCH_WORKSPACE;
-}
-
-static void
-meta_plugin_constructed (GObject *object)
-{
-  meta_plugin_set_features (META_PLUGIN (object));
-
-  G_OBJECT_CLASS (meta_plugin_parent_class)->constructed (object);
-}
 
 static void
 meta_plugin_set_property (GObject      *object,
@@ -143,9 +102,6 @@ meta_plugin_get_property (GObject    *object,
     case PROP_DEBUG_MODE:
       g_value_set_boolean (value, priv->debug);
       break;
-    case PROP_FEATURES:
-      g_value_set_ulong (value, priv->features);
-      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -158,7 +114,6 @@ meta_plugin_class_init (MetaPluginClass *klass)
 {
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->constructed     = meta_plugin_constructed;
   gobject_class->set_property    = meta_plugin_set_property;
   gobject_class->get_property    = meta_plugin_get_property;
 
@@ -169,14 +124,6 @@ meta_plugin_class_init (MetaPluginClass *klass)
                                                         "MetaScreen",
                                                         META_TYPE_SCREEN,
                                                         G_PARAM_READWRITE));
-
-  g_object_class_install_property (gobject_class,
-				   PROP_FEATURES,
-				   g_param_spec_ulong ("features",
-                                                       "Features",
-                                                       "Plugin Features",
-                                                       0 , G_MAXULONG, 0,
-                                                       G_PARAM_READABLE));
 
   g_object_class_install_property (gobject_class,
 				   PROP_DISABLED,
@@ -203,14 +150,6 @@ meta_plugin_init (MetaPlugin *self)
   MetaPluginPrivate *priv;
 
   self->priv = priv = META_PLUGIN_GET_PRIVATE (self);
-}
-
-gulong
-meta_plugin_features (MetaPlugin *plugin)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-
-  return priv->features;
 }
 
 gboolean

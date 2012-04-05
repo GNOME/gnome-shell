@@ -123,7 +123,6 @@ struct _MetaPluginInfo
 
 GType meta_plugin_get_type (void);
 
-gulong        meta_plugin_features            (MetaPlugin *plugin);
 gboolean      meta_plugin_disabled            (MetaPlugin *plugin);
 gboolean      meta_plugin_running             (MetaPlugin *plugin);
 gboolean      meta_plugin_debug_mode          (MetaPlugin *plugin);
