@@ -4,16 +4,17 @@
 #
 # Krishnababu Krothapalli <kkrothap@redhat.com>, 2011, 2012.
 # Hari Krishna <hari@swecha.net>, 2011.
-# Praveen Illa <mail2ipn@gmail.com>, 2011, 2012.
 # Sasi Bhushan Boddepalli <sasi@swecha.net>, 2012.
+# Praveen Illa <mail2ipn@gmail.com>, 2011, 2012.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell gnome-3-0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-03-30 17:59+0000\n"
-"PO-Revision-Date: 2012-04-02 16:36+0530\n"
-"Last-Translator: Sasi Bhushan Boddepalli <sasi@swecha.net>\n"
+"PO-Revision-Date: 2012-04-05 09:17+0530\n"
+"Last-Translator: Praveen Illa <mail2ipn@gmail.com>\n"
 "Language-Team: Telugu <indlinux-telugu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +34,7 @@ msgstr "విండో నిర్వాహణ మరియు అనువర
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 #: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extension Preferences"
-msgstr "గ్నోమ్ షెల్ పొడిగింతల అభీష్టాలు "
+msgstr "గ్నోమ్ షెల్ పొడిగింతల ప్రాధాన్యతలు"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
@@ -128,11 +129,11 @@ msgstr "ఒకవేళ నిజమైతే, క్యాలెండరుల
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Keybinding to open the application menu"
-msgstr "అప్లికేషన్ మెనూ తెరవడానికి  కీ బైండింగ్ "
+msgstr "అనువర్తనం మెనూ తెరవడానికి  కీ బైండింగ్ "
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid "Keybinding to open the application menu."
-msgstr "అప్లికేషన్ మెనూ తెరవడానికి  కీ బైండింగ్ "
+msgstr "అనువర్తనం మెనూ తెరవడానికి  కీ బైండింగ్ "
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "Which keyboard to use"
@@ -258,7 +259,7 @@ msgstr "ప్రవేశించండి"
 
 #: ../js/gdm/loginDialog.js:1377
 msgid "Login Window"
-msgstr "ప్రవేశ విండో"
+msgstr "ప్రవేశ కిటికీ"
 
 #: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
 #: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
@@ -791,8 +792,8 @@ msgstr "వైర్‌లెస్ నెట్‌వర్క్ చేత ధ
 #: ../js/ui/networkAgent.js:330
 #, c-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network '%"
-"s'."
+"Passwords or encryption keys are required to access the wireless network "
+"'%s'."
 msgstr "వైర్‌లెస్ నెట్‌వర్కు '%s' యాక్సెస్ చేయుటకు సంకేతపదాలు లేదా ఎన్క్రిప్షన్ కీలు అవసరం."
 
 #: ../js/ui/networkAgent.js:334
@@ -916,7 +917,7 @@ msgstr "దయచేసి ఒక ఆదేశమును ప్రవేశప
 
 #: ../js/ui/searchDisplay.js:332
 msgid "Searching..."
-msgstr "అన్వేషిస్తోంది..."
+msgstr "వెతుకుతోంది..."
 
 #: ../js/ui/searchDisplay.js:414
 msgid "No matching results."
@@ -1035,7 +1036,7 @@ msgstr "ఫైళ్ళను పంపు..."
 
 #: ../js/ui/status/bluetooth.js:250
 msgid "Browse Files..."
-msgstr "ఫైళ్ళను అన్వేషించు..."
+msgstr "ఫైళ్ళను విహరించు..."
 
 #: ../js/ui/status/bluetooth.js:259
 msgid "Error browsing device"
@@ -1641,14 +1642,14 @@ msgstr "నిష్క్రమించు..."
 
 #: ../js/ui/userMenu.js:688
 msgid "Your chat status will be set to busy"
-msgstr "మీ చాట్ అమరిక వత్తిడిలో వున్నారని వుంచబడును"
+msgstr "మీ చాట్ స్థితి రద్దీగా ఉన్నారని అమర్చును"
 
 #: ../js/ui/userMenu.js:689
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
 msgstr ""
-"ప్రకటలను యిప్పుడు అచేతనం చేయబడెను, చాట్ సందేశములతో సహా. మీరు యితరుల సందేశాలను "
+"ప్రకటలను ఇప్పుడు అచేతనం చేయబడెను, చాట్ సందేశములతో సహా. మీరు ఇతరుల సందేశాలను "
 "చూసివుండకపోవుచ్చునని వారికి తెలియునట్లు మీ ఆన్‌లైన్ స్థితి అమర్చబడెను."
 
 #. Translators: this is the text displayed
@@ -1657,11 +1658,11 @@ msgstr ""
 #. characters.
 #: ../js/ui/viewSelector.js:113
 msgid "Type to search..."
-msgstr "అన్వేషించుటకు టైపు చేయండి..."
+msgstr "వెతకుటకు టైపు చేయండి..."
 
 #: ../js/ui/viewSelector.js:131 ../src/shell-util.c:252
 msgid "Search"
-msgstr "అన్వేషించు"
+msgstr "వెతుకు"
 
 #: ../js/ui/wanda.js:124
 #, c-format
@@ -1693,7 +1694,7 @@ msgstr "'%s' సిద్ధంగా ఉంది"
 msgid "%u Output"
 msgid_plural "%u Outputs"
 msgstr[0] "%u అవుట్‌పుట్"
-msgstr[1] "%u అవుట్‌పుట్లు"
+msgstr[1] "%u అవుట్‌పుట్‌లు"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -1702,7 +1703,7 @@ msgstr[1] "%u అవుట్‌పుట్లు"
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u ఇన్‌పుట్"
-msgstr[1] "%u ఇన్‌పుట్లు"
+msgstr[1] "%u ఇన్‌పుట్‌లు"
 
 #: ../src/gvc/gvc-mixer-control.c:1408
 msgid "System Sounds"
@@ -1723,11 +1724,11 @@ msgstr "'%s' ప్రారంభించుటలో విఫలమైంద
 
 #: ../src/shell-keyring-prompt.c:708
 msgid "Passwords do not match."
-msgstr "రహస్య పదములు సరిపోలడం లేదు"
+msgstr "సంకేతపదాలు  సరిపోలడంలేదు."
 
 #: ../src/shell-keyring-prompt.c:716
 msgid "Password cannot be blank"
-msgstr "రహస్య పదము ఖాళీగా ఉండకూడదు."
+msgstr "సంకేతపదము ఖాళీగా ఉండకూడదు"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
