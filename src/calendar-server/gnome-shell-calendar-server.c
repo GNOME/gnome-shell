@@ -70,7 +70,6 @@ static GDBusNodeInfo *introspection_data = NULL;
 struct _App;
 typedef struct _App App;
 
-static GMainLoop    *loop = NULL;
 static gboolean      opt_replace = FALSE;
 static GOptionEntry  opt_entries[] = {
   {"replace", 0, 0, G_OPTION_ARG_NONE, &opt_replace, "Replace existing daemon", NULL},
@@ -970,7 +969,7 @@ on_name_lost (GDBusConnection *connection,
 {
   g_print ("gnome-shell-calendar-server[%d]: Lost (or failed to acquire) the name " BUS_NAME " - exiting\n",
            (gint) getpid ());
-  g_main_loop_quit (loop);
+  gtk_main_quit ();
 }
 
 static void
@@ -990,7 +989,7 @@ stdin_channel_io_func (GIOChannel *source,
     {
       g_debug ("gnome-shell-calendar-server[%d]: Got HUP on stdin - exiting\n",
                (gint) getpid ());
-      g_main_loop_quit (loop);
+      gtk_main_quit ();
     }
   else
     {
@@ -1010,12 +1009,13 @@ main (int    argc,
   GIOChannel *stdin_channel;
 
   ret = 1;
-  loop = NULL;
   opt_context = NULL;
   name_owner_id = 0;
   stdin_channel = NULL;
 
-  g_type_init ();
+  /* We need to initialize GTK+ since evolution-data-server may decide to use
+   * GTK+ to pop up a dialog box */
+  gtk_init (&argc, &argv);
 
   introspection_data = g_dbus_node_info_new_for_xml (introspection_xml, NULL);
   g_assert (introspection_data != NULL);
@@ -1036,8 +1036,6 @@ main (int    argc,
                   stdin_channel_io_func,
                   NULL);
 
-  loop = g_main_loop_new (NULL, FALSE);
-
   name_owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                                   BUS_NAME,
                                   G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
@@ -1048,7 +1046,7 @@ main (int    argc,
                                   NULL,
                                   NULL);
 
-  g_main_loop_run (loop);
+  gtk_main ();
 
   ret = 0;
 
@@ -1059,8 +1057,6 @@ main (int    argc,
     app_free (_global_app);
   if (name_owner_id != 0)
     g_bus_unown_name (name_owner_id);
-  if (loop != NULL)
-    g_main_loop_unref (loop);
   if (opt_context != NULL)
     g_option_context_free (opt_context);
   return ret;
