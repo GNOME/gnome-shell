@@ -69,6 +69,8 @@ main (int argc, char **argv)
   GOptionContext *ctx;
   GError *error = NULL;
 
+  g_type_init ();
+
   ctx = meta_get_option_context ();
   g_option_context_add_main_entries (ctx, mutter_options, GETTEXT_PACKAGE);
   if (!g_option_context_parse (ctx, &argc, &argv, &error))
