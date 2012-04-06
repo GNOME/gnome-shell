@@ -184,11 +184,11 @@ function scanExtensionsInDirectory(callback, dir, type) {
 
 function scanExtensions(callback) {
     let systemDataDirs = GLib.get_system_data_dirs();
+    scanExtensionsInDirectory(callback, userExtensionsDir, ExtensionType.PER_USER);
     for (let i = 0; i < systemDataDirs.length; i++) {
         let dirPath = GLib.build_filenamev([systemDataDirs[i], 'gnome-shell', 'extensions']);
         let dir = Gio.file_new_for_path(dirPath);
         if (dir.query_exists(null))
             scanExtensionsInDirectory(callback, dir, ExtensionType.SYSTEM);
     }
-    scanExtensionsInDirectory(callback, userExtensionsDir, ExtensionType.PER_USER);
 }
