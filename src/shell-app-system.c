@@ -43,6 +43,7 @@ struct _ShellAppSystemPrivate {
   GHashTable *running_apps;
   GHashTable *visible_id_to_app;
   GHashTable *id_to_app;
+  GHashTable *startup_wm_class_to_app;
 
   GSList *known_vendor_prefixes;
 };
@@ -93,6 +94,10 @@ shell_app_system_init (ShellAppSystem *self)
   /* All the objects in this hash table are owned by id_to_app */
   priv->visible_id_to_app = g_hash_table_new (g_str_hash, g_str_equal);
 
+  priv->startup_wm_class_to_app = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                         NULL,
+                                                         (GDestroyNotify)g_object_unref);
+
   /* We want to track NoDisplay apps, so we add INCLUDE_NODISPLAY. We'll
    * filter NoDisplay apps out when showing them to the user. */
   priv->apps_tree = gmenu_tree_new ("applications.menu", GMENU_TREE_FLAGS_INCLUDE_NODISPLAY);
@@ -112,6 +117,7 @@ shell_app_system_finalize (GObject *object)
   g_hash_table_destroy (priv->running_apps);
   g_hash_table_destroy (priv->id_to_app);
   g_hash_table_destroy (priv->visible_id_to_app);
+  g_hash_table_destroy (priv->startup_wm_class_to_app);
 
   g_slist_free_full (priv->known_vendor_prefixes, g_free);
   priv->known_vendor_prefixes = NULL;
@@ -323,9 +329,11 @@ on_apps_tree_changed_cb (GMenuTree *tree,
       GMenuTreeEntry *old_entry;
       char *prefix;
       ShellApp *app;
-      
+      GDesktopAppInfo *info;
+      const char *startup_wm_class;
+
       prefix = get_prefix_for_entry (entry);
-      
+
       if (prefix != NULL
           && !g_slist_find_custom (self->priv->known_vendor_prefixes, prefix,
                                    (GCompareFunc)g_strcmp0))
@@ -333,7 +341,7 @@ on_apps_tree_changed_cb (GMenuTree *tree,
                                                             prefix);
       else
         g_free (prefix);
-      
+
       app = g_hash_table_lookup (self->priv->id_to_app, id);
       if (app != NULL)
         {
@@ -360,6 +368,24 @@ on_apps_tree_changed_cb (GMenuTree *tree,
       g_hash_table_replace (self->priv->id_to_app, (char*)id, app);
       if (!gmenu_tree_entry_get_is_nodisplay_recurse (entry))
         g_hash_table_replace (self->priv->visible_id_to_app, (char*)id, app);
+
+      if (old_entry)
+        {
+          GDesktopAppInfo *old_info;
+          const gchar *old_startup_wm_class;
+
+          old_info = gmenu_tree_entry_get_app_info (old_entry);
+          old_startup_wm_class = g_desktop_app_info_get_startup_wm_class (old_info);
+
+          if (old_startup_wm_class)
+            g_hash_table_remove (self->priv->startup_wm_class_to_app, old_startup_wm_class);
+        }
+
+      info = gmenu_tree_entry_get_app_info (entry);
+      startup_wm_class = g_desktop_app_info_get_startup_wm_class (info);
+      if (startup_wm_class)
+        g_hash_table_replace (self->priv->startup_wm_class_to_app,
+                              (char*)startup_wm_class, g_object_ref (app));
 
       if (old_entry)
         gmenu_tree_item_unref (old_entry);
@@ -513,17 +539,18 @@ shell_app_system_lookup_heuristic_basename (ShellAppSystem *system,
 }
 
 /**
- * shell_app_system_lookup_wmclass:
+ * shell_app_system_lookup_desktop_wmclass:
  * @system: a #ShellAppSystem
  * @wmclass: A WM_CLASS value
  *
- * Find a valid application corresponding to a WM_CLASS value.
+ * Find a valid application whose .desktop file, without the extension
+ * and properly canonicalized, matches @wmclass.
  *
  * Returns: (transfer none): A #ShellApp for @wmclass
  */
 ShellApp *
-shell_app_system_lookup_wmclass (ShellAppSystem *system,
-                                 const char     *wmclass)
+shell_app_system_lookup_desktop_wmclass (ShellAppSystem *system,
+                                         const char     *wmclass)
 {
   char *canonicalized;
   char *desktop_file;
@@ -546,6 +573,23 @@ shell_app_system_lookup_wmclass (ShellAppSystem *system,
   g_free (desktop_file);
 
   return app;
+}
+
+/**
+ * shell_app_system_lookup_startup_wmclass:
+ * @system: a #ShellAppSystem
+ * @wmclass: A WM_CLASS value
+ *
+ * Find a valid application whose .desktop file contains a
+ * StartupWMClass entry matching @wmclass.
+ *
+ * Returns: (transfer none): A #ShellApp for @wmclass
+ */
+ShellApp *
+shell_app_system_lookup_startup_wmclass (ShellAppSystem *system,
+                                         const char     *wmclass)
+{
+  return g_hash_table_lookup (system->priv->startup_wm_class_to_app, wmclass);
 }
 
 void
