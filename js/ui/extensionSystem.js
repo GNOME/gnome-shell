@@ -249,7 +249,8 @@ function loadExtension(dir, type, enabled) {
     let extension;
 
     if (ExtensionUtils.extensions[uuid] != undefined) {
-        throw new Error('extension already loaded');
+        global.logError('Extension "%s" is already loaded'.format(uuid));
+        return;
     }
 
     try {
