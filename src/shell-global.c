@@ -1102,7 +1102,7 @@ shell_global_end_modal (ShellGlobal *global,
 }
 
 /**
- * shell_global_create_pointer_barrier
+ * shell_global_create_pointer_barrier:
  * @global: a #ShellGlobal
  * @x1: left X coordinate
  * @y1: top Y coordinate
@@ -1133,7 +1133,7 @@ shell_global_create_pointer_barrier (ShellGlobal *global,
 }
 
 /**
- * shell_global_destroy_pointer_barrier
+ * shell_global_destroy_pointer_barrier:
  * @global: a #ShellGlobal
  * @barrier: a pointer barrier
  *

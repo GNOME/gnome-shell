@@ -855,7 +855,7 @@ st_widget_class_init (StWidgetClass *klass)
                                                         ST_PARAM_READWRITE));
 
   /**
-   * StWidget:theme
+   * StWidget:theme:
    *
    * A theme set on this actor overriding the global theming for this actor
    * and its descendants
@@ -2145,7 +2145,6 @@ st_describe_actor (ClutterActor *actor)
 
 /**
  * st_set_slow_down_factor:
- *
  * @factor: new slow-down factor
  *
  * Set a global factor applied to all animation durations

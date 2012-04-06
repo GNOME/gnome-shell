@@ -322,7 +322,7 @@ shell_keyring_prompt_class_init (ShellKeyringPromptClass *klass)
   g_object_class_override_property (gobject_class, PROP_CANCEL_LABEL, "cancel-label");
 
   /**
-   * ShellKeyringPrompt:password-visible
+   * ShellKeyringPrompt:password-visible:
    *
    * Whether the password entry is visible or not.
    */
@@ -331,7 +331,7 @@ shell_keyring_prompt_class_init (ShellKeyringPromptClass *klass)
                                    FALSE, G_PARAM_READABLE));
 
   /**
-    * ShellKeyringPrompt:confirm-visible
+    * ShellKeyringPrompt:confirm-visible:
     *
     * Whether the password confirm entry is visible or not.
     */
@@ -340,7 +340,7 @@ shell_keyring_prompt_class_init (ShellKeyringPromptClass *klass)
                                    FALSE, G_PARAM_READABLE));
 
   /**
-   * ShellKeyringPrompt:warning-visible
+   * ShellKeyringPrompt:warning-visible:
    *
    * Whether the warning label is visible or not.
    */
@@ -349,7 +349,7 @@ shell_keyring_prompt_class_init (ShellKeyringPromptClass *klass)
                                    FALSE, G_PARAM_READABLE));
 
   /**
-   * ShellKeyringPrompt:choice-visible
+   * ShellKeyringPrompt:choice-visible:
    *
    * Whether the choice check box is visible or not.
    */
@@ -358,7 +358,7 @@ shell_keyring_prompt_class_init (ShellKeyringPromptClass *klass)
                                    FALSE, G_PARAM_READABLE));
 
   /**
-   * ShellKeyringPrompt:password-actor
+   * ShellKeyringPrompt:password-actor:
    *
    * Text field for password
    */
@@ -367,7 +367,7 @@ shell_keyring_prompt_class_init (ShellKeyringPromptClass *klass)
                                    CLUTTER_TYPE_TEXT, G_PARAM_READWRITE));
 
   /**
-   * ShellKeyringPrompt:confirm-actor
+   * ShellKeyringPrompt:confirm-actor:
    *
    * Text field for confirmation password
    */

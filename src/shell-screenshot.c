@@ -322,7 +322,6 @@ shell_screenshot_screenshot_area (ShellScreenshot *screenshot,
  * @screenshot: the #ShellScreenshot
  * @include_frame: Whether to include the frame or not
  * @include_cursor: Whether to include the cursor or not
- *
  * @filename: The filename for the screenshot
  * @callback: (scope async): function to call returning success or failure
  * of the async grabbing

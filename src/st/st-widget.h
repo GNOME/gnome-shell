@@ -78,7 +78,7 @@ struct _StWidgetClass
   /* vfuncs */
 
   /**
-   * StWidgetClass::navigate_focus
+   * StWidgetClass::navigate_focus:
    * @self: the "top level" container
    * @from: (allow-none): the actor that the focus is coming from
    * @direction: the direction focus is moving in

@@ -742,7 +742,7 @@ on_focus_window_changed (MetaDisplay        *display,
 
 /**
  * shell_window_tracker_get_startup_sequences:
- * @self:
+ * @tracker:
  *
  * Returns: (transfer none) (element-type ShellStartupSequence): Currently active startup sequences
  */

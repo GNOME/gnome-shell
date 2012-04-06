@@ -97,10 +97,9 @@ gvc_mixer_source_output_finalize (GObject *object)
 
 /**
  * gvc_mixer_source_output_new: (skip)
- *
  * @context:
  * @index:
- * @channel_map:
+ * @map:
  *
  * Returns:
  */

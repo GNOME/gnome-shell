@@ -470,7 +470,7 @@ shell_app_system_get_settings_tree (ShellAppSystem *self)
 
 /**
  * shell_app_system_lookup_setting:
- * @self:
+ * @system:
  * @id: desktop file id
  *
  * Returns: (transfer none): Application in gnomecc.menu, or %NULL if none
@@ -610,7 +610,7 @@ shell_app_system_lookup_heuristic_basename (ShellAppSystem *system,
 
 /**
  * shell_app_system_get_all:
- * @self:
+ * @system:
  *
  * Returns: (transfer container) (element-type ShellApp): All installed applications
  */

@@ -141,7 +141,7 @@ shell_wm_completed_switch_workspace (ShellWM *wm)
 }
 
 /**
- * shell_wm_completed_minimize
+ * shell_wm_completed_minimize:
  * @wm: the ShellWM
  * @actor: the MetaWindowActor actor
  *
@@ -155,7 +155,7 @@ shell_wm_completed_minimize (ShellWM         *wm,
 }
 
 /**
- * shell_wm_completed_maximize
+ * shell_wm_completed_maximize:
  * @wm: the ShellWM
  * @actor: the MetaWindowActor actor
  *
@@ -169,7 +169,7 @@ shell_wm_completed_maximize (ShellWM         *wm,
 }
 
 /**
- * shell_wm_completed_unmaximize
+ * shell_wm_completed_unmaximize:
  * @wm: the ShellWM
  * @actor: the MetaWindowActor actor
  *
@@ -183,7 +183,7 @@ shell_wm_completed_unmaximize (ShellWM         *wm,
 }
 
 /**
- * shell_wm_completed_map
+ * shell_wm_completed_map:
  * @wm: the ShellWM
  * @actor: the MetaWindowActor actor
  *
@@ -197,7 +197,7 @@ shell_wm_completed_map (ShellWM         *wm,
 }
 
 /**
- * shell_wm_completed_destroy
+ * shell_wm_completed_destroy:
  * @wm: the ShellWM
  * @actor: the MetaWindowActor actor
  *
