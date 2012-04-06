@@ -159,6 +159,12 @@ error:
 static gboolean
 _cogl_winsys_context_init (CoglContext *context, GError **error)
 {
+  CoglRenderer *renderer = context->display->renderer;
+
+  if (G_UNLIKELY (renderer->sdl_event_type_set == FALSE))
+    g_error ("cogl_sdl_renderer_set_event_type() or cogl_sdl_context_new() "
+             "must be called during initialization");
+
   return _cogl_context_update_features (context, error);
 }
 

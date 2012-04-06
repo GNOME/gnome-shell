@@ -62,6 +62,12 @@ struct _CoglRenderer
   struct wl_compositor *foreign_wayland_compositor;
   struct wl_shell *foreign_wayland_shell;
 #endif
+
+#ifdef COGL_HAS_SDL_SUPPORT
+  gboolean sdl_event_type_set;
+  guint8 sdl_event_type;
+#endif
+
   /* List of callback functions that will be given every native event */
   GSList *event_filters;
   void *winsys;

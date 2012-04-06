@@ -777,3 +777,13 @@ CoglColorMask
 <TITLE>GType Integration API</TITLE>
 cogl_gtype_matrix_get_type
 </SECTION>
+
+<SECTION>
+<FILE>SDL</FILE>
+<TITLE>SDL Integration</TITLE>
+cogl_sdl_context_new
+cogl_sdl_renderer_set_event_type
+cogl_sdl_renderer_get_event_type
+cogl_sdl_handle_event
+cogl_sdl_idle
+</SECTION>

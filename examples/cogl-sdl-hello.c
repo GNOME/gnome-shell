@@ -13,9 +13,10 @@ typedef struct Data
   float center_x, center_y;
   CoglFramebuffer *fb;
   gboolean quit;
+  gboolean redraw_queued;
 } Data;
 
-static void
+static gboolean
 redraw (Data *data)
 {
   CoglFramebuffer *fb = data->fb;
@@ -29,6 +30,8 @@ redraw (Data *data)
   cogl_framebuffer_pop_matrix (fb);
 
   cogl_onscreen_swap_buffers (COGL_ONSCREEN (fb));
+
+  return FALSE;
 }
 
 static void
@@ -37,7 +40,7 @@ handle_event (Data *data, SDL_Event *event)
   switch (event->type)
     {
     case SDL_VIDEOEXPOSE:
-      redraw (data);
+      data->redraw_queued = TRUE;
       break;
 
     case SDL_MOUSEMOTION:
@@ -50,7 +53,7 @@ handle_event (Data *data, SDL_Event *event)
         data->center_x = event->motion.x * 2.0f / width - 1.0f;
         data->center_y = event->motion.y * 2.0f / height - 1.0f;
 
-        redraw (data);
+        data->redraw_queued = TRUE;
       }
       break;
 
@@ -60,61 +63,9 @@ handle_event (Data *data, SDL_Event *event)
     }
 }
 
-static Uint32
-timer_handler (Uint32 interval, void *user_data)
-{
-  static const SDL_UserEvent dummy_event =
-    {
-      SDL_USEREVENT
-    };
-
-  /* Post an event to wake up from SDL_WaitEvent */
-  SDL_PushEvent ((SDL_Event *) &dummy_event);
-
-  return 0;
-}
-
-static gboolean
-wait_event_with_timeout (Data *data, SDL_Event *event, gint64 timeout)
-{
-  if (timeout == -1)
-    {
-      if (SDL_WaitEvent (event))
-        return TRUE;
-      else
-        {
-          data->quit = TRUE;
-          return FALSE;
-        }
-    }
-  else if (timeout == 0)
-    return SDL_PollEvent (event);
-  else
-    {
-      gboolean ret;
-      /* Add a timer so that we can wake up the event loop */
-      SDL_TimerID timer_id =
-        SDL_AddTimer (timeout / 1000, timer_handler, data);
-
-      if (SDL_WaitEvent (event))
-        ret = TRUE;
-      else
-        {
-          data->quit = TRUE;
-          ret = FALSE;
-        }
-
-      SDL_RemoveTimer (timer_id);
-
-      return ret;
-    }
-}
-
 int
 main (int argc, char **argv)
 {
-  CoglRenderer *renderer;
-  CoglDisplay *display;
   CoglContext *ctx;
   CoglOnscreen *onscreen;
   GError *error = NULL;
@@ -126,18 +77,12 @@ main (int argc, char **argv)
   Data data;
   SDL_Event event;
 
-  /* Force the SDL winsys */
-  renderer = cogl_renderer_new ();
-  cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_SDL);
-  display = cogl_display_new (renderer, NULL);
-  ctx = cogl_context_new (display, &error);
+  ctx = cogl_sdl_context_new (SDL_USEREVENT, &error);
   if (!ctx)
     {
       fprintf (stderr, "Failed to create context: %s\n", error->message);
       return 1;
     }
-
-  SDL_InitSubSystem (SDL_INIT_TIMER);
 
   onscreen = cogl_onscreen_new (ctx, 800, 600);
   data.fb = COGL_FRAMEBUFFER (onscreen);
@@ -151,31 +96,33 @@ main (int argc, char **argv)
   data.triangle = cogl_primitive_new_p2c4 (ctx, COGL_VERTICES_MODE_TRIANGLES,
                                            3, triangle_vertices);
   data.pipeline = cogl_pipeline_new (ctx);
+
+  data.redraw_queued = TRUE;
   while (!data.quit)
     {
-      CoglPollFD *poll_fds;
-      int n_poll_fds;
-      gint64 timeout;
+      while (!data.quit)
+        {
+          if (!SDL_PollEvent (&event))
+            {
+              if (data.redraw_queued)
+                break;
 
-      cogl_poll_get_info (ctx, &poll_fds, &n_poll_fds, &timeout);
+              cogl_sdl_idle (ctx);
+              if (!SDL_WaitEvent (&event))
+                {
+                  fprintf (stderr, "Error waiting for SDL events");
+                  return 1;
+                }
+            }
 
-      /* It's difficult to wait for file descriptors using the SDL
-         event mechanism, but it the SDL winsys is documented that it
-         will never require this so we can assert that there are no
-         fds */
-      g_assert (n_poll_fds == 0);
-
-      if (wait_event_with_timeout (&data, &event, timeout))
-        do
           handle_event (&data, &event);
-        while (SDL_PollEvent (&event));
+          cogl_sdl_handle_event (ctx, &event);
+        }
 
-      cogl_poll_dispatch (ctx, poll_fds, n_poll_fds);
+      data.redraw_queued = redraw (&data);
     }
 
   cogl_object_unref (ctx);
-  cogl_object_unref (display);
-  cogl_object_unref (renderer);
 
   return 0;
 }

@@ -449,9 +449,11 @@ cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-egl-private.h
 endif
 if SUPPORT_SDL
+cogl_experimental_h += $(srcdir)/cogl-sdl.h
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-sdl-private.h \
-       $(srcdir)/winsys/cogl-winsys-sdl.c
+       $(srcdir)/winsys/cogl-winsys-sdl.c \
+       $(srcdir)/cogl-sdl.c
 endif
 
 EXTRA_DIST += stb_image.c

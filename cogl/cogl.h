@@ -117,6 +117,9 @@
  * code has been migrated down into Cogl! */
 #include <cogl/cogl-clutter.h>
 #endif
+#ifdef COGL_HAS_SDL_SUPPORT
+#include <cogl/cogl-sdl.h>
+#endif
 
 /*
  * 2.0 only api...
