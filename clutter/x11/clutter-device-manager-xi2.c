@@ -251,9 +251,6 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
         source = CLUTTER_ERASER_DEVICE;
       else if (strstr (name, "cursor") != NULL)
         source = CLUTTER_CURSOR_DEVICE;
-      else if (strstr (name, "finger") != NULL ||
-               (strstr (name, "touch") != NULL && strstr (name, "touchpad") == NULL))
-        source = CLUTTER_TOUCHSCREEN_DEVICE;
       else if (strstr (name, "wacom") != NULL || strstr (name, "pen") != NULL)
         source = CLUTTER_PEN_DEVICE;
       else
