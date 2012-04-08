@@ -168,7 +168,17 @@ const DashItemContainer = new Lang.Class({
                          });
     },
 
+    destroy: function() {
+        if (this.label)
+            this.label.destroy();
+
+        this.actor.destroy();
+    },
+
     animateOutAndDestroy: function() {
+        if (this.label)
+            this.label.destroy();
+
         if (this.child == null) {
             this.actor.destroy();
             return;
@@ -691,7 +701,7 @@ const Dash = new Lang.Class({
             if (Main.overview.visible)
                 item.animateOutAndDestroy();
             else
-                item.actor.destroy();
+                item.destroy();
         }
 
         this._adjustIconSize();
