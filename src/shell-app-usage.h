@@ -13,10 +13,8 @@ G_DECLARE_FINAL_TYPE (ShellAppUsage, shell_app_usage,
 
 ShellAppUsage* shell_app_usage_get_default(void);
 
-GSList *shell_app_usage_get_most_used (ShellAppUsage *usage,
-                                       const char    *context);
+GSList *shell_app_usage_get_most_used (ShellAppUsage *usage);
 int shell_app_usage_compare (ShellAppUsage *self,
-                             const char    *context,
                              const char    *id_a,
                              const char    *id_b);
 
