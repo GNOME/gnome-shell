@@ -95,8 +95,8 @@ struct _ShellAppUsage
   long watch_start_time;
   ShellApp *watched_app;
 
-  /* <char *context, GHashTable<char *appid, UsageData *usage>> */
-  GHashTable *app_usages_for_context;
+  /* <char *appid, UsageData *usage> */
+  GHashTable *app_usages;
 };
 
 G_DEFINE_TYPE (ShellAppUsage, shell_app_usage, G_TYPE_OBJECT);
@@ -118,9 +118,6 @@ static void shell_app_usage_finalize (GObject *object);
 static void on_session_status_changed (GDBusProxy *proxy, guint status, ShellAppUsage *self);
 static void on_focus_app_changed (ShellWindowTracker *tracker, GParamSpec *spec, ShellAppUsage *self);
 static void ensure_queued_save (ShellAppUsage *self);
-static UsageData * get_app_usage_for_context_and_id (ShellAppUsage  *self,
-                                                    const char     *context,
-                                                    const char     *appid);
 
 static gboolean idle_save_application_usage (gpointer data);
 
@@ -148,130 +145,34 @@ shell_app_usage_class_init (ShellAppUsageClass *klass)
   gobject_class->finalize = shell_app_usage_finalize;
 }
 
-static GHashTable *
-get_usages_for_context (ShellAppUsage *self,
-                        const char    *context)
-{
-  GHashTable *context_usages;
-
-  context_usages = g_hash_table_lookup (self->app_usages_for_context, context);
-  if (context_usages == NULL)
-    {
-      context_usages = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
-      g_hash_table_insert (self->app_usages_for_context, g_strdup (context),
-                           context_usages);
-    }
-  return context_usages;
-}
-
-static UsageData *
-get_app_usage_for_context_and_id (ShellAppUsage *self,
-                                  const char    *context,
-                                  const char    *appid)
-{
-  UsageData *usage;
-  GHashTable *context_usages;
-
-  context_usages = get_usages_for_context (self, context);
-
-  usage = g_hash_table_lookup (context_usages, appid);
-  if (usage)
-    return usage;
-
-  usage = g_new0 (UsageData, 1);
-  g_hash_table_insert (context_usages, g_strdup (appid), usage);
-
-  return usage;
-}
-
 static UsageData *
 get_usage_for_app (ShellAppUsage *self,
                    ShellApp      *app)
 {
-  const char *context;
+  UsageData *usage;
+  const char *appid = shell_app_get_id (app);
 
-  context = _shell_window_tracker_get_app_context (shell_window_tracker_get_default (), app);
+  usage = g_hash_table_lookup (self->app_usages, appid);
+  if (usage)
+    return usage;
 
-  return get_app_usage_for_context_and_id (self, context, shell_app_get_id (app));
-}
+  usage = g_new0 (UsageData, 1);
+  g_hash_table_insert (self->app_usages, g_strdup (appid), usage);
 
-typedef struct {
-  gboolean in_context;
-  GHashTableIter context_iter;
-  const char *context_id;
-  GHashTableIter usage_iter;
-} UsageIterator;
-
-static void
-usage_iterator_init (ShellAppUsage *self,
-                     UsageIterator *iter)
-{
-  iter->in_context = FALSE;
-  g_hash_table_iter_init (&(iter->context_iter), self->app_usages_for_context);
-}
-
-static gboolean
-usage_iterator_next (ShellAppUsage   *self,
-                     UsageIterator   *iter,
-                     const char     **context,
-                     const char     **id,
-                     UsageData       **usage)
-{
-  gpointer key, value;
-  gboolean next_context;
-
-  if (!iter->in_context)
-    next_context = TRUE;
-  else if (!g_hash_table_iter_next (&(iter->usage_iter), &key, &value))
-    next_context = TRUE;
-  else
-    next_context = FALSE;
-
-  while (next_context)
-    {
-      GHashTable *app_usages;
-
-      if (!g_hash_table_iter_next (&(iter->context_iter), &key, &value))
-        return FALSE;
-      iter->in_context = TRUE;
-      iter->context_id = key;
-      app_usages = value;
-      g_hash_table_iter_init (&(iter->usage_iter), app_usages);
-
-      next_context = !g_hash_table_iter_next (&(iter->usage_iter), &key, &value);
-    }
-
-  *context = iter->context_id;
-  *id = key;
-  *usage = value;
-
-  return TRUE;
-}
-
-static void
-usage_iterator_remove (ShellAppUsage *self,
-                       UsageIterator *iter)
-{
-  g_assert (iter->in_context);
-
-  g_hash_table_iter_remove (&(iter->usage_iter));
+  return usage;
 }
 
 /* Limit the score to a certain level so that most used apps can change */
 static void
 normalize_usage (ShellAppUsage *self)
 {
-  UsageIterator iter;
-  const char *context;
-  const char *id;
+  GHashTableIter iter;
   UsageData *usage;
 
-  usage_iterator_init (self, &iter);
+  g_hash_table_iter_init (&iter, self->app_usages);
 
-  while (usage_iterator_next (self, &iter, &context, &id, &usage))
-    {
-      usage->score /= 2;
-    }
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &usage))
+    usage->score /= 2;
 }
 
 static void
@@ -395,7 +296,7 @@ shell_app_usage_init (ShellAppUsage *self)
 
   global = shell_global_get ();
 
-  self->app_usages_for_context = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) g_hash_table_destroy);
+  self->app_usages = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
   tracker = shell_window_tracker_get_default ();
   g_signal_connect (tracker, "notify::focus-app", G_CALLBACK (on_focus_app_changed), self);
@@ -451,25 +352,20 @@ shell_app_usage_finalize (GObject *object)
   G_OBJECT_CLASS (shell_app_usage_parent_class)->finalize(object);
 }
 
-typedef struct {
-  ShellAppUsage *usage;
-  GHashTable *context_usages;
-} SortAppsByUsageData;
-
 static int
 sort_apps_by_usage (gconstpointer a,
                     gconstpointer b,
                     gpointer      datap)
 {
-  SortAppsByUsageData *data = datap;
+  ShellAppUsage *self = datap;
   ShellApp *app_a, *app_b;
   UsageData *usage_a, *usage_b;
 
   app_a = (ShellApp*)a;
   app_b = (ShellApp*)b;
 
-  usage_a = g_hash_table_lookup (data->context_usages, shell_app_get_id (app_a));
-  usage_b = g_hash_table_lookup (data->context_usages, shell_app_get_id (app_b));
+  usage_a = g_hash_table_lookup (self->app_usages, shell_app_get_id (app_a));
+  usage_b = g_hash_table_lookup (self->app_usages, shell_app_get_id (app_b));
 
   return usage_b->score - usage_a->score;
 }
@@ -477,33 +373,23 @@ sort_apps_by_usage (gconstpointer a,
 /**
  * shell_app_usage_get_most_used:
  * @usage: the usage instance to request
- * @context: Activity identifier
- *
- * Get a list of most popular applications for a given context.
  *
  * Returns: (element-type ShellApp) (transfer full): List of applications
  */
 GSList *
-shell_app_usage_get_most_used (ShellAppUsage   *self,
-                               const char      *context)
+shell_app_usage_get_most_used (ShellAppUsage   *self)
 {
   GSList *apps;
-  GList *appids, *iter;
-  GHashTable *usages;
+  char *appid;
   ShellAppSystem *appsys;
-  SortAppsByUsageData data;
-
-  usages = g_hash_table_lookup (self->app_usages_for_context, context);
-  if (usages == NULL)
-    return NULL;
+  GHashTableIter iter;
 
   appsys = shell_app_system_get_default ();
 
-  appids = g_hash_table_get_keys (usages);
+  g_hash_table_iter_init (&iter, self->app_usages);
   apps = NULL;
-  for (iter = appids; iter; iter = iter->next)
+  while (g_hash_table_iter_next (&iter, (gpointer *) &appid, NULL))
     {
-      const char *appid = iter->data;
       ShellApp *app;
 
       app = shell_app_system_lookup_app (appsys, appid);
@@ -513,11 +399,7 @@ shell_app_usage_get_most_used (ShellAppUsage   *self,
       apps = g_slist_prepend (apps, g_object_ref (app));
     }
 
-  g_list_free (appids);
-
-  data.usage = self;
-  data.context_usages = usages;
-  apps = g_slist_sort_with_data (apps, sort_apps_by_usage, &data);
+  apps = g_slist_sort_with_data (apps, sort_apps_by_usage, self);
 
   return apps;
 }
@@ -526,7 +408,6 @@ shell_app_usage_get_most_used (ShellAppUsage   *self,
 /**
  * shell_app_usage_compare:
  * @self: the usage instance to request
- * @context: Activity identifier
  * @id_a: ID of first app
  * @id_b: ID of second app
  *
@@ -537,19 +418,13 @@ shell_app_usage_get_most_used (ShellAppUsage   *self,
  */
 int
 shell_app_usage_compare (ShellAppUsage *self,
-                         const char    *context,
                          const char    *id_a,
                          const char    *id_b)
 {
-  GHashTable *usages;
   UsageData *usage_a, *usage_b;
 
-  usages = g_hash_table_lookup (self->app_usages_for_context, context);
-  if (usages == NULL)
-    return 0;
-
-  usage_a = g_hash_table_lookup (usages, id_a);
-  usage_b = g_hash_table_lookup (usages, id_b);
+  usage_a = g_hash_table_lookup (self->app_usages, id_a);
+  usage_b = g_hash_table_lookup (self->app_usages, id_b);
 
   if (usage_a == NULL && usage_b == NULL)
     return 0;
@@ -577,9 +452,7 @@ ensure_queued_save (ShellAppUsage *self)
 static gboolean
 idle_clean_usage (ShellAppUsage *self)
 {
-  UsageIterator iter;
-  const char *context;
-  const char *id;
+  GHashTableIter iter;
   UsageData *usage;
   long current_time;
   long week_ago;
@@ -587,13 +460,13 @@ idle_clean_usage (ShellAppUsage *self)
   current_time = get_time ();
   week_ago = current_time - (7 * 24 * 60 * 60);
 
-  usage_iterator_init (self, &iter);
+  g_hash_table_iter_init (&iter, self->app_usages);
 
-  while (usage_iterator_next (self, &iter, &context, &id, &usage))
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &usage))
     {
       if ((usage->score < SCORE_MIN) &&
           (usage->last_seen < week_ago))
-        usage_iterator_remove (self, &iter);
+        g_hash_table_iter_remove (&iter);
     }
 
   return FALSE;
@@ -672,10 +545,8 @@ static gboolean
 idle_save_application_usage (gpointer data)
 {
   ShellAppUsage *self = SHELL_APP_USAGE (data);
-  UsageIterator iter;
-  const char *current_context;
-  const char *context;
-  const char *id;
+  char *id;
+  GHashTableIter iter;
   UsageData *usage;
   GFileOutputStream *output;
   GOutputStream *buffered_output;
@@ -699,11 +570,12 @@ idle_save_application_usage (gpointer data)
 
   if (!g_data_output_stream_put_string (data_output, "<?xml version=\"1.0\"?>\n<application-state>\n", NULL, &error))
     goto out;
+  if (!g_data_output_stream_put_string (data_output, "  <context id=\"\">\n", NULL, &error))
+    goto out;
 
-  usage_iterator_init (self, &iter);
+  g_hash_table_iter_init (&iter, self->app_usages);
 
-  current_context = NULL;
-  while (usage_iterator_next (self, &iter, &context, &id, &usage))
+  while (g_hash_table_iter_next (&iter, (gpointer *) &id, (gpointer *) &usage))
     {
       ShellApp *app;
 
@@ -712,28 +584,12 @@ idle_save_application_usage (gpointer data)
       if (!app)
         continue;
 
-      if (context != current_context)
-        {
-          if (current_context != NULL)
-            {
-              if (!g_data_output_stream_put_string (data_output, "  </context>", NULL, &error))
-                goto out;
-            }
-          current_context = context;
-          if (!g_data_output_stream_put_string (data_output, "  <context", NULL, &error))
-            goto out;
-          if (!write_attribute_string (data_output, "id", context, &error))
-            goto out;
-          if (!g_data_output_stream_put_string (data_output, ">\n", NULL, &error))
-            goto out;
-        }
       if (!g_data_output_stream_put_string (data_output, "    <application", NULL, &error))
         goto out;
       if (!write_attribute_string (data_output, "id", id, &error))
         goto out;
       if (!write_attribute_uint (data_output, "open-window-count", shell_app_get_n_windows (app), &error))
         goto out;
-
       if (!write_attribute_double (data_output, "score", usage->score, &error))
         goto out;
       if (!write_attribute_uint (data_output, "last-seen", usage->last_seen, &error))
@@ -741,11 +597,8 @@ idle_save_application_usage (gpointer data)
       if (!g_data_output_stream_put_string (data_output, "/>\n", NULL, &error))
         goto out;
     }
-  if (current_context != NULL)
-    {
-      if (!g_data_output_stream_put_string (data_output, "  </context>\n", NULL, &error))
-        goto out;
-    }
+  if (!g_data_output_stream_put_string (data_output, "  </context>\n", NULL, &error))
+    goto out;
   if (!g_data_output_stream_put_string (data_output, "</application-state>\n", NULL, &error))
     goto out;
 
@@ -761,48 +614,21 @@ out:
   return FALSE;
 }
 
-typedef struct {
-  ShellAppUsage *self;
-  char *context;
-} ParseData;
-
 static void
 shell_app_usage_start_element_handler  (GMarkupParseContext *context,
-                                          const gchar         *element_name,
-                                          const gchar        **attribute_names,
-                                          const gchar        **attribute_values,
-                                          gpointer             user_data,
-                                          GError             **error)
+                                        const gchar         *element_name,
+                                        const gchar        **attribute_names,
+                                        const gchar        **attribute_values,
+                                        gpointer             user_data,
+                                        GError             **error)
 {
-  ParseData *data = user_data;
+  ShellAppUsage *self = user_data;
 
   if (strcmp (element_name, "application-state") == 0)
     {
     }
   else if (strcmp (element_name, "context") == 0)
     {
-      char *id = NULL;
-      const char **attribute;
-      const char **value;
-
-      for (attribute = attribute_names, value = attribute_values; *attribute; attribute++, value++)
-        {
-          if (strcmp (*attribute, "id") == 0)
-            {
-              id = g_strdup (*value);
-              break;
-            }
-        }
-      if (!id)
-        {
-          g_set_error (error,
-                       G_MARKUP_ERROR,
-                       G_MARKUP_ERROR_PARSE,
-                       "Missing attribute id on <%s> element",
-                       element_name);
-          return;
-        }
-      data->context = id;
     }
   else if (strcmp (element_name, "application") == 0)
     {
@@ -810,7 +636,6 @@ shell_app_usage_start_element_handler  (GMarkupParseContext *context,
       const char **value;
       UsageData *usage;
       char *appid = NULL;
-      GHashTable *usage_table;
 
       for (attribute = attribute_names, value = attribute_values; *attribute; attribute++, value++)
         {
@@ -831,10 +656,8 @@ shell_app_usage_start_element_handler  (GMarkupParseContext *context,
           return;
         }
 
-      usage_table = get_usages_for_context (data->self, data->context);
-
       usage = g_new0 (UsageData, 1);
-      g_hash_table_insert (usage_table, appid, usage);
+      g_hash_table_insert (self->app_usages, appid, usage);
 
       for (attribute = attribute_names, value = attribute_values; *attribute; attribute++, value++)
         {
@@ -842,8 +665,8 @@ shell_app_usage_start_element_handler  (GMarkupParseContext *context,
             {
               guint count = strtoul (*value, NULL, 10);
               if (count > 0)
-                 data->self->previously_running = g_slist_prepend (data->self->previously_running,
-                                                                   g_strdup (appid));
+                 self->previously_running = g_slist_prepend (self->previously_running,
+                                                             g_strdup (appid));
             }
           else if (strcmp (*attribute, "score") == 0)
             {
@@ -865,36 +688,11 @@ shell_app_usage_start_element_handler  (GMarkupParseContext *context,
     }
 }
 
-static void
-shell_app_usage_end_element_handler (GMarkupParseContext *context,
-                                       const gchar         *element_name,
-                                       gpointer             user_data,
-                                       GError             **error)
-{
-  ParseData *data = user_data;
-
-  if (strcmp (element_name, "context") == 0)
-    {
-      g_free (data->context);
-      data->context = NULL;
-    }
-}
-
-static void
-shell_app_usage_text_handler (GMarkupParseContext *context,
-                                const gchar         *text,
-                                gsize                text_len,
-                                gpointer             user_data,
-                                GError             **error)
-{
-  /* do nothing, very very fast */
-}
-
 static GMarkupParser app_state_parse_funcs =
 {
   shell_app_usage_start_element_handler,
-  shell_app_usage_end_element_handler,
-  shell_app_usage_text_handler,
+  NULL,
+  NULL,
   NULL,
   NULL
 };
@@ -904,7 +702,6 @@ static void
 restore_from_file (ShellAppUsage *self)
 {
   GFileInputStream *input;
-  ParseData parse_data;
   GMarkupParseContext *parse_context;
   GError *error = NULL;
   char buf[1024];
@@ -919,10 +716,7 @@ restore_from_file (ShellAppUsage *self)
       return;
     }
 
-  memset (&parse_data, 0, sizeof (ParseData));
-  parse_data.self = self;
-  parse_data.context = NULL;
-  parse_context = g_markup_parse_context_new (&app_state_parse_funcs, 0, &parse_data, NULL);
+  parse_context = g_markup_parse_context_new (&app_state_parse_funcs, 0, self, NULL);
 
   while (TRUE)
     {
@@ -934,7 +728,6 @@ restore_from_file (ShellAppUsage *self)
      }
 
 out:
-  g_free (parse_data.context);
   g_markup_parse_context_free (parse_context);
   g_input_stream_close ((GInputStream*)input, NULL, NULL);
   g_object_unref (input);

@@ -813,11 +813,11 @@ var FrequentView = new Lang.Class({
     },
 
     hasUsefulData() {
-        return this._usage.get_most_used("").length >= MIN_FREQUENT_APPS_COUNT;
+        return this._usage.get_most_used().length >= MIN_FREQUENT_APPS_COUNT;
     },
 
     _loadApps() {
-        let mostUsed = this._usage.get_most_used ("");
+        let mostUsed = this._usage.get_most_used();
         let hasUsefulData = this.hasUsefulData();
         this._noFrequentAppsLabel.visible = !hasUsefulData;
         if(!hasUsefulData)
@@ -1116,7 +1116,7 @@ var AppSearchProvider = new Lang.Class({
                 return app && app.should_show();
             });
             results = results.concat(group.sort(
-                (a, b) => usage.compare('', a, b)
+                (a, b) => usage.compare(a, b)
             ));
         });
 
