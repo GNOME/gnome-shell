@@ -90,8 +90,6 @@ struct _ShellAppUsage
   gboolean currently_idle;
   gboolean enable_monitoring;
 
-  GSList *previously_running;
-
   long watch_start_time;
   ShellApp *watched_app;
 
@@ -588,8 +586,6 @@ idle_save_application_usage (gpointer data)
         goto out;
       if (!write_attribute_string (data_output, "id", id, &error))
         goto out;
-      if (!write_attribute_uint (data_output, "open-window-count", shell_app_get_n_windows (app), &error))
-        goto out;
       if (!write_attribute_double (data_output, "score", usage->score, &error))
         goto out;
       if (!write_attribute_uint (data_output, "last-seen", usage->last_seen, &error))
@@ -661,14 +657,7 @@ shell_app_usage_start_element_handler  (GMarkupParseContext *context,
 
       for (attribute = attribute_names, value = attribute_values; *attribute; attribute++, value++)
         {
-          if (strcmp (*attribute, "open-window-count") == 0)
-            {
-              guint count = strtoul (*value, NULL, 10);
-              if (count > 0)
-                 self->previously_running = g_slist_prepend (self->previously_running,
-                                                             g_strdup (appid));
-            }
-          else if (strcmp (*attribute, "score") == 0)
+          if (strcmp (*attribute, "score") == 0)
             {
               usage->score = g_ascii_strtod (*value, NULL);
             }
