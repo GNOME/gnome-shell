@@ -457,12 +457,6 @@ get_app_for_window (ShellWindowTracker    *tracker,
   return result;
 }
 
-const char *
-_shell_window_tracker_get_app_context (ShellWindowTracker *tracker, ShellApp *app)
-{
-  return "";
-}
-
 static void
 update_focus_app (ShellWindowTracker *self)
 {

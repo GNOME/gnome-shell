@@ -386,8 +386,7 @@ _shell_app_system_notify_app_state_changed (ShellAppSystem *self,
  * @self: A #ShellAppSystem
  *
  * Returns the set of applications which currently have at least one
- * open window in the given context.  The returned list will be sorted
- * by shell_app_compare().
+ * open window.  The returned list will be sorted by shell_app_compare().
  *
  * Returns: (element-type ShellApp) (transfer container): Active applications
  */
