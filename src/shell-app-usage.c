@@ -82,9 +82,7 @@ struct _ShellAppUsage
 
   GFile *configfile;
   GDBusProxy *session_proxy;
-  GdkDisplay *display;
   GSettings *privacy_settings;
-  gulong last_idle;
   guint idle_focus_change_id;
   guint save_id;
   gboolean currently_idle;
@@ -102,11 +100,6 @@ G_DEFINE_TYPE (ShellAppUsage, shell_app_usage, G_TYPE_OBJECT);
 /* Represents an application record for a given context */
 struct UsageData
 {
-  /* Whether the application we're tracking is "transient", see
-   * shell_app_is_window_backed.
-   */
-  gboolean transient;
-
   gdouble score; /* Based on the number of times we'e seen the app and normalized */
   long last_seen; /* Used to clear old apps we've only seen a few times */
 };
@@ -314,7 +307,6 @@ shell_app_usage_init (ShellAppUsage *self)
   g_signal_connect (self->session_proxy, "g-signal", G_CALLBACK (session_proxy_signal), self);
   g_object_unref (session_bus);
 
-  self->last_idle = 0;
   self->currently_idle = FALSE;
   self->enable_monitoring = FALSE;
 
