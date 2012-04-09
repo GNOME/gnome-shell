@@ -59,6 +59,7 @@ static const char *clutter_input_axis_atom_names[] = {
   "Abs Tilt X",         /* CLUTTER_INPUT_AXIS_XTILT */
   "Abs Tilt Y",         /* CLUTTER_INPUT_AXIS_YTILT */
   "Abs Wheel",          /* CLUTTER_INPUT_AXIS_WHEEL */
+  "Abs Distance",       /* CLUTTER_INPUT_AXIS_DISTANCE */
 };
 
 #define N_AXIS_ATOMS    G_N_ELEMENTS (clutter_input_axis_atom_names)
@@ -94,7 +95,7 @@ translate_valuator_class (Display             *xdisplay,
     }
 
   for (i = CLUTTER_INPUT_AXIS_IGNORE;
-       i <= CLUTTER_INPUT_AXIS_WHEEL;
+       i < CLUTTER_INPUT_AXIS_LAST;
        i += 1)
     {
       if (clutter_input_axis_atoms[i] == class->label)
