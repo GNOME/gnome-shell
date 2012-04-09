@@ -488,6 +488,9 @@ const UserList = new Lang.Class({
         if (user.is_system_account())
             return;
 
+        if (user.locked)
+           return;
+
         let userName = user.get_user_name();
 
         if (!userName)
