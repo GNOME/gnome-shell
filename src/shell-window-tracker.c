@@ -127,30 +127,6 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
 }
 
 /**
- * get_appid_from_window:
- *
- * Turn the WM_CLASS property into our best guess at a .desktop file id.
- */
-static char *
-get_appid_from_window (MetaWindow  *window)
-{
-  const char *wmclass;
-  char *appid_guess;
-
-  wmclass = meta_window_get_wm_class (window);
-  if (!wmclass)
-    return NULL;
-
-  appid_guess = g_ascii_strdown (wmclass, -1);
-
-  /* This handles "Fedora Eclipse", probably others.
-   * Note g_strdelimit is modify-in-place. */
-  g_strdelimit (appid_guess, " ", '-');
-
-  return appid_guess;
-}
-
-/**
  * shell_window_tracker_is_window_interesting:
  *
  * The ShellWindowTracker associates certain kinds of windows with
@@ -199,40 +175,6 @@ shell_window_tracker_is_window_interesting (MetaWindow *window)
     }
 
   return TRUE;
-}
-
-/**
- * get_app_from_window_wmclass:
- *
- * Looks only at the given window, and attempts to determine
- * an application based on WM_CLASS.  If one can't be determined,
- * return %NULL.
- *
- * Return value: (transfer full): A newly-referenced #ShellApp, or %NULL
- */
-static ShellApp *
-get_app_from_window_wmclass (MetaWindow  *window)
-{
-  ShellApp *app;
-  ShellAppSystem *appsys;
-  char *wmclass;
-  char *with_desktop;
-
-  appsys = shell_app_system_get_default ();
-  wmclass = get_appid_from_window (window);
-
-  if (!wmclass)
-    return NULL;
-
-  with_desktop = g_strjoin (NULL, wmclass, ".desktop", NULL);
-  g_free (wmclass);
-
-  app = shell_app_system_lookup_heuristic_basename (appsys, with_desktop);
-  if (app != NULL)
-    g_object_ref (app);
-  g_free (with_desktop);
-
-  return app;
 }
 
 /**
@@ -328,8 +270,11 @@ static ShellApp *
 get_app_for_window (ShellWindowTracker    *tracker,
                     MetaWindow            *window)
 {
+  ShellAppSystem *app_system;
   ShellApp *result = NULL;
   const char *startup_id;
+
+  app_system = shell_app_system_get_default ();
 
   /* First, we check whether we already know about this window,
    * if so, just return that.
@@ -351,7 +296,8 @@ get_app_for_window (ShellWindowTracker    *tracker,
   /* Check if the app's WM_CLASS specifies an app; this is
    * canonical if it does.
    */
-  result = get_app_from_window_wmclass (window);
+  result = shell_app_system_lookup_wmclass (app_system,
+                                            meta_window_get_wm_class (window));
   if (result != NULL)
     return result;
 

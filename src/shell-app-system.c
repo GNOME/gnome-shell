@@ -609,6 +609,42 @@ shell_app_system_lookup_heuristic_basename (ShellAppSystem *system,
 }
 
 /**
+ * shell_app_system_lookup_wmclass:
+ * @system: a #ShellAppSystem
+ * @wmclass: A WM_CLASS value
+ *
+ * Find a valid application corresponding to a WM_CLASS value.
+ *
+ * Returns: (transfer none): A #ShellApp for @wmclass
+ */
+ShellApp *
+shell_app_system_lookup_wmclass (ShellAppSystem *system,
+                                 const char     *wmclass)
+{
+  char *canonicalized;
+  char *desktop_file;
+  ShellApp *app;
+
+  if (wmclass == NULL)
+    return NULL;
+
+  canonicalized = g_ascii_strdown (wmclass, -1);
+
+  /* This handles "Fedora Eclipse", probably others.
+   * Note g_strdelimit is modify-in-place. */
+  g_strdelimit (canonicalized, " ", '-');
+
+  desktop_file = g_strconcat (canonicalized, ".desktop", NULL);
+
+  app = shell_app_system_lookup_heuristic_basename (system, desktop_file);
+
+  g_free (canonicalized);
+  g_free (desktop_file);
+
+  return app;
+}
+
+/**
  * shell_app_system_get_all:
  * @system:
  *

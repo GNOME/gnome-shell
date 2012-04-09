@@ -578,11 +578,27 @@ const Source = new Lang.Class({
         return true;
     },
 
+    _getApp: function() {
+        let app;
+
+        app = Shell.WindowTracker.get_default().get_app_from_pid(this.pid);
+        if (app != null)
+            return app;
+
+        if (this.trayIcon) {
+            app = Shell.AppSystem.get_default().lookup_wmclass(this.trayIcon.wmclass);
+            if (app != null)
+                return app;
+        }
+
+        return null;
+    },
+
     _setApp: function() {
         if (this.app)
             return;
 
-        this.app = Shell.WindowTracker.get_default().get_app_from_pid(this.pid);
+        this.app = this._getApp();
         if (!this.app)
             return;
 

@@ -49,7 +49,8 @@ ShellApp       *shell_app_system_lookup_app_for_path          (ShellAppSystem  *
                                                                const char      *desktop_path);
 ShellApp       *shell_app_system_lookup_heuristic_basename    (ShellAppSystem  *system,
                                                                const char      *id);
-
+ShellApp       *shell_app_system_lookup_wmclass               (ShellAppSystem *system,
+                                                               const char     *wmclass);
 
 GSList         *shell_app_system_get_all                   (ShellAppSystem  *system);
 
