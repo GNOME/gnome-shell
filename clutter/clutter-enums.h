@@ -893,6 +893,9 @@ typedef enum {
  * @CLUTTER_INPUT_AXIS_XTILT: The tilt on the X axis
  * @CLUTTER_INPUT_AXIS_YTILT: The tile on the Y axis
  * @CLUTTER_INPUT_AXIS_WHEEL: A wheel
+ * @CLUTTER_INPUT_AXIS_DISTANCE: Distance (Since 1.12)
+ * @CLUTTER_INPUT_AXIS_LAST: Last value of the enumeration; this value is
+ *   useful when iterating over the enumeration values (Since 1.12)
  *
  * The type of axes Clutter recognizes on a #ClutterInputDevice
  *
@@ -900,12 +903,16 @@ typedef enum {
  */
 typedef enum {
   CLUTTER_INPUT_AXIS_IGNORE,
+
   CLUTTER_INPUT_AXIS_X,
   CLUTTER_INPUT_AXIS_Y,
   CLUTTER_INPUT_AXIS_PRESSURE,
   CLUTTER_INPUT_AXIS_XTILT,
   CLUTTER_INPUT_AXIS_YTILT,
-  CLUTTER_INPUT_AXIS_WHEEL
+  CLUTTER_INPUT_AXIS_WHEEL,
+  CLUTTER_INPUT_AXIS_DISTANCE,
+
+  CLUTTER_INPUT_AXIS_LAST
 } ClutterInputAxis;
 
 /**
