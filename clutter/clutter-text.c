@@ -1120,7 +1120,7 @@ clutter_text_set_markup_internal (ClutterText *self,
 
   if (text)
     {
-      clutter_text_buffer_set_text (get_buffer (self), text, strlen (text));
+      clutter_text_buffer_set_text (get_buffer (self), text, -1);
       g_free (text);
     }
 
