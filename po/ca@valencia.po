@@ -5,12 +5,13 @@
 # Jesús Moreno <jmmolas@wanadoo.es>, 2002.
 # Jordi Mallach <jordi@sindominio.net>, 2003, 2004, 2005, 2006, 2007, 2008.
 # David Planella <david.planella@gmail.com>, 2008, 2009, 2011, 2012.
+# Jordi Serratosa <jordis@softcatala.cat>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-15 23:18+0100\n"
+"POT-Creation-Date: 2012-04-10 21:09+0200\n"
 "PO-Revision-Date: 2012-03-15 23:17+0100\n"
 "Last-Translator: David Planella <david.planella@gmail.com>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
@@ -321,7 +322,7 @@ msgid "Window manager error: "
 msgstr "Error del gestor de finestres: "
 
 #. first time through
-#: ../src/core/window.c:7269
+#: ../src/core/window.c:7266
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -337,7 +338,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7932
+#: ../src/core/window.c:7931
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -458,7 +459,7 @@ msgid ""
 "vertically and resizes them horizontally to cover half of the available "
 "area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
-"So s'habilita, es maximitzaran les finestres verticalment i es "
+"Si s'habilita, es maximitzaran les finestres verticalment i es "
 "redimensionaran horitzontalment per cobrir la meitat de l'àrea disponible en "
 "deixar-les anar a les vores verticals de la pantalla. Si es deixen anar a la "
 "vora superior de la pantalla es maximitzaran completament."
@@ -2266,13 +2267,13 @@ msgstr ""
 #~ "sol·licituds d'activació des de les miniaplicacions de la llista de "
 #~ "finestres. Aquesta opció està inhabilitada en el mode d'alçar les "
 #~ "finestres amb clic. Fixeu-vos que les diverses maneres d'alçar les "
-#~ "finestres quan «raise_on_click» és fals no inclouen les peticions "
-#~ "programades de les aplicacions per a alçar finestres; aquestes peticions "
-#~ "s'ignoraran sigui quin sigui el motiu. Si desenvolupeu aplicacions i un "
-#~ "usuari es queixa que l'aplicació no funciona quan aquest paràmetre està "
-#~ "inhabilitat, digueu-li que es culpa _seva_ per haver trencat el gestor de "
-#~ "finestres, i que ha de tornar a canviar aquesta opció a «true» o conviure "
-#~ "amb l'error."
+#~ "finestres quan «raise_on_click» és fals no inclouen les sol·licituds "
+#~ "programades de les aplicacions per a alçar finestres; aquestes "
+#~ "sol·licituds s'ignoraran sigui quin sigui el motiu. Si desenvolupeu "
+#~ "aplicacions i un usuari es queixa que l'aplicació no funciona quan aquest "
+#~ "paràmetre està inhabilitat, digueu-li que es culpa _seva_ per haver "
+#~ "trencat el gestor de finestres, i que ha de tornar a canviar aquesta "
+#~ "opció a «true» o conviure amb l'error."
 
 #~ msgid ""
 #~ "Some applications disregard specifications in ways that result in window "
@@ -2538,8 +2539,8 @@ msgstr ""
 #~ msgid ""
 #~ "Error launching metacity-dialog to print an error about a command: %s\n"
 #~ msgstr ""
-#~ "S'ha produït un error en executar el metacity-dialog per a mostrar un "
-#~ "error quant a una ordre: %s\n"
+#~ "S'ha produït un error en executar el metacity-dialog per mostrar un error "
+#~ "quant a una ordre: %s\n"
 
 #~ msgid "Unknown attribute %s on <metacity_session> element"
 #~ msgstr "Atribut %s desconegut a l'element <metacity_session>"
@@ -3354,7 +3355,7 @@ msgstr ""
 #~ "the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
 #~ msgstr ""
-#~ "La vinculació de tecles per a seleccionar si una finestra està sempre per "
+#~ "La vinculació de tecles per seleccionar si una finestra està sempre per "
 #~ "damunt. Una finestra que estiga sempre per damunt serà visible per damunt "
 #~ "de les altres finestres que s'interseccionen. El format és semblant a "
 #~ "«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou "
@@ -3415,12 +3416,12 @@ msgstr ""
 #~ "\". If you set the option to the special string \"disabled\", then there "
 #~ "will be no keybinding for this action."
 #~ msgstr ""
-#~ "La vinculació de tecles per a seleccionar si una finestra està en tots "
-#~ "els espais de treball o només en un. El format és semblant a «&lt;"
-#~ "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou "
-#~ "flexible i permet minúscules i majúscules, i també abreviacions com «&lt;"
-#~ "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-#~ "«disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "La vinculació de tecles per seleccionar si una finestra està en tots els "
+#~ "espais de treball o només en un. El format és semblant a «&lt;Control&gt;"
+#~ "a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i "
+#~ "permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
+#~ "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no "
+#~ "hi haurà cap vinculació per a aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to unmaximize a window. The format looks like \"&lt;"
