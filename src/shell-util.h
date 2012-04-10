@@ -52,8 +52,6 @@ gboolean shell_session_is_active_for_systemd (void);
 gboolean shell_util_wifexited                  (int               status,
                                                 int              *exit);
 
-gchar    *shell_format_int_alternative_output  (gint              intval);
-
 
 G_END_DECLS
 

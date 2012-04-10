@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Shell = imports.gi.Shell;
+const ShellJS = imports.gi.ShellJS;
 
 /*
  * This function is intended to extend the String object and provide
@@ -50,7 +50,7 @@ function format() {
                         case 'd':
                             let intV = parseInt(args[i++]);
                             if (hasAlternativeIntFlag)
-                                s = Shell.format_int_alternative_output(intV);
+                                s = ShellJS.format_int_alternative_output(intV);
                             else
                                 s = intV.toString();
                             break;

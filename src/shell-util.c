@@ -868,15 +868,3 @@ shell_util_wifexited (int  status,
 
   return ret;
 }
-
-/**
- * shell_format_int_alternative_output:
- * @intval:
- *
- * Returns: (transfer full):
- */
-gchar *
-shell_format_int_alternative_output (gint intval)
-{
-  return g_strdup_printf ("%Id", intval);
-}
