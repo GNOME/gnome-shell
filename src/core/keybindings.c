@@ -71,18 +71,10 @@ meta_key_binding_copy (MetaKeyBinding *binding)
   return g_slice_dup (MetaKeyBinding, binding);
 }
 
-GType
-meta_key_binding_get_type (void)
-{
-  static GType type_id = 0;
-
-  if (G_UNLIKELY (type_id == 0))
-    type_id = g_boxed_type_register_static (g_intern_static_string ("MetaKeyBinding"),
-                                            (GBoxedCopyFunc)meta_key_binding_copy,
-                                            (GBoxedFreeFunc)meta_key_binding_free);
-
-  return type_id;
-}
+G_DEFINE_BOXED_TYPE(MetaKeyBinding,
+                    meta_key_binding,
+                    meta_key_binding_copy,
+                    meta_key_binding_free)
 
 const char *
 meta_key_binding_get_name (MetaKeyBinding *binding)
