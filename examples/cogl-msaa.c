@@ -47,9 +47,9 @@ main (int argc, char **argv)
 
     if (!cogl_framebuffer_allocate (fb, &error))
       {
-        g_error_free (error);
         fprintf (stderr, "Failed to allocate 4x msaa offscreen framebuffer, "
-                 "disabling msaa for onscreen rendering\n");
+                 "disabling msaa for onscreen rendering: %s\n", error->message);
+        g_error_free (error);
         cogl_framebuffer_set_samples_per_pixel (fb, 0);
 
         error = NULL;
