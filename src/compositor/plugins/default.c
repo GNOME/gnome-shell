@@ -479,8 +479,8 @@ minimize (MetaPlugin *plugin, MetaWindowActor *window_actor)
                                          MINIMIZE_TIMEOUT,
                                          "scale-x", 0.0,
                                          "scale-y", 0.0,
-                                         "x", icon_geometry.x,
-                                         "y", icon_geometry.y,
+                                         "x", (double)icon_geometry.x,
+                                         "y", (double)icon_geometry.y,
                                          NULL);
       apriv->tml_minimize = clutter_animation_get_timeline (animation);
       data->plugin = plugin;
