@@ -85,6 +85,7 @@ main (int argc, char **argv)
         CoglPollFD *poll_fds;
         int n_poll_fds;
         gint64 timeout;
+        CoglPipeline *texture_pipeline;
 
         cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 
@@ -94,13 +95,13 @@ main (int argc, char **argv)
         cogl_framebuffer_draw_primitive (fb, pipeline, triangle);
         cogl_framebuffer_pop_matrix (fb);
 
-        cogl_push_framebuffer (offscreen_fb);
         cogl_framebuffer_draw_primitive (fb, pipeline, triangle);
         cogl_framebuffer_resolve_samples (offscreen_fb);
-        cogl_pop_framebuffer ();
 
-        cogl_set_source_texture (tex);
-        cogl_rectangle (0, 1, 1, -1);
+        texture_pipeline = cogl_pipeline_new (ctx);
+        cogl_pipeline_set_layer_texture (texture_pipeline, 0, tex);
+        cogl_framebuffer_draw_rectangle (fb, texture_pipeline, 0, 1, 1, -1);
+        cogl_object_unref (texture_pipeline);
 
         cogl_onscreen_swap_buffers (onscreen);
 
