@@ -188,7 +188,16 @@ cogl_context_new (CoglDisplay *display,
   memset (context->winsys_features, 0, sizeof (context->winsys_features));
 
   if (!display)
-    display = cogl_display_new (NULL, NULL);
+    {
+      CoglRenderer *renderer = cogl_renderer_new ();
+      if (!cogl_renderer_connect (renderer, error))
+        {
+          g_free (context);
+          return NULL;
+        }
+
+      display = cogl_display_new (renderer, NULL);
+    }
   else
     cogl_object_ref (display);
 

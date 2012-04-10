@@ -91,13 +91,7 @@ cogl_display_new (CoglRenderer *renderer,
     display->renderer = cogl_renderer_new ();
 
   if (!cogl_renderer_connect (display->renderer, &error))
-    {
-      g_warning ("Failed to connect renderer: %s\n", error->message);
-      g_error_free (error);
-      g_object_unref (display->renderer);
-      g_slice_free (CoglDisplay, display);
-      return NULL;
-    }
+    g_error ("Failed to connect to renderer: %s\n", error->message);
 
   display->onscreen_template = onscreen_template;
   if (onscreen_template)
