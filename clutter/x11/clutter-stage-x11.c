@@ -208,7 +208,14 @@ clutter_stage_x11_get_geometry (ClutterStageWindow    *stage_window,
 
   geometry->x = geometry->y = 0;
 
-  /* If we're fullscreen, return the size of the display. */
+  /* If we're fullscreen, return the size of the display.
+   *
+   * FIXME - this is utterly broken for anything that is not a single
+   * head set up; the window manager will give us the right size in a
+   * ConfigureNotify, but between the fullscreen signal emission on the
+   * stage and the following frame, the size returned by the stage will
+   * be wrong.
+   */
   if (_clutter_stage_is_fullscreen (stage_cogl->wrapper) &&
       stage_x11->fullscreening)
     {
