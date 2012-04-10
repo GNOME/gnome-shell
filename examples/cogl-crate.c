@@ -223,9 +223,9 @@ main (int argc, char **argv)
   data.texture = cogl_texture_new_from_file (COGL_EXAMPLES_DATA "crate.jpg",
                                              COGL_TEXTURE_NO_SLICING,
                                              COGL_PIXEL_FORMAT_ANY,
-                                             NULL);
+                                             &error);
   if (!data.texture)
-    g_error ("Failed to load texture");
+    g_error ("Failed to load texture: %s", error->message);
 
   /* a CoglPipeline conceptually describes all the state for vertex
    * processing, fragment processing and blending geometry. When
