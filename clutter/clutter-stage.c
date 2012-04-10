@@ -897,6 +897,14 @@ clutter_stage_real_fullscreen (ClutterStage *stage)
   box.x2 = geom.width;
   box.y2 = geom.height;
 
+  /* we need to blow the caching on the Stage size, given that
+   * we're about to force an allocation, because if anything
+   * ends up querying the size of the stage during the allocate()
+   * call, like constraints or signal handlers, we'll get into an
+   * inconsistent state: the stage will report the old cached size,
+   * but the allocation will be updated anyway.
+   */
+  clutter_actor_set_size (CLUTTER_ACTOR (stage), -1.0, -1.0);
   clutter_actor_allocate (CLUTTER_ACTOR (stage),
                           &box,
                           CLUTTER_ALLOCATION_NONE);
