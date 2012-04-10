@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>, 2009.
 # Gil Forcada <gilforcada@guifi.net>, 2010, 2011, 2012.
+# Jordi Serratosa <jordis@softcatala.cat>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-30 17:59+0000\n"
+"POT-Creation-Date: 2012-04-01 22:09+0000\n"
 "PO-Revision-Date: 2012-04-02 00:08+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: català; valencià <tradgnome@softcatala.org>\n"
@@ -514,7 +515,7 @@ msgstr "Ocupat"
 
 #: ../js/ui/contactDisplay.js:102
 msgid "Offline"
-msgstr "Fora de línia"
+msgstr "Fora de línia"
 
 #: ../js/ui/contactDisplay.js:153
 msgid "CONTACTS"
@@ -813,7 +814,7 @@ msgstr ""
 
 #: ../js/ui/networkAgent.js:334
 msgid "Wired 802.1X authentication"
-msgstr "Autenticació 802.1X amb fil"
+msgstr "Autenticació 802.1X amb fil"
 
 #: ../js/ui/networkAgent.js:336
 msgid "Network name: "
@@ -821,15 +822,15 @@ msgstr "Nom de la xarxa: "
 
 #: ../js/ui/networkAgent.js:341
 msgid "DSL authentication"
-msgstr "Autenticació DSL"
+msgstr "Autenticació DSL"
 
 #: ../js/ui/networkAgent.js:348
 msgid "PIN code required"
-msgstr "Cal que introduïu el codi PIN"
+msgstr "Cal que introduïu el codi PIN"
 
 #: ../js/ui/networkAgent.js:349
 msgid "PIN code is needed for the mobile broadband device"
-msgstr "Cal que introduïu el codi PIN del dispositiu de banda ampla mòbil"
+msgstr "Cal que introduïu el codi PIN del dispositiu de banda ampla mòbil"
 
 #: ../js/ui/networkAgent.js:350
 msgid "PIN: "
@@ -837,12 +838,12 @@ msgstr "PIN: "
 
 #: ../js/ui/networkAgent.js:356
 msgid "Mobile broadband network password"
-msgstr "Contrasenya de la xarxa de banda ampla mòbil"
+msgstr "Contrasenya de la xarxa de banda ampla mòbil"
 
 #: ../js/ui/networkAgent.js:357
 #, c-format
 msgid "A password is required to connect to '%s'."
-msgstr "Cal que introduïu una contrasenya per connectar-vos a «%s»."
+msgstr "Cal que introduïu una contrasenya per connectar-vos a «%s»."
 
 #: ../js/ui/overview.js:90
 msgid "Undo"
@@ -1077,7 +1078,7 @@ msgstr "Paràmetres de so"
 #: ../js/ui/status/bluetooth.js:372
 #, c-format
 msgid "Authorization request from %s"
-msgstr "Hi ha una petició d'autorització des de %s"
+msgstr "Hi ha una sol·licitud d'autorització des de %s"
 
 #: ../js/ui/status/bluetooth.js:378
 #, c-format
@@ -1247,7 +1248,7 @@ msgstr "Paràmetres de xarxa"
 
 #: ../js/ui/status/network.js:1739
 msgid "Connection failed"
-msgstr "Ha fallat la connexió"
+msgstr "Ha fallat la connexió"
 
 #: ../js/ui/status/network.js:1740
 msgid "Activation of network connection failed"
@@ -1376,11 +1377,11 @@ msgstr "Trucada"
 #. We got the TpContact
 #: ../js/ui/telepathyClient.js:287
 msgid "File Transfer"
-msgstr "Transferència de fitxers"
+msgstr "Transferència de fitxers"
 
 #: ../js/ui/telepathyClient.js:369
 msgid "Subscription request"
-msgstr "Teniu una petició de subscripció"
+msgstr "Teniu una sol·licitud de subscripció"
 
 #: ../js/ui/telepathyClient.js:405
 msgid "Connection error"
@@ -1491,7 +1492,7 @@ msgstr "En/na %s us envia %s"
 #: ../js/ui/telepathyClient.js:1194
 #, c-format
 msgid "%s would like permission to see when you are online"
-msgstr "%s vol poder saber quan esteu en línia"
+msgstr "%s vol poder saber quan esteu en línia"
 
 #: ../js/ui/telepathyClient.js:1287
 msgid "Network error"
@@ -1499,7 +1500,7 @@ msgstr "Error de la xarxa"
 
 #: ../js/ui/telepathyClient.js:1289
 msgid "Authentication failed"
-msgstr "Ha fallat l'autenticació"
+msgstr "Ha fallat l'autenticació"
 
 #: ../js/ui/telepathyClient.js:1291
 msgid "Encryption error"
@@ -1511,19 +1512,19 @@ msgstr "No s'ha proporcionat el certificat"
 
 #: ../js/ui/telepathyClient.js:1295
 msgid "Certificate untrusted"
-msgstr "El certificat no és de confiança"
+msgstr "El certificat no és de confiança"
 
 #: ../js/ui/telepathyClient.js:1297
 msgid "Certificate expired"
-msgstr "El certificat ha vençut"
+msgstr "El certificat ha vençut"
 
 #: ../js/ui/telepathyClient.js:1299
 msgid "Certificate not activated"
-msgstr "El certificat no està activat"
+msgstr "El certificat no està activat"
 
 #: ../js/ui/telepathyClient.js:1301
 msgid "Certificate hostname mismatch"
-msgstr "No coincideix el nom de la màquina del certificat"
+msgstr "No coincideix el nom de la màquina del certificat"
 
 #: ../js/ui/telepathyClient.js:1303
 msgid "Certificate fingerprint mismatch"
@@ -1539,33 +1540,33 @@ msgstr "S'ha establert l'estat a fora de línia"
 
 #: ../js/ui/telepathyClient.js:1309
 msgid "Encryption is not available"
-msgstr "L'encriptació no està disponible"
+msgstr "L'encriptació no està disponible"
 
 #: ../js/ui/telepathyClient.js:1311
 msgid "Certificate is invalid"
-msgstr "El certificat no és vàlid"
+msgstr "El certificat no és vàlid"
 
 #: ../js/ui/telepathyClient.js:1313
 msgid "Connection has been refused"
-msgstr "S'ha rebutjat la connexió"
+msgstr "S'ha rebutjat la connexió"
 
 #: ../js/ui/telepathyClient.js:1315
 msgid "Connection can't be established"
-msgstr "No es pot establir la connexió"
+msgstr "No es pot establir la connexió"
 
 #: ../js/ui/telepathyClient.js:1317
 msgid "Connection has been lost"
-msgstr "S'ha perdut la connexió"
+msgstr "S'ha perdut la connexió"
 
 #: ../js/ui/telepathyClient.js:1319
 msgid "This account is already connected to the server"
-msgstr "Aquest compte ja està connectat al servidor"
+msgstr "Aquest compte ja està connectat al servidor"
 
 #: ../js/ui/telepathyClient.js:1321
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
-"S'ha reemplaçat la connexió per una altra de nova fent servir el mateix "
+"S'ha reemplaçat la connexió per una altra de nova fent servir el mateix "
 "recurs"
 
 #: ../js/ui/telepathyClient.js:1323
@@ -1574,7 +1575,7 @@ msgstr "Ja existeix aquest compte al servidor"
 
 #: ../js/ui/telepathyClient.js:1325
 msgid "Server is currently too busy to handle the connection"
-msgstr "El servidor està massa ocupat per gestionar la connexió"
+msgstr "El servidor està massa ocupat per gestionar la connexió"
 
 #: ../js/ui/telepathyClient.js:1327
 msgid "Certificate has been revoked"
@@ -1584,8 +1585,8 @@ msgstr "S'ha revocat el certificat"
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
-"El certificat utilitza un algorisme criptògraf no segur o la seva fortalesa "
-"criptogràfica és feble"
+"El certificat utilitza un algorisme criptògraf no segur o la seva fortalesa "
+"criptogràfica és feble"
 
 #: ../js/ui/telepathyClient.js:1331
 msgid ""
@@ -1593,7 +1594,7 @@ msgid ""
 "chain, exceed the limits imposed by the cryptography library"
 msgstr ""
 "La llargada del certificat del servidor o la profunditat de la cadena de "
-"certificació excedeix els límits de la biblioteca criptogràfica"
+"certificació excedeix els límits de la biblioteca criptogràfica"
 
 #: ../js/ui/telepathyClient.js:1333
 msgid "Internal error"
