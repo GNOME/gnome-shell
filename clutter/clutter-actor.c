@@ -9509,8 +9509,6 @@ clutter_actor_set_width (ClutterActor *self,
     }
   else
     _clutter_actor_update_transition (self, obj_props[PROP_WIDTH], width);
-
-  clutter_actor_queue_relayout (self);
 }
 
 /**
@@ -9559,8 +9557,6 @@ clutter_actor_set_height (ClutterActor *self,
     }
   else
     _clutter_actor_update_transition (self, obj_props[PROP_HEIGHT], height);
-
-  clutter_actor_queue_relayout (self);
 }
 
 static inline void
@@ -9639,8 +9635,6 @@ clutter_actor_set_x (ClutterActor *self,
     }
   else
     _clutter_actor_update_transition (self, obj_props[PROP_X], x);
-
-  clutter_actor_queue_relayout (self);
 }
 
 /**
@@ -9673,8 +9667,6 @@ clutter_actor_set_y (ClutterActor *self,
     }
   else
     _clutter_actor_update_transition (self, obj_props[PROP_Y], y);
-
-  clutter_actor_queue_relayout (self);
 }
 
 /**
