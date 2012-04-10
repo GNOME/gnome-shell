@@ -10010,8 +10010,6 @@ clutter_actor_set_opacity (ClutterActor *self,
     }
   else
     _clutter_actor_update_transition (self, obj_props[PROP_OPACITY], opacity);
-
-  clutter_actor_queue_redraw (self);
 }
 
 /*
