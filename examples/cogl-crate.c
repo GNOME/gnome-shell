@@ -151,8 +151,6 @@ main (int argc, char **argv)
   CoglDepthState depth_state;
   gboolean has_swap_notify;
 
-  g_type_init ();
-
   ctx = cogl_context_new (NULL, &error);
   if (!ctx) {
       fprintf (stderr, "Failed to create context: %s\n", error->message);
