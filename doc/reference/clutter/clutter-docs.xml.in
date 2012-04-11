@@ -158,15 +158,6 @@
       <xi:include href="xml/clutter-transition-group.xml"/>
     </chapter>
 
-    <chapter>
-      <title>High Level API</title>
-
-      <xi:include href="xml/clutter-animation.xml"/>
-      <xi:include href="xml/clutter-animator.xml"/>
-      <xi:include href="xml/clutter-state.xml"/>
-
-    </chapter>
-
   </part>
 
   <part id="cluttertools">
@@ -259,9 +250,9 @@
   <part id="deprecated">
     <title>Deprecated Classes</title>
 
-      <xi:include href="xml/clutter-score.xml"/>
-      <xi:include href="xml/clutter-shader.xml"/>
       <xi:include href="xml/clutter-alpha.xml"/>
+      <xi:include href="xml/clutter-animation.xml"/>
+      <xi:include href="xml/clutter-animator.xml"/>
       <xi:include href="xml/clutter-behaviour.xml"/>
       <xi:include href="xml/clutter-behaviour-depth.xml"/>
       <xi:include href="xml/clutter-behaviour-ellipse.xml"/>
@@ -269,9 +260,12 @@
       <xi:include href="xml/clutter-behaviour-path.xml"/>
       <xi:include href="xml/clutter-behaviour-rotate.xml"/>
       <xi:include href="xml/clutter-behaviour-scale.xml"/>
-      <xi:include href="xml/clutter-group.xml"/>
       <xi:include href="xml/clutter-box.xml"/>
+      <xi:include href="xml/clutter-group.xml"/>
       <xi:include href="xml/clutter-rectangle.xml"/>
+      <xi:include href="xml/clutter-score.xml"/>
+      <xi:include href="xml/clutter-shader.xml"/>
+      <xi:include href="xml/clutter-state.xml"/>
   </part>
 
   <part id="clutterobjects">
