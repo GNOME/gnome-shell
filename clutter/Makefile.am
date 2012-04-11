@@ -93,6 +93,7 @@ source_h =					\
 	$(srcdir)/clutter-image.h		\
 	$(srcdir)/clutter-input-device.h	\
         $(srcdir)/clutter-interval.h            \
+	$(srcdir)/clutter-keyframe-transition.h	\
 	$(srcdir)/clutter-keysyms.h 		\
 	$(srcdir)/clutter-layout-manager.h	\
 	$(srcdir)/clutter-layout-meta.h		\
@@ -171,6 +172,7 @@ source_c = \
 	$(srcdir)/clutter-image.c		\
 	$(srcdir)/clutter-input-device.c	\
 	$(srcdir)/clutter-interval.c            \
+	$(srcdir)/clutter-keyframe-transition.c	\
 	$(srcdir)/clutter-keysyms-table.c	\
 	$(srcdir)/clutter-layout-manager.c	\
 	$(srcdir)/clutter-layout-meta.c		\

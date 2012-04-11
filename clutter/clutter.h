@@ -73,6 +73,7 @@
 #include "clutter-image.h"
 #include "clutter-input-device.h"
 #include "clutter-interval.h"
+#include "clutter-keyframe-transition.h"
 #include "clutter-keysyms.h" 
 #include "clutter-layout-manager.h"
 #include "clutter-layout-meta.h"

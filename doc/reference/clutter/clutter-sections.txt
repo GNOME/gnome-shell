@@ -3221,3 +3221,25 @@ clutter_rect_get_type
 clutter_size_get_type
 clutter_vertex_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-keyframe-transition</FILE>
+ClutterKeyframeTransition
+ClutterKeyframeTransitionClass
+clutter_keyframe_transition_new
+clutter_keyframe_transition_set
+clutter_keyframe_transition_set_key_frames
+clutter_keyframe_transition_set_modes
+clutter_keyframe_transition_set_values
+clutter_keyframe_transition_clear
+<SECTION Standard>
+CLUTTER_TYPE_KEYFRAME_TRANSITION
+CLUTTER_KEYFRAME_TRANSITION
+CLUTTER_KEYFRAME_TRANSITION_CLASS
+CLUTTER_IS_KEYFRAME_TRANSITION
+CLUTTER_IS_KEYFRAME_TRANSITION_CLASS
+CLUTTER_KEYFRAME_TRANSITION_GET_CLASS
+<SUBSECTION Private>
+ClutterKeyframeTransitionPrivate
+clutter_keyframe_transition_get_type
+</SECTION>

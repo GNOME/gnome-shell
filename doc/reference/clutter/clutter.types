@@ -43,6 +43,7 @@ clutter_gesture_action_get_type
 clutter_group_get_type
 clutter_input_device_get_type
 clutter_interval_get_type
+clutter_keyframe_transition_get_type
 clutter_layout_manager_get_type
 clutter_layout_meta_get_type
 clutter_list_model_get_type
