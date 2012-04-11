@@ -567,8 +567,8 @@ out:
 /**
  * clutter_interval_new_with_values:
  * @gtype: the type of the values in the interval
- * @initial: a #GValue holding the initial value of the interval
- * @final: a #GValue holding the final value of the interval
+ * @initial: (allow-none): a #GValue holding the initial value of the interval
+ * @final: (allow-none): a #GValue holding the final value of the interval
  *
  * Creates a new #ClutterInterval of type @gtype, between @initial
  * and @final.
@@ -587,15 +587,16 @@ clutter_interval_new_with_values (GType         gtype,
   ClutterInterval *retval;
 
   g_return_val_if_fail (gtype != G_TYPE_INVALID, NULL);
-  g_return_val_if_fail (initial != NULL, NULL);
-  g_return_val_if_fail (final != NULL, NULL);
-  g_return_val_if_fail (G_VALUE_TYPE (initial) == gtype, NULL);
-  g_return_val_if_fail (G_VALUE_TYPE (final) == gtype, NULL);
+  g_return_val_if_fail (initial == NULL || G_VALUE_TYPE (initial) == gtype, NULL);
+  g_return_val_if_fail (final == NULL || G_VALUE_TYPE (final) == gtype, NULL);
 
   retval = g_object_new (CLUTTER_TYPE_INTERVAL, "value-type", gtype, NULL);
 
-  clutter_interval_set_initial_value (retval, initial);
-  clutter_interval_set_final_value (retval, final);
+  if (initial != NULL)
+    clutter_interval_set_initial_value (retval, initial);
+
+  if (final != NULL)
+    clutter_interval_set_final_value (retval, final);
 
   return retval;
 }
