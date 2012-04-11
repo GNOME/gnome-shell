@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-31 09:03+0000\n"
+"POT-Creation-Date: 2012-04-03 18:35+0000\n"
 "PO-Revision-Date: 2012-03-31 15:56+0300\n"
 "Last-Translator: Bruno Brouard <annoa.b@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -790,7 +790,7 @@ msgstr "Page Web"
 #: ../js/ui/main.js:118
 #, no-c-format
 msgid "Screencast from %d %t"
-msgstr "Animation d'écran %d %t"
+msgstr "Vidéo d'écran %d %t"
 
 #: ../js/ui/messageTray.js:1200
 msgid "Open"
