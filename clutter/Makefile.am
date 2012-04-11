@@ -56,7 +56,6 @@ source_h =					\
 	$(srcdir)/clutter-alpha.h		\
 	$(srcdir)/clutter-animatable.h          \
 	$(srcdir)/clutter-animation.h           \
-	$(srcdir)/clutter-animator.h		\
 	$(srcdir)/clutter-backend.h		\
 	$(srcdir)/clutter-bind-constraint.h	\
 	$(srcdir)/clutter-binding-pool.h 	\
@@ -117,7 +116,6 @@ source_h =					\
 	$(srcdir)/clutter-snap-constraint.h	\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-stage-manager.h	\
-	$(srcdir)/clutter-state.h		\
 	$(srcdir)/clutter-table-layout.h	\
 	$(srcdir)/clutter-texture.h 		\
 	$(srcdir)/clutter-text.h		\
@@ -138,7 +136,6 @@ source_c = \
 	$(srcdir)/clutter-alpha.c 		\
 	$(srcdir)/clutter-animatable.c		\
 	$(srcdir)/clutter-animation.c		\
-	$(srcdir)/clutter-animator.c		\
 	$(srcdir)/clutter-backend.c		\
 	$(srcdir)/clutter-base-types.c		\
 	$(srcdir)/clutter-bezier.c		\
@@ -199,7 +196,6 @@ source_c = \
 	$(srcdir)/clutter-stage.c		\
 	$(srcdir)/clutter-stage-manager.c	\
 	$(srcdir)/clutter-stage-window.c	\
-	$(srcdir)/clutter-state.c		\
 	$(srcdir)/clutter-table-layout.c	\
 	$(srcdir)/clutter-texture.c 		\
 	$(srcdir)/clutter-text.c		\
@@ -254,6 +250,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-actor.h			\
 	$(srcdir)/deprecated/clutter-animatable.h		\
 	$(srcdir)/deprecated/clutter-animation.h		\
+	$(srcdir)/deprecated/clutter-animator.h			\
 	$(srcdir)/deprecated/clutter-backend.h			\
 	$(srcdir)/deprecated/clutter-behaviour.h 		\
 	$(srcdir)/deprecated/clutter-behaviour-depth.h 		\
@@ -276,6 +273,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-shader.h 			\
 	$(srcdir)/deprecated/clutter-stage-manager.h		\
 	$(srcdir)/deprecated/clutter-stage.h			\
+	$(srcdir)/deprecated/clutter-state.h			\
 	$(srcdir)/deprecated/clutter-texture.h			\
 	$(srcdir)/deprecated/clutter-timeline.h 		\
 	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
@@ -285,6 +283,7 @@ deprecated_h = \
 # deprecated source code
 deprecated_c = \
 	$(srcdir)/deprecated/clutter-actor-deprecated.c		\
+	$(srcdir)/deprecated/clutter-animator.c			\
 	$(srcdir)/deprecated/clutter-behaviour.c 		\
 	$(srcdir)/deprecated/clutter-behaviour-depth.c		\
 	$(srcdir)/deprecated/clutter-behaviour-ellipse.c	\
@@ -301,6 +300,7 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-rectangle.c 		\
 	$(srcdir)/deprecated/clutter-score.c 			\
 	$(srcdir)/deprecated/clutter-shader.c 			\
+	$(srcdir)/deprecated/clutter-state.c			\
 	$(srcdir)/deprecated/clutter-timeout-pool.c		\
 	$(NULL)
 

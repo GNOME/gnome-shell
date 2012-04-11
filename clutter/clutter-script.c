@@ -234,12 +234,11 @@
 #include <glib-object.h>
 #include <gmodule.h>
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-actor.h"
 #include "clutter-alpha.h"
-#include "clutter-behaviour.h"
-#include "clutter-container.h"
 #include "clutter-stage.h"
-#include "clutter-state.h"
 #include "clutter-texture.h"
 
 #include "clutter-script.h"
@@ -249,6 +248,10 @@
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
+
+#include "deprecated/clutter-behaviour.h"
+#include "deprecated/clutter-container.h"
+#include "deprecated/clutter-state.h"
 
 enum
 {
@@ -263,8 +266,7 @@ enum
 
 static GParamSpec *obj_props[PROP_LAST];
 
-#define CLUTTER_SCRIPT_GET_PRIVATE(obj) \
-        (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_SCRIPT, ClutterScriptPrivate))
+#define CLUTTER_SCRIPT_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_SCRIPT, ClutterScriptPrivate))
 
 struct _ClutterScriptPrivate
 {
@@ -1443,6 +1445,8 @@ clutter_script_list_objects (ClutterScript *script)
  * passed to this function.
  *
  * Since: 1.8
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_script_add_states (ClutterScript *script,
@@ -1475,6 +1479,8 @@ clutter_script_add_states (ClutterScript *script,
  *   and it should not be unreferenced
  *
  * Since: 1.8
+ *
+ * Deprecated: 1.12
  */
 ClutterState *
 clutter_script_get_states (ClutterScript *script,
