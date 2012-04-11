@@ -17151,6 +17151,7 @@ _clutter_actor_create_transition (ClutterActor *actor,
   clos = g_hash_table_lookup (info->transitions, pspec->name);
   if (clos == NULL)
     {
+      ClutterTimeline *timeline;
       ClutterInterval *interval;
       GValue initial = G_VALUE_INIT;
       GValue final = G_VALUE_INIT;
@@ -17209,6 +17210,11 @@ _clutter_actor_create_transition (ClutterActor *actor,
       clutter_transition_set_interval (res, interval);
       clutter_transition_set_remove_on_complete (res, TRUE);
 
+      timeline = CLUTTER_TIMELINE (res);
+      clutter_timeline_set_delay (timeline, info->cur_state->easing_delay);
+      clutter_timeline_set_duration (timeline, info->cur_state->easing_duration);
+      clutter_timeline_set_progress_mode (timeline, info->cur_state->easing_mode);
+
       /* this will start the transition as well */
       clutter_actor_add_transition (actor, pspec->name, res);
 
@@ -17266,15 +17272,6 @@ clutter_actor_add_transition (ClutterActor      *self,
 
   info = _clutter_actor_get_animation_info (self);
 
-  if (info->cur_state == NULL)
-    {
-      g_warning ("No easing state is defined for the actor '%s'; you "
-                 "must call clutter_actor_save_easing_state() before "
-                 "calling clutter_actor_add_transition().",
-                 _clutter_actor_get_debug_name (self));
-      return;
-    }
-
   if (info->transitions == NULL)
     info->transitions = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                NULL,
@@ -17293,9 +17290,12 @@ clutter_actor_add_transition (ClutterActor      *self,
 
   timeline = CLUTTER_TIMELINE (transition);
 
-  clutter_timeline_set_delay (timeline, info->cur_state->easing_delay);
-  clutter_timeline_set_duration (timeline, info->cur_state->easing_duration);
-  clutter_timeline_set_progress_mode (timeline, info->cur_state->easing_mode);
+  if (info->cur_state != NULL)
+    {
+      clutter_timeline_set_delay (timeline, info->cur_state->easing_delay);
+      clutter_timeline_set_duration (timeline, info->cur_state->easing_duration);
+      clutter_timeline_set_progress_mode (timeline, info->cur_state->easing_mode);
+    }
 
   clos = g_slice_new (TransitionClosure);
   clos->actor = self;
