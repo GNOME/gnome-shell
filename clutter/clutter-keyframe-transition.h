@@ -98,6 +98,21 @@ void                    clutter_keyframe_transition_set                 (Clutter
                                                                          ...);
 
 CLUTTER_AVAILABLE_IN_1_12
+void                    clutter_keyframe_transition_set_key_frame       (ClutterKeyframeTransition  *transition,
+                                                                         guint                       index_,
+                                                                         double                      key,
+                                                                         ClutterAnimationMode        mode,
+                                                                         const GValue               *value);
+CLUTTER_AVAILABLE_IN_1_12
+void                    clutter_keyframe_transition_get_key_frame       (ClutterKeyframeTransition  *transition,
+                                                                         guint                       index_,
+                                                                         double                     *key,
+                                                                         ClutterAnimationMode       *mode,
+                                                                         GValue                     *value);
+CLUTTER_AVAILABLE_IN_1_12
+guint                   clutter_keyframe_transition_get_n_key_frames    (ClutterKeyframeTransition  *transition);
+
+CLUTTER_AVAILABLE_IN_1_12
 void                    clutter_keyframe_transition_clear               (ClutterKeyframeTransition  *transition);
 
 G_END_DECLS

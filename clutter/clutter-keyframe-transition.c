@@ -626,3 +626,105 @@ clutter_keyframe_transition_clear (ClutterKeyframeTransition *transition)
       transition->priv->frames = NULL;
     }
 }
+
+/**
+ * clutter_keyframe_transition_get_n_key_frames:
+ * @transition: a #ClutterKeyframeTransition
+ *
+ * Retrieves the number of key frames inside @transition.
+ *
+ * Return value: the number of key frames
+ *
+ * Since: 1.12
+ */
+guint
+clutter_keyframe_transition_get_n_key_frames (ClutterKeyframeTransition *transition)
+{
+  g_return_val_if_fail (CLUTTER_IS_KEYFRAME_TRANSITION (transition), 0);
+
+  if (transition->priv->frames == NULL)
+    return 0;
+
+  return transition->priv->frames->len - 1;
+}
+
+/**
+ * clutter_keyframe_transition_set_key_frame:
+ * @transition: a #ClutterKeyframeTransition
+ * @index_: the index of the key frame
+ * @key: the key of the key frame
+ * @mode: the easing mode of the key frame
+ * @value: a #GValue containing the value of the key frame
+ *
+ * Sets the details of the key frame at @index_ inside @transition.
+ *
+ * The @transition must already have a key frame at @index_, and @index_
+ * must be smaller than the number of key frames inside @transition.
+ *
+ * Since: 1.12
+ */
+void
+clutter_keyframe_transition_set_key_frame (ClutterKeyframeTransition *transition,
+                                           guint                      index_,
+                                           double                     key,
+                                           ClutterAnimationMode       mode,
+                                           const GValue              *value)
+{
+  ClutterKeyframeTransitionPrivate *priv;
+  KeyFrame *frame;
+
+  g_return_if_fail (CLUTTER_IS_KEYFRAME_TRANSITION (transition));
+
+  priv = transition->priv;
+  g_return_if_fail (priv->frames != NULL);
+  g_return_if_fail (index_ < priv->frames->len - 1);
+
+  frame = &g_array_index (priv->frames, KeyFrame, index_);
+  frame->key = key;
+  frame->mode = mode;
+  clutter_interval_set_final_value (frame->interval, value);
+}
+
+/**
+ * clutter_keyframe_transition_get_key_frame:
+ * @transition: a #ClutterKeyframeTransition
+ * @index_: the index of the key frame
+ * @key: (out) (allow-none): return location for the key, or %NULL
+ * @mode: (out) (allow-none): return location for the easing mode, or %NULL
+ * @value: (out caller-allocates): a #GValue initialized with the type of
+ *   the values
+ *
+ * Retrieves the details of the key frame at @index_ inside @transition.
+ *
+ * The @transition must already have key frames set, and @index_ must be
+ * smaller than the number of key frames.
+ *
+ * Since: 1.12
+ */
+void
+clutter_keyframe_transition_get_key_frame (ClutterKeyframeTransition *transition,
+                                           guint                      index_,
+                                           double                    *key,
+                                           ClutterAnimationMode      *mode,
+                                           GValue                    *value)
+{
+  ClutterKeyframeTransitionPrivate *priv;
+  const KeyFrame *frame;
+
+  g_return_if_fail (CLUTTER_IS_KEYFRAME_TRANSITION (transition));
+
+  priv = transition->priv;
+  g_return_if_fail (priv->frames != NULL);
+  g_return_if_fail (index_ < priv->frames->len - 1);
+
+  frame = &g_array_index (priv->frames, KeyFrame, index_);
+
+  if (key != NULL)
+    *key = frame->key;
+
+  if (mode != NULL)
+    *mode = frame->mode;
+
+  if (value != NULL)
+    clutter_interval_get_final_value (frame->interval, value);
+}
