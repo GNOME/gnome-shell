@@ -55,7 +55,6 @@ source_h =					\
 	$(srcdir)/clutter-align-constraint.h	\
 	$(srcdir)/clutter-alpha.h		\
 	$(srcdir)/clutter-animatable.h          \
-	$(srcdir)/clutter-animation.h           \
 	$(srcdir)/clutter-backend.h		\
 	$(srcdir)/clutter-bind-constraint.h	\
 	$(srcdir)/clutter-binding-pool.h 	\
@@ -135,7 +134,6 @@ source_c = \
 	$(srcdir)/clutter-align-constraint.c	\
 	$(srcdir)/clutter-alpha.c 		\
 	$(srcdir)/clutter-animatable.c		\
-	$(srcdir)/clutter-animation.c		\
 	$(srcdir)/clutter-backend.c		\
 	$(srcdir)/clutter-base-types.c		\
 	$(srcdir)/clutter-bezier.c		\
@@ -283,6 +281,7 @@ deprecated_h = \
 # deprecated source code
 deprecated_c = \
 	$(srcdir)/deprecated/clutter-actor-deprecated.c		\
+	$(srcdir)/deprecated/clutter-animation.c		\
 	$(srcdir)/deprecated/clutter-animator.c			\
 	$(srcdir)/deprecated/clutter-behaviour.c 		\
 	$(srcdir)/deprecated/clutter-behaviour-depth.c		\

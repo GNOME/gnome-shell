@@ -29,7 +29,7 @@
 #error "Only <clutter/clutter.h> can be included directly."
 #endif
 
-#include <clutter/clutter-animation.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 

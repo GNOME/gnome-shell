@@ -47,21 +47,18 @@ G_BEGIN_DECLS
 #define CLUTTER_TYPE_SIZE               (clutter_size_get_type ())
 #define CLUTTER_TYPE_RECT               (clutter_rect_get_type ())
 
-typedef struct _ClutterActor            ClutterActor;
+typedef struct _ClutterActor                    ClutterActor;
 
-typedef struct _ClutterStage            ClutterStage;
-typedef struct _ClutterContainer        ClutterContainer; /* dummy */
-typedef struct _ClutterChildMeta        ClutterChildMeta;
-typedef struct _ClutterLayoutMeta       ClutterLayoutMeta;
-typedef struct _ClutterActorMeta        ClutterActorMeta;
-typedef struct _ClutterLayoutManager    ClutterLayoutManager;
-typedef struct _ClutterActorIter        ClutterActorIter;
-typedef struct _ClutterPaintNode        ClutterPaintNode;
-typedef struct _ClutterContent          ClutterContent; /* dummy */
+typedef struct _ClutterStage                    ClutterStage;
+typedef struct _ClutterContainer                ClutterContainer; /* dummy */
+typedef struct _ClutterChildMeta                ClutterChildMeta;
+typedef struct _ClutterLayoutMeta               ClutterLayoutMeta;
+typedef struct _ClutterActorMeta                ClutterActorMeta;
+typedef struct _ClutterLayoutManager            ClutterLayoutManager;
+typedef struct _ClutterActorIter                ClutterActorIter;
+typedef struct _ClutterPaintNode                ClutterPaintNode;
+typedef struct _ClutterContent                  ClutterContent; /* dummy */
 
-typedef struct _ClutterAlpha            	ClutterAlpha;
-typedef struct _ClutterAnimator         	ClutterAnimator;
-typedef struct _ClutterState            	ClutterState;
 typedef struct _ClutterInterval         	ClutterInterval;
 typedef struct _ClutterAnimatable       	ClutterAnimatable; /* dummy */
 typedef struct _ClutterTimeline         	ClutterTimeline;
@@ -70,28 +67,35 @@ typedef struct _ClutterPropertyTransition       ClutterPropertyTransition;
 typedef struct _ClutterKeyframeTransition       ClutterKeyframeTransition;
 typedef struct _ClutterTransitionGroup		ClutterTransitionGroup;
 
-typedef struct _ClutterAction           ClutterAction;
-typedef struct _ClutterConstraint       ClutterConstraint;
-typedef struct _ClutterEffect           ClutterEffect;
+typedef struct _ClutterAction                   ClutterAction;
+typedef struct _ClutterConstraint               ClutterConstraint;
+typedef struct _ClutterEffect                   ClutterEffect;
 
-typedef struct _ClutterPath             ClutterPath;
+typedef struct _ClutterPath                     ClutterPath;
 
-typedef struct _ClutterActorBox         ClutterActorBox;
-typedef struct _ClutterColor            ClutterColor;
-typedef struct _ClutterGeometry         ClutterGeometry;
-typedef struct _ClutterKnot             ClutterKnot;
-typedef struct _ClutterMargin           ClutterMargin;
-typedef struct _ClutterPerspective      ClutterPerspective;
-typedef struct _ClutterPoint            ClutterPoint;
-typedef struct _ClutterRect             ClutterRect;
-typedef struct _ClutterSize             ClutterSize;
-typedef struct _ClutterVertex           ClutterVertex;
+typedef struct _ClutterActorBox                 ClutterActorBox;
+typedef struct _ClutterColor                    ClutterColor;
+typedef struct _ClutterGeometry                 ClutterGeometry;
+typedef struct _ClutterKnot                     ClutterKnot;
+typedef struct _ClutterMargin                   ClutterMargin;
+typedef struct _ClutterPerspective              ClutterPerspective;
+typedef struct _ClutterPoint                    ClutterPoint;
+typedef struct _ClutterRect                     ClutterRect;
+typedef struct _ClutterSize                     ClutterSize;
+typedef struct _ClutterVertex                   ClutterVertex;
 
-typedef struct _ClutterFog              ClutterFog; /* deprecated */
-typedef struct _ClutterBehaviour        ClutterBehaviour; /* deprecated */
-typedef struct _ClutterShader           ClutterShader; /* deprecated */
+typedef struct _ClutterAlpha            	ClutterAlpha;
+typedef struct _ClutterAnimation                ClutterAnimation;
+typedef struct _ClutterAnimator         	ClutterAnimator;
+typedef struct _ClutterState            	ClutterState;
+typedef struct _ClutterBehaviour                ClutterBehaviour;
+typedef struct _ClutterShader                   ClutterShader;
 
-typedef union _ClutterEvent             ClutterEvent;
+typedef union _ClutterEvent                     ClutterEvent;
+
+typedef struct _ClutterFog                      ClutterFog; /* deprecated */
+typedef struct _ClutterBehaviour                ClutterBehaviour; /* deprecated */
+typedef struct _ClutterShader                   ClutterShader; /* deprecated */
 
 /**
  * ClutterPaintVolume:

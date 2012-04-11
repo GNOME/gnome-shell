@@ -55,6 +55,7 @@
 #include "clutter-private.h"
 
 #include "deprecated/clutter-animatable.h"
+#include "deprecated/clutter-animation.h"
 
 typedef ClutterAnimatableIface  ClutterAnimatableInterface;
 G_DEFINE_INTERFACE (ClutterAnimatable, clutter_animatable, G_TYPE_OBJECT);
