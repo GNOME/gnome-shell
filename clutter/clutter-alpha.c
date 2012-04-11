@@ -747,74 +747,21 @@ typedef struct _AlphaData {
 
 static GPtrArray *clutter_alphas = NULL;
 
-/*< private >
- * _clutter_animation_modes:
- *
- * A mapping of animation modes and easing functions.
- */
-static const struct {
-  ClutterAnimationMode mode;
-  ClutterEasingFunc func;
-  const char *name;
-} _clutter_animation_modes[] = {
-  { CLUTTER_CUSTOM_MODE,         NULL, "custom" },
-
-  { CLUTTER_LINEAR,              clutter_linear, "linear" },
-  { CLUTTER_EASE_IN_QUAD,        clutter_ease_in_quad, "easeInQuad" },
-  { CLUTTER_EASE_OUT_QUAD,       clutter_ease_out_quad, "easeOutQuad" },
-  { CLUTTER_EASE_IN_OUT_QUAD,    clutter_ease_in_out_quad, "easeInOutQuad" },
-  { CLUTTER_EASE_IN_CUBIC,       clutter_ease_in_cubic, "easeInCubic" },
-  { CLUTTER_EASE_OUT_CUBIC,      clutter_ease_out_cubic, "easeOutCubic" },
-  { CLUTTER_EASE_IN_OUT_CUBIC,   clutter_ease_in_out_cubic, "easeInOutCubic" },
-  { CLUTTER_EASE_IN_QUART,       clutter_ease_in_quart, "easeInQuart" },
-  { CLUTTER_EASE_OUT_QUART,      clutter_ease_out_quart, "easeOutQuart" },
-  { CLUTTER_EASE_IN_OUT_QUART,   clutter_ease_in_out_quart, "easeInOutQuart" },
-  { CLUTTER_EASE_IN_QUINT,       clutter_ease_in_quint, "easeInQuint" },
-  { CLUTTER_EASE_OUT_QUINT,      clutter_ease_out_quint, "easeOutQuint" },
-  { CLUTTER_EASE_IN_OUT_QUINT,   clutter_ease_in_out_quint, "easeInOutQuint" },
-  { CLUTTER_EASE_IN_SINE,        clutter_ease_in_sine, "easeInSine" },
-  { CLUTTER_EASE_OUT_SINE,       clutter_ease_out_sine, "easeOutSine" },
-  { CLUTTER_EASE_IN_OUT_SINE,    clutter_ease_in_out_sine, "easeInOutSine" },
-  { CLUTTER_EASE_IN_EXPO,        clutter_ease_in_expo, "easeInExpo" },
-  { CLUTTER_EASE_OUT_EXPO,       clutter_ease_out_expo, "easeOutExpo" },
-  { CLUTTER_EASE_IN_OUT_EXPO,    clutter_ease_in_out_expo, "easeInOutExpo" },
-  { CLUTTER_EASE_IN_CIRC,        clutter_ease_in_circ, "easeInCirc" },
-  { CLUTTER_EASE_OUT_CIRC,       clutter_ease_out_circ, "easeOutCirc" },
-  { CLUTTER_EASE_IN_OUT_CIRC,    clutter_ease_in_out_circ, "easeInOutCirc" },
-  { CLUTTER_EASE_IN_ELASTIC,     clutter_ease_in_elastic, "easeInElastic" },
-  { CLUTTER_EASE_OUT_ELASTIC,    clutter_ease_out_elastic, "easeOutElastic" },
-  { CLUTTER_EASE_IN_OUT_ELASTIC, clutter_ease_in_out_elastic, "easeInOutElastic" },
-  { CLUTTER_EASE_IN_BACK,        clutter_ease_in_back, "easeInBack" },
-  { CLUTTER_EASE_OUT_BACK,       clutter_ease_out_back, "easeOutBack" },
-  { CLUTTER_EASE_IN_OUT_BACK,    clutter_ease_in_out_back, "easeInOutBack" },
-  { CLUTTER_EASE_IN_BOUNCE,      clutter_ease_in_bounce, "easeInBounce" },
-  { CLUTTER_EASE_OUT_BOUNCE,     clutter_ease_out_bounce, "easeOutBounce" },
-  { CLUTTER_EASE_IN_OUT_BOUNCE,  clutter_ease_in_out_bounce, "easeInOutBounce" },
-
-  { CLUTTER_ANIMATION_LAST,      NULL, "sentinel" },
-};
-
 static gdouble
 clutter_alpha_easing_func (ClutterAlpha *alpha,
                            gpointer      data G_GNUC_UNUSED)
 {
   ClutterAlphaPrivate *priv = alpha->priv;
   ClutterTimeline *timeline = priv->timeline;
-  ClutterEasingFunc easing_func;
   gdouble t, d;
 
   if (G_UNLIKELY (priv->timeline == NULL))
     return 0.0;
 
-  g_assert (_clutter_animation_modes[priv->mode].mode == priv->mode);
-  g_assert (_clutter_animation_modes[priv->mode].func != NULL);
-
   t = clutter_timeline_get_elapsed_time (timeline);
   d = clutter_timeline_get_duration (timeline);
 
-  easing_func = _clutter_animation_modes[priv->mode].func;
-
-  return easing_func (t, d);
+  return clutter_easing_for_mode (priv->mode, t, d);
 }
 
 /**
@@ -851,16 +798,15 @@ clutter_alpha_set_mode (ClutterAlpha *alpha,
       /* sanity check to avoid getting an out of sync
        * enum/function mapping
        */
-      g_assert (_clutter_animation_modes[mode].mode == mode);
-      g_assert (_clutter_animation_modes[mode].func != NULL);
+      g_assert (clutter_get_easing_func_for_mode (mode) != NULL);
 
       clutter_alpha_set_closure_internal (alpha, NULL);
 
       priv->mode = mode;
 
       CLUTTER_NOTE (ANIMATION, "New easing mode '%s'[%lu]\n",
-                    _clutter_animation_modes[priv->mode].name,
-                    _clutter_animation_modes[priv->mode].mode);
+                    clutter_get_easing_name_for_mode (priv->mode),
+                    priv->mode);
 
       priv->func = clutter_alpha_easing_func;
       priv->user_data = NULL;

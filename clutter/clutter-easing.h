@@ -17,6 +17,17 @@ G_BEGIN_DECLS
 typedef double (* ClutterEasingFunc) (double t, double d);
 
 G_GNUC_INTERNAL
+ClutterEasingFunc       clutter_get_easing_func_for_mode        (ClutterAnimationMode mode);
+
+G_GNUC_INTERNAL
+const char *            clutter_get_easing_name_for_mode        (ClutterAnimationMode mode);
+
+G_GNUC_INTERNAL
+double                  clutter_easing_for_mode                 (ClutterAnimationMode mode,
+                                                                 double               t,
+                                                                 double               d);
+
+G_GNUC_INTERNAL
 double  clutter_linear                  (double t,
                                          double d);
 G_GNUC_INTERNAL

@@ -2049,53 +2049,6 @@ clutter_timeline_set_progress_func (ClutterTimeline             *timeline,
   g_object_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_PROGRESS_MODE]);
 }
 
-/*< private >
- * _clutter_animation_modes:
- *
- * A mapping of animation modes and easing functions.
- */
-static const struct {
-  ClutterAnimationMode mode;
-  ClutterEasingFunc func;
-  const char *name;
-} _clutter_animation_modes[] = {
-  { CLUTTER_CUSTOM_MODE,         NULL, "custom" },
-
-  { CLUTTER_LINEAR,              clutter_linear, "linear" },
-  { CLUTTER_EASE_IN_QUAD,        clutter_ease_in_quad, "easeInQuad" },
-  { CLUTTER_EASE_OUT_QUAD,       clutter_ease_out_quad, "easeOutQuad" },
-  { CLUTTER_EASE_IN_OUT_QUAD,    clutter_ease_in_out_quad, "easeInOutQuad" },
-  { CLUTTER_EASE_IN_CUBIC,       clutter_ease_in_cubic, "easeInCubic" },
-  { CLUTTER_EASE_OUT_CUBIC,      clutter_ease_out_cubic, "easeOutCubic" },
-  { CLUTTER_EASE_IN_OUT_CUBIC,   clutter_ease_in_out_cubic, "easeInOutCubic" },
-  { CLUTTER_EASE_IN_QUART,       clutter_ease_in_quart, "easeInQuart" },
-  { CLUTTER_EASE_OUT_QUART,      clutter_ease_out_quart, "easeOutQuart" },
-  { CLUTTER_EASE_IN_OUT_QUART,   clutter_ease_in_out_quart, "easeInOutQuart" },
-  { CLUTTER_EASE_IN_QUINT,       clutter_ease_in_quint, "easeInQuint" },
-  { CLUTTER_EASE_OUT_QUINT,      clutter_ease_out_quint, "easeOutQuint" },
-  { CLUTTER_EASE_IN_OUT_QUINT,   clutter_ease_in_out_quint, "easeInOutQuint" },
-  { CLUTTER_EASE_IN_SINE,        clutter_ease_in_sine, "easeInSine" },
-  { CLUTTER_EASE_OUT_SINE,       clutter_ease_out_sine, "easeOutSine" },
-  { CLUTTER_EASE_IN_OUT_SINE,    clutter_ease_in_out_sine, "easeInOutSine" },
-  { CLUTTER_EASE_IN_EXPO,        clutter_ease_in_expo, "easeInExpo" },
-  { CLUTTER_EASE_OUT_EXPO,       clutter_ease_out_expo, "easeOutExpo" },
-  { CLUTTER_EASE_IN_OUT_EXPO,    clutter_ease_in_out_expo, "easeInOutExpo" },
-  { CLUTTER_EASE_IN_CIRC,        clutter_ease_in_circ, "easeInCirc" },
-  { CLUTTER_EASE_OUT_CIRC,       clutter_ease_out_circ, "easeOutCirc" },
-  { CLUTTER_EASE_IN_OUT_CIRC,    clutter_ease_in_out_circ, "easeInOutCirc" },
-  { CLUTTER_EASE_IN_ELASTIC,     clutter_ease_in_elastic, "easeInElastic" },
-  { CLUTTER_EASE_OUT_ELASTIC,    clutter_ease_out_elastic, "easeOutElastic" },
-  { CLUTTER_EASE_IN_OUT_ELASTIC, clutter_ease_in_out_elastic, "easeInOutElastic" },
-  { CLUTTER_EASE_IN_BACK,        clutter_ease_in_back, "easeInBack" },
-  { CLUTTER_EASE_OUT_BACK,       clutter_ease_out_back, "easeOutBack" },
-  { CLUTTER_EASE_IN_OUT_BACK,    clutter_ease_in_out_back, "easeInOutBack" },
-  { CLUTTER_EASE_IN_BOUNCE,      clutter_ease_in_bounce, "easeInBounce" },
-  { CLUTTER_EASE_OUT_BOUNCE,     clutter_ease_out_bounce, "easeOutBounce" },
-  { CLUTTER_EASE_IN_OUT_BOUNCE,  clutter_ease_in_out_bounce, "easeInOutBounce" },
-
-  { CLUTTER_ANIMATION_LAST,      NULL, "sentinel" },
-};
-
 static gdouble
 clutter_timeline_progress_func (ClutterTimeline *timeline,
                                 gdouble          elapsed,
@@ -2103,14 +2056,8 @@ clutter_timeline_progress_func (ClutterTimeline *timeline,
                                 gpointer         user_data G_GNUC_UNUSED)
 {
   ClutterTimelinePrivate *priv = timeline->priv;
-  ClutterEasingFunc easing_func;
 
-  g_assert (_clutter_animation_modes[priv->progress_mode].mode == priv->progress_mode);
-  g_assert (_clutter_animation_modes[priv->progress_mode].func != NULL);
-
-  easing_func = _clutter_animation_modes[priv->progress_mode].func;
-
-  return easing_func (elapsed, duration);
+  return clutter_easing_for_mode (priv->progress_mode, elapsed, duration);
 }
 
 /**
