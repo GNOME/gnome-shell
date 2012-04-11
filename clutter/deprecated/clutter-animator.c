@@ -118,6 +118,8 @@
  * </refsect2>
  *
  * #ClutterAnimator is available since Clutter 1.2
+ *
+ * #ClutterAnimator has been deprecated in Clutter 1.12
  */
 
 #ifdef HAVE_CONFIG_H
@@ -209,6 +211,8 @@ G_DEFINE_TYPE_WITH_CODE (ClutterAnimator,
  * Return value: a new #ClutterAnimator.
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 ClutterAnimator *
 clutter_animator_new (void)
@@ -855,6 +859,7 @@ animation_animator_started (ClutterTimeline *timeline,
  *   returned and the #GValue is left untouched
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 gboolean
 clutter_animator_compute_value (ClutterAnimator *animator,
@@ -1035,6 +1040,7 @@ clutter_animator_compute_value (ClutterAnimator *animator,
  * Sets an external timeline that will be used for driving the animation
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 void
 clutter_animator_set_timeline (ClutterAnimator *animator,
@@ -1080,6 +1086,7 @@ clutter_animator_set_timeline (ClutterAnimator *animator,
  * Return value: (transfer none): the #ClutterTimeline that drives the animator
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 ClutterTimeline *
 clutter_animator_get_timeline (ClutterAnimator *animator)
@@ -1100,6 +1107,7 @@ clutter_animator_get_timeline (ClutterAnimator *animator)
  *   and it should not be unreferenced
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 ClutterTimeline *
 clutter_animator_start (ClutterAnimator *animator)
@@ -1125,6 +1133,7 @@ clutter_animator_start (ClutterAnimator *animator)
  * as specified.
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 void
 clutter_animator_set_duration (ClutterAnimator *animator,
@@ -1144,6 +1153,7 @@ clutter_animator_set_duration (ClutterAnimator *animator,
  * Return value: the duration of the animation, in milliseconds
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 guint
 clutter_animator_get_duration  (ClutterAnimator *animator)
@@ -1174,6 +1184,7 @@ clutter_animator_get_duration  (ClutterAnimator *animator)
  * value will be replaced with the new values.
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 void
 clutter_animator_set (ClutterAnimator *animator,
@@ -1317,6 +1328,7 @@ clutter_animator_set_key_internal (ClutterAnimator    *animator,
  * Return value: (transfer none): The animator instance
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 ClutterAnimator *
 clutter_animator_set_key (ClutterAnimator *animator,
@@ -1366,6 +1378,7 @@ clutter_animator_set_key (ClutterAnimator *animator,
  *   using g_list_free()
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 GList *
 clutter_animator_get_keys (ClutterAnimator *animator,
@@ -1474,6 +1487,7 @@ again:
  * Removes all keys matching the conditions specificed in the arguments.
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 void
 clutter_animator_remove_key (ClutterAnimator *animator,
@@ -1780,6 +1794,7 @@ clutter_animator_class_init (ClutterAnimatorClass *klass)
    * to drive the animation
    *
    * Since: 1.2
+   * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
    */
   obj_props[PROP_DURATION] =
     g_param_spec_uint ("duration",
@@ -1796,6 +1811,7 @@ clutter_animator_class_init (ClutterAnimatorClass *klass)
    * animation
    *
    * Since: 1.2
+   * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
    */
   obj_props[PROP_TIMELINE] =
     g_param_spec_object ("timeline",
@@ -1841,6 +1857,7 @@ clutter_animator_init (ClutterAnimator *animator)
  * Return value: %TRUE if the property is eased in
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 gboolean
 clutter_animator_property_get_ease_in (ClutterAnimator *animator,
@@ -1878,6 +1895,7 @@ clutter_animator_property_get_ease_in (ClutterAnimator *animator,
  * Sets whether a property value is to be eased into the animation.
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 void
 clutter_animator_property_set_ease_in (ClutterAnimator *animator,
@@ -1920,6 +1938,7 @@ clutter_animator_property_set_ease_in (ClutterAnimator *animator,
  *
  * Returns: a ClutterInterpolation value.
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 ClutterInterpolation
 clutter_animator_property_get_interpolation (ClutterAnimator *animator,
@@ -1963,6 +1982,7 @@ clutter_animator_property_get_interpolation (ClutterAnimator *animator,
  * the values.
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 void
 clutter_animator_property_set_interpolation (ClutterAnimator     *animator,
@@ -2001,6 +2021,7 @@ G_DEFINE_BOXED_TYPE (ClutterAnimatorKey, clutter_animator_key,
  * Return value: (transfer none): the object an animator_key exist for.
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 GObject *
 clutter_animator_key_get_object (const ClutterAnimatorKey *key)
@@ -2019,6 +2040,7 @@ clutter_animator_key_get_object (const ClutterAnimatorKey *key)
  * Return value: the name of the property an animator_key exist for.
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 const gchar *
 clutter_animator_key_get_property_name (const ClutterAnimatorKey *key)
@@ -2040,6 +2062,7 @@ clutter_animator_key_get_property_name (const ClutterAnimatorKey *key)
  * Return value: the #GType of the property
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 GType
 clutter_animator_key_get_property_type (const ClutterAnimatorKey *key)
@@ -2061,6 +2084,7 @@ clutter_animator_key_get_property_type (const ClutterAnimatorKey *key)
  * Return value: the mode of a #ClutterAnimatorKey
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 gulong
 clutter_animator_key_get_mode (const ClutterAnimatorKey *key)
@@ -2079,6 +2103,7 @@ clutter_animator_key_get_mode (const ClutterAnimatorKey *key)
  * Return value: the progress defined for a #ClutterAnimator key.
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 gdouble
 clutter_animator_key_get_progress (const ClutterAnimatorKey *key)
@@ -2105,6 +2130,7 @@ clutter_animator_key_get_progress (const ClutterAnimatorKey *key)
  *   %FALSE otherwise
  *
  * Since: 1.2
+ * Deprecated: 1.12: Use #ClutterKeyframeTransition instead
  */
 gboolean
 clutter_animator_key_get_value (const ClutterAnimatorKey *key,

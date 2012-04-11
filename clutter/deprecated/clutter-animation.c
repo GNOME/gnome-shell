@@ -139,7 +139,9 @@
  *   </programlisting>
  * </example>
  *
- * #ClutterAnimation is available since Clutter 1.0
+ * #ClutterAnimation is available since Clutter 1.0.
+ *
+ * #ClutterAnimation has been deprecated in Clutter 1.12.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -500,6 +502,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    * The #GObject to which the animation applies.
    *
    * Since: 1.0
+   * Deprecated: 1.12: Use #ClutterPropertyTransition instead
    */
   obj_props[PROP_OBJECT] =
     g_param_spec_object ("object",
@@ -516,6 +519,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    * default value is %CLUTTER_LINEAR.
    *
    * Since: 1.0
+   * Deprecated: 1.12: Use #ClutterPropertyTransition instead
    */
   obj_props[PROP_MODE] =
     g_param_spec_ulong ("mode",
@@ -531,6 +535,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    * The duration of the animation, expressed in milliseconds.
    *
    * Since: 1.0
+   * Deprecated: 1.12: Use #ClutterPropertyTransition instead
    */
   obj_props[PROP_DURATION] =
     g_param_spec_uint ("duration",
@@ -546,6 +551,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    * Whether the animation should loop.
    *
    * Since: 1.0
+   * Deprecated: 1.12: Use #ClutterPropertyTransition instead
    */
   obj_props[PROP_LOOP] =
     g_param_spec_boolean ("loop",
@@ -560,6 +566,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    * The #ClutterTimeline used by the animation.
    *
    * Since: 1.0
+   * Deprecated: 1.12: Use #ClutterPropertyTransition instead
    */
   obj_props[PROP_TIMELINE] =
     g_param_spec_object ("timeline",
@@ -597,6 +604,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    * started
    *
    * Since: 1.0
+   * Deprecated: 1.12: Use #ClutterPropertyTransition instead
    */
   animation_signals[STARTED] =
     g_signal_new (I_("started"),
@@ -618,6 +626,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    * duration of the signal emission chain.
    *
    * Since: 1.0
+   * Deprecated: 1.12: Use #ClutterPropertyTransition instead
    */
   animation_signals[COMPLETED] =
     g_signal_new (I_("completed"),
@@ -771,6 +780,7 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
  *
  * Return value: (transfer none): The animation itself.
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 ClutterAnimation *
 clutter_animation_bind_interval (ClutterAnimation *animation,
@@ -812,6 +822,7 @@ clutter_animation_bind_interval (ClutterAnimation *animation,
  * Return value: (transfer none): The animation itself.
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 ClutterAnimation *
 clutter_animation_bind (ClutterAnimation *animation,
@@ -881,6 +892,7 @@ clutter_animation_bind (ClutterAnimation *animation,
  * Removes @property_name from the list of animated properties.
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 void
 clutter_animation_unbind_property (ClutterAnimation *animation,
@@ -915,6 +927,7 @@ clutter_animation_unbind_property (ClutterAnimation *animation,
  *   #ClutterAnimation, %FALSE otherwise
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 gboolean
 clutter_animation_has_property (ClutterAnimation *animation,
@@ -940,6 +953,7 @@ clutter_animation_has_property (ClutterAnimation *animation,
  * will take ownership of the passed #ClutterInterval.
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 void
 clutter_animation_update_interval (ClutterAnimation *animation,
@@ -1017,6 +1031,7 @@ clutter_animation_update_interval (ClutterAnimation *animation,
  * Return value: (transfer none): The animation itself.
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 ClutterAnimation *
 clutter_animation_update (ClutterAnimation *animation,
@@ -1072,6 +1087,7 @@ clutter_animation_update (ClutterAnimation *animation,
  *   owned by the #ClutterAnimation and should not be unreferenced
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 ClutterInterval *
 clutter_animation_get_interval (ClutterAnimation *animation,
@@ -1334,6 +1350,7 @@ out:
  *   to release the associated resources
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 ClutterAnimation *
 clutter_animation_new (void)
@@ -1350,6 +1367,7 @@ clutter_animation_new (void)
  * reference on @object.
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 void
 clutter_animation_set_object (ClutterAnimation *animation,
@@ -1385,6 +1403,7 @@ clutter_animation_set_object (ClutterAnimation *animation,
  * Return value: (transfer none): a #GObject
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 GObject *
 clutter_animation_get_object (ClutterAnimation *animation)
@@ -1406,6 +1425,7 @@ clutter_animation_get_object (ClutterAnimation *animation)
  * This function will also set #ClutterAnimation:alpha if needed.
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 void
 clutter_animation_set_mode (ClutterAnimation *animation,
@@ -1450,6 +1470,7 @@ clutter_animation_set_mode (ClutterAnimation *animation,
  * Return value: the mode for the animation
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 gulong
 clutter_animation_get_mode (ClutterAnimation *animation)
@@ -1477,6 +1498,7 @@ clutter_animation_get_mode (ClutterAnimation *animation)
  * #ClutterAnimation:timeline if needed.
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 void
 clutter_animation_set_duration (ClutterAnimation *animation,
@@ -1511,6 +1533,7 @@ clutter_animation_set_duration (ClutterAnimation *animation,
  * #ClutterAnimation:timeline if needed.
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 void
 clutter_animation_set_loop (ClutterAnimation *animation,
@@ -1539,6 +1562,7 @@ clutter_animation_set_loop (ClutterAnimation *animation,
  * Return value: %TRUE if the animation is looping
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 gboolean
 clutter_animation_get_loop (ClutterAnimation *animation)
@@ -1561,6 +1585,7 @@ clutter_animation_get_loop (ClutterAnimation *animation)
  * Return value: the duration of the animation
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 guint
 clutter_animation_get_duration (ClutterAnimation *animation)
@@ -1585,6 +1610,7 @@ clutter_animation_get_duration (ClutterAnimation *animation)
  * This function will take a reference on the passed @timeline.
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 void
 clutter_animation_set_timeline (ClutterAnimation *animation,
@@ -1667,6 +1693,7 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
  * Return value: (transfer none): the timeline used by the animation
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 ClutterTimeline *
 clutter_animation_get_timeline (ClutterAnimation *animation)
@@ -1736,6 +1763,7 @@ clutter_animation_get_alpha (ClutterAnimation *animation)
  * #ClutterAnimation::completed signal
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 void
 clutter_animation_completed (ClutterAnimation *animation)
@@ -2161,6 +2189,7 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
  *    g_object_unref()
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 ClutterAnimation *
 clutter_actor_animate_with_timeline (ClutterActor    *actor,
@@ -2346,6 +2375,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *   g_object_unref()
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 ClutterAnimation *
 clutter_actor_animate (ClutterActor *actor,
@@ -2401,6 +2431,7 @@ clutter_actor_animate (ClutterActor *actor,
  *   g_object_unref()
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 ClutterAnimation *
 clutter_actor_animatev (ClutterActor        *actor,
@@ -2458,6 +2489,7 @@ clutter_actor_animatev (ClutterActor        *actor,
  *    g_object_unref()
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 ClutterAnimation *
 clutter_actor_animate_with_timelinev (ClutterActor        *actor,
@@ -2556,6 +2588,7 @@ clutter_actor_animate_with_alphav (ClutterActor        *actor,
  * Return value: (transfer none): a #ClutterAnimation, or %NULL
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 ClutterAnimation *
 clutter_actor_get_animation (ClutterActor *actor)
@@ -2578,6 +2611,7 @@ clutter_actor_get_animation (ClutterActor *actor)
  * The #ClutterAnimation::completed signal will not be emitted.
  *
  * Since: 1.4
+ * Deprecated: 1.12: Use #ClutterPropertyTransition instead
  */
 void
 clutter_actor_detach_animation (ClutterActor *actor)
