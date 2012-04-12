@@ -88,6 +88,7 @@
 #include "clutter-property-transition.h"
 #include "clutter-scriptable.h"
 #include "clutter-script.h"
+#include "clutter-scroll-actor.h"
 #include "clutter-settings.h"
 #include "clutter-shader-effect.h"
 #include "clutter-shader-types.h"

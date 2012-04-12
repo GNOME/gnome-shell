@@ -58,7 +58,8 @@ UNIT_TESTS = \
 	test-transitions.c \
 	test-content.c \
 	test-canvas.c \
-	test-keyframe-transition.c
+	test-keyframe-transition.c \
+	test-scroll-actor.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c

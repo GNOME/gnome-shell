@@ -1213,6 +1213,26 @@ typedef enum {
   CLUTTER_ORIENTATION_VERTICAL
 } ClutterOrientation;
 
+/**
+ * ClutterScrollMode:
+ * @CLUTTER_SCROLL_NONE: Ignore scrolling
+ * @CLUTTER_SCROLL_HORIZONTALLY: Scroll only horizontally
+ * @CLUTTER_SCROLL_VERTICALLY: Scroll only vertically
+ * @CLUTTER_SCROLL_BOTH: Scroll in both directions
+ *
+ * Scroll modes.
+ *
+ * Since: 1.12
+ */
+typedef enum { /*< prefix=CLUTTER_SCROLL >*/
+  CLUTTER_SCROLL_NONE         = 0,
+
+  CLUTTER_SCROLL_HORIZONTALLY = 1 << 0,
+  CLUTTER_SCROLL_VERTICALLY   = 1 << 1,
+
+  CLUTTER_SCROLL_BOTH         = CLUTTER_SCROLL_HORIZONTALLY | CLUTTER_SCROLL_VERTICALLY
+} ClutterScrollMode;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ENUMS_H__ */
