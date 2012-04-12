@@ -5207,6 +5207,9 @@ clutter_actor_update_default_paint_volume (ClutterActor       *self,
         {
           const ClutterPaintVolume *child_volume;
 
+          if (!CLUTTER_ACTOR_IS_MAPPED (child))
+            continue;
+
           child_volume = clutter_actor_get_transformed_paint_volume (child, self);
           if (child_volume == NULL)
             {
