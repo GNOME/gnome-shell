@@ -155,7 +155,7 @@ translate_device_classes (Display             *xdisplay,
                                     (XIValuatorClassInfo *) class_info);
           break;
 
-#ifdef XINPUT_2_2
+#ifdef HAVE_XINPUT_2_2
         case XIScrollClass:
           {
             XIScrollClassInfo *scroll_info = (XIScrollClassInfo *) class_info;
@@ -179,7 +179,7 @@ translate_device_classes (Display             *xdisplay,
                                                    scroll_info->increment);
           }
           break;
-#endif /* XINPUT_2_2 */
+#endif /* HAVE_XINPUT_2_2 */
 
         default:
           break;
@@ -193,7 +193,7 @@ is_touch_device (XIAnyClassInfo         **classes,
                  ClutterInputDeviceType  *device_type,
                  guint                   *n_touch_points)
 {
-#ifdef XINPUT_2_2
+#ifdef HAVE_XINPUT_2_2
   guint i;
 
   for (i = 0; i < n_classes; i++)
@@ -484,11 +484,11 @@ get_event_stage (ClutterEventTranslator *translator,
     case XI_ButtonPress:
     case XI_ButtonRelease:
     case XI_Motion:
-#ifdef XINPUT_2_2
+#ifdef HAVE_XINPUT_2_2
     case XI_TouchBegin:
     case XI_TouchUpdate:
     case XI_TouchEnd:
-#endif /* XINPUT_2_2 */
+#endif /* HAVE_XINPUT_2_2 */
       {
         XIDeviceEvent *xev = (XIDeviceEvent *) xi_event;
 
@@ -856,10 +856,10 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                                                  stage_x11,
                                                  &xev->valuators);
 
-#ifdef XINPUT_2_2
+#ifdef HAVE_XINPUT_2_2
             if (xev->flags & XIPointerEmulated)
               _clutter_event_set_pointer_emulated (event, TRUE);
-#endif /* XINPUT_2_2 */
+#endif /* HAVE_XINPUT_2_2 */
             break;
 
           default:
@@ -908,10 +908,10 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                       event->button.y,
                       event->button.axes != NULL ? "yes" : "no");
 
-#ifdef XINPUT_2_2
+#ifdef HAVE_XINPUT_2_2
         if (xev->flags & XIPointerEmulated)
           _clutter_event_set_pointer_emulated (event, TRUE);
-#endif /* XINPUT_2_2 */
+#endif /* HAVE_XINPUT_2_2 */
 
         if (xi_event->evtype == XI_ButtonPress)
           _clutter_stage_x11_set_user_time (stage_x11, event->button.time);
@@ -988,10 +988,10 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         if (source_device != NULL && device->stage != NULL)
           _clutter_input_device_set_stage (source_device, device->stage);
 
-#ifdef XINPUT_2_2
+#ifdef HAVE_XINPUT_2_2
         if (xev->flags & XIPointerEmulated)
           _clutter_event_set_pointer_emulated (event, TRUE);
-#endif /* XINPUT_2_2 */
+#endif /* HAVE_XINPUT_2_2 */
 
         CLUTTER_NOTE (EVENT, "motion: win:0x%x device:%s (x:%.2f, y:%.2f, axes:%s)",
                       (unsigned int) stage_x11->xwin,
@@ -1004,7 +1004,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
       }
       break;
 
-#ifdef XINPUT_2_2
+#ifdef HAVE_XINPUT_2_2
     case XI_TouchBegin:
     case XI_TouchEnd:
       {
@@ -1112,7 +1112,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         retval = CLUTTER_TRANSLATE_QUEUE;
       }
       break;
-#endif /* XINPUT_2_2 */
+#endif /* HAVE_XINPUT_2_2 */
 
     case XI_Enter:
     case XI_Leave:

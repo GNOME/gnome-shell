@@ -92,7 +92,7 @@ clutter_input_device_xi2_select_stage_events (ClutterInputDevice *device,
   if (event_mask & LeaveWindowMask)
     XISetMask (mask, XI_Leave);
 
-#ifdef XINPUT_2_2
+#ifdef HAVE_XINPUT_2_2
   /* enable touch event support if we're running on XInput 2.2 */
   if (backend_x11->xi_minor >= 2)
     {
@@ -100,7 +100,7 @@ clutter_input_device_xi2_select_stage_events (ClutterInputDevice *device,
       XISetMask (mask, XI_TouchUpdate);
       XISetMask (mask, XI_TouchEnd);
     }
-#endif /* XINPUT_2_2 */
+#endif /* HAVE_XINPUT_2_2 */
 
   xi_event_mask.deviceid = device_xi2->device_id;
   xi_event_mask.mask = mask;

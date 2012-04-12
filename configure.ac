@@ -724,7 +724,7 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
                                   AC_CHECK_MEMBER([XIScrollClassInfo.number],
                                                   [
                                                     have_xinput_2_2=yes
-                                                    AC_DEFINE([XINPUT_2_2], [1], [Define to 1 if XInput 2.2 is available])
+                                                    AC_DEFINE([HAVE_XINPUT_2_2], [1], [Define to 1 if XInput 2.2 is available])
                                                   ],
                                                   [have_xinput_2_2=no],
                                                   [[#include <X11/extensions/XInput2.h>]])])
