@@ -68,6 +68,7 @@ src/gnome-shell-extension-prefs
 src/gnome-shell-hotplug-sniffer
 src/gnome-shell-jhbuild
 src/gnome-shell-perf-helper
+src/gnome-shell-perf-tool
 src/gnome-shell-real
 src/hotplug-sniffer/org.gnome.Shell.HotplugSniffer.service
 src/run-js-test

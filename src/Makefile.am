@@ -27,8 +27,10 @@ CLEANFILES += $(service_DATA)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 
-bin_SCRIPTS += gnome-shell-extension-tool gnome-shell-extension-prefs
-EXTRA_DIST += gnome-shell-extension-tool.in gnome-shell-extension-prefs.in
+bin_SCRIPTS += gnome-shell-extension-tool gnome-shell-extension-prefs \
+	       gnome-shell-perf-tool
+EXTRA_DIST += gnome-shell-extension-tool.in gnome-shell-extension-prefs.in \
+	      gnome-shell-perf-tool.in
 bin_PROGRAMS = gnome-shell-real
 
 if USE_JHBUILD_WRAPPER_SCRIPT
@@ -69,6 +71,9 @@ gnome-shell-extension-tool: gnome-shell-extension-tool.in Makefile
 	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
 
 gnome-shell-extension-prefs: gnome-shell-extension-prefs.in Makefile
+	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
+
+gnome-shell-perf-tool: gnome-shell-perf-tool.in Makefile
 	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
 
 CLEANFILES += gnome-shell $(bin_SCRIPTS)

@@ -168,31 +168,7 @@ def start_dconf_await_service():
         sys.exit(1)
 
     wait_for_dbus_name (DCONF_NAME)
-
-PERF_HELPER_NAME = "org.gnome.Shell.PerfHelper"
-PERF_HELPER_IFACE = "org.gnome.Shell.PerfHelper"
-PERF_HELPER_PATH = "/org/gnome/Shell/PerfHelper"
-
-def start_perf_helper():
-    get_bus_iface() # connect to NameOwnerChanged signal
-
-    self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-    running_from_source_tree = os.path.exists(os.path.join(self_dir, 'gnome-shell-jhbuild.in'))
-
-    if running_from_source_tree:
-        perf_helper_path = os.path.join(self_dir, "gnome-shell-perf-helper")
-    else:
-        perf_helper_path = "@libexecdir@/gnome-shell-perf-helper"
-
-    subprocess.Popen([perf_helper_path])
-    wait_for_dbus_name (PERF_HELPER_NAME)
-
-def stop_perf_helper():
-    bus = get_bus()
-    proxy = bus.get_object(PERF_HELPER_NAME, PERF_HELPER_PATH)
-    proxy.Exit(dbus_interface=PERF_HELPER_IFACE)
-
-def start_shell(perf_output=None):
+def start_shell():
     self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
     if os.path.exists(os.path.join(self_dir, 'gnome-shell-jhbuild.in')):
         running_from_source_tree = True
@@ -235,12 +211,6 @@ def start_shell(perf_output=None):
     if os.path.exists(jhbuild_gconf_source):
         env['GCONF_DEFAULT_SOURCE_PATH'] = jhbuild_gconf_source
 
-    if options.perf is not None:
-        env['SHELL_PERF_MODULE'] = options.perf
-        env['MUTTER_WM_CLASS_FILTER'] = 'Gnome-shell-perf-helper'
-
-    if perf_output is not None:
-        env['SHELL_PERF_OUTPUT'] = perf_output
 
     args = []
     if options.debug:
@@ -271,7 +241,7 @@ def ensure_desktop_infrastructure_state():
     _killall('notification-daemon')
     _killall('notify-osd')
 
-def run_shell(perf_output=None):
+def run_shell():
     if options.debug:
         # Record initial terminal state so we can reset it to that
         # later, in case we kill gdb at a bad time
@@ -283,7 +253,7 @@ def run_shell(perf_output=None):
         print "Starting shell"
 
     try:
-        shell = start_shell(perf_output=perf_output)
+        shell = start_shell()
 
         # Wait for shell to exit
         if options.verbose:
@@ -317,206 +287,6 @@ def run_shell(perf_output=None):
 
     return normal_exit
 
-def upload_performance_report(report_text):
-    # Local imports to avoid impacting gnome-shell startup time
-    import base64
-    from ConfigParser import RawConfigParser
-    import hashlib
-    import hmac
-    import httplib
-    import urlparse
-    import urllib
-
-    try:
-        config_home = os.environ['XDG_CONFIG_HOME']
-    except KeyError:
-        config_home = None
-
-    if not config_home:
-        config_home = os.path.expanduser("~/.config")
-
-    config_file = os.path.join(config_home, "gnome-shell/perf.ini")
-
-    try:
-        config = RawConfigParser()
-        f = open(config_file)
-        config.readfp(f)
-        f.close()
-
-        base_url = config.get('upload', 'url')
-        system_name = config.get('upload', 'name')
-        secret_key = config.get('upload', 'key')
-    except Exception, e:
-        print "Can't read upload configuration from %s: %s" % (config_file, str(e))
-        sys.exit(1)
-
-    # Determine host, port and upload URL from provided data, we're
-    # a bit extra-careful about normalization since the URL is part
-    # of the signature.
-
-    split = urlparse.urlsplit(base_url)
-    scheme = split[0].lower()
-    netloc = split[1]
-    base_path = split[2]
-
-    m = re.match(r'^(.*?)(?::(\d+))?$', netloc)
-    if m.group(2):
-        host, port = m.group(1), int(m.group(2))
-    else:
-        host, port = m.group(1), None
-
-    if scheme != "http":
-        print "'%s' is not a HTTP URL" % base_url
-        sys.exit(1)
-
-    if port is None:
-        port = 80
-
-    if base_path.endswith('/'):
-        base_path = base_path[:-1]
-
-    if port == 80:
-        normalized_base = "%s://%s%s" % (scheme, host, base_path)
-    else:
-        normalized_base = "%s://%s:%d%s" % (scheme, host, port, base_path)
-
-    upload_url = normalized_base + '/system/%s/upload' % system_name
-    upload_path = urlparse.urlsplit(upload_url)[2] # path portion
-
-    # Create signature based on upload URL and the report data
-
-    signature_data = 'POST&' + upload_url + "&&"
-    h = hmac.new(secret_key, digestmod=hashlib.sha1)
-    h.update(signature_data)
-    h.update(report_text)
-    signature = urllib.quote(base64.b64encode(h.digest()), "~")
-
-    headers = {
-        'User-Agent': 'gnome-shell',
-        'Content-Type': 'application/json',
-        'X-Shell-Signature': 'HMAC-SHA1 ' + signature
-    };
-
-    connection = httplib.HTTPConnection(host, port)
-    connection.request('POST', upload_path, report_text, headers)
-    response = connection.getresponse()
-
-    if response.status == 200:
-        print "Performance report upload succeeded"
-    else:
-        print "Performance report upload failed with status %d" % response.status
-        print response.read()
-
-def run_performance_test():
-    iters = options.perf_iters
-    if options.perf_warmup:
-        iters += 1
-
-    logs = []
-    metric_summaries = {}
-
-    start_perf_helper()
-
-    for i in xrange(0, iters):
-        # We create an empty temporary file that the shell will overwrite
-        # with the contents.
-        handle, output_file = tempfile.mkstemp(".json", "gnome-shell-perf.")
-        os.close(handle)
-
-        # Run the performance test and collect the output as JSON
-        normal_exit = False
-        try:
-            normal_exit = run_shell(perf_output=output_file)
-        except:
-            stop_perf_helper()
-            raise
-        finally:
-            if not normal_exit:
-                os.remove(output_file)
-
-        if not normal_exit:
-            stop_perf_helper()
-            return False
-
-        try:
-            f = open(output_file)
-            output = json.load(f)
-            f.close()
-        except:
-            stop_perf_helper()
-            raise
-        finally:
-            os.remove(output_file)
-
-        # Grab the event definitions and monitor layout the first time around
-        if i == 0:
-            events = output['events']
-            monitors = output['monitors']
-
-        if options.perf_warmup and i == 0:
-            continue
-
-        for metric in output['metrics']:
-            name = metric['name']
-            if not name in metric_summaries:
-                summary = {}
-                summary['description'] = metric['description']
-                summary['units'] = metric['units']
-                summary['values'] = []
-                metric_summaries[name] = summary
-            else:
-                summary = metric_summaries[name]
-
-            summary['values'].append(metric['value'])
-
-        logs.append(output['log'])
-
-    stop_perf_helper()
-
-    if options.perf_output or options.perf_upload:
-        # Write a complete report, formatted as JSON. The Javascript/C code that
-        # generates the individual reports we are summarizing here is very careful
-        # to format them nicely, but we just dump out a compressed no-whitespace
-        # version here for simplicity. Using json.dump(indent=0) doesn't real
-        # improve the readability of the output much.
-        report = {
-            'date': datetime.datetime.utcnow().isoformat() + 'Z',
-            'events': events,
-            'monitors': monitors,
-            'metrics': metric_summaries,
-            'logs': logs
-        }
-
-        # Add the Git revision if available
-        self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-        if os.path.exists(os.path.join(self_dir, 'gnome-shell-jhbuild.in')):
-            top_dir = os.path.dirname(self_dir)
-            git_dir = os.path.join(top_dir, '.git')
-            if os.path.exists(git_dir):
-                env = dict(os.environ)
-                env['GIT_DIR'] = git_dir
-                revision = subprocess.Popen(['git', 'rev-parse', 'HEAD'],
-                                            env=env,
-                                            stdout=subprocess.PIPE).communicate()[0].strip()
-                report['revision'] = revision
-
-        if options.perf_output:
-            f = open(options.perf_output, 'w')
-            json.dump(report, f)
-            f.close()
-
-        if options.perf_upload:
-            upload_performance_report(json.dumps(report))
-    else:
-        # Write a human readable summary
-        print '------------------------------------------------------------';
-        for metric in sorted(metric_summaries.keys()):
-            summary = metric_summaries[metric]
-            print "#", summary['description']
-            print metric, ", ".join((str(x) for x in summary['values']))
-        print '------------------------------------------------------------';
-
-    return True
 
 def restore_gnome():
     # Do imports lazily to save time and memory
@@ -570,17 +340,6 @@ parser.add_option("", "--debug-command", metavar="COMMAND",
                   help="Command to use for debugging (defaults to 'gdb --args')")
 parser.add_option("-v", "--verbose", action="store_true")
 parser.add_option("", "--sync", action="store_true")
-parser.add_option("", "--perf", metavar="PERF_MODULE",
-		  help="Specify the name of a performance module to run")
-parser.add_option("", "--perf-iters", type="int", metavar="ITERS",
-		  help="Numbers of iterations of performance module to run",
-                  default=1)
-parser.add_option("", "--perf-warmup", action="store_true",
-		  help="Run a dry run before performance tests")
-parser.add_option("", "--perf-output", metavar="OUTPUT_FILE",
-		  help="Output file to write performance report")
-parser.add_option("", "--perf-upload", action="store_true",
-		  help="Upload performance report to server")
 parser.add_option("", "--version", action="callback", callback=show_version,
                   help="Display version and exit")
 
@@ -588,10 +347,6 @@ options, args = parser.parse_args()
 
 if args:
     parser.print_usage()
-    sys.exit(1)
-
-if options.perf and json is None:
-    print 'The Python simplejson module is required for performance tests'
     sys.exit(1)
 
 # Handle ssh logins
@@ -610,13 +365,10 @@ elif options.debug:
 normal_exit = False
 
 try:
-    if options.perf:
-        normal_exit = run_performance_test()
-    else:
-        ensure_desktop_infrastructure_state()
-        normal_exit = run_shell()
+    ensure_desktop_infrastructure_state()
+    normal_exit = run_shell()
 finally:
-    if options.replace and (options.perf or not normal_exit):
+    if options.replace and not normal_exit:
         restore_gnome()
 
 if normal_exit:
