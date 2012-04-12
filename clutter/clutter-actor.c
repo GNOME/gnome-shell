@@ -3241,6 +3241,9 @@ _clutter_actor_remove_effect_internal (ClutterActor  *self,
     return;
 
   _clutter_meta_group_remove_meta (priv->effects, CLUTTER_ACTOR_META (effect));
+
+  if (_clutter_meta_group_peek_metas (priv->effects) == NULL)
+    g_clear_object (&priv->effects);
 }
 
 static gboolean
@@ -14779,6 +14782,9 @@ clutter_actor_remove_action (ClutterActor  *self,
 
   _clutter_meta_group_remove_meta (priv->actions, CLUTTER_ACTOR_META (action));
 
+  if (_clutter_meta_group_peek_metas (priv->actions) == NULL)
+    g_clear_object (&priv->actions);
+
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIONS]);
 }
 
@@ -14982,6 +14988,10 @@ clutter_actor_remove_constraint (ClutterActor      *self,
 
   _clutter_meta_group_remove_meta (priv->constraints,
                                    CLUTTER_ACTOR_META (constraint));
+
+  if (_clutter_meta_group_peek_metas (priv->constraints) == NULL)
+    g_clear_object (&priv->constraints);
+
   clutter_actor_queue_relayout (self);
 
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONSTRAINTS]);
