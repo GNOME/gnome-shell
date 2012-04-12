@@ -79,95 +79,6 @@ def get_running_session_environs():
                 result[key] = environs[key]
         return result
 
-_bus = None
-_bus_iface = None
-_name_owner_changed_hook = None
-
-def on_name_owner_changed(name, prev_owner, new_owner):
-    if _name_owner_changed_hook:
-        _name_owner_changed_hook(name, prev_owner, new_owner)
-
-def get_bus():
-    global _bus
-    if _bus is None:
-        dbus_loop = DBusGMainLoop()
-        _bus = dbus.SessionBus(mainloop=dbus_loop)
-    return _bus
-
-def get_bus_iface():
-    global _bus_iface
-    if _bus_iface is None:
-        bus = get_bus()
-        bus_proxy = bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus')
-        _bus_iface = dbus.Interface(bus_proxy, 'org.freedesktop.DBus')
-        _bus_iface.connect_to_signal('NameOwnerChanged', on_name_owner_changed)
-    return _bus_iface
-
-def wait_for_dbus_name(wait_name):
-    global _name_owner_changed_hook
-
-    bus_iface = get_bus_iface()
-    loop = gobject.MainLoop()
-
-    def on_name_owner_changed(name, prev_owner, new_owner):
-        if not (name == wait_name and new_owner != ''):
-            return
-        loop.quit()
-        return
-    _name_owner_changed_hook = on_name_owner_changed
-
-    def on_timeout():
-        print "\nFailed to start %s: timed out" % (wait_name,)
-        sys.exit(1)
-    gobject.timeout_add_seconds(7, on_timeout)
-
-    loop.run()
-    _name_owner_changed_hook = None
-
-def start_dconf_await_service():
-    DCONF_NAME = 'ca.desrt.dconf'
-
-    bus = get_bus()
-    get_bus_iface() # connect to NameOwnerChanged signal
-
-    # See if the service is already running or normal D-Bus activation works
-    need_manual_activate = False
-    try:
-        dconf_proxy = bus.get_object(DCONF_NAME, '/')
-        dconf_proxy.Ping(dbus_interface='org.freedesktop.DBus.Peer')
-    except dbus.exceptions.DBusException, e:
-        if e.get_dbus_name() == 'org.freedesktop.DBus.Error.ServiceUnknown':
-            need_manual_activate = True
-        else:
-            raise e
-
-    if not need_manual_activate:
-        return
-
-    # At this point, it looks like we just have a jhbuild install
-    # of dconf, not known to the session dbus-daemon, so we start
-    # it manually and wait for it to join the bus
-
-    print "Starting dconf-service... ",
-    sys.stdout.flush()
-
-    # dconf is linked without libtool, so unlike other GNOME modules,
-    # won't have an embedded rpath for its library directory.
-    env = dict(os.environ)
-    if 'LD_LIBRARY_PATH' in env and env['LD_LIBRARY_PATH']:
-        ld_library_path = '@libdir@:' + env['LD_LIBRARY_PATH']
-    else:
-        ld_library_path = '@libdir@'
-    env['LD_LIBRARY_PATH'] = ld_library_path
-
-    dconf_path = os.path.join('@libexecdir@', 'dconf-service')
-    try:
-        subprocess.Popen([dconf_path, '--keep-alive'], env=env)
-    except OSError, e:
-        print "\nFailed to start %s: %s" % (dconf_path, e)
-        sys.exit(1)
-
-    wait_for_dbus_name (DCONF_NAME)
 def start_shell():
     self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
     if os.path.exists(os.path.join(self_dir, 'gnome-shell-jhbuild.in')):
@@ -225,21 +136,6 @@ def start_shell():
     if options.sync:
         args.append('--sync')
     return subprocess.Popen(args, env=env)
-
-def _killall(processname):
-    subprocess.call(['pkill', '-u', '%d' % (os.getuid(), ),
-                     '-f', r'^([^ ]*/)?' + re.escape(processname) + '($| )'])
-
-def ensure_desktop_infrastructure_state():
-    # This is a collection of random hacks necessary to make sure
-    # that we can run in jhbuild scenarios or when dynamically
-    # replacing GNOME 2.
-
-    start_dconf_await_service()
-
-    # We need to terminate notification-daemon
-    _killall('notification-daemon')
-    _killall('notify-osd')
 
 def run_shell():
     if options.debug:
@@ -365,7 +261,6 @@ elif options.debug:
 normal_exit = False
 
 try:
-    ensure_desktop_infrastructure_state()
     normal_exit = run_shell()
 finally:
     if options.replace and not normal_exit:
