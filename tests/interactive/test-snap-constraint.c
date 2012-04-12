@@ -21,18 +21,20 @@ test_snap_constraint_main (int   argc,
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   /* first layer, with a fixed (100, 25) size */
-  layer_a = clutter_rectangle_new_with_color (CLUTTER_COLOR_ScarletRed);
+  layer_a = clutter_actor_new ();
+  clutter_actor_set_background_color (layer_a, CLUTTER_COLOR_ScarletRed);
   clutter_actor_set_name (layer_a, "layerA");
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), layer_a);
   clutter_actor_set_size (layer_a, 100.0, 25.0);
+  clutter_actor_add_child (stage, layer_a);
 
   /* the first layer is anchored to the middle of the stage */
   clutter_actor_add_constraint (layer_a, clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5));
 
   /* second layer, with no implicit size */
-  layer_b = clutter_rectangle_new_with_color (CLUTTER_COLOR_DarkButter);
+  layer_b = clutter_actor_new ();
+  clutter_actor_set_background_color (layer_b, CLUTTER_COLOR_DarkButter);
   clutter_actor_set_name (layer_b, "layerB");
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), layer_b);
+  clutter_actor_add_child (stage, layer_b);
 
   /* the second layer tracks the X coordinate and the width of
    * the first layer
@@ -57,9 +59,10 @@ test_snap_constraint_main (int   argc,
                                                              -10.0));
 
   /* the third layer, with no implicit size */
-  layer_c = clutter_rectangle_new_with_color (CLUTTER_COLOR_LightChameleon);
+  layer_c = clutter_actor_new ();
+  clutter_actor_set_background_color (layer_c, CLUTTER_COLOR_LightChameleon);
   clutter_actor_set_name (layer_c, "layerC");
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), layer_c);
+  clutter_actor_add_child (stage, layer_c);
 
   /* as for the second layer, the third layer tracks the X
    * coordinate and width of the first layer
