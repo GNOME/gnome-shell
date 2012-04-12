@@ -5153,7 +5153,7 @@ clutter_actor_update_default_paint_volume (ClutterActor       *self,
                                            ClutterPaintVolume *volume)
 {
   ClutterActorPrivate *priv = self->priv;
-  gboolean res = FALSE;
+  gboolean res = TRUE;
 
   /* we start from the allocation */
   clutter_paint_volume_set_width (volume,
@@ -5253,10 +5253,13 @@ clutter_actor_real_get_paint_volume (ClutterActor       *self,
       res = FALSE;
     }
 
-  if (clutter_actor_update_default_paint_volume (self, volume))
-    return res;
+  /* update_default_paint_volume() should only fail if one of the children
+   * reported an invalid, or no, paint volume
+   */
+  if (!clutter_actor_update_default_paint_volume (self, volume))
+    return FALSE;
 
-  return FALSE;
+  return res;
 }
 
 /**
