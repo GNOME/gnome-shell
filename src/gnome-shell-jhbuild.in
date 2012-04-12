@@ -1,30 +1,13 @@
 #!@PYTHON@
 # -*- mode: Python; indent-tabs-mode: nil; -*-
 
-import atexit
-import datetime
-import dbus
-from dbus.mainloop.glib import DBusGMainLoop
-import gobject
-try:
-    import json
-except ImportError:
-    try:
-        import simplejson as json
-    except ImportError:
-        json = None
 import optparse
 import os
-import random
 import re
-import shutil
 import signal
 import subprocess
 import sys
-import tempfile
 import termios
-import time
-import errno
 
 def show_version(option, opt_str, value, parser):
     print "GNOME Shell @VERSION@"
