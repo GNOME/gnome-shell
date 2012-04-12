@@ -97,31 +97,11 @@ def start_shell():
 
     # Set up environment
     env = dict(os.environ)
-    # TODO: Fix this, since nothing prevents it from propagating to child
-    # processes.  Why is it even here?
-    env.update({'GNOME_DISABLE_CRASH_DIALOG' : '1'})
-    # This stuff should really should only happen when running
-    # uninstalled, i.e. it should be in the conditional
-    # below. Otherwise it's just a bad reimplementation of "jhbuild
-    # run".  See bug #642084
-    env.update({'GNOME_SHELL_JS'      : js_dir,
-                'PATH'                : '@bindir@:' + os.environ.get('PATH', ''),
-                'GI_TYPELIB_PATH'     : typelib_dir,
-                'XDG_CONFIG_DIRS'     : '@sysconfdir@/xdg:' + (os.environ.get('XDG_CONFIG_DIRS') or '/etc/xdg'),
-                'XDG_DATA_DIRS'       : '@datadir@:' + (os.environ.get('XDG_DATA_DIRS') or '/usr/local/share:/usr/share')})
     if running_from_source_tree:
-        env.update({'GNOME_SHELL_BINDIR'   : self_dir,
+        env.update({'GNOME_SHELL_JS'       : js_dir,
+                    'GNOME_SHELL_BINDIR'   : self_dir,
                     'GNOME_SHELL_DATADIR'  : data_dir,
                     'GSETTINGS_SCHEMA_DIR' : data_dir })
-    else:
-        # This is just broken to set in the installed case; see bug #642084
-        env.update({'GSETTINGS_SCHEMA_DIR' : os.path.join('@datadir@', 'glib-2.0', 'schemas')})
-
-    # Also plain broken to set in the normal installed case
-    jhbuild_gconf_source = os.path.join('@sysconfdir@', 'gconf/2/path.jhbuild')
-    if os.path.exists(jhbuild_gconf_source):
-        env['GCONF_DEFAULT_SOURCE_PATH'] = jhbuild_gconf_source
-
 
     args = []
     if options.debug:
