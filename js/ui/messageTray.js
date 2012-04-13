@@ -577,7 +577,7 @@ const Notification = new Lang.Class({
 
         if (params.body)
             this.addBody(params.body, params.bodyMarkup);
-        this._updated();
+        this.updated();
     },
 
     setIconVisible: function(visible) {
@@ -616,7 +616,7 @@ const Notification = new Lang.Class({
         }
 
         this._contentArea.add(actor, style ? style : {});
-        this._updated();
+        this.updated();
     },
 
     // addBody:
@@ -679,7 +679,7 @@ const Notification = new Lang.Class({
         this._table.add_style_class_name('multi-line-notification');
         this._table.add(this._actionArea, props);
         this._updateLastColumnSettings();
-        this._updated();
+        this.updated();
     },
 
     _updateLastColumnSettings: function() {
@@ -760,7 +760,7 @@ const Notification = new Lang.Class({
         this._buttonFocusManager.add_group(this._buttonBox);
         button.connect('clicked', Lang.bind(this, this._onActionInvoked, id));
 
-        this._updated();
+        this.updated();
     },
 
     setUrgency: function(urgency) {
@@ -856,7 +856,7 @@ const Notification = new Lang.Class({
                                         if (this._canExpandContent()) {
                                             this._addBannerBody();
                                             this._table.add_style_class_name('multi-line-notification');
-                                            this._updated();
+                                            this.updated();
                                         }
                                         return false;
                                      }));
@@ -867,7 +867,7 @@ const Notification = new Lang.Class({
                (!this._titleFitsInBannerMode && !this._table.has_style_class_name('multi-line-notification'));
     },
 
-    _updated: function() {
+    updated: function() {
         if (this.expanded)
             this.expand(false);
     },
