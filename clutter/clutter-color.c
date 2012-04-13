@@ -968,6 +968,12 @@ clutter_color_free (ClutterColor *color)
  *
  * Creates a new #ClutterColor with the given values.
  *
+ * This function is the equivalent of:
+ *
+ * |[
+ *   clutter_color_init (clutter_color_alloc (), red, green, blue, alpha);
+ * ]|
+ *
  * Return value: (transfer full): the newly allocated color.
  *   Use clutter_color_free() when done
  *
@@ -979,13 +985,55 @@ clutter_color_new (guint8 red,
                    guint8 blue,
                    guint8 alpha)
 {
-  ClutterColor *color;
+  return clutter_color_init (clutter_color_alloc (),
+                             red,
+                             green,
+                             blue,
+                             alpha);
+}
 
-  color = g_slice_new (ClutterColor);
+/**
+ * clutter_color_alloc:
+ *
+ * Allocates a new, transparent black #ClutterColor.
+ *
+ * Return value: (transfer full): the newly allocated #ClutterColor; use
+ *   clutter_color_free() to free its resources
+ *
+ * Since: 1.12
+ */
+ClutterColor *
+clutter_color_alloc (void)
+{
+  return g_slice_new0 (ClutterColor);
+}
 
-  color->red   = red;
+/**
+ * clutter_color_init:
+ * @color: a #ClutterColor
+ * @red: red component of the color, between 0 and 255
+ * @green: green component of the color, between 0 and 255
+ * @blue: blue component of the color, between 0 and 255
+ * @alpha: alpha component of the color, between 0 and 255
+ *
+ * Initializes @color with the given values.
+ *
+ * Return value: (transfer none): the initialized #ClutterColor
+ *
+ * Since: 1.12
+ */
+ClutterColor *
+clutter_color_init (ClutterColor *color,
+                    guint8        red,
+                    guint8        green,
+                    guint8        blue,
+                    guint8        alpha)
+{
+  g_return_val_if_fail (color != NULL, NULL);
+
+  color->red = red;
   color->green = green;
-  color->blue  = blue;
+  color->blue = blue;
   color->alpha = alpha;
 
   return color;

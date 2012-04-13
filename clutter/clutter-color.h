@@ -55,9 +55,28 @@ struct _ClutterColor
   guint8 alpha;
 };
 
+/**
+ * CLUTTER_COLOR_INIT:
+ * @r: value for the red channel, between 0 and 255
+ * @g: value for the green channel, between 0 and 255
+ * @b: value for the blue channel, between 0 and 255
+ * @a: value for the alpha channel, between 0 and 255
+ *
+ * A macro that initializes a #ClutterColor, to be used when declaring it.
+ *
+ * Since: 1.12
+ */
+#define CLUTTER_COLOR_INIT(r,g,b,a)     { (r), (g), (b), (a) }
+
 GType         clutter_color_get_type   (void) G_GNUC_CONST;
 
 ClutterColor *clutter_color_new         (guint8              red,
+                                         guint8              green,
+                                         guint8              blue,
+                                         guint8              alpha);
+ClutterColor *clutter_color_alloc       (void);
+ClutterColor *clutter_color_init        (ClutterColor       *color,
+                                         guint8              red,
                                          guint8              green,
                                          guint8              blue,
                                          guint8              alpha);
