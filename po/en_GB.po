@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-13 14:03+0000\n"
-"PO-Revision-Date: 2012-03-13 14:06+0100\n"
+"POT-Creation-Date: 2012-04-13 13:20+0100\n"
+"PO-Revision-Date: 2012-04-13 13:20+0100\n"
 "Last-Translator: Bruce Cowan <bruce@bcowan.me.uk>\n"
 "Language-Team: British English <en@li.org>\n"
 "Language: en_GB\n"
@@ -129,34 +129,42 @@ msgid "If true, display the ISO week date in the calendar."
 msgstr "If true, display the ISO week date in the calendar."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Keybinding to open the application menu"
+msgstr "Keybinding to open the application menu"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "Keybinding to open the application menu."
+msgstr "Keybinding to open the application menu."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "Which keyboard to use"
 msgstr "Which keyboard to use"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The type of keyboard to use."
 msgstr "The type of keyboard to use."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Show time with seconds"
 msgstr "Show time with seconds"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "If true, display seconds in time."
 msgstr "If true, display seconds in time."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Show date in clock"
 msgstr "Show date in clock"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "If true, display date in the clock, in addition to time."
 msgstr "If true, display date in the clock, in addition to time."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Framerate used for recording screencasts."
 msgstr "Framerate used for recording screencasts."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -164,11 +172,11 @@ msgstr ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames per second."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "The GStreamer pipeline used to encode the screencast"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:28
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -193,11 +201,11 @@ msgstr ""
 "using the VP8 codec. %T is used as a placeholder for a guess at the optimal "
 "thread count on the system."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:29
 msgid "File extension used for storing the screencast"
 msgstr "File extension used for storing the screencast"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.h:30
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -220,53 +228,53 @@ msgstr "<b>Extension</b>"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Select an extension to configure using the combobox above."
 
-#: ../js/gdm/loginDialog.js:624
+#: ../js/gdm/loginDialog.js:627
 msgid "Session..."
 msgstr "Session…"
 
-#: ../js/gdm/loginDialog.js:786
+#: ../js/gdm/loginDialog.js:789
 msgctxt "title"
 msgid "Sign In"
 msgstr "Sign In"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:831
+#: ../js/gdm/loginDialog.js:834
 msgid "(or swipe finger)"
 msgstr "(or swipe finger)"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:852
+#: ../js/gdm/loginDialog.js:855
 msgid "Not listed?"
 msgstr "Not listed?"
 
-#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
-#: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
+#: ../js/gdm/loginDialog.js:1023 ../js/ui/endSessionDialog.js:401
+#: ../js/ui/extensionSystem.js:400 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "Cancel"
 
-#: ../js/gdm/loginDialog.js:1025
+#: ../js/gdm/loginDialog.js:1028
 msgctxt "button"
 msgid "Sign In"
 msgstr "Sign In"
 
-#: ../js/gdm/loginDialog.js:1377
+#: ../js/gdm/loginDialog.js:1380
 msgid "Login Window"
 msgstr "Login Window"
 
-#: ../js/gdm/powerMenu.js:152 ../js/ui/userMenu.js:591
-#: ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:662
+#: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
 msgid "Suspend"
 msgstr "Suspend"
 
-#: ../js/gdm/powerMenu.js:157
+#: ../js/gdm/powerMenu.js:160
 msgid "Restart"
 msgstr "Restart"
 
-#: ../js/gdm/powerMenu.js:162
+#: ../js/gdm/powerMenu.js:165
 msgid "Power Off"
 msgstr "Power Off"
 
@@ -286,27 +294,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Execution of '%s' failed:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:251
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "All"
 
-#: ../js/ui/appDisplay.js:310
+#: ../js/ui/appDisplay.js:314
 msgid "APPLICATIONS"
 msgstr "APPLICATIONS"
 
-#: ../js/ui/appDisplay.js:371
+#: ../js/ui/appDisplay.js:375
 msgid "SETTINGS"
 msgstr "SETTINGS"
 
-#: ../js/ui/appDisplay.js:676
+#: ../js/ui/appDisplay.js:680
 msgid "New Window"
 msgstr "New Window"
 
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:683
 msgid "Remove from Favorites"
 msgstr "Remove from Favourites"
 
-#: ../js/ui/appDisplay.js:680
+#: ../js/ui/appDisplay.js:684
 msgid "Add to Favorites"
 msgstr "Add to Favourites"
 
@@ -479,28 +487,28 @@ msgstr "This week"
 msgid "Next week"
 msgstr "Next week"
 
-#: ../js/ui/contactDisplay.js:64 ../js/ui/notificationDaemon.js:486
-#: ../js/ui/status/power.js:215 ../src/shell-app.c:372
+#: ../js/ui/contactDisplay.js:66 ../js/ui/notificationDaemon.js:486
+#: ../js/ui/status/power.js:215 ../src/shell-app.c:374
 msgid "Unknown"
 msgstr "Unknown"
 
-#: ../js/ui/contactDisplay.js:85 ../js/ui/userMenu.js:127
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:129
 msgid "Available"
 msgstr "Available"
 
-#: ../js/ui/contactDisplay.js:90 ../js/ui/userMenu.js:136
+#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:138
 msgid "Away"
 msgstr "Away"
 
-#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:130
+#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:132
 msgid "Busy"
 msgstr "Busy"
 
-#: ../js/ui/contactDisplay.js:98
+#: ../js/ui/contactDisplay.js:102
 msgid "Offline"
 msgstr "Offline"
 
-#: ../js/ui/contactDisplay.js:149
+#: ../js/ui/contactDisplay.js:153
 msgid "CONTACTS"
 msgstr "CONTACTS"
 
@@ -508,58 +516,58 @@ msgstr "CONTACTS"
 msgid "Remove"
 msgstr "Remove"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:103
 msgid "Date and Time Settings"
 msgstr "Date and Time Settings"
 
-#: ../js/ui/dateMenu.js:123
+#: ../js/ui/dateMenu.js:129
 msgid "Open Calendar"
 msgstr "Open Calendar"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:187
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R:%S"
 
-#: ../js/ui/dateMenu.js:182
+#: ../js/ui/dateMenu.js:188
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:186
+#: ../js/ui/dateMenu.js:192
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:193
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:200
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:195
+#: ../js/ui/dateMenu.js:201
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:199
+#: ../js/ui/dateMenu.js:205
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:200
+#: ../js/ui/dateMenu.js:206
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:211
+#: ../js/ui/dateMenu.js:217
 msgid "%A %B %e, %Y"
 msgstr "%A %e %B, %Y"
 
@@ -651,20 +659,21 @@ msgstr[1] "The system will restart automatically in %d seconds."
 msgid "Restarting the system."
 msgstr "Restarting the system."
 
-#: ../js/ui/extensionSystem.js:403
+#: ../js/ui/extensionSystem.js:404
 msgid "Install"
 msgstr "Install"
 
-#: ../js/ui/extensionSystem.js:407
+#: ../js/ui/extensionSystem.js:408
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Download and install '%s' from extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:322
+#: ../js/ui/keyboard.js:327
 msgid "tray"
 msgstr "tray"
 
-#: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:544 ../js/ui/status/keyboard.js:44
+#: ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Keyboard"
 
@@ -676,51 +685,51 @@ msgstr "Password:"
 msgid "Type again:"
 msgstr "Type again:"
 
-#: ../js/ui/lookingGlass.js:725
+#: ../js/ui/lookingGlass.js:732
 msgid "No extensions installed"
 msgstr "No extensions installed"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:779
+#: ../js/ui/lookingGlass.js:786
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s has not emitted any errors."
 
-#: ../js/ui/lookingGlass.js:785
+#: ../js/ui/lookingGlass.js:792
 msgid "Hide Errors"
 msgstr "Hide Errors"
 
-#: ../js/ui/lookingGlass.js:789 ../js/ui/lookingGlass.js:840
+#: ../js/ui/lookingGlass.js:796 ../js/ui/lookingGlass.js:847
 msgid "Show Errors"
 msgstr "Show Errors"
 
-#: ../js/ui/lookingGlass.js:798
+#: ../js/ui/lookingGlass.js:805
 msgid "Enabled"
 msgstr "Enabled"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:801 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:808 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "Disabled"
 
-#: ../js/ui/lookingGlass.js:803
+#: ../js/ui/lookingGlass.js:810
 msgid "Error"
 msgstr "Error"
 
-#: ../js/ui/lookingGlass.js:805
+#: ../js/ui/lookingGlass.js:812
 msgid "Out of date"
 msgstr "Out of date"
 
-#: ../js/ui/lookingGlass.js:807
+#: ../js/ui/lookingGlass.js:814
 msgid "Downloading"
 msgstr "Downloading"
 
-#: ../js/ui/lookingGlass.js:828
+#: ../js/ui/lookingGlass.js:835
 msgid "View Source"
 msgstr "View Source"
 
-#: ../js/ui/lookingGlass.js:834
+#: ../js/ui/lookingGlass.js:841
 msgid "Web Page"
 msgstr "Web Page"
 
@@ -742,7 +751,7 @@ msgstr "Unmute"
 msgid "Mute"
 msgstr "Mute"
 
-#: ../js/ui/messageTray.js:2450
+#: ../js/ui/messageTray.js:2490
 msgid "System Information"
 msgstr "System Information"
 
@@ -831,31 +840,35 @@ msgstr "A password is required to connect to '%s'."
 msgid "Undo"
 msgstr "Undo"
 
-#: ../js/ui/overview.js:199
+#: ../js/ui/overview.js:132
+msgid "Overview"
+msgstr "Overview"
+
+#: ../js/ui/overview.js:202
 msgid "Windows"
 msgstr "Windows"
 
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Applications"
 msgstr "Applications"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:228
+#: ../js/ui/overview.js:231
 msgid "Dash"
 msgstr "Dash"
 
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:592
 msgid "Quit"
 msgstr "Quit"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:624
 msgid "Activities"
 msgstr "Activities"
 
-#: ../js/ui/panel.js:987
+#: ../js/ui/panel.js:999
 msgid "Top Bar"
 msgstr "Top Bar"
 
@@ -901,7 +914,7 @@ msgstr "Sorry, that didn't work. Please try again."
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:720
+#: ../js/ui/popupMenu.js:724
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
@@ -909,11 +922,11 @@ msgstr "toggle-switch-us"
 msgid "Please enter a command:"
 msgstr "Please enter a command:"
 
-#: ../js/ui/searchDisplay.js:331
+#: ../js/ui/searchDisplay.js:332
 msgid "Searching..."
 msgstr "Searching…"
 
-#: ../js/ui/searchDisplay.js:413
+#: ../js/ui/searchDisplay.js:415
 msgid "No matching results."
 msgstr "No matching results."
 
@@ -1595,51 +1608,51 @@ msgstr "Edit account"
 msgid "Unknown reason"
 msgstr "Unknown reason"
 
-#: ../js/ui/userMenu.js:133
+#: ../js/ui/userMenu.js:135
 msgid "Hidden"
 msgstr "Hidden"
 
-#: ../js/ui/userMenu.js:139
+#: ../js/ui/userMenu.js:141
 msgid "Idle"
 msgstr "Idle"
 
-#: ../js/ui/userMenu.js:142
+#: ../js/ui/userMenu.js:144
 msgid "Unavailable"
 msgstr "Unavailable"
 
-#: ../js/ui/userMenu.js:589 ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:663
+#: ../js/ui/userMenu.js:595 ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:669
 msgid "Power Off..."
 msgstr "Power Off…"
 
-#: ../js/ui/userMenu.js:625
+#: ../js/ui/userMenu.js:631
 msgid "Notifications"
 msgstr "Notifications"
 
-#: ../js/ui/userMenu.js:633
+#: ../js/ui/userMenu.js:639
 msgid "Online Accounts"
 msgstr "Online Accounts"
 
-#: ../js/ui/userMenu.js:637
+#: ../js/ui/userMenu.js:643
 msgid "System Settings"
 msgstr "System Settings"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:650
 msgid "Lock Screen"
 msgstr "Lock Screen"
 
-#: ../js/ui/userMenu.js:649
+#: ../js/ui/userMenu.js:655
 msgid "Switch User"
 msgstr "Switch User"
 
-#: ../js/ui/userMenu.js:654
+#: ../js/ui/userMenu.js:660
 msgid "Log Out..."
 msgstr "Log Out…"
 
-#: ../js/ui/userMenu.js:682
+#: ../js/ui/userMenu.js:688
 msgid "Your chat status will be set to busy"
 msgstr "Your chat status will be set to busy"
 
-#: ../js/ui/userMenu.js:683
+#: ../js/ui/userMenu.js:689
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1684,7 +1697,7 @@ msgstr "'%s' is ready"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1100
+#: ../src/gvc/gvc-mixer-control.c:1089
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1693,14 +1706,14 @@ msgstr[1] "%u Outputs"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1110
+#: ../src/gvc/gvc-mixer-control.c:1099
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Input"
 msgstr[1] "%u Inputs"
 
-#: ../src/gvc/gvc-mixer-control.c:1408
+#: ../src/gvc/gvc-mixer-control.c:1397
 msgid "System Sounds"
 msgstr "System Sounds"
 
@@ -1712,7 +1725,7 @@ msgstr "Print version"
 msgid "Mode used by GDM for login screen"
 msgstr "Mode used by GDM for login screen"
 
-#: ../src/shell-app.c:617
+#: ../src/shell-app.c:619
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Failed to launch '%s'"
