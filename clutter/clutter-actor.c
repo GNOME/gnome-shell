@@ -15696,7 +15696,7 @@ clutter_actor_has_overlaps (ClutterActor *self)
 gboolean
 clutter_actor_has_effects (ClutterActor *self)
 {
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), TRUE);
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
   if (self->priv->effects == NULL)
     return FALSE;
@@ -15718,7 +15718,7 @@ clutter_actor_has_effects (ClutterActor *self)
 gboolean
 clutter_actor_has_constraints (ClutterActor *self)
 {
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), TRUE);
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
   return self->priv->constraints != NULL;
 }
@@ -15737,7 +15737,7 @@ clutter_actor_has_constraints (ClutterActor *self)
 gboolean
 clutter_actor_has_actions (ClutterActor *self)
 {
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), TRUE);
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
   return self->priv->actions != NULL;
 }
