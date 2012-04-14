@@ -1048,10 +1048,10 @@ const WorkspacesDisplay = new Lang.Class({
     _onScrollEvent: function (actor, event) {
         switch ( event.get_scroll_direction() ) {
         case Clutter.ScrollDirection.UP:
-            Main.wm.actionMoveWorkspaceUp();
+            Main.wm.actionMoveWorkspace(Meta.MotionDirection.UP);
             break;
         case Clutter.ScrollDirection.DOWN:
-            Main.wm.actionMoveWorkspaceDown();
+            Main.wm.actionMoveWorkspace(Meta.MotionDirection.DOWN);
             break;
         }
     }

@@ -3,17 +3,15 @@
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Meta  = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const Main = imports.ui.main;
 
+const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
 const ANIMATION_TIME = 0.1;
 const DISPLAY_TIMEOUT = 600;
-
-const UP = -1;
-const DOWN = 1;
 
 const WorkspaceSwitcherPopup = new Lang.Class({
     Name: 'WorkspaceSwitcherPopup',
@@ -110,9 +108,9 @@ const WorkspaceSwitcherPopup = new Lang.Class({
         for (let i = 0; i < global.screen.n_workspaces; i++) {
             let indicator = null;
 
-           if (i == activeWorkspaceIndex && direction == UP)
+           if (i == activeWorkspaceIndex && direction == Meta.MotionDirection.UP)
                indicator = new St.Bin({ style_class: 'ws-switcher-active-up' });
-           else if(i == activeWorkspaceIndex && direction == DOWN)
+           else if(i == activeWorkspaceIndex && direction == Meta.MotionDirection.DOWN)
                indicator = new St.Bin({ style_class: 'ws-switcher-active-down' });
            else
                indicator = new St.Bin({ style_class: 'ws-switcher-box' });
