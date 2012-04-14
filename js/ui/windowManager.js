@@ -125,6 +125,14 @@ const WindowManager = new Lang.Class({
                                             Lang.bind(this, this._showWorkspaceSwitcher));
         Meta.keybindings_set_custom_handler('switch-to-workspace-down',
                                             Lang.bind(this, this._showWorkspaceSwitcher));
+        Meta.keybindings_set_custom_handler('move-to-workspace-left',
+                                            Lang.bind(this, this._showWorkspaceSwitcher));
+        Meta.keybindings_set_custom_handler('move-to-workspace-right',
+                                            Lang.bind(this, this._showWorkspaceSwitcher));
+        Meta.keybindings_set_custom_handler('move-to-workspace-up',
+                                            Lang.bind(this, this._showWorkspaceSwitcher));
+        Meta.keybindings_set_custom_handler('move-to-workspace-down',
+                                            Lang.bind(this, this._showWorkspaceSwitcher));
         Meta.keybindings_set_custom_handler('switch-windows',
                                             Lang.bind(this, this._startAppSwitcher));
         Meta.keybindings_set_custom_handler('switch-group',
@@ -563,22 +571,38 @@ const WindowManager = new Lang.Class({
         if (this._workspaceSwitcherPopup == null)
             this._workspaceSwitcherPopup = new WorkspaceSwitcherPopup.WorkspaceSwitcherPopup();
 
-        if (binding.get_name() == 'switch-to-workspace-up')
-            this.actionMoveWorkspace(Meta.MotionDirection.UP);
-        else if (binding.get_name() == 'switch-to-workspace-down')
-            this.actionMoveWorkspace(Meta.MotionDirection.DOWN);
-        else if (binding.get_name() == 'switch-to-workspace-left')
-            this.actionMoveWorkspace(Meta.MotionDirection.LEFT);
-        else if (binding.get_name() == 'switch-to-workspace-right')
-            this.actionMoveWorkspace(Meta.MotionDirection.RIGHT);
+        let [action,,,direction] = binding.get_name().split('-');
+        let direction = Meta.MotionDirection[direction.toUpperCase()];
+
+        if (action == 'switch')
+            this.actionMoveWorkspace(direction);
+        else
+            this.actionMoveWindow(window, direction);
     },
 
     actionMoveWorkspace: function(direction) {
         let activeWorkspace = global.screen.get_active_workspace();
         let toActivate = activeWorkspace.get_neighbor(direction);
 
-        if (toActivate && activeWorkspace != toActivate)
+        if (activeWorkspace != toActivate)
             toActivate.activate(global.get_current_time());
+
+        if (!Main.overview.visible)
+            this._workspaceSwitcherPopup.display(direction, toActivate.index());
+    },
+
+    actionMoveWindow: function(window, direction) {
+        let activeWorkspace = global.screen.get_active_workspace();
+        let toActivate = activeWorkspace.get_neighbor(direction);
+
+        if (activeWorkspace != toActivate) {
+            // This won't have any effect for "always sticky" windows
+            // (like desktop windows or docks)
+            window.change_workspace(toActivate);
+
+            global.display.clear_mouse_mode();
+            toActivate.activate_with_focus (window, global.get_current_time());
+        }
 
         if (!Main.overview.visible)
             this._workspaceSwitcherPopup.display(direction, toActivate.index());
