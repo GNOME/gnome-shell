@@ -98,9 +98,6 @@ void meta_workspace_focus_default_window (MetaWorkspace *workspace,
                                           MetaWindow    *not_this_one,
                                           guint32        timestamp);
 
-MetaWorkspace* meta_workspace_get_neighbor (MetaWorkspace      *workspace,
-                                            MetaMotionDirection direction);
-
 const char* meta_workspace_get_name (MetaWorkspace *workspace);
 
 #endif

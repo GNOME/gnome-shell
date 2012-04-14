@@ -1117,6 +1117,18 @@ meta_motion_direction_to_string (MetaMotionDirection direction)
 }
 #endif /* WITH_VERBOSE_MODE */
 
+/**
+ * meta_workspace_get_neighbor:
+ * @workspace: a #MetaWorkspace
+ * @direction: a #MetaMotionDirection, relative to @workspace
+ *
+ * Calculate and retrive the workspace that is next to @workspace,
+ * according to @direction and the current workspace layout, as set
+ * by meta_screen_override_workspace_layout().
+ *
+ * Returns: (transfer none): the workspace next to @workspace, or
+ *   @workspace itself if the neighbor would be outside the layout
+ */
 MetaWorkspace*
 meta_workspace_get_neighbor (MetaWorkspace      *workspace,
                              MetaMotionDirection direction)

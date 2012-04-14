@@ -63,4 +63,7 @@ void meta_workspace_update_window_hints (MetaWorkspace *workspace);
 void meta_workspace_set_builtin_struts (MetaWorkspace *workspace,
                                         GSList        *struts);
 
+MetaWorkspace* meta_workspace_get_neighbor (MetaWorkspace      *workspace,
+                                            MetaMotionDirection direction);
+
 #endif
