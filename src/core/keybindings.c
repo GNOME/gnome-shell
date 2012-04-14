@@ -3434,7 +3434,7 @@ handle_move_to_workspace  (MetaDisplay    *display,
           meta_topic (META_DEBUG_FOCUS,
                       "Resetting mouse_mode to FALSE due to "
                       "handle_move_to_workspace() call with flip set.\n");
-          workspace->screen->display->mouse_mode = FALSE;
+          meta_display_clear_mouse_mode (workspace->screen->display);
           meta_workspace_activate_with_focus (workspace,
                                               window,
                                               event->xkey.time);

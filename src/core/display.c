@@ -5535,3 +5535,18 @@ meta_display_get_leader_window (MetaDisplay *display)
 {
   return display->leader_window;
 }
+
+/**
+ * meta_display_clear_mouse_mode:
+ * @display: a #MetaDisplay
+ *
+ * Sets the mouse-mode flag to %FALSE, which means that motion events are
+ * no longer ignored in mouse or sloppy focus.
+ * This is an internal function. It should be used only for reimplementing
+ * keybindings, and only in a manner compatible with core code.
+ */
+void
+meta_display_clear_mouse_mode (MetaDisplay *display)
+{
+  display->mouse_mode = FALSE;
+}

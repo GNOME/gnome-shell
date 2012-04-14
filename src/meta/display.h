@@ -175,4 +175,6 @@ void meta_display_unmanage_screen (MetaDisplay *display,
                                    MetaScreen  *screen,
                                    guint32      timestamp);
 
+void meta_display_clear_mouse_mode (MetaDisplay *display);
+
 #endif
