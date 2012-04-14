@@ -1,24 +1,37 @@
 # mutter ja.po.
-# Copyright (C) 2002-2011 Free Software Foundation, Inc.
+# Copyright (C) 2002-2012 Free Software Foundation, Inc.
 # Akira TAGOH <tagoh@gnome.gr.jp>, 2002.
 # KAMAGASAKO Masatoshi <emerald@gnome.gr.jp>, 2003.
 # Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2011.
 # Yukihiro Nakai <nakai@gnome.gr.jp>, 2003.
 # Satoru SATOH <ss@gnome.gr.jp>, 2006.
+# Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-25 11:31+0000\n"
-"PO-Revision-Date: 2011-09-25 23:38+0900\n"
-"Last-Translator: OKANO Takayoshi <kano@na.rim.or.jp>\n"
+"POT-Creation-Date: 2012-04-05 18:56+0000\n"
+"PO-Revision-Date: 2012-04-07 15:39+0900\n"
+"Last-Translator: Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ja\n"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+msgid "Windows"
+msgstr "ウィンドウ"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "View split on left"
+msgstr "画面左半分に表示する"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "View split on right"
+msgstr "画面右半分に表示する"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
@@ -31,321 +44,7 @@ msgstr ""
 "既に別の合成マネージャーがディスプレイ \"%2$s\" 上のスクリーン %1$i で起動中"
 "です"
 
-# ｢キーボード・ショートカット｣のアプレット (gnome-control-center) で表示するメッセージ
-#: ../src/core/all-keybindings.h:88
-msgid "Switch to workspace 1"
-msgstr "ワークスペース 1 へ切り替える"
-
-#: ../src/core/all-keybindings.h:90
-msgid "Switch to workspace 2"
-msgstr "ワークスペース 2 へ切り替える"
-
-#: ../src/core/all-keybindings.h:92
-msgid "Switch to workspace 3"
-msgstr "ワークスペース 3 へ切り替える"
-
-#: ../src/core/all-keybindings.h:94
-msgid "Switch to workspace 4"
-msgstr "ワークスペース 4 へ切り替える"
-
-#: ../src/core/all-keybindings.h:96
-msgid "Switch to workspace 5"
-msgstr "ワークスペース 5 へ切り替える"
-
-#: ../src/core/all-keybindings.h:98
-msgid "Switch to workspace 6"
-msgstr "ワークスペース 6 へ切り替える"
-
-#: ../src/core/all-keybindings.h:100
-msgid "Switch to workspace 7"
-msgstr "ワークスペース 7 へ切り替える"
-
-#: ../src/core/all-keybindings.h:102
-msgid "Switch to workspace 8"
-msgstr "ワークスペース 8 へ切り替える"
-
-#: ../src/core/all-keybindings.h:104
-msgid "Switch to workspace 9"
-msgstr "ワークスペース 9 へ切り替える"
-
-#: ../src/core/all-keybindings.h:106
-msgid "Switch to workspace 10"
-msgstr "ワークスペース 10 へ切り替える"
-
-#: ../src/core/all-keybindings.h:108
-msgid "Switch to workspace 11"
-msgstr "ワークスペース 11 へ切り替える"
-
-#: ../src/core/all-keybindings.h:110
-msgid "Switch to workspace 12"
-msgstr "ワークスペース 12 へ切り替える"
-
-#: ../src/core/all-keybindings.h:122
-msgid "Switch to workspace on the left of the current workspace"
-msgstr "左側のワークスペースへ切り替える"
-
-#: ../src/core/all-keybindings.h:126
-msgid "Switch to workspace on the right of the current workspace"
-msgstr "右側のワークスペースへ切り替える"
-
-#: ../src/core/all-keybindings.h:130
-msgid "Switch to workspace above the current workspace"
-msgstr "上側のワークスペースへ切り替える"
-
-#: ../src/core/all-keybindings.h:134
-msgid "Switch to workspace below the current workspace"
-msgstr "下側のワークスペースへ切り替える"
-
-#: ../src/core/all-keybindings.h:150
-msgid "Move between windows of an application, using a popup window"
-msgstr "ポップアップ・ウィンドウを使って複数のウィンドウの間を移動する"
-
-#: ../src/core/all-keybindings.h:153
-msgid "Move backward between windows of an application, using a popup window"
-msgstr "ポップアップ・ウィンドウを使って複数のウィンドウの間を降順で移動する"
-
-#: ../src/core/all-keybindings.h:157
-msgid "Move between windows, using a popup window"
-msgstr "ポップアップ・ウィンドウを使ってウィンドウ間のフォーカスを切り替える"
-
-#: ../src/core/all-keybindings.h:160
-msgid "Move backward between windows, using a popup window"
-msgstr ""
-"ポップアップ・ウィンドウを使ってウィンドウ間のフォーカスを降順で切り替える"
-
-#: ../src/core/all-keybindings.h:163
-msgid "Move between panels and the desktop, using a popup window"
-msgstr ""
-"ポップアップ・ウィンドウを使ってパネルとデスクトップの間のフォーカスを切り替"
-"える"
-
-#: ../src/core/all-keybindings.h:166
-msgid "Move backward between panels and the desktop, using a popup window"
-msgstr ""
-"ポップアップ・ウィンドウを使ってパネルとデスクトップの間のフォーカスを降順で"
-"切り替える"
-
-#: ../src/core/all-keybindings.h:171
-msgid "Move between windows of an application immediately"
-msgstr "アプリケーションが持つ複数のウィンドウの間を移動する"
-
-#: ../src/core/all-keybindings.h:174
-msgid "Move backward between windows of an application immediately"
-msgstr "アプリケーションが持つ複数のウィンドウを降順で移動する"
-
-#: ../src/core/all-keybindings.h:177
-msgid "Move between windows immediately"
-msgstr "ウィンドウ間のフォーカスを切り替える"
-
-#: ../src/core/all-keybindings.h:180
-msgid "Move backward between windows immediately"
-msgstr "ウィンドウ間のフォーカスを降順で切り替える"
-
-#: ../src/core/all-keybindings.h:183
-msgid "Move between panels and the desktop immediately"
-msgstr "パネルとデスクトップとのフォーカスを切り替える"
-
-#: ../src/core/all-keybindings.h:186
-msgid "Move backward between panels and the desktop immediately"
-msgstr "後方のパネルとデスクトップとの間を切り替える"
-
-#: ../src/core/all-keybindings.h:203
-msgid "Hide all normal windows and set focus to the desktop"
-msgstr "全てのウィンドウを隠してデスクトップにフォーカスを移す"
-
-#: ../src/core/all-keybindings.h:206
-msgid "Show the panel's main menu"
-msgstr "パネルにあるメイン・メニューを開く"
-
-#: ../src/core/all-keybindings.h:209
-msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "アプリケーションの実行ダイアログを開く"
-
-#: ../src/core/all-keybindings.h:211
-msgid "Start or stop recording the session"
-msgstr "セッションの録画を開始/停止する"
-
-#: ../src/core/all-keybindings.h:252
-msgid "Take a screenshot"
-msgstr "スクリーンショットを撮る"
-
-#: ../src/core/all-keybindings.h:254
-msgid "Take a screenshot of a window"
-msgstr "ウィンドウのスクリーンショットを撮る"
-
-#: ../src/core/all-keybindings.h:256
-msgid "Run a terminal"
-msgstr "端末を起動する"
-
-#: ../src/core/all-keybindings.h:271
-msgid "Activate the window menu"
-msgstr "ウィンドウ・メニューを開く"
-
-#: ../src/core/all-keybindings.h:274
-msgid "Toggle fullscreen mode"
-msgstr "フル・スクリーン表示を切り替える"
-
-#: ../src/core/all-keybindings.h:276
-msgid "Toggle maximization state"
-msgstr "最大化/最小化の状態を切り替える"
-
-#: ../src/core/all-keybindings.h:278
-msgid "Toggle whether a window will always be visible over other windows"
-msgstr "ウィンドウを常に前面に表示するかどうかの設定を切り替える"
-
-#: ../src/core/all-keybindings.h:280
-msgid "Maximize window"
-msgstr "ウィンドウを最大化する"
-
-#: ../src/core/all-keybindings.h:282
-msgid "Restore window"
-msgstr "ウィンドウの状態を元に戻す"
-
-#: ../src/core/all-keybindings.h:284
-msgid "Toggle shaded state"
-msgstr "シェードの状態を切り替える"
-
-#: ../src/core/all-keybindings.h:286
-msgid "Minimize window"
-msgstr "ウィンドウを最小化する"
-
-#: ../src/core/all-keybindings.h:288
-msgid "Close window"
-msgstr "ウィンドウを閉じる"
-
-#: ../src/core/all-keybindings.h:290
-msgid "Move window"
-msgstr "ウィンドウを移動する"
-
-#: ../src/core/all-keybindings.h:292
-msgid "Resize window"
-msgstr "ウィンドウ・サイズを変更する"
-
-#: ../src/core/all-keybindings.h:295
-msgid "Toggle whether window is on all workspaces or just one"
-msgstr "ウィンドウを全てのワークスペースに配置するか切り替える"
-
-#: ../src/core/all-keybindings.h:299
-msgid "Move window to workspace 1"
-msgstr "ウィンドウをワークスペース 1 へ移動する"
-
-#: ../src/core/all-keybindings.h:302
-msgid "Move window to workspace 2"
-msgstr "ウィンドウをワークスペース 2 へ移動する"
-
-#: ../src/core/all-keybindings.h:305
-msgid "Move window to workspace 3"
-msgstr "ウィンドウをワークスペース 3 へ移動する"
-
-#: ../src/core/all-keybindings.h:308
-msgid "Move window to workspace 4"
-msgstr "ウィンドウをワークスペース 4 へ移動する"
-
-#: ../src/core/all-keybindings.h:311
-msgid "Move window to workspace 5"
-msgstr "ウィンドウをワークスペース 5 へ移動する"
-
-#: ../src/core/all-keybindings.h:314
-msgid "Move window to workspace 6"
-msgstr "ウィンドウをワークスペース 6 へ移動する"
-
-#: ../src/core/all-keybindings.h:317
-msgid "Move window to workspace 7"
-msgstr "ウィンドウをワークスペース 7 へ移動する"
-
-#: ../src/core/all-keybindings.h:320
-msgid "Move window to workspace 8"
-msgstr "ウィンドウをワークスペース 8 へ移動する"
-
-#: ../src/core/all-keybindings.h:323
-msgid "Move window to workspace 9"
-msgstr "ウィンドウをワークスペース 9 へ移動する"
-
-#: ../src/core/all-keybindings.h:326
-msgid "Move window to workspace 10"
-msgstr "ウィンドウをワークスペース 10 へ移動する"
-
-#: ../src/core/all-keybindings.h:329
-msgid "Move window to workspace 11"
-msgstr "ウィンドウをワークスペース 11 へ移動する"
-
-#: ../src/core/all-keybindings.h:332
-msgid "Move window to workspace 12"
-msgstr "ウィンドウをワークスペース 12 へ移動する"
-
-#: ../src/core/all-keybindings.h:344
-msgid "Move window one workspace to the left"
-msgstr "ウィンドウを左側のワークスペースへ移動する"
-
-#: ../src/core/all-keybindings.h:347
-msgid "Move window one workspace to the right"
-msgstr "ウィンドウを右側のワークスペースへ移動する"
-
-#: ../src/core/all-keybindings.h:350
-msgid "Move window one workspace up"
-msgstr "ウィンドウを上側のワークスペースへ移動する"
-
-#: ../src/core/all-keybindings.h:353
-msgid "Move window one workspace down"
-msgstr "ウィンドウを下側のワークスペースへ移動する"
-
-#: ../src/core/all-keybindings.h:356
-msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "隠れているウィンドウを前面に表示する"
-
-#: ../src/core/all-keybindings.h:358
-msgid "Raise window above other windows"
-msgstr "ウィンドウを前面に表示する"
-
-#: ../src/core/all-keybindings.h:360
-msgid "Lower window below other windows"
-msgstr "ウィンドウを一番奥に移動する"
-
-#: ../src/core/all-keybindings.h:364
-msgid "Maximize window vertically"
-msgstr "ウィンドウを垂直方向に最大化する"
-
-#: ../src/core/all-keybindings.h:368
-msgid "Maximize window horizontally"
-msgstr "ウィンドウを水平方向に最大化する"
-
-#: ../src/core/all-keybindings.h:372
-msgid "Move window to north-west (top left) corner"
-msgstr "ウィンドウを画面の左上隅へ移動する"
-
-#: ../src/core/all-keybindings.h:375
-msgid "Move window to north-east (top right) corner"
-msgstr "ウィンドウを画面の右上隅へ移動する"
-
-#: ../src/core/all-keybindings.h:378
-msgid "Move window to south-west (bottom left) corner"
-msgstr "ウィンドウを画面の左下隅へ移動する"
-
-#: ../src/core/all-keybindings.h:381
-msgid "Move window to south-east (bottom right) corner"
-msgstr "ウィンドウを画面の右下隅へ移動する"
-
-#: ../src/core/all-keybindings.h:385
-msgid "Move window to north (top) side of screen"
-msgstr "ウィンドウを画面の上側へ移動する"
-
-#: ../src/core/all-keybindings.h:388
-msgid "Move window to south (bottom) side of screen"
-msgstr "ウィンドウを画面の下側へ移動する"
-
-#: ../src/core/all-keybindings.h:391
-msgid "Move window to east (right) side of screen"
-msgstr "ウィンドウを画面の右側へ移動する"
-
-#: ../src/core/all-keybindings.h:394
-msgid "Move window to west (left) side of screen"
-msgstr "ウィンドウを画面の左側へ移動する"
-
-#: ../src/core/all-keybindings.h:397
-msgid "Move window to center of screen"
-msgstr "ウィンドウを画面の中央へ移動する"
-
-#: ../src/core/bell.c:310
+#: ../src/core/bell.c:307
 msgid "Bell event"
 msgstr "ベルのイベント"
 
@@ -379,17 +78,17 @@ msgstr "待機する(_W)"
 msgid "_Force Quit"
 msgstr "強制終了する(_F)"
 
-#: ../src/core/display.c:365
+#: ../src/core/display.c:387
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "ウィンドウの合成に必要な %s という拡張モジュールが存在しません"
 
-#: ../src/core/display.c:431
+#: ../src/core/display.c:453
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ｘウィンドウ・システムのディスプレイ '%s' のオープンに失敗しました\n"
 
-#: ../src/core/keybindings.c:759
+#: ../src/core/keybindings.c:852
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -397,30 +96,6 @@ msgid ""
 msgstr ""
 "既にバインディングとして別のプログラムでキー %s (修飾キー %x) を使っていま"
 "す\n"
-
-#. Displayed when a keybinding which is
-#. * supposed to launch a program fails.
-#.
-#: ../src/core/keybindings.c:2523
-#, c-format
-msgid ""
-"There was an error running <tt>%s</tt>:\n"
-"\n"
-"%s"
-msgstr ""
-"<tt>%s</tt>の動作中にエラーが発生しました:\n"
-"\n"
-"%s"
-
-#: ../src/core/keybindings.c:2613
-#, c-format
-msgid "No command %d has been defined.\n"
-msgstr "コマンド %d は定義されていません。\n"
-
-#: ../src/core/keybindings.c:3625
-#, c-format
-msgid "No terminal command has been defined.\n"
-msgstr "端末を起動するコマンドが定義されていません。\n"
 
 #: ../src/core/main.c:206
 msgid "Disable connection to session manager"
@@ -460,7 +135,7 @@ msgstr ""
 "テーマが見つかりませんでした！ %s の存在と通常のテーマが含まれていることを確"
 "認して下さい。\n"
 
-#: ../src/core/mutter.c:42
+#: ../src/core/mutter.c:40
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -476,53 +151,15 @@ msgstr ""
 "このソフトウェアは無保証です; 商用での利用や特定の目的に対する利用についても"
 "保証しません。\n"
 
-#: ../src/core/mutter.c:56
+#: ../src/core/mutter.c:54
 msgid "Print version"
 msgstr "バージョンを表示する"
 
-#: ../src/core/mutter.c:62
+#: ../src/core/mutter.c:60
 msgid "Comma-separated list of compositor plugins"
 msgstr "画像の合成プラグインを指定する (複数ある時はカンマ ',' で区切る)"
 
-#.
-#. * We found it, but it was invalid.  Complain.
-#. *
-#. * FIXME: This replicates the original behaviour, but in the future
-#. * we might consider reverting invalid keys to their original values.
-#. * (We know the old value, so we can look up a suitable string in
-#. * the symtab.)
-#. *
-#. * (Empty comment follows so the translators don't see this.)
-#.
-#.
-#: ../src/core/prefs.c:550 ../src/core/prefs.c:711
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "GConf の '%s' キーには無効な値が格納されています\n"
-
-#: ../src/core/prefs.c:637 ../src/core/prefs.c:880
-#, c-format
-msgid "%d stored in GConf key %s is out of range %d to %d\n"
-msgstr "GConf の %2$s キーの値 %1$d は %3$d〜%4$d の範囲内にありません\n"
-
-#: ../src/core/prefs.c:681 ../src/core/prefs.c:758 ../src/core/prefs.c:806
-#: ../src/core/prefs.c:870 ../src/core/prefs.c:1331 ../src/core/prefs.c:1347
-#: ../src/core/prefs.c:1364 ../src/core/prefs.c:1380
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "GConf の \"%s\" キーには無効な型が格納されています\n"
-
-#: ../src/core/prefs.c:1210
-#, c-format
-msgid "GConf key %s is already in use and can't be used to override %s\n"
-msgstr "GConf キーの %s は既に使用中なので %s をオーバーライドできません\n"
-
-#: ../src/core/prefs.c:1269
-#, c-format
-msgid "Can't override GConf key, %s not found\n"
-msgstr "GConf キーをオーバーライドできません (%s が見つかりませんでした)\n"
-
-#: ../src/core/prefs.c:1454
+#: ../src/core/prefs.c:1077
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -530,12 +167,12 @@ msgstr ""
 "仕様に準拠していないアプリケーションに対する次善策は無効になっています．一部"
 "のアプリケーションは正常に動作しない可能性があります\n"
 
-#: ../src/core/prefs.c:1531
+#: ../src/core/prefs.c:1152
 #, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "GConf の %2$s キーからフォント名 \"%1$s\" を解析できませんでした\n"
+msgid "Could not parse font description \"%s\" from GSettings key %s\n"
+msgstr "GSettings の %2$s キーからフォント名 \"%1$s\" を解析できませんでした\n"
 
-#: ../src/core/prefs.c:1593
+#: ../src/core/prefs.c:1218
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -543,17 +180,7 @@ msgid ""
 msgstr ""
 "GConf の \"%s\" はマウス・ボタンの修飾キーとして妥当な値ではありません\n"
 
-#: ../src/core/prefs.c:2028
-#, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "ワークスペース数を %d に設定中にエラーが発生しました: %s\n"
-
-#: ../src/core/prefs.c:2212 ../src/core/prefs.c:2714
-#, c-format
-msgid "Workspace %d"
-msgstr "ワークスペース %d"
-
-#: ../src/core/prefs.c:2244 ../src/core/prefs.c:2422
+#: ../src/core/prefs.c:1739
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -562,29 +189,17 @@ msgstr ""
 "設定データベースで発見した \"%s\" はキーバインド \"%s\" に有効な値ではありま"
 "せん\n"
 
-#: ../src/core/prefs.c:2795
+#: ../src/core/prefs.c:1836
 #, c-format
-msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr ""
-"ワークスペース %d の名前を \"%s\" に設定するときにエラーが発生しました: %s\n"
+msgid "Workspace %d"
+msgstr "ワークスペース %d"
 
-#: ../src/core/prefs.c:3009
-#, c-format
-msgid "Error setting live hidden windows status status: %s\n"
-msgstr ""
-"表示されていないが動作中のウィンドウに対するステータスの設定エラー: %s\n"
-
-#: ../src/core/prefs.c:3044
-#, c-format
-msgid "Error setting no tab popup status: %s\n"
-msgstr "タブなしのポップアップ・ステータスの設定エラー: %s\n"
-
-#: ../src/core/screen.c:741
+#: ../src/core/screen.c:730
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "ディスプレイ '%2$s' 上のスクリーン %1$d は無効です\n"
 
-#: ../src/core/screen.c:757
+#: ../src/core/screen.c:746
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -594,7 +209,7 @@ msgstr ""
 "持っています; 現在のウィンドウマネージャーを上書きするために --replace という"
 "オプションの使用を試してみて下さい。\n"
 
-#: ../src/core/screen.c:784
+#: ../src/core/screen.c:773
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -602,14 +217,14 @@ msgstr ""
 "ディスプレイ \"%2$s\" 上のスクリーン %1$d でウィンドウマネージャーの選択を取"
 "得できませんでした\n"
 
-#: ../src/core/screen.c:839
+#: ../src/core/screen.c:828
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 "ディスプレイ \"%2$s\" 上のスクリーン %1$d はすでにウィンドウマネージャーを"
 "持っています\n"
 
-#: ../src/core/screen.c:1024
+#: ../src/core/screen.c:1013
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ディスプレイ \"%2$s\" 上のスクリーン %1$d を解放できませんでした\n"
@@ -707,7 +322,7 @@ msgid "Window manager error: "
 msgstr "ウィンドウ・マネージャーのエラー: "
 
 #. first time through
-#: ../src/core/window.c:7069
+#: ../src/core/window.c:7266
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -723,7 +338,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7732
+#: ../src/core/window.c:7931
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -788,49 +403,11 @@ msgstr ""
 msgid "Mutter"
 msgstr "Mutter"
 
-#: ../src/mutter.schemas.in.h:1
-msgid "Attach modal dialogs"
-msgstr "モーダルなダイアログを統合するかどうか"
-
-#: ../src/mutter.schemas.in.h:2
-msgid ""
-"Determines whether hidden windows (i.e., minimized windows and windows on "
-"other workspaces than the current one) should be kept alive."
-msgstr ""
-"現在表示されていないウィンドウ (すなわち、最小化したウィンドウや現在のワーク"
-"スペースにはないウィンドウなど) を (表示させずに) そのままの状態にしておくか"
-"どうかです。"
-
-#: ../src/mutter.schemas.in.h:3
-msgid ""
-"Determines whether workspace switching should happen for windows on all "
-"monitors or only for windows on the primary monitor."
-msgstr ""
-"全てのモニターにあるウィンドウに対してワークスペースの切り替えを可能にする"
-"か、またはプライマリ・モニターにあるウィンドウに対してのみワークスペースの切"
-"り替えを提供するかどうかです。"
-
-#: ../src/mutter.schemas.in.h:4
-msgid "Draggable border width"
-msgstr "ドラッグが可能になる境界線の幅"
-
-#: ../src/mutter.schemas.in.h:5
-msgid "Live Hidden Windows"
-msgstr "表示されていないウィンドウをそのままにしておくかどうか"
-
-#: ../src/mutter.schemas.in.h:6
+#: ../src/org.gnome.mutter.gschema.xml.in.h:1
 msgid "Modifier to use for extended window management operations"
 msgstr "ウィンドウの拡張管理の操作で使用する修飾キー"
 
-#: ../src/mutter.schemas.in.h:7
-msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
-"not enough, invisible borders will be added to meet this value."
-msgstr ""
-"ドラッグができるようになる境界線の幅です。テーマで表示している境界線がこの値"
-"よりも小さい場合は、表示できない境界線がこの値になるように追加されます。"
-
-#: ../src/mutter.schemas.in.h:8
+#: ../src/org.gnome.mutter.gschema.xml.in.h:2
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -842,7 +419,11 @@ msgstr ""
 "デフォルトのキーは PC のキーボードにある [Windows キー] です。指定可能な値: "
 "デフォルトのキー、または空の文字列"
 
-#: ../src/mutter.schemas.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:3
+msgid "Attach modal dialogs"
+msgstr "モーダルなダイアログを統合するかどうか"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:4
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -852,58 +433,90 @@ msgstr ""
 "に、親ウィンドウのタイトルバーに統合したダイアログを表示します (親ウィンドウ"
 "を移動すると一緒にモーダルなダイアログも移動します)。"
 
-#: ../src/mutter.schemas.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:5
+msgid "Live Hidden Windows"
+msgstr "表示されていないウィンドウをそのままにしておくかどうか"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
+msgid ""
+"Determines whether hidden windows (i.e., minimized windows and windows on "
+"other workspaces than the current one) should be kept alive."
+msgstr ""
+"現在表示されていないウィンドウ (すなわち、最小化したウィンドウや現在のワーク"
+"スペースにはないウィンドウなど) を (表示させずに) そのままの状態にしておくか"
+"どうかです。"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+msgid ""
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+msgid "Workspaces are managed dynamically"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "Workspaces only on primary"
 msgstr "プライマリ・モニターのみワークスペースを切り替えるかどうか"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"全てのモニターにあるウィンドウに対してワークスペースの切り替えを可能にする"
+"か、またはプライマリ・モニターにあるウィンドウに対してのみワークスペースの切"
+"り替えを提供するかどうかです。"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "No tab popup"
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr "ドラッグが可能になる境界線の幅"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+msgid ""
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
+msgstr ""
+"ドラッグができるようになる境界線の幅です。テーマで表示している境界線がこの値"
+"よりも小さい場合は、表示できない境界線がこの値になるように追加されます。"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+#, fuzzy
+#| msgid "Remove Window From Top"
+msgid "Select window from tab popup"
+msgstr "ウィンドウを最前面の維持から解除します"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid "Cancel tab popup"
+msgstr ""
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "用法: %s\n"
-
-#: ../src/ui/frames.c:1157
-msgid "Close Window"
-msgstr "ウィンドウを閉じます"
-
-#: ../src/ui/frames.c:1160
-msgid "Window Menu"
-msgstr "ウィンドウ・メニューを表示します"
-
-#: ../src/ui/frames.c:1163
-msgid "Minimize Window"
-msgstr "ウィンドウを最小化します"
-
-#: ../src/ui/frames.c:1166
-msgid "Maximize Window"
-msgstr "ウィンドウを最大化します"
-
-#: ../src/ui/frames.c:1169
-msgid "Restore Window"
-msgstr "ウィンドウの状態を元に戻します"
-
-#: ../src/ui/frames.c:1172
-msgid "Roll Up Window"
-msgstr "ウィンドウを巻き上げます"
-
-#: ../src/ui/frames.c:1175
-msgid "Unroll Window"
-msgstr "ウィンドウの巻き上げを解除します"
-
-#: ../src/ui/frames.c:1178
-msgid "Keep Window On Top"
-msgstr "ウィンドウを最前面に維持します"
-
-#: ../src/ui/frames.c:1181
-msgid "Remove Window From Top"
-msgstr "ウィンドウを最前面の維持から解除します"
-
-#: ../src/ui/frames.c:1184
-msgid "Always On Visible Workspace"
-msgstr "全てのワークスペースに配置します"
-
-#: ../src/ui/frames.c:1187
-msgid "Put Window On Only One Workspace"
-msgstr "現在のワークスペースにのみ配置します"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:69
@@ -1140,12 +753,12 @@ msgstr "ボタンのアスペクト比 %g は妥当ではありません"
 msgid "Frame geometry does not specify size of buttons"
 msgstr "フレームジオメトリはボタンのサイズを指定しません"
 
-#: ../src/ui/theme.c:1065
+#: ../src/ui/theme.c:1067
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "階調度は少なくとも2つの色をもつべきです"
 
-#: ../src/ui/theme.c:1217
+#: ../src/ui/theme.c:1219
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
@@ -1154,7 +767,7 @@ msgstr ""
 "\"%s\" を解析できませんでした; GTK の色指定では gtk:custom(foo,bar); のように"
 "括弧の中に色の名前とそれと代替えになる色の名前を指定して下さい"
 
-#: ../src/ui/theme.c:1233
+#: ../src/ui/theme.c:1235
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
@@ -1163,7 +776,7 @@ msgstr ""
 "gtk:custom の color_name で指定した文字が間違っています (使用できる文字は A-"
 "Za-z0-9-_): '%c'"
 
-#: ../src/ui/theme.c:1247
+#: ../src/ui/theme.c:1249
 #, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
@@ -1172,7 +785,7 @@ msgstr ""
 "Gtk:custom の書式は \"gtk:custom(color_name,fallback)\" です (\"%s\" はこの書"
 "式に合っていません)"
 
-#: ../src/ui/theme.c:1292
+#: ../src/ui/theme.c:1294
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1181,7 +794,7 @@ msgstr ""
 "\"%s\" を解析できませんでした; GTK の色指定では gtk:fg[NORMAL] のように状態を"
 "大括弧で囲み指定する必要があります (NORMAL は状態を示す)"
 
-#: ../src/ui/theme.c:1306
+#: ../src/ui/theme.c:1308
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1190,17 +803,17 @@ msgstr ""
 "\"%s\" を解析できませんでした; GTK の色指定では gtk:fg[NORMAL] のように状態の"
 "後に右大括弧をつける必要があります (NORMAL は状態を示す)"
 
-#: ../src/ui/theme.c:1317
+#: ../src/ui/theme.c:1319
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "色指定で状態 \"%s\" は理解しませんでした"
 
-#: ../src/ui/theme.c:1330
+#: ../src/ui/theme.c:1332
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "色指定でカラーコンポーネント \"%s\" は理解しませんでした"
 
-#: ../src/ui/theme.c:1360
+#: ../src/ui/theme.c:1361
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1209,17 +822,17 @@ msgstr ""
 "混合色のフォーマットは \"blend/bg_color/fg_color/alpha\" で，\"%s\" はこの"
 "フォーマットに適合していません"
 
-#: ../src/ui/theme.c:1371
+#: ../src/ui/theme.c:1372
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "混合色のアルファ値 \"%s\" を解析できませんでした"
 
-#: ../src/ui/theme.c:1381
+#: ../src/ui/theme.c:1382
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "混合色のアルファ値 \"%s\" は 0.0 から 1.0 の間ではありません"
 
-#: ../src/ui/theme.c:1428
+#: ../src/ui/theme.c:1429
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -1227,78 +840,78 @@ msgstr ""
 "シェードのフォーマットは \"shade/base_color/factor\" で，\"%s\" はこのフォー"
 "マットに適合していません"
 
-#: ../src/ui/theme.c:1439
+#: ../src/ui/theme.c:1440
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "シェードカラーのシェード係数 \"%s\" をパスできませんでした"
 
-#: ../src/ui/theme.c:1449
+#: ../src/ui/theme.c:1450
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "シェードカラーのシェード係数 \"%s\" が負の値です"
 
-#: ../src/ui/theme.c:1478
+#: ../src/ui/theme.c:1479
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "次の色を解析できませんでした: \"%s\""
 
-#: ../src/ui/theme.c:1789
+#: ../src/ui/theme.c:1790
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "許可されていない文字が座標式に含まれています: '%s'"
 
-#: ../src/ui/theme.c:1816
+#: ../src/ui/theme.c:1817
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "解析できない浮動小数点数が座標式に含まれています: '%s'"
 
-#: ../src/ui/theme.c:1830
+#: ../src/ui/theme.c:1831
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "解析できない整数が座標式に含まれています: '%s'"
 
-#: ../src/ui/theme.c:1952
+#: ../src/ui/theme.c:1953
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "次のテキストの先頭に無効な演算子が座標式の中に含まれていました: \"%s\""
 
-#: ../src/ui/theme.c:2009
+#: ../src/ui/theme.c:2010
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "座標式が空か解析不能です"
 
-#: ../src/ui/theme.c:2120 ../src/ui/theme.c:2130 ../src/ui/theme.c:2164
+#: ../src/ui/theme.c:2121 ../src/ui/theme.c:2131 ../src/ui/theme.c:2165
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "座標式はゼロで除算しました"
 
-#: ../src/ui/theme.c:2172
+#: ../src/ui/theme.c:2173
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "座標式は浮動小数点で mod 演算子を使用しようとしています"
 
-#: ../src/ui/theme.c:2228
+#: ../src/ui/theme.c:2229
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "座標式はオペランドが必要な場所に演算子 \"%s\" を使用しています"
 
-#: ../src/ui/theme.c:2237
+#: ../src/ui/theme.c:2238
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "座標式は演算子が必要な場所でオペランドを使用しています"
 
-#: ../src/ui/theme.c:2245
+#: ../src/ui/theme.c:2246
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "座標式はオペランドの代わりに演算子で終わっています"
 
-#: ../src/ui/theme.c:2255
+#: ../src/ui/theme.c:2256
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1307,37 +920,37 @@ msgstr ""
 "座標式は演算子 \"%2$c\" の後に演算子 \"%1$c\" が続いており，これらの間にオペ"
 "ランドがありません"
 
-#: ../src/ui/theme.c:2406 ../src/ui/theme.c:2451
+#: ../src/ui/theme.c:2407 ../src/ui/theme.c:2452
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "座標式は無効な値または定数 \"%s\" が使用されていました"
 
-#: ../src/ui/theme.c:2505
+#: ../src/ui/theme.c:2506
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "座標式を解析する際にオーバーフローが発生しました"
 
-#: ../src/ui/theme.c:2534
+#: ../src/ui/theme.c:2535
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "座標式は左括弧がなしに右括弧が指定されています"
 
-#: ../src/ui/theme.c:2598
+#: ../src/ui/theme.c:2599
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "座標式は左括弧が指定されていますが，右括弧がありません"
 
-#: ../src/ui/theme.c:2609
+#: ../src/ui/theme.c:2610
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "座標式は演算子もオペランドも使用していないようです"
 
-#: ../src/ui/theme.c:2821 ../src/ui/theme.c:2841 ../src/ui/theme.c:2861
+#: ../src/ui/theme.c:2822 ../src/ui/theme.c:2842 ../src/ui/theme.c:2862
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "テーマにエラーを引き起こす式が含まれていました: %s\n"
 
-#: ../src/ui/theme.c:4532
+#: ../src/ui/theme.c:4533
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1346,7 +959,7 @@ msgstr ""
 "このフレームスタイルは <button function=\"%s\" state=\"%s\" draw_ops="
 "\"whatever\"/> を指定する必要があります"
 
-#: ../src/ui/theme.c:5065 ../src/ui/theme.c:5090
+#: ../src/ui/theme.c:5066 ../src/ui/theme.c:5091
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -1354,18 +967,18 @@ msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>がありませ"
 "ん"
 
-#: ../src/ui/theme.c:5138
+#: ../src/ui/theme.c:5139
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "テーマ \"%s\" の読み込みに失敗しました: %s\n"
 
-#: ../src/ui/theme.c:5274 ../src/ui/theme.c:5281 ../src/ui/theme.c:5288
-#: ../src/ui/theme.c:5295 ../src/ui/theme.c:5302
+#: ../src/ui/theme.c:5275 ../src/ui/theme.c:5282 ../src/ui/theme.c:5289
+#: ../src/ui/theme.c:5296 ../src/ui/theme.c:5303
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "テーマ \"%1$s\" の <%2$s> が設定されていません"
 
-#: ../src/ui/theme.c:5310
+#: ../src/ui/theme.c:5311
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1375,14 +988,14 @@ msgstr ""
 "ません．<window type=\"%3$s\" style_set=\"whatever\"/> エレメントを追加してく"
 "ださい"
 
-#: ../src/ui/theme.c:5708 ../src/ui/theme.c:5770 ../src/ui/theme.c:5833
+#: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "ユーザー定義の定数は大文字で始まらなければなりません; \"%s\" は違います"
 
-#: ../src/ui/theme.c:5716 ../src/ui/theme.c:5778 ../src/ui/theme.c:5841
+#: ../src/ui/theme.c:5717 ../src/ui/theme.c:5779 ../src/ui/theme.c:5842
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "定数 \"%s\" は既に定義されています"
@@ -1836,101 +1449,101 @@ msgstr "これは '開く' のアイコンを持つボタンの例です"
 msgid "This is a demo button with a 'quit' icon"
 msgstr "これは '終了' のアイコンを持つボタンの例です"
 
-#: ../src/ui/theme-viewer.c:253
+#: ../src/ui/theme-viewer.c:248
 msgid "This is a sample message in a sample dialog"
 msgstr "これはサンプル・ダイアログの中に表示したサンプル・メッセージです"
 
-#: ../src/ui/theme-viewer.c:336
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "メニュー・アイテムの例%d\n"
 
-#: ../src/ui/theme-viewer.c:371
+#: ../src/ui/theme-viewer.c:363
 msgid "Border-only window"
 msgstr "境界線だけのウィンドウ"
 
-#: ../src/ui/theme-viewer.c:373
+#: ../src/ui/theme-viewer.c:365
 msgid "Bar"
 msgstr "バー"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:382
 msgid "Normal Application Window"
 msgstr "通常のアプリケーション・ウィンドウ"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:386
 msgid "Dialog Box"
 msgstr "ダイアログ・ボックス"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:390
 msgid "Modal Dialog Box"
 msgstr "モーダルなダイアログ・ボックス"
 
-#: ../src/ui/theme-viewer.c:402
+#: ../src/ui/theme-viewer.c:394
 msgid "Utility Palette"
 msgstr "ユーティリティ・パレット"
 
-#: ../src/ui/theme-viewer.c:406
+#: ../src/ui/theme-viewer.c:398
 msgid "Torn-off Menu"
 msgstr "取り外したメニュー"
 
-#: ../src/ui/theme-viewer.c:410
+#: ../src/ui/theme-viewer.c:402
 msgid "Border"
 msgstr "境界線"
 
-#: ../src/ui/theme-viewer.c:414
+#: ../src/ui/theme-viewer.c:406
 msgid "Attached Modal Dialog"
 msgstr "埋め込んだモーダルなダイアログ"
 
-#: ../src/ui/theme-viewer.c:747
+#: ../src/ui/theme-viewer.c:739
 #, c-format
 msgid "Button layout test %d"
 msgstr "ボタンの配置テスト %d"
 
-#: ../src/ui/theme-viewer.c:776
+#: ../src/ui/theme-viewer.c:768
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "１個のウィンドウ・フレームの描画時間: %gミリ秒"
 
-#: ../src/ui/theme-viewer.c:821
+#: ../src/ui/theme-viewer.c:813
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "用法: metacity-theme-viewer [テーマ名]\n"
 
-#: ../src/ui/theme-viewer.c:828
+#: ../src/ui/theme-viewer.c:820
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "テーマのロードでエラーが発生しました: %s\n"
 
-#: ../src/ui/theme-viewer.c:834
+#: ../src/ui/theme-viewer.c:826
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "\"%s\" というテーマを%g秒で読み込みました\n"
 
-#: ../src/ui/theme-viewer.c:878
+#: ../src/ui/theme-viewer.c:870
 msgid "Normal Title Font"
 msgstr "標準的なフォントのタイトル"
 
-#: ../src/ui/theme-viewer.c:884
+#: ../src/ui/theme-viewer.c:876
 msgid "Small Title Font"
 msgstr "小さなフォントのタイトル"
 
-#: ../src/ui/theme-viewer.c:890
+#: ../src/ui/theme-viewer.c:882
 msgid "Large Title Font"
 msgstr "大きなフォントのタイトル"
 
-#: ../src/ui/theme-viewer.c:895
+#: ../src/ui/theme-viewer.c:887
 msgid "Button Layouts"
 msgstr "ボタンの配置"
 
-#: ../src/ui/theme-viewer.c:900
+#: ../src/ui/theme-viewer.c:892
 msgid "Benchmark"
 msgstr "ベンチマーク"
 
-#: ../src/ui/theme-viewer.c:952
+#: ../src/ui/theme-viewer.c:944
 msgid "Window Title Goes Here"
 msgstr "ここにウィンドウのタイトルが表示されます"
 
-#: ../src/ui/theme-viewer.c:1055
+#: ../src/ui/theme-viewer.c:1047
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1940,42 +1553,357 @@ msgstr ""
 "%d 個のフレームをクライアント側で%g秒 (1フレームにつき%gミリ秒)、実時間ではＸ"
 "サーバーのリソースを含めて%g秒 (1フレームにつき %gミリ秒)で描画しました\n"
 
-#: ../src/ui/theme-viewer.c:1274
+#: ../src/ui/theme-viewer.c:1266
 msgid "position expression test returned TRUE but set error"
 msgstr "位置式テストはTRUEを返しましたがエラーがセットされています"
 
-#: ../src/ui/theme-viewer.c:1276
+#: ../src/ui/theme-viewer.c:1268
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "位置式テストはFALSEを返しましたがエラーをセットしていません"
 
-#: ../src/ui/theme-viewer.c:1280
+#: ../src/ui/theme-viewer.c:1272
 msgid "Error was expected but none given"
 msgstr "エラーが起きるはずですが何も起こりませんでした"
 
-#: ../src/ui/theme-viewer.c:1282
+#: ../src/ui/theme-viewer.c:1274
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "エラー %d が起きるはずですが %d が起こりました"
 
-#: ../src/ui/theme-viewer.c:1288
+#: ../src/ui/theme-viewer.c:1280
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "エラーは起きないはずですが一つ発生しました: %s"
 
-#: ../src/ui/theme-viewer.c:1292
+#: ../src/ui/theme-viewer.c:1284
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "xの値が %d でした (期待値: %d)"
 
-#: ../src/ui/theme-viewer.c:1295
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "yの値は %d でした (期待値: %d)"
 
-#: ../src/ui/theme-viewer.c:1360
+#: ../src/ui/theme-viewer.c:1352
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d個の座標式を %g秒 (平均 %g秒) で解析しました\n"
+
+# ｢キーボード・ショートカット｣のアプレット (gnome-control-center) で表示するメッセージ
+#~ msgid "Switch to workspace 1"
+#~ msgstr "ワークスペース 1 へ切り替える"
+
+#~ msgid "Switch to workspace 2"
+#~ msgstr "ワークスペース 2 へ切り替える"
+
+#~ msgid "Switch to workspace 3"
+#~ msgstr "ワークスペース 3 へ切り替える"
+
+#~ msgid "Switch to workspace 4"
+#~ msgstr "ワークスペース 4 へ切り替える"
+
+#~ msgid "Switch to workspace 5"
+#~ msgstr "ワークスペース 5 へ切り替える"
+
+#~ msgid "Switch to workspace 6"
+#~ msgstr "ワークスペース 6 へ切り替える"
+
+#~ msgid "Switch to workspace 7"
+#~ msgstr "ワークスペース 7 へ切り替える"
+
+#~ msgid "Switch to workspace 8"
+#~ msgstr "ワークスペース 8 へ切り替える"
+
+#~ msgid "Switch to workspace 9"
+#~ msgstr "ワークスペース 9 へ切り替える"
+
+#~ msgid "Switch to workspace 10"
+#~ msgstr "ワークスペース 10 へ切り替える"
+
+#~ msgid "Switch to workspace 11"
+#~ msgstr "ワークスペース 11 へ切り替える"
+
+#~ msgid "Switch to workspace 12"
+#~ msgstr "ワークスペース 12 へ切り替える"
+
+#~ msgid "Switch to workspace on the left of the current workspace"
+#~ msgstr "左側のワークスペースへ切り替える"
+
+#~ msgid "Switch to workspace on the right of the current workspace"
+#~ msgstr "右側のワークスペースへ切り替える"
+
+#~ msgid "Switch to workspace above the current workspace"
+#~ msgstr "上側のワークスペースへ切り替える"
+
+#~ msgid "Switch to workspace below the current workspace"
+#~ msgstr "下側のワークスペースへ切り替える"
+
+#~ msgid "Move between windows of an application, using a popup window"
+#~ msgstr "ポップアップ・ウィンドウを使って複数のウィンドウの間を移動する"
+
+#~ msgid ""
+#~ "Move backward between windows of an application, using a popup window"
+#~ msgstr ""
+#~ "ポップアップ・ウィンドウを使って複数のウィンドウの間を降順で移動する"
+
+#~ msgid "Move between windows, using a popup window"
+#~ msgstr ""
+#~ "ポップアップ・ウィンドウを使ってウィンドウ間のフォーカスを切り替える"
+
+#~ msgid "Move backward between windows, using a popup window"
+#~ msgstr ""
+#~ "ポップアップ・ウィンドウを使ってウィンドウ間のフォーカスを降順で切り替える"
+
+#~ msgid "Move between panels and the desktop, using a popup window"
+#~ msgstr ""
+#~ "ポップアップ・ウィンドウを使ってパネルとデスクトップの間のフォーカスを切り"
+#~ "替える"
+
+#~ msgid "Move backward between panels and the desktop, using a popup window"
+#~ msgstr ""
+#~ "ポップアップ・ウィンドウを使ってパネルとデスクトップの間のフォーカスを降順"
+#~ "で切り替える"
+
+#~ msgid "Move between windows of an application immediately"
+#~ msgstr "アプリケーションが持つ複数のウィンドウの間を移動する"
+
+#~ msgid "Move backward between windows of an application immediately"
+#~ msgstr "アプリケーションが持つ複数のウィンドウを降順で移動する"
+
+#~ msgid "Move between windows immediately"
+#~ msgstr "ウィンドウ間のフォーカスを切り替える"
+
+#~ msgid "Move backward between windows immediately"
+#~ msgstr "ウィンドウ間のフォーカスを降順で切り替える"
+
+#~ msgid "Move between panels and the desktop immediately"
+#~ msgstr "パネルとデスクトップとのフォーカスを切り替える"
+
+#~ msgid "Move backward between panels and the desktop immediately"
+#~ msgstr "後方のパネルとデスクトップとの間を切り替える"
+
+#~ msgid "Hide all normal windows and set focus to the desktop"
+#~ msgstr "全てのウィンドウを隠してデスクトップにフォーカスを移す"
+
+#~ msgid "Show the panel's main menu"
+#~ msgstr "パネルにあるメイン・メニューを開く"
+
+#~ msgid "Show the panel's \"Run Application\" dialog box"
+#~ msgstr "アプリケーションの実行ダイアログを開く"
+
+#~ msgid "Start or stop recording the session"
+#~ msgstr "セッションの録画を開始/停止する"
+
+#~ msgid "Take a screenshot"
+#~ msgstr "スクリーンショットを撮る"
+
+#~ msgid "Take a screenshot of a window"
+#~ msgstr "ウィンドウのスクリーンショットを撮る"
+
+#~ msgid "Run a terminal"
+#~ msgstr "端末を起動する"
+
+#~ msgid "Activate the window menu"
+#~ msgstr "ウィンドウ・メニューを開く"
+
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "フル・スクリーン表示を切り替える"
+
+#~ msgid "Toggle maximization state"
+#~ msgstr "最大化/最小化の状態を切り替える"
+
+#~ msgid "Toggle whether a window will always be visible over other windows"
+#~ msgstr "ウィンドウを常に前面に表示するかどうかの設定を切り替える"
+
+#~ msgid "Maximize window"
+#~ msgstr "ウィンドウを最大化する"
+
+#~ msgid "Restore window"
+#~ msgstr "ウィンドウの状態を元に戻す"
+
+#~ msgid "Toggle shaded state"
+#~ msgstr "シェードの状態を切り替える"
+
+#~ msgid "Minimize window"
+#~ msgstr "ウィンドウを最小化する"
+
+#~ msgid "Close window"
+#~ msgstr "ウィンドウを閉じる"
+
+#~ msgid "Move window"
+#~ msgstr "ウィンドウを移動する"
+
+#~ msgid "Resize window"
+#~ msgstr "ウィンドウ・サイズを変更する"
+
+#~ msgid "Toggle whether window is on all workspaces or just one"
+#~ msgstr "ウィンドウを全てのワークスペースに配置するか切り替える"
+
+#~ msgid "Move window to workspace 1"
+#~ msgstr "ウィンドウをワークスペース 1 へ移動する"
+
+#~ msgid "Move window to workspace 2"
+#~ msgstr "ウィンドウをワークスペース 2 へ移動する"
+
+#~ msgid "Move window to workspace 3"
+#~ msgstr "ウィンドウをワークスペース 3 へ移動する"
+
+#~ msgid "Move window to workspace 4"
+#~ msgstr "ウィンドウをワークスペース 4 へ移動する"
+
+#~ msgid "Move window to workspace 5"
+#~ msgstr "ウィンドウをワークスペース 5 へ移動する"
+
+#~ msgid "Move window to workspace 6"
+#~ msgstr "ウィンドウをワークスペース 6 へ移動する"
+
+#~ msgid "Move window to workspace 7"
+#~ msgstr "ウィンドウをワークスペース 7 へ移動する"
+
+#~ msgid "Move window to workspace 8"
+#~ msgstr "ウィンドウをワークスペース 8 へ移動する"
+
+#~ msgid "Move window to workspace 9"
+#~ msgstr "ウィンドウをワークスペース 9 へ移動する"
+
+#~ msgid "Move window to workspace 10"
+#~ msgstr "ウィンドウをワークスペース 10 へ移動する"
+
+#~ msgid "Move window to workspace 11"
+#~ msgstr "ウィンドウをワークスペース 11 へ移動する"
+
+#~ msgid "Move window to workspace 12"
+#~ msgstr "ウィンドウをワークスペース 12 へ移動する"
+
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "ウィンドウを左側のワークスペースへ移動する"
+
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "ウィンドウを右側のワークスペースへ移動する"
+
+#~ msgid "Move window one workspace up"
+#~ msgstr "ウィンドウを上側のワークスペースへ移動する"
+
+#~ msgid "Move window one workspace down"
+#~ msgstr "ウィンドウを下側のワークスペースへ移動する"
+
+#~ msgid "Raise window if it's covered by another window, otherwise lower it"
+#~ msgstr "隠れているウィンドウを前面に表示する"
+
+#~ msgid "Raise window above other windows"
+#~ msgstr "ウィンドウを前面に表示する"
+
+#~ msgid "Lower window below other windows"
+#~ msgstr "ウィンドウを一番奥に移動する"
+
+#~ msgid "Maximize window vertically"
+#~ msgstr "ウィンドウを垂直方向に最大化する"
+
+#~ msgid "Maximize window horizontally"
+#~ msgstr "ウィンドウを水平方向に最大化する"
+
+#~ msgid "Move window to north-west (top left) corner"
+#~ msgstr "ウィンドウを画面の左上隅へ移動する"
+
+#~ msgid "Move window to north-east (top right) corner"
+#~ msgstr "ウィンドウを画面の右上隅へ移動する"
+
+#~ msgid "Move window to south-west (bottom left) corner"
+#~ msgstr "ウィンドウを画面の左下隅へ移動する"
+
+#~ msgid "Move window to south-east (bottom right) corner"
+#~ msgstr "ウィンドウを画面の右下隅へ移動する"
+
+#~ msgid "Move window to north (top) side of screen"
+#~ msgstr "ウィンドウを画面の上側へ移動する"
+
+#~ msgid "Move window to south (bottom) side of screen"
+#~ msgstr "ウィンドウを画面の下側へ移動する"
+
+#~ msgid "Move window to east (right) side of screen"
+#~ msgstr "ウィンドウを画面の右側へ移動する"
+
+#~ msgid "Move window to west (left) side of screen"
+#~ msgstr "ウィンドウを画面の左側へ移動する"
+
+#~ msgid "Move window to center of screen"
+#~ msgstr "ウィンドウを画面の中央へ移動する"
+
+#~ msgid ""
+#~ "There was an error running <tt>%s</tt>:\n"
+#~ "\n"
+#~ "%s"
+#~ msgstr ""
+#~ "<tt>%s</tt>の動作中にエラーが発生しました:\n"
+#~ "\n"
+#~ "%s"
+
+#~ msgid "No command %d has been defined.\n"
+#~ msgstr "コマンド %d は定義されていません。\n"
+
+#~ msgid "No terminal command has been defined.\n"
+#~ msgstr "端末を起動するコマンドが定義されていません。\n"
+
+#~ msgid "GConf key '%s' is set to an invalid value\n"
+#~ msgstr "GConf の '%s' キーには無効な値が格納されています\n"
+
+#~ msgid "%d stored in GConf key %s is out of range %d to %d\n"
+#~ msgstr "GConf の %2$s キーの値 %1$d は %3$d〜%4$d の範囲内にありません\n"
+
+#~ msgid "GConf key \"%s\" is set to an invalid type\n"
+#~ msgstr "GConf の \"%s\" キーには無効な型が格納されています\n"
+
+#~ msgid "GConf key %s is already in use and can't be used to override %s\n"
+#~ msgstr "GConf キーの %s は既に使用中なので %s をオーバーライドできません\n"
+
+#~ msgid "Can't override GConf key, %s not found\n"
+#~ msgstr "GConf キーをオーバーライドできません (%s が見つかりませんでした)\n"
+
+#~ msgid "Error setting number of workspaces to %d: %s\n"
+#~ msgstr "ワークスペース数を %d に設定中にエラーが発生しました: %s\n"
+
+#~ msgid "Error setting name for workspace %d to \"%s\": %s\n"
+#~ msgstr ""
+#~ "ワークスペース %d の名前を \"%s\" に設定するときにエラーが発生しました: %"
+#~ "s\n"
+
+#~ msgid "Error setting live hidden windows status status: %s\n"
+#~ msgstr ""
+#~ "表示されていないが動作中のウィンドウに対するステータスの設定エラー: %s\n"
+
+#~ msgid "Error setting no tab popup status: %s\n"
+#~ msgstr "タブなしのポップアップ・ステータスの設定エラー: %s\n"
+
+#~ msgid "Close Window"
+#~ msgstr "ウィンドウを閉じます"
+
+#~ msgid "Window Menu"
+#~ msgstr "ウィンドウ・メニューを表示します"
+
+#~ msgid "Minimize Window"
+#~ msgstr "ウィンドウを最小化します"
+
+#~ msgid "Maximize Window"
+#~ msgstr "ウィンドウを最大化します"
+
+#~ msgid "Restore Window"
+#~ msgstr "ウィンドウの状態を元に戻します"
+
+#~ msgid "Roll Up Window"
+#~ msgstr "ウィンドウを巻き上げます"
+
+#~ msgid "Unroll Window"
+#~ msgstr "ウィンドウの巻き上げを解除します"
+
+#~ msgid "Keep Window On Top"
+#~ msgstr "ウィンドウを最前面に維持します"
+
+#~ msgid "Always On Visible Workspace"
+#~ msgstr "全てのワークスペースに配置します"
+
+#~ msgid "Put Window On Only One Workspace"
+#~ msgstr "現在のワークスペースにのみ配置します"
 
 #~ msgid "Failed to retrieve color %s[%s] from GTK+ theme.\n"
 #~ msgstr "GTK+ のテーマから色を取得できませんでした: %s[%s]\n"
