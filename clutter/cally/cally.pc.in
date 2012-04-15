@@ -4,14 +4,10 @@ libdir=@libdir@
 includedir=@includedir@
 
 apiversion=@CLUTTER_API_VERSION@
-winsys=@CLUTTER_WINSYS@
-soname_infix=@CLUTTER_SONAME_INFIX@
-cogl_driver=@COGL_DRIVER@
-requires=@CLUTTER_REQUIRES@
 
 Name: Cally
 Description: Clutter Accessibility Implementation Library
 Version: @VERSION@
-Libs: -L${libdir} -lclutter-${soname_infix}-${apiversion}
+Libs: -L${libdir} -lclutter-${apiversion}
 Cflags: -I${includedir}/clutter-${apiversion}
 Requires: atk clutter-1.0
