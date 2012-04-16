@@ -96,6 +96,8 @@ _cogl_path_data_unref (CoglPathData *data)
 
       g_array_free (data->path_nodes, TRUE);
 
+      cogl_object_unref (data->context);
+
       g_slice_free (CoglPathData, data);
     }
 }
@@ -122,6 +124,7 @@ _cogl_path_modify (CoglPath *path)
       path->data->fill_attribute_buffer = NULL;
       path->data->stroke_attribute_buffer = NULL;
       path->data->ref_count = 1;
+      cogl_object_ref (path->data->context);
 
       _cogl_path_data_unref (old_data);
     }
@@ -209,8 +212,6 @@ _cogl_path_stroke_nodes (CoglPath *path)
   int path_num = 0;
   CoglPathNode *node;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   source = cogl_get_source ();
 
   if (cogl_pipeline_get_n_layers (source) != 0)
@@ -276,9 +277,8 @@ _cogl_path_fill_nodes_with_clipped_rectangle (CoglPath *path)
 {
   CoglFramebuffer *fb;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_STENCIL_BUFFER))
+  if (!(path->data->context->private_feature_flags &
+        COGL_PRIVATE_FEATURE_STENCIL_BUFFER))
     {
       static gboolean seen_warning = FALSE;
 
@@ -873,10 +873,13 @@ cogl2_path_new (void)
   CoglPath *path;
   CoglPathData *data;
 
+  _COGL_GET_CONTEXT (ctx, NULL);
+
   path = g_slice_new (CoglPath);
   data = path->data = g_slice_new (CoglPathData);
 
   data->ref_count = 1;
+  data->context = cogl_object_ref (ctx);
   data->fill_rule = COGL_PATH_FILL_RULE_EVEN_ODD;
   data->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
   data->last_path = 0;
@@ -1267,8 +1270,6 @@ _cogl_path_build_fill_attribute_buffer (CoglPath *path)
   CoglPathData *data = path->data;
   int i;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   /* If we've already got a vbo then we don't need to do anything */
   if (data->fill_attribute_buffer)
     return;
@@ -1354,7 +1355,7 @@ _cogl_path_build_fill_attribute_buffer (CoglPath *path)
   gluDeleteTess (tess.glu_tess);
 
   data->fill_attribute_buffer =
-    cogl_attribute_buffer_new (ctx,
+    cogl_attribute_buffer_new (data->context,
                                sizeof (CoglPathTesselatorVertex) *
                                tess.vertices->len,
                                tess.vertices->data);
@@ -1375,7 +1376,7 @@ _cogl_path_build_fill_attribute_buffer (CoglPath *path)
                         2, /* n_components */
                         COGL_ATTRIBUTE_TYPE_FLOAT);
 
-  data->fill_vbo_indices = cogl_indices_new (ctx,
+  data->fill_vbo_indices = cogl_indices_new (data->context,
                                              tess.indices_type,
                                              tess.indices->data,
                                              tess.indices->len);
@@ -1394,14 +1395,13 @@ _cogl_path_build_stroke_attribute_buffer (CoglPath *path)
   floatVec2 *buffer_p;
   unsigned int i;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   /* If we've already got a cached vbo then we don't need to do anything */
   if (data->stroke_attribute_buffer)
     return;
 
   data->stroke_attribute_buffer =
-    cogl_attribute_buffer_new (ctx, data->path_nodes->len * sizeof (floatVec2),
+    cogl_attribute_buffer_new (data->context,
+                               data->path_nodes->len * sizeof (floatVec2),
                                NULL);
 
   buffer = COGL_BUFFER (data->stroke_attribute_buffer);

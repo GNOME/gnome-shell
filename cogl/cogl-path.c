@@ -303,4 +303,3 @@ cogl_set_path (CoglPath *path)
   cogl_object_unref (ctx->current_path);
   ctx->current_path = path;
 }
-

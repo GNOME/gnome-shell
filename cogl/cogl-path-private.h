@@ -70,6 +70,8 @@ struct _CoglPathData
 {
   unsigned int         ref_count;
 
+  CoglContext         *context;
+
   CoglPathFillRule     fill_rule;
 
   GArray              *path_nodes;
