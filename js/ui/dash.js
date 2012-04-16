@@ -133,7 +133,6 @@ const DashItemContainer = new Lang.Class({
     },
 
     hideLabel: function () {
-        this.label.opacity = 255;
         Tweener.addTween(this.label,
                          { opacity: 0,
                            time: DASH_ITEM_LABEL_HIDE_TIME,
@@ -459,6 +458,13 @@ const Dash = new Lang.Class({
                                Lang.bind(this, function() {
                                    this._onHover(item, display)
                                }));
+
+        Main.overview.connect('hiding',
+                              Lang.bind(this, function() {
+                                  this._labelShowing = false;
+                                  item.hideLabel();
+                              }));
+
         return item;
     },
 
@@ -474,7 +480,7 @@ const Dash = new Lang.Class({
                     }));
                 if (this._resetHoverTimeoutId > 0) {
                     Mainloop.source_remove(this._resetHoverTimeoutId);
-                this._resetHoverTimeoutId = 0;
+                    this._resetHoverTimeoutId = 0;
                 }
             }
         } else {
