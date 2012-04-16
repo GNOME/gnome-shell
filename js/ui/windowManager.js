@@ -136,7 +136,7 @@ const WindowManager = new Lang.Class({
         Meta.keybindings_set_custom_handler('switch-panels',
                                             Lang.bind(this, this._startA11ySwitcher));
         global.display.add_keybinding('open-application-menu',
-                                      SHELL_KEYBINDINGS_SCHEMA,
+                                      new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
                                       Meta.KeyBindingFlags.NONE,
                                       Lang.bind(this, this._openAppMenu));
 
