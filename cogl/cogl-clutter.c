@@ -43,13 +43,13 @@
 #endif
 #include "cogl-clutter.h"
 
-gboolean
+CoglBool
 cogl_clutter_check_extension (const char *name, const char *ext)
 {
   return _cogl_check_extension (name, ext);
 }
 
-gboolean
+CoglBool
 cogl_clutter_winsys_has_feature (CoglWinsysFeature feature)
 {
   return _cogl_winsys_has_feature (feature);

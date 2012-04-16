@@ -100,8 +100,8 @@ GQuark cogl_texture_pixmap_x11_error_quark (void);
  */
 CoglTexturePixmapX11 *
 cogl_texture_pixmap_x11_new (CoglContext *context,
-                             guint32 pixmap,
-                             gboolean automatic_updates,
+                             uint32_t pixmap,
+                             CoglBool automatic_updates,
                              GError **error);
 
 /**
@@ -142,7 +142,7 @@ cogl_texture_pixmap_x11_update_area (CoglTexturePixmapX11 *texture,
  * Since: 1.4
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_texture_pixmap_x11_is_using_tfp_extension (CoglTexturePixmapX11 *texture);
 
 /**
@@ -166,7 +166,7 @@ cogl_texture_pixmap_x11_is_using_tfp_extension (CoglTexturePixmapX11 *texture);
  */
 void
 cogl_texture_pixmap_x11_set_damage_object (CoglTexturePixmapX11 *texture,
-                                           guint32 damage,
+                                           uint32_t damage,
                                            CoglTexturePixmapX11ReportLevel
                                                                   report_level);
 
@@ -182,7 +182,7 @@ cogl_texture_pixmap_x11_set_damage_object (CoglTexturePixmapX11 *texture,
  * Since: 1.4
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_is_texture_pixmap_x11 (void *object);
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */

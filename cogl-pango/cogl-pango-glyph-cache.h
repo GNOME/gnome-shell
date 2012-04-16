@@ -52,7 +52,7 @@ struct _CoglPangoGlyphCacheValue
 
   /* This will be set to TRUE when the glyph atlas is reorganized
      which means the glyph will need to be redrawn */
-  gboolean   dirty;
+  CoglBool   dirty;
 };
 
 typedef void (* CoglPangoGlyphCacheDirtyFunc) (PangoFont *font,
@@ -60,14 +60,14 @@ typedef void (* CoglPangoGlyphCacheDirtyFunc) (PangoFont *font,
                                                CoglPangoGlyphCacheValue *value);
 
 CoglPangoGlyphCache *
-cogl_pango_glyph_cache_new (gboolean use_mipmapping);
+cogl_pango_glyph_cache_new (CoglBool use_mipmapping);
 
 void
 cogl_pango_glyph_cache_free (CoglPangoGlyphCache *cache);
 
 CoglPangoGlyphCacheValue *
 cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
-                               gboolean             create,
+                               CoglBool             create,
                                PangoFont           *font,
                                PangoGlyph           glyph);
 

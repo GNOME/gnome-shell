@@ -49,16 +49,16 @@ struct _CoglPangoGlyphCache
   /* TRUE if we've ever stored a texture in the global atlas. This is
      used to make sure we only register one callback to listen for
      global atlas reorganizations */
-  gboolean          using_global_atlas;
+  CoglBool          using_global_atlas;
 
   /* True if some of the glyphs are dirty. This is used as an
      optimization in _cogl_pango_glyph_cache_set_dirty_glyphs to avoid
      iterating the hash table if we know none of them are dirty */
-  gboolean          has_dirty_glyphs;
+  CoglBool          has_dirty_glyphs;
 
   /* Whether mipmapping is being used for this cache. This only
      affects whether we decide to put the glyph in the global atlas */
-  gboolean          use_mipmapping;
+  CoglBool          use_mipmapping;
 };
 
 struct _CoglPangoGlyphCacheKey
@@ -82,8 +82,8 @@ cogl_pango_glyph_cache_key_free (CoglPangoGlyphCacheKey *key)
   g_slice_free (CoglPangoGlyphCacheKey, key);
 }
 
-static guint
-cogl_pango_glyph_cache_hash_func (gconstpointer key)
+static unsigned int
+cogl_pango_glyph_cache_hash_func (const void *key)
 {
   const CoglPangoGlyphCacheKey *cache_key
     = (const CoglPangoGlyphCacheKey *) key;
@@ -95,9 +95,8 @@ cogl_pango_glyph_cache_hash_func (gconstpointer key)
   return GPOINTER_TO_UINT (cache_key->font) ^ cache_key->glyph;
 }
 
-static gboolean
-cogl_pango_glyph_cache_equal_func (gconstpointer a,
-				      gconstpointer b)
+static CoglBool
+cogl_pango_glyph_cache_equal_func (const void *a, const void *b)
 {
   const CoglPangoGlyphCacheKey *key_a
     = (const CoglPangoGlyphCacheKey *) a;
@@ -112,7 +111,7 @@ cogl_pango_glyph_cache_equal_func (gconstpointer a,
 }
 
 CoglPangoGlyphCache *
-cogl_pango_glyph_cache_new (gboolean use_mipmapping)
+cogl_pango_glyph_cache_new (CoglBool use_mipmapping)
 {
   CoglPangoGlyphCache *cache;
 
@@ -198,7 +197,7 @@ cogl_pango_glyph_cache_update_position_cb (void *user_data,
   value->dirty = TRUE;
 }
 
-static gboolean
+static CoglBool
 cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
                                             PangoFont *font,
                                             PangoGlyph glyph,
@@ -244,7 +243,7 @@ cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 cogl_pango_glyph_cache_add_to_local_atlas (CoglPangoGlyphCache *cache,
                                            PangoFont *font,
                                            PangoGlyph glyph,
@@ -294,7 +293,7 @@ cogl_pango_glyph_cache_add_to_local_atlas (CoglPangoGlyphCache *cache,
 
 CoglPangoGlyphCacheValue *
 cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
-                               gboolean             create,
+                               CoglBool             create,
                                PangoFont           *font,
                                PangoGlyph           glyph)
 {
@@ -358,9 +357,9 @@ cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
 }
 
 static void
-_cogl_pango_glyph_cache_set_dirty_glyphs_cb (gpointer key_ptr,
-                                             gpointer value_ptr,
-                                             gpointer user_data)
+_cogl_pango_glyph_cache_set_dirty_glyphs_cb (void *key_ptr,
+                                             void *value_ptr,
+                                             void *user_data)
 {
   CoglPangoGlyphCacheKey *key = key_ptr;
   CoglPangoGlyphCacheValue *value = value_ptr;

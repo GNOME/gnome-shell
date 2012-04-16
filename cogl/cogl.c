@@ -97,7 +97,7 @@ cogl_get_proc_address (const char* name)
   return _cogl_renderer_get_proc_address (ctx->display->renderer, name);
 }
 
-gboolean
+CoglBool
 _cogl_check_extension (const char *name, const gchar *ext)
 {
   char *end;
@@ -123,7 +123,7 @@ _cogl_check_extension (const char *name, const gchar *ext)
 }
 
 /* XXX: This has been deprecated as public API */
-gboolean
+CoglBool
 cogl_check_extension (const char *name, const char *ext)
 {
   return _cogl_check_extension (name, ext);
@@ -139,7 +139,7 @@ cogl_clear (const CoglColor *color, unsigned long buffers)
 
 /* XXX: This API has been deprecated */
 void
-cogl_set_depth_test_enabled (gboolean setting)
+cogl_set_depth_test_enabled (CoglBool setting)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -154,7 +154,7 @@ cogl_set_depth_test_enabled (gboolean setting)
 }
 
 /* XXX: This API has been deprecated */
-gboolean
+CoglBool
 cogl_get_depth_test_enabled (void)
 {
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -162,7 +162,7 @@ cogl_get_depth_test_enabled (void)
 }
 
 void
-cogl_set_backface_culling_enabled (gboolean setting)
+cogl_set_backface_culling_enabled (CoglBool setting)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -177,7 +177,7 @@ cogl_set_backface_culling_enabled (gboolean setting)
     ctx->legacy_state_set--;
 }
 
-gboolean
+CoglBool
 cogl_get_backface_culling_enabled (void)
 {
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -244,7 +244,7 @@ cogl_get_features (void)
   return ctx->feature_flags;
 }
 
-gboolean
+CoglBool
 cogl_features_available (CoglFeatureFlags features)
 {
   _COGL_GET_CONTEXT (ctx, 0);
@@ -252,13 +252,13 @@ cogl_features_available (CoglFeatureFlags features)
   return (ctx->feature_flags & features) == features;
 }
 
-gboolean
+CoglBool
 cogl_has_feature (CoglContext *ctx, CoglFeatureID feature)
 {
   return COGL_FLAGS_GET (ctx->features, feature);
 }
 
-gboolean
+CoglBool
 cogl_has_features (CoglContext *ctx, ...)
 {
   va_list args;
@@ -371,7 +371,7 @@ cogl_read_pixels (int x,
                   int height,
                   CoglReadPixelsFlags source,
                   CoglPixelFormat format,
-                  guint8 *pixels)
+                  uint8_t *pixels)
 {
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
   CoglBitmap *bitmap;
@@ -399,7 +399,7 @@ cogl_begin_gl (void)
 
   if (ctx->in_begin_gl_block)
     {
-      static gboolean shown = FALSE;
+      static CoglBool shown = FALSE;
       if (!shown)
         g_warning ("You should not nest cogl_begin_gl/cogl_end_gl blocks");
       shown = TRUE;
@@ -455,7 +455,7 @@ cogl_end_gl (void)
 
   if (!ctx->in_begin_gl_block)
     {
-      static gboolean shown = FALSE;
+      static CoglBool shown = FALSE;
       if (!shown)
         g_warning ("cogl_end_gl is being called before cogl_begin_gl");
       shown = TRUE;
@@ -573,11 +573,11 @@ typedef struct _CoglSourceState
      necessary because some internal Cogl code expects to be able to
      push a temporary pipeline to put GL into a known state. For that
      to work it also needs to prevent applying the legacy state */
-  gboolean enable_legacy;
+  CoglBool enable_legacy;
 } CoglSourceState;
 
 static void
-_push_source_real (CoglPipeline *pipeline, gboolean enable_legacy)
+_push_source_real (CoglPipeline *pipeline, CoglBool enable_legacy)
 {
   CoglSourceState *top = g_slice_new (CoglSourceState);
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -606,7 +606,7 @@ cogl_push_source (void *material_or_pipeline)
    never applies the legacy state. Some parts of Cogl use this
    internally to set a temporary pipeline with a known state */
 void
-_cogl_push_source (CoglPipeline *pipeline, gboolean enable_legacy)
+_cogl_push_source (CoglPipeline *pipeline, CoglBool enable_legacy)
 {
   CoglSourceState *top;
 
@@ -664,7 +664,7 @@ cogl_get_source (void)
   return top->pipeline;
 }
 
-gboolean
+CoglBool
 _cogl_get_enable_legacy_state (void)
 {
   CoglSourceState *top;
@@ -720,10 +720,10 @@ cogl_set_source_texture (CoglTexture *texture)
 }
 
 void
-cogl_set_source_color4ub (guint8 red,
-                          guint8 green,
-                          guint8 blue,
-                          guint8 alpha)
+cogl_set_source_color4ub (uint8_t red,
+                          uint8_t green,
+                          uint8_t blue,
+                          uint8_t alpha)
 {
   CoglColor c = { 0, };
 
@@ -792,7 +792,7 @@ _cogl_error_quark (void)
 void
 _cogl_init (void)
 {
-  static gsize init_status = 0;
+  static size_t init_status = 0;
 
   if (g_once_init_enter (&init_status))
     {
@@ -840,7 +840,7 @@ _cogl_pixel_format_get_bytes_per_pixel (CoglPixelFormat format)
 
 /* Note: this also refers to the mapping defined above for
  * _cogl_pixel_format_get_bytes_per_pixel() */
-gboolean
+CoglBool
 _cogl_pixel_format_is_endian_dependant (CoglPixelFormat format)
 {
   int aligned_lut[] = { -1, 1,  1,  1,

@@ -55,7 +55,7 @@ typedef struct _CoglDisplayXlib
 typedef struct _CoglOnscreenXlib
 {
   Window xwin;
-  gboolean is_foreign_xwin;
+  CoglBool is_foreign_xwin;
 } CoglOnscreenXlib;
 
 #ifdef EGL_KHR_image_pixmap
@@ -67,7 +67,7 @@ typedef struct _CoglTexturePixmapEGL
 #endif
 
 static CoglOnscreen *
-find_onscreen_for_xid (CoglContext *context, guint32 xid)
+find_onscreen_for_xid (CoglContext *context, uint32_t xid)
 {
   GList *l;
 
@@ -173,7 +173,7 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
   g_slice_free (CoglRendererEGL, egl_renderer);
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                GError **error)
 {
@@ -202,7 +202,7 @@ error:
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_egl_display_setup (CoglDisplay *display,
                                 GError **error)
 {
@@ -223,7 +223,7 @@ _cogl_winsys_egl_display_destroy (CoglDisplay *display)
   g_slice_free (CoglDisplayXlib, egl_display->platform);
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_egl_context_init (CoglContext *context,
                                GError **error)
 {
@@ -249,7 +249,7 @@ _cogl_winsys_egl_context_deinit (CoglContext *context)
                                     context);
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
                                 EGLConfig egl_config,
                                 GError **error)
@@ -426,7 +426,7 @@ _cogl_winsys_egl_onscreen_deinit (CoglOnscreen *onscreen)
 
 static void
 _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
-                                      gboolean visibility)
+                                      CoglBool visibility)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglRenderer *renderer = context->display->renderer;
@@ -441,7 +441,7 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
     XUnmapWindow (xlib_renderer->xdpy, xlib_onscreen->xwin);
 }
 
-static guint32
+static uint32_t
 _cogl_winsys_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
 {
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
@@ -450,7 +450,7 @@ _cogl_winsys_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
   return xlib_onscreen->xwin;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_egl_context_created (CoglDisplay *display,
                                   GError **error)
 {
@@ -568,7 +568,7 @@ static void
 _cogl_winsys_poll_get_info (CoglContext *context,
                             CoglPollFD **poll_fds,
                             int *n_poll_fds,
-                            gint64 *timeout)
+                            int64_t *timeout)
 {
   _cogl_xlib_renderer_poll_get_info (context->display->renderer,
                                      poll_fds,
@@ -588,7 +588,7 @@ _cogl_winsys_poll_dispatch (CoglContext *context,
 
 #ifdef EGL_KHR_image_pixmap
 
-static gboolean
+static CoglBool
 _cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
 {
   CoglTexturePixmapEGL *egl_tex_pixmap;
@@ -665,9 +665,9 @@ _cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
   g_free (egl_tex_pixmap);
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
-                                        gboolean needs_mipmap)
+                                        CoglBool needs_mipmap)
 {
   if (needs_mipmap)
     return FALSE;
@@ -706,7 +706,7 @@ _cogl_winsys_egl_vtable =
 const CoglWinsysVtable *
 _cogl_winsys_egl_xlib_get_vtable (void)
 {
-  static gboolean vtable_inited = FALSE;
+  static CoglBool vtable_inited = FALSE;
   static CoglWinsysVtable vtable;
 
   if (!vtable_inited)

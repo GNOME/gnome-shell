@@ -190,7 +190,7 @@ assert_xlib_display (CoglRenderer *renderer, GError **error)
   return xdpy;
 }
 
-gboolean
+CoglBool
 _cogl_xlib_renderer_connect (CoglRenderer *renderer, GError **error)
 {
   CoglXlibRenderer *xlib_renderer =
@@ -274,7 +274,7 @@ void
 _cogl_xlib_renderer_poll_get_info (CoglRenderer *renderer,
                                    CoglPollFD **poll_fds,
                                    int *n_poll_fds,
-                                   gint64 *timeout)
+                                   int64_t *timeout)
 {
   CoglXlibRenderer *xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
 

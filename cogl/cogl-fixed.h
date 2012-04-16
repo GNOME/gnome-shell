@@ -773,7 +773,7 @@ G_INLINE_FUNC CoglFixed
 cogl_fixed_div (CoglFixed a,
                 CoglFixed b)
 {
-  return (CoglFixed) ((((gint64) a) << COGL_FIXED_Q) / b);
+  return (CoglFixed) ((((int64_t) a) << COGL_FIXED_Q) / b);
 }
 #endif
 

@@ -29,7 +29,7 @@
 #ifndef __COGL_PRIMITIVE_TEXTURE_H__
 #define __COGL_PRIMITIVE_TEXTURE_H__
 
-#include <glib.h>
+#include "cogl-types.h"
 
 G_BEGIN_DECLS
 
@@ -71,7 +71,7 @@ typedef struct _CoglPrimitiveTexture CoglPrimitiveTexture;
  * Since: 2.0
  * Stability: unstable
  */
-gboolean
+CoglBool
 cogl_is_primitive_texture (void *object);
 
 /**
@@ -91,7 +91,7 @@ cogl_is_primitive_texture (void *object);
  */
 void
 cogl_primitive_texture_set_auto_mipmap (CoglPrimitiveTexture *primitive_texture,
-                                        gboolean value);
+                                        CoglBool value);
 
 G_END_DECLS
 

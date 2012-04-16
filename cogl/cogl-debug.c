@@ -89,16 +89,16 @@ GHashTable *_cogl_debug_instances;
 
 static void
 _cogl_parse_debug_string_for_keys (const char *value,
-                                   gboolean enable,
+                                   CoglBool enable,
                                    const GDebugKey *keys,
                                    unsigned int nkeys)
 {
   int long_num, key_num;
 
   /* g_parse_debug_string expects the value field in GDebugKey to be a
-     mask in a guint but the flags is stored in an array of multiple
-     longs so we need to build a separate array for each possible
-     guint */
+     mask in an unsigned int but the flags are stored in an array of
+     multiple longs so we need to build a separate array for each
+     possible unsigned int */
 
   for (long_num = 0; long_num < COGL_DEBUG_N_LONGS; long_num++)
     {
@@ -147,8 +147,8 @@ _cogl_parse_debug_string_for_keys (const char *value,
 
 void
 _cogl_parse_debug_string (const char *value,
-                          gboolean enable,
-                          gboolean ignore_help)
+                          CoglBool enable,
+                          CoglBool ignore_help)
 {
   if (ignore_help && strcmp (value, "help") == 0)
     return;
@@ -197,10 +197,10 @@ _cogl_parse_debug_string (const char *value,
 }
 
 #ifdef COGL_ENABLE_DEBUG
-static gboolean
+static CoglBool
 cogl_arg_debug_cb (const char *key,
                    const char *value,
-                   gpointer    user_data)
+                   void *user_data)
 {
   _cogl_parse_debug_string (value,
                             TRUE /* enable the flags */,
@@ -208,10 +208,10 @@ cogl_arg_debug_cb (const char *key,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 cogl_arg_no_debug_cb (const char *key,
                       const char *value,
-                      gpointer    user_data)
+                      void *user_data)
 {
   _cogl_parse_debug_string (value,
                             FALSE, /* disable the flags */
@@ -254,11 +254,11 @@ _cogl_debug_check_environment (void)
     }
 }
 
-static gboolean
-pre_parse_hook (GOptionContext  *context,
-                GOptionGroup    *group,
-                gpointer         data,
-                GError         **error)
+static CoglBool
+pre_parse_hook (GOptionContext *context,
+                GOptionGroup *group,
+                void *data,
+                GError **error)
 {
   _cogl_init ();
 

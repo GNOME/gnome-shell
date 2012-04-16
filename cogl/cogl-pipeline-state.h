@@ -75,10 +75,10 @@ cogl_pipeline_set_color (CoglPipeline    *pipeline,
  */
 void
 cogl_pipeline_set_color4ub (CoglPipeline *pipeline,
-			    guint8        red,
-                            guint8        green,
-                            guint8        blue,
-                            guint8        alpha);
+			    uint8_t red,
+                            uint8_t green,
+                            uint8_t blue,
+                            uint8_t alpha);
 
 /**
  * cogl_pipeline_set_color4f:
@@ -462,7 +462,7 @@ cogl_pipeline_get_alpha_test_reference (CoglPipeline *pipeline);
  * Since: 2.0
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_pipeline_set_blend (CoglPipeline *pipeline,
                          const char   *blend_string,
                          GError      **error);
@@ -635,7 +635,7 @@ cogl_pipeline_set_user_program (CoglPipeline *pipeline,
  * Since: 2.0
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_pipeline_set_depth_state (CoglPipeline *pipeline,
                                const CoglDepthState *state,
                                GError **error);
@@ -893,7 +893,7 @@ cogl_pipeline_set_uniform_matrix (CoglPipeline *pipeline,
                                   int uniform_location,
                                   int dimensions,
                                   int count,
-                                  gboolean transpose,
+                                  CoglBool transpose,
                                   const float *value);
 
 /**

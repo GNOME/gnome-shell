@@ -49,9 +49,9 @@ typedef enum _CoglFramebufferType {
 typedef struct
 {
   CoglSwapChain *swap_chain;
-  gboolean need_stencil;
+  CoglBool need_stencil;
   int samples_per_pixel;
-  gboolean swap_throttled;
+  CoglBool swap_throttled;
 } CoglFramebufferConfig;
 
 /* Flags to pass to _cogl_offscreen_new_to_texture_full */
@@ -117,7 +117,7 @@ struct _CoglFramebuffer
   /* Format of the pixels in the framebuffer (including the expected
      premult state) */
   CoglPixelFormat     format;
-  gboolean            allocated;
+  CoglBool            allocated;
 
   CoglMatrixStack    *modelview_stack;
   CoglMatrixStack    *projection_stack;
@@ -128,13 +128,13 @@ struct _CoglFramebuffer
 
   CoglClipState       clip_state;
 
-  gboolean            dirty_bitmasks;
+  CoglBool            dirty_bitmasks;
   int                 red_bits;
   int                 blue_bits;
   int                 green_bits;
   int                 alpha_bits;
 
-  gboolean            dither_enabled;
+  CoglBool            dither_enabled;
   CoglColorMask       color_mask;
 
   int                 samples_per_pixel;
@@ -162,7 +162,7 @@ struct _CoglFramebuffer
   int                 clear_clip_y0;
   int                 clear_clip_x1;
   int                 clear_clip_y1;
-  gboolean            clear_clip_dirty;
+  CoglBool            clear_clip_dirty;
 };
 
 struct _CoglOffscreen

@@ -20,7 +20,7 @@ create_texture (int size)
 {
   CoglHandle texture;
   const ClutterColor *color;
-  guint8 *data, *p;
+  uint8_t *data, *p;
   int x, y;
 
   /* Create a red, green or blue texture depending on the size */
@@ -67,7 +67,7 @@ create_texture (int size)
 static void
 verify_texture (CoglHandle texture, int size)
 {
-  guint8 *data, *p;
+  uint8_t *data, *p;
   int x, y;
   const ClutterColor *color;
 

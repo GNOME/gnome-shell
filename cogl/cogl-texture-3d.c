@@ -101,7 +101,7 @@ _cogl_texture_3d_free (CoglTexture3D *tex_3d)
 
 static void
 _cogl_texture_3d_set_auto_mipmap (CoglTexture *tex,
-                                  gboolean value)
+                                  CoglBool value)
 {
   CoglTexture3D *tex_3d = COGL_TEXTURE_3D (tex);
 
@@ -140,7 +140,7 @@ _cogl_texture_3d_create_base (CoglContext *ctx,
   return tex_3d;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_3d_can_create (CoglContext *ctx,
                              int width,
                              int height,
@@ -251,15 +251,15 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
                                  CoglPixelFormat internal_format,
                                  GError **error)
 {
-  CoglTexture3D   *tex_3d;
-  CoglBitmap      *dst_bmp;
-  CoglPixelFormat  bmp_format;
-  unsigned int     bmp_width;
-  GLenum           gl_intformat;
-  GLenum           gl_format;
-  GLenum           gl_type;
-  guint8          *data;
-  CoglContext     *ctx;
+  CoglTexture3D *tex_3d;
+  CoglBitmap *dst_bmp;
+  CoglPixelFormat bmp_format;
+  unsigned int bmp_width;
+  GLenum gl_intformat;
+  GLenum gl_format;
+  GLenum gl_type;
+  uint8_t *data;
+  CoglContext *ctx;
 
   ctx = _cogl_bitmap_get_context (bmp);
 
@@ -337,7 +337,7 @@ cogl_texture_3d_new_from_data (CoglContext *context,
                                CoglPixelFormat internal_format,
                                int rowstride,
                                int image_stride,
-                               const guint8 *data,
+                               const uint8_t *data,
                                GError **error)
 {
   CoglBitmap *bitmap;
@@ -368,7 +368,7 @@ cogl_texture_3d_new_from_data (CoglContext *context,
      recommends avoiding this situation. */
   if (image_stride % rowstride != 0)
     {
-      guint8 *bmp_data;
+      uint8_t *bmp_data;
       int bmp_rowstride;
       int z, y;
 
@@ -405,7 +405,7 @@ cogl_texture_3d_new_from_data (CoglContext *context,
                                        image_stride / rowstride * depth,
                                        format,
                                        rowstride,
-                                       (guint8 *) data);
+                                       (uint8_t *) data);
 
   ret = cogl_texture_3d_new_from_bitmap (bitmap,
                                          height,
@@ -424,13 +424,13 @@ _cogl_texture_3d_get_max_waste (CoglTexture *tex)
   return -1;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_3d_is_sliced (CoglTexture *tex)
 {
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_3d_can_hardware_repeat (CoglTexture *tex)
 {
   return TRUE;
@@ -452,7 +452,7 @@ _cogl_texture_3d_transform_quad_coords_to_gl (CoglTexture *tex,
   /* The texture coordinates map directly so we don't need to do
      anything other than check for repeats */
 
-  gboolean need_repeat = FALSE;
+  CoglBool need_repeat = FALSE;
   int i;
 
   for (i = 0; i < 4; i++)
@@ -463,7 +463,7 @@ _cogl_texture_3d_transform_quad_coords_to_gl (CoglTexture *tex,
           : COGL_TRANSFORM_NO_REPEAT);
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_3d_get_gl_texture (CoglTexture *tex,
                                  GLuint *out_gl_handle,
                                  GLenum *out_gl_target)
@@ -556,7 +556,7 @@ _cogl_texture_3d_ensure_non_quad_rendering (CoglTexture *tex)
   /* Nothing needs to be done */
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_3d_set_region (CoglTexture    *tex,
                              int             src_x,
                              int             src_y,
@@ -572,10 +572,10 @@ _cogl_texture_3d_set_region (CoglTexture    *tex,
 }
 
 static int
-_cogl_texture_3d_get_data (CoglTexture     *tex,
-                           CoglPixelFormat  format,
-                           unsigned int     rowstride,
-                           guint8          *data)
+_cogl_texture_3d_get_data (CoglTexture *tex,
+                           CoglPixelFormat format,
+                           unsigned int rowstride,
+                           uint8_t *data)
 {
   /* FIXME: we could probably implement this by assuming the data is
      big enough to hold all of the images and that there is no stride

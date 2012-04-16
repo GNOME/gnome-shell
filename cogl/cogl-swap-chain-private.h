@@ -30,7 +30,7 @@ struct _CoglSwapChain
 {
   CoglObject _parent;
 
-  gboolean has_alpha;
+  CoglBool has_alpha;
 
   int length;
 };

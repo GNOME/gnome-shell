@@ -41,7 +41,7 @@
 struct _CoglRenderer
 {
   CoglObject _parent;
-  gboolean connected;
+  CoglBool connected;
   CoglDriver driver_override;
   const CoglWinsysVtable *winsys_vtable;
   CoglWinsysID winsys_id_override;
@@ -49,7 +49,7 @@ struct _CoglRenderer
 
 #ifdef COGL_HAS_XLIB_SUPPORT
   Display *foreign_xdpy;
-  gboolean xlib_enable_event_retrieval;
+  CoglBool xlib_enable_event_retrieval;
 #endif
 
   CoglDriver driver;
@@ -64,8 +64,8 @@ struct _CoglRenderer
 #endif
 
 #ifdef COGL_HAS_SDL_SUPPORT
-  gboolean sdl_event_type_set;
-  guint8 sdl_event_type;
+  CoglBool sdl_event_type_set;
+  uint8_t sdl_event_type;
 #endif
 
   /* List of callback functions that will be given every native event */

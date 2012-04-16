@@ -69,25 +69,25 @@ typedef struct _CoglWinsysVtable
   (*renderer_get_proc_address) (CoglRenderer *renderer,
                                 const char *name);
 
-  gboolean
+  CoglBool
   (*renderer_connect) (CoglRenderer *renderer, GError **error);
 
   void
   (*renderer_disconnect) (CoglRenderer *renderer);
 
-  gboolean
+  CoglBool
   (*display_setup) (CoglDisplay *display, GError **error);
 
   void
   (*display_destroy) (CoglDisplay *display);
 
-  gboolean
+  CoglBool
   (*context_init) (CoglContext *context, GError **error);
 
   void
   (*context_deinit) (CoglContext *context);
 
-  gboolean
+  CoglBool
   (*onscreen_init) (CoglOnscreen *onscreen, GError **error);
 
   void
@@ -104,7 +104,7 @@ typedef struct _CoglWinsysVtable
 
   void
   (*onscreen_set_visibility) (CoglOnscreen *onscreen,
-                              gboolean visibility);
+                              CoglBool visibility);
 
   /* Optional functions */
 
@@ -123,7 +123,7 @@ typedef struct _CoglWinsysVtable
   (*xlib_get_visual_info) (void);
 #endif
 
-  guint32
+  uint32_t
   (*onscreen_x11_get_window_xid) (CoglOnscreen *onscreen);
 
 #ifdef COGL_HAS_WIN32_SUPPORT
@@ -135,21 +135,21 @@ typedef struct _CoglWinsysVtable
   (*poll_get_info) (CoglContext *context,
                     CoglPollFD **poll_fds,
                     int *n_poll_fds,
-                    gint64 *timeout);
+                    int64_t *timeout);
   void
   (*poll_dispatch) (CoglContext *context,
                     const CoglPollFD *poll_fds,
                     int n_poll_fds);
 
 #ifdef COGL_HAS_XLIB_SUPPORT
-  gboolean
+  CoglBool
   (*texture_pixmap_x11_create) (CoglTexturePixmapX11 *tex_pixmap);
   void
   (*texture_pixmap_x11_free) (CoglTexturePixmapX11 *tex_pixmap);
 
-  gboolean
+  CoglBool
   (*texture_pixmap_x11_update) (CoglTexturePixmapX11 *tex_pixmap,
-                                gboolean needs_mipmap);
+                                CoglBool needs_mipmap);
 
   void
   (*texture_pixmap_x11_damage_notify) (CoglTexturePixmapX11 *tex_pixmap);
@@ -160,7 +160,7 @@ typedef struct _CoglWinsysVtable
 
 } CoglWinsysVtable;
 
-gboolean
+CoglBool
 _cogl_winsys_has_feature (CoglWinsysFeature feature);
 
 #endif /* __COGL_WINSYS_PRIVATE_H */

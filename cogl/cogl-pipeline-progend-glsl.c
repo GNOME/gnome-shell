@@ -352,11 +352,11 @@ typedef struct
 {
   int unit;
   GLuint gl_program;
-  gboolean update_all;
+  CoglBool update_all;
   CoglPipelineProgramState *program_state;
 } UpdateUniformsState;
 
-static gboolean
+static CoglBool
 get_uniform_cb (CoglPipeline *pipeline,
                 int layer_index,
                 void *user_data)
@@ -415,7 +415,7 @@ get_uniform_cb (CoglPipeline *pipeline,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 update_constants_cb (CoglPipeline *pipeline,
                      int layer_index,
                      void *user_data)
@@ -494,7 +494,7 @@ typedef struct
   int value_index;
 } FlushUniformsClosure;
 
-static gboolean
+static CoglBool
 flush_uniform_cb (int uniform_num, void *user_data)
 {
   FlushUniformsClosure *data = user_data;
@@ -557,7 +557,7 @@ _cogl_pipeline_progend_glsl_flush_uniforms (CoglPipeline *pipeline,
                                             CoglPipelineProgramState *
                                                                   program_state,
                                             GLuint gl_program,
-                                            gboolean program_changed)
+                                            CoglBool program_changed)
 {
   CoglPipelineUniformsState *uniforms_state;
   FlushUniformsClosure data;
@@ -652,7 +652,7 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
 {
   CoglPipelineProgramState *program_state;
   GLuint gl_program;
-  gboolean program_changed = FALSE;
+  CoglBool program_changed = FALSE;
   UpdateUniformsState state;
   CoglProgram *user_program;
   CoglPipeline *template_pipeline = NULL;
@@ -931,7 +931,7 @@ _cogl_pipeline_progend_glsl_layer_pre_change_notify (
 static void
 _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
 {
-  gboolean needs_flip;
+  CoglBool needs_flip;
   CoglMatrixStack *projection_stack;
   CoglMatrixStack *modelview_stack;
   CoglPipelineProgramState *program_state;
@@ -957,10 +957,10 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
 #ifdef HAVE_COGL_GLES2
   if (ctx->driver == COGL_DRIVER_GLES2)
     {
-      gboolean modelview_changed;
-      gboolean projection_changed;
-      gboolean need_modelview;
-      gboolean need_projection;
+      CoglBool modelview_changed;
+      CoglBool projection_changed;
+      CoglBool need_modelview;
+      CoglBool need_projection;
       CoglMatrix modelview, projection;
 
       projection_changed =
@@ -1050,7 +1050,7 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
   else
 #endif
     {
-      gboolean disable_flip;
+      CoglBool disable_flip;
 
       /* If there are vertex snippets, then we'll disable flipping the
          geometry via the matrix and use the flip vertex instead */

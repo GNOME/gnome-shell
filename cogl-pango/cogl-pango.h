@@ -48,8 +48,8 @@ void           cogl_pango_font_map_set_resolution       (CoglPangoFontMap *font_
 void           cogl_pango_font_map_clear_glyph_cache    (CoglPangoFontMap *fm);
 void           cogl_pango_ensure_glyph_cache_for_layout (PangoLayout      *layout);
 void           cogl_pango_font_map_set_use_mipmapping   (CoglPangoFontMap *fm,
-                                                         gboolean          value);
-gboolean       cogl_pango_font_map_get_use_mipmapping   (CoglPangoFontMap *fm);
+                                                         CoglBool          value);
+CoglBool       cogl_pango_font_map_get_use_mipmapping   (CoglPangoFontMap *fm);
 PangoRenderer *cogl_pango_font_map_get_renderer         (CoglPangoFontMap *fm);
 
 #define COGL_PANGO_TYPE_RENDERER                (cogl_pango_renderer_get_type ())

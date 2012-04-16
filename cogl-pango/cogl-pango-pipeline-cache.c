@@ -44,7 +44,7 @@ struct _CoglPangoPipelineCache
   CoglPipeline *base_texture_alpha_pipeline;
   CoglPipeline *base_texture_rgba_pipeline;
 
-  gboolean use_mipmapping;
+  CoglBool use_mipmapping;
 };
 
 struct _CoglPangoPipelineCacheEntry
@@ -58,14 +58,14 @@ struct _CoglPangoPipelineCacheEntry
 };
 
 static void
-_cogl_pango_pipeline_cache_key_destroy (gpointer data)
+_cogl_pango_pipeline_cache_key_destroy (void *data)
 {
   if (data)
     cogl_object_unref (data);
 }
 
 static void
-_cogl_pango_pipeline_cache_value_destroy (gpointer data)
+_cogl_pango_pipeline_cache_value_destroy (void *data)
 {
   CoglPangoPipelineCacheEntry *cache_entry = data;
 
@@ -79,7 +79,7 @@ _cogl_pango_pipeline_cache_value_destroy (gpointer data)
 }
 
 CoglPangoPipelineCache *
-_cogl_pango_pipeline_cache_new (gboolean use_mipmapping)
+_cogl_pango_pipeline_cache_new (CoglBool use_mipmapping)
 {
   CoglPangoPipelineCache *cache = g_new (CoglPangoPipelineCache, 1);
 

@@ -203,7 +203,7 @@ cogl_xlib_renderer_get_foreign_display (CoglRenderer *renderer)
 
 void
 cogl_xlib_renderer_set_event_retrieval_enabled (CoglRenderer *renderer,
-                                                gboolean enable)
+                                                CoglBool enable)
 {
   _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
   /* NB: Renderers are considered immutable once connected */
@@ -213,7 +213,7 @@ cogl_xlib_renderer_set_event_retrieval_enabled (CoglRenderer *renderer,
 }
 #endif /* COGL_HAS_XLIB_SUPPORT */
 
-gboolean
+CoglBool
 cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
                                        CoglOnscreenTemplate *onscreen_template,
                                        GError **error)
@@ -235,7 +235,7 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 _cogl_renderer_choose_driver (CoglRenderer *renderer,
                               GError **error)
 {
@@ -307,7 +307,7 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
 
 /* Final connection API */
 
-gboolean
+CoglBool
 cogl_renderer_connect (CoglRenderer *renderer, GError **error)
 {
   int i;
@@ -328,7 +328,7 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
       const CoglWinsysVtable *winsys = _cogl_winsys_vtable_getters[i]();
       GError *tmp_error = NULL;
       GList *l;
-      gboolean constraints_failed = FALSE;
+      CoglBool constraints_failed = FALSE;
 
       if (renderer->winsys_id_override != COGL_WINSYS_ID_ANY)
         {

@@ -58,7 +58,7 @@ COGL_TEXTURE_DEFINE (TextureRectangle, texture_rectangle);
 
 static const CoglTextureVtable cogl_texture_rectangle_vtable;
 
-static gboolean
+static CoglBool
 can_use_wrap_mode (GLenum wrap_mode)
 {
   return (wrap_mode == GL_CLAMP ||
@@ -108,7 +108,7 @@ _cogl_texture_rectangle_free (CoglTextureRectangle *tex_rect)
   _cogl_texture_free (COGL_TEXTURE (tex_rect));
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_rectangle_can_create (unsigned int width,
                                     unsigned int height,
                                     CoglPixelFormat internal_format,
@@ -154,7 +154,7 @@ _cogl_texture_rectangle_can_create (unsigned int width,
 
 static void
 _cogl_texture_rectangle_set_auto_mipmap (CoglTexture *tex,
-                                         gboolean value)
+                                         CoglBool value)
 {
   /* Rectangle textures currently never support mipmapping so there's
      no point in doing anything here */
@@ -396,13 +396,13 @@ _cogl_texture_rectangle_get_max_waste (CoglTexture *tex)
   return -1;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_rectangle_is_sliced (CoglTexture *tex)
 {
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_rectangle_can_hardware_repeat (CoglTexture *tex)
 {
   return FALSE;
@@ -424,7 +424,7 @@ _cogl_texture_rectangle_transform_quad_coords_to_gl (CoglTexture *tex,
                                                      float *coords)
 {
   CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
-  gboolean need_repeat = FALSE;
+  CoglBool need_repeat = FALSE;
   int i;
 
   for (i = 0; i < 4; i++)
@@ -438,7 +438,7 @@ _cogl_texture_rectangle_transform_quad_coords_to_gl (CoglTexture *tex,
           : COGL_TRANSFORM_NO_REPEAT);
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_rectangle_get_gl_texture (CoglTexture *tex,
                                         GLuint *out_gl_handle,
                                         GLenum *out_gl_target)
@@ -500,7 +500,7 @@ _cogl_texture_rectangle_ensure_non_quad_rendering (CoglTexture *tex)
   /* Nothing needs to be done */
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_rectangle_set_region (CoglTexture    *tex,
                                     int             src_x,
                                     int             src_y,
@@ -540,11 +540,11 @@ _cogl_texture_rectangle_set_region (CoglTexture    *tex,
   return TRUE;
 }
 
-static gboolean
-_cogl_texture_rectangle_get_data (CoglTexture     *tex,
-                                  CoglPixelFormat  format,
-                                  unsigned int     rowstride,
-                                  guint8          *data)
+static CoglBool
+_cogl_texture_rectangle_get_data (CoglTexture *tex,
+                                  CoglPixelFormat format,
+                                  unsigned int rowstride,
+                                  uint8_t *data)
 {
   CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
   int                   bpp;
@@ -600,7 +600,7 @@ _cogl_texture_rectangle_get_height (CoglTexture *tex)
   return COGL_TEXTURE_RECTANGLE (tex)->height;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_rectangle_is_foreign (CoglTexture *tex)
 {
   return COGL_TEXTURE_RECTANGLE (tex)->is_foreign;

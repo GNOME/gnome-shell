@@ -94,10 +94,10 @@ cogl_color_free (CoglColor *color);
  */
 void
 cogl_color_init_from_4ub (CoglColor *color,
-                          guint8 red,
-                          guint8 green,
-                          guint8 blue,
-                          guint8 alpha);
+                          uint8_t red,
+                          uint8_t green,
+                          uint8_t blue,
+                          uint8_t alpha);
 
 /**
  * cogl_color_set_from_4ub:
@@ -114,10 +114,10 @@ cogl_color_init_from_4ub (CoglColor *color,
  */
 void
 cogl_color_set_from_4ub (CoglColor *color,
-                         guint8 red,
-                         guint8 green,
-                         guint8 blue,
-                         guint8 alpha);
+                         uint8_t red,
+                         uint8_t green,
+                         uint8_t blue,
+                         uint8_t alpha);
 
 /**
  * cogl_color_init_from_4f:
@@ -467,7 +467,7 @@ cogl_color_set_red (CoglColor *color,
  */
 void
 cogl_color_set_green (CoglColor *color,
-                      float      green);
+                      float green);
 
 /**
  * cogl_color_set_blue:
@@ -480,7 +480,7 @@ cogl_color_set_green (CoglColor *color,
  */
 void
 cogl_color_set_blue (CoglColor *color,
-                     float      blue);
+                     float blue);
 
 /**
  * cogl_color_set_alpha:
@@ -493,7 +493,7 @@ cogl_color_set_blue (CoglColor *color,
  */
 void
 cogl_color_set_alpha (CoglColor *color,
-                      float      alpha);
+                      float alpha);
 
 /**
  * cogl_color_premultiply:
@@ -535,9 +535,8 @@ cogl_color_unpremultiply (CoglColor *color);
  *
  * Since: 1.0
  */
-gboolean
-cogl_color_equal (gconstpointer v1,
-                  gconstpointer v2);
+CoglBool
+cogl_color_equal (const void *v1, const void *v2);
 
 G_END_DECLS
 

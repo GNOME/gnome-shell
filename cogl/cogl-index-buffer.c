@@ -42,10 +42,10 @@ COGL_BUFFER_DEFINE (IndexBuffer, index_buffer);
  * indices buffer should be able to contain multiple ranges of indices
  * which the wiki design doesn't currently consider. */
 CoglIndexBuffer *
-cogl_index_buffer_new (CoglContext *context, gsize bytes)
+cogl_index_buffer_new (CoglContext *context, size_t bytes)
 {
   CoglIndexBuffer *indices = g_slice_new (CoglIndexBuffer);
-  gboolean use_malloc;
+  CoglBool use_malloc;
 
   if (!(context->private_feature_flags & COGL_PRIVATE_FEATURE_VBOS))
     use_malloc = TRUE;
@@ -95,7 +95,7 @@ void
 cogl_index_buffer_set_data (CoglIndexBuffer *indices,
                             CoglIndicesType type,
                             int max_index_value,
-                            gsize write_offset,
+                            size_t write_offset,
                             void *user_indices,
                             int n_indices)
 {

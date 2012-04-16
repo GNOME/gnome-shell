@@ -25,7 +25,7 @@ typedef struct
   int y;
   CoglandBuffer *buffer;
 
-  gboolean has_shell_surface;
+  CoglBool has_shell_surface;
 } CoglandSurface;
 
 typedef struct
@@ -37,7 +37,7 @@ typedef struct
 
 typedef struct
 {
-  guint32 flags;
+  uint32_t flags;
   int width;
   int height;
   int refresh;
@@ -47,10 +47,10 @@ typedef struct
 {
   struct wl_object wayland_output;
 
-  gint32 x;
-  gint32 y;
-  gint32 width_mm;
-  gint32 height_mm;
+  int32_t x;
+  int32_t y;
+  int32_t width_mm;
+  int32_t height_mm;
 
   CoglOnscreen *onscreen;
 
@@ -88,7 +88,7 @@ struct _CoglandCompositor
   GList *surfaces;
 };
 
-static guint32
+static uint32_t
 get_time (void)
 {
   struct timeval tv;
@@ -96,7 +96,7 @@ get_time (void)
   return tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
 
-static gboolean
+static CoglBool
 wayland_event_source_prepare (GSource *base, int *timeout)
 {
   *timeout = -1;
@@ -104,14 +104,14 @@ wayland_event_source_prepare (GSource *base, int *timeout)
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 wayland_event_source_check (GSource *base)
 {
   WaylandEventSource *source = (WaylandEventSource *)base;
   return source->pfd.revents;
 }
 
-static gboolean
+static CoglBool
 wayland_event_source_dispatch (GSource *base,
                                 GSourceFunc callback,
                                 void *data)
@@ -184,10 +184,10 @@ shm_buffer_created (struct wl_buffer *wayland_buffer)
 
 static void
 shm_buffer_damaged (struct wl_buffer *wayland_buffer,
-                    gint32 x,
-                    gint32 y,
-                    gint32 width,
-                    gint32 height)
+                    int32_t x,
+                    int32_t y,
+                    int32_t width,
+                    int32_t height)
 {
   CoglandBuffer *buffer = wayland_buffer->user_data;
 
@@ -267,7 +267,7 @@ static void
 cogland_surface_attach_buffer (struct wl_client *wayland_client,
                                struct wl_resource *wayland_surface_resource,
                                struct wl_resource *wayland_buffer_resource,
-                               gint32 dx, gint32 dy)
+                               int32_t dx, int32_t dy)
 {
   struct wl_buffer *wayland_buffer = wayland_buffer_resource->data;
   CoglandBuffer *buffer = wayland_buffer->user_data;
@@ -316,10 +316,10 @@ cogland_surface_attach_buffer (struct wl_client *wayland_client,
 static void
 cogland_surface_damage (struct wl_client *client,
                         struct wl_resource *resource,
-                        gint32 x,
-                        gint32 y,
-                        gint32 width,
-                        gint32 height)
+                        int32_t x,
+                        int32_t y,
+                        int32_t width,
+                        int32_t height)
 {
 }
 
@@ -347,7 +347,7 @@ destroy_frame_callback (struct wl_resource *callback_resource)
 static void
 cogland_surface_frame (struct wl_client *client,
                        struct wl_resource *surface_resource,
-                       guint32 callback_id)
+                       uint32_t callback_id)
 {
   CoglandFrameCallback *callback;
   CoglandSurface *surface = surface_resource->data;
@@ -391,7 +391,7 @@ cogland_surface_resource_destroy_cb (struct wl_resource *resource)
 static void
 cogland_compositor_create_surface (struct wl_client *wayland_client,
                                    struct wl_resource *wayland_compositor_resource,
-                                   guint32 id)
+                                   uint32_t id)
 {
   CoglandCompositor *compositor = wayland_compositor_resource->data;
   CoglandSurface *surface = g_slice_new0 (CoglandSurface);
@@ -415,8 +415,8 @@ cogland_compositor_create_surface (struct wl_client *wayland_client,
 static void
 bind_output (struct wl_client *client,
              void *data,
-             guint32 version,
-             guint32 id)
+             uint32_t version,
+             uint32_t id)
 {
   CoglandOutput *output = data;
   struct wl_resource *resource =
@@ -498,7 +498,7 @@ cogland_compositor_create_output (CoglandCompositor *compositor,
   compositor->outputs = g_list_prepend (compositor->outputs, output);
 }
 
-static gboolean
+static CoglBool
 paint_cb (void *user_data)
 {
   CoglandCompositor *compositor = user_data;
@@ -554,8 +554,8 @@ const static struct wl_compositor_interface cogland_compositor_interface =
 static void
 compositor_bind (struct wl_client *client,
                  void *data,
-                 guint32 version,
-                 guint32 id)
+                 uint32_t version,
+                 uint32_t id)
 {
   CoglandCompositor *compositor = data;
 
@@ -682,8 +682,8 @@ static const struct wl_shell_interface cogland_shell_interface =
 static void
 bind_shell (struct wl_client *client,
             void *data,
-            guint32 version,
-            guint32 id)
+            uint32_t version,
+            uint32_t id)
 {
   wl_client_add_object (client, &wl_shell_interface,
                         &cogland_shell_interface, id, data);

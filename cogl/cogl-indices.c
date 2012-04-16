@@ -61,7 +61,7 @@ sizeof_indices_type (CoglIndicesType type)
 CoglIndices *
 cogl_indices_new_for_buffer (CoglIndicesType type,
                              CoglIndexBuffer *buffer,
-                             gsize offset)
+                             size_t offset)
 {
   CoglIndices *indices = g_slice_new (CoglIndices);
 
@@ -111,7 +111,7 @@ cogl_indices_get_type (CoglIndices *indices)
   return indices->type;
 }
 
-gsize
+size_t
 cogl_indices_get_offset (CoglIndices *indices)
 {
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_indices (indices), 0);
@@ -122,7 +122,7 @@ cogl_indices_get_offset (CoglIndices *indices)
 static void
 warn_about_midscene_changes (void)
 {
-  static gboolean seen = FALSE;
+  static CoglBool seen = FALSE;
   if (!seen)
     {
       g_warning ("Mid-scene modification of indices has "
@@ -133,7 +133,7 @@ warn_about_midscene_changes (void)
 
 void
 cogl_indices_set_offset (CoglIndices *indices,
-                         gsize offset)
+                         size_t offset)
 {
   _COGL_RETURN_IF_FAIL (cogl_is_indices (indices));
 
@@ -181,8 +181,8 @@ cogl_get_rectangle_indices (CoglContext *ctx, int n_rectangles)
       /* Generate the byte array if we haven't already */
       if (ctx->rectangle_byte_indices == NULL)
         {
-          guint8 *byte_array = g_malloc (256 / 4 * 6 * sizeof (guint8));
-          guint8 *p = byte_array;
+          uint8_t *byte_array = g_malloc (256 / 4 * 6 * sizeof (uint8_t));
+          uint8_t *p = byte_array;
           int i, vert_num = 0;
 
           for (i = 0; i < 256 / 4; i++)
@@ -211,8 +211,8 @@ cogl_get_rectangle_indices (CoglContext *ctx, int n_rectangles)
     {
       if (ctx->rectangle_short_indices_len < n_indices)
         {
-          guint16 *short_array;
-          guint16 *p;
+          uint16_t *short_array;
+          uint16_t *p;
           int i, vert_num = 0;
 
           if (ctx->rectangle_short_indices != NULL)
@@ -226,7 +226,7 @@ cogl_get_rectangle_indices (CoglContext *ctx, int n_rectangles)
           /* Over-allocate to generate a whole number of quads */
           p = short_array = g_malloc ((ctx->rectangle_short_indices_len
                                        + 5) / 6 * 6
-                                      * sizeof (guint16));
+                                      * sizeof (uint16_t));
 
           /* Fill in the complete quads */
           for (i = 0; i < ctx->rectangle_short_indices_len; i += 6)

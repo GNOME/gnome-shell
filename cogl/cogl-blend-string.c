@@ -158,7 +158,7 @@ _cogl_blend_string_split_rgba_statement (CoglBlendStringStatement *statement,
     }
 }
 
-static gboolean
+static CoglBool
 validate_tex_combine_statements (CoglBlendStringStatement *statements,
                                  int n_statements,
                                  GError **error)
@@ -204,7 +204,7 @@ error:
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 validate_blend_statements (CoglBlendStringStatement *statements,
                            int n_statements,
                            GError **error)
@@ -283,7 +283,7 @@ error:
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 validate_statements_for_context (CoglBlendStringStatement *statements,
                                  int n_statements,
                                  CoglBlendStringContext context,
@@ -392,9 +392,9 @@ get_function_info (const char *mark,
                    const char *p,
                    CoglBlendStringContext context)
 {
-  gsize len = p - mark;
+  size_t len = p - mark;
   CoglBlendStringFunctionInfo *functions;
-  gsize array_len;
+  size_t array_len;
   int i;
 
   if (context == COGL_BLEND_STRING_CONTEXT_BLENDING)
@@ -422,9 +422,9 @@ get_color_src_info (const char *mark,
                     const char *p,
                     CoglBlendStringContext context)
 {
-  gsize len = p - mark;
+  size_t len = p - mark;
   CoglBlendStringColorSourceInfo *sources;
-  gsize array_len;
+  size_t array_len;
   int i;
 
   if (context == COGL_BLEND_STRING_CONTEXT_BLENDING)
@@ -455,19 +455,19 @@ get_color_src_info (const char *mark,
   return NULL;
 }
 
-static gboolean
+static CoglBool
 is_symbol_char (const char c)
 {
   return (g_ascii_isalpha (c) || c == '_') ? TRUE : FALSE;
 }
 
-static gboolean
+static CoglBool
 is_alphanum_char (const char c)
 {
   return (g_ascii_isalnum (c) || c == '_') ? TRUE : FALSE;
 }
 
-static gboolean
+static CoglBool
 parse_argument (const char *string, /* original user string */
                 const char **ret_p, /* start of argument IN:OUT */
                 const CoglBlendStringStatement *statement,
@@ -480,8 +480,8 @@ parse_argument (const char *string, /* original user string */
   const char *mark = NULL;
   const char *error_string = NULL;
   ParserArgState state = PARSER_ARG_STATE_START;
-  gboolean parsing_factor = FALSE;
-  gboolean implicit_factor_brace;
+  CoglBool parsing_factor = FALSE;
+  CoglBool implicit_factor_brace;
 
   arg->source.is_zero = FALSE;
   arg->source.info = NULL;
@@ -597,7 +597,7 @@ parse_argument (const char *string, /* original user string */
         case PARSER_ARG_STATE_SCRAPING_MASK:
           if (*p == ']')
             {
-              gsize len = p - mark;
+              size_t len = p - mark;
               CoglBlendStringColorSource *source =
                 parsing_factor ? &arg->factor.source : &arg->source;
 
@@ -668,7 +668,7 @@ parse_argument (const char *string, /* original user string */
         case PARSER_ARG_STATE_MAYBE_SRC_ALPHA_SATURATE:
           if (!is_symbol_char (*p))
             {
-              gsize len = p - mark;
+              size_t len = p - mark;
               if (len >= strlen ("SRC_ALPHA_SATURATE") &&
                   strncmp (mark, "SRC_ALPHA_SATURATE", len) == 0)
                 {

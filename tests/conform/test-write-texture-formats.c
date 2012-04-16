@@ -10,16 +10,16 @@
 
 static void
 test_color (CoglTexture *texture,
-            guint32 expected_pixel)
+            uint32_t expected_pixel)
 {
-  guint32 received_pixel;
+  uint32_t received_pixel;
   char *received_value_str;
   char *expected_value_str;
 
   cogl_texture_get_data (texture,
                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                          4, /* rowstride */
-                         (guint8 *) &received_pixel);
+                         (uint8_t *) &received_pixel);
 
   received_pixel = GUINT32_FROM_BE (received_pixel);
 
@@ -33,8 +33,8 @@ test_color (CoglTexture *texture,
 static void
 test_write_byte (CoglContext *context,
                  CoglPixelFormat format,
-                 guint8 byte,
-                 guint32 expected_pixel)
+                 uint8_t byte,
+                 uint32_t expected_pixel)
 {
   CoglTexture *texture = test_utils_create_color_texture (context, 0);
 
@@ -55,8 +55,8 @@ test_write_byte (CoglContext *context,
 static void
 test_write_short (CoglContext *context,
                   CoglPixelFormat format,
-                  guint16 value,
-                  guint32 expected_pixel)
+                  uint16_t value,
+                  uint32_t expected_pixel)
 {
   CoglTexture *texture = test_utils_create_color_texture (context, 0);
 
@@ -67,7 +67,7 @@ test_write_short (CoglContext *context,
                            1, 1, /* width / height */
                            format,
                            2, /* rowstride */
-                           (guint8 *) &value);
+                           (uint8_t *) &value);
 
   test_color (texture, expected_pixel);
 
@@ -77,8 +77,8 @@ test_write_short (CoglContext *context,
 static void
 test_write_bytes (CoglContext *context,
                   CoglPixelFormat format,
-                  guint32 value,
-                  guint32 expected_pixel)
+                  uint32_t value,
+                  uint32_t expected_pixel)
 {
   CoglTexture *texture = test_utils_create_color_texture (context, 0);
 
@@ -91,7 +91,7 @@ test_write_bytes (CoglContext *context,
                            1, 1, /* width / height */
                            format,
                            4, /* rowstride */
-                           (guint8 *) &value);
+                           (uint8_t *) &value);
 
   test_color (texture, expected_pixel);
 
@@ -101,12 +101,12 @@ test_write_bytes (CoglContext *context,
 static void
 test_write_int (CoglContext *context,
                 CoglPixelFormat format,
-                guint32 expected_pixel,
+                uint32_t expected_pixel,
                 ...)
 {
   va_list ap;
   int bits;
-  guint32 tex_data = 0;
+  uint32_t tex_data = 0;
   int bits_sum = 0;
   CoglTexture *texture = test_utils_create_color_texture (context, 0);
 
@@ -115,7 +115,7 @@ test_write_int (CoglContext *context,
   /* Convert the va args into a single 32-bit value */
   while ((bits = va_arg (ap, int)) != -1)
     {
-      guint32 value = (va_arg (ap, int) * ((1 << bits) - 1) + 127) / 255;
+      uint32_t value = (va_arg (ap, int) * ((1 << bits) - 1) + 127) / 255;
 
       bits_sum += bits;
 
@@ -131,7 +131,7 @@ test_write_int (CoglContext *context,
                            1, 1, /* width / height */
                            format,
                            4, /* rowstride */
-                           (guint8 *) &tex_data);
+                           (uint8_t *) &tex_data);
 
   test_color (texture, expected_pixel);
 

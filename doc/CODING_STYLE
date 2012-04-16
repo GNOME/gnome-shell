@@ -19,28 +19,29 @@ Differences to the Clutter coding style:
 
 Cogl headers are not exempt from the 80 characters limit as they are in
 Clutter. Function prototypes should not be arranged into vertical
-columns but should instead follow the "+ Functions" section of the
-Clutter CODING_STYLE like:
+columns but should instead look somthing like this:
 
 void
-my_function (CoglType     type,
-	     CoglType	 *a_pointer,
-	     CoglType	  another_type);
+my_function (CoglType type,
+	     CoglType *a_pointer,
+	     CoglType another_type);
 
 + Types
 
 Avoid the use of redundant glib typedefs and wherever possible simply
-use ANSI C types.
+use ANSI C/c99 types.
 
 The following types should not be used:
-  gint, guint, gfloat, gdouble, glong, gulong, gchar and guchar
+  gint, guint, gfloat, gdouble, glong, gulong, gchar, guchar,
+  guint{8,16,32} or gint{8,16,32}
 Instead use:
-  int, unsigned int, float, double, long, unsigned long, char, and
-  guint8/unsigned char
+  int, unsigned int, float, double, long, unsigned long, char,
+  unsigned char, uint{8,16,32}_t and int{8,16,32}_t
 
-The glib types that we continue to use for portability are gboolean,
-gint{8,16,32,64}, guint{8,16,32,64} and gsize. When ever you need a
-byte size type for dealing with pixel data then guint8 should be used.
+Use CoglBool for boolean types.
+
+When ever you need a byte size type for dealing with pixel data then
+uint8_t should be used.
 
 The general intention is that Cogl should look palatable to the widest
 range of C programmers including those outside the Gnome community so

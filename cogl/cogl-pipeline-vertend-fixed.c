@@ -43,7 +43,7 @@
 
 const CoglPipelineVertend _cogl_pipeline_fixed_vertend;
 
-static gboolean
+static CoglBool
 _cogl_pipeline_vertend_fixed_start (CoglPipeline *pipeline,
                                     int n_layers,
                                     unsigned long pipelines_difference,
@@ -77,7 +77,7 @@ _cogl_pipeline_vertend_fixed_start (CoglPipeline *pipeline,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 _cogl_pipeline_vertend_fixed_add_layer (CoglPipeline *pipeline,
                                         CoglPipelineLayer *layer,
                                         unsigned long layers_difference)
@@ -106,7 +106,7 @@ _cogl_pipeline_vertend_fixed_add_layer (CoglPipeline *pipeline,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 _cogl_pipeline_vertend_fixed_end (CoglPipeline *pipeline,
                                   unsigned long pipelines_difference)
 {

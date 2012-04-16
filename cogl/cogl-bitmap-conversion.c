@@ -31,7 +31,7 @@
 
 #include <string.h>
 
-#define component_type guint8
+#define component_type uint8_t
 /* We want to specially optimise the packing when we are converting
    to/from an 8-bit type so that it won't do anything. That way for
    example if we are just doing a swizzle conversion then the inner
@@ -43,7 +43,7 @@
 #undef UNPACK_BYTE
 #undef component_type
 
-#define component_type guint16
+#define component_type uint16_t
 #define UNPACK_BYTE(b) (((b) * 65535 + 127) / 255)
 #define PACK_BYTE(b) (((b) * 255 + 32767) / 65535)
 #include "cogl-bitmap-packing.h"
@@ -54,7 +54,7 @@
 /* (Un)Premultiplication */
 
 inline static void
-_cogl_unpremult_alpha_0 (guint8 *dst)
+_cogl_unpremult_alpha_0 (uint8_t *dst)
 {
   dst[0] = 0;
   dst[1] = 0;
@@ -63,9 +63,9 @@ _cogl_unpremult_alpha_0 (guint8 *dst)
 }
 
 inline static void
-_cogl_unpremult_alpha_last (guint8 *dst)
+_cogl_unpremult_alpha_last (uint8_t *dst)
 {
-  guint8 alpha = dst[3];
+  uint8_t alpha = dst[3];
 
   dst[0] = (dst[0] * 255) / alpha;
   dst[1] = (dst[1] * 255) / alpha;
@@ -73,9 +73,9 @@ _cogl_unpremult_alpha_last (guint8 *dst)
 }
 
 inline static void
-_cogl_unpremult_alpha_first (guint8 *dst)
+_cogl_unpremult_alpha_first (uint8_t *dst)
 {
-  guint8 alpha = dst[0];
+  uint8_t alpha = dst[0];
 
   dst[1] = (dst[1] * 255) / alpha;
   dst[2] = (dst[2] * 255) / alpha;
@@ -93,9 +93,9 @@ _cogl_unpremult_alpha_first (guint8 *dst)
   } G_STMT_END
 
 inline static void
-_cogl_premult_alpha_last (guint8 *dst)
+_cogl_premult_alpha_last (uint8_t *dst)
 {
-  guint8 alpha = dst[3];
+  uint8_t alpha = dst[3];
   /* Using a separate temporary per component has given slightly better
    * code generation with GCC in the past; it shouldn't do any worse in
    * any case.
@@ -107,9 +107,9 @@ _cogl_premult_alpha_last (guint8 *dst)
 }
 
 inline static void
-_cogl_premult_alpha_first (guint8 *dst)
+_cogl_premult_alpha_first (uint8_t *dst)
 {
-  guint8 alpha = dst[0];
+  uint8_t alpha = dst[0];
   unsigned int t1, t2, t3;
 
   MULT(dst[1], alpha, t1);
@@ -130,13 +130,13 @@ _cogl_premult_alpha_first (guint8 *dst)
 #ifdef COGL_USE_PREMULT_SSE2
 
 inline static void
-_cogl_premult_alpha_last_four_pixels_sse2 (guint8 *p)
+_cogl_premult_alpha_last_four_pixels_sse2 (uint8_t *p)
 {
   /* 8 copies of 128 used below */
-  static const gint16 eight_halves[8] __attribute__ ((aligned (16))) =
+  static const int16_t eight_halves[8] __attribute__ ((aligned (16))) =
     { 128, 128, 128, 128, 128, 128, 128, 128 };
   /* Mask of the rgb components of the four pixels */
-  static const gint8 just_rgb[16] __attribute__ ((aligned (16))) =
+  static const int8_t just_rgb[16] __attribute__ ((aligned (16))) =
     { 0xff, 0xff, 0xff, 0x00, 0xff, 0xff, 0xff, 0x00,
       0xff, 0xff, 0xff, 0x00, 0xff, 0xff, 0xff, 0x00 };
   /* Each SSE register only holds two pixels because we need to work
@@ -205,7 +205,7 @@ _cogl_premult_alpha_last_four_pixels_sse2 (guint8 *p)
 #endif /* COGL_USE_PREMULT_SSE2 */
 
 static void
-_cogl_bitmap_premult_unpacked_span_guint8 (guint8 *data,
+_cogl_bitmap_premult_unpacked_span_uint8_t (uint8_t *data,
                                            int width)
 {
 #ifdef COGL_USE_PREMULT_SSE2
@@ -231,7 +231,7 @@ _cogl_bitmap_premult_unpacked_span_guint8 (guint8 *data,
 }
 
 static void
-_cogl_bitmap_unpremult_unpacked_span_guint8 (guint8 *data,
+_cogl_bitmap_unpremult_unpacked_span_uint8_t (uint8_t *data,
                                              int width)
 {
   int x;
@@ -247,15 +247,15 @@ _cogl_bitmap_unpremult_unpacked_span_guint8 (guint8 *data,
 }
 
 static void
-_cogl_bitmap_unpremult_unpacked_span_guint16 (guint16 *data,
+_cogl_bitmap_unpremult_unpacked_span_uint16_t (uint16_t *data,
                                               int width)
 {
   while (width-- > 0)
     {
-      guint16 alpha = data[3];
+      uint16_t alpha = data[3];
 
       if (alpha == 0)
-        memset (data, 0, sizeof (guint16) * 3);
+        memset (data, 0, sizeof (uint16_t) * 3);
       else
         {
           data[0] = (data[0] * 65535) / alpha;
@@ -266,12 +266,12 @@ _cogl_bitmap_unpremult_unpacked_span_guint16 (guint16 *data,
 }
 
 static void
-_cogl_bitmap_premult_unpacked_span_guint16 (guint16 *data,
+_cogl_bitmap_premult_unpacked_span_uint16_t (uint16_t *data,
                                             int width)
 {
   while (width-- > 0)
     {
-      guint16 alpha = data[3];
+      uint16_t alpha = data[3];
 
       data[0] = (data[0] * alpha) / 65535;
       data[1] = (data[1] * alpha) / 65535;
@@ -279,7 +279,7 @@ _cogl_bitmap_premult_unpacked_span_guint16 (guint16 *data,
     }
 }
 
-static gboolean
+static CoglBool
 _cogl_bitmap_can_fast_premult (CoglPixelFormat format)
 {
   switch (format & ~COGL_PREMULT_BIT)
@@ -295,7 +295,7 @@ _cogl_bitmap_can_fast_premult (CoglPixelFormat format)
     }
 }
 
-static gboolean
+static CoglBool
 _cogl_bitmap_needs_short_temp_buffer (CoglPixelFormat format)
 {
   /* If the format is using more than 8 bits per component then we'll
@@ -343,23 +343,23 @@ _cogl_bitmap_needs_short_temp_buffer (CoglPixelFormat format)
   g_assert_not_reached ();
 }
 
-gboolean
+CoglBool
 _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
                                   CoglBitmap *dst_bmp)
 {
-  guint8          *src_data;
-  guint8          *dst_data;
-  guint8          *src;
-  guint8          *dst;
-  void            *tmp_row;
-  int              src_rowstride;
-  int              dst_rowstride;
-  int              y;
-  int              width, height;
-  CoglPixelFormat  src_format;
-  CoglPixelFormat  dst_format;
-  gboolean         use_16;
-  gboolean         need_premult;
+  uint8_t *src_data;
+  uint8_t *dst_data;
+  uint8_t *src;
+  uint8_t *dst;
+  void *tmp_row;
+  int src_rowstride;
+  int dst_rowstride;
+  int y;
+  int width, height;
+  CoglPixelFormat src_format;
+  CoglPixelFormat dst_format;
+  CoglBool use_16;
+  CoglBool need_premult;
 
   src_format = cogl_bitmap_get_format (src_bmp);
   src_rowstride = cogl_bitmap_get_rowstride (src_bmp);
@@ -421,7 +421,7 @@ _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
 
   /* Allocate a buffer to hold a temporary RGBA row */
   tmp_row = g_malloc (width *
-                      (use_16 ? sizeof (guint16) : sizeof (guint8)) * 4);
+                      (use_16 ? sizeof (uint16_t) : sizeof (uint8_t)) * 4);
 
   /* FIXME: Optimize */
   for (y = 0; y < height; y++)
@@ -430,9 +430,9 @@ _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
       dst = dst_data + y * dst_rowstride;
 
       if (use_16)
-        _cogl_unpack_guint16 (src_format, src, tmp_row, width);
+        _cogl_unpack_uint16_t (src_format, src, tmp_row, width);
       else
-        _cogl_unpack_guint8 (src_format, src, tmp_row, width);
+        _cogl_unpack_uint8_t (src_format, src, tmp_row, width);
 
       /* Handle premultiplication */
       if (need_premult)
@@ -440,23 +440,23 @@ _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
           if (dst_format & COGL_PREMULT_BIT)
             {
               if (use_16)
-                _cogl_bitmap_premult_unpacked_span_guint16 (tmp_row, width);
+                _cogl_bitmap_premult_unpacked_span_uint16_t (tmp_row, width);
               else
-                _cogl_bitmap_premult_unpacked_span_guint8 (tmp_row, width);
+                _cogl_bitmap_premult_unpacked_span_uint8_t (tmp_row, width);
             }
           else
             {
               if (use_16)
-                _cogl_bitmap_unpremult_unpacked_span_guint16 (tmp_row, width);
+                _cogl_bitmap_unpremult_unpacked_span_uint16_t (tmp_row, width);
               else
-                _cogl_bitmap_unpremult_unpacked_span_guint8 (tmp_row, width);
+                _cogl_bitmap_unpremult_unpacked_span_uint8_t (tmp_row, width);
             }
         }
 
       if (use_16)
-        _cogl_pack_guint16 (dst_format, tmp_row, dst, width);
+        _cogl_pack_uint16_t (dst_format, tmp_row, dst, width);
       else
-        _cogl_pack_guint8 (dst_format, tmp_row, dst, width);
+        _cogl_pack_uint8_t (dst_format, tmp_row, dst, width);
     }
 
   _cogl_bitmap_unmap (src_bmp);
@@ -492,15 +492,15 @@ _cogl_bitmap_convert (CoglBitmap *src_bmp,
   return dst_bmp;
 }
 
-gboolean
+CoglBool
 _cogl_bitmap_unpremult (CoglBitmap *bmp)
 {
-  guint8          *p, *data;
-  guint16         *tmp_row;
-  int              x,y;
-  CoglPixelFormat  format;
-  int              width, height;
-  int              rowstride;
+  uint8_t *p, *data;
+  uint16_t *tmp_row;
+  int x,y;
+  CoglPixelFormat format;
+  int width, height;
+  int rowstride;
 
   format = cogl_bitmap_get_format (bmp);
   width = cogl_bitmap_get_width (bmp);
@@ -519,17 +519,17 @@ _cogl_bitmap_unpremult (CoglBitmap *bmp)
   if (_cogl_bitmap_can_fast_premult (format))
     tmp_row = NULL;
   else
-    tmp_row = g_malloc (sizeof (guint16) * 4 * width);
+    tmp_row = g_malloc (sizeof (uint16_t) * 4 * width);
 
   for (y = 0; y < height; y++)
     {
-      p = (guint8*) data + y * rowstride;
+      p = (uint8_t*) data + y * rowstride;
 
       if (tmp_row)
         {
-          _cogl_unpack_guint16 (format, p, tmp_row, width);
-          _cogl_bitmap_unpremult_unpacked_span_guint16 (tmp_row, width);
-          _cogl_pack_guint16 (format, tmp_row, p, width);
+          _cogl_unpack_uint16_t (format, p, tmp_row, width);
+          _cogl_bitmap_unpremult_unpacked_span_uint16_t (tmp_row, width);
+          _cogl_pack_uint16_t (format, tmp_row, p, width);
         }
       else
         {
@@ -545,7 +545,7 @@ _cogl_bitmap_unpremult (CoglBitmap *bmp)
                 }
             }
           else
-            _cogl_bitmap_unpremult_unpacked_span_guint8 (p, width);
+            _cogl_bitmap_unpremult_unpacked_span_uint8_t (p, width);
         }
     }
 
@@ -558,15 +558,15 @@ _cogl_bitmap_unpremult (CoglBitmap *bmp)
   return TRUE;
 }
 
-gboolean
+CoglBool
 _cogl_bitmap_premult (CoglBitmap *bmp)
 {
-  guint8          *p, *data;
-  guint16         *tmp_row;
-  int              x,y;
-  CoglPixelFormat  format;
-  int              width, height;
-  int              rowstride;
+  uint8_t *p, *data;
+  uint16_t *tmp_row;
+  int x,y;
+  CoglPixelFormat format;
+  int width, height;
+  int rowstride;
 
   format = cogl_bitmap_get_format (bmp);
   width = cogl_bitmap_get_width (bmp);
@@ -584,17 +584,17 @@ _cogl_bitmap_premult (CoglBitmap *bmp)
   if (_cogl_bitmap_can_fast_premult (format))
     tmp_row = NULL;
   else
-    tmp_row = g_malloc (sizeof (guint16) * 4 * width);
+    tmp_row = g_malloc (sizeof (uint16_t) * 4 * width);
 
   for (y = 0; y < height; y++)
     {
-      p = (guint8*) data + y * rowstride;
+      p = (uint8_t*) data + y * rowstride;
 
       if (tmp_row)
         {
-          _cogl_unpack_guint16 (format, p, tmp_row, width);
-          _cogl_bitmap_premult_unpacked_span_guint16 (tmp_row, width);
-          _cogl_pack_guint16 (format, tmp_row, p, width);
+          _cogl_unpack_uint16_t (format, p, tmp_row, width);
+          _cogl_bitmap_premult_unpacked_span_uint16_t (tmp_row, width);
+          _cogl_pack_uint16_t (format, tmp_row, p, width);
         }
       else
         {
@@ -607,7 +607,7 @@ _cogl_bitmap_premult (CoglBitmap *bmp)
                 }
             }
           else
-            _cogl_bitmap_premult_unpacked_span_guint8 (p, width);
+            _cogl_bitmap_premult_unpacked_span_uint8_t (p, width);
         }
     }
 

@@ -15,7 +15,7 @@ enum
 
 typedef struct test_tile
 {
-  guint8 color[4];
+  uint8_t color[4];
   gfloat x, y;
   CoglBuffer *buffer;
   CoglTexture *texture;
@@ -51,7 +51,7 @@ create_map_tile (CoglContext *context,
   guchar *map;
   unsigned int i;
   unsigned int stride;
-  guint8 *line;
+  uint8_t *line;
 
   bitmap = cogl_bitmap_new_with_size (context,
                                       TILE_SIZE,
@@ -95,7 +95,7 @@ create_set_region_tile (CoglContext *context,
 {
   CoglBitmap *bitmap;
   CoglBuffer *buffer;
-  guint8 bottom_color[4];
+  uint8_t bottom_color[4];
   unsigned int rowstride = 0;
   guchar *data;
   unsigned int i;
@@ -148,7 +148,7 @@ create_set_data_tile (CoglContext *context,
   CoglBitmap *bitmap;
   CoglBuffer *buffer;
   unsigned int rowstride = 0;
-  gboolean res;
+  CoglBool res;
   guchar *data;
   unsigned int i;
 

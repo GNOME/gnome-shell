@@ -84,7 +84,7 @@ main (int argc, char **argv)
     for (;;) {
         CoglPollFD *poll_fds;
         int n_poll_fds;
-        gint64 timeout;
+        int64_t timeout;
         CoglPipeline *texture_pipeline;
 
         cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);

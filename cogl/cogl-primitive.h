@@ -100,7 +100,7 @@ typedef struct
 typedef struct
 {
    float x, y;
-   guint8 r, g, b, a;
+   uint8_t r, g, b, a;
 } CoglVertexP2C4;
 
 /**
@@ -122,7 +122,7 @@ typedef struct
 typedef struct
 {
    float x, y, z;
-   guint8 r, g, b, a;
+   uint8_t r, g, b, a;
 } CoglVertexP3C4;
 
 /**
@@ -186,7 +186,7 @@ typedef struct
 {
    float x, y;
    float s, t;
-   guint8 r, g, b, a;
+   uint8_t r, g, b, a;
 } CoglVertexP2T2C4;
 
 /**
@@ -211,7 +211,7 @@ typedef struct
 {
    float x, y, z;
    float s, t;
-   guint8 r, g, b, a;
+   uint8_t r, g, b, a;
 } CoglVertexP3T2C4;
 
 /**
@@ -833,7 +833,7 @@ cogl_primitive_copy (CoglPrimitive *primitive);
  * Since: 1.6
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_is_primitive (void *object);
 
 /**
@@ -851,7 +851,7 @@ cogl_is_primitive (void *object);
  * Since: 1.10
  * Stability: Unstable
  */
-typedef gboolean (* CoglPrimitiveAttributeCallback) (CoglPrimitive *primitive,
+typedef CoglBool (* CoglPrimitiveAttributeCallback) (CoglPrimitive *primitive,
                                                      CoglAttribute *attribute,
                                                      void *user_data);
 

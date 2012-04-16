@@ -85,19 +85,19 @@ typedef struct _CoglBitmaskImaginaryType *CoglBitmask;
 #define _cogl_bitmask_init(bitmask) \
   G_STMT_START { *(bitmask) = _cogl_bitmask_from_bits (0); } G_STMT_END
 
-gboolean
+CoglBool
 _cogl_bitmask_get_from_array (const CoglBitmask *bitmask,
                               unsigned int bit_num);
 
 void
 _cogl_bitmask_set_in_array (CoglBitmask *bitmask,
                             unsigned int bit_num,
-                            gboolean value);
+                            CoglBool value);
 
 void
 _cogl_bitmask_set_range_in_array (CoglBitmask *bitmask,
                                   unsigned int n_bits,
-                                  gboolean value);
+                                  CoglBool value);
 
 void
 _cogl_bitmask_clear_all_in_array (CoglBitmask *bitmask);
@@ -138,7 +138,7 @@ _cogl_bitmask_xor_bits (CoglBitmask *dst,
                         const CoglBitmask *src);
 
 /* The foreach function can return FALSE to stop iteration */
-typedef gboolean (* CoglBitmaskForeachFunc) (int bit_num, void *user_data);
+typedef CoglBool (* CoglBitmaskForeachFunc) (int bit_num, void *user_data);
 
 /*
  * cogl_bitmask_foreach:
@@ -160,7 +160,7 @@ _cogl_bitmask_foreach (const CoglBitmask *bitmask,
  *
  * Return value: whether bit number @bit_num is set in @bitmask
  */
-static inline gboolean
+static inline CoglBool
 _cogl_bitmask_get (const CoglBitmask *bitmask, unsigned int bit_num)
 {
   if (_cogl_bitmask_has_array (bitmask))
@@ -180,7 +180,7 @@ _cogl_bitmask_get (const CoglBitmask *bitmask, unsigned int bit_num)
  * Sets or resets a bit number @bit_num in @bitmask according to @value.
  */
 static inline void
-_cogl_bitmask_set (CoglBitmask *bitmask, unsigned int bit_num, gboolean value)
+_cogl_bitmask_set (CoglBitmask *bitmask, unsigned int bit_num, CoglBool value)
 {
   if (_cogl_bitmask_has_array (bitmask) ||
       bit_num >= COGL_BITMASK_MAX_DIRECT_BITS)
@@ -204,7 +204,7 @@ _cogl_bitmask_set (CoglBitmask *bitmask, unsigned int bit_num, gboolean value)
 static inline void
 _cogl_bitmask_set_range (CoglBitmask *bitmask,
                          unsigned int n_bits,
-                         gboolean value)
+                         CoglBool value)
 {
   if (_cogl_bitmask_has_array (bitmask) ||
       n_bits > COGL_BITMASK_MAX_DIRECT_BITS)

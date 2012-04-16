@@ -7,7 +7,7 @@
 #define FB_WIDTH 512
 #define FB_HEIGHT 512
 
-static gboolean cogl_test_is_verbose;
+static CoglBool cogl_test_is_verbose;
 
 CoglContext *ctx;
 CoglFramebuffer *fb;
@@ -20,7 +20,7 @@ test_utils_init (TestFlags flags)
   CoglOnscreen *onscreen = NULL;
   CoglDisplay *display;
   CoglRenderer *renderer;
-  gboolean missing_requirement = FALSE;
+  CoglBool missing_requirement = FALSE;
 
   if (counter != 0)
     g_critical ("We don't support running more than one test at a time\n"
@@ -126,21 +126,21 @@ test_utils_fini (void)
     cogl_object_unref (ctx);
 }
 
-static gboolean
+static CoglBool
 compare_component (int a, int b)
 {
   return ABS (a - b) <= 1;
 }
 
 void
-test_utils_compare_pixel (const guint8 *screen_pixel, guint32 expected_pixel)
+test_utils_compare_pixel (const uint8_t *screen_pixel, uint32_t expected_pixel)
 {
   /* Compare each component with a small fuzz factor */
   if (!compare_component (screen_pixel[0], expected_pixel >> 24) ||
       !compare_component (screen_pixel[1], (expected_pixel >> 16) & 0xff) ||
       !compare_component (screen_pixel[2], (expected_pixel >> 8) & 0xff))
     {
-      guint32 screen_pixel_num = GUINT32_FROM_BE (*(guint32 *) screen_pixel);
+      uint32_t screen_pixel_num = GUINT32_FROM_BE (*(uint32_t *) screen_pixel);
       char *screen_pixel_string =
         g_strdup_printf ("#%06x", screen_pixel_num >> 8);
       char *expected_pixel_string =
@@ -155,9 +155,9 @@ test_utils_compare_pixel (const guint8 *screen_pixel, guint32 expected_pixel)
 
 void
 test_utils_check_pixel (CoglFramebuffer *fb,
-                        int x, int y, guint32 expected_pixel)
+                        int x, int y, uint32_t expected_pixel)
 {
-  guint8 pixel[4];
+  uint8_t pixel[4];
 
   cogl_framebuffer_read_pixels (fb,
                                 x, y, 1, 1,
@@ -178,9 +178,9 @@ void
 test_utils_check_region (CoglFramebuffer *fb,
                          int x, int y,
                          int width, int height,
-                         guint32 expected_rgba)
+                         uint32_t expected_rgba)
 {
-  guint8 *pixels, *p;
+  uint8_t *pixels, *p;
 
   pixels = p = g_malloc (width * height * 4);
   cogl_framebuffer_read_pixels (fb,
@@ -204,7 +204,7 @@ test_utils_check_region (CoglFramebuffer *fb,
 
 CoglTexture *
 test_utils_create_color_texture (CoglContext *context,
-                                 guint32 color)
+                                 uint32_t color)
 {
   CoglTexture2D *tex_2d;
 
@@ -215,13 +215,13 @@ test_utils_create_color_texture (CoglContext *context,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                           4, /* rowstride */
-                                          (guint8 *) &color,
+                                          (uint8_t *) &color,
                                           NULL);
 
   return COGL_TEXTURE (tex_2d);
 }
 
-gboolean
+CoglBool
 cogl_test_verbose (void)
 {
   return cogl_test_is_verbose;

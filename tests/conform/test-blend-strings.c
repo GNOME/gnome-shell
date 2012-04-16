@@ -29,32 +29,32 @@ static void
 test_blend (TestState *state,
             int x,
             int y,
-            guint32 src_color,
-            guint32 dst_color,
+            uint32_t src_color,
+            uint32_t dst_color,
             const char *blend_string,
-            guint32 blend_constant,
-            guint32 expected_result)
+            uint32_t blend_constant,
+            uint32_t expected_result)
 {
   /* src color */
-  guint8 Sr = MASK_RED (src_color);
-  guint8 Sg = MASK_GREEN (src_color);
-  guint8 Sb = MASK_BLUE (src_color);
-  guint8 Sa = MASK_ALPHA (src_color);
+  uint8_t Sr = MASK_RED (src_color);
+  uint8_t Sg = MASK_GREEN (src_color);
+  uint8_t Sb = MASK_BLUE (src_color);
+  uint8_t Sa = MASK_ALPHA (src_color);
   /* dest color */
-  guint8 Dr = MASK_RED (dst_color);
-  guint8 Dg = MASK_GREEN (dst_color);
-  guint8 Db = MASK_BLUE (dst_color);
-  guint8 Da = MASK_ALPHA (dst_color);
+  uint8_t Dr = MASK_RED (dst_color);
+  uint8_t Dg = MASK_GREEN (dst_color);
+  uint8_t Db = MASK_BLUE (dst_color);
+  uint8_t Da = MASK_ALPHA (dst_color);
   /* blend constant - when applicable */
-  guint8 Br = MASK_RED (blend_constant);
-  guint8 Bg = MASK_GREEN (blend_constant);
-  guint8 Bb = MASK_BLUE (blend_constant);
-  guint8 Ba = MASK_ALPHA (blend_constant);
+  uint8_t Br = MASK_RED (blend_constant);
+  uint8_t Bg = MASK_GREEN (blend_constant);
+  uint8_t Bb = MASK_BLUE (blend_constant);
+  uint8_t Ba = MASK_ALPHA (blend_constant);
   CoglColor blend_const_color;
 
   CoglHandle material;
   CoglPipeline *pipeline;
-  gboolean status;
+  CoglBool status;
   GError *error = NULL;
   int y_off;
   int x_off;
@@ -175,13 +175,13 @@ test_blend (TestState *state,
 }
 
 static CoglTexture *
-make_texture (guint32 color)
+make_texture (uint32_t color)
 {
   guchar *tex_data, *p;
-  guint8 r = MASK_RED (color);
-  guint8 g = MASK_GREEN (color);
-  guint8 b = MASK_BLUE (color);
-  guint8 a = MASK_ALPHA (color);
+  uint8_t r = MASK_RED (color);
+  uint8_t g = MASK_GREEN (color);
+  uint8_t b = MASK_BLUE (color);
+  uint8_t a = MASK_ALPHA (color);
   CoglTexture *tex;
 
   tex_data = g_malloc (QUAD_WIDTH * QUAD_WIDTH * 4);
@@ -213,23 +213,23 @@ static void
 test_tex_combine (TestState *state,
                   int x,
                   int y,
-                  guint32 tex0_color,
-                  guint32 tex1_color,
-                  guint32 combine_constant,
+                  uint32_t tex0_color,
+                  uint32_t tex1_color,
+                  uint32_t combine_constant,
                   const char *combine_string,
-                  guint32 expected_result)
+                  uint32_t expected_result)
 {
   CoglTexture *tex0, *tex1;
 
   /* combine constant - when applicable */
-  guint8 Cr = MASK_RED (combine_constant);
-  guint8 Cg = MASK_GREEN (combine_constant);
-  guint8 Cb = MASK_BLUE (combine_constant);
-  guint8 Ca = MASK_ALPHA (combine_constant);
+  uint8_t Cr = MASK_RED (combine_constant);
+  uint8_t Cg = MASK_GREEN (combine_constant);
+  uint8_t Cb = MASK_BLUE (combine_constant);
+  uint8_t Ca = MASK_ALPHA (combine_constant);
   CoglColor combine_const_color;
 
   CoglHandle material;
-  gboolean status;
+  CoglBool status;
   GError *error = NULL;
   int y_off;
   int x_off;

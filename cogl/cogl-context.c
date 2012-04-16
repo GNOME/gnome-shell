@@ -589,7 +589,7 @@ cogl_egl_context_get_egl_display (CoglContext *context)
 }
 #endif
 
-gboolean
+CoglBool
 _cogl_context_update_features (CoglContext *context,
                                GError **error)
 {

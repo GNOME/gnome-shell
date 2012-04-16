@@ -74,7 +74,7 @@ typedef struct _CoglTextureRectangle CoglTextureRectangle;
  * Return value: %TRUE if the object references a
  *               #CoglTextureRectangle, %FALSE otherwise.
  */
-gboolean
+CoglBool
 cogl_is_texture_rectangle (void *object);
 
 #define cogl_texture_rectangle_new_with_size \

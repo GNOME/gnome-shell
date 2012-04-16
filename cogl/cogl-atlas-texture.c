@@ -69,7 +69,7 @@ _cogl_atlas_texture_create_sub_texture (CoglTexture *full_texture,
 }
 
 static void
-_cogl_atlas_texture_update_position_cb (gpointer user_data,
+_cogl_atlas_texture_update_position_cb (void *user_data,
                                         CoglTexture *new_texture,
                                         const CoglRectangleMapEntry *rectangle)
 {
@@ -294,7 +294,7 @@ _cogl_atlas_texture_get_max_waste (CoglTexture *tex)
   return cogl_texture_get_max_waste (atlas_tex->sub_texture);
 }
 
-static gboolean
+static CoglBool
 _cogl_atlas_texture_is_sliced (CoglTexture *tex)
 {
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
@@ -303,7 +303,7 @@ _cogl_atlas_texture_is_sliced (CoglTexture *tex)
   return cogl_texture_is_sliced (atlas_tex->sub_texture);
 }
 
-static gboolean
+static CoglBool
 _cogl_atlas_texture_can_hardware_repeat (CoglTexture *tex)
 {
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
@@ -334,7 +334,7 @@ _cogl_atlas_texture_transform_quad_coords_to_gl (CoglTexture *tex,
                                                     coords);
 }
 
-static gboolean
+static CoglBool
 _cogl_atlas_texture_get_gl_texture (CoglTexture *tex,
                                     GLuint *out_gl_handle,
                                     GLenum *out_gl_target)
@@ -430,7 +430,7 @@ _cogl_atlas_texture_ensure_non_quad_rendering (CoglTexture *tex)
   _cogl_texture_ensure_non_quad_rendering (atlas_tex->sub_texture);
 }
 
-static gboolean
+static CoglBool
 _cogl_atlas_texture_set_region_with_border (CoglAtlasTexture *atlas_tex,
                                             int             src_x,
                                             int             src_y,
@@ -540,7 +540,7 @@ _cogl_atlas_texture_prepare_for_upload (CoglAtlasTexture *atlas_tex,
   return override_bmp;
 }
 
-static gboolean
+static CoglBool
 _cogl_atlas_texture_set_region (CoglTexture    *tex,
                                 int             src_x,
                                 int             src_y,
@@ -556,7 +556,7 @@ _cogl_atlas_texture_set_region (CoglTexture    *tex,
      pixels to the border */
   if (atlas_tex->atlas)
     {
-      gboolean ret;
+      CoglBool ret;
 
       bmp = _cogl_atlas_texture_prepare_for_upload (atlas_tex,
                                                     bmp);
@@ -619,7 +619,7 @@ _cogl_atlas_texture_get_height (CoglTexture *tex)
   return cogl_texture_get_height (atlas_tex->sub_texture);
 }
 
-static gboolean
+static CoglBool
 _cogl_atlas_texture_can_use_format (CoglPixelFormat format)
 {
   /* We don't care about the ordering or the premult status and we can

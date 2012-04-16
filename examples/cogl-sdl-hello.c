@@ -12,11 +12,11 @@ typedef struct Data
   CoglPipeline *pipeline;
   float center_x, center_y;
   CoglFramebuffer *fb;
-  gboolean quit;
-  gboolean redraw_queued;
+  CoglBool quit;
+  CoglBool redraw_queued;
 } Data;
 
-static gboolean
+static CoglBool
 redraw (Data *data)
 {
   CoglFramebuffer *fb = data->fb;

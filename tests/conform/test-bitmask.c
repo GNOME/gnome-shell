@@ -20,7 +20,7 @@ typedef struct
   int *bits;
 } CheckData;
 
-static gboolean
+static CoglBool
 check_bit (int bit_num, void *user_data)
 {
   CheckData *data = user_data;

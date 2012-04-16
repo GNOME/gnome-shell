@@ -23,26 +23,26 @@ typedef struct _TestState
 
 typedef struct
 {
-  guint32               color;
+  uint32_t               color;
   float                 depth;
-  gboolean              test_enable;
+  CoglBool              test_enable;
   CoglDepthTestFunction test_function;
-  gboolean              write_enable;
+  CoglBool              write_enable;
   float                 range_near;
   float                 range_far;
 } TestDepthState;
 
-static gboolean
+static CoglBool
 draw_rectangle (TestState *state,
                 int x,
                 int y,
                 TestDepthState *rect_state,
-                gboolean legacy_mode)
+                CoglBool legacy_mode)
 {
-  guint8 Cr = MASK_RED (rect_state->color);
-  guint8 Cg = MASK_GREEN (rect_state->color);
-  guint8 Cb = MASK_BLUE (rect_state->color);
-  guint8 Ca = MASK_ALPHA (rect_state->color);
+  uint8_t Cr = MASK_RED (rect_state->color);
+  uint8_t Cg = MASK_GREEN (rect_state->color);
+  uint8_t Cb = MASK_BLUE (rect_state->color);
+  uint8_t Ca = MASK_ALPHA (rect_state->color);
   CoglPipeline *pipeline;
   CoglDepthState depth_state;
 
@@ -101,10 +101,10 @@ test_depth (TestState *state,
             TestDepthState *rect0_state,
             TestDepthState *rect1_state,
             TestDepthState *rect2_state,
-            gboolean legacy_mode,
-            guint32 expected_result)
+            CoglBool legacy_mode,
+            uint32_t expected_result)
 {
-  gboolean missing_feature = FALSE;
+  CoglBool missing_feature = FALSE;
 
   if (rect0_state)
     missing_feature |= !draw_rectangle (state, x, y, rect0_state, legacy_mode);

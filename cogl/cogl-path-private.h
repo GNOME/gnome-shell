@@ -97,13 +97,13 @@ struct _CoglPathData
      case and divert to the journal or a rectangle clip. If it is TRUE
      then the entire path can be described by calling
      _cogl_path_get_bounds */
-  gboolean             is_rectangle;
+  CoglBool             is_rectangle;
 };
 
 void
 _cogl_add_path_to_stencil_buffer (CoglPath  *path,
-                                  gboolean   merge,
-                                  gboolean   need_clear);
+                                  CoglBool   merge,
+                                  CoglBool   need_clear);
 
 void
 _cogl_path_get_bounds (CoglPath *path,
@@ -112,7 +112,7 @@ _cogl_path_get_bounds (CoglPath *path,
                        float *max_x,
                        float *max_y);
 
-gboolean
+CoglBool
 _cogl_path_is_rectangle (CoglPath *path);
 
 void

@@ -114,7 +114,7 @@ cogl_display_get_renderer (CoglDisplay *display)
   return display->renderer;
 }
 
-gboolean
+CoglBool
 cogl_display_setup (CoglDisplay *display,
                     GError **error)
 {

@@ -58,7 +58,7 @@ cogl_material_unref (CoglHandle handle)
   cogl_object_unref (handle);
 }
 
-gboolean
+CoglBool
 cogl_is_material (CoglHandle handle)
 {
   return cogl_is_pipeline (handle);
@@ -73,10 +73,10 @@ cogl_material_set_color (CoglMaterial    *material,
 
 void
 cogl_material_set_color4ub (CoglMaterial *material,
-			    guint8        red,
-                            guint8        green,
-                            guint8        blue,
-                            guint8        alpha)
+			    uint8_t red,
+                            uint8_t green,
+                            uint8_t blue,
+                            uint8_t alpha)
 {
   cogl_pipeline_set_color4ub (COGL_PIPELINE (material),
                               red, green, blue, alpha);
@@ -189,7 +189,7 @@ cogl_material_set_alpha_test_function (CoglMaterial         *material,
                                          alpha_reference);
 }
 
-gboolean
+CoglBool
 cogl_material_set_blend (CoglMaterial *material,
                          const char   *blend_string,
                          GError      **error)
@@ -248,7 +248,7 @@ cogl_material_remove_layer (CoglMaterial *material,
   cogl_pipeline_remove_layer (COGL_PIPELINE (material), layer_index);
 }
 
-gboolean
+CoglBool
 cogl_material_set_layer_combine (CoglMaterial *material,
 				 int           layer_index,
 				 const char   *blend_string,
@@ -327,10 +327,10 @@ cogl_material_set_layer_filters (CoglMaterial      *material,
                                    mag_filter);
 }
 
-gboolean
+CoglBool
 cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
                                                      int           layer_index,
-                                                     gboolean      enable,
+                                                     CoglBool      enable,
                                                      GError      **error)
 {
   CoglPipeline *pipeline = COGL_PIPELINE (material);
@@ -340,7 +340,7 @@ cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
                                                               error);
 }
 
-gboolean
+CoglBool
 cogl_material_get_layer_point_sprite_coords_enabled (CoglMaterial *material,
                                                      int           layer_index)
 {
@@ -436,7 +436,7 @@ cogl_material_foreach_layer (CoglMaterial *material,
                                (CoglPipelineLayerCallback)callback, user_data);
 }
 
-gboolean
+CoglBool
 cogl_material_set_depth_state (CoglMaterial *material,
                                const CoglDepthState *state,
                                GError **error)

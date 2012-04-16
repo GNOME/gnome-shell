@@ -152,7 +152,7 @@ cogl_display_get_renderer (CoglDisplay *display);
  * Since: 1.10
  * Stability: unstable
  */
-gboolean
+CoglBool
 cogl_display_setup (CoglDisplay *display,
                     GError **error);
 
@@ -200,7 +200,7 @@ cogl_wayland_display_set_compositor_display (CoglDisplay *display,
  * Since: 1.10
  * Stability: unstable
  */
-gboolean
+CoglBool
 cogl_is_display (void *object);
 
 G_END_DECLS

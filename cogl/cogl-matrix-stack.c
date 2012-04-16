@@ -38,7 +38,7 @@
 
 typedef struct {
   CoglMatrix matrix;
-  gboolean is_identity;
+  CoglBool is_identity;
   /* count of pushes with no changes; when a change is
    * requested, we create a new state and decrement this
    */
@@ -93,7 +93,7 @@ _cogl_matrix_stack_top (CoglMatrixStack *stack)
  */
 static CoglMatrixState *
 _cogl_matrix_stack_top_mutable (CoglMatrixStack *stack,
-                                gboolean initialize)
+                                CoglBool initialize)
 {
   CoglMatrixState *state;
   CoglMatrixState *new_top;
@@ -321,7 +321,7 @@ _cogl_matrix_stack_ortho (CoglMatrixStack *stack,
   stack->age++;
 }
 
-gboolean
+CoglBool
 _cogl_matrix_stack_get_inverse (CoglMatrixStack *stack,
                                 CoglMatrix      *inverse)
 {
@@ -367,7 +367,7 @@ _cogl_matrix_stack_set (CoglMatrixStack  *stack,
 
 static void
 _cogl_matrix_stack_flush_matrix_to_gl_builtin (CoglContext *ctx,
-                                               gboolean is_identity,
+                                               CoglBool is_identity,
                                                CoglMatrix *matrix,
                                                CoglMatrixMode mode)
 {
@@ -409,14 +409,14 @@ void
 _cogl_matrix_stack_flush_to_gl_builtins (CoglContext *ctx,
                                          CoglMatrixStack *stack,
                                          CoglMatrixMode mode,
-                                         gboolean disable_flip)
+                                         CoglBool disable_flip)
 {
   g_assert (ctx->driver == COGL_DRIVER_GL ||
             ctx->driver == COGL_DRIVER_GLES1);
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
   {
-    gboolean needs_flip;
+    CoglBool needs_flip;
     CoglMatrixState *state;
     CoglMatrixStackCache *cache;
 
@@ -451,7 +451,7 @@ _cogl_matrix_stack_flush_to_gl_builtins (CoglContext *ctx,
     if (!cache ||
         _cogl_matrix_stack_check_and_update_cache (stack, cache, needs_flip))
       {
-        gboolean is_identity = state->is_identity && !needs_flip;
+        CoglBool is_identity = state->is_identity && !needs_flip;
 
         if (needs_flip)
           {
@@ -485,13 +485,13 @@ _cogl_matrix_stack_get_age (CoglMatrixStack *stack)
   return stack->age;
 }
 
-gboolean
+CoglBool
 _cogl_matrix_stack_has_identity_flag (CoglMatrixStack *stack)
 {
   return _cogl_matrix_stack_top (stack)->is_identity;
 }
 
-gboolean
+CoglBool
 _cogl_matrix_stack_equal (CoglMatrixStack *stack0,
                           CoglMatrixStack *stack1)
 {
@@ -507,14 +507,14 @@ _cogl_matrix_stack_equal (CoglMatrixStack *stack0,
     return cogl_matrix_equal (&state0->matrix, &state1->matrix);
 }
 
-gboolean
+CoglBool
 _cogl_matrix_stack_check_and_update_cache (CoglMatrixStack *stack,
                                            CoglMatrixStackCache *cache,
-                                           gboolean flip)
+                                           CoglBool flip)
 {
-  gboolean is_identity =
+  CoglBool is_identity =
     _cogl_matrix_stack_has_identity_flag (stack) && !flip;
-  gboolean is_dirty;
+  CoglBool is_dirty;
 
   if (is_identity && cache->flushed_identity)
     is_dirty = FALSE;

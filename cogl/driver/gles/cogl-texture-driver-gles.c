@@ -172,7 +172,7 @@ static void
 _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
                                              GLenum       gl_target,
                                              GLuint       gl_handle,
-                                             gboolean     is_foreign,
+                                             CoglBool     is_foreign,
                                              int          src_x,
                                              int          src_y,
                                              int          dst_x,
@@ -183,7 +183,7 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
 				             GLuint       source_gl_format,
 				             GLuint       source_gl_type)
 {
-  guint8 *data;
+  uint8_t *data;
   CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
   CoglBitmap *slice_bmp;
@@ -235,7 +235,7 @@ static void
 _cogl_texture_driver_upload_to_gl (CoglContext *ctx,
                                    GLenum       gl_target,
                                    GLuint       gl_handle,
-                                   gboolean     is_foreign,
+                                   CoglBool     is_foreign,
                                    CoglBitmap  *source_bmp,
                                    GLint        internal_gl_format,
                                    GLuint       source_gl_format,
@@ -247,7 +247,7 @@ _cogl_texture_driver_upload_to_gl (CoglContext *ctx,
   int bmp_width = cogl_bitmap_get_width (source_bmp);
   int bmp_height = cogl_bitmap_get_height (source_bmp);
   CoglBitmap *bmp;
-  guint8 *data;
+  uint8_t *data;
 
   bmp = prepare_bitmap_alignment_for_upload (ctx, source_bmp);
   rowstride = cogl_bitmap_get_rowstride (bmp);
@@ -276,7 +276,7 @@ static void
 _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
                                       GLenum       gl_target,
                                       GLuint       gl_handle,
-                                      gboolean     is_foreign,
+                                      CoglBool     is_foreign,
                                       GLint        height,
                                       GLint        depth,
                                       CoglBitmap  *source_bmp,
@@ -289,7 +289,7 @@ _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
   int rowstride = cogl_bitmap_get_rowstride (source_bmp);
   int bmp_width = cogl_bitmap_get_width (source_bmp);
   int bmp_height = cogl_bitmap_get_height (source_bmp);
-  guint8 *data;
+  uint8_t *data;
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
@@ -378,17 +378,17 @@ _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
 /* NB: GLES doesn't support glGetTexImage2D, so cogl-texture will instead
  * fallback to a generic render + readpixels approach to downloading
  * texture data. (See _cogl_texture_draw_and_read() ) */
-static gboolean
+static CoglBool
 _cogl_texture_driver_gl_get_tex_image (CoglContext *ctx,
                                        GLenum gl_target,
                                        GLenum dest_gl_format,
                                        GLenum dest_gl_type,
-                                       guint8 *dest)
+                                       uint8_t *dest)
 {
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_driver_size_supported_3d (CoglContext *ctx,
                                         GLenum gl_target,
                                         GLenum gl_format,
@@ -407,7 +407,7 @@ _cogl_texture_driver_size_supported_3d (CoglContext *ctx,
   return width <= max_size && height <= max_size && depth <= max_size;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_driver_size_supported (CoglContext *ctx,
                                      GLenum gl_target,
                                      GLenum gl_format,
@@ -433,7 +433,7 @@ _cogl_texture_driver_try_setting_gl_border_color
   /* FAIL! */
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_driver_allows_foreign_gl_target (CoglContext *ctx,
                                                GLenum gl_target)
 {

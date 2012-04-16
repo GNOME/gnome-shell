@@ -176,7 +176,7 @@ cogl_onscreen_swap_region (CoglOnscreen *onscreen,
 #ifdef COGL_HAS_X11_SUPPORT
 void
 cogl_x11_onscreen_set_foreign_window_xid (CoglOnscreen *onscreen,
-                                          guint32 xid,
+                                          uint32_t xid,
                                           CoglOnscreenX11MaskCallback update,
                                           void *user_data)
 {
@@ -189,7 +189,7 @@ cogl_x11_onscreen_set_foreign_window_xid (CoglOnscreen *onscreen,
   onscreen->foreign_update_mask_data = user_data;
 }
 
-guint32
+uint32_t
 cogl_x11_onscreen_get_window_xid (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
@@ -207,19 +207,19 @@ cogl_x11_onscreen_get_window_xid (CoglOnscreen *onscreen)
     }
 }
 
-guint32
+uint32_t
 cogl_x11_onscreen_get_visual_xid (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
   XVisualInfo *visinfo;
-  guint32 id;
+  uint32_t id;
 
   /* This should only be called for xlib based onscreens */
   _COGL_RETURN_VAL_IF_FAIL (winsys->xlib_get_visual_info != NULL, 0);
 
   visinfo = winsys->xlib_get_visual_info ();
-  id = (guint32)visinfo->visualid;
+  id = (uint32_t)visinfo->visualid;
 
   XFree (visinfo);
   return id;
@@ -291,7 +291,7 @@ cogl_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
 
 void
 cogl_onscreen_set_swap_throttled (CoglOnscreen *onscreen,
-                                  gboolean throttled)
+                                  CoglBool throttled)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   framebuffer->config.swap_throttled = throttled;

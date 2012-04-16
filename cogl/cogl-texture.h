@@ -179,7 +179,7 @@ cogl_texture_new_from_data (unsigned int      width,
                             CoglPixelFormat   format,
                             CoglPixelFormat   internal_format,
                             unsigned int      rowstride,
-                            const guint8     *data);
+                            const uint8_t     *data);
 
 /**
  * cogl_texture_new_from_foreign:
@@ -242,7 +242,7 @@ cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
  * Return value: %TRUE if the @object references a texture, and
  *   %FALSE otherwise
  */
-gboolean
+CoglBool
 cogl_is_texture (void *object);
 
 /**
@@ -332,7 +332,7 @@ cogl_texture_get_max_waste (CoglTexture *texture);
  * Return value: %TRUE if the texture is sliced, %FALSE if the texture
  *   is stored as a single GPU texture
  */
-gboolean
+CoglBool
 cogl_texture_is_sliced (CoglTexture *texture);
 
 /**
@@ -351,7 +351,7 @@ cogl_texture_is_sliced (CoglTexture *texture);
  * Return value: %TRUE if the handle was successfully retrieved, %FALSE
  *   if the handle was invalid
  */
-gboolean
+CoglBool
 cogl_texture_get_gl_texture (CoglTexture *texture,
                              unsigned int *out_gl_handle,
                              unsigned int *out_gl_target);
@@ -379,7 +379,7 @@ int
 cogl_texture_get_data (CoglTexture *texture,
                        CoglPixelFormat format,
                        unsigned int rowstride,
-                       guint8 *data);
+                       uint8_t *data);
 
 /**
  * cogl_texture_set_region:
@@ -407,19 +407,19 @@ cogl_texture_get_data (CoglTexture *texture,
  * Return value: %TRUE if the subregion upload was successful, and
  *   %FALSE otherwise
  */
-gboolean
-cogl_texture_set_region (CoglTexture     *texture,
-                         int              src_x,
-                         int              src_y,
-                         int              dst_x,
-                         int              dst_y,
-                         unsigned int     dst_width,
-                         unsigned int     dst_height,
-                         int              width,
-                         int              height,
-                         CoglPixelFormat  format,
-                         unsigned int     rowstride,
-                         const guint8    *data);
+CoglBool
+cogl_texture_set_region (CoglTexture *texture,
+                         int src_x,
+                         int src_y,
+                         int dst_x,
+                         int dst_y,
+                         unsigned int dst_width,
+                         unsigned int dst_height,
+                         int width,
+                         int height,
+                         CoglPixelFormat format,
+                         unsigned int rowstride,
+                         const uint8_t *data);
 
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
 
@@ -450,7 +450,7 @@ cogl_texture_set_region (CoglTexture     *texture,
  * Since: 1.8
  * Stability: unstable
  */
-gboolean
+CoglBool
 cogl_texture_set_region_from_bitmap (CoglTexture *texture,
                                      int src_x,
                                      int src_y,

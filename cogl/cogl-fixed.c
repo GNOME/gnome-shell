@@ -188,7 +188,7 @@ static const CoglFixed tan_tbl[] =
  * The angles are radians in CoglFixed truncated to 16-bit (they're
  * all less than one)
  */
-static const guint16 atan_tbl[] =
+static const uint16_t atan_tbl[] =
 {
   0x0000, 0x00FF, 0x01FF, 0x02FF, 0x03FF, 0x04FF, 0x05FF, 0x06FF,
   0x07FF, 0x08FF, 0x09FE, 0x0AFE, 0x0BFD, 0x0CFD, 0x0DFC, 0x0EFB,
@@ -557,7 +557,7 @@ cogl_angle_tan (CoglAngle angle)
 CoglFixed
 cogl_fixed_atan (CoglFixed x)
 {
-  gboolean negative = FALSE;
+  CoglBool negative = FALSE;
   CoglFixed angle;
 
   if (x < 0)
@@ -744,13 +744,13 @@ cogl_sqrti (int number)
      * elsewhere in clutter is not good enough, and 10.22 is used instead.
      */
     CoglFixed x;
-    guint32 y_1;        /* 10.22 fixed point */
-    guint32 f = 0x600000; /* '1.5' as 10.22 fixed */
+    uint32_t y_1;        /* 10.22 fixed point */
+    uint32_t f = 0x600000; /* '1.5' as 10.22 fixed */
 
     union
     {
 	float f;
-	guint32 i;
+	uint32_t i;
     } flt, flt2;
 
     flt.f = number;
@@ -824,7 +824,7 @@ cogl_fixed_mul (CoglFixed a,
 
   return (CoglFixed) res_low;
 #else
-  gint64 r = (gint64) a * (gint64) b;
+  int64_t r = (int64_t) a * (int64_t) b;
 
   return (CoglFixed) (r >> COGL_FIXED_Q);
 #endif
@@ -834,7 +834,7 @@ CoglFixed
 cogl_fixed_div (CoglFixed a,
                 CoglFixed b)
 {
-  return (CoglFixed) ((((gint64) a) << COGL_FIXED_Q) / b);
+  return (CoglFixed) ((((int64_t) a) << COGL_FIXED_Q) / b);
 }
 
 CoglFixed
@@ -902,8 +902,8 @@ cogl_fixed_pow2 (CoglFixed x)
 
   union
   {
-    float        f;
-    guint32      i;
+    float f;
+    uint32_t i;
   } flt;
 
   CoglFixed magic = 0x56f7;
@@ -999,7 +999,7 @@ cogl_value_lcopy_fixed (const GValue *value,
                         GTypeCValue  *collect_values,
                         unsigned int  collect_flags)
 {
-  gint32 *fixed_p = collect_values[0].v_pointer;
+  int32_t *fixed_p = collect_values[0].v_pointer;
 
   if (!fixed_p)
     return g_strdup_printf ("value location for '%s' passed as NULL",

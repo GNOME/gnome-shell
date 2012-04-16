@@ -77,7 +77,7 @@ cogl_get_features (void);
  *
  * Return value: %TRUE if the features are available, %FALSE otherwise.
  */
-gboolean
+CoglBool
 cogl_features_available (CoglFeatureFlags features);
 
 /**
@@ -109,10 +109,10 @@ cogl_get_proc_address (const char *name);
  *   not appropriate to expose OpenGL extensions through the Cogl API. This
  *   function can be replaced by the following equivalent code:
  * |[
- *   gboolean retval = (strstr (ext, name) != NULL) ? TRUE : FALSE;
+ *   CoglBool retval = (strstr (ext, name) != NULL) ? TRUE : FALSE;
  * ]|
  */
-gboolean
+CoglBool
 cogl_check_extension (const char *name,
                       const char *ext) G_GNUC_DEPRECATED;
 
@@ -393,7 +393,7 @@ cogl_get_viewport (float v[4]);
  * instead.
  */
 void
-cogl_set_depth_test_enabled (gboolean setting);
+cogl_set_depth_test_enabled (CoglBool setting);
 
 /**
  * cogl_get_depth_test_enabled:
@@ -405,7 +405,7 @@ cogl_set_depth_test_enabled (gboolean setting);
  * Deprecated: 1.4: Use cogl_material_get_depth_test_enabled()
  * instead.
  */
-gboolean
+CoglBool
 cogl_get_depth_test_enabled (void);
 
 /**
@@ -419,7 +419,7 @@ cogl_get_depth_test_enabled (void);
  * cogl_vertex_buffer_draw*. Backface culling is disabled by default.
  */
 void
-cogl_set_backface_culling_enabled (gboolean setting);
+cogl_set_backface_culling_enabled (CoglBool setting);
 
 /**
  * cogl_get_backface_culling_enabled:
@@ -429,7 +429,7 @@ cogl_set_backface_culling_enabled (gboolean setting);
  *
  * Return value: %TRUE if backface culling is enabled, and %FALSE otherwise
  */
-gboolean
+CoglBool
 cogl_get_backface_culling_enabled (void);
 
 /**
@@ -581,10 +581,10 @@ cogl_set_source_color (const CoglColor *color);
  * Since: 1.0
  */
 void
-cogl_set_source_color4ub (guint8 red,
-                          guint8 green,
-                          guint8 blue,
-                          guint8 alpha);
+cogl_set_source_color4ub (uint8_t red,
+                          uint8_t green,
+                          uint8_t blue,
+                          uint8_t alpha);
 
 /**
  * cogl_set_source_color4f:
@@ -1044,7 +1044,7 @@ cogl_read_pixels (int x,
                   int height,
                   CoglReadPixelsFlags source,
                   CoglPixelFormat format,
-                  guint8 *pixels);
+                  uint8_t *pixels);
 
 /**
  * cogl_flush:

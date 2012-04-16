@@ -167,7 +167,7 @@ _cogl_span_iter_next (CoglSpanIter *iter)
   _cogl_span_iter_update (iter);
 }
 
-gboolean
+CoglBool
 _cogl_span_iter_end (CoglSpanIter *iter)
 {
   /* End reached when whole area covered */

@@ -23,12 +23,12 @@ assert_region_color (int x,
                      int y,
                      int width,
                      int height,
-                     guint8 red,
-                     guint8 green,
-                     guint8 blue,
-                     guint8 alpha)
+                     uint8_t red,
+                     uint8_t green,
+                     uint8_t blue,
+                     uint8_t alpha)
 {
-  guint8 *data = g_malloc0 (width * height * 4);
+  uint8_t *data = g_malloc0 (width * height * 4);
   cogl_read_pixels (x, y, width, height,
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
@@ -36,7 +36,7 @@ assert_region_color (int x,
   for (y = 0; y < height; y++)
     for (x = 0; x < width; x++)
       {
-        guint8 *pixel = &data[y * width * 4 + x * 4];
+        uint8_t *pixel = &data[y * width * 4 + x * 4];
 #if 1
         g_assert (pixel[RED] == red &&
                   pixel[GREEN] == green &&
@@ -103,7 +103,7 @@ on_paint (ClutterActor *actor, TestState *state)
 {
   CoglHandle tex0, tex1;
   CoglHandle material;
-  gboolean status;
+  CoglBool status;
   GError *error = NULL;
   float tex_coords[] = {
     0, 0, 0.5, 0.5, /* tex0 */
@@ -164,8 +164,8 @@ on_paint (ClutterActor *actor, TestState *state)
 #endif
 }
 
-static gboolean
-queue_redraw (gpointer stage)
+static CoglBool
+queue_redraw (void *stage)
 {
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 

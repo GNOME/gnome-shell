@@ -71,7 +71,7 @@ CoglBitmap *
 _cogl_bitmap_convert (CoglBitmap *bmp,
 		      CoglPixelFormat   dst_format);
 
-gboolean
+CoglBool
 _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
                                   CoglBitmap *dst_bmp);
 
@@ -79,17 +79,17 @@ CoglBitmap *
 _cogl_bitmap_from_file (const char *filename,
 			GError     **error);
 
-gboolean
+CoglBool
 _cogl_bitmap_unpremult (CoglBitmap *dst_bmp);
 
-gboolean
+CoglBool
 _cogl_bitmap_premult (CoglBitmap *dst_bmp);
 
-gboolean
+CoglBool
 _cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
                                      CoglPixelFormat  dst_format);
 
-gboolean
+CoglBool
 _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     CoglBitmap *dst,
 			     int         src_x,
@@ -103,7 +103,7 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
 CoglBitmap *
 _cogl_bitmap_copy (CoglBitmap *src_bmp);
 
-gboolean
+CoglBool
 _cogl_bitmap_get_size_from_file (const char *filename,
                                  int        *width,
                                  int        *height);
@@ -120,7 +120,7 @@ _cogl_bitmap_set_format (CoglBitmap *bitmap,
    uploads data using gdk_pixbuf_new_subpixbuf with a sub region
    containing the last row of the pixbuf because in that case the
    rowstride can be much larger than the width of the image */
-guint8 *
+uint8_t *
 _cogl_bitmap_map (CoglBitmap *bitmap,
                   CoglBufferAccess access,
                   CoglBufferMapHint hints);
@@ -134,7 +134,7 @@ _cogl_bitmap_unmap (CoglBitmap *bitmap);
    was created with new_from_buffer but it will however be good to
    pass to glTexImage2D for example. The access should be READ for
    unpacking and WRITE for packing. It can not be both */
-guint8 *
+uint8_t *
 _cogl_bitmap_bind (CoglBitmap *bitmap,
                    CoglBufferAccess access,
                    CoglBufferMapHint hints);

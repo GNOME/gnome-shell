@@ -59,8 +59,8 @@ typedef struct _TextureSlicedQuadState
   float v_to_q_scale_y;
   float quad_len_x;
   float quad_len_y;
-  gboolean flipped_x;
-  gboolean flipped_y;
+  CoglBool flipped_x;
+  CoglBool flipped_y;
 } TextureSlicedQuadState;
 
 typedef struct _TextureSlicedPolygonState
@@ -135,7 +135,7 @@ typedef struct _ValidateFirstLayerState
   CoglPipeline *override_pipeline;
 } ValidateFirstLayerState;
 
-static gboolean
+static CoglBool
 validate_first_layer_cb (CoglPipeline *pipeline,
                          int layer_index,
                          void *user_data)
@@ -201,10 +201,10 @@ _cogl_texture_quad_multiple_primitives (CoglFramebuffer *framebuffer,
                                         float ty_2)
 {
   TextureSlicedQuadState state;
-  gboolean tex_virtual_flipped_x;
-  gboolean tex_virtual_flipped_y;
-  gboolean quad_flipped_x;
-  gboolean quad_flipped_y;
+  CoglBool tex_virtual_flipped_x;
+  CoglBool tex_virtual_flipped_y;
+  CoglBool quad_flipped_x;
+  CoglBool quad_flipped_y;
   ValidateFirstLayerState validate_first_layer_state;
   CoglPipelineWrapMode wrap_s, wrap_t;
 
@@ -291,13 +291,13 @@ typedef struct _ValidateTexCoordsState
   int user_tex_coords_len;
   float *final_tex_coords;
   CoglPipeline *override_pipeline;
-  gboolean needs_multiple_primitives;
+  CoglBool needs_multiple_primitives;
 } ValidateTexCoordsState;
 
 /*
  * Validate the texture coordinates for this rectangle.
  */
-static gboolean
+static CoglBool
 validate_tex_coords_cb (CoglPipeline *pipeline,
                         int layer_index,
                         void *user_data)
@@ -351,7 +351,7 @@ validate_tex_coords_cb (CoglPipeline *pipeline,
         {
           if (state->n_layers > 1)
             {
-              static gboolean warning_seen = FALSE;
+              static CoglBool warning_seen = FALSE;
               if (!warning_seen)
                 g_warning ("Skipping layers 1..n of your material since "
                            "the first layer doesn't support hardware "
@@ -370,7 +370,7 @@ validate_tex_coords_cb (CoglPipeline *pipeline,
         }
       else
         {
-          static gboolean warning_seen = FALSE;
+          static CoglBool warning_seen = FALSE;
           if (!warning_seen)
             g_warning ("Skipping layer %d of your material "
                        "since you have supplied texture coords "
@@ -431,7 +431,7 @@ validate_tex_coords_cb (CoglPipeline *pipeline,
  * - CoglTexturePixmap: assuming the users given texture coordinates don't
  *   require repeating.
  */
-static gboolean
+static CoglBool
 _cogl_multitexture_quad_single_primitive (CoglFramebuffer *framebuffer,
                                           CoglPipeline *pipeline,
                                           const float  *position,
@@ -480,10 +480,10 @@ typedef struct _ValidateLayerState
   int i;
   int first_layer;
   CoglPipeline *override_source;
-  gboolean all_use_sliced_quad_fallback;
+  CoglBool all_use_sliced_quad_fallback;
 } ValidateLayerState;
 
-static gboolean
+static CoglBool
 _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
                                     int layer_index,
                                     void *user_data)
@@ -560,7 +560,7 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
         {
           if (cogl_pipeline_get_n_layers (pipeline) > 1)
             {
-              static gboolean warning_seen = FALSE;
+              static CoglBool warning_seen = FALSE;
 
               if (!state->override_source)
                 state->override_source = cogl_pipeline_copy (pipeline);
@@ -581,7 +581,7 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
         }
       else
         {
-          static gboolean warning_seen = FALSE;
+          static CoglBool warning_seen = FALSE;
           CoglTexture2D *tex_2d;
 
           if (!warning_seen)
@@ -612,7 +612,7 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
   if (!_cogl_texture_can_hardware_repeat (texture) &&
       _cogl_pipeline_layer_has_user_matrix (pipeline, layer_index))
     {
-      static gboolean warning_seen = FALSE;
+      static CoglBool warning_seen = FALSE;
       if (!warning_seen)
         g_warning ("layer %d of your pipeline uses a custom "
                    "texture matrix but because the texture doesn't "
@@ -632,7 +632,7 @@ _cogl_framebuffer_draw_multitextured_rectangles (
                                         CoglPipeline *pipeline,
                                         CoglMultiTexturedRect *rects,
                                         int n_rects,
-                                        gboolean disable_legacy_state)
+                                        CoglBool disable_legacy_state)
 {
   CoglContext *ctx = framebuffer->context;
   CoglPipeline *original_pipeline;
@@ -680,7 +680,7 @@ _cogl_framebuffer_draw_multitextured_rectangles (
 
       if (!state.all_use_sliced_quad_fallback)
         {
-          gboolean success =
+          CoglBool success =
             _cogl_multitexture_quad_single_primitive (framebuffer,
                                                       pipeline,
                                                       rects[i].position,
@@ -909,7 +909,7 @@ typedef struct _AppendTexCoordsState
   float *vertices_out;
 } AppendTexCoordsState;
 
-static gboolean
+static CoglBool
 append_tex_coord_attributes_cb (CoglPipeline *pipeline,
                                 int layer_index,
                                 void *user_data)
@@ -945,7 +945,7 @@ typedef struct _ValidateState
   CoglPipeline *pipeline;
 } ValidateState;
 
-static gboolean
+static CoglBool
 _cogl_polygon_validate_layer_cb (CoglPipeline *pipeline,
                                  int layer_index,
                                  void *user_data)
@@ -983,7 +983,7 @@ _cogl_polygon_validate_layer_cb (CoglPipeline *pipeline,
 void
 cogl_polygon (const CoglTextureVertex *vertices,
               unsigned int n_vertices,
-	      gboolean use_color)
+	      CoglBool use_color)
 {
   CoglPipeline *pipeline;
   ValidateState validate_state;
@@ -992,7 +992,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
   CoglAttribute **attributes;
   int i;
   unsigned int stride;
-  gsize stride_bytes;
+  size_t stride_bytes;
   CoglAttributeBuffer *attribute_buffer;
   float *v;
 
@@ -1080,7 +1080,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
   for (i = 0; i < n_vertices; i++)
     {
       AppendTexCoordsState append_tex_coords_state;
-      guint8 *c;
+      uint8_t *c;
 
       /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
       v[0] = vertices[i].x;
@@ -1098,7 +1098,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
       if (use_color)
         {
           /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
-          c = (guint8 *) (v + 3 + 2 * n_layers);
+          c = (uint8_t *) (v + 3 + 2 * n_layers);
           c[0] = cogl_color_get_red_byte (&vertices[i].color);
           c[1] = cogl_color_get_green_byte (&vertices[i].color);
           c[2] = cogl_color_get_blue_byte (&vertices[i].color);

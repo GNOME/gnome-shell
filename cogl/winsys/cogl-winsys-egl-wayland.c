@@ -69,7 +69,7 @@ typedef struct _CoglOnscreenWayland
   int pending_height;
   int pending_dx;
   int pending_dy;
-  gboolean has_pending;
+  CoglBool has_pending;
 } CoglOnscreenWayland;
 
 static void
@@ -101,7 +101,7 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
   g_slice_free (CoglRendererEGL, egl_renderer);
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                GError **error)
 {
@@ -173,7 +173,7 @@ error:
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_egl_display_setup (CoglDisplay *display,
                                 GError **error)
 {
@@ -194,7 +194,7 @@ _cogl_winsys_egl_display_destroy (CoglDisplay *display)
   g_slice_free (CoglDisplayWayland, egl_display->platform);
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_egl_context_created (CoglDisplay *display,
                                   GError **error)
 {
@@ -280,7 +280,7 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
     }
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_egl_context_init (CoglContext *context,
                                GError **error)
 {
@@ -294,7 +294,7 @@ _cogl_winsys_egl_context_init (CoglContext *context,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
                                 EGLConfig egl_config,
                                 GError **error)
@@ -572,7 +572,7 @@ _cogl_winsys_egl_vtable =
 const CoglWinsysVtable *
 _cogl_winsys_egl_wayland_get_vtable (void)
 {
-  static gboolean vtable_inited = FALSE;
+  static CoglBool vtable_inited = FALSE;
   static CoglWinsysVtable vtable;
 
   if (!vtable_inited)

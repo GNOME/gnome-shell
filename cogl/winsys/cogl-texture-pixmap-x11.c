@@ -100,7 +100,7 @@ cogl_damage_rectangle_union (CoglDamageRectangle *damage_rect,
     }
 }
 
-static gboolean
+static CoglBool
 cogl_damage_rectangle_is_whole (const CoglDamageRectangle *damage_rect,
                                 unsigned int width,
                                 unsigned int height)
@@ -271,8 +271,8 @@ set_damage_object_internal (CoglContext *ctx,
 
 CoglTexturePixmapX11 *
 cogl_texture_pixmap_x11_new (CoglContext *ctxt,
-                             guint32 pixmap,
-                             gboolean automatic_updates,
+                             uint32_t pixmap,
+                             CoglBool automatic_updates,
                              GError **error)
 {
   CoglTexturePixmapX11 *tex_pixmap = g_new (CoglTexturePixmapX11, 1);
@@ -449,7 +449,7 @@ cogl_texture_pixmap_x11_update_area (CoglTexturePixmapX11 *tex_pixmap,
                                x, y, width, height);
 }
 
-gboolean
+CoglBool
 cogl_texture_pixmap_x11_is_using_tfp_extension (CoglTexturePixmapX11 *tex_pixmap)
 {
   return !!tex_pixmap->winsys;
@@ -457,7 +457,7 @@ cogl_texture_pixmap_x11_is_using_tfp_extension (CoglTexturePixmapX11 *tex_pixmap
 
 void
 cogl_texture_pixmap_x11_set_damage_object (CoglTexturePixmapX11 *tex_pixmap,
-                                           guint32 damage,
+                                           uint32_t damage,
                                            CoglTexturePixmapX11ReportLevel
                                                                   report_level)
 {
@@ -590,7 +590,7 @@ _cogl_texture_pixmap_x11_update_image_texture (CoglTexturePixmapX11 *tex_pixmap)
                            image->height,
                            image_format,
                            image->bytes_per_line,
-                           (const guint8 *) image->data);
+                           (const uint8_t *) image->data);
 
   /* If we have a shared memory segment then the XImage would be a
      temporary one with no data allocated so we can just XFree it */
@@ -602,7 +602,7 @@ _cogl_texture_pixmap_x11_update_image_texture (CoglTexturePixmapX11 *tex_pixmap)
 
 static void
 _cogl_texture_pixmap_x11_set_use_winsys_texture (CoglTexturePixmapX11 *tex_pixmap,
-                                                 gboolean new_value)
+                                                 CoglBool new_value)
 {
   if (tex_pixmap->use_winsys_texture != new_value)
     {
@@ -617,7 +617,7 @@ _cogl_texture_pixmap_x11_set_use_winsys_texture (CoglTexturePixmapX11 *tex_pixma
 
 static void
 _cogl_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
-                                 gboolean needs_mipmap)
+                                 CoglBool needs_mipmap)
 {
   if (tex_pixmap->winsys)
     {
@@ -675,7 +675,7 @@ _cogl_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
   return NULL;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_pixmap_x11_set_region (CoglTexture     *tex,
                                      int              src_x,
                                      int              src_y,
@@ -690,11 +690,11 @@ _cogl_texture_pixmap_x11_set_region (CoglTexture     *tex,
   return FALSE;
 }
 
-static gboolean
-_cogl_texture_pixmap_x11_get_data (CoglTexture     *tex,
-                                   CoglPixelFormat  format,
-                                   unsigned int     rowstride,
-                                   guint8          *data)
+static CoglBool
+_cogl_texture_pixmap_x11_get_data (CoglTexture *tex,
+                                   CoglPixelFormat format,
+                                   unsigned int rowstride,
+                                   uint8_t *data)
 {
   CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (tex);
   CoglTexture *child_tex = _cogl_texture_pixmap_x11_get_texture (tex_pixmap);
@@ -796,7 +796,7 @@ _cogl_texture_pixmap_x11_get_max_waste (CoglTexture *tex)
   return cogl_texture_get_max_waste (child_tex);
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_pixmap_x11_is_sliced (CoglTexture *tex)
 {
   CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (tex);
@@ -805,7 +805,7 @@ _cogl_texture_pixmap_x11_is_sliced (CoglTexture *tex)
   return cogl_texture_is_sliced (child_tex);
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_pixmap_x11_can_hardware_repeat (CoglTexture *tex)
 {
   CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (tex);
@@ -837,7 +837,7 @@ _cogl_texture_pixmap_x11_transform_quad_coords_to_gl (CoglTexture *tex,
   return _cogl_texture_transform_quad_coords_to_gl (child_tex, coords);
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_pixmap_x11_get_gl_texture (CoglTexture *tex,
                                          GLuint      *out_gl_handle,
                                          GLenum      *out_gl_target)

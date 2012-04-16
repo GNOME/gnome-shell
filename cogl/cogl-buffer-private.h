@@ -47,7 +47,7 @@ struct _CoglBufferVtable
 
   void (* unmap) (CoglBuffer *buffer);
 
-  gboolean (* set_data) (CoglBuffer   *buffer,
+  CoglBool (* set_data) (CoglBuffer   *buffer,
                          unsigned int  offset,
                          const void   *data,
                          unsigned int  size);
@@ -78,29 +78,28 @@ typedef enum {
 
 struct _CoglBuffer
 {
-  CoglObject              _parent;
+  CoglObject _parent;
 
-  CoglContext            *context;
+  CoglContext *context;
 
-  CoglBufferVtable        vtable;
+  CoglBufferVtable vtable;
 
-  CoglBufferBindTarget    last_target;
+  CoglBufferBindTarget last_target;
 
-  CoglBufferFlags         flags;
+  CoglBufferFlags flags;
 
-  GLuint                  gl_handle;  /* OpenGL handle */
-  unsigned int            size;       /* size of the buffer, in bytes */
-  CoglBufferUsageHint     usage_hint;
-  CoglBufferUpdateHint    update_hint;
+  GLuint gl_handle; /* OpenGL handle */
+  unsigned int size; /* size of the buffer, in bytes */
+  CoglBufferUsageHint usage_hint;
+  CoglBufferUpdateHint update_hint;
 
-  guint8                 *data;      /* points to the mapped memory when
-                                      * the CoglBuffer is a VBO, PBO, ... or
-                                      * points to allocated memory in the
-                                      * fallback paths */
+  /* points to the mapped memory when the CoglBuffer is a VBO, PBO,
+   * ... or points to allocated memory in the fallback paths */
+  uint8_t *data;
 
-  int                     immutable_ref;
+  int immutable_ref;
 
-  guint                   store_created:1;
+  unsigned int store_created:1;
 };
 
 /* This is used to register a type to the list of handle types that
@@ -117,7 +116,7 @@ void
 _cogl_buffer_initialize (CoglBuffer          *buffer,
                          CoglContext         *context,
                          unsigned int         size,
-                         gboolean             use_malloc,
+                         CoglBool             use_malloc,
                          CoglBufferBindTarget default_target,
                          CoglBufferUsageHint  usage_hint,
                          CoglBufferUpdateHint update_hint);

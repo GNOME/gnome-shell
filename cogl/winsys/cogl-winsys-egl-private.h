@@ -32,26 +32,26 @@
 
 typedef struct _CoglWinsysEGLVtable
 {
-  gboolean
+  CoglBool
   (* display_setup) (CoglDisplay *display,
                      GError **error);
   void
   (* display_destroy) (CoglDisplay *display);
 
-  gboolean
+  CoglBool
   (* context_created) (CoglDisplay *display,
                        GError **error);
 
   void
   (* cleanup_context) (CoglDisplay *display);
 
-  gboolean
+  CoglBool
   (* context_init) (CoglContext *context, GError **error);
 
   void
   (* context_deinit) (CoglContext *context);
 
-  gboolean
+  CoglBool
   (* onscreen_init) (CoglOnscreen *onscreen,
                      EGLConfig config,
                      GError **error);
@@ -110,8 +110,8 @@ typedef struct _CoglDisplayEGL
   EGLSurface egl_surface;
 
   EGLConfig egl_config;
-  gboolean found_egl_config;
-  gboolean stencil_disabled;
+  CoglBool found_egl_config;
+  CoglBool stencil_disabled;
 
   /* Platform specific display data */
   void *platform;
@@ -145,7 +145,7 @@ _cogl_egl_destroy_image (CoglContext *ctx,
                          EGLImageKHR image);
 #endif
 
-gboolean
+CoglBool
 _cogl_winsys_egl_renderer_connect_common (CoglRenderer *renderer,
                                           GError **error);
 

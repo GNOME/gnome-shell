@@ -55,7 +55,7 @@ cogl_swap_chain_new (void)
 
 void
 cogl_swap_chain_set_has_alpha (CoglSwapChain *swap_chain,
-                               gboolean has_alpha)
+                               CoglBool has_alpha)
 {
   swap_chain->has_alpha = has_alpha;
 }

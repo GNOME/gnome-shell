@@ -349,7 +349,7 @@ paint (TestState *state)
 }
 
 static void
-check_pos (int pos, guint32 color)
+check_pos (int pos, uint32_t color)
 {
   test_utils_check_pixel (fb, pos * 10 + 5, 5, color);
 }

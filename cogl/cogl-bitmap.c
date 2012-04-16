@@ -37,28 +37,28 @@
 
 struct _CoglBitmap
 {
-  CoglObject               _parent;
+  CoglObject _parent;
 
   /* Pointer back to the context that this bitmap was created with */
-  CoglContext             *context;
+  CoglContext *context;
 
-  CoglPixelFormat          format;
-  int                      width;
-  int                      height;
-  int                      rowstride;
+  CoglPixelFormat format;
+  int width;
+  int height;
+  int rowstride;
 
-  guint8                  *data;
+  uint8_t *data;
 
-  gboolean                 mapped;
-  gboolean                 bound;
+  CoglBool mapped;
+  CoglBool bound;
 
   /* If this is non-null then 'data' is ignored and instead it is
      fetched from this shared bitmap. */
-  CoglBitmap              *shared_bmp;
+  CoglBitmap *shared_bmp;
 
   /* If this is non-null then 'data' is treated as an offset into the
      buffer and map will divert to mapping the buffer */
-  CoglBuffer              *buffer;
+  CoglBuffer *buffer;
 };
 
 static void _cogl_bitmap_free (CoglBitmap *bmp);
@@ -83,7 +83,7 @@ _cogl_bitmap_free (CoglBitmap *bmp)
   g_slice_free (CoglBitmap, bmp);
 }
 
-gboolean
+CoglBool
 _cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
                                      CoglPixelFormat  dst_format)
 {
@@ -125,7 +125,7 @@ _cogl_bitmap_copy (CoglBitmap *src_bmp)
   return dst_bmp;
 }
 
-gboolean
+CoglBool
 _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     CoglBitmap *dst,
 			     int         src_x,
@@ -135,11 +135,11 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     int         width,
 			     int         height)
 {
-  guint8 *srcdata;
-  guint8 *dstdata;
-  int    bpp;
-  int    line;
-  gboolean succeeded = FALSE;
+  uint8_t *srcdata;
+  uint8_t *dstdata;
+  int bpp;
+  int line;
+  CoglBool succeeded = FALSE;
 
   /* Intended only for fast copies when format is equal! */
   g_assert ((src->format & ~COGL_PREMULT_BIT) ==
@@ -172,7 +172,7 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
   return succeeded;
 }
 
-gboolean
+CoglBool
 cogl_bitmap_get_size_from_file (const char *filename,
                                 int        *width,
                                 int        *height)
@@ -186,7 +186,7 @@ cogl_bitmap_new_for_data (CoglContext *context,
                           int height,
                           CoglPixelFormat format,
                           int rowstride,
-                          guint8 *data)
+                          uint8_t *data)
 {
   CoglBitmap *bmp;
 
@@ -216,7 +216,7 @@ _cogl_bitmap_new_with_malloc_buffer (CoglContext *context,
   static CoglUserDataKey bitmap_free_key;
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
   int rowstride = ((width * bpp) + 3) & ~3;
-  guint8 *data = g_malloc (rowstride * height);
+  uint8_t *data = g_malloc (rowstride * height);
   CoglBitmap *bitmap;
 
   bitmap = cogl_bitmap_new_for_data (context,
@@ -365,7 +365,7 @@ cogl_bitmap_error_quark (void)
   return g_quark_from_static_string ("cogl-bitmap-error-quark");
 }
 
-guint8 *
+uint8_t *
 _cogl_bitmap_map (CoglBitmap *bitmap,
                   CoglBufferAccess access,
                   CoglBufferMapHint hints)
@@ -378,7 +378,7 @@ _cogl_bitmap_map (CoglBitmap *bitmap,
 
   if (bitmap->buffer)
     {
-      guint8 *data = cogl_buffer_map (bitmap->buffer,
+      uint8_t *data = cogl_buffer_map (bitmap->buffer,
                                       access,
                                       hints);
 
@@ -420,12 +420,12 @@ _cogl_bitmap_unmap (CoglBitmap *bitmap)
     cogl_buffer_unmap (bitmap->buffer);
 }
 
-guint8 *
+uint8_t *
 _cogl_bitmap_bind (CoglBitmap *bitmap,
                    CoglBufferAccess access,
                    CoglBufferMapHint hints)
 {
-  guint8 *ptr;
+  uint8_t *ptr;
 
   /* Divert to another bitmap if this data is shared */
   if (bitmap->shared_bmp)
@@ -437,7 +437,7 @@ _cogl_bitmap_bind (CoglBitmap *bitmap,
      implementation of bind is the same as map */
   if (bitmap->buffer == NULL)
     {
-      guint8 *data = _cogl_bitmap_map (bitmap, access, hints);
+      uint8_t *data = _cogl_bitmap_map (bitmap, access, hints);
       if (data)
         bitmap->bound = TRUE;
       return data;

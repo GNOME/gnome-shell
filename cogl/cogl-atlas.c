@@ -280,7 +280,7 @@ _cogl_atlas_create_texture (CoglAtlas *atlas,
 
   if ((atlas->flags & COGL_ATLAS_CLEAR_TEXTURE))
     {
-      guint8 *clear_data;
+      uint8_t *clear_data;
       CoglBitmap *clear_bmp;
       int bpp = _cogl_pixel_format_get_bytes_per_pixel (atlas->texture_format);
 
@@ -337,7 +337,7 @@ _cogl_atlas_notify_post_reorganize (CoglAtlas *atlas)
   g_hook_list_invoke (&atlas->post_reorganize_callbacks, FALSE);
 }
 
-gboolean
+CoglBool
 _cogl_atlas_reserve_space (CoglAtlas             *atlas,
                            unsigned int           width,
                            unsigned int           height,
@@ -347,7 +347,7 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
   CoglRectangleMap *new_map;
   CoglTexture2D *new_tex;
   unsigned int map_width, map_height;
-  gboolean ret;
+  CoglBool ret;
   CoglRectangleMapEntry new_position;
 
   /* Check if we can fit the rectangle into the existing map */

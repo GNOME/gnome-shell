@@ -56,10 +56,10 @@ cogl_color_free (CoglColor *color)
 
 void
 cogl_color_init_from_4ub (CoglColor *color,
-                          guint8     red,
-                          guint8     green,
-                          guint8     blue,
-                          guint8     alpha)
+                          uint8_t red,
+                          uint8_t green,
+                          uint8_t blue,
+                          uint8_t alpha)
 {
   _COGL_RETURN_IF_FAIL (color != NULL);
 
@@ -72,20 +72,20 @@ cogl_color_init_from_4ub (CoglColor *color,
 /* XXX: deprecated, use cogl_color_init_from_4ub */
 void
 cogl_color_set_from_4ub (CoglColor *dest,
-                         guint8     red,
-                         guint8     green,
-                         guint8     blue,
-                         guint8     alpha)
+                         uint8_t red,
+                         uint8_t green,
+                         uint8_t blue,
+                         uint8_t alpha)
 {
   cogl_color_init_from_4ub (dest, red, green, blue, alpha);
 }
 
 void
 cogl_color_init_from_4f (CoglColor *color,
-                         float      red,
-                         float      green,
-                         float      blue,
-                         float      alpha)
+                         float red,
+                         float green,
+                         float blue,
+                         float alpha)
 {
   _COGL_RETURN_IF_FAIL (color != NULL);
 
@@ -98,10 +98,10 @@ cogl_color_init_from_4f (CoglColor *color,
 /* XXX: deprecated, use cogl_color_init_from_4f */
 void
 cogl_color_set_from_4f (CoglColor *color,
-                        float      red,
-                        float      green,
-                        float      blue,
-                        float      alpha)
+                        float red,
+                        float green,
+                        float blue,
+                        float alpha)
 {
   cogl_color_init_from_4f (color, red, green, blue, alpha);
 }
@@ -220,41 +220,41 @@ cogl_color_set_green_byte (CoglColor     *color,
 
 void
 cogl_color_set_green_float (CoglColor *color,
-                            float      green)
+                            float green)
 {
   color->green = green * 255.0;
 }
 
 void
 cogl_color_set_green (CoglColor *color,
-                      float      green)
+                      float green)
 {
   color->green = green * 255.0;
 }
 
 void
-cogl_color_set_blue_byte (CoglColor     *color,
-                          unsigned char  blue)
+cogl_color_set_blue_byte (CoglColor *color,
+                          unsigned char blue)
 {
   color->blue = blue;
 }
 
 void
 cogl_color_set_blue_float (CoglColor *color,
-                           float      blue)
+                           float blue)
 {
   color->blue = blue * 255.0;
 }
 
 void
 cogl_color_set_blue (CoglColor *color,
-                     float      blue)
+                     float blue)
 {
   color->blue = blue * 255.0;
 }
 
 void
-cogl_color_set_alpha_byte (CoglColor     *color,
+cogl_color_set_alpha_byte (CoglColor *color,
                            unsigned char  alpha)
 {
   color->alpha = alpha;
@@ -262,14 +262,14 @@ cogl_color_set_alpha_byte (CoglColor     *color,
 
 void
 cogl_color_set_alpha_float (CoglColor *color,
-                            float      alpha)
+                            float alpha)
 {
   color->alpha = alpha * 255.0;
 }
 
 void
 cogl_color_set_alpha (CoglColor *color,
-                      float      alpha)
+                      float alpha)
 {
   color->alpha = alpha * 255.0;
 }
@@ -293,10 +293,10 @@ cogl_color_unpremultiply (CoglColor *color)
     }
 }
 
-gboolean
-cogl_color_equal (gconstpointer v1, gconstpointer v2)
+CoglBool
+cogl_color_equal (const void *v1, const void *v2)
 {
-  const guint32 *c1 = v1, *c2 = v2;
+  const uint32_t *c1 = v1, *c2 = v2;
 
   _COGL_RETURN_VAL_IF_FAIL (v1 != NULL, FALSE);
   _COGL_RETURN_VAL_IF_FAIL (v2 != NULL, FALSE);
@@ -307,7 +307,7 @@ cogl_color_equal (gconstpointer v1, gconstpointer v2)
 
 void
 _cogl_color_get_rgba_4ubv (const CoglColor *color,
-                           guint8 *dest)
+                           uint8_t *dest)
 {
   memcpy (dest, color, 4);
 }

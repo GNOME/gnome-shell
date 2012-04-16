@@ -39,7 +39,7 @@
 
 void
 _cogl_color_get_rgba_4ubv (const CoglColor *color,
-                           guint8 *dest);
+                           uint8_t *dest);
 
 #endif /* __COGL_COLOR_PRIVATE_PRIVATE_H */
 

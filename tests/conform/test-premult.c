@@ -17,13 +17,13 @@
 #define MASK_ALPHA(COLOR) (COLOR & 0xff)
 
 static guchar *
-gen_tex_data (guint32 color)
+gen_tex_data (uint32_t color)
 {
   guchar *tex_data, *p;
-  guint8 r = MASK_RED (color);
-  guint8 g = MASK_GREEN (color);
-  guint8 b = MASK_BLUE (color);
-  guint8 a = MASK_ALPHA (color);
+  uint8_t r = MASK_RED (color);
+  uint8_t g = MASK_GREEN (color);
+  uint8_t b = MASK_BLUE (color);
+  uint8_t a = MASK_ALPHA (color);
 
   tex_data = g_malloc (QUAD_WIDTH * QUAD_WIDTH * 4);
 
@@ -39,7 +39,7 @@ gen_tex_data (guint32 color)
 }
 
 static CoglTexture *
-make_texture (guint32 color,
+make_texture (uint32_t color,
 	      CoglPixelFormat src_format,
 	      CoglPixelFormat internal_format)
 {
@@ -62,7 +62,7 @@ make_texture (guint32 color,
 
 static void
 set_region (CoglTexture *tex,
-	    guint32 color,
+	    uint32_t color,
 	    CoglPixelFormat format)
 {
   guchar *tex_data = gen_tex_data (color);
@@ -83,7 +83,7 @@ check_texture (CoglPipeline *pipeline,
 	       int x,
 	       int y,
 	       CoglTexture *tex,
-	       guint32 expected_result)
+	       uint32_t expected_result)
 {
   /* Legacy */
   cogl_push_framebuffer (fb);

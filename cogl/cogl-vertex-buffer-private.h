@@ -85,7 +85,7 @@ typedef struct _CoglVertexBufferAttrib
   /* TODO: look at breaking up the flags into seperate
    * bitfields and seperate enums */
   CoglVertexBufferAttribFlags   flags:24;
-  guint8		   id;
+  uint8_t	           id;
   GQuark		   name;
   char                    *name_without_detail;
   union _u
@@ -95,9 +95,9 @@ typedef struct _CoglVertexBufferAttrib
   } u;
   CoglAttributeType        type;
   size_t		   span_bytes;
-  guint16		   stride;
-  guint8		   n_components;
-  guint8		   texture_unit;
+  uint16_t                 stride;
+  uint8_t                  n_components;
+  uint8_t                  texture_unit;
 
   int                      attribute_first;
   CoglAttribute           *attribute;
@@ -148,7 +148,7 @@ typedef struct _CoglVertexBuffer
    * modifying a buffer. */
   GList  *new_attributes; /*!< attributes pending submission */
 
-  gboolean dirty_attributes;
+  CoglBool dirty_attributes;
 
   CoglPrimitive *primitive;
 

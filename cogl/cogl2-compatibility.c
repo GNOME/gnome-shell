@@ -55,11 +55,11 @@ cogl_swap_chain_error_quark (void);
 GQuark
 cogl_texture_3d_error_quark (void);
 
-gboolean
+CoglBool
 cogl_index_buffer_allocate (CoglIndexBuffer *indices,
                             GError *error);
 
-gboolean
+CoglBool
 cogl_is_journal (void *object);
 
 void
@@ -95,14 +95,14 @@ cogl_texture_3d_error_quark (void)
   return g_quark_from_static_string ("cogl-texture-3d-error-quark");
 }
 
-gboolean
+CoglBool
 cogl_index_buffer_allocate (CoglIndexBuffer *indices,
                             GError *error)
 {
   return TRUE;
 }
 
-gboolean
+CoglBool
 cogl_is_journal (void *object)
 {
   /* There's no way to get a pointer to a journal so this will never

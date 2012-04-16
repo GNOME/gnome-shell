@@ -16,7 +16,7 @@ create_texture_pipeline (TestState *state)
 {
   CoglPipeline *pipeline;
   CoglTexture *tex;
-  static const guint8 tex_data[] =
+  static const uint8_t tex_data[] =
     {
       0xff, 0x00, 0x00, 0xff, /* red */  0x00, 0xff, 0x00, 0xff, /* green */
       0x00, 0x00, 0xff, 0xff, /* blue */ 0xff, 0xff, 0x00, 0xff, /* yellow */

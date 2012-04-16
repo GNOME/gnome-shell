@@ -281,7 +281,7 @@ cogl_shader_unref (CoglHandle handle) G_GNUC_DEPRECATED;
  * Returns: %TRUE if the handle references a shader,
  *   %FALSE otherwise
  */
-gboolean
+CoglBool
 cogl_is_shader (CoglHandle handle);
 
 /**
@@ -346,7 +346,7 @@ cogl_shader_get_type (CoglHandle handle);
  *
  * Return value: %TRUE if the shader object has sucessfully be compiled
  */
-gboolean
+CoglBool
 cogl_shader_is_compiled (CoglHandle handle);
 
 /**
@@ -398,7 +398,7 @@ cogl_program_unref (CoglHandle handle) G_GNUC_DEPRECATED;
  * Returns: %TRUE if the handle references a program,
  *   %FALSE otherwise
  */
-gboolean
+CoglBool
 cogl_is_program (CoglHandle handle);
 
 /**
@@ -561,7 +561,7 @@ cogl_program_set_uniform_matrix (CoglHandle program,
                                  int uniform_location,
                                  int dimensions,
                                  int count,
-                                 gboolean transpose,
+                                 CoglBool transpose,
                                  const float *value);
 
 #ifndef COGL_DISABLE_DEPRECATED
@@ -644,7 +644,7 @@ void
 cogl_program_uniform_matrix (int          uniform_no,
                              int          size,
                              int          count,
-                             gboolean     transpose,
+                             CoglBool     transpose,
                              const float *value) G_GNUC_DEPRECATED;
 
 #endif /* COGL_DISABLE_DEPRECATED */

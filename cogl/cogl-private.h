@@ -30,7 +30,7 @@
 
 G_BEGIN_DECLS
 
-gboolean
+CoglBool
 _cogl_check_extension (const char *name, const char *ext);
 
 void
@@ -40,9 +40,9 @@ void
 _cogl_init (void);
 
 void
-_cogl_push_source (CoglPipeline *pipeline, gboolean enable_legacy);
+_cogl_push_source (CoglPipeline *pipeline, CoglBool enable_legacy);
 
-gboolean
+CoglBool
 _cogl_get_enable_legacy_state (void);
 
 /*
@@ -81,7 +81,7 @@ _cogl_pixel_format_get_bytes_per_pixel (CoglPixelFormat format);
  *               endianness when dealing with the given @format
  *               else %FALSE.
  */
-gboolean
+CoglBool
 _cogl_pixel_format_is_endian_dependant (CoglPixelFormat format);
 
 /*

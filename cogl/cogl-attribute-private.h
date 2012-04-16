@@ -46,7 +46,7 @@ typedef struct _CoglAttributeNameState
   char *name;
   CoglAttributeNameID name_id;
   int name_index;
-  gboolean normalized_default;
+  CoglBool normalized_default;
   int texture_unit;
 } CoglAttributeNameState;
 
@@ -56,11 +56,11 @@ struct _CoglAttribute
 
   CoglAttributeBuffer *attribute_buffer;
   const CoglAttributeNameState *name_state;
-  gsize stride;
-  gsize offset;
+  size_t stride;
+  size_t offset;
   int n_components;
   CoglAttributeType type;
-  gboolean normalized;
+  CoglBool normalized;
 
   int immutable_ref;
 };

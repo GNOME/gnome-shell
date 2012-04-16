@@ -115,7 +115,7 @@ typedef enum _CoglPipelineEvalFlags
   COGL_PIPELINE_EVAL_FLAG_NONE = 0
 } CoglPipelineEvalFlags;
 
-gboolean
+CoglBool
 _cogl_check_extension (const char *name, const char *ext);
 
 GQuark

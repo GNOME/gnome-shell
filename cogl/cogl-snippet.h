@@ -611,7 +611,7 @@ cogl_snippet_get_hook (CoglSnippet *snippet);
  * Since: 1.10
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_is_snippet (void *object);
 
 /**

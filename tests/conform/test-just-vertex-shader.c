@@ -14,7 +14,7 @@ create_dummy_texture (void)
 {
   /* Create a dummy 1x1 green texture to replace the color from the
      vertex shader */
-  static const guint8 data[4] = { 0x00, 0xff, 0x00, 0xff };
+  static const uint8_t data[4] = { 0x00, 0xff, 0x00, 0xff };
 
   return cogl_texture_new_from_data (1, 1, /* size */
                                      COGL_TEXTURE_NONE,

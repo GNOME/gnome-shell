@@ -211,7 +211,7 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
                             float y_1,
                             float x_2,
                             float y_2,
-                            gboolean first)
+                            CoglBool first)
 {
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
@@ -287,8 +287,8 @@ add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
                              float bounds_y1,
                              float bounds_x2,
                              float bounds_y2,
-                             gboolean merge,
-                             gboolean need_clear,
+                             CoglBool merge,
+                             CoglBool need_clear,
                              void *user_data)
 {
   CoglMatrixStack *modelview_stack =
@@ -395,8 +395,8 @@ paint_path_silhouette (void *user_data)
 static void
 add_stencil_clip_path (CoglFramebuffer *framebuffer,
                        CoglPath *path,
-                       gboolean merge,
-                       gboolean need_clear)
+                       CoglBool merge,
+                       CoglBool need_clear)
 {
   CoglPathData *data = path->data;
   add_stencil_clip_silhouette (framebuffer,
@@ -429,8 +429,8 @@ add_stencil_clip_primitive (CoglFramebuffer *framebuffer,
                             float bounds_y1,
                             float bounds_x2,
                             float bounds_y2,
-                            gboolean merge,
-                            gboolean need_clear)
+                            CoglBool merge,
+                            CoglBool need_clear)
 {
   add_stencil_clip_silhouette (framebuffer,
                                paint_primitive_silhouette,
@@ -473,7 +473,7 @@ disable_clip_planes (void)
   GE( ctx, glDisable (GL_CLIP_PLANE0) );
 }
 
-static gpointer
+static void *
 _cogl_clip_stack_push_entry (CoglClipStack *clip_stack,
                              size_t size,
                              CoglClipStackType type)
@@ -797,8 +797,8 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
                         CoglFramebuffer *framebuffer)
 {
   int has_clip_planes;
-  gboolean using_clip_planes = FALSE;
-  gboolean using_stencil_buffer = FALSE;
+  CoglBool using_clip_planes = FALSE;
+  CoglBool using_stencil_buffer = FALSE;
   int scissor_x0;
   int scissor_y0;
   int scissor_x1;

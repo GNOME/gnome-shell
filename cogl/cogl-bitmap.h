@@ -155,7 +155,7 @@ cogl_bitmap_new_for_data (CoglContext *context,
                           int height,
                           CoglPixelFormat format,
                           int rowstride,
-                          guint8 *data);
+                          uint8_t *data);
 
 /**
  * cogl_bitmap_get_format:
@@ -232,7 +232,7 @@ cogl_bitmap_get_buffer (CoglBitmap *bitmap);
  *
  * Since: 1.0
  */
-gboolean
+CoglBool
 cogl_bitmap_get_size_from_file (const char *filename,
                                 int *width,
                                 int *height);
@@ -248,7 +248,7 @@ cogl_bitmap_get_size_from_file (const char *filename,
  *
  * Since: 1.0
  */
-gboolean
+CoglBool
 cogl_is_bitmap (void *object);
 
 /**

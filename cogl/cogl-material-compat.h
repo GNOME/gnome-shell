@@ -198,7 +198,7 @@ cogl_material_unref (CoglHandle material) G_GNUC_DEPRECATED;
  * Return value: %TRUE if the handle references a #CoglMaterial,
  *   %FALSE otherwise
  */
-gboolean
+CoglBool
 cogl_is_material (CoglHandle handle);
 
 /**
@@ -237,10 +237,10 @@ cogl_material_set_color (CoglMaterial    *material,
  */
 void
 cogl_material_set_color4ub (CoglMaterial *material,
-			    guint8        red,
-                            guint8        green,
-                            guint8        blue,
-                            guint8        alpha);
+			    uint8_t red,
+                            uint8_t green,
+                            uint8_t blue,
+                            uint8_t alpha);
 
 /**
  * cogl_material_set_color4f:
@@ -587,7 +587,7 @@ cogl_material_set_alpha_test_function (CoglMaterial         *material,
  *
  * Since: 1.0
  */
-gboolean
+CoglBool
 cogl_material_set_blend (CoglMaterial *material,
                          const char   *blend_string,
                          GError      **error);
@@ -832,7 +832,7 @@ cogl_material_remove_layer (CoglMaterial *material,
  *
  * Since: 1.0
  */
-gboolean
+CoglBool
 cogl_material_set_layer_combine (CoglMaterial *material,
 				 int           layer_index,
 				 const char   *blend_string,
@@ -1013,10 +1013,10 @@ cogl_material_set_layer_filters (CoglMaterial      *material,
  * Return value: %TRUE if the function succeeds, %FALSE otherwise.
  * Since: 1.4
  */
-gboolean
+CoglBool
 cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
                                                      int           layer_index,
-                                                     gboolean      enable,
+                                                     CoglBool      enable,
                                                      GError      **error);
 
 /**
@@ -1032,7 +1032,7 @@ cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
  *
  * Since: 1.4
  */
-gboolean
+CoglBool
 cogl_material_get_layer_point_sprite_coords_enabled (CoglMaterial *material,
                                                      int           layer_index);
 
@@ -1215,7 +1215,7 @@ cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer);
  * Since: 1.8
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_material_set_depth_state (CoglMaterial *material,
                                const CoglDepthState *state,
                                GError **error);
@@ -1247,7 +1247,7 @@ cogl_material_get_depth_state (CoglMaterial *material,
  * Since: 1.4
  * Stability: Unstable
  */
-typedef gboolean (*CoglMaterialLayerCallback) (CoglMaterial *material,
+typedef CoglBool (*CoglMaterialLayerCallback) (CoglMaterial *material,
                                                int layer_index,
                                                void *user_data);
 

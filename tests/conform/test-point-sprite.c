@@ -11,7 +11,7 @@ point =
     0.0f, 0.0f
   };
 
-static const guint8
+static const uint8_t
 tex_data[3 * 2 * 2] =
   {
     0x00, 0x00, 0xff, 0x00, 0xff, 0x00,
@@ -27,7 +27,7 @@ test_point_sprite (void)
   GError *error = NULL;
   CoglTexture2D *tex_2d;
   CoglPipeline *pipeline, *solid_pipeline;
-  gboolean res;
+  CoglBool res;
 
   cogl_framebuffer_orthographic (fb,
                                  0, 0, /* x_1, y_1 */

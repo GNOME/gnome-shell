@@ -153,7 +153,7 @@ cogl_android_set_native_window (ANativeWindow *window);
  * Since: 1.10
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_is_context (void *object);
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_2_0_API */
@@ -256,7 +256,7 @@ typedef enum _CoglFeatureID
  * Since: 1.10
  * Stability: unstable
  */
-gboolean
+CoglBool
 cogl_has_feature (CoglContext *context, CoglFeatureID feature);
 
 /**
@@ -276,7 +276,7 @@ cogl_has_feature (CoglContext *context, CoglFeatureID feature);
  * Since: 1.10
  * Stability: unstable
  */
-gboolean
+CoglBool
 cogl_has_features (CoglContext *context, ...);
 
 /**

@@ -15,12 +15,12 @@
 
 static void
 update_cogl_x11_event_mask (CoglOnscreen *onscreen,
-                            guint32 event_mask,
+                            uint32_t event_mask,
                             void *user_data)
 {
   Display *xdpy = user_data;
   XSetWindowAttributes attrs;
-  guint32 xwin;
+  uint32_t xwin;
 
   attrs.event_mask = event_mask | X11_FOREIGN_EVENT_MASK;
   xwin = cogl_x11_onscreen_get_window_xid (onscreen);
@@ -44,7 +44,7 @@ main (int argc, char **argv)
   CoglFramebuffer *fb;
   CoglPipeline *pipeline;
   GError *error = NULL;
-  guint32 visual;
+  uint32_t visual;
   XVisualInfo template, *xvisinfo;
   int visinfos_count;
   XSetWindowAttributes xattr;
@@ -156,7 +156,7 @@ main (int argc, char **argv)
     {
       CoglPollFD *poll_fds;
       int n_poll_fds;
-      gint64 timeout;
+      int64_t timeout;
 
       while (XPending (xdpy))
         {

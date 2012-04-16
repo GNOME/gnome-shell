@@ -36,10 +36,10 @@ typedef struct _CoglGLibSource
 
   GArray *poll_fds;
 
-  gint64 expiration_time;
+  int64_t expiration_time;
 } CoglGLibSource;
 
-static gboolean
+static CoglBool
 cogl_glib_source_poll_fds_changed (CoglGLibSource *cogl_source,
                                    const CoglPollFD *poll_fds,
                                    int n_poll_fds)
@@ -57,13 +57,13 @@ cogl_glib_source_poll_fds_changed (CoglGLibSource *cogl_source,
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 cogl_glib_source_prepare (GSource *source, int *timeout)
 {
   CoglGLibSource *cogl_source = (CoglGLibSource *) source;
   CoglPollFD *poll_fds;
   int n_poll_fds;
-  gint64 cogl_timeout;
+  int64_t cogl_timeout;
   int i;
 
   cogl_poll_get_info (cogl_source->context,
@@ -118,7 +118,7 @@ cogl_glib_source_prepare (GSource *source, int *timeout)
   return *timeout == 0;
 }
 
-static gboolean
+static CoglBool
 cogl_glib_source_check (GSource *source)
 {
   CoglGLibSource *cogl_source = (CoglGLibSource *) source;
@@ -138,7 +138,7 @@ cogl_glib_source_check (GSource *source)
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 cogl_glib_source_dispatch (GSource *source,
                            GSourceFunc callback,
                            void *user_data)

@@ -73,7 +73,7 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
   renderer->winsys = NULL;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                GError **error)
 {
@@ -87,7 +87,7 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
   display->winsys = NULL;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_display_setup (CoglDisplay *display,
                             GError **error)
 {
@@ -95,7 +95,7 @@ _cogl_winsys_display_setup (CoglDisplay *display,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_context_init (CoglContext *context, GError **error)
 {
   context->winsys = &_cogl_winsys_stub_dummy_ptr;
@@ -114,7 +114,7 @@ _cogl_winsys_context_deinit (CoglContext *context)
   context->winsys = NULL;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                             GError **error)
 {
@@ -143,14 +143,14 @@ _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
 
 static void
 _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
-                                      gboolean visibility)
+                                      CoglBool visibility)
 {
 }
 
 const CoglWinsysVtable *
 _cogl_winsys_stub_get_vtable (void)
 {
-  static gboolean vtable_inited = FALSE;
+  static CoglBool vtable_inited = FALSE;
   static CoglWinsysVtable vtable;
 
   /* It would be nice if we could use C99 struct initializers here

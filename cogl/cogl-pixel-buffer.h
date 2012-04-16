@@ -74,7 +74,7 @@ typedef struct _CoglPixelBuffer CoglPixelBuffer;
  */
 CoglPixelBuffer *
 cogl_pixel_buffer_new (CoglContext *context,
-                       gsize size,
+                       size_t size,
                        const void *data);
 
 /**
@@ -89,7 +89,7 @@ cogl_pixel_buffer_new (CoglContext *context,
  * Since: 1.2
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_is_pixel_buffer (void *object);
 
 #if 0
@@ -113,9 +113,9 @@ cogl_is_pixel_buffer (void *object);
  * Since: 1.2
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_pixel_buffer_set_region (CoglPixelBuffer *buffer,
-                              guint8 *data,
+                              uint8_t *data,
                               unsigned int src_width,
                               unsigned int src_height,
                               unsigned int src_rowstride,

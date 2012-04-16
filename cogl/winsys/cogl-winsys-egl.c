@@ -130,7 +130,7 @@ check_egl_extensions (CoglRenderer *renderer)
       }
 }
 
-gboolean
+CoglBool
 _cogl_winsys_egl_renderer_connect_common (CoglRenderer *renderer,
                                           GError **error)
 {
@@ -151,7 +151,7 @@ _cogl_winsys_egl_renderer_connect_common (CoglRenderer *renderer,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                GError **error)
 {
@@ -162,7 +162,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 static void
 egl_attributes_from_framebuffer_config (CoglDisplay *display,
                                         CoglFramebufferConfig *config,
-                                        gboolean needs_stencil_override,
+                                        CoglBool needs_stencil_override,
                                         EGLint *attributes)
 {
   CoglRenderer *renderer = display->renderer;
@@ -217,9 +217,9 @@ egl_attributes_from_framebuffer_config (CoglDisplay *display,
   g_assert (i < MAX_EGL_CONFIG_ATTRIBS);
 }
 
-static gboolean
+static CoglBool
 try_create_context (CoglDisplay *display,
-                    gboolean with_stencil_buffer,
+                    CoglBool with_stencil_buffer,
                     GError **error)
 {
   CoglRenderer *renderer = display->renderer;
@@ -308,7 +308,7 @@ cleanup_context (CoglDisplay *display)
     egl_renderer->platform_vtable->cleanup_context (display);
 }
 
-static gboolean
+static CoglBool
 create_context (CoglDisplay *display, GError **error)
 {
   CoglDisplayEGL *egl_display = display->winsys;
@@ -350,7 +350,7 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
   display->winsys = NULL;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_display_setup (CoglDisplay *display,
                             GError **error)
 {
@@ -390,7 +390,7 @@ error:
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_context_init (CoglContext *context, GError **error)
 {
   CoglRenderer *renderer = context->display->renderer;
@@ -435,7 +435,7 @@ _cogl_winsys_context_deinit (CoglContext *context)
   g_free (context->winsys);
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                             GError **error)
 {
@@ -449,7 +449,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   EGLConfig egl_config;
   EGLint config_count = 0;
   EGLBoolean status;
-  gboolean need_stencil =
+  CoglBool need_stencil =
     egl_display->stencil_disabled ? FALSE : framebuffer->config.need_stencil;
 
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context, FALSE);

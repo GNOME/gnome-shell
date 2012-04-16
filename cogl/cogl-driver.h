@@ -30,7 +30,7 @@ typedef struct _CoglDriverVtable CoglDriverVtable;
 
 struct _CoglDriverVtable
 {
-  gboolean
+  CoglBool
   (* pixel_format_from_gl_internal) (CoglContext *context,
                                      GLenum gl_int_format,
                                      CoglPixelFormat *out_format);
@@ -42,7 +42,7 @@ struct _CoglDriverVtable
                           GLenum *out_glformat,
                           GLenum *out_gltype);
 
-  gboolean
+  CoglBool
   (* update_features) (CoglContext *context,
                        GError **error);
 };

@@ -58,7 +58,7 @@ pipeline_fragment_hash (const void *data)
                               0);
 }
 
-static gboolean
+static CoglBool
 pipeline_fragment_equal (const void *a, const void *b)
 {
   unsigned int fragment_state;
@@ -89,7 +89,7 @@ pipeline_vertex_hash (const void *data)
                               0);
 }
 
-static gboolean
+static CoglBool
 pipeline_vertex_equal (const void *a, const void *b)
 {
   unsigned long vertex_state =
@@ -122,7 +122,7 @@ pipeline_combined_hash (const void *data)
                               0);
 }
 
-static gboolean
+static CoglBool
 pipeline_combined_equal (const void *a, const void *b)
 {
   unsigned int combined_state;
@@ -211,7 +211,7 @@ _cogl_pipeline_cache_get_fragment_template (CoglPipelineCache *cache,
 
       if (G_UNLIKELY (g_hash_table_size (cache->fragment_hash) > 50))
         {
-          static gboolean seen = FALSE;
+          static CoglBool seen = FALSE;
           if (!seen)
             g_warning ("Over 50 separate fragment shaders have been "
                        "generated which is very unusual, so something "
@@ -240,7 +240,7 @@ _cogl_pipeline_cache_get_vertex_template (CoglPipelineCache *cache,
 
       if (G_UNLIKELY (g_hash_table_size (cache->vertex_hash) > 50))
         {
-          static gboolean seen = FALSE;
+          static CoglBool seen = FALSE;
           if (!seen)
             g_warning ("Over 50 separate vertex shaders have been "
                        "generated which is very unusual, so something "
@@ -269,7 +269,7 @@ _cogl_pipeline_cache_get_combined_template (CoglPipelineCache *cache,
 
       if (G_UNLIKELY (g_hash_table_size (cache->combined_hash) > 50))
         {
-          static gboolean seen = FALSE;
+          static CoglBool seen = FALSE;
           if (!seen)
             g_warning ("Over 50 separate programs have been "
                        "generated which is very unusual, so something "

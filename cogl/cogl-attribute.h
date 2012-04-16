@@ -137,8 +137,8 @@ G_BEGIN_DECLS
 CoglAttribute *
 cogl_attribute_new (CoglAttributeBuffer *attribute_buffer,
                     const char *name,
-                    gsize stride,
-                    gsize offset,
+                    size_t stride,
+                    size_t offset,
                     int components,
                     CoglAttributeType type);
 
@@ -162,7 +162,7 @@ cogl_attribute_new (CoglAttributeBuffer *attribute_buffer,
  */
 void
 cogl_attribute_set_normalized (CoglAttribute *attribute,
-                               gboolean normalized);
+                               CoglBool normalized);
 
 /**
  * cogl_attribute_get_normalized:
@@ -174,7 +174,7 @@ cogl_attribute_set_normalized (CoglAttribute *attribute,
  * Stability: unstable
  * Since: 1.10
  */
-gboolean
+CoglBool
 cogl_attribute_get_normalized (CoglAttribute *attribute);
 
 /**
@@ -213,7 +213,7 @@ cogl_attribute_set_buffer (CoglAttribute *attribute,
  * Return value: %TRUE if the @object references a #CoglAttribute,
  *   %FALSE otherwise
  */
-gboolean
+CoglBool
 cogl_is_attribute (void *object);
 
 G_END_DECLS

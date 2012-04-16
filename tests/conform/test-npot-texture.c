@@ -36,12 +36,12 @@ typedef struct _TestState
   CoglHandle texture;
 } TestState;
 
-static gboolean
+static CoglBool
 validate_part (int xnum, int ynum, const ClutterColor *color)
 {
   guchar *pixels, *p;
   ClutterActor *stage = clutter_stage_get_default ();
-  gboolean ret = TRUE;
+  CoglBool ret = TRUE;
 
   /* Read the appropriate part but skip out a few pixels around the
      edges */
@@ -114,8 +114,8 @@ on_paint (ClutterActor *actor, TestState *state)
     validate_result (state);
 }
 
-static gboolean
-queue_redraw (gpointer stage)
+static CoglBool
+queue_redraw (void *stage)
 {
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 

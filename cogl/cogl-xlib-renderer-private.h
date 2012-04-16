@@ -43,7 +43,7 @@ typedef struct _CoglXlibRenderer
   CoglPollFD poll_fd;
 } CoglXlibRenderer;
 
-gboolean
+CoglBool
 _cogl_xlib_renderer_connect (CoglRenderer *renderer, GError **error);
 
 void
@@ -85,7 +85,7 @@ void
 _cogl_xlib_renderer_poll_get_info (CoglRenderer *renderer,
                                    CoglPollFD **poll_fds,
                                    int *n_poll_fds,
-                                   gint64 *timeout);
+                                   int64_t *timeout);
 
 void
 _cogl_xlib_renderer_poll_dispatch (CoglRenderer *renderer,

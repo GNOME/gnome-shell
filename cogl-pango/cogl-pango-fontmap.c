@@ -167,7 +167,7 @@ cogl_pango_font_map_clear_glyph_cache (CoglPangoFontMap *fm)
  */
 void
 cogl_pango_font_map_set_use_mipmapping (CoglPangoFontMap *fm,
-                                        gboolean          value)
+                                        CoglBool          value)
 {
   CoglPangoRenderer *renderer;
 
@@ -187,7 +187,7 @@ cogl_pango_font_map_set_use_mipmapping (CoglPangoFontMap *fm,
  *
  * Since: 1.0
  */
-gboolean
+CoglBool
 cogl_pango_font_map_get_use_mipmapping (CoglPangoFontMap *fm)
 {
   CoglPangoRenderer *renderer;

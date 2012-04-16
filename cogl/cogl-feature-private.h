@@ -80,7 +80,7 @@ struct _CoglFeatureData
   const CoglFeatureFunction *functions;
 };
 
-gboolean
+CoglBool
 _cogl_feature_check (CoglRenderer *renderer,
                      const char *driver_prefix,
                      const CoglFeatureData *data,

@@ -21,8 +21,8 @@ static CoglTexture3D *
 create_texture_3d (CoglContext *context)
 {
   int x, y, z;
-  guint8 *data = g_malloc (TEX_IMAGE_STRIDE * TEX_DEPTH);
-  guint8 *p = data;
+  uint8_t *data = g_malloc (TEX_IMAGE_STRIDE * TEX_DEPTH);
+  uint8_t *p = data;
   CoglTexture3D *tex;
   GError *error = NULL;
 
@@ -199,7 +199,7 @@ test_multi_texture (TestState *state)
   CoglPipeline *pipeline;
   CoglTexture3D *tex_3d;
   CoglTexture2D *tex_2d;
-  guint8 tex_data[4];
+  uint8_t tex_data[4];
 
   cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 

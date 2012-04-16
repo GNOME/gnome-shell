@@ -31,75 +31,75 @@
 CoglPipeline *
 _cogl_pipeline_get_user_program (CoglPipeline *pipeline);
 
-gboolean
+CoglBool
 _cogl_pipeline_has_vertex_snippets (CoglPipeline *pipeline);
 
-gboolean
+CoglBool
 _cogl_pipeline_has_fragment_snippets (CoglPipeline *pipeline);
 
-gboolean
+CoglBool
 _cogl_pipeline_has_non_layer_vertex_snippets (CoglPipeline *pipeline);
 
-gboolean
+CoglBool
 _cogl_pipeline_has_non_layer_fragment_snippets (CoglPipeline *pipeline);
 
 void
 _cogl_pipeline_set_fog_state (CoglPipeline *pipeline,
                               const CoglPipelineFogState *fog_state);
 
-gboolean
+CoglBool
 _cogl_pipeline_color_equal (CoglPipeline *authority0,
                             CoglPipeline *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_lighting_state_equal (CoglPipeline *authority0,
                                      CoglPipeline *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_alpha_func_state_equal (CoglPipeline *authority0,
                                        CoglPipeline *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_alpha_func_reference_state_equal (CoglPipeline *authority0,
                                                  CoglPipeline *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_blend_state_equal (CoglPipeline *authority0,
                                   CoglPipeline *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_depth_state_equal (CoglPipeline *authority0,
                                   CoglPipeline *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_fog_state_equal (CoglPipeline *authority0,
                                 CoglPipeline *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_point_size_equal (CoglPipeline *authority0,
                                  CoglPipeline *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_logic_ops_state_equal (CoglPipeline *authority0,
                                       CoglPipeline *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_user_shader_equal (CoglPipeline *authority0,
                                   CoglPipeline *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_cull_face_state_equal (CoglPipeline *authority0,
                                       CoglPipeline *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_uniforms_state_equal (CoglPipeline *authority0,
                                      CoglPipeline *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_vertex_snippets_state_equal (CoglPipeline *authority0,
                                             CoglPipeline *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_fragment_snippets_state_equal (CoglPipeline *authority0,
                                               CoglPipeline *authority1);
 

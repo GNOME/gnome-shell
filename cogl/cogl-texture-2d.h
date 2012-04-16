@@ -67,7 +67,7 @@ typedef struct _CoglTexture2D CoglTexture2D;
  * Return value: %TRUE if the object references a #CoglTexture2D,
  *   %FALSE otherwise
  */
-gboolean
+CoglBool
 cogl_is_texture_2d (void *object);
 
 #define cogl_texture_2d_new_with_size cogl_texture_2d_new_with_size_EXP
@@ -149,7 +149,7 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
                                CoglPixelFormat format,
                                CoglPixelFormat internal_format,
                                int rowstride,
-                               const guint8 *data,
+                               const uint8_t *data,
                                GError **error);
 
 /**

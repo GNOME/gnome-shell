@@ -35,7 +35,7 @@ void
 cogl_poll_get_info (CoglContext *context,
                     CoglPollFD **poll_fds,
                     int *n_poll_fds,
-                    gint64 *timeout)
+                    int64_t *timeout)
 {
   const CoglWinsysVtable *winsys;
 

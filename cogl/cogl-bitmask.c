@@ -49,7 +49,7 @@ _COGL_STATIC_ASSERT (sizeof (unsigned long) <= sizeof (void *),
 #define BIT_MASK(bit_num) \
   (1UL << BIT_INDEX (bit_num))
 
-gboolean
+CoglBool
 _cogl_bitmask_get_from_array (const CoglBitmask *bitmask,
                               unsigned int bit_num)
 {
@@ -83,7 +83,7 @@ _cogl_bitmask_convert_to_array (CoglBitmask *bitmask)
 void
 _cogl_bitmask_set_in_array (CoglBitmask *bitmask,
                             unsigned int bit_num,
-                            gboolean value)
+                            CoglBool value)
 {
   GArray *array;
   unsigned int array_index;
@@ -147,7 +147,7 @@ _cogl_bitmask_set_bits (CoglBitmask *dst,
 void
 _cogl_bitmask_set_range_in_array (CoglBitmask *bitmask,
                                   unsigned int n_bits,
-                                  gboolean value)
+                                  CoglBool value)
 {
   GArray *array;
   unsigned int array_index, bit_index;

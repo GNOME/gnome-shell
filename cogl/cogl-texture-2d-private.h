@@ -46,9 +46,9 @@ struct _CoglTexture2D
   GLenum          mag_filter;
   GLint           wrap_mode_s;
   GLint           wrap_mode_t;
-  gboolean        auto_mipmap;
-  gboolean        mipmaps_dirty;
-  gboolean        is_foreign;
+  CoglBool        auto_mipmap;
+  CoglBool        mipmaps_dirty;
+  CoglBool        is_foreign;
 
   CoglTexturePixel first_pixel;
 };

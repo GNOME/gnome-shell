@@ -94,21 +94,21 @@ _cogl_journal_flush (CoglJournal *journal);
 void
 _cogl_journal_discard (CoglJournal *journal);
 
-gboolean
+CoglBool
 _cogl_journal_all_entries_within_bounds (CoglJournal *journal,
                                          float clip_x0,
                                          float clip_y0,
                                          float clip_x1,
                                          float clip_y1);
 
-gboolean
+CoglBool
 _cogl_journal_try_read_pixel (CoglJournal *journal,
                               int x,
                               int y,
                               CoglBitmap *bitmap,
-                              gboolean *found_intersection);
+                              CoglBool *found_intersection);
 
-gboolean
+CoglBool
 _cogl_is_journal (void *object);
 
 #endif /* __COGL_JOURNAL_PRIVATE_H */

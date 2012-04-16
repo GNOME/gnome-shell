@@ -223,8 +223,8 @@ typedef struct _ClampData
 {
   float start;
   float end;
-  gboolean s_flipped;
-  gboolean t_flipped;
+  CoglBool s_flipped;
+  CoglBool t_flipped;
   CoglMetaTextureCallback callback;
   void *user_data;
 } ClampData;
@@ -273,7 +273,7 @@ clamp_t_cb (CoglTexture *sub_texture,
                         clamp_data->user_data);
 }
 
-static gboolean
+static CoglBool
 foreach_clamped_region (CoglMetaTexture *meta_texture,
                         float *tx_1,
                         float *ty_1,
@@ -513,7 +513,7 @@ cogl_meta_texture_foreach_in_region (CoglMetaTexture *meta_texture,
   if (wrap_s == COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE ||
       wrap_t == COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE)
     {
-      gboolean finished = foreach_clamped_region (meta_texture,
+      CoglBool finished = foreach_clamped_region (meta_texture,
                                                   &tx_1, &ty_1, &tx_2, &ty_2,
                                                   wrap_s, wrap_t,
                                                   callback,

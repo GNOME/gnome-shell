@@ -74,7 +74,7 @@ typedef struct _CoglBuffer CoglBuffer;
  * Since: 1.2
  * Stability: unstable
  */
-gboolean
+CoglBool
 cogl_is_buffer (void *object);
 
 /**
@@ -231,11 +231,11 @@ cogl_buffer_unmap (CoglBuffer *buffer);
  * Since: 1.2
  * Stability: unstable
  */
-gboolean
-cogl_buffer_set_data (CoglBuffer  *buffer,
-                      gsize        offset,
-                      const void  *data,
-                      gsize        size);
+CoglBool
+cogl_buffer_set_data (CoglBuffer *buffer,
+                      size_t offset,
+                      const void *data,
+                      size_t size);
 
 G_END_DECLS
 

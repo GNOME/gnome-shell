@@ -26,7 +26,7 @@ typedef struct _TestState
 } TestState;
 
 static void
-check_quad (int quad_x, int quad_y, guint32 color)
+check_quad (int quad_x, int quad_y, uint32_t color)
 {
   test_utils_check_pixel (x * QUAD_WIDTH + (QUAD_WIDTH / 2),
                           y * QUAD_WIDTH + (QUAD_WIDTH / 2),
@@ -36,7 +36,7 @@ check_quad (int quad_x, int quad_y, guint32 color)
 static void
 test_material_with_primitives (TestState *state,
                                int x, int y,
-                               guint32 color)
+                               uint32_t color)
 {
   CoglTextureVertex verts[4] = {
     { .x = 0,          .y = 0,          .z = 0 },
@@ -99,8 +99,8 @@ static void
 test_using_all_layers (TestState *state, int x, int y)
 {
   CoglHandle material = cogl_material_new ();
-  guint8 white_pixel[] = { 0xff, 0xff, 0xff, 0xff };
-  guint8 red_pixel[] = { 0xff, 0x00, 0x00, 0xff };
+  uint8_t white_pixel[] = { 0xff, 0xff, 0xff, 0xff };
+  uint8_t red_pixel[] = { 0xff, 0x00, 0x00, 0xff };
   CoglHandle white_texture;
   CoglHandle red_texture;
   GLint n_layers;
@@ -209,8 +209,8 @@ on_paint (ClutterActor *actor, TestState *state)
 #endif
 }
 
-static gboolean
-queue_redraw (gpointer stage)
+static CoglBool
+queue_redraw (void *stage)
 {
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 

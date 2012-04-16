@@ -11,7 +11,7 @@
 
 #define TEST_INSET         1
 
-static const guint32
+static const uint32_t
 corner_colors[SOURCE_DIVISIONS_X * SOURCE_DIVISIONS_Y] =
   {
     0xff0000ff, /* red top left */
@@ -29,7 +29,7 @@ static CoglTexture2D *
 create_source (TestState *state)
 {
   int dx, dy;
-  guint8 *data = g_malloc (SOURCE_SIZE * SOURCE_SIZE * 4);
+  uint8_t *data = g_malloc (SOURCE_SIZE * SOURCE_SIZE * 4);
   CoglTexture2D *tex;
   GError *error = NULL;
 
@@ -38,7 +38,7 @@ create_source (TestState *state)
   for (dy = 0; dy < SOURCE_DIVISIONS_Y; dy++)
     for (dx = 0; dx < SOURCE_DIVISIONS_X; dx++)
       {
-        guint8 *p = (data + dy * DIVISION_HEIGHT * SOURCE_SIZE * 4 +
+        uint8_t *p = (data + dy * DIVISION_HEIGHT * SOURCE_SIZE * 4 +
                      dx * DIVISION_WIDTH * 4);
         int x, y;
 
@@ -46,7 +46,7 @@ create_source (TestState *state)
           {
             for (x = 0; x < DIVISION_WIDTH; x++)
               {
-                guint32 color = GUINT32_FROM_BE (corner_colors[dx + dy * SOURCE_DIVISIONS_X]);
+                uint32_t color = GUINT32_FROM_BE (corner_colors[dx + dy * SOURCE_DIVISIONS_X]);
                 memcpy (p, &color, 4);
                 p += 4;
               }
@@ -70,7 +70,7 @@ static CoglTexture2D *
 create_test_texture (TestState *state)
 {
   CoglTexture2D *tex;
-  guint8 *data = g_malloc (256 * 256 * 4), *p = data;
+  uint8_t *data = g_malloc (256 * 256 * 4), *p = data;
   int x, y;
   GError *error = NULL;
 
@@ -163,7 +163,7 @@ paint (TestState *state)
 static void
 validate_part (int xpos, int ypos,
                int width, int height,
-               guint32 color)
+               uint32_t color)
 {
   test_utils_check_region (fb,
                            xpos + TEST_INSET,
@@ -173,10 +173,10 @@ validate_part (int xpos, int ypos,
                            color);
 }
 
-static guint8 *
+static uint8_t *
 create_update_data (void)
 {
-  guint8 *data = g_malloc (256 * 256 * 4), *p = data;
+  uint8_t *data = g_malloc (256 * 256 * 4), *p = data;
   int x, y;
 
   /* Create some image data that is 256x256 where the blue component
@@ -201,7 +201,7 @@ validate_result (TestState *state)
   int i, division_num, x, y;
   CoglTexture2D *test_tex;
   CoglSubTexture *sub_texture;
-  guint8 *texture_data, *p;
+  uint8_t *texture_data, *p;
   int tex_width, tex_height;
 
   /* Sub texture of the bottom right corner of the texture */
@@ -255,8 +255,8 @@ validate_result (TestState *state)
                      DIVISION_WIDTH);
         int div_y = ((y * SOURCE_SIZE / 2 / tex_height + SOURCE_SIZE / 4) /
                      DIVISION_HEIGHT);
-        guint32 reference = corner_colors[div_x + div_y * SOURCE_DIVISIONS_X] >> 8;
-        guint32 color = GUINT32_FROM_BE (*((guint32 *)p)) >> 8;
+        uint32_t reference = corner_colors[div_x + div_y * SOURCE_DIVISIONS_X] >> 8;
+        uint32_t color = GUINT32_FROM_BE (*((uint32_t *)p)) >> 8;
         g_assert (color == reference);
         p += 4;
       }

@@ -16,7 +16,7 @@ static void
 check_quadrant (TestState *state,
                 int qx,
                 int qy,
-                guint32 expected_rgba)
+                uint32_t expected_rgba)
 {
   /* The quadrants are all stuffed into the top right corner of the
      framebuffer */
@@ -147,7 +147,7 @@ test_flush (TestState *state)
                                  1, 1, 15, 15, 0xff0000ff);
       else if (i == 1)
         {
-          guint8 data[16 * 4 * 16];
+          uint8_t data[16 * 4 * 16];
           int x, y;
 
           /* Second time try reading back the texture contents */

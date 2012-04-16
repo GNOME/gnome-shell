@@ -49,8 +49,8 @@ struct _CoglTexture3D
   GLint           wrap_mode_s;
   GLint           wrap_mode_t;
   GLint           wrap_mode_p;
-  gboolean        auto_mipmap;
-  gboolean        mipmaps_dirty;
+  CoglBool        auto_mipmap;
+  CoglBool        mipmaps_dirty;
 
   CoglTexturePixel first_pixel;
 };

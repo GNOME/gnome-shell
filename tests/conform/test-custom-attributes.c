@@ -11,19 +11,19 @@ typedef struct _TestState
 
 typedef struct
 {
-  gint16 x, y;
+  int16_t x, y;
   float r, g, b, a;
 } FloatVert;
 
 typedef struct
 {
-  gint16 x, y;
-  guint8 r, g, b, a;
+  int16_t x, y;
+  uint8_t r, g, b, a;
 } ByteVert;
 
 typedef struct
 {
-  gint16 x, y;
+  int16_t x, y;
 } ShortVert;
 
 static void

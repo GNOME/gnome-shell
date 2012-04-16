@@ -56,7 +56,7 @@ struct _CoglNode
 
   /* TRUE if the node took a strong reference on its parent. Weak
    * pipelines for instance don't take a reference on their parent. */
-  gboolean has_parent_reference;
+  CoglBool has_parent_reference;
 };
 
 #define COGL_NODE(X) ((CoglNode *)(X))
@@ -70,12 +70,12 @@ void
 _cogl_pipeline_node_set_parent_real (CoglNode *node,
                                      CoglNode *parent,
                                      CoglNodeUnparentVFunc unparent,
-                                     gboolean take_strong_reference);
+                                     CoglBool take_strong_reference);
 
 void
 _cogl_pipeline_node_unparent_real (CoglNode *node);
 
-typedef gboolean (*CoglNodeChildCallback) (CoglNode *child, void *user_data);
+typedef CoglBool (*CoglNodeChildCallback) (CoglNode *child, void *user_data);
 
 void
 _cogl_pipeline_node_foreach_child (CoglNode *node,

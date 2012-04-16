@@ -38,8 +38,8 @@ typedef struct
 {
   CoglMatrixStack *stack;
   unsigned int age;
-  gboolean flushed_identity;
-  gboolean flipped;
+  CoglBool flushed_identity;
+  CoglBool flipped;
 } CoglMatrixStackCache;
 
 typedef enum {
@@ -49,7 +49,7 @@ typedef enum {
 } CoglMatrixMode;
 
 typedef void (* CoglMatrixStackFlushFunc) (CoglContext *context,
-                                           gboolean is_identity,
+                                           CoglBool is_identity,
                                            const CoglMatrix *matrix,
                                            void *user_data);
 
@@ -106,7 +106,7 @@ _cogl_matrix_stack_ortho (CoglMatrixStack *stack,
                           float top,
                           float z_near,
                           float z_far);
-gboolean
+CoglBool
 _cogl_matrix_stack_get_inverse (CoglMatrixStack *stack,
                                 CoglMatrix *inverse);
 void
@@ -120,7 +120,7 @@ void
 _cogl_matrix_stack_flush_to_gl_builtins (CoglContext *ctx,
                                          CoglMatrixStack *stack,
                                          CoglMatrixMode mode,
-                                         gboolean disable_flip);
+                                         CoglBool disable_flip);
 
 unsigned int
 _cogl_matrix_stack_get_age (CoglMatrixStack *stack);
@@ -129,25 +129,25 @@ _cogl_matrix_stack_get_age (CoglMatrixStack *stack);
    identity matrix. If it returns FALSE it may or may not be the
    identity matrix but no expensive comparison is performed to verify
    it. */
-gboolean
+CoglBool
 _cogl_matrix_stack_has_identity_flag (CoglMatrixStack *stack);
 
-gboolean
+CoglBool
 _cogl_matrix_stack_equal (CoglMatrixStack *stack0,
                           CoglMatrixStack *stack1);
 
 void
 _cogl_matrix_stack_init_cache (CoglMatrixStackCache *cache);
 
-gboolean
+CoglBool
 _cogl_matrix_stack_check_and_update_cache (CoglMatrixStack *stack,
                                            CoglMatrixStackCache *cache,
-                                           gboolean flip);
+                                           CoglBool flip);
 
 void
 _cogl_matrix_stack_destroy_cache (CoglMatrixStackCache *cache);
 
-gboolean
+CoglBool
 _cogl_is_matrix_stack (void *object);
 
 #endif /* __COGL_MATRIX_STACK_H */

@@ -41,7 +41,7 @@ test_utils_fini (void);
  */
 void
 test_utils_check_pixel (CoglFramebuffer *framebuffer,
-                        int x, int y, guint32 expected_pixel);
+                        int x, int y, uint32_t expected_pixel);
 
 /*
  * test_utils_check_pixel:
@@ -79,7 +79,7 @@ void
 test_utils_check_region (CoglFramebuffer *framebuffer,
                          int x, int y,
                          int width, int height,
-                         guint32 expected_rgba);
+                         uint32_t expected_rgba);
 
 /*
  * test_utils_compare_pixel:
@@ -92,7 +92,7 @@ test_utils_check_region (CoglFramebuffer *framebuffer,
  * message.
  */
 void
-test_utils_compare_pixel (const guint8 *screen_pixel, guint32 expected_pixel);
+test_utils_compare_pixel (const uint8_t *screen_pixel, uint32_t expected_pixel);
 
 /*
  * test_utils_create_color_texture:
@@ -103,13 +103,13 @@ test_utils_compare_pixel (const guint8 *screen_pixel, guint32 expected_pixel);
  */
 CoglTexture *
 test_utils_create_color_texture (CoglContext *context,
-                                 guint32 color);
+                                 uint32_t color);
 
 /* cogl_test_verbose:
  *
  * Queries if the user asked for verbose output or not.
  */
-gboolean
+CoglBool
 cogl_test_verbose (void);
 
 #endif /* _TEST_UTILS_H_ */

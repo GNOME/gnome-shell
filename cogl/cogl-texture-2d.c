@@ -103,7 +103,7 @@ _cogl_texture_2d_free (CoglTexture2D *tex_2d)
   _cogl_texture_free (COGL_TEXTURE (tex_2d));
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_can_create (unsigned int width,
                              unsigned int height,
                              CoglPixelFormat internal_format)
@@ -140,7 +140,7 @@ _cogl_texture_2d_can_create (unsigned int width,
 
 static void
 _cogl_texture_2d_set_auto_mipmap (CoglTexture *tex,
-                                  gboolean value)
+                                  CoglBool value)
 {
   CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
 
@@ -227,12 +227,12 @@ cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
                                  GError **error)
 {
   CoglTexture2D *tex_2d;
-  CoglBitmap    *dst_bmp;
-  GLenum         gl_intformat;
-  GLenum         gl_format;
-  GLenum         gl_type;
-  guint8        *data;
-  CoglContext   *ctx;
+  CoglBitmap *dst_bmp;
+  GLenum gl_intformat;
+  GLenum gl_format;
+  GLenum gl_type;
+  uint8_t *data;
+  CoglContext *ctx;
 
   _COGL_RETURN_VAL_IF_FAIL (bmp != NULL, NULL);
 
@@ -310,7 +310,7 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
                                CoglPixelFormat format,
                                CoglPixelFormat internal_format,
                                int rowstride,
-                               const guint8 *data,
+                               const uint8_t *data,
                                GError **error)
 {
   CoglBitmap *bmp;
@@ -328,7 +328,7 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
                                   width, height,
                                   format,
                                   rowstride,
-                                  (guint8 *) data);
+                                  (uint8_t *) data);
 
   tex_2d = cogl_texture_2d_new_from_bitmap (bmp,
                                             internal_format,
@@ -622,13 +622,13 @@ _cogl_texture_2d_get_max_waste (CoglTexture *tex)
   return -1;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_is_sliced (CoglTexture *tex)
 {
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_can_hardware_repeat (CoglTexture *tex)
 {
   return TRUE;
@@ -650,7 +650,7 @@ _cogl_texture_2d_transform_quad_coords_to_gl (CoglTexture *tex,
   /* The texture coordinates map directly so we don't need to do
      anything other than check for repeats */
 
-  gboolean need_repeat = FALSE;
+  CoglBool need_repeat = FALSE;
   int i;
 
   for (i = 0; i < 4; i++)
@@ -661,7 +661,7 @@ _cogl_texture_2d_transform_quad_coords_to_gl (CoglTexture *tex,
           : COGL_TRANSFORM_NO_REPEAT);
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_get_gl_texture (CoglTexture *tex,
                                  GLuint *out_gl_handle,
                                  GLenum *out_gl_target)
@@ -748,7 +748,7 @@ _cogl_texture_2d_ensure_non_quad_rendering (CoglTexture *tex)
   /* Nothing needs to be done */
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_set_region (CoglTexture    *tex,
                              int             src_x,
                              int             src_y,
@@ -759,9 +759,9 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
                              CoglBitmap     *bmp)
 {
   CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
-  GLenum         gl_format;
-  GLenum         gl_type;
-  guint8        *data;
+  GLenum gl_format;
+  GLenum gl_type;
+  uint8_t *data;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -807,11 +807,11 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
   return TRUE;
 }
 
-static gboolean
-_cogl_texture_2d_get_data (CoglTexture     *tex,
-                           CoglPixelFormat  format,
-                           unsigned int     rowstride,
-                           guint8          *data)
+static CoglBool
+_cogl_texture_2d_get_data (CoglTexture *tex,
+                           CoglPixelFormat format,
+                           unsigned int rowstride,
+                           uint8_t *data)
 {
   CoglTexture2D   *tex_2d = COGL_TEXTURE_2D (tex);
   int              bpp;
@@ -867,7 +867,7 @@ _cogl_texture_2d_get_height (CoglTexture *tex)
   return COGL_TEXTURE_2D (tex)->height;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_is_foreign (CoglTexture *tex)
 {
   return COGL_TEXTURE_2D (tex)->is_foreign;

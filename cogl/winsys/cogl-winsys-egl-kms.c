@@ -77,8 +77,8 @@ typedef struct _CoglDisplayKMS
 {
   GList *outputs;
   int width, height;
-  gboolean pending_set_crtc;
-  gboolean pending_swap_notify;
+  CoglBool pending_set_crtc;
+  CoglBool pending_swap_notify;
 } CoglDisplayKMS;
 
 typedef struct _CoglFlipKMS
@@ -94,7 +94,7 @@ typedef struct _CoglOnscreenKMS
   uint32_t next_fb_id;
   struct gbm_bo *current_bo;
   struct gbm_bo *next_bo;
-  gboolean pending_swap_notify;
+  CoglBool pending_swap_notify;
 } CoglOnscreenKMS;
 
 static const char device_name[] = "/dev/dri/card0";
@@ -111,7 +111,7 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
   g_slice_free (CoglRendererEGL, egl_renderer);
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                GError **error)
 {
@@ -173,7 +173,7 @@ close_fd:
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 is_connector_excluded (int id,
                        int *excluded_connectors,
                        int n_excluded_connectors)
@@ -210,7 +210,7 @@ find_connector (int fd,
   return NULL;
 }
 
-static gboolean
+static CoglBool
 find_mirror_modes (drmModeModeInfo *modes0,
                    int n_modes0,
                    drmModeModeInfo *modes1,
@@ -249,7 +249,7 @@ static drmModeModeInfo builtin_1024x768 =
 	"1024x768"
 };
 
-static gboolean
+static CoglBool
 is_panel (int type)
 {
   return (type == DRM_MODE_CONNECTOR_LVDS ||
@@ -324,7 +324,7 @@ find_output (int _index,
     {
       const char *name = getenv (mode_env_name);
       int i;
-      gboolean found = FALSE;
+      CoglBool found = FALSE;
       drmModeModeInfo mode;
 
       for (i = 0; i < n_modes; i++)
@@ -380,7 +380,7 @@ setup_crtc_modes (CoglDisplay *display, int fb_id)
     }
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_egl_display_setup (CoglDisplay *display,
                                 GError **error)
 {
@@ -392,7 +392,7 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
   const char *surfaceless_feature_name = "";
   drmModeRes *resources;
   CoglOutputKMS *output0, *output1;
-  gboolean mirror;
+  CoglBool mirror;
 
   kms_display = g_slice_new0 (CoglDisplayKMS);
   egl_display->platform = kms_display;
@@ -533,7 +533,7 @@ _cogl_winsys_egl_display_destroy (CoglDisplay *display)
   g_slice_free (CoglDisplayKMS, egl_display->platform);
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_egl_context_created (CoglDisplay *display,
                                   GError **error)
 {
@@ -726,7 +726,7 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
     }
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_egl_context_init (CoglContext *context,
                                GError **error)
 {
@@ -739,7 +739,7 @@ _cogl_winsys_egl_context_init (CoglContext *context,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                             GError **error)
 {
@@ -841,7 +841,7 @@ static void
 _cogl_winsys_poll_get_info (CoglContext *context,
                             CoglPollFD **poll_fds,
                             int *n_poll_fds,
-                            gint64 *timeout)
+                            int64_t *timeout)
 {
   CoglDisplay *display = context->display;
   CoglDisplayEGL *egl_display = display->winsys;
@@ -922,7 +922,7 @@ _cogl_winsys_egl_vtable =
 const CoglWinsysVtable *
 _cogl_winsys_egl_kms_get_vtable (void)
 {
-  static gboolean vtable_inited = FALSE;
+  static CoglBool vtable_inited = FALSE;
   static CoglWinsysVtable vtable;
 
   if (!vtable_inited)

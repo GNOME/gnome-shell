@@ -70,7 +70,7 @@ _cogl_pipeline_layer_get_unit_index (CoglPipelineLayer *layer)
   return authority->unit_index;
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_layer_has_alpha (CoglPipelineLayer *layer)
 {
   CoglPipelineLayer *combine_authority =
@@ -466,7 +466,7 @@ _cogl_pipeline_layer_compare_differences (CoglPipelineLayer *layer0,
   return layers_difference;
 }
 
-static gboolean
+static CoglBool
 layer_state_equal (CoglPipelineLayerStateIndex state_index,
                    CoglPipelineLayer **authorities0,
                    CoglPipelineLayer **authorities1,
@@ -510,7 +510,7 @@ _cogl_pipeline_layer_resolve_authorities (CoglPipelineLayer *layer,
   g_assert (remaining == 0);
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_layer_equal (CoglPipelineLayer *layer0,
                             CoglPipelineLayer *layer1,
                             unsigned long differences_mask,
@@ -741,7 +741,7 @@ _cogl_pipeline_layer_pre_paint (CoglPipelineLayer *layer)
  * separately or is the same function used for both channel masks and
  * with the same arguments...
  */
-gboolean
+CoglBool
 _cogl_pipeline_layer_needs_combine_separate
                                        (CoglPipelineLayer *combine_authority)
 {

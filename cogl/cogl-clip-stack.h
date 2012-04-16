@@ -128,7 +128,7 @@ struct _CoglClipStackRect
      modelview matrix is that same as when a rectangle is added to the
      journal. In that case we can use the original clip coordinates
      and modify the rectangle instead. */
-  gboolean               can_be_scissor;
+  CoglBool               can_be_scissor;
 
   /* The matrix that was current when the clip was set */
   CoglMatrix             matrix;

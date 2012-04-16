@@ -146,7 +146,7 @@ cogl_framebuffer_error_quark (void)
   return g_quark_from_static_string ("cogl-framebuffer-error-quark");
 }
 
-gboolean
+CoglBool
 cogl_is_framebuffer (void *object)
 {
   CoglObject *obj = object;
@@ -302,7 +302,7 @@ _cogl_framebuffer_clear_without_flush4f (CoglFramebuffer *framebuffer,
 
   if (!gl_buffers)
     {
-      static gboolean shown = FALSE;
+      static CoglBool shown = FALSE;
 
       if (!shown)
         {
@@ -817,7 +817,7 @@ _cogl_offscreen_free (CoglOffscreen *offscreen)
   g_free (offscreen);
 }
 
-static gboolean
+static CoglBool
 try_creating_fbo (CoglOffscreen *offscreen,
                   TryFBOFlags flags)
 {
@@ -993,15 +993,15 @@ try_creating_fbo (CoglOffscreen *offscreen,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 _cogl_offscreen_allocate (CoglOffscreen *offscreen,
                           GError **error)
 {
   CoglFramebuffer *fb = COGL_FRAMEBUFFER (offscreen);
   CoglContext *ctx = fb->context;
   static TryFBOFlags flags;
-  static gboolean have_working_flags = FALSE;
-  gboolean fbo_created;
+  static CoglBool have_working_flags = FALSE;
+  CoglBool fbo_created;
 
   /* XXX: The framebuffer_object spec isn't clear in defining whether attaching
    * a texture as a renderbuffer with mipmap filtering enabled while the
@@ -1052,7 +1052,7 @@ _cogl_offscreen_allocate (CoglOffscreen *offscreen,
   return TRUE;
 }
 
-gboolean
+CoglBool
 cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
                            GError **error)
 {
@@ -1769,7 +1769,7 @@ cogl_framebuffer_set_color_mask (CoglFramebuffer *framebuffer,
       COGL_FRAMEBUFFER_STATE_COLOR_MASK;
 }
 
-gboolean
+CoglBool
 cogl_framebuffer_get_dither_enabled (CoglFramebuffer *framebuffer)
 {
   return framebuffer->dither_enabled;
@@ -1777,7 +1777,7 @@ cogl_framebuffer_get_dither_enabled (CoglFramebuffer *framebuffer)
 
 void
 cogl_framebuffer_set_dither_enabled (CoglFramebuffer *framebuffer,
-                                     gboolean dither_enabled)
+                                     CoglBool dither_enabled)
 {
   if (framebuffer->dither_enabled == dither_enabled)
     return;
@@ -1868,14 +1868,14 @@ cogl_framebuffer_get_context (CoglFramebuffer *framebuffer)
   return framebuffer->context;
 }
 
-static gboolean
+static CoglBool
 _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
                                        int x,
                                        int y,
                                        CoglReadPixelsFlags source,
                                        CoglBitmap *bitmap)
 {
-  gboolean found_intersection;
+  CoglBool found_intersection;
   CoglPixelFormat format;
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_FAST_READ_PIXEL)))
@@ -1916,7 +1916,7 @@ _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
       y >= framebuffer->clear_clip_y0 &&
       y < framebuffer->clear_clip_y1)
     {
-      guint8 *pixel;
+      uint8_t *pixel;
 
       /* we currently only care about cases where the premultiplied or
        * unpremultipled colors are equivalent... */
@@ -1942,7 +1942,7 @@ _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 _cogl_framebuffer_slow_read_pixels_workaround (CoglFramebuffer *framebuffer,
                                                int x,
                                                int y,
@@ -1954,7 +1954,7 @@ _cogl_framebuffer_slow_read_pixels_workaround (CoglFramebuffer *framebuffer,
   CoglBitmap *pbo;
   int width;
   int height;
-  gboolean res;
+  CoglBool res;
 
   _COGL_RETURN_VAL_IF_FAIL (source & COGL_READ_PIXELS_COLOR_BUFFER, FALSE);
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_framebuffer (framebuffer), FALSE);
@@ -1980,7 +1980,7 @@ _cogl_framebuffer_slow_read_pixels_workaround (CoglFramebuffer *framebuffer,
 
   if (res)
     {
-      guint8 *dst;
+      uint8_t *dst;
 
       /* Copy the pixels back into application's buffer */
       dst = _cogl_bitmap_map (bitmap,
@@ -1991,7 +1991,7 @@ _cogl_framebuffer_slow_read_pixels_workaround (CoglFramebuffer *framebuffer,
         res = FALSE;
       else
         {
-          const guint8 *src;
+          const uint8_t *src;
 
           src = _cogl_bitmap_map (pbo,
                                   COGL_BUFFER_ACCESS_READ,
@@ -2033,7 +2033,7 @@ _cogl_framebuffer_slow_read_pixels_workaround (CoglFramebuffer *framebuffer,
   return res;
 }
 
-gboolean
+CoglBool
 cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
                                           int x,
                                           int y,
@@ -2047,7 +2047,7 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
   GLenum gl_intformat;
   GLenum gl_format;
   GLenum gl_type;
-  gboolean pack_invert_set;
+  CoglBool pack_invert_set;
   int width;
   int height;
 
@@ -2160,7 +2160,7 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       CoglBitmap *tmp_bmp;
       CoglPixelFormat read_format;
       int bpp, rowstride;
-      guint8 *tmp_data;
+      uint8_t *tmp_data;
       int succeeded;
 
       if (ctx->driver == COGL_DRIVER_GL)
@@ -2209,8 +2209,8 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       CoglBitmap *shared_bmp;
       CoglPixelFormat bmp_format;
       int bpp, rowstride;
-      gboolean succeeded = FALSE;
-      guint8 *pixels;
+      CoglBool succeeded = FALSE;
+      uint8_t *pixels;
 
       rowstride = cogl_bitmap_get_rowstride (bitmap);
 
@@ -2273,9 +2273,9 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       (source & COGL_READ_PIXELS_NO_FLIP) == 0 &&
       !pack_invert_set)
     {
-      guint8 *temprow;
+      uint8_t *temprow;
       int rowstride;
-      guint8 *pixels;
+      uint8_t *pixels;
 
       rowstride = cogl_bitmap_get_rowstride (bitmap);
       pixels = _cogl_bitmap_map (bitmap,
@@ -2286,7 +2286,7 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       if (pixels == NULL)
         return FALSE;
 
-      temprow = g_alloca (rowstride * sizeof (guint8));
+      temprow = g_alloca (rowstride * sizeof (uint8_t));
 
       /* vertically flip the buffer in-place */
       for (y = 0; y < height / 2; y++)
@@ -2309,18 +2309,18 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
   return TRUE;
 }
 
-gboolean
+CoglBool
 cogl_framebuffer_read_pixels (CoglFramebuffer *framebuffer,
                               int x,
                               int y,
                               int width,
                               int height,
                               CoglPixelFormat format,
-                              guint8 *pixels)
+                              uint8_t *pixels)
 {
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
   CoglBitmap *bitmap;
-  gboolean ret;
+  CoglBool ret;
 
   bitmap = cogl_bitmap_new_for_data (framebuffer->context,
                                      width, height,
@@ -2855,18 +2855,18 @@ get_index (void *indices,
   switch (type)
     {
     case COGL_INDICES_TYPE_UNSIGNED_BYTE:
-      return ((guint8 *)indices)[_index];
+      return ((uint8_t *)indices)[_index];
     case COGL_INDICES_TYPE_UNSIGNED_SHORT:
-      return ((guint16 *)indices)[_index];
+      return ((uint16_t *)indices)[_index];
     case COGL_INDICES_TYPE_UNSIGNED_INT:
-      return ((guint32 *)indices)[_index];
+      return ((uint32_t *)indices)[_index];
     }
 
   g_return_val_if_reached (0);
 }
 
 static void
-add_line (guint32 *line_indices,
+add_line (uint32_t *line_indices,
           int base,
           void *user_indices,
           CoglIndicesType user_indices_type,
@@ -2920,7 +2920,7 @@ get_wire_line_indices (CoglContext *ctx,
                        int *n_indices)
 {
   int n_lines;
-  guint32 *line_indices;
+  uint32_t *line_indices;
   CoglIndexBuffer *index_buffer;
   void *indices;
   CoglIndicesType indices_type;
@@ -3020,7 +3020,7 @@ get_wire_line_indices (CoglContext *ctx,
   return ret;
 }
 
-static gboolean
+static CoglBool
 remove_layer_cb (CoglPipeline *pipeline,
                  int layer_index,
                  void *user_data)
@@ -3247,7 +3247,7 @@ _cogl_framebuffer_draw_indexed_attributes (CoglFramebuffer *framebuffer,
 #endif
     {
       CoglBuffer *buffer;
-      guint8 *base;
+      uint8_t *base;
       size_t buffer_offset;
       size_t index_size;
       GLenum indices_gl_type = 0;

@@ -24,8 +24,8 @@ on_paint (ClutterActor *actor, void *state)
   guchar *data;
   CoglHandle tex;
   CoglHandle offscreen;
-  guint32 *pixels;
-  guint8 *pixelsc;
+  uint32_t *pixels;
+  uint8_t *pixelsc;
 
   /* Save the Clutter viewport/matrices and load identity matrices */
 
@@ -138,8 +138,8 @@ on_paint (ClutterActor *actor, void *state)
   clutter_main_quit ();
 }
 
-static gboolean
-queue_redraw (gpointer stage)
+static CoglBool
+queue_redraw (void *stage)
 {
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 

@@ -10,7 +10,7 @@ typedef struct _Data
     CoglPipeline *pipeline;
 } Data;
 
-static gboolean
+static CoglBool
 paint_cb (void *user_data)
 {
     Data *data = user_data;

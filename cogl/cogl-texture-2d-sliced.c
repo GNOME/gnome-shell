@@ -130,13 +130,13 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
                                          &data);
 }
 
-static guint8 *
+static uint8_t *
 _cogl_texture_2d_sliced_allocate_waste_buffer (CoglTexture2DSliced *tex_2ds,
                                                CoglPixelFormat format)
 {
   CoglSpan *last_x_span;
   CoglSpan *last_y_span;
-  guint8   *waste_buf = NULL;
+  uint8_t *waste_buf = NULL;
 
   /* If the texture has any waste then allocate a buffer big enough to
      fill the gaps */
@@ -164,7 +164,7 @@ static void
 _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
                                    CoglBitmap *source_bmp,
                                    CoglTexture2D *slice_tex,
-                                   guint8 *waste_buf,
+                                   uint8_t *waste_buf,
                                    CoglSpan *x_span,
                                    CoglSpan *y_span,
                                    CoglSpanIter *x_iter,
@@ -174,7 +174,7 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
                                    int dst_x,
                                    int dst_y)
 {
-  gboolean need_x, need_y;
+  CoglBool need_x, need_y;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -193,9 +193,9 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
       int bmp_rowstride = cogl_bitmap_get_rowstride (source_bmp);
       CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
       int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
-      guint8 *bmp_data;
-      const guint8 *src;
-      guint8 *dst;
+      uint8_t *bmp_data;
+      const uint8_t *src;
+      uint8_t *dst;
       unsigned int wy, wx;
       CoglBitmap *waste_bmp;
 
@@ -306,16 +306,16 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
     }
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_sliced_upload_to_gl (CoglTexture2DSliced *tex_2ds,
                                       CoglBitmap          *bmp)
 {
-  CoglSpan        *x_span;
-  CoglSpan        *y_span;
-  CoglTexture2D   *slice_tex;
-  int              x, y;
-  guint8          *waste_buf;
-  CoglPixelFormat  bmp_format;
+  CoglSpan *x_span;
+  CoglSpan *y_span;
+  CoglTexture2D *slice_tex;
+  int x, y;
+  uint8_t *waste_buf;
+  CoglPixelFormat bmp_format;
 
   bmp_format = cogl_bitmap_get_format (bmp);
 
@@ -382,7 +382,7 @@ _cogl_texture_2d_sliced_upload_to_gl (CoglTexture2DSliced *tex_2ds,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
                                                 int          src_x,
                                                 int          src_y,
@@ -396,14 +396,14 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
 {
   CoglSpan *x_span;
   CoglSpan *y_span;
-  CoglSpanIter      x_iter;
-  CoglSpanIter      y_iter;
-  CoglTexture2D    *slice_tex;
-  int               source_x = 0, source_y = 0;
-  int               inter_w = 0, inter_h = 0;
-  int               local_x = 0, local_y = 0;
-  guint8           *waste_buf;
-  CoglPixelFormat   source_format;
+  CoglSpanIter x_iter;
+  CoglSpanIter y_iter;
+  CoglTexture2D *slice_tex;
+  int source_x = 0, source_y = 0;
+  int inter_w = 0, inter_h = 0;
+  int local_x = 0, local_y = 0;
+  uint8_t *waste_buf;
+  CoglPixelFormat source_format;
 
   source_format = cogl_bitmap_get_format (source_bmp);
 
@@ -606,7 +606,7 @@ _cogl_texture_2d_sliced_set_wrap_mode_parameters (CoglTexture *tex,
     }
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_sliced_slices_create (CoglContext *ctx,
                                        CoglTexture2DSliced *tex_2ds,
                                        int width, int height,
@@ -806,7 +806,7 @@ _cogl_texture_2d_sliced_free (CoglTexture2DSliced *tex_2ds)
   _cogl_texture_free (COGL_TEXTURE (tex_2ds));
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_sliced_init_base (CoglContext *ctx,
                                    CoglTexture2DSliced *tex_2ds,
                                    int width,
@@ -1033,7 +1033,7 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
   return _cogl_texture_2d_sliced_object_new (tex_2ds);
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_sliced_is_foreign (CoglTexture *tex)
 {
   CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
@@ -1056,7 +1056,7 @@ _cogl_texture_2d_sliced_get_max_waste (CoglTexture *tex)
   return tex_2ds->max_waste;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_sliced_is_sliced (CoglTexture *tex)
 {
   CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
@@ -1070,7 +1070,7 @@ _cogl_texture_2d_sliced_is_sliced (CoglTexture *tex)
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_sliced_can_hardware_repeat (CoglTexture *tex)
 {
   CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
@@ -1121,7 +1121,7 @@ static CoglTransformResult
 _cogl_texture_2d_sliced_transform_quad_coords_to_gl (CoglTexture *tex,
                                                      float *coords)
 {
-  gboolean need_repeat = FALSE;
+  CoglBool need_repeat = FALSE;
   int i;
 
   /* This is a bit lazy - in the case where the quad lies entirely
@@ -1146,7 +1146,7 @@ _cogl_texture_2d_sliced_transform_quad_coords_to_gl (CoglTexture *tex,
           ? COGL_TRANSFORM_HARDWARE_REPEAT : COGL_TRANSFORM_NO_REPEAT);
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_sliced_get_gl_texture (CoglTexture *tex,
                                         GLuint *out_gl_handle,
                                         GLenum *out_gl_target)
@@ -1229,7 +1229,7 @@ _cogl_texture_2d_sliced_ensure_non_quad_rendering (CoglTexture *tex)
     }
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_2d_sliced_set_region (CoglTexture    *tex,
                                     int             src_x,
                                     int             src_y,

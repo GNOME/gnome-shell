@@ -49,7 +49,7 @@ on_paint (ClutterActor *actor, TestState *state)
 {
   CoglHandle tex;
   CoglHandle material;
-  guint8 pixels[8];
+  uint8_t pixels[8];
 
   tex = make_texture ();
   material = cogl_material_new ();
@@ -94,8 +94,8 @@ on_paint (ClutterActor *actor, TestState *state)
 #endif
 }
 
-static gboolean
-queue_redraw (gpointer stage)
+static CoglBool
+queue_redraw (void *stage)
 {
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 

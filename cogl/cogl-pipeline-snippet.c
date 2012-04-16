@@ -31,6 +31,7 @@
 
 #include <string.h>
 
+#include "cogl-types.h"
 #include "cogl-pipeline-snippet-private.h"
 #include "cogl-snippet-private.h"
 #include "cogl-util.h"
@@ -260,7 +261,7 @@ _cogl_pipeline_snippet_list_hash (CoglPipelineSnippetList *list,
     }
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_snippet_list_equal (CoglPipelineSnippetList *list0,
                                    CoglPipelineSnippetList *list1)
 {

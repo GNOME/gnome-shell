@@ -110,7 +110,7 @@ cogl_texture_2d_sliced_new_with_size (CoglContext *ctx,
  * Since: 1.10
  * Stability: unstable
  */
-gboolean
+CoglBool
 cogl_is_texture_2d_sliced (void *object);
 
 #endif /* __COGL_TEXURE_2D_SLICED_H */

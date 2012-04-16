@@ -39,14 +39,14 @@ cogl_swap_chain_new (void);
 #define cogl_swap_chain_set_has_alpha cogl_swap_chain_set_has_alpha_EXP
 void
 cogl_swap_chain_set_has_alpha (CoglSwapChain *swap_chain,
-                               gboolean has_alpha);
+                               CoglBool has_alpha);
 
 #define cogl_swap_chain_set_length cogl_swap_chain_set_length_EXP
 void
 cogl_swap_chain_set_length (CoglSwapChain *swap_chain,
                             int length);
 
-gboolean
+CoglBool
 cogl_is_swap_chain (void *object);
 
 G_END_DECLS

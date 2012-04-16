@@ -56,7 +56,7 @@ paint (TestState *state)
   /* Verify all of the fbos drew the right color */
   for (i = 0; i < NUM_FBOS; i++)
     {
-      guint8 expected_colors[NUM_FBOS][4] =
+      uint8_t expected_colors[NUM_FBOS][4] =
         { { 0xff, 0x00, 0x00, 0xff },
           { 0x00, 0xff, 0x00, 0xff },
           { 0x00, 0x00, 0xff, 0xff } };

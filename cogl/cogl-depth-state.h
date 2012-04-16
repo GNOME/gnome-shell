@@ -41,24 +41,24 @@ G_BEGIN_DECLS
 
 typedef struct
 {
-  guint32 COGL_PRIVATE (magic);
+  uint32_t COGL_PRIVATE (magic);
 
-  gboolean COGL_PRIVATE (test_enabled);
+  CoglBool COGL_PRIVATE (test_enabled);
   CoglDepthTestFunction COGL_PRIVATE (test_function);
-  gboolean COGL_PRIVATE (write_enabled);
+  CoglBool COGL_PRIVATE (write_enabled);
   float COGL_PRIVATE (range_near);
   float COGL_PRIVATE (range_far);
 
-  guint32 COGL_PRIVATE (padding0);
-  guint32 COGL_PRIVATE (padding1);
-  guint32 COGL_PRIVATE (padding2);
-  guint32 COGL_PRIVATE (padding3);
-  guint32 COGL_PRIVATE (padding4);
-  guint32 COGL_PRIVATE (padding5);
-  guint32 COGL_PRIVATE (padding6);
-  guint32 COGL_PRIVATE (padding7);
-  guint32 COGL_PRIVATE (padding8);
-  guint32 COGL_PRIVATE (padding9);
+  uint32_t COGL_PRIVATE (padding0);
+  uint32_t COGL_PRIVATE (padding1);
+  uint32_t COGL_PRIVATE (padding2);
+  uint32_t COGL_PRIVATE (padding3);
+  uint32_t COGL_PRIVATE (padding4);
+  uint32_t COGL_PRIVATE (padding5);
+  uint32_t COGL_PRIVATE (padding6);
+  uint32_t COGL_PRIVATE (padding7);
+  uint32_t COGL_PRIVATE (padding8);
+  uint32_t COGL_PRIVATE (padding9);
 
 } CoglDepthState;
 
@@ -104,7 +104,7 @@ cogl_depth_state_init (CoglDepthState *state);
  */
 void
 cogl_depth_state_set_test_enabled (CoglDepthState *state,
-                                   gboolean enable);
+                                   CoglBool enable);
 
 /**
  * cogl_depth_state_get_test_enabled:
@@ -117,7 +117,7 @@ cogl_depth_state_set_test_enabled (CoglDepthState *state,
  * Since: 2.0
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_depth_state_get_test_enabled (CoglDepthState *state);
 
 /**
@@ -142,7 +142,7 @@ cogl_depth_state_get_test_enabled (CoglDepthState *state);
  */
 void
 cogl_depth_state_set_write_enabled (CoglDepthState *state,
-                                    gboolean enable);
+                                    CoglBool enable);
 
 /**
  * cogl_depth_state_get_write_enabled:
@@ -155,7 +155,7 @@ cogl_depth_state_set_write_enabled (CoglDepthState *state,
  * Since: 2.0
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_depth_state_get_write_enabled (CoglDepthState *state);
 
 /**

@@ -93,8 +93,8 @@ cogl_vector3_init_zero (float *vector);
  * Since: 1.4
  * Stability: Unstable
  */
-gboolean
-cogl_vector3_equal (gconstpointer v1, gconstpointer v2);
+CoglBool
+cogl_vector3_equal (const void *v1, const void *v2);
 
 /**
  * cogl_vector3_equal_with_epsilon:
@@ -117,7 +117,7 @@ cogl_vector3_equal (gconstpointer v1, gconstpointer v2);
  * Since: 1.4
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_vector3_equal_with_epsilon (const float *vector0,
                                  const float *vector1,
                                  float epsilon);

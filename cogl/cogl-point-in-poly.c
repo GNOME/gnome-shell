@@ -78,11 +78,11 @@ _cogl_util_point_in_screen_poly (float point_x,
 
   for (i = 0, j = n_vertices - 1; i < n_vertices; j = i++)
     {
-      float vert_xi = *(float *)((guint8 *)vertices + i * stride);
-      float vert_xj = *(float *)((guint8 *)vertices + j * stride);
-      float vert_yi = *(float *)((guint8 *)vertices + i * stride +
+      float vert_xi = *(float *)((uint8_t *)vertices + i * stride);
+      float vert_xj = *(float *)((uint8_t *)vertices + j * stride);
+      float vert_yi = *(float *)((uint8_t *)vertices + i * stride +
                                  sizeof (float));
-      float vert_yj = *(float *)((guint8 *)vertices + j * stride +
+      float vert_yj = *(float *)((uint8_t *)vertices + j * stride +
                                  sizeof (float));
 
       vert_xi = COGL_UTIL_NEARBYINT (vert_xi);

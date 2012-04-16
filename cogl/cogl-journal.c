@@ -94,29 +94,29 @@
 
 typedef struct _CoglJournalFlushState
 {
-  CoglJournal         *journal;
+  CoglJournal *journal;
 
   CoglAttributeBuffer *attribute_buffer;
-  GArray              *attributes;
-  int                  current_attribute;
+  GArray *attributes;
+  int current_attribute;
 
-  gsize                stride;
-  size_t               array_offset;
-  GLuint               current_vertex;
+  size_t stride;
+  size_t array_offset;
+  GLuint current_vertex;
 
-  CoglIndices         *indices;
-  gsize                indices_type_size;
+  CoglIndices *indices;
+  size_t indices_type_size;
 
-  CoglMatrixStack     *modelview_stack;
-  CoglMatrixStack     *projection_stack;
+  CoglMatrixStack *modelview_stack;
+  CoglMatrixStack *projection_stack;
 
-  CoglPipeline        *pipeline;
+  CoglPipeline *pipeline;
 } CoglJournalFlushState;
 
 typedef void (*CoglJournalBatchCallback) (CoglJournalEntry *start,
                                           int n_entries,
                                           void *data);
-typedef gboolean (*CoglJournalBatchTest) (CoglJournalEntry *entry0,
+typedef CoglBool (*CoglJournalBatchTest) (CoglJournalEntry *entry0,
                                           CoglJournalEntry *entry1);
 
 static void _cogl_journal_free (CoglJournal *journal);
@@ -160,9 +160,9 @@ _cogl_journal_new (CoglFramebuffer *framebuffer)
 }
 
 static void
-_cogl_journal_dump_logged_quad (guint8 *data, int n_layers)
+_cogl_journal_dump_logged_quad (uint8_t *data, int n_layers)
 {
-  gsize stride = GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS (n_layers);
+  size_t stride = GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS (n_layers);
   int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -189,9 +189,9 @@ _cogl_journal_dump_logged_quad (guint8 *data, int n_layers)
 }
 
 static void
-_cogl_journal_dump_quad_vertices (guint8 *data, int n_layers)
+_cogl_journal_dump_quad_vertices (uint8_t *data, int n_layers)
 {
-  gsize stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers);
+  size_t stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers);
   int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -204,7 +204,7 @@ _cogl_journal_dump_quad_vertices (guint8 *data, int n_layers)
   for (i = 0; i < 4; i++)
     {
       float *v = (float *)data + (i * stride);
-      guint8 *c = data + (POS_STRIDE * 4) + (i * stride * 4);
+      uint8_t *c = data + (POS_STRIDE * 4) + (i * stride * 4);
       int j;
 
       if (G_UNLIKELY (COGL_DEBUG_ENABLED
@@ -224,9 +224,9 @@ _cogl_journal_dump_quad_vertices (guint8 *data, int n_layers)
 }
 
 static void
-_cogl_journal_dump_quad_batch (guint8 *data, int n_layers, int n_quads)
+_cogl_journal_dump_quad_batch (uint8_t *data, int n_layers, int n_quads)
 {
-  gsize byte_stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers) * 4;
+  size_t byte_stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers) * 4;
   int i;
 
   g_print ("_cogl_journal_dump_quad_batch: n_layers = %d, n_quads = %d\n",
@@ -358,7 +358,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_RECTANGLES)))
     {
       static CoglPipeline *outline = NULL;
-      guint8 color_intensity;
+      uint8_t color_intensity;
       int i;
       CoglAttribute *loop_attributes[1];
 
@@ -408,7 +408,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
   COGL_TIMER_STOP (_cogl_uprof_context, time_flush_modelview_and_entries);
 }
 
-static gboolean
+static CoglBool
 compare_entry_modelviews (CoglJournalEntry *entry0,
                           CoglJournalEntry *entry1)
 {
@@ -469,7 +469,7 @@ _cogl_journal_flush_pipeline_and_entries (CoglJournalEntry *batch_start,
   COGL_TIMER_STOP (_cogl_uprof_context, time_flush_pipeline_entries);
 }
 
-static gboolean
+static CoglBool
 compare_entry_pipelines (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
 {
   /* batch rectangles using compatible pipelines */
@@ -566,7 +566,7 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
   COGL_TIMER_STOP (_cogl_uprof_context, time_flush_texcoord_pipeline_entries);
 }
 
-static gboolean
+static CoglBool
 compare_entry_n_layers (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
 {
   if (entry0->n_layers == entry1->n_layers)
@@ -582,11 +582,11 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
                                              int               batch_len,
                                              void             *data)
 {
-  CoglJournalFlushState   *state = data;
-  CoglContext             *ctx = state->journal->framebuffer->context;
-  gsize                    stride;
-  int                      i;
-  CoglAttribute          **attribute_entry;
+  CoglJournalFlushState *state = data;
+  CoglContext *ctx = state->journal->framebuffer->context;
+  size_t stride;
+  int i;
+  CoglAttribute **attribute_entry;
   COGL_STATIC_TIMER (time_flush_vbo_texcoord_pipeline_entries,
                      "flush: clip+vbo+texcoords+pipeline+entries", /* parent */
                      "flush: vbo+texcoords+pipeline+entries",
@@ -648,12 +648,12 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_JOURNAL)))
     {
-      guint8 *verts;
+      uint8_t *verts;
 
       /* Mapping a buffer for read is probably a really bad thing to
          do but this will only happen during debugging so it probably
          doesn't matter */
-      verts = ((guint8 *)cogl_buffer_map (COGL_BUFFER (state->attribute_buffer),
+      verts = ((uint8_t *)cogl_buffer_map (COGL_BUFFER (state->attribute_buffer),
                                           COGL_BUFFER_ACCESS_READ, 0) +
                state->array_offset);
 
@@ -679,7 +679,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
                    time_flush_vbo_texcoord_pipeline_entries);
 }
 
-static gboolean
+static CoglBool
 compare_entry_strides (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
 {
   /* Currently the only thing that affects the stride for our vertex arrays
@@ -755,7 +755,7 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
                    time_flush_clip_stack_pipeline_entries);
 }
 
-static gboolean
+static CoglBool
 calculate_translation (const CoglMatrix *a,
                        const CoglMatrix *b,
                        float *tx_p,
@@ -846,7 +846,7 @@ typedef struct
   float x_2, y_2;
 } ClipBounds;
 
-static gboolean
+static CoglBool
 can_software_clip_entry (CoglJournalEntry *journal_entry,
                          CoglJournalEntry *prev_journal_entry,
                          CoglClipStack *clip_stack,
@@ -1119,7 +1119,7 @@ _cogl_journal_maybe_software_clip_entries (CoglJournalEntry *batch_start,
                    time_check_software_clip);
 }
 
-static gboolean
+static CoglBool
 compare_entry_clip_stacks (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
 {
   return entry0->clip_stack == entry1->clip_stack;
@@ -1129,7 +1129,7 @@ compare_entry_clip_stacks (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
    array so it can be treated as if it was just newly allocated */
 static CoglAttributeBuffer *
 create_attribute_buffer (CoglJournal *journal,
-                         gsize n_bytes)
+                         size_t n_bytes)
 {
   CoglAttributeBuffer *vbo;
 
@@ -1163,11 +1163,11 @@ create_attribute_buffer (CoglJournal *journal,
 }
 
 static CoglAttributeBuffer *
-upload_vertices (CoglJournal            *journal,
+upload_vertices (CoglJournal *journal,
                  const CoglJournalEntry *entries,
-                 int                     n_entries,
-                 size_t                  needed_vbo_len,
-                 GArray                 *vertices)
+                 int n_entries,
+                 size_t needed_vbo_len,
+                 GArray *vertices)
 {
   CoglAttributeBuffer *attribute_buffer;
   CoglBuffer *buffer;
@@ -1284,7 +1284,7 @@ _cogl_journal_discard (CoglJournal *journal)
 
 /* Note: A return value of FALSE doesn't mean 'no' it means
  * 'unknown' */
-gboolean
+CoglBool
 _cogl_journal_all_entries_within_bounds (CoglJournal *journal,
                                          float clip_x0,
                                          float clip_y0,
@@ -1329,7 +1329,7 @@ _cogl_journal_all_entries_within_bounds (CoglJournal *journal,
    */
   for (i = 1; i < journal->entries->len; i++)
     {
-      gboolean found_reference = FALSE;
+      CoglBool found_reference = FALSE;
       entry = &g_array_index (journal->entries, CoglJournalEntry, i);
 
       for (clip_entry = entry->clip_stack;
@@ -1466,7 +1466,7 @@ _cogl_journal_flush (CoglJournal *journal)
   COGL_TIMER_STOP (_cogl_uprof_context, flush_timer);
 }
 
-static gboolean
+static CoglBool
 add_framebuffer_deps_cb (CoglPipelineLayer *layer, void *user_data)
 {
   CoglFramebuffer *framebuffer = user_data;
@@ -1492,12 +1492,12 @@ _cogl_journal_log_quad (CoglJournal  *journal,
                         unsigned int  tex_coords_len)
 {
   CoglFramebuffer *framebuffer = journal->framebuffer;
-  gsize stride;
+  size_t stride;
   int next_vert;
   float *v;
   int i;
   int next_entry;
-  guint32 disable_layers;
+  uint32_t disable_layers;
   CoglJournalEntry *entry;
   CoglPipeline *final_pipeline;
   CoglClipStack *clip_stack;
@@ -1539,7 +1539,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
 
   /* FIXME: This is a hacky optimization, since it will break if we
    * change the definition of CoglColor: */
-  _cogl_pipeline_get_colorubv (pipeline, (guint8 *) v);
+  _cogl_pipeline_get_colorubv (pipeline, (uint8_t *) v);
   v++;
 
   memcpy (v, position, sizeof (float) * 2);
@@ -1559,7 +1559,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
     {
       g_print ("Logged new quad:\n");
       v = &g_array_index (journal->vertices, float, next_vert);
-      _cogl_journal_dump_logged_quad ((guint8 *)v, n_layers);
+      _cogl_journal_dump_logged_quad ((uint8_t *)v, n_layers);
     }
 
   next_entry = journal->entries->len;
@@ -1704,16 +1704,16 @@ entry_to_screen_polygon (CoglFramebuffer *framebuffer,
 #undef VIEWPORT_TRANSFORM_Y
 }
 
-static gboolean
+static CoglBool
 try_checking_point_hits_entry_after_clipping (CoglFramebuffer *framebuffer,
                                               CoglJournalEntry *entry,
                                               float *vertices,
                                               float x,
                                               float y,
-                                              gboolean *hit)
+                                              CoglBool *hit)
 {
-  gboolean can_software_clip = TRUE;
-  gboolean needs_software_clip = FALSE;
+  CoglBool can_software_clip = TRUE;
+  CoglBool needs_software_clip = FALSE;
   CoglClipStack *clip_entry;
 
   *hit = TRUE;
@@ -1777,12 +1777,12 @@ try_checking_point_hits_entry_after_clipping (CoglFramebuffer *framebuffer,
   return TRUE;
 }
 
-gboolean
+CoglBool
 _cogl_journal_try_read_pixel (CoglJournal *journal,
                               int x,
                               int y,
                               CoglBitmap *bitmap,
-                              gboolean *found_intersection)
+                              CoglBool *found_intersection)
 {
   CoglPixelFormat format;
   int i;
@@ -1819,12 +1819,12 @@ _cogl_journal_try_read_pixel (CoglJournal *journal,
     {
       CoglJournalEntry *entry =
         &g_array_index (journal->entries, CoglJournalEntry, i);
-      guint8 *color = (guint8 *)&g_array_index (journal->vertices, float,
+      uint8_t *color = (uint8_t *)&g_array_index (journal->vertices, float,
                                                 entry->array_offset);
       float *vertices = (float *)color + 1;
       float poly[16];
       CoglFramebuffer *framebuffer = journal->framebuffer;
-      guint8 *pixel;
+      uint8_t *pixel;
 
       entry_to_screen_polygon (framebuffer, entry, vertices, poly);
 
@@ -1833,7 +1833,7 @@ _cogl_journal_try_read_pixel (CoglJournal *journal,
 
       if (entry->clip_stack)
         {
-          gboolean hit;
+          CoglBool hit;
 
           if (!try_checking_point_hits_entry_after_clipping (framebuffer,
                                                              entry,

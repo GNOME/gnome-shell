@@ -47,8 +47,8 @@ typedef struct _CoglSpanIter
   float cover_end;
   float intersect_start;
   float intersect_end;
-  gboolean intersects;
-  gboolean flipped;
+  CoglBool intersects;
+  CoglBool flipped;
   CoglPipelineWrapMode wrap_mode;
   int mirror_direction;
 } CoglSpanIter;
@@ -68,7 +68,7 @@ _cogl_span_iter_begin (CoglSpanIter *iter,
 void
 _cogl_span_iter_next (CoglSpanIter *iter);
 
-gboolean
+CoglBool
 _cogl_span_iter_end (CoglSpanIter *iter);
 
 #endif /* __COGL_SPANS_PRIVATE_H */

@@ -68,7 +68,7 @@ struct _CoglTextureDriver
   (* upload_subregion_to_gl) (CoglContext *ctx,
                               GLenum gl_target,
                               GLuint gl_handle,
-                              gboolean is_foreign,
+                              CoglBool is_foreign,
                               int src_x,
                               int src_y,
                               int dst_x,
@@ -89,7 +89,7 @@ struct _CoglTextureDriver
   (* upload_to_gl) (CoglContext *ctx,
                     GLenum gl_target,
                     GLuint gl_handle,
-                    gboolean is_foreign,
+                    CoglBool is_foreign,
                     CoglBitmap *source_bmp,
                     GLint internal_gl_format,
                     GLuint source_gl_format,
@@ -106,7 +106,7 @@ struct _CoglTextureDriver
   (* upload_to_gl_3d) (CoglContext *ctx,
                        GLenum gl_target,
                        GLuint gl_handle,
-                       gboolean is_foreign,
+                       CoglBool is_foreign,
                        GLint height,
                        GLint depth,
                        CoglBitmap *source_bmp,
@@ -134,17 +134,17 @@ struct _CoglTextureDriver
    * renders the texture and reads it back from the framebuffer. (See
    * _cogl_texture_draw_and_read () )
    */
-  gboolean
+  CoglBool
   (* gl_get_tex_image) (CoglContext *ctx,
                         GLenum gl_target,
                         GLenum dest_gl_format,
                         GLenum dest_gl_type,
-                        guint8 *dest);
+                        uint8_t *dest);
 
   /*
    * It may depend on the driver as to what texture sizes are supported...
    */
-  gboolean
+  CoglBool
   (* size_supported) (CoglContext *ctx,
                       GLenum gl_target,
                       GLenum gl_format,
@@ -152,7 +152,7 @@ struct _CoglTextureDriver
                       int width,
                       int height);
 
-  gboolean
+  CoglBool
   (* size_supported_3d) (CoglContext *ctx,
                          GLenum gl_target,
                          GLenum gl_format,
@@ -175,7 +175,7 @@ struct _CoglTextureDriver
    * creating a foreign texture. E.g. OpenGL supports ARB_texture_rectangle
    * but GLES doesn't
    */
-  gboolean
+  CoglBool
   (* allows_foreign_gl_target) (CoglContext *ctx,
                                 GLenum gl_target);
 

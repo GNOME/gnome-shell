@@ -21,7 +21,7 @@ create_source_rect (void)
   GLint prev_unpack_skip_rows;
   GLint prev_unpack_skip_pixles;
   GLint prev_rectangle_binding;
-  guint8 *data = g_malloc (256 * 256 * 4), *p = data;
+  uint8_t *data = g_malloc (256 * 256 * 4), *p = data;
   CoglHandle tex;
   GLuint gl_tex;
 
@@ -87,7 +87,7 @@ static CoglHandle
 create_source_2d (void)
 {
   int x, y;
-  guint8 *data = g_malloc (256 * 256 * 4), *p = data;
+  uint8_t *data = g_malloc (256 * 256 * 4), *p = data;
   CoglHandle tex;
 
   for (y = 0; y < 256; y++)
@@ -160,7 +160,7 @@ draw_frame (TestState *state)
 static void
 validate_result (TestState *state)
 {
-  guint8 *data, *p;
+  uint8_t *data, *p;
   int x, y;
 
   p = data = g_malloc (512 * 384 * 4);
@@ -202,15 +202,15 @@ on_paint (ClutterActor *actor, TestState *state)
   validate_result (state);
 }
 
-static gboolean
-queue_redraw (gpointer stage)
+static CoglBool
+queue_redraw (void *stage)
 {
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 check_rectangle_extension (void)
 {
   static const char rect_extension[] = "GL_ARB_texture_rectangle";

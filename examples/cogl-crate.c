@@ -25,7 +25,7 @@ typedef struct _Data
 
   GTimer *timer;
 
-  gboolean swap_ready;
+  CoglBool swap_ready;
 
 } Data;
 
@@ -149,7 +149,7 @@ main (int argc, char **argv)
   PangoRectangle hello_label_size;
   float fovy, aspect, z_near, z_2d, z_far;
   CoglDepthState depth_state;
-  gboolean has_swap_notify;
+  CoglBool has_swap_notify;
 
   ctx = cogl_context_new (NULL, &error);
   if (!ctx) {
@@ -279,7 +279,7 @@ main (int argc, char **argv)
     {
       CoglPollFD *poll_fds;
       int n_poll_fds;
-      gint64 timeout;
+      int64_t timeout;
 
       if (data.swap_ready)
         {

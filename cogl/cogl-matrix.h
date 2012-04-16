@@ -483,8 +483,8 @@ cogl_matrix_init_from_quaternion (CoglMatrix *matrix,
  *
  * Since: 1.4
  */
-gboolean
-cogl_matrix_equal (gconstpointer v1, gconstpointer v2);
+CoglBool
+cogl_matrix_equal (const void *v1, const void *v2);
 
 /**
  * cogl_matrix_copy:
@@ -533,7 +533,7 @@ cogl_matrix_free (CoglMatrix *matrix);
  *
  * Since: 1.2
  */
-gboolean
+CoglBool
 cogl_matrix_get_inverse (const CoglMatrix *matrix,
                          CoglMatrix *inverse);
 
@@ -584,11 +584,11 @@ cogl_matrix_transform_point (const CoglMatrix *matrix,
  * |[
  * typedef struct {
  *   float x,y;
- *   guint8 r,g,b,a;
+ *   uint8_t r,g,b,a;
  *   float s,t,p;
  * } MyInVertex;
  * typedef struct {
- *   guint8 r,g,b,a;
+ *   uint8_t r,g,b,a;
  *   float x,y,z;
  * } MyOutVertex;
  * MyInVertex vertices[N_VERTICES];
@@ -639,11 +639,11 @@ cogl_matrix_transform_points (const CoglMatrix *matrix,
  * |[
  * typedef struct {
  *   float x,y;
- *   guint8 r,g,b,a;
+ *   uint8_t r,g,b,a;
  *   float s,t,p;
  * } MyInVertex;
  * typedef struct {
- *   guint8 r,g,b,a;
+ *   uint8_t r,g,b,a;
  *   float x,y,z;
  * } MyOutVertex;
  * MyInVertex vertices[N_VERTICES];
@@ -684,7 +684,7 @@ cogl_matrix_project_points (const CoglMatrix *matrix,
  * Returns: %TRUE if @matrix is an identity matrix else %FALSE
  * Since: 1.8
  */
-gboolean
+CoglBool
 cogl_matrix_is_identity (const CoglMatrix *matrix);
 
 /**

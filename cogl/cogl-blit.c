@@ -40,7 +40,7 @@
 
 static const CoglBlitMode *_cogl_blit_default_mode = NULL;
 
-static gboolean
+static CoglBool
 _cogl_blit_texture_render_begin (CoglBlitData *data)
 {
   CoglOffscreen *offscreen;
@@ -142,7 +142,7 @@ _cogl_blit_texture_render_end (CoglBlitData *data)
                                    data->dst_tex);
 }
 
-static gboolean
+static CoglBool
 _cogl_blit_framebuffer_begin (CoglBlitData *data)
 {
   CoglOffscreen *dst_offscreen = NULL, *src_offscreen = NULL;
@@ -212,7 +212,7 @@ _cogl_blit_framebuffer_end (CoglBlitData *data)
   cogl_pop_framebuffer ();
 }
 
-static gboolean
+static CoglBool
 _cogl_blit_copy_tex_sub_image_begin (CoglBlitData *data)
 {
   CoglOffscreen *offscreen;
@@ -264,7 +264,7 @@ _cogl_blit_copy_tex_sub_image_end (CoglBlitData *data)
   cogl_pop_framebuffer ();
 }
 
-static gboolean
+static CoglBool
 _cogl_blit_get_tex_data_begin (CoglBlitData *data)
 {
   data->format = cogl_texture_get_format (data->src_tex);

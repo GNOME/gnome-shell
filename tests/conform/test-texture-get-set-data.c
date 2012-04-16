@@ -8,7 +8,7 @@ static void
 check_texture (int width, int height, CoglTextureFlags flags)
 {
   CoglHandle tex;
-  guint8 *data, *p;
+  uint8_t *data, *p;
   int y, x;
 
   p = data = g_malloc (width * height * 4);

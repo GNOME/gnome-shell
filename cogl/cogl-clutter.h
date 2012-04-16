@@ -31,11 +31,11 @@
 G_BEGIN_DECLS
 
 #define cogl_clutter_check_extension cogl_clutter_check_extension_CLUTTER
-gboolean
+CoglBool
 cogl_clutter_check_extension (const char *name, const char *ext);
 
 #define cogl_clutter_winsys_has_feature cogl_clutter_winsys_has_feature_CLUTTER
-gboolean
+CoglBool
 cogl_clutter_winsys_has_feature (CoglWinsysFeature feature);
 
 #define cogl_onscreen_clutter_backend_set_size cogl_onscreen_clutter_backend_set_size_CLUTTER

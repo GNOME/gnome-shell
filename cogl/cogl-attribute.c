@@ -59,11 +59,11 @@ static void _cogl_attribute_free (CoglAttribute *attribute);
 
 COGL_OBJECT_DEFINE (Attribute, attribute);
 
-static gboolean
+static CoglBool
 validate_cogl_attribute_name (const char *name,
                               char **real_attribute_name,
                               CoglAttributeNameID *name_id,
-                              gboolean *normalized,
+                              CoglBool *normalized,
                               int *texture_unit)
 {
   name = name + 5; /* skip "cogl_" */
@@ -161,8 +161,8 @@ error:
 CoglAttribute *
 cogl_attribute_new (CoglAttributeBuffer *attribute_buffer,
                     const char *name,
-                    gsize stride,
-                    gsize offset,
+                    size_t stride,
+                    size_t offset,
                     int n_components,
                     CoglAttributeType type)
 {
@@ -236,7 +236,7 @@ error:
   return NULL;
 }
 
-gboolean
+CoglBool
 cogl_attribute_get_normalized (CoglAttribute *attribute)
 {
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_attribute (attribute), FALSE);
@@ -247,7 +247,7 @@ cogl_attribute_get_normalized (CoglAttribute *attribute)
 static void
 warn_about_midscene_changes (void)
 {
-  static gboolean seen = FALSE;
+  static CoglBool seen = FALSE;
   if (!seen)
     {
       g_warning ("Mid-scene modification of attributes has "
@@ -258,7 +258,7 @@ warn_about_midscene_changes (void)
 
 void
 cogl_attribute_set_normalized (CoglAttribute *attribute,
-                                      gboolean normalized)
+                                      CoglBool normalized)
 {
   _COGL_RETURN_IF_FAIL (cogl_is_attribute (attribute));
 
@@ -323,10 +323,10 @@ typedef struct
 {
   int unit;
   CoglPipelineFlushOptions options;
-  guint32 fallback_layers;
+  uint32_t fallback_layers;
 } ValidateLayerState;
 
-static gboolean
+static CoglBool
 validate_layer_cb (CoglPipeline *pipeline,
                    int layer_index,
                    void *user_data)
@@ -334,7 +334,7 @@ validate_layer_cb (CoglPipeline *pipeline,
   CoglTexture *texture =
     cogl_pipeline_get_layer_texture (pipeline, layer_index);
   ValidateLayerState *state = user_data;
-  gboolean status = TRUE;
+  CoglBool status = TRUE;
 
   /* invalid textures will be handled correctly in
    * _cogl_pipeline_flush_layers_gl_state */
@@ -389,7 +389,7 @@ typedef struct _ForeachChangedBitState
   CoglPipeline *pipeline;
 } ForeachChangedBitState;
 
-static gboolean
+static CoglBool
 toggle_builtin_attribute_enabled_cb (int bit_num, void *user_data)
 {
   ForeachChangedBitState *state = user_data;
@@ -401,7 +401,7 @@ toggle_builtin_attribute_enabled_cb (int bit_num, void *user_data)
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
   {
-    gboolean enabled = _cogl_bitmask_get (state->new_bits, bit_num);
+    CoglBool enabled = _cogl_bitmask_get (state->new_bits, bit_num);
     GLenum cap;
 
     switch (bit_num)
@@ -426,7 +426,7 @@ toggle_builtin_attribute_enabled_cb (int bit_num, void *user_data)
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 toggle_texcood_attribute_enabled_cb (int bit_num, void *user_data)
 {
   ForeachChangedBitState *state = user_data;
@@ -438,7 +438,7 @@ toggle_texcood_attribute_enabled_cb (int bit_num, void *user_data)
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
   {
-    gboolean enabled = _cogl_bitmask_get (state->new_bits, bit_num);
+    CoglBool enabled = _cogl_bitmask_get (state->new_bits, bit_num);
 
     GE( context, glClientActiveTexture (GL_TEXTURE0 + bit_num) );
 
@@ -452,11 +452,11 @@ toggle_texcood_attribute_enabled_cb (int bit_num, void *user_data)
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 toggle_custom_attribute_enabled_cb (int bit_num, void *user_data)
 {
   ForeachChangedBitState *state = user_data;
-  gboolean enabled = _cogl_bitmask_get (state->new_bits, bit_num);
+  CoglBool enabled = _cogl_bitmask_get (state->new_bits, bit_num);
   CoglContext *context = state->context;
 
   if (enabled)
@@ -496,7 +496,7 @@ static void
 setup_generic_attribute (CoglContext *context,
                          CoglPipeline *pipeline,
                          CoglAttribute *attribute,
-                         guint8 *base)
+                         uint8_t *base)
 {
   int name_index = attribute->name_state->name_index;
   int attrib_location =
@@ -555,7 +555,7 @@ _cogl_flush_attributes_state (CoglFramebuffer *framebuffer,
                               int n_attributes)
 {
   int i;
-  gboolean skip_gl_color = FALSE;
+  CoglBool skip_gl_color = FALSE;
   CoglPipeline *copy = NULL;
   int n_tex_coord_attribs = 0;
   ValidateLayerState layers_state;
@@ -689,7 +689,7 @@ _cogl_flush_attributes_state (CoglFramebuffer *framebuffer,
       CoglAttribute *attribute = attributes[i];
       CoglAttributeBuffer *attribute_buffer;
       CoglBuffer *buffer;
-      guint8 *base;
+      uint8_t *base;
 
       attribute_buffer = cogl_attribute_get_buffer (attribute);
       buffer = COGL_BUFFER (attribute_buffer);

@@ -89,7 +89,7 @@ get_max_texture_units (void)
   return ctx->max_texture_units;
 }
 
-static gboolean
+static CoglBool
 _cogl_pipeline_fragend_fixed_start (CoglPipeline *pipeline,
                                     int n_layers,
                                     unsigned long pipelines_difference,
@@ -161,7 +161,7 @@ translate_sources (CoglPipeline *pipeline,
 
           if (layer == NULL)
             {
-              static gboolean warning_seen = FALSE;
+              static CoglBool warning_seen = FALSE;
               if (!warning_seen)
                 {
                   g_warning ("The application is trying to use a texture "
@@ -177,7 +177,7 @@ translate_sources (CoglPipeline *pipeline,
       }
 }
 
-static gboolean
+static CoglBool
 _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
                                         CoglPipelineLayer *layer,
                                         unsigned long layers_difference)
@@ -357,7 +357,7 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 get_highest_unit_index_cb (CoglPipelineLayer *layer,
                            void *user_data)
 {
@@ -369,7 +369,7 @@ get_highest_unit_index_cb (CoglPipelineLayer *layer,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 _cogl_pipeline_fragend_fixed_end (CoglPipeline *pipeline,
                                   unsigned long pipelines_difference)
 {

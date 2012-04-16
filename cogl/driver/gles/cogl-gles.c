@@ -33,7 +33,7 @@
 #include "cogl-renderer-private.h"
 #include "cogl-private.h"
 
-static gboolean
+static CoglBool
 _cogl_driver_pixel_format_from_gl_internal (CoglContext *context,
                                             GLenum gl_int_format,
                                             CoglPixelFormat *out_format)
@@ -157,7 +157,7 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
   return required_format;
 }
 
-static gboolean
+static CoglBool
 _cogl_driver_update_features (CoglContext *context,
                               GError **error)
 {

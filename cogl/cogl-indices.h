@@ -108,7 +108,7 @@ cogl_indices_new (CoglContext *context,
 CoglIndices *
 cogl_indices_new_for_buffer (CoglIndicesType type,
                              CoglIndexBuffer *buffer,
-                             gsize offset);
+                             size_t offset);
 
 CoglIndexBuffer *
 cogl_indices_get_buffer (CoglIndices *indices);
@@ -116,12 +116,12 @@ cogl_indices_get_buffer (CoglIndices *indices);
 CoglIndicesType
 cogl_indices_get_type (CoglIndices *indices);
 
-gsize
+size_t
 cogl_indices_get_offset (CoglIndices *indices);
 
 void
 cogl_indices_set_offset (CoglIndices *indices,
-                         gsize offset);
+                         size_t offset);
 
 CoglIndices *
 cogl_get_rectangle_indices (CoglContext *context, int n_rectangles);
@@ -137,7 +137,7 @@ cogl_get_rectangle_indices (CoglContext *context, int n_rectangles);
  * Since: 1.10
  * Stability: unstable
  */
-gboolean
+CoglBool
 cogl_is_indices (void *object);
 
 G_END_DECLS

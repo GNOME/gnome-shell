@@ -43,25 +43,25 @@ typedef struct
 {
   CoglGpuInfoVendor vendor;
   const char *name;
-  gboolean (* check_function) (const CoglGpuInfoStrings *strings);
+  CoglBool (* check_function) (const CoglGpuInfoStrings *strings);
 } CoglGpuInfoVendorDescription;
 
 typedef struct
 {
   CoglGpuInfoDriverPackage driver_package;
   const char *name;
-  gboolean (* check_function) (const CoglGpuInfoStrings *strings,
+  CoglBool (* check_function) (const CoglGpuInfoStrings *strings,
                                int *version_out);
 } CoglGpuInfoDriverPackageDescription;
 
-static gboolean
+static CoglBool
 _cogl_gpu_info_parse_version_string (const char *version_string,
                                      int n_components,
                                      const char **tail,
                                      int *version_ret)
 {
   int version = 0;
-  guint64 part;
+  uint64_t part;
   int i;
 
   for (i = 0; ; i++)
@@ -93,7 +93,7 @@ _cogl_gpu_info_parse_version_string (const char *version_string,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 check_intel_vendor (const CoglGpuInfoStrings *strings)
 {
   const char *intel_part = strstr (strings->renderer_string, "Intel(R)");
@@ -110,7 +110,7 @@ check_intel_vendor (const CoglGpuInfoStrings *strings)
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 check_unknown_vendor (const CoglGpuInfoStrings *strings)
 {
   /* This is a last resort so it always matches */
@@ -133,11 +133,11 @@ _cogl_gpu_info_vendors[] =
     }
   };
 
-static gboolean
+static CoglBool
 check_mesa_driver_package (const CoglGpuInfoStrings *strings,
                            int *version_ret)
 {
-  guint64 micro_part;
+  uint64_t micro_part;
   const char *v;
 
   /* The version string should always begin a two-part GL version
@@ -184,7 +184,7 @@ check_mesa_driver_package (const CoglGpuInfoStrings *strings,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 check_unknown_driver_package (const CoglGpuInfoStrings *strings,
                               int *version_out)
 {

@@ -83,10 +83,10 @@ update_pixmap (TestState *state)
   XFreeGC (state->display, black_gc);
 }
 
-static gboolean
+static CoglBool
 check_paint (TestState *state, int x, int y, int scale)
 {
-  guint8 *data, *p, update_value = 0;
+  uint8_t *data, *p, update_value = 0;
 
   p = data = g_malloc (PIXMAP_WIDTH * PIXMAP_HEIGHT * 4);
 
@@ -117,7 +117,7 @@ check_paint (TestState *state, int x, int y, int scale)
           }
         else
           {
-            guint8 value = ((grid_x ^ grid_y) & 1) ? 0x00 : 0xff;
+            uint8_t value = ((grid_x ^ grid_y) & 1) ? 0x00 : 0xff;
             g_assert_cmpint (*(p++), ==, value);
             g_assert_cmpint (*(p++), ==, value);
             g_assert_cmpint (*(p++), ==, value);
@@ -167,7 +167,7 @@ on_paint (ClutterActor *actor, TestState *state)
 
   if (state->frame_count >= 5)
     {
-      gboolean big_updated, small_updated;
+      CoglBool big_updated, small_updated;
 
       big_updated = check_paint (state, 0, 0, 1);
       small_updated = check_paint (state, 0, PIXMAP_HEIGHT, 4);
@@ -187,8 +187,8 @@ on_paint (ClutterActor *actor, TestState *state)
   state->frame_count++;
 }
 
-static gboolean
-queue_redraw (gpointer stage)
+static CoglBool
+queue_redraw (void *stage)
 {
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 

@@ -128,7 +128,7 @@ cogl_texture_3d_new_from_data (CoglContext *context,
                                CoglPixelFormat internal_format,
                                int rowstride,
                                int image_stride,
-                               const guint8 *data,
+                               const uint8_t *data,
                                GError **error);
 
 /**
@@ -177,7 +177,7 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bitmap,
  * Since: 1.4
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_is_texture_3d (void *object);
 
 G_END_DECLS

@@ -31,13 +31,13 @@
 #include "cogl-renderer-private.h"
 
 void
-cogl_sdl_renderer_set_event_type (CoglRenderer *renderer, guint8 type)
+cogl_sdl_renderer_set_event_type (CoglRenderer *renderer, uint8_t type)
 {
   renderer->sdl_event_type_set = TRUE;
   renderer->sdl_event_type = type;
 }
 
-guint8
+uint8_t
 cogl_sdl_renderer_get_event_type (CoglRenderer *renderer)
 {
   _COGL_RETURN_VAL_IF_FAIL (renderer->sdl_event_type_set, SDL_USEREVENT);
@@ -46,7 +46,7 @@ cogl_sdl_renderer_get_event_type (CoglRenderer *renderer)
 }
 
 CoglContext *
-cogl_sdl_context_new (guint8 type, GError **error)
+cogl_sdl_context_new (uint8_t type, GError **error)
 {
   CoglRenderer *renderer = cogl_renderer_new ();
   CoglDisplay *display;

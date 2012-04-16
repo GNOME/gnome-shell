@@ -86,7 +86,7 @@ cogl_onscreen_template_set_samples_per_pixel (
 void
 cogl_onscreen_template_set_swap_throttled (
                                           CoglOnscreenTemplate *onscreen_template,
-                                          gboolean throttled);
+                                          CoglBool throttled);
 
 /**
  * cogl_is_onscreen_template:
@@ -99,7 +99,7 @@ cogl_onscreen_template_set_swap_throttled (
  * Since: 1.10
  * Stability: unstable
  */
-gboolean
+CoglBool
 cogl_is_onscreen_template (void *object);
 
 G_END_DECLS

@@ -29,6 +29,7 @@
 #include "config.h"
 #endif
 
+#include "cogl-types.h"
 #include "cogl-snippet-private.h"
 #include "cogl-util.h"
 
@@ -62,7 +63,7 @@ cogl_snippet_get_hook (CoglSnippet *snippet)
   return snippet->hook;
 }
 
-static gboolean
+static CoglBool
 _cogl_snippet_modify (CoglSnippet *snippet)
 {
   if (snippet->immutable)

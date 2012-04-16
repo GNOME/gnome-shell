@@ -56,14 +56,14 @@ _cogl_pipeline_get_user_program (CoglPipeline *pipeline)
   return authority->big_state->user_program;
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_color_equal (CoglPipeline *authority0,
                             CoglPipeline *authority1)
 {
   return cogl_color_equal (&authority0->color, &authority1->color);
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_lighting_state_equal (CoglPipeline *authority0,
                                      CoglPipeline *authority1)
 {
@@ -84,7 +84,7 @@ _cogl_pipeline_lighting_state_equal (CoglPipeline *authority0,
   return TRUE;
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_alpha_func_state_equal (CoglPipeline *authority0,
                                        CoglPipeline *authority1)
 {
@@ -96,7 +96,7 @@ _cogl_pipeline_alpha_func_state_equal (CoglPipeline *authority0,
   return alpha_state0->alpha_func == alpha_state1->alpha_func;
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_alpha_func_reference_state_equal (CoglPipeline *authority0,
                                                  CoglPipeline *authority1)
 {
@@ -109,7 +109,7 @@ _cogl_pipeline_alpha_func_reference_state_equal (CoglPipeline *authority0,
           alpha_state1->alpha_func_reference);
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_blend_state_equal (CoglPipeline *authority0,
                                   CoglPipeline *authority1)
 {
@@ -156,7 +156,7 @@ _cogl_pipeline_blend_state_equal (CoglPipeline *authority0,
   return TRUE;
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_depth_state_equal (CoglPipeline *authority0,
                                   CoglPipeline *authority1)
 {
@@ -175,7 +175,7 @@ _cogl_pipeline_depth_state_equal (CoglPipeline *authority0,
     }
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_fog_state_equal (CoglPipeline *authority0,
                                 CoglPipeline *authority1)
 {
@@ -193,14 +193,14 @@ _cogl_pipeline_fog_state_equal (CoglPipeline *authority0,
     return FALSE;
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_point_size_equal (CoglPipeline *authority0,
                                  CoglPipeline *authority1)
 {
   return authority0->big_state->point_size == authority1->big_state->point_size;
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_logic_ops_state_equal (CoglPipeline *authority0,
                                       CoglPipeline *authority1)
 {
@@ -210,7 +210,7 @@ _cogl_pipeline_logic_ops_state_equal (CoglPipeline *authority0,
   return logic_ops_state0->color_mask == logic_ops_state1->color_mask;
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_cull_face_state_equal (CoglPipeline *authority0,
                                       CoglPipeline *authority1)
 {
@@ -231,7 +231,7 @@ _cogl_pipeline_cull_face_state_equal (CoglPipeline *authority0,
           cull_face_state0->front_winding == cull_face_state1->front_winding);
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_user_shader_equal (CoglPipeline *authority0,
                                   CoglPipeline *authority1)
 {
@@ -246,7 +246,7 @@ typedef struct
   int override_count;
 } GetUniformsClosure;
 
-static gboolean
+static CoglBool
 get_uniforms_cb (int uniform_num, void *user_data)
 {
   GetUniformsClosure *data = user_data;
@@ -291,7 +291,7 @@ _cogl_pipeline_get_all_uniform_values (CoglPipeline *pipeline,
   while (pipeline);
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_uniforms_state_equal (CoglPipeline *authority0,
                                      CoglPipeline *authority1)
 {
@@ -341,7 +341,7 @@ _cogl_pipeline_uniforms_state_equal (CoglPipeline *authority0,
   return TRUE;
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_vertex_snippets_state_equal (CoglPipeline *authority0,
                                             CoglPipeline *authority1)
 {
@@ -351,7 +351,7 @@ _cogl_pipeline_vertex_snippets_state_equal (CoglPipeline *authority0,
                                             vertex_snippets);
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_fragment_snippets_state_equal (CoglPipeline *authority0,
                                               CoglPipeline *authority1)
 {
@@ -378,7 +378,7 @@ cogl_pipeline_get_color (CoglPipeline *pipeline,
 /* This is used heavily by the cogl journal when logging quads */
 void
 _cogl_pipeline_get_colorubv (CoglPipeline *pipeline,
-                             guint8       *color)
+                             uint8_t *color)
 {
   CoglPipeline *authority =
     _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_COLOR);
@@ -417,10 +417,10 @@ cogl_pipeline_set_color (CoglPipeline    *pipeline,
 
 void
 cogl_pipeline_set_color4ub (CoglPipeline *pipeline,
-			    guint8 red,
-                            guint8 green,
-                            guint8 blue,
-                            guint8 alpha)
+			    uint8_t red,
+                            uint8_t green,
+                            uint8_t blue,
+                            uint8_t alpha)
 {
   CoglColor color;
   cogl_color_init_from_4ub (&color, red, green, blue, alpha);
@@ -451,7 +451,7 @@ _cogl_pipeline_get_blend_enabled (CoglPipeline *pipeline)
   return authority->blend_enable;
 }
 
-static gboolean
+static CoglBool
 _cogl_pipeline_blend_enable_equal (CoglPipeline *authority0,
                                    CoglPipeline *authority1)
 {
@@ -935,7 +935,7 @@ setup_blend_state (CoglBlendStringStatement *statement,
   *blend_dst_factor = arg_to_gl_blend_factor (&statement->args[1]);
 }
 
-gboolean
+CoglBool
 cogl_pipeline_set_blend (CoglPipeline *pipeline,
                          const char *blend_description,
                          GError **error)
@@ -1158,7 +1158,7 @@ cogl_pipeline_set_user_program (CoglPipeline *pipeline,
   _cogl_pipeline_update_blend_enable (pipeline, state);
 }
 
-gboolean
+CoglBool
 cogl_pipeline_set_depth_state (CoglPipeline *pipeline,
                                const CoglDepthState *depth_state,
                                GError **error)
@@ -1556,7 +1556,7 @@ cogl_pipeline_set_uniform_matrix (CoglPipeline *pipeline,
                                   int uniform_location,
                                   int dimensions,
                                   int count,
-                                  gboolean transpose,
+                                  CoglBool transpose,
                                   const float *value)
 {
   CoglBoxedValue *boxed_value;
@@ -1618,7 +1618,7 @@ cogl_pipeline_add_snippet (CoglPipeline *pipeline,
     _cogl_pipeline_add_fragment_snippet (pipeline, snippet);
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_has_non_layer_vertex_snippets (CoglPipeline *pipeline)
 {
   CoglPipeline *authority =
@@ -1628,14 +1628,14 @@ _cogl_pipeline_has_non_layer_vertex_snippets (CoglPipeline *pipeline)
   return !COGL_LIST_EMPTY (&authority->big_state->vertex_snippets);
 }
 
-static gboolean
+static CoglBool
 check_layer_has_vertex_snippet (CoglPipelineLayer *layer,
                                 void *user_data)
 {
   unsigned long state = COGL_PIPELINE_LAYER_STATE_VERTEX_SNIPPETS;
   CoglPipelineLayer *authority =
     _cogl_pipeline_layer_get_authority (layer, state);
-  gboolean *found_vertex_snippet = user_data;
+  CoglBool *found_vertex_snippet = user_data;
 
   if (!COGL_LIST_EMPTY (&authority->big_state->vertex_snippets))
     {
@@ -1646,10 +1646,10 @@ check_layer_has_vertex_snippet (CoglPipelineLayer *layer,
   return TRUE;
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_has_vertex_snippets (CoglPipeline *pipeline)
 {
-  gboolean found_vertex_snippet = FALSE;
+  CoglBool found_vertex_snippet = FALSE;
 
   if (_cogl_pipeline_has_non_layer_vertex_snippets (pipeline))
     return TRUE;
@@ -1661,7 +1661,7 @@ _cogl_pipeline_has_vertex_snippets (CoglPipeline *pipeline)
   return found_vertex_snippet;
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_has_non_layer_fragment_snippets (CoglPipeline *pipeline)
 {
   CoglPipeline *authority =
@@ -1671,14 +1671,14 @@ _cogl_pipeline_has_non_layer_fragment_snippets (CoglPipeline *pipeline)
   return !COGL_LIST_EMPTY (&authority->big_state->fragment_snippets);
 }
 
-static gboolean
+static CoglBool
 check_layer_has_fragment_snippet (CoglPipelineLayer *layer,
                                   void *user_data)
 {
   unsigned long state = COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS;
   CoglPipelineLayer *authority =
     _cogl_pipeline_layer_get_authority (layer, state);
-  gboolean *found_fragment_snippet = user_data;
+  CoglBool *found_fragment_snippet = user_data;
 
   if (!COGL_LIST_EMPTY (&authority->big_state->fragment_snippets))
     {
@@ -1689,10 +1689,10 @@ check_layer_has_fragment_snippet (CoglPipelineLayer *layer,
   return TRUE;
 }
 
-gboolean
+CoglBool
 _cogl_pipeline_has_fragment_snippets (CoglPipeline *pipeline)
 {
-  gboolean found_fragment_snippet = FALSE;
+  CoglBool found_fragment_snippet = FALSE;
 
   if (_cogl_pipeline_has_non_layer_fragment_snippets (pipeline))
     return TRUE;
@@ -1716,7 +1716,7 @@ void
 _cogl_pipeline_hash_blend_enable_state (CoglPipeline *authority,
                                         CoglPipelineHashState *state)
 {
-  guint8 blend_enable = authority->blend_enable;
+  uint8_t blend_enable = authority->blend_enable;
   state->hash = _cogl_util_one_at_a_time_hash (state->hash, &blend_enable, 1);
 }
 
@@ -1821,7 +1821,7 @@ _cogl_pipeline_hash_depth_state (CoglPipeline *authority,
 
   if (depth_state->test_enabled)
     {
-      guint8 enabled = depth_state->test_enabled;
+      uint8_t enabled = depth_state->test_enabled;
       CoglDepthTestFunction function = depth_state->test_function;
       hash = _cogl_util_one_at_a_time_hash (hash, &enabled, sizeof (enabled));
       hash = _cogl_util_one_at_a_time_hash (hash, &function, sizeof (function));
@@ -1829,7 +1829,7 @@ _cogl_pipeline_hash_depth_state (CoglPipeline *authority,
 
   if (depth_state->write_enabled)
     {
-      guint8 enabled = depth_state->write_enabled;
+      uint8_t enabled = depth_state->write_enabled;
       float near_val = depth_state->range_near;
       float far_val = depth_state->range_far;
       hash = _cogl_util_one_at_a_time_hash (hash, &enabled, sizeof (enabled));

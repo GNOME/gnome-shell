@@ -58,14 +58,14 @@ struct _CoglTextureVtable
   /* Virtual functions that must be implemented for a texture
      backend */
 
-  gboolean is_primitive;
+  CoglBool is_primitive;
 
   /* This should update the specified sub region of the texture with a
      sub region of the given bitmap. The bitmap is not converted
      before being passed so the implementation is expected to call
      _cogl_texture_prepare_for_upload with a suitable destination
      format before uploading */
-  gboolean (* set_region) (CoglTexture    *tex,
+  CoglBool (* set_region) (CoglTexture    *tex,
                            int             src_x,
                            int             src_y,
                            int             dst_x,
@@ -79,10 +79,10 @@ struct _CoglTextureVtable
      ctx->texture_driver->find_best_gl_get_data_format so it should
      always be a format that is valid for GL (ie, no conversion should
      be necessary). */
-  gboolean (* get_data) (CoglTexture     *tex,
-                         CoglPixelFormat  format,
-                         unsigned int     rowstride,
-                         guint8          *data);
+  CoglBool (* get_data) (CoglTexture *tex,
+                         CoglPixelFormat format,
+                         unsigned int rowstride,
+                         uint8_t *data);
 
   void (* foreach_sub_texture_in_region) (CoglTexture *tex,
                                           float virtual_tx_1,
@@ -94,9 +94,9 @@ struct _CoglTextureVtable
 
   int (* get_max_waste) (CoglTexture *tex);
 
-  gboolean (* is_sliced) (CoglTexture *tex);
+  CoglBool (* is_sliced) (CoglTexture *tex);
 
-  gboolean (* can_hardware_repeat) (CoglTexture *tex);
+  CoglBool (* can_hardware_repeat) (CoglTexture *tex);
 
   void (* transform_coords_to_gl) (CoglTexture *tex,
                                    float *s,
@@ -104,7 +104,7 @@ struct _CoglTextureVtable
   CoglTransformResult (* transform_quad_coords_to_gl) (CoglTexture *tex,
 						       float *coords);
 
-  gboolean (* get_gl_texture) (CoglTexture *tex,
+  CoglBool (* get_gl_texture) (CoglTexture *tex,
                                GLuint *out_gl_handle,
                                GLenum *out_gl_target);
 
@@ -127,11 +127,11 @@ struct _CoglTextureVtable
 
   CoglTextureType (* get_type) (CoglTexture *tex);
 
-  gboolean (* is_foreign) (CoglTexture *tex);
+  CoglBool (* is_foreign) (CoglTexture *tex);
 
   /* Only needs to be implemented if is_primitive == TRUE */
   void (* set_auto_mipmap) (CoglTexture *texture,
-                            gboolean value);
+                            CoglBool value);
 };
 
 struct _CoglTexture
@@ -165,7 +165,7 @@ struct _CoglTexturePixel
      each slice if a subregion is updated with a different format */
   GLenum gl_format;
   GLenum gl_type;
-  guint8 data[4];
+  uint8_t data[4];
 };
 
 void
@@ -190,7 +190,7 @@ _cogl_texture_register_texture_type (const CoglObjectClass *klass);
   (TypeName, type_name,                                                 \
    _cogl_texture_register_texture_type (&_cogl_##type_name##_class))
 
-gboolean
+CoglBool
 _cogl_texture_can_hardware_repeat (CoglTexture *texture);
 
 void
@@ -253,13 +253,13 @@ _cogl_texture_prep_gl_alignment_for_pixels_download (int bpp,
 /* Utility function to use as a fallback for getting the data of any
    texture via the framebuffer */
 
-gboolean
+CoglBool
 _cogl_texture_draw_and_read (CoglTexture *texture,
                              CoglBitmap  *target_bmp,
                              GLuint       target_gl_format,
                              GLuint       target_gl_type);
 
-gboolean
+CoglBool
 _cogl_texture_is_foreign (CoglTexture *texture);
 
 void

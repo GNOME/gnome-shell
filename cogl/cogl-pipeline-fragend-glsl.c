@@ -200,7 +200,7 @@ get_layer_fragment_snippets (CoglPipelineLayer *layer)
   return &layer->big_state->fragment_snippets;
 }
 
-static gboolean
+static CoglBool
 has_replace_hook (CoglPipelineLayer *layer,
                   CoglSnippetHook hook)
 {
@@ -213,7 +213,7 @@ has_replace_hook (CoglPipelineLayer *layer,
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
                                    int n_layers,
                                    unsigned long pipelines_difference,
@@ -581,7 +581,7 @@ add_arg (CoglPipelineShaderState *shader_state,
 
         if (other_layer == NULL)
           {
-            static gboolean warning_seen = FALSE;
+            static CoglBool warning_seen = FALSE;
             if (!warning_seen)
               {
                 g_warning ("The application is trying to use a texture "
@@ -905,7 +905,7 @@ ensure_layer_generated (CoglPipeline *pipeline,
   g_slice_free (LayerData, layer_data);
 }
 
-static gboolean
+static CoglBool
 _cogl_pipeline_fragend_glsl_add_layer (CoglPipeline *pipeline,
                                         CoglPipelineLayer *layer,
                                         unsigned long layers_difference)
@@ -998,7 +998,7 @@ add_alpha_test_snippet (CoglPipeline *pipeline,
 
 #endif /*  HAVE_COGL_GLES2 */
 
-static gboolean
+static CoglBool
 _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
                                  unsigned long pipelines_difference)
 {

@@ -46,7 +46,7 @@ typedef struct _CoglRendererSdl
 typedef struct _CoglDisplaySdl
 {
   SDL_Surface *surface;
-  gboolean has_onscreen;
+  CoglBool has_onscreen;
 } CoglDisplaySdl;
 
 static CoglFuncPtr
@@ -64,7 +64,7 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
   g_slice_free (CoglRendererSdl, renderer->winsys);
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                GError **error)
 {
@@ -121,7 +121,7 @@ set_gl_attribs_from_framebuffer_config (CoglFramebufferConfig *config)
                        config->swap_chain->has_alpha ? 1 : 0);
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_display_setup (CoglDisplay *display,
                             GError **error)
 {
@@ -156,7 +156,7 @@ error:
   return FALSE;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_context_init (CoglContext *context, GError **error)
 {
   CoglRenderer *renderer = context->display->renderer;
@@ -188,7 +188,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   sdl_display->has_onscreen = FALSE;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                             GError **error)
 {
@@ -248,7 +248,7 @@ _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
 
 static void
 _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
-                                      gboolean visibility)
+                                      CoglBool visibility)
 {
   /* SDL doesn't appear to provide a way to set this */
 }
@@ -256,7 +256,7 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
 const CoglWinsysVtable *
 _cogl_winsys_sdl_get_vtable (void)
 {
-  static gboolean vtable_inited = FALSE;
+  static CoglBool vtable_inited = FALSE;
   static CoglWinsysVtable vtable;
 
   /* It would be nice if we could use C99 struct initializers here

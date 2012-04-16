@@ -44,41 +44,41 @@ CoglPipelineFilter
 _cogl_pipeline_get_layer_mag_filter (CoglPipeline *pipeline,
                                      int layer_index);
 
-gboolean
+CoglBool
 _cogl_pipeline_layer_texture_type_equal (CoglPipelineLayer *authority0,
                                          CoglPipelineLayer *authority1,
                                          CoglPipelineEvalFlags flags);
 
-gboolean
+CoglBool
 _cogl_pipeline_layer_texture_data_equal (CoglPipelineLayer *authority0,
                                          CoglPipelineLayer *authority1,
                                          CoglPipelineEvalFlags flags);
 
-gboolean
+CoglBool
 _cogl_pipeline_layer_combine_state_equal (CoglPipelineLayer *authority0,
                                           CoglPipelineLayer *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_layer_combine_constant_equal (CoglPipelineLayer *authority0,
                                              CoglPipelineLayer *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_layer_sampler_equal (CoglPipelineLayer *authority0,
                                     CoglPipelineLayer *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_layer_user_matrix_equal (CoglPipelineLayer *authority0,
                                         CoglPipelineLayer *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_layer_point_sprite_coords_equal (CoglPipelineLayer *authority0,
                                                 CoglPipelineLayer *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_layer_vertex_snippets_equal (CoglPipelineLayer *authority0,
                                             CoglPipelineLayer *authority1);
 
-gboolean
+CoglBool
 _cogl_pipeline_layer_fragment_snippets_equal (CoglPipelineLayer *authority0,
                                               CoglPipelineLayer *authority1);
 

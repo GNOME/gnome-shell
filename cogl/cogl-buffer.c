@@ -84,7 +84,7 @@ _cogl_buffer_register_buffer_type (const CoglObjectClass *klass)
   _cogl_buffer_types = g_slist_prepend (_cogl_buffer_types, (void *) klass);
 }
 
-gboolean
+CoglBool
 cogl_is_buffer (void *object)
 {
   const CoglObject *obj = object;
@@ -188,7 +188,7 @@ bo_map (CoglBuffer       *buffer,
         CoglBufferAccess  access,
         CoglBufferMapHint hints)
 {
-  guint8 *data;
+  uint8_t *data;
   CoglBufferBindTarget target;
   GLenum gl_target;
   CoglContext *ctx = buffer->context;
@@ -235,7 +235,7 @@ bo_unmap (CoglBuffer *buffer)
   _cogl_buffer_unbind (buffer);
 }
 
-static gboolean
+static CoglBool
 bo_set_data (CoglBuffer   *buffer,
              unsigned int  offset,
              const void   *data,
@@ -276,7 +276,7 @@ malloc_unmap (CoglBuffer *buffer)
   buffer->flags &= ~COGL_BUFFER_FLAG_MAPPED;
 }
 
-static gboolean
+static CoglBool
 malloc_set_data (CoglBuffer   *buffer,
                  unsigned int  offset,
                  const void   *data,
@@ -290,7 +290,7 @@ void
 _cogl_buffer_initialize (CoglBuffer           *buffer,
                          CoglContext          *context,
                          unsigned int          size,
-                         gboolean              use_malloc,
+                         CoglBool              use_malloc,
                          CoglBufferBindTarget  default_target,
                          CoglBufferUsageHint   usage_hint,
                          CoglBufferUpdateHint  update_hint)
@@ -419,7 +419,7 @@ cogl_buffer_get_update_hint (CoglBuffer *buffer)
 static void
 warn_about_midscene_changes (void)
 {
-  static gboolean seen = FALSE;
+  static CoglBool seen = FALSE;
   if (!seen)
     {
       g_warning ("Mid-scene modification of buffers has "
@@ -507,11 +507,11 @@ _cogl_buffer_unmap_for_fill_or_fallback (CoglBuffer *buffer)
     cogl_buffer_unmap (buffer);
 }
 
-gboolean
-cogl_buffer_set_data (CoglBuffer   *buffer,
-                      gsize         offset,
-                      const void   *data,
-                      gsize         size)
+CoglBool
+cogl_buffer_set_data (CoglBuffer *buffer,
+                      size_t offset,
+                      const void *data,
+                      size_t size)
 {
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), FALSE);
   _COGL_RETURN_VAL_IF_FAIL ((offset + size) <= buffer->size, FALSE);

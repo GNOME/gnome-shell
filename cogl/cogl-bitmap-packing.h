@@ -22,7 +22,7 @@
  */
 
 /* This file is included multiple times with different definitions for
-   the component_type type (either guint8 or guint16). The code ends
+   the component_type type (either uint8_t or uint16_t). The code ends
    up exactly the same for both but we only want to end up hitting the
    16-bit path when one of the types in the conversion is > 8 bits per
    component. */
@@ -42,7 +42,7 @@
                        511) / 1023)
 
 inline static void
-G_PASTE (_cogl_unpack_a_8_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_a_8_, component_type) (const uint8_t *src,
                                              component_type *dst,
                                              int width)
 {
@@ -58,7 +58,7 @@ G_PASTE (_cogl_unpack_a_8_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_g_8_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_g_8_, component_type) (const uint8_t *src,
                                              component_type *dst,
                                              int width)
 {
@@ -79,7 +79,7 @@ G_PASTE (_cogl_unpack_g_8_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_rgb_888_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_rgb_888_, component_type) (const uint8_t *src,
                                                  component_type *dst,
                                                  int width)
 {
@@ -95,7 +95,7 @@ G_PASTE (_cogl_unpack_rgb_888_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_bgr_888_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_bgr_888_, component_type) (const uint8_t *src,
                                                  component_type *dst,
                                                  int width)
 {
@@ -111,7 +111,7 @@ G_PASTE (_cogl_unpack_bgr_888_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_bgra_8888_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_bgra_8888_, component_type) (const uint8_t *src,
                                                    component_type *dst,
                                                    int width)
 {
@@ -127,7 +127,7 @@ G_PASTE (_cogl_unpack_bgra_8888_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_argb_8888_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_argb_8888_, component_type) (const uint8_t *src,
                                                    component_type *dst,
                                                    int width)
 {
@@ -143,7 +143,7 @@ G_PASTE (_cogl_unpack_argb_8888_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_abgr_8888_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_abgr_8888_, component_type) (const uint8_t *src,
                                                    component_type *dst,
                                                    int width)
 {
@@ -159,7 +159,7 @@ G_PASTE (_cogl_unpack_abgr_8888_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_rgba_8888_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_rgba_8888_, component_type) (const uint8_t *src,
                                                    component_type *dst,
                                                    int width)
 {
@@ -175,13 +175,13 @@ G_PASTE (_cogl_unpack_rgba_8888_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_rgb_565_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_rgb_565_, component_type) (const uint8_t *src,
                                                  component_type *dst,
                                                  int width)
 {
   while (width-- > 0)
     {
-      guint16 v = *(const guint16 *) src;
+      uint16_t v = *(const uint16_t *) src;
 
       dst[0] = UNPACK_5 (v >> 11);
       dst[1] = UNPACK_6 ((v >> 5) & 63);
@@ -193,13 +193,13 @@ G_PASTE (_cogl_unpack_rgb_565_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_rgba_4444_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_rgba_4444_, component_type) (const uint8_t *src,
                                                    component_type *dst,
                                                    int width)
 {
   while (width-- > 0)
     {
-      guint16 v = *(const guint16 *) src;
+      uint16_t v = *(const uint16_t *) src;
 
       dst[0] = UNPACK_4 (v >> 12);
       dst[1] = UNPACK_4 ((v >> 8) & 15);
@@ -211,13 +211,13 @@ G_PASTE (_cogl_unpack_rgba_4444_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_rgba_5551_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_rgba_5551_, component_type) (const uint8_t *src,
                                                    component_type *dst,
                                                    int width)
 {
   while (width-- > 0)
     {
-      guint16 v = *(const guint16 *) src;
+      uint16_t v = *(const uint16_t *) src;
 
       dst[0] = UNPACK_5 (v >> 11);
       dst[1] = UNPACK_5 ((v >> 6) & 31);
@@ -229,13 +229,13 @@ G_PASTE (_cogl_unpack_rgba_5551_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_rgba_1010102_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_rgba_1010102_, component_type) (const uint8_t *src,
                                                       component_type *dst,
                                                       int width)
 {
   while (width-- > 0)
     {
-      guint32 v = *(const guint32 *) src;
+      uint32_t v = *(const uint32_t *) src;
 
       dst[0] = UNPACK_10 (v >> 22);
       dst[1] = UNPACK_10 ((v >> 12) & 1023);
@@ -247,13 +247,13 @@ G_PASTE (_cogl_unpack_rgba_1010102_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_bgra_1010102_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_bgra_1010102_, component_type) (const uint8_t *src,
                                                       component_type *dst,
                                                       int width)
 {
   while (width-- > 0)
     {
-      guint32 v = *(const guint32 *) src;
+      uint32_t v = *(const uint32_t *) src;
 
       dst[2] = UNPACK_10 (v >> 22);
       dst[1] = UNPACK_10 ((v >> 12) & 1023);
@@ -265,13 +265,13 @@ G_PASTE (_cogl_unpack_bgra_1010102_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_argb_2101010_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_argb_2101010_, component_type) (const uint8_t *src,
                                                       component_type *dst,
                                                       int width)
 {
   while (width-- > 0)
     {
-      guint32 v = *(const guint32 *) src;
+      uint32_t v = *(const uint32_t *) src;
 
       dst[3] = UNPACK_2 (v >> 30);
       dst[0] = UNPACK_10 ((v >> 20) & 1023);
@@ -283,13 +283,13 @@ G_PASTE (_cogl_unpack_argb_2101010_, component_type) (const guint8 *src,
 }
 
 inline static void
-G_PASTE (_cogl_unpack_abgr_2101010_, component_type) (const guint8 *src,
+G_PASTE (_cogl_unpack_abgr_2101010_, component_type) (const uint8_t *src,
                                                       component_type *dst,
                                                       int width)
 {
   while (width-- > 0)
     {
-      guint32 v = *(const guint32 *) src;
+      uint32_t v = *(const uint32_t *) src;
 
       dst[3] = UNPACK_2 (v >> 30);
       dst[2] = UNPACK_10 ((v >> 20) & 1023);
@@ -309,7 +309,7 @@ G_PASTE (_cogl_unpack_abgr_2101010_, component_type) (const guint8 *src,
 
 inline static void
 G_PASTE (_cogl_unpack_, component_type) (CoglPixelFormat format,
-                                         const guint8 *src,
+                                         const uint8_t *src,
                                          component_type *dst,
                                          int width)
 {
@@ -392,7 +392,7 @@ G_PASTE (_cogl_unpack_, component_type) (CoglPixelFormat format,
 
 inline static void
 G_PASTE (_cogl_pack_a_8_, component_type) (const component_type *src,
-                                           guint8 *dst,
+                                           uint8_t *dst,
                                            int width)
 {
   while (width-- > 0)
@@ -405,7 +405,7 @@ G_PASTE (_cogl_pack_a_8_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_g_8_, component_type) (const component_type *src,
-                                           guint8 *dst,
+                                           uint8_t *dst,
                                            int width)
 {
   /* FIXME: I'm not sure if this is right. It looks like Nvidia and
@@ -423,7 +423,7 @@ G_PASTE (_cogl_pack_g_8_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_rgb_888_, component_type) (const component_type *src,
-                                               guint8 *dst,
+                                               uint8_t *dst,
                                                int width)
 {
   while (width-- > 0)
@@ -438,7 +438,7 @@ G_PASTE (_cogl_pack_rgb_888_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_bgr_888_, component_type) (const component_type *src,
-                                               guint8 *dst,
+                                               uint8_t *dst,
                                                int width)
 {
   while (width-- > 0)
@@ -453,7 +453,7 @@ G_PASTE (_cogl_pack_bgr_888_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_bgra_8888_, component_type) (const component_type *src,
-                                                 guint8 *dst,
+                                                 uint8_t *dst,
                                                  int width)
 {
   while (width-- > 0)
@@ -469,7 +469,7 @@ G_PASTE (_cogl_pack_bgra_8888_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_argb_8888_, component_type) (const component_type *src,
-                                                 guint8 *dst,
+                                                 uint8_t *dst,
                                                  int width)
 {
   while (width-- > 0)
@@ -485,7 +485,7 @@ G_PASTE (_cogl_pack_argb_8888_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_abgr_8888_, component_type) (const component_type *src,
-                                                 guint8 *dst,
+                                                 uint8_t *dst,
                                                  int width)
 {
   while (width-- > 0)
@@ -501,7 +501,7 @@ G_PASTE (_cogl_pack_abgr_8888_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_rgba_8888_, component_type) (const component_type *src,
-                                                 guint8 *dst,
+                                                 uint8_t *dst,
                                                  int width)
 {
   while (width-- > 0)
@@ -517,12 +517,12 @@ G_PASTE (_cogl_pack_rgba_8888_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_rgb_565_, component_type) (const component_type *src,
-                                               guint8 *dst,
+                                               uint8_t *dst,
                                                int width)
 {
   while (width-- > 0)
     {
-      guint16 *v = (guint16 *) dst;
+      uint16_t *v = (uint16_t *) dst;
 
       *v = ((PACK_5 (src[0]) << 11) |
             (PACK_6 (src[1]) << 5) |
@@ -534,12 +534,12 @@ G_PASTE (_cogl_pack_rgb_565_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_rgba_4444_, component_type) (const component_type *src,
-                                                 guint8 *dst,
+                                                 uint8_t *dst,
                                                  int width)
 {
   while (width-- > 0)
     {
-      guint16 *v = (guint16 *) dst;
+      uint16_t *v = (uint16_t *) dst;
 
       *v = ((PACK_4 (src[0]) << 12) |
             (PACK_4 (src[1]) << 8) |
@@ -552,12 +552,12 @@ G_PASTE (_cogl_pack_rgba_4444_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_rgba_5551_, component_type) (const component_type *src,
-                                                 guint8 *dst,
+                                                 uint8_t *dst,
                                                  int width)
 {
   while (width-- > 0)
     {
-      guint16 *v = (guint16 *) dst;
+      uint16_t *v = (uint16_t *) dst;
 
       *v = ((PACK_5 (src[0]) << 11) |
             (PACK_5 (src[1]) << 6) |
@@ -570,12 +570,12 @@ G_PASTE (_cogl_pack_rgba_5551_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_rgba_1010102_, component_type) (const component_type *src,
-                                                    guint8 *dst,
+                                                    uint8_t *dst,
                                                     int width)
 {
   while (width-- > 0)
     {
-      guint32 *v = (guint32 *) dst;
+      uint32_t *v = (uint32_t *) dst;
 
       *v = ((PACK_10 (src[0]) << 22) |
             (PACK_10 (src[1]) << 12) |
@@ -588,12 +588,12 @@ G_PASTE (_cogl_pack_rgba_1010102_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_bgra_1010102_, component_type) (const component_type *src,
-                                                    guint8 *dst,
+                                                    uint8_t *dst,
                                                     int width)
 {
   while (width-- > 0)
     {
-      guint32 *v = (guint32 *) dst;
+      uint32_t *v = (uint32_t *) dst;
 
       *v = ((PACK_10 (src[2]) << 22) |
             (PACK_10 (src[1]) << 12) |
@@ -606,12 +606,12 @@ G_PASTE (_cogl_pack_bgra_1010102_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_argb_2101010_, component_type) (const component_type *src,
-                                                    guint8 *dst,
+                                                    uint8_t *dst,
                                                     int width)
 {
   while (width-- > 0)
     {
-      guint32 *v = (guint32 *) dst;
+      uint32_t *v = (uint32_t *) dst;
 
       *v = ((PACK_2 (src[3]) << 30) |
             (PACK_10 (src[0]) << 20) |
@@ -624,12 +624,12 @@ G_PASTE (_cogl_pack_argb_2101010_, component_type) (const component_type *src,
 
 inline static void
 G_PASTE (_cogl_pack_abgr_2101010_, component_type) (const component_type *src,
-                                                    guint8 *dst,
+                                                    uint8_t *dst,
                                                     int width)
 {
   while (width-- > 0)
     {
-      guint32 *v = (guint32 *) dst;
+      uint32_t *v = (uint32_t *) dst;
 
       *v = ((PACK_2 (src[3]) << 30) |
             (PACK_10 (src[2]) << 20) |
@@ -651,7 +651,7 @@ G_PASTE (_cogl_pack_abgr_2101010_, component_type) (const component_type *src,
 inline static void
 G_PASTE (_cogl_pack_, component_type) (CoglPixelFormat format,
                                        const component_type *src,
-                                       guint8 *dst,
+                                       uint8_t *dst,
                                        int width)
 {
   switch (format)

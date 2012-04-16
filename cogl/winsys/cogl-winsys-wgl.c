@@ -76,7 +76,7 @@ typedef struct _CoglDisplayWgl
 typedef struct _CoglOnscreenWin32
 {
   HWND hwnd;
-  gboolean is_foreign_hwnd;
+  CoglBool is_foreign_hwnd;
 } CoglOnscreenWin32;
 
 typedef struct _CoglContextWgl
@@ -222,7 +222,7 @@ win32_event_filter_cb (MSG *msg, void *data)
   return COGL_FILTER_CONTINUE;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                GError **error)
 {
@@ -235,7 +235,7 @@ static LRESULT CALLBACK
 window_proc (HWND hwnd, UINT umsg,
              WPARAM wparam, LPARAM lparam)
 {
-  gboolean message_handled = FALSE;
+  CoglBool message_handled = FALSE;
   CoglOnscreen *onscreen;
 
   /* It's not clear what the best thing to do with messages sent to
@@ -294,7 +294,7 @@ window_proc (HWND hwnd, UINT umsg,
     return 0;
 }
 
-static gboolean
+static CoglBool
 pixel_format_is_better (const PIXELFORMATDESCRIPTOR *pfa,
                         const PIXELFORMATDESCRIPTOR *pfb)
 {
@@ -363,7 +363,7 @@ choose_pixel_format (CoglFramebufferConfig *config,
   return best_pf;
 }
 
-static gboolean
+static CoglBool
 create_window_class (CoglDisplay *display, GError **error)
 {
   CoglDisplayWgl *wgl_display = display->winsys;
@@ -416,7 +416,7 @@ create_window_class (CoglDisplay *display, GError **error)
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 create_context (CoglDisplay *display, GError **error)
 {
   CoglDisplayWgl *wgl_display = display->winsys;
@@ -519,7 +519,7 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
   display->winsys = NULL;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_display_setup (CoglDisplay *display,
                             GError **error)
 {
@@ -578,7 +578,7 @@ get_wgl_extensions_string (HDC dc)
   return NULL;
 }
 
-static gboolean
+static CoglBool
 update_winsys_features (CoglContext *context, GError **error)
 {
   CoglDisplayWgl *wgl_display = context->display->winsys;
@@ -624,7 +624,7 @@ update_winsys_features (CoglContext *context, GError **error)
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_context_init (CoglContext *context, GError **error)
 {
   CoglContextWgl *wgl_context;
@@ -723,7 +723,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   onscreen->winsys = NULL;
 }
 
-static gboolean
+static CoglBool
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                             GError **error)
 {
@@ -850,7 +850,7 @@ _cogl_winsys_onscreen_win32_get_window (CoglOnscreen *onscreen)
 
 static void
 _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
-                                      gboolean visibility)
+                                      CoglBool visibility)
 {
   CoglOnscreenWin32 *win32_onscreen = onscreen->winsys;
 
@@ -860,7 +860,7 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
 const CoglWinsysVtable *
 _cogl_winsys_wgl_get_vtable (void)
 {
-  static gboolean vtable_inited = FALSE;
+  static CoglBool vtable_inited = FALSE;
   static CoglWinsysVtable vtable;
 
   /* It would be nice if we could use C99 struct initializers here

@@ -32,7 +32,7 @@
 GType \
 cogl_gtype_ ## underscore_name ## _get_type (void) \
 { \
-   static volatile gsize type_volatile = 0; \
+   static volatile size_t type_volatile = 0; \
    if (g_once_init_enter (&type_volatile)) \
      { \
        GType type = \

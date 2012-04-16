@@ -26,7 +26,7 @@ draw_path_at (int x, int y)
 static void
 check_block (int block_x, int block_y, int block_mask)
 {
-  guint32 data[BLOCK_SIZE * BLOCK_SIZE];
+  uint32_t data[BLOCK_SIZE * BLOCK_SIZE];
   int qx, qy;
 
   /* Block mask represents which quarters of the block should be
@@ -38,7 +38,7 @@ check_block (int block_x, int block_y, int block_mask)
                                 block_y * BLOCK_SIZE,
                                 BLOCK_SIZE, BLOCK_SIZE,
                                 COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                (guint8 *)data);
+                                (uint8_t *)data);
 
   for (qy = 0; qy < 2; qy++)
     for (qx = 0; qx < 2; qx++)
@@ -50,7 +50,7 @@ check_block (int block_x, int block_y, int block_mask)
         for (x = 0; x < BLOCK_SIZE / 2 - TEST_INSET * 2; x++)
           for (y = 0; y < BLOCK_SIZE / 2 - TEST_INSET * 2; y++)
             {
-              const guint32 *p = data + (qx * BLOCK_SIZE / 2 +
+              const uint32_t *p = data + (qx * BLOCK_SIZE / 2 +
                                         qy * BLOCK_SIZE * BLOCK_SIZE / 2 +
                                         (x + TEST_INSET) +
                                         (y + TEST_INSET) * BLOCK_SIZE);

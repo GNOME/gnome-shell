@@ -40,7 +40,7 @@
 
 #ifdef USE_QUARTZ
 
-gboolean
+CoglBool
 _cogl_bitmap_get_size_from_file (const char *filename,
                                  int        *width,
                                  int        *height)
@@ -64,8 +64,8 @@ _cogl_bitmap_from_file (const char  *filename,
   CGImageRef image;
   int save_errno;
   CFStringRef type;
-  gsize width, height, rowstride;
-  guint8 *out_data;
+  size_t width, height, rowstride;
+  uint8_t *out_data;
   CGColorSpaceRef color_space;
   CGContextRef bitmap_context;
   CoglBitmap *bmp;
@@ -159,7 +159,7 @@ _cogl_bitmap_from_file (const char  *filename,
 
 #elif defined(USE_GDKPIXBUF)
 
-gboolean
+CoglBool
 _cogl_bitmap_get_size_from_file (const char *filename,
                                  int        *width,
                                  int        *height)
@@ -178,7 +178,7 @@ _cogl_bitmap_from_file (const char   *filename,
 {
   static CoglUserDataKey pixbuf_key;
   GdkPixbuf        *pixbuf;
-  gboolean          has_alpha;
+  CoglBool          has_alpha;
   GdkColorspace     color_space;
   CoglPixelFormat   pixel_format;
   int               width;
@@ -255,7 +255,7 @@ _cogl_bitmap_from_file (const char   *filename,
 
 #include "stb_image.c"
 
-gboolean
+CoglBool
 _cogl_bitmap_get_size_from_file (const char *filename,
                                  int        *width,
                                  int        *height)
@@ -278,7 +278,7 @@ _cogl_bitmap_from_file (const char  *filename,
   int      stb_pixel_format;
   int      width;
   int      height;
-  guint8  *pixels;
+  uint8_t  *pixels;
 
   _COGL_GET_CONTEXT (ctx, NULL);
 

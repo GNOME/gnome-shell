@@ -45,7 +45,7 @@ G_BEGIN_DECLS
  * Return value: %TRUE if the handle references a #CoglPath,
  *   %FALSE otherwise
  */
-gboolean
+CoglBool
 cogl_is_path (CoglHandle handle);
 
 /**

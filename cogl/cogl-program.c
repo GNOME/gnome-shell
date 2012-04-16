@@ -311,7 +311,7 @@ cogl_program_set_uniform_matrix (CoglHandle handle,
                                  int uniform_location,
                                  int dimensions,
                                  int count,
-                                 gboolean transpose,
+                                 CoglBool transpose,
                                  const float *value)
 {
   CoglProgramUniform *uniform;
@@ -328,7 +328,7 @@ void
 cogl_program_uniform_matrix (int uniform_no,
                              int size,
                              int count,
-                             gboolean transpose,
+                             CoglBool transpose,
                              const float *value)
 {
   CoglProgramUniform *uniform;
@@ -395,7 +395,7 @@ _cogl_program_flush_uniform_arbfp (GLint location,
 void
 _cogl_program_flush_uniforms (CoglProgram *program,
                               GLuint gl_program,
-                              gboolean gl_program_changed)
+                              CoglBool gl_program_changed)
 {
   CoglProgramUniform *uniform;
   int i;
@@ -466,7 +466,7 @@ _cogl_program_get_language (CoglHandle handle)
     return COGL_SHADER_LANGUAGE_GLSL;
 }
 
-static gboolean
+static CoglBool
 _cogl_program_has_shader_type (CoglProgram *program,
                                CoglShaderType type)
 {
@@ -483,13 +483,13 @@ _cogl_program_has_shader_type (CoglProgram *program,
   return FALSE;
 }
 
-gboolean
+CoglBool
 _cogl_program_has_fragment_shader (CoglHandle handle)
 {
   return _cogl_program_has_shader_type (handle, COGL_SHADER_TYPE_FRAGMENT);
 }
 
-gboolean
+CoglBool
 _cogl_program_has_vertex_shader (CoglHandle handle)
 {
   return _cogl_program_has_shader_type (handle, COGL_SHADER_TYPE_VERTEX);

@@ -51,7 +51,7 @@ struct _CoglOnscreen
   CoglFramebuffer  _parent;
 
 #ifdef COGL_HAS_X11_SUPPORT
-  guint32 foreign_xid;
+  uint32_t foreign_xid;
   CoglOnscreenX11MaskCallback foreign_update_mask_callback;
   void *foreign_update_mask_data;
 #endif
@@ -60,7 +60,7 @@ struct _CoglOnscreen
   HWND foreign_hwnd;
 #endif
 
-  gboolean swap_throttled;
+  CoglBool swap_throttled;
 
   CoglSwapBuffersNotifyList swap_callbacks;
 

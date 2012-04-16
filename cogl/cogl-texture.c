@@ -79,7 +79,7 @@ _cogl_texture_register_texture_type (const CoglObjectClass *klass)
   ctxt->texture_types = g_slist_prepend (ctxt->texture_types, (void *) klass);
 }
 
-gboolean
+CoglBool
 cogl_is_texture (void *object)
 {
   CoglObject *obj = (CoglObject *)object;
@@ -140,7 +140,7 @@ _cogl_texture_free (CoglTexture *texture)
   g_free (texture);
 }
 
-static gboolean
+static CoglBool
 _cogl_texture_needs_premult_conversion (CoglPixelFormat src_format,
                                         CoglPixelFormat dst_format)
 {
@@ -330,7 +330,7 @@ cogl_texture_new_with_size (unsigned int     width,
 
   if (tex)
     {
-      gboolean auto_mipmap = !(flags & COGL_TEXTURE_NO_AUTO_MIPMAP);
+      CoglBool auto_mipmap = !(flags & COGL_TEXTURE_NO_AUTO_MIPMAP);
       cogl_primitive_texture_set_auto_mipmap (COGL_PRIMITIVE_TEXTURE (tex),
                                               auto_mipmap);
     }
@@ -350,13 +350,13 @@ cogl_texture_new_with_size (unsigned int     width,
 }
 
 CoglTexture *
-cogl_texture_new_from_data (unsigned int      width,
-			    unsigned int      height,
-                            CoglTextureFlags  flags,
-			    CoglPixelFormat   format,
-			    CoglPixelFormat   internal_format,
-			    unsigned int      rowstride,
-			    const guint8     *data)
+cogl_texture_new_from_data (unsigned int width,
+			    unsigned int height,
+                            CoglTextureFlags flags,
+			    CoglPixelFormat format,
+			    CoglPixelFormat internal_format,
+			    unsigned int rowstride,
+			    const uint8_t *data)
 {
   CoglBitmap *bmp;
   CoglTexture *tex;
@@ -378,7 +378,7 @@ cogl_texture_new_from_data (unsigned int      width,
                                   width, height,
                                   format,
                                   rowstride,
-                                  (guint8 *) data);
+                                  (uint8_t *) data);
 
   tex = cogl_texture_new_from_bitmap (bmp, flags, internal_format);
 
@@ -513,7 +513,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
     }
 }
 
-gboolean
+CoglBool
 _cogl_texture_is_foreign (CoglTexture *texture)
 {
   if (texture->vtable->is_foreign)
@@ -572,7 +572,7 @@ cogl_texture_get_max_waste (CoglTexture *texture)
   return texture->vtable->get_max_waste (texture);
 }
 
-gboolean
+CoglBool
 cogl_texture_is_sliced (CoglTexture *texture)
 {
   return texture->vtable->is_sliced (texture);
@@ -582,7 +582,7 @@ cogl_texture_is_sliced (CoglTexture *texture)
  * will be needed to iterate over multiple sub textures for regions whos
  * texture coordinates extend out of the range [0,1]
  */
-gboolean
+CoglBool
 _cogl_texture_can_hardware_repeat (CoglTexture *texture)
 {
   return texture->vtable->can_hardware_repeat (texture);
@@ -612,7 +612,7 @@ _cogl_texture_get_gl_format (CoglTexture *texture)
   return texture->vtable->get_gl_format (texture);
 }
 
-gboolean
+CoglBool
 cogl_texture_get_gl_texture (CoglTexture *texture,
 			     GLuint *out_gl_handle,
 			     GLenum *out_gl_target)
@@ -647,7 +647,7 @@ _cogl_texture_ensure_non_quad_rendering (CoglTexture *texture)
   texture->vtable->ensure_non_quad_rendering (texture);
 }
 
-gboolean
+CoglBool
 cogl_texture_set_region_from_bitmap (CoglTexture *texture,
                                      int src_x,
                                      int src_y,
@@ -657,7 +657,7 @@ cogl_texture_set_region_from_bitmap (CoglTexture *texture,
                                      unsigned int dst_height,
                                      CoglBitmap *bmp)
 {
-  gboolean ret;
+  CoglBool ret;
 
   _COGL_RETURN_VAL_IF_FAIL ((cogl_bitmap_get_width (bmp) - src_x)
                             >= dst_width, FALSE);
@@ -684,22 +684,22 @@ cogl_texture_set_region_from_bitmap (CoglTexture *texture,
   return ret;
 }
 
-gboolean
-cogl_texture_set_region (CoglTexture     *texture,
-			 int              src_x,
-			 int              src_y,
-			 int              dst_x,
-			 int              dst_y,
-			 unsigned int     dst_width,
-			 unsigned int     dst_height,
-			 int              width,
-			 int              height,
-			 CoglPixelFormat  format,
-			 unsigned int     rowstride,
-			 const guint8    *data)
+CoglBool
+cogl_texture_set_region (CoglTexture *texture,
+			 int src_x,
+			 int src_y,
+			 int dst_x,
+			 int dst_y,
+			 unsigned int dst_width,
+			 unsigned int dst_height,
+			 int width,
+			 int height,
+			 CoglPixelFormat format,
+			 unsigned int rowstride,
+			 const uint8_t *data)
 {
   CoglBitmap *source_bmp;
-  gboolean    ret;
+  CoglBool    ret;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -719,7 +719,7 @@ cogl_texture_set_region (CoglTexture     *texture,
                                          width, height,
                                          format,
                                          rowstride,
-                                         (guint8 *) data);
+                                         (uint8_t *) data);
 
   ret = cogl_texture_set_region_from_bitmap (texture,
                                              src_x, src_y,
@@ -836,7 +836,7 @@ do_texture_draw_and_read (CoglTexture *texture,
  * NB: Normally this approach isn't normally used since we can just use
  * glGetTexImage, but may be used as a fallback in some circumstances.
  */
-gboolean
+CoglBool
 _cogl_texture_draw_and_read (CoglTexture *texture,
                              CoglBitmap  *target_bmp,
                              GLuint       target_gl_format,
@@ -915,12 +915,12 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
   printf ("A bits: %d\n", a_bits); */
   if ((cogl_texture_get_format (texture) & COGL_A_BIT)/* && a_bits == 0*/)
     {
-      guint8 *srcdata;
-      guint8 *dstdata;
-      guint8 *srcpixel;
-      guint8 *dstpixel;
-      int     x,y;
-      int     alpha_rowstride = bpp * target_width;
+      uint8_t *srcdata;
+      uint8_t *dstdata;
+      uint8_t *srcpixel;
+      uint8_t *dstpixel;
+      int x,y;
+      int alpha_rowstride = bpp * target_width;
 
       if ((dstdata = _cogl_bitmap_map (target_bmp,
                                        COGL_BUFFER_ACCESS_WRITE,
@@ -977,20 +977,20 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
   return TRUE;
 }
 
-static gboolean
+static CoglBool
 get_texture_bits_via_offscreen (CoglTexture    *texture,
                                 int             x,
                                 int             y,
                                 int             width,
                                 int             height,
-                                guint8         *dst_bits,
+                                uint8_t         *dst_bits,
                                 unsigned int    dst_rowstride,
                                 CoglPixelFormat dst_format)
 {
   CoglOffscreen *offscreen;
   CoglFramebuffer *framebuffer;
   CoglBitmap *bitmap;
-  gboolean ret;
+  CoglBool ret;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -1023,19 +1023,19 @@ get_texture_bits_via_offscreen (CoglTexture    *texture,
   return ret;
 }
 
-static gboolean
-get_texture_bits_via_copy (CoglTexture    *texture,
-                           int             x,
-                           int             y,
-                           int             width,
-                           int             height,
-                           guint8         *dst_bits,
-                           unsigned int    dst_rowstride,
+static CoglBool
+get_texture_bits_via_copy (CoglTexture *texture,
+                           int x,
+                           int y,
+                           int width,
+                           int height,
+                           uint8_t *dst_bits,
+                           unsigned int dst_rowstride,
                            CoglPixelFormat dst_format)
 {
   unsigned int full_rowstride;
-  guint8 *full_bits;
-  gboolean ret = TRUE;
+  uint8_t *full_bits;
+  CoglBool ret = TRUE;
   int bpp;
   int full_tex_width, full_tex_height;
 
@@ -1052,8 +1052,8 @@ get_texture_bits_via_copy (CoglTexture    *texture,
                                  full_rowstride,
                                  full_bits))
     {
-      guint8 *dst = dst_bits;
-      guint8 *src = full_bits + x * bpp + y * full_rowstride;
+      uint8_t *dst = dst_bits;
+      uint8_t *src = full_bits + x * bpp + y * full_rowstride;
       int i;
 
       for (i = 0; i < height; i++)
@@ -1073,11 +1073,11 @@ get_texture_bits_via_copy (CoglTexture    *texture,
 
 typedef struct
 {
-  int         orig_width;
-  int         orig_height;
+  int orig_width;
+  int orig_height;
   CoglBitmap *target_bmp;
-  guint8     *target_bits;
-  gboolean    success;
+  uint8_t *target_bits;
+  CoglBool success;
 } CoglTextureGetData;
 
 static void
@@ -1102,7 +1102,7 @@ texture_get_cb (CoglTexture *texture,
   int x_in_bitmap = (int) (0.5 + tg_data->orig_width * virtual_coords[0]);
   int y_in_bitmap = (int) (0.5 + tg_data->orig_height * virtual_coords[1]);
 
-  guint8 *dst_bits;
+  uint8_t *dst_bits;
 
   if (!tg_data->success)
     return;
@@ -1147,10 +1147,10 @@ texture_get_cb (CoglTexture *texture,
 }
 
 int
-cogl_texture_get_data (CoglTexture     *texture,
-		       CoglPixelFormat  format,
-		       unsigned int     rowstride,
-		       guint8          *data)
+cogl_texture_get_data (CoglTexture *texture,
+		       CoglPixelFormat format,
+		       unsigned int rowstride,
+		       uint8_t *data)
 {
   int              bpp;
   int              byte_size;
@@ -1254,7 +1254,7 @@ cogl_texture_get_data (CoglTexture     *texture,
   if (closest_format != format)
     {
       CoglBitmap *new_bmp;
-      gboolean result;
+      CoglBool result;
 
       /* Convert to requested format directly into the user's buffer */
       new_bmp = cogl_bitmap_new_for_data (ctx,

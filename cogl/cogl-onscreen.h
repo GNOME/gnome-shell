@@ -60,7 +60,7 @@ cogl_onscreen_new (CoglContext *context, int width, int height);
 
 #ifdef COGL_HAS_X11
 typedef void (*CoglOnscreenX11MaskCallback) (CoglOnscreen *onscreen,
-                                             guint32 event_mask,
+                                             uint32_t event_mask,
                                              void *user_data);
 
 /**
@@ -88,7 +88,7 @@ typedef void (*CoglOnscreenX11MaskCallback) (CoglOnscreen *onscreen,
  * [{
  * static void
  * my_update_cogl_x11_event_mask (CoglOnscreen *onscreen,
- *                                guint32 event_mask,
+ *                                uint32_t event_mask,
  *                                void *user_data)
  * {
  *   XSetWindowAttributes attrs;
@@ -115,7 +115,7 @@ typedef void (*CoglOnscreenX11MaskCallback) (CoglOnscreen *onscreen,
  */
 void
 cogl_x11_onscreen_set_foreign_window_xid (CoglOnscreen *onscreen,
-                                          guint32 xid,
+                                          uint32_t xid,
                                           CoglOnscreenX11MaskCallback update,
                                           void *user_data);
 
@@ -136,12 +136,12 @@ cogl_x11_onscreen_set_foreign_window_xid (CoglOnscreen *onscreen,
  * Since: 1.10
  * Stability: unstable
  */
-guint32
+uint32_t
 cogl_x11_onscreen_get_window_xid (CoglOnscreen *onscreen);
 
 /* XXX: we should maybe remove this, since nothing currently uses
  * it and the current implementation looks dubious. */
-guint32
+uint32_t
 cogl_x11_onscreen_get_visual_xid (CoglOnscreen *onscreen);
 #endif /* COGL_HAS_X11 */
 
@@ -237,7 +237,7 @@ cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
  */
 void
 cogl_onscreen_set_swap_throttled (CoglOnscreen *onscreen,
-                                  gboolean throttled);
+                                  CoglBool throttled);
 
 /**
  * cogl_onscreen_show:
@@ -391,7 +391,7 @@ cogl_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
  * Since: 1.10
  * Stability: unstable
  */
-gboolean
+CoglBool
 cogl_is_onscreen (void *object);
 
 G_END_DECLS

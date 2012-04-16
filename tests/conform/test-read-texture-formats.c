@@ -8,14 +8,14 @@
  * pixel formats
  */
 
-static const guint8 tex_data[4] = { 0x12, 0x34, 0x56, 0x78 };
+static const uint8_t tex_data[4] = { 0x12, 0x34, 0x56, 0x78 };
 
 static void
 test_read_byte (CoglTexture2D *tex_2d,
                 CoglPixelFormat format,
-                guint8 expected_byte)
+                uint8_t expected_byte)
 {
-  guint8 received_byte;
+  uint8_t received_byte;
 
   cogl_texture_get_data (COGL_TEXTURE (tex_2d),
                          format,
@@ -32,8 +32,8 @@ test_read_short (CoglTexture2D *tex_2d,
 {
   va_list ap;
   int bits;
-  guint16 received_value;
-  guint16 expected_value = 0;
+  uint16_t received_value;
+  uint16_t expected_value = 0;
   char *received_value_str;
   char *expected_value_str;
   int bits_sum = 0;
@@ -41,7 +41,7 @@ test_read_short (CoglTexture2D *tex_2d,
   cogl_texture_get_data (COGL_TEXTURE (tex_2d),
                          format,
                          2, /* rowstride */
-                         (guint8 *) &received_value);
+                         (uint8_t *) &received_value);
 
   va_start (ap, format);
 
@@ -67,9 +67,9 @@ test_read_short (CoglTexture2D *tex_2d,
 static void
 test_read_888 (CoglTexture2D *tex_2d,
                CoglPixelFormat format,
-               guint32 expected_pixel)
+               uint32_t expected_pixel)
 {
-  guint8 pixel[4];
+  uint8_t pixel[4];
 
   cogl_texture_get_data (COGL_TEXTURE (tex_2d),
                          format,
@@ -82,16 +82,16 @@ test_read_888 (CoglTexture2D *tex_2d,
 static void
 test_read_8888 (CoglTexture2D *tex_2d,
                 CoglPixelFormat format,
-                guint32 expected_pixel)
+                uint32_t expected_pixel)
 {
-  guint32 received_pixel;
+  uint32_t received_pixel;
   char *received_value_str;
   char *expected_value_str;
 
   cogl_texture_get_data (COGL_TEXTURE (tex_2d),
                          format,
                          4, /* rowstride */
-                         (guint8 *) &received_pixel);
+                         (uint8_t *) &received_pixel);
 
   received_pixel = GUINT32_FROM_BE (received_pixel);
 
@@ -109,8 +109,8 @@ test_read_int (CoglTexture2D *tex_2d,
 {
   va_list ap;
   int bits;
-  guint32 received_value;
-  guint32 expected_value = 0;
+  uint32_t received_value;
+  uint32_t expected_value = 0;
   char *received_value_str;
   char *expected_value_str;
   int bits_sum = 0;
@@ -118,14 +118,14 @@ test_read_int (CoglTexture2D *tex_2d,
   cogl_texture_get_data (COGL_TEXTURE (tex_2d),
                          format,
                          4, /* rowstride */
-                         (guint8 *) &received_value);
+                         (uint8_t *) &received_value);
 
   va_start (ap, format);
 
   /* Convert the va args into a single 32-bit expected value */
   while ((bits = va_arg (ap, int)) != -1)
     {
-      guint32 value = (va_arg (ap, int) * ((1 << bits) - 1) + 128) / 255;
+      uint32_t value = (va_arg (ap, int) * ((1 << bits) - 1) + 128) / 255;
 
       bits_sum += bits;
 

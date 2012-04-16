@@ -34,8 +34,8 @@ verify_point_size (CoglFramebuffer *fb,
   for (y = 0; y < 4; y++)
     for (x = 0; x < 4; x++)
       {
-        gboolean in_point = x >= 1 && x <= 2 && y >= 1 && y <= 2;
-        guint32 expected_pixel = in_point ? 0x00ff00ff : 0xff0000ff;
+        CoglBool in_point = x >= 1 && x <= 2 && y >= 1 && y <= 2;
+        uint32_t expected_pixel = in_point ? 0x00ff00ff : 0xff0000ff;
 
         test_utils_check_pixel (fb,
                                 calc_coord_offset (x_pos, x, point_size),

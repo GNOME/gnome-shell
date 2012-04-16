@@ -62,7 +62,7 @@ typedef struct _CoglIndexBuffer	      CoglIndexBuffer;
  */
 CoglIndexBuffer *
 cogl_index_buffer_new (CoglContext *context,
-                       gsize bytes);
+                       size_t bytes);
 
 /**
  * cogl_is_index_buffer:
@@ -76,7 +76,7 @@ cogl_index_buffer_new (CoglContext *context,
  * Since: 1.4
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_is_index_buffer (void *object);
 
 G_END_DECLS

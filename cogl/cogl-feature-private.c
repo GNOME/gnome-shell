@@ -32,7 +32,7 @@
 #include "cogl-feature-private.h"
 #include "cogl-renderer-private.h"
 
-gboolean
+CoglBool
 _cogl_feature_check (CoglRenderer *renderer,
                      const char *driver_prefix,
                      const CoglFeatureData *data,
@@ -129,7 +129,7 @@ _cogl_feature_check (CoglRenderer *renderer,
         goto error;
 
       /* Set the function pointer in the context */
-      *(void **) ((guint8 *) function_table +
+      *(void **) ((uint8_t *) function_table +
                   data->functions[func_num].pointer_offset) = func;
     }
 
@@ -140,7 +140,7 @@ _cogl_feature_check (CoglRenderer *renderer,
    * do feature testing by just looking at the function pointers */
 error:
   for (func_num = 0; data->functions[func_num].name; func_num++)
-    *(void **) ((guint8 *) function_table +
+    *(void **) ((uint8_t *) function_table +
                 data->functions[func_num].pointer_offset) = NULL;
 
   return FALSE;

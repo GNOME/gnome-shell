@@ -157,7 +157,7 @@ cogl2_path_get_fill_rule (CoglPath *path)
 
 static void
 _cogl_path_add_node (CoglPath *path,
-                     gboolean new_sub_path,
+                     CoglBool new_sub_path,
 		     float x,
 		     float y)
 {
@@ -280,7 +280,7 @@ _cogl_path_fill_nodes_with_clipped_rectangle (CoglPath *path)
   if (!(path->data->context->private_feature_flags &
         COGL_PRIVATE_FEATURE_STENCIL_BUFFER))
     {
-      static gboolean seen_warning = FALSE;
+      static CoglBool seen_warning = FALSE;
 
       if (!seen_warning)
         {
@@ -300,10 +300,10 @@ _cogl_path_fill_nodes_with_clipped_rectangle (CoglPath *path)
   cogl_framebuffer_pop_clip (fb);
 }
 
-static gboolean
+static CoglBool
 validate_layer_cb (CoglPipelineLayer *layer, void *user_data)
 {
-  gboolean *needs_fallback = user_data;
+  CoglBool *needs_fallback = user_data;
   CoglTexture *texture = _cogl_pipeline_layer_get_texture (layer);
 
   /* If any of the layers of the current pipeline contain sliced
@@ -502,7 +502,7 @@ cogl2_path_rectangle (CoglPath *path,
                       float x_2,
                       float y_2)
 {
-  gboolean is_rectangle;
+  CoglBool is_rectangle;
 
   /* If the path was previously empty and the rectangle isn't mirrored
      then we'll record that this is a simple rectangle path so that we
@@ -520,7 +520,7 @@ cogl2_path_rectangle (CoglPath *path,
   path->data->is_rectangle = is_rectangle;
 }
 
-gboolean
+CoglBool
 _cogl_path_is_rectangle (CoglPath *path)
 {
   return path->data->is_rectangle;
@@ -1040,7 +1040,7 @@ struct _CoglPathTesselator
      combine callback is called */
   GArray *vertices;
   /* Array of integers for the indices into the vertices array. Each
-     element will either be guint8, guint16 or guint32 depending on
+     element will either be uint8_t, uint16_t or uint32_t depending on
      the number of vertices */
   GArray *indices;
   CoglIndicesType indices_type;
@@ -1082,15 +1082,15 @@ _cogl_path_tesselator_allocate_indices_array (CoglPathTesselator *tess)
   switch (tess->indices_type)
     {
     case COGL_INDICES_TYPE_UNSIGNED_BYTE:
-      tess->indices = g_array_new (FALSE, FALSE, sizeof (guint8));
+      tess->indices = g_array_new (FALSE, FALSE, sizeof (uint8_t));
       break;
 
     case COGL_INDICES_TYPE_UNSIGNED_SHORT:
-      tess->indices = g_array_new (FALSE, FALSE, sizeof (guint16));
+      tess->indices = g_array_new (FALSE, FALSE, sizeof (uint16_t));
       break;
 
     case COGL_INDICES_TYPE_UNSIGNED_INT:
-      tess->indices = g_array_new (FALSE, FALSE, sizeof (guint32));
+      tess->indices = g_array_new (FALSE, FALSE, sizeof (uint32_t));
       break;
     }
 }
@@ -1102,21 +1102,21 @@ _cogl_path_tesselator_add_index (CoglPathTesselator *tess, int vertex_index)
     {
     case COGL_INDICES_TYPE_UNSIGNED_BYTE:
       {
-        guint8 val = vertex_index;
+        uint8_t val = vertex_index;
         g_array_append_val (tess->indices, val);
       }
       break;
 
     case COGL_INDICES_TYPE_UNSIGNED_SHORT:
       {
-        guint16 val = vertex_index;
+        uint16_t val = vertex_index;
         g_array_append_val (tess->indices, val);
       }
       break;
 
     case COGL_INDICES_TYPE_UNSIGNED_INT:
       {
-        guint32 val = vertex_index;
+        uint32_t val = vertex_index;
         g_array_append_val (tess->indices, val);
       }
       break;
@@ -1240,21 +1240,21 @@ _cogl_path_tesselator_combine (double coords[3],
           for (i = 0; i < old_vertices->len; i++)
             _cogl_path_tesselator_add_index (tess,
                                              g_array_index (old_vertices,
-                                                            guint8, i));
+                                                            uint8_t, i));
           break;
 
         case COGL_INDICES_TYPE_UNSIGNED_SHORT:
           for (i = 0; i < old_vertices->len; i++)
             _cogl_path_tesselator_add_index (tess,
                                              g_array_index (old_vertices,
-                                                            guint16, i));
+                                                            uint16_t, i));
           break;
 
         case COGL_INDICES_TYPE_UNSIGNED_INT:
           for (i = 0; i < old_vertices->len; i++)
             _cogl_path_tesselator_add_index (tess,
                                              g_array_index (old_vertices,
-                                                            guint32, i));
+                                                            uint32_t, i));
           break;
         }
 

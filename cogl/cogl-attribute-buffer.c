@@ -40,11 +40,11 @@ COGL_BUFFER_DEFINE (AttributeBuffer, attribute_buffer);
 
 CoglAttributeBuffer *
 cogl_attribute_buffer_new (CoglContext *context,
-                           gsize bytes,
+                           size_t bytes,
                            const void *data)
 {
   CoglAttributeBuffer *array = g_slice_new (CoglAttributeBuffer);
-  gboolean use_malloc;
+  CoglBool use_malloc;
 
   if (!(context->private_feature_flags & COGL_PRIVATE_FEATURE_VBOS))
     use_malloc = TRUE;

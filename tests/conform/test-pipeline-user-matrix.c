@@ -13,7 +13,7 @@ typedef struct _TestState
 static void
 validate_result (TestState *state)
 {
-  guint32 *pixels, *p;
+  uint32_t *pixels, *p;
   char *screen_pixel;
   const char *intended_pixel = "#ffffff";
 
@@ -24,7 +24,7 @@ validate_result (TestState *state)
 
   cogl_framebuffer_read_pixels (fb, 0, 0, state->width, state->height,
                                 COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                (guint8 *)pixels);
+                                (uint8_t *)pixels);
 
   for (p = pixels; p < pixels + state->width * state->height; p++)
     {
@@ -38,14 +38,14 @@ static void
 paint (TestState *state)
 {
   /* This texture is painted mirrored around the x-axis */
-  guint8 data0[] = {
+  uint8_t data0[] = {
     0xff, 0x00, 0x00, /* red -> becomes bottom left */
     0x00, 0xff, 0x00, /* green -> becomes bottom right */
     0x00, 0x00, 0xff, /* blue -> becomes top left */
     0xff, 0x00, 0xff  /* magenta -> becomes top right */
   };
   /* This texture is painted mirrored about the y-axis */
-  guint8 data1[] = {
+  uint8_t data1[] = {
     0x00, 0xff, 0x00, /* green -> becomes top right */
     0xff, 0xff, 0x00, /* yellow -> becomes top left */
     0xff, 0x00, 0xff, /* magenta -> becomes bottom right */

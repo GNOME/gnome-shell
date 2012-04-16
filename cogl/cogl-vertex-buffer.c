@@ -156,8 +156,8 @@ cogl_vertex_buffer_get_n_vertices (CoglHandle handle)
  */
 static CoglVertexBufferAttribFlags
 validate_gl_attribute (const char *gl_attribute,
-		       guint8 n_components,
-		       guint8 *texture_unit)
+		       uint8_t n_components,
+		       uint8_t *texture_unit)
 {
   CoglVertexBufferAttribFlags type;
   char *detail_seperator = NULL;
@@ -225,8 +225,8 @@ validate_gl_attribute (const char *gl_attribute,
  */
 static CoglVertexBufferAttribFlags
 validate_cogl_attribute (const char *cogl_attribute,
-		         guint8 n_components,
-		         guint8 *texture_unit)
+		         uint8_t n_components,
+		         uint8_t *texture_unit)
 {
   CoglVertexBufferAttribFlags type;
   char *detail_seperator = NULL;
@@ -298,7 +298,7 @@ validate_cogl_attribute (const char *cogl_attribute,
  *
  * maybe I should hang a compiled regex somewhere to handle this
  */
-static gboolean
+static CoglBool
 validate_custom_attribute_name (const char *attribute_name)
 {
   char *detail_seperator = NULL;
@@ -432,19 +432,19 @@ canonize_attribute_name (const char *attribute_name)
 void
 cogl_vertex_buffer_add (CoglHandle         handle,
 		        const char        *attribute_name,
-			guint8             n_components,
+			uint8_t            n_components,
 			CoglAttributeType  type,
-			gboolean           normalized,
-			guint16            stride,
+			CoglBool           normalized,
+			uint16_t           stride,
 			const void        *pointer)
 {
   CoglVertexBuffer *buffer;
   char *cogl_attribute_name;
   GQuark name_quark;
-  gboolean modifying_an_attrib = FALSE;
+  CoglBool modifying_an_attrib = FALSE;
   CoglVertexBufferAttrib *attribute;
   CoglVertexBufferAttribFlags flags = 0;
-  guint8 texture_unit = 0;
+  uint8_t texture_unit = 0;
   GList *tmp;
   char *detail;
 
@@ -606,7 +606,7 @@ cogl_vertex_buffer_delete (CoglHandle handle,
 static void
 set_attribute_enable (CoglHandle handle,
 		      const char *attribute_name,
-		      gboolean state)
+		      CoglBool state)
 {
   CoglVertexBuffer *buffer;
   char *cogl_attribute_name = canonize_attribute_name (attribute_name);
@@ -979,12 +979,12 @@ prep_strided_vbo_for_upload (CoglVertexBufferVBO *cogl_vbo)
   return lowest_pointer;
 }
 
-static gboolean
+static CoglBool
 upload_multipack_vbo_via_map_buffer (CoglVertexBufferVBO *cogl_vbo)
 {
   GList *tmp;
   unsigned int offset = 0;
-  guint8 *buf;
+  uint8_t *buf;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -1087,7 +1087,7 @@ cogl_vertex_buffer_vbo_resolve (CoglVertexBuffer *buffer,
   GList *conflicts;
   GList *tmp;
   GList *next;
-  gboolean found_target_vbo = FALSE;
+  CoglBool found_target_vbo = FALSE;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1507,7 +1507,7 @@ weak_override_source_destroyed_cb (CoglPipeline *pipeline,
   unref_pipeline_priv (pipeline_priv);
 }
 
-static gboolean
+static CoglBool
 validate_layer_cb (CoglPipeline *pipeline,
                    int layer_index,
                    void *user_data)
@@ -1521,7 +1521,7 @@ validate_layer_cb (CoglPipeline *pipeline,
       CoglPipelineWrapMode wrap_s;
       CoglPipelineWrapMode wrap_t;
       CoglPipelineWrapMode wrap_p;
-      gboolean need_override_source = FALSE;
+      CoglBool need_override_source = FALSE;
 
       /* By default COGL_PIPELINE_WRAP_MODE_AUTOMATIC becomes
        * GL_CLAMP_TO_EDGE but we want GL_REPEAT to maintain

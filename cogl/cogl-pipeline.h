@@ -105,7 +105,7 @@ cogl_pipeline_copy (CoglPipeline *source);
  * Since: 2.0
  * Stability: Unstable
  */
-gboolean
+CoglBool
 cogl_is_pipeline (void *object);
 
 /**
@@ -120,7 +120,7 @@ cogl_is_pipeline (void *object);
  * Since: 2.0
  * Stability: Unstable
  */
-typedef gboolean (*CoglPipelineLayerCallback) (CoglPipeline *pipeline,
+typedef CoglBool (*CoglPipelineLayerCallback) (CoglPipeline *pipeline,
                                                int layer_index,
                                                void *user_data);
 

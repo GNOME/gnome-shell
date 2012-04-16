@@ -64,7 +64,7 @@ _cogl_atlas_new (CoglPixelFormat texture_format,
                  CoglAtlasFlags flags,
                  CoglAtlasUpdatePositionCallback update_position_cb);
 
-gboolean
+CoglBool
 _cogl_atlas_reserve_space (CoglAtlas             *atlas,
                            unsigned int           width,
                            unsigned int           height,
@@ -95,7 +95,7 @@ _cogl_atlas_remove_reorganize_callback (CoglAtlas            *atlas,
                                         GHookFunc             post_callback,
                                         void                 *user_data);
 
-gboolean
+CoglBool
 _cogl_is_atlas (void *object);
 
 #endif /* __COGL_ATLAS_H */

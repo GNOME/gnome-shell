@@ -68,12 +68,12 @@ COGL_BUFFER_DEFINE (PixelBuffer, pixel_buffer)
 
 CoglPixelBuffer *
 cogl_pixel_buffer_new (CoglContext *context,
-                       gsize size,
+                       size_t size,
                        const void *data)
 {
   CoglPixelBuffer *pixel_buffer = g_slice_new0 (CoglPixelBuffer);
   CoglBuffer *buffer = COGL_BUFFER (pixel_buffer);
-  gboolean use_malloc;
+  CoglBool use_malloc;
 
   if (!(context->private_feature_flags & COGL_PRIVATE_FEATURE_PBOS))
     use_malloc = TRUE;
