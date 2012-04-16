@@ -34,6 +34,11 @@
 #include <stdio.h>
 #endif
 
+/* Double check that config.h has been included */
+#if !defined (GETTEXT_PACKAGE) && !defined (_COGL_IN_TEST_BITMASK)
+#error "config.h must be included before including cogl-util.h"
+#endif
+
 /* When compiling with Visual Studio, symbols that represent data that
    are exported out of the DLL need to be marked with the dllexport
    attribute. */
@@ -226,5 +231,51 @@ _cogl_util_pixel_format_from_masks (unsigned long r_mask,
                                     unsigned long b_mask,
                                     int depth, int bpp,
                                     int byte_order);
+
+/* Since we can't rely on _Static_assert always being available for
+ * all compilers we have limited static assert that can be used in
+ * C code but not in headers.
+ */
+#define _COGL_TYPEDEF_ASSERT(EXPRESSION) \
+  typedef struct { char Compile_Time_Assertion[(EXPRESSION) ? 1 : -1]; } \
+  G_PASTE (_GStaticAssert_, __LINE__)
+
+/* _COGL_STATIC_ASSERT:
+ * @expression: An expression to assert evaluates to true at compile
+ *              time.
+ * @message: A message to print to the console if the assertion fails
+ *           at compile time.
+ *
+ * Allows you to assert that an expression evaluates to true at
+ * compile time and aborts compilation if not. If possible message
+ * will also be printed if the assertion fails.
+ *
+ * Note: Only Gcc >= 4.6 supports the c11 _Static_assert which lets us
+ * print a nice message if the compile time assertion fails.
+ *
+ * Note: this assertion macro can only be used in C code where it is
+ * valid to use a typedef. This macro should not be used in headers
+ * because we can't guarantee a unique name for the typedef due to
+ * the name being based on the line number of the file it's used in.
+ *
+ * Although we can remove this limitation if the compiler supports
+ * _Static_assert we currently choose to maintain the limitation in
+ * any case to help ensure we don't accidentally create code that
+ * doesn't compile on some toolchains because we forgot about this
+ * limitation.
+ */
+#ifdef HAVE_STATIC_ASSERT
+#define _COGL_STATIC_ASSERT(EXPRESSION, MESSAGE) \
+  _Static_assert (EXPRESSION, MESSAGE); \
+  _COGL_TYPEDEF_ASSERT(EXPRESSION)
+#else
+#define _COGL_STATIC_ASSERT(EXPRESSION, MESSAGE) \
+  _COGL_TYPEDEF_ASSERT(EXPRESSION)
+
+/* So that we can safely use _Static_assert() if we want to add
+ * assertions to internal headers we define it to a NOP here
+ * if it's not supported by the compiler. */
+#define _Static_assert(EXPRESSION, MESSAGE)
+#endif
 
 #endif /* __COGL_UTIL_H */

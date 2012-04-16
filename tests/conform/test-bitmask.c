@@ -9,9 +9,9 @@
    within Cogl. Cogl doesn't export the symbols for this data type so
    we just directly include the source instead */
 
+#define _COGL_IN_TEST_BITMASK
 #include <cogl/cogl-bitmask.h>
 #include <cogl/cogl-bitmask.c>
-#define _COGL_IN_TEST_BITMASK
 #include <cogl/cogl-util.c>
 
 typedef struct

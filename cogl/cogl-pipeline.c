@@ -2590,8 +2590,13 @@ _cogl_pipeline_init_layer_state_hash_functions (void)
   layer_state_hash_functions[_index] =
     _cogl_pipeline_layer_hash_fragment_snippets_state;
 
+  {
   /* So we get a big error if we forget to update this code! */
-  g_assert (COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT == 10);
+  _COGL_STATIC_ASSERT (COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT == 10,
+                       "Don't forget to install a hash function for new "
+                       "pipeline state and update assert at end of "
+                       "_cogl_pipeline_init_state_hash_functions");
+  }
 }
 
 static gboolean
@@ -2697,8 +2702,13 @@ _cogl_pipeline_init_state_hash_functions (void)
   state_hash_functions[COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS_INDEX] =
     _cogl_pipeline_hash_fragment_snippets_state;
 
+  {
   /* So we get a big error if we forget to update this code! */
-  g_assert (COGL_PIPELINE_STATE_SPARSE_COUNT == 16);
+  _COGL_STATIC_ASSERT (COGL_PIPELINE_STATE_SPARSE_COUNT == 16,
+                       "Make sure to install a hash function for "
+                       "newly added pipeline state and update assert "
+                       "in _cogl_pipeline_init_state_hash_functions");
+  }
 }
 
 unsigned int

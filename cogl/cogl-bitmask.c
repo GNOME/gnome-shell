@@ -37,7 +37,10 @@
 
 /* This code assumes that we can cast an unsigned long to a pointer
    and back without losing any data */
-G_STATIC_ASSERT (sizeof (unsigned long) <= sizeof (void *));
+_COGL_STATIC_ASSERT (sizeof (unsigned long) <= sizeof (void *),
+                     "This toolchain breaks Cogl's assumption that it can "
+                     "safely cast an unsigned long to a pointer without "
+                     "loosing data");
 
 #define ARRAY_INDEX(bit_num) \
   ((bit_num) / (sizeof (unsigned long) * 8))

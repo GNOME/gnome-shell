@@ -935,6 +935,19 @@ AM_PROG_CC_C_O
 AC_ISC_POSIX
 AC_C_CONST
 
+dnl     ============================================================
+dnl     Compiler features
+dnl     ============================================================
+AC_TRY_COMPILE([],
+[
+_Static_assert (1, "");
+int
+main (int argc, char **argv)
+{
+  return 0;
+}
+],
+[AC_DEFINE([HAVE_STATIC_ASSERT], [1], [Whether _Static_assert can be used or not])])
 
 dnl ================================================================
 dnl Libtool stuff.
