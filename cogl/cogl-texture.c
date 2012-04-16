@@ -47,7 +47,7 @@
 #include "cogl-atlas-texture-private.h"
 #include "cogl-pipeline.h"
 #include "cogl-context-private.h"
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-object-private.h"
 #include "cogl-primitives.h"
 #include "cogl-framebuffer-private.h"
@@ -66,8 +66,8 @@ cogl_texture_error_quark (void)
 }
 
 /* XXX:
- * The CoglHandle macros don't support any form of inheritance, so for
- * now we implement the CoglHandle support for the CoglTexture
+ * The CoglObject macros don't support any form of inheritance, so for
+ * now we implement the CoglObject support for the CoglTexture
  * abstract class manually.
  */
 
@@ -320,7 +320,7 @@ cogl_texture_new_with_size (unsigned int     width,
 {
   CoglTexture *tex;
 
-  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   /* First try creating a fast-path non-sliced texture */
   tex = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx,
@@ -392,14 +392,14 @@ cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
                               CoglTextureFlags flags,
                               CoglPixelFormat  internal_format)
 {
-  CoglTexture *tex;
+  CoglAtlasTexture *atlas_tex;
   CoglTexture2D *tex_2d;
 
   /* First try putting the texture in the atlas */
-  if ((tex = _cogl_atlas_texture_new_from_bitmap (bitmap,
-                                                  flags,
-                                                  internal_format)))
-    return tex;
+  if ((atlas_tex = _cogl_atlas_texture_new_from_bitmap (bitmap,
+                                                        flags,
+                                                        internal_format)))
+    return COGL_TEXTURE (atlas_tex);
 
   /* If that doesn't work try a fast path 2D texture */
   if ((tex_2d = cogl_texture_2d_new_from_bitmap (bitmap,
@@ -467,7 +467,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
       CoglTextureRectangle *texture_rectangle;
       CoglSubTexture *sub_texture;
 
-      _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+      _COGL_GET_CONTEXT (ctx, NULL);
 
       if (x_pot_waste != 0 || y_pot_waste != 0)
         {
@@ -475,7 +475,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
            * the texture isn't limited to power of two sizes. */
           g_warning ("You can't create a foreign GL_TEXTURE_RECTANGLE cogl "
                      "texture with waste\n");
-          return COGL_INVALID_HANDLE;
+          return NULL;
         }
 
       texture_rectangle = _cogl_texture_rectangle_new_from_foreign (gl_handle,
@@ -503,7 +503,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
                                                                    format));
   else
     {
-      _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+      _COGL_GET_CONTEXT (ctx, NULL);
       return COGL_TEXTURE (cogl_texture_2d_new_from_foreign (ctx,
                                                              gl_handle,
                                                              width,

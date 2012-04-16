@@ -54,7 +54,7 @@ struct _CoglPangoPipelineCacheEntry
   CoglTexture *texture;
 
   /* This will only take a weak reference */
-  CoglHandle pipeline;
+  CoglPipeline *pipeline;
 };
 
 static void
@@ -173,7 +173,7 @@ pipeline_destroy_notify_cb (void *user_data)
 
 CoglPipeline *
 _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
-                                CoglHandle texture)
+                                CoglTexture *texture)
 {
   CoglPangoPipelineCacheEntry *entry;
   PipelineDestroyNotifyData *destroy_data;
@@ -216,7 +216,7 @@ _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
   destroy_data = g_slice_new (PipelineDestroyNotifyData);
   destroy_data->cache = cache;
   destroy_data->texture = texture;
-  cogl_object_set_user_data (entry->pipeline,
+  cogl_object_set_user_data (COGL_OBJECT (entry->pipeline),
                              &pipeline_destroy_notify_key,
                              destroy_data,
                              pipeline_destroy_notify_cb);

@@ -872,9 +872,9 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
     }
 #endif
 
-  cogl_handle_ref (layer);
-  if (unit->layer != COGL_INVALID_HANDLE)
-    cogl_handle_unref (unit->layer);
+  cogl_object_ref (layer);
+  if (unit->layer != NULL)
+    cogl_object_unref (unit->layer);
 
   unit->layer = layer;
   unit->layer_changes_since_flush = 0;

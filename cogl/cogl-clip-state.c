@@ -193,7 +193,7 @@ _cogl_clip_state_save_clip_stack (CoglClipState *clip_state)
 void
 _cogl_clip_state_restore_clip_stack (CoglClipState *clip_state)
 {
-  CoglHandle stack;
+  CoglClipStack *stack;
 
   _COGL_RETURN_IF_FAIL (clip_state->stacks != NULL);
 

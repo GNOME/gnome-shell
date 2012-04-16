@@ -43,7 +43,7 @@ _cogl_pango_pipeline_cache_new (gboolean use_mipmapping);
    to unref it */
 CoglPipeline *
 _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
-                                CoglHandle texture);
+                                CoglTexture *texture);
 
 void
 _cogl_pango_pipeline_cache_free (CoglPangoPipelineCache *cache);

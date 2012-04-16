@@ -24,7 +24,7 @@
 #ifndef __COGL_PROGRAM_H
 #define __COGL_PROGRAM_H
 
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-internal.h"
 #include "cogl-shader-private.h"
 

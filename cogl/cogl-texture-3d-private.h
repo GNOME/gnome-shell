@@ -25,7 +25,7 @@
 #ifndef __COGL_TEXTURE_3D_PRIVATE_H
 #define __COGL_TEXTURE_3D_PRIVATE_H
 
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-3d.h"

@@ -601,11 +601,11 @@ cogl_snippet_get_hook (CoglSnippet *snippet);
 
 /**
  * cogl_is_snippet:
- * @handle: A CoglHandle
+ * @object: A #CoglObject pointer
  *
- * Gets whether the given handle references an existing snippet object.
+ * Gets whether the given @object references an existing snippet object.
  *
- * Return value: %TRUE if the handle references a #CoglSnippet,
+ * Return value: %TRUE if the @object references a #CoglSnippet,
  *   %FALSE otherwise
  *
  * Since: 1.10

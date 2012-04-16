@@ -37,7 +37,7 @@
 
 struct _CoglBitmap
 {
-  CoglHandleObject         _parent;
+  CoglObject               _parent;
 
   /* Pointer back to the context that this bitmap was created with */
   CoglContext             *context;
@@ -256,7 +256,7 @@ CoglBitmap *
 cogl_bitmap_new_from_file (const char  *filename,
                            GError     **error)
 {
-  _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
+  _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, NULL);
 
   return _cogl_bitmap_from_file (filename, error);
 }

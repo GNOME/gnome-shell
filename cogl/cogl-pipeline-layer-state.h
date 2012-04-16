@@ -413,7 +413,7 @@ cogl_pipeline_get_layer_mag_filter (CoglPipeline *pipeline,
 
 /**
  * cogl_pipeline_set_layer_point_sprite_coords_enabled:
- * @pipeline: a #CoglHandle to a pipeline.
+ * @pipeline: A #CoglPipeline object
  * @layer_index: the layer number to change.
  * @enable: whether to enable point sprite coord generation.
  * @error: A return location for a GError, or NULL to ignore errors.
@@ -441,7 +441,7 @@ cogl_pipeline_set_layer_point_sprite_coords_enabled (CoglPipeline *pipeline,
 
 /**
  * cogl_pipeline_get_layer_point_sprite_coords_enabled:
- * @pipeline: a #CoglHandle to a pipeline.
+ * @pipeline: A #CoglPipeline object
  * @layer_index: the layer number to check.
  *
  * Gets whether point sprite coordinate generation is enabled for this

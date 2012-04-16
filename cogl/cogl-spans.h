@@ -24,7 +24,7 @@
 #ifndef __COGL_SPANS_PRIVATE_H
 #define __COGL_SPANS_PRIVATE_H
 
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-pipeline-layer-state.h"
 
 typedef struct _CoglSpan

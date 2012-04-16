@@ -25,7 +25,8 @@
 #define __COGL_BLIT_H
 
 #include <glib.h>
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
+#include "cogl-texture.h"
 
 /* This structures and functions are used when a series of blits needs
    to be performed between two textures. In this case there are
@@ -55,7 +56,7 @@ typedef struct
 
 struct _CoglBlitData
 {
-  CoglHandle src_tex, dst_tex;
+  CoglTexture *src_tex, *dst_tex;
 
   unsigned int src_width;
   unsigned int src_height;
@@ -71,8 +72,8 @@ struct _CoglBlitData
 
 void
 _cogl_blit_begin (CoglBlitData *data,
-                  CoglHandle dst_tex,
-                  CoglHandle src_tex);
+                  CoglTexture *dst_tex,
+                  CoglTexture *src_tex);
 
 void
 _cogl_blit (CoglBlitData *data,

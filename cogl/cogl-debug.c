@@ -41,7 +41,7 @@
  * used since they don't affect the behaviour of Cogl they
  * simply print out verbose information */
 static const GDebugKey cogl_log_debug_keys[] = {
-  { "handle", COGL_DEBUG_HANDLE },
+  { "object", COGL_DEBUG_OBJECT },
   { "slicing", COGL_DEBUG_SLICING },
   { "atlas", COGL_DEBUG_ATLAS },
   { "blend-strings", COGL_DEBUG_BLEND_STRINGS },

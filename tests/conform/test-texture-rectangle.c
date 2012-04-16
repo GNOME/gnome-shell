@@ -78,7 +78,7 @@ create_source_rect (void)
 
 #else /* GL_TEXTURE_RECTANGLE_ARB */
 
-  return COGL_INVALID_HANDLE;
+  return NULL;
 
 #endif /* GL_TEXTURE_RECTANGLE_ARB */
 }
@@ -119,7 +119,7 @@ draw_frame (TestState *state)
   CoglHandle tex_2d = create_source_2d ();
   CoglHandle material_2d = cogl_material_new ();
 
-  g_assert (tex_rect != COGL_INVALID_HANDLE);
+  g_assert (tex_rect != NULL);
 
   cogl_material_set_layer (material_rect, 0, tex_rect);
   cogl_material_set_layer_filters (material_rect, 0,

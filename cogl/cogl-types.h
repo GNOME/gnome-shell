@@ -60,7 +60,7 @@ typedef struct { \
  * Type used for storing references to cogl objects, the CoglHandle is
  * a fully opaque type without any public data members.
  */
-typedef gpointer CoglHandle;
+typedef void * CoglHandle;
 
 /**
  * COGL_INVALID_HANDLE:
@@ -99,7 +99,7 @@ cogl_handle_unref (CoglHandle handle);
  * cogl_object_ref: (skip)
  * @object: a #CoglObject
  *
- * Increases the reference count of @handle by 1
+ * Increases the reference count of @object by 1
  *
  * Returns: the @object, with its reference count increased
  */

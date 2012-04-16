@@ -25,7 +25,7 @@
 #define __COGL_JOURNAL_PRIVATE_H
 
 #include "cogl-texture.h"
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-clip-stack.h"
 
 #define COGL_JOURNAL_VBO_POOL_SIZE 8

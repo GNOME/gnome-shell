@@ -332,8 +332,6 @@ cogl_context_new (CoglDisplay *display,
   context->max_texture_units = -1;
   context->max_activateable_texture_units = -1;
 
-  context->current_program = COGL_INVALID_HANDLE;
-
   context->current_fragment_program_type = COGL_PIPELINE_PROGRAM_TYPE_FIXED;
   context->current_vertex_program_type = COGL_PIPELINE_PROGRAM_TYPE_FIXED;
   context->current_gl_program = 0;
@@ -375,16 +373,16 @@ cogl_context_new (CoglDisplay *display,
 
   context->in_begin_gl_block = FALSE;
 
-  context->quad_buffer_indices_byte = COGL_INVALID_HANDLE;
-  context->quad_buffer_indices = COGL_INVALID_HANDLE;
+  context->quad_buffer_indices_byte = NULL;
+  context->quad_buffer_indices = NULL;
   context->quad_buffer_indices_len = 0;
 
   context->rectangle_byte_indices = NULL;
   context->rectangle_short_indices = NULL;
   context->rectangle_short_indices_len = 0;
 
-  context->texture_download_pipeline = COGL_INVALID_HANDLE;
-  context->blit_texture_pipeline = COGL_INVALID_HANDLE;
+  context->texture_download_pipeline = NULL;
+  context->blit_texture_pipeline = NULL;
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
   if (context->driver != COGL_DRIVER_GLES2)
@@ -473,14 +471,14 @@ _cogl_context_free (CoglContext *context)
     cogl_object_unref (context->default_gl_texture_rect_tex);
 
   if (context->opaque_color_pipeline)
-    cogl_handle_unref (context->opaque_color_pipeline);
+    cogl_object_unref (context->opaque_color_pipeline);
   if (context->blended_color_pipeline)
-    cogl_handle_unref (context->blended_color_pipeline);
+    cogl_object_unref (context->blended_color_pipeline);
   if (context->texture_pipeline)
-    cogl_handle_unref (context->texture_pipeline);
+    cogl_object_unref (context->texture_pipeline);
 
   if (context->blit_texture_pipeline)
-    cogl_handle_unref (context->blit_texture_pipeline);
+    cogl_object_unref (context->blit_texture_pipeline);
 
   if (context->journal_flush_attributes_array)
     g_array_free (context->journal_flush_attributes_array, TRUE);
@@ -491,9 +489,9 @@ _cogl_context_free (CoglContext *context)
     g_array_free (context->polygon_vertices, TRUE);
 
   if (context->quad_buffer_indices_byte)
-    cogl_handle_unref (context->quad_buffer_indices_byte);
+    cogl_object_unref (context->quad_buffer_indices_byte);
   if (context->quad_buffer_indices)
-    cogl_handle_unref (context->quad_buffer_indices);
+    cogl_object_unref (context->quad_buffer_indices);
 
   if (context->rectangle_byte_indices)
     cogl_object_unref (context->rectangle_byte_indices);
@@ -501,14 +499,14 @@ _cogl_context_free (CoglContext *context)
     cogl_object_unref (context->rectangle_short_indices);
 
   if (context->default_pipeline)
-    cogl_handle_unref (context->default_pipeline);
+    cogl_object_unref (context->default_pipeline);
 
   if (context->dummy_layer_dependant)
-    cogl_handle_unref (context->dummy_layer_dependant);
+    cogl_object_unref (context->dummy_layer_dependant);
   if (context->default_layer_n)
-    cogl_handle_unref (context->default_layer_n);
+    cogl_object_unref (context->default_layer_n);
   if (context->default_layer_0)
-    cogl_handle_unref (context->default_layer_0);
+    cogl_object_unref (context->default_layer_0);
 
   if (context->current_clip_stack_valid)
     _cogl_clip_stack_unref (context->current_clip_stack);

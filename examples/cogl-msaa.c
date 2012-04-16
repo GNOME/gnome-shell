@@ -17,8 +17,8 @@ main (int argc, char **argv)
         {0.7, -0.7, 0x00, 0x00, 0xff, 0xff}
     };
     CoglPrimitive *triangle;
-    CoglHandle tex;
-    CoglHandle offscreen;
+    CoglTexture *tex;
+    CoglOffscreen *offscreen;
     CoglFramebuffer *offscreen_fb;
     CoglPipeline *pipeline;
 

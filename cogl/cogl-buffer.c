@@ -41,7 +41,7 @@
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context-private.h"
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-pixel-buffer-private.h"
 
 /*
@@ -71,7 +71,7 @@
 #endif
 
 /* XXX:
- * The CoglHandle macros don't support any form of inheritance, so for
+ * The CoglObject macros don't support any form of inheritance, so for
  * now we implement the CoglObject support for the CoglBuffer
  * abstract class manually.
  */
@@ -87,7 +87,7 @@ _cogl_buffer_register_buffer_type (const CoglObjectClass *klass)
 gboolean
 cogl_is_buffer (void *object)
 {
-  const CoglHandleObject *obj = object;
+  const CoglObject *obj = object;
   GSList *l;
 
   if (object == NULL)

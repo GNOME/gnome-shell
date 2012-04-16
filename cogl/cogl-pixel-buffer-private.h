@@ -28,7 +28,7 @@
 #ifndef __COGL_PIXEL_BUFFER_PRIVATE_H__
 #define __COGL_PIXEL_BUFFER_PRIVATE_H__
 
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-buffer-private.h"
 
 #include <glib.h>

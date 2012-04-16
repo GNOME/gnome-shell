@@ -726,20 +726,20 @@ _cogl_offscreen_new_to_texture_full (CoglTexture *texture,
   int level_width;
   int level_height;
   int i;
-  CoglHandle ret;
+  CoglOffscreen *ret;
 
-  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
-    return COGL_INVALID_HANDLE;
+    return NULL;
 
   /* Make texture is a valid texture object */
   if (!cogl_is_texture (texture))
-    return COGL_INVALID_HANDLE;
+    return NULL;
 
   /* The texture must not be sliced */
   if (cogl_texture_is_sliced (texture))
-    return COGL_INVALID_HANDLE;
+    return NULL;
 
   /* Calculate the size of the texture at this mipmap level to ensure
      that it's a valid level */
@@ -754,7 +754,7 @@ _cogl_offscreen_new_to_texture_full (CoglTexture *texture,
         {
           g_warning ("Invalid texture level passed to "
                      "_cogl_offscreen_new_to_texture_full");
-          return COGL_INVALID_HANDLE;
+          return NULL;
         }
 
       if (level_width > 1)
@@ -811,7 +811,7 @@ _cogl_offscreen_free (CoglOffscreen *offscreen)
 
   GE (ctx, glDeleteFramebuffers (1, &offscreen->fbo_handle));
 
-  if (offscreen->texture != COGL_INVALID_HANDLE)
+  if (offscreen->texture != NULL)
     cogl_object_unref (offscreen->texture);
 
   g_free (offscreen);
@@ -1096,7 +1096,7 @@ _cogl_create_framebuffer_stack (void)
   CoglFramebufferStackEntry *entry;
   GSList *stack = NULL;
 
-  entry = create_stack_entry (COGL_INVALID_HANDLE, COGL_INVALID_HANDLE);
+  entry = create_stack_entry (NULL, NULL);
 
   return g_slist_prepend (stack, entry);
 }

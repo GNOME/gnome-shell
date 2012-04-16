@@ -85,7 +85,7 @@ test_invalid_texture_layers (TestState *state, int x, int y)
   /* explicitly create a layer with an invalid handle. This may be desireable
    * if the user also sets a texture combine string that e.g. refers to a
    * constant color. */
-  cogl_material_set_layer (material, 0, COGL_INVALID_HANDLE);
+  cogl_material_set_layer (material, 0, NULL);
 
   cogl_set_source (material);
 
@@ -172,7 +172,7 @@ test_invalid_texture_layers_with_constant_colors (TestState *state,
   CoglColor constant_color;
 
   /* explicitly create a layer with an invalid handle */
-  cogl_material_set_layer (material, 0, COGL_INVALID_HANDLE);
+  cogl_material_set_layer (material, 0, NULL);
 
   /* ignore the fallback texture on the layer and use a constant color
      instead */

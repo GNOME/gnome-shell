@@ -154,7 +154,7 @@ typedef struct _CoglWinsysVtable
   void
   (*texture_pixmap_x11_damage_notify) (CoglTexturePixmapX11 *tex_pixmap);
 
-  CoglHandle
+  CoglTexture *
   (*texture_pixmap_x11_get_texture) (CoglTexturePixmapX11 *tex_pixmap);
 #endif
 

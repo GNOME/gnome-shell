@@ -173,7 +173,7 @@ cogl_pango_glyph_cache_free (CoglPangoGlyphCache *cache)
 
 static void
 cogl_pango_glyph_cache_update_position_cb (void *user_data,
-                                           CoglHandle new_texture,
+                                           CoglTexture *new_texture,
                                            const CoglRectangleMapEntry *rect)
 {
   CoglPangoGlyphCacheValue *value = user_data;
@@ -204,7 +204,7 @@ cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
                                             PangoGlyph glyph,
                                             CoglPangoGlyphCacheValue *value)
 {
-  CoglTexture *texture;
+  CoglAtlasTexture *texture;
 
   if (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SHARED_ATLAS))
     return FALSE;
@@ -222,7 +222,7 @@ cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
   if (texture == NULL)
     return FALSE;
 
-  value->texture = texture;
+  value->texture = COGL_TEXTURE (texture);
   value->tx1 = 0;
   value->ty1 = 0;
   value->tx2 = 1;

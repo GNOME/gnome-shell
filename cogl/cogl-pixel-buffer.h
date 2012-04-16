@@ -81,9 +81,9 @@ cogl_pixel_buffer_new (CoglContext *context,
  * cogl_is_pixel_buffer:
  * @object: a #CoglObject to test
  *
- * Checks whether @handle is a pixel array.
+ * Checks whether @object is a pixel buffer.
  *
- * Return value: %TRUE if the @handle is a pixel array, and %FALSE
+ * Return value: %TRUE if the @object is a pixel buffer, and %FALSE
  *   otherwise
  *
  * Since: 1.2
@@ -95,7 +95,7 @@ cogl_is_pixel_buffer (void *object);
 #if 0
 /*
  * cogl_pixel_buffer_set_region:
- * @array: the #CoglHandle of a pixel array
+ * @buffer: A #CoglPixelBuffer object
  * @data: pixel data to upload to @array
  * @src_width: width in pixels of the region to update
  * @src_height: height in pixels of the region to update
@@ -114,13 +114,13 @@ cogl_is_pixel_buffer (void *object);
  * Stability: Unstable
  */
 gboolean
-cogl_pixel_buffer_set_region (CoglHandle    array,
-                              guint8       *data,
-                              unsigned int  src_width,
-                              unsigned int  src_height,
-                              unsigned int  src_rowstride,
-                              unsigned int  dst_x,
-                              unsigned int  dst_y);
+cogl_pixel_buffer_set_region (CoglPixelBuffer *buffer,
+                              guint8 *data,
+                              unsigned int src_width,
+                              unsigned int src_height,
+                              unsigned int src_rowstride,
+                              unsigned int dst_x,
+                              unsigned int dst_y);
 #endif
 
 G_END_DECLS

@@ -142,9 +142,6 @@ void
 _cogl_delete_gl_texture (GLuint gl_texture);
 
 void
-_cogl_gl_use_program_wrapper (CoglHandle program);
-
-void
 _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
                                gboolean skip_gl_state,
                                int n_tex_coord_attribs);

@@ -239,7 +239,7 @@ cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
  *
  * Gets whether the given object references a texture object.
  *
- * Return value: %TRUE if the handle references a texture, and
+ * Return value: %TRUE if the @object references a texture, and
  *   %FALSE otherwise
  */
 gboolean

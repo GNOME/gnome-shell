@@ -147,7 +147,7 @@ cogl_android_set_native_window (ANativeWindow *window);
  *
  * Gets whether the given object references an existing context object.
  *
- * Return value: %TRUE if the handle references a #CoglContext,
+ * Return value: %TRUE if the @object references a #CoglContext,
  *   %FALSE otherwise
  *
  * Since: 1.10

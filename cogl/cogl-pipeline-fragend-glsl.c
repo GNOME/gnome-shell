@@ -35,7 +35,6 @@
 #include "cogl-context-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-layer-private.h"
-#include "cogl-shader-private.h"
 #include "cogl-blend-string.h"
 #include "cogl-snippet-private.h"
 

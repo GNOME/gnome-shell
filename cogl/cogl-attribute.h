@@ -210,7 +210,7 @@ cogl_attribute_set_buffer (CoglAttribute *attribute,
  *
  * Gets whether the given object references a #CoglAttribute.
  *
- * Return value: %TRUE if the handle references a #CoglAttribute,
+ * Return value: %TRUE if the @object references a #CoglAttribute,
  *   %FALSE otherwise
  */
 gboolean

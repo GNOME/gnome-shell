@@ -40,7 +40,7 @@
 #include "cogl-texture-2d-sliced-private.h"
 #include "cogl-texture-driver.h"
 #include "cogl-context-private.h"
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-spans.h"
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-opengl-private.h"
@@ -790,7 +790,7 @@ _cogl_texture_2d_sliced_slices_free (CoglTexture2DSliced *tex_2ds)
         {
           CoglTexture2D *slice_tex =
             g_array_index (tex_2ds->slice_textures, CoglTexture2D *, i);
-          cogl_handle_unref (slice_tex);
+          cogl_object_unref (slice_tex);
         }
 
       g_array_free (tex_2ds->slice_textures, TRUE);
@@ -867,7 +867,7 @@ cogl_texture_2d_sliced_new_with_size (CoglContext *ctx,
       return NULL;
     }
 
-  return _cogl_texture_2d_sliced_handle_new (tex_2ds);
+  return _cogl_texture_2d_sliced_object_new (tex_2ds);
 }
 
 CoglTexture2DSliced *
@@ -935,7 +935,7 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap      *bmp,
         cogl_primitive_texture_set_auto_mipmap (slice_tex, FALSE);
       }
 
-  return _cogl_texture_2d_sliced_handle_new (tex_2ds);
+  return _cogl_texture_2d_sliced_object_new (tex_2ds);
 
  error:
   cogl_object_unref (dst_bmp);
@@ -1030,7 +1030,7 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
 
   g_array_append_val (tex_2ds->slice_textures, tex_2d);
 
-  return _cogl_texture_2d_sliced_handle_new (tex_2ds);
+  return _cogl_texture_2d_sliced_object_new (tex_2ds);
 }
 
 static gboolean

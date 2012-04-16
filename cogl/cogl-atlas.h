@@ -26,10 +26,11 @@
 
 #include "cogl-rectangle-map.h"
 #include "cogl-object-private.h"
+#include "cogl-texture.h"
 
 typedef void
 (* CoglAtlasUpdatePositionCallback) (void *user_data,
-                                     CoglHandle new_texture,
+                                     CoglTexture *new_texture,
                                      const CoglRectangleMapEntry *rect);
 
 typedef enum
@@ -48,7 +49,7 @@ struct _CoglAtlas
 
   CoglRectangleMap *map;
 
-  CoglHandle texture;
+  CoglTexture *texture;
   CoglPixelFormat texture_format;
   CoglAtlasFlags flags;
 
@@ -73,7 +74,7 @@ void
 _cogl_atlas_remove (CoglAtlas *atlas,
                     const CoglRectangleMapEntry *rectangle);
 
-CoglHandle
+CoglTexture *
 _cogl_atlas_copy_rectangle (CoglAtlas        *atlas,
                             unsigned int      x,
                             unsigned int      y,

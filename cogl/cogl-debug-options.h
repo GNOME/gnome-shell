@@ -21,7 +21,7 @@
  *
  */
 
-OPT (HANDLE,
+OPT (OBJECT,
      N_("Cogl Tracing"),
      "ref-counts",
      N_("CoglObject references"),

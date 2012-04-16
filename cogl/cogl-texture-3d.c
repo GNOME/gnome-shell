@@ -33,7 +33,7 @@
 #include "cogl-texture-3d.h"
 #include "cogl-texture-driver.h"
 #include "cogl-context-private.h"
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-opengl-private.h"
@@ -241,7 +241,7 @@ cogl_texture_3d_new_with_size (CoglContext *ctx,
   GE( ctx, glTexImage3D (GL_TEXTURE_3D, 0, gl_intformat,
                          width, height, depth, 0, gl_format, gl_type, NULL) );
 
-  return _cogl_texture_3d_handle_new (tex_3d);
+  return _cogl_texture_3d_object_new (tex_3d);
 }
 
 CoglTexture3D *
@@ -325,7 +325,7 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
 
   cogl_object_unref (dst_bmp);
 
-  return _cogl_texture_3d_handle_new (tex_3d);
+  return _cogl_texture_3d_object_new (tex_3d);
 }
 
 CoglTexture3D *

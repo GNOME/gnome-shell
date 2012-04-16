@@ -1,4 +1,8 @@
 /*** BEGIN file-header ***/
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include "cogl-enum-types.h"
 /*** END file-header ***/
 

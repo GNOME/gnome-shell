@@ -34,7 +34,7 @@
 #include "cogl-texture-rectangle-private.h"
 #include "cogl-texture-driver.h"
 #include "cogl-context-private.h"
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-opengl-private.h"
 
@@ -387,7 +387,7 @@ _cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
   tex_rect->min_filter = GL_FALSE;
   tex_rect->mag_filter = GL_FALSE;
 
-  return _cogl_texture_rectangle_handle_new (tex_rect);
+  return _cogl_texture_rectangle_object_new (tex_rect);
 }
 
 static int

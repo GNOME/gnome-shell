@@ -239,17 +239,17 @@ cogl_bitmap_get_size_from_file (const char *filename,
 
 /**
  * cogl_is_bitmap:
- * @handle: a #CoglHandle for a bitmap
+ * @object: a #CoglObject pointer
  *
- * Checks whether @handle is a #CoglHandle for a bitmap
+ * Checks whether @object is a #CoglBitmap
  *
- * Return value: %TRUE if the passed handle represents a bitmap,
+ * Return value: %TRUE if the passed @object represents a bitmap,
  *   and %FALSE otherwise
  *
  * Since: 1.0
  */
 gboolean
-cogl_is_bitmap (CoglHandle handle);
+cogl_is_bitmap (void *object);
 
 /**
  * COGL_BITMAP_ERROR:

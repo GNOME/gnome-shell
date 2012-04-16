@@ -1597,7 +1597,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
   entry->clip_stack = _cogl_clip_stack_ref (clip_stack);
 
   if (G_UNLIKELY (final_pipeline != pipeline))
-    cogl_handle_unref (final_pipeline);
+    cogl_object_unref (final_pipeline);
 
   cogl_framebuffer_get_modelview_matrix (framebuffer,
                                          &entry->model_view);

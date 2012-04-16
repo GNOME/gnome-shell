@@ -32,7 +32,7 @@
 #include <cogl-xlib.h>
 
 #include <cogl-internal.h>
-#include <cogl-handle.h>
+#include <cogl-object-private.h>
 #include <cogl-context-private.h>
 #include <cogl-framebuffer-private.h>
 #include <cogl-display-private.h>

@@ -27,7 +27,7 @@
 #ifndef __COGL_VERTEX_BUFFER_H
 #define __COGL_VERTEX_BUFFER_H
 
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 
 #include "cogl-primitive.h"
 

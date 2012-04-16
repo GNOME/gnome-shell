@@ -34,7 +34,7 @@
 #include "cogl-texture-2d-private.h"
 #include "cogl-texture-driver.h"
 #include "cogl-context-private.h"
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-framebuffer-private.h"
@@ -218,7 +218,7 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
   GE( ctx, glTexImage2D (GL_TEXTURE_2D, 0, gl_intformat,
                          width, height, 0, gl_format, gl_type, NULL) );
 
-  return _cogl_texture_2d_handle_new (tex_2d);
+  return _cogl_texture_2d_object_new (tex_2d);
 }
 
 CoglTexture2D *
@@ -234,7 +234,7 @@ cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
   guint8        *data;
   CoglContext   *ctx;
 
-  _COGL_RETURN_VAL_IF_FAIL (bmp != NULL, COGL_INVALID_HANDLE);
+  _COGL_RETURN_VAL_IF_FAIL (bmp != NULL, NULL);
 
   ctx = _cogl_bitmap_get_context (bmp);
 
@@ -300,7 +300,7 @@ cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
 
   cogl_object_unref (dst_bmp);
 
-  return _cogl_texture_2d_handle_new (tex_2d);
+  return _cogl_texture_2d_object_new (tex_2d);
 }
 
 CoglTexture2D *
@@ -314,7 +314,7 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
                                GError **error)
 {
   CoglBitmap *bmp;
-  CoglHandle tex;
+  CoglTexture2D *tex_2d;
 
   _COGL_RETURN_VAL_IF_FAIL (format != COGL_PIXEL_FORMAT_ANY, NULL);
   _COGL_RETURN_VAL_IF_FAIL (data != NULL, NULL);
@@ -330,13 +330,13 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
                                   rowstride,
                                   (guint8 *) data);
 
-  tex = cogl_texture_2d_new_from_bitmap (bmp,
-                                         internal_format,
-                                         error);
+  tex_2d = cogl_texture_2d_new_from_bitmap (bmp,
+                                            internal_format,
+                                            error);
 
   cogl_object_unref (bmp);
 
-  return tex;
+  return tex_2d;
 }
 
 CoglTexture2D *
@@ -357,11 +357,11 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
   CoglTexture2D *tex_2d;
 
   if (!ctx->texture_driver->allows_foreign_gl_target (ctx, GL_TEXTURE_2D))
-    return COGL_INVALID_HANDLE;
+    return NULL;
 
   /* Make sure it is a valid GL texture object */
   if (!ctx->glIsTexture (gl_handle))
-    return COGL_INVALID_HANDLE;
+    return NULL;
 
   /* Make sure binding succeeds */
   while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
@@ -369,7 +369,7 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D, gl_handle, TRUE);
   if (ctx->glGetError () != GL_NO_ERROR)
-    return COGL_INVALID_HANDLE;
+    return NULL;
 
   /* Obtain texture parameters
      (only level 0 we are interested in) */
@@ -396,7 +396,7 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
       if (!ctx->driver_vtable->pixel_format_from_gl_internal (ctx,
                                                               gl_int_format,
                                                               &format))
-        return COGL_INVALID_HANDLE;
+        return NULL;
     }
   else
 #endif
@@ -419,11 +419,11 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
 
   /* Validate width and height */
   if (width <= 0 || height <= 0)
-    return COGL_INVALID_HANDLE;
+    return NULL;
 
   /* Compressed texture images not supported */
   if (gl_compressed == GL_TRUE)
-    return COGL_INVALID_HANDLE;
+    return NULL;
 
   /* Note: previously this code would query the texture object for
      whether it has GL_GENERATE_MIPMAP enabled to determine whether to
@@ -454,7 +454,7 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
   tex_2d->min_filter = GL_FALSE;
   tex_2d->mag_filter = GL_FALSE;
 
-  return _cogl_texture_2d_handle_new (tex_2d);
+  return _cogl_texture_2d_object_new (tex_2d);
 }
 
 #if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
@@ -500,7 +500,7 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
       return NULL;
     }
 
-  return _cogl_texture_2d_handle_new (tex_2d);
+  return _cogl_texture_2d_object_new (tex_2d);
 }
 #endif /* defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base) */
 
@@ -574,16 +574,16 @@ cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
 #endif /* COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT */
 
 void
-_cogl_texture_2d_externally_modified (CoglHandle handle)
+_cogl_texture_2d_externally_modified (CoglTexture *texture)
 {
-  if (!cogl_is_texture_2d (handle))
+  if (!cogl_is_texture_2d (texture))
     return;
 
-  COGL_TEXTURE_2D (handle)->mipmaps_dirty = TRUE;
+  COGL_TEXTURE_2D (texture)->mipmaps_dirty = TRUE;
 }
 
 void
-_cogl_texture_2d_copy_from_framebuffer (CoglHandle handle,
+_cogl_texture_2d_copy_from_framebuffer (CoglTexture2D *tex_2d,
                                         int dst_x,
                                         int dst_y,
                                         int src_x,
@@ -591,13 +591,9 @@ _cogl_texture_2d_copy_from_framebuffer (CoglHandle handle,
                                         int width,
                                         int height)
 {
-  CoglTexture2D *tex_2d;
-
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  _COGL_RETURN_IF_FAIL (cogl_is_texture_2d (handle));
-
-  tex_2d = COGL_TEXTURE_2D (handle);
+  _COGL_RETURN_IF_FAIL (cogl_is_texture_2d (tex_2d));
 
   /* Make sure the current framebuffers are bound, though we don't need to
    * flush the clip state here since we aren't going to draw to the

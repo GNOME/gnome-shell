@@ -25,7 +25,7 @@
 #define __COGL_TEXTURE_PRIVATE_H
 
 #include "cogl-bitmap-private.h"
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-spans.h"
 #include "cogl-meta-texture.h"
@@ -181,12 +181,12 @@ void
 _cogl_texture_register_texture_type (const CoglObjectClass *klass);
 
 #define COGL_TEXTURE_DEFINE(TypeName, type_name)                        \
-  COGL_HANDLE_DEFINE_WITH_CODE                                          \
+  COGL_OBJECT_DEFINE_WITH_CODE                                          \
   (TypeName, type_name,                                                 \
    _cogl_texture_register_texture_type (&_cogl_##type_name##_class))
 
 #define COGL_TEXTURE_INTERNAL_DEFINE(TypeName, type_name)               \
-  COGL_HANDLE_INTERNAL_DEFINE_WITH_CODE                                 \
+  COGL_OBJECT_INTERNAL_DEFINE_WITH_CODE                                 \
   (TypeName, type_name,                                                 \
    _cogl_texture_register_texture_type (&_cogl_##type_name##_class))
 

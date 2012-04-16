@@ -24,7 +24,7 @@
 #ifndef __COGL_ATLAS_TEXTURE_H
 #define __COGL_ATLAS_TEXTURE_H
 
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-rectangle-map.h"
 #include "cogl-atlas.h"
@@ -51,16 +51,18 @@ struct _CoglAtlasTexture
      atlas by the texture (but not vice versa so there is no cycle) */
   CoglAtlas            *atlas;
 
-  /* A CoglSubTexture representing the region for easy rendering */
-  CoglHandle            sub_texture;
+  /* Either a CoglSubTexture representing the atlas region for easy
+   * rendering or if the texture has been migrated out of the atlas it
+   * may be some other texture type such as CoglTexture2D */
+  CoglTexture          *sub_texture;
 };
 
-CoglHandle
+CoglAtlasTexture *
 _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
                                      CoglTextureFlags flags,
                                      CoglPixelFormat  internal_format);
 
-CoglHandle
+CoglAtlasTexture *
 _cogl_atlas_texture_new_with_size (unsigned int     width,
                                    unsigned int     height,
                                    CoglTextureFlags flags,

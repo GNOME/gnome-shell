@@ -253,7 +253,7 @@ cogl_sub_texture_new (CoglContext *ctx,
   sub_tex->sub_width = sub_width;
   sub_tex->sub_height = sub_height;
 
-  return _cogl_sub_texture_handle_new (sub_tex);
+  return _cogl_sub_texture_object_new (sub_tex);
 }
 
 CoglTexture *

@@ -99,7 +99,7 @@
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context-private.h"
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-vertex-buffer-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-pipeline.h"

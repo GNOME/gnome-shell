@@ -88,7 +88,7 @@ typedef struct _CoglTexturePixmapGLX
   gboolean has_mipmap_space;
   gboolean can_mipmap;
 
-  CoglHandle glx_tex;
+  CoglTexture *glx_tex;
 
   gboolean bind_tex_image_queued;
   gboolean pixmap_bound;
@@ -1715,7 +1715,7 @@ _cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
   glx_tex_pixmap->can_mipmap = FALSE;
   glx_tex_pixmap->has_mipmap_space = FALSE;
 
-  glx_tex_pixmap->glx_tex = COGL_INVALID_HANDLE;
+  glx_tex_pixmap->glx_tex = NULL;
 
   glx_tex_pixmap->bind_tex_image_queued = TRUE;
   glx_tex_pixmap->pixmap_bound = FALSE;
@@ -1793,7 +1793,7 @@ _cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
   free_glx_pixmap (ctx, glx_tex_pixmap);
 
   if (glx_tex_pixmap->glx_tex)
-    cogl_handle_unref (glx_tex_pixmap->glx_tex);
+    cogl_object_unref (glx_tex_pixmap->glx_tex);
 
   tex_pixmap->winsys = NULL;
   g_free (glx_tex_pixmap);
@@ -1817,7 +1817,7 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
   glx_renderer = ctx->display->renderer->winsys;
 
   /* Lazily create a texture to hold the pixmap */
-  if (glx_tex_pixmap->glx_tex == COGL_INVALID_HANDLE)
+  if (glx_tex_pixmap->glx_tex == NULL)
     {
       CoglPixelFormat texture_format;
       GError *error = NULL;
@@ -1828,12 +1828,12 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
 
       if (should_use_rectangle (ctx))
         {
-          glx_tex_pixmap->glx_tex =
+          glx_tex_pixmap->glx_tex = COGL_TEXTURE (
             cogl_texture_rectangle_new_with_size (ctx,
                                                   tex_pixmap->width,
                                                   tex_pixmap->height,
                                                   texture_format,
-                                                  &error);
+                                                  &error));
 
           if (glx_tex_pixmap->glx_tex)
             COGL_NOTE (TEXTURE_PIXMAP, "Created a texture rectangle for %p",
@@ -1850,12 +1850,12 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
         }
       else
         {
-          glx_tex_pixmap->glx_tex =
+          glx_tex_pixmap->glx_tex = COGL_TEXTURE (
             cogl_texture_2d_new_with_size (ctx,
                                            tex_pixmap->width,
                                            tex_pixmap->height,
                                            texture_format,
-                                           NULL);
+                                           NULL));
 
           if (glx_tex_pixmap->glx_tex)
             COGL_NOTE (TEXTURE_PIXMAP, "Created a texture 2d for %p",
@@ -1895,7 +1895,7 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
                          "with mipmap support failed", tex_pixmap);
 
               if (glx_tex_pixmap->glx_tex)
-                cogl_handle_unref (glx_tex_pixmap->glx_tex);
+                cogl_object_unref (glx_tex_pixmap->glx_tex);
               return FALSE;
             }
 
@@ -1953,7 +1953,7 @@ _cogl_winsys_texture_pixmap_x11_damage_notify (CoglTexturePixmapX11 *tex_pixmap)
   glx_tex_pixmap->bind_tex_image_queued = TRUE;
 }
 
-static CoglHandle
+static CoglTexture *
 _cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
 {
   CoglTexturePixmapGLX *glx_tex_pixmap = tex_pixmap->winsys;

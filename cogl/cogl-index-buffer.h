@@ -70,7 +70,7 @@ cogl_index_buffer_new (CoglContext *context,
  *
  * Gets whether the given object references a #CoglIndexBuffer.
  *
- * Returns: %TRUE if the handle references a #CoglIndexBuffer,
+ * Returns: %TRUE if the @object references a #CoglIndexBuffer,
  *   %FALSE otherwise
  *
  * Since: 1.4

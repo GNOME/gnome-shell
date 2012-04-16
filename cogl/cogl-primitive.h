@@ -827,7 +827,7 @@ cogl_primitive_copy (CoglPrimitive *primitive);
  *
  * Gets whether the given object references a #CoglPrimitive.
  *
- * Returns: %TRUE if the handle references a #CoglPrimitive,
+ * Returns: %TRUE if the @object references a #CoglPrimitive,
  *   %FALSE otherwise
  *
  * Since: 1.6

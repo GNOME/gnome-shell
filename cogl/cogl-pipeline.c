@@ -1906,7 +1906,7 @@ fallback_layer_cb (CoglPipelineLayer *layer, void *user_data)
 typedef struct
 {
   CoglPipeline *pipeline;
-  CoglHandle texture;
+  CoglTexture *texture;
 } CoglPipelineOverrideLayerState;
 
 static gboolean

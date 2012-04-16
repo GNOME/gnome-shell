@@ -28,7 +28,7 @@
 
 #include <glib.h>
 
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-buffer.h"
 #include "cogl-bitmap.h"
 

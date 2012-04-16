@@ -114,7 +114,7 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
 
-  if (framebuffer->context->window_buffer == onscreen)
+  if (framebuffer->context->window_buffer == COGL_FRAMEBUFFER (onscreen))
     framebuffer->context->window_buffer = NULL;
 
   winsys->onscreen_deinit (onscreen);

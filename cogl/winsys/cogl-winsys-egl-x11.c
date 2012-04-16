@@ -680,7 +680,7 @@ _cogl_winsys_texture_pixmap_x11_damage_notify (CoglTexturePixmapX11 *tex_pixmap)
 {
 }
 
-static CoglHandle
+static CoglTexture *
 _cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
 {
   CoglTexturePixmapEGL *egl_tex_pixmap = tex_pixmap->winsys;

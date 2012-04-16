@@ -95,18 +95,18 @@ cogl_pipeline_copy (CoglPipeline *source);
 
 /**
  * cogl_is_pipeline:
- * @handle: A CoglHandle
+ * @object: A #CoglObject
  *
- * Gets whether the given handle references an existing pipeline object.
+ * Gets whether the given @object references an existing pipeline object.
  *
- * Return value: %TRUE if the handle references a #CoglPipeline,
+ * Return value: %TRUE if the @object references a #CoglPipeline,
  *   %FALSE otherwise
  *
  * Since: 2.0
  * Stability: Unstable
  */
 gboolean
-cogl_is_pipeline (CoglHandle handle);
+cogl_is_pipeline (void *object);
 
 /**
  * CoglPipelineLayerCallback:

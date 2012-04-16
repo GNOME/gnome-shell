@@ -24,7 +24,7 @@
 #ifndef __COGL_TEXTURE_2D_H
 #define __COGL_TEXTURE_2D_H
 
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-2d.h"
@@ -68,18 +68,18 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
 
 /*
  * _cogl_texture_2d_externally_modified:
- * @handle: A handle to a 2D texture
+ * @texture: A #CoglTexture2D object
  *
  * This should be called whenever the texture is modified other than
  * by using cogl_texture_set_region. It will cause the mipmaps to be
  * invalidated
  */
 void
-_cogl_texture_2d_externally_modified (CoglHandle handle);
+_cogl_texture_2d_externally_modified (CoglTexture *texture);
 
 /*
  * _cogl_texture_2d_copy_from_framebuffer:
- * @handle: A handle to a 2D texture
+ * @texture: A #CoglTexture2D pointer
  * @dst_x: X-position to store the image within the texture
  * @dst_y: Y-position to store the image within the texture
  * @src_x: X-position to within the framebuffer to read from
@@ -91,7 +91,7 @@ _cogl_texture_2d_externally_modified (CoglHandle handle);
  * texture.
  */
 void
-_cogl_texture_2d_copy_from_framebuffer (CoglHandle handle,
+_cogl_texture_2d_copy_from_framebuffer (CoglTexture2D *texture,
                                         int dst_x,
                                         int dst_y,
                                         int src_x,

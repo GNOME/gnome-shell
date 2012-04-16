@@ -38,7 +38,7 @@
 
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-program-private.h"
 
 const CoglPipelineVertend _cogl_pipeline_fixed_vertend;

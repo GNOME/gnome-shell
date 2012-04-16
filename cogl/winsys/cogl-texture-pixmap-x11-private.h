@@ -34,7 +34,7 @@
 #include <GL/glx.h>
 #endif
 
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-pixmap-x11.h"
 
@@ -53,7 +53,7 @@ struct _CoglTexturePixmapX11
   CoglTexture _parent;
 
   Pixmap pixmap;
-  CoglHandle tex;
+  CoglTexture *tex;
 
   unsigned int depth;
   Visual *visual;
