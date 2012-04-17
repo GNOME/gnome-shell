@@ -1,3 +1,24 @@
+3.4.1
+=====
+* API change: the meta_display_add_keybinding() function added in 3.4
+  wasn't usable from a GNOME Shell extension, so has been changed to take
+  a GSettings object rather than the name of a schema [Jasper; #673014]
+* Don't try to auto-maximize not-maximizable windows; this fixes the problem
+  with the Nautilus desktop window being mis-positioned when enabled
+  [Owen; #673566]
+* Fix a crash in the default plugin (not used in GNOME) [Giovanni; #673809]
+* Make the <Super> key work when set as the mouse button modifier
+  [Florian; #662476]
+
+Contributors:
+ Giovanni Campagna, Florian Muellner, Jasper St. Pierre, Owen Taylor
+
+Translations:
+ Khaled Hosny [ar], Jordi Serratosa [ca], Carles Ferrando [ca@valencia],
+ Christian Kirbach [de], Kristjan Schmidt [eo], Arash Mousavi [fa],
+ Jiro Matsuzawa [ja], Shankar Prasad [kn], Aurimas Černius [lt],
+ Yinghua Wang [zh_CN]
+
 3.4.0
 =====
 * Fix crash when a full-screen window is opened [Jasper; #672797]
