@@ -34,6 +34,7 @@
 #include <unistd.h>
 
 #include <gio/gio.h>
+#include <gtk/gtk.h>
 
 #define HANDLE_LIBICAL_MEMORY
 #include <libecal/e-cal-client.h>
