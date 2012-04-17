@@ -61,6 +61,8 @@
  * </example>
  *
  * #ClutterCairoTexture is available since Clutter 1.0.
+ *
+ * #ClutterCairoTexture is deprecated since Clutter 1.12.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -74,6 +76,7 @@
 #include "clutter-cairo-texture.h"
 
 #include "clutter-actor-private.h"
+#include "clutter-cairo.h"
 #include "clutter-color.h"
 #include "clutter-debug.h"
 #include "clutter-marshal.h"
@@ -585,6 +588,8 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
    * actor, in pixels.
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.12
    */
   obj_props[PROP_SURFACE_WIDTH] =
     g_param_spec_uint ("surface-width",
@@ -592,7 +597,8 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
                        P_("The width of the Cairo surface"),
                        0, G_MAXUINT,
                        0,
-                       CLUTTER_PARAM_READWRITE);
+                       CLUTTER_PARAM_READWRITE |
+                       G_PARAM_DEPRECATED);
   /**
    * ClutterCairoTexture:surface-height:
    *
@@ -600,6 +606,8 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
    * actor, in pixels.
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.12
    */
   obj_props[PROP_SURFACE_HEIGHT] =
     g_param_spec_uint ("surface-height",
@@ -607,7 +615,8 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
                        P_("The height of the Cairo surface"),
                        0, G_MAXUINT,
                        0,
-                       CLUTTER_PARAM_READWRITE);
+                       CLUTTER_PARAM_READWRITE |
+                       G_PARAM_DEPRECATED);
 
   /**
    * ClutterCairoTexture:auto-resize:
@@ -618,13 +627,16 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
    * be invalidated automatically.
    *
    * Since: 1.8
+   *
+   * Deprecated: 1.12
    */
   obj_props[PROP_AUTO_RESIZE] =
     g_param_spec_boolean ("auto-resize",
                           P_("Auto Resize"),
                           P_("Whether the surface should match the allocation"),
                           FALSE,
-                          CLUTTER_PARAM_READWRITE);
+                          CLUTTER_PARAM_READWRITE |
+                          G_PARAM_DEPRECATED);
 
   g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
 
@@ -647,6 +659,8 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
    * Return value: the newly created #cairo_surface_t for the texture
    *
    * Since: 1.6
+   *
+   * Deprecated: 1.12
    */
   cairo_signals[CREATE_SURFACE] =
     g_signal_new (I_("create-surface"),
@@ -679,6 +693,8 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
    *   to continue
    *
    * Since: 1.8
+   *
+   * Deprecated: 1.12
    */
   cairo_signals[DRAW] =
     g_signal_new (I_("draw"),
@@ -726,6 +742,8 @@ clutter_cairo_texture_init (ClutterCairoTexture *self)
  * Return value: the newly created #ClutterCairoTexture actor
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12: Use #ClutterCanvas instead
  */
 ClutterActor*
 clutter_cairo_texture_new (guint width,
@@ -875,6 +893,7 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
  * See also: clutter_cairo_texture_invalidate()
  *
  * Since: 1.8
+ * Deprecated: 1.12: Use #ClutterCanvas instead
  */
 void
 clutter_cairo_texture_invalidate_rectangle (ClutterCairoTexture   *self,
@@ -934,6 +953,7 @@ clutter_cairo_texture_invalidate_rectangle (ClutterCairoTexture   *self,
  * See also: clutter_cairo_texture_invalidate_rectangle()
  *
  * Since: 1.8
+ * Deprecated: 1.12: Use #ClutterCanvas instead
  */
 void
 clutter_cairo_texture_invalidate (ClutterCairoTexture *self)
@@ -976,44 +996,6 @@ clutter_cairo_texture_create (ClutterCairoTexture *self)
 }
 
 /**
- * clutter_cairo_set_source_color:
- * @cr: a Cairo context
- * @color: a #ClutterColor
- *
- * Utility function for setting the source color of @cr using
- * a #ClutterColor. This function is the equivalent of:
- *
- * |[
- *   cairo_set_source_rgba (cr,
- *                          color->red / 255.0,
- *                          color->green / 255.0,
- *                          color->blue / 255.0,
- *                          color->alpha / 255.0);
- * ]|
- *
- * Since: 1.0
- */
-void
-clutter_cairo_set_source_color (cairo_t            *cr,
-                                const ClutterColor *color)
-{
-  g_return_if_fail (cr != NULL);
-  g_return_if_fail (color != NULL);
-
-  if (color->alpha == 0xff)
-    cairo_set_source_rgb (cr,
-                          color->red / 255.0,
-                          color->green / 255.0,
-                          color->blue / 255.0);
-  else
-    cairo_set_source_rgba (cr,
-                           color->red / 255.0,
-                           color->green / 255.0,
-                           color->blue / 255.0,
-                           color->alpha / 255.0);
-}
-
-/**
  * clutter_cairo_texture_set_surface_size:
  * @self: a #ClutterCairoTexture
  * @width: the new width of the surface
@@ -1027,6 +1009,7 @@ clutter_cairo_set_source_color (cairo_t            *cr,
  * clutter_cairo_texture_invalidate().
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterCanvas instead
  */
 void
 clutter_cairo_texture_set_surface_size (ClutterCairoTexture *self,
@@ -1071,6 +1054,7 @@ clutter_cairo_texture_set_surface_size (ClutterCairoTexture *self,
  * Retrieves the surface width and height for @self.
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterCanvas instead
  */
 void
 clutter_cairo_texture_get_surface_size (ClutterCairoTexture *self,
@@ -1098,6 +1082,7 @@ clutter_cairo_texture_get_surface_size (ClutterCairoTexture *self,
  * signal handler will clear the invalidated area.
  *
  * Since: 1.0
+ * Deprecated: 1.12: Use #ClutterCanvas instead
  */
 void
 clutter_cairo_texture_clear (ClutterCairoTexture *self)
@@ -1148,6 +1133,7 @@ clutter_cairo_texture_clear (ClutterCairoTexture *self)
  * #ClutterCairoTexture will also be invalidated automatically.
  *
  * Since: 1.8
+ * Deprecated: 1.12: Use #ClutterCanvas instead
  */
 void
 clutter_cairo_texture_set_auto_resize (ClutterCairoTexture *self,
@@ -1181,6 +1167,7 @@ clutter_cairo_texture_set_auto_resize (ClutterCairoTexture *self,
  *   allocation, and %FALSE otherwise
  *
  * Since: 1.8
+ * Deprecated: 1.12: Use #ClutterCanvas instead
  */
 gboolean
 clutter_cairo_texture_get_auto_resize (ClutterCairoTexture *self)

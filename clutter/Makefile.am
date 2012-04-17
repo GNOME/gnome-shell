@@ -64,7 +64,7 @@ source_h =					\
 	$(srcdir)/clutter-blur-effect.h		\
 	$(srcdir)/clutter-box-layout.h		\
 	$(srcdir)/clutter-brightness-contrast-effect.h	\
-	$(srcdir)/clutter-cairo-texture.h	\
+	$(srcdir)/clutter-cairo.h		\
 	$(srcdir)/clutter-canvas.h		\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-click-action.h	\
@@ -145,7 +145,7 @@ source_c = \
 	$(srcdir)/clutter-blur-effect.c		\
 	$(srcdir)/clutter-box-layout.c		\
 	$(srcdir)/clutter-brightness-contrast-effect.c	\
-	$(srcdir)/clutter-cairo-texture.c       \
+	$(srcdir)/clutter-cairo.c		\
 	$(srcdir)/clutter-canvas.c		\
 	$(srcdir)/clutter-child-meta.c		\
 	$(srcdir)/clutter-click-action.c	\
@@ -288,6 +288,7 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-behaviour-rotate.c		\
 	$(srcdir)/deprecated/clutter-behaviour-scale.c		\
 	$(srcdir)/deprecated/clutter-box.c			\
+	$(srcdir)/deprecated/clutter-cairo-texture.c		\
 	$(srcdir)/deprecated/clutter-fixed.c			\
 	$(srcdir)/deprecated/clutter-frame-source.c		\
 	$(srcdir)/deprecated/clutter-group.c 			\

@@ -59,7 +59,7 @@
 
 #include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
-#include "clutter-cairo-texture.h"
+#include "clutter-cairo.h"
 #include "clutter-color.h"
 #include "clutter-container.h"
 #include "clutter-debug.h"

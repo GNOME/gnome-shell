@@ -59,6 +59,7 @@
 #define CLUTTER_ENABLE_EXPERIMENTAL_API
 
 #include "clutter-backend.h"
+#include "clutter-cairo.h"
 #include "clutter-color.h"
 #include "clutter-content-private.h"
 #include "clutter-marshal.h"

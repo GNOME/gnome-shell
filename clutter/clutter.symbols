@@ -494,6 +494,7 @@ clutter_brightness_contrast_effect_set_contrast
 clutter_canvas_get_type
 clutter_canvas_new
 clutter_canvas_set_size
+clutter_cairo_clear
 clutter_cairo_set_source_color
 clutter_cairo_texture_clear
 clutter_cairo_texture_create
