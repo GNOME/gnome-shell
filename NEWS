@@ -1,3 +1,43 @@
+3.4.1
+=====
+* Fix crash that occurred when an icon theme change caused unexpected
+  reentrancy in the icon loading code [Jasper; #673512]
+* Don't show system and other disabled users in the GDM user list
+  [Adel; #673784]
+* Make gnome-shell-calendar-server initialize GTK+ so it can display
+  password prompts if needed [#673608; Owen, Rico]
+* Adapt to Mutter API change for keybinding addition [Florian; #673014]
+* Fix crash when an extension was installed as both a user extension
+  and a system extension [#673613; Jasper]
+* Fix bug where chat entry could end up partially offscreen [Joost, 661944]
+* Fix problem where icons weren't updating when theme was changed
+  [#672941; Florian]
+* Look for Evolution calendar settings in GSettings, not GConf [#673610; Owen]
+* Add <super>F10 for the application menu [#672909; Florian]
+* Fix %Id format characters to work in translations [#673106; Cosimo]
+  (were already used in fa translation)
+* Fix error when NetworkManager restarts [#673043; Giovanni]
+* Improve efficiency of overview redraws by working around Clutter issue
+  [Stefano; #670636]
+* Misc bug fixes [Florian, Giovanni, Jasper, Rui, Stefano;
+  #672592, #672641, #672719, #673187, #673233, #673656]
+
+Contributors:
+ Giovanni Campagna, Cosimo Cecchi, Stefano Facchini, Adel Gadllah, Rui Matos,
+ Florian Müllner, Jasper St. Pierre, Owen Taylor, Rico Tzschichholz,
+ Joost Verdoorn
+
+Translations:
+ Khaled Hosny [ar], Ihar Hrachyshka [be], Alexander Shopov [bg], Gil Forcada,
+ Jordi Serratosa [ca], Petr Kovar [cs], Bruce Cowan [en_GB],
+ Carles Ferrando [ca@valencia], Wolfgang Stöggl [de], Daniel Mustieles [es],
+ Arash Mousavi [fa], Bruno Brouard [fr], Fran Diéguez [gl],
+ Sweta Kothari [gu], Yaron Shahrabani [he], Gabor Kelemen [hu],
+ Shankar Prasad [kn], Žygimantas Beručka [lt], Rudolfs Mazurs [lv],
+ Sandeep Sheshrao Shedmake [mr], Kjartan Maraas [nb], Piotr Drąg [pl],
+ Yuri Myasoedov [ru], Daniel Nylander [se], Matej Urbančič [sl],
+ Miroslav Nikolić [sr], Sasi Bhushan, Praveen Illa [te], Yinghua Wang [zh_CN]
+
 3.4.0
 =====
 * Don't crash when taking screenshots [Jasper; #672775]
