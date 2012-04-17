@@ -79,7 +79,6 @@
 #include "clutter-list-model.h"
 #include "clutter-macros.h"
 #include "clutter-main.h"
-#include "clutter-media.h"
 #include "clutter-model.h"
 #include "clutter-offscreen-effect.h"
 #include "clutter-page-turn-effect.h"

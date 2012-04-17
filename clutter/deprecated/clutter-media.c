@@ -34,6 +34,8 @@
  * a uniform API for applications.
  *
  * #ClutterMedia is available since Clutter 0.2
+ *
+ * #ClutterMedia is deprecated since Clutter 1.12
  */
 
 #ifdef HAVE_CONFIG_H
@@ -72,12 +74,15 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * The location of a media file, expressed as a valid URI.
    *
    * Since: 0.2
+   *
+   * Deprecated: 1.12
    */
   pspec = g_param_spec_string ("uri",
                                P_("URI"),
                                P_("URI of a media file"),
                                NULL,
-                               CLUTTER_PARAM_READWRITE);
+                               CLUTTER_PARAM_READWRITE |
+                               G_PARAM_DEPRECATED);
   g_object_interface_install_property (iface, pspec);
 
   /**
@@ -86,12 +91,15 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * Whether the #ClutterMedia actor is playing.
    *
    * Since: 0.2
+   *
+   * Deprecated: 1.12
    */
   pspec = g_param_spec_boolean ("playing",
                                 P_("Playing"),
                                 P_("Whether the actor is playing"),
                                 FALSE,
-                                CLUTTER_PARAM_READWRITE);
+                                CLUTTER_PARAM_READWRITE |
+                                G_PARAM_DEPRECATED);
   g_object_interface_install_property (iface, pspec);
 
   /**
@@ -101,12 +109,15 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * value between 0.0 and 1.0.
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.12
    */
   pspec = g_param_spec_double ("progress",
                                P_("Progress"),
                                P_("Current progress of the playback"),
                                0.0, 1.0, 0.0,
-                               CLUTTER_PARAM_READWRITE);
+                               CLUTTER_PARAM_READWRITE |
+                               G_PARAM_DEPRECATED);
   g_object_interface_install_property (iface, pspec);
 
   /**
@@ -115,12 +126,15 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * The location of a subtitle file, expressed as a valid URI.
    *
    * Since: 1.2
+   *
+   * Deprecated: 1.12
    */
   pspec = g_param_spec_string ("subtitle-uri",
                                P_("Subtitle URI"),
                                P_("URI of a subtitle file"),
                                NULL,
-                               CLUTTER_PARAM_READWRITE);
+                               CLUTTER_PARAM_READWRITE |
+                               G_PARAM_DEPRECATED);
   g_object_interface_install_property (iface, pspec);
 
   /**
@@ -131,12 +145,15 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * pango_font_description_from_string().
    *
    * Since: 1.2
+   *
+   * Deprecated: 1.12
    */
   pspec = g_param_spec_string ("subtitle-font-name",
                                P_("Subtitle Font Name"),
                                P_("The font used to display subtitles"),
                                NULL,
-                               CLUTTER_PARAM_READWRITE);
+                               CLUTTER_PARAM_READWRITE |
+                               G_PARAM_DEPRECATED);
   g_object_interface_install_property (iface, pspec);
 
   /**
@@ -146,12 +163,15 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * 0.0 and 1.0.
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.12
    */
   pspec = g_param_spec_double ("audio-volume",
                                P_("Audio Volume"),
                                P_("The volume of the audio"),
                                0.0, 1.0, 0.5,
-                               CLUTTER_PARAM_READWRITE);
+                               CLUTTER_PARAM_READWRITE |
+                               G_PARAM_DEPRECATED);
   g_object_interface_install_property (iface, pspec);
 
   /**
@@ -160,12 +180,15 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * Whether the current stream is seekable.
    *
    * Since: 0.2
+   *
+   * Deprecated: 1.12
    */
   pspec = g_param_spec_boolean ("can-seek",
                                 P_("Can Seek"),
                                 P_("Whether the current stream is seekable"),
                                 FALSE,
-                                CLUTTER_PARAM_READABLE);
+                                CLUTTER_PARAM_READABLE |
+                                G_PARAM_DEPRECATED);
   g_object_interface_install_property (iface, pspec);
 
   /**
@@ -175,12 +198,15 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * as a value between 0.0 and 1.0.
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.12
    */
   pspec = g_param_spec_double ("buffer-fill",
                                P_("Buffer Fill"),
                                P_("The fill level of the buffer"),
                                0.0, 1.0, 0.0,
-                               CLUTTER_PARAM_READABLE);
+                               CLUTTER_PARAM_READABLE |
+                               G_PARAM_DEPRECATED);
   g_object_interface_install_property (iface, pspec);
 
   /**
@@ -189,6 +215,8 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * The duration of the current stream, in seconds
    *
    * Since: 0.2
+   *
+   * Deprecated: 1.12
    */
   pspec = g_param_spec_double ("duration",
                                P_("Duration"),
@@ -204,6 +232,8 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * The ::eos signal is emitted each time the media stream ends.
    *
    * Since: 0.2
+   *
+   * Deprecated: 1.12
    */
   media_signals[EOS_SIGNAL] =
     g_signal_new (I_("eos"),
@@ -221,6 +251,8 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * The ::error signal is emitted each time an error occurred.
    *
    * Since: 0.2
+   *
+   * Deprecated: 1.12
    */
   media_signals[ERROR_SIGNAL] =
     g_signal_new (I_("error"),
@@ -242,6 +274,8 @@ clutter_media_default_init (ClutterMediaInterface *iface)
  * Sets the URI of @media to @uri.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_media_set_uri (ClutterMedia *media,
@@ -262,6 +296,8 @@ clutter_media_set_uri (ClutterMedia *media,
  *   to free the returned string
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.12
  */
 gchar *
 clutter_media_get_uri (ClutterMedia *media)
@@ -289,6 +325,8 @@ clutter_media_get_uri (ClutterMedia *media)
  * in clutter-gst is an example of such an asynchronous implementation.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_media_set_playing (ClutterMedia *media,
@@ -308,6 +346,8 @@ clutter_media_set_playing (ClutterMedia *media,
  * Return value: %TRUE if playing, %FALSE if stopped.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.12
  */
 gboolean
 clutter_media_get_playing (ClutterMedia *media)
@@ -330,6 +370,8 @@ clutter_media_get_playing (ClutterMedia *media)
  * a normalized value between 0.0 (begin) and 1.0 (end).
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_media_set_progress (ClutterMedia *media,
@@ -349,6 +391,8 @@ clutter_media_set_progress (ClutterMedia *media,
  * Return value: the playback progress, between 0.0 and 1.0
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 gdouble
 clutter_media_get_progress (ClutterMedia *media)
@@ -370,6 +414,8 @@ clutter_media_get_progress (ClutterMedia *media)
  * Sets the location of a subtitle file to display while playing @media.
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_media_set_subtitle_uri (ClutterMedia *media,
@@ -390,6 +436,8 @@ clutter_media_set_subtitle_uri (ClutterMedia *media,
  *   to free the returned string
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12
  */
 gchar *
 clutter_media_get_subtitle_uri (ClutterMedia *media)
@@ -418,6 +466,8 @@ clutter_media_get_subtitle_uri (ClutterMedia *media)
  * ]|
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_media_set_subtitle_font_name (ClutterMedia *media,
@@ -438,6 +488,8 @@ clutter_media_set_subtitle_font_name (ClutterMedia *media,
  *   to free the returned string
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12
  */
 gchar *
 clutter_media_get_subtitle_font_name (ClutterMedia *media)
@@ -459,6 +511,8 @@ clutter_media_get_subtitle_font_name (ClutterMedia *media)
  * Sets the playback volume of @media to @volume.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_media_set_audio_volume (ClutterMedia *media,
@@ -478,6 +532,8 @@ clutter_media_set_audio_volume (ClutterMedia *media,
  * Return value: The playback volume between 0.0 and 1.0
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 gdouble
 clutter_media_get_audio_volume (ClutterMedia *media)
@@ -500,6 +556,8 @@ clutter_media_get_audio_volume (ClutterMedia *media)
  * Return value: %TRUE if @media can seek, %FALSE otherwise.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.12
  */
 gboolean
 clutter_media_get_can_seek (ClutterMedia *media)
@@ -522,6 +580,8 @@ clutter_media_get_can_seek (ClutterMedia *media)
  * Return value: the fill level, between 0.0 and 1.0
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 gdouble
 clutter_media_get_buffer_fill (ClutterMedia *media)
@@ -544,6 +604,8 @@ clutter_media_get_buffer_fill (ClutterMedia *media)
  * Return value: the duration of the media stream, in seconds
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.12
  */
 gdouble
 clutter_media_get_duration (ClutterMedia *media)
@@ -567,6 +629,8 @@ clutter_media_get_duration (ClutterMedia *media)
  * Sets the source of @media using a file path.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_media_set_filename (ClutterMedia *media,

@@ -99,7 +99,6 @@ source_h =					\
 	$(srcdir)/clutter-list-model.h		\
 	$(srcdir)/clutter-macros.h		\
 	$(srcdir)/clutter-main.h		\
-	$(srcdir)/clutter-media.h		\
 	$(srcdir)/clutter-model.h		\
 	$(srcdir)/clutter-offscreen-effect.h	\
 	$(srcdir)/clutter-page-turn-effect.h	\
@@ -177,7 +176,6 @@ source_c = \
 	$(srcdir)/clutter-list-model.c		\
 	$(srcdir)/clutter-main.c 		\
 	$(srcdir)/clutter-master-clock.c	\
-	$(srcdir)/clutter-media.c 		\
 	$(srcdir)/clutter-model.c		\
 	$(srcdir)/clutter-offscreen-effect.c	\
 	$(srcdir)/clutter-page-turn-effect.c	\
@@ -267,6 +265,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-group.h			\
 	$(srcdir)/deprecated/clutter-keysyms.h			\
 	$(srcdir)/deprecated/clutter-main.h			\
+	$(srcdir)/deprecated/clutter-media.h			\
 	$(srcdir)/deprecated/clutter-rectangle.h		\
 	$(srcdir)/deprecated/clutter-score.h 			\
 	$(srcdir)/deprecated/clutter-shader.h 			\
@@ -292,6 +291,7 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-fixed.c			\
 	$(srcdir)/deprecated/clutter-frame-source.c		\
 	$(srcdir)/deprecated/clutter-group.c 			\
+	$(srcdir)/deprecated/clutter-media.c			\
 	$(srcdir)/deprecated/clutter-rectangle.c 		\
 	$(srcdir)/deprecated/clutter-score.c 			\
 	$(srcdir)/deprecated/clutter-shader.c 			\

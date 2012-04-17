@@ -72,31 +72,48 @@ struct _ClutterMediaIface
 		  const GError *error);
 };
 
+CLUTTER_DEPRECATED_IN_1_12
 GType    clutter_media_get_type               (void) G_GNUC_CONST;
 
+CLUTTER_DEPRECATED_IN_1_12
 void     clutter_media_set_uri                (ClutterMedia *media,
                                                const gchar  *uri);
+CLUTTER_DEPRECATED_IN_1_12
 gchar *  clutter_media_get_uri                (ClutterMedia *media);
+CLUTTER_DEPRECATED_IN_1_12
 void     clutter_media_set_filename           (ClutterMedia *media,
                                                const gchar  *filename);
 
+CLUTTER_DEPRECATED_IN_1_12
 void     clutter_media_set_playing            (ClutterMedia *media,
                                                gboolean      playing);
+CLUTTER_DEPRECATED_IN_1_12
 gboolean clutter_media_get_playing            (ClutterMedia *media);
+CLUTTER_DEPRECATED_IN_1_12
 void     clutter_media_set_progress           (ClutterMedia *media,
                                                gdouble       progress);
+CLUTTER_DEPRECATED_IN_1_12
 gdouble  clutter_media_get_progress           (ClutterMedia *media);
+CLUTTER_DEPRECATED_IN_1_12
 void     clutter_media_set_subtitle_uri       (ClutterMedia *media,
                                                const gchar  *uri);
+CLUTTER_DEPRECATED_IN_1_12
 gchar *  clutter_media_get_subtitle_uri       (ClutterMedia *media);
+CLUTTER_DEPRECATED_IN_1_12
 void     clutter_media_set_subtitle_font_name (ClutterMedia *media,
                                                const char   *font_name);
+CLUTTER_DEPRECATED_IN_1_12
 gchar *  clutter_media_get_subtitle_font_name (ClutterMedia *media);
+CLUTTER_DEPRECATED_IN_1_12
 void     clutter_media_set_audio_volume       (ClutterMedia *media,
                                                gdouble       volume);
+CLUTTER_DEPRECATED_IN_1_12
 gdouble  clutter_media_get_audio_volume       (ClutterMedia *media);
+CLUTTER_DEPRECATED_IN_1_12
 gboolean clutter_media_get_can_seek           (ClutterMedia *media);
+CLUTTER_DEPRECATED_IN_1_12
 gdouble  clutter_media_get_buffer_fill        (ClutterMedia *media);
+CLUTTER_DEPRECATED_IN_1_12
 gdouble  clutter_media_get_duration           (ClutterMedia *media);
 
 G_END_DECLS
