@@ -8,10 +8,10 @@ Contributors:
 
 Translations:
  Khaled Hosny, Abderrahim Kitouni [ar], Ihar Hrachyshka [be],
- Alexander Shopov [bg], Marek Černocký [cz], Jiri Grönroos, Timo Jyrinki [fi],
+ Alexander Shopov [bg], Marek Černocký [cs], Jiri Grönroos, Timo Jyrinki [fi],
  Bruno Brouard [fr], Fran Diéguez [gl], Yaron Shahrabani [he],
  Gabor Kelemen [hu], Jiro Matsuzawa [ja], Kenneth Nielsen [dk],
- Mattias Põldaru [et], Changwoo Ryu [kr], Rudolfs Mazurs [lv],
+ Mattias Põldaru [et], Changwoo Ryu [ko], Rudolfs Mazurs [lv],
  Jonh Wendell [pt_BR], Yuri Myasoedov[ru], Daniel Korostil [uk],
  Nguyễn Thái Ngọc Duy [vi], Chao-Hsiung Liao [zh_HK, zh_TW]
 
@@ -80,7 +80,7 @@ Contributors:
 
 Translations:
  Nilamdyuti Goswami [as], Ihar Hrachyshka, Kasia Bondarava [be],
- Alexander Shopov, Ivaylo Valkov [bg], Gil Forcada [ca], Marek Černocký [cz],
+ Alexander Shopov, Ivaylo Valkov [bg], Gil Forcada [ca], Marek Černocký [cs],
  Mario Blättermann [de], Kris Thomsen [dk], Bruce Cowan [en_GB],
  Kristjan Schmidt [eo], Daniel Mustieles [es], Mattias Põldaru [et],
  Inaki Larranaga Murgoitio [eu], Arash Mousavi [fa], Timo Jyrinki [fi],
@@ -129,7 +129,7 @@ Contributors:
  Will Thompson, Stef Walter
 
 Translations:
- Ihar Hrachyshka [be], Marek Černocký, Adam Matoušek [cz],
+ Ihar Hrachyshka [be], Marek Černocký, Adam Matoušek [cs],
  Kenneth Nielsen [dk], Daniel Mustieles [es], Mattias Põldaru [et],
  Fran Diéguez [gl], Yaron Shahrabani [he], Luca Ferretti [it],
  Baurzhan Muftakhidinov [kk], Aurimas Černius [lt], Kjartan Maraas [nb],
@@ -260,7 +260,7 @@ Contributors:
  Marina Zhurakhinskaya
 
 Translations:
- Petr Kovar [cz], Kris Thomsen [dk], Daniel Mustieles [es],
+ Petr Kovar [cs], Kris Thomsen [dk], Daniel Mustieles [es],
  Ville-Pekka Vainio [fi], Yaron Shahrabani [he], Luca Ferretti [it],
  Hideki Yamane [ja], Žygimantas Beručka [lt], Jovan Naumovski [mk],
  Kjartan Maraas [nb], "Andreas N" [nn], Lucian Adrian Grijincu [ro],
@@ -423,7 +423,7 @@ Contributors:
 Translations:
  Friedel Wolff [af], Nilamdyuti Goswami [as], Ihar Hrachyshka [be],
  Ivaylo Valkov [bg], Gil Forcada [ca], Carles Ferrando [ca@valencia],
- Petr Kovar [cz], Mario Blättermann [de], Kris Thomsen [dk],
+ Petr Kovar [cs], Mario Blättermann [de], Kris Thomsen [dk],
  Tiffany Antopolski, Kristjan Schmidt [eo], Daniel Mustieles [es],
  Inaki Larranaga Murgoitio [eu], Tommi Vainikainen [fi], Bruno Brouard [fr],
  Fran Dieguez [gl], Yaron Shahrabani [he], Gabor Kelemen [hu],
