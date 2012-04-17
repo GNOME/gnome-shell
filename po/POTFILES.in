@@ -34,7 +34,6 @@ clutter/clutter-interval.c
 clutter/clutter-layout-manager.c
 clutter/clutter-layout-meta.c
 clutter/clutter-main.c
-clutter/clutter-media.c
 clutter/clutter-paint-node.c
 clutter/clutter-path-constraint.c
 clutter/clutter-property-transition.c
@@ -64,6 +63,7 @@ clutter/deprecated/clutter-behaviour-scale.c
 clutter/deprecated/clutter-box.c
 clutter/deprecated/clutter-fixed.c
 clutter/deprecated/clutter-fixed.h
+clutter/deprecated/clutter-media.c
 clutter/deprecated/clutter-rectangle.c
 clutter/deprecated/clutter-shader.c
 clutter/evdev/clutter-input-device-evdev.c
