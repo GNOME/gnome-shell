@@ -1134,7 +1134,6 @@ const Workspace = new Lang.Class({
     _hideAllOverlays: function() {
         for (let i = 0; i < this._windows.length; i++) {
             let clone = this._windows[i];
-            Tweener.removeTweens(clone.actor);
             let overlay = this._windowOverlays[i];
             if (overlay)
                 overlay.hide();
@@ -1321,7 +1320,10 @@ const Workspace = new Lang.Class({
 
         this.leavingOverview = true;
 
-        this._hideAllOverlays();
+        for (let i = 0; i < this._windows.length; i++) {
+            let clone = this._windows[i];
+            Tweener.removeTweens(clone.actor);
+        }
 
         if (this._repositionWindowsId > 0) {
             Mainloop.source_remove(this._repositionWindowsId);
@@ -1361,6 +1363,7 @@ const Workspace = new Lang.Class({
             }
         }
 
+        this._hideAllOverlays();
     },
 
     destroy : function() {
