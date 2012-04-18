@@ -47,6 +47,7 @@
 #include "cogl1-context.h"
 #include "cogl-private.h"
 #include "cogl-primitives-private.h"
+#include "cogl-path-private.h"
 
 #ifndef GL_FRAMEBUFFER
 #define GL_FRAMEBUFFER		0x8D40
@@ -3521,4 +3522,28 @@ cogl_framebuffer_draw_textured_rectangles (CoglFramebuffer *framebuffer,
                                                    rects,
                                                    n_rectangles,
                                                    TRUE);
+}
+
+void
+cogl_framebuffer_fill_path (CoglFramebuffer *framebuffer,
+                            CoglPipeline *pipeline,
+                            CoglPath *path)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_framebuffer (framebuffer));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_path (path));
+
+  _cogl_path_fill_nodes (path, framebuffer, pipeline, 0 /* flags */);
+}
+
+void
+cogl_framebuffer_stroke_path (CoglFramebuffer *framebuffer,
+                              CoglPipeline *pipeline,
+                              CoglPath *path)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_framebuffer (framebuffer));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_path (path));
+
+  _cogl_path_stroke_nodes (path, framebuffer, pipeline);
 }

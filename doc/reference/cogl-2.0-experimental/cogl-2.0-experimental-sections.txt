@@ -286,8 +286,6 @@ cogl_path_ellipse
 CoglPathFillRule
 cogl_path_set_fill_rule
 cogl_path_get_fill_rule
-cogl_path_fill
-cogl_path_stroke
 </SECTION>
 
 <SECTION>
@@ -425,6 +423,8 @@ cogl_framebuffer_draw_textured_rectangle
 cogl_framebuffer_draw_multitextured_rectangle
 cogl_framebuffer_draw_rectangles
 cogl_framebuffer_draw_textured_rectangles
+cogl_framebuffer_stroke_path
+cogl_framebuffer_fill_path
 
 <SUBSECTION>
 cogl_framebuffer_swap_buffers

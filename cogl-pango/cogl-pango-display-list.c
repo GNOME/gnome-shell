@@ -437,6 +437,7 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
 
         case COGL_PANGO_DISPLAY_LIST_TRAPEZOID:
           {
+            CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
             float points[8];
             CoglPath *path;
 
@@ -453,7 +454,7 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
 
             path = cogl_path_new ();
             cogl_path_polygon (path, points, 4);
-            cogl_path_fill (path);
+            cogl_framebuffer_fill_path (framebuffer, node->pipeline, path);
             cogl_object_unref (path);
           }
           break;

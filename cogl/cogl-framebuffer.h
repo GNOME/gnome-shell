@@ -1491,6 +1491,47 @@ cogl_framebuffer_draw_textured_rectangles (CoglFramebuffer *framebuffer,
                                            const float *coordinates,
                                            unsigned int n_rectangles);
 
+/**
+ * cogl_framebuffer_fill_path:
+ * @framebuffer: A #CoglFramebuffer
+ * @pipeline: A #CoglPipeline to render with
+ * @path: The #CoglPath to fill
+ *
+ * Fills the interior of the path using the fragment operations
+ * defined by the pipeline.
+ *
+ * The interior of the shape is determined using the fill rule of the
+ * path. See %CoglPathFillRule for details.
+ *
+ * <note>The result of referencing sliced textures in your current
+ * pipeline when filling a path are undefined. You should pass
+ * the %COGL_TEXTURE_NO_SLICING flag when loading any texture you will
+ * use while filling a path.</note>
+ *
+ * Since: 2.0
+ */
+void
+cogl_framebuffer_fill_path (CoglFramebuffer *framebuffer,
+                            CoglPipeline *pipeline,
+                            CoglPath *path);
+
+/**
+ * cogl_framebuffer_stroke_path:
+ * @framebuffer: A #CoglFramebuffer
+ * @pipeline: A #CoglPipeline to render with
+ * @path: The #CoglPath to stroke
+ *
+ * Strokes the edge of the path using the fragment operations defined
+ * by the pipeline. The stroke line will have a width of 1 pixel
+ * regardless of the current transformation matrix.
+ *
+ * Since: 2.0
+ */
+void
+cogl_framebuffer_stroke_path (CoglFramebuffer *framebuffer,
+                              CoglPipeline *pipeline,
+                              CoglPath *path);
+
 /* XXX: Should we take an n_buffers + buffer id array instead of using
  * the CoglBufferBits type which doesn't seem future proof? */
 /**

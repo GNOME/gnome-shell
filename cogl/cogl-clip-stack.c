@@ -278,7 +278,9 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
   GE( ctx, glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
 }
 
-typedef void (*SilhouettePaintCallback) (void *user_data);
+typedef void (*SilhouettePaintCallback) (CoglFramebuffer *framebuffer,
+                                         CoglPipeline *pipeline,
+                                         void *user_data);
 
 static void
 add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
@@ -346,7 +348,7 @@ add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
 
   GE (ctx, glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT));
 
-  silhouette_callback (user_data);
+  silhouette_callback (framebuffer, ctx->stencil_pipeline, user_data);
 
   if (merge)
     {
@@ -382,11 +384,15 @@ add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
 }
 
 static void
-paint_path_silhouette (void *user_data)
+paint_path_silhouette (CoglFramebuffer *framebuffer,
+                       CoglPipeline *pipeline,
+                       void *user_data)
 {
   CoglPath *path = user_data;
   if (path->data->path_nodes->len >= 3)
     _cogl_path_fill_nodes (path,
+                           framebuffer,
+                           pipeline,
                            COGL_DRAW_SKIP_JOURNAL_FLUSH |
                            COGL_DRAW_SKIP_PIPELINE_VALIDATION |
                            COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
@@ -411,10 +417,12 @@ add_stencil_clip_path (CoglFramebuffer *framebuffer,
 }
 
 static void
-paint_primitive_silhouette (void *user_data)
+paint_primitive_silhouette (CoglFramebuffer *framebuffer,
+                            CoglPipeline *pipeline,
+                            void *user_data)
 {
-  _cogl_framebuffer_draw_primitive (cogl_get_draw_framebuffer (),
-                                    cogl_get_source (),
+  _cogl_framebuffer_draw_primitive (framebuffer,
+                                    pipeline,
                                     user_data,
                                     COGL_DRAW_SKIP_JOURNAL_FLUSH |
                                     COGL_DRAW_SKIP_PIPELINE_VALIDATION |

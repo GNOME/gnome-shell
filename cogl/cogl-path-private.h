@@ -116,6 +116,14 @@ CoglBool
 _cogl_path_is_rectangle (CoglPath *path);
 
 void
-_cogl_path_fill_nodes (CoglPath *path, CoglDrawFlags flags);
+_cogl_path_stroke_nodes (CoglPath *path,
+                         CoglFramebuffer *framebuffer,
+                         CoglPipeline *pipeline);
+
+void
+_cogl_path_fill_nodes (CoglPath *path,
+                       CoglFramebuffer *framebuffer,
+                       CoglPipeline *pipeline,
+                       CoglDrawFlags flags);
 
 #endif /* __COGL_PATH_PRIVATE_H */

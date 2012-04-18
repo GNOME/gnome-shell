@@ -202,28 +202,28 @@ _cogl_path_add_node (CoglPath *path,
   data->is_rectangle = FALSE;
 }
 
-static void
-_cogl_path_stroke_nodes (CoglPath *path)
+void
+_cogl_path_stroke_nodes (CoglPath *path,
+                         CoglFramebuffer *framebuffer,
+                         CoglPipeline *pipeline)
 {
   CoglPathData *data = path->data;
   CoglPipeline *copy = NULL;
-  CoglPipeline *source;
   unsigned int path_start;
   int path_num = 0;
   CoglPathNode *node;
 
-  source = cogl_get_source ();
+  if (data->path_nodes->len == 0)
+    return;
 
-  if (cogl_pipeline_get_n_layers (source) != 0)
+  if (cogl_pipeline_get_n_layers (pipeline) != 0)
     {
-      copy = cogl_pipeline_copy (source);
+      copy = cogl_pipeline_copy (pipeline);
       _cogl_pipeline_prune_to_n_layers (copy, 0);
-      source = copy;
+      pipeline = copy;
     }
 
   _cogl_path_build_stroke_attribute_buffer (path);
-
-  cogl_push_source (source);
 
   for (path_start = 0;
        path_start < data->path_nodes->len;
@@ -231,8 +231,8 @@ _cogl_path_stroke_nodes (CoglPath *path)
     {
       node = &g_array_index (data->path_nodes, CoglPathNode, path_start);
 
-      cogl_framebuffer_vdraw_attributes (cogl_get_draw_framebuffer (),
-                                         source,
+      cogl_framebuffer_vdraw_attributes (framebuffer,
+                                         pipeline,
                                          COGL_VERTICES_MODE_LINE_STRIP,
                                          0, node->path_size,
                                          data->stroke_attributes[path_num],
@@ -240,8 +240,6 @@ _cogl_path_stroke_nodes (CoglPath *path)
 
       path_num++;
     }
-
-  cogl_pop_source ();
 
   if (copy)
     cogl_object_unref (copy);
@@ -273,10 +271,10 @@ _cogl_path_get_bounds (CoglPath *path,
 }
 
 static void
-_cogl_path_fill_nodes_with_clipped_rectangle (CoglPath *path)
+_cogl_path_fill_nodes_with_clipped_rectangle (CoglPath *path,
+                                              CoglFramebuffer *framebuffer,
+                                              CoglPipeline *pipeline)
 {
-  CoglFramebuffer *fb;
-
   if (!(path->data->context->private_feature_flags &
         COGL_PRIVATE_FEATURE_STENCIL_BUFFER))
     {
@@ -291,13 +289,14 @@ _cogl_path_fill_nodes_with_clipped_rectangle (CoglPath *path)
         }
     }
 
-  fb = cogl_get_draw_framebuffer ();
-  cogl_framebuffer_push_path_clip (fb, path);
-  cogl_rectangle (path->data->path_nodes_min.x,
-                  path->data->path_nodes_min.y,
-                  path->data->path_nodes_max.x,
-                  path->data->path_nodes_max.y);
-  cogl_framebuffer_pop_clip (fb);
+  cogl_framebuffer_push_path_clip (framebuffer, path);
+  cogl_framebuffer_draw_rectangle (framebuffer,
+                                   pipeline,
+                                   path->data->path_nodes_min.x,
+                                   path->data->path_nodes_min.y,
+                                   path->data->path_nodes_max.x,
+                                   path->data->path_nodes_max.y);
+  cogl_framebuffer_pop_clip (framebuffer);
 }
 
 static CoglBool
@@ -321,30 +320,55 @@ validate_layer_cb (CoglPipelineLayer *layer, void *user_data)
 }
 
 void
-_cogl_path_fill_nodes (CoglPath *path, CoglDrawFlags flags)
+_cogl_path_fill_nodes (CoglPath *path,
+                       CoglFramebuffer *framebuffer,
+                       CoglPipeline *pipeline,
+                       CoglDrawFlags flags)
 {
-  gboolean needs_fallback = FALSE;
-  CoglPipeline *pipeline = cogl_get_source ();
+  if (path->data->path_nodes->len == 0)
+    return;
 
-  _cogl_pipeline_foreach_layer_internal (pipeline,
-                                         validate_layer_cb, &needs_fallback);
-  if (needs_fallback)
+  /* If the path is a simple rectangle then we can divert to using
+     cogl_framebuffer_draw_rectangle which should be faster because it
+     can go through the journal instead of uploading the geometry just
+     for two triangles */
+  if (path->data->is_rectangle && flags == 0)
     {
-      _cogl_path_fill_nodes_with_clipped_rectangle (path);
-      return;
+      float x_1, y_1, x_2, y_2;
+
+      _cogl_path_get_bounds (path, &x_1, &y_1, &x_2, &y_2);
+      cogl_framebuffer_draw_rectangle (framebuffer,
+                                       pipeline,
+                                       x_1, y_1,
+                                       x_2, y_2);
     }
+  else
+    {
+      CoglBool needs_fallback = FALSE;
 
-  _cogl_path_build_fill_attribute_buffer (path);
+      _cogl_pipeline_foreach_layer_internal (pipeline,
+                                             validate_layer_cb,
+                                             &needs_fallback);
+      if (needs_fallback)
+        {
+          _cogl_path_fill_nodes_with_clipped_rectangle (path,
+                                                        framebuffer,
+                                                        pipeline);
+          return;
+        }
 
-  _cogl_framebuffer_draw_indexed_attributes (cogl_get_draw_framebuffer (),
-                                             pipeline,
-                                             COGL_VERTICES_MODE_TRIANGLES,
-                                             0, /* first_vertex */
-                                             path->data->fill_vbo_n_indices,
-                                             path->data->fill_vbo_indices,
-                                             path->data->fill_attributes,
-                                             COGL_PATH_N_ATTRIBUTES,
-                                             flags);
+      _cogl_path_build_fill_attribute_buffer (path);
+
+      _cogl_framebuffer_draw_indexed_attributes (framebuffer,
+                                                 pipeline,
+                                                 COGL_VERTICES_MODE_TRIANGLES,
+                                                 0, /* first_vertex */
+                                                 path->data->fill_vbo_n_indices,
+                                                 path->data->fill_vbo_indices,
+                                                 path->data->fill_attributes,
+                                                 COGL_PATH_N_ATTRIBUTES,
+                                                 flags);
+    }
 }
 
 void
@@ -367,7 +391,10 @@ cogl2_path_fill (CoglPath *path)
       cogl_rectangle (x_1, y_1, x_2, y_2);
     }
   else
-    _cogl_path_fill_nodes (path, 0);
+    _cogl_path_fill_nodes (path,
+                           cogl_get_draw_framebuffer (),
+                           cogl_get_source (),
+                           0);
 }
 
 void
@@ -378,7 +405,9 @@ cogl2_path_stroke (CoglPath *path)
   if (path->data->path_nodes->len == 0)
     return;
 
-  _cogl_path_stroke_nodes (path);
+  _cogl_path_stroke_nodes (path,
+                           cogl_get_draw_framebuffer (),
+                           cogl_get_source ());
 }
 
 void
