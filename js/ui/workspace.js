@@ -1251,7 +1251,7 @@ const Workspace = new Lang.Class({
         if (!this._isMyWindow(win) || !this._isOverviewWindow(win))
             return;
 
-        let clone = this._addWindowClone(win);
+        let [clone, overlay] = this._addWindowClone(win);
 
         if (win._overviewHint) {
             let x = win._overviewHint.x - this.actor.x;
@@ -1261,6 +1261,7 @@ const Workspace = new Lang.Class({
 
             clone.actor.set_position (x, y);
             clone.actor.set_scale (scale, scale);
+            this._updateWindowOverlayPositions(clone, overlay, x, y, scale, false);
         } else {
             // Position new windows at the top corner of the workspace rather
             // than where they were placed for real to avoid the window
@@ -1454,7 +1455,7 @@ const Workspace = new Lang.Class({
         this._windows.push(clone);
         this._windowOverlays.push(overlay);
 
-        return clone;
+        return [clone, overlay];
     },
 
     _onShowOverlayClose: function (windowOverlay) {
