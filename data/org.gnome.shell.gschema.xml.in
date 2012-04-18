@@ -88,6 +88,13 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
         Keybinding to open the application menu.
       </_description>
     </key>
+    <key name="toggle-recording" type="as">
+      <default><![CDATA[['<Control><Shift><Alt>r']]]></default>
+      <_summary>Keybinding to toggle the screen recorder</_summary>
+      <_description>
+        Keybinding to start/stop the builtin screen recorder.
+      </_description>
+    </key>
   </schema>
 
   <schema id="org.gnome.shell.keyboard" path="/org/gnome/shell/keyboard/"

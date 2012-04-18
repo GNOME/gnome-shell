@@ -101,8 +101,11 @@ function _createGDMSession() {
 
 function _initRecorder() {
     let recorderSettings = new Gio.Settings({ schema: 'org.gnome.shell.recorder' });
+    let bindingSettings = new Gio.Settings({ schema: 'org.gnome.shell.keybindings' });
 
-    global.screen.connect('toggle-recording', function() {
+    global.display.add_keybinding('toggle-recording',
+                                  bindingSettings,
+                                  Meta.KeyBindingFlags.NONE, function() {
         if (recorder == null) {
             recorder = new Shell.Recorder({ stage: global.stage });
         }
