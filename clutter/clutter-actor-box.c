@@ -16,10 +16,18 @@
  * @y_2: Y coordinate of the bottom right point
  *
  * Allocates a new #ClutterActorBox using the passed coordinates
- * for the top left and bottom right points
+ * for the top left and bottom right points.
  *
- * Return value: the newly allocated #ClutterActorBox. Use
- *   clutter_actor_box_free() to free the resources
+ * This function is the logical equivalent of:
+ *
+ * |[
+ *   clutter_actor_box_init (clutter_actor_box_alloc (),
+ *                           x_1, y_1,
+ *                           x_2, y_2);
+ * ]|
+ *
+ * Return value: (transfer full): the newly allocated #ClutterActorBox.
+ *   Use clutter_actor_box_free() to free the resources
  *
  * Since: 1.0
  */
@@ -29,12 +37,25 @@ clutter_actor_box_new (gfloat x_1,
                        gfloat x_2,
                        gfloat y_2)
 {
-  ClutterActorBox *box;
+  return clutter_actor_box_init (clutter_actor_box_alloc (),
+                                 x_1, y_1,
+                                 x_2, y_2);
+}
 
-  box = g_slice_new (ClutterActorBox);
-  clutter_actor_box_init (box, x_1, y_1, x_2, y_2);
-
-  return box;
+/**
+ * clutter_actor_box_alloc:
+ *
+ * Allocates a new #ClutterActorBox.
+ *
+ * Return value: (transfer full): the newly allocated #ClutterActorBox.
+ *   Use clutter_actor_box_free() to free its resources
+ *
+ * Since: 1.12
+ */
+ClutterActorBox *
+clutter_actor_box_alloc (void)
+{
+  return g_slice_new0 (ClutterActorBox);
 }
 
 /**
@@ -47,21 +68,25 @@ clutter_actor_box_new (gfloat x_1,
  *
  * Initializes @box with the given coordinates.
  *
+ * Return value: (transfer none): the initialized #ClutterActorBox
+ *
  * Since: 1.10
  */
-void
+ClutterActorBox *
 clutter_actor_box_init (ClutterActorBox *box,
                         gfloat           x_1,
                         gfloat           y_1,
                         gfloat           x_2,
                         gfloat           y_2)
 {
-  g_return_if_fail (box != NULL);
+  g_return_val_if_fail (box != NULL, NULL);
 
   box->x1 = x_1;
   box->y1 = y_1;
   box->x2 = x_2;
   box->y2 = y_2;
+
+  return box;
 }
 
 /**

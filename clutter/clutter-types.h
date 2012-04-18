@@ -131,7 +131,7 @@ struct _ClutterPoint
 
 GType clutter_point_get_type (void) G_GNUC_CONST;
 
-ClutterPoint *  clutter_point_new       (void);
+ClutterPoint *  clutter_point_alloc     (void);
 ClutterPoint *  clutter_point_init      (ClutterPoint       *point,
                                          float               x,
                                          float               y);
@@ -160,7 +160,7 @@ struct _ClutterSize
 
 GType clutter_size_get_type (void) G_GNUC_CONST;
 
-ClutterSize *   clutter_size_new        (void);
+ClutterSize *   clutter_size_alloc      (void);
 ClutterSize *   clutter_size_init       (ClutterSize       *size,
                                          float              width,
                                          float              height);
@@ -201,7 +201,7 @@ struct _ClutterRect
 
 GType clutter_rect_get_type (void) G_GNUC_CONST;
 
-ClutterRect *   clutter_rect_new                (void);
+ClutterRect *   clutter_rect_alloc              (void);
 ClutterRect *   clutter_rect_init               (ClutterRect       *rect,
                                                  float              x,
                                                  float              y,
@@ -272,7 +272,8 @@ GType          clutter_vertex_get_type (void) G_GNUC_CONST;
 ClutterVertex *clutter_vertex_new      (gfloat               x,
                                         gfloat               y,
                                         gfloat               z);
-void           clutter_vertex_init     (ClutterVertex       *vertex,
+ClutterVertex *clutter_vertex_alloc    (void);
+ClutterVertex *clutter_vertex_init     (ClutterVertex       *vertex,
                                         gfloat               x,
                                         gfloat               y,
                                         gfloat               z);
@@ -324,7 +325,8 @@ ClutterActorBox *clutter_actor_box_new           (gfloat                 x_1,
                                                   gfloat                 y_1,
                                                   gfloat                 x_2,
                                                   gfloat                 y_2);
-void             clutter_actor_box_init          (ClutterActorBox       *box,
+ClutterActorBox *clutter_actor_box_alloc         (void);
+ClutterActorBox *clutter_actor_box_init          (ClutterActorBox       *box,
                                                   gfloat                 x_1,
                                                   gfloat                 y_1,
                                                   gfloat                 x_2,

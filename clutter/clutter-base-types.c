@@ -156,10 +156,16 @@ G_DEFINE_BOXED_TYPE_WITH_CODE (ClutterGeometry, clutter_geometry,
  * @z: Z coordinate
  *
  * Creates a new #ClutterVertex for the point in 3D space
- * identified by the 3 coordinates @x, @y, @z
+ * identified by the 3 coordinates @x, @y, @z.
  *
- * Return value: the newly allocate #ClutterVertex. Use
- *   clutter_vertex_free() to free the resources
+ * This function is the logical equivalent of:
+ *
+ * |[
+ *   clutter_vertex_init (clutter_vertex_alloc (), x, y, z);
+ * ]|
+ *
+ * Return value: (transfer full): the newly allocated #ClutterVertex.
+ *   Use clutter_vertex_free() to free the resources
  *
  * Since: 1.0
  */
@@ -168,12 +174,23 @@ clutter_vertex_new (gfloat x,
                     gfloat y,
                     gfloat z)
 {
-  ClutterVertex *vertex;
+  return clutter_vertex_init (clutter_vertex_alloc (), x, y, z);
+}
 
-  vertex = g_slice_new (ClutterVertex);
-  clutter_vertex_init (vertex, x, y, z);
-
-  return vertex;
+/**
+ * clutter_vertex_alloc:
+ *
+ * Allocates a new, empty #ClutterVertex.
+ *
+ * Return value: (transfer full): the newly allocated #ClutterVertex.
+ *   Use clutter_vertex_free() to free its resources
+ *
+ * Since: 1.12
+ */
+ClutterVertex *
+clutter_vertex_alloc (void)
+{
+  return g_slice_new0 (ClutterVertex);
 }
 
 /**
@@ -185,19 +202,23 @@ clutter_vertex_new (gfloat x,
  *
  * Initializes @vertex with the given coordinates.
  *
+ * Return value: (transfer none): the initialized #ClutterVertex
+ *
  * Since: 1.10
  */
-void
+ClutterVertex *
 clutter_vertex_init (ClutterVertex *vertex,
                      gfloat         x,
                      gfloat         y,
                      gfloat         z)
 {
-  g_return_if_fail (vertex != NULL);
+  g_return_val_if_fail (vertex != NULL, NULL);
 
   vertex->x = x;
   vertex->y = y;
   vertex->z = z;
+
+  return vertex;
 }
 
 /**
@@ -206,8 +227,8 @@ clutter_vertex_init (ClutterVertex *vertex,
  *
  * Copies @vertex
  *
- * Return value: a newly allocated copy of #ClutterVertex. Use
- *   clutter_vertex_free() to free the allocated resources
+ * Return value: (transfer full): a newly allocated copy of #ClutterVertex.
+ *   Use clutter_vertex_free() to free the allocated resources
  *
  * Since: 1.0
  */
@@ -224,7 +245,8 @@ clutter_vertex_copy (const ClutterVertex *vertex)
  * clutter_vertex_free:
  * @vertex: a #ClutterVertex
  *
- * Frees a #ClutterVertex allocated using clutter_vertex_copy()
+ * Frees a #ClutterVertex allocated using clutter_vertex_alloc() or
+ * clutter_vertex_copy().
  *
  * Since: 1.0
  */
@@ -268,7 +290,7 @@ clutter_vertex_progress (const GValue *a,
 {
   const ClutterVertex *av = g_value_get_boxed (a);
   const ClutterVertex *bv = g_value_get_boxed (b);
-  ClutterVertex res = { 0, };
+  ClutterVertex res;
 
   res.x = av->x + (bv->x - av->x) * progress;
   res.y = av->y + (bv->y - av->y) * progress;
@@ -353,12 +375,34 @@ G_DEFINE_BOXED_TYPE (ClutterMargin, clutter_margin,
  * ClutterPoint
  */
 
+/**
+ * clutter_point_alloc:
+ *
+ * Allocates a new #ClutterPoint.
+ *
+ * Return value: (transfer full): the newly allocated #ClutterPoint.
+ *   Use clutter_point_free() to free its resources.
+ *
+ * Since: 1.12
+ */
 ClutterPoint *
-clutter_point_new (void)
+clutter_point_alloc (void)
 {
   return g_slice_new0 (ClutterPoint);
 }
 
+/**
+ * clutter_point_init:
+ * @point: a #ClutterPoint
+ * @x: the X coordinate of the point
+ * @y: the Y coordinate of the point
+ *
+ * Initializes @point with the given coordinates.
+ *
+ * Return value: (transfer none): the initialized #ClutterPoint
+ *
+ * Since: 1.12
+ */
 ClutterPoint *
 clutter_point_init (ClutterPoint *point,
                     float         x,
@@ -372,12 +416,31 @@ clutter_point_init (ClutterPoint *point,
   return point;
 }
 
+/**
+ * clutter_point_copy:
+ * @point: a #ClutterPoint
+ *
+ * Creates a new #ClutterPoint with the same coordinates of @point.
+ *
+ * Return value: (transfer full): a newly allocated #ClutterPoint.
+ *   Use clutter_point_free() to free its resources.
+ *
+ * Since: 1.12
+ */
 ClutterPoint *
 clutter_point_copy (const ClutterPoint *point)
 {
   return g_slice_dup (ClutterPoint, point);
 }
 
+/**
+ * clutter_point_free:
+ * @point: a #ClutterPoint
+ *
+ * Frees the resources allocated for @point.
+ *
+ * Since: 1.12
+ */
 void
 clutter_point_free (ClutterPoint *point)
 {
@@ -385,6 +448,17 @@ clutter_point_free (ClutterPoint *point)
     g_slice_free (ClutterPoint, point);
 }
 
+/**
+ * clutter_point_equals:
+ * @a: the first #ClutterPoint to compare
+ * @b: the second #ClutterPoint to compare
+ *
+ * Compares two #ClutterPoint for equality.
+ *
+ * Return value: %TRUE if the #ClutterPoints are equal
+ *
+ * Since: 1.12
+ */
 gboolean
 clutter_point_equals (const ClutterPoint *a,
                       const ClutterPoint *b)
@@ -427,12 +501,34 @@ G_DEFINE_BOXED_TYPE_WITH_CODE (ClutterPoint, clutter_point,
  * ClutterSize
  */
 
+/**
+ * clutter_size_alloc:
+ *
+ * Allocates a new #ClutterSize.
+ *
+ * Return value: (transfer full): the newly allocated #ClutterSize.
+ *   Use clutter_size_free() to free its resources.
+ *
+ * Since: 1.12
+ */
 ClutterSize *
-clutter_size_new (void)
+clutter_size_alloc (void)
 {
   return g_slice_new0 (ClutterSize);
 }
 
+/**
+ * clutter_size_init:
+ * @size: a #ClutterSize
+ * @width: the width
+ * @height: the height
+ *
+ * Initializes a #ClutterSize with the given dimensions.
+ *
+ * Return value: (transfer none): the initialized #ClutterSize
+ *
+ * Since: 1.12
+ */
 ClutterSize *
 clutter_size_init (ClutterSize *size,
                    float        width,
@@ -446,12 +542,31 @@ clutter_size_init (ClutterSize *size,
   return size;
 }
 
+/**
+ * clutter_size_copy:
+ * @size: a #ClutterSize
+ *
+ * Creates a new #ClutterSize and duplicates @size.
+ *
+ * Return value: (transfer full): the newly allocated #ClutterSize.
+ *   Use clutter_size_free() to free its resources.
+ *
+ * Since: 1.12
+ */
 ClutterSize *
 clutter_size_copy (const ClutterSize *size)
 {
   return g_slice_dup (ClutterSize, size);
 }
 
+/**
+ * clutter_size_free:
+ * @size: a #ClutterSize
+ *
+ * Frees the resources allocated for @size.
+ *
+ * Since: 1.12
+ */
 void
 clutter_size_free (ClutterSize *size)
 {
@@ -459,6 +574,17 @@ clutter_size_free (ClutterSize *size)
     g_slice_free (ClutterSize, size);
 }
 
+/**
+ * clutter_size_equals:
+ * @a: a #ClutterSize to compare
+ * @b: a #ClutterSize to compare
+ *
+ * Compares two #ClutterSize for equality.
+ *
+ * Return value: %TRUE if the two #ClutterSize are equal
+ *
+ * Since: 1.12
+ */
 gboolean
 clutter_size_equals (const ClutterSize *a,
                      const ClutterSize *b)
@@ -535,7 +661,7 @@ clutter_rect_normalize_internal (ClutterRect *rect)
 }
 
 /**
- * clutter_rect_new:
+ * clutter_rect_alloc:
  *
  * Creates a new, empty #ClutterRect.
  *
@@ -543,9 +669,7 @@ clutter_rect_normalize_internal (ClutterRect *rect)
  * for instance:
  *
  * |[
- *   ClutterRect *rect;
- *
- *   rect = clutter_rect_init (clutter_rect_new (), x, y, width, height);
+ *   rect = clutter_rect_init (clutter_rect_alloc (), x, y, width, height);
  * ]|
  *
  * Return value: (transfer full): the newly allocated #ClutterRect.
@@ -554,7 +678,7 @@ clutter_rect_normalize_internal (ClutterRect *rect)
  * Since: 1.12
  */
 ClutterRect *
-clutter_rect_new (void)
+clutter_rect_alloc (void)
 {
   return g_slice_new0 (ClutterRect);
 }
@@ -1020,6 +1144,8 @@ clutter_rect_progress (const GValue *a,
   res.size.height = INTERPOLATE (rect_a, rect_b, size, height, progress);
 
 #undef INTERPOLATE
+
+  clutter_rect_normalize_internal (&res);
 
   g_value_set_boxed (retval, &res);
 
