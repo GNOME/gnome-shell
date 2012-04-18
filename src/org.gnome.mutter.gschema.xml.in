@@ -89,10 +89,6 @@
   </schema>
   <schema id="org.gnome.mutter.keybindings" path="/org/gnome/mutter/keybindings/">
 
-    <key name="toggle-recording" type="as">
-      <default><![CDATA[['<Control><Shift><Alt>r']]]></default>
-    </key>
-
     <key name="toggle-tiled-left" type="as">
       <default><![CDATA[['<Super>Left']]]></default>
     </key>

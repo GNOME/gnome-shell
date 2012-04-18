@@ -83,7 +83,6 @@ enum
 enum
 {
   RESTACKED,
-  TOGGLE_RECORDING,
   WORKSPACE_ADDED,
   WORKSPACE_REMOVED,
   WORKSPACE_SWITCHED,
@@ -229,14 +228,6 @@ meta_screen_class_init (MetaScreenClass *klass)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 1, G_TYPE_POINTER);
-
-  screen_signals[TOGGLE_RECORDING] =
-    g_signal_new ("toggle-recording",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
 
   screen_signals[WORKAREAS_CHANGED] =
     g_signal_new ("workareas-changed",

@@ -2973,17 +2973,6 @@ handle_panel (MetaDisplay    *display,
 }
 
 static void
-handle_toggle_recording (MetaDisplay    *display,
-                         MetaScreen     *screen,
-                         MetaWindow     *window,
-                         XEvent         *event,
-                         MetaKeyBinding *binding,
-                         gpointer        dummy)
-{
-  g_signal_emit_by_name (screen, "toggle-recording");
-}
-
-static void
 handle_activate_window_menu (MetaDisplay    *display,
                       MetaScreen     *screen,
                       MetaWindow     *event_window,
@@ -3885,13 +3874,6 @@ init_builtin_key_bindings (MetaDisplay *display)
                           META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_PANEL_RUN_DIALOG,
                           handle_panel, META_KEYBINDING_ACTION_PANEL_RUN_DIALOG);
-
-  add_builtin_keybinding (display,
-                          "toggle-recording",
-                          mutter_keybindings,
-                          META_KEY_BINDING_NONE,
-                          META_KEYBINDING_ACTION_TOGGLE_RECORDING,
-                          handle_toggle_recording, 0);
 
   add_builtin_keybinding (display,
                           "set-spew-mark",
