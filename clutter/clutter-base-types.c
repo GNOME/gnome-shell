@@ -22,12 +22,12 @@
  */
 
 /**
- * SECTION:clutter-base-types
- * @Title: Base data types
- * @Short_Description: Common data types used by Clutter
+ * SECTION:clutter-geometric-types
+ * @Title: Base geometric types
+ * @Short_Description: Common geometric data types used by Clutter
  *
- * Clutter defines a set of data structures that are commonly used across the
- * whole API.
+ * Clutter defines a set of geometric data structures that are commonly used
+ * across the whole API.
  */
 
 #ifdef HAVE_CONFIG_H
