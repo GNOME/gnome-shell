@@ -139,6 +139,10 @@ ClutterPoint *  clutter_point_copy      (const ClutterPoint *point);
 void            clutter_point_free      (ClutterPoint       *point);
 gboolean        clutter_point_equals    (const ClutterPoint *a,
                                          const ClutterPoint *b);
+float           clutter_point_distance  (const ClutterPoint *a,
+                                         const ClutterPoint *b,
+                                         float              *x_distance,
+                                         float              *y_distance);
 
 /**
  * ClutterSize:

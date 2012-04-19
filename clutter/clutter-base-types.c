@@ -472,6 +472,47 @@ clutter_point_equals (const ClutterPoint *a,
   return a->x == b->x && a->y == b->y;
 }
 
+/**
+ * clutter_point_distance:
+ * @a: a #ClutterPoint
+ * @b: a #ClutterPoint
+ * @x_distance: (out) (allow-none): return location for the horizontal
+ *   distance between the points
+ * @y_distance: (out) (allow-none): return location for the vertical
+ *   distance between the points
+ *
+ * Computes the distance between two #ClutterPoint.
+ *
+ * Return value: the distance between the points.
+ *
+ * Since: 1.12
+ */
+float
+clutter_point_distance (const ClutterPoint *a,
+                        const ClutterPoint *b,
+                        float              *x_distance,
+                        float              *y_distance)
+{
+  float x_d, y_d;
+
+  g_return_val_if_fail (a != NULL, 0.f);
+  g_return_val_if_fail (b != NULL, 0.f);
+
+  if (clutter_point_equals (a, b))
+    return 0.f;
+
+  x_d = (a->x - b->x);
+  y_d = (a->y - b->y);
+
+  if (x_distance != NULL)
+    *x_distance = fabsf (x_d);
+
+  if (y_distance != NULL)
+    *y_distance = fabsf (y_d);
+
+  return sqrt ((x_d * x_d) + (y_d * y_d));
+}
+
 static gboolean
 clutter_point_progress (const GValue *a,
                         const GValue *b,

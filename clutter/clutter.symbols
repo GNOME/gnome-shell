@@ -982,6 +982,7 @@ clutter_pipeline_node_new
 clutter_pick_mode_get_type
 clutter_point_alloc
 clutter_point_copy
+clutter_point_distance
 clutter_point_equals
 clutter_point_free
 clutter_point_get_type
