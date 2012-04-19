@@ -17244,10 +17244,6 @@ out:
  * The @name string is a per-actor unique identifier of the @transition: only
  * one #ClutterTransition can be associated to the specified @name.
  *
- * The @transition will be given the easing duration, mode, and delay
- * associated to the actor's current easing state; it is possible to modify
- * these values after calling clutter_actor_add_transition().
- *
  * The @transition will be started once added.
  *
  * This function will take a reference on the @transition.
@@ -17289,13 +17285,6 @@ clutter_actor_add_transition (ClutterActor      *self,
   clutter_transition_set_animatable (transition, CLUTTER_ANIMATABLE (self));
 
   timeline = CLUTTER_TIMELINE (transition);
-
-  if (info->cur_state != NULL)
-    {
-      clutter_timeline_set_delay (timeline, info->cur_state->easing_delay);
-      clutter_timeline_set_duration (timeline, info->cur_state->easing_duration);
-      clutter_timeline_set_progress_mode (timeline, info->cur_state->easing_mode);
-    }
 
   clos = g_slice_new (TransitionClosure);
   clos->actor = self;

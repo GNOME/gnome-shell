@@ -50,11 +50,8 @@ test_keyframe_transition_main (int argc, char *argv[])
       clutter_actor_set_position (rect, PADDING, cur_y);
       clutter_actor_add_child (stage, rect);
 
-      clutter_actor_save_easing_state (rect);
-      clutter_actor_set_easing_duration (rect, 2000);
-      clutter_actor_set_easing_mode (rect, CLUTTER_LINEAR);
-
       group = clutter_transition_group_new ();
+      clutter_timeline_set_duration (CLUTTER_TIMELINE (group), 2000);
       clutter_timeline_set_repeat_count (CLUTTER_TIMELINE (group), 1);
       clutter_timeline_set_auto_reverse (CLUTTER_TIMELINE (group), TRUE);
 
@@ -80,8 +77,6 @@ test_keyframe_transition_main (int argc, char *argv[])
 
       clutter_actor_add_transition (rect, "rectAnimation", group);
       g_object_unref (group);
-
-      clutter_actor_restore_easing_state (rect);
     }
 
   clutter_actor_show (stage);
