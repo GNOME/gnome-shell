@@ -445,6 +445,15 @@ void                    clutter_event_set_coords                (ClutterEvent   
 void                    clutter_event_get_coords                (const ClutterEvent     *event,
                                                                  gfloat                 *x,
                                                                  gfloat                 *y);
+CLUTTER_AVAILABLE_IN_1_12
+void                    clutter_event_get_position              (const ClutterEvent     *event,
+                                                                 ClutterPoint           *position);
+CLUTTER_AVAILABLE_IN_1_12
+float                   clutter_event_get_distance              (const ClutterEvent     *source,
+                                                                 const ClutterEvent     *target);
+CLUTTER_AVAILABLE_IN_1_12
+double                  clutter_event_get_angle                 (const ClutterEvent     *source,
+                                                                 const ClutterEvent     *target);
 
 gdouble *               clutter_event_get_axes                  (const ClutterEvent     *event,
                                                                  guint                  *n_axes);

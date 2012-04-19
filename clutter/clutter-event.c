@@ -33,6 +33,8 @@
 #include "clutter-keysyms.h"
 #include "clutter-private.h"
 
+#include <math.h>
+
 /**
  * SECTION:clutter-event
  * @short_description: User and window system events
@@ -278,11 +280,34 @@ clutter_event_get_coords (const ClutterEvent *event,
                           gfloat             *x,
                           gfloat             *y)
 {
-  gfloat event_x, event_y;
+  ClutterPoint coords;
 
   g_return_if_fail (event != NULL);
 
-  event_x = event_y = 0;
+  clutter_event_get_position (event, &coords);
+
+  if (x != NULL)
+    *x = coords.x;
+
+  if (y != NULL)
+    *y = coords.y;
+}
+
+/**
+ * clutter_event_get_position:
+ * @event: a #ClutterEvent
+ * @position: a #ClutterPoint
+ *
+ * Retrieves the event coordinates as a #ClutterPoint.
+ *
+ * Since: 1.12
+ */
+void
+clutter_event_get_position (const ClutterEvent *event,
+                            ClutterPoint       *position)
+{
+  g_return_if_fail (event != NULL);
+  g_return_if_fail (position != NULL);
 
   switch (event->type)
     {
@@ -294,44 +319,35 @@ clutter_event_get_coords (const ClutterEvent *event,
     case CLUTTER_CLIENT_MESSAGE:
     case CLUTTER_DELETE:
     case CLUTTER_EVENT_LAST:
+      clutter_point_init (position, 0.f, 0.f);
       break;
 
     case CLUTTER_ENTER:
     case CLUTTER_LEAVE:
-      event_x = event->crossing.x;
-      event_y = event->crossing.y;
+      clutter_point_init (position, event->crossing.x, event->crossing.y);
       break;
 
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
-      event_x = event->button.x;
-      event_y = event->button.y;
+      clutter_point_init (position, event->button.x, event->button.y);
       break;
 
     case CLUTTER_MOTION:
-      event_x = event->motion.x;
-      event_y = event->motion.y;
+      clutter_point_init (position, event->motion.x, event->motion.y);
       break;
 
     case CLUTTER_TOUCH_BEGIN:
     case CLUTTER_TOUCH_UPDATE:
     case CLUTTER_TOUCH_END:
     case CLUTTER_TOUCH_CANCEL:
-      event_x = event->touch.x;
-      event_y = event->touch.y;
+      clutter_point_init (position, event->touch.x, event->touch.y);
       break;
 
     case CLUTTER_SCROLL:
-      event_x = event->scroll.x;
-      event_y = event->scroll.y;
+      clutter_point_init (position, event->scroll.x, event->scroll.y);
       break;
     }
 
-  if (x)
-    *x = event_x;
-
-  if (y)
-    *y = event_y;
 }
 
 /**
@@ -1512,4 +1528,69 @@ clutter_event_get_axes (const ClutterEvent *event,
     *n_axes = len;
 
   return retval;
+}
+
+/**
+ * clutter_event_get_distance:
+ * @source: a #ClutterEvent
+ * @target: a #ClutterEvent
+ *
+ * Retrieves the distance between two events, a @source and a @target.
+ *
+ * Return value: the distance between two #ClutterEvent
+ *
+ * Since: 1.12
+ */
+float
+clutter_event_get_distance (const ClutterEvent *source,
+                            const ClutterEvent *target)
+{
+  ClutterPoint p0, p1;
+
+  clutter_event_get_position (source, &p0);
+  clutter_event_get_position (source, &p1);
+
+  return clutter_point_distance (&p0, &p1, NULL, NULL);
+}
+
+/**
+ * clutter_event_get_angle:
+ * @source: a #ClutterEvent
+ * @target: a #ClutterEvent
+ *
+ * Retrieves the angle relative from @source to @target.
+ *
+ * The direction of the angle is from the position X axis towards
+ * the positive Y axis.
+ *
+ * Return value: the angle between two #ClutterEvent
+ *
+ * Since: 1.12
+ */
+double
+clutter_event_get_angle (const ClutterEvent *source,
+                         const ClutterEvent *target)
+{
+  ClutterPoint p0, p1;
+  float x_distance, y_distance;
+  double angle;
+
+  clutter_event_get_position (source, &p0);
+  clutter_event_get_position (target, &p1);
+
+  if (clutter_point_equals (&p0, &p1))
+    return 0;
+
+  clutter_point_distance (&p0, &p1, &x_distance, &y_distance);
+
+  angle = atan2 (x_distance, y_distance);
+
+  /* invert the angle, and shift it by 90 degrees */
+  angle = (2.0 * G_PI) - angle;
+  angle += G_PI / 2.0;
+
+  /* keep the angle within the [ 0, 360 ] interval */
+  angle = fmod (angle, 2.0 * G_PI);
+
+  return angle;
 }
