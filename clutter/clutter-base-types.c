@@ -39,6 +39,8 @@
 
 #include <math.h>
 
+#define FLOAT_EPSILON   (1e-15)
+
 
 
 /*
@@ -277,9 +279,9 @@ clutter_vertex_equal (const ClutterVertex *vertex_a,
   if (vertex_a == vertex_b)
     return TRUE;
 
-  return vertex_a->x == vertex_b->x &&
-         vertex_a->y == vertex_b->y &&
-         vertex_a->z == vertex_b->z;
+  return fabsf (vertex_a->x - vertex_b->x) < FLOAT_EPSILON &&
+         fabsf (vertex_a->y - vertex_b->y) < FLOAT_EPSILON &&
+         fabsf (vertex_a->z - vertex_b->z) < FLOAT_EPSILON;
 }
 
 static gboolean
@@ -469,7 +471,8 @@ clutter_point_equals (const ClutterPoint *a,
   if (a == NULL || b == NULL)
     return FALSE;
 
-  return a->x == b->x && a->y == b->y;
+  return fabsf (a->x - b->x) < FLOAT_EPSILON &&
+         fabsf (a->y - b->y) < FLOAT_EPSILON;
 }
 
 /**
@@ -636,7 +639,8 @@ clutter_size_equals (const ClutterSize *a,
   if (a == NULL || b == NULL)
     return FALSE;
 
-  return a->width == b->width && a->height == b->height;
+  return fabsf (a->width - b->width) < FLOAT_EPSILON &&
+         fabsf (a->height - b->height) < FLOAT_EPSILON;
 }
 
 static gboolean
