@@ -910,6 +910,34 @@ clutter_rect_contains_point (ClutterRect  *rect,
 }
 
 /**
+ * clutter_rect_contains_rect:
+ * @a: a #ClutterRect
+ * @b: a #ClutterRect
+ *
+ * Checks whether @a contains @b.
+ *
+ * The first rectangle contains the second if the union of the
+ * two #ClutterRect is equal to the first rectangle.
+ *
+ * Return value: %TRUE if the first rectangle contains the second.
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_rect_contains_rect (ClutterRect *a,
+                            ClutterRect *b)
+{
+  ClutterRect res;
+
+  g_return_val_if_fail (a != NULL, FALSE);
+  g_return_val_if_fail (b != NULL, FALSE);
+
+  clutter_rect_union (a, b, &res);
+
+  return clutter_rect_equals (a, &res);
+}
+
+/**
  * clutter_rect_union:
  * @a: a #ClutterRect
  * @b: a #ClutterRect

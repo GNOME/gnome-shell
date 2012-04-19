@@ -998,6 +998,7 @@ clutter_property_transition_set_property_name
 clutter_rect_alloc
 clutter_rect_clamp_to_pixel
 clutter_rect_contains_point
+clutter_rect_contains_rect
 clutter_rect_copy
 clutter_rect_equals
 clutter_rect_free

@@ -221,6 +221,8 @@ void            clutter_rect_get_center         (ClutterRect       *rect,
                                                  ClutterPoint      *center);
 gboolean        clutter_rect_contains_point     (ClutterRect       *rect,
                                                  ClutterPoint      *point);
+gboolean        clutter_rect_contains_rect      (ClutterRect       *a,
+                                                 ClutterRect       *b);
 void            clutter_rect_union              (ClutterRect       *a,
                                                  ClutterRect       *b,
                                                  ClutterRect       *res);
