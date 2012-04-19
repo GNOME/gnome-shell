@@ -541,7 +541,7 @@ typedef enum {
  * @CLUTTER_LONG_PRESS_ACTIVATE: Activates the action on a long press
  * @CLUTTER_LONG_PRESS_CANCEL: The long press was cancelled
  *
- * The states for the #ClutterClikAction::long-press signal.
+ * The states for the #ClutterClickAction::long-press signal.
  *
  * Since: 1.8
  */

@@ -992,8 +992,11 @@ clutter_feature_get_all
 <SECTION>
 <FILE>clutter-color</FILE>
 <TITLE>Colors</TITLE>
+CLUTTER_COLOR_INIT
 ClutterColor
 clutter_color_new
+clutter_color_alloc
+clutter_color_init
 clutter_color_copy
 clutter_color_free
 clutter_color_equal
@@ -1076,6 +1079,9 @@ clutter_event_set_flags
 clutter_event_get_flags
 clutter_event_get_axes
 clutter_event_get_event_sequence
+clutter_event_get_angle
+clutter_event_get_distance
+clutter_event_get_position
 
 <SUBSECTION>
 clutter_event_get
@@ -1452,6 +1458,7 @@ CLUTTER_VERSION_1_4
 CLUTTER_VERSION_1_6
 CLUTTER_VERSION_1_8
 CLUTTER_VERSION_1_10
+CLUTTER_VERSION_1_12
 CLUTTER_VERSION_MAX_ALLOWED
 CLUTTER_VERSION_MIN_REQUIRED
 
@@ -1470,6 +1477,7 @@ CLUTTER_AVAILABLE_IN_1_4
 CLUTTER_AVAILABLE_IN_1_6
 CLUTTER_AVAILABLE_IN_1_8
 CLUTTER_AVAILABLE_IN_1_10
+CLUTTER_AVAILABLE_IN_1_12
 CLUTTER_DEPRECATED_IN_1_0
 CLUTTER_DEPRECATED_IN_1_0_FOR
 CLUTTER_DEPRECATED_IN_1_2
@@ -1482,6 +1490,8 @@ CLUTTER_DEPRECATED_IN_1_8
 CLUTTER_DEPRECATED_IN_1_8_FOR
 CLUTTER_DEPRECATED_IN_1_10
 CLUTTER_DEPRECATED_IN_1_10_FOR
+CLUTTER_DEPRECATED_IN_1_12
+CLUTTER_DEPRECATED_IN_1_12_FOR
 CLUTTER_UNAVAILABLE
 </SECTION>
 
@@ -1871,9 +1881,15 @@ clutter_interval_get_type
 </SECTION>
 
 <SECTION>
+<FILE>clutter-cairo</FILE>
+CLUTTER_CAIRO_FORMAT_ARGB32
+clutter_cairo_clear
+clutter_cairo_set_source_color
+</SECTION>
+
+<SECTION>
 <FILE>clutter-cairo-texture</FILE>
 <TITLE>ClutterCairoTexture</TITLE>
-CLUTTER_CAIRO_FORMAT_ARGB32
 ClutterCairoTexture
 ClutterCairoTextureClass
 clutter_cairo_texture_new
@@ -1890,9 +1906,6 @@ clutter_cairo_texture_create_region
 clutter_cairo_texture_invalidate_rectangle
 clutter_cairo_texture_invalidate
 clutter_cairo_texture_clear
-
-<SUBSECTION>
-clutter_cairo_set_source_color
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_CAIRO_TEXTURE
@@ -2897,6 +2910,10 @@ clutter_drop_action_get_type
 <FILE>clutter-transition</FILE>
 ClutterTransition
 ClutterTransitionClass
+clutter_transition_set_from
+clutter_transition_set_from_value
+clutter_transition_set_to
+clutter_transition_set_to_value
 clutter_transition_set_interval
 clutter_transition_get_interval
 clutter_transition_set_animatable
@@ -3237,7 +3254,7 @@ clutter_keyframe_transition_get_n_key_frames
 clutter_keyframe_transition_set_key_frame
 clutter_keyframe_transition_get_key_frame
 clutter_keyframe_transition_clear
-<SECTION Standard>
+<SUBSECTION Standard>
 CLUTTER_TYPE_KEYFRAME_TRANSITION
 CLUTTER_KEYFRAME_TRANSITION
 CLUTTER_KEYFRAME_TRANSITION_CLASS

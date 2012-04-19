@@ -33,8 +33,8 @@
  * its type, expressed as a value of the #ClutterUnitType enumeration. It is
  * possible to use #ClutterUnits to store a position or a size in units
  * different than pixels, and convert them whenever needed (for instance
- * inside the #ClutterActor::allocate() virtual function, or inside the
- * #ClutterActor::get_preferred_width() and #ClutterActor::get_preferred_height()
+ * inside the #ClutterActorClass.allocate() virtual function, or inside the
+ * #ClutterActorClass.get_preferred_width() and #ClutterActorClass.get_preferred_height()
  * virtual functions.
  *
  * In order to register a #ClutterUnits property, the #ClutterParamSpecUnits

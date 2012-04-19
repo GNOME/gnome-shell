@@ -217,6 +217,16 @@ set_size (ClutterWaylandSurface *self,
   clutter_actor_set_size (CLUTTER_ACTOR (self), priv->width, priv->height);
 }
 
+/**
+ * clutter_wayland_surface_get_surface:
+ * @self: a #ClutterWaylandSurface
+ *
+ * Retrieves a point to the Wayland surface used by the actor.
+ *
+ * Return value: (transfer none): a wl_surface pointer, or %NULL
+ *
+ * Since: 1.10
+ */
 struct wl_surface *
 clutter_wayland_surface_get_surface (ClutterWaylandSurface *self)
 {
@@ -224,6 +234,15 @@ clutter_wayland_surface_get_surface (ClutterWaylandSurface *self)
   return priv->surface;
 }
 
+/**
+ * clutter_wayland_surface_set_surface:
+ * @self: a #ClutterWaylandSurface
+ * @surface: a Wayland wl_surface pointer
+ *
+ * Sets the Wayland surface to be used by the actor.
+ *
+ * Since: 1.10
+ */
 void
 clutter_wayland_surface_set_surface (ClutterWaylandSurface *self,
                                      struct wl_surface *surface)
@@ -435,7 +454,7 @@ clutter_wayland_surface_class_init (ClutterWaylandSurfaceClass *klass)
   g_object_class_install_property (object_class, PROP_COGL_TEXTURE, pspec);
 
   /**
-   * ClutterWaylandSurface::queue-damage-redraw
+   * ClutterWaylandSurface::queue-damage-redraw:
    * @texture: the object which received the signal
    * @x: The top left x position of the damage region
    * @y: The top left y position of the damage region
@@ -613,6 +632,16 @@ clutter_wayland_surface_damage_buffer (ClutterWaylandSurface *self,
                  x, y, width, height);
 }
 
+/**
+ * clutter_wayland_surface_get_cogl_texture:
+ * @self: a #ClutterWaylandSurface
+ *
+ * Retrieves the Cogl texture with the contents of the Wayland surface.
+ *
+ * Return value: (transfer none): a Cogl texture, or %NULL
+ *
+ * Since: 1.10
+ */
 CoglTexture *
 clutter_wayland_surface_get_cogl_texture (ClutterWaylandSurface *self)
 {

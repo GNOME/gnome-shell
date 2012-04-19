@@ -42,13 +42,11 @@
  *   <title>Using a Layout Manager inside an Actor</title>
  *   <para>In order to use a #ClutterLayoutManager inside a #ClutterActor
  *   sub-class you should invoke clutter_layout_manager_get_preferred_width()
- *   inside the <structname>ClutterActor</structname>::get_preferred_width()
- *   virtual function and clutter_layout_manager_get_preferred_height()
- *   inside the <structname>ClutterActor</structname>::get_preferred_height()
- *   virtual function implementations. You should also call
- *   clutter_layout_manager_allocate() inside the implementation of the
- *   <structname>ClutterActor</structname>::allocate() virtual
- *   function.</para>
+ *   inside the #ClutterActorClass.get_preferred_width() virtual function and
+ *   clutter_layout_manager_get_preferred_height() inside the
+ *   #ClutterActorClass.get_preferred_height() virtual functions implementation.
+ *   You should also call clutter_layout_manager_allocate() inside the
+ *   implementation of the #ClutterActorClass.allocate() virtual function.</para>
  *   <para>In order to receive notifications for changes in the layout
  *   manager policies you should also connect to the
  *   #ClutterLayoutManager::layout-changed signal and queue a relayout
@@ -93,9 +91,9 @@
  *   <para>It is possible for a #ClutterLayoutManager sub-class to animate its
  *   children layout by using the base class animation support. The
  *   #ClutterLayoutManager animation support consists of three virtual
- *   functions: <function>begin_animation()</function>,
- *   <function>get_animation_progress()</function> and
- *   <function>end_animation()</function>.</para>
+ *   functions: #ClutterLayoutManagerClass.begin_animation(),
+ *   #ClutterLayoutManagerClass.get_animation_progress(), and
+ *   #ClutterLayoutManagerClass.end_animation().</para>
  *   <variablelist>
  *     <varlistentry>
  *       <term><function>begin_animation (duration, easing)</function></term>
@@ -131,20 +129,20 @@
  *   clutter_layout_manager_end_animation() to be called. The default
  *   implementation provided internally by #ClutterLayoutManager does exactly
  *   this, so most sub-classes should either not override any animation-related
- *   virtual function or simply override <function>begin_animation()</function>
- *   and <function>end_animation()</function> to set up ad hoc state, and then
+ *   virtual function or simply override #ClutterLayoutManagerClass.begin_animation()
+ *   and #ClutterLayoutManagerClass.end_animation() to set up ad hoc state, and then
  *   chain up to the parent's implementation.</para>
  *   <example id="example-ClutterLayoutManager-animation">
  *     <title>Animation of a Layout Manager</title>
  *     <para>The code below shows how a #ClutterLayoutManager sub-class should
  *     provide animating the allocation of its children from within the
- *     <function>allocate()</function> virtual function implementation. The
+ *     #ClutterLayoutManagerClass.allocate() virtual function implementation. The
  *     animation is computed between the last stable allocation performed
  *     before the animation started and the desired final allocation.</para>
  *     <para>The <varname>is_animating</varname> variable is stored inside the
  *     #ClutterLayoutManager sub-class and it is updated by overriding the
- *     <function>begin_animation()</function> and
- *     <function>end_animation()</function> virtual functions and chaining up
+ *     #ClutterLayoutManagerClass.begin_animation() and the
+ *     #ClutterLayoutManagerClass.end_animation() virtual functions and chaining up
  *     to the base class implementation.</para>
  *     <para>The last stable allocation is stored within a #ClutterLayoutMeta
  *     sub-class used by the implementation.</para>
@@ -254,13 +252,12 @@
  *   should exist only as the result of the presence of a specific (layout
  *   manager, container actor, child actor) combination, and it wishes to store
  *   those properties inside a #ClutterLayoutMeta, then it should override the
- *   <structname>ClutterLayoutManager</structname>::get_child_meta_type()
- *   virtual function to return the #GType of the #ClutterLayoutMeta sub-class
- *   used to store the layout properties; optionally, the #ClutterLayoutManager
- *   sub-class might also override the
- *   <structname>ClutterLayoutManager</structname>::create_child_meta() virtual
- *   function to control how the #ClutterLayoutMeta instance is created,
- *   otherwise the default implementation will be equivalent to:</para>
+ *   #ClutterLayoutManagerClass.get_child_meta_type() virtual function to return
+ *   the #GType of the #ClutterLayoutMeta sub-class used to store the layout
+ *   properties; optionally, the #ClutterLayoutManager sub-class might also
+ *   override the #ClutterLayoutManagerClass.create_child_meta() virtual function
+ *   to control how the #ClutterLayoutMeta instance is created, otherwise the
+ *   default implementation will be equivalent to:</para>
  *   <informalexample><programlisting>
  *  ClutterLayoutManagerClass *klass;
  *  GType meta_type;

@@ -32,7 +32,7 @@
  * the logic for recognizing gesture gestures. It listens for low level events
  * such as #ClutterButtonEvent and #ClutterMotionEvent on the stage to raise
  * the #ClutterGestureAction::gesture-begin, #ClutterGestureAction::gesture-progress,
- * and * #ClutterGestureAction::gesture-end signals.
+ * and #ClutterGestureAction::gesture-end signals.
  *
  * To use #ClutterGestureAction you just need to apply it to a #ClutterActor
  * using clutter_actor_add_action() and connect to the signals:

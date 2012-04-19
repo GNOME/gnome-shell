@@ -75,6 +75,15 @@ void                    clutter_paint_node_add_primitive                (Clutter
                                                                          CoglPrimitive         *primitive);
 #endif /* COGL_ENABLE_EXPERIMENTAL_2_0_API && CLUTTER_ENABLE_EXPERIMENTAL_API */
 
+/**
+ * CLUTTER_VALUE_HOLDS_PAINT_NODE:
+ * @value: a #GValue
+ *
+ * Evaluates to %TRUE if the @value has been initialized to hold
+ * a #ClutterPaintNode.
+ *
+ * Since: 1.10
+ */
 #define CLUTTER_VALUE_HOLDS_PAINT_NODE(value)   (G_VALUE_HOLDS (value, CLUTTER_TYPE_PAINT_NODE))
 
 CLUTTER_AVAILABLE_IN_1_10

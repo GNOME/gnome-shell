@@ -34,7 +34,7 @@
  *
  * Effects should be the preferred way to affect the paint sequence of an
  * actor without sub-classing the actor itself and overriding the
- * #ClutterActor::paint virtual function.
+ * #ClutterActorClass.paint()_ virtual function.
  *
  * <refsect2 id="ClutterEffect-implementation">
  *   <title>Implementing a ClutterEffect</title>
@@ -91,18 +91,19 @@
  *   <para>
  *     With these two functions it is not possible to skip the rest of
  *     the paint sequence. The default implementation of the ‘paint’
- *     virtual calls pre_paint(), clutter_actor_continue_paint() and
- *     then post_paint() so that existing actors that aren't using the
- *     paint virtual will continue to work. New actors using the paint
- *     virtual do not need to implement pre or post paint.
+ *     virtual calls #ClutterEffectClass.pre_paint(), clutter_actor_continue_paint()
+ *     and then #ClutterEffectClass.post_paint() so that existing actors that aren't
+ *     using the #ClutterEffectClass.paint() virtual will continue to work. New
+ *     effects using the #ClutterEffectClass.paint() virtual do not need to implement
+ *     pre or post paint.
  *   </para>
  *   <example id="ClutterEffect-example">
  *     <title>A simple ClutterEffect implementation</title>
  *     <para>The example below creates two rectangles: one will be
  *     painted "behind" the actor, while another will be painted "on
- *     top" of the actor.  The <function>set_actor()</function>
+ *     top" of the actor.  The #ClutterActorMetaClass.set_actor()
  *     implementation will create the two materials used for the two
- *     different rectangles; the <function>paint()</function> function
+ *     different rectangles; the #ClutterEffectClass.paint() implementation
  *     will paint the first material using cogl_rectangle(), before
  *     continuing and then it will paint paint the second material
  *     after.</para>

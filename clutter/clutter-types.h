@@ -132,7 +132,29 @@ struct _ClutterPoint
   float y;
 };
 
+/**
+ * CLUTTER_POINT_INIT:
+ * @x: X coordinate
+ * @y: Y coordinate
+ *
+ * A simple macro for initializing a #ClutterPoint when declaring it, e.g.:
+ *
+ * |[
+ *   ClutterPoint p = CLUTTER_POINT_INIT (100, 100);
+ * ]|
+ *
+ * Since: 1.12
+ */
 #define CLUTTER_POINT_INIT(x,y)         { (x), (y) }
+
+/**
+ * CLUTTER_POINT_INIT_ZERO:
+ *
+ * A simple macro for initializing a #ClutterPoint to (0, 0) when
+ * declaring it.
+ *
+ * Since: 1.12
+ */
 #define CLUTTER_POINT_INIT_ZERO         CLUTTER_POINT_INIT (0.f, 0.f)
 
 CLUTTER_AVAILABLE_IN_1_12
@@ -172,7 +194,29 @@ struct _ClutterSize
   float height;
 };
 
+/**
+ * CLUTTER_SIZE_INIT:
+ * @width: the width
+ * @height: the height
+ *
+ * A simple macro for initializing a #ClutterSize when declaring it, e.g.:
+ *
+ * |[
+ *   ClutterSize s = CLUTTER_SIZE_INIT (200, 200);
+ * ]|
+ *
+ * Since: 1.12
+ */
 #define CLUTTER_SIZE_INIT(width,height) { (width), (height) }
+
+/**
+ * CLUTTER_SIZE_INIT_ZERO:
+ *
+ * A simple macro for initializing a #ClutterSize to (0, 0) when
+ * declaring it.
+ *
+ * Since: 1.12
+ */
 #define CLUTTER_SIZE_INIT_ZERO          CLUTTER_SIZE_INIT (0.f, 0.f)
 
 CLUTTER_AVAILABLE_IN_1_12
@@ -219,7 +263,31 @@ struct _ClutterRect
   ClutterSize size;
 };
 
+/**
+ * CLUTTER_RECT_INIT:
+ * @x: the X coordinate
+ * @y: the Y coordinate
+ * @width: the width
+ * @height: the height
+ *
+ * A simple macro for initializing a #ClutterRect when declaring it, e.g.:
+ *
+ * |[
+ *   ClutterRect r = CLUTTER_RECT_INIT (100, 100, 200, 200);
+ * ]|
+ *
+ * Since: 1.12
+ */
 #define CLUTTER_RECT_INIT(x,y,width,height)     { { (x), (y) }, { (width), (height) } }
+
+/**
+ * CLUTTER_RECT_INIT_ZERO:
+ *
+ * A simple macro for initializing a #ClutterRect to (0, 0, 0, 0) when
+ * declaring it.
+ *
+ * Since: 1.12
+ */
 #define CLUTTER_RECT_INIT_ZERO                  CLUTTER_RECT_INIT (0.f, 0.f, 0.f, 0.f)
 
 CLUTTER_AVAILABLE_IN_1_12
@@ -305,7 +373,7 @@ struct _ClutterVertex
  * A simple macro for initializing a #ClutterVertex when declaring it, e.g.:
  *
  * |[
- *   ClutterVertext v = CLUTTER_VERTEX_INIT (x, y, z);
+ *   ClutterVertex v = CLUTTER_VERTEX_INIT (x, y, z);
  * ]|
  *
  * Since: 1.10

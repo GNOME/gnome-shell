@@ -37,11 +37,11 @@
  * <refsect2 id="ClutterShaderEffect-implementing">
  *   <title>Implementing a ClutterShaderEffect</title>
  *   <para>Creating a sub-class of #ClutterShaderEffect requires the
- *   overriding of the <function>paint_target()</function> virtual
+ *   overriding of the #ClutterOffscreenEffectClass.paint_target() virtual
  *   function from the #ClutterOffscreenEffect class as well as the
  *   <function>get_static_shader_source()</function> virtual from the
  *   #ClutterShaderEffect class.</para>
- *   <para>The <function>get_static_shader_source()</function>
+ *   <para>The #ClutterShaderEffectClass.get_static_shader_source()
  *   function should return a copy of the shader source to use. This
  *   function is only called once per subclass of #ClutterShaderEffect
  *   regardless of how many instances of the effect are created. The

@@ -11,7 +11,7 @@
  * the position or size of the #ClutterActor to which it is applied, by
  * updating the actor's allocation. Each #ClutterConstraint can change the
  * allocation of the actor to which they are applied by overriding the
- * <function>update_allocation()</function> virtual function.
+ * #ClutterConstraintClass.update_allocation() virtual function.
  *
  * <refsect2 id="ClutterConstraint-usage">
  *   <title>Using Constraints</title>

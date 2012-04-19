@@ -46,14 +46,14 @@
  *   of overriding the #ClutterEffect virtual functions, to chain up to the
  *   #ClutterOffscreenEffect's implementation.</para>
  *   <para>On top of the #ClutterEffect's virtual functions,
- *   #ClutterOffscreenEffect also provides a <function>paint_target()</function>
+ *   #ClutterOffscreenEffect also provides a #ClutterOffscreenEffectClass.paint_target()
  *   function, which encapsulates the effective painting of the texture that
  *   contains the result of the offscreen redirection.</para>
  *   <para>The size of the target material is defined to be as big as the
  *   transformed size of the #ClutterActor using the offscreen effect.
  *   Sub-classes of #ClutterOffscreenEffect can change the texture creation
  *   code to provide bigger textures by overriding the
- *   <function>create_texture()</function> virtual function; no chain up
+ *   #ClutterOffscreenEffectClass.create_texture() virtual function; no chain up
  *   to the #ClutterOffscreenEffect implementation is required in this
  *   case.</para>
  * </refsect2>
