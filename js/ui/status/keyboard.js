@@ -2,9 +2,9 @@
 
 const Clutter = imports.gi.Clutter;
 const GdkPixbuf = imports.gi.GdkPixbuf;
-const Gkbd = imports.gi.Gkbd;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GnomeDesktop = imports.gi.GnomeDesktop;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -14,30 +14,28 @@ const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const Util = imports.misc.util;
 
+const DESKTOP_INPUT_SOURCES_SCHEMA = 'org.gnome.desktop.input-sources';
+const KEY_CURRENT_INPUT_SOURCE = 'current';
+const KEY_INPUT_SOURCES = 'sources';
+
+const INPUT_SOURCE_TYPE_XKB = 'xkb';
+
 const LayoutMenuItem = new Lang.Class({
     Name: 'LayoutMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem,
 
-    _init: function(config, id, indicator, long_name) {
+    _init: function(displayName, shortName) {
         this.parent();
 
-        this._config = config;
-        this._id = id;
-        this.label = new St.Label({ text: long_name });
-        this.indicator = indicator;
+        this.label = new St.Label({ text: displayName });
+        this.indicator = new St.Label({ text: shortName });
         this.addActor(this.label);
         this.addActor(this.indicator);
-    },
-
-    activate: function(event) {
-        this.parent(event);
-
-        this._config.lock_group(this._id);
     }
 });
 
-const XKBIndicator = new Lang.Class({
-    Name: 'XKBIndicator',
+const InputSourceIndicator = new Lang.Class({
+    Name: 'InputSourceIndicator',
     Extends: PanelMenu.Button,
 
     _init: function() {
@@ -50,18 +48,17 @@ const XKBIndicator = new Lang.Class({
         this.actor.add_actor(this._container);
         this.actor.add_style_class_name('panel-status-button');
 
-        this._iconActor = new St.Icon({ icon_name: 'keyboard', icon_type: St.IconType.SYMBOLIC, style_class: 'system-status-icon' });
-        this._container.add_actor(this._iconActor);
-        this._labelActors = [ ];
-        this._layoutItems = [ ];
+        this._labelActors = {};
+        this._layoutItems = {};
 
-        this._showFlags = false;
-        this._config = Gkbd.Configuration.get();
-        this._config.connect('changed', Lang.bind(this, this._syncConfig));
-        this._config.connect('group-changed', Lang.bind(this, this._syncGroup));
-        this._config.start_listen();
+        this._settings = new Gio.Settings({ schema: DESKTOP_INPUT_SOURCES_SCHEMA });
+        this._settings.connect('changed::' + KEY_CURRENT_INPUT_SOURCE, Lang.bind(this, this._currentInputSourceChanged));
+        this._settings.connect('changed::' + KEY_INPUT_SOURCES, Lang.bind(this, this._inputSourcesChanged));
 
-        this._syncConfig();
+        this._currentSourceIndex = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
+        this._xkbInfo = new GnomeDesktop.XkbInfo();
+
+        this._inputSourcesChanged();
 
         // re-using "allowSettings" for the keyboard layout is a bit shady,
         // but at least for now it is used as "allow popping up windows
@@ -69,107 +66,126 @@ const XKBIndicator = new Lang.Class({
         // option if need arises.
         if (Main.sessionMode.allowSettings) {
             this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-            this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, function() {
-                Main.overview.hide();
-                Util.spawn(['gkbd-keyboard-display', '-g', String(this._config.get_current_group() + 1)]);
-            }));
+            this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, this._showLayout));
         }
         this.menu.addSettingsAction(_("Region and Language Settings"), 'gnome-region-panel.desktop');
     },
 
-    _adjustGroupNames: function(names) {
-        // Disambiguate duplicate names with a subscript
-        // This is O(N^2) to avoid sorting names
-        // but N <= 4 so who cares?
+    _currentInputSourceChanged: function() {
+        let nVisibleSources = Object.keys(this._layoutItems).length;
+        if (nVisibleSources < 2)
+            return;
 
-        for (let i = 0; i < names.length; i++) {
-            let name = names[i];
-            let cnt = 0;
-            for (let j = i + 1; j < names.length; j++) {
-                if (names[j] == name) {
-                    cnt++;
-                    // U+2081 SUBSCRIPT ONE
-                    names[j] = name + String.fromCharCode(0x2081 + cnt);
-                }
-            }
-            if (cnt != 0)
-                names[i] = name + '\u2081';
+        let nSources = this._settings.get_value(KEY_INPUT_SOURCES).n_children();
+        let newCurrentSourceIndex = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
+        if (newCurrentSourceIndex >= nSources)
+            return;
+
+        if (!this._layoutItems[newCurrentSourceIndex]) {
+            // This source index is invalid as we weren't able to
+            // build a menu item for it, so we hide ourselves since we
+            // can't fix it here. *shrug*
+            this.menu.close();
+            this.actor.hide();
+            return;
+        } else {
+            this.actor.show();
         }
 
-        return names;
+        if (this._layoutItems[this._currentSourceIndex]) {
+            this._layoutItems[this._currentSourceIndex].setShowDot(false);
+            this._container.set_skip_paint(this._labelActors[this._currentSourceIndex], true);
+        }
+
+        this._layoutItems[newCurrentSourceIndex].setShowDot(true);
+        this._container.set_skip_paint(this._labelActors[newCurrentSourceIndex], false);
+
+        this._currentSourceIndex = newCurrentSourceIndex;
     },
 
-    _syncConfig: function() {
-        this._showFlags = this._config.if_flags_shown();
-        if (this._showFlags) {
-            this._container.set_skip_paint(this._iconActor, false);
-        } else {
-            this._container.set_skip_paint(this._iconActor, true);
+    _inputSourcesChanged: function() {
+        let sources = this._settings.get_value(KEY_INPUT_SOURCES);
+        let nSources = sources.n_children();
+
+        for (let i in this._layoutItems)
+            this._layoutItems[i].destroy();
+
+        for (let i in this._labelActors)
+            this._labelActors[i].destroy();
+
+        this._layoutItems = {};
+        this._labelActors = {};
+
+        let infos = [];
+        let infosByShortName = {};
+
+        for (let i = 0; i < nSources; i++) {
+            let [type, id] = sources.get_child_value(i).deep_unpack();
+            if (type != INPUT_SOURCE_TYPE_XKB)
+                continue;
+
+            let info = {};
+            [info.exists, info.displayName, info.shortName, , ] =
+                this._xkbInfo.get_layout_info(id);
+
+            if (!info.exists)
+                continue;
+
+            info.sourceIndex = i;
+
+            if (!(info.shortName in infosByShortName))
+                infosByShortName[info.shortName] = [];
+            infosByShortName[info.shortName].push(info);
+            infos.push(info);
         }
 
-        let groups = this._config.get_group_names();
-        if (groups.length > 1) {
+        if (infos.length > 1) {
             this.actor.show();
         } else {
             this.menu.close();
             this.actor.hide();
         }
 
-        for (let i = 0; i < this._layoutItems.length; i++)
-            this._layoutItems[i].destroy();
+        for (let i = 0; i < infos.length; i++) {
+            let info = infos[i];
+            if (infosByShortName[info.shortName].length > 1) {
+                let sub = infosByShortName[info.shortName].indexOf(info) + 1;
+                info.shortName += String.fromCharCode(0x2080 + sub);
+            }
 
-        for (let i = 0; i < this._labelActors.length; i++)
-            this._labelActors[i].destroy();
-
-        let short_names = this._adjustGroupNames(this._config.get_short_group_names());
-
-        this._selectedLayout = null;
-        this._layoutItems = [ ];
-        this._selectedLabel = null;
-        this._labelActors = [ ];
-        for (let i = 0; i < groups.length; i++) {
-            let icon_name = this._config.get_group_name(i);
-            let actor;
-            if (this._showFlags)
-                actor = new St.Icon({ icon_name: icon_name, icon_type: St.IconType.SYMBOLIC, style_class: 'popup-menu-icon' });
-            else
-                actor = new St.Label({ text: short_names[i] });
-            let item = new LayoutMenuItem(this._config, i, actor, groups[i]);
-            item._short_group_name = short_names[i];
-            item._icon_name = icon_name;
-            this._layoutItems.push(item);
+            let item = new LayoutMenuItem(info.displayName, info.shortName);
+            this._layoutItems[info.sourceIndex] = item;
             this.menu.addMenuItem(item, i);
+            item.connect('activate', Lang.bind(this, function() {
+                this._settings.set_value(KEY_CURRENT_INPUT_SOURCE,
+                                         GLib.Variant.new_uint32(info.sourceIndex));
+            }));
 
-            let shortLabel = new St.Label({ text: short_names[i] });
-            this._labelActors.push(shortLabel);
+            let shortLabel = new St.Label({ text: info.shortName });
+            this._labelActors[info.sourceIndex] = shortLabel;
             this._container.add_actor(shortLabel);
             this._container.set_skip_paint(shortLabel, true);
         }
 
-        this._syncGroup();
+        this._currentInputSourceChanged();
     },
 
-    _syncGroup: function() {
-        let selected = this._config.get_current_group();
+    _showLayout: function() {
+        Main.overview.hide();
 
-        if (this._selectedLayout) {
-            this._selectedLayout.setShowDot(false);
-            this._selectedLayout = null;
-        }
+        let sources = this._settings.get_value(KEY_INPUT_SOURCES);
+        let current = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
+        let id = sources.get_child_value(current).deep_unpack()[1];
+        let [, , , xkbLayout, xkbVariant] = this._xkbInfo.get_layout_info(id);
 
-        if (this._selectedLabel) {
-            this._container.set_skip_paint(this._selectedLabel, true);
-            this._selectedLabel = null;
-        }
+        if (!xkbLayout || xkbLayout.length == 0)
+            return;
 
-        let item = this._layoutItems[selected];
-        item.setShowDot(true);
+        let description = xkbLayout;
+        if (xkbVariant.length > 0)
+            description = description + '\t' + xkbVariant;
 
-        this._iconActor.icon_name = item._icon_name;
-        this._selectedLabel = this._labelActors[selected];
-        this._container.set_skip_paint(this._selectedLabel, this._showFlags);
-
-        this._selectedLayout = item;
+        Util.spawn(['gkbd-keyboard-display', '-l', description]);
     },
 
     _containerGetPreferredWidth: function(container, for_height, alloc) {
@@ -177,15 +193,11 @@ const XKBIndicator = new Lang.Class({
         // for the height of all children, but we ignore the results
         // for those we don't actually display.
         let max_min_width = 0, max_natural_width = 0;
-        if (this._showFlags)
-            [max_min_width, max_natural_width] = this._iconActor.get_preferred_width(for_height);
 
-        for (let i = 0; i < this._labelActors.length; i++) {
+        for (let i in this._labelActors) {
             let [min_width, natural_width] = this._labelActors[i].get_preferred_width(for_height);
-            if (!this._showFlags) {
-                max_min_width = Math.max(max_min_width, min_width);
-                max_natural_width = Math.max(max_natural_width, natural_width);
-            }
+            max_min_width = Math.max(max_min_width, min_width);
+            max_natural_width = Math.max(max_natural_width, natural_width);
         }
 
         alloc.min_size = max_min_width;
@@ -194,15 +206,11 @@ const XKBIndicator = new Lang.Class({
 
     _containerGetPreferredHeight: function(container, for_width, alloc) {
         let max_min_height = 0, max_natural_height = 0;
-        if (this._showFlags)
-            [max_min_height, max_natural_height] = this._iconActor.get_preferred_height(for_width);
-        
-        for (let i = 0; i < this._labelActors.length; i++) {
+
+        for (let i in this._labelActors) {
             let [min_height, natural_height] = this._labelActors[i].get_preferred_height(for_width);
-            if (!this._showFlags) {
-                max_min_height = Math.max(max_min_height, min_height);
-                max_natural_height = Math.max(max_natural_height, natural_height);
-            }
+            max_min_height = Math.max(max_min_height, min_height);
+            max_natural_height = Math.max(max_natural_height, natural_height);
         }
 
         alloc.min_size = max_min_height;
@@ -216,8 +224,7 @@ const XKBIndicator = new Lang.Class({
         box.y2 -= box.y1;
         box.y1 = 0;
 
-        this._iconActor.allocate_align_fill(box, 0.5, 0, false, false, flags);
-        for (let i = 0; i < this._labelActors.length; i++)
+        for (let i in this._labelActors)
             this._labelActors[i].allocate_align_fill(box, 0.5, 0, false, false, flags);
     }
 });
