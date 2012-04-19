@@ -54,6 +54,7 @@ test_sources = \
 	test-point-sprite.c \
 	test-no-gl-header.c \
 	test-version.c \
+	test-gles2-context.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
