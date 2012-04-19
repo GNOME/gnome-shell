@@ -5,6 +5,7 @@ const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
@@ -13,6 +14,7 @@ const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const Util = imports.misc.util;
 
+const DESKTOP_INPUT_SOURCES_KEYBINDINGS_SCHEMA = 'org.gnome.desktop.input-sources.keybindings';
 const DESKTOP_INPUT_SOURCES_SCHEMA = 'org.gnome.desktop.input-sources';
 const KEY_CURRENT_IS    = 'current';
 const KEY_INPUT_SOURCES = 'sources';
@@ -66,6 +68,15 @@ const InputSourceIndicator = new Lang.Class({
             }));
         }
         this.menu.addSettingsAction(_("Region and Language Settings"), 'gnome-region-panel.desktop');
+
+        global.display.add_keybinding('switch-next',
+                                      new Gio.Settings({ schema: DESKTOP_INPUT_SOURCES_KEYBINDINGS_SCHEMA }),
+                                      Meta.KeyBindingFlags.NONE,
+                                      Lang.bind(this, this._switchNext));
+        global.display.add_keybinding('switch-previous',
+                                      new Gio.Settings({ schema: DESKTOP_INPUT_SOURCES_KEYBINDINGS_SCHEMA }),
+                                      Meta.KeyBindingFlags.NONE,
+                                      Lang.bind(this, this._switchPrevious));
     },
 
     _currentISChanged: function() {
@@ -151,6 +162,34 @@ const InputSourceIndicator = new Lang.Class({
         }
 
         this._currentISChanged();
+    },
+
+    _switchNext: function() {
+        if (!this._selectedLayout || !this._selectedLabel) {
+            this._layoutItems[0].activate();
+            return;
+          }
+        for (let i = 0; i < this._layoutItems.length; ++i) {
+            let item = this._layoutItems[i];
+            if (item.name == this._selectedLayout.name) {
+                this._layoutItems[(++i == this._layoutItems.length) ? 0 : i].activate();
+                break;
+            }
+        }
+    },
+
+    _switchPrevious: function() {
+        if (!this._selectedLayout || !this._selectedLabel) {
+            this._layoutItems[0].activate();
+            return;
+        }
+        for (let i = 0; i < this._layoutItems.length; ++i) {
+            let item = this._layoutItems[i];
+            if (item.name == this._selectedLayout.name) {
+                this._layoutItems[(--i == -1) ? (this._layoutItems.length - 1) : i].activate();
+                break;
+            }
+        }
     },
 
     _containerGetPreferredWidth: function(container, for_height, alloc) {
