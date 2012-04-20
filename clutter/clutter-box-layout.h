@@ -132,14 +132,20 @@ void                    clutter_box_layout_set_expand           (ClutterBoxLayou
 gboolean                clutter_box_layout_get_expand           (ClutterBoxLayout    *layout,
                                                                  ClutterActor        *actor);
 
+CLUTTER_DEPRECATED_IN_1_12
 void                    clutter_box_layout_set_use_animations   (ClutterBoxLayout    *layout,
                                                                  gboolean             animate);
+CLUTTER_DEPRECATED_IN_1_12
 gboolean                clutter_box_layout_get_use_animations   (ClutterBoxLayout    *layout);
+CLUTTER_DEPRECATED_IN_1_12
 void                    clutter_box_layout_set_easing_mode      (ClutterBoxLayout    *layout,
                                                                  gulong               mode);
+CLUTTER_DEPRECATED_IN_1_12
 gulong                  clutter_box_layout_get_easing_mode      (ClutterBoxLayout    *layout);
+CLUTTER_DEPRECATED_IN_1_12
 void                    clutter_box_layout_set_easing_duration  (ClutterBoxLayout    *layout,
                                                                  guint                msecs);
+CLUTTER_DEPRECATED_IN_1_12
 guint                   clutter_box_layout_get_easing_duration  (ClutterBoxLayout    *layout);
 
 G_END_DECLS
