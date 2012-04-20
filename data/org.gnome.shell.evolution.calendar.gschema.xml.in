@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- NOTE: This schema is a GNOME 3.4 workaround - it uses the same path
+     as org.gnome.evolution.calendar, but avoids us requiring Evolution
+     be installed. In GNOME 3.6 the selected state will become a flag
+     on the calendar. Because the translations are in Evolution,
+     this is untranslated and in POTFILES.skip.
+  -->
+<schemalist>
+  <schema path="/org/gnome/evolution/calendar/" id="org.gnome.shell.evolution.calendar" gettext-domain="evolution">
+    <key type="as" name="selected-calendars">
+      <default>[]</default>
+      <summary>List of selected calendars</summary>
+      <description>List of calendars to load</description>
+    </key>
+    <key type="as" name="selected-tasks">
+      <default>[]</default>
+      <summary>List of selected task lists</summary>
+      <description>List of task lists to load</description>
+    </key>
+  </schema>
+</schemalist>

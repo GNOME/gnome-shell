@@ -53,7 +53,7 @@ dist_theme_DATA =				\
 	theme/ws-switch-arrow-up.svg		\
 	theme/ws-switch-arrow-down.svg
 
-gsettings_SCHEMAS = org.gnome.shell.gschema.xml
+gsettings_SCHEMAS = org.gnome.shell.gschema.xml org.gnome.shell.evolution.calendar.gschema.xml
 
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@

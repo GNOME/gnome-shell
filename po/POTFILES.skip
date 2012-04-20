@@ -1,2 +1,3 @@
 data/gnome-shell.desktop.in
 data/gnome-shell-extension-prefs.desktop.in
+data/org.gnome.shell.evolution.calendar.gschema.xml.in

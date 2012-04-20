@@ -52,7 +52,10 @@
 #define CALENDAR_SOURCES_APPOINTMENT_SOURCES_KEY          CALENDAR_SOURCES_EVO_DIR "/calendar/sources"
 #define CALENDAR_SOURCES_TASK_SOURCES_KEY                 CALENDAR_SOURCES_EVO_DIR "/tasks/sources"
 
-#define CALENDAR_SELECTED_SOURCES_SCHEMA                  "org.gnome.evolution.calendar"
+/* org.gnome.shell.evolution.calendar has the same data behind it
+ * as org.gnome.evolution.calendar, but is a small schema we install
+ * ourselves */
+#define CALENDAR_SELECTED_SOURCES_SCHEMA                  "org.gnome.shell.evolution.calendar"
 #define CALENDAR_SOURCES_SELECTED_APPOINTMENT_SOURCES_KEY "selected-calendars"
 #define CALENDAR_SOURCES_SELECTED_TASK_SOURCES_KEY        "selected-tasks"
 
