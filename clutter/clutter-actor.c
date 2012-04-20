@@ -5851,7 +5851,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Allocation"),
                         P_("The actor's allocation"),
                         CLUTTER_TYPE_ACTOR_BOX,
-                        CLUTTER_PARAM_READABLE);
+                        G_PARAM_READABLE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:request-mode:
@@ -8629,6 +8631,26 @@ clutter_actor_adjust_allocation (ClutterActor    *self,
   *allocation = adj_allocation;
 }
 
+static void
+clutter_actor_allocate_internal (ClutterActor           *self,
+                                 const ClutterActorBox  *allocation,
+                                 ClutterAllocationFlags  flags)
+{
+  ClutterActorClass *klass;
+
+  CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IN_RELAYOUT);
+
+  CLUTTER_NOTE (LAYOUT, "Calling %s::allocate()",
+                _clutter_actor_get_debug_name (self));
+
+  klass = CLUTTER_ACTOR_GET_CLASS (self);
+  klass->allocate (self, allocation, flags);
+
+  CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_IN_RELAYOUT);
+
+  clutter_actor_queue_redraw (self);
+}
+
 /**
  * clutter_actor_allocate:
  * @self: A #ClutterActor
@@ -8652,11 +8674,10 @@ clutter_actor_allocate (ClutterActor           *self,
                         const ClutterActorBox  *box,
                         ClutterAllocationFlags  flags)
 {
-  ClutterActorPrivate *priv;
-  ClutterActorClass *klass;
   ClutterActorBox old_allocation, real_allocation;
   gboolean origin_changed, child_moved, size_changed;
   gboolean stage_allocation_changed;
+  ClutterActorPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   if (G_UNLIKELY (_clutter_actor_get_stage_internal (self) == NULL))
@@ -8734,18 +8755,20 @@ clutter_actor_allocate (ClutterActor           *self,
   if (child_moved)
     flags |= CLUTTER_ABSOLUTE_ORIGIN_CHANGED;
 
-  CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IN_RELAYOUT);
+  /* store the flags here, so that they can be propagated by the
+   * transition code
+   */
+  self->priv->allocation_flags = flags;
 
-  CLUTTER_NOTE (LAYOUT, "Calling %s::allocate()",
-                _clutter_actor_get_debug_name (self));
-
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
-  klass->allocate (self, &real_allocation, flags);
-
-  CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_IN_RELAYOUT);
-
-  if (stage_allocation_changed)
-    clutter_actor_queue_redraw (self);
+  if (_clutter_actor_get_transition (self, obj_props[PROP_ALLOCATION]) == NULL)
+    {
+      _clutter_actor_create_transition (self, obj_props[PROP_ALLOCATION],
+                                        &priv->allocation,
+                                        &real_allocation);
+    }
+  else
+    _clutter_actor_update_transition (self, obj_props[PROP_ALLOCATION],
+                                      &real_allocation);
 }
 
 /**
@@ -13340,6 +13363,12 @@ clutter_actor_set_animatable_property (ClutterActor *actor,
 
     case PROP_SIZE:
       clutter_actor_set_size_internal (actor, g_value_get_boxed (value));
+      break;
+
+    case PROP_ALLOCATION:
+      clutter_actor_allocate_internal (actor,
+                                       g_value_get_boxed (value),
+                                       actor->priv->allocation_flags);
       break;
 
     case PROP_DEPTH:
