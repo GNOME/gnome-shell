@@ -938,16 +938,13 @@ AC_C_CONST
 dnl     ============================================================
 dnl     Compiler features
 dnl     ============================================================
-AC_TRY_COMPILE([],
-[
-_Static_assert (1, "");
-int
-main (int argc, char **argv)
-{
-  return 0;
-}
-],
-[AC_DEFINE([HAVE_STATIC_ASSERT], [1], [Whether _Static_assert can be used or not])])
+AC_MSG_CHECKING([for _Static_assert])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([_Static_assert (1, "");],
+                                   [(void) 0])],
+                  [AC_DEFINE([HAVE_STATIC_ASSERT], [1],
+                             [Whether _Static_assert can be used or not])
+                   AC_MSG_RESULT([yes])],
+                  [AC_MSG_RESULT([no])])
 
 dnl ================================================================
 dnl Libtool stuff.
