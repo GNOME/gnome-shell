@@ -408,22 +408,22 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   if (may_use_clipped_redraw &&
       G_UNLIKELY ((clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS)))
     {
-      CoglContext *ctx =
-        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      CoglFramebuffer *fb = COGL_FRAMEBUFFER (stage_cogl->onscreen);
+      CoglContext *ctx = cogl_framebuffer_get_context (fb);
       static CoglPipeline *outline = NULL;
       cairo_rectangle_int_t *clip = &stage_cogl->bounding_redraw_clip;
       ClutterActor *actor = CLUTTER_ACTOR (wrapper);
-      CoglHandle vbo;
       float x_1 = clip->x;
       float x_2 = clip->x + clip->width;
       float y_1 = clip->y;
       float y_2 = clip->y + clip->height;
-      float quad[8] = {
-        x_1, y_1,
-        x_2, y_1,
-        x_2, y_2,
-        x_1, y_2
+      CoglVertexP2 quad[4] = {
+        { x_1, y_1 },
+        { x_2, y_1 },
+        { x_2, y_2 },
+        { x_1, y_2 }
       };
+      CoglPrimitive *prim;
       CoglMatrix modelview;
 
       if (outline == NULL)
@@ -432,25 +432,20 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
           cogl_pipeline_set_color4ub (outline, 0xff, 0x00, 0x00, 0xff);
         }
 
-      vbo = cogl_vertex_buffer_new (4);
-      cogl_vertex_buffer_add (vbo,
-                              "gl_Vertex",
-                              2, /* n_components */
-                              COGL_ATTRIBUTE_TYPE_FLOAT,
-                              FALSE, /* normalized */
-                              0, /* stride */
-                              quad);
-      cogl_vertex_buffer_submit (vbo);
+      prim = cogl_primitive_new_p2 (ctx,
+                                    COGL_VERTICES_MODE_LINE_LOOP,
+                                    4, /* n_vertices */
+                                    quad);
 
-      cogl_push_matrix ();
+      cogl_framebuffer_push_matrix (fb);
       cogl_matrix_init_identity (&modelview);
       _clutter_actor_apply_modelview_transform (actor, &modelview);
-      cogl_set_modelview_matrix (&modelview);
-      cogl_set_source (outline);
-      cogl_vertex_buffer_draw (vbo, COGL_VERTICES_MODE_LINE_LOOP,
-                               0 , 4);
-      cogl_pop_matrix ();
-      cogl_object_unref (vbo);
+      cogl_framebuffer_set_modelview_matrix (fb, &modelview);
+      cogl_framebuffer_draw_primitive (COGL_FRAMEBUFFER (stage_cogl->onscreen),
+                                       outline,
+                                       prim);
+      cogl_framebuffer_pop_matrix (fb);
+      cogl_object_unref (prim);
     }
 
   CLUTTER_TIMER_STOP (_clutter_uprof_context, painting_timer);
