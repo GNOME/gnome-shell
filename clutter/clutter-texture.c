@@ -556,7 +556,6 @@ update_fbo (ClutterActor *self)
   cogl_clear (&transparent_col,
               COGL_BUFFER_BIT_COLOR |
               COGL_BUFFER_BIT_DEPTH);
-  cogl_disable_fog ();
 
   /* Render the actor to the fbo */
   clutter_actor_paint (priv->fbo_source);

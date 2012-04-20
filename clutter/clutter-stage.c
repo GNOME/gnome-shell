@@ -696,8 +696,6 @@ clutter_stage_paint (ClutterActor *self)
   if (!STAGE_NO_CLEAR_ON_PAINT (self))
     clear_flags |= COGL_BUFFER_BIT_COLOR;
 
-  cogl_disable_fog ();
-
   CLUTTER_TIMER_START (_clutter_uprof_context, stage_clear_timer);
   /* we use the real alpha to clear the stage if :use-alpha is
    * set; the effect depends entirely on the Clutter backend
@@ -1500,7 +1498,6 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   CLUTTER_NOTE (PICK, "Performing %s pick at %i,%i",
                 is_clipped ? "clippped" : "full", x, y);
 
-  cogl_disable_fog ();
   cogl_color_init_from_4ub (&stage_pick_id, 255, 255, 255, 255);
   CLUTTER_TIMER_START (_clutter_uprof_context, pick_clear);
   cogl_clear (&stage_pick_id,
