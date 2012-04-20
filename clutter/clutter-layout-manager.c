@@ -1311,6 +1311,8 @@ clutter_layout_manager_list_child_properties (ClutterLayoutManager *manager,
  *   manager and should not be unreferenced
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12
  */
 ClutterAlpha *
 clutter_layout_manager_begin_animation (ClutterLayoutManager *manager,
@@ -1335,6 +1337,8 @@ clutter_layout_manager_begin_animation (ClutterLayoutManager *manager,
  * The result of this call depends on the @manager implementation
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_layout_manager_end_animation (ClutterLayoutManager *manager)
@@ -1357,6 +1361,8 @@ clutter_layout_manager_end_animation (ClutterLayoutManager *manager)
  * Return value: the progress of the animation
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12
  */
 gdouble
 clutter_layout_manager_get_animation_progress (ClutterLayoutManager *manager)
