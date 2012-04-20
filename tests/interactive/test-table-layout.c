@@ -180,6 +180,7 @@ test_table_layout_main (int argc, char *argv[])
   layout = clutter_table_layout_new ();
   clutter_table_layout_set_column_spacing (CLUTTER_TABLE_LAYOUT (layout), 10);
   clutter_table_layout_set_row_spacing (CLUTTER_TABLE_LAYOUT (layout), 10);
+  clutter_table_layout_set_use_animations (CLUTTER_TABLE_LAYOUT (layout), TRUE);
 
   box = clutter_box_new (layout);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
