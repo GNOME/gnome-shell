@@ -18318,7 +18318,7 @@ clutter_actor_set_x_expand (ClutterActor *self,
  *
  * Retrieves the value set with clutter_actor_set_x_expand().
  *
- * See also: clutter_actor_needs_x_expand()
+ * See also: clutter_actor_needs_expand()
  *
  * Return value: %TRUE if the actor has been set to expand
  *
@@ -18377,7 +18377,7 @@ clutter_actor_set_y_expand (ClutterActor *self,
  *
  * Retrieves the value set with clutter_actor_set_y_expand().
  *
- * See also: clutter_actor_needs_y_expand()
+ * See also: clutter_actor_needs_expand()
  *
  * Return value: %TRUE if the actor has been set to expand
  *
@@ -18402,11 +18402,18 @@ clutter_actor_compute_expand_recursive (ClutterActor *self,
 
   x_expand = y_expand = FALSE;
 
+  /* note that we don't recurse into children if we're already set to expand;
+   * this avoids traversing the whole actor tree, even if it may lead to some
+   * child left with the needs_compute_expand flag set.
+   */
   clutter_actor_iter_init (&iter, self);
   while (clutter_actor_iter_next (&iter, &child))
     {
-      x_expand = x_expand || clutter_actor_needs_x_expand (child);
-      y_expand = y_expand || clutter_actor_needs_y_expand (child);
+      x_expand = x_expand ||
+        clutter_actor_needs_expand (child, CLUTTER_ORIENTATION_HORIZONTAL);
+
+      y_expand = y_expand ||
+        clutter_actor_needs_expand (child, CLUTTER_ORIENTATION_VERTICAL);
     }
 
   *x_expand_p = x_expand;
@@ -18459,24 +18466,26 @@ clutter_actor_compute_expand (ClutterActor *self)
 }
 
 /**
- * clutter_actor_needs_x_expand:
+ * clutter_actor_needs_expand:
  * @self: a #ClutterActor
+ * @orientation: the direction of expansion
  *
  * Checks whether an actor, or any of its children, is set to expand
- * horizontally.
+ * horizontally or vertically.
  *
  * This function should only be called by layout managers that can
  * assign extra space to their children.
  *
  * If you want to know whether the actor was explicitly set to expand,
- * use clutter_actor_get_y_expand().
+ * use clutter_actor_get_x_expand() or clutter_actor_get_y_expand().
  *
  * Return value: %TRUE if the actor should expand
  *
  * Since: 1.12
  */
 gboolean
-clutter_actor_needs_x_expand (ClutterActor *self)
+clutter_actor_needs_expand (ClutterActor       *self,
+                            ClutterOrientation  orientation)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
@@ -18488,38 +18497,14 @@ clutter_actor_needs_x_expand (ClutterActor *self)
 
   clutter_actor_compute_expand (self);
 
-  return self->priv->needs_x_expand;
-}
+  switch (orientation)
+    {
+    case CLUTTER_ORIENTATION_HORIZONTAL:
+      return self->priv->needs_x_expand;
 
-/**
- * clutter_actor_needs_y_expand:
- * @self: a #ClutterActor
- *
- * Checks whether an actor, or any of its children, is set to expand
- * vertically.
- *
- * This function should only be called by layout managers that can
- * assign extra space to their children.
- *
- * If you want to know whether the actor was explicitly set to expand,
- * use clutter_actor_get_y_expand().
- *
- * Return value: %TRUE if the actor should expand
- *
- * Since: 1.12
- */
-gboolean
-clutter_actor_needs_y_expand (ClutterActor *self)
-{
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+    case CLUTTER_ORIENTATION_VERTICAL:
+      return self->priv->needs_y_expand;
+    }
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
-    return FALSE;
-
-  if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
-    return FALSE;
-
-  clutter_actor_compute_expand (self);
-
-  return self->priv->needs_x_expand;
+  return FALSE;
 }

@@ -192,8 +192,7 @@ clutter_actor_meta_set_name
 clutter_actor_move_anchor_point
 clutter_actor_move_anchor_point_from_gravity
 clutter_actor_move_by
-clutter_actor_needs_x_expand
-clutter_actor_needs_y_expand
+clutter_actor_needs_expand
 clutter_actor_new
 clutter_actor_paint
 clutter_actor_pop_internal

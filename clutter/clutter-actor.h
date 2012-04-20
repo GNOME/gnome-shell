@@ -450,9 +450,8 @@ void                            clutter_actor_set_y_expand                      
 CLUTTER_AVAILABLE_IN_1_12
 gboolean                        clutter_actor_get_y_expand                      (ClutterActor                *self);
 CLUTTER_AVAILABLE_IN_1_12
-gboolean                        clutter_actor_needs_x_expand                    (ClutterActor                *self);
-CLUTTER_AVAILABLE_IN_1_12
-gboolean                        clutter_actor_needs_y_expand                    (ClutterActor                *self);
+gboolean                        clutter_actor_needs_expand                      (ClutterActor                *self,
+                                                                                 ClutterOrientation           orientation);
 
 /* Paint */
 void                            clutter_actor_set_clip                          (ClutterActor                *self,

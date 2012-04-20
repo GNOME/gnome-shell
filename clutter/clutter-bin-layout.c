@@ -461,7 +461,7 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
       child_alloc.x2 = available_w;
       child_alloc.y2 = available_h;
 
-      if (clutter_actor_needs_x_expand (child))
+      if (clutter_actor_needs_expand (child, CLUTTER_ORIENTATION_HORIZONTAL))
         {
           ClutterActorAlign align;
 
@@ -475,7 +475,7 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
           x_align = get_bin_alignment_factor (layer->x_align);
         }
 
-      if (clutter_actor_needs_y_expand (child))
+      if (clutter_actor_needs_expand (child, CLUTTER_ORIENTATION_VERTICAL))
         {
           ClutterActorAlign align;
 
