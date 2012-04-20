@@ -650,9 +650,9 @@ scroll_valuators_changed (ClutterInputDevice *device,
 
           if (direction == CLUTTER_SCROLL_UP ||
               direction == CLUTTER_SCROLL_DOWN)
-            *dx_p = delta;
-          else
             *dy_p = delta;
+          else
+            *dx_p = delta;
         }
 
       n_val += 1;
