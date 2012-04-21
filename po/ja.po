@@ -12,9 +12,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-24 17:45+0000\n"
-"PO-Revision-Date: 2012-03-25 05:15+0900\n"
-"Last-Translator: Jiro Matsuzawa <jmatsuzawa@src.gnome.org>\n"
+"POT-Creation-Date: 2012-04-19 21:14+0000\n"
+"PO-Revision-Date: 2012-04-21 21:35+0900\n"
+"Last-Translator: OKANO Takayoshi <kano@na.rim.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -126,34 +126,42 @@ msgid "If true, display the ISO week date in the calendar."
 msgstr "ISO 8601 方式の暦週日付を表示します。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Keybinding to open the application menu"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "Keybinding to open the application menu."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "Which keyboard to use"
 msgstr "使いたいキーボードの種類"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The type of keyboard to use."
 msgstr "使いたいキーボードの種類です。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Show time with seconds"
 msgstr "秒を表示"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "If true, display seconds in time."
 msgstr "時刻を秒まで表示します。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Show date in clock"
 msgstr "日付を表示"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "If true, display date in the clock, in addition to time."
 msgstr "日付と時刻を表示します。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Framerate used for recording screencasts."
 msgstr "スクリーンキャスト録画のフレームレート"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -161,11 +169,11 @@ msgstr ""
 "GNOME Shell のスクリーンキャストレコーダーで録画するスクリーンキャストの 1秒"
 "あたりのフレーム数です。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "スクリーンキャストのエンコードに使用する Gstreamer パイプライン"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:28
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -189,11 +197,11 @@ msgstr ""
 "webmmux' が使用され、VP8 コーデックを使用した WebM 形式で録画します。 '%T' は"
 "システムの最適スレッド数の推量値を示すプレースホルダーです。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:29
 msgid "File extension used for storing the screencast"
 msgstr "ファイルに保存するスクリーンキャストのファイル拡張子"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.h:30
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -216,40 +224,40 @@ msgstr "<b>拡張機能</b>"
 msgid "Select an extension to configure using the combobox above."
 msgstr "設定する拡張機能を上部のコンボボックスから選択してください。"
 
-#: ../js/gdm/loginDialog.js:624
+#: ../js/gdm/loginDialog.js:627
 msgid "Session..."
 msgstr "セッション..."
 
-#: ../js/gdm/loginDialog.js:786
+#: ../js/gdm/loginDialog.js:789
 msgctxt "title"
 msgid "Sign In"
 msgstr "サインイン"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:831
+#: ../js/gdm/loginDialog.js:834
 msgid "(or swipe finger)"
 msgstr "(あるいは指でスワイプする)"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:852
+#: ../js/gdm/loginDialog.js:855
 msgid "Not listed?"
 msgstr "アカウントが見つかりませんか?"
 
-#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:401
-#: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
+#: ../js/gdm/loginDialog.js:1023 ../js/ui/endSessionDialog.js:401
+#: ../js/ui/extensionSystem.js:400 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: ../js/gdm/loginDialog.js:1025
+#: ../js/gdm/loginDialog.js:1028
 msgctxt "button"
 msgid "Sign In"
 msgstr "サインイン"
 
-#: ../js/gdm/loginDialog.js:1377
+#: ../js/gdm/loginDialog.js:1380
 msgid "Login Window"
 msgstr "ログインウィンドウ"
 
@@ -649,11 +657,11 @@ msgstr[0] "%d 秒後にシステムを再起動します。"
 msgid "Restarting the system."
 msgstr "システムを再起動します。"
 
-#: ../js/ui/extensionSystem.js:403
+#: ../js/ui/extensionSystem.js:404
 msgid "Install"
 msgstr "インストール"
 
-#: ../js/ui/extensionSystem.js:407
+#: ../js/ui/extensionSystem.js:408
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "extensions.gnome.org から '%s' をダウンロードしてインストールしますか?"
@@ -662,7 +670,8 @@ msgstr "extensions.gnome.org から '%s' をダウンロードしてインスト
 msgid "tray"
 msgstr "トレイ"
 
-#: ../js/ui/keyboard.js:544 ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:544 ../js/ui/status/keyboard.js:44
+#: ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "キーボード"
 
@@ -674,51 +683,51 @@ msgstr "パスワード:"
 msgid "Type again:"
 msgstr "再入力:"
 
-#: ../js/ui/lookingGlass.js:725
+#: ../js/ui/lookingGlass.js:732
 msgid "No extensions installed"
 msgstr "機能拡張はインストールされていません"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:779
+#: ../js/ui/lookingGlass.js:786
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s は何もエラーを出力していません。"
 
-#: ../js/ui/lookingGlass.js:785
+#: ../js/ui/lookingGlass.js:792
 msgid "Hide Errors"
 msgstr "エラーを非表示"
 
-#: ../js/ui/lookingGlass.js:789 ../js/ui/lookingGlass.js:840
+#: ../js/ui/lookingGlass.js:796 ../js/ui/lookingGlass.js:847
 msgid "Show Errors"
 msgstr "エラーを表示"
 
-#: ../js/ui/lookingGlass.js:798
+#: ../js/ui/lookingGlass.js:805
 msgid "Enabled"
 msgstr "利用可能にする"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:801 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:808 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "利用不可能にする"
 
-#: ../js/ui/lookingGlass.js:803
+#: ../js/ui/lookingGlass.js:810
 msgid "Error"
 msgstr "エラー"
 
-#: ../js/ui/lookingGlass.js:805
+#: ../js/ui/lookingGlass.js:812
 msgid "Out of date"
 msgstr "最新ではありません"
 
-#: ../js/ui/lookingGlass.js:807
+#: ../js/ui/lookingGlass.js:814
 msgid "Downloading"
 msgstr "ダウンロード中"
 
-#: ../js/ui/lookingGlass.js:828
+#: ../js/ui/lookingGlass.js:835
 msgid "View Source"
 msgstr "ソースの表示"
 
-#: ../js/ui/lookingGlass.js:834
+#: ../js/ui/lookingGlass.js:841
 msgid "Web Page"
 msgstr "ウェブページ"
 
@@ -849,17 +858,17 @@ msgstr "アプリケーション"
 msgid "Dash"
 msgstr "ダッシュボード"
 
-#: ../js/ui/panel.js:591
+#: ../js/ui/panel.js:592
 msgid "Quit"
 msgstr "終了"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:623
+#: ../js/ui/panel.js:624
 msgid "Activities"
 msgstr "アクティビティ"
 
-#: ../js/ui/panel.js:998
+#: ../js/ui/panel.js:999
 msgid "Top Bar"
 msgstr "トップバー"
 
@@ -917,7 +926,7 @@ msgstr "コマンド:"
 msgid "Searching..."
 msgstr "検索しています..."
 
-#: ../js/ui/searchDisplay.js:414
+#: ../js/ui/searchDisplay.js:415
 msgid "No matching results."
 msgstr "一致するものがありません。"
 
@@ -1075,7 +1084,7 @@ msgstr "許可"
 msgid "Grant this time only"
 msgstr "今回のみ許可"
 
-#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1091
+#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1093
 msgid "Reject"
 msgstr "拒否"
 
@@ -1388,35 +1397,35 @@ msgstr "%s は取り込み中です。"
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:887
+#: ../js/ui/telepathyClient.js:889
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "<b>%A</b>の<b>%X</b>に送信"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:893
+#: ../js/ui/telepathyClient.js:895
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "<b>%b%e日</b> <b>%A</b>に送信"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:898
+#: ../js/ui/telepathyClient.js:900
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "<b>%Y年%b%e日</b> <b>%A</b>に送信"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:940
+#: ../js/ui/telepathyClient.js:942
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s は %s になりました"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1042
+#: ../js/ui/telepathyClient.js:1044
 #, c-format
 msgid "Invitation to %s"
 msgstr "%s への招待"
@@ -1424,35 +1433,35 @@ msgstr "%s への招待"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1050
+#: ../js/ui/telepathyClient.js:1052
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s さんがあなたを %s に招待しています"
 
-#: ../js/ui/telepathyClient.js:1052 ../js/ui/telepathyClient.js:1131
-#: ../js/ui/telepathyClient.js:1229
+#: ../js/ui/telepathyClient.js:1054 ../js/ui/telepathyClient.js:1133
+#: ../js/ui/telepathyClient.js:1231
 msgid "Decline"
 msgstr "拒否する"
 
-#: ../js/ui/telepathyClient.js:1053 ../js/ui/telepathyClient.js:1132
-#: ../js/ui/telepathyClient.js:1230
+#: ../js/ui/telepathyClient.js:1055 ../js/ui/telepathyClient.js:1134
+#: ../js/ui/telepathyClient.js:1232
 msgid "Accept"
 msgstr "受け入れる"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1083
+#: ../js/ui/telepathyClient.js:1085
 #, c-format
 msgid "Video call from %s"
 msgstr "%s さんからビデオでの呼び出し"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1086
+#: ../js/ui/telepathyClient.js:1088
 #, c-format
 msgid "Call from %s"
 msgstr "%s さんからの呼び出し"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1093
+#: ../js/ui/telepathyClient.js:1095
 msgid "Answer"
 msgstr "応答"
 
@@ -1461,109 +1470,109 @@ msgstr "応答"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1125
+#: ../js/ui/telepathyClient.js:1127
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s さんがあなたに %s を送信しようとしています"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1194
+#: ../js/ui/telepathyClient.js:1196
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr ""
 "%s さんが、あなたがオンライン状態になったことを知る許可を欲しいと思っています"
 
-#: ../js/ui/telepathyClient.js:1287
+#: ../js/ui/telepathyClient.js:1289
 msgid "Network error"
 msgstr "ネットワークエラー"
 
-#: ../js/ui/telepathyClient.js:1289
+#: ../js/ui/telepathyClient.js:1291
 msgid "Authentication failed"
 msgstr "認証失敗"
 
-#: ../js/ui/telepathyClient.js:1291
+#: ../js/ui/telepathyClient.js:1293
 msgid "Encryption error"
 msgstr "暗号化のエラーです"
 
-#: ../js/ui/telepathyClient.js:1293
+#: ../js/ui/telepathyClient.js:1295
 msgid "Certificate not provided"
 msgstr "証明書がありません"
 
-#: ../js/ui/telepathyClient.js:1295
+#: ../js/ui/telepathyClient.js:1297
 msgid "Certificate untrusted"
 msgstr "信用のない証明書です"
 
-#: ../js/ui/telepathyClient.js:1297
+#: ../js/ui/telepathyClient.js:1299
 msgid "Certificate expired"
 msgstr "証明書の有効期限が切れています"
 
-#: ../js/ui/telepathyClient.js:1299
+#: ../js/ui/telepathyClient.js:1301
 msgid "Certificate not activated"
 msgstr "証明書は利用できません"
 
-#: ../js/ui/telepathyClient.js:1301
+#: ../js/ui/telepathyClient.js:1303
 msgid "Certificate hostname mismatch"
 msgstr "証明書のホスト名が一致しません"
 
-#: ../js/ui/telepathyClient.js:1303
+#: ../js/ui/telepathyClient.js:1305
 msgid "Certificate fingerprint mismatch"
 msgstr "証明書の指紋が一致しません"
 
-#: ../js/ui/telepathyClient.js:1305
+#: ../js/ui/telepathyClient.js:1307
 msgid "Certificate self-signed"
 msgstr "証明書自身の署名です"
 
-#: ../js/ui/telepathyClient.js:1307
+#: ../js/ui/telepathyClient.js:1309
 msgid "Status is set to offline"
 msgstr "状態はオフラインに設定されています"
 
-#: ../js/ui/telepathyClient.js:1309
+#: ../js/ui/telepathyClient.js:1311
 msgid "Encryption is not available"
 msgstr "暗号が利用できません"
 
-#: ../js/ui/telepathyClient.js:1311
+#: ../js/ui/telepathyClient.js:1313
 msgid "Certificate is invalid"
 msgstr "証明書が正しくありません"
 
-#: ../js/ui/telepathyClient.js:1313
+#: ../js/ui/telepathyClient.js:1315
 msgid "Connection has been refused"
 msgstr "接続が拒否されました"
 
-#: ../js/ui/telepathyClient.js:1315
+#: ../js/ui/telepathyClient.js:1317
 msgid "Connection can't be established"
 msgstr "接続を確立できませんでした"
 
-#: ../js/ui/telepathyClient.js:1317
+#: ../js/ui/telepathyClient.js:1319
 msgid "Connection has been lost"
 msgstr "接続が失われました"
 
-#: ../js/ui/telepathyClient.js:1319
+#: ../js/ui/telepathyClient.js:1321
 msgid "This account is already connected to the server"
 msgstr "このアカウントはすでにサーバーに接続済みです"
 
-#: ../js/ui/telepathyClient.js:1321
+#: ../js/ui/telepathyClient.js:1323
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "接続は同じリソースを使って新しい接続で置き換わりました"
 
-#: ../js/ui/telepathyClient.js:1323
+#: ../js/ui/telepathyClient.js:1325
 msgid "The account already exists on the server"
 msgstr "アカウントがサーバーに既に存在しています"
 
-#: ../js/ui/telepathyClient.js:1325
+#: ../js/ui/telepathyClient.js:1327
 msgid "Server is currently too busy to handle the connection"
 msgstr "サーバーがビジー状態にあるため、この接続を処理できません"
 
-#: ../js/ui/telepathyClient.js:1327
+#: ../js/ui/telepathyClient.js:1329
 msgid "Certificate has been revoked"
 msgstr "証明書が無効化されました"
 
-#: ../js/ui/telepathyClient.js:1329
+#: ../js/ui/telepathyClient.js:1331
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "証明書が安全でない暗号のアルゴリズムを使っているか、暗号的に弱いです"
 
-#: ../js/ui/telepathyClient.js:1331
+#: ../js/ui/telepathyClient.js:1333
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1571,26 +1580,26 @@ msgstr ""
 "サーバー証明書の長さや、サーバー証明書のチェーンの深さが暗号ライブラリで規定"
 "されている長さを越えています"
 
-#: ../js/ui/telepathyClient.js:1333
+#: ../js/ui/telepathyClient.js:1335
 msgid "Internal error"
 msgstr "内部エラー"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1343
+#: ../js/ui/telepathyClient.js:1345
 #, c-format
 msgid "Connection to %s failed"
 msgstr "%s に接続できません"
 
-#: ../js/ui/telepathyClient.js:1352
+#: ../js/ui/telepathyClient.js:1354
 msgid "Reconnect"
 msgstr "再接続"
 
-#: ../js/ui/telepathyClient.js:1353
+#: ../js/ui/telepathyClient.js:1355
 msgid "Edit account"
 msgstr "アカウントの編集"
 
-#: ../js/ui/telepathyClient.js:1399
+#: ../js/ui/telepathyClient.js:1401
 msgid "Unknown reason"
 msgstr "原因不明"
 
@@ -1675,7 +1684,7 @@ msgstr "預言者 %s 曰く"
 
 #: ../js/ui/wanda.js:168
 msgid "Your favorite Easter Egg"
-msgstr "あたなの好きなイースターエッグ"
+msgstr "あなたの好きなイースターエッグ"
 
 #: ../js/ui/windowAttentionHandler.js:19
 #, c-format
@@ -1684,7 +1693,7 @@ msgstr "'%s' は準備完了です"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1100
+#: ../src/gvc/gvc-mixer-control.c:1089
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1692,13 +1701,13 @@ msgstr[0] "出力数: %u"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1110
+#: ../src/gvc/gvc-mixer-control.c:1099
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "入力数: %u"
 
-#: ../src/gvc/gvc-mixer-control.c:1408
+#: ../src/gvc/gvc-mixer-control.c:1397
 msgid "System Sounds"
 msgstr "システムのサウンド"
 
