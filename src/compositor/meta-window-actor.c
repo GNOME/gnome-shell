@@ -222,7 +222,7 @@ meta_window_actor_class_init (MetaWindowActorClass *klass)
                                "MetaWindow",
                                "The displayed MetaWindow",
                                META_TYPE_WINDOW,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
   g_object_class_install_property (object_class,
                                    PROP_META_WINDOW,
@@ -455,11 +455,7 @@ meta_window_actor_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_META_WINDOW:
-      {
-        if (priv->window)
-          g_object_unref (priv->window);
-        priv->window = g_value_dup_object (value);
-      }
+      priv->window = g_value_dup_object (value);
       break;
     case PROP_NO_SHADOW:
       {
