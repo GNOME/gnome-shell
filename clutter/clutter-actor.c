@@ -2273,7 +2273,6 @@ clutter_actor_set_allocation_internal (ClutterActor           *self,
   ClutterActorPrivate *priv = self->priv;
   GObject *obj;
   gboolean x1_changed, y1_changed, x2_changed, y2_changed;
-  gboolean flags_changed;
   gboolean retval;
   ClutterActorBox old_alloc = { 0, };
 
@@ -2288,8 +2287,6 @@ clutter_actor_set_allocation_internal (ClutterActor           *self,
   x2_changed = priv->allocation.x2 != box->x2;
   y2_changed = priv->allocation.y2 != box->y2;
 
-  flags_changed = priv->allocation_flags != flags;
-
   priv->allocation = *box;
   priv->allocation_flags = flags;
 
@@ -2298,9 +2295,10 @@ clutter_actor_set_allocation_internal (ClutterActor           *self,
   priv->needs_height_request = FALSE;
   priv->needs_allocation = FALSE;
 
-  if (x1_changed || y1_changed ||
-      x2_changed || y2_changed ||
-      flags_changed)
+  if (x1_changed ||
+      y1_changed ||
+      x2_changed ||
+      y2_changed)
     {
       CLUTTER_NOTE (LAYOUT, "Allocation for '%s' changed",
                     _clutter_actor_get_debug_name (self));
