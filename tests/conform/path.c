@@ -551,12 +551,42 @@ path_test_get_length (CallbackData *data)
   const float actual_length /* sqrt(64**2 + 64**2) * 2 */ = 181.019336f;
   guint approx_length;
 
+  clutter_path_set_description (data->path, "M 0 0 L 46340 0");
+  g_object_get (data->path, "length", &approx_length, NULL);
+
+  if (!(fabs (approx_length - 46340.f) / 46340.f <= 0.15f))
+    {
+      if (g_test_verbose ())
+        g_print ("M 0 0 L 46340 0 - Expected 46340, got %d instead.", approx_length);
+
+      return FALSE;
+    }
+
+  clutter_path_set_description (data->path, "M 0 0 L 46341 0");
+  g_object_get (data->path, "length", &approx_length, NULL);
+
+  if (!(fabs (approx_length - 46341.f) / 46341.f <= 0.15f))
+    {
+      if (g_test_verbose ())
+        g_print ("M 0 0 L 46341 0 - Expected 46341, got %d instead.", approx_length);
+
+      return FALSE;
+    }
+
   set_triangle_path (data);
 
   g_object_get (data->path, "length", &approx_length, NULL);
 
   /* Allow 15% margin of error */
-  return fabs (approx_length - actual_length) / actual_length <= 0.15f;
+  if (!(fabs (approx_length - actual_length) / (float) actual_length <= 0.15f))
+    {
+      if (g_test_verbose ())
+        g_print ("Expected %g, got %d instead.\n", actual_length, approx_length);
+
+      return FALSE;
+    }
+
+  return TRUE;
 }
 
 static gboolean
