@@ -30,7 +30,7 @@
 
 #include "cogl-gpu-info-private.h"
 #include "cogl-context-private.h"
-#include "cogl-util.h"
+#include "cogl-version.h"
 
 typedef struct
 {

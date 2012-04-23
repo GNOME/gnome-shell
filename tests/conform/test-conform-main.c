@@ -95,6 +95,8 @@ main (int argc, char **argv)
   ADD_TEST (test_point_sprite,
             TEST_KNOWN_FAILURE | TEST_REQUIREMENT_POINT_SPRITE);
 
+  ADD_TEST (test_version, 0);
+
   UNPORTED_TEST (test_viewport);
 
   g_printerr ("Unknown test name \"%s\"\n", argv[1]);

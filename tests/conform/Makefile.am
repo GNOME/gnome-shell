@@ -53,6 +53,7 @@ test_sources = \
 	test-point-size.c \
 	test-point-sprite.c \
 	test-no-gl-header.c \
+	test-version.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
