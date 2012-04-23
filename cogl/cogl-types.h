@@ -28,6 +28,7 @@
 #ifndef __COGL_TYPES_H__
 #define __COGL_TYPES_H__
 
+#include <stdint.h>
 #include <glib-object.h>
 
 #include <cogl/cogl-defines.h>
