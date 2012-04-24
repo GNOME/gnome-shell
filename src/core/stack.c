@@ -602,7 +602,16 @@ create_constraints (Constraint **constraints,
                   continue;
                 }
               
+#if 0
+              /* old way of doing it */
+              if (!(meta_window_is_ancestor_of_transient (w, group_window)) &&
+                  !WINDOW_TRANSIENT_FOR_WHOLE_GROUP (group_window))  /* note */;/*note*/
+#else
+              /* better way I think, so transient-for-group are constrained
+               * only above non-transient-type windows in their group
+               */
               if (!WINDOW_HAS_TRANSIENT_TYPE (group_window))
+#endif
                 {
                   meta_topic (META_DEBUG_STACK, "Constraining %s above %s as it's transient for its group\n",
                               w->desc, group_window->desc);
