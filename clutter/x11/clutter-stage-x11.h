@@ -92,6 +92,9 @@ GType _clutter_stage_x11_get_type (void) G_GNUC_CONST;
 void  _clutter_stage_x11_update_foreign_event_mask (CoglOnscreen *onscreen,
                                                     guint32 event_mask,
                                                     void *user_data);
+void  _clutter_stage_x11_events_device_changed (ClutterStageX11 *stage_x11,
+                                                ClutterInputDevice *device,
+                                                ClutterDeviceManager *device_manager);
 
 /* Private to subclasses */
 void            _clutter_stage_x11_set_user_time                (ClutterStageX11 *stage_x11,

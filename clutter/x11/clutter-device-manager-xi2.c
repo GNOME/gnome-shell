@@ -425,6 +425,7 @@ translate_hierarchy_event (ClutterBackendX11       *backend_x11,
           ClutterInputDevice *master, *slave;
           XIDeviceInfo *info;
           int n_devices;
+          gboolean send_changed = FALSE;
 
           CLUTTER_NOTE (EVENT, "Hierarchy event: slave %s",
                         (ev->info[i].flags & XISlaveAttached)
@@ -440,6 +441,8 @@ translate_hierarchy_event (ClutterBackendX11       *backend_x11,
             {
               _clutter_input_device_remove_slave (master, slave);
               _clutter_input_device_set_associated_device (slave, NULL);
+
+              send_changed = TRUE;
             }
 
           /* and attach the slave to the new master if needed */
@@ -453,7 +456,17 @@ translate_hierarchy_event (ClutterBackendX11       *backend_x11,
               _clutter_input_device_set_associated_device (slave, master);
               _clutter_input_device_add_slave (master, slave);
 
+              send_changed = TRUE;
               XIFreeDeviceInfo (info);
+            }
+
+          if (send_changed)
+            {
+              ClutterStage *stage = _clutter_input_device_get_stage (master);
+              if (stage != NULL)
+                _clutter_stage_x11_events_device_changed (CLUTTER_STAGE_X11 (_clutter_stage_get_window (stage)), 
+                                                          master,
+                                                          CLUTTER_DEVICE_MANAGER (manager_xi2));
             }
         }
     }
