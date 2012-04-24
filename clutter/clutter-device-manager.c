@@ -323,7 +323,8 @@ _clutter_device_manager_select_stage_events (ClutterDeviceManager *device_manage
     {
       ClutterInputDevice *device = d->data;
 
-      _clutter_input_device_select_stage_events (device, stage, event_flags);
+      if (device->is_enabled)
+        _clutter_input_device_select_stage_events (device, stage, event_flags);
     }
 }
 
