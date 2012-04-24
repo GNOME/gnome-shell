@@ -115,7 +115,7 @@ _cogl_texture_2d_can_create (unsigned int width,
 
   /* If NPOT textures aren't supported then the size must be a power
      of two */
-  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT) &&
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_BASIC) &&
       (!_cogl_util_is_pot (width) ||
        !_cogl_util_is_pot (height)))
     return FALSE;
@@ -631,7 +631,16 @@ _cogl_texture_2d_is_sliced (CoglTexture *tex)
 static CoglBool
 _cogl_texture_2d_can_hardware_repeat (CoglTexture *tex)
 {
-  return TRUE;
+  CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  if (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_REPEAT) ||
+      (_cogl_util_is_pot (tex_2d->width) &&
+       _cogl_util_is_pot (tex_2d->height)))
+    return TRUE;
+  else
+    return FALSE;
 }
 
 static void
@@ -650,15 +659,19 @@ _cogl_texture_2d_transform_quad_coords_to_gl (CoglTexture *tex,
   /* The texture coordinates map directly so we don't need to do
      anything other than check for repeats */
 
-  CoglBool need_repeat = FALSE;
   int i;
 
   for (i = 0; i < 4; i++)
     if (coords[i] < 0.0f || coords[i] > 1.0f)
-      need_repeat = TRUE;
+      {
+        /* Repeat is needed */
+        return (_cogl_texture_2d_can_hardware_repeat (tex) ?
+                COGL_TRANSFORM_HARDWARE_REPEAT :
+                COGL_TRANSFORM_SOFTWARE_REPEAT);
+      }
 
-  return (need_repeat ? COGL_TRANSFORM_HARDWARE_REPEAT
-          : COGL_TRANSFORM_NO_REPEAT);
+  /* No repeat is needed */
+  return COGL_TRANSFORM_NO_REPEAT;
 }
 
 static CoglBool

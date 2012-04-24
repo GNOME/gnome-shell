@@ -322,11 +322,18 @@ cogl_texture_new_with_size (unsigned int     width,
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  /* First try creating a fast-path non-sliced texture */
-  tex = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx,
-                                                     width, height,
-                                                     internal_format,
-                                                     NULL));
+  if ((_cogl_util_is_pot (width) && _cogl_util_is_pot (height)) ||
+      (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_BASIC) &&
+       cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP)))
+    {
+      /* First try creating a fast-path non-sliced texture */
+      tex = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx,
+                                                         width, height,
+                                                         internal_format,
+                                                         NULL));
+    }
+  else
+    tex = NULL;
 
   if (tex)
     {
@@ -393,7 +400,9 @@ cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
                               CoglPixelFormat  internal_format)
 {
   CoglAtlasTexture *atlas_tex;
-  CoglTexture2D *tex_2d;
+  CoglTexture *tex;
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
 
   /* First try putting the texture in the atlas */
   if ((atlas_tex = _cogl_atlas_texture_new_from_bitmap (bitmap,
@@ -402,21 +411,33 @@ cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
     return COGL_TEXTURE (atlas_tex);
 
   /* If that doesn't work try a fast path 2D texture */
-  if ((tex_2d = cogl_texture_2d_new_from_bitmap (bitmap,
-                                                 internal_format,
-                                                 NULL)))
+  if ((_cogl_util_is_pot (bitmap->width) &&
+       _cogl_util_is_pot (bitmap->height)) ||
+      (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_BASIC) &&
+       cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP)))
     {
-      cogl_primitive_texture_set_auto_mipmap (COGL_PRIMITIVE_TEXTURE (tex_2d),
-                                              !(flags &
-                                                COGL_TEXTURE_NO_AUTO_MIPMAP));
-      return COGL_TEXTURE (tex_2d);
+      tex = COGL_TEXTURE (cogl_texture_2d_new_from_bitmap (bitmap,
+                                                           internal_format,
+                                                           NULL));
+    }
+  else
+    tex = NULL;
+
+  if (tex)
+    {
+      CoglBool auto_mipmap = !(flags & COGL_TEXTURE_NO_AUTO_MIPMAP);
+      cogl_primitive_texture_set_auto_mipmap (COGL_PRIMITIVE_TEXTURE (tex),
+                                              auto_mipmap);
+    }
+  else
+    {
+      /* Otherwise create a sliced texture */
+      tex = COGL_TEXTURE (_cogl_texture_2d_sliced_new_from_bitmap (bitmap,
+                                                             flags,
+                                                             internal_format));
     }
 
-  /* Otherwise create a sliced texture */
-  return
-    COGL_TEXTURE (_cogl_texture_2d_sliced_new_from_bitmap (bitmap,
-                                                           flags,
-                                                           internal_format));
+  return tex;
 }
 
 CoglTexture *

@@ -32,6 +32,33 @@
 #include "cogl-buffer.h"
 #include "cogl-bitmap.h"
 
+struct _CoglBitmap
+{
+  CoglObject _parent;
+
+  /* Pointer back to the context that this bitmap was created with */
+  CoglContext *context;
+
+  CoglPixelFormat format;
+  int width;
+  int height;
+  int rowstride;
+
+  uint8_t *data;
+
+  CoglBool mapped;
+  CoglBool bound;
+
+  /* If this is non-null then 'data' is ignored and instead it is
+     fetched from this shared bitmap. */
+  CoglBitmap *shared_bmp;
+
+  /* If this is non-null then 'data' is treated as an offset into the
+     buffer and map will divert to mapping the buffer */
+  CoglBuffer *buffer;
+};
+
+
 /*
  * _cogl_bitmap_new_with_malloc_buffer:
  * @context: A #CoglContext
