@@ -75,7 +75,6 @@
       <xi:include href="xml/clutter-texture.xml"/>
       <xi:include href="xml/clutter-clone.xml"/>
       <xi:include href="xml/clutter-text.xml"/>
-      <xi:include href="xml/clutter-cairo-texture.xml"/>
       <xi:include href="xml/clutter-scroll-actor.xml"/>
     </chapter>
 
@@ -262,6 +261,7 @@
       <xi:include href="xml/clutter-behaviour-rotate.xml"/>
       <xi:include href="xml/clutter-behaviour-scale.xml"/>
       <xi:include href="xml/clutter-box.xml"/>
+      <xi:include href="xml/clutter-cairo-texture.xml"/>
       <xi:include href="xml/clutter-group.xml"/>
       <xi:include href="xml/clutter-rectangle.xml"/>
       <xi:include href="xml/clutter-score.xml"/>
