@@ -1,6 +1,6 @@
 SUBDIRS = conform micro-perf data
 
-DIST_SUBDIRS = conform data
+DIST_SUBDIRS = conform micro-perf data
 
 EXTRA_DIST = README
 
