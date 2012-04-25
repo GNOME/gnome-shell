@@ -77,6 +77,7 @@
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include "deprecated/clutter-container.h"
+#include "deprecated/clutter-alpha.h"
 
 #include "clutter-box-layout.h"
 

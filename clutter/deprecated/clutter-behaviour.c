@@ -79,6 +79,7 @@
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include "clutter-behaviour.h"
+#include "clutter-alpha.h"
 
 #include "clutter-debug.h"
 #include "clutter-main.h"

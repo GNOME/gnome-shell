@@ -29,9 +29,6 @@
 #ifndef __CLUTTER_LAYOUT_MANAGER_H__
 #define __CLUTTER_LAYOUT_MANAGER_H__
 
-#include <clutter/clutter-actor.h>
-#include <clutter/clutter-alpha.h>
-#include <clutter/clutter-container.h>
 #include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
