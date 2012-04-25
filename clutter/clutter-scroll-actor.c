@@ -366,6 +366,8 @@ on_transition_completed (ClutterTimeline *timeline,
  * Scrolls the contents of @actor so that @point is the new origin
  * of the visible area.
  *
+ * The coordinates of @point must be relative to the @actor.
+ *
  * This function will use the currently set easing state of the @actor
  * to transition from the current scroll origin to the new one.
  *
