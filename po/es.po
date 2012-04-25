@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-30 17:59+0000\n"
-"PO-Revision-Date: 2012-04-01 19:11+0200\n"
+"POT-Creation-Date: 2012-04-24 15:39+0000\n"
+"PO-Revision-Date: 2012-04-25 12:09+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -141,34 +141,44 @@ msgid "Keybinding to open the application menu."
 msgstr "Asociación de teclas para abrir el menú de la aplicación."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
+#| msgid "Keybinding to open the application menu"
+msgid "Keybinding to toggle the screen recorder"
+msgstr "Asociación de teclas cambiar el grabador de pantalla"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#| msgid "Keybinding to open the application menu."
+msgid "Keybinding to start/stop the builtin screen recorder."
+msgstr "Asociación de teclas para iniciar/detener el grabador de pantalla."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Which keyboard to use"
 msgstr "Qué teclado usar"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "The type of keyboard to use."
 msgstr "El tipo de teclado que usar."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Show time with seconds"
 msgstr "Mostrar la hora con segundos"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "If true, display seconds in time."
 msgstr "Si es cierta, muestra los segundos en la hora."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Show date in clock"
 msgstr "Mostrar la fecha en el reloj"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "If true, display date in the clock, in addition to time."
 msgstr "Si es cierta, muestra la fecha en el reloj, además de la hora."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "Framerate used for recording screencasts."
 msgstr "Tasa de fotogramas usada para grabar «screencast»."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -176,11 +186,11 @@ msgstr ""
 "La tasa de fotogramas de la grabación resultante grabada por el grabador de "
 "«screencast» de GNOME Shell, en fotogramas por segundo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:28
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "La tubería de gstreamer usada para codificar el «screencast»"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.h:30
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -195,22 +205,22 @@ msgid ""
 "thread count on the system."
 msgstr ""
 "Establece la tubería GStreamer usada para codificar grabaciones. Sigue la "
-"sintaxis usada para gst-launch. La tubería debería tener un sumidero "
-"(«sink») desconectado donde grabar el vídeo que se está grabando. "
-"Generalmente tendrá un punto de origen desconectado; la salida de ese punto "
-"se escribirá en el archivo de salida. Sin embargo, la tubería también puede "
-"tomar parte en su propia salida; esto se puede usar para enviar la salida a "
-"un servidor «icecast» a través de shout2send o similar. Cuando no está "
-"establecido o lo está a un valor vacío, se usará la tubería predeterminada. "
-"Actualmente es «'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux» y "
-"graba en WEBM usando el códec VP8. Se usa %T como marcador de posición para "
-"el número de hilos óptimos en el sistema."
+"sintaxis usada para gst-launch. La tubería debería tener un sumidero («sink») "
+"desconectado donde grabar el vídeo que se está grabando. Generalmente tendrá "
+"un punto de origen desconectado; la salida de ese punto se escribirá en el "
+"archivo de salida. Sin embargo, la tubería también puede tomar parte en su "
+"propia salida; esto se puede usar para enviar la salida a un servidor "
+"«icecast» a través de shout2send o similar. Cuando no está establecido o lo "
+"está a un valor vacío, se usará la tubería predeterminada. Actualmente es "
+"«'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux» y graba en WEBM "
+"usando el códec VP8. Se usa %T como marcador de posición para el número de "
+"hilos óptimos en el sistema."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.h:31
 msgid "File extension used for storing the screencast"
 msgstr "Extensión de archivo que usar para almacenar los «screencast»"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.h:32
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -234,40 +244,40 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Seleccione una extensión que configurar usando la caja combinada de arriba."
 
-#: ../js/gdm/loginDialog.js:624
+#: ../js/gdm/loginDialog.js:627
 msgid "Session..."
 msgstr "Sesión…"
 
-#: ../js/gdm/loginDialog.js:786
+#: ../js/gdm/loginDialog.js:789
 msgctxt "title"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:831
+#: ../js/gdm/loginDialog.js:834
 msgid "(or swipe finger)"
 msgstr "(o pase el dedo)"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:852
+#: ../js/gdm/loginDialog.js:855
 msgid "Not listed?"
 msgstr "¿No está en la lista?"
 
-#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:401
-#: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
+#: ../js/gdm/loginDialog.js:1023 ../js/ui/endSessionDialog.js:401
+#: ../js/ui/extensionSystem.js:400 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/gdm/loginDialog.js:1025
+#: ../js/gdm/loginDialog.js:1028
 msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
-#: ../js/gdm/loginDialog.js:1377
+#: ../js/gdm/loginDialog.js:1380
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
@@ -668,11 +678,11 @@ msgstr[1] "El sistema se reiniciará automáticamente en %d segundos."
 msgid "Restarting the system."
 msgstr "Reiniciando el sistema."
 
-#: ../js/ui/extensionSystem.js:403
+#: ../js/ui/extensionSystem.js:404
 msgid "Install"
 msgstr "Instalar"
 
-#: ../js/ui/extensionSystem.js:407
+#: ../js/ui/extensionSystem.js:408
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
@@ -681,7 +691,8 @@ msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
 msgid "tray"
 msgstr "bandeja"
 
-#: ../js/ui/keyboard.js:544 ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:544 ../js/ui/status/keyboard.js:44
+#: ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Teclado"
 
@@ -717,7 +728,7 @@ msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:808 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:808 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "Desactivado"
 
@@ -742,7 +753,7 @@ msgid "Web Page"
 msgstr "Página web"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:118
+#: ../js/ui/main.js:121
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Screencast desde %d %t"
@@ -805,8 +816,8 @@ msgstr "La red inalámbrica requiere autenticación"
 #: ../js/ui/networkAgent.js:330
 #, c-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"'%s'."
+"Passwords or encryption keys are required to access the wireless network '%"
+"s'."
 msgstr ""
 "Se necesitan contraseñas o claves de cifrado para acceder a la red "
 "inalámbrica «%s»."
@@ -934,7 +945,7 @@ msgstr "Introduzca un comando:"
 msgid "Searching..."
 msgstr "Buscando…"
 
-#: ../js/ui/searchDisplay.js:414
+#: ../js/ui/searchDisplay.js:415
 msgid "No matching results."
 msgstr "No se encontró ningún resultado coincidente."
 
@@ -1092,7 +1103,7 @@ msgstr "Conceder acceso siempre"
 msgid "Grant this time only"
 msgstr "Conceder sólo esta vez"
 
-#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1091
+#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1093
 msgid "Reject"
 msgstr "Rechazar"
 
@@ -1409,35 +1420,35 @@ msgstr "%s está ocupado/a."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:887
+#: ../js/ui/telepathyClient.js:889
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Enviado el <b>%A</b> a las <b>%H:%M</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:893
+#: ../js/ui/telepathyClient.js:895
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Enviado el <b>%A</b>, <b>%d de %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:898
+#: ../js/ui/telepathyClient.js:900
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Enviado el <b>%A</b>, <b>%d de %B</b> de %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:940
+#: ../js/ui/telepathyClient.js:942
 #, c-format
 msgid "%s is now known as %s"
 msgstr "Ahora %s se llama %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1042
+#: ../js/ui/telepathyClient.js:1044
 #, c-format
 msgid "Invitation to %s"
 msgstr "Invitación a %s"
@@ -1445,35 +1456,35 @@ msgstr "Invitación a %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1050
+#: ../js/ui/telepathyClient.js:1052
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s le está invitando a unirse a %s"
 
-#: ../js/ui/telepathyClient.js:1052 ../js/ui/telepathyClient.js:1131
-#: ../js/ui/telepathyClient.js:1229
+#: ../js/ui/telepathyClient.js:1054 ../js/ui/telepathyClient.js:1133
+#: ../js/ui/telepathyClient.js:1231
 msgid "Decline"
 msgstr "Rechazar"
 
-#: ../js/ui/telepathyClient.js:1053 ../js/ui/telepathyClient.js:1132
-#: ../js/ui/telepathyClient.js:1230
+#: ../js/ui/telepathyClient.js:1055 ../js/ui/telepathyClient.js:1134
+#: ../js/ui/telepathyClient.js:1232
 msgid "Accept"
 msgstr "Aceptar"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1083
+#: ../js/ui/telepathyClient.js:1085
 #, c-format
 msgid "Video call from %s"
 msgstr "Videollamada de %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1086
+#: ../js/ui/telepathyClient.js:1088
 #, c-format
 msgid "Call from %s"
 msgstr "Llamada de %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1093
+#: ../js/ui/telepathyClient.js:1095
 msgid "Answer"
 msgstr "Responder"
 
@@ -1482,112 +1493,112 @@ msgstr "Responder"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1125
+#: ../js/ui/telepathyClient.js:1127
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s le está enviando %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1194
+#: ../js/ui/telepathyClient.js:1196
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s solicita permiso para ver cuándo está en línea"
 
-#: ../js/ui/telepathyClient.js:1287
+#: ../js/ui/telepathyClient.js:1289
 msgid "Network error"
 msgstr "Error de la red"
 
-#: ../js/ui/telepathyClient.js:1289
+#: ../js/ui/telepathyClient.js:1291
 msgid "Authentication failed"
 msgstr "Falló la autenticación"
 
-#: ../js/ui/telepathyClient.js:1291
+#: ../js/ui/telepathyClient.js:1293
 msgid "Encryption error"
 msgstr "Error de cifrado"
 
-#: ../js/ui/telepathyClient.js:1293
+#: ../js/ui/telepathyClient.js:1295
 msgid "Certificate not provided"
 msgstr "Certificado no proporcionado"
 
-#: ../js/ui/telepathyClient.js:1295
+#: ../js/ui/telepathyClient.js:1297
 msgid "Certificate untrusted"
 msgstr "No se confía en el certificado"
 
-#: ../js/ui/telepathyClient.js:1297
+#: ../js/ui/telepathyClient.js:1299
 msgid "Certificate expired"
 msgstr "Certificado caducado"
 
-#: ../js/ui/telepathyClient.js:1299
+#: ../js/ui/telepathyClient.js:1301
 msgid "Certificate not activated"
 msgstr "Certificado no activado"
 
-#: ../js/ui/telepathyClient.js:1301
+#: ../js/ui/telepathyClient.js:1303
 msgid "Certificate hostname mismatch"
 msgstr "El nombre del servidor dle certificado no coincide"
 
-#: ../js/ui/telepathyClient.js:1303
+#: ../js/ui/telepathyClient.js:1305
 msgid "Certificate fingerprint mismatch"
 msgstr "La huella del certificado no coincide"
 
-#: ../js/ui/telepathyClient.js:1305
+#: ../js/ui/telepathyClient.js:1307
 msgid "Certificate self-signed"
 msgstr "Certificado autofirmado"
 
-#: ../js/ui/telepathyClient.js:1307
+#: ../js/ui/telepathyClient.js:1309
 msgid "Status is set to offline"
 msgstr "El estado está establecido a «desconectado»"
 
-#: ../js/ui/telepathyClient.js:1309
+#: ../js/ui/telepathyClient.js:1311
 msgid "Encryption is not available"
 msgstr "El cifrado no está disponible"
 
-#: ../js/ui/telepathyClient.js:1311
+#: ../js/ui/telepathyClient.js:1313
 msgid "Certificate is invalid"
 msgstr "El certificado no es válido"
 
-#: ../js/ui/telepathyClient.js:1313
+#: ../js/ui/telepathyClient.js:1315
 msgid "Connection has been refused"
 msgstr "Se ha rechazado la conexión"
 
-#: ../js/ui/telepathyClient.js:1315
+#: ../js/ui/telepathyClient.js:1317
 msgid "Connection can't be established"
 msgstr "No se puede establecer la conexión"
 
-#: ../js/ui/telepathyClient.js:1317
+#: ../js/ui/telepathyClient.js:1319
 msgid "Connection has been lost"
 msgstr "Se ha perdido la conexión"
 
-#: ../js/ui/telepathyClient.js:1319
+#: ../js/ui/telepathyClient.js:1321
 msgid "This account is already connected to the server"
 msgstr "Esta cuenta ya está conectada al servidor"
 
-#: ../js/ui/telepathyClient.js:1321
+#: ../js/ui/telepathyClient.js:1323
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Se ha sustituido la conexión por una nueva conexión usando el mismo recurso"
 
-#: ../js/ui/telepathyClient.js:1323
+#: ../js/ui/telepathyClient.js:1325
 msgid "The account already exists on the server"
 msgstr "La cuenta ya existe en el servidor"
 
-#: ../js/ui/telepathyClient.js:1325
+#: ../js/ui/telepathyClient.js:1327
 msgid "Server is currently too busy to handle the connection"
 msgstr ""
 "Actualmente el servidor está muy ocupado intentando gestionar la conexión"
 
-#: ../js/ui/telepathyClient.js:1327
+#: ../js/ui/telepathyClient.js:1329
 msgid "Certificate has been revoked"
 msgstr "Se ha revocado el certificado"
 
-#: ../js/ui/telepathyClient.js:1329
+#: ../js/ui/telepathyClient.js:1331
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "El certificado usa un algoritmo de cifrado inseguro o es criptográficamente "
 "débil"
 
-#: ../js/ui/telepathyClient.js:1331
+#: ../js/ui/telepathyClient.js:1333
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1596,26 +1607,26 @@ msgstr ""
 "certificado del servidor exceden los límites impuestos por la biblioteca de "
 "criptografía"
 
-#: ../js/ui/telepathyClient.js:1333
+#: ../js/ui/telepathyClient.js:1335
 msgid "Internal error"
 msgstr "Error interno"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1343
+#: ../js/ui/telepathyClient.js:1345
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Falló la conexión a %s"
 
-#: ../js/ui/telepathyClient.js:1352
+#: ../js/ui/telepathyClient.js:1354
 msgid "Reconnect"
 msgstr "Reconectar"
 
-#: ../js/ui/telepathyClient.js:1353
+#: ../js/ui/telepathyClient.js:1355
 msgid "Edit account"
 msgstr "Editar cuenta"
 
-#: ../js/ui/telepathyClient.js:1399
+#: ../js/ui/telepathyClient.js:1401
 msgid "Unknown reason"
 msgstr "Razón desconocida"
 
@@ -1709,7 +1720,7 @@ msgstr "«%s» está preparado"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1100
+#: ../src/gvc/gvc-mixer-control.c:1089
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1718,14 +1729,14 @@ msgstr[1] "%u salidas"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1110
+#: ../src/gvc/gvc-mixer-control.c:1099
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrada"
 msgstr[1] "%u entradas"
 
-#: ../src/gvc/gvc-mixer-control.c:1408
+#: ../src/gvc/gvc-mixer-control.c:1397
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
 
@@ -2059,8 +2070,8 @@ msgstr "%1$s: %2$s"
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
-#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los "
-#~ "segundos en la hora."
+#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los segundos "
+#~ "en la hora."
 
 #~ msgid ""
 #~ "This key specifies the format used by the panel clock when the format key "
@@ -2077,19 +2088,18 @@ msgstr "%1$s: %2$s"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
-#~ "1970-01-01. If set to \"custom\", the clock will display time according "
-#~ "to the format specified in the custom_format key. Note that if set to "
-#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
-#~ "ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
+#~ "01-01. If set to \"custom\", the clock will display time according to the "
+#~ "format specified in the custom_format key. Note that if set to either "
+#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
 #~ msgstr ""
 #~ "Esta clave especifica el formato de la hora especificado por el reloj del "
-#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 "
-#~ "horas), «unix» y «custom» (personalizado).Si se establece a «unix» el "
-#~ "reloj mostrará la hora en segundos desde la época (1 de enero de 1970). "
-#~ "Si se establece a «custom» el reloj mostrará la hora según el formato "
-#~ "especificado en la clave «custom_format». Note que si se establece a "
-#~ "«unix» o «custom» se ignoran las claves «show_date» y «show_seconds»."
+#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 horas), "
+#~ "«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará "
+#~ "la hora en segundos desde la época (1 de enero de 1970). Si se establece "
+#~ "a «custom» el reloj mostrará la hora según el formato especificado en la "
+#~ "clave «custom_format». Note que si se establece a «unix» o «custom» se "
+#~ "ignoran las claves «show_date» y «show_seconds»."
 
 #~ msgid "Clock Format"
 #~ msgstr "Formato del reloj"
