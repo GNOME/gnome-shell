@@ -313,12 +313,17 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
         }
       else
 #endif /* GL_TEXTURE_RECTANGLE_ARB */
-        priv->mask_texture = cogl_texture_new_from_data (tex_width, tex_height,
-                                                         COGL_TEXTURE_NONE,
-                                                         COGL_PIXEL_FORMAT_A_8,
-                                                         COGL_PIXEL_FORMAT_ANY,
-                                                         stride,
-                                                         mask_data);
+        {
+	  /* Note: we don't allow slicing for this texture because we
+           * need to use it with multi-texturing which doesn't support
+           * sliced textures */
+          priv->mask_texture = cogl_texture_new_from_data (tex_width, tex_height,
+                                                           COGL_TEXTURE_NO_SLICING,
+                                                           COGL_PIXEL_FORMAT_A_8,
+                                                           COGL_PIXEL_FORMAT_ANY,
+                                                           stride,
+                                                           mask_data);
+        }
 
       g_free (mask_data);
 
