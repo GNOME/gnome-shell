@@ -3285,3 +3285,25 @@ CLUTTER_TRANSITION_GROUP_GET_CLASS
 ClutterTransitionGroupPrivate
 clutter_transition_group_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-scroll-actor</FILE>
+ClutterScrollActor
+ClutterScrollActorClass
+clutter_scroll_actor_new
+ClutterScrollMode
+clutter_scroll_actor_set_scroll_mode
+clutter_scroll_actor_get_scroll_mode
+clutter_scroll_actor_scroll_to_point
+clutter_scroll_actor_scroll_to_rect
+<SUBSECTION Standard>
+CLUTTER_TYPE_SCROLL_ACTOR
+CLUTTER_SCROLL_ACTOR
+CLUTTER_SCROLL_ACTOR_CLASS
+CLUTTER_IS_SCROLL_ACTOR
+CLUTTER_IS_SCROLL_ACTOR_CLASS
+CLUTTER_SCROLL_ACTOR_GET_CLASS
+<SUBSECTION Private>
+ClutterScrollActorPrivate
+clutter_scroll_actor_get_type
+</SECTION>

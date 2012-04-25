@@ -59,6 +59,7 @@ clutter_rectangle_get_type
 clutter_score_get_type
 clutter_scriptable_get_type
 clutter_script_get_type
+clutter_scroll_actor_get_type
 clutter_settings_get_type
 clutter_shader_get_type
 clutter_shader_effect_get_type

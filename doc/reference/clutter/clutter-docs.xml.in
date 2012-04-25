@@ -76,6 +76,7 @@
       <xi:include href="xml/clutter-clone.xml"/>
       <xi:include href="xml/clutter-text.xml"/>
       <xi:include href="xml/clutter-cairo-texture.xml"/>
+      <xi:include href="xml/clutter-scroll-actor.xml"/>
     </chapter>
 
     <chapter>
