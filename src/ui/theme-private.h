@@ -925,16 +925,6 @@ void             meta_frame_layout_get_borders   (const MetaFrameLayout *layout,
                                                   MetaFrameFlags         flags,
                                                   MetaFrameType          type,
                                                   MetaFrameBorders      *borders);
-void             meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
-                                                  int                     text_height,
-                                                  MetaFrameFlags          flags,
-                                                  int                     client_width,
-                                                  int                     client_height,
-                                                  const MetaButtonLayout *button_layout,
-                                                  MetaFrameType           type,
-                                                  MetaFrameGeometry      *fgeom,
-                                                  MetaTheme              *theme);
-
 gboolean         meta_frame_layout_validate      (const MetaFrameLayout *layout,
                                                   GError               **error);
 
