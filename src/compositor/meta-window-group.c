@@ -209,7 +209,6 @@ meta_window_group_paint (ClutterActor *actor)
       if (META_IS_WINDOW_ACTOR (l->data))
         {
           MetaWindowActor *window_actor = l->data;
-          window_actor = l->data;
           meta_window_actor_reset_visible_regions (window_actor);
         }
       else if (META_IS_BACKGROUND_ACTOR (l->data))
