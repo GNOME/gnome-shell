@@ -375,6 +375,9 @@ clutter_win32_handle_event (const MSG *msg)
     return TRUE;
 
   manager = clutter_device_manager_get_default ();
+  if (manager == NULL)
+    return FALSE;
+
   core_pointer =
     clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
   core_keyboard =

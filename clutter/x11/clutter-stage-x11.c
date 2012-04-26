@@ -652,12 +652,16 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
    * the event mask we passed to XSelectInput as the template
    */
   device_manager = clutter_device_manager_get_default ();
-  _clutter_device_manager_select_stage_events (device_manager,
-                                               stage_cogl->wrapper,
-                                               event_flags);
+  if (G_UNLIKELY (device_manager != NULL))
+    {
+      _clutter_device_manager_select_stage_events (device_manager,
+                                                   stage_cogl->wrapper,
+                                                   event_flags);
 
-  g_signal_connect (device_manager, "device-added",
-                    G_CALLBACK (stage_events_device_added), stage_window);
+      g_signal_connect (device_manager, "device-added",
+                        G_CALLBACK (stage_events_device_added),
+                        stage_window);
+    }
 
   clutter_stage_x11_fix_window_size (stage_x11,
                                      stage_x11->xwin_width,

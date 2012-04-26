@@ -2981,6 +2981,9 @@ clutter_grab_pointer_for_device (ClutterActor *actor,
     }
 
   manager = clutter_device_manager_get_default ();
+  if (manager == NULL)
+    return;
+
   dev = clutter_device_manager_get_device (manager, id_);
   if (dev == NULL)
     return;
@@ -3025,6 +3028,9 @@ clutter_ungrab_pointer_for_device (gint id_)
   ClutterInputDevice *device;
 
   manager = clutter_device_manager_get_default ();
+  if (manager == NULL)
+    return;
+
   device = clutter_device_manager_get_device (manager, id_);
   if (device != NULL)
     clutter_input_device_ungrab (device);
@@ -3293,6 +3299,8 @@ clutter_get_input_device_for_id (gint id_)
   ClutterDeviceManager *manager;
 
   manager = clutter_device_manager_get_default ();
+  if (manager == NULL)
+    return NULL;
 
   return clutter_device_manager_get_device (manager, id_);
 }

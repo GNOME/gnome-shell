@@ -78,9 +78,12 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
   if (gdk_event->any.window == NULL)
     return GDK_FILTER_CONTINUE;
 
+  device_manager = clutter_device_manager_get_default ();
+  if (G_UNLIKELY (device_manager == NULL))
+    return GDK_FILTER_CONTINUE;
+
   backend_gdk = CLUTTER_BACKEND_GDK (backend);
   stage = clutter_gdk_get_stage_from_window (gdk_event->any.window);
-  device_manager = clutter_device_manager_get_default ();
 
   gdk_device = gdk_event_get_device (gdk_event);
   if (gdk_device != NULL)

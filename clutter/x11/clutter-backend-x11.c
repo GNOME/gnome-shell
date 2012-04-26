@@ -1185,6 +1185,8 @@ clutter_x11_get_input_devices (void)
   ClutterDeviceManager *manager;
 
   manager = clutter_device_manager_get_default ();
+  if (manager == NULL)
+    return NULL;
 
   return clutter_device_manager_peek_devices (manager);
 }

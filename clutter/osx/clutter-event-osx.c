@@ -306,14 +306,19 @@ clutter_event_osx_translate (NSEvent *nsevent,
                              ClutterEvent *event)
 {
   ClutterDeviceManagerOSX *manager_osx;
+  ClutterDeviceManager *manager;
   ClutterStageOSX *stage_osx;
   ClutterStageWindow *impl;
   ClutterStage *stage;
 
-  stage       = event->any.stage;
-  impl        = _clutter_stage_get_window (event->any.stage);
-  stage_osx   = CLUTTER_STAGE_OSX (impl);
-  manager_osx = CLUTTER_DEVICE_MANAGER_OSX (clutter_device_manager_get_default ());
+  manager = clutter_device_manager_get_default ();
+  if (manager == NULL)
+    return FALSE;
+
+  stage = event->any.stage;
+  impl = _clutter_stage_get_window (event->any.stage);
+  stage_osx = CLUTTER_STAGE_OSX (impl);
+  manager_osx = CLUTTER_DEVICE_MANAGER_OSX (manager);
 
   event->any.time = [nsevent clutterTime];
 
