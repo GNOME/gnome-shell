@@ -279,6 +279,15 @@ Which is available here:
 
   http://git.fishsoup.net/cgit/git-bz/
 
+Patches submitted against Clutter have to pass the conformance test suite, or,
+if possible, add new unit tests for the conformance test suite in case of new
+features. Ensure you run the conformance test suite every for every patch you
+wish to submit, by using:
+
+  cd tests/conform && make test
+
+and verifying that the test suite passes.
+
 RELEASE NOTES
 -------------------------------------------------------------------------------
 
