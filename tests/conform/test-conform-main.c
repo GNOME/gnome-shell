@@ -99,7 +99,7 @@ main (int argc, char **argv)
 
   UNPORTED_TEST (test_viewport);
 
-  ADD_TEST (test_gles2_context, 0);
+  ADD_TEST (test_gles2_context, TEST_REQUIREMENT_GLES2_CONTEXT);
 
   g_printerr ("Unknown test name \"%s\"\n", argv[1]);
 

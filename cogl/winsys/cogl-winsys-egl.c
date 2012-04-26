@@ -809,7 +809,8 @@ _cogl_winsys_restore_context (CoglContext *ctx)
 
 static CoglWinsysVtable _cogl_winsys_vtable =
   {
-    .constraints = COGL_RENDERER_CONSTRAINT_USES_EGL,
+    .constraints = COGL_RENDERER_CONSTRAINT_USES_EGL |
+      COGL_RENDERER_CONSTRAINT_SUPPORTS_COGL_GLES2,
 
     /* This winsys is only used as a base for the EGL-platform
        winsys's so it does not have an ID or a name */

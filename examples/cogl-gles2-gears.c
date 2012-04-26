@@ -758,8 +758,14 @@ main (int argc, char **argv)
     GError *error = NULL;
     GSource *cogl_source;
     GMainLoop *loop;
+    CoglRenderer *renderer;
+    CoglDisplay *display;
 
-    data.ctx = cogl_context_new (NULL, NULL);
+    renderer = cogl_renderer_new ();
+    cogl_renderer_add_constraint (renderer,
+                                  COGL_RENDERER_CONSTRAINT_SUPPORTS_COGL_GLES2);
+    display = cogl_display_new (renderer, NULL);
+    data.ctx = cogl_context_new (display, NULL);
 
     onscreen = cogl_onscreen_new (data.ctx, 300, 300);
     cogl_onscreen_show (onscreen);

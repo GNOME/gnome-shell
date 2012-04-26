@@ -241,9 +241,24 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
 {
   const char *driver_name = g_getenv ("COGL_DRIVER");
   const char *libgl_name;
+  CoglBool support_gles2_constraint = FALSE;
+  GList *l;
 
   if (!driver_name)
     driver_name = _cogl_config_driver;
+
+  for (l = renderer->constraints; l; l = l->next)
+    {
+      CoglRendererConstraint constraint = GPOINTER_TO_UINT (l->data);
+      if (constraint == COGL_RENDERER_CONSTRAINT_SUPPORTS_COGL_GLES2)
+        {
+          support_gles2_constraint = TRUE;
+
+          if (!driver_name && renderer->driver_override == COGL_DRIVER_ANY)
+            renderer->driver_override = COGL_DRIVER_GLES2;
+          break;
+        }
+    }
 
 #ifdef HAVE_COGL_GL
   if (renderer->driver_override == COGL_DRIVER_GL ||
@@ -284,7 +299,17 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
                "No suitable driver found");
   return FALSE;
 
- found:
+found:
+
+  if (support_gles2_constraint &&
+      renderer->driver != COGL_DRIVER_GLES2)
+    {
+      g_set_error (error,
+                   COGL_RENDERER_ERROR,
+                   COGL_RENDERER_ERROR_BAD_CONSTRAINT,
+                   "No suitable driver found");
+      return FALSE;
+    }
 
 #ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
 
@@ -312,6 +337,7 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
 {
   int i;
   GString *error_message;
+  CoglBool constraints_failed = FALSE;
 
   if (renderer->connected)
     return TRUE;
@@ -328,7 +354,7 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
       const CoglWinsysVtable *winsys = _cogl_winsys_vtable_getters[i]();
       GError *tmp_error = NULL;
       GList *l;
-      CoglBool constraints_failed = FALSE;
+      CoglBool skip_due_to_constraints = FALSE;
 
       if (renderer->winsys_id_override != COGL_WINSYS_ID_ANY)
         {
@@ -350,12 +376,15 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
           CoglRendererConstraint constraint = GPOINTER_TO_UINT (l->data);
           if (!(winsys->constraints & constraint))
             {
-              constraints_failed = TRUE;
+              skip_due_to_constraints = TRUE;
               break;
             }
         }
-      if (constraints_failed)
-        continue;
+      if (skip_due_to_constraints)
+        {
+          constraints_failed |= TRUE;
+          continue;
+        }
 
       /* At least temporarily we will associate this winsys with
        * the renderer in-case ->renderer_connect calls API that
@@ -378,6 +407,14 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
 
   if (!renderer->connected)
     {
+      if (constraints_failed)
+        {
+          g_set_error (error, COGL_RENDERER_ERROR,
+                       COGL_RENDERER_ERROR_BAD_CONSTRAINT,
+                       "Failed to connected to any renderer due to constraints");
+          return FALSE;
+        }
+
       renderer->winsys_vtable = NULL;
       g_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
