@@ -2828,20 +2828,6 @@ map_frame (MetaWindow *window)
 }
 
 static gboolean
-unmap_frame (MetaWindow *window)
-{
-  if (window->frame && window->frame->mapped)
-    {
-      meta_topic (META_DEBUG_WINDOW_STATE, "Frame actually needs unmap\n");
-      window->frame->mapped = FALSE;
-      meta_ui_unmap_frame (window->screen->ui, window->frame->xwindow);
-      return TRUE;
-    }
-  else
-    return FALSE;
-}
-
-static gboolean
 map_client_window (MetaWindow *window)
 {
   if (!window->mapped)
