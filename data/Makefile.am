@@ -80,6 +80,7 @@ EXTRA_DIST =						\
 	$(menu_DATA)					\
 	$(shaders_DATA)					\
 	$(convert_DATA)					\
+	org.gnome.shell.evolution.calendar.gschema.xml.in	\
 	org.gnome.shell.gschema.xml.in
 
 CLEANFILES =						\
