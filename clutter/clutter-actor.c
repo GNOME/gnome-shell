@@ -1554,9 +1554,12 @@ set_show_on_set_parent (ClutterActor *self,
   if (priv->show_on_set_parent == set_show)
     return;
 
-  priv->show_on_set_parent = set_show;
-  g_object_notify_by_pspec (G_OBJECT (self),
-                            obj_props[PROP_SHOW_ON_SET_PARENT]);
+  if (priv->parent == NULL)
+    {
+      priv->show_on_set_parent = set_show;
+      g_object_notify_by_pspec (G_OBJECT (self),
+                                obj_props[PROP_SHOW_ON_SET_PARENT]);
+    }
 }
 
 /**
