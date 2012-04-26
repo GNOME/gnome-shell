@@ -67,22 +67,21 @@ def start_shell():
     if os.path.exists(os.path.join(self_dir, 'gnome-shell-jhbuild.in')):
         running_from_source_tree = True
         top_dir = os.path.dirname(self_dir)
-        typelib_dir = '@JHBUILD_TYPELIBDIR@:' + os.path.join(top_dir, "src")
         js_dir = os.path.join(top_dir, "js")
         data_dir = os.path.join(top_dir, "data")
+        typelib_dir = os.path.join(top_dir, "src")
+        if 'GI_TYPELIB_PATH' in os.environ:
+            typelib_dir += ':%s' % (os.environ['GI_TYPELIB_PATH'],)
     else:
         running_from_source_tree = False
         js_dir = os.path.join('@pkgdatadir@', 'js')
-        typelib_dir = '@JHBUILD_TYPELIBDIR@'
-
-    if os.environ.has_key('GI_TYPELIB_PATH'):
-        typelib_dir = typelib_dir + ":" + os.environ.get('GI_TYPELIB_PATH')
 
     # Set up environment
     env = dict(os.environ)
     if running_from_source_tree:
         env.update({'GNOME_SHELL_JS'       : js_dir,
                     'GNOME_SHELL_BINDIR'   : self_dir,
+                    'GI_TYPELIB_PATH'      : typelib_dir,
                     'GNOME_SHELL_DATADIR'  : data_dir,
                     'GSETTINGS_SCHEMA_DIR' : data_dir })
 
