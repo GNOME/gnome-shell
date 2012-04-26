@@ -111,6 +111,7 @@ def run_shell():
     if options.verbose:
         print "Starting shell"
 
+    shell = None
     try:
         shell = start_shell()
 
