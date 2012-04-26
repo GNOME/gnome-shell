@@ -112,8 +112,6 @@ struct _MetaDefaultPluginPrivate
   ClutterActor          *desktop2;
 
   MetaPluginInfo         info;
-
-  gboolean               debug_mode : 1;
 };
 
 /*
@@ -183,34 +181,6 @@ meta_default_plugin_get_property (GObject    *object,
 }
 
 static void
-start (MetaPlugin *plugin)
-{
-  MetaDefaultPluginPrivate *priv   = META_DEFAULT_PLUGIN (plugin)->priv;
-
-  guint destroy_timeout  = DESTROY_TIMEOUT;
-  guint minimize_timeout = MINIMIZE_TIMEOUT;
-  guint maximize_timeout = MAXIMIZE_TIMEOUT;
-  guint map_timeout      = MAP_TIMEOUT;
-  guint switch_timeout   = SWITCH_TIMEOUT;
-
-  if (meta_plugin_debug_mode (plugin))
-    {
-      g_debug ("Plugin %s: Entering debug mode.", priv->info.name);
-
-      priv->debug_mode = TRUE;
-
-      /*
-       * Double the effect duration to make them easier to observe.
-       */
-      destroy_timeout  *= 2;
-      minimize_timeout *= 2;
-      maximize_timeout *= 2;
-      map_timeout      *= 2;
-      switch_timeout   *= 2;
-    }
-}
-
-static void
 meta_default_plugin_class_init (MetaDefaultPluginClass *klass)
 {
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
@@ -221,7 +191,6 @@ meta_default_plugin_class_init (MetaDefaultPluginClass *klass)
   gobject_class->set_property    = meta_default_plugin_set_property;
   gobject_class->get_property    = meta_default_plugin_get_property;
 
-  plugin_class->start            = start;
   plugin_class->map              = map;
   plugin_class->minimize         = minimize;
   plugin_class->maximize         = maximize;
