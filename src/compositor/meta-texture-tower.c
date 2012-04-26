@@ -546,7 +546,7 @@ texture_tower_revalidate_client (MetaTextureTower *tower,
                            4 * dest_width,
                            dest_data);
 
-  if (dest_height < source_texture_height)
+  if (dest_texture_height < source_texture_height)
     {
       g_free (source_tmp1);
       g_free (source_tmp2);
