@@ -625,7 +625,6 @@ meta_rectangle_get_minimal_spanning_set_for_region (
   *temp_rect = *basic_rect;
   ret = g_list_prepend (NULL, temp_rect);
 
-  strut_iter = all_struts;
   for (strut_iter = all_struts; strut_iter; strut_iter = strut_iter->next)
     {
       GList *rect_iter; 
