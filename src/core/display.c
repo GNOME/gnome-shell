@@ -74,6 +74,9 @@
 #include <string.h>
 #include <unistd.h>
 
+/* This is set in stone and also hard-coded in GDK. */
+#define VIRTUAL_CORE_KEYBOARD_ID 3
+
 #define GRAB_OP_IS_WINDOW_SWITCH(g)                     \
         (g == META_GRAB_OP_KEYBOARD_TABBING_NORMAL  ||  \
          g == META_GRAB_OP_KEYBOARD_TABBING_DOCK    ||  \
@@ -2813,7 +2816,8 @@ event_callback (XEvent   *event,
 	      break;
             case XkbNewKeyboardNotify:
             case XkbMapNotify:
-              meta_display_process_mapping_event (display, event);
+              if (xkb_ev->device == VIRTUAL_CORE_KEYBOARD_ID)
+                meta_display_process_mapping_event (display, event);
               break;
 	    }
 	}
