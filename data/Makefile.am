@@ -53,7 +53,7 @@ dist_theme_DATA =				\
 	theme/ws-switch-arrow-up.svg		\
 	theme/ws-switch-arrow-down.svg
 
-gsettings_SCHEMAS = org.gnome.shell.gschema.xml org.gnome.shell.evolution.calendar.gschema.xml
+gsettings_SCHEMAS = org.gnome.shell.gschema.xml
 
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
@@ -80,7 +80,6 @@ EXTRA_DIST =						\
 	$(menu_DATA)					\
 	$(shaders_DATA)					\
 	$(convert_DATA)					\
-	org.gnome.shell.evolution.calendar.gschema.xml.in	\
 	org.gnome.shell.gschema.xml.in
 
 CLEANFILES =						\
