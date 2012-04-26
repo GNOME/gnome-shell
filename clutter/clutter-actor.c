@@ -10899,23 +10899,26 @@ typedef void (* ClutterActorAddChildFunc) (ClutterActor *parent,
                                            gpointer      data);
 
 typedef enum {
-  ADD_CHILD_CREATE_META       = 1 << 0,
-  ADD_CHILD_EMIT_PARENT_SET   = 1 << 1,
-  ADD_CHILD_EMIT_ACTOR_ADDED  = 1 << 2,
-  ADD_CHILD_CHECK_STATE       = 1 << 3,
-  ADD_CHILD_NOTIFY_FIRST_LAST = 1 << 4,
+  ADD_CHILD_CREATE_META        = 1 << 0,
+  ADD_CHILD_EMIT_PARENT_SET    = 1 << 1,
+  ADD_CHILD_EMIT_ACTOR_ADDED   = 1 << 2,
+  ADD_CHILD_CHECK_STATE        = 1 << 3,
+  ADD_CHILD_NOTIFY_FIRST_LAST  = 1 << 4,
+  ADD_CHILD_SHOW_ON_SET_PARENT = 1 << 5,
 
   /* default flags for public API */
   ADD_CHILD_DEFAULT_FLAGS    = ADD_CHILD_CREATE_META |
                                ADD_CHILD_EMIT_PARENT_SET |
                                ADD_CHILD_EMIT_ACTOR_ADDED |
                                ADD_CHILD_CHECK_STATE |
-                               ADD_CHILD_NOTIFY_FIRST_LAST,
+                               ADD_CHILD_NOTIFY_FIRST_LAST |
+                               ADD_CHILD_SHOW_ON_SET_PARENT,
 
   /* flags for legacy/deprecated API */
   ADD_CHILD_LEGACY_FLAGS     = ADD_CHILD_EMIT_PARENT_SET |
                                ADD_CHILD_CHECK_STATE |
-                               ADD_CHILD_NOTIFY_FIRST_LAST
+                               ADD_CHILD_NOTIFY_FIRST_LAST |
+                               ADD_CHILD_SHOW_ON_SET_PARENT
 } ClutterActorAddChildFlags;
 
 /*< private >
@@ -10946,6 +10949,7 @@ clutter_actor_add_child_internal (ClutterActor              *self,
   gboolean emit_parent_set, emit_actor_added;
   gboolean check_state;
   gboolean notify_first_last;
+  gboolean show_on_set_parent;
   ClutterActor *old_first_child, *old_last_child;
 
   if (child->priv->parent != NULL)
@@ -11022,6 +11026,7 @@ clutter_actor_add_child_internal (ClutterActor              *self,
   emit_actor_added = (flags & ADD_CHILD_EMIT_ACTOR_ADDED) != 0;
   check_state = (flags & ADD_CHILD_CHECK_STATE) != 0;
   notify_first_last = (flags & ADD_CHILD_NOTIFY_FIRST_LAST) != 0;
+  show_on_set_parent = (flags & ADD_CHILD_SHOW_ON_SET_PARENT) != 0;
 
   old_first_child = self->priv->first_child;
   old_last_child = self->priv->last_child;
@@ -11067,7 +11072,7 @@ clutter_actor_add_child_internal (ClutterActor              *self,
       clutter_actor_set_text_direction (child, text_dir);
     }
 
-  if (child->priv->show_on_set_parent)
+  if (show_on_set_parent && child->priv->show_on_set_parent)
     clutter_actor_show (child);
 
   if (CLUTTER_ACTOR_IS_MAPPED (child))
