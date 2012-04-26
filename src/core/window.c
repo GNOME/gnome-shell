@@ -2813,6 +2813,21 @@ window_would_be_covered (const MetaWindow *newbie)
 }
 
 static gboolean
+map_frame (MetaWindow *window)
+{
+  if (window->frame && !window->frame->mapped)
+    {
+      meta_topic (META_DEBUG_WINDOW_STATE,
+                  "Frame actually needs map\n");
+      window->frame->mapped = TRUE;
+      meta_ui_map_frame (window->screen->ui, window->frame->xwindow);
+      return TRUE;
+    }
+  else
+    return FALSE;
+}
+
+static gboolean
 unmap_frame (MetaWindow *window)
 {
   if (window->frame && window->frame->mapped)
