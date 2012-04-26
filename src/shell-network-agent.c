@@ -409,6 +409,7 @@ shell_network_agent_set_password (ShellNetworkAgent *self,
 
   priv = self->priv;
   request = g_hash_table_lookup (priv->requests, request_id);
+  g_return_if_fail (request != NULL);
 
   if (!request->is_vpn)
     {
@@ -438,6 +439,7 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
 
   priv = self->priv;
   request = g_hash_table_lookup (priv->requests, request_id);
+  g_return_if_fail (request != NULL);
 
   if (response == SHELL_NETWORK_AGENT_USER_CANCELED)
     {
@@ -491,10 +493,20 @@ shell_network_agent_cancel_get_secrets (NMSecretAgent *agent,
 
   gchar *request_id = g_strdup_printf ("%s/%s", connection_path, setting_name);
   ShellAgentRequest *request = g_hash_table_lookup (priv->requests, request_id);
+  GError *error;
 
-  GError *error = g_error_new (NM_SECRET_AGENT_ERROR,
-                               NM_SECRET_AGENT_ERROR_AGENT_CANCELED,
-                               "Canceled by NetworkManager");
+  if (!request)
+    {
+      /* We've already sent the result, but the caller cancelled the
+       * operation before receiving that result.
+       */
+      g_free (request_id);
+      return;
+    }
+
+  error = g_error_new (NM_SECRET_AGENT_ERROR,
+                       NM_SECRET_AGENT_ERROR_AGENT_CANCELED,
+                       "Canceled by NetworkManager");
   request->callback (agent, request->connection, NULL, error, request->callback_data);
 
   g_signal_emit (self, signals[SIGNAL_CANCEL_REQUEST], 0, request_id);
