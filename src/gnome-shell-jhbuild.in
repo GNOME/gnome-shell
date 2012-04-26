@@ -64,26 +64,22 @@ def get_running_session_environs():
 
 def start_shell():
     self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-    if os.path.exists(os.path.join(self_dir, 'gnome-shell-jhbuild.in')):
-        running_from_source_tree = True
-        top_dir = os.path.dirname(self_dir)
-        js_dir = os.path.join(top_dir, "js")
-        data_dir = os.path.join(top_dir, "data")
-        typelib_dir = os.path.join(top_dir, "src")
-        if 'GI_TYPELIB_PATH' in os.environ:
-            typelib_dir += ':%s' % (os.environ['GI_TYPELIB_PATH'],)
-    else:
-        running_from_source_tree = False
-        js_dir = os.path.join('@pkgdatadir@', 'js')
+    running_from_source_tree = os.path.exists(os.path.join(self_dir, 'gnome-shell-jhbuild.in'))
 
     # Set up environment
     env = dict(os.environ)
     if running_from_source_tree:
-        env.update({'GNOME_SHELL_JS'       : js_dir,
+        top_dir = os.path.dirname(self_dir)
+
+        typelib_dir = os.path.join(top_dir, "src")
+        if 'GI_TYPELIB_PATH' in os.environ:
+            typelib_dir += ':%s' % (os.environ['GI_TYPELIB_PATH'],)
+
+        env.update({'GNOME_SHELL_JS'       : os.path.join(top_dir, "js"),
                     'GNOME_SHELL_BINDIR'   : self_dir,
                     'GI_TYPELIB_PATH'      : typelib_dir,
-                    'GNOME_SHELL_DATADIR'  : data_dir,
-                    'GSETTINGS_SCHEMA_DIR' : data_dir })
+                    'GNOME_SHELL_DATADIR'  : os.path.join(top_dir, "data"),
+                    'GSETTINGS_SCHEMA_DIR' : os.path.join(top_dir, "data") })
 
     args = []
     if options.debug:
