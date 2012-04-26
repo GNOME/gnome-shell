@@ -1,6 +1,5 @@
 [org.gnome.mutter]
 overlay-key = /apps/mutter/general/overlay_key
 attach-modal-dialogs = /apps/mutter/general/attach_modal_dialogs
-live-hidden-windows = /apps/mutter/general/live_hidden_windows
 workspaces-only-on-primary = /apps/mutter/general/workspaces_only_on_primary
 draggable-border-width = /apps/mutter/general/draggable_border_width
