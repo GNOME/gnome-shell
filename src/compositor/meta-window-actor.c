@@ -2147,17 +2147,8 @@ check_needs_reshape (MetaWindowActor *self)
 
       client_area.width = priv->window->rect.width;
       client_area.height = priv->window->rect.height;
-
-      if (priv->window->frame)
-        {
-          client_area.x = borders.total.left;
-          client_area.y = borders.total.top;
-        }
-      else
-        {
-          client_area.x = 0;
-          client_area.y = 0;
-        }
+      client_area.x = borders.total.left;
+      client_area.y = borders.total.top;
 
       /* Punch out client area. */
       cairo_region_subtract_rectangle (region, &client_area);
