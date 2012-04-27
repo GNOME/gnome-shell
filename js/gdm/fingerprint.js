@@ -11,10 +11,17 @@ const FprintManagerIface = <interface name='net.reactivated.Fprint.Manager'>
 </method>
 </interface>;
 
-const FprintManagerProxy = Gio.DBusProxy.makeProxyWrapper(FprintManagerIface);
+const FprintManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(FprintManagerIface);
 
 function FprintManager() {
-    return new FprintManagerProxy(Gio.DBus.system,
-                           'net.reactivated.Fprint',
-                           '/net/reactivated/Fprint/Manager');
-};
+    var self = new Gio.DBusProxy({ g_connection: Gio.DBus.system,
+                                   g_interface_name: FprintManagerInfo.name,
+                                   g_interface_info: FprintManagerInfo,
+                                   g_name: 'net.reactivated.Fprint',
+                                   g_object_path: '/net/reactivated/Fprint/Manager',
+                                   g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START |
+                                             Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
+
+    self.init(null);
+    return self;
+}
