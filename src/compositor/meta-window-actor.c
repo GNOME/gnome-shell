@@ -745,11 +745,8 @@ meta_window_actor_has_shadow (MetaWindowActor *self)
    * Always put a shadow around windows with a frame - This should override
    * the restriction about not putting a shadow around ARGB windows.
    */
-  if (priv->window)
-    {
-      if (meta_window_get_frame (priv->window))
-        return TRUE;
-    }
+  if (meta_window_get_frame (priv->window))
+    return TRUE;
 
   /*
    * Do not add shadows to ARGB windows; eventually we should generate a
