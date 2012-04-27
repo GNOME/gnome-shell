@@ -49,6 +49,8 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-animatable.h"
 #include "clutter-interval.h"
 #include "clutter-debug.h"
