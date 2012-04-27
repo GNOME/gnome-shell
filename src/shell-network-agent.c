@@ -77,6 +77,26 @@ shell_agent_request_free (gpointer data)
 }
 
 static void
+shell_agent_request_cancel (ShellAgentRequest *request)
+{
+  GError *error;
+  ShellNetworkAgent *self;
+
+  self = request->self;
+
+  error = g_error_new (NM_SECRET_AGENT_ERROR,
+                       NM_SECRET_AGENT_ERROR_AGENT_CANCELED,
+                       "Canceled by NetworkManager");
+  request->callback (NM_SECRET_AGENT (self), request->connection,
+                     NULL, error, request->callback_data);
+
+  g_signal_emit (self, signals[SIGNAL_CANCEL_REQUEST], 0, request->request_id);
+
+  g_hash_table_remove (self->priv->requests, request->request_id);
+  g_error_free (error);
+}
+
+static void
 shell_network_agent_init (ShellNetworkAgent *agent)
 {
   ShellNetworkAgentPrivate *priv;
@@ -341,6 +361,17 @@ shell_network_agent_get_secrets (NMSecretAgent                 *agent,
   ShellAgentRequest *request;
   NMSettingConnection *setting_connection;
   const char *connection_type;
+  char *request_id;
+
+  request_id = g_strdup_printf ("%s/%s", connection_path, setting_name);
+  if ((request = g_hash_table_lookup (self->priv->requests, request_id)) != NULL)
+    {
+      /* We already have a request pending for this (connection, setting)
+       * Cancel it before starting the new one.
+       * This will also free the request structure and associated resources.
+       */
+      shell_agent_request_cancel (request);
+    }
 
   setting_connection = nm_connection_get_setting_connection (connection);
   connection_type = nm_setting_connection_get_connection_type (setting_connection);
@@ -371,7 +402,7 @@ shell_network_agent_get_secrets (NMSecretAgent                 *agent,
   else
     request->vpn_entries = NULL;
 
-  request->request_id = g_strdup_printf ("%s/%s", connection_path, setting_name);
+  request->request_id = request_id;
   g_hash_table_replace (self->priv->requests, request->request_id, request);
 
   if ((flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_REQUEST_NEW) ||
@@ -490,30 +521,22 @@ shell_network_agent_cancel_get_secrets (NMSecretAgent *agent,
 {
   ShellNetworkAgent *self = SHELL_NETWORK_AGENT (agent);
   ShellNetworkAgentPrivate *priv = self->priv;
+  gchar *request_id;
+  ShellAgentRequest *request;
 
-  gchar *request_id = g_strdup_printf ("%s/%s", connection_path, setting_name);
-  ShellAgentRequest *request = g_hash_table_lookup (priv->requests, request_id);
-  GError *error;
+  request_id = g_strdup_printf ("%s/%s", connection_path, setting_name);
+  request = g_hash_table_lookup (priv->requests, request_id);
+  g_free (request_id);
 
   if (!request)
     {
       /* We've already sent the result, but the caller cancelled the
        * operation before receiving that result.
        */
-      g_free (request_id);
       return;
     }
 
-  error = g_error_new (NM_SECRET_AGENT_ERROR,
-                       NM_SECRET_AGENT_ERROR_AGENT_CANCELED,
-                       "Canceled by NetworkManager");
-  request->callback (agent, request->connection, NULL, error, request->callback_data);
-
-  g_signal_emit (self, signals[SIGNAL_CANCEL_REQUEST], 0, request_id);
-
-  g_hash_table_remove (priv->requests, request_id);
-  g_free (request_id);
-  g_error_free (error);
+  shell_agent_request_cancel (request);
 }
 
 /************************* saving of secrets ****************************************/
