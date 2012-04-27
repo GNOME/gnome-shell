@@ -115,6 +115,8 @@
 
 #include <gmodule.h>
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-alpha.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"

@@ -151,6 +151,8 @@
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-alpha.h"
 #include "clutter-animatable.h"
 #include "clutter-animation.h"

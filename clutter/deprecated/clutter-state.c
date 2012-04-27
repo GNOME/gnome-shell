@@ -181,10 +181,12 @@
 #include "config.h"
 #endif
 
-#include "clutter-state.h"
-
 #include <gobject/gvaluecollector.h>
 #include <string.h>
+
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
+#include "clutter-state.h"
 
 #include "clutter-alpha.h"
 #include "clutter-animatable.h"

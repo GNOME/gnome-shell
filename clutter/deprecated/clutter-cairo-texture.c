@@ -73,6 +73,8 @@
 
 #include <cairo-gobject.h>
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-cairo-texture.h"
 
 #include "clutter-actor-private.h"
