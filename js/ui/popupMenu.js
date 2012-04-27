@@ -1867,7 +1867,7 @@ const RemoteMenu = new Lang.Class({
                 item = new PopupSwitchMenuItem(label, action.state.get_boolean());
                 action.items.push(item);
                 specificSignalId = item.connect('toggled', Lang.bind(this, function(item) {
-                    this.actionGroup.activate_action(action_id, null);
+                    this.actionGroup.activate_action(action_id, GLib.Variant.new_boolean(item.state));
                 }));
                 break;
             case 's':
