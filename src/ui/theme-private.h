@@ -997,18 +997,6 @@ MetaFrameStyle* meta_frame_style_new   (MetaFrameStyle *parent);
 void            meta_frame_style_ref   (MetaFrameStyle *style);
 void            meta_frame_style_unref (MetaFrameStyle *style);
 
-void meta_frame_style_draw_with_style (MetaFrameStyle          *style,
-                                       GtkStyleContext         *style_gtk,
-                                       cairo_t                 *cr,
-                                       const MetaFrameGeometry *fgeom,
-                                       int                      client_width,
-                                       int                      client_height,
-                                       PangoLayout             *title_layout,
-                                       int                      text_height,
-                                       MetaButtonState          button_states[META_BUTTON_TYPE_LAST],
-                                       GdkPixbuf               *mini_icon,
-                                       GdkPixbuf               *icon);
-
 
 gboolean       meta_frame_style_validate (MetaFrameStyle    *style,
                                           guint              current_theme_version,
