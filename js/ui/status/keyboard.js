@@ -9,6 +9,13 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
+try {
+    var IBus = imports.gi.IBus;
+    const CandidatePanel = imports.ui.status.candidatePanel;
+} catch (e) {
+    var IBus = null;
+}
+
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
@@ -58,6 +65,9 @@ const InputSourceIndicator = new Lang.Class({
         this._settings.connect('changed::' + KEY_CURRENT_IS, Lang.bind(this, this._currentISChanged));
         this._settings.connect('changed::' + KEY_INPUT_SOURCES, Lang.bind(this, this._inputSourcesChanged));
 
+        if (IBus)
+            this._ibusInit();
+
         this._inputSourcesChanged();
 
         if (global.session_type == Shell.SessionType.USER) {
@@ -77,6 +87,164 @@ const InputSourceIndicator = new Lang.Class({
                                       new Gio.Settings({ schema: DESKTOP_INPUT_SOURCES_KEYBINDINGS_SCHEMA }),
                                       Meta.KeyBindingFlags.NONE,
                                       Lang.bind(this, this._switchPrevious));
+    },
+
+    _ibusInit: function() {
+        IBus.init();
+        this._ibus = new IBus.Bus();
+        if (!this._ibus.is_connected()) {
+            log('ibus-daemon is not running');
+            return;
+        }
+
+        this._ibus.request_name(IBus.SERVICE_PANEL,
+                                IBus.BusNameFlag.ALLOW_REPLACEMENT |
+                                IBus.BusNameFlag.REPLACE_EXISTING);
+        this._panel = new IBus.PanelService({ connection: this._ibus.get_connection(),
+                                              object_path: IBus.PATH_PANEL });
+        this._ibusInitPanelService();
+
+        this._candidatePanel = new CandidatePanel.CandidatePanel();
+        this._ibusInitCandidatePanel();
+    },
+
+    _ibusInitCandidatePanel: function() {
+        this._candidatePanel.connect('cursor-up',
+                                     Lang.bind(this, function(widget) {
+                                         this.cursorUp();
+                                     }));
+        this._candidatePanel.connect('cursor-down',
+                                     Lang.bind(this, function(widget) {
+                                         this.cursorDown();
+                                     }));
+        this._candidatePanel.connect('page-up',
+                                     Lang.bind(this, function(widget) {
+                                         this.pageUp();
+                                     }));
+        this._candidatePanel.connect('page-down',
+                                     Lang.bind(this, function(widget) {
+                                         this.pageDown();
+                                     }));
+        this._candidatePanel.connect('candidate-clicked',
+                                     Lang.bind(this, function(widget, index, button, state) {
+                                         this.candidateClicked(index, button, state);
+                                     }));
+    },
+
+    _ibusInitPanelService: function() {
+        this._panel.connect('set-cursor-location',
+                            Lang.bind(this, this.setCursorLocation));
+        this._panel.connect('update-preedit-text',
+                            Lang.bind(this, this.updatePreeditText));
+        this._panel.connect('show-preedit-text',
+                            Lang.bind(this, this.showPreeditText));
+        this._panel.connect('hide-preedit-text',
+                            Lang.bind(this, this.hidePreeditText));
+        this._panel.connect('update-auxiliary-text',
+                            Lang.bind(this, this.updateAuxiliaryText));
+        this._panel.connect('show-auxiliary-text',
+                            Lang.bind(this, this.showAuxiliaryText));
+        this._panel.connect('hide-auxiliary-text',
+                            Lang.bind(this, this.hideAuxiliaryText));
+        this._panel.connect('update-lookup-table',
+                            Lang.bind(this, this.updateLookupTable));
+        this._panel.connect('show-lookup-table',
+                            Lang.bind(this, this.showLookupTable));
+        this._panel.connect('hide-lookup-table',
+                            Lang.bind(this, this.hideLookupTable));
+        this._panel.connect('page-up-lookup-table',
+                            Lang.bind(this, this.pageUpLookupTable));
+        this._panel.connect('page-down-lookup-table',
+                            Lang.bind(this, this.pageDownLookupTable));
+        this._panel.connect('cursor-up-lookup-table',
+                            Lang.bind(this, this.cursorUpLookupTable));
+        this._panel.connect('cursor-down-lookup-table',
+                            Lang.bind(this, this.cursorDownLookupTable));
+        this._panel.connect('focus-in', Lang.bind(this, this.focusIn));
+        this._panel.connect('focus-out', Lang.bind(this, this.focusOut));
+    },
+
+    setCursorLocation: function(panel, x, y, w, h) {
+        this._candidatePanel.setCursorLocation(x, y, w, h);
+    },
+
+    updatePreeditText: function(panel, text, cursorPos, visible) {
+        this._candidatePanel.updatePreeditText(text, cursorPos, visible);
+    },
+
+    showPreeditText: function(panel) {
+        this._candidatePanel.showPreeditText();
+    },
+
+    hidePreeditText: function(panel) {
+        this._candidatePanel.hidePreeditText();
+    },
+
+    updateAuxiliaryText: function(panel, text, visible) {
+        this._candidatePanel.updateAuxiliaryText(text, visible);
+    },
+
+    showAuxiliaryText: function(panel) {
+        this._candidatePanel.showAuxiliaryText();
+    },
+
+    hideAuxiliaryText: function(panel) {
+        this._candidatePanel.hideAuxiliaryText();
+    },
+
+    updateLookupTable: function(panel, lookupTable, visible) {
+        this._candidatePanel.updateLookupTable(lookupTable, visible);
+    },
+
+    showLookupTable: function(panel) {
+        this._candidatePanel.showLookupTable();
+    },
+
+    hideLookupTable: function(panel) {
+        this._candidatePanel.hideLookupTable();
+    },
+
+    pageUpLookupTable: function(panel) {
+        this._candidatePanel.pageUpLookupTable();
+    },
+
+    pageDownLookupTable: function(panel) {
+        this._candidatePanel.pageDownLookupTable();
+    },
+
+    cursorUpLookupTable: function(panel) {
+        this._candidatePanel.cursorUpLookupTable();
+    },
+
+    cursorDownLookupTable: function(panel) {
+        this._candidatePanel.cursorDownLookupTable();
+    },
+
+    focusIn: function(panel, path) {
+    },
+
+    focusOut: function(panel, path) {
+        this._candidatePanel.reset();
+    },
+
+    cursorUp: function() {
+        this._panel.cursor_up();
+    },
+
+    cursorDown: function() {
+        this._panel.cursor_down();
+    },
+
+    pageUp: function() {
+        this._panel.page_up();
+    },
+
+    pageDown: function() {
+        this._panel.page_down();
+    },
+
+    candidateClicked: function(index, button, state) {
+        this._panel.candidate_clicked(index, button, state);
     },
 
     _currentISChanged: function() {

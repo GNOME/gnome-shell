@@ -84,6 +84,7 @@ nobase_dist_js_DATA = 	\
 	ui/shellDBus.js		\
 	ui/statusIconDispatcher.js	\
 	ui/status/accessibility.js	\
+	ui/status/candidatePanel.js	\
 	ui/status/keyboard.js	\
 	ui/status/network.js	\
 	ui/status/power.js	\

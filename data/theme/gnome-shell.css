@@ -2040,3 +2040,30 @@ StScrollBar StButton#vhandle:hover
     -arrow-rise: 10px;
     -boxpointer-gap: 5px;
 }
+
+/* Candidate Window */
+.candidate-panel {
+    min-width: 100px;
+    padding: .5em;
+    spacing: 0;
+}
+
+.candidate-area {
+    padding-top: 5px;
+}
+
+.candidate-label {
+    cursor: pointer;
+}
+
+.candidate-hlabel-content {
+    padding: 0em .5em 0em 0em;
+}
+
+.candidate-htext-content {
+    padding: 0em;
+}
+
+.candidate-vcontent {
+    padding: 0em .5em 0em 0em;
+}
