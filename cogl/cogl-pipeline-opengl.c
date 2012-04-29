@@ -401,11 +401,20 @@ blend_factor_uses_constant (GLenum blend_factor)
 #endif
 
 static void
-flush_depth_state (CoglDepthState *depth_state)
+flush_depth_state (CoglContext *ctx,
+                   CoglDepthState *depth_state)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  if (ctx->depth_test_enabled_cache != depth_state->test_enabled)
+    {
+      if (depth_state->test_enabled == TRUE)
+        GE (ctx, glEnable (GL_DEPTH_TEST));
+      else
+        GE (ctx, glDisable (GL_DEPTH_TEST));
+      ctx->depth_test_enabled_cache = depth_state->test_enabled;
+    }
 
-  if (ctx->depth_test_function_cache != depth_state->test_function)
+  if (ctx->depth_test_function_cache != depth_state->test_function &&
+      depth_state->test_enabled == TRUE)
     {
       GE (ctx, glDepthFunc (depth_state->test_function));
       ctx->depth_test_function_cache = depth_state->test_function;
@@ -571,20 +580,7 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
         _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_DEPTH);
       CoglDepthState *depth_state = &authority->big_state->depth_state;
 
-      if (depth_state->test_enabled)
-        {
-          if (ctx->depth_test_enabled_cache != TRUE)
-            {
-              GE (ctx, glEnable (GL_DEPTH_TEST));
-              ctx->depth_test_enabled_cache = depth_state->test_enabled;
-            }
-          flush_depth_state (depth_state);
-        }
-      else if (ctx->depth_test_enabled_cache != FALSE)
-        {
-          GE (ctx, glDisable (GL_DEPTH_TEST));
-          ctx->depth_test_enabled_cache = depth_state->test_enabled;
-        }
+      flush_depth_state (ctx, depth_state);
     }
 
   if (pipelines_difference & COGL_PIPELINE_STATE_LOGIC_OPS)
