@@ -23,6 +23,8 @@ data/gnome-shell-extension-prefs.desktop.in
 data/gschemas.compiled
 data/org.gnome.shell.gschema.xml
 data/org.gnome.shell.gschema.valid
+data/org.gnome.shell.evolution.calendar.gschema.xml
+data/org.gnome.shell.evolution.calendar.gschema.valid
 docs/reference/*/*.args
 docs/reference/*/*.bak
 docs/reference/*/*.hierarchy
