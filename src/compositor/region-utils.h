@@ -63,6 +63,32 @@ struct _MetaRegionIterator {
   cairo_rectangle_int_t next_rectangle;
 };
 
+typedef struct _MetaRegionBuilder MetaRegionBuilder;
+
+#define META_REGION_BUILDER_MAX_LEVELS 16
+struct _MetaRegionBuilder {
+  /* To merge regions in binary tree order, we need to keep track of
+   * the regions that we've already merged together at different
+   * levels of the tree. We fill in an array in the pattern:
+   *
+   * |a  |
+   * |b  |a  |
+   * |c  |   |ab |
+   * |d  |c  |ab |
+   * |e  |   |   |abcd|
+   */
+  cairo_region_t *levels[META_REGION_BUILDER_MAX_LEVELS];
+  int n_levels;
+};
+
+void     meta_region_builder_init       (MetaRegionBuilder *builder);
+void     meta_region_builder_add_rectangle (MetaRegionBuilder *builder,
+                                            int                x,
+                                            int                y,
+                                            int                width,
+                                            int                height);
+cairo_region_t * meta_region_builder_finish (MetaRegionBuilder *builder);
+
 void     meta_region_iterator_init      (MetaRegionIterator *iter,
                                          cairo_region_t     *region);
 gboolean meta_region_iterator_at_end    (MetaRegionIterator *iter);
