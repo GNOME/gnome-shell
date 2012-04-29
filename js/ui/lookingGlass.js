@@ -634,45 +634,6 @@ const Inspector = new Lang.Class({
 
 Signals.addSignalMethods(Inspector.prototype);
 
-const ErrorLog = new Lang.Class({
-    Name: 'ErrorLog',
-
-    _init: function() {
-        this.actor = new St.BoxLayout();
-        this.text = new St.Label();
-        this.actor.add(this.text);
-        // We need to override StLabel's default ellipsization when
-        // using line_wrap; otherwise ClutterText's layout is going
-        // to constrain both the width and height, which prevents
-        // scrolling.
-        this.text.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this.text.clutter_text.line_wrap = true;
-        this.actor.connect('notify::mapped', Lang.bind(this, this._renderText));
-    },
-
-    _formatTime: function(d){
-        function pad(n) { return n < 10 ? '0' + n : n; }
-        return d.getUTCFullYear()+'-'
-            + pad(d.getUTCMonth()+1)+'-'
-            + pad(d.getUTCDate())+'T'
-            + pad(d.getUTCHours())+':'
-            + pad(d.getUTCMinutes())+':'
-            + pad(d.getUTCSeconds())+'Z';
-    },
-
-    _renderText: function() {
-        if (!this.actor.mapped)
-            return;
-        let text = this.text.text;
-        let stack = Main._getAndClearErrorStack();
-        for (let i = 0; i < stack.length; i++) {
-            let logItem = stack[i];
-            text += logItem.category + ' t=' + this._formatTime(new Date(logItem.timestamp)) + ' ' + logItem.message + '\n';
-        }
-        this.text.text = text;
-    }
-});
-
 const Memory = new Lang.Class({
     Name: 'Memory',
 
@@ -946,9 +907,6 @@ const LookingGlass = new Lang.Class({
             this._pushResult('<window selection>', window);
         }));
         notebook.appendPage('Windows', this._windowList.actor);
-
-        this._errorLog = new ErrorLog();
-        notebook.appendPage('Errors', this._errorLog.actor);
 
         this._memory = new Memory();
         notebook.appendPage('Memory', this._memory.actor);

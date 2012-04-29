@@ -67,7 +67,6 @@ let statusIconDispatcher = null;
 let keyboard = null;
 let layoutManager = null;
 let networkAgent = null;
-let _errorLogStack = [];
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
@@ -153,11 +152,9 @@ function _initUserSession() {
 }
 
 function start() {
-    // Monkey patch utility functions into the global proxy;
-    // This is easier and faster than indirecting down into global
-    // if we want to call back up into JS.
-    global.logError = _logError;
-    global.log = _logDebug;
+    // These are here so we don't break compatibility.
+    global.logError = window.log;
+    global.log = window.log;
 
     // Chain up async errors reported from C
     global.connect('notify-error', function (global, msg, detail) { notifyError(msg, detail); });
@@ -254,7 +251,6 @@ function start() {
 
     global.stage.connect('captured-event', _globalKeyPressHandler);
 
-    _log('info', 'loaded at ' + _startDate);
     log('GNOME Shell started at ' + _startDate);
 
     let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
@@ -538,59 +534,6 @@ function notifyError(msg, details) {
         log('error: ' + msg);
 
     notify(msg, details);
-}
-
-/**
- * _log:
- * @category: string message type ('info', 'error')
- * @msg: A message string
- * ...: Any further arguments are converted into JSON notation,
- *      and appended to the log message, separated by spaces.
- *
- * Log a message into the LookingGlass error
- * stream.  This is primarily intended for use by the
- * extension system as well as debugging.
- */
-function _log(category, msg) {
-    let text = msg;
-    if (arguments.length > 2) {
-        text += ': ';
-        for (let i = 2; i < arguments.length; i++) {
-            text += JSON.stringify(arguments[i]);
-            if (i < arguments.length - 1)
-                text += ' ';
-        }
-    }
-    _errorLogStack.push({timestamp: new Date().getTime(),
-                         category: category,
-                         message: text });
-}
-
-function _logError(msg) {
-    return _log('error', msg);
-}
-
-function _logDebug(msg) {
-    return _log('debug', msg);
-}
-
-// Used by the error display in lookingGlass.js
-function _getAndClearErrorStack() {
-    let errors = _errorLogStack;
-    _errorLogStack = [];
-    return errors;
-}
-
-function logStackTrace(msg) {
-    try {
-        throw new Error();
-    } catch (e) {
-        // e.stack must have at least two lines, with the first being
-        // logStackTrace() (which we strip off), and the second being
-        // our caller.
-        let trace = e.stack.substr(e.stack.indexOf('\n') + 1);
-        log(msg ? (msg + '\n' + trace) : trace);
-    }
 }
 
 function isWindowActorDisplayedOnWorkspace(win, workspaceIndex) {
