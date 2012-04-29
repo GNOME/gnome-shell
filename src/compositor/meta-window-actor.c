@@ -1684,7 +1684,7 @@ meta_window_actor_get_obscured_region (MetaWindowActor *self)
 #if 0
 /* Print out a region; useful for debugging */
 static void
-dump_region (cairo_region_t *region)
+print_region (cairo_region_t *region)
 {
   int n_rects;
   int i;
@@ -1699,6 +1699,26 @@ dump_region (cairo_region_t *region)
                rect.x, rect.y, rect.width, rect.height);
     }
   g_print ("]\n");
+}
+#endif
+
+#if 0
+/* Dump a region to a PNG file; useful for debugging */
+static void
+see_region (cairo_region_t *region,
+            int             width,
+            int             height,
+            char           *filename)
+{
+  cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_A8, width, height);
+  cairo_t *cr = cairo_create (surface);
+
+  gdk_cairo_region (cr, region);
+  cairo_fill (cr);
+
+  cairo_surface_write_to_png (surface, filename);
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
 }
 #endif
 
