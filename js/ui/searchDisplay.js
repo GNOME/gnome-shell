@@ -395,10 +395,17 @@ const SearchResults = new Lang.Class({
                     function(metas) {
                         this._clearDisplayForProvider(provider);
                         meta.actor.show();
+
+                        // Hinding drops the key focus if we have it
+                        let focus = global.stage.get_key_focus();
                         this._content.hide();
+
                         meta.resultDisplay.renderResults(metas);
                         this._maybeSetInitialSelection();
+
                         this._content.show();
+                        if (this._content.contains(focus))
+                            global.stage.set_key_focus(focus);
                     }));
             } else {
                 let metas = provider.getResultMetas(results);
