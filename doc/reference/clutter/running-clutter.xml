@@ -80,7 +80,7 @@
           <term>CLUTTER_ENABLE_DIAGNOSTIC</term>
           <listitem>
             <para>When set to 1, enables diagnostic messages for run-time
-            deprecations, similarly to <envvar>G_ENABLE_DIAGNOSTIC</envvar> in
+            deprecations, similarly to <varname>G_ENABLE_DIAGNOSTIC</varname> in
             GLib.</para>
           </listitem>
         </varlistentry>
