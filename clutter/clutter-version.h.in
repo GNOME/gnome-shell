@@ -27,6 +27,9 @@
 #error "Only <clutter/clutter.h> can be included directly."
 #endif
 
+#ifndef __CLUTTER_VERSION_H__
+#define __CLUTTER_VERSION_H__
+
 /**
  * SECTION:clutter-version
  * @short_description: Versioning utility macros
@@ -69,9 +72,6 @@
  * %CLUTTER_DISABLE_DEPRECATION_WARNINGS before including the clutter.h
  * header.
  */
-
-#ifndef __CLUTTER_VERSION_H__
-#define __CLUTTER_VERSION_H__
 
 #include <glib.h>
 

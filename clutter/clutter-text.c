@@ -3509,7 +3509,7 @@ clutter_text_class_init (ClutterTextClass *klass)
 		  CLUTTER_TYPE_GEOMETRY | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
-   * ClutterText::activate
+   * ClutterText::activate:
    * @self: the #ClutterText that emitted the signal
    *
    * The ::activate signal is emitted each time the actor is 'activated'

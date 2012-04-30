@@ -552,7 +552,7 @@ clutter_event_get_related (const ClutterEvent *event)
 }
 
 /**
- * clutter_event_set_related
+ * clutter_event_set_related:
  * @event: a #ClutterEvent of type %CLUTTER_ENTER or %CLUTTER_LEAVE
  * @actor: (allow-none): a #ClutterActor or %NULL
  *

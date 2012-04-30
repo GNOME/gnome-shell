@@ -707,7 +707,7 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
                   CLUTTER_TYPE_MODIFIER_TYPE);
 
   /**
-   * ClutterDragAction::drag-motion
+   * ClutterDragAction::drag-motion:
    * @action: the #ClutterDragAction that emitted the signal
    * @actor: the #ClutterActor attached to the action
    * @delta_x: the X component of the distance between the press event

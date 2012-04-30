@@ -1322,7 +1322,7 @@ clutter_timeline_is_playing (ClutterTimeline *timeline)
  * Create a new #ClutterTimeline instance which has property values
  * matching that of supplied timeline. The cloned timeline will not
  * be started and will not be positioned to the current position of
- * @timeline: you will have to start it with clutter_timeline_start().
+ * the original @timeline: you will have to start it with clutter_timeline_start().
  *
  * <note><para>The only cloned properties are:</para>
  * <itemizedlist>

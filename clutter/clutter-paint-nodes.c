@@ -339,6 +339,14 @@ struct _ClutterPipelineNode
   CoglPipeline *pipeline;
 };
 
+/**
+ * ClutterPipelineNodeClass:
+ *
+ * The <structname>ClutterPipelineNodeClass</structname> structure is an opaque
+ * type whose members cannot be directly accessed.
+ *
+ * Since: 1.10
+ */
 struct _ClutterPipelineNodeClass
 {
   ClutterPaintNodeClass parent_class;
@@ -520,21 +528,13 @@ clutter_pipeline_node_new (CoglPipeline *pipeline)
  * Color node
  */
 
-/**
- * ClutterColorNode:
- *
- * The <structname>ClutterColorNode</structname> structure is an opaque
- * type whose members cannot be directly accessed.
- *
- * Since: 1.10
- */
 struct _ClutterColorNode
 {
   ClutterPipelineNode parent_instance;
 };
 
 /**
- * ClutterColorNode:
+ * ClutterColorNodeClass:
  *
  * The <structname>ClutterColorNodeClass</structname> structure is an
  * opaque type whose members cannot be directly accessed.
@@ -603,21 +603,13 @@ clutter_color_node_new (const ClutterColor *color)
  * Texture node
  */
 
-/**
- * ClutterTextureNode:
- *
- * The <structname>ClutterTextureNode</structname> structure is an opaque
- * type whose members cannot be directly accessed.
- *
- * Since: 1.10
- */
 struct _ClutterTextureNode
 {
   ClutterPipelineNode parent_instance;
 };
 
 /**
- * ClutterTextureNode:
+ * ClutterTextureNodeClass:
  *
  * The <structname>ClutterTextureNodeClass</structname> structure is an
  * opaque type whose members cannot be directly accessed.
@@ -723,6 +715,14 @@ struct _ClutterTextNode
   CoglColor color;
 };
 
+/**
+ * ClutterTextNodeClass:
+ *
+ * The <structname>ClutterTextNodeClass</structure> structure is an opaque
+ * type whose contents cannot be directly accessed.
+ *
+ * Since: 1.10
+ */
 struct _ClutterTextNodeClass
 {
   ClutterPaintNodeClass parent_class;
@@ -915,6 +915,14 @@ struct _ClutterClipNode
   ClutterPaintNode parent_instance;
 };
 
+/**
+ * ClutterClipNodeClass:
+ *
+ * The <structname>ClutterClipNodeClass</structname> structure is an opaque
+ * type whose members cannot be directly accessed.
+ *
+ * Since: 1.10
+ */
 struct _ClutterClipNodeClass
 {
   ClutterPaintNodeClass parent_class;

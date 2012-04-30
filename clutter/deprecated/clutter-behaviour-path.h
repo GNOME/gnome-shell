@@ -80,7 +80,7 @@ struct _ClutterBehaviourPath
 };
 
 /**
- * ClutterBehaviourPathClass
+ * ClutterBehaviourPathClass:
  * @knot_reached: signal class handler for the
  *   ClutterBehaviourPath::knot_reached signal
  *

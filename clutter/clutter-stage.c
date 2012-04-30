@@ -2088,7 +2088,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   g_object_class_install_property (gobject_class, PROP_ACCEPT_FOCUS, pspec);
 
   /**
-   * ClutterStage::fullscreen
+   * ClutterStage::fullscreen:
    * @stage: the stage which was fullscreened
    *
    * The ::fullscreen signal is emitted when the stage is made fullscreen.
@@ -2104,7 +2104,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
-   * ClutterStage::unfullscreen
+   * ClutterStage::unfullscreen:
    * @stage: the stage which has left a fullscreen state.
    *
    * The ::unfullscreen signal is emitted when the stage leaves a fullscreen
@@ -2121,7 +2121,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
-   * ClutterStage::activate
+   * ClutterStage::activate:
    * @stage: the stage which was activated
    *
    * The ::activate signal is emitted when the stage receives key focus
@@ -2138,7 +2138,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  _clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   /**
-   * ClutterStage::deactivate
+   * ClutterStage::deactivate:
    * @stage: the stage which was deactivated
    *
    * The ::activate signal is emitted when the stage loses key focus
@@ -2960,7 +2960,7 @@ clutter_stage_event (ClutterStage *stage,
 }
 
 /**
- * clutter_stage_set_title
+ * clutter_stage_set_title:
  * @stage: A #ClutterStage
  * @title: A utf8 string for the stage windows title.
  *
@@ -2990,7 +2990,7 @@ clutter_stage_set_title (ClutterStage       *stage,
 }
 
 /**
- * clutter_stage_get_title
+ * clutter_stage_get_title:
  * @stage: A #ClutterStage
  *
  * Gets the stage title.

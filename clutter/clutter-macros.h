@@ -44,7 +44,7 @@
 #define CLUTTER_FLAVOUR         "deprecated"
 
 /**
- * CLUTTER_COGL
+ * CLUTTER_COGL:
  *
  * Cogl (internal GL abstraction utility library) backend. Can be "gl" or
  * "gles" currently
@@ -75,7 +75,7 @@
  *
  * Set to 1 if Clutter was built without FPU (i.e fixed math), 0 otherwise
  *
- * @Deprecated: 0.6: This macro is no longer defined (identical code is used
+ * Deprecated: 0.6: This macro is no longer defined (identical code is used
  *  regardless the presence of FPU).
  */
 #define CLUTTER_NO_FPU          (0)

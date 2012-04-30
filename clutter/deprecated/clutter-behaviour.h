@@ -94,7 +94,7 @@ struct _ClutterBehaviour
 };
 
 /**
- * ClutterBehaviourClass
+ * ClutterBehaviourClass:
  * @alpha_notify: virtual function, called each time the #ClutterAlpha
  *   computes a new alpha value; the actors to which the behaviour applies
  *   should be changed in this function. Every subclass of #ClutterBehaviour

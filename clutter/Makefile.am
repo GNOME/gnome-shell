@@ -967,6 +967,7 @@ Cally_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_API_VERSION@.la
 Cally_@CLUTTER_API_VERSION_AM@_gir_FILES = $(cally_sources_h) $(cally_sources_c)
 Cally_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS)
 Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+	--warn-all \
 	--identifier-prefix=Cally \
 	--symbol-prefix=cally \
 	--c-include='cally/cally.h' \
@@ -979,6 +980,7 @@ if SUPPORT_X11
 ClutterX11-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
 
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+	--warn-all \
 	--identifier-prefix=ClutterX11 \
 	--symbol-prefix=clutter_x11 \
 	--c-include='clutter/x11/clutter-x11.h' \

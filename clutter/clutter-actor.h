@@ -85,7 +85,7 @@ typedef void (*ClutterCallback) (ClutterActor *actor,
                                  gpointer      data);
 
 /**
- * CLUTTER_CALLBACK
+ * CLUTTER_CALLBACK:
  * @f: a function
  *
  * Convenience macro to cast a function to #ClutterCallback

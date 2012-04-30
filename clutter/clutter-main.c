@@ -2354,7 +2354,7 @@ is_off_stage (ClutterActor *stage,
 }
 
 /**
- * clutter_do_event
+ * clutter_do_event:
  * @event: a #ClutterEvent.
  *
  * Processes an event.

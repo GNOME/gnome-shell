@@ -6863,7 +6863,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   CLUTTER_TYPE_ACTOR);
 
   /**
-   * ClutterActor::queue-relayout
+   * ClutterActor::queue-relayout:
    * @actor: the actor being queued for relayout
    *
    * The ::queue_layout signal is emitted when clutter_actor_queue_relayout()

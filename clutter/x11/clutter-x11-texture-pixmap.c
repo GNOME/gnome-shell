@@ -669,7 +669,7 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
                     G_TYPE_INT);
 
   /**
-   * ClutterX11TexturePixmap::queue-damage-redraw
+   * ClutterX11TexturePixmap::queue-damage-redraw:
    * @texture: the object which received the signal
    * @x: The top left x position of the damage region
    * @y: The top left y position of the damage region

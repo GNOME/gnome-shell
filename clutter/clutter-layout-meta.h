@@ -47,7 +47,7 @@ G_BEGIN_DECLS
 typedef struct _ClutterLayoutMetaClass          ClutterLayoutMetaClass;
 
 /**
- * ClutterLayoutMeta
+ * ClutterLayoutMeta:
  * @manager: the layout manager handling this data
  *
  * Sub-class of #ClutterChildMeta specific for layout managers
