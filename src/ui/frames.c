@@ -261,8 +261,6 @@ meta_frames_init (MetaFrames *frames)
   
   frames->frames = g_hash_table_new (unsigned_long_hash, unsigned_long_equal);
 
-  frames->expose_delay_count = 0;
-
   frames->invalidate_cache_timeout_id = 0;
   frames->invalidate_frames = NULL;
   frames->cache = g_hash_table_new (g_direct_hash, g_direct_equal);
@@ -698,7 +696,6 @@ meta_frames_manage_window (MetaFrames *frames,
   frame->layout = NULL;
   frame->text_height = -1;
   frame->title = NULL;
-  frame->expose_delayed = FALSE;
   frame->shape_applied = FALSE;
   frame->prelit_control = META_FRAME_CONTROL_NONE;
 
@@ -2141,13 +2138,6 @@ meta_frames_draw (GtkWidget *widget,
   if (frame == NULL)
     return FALSE;
 
-  if (frames->expose_delay_count > 0)
-    {
-      /* Redraw this entire frame later */
-      frame->expose_delayed = TRUE;
-      return TRUE;
-    }
-
   populate_cache (frames, frame);
 
   region = cairo_region_create_rectangle (&clip);
@@ -2618,50 +2608,6 @@ get_control (MetaFrames *frames,
     return META_FRAME_CONTROL_NONE;
   else
     return META_FRAME_CONTROL_TITLE;
-}
-
-void
-meta_frames_push_delay_exposes (MetaFrames *frames)
-{
-  if (frames->expose_delay_count == 0)
-    {
-      /* Make sure we've repainted things */
-      gdk_window_process_all_updates ();
-      XFlush (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
-    }
-  
-  frames->expose_delay_count += 1;
-}
-
-static void
-queue_pending_exposes_func (gpointer key, gpointer value, gpointer data)
-{
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-
-  frames = META_FRAMES (data);
-  frame = value;
-
-  if (frame->expose_delayed)
-    {
-      invalidate_whole_window (frames, frame);
-      frame->expose_delayed = FALSE;
-    }
-}
-
-void
-meta_frames_pop_delay_exposes  (MetaFrames *frames)
-{
-  g_return_if_fail (frames->expose_delay_count > 0);
-  
-  frames->expose_delay_count -= 1;
-
-  if (frames->expose_delay_count == 0)
-    {
-      g_hash_table_foreach (frames->frames,
-                            queue_pending_exposes_func,
-                            frames);
-    }
 }
 
 static void
