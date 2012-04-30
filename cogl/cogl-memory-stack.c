@@ -70,13 +70,13 @@ struct _CoglMemorySubStack
   uint8_t *data;
 };
 
-typedef struct _CoglMemoryStack
+struct _CoglMemoryStack
 {
   CoglMemorySubStackList sub_stacks;
 
   CoglMemorySubStack *sub_stack;
   size_t sub_stack_offset;
-} CoglMemoryStack;
+};
 
 static CoglMemorySubStack *
 _cogl_memory_sub_stack_alloc (size_t bytes)
