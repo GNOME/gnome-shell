@@ -261,8 +261,6 @@ meta_frames_init (MetaFrames *frames)
   
   frames->frames = g_hash_table_new (unsigned_long_hash, unsigned_long_equal);
 
-  frames->tooltip_timeout = 0;
-
   frames->expose_delay_count = 0;
 
   frames->invalidate_cache_timeout_id = 0;
@@ -1841,8 +1839,6 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
         
         /* Update prelit control and cursor */
         meta_frames_update_prelit_control (frames, frame, control);
-
-        /* No tooltip while in the process of clicking */
       }
       break;
     case META_GRAB_OP_NONE:

@@ -94,8 +94,6 @@ struct _MetaFrames
   GHashTable *text_heights;
 
   GHashTable *frames;
-
-  guint tooltip_timeout;
   MetaUIFrame *last_motion_frame;
 
   GtkStyleContext *normal_style;
