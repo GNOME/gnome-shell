@@ -718,7 +718,7 @@ struct _ClutterTextNode
 /**
  * ClutterTextNodeClass:
  *
- * The <structname>ClutterTextNodeClass</structure> structure is an opaque
+ * The <structname>ClutterTextNodeClass</structname> structure is an opaque
  * type whose contents cannot be directly accessed.
  *
  * Since: 1.10
