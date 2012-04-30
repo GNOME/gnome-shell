@@ -11,10 +11,10 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-27 21:13+0000\n"
-"PO-Revision-Date: 2012-04-01 12:39+0100\n"
-"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
-"Language-Team: German <gnome-de@gnome.org>\n"
+"POT-Creation-Date: 2012-04-24 14:43+0000\n"
+"PO-Revision-Date: 2012-04-15 18:11+0200\n"
+"Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
+"Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,31 +23,31 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 
-#: ../cogl/cogl-debug.c:173
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "Unterstützte Debug-Werte:"
 
-#: ../cogl/cogl-debug.c:178
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "Spezielle Debug-Werte:"
 
-#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr ""
 
-#: ../cogl/cogl-debug.c:226
+#: ../cogl/cogl-debug.c:227
 msgid "Cogl debugging flags to set"
 msgstr "Zu setzende Cogl-Fehlerdiagnose-Flags"
 
-#: ../cogl/cogl-debug.c:228
+#: ../cogl/cogl-debug.c:229
 msgid "Cogl debugging flags to unset"
 msgstr "Zurückzusetzende Cogl-Fehlerdiagnose-Flags"
 
-#: ../cogl/cogl-debug.c:277
+#: ../cogl/cogl-debug.c:278
 msgid "Cogl Options"
 msgstr "Cogl-Einstellungen"
 
-#: ../cogl/cogl-debug.c:278
+#: ../cogl/cogl-debug.c:279
 msgid "Show Cogl options"
 msgstr "Cogl-Einstellungen anzeigen"
 
@@ -58,6 +58,7 @@ msgstr "Cogl-Einstellungen anzeigen"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Cogl-Tracing"
 
@@ -67,7 +68,7 @@ msgstr "CoglObject-Referenzen"
 
 #: ../cogl/cogl-debug-options.h:28
 msgid "Debug ref counting issues for CoglObjects"
-msgstr ""
+msgstr "Ref-Counting Probleme for CoglObjects diagnostizieren"
 
 #: ../cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
@@ -75,7 +76,7 @@ msgstr "Textur-Slicing verfolgen"
 
 #: ../cogl/cogl-debug-options.h:33
 msgid "debug the creation of texture slices"
-msgstr ""
+msgstr "Die Erstellung von Textur-Scheiben diagnostizieren"
 
 #: ../cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
@@ -99,7 +100,7 @@ msgstr "Journal verfolgen"
 
 #: ../cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
-msgstr ""
+msgstr "Alle Geometrie-Weitergaben durch das Journal anzeigen"
 
 #: ../cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
@@ -107,7 +108,7 @@ msgstr "Batching verfolgen"
 
 #: ../cogl/cogl-debug-options.h:53
 msgid "Show how geometry is being batched in the journal"
-msgstr ""
+msgstr "Anzeigen, wie Geometrie im Journal eingereiht wird"
 
 #: ../cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
@@ -178,7 +179,7 @@ msgstr "Journal-Stapelung ausschalten"
 
 #: ../cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
-msgstr ""
+msgstr "Einreihen von geometrie im Cogl-Journal deaktivieren."
 
 #: ../cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
@@ -253,12 +254,13 @@ msgid "Disable use of ARB fragment programs"
 msgstr "Verwendung von ARB-Fragment-Programmen deaktivieren"
 
 #: ../cogl/cogl-debug-options.h:134
+#, fuzzy
 msgid "Disable fixed"
-msgstr ""
+msgstr "Feste deaktivieren"
 
 #: ../cogl/cogl-debug-options.h:135
 msgid "Disable use of the fixed function pipeline backend"
-msgstr ""
+msgstr "Verwendung des Backends für feste Funktions-Pipeline deaktivieren"
 
 #: ../cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
@@ -328,16 +330,19 @@ msgstr "Programm-Zwischenspeicher deaktivieren"
 
 #: ../cogl/cogl-debug-options.h:176
 msgid "Disable fallback caches for arbfp and glsl programs"
-msgstr ""
+msgstr "Rückfall-Zwischenspeicher für arbfp- und glsl-Programme deaktivieren"
 
 #: ../cogl/cogl-debug-options.h:180
+#, fuzzy
 msgid "Disable read pixel optimization"
-msgstr ""
+msgstr "Optimierung zum Lesen von Pixeln deaktivieren"
 
 #: ../cogl/cogl-debug-options.h:181
 msgid ""
 "Disable optimization for reading 1px for simple scenes of opaque rectangles"
 msgstr ""
+"Optimierung zum Lesen von 1px für einfache Szenen mit voll deckenden "
+"Rechtecken deaktivieren"
 
 #: ../cogl/cogl-debug-options.h:186
 msgid "Trace clipping"
@@ -346,3 +351,11 @@ msgstr "Clipping verfolgen"
 #: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Protokolliert Informationen, wie Cogl Clipping implementiert"
+
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr ""
