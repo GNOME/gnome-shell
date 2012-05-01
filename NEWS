@@ -1,3 +1,74 @@
+Clutter 1.11.2                                                       2012-04-30
+===============================================================================
+
+  • List of changes since Clutter 1.10
+
+    - Add ClutterScrollActor
+    An actor that can display a portion of its children, as well as
+    transitioning between visible regions.
+
+    - Make clutter_actor_allocate() respect the easing state of the actor
+    This allows animating allocations in layout managers.
+
+    - Add automatic expansion flags for ClutterActor
+    Actors can be marked to by allocated extra space by their parent, or
+    by the layout manager used by their parent; the expansion flags are also
+    recursive, so they can be set on a leaf node of the actor tree, and
+    propagate further up automatically.
+
+    - Add ClutterTransitionGroup and ClutterKeyframeTransition
+    Two ClutterTransition implementation that allow creating complex
+    transitions.
+
+    - Provide more C convenience API to ClutterTransition
+    Instead of dealing with ClutterInterval instances, it's possible to
+    define the starting and final values of a transition.
+
+    - Provide base geometric types: point, size, rectangle
+    Along with commodity API.
+
+    - New round of deprecations
+    ClutterMedia, ClutterCairoTexture, clutter_actor_animate(),
+    ClutterAnimation, ClutterAnimator, ClutterState, ClutterLayoutManager's
+    animation API.
+
+    - Return a valid default PaintVolume in more cases
+    For actors not overriding paint() or get_paint_volume() we can already
+    infer enough information on the area thatis going to be painted, and return
+    a valid paint volume. We specifically ignore any painting going on inside
+    a ClutterActor::paint signal handler, as that is considered legacy and on
+    its way to deprecation. People overriding the paint sequence of an actor
+    from within a paint signal handler, and painting outside the allocation,
+    are evil anyway.
+
+    - Depend on Pango 1.30
+
+    - Report distance as an axis on X11 with XInput 2 support enabled
+    Proximity information with XInput 2+ is reported as axis data on devices
+    with valuator classes.
+
+    - Documentation fixes
+
+  • List of bugs fixed since Clutter 1.10
+
+    #674510 - Changing a hidden child's position with new API shows the
+              actor
+    #672994 - Orca sometimes presents previously-entered text in GNOME
+              Shell Alt+F2 dialog
+    #652521 - get_length fails in Clutter.Path when length is greater
+              than 46340
+    #673644 - Scroll not working in document overview
+
+Many thanks to:
+
+  Jasper St. Pierre, Neil Roberts, Robert Bragg, Cosimo Cecchi, Rob Bradford,
+  Jonh Wendell, Piotr Drąg, Rico Tzschichholz, Alejandro Piñeiro,
+  Carles Ferrando, Christian Kirbach, Daniel Korostil, Daniel Mustieles,
+  Daniel Nylander, Fran Diéguez, Ihar Hrachyshka, Jordi Serratosa,
+  Kenneth Nielsen, Owen W. Taylor, Peter Hutterer, Rajesh Ranjan,
+  Rudolfs Mazurs, Stefano Facchini, Tristan Van Berkom, Viktor Nyberg,
+  Yuri Myasoedov, kkrothap@redhat.com.
+
 Clutter 1.9.16                                                       2012-03-19
 ===============================================================================
 
