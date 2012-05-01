@@ -748,11 +748,7 @@ meta_window_actor_has_shadow (MetaWindowActor *self)
   if (priv->window)
     {
       if (meta_window_get_frame (priv->window))
-	{
-	  meta_verbose ("Window 0x%x has shadow because it has a frame\n",
-			(guint)priv->xwindow);
-	  return TRUE;
-	}
+        return TRUE;
     }
 
   /*
@@ -760,55 +756,33 @@ meta_window_actor_has_shadow (MetaWindowActor *self)
    * shadow from the input shape for such windows.
    */
   if (priv->argb32 || priv->opacity != 0xff)
-    {
-      meta_verbose ("Window 0x%x has no shadow as it is ARGB\n",
-		    (guint)priv->xwindow);
-      return FALSE;
-    }
+    return FALSE;
 
   /*
    * Add shadows to override redirect windows (e.g., Gtk menus).
    */
   if (priv->window->override_redirect)
-    {
-      meta_verbose ("Window 0x%x has shadow because it is override redirect.\n",
-		    (guint)priv->xwindow);
-      return TRUE;
-    }
+    return TRUE;
 
   /*
    * Don't put shadow around DND icon windows
    */
   if (window_type == META_WINDOW_DND ||
       window_type == META_WINDOW_DESKTOP)
-    {
-      meta_verbose ("Window 0x%x has no shadow as it is DND or Desktop\n",
-		    (guint)priv->xwindow);
-      return FALSE;
-    }
+    return FALSE;
 
   if (window_type == META_WINDOW_MENU
 #if 0
       || window_type == META_WINDOW_DROPDOWN_MENU
 #endif
       )
-    {
-      meta_verbose ("Window 0x%x has shadow as it is a menu\n",
-		    (guint)priv->xwindow);
-      return TRUE;
-    }
+    return TRUE;
 
 #if 0
   if (window_type == META_WINDOW_TOOLTIP)
-    {
-      meta_verbose ("Window 0x%x has shadow as it is a tooltip\n",
-		    (guint)priv->xwindow);
-      return TRUE;
-    }
+    return TRUE;
 #endif
 
-  meta_verbose ("Window 0x%x has no shadow as it fell through\n",
-		(guint)priv->xwindow);
   return FALSE;
 }
 
