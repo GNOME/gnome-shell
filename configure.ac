@@ -866,16 +866,6 @@ AS_CASE([$enable_deprecated],
 AC_SUBST([CLUTTER_DEPRECATED_CFLAGS])
 
 
-dnl === Conformance test suite ================================================
-
-AC_ARG_ENABLE([conformance],
-              [AS_HELP_STRING([--enable-conformance=@<:@no/yes@:>@],
-                              [Build conformance test suite @<:@default=yes@:>@])],
-              [],
-              [enable_conformance=yes])
-
-AM_CONDITIONAL([BUILD_TESTS], [test "x$enable_conformance" = "xyes"])
-
 dnl === Profiling =============================================================
 
 m4_define([profile_default], [no])
@@ -1088,6 +1078,27 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
                    [The prefix for our gettext translation domains.])
 AS_ALL_LINGUAS
 
+dnl = Build optionals =========================================================
+
+dnl === Conformance test suite ================================================
+
+AC_ARG_ENABLE([conformance],
+              [AS_HELP_STRING([--disable-conformance], [Whether the conformance tests should be built])],
+              [],
+              [enable_conformance=yes])
+
+AC_ARG_ENABLE([tests],
+              [AS_HELP_STRING([--disable-tests], [Whether tests should be built])],
+              [],
+              [enable_tests=yes])
+AM_CONDITIONAL(BUILD_TESTS, [test "x$enable_tests" = "xyes" && "x$enable_conformance" = "xyes"])
+
+AC_ARG_ENABLE([examples],
+              [AS_HELP_STRING([--disable-examples], [Whether examples should be built])],
+              [],
+              [enable_examples=yes])
+AM_CONDITIONAL(BUILD_EXAMPLES, [test "x$enable_examples" = "xyes"])
+
 dnl ===========================================================================
 
 AC_CONFIG_FILES([
@@ -1170,9 +1181,12 @@ echo "        Build Additional Documentation: ${enable_docs} (Generate PDF: ${en
 echo ""
 echo " • Extra:"
 echo "        Build introspection data: ${enable_introspection}"
-echo "        Build conformance test suite: ${enable_conformance}"
+echo "        Build test suites: ${enable_tests}"
+if test "x$enable_tests" = "xyes"; then
 echo "        Build X11-specific tests: ${x11_tests}"
 echo "        Build tests using GDK-Pixbuf: ${pixbuf_tests}"
+fi
+echo "        Build examples: ${enable_examples}"
 
 # Clutter backend related flags
 echo ""
