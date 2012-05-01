@@ -105,7 +105,7 @@
  *   of children from a ClutterActor, use the #ClutterContainer::actor-removed
  *   signal.</para>
  *   <informalexample><programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-actor.c">
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/basic-actor.c">
  *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
  * </xi:include>
  *   </programlisting></informalexample>

@@ -80,8 +80,8 @@ invalidate_clock (gpointer data_)
   return TRUE;
 }
 
-G_MODULE_EXPORT int
-test_canvas_main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
   ClutterActor *stage, *actor;
   ClutterContent *canvas;
@@ -130,10 +130,4 @@ test_canvas_main (int argc, char *argv[])
   clutter_main ();
 
   return EXIT_SUCCESS;
-}
-
-G_MODULE_EXPORT const char *
-test_canvas_describe (void)
-{
-  return "Simple 2D clock using the Canvas content";
 }

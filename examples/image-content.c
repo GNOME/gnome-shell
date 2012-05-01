@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <gmodule.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <clutter/clutter.h>
 
@@ -47,14 +46,8 @@ on_clicked (ClutterClickAction *action,
     cur_gravity = 0;
 }
 
-G_MODULE_EXPORT const char *
-test_image_box_describe (void)
-{
-  return "A test with image content.";
-}
-
-G_MODULE_EXPORT int
-test_image_box_main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
   ClutterActor *stage, *box, *text;
   ClutterContent *image;

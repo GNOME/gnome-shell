@@ -1121,6 +1121,8 @@ AC_CONFIG_FILES([
 	tests/micro-bench/Makefile
 	tests/performance/Makefile
 
+        examples/Makefile
+
 	doc/Makefile
 	doc/reference/Makefile
 	doc/reference/clutter/Makefile

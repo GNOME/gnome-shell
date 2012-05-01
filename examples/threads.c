@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <gmodule.h>
 #include <clutter/clutter.h>
 
 /* our thread-specific data */
@@ -195,8 +194,8 @@ on_key_press_event (ClutterStage *stage,
   return FALSE;
 }
 
-G_MODULE_EXPORT int
-test_threads_main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
   ClutterActor *stage;
   ClutterActor *rect;
@@ -272,10 +271,4 @@ test_threads_main (int argc, char *argv[])
   g_object_unref (timeline);
 
   return EXIT_SUCCESS;
-}
-
-const char *
-test_threads_describe (void)
-{
-  return "Multi-threading programming with Clutter";
 }

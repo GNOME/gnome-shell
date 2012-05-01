@@ -91,7 +91,9 @@
  *       <graphic fileref="constraints-example.png" format="PNG"/>
  *     </figure>
  *     <programlisting>
- *<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../../../../tests/interactive/test-snap-constraint.c" parse="text"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include>
+ *<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../../../../examples/constraints.c" parse="text">
+ *  <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ *</xi:include>
  *     </programlisting>
  *     <para>You can try resizing interactively the #ClutterStage and verify
  *     that the three #ClutterActor<!-- -->s maintain the same position and

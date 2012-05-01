@@ -80,7 +80,7 @@
  * <example id="bind-constraint-example">
  *   <title>Animating the offset property of ClutterBindConstraint</title>
  *   <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-constraints.c">
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/bind-constraint.c">
  *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
  * </xi:include>
  *   </programlisting>

@@ -1,11 +1,8 @@
 #include <stdlib.h>
-#include <gmodule.h>
-
 #include <clutter/clutter.h>
 
-G_MODULE_EXPORT int
-test_snap_constraint_main (int   argc,
-                           char *argv[])
+int
+main (int argc, char *argv[])
 {
   ClutterActor *stage, *layer_a, *layer_b, *layer_c;
 

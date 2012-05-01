@@ -2,7 +2,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 NULL =
 
-SUBDIRS = clutter tests doc po build
+SUBDIRS = clutter tests examples doc po build
 
 # XXX - this is a massive hack to make autoreconf honour the ACLOCAL_FLAGS
 # that jhbuild sets while still retaining build/autotools as the authoritative

@@ -52,7 +52,7 @@
  * <example id="example-clutter-bin-layout">
  *  <title>How to pack actors inside a BinLayout</title>
  *  <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-bin-layout.c">
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/bin-layout.c">
  *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
  * </xi:include>
  *  </programlisting>

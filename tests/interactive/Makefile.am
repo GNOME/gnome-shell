@@ -8,8 +8,6 @@ UNIT_TESTS = \
 	test-scale.c \
         test-actors.c \
 	test-shader-effects.c \
-	test-depth.c \
-	test-threads.c \
 	test-script.c \
 	test-grab.c \
 	test-cogl-shader-arbfp.c \
@@ -43,21 +41,15 @@ UNIT_TESTS = \
 	test-flow-layout.c \
 	test-box-layout.c \
 	test-stage-sizing.c \
-	test-drag.c \
-	test-constraints.c \
 	test-scrolling.c \
 	test-swipe-action.c \
 	test-cogl-point-sprites.c \
 	test-table-layout.c \
 	test-path-constraint.c \
-	test-snap-constraint.c \
 	test-state-script.c \
-	test-drop.c \
 	test-devices.c \
-	test-actor.c \
 	test-transitions.c \
 	test-content.c \
-	test-canvas.c \
 	test-keyframe-transition.c \
 	test-scroll-actor.c
 
@@ -67,9 +59,7 @@ endif
 
 if PIXBUF_TESTS
 UNIT_TESTS += \
-	test-bin-layout.c \
-	test-image.c \
-	test-image-box.c
+	test-image.c
 endif
 
 if OS_WIN32

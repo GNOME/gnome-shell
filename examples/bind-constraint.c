@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <gmodule.h>
 #include <clutter/clutter.h>
 
 #define RECT_SIZE       128
@@ -155,8 +154,8 @@ on_button_release (ClutterActor *actor,
   return TRUE;
 }
 
-G_MODULE_EXPORT int
-test_constraints_main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
   ClutterActor *stage, *rect;
   ClutterConstraint *constraint;
@@ -244,10 +243,4 @@ test_constraints_main (int argc, char *argv[])
   clutter_main ();
 
   return EXIT_SUCCESS;
-}
-
-G_MODULE_EXPORT const char *
-test_constraints_describe (void)
-{
-  return "Visualize usage of Bind and Align constraints";
 }

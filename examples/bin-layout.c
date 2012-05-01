@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <gmodule.h>
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <clutter/clutter.h>
@@ -160,8 +159,8 @@ redraw_canvas (ClutterActor  *actor,
                            clutter_actor_get_height (actor));
 }
 
-G_MODULE_EXPORT int
-test_bin_layout_main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
   ClutterActor *stage, *box, *bg, *icon, *emblem, *label;
   ClutterLayoutManager *layout;
@@ -305,10 +304,4 @@ test_bin_layout_main (int argc, char *argv[])
   clutter_main ();
 
   return EXIT_SUCCESS;
-}
-
-G_MODULE_EXPORT const char *
-test_bin_layout_describe (void)
-{
-  return "BinLayout layout manager example";
 }

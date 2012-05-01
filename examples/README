@@ -1,0 +1,10 @@
+The code in this directory is meant to be XIncluded into the Clutter API
+reference, and thus is to be considered part of the Clutter documentation.
+
+As such, the code MUST be:
+
+  - correct;
+  - idiomatic, i.e. show how a task is meant to be achieved using the
+    best possible practices given the current API;
+  - well documented;
+  - ready for copy and paste.

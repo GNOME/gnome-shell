@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <gmodule.h>
 #include <clutter/clutter.h>
 
 static gboolean
@@ -148,8 +147,8 @@ static GOptionEntry entries[] = {
   { NULL }
 };
 
-G_MODULE_EXPORT int
-test_drag_main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
   ClutterActor *stage, *handle;
   ClutterAction *action;

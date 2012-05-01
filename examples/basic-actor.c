@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <gmodule.h>
 #include <clutter/clutter.h>
 
 #define SIZE    128
@@ -84,8 +83,8 @@ animate_rotation (ClutterActor *actor,
   return CLUTTER_EVENT_STOP;
 }
 
-G_MODULE_EXPORT int
-test_actor_main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
   ClutterActor *stage, *vase;
   ClutterActor *flowers[3];
@@ -151,10 +150,4 @@ test_actor_main (int argc, char *argv[])
   clutter_main ();
 
   return EXIT_SUCCESS;
-}
-
-G_MODULE_EXPORT const char *
-test_actor_describe (void)
-{
-  return "Basic example of actor usage.";
 }

@@ -169,8 +169,8 @@ on_target_drop (ClutterDropAction *action,
   add_drag_object (actor);
 }
 
-G_MODULE_EXPORT int
-test_drop_main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
   ClutterActor *dummy;
 
@@ -242,10 +242,4 @@ test_drop_main (int argc, char *argv[])
   clutter_main ();
 
   return EXIT_SUCCESS;
-}
-
-G_MODULE_EXPORT const char *
-test_drop_describe (void)
-{
-  return "Drop action support";
 }
