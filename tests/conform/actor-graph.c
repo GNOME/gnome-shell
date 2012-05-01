@@ -220,7 +220,7 @@ actor_raise_child (TestConformSimpleFixture *fixture,
                    ==,
                    "bar");
   g_assert (!CLUTTER_ACTOR_IS_VISIBLE (iter));
-  g_object_get (iter, "show-on-set-parent", &show_on_set_parent);
+  g_object_get (iter, "show-on-set-parent", &show_on_set_parent, NULL);
   g_assert (!show_on_set_parent);
 
   iter = clutter_actor_get_child_at_index (actor, 0);
@@ -236,7 +236,7 @@ actor_raise_child (TestConformSimpleFixture *fixture,
                    ==,
                    "foo");
   g_assert (!CLUTTER_ACTOR_IS_VISIBLE (iter));
-  g_object_get (iter, "show-on-set-parent", &show_on_set_parent);
+  g_object_get (iter, "show-on-set-parent", &show_on_set_parent, NULL);
   g_assert (!show_on_set_parent);
 
   clutter_actor_destroy (actor);
@@ -284,7 +284,7 @@ actor_lower_child (TestConformSimpleFixture *fixture,
                    ==,
                    "baz");
   g_assert (!CLUTTER_ACTOR_IS_VISIBLE (iter));
-  g_object_get (iter, "show-on-set-parent", &show_on_set_parent);
+  g_object_get (iter, "show-on-set-parent", &show_on_set_parent, NULL);
   g_assert (!show_on_set_parent);
 
   iter = clutter_actor_get_child_at_index (actor, 2);
@@ -300,7 +300,7 @@ actor_lower_child (TestConformSimpleFixture *fixture,
                    ==,
                    "foo");
   g_assert (!CLUTTER_ACTOR_IS_VISIBLE (iter));
-  g_object_get (iter, "show-on-set-parent", &show_on_set_parent);
+  g_object_get (iter, "show-on-set-parent", &show_on_set_parent, NULL);
   g_assert (!show_on_set_parent);
 
   clutter_actor_destroy (actor);
