@@ -396,9 +396,7 @@ const PlaceSearchProvider = new Lang.Class({
     },
 
     _searchPlaces: function(places, terms) {
-        let multiplePrefixResults = [];
         let prefixResults = [];
-        let multipleSubstringResults = [];
         let substringResults = [];
 
         terms = terms.map(String.toLowerCase);
@@ -406,20 +404,15 @@ const PlaceSearchProvider = new Lang.Class({
         for (let i = 0; i < places.length; i++) {
             let place = places[i];
             let mtype = place.matchTerms(terms);
-            if (mtype == Search.MatchType.MULTIPLE_PREFIX)
-                multiplePrefixResults.push(place.id);
-            else if (mtype == Search.MatchType.PREFIX)
+            if (mtype == Search.MatchType.PREFIX)
                 prefixResults.push(place.id);
-            else if (mtype == Search.MatchType.MULTIPLE_SUBSTRING)
-                multipleSubstringResults.push(place.id);
             else if (mtype == Search.MatchType.SUBSTRING)
                 substringResults.push(place.id);
         }
-        multiplePrefixResults.sort(this._compareResultMeta);
         prefixResults.sort(this._compareResultMeta);
-        multipleSubstringResults.sort(this._compareResultMeta);
         substringResults.sort(this._compareResultMeta);
-        return multiplePrefixResults.concat(prefixResults.concat(multipleSubstringResults.concat(substringResults)));
+
+        return prefixResults.concat(substringResults);
     },
 
     getInitialResultSet: function(terms) {

@@ -18,9 +18,7 @@ const DISABLED_OPEN_SEARCH_PROVIDERS_KEY = 'disabled-open-search-providers';
 const MatchType = {
     NONE: 0,
     SUBSTRING: 1,
-    MULTIPLE_SUBSTRING: 2,
-    PREFIX: 3,
-    MULTIPLE_PREFIX: 4
+    PREFIX: 2
 };
 
 const SearchResultDisplay = new Lang.Class({
