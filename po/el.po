@@ -1,18 +1,19 @@
+# Kostas Papadimas <pkst@gnome.org>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.po.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-21 09:14+0200\n"
-"PO-Revision-Date: 2011-11-21 09:08+0200\n"
+"POT-Creation-Date: 2012-05-02 13:53+0300\n"
+"PO-Revision-Date: 2012-05-02 13:53+0300\n"
 "Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
-"Language-Team: Greek <team@gnome.gr>\n"
+"Language-Team: team@gnome.gr\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
 "X-DamnedLies-Scope: partial\n"
-"X-Generator: KBabel 1.11.4\n"
 "X-Poedit-Language: Greek\n"
 "X-Poedit-Country: GREECE\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -24,6 +25,15 @@ msgstr "GNOME Shell"
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "Διαχείριση παραθύρων και εκκίνηση εφαρμογών"
+
+#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
+msgid "Configure GNOME Shell Extensions"
+msgstr "Επεξεργασία επεκτάσεων του GNOME Shell"
+
+#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
+#: ../js/extensionPrefs/main.js:153
+msgid "GNOME Shell Extension Preferences"
+msgstr "Επιλογές επεκτάσεων του GNOME Shell"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid ""
@@ -86,10 +96,46 @@ msgstr ""
 "Αν αληθές, εμφανίζει τον αριθμό εβδομάδας σύμφωνα με το ISO στο ημερολόγιο."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid ""
+"Internally used to store the last IM presence explicitly set by the user. "
+"The value here is from the TpConnectionPresenceType enumeration."
+msgstr ""
+"Χρησιμοποιείται εσωτερικά για την αποθήκευση της συνομιλίας που έχει ορισθεί "
+"από τον χρήστη. Η τιμή εδώ είναι από την απαρίθμηση του "
+"TpConnectionPresenceType."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid ""
+"Internally used to store the last session presence status for the user. The "
+"value here is from the GsmPresenceStatus enumeration."
+msgstr ""
+"Χρησιμοποιείται εσωτερικά για την αποθήκευση της κατάστασης παρουσίας της "
+"τελευταίας συνόδου του χρήστη. Η τιμή εδώ είναι από την απαρίθμηση του "
+"GsmPresenceStatus."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "Keybinding to open the application menu"
+msgstr "Συνδυασμός πλήκτρων για το άνοιγμα του μενού εφαρμογών"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Keybinding to open the application menu."
+msgstr "Συνδυασμός πλήκτρων για το άνοιγμα του μενού εφαρμογών."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Keybinding to start/stop the builtin screen recorder."
+msgstr ""
+"Συνδυασμός πλήκτρων για το άνοιγμα/κλείσιμο της ενσωματωμένης "
+"μαγνητοσκόπησης οθόνης."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Keybinding to toggle the screen recorder"
+msgstr "Συνδυασμός πλήκτρων για την εναλλαγή της μαγνητοσκόπησης οθόνης"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Λίστα ID αρχείων επιφάνειας εργασίας για προτιμώμενες εφαρμογές"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -99,9 +145,9 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
-"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
-"at the optimal thread count on the system."
+"'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM "
+"using the VP8 codec. %T is used as a placeholder for a guess at the optimal "
+"thread count on the system."
 msgstr ""
 "Ορίζει το δίαυλο του GStreamer που θα χρησιμοποιηθεί για την κωδικοποίηση "
 "των εγγραφών. Ακολουθεί το συντακτικό που χρησιμοποιείται για το gst-launch. "
@@ -112,23 +158,23 @@ msgstr ""
 "αποστολή της εξόδου σε έναν διακομιστή icecast μέσω του shout2send ή κάποιου "
 "παρόμοιου. Όταν δεν έχει ορισθεί ή έχει ορισθεί σε κενή τιμή, θα "
 "χρησιμοποιηθεί ο προεπιλεγμένος δίαυλος. Αυτός είναι αυτή τη στιγμή ο "
-"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' και "
-"γράφει σε WEBM με κωδικοποίηση VP8. Το %T χρησιμοποιείται ως παράδειγμα για "
-"το πιθανό βέλτιστο αριθμό πυρήνων του συστήματος."
+"'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' και γράφει σε WEBM "
+"με κωδικοποίηση VP8. Το %T χρησιμοποιείται ως παράδειγμα για το πιθανό "
+"βέλτιστο αριθμό πυρήνων του συστήματος."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Show date in clock"
 msgstr "Εμφάνιση ημερομηνίας στο ρολόι"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "Show the week date in the calendar"
 msgstr "Εμφάνιση του αριθμού εβδομάδας στο ημερολόγιο"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Show time with seconds"
 msgstr "Εμφάνιση ώρας με δευτερόλεπτα"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -136,7 +182,7 @@ msgstr ""
 "Οι εφαρμογές που αντιστοιχούν σε αυτά τα αναγνωριστικά θα εμφανισθούν στην "
 "περιοχή αγαπημένων."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -146,7 +192,7 @@ msgstr ""
 "βασισμένο στην τρέχουσα ημερομηνία και θα χρησιμοποιεί αυτή την επέκταση. Θα "
 "πρέπει να αλλάζει όταν γίνεται εγγραφή σε διαφορετικό πρότυπο περιέκτη."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -154,13 +200,13 @@ msgstr ""
 "Ο ρυθμός καρέ του στιγμιότυπου που παράγεται από τον εγγραφέα στιγμιοτύπων "
 "οθόνης του GNOME Shell σε καρέ ανά δευτερόλεπτο."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 "Ο δίαυλος του gstreamer που χρησιμοποιήθηκε για την κωδικοποίηση του "
 "στιγμιότυπου"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -173,73 +219,90 @@ msgstr ""
 "αυτή τη λειτουργία για λόγους απορρήτου. Παρακαλούμε έχετε υπ' όψιν ότι η "
 "απενεργοποίηση δεν θα αφαιρέσει τα ήδη αποθηκευμένα δεδομένα."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:28
 msgid "The type of keyboard to use."
 msgstr "Ο τύπος του πληκτρολογίου που θα χρησιμοποιηθεί"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:29
 msgid "Uuids of extensions to enable"
 msgstr "Uuid των επεκτάσεων που θα ενεργοποιηθούν"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:30
 msgid "Whether to collect stats about applications usage"
 msgstr "Εάν θα συλλέγονται στατιστικά χρήσης των εφαρμογών"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:31
 msgid "Which keyboard to use"
 msgstr "Ποιό πληκτρολόγιο θα χρησιμοποιηθεί"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:32
 msgid "disabled OpenSearch providers"
 msgstr "απενεργοποιημένοι πάροχοι OpenSearch"
 
-#: ../js/gdm/loginDialog.js:633
+#: ../js/extensionPrefs/main.js:125
+#, c-format
+msgid "There was an error loading the preferences dialog for %s:"
+msgstr ""
+"Προέκυψε ένα σφάλμα στη φόρτωση του παραθύρου διαλόγου των προτιμήσεων για "
+"%s:"
+
+#: ../js/extensionPrefs/main.js:165
+msgid "<b>Extension</b>"
+msgstr "<b>Επέκταση</b>"
+
+#: ../js/extensionPrefs/main.js:189
+msgid "Select an extension to configure using the combobox above."
+msgstr ""
+"Επιλέξτε μια επέκταση για να την ρυθμίσετε χρησιμοποιώντας το πλαίσιο "
+"πολλαπλών επιλογών."
+
+#: ../js/gdm/loginDialog.js:627
 msgid "Session..."
 msgstr "Συνεδρία..."
 
-#: ../js/gdm/loginDialog.js:804
+#: ../js/gdm/loginDialog.js:789
 msgctxt "title"
 msgid "Sign In"
 msgstr "Σύνδεση"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:849
+#: ../js/gdm/loginDialog.js:834
 msgid "(or swipe finger)"
 msgstr "(ή περάστε το δάκτυλο σας)"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:870
+#: ../js/gdm/loginDialog.js:855
 msgid "Not listed?"
 msgstr "Δεν είστε στη λίστα;"
 
-#: ../js/gdm/loginDialog.js:1038 ../js/ui/endSessionDialog.js:428
-#: ../js/ui/extensionSystem.js:519 ../js/ui/networkAgent.js:148
-#: ../js/ui/polkitAuthenticationAgent.js:178 ../js/ui/status/bluetooth.js:481
+#: ../js/gdm/loginDialog.js:1023 ../js/ui/endSessionDialog.js:401
+#: ../js/ui/extensionSystem.js:400 ../js/ui/networkAgent.js:153
+#: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "Ακύρωση"
 
-#: ../js/gdm/loginDialog.js:1043
+#: ../js/gdm/loginDialog.js:1028
 msgctxt "button"
 msgid "Sign In"
 msgstr "Σύνδεση"
 
-#: ../js/gdm/loginDialog.js:1395
+#: ../js/gdm/loginDialog.js:1380
 msgid "Login Window"
 msgstr "Παράθυρο σύνδεσης"
 
-#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:591
-#: ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:662
+#: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
 msgid "Suspend"
 msgstr "Αναστολή"
 
-#: ../js/gdm/powerMenu.js:121
+#: ../js/gdm/powerMenu.js:160
 msgid "Restart"
 msgstr "Επανεκκίνηση"
 
-#: ../js/gdm/powerMenu.js:126
+#: ../js/gdm/powerMenu.js:165
 msgid "Power Off"
 msgstr "Απενεργοποιήση"
 
@@ -263,46 +326,46 @@ msgstr "Η εκτέλεση του '%s' απέτυχε:"
 msgid "All"
 msgstr "Όλα"
 
-#: ../js/ui/appDisplay.js:319
+#: ../js/ui/appDisplay.js:314
 msgid "APPLICATIONS"
 msgstr "ΕΦΑΡΜΟΓΕΣ"
 
-#: ../js/ui/appDisplay.js:377
+#: ../js/ui/appDisplay.js:375
 msgid "SETTINGS"
 msgstr "ΡΥΘΜΙΣΕΙΣ"
 
-#: ../js/ui/appDisplay.js:684
+#: ../js/ui/appDisplay.js:680
 msgid "New Window"
 msgstr "Νέο παράθυρο"
 
-#: ../js/ui/appDisplay.js:687
+#: ../js/ui/appDisplay.js:683
 msgid "Remove from Favorites"
 msgstr "Αφαίρεση από τα αγαπημένα"
 
-#: ../js/ui/appDisplay.js:688
+#: ../js/ui/appDisplay.js:684
 msgid "Add to Favorites"
 msgstr "Προσθήκη στα αγαπημένα"
 
-#: ../js/ui/appFavorites.js:89
+#: ../js/ui/appFavorites.js:87
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "To %s προστέθηκε στα αγαπημένα σας"
 
-#: ../js/ui/appFavorites.js:120
+#: ../js/ui/appFavorites.js:118
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "To %s αφαιρέθηκε από τα αγαπημένα σας"
 
-#: ../js/ui/autorunManager.js:272
+#: ../js/ui/autorunManager.js:265
 msgid "Removable Devices"
 msgstr "Αφαιρούμενες συσκευές"
 
-#: ../js/ui/autorunManager.js:582
+#: ../js/ui/autorunManager.js:560
 #, c-format
 msgid "Open with %s"
 msgstr "Άνοιγμα με %s"
 
-#: ../js/ui/autorunManager.js:608
+#: ../js/ui/autorunManager.js:586
 msgid "Eject"
 msgstr "Εξαγωγή"
 
@@ -420,125 +483,121 @@ msgid "S"
 msgstr "Σ"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:692
+#: ../js/ui/calendar.js:681
 msgid "Nothing Scheduled"
 msgstr "Τίποτα προγραμματισμένο"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:708
+#: ../js/ui/calendar.js:697
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:711
+#: ../js/ui/calendar.js:700
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:721
+#: ../js/ui/calendar.js:710
 msgid "Today"
 msgstr "Σήμερα"
 
-#: ../js/ui/calendar.js:725
+#: ../js/ui/calendar.js:714
 msgid "Tomorrow"
 msgstr "Αύριο"
 
-#: ../js/ui/calendar.js:734
+#: ../js/ui/calendar.js:723
 msgid "This week"
 msgstr "Αυτή η εβδομάδα"
 
-#: ../js/ui/calendar.js:742
+#: ../js/ui/calendar.js:731
 msgid "Next week"
 msgstr "Επόμενη εβδομάδα"
 
-#: ../js/ui/contactDisplay.js:65 ../js/ui/notificationDaemon.js:468
-#: ../js/ui/status/power.js:220 ../src/shell-app.c:350
+#: ../js/ui/contactDisplay.js:66 ../js/ui/notificationDaemon.js:486
+#: ../js/ui/status/power.js:215 ../src/shell-app.c:374
 msgid "Unknown"
 msgstr "Άγνωστο"
 
-#: ../js/ui/contactDisplay.js:86 ../js/ui/userMenu.js:138
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:129
 msgid "Available"
 msgstr "Διαθέσιμος"
 
-#: ../js/ui/contactDisplay.js:91 ../js/ui/userMenu.js:147
+#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:138
 msgid "Away"
 msgstr "Μακρυά"
 
-#: ../js/ui/contactDisplay.js:95 ../js/ui/userMenu.js:141
+#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:132
 msgid "Busy"
 msgstr "Απασχολημένος"
 
-#: ../js/ui/contactDisplay.js:99
+#: ../js/ui/contactDisplay.js:102
 msgid "Offline"
 msgstr "Εκτός σύνδεσης"
 
-#: ../js/ui/contactDisplay.js:146
+#: ../js/ui/contactDisplay.js:153
 msgid "CONTACTS"
 msgstr "ΕΠΑΦΕΣ"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1214
+#: ../js/ui/dash.js:239 ../js/ui/messageTray.js:1207
 msgid "Remove"
 msgstr "Απομάκρυνση"
 
-#: ../js/ui/dateMenu.js:99
+#: ../js/ui/dateMenu.js:103
 msgid "Date and Time Settings"
 msgstr "Ρυθμίσεις ώρας και ημερομηνίας"
 
-#: ../js/ui/dateMenu.js:125
+#: ../js/ui/dateMenu.js:129
 msgid "Open Calendar"
 msgstr "Άνοιγμα ημερολογίου"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:183
+#: ../js/ui/dateMenu.js:187
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R:%S"
 
-#: ../js/ui/dateMenu.js:184
+#: ../js/ui/dateMenu.js:188
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:188
+#: ../js/ui/dateMenu.js:192
 msgid "%a %R:%S"
 msgstr "%a %R%a %R:%S"
 
-#: ../js/ui/dateMenu.js:189
+#: ../js/ui/dateMenu.js:193
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:196
+#: ../js/ui/dateMenu.js:200
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:197
+#: ../js/ui/dateMenu.js:201
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:201
+#: ../js/ui/dateMenu.js:205
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:202
+#: ../js/ui/dateMenu.js:206
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:213
+#: ../js/ui/dateMenu.js:217
 msgid "%A %B %e, %Y"
 msgstr "%A %B %e, %Y"
-
-#: ../js/ui/docDisplay.js:16
-msgid "RECENT ITEMS"
-msgstr "ΠΡΟΣΦΑΤΑ ΑΝΤΙΚΕΙΜΕΝΑ"
 
 #: ../js/ui/endSessionDialog.js:61
 #, c-format
@@ -634,127 +693,142 @@ msgstr[1] "Το σύστημα θα επανεκκινήσει αυτόματα 
 msgid "Restarting the system."
 msgstr "Επανεκκινείται το σύστημα"
 
-#: ../js/ui/extensionSystem.js:523
+#: ../js/ui/extensionSystem.js:404
 msgid "Install"
 msgstr "Εγκατάσταση"
 
-#: ../js/ui/extensionSystem.js:527
+#: ../js/ui/extensionSystem.js:408
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Λήψη και εγκατάσταση '%s' από το extensions.gnome.org;"
 
-#: ../js/ui/keyboard.js:325
+#: ../js/ui/keyboard.js:327
 msgid "tray"
 msgstr "συρτάρι"
 
-#: ../js/ui/keyboard.js:547 ../js/ui/status/power.js:208
+#: ../js/ui/keyboard.js:544 ../js/ui/status/keyboard.js:44
+#: ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Πληκτρολόγιο"
 
-#: ../js/ui/lookingGlass.js:744
+#: ../js/ui/keyringPrompt.js:85 ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Κωδικός:"
+
+#: ../js/ui/keyringPrompt.js:101
+msgid "Type again:"
+msgstr "Πληκτρολογήστε ξανά:"
+
+#: ../js/ui/lookingGlass.js:693
 msgid "No extensions installed"
 msgstr "Δεν υπάρχουν εγκατεστημένες επεκτάσεις"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:799
+#: ../js/ui/lookingGlass.js:747
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "Το %s δεν έδωσε σφάλματα"
 
-#: ../js/ui/lookingGlass.js:805
+#: ../js/ui/lookingGlass.js:753
 msgid "Hide Errors"
 msgstr "Απόκρυψη σφαλμάτων"
 
-#: ../js/ui/lookingGlass.js:809 ../js/ui/lookingGlass.js:860
+#: ../js/ui/lookingGlass.js:757 ../js/ui/lookingGlass.js:808
 msgid "Show Errors"
 msgstr "Εμφάνιση σφαλμάτων"
 
-#: ../js/ui/lookingGlass.js:818
+#: ../js/ui/lookingGlass.js:766
 msgid "Enabled"
 msgstr "Ενεργοποιημένο"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:821 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:769 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
 
-#: ../js/ui/lookingGlass.js:823
+#: ../js/ui/lookingGlass.js:771
 msgid "Error"
 msgstr "Σφάλμα"
 
-#: ../js/ui/lookingGlass.js:825
+#: ../js/ui/lookingGlass.js:773
 msgid "Out of date"
 msgstr "Μη ενημερωμένο"
 
-#: ../js/ui/lookingGlass.js:827
+#: ../js/ui/lookingGlass.js:775
 msgid "Downloading"
 msgstr "Γίνεται λήψη"
 
-#: ../js/ui/lookingGlass.js:848
+#: ../js/ui/lookingGlass.js:796
 msgid "View Source"
 msgstr "Προβολή πηγής"
 
-#: ../js/ui/lookingGlass.js:854
+#: ../js/ui/lookingGlass.js:802
 msgid "Web Page"
 msgstr "Ιστοσελίδα"
 
-#: ../js/ui/messageTray.js:1207
+#. Translators: this is a filename used for screencast recording
+#: ../js/ui/main.js:120
+#, no-c-format
+msgid "Screencast from %d %t"
+msgstr "Screencast από %d %t"
+
+#: ../js/ui/messageTray.js:1200
 msgid "Open"
 msgstr "Άνοιγμα"
 
-#: ../js/ui/messageTray.js:1224
+#: ../js/ui/messageTray.js:1217
 msgid "Unmute"
 msgstr "Άρση σίγασης"
 
-#: ../js/ui/messageTray.js:1224
+#: ../js/ui/messageTray.js:1217
 msgid "Mute"
 msgstr "Σίγαση"
 
-#: ../js/ui/messageTray.js:2439
+#: ../js/ui/messageTray.js:2490
 msgid "System Information"
 msgstr "Πληροφορίες Συστήματος"
 
-#: ../js/ui/networkAgent.js:143
+#: ../js/ui/networkAgent.js:148
 msgid "Connect"
 msgstr "Σύνδεση"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:238 ../js/ui/networkAgent.js:250
-#: ../js/ui/networkAgent.js:277 ../js/ui/networkAgent.js:297
-#: ../js/ui/networkAgent.js:307
+#: ../js/ui/networkAgent.js:243 ../js/ui/networkAgent.js:255
+#: ../js/ui/networkAgent.js:282 ../js/ui/networkAgent.js:302
+#: ../js/ui/networkAgent.js:312
 msgid "Password: "
 msgstr "Κωδικός:"
 
 #. static WEP
-#: ../js/ui/networkAgent.js:243
+#: ../js/ui/networkAgent.js:248
 msgid "Key: "
 msgstr "Κλειδί:"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:275 ../js/ui/networkAgent.js:293
+#: ../js/ui/networkAgent.js:280 ../js/ui/networkAgent.js:298
 msgid "Username: "
 msgstr "Όνομα χρήστη:"
 
-#: ../js/ui/networkAgent.js:281
+#: ../js/ui/networkAgent.js:286
 msgid "Identity: "
 msgstr "Ταυτότητα:"
 
-#: ../js/ui/networkAgent.js:283
+#: ../js/ui/networkAgent.js:288
 msgid "Private key password: "
 msgstr "Κωδικός ιδιωτικού κλειδιού:"
 
-#: ../js/ui/networkAgent.js:295
+#: ../js/ui/networkAgent.js:300
 msgid "Service: "
 msgstr "Υπηρεσία:"
 
-#: ../js/ui/networkAgent.js:324
+#: ../js/ui/networkAgent.js:329
 msgid "Authentication required by wireless network"
 msgstr "Απαιτείται πιστοποίηση από το ασύρματο δίκτυο"
 
-#: ../js/ui/networkAgent.js:325
+#: ../js/ui/networkAgent.js:330
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -763,99 +837,101 @@ msgstr ""
 "Κωδικοί ή κλειδιά κρυπτογράφησης απαιτούνται για πρόσβαση στο ασύρματο "
 "δίκτυο '%s'."
 
-#: ../js/ui/networkAgent.js:329
+#: ../js/ui/networkAgent.js:334
 msgid "Wired 802.1X authentication"
 msgstr "Πιστοποίηση ενσύρματου 802.1X "
 
-#: ../js/ui/networkAgent.js:331
+#: ../js/ui/networkAgent.js:336
 msgid "Network name: "
 msgstr "Όνομα δικτύου:"
 
-#: ../js/ui/networkAgent.js:336
+#: ../js/ui/networkAgent.js:341
 msgid "DSL authentication"
 msgstr "Πιστοποίηση DSL"
 
-#: ../js/ui/networkAgent.js:343
+#: ../js/ui/networkAgent.js:348
 msgid "PIN code required"
 msgstr "Απαιτείται κωδικός PIN"
 
-#: ../js/ui/networkAgent.js:344
+#: ../js/ui/networkAgent.js:349
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Ο κωδικός PIN απαιτείται για την συσκευή κινητής ευρυζωνικής"
 
-#: ../js/ui/networkAgent.js:345
+#: ../js/ui/networkAgent.js:350
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/networkAgent.js:351
+#: ../js/ui/networkAgent.js:356
 msgid "Mobile broadband network password"
 msgstr "Κωδικός  δικτύου κινητής ευρυζωνικής"
 
-#: ../js/ui/networkAgent.js:352
+#: ../js/ui/networkAgent.js:357
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Απαιτείται ένας κωδικός για σύνδεση στο '%s'"
 
-#: ../js/ui/overview.js:91
+#: ../js/ui/overview.js:90
 msgid "Undo"
 msgstr "Αναίρεση"
 
-#: ../js/ui/overview.js:205
+#: ../js/ui/overview.js:132
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+#: ../js/ui/overview.js:202
 msgid "Windows"
 msgstr "Παράθυρα"
 
-#: ../js/ui/overview.js:208
+#: ../js/ui/overview.js:205
 msgid "Applications"
 msgstr "Εφαρμογές"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:230
+#: ../js/ui/overview.js:231
 msgid "Dash"
 msgstr "Ταμπλό"
 
-#. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:539
-#, c-format
-msgid "Quit %s"
-msgstr "Έξοδος %s"
+#: ../js/ui/panel.js:592
+msgid "Quit"
+msgstr "Έξοδος"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:575
+#: ../js/ui/panel.js:624
 msgid "Activities"
 msgstr "Δραστηριότητες"
 
-#: ../js/ui/panel.js:967
+#: ../js/ui/panel.js:999
 msgid "Top Bar"
 msgstr "Πάνω Μπάρα"
 
-#: ../js/ui/placeDisplay.js:120
+#: ../js/ui/placeDisplay.js:115
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Αποτυχία αποπροσάρτησης '%s'"
 
-#: ../js/ui/placeDisplay.js:123
+#: ../js/ui/placeDisplay.js:118
 msgid "Retry"
 msgstr "Προσπάθεια ξανά"
 
-#: ../js/ui/placeDisplay.js:163
+#: ../js/ui/placeDisplay.js:156
 msgid "Connect to..."
 msgstr "Σύνδεση σε..."
 
-#: ../js/ui/placeDisplay.js:375
+#: ../js/ui/placeDisplay.js:367
 msgid "PLACES & DEVICES"
 msgstr "ΤΟΠΟΘΕΣΙΕΣ & ΣΥΣΚΕΥΕΣ"
 
-#: ../js/ui/polkitAuthenticationAgent.js:74
+#: ../js/ui/polkitAuthenticationAgent.js:71
 msgid "Authentication Required"
 msgstr "Απαιτείται πιστοποίηση"
 
-#: ../js/ui/polkitAuthenticationAgent.js:112
+#: ../js/ui/polkitAuthenticationAgent.js:109
 msgid "Administrator"
 msgstr "Διαχειριστής"
 
-#: ../js/ui/polkitAuthenticationAgent.js:182
+#: ../js/ui/polkitAuthenticationAgent.js:179
 msgid "Authenticate"
 msgstr "Πιστοποίηση"
 
@@ -863,230 +939,231 @@ msgstr "Πιστοποίηση"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/polkitAuthenticationAgent.js:263
+#: ../js/ui/polkitAuthenticationAgent.js:260
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Συγνώμη, αυτό δεν λειτούργησε. Παρακαλώ προσπαθήστε ξανά."
-
-#: ../js/ui/polkitAuthenticationAgent.js:275
-msgid "Password:"
-msgstr "Κωδικός:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:733
+#: ../js/ui/popupMenu.js:728
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:209
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Παρακαλώ εισάγετε μία εντολή:"
 
-#: ../js/ui/searchDisplay.js:340
+#: ../js/ui/searchDisplay.js:332
 msgid "Searching..."
 msgstr "Αναζήτηση..."
 
-#: ../js/ui/searchDisplay.js:363
+#: ../js/ui/searchDisplay.js:422
 msgid "No matching results."
 msgstr "Δεν βρέθηκαν αποτελέσματα."
 
-#: ../js/ui/shellEntry.js:30
+#: ../js/ui/shellEntry.js:26
 msgid "Copy"
 msgstr "Αντιγραφή"
 
-#: ../js/ui/shellEntry.js:35
+#: ../js/ui/shellEntry.js:31
 msgid "Paste"
 msgstr "Επικόλληση"
 
-#: ../js/ui/shellEntry.js:81
+#: ../js/ui/shellEntry.js:77
 msgid "Show Text"
 msgstr "Εμφάνιση κειμένου"
 
-#: ../js/ui/shellEntry.js:83
+#: ../js/ui/shellEntry.js:79
 msgid "Hide Text"
 msgstr "Απόκρυψη κειμένου"
 
-#: ../js/ui/shellMountOperation.js:285
+#: ../js/ui/shellMountOperation.js:271
 msgid "Wrong password, please try again"
 msgstr "Εσφαλμένος κωδικός, προσπαθήστε ξανά"
 
-#: ../js/ui/status/accessibility.js:56
+#: ../js/ui/status/accessibility.js:47
+msgid "Accessibility"
+msgstr "Προσιτότητα"
+
+#: ../js/ui/status/accessibility.js:52
 msgid "Zoom"
 msgstr "Εστίαση"
 
 #. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
-#: ../js/ui/status/accessibility.js:67
+#: ../js/ui/status/accessibility.js:63
 msgid "Screen Keyboard"
 msgstr "Πληκτρολόγιο οθόνης"
 
-#: ../js/ui/status/accessibility.js:71
+#: ../js/ui/status/accessibility.js:67
 msgid "Visual Alerts"
 msgstr "Οπτικές ειδοποιήσεις"
 
-#: ../js/ui/status/accessibility.js:74
+#: ../js/ui/status/accessibility.js:70
 msgid "Sticky Keys"
 msgstr "Κολλώδη πλήκτρα"
 
-#: ../js/ui/status/accessibility.js:77
+#: ../js/ui/status/accessibility.js:73
 msgid "Slow Keys"
 msgstr "Αργά πλήκτρα"
 
-#: ../js/ui/status/accessibility.js:80
+#: ../js/ui/status/accessibility.js:76
 msgid "Bounce Keys"
 msgstr "Πλήκτρα αναπήδησης"
 
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:79
 msgid "Mouse Keys"
 msgstr "Πλήκτρα ποντικιού"
 
-#: ../js/ui/status/accessibility.js:87
+#: ../js/ui/status/accessibility.js:83
 msgid "Universal Access Settings"
 msgstr "Ρυθμίσεις καθολικής πρόσβασης"
 
-#: ../js/ui/status/accessibility.js:121
+#: ../js/ui/status/accessibility.js:117
 msgid "High Contrast"
 msgstr "Υψηλή αντίθεση"
 
-#: ../js/ui/status/accessibility.js:158
+#: ../js/ui/status/accessibility.js:154
 msgid "Large Text"
 msgstr "Μεγάλο κείμενο"
 
-#: ../js/ui/status/bluetooth.js:39 ../js/ui/status/bluetooth.js:262
-#: ../js/ui/status/bluetooth.js:348 ../js/ui/status/bluetooth.js:382
-#: ../js/ui/status/bluetooth.js:422 ../js/ui/status/bluetooth.js:455
+#: ../js/ui/status/bluetooth.js:31 ../js/ui/status/bluetooth.js:35
+#: ../js/ui/status/bluetooth.js:258 ../js/ui/status/bluetooth.js:341
+#: ../js/ui/status/bluetooth.js:371 ../js/ui/status/bluetooth.js:407
+#: ../js/ui/status/bluetooth.js:436 ../js/ui/status/network.js:893
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:52
+#: ../js/ui/status/bluetooth.js:48
 msgid "Visibility"
 msgstr "Ορατότητα"
 
-#: ../js/ui/status/bluetooth.js:66
+#: ../js/ui/status/bluetooth.js:62
 msgid "Send Files to Device..."
 msgstr "Αποστολή αρχείων σε συσκευή..."
 
-#: ../js/ui/status/bluetooth.js:67
+#: ../js/ui/status/bluetooth.js:63
 msgid "Set up a New Device..."
 msgstr "Ρύθμιση μιας νέας συσκευής..."
 
-#: ../js/ui/status/bluetooth.js:91
+#: ../js/ui/status/bluetooth.js:87
 msgid "Bluetooth Settings"
 msgstr "Ρυθμίσεις Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:111
+#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/network.js:256
 msgid "hardware disabled"
 msgstr "απενεργοποιημένο μέσω διακόπτη"
 
-#: ../js/ui/status/bluetooth.js:207
+#: ../js/ui/status/bluetooth.js:203
 msgid "Connection"
 msgstr "Σύνδεση"
 
-#: ../js/ui/status/bluetooth.js:218 ../js/ui/status/network.js:485
+#: ../js/ui/status/bluetooth.js:214 ../js/ui/status/network.js:491
 msgid "disconnecting..."
 msgstr "αποσύνδεση..."
 
-#: ../js/ui/status/bluetooth.js:231 ../js/ui/status/network.js:491
+#: ../js/ui/status/bluetooth.js:227 ../js/ui/status/network.js:497
 msgid "connecting..."
 msgstr "σύνδεση..."
 
-#: ../js/ui/status/bluetooth.js:249
+#: ../js/ui/status/bluetooth.js:245
 msgid "Send Files..."
 msgstr "Αποστολή αρχείων..."
 
-#: ../js/ui/status/bluetooth.js:254
+#: ../js/ui/status/bluetooth.js:250
 msgid "Browse Files..."
 msgstr "Εξερεύνηση αρχείων..."
 
-#: ../js/ui/status/bluetooth.js:263
+#: ../js/ui/status/bluetooth.js:259
 msgid "Error browsing device"
 msgstr "Σφάλμα περιήγησης συσκευής"
 
-#: ../js/ui/status/bluetooth.js:264
+#: ../js/ui/status/bluetooth.js:260
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr ""
 "Δεν είναι δυνατή η περιήγηση στην αιτούμενη συσκευή, το σφάλμα είναι '%s'"
 
-#: ../js/ui/status/bluetooth.js:272
+#: ../js/ui/status/bluetooth.js:268
 msgid "Keyboard Settings"
 msgstr "Ρυθμίσεις πληκτρολογίου"
 
-#: ../js/ui/status/bluetooth.js:275
+#: ../js/ui/status/bluetooth.js:271
 msgid "Mouse Settings"
 msgstr "Ρυθμίσεις ποντικιού"
 
-#: ../js/ui/status/bluetooth.js:280 ../js/ui/status/volume.js:61
+#: ../js/ui/status/bluetooth.js:276 ../js/ui/status/volume.js:59
 msgid "Sound Settings"
 msgstr "Ρυθμίσεις ήχου"
 
-#: ../js/ui/status/bluetooth.js:383
+#: ../js/ui/status/bluetooth.js:372
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Αίτηση διαπίστευσης από %s"
 
-#: ../js/ui/status/bluetooth.js:389
+#: ../js/ui/status/bluetooth.js:378
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Η συσκευή %s επιθυμεί πρόσβαση στην υπηρεσία '%s'"
 
-#: ../js/ui/status/bluetooth.js:391
+#: ../js/ui/status/bluetooth.js:380
 msgid "Always grant access"
 msgstr "Να επιτρέπεται πάντα η πρόσβαση"
 
-#: ../js/ui/status/bluetooth.js:392
+#: ../js/ui/status/bluetooth.js:381
 msgid "Grant this time only"
 msgstr "Μόνο για αυτή τη φορά"
 
-#: ../js/ui/status/bluetooth.js:393 ../js/ui/telepathyClient.js:1203
+#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1093
 msgid "Reject"
 msgstr "Απόρριψη"
 
-#: ../js/ui/status/bluetooth.js:423
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Επιβεβαίωση σύζευξης για %s"
 
-#: ../js/ui/status/bluetooth.js:429 ../js/ui/status/bluetooth.js:463
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:444
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Η συσκευή %s επιθυμεί να συνδεθεί με αυτόν τον υπολογιστή"
 
-#: ../js/ui/status/bluetooth.js:430
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Παρακαλώ επιβεβαιώστε αν το PIN '%s' ταιριάζει με αυτό στη συσκευή."
 
-#: ../js/ui/status/bluetooth.js:432
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
 msgstr "Ταιριάζει"
 
-#: ../js/ui/status/bluetooth.js:433
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "Δεν ταιριάζει"
 
-#: ../js/ui/status/bluetooth.js:456
+#: ../js/ui/status/bluetooth.js:437
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Αίτηση σύζευξης για %s"
 
-#: ../js/ui/status/bluetooth.js:464
+#: ../js/ui/status/bluetooth.js:445
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Παρακαλώ εισάγετε το PIN που αναφέρεται στην συσκευή"
 
-#: ../js/ui/status/bluetooth.js:480
+#: ../js/ui/status/bluetooth.js:461
 msgid "OK"
 msgstr "ΟΚ"
 
-#: ../js/ui/status/keyboard.js:73
+#: ../js/ui/status/keyboard.js:68
 msgid "Show Keyboard Layout"
 msgstr "Εμφάνιση διάταξης πληκτρολογίου"
 
-#: ../js/ui/status/keyboard.js:78
+#: ../js/ui/status/keyboard.js:73
 msgid "Region and Language Settings"
 msgstr "Ρυθμίσεις  περιοχής και γλώσσας"
 
@@ -1095,129 +1172,137 @@ msgid "<unknown>"
 msgstr "<άγνωστο>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:284
+#: ../js/ui/status/network.js:278
 msgid "disabled"
 msgstr "απενεργοποιημένο"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:483
+#: ../js/ui/status/network.js:489
 msgid "unmanaged"
 msgstr "μη διαχειριζόμενες"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:494
+#: ../js/ui/status/network.js:500
 msgid "authentication required"
 msgstr "απαιτείται πιστοποίηση"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:504
+#: ../js/ui/status/network.js:510
 msgid "firmware missing"
 msgstr "έλλειψη firmware"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:511
+#: ../js/ui/status/network.js:517
 msgid "cable unplugged"
 msgstr "καλώδιο αποσυνδέθηκε"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:516
+#: ../js/ui/status/network.js:522
 msgid "unavailable"
 msgstr "Μη διαθέσιμος-η"
 
-#: ../js/ui/status/network.js:518
+#: ../js/ui/status/network.js:524
 msgid "connection failed"
 msgstr "αποτυχία σύνδεσης"
 
-#: ../js/ui/status/network.js:574 ../js/ui/status/network.js:1531
+#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1505
 msgid "More..."
 msgstr "Περισσότερα..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:610 ../js/ui/status/network.js:1466
+#: ../js/ui/status/network.js:621 ../js/ui/status/network.js:1440
 msgid "Connected (private)"
 msgstr "Συνδεμένο (ιδιωτικό)"
 
-#: ../js/ui/status/network.js:688
+#: ../js/ui/status/network.js:696
 msgid "Auto Ethernet"
 msgstr "Αυτόματα Ethernet"
 
-#: ../js/ui/status/network.js:752
+#: ../js/ui/status/network.js:757
 msgid "Auto broadband"
 msgstr "Αυτόματα Ευρυζωνική"
 
-#: ../js/ui/status/network.js:755
+#: ../js/ui/status/network.js:760
 msgid "Auto dial-up"
 msgstr "Αυτόματα dial-up"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:877 ../js/ui/status/network.js:1478
+#: ../js/ui/status/network.js:879 ../js/ui/status/network.js:1452
 #, c-format
 msgid "Auto %s"
 msgstr "Αυτόματα %s"
 
-#: ../js/ui/status/network.js:879
+#: ../js/ui/status/network.js:881
 msgid "Auto bluetooth"
 msgstr "Αυτόματα bluetooth"
 
-#: ../js/ui/status/network.js:1480
+#: ../js/ui/status/network.js:1454
 msgid "Auto wireless"
 msgstr "Αυτόματα ασύρματο"
 
-#: ../js/ui/status/network.js:1574
+#: ../js/ui/status/network.js:1541
+msgid "Network"
+msgstr "Δίκτυο"
+
+#: ../js/ui/status/network.js:1548
 msgid "Enable networking"
 msgstr "Ενεργοποίηση δικτύωσης"
 
-#: ../js/ui/status/network.js:1586
+#: ../js/ui/status/network.js:1560
 msgid "Wired"
 msgstr "Ενσύρματο"
 
-#: ../js/ui/status/network.js:1597
+#: ../js/ui/status/network.js:1571
 msgid "Wireless"
 msgstr "Ασύρματο"
 
-#: ../js/ui/status/network.js:1607
+#: ../js/ui/status/network.js:1581
 msgid "Mobile broadband"
 msgstr "Κινήτη ευρυζωνική"
 
-#: ../js/ui/status/network.js:1617
+#: ../js/ui/status/network.js:1591
 msgid "VPN Connections"
 msgstr "Συνδέσεις VPN"
 
-#: ../js/ui/status/network.js:1628
+#: ../js/ui/status/network.js:1602
 msgid "Network Settings"
 msgstr "Ρυθμίσεις Δικτύου"
 
-#: ../js/ui/status/network.js:1765
+#: ../js/ui/status/network.js:1739
 msgid "Connection failed"
 msgstr "Αποτυχία σύνδεσης"
 
-#: ../js/ui/status/network.js:1766
+#: ../js/ui/status/network.js:1740
 msgid "Activation of network connection failed"
 msgstr "Αποτυχία ενεργοποίησης σύνδεσης δικτύου"
 
-#: ../js/ui/status/network.js:2016
+#: ../js/ui/status/network.js:1993
 msgid "Networking is disabled"
 msgstr "Η δικτύωση είναι απενεργοποιημένη"
 
-#: ../js/ui/status/network.js:2143
+#: ../js/ui/status/network.js:2117
 msgid "Network Manager"
 msgstr "Διαχειριστής δικτύου"
 
-#: ../js/ui/status/power.js:79
+#: ../js/ui/status/power.js:59
+msgid "Battery"
+msgstr "Μπαταρία"
+
+#: ../js/ui/status/power.js:76
 msgid "Power Settings"
 msgstr "Ρυθμίσεις τροφοδοσίας"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:100
+#: ../js/ui/status/power.js:98
 msgid "Estimating..."
 msgstr "Υπολογισμός..."
 
-#: ../js/ui/status/power.js:107
+#: ../js/ui/status/power.js:105
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -1225,125 +1310,125 @@ msgstr[0] "%d ώρα απομένει"
 msgstr[1] "%d ώρες απομένουν"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:108
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "Απομένουν %d %s %d %s "
 
-#: ../js/ui/status/power.js:112
+#: ../js/ui/status/power.js:110
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "ώρα"
 msgstr[1] "ώρες"
 
-#: ../js/ui/status/power.js:112
+#: ../js/ui/status/power.js:110
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "λεπτό"
 msgstr[1] "λεπτά"
 
-#: ../js/ui/status/power.js:115
+#: ../js/ui/status/power.js:113
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d λεπτό απομένει"
 msgstr[1] "%d λεπτά απομένουν"
 
-#: ../js/ui/status/power.js:118 ../js/ui/status/power.js:191
+#: ../js/ui/status/power.js:116 ../js/ui/status/power.js:186
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:198
+#: ../js/ui/status/power.js:193
 msgid "AC adapter"
 msgstr "Τροφοδοσία AC"
 
-#: ../js/ui/status/power.js:200
+#: ../js/ui/status/power.js:195
 msgid "Laptop battery"
 msgstr "Μπαταρία φορητού"
 
-#: ../js/ui/status/power.js:202
+#: ../js/ui/status/power.js:197
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:204
+#: ../js/ui/status/power.js:199
 msgid "Monitor"
 msgstr "Οθόνη"
 
-#: ../js/ui/status/power.js:206
+#: ../js/ui/status/power.js:201
 msgid "Mouse"
 msgstr "Ποντίκι"
 
-#: ../js/ui/status/power.js:210
+#: ../js/ui/status/power.js:205
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:212
+#: ../js/ui/status/power.js:207
 msgid "Cell phone"
 msgstr "Κινητό"
 
-#: ../js/ui/status/power.js:214
+#: ../js/ui/status/power.js:209
 msgid "Media player"
 msgstr "Αναπαραγωγή πολυμέσων"
 
-#: ../js/ui/status/power.js:216
+#: ../js/ui/status/power.js:211
 msgid "Tablet"
 msgstr "Ταμπλέτα"
 
-#: ../js/ui/status/power.js:218
+#: ../js/ui/status/power.js:213
 msgid "Computer"
 msgstr "Υπολογιστής"
 
-#: ../js/ui/status/volume.js:41
+#. Translators: This is the label for audio volume
+#: ../js/ui/status/volume.js:25 ../js/ui/status/volume.js:39
 msgid "Volume"
 msgstr "Ένταση ήχου"
 
-#: ../js/ui/status/volume.js:53
+#: ../js/ui/status/volume.js:51
 msgid "Microphone"
 msgstr "Μικρόφωνο"
 
-#. We got the TpContact
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:258
+#: ../js/ui/telepathyClient.js:220
 msgid "Invitation"
 msgstr "Πρόσκληση"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:326
+#: ../js/ui/telepathyClient.js:271
 msgid "Call"
 msgstr "Κλήση"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:356
+#: ../js/ui/telepathyClient.js:287
 msgid "File Transfer"
 msgstr "Μεταφορά αρχείου"
 
-#: ../js/ui/telepathyClient.js:437
+#: ../js/ui/telepathyClient.js:369
 msgid "Subscription request"
 msgstr "Αίτηση συνδρομής"
 
-#: ../js/ui/telepathyClient.js:473
+#: ../js/ui/telepathyClient.js:405
 msgid "Connection error"
 msgstr "Σφάλμα σύνδεσης"
 
-#: ../js/ui/telepathyClient.js:740
+#: ../js/ui/telepathyClient.js:663
 #, c-format
 msgid "%s is online."
 msgstr "Ο/η %s είναι συνδεδεμένος"
 
-#: ../js/ui/telepathyClient.js:745
+#: ../js/ui/telepathyClient.js:667
 #, c-format
 msgid "%s is offline."
 msgstr "Ο/η %s είναι αποσυνδεδεμένος"
 
-#: ../js/ui/telepathyClient.js:748
+#: ../js/ui/telepathyClient.js:671
 #, c-format
 msgid "%s is away."
 msgstr "Ο/η '%s' είναι εκτός. "
 
-#: ../js/ui/telepathyClient.js:751
+#: ../js/ui/telepathyClient.js:674
 #, c-format
 msgid "%s is busy."
 msgstr "%s είναι απασχολημένος/η"
@@ -1351,35 +1436,35 @@ msgstr "%s είναι απασχολημένος/η"
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:985
+#: ../js/ui/telepathyClient.js:889
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Στάλθηκε στις  <b>%A</b> και ώρα  <b>%X</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:991
+#: ../js/ui/telepathyClient.js:895
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Στάλθηκε την <b>%A</b>, <b>%d %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:996
+#: ../js/ui/telepathyClient.js:900
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Στάλθηκε την <b>%A</b>, <b>%d %B</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:1038
+#: ../js/ui/telepathyClient.js:942
 #, c-format
 msgid "%s is now known as %s"
 msgstr "Ο/η %s είναι τώρα γνωστός ως %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1147
+#: ../js/ui/telepathyClient.js:1044
 #, c-format
 msgid "Invitation to %s"
 msgstr "Πρόσκληση στο δωμάτιο %s"
@@ -1387,35 +1472,35 @@ msgstr "Πρόσκληση στο δωμάτιο %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1155
+#: ../js/ui/telepathyClient.js:1052
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "Ο/η %s σας προσκαλεί να μπείτε στο δωμάτιο %s"
 
-#: ../js/ui/telepathyClient.js:1157 ../js/ui/telepathyClient.js:1247
-#: ../js/ui/telepathyClient.js:1351
+#: ../js/ui/telepathyClient.js:1054 ../js/ui/telepathyClient.js:1133
+#: ../js/ui/telepathyClient.js:1231
 msgid "Decline"
 msgstr "Άρνηση"
 
-#: ../js/ui/telepathyClient.js:1158 ../js/ui/telepathyClient.js:1248
-#: ../js/ui/telepathyClient.js:1352
+#: ../js/ui/telepathyClient.js:1055 ../js/ui/telepathyClient.js:1134
+#: ../js/ui/telepathyClient.js:1232
 msgid "Accept"
 msgstr "Αποδοχή"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1191
+#: ../js/ui/telepathyClient.js:1085
 #, c-format
 msgid "Video call from %s"
 msgstr "Βιντεοκλήση από %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1194
+#: ../js/ui/telepathyClient.js:1088
 #, c-format
 msgid "Call from %s"
 msgstr "Κλήση από %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1205
+#: ../js/ui/telepathyClient.js:1095
 msgid "Answer"
 msgstr "Απάντηση"
 
@@ -1424,112 +1509,112 @@ msgstr "Απάντηση"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1241
+#: ../js/ui/telepathyClient.js:1127
 #, c-format
 msgid "%s is sending you %s"
 msgstr "Ο/η %s σας στέλνει %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1316
+#: ../js/ui/telepathyClient.js:1196
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "Ο/η %s ζητάει την άδεια σας για να βλέπει πότε είστε συνδεδεμένος"
 
-#: ../js/ui/telepathyClient.js:1414
+#: ../js/ui/telepathyClient.js:1289
 msgid "Network error"
 msgstr "Σφάλμα δικτύου"
 
-#: ../js/ui/telepathyClient.js:1416
+#: ../js/ui/telepathyClient.js:1291
 msgid "Authentication failed"
 msgstr "Απαιτείται πιστοποίηση"
 
-#: ../js/ui/telepathyClient.js:1418
+#: ../js/ui/telepathyClient.js:1293
 msgid "Encryption error"
 msgstr "Σφάλμα κρυπτογράφησης"
 
-#: ../js/ui/telepathyClient.js:1420
+#: ../js/ui/telepathyClient.js:1295
 msgid "Certificate not provided"
 msgstr "Δεν υπάρχει πιστοποιητικό"
 
-#: ../js/ui/telepathyClient.js:1422
+#: ../js/ui/telepathyClient.js:1297
 msgid "Certificate untrusted"
 msgstr "Μη έμπιστο πιστοποιητικό"
 
-#: ../js/ui/telepathyClient.js:1424
+#: ../js/ui/telepathyClient.js:1299
 msgid "Certificate expired"
 msgstr "Ληγμένο πιστοποιητικό"
 
-#: ../js/ui/telepathyClient.js:1426
+#: ../js/ui/telepathyClient.js:1301
 msgid "Certificate not activated"
 msgstr "Το πιστοποιητικό δεν ενεργοποιήθηκε"
 
-#: ../js/ui/telepathyClient.js:1428
+#: ../js/ui/telepathyClient.js:1303
 msgid "Certificate hostname mismatch"
 msgstr "Αταίριαστο όνομα κεντρικού υπολογιστή πιστοποιητικού"
 
-#: ../js/ui/telepathyClient.js:1430
+#: ../js/ui/telepathyClient.js:1305
 msgid "Certificate fingerprint mismatch"
 msgstr "Αταίριαστο αποτύπωμα πιστοποιητικού"
 
-#: ../js/ui/telepathyClient.js:1432
+#: ../js/ui/telepathyClient.js:1307
 msgid "Certificate self-signed"
 msgstr "Αυτο-υπογεγραμμένο πιστοποιητικό"
 
-#: ../js/ui/telepathyClient.js:1434
+#: ../js/ui/telepathyClient.js:1309
 msgid "Status is set to offline"
 msgstr "Η κατάσταση έχει ορισθεί σε αποσυνδεδεμένος"
 
-#: ../js/ui/telepathyClient.js:1436
+#: ../js/ui/telepathyClient.js:1311
 msgid "Encryption is not available"
 msgstr "Δεν υπάρχει διαθέσιμη κρυπτογράφηση"
 
-#: ../js/ui/telepathyClient.js:1438
+#: ../js/ui/telepathyClient.js:1313
 msgid "Certificate is invalid"
 msgstr "Το πιστοποιητικό δεν είναι έγκυρο"
 
-#: ../js/ui/telepathyClient.js:1440
+#: ../js/ui/telepathyClient.js:1315
 msgid "Connection has been refused"
 msgstr "Άρνηση σύνδεσης"
 
-#: ../js/ui/telepathyClient.js:1442
+#: ../js/ui/telepathyClient.js:1317
 msgid "Connection can't be established"
 msgstr "Δεν είναι δυνατή η σύνδεση"
 
-#: ../js/ui/telepathyClient.js:1444
+#: ../js/ui/telepathyClient.js:1319
 msgid "Connection has been lost"
 msgstr "Η σύνδεση χάθηκε"
 
-#: ../js/ui/telepathyClient.js:1446
-msgid "This resource is already connected to the server"
-msgstr "Αυτός ο πόρος είναι ήδη συνδεδεμένος με τον εξυπηρετητή"
+#: ../js/ui/telepathyClient.js:1321
+msgid "This account is already connected to the server"
+msgstr "Αυτός ο λογαριασμός είναι ήδη συνδεδεμένος με τον εξυπηρετητή"
 
-#: ../js/ui/telepathyClient.js:1448
+#: ../js/ui/telepathyClient.js:1323
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Η σύνδεση έχει αντικατασταθεί από μια νέα σύνδεση που χρησιμοποιεί τον ίδιο "
 "πόρο"
 
-#: ../js/ui/telepathyClient.js:1450
+#: ../js/ui/telepathyClient.js:1325
 msgid "The account already exists on the server"
 msgstr "Ο λογαριασμός υπάρχει ήδη στον διακομιστή"
 
-#: ../js/ui/telepathyClient.js:1452
+#: ../js/ui/telepathyClient.js:1327
 msgid "Server is currently too busy to handle the connection"
 msgstr "Ο διακομιστής είναι πολύ απασχολημένος ώστε να χειριστεί την σύνδεση"
 
-#: ../js/ui/telepathyClient.js:1454
+#: ../js/ui/telepathyClient.js:1329
 msgid "Certificate has been revoked"
 msgstr "Το πιστοποιητικό έχει ανακληθεί"
 
-#: ../js/ui/telepathyClient.js:1456
+#: ../js/ui/telepathyClient.js:1331
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Το πιστοποιητικό χρησιμοποιεί ένα μη ασφαλή αλγόριθμο αποτυπώματος ή είναι "
 "αδύναμα κρυπτογραφημένο"
 
-#: ../js/ui/telepathyClient.js:1458
+#: ../js/ui/telepathyClient.js:1333
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1538,70 +1623,74 @@ msgstr ""
 "πιστοποιητικού του εξυπηρετητή υπερβαίνει τα όρια που επιτρέπει η βιβλιοθήκη "
 "κρυπτογραφίας"
 
+#: ../js/ui/telepathyClient.js:1335
+msgid "Internal error"
+msgstr "Εσωτερικό σφάλμα"
+
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1467
+#: ../js/ui/telepathyClient.js:1345
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Η σύνδεση στο %s απέτυχε"
 
-#: ../js/ui/telepathyClient.js:1476
+#: ../js/ui/telepathyClient.js:1354
 msgid "Reconnect"
 msgstr "Επανασύνδεση"
 
-#: ../js/ui/telepathyClient.js:1477
+#: ../js/ui/telepathyClient.js:1355
 msgid "Edit account"
 msgstr "Επεξεργασία λογαριασμού"
 
-#: ../js/ui/telepathyClient.js:1523
+#: ../js/ui/telepathyClient.js:1401
 msgid "Unknown reason"
 msgstr "Άγνωστος λόγος"
 
-#: ../js/ui/userMenu.js:144
+#: ../js/ui/userMenu.js:135
 msgid "Hidden"
 msgstr "Αόρατος"
 
-#: ../js/ui/userMenu.js:150
+#: ../js/ui/userMenu.js:141
 msgid "Idle"
 msgstr "Αδρανής"
 
-#: ../js/ui/userMenu.js:153
+#: ../js/ui/userMenu.js:144
 msgid "Unavailable"
 msgstr "Μη διαθέσιμος-η"
 
-#: ../js/ui/userMenu.js:589 ../js/ui/userMenu.js:593 ../js/ui/userMenu.js:663
+#: ../js/ui/userMenu.js:595 ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:669
 msgid "Power Off..."
 msgstr "Απενεργοποίηση..."
 
-#: ../js/ui/userMenu.js:625
+#: ../js/ui/userMenu.js:631
 msgid "Notifications"
 msgstr "Ειδοποιήσεις"
 
-#: ../js/ui/userMenu.js:633
+#: ../js/ui/userMenu.js:639
 msgid "Online Accounts"
 msgstr "Διαδικτυακοί λογαριασμοί"
 
-#: ../js/ui/userMenu.js:637
+#: ../js/ui/userMenu.js:643
 msgid "System Settings"
 msgstr "Ρυθμίσεις συστήματος"
 
-#: ../js/ui/userMenu.js:644
+#: ../js/ui/userMenu.js:650
 msgid "Lock Screen"
 msgstr "Κλείδωμα οθόνης"
 
-#: ../js/ui/userMenu.js:649
+#: ../js/ui/userMenu.js:655
 msgid "Switch User"
 msgstr "Αλλαγή χρήστη"
 
-#: ../js/ui/userMenu.js:654
+#: ../js/ui/userMenu.js:660
 msgid "Log Out..."
 msgstr "Αποσύνδεση..."
 
-#: ../js/ui/userMenu.js:682
+#: ../js/ui/userMenu.js:688
 msgid "Your chat status will be set to busy"
 msgstr "Η κατάσταση συνομιλίας σας θα ορισθεί σε απασχολημένος"
 
-#: ../js/ui/userMenu.js:683
+#: ../js/ui/userMenu.js:689
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1614,22 +1703,40 @@ msgstr ""
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:121
+#: ../js/ui/viewSelector.js:113
 msgid "Type to search..."
 msgstr "Πληκτρολογήστε για αναζήτηση..."
 
-#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:244
+#: ../js/ui/viewSelector.js:131 ../src/shell-util.c:252
 msgid "Search"
 msgstr "Αναζήτηση"
 
-#: ../js/ui/windowAttentionHandler.js:35
+#: ../js/ui/wanda.js:124
+#, c-format
+msgid ""
+"Sorry, no wisdom for you today:\n"
+"%s"
+msgstr ""
+"Συγγνώμη, κανένα απόφθεγμα για εσάς σήμερα:\n"
+"%s"
+
+#: ../js/ui/wanda.js:128
+#, c-format
+msgid "%s the Oracle says"
+msgstr "%s ο Προφήτης λέει"
+
+#: ../js/ui/wanda.js:168
+msgid "Your favorite Easter Egg"
+msgstr "Το αγαπημένο σας  Easter Egg"
+
+#: ../js/ui/windowAttentionHandler.js:19
 #, c-format
 msgid "'%s' is ready"
 msgstr "Το '%s' είναι έτοιμο"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1100
+#: ../src/gvc/gvc-mixer-control.c:1089
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1638,29 +1745,37 @@ msgstr[1] "%u έξοδοι"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1110
+#: ../src/gvc/gvc-mixer-control.c:1099
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u είσοδος"
 msgstr[1] "%u είσοδοι"
 
-#: ../src/gvc/gvc-mixer-control.c:1408
+#: ../src/gvc/gvc-mixer-control.c:1397
 msgid "System Sounds"
 msgstr "Ήχοι συστήματος"
 
-#: ../src/main.c:508
+#: ../src/main.c:255
 msgid "Print version"
 msgstr "Εκτύπωση έκδοσης"
 
-#: ../src/main.c:514
+#: ../src/main.c:261
 msgid "Mode used by GDM for login screen"
 msgstr "Λειτουργία που απαιτείται από το GDM για την οθόνη σύνδεσης."
 
-#: ../src/shell-app.c:567
+#: ../src/shell-app.c:619
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Αποτυχία εκκίνησης '%s'"
+
+#: ../src/shell-keyring-prompt.c:708
+msgid "Passwords do not match."
+msgstr "Οι κωδικοί δεν ταιριάζουν."
+
+#: ../src/shell-keyring-prompt.c:716
+msgid "Password cannot be blank"
+msgstr "Ο κωδικός δεν μπορεί να είναι κενός"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
@@ -1670,19 +1785,19 @@ msgstr "Ηνωμένο Βασίλειο"
 msgid "Default"
 msgstr "Προεπιλογή"
 
-#: ../src/shell-polkit-authentication-agent.c:334
+#: ../src/shell-polkit-authentication-agent.c:339
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Το παράθυρο πιστοποίησης έκλεισε από τον χρήστη"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:89
+#: ../src/shell-util.c:97
 msgid "Home"
 msgstr "Προσωπικός φάκελος"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:98
+#: ../src/shell-util.c:106
 msgid "File System"
 msgstr "Σύστημα αρχείων"
 
@@ -1691,10 +1806,13 @@ msgstr "Σύστημα αρχείων"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:294
+#: ../src/shell-util.c:302
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "RECENT ITEMS"
+#~ msgstr "ΠΡΟΣΦΑΤΑ ΑΝΤΙΚΕΙΜΕΝΑ"
 
 #~ msgid ""
 #~ "GNOME Shell extensions have a uuid property; this key lists extensions "
