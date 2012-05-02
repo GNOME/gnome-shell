@@ -147,21 +147,27 @@ _cogl_buffer_bind_no_create (CoglBuffer *buffer,
 }
 
 static GLenum
-_cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
-                               CoglBufferUpdateHint update_hint)
+_cogl_buffer_hints_to_gl_enum (CoglBuffer *buffer)
 {
-  /* usage hint is always TEXTURE for now */
-  if (update_hint == COGL_BUFFER_UPDATE_HINT_STATIC)
-    return GL_STATIC_DRAW;
-  if (update_hint == COGL_BUFFER_UPDATE_HINT_DYNAMIC)
-    return GL_DYNAMIC_DRAW;
-  /* OpenGL ES 1.1 and 2 only know about STATIC_DRAW and DYNAMIC_DRAW */
-#ifdef HAVE_COGL_GL
-  if (update_hint == COGL_BUFFER_UPDATE_HINT_STREAM)
-    return GL_STREAM_DRAW;
-#endif
+  /* usage hint is always DRAW for now */
+  switch (buffer->update_hint)
+    {
+    case COGL_BUFFER_UPDATE_HINT_STATIC:
+      return GL_STATIC_DRAW;
+    case COGL_BUFFER_UPDATE_HINT_DYNAMIC:
+      return GL_DYNAMIC_DRAW;
 
-  return GL_STATIC_DRAW;
+    case COGL_BUFFER_UPDATE_HINT_STREAM:
+      /* OpenGL ES 1.1 only knows about STATIC_DRAW and DYNAMIC_DRAW */
+#if defined(HAVE_COGL_GL) || defined(HAVE_COGL_GLES2)
+      if (buffer->context->driver != COGL_DRIVER_GLES1)
+        return GL_STREAM_DRAW;
+#else
+      return GL_DYNAMIC_DRAW;
+#endif
+    }
+
+  g_assert_not_reached ();
 }
 
 static void
@@ -173,8 +179,7 @@ bo_recreate_store (CoglBuffer *buffer)
   /* This assumes the buffer is already bound */
 
   gl_target = convert_bind_target_to_gl_target (buffer->last_target);
-  gl_enum = _cogl_buffer_hints_to_gl_enum (buffer->usage_hint,
-                                           buffer->update_hint);
+  gl_enum = _cogl_buffer_hints_to_gl_enum (buffer);
 
   GE( buffer->context, glBufferData (gl_target,
                                      buffer->size,
