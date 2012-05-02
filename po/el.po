@@ -4,336 +4,356 @@
 # ioza1964 <ioza1964@yahoo.gr>, 2011.
 # Ιωάννης Ζαμπούκας <ioza1964@yahoo.gr>, 2011.
 # Simos Xenitellis <simos@gnome.org>, 2011.
-#
+# Κωνσταντίνος Χόρτης <cograss@yahoo.com>, 2012.
+# Kostas Papadimas <pkst@gnome.org>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter\n"
-"POT-Creation-Date: 2012-03-05 23:14+0000\n"
-"PO-Revision-Date: 2011-11-13 16:03+0200\n"
-"Last-Translator: Simos Xenitellis <simos@gnome.org>\n"
-"Language-Team: Greek <team@gnome.gr>\n"
+"Report-Msgid-Bugs-To: "
+"http://bugzilla.gnome.org/enter_bug.cgi?product=clutter\n"
+"POT-Creation-Date: 2012-05-02 10:18+0300\n"
+"PO-Revision-Date: 2012-05-02 10:22+0300\n"
+"Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
+"Language-Team: team@gnome.gr\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
 
-#: cogl/cogl-debug.c:172
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
-msgstr "Υποστηριζόμενες τιμές εκσφαλμάτωσης:"
+msgstr "Υποστηριζόμενες τιμές αποσφαλμάτωσης:"
 
-#: cogl/cogl-debug.c:177
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
-msgstr ""
+msgstr "Ειδικές τιμές αποσφαλμάτωσης"
 
-#: cogl/cogl-debug.c:179 cogl/cogl-debug.c:181
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
-msgstr ""
+msgstr "Ενεργοποιεί όλες τις επιλογές μη συμπεριφορικής αποσφαλμάτωσης"
 
-#: cogl/cogl-debug.c:225
+#: ../cogl/cogl-debug.c:227
 msgid "Cogl debugging flags to set"
 msgstr "Ενεργοποίηση σημαιών αποσφαλμάτωσης Cogl"
 
-#: cogl/cogl-debug.c:227
+#: ../cogl/cogl-debug.c:229
 msgid "Cogl debugging flags to unset"
 msgstr "Απενεργοποίηση σημαιών αποσφαλμάτωσης Cogl"
 
-#: cogl/cogl-debug.c:276
+#: ../cogl/cogl-debug.c:278
 msgid "Cogl Options"
 msgstr "Επιλογές Cogl"
 
-#: cogl/cogl-debug.c:277
+#: ../cogl/cogl-debug.c:279
 msgid "Show Cogl options"
 msgstr "Εμφάνιση επιλογών Cogl"
 
-#: cogl/cogl-debug-options.h:25 cogl/cogl-debug-options.h:30
-#: cogl/cogl-debug-options.h:35 cogl/cogl-debug-options.h:40
-#: cogl/cogl-debug-options.h:45 cogl/cogl-debug-options.h:50
-#: cogl/cogl-debug-options.h:55 cogl/cogl-debug-options.h:61
-#: cogl/cogl-debug-options.h:66 cogl/cogl-debug-options.h:71
-#: cogl/cogl-debug-options.h:158 cogl/cogl-debug-options.h:163
-#: cogl/cogl-debug-options.h:168 cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
+#: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
+#: ../cogl/cogl-debug-options.h:45 ../cogl/cogl-debug-options.h:50
+#: ../cogl/cogl-debug-options.h:55 ../cogl/cogl-debug-options.h:61
+#: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
+#: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
+#: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
-msgstr ""
+msgstr "Εντοπισμός Cogl"
 
-#: cogl/cogl-debug-options.h:27
+#: ../cogl/cogl-debug-options.h:27
 msgid "CoglObject references"
-msgstr ""
+msgstr "Αναφορές του CoglObject"
 
-#: cogl/cogl-debug-options.h:28
+#: ../cogl/cogl-debug-options.h:28
 msgid "Debug ref counting issues for CoglObjects"
-msgstr ""
+msgstr "Αποσφαλμάτωση αναφορά καταμέτρησης ζητημάτων για το CoglObjects"
 
-#: cogl/cogl-debug-options.h:32
+#: ../cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
-msgstr ""
+msgstr "Ανίχνευση τεμαχισμoύ Υφής"
 
-#: cogl/cogl-debug-options.h:33
+#: ../cogl/cogl-debug-options.h:33
 msgid "debug the creation of texture slices"
-msgstr ""
+msgstr "αποσφαλμάτωση της δημιουργίας τεμαχισμoύ υφής"
 
-#: cogl/cogl-debug-options.h:37
+#: ../cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
-msgstr ""
+msgstr "Ανίχνευση υφών Atlas"
 
-#: cogl/cogl-debug-options.h:38
+#: ../cogl/cogl-debug-options.h:38
 msgid "Debug texture atlas management"
-msgstr ""
+msgstr "Αποσφαλμάτωση διαχείρισης υφών atlas"
 
-#: cogl/cogl-debug-options.h:42
+#: ../cogl/cogl-debug-options.h:42
 msgid "Trace Blend Strings"
-msgstr ""
+msgstr "Ανίχνευση Συμβολοσειρών Blend"
 
-#: cogl/cogl-debug-options.h:43
+#: ../cogl/cogl-debug-options.h:43
 msgid "Debug CoglBlendString parsing"
-msgstr ""
+msgstr "Αποσφαλμάτωση ανάλυσης CoglBlendString"
 
-#: cogl/cogl-debug-options.h:47
+#: ../cogl/cogl-debug-options.h:47
 msgid "Trace Journal"
-msgstr ""
+msgstr "Ανίχνευση Αναφοράς"
 
-#: cogl/cogl-debug-options.h:48
+#: ../cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
-msgstr ""
+msgstr "Προβολή όλης της γεωμετρίας που διέρχεται από την αναφορά"
 
-#: cogl/cogl-debug-options.h:52
+#: ../cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
-msgstr ""
+msgstr "Ανίχνευση ουράς ενεργειών"
 
-#: cogl/cogl-debug-options.h:53
+#: ../cogl/cogl-debug-options.h:53
 msgid "Show how geometry is being batched in the journal"
-msgstr ""
+msgstr "Προβολή γεωμετρίας της ουράς ενεργειών στην αναφορά"
 
-#: cogl/cogl-debug-options.h:57
+#: ../cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
-msgstr ""
+msgstr "Ανίχνευση μητρών"
 
-#: cogl/cogl-debug-options.h:58
+#: ../cogl/cogl-debug-options.h:58
 msgid "Trace all matrix manipulation"
-msgstr ""
+msgstr "Εντοπισμός όλων των χειραγωγήσεων μητρών"
 
-#: cogl/cogl-debug-options.h:63
+#: ../cogl/cogl-debug-options.h:63
 msgid "Trace Misc Drawing"
-msgstr ""
+msgstr "Ανίχνευση Διάφορων Σχεδίων"
 
-#: cogl/cogl-debug-options.h:64
+#: ../cogl/cogl-debug-options.h:64
 msgid "Trace some misc drawing operations"
-msgstr ""
+msgstr "Ανίχνευση Διάφορων Λειτουργειών Σχέδιων"
 
-#: cogl/cogl-debug-options.h:68
+#: ../cogl/cogl-debug-options.h:68
 msgid "Trace Pango Renderer"
-msgstr ""
+msgstr "Ανίχνευση απεικoνιστή Pango"
 
-#: cogl/cogl-debug-options.h:69
+#: ../cogl/cogl-debug-options.h:69
 msgid "Trace the Cogl Pango renderer"
-msgstr ""
+msgstr "Ανίχνευση του απεικoνιστή Cogl Pango"
 
-#: cogl/cogl-debug-options.h:73
+#: ../cogl/cogl-debug-options.h:73
 msgid "Trace CoglTexturePixmap backend"
-msgstr ""
+msgstr "Ανίχνευση συστήματος υποστήριξης CoglTexturePixmap"
 
-#: cogl/cogl-debug-options.h:74
+#: ../cogl/cogl-debug-options.h:74
 msgid "Trace the Cogl texture pixmap backend"
-msgstr ""
+msgstr "Ανίχνευση συστήματος υποστήριξης Cogl Texture Pixmap"
 
-#: cogl/cogl-debug-options.h:76 cogl/cogl-debug-options.h:81
+#: ../cogl/cogl-debug-options.h:76 ../cogl/cogl-debug-options.h:81
 msgid "Visualize"
-msgstr ""
+msgstr "Απεικόνιση"
 
-#: cogl/cogl-debug-options.h:78
+#: ../cogl/cogl-debug-options.h:78
 msgid "Outline rectangles"
-msgstr ""
+msgstr "Περίγραμμα ορθογωνίων"
 
-#: cogl/cogl-debug-options.h:79
+#: ../cogl/cogl-debug-options.h:79
 msgid "Add wire outlines for all rectangular geometry"
-msgstr ""
+msgstr "Προσθήκη γραμμικών περιγραμμάτων για όλα τα ορθογώνια"
 
-#: cogl/cogl-debug-options.h:83
+#: ../cogl/cogl-debug-options.h:83
 msgid "Show wireframes"
-msgstr ""
+msgstr "Εμφάνηση γραμμικών σχημάτων"
 
-#: cogl/cogl-debug-options.h:84
+#: ../cogl/cogl-debug-options.h:84
 msgid "Add wire outlines for all geometry"
-msgstr ""
+msgstr "Προσθήκη γραμμικών περιγραμμάτων σε όλη τη γεωμετρία"
 
-#: cogl/cogl-debug-options.h:86 cogl/cogl-debug-options.h:91
-#: cogl/cogl-debug-options.h:96 cogl/cogl-debug-options.h:101
-#: cogl/cogl-debug-options.h:111 cogl/cogl-debug-options.h:116
-#: cogl/cogl-debug-options.h:122 cogl/cogl-debug-options.h:127
-#: cogl/cogl-debug-options.h:132 cogl/cogl-debug-options.h:137
-#: cogl/cogl-debug-options.h:142 cogl/cogl-debug-options.h:147
-#: cogl/cogl-debug-options.h:153 cogl/cogl-debug-options.h:173
-#: cogl/cogl-debug-options.h:178
+#: ../cogl/cogl-debug-options.h:86 ../cogl/cogl-debug-options.h:91
+#: ../cogl/cogl-debug-options.h:96 ../cogl/cogl-debug-options.h:101
+#: ../cogl/cogl-debug-options.h:111 ../cogl/cogl-debug-options.h:116
+#: ../cogl/cogl-debug-options.h:122 ../cogl/cogl-debug-options.h:127
+#: ../cogl/cogl-debug-options.h:132 ../cogl/cogl-debug-options.h:137
+#: ../cogl/cogl-debug-options.h:142 ../cogl/cogl-debug-options.h:147
+#: ../cogl/cogl-debug-options.h:153 ../cogl/cogl-debug-options.h:173
+#: ../cogl/cogl-debug-options.h:178
 msgid "Root Cause"
-msgstr ""
+msgstr "Βασική Αιτία"
 
-#: cogl/cogl-debug-options.h:88
+#: ../cogl/cogl-debug-options.h:88
 msgid "Disable Journal batching"
-msgstr ""
+msgstr "Απενεργοποίηση αναφοράς ουράς ενεργειών"
 
-#: cogl/cogl-debug-options.h:89
+#: ../cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
-msgstr ""
+msgstr "Απενεργοποίηση ουράς ενεργειών γεωμετρίας στην αναφορά Cogl"
 
-#: cogl/cogl-debug-options.h:93
+#: ../cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
-msgstr ""
+msgstr "Απενεργοποίηση Ρυθμιστών GL Vertex"
 
-#: cogl/cogl-debug-options.h:94
+#: ../cogl/cogl-debug-options.h:94
 msgid "Disable use of OpenGL vertex buffer objects"
-msgstr ""
+msgstr "Απενεργοποίηση όλων των Ρυθμιστών OpenGL Vertex"
 
-#: cogl/cogl-debug-options.h:98
+#: ../cogl/cogl-debug-options.h:98
 msgid "Disable GL Pixel Buffers"
-msgstr ""
+msgstr "Απενεργοποίηση Ρυθμιστών GL Pixel"
 
-#: cogl/cogl-debug-options.h:99
+#: ../cogl/cogl-debug-options.h:99
 msgid "Disable use of OpenGL pixel buffer objects"
-msgstr ""
+msgstr "Απενεργοποίηση όλων των Ρυθμιστών OpenGL Pixel"
 
-#: cogl/cogl-debug-options.h:103
+#: ../cogl/cogl-debug-options.h:103
 msgid "Disable software rect transform"
-msgstr ""
+msgstr "Απενεργοποιήση του μετασχηματισμού λογισμικού rect"
 
-#: cogl/cogl-debug-options.h:104
+#: ../cogl/cogl-debug-options.h:104
 msgid "Use the GPU to transform rectangular geometry"
-msgstr ""
+msgstr "Χρήση του GPU για τη μετατροπή ορθογώνιας γεωμετρίας"
 
-#: cogl/cogl-debug-options.h:106
+#: ../cogl/cogl-debug-options.h:106
 msgid "Cogl Specialist"
-msgstr ""
+msgstr "Ειδικός Cogl"
 
-#: cogl/cogl-debug-options.h:108
+#: ../cogl/cogl-debug-options.h:108
 msgid "Dump atlas images"
-msgstr ""
+msgstr "Απόρριψη εικόνων atlas"
 
-#: cogl/cogl-debug-options.h:109
+#: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
-msgstr ""
+msgstr "Απόρριψη αλλαγών των υφών atlas σε αρχείο απεικόνισης"
 
-#: cogl/cogl-debug-options.h:113
+#: ../cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
-msgstr ""
+msgstr "Απενεργοποίηση ατλαντοποίησης υφών"
 
-#: cogl/cogl-debug-options.h:114
+#: ../cogl/cogl-debug-options.h:114
 msgid "Disable use of texture atlasing"
-msgstr ""
+msgstr "Απενεργοποίηση χρήσης της ατλαντοποίησης υφών"
 
-#: cogl/cogl-debug-options.h:118
+#: ../cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
 msgstr ""
+"Απενεργοποίηση κοινής χρήσης της υφής atlas μεταξύ κειμένου και εικόνων"
 
-#: cogl/cogl-debug-options.h:119
+#: ../cogl/cogl-debug-options.h:119
 msgid ""
 "When this is set the glyph cache will always use a separate texture for its "
 "atlas. Otherwise it will try to share the atlas with images."
 msgstr ""
+"Όταν αυτό έχει οριστεί η μνήμη glyph cache θα χρησιμοποιεί μια ξεχωριστή υφή "
+"γιαatlas. Διαφορετικά, θα προσπαθεί να μοιραστεί το atlas με εικόνες."
 
-#: cogl/cogl-debug-options.h:124
+#: ../cogl/cogl-debug-options.h:124
 msgid "Disable texturing"
-msgstr ""
+msgstr "Απενεργοποίηση δημιουργίας υφών"
 
-#: cogl/cogl-debug-options.h:125
+#: ../cogl/cogl-debug-options.h:125
 msgid "Disable texturing any primitives"
-msgstr ""
+msgstr "Απενεργοποίηση δημιουργίας υφών των αρχέτυπων"
 
-#: cogl/cogl-debug-options.h:129
+#: ../cogl/cogl-debug-options.h:129
 msgid "Disable arbfp"
-msgstr ""
+msgstr "Απενεργοποίηση arbfp"
 
-#: cogl/cogl-debug-options.h:130
+#: ../cogl/cogl-debug-options.h:130
 msgid "Disable use of ARB fragment programs"
-msgstr ""
+msgstr "Απενεργοποίηση χρήσης σκελίδων λογισμικού ARB"
 
-#: cogl/cogl-debug-options.h:134
+#: ../cogl/cogl-debug-options.h:134
 msgid "Disable fixed"
-msgstr ""
+msgstr "Απενεργοποίηση καθορισμένων"
 
-#: cogl/cogl-debug-options.h:135
+#: ../cogl/cogl-debug-options.h:135
 msgid "Disable use of the fixed function pipeline backend"
-msgstr ""
+msgstr "Απενεργοποίηση χρήσης της καθορισμένης ρουτίνας συστήματος υποστήριξης"
 
-#: cogl/cogl-debug-options.h:139
+#: ../cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
-msgstr ""
+msgstr "Απενεργοποίηση του GLSL"
 
-#: cogl/cogl-debug-options.h:140
+#: ../cogl/cogl-debug-options.h:140
 msgid "Disable use of GLSL"
-msgstr ""
+msgstr "Απενεργοποίηση χρήσης του GLSL"
 
-#: cogl/cogl-debug-options.h:144
+#: ../cogl/cogl-debug-options.h:144
 msgid "Disable blending"
-msgstr ""
+msgstr "Απενεργοποίηση blending"
 
-#: cogl/cogl-debug-options.h:145
+#: ../cogl/cogl-debug-options.h:145
 msgid "Disable use of blending"
-msgstr ""
+msgstr "Απενεργοποίηση χρήσης του blending"
 
-#: cogl/cogl-debug-options.h:149
+#: ../cogl/cogl-debug-options.h:149
 msgid "Disable non-power-of-two textures"
-msgstr ""
+msgstr "Απενεργοποίηση μη-τετραγωνικών υφών"
 
-#: cogl/cogl-debug-options.h:150
+#: ../cogl/cogl-debug-options.h:150
 msgid ""
 "Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
 "will create sliced textures or textures with waste instead."
 msgstr ""
+"Κάνει το Cogl να βλέπει οτι ο οδηγός GL δέν υποστηρίζει υφές NOPT ώστε αντ' "
+"αυτού θα δημιουργεί υφές φέτες ή υφές με σκουπίδια"
 
-#: cogl/cogl-debug-options.h:155
+#: ../cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
-msgstr ""
+msgstr "Απενεργοποίηση περικοπής λογισμικού"
 
-#: cogl/cogl-debug-options.h:156
+#: ../cogl/cogl-debug-options.h:156
 msgid "Disables Cogl's attempts to clip some rectangles in software."
 msgstr ""
+"Απενεργοποιεί τις προσπάθειες του cogl να περικόψει κάποια ορθογώνια στο "
+"λογισμικό"
 
-#: cogl/cogl-debug-options.h:160
+#: ../cogl/cogl-debug-options.h:160
 msgid "Show source"
-msgstr ""
+msgstr "Προβολή πηγαίου"
 
-#: cogl/cogl-debug-options.h:161
+#: ../cogl/cogl-debug-options.h:161
 msgid "Show generated ARBfp/GLSL source code"
-msgstr ""
+msgstr "Προβολή δημιουργηθέντος πηγαίου κώδικα ARBfp/GLSL"
 
-#: cogl/cogl-debug-options.h:165
+#: ../cogl/cogl-debug-options.h:165
 msgid "Trace some OpenGL"
-msgstr ""
+msgstr "Ανίχνευση κάποιου OpenGL"
 
-#: cogl/cogl-debug-options.h:166
+#: ../cogl/cogl-debug-options.h:166
 msgid "Traces some select OpenGL calls"
-msgstr ""
+msgstr "Ανιχνέυει κάποια OpenGL calls"
 
-#: cogl/cogl-debug-options.h:170
+#: ../cogl/cogl-debug-options.h:170
 msgid "Trace offscreen support"
-msgstr ""
+msgstr "Ανίχνευση υποστήριξης offscreen"
 
-#: cogl/cogl-debug-options.h:171
+#: ../cogl/cogl-debug-options.h:171
 msgid "Debug offscreen support"
-msgstr ""
+msgstr "Αποσφαλμάτωση υποστήριξης offscreen"
 
-#: cogl/cogl-debug-options.h:175
+#: ../cogl/cogl-debug-options.h:175
 msgid "Disable program caches"
-msgstr ""
+msgstr "Απενεργοποίηση μνήμης cache προγραμμάτων"
 
-#: cogl/cogl-debug-options.h:176
+#: ../cogl/cogl-debug-options.h:176
 msgid "Disable fallback caches for arbfp and glsl programs"
-msgstr ""
+msgstr "Απενεργοποίηση αναδίπλωσης μνήμης cache για arbfp και glsl προγράμματα"
 
-#: cogl/cogl-debug-options.h:180
+#: ../cogl/cogl-debug-options.h:180
 msgid "Disable read pixel optimization"
-msgstr ""
+msgstr "Απενεργοποίηση βελτιστοποίησης read pixel"
 
-#: cogl/cogl-debug-options.h:181
+#: ../cogl/cogl-debug-options.h:181
 msgid ""
 "Disable optimization for reading 1px for simple scenes of opaque rectangles"
 msgstr ""
+"Απενεργοποίηση βελτιστοποίησης για την ανάγνωση 1px για απλές σκηνές "
+"αδιαφανών ορθογωνίων"
 
-#: cogl/cogl-debug-options.h:186
+#: ../cogl/cogl-debug-options.h:186
 msgid "Trace clipping"
+msgstr "Ανίχνευση περικοπών"
+
+#: ../cogl/cogl-debug-options.h:187
+msgid "Logs information about how Cogl is implementing clipping"
+msgstr "Καταγραφή πληροφοριών σχετικά με το πώς το Cogl εφαρμόζει περικοπές"
+
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
 msgstr ""
 
-#: cogl/cogl-debug-options.h:187
-msgid "Logs information about how Cogl is implementing clipping"
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
 msgstr ""
