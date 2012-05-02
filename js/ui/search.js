@@ -379,14 +379,19 @@ const SearchSystem = new Lang.Class({
             }
         }
 
+        let previousResultsArr = this._previousResults;
+
         let results = [];
+        this._previousTerms = terms;
+        this._previousResults = results;
+
         if (isSubSearch) {
             for (let i = 0; i < this._providers.length; i++) {
-                let [provider, previousResults] = this._previousResults[i];
+                let [provider, previousResults] = previousResultsArr[i];
                 try {
                     if (provider.async) {
-                        provider.getSubsearchResultSetAsync(previousResults, terms);
                         results.push([provider, []]);
+                        provider.getSubsearchResultSetAsync(previousResults, terms);
                     } else {
                         let providerResults = provider.getSubsearchResultSet(previousResults, terms);
                         results.push([provider, providerResults]);
@@ -400,8 +405,8 @@ const SearchSystem = new Lang.Class({
                 let provider = this._providers[i];
                 try {
                     if (provider.async) {
-                        provider.getInitialResultSetAsync(terms);
                         results.push([provider, []]);
+                        provider.getInitialResultSetAsync(terms);
                     } else {
                         let providerResults = provider.getInitialResultSet(terms);
                         results.push([provider, providerResults]);
@@ -412,8 +417,6 @@ const SearchSystem = new Lang.Class({
             }
         }
 
-        this._previousTerms = terms;
-        this._previousResults = results;
         this.emit('search-completed', results);
     },
 });
