@@ -119,13 +119,7 @@ const GridSearchResults = new Lang.Class({
                 if (results.length == 0)
                     return;
 
-                if (provider.async) {
-                    provider.getResultMetasAsync(results,
-                                                 Lang.bind(this, this.renderResults));
-                } else {
-                    let metas = provider.getResultMetas(results);
-                    this.renderResults(metas);
-                }
+                provider.getResultMetas(results, Lang.bind(this, this.renderResults));
             }));
         }));
         this._notDisplayedResult = [];
@@ -390,29 +384,21 @@ const SearchResults = new Lang.Class({
             meta.resultDisplay.setResults(providerResults, terms);
             let results = meta.resultDisplay.getResultsForDisplay();
 
-            if (provider.async) {
-                provider.getResultMetasAsync(results, Lang.bind(this,
-                    function(metas) {
-                        this._clearDisplayForProvider(provider);
-                        meta.actor.show();
-
-                        // Hinding drops the key focus if we have it
-                        let focus = global.stage.get_key_focus();
-                        this._content.hide();
-
-                        meta.resultDisplay.renderResults(metas);
-                        this._maybeSetInitialSelection();
-
-                        this._content.show();
-                        if (this._content.contains(focus))
-                            global.stage.set_key_focus(focus);
-                    }));
-            } else {
-                let metas = provider.getResultMetas(results);
+            provider.getResultMetas(results, Lang.bind(this, function(metas) {
                 this._clearDisplayForProvider(provider);
                 meta.actor.show();
+
+                // Hinding drops the key focus if we have it
+                let focus = global.stage.get_key_focus();
+                this._content.hide();
+
                 meta.resultDisplay.renderResults(metas);
-            }
+                this._maybeSetInitialSelection();
+
+                this._content.show();
+                if (this._content.contains(focus))
+                    global.stage.set_key_focus(focus);
+            }));
         }
         this._maybeSetInitialSelection();
     },
@@ -436,9 +422,7 @@ const SearchResults = new Lang.Class({
         for (let i = 0; i < results.length; i++) {
             let [provider, providerResults] = results[i];
             let meta = this._metaForProvider(provider);
-            meta.hasPendingResults = provider.async;
-            if (!meta.hasPendingResults)
-                this._updateProviderResults(provider, providerResults, terms);
+            meta.hasPendingResults = true;
         }
 
         this._content.show();

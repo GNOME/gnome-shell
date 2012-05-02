@@ -91,7 +91,6 @@ const RemoteSearchProvider = new Lang.Class({
                                               dbusName, dbusPath);
 
         this.parent(title.toUpperCase());
-        this.async = true;
         this._cancellable = new Gio.Cancellable();
     },
 
@@ -120,7 +119,7 @@ const RemoteSearchProvider = new Lang.Class({
         this.searchSystem.pushResults(this, results[0]);
     },
 
-    getInitialResultSetAsync: function(terms) {
+    getInitialResultSet: function(terms) {
         this._cancellable.cancel();
         this._cancellable.reset();
         try {
@@ -133,7 +132,7 @@ const RemoteSearchProvider = new Lang.Class({
         }
     },
 
-    getSubsearchResultSetAsync: function(previousResults, newTerms) {
+    getSubsearchResultSet: function(previousResults, newTerms) {
         this._cancellable.cancel();
         this._cancellable.reset();
         try {
@@ -164,7 +163,7 @@ const RemoteSearchProvider = new Lang.Class({
         callback(resultMetas);
     },
 
-    getResultMetasAsync: function(ids, callback) {
+    getResultMetas: function(ids, callback) {
         this._cancellable.cancel();
         this._cancellable.reset();
         try {

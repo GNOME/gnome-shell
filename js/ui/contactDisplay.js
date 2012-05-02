@@ -151,11 +151,10 @@ const ContactSearchProvider = new Lang.Class({
 
     _init: function() {
         this.parent(_("CONTACTS"));
-        this.async = true;
         this._contactSys = Shell.ContactSystem.get_default();
     },
 
-    getResultMetasAsync: function(ids, callback) {
+    getResultMetas: function(ids, callback) {
         let metas = [];
         for (let i = 0; i < ids.length; i++) {
             let contact = new Contact(ids[i]);
@@ -169,11 +168,11 @@ const ContactSearchProvider = new Lang.Class({
         callback(metas);
     },
 
-    getInitialResultSetAsync: function(terms) {
+    getInitialResultSet: function(terms) {
         this.searchSystem.pushResults(this, this._contactSys.initial_search(terms));
     },
 
-    getSubsearchResultSetAsync: function(previousResults, terms) {
+    getSubsearchResultSet: function(previousResults, terms) {
         this.searchSystem.pushResults(this, this._contactSys.subsearch(previousResults, terms));
     },
 

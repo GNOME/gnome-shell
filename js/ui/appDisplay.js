@@ -312,12 +312,10 @@ const AppSearchProvider = new Lang.Class({
 
     _init: function() {
         this.parent(_("APPLICATIONS"));
-
-        this.async = true;
         this._appSys = Shell.AppSystem.get_default();
     },
 
-    getResultMetasAsync: function(apps, callback) {
+    getResultMetas: function(apps, callback) {
         let metas = [];
         for (let i = 0; i < apps.length; i++) {
             let app = apps[i];
@@ -331,11 +329,11 @@ const AppSearchProvider = new Lang.Class({
         callback(metas);
     },
 
-    getInitialResultSetAsync: function(terms) {
+    getInitialResultSet: function(terms) {
         this.searchSystem.pushResults(this, this._appSys.initial_search(terms));
     },
 
-    getSubsearchResultSetAsync: function(previousResults, terms) {
+    getSubsearchResultSet: function(previousResults, terms) {
         this.searchSystem.pushResults(this, this._appSys.subsearch(previousResults, terms));
     },
 
@@ -375,12 +373,11 @@ const SettingsSearchProvider = new Lang.Class({
     _init: function() {
         this.parent(_("SETTINGS"));
 
-        this.async = true;
         this._appSys = Shell.AppSystem.get_default();
         this._gnomecc = this._appSys.lookup_app('gnome-control-center.desktop');
     },
 
-    getResultMetasAsync: function(prefs, callback) {
+    getResultMetas: function(prefs, callback) {
         let metas = [];
         for (let i = 0; i < prefs.length; i++) {
             let pref = prefs[i];
@@ -394,11 +391,11 @@ const SettingsSearchProvider = new Lang.Class({
         callback(metas);
     },
 
-    getInitialResultSetAsync: function(terms) {
+    getInitialResultSet: function(terms) {
         this.searchSystem.pushResults(this, this._appSys.search_settings(terms));
     },
 
-    getSubsearchResultSetAsync: function(previousResults, terms) {
+    getSubsearchResultSet: function(previousResults, terms) {
         this.searchSystem.pushResults(this, this._appSys.search_settings(terms));
     },
 

@@ -166,10 +166,9 @@ const WandaSearchProvider = new Lang.Class({
 
     _init: function() {
         this.parent(_("Your favorite Easter Egg"));
-        this.async = true;
     },
 
-    getResultMetasAsync: function(fish, callback) {
+    getResultMetas: function(fish, callback) {
         callback([{ 'id': fish[0], // there may be many fish in the sea, but
                     // only one which speaks the truth!
                     'name': capitalize(fish[0]),
@@ -188,7 +187,7 @@ const WandaSearchProvider = new Lang.Class({
                   }]);
     },
 
-    getInitialResultSetAsync: function(terms) {
+    getInitialResultSet: function(terms) {
         if (terms.join(' ') == MAGIC_FISH_KEY) {
             this.searchSystem.pushResults(this, [ FISH_NAME ]);
         } else {
@@ -196,8 +195,8 @@ const WandaSearchProvider = new Lang.Class({
         }
     },
 
-    getSubsearchResultSetAsync: function(previousResults, terms) {
-        this.getInitialResultSetAsync(terms);
+    getSubsearchResultSet: function(previousResults, terms) {
+        this.getInitialResultSet(terms);
     },
 
     activateResult: function(fish, params) {

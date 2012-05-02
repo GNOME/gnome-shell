@@ -365,11 +365,10 @@ const PlaceSearchProvider = new Lang.Class({
 
     _init: function() {
         this.parent(_("PLACES & DEVICES"));
-        this.async = true;
         this.placesManager = new PlacesManager();
     },
 
-    getResultMetasAsync: function(resultIds, callback) {
+    getResultMetas: function(resultIds, callback) {
         let metas = [];
         for (let i = 0; i < resultIds.length; i++) {
             let placeInfo = this.placesManager.lookupPlaceById(resultIds[i]);
@@ -417,12 +416,12 @@ const PlaceSearchProvider = new Lang.Class({
         this.searchSystem.pushResults(this, prefixResults.concat(substringResults));
     },
 
-    getInitialResultSetAsync: function(terms) {
+    getInitialResultSet: function(terms) {
         let places = this.placesManager.getAllPlaces();
         this._searchPlaces(places, terms);
     },
 
-    getSubsearchResultSetAsync: function(previousResults, terms) {
+    getSubsearchResultSet: function(previousResults, terms) {
         let places = previousResults.map(Lang.bind(this, function(id) {
             return this.placesManager.lookupPlaceById(id);
         }));
