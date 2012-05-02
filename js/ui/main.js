@@ -110,7 +110,7 @@ function _initRecorder() {
         }
 
         if (recorder.is_recording()) {
-            recorder.pause();
+            recorder.close();
             Meta.enable_unredirect_for_screen(global.screen);
         } else {
             // read the parameters from GSettings always in case they have changed
