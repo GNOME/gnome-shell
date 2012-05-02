@@ -101,6 +101,7 @@ enum
   OVER_IN,
   OVER_OUT,
   DROP,
+  DROP_CANCEL,
 
   LAST_SIGNAL
 };
@@ -227,6 +228,13 @@ out:
                              clutter_actor_meta_get_actor (meta),
                              event_x, event_y);
             }
+	  else
+            {
+              g_signal_emit (data->last_action, drop_signals[DROP_CANCEL], 0,
+                             clutter_actor_meta_get_actor (meta),
+                             event_x, event_y);
+            }
+
         }
 
       data->last_action = NULL;
@@ -449,6 +457,34 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
    */
   drop_signals[DROP] =
     g_signal_new (I_("drop"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterDropActionClass, drop),
+                  NULL, NULL,
+                  _clutter_marshal_VOID__OBJECT_FLOAT_FLOAT,
+                  G_TYPE_NONE, 3,
+                  CLUTTER_TYPE_ACTOR,
+                  G_TYPE_FLOAT,
+                  G_TYPE_FLOAT);
+
+
+  /**
+   * ClutterDropAction::drop-cancel:
+   * @action: the #ClutterDropAction that emitted the signal
+   * @actor: the #ClutterActor attached to the @action
+   * @event_x: the X coordinate (in stage space) of the drop event
+   * @event_y: the Y coordinate (in stage space) of the drop event
+   *
+   * The ::drop-cancel signal is emitted when the drop is refused
+   * by an emission of the #ClutterDropAction::can-drop signal.
+   *
+   * After the ::drop-cancel signal is fired the active drag is
+   * terminated.
+   *
+   * Since: 1.12
+   */
+  drop_signals[DROP_CANCEL] =
+    g_signal_new (I_("drop-cancel"),
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterDropActionClass, drop),
