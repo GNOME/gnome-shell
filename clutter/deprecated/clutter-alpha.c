@@ -62,11 +62,6 @@
  * #ClutterAlpha is used to "drive" a #ClutterBehaviour instance, and it
  * is internally used by the #ClutterAnimation API.
  *
- * <figure id="easing-modes">
- *   <title>Easing modes provided by Clutter</title>
- *   <graphic fileref="easing-modes.png" format="PNG"/>
- * </figure>
- *
  * <refsect2 id="ClutterAlpha-script">
  *   <title>ClutterAlpha custom properties for #ClutterScript</title>
  *   <para>#ClutterAlpha defines a custom "function" property for

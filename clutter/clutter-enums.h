@@ -164,8 +164,12 @@ typedef enum { /*< prefix=CLUTTER_REQUEST >*/
  *   registered global alpha functions
  *
  * The animation modes used by #ClutterAlpha and #ClutterAnimation. This
- * enumeration can be expanded in later versions of Clutter. See the
- * #ClutterAlpha documentation for a graph of all the animation modes.
+ * enumeration can be expanded in later versions of Clutter.
+ *
+ * <figure id="easing-modes">
+ *   <title>Easing modes provided by Clutter</title>
+ *   <graphic fileref="easing-modes.png" format="PNG"/>
+ * </figure>
  *
  * Every global alpha function registered using clutter_alpha_register_func()
  * or clutter_alpha_register_closure() will have a logical id greater than
