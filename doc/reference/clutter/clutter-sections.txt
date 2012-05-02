@@ -698,6 +698,7 @@ clutter_timeline_set_direction
 clutter_timeline_get_direction
 clutter_timeline_set_auto_reverse
 clutter_timeline_get_auto_reverse
+ClutterAnimationMode
 clutter_timeline_set_progress_mode
 clutter_timeline_get_progress_mode
 ClutterTimelineProgressFunc
@@ -1795,7 +1796,6 @@ clutter_shader_error_quark
 <FILE>clutter-animation</FILE>
 ClutterAnimation
 ClutterAnimationClass
-ClutterAnimationMode
 clutter_animation_new
 clutter_animation_set_object
 clutter_animation_get_object
