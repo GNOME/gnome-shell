@@ -48,8 +48,8 @@ int main (int argc, char **argv)
   animation = clutter_actor_animate (text,
 				     CLUTTER_EASE_IN_OUT_QUAD,
 				     3000,
-				     "x", 320,
-				     "y", 240,
+				     "x", 320.0,
+				     "y", 240.0,
 				     NULL);
   g_signal_connect (animation, "completed",
 		    G_CALLBACK (on_animation_completed), NULL);
@@ -58,32 +58,32 @@ int main (int argc, char **argv)
 		       "text", "Blue",
 		       "font-name", "Sans 40px",
 		       "color", &blue,
-		       "x", 640,
-		       "y", 0,
+		       "x", 640.0,
+		       "y", 0.0,
 		       NULL);
   clutter_actor_set_anchor_point_from_gravity (text, CLUTTER_GRAVITY_NORTH_EAST);
   clutter_actor_add_child (stage, text);
   animation = clutter_actor_animate (text,
 				     CLUTTER_EASE_IN_OUT_QUAD,
 				     3000,
-				     "x", 320,
-				     "y", 240,
+				     "x", 320.0,
+				     "y", 240.0,
 				     NULL);
 
   text = g_object_new (CLUTTER_TYPE_TEXT,
 		       "text", "Green",
 		       "font-name", "Sans 40px",
 		       "color", &green,
-		       "x", 0,
-		       "y", 480,
+		       "x", 0.0,
+		       "y", 480.0,
 		       NULL);
   clutter_actor_set_anchor_point_from_gravity (text, CLUTTER_GRAVITY_SOUTH_WEST);
   clutter_actor_add_child (stage, text);
   animation = clutter_actor_animate (text,
 				     CLUTTER_EASE_IN_OUT_QUAD,
 				     3000,
-				     "x", 320,
-				     "y", 240,
+				     "x", 320.0,
+				     "y", 240.0,
 				     NULL);
 
   recorder = shell_recorder_new (CLUTTER_STAGE (stage));
