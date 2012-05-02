@@ -40,8 +40,9 @@ static const struct {
   { "easeInOutBounce", CLUTTER_EASE_IN_OUT_BOUNCE },
 };
 
-#define HELP_TEXT       "Easing mode: %s (%d of %d)\n" \
+#define HELP_TEXT       "<b>Easing mode: %s (%d of %d)</b>\n" \
                         "Left click to tween\n" \
+                        "Middle click to jump\n" \
                         "Right click to change the easing mode"
 
 static const gint n_easing_modes = G_N_ELEMENTS (easing_modes);
@@ -72,7 +73,7 @@ on_button_press (ClutterActor       *actor,
                               current_mode + 1,
                               n_easing_modes);
 
-      clutter_text_set_text (CLUTTER_TEXT (easing_mode_label), text);
+      clutter_text_set_markup (CLUTTER_TEXT (easing_mode_label), text);
       g_free (text);
     }
   else if (event->button == CLUTTER_BUTTON_MIDDLE)
@@ -100,19 +101,21 @@ on_button_press (ClutterActor       *actor,
 }
 
 static gboolean
-draw_bouncer (ClutterCairoTexture *texture,
-              cairo_t             *cr)
+draw_bouncer (ClutterCanvas *canvas,
+              cairo_t       *cr,
+              int            width,
+              int            height)
 {
   const ClutterColor *bouncer_color;
   cairo_pattern_t *pattern;
-  guint width, height;
   float radius;
 
-  clutter_cairo_texture_get_surface_size (texture, &width, &height);
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
   radius = MAX (width, height);
-
-  clutter_cairo_texture_clear (texture);
 
   cairo_arc (cr, radius / 2, radius / 2, radius / 2, 0.0, 2.0 * G_PI);
 
@@ -146,17 +149,21 @@ make_bouncer (gfloat width,
               gfloat height)
 {
   ClutterActor *retval;
+  ClutterContent *canvas;
 
-  retval = clutter_cairo_texture_new (width, height);
-  g_signal_connect (retval, "draw", G_CALLBACK (draw_bouncer), NULL);
+  retval = clutter_actor_new ();
+
+  canvas = clutter_canvas_new ();
+  g_signal_connect (canvas, "draw", G_CALLBACK (draw_bouncer), NULL);
+  clutter_canvas_set_size (CLUTTER_CANVAS (canvas), width, height);
 
   clutter_actor_set_name (retval, "bouncer");
   clutter_actor_set_size (retval, width, height);
   clutter_actor_set_anchor_point (retval, width / 2, height / 2);
   clutter_actor_set_reactive (retval, TRUE);
+  clutter_actor_set_content (retval, canvas);
 
-  /* make sure we draw the bouncer immediately */
-  clutter_cairo_texture_invalidate (CLUTTER_CAIRO_TEXTURE (retval));
+  g_object_unref (canvas);
 
   return retval;
 }
@@ -198,7 +205,7 @@ test_transitions_main (int argc, char *argv[])
 
   /* create the actor that we want to tween */
   rect = make_bouncer (50, 50);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
+  clutter_actor_add_child (stage, rect);
   clutter_actor_set_position (rect, stage_width / 2, stage_height / 2);
 
   text = g_strdup_printf (HELP_TEXT,
@@ -207,8 +214,9 @@ test_transitions_main (int argc, char *argv[])
                           n_easing_modes);
 
   label = clutter_text_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
-  clutter_text_set_text (CLUTTER_TEXT (label), text);
+  clutter_actor_add_child (stage, label);
+  clutter_text_set_markup (CLUTTER_TEXT (label), text);
+  clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_RIGHT);
   clutter_actor_add_constraint (label, clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.95));
   clutter_actor_add_constraint (label, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.95));
   easing_mode_label = label;
