@@ -707,7 +707,7 @@ const NMDeviceWired = new Lang.Class({
         // the device
         // we can do it here because addConnection and removeConnection
         // both call _createSection at some point
-        this.section.actor.visible = this._connections.length <= 1;
+        this.section.actor.visible = this._connections.length > 1;
     },
 
     _createAutomaticConnection: function() {
