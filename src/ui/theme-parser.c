@@ -4281,20 +4281,6 @@ meta_theme_load (const char *theme_name,
   int i;
 
   retval = NULL;
-
-  if (meta_is_debugging ())
-    {
-      /* Try in themes in our source tree */
-      /* We try all supported major versions from current to oldest */
-      for (major_version = THEME_MAJOR_VERSION; (major_version > 0); major_version--)
-        {
-          theme_dir = g_build_filename ("./themes", theme_name, NULL);
-          retval = load_theme (theme_dir, theme_name, major_version, &error);
-          g_free (theme_dir);
-          if (!keep_trying (&error))
-            goto out;
-        }
-    }
   
   /* We try all supported major versions from current to oldest */
   for (major_version = THEME_MAJOR_VERSION; (major_version > 0); major_version--)
