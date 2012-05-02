@@ -82,7 +82,7 @@ test_flow_layout_main (int argc, char *argv[])
                               NULL,
                               &error) != CLUTTER_INIT_SUCCESS)
     {
-      g_print ("Unable to run test-flow: %s", error->message);
+      g_print ("Unable to run flow-layout: %s", error->message);
       g_error_free (error);
 
       return EXIT_FAILURE;
@@ -103,23 +103,23 @@ test_flow_layout_main (int argc, char *argv[])
   clutter_flow_layout_set_row_spacing (CLUTTER_FLOW_LAYOUT (layout),
                                        y_spacing);
 
-  box = clutter_box_new (layout);
-  clutter_box_set_color (CLUTTER_BOX (box), CLUTTER_COLOR_Aluminium2);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
+  box = clutter_actor_new ();
+  clutter_actor_set_layout_manager (box, layout);
+  clutter_actor_set_background_color (box, CLUTTER_COLOR_Aluminium2);
+  clutter_actor_add_child (stage, box);
 
   if (!fixed_size)
     clutter_actor_add_constraint (box, clutter_bind_constraint_new (stage, CLUTTER_BIND_SIZE, 0.0));
 
   clutter_actor_set_position (box, 0, 0);
-
   clutter_actor_set_name (box, "box");
 
   for (i = 0; i < n_rects; i++)
     {
-      ClutterColor color = { 255, 255, 255, 224 };
+      ClutterColor color = CLUTTER_COLOR_INIT (255, 255, 255, 255);
+      gfloat width, height;
       ClutterActor *rect;
       gchar *name;
-      gfloat width, height;
 
       name = g_strdup_printf ("rect%02d", i);
 
@@ -127,9 +127,8 @@ test_flow_layout_main (int argc, char *argv[])
                               360.0 / n_rects * i,
                               0.5,
                               0.8);
-      rect = clutter_rectangle_new_with_color (&color);
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (box), rect);
+      rect = clutter_actor_new ();
+      clutter_actor_set_background_color (rect, &color);
 
       if (random_size)
         {
@@ -137,12 +136,12 @@ test_flow_layout_main (int argc, char *argv[])
           height = g_random_int_range (50, 100);
         }
       else
-        {
-          width = height = 50;
-        }
+        width = height = 50.f;
 
       clutter_actor_set_size (rect, width, height);
       clutter_actor_set_name (rect, name);
+
+      clutter_actor_add_child (box, rect);
 
       g_free (name);
     }
