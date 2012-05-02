@@ -1091,7 +1091,7 @@ AC_ARG_ENABLE([tests],
               [AS_HELP_STRING([--disable-tests], [Whether tests should be built])],
               [],
               [enable_tests=yes])
-AM_CONDITIONAL(BUILD_TESTS, [test "x$enable_tests" = "xyes" && "x$enable_conformance" = "xyes"])
+AM_CONDITIONAL(BUILD_TESTS, [test "x$enable_tests" = "xyes" && test "x$enable_conformance" = "xyes"])
 
 AC_ARG_ENABLE([examples],
               [AS_HELP_STRING([--disable-examples], [Whether examples should be built])],
