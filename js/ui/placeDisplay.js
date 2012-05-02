@@ -365,12 +365,13 @@ const PlaceSearchProvider = new Lang.Class({
 
     _init: function() {
         this.parent(_("PLACES & DEVICES"));
+        this.placesManager = new PlacesManager();
     },
 
     getResultMetas: function(resultIds) {
         let metas = [];
         for (let i = 0; i < resultIds.length; i++) {
-            let placeInfo = Main.placesManager.lookupPlaceById(resultIds[i]);
+            let placeInfo = this.placesManager.lookupPlaceById(resultIds[i]);
             if (!placeInfo)
                 metas.push(null);
             else
@@ -385,13 +386,13 @@ const PlaceSearchProvider = new Lang.Class({
     },
 
     activateResult: function(id, params) {
-        let placeInfo = Main.placesManager.lookupPlaceById(id);
+        let placeInfo = this.placesManager.lookupPlaceById(id);
         placeInfo.launch(params);
     },
 
     _compareResultMeta: function (idA, idB) {
-        let infoA = Main.placesManager.lookupPlaceById(idA);
-        let infoB = Main.placesManager.lookupPlaceById(idB);
+        let infoA = this.placesManager.lookupPlaceById(idA);
+        let infoB = this.placesManager.lookupPlaceById(idB);
         return infoA.name.localeCompare(infoB.name);
     },
 
@@ -409,19 +410,21 @@ const PlaceSearchProvider = new Lang.Class({
             else if (mtype == Search.MatchType.SUBSTRING)
                 substringResults.push(place.id);
         }
-        prefixResults.sort(this._compareResultMeta);
-        substringResults.sort(this._compareResultMeta);
+        prefixResults.sort(Lang.bind(this, this._compareResultMeta));
+        substringResults.sort(Lang.bind(this, this._compareResultMeta));
 
         return prefixResults.concat(substringResults);
     },
 
     getInitialResultSet: function(terms) {
-        let places = Main.placesManager.getAllPlaces();
+        let places = this.placesManager.getAllPlaces();
         return this._searchPlaces(places, terms);
     },
 
     getSubsearchResultSet: function(previousResults, terms) {
-        let places = previousResults.map(function (id) { return Main.placesManager.lookupPlaceById(id); });
+        let places = previousResults.map(Lang.bind(this, function(id) {
+            return this.placesManager.lookupPlaceById(id);
+        }));
         return this._searchPlaces(places, terms);
     }
 });

@@ -46,7 +46,6 @@ let automountManager = null;
 let autorunManager = null;
 let panel = null;
 let hotCorners = [];
-let placesManager = null;
 let overview = null;
 let runDialog = null;
 let lookingGlass = null;
@@ -80,7 +79,6 @@ function _createUserSession() {
     // not loading any events until the user presses the clock
     global.launch_calendar_server();
 
-    placesManager = new PlaceDisplay.PlacesManager();
     telepathyClient = new TelepathyClient.Client();
     automountManager = new AutomountManager.AutomountManager();
     autorunManager = new AutorunManager.AutorunManager();
