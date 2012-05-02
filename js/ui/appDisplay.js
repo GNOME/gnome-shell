@@ -313,10 +313,11 @@ const AppSearchProvider = new Lang.Class({
     _init: function() {
         this.parent(_("APPLICATIONS"));
 
+        this.async = true;
         this._appSys = Shell.AppSystem.get_default();
     },
 
-    getResultMetas: function(apps) {
+    getResultMetasAsync: function(apps, callback) {
         let metas = [];
         for (let i = 0; i < apps.length; i++) {
             let app = apps[i];
@@ -327,15 +328,15 @@ const AppSearchProvider = new Lang.Class({
                          }
                        });
         }
-        return metas;
+        callback(metas);
     },
 
-    getInitialResultSet: function(terms) {
-        return this._appSys.initial_search(terms);
+    getInitialResultSetAsync: function(terms) {
+        this.searchSystem.pushResults(this, this._appSys.initial_search(terms));
     },
 
-    getSubsearchResultSet: function(previousResults, terms) {
-        return this._appSys.subsearch(previousResults, terms);
+    getSubsearchResultSetAsync: function(previousResults, terms) {
+        this.searchSystem.pushResults(this, this._appSys.subsearch(previousResults, terms));
     },
 
     activateResult: function(app, params) {
@@ -374,11 +375,12 @@ const SettingsSearchProvider = new Lang.Class({
     _init: function() {
         this.parent(_("SETTINGS"));
 
+        this.async = true;
         this._appSys = Shell.AppSystem.get_default();
         this._gnomecc = this._appSys.lookup_app('gnome-control-center.desktop');
     },
 
-    getResultMetas: function(prefs) {
+    getResultMetasAsync: function(prefs, callback) {
         let metas = [];
         for (let i = 0; i < prefs.length; i++) {
             let pref = prefs[i];
@@ -389,15 +391,15 @@ const SettingsSearchProvider = new Lang.Class({
                          }
                        });
         }
-        return metas;
+        callback(metas);
     },
 
-    getInitialResultSet: function(terms) {
-        return this._appSys.search_settings(terms);
+    getInitialResultSetAsync: function(terms) {
+        this.searchSystem.pushResults(this, this._appSys.search_settings(terms));
     },
 
-    getSubsearchResultSet: function(previousResults, terms) {
-        return this._appSys.search_settings(terms);
+    getSubsearchResultSetAsync: function(previousResults, terms) {
+        this.searchSystem.pushResults(this, this._appSys.search_settings(terms));
     },
 
     activateResult: function(pref, params) {

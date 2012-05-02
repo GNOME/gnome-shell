@@ -166,36 +166,38 @@ const WandaSearchProvider = new Lang.Class({
 
     _init: function() {
         this.parent(_("Your favorite Easter Egg"));
+        this.async = true;
     },
 
-    getResultMetas: function(fish) {
-        return [{ 'id': fish[0], // there may be many fish in the sea, but
-                                 // only one which speaks the truth!
-                  'name': capitalize(fish[0]),
-                  'createIcon': function(iconSize) {
-                      // for DND only (maybe could be improved)
-                      // DON'T use St.Icon here, it crashes the shell
-                      // (dnd.js code assumes it can query the actor size
-                      // without parenting it, while StWidget accesses
-                      // StThemeNode in get_preferred_width/height, which
-                      // triggers an assertion failure)
-                      return St.TextureCache.get_default().load_icon_name(null,
-                                                                          'face-smile',
-                                                                          St.IconType.FULLCOLOR,
-                                                                          iconSize);
-                  }
-                }];
+    getResultMetasAsync: function(fish, callback) {
+        callback([{ 'id': fish[0], // there may be many fish in the sea, but
+                    // only one which speaks the truth!
+                    'name': capitalize(fish[0]),
+                    'createIcon': function(iconSize) {
+                        // for DND only (maybe could be improved)
+                        // DON'T use St.Icon here, it crashes the shell
+                        // (dnd.js code assumes it can query the actor size
+                        // without parenting it, while StWidget accesses
+                        // StThemeNode in get_preferred_width/height, which
+                        // triggers an assertion failure)
+                        return St.TextureCache.get_default().load_icon_name(null,
+                                                                            'face-smile',
+                                                                            St.IconType.FULLCOLOR,
+                                                                            iconSize);
+                    }
+                  }]);
     },
 
-    getInitialResultSet: function(terms) {
+    getInitialResultSetAsync: function(terms) {
         if (terms.join(' ') == MAGIC_FISH_KEY) {
-            return [ FISH_NAME ];
+            this.searchSystem.pushResults(this, [ FISH_NAME ]);
+        } else {
+            this.searchSystem.pushResults(this, []);
         }
-        return [];
     },
 
-    getSubsearchResultSet: function(previousResults, terms) {
-        return this.getInitialResultSet(terms);
+    getSubsearchResultSetAsync: function(previousResults, terms) {
+        this.getInitialResultSetAsync(terms);
     },
 
     activateResult: function(fish, params) {

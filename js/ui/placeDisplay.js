@@ -365,10 +365,11 @@ const PlaceSearchProvider = new Lang.Class({
 
     _init: function() {
         this.parent(_("PLACES & DEVICES"));
+        this.async = true;
         this.placesManager = new PlacesManager();
     },
 
-    getResultMetas: function(resultIds) {
+    getResultMetasAsync: function(resultIds, callback) {
         let metas = [];
         for (let i = 0; i < resultIds.length; i++) {
             let placeInfo = this.placesManager.lookupPlaceById(resultIds[i]);
@@ -382,7 +383,7 @@ const PlaceSearchProvider = new Lang.Class({
                              }
                            });
         }
-        return metas;
+        callback(metas);
     },
 
     activateResult: function(id, params) {
@@ -413,18 +414,18 @@ const PlaceSearchProvider = new Lang.Class({
         prefixResults.sort(Lang.bind(this, this._compareResultMeta));
         substringResults.sort(Lang.bind(this, this._compareResultMeta));
 
-        return prefixResults.concat(substringResults);
+        this.searchSystem.pushResults(this, prefixResults.concat(substringResults));
     },
 
-    getInitialResultSet: function(terms) {
+    getInitialResultSetAsync: function(terms) {
         let places = this.placesManager.getAllPlaces();
-        return this._searchPlaces(places, terms);
+        this._searchPlaces(places, terms);
     },
 
-    getSubsearchResultSet: function(previousResults, terms) {
+    getSubsearchResultSetAsync: function(previousResults, terms) {
         let places = previousResults.map(Lang.bind(this, function(id) {
             return this.placesManager.lookupPlaceById(id);
         }));
-        return this._searchPlaces(places, terms);
+        this._searchPlaces(places, terms);
     }
 });
