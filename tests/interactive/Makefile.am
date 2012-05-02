@@ -47,7 +47,6 @@ UNIT_TESTS = \
 	test-path-constraint.c \
 	test-state-script.c \
 	test-devices.c \
-	test-transitions.c \
 	test-content.c \
 	test-keyframe-transition.c \
 	test-scroll-actor.c

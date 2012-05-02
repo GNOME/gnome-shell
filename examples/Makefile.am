@@ -7,6 +7,7 @@ all_examples = \
 	constraints \
 	drag-action \
 	drop-action \
+	easing-modes \
 	flow-layout \
 	threads
 

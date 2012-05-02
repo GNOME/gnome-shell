@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <gmodule.h>
 #include <clutter/clutter.h>
 
 /* all the easing modes provided by Clutter */
@@ -180,8 +179,8 @@ static GOptionEntry test_easing_entries[] = {
   { NULL }
 };
 
-G_MODULE_EXPORT int
-test_transitions_main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
   ClutterActor *stage, *rect, *label;
   gchar *text;
@@ -232,10 +231,4 @@ test_transitions_main (int argc, char *argv[])
   clutter_main ();
 
   return EXIT_SUCCESS;
-}
-
-G_MODULE_EXPORT const char *
-test_transitions_describe (void)
-{
-  return "Visualize all easing modes provided by Clutter";
 }
