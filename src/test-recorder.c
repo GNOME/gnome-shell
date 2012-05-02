@@ -7,12 +7,19 @@
 /* Very simple test of the ShellRecorder class; shows some text strings
  * moving around and records it.
  */
-static ShellRecorder *recorder;
+static ShellRecorder *recorder = NULL;
 
 static gboolean
 stop_recording_timeout (gpointer data)
 {
-  shell_recorder_close (recorder);
+  if (recorder)
+    {
+      shell_recorder_close (recorder);
+      g_object_unref (recorder);
+    }
+
+  clutter_main_quit ();
+
   return FALSE;
 }
 
@@ -20,6 +27,15 @@ static void
 on_animation_completed (ClutterAnimation *animation)
 {
   g_timeout_add (1000, stop_recording_timeout, NULL);
+}
+
+static void
+on_stage_realized (ClutterActor *stage,
+                   gpointer      data)
+{
+  recorder = shell_recorder_new (CLUTTER_STAGE (stage));
+  shell_recorder_set_filename (recorder, "test-recorder.ogg");
+  shell_recorder_record (recorder);
 }
 
 int main (int argc, char **argv)
@@ -86,13 +102,14 @@ int main (int argc, char **argv)
 				     "y", 240.0,
 				     NULL);
 
-  recorder = shell_recorder_new (CLUTTER_STAGE (stage));
-  shell_recorder_set_filename (recorder, "test-recorder.ogg");
+  g_signal_connect_after (stage, "realize",
+                          G_CALLBACK (on_stage_realized), NULL);
 
   clutter_actor_show (stage);
 
-  shell_recorder_record (recorder);
   clutter_main ();
+
+  g_object_unref (stage);
 
   return 0;
 }
