@@ -38,7 +38,6 @@ UNIT_TESTS = \
 	test-cairo-clock.c \
 	test-cairo-flowers.c \
 	test-cogl-vertex-buffer.c \
-	test-flow-layout.c \
 	test-box-layout.c \
 	test-stage-sizing.c \
 	test-scrolling.c \

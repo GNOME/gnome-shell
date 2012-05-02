@@ -67,8 +67,8 @@ static GOptionEntry entries[] = {
   { NULL }
 };
 
-G_MODULE_EXPORT int
-test_flow_layout_main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
   ClutterActor *stage, *box;
   ClutterLayoutManager *layout;
@@ -151,10 +151,4 @@ test_flow_layout_main (int argc, char *argv[])
   clutter_main ();
 
   return EXIT_SUCCESS;
-}
-
-G_MODULE_EXPORT const char *
-test_flow_layout_describe (void)
-{
-  return "FlowLayout layout manager example";
 }

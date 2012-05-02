@@ -7,6 +7,7 @@ all_examples = \
 	constraints \
 	drag-action \
 	drop-action \
+	flow-layout \
 	threads
 
 if PIXBUF_TESTS

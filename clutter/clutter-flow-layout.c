@@ -56,6 +56,14 @@
  *   <graphic fileref="flow-layout.png" format="PNG"/>
  * </figure>
  *
+ * <informalexample>
+ *  <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/flow-layout.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ *  </programlisting>
+ * </informalexample>
+ *
  * #ClutterFlowLayout is available since Clutter 1.2
  */
 
