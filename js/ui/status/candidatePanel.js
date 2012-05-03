@@ -34,11 +34,9 @@ const ORIENTATION_HORIZONTAL  = 0;
 const ORIENTATION_VERTICAL    = 1;
 const ORIENTATION_SYSTEM      = 2;
 
-function StCandidateArea(orientation) {
-    this._init(orientation);
-}
+const StCandidateArea = new Lang.Class({
+    Name: 'StCandidateArea',
 
-StCandidateArea.prototype = {
     _init: function(orientation) {
         this.actor = new St.BoxLayout({ style_class: 'candidate-area' });
         this._orientation = orientation;
@@ -210,15 +208,12 @@ StCandidateArea.prototype = {
     hideAll: function() {
         this.actor.hide();
     },
-};
-
+});
 Signals.addSignalMethods(StCandidateArea.prototype);
 
-function CandidatePanel() {
-    this._init();
-}
+const CandidatePanel = new Lang.Class({
+    Name: 'CandidatePanel',
 
-CandidatePanel.prototype = {
     _init: function() {
         this._orientation = ORIENTATION_VERTICAL;
         this._currentOrientation = this._orientation;
@@ -585,6 +580,5 @@ CandidatePanel.prototype = {
     move: function(x, y) {
         this.actor.set_position(x, y);
     }
-};
-
+});
 Signals.addSignalMethods(CandidatePanel.prototype);
