@@ -19,15 +19,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-const Cairo = imports.cairo;
 const St = imports.gi.St;
 const GLib = imports.gi.GLib;
 const IBus = imports.gi.IBus;
 const Lang = imports.lang;
 const Signals = imports.signals;
-const Main = imports.ui.main;
 const Shell = imports.gi.Shell;
+
 const BoxPointer = imports.ui.boxpointer;
+const Main = imports.ui.main;
+const PopupMenu = imports.ui.popupMenu;
 
 const ORIENTATION_HORIZONTAL  = 0;
 const ORIENTATION_VERTICAL    = 1;
@@ -264,7 +265,7 @@ CandidatePanel.prototype = {
             this._stAuxLabel.hide();
         }
 
-        this._separator = new Separator();
+        this._separator = new PopupMenu.PopupSeparatorMenuItem();
         if (!this._preeditVisible && !this._auxVisible) {
             this._separator.actor.hide();
         }
@@ -587,34 +588,3 @@ CandidatePanel.prototype = {
 };
 
 Signals.addSignalMethods(CandidatePanel.prototype);
-
-function Separator() {
-    this._init();
-}
-
-Separator.prototype = {
-    _init: function() {
-        this.actor = new St.DrawingArea({ style_class: 'popup-separator-menu-item' });
-        this.actor.connect('repaint', Lang.bind(this, this._onRepaint));
-    },
-
-    _onRepaint: function(area) {
-        let cr = area.get_context();
-        let themeNode = area.get_theme_node();
-        let [width, height] = area.get_surface_size();
-        let margin = 0;
-        let gradientHeight = themeNode.get_length('-gradient-height');
-        let startColor = themeNode.get_color('-gradient-start');
-        let endColor = themeNode.get_color('-gradient-end');
-
-        let gradientWidth = (width - margin * 2);
-        let gradientOffset = (height - gradientHeight) / 2;
-        let pattern = new Cairo.LinearGradient(margin, gradientOffset, width - margin, gradientOffset + gradientHeight);
-        pattern.addColorStopRGBA(0, startColor.red / 255, startColor.green / 255, startColor.blue / 255, startColor.alpha / 255);
-        pattern.addColorStopRGBA(0.5, endColor.red / 255, endColor.green / 255, endColor.blue / 255, endColor.alpha / 255);
-        pattern.addColorStopRGBA(1, startColor.red / 255, startColor.green / 255, startColor.blue / 255, startColor.alpha / 255);
-        cr.setSource(pattern);
-        cr.rectangle(margin, gradientOffset, gradientWidth, gradientHeight);
-        cr.fill();
-    },
-};
