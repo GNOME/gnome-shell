@@ -33,11 +33,6 @@ const ORIENTATION_HORIZONTAL  = 0;
 const ORIENTATION_VERTICAL    = 1;
 const ORIENTATION_SYSTEM      = 2;
 
-const topLabelStyle = 'padding: .1em 0em';
-const candidateLabelStyle = 'padding: .1em 0em .1em 0em';
-const candidateTextStyle = 'padding: .1em 0em .1em 0em';
-const separatorStyle = 'height: 2px; padding: 0em';
-
 function StCandidateArea(orientation) {
     this._init(orientation);
 }
@@ -80,12 +75,10 @@ StCandidateArea.prototype = {
         for (let i = 0; i < 16; i++) {
             let label1 = new St.Label({ text: '1234567890abcdef'.charAt(i) + '.',
                                         style_class: 'popup-menu-item',
-                                        style: candidateLabelStyle,
                                         reactive: true });
 
             let label2 = new St.Label({ text: '' ,
                                         style_class: 'popup-menu-item',
-                                        style: candidateTextStyle,
                                         reactive: true });
 
             if (this._orientation == ORIENTATION_VERTICAL) {
@@ -261,13 +254,11 @@ CandidatePanel.prototype = {
         this._boxPointer.bin.set_child(this._stCandidatePanel);
 
         this._stPreeditLabel = new St.Label({ style_class: 'popup-menu-item',
-                                              style: topLabelStyle,
                                               text: '' });
         if (!this._preeditVisible) {
             this._stPreeditLabel.hide();
         }
         this._stAuxLabel = new St.Label({ style_class: 'popup-menu-item',
-                                          style: topLabelStyle,
                                           text: '' });
         if (!this._auxVisible) {
             this._stAuxLabel.hide();
@@ -603,8 +594,7 @@ function Separator() {
 
 Separator.prototype = {
     _init: function() {
-        this.actor = new St.DrawingArea({ style_class: 'popup-separator-menu-item',
-                                          style: separatorStyle });
+        this.actor = new St.DrawingArea({ style_class: 'popup-separator-menu-item' });
         this.actor.connect('repaint', Lang.bind(this, this._onRepaint));
     },
 
