@@ -1174,7 +1174,7 @@ clutter_event_copy (const ClutterEvent *event)
     case CLUTTER_TOUCH_END:
     case CLUTTER_TOUCH_CANCEL:
       if (event->touch.axes != NULL)
-        new_event->touch.axes = g_memdup (event->motion.axes,
+        new_event->touch.axes = g_memdup (event->touch.axes,
                                           sizeof (gdouble) * n_axes);
       break;
 
