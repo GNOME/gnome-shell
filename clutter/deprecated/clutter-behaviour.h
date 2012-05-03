@@ -134,6 +134,7 @@ struct _ClutterBehaviourClass
   void (*_clutter_behaviour6) (void);
 };
 
+CLUTTER_DEPRECATED_IN_1_6
 GType clutter_behaviour_get_type (void) G_GNUC_CONST;
 
 CLUTTER_DEPRECATED_IN_1_6

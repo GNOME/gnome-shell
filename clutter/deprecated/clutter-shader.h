@@ -105,7 +105,10 @@ struct _ClutterShaderClass
   GObjectClass parent_class;
 };
 
+CLUTTER_DEPRECATED_IN_1_8
 GQuark clutter_shader_error_quark (void);
+
+CLUTTER_DEPRECATED_IN_1_8
 GType clutter_shader_get_type (void) G_GNUC_CONST;
 
 CLUTTER_DEPRECATED_IN_1_8_FOR(ClutterShaderEffect)

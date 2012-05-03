@@ -79,6 +79,7 @@ struct _ClutterBehaviourScaleClass
   ClutterBehaviourClass parent_class;
 };
 
+CLUTTER_DEPRECATED_IN_1_6
 GType clutter_behaviour_scale_get_type (void) G_GNUC_CONST;
 
 CLUTTER_DEPRECATED_IN_1_6_FOR(clutter_actor_animate with ClutterActor:scale-x and ClutterActor:scale-y)

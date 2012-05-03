@@ -90,6 +90,7 @@ struct _ClutterBehaviourEllipseClass
   ClutterBehaviourClass   parent_class;
 };
 
+CLUTTER_DEPRECATED_IN_1_8
 GType clutter_behaviour_ellipse_get_type (void) G_GNUC_CONST;
 
 CLUTTER_DEPRECATED_IN_1_8_FOR(clutter_actor_animate)

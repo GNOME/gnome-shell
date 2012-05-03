@@ -96,6 +96,7 @@ struct _ClutterScoreClass
   void (*_clutter_score_5) (void);
 }; 
 
+CLUTTER_DEPRECATED_IN_1_10
 GType clutter_score_get_type (void) G_GNUC_CONST;
 
 CLUTTER_DEPRECATED_IN_1_10

@@ -83,6 +83,7 @@ struct _ClutterBoxClass
   void (*clutter_padding_6) (void);
 };
 
+CLUTTER_DEPRECATED_IN_1_10
 GType clutter_box_get_type (void) G_GNUC_CONST;
 
 CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_actor_new)

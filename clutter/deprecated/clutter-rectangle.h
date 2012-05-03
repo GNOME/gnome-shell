@@ -80,6 +80,7 @@ struct _ClutterRectangleClass
   void (*_clutter_rectangle4) (void);
 };
 
+CLUTTER_DEPRECATED_IN_1_10
 GType clutter_rectangle_get_type (void) G_GNUC_CONST;
 
 CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_actor_new)

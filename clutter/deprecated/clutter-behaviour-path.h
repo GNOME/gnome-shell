@@ -106,6 +106,7 @@ struct _ClutterBehaviourPathClass
   void (*_clutter_path_4) (void);
 };
 
+CLUTTER_DEPRECATED_IN_1_6
 GType clutter_behaviour_path_get_type (void) G_GNUC_CONST;
 
 CLUTTER_DEPRECATED_IN_1_6_FOR(clutter_actor_animate)
