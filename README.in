@@ -161,8 +161,11 @@ Clutter has additional command line options for the configure script:
         Build Clutter with profiling instrumentation. Requires the GNU
         C Compiler and the UProf library.
 
- --enable-conform=[yes/no]
-        Build the Clutter conformance test suite.
+ --disable-tests
+        Disable building the Clutter tests suite.
+
+ --disable-examples
+        Disable building the Clutter API reference examples.
 
  --enable-deprecated=[yes/no]
         Whether deprecated symbols should be available when compiling Clutter.
@@ -240,7 +243,7 @@ In the report you should include:
 
   • what system you're running Clutter on;
   • which version of Clutter you are using;
-  • which version of GLib and OpenGL (or OpenGL ES) you are using;
+  • which version of GLib, Cogl, and OpenGL (or OpenGL ES) you are using;
   • which video card and which drivers you are using, including output of
     glxinfo and xdpyinfo (if applicable);
   • how to reproduce the bug.
