@@ -66,7 +66,7 @@ G_BEGIN_DECLS
 /**
  * CLUTTER_EVENT_STOP:
  *
- * Stops the propagattion of an event; this macro should be used
+ * Stops the propagation of an event; this macro should be used
  * in event-related signals.
  *
  * Since: 1.10
@@ -115,6 +115,14 @@ typedef struct _ClutterStageStateEvent  ClutterStageStateEvent;
 typedef struct _ClutterCrossingEvent    ClutterCrossingEvent;
 typedef struct _ClutterTouchEvent       ClutterTouchEvent;
 
+/**
+ * ClutterEventSequence:
+ *
+ * The <structname>ClutterEventSequence</structname> structure is an opaque
+ * type used to denote the event sequence of a touch event.
+ *
+ * Since: 1.12
+ */
 typedef struct _ClutterEventSequence    ClutterEventSequence;
 
 /**
