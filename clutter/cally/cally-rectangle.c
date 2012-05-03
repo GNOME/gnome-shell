@@ -30,6 +30,8 @@
  * In particular it sets a proper role for the rectangle.
  */
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "cally-rectangle.h"
 #include "cally-actor-private.h"
 

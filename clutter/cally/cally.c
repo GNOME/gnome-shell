@@ -33,6 +33,8 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "cally.h"
 
 #include "cally-actor.h"
