@@ -166,7 +166,7 @@ expand_content_files = \
 # e.g. INCLUDES=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
 
-INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/clutter -I$(top_builddir) -I$(top_builddir)/clutter $(CLUTTER_CFLAGS)
+INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/clutter -I$(top_builddir) -I$(top_builddir)/clutter $(CLUTTER_CFLAGS) -DCLUTTER_DISABLE_DEPRECATION_WARNINGS
 GTKDOC_LIBS = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
