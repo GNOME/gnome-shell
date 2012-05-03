@@ -1603,6 +1603,40 @@ cogl_matrix_init_identity (CoglMatrix *matrix)
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
+/*
+ * Set a matrix to the (tx, ty, tz) translation matrix.
+ *
+ * @matix matrix.
+ * @tx x coordinate of the translation vector
+ * @ty y coordinate of the translation vector
+ * @tz z coordinate of the translation vector
+ */
+static void
+_cogl_matrix_init_translation (CoglMatrix *matrix,
+                               float       tx,
+                               float       ty,
+                               float       tz)
+{
+  memcpy (matrix, identity, 16 * sizeof (float));
+
+  matrix->xw = tx;
+  matrix->yw = ty;
+  matrix->yw = tz;
+
+  matrix->type = COGL_MATRIX_TYPE_3D;
+  matrix->flags = MAT_FLAG_TRANSLATION | MAT_DIRTY_INVERSE;
+}
+
+void
+cogl_matrix_init_translation (CoglMatrix *matrix,
+                              float       tx,
+                              float       ty,
+                              float       tz)
+{
+  _cogl_matrix_init_translation (matrix, tx, ty, tz);
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
+}
+
 #if 0
 /*
  * Test if the given matrix preserves vector lengths.

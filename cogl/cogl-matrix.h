@@ -127,6 +127,30 @@ void
 cogl_matrix_init_identity (CoglMatrix *matrix);
 
 /**
+ * cogl_matrix_init_translation:
+ * @matrix: A 4x4 transformation matrix
+ * @tx x coordinate of the translation vector
+ * @ty y coordinate of the translation vector
+ * @tz z coordinate of the translation vector
+ *
+ * Resets matrix to the (tx, ty, tz) translation matrix:
+ *
+ * |[
+ *   .xx=1; .xy=0; .xz=0; .xw=tx;
+ *   .yx=0; .yy=1; .yz=0; .yw=ty;
+ *   .zx=0; .zy=0; .zz=1; .zw=tz;
+ *   .wx=0; .wy=0; .wz=0; .ww=1;
+ * ]|
+ *
+ * Since: 2.0
+ */
+void
+cogl_matrix_init_translation (CoglMatrix *matrix,
+                              float       tx,
+                              float       ty,
+                              float       tz);
+
+/**
  * cogl_matrix_multiply:
  * @result: The address of a 4x4 matrix to store the result in
  * @a: A 4x4 transformation matrix

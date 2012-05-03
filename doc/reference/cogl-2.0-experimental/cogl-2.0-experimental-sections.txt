@@ -545,6 +545,7 @@ cogl_color_equal
 CoglMatrix
 cogl_matrix_init_identity
 cogl_matrix_init_from_array
+cogl_matrix_init_translation
 cogl_matrix_copy
 cogl_matrix_equal
 cogl_matrix_free
