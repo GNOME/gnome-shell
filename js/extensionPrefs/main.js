@@ -6,11 +6,11 @@ const GObject = imports.gi.GObject;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Pango = imports.gi.Pango;
+const Format = imports.format;
 
 const _ = Gettext.gettext;
 
 const Config = imports.misc.config;
-const Format = imports.misc.format;
 const ExtensionUtils = imports.misc.extensionUtils;
 
 

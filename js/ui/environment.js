@@ -90,7 +90,7 @@ function init() {
     }
 
     // OK, now things are initialized enough that we can import shell JS
-    const Format = imports.misc.format;
+    const Format = imports.format;
     const Tweener = imports.ui.tweener;
 
     Tweener.init();

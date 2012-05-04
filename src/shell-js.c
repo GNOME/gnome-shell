@@ -79,15 +79,3 @@ shell_js_add_extension_importer (const char  *target_object_script,
   JS_EndRequest (context);
   return ret;
 }
-
-/**
- * shell_js_format_int_alternative_output:
- * @intval:
- *
- * Returns: (transfer full):
- */
-gchar *
-shell_js_format_int_alternative_output (gint intval)
-{
-  return g_strdup_printf ("%Id", intval);
-}
