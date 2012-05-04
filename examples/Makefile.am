@@ -9,6 +9,7 @@ all_examples = \
 	drop-action \
 	easing-modes \
 	flow-layout \
+	layout-manager \
 	rounded-rectangle \
 	threads
 
