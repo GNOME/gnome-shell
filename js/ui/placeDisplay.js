@@ -189,7 +189,7 @@ const PlacesManager = new Lang.Class({
         this._volumeMonitor.connect('drive-changed', Lang.bind(this, this._updateDevices));
         this._updateDevices();
 
-        this._bookmarksPath = GLib.build_filenamev([GLib.get_home_dir(), '.gtk-bookmarks']);
+        this._bookmarksPath = GLib.build_filenamev([GLib.get_user_config_dir(), 'gtk-3.0', 'bookmarks']);
         this._bookmarksFile = Gio.file_new_for_path(this._bookmarksPath);
         this._monitor = this._bookmarksFile.monitor_file(Gio.FileMonitorFlags.NONE, null);
         this._bookmarkTimeoutId = 0;
