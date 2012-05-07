@@ -368,8 +368,6 @@ const SearchSystem = new Lang.Class({
                 }
             }
         }
-
-        this.emit('search-completed', results);
     },
 });
 Signals.addSignalMethods(SearchSystem.prototype);

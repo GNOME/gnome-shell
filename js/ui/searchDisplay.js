@@ -173,8 +173,7 @@ const SearchResults = new Lang.Class({
 
     _init: function(searchSystem, openSearchSystem) {
         this._searchSystem = searchSystem;
-        this._searchSystem.connect('search-updated', Lang.bind(this, this._updateCurrentResults));
-        this._searchSystem.connect('search-completed', Lang.bind(this, this._updateResults));
+        this._searchSystem.connect('search-updated', Lang.bind(this, this._updateResults));
         this._openSearchSystem = openSearchSystem;
 
         this.actor = new St.BoxLayout({ name: 'searchResults',
@@ -282,8 +281,7 @@ const SearchResults = new Lang.Class({
 
         this._providerMeta.push({ provider: provider,
                                   actor: providerBox,
-                                  resultDisplay: resultDisplay,
-                                  hasPendingResults: false });
+                                  resultDisplay: resultDisplay });
         this._content.add(providerBox);
     },
 
@@ -326,6 +324,8 @@ const SearchResults = new Lang.Class({
 
     doSearch: function (searchString) {
         this._searchSystem.updateSearch(searchString);
+        let terms = this._searchSystem.getTerms();
+        this._openSearchSystem.setSearchTerms(terms);
     },
 
     _metaForProvider: function(provider) {
@@ -337,8 +337,6 @@ const SearchResults = new Lang.Class({
 
         for (let i = 0; i < this._providerMeta.length; i++) {
             let meta = this._providerMeta[i];
-            if (meta.hasPendingResults)
-                return;
 
             if (!meta.actor.visible)
                 continue;
@@ -363,19 +361,33 @@ const SearchResults = new Lang.Class({
         }
     },
 
-    _updateCurrentResults: function(searchSystem, results) {
+    _updateStatusText: function () {
+        let haveResults = false;
+
+        for (let i = 0; i < this._providerMeta.length; ++i)
+            if (this._providerMeta[i].resultDisplay.getFirstResult()) {
+                haveResults = true;
+                break;
+            }
+
+        if (!haveResults) {
+            this._statusText.set_text(_("No matching results."));
+            this._statusText.show();
+        } else {
+            this._statusText.hide();
+        }
+    },
+
+    _updateResults: function(searchSystem, results) {
         let terms = searchSystem.getTerms();
         let [provider, providerResults] = results;
         let meta = this._metaForProvider(provider);
-        meta.hasPendingResults = false;
-        this._updateProviderResults(provider, providerResults, terms);
-    },
 
-    _updateProviderResults: function(provider, providerResults, terms) {
-        let meta = this._metaForProvider(provider);
         if (providerResults.length == 0) {
             this._clearDisplayForProvider(provider);
             meta.resultDisplay.setResults([], []);
+            this._maybeSetInitialSelection();
+            this._updateStatusText();
         } else {
             meta.resultDisplay.setResults(providerResults, terms);
             let results = meta.resultDisplay.getResultsForDisplay();
@@ -384,46 +396,22 @@ const SearchResults = new Lang.Class({
                 this._clearDisplayForProvider(provider);
                 meta.actor.show();
 
-                // Hinding drops the key focus if we have it
+                // Hiding drops the key focus if we have it
                 let focus = global.stage.get_key_focus();
+                // To avoid CSS transitions causing flickering when
+                // the first search result stays the same, we hide the
+                // content while filling in the results.
                 this._content.hide();
 
                 meta.resultDisplay.renderResults(metas);
                 this._maybeSetInitialSelection();
+                this._updateStatusText();
 
                 this._content.show();
                 if (this._content.contains(focus))
                     global.stage.set_key_focus(focus);
             }));
         }
-        this._maybeSetInitialSelection();
-    },
-
-    _updateResults: function(searchSystem, results) {
-        if (results.length == 0) {
-            this._statusText.set_text(_("No matching results."));
-            this._statusText.show();
-        } else {
-            this._statusText.hide();
-        }
-
-        let terms = searchSystem.getTerms();
-        this._openSearchSystem.setSearchTerms(terms);
-
-        // To avoid CSS transitions causing flickering when the first search
-        // result stays the same, we hide the content while filling in the
-        // results.
-        this._content.hide();
-
-        for (let i = 0; i < results.length; i++) {
-            let [provider, providerResults] = results[i];
-            let meta = this._metaForProvider(provider);
-            meta.hasPendingResults = true;
-        }
-
-        this._content.show();
-
-        return true;
     },
 
     activateDefault: function() {
