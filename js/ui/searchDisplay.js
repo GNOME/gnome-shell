@@ -208,10 +208,8 @@ const SearchResults = new Lang.Class({
         this._content.add(this._statusText);
         this._providers = this._searchSystem.getProviders();
         this._providerMeta = [];
-        this._providerMetaResults = {};
         for (let i = 0; i < this._providers.length; i++) {
             this.createProviderMeta(this._providers[i]);
-            this._providerMetaResults[this.providers[i].title] = [];
         }
         this._searchProvidersBox = new St.BoxLayout({ style_class: 'search-providers-box' });
         this.actor.add(this._searchProvidersBox);
@@ -301,7 +299,6 @@ const SearchResults = new Lang.Class({
     },
 
     _clearDisplay: function() {
-        this._visibleResultsCount = 0;
         for (let i = 0; i < this._providerMeta.length; i++) {
             let meta = this._providerMeta[i];
             meta.resultDisplay.clear();
@@ -380,7 +377,6 @@ const SearchResults = new Lang.Class({
             this._clearDisplayForProvider(provider);
             meta.resultDisplay.setResults([], []);
         } else {
-            this._providerMetaResults[provider.title] = providerResults;
             meta.resultDisplay.setResults(providerResults, terms);
             let results = meta.resultDisplay.getResultsForDisplay();
 
