@@ -28,6 +28,14 @@
 #include "cogl-context.h"
 #include "cogl-gl-header.h"
 
+/* These aren't defined in the GLES headers */
+#ifndef GL_CLAMP_TO_BORDER
+#define GL_CLAMP_TO_BORDER 0x812d
+#endif
+#ifndef GL_MIRRORED_REPEAT
+#define GL_MIRRORED_REPEAT 0x8370
+#endif
+
 /* GL_ALWAYS is just used here as a value that is known not to clash
  * with any valid GL wrap modes.
  *

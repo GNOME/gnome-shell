@@ -39,14 +39,6 @@
 
 #include <glib.h>
 
-/* This isn't defined in the GLES headers */
-#ifndef GL_CLAMP_TO_BORDER
-#define GL_CLAMP_TO_BORDER 0x812d
-#endif
-#ifndef GL_MIRRORED_REPEAT
-#define GL_MIRRORED_REPEAT 0x8370
-#endif
-
 typedef struct _CoglPipelineLayer     CoglPipelineLayer;
 #define COGL_PIPELINE_LAYER(OBJECT) ((CoglPipelineLayer *)OBJECT)
 
