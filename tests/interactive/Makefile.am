@@ -49,7 +49,8 @@ UNIT_TESTS = \
 	test-devices.c \
 	test-content.c \
 	test-keyframe-transition.c \
-	test-scroll-actor.c
+	test-scroll-actor.c \
+	test-bind-constraint.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c

@@ -154,8 +154,14 @@ on_button_release (ClutterActor *actor,
   return TRUE;
 }
 
-int
-main (int argc, char *argv[])
+G_MODULE_EXPORT const char *
+test_bind_constraint_describe (void)
+{
+  return "Demonstrate the usage of ClutterBindConstraint";
+}
+
+G_MODULE_EXPORT int
+test_bind_constraint_main (int argc, char *argv[])
 {
   ClutterActor *stage, *rect;
   ClutterConstraint *constraint;
