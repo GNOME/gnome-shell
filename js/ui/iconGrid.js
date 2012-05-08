@@ -282,6 +282,10 @@ const IconGrid = new Lang.Class({
         return this._computeLayout(rowWidth)[0];
     },
 
+    getRowLimit: function() {
+        return this._rowLimit;
+    },
+
     _computeLayout: function (forWidth) {
         let nColumns = 0;
         let usedWidth = 0;

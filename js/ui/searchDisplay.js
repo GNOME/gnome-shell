@@ -131,7 +131,7 @@ const GridSearchResults = new Lang.Class({
 
     getResultsForDisplay: function() {
         let alreadyVisible = this._pendingClear ? 0 : this._grid.visibleItemsCount();
-        let canDisplay = this._grid.childrenInRow(this._width) * MAX_SEARCH_RESULTS_ROWS
+        let canDisplay = this._grid.childrenInRow(this._width) * this._grid.getRowLimit()
                          - alreadyVisible;
 
         let numResults = Math.min(this._notDisplayedResult.length, canDisplay);
