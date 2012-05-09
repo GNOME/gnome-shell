@@ -233,7 +233,7 @@ static guint
 cally_util_add_key_event_listener (AtkKeySnoopFunc  listener,
                                    gpointer         data)
 {
-  static guint key=0;
+  static guint key = 1;
   CallyKeyEventInfo *event_info = NULL;
 
   if (!key_listener_list)
