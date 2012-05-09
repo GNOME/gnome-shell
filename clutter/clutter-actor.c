@@ -8258,12 +8258,16 @@ clutter_actor_get_preferred_width (ClutterActor *self,
   if (!priv->min_width_set)
     request_min_width = cached_size_request->min_size;
   else
-    request_min_width = info->minimum.width;
+    request_min_width = info->margin.left
+                      + info->minimum.width
+                      + info->margin.right;
 
   if (!priv->natural_width_set)
     request_natural_width = cached_size_request->natural_size;
   else
-    request_natural_width = info->natural.width;
+    request_natural_width = info->margin.left
+                          + info->natural.width
+                          + info->margin.right;
 
   if (min_width_p)
     *min_width_p = request_min_width;
@@ -8390,12 +8394,16 @@ clutter_actor_get_preferred_height (ClutterActor *self,
   if (!priv->min_height_set)
     request_min_height = cached_size_request->min_size;
   else
-    request_min_height = info->minimum.height;
+    request_min_height = info->margin.top
+                       + info->minimum.height
+                       + info->margin.bottom;
 
   if (!priv->natural_height_set)
     request_natural_height = cached_size_request->natural_size;
   else
-    request_natural_height = info->natural.height;
+    request_natural_height = info->margin.top
+                           + info->natural.height
+                           + info->margin.bottom;
 
   if (min_height_p)
     *min_height_p = request_min_height;
