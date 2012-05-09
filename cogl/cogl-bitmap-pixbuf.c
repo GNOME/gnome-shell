@@ -29,6 +29,7 @@
 #include "cogl-internal.h"
 #include "cogl-bitmap-private.h"
 #include "cogl-context-private.h"
+#include "cogl-private.h"
 
 #include <string.h>
 
@@ -56,8 +57,9 @@ _cogl_bitmap_get_size_from_file (const char *filename,
 
 /* the error does not contain the filename as the caller already has it */
 CoglBitmap *
-_cogl_bitmap_from_file (const char  *filename,
-			GError     **error)
+_cogl_bitmap_from_file (CoglContext *ctx,
+                        const char *filename,
+			GError **error)
 {
   CFURLRef url;
   CGImageSourceRef image_source;
@@ -69,11 +71,6 @@ _cogl_bitmap_from_file (const char  *filename,
   CGColorSpaceRef color_space;
   CGContextRef bitmap_context;
   CoglBitmap *bmp;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
-
-  g_assert (filename != NULL);
-  g_assert (error == NULL || *error == NULL);
 
   url = CFURLCreateFromFileSystemRepresentation (NULL,
                                                  (guchar *) filename,
@@ -173,8 +170,9 @@ _cogl_bitmap_get_size_from_file (const char *filename,
 }
 
 CoglBitmap *
-_cogl_bitmap_from_file (const char   *filename,
-			GError      **error)
+_cogl_bitmap_from_file (CoglContext *ctx,
+                        const char *filename,
+			GError **error)
 {
   static CoglUserDataKey pixbuf_key;
   GdkPixbuf        *pixbuf;
@@ -187,10 +185,6 @@ _cogl_bitmap_from_file (const char   *filename,
   int               bits_per_sample;
   int               n_channels;
   CoglBitmap       *bmp;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
-
-  _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, FALSE);
 
   /* Load from file using GdkPixbuf */
   pixbuf = gdk_pixbuf_new_from_file (filename, error);
@@ -269,38 +263,187 @@ _cogl_bitmap_get_size_from_file (const char *filename,
   return TRUE;
 }
 
-CoglBitmap *
-_cogl_bitmap_from_file (const char  *filename,
-			GError     **error)
+/* stb_image.c supports an STBI_grey_alpha format which we don't have
+ * a corresponding CoglPixelFormat for so as a special case we
+ * convert this to rgba8888.
+ *
+ * If we have a use case where this is an important format to consider
+ * then it could be worth adding a corresponding CoglPixelFormat
+ * instead.
+ */
+static uint8_t *
+convert_ra_88_to_rgba_8888 (uint8_t *pixels,
+                            int width,
+                            int height)
+{
+  int x, y;
+  uint8_t *buf;
+  size_t in_stride = width * 2;
+  size_t out_stride = width * 4;
+
+  buf = malloc (width * height * 4);
+  if (buf)
+    return NULL;
+
+  for (y = 0; y < height; y++)
+    for (x = 0; x < width; x++)
+      {
+        uint8_t *src = pixels + in_stride * y + 2 * x;
+        uint8_t *dst = buf + out_stride * y + 4 * x;
+
+        dst[0] = src[0];
+        dst[1] = src[0];
+        dst[2] = src[0];
+        dst[3] = src[1];
+      }
+
+  return buf;
+}
+
+static CoglBitmap *
+_cogl_bitmap_new_from_stb_pixels (CoglContext *ctx,
+                                  uint8_t *pixels,
+                                  int stb_pixel_format,
+                                  int width,
+                                  int height,
+                                  GError **error)
 {
   static CoglUserDataKey bitmap_data_key;
   CoglBitmap *bmp;
-  int      stb_pixel_format;
-  int      width;
-  int      height;
-  uint8_t  *pixels;
+  CoglPixelFormat cogl_format;
+  size_t stride;
 
-  _COGL_GET_CONTEXT (ctx, NULL);
-
-  _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, FALSE);
-
-  /* Load from file using stb */
-  pixels = stbi_load (filename,
-                      &width, &height, &stb_pixel_format,
-                      STBI_rgb_alpha);
   if (pixels == NULL)
-    return FALSE;
+    {
+      g_set_error_literal (error,
+                           COGL_BITMAP_ERROR,
+                           COGL_BITMAP_ERROR_FAILED,
+                           "Failed to load image with stb image library");
+      return NULL;
+    }
+
+  switch (stb_pixel_format)
+    {
+    case STBI_grey:
+      cogl_format = COGL_PIXEL_FORMAT_A_8;
+      break;
+    case STBI_grey_alpha:
+      {
+        uint8_t *tmp = pixels;
+
+        pixels = convert_ra_88_to_rgba_8888 (pixels, width, height);
+        free (tmp);
+
+        if (!pixels)
+          {
+            g_set_error_literal (error,
+                                 COGL_BITMAP_ERROR,
+                                 COGL_BITMAP_ERROR_FAILED,
+                                 "Failed to alloc memory to convert "
+                                 "gray_alpha to rgba8888");
+            return NULL;
+          }
+
+        cogl_format = COGL_PIXEL_FORMAT_RGBA_8888;
+        break;
+      }
+    case STBI_rgb:
+      cogl_format = COGL_PIXEL_FORMAT_RGB_888;
+      break;
+    case STBI_rgb_alpha:
+      cogl_format = COGL_PIXEL_FORMAT_RGBA_8888;
+      break;
+
+    default:
+      g_warn_if_reached ();
+      return NULL;
+    }
+
+  stride = width * _cogl_pixel_format_get_bytes_per_pixel (cogl_format);
 
   /* Store bitmap info */
   bmp = cogl_bitmap_new_for_data (ctx,
                                   width, height,
-                                  COGL_PIXEL_FORMAT_RGBA_8888,
-                                  width * 4, /* rowstride */
+                                  cogl_format,
+                                  stride,
                                   pixels);
+
   /* Register a destroy function so the pixel data will be freed
      automatically when the bitmap object is destroyed */
   cogl_object_set_user_data (COGL_OBJECT (bmp), &bitmap_data_key, pixels, free);
 
   return bmp;
 }
+
+CoglBitmap *
+_cogl_bitmap_from_file (CoglContext *ctx,
+                        const char *filename,
+			GError **error)
+{
+  int stb_pixel_format;
+  int width;
+  int height;
+  uint8_t *pixels;
+
+  pixels = stbi_load (filename,
+                      &width, &height, &stb_pixel_format,
+                      STBI_default);
+
+  return _cogl_bitmap_new_from_stb_pixels (ctx, pixels, stb_pixel_format,
+                                           width, height,
+                                           error);
+}
+
+#ifdef COGL_HAS_ANDROID_SUPPORT
+CoglBitmap *
+_cogl_android_bitmap_new_from_asset (CoglContext *ctx,
+                                     AAssetManager *manager,
+                                     const char *filename,
+                                     GError **error)
+{
+  AAsset *asset;
+  const void *data;
+  off_t len;
+  int stb_pixel_format;
+  int width;
+  int height;
+  uint8_t *pixels;
+  CoglBitmap *bmp;
+
+  asset = AAssetManager_open (manager, filename, AASSET_MODE_BUFFER);
+  if (!asset)
+    {
+      g_set_error_literal (error,
+                           COGL_BITMAP_ERROR,
+                           COGL_BITMAP_ERROR_FAILED,
+                           "Failed to open asset");
+      return NULL;
+    }
+
+  data = AAsset_getBuffer (asset);
+  if (!data)
+    {
+      g_set_error_literal (error,
+                           COGL_BITMAP_ERROR,
+                           COGL_BITMAP_ERROR_FAILED,
+                           "Failed to ::getBuffer from asset");
+      return NULL;
+    }
+
+  len = AAsset_getLength (asset);
+
+  pixels = stbi_load_from_memory (data, len,
+                                  &width, &height,
+                                  &stb_pixel_format, STBI_default);
+
+  bmp = _cogl_bitmap_new_from_stb_pixels (ctx, pixels, stb_pixel_format,
+                                          width, height,
+                                          error);
+
+  AAsset_close (asset);
+
+  return bmp;
+}
+#endif
+
 #endif

@@ -450,6 +450,8 @@ cogl_texture_new_from_file (const char        *filename,
   CoglTexture *texture = NULL;
   CoglPixelFormat src_format;
 
+  _COGL_GET_CONTEXT (ctx, NULL);
+
   _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, NULL);
 
   bmp = cogl_bitmap_new_from_file (filename, error);
