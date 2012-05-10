@@ -120,7 +120,7 @@ function createExtensionObject(uuid, dir, type) {
 
     // Encourage people to add this
     if (!meta.url) {
-        global.log('Warning: Missing "url" property in metadata.json');
+        log('Warning: Missing "url" property in %s/metadata.json'.format(uuid));
     }
 
     if (uuid != meta.uuid) {
@@ -157,7 +157,7 @@ function init() {
         if (!userExtensionsDir.query_exists(null))
             userExtensionsDir.make_directory_with_parents(null);
     } catch (e) {
-        global.logError('' + e);
+        logError(e, 'Could not create extensions directory');
     }
 }
 
@@ -167,7 +167,7 @@ function scanExtensionsInDirectory(callback, dir, type) {
     try {
         fileEnum = dir.enumerate_children('standard::*', Gio.FileQueryInfoFlags.NONE, null);
     } catch(e) {
-        global.logError('' + e);
+        logError(e, 'Could not enumerate extensions directory');
         return;
     }
 

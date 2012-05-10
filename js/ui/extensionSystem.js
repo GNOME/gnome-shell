@@ -237,7 +237,7 @@ function logExtensionError(uuid, message, state) {
         extension.errors = [];
 
     extension.errors.push(message);
-    global.logError('Extension "%s" had error: %s'.format(uuid, message));
+    log('Extension "%s" had error: %s'.format(uuid, message));
     state = state || ExtensionState.ERROR;
     _signals.emit('extension-state-changed', { uuid: uuid,
                                                error: message,
@@ -249,7 +249,7 @@ function loadExtension(dir, type, enabled) {
     let extension;
 
     if (ExtensionUtils.extensions[uuid] != undefined) {
-        global.logError('Extension "%s" is already loaded'.format(uuid));
+        log('Extension "%s" is already loaded'.format(uuid));
         return;
     }
 

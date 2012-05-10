@@ -875,7 +875,8 @@ function initializeDeferredWork(actor, callback, props) {
 function queueDeferredWork(workId) {
     let data = _deferredWorkData[workId];
     if (!data) {
-        global.logError('invalid work id ', workId);
+        let message = 'Invalid work id %d'.format(workId);
+        logError(new Error(message), message);
         return;
     }
     if (_deferredWorkQueue.indexOf(workId) < 0)

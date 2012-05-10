@@ -354,7 +354,7 @@ const SearchSystem = new Lang.Class({
                     results.push([provider, []]);
                     provider.getSubsearchResultSet(previousResults, terms);
                 } catch (error) {
-                    global.log ('A ' + error.name + ' has occured in ' + provider.title + ': ' + error.message);
+                    log('A ' + error.name + ' has occured in ' + provider.title + ': ' + error.message);
                 }
             }
         } else {
@@ -364,7 +364,7 @@ const SearchSystem = new Lang.Class({
                     results.push([provider, []]);
                     provider.getInitialResultSet(terms);
                 } catch (error) {
-                    global.log ('A ' + error.name + ' has occured in ' + provider.title + ': ' + error.message);
+                    log('A ' + error.name + ' has occured in ' + provider.title + ': ' + error.message);
                 }
             }
         }

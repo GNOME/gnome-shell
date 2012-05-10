@@ -210,7 +210,7 @@ const Application = new Lang.Class({
             try {
                 extension = ExtensionUtils.createExtensionObject(uuid, dir, type);
             } catch(e) {
-                global.logError('' + e);
+                logError(e, 'Could not create extensions object');
                 return;
             }
 
@@ -257,7 +257,7 @@ function initEnvironment() {
         },
 
         logError: function(s) {
-            global.log('ERROR: ' + s);
+            log('ERROR: ' + s);
         },
 
         userdatadir: GLib.build_filenamev([GLib.get_user_data_dir(), 'gnome-shell'])
