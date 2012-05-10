@@ -559,7 +559,7 @@ const UserMenuButton = new Lang.Class({
 
     _updateLockScreen: function() {
         let allowLockScreen = !this._lockdownSettings.get_boolean(DISABLE_LOCK_SCREEN_KEY);
-        this._logoutItem.actor.visible = allowLockScreen;
+        this._lockScreenItem.actor.visible = allowLockScreen;
     },
 
     _updateHaveShutdown: function() {
