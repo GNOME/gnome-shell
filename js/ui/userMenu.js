@@ -497,13 +497,13 @@ const UserMenuButton = new Lang.Class({
         }));
 
         this._userManager.connect('notify::is-loaded',
-                                  Lang.bind(this, this._updateSwitchUser));
+                                  Lang.bind(this, this._updateMultiUser));
         this._userManager.connect('notify::has-multiple-users',
-                                  Lang.bind(this, this._updateSwitchUser));
+                                  Lang.bind(this, this._updateMultiUser));
         this._userManager.connect('user-added',
-                                  Lang.bind(this, this._updateSwitchUser));
+                                  Lang.bind(this, this._updateMultiUser));
         this._userManager.connect('user-removed',
-                                  Lang.bind(this, this._updateSwitchUser));
+                                  Lang.bind(this, this._updateMultiUser));
         this._lockdownSettings.connect('changed::' + DISABLE_USER_SWITCH_KEY,
                                        Lang.bind(this, this._updateSwitchUser));
         this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
@@ -542,6 +542,11 @@ const UserMenuButton = new Lang.Class({
             this._name.set_text("");
     },
 
+    _updateMultiUser: function() {
+        this._updateSwitchUser();
+        this._updateLogout();
+    },
+
     _updateSwitchUser: function() {
         let allowSwitch = !this._lockdownSettings.get_boolean(DISABLE_USER_SWITCH_KEY);
         this._loginScreenItem.actor.visible = allowSwitch &&
@@ -551,7 +556,7 @@ const UserMenuButton = new Lang.Class({
 
     _updateLogout: function() {
         let allowLogout = !this._lockdownSettings.get_boolean(DISABLE_LOG_OUT_KEY);
-        this._logoutItem.actor.visible = allowLogout;
+        this._logoutItem.actor.visible = allowLogout && this._userManager.has_multiple_users;
     },
 
     _updateLockScreen: function() {
