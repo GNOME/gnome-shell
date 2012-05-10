@@ -30,17 +30,19 @@ const LayoutMenuItem = new Lang.Class({
     Name: 'LayoutMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem,
 
-    _init: function(name, layout, engine) {
+    _init: function(name, shortName, xkbLayout, xkbVariant, ibusEngine) {
         this.parent();
 
         this.label = new St.Label({ text: name });
-        this.indicator = new St.Label({ text: layout });
+        this.indicator = new St.Label({ text: shortName });
         this.addActor(this.label);
         this.addActor(this.indicator);
 
-        this.name = name;
-        this.layout = layout;
-        this.engine = engine;
+        this.sourceName = name;
+        this.shortName = shortName;
+        this.xkbLayout = xkbLayout;
+        this.xkbVariant = xkbVariant;
+        this.ibusEngine = ibusEngine;
     }
 });
 
@@ -74,7 +76,10 @@ const InputSourceIndicator = new Lang.Class({
             this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
             this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, function() {
                 Main.overview.hide();
-                Util.spawn(['gkbd-keyboard-display', '-l', String(this._selectedLayout.layout)]);
+                let description = this._selectedLayout.xkbLayout;
+                if (this._selectedLayout.xkbVariant.length > 0)
+                    description = description + '\t' + this._selectedLayout.xkbVariant;
+                Util.spawn(['gkbd-keyboard-display', '-l', description]);
             }));
         }
         this.menu.addSettingsAction(_("Region and Language Settings"), 'gnome-region-panel.desktop');
@@ -250,8 +255,6 @@ const InputSourceIndicator = new Lang.Class({
     _currentISChanged: function() {
         let source = this._settings.get_value(KEY_CURRENT_IS);
         let name = source.get_child_value(0).get_string()[0];
-        let layout = source.get_child_value(1).get_string()[0];
-        let engine = source.get_child_value(2).get_string()[0];
 
         if (this._selectedLayout) {
             this._selectedLayout.setShowDot(false);
@@ -265,7 +268,7 @@ const InputSourceIndicator = new Lang.Class({
 
         for (let i = 0; i < this._layoutItems.length; ++i) {
             let item = this._layoutItems[i];
-            if (item.name == name) {
+            if (item.sourceName == name) {
                 item.setShowDot(true);
                 this._selectedLayout = item;
                 break;
@@ -274,7 +277,7 @@ const InputSourceIndicator = new Lang.Class({
 
         for (let i = 0; i < this._labelActors.length; ++i) {
             let actor = this._labelActors[i];
-            if (actor.text == layout) {
+            if (actor.sourceName == name) {
                 this._selectedLabel = actor;
                 this._container.set_skip_paint(actor, false);
                 break;
@@ -307,23 +310,28 @@ const InputSourceIndicator = new Lang.Class({
 
         for (let i = 0; i < sources.n_children(); ++i) {
             let name = sources.get_child_value(i).get_child_value(0).get_string()[0];
-            let layout = sources.get_child_value(i).get_child_value(1).get_string()[0];
-            let engine = sources.get_child_value(i).get_child_value(2).get_string()[0];
+            let shortName = sources.get_child_value(i).get_child_value(1).get_string()[0];
+            let xkbLayout = sources.get_child_value(i).get_child_value(2).get_string()[0];
+            let xkbVariant = sources.get_child_value(i).get_child_value(3).get_string()[0];
+            let ibusEngine = sources.get_child_value(i).get_child_value(4).get_string()[0];
 
-            let item = new LayoutMenuItem(name, layout, engine);
+            let item = new LayoutMenuItem(name, shortName, xkbLayout, xkbVariant, ibusEngine);
             this._layoutItems.push(item);
             this.menu.addMenuItem(item, i);
             item.connect('activate', Lang.bind(this, function() {
-                if (this._selectedLayout == null || item.name != this._selectedLayout.name) {
-                    let name = GLib.Variant.new_string(item.name);
-                    let layout = GLib.Variant.new_string(item.layout);
-                    let engine = GLib.Variant.new_string(item.engine);
-                    let tuple = GLib.Variant.new_tuple([name, layout, engine], 3);
+                if (this._selectedLayout == null || item.sourceName != this._selectedLayout.sourceName) {
+                    let name = GLib.Variant.new_string(item.sourceName);
+                    let shortName = GLib.Variant.new_string(item.shortName);
+                    let xkbLayout = GLib.Variant.new_string(item.xkbLayout);
+                    let xkbVariant = GLib.Variant.new_string(item.xkbVariant);
+                    let ibusEngine = GLib.Variant.new_string(item.ibusEngine);
+                    let tuple = GLib.Variant.new_tuple([name, shortName, xkbLayout, xkbVariant, ibusEngine], 5);
                     this._settings.set_value(KEY_CURRENT_IS, tuple);
                 }
             }));
 
-            let shortLabel = new St.Label({ text: layout });
+            let shortLabel = new St.Label({ text: shortName });
+            shortLabel.sourceName = name;
             this._labelActors.push(shortLabel);
             this._container.add_actor(shortLabel);
             this._container.set_skip_paint(shortLabel, true);
@@ -339,7 +347,7 @@ const InputSourceIndicator = new Lang.Class({
           }
         for (let i = 0; i < this._layoutItems.length; ++i) {
             let item = this._layoutItems[i];
-            if (item.name == this._selectedLayout.name) {
+            if (item.sourceName == this._selectedLayout.sourceName) {
                 this._layoutItems[(++i == this._layoutItems.length) ? 0 : i].activate();
                 break;
             }
@@ -353,7 +361,7 @@ const InputSourceIndicator = new Lang.Class({
         }
         for (let i = 0; i < this._layoutItems.length; ++i) {
             let item = this._layoutItems[i];
-            if (item.name == this._selectedLayout.name) {
+            if (item.sourceName == this._selectedLayout.sourceName) {
                 this._layoutItems[(--i == -1) ? (this._layoutItems.length - 1) : i].activate();
                 break;
             }
