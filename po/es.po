@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-24 15:39+0000\n"
-"PO-Revision-Date: 2012-04-25 12:09+0200\n"
+"POT-Creation-Date: 2012-05-10 14:28+0000\n"
+"PO-Revision-Date: 2012-05-10 18:04+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -141,12 +141,10 @@ msgid "Keybinding to open the application menu."
 msgstr "Asociación de teclas para abrir el menú de la aplicación."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to toggle the screen recorder"
 msgstr "Asociación de teclas cambiar el grabador de pantalla"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
-#| msgid "Keybinding to open the application menu."
 msgid "Keybinding to start/stop the builtin screen recorder."
 msgstr "Asociación de teclas para iniciar/detener el grabador de pantalla."
 
@@ -268,7 +266,7 @@ msgstr "¿No está en la lista?"
 
 #: ../js/gdm/loginDialog.js:1023 ../js/ui/endSessionDialog.js:401
 #: ../js/ui/extensionSystem.js:400 ../js/ui/networkAgent.js:153
-#: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
+#: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:459
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -281,16 +279,17 @@ msgstr "Iniciar sesión"
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
-#: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
-#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
+#: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:588
+#: ../js/ui/userMenu.js:592 ../js/ui/userMenu.js:637
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../js/gdm/powerMenu.js:160
+#: ../js/gdm/powerMenu.js:135
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/gdm/powerMenu.js:165
+#: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:590
+#: ../js/ui/userMenu.js:592 ../js/ui/userMenu.js:636
 msgid "Power Off"
 msgstr "Apagar"
 
@@ -318,19 +317,19 @@ msgstr "Todas"
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
-#: ../js/ui/appDisplay.js:375
+#: ../js/ui/appDisplay.js:374
 msgid "SETTINGS"
 msgstr "CONFIGURACIÓN"
 
-#: ../js/ui/appDisplay.js:680
+#: ../js/ui/appDisplay.js:679
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:683
+#: ../js/ui/appDisplay.js:682
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:684
+#: ../js/ui/appDisplay.js:683
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
@@ -528,7 +527,7 @@ msgstr "Desconectado"
 msgid "CONTACTS"
 msgstr "CONTACTOS"
 
-#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1207
+#: ../js/ui/dash.js:239 ../js/ui/messageTray.js:1209
 msgid "Remove"
 msgstr "Quitar"
 
@@ -704,73 +703,73 @@ msgstr "Contraseña:"
 msgid "Type again:"
 msgstr "Escriba de nuevo:"
 
-#: ../js/ui/lookingGlass.js:732
+#: ../js/ui/lookingGlass.js:693
 msgid "No extensions installed"
 msgstr "No hay extensiones instaladas"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:786
+#: ../js/ui/lookingGlass.js:747
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s no ha generado ningún error."
 
-#: ../js/ui/lookingGlass.js:792
+#: ../js/ui/lookingGlass.js:753
 msgid "Hide Errors"
 msgstr "Ocultar errores"
 
-#: ../js/ui/lookingGlass.js:796 ../js/ui/lookingGlass.js:847
+#: ../js/ui/lookingGlass.js:757 ../js/ui/lookingGlass.js:808
 msgid "Show Errors"
 msgstr "Mostrar errores"
 
-#: ../js/ui/lookingGlass.js:805
+#: ../js/ui/lookingGlass.js:766
 msgid "Enabled"
 msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:808 ../src/gvc/gvc-mixer-control.c:1082
+#: ../js/ui/lookingGlass.js:769 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../js/ui/lookingGlass.js:810
+#: ../js/ui/lookingGlass.js:771
 msgid "Error"
 msgstr "Error"
 
-#: ../js/ui/lookingGlass.js:812
+#: ../js/ui/lookingGlass.js:773
 msgid "Out of date"
 msgstr "Caducado"
 
-#: ../js/ui/lookingGlass.js:814
+#: ../js/ui/lookingGlass.js:775
 msgid "Downloading"
 msgstr "Descargando"
 
-#: ../js/ui/lookingGlass.js:835
+#: ../js/ui/lookingGlass.js:796
 msgid "View Source"
 msgstr "Ver fuente"
 
-#: ../js/ui/lookingGlass.js:841
+#: ../js/ui/lookingGlass.js:802
 msgid "Web Page"
 msgstr "Página web"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:121
+#: ../js/ui/main.js:118
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Screencast desde %d %t"
 
-#: ../js/ui/messageTray.js:1200
+#: ../js/ui/messageTray.js:1202
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:1217
+#: ../js/ui/messageTray.js:1219
 msgid "Unmute"
 msgstr "Dar voz"
 
-#: ../js/ui/messageTray.js:1217
+#: ../js/ui/messageTray.js:1219
 msgid "Mute"
 msgstr "Silenciar"
 
-#: ../js/ui/messageTray.js:2490
+#: ../js/ui/messageTray.js:2492
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -933,7 +932,7 @@ msgstr "Inténtelo de nuevo,"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:724
+#: ../js/ui/popupMenu.js:728
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -941,11 +940,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Introduzca un comando:"
 
-#: ../js/ui/searchDisplay.js:332
+#: ../js/ui/searchDisplay.js:321
 msgid "Searching..."
 msgstr "Buscando…"
 
-#: ../js/ui/searchDisplay.js:415
+#: ../js/ui/searchDisplay.js:374
 msgid "No matching results."
 msgstr "No se encontró ningún resultado coincidente."
 
@@ -1017,9 +1016,9 @@ msgid "Large Text"
 msgstr "Texto grande"
 
 #: ../js/ui/status/bluetooth.js:31 ../js/ui/status/bluetooth.js:35
-#: ../js/ui/status/bluetooth.js:258 ../js/ui/status/bluetooth.js:341
-#: ../js/ui/status/bluetooth.js:371 ../js/ui/status/bluetooth.js:407
-#: ../js/ui/status/bluetooth.js:436 ../js/ui/status/network.js:893
+#: ../js/ui/status/bluetooth.js:255 ../js/ui/status/bluetooth.js:338
+#: ../js/ui/status/bluetooth.js:368 ../js/ui/status/bluetooth.js:404
+#: ../js/ui/status/bluetooth.js:433 ../js/ui/status/network.js:890
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1044,102 +1043,102 @@ msgstr "Configuración de Bluetooth"
 msgid "hardware disabled"
 msgstr "hardware desactivado"
 
-#: ../js/ui/status/bluetooth.js:203
+#: ../js/ui/status/bluetooth.js:200
 msgid "Connection"
 msgstr "Conexión"
 
-#: ../js/ui/status/bluetooth.js:214 ../js/ui/status/network.js:491
+#: ../js/ui/status/bluetooth.js:211 ../js/ui/status/network.js:491
 msgid "disconnecting..."
 msgstr "deconectando…"
 
-#: ../js/ui/status/bluetooth.js:227 ../js/ui/status/network.js:497
+#: ../js/ui/status/bluetooth.js:224 ../js/ui/status/network.js:497
 msgid "connecting..."
 msgstr "conectando…"
 
-#: ../js/ui/status/bluetooth.js:245
+#: ../js/ui/status/bluetooth.js:242
 msgid "Send Files..."
 msgstr "Enviar archivos…"
 
-#: ../js/ui/status/bluetooth.js:250
+#: ../js/ui/status/bluetooth.js:247
 msgid "Browse Files..."
 msgstr "Examinar archivos…"
 
-#: ../js/ui/status/bluetooth.js:259
+#: ../js/ui/status/bluetooth.js:256
 msgid "Error browsing device"
 msgstr "Error al examinar el dispositivo"
 
-#: ../js/ui/status/bluetooth.js:260
+#: ../js/ui/status/bluetooth.js:257
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "No se puede examinar el dispositivo solicitado, el error es «%s»"
 
-#: ../js/ui/status/bluetooth.js:268
+#: ../js/ui/status/bluetooth.js:265
 msgid "Keyboard Settings"
 msgstr "Configuración del teclado"
 
-#: ../js/ui/status/bluetooth.js:271
+#: ../js/ui/status/bluetooth.js:268
 msgid "Mouse Settings"
 msgstr "Ajustes del ratón…"
 
-#: ../js/ui/status/bluetooth.js:276 ../js/ui/status/volume.js:59
+#: ../js/ui/status/bluetooth.js:273 ../js/ui/status/volume.js:59
 msgid "Sound Settings"
 msgstr "Configuración del sonido"
 
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:369
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Solicitud de autorización de %s"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:375
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "El dispositivo %s quiere acceder al servicio «%s»"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:377
 msgid "Always grant access"
 msgstr "Conceder acceso siempre"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:378
 msgid "Grant this time only"
 msgstr "Conceder sólo esta vez"
 
-#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1093
+#: ../js/ui/status/bluetooth.js:379 ../js/ui/telepathyClient.js:1093
 msgid "Reject"
 msgstr "Rechazar"
 
-#: ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:405
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Confirmación de emparejamiento para «%s»"
 
-#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "El dispositivo «%s» quiere emparejarse con este equipo"
 
-#: ../js/ui/status/bluetooth.js:415
+#: ../js/ui/status/bluetooth.js:412
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Confirme que el PIN mostrado en «%s» coincide con el del dispositivo."
 
-#: ../js/ui/status/bluetooth.js:417
+#: ../js/ui/status/bluetooth.js:414
 msgid "Matches"
 msgstr "Coincide"
 
-#: ../js/ui/status/bluetooth.js:418
+#: ../js/ui/status/bluetooth.js:415
 msgid "Does not match"
 msgstr "No coincide"
 
-#: ../js/ui/status/bluetooth.js:437
+#: ../js/ui/status/bluetooth.js:434
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Solicitud de emparejamiento para «%s»"
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:442
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Introduzca el PIN mencionado en el dispositivo."
 
-#: ../js/ui/status/bluetooth.js:461
+#: ../js/ui/status/bluetooth.js:458
 msgid "OK"
 msgstr "Aceptar"
 
@@ -1192,13 +1191,13 @@ msgstr "no disponible"
 msgid "connection failed"
 msgstr "falló la conexión"
 
-#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1505
+#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1497
 msgid "More..."
 msgstr "Más…"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:621 ../js/ui/status/network.js:1440
+#: ../js/ui/status/network.js:621 ../js/ui/status/network.js:1432
 msgid "Connected (private)"
 msgstr "Conectada (privada)"
 
@@ -1206,69 +1205,69 @@ msgstr "Conectada (privada)"
 msgid "Auto Ethernet"
 msgstr "Ethernet automática"
 
-#: ../js/ui/status/network.js:757
+#: ../js/ui/status/network.js:754
 msgid "Auto broadband"
 msgstr "Banda ancha automática"
 
-#: ../js/ui/status/network.js:760
+#: ../js/ui/status/network.js:757
 msgid "Auto dial-up"
 msgstr "Marcado automático"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:879 ../js/ui/status/network.js:1452
+#: ../js/ui/status/network.js:876 ../js/ui/status/network.js:1444
 #, c-format
 msgid "Auto %s"
 msgstr "%s automática"
 
-#: ../js/ui/status/network.js:881
+#: ../js/ui/status/network.js:878
 msgid "Auto bluetooth"
 msgstr "Bluetooth automático"
 
-#: ../js/ui/status/network.js:1454
+#: ../js/ui/status/network.js:1446
 msgid "Auto wireless"
 msgstr "Inalámbrica automática"
 
-#: ../js/ui/status/network.js:1541
+#: ../js/ui/status/network.js:1533
 msgid "Network"
 msgstr "Red"
 
-#: ../js/ui/status/network.js:1548
+#: ../js/ui/status/network.js:1540
 msgid "Enable networking"
 msgstr "Activar red"
 
-#: ../js/ui/status/network.js:1560
+#: ../js/ui/status/network.js:1552
 msgid "Wired"
 msgstr "Cableada"
 
-#: ../js/ui/status/network.js:1571
+#: ../js/ui/status/network.js:1563
 msgid "Wireless"
 msgstr "Inalámbrica"
 
-#: ../js/ui/status/network.js:1581
+#: ../js/ui/status/network.js:1573
 msgid "Mobile broadband"
 msgstr "Banda ancha móvil"
 
-#: ../js/ui/status/network.js:1591
+#: ../js/ui/status/network.js:1583
 msgid "VPN Connections"
 msgstr "Conexiones VPN"
 
-#: ../js/ui/status/network.js:1602
+#: ../js/ui/status/network.js:1594
 msgid "Network Settings"
 msgstr "Configuración de la red"
 
-#: ../js/ui/status/network.js:1739
+#: ../js/ui/status/network.js:1731
 msgid "Connection failed"
 msgstr "Falló la conexión"
 
-#: ../js/ui/status/network.js:1740
+#: ../js/ui/status/network.js:1732
 msgid "Activation of network connection failed"
 msgstr "Falló la activación de la conexión de red"
 
-#: ../js/ui/status/network.js:1993
+#: ../js/ui/status/network.js:1985
 msgid "Networking is disabled"
 msgstr "La red está desactivada"
 
-#: ../js/ui/status/network.js:2117
+#: ../js/ui/status/network.js:2109
 msgid "Network Manager"
 msgstr "Gestor de la red"
 
@@ -1642,39 +1641,34 @@ msgstr "Inactivo"
 msgid "Unavailable"
 msgstr "No disponible"
 
-#: ../js/ui/userMenu.js:595 ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:669
-msgid "Power Off..."
-msgstr "Apagar…"
-
-#: ../js/ui/userMenu.js:631
+#: ../js/ui/userMenu.js:624
 msgid "Notifications"
 msgstr "Notificaciones"
 
-#: ../js/ui/userMenu.js:639
-msgid "Online Accounts"
-msgstr "Cuentas en línea"
-
-#: ../js/ui/userMenu.js:643
+#: ../js/ui/userMenu.js:632
 msgid "System Settings"
 msgstr "Configuración del sistema"
 
-#: ../js/ui/userMenu.js:650
-msgid "Lock Screen"
-msgstr "Bloquear la pantalla"
-
-#: ../js/ui/userMenu.js:655
+#: ../js/ui/userMenu.js:646
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/userMenu.js:660
-msgid "Log Out..."
-msgstr "Cerrar la sesión…"
+#: ../js/ui/userMenu.js:651
+#| msgctxt "title"
+#| msgid "Log Out"
+msgid "Log Out"
+msgstr "Cerrar la sesión"
 
-#: ../js/ui/userMenu.js:688
+#: ../js/ui/userMenu.js:659
+#| msgid "Clock"
+msgid "Lock"
+msgstr "Bloquear"
+
+#: ../js/ui/userMenu.js:677
 msgid "Your chat status will be set to busy"
 msgstr "Su estado del chat se establecerá a «ocupado»"
 
-#: ../js/ui/userMenu.js:689
+#: ../js/ui/userMenu.js:678
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1794,6 +1788,18 @@ msgstr "Sistema de archivos"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Power Off..."
+#~ msgstr "Apagar…"
+
+#~ msgid "Online Accounts"
+#~ msgstr "Cuentas en línea"
+
+#~ msgid "Lock Screen"
+#~ msgstr "Bloquear la pantalla"
+
+#~ msgid "Log Out..."
+#~ msgstr "Cerrar la sesión…"
 
 #~ msgid "RECENT ITEMS"
 #~ msgstr "ELEMENTOS RECIENTES"
@@ -2053,9 +2059,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Can't remove the first workspace."
 #~ msgstr "No se puede quitar el primer área de trabajo."
-
-#~ msgid "Clock"
-#~ msgstr "Reloj"
 
 #~ msgid "Customize the panel clock"
 #~ msgstr "Personalizar el reloj del panel"
