@@ -544,12 +544,9 @@ const UserMenuButton = new Lang.Class({
 
     _updateSwitchUser: function() {
         let allowSwitch = !this._lockdownSettings.get_boolean(DISABLE_USER_SWITCH_KEY);
-        if (allowSwitch &&
-            this._userManager.can_switch() &&
-            this._userManager.has_multiple_users)
-            this._loginScreenItem.actor.show();
-        else
-            this._loginScreenItem.actor.hide();
+        this._loginScreenItem.actor.visible = allowSwitch &&
+                                              this._userManager.can_switch() &&
+                                              this._userManager.has_multiple_users;
     },
 
     _updateLogout: function() {
