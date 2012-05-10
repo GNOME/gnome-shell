@@ -1,11 +1,10 @@
 /*
- * Clutter.
+ * Cogl
  *
- * An OpenGL based 'interactive canvas' library.
- *
- * Authored By Matthew Allum  <mallum@openedhand.com>
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
  * Copyright (C) 2008 OpenedHand
+ * Copyright (C) 2012 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,7 +17,14 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ * License along with this library. If not, see
+ * <http://www.gnu.org/licenses/>.
+ *
+ *
+ * Authors:
+ *   Neil Roberts <neil@linux.intel.com>
+ *   Robert Bragg <robert@linux.intel.com>
+ *   Matthew Allum  <mallum@openedhand.com>
  */
 
 #ifndef __COGL_PANGO_PRIVATE_H__
@@ -28,10 +34,25 @@
 
 COGL_BEGIN_DECLS
 
-void           _cogl_pango_renderer_clear_glyph_cache  (CoglPangoRenderer *renderer);
-void           _cogl_pango_renderer_set_use_mipmapping (CoglPangoRenderer *renderer,
-                                                        CoglBool           value);
-CoglBool       _cogl_pango_renderer_get_use_mipmapping (CoglPangoRenderer *renderer);
+PangoRenderer *
+_cogl_pango_renderer_new (CoglContext *context);
+
+void
+_cogl_pango_renderer_clear_glyph_cache  (CoglPangoRenderer *renderer);
+
+void
+_cogl_pango_renderer_set_use_mipmapping (CoglPangoRenderer *renderer,
+                                         CoglBool value);
+CoglBool
+_cogl_pango_renderer_get_use_mipmapping (CoglPangoRenderer *renderer);
+
+
+
+CoglContext *
+_cogl_pango_font_map_get_cogl_context (CoglPangoFontMap *fm);
+
+PangoRenderer *
+_cogl_pango_font_map_get_renderer (CoglPangoFontMap *fm);
 
 COGL_END_DECLS
 

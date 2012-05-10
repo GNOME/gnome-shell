@@ -1,11 +1,10 @@
 /*
- * Clutter.
+ * Cogl
  *
- * An OpenGL based 'interactive canvas' library.
- *
- * Authored By Matthew Allum  <mallum@openedhand.com>
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
  * Copyright (C) 2008 OpenedHand
+ * Copyright (C) 2012 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,7 +17,14 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ * License along with this library. If not, see
+ * <http://www.gnu.org/licenses/>.
+ *
+ *
+ * Authors:
+ *   Neil Roberts <neil@linux.intel.com>
+ *   Robert Bragg <robert@linux.intel.com>
+ *   Matthew Allum  <mallum@openedhand.com>
  */
 
 #ifdef HAVE_CONFIG_H
@@ -41,6 +47,14 @@
 #include "cogl-pango-glyph-cache.h"
 #include "cogl-pango-display-list.h"
 
+enum
+{
+  PROP_0,
+
+  PROP_COGL_CONTEXT,
+  PROP_LAST
+};
+
 typedef struct
 {
   CoglPangoGlyphCache *glyph_cache;
@@ -50,6 +64,8 @@ typedef struct
 struct _CoglPangoRenderer
 {
   PangoRenderer parent_instance;
+
+  CoglContext *ctx;
 
   /* Two caches of glyphs as textures and their corresponding pipeline
      caches, one with mipmapped textures and one without */
@@ -67,11 +83,11 @@ struct _CoglPangoRendererClass
   PangoRendererClass class_instance;
 };
 
-typedef struct _CoglPangoRendererQdata CoglPangoRendererQdata;
+typedef struct _CoglPangoLayoutQdata CoglPangoLayoutQdata;
 
 /* An instance of this struct gets attached to each PangoLayout to
    cache the VBO and to detect changes to the layout */
-struct _CoglPangoRendererQdata
+struct _CoglPangoLayoutQdata
 {
   CoglPangoRenderer *renderer;
   /* The cache of the geometry for the layout */
@@ -93,6 +109,13 @@ typedef struct
   CoglPangoDisplayList *display_list;
   float x1, y1, x2, y2;
 } CoglPangoRendererSliceCbData;
+
+PangoRenderer *
+_cogl_pango_renderer_new (CoglContext *context)
+{
+  return PANGO_RENDERER (g_object_new (COGL_PANGO_TYPE_RENDERER,
+                                       "context", context, NULL));
+}
 
 static void
 cogl_pango_renderer_slice_cb (CoglTexture *texture,
@@ -126,7 +149,7 @@ cogl_pango_renderer_draw_glyph (CoglPangoRenderer        *priv,
 {
   CoglPangoRendererSliceCbData data;
 
-  g_return_if_fail (priv->display_list != NULL);
+  _COGL_RETURN_IF_FAIL (priv->display_list != NULL);
 
   data.display_list = priv->display_list;
   data.x1 = x1;
@@ -151,6 +174,7 @@ cogl_pango_renderer_draw_glyph (CoglPangoRenderer        *priv,
                                        &data);
 }
 
+static void cogl_pango_renderer_dispose (GObject *object);
 static void cogl_pango_renderer_finalize (GObject *object);
 static void cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
                                              PangoFont        *font,
@@ -177,15 +201,46 @@ G_DEFINE_TYPE (CoglPangoRenderer, cogl_pango_renderer, PANGO_TYPE_RENDERER);
 static void
 cogl_pango_renderer_init (CoglPangoRenderer *priv)
 {
-  priv->no_mipmap_caches.pipeline_cache =
-    _cogl_pango_pipeline_cache_new (FALSE);
-  priv->mipmap_caches.pipeline_cache =
-    _cogl_pango_pipeline_cache_new (TRUE);
+}
 
-  priv->no_mipmap_caches.glyph_cache = cogl_pango_glyph_cache_new (FALSE);
-  priv->mipmap_caches.glyph_cache = cogl_pango_glyph_cache_new (TRUE);
+static void
+_cogl_pango_renderer_constructed (GObject *gobject)
+{
+  CoglPangoRenderer *renderer = COGL_PANGO_RENDERER (gobject);
+  CoglContext *ctx = renderer->ctx;
 
-  _cogl_pango_renderer_set_use_mipmapping (priv, FALSE);
+  renderer->no_mipmap_caches.pipeline_cache =
+    _cogl_pango_pipeline_cache_new (ctx, FALSE);
+  renderer->mipmap_caches.pipeline_cache =
+    _cogl_pango_pipeline_cache_new (ctx, TRUE);
+
+  renderer->no_mipmap_caches.glyph_cache = cogl_pango_glyph_cache_new (FALSE);
+  renderer->mipmap_caches.glyph_cache = cogl_pango_glyph_cache_new (TRUE);
+
+  _cogl_pango_renderer_set_use_mipmapping (renderer, FALSE);
+
+  if (G_OBJECT_CLASS (cogl_pango_renderer_parent_class)->constructed)
+    G_OBJECT_CLASS (cogl_pango_renderer_parent_class)->constructed (gobject);
+}
+
+static void
+cogl_pango_renderer_set_property (GObject *object,
+                                  unsigned int prop_id,
+                                  const GValue *value,
+                                  GParamSpec *pspec)
+{
+  CoglPangoRenderer *renderer = COGL_PANGO_RENDERER (object);
+
+  switch (prop_id)
+    {
+    case PROP_COGL_CONTEXT:
+      renderer->ctx = g_value_get_pointer (value);
+      cogl_object_ref (renderer->ctx);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
 }
 
 static void
@@ -193,12 +248,37 @@ cogl_pango_renderer_class_init (CoglPangoRendererClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   PangoRendererClass *renderer_class = PANGO_RENDERER_CLASS (klass);
+  GParamSpec *pspec;
 
+  object_class->set_property = cogl_pango_renderer_set_property;
+  object_class->constructed = _cogl_pango_renderer_constructed;
+  object_class->dispose = cogl_pango_renderer_dispose;
   object_class->finalize = cogl_pango_renderer_finalize;
+
+  pspec = g_param_spec_pointer ("context",
+                                "Context",
+                                "The Cogl Context",
+                                G_PARAM_WRITABLE |
+                                G_PARAM_STATIC_STRINGS |
+                                G_PARAM_CONSTRUCT_ONLY);
+
+  g_object_class_install_property (object_class, PROP_COGL_CONTEXT, pspec);
 
   renderer_class->draw_glyphs = cogl_pango_renderer_draw_glyphs;
   renderer_class->draw_rectangle = cogl_pango_renderer_draw_rectangle;
   renderer_class->draw_trapezoid = cogl_pango_renderer_draw_trapezoid;
+}
+
+static void
+cogl_pango_renderer_dispose (GObject *object)
+{
+  CoglPangoRenderer *priv = COGL_PANGO_RENDERER (object);
+
+  if (priv->ctx)
+    {
+      cogl_object_unref (priv->ctx);
+      priv->ctx = NULL;
+    }
 }
 
 static void
@@ -218,22 +298,24 @@ cogl_pango_renderer_finalize (GObject *object)
 static CoglPangoRenderer *
 cogl_pango_get_renderer_from_context (PangoContext *context)
 {
-  PangoFontMap      *font_map;
-  PangoRenderer     *renderer;
-  CoglPangoFontMap  *font_map_priv;
+  PangoFontMap *font_map;
+  CoglPangoFontMap *cogl_font_map;
+  PangoRenderer *renderer;
 
   font_map = pango_context_get_font_map (context);
   g_return_val_if_fail (COGL_PANGO_IS_FONT_MAP (font_map), NULL);
 
-  font_map_priv = COGL_PANGO_FONT_MAP (font_map);
-  renderer = cogl_pango_font_map_get_renderer (font_map_priv);
+  cogl_font_map = COGL_PANGO_FONT_MAP (font_map);
+
+  renderer = _cogl_pango_font_map_get_renderer (cogl_font_map);
+
   g_return_val_if_fail (COGL_PANGO_IS_RENDERER (renderer), NULL);
 
   return COGL_PANGO_RENDERER (renderer);
 }
 
 static GQuark
-cogl_pango_render_get_qdata_key (void)
+cogl_pango_layout_get_qdata_key (void)
 {
   static GQuark key = 0;
 
@@ -244,7 +326,7 @@ cogl_pango_render_get_qdata_key (void)
 }
 
 static void
-cogl_pango_render_qdata_forget_display_list (CoglPangoRendererQdata *qdata)
+cogl_pango_layout_qdata_forget_display_list (CoglPangoLayoutQdata *qdata)
 {
   if (qdata->display_list)
     {
@@ -254,7 +336,7 @@ cogl_pango_render_qdata_forget_display_list (CoglPangoRendererQdata *qdata)
 
       _cogl_pango_glyph_cache_remove_reorganize_callback
         (caches->glyph_cache,
-         (GHookFunc) cogl_pango_render_qdata_forget_display_list,
+         (GHookFunc) cogl_pango_layout_qdata_forget_display_list,
          qdata);
 
       _cogl_pango_display_list_free (qdata->display_list);
@@ -264,36 +346,24 @@ cogl_pango_render_qdata_forget_display_list (CoglPangoRendererQdata *qdata)
 }
 
 static void
-cogl_pango_render_qdata_destroy (CoglPangoRendererQdata *qdata)
+cogl_pango_render_qdata_destroy (CoglPangoLayoutQdata *qdata)
 {
-  cogl_pango_render_qdata_forget_display_list (qdata);
+  cogl_pango_layout_qdata_forget_display_list (qdata);
   if (qdata->first_line)
     pango_layout_line_unref (qdata->first_line);
-  g_slice_free (CoglPangoRendererQdata, qdata);
+  g_slice_free (CoglPangoLayoutQdata, qdata);
 }
 
-/**
- * cogl_pango_render_layout_subpixel:
- * @layout: a #PangoLayout
- * @x: FIXME
- * @y: FIXME
- * @color: color to use when rendering the layout
- * @flags: flags to pass to the renderer
- *
- * FIXME
- *
- * Since: 1.0
- */
 void
-cogl_pango_render_layout_subpixel (PangoLayout     *layout,
-				   int              x,
-				   int              y,
-				   const CoglColor *color,
-				   int              flags)
+cogl_pango_show_layout (CoglFramebuffer *fb,
+                        PangoLayout *layout,
+                        float x,
+                        float y,
+                        const CoglColor *color)
 {
-  PangoContext           *context;
-  CoglPangoRenderer      *priv;
-  CoglPangoRendererQdata *qdata;
+  PangoContext *context;
+  CoglPangoRenderer *priv;
+  CoglPangoLayoutQdata *qdata;
 
   context = pango_layout_get_context (layout);
   priv = cogl_pango_get_renderer_from_context (context);
@@ -301,14 +371,14 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
     return;
 
   qdata = g_object_get_qdata (G_OBJECT (layout),
-                              cogl_pango_render_get_qdata_key ());
+                              cogl_pango_layout_get_qdata_key ());
 
   if (qdata == NULL)
     {
-      qdata = g_slice_new0 (CoglPangoRendererQdata);
+      qdata = g_slice_new0 (CoglPangoLayoutQdata);
       qdata->renderer = priv;
       g_object_set_qdata_full (G_OBJECT (layout),
-                               cogl_pango_render_get_qdata_key (),
+                               cogl_pango_layout_get_qdata_key (),
                                qdata,
                                (GDestroyNotify)
                                cogl_pango_render_qdata_destroy);
@@ -321,7 +391,7 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
       ((qdata->first_line &&
         qdata->first_line->layout != layout) ||
        qdata->mipmapping_used != priv->use_mipmapping))
-    cogl_pango_render_qdata_forget_display_list (qdata);
+    cogl_pango_layout_qdata_forget_display_list (qdata);
 
   if (qdata->display_list == NULL)
     {
@@ -338,7 +408,7 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
          we can rebuild the display list */
       _cogl_pango_glyph_cache_add_reorganize_callback
         (caches->glyph_cache,
-         (GHookFunc) cogl_pango_render_qdata_forget_display_list,
+         (GHookFunc) cogl_pango_layout_qdata_forget_display_list,
          qdata);
 
       priv->display_list = qdata->display_list;
@@ -348,11 +418,14 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
       qdata->mipmapping_used = priv->use_mipmapping;
     }
 
-  cogl_push_matrix ();
-  cogl_translate (x / (gfloat) PANGO_SCALE, y / (gfloat) PANGO_SCALE, 0);
-  _cogl_pango_display_list_render (qdata->display_list,
+  cogl_framebuffer_push_matrix (fb);
+  cogl_framebuffer_translate (fb, x, y, 0);
+
+  _cogl_pango_display_list_render (fb,
+                                   qdata->display_list,
                                    color);
-  cogl_pop_matrix ();
+
+  cogl_framebuffer_pop_matrix (fb);
 
   /* Keep a reference to the first line of the layout so we can detect
      changes */
@@ -368,24 +441,26 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
     }
 }
 
-/**
- * cogl_pango_render_layout:
- * @layout: a #PangoLayout
- * @x: X coordinate to render the layout at
- * @y: Y coordinate to render the layout at
- * @color: color to use when rendering the layout
- * @flags: flags to pass to the renderer
- *
- * Renders @layout.
- *
- * Since: 1.0
- */
 void
-cogl_pango_render_layout (PangoLayout     *layout,
-                          int              x,
-                          int              y,
+cogl_pango_render_layout_subpixel (PangoLayout *layout,
+                                   int x,
+                                   int y,
+                                   const CoglColor *color,
+                                   int flags)
+{
+  cogl_pango_show_layout (cogl_get_draw_framebuffer (),
+                          layout,
+                          x / (float) PANGO_SCALE,
+                          y / (float) PANGO_SCALE,
+                          color);
+}
+
+void
+cogl_pango_render_layout (PangoLayout *layout,
+                          int x,
+                          int y,
                           const CoglColor *color,
-                          int              flags)
+                          int flags)
 {
   cogl_pango_render_layout_subpixel (layout,
                                      x * PANGO_SCALE,
@@ -394,26 +469,18 @@ cogl_pango_render_layout (PangoLayout     *layout,
                                      flags);
 }
 
-/**
- * cogl_pango_render_layout_line:
- * @line: a #PangoLayoutLine
- * @x: X coordinate to render the line at
- * @y: Y coordinate to render the line at
- * @color: color to use when rendering the line
- *
- * Renders @line at the given coordinates using the given color.
- *
- * Since: 1.0
- */
 void
-cogl_pango_render_layout_line (PangoLayoutLine *line,
-                               int              x,
-                               int              y,
-                               const CoglColor *color)
+cogl_pango_show_layout_line (CoglFramebuffer *fb,
+                             PangoLayoutLine *line,
+                             float x,
+                             float y,
+                             const CoglColor *color)
 {
   PangoContext *context;
   CoglPangoRenderer *priv;
   CoglPangoRendererCaches *caches;
+  int pango_x = x * PANGO_SCALE;
+  int pango_y = y * PANGO_SCALE;
 
   context = pango_layout_get_context (line->layout);
   priv = cogl_pango_get_renderer_from_context (context);
@@ -428,13 +495,28 @@ cogl_pango_render_layout_line (PangoLayoutLine *line,
 
   _cogl_pango_ensure_glyph_cache_for_layout_line (line);
 
-  pango_renderer_draw_layout_line (PANGO_RENDERER (priv), line, x, y);
+  pango_renderer_draw_layout_line (PANGO_RENDERER (priv), line,
+                                   pango_x, pango_y);
 
-  _cogl_pango_display_list_render (priv->display_list,
+  _cogl_pango_display_list_render (fb,
+                                   priv->display_list,
                                    color);
 
   _cogl_pango_display_list_free (priv->display_list);
   priv->display_list = NULL;
+}
+
+void
+cogl_pango_render_layout_line (PangoLayoutLine *line,
+                               int x,
+                               int y,
+                               const CoglColor *color)
+{
+  cogl_pango_show_layout_line (cogl_get_draw_framebuffer (),
+                               line,
+                               x / (float) PANGO_SCALE,
+                               y / (float) PANGO_SCALE,
+                               color);
 }
 
 void
@@ -489,7 +571,7 @@ cogl_pango_renderer_set_dirty_glyph (PangoFont *font,
   /* Glyphs that don't take up any space will end up without a
      texture. These should never become dirty so they shouldn't end up
      here */
-  g_return_if_fail (value->texture != NULL);
+  _COGL_RETURN_IF_FAIL (value->texture != NULL);
 
   if (cogl_texture_get_format (value->texture) == COGL_PIXEL_FORMAT_A_8)
     {
@@ -617,7 +699,7 @@ cogl_pango_ensure_glyph_cache_for_layout (PangoLayout *layout)
   context = pango_layout_get_context (layout);
   priv = cogl_pango_get_renderer_from_context (context);
 
-  g_return_if_fail (PANGO_IS_LAYOUT (layout));
+  _COGL_RETURN_IF_FAIL (PANGO_IS_LAYOUT (layout));
 
   if ((iter = pango_layout_get_iter (layout)) == NULL)
     return;
@@ -671,7 +753,7 @@ cogl_pango_renderer_draw_box (PangoRenderer *renderer,
 {
   CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
 
-  g_return_if_fail (priv->display_list != NULL);
+  _COGL_RETURN_IF_FAIL (priv->display_list != NULL);
 
   _cogl_pango_display_list_add_rectangle (priv->display_list,
                                           x,
@@ -715,7 +797,7 @@ cogl_pango_renderer_draw_rectangle (PangoRenderer   *renderer,
   CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
   float x1, x2, y1, y2;
 
-  g_return_if_fail (priv->display_list != NULL);
+  _COGL_RETURN_IF_FAIL (priv->display_list != NULL);
 
   cogl_pango_renderer_set_color_for_part (renderer, part);
 
@@ -743,7 +825,7 @@ cogl_pango_renderer_draw_trapezoid (PangoRenderer   *renderer,
   CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
   float points[8];
 
-  g_return_if_fail (priv->display_list != NULL);
+  _COGL_RETURN_IF_FAIL (priv->display_list != NULL);
 
   points[0] =  (x11);
   points[1] =  (y1);

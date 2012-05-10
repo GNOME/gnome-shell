@@ -32,37 +32,48 @@ COGL_BEGIN_DECLS
 
 typedef struct _CoglPangoDisplayList CoglPangoDisplayList;
 
-CoglPangoDisplayList *_cogl_pango_display_list_new (CoglPangoPipelineCache *);
+CoglPangoDisplayList *
+_cogl_pango_display_list_new (CoglPangoPipelineCache *);
 
-void _cogl_pango_display_list_set_color_override (CoglPangoDisplayList *dl,
-                                                  const CoglColor *color);
-void _cogl_pango_display_list_remove_color_override (CoglPangoDisplayList *dl);
+void
+_cogl_pango_display_list_set_color_override (CoglPangoDisplayList *dl,
+                                             const CoglColor *color);
 
-void _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
-                                           CoglTexture *texture,
-                                           float x_1, float y_1,
-                                           float x_2, float y_2,
-                                           float tx_1, float ty_1,
-                                           float tx_2, float ty_2);
+void
+_cogl_pango_display_list_remove_color_override (CoglPangoDisplayList *dl);
 
-void _cogl_pango_display_list_add_rectangle (CoglPangoDisplayList *dl,
-                                             float x_1, float y_1,
-                                             float x_2, float y_2);
+void
+_cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
+                                      CoglTexture *texture,
+                                      float x_1, float y_1,
+                                      float x_2, float y_2,
+                                      float tx_1, float ty_1,
+                                      float tx_2, float ty_2);
 
-void _cogl_pango_display_list_add_trapezoid (CoglPangoDisplayList *dl,
-                                             float y_1,
-                                             float x_11,
-                                             float x_21,
-                                             float y_2,
-                                             float x_12,
-                                             float x_22);
+void
+_cogl_pango_display_list_add_rectangle (CoglPangoDisplayList *dl,
+                                        float x_1, float y_1,
+                                        float x_2, float y_2);
 
-void _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
-                                      const CoglColor *color);
+void
+_cogl_pango_display_list_add_trapezoid (CoglPangoDisplayList *dl,
+                                        float y_1,
+                                        float x_11,
+                                        float x_21,
+                                        float y_2,
+                                        float x_12,
+                                        float x_22);
 
-void _cogl_pango_display_list_clear (CoglPangoDisplayList *dl);
+void
+_cogl_pango_display_list_render (CoglFramebuffer *framebuffer,
+                                 CoglPangoDisplayList *dl,
+                                 const CoglColor *color);
 
-void _cogl_pango_display_list_free (CoglPangoDisplayList *dl);
+void
+_cogl_pango_display_list_clear (CoglPangoDisplayList *dl);
+
+void
+_cogl_pango_display_list_free (CoglPangoDisplayList *dl);
 
 COGL_END_DECLS
 

@@ -39,6 +39,8 @@ typedef struct _CoglPangoPipelineCacheEntry CoglPangoPipelineCacheEntry;
 
 struct _CoglPangoPipelineCache
 {
+  CoglContext *ctx;
+
   GHashTable *hash_table;
 
   CoglPipeline *base_texture_alpha_pipeline;
@@ -79,9 +81,12 @@ _cogl_pango_pipeline_cache_value_destroy (void *data)
 }
 
 CoglPangoPipelineCache *
-_cogl_pango_pipeline_cache_new (CoglBool use_mipmapping)
+_cogl_pango_pipeline_cache_new (CoglContext *ctx,
+                                CoglBool use_mipmapping)
 {
   CoglPangoPipelineCache *cache = g_new (CoglPangoPipelineCache, 1);
+
+  cache->ctx = cogl_object_ref (ctx);
 
   /* The key is the pipeline pointer. A reference is taken when the
      pipeline is used as a key so we should unref it again in the
@@ -107,9 +112,8 @@ get_base_texture_rgba_pipeline (CoglPangoPipelineCache *cache)
     {
       CoglPipeline *pipeline;
 
-      _COGL_GET_CONTEXT (ctx, NULL);
-
-      pipeline = cache->base_texture_rgba_pipeline = cogl_pipeline_new (ctx);
+      pipeline = cache->base_texture_rgba_pipeline =
+        cogl_pipeline_new (cache->ctx);
 
       cogl_pipeline_set_layer_wrap_mode (pipeline, 0,
                                          COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
@@ -205,10 +209,8 @@ _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
     }
   else
     {
-      _COGL_GET_CONTEXT (ctx, NULL);
-
       entry->texture = NULL;
-      entry->pipeline = cogl_pipeline_new (ctx);
+      entry->pipeline = cogl_pipeline_new (cache->ctx);
     }
 
   /* Add a weak reference to the pipeline so we can remove it from the
@@ -239,6 +241,8 @@ _cogl_pango_pipeline_cache_free (CoglPangoPipelineCache *cache)
     cogl_object_unref (cache->base_texture_alpha_pipeline);
 
   g_hash_table_destroy (cache->hash_table);
+
+  cogl_object_unref (cache->ctx);
 
   g_free (cache);
 }

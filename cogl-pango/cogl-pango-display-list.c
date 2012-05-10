@@ -236,17 +236,24 @@ _cogl_pango_display_list_add_trapezoid (CoglPangoDisplayList *dl,
 }
 
 static void
-emit_rectangles_through_journal (CoglPangoDisplayListNode *node)
+emit_rectangles_through_journal (CoglFramebuffer *fb,
+                                 CoglPipeline *pipeline,
+                                 CoglPangoDisplayListNode *node)
 {
-  cogl_rectangles_with_texture_coords ((float *)
-                                       node->d.texture.rectangles->data,
-                                       node->d.texture.rectangles->len);
+  const float *rectangles = (const float *)node->d.texture.rectangles->data;
+
+  cogl_framebuffer_draw_textured_rectangles (fb,
+                                             pipeline,
+                                             rectangles,
+                                             node->d.texture.rectangles->len);
 }
 
 static void
-emit_vertex_buffer_geometry (CoglPangoDisplayListNode *node)
+emit_vertex_buffer_geometry (CoglFramebuffer *fb,
+                             CoglPipeline *pipeline,
+                             CoglPangoDisplayListNode *node)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = fb->context;
 
   /* It's expensive to go through the Cogl journal for large runs
    * of text in part because the journal transforms the quads in software
@@ -366,13 +373,15 @@ emit_vertex_buffer_geometry (CoglPangoDisplayListNode *node)
       cogl_object_unref (attributes[1]);
     }
 
-  cogl_framebuffer_draw_primitive (cogl_get_draw_framebuffer (),
-                                   cogl_get_source (),
+  cogl_framebuffer_draw_primitive (fb,
+                                   pipeline,
                                    node->d.texture.primitive);
 }
 
 static void
-_cogl_pango_display_list_render_texture (CoglPangoDisplayListNode *node)
+_cogl_framebuffer_draw_display_list_texture (CoglFramebuffer *fb,
+                                             CoglPipeline *pipeline,
+                                             CoglPangoDisplayListNode *node)
 {
   /* For small runs of text like icon labels, we can get better performance
    * going through the Cogl journal since text may then be batched together
@@ -380,13 +389,14 @@ _cogl_pango_display_list_render_texture (CoglPangoDisplayListNode *node)
   /* FIXME: 25 is a number I plucked out of thin air; it would be good
    * to determine this empirically! */
   if (node->d.texture.rectangles->len < 25)
-    emit_rectangles_through_journal (node);
+    emit_rectangles_through_journal (fb, pipeline, node);
   else
-    emit_vertex_buffer_geometry (node);
+    emit_vertex_buffer_geometry (fb, pipeline, node);
 }
 
 void
-_cogl_pango_display_list_render (CoglPangoDisplayList *dl,
+_cogl_pango_display_list_render (CoglFramebuffer *fb,
+                                 CoglPangoDisplayList *dl,
                                  const CoglColor *color)
 {
   GSList *l;
@@ -421,28 +431,27 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
       cogl_color_premultiply (&draw_color);
 
       cogl_pipeline_set_color (node->pipeline, &draw_color);
-      cogl_push_source (node->pipeline);
 
       switch (node->type)
         {
         case COGL_PANGO_DISPLAY_LIST_TEXTURE:
-          _cogl_pango_display_list_render_texture (node);
+          _cogl_framebuffer_draw_display_list_texture (fb, node->pipeline, node);
           break;
 
         case COGL_PANGO_DISPLAY_LIST_RECTANGLE:
-          cogl_rectangle (node->d.rectangle.x_1,
-                          node->d.rectangle.y_1,
-                          node->d.rectangle.x_2,
-                          node->d.rectangle.y_2);
+          cogl_framebuffer_draw_rectangle (fb,
+                                           node->pipeline,
+                                           node->d.rectangle.x_1,
+                                           node->d.rectangle.y_1,
+                                           node->d.rectangle.x_2,
+                                           node->d.rectangle.y_2);
           break;
 
         case COGL_PANGO_DISPLAY_LIST_TRAPEZOID:
           {
-            CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
             float points[8];
             CoglPath *path;
-
-            _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+            CoglContext *ctx = fb->context;
 
             points[0] =  node->d.trapezoid.x_11;
             points[1] =  node->d.trapezoid.y_1;
@@ -455,13 +464,11 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
 
             path = cogl_path_new ();
             cogl_path_polygon (path, points, 4);
-            cogl_framebuffer_fill_path (framebuffer, node->pipeline, path);
+            cogl_framebuffer_fill_path (fb, node->pipeline, path);
             cogl_object_unref (path);
           }
           break;
         }
-
-      cogl_pop_source ();
     }
 }
 

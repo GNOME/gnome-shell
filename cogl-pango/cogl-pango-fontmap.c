@@ -45,165 +45,131 @@
 
 #include "cogl-pango.h"
 #include "cogl-pango-private.h"
+#include "cogl-util.h"
+#include "cogl/cogl-context-private.h"
 
-static GQuark cogl_pango_font_map_get_renderer_key (void) G_GNUC_CONST;
+static GQuark cogl_pango_font_map_get_priv_key (void) G_GNUC_CONST;
 
-/**
- * cogl_pango_font_map_new:
- *
- * Creates a new font map.
- *
- * Return value: (transfer full): the newly created #PangoFontMap
- *
- * Since: 1.0
- */
+typedef struct _CoglPangoFontMapPriv
+{
+  CoglContext *ctx;
+  PangoRenderer *renderer;
+} CoglPangoFontMapPriv;
+
+static void
+free_priv (gpointer data)
+{
+  CoglPangoFontMapPriv *priv = data;
+
+  cogl_object_unref (priv->ctx);
+  cogl_object_unref (priv->renderer);
+
+  g_free (priv);
+}
+
 PangoFontMap *
 cogl_pango_font_map_new (void)
 {
-  return pango_cairo_font_map_new ();
+  PangoFontMap *fm = pango_cairo_font_map_new ();
+  CoglPangoFontMapPriv *priv = g_new0 (CoglPangoFontMapPriv, 1);
+
+  _COGL_GET_CONTEXT (context, NULL);
+
+  priv->ctx = cogl_object_ref (context);
+
+  /* XXX: The public pango api doesn't let us sub-class
+   * PangoCairoFontMap so we attach our own private data using qdata
+   * for now. */
+  g_object_set_qdata_full (G_OBJECT (fm),
+                           cogl_pango_font_map_get_priv_key (),
+                           priv,
+                           free_priv);
+
+  return fm;
 }
 
-/**
- * cogl_pango_font_map_create_context:
- * @fm: a #CoglPangoFontMap
- *
- * Creates a new #PangoContext from the passed font map.
- *
- * Return value: (transfer full): the newly created #PangoContext
- *
- * Since: 1.0
- */
 PangoContext *
 cogl_pango_font_map_create_context (CoglPangoFontMap *fm)
 {
-  g_return_val_if_fail (COGL_PANGO_IS_FONT_MAP (fm), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (COGL_PANGO_IS_FONT_MAP (fm), NULL);
 
   /* We can just directly use the pango context from the Cairo font
      map */
   return pango_cairo_font_map_create_context (PANGO_CAIRO_FONT_MAP (fm));
 }
 
-/**
- * cogl_pango_font_map_get_renderer:
- * @fm: a #CoglPangoFontMap
- *
- * Retrieves the #CoglPangoRenderer for the passed font map.
- *
- * Return value: (transfer none): a #PangoRenderer
- *
- * Since: 1.0
- */
+static CoglPangoFontMapPriv *
+_cogl_pango_font_map_get_priv (CoglPangoFontMap *fm)
+{
+  return g_object_get_qdata (G_OBJECT (fm),
+			     cogl_pango_font_map_get_priv_key ());
+}
+
+PangoRenderer *
+_cogl_pango_font_map_get_renderer (CoglPangoFontMap *fm)
+{
+  CoglPangoFontMapPriv *priv = _cogl_pango_font_map_get_priv (fm);
+  if (G_UNLIKELY (!priv->renderer))
+    priv->renderer = _cogl_pango_renderer_new (priv->ctx);
+  return priv->renderer;
+}
+
 PangoRenderer *
 cogl_pango_font_map_get_renderer (CoglPangoFontMap *fm)
 {
-  PangoRenderer *renderer;
-
-  g_return_val_if_fail (COGL_PANGO_IS_FONT_MAP (fm), NULL);
-
-  /* We want to keep a cached pointer to the renderer from the font
-     map instance but as we don't have a proper subclass we have to
-     store it in the object data instead */
-
-  renderer = g_object_get_qdata (G_OBJECT (fm),
-				 cogl_pango_font_map_get_renderer_key ());
-
-  if (G_UNLIKELY (renderer == NULL))
-    {
-      renderer = g_object_new (COGL_PANGO_TYPE_RENDERER, NULL);
-      g_object_set_qdata_full (G_OBJECT (fm),
-			       cogl_pango_font_map_get_renderer_key (),
-			       renderer,
-			       g_object_unref);
-    }
-
-  return renderer;
+  return _cogl_pango_font_map_get_renderer (fm);
 }
 
-/**
- * cogl_pango_font_map_set_resolution:
- * @font_map: a #CoglPangoFontMap
- * @dpi: DPI to set
- *
- * Sets the resolution to be used by @font_map at @dpi.
- *
- * Since: 1.0
- */
+CoglContext *
+_cogl_pango_font_map_get_cogl_context (CoglPangoFontMap *fm)
+{
+  CoglPangoFontMapPriv *priv = _cogl_pango_font_map_get_priv (fm);
+  return priv->ctx;
+}
+
 void
 cogl_pango_font_map_set_resolution (CoglPangoFontMap *font_map,
 				    double            dpi)
 {
-  g_return_if_fail (COGL_PANGO_IS_FONT_MAP (font_map));
+  _COGL_RETURN_IF_FAIL (COGL_PANGO_IS_FONT_MAP (font_map));
 
   pango_cairo_font_map_set_resolution (PANGO_CAIRO_FONT_MAP (font_map), dpi);
 }
 
-/**
- * cogl_pango_font_map_clear_glyph_cache:
- * @fm: a #CoglPangoFontMap
- *
- * Clears the glyph cache for @fm.
- *
- * Since: 1.0
- */
 void
 cogl_pango_font_map_clear_glyph_cache (CoglPangoFontMap *fm)
 {
-  PangoRenderer *renderer;
-
-  renderer = cogl_pango_font_map_get_renderer (fm);
+  PangoRenderer *renderer = _cogl_pango_font_map_get_renderer (fm);
 
   _cogl_pango_renderer_clear_glyph_cache (COGL_PANGO_RENDERER (renderer));
 }
 
-/**
- * cogl_pango_font_map_set_use_mipmapping:
- * @fm: a #CoglPangoFontMap
- * @value: %TRUE to enable the use of mipmapping
- *
- * Sets whether the renderer for the passed font map should use
- * mipmapping when rendering a #PangoLayout.
- *
- * Since: 1.0
- */
 void
 cogl_pango_font_map_set_use_mipmapping (CoglPangoFontMap *fm,
                                         CoglBool          value)
 {
-  CoglPangoRenderer *renderer;
+  PangoRenderer *renderer = _cogl_pango_font_map_get_renderer (fm);
 
-  renderer = COGL_PANGO_RENDERER (cogl_pango_font_map_get_renderer (fm));
-
-  _cogl_pango_renderer_set_use_mipmapping (renderer, value);
+  _cogl_pango_renderer_set_use_mipmapping (COGL_PANGO_RENDERER (renderer),
+                                           value);
 }
 
-/**
- * cogl_pango_font_map_get_use_mipmapping:
- * @fm: a #CoglPangoFontMap
- *
- * Retrieves whether the #CoglPangoRenderer used by @fm will
- * use mipmapping when rendering the glyphs.
- *
- * Return value: %TRUE if mipmapping is used, %FALSE otherwise.
- *
- * Since: 1.0
- */
 CoglBool
 cogl_pango_font_map_get_use_mipmapping (CoglPangoFontMap *fm)
 {
-  CoglPangoRenderer *renderer;
+  PangoRenderer *renderer = _cogl_pango_font_map_get_renderer (fm);
 
-  renderer = COGL_PANGO_RENDERER (cogl_pango_font_map_get_renderer (fm));
-
-  return _cogl_pango_renderer_get_use_mipmapping (renderer);
+  return
+    _cogl_pango_renderer_get_use_mipmapping (COGL_PANGO_RENDERER (renderer));
 }
 
 static GQuark
-cogl_pango_font_map_get_renderer_key (void)
+cogl_pango_font_map_get_priv_key (void)
 {
-  static GQuark renderer_key = 0;
+  static GQuark priv_key = 0;
 
-  if (G_UNLIKELY (renderer_key == 0))
-      renderer_key = g_quark_from_static_string ("CoglPangoFontMap");
+  if (G_UNLIKELY (priv_key == 0))
+      priv_key = g_quark_from_static_string ("CoglPangoFontMap");
 
-  return renderer_key;
+  return priv_key;
 }
