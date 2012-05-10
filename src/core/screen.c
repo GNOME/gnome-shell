@@ -1216,31 +1216,6 @@ meta_screen_foreach_window (MetaScreen *screen,
   g_slist_free (winlist);
 }
 
-static void
-queue_draw (MetaScreen *screen, MetaWindow *window, gpointer data)
-{
-  if (window->frame)
-    meta_frame_queue_draw (window->frame);
-}
-
-void
-meta_screen_queue_frame_redraws (MetaScreen *screen)
-{
-  meta_screen_foreach_window (screen, queue_draw, NULL);
-}
-
-static void
-queue_resize (MetaScreen *screen, MetaWindow *window, gpointer data)
-{
-  meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
-}
-
-void
-meta_screen_queue_window_resizes (MetaScreen *screen)
-{
-  meta_screen_foreach_window (screen, queue_resize, NULL);
-}
-
 int
 meta_screen_get_n_workspaces (MetaScreen *screen)
 {
