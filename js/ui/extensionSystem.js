@@ -278,7 +278,6 @@ function loadExtension(dir, type, enabled) {
     }
 
     _signals.emit('extension-state-changed', extension);
-    global.log('Loaded extension ' + uuid);
 }
 
 function initExtension(uuid) {
