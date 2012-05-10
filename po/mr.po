@@ -780,12 +780,12 @@ msgstr "उघडा"
 #| msgid "minute"
 #| msgid_plural "minutes"
 msgid "Unmute"
-msgstr "मंद करणे अशक्य करा"
+msgstr "बंद करणे अशक्य करा"
 
 #: ../js/ui/messageTray.js:1217
 #| msgid "Mouse"
 msgid "Mute"
-msgstr "मंद करा"
+msgstr "बंद करा"
 
 #: ../js/ui/messageTray.js:2490
 msgid "System Information"
