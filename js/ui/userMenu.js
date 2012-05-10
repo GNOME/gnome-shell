@@ -582,14 +582,14 @@ const UserMenuButton = new Lang.Class({
 
         this._suspendOrPowerOffItem.actor.visible = this._haveShutdown || this._haveSuspend;
 
-        // If we can't suspend show Power Off... instead
+        // If we can't power off show Suspend instead
         // and disable the alt key
-        if (!this._haveSuspend) {
-            this._suspendOrPowerOffItem.updateText(_("Power Off..."), null);
-        } else if (!this._haveShutdown) {
+        if (!this._haveShutdown) {
             this._suspendOrPowerOffItem.updateText(_("Suspend"), null);
+        } else if (!this._haveSuspend) {
+            this._suspendOrPowerOffItem.updateText(_("Power Off"), null);
         } else {
-            this._suspendOrPowerOffItem.updateText(_("Suspend"), _("Power Off..."));
+            this._suspendOrPowerOffItem.updateText(_("Power Off"), _("Suspend"));
         }
     },
 
@@ -629,28 +629,26 @@ const UserMenuButton = new Lang.Class({
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupMenuItem(_("Online Accounts"));
-        item.connect('activate', Lang.bind(this, this._onOnlineAccountsActivate));
-        this.menu.addMenuItem(item);
-
         item = new PopupMenu.PopupMenuItem(_("System Settings"));
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
         this.menu.addMenuItem(item);
 
+        item = new PopupMenu.PopupAlternatingMenuItem(_("Power Off"),
+                                                      _("Suspend"));
+        this.menu.addMenuItem(item);
+        item.connect('activate', Lang.bind(this, this._onSuspendOrPowerOffActivate));
+        this._suspendOrPowerOffItem = item;
+        this._updateSuspendOrPowerOff();
+
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
-
-        item = new PopupMenu.PopupMenuItem(_("Lock Screen"));
-        item.connect('activate', Lang.bind(this, this._onLockScreenActivate));
-        this.menu.addMenuItem(item);
-        this._lockScreenItem = item;
 
         item = new PopupMenu.PopupMenuItem(_("Switch User"));
         item.connect('activate', Lang.bind(this, this._onLoginScreenActivate));
         this.menu.addMenuItem(item);
         this._loginScreenItem = item;
 
-        item = new PopupMenu.PopupMenuItem(_("Log Out..."));
+        item = new PopupMenu.PopupMenuItem(_("Log Out"));
         item.connect('activate', Lang.bind(this, this._onQuitSessionActivate));
         this.menu.addMenuItem(item);
         this._logoutItem = item;
@@ -658,12 +656,10 @@ const UserMenuButton = new Lang.Class({
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupAlternatingMenuItem(_("Suspend"),
-                                                      _("Power Off..."));
+        item = new PopupMenu.PopupMenuItem(_("Lock"));
+        item.connect('activate', Lang.bind(this, this._onLockScreenActivate));
         this.menu.addMenuItem(item);
-        this._suspendOrPowerOffItem = item;
-        item.connect('activate', Lang.bind(this, this._onSuspendOrPowerOffActivate));
-        this._updateSuspendOrPowerOff();
+        this._lockScreenItem = item;
     },
 
     _updatePresenceStatus: function(item, event) {
@@ -689,12 +685,6 @@ const UserMenuButton = new Lang.Class({
         Main.overview.hide();
         let app = Shell.AppSystem.get_default().lookup_setting('gnome-user-accounts-panel.desktop');
         app.activate();
-    },
-
-    _onOnlineAccountsActivate: function() {
-        Main.overview.hide();
-        let app = Shell.AppSystem.get_default().lookup_setting('gnome-online-accounts-panel.desktop');
-        app.activate(-1);
     },
 
     _onPreferencesActivate: function() {
@@ -725,14 +715,14 @@ const UserMenuButton = new Lang.Class({
     _onSuspendOrPowerOffActivate: function() {
         Main.overview.hide();
 
-        if (this._haveSuspend &&
+        if (this._haveShutdown &&
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
+            this._session.ShutdownRemote();
+        } else {
             // Ensure we only suspend after locking the screen
             this._screenSaverProxy.LockRemote(Lang.bind(this, function() {
                 this._upClient.suspend_sync(null);
             }));
-        } else {
-            this._session.ShutdownRemote();
         }
     }
 });
