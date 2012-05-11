@@ -177,7 +177,7 @@
 
   <autotools id="cogl">
     <pkg-config>cogl-1.0.pc</pkg-config>
-    <branch/>
+    <branch revision="cogl-1.10"/>
     <dependencies>
       <dep package="glib"/>
     </dependencies>
