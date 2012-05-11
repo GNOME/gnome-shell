@@ -588,6 +588,7 @@ cogl_quaternion_init_from_array
 cogl_quaternion_init_from_x_rotation
 cogl_quaternion_init_from_y_rotation
 cogl_quaternion_init_from_z_rotation
+cogl_quaternion_init_from_euler
 cogl_quaternion_equal
 cogl_quaternion_copy
 cogl_quaternion_free

@@ -247,6 +247,13 @@ void
 cogl_quaternion_init_from_z_rotation (CoglQuaternion *quaternion,
                                       float angle);
 
+/**
+ * cogl_quaternion_init_from_euler:
+ * @quaternion: A #CoglQuaternion
+ * @euler: A #CoglEuler with which to initialize the quaternion
+ *
+ * Since: 2.0
+ */
 void
 cogl_quaternion_init_from_euler (CoglQuaternion *quaternion,
                                  const CoglEuler *euler);
