@@ -4767,12 +4767,12 @@ clutter_text_set_text (ClutterText *self,
    */
   if (self->priv->editable)
     {
-      if (strcmp (clutter_text_buffer_get_text (get_buffer (self)), text) == 0)
+      if (g_strcmp0 (clutter_text_buffer_get_text (get_buffer (self)), text) == 0)
         return;
     }
 
   clutter_text_set_use_markup_internal (self, FALSE);
-  clutter_text_buffer_set_text (get_buffer (self), text, -1);
+  clutter_text_buffer_set_text (get_buffer (self), text ? text : "", -1);
 }
 
 /**
