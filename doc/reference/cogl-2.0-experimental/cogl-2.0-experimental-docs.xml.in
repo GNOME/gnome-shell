@@ -113,7 +113,6 @@
       <xi:include href="xml/cogl-texture-rectangle.xml"/>
     </section>
 
-    <xi:include href="xml/cogl-clipping.xml"/>
     <section id="cogl-framebuffer-apis">
       <title>Framebuffers</title>
       <xi:include href="xml/cogl-framebuffer.xml"/>
