@@ -77,7 +77,41 @@ invalidate_clock (gpointer data_)
   clutter_content_invalidate (data_);
 
   /* keep the timeout source */
-  return TRUE;
+  return G_SOURCE_CONTINUE;
+}
+
+static guint idle_resize_id;
+
+static gboolean
+idle_resize (gpointer data)
+{
+  ClutterActor *actor = data;
+  float width, height;
+
+  /* match the canvas size to the actor's */
+  clutter_actor_get_size (actor, &width, &height);
+  clutter_canvas_set_size (CLUTTER_CANVAS (clutter_actor_get_content (actor)),
+                           ceilf (width),
+                           ceilf (height));
+
+  /* unset the guard */
+  idle_resize_id = 0;
+
+  /* remove the timeout */
+  return G_SOURCE_REMOVE;
+}
+
+static void
+on_actor_resize (ClutterActor           *actor,
+                 const ClutterActorBox  *allocation,
+                 ClutterAllocationFlags  flags,
+                 gpointer                user_data)
+{
+  /* throttle multiple actor allocations to one canvas resize; we use a guard
+   * variable to avoid queueing multiple resize operations
+   */
+  if (idle_resize_id == 0)
+    idle_resize_id = clutter_threads_add_timeout (1000, idle_resize, actor);
 }
 
 int
@@ -114,6 +148,9 @@ main (int argc, char *argv[])
 
   /* bind the size of the actor to that of the stage */
   clutter_actor_add_constraint (actor, clutter_bind_constraint_new (stage, CLUTTER_BIND_SIZE, 0));
+
+  /* resize the canvas whenever the actor changes size */
+  g_signal_connect (actor, "allocation-changed", G_CALLBACK (on_actor_resize), NULL);
 
   /* quit on destroy */
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
