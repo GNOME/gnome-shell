@@ -239,7 +239,7 @@ cogl_quaternion_init_from_y_rotation (CoglQuaternion *quaternion,
 /**
  * cogl_quaternion_init_from_z_rotation:
  * @quaternion: An uninitialized #CoglQuaternion
- * @angle: The angle to rotate around the y axis
+ * @angle: The angle to rotate around the z axis
  *
  *
  * Since: 2.0
