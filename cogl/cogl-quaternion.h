@@ -127,6 +127,7 @@ struct _CoglQuaternion
   float y;
   float z;
 
+  /*< private >*/
   float padding0;
   float padding1;
   float padding2;
