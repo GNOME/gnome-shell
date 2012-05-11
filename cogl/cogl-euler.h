@@ -62,7 +62,7 @@ G_BEGIN_DECLS
  * <listitem>
  * Easy to understand and use, compared to quaternions and matrices,
  * so may be a good choice for a user interface.
- * <listitem>
+ * </listitem>
  * <listitem>
  * Efficient storage, needing only 3 components any rotation can be
  * represented.
@@ -105,7 +105,7 @@ G_BEGIN_DECLS
  * slightly different aeronautical terms, such as "yaw" instead of
  * "heading" or "bank" instead of "roll".
  * </listitem>
- * </itemlist>
+ * </itemizedlist>
  *
  * To minimize the aliasing issue we may refer to "Canonical Euler"
  * angles where heading and roll are restricted to +- 180° and pitch is
