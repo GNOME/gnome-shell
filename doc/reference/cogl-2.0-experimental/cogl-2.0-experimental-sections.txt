@@ -583,6 +583,7 @@ cogl_euler_free
 CoglQuaternion
 cogl_quaternion_init_identity
 cogl_quaternion_init
+cogl_quaternion_init_from_quaternion
 cogl_quaternion_init_from_angle_vector
 cogl_quaternion_init_from_array
 cogl_quaternion_init_from_x_rotation
