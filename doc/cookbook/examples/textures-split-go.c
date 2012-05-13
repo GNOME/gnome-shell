@@ -137,16 +137,16 @@ main (int    argc,
   /* Create four sub-textures from image, actually splitting the image in
    * four */
   context.sub_nw = setup_sub (texture, image_width, image_height,
-                              0, 0, image_width / 2 , image_width / 2);
+                              0, 0, image_width / 2 , image_height / 2);
   context.sub_ne = setup_sub (texture, image_width, image_height,
                               image_width / 2 , 0,
-                              image_width / 2, image_width / 2);
+                              image_width / 2, image_height / 2);
   context.sub_sw = setup_sub (texture, image_width, image_height,
-                              0.f, image_width / 2,
-                              image_width / 2, image_width / 2);
+                              0.f, image_height / 2,
+                              image_width / 2, image_height / 2);
   context.sub_se = setup_sub (texture, image_width, image_height,
-                              image_width / 2, image_width / 2,
-                              image_width / 2, image_width / 2);
+                              image_width / 2, image_height / 2,
+                              image_width / 2, image_height / 2);
 
   /* We don't need the image anymore as we won't display it and as
    * cogl_texture_new_from_sub_texture() keeps a reference to the underlying
