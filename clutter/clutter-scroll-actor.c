@@ -113,8 +113,8 @@ clutter_scroll_actor_apply_transform (ClutterActor *actor,
   cogl_matrix_translate (transform, x_factor, y_factor, 0.0f);
 }
 
-static void
-clutter_scroll_actor_paint (ClutterActor *actor)
+static inline void
+clutter_scroll_actor_push_clip (ClutterActor *actor)
 {
   ClutterScrollActorPrivate *priv = CLUTTER_SCROLL_ACTOR (actor)->priv;
   ClutterActorBox allocation;
@@ -139,10 +139,42 @@ clutter_scroll_actor_paint (ClutterActor *actor)
                             y,
                             x + width,
                             y + height);
+}
+
+static void
+clutter_scroll_actor_paint (ClutterActor *actor)
+{
+  clutter_scroll_actor_push_clip (actor);
 
   CLUTTER_ACTOR_CLASS (clutter_scroll_actor_parent_class)->paint (actor);
 
   cogl_clip_pop ();
+}
+
+static void
+clutter_scroll_actor_pick (ClutterActor       *actor,
+                           const ClutterColor *pick_color)
+{
+  clutter_scroll_actor_push_clip (actor);
+
+  CLUTTER_ACTOR_CLASS (clutter_scroll_actor_parent_class)->pick (actor, pick_color);
+
+  cogl_clip_pop ();
+}
+
+static void
+clutter_scroll_actor_set_scroll_to_internal (ClutterScrollActor *self,
+                                             const ClutterPoint *point)
+{
+  ClutterScrollActorPrivate *priv = self->priv;
+  ClutterActor *actor = CLUTTER_ACTOR (self);
+
+  if (point == NULL)
+    clutter_point_init (&priv->scroll_to, 0.f, 0.f);
+  else
+    priv->scroll_to = *point;
+
+  clutter_actor_queue_redraw (actor);
 }
 
 static void
@@ -196,6 +228,7 @@ clutter_scroll_actor_class_init (ClutterScrollActorClass *klass)
 
   actor_class->apply_transform = clutter_scroll_actor_apply_transform;
   actor_class->paint = clutter_scroll_actor_paint;
+  actor_class->pick = clutter_scroll_actor_pick;
 
   /**
    * ClutterScrollActor:scroll-mode:
@@ -245,12 +278,7 @@ clutter_scroll_actor_set_final_state (ClutterAnimatable *animatable,
       ClutterScrollActor *self = CLUTTER_SCROLL_ACTOR (animatable);
       const ClutterPoint *point = g_value_get_boxed (value);
 
-      if (point == NULL)
-        clutter_point_init (&self->priv->scroll_to, 0.f, 0.f);
-      else
-        self->priv->scroll_to = *point;
-
-      clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+      clutter_scroll_actor_set_scroll_to_internal (self, point);
     }
   else
     parent_animatable_iface->set_final_state (animatable, property_name, value);
@@ -404,9 +432,7 @@ clutter_scroll_actor_scroll_to_point (ClutterScrollActor *actor,
           priv->transition = NULL;
         }
 
-      priv->scroll_to = *point;
-
-      clutter_actor_queue_redraw (CLUTTER_ACTOR (actor));
+      clutter_scroll_actor_set_scroll_to_internal (actor, point);
 
       return;
     }
