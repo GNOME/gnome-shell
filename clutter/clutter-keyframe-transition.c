@@ -493,7 +493,12 @@ clutter_keyframe_transition_set_values (ClutterKeyframeTransition *transition,
     {
       KeyFrame *frame = &g_array_index (priv->frames, KeyFrame, i);
 
-      clutter_interval_set_final_value (frame->interval, &values[i]);
+      if (frame->interval)
+        clutter_interval_set_final_value (frame->interval, &values[i]);
+      else
+        frame->interval =
+          clutter_interval_new_with_values (G_VALUE_TYPE (&values[i]), NULL,
+                                            &values[i]);
     }
 }
 
