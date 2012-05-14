@@ -2000,9 +2000,9 @@ generate_mask (MetaWindowActor  *self,
   guchar *mask_data;
   guint tex_width, tex_height;
   CoglHandle paint_tex, mask_texture;
-  int i;
-  int n_rects;
   int stride;
+  cairo_t *cr;
+  cairo_surface_t *surface;
 
   paint_tex = meta_shaped_texture_get_texture (META_SHAPED_TEXTURE (priv->actor));
   if (paint_tex == COGL_INVALID_HANDLE)
@@ -2016,30 +2016,18 @@ generate_mask (MetaWindowActor  *self,
   /* Create data for an empty image */
   mask_data = g_malloc0 (stride * tex_height);
 
-  n_rects = cairo_region_num_rectangles (shape_region);
+  surface = cairo_image_surface_create_for_data (mask_data,
+                                                 CAIRO_FORMAT_A8,
+                                                 tex_width,
+                                                 tex_height,
+                                                 stride);
+  cr = cairo_create (surface);
 
-  /* Fill in each rectangle. */
-  for (i = 0; i < n_rects; i ++)
-    {
-      cairo_rectangle_int_t rect;
-      cairo_region_get_rectangle (shape_region, i, &rect);
+  gdk_cairo_region (cr, shape_region);
+  cairo_fill (cr);
 
-      gint x1 = rect.x, x2 = x1 + rect.width;
-      gint y1 = rect.y, y2 = y1 + rect.height;
-      guchar *p;
-
-      /* Clip the rectangle to the size of the texture */
-      x1 = CLAMP (x1, 0, (gint) tex_width - 1);
-      x2 = CLAMP (x2, x1, (gint) tex_width);
-      y1 = CLAMP (y1, 0, (gint) tex_height - 1);
-      y2 = CLAMP (y2, y1, (gint) tex_height);
-
-      /* Fill the rectangle */
-      for (p = mask_data + y1 * stride + x1;
-           y1 < y2;
-           y1++, p += stride)
-        memset (p, 255, x2 - x1);
-    }
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
 
   if (meta_texture_rectangle_check (paint_tex))
     {
