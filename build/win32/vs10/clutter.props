@@ -16,21 +16,41 @@
     <CallyTestDefs>$(BaseWinBuildDef);PREFIXDIR="/some/dummy/dir";$(ClutterDisableDeprecationWarnings)</CallyTestDefs>
     <TestProgDef>$(BaseBuildDef);TESTS_DATADIR="../share/clutter-$(ClutterApiVersion)/data"</TestProgDef>
     <TestPerfProgDef>$(BaseBuildDef);TESTS_DATA_DIR="../share/clutter-$(ClutterApiVersion)/data";$(ClutterDisableDeprecationWarnings)</TestPerfProgDef>
-    <PreBuildCmd>
+    <PreBuildWin>
 if exist ..\..\..\config.h goto DONE_CONFIG_H
 
 copy ..\..\..\config.h.win32 ..\..\..\config.h
 
 :DONE_CONFIG_H
 
+if exist ..\..\..\clutter\clutter.bld.win32.win32 goto DONE_CLUTTER_CONFIG_H
 
-if exist ..\..\..\clutter\clutter-config.h goto DONE_CLUTTER_CONFIG_H
+del clutter.bld.*.win32
+
+copy ..\..\..\clutter\clutter-config.h.win32 clutter.bld.win32.win32
 
 copy ..\..\..\clutter\clutter-config.h.win32 ..\..\..\clutter\clutter-config.h
 
 :DONE_CLUTTER_CONFIG_H
+    </PreBuildWin>
+    <PreBuildGDK>
+if exist ..\..\..\config.h goto DONE_CONFIG_H
 
+copy ..\..\..\config.h.win32 ..\..\..\config.h
 
+:DONE_CONFIG_H
+
+if exist ..\..\..\clutter\clutter.bld.GDK.win32 goto DONE_CLUTTER_CONFIG_H
+
+del clutter.bld.*.win32
+
+copy ..\..\..\clutter\clutter-config.h.win32_GDK clutter.bld.GDK.win32
+
+copy ..\..\..\clutter\clutter-config.h.win32_GDK ..\..\..\clutter\clutter-config.h
+
+:DONE_CLUTTER_CONFIG_H
+    </PreBuildGDK>
+    <PreBuildCmd2>
 if exist ..\..\..\clutter\clutter-marshal.h goto DONE_CLUTTER_MARSHAL_H
 
 cd ..\..\..\clutter
@@ -61,7 +81,7 @@ gen-enums.bat $(GlibEtcInstallRoot)
 
 cd .\vs10
 
-</PreBuildCmd>
+</PreBuildCmd2>
     <ClutterDoInstall>
 mkdir $(CopyDir)
 
@@ -352,7 +372,13 @@ copy ..\..\..\clutter\cally\cally-util.h $(CopyDir)\include\clutter-$(ClutterApi
 
          cl -EP -DHAVE_CAIRO -DHAVE_CLUTTER_WIN32 -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; ..\..\..\clutter\clutter.def
 
-     </GenerateClutterDef>
+    </GenerateClutterDef>
+    <GenerateClutterGDKDef>
+         echo EXPORTS &gt; ..\..\..\clutter\clutter.def
+
+         cl -EP -DHAVE_CAIRO -DHAVE_CLUTTER_WIN32 -DCLUTTER_WINDOWING_GDK -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; ..\..\..\clutter\clutter.def
+
+    </GenerateClutterGDKDef>
     <ClutterLibtoolCompatibleDllPrefix>lib</ClutterLibtoolCompatibleDllPrefix>
     <ClutterLibtoolCompatibleDllSuffix>-$(ClutterApiVersion)-0</ClutterLibtoolCompatibleDllSuffix>
     <ClutterSeparateVS10DllPrefix />
@@ -420,14 +446,23 @@ copy ..\..\..\clutter\cally\cally-util.h $(CopyDir)\include\clutter-$(ClutterApi
     <BuildMacro Include="TestPerfProgDef">
       <Value>$(TestPerfProgDef)</Value>
     </BuildMacro>
-    <BuildMacro Include="PreBuildCmd">
-      <Value>$(PreBuildCmd)</Value>
+    <BuildMacro Include="PreBuildGDK">
+      <Value>$(PreBuildGDK)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PreBuildWin">
+      <Value>$(PreBuildWin)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PreBuildCmd2">
+      <Value>$(PreBuildCmd2)</Value>
     </BuildMacro>
     <BuildMacro Include="ClutterDoInstall">
       <Value>$(ClutterDoInstall)</Value>
     </BuildMacro>
     <BuildMacro Include="GenerateClutterDef">
       <Value>$(GenerateClutterDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenerateClutterGDKDef">
+      <Value>$(GenerateClutterGDKDef)</Value>
     </BuildMacro>
     <BuildMacro Include="ClutterLibtoolCompatibleDllPrefix">
       <Value>$(ClutterLibtoolCompatibleDllPrefix)</Value>

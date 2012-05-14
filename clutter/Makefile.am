@@ -910,6 +910,7 @@ clutter.vsenums_c:
 
 EXTRA_DIST += \
 	clutter-config.h.win32	\
+	clutter-config.h.win32_GDK	\
 	clutter.symbols	\
 	$(NULL)
 

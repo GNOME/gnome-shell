@@ -16,6 +16,12 @@
   </ItemGroup>
   <ItemGroup>
 #include "clutter.vs10.sourcefiles.filters"
+    <ClCompile Include="..\..\..\clutter\gdk\clutter-backend-gdk.c"><Filter>Sources</Filter></ClCompile>
+    <ClCompile Include="..\..\..\clutter\gdk\clutter-device-manager-gdk.c"><Filter>Sources</Filter></ClCompile>
+    <ClCompile Include="..\..\..\clutter\gdk\clutter-input-device-gdk.c"><Filter>Sources</Filter></ClCompile>
+    <ClCompile Include="..\..\..\clutter\gdk\clutter-event-gdk.c"><Filter>Sources</Filter></ClCompile>
+    <ClCompile Include="..\..\..\clutter\gdk\clutter-stage-gdk.c"><Filter>Sources</Filter></ClCompile>
+    <ClCompile Include="..\..\..\clutter\cogl\clutter-stage-cogl.c"><Filter>Sources</Filter></ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\..\clutter\win32\resources.rc">
