@@ -163,6 +163,7 @@ NP_Initialize(NPNetscapeFuncs *pfuncs, NPPluginFuncs *plugin)
   plugin->newp = NPP_New;
   plugin->destroy = NPP_Destroy;
   plugin->getvalue = NPP_GetValue;
+  plugin->setwindow = NPP_SetWindow;
 
   return NPERR_NO_ERROR;
 }
@@ -967,5 +968,14 @@ NPP_GetValue(NPP          instance,
     ;
   }
 
+  return NPERR_NO_ERROR;
+}
+
+/* Opera tries to call NPP_SetWindow without checking the
+ * NULL pointer beforehand. */
+NPError
+NPP_SetWindow(NPP          instance,
+              NPWindow    *window)
+{
   return NPERR_NO_ERROR;
 }
