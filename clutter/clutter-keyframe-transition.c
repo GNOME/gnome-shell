@@ -42,10 +42,10 @@
  *   keyframe = clutter_keyframe_transition_new ("opacity");
  *   clutter_transition_set_from (keyframe, G_TYPE_UINT, 255);
  *   clutter_transition_set_to (keyframe, G_TYPE_UINT, 0);
- *   clutter_keyframe_transition_set_keys (CLUTTER_KEYFRAME_TRANSITION (keyframe),
- *                                         G_TYPE_UINT,
- *                                         1, /&ast; number of key frames &ast;/
- *                                         0.5, 128, CLUTTER_EASE_IN_OUT_CUBIC);
+ *   clutter_keyframe_transition_set (CLUTTER_KEYFRAME_TRANSITION (keyframe),
+ *                                    G_TYPE_UINT,
+ *                                    1, /&ast; number of key frames &ast;/
+ *                                    0.5, 128, CLUTTER_EASE_IN_OUT_CUBIC);
  * ]|
  *
  * The example above sets up a keyframe transition for the #ClutterActor:opacity
@@ -551,7 +551,7 @@ clutter_keyframe_transition_set_modes (ClutterKeyframeTransition  *transition,
  * Sets the key frames of the @transition.
  *
  * This variadic arguments function is a convenience for C developers;
- * language bindings should use clutter_keyframe_transition_set_keys(),
+ * language bindings should use clutter_keyframe_transition_set_key_frames(),
  * clutter_keyframe_transition_set_modes(), and
  * clutter_keyframe_transition_set_values() instead.
  *
