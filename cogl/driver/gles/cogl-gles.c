@@ -184,6 +184,8 @@ _cogl_driver_update_features (CoglContext *context,
              context->glGetString (GL_VERSION),
              context->glGetString (GL_EXTENSIONS));
 
+  _cogl_gpu_info_init (context, &context->gpu);
+
   gl_extensions = (const char*) context->glGetString (GL_EXTENSIONS);
 
   _cogl_feature_check_ext_functions (context,

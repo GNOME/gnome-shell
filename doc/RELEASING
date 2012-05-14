@@ -52,6 +52,9 @@ When making a new release;
         - Use git shortlog -n -s to get the list of authors
         - The following bash snippet may help with extracting the list of
           bugs closed:
+        - Grep the source code for "XXX: ONGOING BUG" and add a
+          section about workarounds for un-resolved upstream bugs.
+
 
 URLS=$(git log $1|grep bugzilla|sort|uniq)
 for i in $URLS

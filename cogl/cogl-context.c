@@ -244,8 +244,6 @@ cogl_context_new (CoglDisplay *display,
       return NULL;
     }
 
-  _cogl_gpu_info_init (context, &context->gpu);
-
   context->attribute_name_states_hash =
     g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
   context->attribute_name_index_map = NULL;

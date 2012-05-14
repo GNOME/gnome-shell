@@ -339,6 +339,8 @@ _cogl_driver_update_features (CoglContext *ctx,
 
   _cogl_get_gl_version (ctx, &gl_major, &gl_minor);
 
+  _cogl_gpu_info_init (ctx, &ctx->gpu);
+
   flags = (COGL_FEATURE_TEXTURE_READ_PIXELS
            | COGL_FEATURE_UNSIGNED_INT_INDICES
            | COGL_FEATURE_DEPTH_RANGE);
