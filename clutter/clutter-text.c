@@ -4225,7 +4225,7 @@ clutter_text_get_cursor_visible (ClutterText *self)
 /**
  * clutter_text_set_cursor_color:
  * @self: a #ClutterText
- * @color: the color of the cursor, or %NULL to unset it
+ * @color: (allow-none): the color of the cursor, or %NULL to unset it
  *
  * Sets the color of the cursor of a #ClutterText actor.
  *
@@ -4423,7 +4423,7 @@ clutter_text_get_selection_bound (ClutterText *self)
 /**
  * clutter_text_set_selection_color:
  * @self: a #ClutterText
- * @color: the color of the selection, or %NULL to unset it
+ * @color: (allow-none): the color of the selection, or %NULL to unset it
  *
  * Sets the color of the selection of a #ClutterText actor.
  *
@@ -4483,7 +4483,7 @@ clutter_text_get_selection_color (ClutterText  *self,
 /**
  * clutter_text_set_selected_text_color:
  * @self: a #ClutterText
- * @color: the selected text color, or %NULL to unset it
+ * @color: (allow-none): the selected text color, or %NULL to unset it
  *
  * Sets the selected text color of a #ClutterText actor.
  *
@@ -5049,7 +5049,7 @@ clutter_text_get_line_wrap_mode (ClutterText *self)
 /**
  * clutter_text_set_attributes:
  * @self: a #ClutterText
- * @attrs: a #PangoAttrList or %NULL to unset the attributes
+ * @attrs: (allow-none): a #PangoAttrList or %NULL to unset the attributes
  *
  * Sets the attributes list that are going to be applied to the
  * #ClutterText contents.
