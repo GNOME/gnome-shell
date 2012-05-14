@@ -176,7 +176,7 @@
 			<DebugInformationFormat>EditAndContinue</DebugInformationFormat>
 		</ClCompile>
 		<PreLinkEvent>
-			<Command>$(GenerateCoglDef)</Command>
+			<Command>$(GenerateCoglSDLDef)</Command>
 		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>SDL.lib;opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -240,7 +240,7 @@
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 		</ClCompile>
 		<PreLinkEvent>
-			<Command>$(GenerateCoglDef)</Command>
+			<Command>$(GenerateCoglSDLDef)</Command>
 		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>SDL.lib;opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -306,7 +306,7 @@
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 		</ClCompile>
 		<PreLinkEvent>
-			<Command>$(GenerateCoglDef)</Command>
+			<Command>$(GenerateCoglSDLDef)</Command>
 		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>SDL.lib;opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -368,7 +368,7 @@
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 		</ClCompile>
 		<PreLinkEvent>
-			<Command>$(GenerateCoglDef)</Command>
+			<Command>$(GenerateCoglSDLDef)</Command>
 		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>SDL.lib;opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -385,6 +385,12 @@
 	<ItemGroup>
 		<ClCompile Include="..\..\..\cogl\winsys\cogl-winsys-wgl.c" />
 		<ClCompile Include="..\..\..\cogl\winsys\cogl-winsys-sdl.c">
+			<ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+			<ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+			<ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+			<ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+		</ClCompile>
+		<ClCompile Include="..\..\..\cogl\cogl-sdl.c">
 			<ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
 			<ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
 			<ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

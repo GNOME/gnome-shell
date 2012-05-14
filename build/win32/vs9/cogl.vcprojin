@@ -88,7 +88,7 @@ $(PreBuildCmd)
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
-				CommandLine="$(GenerateCoglDef)"
+				CommandLine="$(GenerateCoglSDLDef)"
 			/>
 			<Tool
 				Name="VCLinkerTool"
@@ -171,7 +171,7 @@ $(PreBuildCmd)
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
-				CommandLine="$(GenerateCoglDef)"
+				CommandLine="$(GenerateCoglSDLDef)"
 			/>
 			<Tool
 				Name="VCLinkerTool"
@@ -258,7 +258,7 @@ $(PreBuildCmd)
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
-				CommandLine="$(GenerateCoglDef)"
+				CommandLine="$(GenerateCoglSDLDef)"
 			/>
 			<Tool
 				Name="VCLinkerTool"
@@ -339,7 +339,7 @@ $(PreBuildCmd)
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
-				CommandLine="$(GenerateCoglDef)"
+				CommandLine="$(GenerateCoglSDLDef)"
 			/>
 			<Tool
 				Name="VCLinkerTool"
@@ -365,6 +365,12 @@ $(PreBuildCmd)
 			>
 			<File RelativePath="..\..\..\cogl\winsys\cogl-winsys-wgl.c" />
 			<File RelativePath="..\..\..\cogl\winsys\cogl-winsys-sdl.c" >
+				<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+			</File>
+			<File RelativePath="..\..\..\cogl\cogl-sdl.c" >
 				<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>

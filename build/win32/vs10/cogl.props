@@ -195,6 +195,12 @@ copy ..\..\..\cogl\cogl2-compatibility.h $(CopyDir)\include\cogl-$(CoglApiVersio
 
          cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def
 
+    </GenerateCoglDef>
+    <GenerateCoglSDLDef>
+         echo EXPORTS &gt; ..\..\..\cogl\cogl.def
+
+         cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def
+
      </GenerateCoglDef>
     <GenerateCoglPangoDef>
          echo EXPORTS &gt; ..\..\..\cogl-pango\cogl-pango.def
@@ -270,6 +276,9 @@ copy ..\..\..\cogl\cogl2-compatibility.h $(CopyDir)\include\cogl-$(CoglApiVersio
       <Value>$(CoglDoInstall)</Value>
     </BuildMacro>
     <BuildMacro Include="GenerateCoglDef">
+      <Value>$(GenerateCoglDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenerateCoglSDLDef">
       <Value>$(GenerateCoglDef)</Value>
     </BuildMacro>
     <BuildMacro Include="GenerateCoglPangoDef">

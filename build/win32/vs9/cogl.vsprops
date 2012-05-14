@@ -186,6 +186,13 @@ copy ..\..\..\tests\data\valgrind.suppressions $(OutDir)\share\cogl-$(CoglApiVer
 			  "
 	/>
 	<UserMacro
+		Name="GenerateCoglSDLDef"
+		Value="
+		       echo EXPORTS &gt; ..\..\..\cogl\cogl.def&#x0D;&#x0A;
+		       cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def&#x0D;&#x0A;
+			  "
+	/>
+	<UserMacro
 		Name="GenerateCoglPangoDef"
 		Value="
 		       echo EXPORTS &gt; ..\..\..\cogl-pango\cogl-pango.def&#x0D;&#x0A;
