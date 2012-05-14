@@ -39,11 +39,22 @@ typedef struct
   const char *vendor_string;
 } CoglGpuInfoStrings;
 
+typedef struct CoglGpuInfoArchitectureDescription
+{
+  CoglGpuInfoArchitecture architecture;
+  const char *name;
+  CoglGpuInfoArchitectureFlag flags;
+  CoglBool (* check_function) (const CoglGpuInfoStrings *strings);
+
+} CoglGpuInfoArchitectureDescription;
+
 typedef struct
 {
   CoglGpuInfoVendor vendor;
   const char *name;
   CoglBool (* check_function) (const CoglGpuInfoStrings *strings);
+  const CoglGpuInfoArchitectureDescription *architectures;
+
 } CoglGpuInfoVendorDescription;
 
 typedef struct
@@ -94,28 +105,243 @@ _cogl_gpu_info_parse_version_string (const char *version_string,
 }
 
 static CoglBool
-check_intel_vendor (const CoglGpuInfoStrings *strings)
+match_phrase (const char *string, const char *phrase)
 {
-  const char *intel_part = strstr (strings->renderer_string, "Intel(R)");
+  const char *part = strstr (string, phrase);
+  int len;
 
-  if (intel_part == NULL)
+  if (part == NULL)
     return FALSE;
 
   /* The match must either be at the beginning of the string or
-     preceded by a space. Just in case there's a company called
-     IAmNotIntel (R) or something */
-  if (intel_part > strings->renderer_string && intel_part[-1] != ' ')
+     preceded by a space. */
+  if (part > string && part[-1] != ' ')
+    return FALSE;
+
+  /* Also match must either be at end of string or followed by a
+   * space. */
+  len = strlen (phrase);
+  if (part[len] != '\0' && part[len] != ' ')
     return FALSE;
 
   return TRUE;
 }
 
 static CoglBool
-check_unknown_vendor (const CoglGpuInfoStrings *strings)
+check_intel_vendor (const CoglGpuInfoStrings *strings)
+{
+  return match_phrase (strings->renderer_string, "Intel(R)");
+}
+
+static CoglBool
+check_imagination_technologies_vendor (const CoglGpuInfoStrings *strings)
+{
+  if (strcmp (strings->vendor_string, "Imagination Technologies") != 0)
+    return FALSE;
+  return TRUE;
+}
+
+static CoglBool
+check_arm_vendor (const CoglGpuInfoStrings *strings)
+{
+  if (strcmp (strings->vendor_string, "ARM") != 0)
+    return FALSE;
+  return TRUE;
+}
+
+static CoglBool
+check_qualcomm_vendor (const CoglGpuInfoStrings *strings)
+{
+  if (strcmp (strings->vendor_string, "Qualcomm") != 0)
+    return FALSE;
+  return TRUE;
+}
+
+static CoglBool
+check_nvidia_vendor (const CoglGpuInfoStrings *strings)
+{
+  if (strcmp (strings->vendor_string, "NVIDIA") != 0)
+    return FALSE;
+
+  return TRUE;
+}
+
+static CoglBool
+check_ati_vendor (const CoglGpuInfoStrings *strings)
+{
+  if (strcmp (strings->vendor_string, "ATI") != 0)
+    return FALSE;
+
+  return TRUE;
+}
+
+static CoglBool
+check_mesa_vendor (const CoglGpuInfoStrings *strings)
+{
+  if (strcmp (strings->vendor_string, "Tungsten Graphics, Inc") == 0)
+    return TRUE;
+  else if (strcmp (strings->vendor_string, "VMware, Inc.") == 0)
+    return TRUE;
+
+  return FALSE;
+}
+
+static CoglBool
+check_true (const CoglGpuInfoStrings *strings)
 {
   /* This is a last resort so it always matches */
   return TRUE;
 }
+
+static CoglBool
+check_sandybridge_architecture (const CoglGpuInfoStrings *strings)
+{
+  return match_phrase (strings->renderer_string, "Sandybridge");
+}
+
+static CoglBool
+check_llvmpipe_architecture (const CoglGpuInfoStrings *strings)
+{
+  return match_phrase (strings->renderer_string, "llvmpipe");
+}
+
+static CoglBool
+check_softpipe_architecture (const CoglGpuInfoStrings *strings)
+{
+  return match_phrase (strings->renderer_string, "softpipe");
+}
+
+static CoglBool
+check_swrast_architecture (const CoglGpuInfoStrings *strings)
+{
+  return match_phrase (strings->renderer_string, "software rasterizer");
+}
+
+static CoglBool
+check_sgx_architecture (const CoglGpuInfoStrings *strings)
+{
+  if (strncmp (strings->renderer_string, "PowerVR SGX", 12) != 0)
+    return FALSE;
+
+  return TRUE;
+}
+
+static CoglBool
+check_mali_architecture (const CoglGpuInfoStrings *strings)
+{
+  if (strncmp (strings->renderer_string, "Mali-", 5) != 0)
+    return FALSE;
+
+  return TRUE;
+}
+
+static const CoglGpuInfoArchitectureDescription
+intel_architectures[] =
+  {
+    {
+      COGL_GPU_INFO_ARCHITECTURE_SANDYBRIDGE,
+      "Sandybridge",
+      COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_IMMEDIATE_MODE |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_FRAGMENT_IMMEDIATE_MODE,
+      check_sandybridge_architecture
+    },
+    {
+      COGL_GPU_INFO_ARCHITECTURE_UNKNOWN,
+      "Unknown",
+      COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_IMMEDIATE_MODE |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_FRAGMENT_IMMEDIATE_MODE,
+      check_true
+    }
+  };
+
+static const CoglGpuInfoArchitectureDescription
+powervr_architectures[] =
+  {
+    {
+      COGL_GPU_INFO_ARCHITECTURE_SGX,
+      "SGX",
+      COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_TILED |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_FRAGMENT_DEFERRED,
+      check_sgx_architecture
+    },
+    {
+      COGL_GPU_INFO_ARCHITECTURE_UNKNOWN,
+      "Unknown",
+      COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_TILED |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_TILED,
+      check_true
+    }
+  };
+
+static const CoglGpuInfoArchitectureDescription
+arm_architectures[] =
+  {
+    {
+      COGL_GPU_INFO_ARCHITECTURE_MALI,
+      "Mali",
+      COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_TILED |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_FRAGMENT_IMMEDIATE_MODE,
+      check_mali_architecture
+    },
+    {
+      COGL_GPU_INFO_ARCHITECTURE_UNKNOWN,
+      "Unknown",
+      COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_TILED |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_FRAGMENT_IMMEDIATE_MODE,
+      check_true
+    }
+  };
+
+static const CoglGpuInfoArchitectureDescription
+mesa_architectures[] =
+  {
+    {
+      COGL_GPU_INFO_ARCHITECTURE_LLVMPIPE,
+      "LLVM Pipe",
+      COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_IMMEDIATE_MODE |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_SOFTWARE |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_FRAGMENT_IMMEDIATE_MODE |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_FRAGMENT_SOFTWARE,
+      check_llvmpipe_architecture
+    },
+    {
+      COGL_GPU_INFO_ARCHITECTURE_SOFTPIPE,
+      "Softpipe",
+      COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_IMMEDIATE_MODE |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_SOFTWARE |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_FRAGMENT_IMMEDIATE_MODE |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_FRAGMENT_SOFTWARE,
+      check_softpipe_architecture
+    },
+    {
+      COGL_GPU_INFO_ARCHITECTURE_SWRAST,
+      "SWRast",
+      COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_IMMEDIATE_MODE |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_SOFTWARE |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_FRAGMENT_IMMEDIATE_MODE |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_FRAGMENT_SOFTWARE,
+      check_swrast_architecture
+    },
+    {
+      COGL_GPU_INFO_ARCHITECTURE_UNKNOWN,
+      "Unknown",
+      COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_IMMEDIATE_MODE |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_FRAGMENT_IMMEDIATE_MODE,
+      check_true
+    }
+  };
+
+static const CoglGpuInfoArchitectureDescription
+unknown_architectures[] =
+  {
+    {
+      COGL_GPU_INFO_ARCHITECTURE_UNKNOWN,
+      "Unknown",
+      COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_IMMEDIATE_MODE |
+        COGL_GPU_INFO_ARCHITECTURE_FLAG_VERTEX_IMMEDIATE_MODE,
+      check_true
+    }
+  };
 
 static const CoglGpuInfoVendorDescription
 _cogl_gpu_info_vendors[] =
@@ -123,13 +349,51 @@ _cogl_gpu_info_vendors[] =
     {
       COGL_GPU_INFO_VENDOR_INTEL,
       "Intel",
-      check_intel_vendor
+      check_intel_vendor,
+      intel_architectures
+    },
+    {
+      COGL_GPU_INFO_VENDOR_IMAGINATION_TECHNOLOGIES,
+      "Imagination Technologies",
+      check_imagination_technologies_vendor,
+      powervr_architectures
+    },
+    {
+      COGL_GPU_INFO_VENDOR_ARM,
+      "ARM",
+      check_arm_vendor,
+      arm_architectures
+    },
+    {
+      COGL_GPU_INFO_VENDOR_QUALCOMM,
+      "Qualcomm",
+      check_qualcomm_vendor,
+      unknown_architectures
+    },
+    {
+      COGL_GPU_INFO_VENDOR_NVIDIA,
+      "Nvidia",
+      check_nvidia_vendor,
+      unknown_architectures
+    },
+    {
+      COGL_GPU_INFO_VENDOR_ATI,
+      "ATI",
+      check_ati_vendor,
+      unknown_architectures
     },
     /* Must be last */
     {
+      COGL_GPU_INFO_VENDOR_MESA,
+      "Mesa",
+      check_mesa_vendor,
+      mesa_architectures
+    },
+    {
       COGL_GPU_INFO_VENDOR_UNKNOWN,
       "Unknown",
-      check_unknown_vendor
+      check_true,
+      unknown_architectures
     }
   };
 
@@ -243,11 +507,33 @@ _cogl_gpu_info_init (CoglContext *ctx,
 
       if (description->check_function (&strings))
         {
+          int j;
+
           gpu->vendor = description->vendor;
           gpu->vendor_name = description->name;
-          break;
+
+          for (j = 0; ; j++)
+            {
+              const CoglGpuInfoArchitectureDescription *architecture =
+                description->architectures + j;
+
+              if (architecture->check_function (&strings))
+                {
+                  gpu->architecture = architecture->architecture;
+                  gpu->architecture_name = architecture->name;
+                  gpu->architecture_flags = architecture->flags;
+                  goto probed;
+                }
+            }
         }
     }
+
+probed:
+
+  COGL_NOTE (WINSYS, "Driver package = %s, vendor = %s, architecture = %s\n",
+             gpu->driver_package_name,
+             gpu->vendor_name,
+             gpu->architecture_name);
 
   /* Determine the driver bugs */
 
