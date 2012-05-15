@@ -26,6 +26,14 @@ gettext-runtime* and Cairo*, and glext.h from
 http://www.opengl.org/registry/api/glext.h (which need to be in the GL folder
 in your include directories or in <root>\vs9\<PlatformName>\include\GL).
 
+As Cogl 1.99.x and later will now use C99 types in lieu of GLib types, a
+compatible implementation of stdint.h for Visual C++ is required, such
+as the one from http://code.google.com/p/msinttypes/, so one would need
+to download and extract the .zip file from that website and extract stdint.h
+into <root>\vs9\<PlatformName>\include or somewhere where it can be
+automatically found by the compiler.  Note that Visual C++ 2010 and later
+ships with stdint.h, so it is only required for Visual C++ 2008 builds.
+
 If building the SDL winsys is desired, you will also need the SDL libraries
 from www.libsdl.org-building the SDL source package with Visual C++ 2008
 is recommended (working Visual C++ 2005 projects are included with it, upgrade
