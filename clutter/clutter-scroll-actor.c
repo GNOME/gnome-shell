@@ -155,9 +155,19 @@ static void
 clutter_scroll_actor_pick (ClutterActor       *actor,
                            const ClutterColor *pick_color)
 {
+  ClutterActorIter iter;
+  ClutterActor *child;
+
   clutter_scroll_actor_push_clip (actor);
 
   CLUTTER_ACTOR_CLASS (clutter_scroll_actor_parent_class)->pick (actor, pick_color);
+
+  /* FIXME - this has to go away when we remove the vfunc check inside
+   * the ClutterActor::pick default implementation
+   */
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
+    clutter_actor_paint (child);
 
   cogl_clip_pop ();
 }
