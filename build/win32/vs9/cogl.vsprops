@@ -89,6 +89,7 @@ copy ..\..\..\cogl\WGL_DEFINES ..\..\..\cogl\cogl-defines.h&#x0D;&#x0A;
 		Value="
 if exist ..\..\..\config.h goto DONE_CONFIG_H&#x0D;&#x0A;
 copy ..\..\..\config.h.win32 ..\..\..\config.h&#x0D;&#x0A;
+if not exist ..\..\..\cogl\cogl-gl-header.h copy ..\..\..\cogl\cogl-gl-header.h.win32 copy ..\..\..\cogl\cogl-gl-header.h&#x0D;&#x0A;
 :DONE_CONFIG_H&#x0D;&#x0A;
 
 cd ..&#x0D;&#x0A;

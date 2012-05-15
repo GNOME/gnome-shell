@@ -1147,6 +1147,8 @@ cogl/Makefile
 cogl/cogl-1.0.pc
 cogl/cogl-2.0-experimental.pc
 cogl/cogl-defines.h
+cogl/cogl-defines.h.win32
+cogl/cogl-defines.h.win32_SDL
 cogl/cogl-gl-header.h
 cogl/cogl.rc
 cogl-pango/Makefile

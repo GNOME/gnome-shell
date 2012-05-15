@@ -533,7 +533,7 @@ dist-hook: ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../bu
 	rm cogl.vs10.sourcefiles.filters
 
 cogl.vsenums_h:
-	echo 'perl %1\bin\glib-mkenums --template ../../cogl/cogl-enum-types.h.in ' >vsenums_h.temp1
+	echo 'perl %1\bin\glib-mkenums --symbol-prefix cogl_gtype --template ../../cogl/cogl-enum-types.h.in ' >vsenums_h.temp1
 	for F in `echo $(cogl_1_public_h) $(srcdir)/cogl-win32-renderer.h`; do \
 		case $$F in \
 		*xlib*.h|*wayland*.h) ;; \
@@ -548,7 +548,7 @@ cogl.vsenums_h:
 	rm vsenums_h.temp
 
 cogl.vsenums_c:
-	echo 'perl %1\bin\glib-mkenums --template ../../cogl/cogl-enum-types.c.in ' >vsenums_c.temp1
+	echo 'perl %1\bin\glib-mkenums --symbol-prefix cogl_gtype --template ../../cogl/cogl-enum-types.c.in ' >vsenums_c.temp1
 	for F in `echo $(cogl_1_public_h) $(srcdir)/cogl-win32-renderer.h`; do \
 		case $$F in \
 		*xlib*.h|*wayland*.h) ;; \
@@ -573,8 +573,11 @@ cogl.vsenums_c:
 	rm cogl.vsenums_c
 
 EXTRA_DIST += \
+	cogl-defines.h.win32.in	\
 	cogl-defines.h.win32	\
+	cogl-defines.h.win32_SDL.in	\
 	cogl-defines.h.win32_SDL	\
+	cogl-gl-header.h.win32	\
 	cogl.symbols	\
 	cogl.rc.in	\
 	cogl.rc

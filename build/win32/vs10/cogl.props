@@ -39,6 +39,8 @@ copy ..\..\..\config.h.win32 ..\..\..\config.h
 
 :DONE_CONFIG_H
 
+if not exist ..\..\..\cogl\cogl-gl-header.h copy ..\..\..\cogl\cogl-gl-header.h.win32 copy ..\..\..\cogl\cogl-gl-header.h
+
 
 cd ..
 
