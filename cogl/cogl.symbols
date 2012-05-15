@@ -31,10 +31,6 @@ cogl2_path_stroke
 cogl_android_set_native_window_EXP
 #endif
 
-cogl_angle_cos
-cogl_angle_sin
-cogl_angle_tan
-
 cogl_attribute_new
 cogl_attribute_buffer_new
 cogl_attribute_get_buffer
@@ -159,9 +155,6 @@ cogl_egl_context_get_egl_display
 cogl_context_get_display
 cogl_context_new
 
-cogl_create_program
-cogl_create_shader
-
 cogl_depth_state_get_range
 cogl_depth_state_get_test_enabled
 cogl_depth_state_get_test_function
@@ -178,10 +171,6 @@ cogl_disable_fog
 cogl_display_get_renderer
 cogl_display_new
 cogl_display_setup
-
-cogl_double_to_fixed
-cogl_double_to_int
-cogl_double_to_uint
 
 cogl_end_gl
 
@@ -228,6 +217,7 @@ cogl_framebuffer_draw_rectangles
 cogl_framebuffer_draw_textured_rectangle
 cogl_framebuffer_draw_textured_rectangles
 cogl_framebuffer_error_quark
+cogl_framebuffer_fill_path
 cogl_framebuffer_finish
 cogl_framebuffer_frustum
 cogl_framebuffer_get_alpha_bits
@@ -270,6 +260,7 @@ cogl_framebuffer_set_modelview_matrix
 cogl_framebuffer_set_projection_matrix
 cogl_framebuffer_set_samples_per_pixel
 cogl_framebuffer_set_viewport
+cogl_framebuffer_stroke_path
 cogl_framebuffer_transform
 cogl_framebuffer_translate
 cogl_framebuffer_vdraw_attributes
@@ -288,7 +279,6 @@ cogl_get_draw_framebuffer
 cogl_get_features
 cogl_get_modelview_matrix
 cogl_get_option_group
-cogl_get_path	/* this is COGL 1.0 API */
 cogl_get_proc_address
 cogl_get_projection_matrix
 cogl_get_rectangle_indices
@@ -337,9 +327,8 @@ cogl_is_path
 cogl_is_pipeline
 cogl_is_pixel_buffer_EXP
 cogl_is_primitive
-cogl_is_program
+cogl_is_primitive_texture
 cogl_is_renderer
-cogl_is_shader
 cogl_is_snippet
 cogl_is_sub_texture_EXP
 cogl_is_texture
@@ -349,10 +338,9 @@ cogl_is_texture_pixmap_x11
 cogl_is_texture_rectangle_EXP
 cogl_is_texture_2d_EXP
 cogl_is_texture_3d
-cogl_is_vertex_buffer
-cogl_is_vertex_buffer_indices
 
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+cogl_kms_display_queue_modes_reset
 cogl_kms_renderer_get_kms_fd
 #endif
 
@@ -425,6 +413,7 @@ cogl_matrix_frustum
 cogl_matrix_get_array
 cogl_matrix_get_inverse
 cogl_matrix_init_from_array
+cogl_matrix_init_translation
 cogl_matrix_is_identity
 cogl_matrix_init_from_quaternion
 cogl_matrix_init_identity
@@ -453,11 +442,6 @@ cogl_object_set_user_data
 cogl_object_unref
 
 cogl_offscreen_new_to_texture
-
-#ifndef COGL_DISABLE_DEPRECATED
-cogl_offscreen_ref
-cogl_offscreen_unref
-#endif
 
 cogl_onscreen_add_swap_buffers_callback
 #ifndef COGL_WINSYS_INTEGRATED
@@ -609,24 +593,7 @@ cogl_primitive_set_indices_EXP
 cogl_primitive_set_mode
 cogl_primitive_set_n_vertices_EXP
 
-cogl_program_attach_shader
-cogl_program_get_uniform_location
-cogl_program_link
-cogl_program_ref
-cogl_program_set_uniform_float
-cogl_program_set_uniform_int
-cogl_program_set_uniform_matrix
-cogl_program_set_uniform_1f
-cogl_program_set_uniform_1i
-#ifndef COGL_DISABLE_DEPRECATED
-cogl_program_uniform_float
-cogl_program_uniform_int
-cogl_program_uniform_matrix
-cogl_program_uniform_1f
-cogl_program_uniform_1i
-#endif
-cogl_program_unref
-cogl_program_use
+cogl_primitive_texture_set_auto_mipmap
 
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_push_draw_buffer
@@ -684,15 +651,25 @@ cogl_rotate
 
 cogl_scale
 
+<<<<<<< HEAD
 cogl_set_backface_culling_enabled
 cogl_set_depth_test_enabled
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_set_draw_buffer
 #endif
 cogl_set_fog
+=======
+#ifdef COGL_HAS_SDL_SUPPORT
+cogl_sdl_context_new
+cogl_sdl_handle_event
+cogl_sdl_idle
+cogl_sdl_renderer_get_event_type
+cogl_sdl_renderer_set_event_type
+#endif
+
+>>>>>>> 2625354... Update cogl.symbols
 cogl_set_framebuffer
 cogl_set_modelview_matrix
-cogl_set_path	/* this is COGL 1.0 API */
 cogl_set_projection_matrix
 cogl_set_source
 cogl_set_source_color
@@ -700,19 +677,6 @@ cogl_set_source_color4f
 cogl_set_source_color4ub
 cogl_set_source_texture
 cogl_set_viewport
-
-cogl_shader_compile
-cogl_shader_get_info_log
-cogl_shader_get_type
-cogl_shader_is_compiled
-#ifndef COGL_DISABLE_DEPRECATED
-cogl_shader_ref
-#endif
-cogl_shader_source
-#ifndef COGL_DISABLE_DEPRECATED
-cogl_shader_unref
-#endif
-cogl_shader_type_get_type
 
 cogl_snippet_get_declarations
 cogl_snippet_get_hook
@@ -724,8 +688,6 @@ cogl_snippet_set_declarations
 cogl_snippet_set_post
 cogl_snippet_set_pre
 cogl_snippet_set_replace
-
-cogl_sqrti
 
 cogl_sub_texture_get_parent
 cogl_sub_texture_new_EXP
@@ -757,6 +719,7 @@ cogl_texture_pixmap_x11_new
 cogl_texture_pixmap_x11_set_damage_object
 cogl_texture_pixmap_x11_update_area
 #endif
+cogl_texture_rectangle_new_from_bitmap
 cogl_texture_rectangle_new_with_size_EXP
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_texture_ref
@@ -766,10 +729,12 @@ cogl_texture_set_region_from_bitmap_EXP
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_texture_unref
 #endif
+cogl_texture_2d_new_from_bitmap
 cogl_texture_2d_new_from_data_EXP
 cogl_texture_2d_new_from_foreign_EXP
 cogl_texture_2d_new_with_size_EXP
 cogl_texture_2d_sliced_new_with_size
+cogl_texture_3d_new_from_bitmap
 cogl_texture_3d_new_from_data
 cogl_texture_3d_new_with_size
 
