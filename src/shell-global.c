@@ -97,7 +97,6 @@ struct _ShellGlobal {
 enum {
   PROP_0,
 
-  PROP_SESSION_TYPE,
   PROP_SESSION_MODE,
   PROP_OVERLAY_GROUP,
   PROP_SCREEN,
@@ -164,9 +163,6 @@ shell_global_get_property(GObject         *object,
 
   switch (prop_id)
     {
-    case PROP_SESSION_TYPE:
-      g_value_set_enum (value, shell_global_get_session_type (global));
-      break;
     case PROP_SESSION_MODE:
       g_value_set_string (value, shell_global_get_session_mode (global));
       break;
@@ -347,14 +343,6 @@ shell_global_class_init (ShellGlobalClass *klass)
                     G_TYPE_STRING,
                     G_TYPE_STRING);
 
-  g_object_class_install_property (gobject_class,
-                                   PROP_SESSION_TYPE,
-                                   g_param_spec_enum ("session-type",
-                                                      "Session Type",
-                                                      "The type of session",
-                                                      SHELL_TYPE_SESSION_TYPE,
-                                                      SHELL_SESSION_USER,
-                                                      G_PARAM_READABLE));
   g_object_class_install_property (gobject_class,
                                    PROP_SESSION_MODE,
                                    g_param_spec_string ("session-mode",
@@ -1801,36 +1789,6 @@ shell_global_launch_calendar_server (ShellGlobal *global)
    */
 
   g_free (calendar_server_exe);
-}
-
-/**
- * shell_global_get_session_type:
- * @global: The #ShellGlobal.
- *
- * Gets the type of session gnome-shell provides.
- *
- * The type determines what UI elements are displayed,
- * what keybindings work, and generally how the shell
- * behaves.
- *
- * A session type of #SHELL_SESSION_USER means gnome-shell
- * will enable the activities overview, status menu, run dialog,
- * etc. This is the default.
- *
- * A session type of #SHELL_SESSION_GDM means gnome-shell
- * will enable a login dialog and run in a more confined
- * way. This type is suitable for the display manager.
- *
- * Returns: the type of session gnome-shell is providing.
- */
-ShellSessionType
-shell_global_get_session_type (ShellGlobal  *global)
-{
-  g_return_val_if_fail (SHELL_IS_GLOBAL (global),
-                        SHELL_SESSION_USER);
-
-  return strcmp (global->session_mode, "gdm") == 0 ? SHELL_SESSION_GDM
-                                                   : SHELL_SESSION_USER;
 }
 
 const char *

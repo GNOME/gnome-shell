@@ -17,7 +17,4 @@ gboolean _shell_global_has_valid_session_mode (ShellGlobal *global);
 gboolean _shell_global_check_xdnd_event (ShellGlobal  *global,
                                          XEvent       *xev);
 
-void     _shell_global_set_session_type (ShellGlobal      *global,
-                                         ShellSessionType  session_type);
-
 #endif /* __SHELL_GLOBAL_PRIVATE_H__ */
