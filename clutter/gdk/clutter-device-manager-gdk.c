@@ -24,7 +24,9 @@
 
 #include "config.h"
 
+#ifdef HAVE_STDINT_H
 #include <stdint.h>
+#endif
 
 #include "clutter-device-manager-gdk.h"
 

@@ -26,8 +26,9 @@
 #include <glib/gi18n-lib.h>
 
 #include <string.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#include <sys/ioctl.h>
+#endif
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>
@@ -36,7 +37,13 @@
 #include <gdk/gdk.h>
 #include <cogl/cogl.h>
 
+#ifndef GDK_WINDOWING_WIN32
+#include <sys/ioctl.h>
+#endif
+
+#if defined(GDK_WINDOWING_X11) && defined(COGL_HAS_XLIB_SUPPORT)
 #include <cogl/cogl-xlib.h>
+#endif
 
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
@@ -277,7 +284,7 @@ clutter_backend_gdk_get_renderer (ClutterBackend  *backend,
   if (GDK_IS_WIN32_DISPLAY (backend_gdk->display))
     {
       /* Force a WGL winsys on windows */
-      cogl_renderer_set_winsys_id (backend_cogl->cogl_renderer, COGL_WINSYS_ID_WGL);
+      cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_WGL);
     }
   else
 #endif
