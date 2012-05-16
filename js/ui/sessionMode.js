@@ -9,9 +9,11 @@ const DEFAULT_MODE = 'user';
 
 const _modes = {
     'gdm': { hasOverview: false,
+             hasAppMenu: false,
              sessionType: Shell.SessionType.GDM },
 
     'user': { hasOverview: true,
+              hasAppMenu: true,
               sessionType: Shell.SessionType.USER }
 };
 

@@ -972,7 +972,7 @@ const Panel = new Lang.Class({
             this._menus.addMenu(this._activitiesButton.menu);
         }
 
-        if (Main.sessionMode.sessionType == Shell.SessionType.USER) {
+        if (Main.sessionMode.hasAppMenu) {
             this._appMenu = new AppMenuButton(this._menus);
             this._leftBox.add(this._appMenu.actor);
         }
