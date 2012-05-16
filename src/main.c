@@ -36,6 +36,7 @@ extern GType gnome_shell_plugin_get_type (void);
 #define OVERRIDES_SCHEMA "org.gnome.shell.overrides"
 
 static gboolean is_gdm_mode = FALSE;
+static char *session_mode = NULL;
 
 #define DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER 1
 #define DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER 4
@@ -257,10 +258,16 @@ GOptionEntry gnome_shell_options[] = {
     NULL
   },
   {
-    "gdm-mode", 0, 0, G_OPTION_ARG_NONE,
+    "gdm-mode", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_NONE,
     &is_gdm_mode,
     N_("Mode used by GDM for login screen"),
     NULL
+  },
+  {
+    "mode", 0, 0, G_OPTION_ARG_STRING,
+    &session_mode,
+    N_("Use a specific mode, e.g. \"gdm\" for login screen"),
+    "MODE"
   },
   { NULL }
 };
@@ -324,7 +331,9 @@ main (int argc, char **argv)
   g_log_set_default_handler (default_log_handler, sender);
 
   /* Initialize the global object */
-  if (is_gdm_mode)
+  if (g_strcmp0 (session_mode, "gdm") == 0)
+      session_type = SHELL_SESSION_GDM;
+  else if (is_gdm_mode)
       session_type = SHELL_SESSION_GDM;
   else
       session_type = SHELL_SESSION_USER;
