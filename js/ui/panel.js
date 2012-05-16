@@ -962,7 +962,7 @@ const Panel = new Lang.Class({
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
 
         /* Button on the left side of the panel. */
-        if (Main.sessionMode.sessionType == Shell.SessionType.USER) {
+        if (Main.sessionMode.hasOverview) {
             this._activitiesButton = new ActivitiesButton();
             this._activities = this._activitiesButton.actor;
             this._leftBox.add(this._activities);
@@ -970,7 +970,9 @@ const Panel = new Lang.Class({
             // The activities button has a pretend menu, so as to integrate
             // more cleanly with the rest of the panel
             this._menus.addMenu(this._activitiesButton.menu);
+        }
 
+        if (Main.sessionMode.sessionType == Shell.SessionType.USER) {
             this._appMenu = new AppMenuButton(this._menus);
             this._leftBox.add(this._appMenu.actor);
         }

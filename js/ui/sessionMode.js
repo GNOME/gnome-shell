@@ -8,9 +8,11 @@ const Params = imports.misc.params;
 const DEFAULT_MODE = 'user';
 
 const _modes = {
-    'gdm': { sessionType: Shell.SessionType.GDM },
+    'gdm': { hasOverview: false,
+             sessionType: Shell.SessionType.GDM },
 
-    'user': { sessionType: Shell.SessionType.USER }
+    'user': { hasOverview: true,
+              sessionType: Shell.SessionType.USER }
 };
 
 function modeExists(mode) {

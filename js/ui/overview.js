@@ -99,10 +99,8 @@ const ShellInfo = new Lang.Class({
 const Overview = new Lang.Class({
     Name: 'Overview',
 
-    _init : function(params) {
-        params = Params.parse(params, { isDummy: false });
-
-        this.isDummy = params.isDummy;
+    _init : function() {
+        this.isDummy = !Main.sessionMode.hasOverview;
 
         // We only have an overview in user sessions, so
         // create a dummy overview in other cases

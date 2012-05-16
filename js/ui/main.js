@@ -142,13 +142,6 @@ function _initUserSession() {
     Meta.keybindings_set_custom_handler('panel-run-dialog', function() {
        getRunDialog().open();
     });
-
-    Meta.keybindings_set_custom_handler('panel-main-menu', function () {
-        overview.toggle();
-    });
-
-    global.display.connect('overlay-key', Lang.bind(overview, overview.toggle));
-
 }
 
 function start() {
@@ -212,8 +205,7 @@ function start() {
     layoutManager = new Layout.LayoutManager();
     xdndHandler = new XdndHandler.XdndHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
-    // This overview object is just a stub for non-user sessions
-    overview = new Overview.Overview({ isDummy: sessionMode.sessionType != Shell.SessionType.USER });
+    overview = new Overview.Overview();
     magnifier = new Magnifier.Magnifier();
     statusIconDispatcher = new StatusIconDispatcher.StatusIconDispatcher();
     panel = new Panel.Panel();
@@ -236,6 +228,16 @@ function start() {
 
     if (sessionMode.sessionType == Shell.SessionType.USER)
         _initUserSession();
+
+    if (sessionMode.hasOverview) {
+        Meta.keybindings_set_custom_handler('panel-main-menu', function () {
+            overview.toggle();
+        });
+
+        global.display.connect('overlay-key',
+                               Lang.bind(overview, overview.toggle));
+    }
+
     statusIconDispatcher.start(messageTray.actor);
 
     // Provide the bus object for gnome-session to
