@@ -63,7 +63,11 @@ const XKBIndicator = new Lang.Class({
 
         this._syncConfig();
 
-        if (Main.sessionMode.sessionType == Shell.SessionType.USER) {
+        // re-using "allowSettings" for the keyboard layout is a bit shady,
+        // but at least for now it is used as "allow popping up windows
+        // from shell menus"; we can always add a separate sessionMode
+        // option if need arises.
+        if (Main.sessionMode.allowSettings) {
             this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
             this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, function() {
                 Main.overview.hide();

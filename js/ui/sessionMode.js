@@ -11,11 +11,13 @@ const _modes = {
     'gdm': { hasOverview: false,
              hasAppMenu: false,
              showCalendarEvents: false,
+             allowSettings: false,
              sessionType: Shell.SessionType.GDM },
 
     'user': { hasOverview: true,
               hasAppMenu: true,
               showCalendarEvents: true,
+              allowSettings: true,
               sessionType: Shell.SessionType.USER }
 };
 

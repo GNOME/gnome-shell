@@ -888,8 +888,7 @@ const PopupMenuBase = new Lang.Class({
     },
 
     addSettingsAction: function(title, desktopFile) {
-        // Don't allow user settings to get edited unless we're in a user session
-        if (Main.sessionMode.sessionType != Shell.SessionType.USER)
+        if (!Main.sessionMode.allowSettings)
             return null;
 
         let menuItem = this.addAction(title, function() {

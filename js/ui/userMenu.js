@@ -624,7 +624,8 @@ const UserMenuButton = new Lang.Class({
         let item;
 
         item = new IMStatusChooserItem();
-        item.connect('activate', Lang.bind(this, this._onMyAccountActivate));
+        if (Main.sessionMode.allowSettings)
+            item.connect('activate', Lang.bind(this, this._onMyAccountActivate));
         this.menu.addMenuItem(item);
         this._statusChooser = item;
 
@@ -636,9 +637,11 @@ const UserMenuButton = new Lang.Class({
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupMenuItem(_("System Settings"));
-        item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
-        this.menu.addMenuItem(item);
+        if (Main.sessionMode.allowSettings) {
+            item = new PopupMenu.PopupMenuItem(_("System Settings"));
+            item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
+            this.menu.addMenuItem(item);
+        }
 
         item = new PopupMenu.PopupAlternatingMenuItem(_("Power Off"),
                                                       _("Suspend"));
