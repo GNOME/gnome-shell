@@ -22,13 +22,13 @@ unported_test_sources = \
 	test-texture-mipmaps.c \
 	test-texture-pixmap-x11.c \
 	test-texture-rectangle.c \
-	test-atlas-migration.c \
 	test-vertex-buffer-contiguous.c \
 	test-vertex-buffer-interleved.c \
 	test-vertex-buffer-mutability.c \
 	$(NULL)
 
 test_sources = \
+	test-atlas-migration.c \
 	test-bitmask.c \
 	test-blend-strings.c \
 	test-depth-test.c \

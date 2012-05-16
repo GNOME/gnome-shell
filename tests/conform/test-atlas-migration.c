@@ -1,6 +1,6 @@
-#include <clutter/clutter.h>
+#include <cogl/cogl.h>
 
-#include "test-conform-common.h"
+#include "test-utils.h"
 
 #define N_TEXTURES 128
 
@@ -10,16 +10,21 @@
 #define COLOR_FOR_SIZE(size) \
   (colors + (size) % 3)
 
-static const ClutterColor colors[] =
+typedef struct
+{
+  uint8_t red, green, blue, alpha;
+} TestColor;
+
+static const TestColor colors[] =
   { { 0xff, 0x00, 0x00, 0xff },
     { 0x00, 0xff, 0x00, 0xff },
     { 0x00, 0x00, 0xff, 0xff } };
 
-static CoglHandle
+static CoglTexture *
 create_texture (int size)
 {
-  CoglHandle texture;
-  const ClutterColor *color;
+  CoglTexture *texture;
+  const TestColor *color;
   uint8_t *data, *p;
   int x, y;
 
@@ -65,11 +70,11 @@ create_texture (int size)
 }
 
 static void
-verify_texture (CoglHandle texture, int size)
+verify_texture (CoglTexture *texture, int size)
 {
   uint8_t *data, *p;
   int x, y;
-  const ClutterColor *color;
+  const TestColor *color;
 
   color = COLOR_FOR_SIZE (size);
 
@@ -86,9 +91,18 @@ verify_texture (CoglHandle texture, int size)
 
       for (x = 0; x < size; x++)
         {
-          g_assert_cmpint (p[0], ==, color->red * opacity / 255);
-          g_assert_cmpint (p[1], ==, color->green * opacity / 255);
-          g_assert_cmpint (p[2], ==, color->blue * opacity / 255);
+          TestColor real_color =
+            {
+              color->red * opacity / 255,
+              color->green * opacity / 255,
+              color->blue * opacity / 255
+            };
+
+          test_utils_compare_pixel (p,
+                                    (real_color.red << 24) |
+                                    (real_color.green << 16) |
+                                    (real_color.blue << 8) |
+                                    opacity);
           g_assert_cmpint (p[3], ==, opacity);
 
           p += 4;
@@ -99,10 +113,9 @@ verify_texture (CoglHandle texture, int size)
 }
 
 void
-test_atlas_migration (TestUtilsGTestFixture *fixture,
-                           void *data)
+test_atlas_migration (void)
 {
-  CoglHandle textures[N_TEXTURES];
+  CoglTexture *textures[N_TEXTURES];
   int i, tex_num;
 
   /* Create and destroy all of the textures a few times to increase
