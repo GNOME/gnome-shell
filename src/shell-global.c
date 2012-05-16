@@ -59,7 +59,7 @@ struct _ShellGlobal {
   MetaScreen *meta_screen;
   GdkScreen *gdk_screen;
 
-  ShellSessionType session_type;
+  char *session_mode;
 
   /* We use this window to get a notification from GTK+ when
    * a widget in our process does a GTK+ grab.  See
@@ -98,6 +98,7 @@ enum {
   PROP_0,
 
   PROP_SESSION_TYPE,
+  PROP_SESSION_MODE,
   PROP_OVERLAY_GROUP,
   PROP_SCREEN,
   PROP_GDK_SCREEN,
@@ -143,8 +144,9 @@ shell_global_set_property(GObject         *object,
     case PROP_STAGE_INPUT_MODE:
       shell_global_set_stage_input_mode (global, g_value_get_enum (value));
       break;
-    case PROP_SESSION_TYPE:
-      global->session_type = g_value_get_enum (value);
+    case PROP_SESSION_MODE:
+      g_clear_pointer (&global->session_mode, g_free);
+      global->session_mode = g_ascii_strdown (g_value_get_string (value), -1);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -164,6 +166,9 @@ shell_global_get_property(GObject         *object,
     {
     case PROP_SESSION_TYPE:
       g_value_set_enum (value, shell_global_get_session_type (global));
+      break;
+    case PROP_SESSION_MODE:
+      g_value_set_string (value, shell_global_get_session_mode (global));
       break;
     case PROP_OVERLAY_GROUP:
       g_value_set_object (value, meta_get_overlay_group_for_screen (global->meta_screen));
@@ -349,7 +354,14 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                       "The type of session",
                                                       SHELL_TYPE_SESSION_TYPE,
                                                       SHELL_SESSION_USER,
-                                                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+                                                      G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_SESSION_MODE,
+                                   g_param_spec_string ("session-mode",
+                                                        "Session Mode",
+                                                        "The session mode to use",
+                                                        "user",
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
   g_object_class_install_property (gobject_class,
                                    PROP_OVERLAY_GROUP,
                                    g_param_spec_object ("overlay-group",
@@ -1802,5 +1814,14 @@ shell_global_get_session_type (ShellGlobal  *global)
   g_return_val_if_fail (SHELL_IS_GLOBAL (global),
                         SHELL_SESSION_USER);
 
-  return global->session_type;
+  return strcmp (global->session_mode, "gdm") == 0 ? SHELL_SESSION_GDM
+                                                   : SHELL_SESSION_USER;
+}
+
+const char *
+shell_global_get_session_mode (ShellGlobal *global)
+{
+  g_return_val_if_fail (SHELL_IS_GLOBAL (global), "user");
+
+  return global->session_mode;
 }

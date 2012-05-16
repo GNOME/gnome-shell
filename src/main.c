@@ -277,7 +277,6 @@ main (int argc, char **argv)
 {
   GOptionContext *ctx;
   GError *error = NULL;
-  ShellSessionType session_type;
   int ecode;
   TpDebugSender *sender;
 
@@ -331,14 +330,10 @@ main (int argc, char **argv)
   g_log_set_default_handler (default_log_handler, sender);
 
   /* Initialize the global object */
-  if (g_strcmp0 (session_mode, "gdm") == 0)
-      session_type = SHELL_SESSION_GDM;
-  else if (is_gdm_mode)
-      session_type = SHELL_SESSION_GDM;
-  else
-      session_type = SHELL_SESSION_USER;
+  if (session_mode == NULL)
+    session_mode = is_gdm_mode ? "gdm" : "user";
 
-  _shell_global_init ("session-type", session_type, NULL);
+  _shell_global_init ("session-mode", session_mode, NULL);
 
   ecode = meta_run ();
 

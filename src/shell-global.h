@@ -147,6 +147,7 @@ typedef enum {
 } ShellSessionType;
 
 ShellSessionType shell_global_get_session_type  (ShellGlobal  *global);
+const char *     shell_global_get_session_mode  (ShellGlobal  *global);
 
 G_END_DECLS
 
