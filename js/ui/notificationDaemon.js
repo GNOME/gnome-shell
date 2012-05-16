@@ -226,7 +226,7 @@ const NotificationDaemon = new Lang.Class({
         if (appName == 'Empathy' && (hints['category'] == 'im.received' ||
               hints['category'] == 'x-empathy.im.room-invitation' ||
               hints['category'] == 'x-empathy.call.incoming' ||
-              hints['category'] == 'x-empathy.call.incoming"' ||
+              hints['category'] == 'x-empathy.transfer.incoming' ||
               hints['category'] == 'x-empathy.im.subscription-request' ||
               hints['category'] == 'presence.online' ||
               hints['category'] == 'presence.offline')) {
