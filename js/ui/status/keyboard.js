@@ -63,7 +63,7 @@ const XKBIndicator = new Lang.Class({
 
         this._syncConfig();
 
-        if (global.session_type == Shell.SessionType.USER) {
+        if (Main.sessionMode.sessionType == Shell.SessionType.USER) {
             this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
             this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, function() {
                 Main.overview.hide();

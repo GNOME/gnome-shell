@@ -962,7 +962,7 @@ const Panel = new Lang.Class({
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
 
         /* Button on the left side of the panel. */
-        if (global.session_type == Shell.SessionType.USER) {
+        if (Main.sessionMode.sessionType == Shell.SessionType.USER) {
             this._activitiesButton = new ActivitiesButton();
             this._activities = this._activitiesButton.actor;
             this._leftBox.add(this._activities);
@@ -976,7 +976,7 @@ const Panel = new Lang.Class({
         }
 
         /* center */
-        if (global.session_type == Shell.SessionType.USER)
+        if (Main.sessionMode.sessionType == Shell.SessionType.USER)
             this._dateMenu = new DateMenu.DateMenuButton({ showEvents: true });
         else
             this._dateMenu = new DateMenu.DateMenuButton({ showEvents: false });
@@ -984,7 +984,7 @@ const Panel = new Lang.Class({
         this._menus.addMenu(this._dateMenu.menu);
 
         /* right */
-        if (global.session_type == Shell.SessionType.GDM) {
+        if (Main.sessionMode.sessionType == Shell.SessionType.GDM) {
             this._status_area_order = GDM_STATUS_AREA_ORDER;
             this._status_area_shell_implementation = GDM_STATUS_AREA_SHELL_IMPLEMENTATION;
         } else {

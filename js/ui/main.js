@@ -30,6 +30,7 @@ const NetworkAgent = imports.ui.networkAgent;
 const NotificationDaemon = imports.ui.notificationDaemon;
 const WindowAttentionHandler = imports.ui.windowAttentionHandler;
 const Scripting = imports.ui.scripting;
+const SessionMode = imports.ui.sessionMode;
 const ShellDBus = imports.ui.shellDBus;
 const TelepathyClient = imports.ui.telepathyClient;
 const WindowManager = imports.ui.windowManager;
@@ -56,6 +57,7 @@ let windowAttentionHandler = null;
 let telepathyClient = null;
 let ctrlAltTabManager = null;
 let recorder = null;
+let sessionMode = null;
 let shellDBusService = null;
 let modalCount = 0;
 let modalActorFocusStack = [];
@@ -159,6 +161,7 @@ function start() {
 
     Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
+    sessionMode = new SessionMode.SessionMode();
     shellDBusService = new ShellDBus.GnomeShell();
 
     // Ensure ShellWindowTracker and ShellAppUsage are initialized; this will
@@ -210,7 +213,7 @@ function start() {
     xdndHandler = new XdndHandler.XdndHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
     // This overview object is just a stub for non-user sessions
-    overview = new Overview.Overview({ isDummy: global.session_type != Shell.SessionType.USER });
+    overview = new Overview.Overview({ isDummy: sessionMode.sessionType != Shell.SessionType.USER });
     magnifier = new Magnifier.Magnifier();
     statusIconDispatcher = new StatusIconDispatcher.StatusIconDispatcher();
     panel = new Panel.Panel();
@@ -220,9 +223,9 @@ function start() {
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
 
-    if (global.session_type == Shell.SessionType.USER)
+    if (sessionMode.sessionType == Shell.SessionType.USER)
         _createUserSession();
-    else if (global.session_type == Shell.SessionType.GDM)
+    else if (sessionMode.sessionType == Shell.SessionType.GDM)
         _createGDMSession();
 
     panel.startStatusArea();
@@ -231,7 +234,7 @@ function start() {
     keyboard.init();
     overview.init();
 
-    if (global.session_type == Shell.SessionType.USER)
+    if (sessionMode.sessionType == Shell.SessionType.USER)
         _initUserSession();
     statusIconDispatcher.start(messageTray.actor);
 
@@ -491,7 +494,7 @@ function loadTheme() {
 
     let theme = new St.Theme ({ application_stylesheet: cssStylesheet });
 
-    if (global.session_type == Shell.SessionType.GDM)
+    if (sessionMode.sessionType == Shell.SessionType.GDM)
         theme.load_stylesheet(_gdmCssStylesheet);
 
     if (previousTheme) {
@@ -566,7 +569,7 @@ function _globalKeyPressHandler(actor, event) {
 
     // Other bindings are only available to the user session when the overview is up and
     // no modal dialog is present.
-    if (global.session_type == Shell.SessionType.USER && (!overview.visible || modalCount > 1))
+    if (sessionMode.sessionType == Shell.SessionType.USER && (!overview.visible || modalCount > 1))
         return false;
 
     // This isn't a Meta.KeyBindingAction yet
@@ -582,7 +585,7 @@ function _globalKeyPressHandler(actor, event) {
     }
 
     // None of the other bindings are relevant outside of the user's session
-    if (global.session_type != Shell.SessionType.USER)
+    if (sessionMode.sessionType != Shell.SessionType.USER)
         return false;
 
     switch (action) {
