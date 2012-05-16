@@ -140,12 +140,6 @@ struct _ClutterTableChild
 {
   ClutterLayoutMeta parent_instance;
 
-  /* the last stable allocation before an animation; it is used as the
-   * initial ActorBox when interpolating. If has_last_allocation is
-   * FALSE then this value is not yet known
-   */
-  ClutterActorBox last_allocation;
-
   gint col;
   gint row;
 
@@ -159,7 +153,6 @@ struct _ClutterTableChild
   guint y_expand            : 1;
   guint x_fill              : 1;
   guint y_fill              : 1;
-  guint has_last_allocation : 1;
 };
 
 enum
@@ -651,8 +644,6 @@ clutter_table_child_init (ClutterTableChild *self)
 
   self->x_fill = TRUE;
   self->y_fill = TRUE;
-
-  self->has_last_allocation = FALSE;
 }
 
 static GType
