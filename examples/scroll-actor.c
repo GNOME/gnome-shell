@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <glib.h>
-#include <gmodule.h>
 #include <clutter/clutter.h>
 
 static const char *menu_items_name[] = {
@@ -36,6 +35,7 @@ select_item_at_index (ClutterActor *scroll,
       clutter_text_set_color (CLUTTER_TEXT (item), CLUTTER_COLOR_White);
     }
 
+  /* wrap around the index */
   if (index_ < 0)
     index_ = clutter_actor_get_n_children (menu) - 1;
   else if (index_ >= clutter_actor_get_n_children (menu))
@@ -44,12 +44,21 @@ select_item_at_index (ClutterActor *scroll,
   item = clutter_actor_get_child_at_index (menu, index_);
   clutter_actor_get_position (item, &point.x, &point.y);
 
+  /* scroll to the actor's position; the menu actor is always set at (0, 0),
+   * so it does not contribute any further offset, and we can use the position
+   * of its children to ask the ScrollActor to scroll the visible region; if
+   * the menu actor had an offset, or was transformed, we would have needed to
+   * get their relative transformed position instead.
+   */
   clutter_actor_save_easing_state (scroll);
   clutter_scroll_actor_scroll_to_point (CLUTTER_SCROLL_ACTOR (scroll), &point);
   clutter_actor_restore_easing_state (scroll);
 
   clutter_text_set_color (CLUTTER_TEXT (item), CLUTTER_COLOR_LightSkyBlue);
 
+  /* store the index of the currently selected item, so that we can
+   * implement select_next_item() and select_prev_item()
+   */
   g_object_set_data (G_OBJECT (scroll), "selected-item",
                      GINT_TO_POINTER (index_));
 }
@@ -92,6 +101,7 @@ create_menu_actor (ClutterActor *scroll)
   ClutterLayoutManager *layout_manager;
   guint i;
 
+  /* this is our menu; it contains items in a vertical layout */
   layout_manager = clutter_box_layout_new ();
   clutter_box_layout_set_orientation (CLUTTER_BOX_LAYOUT (layout_manager),
                                       CLUTTER_ORIENTATION_VERTICAL);
@@ -101,6 +111,7 @@ create_menu_actor (ClutterActor *scroll)
   clutter_actor_set_layout_manager (menu, layout_manager);
   clutter_actor_set_background_color (menu, CLUTTER_COLOR_Black);
 
+  /* these are the items */
   for (i = 0; i < menu_items_len; i++)
     clutter_actor_add_child (menu, create_menu_item (menu_items_name[i]));
 
@@ -112,18 +123,26 @@ create_scroll_actor (ClutterActor *stage)
 {
   ClutterActor *scroll;
 
+  /* our scrollable viewport */
   scroll = clutter_scroll_actor_new ();
   clutter_actor_set_name (scroll, "scroll");
 
+  /* give a vertical offset, and constrain the viewport so that its size
+   * is bound to the stage size
+   */
   clutter_actor_set_position (scroll, 0.f, 18.f);
   clutter_actor_add_constraint (scroll, clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.5));
   clutter_actor_add_constraint (scroll, clutter_bind_constraint_new (stage, CLUTTER_BIND_HEIGHT, -36.f));
 
+  /* we only want to scroll the contents vertically, and
+   * ignore any horizontal component
+   */
   clutter_scroll_actor_set_scroll_mode (CLUTTER_SCROLL_ACTOR (scroll),
                                         CLUTTER_SCROLL_VERTICALLY);
 
   clutter_actor_add_child (scroll, create_menu_actor (scroll));
 
+  /* select the first item */
   select_item_at_index (scroll, 0);
 
   return scroll;
@@ -149,20 +168,15 @@ on_key_press (ClutterActor *stage,
   return CLUTTER_EVENT_STOP;
 }
 
-G_MODULE_EXPORT const char *
-test_scroll_actor_describe (void)
-{
-  return "Scrolling actor example.";
-}
-
-G_MODULE_EXPORT int
-test_scroll_actor_main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
   ClutterActor *stage;
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return EXIT_FAILURE;
 
+  /* create a new stage */
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Scroll Actor");
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);

@@ -10,6 +10,7 @@ all_examples = \
 	flow-layout \
 	layout-manager \
 	rounded-rectangle \
+	scroll-actor \
 	threads
 
 if PIXBUF_TESTS

@@ -36,6 +36,14 @@
  * #ClutterScrollActor does not provide pointer or keyboard event handling,
  * nor does it provide visible scroll handles.
  *
+ * <informalexample>
+ *  <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/scroll-actor.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ *  </programlisting>
+ * </informalexample>
+ *
  * #ClutterScrollActor is available since Clutter 1.12.
  */
 
