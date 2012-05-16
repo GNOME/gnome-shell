@@ -138,7 +138,7 @@ copy ..\..\..\tests\data\*.json $(OutDir)\share\clutter-$(ClutterApiVersion)\dat
 mkdir $(OutDir)\lib&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*-$(ClutterApiVersion).lib $(OutDir)\lib&#x0D;&#x0A;
 
-mkdir $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
+mkdir $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\win32&#x0D;&#x0A;
 
 copy ..\..\..\clutter\clutter.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-action.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
@@ -223,7 +223,7 @@ copy ..\..\..\clutter\clutter-transition.h $(OutDir)\include\clutter-$(ClutterAp
 copy ..\..\..\clutter\clutter-types.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-units.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-version.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
-copy ..\..\..\clutter\win32\clutter-win32.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter&#x0D;&#x0A;
+copy ..\..\..\clutter\win32\clutter-win32.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\win32&#x0D;&#x0A;
 
 mkdir $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-actor.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;

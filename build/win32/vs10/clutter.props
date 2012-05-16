@@ -108,7 +108,7 @@ mkdir $(CopyDir)\lib
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*-$(ClutterApiVersion).lib $(CopyDir)\lib
 
 
-mkdir $(CopyDir)\include\clutter-1.0\clutter
+mkdir $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\win32
 
 
 copy ..\..\..\clutter\clutter.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
@@ -277,7 +277,7 @@ copy ..\..\..\clutter\clutter-units.h $(CopyDir)\include\clutter-$(ClutterApiVer
 
 copy ..\..\..\clutter\clutter-version.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
 
-copy ..\..\..\clutter\win32\clutter-win32.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+copy ..\..\..\clutter\win32\clutter-win32.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\win32
 
 
 mkdir $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
