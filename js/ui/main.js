@@ -71,7 +71,6 @@ let networkAgent = null;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
-let _gdmCssStylesheet = null;
 let _overridesSettings = null;
 
 let background = null;
@@ -166,7 +165,6 @@ function start() {
     global.stage.no_clear_hint = true;
 
     _defaultCssStylesheet = global.datadir + '/theme/gnome-shell.css';
-    _gdmCssStylesheet = global.datadir + '/theme/gdm.css';
     loadTheme();
 
     // Set up stage hierarchy to group all UI actors under one container.
@@ -494,8 +492,8 @@ function loadTheme() {
 
     let theme = new St.Theme ({ application_stylesheet: cssStylesheet });
 
-    if (sessionMode.sessionType == Shell.SessionType.GDM)
-        theme.load_stylesheet(_gdmCssStylesheet);
+    if (sessionMode.extraStylesheet)
+        theme.load_stylesheet(sessionMode.extraStylesheet);
 
     if (previousTheme) {
         let customStylesheets = previousTheme.get_custom_stylesheets();

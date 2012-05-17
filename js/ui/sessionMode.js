@@ -18,6 +18,7 @@ const _modes = {
              hasRunDialog: false,
              hasWorkspaces: false,
              createSession: Main.createGDMSession,
+             extraStylesheet: global.datadir + '/theme/gdm.css',
              sessionType: Shell.SessionType.GDM },
 
     'user': { hasOverview: true,
@@ -29,6 +30,7 @@ const _modes = {
               hasRunDialog: true,
               hasWorkspaces: true,
               createSession: Main.createUserSession,
+              extraStylesheet: null,
               sessionType: Shell.SessionType.USER }
 };
 
