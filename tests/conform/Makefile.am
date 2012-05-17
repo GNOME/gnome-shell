@@ -55,6 +55,7 @@ test_sources = \
 	test-no-gl-header.c \
 	test-version.c \
 	test-gles2-context.c \
+	test-euler-quaternion.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)

@@ -101,6 +101,8 @@ main (int argc, char **argv)
 
   ADD_TEST (test_gles2_context, TEST_REQUIREMENT_GLES2_CONTEXT);
 
+  ADD_TEST (test_euler_quaternion, 0);
+
   g_printerr ("Unknown test name \"%s\"\n", argv[1]);
 
   return 1;
