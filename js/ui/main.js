@@ -135,10 +135,6 @@ function _initUserSession() {
     _initRecorder();
 
     global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT, false, -1, 1);
-
-    Meta.keybindings_set_custom_handler('panel-run-dialog', function() {
-       getRunDialog().open();
-    });
 }
 
 function start() {
@@ -229,6 +225,12 @@ function start() {
     if (sessionMode.allowExtensions) {
         ExtensionSystem.init();
         ExtensionSystem.loadExtensions();
+    }
+
+    if (sessionMode.hasRunDialog) {
+        Meta.keybindings_set_custom_handler('panel-run-dialog', function() {
+           getRunDialog().open();
+        });
     }
 
     if (sessionMode.hasOverview) {
@@ -610,6 +612,9 @@ function _globalKeyPressHandler(actor, event) {
             return true;
         case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
         case Meta.KeyBindingAction.COMMAND_2:
+            if (!sessionMode.hasRunDialog)
+                return false;
+
             getRunDialog().open();
             return true;
         case Meta.KeyBindingAction.PANEL_MAIN_MENU:

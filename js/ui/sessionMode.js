@@ -14,6 +14,7 @@ const _modes = {
              allowSettings: false,
              allowExtensions: false,
              allowKeybindingsWhenModal: true,
+             hasRunDialog: false,
              sessionType: Shell.SessionType.GDM },
 
     'user': { hasOverview: true,
@@ -22,6 +23,7 @@ const _modes = {
               allowSettings: true,
               allowExtensions: true,
               allowKeybindingsWhenModal: false,
+              hasRunDialog: true,
               sessionType: Shell.SessionType.USER }
 };
 
