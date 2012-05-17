@@ -491,6 +491,17 @@ cogl_matrix_get_array (const CoglMatrix *matrix);
 void
 cogl_matrix_init_from_quaternion (CoglMatrix *matrix,
                                   const CoglQuaternion *quaternion);
+
+/**
+ * cogl_matrix_init_from_euler:
+ * @matrix: A 4x4 transformation matrix
+ * @euler: A #CoglEuler
+ *
+ * Initializes @matrix from a #CoglEuler rotation.
+ */
+void
+cogl_matrix_init_from_euler (CoglMatrix *matrix,
+                             const CoglEuler *euler);
 #endif
 
 /**

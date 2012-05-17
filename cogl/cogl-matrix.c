@@ -1751,6 +1751,84 @@ cogl_matrix_init_from_quaternion (CoglMatrix *matrix,
   _cogl_matrix_init_from_quaternion (matrix, quaternion);
 }
 
+void
+cogl_matrix_init_from_euler (CoglMatrix *matrix,
+                             const CoglEuler *euler)
+{
+  /* Convert angles to radians */
+  float heading_rad = euler->heading / 180.0f * G_PI;
+  float pitch_rad = euler->pitch / 180.0f * G_PI;
+  float roll_rad = euler->roll / 180.0f * G_PI;
+  /* Pre-calculate the sin and cos */
+  float sin_heading = sinf (heading_rad);
+  float cos_heading = cosf (heading_rad);
+  float sin_pitch = sinf (pitch_rad);
+  float cos_pitch = cosf (pitch_rad);
+  float sin_roll = sinf (roll_rad);
+  float cos_roll = cosf (roll_rad);
+
+  /* These calculations are based on the following website but they
+   * use a different order for the rotations so it has been modified
+   * slightly.
+   * http://www.euclideanspace.com/maths/geometry/
+   *        rotations/conversions/eulerToMatrix/index.htm
+   */
+
+  /* Heading rotation x=0, y=1, z=0 gives:
+   *
+   * [ ch   0   sh   0 ]
+   * [ 0    1   0    0 ]
+   * [ -sh  0   ch   0 ]
+   * [ 0    0   0    1 ]
+   *
+   * Pitch rotation x=1, y=0, z=0 gives:
+   * [ 1    0   0    0 ]
+   * [ 0    cp  -sp  0 ]
+   * [ 0    sp  cp   0 ]
+   * [ 0    0   0    1 ]
+   *
+   * Roll rotation x=0, y=0, z=1 gives:
+   * [ cr   -sr 0    0 ]
+   * [ sr   cr  0    0 ]
+   * [ 0    0   1    0 ]
+   * [ 0    0   0    1 ]
+   *
+   * Heading matrix * pitch matrix =
+   * [ ch   sh*sp    cp*sh   0  ]
+   * [ 0    cp       -sp     0  ]
+   * [ -sh  ch*sp    ch*cp   0  ]
+   * [ 0    0        0       1  ]
+   *
+   * That matrix * roll matrix =
+   * [ ch*cr + sh*sp*sr   sh*sp*cr - ch*sr       sh*cp       0 ]
+   * [     cp*sr                cp*cr             -sp        0 ]
+   * [ ch*sp*sr - sh*cr   sh*sr + ch*sp*cr       ch*cp       0 ]
+   * [       0                    0                0         1 ]
+   */
+
+  matrix->xx = cos_heading * cos_roll + sin_heading * sin_pitch * sin_roll;
+  matrix->yx = cos_pitch * sin_roll;
+  matrix->zx = cos_heading * sin_pitch * sin_roll - sin_heading * cos_roll;
+  matrix->wx = 0.0f;
+
+  matrix->xy = sin_heading * sin_pitch * cos_roll - cos_heading * sin_roll;
+  matrix->yy = cos_pitch * cos_roll;
+  matrix->zy = sin_heading * sin_roll + cos_heading * sin_pitch * cos_roll;
+  matrix->wy = 0.0f;
+
+  matrix->xz = sin_heading * cos_pitch;
+  matrix->yz = -sin_pitch;
+  matrix->zz = cos_heading * cos_pitch;
+  matrix->wz = 0;
+
+  matrix->xw = 0;
+  matrix->yw = 0;
+  matrix->zw = 0;
+  matrix->ww = 1;
+
+  matrix->flags = (MAT_FLAG_GENERAL | MAT_DIRTY_ALL);
+}
+
 /*
  * Transpose a float matrix.
  */
