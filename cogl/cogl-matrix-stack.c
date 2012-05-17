@@ -863,6 +863,7 @@ _cogl_matrix_entry_equal (CoglMatrixEntry *entry0,
                 translate0->z != translate1->z)
               return FALSE;
           }
+          break;
         case COGL_MATRIX_OP_ROTATE:
           {
             CoglMatrixEntryRotate *rotate0 =
@@ -875,6 +876,7 @@ _cogl_matrix_entry_equal (CoglMatrixEntry *entry0,
                 rotate0->z != rotate1->z)
               return FALSE;
           }
+          break;
         case COGL_MATRIX_OP_SCALE:
           {
             CoglMatrixEntryScale *scale0 = (CoglMatrixEntryScale *)entry0;
@@ -884,6 +886,7 @@ _cogl_matrix_entry_equal (CoglMatrixEntry *entry0,
                 scale0->z != scale1->z)
               return FALSE;
           }
+          break;
         case COGL_MATRIX_OP_MULTIPLY:
           {
             CoglMatrixEntryMultiply *mult0 = (CoglMatrixEntryMultiply *)entry0;
@@ -891,6 +894,7 @@ _cogl_matrix_entry_equal (CoglMatrixEntry *entry0,
             if (!cogl_matrix_equal (mult0->matrix, mult1->matrix))
               return FALSE;
           }
+          break;
         case COGL_MATRIX_OP_LOAD:
           {
             CoglMatrixEntryLoad *load0 = (CoglMatrixEntryLoad *)entry0;
