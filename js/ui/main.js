@@ -85,6 +85,8 @@ function _createUserSession() {
     automountManager = new AutomountManager.AutomountManager();
     autorunManager = new AutorunManager.AutorunManager();
     networkAgent = new NetworkAgent.NetworkAgent();
+
+    _initRecorder();
 }
 
 function _createGDMSession() {
@@ -129,10 +131,6 @@ function _initRecorder() {
             recorder.record();
         }
     });
-}
-
-function _initUserSession() {
-    _initRecorder();
 }
 
 function start() {
@@ -216,9 +214,6 @@ function start() {
     layoutManager.init();
     keyboard.init();
     overview.init();
-
-    if (sessionMode.sessionType == Shell.SessionType.USER)
-        _initUserSession();
 
     if (sessionMode.hasWorkspaces)
         global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
