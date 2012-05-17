@@ -39,6 +39,8 @@ typedef enum _CoglMatrixOp
   COGL_MATRIX_OP_LOAD_IDENTITY,
   COGL_MATRIX_OP_TRANSLATE,
   COGL_MATRIX_OP_ROTATE,
+  COGL_MATRIX_OP_ROTATE_QUATERNION,
+  COGL_MATRIX_OP_ROTATE_EULER,
   COGL_MATRIX_OP_SCALE,
   COGL_MATRIX_OP_MULTIPLY,
   COGL_MATRIX_OP_LOAD,
@@ -77,6 +79,26 @@ typedef struct _CoglMatrixEntryRotate
   float z;
 
 } CoglMatrixEntryRotate;
+
+typedef struct _CoglMatrixEntryRotateEuler
+{
+  CoglMatrixEntry _parent_data;
+
+  /* This doesn't store an actual CoglEuler in order to avoid the
+   * padding */
+  float heading;
+  float pitch;
+  float roll;
+} CoglMatrixEntryRotateEuler;
+
+typedef struct _CoglMatrixEntryRotateQuaternion
+{
+  CoglMatrixEntry _parent_data;
+
+  /* This doesn't store an actual CoglQuaternion in order to avoid the
+   * padding */
+  float values[4];
+} CoglMatrixEntryRotateQuaternion;
 
 typedef struct _CoglMatrixEntryScale
 {
@@ -117,7 +139,9 @@ typedef union _CoglMatrixEntryFull
 {
   CoglMatrixEntry any;
   CoglMatrixEntryTranslate translate;
-  CoglMatrixEntryRotate rotae;
+  CoglMatrixEntryRotate rotate;
+  CoglMatrixEntryRotateEuler rotate_euler;
+  CoglMatrixEntryRotateQuaternion rotate_quaternion;
   CoglMatrixEntryScale scale;
   CoglMatrixEntryMultiply multiply;
   CoglMatrixEntryLoad load;
@@ -169,6 +193,12 @@ _cogl_matrix_stack_rotate (CoglMatrixStack *stack,
                            float x,
                            float y,
                            float z);
+void
+_cogl_matrix_stack_rotate_quaternion (CoglMatrixStack *stack,
+                                      const CoglQuaternion *quaternion);
+void
+_cogl_matrix_stack_rotate_euler (CoglMatrixStack *stack,
+                                 const CoglEuler *euler);
 void
 _cogl_matrix_stack_multiply (CoglMatrixStack *stack,
                              const CoglMatrix *matrix);

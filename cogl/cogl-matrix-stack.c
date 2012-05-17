@@ -123,6 +123,37 @@ _cogl_matrix_stack_rotate (CoglMatrixStack *stack,
 }
 
 void
+_cogl_matrix_stack_rotate_quaternion (CoglMatrixStack *stack,
+                                      const CoglQuaternion *quaternion)
+{
+  CoglMatrixEntryRotateQuaternion *entry;
+
+  entry = _cogl_matrix_stack_push_entry (stack,
+                                         sizeof (CoglMatrixEntryRotate),
+                                         COGL_MATRIX_OP_ROTATE_QUATERNION);
+
+  entry->values[0] = quaternion->w;
+  entry->values[1] = quaternion->x;
+  entry->values[2] = quaternion->y;
+  entry->values[3] = quaternion->z;
+}
+
+void
+_cogl_matrix_stack_rotate_euler (CoglMatrixStack *stack,
+                                 const CoglEuler *euler)
+{
+  CoglMatrixEntryRotateEuler *entry;
+
+  entry = _cogl_matrix_stack_push_entry (stack,
+                                         sizeof (CoglMatrixEntryRotate),
+                                         COGL_MATRIX_OP_ROTATE_EULER);
+
+  entry->heading = euler->heading;
+  entry->pitch = euler->pitch;
+  entry->roll = euler->roll;
+}
+
+void
 _cogl_matrix_stack_scale (CoglMatrixStack *stack,
                           float x,
                           float y,
@@ -272,6 +303,8 @@ _cogl_matrix_entry_unref (CoglMatrixEntry *entry)
         case COGL_MATRIX_OP_LOAD_IDENTITY:
         case COGL_MATRIX_OP_TRANSLATE:
         case COGL_MATRIX_OP_ROTATE:
+        case COGL_MATRIX_OP_ROTATE_QUATERNION:
+        case COGL_MATRIX_OP_ROTATE_EULER:
         case COGL_MATRIX_OP_SCALE:
           break;
         case COGL_MATRIX_OP_MULTIPLY:
@@ -411,6 +444,8 @@ initialized:
         case COGL_MATRIX_OP_LOAD_IDENTITY:
         case COGL_MATRIX_OP_TRANSLATE:
         case COGL_MATRIX_OP_ROTATE:
+        case COGL_MATRIX_OP_ROTATE_QUATERNION:
+        case COGL_MATRIX_OP_ROTATE_EULER:
         case COGL_MATRIX_OP_SCALE:
         case COGL_MATRIX_OP_MULTIPLY:
           return NULL;
@@ -483,6 +518,28 @@ initialized:
                                 rotate->x,
                                 rotate->y,
                                 rotate->z);
+            continue;
+          }
+        case COGL_MATRIX_OP_ROTATE_EULER:
+          {
+            CoglMatrixEntryRotateEuler *rotate =
+              (CoglMatrixEntryRotateEuler *)children[i];
+            CoglEuler euler;
+            cogl_euler_init (&euler,
+                             rotate->heading,
+                             rotate->pitch,
+                             rotate->roll);
+            cogl_matrix_rotate_euler (matrix,
+                                      &euler);
+            continue;
+          }
+        case COGL_MATRIX_OP_ROTATE_QUATERNION:
+          {
+            CoglMatrixEntryRotateQuaternion *rotate =
+              (CoglMatrixEntryRotateQuaternion *)children[i];
+            CoglQuaternion quaternion;
+            cogl_quaternion_init_from_array (&quaternion, rotate->values);
+            cogl_matrix_rotate_quaternion (matrix, &quaternion);
             continue;
           }
         case COGL_MATRIX_OP_SCALE:
@@ -877,6 +934,31 @@ _cogl_matrix_entry_equal (CoglMatrixEntry *entry0,
               return FALSE;
           }
           break;
+        case COGL_MATRIX_OP_ROTATE_QUATERNION:
+          {
+            CoglMatrixEntryRotateQuaternion *rotate0 =
+              (CoglMatrixEntryRotateQuaternion *)entry0;
+            CoglMatrixEntryRotateQuaternion *rotate1 =
+              (CoglMatrixEntryRotateQuaternion *)entry1;
+            int i;
+            for (i = 0; i < 4; i++)
+              if (rotate0->values[i] != rotate1->values[i])
+                return FALSE;
+          }
+          break;
+        case COGL_MATRIX_OP_ROTATE_EULER:
+          {
+            CoglMatrixEntryRotateEuler *rotate0 =
+              (CoglMatrixEntryRotateEuler *)entry0;
+            CoglMatrixEntryRotateEuler *rotate1 =
+              (CoglMatrixEntryRotateEuler *)entry1;
+
+            if (rotate0->heading != rotate1->heading ||
+                rotate0->pitch != rotate1->pitch ||
+                rotate0->roll != rotate1->roll)
+              return FALSE;
+          }
+          break;
         case COGL_MATRIX_OP_SCALE:
           {
             CoglMatrixEntryScale *scale0 = (CoglMatrixEntryScale *)entry0;
@@ -963,6 +1045,27 @@ _cogl_matrix_entry_print (CoglMatrixEntry *entry)
                      rotate->x,
                      rotate->y,
                      rotate->z);
+            continue;
+          }
+        case COGL_MATRIX_OP_ROTATE_QUATERNION:
+          {
+            CoglMatrixEntryRotateQuaternion *rotate =
+              (CoglMatrixEntryRotateQuaternion *)entry;
+            g_print ("  ROTATE QUATERNION w=%f x=%f y=%f z=%f\n",
+                     rotate->values[0],
+                     rotate->values[1],
+                     rotate->values[2],
+                     rotate->values[3]);
+            continue;
+          }
+        case COGL_MATRIX_OP_ROTATE_EULER:
+          {
+            CoglMatrixEntryRotateEuler *rotate =
+              (CoglMatrixEntryRotateEuler *)entry;
+            g_print ("  ROTATE EULER heading=%f pitch=%f roll=%f\n",
+                     rotate->heading,
+                     rotate->pitch,
+                     rotate->roll);
             continue;
           }
         case COGL_MATRIX_OP_SCALE:

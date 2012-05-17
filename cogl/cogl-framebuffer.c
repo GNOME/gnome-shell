@@ -2652,6 +2652,32 @@ cogl_framebuffer_rotate (CoglFramebuffer *framebuffer,
 }
 
 void
+cogl_framebuffer_rotate_quaternion (CoglFramebuffer *framebuffer,
+                                    const CoglQuaternion *quaternion)
+{
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  _cogl_matrix_stack_rotate_quaternion (modelview_stack, quaternion);
+
+  if (framebuffer->context->current_draw_buffer == framebuffer)
+    framebuffer->context->current_draw_buffer_changes |=
+      COGL_FRAMEBUFFER_STATE_MODELVIEW;
+}
+
+void
+cogl_framebuffer_rotate_euler (CoglFramebuffer *framebuffer,
+                               const CoglEuler *euler)
+{
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  _cogl_matrix_stack_rotate_euler (modelview_stack, euler);
+
+  if (framebuffer->context->current_draw_buffer == framebuffer)
+    framebuffer->context->current_draw_buffer_changes |=
+      COGL_FRAMEBUFFER_STATE_MODELVIEW;
+}
+
+void
 cogl_framebuffer_transform (CoglFramebuffer *framebuffer,
                             const CoglMatrix *matrix)
 {

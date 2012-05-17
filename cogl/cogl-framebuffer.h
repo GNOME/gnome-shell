@@ -43,6 +43,10 @@
 #include <cogl/cogl-pipeline.h>
 #include <cogl/cogl-indices.h>
 #include <cogl/cogl-bitmap.h>
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
+#include <cogl/cogl-quaternion.h>
+#include <cogl/cogl-euler.h>
+#endif
 
 G_BEGIN_DECLS
 
@@ -346,6 +350,40 @@ cogl_framebuffer_rotate (CoglFramebuffer *framebuffer,
                          float x,
                          float y,
                          float z);
+
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
+
+/**
+ * cogl_framebuffer_rotate_quaternion:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @quaternion: A #CoglQuaternion
+ *
+ * Multiplies the current model-view matrix by one that rotates
+ * according to the rotation described by @quaternion.
+ *
+ * Since: 2.0
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_rotate_quaternion (CoglFramebuffer *framebuffer,
+                                    const CoglQuaternion *quaternion);
+
+/**
+ * cogl_framebuffer_rotate_euler:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @euler: A #CoglEuler
+ *
+ * Multiplies the current model-view matrix by one that rotates
+ * according to the rotation described by @euler.
+ *
+ * Since: 2.0
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_rotate_euler (CoglFramebuffer *framebuffer,
+                               const CoglEuler *euler);
+
+#endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 /**
  * cogl_framebuffer_transform:

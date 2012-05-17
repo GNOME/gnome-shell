@@ -1352,6 +1352,26 @@ cogl_matrix_rotate (CoglMatrix *matrix,
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
+void
+cogl_matrix_rotate_quaternion (CoglMatrix *matrix,
+                               const CoglQuaternion *quaternion)
+{
+  CoglMatrix rotation_transform;
+
+  cogl_matrix_init_from_quaternion (&rotation_transform, quaternion);
+  cogl_matrix_multiply (matrix, matrix, &rotation_transform);
+}
+
+void
+cogl_matrix_rotate_euler (CoglMatrix *matrix,
+                          const CoglEuler *euler)
+{
+  CoglMatrix rotation_transform;
+
+  cogl_matrix_init_from_euler (&rotation_transform, euler);
+  cogl_matrix_multiply (matrix, matrix, &rotation_transform);
+}
+
 /*
  * Apply a perspective projection matrix.
  *

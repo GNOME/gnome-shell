@@ -185,6 +185,36 @@ cogl_matrix_rotate (CoglMatrix *matrix,
 		    float y,
 		    float z);
 
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
+/**
+ * cogl_matrix_rotate_quaternion:
+ * @matrix: A 4x4 transformation matrix
+ * @quaternion: A quaternion describing a rotation
+ *
+ * Multiplies @matrix with a rotation transformation described by the
+ * given #CoglQuaternion.
+ *
+ * Since: 2.0
+ */
+void
+cogl_matrix_rotate_quaternion (CoglMatrix *matrix,
+                               const CoglQuaternion *quaternion);
+
+/**
+ * cogl_matrix_rotate_euler:
+ * @matrix: A 4x4 transformation matrix
+ * @euler: A euler describing a rotation
+ *
+ * Multiplies @matrix with a rotation transformation described by the
+ * given #CoglEuler.
+ *
+ * Since: 2.0
+ */
+void
+cogl_matrix_rotate_euler (CoglMatrix *matrix,
+                          const CoglEuler *euler);
+#endif
+
 /**
  * cogl_matrix_translate:
  * @matrix: A 4x4 transformation matrix

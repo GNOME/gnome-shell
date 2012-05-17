@@ -440,6 +440,8 @@ cogl_framebuffer_identity_matrix
 cogl_framebuffer_scale
 cogl_framebuffer_translate
 cogl_framebuffer_rotate
+cogl_framebuffer_rotate_euler
+cogl_framebuffer_rotate_quaternion
 cogl_framebuffer_transform
 cogl_framebuffer_get_modelview_matrix
 cogl_framebuffer_set_modelview_matrix
@@ -557,6 +559,8 @@ cogl_matrix_perspective
 cogl_matrix_look_at
 cogl_matrix_multiply
 cogl_matrix_rotate
+cogl_matrix_rotate_quaternion
+cogl_matrix_rotate_euler
 cogl_matrix_translate
 cogl_matrix_scale
 cogl_matrix_transpose
