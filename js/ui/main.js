@@ -76,7 +76,7 @@ let _overridesSettings = null;
 
 let background = null;
 
-function _createUserSession() {
+function createUserSession() {
     // Load the calendar server. Note that we are careful about
     // not loading any events until the user presses the clock
     global.launch_calendar_server();
@@ -89,7 +89,7 @@ function _createUserSession() {
     _initRecorder();
 }
 
-function _createGDMSession() {
+function createGDMSession() {
     // We do this this here instead of at the top to prevent GDM
     // related code from getting loaded in normal user sessions
     const LoginDialog = imports.gdm.loginDialog;
@@ -204,10 +204,7 @@ function start() {
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
 
-    if (sessionMode.sessionType == Shell.SessionType.USER)
-        _createUserSession();
-    else if (sessionMode.sessionType == Shell.SessionType.GDM)
-        _createGDMSession();
+    sessionMode.createSession();
 
     panel.startStatusArea();
 

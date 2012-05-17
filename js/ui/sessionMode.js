@@ -3,6 +3,7 @@
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 
+const Main = imports.ui.main;
 const Params = imports.misc.params;
 
 const DEFAULT_MODE = 'user';
@@ -16,6 +17,7 @@ const _modes = {
              allowKeybindingsWhenModal: true,
              hasRunDialog: false,
              hasWorkspaces: false,
+             createSession: Main.createGDMSession,
              sessionType: Shell.SessionType.GDM },
 
     'user': { hasOverview: true,
@@ -26,6 +28,7 @@ const _modes = {
               allowKeybindingsWhenModal: false,
               hasRunDialog: true,
               hasWorkspaces: true,
+              createSession: Main.createUserSession,
               sessionType: Shell.SessionType.USER }
 };
 
@@ -41,6 +44,15 @@ const SessionMode = new Lang.Class({
         let params = _modes[global.session_mode];
 
         params = Params.parse(params, _modes[DEFAULT_MODE]);
+
+        this._createSession = params.createSession;
+        delete params.createSession;
+
         Lang.copyProperties(params, this);
+    },
+
+    createSession: function() {
+        if (this._createSession)
+            this._createSession();
     }
 });
