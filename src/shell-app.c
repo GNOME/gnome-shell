@@ -42,6 +42,7 @@ typedef struct {
   /* See GApplication documentation */
   GDBusMenuModel   *remote_menu;
   GActionMuxer     *muxer;
+  char * unique_bus_name;
 } ShellAppRunningState;
 
 /**
@@ -95,7 +96,6 @@ enum {
 static guint shell_app_signals[LAST_SIGNAL] = { 0 };
 
 static void create_running_state (ShellApp *app);
-static void setup_running_state (ShellApp *app, MetaWindow *window);
 static void unref_running_state (ShellAppRunningState *state);
 
 G_DEFINE_TYPE (ShellApp, shell_app, G_TYPE_OBJECT)
@@ -975,7 +975,7 @@ _shell_app_add_window (ShellApp        *app,
   g_signal_connect (window, "unmanaged", G_CALLBACK(shell_app_on_unmanaged), app);
   g_signal_connect (window, "notify::user-time", G_CALLBACK(shell_app_on_user_time_changed), app);
 
-  setup_running_state (app, window);
+  shell_app_update_app_menu (app, window);
 
   if (app->state != SHELL_APP_STATE_STARTING)
     shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
@@ -1221,12 +1221,14 @@ create_running_state (ShellApp *app)
   app->running_state->muxer = g_action_muxer_new ();
 }
 
-static void
-setup_running_state (ShellApp   *app,
-                     MetaWindow *window)
+void
+shell_app_update_app_menu (ShellApp   *app,
+                           MetaWindow *window)
 {
-  /* We assume that 'gtk-unique-bus-name', gtk-application-object-path'
-   * and 'gtk-app-menu-object-path' are the same for all windows which
+  const gchar *unique_bus_name;
+
+  /* We assume that 'gtk-application-object-path' and
+   * 'gtk-app-menu-object-path' are the same for all windows which
    * have it set.
    *
    * It could be possible, however, that the first window we see
@@ -1235,23 +1237,27 @@ setup_running_state (ShellApp   *app,
    * all the rest (until the app is stopped and restarted).
    */
 
-  if (app->running_state->remote_menu == NULL)
+  unique_bus_name = meta_window_get_gtk_unique_bus_name (window);
+
+  if (app->running_state->remote_menu == NULL ||
+      g_strcmp0 (app->running_state->unique_bus_name, unique_bus_name) != 0)
     {
       const gchar *application_object_path;
       const gchar *app_menu_object_path;
-      const gchar *unique_bus_name;
       GDBusConnection *session;
       GDBusActionGroup *actions;
 
       application_object_path = meta_window_get_gtk_application_object_path (window);
       app_menu_object_path = meta_window_get_gtk_app_menu_object_path (window);
-      unique_bus_name = meta_window_get_gtk_unique_bus_name (window);
 
       if (application_object_path == NULL || app_menu_object_path == NULL || unique_bus_name == NULL)
         return;
 
       session = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
       g_assert (session != NULL);
+      g_clear_pointer (&app->running_state->unique_bus_name, g_free);
+      app->running_state->unique_bus_name = g_strdup (unique_bus_name);
+      g_clear_object (&app->running_state->remote_menu);
       app->running_state->remote_menu = g_dbus_menu_model_get (session, unique_bus_name, app_menu_object_path);
       actions = g_dbus_action_group_get (session, unique_bus_name, application_object_path);
       g_action_muxer_insert (app->running_state->muxer, "app", G_ACTION_GROUP (actions));
