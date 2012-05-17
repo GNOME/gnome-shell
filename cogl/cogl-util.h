@@ -175,7 +175,18 @@ _cogl_util_popcountl (unsigned long num)
 #define _COGL_RETURN_IF_FAIL(EXPR) g_return_if_fail(EXPR)
 #define _COGL_RETURN_VAL_IF_FAIL(EXPR, VAL) g_return_val_if_fail(EXPR, VAL)
 #else
-#define _COGL_RETURN_IF_FAIL(EXPR) do {	                            \
+#if COGL_ENABLE_DEBUG
+#define _COGL_RETURN_START do {
+#define _COGL_RETURN_END } while (0)
+#else /* COGL_ENABLE_DEBUG */
+/* If debugging is disabled then we don't actually want to do the
+ * check but we still want the code for the expression to be generated
+ * so that it won't give loads of warnings about unused variables.
+ * Therefore we just surround the block with if(0) */
+#define _COGL_RETURN_START do { if (0) {
+#define _COGL_RETURN_END } } while (0)
+#endif /* COGL_ENABLE_DEBUG */
+#define _COGL_RETURN_IF_FAIL(EXPR) _COGL_RETURN_START {             \
    if (!(EXPR))						            \
      {							            \
        fprintf (stderr, "file %s: line %d: assertion `%s' failed",  \
@@ -184,8 +195,8 @@ _cogl_util_popcountl (unsigned long num)
                 #EXPR);						    \
        return;						            \
      };                                                             \
-  } while(0)
-#define _COGL_RETURN_VAL_IF_FAIL(EXPR, VAL) do {	                    \
+  } _COGL_RETURN_END
+#define _COGL_RETURN_VAL_IF_FAIL(EXPR, VAL) _COGL_RETURN_START {    \
    if (!(EXPR))						            \
      {							            \
        fprintf (stderr, "file %s: line %d: assertion `%s' failed",  \
@@ -194,7 +205,7 @@ _cogl_util_popcountl (unsigned long num)
                 #EXPR);						    \
        return (VAL);						    \
      };                                                             \
-  } while(0)
+  } _COGL_RETURN_END
 #endif /* COGL_HAS_GLIB_SUPPORT */
 
 /* Match a CoglPixelFormat according to channel masks, color depth,

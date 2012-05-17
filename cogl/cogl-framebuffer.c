@@ -119,7 +119,9 @@ typedef struct _CoglFramebufferStackEntry
 
 extern CoglObjectClass _cogl_onscreen_class;
 
+#ifdef COGL_ENABLE_DEBUG
 static CoglUserDataKey wire_pipeline_key;
+#endif
 
 static void _cogl_offscreen_free (CoglOffscreen *offscreen);
 
