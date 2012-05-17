@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Lang = imports.lang;
-const Shell = imports.gi.Shell;
 
 const Config = imports.misc.config;
 const Main = imports.ui.main;
@@ -53,8 +52,8 @@ const _modes = {
                      'keyboard': imports.ui.status.keyboard.XKBIndicator,
                      'powerMenu': imports.gdm.powerMenu.PowerMenuButton
                  }
-             },
-             sessionType: Shell.SessionType.GDM },
+             }
+           },
 
     'user': { hasOverview: true,
               hasAppMenu: true,
@@ -72,8 +71,8 @@ const _modes = {
                       'network', 'battery', 'userMenu'
                   ],
                   implementation: STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION
-              },
-              sessionType: Shell.SessionType.USER }
+              }
+            }
 };
 
 function modeExists(mode) {
