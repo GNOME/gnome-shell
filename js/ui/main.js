@@ -133,8 +133,6 @@ function _initRecorder() {
 
 function _initUserSession() {
     _initRecorder();
-
-    global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT, false, -1, 1);
 }
 
 function start() {
@@ -221,6 +219,10 @@ function start() {
 
     if (sessionMode.sessionType == Shell.SessionType.USER)
         _initUserSession();
+
+    if (sessionMode.hasWorkspaces)
+        global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
+                                                false, -1, 1);
 
     if (sessionMode.allowExtensions) {
         ExtensionSystem.init();
@@ -590,24 +592,32 @@ function _globalKeyPressHandler(actor, event) {
         return true;
     }
 
-    // None of the other bindings are relevant outside of the user's session
-    if (sessionMode.sessionType != Shell.SessionType.USER)
-        return false;
-
     switch (action) {
         // left/right would effectively act as synonyms for up/down if we enabled them;
         // but that could be considered confusing; we also disable them in the main view.
         //
         // case Meta.KeyBindingAction.WORKSPACE_LEFT:
+        //  if (!sessionMode.hasWorkspaces)
+        //      return false;
+        //
         //     wm.actionMoveWorkspaceLeft();
         //     return true;
         // case Meta.KeyBindingAction.WORKSPACE_RIGHT:
+        //  if (!sessionMode.hasWorkspaces)
+        //      return false;
+        //
         //     wm.actionMoveWorkspaceRight();
         //     return true;
         case Meta.KeyBindingAction.WORKSPACE_UP:
+            if (!sessionMode.hasWorkspaces)
+                return false;
+
             wm.actionMoveWorkspaceUp();
             return true;
         case Meta.KeyBindingAction.WORKSPACE_DOWN:
+            if (!sessionMode.hasWorkspaces)
+                return false;
+
             wm.actionMoveWorkspaceDown();
             return true;
         case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
