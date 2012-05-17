@@ -276,9 +276,11 @@ static void
 drop_action_unregister (ClutterDropAction *self)
 {
   ClutterDropActionPrivate *priv = self->priv;
-  DropTarget *data;
+  DropTarget *data = NULL;
 
-  data = g_object_get_data (G_OBJECT (priv->stage), "__clutter_drop_targets");
+  if (priv->stage != NULL)
+    data = g_object_get_data (G_OBJECT (priv->stage), "__clutter_drop_targets");
+
   if (data == NULL)
     return;
 
