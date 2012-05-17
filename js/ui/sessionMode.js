@@ -10,10 +10,12 @@ const DEFAULT_MODE = 'user';
 const _modes = {
     'gdm': { hasOverview: false,
              hasAppMenu: false,
+             showCalendarEvents: false,
              sessionType: Shell.SessionType.GDM },
 
     'user': { hasOverview: true,
               hasAppMenu: true,
+              showCalendarEvents: true,
               sessionType: Shell.SessionType.USER }
 };
 

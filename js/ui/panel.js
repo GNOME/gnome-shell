@@ -978,10 +978,7 @@ const Panel = new Lang.Class({
         }
 
         /* center */
-        if (Main.sessionMode.sessionType == Shell.SessionType.USER)
-            this._dateMenu = new DateMenu.DateMenuButton({ showEvents: true });
-        else
-            this._dateMenu = new DateMenu.DateMenuButton({ showEvents: false });
+        this._dateMenu = new DateMenu.DateMenuButton();
         this._centerBox.add(this._dateMenu.actor, { y_fill: true });
         this._menus.addMenu(this._dateMenu.menu);
 

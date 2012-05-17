@@ -45,9 +45,7 @@ const DateMenuButton = new Lang.Class({
     Name: 'DateMenuButton',
     Extends: PanelMenu.Button,
 
-    _init: function(params) {
-        params = Params.parse(params, { showEvents: true });
-
+    _init: function() {
         let item;
         let hbox;
         let vbox;
@@ -79,7 +77,7 @@ const DateMenuButton = new Lang.Class({
         this._date.style_class = 'datemenu-date-label';
         vbox.add(this._date);
 
-        if (params.showEvents) {
+        if (Main.sessionMode.showCalendarEvents) {
             this._eventSource = new Calendar.DBusEventSource();
             this._eventList = new Calendar.EventsList(this._eventSource);
         } else {
@@ -110,7 +108,7 @@ const DateMenuButton = new Lang.Class({
             item.actor.reparent(vbox);
         }
 
-        if (params.showEvents) {
+        if (Main.sessionMode.showCalendarEvents) {
             // Add vertical separator
 
             item = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
