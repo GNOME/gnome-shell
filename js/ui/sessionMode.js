@@ -3,8 +3,30 @@
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 
+const Config = imports.misc.config;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
+
+
+const STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION = {
+    'a11y': imports.ui.status.accessibility.ATIndicator,
+    'volume': imports.ui.status.volume.Indicator,
+    'battery': imports.ui.status.power.Indicator,
+    'keyboard': imports.ui.status.keyboard.XKBIndicator,
+    'userMenu': imports.ui.userMenu.UserMenuButton
+};
+
+if (Config.HAVE_BLUETOOTH)
+    STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION['bluetooth'] =
+        imports.ui.status.bluetooth.Indicator;
+
+try {
+    STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION['network'] =
+        imports.ui.status.network.NMApplet;
+} catch(e) {
+    log('NMApplet is not supported. It is possible that your NetworkManager version is too old');
+}
+
 
 const DEFAULT_MODE = 'user';
 
@@ -19,6 +41,19 @@ const _modes = {
              hasWorkspaces: false,
              createSession: Main.createGDMSession,
              extraStylesheet: global.datadir + '/theme/gdm.css',
+             statusArea: {
+                 order: [
+                     'a11y', 'display', 'keyboard',
+                     'volume', 'battery', 'powerMenu'
+                 ],
+                 implementation: {
+                     'a11y': imports.ui.status.accessibility.ATIndicator,
+                     'volume': imports.ui.status.volume.Indicator,
+                     'battery': imports.ui.status.power.Indicator,
+                     'keyboard': imports.ui.status.keyboard.XKBIndicator,
+                     'powerMenu': imports.gdm.powerMenu.PowerMenuButton
+                 }
+             },
              sessionType: Shell.SessionType.GDM },
 
     'user': { hasOverview: true,
@@ -31,6 +66,13 @@ const _modes = {
               hasWorkspaces: true,
               createSession: Main.createUserSession,
               extraStylesheet: null,
+              statusArea: {
+                  order: [
+                      'a11y', 'keyboard', 'volume', 'bluetooth',
+                      'network', 'battery', 'userMenu'
+                  ],
+                  implementation: STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION
+              },
               sessionType: Shell.SessionType.USER }
 };
 

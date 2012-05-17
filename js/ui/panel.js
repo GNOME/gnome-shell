@@ -14,7 +14,6 @@ const St = imports.gi.St;
 const Signals = imports.signals;
 const Atk = imports.gi.Atk;
 
-const Config = imports.misc.config;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const DND = imports.ui.dnd;
 const Layout = imports.ui.layout;
@@ -31,33 +30,6 @@ const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
 
 const ANIMATED_ICON_UPDATE_TIMEOUT = 100;
 const SPINNER_ANIMATION_TIME = 0.2;
-
-const STANDARD_STATUS_AREA_ORDER = ['a11y', 'keyboard', 'volume', 'bluetooth', 'network', 'battery', 'userMenu'];
-const STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION = {
-    'a11y': imports.ui.status.accessibility.ATIndicator,
-    'volume': imports.ui.status.volume.Indicator,
-    'battery': imports.ui.status.power.Indicator,
-    'keyboard': imports.ui.status.keyboard.XKBIndicator,
-    'userMenu': imports.ui.userMenu.UserMenuButton
-};
-
-if (Config.HAVE_BLUETOOTH)
-    STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION['bluetooth'] = imports.ui.status.bluetooth.Indicator;
-
-try {
-    STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION['network'] = imports.ui.status.network.NMApplet;
-} catch(e) {
-    log('NMApplet is not supported. It is possible that your NetworkManager version is too old');
-}
-
-const GDM_STATUS_AREA_ORDER = ['a11y', 'display', 'keyboard', 'volume', 'battery', 'powerMenu'];
-const GDM_STATUS_AREA_SHELL_IMPLEMENTATION = {
-    'a11y': imports.ui.status.accessibility.ATIndicator,
-    'volume': imports.ui.status.volume.Indicator,
-    'battery': imports.ui.status.power.Indicator,
-    'keyboard': imports.ui.status.keyboard.XKBIndicator,
-    'powerMenu': imports.gdm.powerMenu.PowerMenuButton
-};
 
 // To make sure the panel corners blend nicely with the panel,
 // we draw background and borders the same way, e.g. drawing
@@ -983,14 +955,6 @@ const Panel = new Lang.Class({
         this._menus.addMenu(this._dateMenu.menu);
 
         /* right */
-        if (Main.sessionMode.sessionType == Shell.SessionType.GDM) {
-            this._status_area_order = GDM_STATUS_AREA_ORDER;
-            this._status_area_shell_implementation = GDM_STATUS_AREA_SHELL_IMPLEMENTATION;
-        } else {
-            this._status_area_order = STANDARD_STATUS_AREA_ORDER;
-            this._status_area_shell_implementation = STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION;
-        }
-
         Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
         Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
 
@@ -1122,9 +1086,9 @@ const Panel = new Lang.Class({
     },
 
     startStatusArea: function() {
-        for (let i = 0; i < this._status_area_order.length; i++) {
-            let role = this._status_area_order[i];
-            let constructor = this._status_area_shell_implementation[role];
+        for (let i = 0; i < Main.sessionMode.statusArea.order.length; i++) {
+            let role = Main.sessionMode.statusArea.order[i];
+            let constructor = Main.sessionMode.statusArea.implementation[role];
             if (!constructor) {
                 // This icon is not implemented (this is a bug)
                 continue;
@@ -1174,7 +1138,7 @@ const Panel = new Lang.Class({
     },
 
     _onTrayIconAdded: function(o, icon, role) {
-        if (this._status_area_shell_implementation[role]) {
+        if (Main.sessionMode.statusArea.implementation[role]) {
             // This icon is legacy, and replaced by a Shell version
             // Hide it
             return;
@@ -1185,7 +1149,7 @@ const Panel = new Lang.Class({
         let box = buttonBox.actor;
         box.add_actor(icon);
 
-        this._insertStatusItem(box, this._status_area_order.indexOf(role));
+        this._insertStatusItem(box, Main.sessionMode.statusArea.order.indexOf(role));
     },
 
     _onTrayIconRemoved: function(o, icon) {
