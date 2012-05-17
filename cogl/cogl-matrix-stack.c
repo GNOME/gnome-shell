@@ -69,6 +69,34 @@ _cogl_matrix_stack_push_entry (CoglMatrixStack *stack,
   return entry;
 }
 
+static void *
+_cogl_matrix_stack_push_replacement_entry (CoglMatrixStack *stack,
+                                           size_t size,
+                                           CoglMatrixOp operation)
+{
+  CoglMatrixEntry *old_top = stack->last_entry;
+  CoglMatrixEntry *new_top;
+
+  /* This would only be called for operations that completely replace
+   * the matrix. In that case we don't need to keep a reference to
+   * anything up to the last save entry. This optimisation could be
+   * important for applications that aren't using the stack but
+   * instead just perform their own matrix manipulations and load a
+   * new stack every frame. If this optimisation isn't done then the
+   * stack would just grow endlessly. See the comments
+   * _cogl_matrix_stack_pop for a description of how popping works. */
+  for (new_top = old_top;
+       new_top->op != COGL_MATRIX_OP_SAVE && new_top->parent;
+       new_top = new_top->parent)
+    ;
+
+  _cogl_matrix_entry_ref (new_top);
+  _cogl_matrix_entry_unref (old_top);
+  stack->last_entry = new_top;
+
+  return _cogl_matrix_stack_push_entry (stack, size, operation);
+}
+
 void
 _cogl_matrix_entry_identity_init (CoglMatrixEntry *entry)
 {
@@ -81,9 +109,9 @@ _cogl_matrix_entry_identity_init (CoglMatrixEntry *entry)
 void
 _cogl_matrix_stack_load_identity (CoglMatrixStack *stack)
 {
-  _cogl_matrix_stack_push_entry (stack,
-                                 sizeof (CoglMatrixEntry),
-                                 COGL_MATRIX_OP_LOAD_IDENTITY);
+  _cogl_matrix_stack_push_replacement_entry (stack,
+                                             sizeof (CoglMatrixEntry),
+                                             COGL_MATRIX_OP_LOAD_IDENTITY);
 }
 
 void
@@ -192,9 +220,10 @@ _cogl_matrix_stack_set (CoglMatrixStack *stack,
 {
   CoglMatrixEntryLoad *entry;
 
-  entry = _cogl_matrix_stack_push_entry (stack,
-                                         sizeof (CoglMatrixEntryLoad),
-                                         COGL_MATRIX_OP_LOAD);
+  entry =
+    _cogl_matrix_stack_push_replacement_entry (stack,
+                                               sizeof (CoglMatrixEntryLoad),
+                                               COGL_MATRIX_OP_LOAD);
 
   entry->matrix =
     _cogl_magazine_chunk_alloc (_cogl_matrix_stack_matrices_magazine);
@@ -213,9 +242,10 @@ _cogl_matrix_stack_frustum (CoglMatrixStack *stack,
 {
   CoglMatrixEntryLoad *entry;
 
-  entry = _cogl_matrix_stack_push_entry (stack,
-                                         sizeof (CoglMatrixEntryLoad),
-                                         COGL_MATRIX_OP_LOAD);
+  entry =
+    _cogl_matrix_stack_push_replacement_entry (stack,
+                                               sizeof (CoglMatrixEntryLoad),
+                                               COGL_MATRIX_OP_LOAD);
 
   entry->matrix =
     _cogl_magazine_chunk_alloc (_cogl_matrix_stack_matrices_magazine);
@@ -235,9 +265,10 @@ _cogl_matrix_stack_perspective (CoglMatrixStack *stack,
 {
   CoglMatrixEntryLoad *entry;
 
-  entry = _cogl_matrix_stack_push_entry (stack,
-                                         sizeof (CoglMatrixEntryLoad),
-                                         COGL_MATRIX_OP_LOAD);
+  entry =
+    _cogl_matrix_stack_push_replacement_entry (stack,
+                                               sizeof (CoglMatrixEntryLoad),
+                                               COGL_MATRIX_OP_LOAD);
 
   entry->matrix =
     _cogl_magazine_chunk_alloc (_cogl_matrix_stack_matrices_magazine);
@@ -258,9 +289,10 @@ _cogl_matrix_stack_orthographic (CoglMatrixStack *stack,
 {
   CoglMatrixEntryLoad *entry;
 
-  entry = _cogl_matrix_stack_push_entry (stack,
-                                         sizeof (CoglMatrixEntryLoad),
-                                         COGL_MATRIX_OP_LOAD);
+  entry =
+    _cogl_matrix_stack_push_replacement_entry (stack,
+                                               sizeof (CoglMatrixEntryLoad),
+                                               COGL_MATRIX_OP_LOAD);
 
   entry->matrix =
     _cogl_magazine_chunk_alloc (_cogl_matrix_stack_matrices_magazine);
@@ -605,7 +637,9 @@ _cogl_matrix_stack_new (void)
 
   stack->last_entry = NULL;
 
-  _cogl_matrix_stack_load_identity (stack);
+  _cogl_matrix_stack_push_entry (stack,
+                                 sizeof (CoglMatrixEntry),
+                                 COGL_MATRIX_OP_LOAD_IDENTITY);
 
   return _cogl_matrix_stack_object_new (stack);
 }
