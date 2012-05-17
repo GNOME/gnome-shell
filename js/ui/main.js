@@ -563,6 +563,11 @@ function _globalKeyPressHandler(actor, event) {
     if (event.type() != Clutter.EventType.KEY_PRESS)
         return false;
 
+    if (!sessionMode.allowKeybindingsWhenModal) {
+        if (modalCount > (overview.visible ? 1 : 0))
+            return false;
+    }
+
     let symbol = event.get_key_symbol();
     let keyCode = event.get_key_code();
     let ignoredModifiers = global.display.get_ignored_modifier_mask();
@@ -570,11 +575,6 @@ function _globalKeyPressHandler(actor, event) {
 
     // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
     let action = global.display.get_keybinding_action(keyCode, modifierState);
-
-    // Other bindings are only available to the user session when the overview is up and
-    // no modal dialog is present.
-    if (sessionMode.sessionType == Shell.SessionType.USER && (!overview.visible || modalCount > 1))
-        return false;
 
     // This isn't a Meta.KeyBindingAction yet
     if (symbol == Clutter.Super_L || symbol == Clutter.Super_R) {

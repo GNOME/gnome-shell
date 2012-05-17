@@ -13,6 +13,7 @@ const _modes = {
              showCalendarEvents: false,
              allowSettings: false,
              allowExtensions: false,
+             allowKeybindingsWhenModal: true,
              sessionType: Shell.SessionType.GDM },
 
     'user': { hasOverview: true,
@@ -20,6 +21,7 @@ const _modes = {
               showCalendarEvents: true,
               allowSettings: true,
               allowExtensions: true,
+              allowKeybindingsWhenModal: false,
               sessionType: Shell.SessionType.USER }
 };
 
