@@ -12,12 +12,14 @@ const _modes = {
              hasAppMenu: false,
              showCalendarEvents: false,
              allowSettings: false,
+             allowExtensions: false,
              sessionType: Shell.SessionType.GDM },
 
     'user': { hasOverview: true,
               hasAppMenu: true,
               showCalendarEvents: true,
               allowSettings: true,
+              allowExtensions: true,
               sessionType: Shell.SessionType.USER }
 };
 

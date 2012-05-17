@@ -136,9 +136,6 @@ function _initUserSession() {
 
     global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT, false, -1, 1);
 
-    ExtensionSystem.init();
-    ExtensionSystem.loadExtensions();
-
     Meta.keybindings_set_custom_handler('panel-run-dialog', function() {
        getRunDialog().open();
     });
@@ -228,6 +225,11 @@ function start() {
 
     if (sessionMode.sessionType == Shell.SessionType.USER)
         _initUserSession();
+
+    if (sessionMode.allowExtensions) {
+        ExtensionSystem.init();
+        ExtensionSystem.loadExtensions();
+    }
 
     if (sessionMode.hasOverview) {
         Meta.keybindings_set_custom_handler('panel-main-menu', function () {
