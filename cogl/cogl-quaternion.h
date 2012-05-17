@@ -200,7 +200,7 @@ cogl_quaternion_init_identity (CoglQuaternion *quaternion);
 /**
  * cogl_quaternion_init_from_array:
  * @quaternion: A #CoglQuaternion
- * @array: An array of 4 floats (x,y,z),w
+ * @array: An array of 4 floats w,(x,y,z)
  *
  * Initializes a [w (x, y,z)] quaternion directly from an array of 4
  * floats: [w,x,y,z].
