@@ -487,12 +487,10 @@ cogl_matrix_get_array (const CoglMatrix *matrix);
  * @quaternion: A #CoglQuaternion
  *
  * Initializes @matrix from a #CoglQuaternion rotation.
- *
- * Return value: a pointer to the float array
  */
 void
 cogl_matrix_init_from_quaternion (CoglMatrix *matrix,
-                                  CoglQuaternion *quaternion);
+                                  const CoglQuaternion *quaternion);
 #endif
 
 /**

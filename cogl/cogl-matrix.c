@@ -1711,7 +1711,7 @@ _cogl_matrix_init_from_matrix_without_inverse (CoglMatrix *matrix,
 
 static void
 _cogl_matrix_init_from_quaternion (CoglMatrix *matrix,
-                                   CoglQuaternion *quaternion)
+                                   const CoglQuaternion *quaternion)
 {
   float qnorm = _COGL_QUATERNION_NORM (quaternion);
   float s = (qnorm > 0.0f) ? (2.0f / qnorm) : 0.0f;
@@ -1746,7 +1746,7 @@ _cogl_matrix_init_from_quaternion (CoglMatrix *matrix,
 
 void
 cogl_matrix_init_from_quaternion (CoglMatrix *matrix,
-                                  CoglQuaternion *quaternion)
+                                  const CoglQuaternion *quaternion)
 {
   _cogl_matrix_init_from_quaternion (matrix, quaternion);
 }
