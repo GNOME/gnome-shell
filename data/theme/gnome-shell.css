@@ -328,6 +328,11 @@ StScrollBar StButton#vhandle:hover
     background-gradient-end: rgba(255, 255, 255, 0.2);
 }
 
+.notification-icon-button:insensitive,
+.notification-button:insensitive {
+    color: #9f9f9f;
+}
+
 /* Panel */
 
 #panel {
