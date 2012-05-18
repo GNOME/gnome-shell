@@ -187,6 +187,9 @@ clutter_scroll_actor_set_scroll_to_internal (ClutterScrollActor *self,
   ClutterScrollActorPrivate *priv = self->priv;
   ClutterActor *actor = CLUTTER_ACTOR (self);
 
+  if (clutter_point_equals (&priv->scroll_to, point))
+    return;
+
   if (point == NULL)
     clutter_point_init (&priv->scroll_to, 0.f, 0.f);
   else
@@ -423,9 +426,6 @@ clutter_scroll_actor_scroll_to_point (ClutterScrollActor *actor,
   g_return_if_fail (point != NULL);
 
   priv = actor->priv;
-
-  if (clutter_point_equals (&priv->scroll_to, point))
-    return;
 
   info = _clutter_actor_get_animation_info (CLUTTER_ACTOR (actor));
 
