@@ -397,13 +397,6 @@ clutter_scroll_actor_get_scroll_mode (ClutterScrollActor *actor)
   return actor->priv->scroll_mode;
 }
 
-static void
-on_transition_completed (ClutterTimeline *timeline,
-                         ClutterScrollActor *actor)
-{
-  actor->priv->transition = NULL;
-}
-
 /**
  * clutter_scroll_actor_scroll_to_point:
  * @actor: a #ClutterScrollActor
@@ -466,9 +459,7 @@ clutter_scroll_actor_scroll_to_point (ClutterScrollActor *actor,
       clutter_timeline_set_delay (CLUTTER_TIMELINE (priv->transition),
                                   info->cur_state->easing_delay);
       /* we need this to clear the priv->transition pointer */
-      g_signal_connect (priv->transition, "completed",
-                        G_CALLBACK (on_transition_completed),
-                        actor);
+      g_object_add_weak_pointer (G_OBJECT (priv->transition), (gpointer *) &priv->transition);
 
       clutter_actor_add_transition (CLUTTER_ACTOR (actor),
                                     "scroll-to",
