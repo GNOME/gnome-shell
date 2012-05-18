@@ -93,7 +93,8 @@ gnome_shell_cflags =				\
 	-DGNOME_SHELL_LIBEXECDIR=\"$(libexecdir)\"	\
 	-DGNOME_SHELL_DATADIR=\"$(pkgdatadir)\"	\
 	-DGNOME_SHELL_PKGLIBDIR=\"$(pkglibdir)\" \
-	-DJSDIR=\"$(pkgdatadir)/js\"
+	-DJSDIR=\"$(pkgdatadir)/js\"		\
+	-DMUTTER_TYPELIB_DIR=\"$(MUTTER_TYPELIB_DIR)\"
 
 privlibdir = $(pkglibdir)
 privlib_LTLIBRARIES = libgnome-shell.la libgnome-shell-js.la

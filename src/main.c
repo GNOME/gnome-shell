@@ -28,6 +28,8 @@
 #include "shell-perf-log.h"
 #include "st.h"
 
+#include <jsapi.h>
+
 extern GType gnome_shell_plugin_get_type (void);
 
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
@@ -176,6 +178,18 @@ shell_prefs_init (void)
 }
 
 static void
+shell_introspection_init (void)
+{
+
+  g_irepository_prepend_search_path (MUTTER_TYPELIB_DIR);
+  g_irepository_prepend_search_path (GNOME_SHELL_PKGLIBDIR);
+#if HAVE_BLUETOOTH
+  g_irepository_prepend_search_path (BLUETOOTH_DIR);
+#endif
+
+}
+
+static void
 malloc_statistics_callback (ShellPerfLog *perf_log,
                             gpointer      data)
 {
@@ -240,6 +254,48 @@ default_log_handler (const char     *log_domain,
     g_log_default_handler (log_domain, log_level, message, data);
 }
 
+static void
+shut_up (const char     *domain,
+         GLogLevelFlags  level,
+         const char     *message,
+         gpointer        user_data)
+{
+}
+
+static gboolean
+list_modes (const char  *option_name,
+            const char  *value,
+            gpointer     data,
+            GError     **error)
+{
+  ShellGlobal *global;
+  GjsContext *context;
+  const char *script;
+  int status;
+
+  /* Many of our imports require global to be set, so rather than
+   * tayloring our imports carefully here to avoid that dependency,
+   * we just set it.
+   * ShellGlobal has some GTK+ dependencies, so initialize GTK+; we
+   * don't really care if it fails though (e.g. when running from a tty),
+   * so we mute all warnings */
+  g_log_set_default_handler (shut_up, NULL);
+  gtk_init_check (NULL, NULL);
+
+  _shell_global_init (NULL);
+  global = shell_global_get ();
+  context = _shell_global_get_gjs_context (global);
+
+  shell_introspection_init ();
+
+  script = "imports.ui.environment.init();"
+           "imports.ui.sessionMode.listModes();";
+  if (!gjs_context_eval (context, script, -1, "<main>", &status, NULL))
+      g_message ("Retrieving list of available modes failed.");
+
+  exit (status);
+}
+
 static gboolean
 print_version (const gchar    *option_name,
                const gchar    *value,
@@ -268,6 +324,12 @@ GOptionEntry gnome_shell_options[] = {
     &session_mode,
     N_("Use a specific mode, e.g. \"gdm\" for login screen"),
     "MODE"
+  },
+  {
+    "list-modes", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK,
+    list_modes,
+    N_("List possible modes"),
+    NULL
   },
   { NULL }
 };
@@ -315,11 +377,7 @@ main (int argc, char **argv)
   shell_a11y_init ();
   shell_perf_log_init ();
   shell_prefs_init ();
-
-  g_irepository_prepend_search_path (GNOME_SHELL_PKGLIBDIR);
-#if HAVE_BLUETOOTH
-  g_irepository_prepend_search_path (BLUETOOTH_DIR);
-#endif
+  shell_introspection_init ();
 
   /* Turn on telepathy-glib debugging but filter it out in
    * default_log_handler. This handler also exposes all the logs over D-Bus

@@ -80,6 +80,12 @@ function modeExists(mode) {
     return modes.indexOf(mode) != -1;
 }
 
+function listModes() {
+    let modes = Object.getOwnPropertyNames(_modes);
+    for (let i = 0; i < modes.length; i++)
+        print(modes[i]);
+}
+
 const SessionMode = new Lang.Class({
     Name: 'SessionMode',
 
