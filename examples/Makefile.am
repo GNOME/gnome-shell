@@ -24,7 +24,7 @@ cogl_info_SOURCES = cogl-info.c
 cogl_info_LDADD = $(common_ldadd)
 
 if USE_GLIB
-programs += cogl-hello cogl-msaa  cogl-gles2-context cogl-gles2-gears
+programs += cogl-hello cogl-msaa cogl-gles2-context
 examples_datadir = $(pkgdatadir)/examples-data
 examples_data_DATA =
 
@@ -66,9 +66,12 @@ endif
 cogl_gles2_context_SOURCES = cogl-gles2-context.c
 cogl_gles2_context_LDADD = $(common_ldadd)
 
+if BUILD_COGL_GLES2
+programs += cogl-gles2-gears
 cogl_gles2_gears_SOURCES = cogl-gles2-gears.c
 cogl_gles2_gears_CFLAGS = -I$(top_srcdir)/cogl-gles2 $(AM_CFLAGS)
 cogl_gles2_gears_LDADD = $(common_ldadd) $(top_builddir)/cogl-gles2/libcogl-gles2.la
+endif
 
 endif #USE_GLIB
 
