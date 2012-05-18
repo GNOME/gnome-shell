@@ -261,8 +261,9 @@ create_gles2_framebuffer (const CoglGLES2Vtable *gles2,
                                  GL_TEXTURE_2D, texture_handle, 0);
 
   status = gles2->glCheckFramebufferStatus (GL_FRAMEBUFFER);
-  printf ("status for gles2 framebuffer = 0x%x %s\n",
-          status, status == GL_FRAMEBUFFER_COMPLETE ? "(complete)" : "(?)");
+  if (cogl_test_verbose ())
+    g_print ("status for gles2 framebuffer = 0x%x %s\n",
+             status, status == GL_FRAMEBUFFER_COMPLETE ? "(complete)" : "(?)");
 
   gles2->glBindFramebuffer (GL_FRAMEBUFFER, 0);
 
