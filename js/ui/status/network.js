@@ -896,12 +896,12 @@ const NMDeviceVPN = new Lang.Class({
     Name: 'NMDeviceVPN',
     Extends: NMDevice,
 
-    _init: function(client) {
+    _init: function(client, device, connections) {
         // Disable autoconnections
         this._autoConnectionName = null;
         this.category = NMConnectionCategory.VPN;
 
-        this.parent(client, null, [ ]);
+        this.parent(client, null, connections);
     },
 
     connectionValid: function(connection) {
@@ -913,13 +913,24 @@ const NMDeviceVPN = new Lang.Class({
     },
 
     get connected() {
-        return !!this._activeConnection;
+        if (!this._activeConnection)
+            return false;
+
+        return this._activeConnection.vpn_state == NetworkManager.VPNConnectionState.ACTIVATED;
     },
 
     setActiveConnection: function(activeConnection) {
+        if (this._stateChangeId)
+            this._activeConnection.disconnect(this._stateChangeId);
+        this._stateChangeId = 0;
+
         this.parent(activeConnection);
 
-        this.emit('active-connection-changed');
+        if (this._activeConnection)
+            this._stateChangeId = this._activeConnection.connect('vpn-state-changed',
+                                                                 Lang.bind(this, this._connectionStateChanged));
+
+        this.emit('state-changed');
     },
 
     _shouldShowConnectionList: function() {
@@ -932,7 +943,39 @@ const NMDeviceVPN = new Lang.Class({
     },
 
     getStatusLabel: function() {
-        return null;
+        if (!this._activeConnection) // Same as DISCONNECTED
+            return null;
+
+        switch(this._activeConnection.vpn_state) {
+        case NetworkManager.VPNConnectionState.DISCONNECTED:
+        case NetworkManager.VPNConnectionState.ACTIVATED:
+            return null;
+        case NetworkManager.VPNConnectionState.PREPARE:
+        case NetworkManager.VPNConnectionState.CONNECT:
+        case NetworkManager.VPNConnectionState.IP_CONFIG_GET:
+            return _("connecting...");
+        case NetworkManager.VPNConnectionState.NEED_AUTH:
+            /* Translators: this is for network connections that require some kind of key or password */
+            return _("authentication required");
+        case NetworkManager.VPNConnectionState.FAILED:
+            return _("connection failed");
+        default:
+            log('VPN connection state invalid, is %d'.format(this.device.state));
+            return 'invalid';
+        }
+    },
+
+    _connectionStateChanged: function(connection, newstate, reason) {
+        if (newstate == NetworkManager.VPNConnectionState.FAILED) {
+            // FIXME: if we ever want to show something based on reason,
+            // we need to convert from NetworkManager.VPNConnectionStateReason
+            // to NetworkManager.DeviceStateReason
+            this.emit('activation-failed', reason);
+        }
+
+        // Differently from real NMDevices, there is no need to queue
+        // an update of the menu section, contents wouldn't change anyway
+        this.emit('state-changed');
     }
 });
 
@@ -1541,6 +1584,15 @@ const NMApplet = new Lang.Class({
         this.menu.addMenuItem(this._statusSection);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
+        this._activeConnections = [ ];
+        this._connections = [ ];
+
+        this._mainConnection = null;
+        this._activeAccessPointUpdateId = 0;
+        this._activeAccessPoint = null;
+        this._mobileUpdateId = 0;
+        this._mobileUpdateDevice = null;
+
         this._devices = { };
 
         this._devices.wired = {
@@ -1576,28 +1628,15 @@ const NMApplet = new Lang.Class({
 
         this._devices.vpn = {
             section: new PopupMenu.PopupMenuSection(),
-            device: new NMDeviceVPN(this._client),
+            device: this._makeWrapperDevice(NMDeviceVPN, null),
             item: new NMWiredSectionTitleMenuItem(_("VPN Connections"))
         };
-        this._devices.vpn.device.connect('active-connection-changed', Lang.bind(this, function() {
-            this._devices.vpn.item.updateForDevice(this._devices.vpn.device);
-        }));
-        this._devices.vpn.item.updateForDevice(this._devices.vpn.device);
         this._devices.vpn.section.addMenuItem(this._devices.vpn.item);
         this._devices.vpn.section.addMenuItem(this._devices.vpn.device.section);
         this._devices.vpn.section.actor.hide();
         this.menu.addMenuItem(this._devices.vpn.section);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
-
-        this._activeConnections = [ ];
-        this._connections = [ ];
-
-        this._mainConnection = null;
-        this._activeAccessPointUpdateId = 0;
-        this._activeAccessPoint = null;
-        this._mobileUpdateId = 0;
-        this._mobileUpdateDevice = null;
 
         // Device types
         this._dtypes = { };
@@ -1665,6 +1704,18 @@ const NMApplet = new Lang.Class({
     },
 
     _syncSectionTitle: function(category) {
+        if (category == NMConnectionCategory.VPN) {
+            // Special case VPN: it's only one device (and a fake one
+            // actually), and we don't show it if empty
+            let device = this._devices.vpn.device;
+            let section = this._devices.vpn.section;
+            let item = this._devices.vpn.item;
+
+            section.actor.visible = !device.empty;
+            item.updateForDevice(device);
+            return;
+        }
+
         let devices = this._devices[category].devices;
         let item = this._devices[category].item;
         let section = this._devices[category].section;
@@ -1715,6 +1766,29 @@ const NMApplet = new Lang.Class({
         this._source.notify(device._notification);
     },
 
+    _makeWrapperDevice: function(wrapperClass, device) {
+        let wrapper = new wrapperClass(this._client, device, this._connections);
+
+        wrapper._activationFailedId = wrapper.connect('activation-failed', Lang.bind(this, function(device, reason) {
+            // XXX: nm-applet has no special text depending on reason
+            // but I'm not sure of this generic message
+            this._notifyForDevice(device, 'network-error',
+                                  _("Connection failed"),
+                                  _("Activation of network connection failed"),
+                                  MessageTray.Urgency.HIGH);
+        }));
+        wrapper._deviceStateChangedId = wrapper.connect('state-changed', Lang.bind(this, function(dev) {
+            this._syncSectionTitle(dev.category);
+        }));
+        wrapper._destroyId = wrapper.connect('destroy', function(wrapper) {
+            wrapper.disconnect(wrapper._activationFailedId);
+            wrapper.disconnect(wrapper._deviceStateChangedId);
+            wrapper.disconnect(wrapper._destroyId);
+        });
+
+        return wrapper;
+    },
+
     _deviceAdded: function(client, device) {
         if (device._delegate) {
             // already seen, not adding again
@@ -1722,24 +1796,8 @@ const NMApplet = new Lang.Class({
         }
         let wrapperClass = this._dtypes[device.get_device_type()];
         if (wrapperClass) {
-            let wrapper = new wrapperClass(this._client, device, this._connections);
+            let wrapper = this._makeWrapperDevice(wrapperClass, device);
 
-            wrapper._activationFailedId = wrapper.connect('activation-failed', Lang.bind(this, function(device, reason) {
-                // XXX: nm-applet has no special text depending on reason
-                // but I'm not sure of this generic message
-                this._notifyForDevice(device, 'network-error',
-                                      _("Connection failed"),
-                                      _("Activation of network connection failed"),
-                                     MessageTray.Urgency.HIGH);
-            }));
-            wrapper._deviceStateChangedId = wrapper.connect('state-changed', Lang.bind(this, function(dev) {
-                this._syncSectionTitle(dev.category);
-            }));
-            wrapper._destroyId = wrapper.connect('destroy', function(wrapper) {
-                wrapper.disconnect(wrapper._activationFailedId);
-                wrapper.disconnect(wrapper._deviceStateChangedId);
-                wrapper.disconnect(wrapper._destroyId);
-            });
             let section = this._devices[wrapper.category].section;
             let devices = this._devices[wrapper.category].devices;
 
@@ -1911,8 +1969,7 @@ const NMApplet = new Lang.Class({
 
         if (section == NMConnectionCategory.VPN) {
             this._devices.vpn.device.removeConnection(connection);
-            if (this._devices.vpn.device.empty)
-                this._devices.vpn.section.actor.hide();
+            this._syncSectionTitle(section);
         } else if (section != NMConnectionCategory.INVALID) {
             let devices = this._devices[section].devices;
             for (let i = 0; i < devices.length; i++)
@@ -1936,7 +1993,7 @@ const NMApplet = new Lang.Class({
             return;
         if (section == NMConnectionCategory.VPN) {
             this._devices.vpn.device.checkConnection(connection);
-            this._devices.vpn.section.actor.show();
+            this._syncSectionTitle(section);
         } else {
             let devices = this._devices[section].devices;
             for (let i = 0; i < devices.length; i++) {
@@ -1959,12 +2016,10 @@ const NMApplet = new Lang.Class({
 
         this._statusSection.actor.hide();
 
-        this._syncSectionTitle('wired');
-        this._syncSectionTitle('wireless');
-        this._syncSectionTitle('wwan');
-
-        if (!this._devices.vpn.device.empty)
-            this._devices.vpn.section.actor.show();
+        this._syncSectionTitle(NMConnectionCategory.WIRED);
+        this._syncSectionTitle(NMConnectionCategory.WIRELESS);
+        this._syncSectionTitle(NMConnectionCategory.WWAN);
+        this._syncSectionTitle(NMConnectionCategory.VPN);
     },
 
     _syncNMState: function() {
