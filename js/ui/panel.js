@@ -1115,8 +1115,8 @@ const Panel = new Lang.Class({
 
     openAppMenu: function() {
         let menu = this._appMenu.menu;
-        if (Main.overview.visible || menu.isOpen)
-          return;
+        if (!this._appMenu.actor.reactive || menu.isOpen)
+            return;
 
         menu.open();
         menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
