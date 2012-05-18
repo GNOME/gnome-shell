@@ -597,6 +597,21 @@ shell_global_set_stage_input_mode (ShellGlobal         *global,
     }
 }
 
+gboolean
+_shell_global_has_valid_session_mode (ShellGlobal *global)
+{
+  char *script;
+  int status;
+
+  script = g_strdup_printf ("imports.ui.environment.init();"
+                            "imports.ui.sessionMode.modeExists('%s') || 1;",
+                            global->session_mode);
+  gjs_context_eval (global->js_context, script, -1, "<sessionMode.js>", &status, NULL);
+  g_free (script);
+
+  return status == 0;
+}
+
 /**
  * shell_global_set_cursor:
  * @global: A #ShellGlobal

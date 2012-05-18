@@ -13,6 +13,7 @@ void _shell_global_set_plugin      (ShellGlobal  *global,
 
 GjsContext *_shell_global_get_gjs_context (ShellGlobal  *global);
 
+gboolean _shell_global_has_valid_session_mode (ShellGlobal *global);
 gboolean _shell_global_check_xdnd_event (ShellGlobal  *global,
                                          XEvent       *xev);
 

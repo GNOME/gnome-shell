@@ -13,6 +13,11 @@ const _modes = {
     'user': { sessionType: Shell.SessionType.USER }
 };
 
+function modeExists(mode) {
+    let modes = Object.getOwnPropertyNames(_modes);
+    return modes.indexOf(mode) != -1;
+}
+
 const SessionMode = new Lang.Class({
     Name: 'SessionMode',
 
