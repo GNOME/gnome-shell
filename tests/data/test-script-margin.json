@@ -1,0 +1,22 @@
+[
+  {
+    "id" : "actor-1",
+    "type" : "ClutterActor",
+    "margin" : [ 10 ]
+  },
+  {
+    "id" : "actor-2",
+    "type" : "ClutterActor",
+    "margin" : [ 10, 20 ]
+  },
+  {
+    "id" : "actor-3",
+    "type" : "ClutterActor",
+    "margin" : [ 10, 20, 30 ]
+  },
+  {
+    "id" : "actor-4",
+    "type" : "ClutterActor",
+    "margin" : [ 10, 20, 30, 40]
+  }
+]

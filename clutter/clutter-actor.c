@@ -383,6 +383,21 @@
  *   it must contain the center of rotation as described by two coordinates:
  *   Y and Z for "x-axis"; X and Z for "y-axis"; and X and Y for
  *   "z-axis".</para>
+ *   <para>#ClutterActor also defines a scriptable "margin" property which
+ *   follows the CSS "margin" shorthand.
+ *   <informalexample>
+ *     <programlisting>
+ * // 4 values
+ * "margin" : [ &lt;top&gt;, &lt;right&gt;, &lt;bottom&gt; &lt;left&gt; ]
+ * // 3 values
+ * "margin" : [ &lt;top&gt;, &lt;left/right&gt;, &lt;bottom&gt; ]
+ * // 2 values
+ * "margin" : [ &lt;top/bottom&gt;, &lt;left/right&gt; ]
+ * // 1 value
+ * "margin" : [ &lt;top/right/bottom/left&gt; ]
+ *     </programlisting>
+ *   </informalexample>
+ *   </para>
  *   <para>#ClutterActor will also parse every positional and dimensional
  *   property defined as a string through clutter_units_from_string(); you
  *   should read the documentation for the #ClutterUnits parser format for
@@ -13017,6 +13032,63 @@ parse_behaviours (ClutterScript *script,
   return g_slist_reverse (retval);
 }
 
+static ClutterMargin *
+parse_margin (ClutterActor *self,
+              JsonNode     *node)
+{
+  ClutterMargin *margin;
+  JsonArray *array;
+
+  if (!JSON_NODE_HOLDS_ARRAY (node))
+    {
+      g_warning ("The margin property must be an array of 1 to 4 elements");
+      return NULL;
+    }
+
+  margin = clutter_margin_new ();
+  array = json_node_get_array (node);
+  switch (json_array_get_length (array))
+    {
+    case 1:
+      margin->top = margin->right = margin->bottom = margin->left =
+        parse_units (self, 0, json_array_get_element (array, 0));
+      break;
+
+    case 2:
+      margin->top = margin->bottom =
+        parse_units (self, 0, json_array_get_element (array, 0));
+      margin->right = margin->left =
+        parse_units (self, 0, json_array_get_element (array, 1));
+      break;
+
+    case 3:
+      margin->top =
+        parse_units (self, 0, json_array_get_element (array, 0));
+      margin->right = margin->left =
+        parse_units (self, 0, json_array_get_element (array, 1));
+      margin->bottom =
+        parse_units (self, 0, json_array_get_element (array, 2));
+      break;
+
+    case 4:
+      margin->top =
+        parse_units (self, 0, json_array_get_element (array, 0));
+      margin->right =
+        parse_units (self, 0, json_array_get_element (array, 1));
+      margin->bottom =
+        parse_units (self, 0, json_array_get_element (array, 2));
+      margin->left =
+        parse_units (self, 0, json_array_get_element (array, 3));
+      break;
+
+    default:
+      g_warning ("The margin property must be an array of 1 to 4 elements");
+      clutter_margin_free (margin);
+      return NULL;
+    }
+  return margin;
+}
+
 static gboolean
 clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
                                  ClutterScript     *script,
@@ -13105,6 +13177,17 @@ clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
       g_value_set_pointer (value, l);
 
       retval = TRUE;
+    }
+  else if (strcmp (name, "margin") == 0)
+    {
+      ClutterMargin *margin = parse_margin (actor, node);
+
+      if (margin)
+        {
+          g_value_init (value, CLUTTER_TYPE_MARGIN);
+          g_value_set_boxed (value, margin);
+          retval = TRUE;
+        }
     }
 
   return retval;
@@ -13196,6 +13279,11 @@ clutter_actor_set_custom_property (ClutterScriptable *scriptable,
 
       g_slist_free (metas);
 
+      return;
+    }
+  if (strcmp (name, "margin") == 0)
+    {
+      clutter_actor_set_margin (actor, g_value_get_boxed (value));
       return;
     }
 

@@ -398,3 +398,47 @@ script_layout_property (TestConformSimpleFixture *fixture,
 
   g_object_unref (script);
 }
+
+script_margin (TestConformSimpleFixture *fixture,
+               gpointer                  dummy)
+{
+  ClutterScript *script = clutter_script_new ();
+  ClutterActor *actor;
+  gchar *test_file;
+  GError *error = NULL;
+
+  test_file = clutter_test_get_data_file ("test-script-margin.json");
+  clutter_script_load_from_file (script, test_file, &error);
+  if (g_test_verbose () && error)
+    g_print ("Error: %s", error->message);
+
+  g_assert_no_error (error);
+
+  actor = CLUTTER_ACTOR (clutter_script_get_object (script, "actor-1"));
+  g_assert_cmpfloat (clutter_actor_get_margin_top (actor), ==, 10.0f);
+  g_assert_cmpfloat (clutter_actor_get_margin_right (actor), ==, 10.0f);
+  g_assert_cmpfloat (clutter_actor_get_margin_bottom (actor), ==, 10.0f);
+  g_assert_cmpfloat (clutter_actor_get_margin_left (actor), ==, 10.0f);
+
+  actor = CLUTTER_ACTOR (clutter_script_get_object (script, "actor-2"));
+  g_assert_cmpfloat (clutter_actor_get_margin_top (actor), ==, 10.0f);
+  g_assert_cmpfloat (clutter_actor_get_margin_right (actor), ==, 20.0f);
+  g_assert_cmpfloat (clutter_actor_get_margin_bottom (actor), ==, 10.0f);
+  g_assert_cmpfloat (clutter_actor_get_margin_left (actor), ==, 20.0f);
+
+  actor = CLUTTER_ACTOR (clutter_script_get_object (script, "actor-3"));
+  g_assert_cmpfloat (clutter_actor_get_margin_top (actor), ==, 10.0f);
+  g_assert_cmpfloat (clutter_actor_get_margin_right (actor), ==, 20.0f);
+  g_assert_cmpfloat (clutter_actor_get_margin_bottom (actor), ==, 30.0f);
+  g_assert_cmpfloat (clutter_actor_get_margin_left (actor), ==, 20.0f);
+
+  actor = CLUTTER_ACTOR (clutter_script_get_object (script, "actor-4"));
+  g_assert_cmpfloat (clutter_actor_get_margin_top (actor), ==, 10.0f);
+  g_assert_cmpfloat (clutter_actor_get_margin_right (actor), ==, 20.0f);
+  g_assert_cmpfloat (clutter_actor_get_margin_bottom (actor), ==, 30.0f);
+  g_assert_cmpfloat (clutter_actor_get_margin_left (actor), ==, 40.0f);
+
+  g_object_unref (script);
+  g_free (test_file);
+}
+
