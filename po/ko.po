@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-04-19 21:14+0000\n"
-"PO-Revision-Date: 2012-04-26 01:05+0900\n"
+"PO-Revision-Date: 2012-05-19 22:57+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -51,7 +51,7 @@ msgstr "Alt-F2 대화 상자에서 내부 디버깅 및 감시 기능에 접근�
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Uuids of extensions to enable"
-msgstr "사용할 확장 기능의 UUID 목록"
+msgstr "사용할 확장의 UUID 목록"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid ""
@@ -71,11 +71,7 @@ msgid ""
 "used ones (e.g. in launchers). While this data will be kept private, you may "
 "want to disable this for privacy reasons. Please note that doing so won't "
 "remove already saved data."
-msgstr ""
-"셸에서는 최근에 사용한 프로그램을 (실행 메뉴 등에서) 표시하는 목적으로, 현재 "
-"사용 중인 프로그램을 감시합니다. 이 데이터는 비공개 데이터이지만 사생활 문제"
-"가 걱정된다면 이 기능을 끌 수도 있습니다. 단 이 기능을 사용하지 않더라도 이"
-"미 저장된 데이터를 제거하지는 않습니다."
+msgstr "셸에서는 최근에 사용한 프로그램을(실행 메뉴 등에서) 표시하는 목적으로, 현재 사용 중인 프로그램을 감시합니다. 이 데이터는 비공개 데이터이지만 사생활 문제가 걱정된다면 이 기능을 끌 수도 있습니다. 단 이 기능을 사용하지 않더라도 이미 저장된 데이터를 제거하지는 않습니다."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -93,7 +89,7 @@ msgstr "사용하지 않는 OpenSearch 서비스"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "History for command (Alt-F2) dialog"
-msgstr "명령어 대화 상자에 (Alt-F2) 기록 기능"
+msgstr "명령어 대화 상자에(Alt-F2) 기록 기능"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "History for the looking glass dialog"
@@ -166,7 +162,7 @@ msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "스크린 방송 인코딩에 사용할 gstreamer 파이프라인"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:28
-#, no-c-format, fuzzy
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -178,45 +174,31 @@ msgid ""
 "'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM "
 "using the VP8 codec. %T is used as a placeholder for a guess at the optimal "
 "thread count on the system."
-msgstr ""
-"녹화 인코딩에 사용할 GStreamer 파이프라인을 지정합니다. gst-launch에 사용하"
-"는 문법을 따릅니다. 파이프라인은 녹화한 영상이 있는 싱크 패드를 연결하지 않"
-"은 상태여야 합니다. 보통 소스 패드와 연결하지 않았을 것입니다. 이 패드의 출력"
-"은 출력 파일에 기록할 것입니다. 그러나 파이프라인은 이 출력을 다룰 수 있기도 "
-"합니다 - 아마 shout2send와 같은 것을 통해 icecast 서버로 출력을 보내는데 사용"
-"할지도 모릅니다. 만약 설정을 취소하거나 빈 값으로 설정한다면, 기본 파이프라인"
-"을 사용할 것입니다. 이것은 현재 'vp8enc quality=8 speed=6 threads=%T ! "
-"queue ! webmmux' 이며 VP8 코덱을 사용하여 WEBM으로 녹화합니다. %T는 시스템 상"
-"의 최적의 스레드 수를 추측하기 위해 대체기호로 사용합니다."
+msgstr "녹화 인코딩에 사용할 GStreamer 파이프라인을 지정합니다. gst-launch 프로그램에 사용하는 문법을 따릅니다. 녹화한 영상이 입력되는 싱크 패드는 이 파이프라인에 연결하지 않은 상태여야 합니다. 보통은 소스 패드도 연결하지 않고, 소스 패드의 출력을 출력 파일에 기록합니다. 하지만 파이프라인에서 이 출력을 처리할 수도 있습니다. shout2send 같은 프로그램을 이용해 아이스캐스트 서버로 출력을 보내거나 하는 용도로 사용할 수 있습니다. 설정을 취소하거나 빈 값으로 설정하면, 기본 파이프라인을 사용합니다. 기본 파이프라인은 'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux'이고 VP8 코덱을 사용해 WEBM 형식으로 녹화합니다. '%T' 기호는 시스템에서 최적으로 생각되는 스레드 수로 대체됩니다."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:29
 msgid "File extension used for storing the screencast"
 msgstr "스크린 방송을 저장할 때 사용할 파일 확장자"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:30
-#, fuzzy
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
-msgstr ""
-"스크린 방송 녹화 파일 이름은 현재 날짜와 이 확장자를 사용해서 결정됩니다. 녹"
-"화할 때 다른 형식으로 바꿀 수도 있습니다."
+msgstr "녹화한 스크린 방송 영상 파일은, 현재 날짜와 여기서 설정하는 확장자를 붙여 파일 이름을 만듭니다. 다른 컨테이너 형식으로 녹화하려면 이 값을 바꿔야 합니다."
 
 #: ../js/extensionPrefs/main.js:125
-#, c-format, fuzzy
+#, c-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "%s에 대한 기본 설정 대화상자를 불러오는데 오류가 발생했습니다:"
 
 #: ../js/extensionPrefs/main.js:165
-#, fuzzy
 msgid "<b>Extension</b>"
 msgstr "<b>확장</b>"
 
 #: ../js/extensionPrefs/main.js:189
-#, fuzzy
 msgid "Select an extension to configure using the combobox above."
-msgstr "위의 콤보상자를 사용하여 설정할 확장을 선택하십시오."
+msgstr "위의 콤보상자를 사용해 설정할 확장을 선택하십시오."
 
 #: ../js/gdm/loginDialog.js:627
 msgid "Session..."
@@ -674,13 +656,13 @@ msgstr "다시 입력하십시오:"
 
 #: ../js/ui/lookingGlass.js:732
 msgid "No extensions installed"
-msgstr "확장 기능을 설치하지 않았습니다"
+msgstr "확장을 설치하지 않았습니다"
 
 #. Translators: argument is an extension UUID.
 #: ../js/ui/lookingGlass.js:786
 #, c-format
 msgid "%s has not emitted any errors."
-msgstr "%s이(가) 발생한 에러가 없습니다."
+msgstr "%s에서 발생한 에러가 없습니다."
 
 #: ../js/ui/lookingGlass.js:792
 msgid "Hide Errors"
@@ -1167,7 +1149,7 @@ msgstr "더 보기..."
 #. and we cannot access its settings (including the name)
 #: ../js/ui/status/network.js:621 ../js/ui/status/network.js:1440
 msgid "Connected (private)"
-msgstr "연결됨 (개인)"
+msgstr "연결됨(개인)"
 
 #: ../js/ui/status/network.js:696
 msgid "Auto Ethernet"
@@ -1573,7 +1555,7 @@ msgstr "내부 오류"
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
 #: ../js/ui/telepathyClient.js:1345
-#, c-format, fuzzy
+#, c-format
 msgid "Connection to %s failed"
 msgstr "%s에 연결이 실패했습니다"
 
