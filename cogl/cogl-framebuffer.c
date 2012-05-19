@@ -3277,15 +3277,21 @@ draw_wireframe (CoglContext *ctx,
        * of the wire color leaving the rest of the state untouched. */
       if (cogl_has_feature (framebuffer->context, COGL_FEATURE_ID_GLSL))
         {
-          CoglSnippet *snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
-                                                   NULL,
-                                                   NULL);
-          cogl_snippet_set_replace (snippet,
-                                    "cogl_color_out = "
-                                      "vec4 (0.0, 1.0, 0.0, 1.0);\n");
+          static CoglSnippet *snippet = NULL;
+
+          /* The snippet is cached so that it will reuse the program
+           * from the pipeline cache if possible */
+          if (snippet == NULL)
+            {
+              snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                                          NULL,
+                                          NULL);
+              cogl_snippet_set_replace (snippet,
+                                        "cogl_color_out = "
+                                        "vec4 (0.0, 1.0, 0.0, 1.0);\n");
+            }
 
           cogl_pipeline_add_snippet (wire_pipeline, snippet);
-          cogl_object_unref (snippet);
         }
       else
         {
