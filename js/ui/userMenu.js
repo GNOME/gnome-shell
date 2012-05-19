@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const AccountsService = imports.gi.AccountsService;
-const GdmGreeter = imports.gi.GdmGreeter;
+const Gdm = imports.gi.Gdm;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
@@ -562,7 +562,7 @@ const UserMenuButton = new Lang.Class({
     _updateSwitchUser: function() {
         let allowSwitch = !this._lockdownSettings.get_boolean(DISABLE_USER_SWITCH_KEY);
         let multiUser = this._userManager.can_switch() && this._userManager.has_multiple_users;
-        let multiSession = GdmGreeter.get_session_ids().length > 1;
+        let multiSession = Gdm.get_session_ids().length > 1;
 
         this._loginScreenItem.label.set_text(multiUser ? _("Switch User")
                                                        : _("Switch Session"));
@@ -572,7 +572,7 @@ const UserMenuButton = new Lang.Class({
     _updateLogout: function() {
         let allowLogout = !this._lockdownSettings.get_boolean(DISABLE_LOG_OUT_KEY);
         let multiUser = this._userManager.has_multiple_users;
-        let multiSession = GdmGreeter.get_session_ids().length > 1;
+        let multiSession = Gdm.get_session_ids().length > 1;
 
         this._logoutItem.actor.visible = allowLogout && (multiUser || multiSession);
     },

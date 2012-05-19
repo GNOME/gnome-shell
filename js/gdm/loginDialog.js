@@ -30,7 +30,7 @@ const Pango = imports.gi.Pango;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const GdmGreeter = imports.gi.GdmGreeter;
+const Gdm = imports.gi.Gdm;
 
 const Batch = imports.gdm.batch;
 const Fprint = imports.gdm.fingerprint;
@@ -703,7 +703,7 @@ const SessionList = new Lang.Class({
         this._activeSessionId = null;
         this._items = {};
 
-        let ids = GdmGreeter.get_session_ids();
+        let ids = Gdm.get_session_ids();
         ids.sort();
 
         if (ids.length <= 1) {
@@ -715,7 +715,7 @@ const SessionList = new Lang.Class({
         }
 
         for (let i = 0; i < ids.length; i++) {
-            let [sessionName, sessionDescription] = GdmGreeter.get_session_name_and_description(ids[i]);
+            let [sessionName, sessionDescription] = Gdm.get_session_name_and_description(ids[i]);
 
             let item = new SessionListItem(ids[i], sessionName);
             this._itemList.add_actor(item.actor,
@@ -749,37 +749,22 @@ const LoginDialog = new Lang.Class({
                      Lang.bind(this, this._onOpened));
 
         this._userManager = AccountsService.UserManager.get_default()
-        this._greeterClient = new GdmGreeter.Client();
+        this._greeterClient = new Gdm.Client();
 
-        this._greeterClient.open_connection();
+        this._greeter = this._greeterClient.get_greeter_sync(null);
 
-        this._greeterClient.call_start_conversation(_PASSWORD_SERVICE_NAME);
+        this._greeter.connect('default-session-name-changed',
+                              Lang.bind(this, this._onDefaultSessionChanged));
 
-        this._greeterClient.connect('reset',
-                                    Lang.bind(this, this._onReset));
-        this._greeterClient.connect('default-session-changed',
-                                    Lang.bind(this, this._onDefaultSessionChanged));
-        this._greeterClient.connect('info',
-                                    Lang.bind(this, this._onInfo));
-        this._greeterClient.connect('problem',
-                                    Lang.bind(this, this._onProblem));
-        this._greeterClient.connect('info-query',
-                                    Lang.bind(this, this._onInfoQuery));
-        this._greeterClient.connect('secret-info-query',
-                                    Lang.bind(this, this._onSecretInfoQuery));
-        this._greeterClient.connect('session-opened',
-                                    Lang.bind(this, this._onSessionOpened));
-        this._greeterClient.connect('timed-login-requested',
-                                    Lang.bind(this, this._onTimedLoginRequested));
-        this._greeterClient.connect('authentication-failed',
-                                    Lang.bind(this, this._onAuthenticationFailed));
-        this._greeterClient.connect('conversation-stopped',
-                                    Lang.bind(this, this._onConversationStopped));
+        this._greeter.connect('session-opened',
+                              Lang.bind(this, this._onSessionOpened));
+        this._greeter.connect('timed-login-requested',
+                              Lang.bind(this, this._onTimedLoginRequested));
 
         this._settings = new Gio.Settings({ schema: _LOGIN_SCREEN_SCHEMA });
 
         this._fprintManager = new Fprint.FprintManager();
-        this._startFingerprintConversationIfNeeded();
+        this._checkForFingerprintReader();
         this._settings.connect('changed::' + _LOGO_KEY,
                                Lang.bind(this, this._updateLogo));
         this._settings.connect('changed::' + _BANNER_MESSAGE_KEY,
@@ -850,7 +835,7 @@ const LoginDialog = new Lang.Class({
         this._sessionList = new SessionList();
         this._sessionList.connect('session-activated',
                                   Lang.bind(this, function(list, sessionId) {
-                                                this._greeterClient.call_select_session (sessionId);
+                                                this._greeter.call_select_session_sync (sessionId, null);
                                             }));
 
         this._promptBox.add(this._sessionList.actor,
@@ -898,7 +883,7 @@ const LoginDialog = new Lang.Class({
 
    },
 
-   _startFingerprintConversationIfNeeded: function() {
+   _checkForFingerprintReader: function() {
         this._haveFingerprintReader = false;
 
         if (!this._settings.get_boolean(_FINGERPRINT_AUTHENTICATION_KEY))
@@ -908,9 +893,6 @@ const LoginDialog = new Lang.Class({
             function(device, error) {
                 if (!error && device)
                     this._haveFingerprintReader = true;
-
-                if (this._haveFingerprintReader)
-                    this._greeterClient.call_start_conversation(_FINGERPRINT_SERVICE_NAME);
             }));
     },
 
@@ -941,8 +923,9 @@ const LoginDialog = new Lang.Class({
     },
 
     _onReset: function(client, serviceName) {
-        this._greeterClient.call_start_conversation(_PASSWORD_SERVICE_NAME);
-        this._startFingerprintConversationIfNeeded();
+        this._userVerifier = null;
+
+        this._checkForFingerprintReader();
 
         let tasks = [this._hidePrompt,
 
@@ -1000,7 +983,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _onCancel: function(client) {
-        this._greeterClient.call_cancel();
+        this._userVerifier.call_cancel_sync(null);
     },
 
     _fadeInPrompt: function() {
@@ -1107,7 +1090,7 @@ const LoginDialog = new Lang.Class({
                          let _text = this._promptEntry.get_text();
                          this._promptEntry.reactive = false;
                          this._promptEntry.add_style_pseudo_class('insensitive');
-                         this._greeterClient.call_answer_query(serviceName, _text);
+                         this._userVerifier.call_answer_query_sync(serviceName, _text, null);
                      }];
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
@@ -1134,7 +1117,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _onSessionOpened: function(client, serviceName) {
-        this._greeterClient.call_start_session_when_ready(serviceName, true);
+        this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
     },
 
     _waitForItemForUser: function(userName) {
@@ -1216,7 +1199,7 @@ const LoginDialog = new Lang.Class({
 
                      function() {
                          this._timedLoginBatch = null;
-                         this._greeterClient.call_begin_auto_login(userName);
+                         this._greeter.call_begin_auto_login_sync(userName, null);
                      }];
 
         this._timedLoginBatch = new Batch.ConsecutiveBatch(this, tasks);
@@ -1259,16 +1242,12 @@ const LoginDialog = new Lang.Class({
                              }));
     },
 
-    _onAuthenticationFailed: function(client) {
-        this._greeterClient.call_cancel();
-    },
-
     _onConversationStopped: function(client, serviceName) {
         // if the password service fails, then cancel everything.
         // But if, e.g., fingerprint fails, still give
         // password authentication a chance to succeed
         if (serviceName == _PASSWORD_SERVICE_NAME) {
-            this._greeterClient.call_cancel();
+            this._userVerifier.call_cancel_sync(null);
         } else if (serviceName == _FINGERPRINT_SERVICE_NAME) {
             _fadeOutActor(this._promptFingerprintMessage);
         }
@@ -1292,7 +1271,16 @@ const LoginDialog = new Lang.Class({
                                                       this._fadeOutLogo]),
 
                      function() {
-                         this._greeterClient.call_begin_verification(_PASSWORD_SERVICE_NAME);
+                         let hold = new Batch.Hold();
+
+                         this._userVerifier.call_begin_verification(_PASSWORD_SERVICE_NAME,
+                                                                    null,
+                                                                    Lang.bind(this, function (userVerifier, result) {
+                             this._userVerifier.call_begin_verification_finish (result);
+                             hold.release();
+                         }));
+
+                         return hold;
                      }];
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
@@ -1331,7 +1319,101 @@ const LoginDialog = new Lang.Class({
         return _fadeOutActor(this._notListedButton);
     },
 
+    _getUserVerifier: function(userName) {
+         let hold = new Batch.Hold();
+
+         this._userVerifier = null;
+
+         // If possible, reauthenticate an already running session,
+         // so any session specific credentials get updated appropriately
+         this._greeterClient.open_reauthentication_channel(userName,
+                                                           null,
+                                                           Lang.bind(this, function(client, result) {
+             try {
+                 this._userVerifier = this._greeterClient.open_reauthentication_channel_finish(result);
+                 hold.release();
+             } catch (e) {
+                 // If there's no session running, or it otherwise fails, then fall back
+                 // to performing verification from this login session
+                 this._greeterClient.get_user_verifier(null,
+                                                       Lang.bind(this, function(client, result) {
+                     this._userVerifier = this._greeterClient.get_user_verifier_finish(result);
+                     hold.release();
+                 }));
+             }
+         }));
+
+         hold.connect('release', Lang.bind(this, function() {
+             if (this._userVerifier) {
+                let ids = [];
+                let id;
+
+                id = this._userVerifier.connect('info',
+                                                Lang.bind(this, this._onInfo));
+                ids.push(id);
+                id = this._userVerifier.connect('problem',
+                                                Lang.bind(this, this._onProblem));
+                ids.push(id);
+                id = this._userVerifier.connect('info-query',
+                                                Lang.bind(this, this._onInfoQuery));
+                ids.push(id);
+                id = this._userVerifier.connect('secret-info-query',
+                                                Lang.bind(this, this._onSecretInfoQuery));
+                ids.push(id);
+                id = this._userVerifier.connect('conversation-stopped',
+                                                Lang.bind(this, this._onConversationStopped));
+                ids.push(id);
+                id = this._userVerifier.connect('reset',
+                                                Lang.bind(this, function() {
+                                                    for (let i = 0; i < ids.length; i++)
+                                                        this._userVerifier.disconnect(ids[i]);
+
+                                                    this._onReset();
+                                                }));
+                ids.push(id);
+             }
+         }));
+
+        return hold;
+    },
+
+    _beginVerificationForUser: function(userName) {
+        let tasks = [function() {
+                         let hold = new Batch.Hold();
+                         this._userVerifier.call_begin_verification_for_user (_PASSWORD_SERVICE_NAME,
+                                                                              userName, null,
+                                                                              Lang.bind(this, function(userVerifier, result) {
+                             this._userVerifier.call_begin_verification_for_user_finish (result);
+                             hold.release();
+                         }));
+                         return hold;
+                     },
+
+                     function() {
+                         let hold = new Batch.Hold();
+                         if (this._haveFingerprintReader) {
+                             this._userVerifier.call_begin_verification_for_user (_FINGERPRINT_SERVICE_NAME,
+                                                                                  userName, null,
+                                                                                  Lang.bind(this, function(userVerifier, result) {
+                                 this._userVerifier.call_begin_verification_for_user_finish (result);
+                                 hold.release();
+                             }));
+                         } else {
+                             hold.release();
+                         }
+
+                         return hold;
+                     }];
+
+        let batch = new Batch.ConsecutiveBatch(this, [this._getUserVerifier(userName),
+                                                      new Batch.ConcurrentBatch(this, tasks)]);
+
+        return batch.run();
+    },
+
     _onUserListActivated: function(activatedItem) {
+        let userName;
+
         let tasks = [function() {
                          this._userList.actor.reactive = false;
                          return this._userList.pinInPlace();
@@ -1358,12 +1440,9 @@ const LoginDialog = new Lang.Class({
                      },
 
                      function() {
-                         let userName = activatedItem.user.get_user_name();
-                         this._greeterClient.call_begin_verification_for_user(_PASSWORD_SERVICE_NAME,
-                                                                              userName);
+                         userName = activatedItem.user.get_user_name();
 
-                         if (this._haveFingerprintReader)
-                             this._greeterClient.call_begin_verification_for_user(_FINGERPRINT_SERVICE_NAME, userName);
+                         return this._beginVerificationForUser(userName);
                      }];
 
         this._user = activatedItem.user;
