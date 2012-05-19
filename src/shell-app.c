@@ -493,7 +493,7 @@ shell_app_activate_window (ShellApp     *app,
     return;
   else
     {
-      GSList *iter;
+      GSList *windows_reversed, *iter;
       ShellGlobal *global = shell_global_get ();
       MetaScreen *screen = shell_global_get_screen (global);
       MetaDisplay *display = meta_screen_get_display (screen);
@@ -511,13 +511,16 @@ shell_app_activate_window (ShellApp     *app,
       /* Now raise all the other windows for the app that are on
        * the same workspace, in reverse order to preserve the stacking.
        */
-      for (iter = windows; iter; iter = iter->next)
+      windows_reversed = g_slist_copy (windows);
+      windows_reversed = g_slist_reverse (windows_reversed);
+      for (iter = windows_reversed; iter; iter = iter->next)
         {
           MetaWindow *other_window = iter->data;
 
           if (other_window != window)
             meta_window_raise (other_window);
         }
+      g_slist_free (windows_reversed);
 
       /* If we have a transient that the user's interacted with more recently than
        * the window, pick that.
