@@ -747,15 +747,13 @@ const LoginDialog = new Lang.Class({
                      Lang.bind(this, this._onOpened));
 
         this._userManager = AccountsService.UserManager.get_default()
-        this._greeterClient = new GdmGreeter.Client();
+        this._greeterClient = GdmGreeter.Server.new_for_greeter_sync(null);
 
-        this._greeterClient.open_connection();
-
-        this._greeterClient.call_start_conversation(_PASSWORD_SERVICE_NAME);
+        this._greeterClient.call_start_conversation_sync(_PASSWORD_SERVICE_NAME, null);
 
         this._greeterClient.connect('reset',
                                     Lang.bind(this, this._onReset));
-        this._greeterClient.connect('default-session-changed',
+        this._greeterClient.connect('default-session-name-changed',
                                     Lang.bind(this, this._onDefaultSessionChanged));
         this._greeterClient.connect('info',
                                     Lang.bind(this, this._onInfo));
@@ -769,8 +767,6 @@ const LoginDialog = new Lang.Class({
                                     Lang.bind(this, this._onSessionOpened));
         this._greeterClient.connect('timed-login-requested',
                                     Lang.bind(this, this._onTimedLoginRequested));
-        this._greeterClient.connect('authentication-failed',
-                                    Lang.bind(this, this._onAuthenticationFailed));
         this._greeterClient.connect('conversation-stopped',
                                     Lang.bind(this, this._onConversationStopped));
 
@@ -918,7 +914,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _onReset: function(client, serviceName) {
-        this._greeterClient.call_start_conversation(_PASSWORD_SERVICE_NAME);
+        this._greeterClient.call_start_conversation_sync(_PASSWORD_SERVICE_NAME, null);
         this._startFingerprintConversationIfNeeded();
 
         let tasks = [this._hidePrompt,
@@ -977,7 +973,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _onCancel: function(client) {
-        this._greeterClient.call_cancel();
+        this._greeterClient.call_cancel_sync(null);
     },
 
     _fadeInPrompt: function() {
@@ -1084,7 +1080,7 @@ const LoginDialog = new Lang.Class({
                          let _text = this._promptEntry.get_text();
                          this._promptEntry.reactive = false;
                          this._promptEntry.add_style_pseudo_class('insensitive');
-                         this._greeterClient.call_answer_query(serviceName, _text);
+                         this._greeterClient.call_answer_query_sync(serviceName, _text, null);
                      }];
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
@@ -1111,7 +1107,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _onSessionOpened: function(client, serviceName) {
-        this._greeterClient.call_start_session_when_ready(serviceName, true);
+        this._greeterClient.call_start_session_when_ready_sync(serviceName, true, null);
     },
 
     _waitForItemForUser: function(userName) {
@@ -1193,7 +1189,7 @@ const LoginDialog = new Lang.Class({
 
                      function() {
                          this._timedLoginBatch = null;
-                         this._greeterClient.call_begin_auto_login(userName);
+                         this._greeterClient.call_begin_auto_login_sync(userName, null);
                      }];
 
         this._timedLoginBatch = new Batch.ConsecutiveBatch(this, tasks);
@@ -1236,16 +1232,12 @@ const LoginDialog = new Lang.Class({
                              }));
     },
 
-    _onAuthenticationFailed: function(client) {
-        this._greeterClient.call_cancel();
-    },
-
     _onConversationStopped: function(client, serviceName) {
         // if the password service fails, then cancel everything.
         // But if, e.g., fingerprint fails, still give
         // password authentication a chance to succeed
         if (serviceName == _PASSWORD_SERVICE_NAME) {
-            this._greeterClient.call_cancel();
+            this._greeterClient.call_cancel_sync(null);
         } else if (serviceName == _FINGERPRINT_SERVICE_NAME) {
             _fadeOutActor(this._promptFingerprintMessage);
         }
@@ -1269,7 +1261,7 @@ const LoginDialog = new Lang.Class({
                                                       this._fadeOutLogo]),
 
                      function() {
-                         this._greeterClient.call_begin_verification(_PASSWORD_SERVICE_NAME);
+                         this._greeterClient.call_begin_verification_sync(_PASSWORD_SERVICE_NAME, null);
                      }];
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
@@ -1328,11 +1320,11 @@ const LoginDialog = new Lang.Class({
 
                      function() {
                          let userName = activatedItem.user.get_user_name();
-                         this._greeterClient.call_begin_verification_for_user(_PASSWORD_SERVICE_NAME,
-                                                                              userName);
+                         this._greeterClient.call_begin_verification_for_user_sync(_PASSWORD_SERVICE_NAME,
+                                                                                   userName, null);
 
                          if (this._haveFingerprintReader)
-                             this._greeterClient.call_begin_verification_for_user(_FINGERPRINT_SERVICE_NAME, userName);
+                             this._greeterClient.call_begin_verification_for_user_sync(_FINGERPRINT_SERVICE_NAME, userName, null);
                      }];
 
         this._user = activatedItem.user;
