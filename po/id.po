@@ -8,10 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell gnome-3-4\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-05-18 22:36+0000\n"
-"PO-Revision-Date: 2011-09-25 15:38+0700\n"
+"PO-Revision-Date: 2012-05-19 16:30+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
@@ -34,73 +33,47 @@ msgstr "Manajemen jendela dan peluncuran aplikasi"
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 #: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extension Preferences"
-msgstr ""
+msgstr "Preferensi Ekstensi GNOME Shell"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
-msgstr ""
+msgstr "Tata Ekstensi GNOME Shell"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Mengaktifkan perkakas internal yang berguna bagi pengembang dan penguji "
-"dengan Alt-F2"
+msgstr "Mengaktifkan perkakas internal yang berguna bagi pengembang dan penguji dengan Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid ""
-"Allows access to internal debugging and monitoring tools using the Alt-F2 "
-"dialog."
-msgstr ""
-"Ijinkan askes ke perkakas pemantauan dan pengawakutuan internal memakai "
-"dialog Alt-F2."
+msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
+msgstr "Ijinkan askes ke perkakas pemantauan dan pengawakutuan internal memakai dialog Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Uuids of extensions to enable"
 msgstr "Uuid ekstensi yang hendak diaktifkan"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
-#, fuzzy
 #| msgid ""
 #| "GNOME Shell extensions have a uuid property; this key lists extensions "
 #| "which should be loaded. disabled-extensions overrides this setting for "
 #| "extensions that appear in both lists."
-msgid ""
-"GNOME Shell extensions have a uuid property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
-"DisableExtension DBus methods on org.gnome.Shell."
-msgstr ""
-"Ekstensi GNOME Shell memiliki suatu properti uuid; kunci ini mendaftar "
-"ekstensi yang mesti dimuat. disabled-extensions menimpa pengaturan ini bagi "
-"ekstensi yang muncul pada kedua daftar."
+msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should be loaded. Any extension that wants to be loaded needs to be in this list. You can also manipulate this list with the EnableExtension and DisableExtension DBus methods on org.gnome.Shell."
+msgstr "Ekstensi GNOME Shell memiliki properti uuid; kunci ini berisikan ekstensi yang seharusnya dimuat. Ekstensi yang ingin dimuat harus berada di dalam daftar tersebut. Anda juga bisa memanipulasi daftar ini dengan metode DBus EnableExtension dan DisableExtension pada org.gnome.Shell."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid "Whether to collect stats about applications usage"
 msgstr "Apakah mengumpulkan statistik tentang penggunaan aplikasi"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-"Shell secara normal memantau aplikasi aktif untuk menyajikan yang paling "
-"sering dipakai (mis. di peluncur). Walaupun data ini dijaga tetap privat, "
-"Anda mungkin ingin mematikan ini karena alasan privasi. Mohon dicatata bahwa "
-"hal itu tak akan menghapus data yang telah disimpan."
+msgid "The shell normally monitors active applications in order to present the most used ones (e.g. in launchers). While this data will be kept private, you may want to disable this for privacy reasons. Please note that doing so won't remove already saved data."
+msgstr "Shell secara normal memantau aplikasi aktif untuk menyajikan yang paling sering dipakai (mis. di peluncur). Walaupun data ini dijaga tetap privat, Anda mungkin ingin mematikan ini karena alasan privasi. Mohon dicatata bahwa hal itu tak akan menghapus data yang telah disimpan."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Daftar ID berkas desktop untuk aplikasi favorit"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Aplikasi yang terkait dengan identifier-identifier ini akan ditampilkan pada "
-"area favorit."
+msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
+msgstr "Aplikasi yang terkait dengan identifier-identifier ini akan ditampilkan pada area favorit."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "disabled OpenSearch providers"
@@ -115,16 +88,12 @@ msgid "History for the looking glass dialog"
 msgstr "Riwayat untuk dialog yang berpenampilan gelas kaca"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:12
-msgid ""
-"Internally used to store the last IM presence explicitly set by the user. "
-"The value here is from the TpConnectionPresenceType enumeration."
-msgstr ""
+msgid "Internally used to store the last IM presence explicitly set by the user. The value here is from the TpConnectionPresenceType enumeration."
+msgstr "Secara internal dipakai untuk menyimpan kehadiran PI terakhir yang ditentukan oleh pengguna. Nilainya berasal dari enumerasi TpConnectionPresenceType."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid ""
-"Internally used to store the last session presence status for the user. The "
-"value here is from the GsmPresenceStatus enumeration."
-msgstr ""
+msgid "Internally used to store the last session presence status for the user. The value here is from the GsmPresenceStatus enumeration."
+msgstr "Secara internal dipakai untuk menyimpan status sesi terakhir bagi pengguna. Nilainya berasal dari enumerasi GsmPresenceStatus."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show the week date in the calendar"
@@ -132,16 +101,15 @@ msgstr "Menampilkan tanggal pada kalender"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "If true, display the ISO week date in the calendar."
-msgstr ""
-"Jika bernilai \"true\", menampilkan tanggal berformat ISO pada kalender."
+msgstr "Jika bernilai \"true\", menampilkan tanggal berformat ISO pada kalender."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Keybinding to open the application menu"
-msgstr ""
+msgstr "Kombinasi tombol untuk membuka menu aplikasi"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid "Keybinding to open the application menu."
-msgstr ""
+msgstr "Kombinasi tombol untuk membuka menu aplikasi."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "Which keyboard to use"
@@ -172,19 +140,15 @@ msgid "Framerate used for recording screencasts."
 msgstr "Laju gambar untuk menyimpan tangkapan layar."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:25
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr ""
-"Laju frame dari hasil screencast yang direkam oleh perekam screencast GNOME "
-"Shell dalam frame per detik."
+msgid "The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second."
+msgstr "Laju frame dari hasil screencast yang direkam oleh perekam screencast GNOME Shell dalam frame per detik."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Jalur pipa gstreamer yang dipakai untuk mengode screencast"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:28
-#, fuzzy, no-c-format
+#, no-c-format
 #| msgid ""
 #| "Sets the GStreamer pipeline used to encode recordings. It follows the "
 #| "syntax used for gst-launch. The pipeline should have an unconnected sink "
@@ -197,56 +161,29 @@ msgstr "Jalur pipa gstreamer yang dipakai untuk mengode screencast"
 #| "threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T "
 #| "is used as a placeholder for a guess at the optimal thread count on the "
 #| "system."
-msgid ""
-"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
-"used for gst-launch. The pipeline should have an unconnected sink pad where "
-"the recorded video is recorded. It will normally have a unconnected source "
-"pad; output from that pad will be written into the output file. However the "
-"pipeline can also take care of its own output - this might be used to send "
-"the output to an icecast server via shout2send or similar. When unset or set "
-"to an empty value, the default pipeline will be used. This is currently "
-"'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM "
-"using the VP8 codec. %T is used as a placeholder for a guess at the optimal "
-"thread count on the system."
-msgstr ""
-"Tata jalur pipa GStreamer yang dipakai untuk mengode perekaman. Ini "
-"mengikuti sintaks yang dipakai bagi gst-launch. Jalur pipa mesti memiliki "
-"pad muara tak terhubung dimana video direkam. Ini biasanya memiliki pad "
-"sumber tak terhubung; keluaran dari pad tersebut akan ditulis ke berkas "
-"keluaran. Namun jalur pipa bisa juga menangani sendiri keluarannya - ini "
-"mungkin dipakai untuk mengirim keluaran ke server icecast melalui shout2send "
-"atau semacamnya. Ketika tak ditata atau diisi dengan nilai kosong, jalur "
-"pipa baku akan dipakai. Saat ini isinya 'videorate ! vp8enc quality=10 "
-"speed=2 threads=%T ! queue ! webmmux' dan merekam ke WEBM memakai codec VP8. "
-"%T dipakai sebagai placeholder bagi tamu pada cacah thread optimal pada "
-"sistem."
+msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
+msgstr "Menentukan jalur pipa GStreamer yang dipakai untuk enkode perekaman. Ini mengikuti sintaks yang dipakai oleh gst-launch. Jalur pipa harus memiliki pad muara tak terhubung di mana video direkam. Ini biasanya memiliki pad sumber tak terhubung; keluaran dari pad tersebut akan ditulis ke berkas keluaran. Namun jalur pipa bisa juga menangani sendiri keluarannya - ini mungkin dipakai untuk mengirim keluaran ke server icecast melalui shout2send atau semacamnya. Apabila belum ditentukan atau diisi dengan nilai kosong, jalur pipa baku akan dipakai. Saat ini isinya 'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' dan merekam ke WEBM memakai kodek VP8. %T digunakan sebagai pewakil untuk perkiraan jumlah thread optimal pada sistem."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:29
 msgid "File extension used for storing the screencast"
 msgstr "Ekstensi berkas untuk menyimpan tangkapan layar"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:30
-msgid ""
-"The filename for recorded screencasts will be a unique filename based on the "
-"current date, and use this extension. It should be changed when recording to "
-"a different container format."
-msgstr ""
-"Nama berkas bagi screencast yang direkam akan berupa nama berkas unik yang "
-"didasarkan atas tanggal kini, dan memakai ekstensi ini. Ini mesti diubah "
-"ketika merekam ke format wadah yang berbeda."
+msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
+msgstr "Nama berkas bagi screencast yang direkam akan berupa nama berkas unik yang didasarkan atas tanggal kini, dan memakai ekstensi ini. Ini mesti diubah ketika merekam ke format wadah yang berbeda."
 
 #: ../js/extensionPrefs/main.js:125
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
-msgstr ""
+msgstr "Terjadi galat sewaktu memuat dialog preferensi untuk %s:"
 
 #: ../js/extensionPrefs/main.js:165
 msgid "<b>Extension</b>"
-msgstr ""
+msgstr "<b>Ekstensi</b>"
 
 #: ../js/extensionPrefs/main.js:189
 msgid "Select an extension to configure using the combobox above."
-msgstr ""
+msgstr "Pilih ekstensi yang ingin dikonfigurasi pada kotak di atas."
 
 #: ../js/gdm/loginDialog.js:627
 msgid "Session..."
@@ -270,9 +207,12 @@ msgstr "(atau gesekkan jari)"
 msgid "Not listed?"
 msgstr "Tak masuk daftar?"
 
-#: ../js/gdm/loginDialog.js:1023 ../js/ui/endSessionDialog.js:401
-#: ../js/ui/extensionSystem.js:400 ../js/ui/networkAgent.js:153
-#: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
+#: ../js/gdm/loginDialog.js:1023
+#: ../js/ui/endSessionDialog.js:401
+#: ../js/ui/extensionSystem.js:400
+#: ../js/ui/networkAgent.js:153
+#: ../js/ui/polkitAuthenticationAgent.js:175
+#: ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "Batal"
 
@@ -285,8 +225,10 @@ msgstr "Masuk"
 msgid "Login Window"
 msgstr "Jendela Log Masuk"
 
-#: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
-#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
+#: ../js/gdm/powerMenu.js:155
+#: ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:599
+#: ../js/ui/userMenu.js:668
 msgid "Suspend"
 msgstr "Suspensi"
 
@@ -507,20 +449,25 @@ msgstr "Minggu ini"
 msgid "Next week"
 msgstr "Minggu depan"
 
-#: ../js/ui/contactDisplay.js:66 ../js/ui/notificationDaemon.js:486
-#: ../js/ui/status/power.js:215 ../src/shell-app.c:374
+#: ../js/ui/contactDisplay.js:66
+#: ../js/ui/notificationDaemon.js:486
+#: ../js/ui/status/power.js:215
+#: ../src/shell-app.c:374
 msgid "Unknown"
 msgstr "Tak dikenal"
 
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:129
+#: ../js/ui/contactDisplay.js:89
+#: ../js/ui/userMenu.js:129
 msgid "Available"
 msgstr "Ada"
 
-#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:138
+#: ../js/ui/contactDisplay.js:94
+#: ../js/ui/userMenu.js:138
 msgid "Away"
 msgstr "Pergi"
 
-#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:132
+#: ../js/ui/contactDisplay.js:98
+#: ../js/ui/userMenu.js:132
 msgid "Busy"
 msgstr "Sibuk"
 
@@ -532,7 +479,8 @@ msgstr "Luring"
 msgid "CONTACTS"
 msgstr "KONTAK"
 
-#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1207
+#: ../js/ui/dash.js:229
+#: ../js/ui/messageTray.js:1207
 msgid "Remove"
 msgstr "Hapus"
 
@@ -592,14 +540,13 @@ msgid "%A %B %e, %Y"
 msgstr "%A, %e %B %Y"
 
 #: ../js/ui/endSessionDialog.js:61
-#, fuzzy, c-format
+#, c-format
 #| msgid "Log Out %s"
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Keluar %s"
 
 #: ../js/ui/endSessionDialog.js:62
-#, fuzzy
 #| msgid "Log Out"
 msgctxt "title"
 msgid "Log Out"
@@ -626,14 +573,12 @@ msgid "Logging out of the system."
 msgstr "Keluar dari sistem."
 
 #: ../js/ui/endSessionDialog.js:76
-#, fuzzy
 #| msgid "Log Out"
 msgctxt "button"
 msgid "Log Out"
 msgstr "Keluar"
 
 #: ../js/ui/endSessionDialog.js:81
-#, fuzzy
 #| msgid "Power Off"
 msgctxt "title"
 msgid "Power Off"
@@ -653,22 +598,20 @@ msgstr[0] "Sistem ini akan otomatis dimatikan dalam %d detik."
 msgid "Powering off the system."
 msgstr "Mematikan sistem."
 
-#: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
-#, fuzzy
+#: ../js/ui/endSessionDialog.js:90
+#: ../js/ui/endSessionDialog.js:107
 #| msgid "Restart"
 msgctxt "button"
 msgid "Restart"
 msgstr "Nyalakan Ulang"
 
 #: ../js/ui/endSessionDialog.js:92
-#, fuzzy
 #| msgid "Power Off"
 msgctxt "button"
 msgid "Power Off"
 msgstr "Matikan"
 
 #: ../js/ui/endSessionDialog.js:98
-#, fuzzy
 #| msgid "Restart"
 msgctxt "title"
 msgid "Restart"
@@ -676,9 +619,7 @@ msgstr "Nyalakan Ulang"
 
 #: ../js/ui/endSessionDialog.js:99
 msgid "Click Restart to quit these applications and restart the system."
-msgstr ""
-"Klik Nyalakan Ulang untuk menutup aplikasi ini serta menyalakan kembali "
-"sistem."
+msgstr "Klik Nyalakan Ulang untuk menutup aplikasi ini serta menyalakan kembali sistem."
 
 #: ../js/ui/endSessionDialog.js:101
 #, c-format
@@ -700,23 +641,24 @@ msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Unduh dan pasang '%s' dari extensions.gnome.org?"
 
 #: ../js/ui/keyboard.js:327
-#, fuzzy
 #| msgid "Retry"
 msgid "tray"
-msgstr "Coba lagi"
+msgstr "baki"
 
-#: ../js/ui/keyboard.js:544 ../js/ui/status/keyboard.js:44
+#: ../js/ui/keyboard.js:544
+#: ../js/ui/status/keyboard.js:44
 #: ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Papan Ketik"
 
-#: ../js/ui/keyringPrompt.js:85 ../js/ui/polkitAuthenticationAgent.js:272
+#: ../js/ui/keyringPrompt.js:85
+#: ../js/ui/polkitAuthenticationAgent.js:272
 msgid "Password:"
 msgstr "Sandi:"
 
 #: ../js/ui/keyringPrompt.js:101
 msgid "Type again:"
-msgstr ""
+msgstr "Ketik lagi:"
 
 #: ../js/ui/lookingGlass.js:732
 msgid "No extensions installed"
@@ -726,19 +668,18 @@ msgstr "Tak ada ekstensi terpasang"
 #: ../js/ui/lookingGlass.js:786
 #, c-format
 msgid "%s has not emitted any errors."
-msgstr ""
+msgstr "%s tidak menampilkan galat apa pun."
 
 #: ../js/ui/lookingGlass.js:792
-#, fuzzy
 #| msgid "Error"
 msgid "Hide Errors"
-msgstr "Galat"
+msgstr "Sembunyikan Galat"
 
-#: ../js/ui/lookingGlass.js:796 ../js/ui/lookingGlass.js:847
-#, fuzzy
+#: ../js/ui/lookingGlass.js:796
+#: ../js/ui/lookingGlass.js:847
 #| msgid "Error"
 msgid "Show Errors"
-msgstr "Galat"
+msgstr "Tampilkan Galat"
 
 #: ../js/ui/lookingGlass.js:805
 msgid "Enabled"
@@ -746,7 +687,8 @@ msgstr "Diaktifkan"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:808 ../src/gvc/gvc-mixer-control.c:1082
+#: ../js/ui/lookingGlass.js:808
+#: ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
@@ -774,24 +716,22 @@ msgstr "Halaman Web"
 #: ../js/ui/main.js:118
 #, no-c-format
 msgid "Screencast from %d %t"
-msgstr ""
+msgstr "Rekaman dari %d %t"
 
 #: ../js/ui/messageTray.js:1200
 msgid "Open"
 msgstr "Buka"
 
 #: ../js/ui/messageTray.js:1217
-#, fuzzy
 #| msgid "minute"
 #| msgid_plural "minutes"
 msgid "Unmute"
-msgstr "menit"
+msgstr "Bersuara"
 
 #: ../js/ui/messageTray.js:1217
-#, fuzzy
 #| msgid "Mouse"
 msgid "Mute"
-msgstr "Tetikus"
+msgstr "Bisu"
 
 #: ../js/ui/messageTray.js:2490
 msgid "System Information"
@@ -802,8 +742,10 @@ msgid "Connect"
 msgstr "Sambung"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:243 ../js/ui/networkAgent.js:255
-#: ../js/ui/networkAgent.js:282 ../js/ui/networkAgent.js:302
+#: ../js/ui/networkAgent.js:243
+#: ../js/ui/networkAgent.js:255
+#: ../js/ui/networkAgent.js:282
+#: ../js/ui/networkAgent.js:302
 #: ../js/ui/networkAgent.js:312
 msgid "Password: "
 msgstr "Sandi:"
@@ -816,7 +758,8 @@ msgstr "Tombol:"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:280 ../js/ui/networkAgent.js:298
+#: ../js/ui/networkAgent.js:280
+#: ../js/ui/networkAgent.js:298
 msgid "Username: "
 msgstr "Nama pengguna: "
 
@@ -838,12 +781,8 @@ msgstr "Otentikasi dibutuhkan oleh jaringan nirkabel"
 
 #: ../js/ui/networkAgent.js:330
 #, c-format
-msgid ""
-"Passwords or encryption keys are required to access the wireless network '%"
-"s'."
-msgstr ""
-"Sandi atau kunci penyandian diperlukan untuk mengakses jaringan nirkabel '%"
-"s'."
+msgid "Passwords or encryption keys are required to access the wireless network '%s'."
+msgstr "Sandi atau kunci penyandian diperlukan untuk mengakses jaringan nirkabel '%s'."
 
 #: ../js/ui/networkAgent.js:334
 msgid "Wired 802.1X authentication"
@@ -884,7 +823,7 @@ msgstr "Batal"
 
 #: ../js/ui/overview.js:132
 msgid "Overview"
-msgstr ""
+msgstr "Ringkasan"
 
 #: ../js/ui/overview.js:202
 msgid "Windows"
@@ -901,10 +840,9 @@ msgid "Dash"
 msgstr "Dash"
 
 #: ../js/ui/panel.js:592
-#, fuzzy
 #| msgid "Quit %s"
 msgid "Quit"
-msgstr "Keluar %s"
+msgstr "Keluar"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
@@ -977,31 +915,29 @@ msgstr "Tak ada yang cocok."
 
 #: ../js/ui/shellEntry.js:26
 msgid "Copy"
-msgstr ""
+msgstr "Salin"
 
 #: ../js/ui/shellEntry.js:31
 msgid "Paste"
-msgstr ""
+msgstr "Tempel"
 
 #: ../js/ui/shellEntry.js:77
 msgid "Show Text"
-msgstr ""
+msgstr "Tampilkan Teks"
 
 #: ../js/ui/shellEntry.js:79
-#, fuzzy
 #| msgid "Large Text"
 msgid "Hide Text"
-msgstr "Teks Besar"
+msgstr "Sembunyikan Teks"
 
 #: ../js/ui/shellMountOperation.js:271
 msgid "Wrong password, please try again"
 msgstr "Sandi salah, silakan coba lagi"
 
 #: ../js/ui/status/accessibility.js:47
-#, fuzzy
 #| msgid "Visibility"
 msgid "Accessibility"
-msgstr "Visibilitas"
+msgstr "Aksesibilitas"
 
 #: ../js/ui/status/accessibility.js:52
 msgid "Zoom"
@@ -1046,10 +982,14 @@ msgstr "Kontras Tinggi"
 msgid "Large Text"
 msgstr "Teks Besar"
 
-#: ../js/ui/status/bluetooth.js:31 ../js/ui/status/bluetooth.js:35
-#: ../js/ui/status/bluetooth.js:258 ../js/ui/status/bluetooth.js:341
-#: ../js/ui/status/bluetooth.js:371 ../js/ui/status/bluetooth.js:407
-#: ../js/ui/status/bluetooth.js:436 ../js/ui/status/network.js:893
+#: ../js/ui/status/bluetooth.js:31
+#: ../js/ui/status/bluetooth.js:35
+#: ../js/ui/status/bluetooth.js:258
+#: ../js/ui/status/bluetooth.js:341
+#: ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:407
+#: ../js/ui/status/bluetooth.js:436
+#: ../js/ui/status/network.js:893
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1070,7 +1010,8 @@ msgid "Bluetooth Settings"
 msgstr "Pengaturan Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/network.js:256
+#: ../js/ui/status/bluetooth.js:107
+#: ../js/ui/status/network.js:256
 msgid "hardware disabled"
 msgstr "perangkat keras dinoaktifkan"
 
@@ -1078,11 +1019,13 @@ msgstr "perangkat keras dinoaktifkan"
 msgid "Connection"
 msgstr "Koneksi"
 
-#: ../js/ui/status/bluetooth.js:214 ../js/ui/status/network.js:491
+#: ../js/ui/status/bluetooth.js:214
+#: ../js/ui/status/network.js:491
 msgid "disconnecting..."
 msgstr "memutus..."
 
-#: ../js/ui/status/bluetooth.js:227 ../js/ui/status/network.js:497
+#: ../js/ui/status/bluetooth.js:227
+#: ../js/ui/status/network.js:497
 msgid "connecting..."
 msgstr "menghubungi..."
 
@@ -1111,7 +1054,8 @@ msgstr "Pengaturan Papan Ketik"
 msgid "Mouse Settings"
 msgstr "Pengaturan Tetikus"
 
-#: ../js/ui/status/bluetooth.js:276 ../js/ui/status/volume.js:59
+#: ../js/ui/status/bluetooth.js:276
+#: ../js/ui/status/volume.js:59
 msgid "Sound Settings"
 msgstr "Pengaturan Suara"
 
@@ -1133,7 +1077,8 @@ msgstr "Selalu berikan akses"
 msgid "Grant this time only"
 msgstr "Hanya untuk saat ini"
 
-#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1093
+#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/telepathyClient.js:1093
 msgid "Reject"
 msgstr "Tolak"
 
@@ -1142,7 +1087,8 @@ msgstr "Tolak"
 msgid "Pairing confirmation for %s"
 msgstr "Konfirmasi berpasangan untuk %s"
 
-#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:444
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Perangkat %s ingin berpasangan dengan komputer ini"
@@ -1222,13 +1168,15 @@ msgstr "tidak tersedia"
 msgid "connection failed"
 msgstr "koneksi gagal"
 
-#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1505
+#: ../js/ui/status/network.js:585
+#: ../js/ui/status/network.js:1505
 msgid "More..."
 msgstr "Lainnya..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:621 ../js/ui/status/network.js:1440
+#: ../js/ui/status/network.js:621
+#: ../js/ui/status/network.js:1440
 msgid "Connected (private)"
 msgstr "Termsabung (pribadi)"
 
@@ -1245,7 +1193,8 @@ msgid "Auto dial-up"
 msgstr "Dial-up otomatis"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:879 ../js/ui/status/network.js:1452
+#: ../js/ui/status/network.js:879
+#: ../js/ui/status/network.js:1452
 #, c-format
 msgid "Auto %s"
 msgstr "%s otomatis"
@@ -1259,10 +1208,9 @@ msgid "Auto wireless"
 msgstr "Nirkabel otomatis"
 
 #: ../js/ui/status/network.js:1541
-#, fuzzy
 #| msgid "Network error"
 msgid "Network"
-msgstr "Galat jaringan"
+msgstr "Jaringan"
 
 #: ../js/ui/status/network.js:1548
 msgid "Enable networking"
@@ -1306,7 +1254,7 @@ msgstr "Manajer Jaringan"
 
 #: ../js/ui/status/power.js:59
 msgid "Battery"
-msgstr ""
+msgstr "Baterai"
 
 #: ../js/ui/status/power.js:76
 msgid "Power Settings"
@@ -1346,7 +1294,8 @@ msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d menit lagi"
 
-#: ../js/ui/status/power.js:116 ../js/ui/status/power.js:186
+#: ../js/ui/status/power.js:116
+#: ../js/ui/status/power.js:186
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
@@ -1393,7 +1342,8 @@ msgid "Computer"
 msgstr "Komputer"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:25 ../js/ui/status/volume.js:39
+#: ../js/ui/status/volume.js:25
+#: ../js/ui/status/volume.js:39
 msgid "Volume"
 msgstr "Volume"
 
@@ -1489,12 +1439,14 @@ msgstr "Undangan ke %s"
 msgid "%s is inviting you to join %s"
 msgstr "%s mengundang Anda untuk bergabung dengan %s"
 
-#: ../js/ui/telepathyClient.js:1054 ../js/ui/telepathyClient.js:1133
+#: ../js/ui/telepathyClient.js:1054
+#: ../js/ui/telepathyClient.js:1133
 #: ../js/ui/telepathyClient.js:1231
 msgid "Decline"
 msgstr "Tolak"
 
-#: ../js/ui/telepathyClient.js:1055 ../js/ui/telepathyClient.js:1134
+#: ../js/ui/telepathyClient.js:1055
+#: ../js/ui/telepathyClient.js:1134
 #: ../js/ui/telepathyClient.js:1232
 msgid "Accept"
 msgstr "Terima"
@@ -1597,16 +1549,13 @@ msgid "Connection has been lost"
 msgstr "Koneksi telah terputus"
 
 #: ../js/ui/telepathyClient.js:1321
-#, fuzzy
 #| msgid "This resource is already connected to the server"
 msgid "This account is already connected to the server"
-msgstr "Sumber daya ini sudah tersambung ke server"
+msgstr "Akun ini telah tersambung pada server"
 
 #: ../js/ui/telepathyClient.js:1323
-msgid ""
-"Connection has been replaced by a new connection using the same resource"
-msgstr ""
-"Koneksi telah digantikan oleh koneksi baru memakai sumberdaya yang sama"
+msgid "Connection has been replaced by a new connection using the same resource"
+msgstr "Koneksi telah digantikan oleh koneksi baru memakai sumberdaya yang sama"
 
 #: ../js/ui/telepathyClient.js:1325
 msgid "The account already exists on the server"
@@ -1621,25 +1570,17 @@ msgid "Certificate has been revoked"
 msgstr "Sertifikat telah dicabut"
 
 #: ../js/ui/telepathyClient.js:1331
-msgid ""
-"Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr ""
-"Sertifikat memakai algorima cipher yang tak aman atau lemah secara "
-"kriptografi"
+msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgstr "Sertifikat memakai algorima cipher yang tak aman atau lemah secara kriptografi"
 
 #: ../js/ui/telepathyClient.js:1333
-msgid ""
-"The length of the server certificate, or the depth of the server certificate "
-"chain, exceed the limits imposed by the cryptography library"
-msgstr ""
-"Panjang sertifikat server, atau kedalaman rantai sertifikat server, "
-"melampaui batas yang diberlakukan oleh pustaka kriptografi"
+msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
+msgstr "Panjang sertifikat server, atau kedalaman rantai sertifikat server, melampaui batas yang diberlakukan oleh pustaka kriptografi"
 
 #: ../js/ui/telepathyClient.js:1335
-#, fuzzy
 #| msgid "Connection error"
 msgid "Internal error"
-msgstr "Galat sambungan"
+msgstr "Galat internal"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
@@ -1672,7 +1613,9 @@ msgstr "Menganggur"
 msgid "Unavailable"
 msgstr "Tak tersedia"
 
-#: ../js/ui/userMenu.js:595 ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:669
+#: ../js/ui/userMenu.js:595
+#: ../js/ui/userMenu.js:599
+#: ../js/ui/userMenu.js:669
 msgid "Power Off..."
 msgstr "Matikan..."
 
@@ -1705,13 +1648,8 @@ msgid "Your chat status will be set to busy"
 msgstr "Status obrolan Anda akan ditata ke sibuk"
 
 #: ../js/ui/userMenu.js:689
-msgid ""
-"Notifications are now disabled, including chat messages. Your online status "
-"has been adjusted to let others know that you might not see their messages."
-msgstr ""
-"Pemberitahuan kini dimatikan, termasuk pesan obrolan. Status daring Anda "
-"telah disesuaikan untuk memberitahu pihak lain bahwa Anda mungkin tak "
-"melihat pesan mereka."
+msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
+msgstr "Pemberitahuan kini dimatikan, termasuk pesan obrolan. Status daring Anda telah disesuaikan untuk memberitahu pihak lain bahwa Anda mungkin tak melihat pesan mereka."
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1721,7 +1659,8 @@ msgstr ""
 msgid "Type to search..."
 msgstr "Ketik yang ingin dicari..."
 
-#: ../js/ui/viewSelector.js:131 ../src/shell-util.c:252
+#: ../js/ui/viewSelector.js:131
+#: ../src/shell-util.c:252
 msgid "Search"
 msgstr "Cari"
 
@@ -1731,15 +1670,17 @@ msgid ""
 "Sorry, no wisdom for you today:\n"
 "%s"
 msgstr ""
+"Maaf, tidak ada kata-kata bijak bagi Anda hari ini:\n"
+"%s"
 
 #: ../js/ui/wanda.js:128
 #, c-format
 msgid "%s the Oracle says"
-msgstr ""
+msgstr "%s sang Peramal berkata"
 
 #: ../js/ui/wanda.js:168
 msgid "Your favorite Easter Egg"
-msgstr ""
+msgstr "Telur Paskah Kesukaan Anda"
 
 #: ../js/ui/windowAttentionHandler.js:19
 #, c-format
@@ -1780,14 +1721,13 @@ msgid "Failed to launch '%s'"
 msgstr "Gagal meluncurkan '%s'"
 
 #: ../src/shell-keyring-prompt.c:708
-#, fuzzy
 #| msgid "Does not match"
 msgid "Passwords do not match."
-msgstr "Tidak cocok"
+msgstr "Sandi tidak cocok."
 
 #: ../src/shell-keyring-prompt.c:716
 msgid "Password cannot be blank"
-msgstr ""
+msgstr "Sandi tidak boleh kosong"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
@@ -1804,10 +1744,9 @@ msgstr "Dialog otentikasi ditolak oleh pengguna"
 #. Translators: this is the same string as the one found in
 #. * nautilus
 #: ../src/shell-util.c:97
-#, fuzzy
 #| msgid "Volume"
 msgid "Home"
-msgstr "Volume"
+msgstr "Rumah"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
