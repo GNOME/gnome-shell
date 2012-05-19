@@ -77,7 +77,10 @@ typedef enum
      blending. However when drawing from the journal we know what the
      contents of the color array is so we can override this by passing
      this flag. */
-  COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE = 1 << 4
+  COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE = 1 << 4,
+  /* This forcibly disables the debug option to divert all drawing to
+   * wireframes */
+  COGL_DRAW_SKIP_DEBUG_WIREFRAME = 1 << 5
 } CoglDrawFlags;
 
 /* During CoglContext initialization we register the "cogl_color_in"
