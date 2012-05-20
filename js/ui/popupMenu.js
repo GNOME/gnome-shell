@@ -1958,8 +1958,9 @@ const RemoteMenu = new Lang.Class({
                     k++;
                 }
             } else if (changeSignal) {
-                let signalId = this.actionGroup.connect(changeSignal, Lang.bind(this, function() {
-                    this.actionGroup.disconnect(signalId);
+                let signalId = this.actionGroup.connect(changeSignal, Lang.bind(this, function(actionGroup, actionName) {
+                    actionGroup.disconnect(signalId);
+                    if (this._actions[actionName]) return;
 
                     // force a full update
                     this._modelChanged(model, 0, -1, model.get_n_items(), target);
