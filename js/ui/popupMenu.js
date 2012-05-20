@@ -1917,7 +1917,7 @@ const RemoteMenu = new Lang.Class({
         while (k0 < currentItems.length && currentItems[k0]._ignored)
             k0++;
         // find the right menu item matching the model item
-        for (j0 = 0; j0 < position; j0++, k0++) {
+        for (j0 = 0; k0 < currentItems.length && j0 < position; j0++, k0++) {
             if (currentItems[k0]._ignored)
                 k0++;
         }
@@ -1927,7 +1927,7 @@ const RemoteMenu = new Lang.Class({
             for (k = k0; k < currentItems.length; k++)
                 currentItems[k].destroy();
         } else {
-            for (j = j0, k = k0; j < j0 + removed; j++, k++) {
+            for (j = j0, k = k0; k < currentItems.length && j < j0 + removed; j++, k++) {
                 currentItems[k].destroy();
 
                 if (currentItems[k]._ignored)
