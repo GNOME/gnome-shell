@@ -39,7 +39,7 @@ const _modes = {
              hasRunDialog: false,
              hasWorkspaces: false,
              createSession: Main.createGDMSession,
-             extraStylesheet: global.datadir + '/theme/gdm.css',
+             extraStylesheet: null,
              statusArea: {
                  order: [
                      'a11y', 'display', 'keyboard',

@@ -8,7 +8,7 @@ const St = imports.gi.St;
 
 const GnomeSession = imports.misc.gnomeSession;
 const Lightbox = imports.ui.lightbox;
-const LoginDialog = imports.gdm.loginDialog;
+const UnlockDialog = imports.ui.unlockDialog;
 const Main = imports.ui.main;
 
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
@@ -48,8 +48,7 @@ const ScreenShield = new Lang.Class({
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.POSITION | Clutter.BindCoordinate.SIZE });
         this._group.add_constraint(constraint);
-        this._group.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
-        this._group.connect('button-press-event', Lang.bind(this, this._onButtonPressEvent));
+
         this._lightbox = new Lightbox.Lightbox(this._group,
                                                { inhibitEvents: true, fadeInTime: 10, fadeFactor: 1 });
         this._background = Meta.BackgroundActor.new_for_screen(global.screen);
@@ -71,6 +70,8 @@ const ScreenShield = new Lang.Class({
             if (lightboxWasShown && this._settings.get_boolean(LOCK_ENABLED_KEY)) {
                 this._background.show();
                 this._background.raise_top();
+
+                this._showUnlockDialog();
             } else {
                 this._popModal();
             }
@@ -84,13 +85,32 @@ const ScreenShield = new Lang.Class({
         this._background.hide();
     },
 
-    _onKeyPressEvent: function(object, keyPressEvent) {
-        log("in _onKeyPressEvent - lock is enabled: " + this._settings.get_boolean(LOCK_ENABLED_KEY));
-        this._popModal();
+    _showUnlockDialog: function() {
+        if (this._dialog)
+            return;
+
+        this._dialog = new UnlockDialog.UnlockDialog();
+        this._dialog.connect('failed', Lang.bind(this, this._onUnlockFailed));
+        this._dialog.connect('unlocked', Lang.bind(this, this._onUnlockSucceded));
+
+        this._dialog.open(global.get_current_time());
     },
 
-    _onButtonPressEvent: function(object, buttonPressEvent) {
-        log("in _onButtonPressEvent - lock is enabled: " + this._settings.get_boolean(LOCK_ENABLED_KEY));
+    _onUnlockFailed: function() {
+        // for now, on failure we just destroy the dialog and create a new
+        // one (this is what gnome-screensaver does)
+        // in the future, we may want to go back to the lock screen instead
+
+        this._dialog.destroy();
+        this._dialog = null;
+
+        this._showUnlockDialog();
+    },
+
+    _onUnlockSucceded: function() {
+        this._dialog.destroy();
+        this._dialog = null;
+
         this._popModal();
     },
 });
