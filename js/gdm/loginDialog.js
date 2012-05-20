@@ -39,8 +39,8 @@ const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
 
-const _PASSWORD_SERVICE_NAME = 'gdm-password';
-const _FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
+const PASSWORD_SERVICE_NAME = 'gdm-password';
+const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 const _FADE_ANIMATION_TIME = 0.16;
 const _RESIZE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 2.0;
@@ -749,7 +749,7 @@ const LoginDialog = new Lang.Class({
         this._userManager = AccountsService.UserManager.get_default()
         this._greeterClient = GdmGreeter.Server.new_for_greeter_sync(null);
 
-        this._greeterClient.call_start_conversation_sync(_PASSWORD_SERVICE_NAME, null);
+        this._greeterClient.call_start_conversation_sync(PASSWORD_SERVICE_NAME, null);
 
         this._greeterClient.connect('reset',
                                     Lang.bind(this, this._onReset));
@@ -895,7 +895,7 @@ const LoginDialog = new Lang.Class({
                     this._haveFingerprintReader = true;
 
                 if (this._haveFingerprintReader)
-                    this._greeterClient.call_start_conversation(_FINGERPRINT_SERVICE_NAME);
+                    this._greeterClient.call_start_conversation_sync(FINGERPRINT_SERVICE_NAME, null);
             }));
     },
 
@@ -914,7 +914,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _onReset: function(client, serviceName) {
-        this._greeterClient.call_start_conversation_sync(_PASSWORD_SERVICE_NAME, null);
+        this._greeterClient.call_start_conversation_sync(PASSWORD_SERVICE_NAME, null);
         this._startFingerprintConversationIfNeeded();
 
         let tasks = [this._hidePrompt,
@@ -950,7 +950,7 @@ const LoginDialog = new Lang.Class({
         // We don't display fingerprint messages, because they
         // have words like UPEK in them. Instead we use the messages
         // as a cue to display our own message.
-        if (serviceName == _FINGERPRINT_SERVICE_NAME &&
+        if (serviceName == FINGERPRINT_SERVICE_NAME &&
             this._haveFingerprintReader &&
             (!this._promptFingerprintMessage.visible ||
              this._promptFingerprintMessage.opacity != 255)) {
@@ -959,7 +959,7 @@ const LoginDialog = new Lang.Class({
             return;
         }
 
-        if (serviceName != _PASSWORD_SERVICE_NAME)
+        if (serviceName != PASSWORD_SERVICE_NAME)
             return;
         Main.notifyError(info);
     },
@@ -967,7 +967,7 @@ const LoginDialog = new Lang.Class({
     _onProblem: function(client, serviceName, problem) {
         // we don't want to show auth failed messages to
         // users who haven't enrolled their fingerprint.
-        if (serviceName != _PASSWORD_SERVICE_NAME)
+        if (serviceName != PASSWORD_SERVICE_NAME)
             return;
         Main.notifyError(problem);
     },
@@ -1088,7 +1088,7 @@ const LoginDialog = new Lang.Class({
     },
     _onInfoQuery: function(client, serviceName, question) {
         // We only expect questions to come from the main auth service
-        if (serviceName != _PASSWORD_SERVICE_NAME)
+        if (serviceName != PASSWORD_SERVICE_NAME)
             return;
 
         this._promptEntry.set_text('');
@@ -1098,7 +1098,7 @@ const LoginDialog = new Lang.Class({
 
     _onSecretInfoQuery: function(client, serviceName, secretQuestion) {
         // We only expect secret requests to come from the main auth service
-        if (serviceName != _PASSWORD_SERVICE_NAME)
+        if (serviceName != PASSWORD_SERVICE_NAME)
             return;
 
         this._promptEntry.set_text('');
@@ -1236,9 +1236,9 @@ const LoginDialog = new Lang.Class({
         // if the password service fails, then cancel everything.
         // But if, e.g., fingerprint fails, still give
         // password authentication a chance to succeed
-        if (serviceName == _PASSWORD_SERVICE_NAME) {
+        if (serviceName == PASSWORD_SERVICE_NAME) {
             this._greeterClient.call_cancel_sync(null);
-        } else if (serviceName == _FINGERPRINT_SERVICE_NAME) {
+        } else if (serviceName == FINGERPRINT_SERVICE_NAME) {
             _fadeOutActor(this._promptFingerprintMessage);
         }
     },
@@ -1261,7 +1261,7 @@ const LoginDialog = new Lang.Class({
                                                       this._fadeOutLogo]),
 
                      function() {
-                         this._greeterClient.call_begin_verification_sync(_PASSWORD_SERVICE_NAME, null);
+                         this._greeterClient.call_begin_verification_sync(PASSWORD_SERVICE_NAME, null);
                      }];
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
@@ -1320,7 +1320,7 @@ const LoginDialog = new Lang.Class({
 
                      function() {
                          let userName = activatedItem.user.get_user_name();
-                         this._greeterClient.call_begin_verification_for_user_sync(_PASSWORD_SERVICE_NAME,
+                         this._greeterClient.call_begin_verification_for_user_sync(PASSWORD_SERVICE_NAME,
                                                                                    userName, null);
 
                          if (this._haveFingerprintReader)

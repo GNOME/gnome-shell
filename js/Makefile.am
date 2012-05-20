@@ -92,6 +92,7 @@ nobase_dist_js_DATA = 	\
 	ui/status/bluetooth.js	\
 	ui/telepathyClient.js	\
 	ui/tweener.js		\
+	ui/unlockDialog.js	\
 	ui/userMenu.js		\
 	ui/viewSelector.js	\
 	ui/wanda.js		\

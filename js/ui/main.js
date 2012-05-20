@@ -494,8 +494,8 @@ function loadTheme() {
 
     let theme = new St.Theme ({ application_stylesheet: cssStylesheet });
 
-    if (global.session_type == Shell.SessionType.GDM)
-        theme.load_stylesheet(_gdmCssStylesheet);
+    // FIXME: merge back into main stylesheet
+    theme.load_stylesheet(_gdmCssStylesheet);
 
     if (previousTheme) {
         let customStylesheets = previousTheme.get_custom_stylesheets();
