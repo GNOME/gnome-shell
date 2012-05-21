@@ -683,7 +683,7 @@ function pushModal(actor, timestamp, options) {
     let actorDestroyId = actor.connect('destroy', function() {
         let index = _findModal(actor);
         if (index >= 0)
-            modalActorFocusStack.splice(index, 1);
+            popModal(actor);
     });
     let curFocus = global.stage.get_key_focus();
     let curFocusDestroyId;
