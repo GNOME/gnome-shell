@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
+const Signals = imports.signals;
 const St = imports.gi.St;
 
 const GnomeSession = imports.misc.gnomeSession;
@@ -42,6 +43,8 @@ const ScreenShield = new Lang.Class({
 
         this._settings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
 
+        this._isModal = false;
+        this._isLocked = false;
         this._group = new St.Widget({ x: 0,
                                       y: 0 });
         Main.uiGroup.add_actor(this._group);
@@ -57,22 +60,28 @@ const ScreenShield = new Lang.Class({
     },
 
     _onStatusChanged: function(status) {
-        log ("in _onStatusChanged");
         if (status == GnomeSession.PresenceStatus.IDLE) {
-            log("session gone idle");
+            if (this._dialog) {
+                this._dialog.cancel();
+                this._dialog = null;
+            }
+
             this._group.reactive = true;
-            Main.pushModal(this._group);
-            this._lightbox.show();
+            if (!this._isModal) {
+                Main.pushModal(this._group);
+                this._isModal = true;
+            }
+
+            if (!this._isLocked)
+                this._lightbox.show();
         } else {
             let lightboxWasShown = this._lightbox.shown;
-            log("this._lightbox.shown " + this._lightbox.shown);
             this._lightbox.hide();
-            if (lightboxWasShown && this._settings.get_boolean(LOCK_ENABLED_KEY)) {
-                this._background.show();
-                this._background.raise_top();
 
-                this._showUnlockDialog();
-            } else {
+            let shouldLock = lightboxWasShown && this._settings.get_boolean(LOCK_ENABLED_KEY);
+            if (shouldLock || this._isLocked) {
+                this.lock();
+            } else if (this._isModal) {
                 this._popModal();
             }
         }
@@ -80,9 +89,14 @@ const ScreenShield = new Lang.Class({
 
     _popModal: function() {
         this._group.reactive = false;
-        if (Main.isInModalStack(this._group))
-            Main.popModal(this._group);
+        Main.popModal(this._group);
+
         this._background.hide();
+
+        this._isModal = false;
+        this._isLocked = false;
+
+        this.emit('lock-status-changed', false);
     },
 
     _showUnlockDialog: function() {
@@ -93,7 +107,15 @@ const ScreenShield = new Lang.Class({
         this._dialog.connect('failed', Lang.bind(this, this._onUnlockFailed));
         this._dialog.connect('unlocked', Lang.bind(this, this._onUnlockSucceded));
 
-        this._dialog.open(global.get_current_time());
+        if (!this._dialog.open(global.get_current_time())) {
+            log('Could not open unlock dialog: failed to acquire grab');
+
+            // and then? best we can do is to autounlock, although that's potentially
+            // a security issue
+            this._onUnlockSucceded();
+        }
+
+        this._dialog._group.raise_top();
     },
 
     _onUnlockFailed: function() {
@@ -113,4 +135,25 @@ const ScreenShield = new Lang.Class({
 
         this._popModal();
     },
+
+    get locked() {
+        return this._isLocked;
+    },
+
+    lock: function() {
+        if (!this._isModal) {
+            Main.pushModal(this.actor);
+            this._isModal = true;
+        }
+
+        let wasLocked = this._isLocked;
+        this._isLocked = true;
+        this.actor.show();
+
+        this._showUnlockDialog();
+
+        if (!wasLocked)
+            this.emit('lock-status-changed', true);
+    }
 });
+Signals.addSignalMethods(ScreenShield.prototype);
