@@ -1641,7 +1641,7 @@ _cogl_matrix_init_translation (CoglMatrix *matrix,
 
   matrix->xw = tx;
   matrix->yw = ty;
-  matrix->yw = tz;
+  matrix->zw = tz;
 
   matrix->type = COGL_MATRIX_TYPE_3D;
   matrix->flags = MAT_FLAG_TRANSLATION | MAT_DIRTY_INVERSE;
