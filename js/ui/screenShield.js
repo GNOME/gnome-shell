@@ -37,6 +37,8 @@ const ScreenShield = new Lang.Class({
 
         this._settings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
 
+        this._isModal = false;
+        this._isLocked = false;
         this._group = new St.Widget({ x: 0,
                                       y: 0 });
         Main.uiGroup.add_actor(this._group);
@@ -55,19 +57,36 @@ const ScreenShield = new Lang.Class({
         log ("in _onStatusChanged");
         if (status == GnomeSession.PresenceStatus.IDLE) {
             log("session gone idle");
+
+            if (this._dialog) {
+                log('canceling existing dialog');
+                this._dialog.cancel();
+                this._dialog = null;
+            }
+
             this._group.reactive = true;
-            Main.pushModal(this._group);
+            if (!this._isModal) {
+                Main.pushModal(this._group);
+                this._isModal = true;
+            }
+
+            this._group.raise_top();
             this._lightbox.show();
         } else {
+            log('status is now ' + status);
+
             let lightboxWasShown = this._lightbox.shown;
             log("this._lightbox.shown " + this._lightbox.shown);
             this._lightbox.hide();
-            if (lightboxWasShown && this._settings.get_boolean(LOCK_ENABLED_KEY)) {
+
+            let shouldLock = lightboxWasShown && this._settings.get_boolean(LOCK_ENABLED_KEY);
+            if (shouldLock || this._isLocked) {
+                this._isLocked = true;
                 this._background.show();
                 this._background.raise_top();
 
                 this._showUnlockDialog();
-            } else {
+            } else if (this._isModal) {
                 this._popModal();
             }
         }
@@ -75,20 +94,32 @@ const ScreenShield = new Lang.Class({
 
     _popModal: function() {
         this._group.reactive = false;
-        if (Main.isInModalStack(this._group))
-            Main.popModal(this._group);
+        Main.popModal(this._group);
+
         this._background.hide();
     },
 
     _showUnlockDialog: function() {
-        if (this._dialog)
+        if (this._dialog) {
+            log ('_showUnlockDialog called again when the dialog was already there');
             return;
+        }
 
-        this._dialog = new UnlockDialog.UnlockDialog();
-        this._dialog.connect('failed', Lang.bind(this, this._onUnlockFailed));
-        this._dialog.connect('unlocked', Lang.bind(this, this._onUnlockSucceded));
+        try {
+            this._dialog = new UnlockDialog.UnlockDialog();
+            this._dialog.connect('failed', Lang.bind(this, this._onUnlockFailed));
+            this._dialog.connect('unlocked', Lang.bind(this, this._onUnlockSucceded));
 
-        this._dialog.open(global.get_current_time());
+            if (!this._dialog.open(global.get_current_time()))
+                throw new Error('open failed!')
+
+            this._dialog._group.raise_top();
+        } catch(e) {
+            // FIXME: this is for debugging purposes
+            logError(e, 'error while creating unlock dialog');
+
+            this._popModal();
+        }
     },
 
     _onUnlockFailed: function() {
@@ -104,6 +135,8 @@ const ScreenShield = new Lang.Class({
 
     _onUnlockSucceded: function() {
         this._dialog.destroy();
+        this._dialog = null;
+
         this._popModal();
     },
 });
