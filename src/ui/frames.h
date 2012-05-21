@@ -97,10 +97,6 @@ struct _MetaFrames
 
   GtkStyleContext *normal_style;
   GHashTable *style_variants;
-
-  int invalidate_cache_timeout_id;
-  GList *invalidate_frames;
-  GHashTable *cache;
 };
 
 struct _MetaFramesClass
