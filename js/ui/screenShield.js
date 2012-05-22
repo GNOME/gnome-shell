@@ -11,6 +11,7 @@ const St = imports.gi.St;
 const GnomeSession = imports.misc.gnomeSession;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
+const MessageTray = imports.ui.messageTray;
 const Tweener = imports.ui.tweener;
 
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
@@ -20,6 +21,8 @@ const CURTAIN_SLIDE_TIME = 1.2;
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
 const ARROW_DRAG_TRESHOLD = 0.4;
+
+const SUMMARY_ICON_SIZE = 48;
 
 const Clock = new Lang.Class({
     Name: 'ScreenShieldClock',
@@ -56,6 +59,191 @@ const Clock = new Lang.Class({
         this.actor.destroy();
         this._wallClock.run_dispose();
     }
+});
+
+const NotificationsBox = new Lang.Class({
+    Name: 'NotificationsBox',
+
+    _init: function() {
+        this.actor = new St.BoxLayout({ vertical: true,
+                                        name: 'screenShieldNotifications',
+                                        margin_top: 20
+                                      });
+
+        this._residentNotificationBox = new St.BoxLayout({ vertical: true,
+                                                           style_class: 'screen-shield-notifications-box' });
+        this._persistentNotificationBox = new St.BoxLayout({ vertical: true,
+                                                             style_class: 'screen-shield-notifications-box' });
+
+        this.actor.add(this._residentNotificationBox, { x_fill: true });
+        this.actor.add(this._persistentNotificationBox, { x_fill: false, x_align: St.Align.MIDDLE });
+
+        this._items = [];
+        Main.messageTray.getSummaryItems().forEach(Lang.bind(this, function(item) {
+            this._summaryItemAdded(Main.messageTray, item);
+        }));
+
+        this._summaryAddedId = Main.messageTray.connect('summary-item-added', Lang.bind(this, this._summaryItemAdded));
+    },
+
+    destroy: function() {
+        if (this._summaryAddedId) {
+            Main.messageTray.disconnect(this._summaryAddedId);
+            this._summaryAddedId = 0;
+        }
+
+        for (let i = 0; i < this._items.length; i++)
+            this._removeItem(this._items[i]);
+        this._items = [];
+
+        this.actor.destroy();
+    },
+
+    _updateVisibility: function() {
+        if (this._residentNotificationBox.get_n_children() > 0) {
+            this.actor.show();
+            return;
+        }
+
+        let children = this._persistentNotificationBox.get_children()
+        this.actor.visible = children.some(function(a) { return a.visible; });
+    },
+
+    _sourceIsResident: function(source) {
+        return source.hasResidentNotification() && !source.isChat;
+    },
+
+    _makeNotificationCountText: function(source) {
+        if (source.isChat)
+            return ngettext("%d new message", "%d new messages", source.count).format(source.count);
+        else
+            return ngettext("%d new notification", "%d new notifications", source.count).format(source.count);
+    },
+
+    _makeNotificationSource: function(source) {
+        let box = new St.BoxLayout({ style_class: 'screen-shield-notification-source' });
+
+        let iconClone = source.createIcon(SUMMARY_ICON_SIZE);
+        let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
+        sourceActor.setIcon(iconClone);
+        box.add(sourceActor.actor, { y_fill: true });
+
+        let textBox = new St.BoxLayout({ vertical: true });
+        box.add(textBox, { y_fill: true, expand: true });
+
+        let label = new St.Label({ text: source.title,
+                                   style_class: 'screen-shield-notification-label' });
+        textBox.add(label);
+
+        let countLabel = new St.Label({ text: this._makeNotificationCountText(source),
+                                        style_class: 'screen-shield-notification-count-text' });
+        textBox.add(countLabel);
+
+        box.visible = source.count != 0;
+        return [box, countLabel];
+    },
+
+    _summaryItemAdded: function(tray, item) {
+        // Ignore transient sources
+        if (item.source.isTransient)
+            return;
+
+        let obj = {
+            item: item,
+            source: item.source,
+            resident: this._sourceIsResident(item.source),
+            contentUpdatedId: 0,
+            sourceDestroyId: 0,
+            sourceBox: null,
+            countLabel: null,
+        };
+
+        if (obj.resident) {
+            item.prepareNotificationStackForShowing();
+            this._residentNotificationBox.add(item.notificationStackView);
+        } else {
+            [obj.sourceBox, obj.countLabel] = this._makeNotificationSource(item.source);
+            this._persistentNotificationBox.add(obj.sourceBox);
+        }
+
+        obj.contentUpdatedId = item.connect('content-updated', Lang.bind(this, this._onItemContentUpdated));
+        obj.sourceCountChangedId = item.source.connect('count-changed', Lang.bind(this, this._onSourceCountChanged));
+        obj.sourceDestroyId = item.source.connect('destroy', Lang.bind(this, this._onSourceDestroy));
+        this._items.push(obj);
+
+        this._updateVisibility();
+    },
+
+    _findSource: function(source) {
+        for (let i = 0; i < this._items.length; i++) {
+            if (this._items[i].source == source)
+                return i;
+        }
+
+        return -1;
+    },
+
+    _onItemContentUpdated: function(item) {
+        let obj = this._items[this._findSource(item.source)];
+        this._updateItem(obj);
+    },
+
+    _onSourceCountChanged: function(source) {
+        let obj = this._items[this._findSource(source)];
+        this._updateItem(obj);
+    },
+
+    _updateItem: function(obj) {
+        let itemShouldBeResident = this._sourceIsResident(obj.source);
+
+        if (itemShouldBeResident && obj.resident) {
+            // Nothing to do here, the actor is already updated
+            return;
+        }
+
+        if (obj.resident && !itemShouldBeResident) {
+            // make into a regular item
+            this._residentNotificationBox.remove_actor(obj.item.notificationStackView);
+
+            [obj.sourceBox, obj.countLabel] = this._makeNotificationSource(obj.source);
+            this._persistentNotificationBox.add(obj.sourceBox);
+        } else if (itemShouldBeResident && !obj.resident) {
+            // make into a resident item
+            obj.sourceBox.destroy();
+            obj.sourceBox = obj.countLabel = null;
+
+            obj.item.prepareNotificationStackForShowing();
+            this._residentNotificationBox.add(obj.item.notificationStackView);
+        } else {
+            // just update the counter
+            obj.countLabel.text = this._makeNotificationCountText(obj.item.source);
+            obj.sourceBox.visible = obj.source.count != 0;
+        }
+
+        this._updateVisibility();
+    },
+
+    _onSourceDestroy: function(source) {
+        let idx = this._findSource(source);
+
+        this._removeItem(this._items[idx]);
+        this._items.splice(idx, 1);
+
+        this._updateVisibility();
+    },
+
+    _removeItem: function(obj) {
+        if (obj.resident) {
+            this._residentNotificationBox.remove_actor(obj.item.notificationStackView);
+            obj.item.doneShowingNotificationStack();
+        } else {
+            obj.sourceBox.destroy();
+        }
+
+        obj.item.disconnect(obj.contentUpdatedId);
+        obj.source.disconnect(obj.sourceDestroyId);
+        obj.source.disconnect(obj.sourceCountChangedId);
+    },
 });
 
 /**
@@ -298,12 +486,24 @@ const ScreenShield = new Lang.Class({
 
         this._lockScreenGroup.add_actor(this._lockScreenContentsBox);
 
+        if (this._settings.get_boolean('show-notifications')) {
+            this._notificationsBox = new NotificationsBox();
+            this._lockScreenContentsBox.add(this._notificationsBox.actor, { x_fill: true,
+                                                                            y_fill: true,
+                                                                            expand: true });
+        }
+
         this._hasLockScreen = true;
     },
 
     _clearLockScreen: function() {
         this._clock.destroy();
         this._clock = null;
+
+        if (this._notificationsBox) {
+            this._notificationsBox.destroy();
+            this._notificationsBox = null;
+        }
 
         this._lockScreenContentsBox.destroy();
 

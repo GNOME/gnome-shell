@@ -2221,3 +2221,30 @@ StScrollBar StButton#vhandle:hover
 .screen-shield-clock-date {
     font-size: 48px;
 }
+
+#screenShieldNotifications {
+    border-radius: 24px;
+    background-color: rgba(0.0, 0.0, 0.0, 0.9);
+    border: 2px solid #868686;
+}
+
+#screenShieldNotifications, .screen-shield-notifications-box {
+    spacing: 8px;
+}
+
+.screen-shield-notification-source {
+    padding: 24px 8px;
+    spacing: 5px;
+}
+
+.screen-shield-notification-label {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+/* Remove background from notifications, otherwise
+   opacity is doubled and they look darker
+*/
+.screen-shield-notifications-box .notification {
+    background-color: transparent;
+}

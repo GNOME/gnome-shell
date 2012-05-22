@@ -420,6 +420,7 @@ const Notification = new Lang.Class({
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
         this.isTransient = false;
         this.expanded = false;
+        this.showWhenLocked = false;
         this._destroyed = false;
         this._useActionIcons = false;
         this._customContent = false;
@@ -814,6 +815,14 @@ const Notification = new Lang.Class({
 
     setTransient: function(isTransient) {
         this.isTransient = isTransient;
+    },
+
+    setShowWhenLocked: function(show) {
+        if (show && !this.isTransient) {
+            throw new Error('ShowWhenLocked can only be set on a transient notification');
+        }
+
+        this.showWhenLocked = show;
     },
 
     setUseActionIcons: function(useIcons) {
@@ -1237,6 +1246,10 @@ const Source = new Lang.Class({
     // Default implementation is to destroy this source, but subclasses can override
     _lastNotificationRemoved: function() {
         this.destroy();
+    },
+
+    hasResidentNotification: function() {
+        return this.notifications.some(function(n) { return n.resident; });
     }
 });
 Signals.addSignalMethods(Source.prototype);
@@ -1578,6 +1591,9 @@ const MessageTray = new Lang.Class({
                 }
             }));
 
+        this._isScreenLocked = false;
+        Main.screenShield.connect('lock-status-changed', Lang.bind(this, this._onScreenLockStatusChanged));
+
         this._summaryItems = [];
         // We keep a list of new summary items that were added to the summary since the last
         // time it was shown to the user. We automatically show the summary to the user if there
@@ -1684,6 +1700,12 @@ const MessageTray = new Lang.Class({
         // *first* and not show the summary item until after it hides.
         // So postpone calling _updateState() a tiny bit.
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() { this._updateState(); return false; }));
+
+        this.emit('summary-item-added', summaryItem);
+    },
+
+    getSummaryItems: function() {
+        return this._summaryItems;
     },
 
     _onSourceDestroy: function(source) {
@@ -1756,6 +1778,11 @@ const MessageTray = new Lang.Class({
         notification.destroy();
         if (index != -1)
             this._notificationQueue.splice(index, 1);
+    },
+
+    _onScreenLockStatusChanged: function(screenShield, locked) {
+        this._isScreenLocked = locked;
+        this._updateState();
     },
 
     _lock: function() {
@@ -2088,18 +2115,36 @@ const MessageTray = new Lang.Class({
     // at the present time.
     _updateState: function() {
         // Notifications
-        let notificationUrgent = this._notificationQueue.length > 0 && this._notificationQueue[0].urgency == Urgency.CRITICAL;
-        let notificationsPending = this._notificationQueue.length > 0 && ((!this._busy && !this._inFullscreen) || notificationUrgent);
+        let notificationQueue = this._notificationQueue.filter(Lang.bind(this, function(notification) {
+            if (this._isScreenLocked)
+                return notification.showWhenLocked;
+            else
+                return true;
+        }));
+        let notificationUrgent = notificationQueue.length > 0 && notificationQueue[0].urgency == Urgency.CRITICAL;
+        // notificationsLimited is false when the screen is locked, because they go through
+        // different filtering, and we want to show non urgent messages at times
+        let notificationsLimited = (this._busy || this._inFullscreen) && !this._isScreenLocked;
+        let notificationsPending = notificationQueue.length > 0 && (!notificationsLimited || notificationUrgent);
+        let nextNotification = notificationQueue.length > 0 ? notificationQueue[0] : null;
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
         let notificationExpanded = this._notificationBin.y < - this.actor.height;
-        let notificationExpired = (this._notificationTimeoutId == 0 && !(this._notification && this._notification.urgency == Urgency.CRITICAL) && !this._pointerInTray && !this._locked && !(this._pointerInKeyboard && notificationExpanded)) || this._notificationRemoved;
+        let notificationExpired = this._notificationTimeoutId == 0 &&
+                                  !(this._notification && this._notification.urgency == Urgency.CRITICAL) &&
+                                  !this._pointerInTray &&
+                                  !this._locked &&
+                                  !(this._pointerInKeyboard && notificationExpanded);
+        let notificationLockedOut = this._isScreenLocked && (this._notification && !this._notification.showWhenLocked);
+        let notificationMustClose = this._notificationRemoved || notificationLockedOut || notificationExpired;
         let canShowNotification = notificationsPending && this._summaryState == State.HIDDEN;
 
         if (this._notificationState == State.HIDDEN) {
-            if (canShowNotification)
-                this._showNotification();
+            if (canShowNotification) {
+                this._showNotification(nextNotification);
+                this._notificationQueue.splice(this._notificationQueue.indexOf(nextNotification), 1);
+            }
         } else if (this._notificationState == State.SHOWN) {
-            if (notificationExpired)
+            if (notificationMustClose)
                 this._hideNotification();
             else if (notificationPinned && !notificationExpanded)
                 this._expandNotification(false);
@@ -2120,7 +2165,7 @@ const MessageTray = new Lang.Class({
 
         let summaryOptionalInOverview = this._overviewVisible && !this._locked && !summaryHovered;
         let mustHideSummary = (notificationsPending && (notificationUrgent || summaryOptionalInOverview))
-                              || notificationsVisible;
+                              || notificationsVisible || this._isScreenLocked;
 
         if (this._summaryState == State.HIDDEN && !mustHideSummary) {
             if (summarySummoned) {
@@ -2237,8 +2282,8 @@ const MessageTray = new Lang.Class({
        }
     },
 
-    _showNotification: function() {
-        this._notification = this._notificationQueue.shift();
+    _showNotification: function(notification) {
+        this._notification = notification;
         this._unseenNotifications.push(this._notification);
         if (this._idleMonitorWatchId == 0)
             this._idleMonitorWatchId = this.idleMonitor.add_watch(1000,
@@ -2587,6 +2632,7 @@ const MessageTray = new Lang.Class({
             this._updateState();
     }
 });
+Signals.addSignalMethods(MessageTray.prototype);
 
 const SystemNotificationSource = new Lang.Class({
     Name: 'SystemNotificationSource',
@@ -2594,6 +2640,7 @@ const SystemNotificationSource = new Lang.Class({
 
     _init: function() {
         this.parent(_("System Information"), 'dialog-information', St.IconType.SYMBOLIC);
+        this.setTransient(true);
     },
 
     open: function() {
