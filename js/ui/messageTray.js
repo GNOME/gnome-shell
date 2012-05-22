@@ -1457,7 +1457,7 @@ const MessageTray = new Lang.Class({
                                                               track_hover: true });
         this._summaryBoxPointer.actor.style_class = 'summary-boxpointer';
         this._summaryBoxPointer.actor.hide();
-        Main.layoutManager.addChrome(this._summaryBoxPointer.actor, { visibleInFullscreen: true });
+        Main.layoutManager.addChrome(this._summaryBoxPointer.actor);
 
         this._summaryBoxPointerItem = null;
         this._summaryBoxPointerContentUpdatedId = 0;

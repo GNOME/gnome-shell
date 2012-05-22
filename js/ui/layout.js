@@ -35,19 +35,20 @@ const LayoutManager = new Lang.Class({
 
         this.panelBox = new St.BoxLayout({ name: 'panelBox',
                                            vertical: true });
-        this.addChrome(this.panelBox, { affectsStruts: true });
+        this.addChrome(this.panelBox, { affectsStruts: true,
+                                        trackFullscreen: true });
         this.panelBox.connect('allocation-changed',
                               Lang.bind(this, this._updatePanelBarriers));
 
         this.trayBox = new St.BoxLayout({ name: 'trayBox' }); 
-        this.addChrome(this.trayBox, { visibleInFullscreen: true });
+        this.addChrome(this.trayBox);
         this.trayBox.connect('allocation-changed',
                              Lang.bind(this, this._updateTrayBarrier));
 
         this.keyboardBox = new St.BoxLayout({ name: 'keyboardBox',
                                               reactive: true,
                                               track_hover: true });
-        this.addChrome(this.keyboardBox, { visibleInFullscreen: true });
+        this.addChrome(this.keyboardBox);
         this._keyboardHeightNotifyId = 0;
 
         global.screen.connect('monitors-changed',
@@ -318,8 +319,10 @@ const LayoutManager = new Lang.Class({
     // the window manager struts. Changes to @actor's visibility will
     // NOT affect whether or not the strut is present, however.
     //
-    // If %visibleInFullscreen in @params is %true, the actor will be
-    // visible even when a fullscreen window should be covering it.
+    // If %trackFullscreen in @params is %true, the actor's visibility
+    // will be bound to the presence of fullscreen windows on the same
+    // monitor (it will be hidden whenever a fullscreen window is visible,
+    // and shown otherwise)
     addChrome: function(actor, params) {
         this._chrome.addActor(actor, params);
     },
@@ -333,10 +336,8 @@ const LayoutManager = new Lang.Class({
     // struts or input region to cover specific children.
     //
     // @params can have any of the same values as in addChrome(),
-    // though some possibilities don't make sense (eg, trying to have
-    // a %visibleInFullscreen child of a non-%visibleInFullscreen
-    // parent). By default, @actor has the same params as its chrome
-    // ancestor.
+    // though some possibilities don't make sense. By default, @actor has
+    // the same params as its chrome ancestor.
     trackChrome: function(actor, params) {
         this._chrome.trackActor(actor, params);
     },
@@ -542,7 +543,7 @@ const HotCorner = new Lang.Class({
 // workspace content.
 
 const defaultParams = {
-    visibleInFullscreen: false,
+    trackFullscreen: false,
     affectsStruts: false,
     affectsInputRegion: true
 };
@@ -680,6 +681,9 @@ const Chrome = new Lang.Class({
 
     _updateVisibility: function() {
         for (let i = 0; i < this._trackedActors.length; i++) {
+            if (!actorData.trackFullscreen)
+                continue;
+
             let actorData = this._trackedActors[i], visible;
             if (!actorData.isToplevel)
                 continue;
@@ -688,12 +692,11 @@ const Chrome = new Lang.Class({
                 visible = false;
             else if (this._inOverview)
                 visible = true;
-            else if (!actorData.visibleInFullscreen &&
-                     this.findMonitorForActor(actorData.actor).inFullscreen)
+            else if (this.findMonitorForActor(actorData.actor).inFullscreen)
                 visible = false;
             else
                 visible = true;
-            Main.uiGroup.set_skip_paint(actorData.actor, !visible);
+            actorData.actor.visible = visible;
         }
     },
 

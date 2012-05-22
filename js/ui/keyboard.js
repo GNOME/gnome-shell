@@ -93,7 +93,7 @@ const Key = new Lang.Class({
             this._getExtendedKeys();
             this.actor._extended_keys = this._extended_keyboard;
             this._boxPointer.actor.hide();
-            Main.layoutManager.addChrome(this._boxPointer.actor, { visibleInFullscreen: true });
+            Main.layoutManager.addChrome(this._boxPointer.actor);
         }
     },
 
