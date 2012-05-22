@@ -580,8 +580,8 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
    * available size in case the FlowLayout wasn't given the exact
    * size it requested
    */
-  if ((priv->req_width > 0 && avail_width != priv->req_width) ||
-      (priv->req_height > 0 && avail_height != priv->req_height))
+  if ((priv->req_width >= 0 && avail_width != priv->req_width) ||
+      (priv->req_height >= 0 && avail_height != priv->req_height))
     {
       clutter_flow_layout_get_preferred_width (manager, container,
                                                avail_height,
