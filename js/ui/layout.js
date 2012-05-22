@@ -11,7 +11,6 @@ const St = imports.gi.St;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
-const ScreenSaver = imports.misc.screenSaver;
 const Tweener = imports.ui.tweener;
 
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
@@ -565,6 +564,7 @@ const Chrome = new Lang.Class({
 
         this._monitors = [];
         this._inOverview = false;
+        this._isLocked = false;
         this._updateRegionIdle = 0;
         this._freezeUpdateCount = 0;
 
@@ -579,16 +579,6 @@ const Chrome = new Lang.Class({
         global.screen.connect('notify::n-workspaces',
                               Lang.bind(this, this._queueUpdateRegions));
 
-        this._screenSaverActive = false;
-        this._screenSaverProxy = new ScreenSaver.ScreenSaverProxy();
-        this._screenSaverProxy.connectSignal('ActiveChanged', Lang.bind(this, function(proxy, senderName, [isActive]) {
-            this._onScreenSaverActiveChanged(isActive);
-        }));
-        this._screenSaverProxy.GetActiveRemote(Lang.bind(this, function(result, err) {
-            if (!err)
-                this._onScreenSaverActiveChanged(result[0]);
-        }));
-
         this._relayout();
     },
 
@@ -597,6 +587,8 @@ const Chrome = new Lang.Class({
                              Lang.bind(this, this._overviewShowing));
         Main.overview.connect('hidden',
                              Lang.bind(this, this._overviewHidden));
+        Main.screenShield.connect('lock-status-changed',
+                                  Lang.bind(this, this._lockStatusChanged));
     },
 
     addActor: function(actor, params) {
@@ -690,16 +682,13 @@ const Chrome = new Lang.Class({
 
     _updateVisibility: function() {
         for (let i = 0; i < this._trackedActors.length; i++) {
+            let actorData = this._trackedActors[i], visible;
             if (!actorData.trackFullscreen)
                 continue;
-
-            let actorData = this._trackedActors[i], visible;
             if (!actorData.isToplevel)
                 continue;
 
-            if (this._screenSaverActive)
-                visible = false;
-            else if (this._inOverview)
+            if (this._inOverview || this._isLocked)
                 visible = true;
             else if (this.findMonitorForActor(actorData.actor).inFullscreen)
                 visible = false;
@@ -721,17 +710,17 @@ const Chrome = new Lang.Class({
         this._queueUpdateRegions();
     },
 
+    _lockStatusChanged: function(shield, locked) {
+        this._isLocked = locked;
+        this._updateVisibility();
+        this._queueUpdateRegions();
+    },
+
     _relayout: function() {
         this._monitors = this._layoutManager.monitors;
         this._primaryMonitor = this._layoutManager.primaryMonitor;
 
         this._updateFullscreen();
-        this._updateVisibility();
-        this._queueUpdateRegions();
-    },
-
-    _onScreenSaverActiveChanged: function(screenSaverActive) {
-        this._screenSaverActive = screenSaverActive;
         this._updateVisibility();
         this._queueUpdateRegions();
     },

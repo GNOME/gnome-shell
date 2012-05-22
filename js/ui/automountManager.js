@@ -9,7 +9,6 @@ const Params = imports.misc.params;
 const Shell = imports.gi.Shell;
 const Main = imports.ui.main;
 const ShellMountOperation = imports.ui.shellMountOperation;
-const ScreenSaver = imports.misc.screenSaver;
 const GnomeSession = imports.misc.gnomeSession;
 
 const GNOME_SESSION_AUTOMOUNT_INHIBIT = 16;
@@ -92,9 +91,7 @@ const AutomountManager = new Lang.Class({
         if (!haveSystemd())
             this.ckListener = new ConsoleKitManager();
 
-        this._ssProxy = new ScreenSaver.ScreenSaverProxy();
-        this._ssProxy.connectSignal('ActiveChanged',
-                                    Lang.bind(this, this._screenSaverActiveChanged));
+        Main.screenShield.connect('lock-status-changed', Lang.bind(this, this._lockStatusChanged));
 
         this._volumeMonitor = Gio.VolumeMonitor.get();
 
@@ -127,8 +124,8 @@ const AutomountManager = new Lang.Class({
                 }));
     },
 
-    _screenSaverActiveChanged: function(object, senderName, [isActive]) {
-        if (!isActive) {
+    _lockStatusChanged: function(shield, locked) {
+        if (!locked) {
             this._volumeQueue.forEach(Lang.bind(this, function(volume) {
                 this._checkAndMountVolume(volume);
             }));
@@ -166,7 +163,7 @@ const AutomountManager = new Lang.Class({
         if (!this.isSessionActive())
             return;
 
-        if (this._ssProxy.screenSaverActive)
+        if (Main.screenShield.locked)
             return;
 
         global.play_theme_sound(0, 'device-added-media');
@@ -178,7 +175,7 @@ const AutomountManager = new Lang.Class({
         if (!this.isSessionActive())
             return;
 
-        if (this._ssProxy.screenSaverActive)
+        if (Main.screenShield.locked)
             return;
 
         global.play_theme_sound(0, 'device-removed-media');        
@@ -230,7 +227,7 @@ const AutomountManager = new Lang.Class({
             if (!this.isSessionActive())
                 return;
 
-            if (this._ssProxy.screenSaverActive) {
+            if (Main.screenShield.locked) {
                 if (this._volumeQueue.indexOf(volume) == -1)
                     this._volumeQueue.push(volume);
 

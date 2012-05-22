@@ -16,7 +16,6 @@ const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
-const ScreenSaver = imports.misc.screenSaver;
 const Util = imports.misc.util;
 
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
@@ -451,7 +450,6 @@ const UserMenuButton = new Lang.Class({
         this._accountMgr = Tp.AccountManager.dup();
 
         this._upClient = new UPowerGlib.Client();
-        this._screenSaverProxy = new ScreenSaver.ScreenSaverProxy();
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._iconBox = new St.Bin();
@@ -769,16 +767,13 @@ const UserMenuButton = new Lang.Class({
 
     _onLockScreenActivate: function() {
         Main.overview.hide();
-        this._screenSaverProxy.LockRemote();
+        Main.screenShield.lock();
     },
 
     _onLoginScreenActivate: function() {
         Main.overview.hide();
-        // Ensure we only move to GDM after the screensaver has activated; in some
-        // OS configurations, the X server may block event processing on VT switch
-        this._screenSaverProxy.SetActiveRemote(true, Lang.bind(this, function() {
-            this._userManager.goto_login_session();
-        }));
+        Main.screenShield.lock();
+        this._userManager.goto_login_session();
     },
 
     _onQuitSessionActivate: function() {
@@ -800,10 +795,8 @@ const UserMenuButton = new Lang.Class({
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
             this._session.ShutdownRemote();
         } else {
-            // Ensure we only suspend after locking the screen
-            this._screenSaverProxy.LockRemote(Lang.bind(this, function() {
-                this._upClient.suspend_sync(null);
-            }));
+            Main.screenShield.lock();
+            this._upClient.suspend_sync(null);
         }
     }
 });
