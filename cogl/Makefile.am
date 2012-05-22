@@ -371,6 +371,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-memory-stack.c			\
 	$(srcdir)/cogl-magazine-private.h		\
 	$(srcdir)/cogl-magazine.c			\
+	$(srcdir)/cogl-gles2-context-private.h		\
 	$(srcdir)/cogl-gles2-context.c			\
 	$(NULL)
 
