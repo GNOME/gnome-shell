@@ -62,6 +62,10 @@ const Indicator = new Lang.Class({
         this._control.open();
     },
 
+    setLockedState: function(locked) {
+        this.menu.setSettingsVisibility(!locked);
+    },
+
     _onScrollEvent: function(actor, event) {
         let direction = event.get_scroll_direction();
         let currentVolume = this._output.volume;

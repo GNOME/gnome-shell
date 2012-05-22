@@ -83,6 +83,10 @@ const ATIndicator = new Lang.Class({
         this.menu.addSettingsAction(_("Universal Access Settings"), 'gnome-universal-access-panel.desktop');
     },
 
+    setLockedState: function(locked) {
+        this.menu.setSettingsVisibility(!locked);
+    },
+
     _buildItemExtended: function(string, initial_value, writable, on_set) {
         let widget = new PopupMenu.PopupSwitchMenuItem(string, initial_value);
         if (!writable)

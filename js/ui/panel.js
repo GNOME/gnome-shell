@@ -467,6 +467,13 @@ const AppMenuButton = new Lang.Class({
         this._sync();
     },
 
+    setLockedState: function(locked) {
+        if (locked)
+            this.hide();
+        else
+            this._sync();
+    },
+
     _sync: function() {
         let tracker = Shell.WindowTracker.get_default();
         let focusedApp = tracker.focus_app;
@@ -910,6 +917,8 @@ const Panel = new Lang.Class({
             this.actor.remove_style_class_name('in-overview');
         }));
 
+        Main.screenShield.connect('lock-status-changed', Lang.bind(this, this._onLockStateChanged));
+
         this._menus = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
@@ -1135,7 +1144,7 @@ const Panel = new Lang.Class({
 
         this._statusArea[role] = indicator;
         let destroyId = indicator.connect('destroy', Lang.bind(this, function(emitter) {
-            this._statusArea[role] = null;
+            delete this._statusArea[role];
             emitter.disconnect(destroyId);
         }));
 
@@ -1164,5 +1173,17 @@ const Panel = new Lang.Class({
         let box = icon.get_parent();
         if (box && box._delegate instanceof PanelMenu.ButtonBox)
             box.destroy();
+    },
+
+    _onLockStateChanged: function(shield, locked) {
+        if (this._activitiesButton)
+            this._activitiesButton.setLockedState(locked);
+        if (this._appMenu)
+            this._appMenu.setLockedState(locked);
+        if (this._dateMenu)
+            this._dateMenu.setLockedState(locked);
+
+        for (let id in this._statusArea)
+            this._statusArea[id].setLockedState(locked);
     },
 });

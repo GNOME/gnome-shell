@@ -80,6 +80,12 @@ const Indicator = new Lang.Class({
         this._devicesChanged();
     },
 
+    setLockedState: function(locked) {
+        if (locked)
+            this.menu.close();
+        this.actor.reactive = !locked;
+    },
+
     _readPrimaryDevice: function() {
         this._proxy.GetPrimaryDeviceRemote(Lang.bind(this, function(result, error) {
             if (error) {

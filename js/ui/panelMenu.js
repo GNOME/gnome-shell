@@ -145,6 +145,13 @@ const Button = new Lang.Class({
         }
     },
 
+    setLockedState: function(locked) {
+        // default behaviour is to hide completely
+        if (locked)
+            this.menu.close();
+        this.actor.visible = !locked;
+    },
+
     _onButtonPress: function(actor, event) {
         if (!this.menu)
             return;

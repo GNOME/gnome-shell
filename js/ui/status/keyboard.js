@@ -175,9 +175,14 @@ const InputSourceIndicator = new Lang.Class({
         // option if need arises.
         if (Main.sessionMode.allowSettings) {
             this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-            this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, this._showLayout));
+            this._showLayoutItem = this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, this._showLayout));
         }
         this.menu.addSettingsAction(_("Region and Language Settings"), 'gnome-region-panel.desktop');
+    },
+
+    setLockedState: function(locked) {
+        this._showLayoutItem.actor.visible = !locked;
+        this.menu.setSettingsVisibility(!locked);
     },
 
     _currentInputSourceChanged: function() {

@@ -872,6 +872,7 @@ const PopupMenuBase = new Lang.Class({
 
         this._activeMenuItem = null;
         this._childMenus = [];
+        this._settingsActions = { };
     },
 
     addAction: function(title, callback) {
@@ -899,7 +900,17 @@ const PopupMenuBase = new Lang.Class({
                            Main.overview.hide();
                            app.activate();
                        });
+
+        this._settingsActions[desktopFile] = menuItem;
+
         return menuItem;
+    },
+
+    setSettingsVisibility: function(visible) {
+        for (let id in this._settingsActions) {
+            let item = this._settingsActions[id];
+            item.actor.visible = visible;
+        }
     },
 
     isEmpty: function() {

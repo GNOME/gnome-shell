@@ -1698,6 +1698,15 @@ const NMApplet = new Lang.Class({
         this._primaryIcon.icon_name = iconName;
     },
 
+    setLockedState: function(locked) {
+        // FIXME: more design discussion is needed before we can
+        // expose part of this menu
+
+        if (locked)
+            this.menu.close();
+        this.actor.reactive = !locked;
+    },
+
     _ensureSource: function() {
         if (!this._source) {
             this._source = new MessageTray.Source(_("Network Manager"),
