@@ -374,7 +374,7 @@
   </autotools>
 
   <autotools id="gstreamer" autogenargs="-- --disable-tests" makeargs="GLIB_EXTRA_CFLAGS=-UG_DISABLE_DEPRECATED ERROR_CFLAGS=" supports-non-srcdir-builds="no">
-    <branch repo="gstreamer.freedesktop.org" module="gstreamer"/>
+    <branch repo="gstreamer.freedesktop.org" module="gstreamer" revision="0.10"/>
     <dependencies>
       <dep package="glib"/>
       <dep package="libxml2"/>
@@ -383,7 +383,7 @@
   </autotools>
 
   <autotools id="gst-plugins-base" autogenargs="--with-gtk=3.0 --disable-tests --disable-gnome_vfs" makeargs="GLIB_EXTRA_CFLAGS=-UG_DISABLE_DEPRECATED ERROR_CFLAGS= ERROR_CXXFLAGS=" supports-non-srcdir-builds="no">
-    <branch repo="gstreamer.freedesktop.org" module="gst-plugins-base"/>
+    <branch repo="gstreamer.freedesktop.org" module="gst-plugins-base" revision="0.10"/>
     <dependencies>
       <dep package="gstreamer"/>
       <dep package="gtk+"/>
@@ -395,7 +395,7 @@
   </autotools>
 
   <autotools id="gst-plugins-good" autogenargs="--with-gtk=3.0 --disable-tests --disable-examples" makeargs="GLIB_EXTRA_CFLAGS=-UG_DISABLE_DEPRECATED ERROR_CFLAGS= ERROR_CXXFLAGS=" supports-non-srcdir-builds="no">
-    <branch repo="gstreamer.freedesktop.org" module="gst-plugins-good"/>
+    <branch repo="gstreamer.freedesktop.org" module="gst-plugins-good" revision="0.10"/>
     <dependencies>
       <dep package="gstreamer"/>
       <dep package="gst-plugins-base"/>
