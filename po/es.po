@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-19 13:58+0000\n"
-"PO-Revision-Date: 2012-05-21 12:59+0200\n"
+"POT-Creation-Date: 2012-05-22 05:38+0000\n"
+"PO-Revision-Date: 2012-05-22 09:47+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -279,8 +279,8 @@ msgstr "Iniciar sesión"
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
-#: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:588
-#: ../js/ui/userMenu.js:592 ../js/ui/userMenu.js:637
+#: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:595
+#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:644
 msgid "Suspend"
 msgstr "Suspender"
 
@@ -288,8 +288,8 @@ msgstr "Suspender"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:590
-#: ../js/ui/userMenu.js:592 ../js/ui/userMenu.js:636
+#: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:643
 msgid "Power Off"
 msgstr "Apagar"
 
@@ -507,15 +507,15 @@ msgstr "La semana que viene"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:129
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:130
 msgid "Available"
 msgstr "Disponible"
 
-#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:138
+#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:139
 msgid "Away"
 msgstr "Ausente"
 
-#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:132
+#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:133
 msgid "Busy"
 msgstr "Ocupado"
 
@@ -1118,7 +1118,6 @@ msgstr "El dispositivo «%s» quiere emparejarse con este equipo"
 
 #: ../js/ui/status/bluetooth.js:383
 #, c-format
-#| msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgstr "Confirme que el PIN mostrado en «%06d» coincide con el del dispositivo."
 
@@ -1630,43 +1629,48 @@ msgstr "Editar cuenta"
 msgid "Unknown reason"
 msgstr "Razón desconocida"
 
-#: ../js/ui/userMenu.js:135
+#: ../js/ui/userMenu.js:136
 msgid "Hidden"
 msgstr "Oculto"
 
-#: ../js/ui/userMenu.js:141
+#: ../js/ui/userMenu.js:142
 msgid "Idle"
 msgstr "Inactivo"
 
-#: ../js/ui/userMenu.js:144
+#: ../js/ui/userMenu.js:145
 msgid "Unavailable"
 msgstr "No disponible"
 
-#: ../js/ui/userMenu.js:624
-msgid "Notifications"
-msgstr "Notificaciones"
-
-#: ../js/ui/userMenu.js:632
-msgid "System Settings"
-msgstr "Configuración del sistema"
-
-#: ../js/ui/userMenu.js:646
+#: ../js/ui/userMenu.js:556 ../js/ui/userMenu.js:653
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/userMenu.js:651
+#: ../js/ui/userMenu.js:557
+#| msgid "Switch User"
+msgid "Switch Session"
+msgstr "Cambiar de sesión"
+
+#: ../js/ui/userMenu.js:631
+msgid "Notifications"
+msgstr "Notificaciones"
+
+#: ../js/ui/userMenu.js:639
+msgid "System Settings"
+msgstr "Configuración del sistema"
+
+#: ../js/ui/userMenu.js:658
 msgid "Log Out"
 msgstr "Cerrar la sesión"
 
-#: ../js/ui/userMenu.js:659
+#: ../js/ui/userMenu.js:666
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/userMenu.js:677
+#: ../js/ui/userMenu.js:684
 msgid "Your chat status will be set to busy"
 msgstr "Su estado del chat se establecerá a «ocupado»"
 
-#: ../js/ui/userMenu.js:678
+#: ../js/ui/userMenu.js:685
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1740,7 +1744,7 @@ msgstr "Imprimir versión"
 msgid "Mode used by GDM for login screen"
 msgstr "Modo usado por GDM para la pantalla de inicio"
 
-#: ../src/shell-app.c:619
+#: ../src/shell-app.c:622
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Falló al lanzar «%s»"
