@@ -147,6 +147,7 @@ struct _CoglTextureDriver
   CoglBool
   (* size_supported) (CoglContext *ctx,
                       GLenum gl_target,
+                      GLenum gl_intformat,
                       GLenum gl_format,
                       GLenum gl_type,
                       int width,

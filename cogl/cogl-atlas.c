@@ -173,6 +173,7 @@ _cogl_atlas_get_initial_size (CoglPixelFormat format,
 {
   unsigned int size;
   GLenum gl_intformat;
+  GLenum gl_format;
   GLenum gl_type;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -180,7 +181,7 @@ _cogl_atlas_get_initial_size (CoglPixelFormat format,
   ctx->driver_vtable->pixel_format_to_gl (ctx,
                                           format,
                                           &gl_intformat,
-                                          NULL, /* gl_format */
+                                          &gl_format,
                                           &gl_type);
 
   /* At least on Intel hardware, the texture size will be rounded up
@@ -199,6 +200,7 @@ _cogl_atlas_get_initial_size (CoglPixelFormat format,
          !ctx->texture_driver->size_supported (ctx,
                                                GL_TEXTURE_2D,
                                                gl_intformat,
+                                               gl_format,
                                                gl_type,
                                                size, size))
     size >>= 1;
@@ -215,6 +217,7 @@ _cogl_atlas_create_map (CoglPixelFormat          format,
                         CoglAtlasRepositionData *textures)
 {
   GLenum gl_intformat;
+  GLenum gl_format;
   GLenum gl_type;
 
   _COGL_GET_CONTEXT (ctx, NULL);
@@ -222,7 +225,7 @@ _cogl_atlas_create_map (CoglPixelFormat          format,
   ctx->driver_vtable->pixel_format_to_gl (ctx,
                                           format,
                                           &gl_intformat,
-                                          NULL, /* gl_format */
+                                          &gl_format,
                                           &gl_type);
 
   /* Keep trying increasingly larger atlases until we can fit all of
@@ -230,6 +233,7 @@ _cogl_atlas_create_map (CoglPixelFormat          format,
   while (ctx->texture_driver->size_supported (ctx,
                                               GL_TEXTURE_2D,
                                               gl_intformat,
+                                              gl_format,
                                               gl_type,
                                               map_width, map_height))
     {

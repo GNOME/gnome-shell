@@ -314,6 +314,7 @@ _cogl_texture_driver_size_supported_3d (CoglContext *ctx,
 static CoglBool
 _cogl_texture_driver_size_supported (CoglContext *ctx,
                                      GLenum gl_target,
+                                     GLenum gl_intformat,
                                      GLenum gl_format,
                                      GLenum gl_type,
                                      int width,
@@ -333,7 +334,7 @@ _cogl_texture_driver_size_supported (CoglContext *ctx,
     return FALSE;
 
   /* Proxy texture allows for a quick check for supported size */
-  GE( ctx, glTexImage2D (proxy_target, 0, GL_RGBA,
+  GE( ctx, glTexImage2D (proxy_target, 0, gl_intformat,
                          width, height, 0 /* border */,
                          gl_format, gl_type, NULL) );
 

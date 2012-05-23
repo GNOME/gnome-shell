@@ -622,6 +622,7 @@ _cogl_texture_2d_sliced_slices_create (CoglContext *ctx,
   CoglSpan *x_span;
   CoglSpan *y_span;
   GLenum gl_intformat;
+  GLenum gl_format;
   GLenum gl_type;
 
   int   (*slices_for_size) (int, int, int, GArray*);
@@ -643,7 +644,7 @@ _cogl_texture_2d_sliced_slices_create (CoglContext *ctx,
   ctx->driver_vtable->pixel_format_to_gl (ctx,
                                           format,
                                           &gl_intformat,
-                                          NULL,
+                                          &gl_format,
                                           &gl_type);
 
   /* Negative number means no slicing forced by the user */
@@ -655,6 +656,7 @@ _cogl_texture_2d_sliced_slices_create (CoglContext *ctx,
       if (!ctx->texture_driver->size_supported (ctx,
                                                 GL_TEXTURE_2D,
                                                 gl_intformat,
+                                                gl_format,
                                                 gl_type,
                                                 max_width,
                                                 max_height))
@@ -690,6 +692,7 @@ _cogl_texture_2d_sliced_slices_create (CoglContext *ctx,
       while (!ctx->texture_driver->size_supported (ctx,
                                                    GL_TEXTURE_2D,
                                                    gl_intformat,
+                                                   gl_format,
                                                    gl_type,
                                                    max_width,
                                                    max_height))

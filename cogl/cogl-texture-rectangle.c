@@ -115,6 +115,7 @@ _cogl_texture_rectangle_can_create (unsigned int width,
                                     GError **error)
 {
   GLenum gl_intformat;
+  GLenum gl_format;
   GLenum gl_type;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -131,13 +132,14 @@ _cogl_texture_rectangle_can_create (unsigned int width,
   ctx->driver_vtable->pixel_format_to_gl (ctx,
                                           internal_format,
                                           &gl_intformat,
-                                          NULL,
+                                          &gl_format,
                                           &gl_type);
 
   /* Check that the driver can create a texture with that size */
   if (!ctx->texture_driver->size_supported (ctx,
                                             GL_TEXTURE_RECTANGLE_ARB,
                                             gl_intformat,
+                                            gl_format,
                                             gl_type,
                                             width,
                                             height))
