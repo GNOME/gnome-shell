@@ -199,6 +199,23 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
       gltype = GL_UNSIGNED_SHORT_5_5_5_1;
       break;
 
+    case COGL_PIXEL_FORMAT_DEPTH_16:
+      glintformat = GL_DEPTH_COMPONENT16;
+      glformat = GL_DEPTH_COMPONENT;
+      gltype = GL_UNSIGNED_SHORT;
+      break;
+    case COGL_PIXEL_FORMAT_DEPTH_32:
+      glintformat = GL_DEPTH_COMPONENT32;
+      glformat = GL_DEPTH_COMPONENT;
+      gltype = GL_UNSIGNED_INT;
+      break;
+
+    case COGL_PIXEL_FORMAT_DEPTH_24_STENCIL_8:
+      glintformat = GL_DEPTH_STENCIL;
+      glformat = GL_DEPTH_STENCIL;
+      gltype = GL_UNSIGNED_INT_24_8;
+      break;
+
     case COGL_PIXEL_FORMAT_ANY:
     case COGL_PIXEL_FORMAT_YUV:
       g_assert_not_reached ();
@@ -401,6 +418,13 @@ _cogl_driver_update_features (CoglContext *ctx,
       flags |= COGL_FEATURE_OFFSCREEN_MULTISAMPLE;
       COGL_FLAGS_SET (ctx->features,
                       COGL_FEATURE_ID_OFFSCREEN_MULTISAMPLE, TRUE);
+    }
+
+  if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 3, 0) ||
+      _cogl_check_extension ("GL_ARB_depth_texture", gl_extensions))
+    {
+      flags |= COGL_FEATURE_DEPTH_TEXTURE;
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_DEPTH_TEXTURE, TRUE);
     }
 
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 1) ||

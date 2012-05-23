@@ -1722,6 +1722,7 @@ _cogl_gles2_offscreen_allocate (CoglOffscreen *offscreen,
                                               offscreen->texture_level,
                                               offscreen->texture_level_width,
                                               offscreen->texture_level_height,
+                                              offscreen->depth_texture,
                                               &COGL_FRAMEBUFFER (offscreen)->config,
                                               offscreen->allocation_flags,
                                               &gles2_offscreen->gl_framebuffer))

@@ -53,6 +53,7 @@ typedef struct
   CoglBool need_stencil;
   int samples_per_pixel;
   CoglBool swap_throttled;
+  CoglBool depth_texture_enabled;
 } CoglFramebufferConfig;
 
 /* Flags to pass to _cogl_offscreen_new_to_texture_full */
@@ -189,6 +190,8 @@ struct _CoglOffscreen
   int             texture_level;
   int             texture_level_width;
   int             texture_level_height;
+
+  CoglTexture *depth_texture;
 
   CoglOffscreenAllocateFlags allocation_flags;
 
@@ -421,6 +424,7 @@ _cogl_framebuffer_try_creating_gl_fbo (CoglContext *ctx,
                                        int texture_level,
                                        int texture_level_width,
                                        int texture_level_height,
+                                       CoglTexture *depth_texture,
                                        CoglFramebufferConfig *config,
                                        CoglOffscreenAllocateFlags flags,
                                        CoglGLFramebuffer *gl_framebuffer);

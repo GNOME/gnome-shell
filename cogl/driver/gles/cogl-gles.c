@@ -33,6 +33,13 @@
 #include "cogl-renderer-private.h"
 #include "cogl-private.h"
 
+#ifndef GL_UNSIGNED_INT_24_8
+#define GL_UNSIGNED_INT_24_8 0x84FA
+#endif
+#ifndef GL_DEPTH_STENCIL
+#define GL_DEPTH_STENCIL 0x84F9
+#endif
+
 static CoglBool
 _cogl_driver_pixel_format_from_gl_internal (CoglContext *context,
                                             GLenum gl_int_format,
@@ -135,6 +142,23 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
       glintformat = GL_RGBA;
       glformat = GL_RGBA;
       gltype = GL_UNSIGNED_SHORT_5_5_5_1;
+      break;
+
+    case COGL_PIXEL_FORMAT_DEPTH_16:
+      glintformat = GL_DEPTH_COMPONENT;
+      glformat = GL_DEPTH_COMPONENT;
+      gltype = GL_UNSIGNED_SHORT;
+      break;
+    case COGL_PIXEL_FORMAT_DEPTH_32:
+      glintformat = GL_DEPTH_COMPONENT;
+      glformat = GL_DEPTH_COMPONENT;
+      gltype = GL_UNSIGNED_INT;
+      break;
+
+    case COGL_PIXEL_FORMAT_DEPTH_24_STENCIL_8:
+      glintformat = GL_DEPTH_STENCIL;
+      glformat = GL_DEPTH_STENCIL;
+      gltype = GL_UNSIGNED_INT_24_8;
       break;
 
     case COGL_PIXEL_FORMAT_ANY:
@@ -245,6 +269,12 @@ _cogl_driver_update_features (CoglContext *context,
       flags |= COGL_FEATURE_UNSIGNED_INT_INDICES;
       COGL_FLAGS_SET (context->features,
                       COGL_FEATURE_ID_UNSIGNED_INT_INDICES, TRUE);
+    }
+
+  if (_cogl_check_extension ("GL_OES_depth_texture", gl_extensions))
+    {
+      flags |= COGL_FEATURE_DEPTH_TEXTURE;
+      COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_DEPTH_TEXTURE, TRUE);
     }
 
   if (_cogl_check_extension ("GL_OES_texture_npot", gl_extensions))

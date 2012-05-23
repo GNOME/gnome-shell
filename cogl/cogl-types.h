@@ -206,18 +206,22 @@ typedef struct _CoglTextureVertex       CoglTextureVertex;
 #define COGL_BGR_BIT            (1 << 5)
 #define COGL_AFIRST_BIT         (1 << 6)
 #define COGL_PREMULT_BIT        (1 << 7)
+#define COGL_DEPTH_BIT          (1 << 8)
+#define COGL_STENCIL_BIT        (1 << 9)
 
 /* XXX: Notes to those adding new formats here...
  *
  * First this diagram outlines how we allocate the 32bits of a
  * CoglPixelFormat currently...
  *
- *                             4 bits for flags
- *                             |--|
+ *                            6 bits for flags
+ *                          |-----|
  *  enum        unused             4 bits for the bytes-per-pixel
  *                                 and component alignment info
- *  |------| |---------------|     |--|
- *  00000000 xxxxxxxx xxxxxxxx PFBA0000
+ *  |------| |-------------|       |--|
+ *  00000000 xxxxxxxx xxxxxxSD PFBA0000
+ *                          ^ stencil
+ *                           ^ depth
  *                             ^ premult
  *                              ^ alpha first
  *                               ^ bgr order
@@ -239,7 +243,7 @@ typedef struct _CoglTextureVertex       CoglTextureVertex;
  * 4-6   = 2 bpp, not aligned (e.g. 565, 4444, 5551)
  * 7     = YUV: undefined bpp, undefined alignment
  * 9     = 2 bpp, aligned
- * 10    = undefined
+ * 10    = depth, aligned (8, 16, 24, 32, 32f)
  * 11    = undefined
  * 12    = 3 bpp, not aligned
  * 13    = 4 bpp, not aligned (e.g. 2101010)
@@ -357,7 +361,12 @@ typedef enum { /*< prefix=COGL_PIXEL_FORMAT >*/
   COGL_PIXEL_FORMAT_RGBA_1010102_PRE = (COGL_PIXEL_FORMAT_RGBA_1010102 | COGL_PREMULT_BIT),
   COGL_PIXEL_FORMAT_BGRA_1010102_PRE = (COGL_PIXEL_FORMAT_BGRA_1010102 | COGL_PREMULT_BIT),
   COGL_PIXEL_FORMAT_ARGB_2101010_PRE = (COGL_PIXEL_FORMAT_ARGB_2101010 | COGL_PREMULT_BIT),
-  COGL_PIXEL_FORMAT_ABGR_2101010_PRE = (COGL_PIXEL_FORMAT_ABGR_2101010 | COGL_PREMULT_BIT)
+  COGL_PIXEL_FORMAT_ABGR_2101010_PRE = (COGL_PIXEL_FORMAT_ABGR_2101010 | COGL_PREMULT_BIT),
+
+  COGL_PIXEL_FORMAT_DEPTH_16  = (9 | COGL_DEPTH_BIT),
+  COGL_PIXEL_FORMAT_DEPTH_32  = (3 | COGL_DEPTH_BIT),
+
+  COGL_PIXEL_FORMAT_DEPTH_24_STENCIL_8 = (3 | COGL_DEPTH_BIT | COGL_STENCIL_BIT)
 } CoglPixelFormat;
 
 /**
@@ -400,6 +409,8 @@ typedef enum { /*< prefix=COGL_PIXEL_FORMAT >*/
  *     supported with CoglBufferAccess including read support.
  * @COGL_FEATURE_MAP_BUFFER_FOR_WRITE: Whether cogl_buffer_map() is
  *     supported with CoglBufferAccess including write support.
+ * @COGL_FEATURE_DEPTH_TEXTURE: Whether #CoglFramebuffer support rendering the
+ *     depth buffer to a texture.
  *
  * Flags for the supported features.
  *
@@ -429,7 +440,8 @@ typedef enum
   COGL_FEATURE_SHADERS_ARBFP          = (1 << 20),
   COGL_FEATURE_MAP_BUFFER_FOR_READ    = (1 << 21),
   COGL_FEATURE_MAP_BUFFER_FOR_WRITE   = (1 << 22),
-  COGL_FEATURE_ONSCREEN_MULTIPLE      = (1 << 23)
+  COGL_FEATURE_ONSCREEN_MULTIPLE      = (1 << 23),
+  COGL_FEATURE_DEPTH_TEXTURE          = (1 << 24)
 } CoglFeatureFlags;
 
 /**

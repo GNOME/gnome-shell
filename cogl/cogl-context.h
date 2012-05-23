@@ -206,7 +206,8 @@ cogl_is_context (void *object);
  *     for swap buffer completions.
  * @COGL_FEATURE_ID_GLES2_CONTEXT: Whether creating new GLES2 contexts is
  *    suported.
- *
+ * @COGL_FEATURE_ID_DEPTH_TEXTURE: Whether #CoglFramebuffer support rendering
+ *     the depth buffer to a texture.
  *
  * All the capabilities that can vary between different GPUs supported
  * by Cogl. Applications that depend on any of these features should explicitly
@@ -235,6 +236,7 @@ typedef enum _CoglFeatureID
   COGL_FEATURE_ID_MIRRORED_REPEAT,
   COGL_FEATURE_ID_SWAP_BUFFERS_EVENT,
   COGL_FEATURE_ID_GLES2_CONTEXT,
+  COGL_FEATURE_ID_DEPTH_TEXTURE,
 
   /*< private > */
   _COGL_N_FEATURE_IDS

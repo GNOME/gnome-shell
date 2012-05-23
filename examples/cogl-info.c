@@ -109,6 +109,12 @@ struct {
     "GLES2 API integration supported",
     "Support for creating a GLES2 context for using the GLES2 API in a "
       "way that's integrated with Cogl."
+  },
+  {
+    COGL_FEATURE_ID_DEPTH_TEXTURE,
+    "Depth Textures",
+    "CoglFramebuffers can be configured to render their depth buffer into "
+    "a texture"
   }
 };
 

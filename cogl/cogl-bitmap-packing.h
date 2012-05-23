@@ -370,6 +370,9 @@ G_PASTE (_cogl_unpack_, component_type) (CoglPixelFormat format,
     case COGL_PIXEL_FORMAT_ABGR_2101010_PRE:
       G_PASTE (_cogl_unpack_abgr_2101010_, component_type) (src, dst, width);
       break;
+    case COGL_PIXEL_FORMAT_DEPTH_16:
+    case COGL_PIXEL_FORMAT_DEPTH_32:
+    case COGL_PIXEL_FORMAT_DEPTH_24_STENCIL_8:
     case COGL_PIXEL_FORMAT_ANY:
     case COGL_PIXEL_FORMAT_YUV:
       g_assert_not_reached ();
@@ -711,6 +714,9 @@ G_PASTE (_cogl_pack_, component_type) (CoglPixelFormat format,
     case COGL_PIXEL_FORMAT_ABGR_2101010_PRE:
       G_PASTE (_cogl_pack_abgr_2101010_, component_type) (src, dst, width);
       break;
+    case COGL_PIXEL_FORMAT_DEPTH_16:
+    case COGL_PIXEL_FORMAT_DEPTH_32:
+    case COGL_PIXEL_FORMAT_DEPTH_24_STENCIL_8:
     case COGL_PIXEL_FORMAT_ANY:
     case COGL_PIXEL_FORMAT_YUV:
       g_assert_not_reached ();
