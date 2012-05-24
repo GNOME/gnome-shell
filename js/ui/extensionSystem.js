@@ -34,7 +34,7 @@ const REPOSITORY_URL_BASE = 'https://extensions.gnome.org';
 const REPOSITORY_URL_DOWNLOAD = REPOSITORY_URL_BASE + '/download-extension/%s.shell-extension.zip';
 const REPOSITORY_URL_INFO =     REPOSITORY_URL_BASE + '/extension-info/';
 
-const _httpSession = new Soup.SessionAsync();
+const _httpSession = new Soup.SessionAsync({ ssl_use_system_ca_file: true });
 
 // The unfortunate state of gjs, gobject-introspection and libsoup
 // means that I have to do a hack to add a feature.
@@ -42,16 +42,6 @@ const _httpSession = new Soup.SessionAsync();
 
 if (Soup.Session.prototype.add_feature != null)
     Soup.Session.prototype.add_feature.call(_httpSession, new Soup.ProxyResolverDefault());
-
-function _getCertFile() {
-    let localCert = GLib.build_filenamev([global.userdatadir, 'extensions.gnome.org.crt']);
-    if (GLib.file_test(localCert, GLib.FileTest.EXISTS))
-        return localCert;
-    else
-        return Config.SHELL_SYSTEM_CA_FILE;
-}
-
-_httpSession.ssl_ca_file = _getCertFile();
 
 // Arrays of uuids
 var enabledExtensions;

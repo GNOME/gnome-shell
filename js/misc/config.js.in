@@ -8,8 +8,6 @@ const PACKAGE_VERSION = '@PACKAGE_VERSION@';
 const GJS_VERSION = '@GJS_VERSION@';
 /* 1 if gnome-bluetooth is available, 0 otherwise */
 const HAVE_BLUETOOTH = @HAVE_BLUETOOTH@;
-/* The system TLS CA list */
-const SHELL_SYSTEM_CA_FILE = '@SHELL_SYSTEM_CA_FILE@';
 /* gettext package */
 const GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
 /* locale dir */

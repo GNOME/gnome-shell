@@ -237,31 +237,6 @@ AC_ARG_ENABLE(jhbuild-wrapper-script,
   AS_HELP_STRING([--enable-jhbuild-wrapper-script],[Make "gnome-shell" script work for jhbuild]),,enable_jhbuild_wrapper_script=no)
 AM_CONDITIONAL(USE_JHBUILD_WRAPPER_SCRIPT, test "x$enable_jhbuild_wrapper_script" = xyes)
 
-AC_MSG_CHECKING([location of system Certificate Authority list])
-AC_ARG_WITH(ca-certificates,
-            [AC_HELP_STRING([--with-ca-certificates=@<:@path@:>@],
-                            [path to system Certificate Authority list])])
-
-if test "$with_ca_certificates" = "no"; then
-    AC_MSG_RESULT([disabled])
-else
-    if test -z "$with_ca_certificates"; then
-        for f in /etc/pki/tls/certs/ca-bundle.crt \
-                 /etc/ssl/certs/ca-certificates.crt; do
-             if test -f "$f"; then
-                with_ca_certificates="$f"
-             fi
-        done
-        if test -z "$with_ca_certificates"; then
-            AC_MSG_ERROR([could not find. Use --with-ca-certificates=path to set, or --without-ca-certificates to disable])
-        fi
-   fi
-
-   AC_MSG_RESULT($with_ca_certificates)
-   AC_DEFINE_UNQUOTED(SHELL_SYSTEM_CA_FILE, ["$with_ca_certificates"], [The system TLS CA list])
-fi
-AC_SUBST(SHELL_SYSTEM_CA_FILE,["$with_ca_certificates"])
-
 BROWSER_PLUGIN_DIR="${BROWSER_PLUGIN_DIR:-"\${libdir}/mozilla/plugins"}"
 AC_ARG_VAR([BROWSER_PLUGIN_DIR],[Where to install the plugin to])
 
