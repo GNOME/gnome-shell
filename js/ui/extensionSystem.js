@@ -65,7 +65,7 @@ function installExtensionFromUUID(uuid) {
     _httpSession.queue_message(message,
                                function(session, message) {
                                    let info = JSON.parse(message.response_body.data);
-                                   let dialog = new InstallExtensionDialog(uuid, info.name);
+                                   let dialog = new InstallExtensionDialog(uuid, info);
                                    dialog.open(global.get_current_time());
                                });
 }
@@ -366,11 +366,11 @@ const InstallExtensionDialog = new Lang.Class({
     Name: 'InstallExtensionDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(uuid, name) {
+    _init: function(uuid, info) {
         this.parent({ styleClass: 'extension-dialog' });
 
         this._uuid = uuid;
-        this._name = name;
+        this._info = info;
 
         this.setButtons([{ label: _("Cancel"),
                            action: Lang.bind(this, this._onCancelButtonPressed),
@@ -380,13 +380,17 @@ const InstallExtensionDialog = new Lang.Class({
                            action: Lang.bind(this, this._onInstallButtonPressed)
                          }]);
 
-        let message = _("Download and install '%s' from extensions.gnome.org?").format(name);
+        let message = _("Download and install '%s' from extensions.gnome.org?").format(info.name);
 
-        this._descriptionLabel = new St.Label({ text: message });
+        let box = new St.BoxLayout();
+        this.contentLayout.add(box);
 
-        this.contentLayout.add(this._descriptionLabel,
-                               { y_fill:  true,
-                                 y_align: St.Align.START });
+        let gicon = new Gio.FileIcon({ file: Gio.File.new_for_uri(REPOSITORY_URL_BASE + info.icon) })
+        let icon = new St.Icon({ gicon: gicon });
+        box.add(icon);
+
+        let label = new St.Label({ text: message });
+        box.add(label);
     },
 
     _onCancelButtonPressed: function(button, event) {
