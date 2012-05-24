@@ -568,6 +568,9 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
   gint line_item_count;
   gint items_per_line;
   gint line_index;
+  gboolean use_animations;
+  ClutterAnimationMode easing_mode;
+  guint easing_duration, easing_delay;
 
   actor = CLUTTER_ACTOR (container);
   if (clutter_actor_get_n_children (actor) == 0)
@@ -599,6 +602,11 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
 
   line_item_count = 0;
   line_index = 0;
+
+  use_animations = clutter_layout_manager_get_easing_state (manager,
+                                                            &easing_mode,
+                                                            &easing_duration,
+                                                            &easing_delay);
 
   clutter_actor_iter_init (&iter, actor);
   while (clutter_actor_iter_next (&iter, &child))
@@ -701,7 +709,19 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
       child_alloc.y1 = ceil (item_y);
       child_alloc.x2 = ceil (child_alloc.x1 + item_width);
       child_alloc.y2 = ceil (child_alloc.y1 + item_height);
+
+      if (use_animations)
+        {
+          clutter_actor_save_easing_state (child);
+          clutter_actor_set_easing_mode (child, easing_mode);
+          clutter_actor_set_easing_duration (child, easing_duration);
+          clutter_actor_set_easing_delay (child, easing_delay);
+        }
+
       clutter_actor_allocate (child, &child_alloc, flags);
+
+      if (use_animations)
+        clutter_actor_restore_easing_state (child);
 
       if (priv->orientation == CLUTTER_FLOW_HORIZONTAL)
         item_x = new_x;
