@@ -41,14 +41,9 @@ const LayoutManager = new Lang.Class({
                               Lang.bind(this, this._updatePanelBarriers));
 
         this.screenShieldGroup = new St.Widget({ name: 'screenShieldGroup',
-                                                 visible: false
+                                                 visible: false,
+                                                 clip_to_allocation: true,
                                                });
-        // FIXME: This is going to slow everything down by a big factor
-        // Need a better solution (like a layout manager?)
-        let constraint = new Clutter.BindConstraint({ source: global.stage,
-                                                      coordinate: Clutter.BindCoordinate.ALL
-                                                    });
-        this.screenShieldGroup.add_constraint(constraint);
         this.addChrome(this.screenShieldGroup);
 
         this.trayBox = new St.BoxLayout({ name: 'trayBox' }); 
@@ -161,6 +156,9 @@ const LayoutManager = new Lang.Class({
     },
 
     _updateBoxes: function() {
+        this.screenShieldGroup.set_position(0, 0);
+        this.screenShieldGroup.set_size(global.screen_width, global.screen_height);
+
         this.panelBox.set_position(this.primaryMonitor.x, this.primaryMonitor.y);
         this.panelBox.set_size(this.primaryMonitor.width, -1);
 

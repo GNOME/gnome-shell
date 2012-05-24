@@ -77,9 +77,11 @@ const UnlockDialog = new Lang.Class({
     Name: 'UnlockDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function() {
+    _init: function(parentActor) {
         this.parent({ shellReactive: true,
-                      styleClass: 'login-dialog' });
+                      styleClass: 'login-dialog',
+                      parentActor: parentActor
+                    });
 
         this._userManager = AccountsService.UserManager.get_default();
         this._userName = GLib.get_user_name();

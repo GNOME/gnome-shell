@@ -2194,3 +2194,15 @@ StScrollBar StButton#vhandle:hover
 .unlock-dialog-user-name-container {
     spacing: .4em;
 }
+
+/* Screen shield */
+
+#screenShieldGroup {
+    background-color: #333333;
+}
+
+#screenShieldGroup .arrow {
+    color: #333333;
+    width: 100px;
+    height: 50px;
+}
