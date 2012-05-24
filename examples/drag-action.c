@@ -5,22 +5,46 @@ static gboolean
 on_enter (ClutterActor *actor,
           ClutterEvent *event)
 {
-  clutter_actor_animate (actor, CLUTTER_LINEAR, 150,
-                         "@effects.curl.period", 0.25,
-                         NULL);
+  ClutterTransition *t;
 
-  return FALSE;
+  t = clutter_actor_get_transition (actor, "curl");
+  if (t == NULL)
+    {
+      t = clutter_property_transition_new ("@effects.curl.period");
+      clutter_timeline_set_duration (CLUTTER_TIMELINE (t), 250);
+      clutter_actor_add_transition (actor, "curl", t);
+      g_object_unref (t);
+    }
+
+  clutter_transition_set_from (t, G_TYPE_DOUBLE, 0.0);
+  clutter_transition_set_to (t, G_TYPE_DOUBLE, 0.25);
+  clutter_timeline_rewind (CLUTTER_TIMELINE (t));
+  clutter_timeline_start (CLUTTER_TIMELINE (t));
+
+  return CLUTTER_EVENT_STOP;
 }
 
 static gboolean
 on_leave (ClutterActor *actor,
           ClutterEvent *event)
 {
-  clutter_actor_animate (actor, CLUTTER_LINEAR, 150,
-                         "@effects.curl.period", 0.0,
-                         NULL);
+  ClutterTransition *t;
 
-  return FALSE;
+  t = clutter_actor_get_transition (actor, "curl");
+  if (t == NULL)
+    {
+      t = clutter_property_transition_new ("@effects.curl.period");
+      clutter_timeline_set_duration (CLUTTER_TIMELINE (t), 250);
+      clutter_actor_add_transition (actor, "curl", t);
+      g_object_unref (t);
+    }
+
+  clutter_transition_set_from (t, G_TYPE_DOUBLE, 0.25);
+  clutter_transition_set_to (t, G_TYPE_DOUBLE, 0.0);
+  clutter_timeline_rewind (CLUTTER_TIMELINE (t));
+  clutter_timeline_start (CLUTTER_TIMELINE (t));
+
+  return CLUTTER_EVENT_STOP;
 }
 
 static void
@@ -32,18 +56,18 @@ on_drag_begin (ClutterDragAction   *action,
 {
   gboolean is_copy = (modifiers & CLUTTER_SHIFT_MASK) ? TRUE : FALSE;
   ClutterActor *drag_handle = NULL;
+  ClutterTransition *t;
 
   if (is_copy)
     {
       ClutterActor *stage = clutter_actor_get_stage (actor);
 
-      drag_handle = clutter_rectangle_new ();
+      drag_handle = clutter_actor_new ();
       clutter_actor_set_size (drag_handle, 48, 48);
 
-      clutter_rectangle_set_color (CLUTTER_RECTANGLE (drag_handle),
-                                   CLUTTER_COLOR_DarkSkyBlue);
+      clutter_actor_set_background_color (drag_handle, CLUTTER_COLOR_DarkSkyBlue);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (stage), drag_handle);
+      clutter_actor_add_child (stage, drag_handle);
       clutter_actor_set_position (drag_handle, event_x, event_y);
     }
   else
@@ -52,9 +76,19 @@ on_drag_begin (ClutterDragAction   *action,
   clutter_drag_action_set_drag_handle (action, drag_handle);
 
   /* fully desaturate the actor */
-  clutter_actor_animate (actor, CLUTTER_LINEAR, 150,
-                         "@effects.disable.factor", 1.0,
-                         NULL);
+  t = clutter_actor_get_transition (actor, "disable");
+  if (t == NULL)
+    {
+      t = clutter_property_transition_new ("@effects.disable.factor");
+      clutter_timeline_set_duration (CLUTTER_TIMELINE (t), 250);
+      clutter_actor_add_transition (actor, "disable", t);
+      g_object_unref (t);
+    }
+
+  clutter_transition_set_from (t, G_TYPE_DOUBLE, 0.0);
+  clutter_transition_set_to (t, G_TYPE_DOUBLE, 1.0);
+  clutter_timeline_rewind (CLUTTER_TIMELINE (t));
+  clutter_timeline_start (CLUTTER_TIMELINE (t));
 }
 
 static void
@@ -65,6 +99,7 @@ on_drag_end (ClutterDragAction   *action,
              ClutterModifierType  modifiers)
 {
   ClutterActor *drag_handle;
+  ClutterTransition *t;
 
   drag_handle = clutter_drag_action_get_drag_handle (action);
   if (actor != drag_handle)
@@ -76,28 +111,38 @@ on_drag_end (ClutterDragAction   *action,
        * and animate the real actor to the drop coordinates,
        * transformed in the parent's coordinate space
        */
-      clutter_actor_animate (drag_handle, CLUTTER_LINEAR, 150,
-                             "opacity", 0,
-                             "signal-swapped-after::completed",
-                               G_CALLBACK (clutter_actor_destroy),
-                               drag_handle,
-                             NULL);
+      clutter_actor_save_easing_state (drag_handle);
+      clutter_actor_set_easing_mode (drag_handle, CLUTTER_LINEAR);
+      clutter_actor_set_opacity (drag_handle, 0);
+      clutter_actor_restore_easing_state (drag_handle);
+      g_signal_connect (drag_handle, "transitions-completed",
+                        G_CALLBACK (clutter_actor_destroy),
+                        NULL);
 
       parent = clutter_actor_get_parent (actor);
       clutter_actor_transform_stage_point (parent, event_x, event_y,
                                            &real_x,
                                            &real_y);
 
-      clutter_actor_animate (actor, CLUTTER_EASE_OUT_CUBIC, 150,
-                             "@effects.disable.factor", 0.0,
-                             "x", real_x,
-                             "y", real_y,
-                             NULL);
+      clutter_actor_save_easing_state (actor);
+      clutter_actor_set_easing_mode (actor, CLUTTER_EASE_OUT_CUBIC);
+      clutter_actor_set_position (actor, real_x, real_y);
+      clutter_actor_restore_easing_state (actor);
     }
-  else
-    clutter_actor_animate (actor, CLUTTER_LINEAR, 150,
-                           "@effects.disable.factor", 0.0,
-                           NULL);
+
+  t = clutter_actor_get_transition (actor, "disable");
+  if (t == NULL)
+    {
+      t = clutter_property_transition_new ("@effects.disable.factor");
+      clutter_timeline_set_duration (CLUTTER_TIMELINE (t), 250);
+      clutter_actor_add_transition (actor, "disable", t);
+      g_object_unref (t);
+    }
+
+  clutter_transition_set_from (t, G_TYPE_DOUBLE, 1.0);
+  clutter_transition_set_to (t, G_TYPE_DOUBLE, 0.0);
+  clutter_timeline_rewind (CLUTTER_TIMELINE (t));
+  clutter_timeline_start (CLUTTER_TIMELINE (t));
 }
 
 static ClutterDragAxis
@@ -161,7 +206,7 @@ main (int argc, char *argv[])
                               NULL,
                               &error) != CLUTTER_INIT_SUCCESS)
     {
-      g_print ("Unable to run test-drag: %s\n", error->message);
+      g_print ("Unable to run drag-action: %s\n", error->message);
       g_error_free (error);
 
       return EXIT_FAILURE;
@@ -172,13 +217,12 @@ main (int argc, char *argv[])
   clutter_actor_set_size (stage, 800, 600);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  handle = clutter_rectangle_new ();
-  clutter_rectangle_set_color (CLUTTER_RECTANGLE (handle),
-                               CLUTTER_COLOR_SkyBlue);
+  handle = clutter_actor_new ();
+  clutter_actor_set_background_color (handle, CLUTTER_COLOR_SkyBlue);
   clutter_actor_set_size (handle, 128, 128);
   clutter_actor_set_position (handle, (800 - 128) / 2, (600 - 128) / 2);
   clutter_actor_set_reactive (handle, TRUE);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), handle);
+  clutter_actor_add_child (stage, handle);
   g_signal_connect (handle, "enter-event", G_CALLBACK (on_enter), NULL);
   g_signal_connect (handle, "leave-event", G_CALLBACK (on_leave), NULL);
 

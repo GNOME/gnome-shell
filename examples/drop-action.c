@@ -25,36 +25,42 @@ on_drag_end (ClutterDragAction   *action,
   g_print ("Drag ended at: %.0f, %.0f\n",
            event_x, event_y);
 
-  clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "opacity", 255, NULL);
+  clutter_actor_save_easing_state (actor);
+  clutter_actor_set_easing_mode (actor, CLUTTER_LINEAR);
+  clutter_actor_set_opacity (actor, 255);
+  clutter_actor_restore_easing_state (actor);
+
+  clutter_actor_save_easing_state (handle);
 
   if (!drop_successful)
     {
+      ClutterActor *parent = clutter_actor_get_parent (actor);
       gfloat x_pos, y_pos;
 
-      clutter_actor_animate (clutter_actor_get_parent (actor),
-                             CLUTTER_LINEAR, 150,
-                             "opacity", 255,
-                             NULL);
+      clutter_actor_save_easing_state (parent);
+      clutter_actor_set_easing_mode (parent, CLUTTER_LINEAR);
+      clutter_actor_set_opacity (parent, 255);
+      clutter_actor_restore_easing_state (parent);
 
       clutter_actor_get_transformed_position (actor, &x_pos, &y_pos);
-      clutter_actor_animate (handle, CLUTTER_EASE_OUT_BOUNCE, 250,
-                             "x", x_pos,
-                             "y", y_pos,
-                             "opacity", 0,
-                             "signal-swapped::completed",
-                               G_CALLBACK (clutter_actor_destroy),
-                               handle,
-                             NULL);
+
+      clutter_actor_set_easing_mode (handle, CLUTTER_EASE_OUT_BOUNCE);
+      clutter_actor_set_position (handle, x_pos, y_pos);
+      clutter_actor_set_opacity (handle, 0);
+      clutter_actor_restore_easing_state (handle);
+
     }
   else
     {
-      clutter_actor_animate (handle, CLUTTER_LINEAR, 250,
-                             "opacity", 0,
-                             "signal-swapped::completed",
-                               G_CALLBACK (clutter_actor_destroy),
-                               handle,
-                             NULL);
+      clutter_actor_set_easing_mode (handle, CLUTTER_LINEAR);
+      clutter_actor_set_opacity (handle, 0);
     }
+
+  clutter_actor_restore_easing_state (handle);
+
+  g_signal_connect (handle, "transitions-completed",
+                    G_CALLBACK (clutter_actor_destroy),
+                    NULL);
 }
 
 static void
@@ -69,14 +75,18 @@ on_drag_begin (ClutterDragAction   *action,
 
   clutter_actor_get_position (actor, &x_pos, &y_pos);
 
-  handle = clutter_rectangle_new_with_color (CLUTTER_COLOR_DarkSkyBlue);
+  handle = clutter_actor_new ();
+  clutter_actor_set_background_color (handle, CLUTTER_COLOR_DarkSkyBlue);
   clutter_actor_set_size (handle, 128, 128);
   clutter_actor_set_position (handle, event_x - x_pos, event_y - y_pos);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), handle);
+  clutter_actor_add_child (stage, handle);
 
   clutter_drag_action_set_drag_handle (action, handle);
 
-  clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "opacity", 128, NULL);\
+  clutter_actor_save_easing_state (actor);
+  clutter_actor_set_easing_mode (actor, CLUTTER_LINEAR);
+  clutter_actor_set_opacity (actor, 128);
+  clutter_actor_restore_easing_state (actor);
 
   drop_successful = FALSE;
 }
@@ -90,7 +100,8 @@ add_drag_object (ClutterActor *target)
     {
       ClutterAction *action;
 
-      drag = clutter_rectangle_new_with_color (CLUTTER_COLOR_LightSkyBlue);
+      drag = clutter_actor_new ();
+      clutter_actor_set_background_color (drag, CLUTTER_COLOR_LightSkyBlue);
       clutter_actor_set_size (drag, HANDLE_SIZE, HANDLE_SIZE);
       clutter_actor_set_position (drag,
                                   (TARGET_SIZE - HANDLE_SIZE) / 2.0,
@@ -105,28 +116,32 @@ add_drag_object (ClutterActor *target)
     }
 
   parent = clutter_actor_get_parent (drag);
-
   if (parent == target)
     {
-      clutter_actor_animate (target, CLUTTER_LINEAR, 150,
-                             "opacity", 255,
-                             NULL);
+      clutter_actor_save_easing_state (target);
+      clutter_actor_set_easing_mode (target, CLUTTER_LINEAR);
+      clutter_actor_set_opacity (target, 255);
+      clutter_actor_restore_easing_state (target);
       return;
     }
 
   g_object_ref (drag);
   if (parent != NULL && parent != stage)
     {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (parent), drag);
-      clutter_actor_animate (parent, CLUTTER_LINEAR, 150,
-                             "opacity", 64,
-                             NULL);
+      clutter_actor_remove_child (parent, drag);
+
+      clutter_actor_save_easing_state (parent);
+      clutter_actor_set_easing_mode (parent, CLUTTER_LINEAR);
+      clutter_actor_set_opacity (parent, 64);
+      clutter_actor_restore_easing_state (parent);
     }
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (target), drag);
-  clutter_actor_animate (target, CLUTTER_LINEAR, 150,
-                         "opacity", 255,
-                         NULL);
+  clutter_actor_add_child (target, drag);
+
+  clutter_actor_save_easing_state (target);
+  clutter_actor_set_easing_mode (target, CLUTTER_LINEAR);
+  clutter_actor_set_opacity (target, 255);
+  clutter_actor_restore_easing_state (target);
 
   g_object_unref (drag);
 }
@@ -142,9 +157,10 @@ on_target_over (ClutterDropAction *action,
 
   target = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
 
-  clutter_actor_animate (target, CLUTTER_LINEAR, 250,
-                         "opacity", final_opacity,
-                         NULL);
+  clutter_actor_save_easing_state (target);
+  clutter_actor_set_easing_mode (target, CLUTTER_LINEAR);
+  clutter_actor_set_opacity (target, final_opacity);
+  clutter_actor_restore_easing_state (target);
 }
 
 static void
@@ -181,8 +197,8 @@ main (int argc, char *argv[])
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Drop Action");
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  target1 = clutter_box_new (clutter_fixed_layout_new ());
-  clutter_box_set_color (CLUTTER_BOX (target1), CLUTTER_COLOR_LightScarletRed);
+  target1 = clutter_actor_new ();
+  clutter_actor_set_background_color (target1, CLUTTER_COLOR_LightScarletRed);
   clutter_actor_set_size (target1, TARGET_SIZE, TARGET_SIZE);
   clutter_actor_set_opacity (target1, 64);
   clutter_actor_add_constraint (target1, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.5));
@@ -203,7 +219,8 @@ main (int argc, char *argv[])
                     G_CALLBACK (on_target_drop),
                     NULL);
 
-  dummy = clutter_rectangle_new_with_color (CLUTTER_COLOR_DarkOrange);
+  dummy = clutter_actor_new ();
+  clutter_actor_set_background_color (dummy, CLUTTER_COLOR_DarkOrange);
   clutter_actor_set_size (dummy,
                           640 - (2 * 10) - (2 * (TARGET_SIZE + 10)),
                           TARGET_SIZE);
@@ -211,8 +228,8 @@ main (int argc, char *argv[])
   clutter_actor_add_constraint (dummy, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.5));
   clutter_actor_set_reactive (dummy, TRUE);
 
-  target2 = clutter_box_new (clutter_fixed_layout_new ());
-  clutter_box_set_color (CLUTTER_BOX (target2), CLUTTER_COLOR_LightChameleon);
+  target2 = clutter_actor_new ();
+  clutter_actor_set_background_color (target2, CLUTTER_COLOR_LightChameleon);
   clutter_actor_set_size (target2, TARGET_SIZE, TARGET_SIZE);
   clutter_actor_set_opacity (target2, 64);
   clutter_actor_add_constraint (target2, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.5));
@@ -233,7 +250,9 @@ main (int argc, char *argv[])
                     G_CALLBACK (on_target_drop),
                     NULL);
 
-  clutter_container_add (CLUTTER_CONTAINER (stage), target1, dummy, target2, NULL);
+  clutter_actor_add_child (stage, target1);
+  clutter_actor_add_child (stage, dummy);
+  clutter_actor_add_child (stage, target2);
 
   add_drag_object (target1);
 
