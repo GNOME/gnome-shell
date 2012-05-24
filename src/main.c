@@ -393,12 +393,6 @@ main (int argc, char **argv)
 
   _shell_global_init ("session-mode", session_mode, NULL);
 
-  if (!_shell_global_has_valid_session_mode (shell_global_get ()))
-    {
-      g_printerr ("\"%s\" is not a valid mode.\n", session_mode);
-      exit(1);
-    }
-
   ecode = meta_run ();
 
   if (g_getenv ("GNOME_SHELL_ENABLE_CLEANUP"))

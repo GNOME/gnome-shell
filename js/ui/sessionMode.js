@@ -75,11 +75,6 @@ const _modes = {
             }
 };
 
-function modeExists(mode) {
-    let modes = Object.getOwnPropertyNames(_modes);
-    return modes.indexOf(mode) != -1;
-}
-
 function listModes() {
     let modes = Object.getOwnPropertyNames(_modes);
     for (let i = 0; i < modes.length; i++)
