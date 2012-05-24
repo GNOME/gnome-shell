@@ -332,6 +332,7 @@
 #include "deprecated/clutter-alpha.h"
 
 #include "clutter-debug.h"
+#include "clutter-enum-types.h"
 #include "clutter-layout-manager.h"
 #include "clutter-layout-meta.h"
 #include "clutter-marshal.h"
@@ -347,8 +348,25 @@
 
 struct _ClutterLayoutManagerPrivate
 {
-  gpointer dummy;
+  ClutterAnimationMode easing_mode;
+  guint easing_duration;
+  guint easing_delay;
+  guint use_animations : 1;
 };
+
+enum
+{
+  PROP_0,
+
+  PROP_USE_ANIMATIONS,
+  PROP_EASING_MODE,
+  PROP_EASING_DURATION,
+  PROP_EASING_DELAY,
+
+  PROP_LAST
+};
+
+static GParamSpec *layout_props[PROP_LAST];
 
 enum
 {
@@ -583,14 +601,85 @@ layout_manager_real_end_animation (ClutterLayoutManager *manager)
 }
 
 static void
+layout_manager_set_property (GObject      *gobject,
+                             guint         prop_id,
+                             const GValue *value,
+                             GParamSpec   *pspec)
+{
+  ClutterLayoutManager *self = CLUTTER_LAYOUT_MANAGER (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_USE_ANIMATIONS:
+      clutter_layout_manager_set_use_animations (self,
+                                                 g_value_get_boolean (value));
+      break;
+
+    case PROP_EASING_MODE:
+      clutter_layout_manager_set_easing_mode (self, g_value_get_enum (value));
+      break;
+
+    case PROP_EASING_DURATION:
+      clutter_layout_manager_set_easing_duration (self,
+                                                  g_value_get_uint (value));
+      break;
+
+    case PROP_EASING_DELAY:
+      clutter_layout_manager_set_easing_delay (self, g_value_get_uint (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+layout_manager_get_property (GObject    *gobject,
+                             guint       prop_id,
+                             GValue     *value,
+                             GParamSpec *pspec)
+{
+  ClutterLayoutManagerPrivate *priv = CLUTTER_LAYOUT_MANAGER (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case PROP_USE_ANIMATIONS:
+      g_value_set_boolean (value, priv->use_animations);
+      break;
+
+    case PROP_EASING_MODE:
+      g_value_set_enum (value, priv->easing_mode);
+      break;
+
+    case PROP_EASING_DURATION:
+      g_value_set_uint (value, priv->easing_duration);
+      break;
+
+    case PROP_EASING_DELAY:
+      g_value_set_uint (value, priv->easing_delay);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
   quark_layout_meta =
     g_quark_from_static_string ("clutter-layout-manager-child-meta");
   quark_layout_alpha =
     g_quark_from_static_string ("clutter-layout-manager-alpha");
 
   g_type_class_add_private (klass, sizeof (ClutterLayoutManagerPrivate));
+
+  object_class->set_property = layout_manager_set_property;
+  object_class->get_property = layout_manager_get_property;
 
   klass->get_preferred_width = layout_manager_real_get_preferred_width;
   klass->get_preferred_height = layout_manager_real_get_preferred_height;
@@ -601,6 +690,80 @@ clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
   klass->get_animation_progress = layout_manager_real_get_animation_progress;
   klass->end_animation = layout_manager_real_end_animation;
   klass->set_container = layout_manager_real_set_container;
+
+  /**
+   * ClutterLayoutManager:use-animations:
+   *
+   * Whether the #ClutterLayoutManager should animate changes in the
+   * layout, overriding the easing state of the children.
+   *
+   * Since: 1.12
+   */
+  layout_props[PROP_USE_ANIMATIONS] =
+    g_param_spec_boolean ("use-animations",
+                          P_("Use Animations"),
+                          P_("Whether layout changes should be animated"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterLayoutManager:easing-mode:
+   *
+   * The easing mode for the animations, in case
+   * #ClutterLayoutManager:use-animations is set to %TRUE.
+   *
+   * The easing mode has the same semantics of #ClutterAnimation:mode: it can
+   * either be a value from the #ClutterAnimationMode enumeration, like
+   * %CLUTTER_EASE_OUT_CUBIC, or a logical id as returned by
+   * clutter_alpha_register_func().
+   *
+   * The default value is %CLUTTER_EASE_OUT_CUBIC.
+   *
+   * Since: 1.12
+   */
+  layout_props[PROP_EASING_MODE] =
+    g_param_spec_enum ("easing-mode",
+                       P_("Easing Mode"),
+                       P_("The easing mode of the animations"),
+                       CLUTTER_TYPE_ANIMATION_MODE,
+                       CLUTTER_EASE_OUT_CUBIC,
+                       CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterLayoutManager:easing-duration:
+   *
+   * The duration of the animations, in case
+   * #ClutterLayoutManager:use-animations is set to %TRUE.
+   *
+   * The duration is expressed in milliseconds.
+   *
+   * Since: 1.12
+   */
+  layout_props[PROP_EASING_DURATION] =
+    g_param_spec_uint ("easing-duration",
+                       P_("Easing Duration"),
+                       P_("The duration of the animations"),
+                       0, G_MAXUINT, 250,
+                       CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterLayoutManager:easing-delay:
+   *
+   * The delay befor the animations will start,
+   * #ClutterLayoutManager:use-animations is set to %TRUE.
+   *
+   * The duration is expressed in milliseconds.
+   *
+   * Since: 1.12
+   */
+  layout_props[PROP_EASING_DELAY] =
+    g_param_spec_uint ("easing-delay",
+                       P_("Easing Delay"),
+                       P_("The delay befor the animations start"),
+                       0, G_MAXUINT, 0,
+                       CLUTTER_PARAM_READWRITE);
+
+  g_object_class_install_properties (object_class, PROP_LAST, layout_props);
 
   /**
    * ClutterLayoutManager::layout-changed:
@@ -645,9 +808,16 @@ clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
 static void
 clutter_layout_manager_init (ClutterLayoutManager *manager)
 {
-  manager->priv =
+  ClutterLayoutManagerPrivate *priv;
+
+  manager->priv = priv =
     G_TYPE_INSTANCE_GET_PRIVATE (manager, CLUTTER_TYPE_LAYOUT_MANAGER,
                                  ClutterLayoutManagerPrivate);
+
+  priv->use_animations = FALSE;
+  priv->easing_mode = CLUTTER_EASE_OUT_CUBIC;
+  priv->easing_duration = 250;
+  priv->easing_delay = 0;
 }
 
 /**
@@ -1387,4 +1557,236 @@ clutter_layout_manager_get_animation_progress (ClutterLayoutManager *manager)
   klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
 
   return klass->get_animation_progress (manager);
+}
+
+/**
+ * clutter_layout_manager_set_use_animations:
+ * @manager: a #ClutterLayoutManager
+ * @animate: %TRUE if the layout should use animations
+ *
+ * Sets whether @manager should animate changes in the layout properties
+ *
+ * The duration and delay of the animations are controlled by
+ * clutter_layout_manager_set_easing_duration() and
+ * clutter_layout_manager_set_easing_delay(); the easing mode to be used
+ * by the animations is controlled by clutter_layout_manager_set_easing_mode()
+ *
+ * Since: 1.12
+ */
+void
+clutter_layout_manager_set_use_animations (ClutterLayoutManager *manager,
+                                           gboolean              animate)
+{
+  ClutterLayoutManagerPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
+
+  priv = manager->priv;
+
+  if (priv->use_animations == animate)
+    return;
+
+  priv->use_animations = animate;
+
+  g_object_notify_by_pspec (G_OBJECT (manager),
+                            layout_props[PROP_USE_ANIMATIONS]);
+}
+
+/**
+ * clutter_layout_manager_get_use_animations:
+ * @manager: a #ClutterLayoutManager
+ *
+ * Retrieves whether @manager should animate changes in the layout properties.
+
+ * Return value: %TRUE if the animations should be used, %FALSE otherwise
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_layout_manager_get_use_animations (ClutterLayoutManager *manager)
+{
+  g_return_val_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager), FALSE);
+
+  return manager->priv->use_animations;
+}
+
+/**
+ * clutter_layout_manager_set_easing_mode:
+ * @manager: a #ClutterLayoutManager
+ * @mode: an easing mode, either from #ClutterAnimationMode or a logical id
+ *   from clutter_alpha_register_func()
+
+ * Sets the easing mode to be used by @manager when animating changes in layout
+ * properties.
+ *
+ * Since: 1.12
+ */
+void
+clutter_layout_manager_set_easing_mode (ClutterLayoutManager *manager,
+                                        ClutterAnimationMode  mode)
+{
+  ClutterLayoutManagerPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
+  g_return_if_fail (mode < CLUTTER_ANIMATION_LAST);
+  g_return_if_fail (mode != CLUTTER_CUSTOM_MODE);
+
+  priv = manager->priv;
+
+  if (priv->easing_mode == mode)
+    return;
+
+  priv->easing_mode = mode;
+
+  g_object_notify_by_pspec (G_OBJECT (manager), layout_props[PROP_EASING_MODE]);
+}
+
+/**
+ * clutter_layout_manager_get_easing_mode:
+ * @manager: a #ClutterLayoutManager
+ *
+ * Retrieves the easing mode set using clutter_layout_manager_set_easing_mode()
+ *
+ * Return value: an easing mode
+ *
+ * Since: 1.12
+ */
+ClutterAnimationMode
+clutter_layout_manager_get_easing_mode (ClutterLayoutManager *manager)
+{
+  g_return_val_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager), CLUTTER_LINEAR);
+
+  return manager->priv->easing_mode;
+}
+
+
+/**
+ * clutter_layout_manager_set_easing_duration:
+ * @manager: a #ClutterLayoutManager
+ * @duration: the duration of the animations, in milliseconds
+ *
+ * Sets the duration of the animations used by @manager when animating changes
+ * in the layout properties.
+ *
+ * Since: 1.12
+ */
+void
+clutter_layout_manager_set_easing_duration (ClutterLayoutManager *manager,
+                                            guint                 duration)
+{
+  ClutterLayoutManagerPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
+
+  priv = manager->priv;
+
+  if (priv->easing_duration == duration)
+    return;
+
+  priv->easing_duration = duration;
+
+  g_object_notify_by_pspec (G_OBJECT (manager),
+                            layout_props[PROP_EASING_DURATION]);
+}
+
+/**
+ * clutter_layout_manager_get_easing_duration:
+ * @manager: a #ClutterLayoutManager
+ *
+ * Retrieves the duration set using clutter_layout_manager_set_easing_duration()
+ *
+ * Return value: the duration of the animations, in milliseconds
+ *
+ * Since: 1.12
+ */
+guint
+clutter_layout_manager_get_easing_duration (ClutterLayoutManager *manager)
+{
+  g_return_val_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager), 0);
+
+  return manager->priv->easing_duration;
+}
+
+/**
+ * clutter_layout_manager_set_easing_delay:
+ * @manager: a #ClutterLayoutManager
+ * @delay: the delay in milliseconds
+ *
+ * Sets the delay before the animations used by @manager will start.
+ *
+ * Since: 1.12
+ */
+void
+clutter_layout_manager_set_easing_delay (ClutterLayoutManager *manager,
+                                         guint                 delay)
+{
+  ClutterLayoutManagerPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
+
+  priv = manager->priv;
+
+  if (priv->easing_delay == delay)
+    return;
+
+  priv->easing_delay = delay;
+
+  g_object_notify_by_pspec (G_OBJECT (manager),
+                            layout_props[PROP_EASING_DELAY]);
+}
+
+/**
+ * clutter_layout_manager_get_easing_delay:
+ * @manager: a #ClutterLayoutManager
+ *
+ * Retrieves the delay set using clutter_layout_manager_set_easing_delay()
+
+ * Return value: the delay in milliseconds
+ *
+ * Since: 1.12
+ */
+guint
+clutter_layout_manager_get_easing_delay (ClutterLayoutManager *manager)
+{
+  g_return_val_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager), 0);
+
+  return manager->priv->easing_delay;
+}
+
+/**
+ * clutter_layout_manager_get_easing_state:
+ * @manager: a #ClutterLayoutManager
+ * @mode: (out): the #ClutterAnimationMode
+ * @duration: (out): the easing duration
+ * @delay: (out): the easing delay
+ *
+ * Retrieves all the necessary information if and how the @manager should
+ * animate allocation changes. This function is meant to be called by
+ * implementations of the #ClutterLayoutManager class in the
+ * #ClutterLayoutManagerClass.allocate() virtual function.
+ *
+ * Return value: %TRUE if the @manager should animate allocation changes
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_layout_manager_get_easing_state (ClutterLayoutManager *manager,
+                                         ClutterAnimationMode *mode,
+                                         guint                *duration,
+                                         guint                *delay)
+{
+  ClutterLayoutManagerPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager), FALSE);
+
+  priv = manager->priv;
+
+  if (mode)
+    *mode = priv->easing_mode;
+  if (duration)
+    *duration = priv->easing_duration;
+  if (delay)
+    *delay = priv->easing_delay;
+
+  return priv->use_animations;
 }
