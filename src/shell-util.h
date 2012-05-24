@@ -25,10 +25,6 @@ char    *shell_util_normalize_and_casefold     (const char       *str);
 char    *shell_util_format_date                (const char       *format,
                                                 gint64            time_ms);
 
-void     shell_write_soup_message_to_stream    (GOutputStream    *stream,
-                                                SoupMessage      *message,
-                                                GError          **error);
-
 gboolean shell_write_string_to_stream          (GOutputStream    *stream,
                                                 const char       *str,
                                                 GError          **error);

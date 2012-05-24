@@ -102,7 +102,8 @@ function gotExtensionZipFile(session, message, uuid) {
 
     let [file, stream] = Gio.File.new_tmp('XXXXXX.shell-extension.zip');
     let dir = ExtensionUtils.userExtensionsDir.get_child(uuid);
-    Shell.write_soup_message_to_stream(stream.output_stream, message);
+    let contents = message.response_body.flatten().as_bytes();
+    stream.output_stream.write_bytes(contents, null);
     stream.close(null);
     let [success, pid] = GLib.spawn_async(null,
                                           ['unzip', '-uod', dir.get_path(), '--', file.get_path()],
