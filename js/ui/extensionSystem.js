@@ -100,21 +100,12 @@ function gotExtensionZipFile(session, message, uuid) {
         return;
     }
 
-    // FIXME: use a GFile mkstemp-type method once one exists
-    let fd, tmpzip;
-    try {
-        [fd, tmpzip] = GLib.file_open_tmp('XXXXXX.shell-extension.zip');
-    } catch (e) {
-        logExtensionError(uuid, 'tempfile: ' + e.toString());
-        return;
-    }
-
-    let stream = new Gio.UnixOutputStream({ fd: fd });
+    let [file, stream] = Gio.File.new_tmp('XXXXXX.shell-extension.zip');
     let dir = ExtensionUtils.userExtensionsDir.get_child(uuid);
-    Shell.write_soup_message_to_stream(stream, message);
+    Shell.write_soup_message_to_stream(stream.output_stream, message);
     stream.close(null);
     let [success, pid] = GLib.spawn_async(null,
-                                          ['unzip', '-uod', dir.get_path(), '--', tmpzip],
+                                          ['unzip', '-uod', dir.get_path(), '--', file.get_path()],
                                           null,
                                           GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
                                           null);
