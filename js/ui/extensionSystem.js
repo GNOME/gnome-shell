@@ -36,12 +36,9 @@ const REPOSITORY_URL_INFO =     REPOSITORY_URL_BASE + '/extension-info/';
 
 const _httpSession = new Soup.SessionAsync({ ssl_use_system_ca_file: true });
 
-// The unfortunate state of gjs, gobject-introspection and libsoup
-// means that I have to do a hack to add a feature.
 // See: https://bugzilla.gnome.org/show_bug.cgi?id=655189 for context.
-
-if (Soup.Session.prototype.add_feature != null)
-    Soup.Session.prototype.add_feature.call(_httpSession, new Soup.ProxyResolverDefault());
+// _httpSession.add_feature(new Soup.ProxyResolverDefault());
+Soup.Session.prototype.add_feature.call(_httpSession, new Soup.ProxyResolverDefault());
 
 // Arrays of uuids
 var enabledExtensions;
