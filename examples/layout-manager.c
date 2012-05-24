@@ -193,6 +193,9 @@ multi_layout_allocate (ClutterLayoutManager   *manager,
   int n_items, n_items_per_row, item_index;
   ClutterPoint center;
   double radius, theta;
+  gboolean use_animations;
+  ClutterAnimationMode easing_mode;
+  guint easing_duration, easing_delay;
 
   n_items = get_visible_children (CLUTTER_ACTOR (container));
   if (n_items == 0)
@@ -220,6 +223,11 @@ multi_layout_allocate (ClutterLayoutManager   *manager,
       radius = MIN ((avail_width - self->cell_width) / 2.0,
                     (avail_height - self->cell_height) / 2.0);
     }
+
+  use_animations = clutter_layout_manager_get_easing_state (manager,
+                                                            &easing_mode,
+                                                            &easing_duration,
+                                                            &easing_delay);
 
   clutter_actor_iter_init (&iter, CLUTTER_ACTOR (container));
   while (clutter_actor_iter_next (&iter, &child))
@@ -254,9 +262,18 @@ multi_layout_allocate (ClutterLayoutManager   *manager,
           child_allocation.y2 = child_allocation.y1 + self->cell_height;
         }
 
-      clutter_actor_save_easing_state (child);
+      if (use_animations)
+        {
+          clutter_actor_save_easing_state (child);
+          clutter_actor_set_easing_mode (child, easing_mode);
+          clutter_actor_set_easing_duration (child, easing_duration);
+          clutter_actor_set_easing_delay (child, easing_delay);
+        }
+
       clutter_actor_allocate (child, &child_allocation, flags);
-      clutter_actor_restore_easing_state (child);
+
+      if (use_animations)
+        clutter_actor_restore_easing_state (child);
 
       item_index += 1;
     }
@@ -365,6 +382,7 @@ main (int argc, char *argv[])
 
   manager = multi_layout_new ();
   multi_layout_set_spacing ((MultiLayout *) manager, PADDING);
+  clutter_layout_manager_set_use_animations (manager, TRUE);
 
   margin.top = margin.bottom = margin.left = margin.right = PADDING;
 
