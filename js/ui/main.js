@@ -99,6 +99,10 @@ function createGDMSession() {
                         });
 }
 
+function createInitialSetupSession() {
+    networkAgent = new NetworkAgent.NetworkAgent();
+}
+
 function _initRecorder() {
     let recorderSettings = new Gio.Settings({ schema: 'org.gnome.shell.recorder' });
     let bindingSettings = new Gio.Settings({ schema: 'org.gnome.shell.keybindings' });

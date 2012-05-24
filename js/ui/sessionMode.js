@@ -55,6 +55,28 @@ const _modes = {
              }
            },
 
+    'initial-setup': { hasOverview: false,
+                       hasAppMenu: false,
+                       showCalendarEvents: false,
+                       allowSettings: false,
+                       allowExtensions: false,
+                       allowKeybindingsWhenModal: false,
+                       hasRunDialog: false,
+                       hasWorkspaces: false,
+                       createSession: Main.createInitialSetupSession,
+                       extraStylesheet: null,
+                       statusArea: {
+                           order: [
+                               'a11y', 'keyboard', 'volume'
+                           ],
+                           implementation: {
+                               'a11y': imports.ui.status.accessibility.ATIndicator,
+                               'keyboard': imports.ui.status.keyboard.XKBIndicator,
+                               'volume': imports.ui.status.volume.Indicator
+                        }
+                }
+           },
+
     'user': { hasOverview: true,
               hasAppMenu: true,
               showCalendarEvents: true,
