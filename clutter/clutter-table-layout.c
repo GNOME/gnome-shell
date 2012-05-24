@@ -128,12 +128,6 @@ struct _ClutterTableLayoutPrivate
 
   GArray *columns;
   GArray *rows;
-
-  gulong easing_mode;
-  guint easing_duration;
-
-  guint is_animating   : 1;
-  guint use_animations : 1;
 };
 
 struct _ClutterTableChild
@@ -177,8 +171,6 @@ enum
 
   PROP_ROW_SPACING,
   PROP_COLUMN_SPACING,
-  PROP_USE_ANIMATIONS,
-  PROP_EASING_MODE,
   PROP_EASING_DURATION
 };
 
@@ -1368,6 +1360,10 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
   gint row_spacing, col_spacing;
   gint i;
   DimensionData *rows, *columns;
+  gboolean use_animations;
+  ClutterAnimationMode easing_mode;
+  guint easing_duration, easing_delay;
+
 
   update_row_col (self, container);
   if (priv->n_cols < 1 || priv->n_rows < 1)
@@ -1387,6 +1383,11 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
 
   rows = (DimensionData *) (void *) priv->rows->data;
   columns = (DimensionData *) (void *) priv->columns->data;
+
+  use_animations = clutter_layout_manager_get_easing_state (layout,
+                                                            &easing_mode,
+                                                            &easing_duration,
+                                                            &easing_delay);
 
   for (child = clutter_actor_get_first_child (actor);
        child != NULL;
@@ -1483,11 +1484,12 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
       childbox.y1 = (float) child_y;
       childbox.y2 = (float) MAX (0, child_y + row_height);
 
-      if (priv->use_animations)
+      if (use_animations)
         {
           clutter_actor_save_easing_state (child);
-          clutter_actor_set_easing_mode (child, priv->easing_mode);
-          clutter_actor_set_easing_duration (child, priv->easing_duration);
+          clutter_actor_set_easing_mode (child, easing_mode);
+          clutter_actor_set_easing_duration (child, easing_duration);
+          clutter_actor_set_easing_delay (child, easing_delay);
         }
 
       clutter_actor_allocate_align_fill (child, &childbox,
@@ -1495,7 +1497,7 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
                                          x_fill, y_fill,
                                          flags);
 
-      if (priv->use_animations)
+      if (use_animations)
         clutter_actor_restore_easing_state (child);
     }
 }
@@ -1516,18 +1518,6 @@ clutter_table_layout_set_property (GObject      *gobject,
 
     case PROP_ROW_SPACING:
       clutter_table_layout_set_row_spacing (self, g_value_get_uint (value));
-      break;
-
-    case PROP_USE_ANIMATIONS:
-      clutter_table_layout_set_use_animations (self, g_value_get_boolean (value));
-      break;
-
-    case PROP_EASING_MODE:
-      clutter_table_layout_set_easing_mode (self, g_value_get_ulong (value));
-      break;
-
-    case PROP_EASING_DURATION:
-      clutter_table_layout_set_easing_duration (self, g_value_get_uint (value));
       break;
 
     default:
@@ -1552,18 +1542,6 @@ clutter_table_layout_get_property (GObject    *gobject,
 
     case PROP_COLUMN_SPACING:
       g_value_set_uint (value, priv->col_spacing);
-      break;
-
-    case PROP_USE_ANIMATIONS:
-      g_value_set_boolean (value, priv->use_animations);
-      break;
-
-    case PROP_EASING_MODE:
-      g_value_set_ulong (value, priv->easing_mode);
-      break;
-
-    case PROP_EASING_DURATION:
-      g_value_set_uint (value, priv->easing_duration);
       break;
 
     default:
@@ -1635,74 +1613,11 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_ROW_SPACING, pspec);
 
-  /**
-   * ClutterTableLayout:use-animations:
-   *
-   * Whether the #ClutterTableLayout should animate changes in the
-   * layout properties.
-   *
-   * By default, #ClutterTableLayout will honour the easing state of
-   * the children when allocating them. Setting this property to
-   * %TRUE will override the easing state with the layout manager's
-   * #ClutterTableLayout:easing-mode and #ClutterTableLayout:easing-duration
-   * properties.
-   *
-   * Since: 1.4
-   *
-   * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
-   *   of the children when allocating them
-   */
-  pspec = g_param_spec_boolean ("use-animations",
-                                P_("Use Animations"),
-                                P_("Whether layout changes should be animated"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_USE_ANIMATIONS, pspec);
-
-  /**
-   * ClutterTableLayout:easing-mode:
-   *
-   * The easing mode for the animations, in case
-   * #ClutterTableLayout:use-animations is set to %TRUE.
-   *
-   * The easing mode has the same semantics of #ClutterAnimation:mode: it can
-   * either be a value from the #ClutterAnimationMode enumeration, like
-   * %CLUTTER_EASE_OUT_CUBIC, or a logical id as returned by
-   * clutter_alpha_register_func().
-   *
-   * The default value is %CLUTTER_EASE_OUT_CUBIC.
-   *
-   * Since: 1.4
-   *
-   * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
-   *   of the children when allocating them
-   */
-  pspec = g_param_spec_ulong ("easing-mode",
-                              P_("Easing Mode"),
-                              P_("The easing mode of the animations"),
-                              0, G_MAXULONG,
-                              CLUTTER_EASE_OUT_CUBIC,
-                              CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_EASING_MODE, pspec);
-
-  /**
-   * ClutterTableLayout:easing-duration:
-   *
-   * The duration of the animations, in case #ClutterTableLayout:use-animations
-   * is set to %TRUE.
-   *
-   * The duration is expressed in milliseconds.
-   *
-   * Since: 1.4
-   *
-   * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
-   *   of the children when allocating them
-   */
+  /* a leftover to be compatible to the previous implementation */
   pspec = g_param_spec_uint ("easing-duration",
                              P_("Easing Duration"),
                              P_("The duration of the animations"),
-                             0, G_MAXUINT,
-                             500,
+                             0, G_MAXUINT, 500,
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_EASING_DURATION, pspec);
 }
@@ -1716,10 +1631,6 @@ clutter_table_layout_init (ClutterTableLayout *layout)
 
   priv->row_spacing = 0;
   priv->col_spacing = 0;
-
-  priv->use_animations = FALSE;
-  priv->easing_mode = CLUTTER_EASE_OUT_CUBIC;
-  priv->easing_duration = 500;
 
   priv->columns = g_array_new (FALSE, TRUE, sizeof (DimensionData));
   priv->rows = g_array_new (FALSE, TRUE, sizeof (DimensionData));
@@ -2357,26 +2268,17 @@ clutter_table_layout_get_expand (ClutterTableLayout *layout,
  *
  * Since: 1.4
  *
- * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
- *   of the children when allocating them
+ * Deprecated: 1.12: #ClutterTableLayout will honour the
+ *   #ClutterLayoutManager:use-animations property
  */
 void
 clutter_table_layout_set_use_animations (ClutterTableLayout *layout,
                                          gboolean            animate)
 {
-  ClutterTableLayoutPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout));
 
-  priv = layout->priv;
-
-  animate = !!animate;
-  if (priv->use_animations != animate)
-    {
-      priv->use_animations = animate;
-
-      g_object_notify (G_OBJECT (layout), "use-animations");
-    }
+  clutter_layout_manager_set_use_animations (CLUTTER_LAYOUT_MANAGER (layout),
+                                             animate);
 }
 
 /**
@@ -2391,14 +2293,19 @@ clutter_table_layout_set_use_animations (ClutterTableLayout *layout,
  *
  * Since: 1.4
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: #ClutterTable will honour the
+ *   #ClutterLayoutManager:use-animations property
  */
 gboolean
 clutter_table_layout_get_use_animations (ClutterTableLayout *layout)
 {
+  ClutterLayoutManager *manager;
+
   g_return_val_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout), FALSE);
 
-  return layout->priv->use_animations;
+  manager = CLUTTER_LAYOUT_MANAGER (layout);
+
+  return clutter_layout_manager_get_use_animations (manager);
 }
 
 /**
@@ -2415,25 +2322,17 @@ clutter_table_layout_get_use_animations (ClutterTableLayout *layout)
  *
  * Since: 1.4
  *
- * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
- *   of the children when allocating them
+ * Deprecated: 1.12: #ClutterTableLayout will honour the
+ *   #ClutterLayoutManager:easing-mode property
  */
 void
 clutter_table_layout_set_easing_mode (ClutterTableLayout *layout,
                                       gulong              mode)
 {
-  ClutterTableLayoutPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout));
 
-  priv = layout->priv;
-
-  if (priv->easing_mode != mode)
-    {
-      priv->easing_mode = mode;
-
-      g_object_notify (G_OBJECT (layout), "easing-mode");
-    }
+  clutter_layout_manager_set_easing_mode (CLUTTER_LAYOUT_MANAGER (layout),
+                                          mode);
 }
 
 /**
@@ -2446,16 +2345,20 @@ clutter_table_layout_set_easing_mode (ClutterTableLayout *layout,
  *
  * Since: 1.4
  *
- * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
- *   of the children when allocating them
+ * Deprecated: 1.12: #ClutterTableLayout will honour the
+ *   #ClutterLayoutManager:easing-mode property
  */
 gulong
 clutter_table_layout_get_easing_mode (ClutterTableLayout *layout)
 {
+  ClutterLayoutManager *manager;
+
   g_return_val_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout),
                         CLUTTER_EASE_OUT_CUBIC);
 
-  return layout->priv->easing_mode;
+  manager = CLUTTER_LAYOUT_MANAGER (layout);
+
+  return clutter_layout_manager_get_easing_mode (manager);
 }
 
 /**
@@ -2471,25 +2374,17 @@ clutter_table_layout_get_easing_mode (ClutterTableLayout *layout)
  *
  * Since: 1.4
  *
- * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
- *   of the children when allocating them
+ * Deprecated: 1.12: #ClutterTableLayout will honour the
+ *   #ClutterLayoutManager:easing-duration property
  */
 void
 clutter_table_layout_set_easing_duration (ClutterTableLayout *layout,
                                           guint               msecs)
 {
-  ClutterTableLayoutPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout));
 
-  priv = layout->priv;
-
-  if (priv->easing_duration != msecs)
-    {
-      priv->easing_duration = msecs;
-
-      g_object_notify (G_OBJECT (layout), "easing-duration");
-    }
+  clutter_layout_manager_set_easing_duration (CLUTTER_LAYOUT_MANAGER (layout),
+                                              msecs);
 }
 
 /**
@@ -2507,9 +2402,13 @@ clutter_table_layout_set_easing_duration (ClutterTableLayout *layout,
 guint
 clutter_table_layout_get_easing_duration (ClutterTableLayout *layout)
 {
+  ClutterLayoutManager *manager;
+
   g_return_val_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout), 500);
 
-  return layout->priv->easing_duration;
+  manager = CLUTTER_LAYOUT_MANAGER (layout);
+
+  return clutter_layout_manager_get_easing_duration (manager);
 }
 
 
