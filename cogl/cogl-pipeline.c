@@ -1404,8 +1404,6 @@ _cogl_pipeline_remove_layer_difference (CoglPipeline *pipeline,
                                         CoglPipelineLayer *layer,
                                         CoglBool dec_n_layers)
 {
-  _COGL_RETURN_IF_FAIL (layer->owner == pipeline);
-
   /* - Flush journal primitives referencing the current state.
    * - Make sure the pipeline has no dependants so it may be modified.
    * - If the pipeline isn't currently an authority for the state being
@@ -1421,13 +1419,23 @@ _cogl_pipeline_remove_layer_difference (CoglPipeline *pipeline,
                                     NULL,
                                     !dec_n_layers);
 
-  layer->owner = NULL;
-  cogl_object_unref (layer);
+  /* We only need to remove the layer difference if the pipeline is
+   * currently the owner. If it is not the owner then one of two
+   * things will happen to make sure this layer is replaced. If it is
+   * the last layer being removed then decrementing n_layers will
+   * ensure that the last layer is skipped. If it is any other layer
+   * then the subsequent layers will have been shifted down and cause
+   * it be replaced */
+  if (layer->owner == pipeline)
+    {
+      layer->owner = NULL;
+      cogl_object_unref (layer);
+
+      pipeline->layer_differences =
+        g_list_remove (pipeline->layer_differences, layer);
+    }
 
   pipeline->differences |= COGL_PIPELINE_STATE_LAYERS;
-
-  pipeline->layer_differences =
-    g_list_remove (pipeline->layer_differences, layer);
 
   if (dec_n_layers)
     pipeline->n_layers--;

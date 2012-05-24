@@ -59,7 +59,7 @@ main (int argc, char **argv)
   ADD_TEST (test_depth_test, 0);
   ADD_TEST (test_color_mask, 0);
   ADD_TEST (test_backface_culling, TEST_REQUIREMENT_NPOT);
-  ADD_TEST (test_layer_remove, TEST_KNOWN_FAILURE);
+  ADD_TEST (test_layer_remove, 0);
 
   ADD_TEST (test_sparse_pipeline, 0);
 
