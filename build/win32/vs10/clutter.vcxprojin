@@ -273,7 +273,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">
     <PreBuildEvent>
-      <Command>$(PreBuildWin)$(PreBuildCmd2)</Command>
+      <Command>$(PreBuildGDK)$(PreBuildCmd2)</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
@@ -332,7 +332,7 @@
   </ItemDefinitionGroup>
     <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">
     <PreBuildEvent>
-      <Command>$(PreBuildWin)$(PreBuildCmd2)</Command>
+      <Command>$(PreBuildGDK)$(PreBuildCmd2)</Command>
     </PreBuildEvent>
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

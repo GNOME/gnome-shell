@@ -272,6 +272,14 @@ copy ..\..\..\clutter\cally\cally-util.h $(OutDir)\include\clutter-$(ClutterApiV
 "
 	/>
 	<UserMacro
+		Name="ClutterDoInstallGDK"
+		Value="
+mkdir $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\gdk&#x0D;&#x0A;
+
+copy ..\..\..\clutter\gdk\clutter-gdk.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\gdk&#x0D;&#x0A;
+			  "
+	/>
+	<UserMacro
 		Name="GenerateClutterDef"
 		Value="
 		       echo EXPORTS &gt; ..\..\..\clutter\clutter.def&#x0D;&#x0A;

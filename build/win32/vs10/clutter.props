@@ -82,7 +82,7 @@ gen-enums.bat $(GlibEtcInstallRoot)
 cd .\vs10
 
 </PreBuildCmd2>
-    <ClutterDoInstall>
+<ClutterDoInstall>
 mkdir $(CopyDir)
 
 mkdir $(CopyDir)\bin
@@ -367,6 +367,11 @@ copy ..\..\..\clutter\cally\cally-util.h $(CopyDir)\include\clutter-$(ClutterApi
 
 
 </ClutterDoInstall>
+<ClutterDoInstallGDK>
+mkdir $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\gdk
+
+copy ..\..\..\clutter\gdk\clutter-gdk.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\gdk
+</ClutterDoInstallGDK>
     <GenerateClutterDef>
          echo EXPORTS &gt; ..\..\..\clutter\clutter.def
 
@@ -457,6 +462,9 @@ copy ..\..\..\clutter\cally\cally-util.h $(CopyDir)\include\clutter-$(ClutterApi
     </BuildMacro>
     <BuildMacro Include="ClutterDoInstall">
       <Value>$(ClutterDoInstall)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterDoInstallGDK">
+      <Value>$(ClutterDoInstallGDK)</Value>
     </BuildMacro>
     <BuildMacro Include="GenerateClutterDef">
       <Value>$(GenerateClutterDef)</Value>
