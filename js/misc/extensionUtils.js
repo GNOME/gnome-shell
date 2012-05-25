@@ -158,12 +158,6 @@ function installImporter(extension) {
 function init() {
     let userExtensionsPath = GLib.build_filenamev([global.userdatadir, 'extensions']);
     userExtensionsDir = Gio.file_new_for_path(userExtensionsPath);
-    try {
-        if (!userExtensionsDir.query_exists(null))
-            userExtensionsDir.make_directory_with_parents(null);
-    } catch (e) {
-        logError(e, 'Could not create extensions directory');
-    }
 }
 
 function scanExtensionsInDirectory(callback, dir, type) {

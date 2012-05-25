@@ -66,8 +66,15 @@ function gotExtensionZipFile(session, message, uuid) {
         return;
     }
 
-    let [file, stream] = Gio.File.new_tmp('XXXXXX.shell-extension.zip');
     let dir = ExtensionUtils.userExtensionsDir.get_child(uuid);
+    try {
+        if (!dir.query_exists(null))
+            dir.make_directory_with_parents(null);
+    } catch (e) {
+        logExtensionError('Could not create extension directory');
+    }
+
+    let [file, stream] = Gio.File.new_tmp('XXXXXX.shell-extension.zip');
     let contents = message.response_body.flatten().as_bytes();
     stream.output_stream.write_bytes(contents, null);
     stream.close(null);
