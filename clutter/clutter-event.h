@@ -466,6 +466,11 @@ double                  clutter_event_get_angle                 (const ClutterEv
 gdouble *               clutter_event_get_axes                  (const ClutterEvent     *event,
                                                                  guint                  *n_axes);
 
+CLUTTER_AVAILABLE_IN_1_12
+gboolean                clutter_event_has_shift_modifier        (const ClutterEvent     *event);
+CLUTTER_AVAILABLE_IN_1_12
+gboolean                clutter_event_has_control_modifier      (const ClutterEvent     *event);
+
 void                    clutter_event_set_key_symbol            (ClutterEvent           *event,
                                                                  guint                   key_sym);
 guint                   clutter_event_get_key_symbol            (const ClutterEvent     *event);

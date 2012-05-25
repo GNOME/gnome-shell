@@ -1594,3 +1594,35 @@ clutter_event_get_angle (const ClutterEvent *source,
 
   return angle;
 }
+
+/**
+ * clutter_event_has_shift_modifier:
+ * @event: a #ClutterEvent
+ *
+ * Checks whether @event has the Shift modifier mask set.
+ *
+ * Return value: %TRUE if the event has the Shift modifier mask set
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_event_has_shift_modifier (const ClutterEvent *event)
+{
+  return (clutter_event_get_state (event) & CLUTTER_SHIFT_MASK) != FALSE;
+}
+
+/**
+ * clutter_event_has_control_modifier:
+ * @event: a #ClutterEvent
+ *
+ * Checks whether @event has the Control modifier mask set.
+ *
+ * Return value: %TRUE if the event has the Control modifier mask set
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_event_has_control_modifier (const ClutterEvent *event)
+{
+  return (clutter_event_get_state (event) & CLUTTER_CONTROL_MASK) != FALSE;
+}

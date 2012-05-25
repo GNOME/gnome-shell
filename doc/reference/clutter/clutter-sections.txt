@@ -1088,6 +1088,8 @@ clutter_event_get_event_sequence
 clutter_event_get_angle
 clutter_event_get_distance
 clutter_event_get_position
+clutter_event_has_control_modifier
+clutter_event_has_shift_modifier
 
 <SUBSECTION>
 clutter_event_get

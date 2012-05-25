@@ -34,10 +34,8 @@ on_captured_event (ClutterText *text,
 
   c = clutter_event_get_key_unicode (event);
   keyval = clutter_event_get_key_symbol (event);
-  if (keyval == CLUTTER_KEY_u)
+  if (keyval == CLUTTER_KEY_U)
     {
-      ClutterModifierType mods = clutter_event_get_state (event);
-
       if (is_unicode_mode)
         {
           GString *str = g_object_get_data (G_OBJECT (text), "unicode-str");
@@ -54,8 +52,7 @@ on_captured_event (ClutterText *text,
           return FALSE;
         }
 
-      if ((mods & CLUTTER_CONTROL_MASK) &&
-          (mods & CLUTTER_SHIFT_MASK))
+      if (clutter_event_has_control_modifier (event))
         {
           PangoAttrList *attrs;
           PangoAttribute *a;
@@ -99,7 +96,7 @@ on_captured_event (ClutterText *text,
 
       g_string_append (str, buf);
 
-      g_print ("added '%s' to '%s' (len:%d)",
+      g_print ("added '%s' to '%s' (len:%d)\n",
                buf,
                str->str,
                (int) str->len);
