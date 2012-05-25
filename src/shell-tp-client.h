@@ -7,7 +7,6 @@
 #include <glib-object.h>
 
 #include <telepathy-glib/telepathy-glib.h>
-#include <telepathy-logger/telepathy-logger.h>
 
 G_BEGIN_DECLS
 
@@ -102,12 +101,6 @@ void shell_tp_client_grab_contact_list_changed (ShellTpClient *self,
     TpConnection *conn);
 
 /* Telepathy utility functions */
-
-void shell_get_contact_events (TplLogManager *log_manager,
-                               TpAccount *account,
-                               TplEntity *entity,
-                               guint num_events,
-                               GAsyncReadyCallback callback);
 
 void shell_decline_dispatch_op (TpAddDispatchOperationContext *context,
                                 const gchar *message);

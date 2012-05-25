@@ -509,10 +509,10 @@ const ChatSource = new Lang.Class({
     _getLogMessages: function() {
         let logManager = Tpl.LogManager.dup_singleton();
         let entity = Tpl.Entity.new_from_tp_contact(this._contact, Tpl.EntityType.CONTACT);
-        Shell.get_contact_events(logManager,
-                                 this._account, entity,
-                                 SCROLLBACK_HISTORY_LINES,
-                                 Lang.bind(this, this._displayPendingMessages));
+
+        logManager.get_filtered_events_async(this._account, entity,
+                                             Tpl.EventTypeMask.TEXT, SCROLLBACK_HISTORY_LINES,
+                                             null, Lang.bind(this, this._displayPendingMessages));
     },
 
     _displayPendingMessages: function(logManager, result) {

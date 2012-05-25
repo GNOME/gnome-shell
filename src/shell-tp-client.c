@@ -330,34 +330,6 @@ shell_tp_client_grab_contact_list_changed (ShellTpClient *self,
 
 /* Telepathy utility functions */
 
-
-/**
- * shell_get_contact_events:
- * @log_manager: A #TplLogManager
- * @account: A #TpAccount
- * @entity: A #TplEntity
- * @num_events: The number of events to retrieve
- * @callback: (scope async): User callback to run when the contact is ready
- *
- * Wrap tpl_log_manager_get_filtered_events_async because gjs cannot support
- * multiple callbacks in the same function call.
- */
-void
-shell_get_contact_events (TplLogManager *log_manager,
-                          TpAccount *account,
-                          TplEntity *entity,
-                          guint num_events,
-                          GAsyncReadyCallback callback)
-{
-  tpl_log_manager_get_filtered_events_async (log_manager,
-                                             account,
-                                             entity,
-                                             TPL_EVENT_MASK_TEXT,
-                                             num_events,
-                                             NULL, NULL,
-                                             callback, NULL);
-}
-
 /* gjs doesn't allow us to craft a GError so we need a C wrapper */
 void
 shell_decline_dispatch_op (TpAddDispatchOperationContext *context,
