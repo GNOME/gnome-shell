@@ -17272,39 +17272,29 @@ transition_closure_free (gpointer data)
 }
 
 static void
-on_transition_completed (ClutterTransition *transition,
-                         TransitionClosure *clos)
+on_transition_stopped (ClutterTransition *transition,
+                       gboolean           is_finished,
+                       TransitionClosure *clos)
 {
-  ClutterTimeline *timeline = CLUTTER_TIMELINE (transition);
   ClutterActor *actor = clos->actor;
   ClutterAnimationInfo *info;
-  gint n_repeats, cur_repeat;
-
-  info = _clutter_actor_get_animation_info (actor);
 
   /* reset the caches used by animations */
   clutter_actor_store_content_box (actor, NULL);
 
-  /* ensure that we remove the transition only at the end
-   * of its run; we emit ::completed for every repeat
-   */
-  n_repeats = clutter_timeline_get_repeat_count (timeline);
-  cur_repeat = clutter_timeline_get_current_repeat (timeline);
+  if (!is_finished)
+    return;
 
-  if (cur_repeat == n_repeats)
-    {
-      if (clutter_transition_get_remove_on_complete (transition))
-        {
-          /* we take a reference here because removing the closure
-           * will release the reference on the transition, and we
-           * want the transition to survive the signal emission;
-           * the master clock will release the last reference at
-           * the end of the frame processing.
-           */
-          g_object_ref (transition);
-          g_hash_table_remove (info->transitions, clos->name);
-        }
-    }
+  info = _clutter_actor_get_animation_info (actor);
+
+  /* we take a reference here because removing the closure
+   * will release the reference on the transition, and we
+   * want the transition to survive the signal emission;
+   * the master clock will release the last reference at
+   * the end of the frame processing.
+   */
+  g_object_ref (transition);
+  g_hash_table_remove (info->transitions, clos->name);
 
   /* if it's the last transition then we clean up */
   if (g_hash_table_size (info->transitions) == 0)
@@ -17585,8 +17575,8 @@ clutter_actor_add_transition (ClutterActor      *self,
   clos->actor = self;
   clos->transition = g_object_ref (transition);
   clos->name = g_strdup (name);
-  clos->completed_id = g_signal_connect (timeline, "completed",
-                                         G_CALLBACK (on_transition_completed),
+  clos->completed_id = g_signal_connect (timeline, "stopped",
+                                         G_CALLBACK (on_transition_stopped),
                                          clos);
 
   CLUTTER_NOTE (ANIMATION,
@@ -17842,13 +17832,13 @@ clutter_actor_get_easing_delay (ClutterActor *self)
  *   clutter_actor_set_rotation (actor, CLUTTER_Y_AXIS, 360.0, x, y, z);
  *
  *   transition = clutter_actor_get_transition (actor, "rotation-angle-y");
- *   g_signal_connect (transition, "completed",
- *                     G_CALLBACK (on_transition_complete),
+ *   g_signal_connect (transition, "stopped",
+ *                     G_CALLBACK (on_transition_stopped),
  *                     actor);
  * ]|
  *
- * will call the <function>on_transition_complete</function> callback when
- * the transition is complete.
+ * will call the <function>on_transition_stopped</function> callback when
+ * the transition is finished.
  *
  * Return value: (transfer none): a #ClutterTransition, or %NULL is none
  *   was found to match the passed name; the returned instance is owned

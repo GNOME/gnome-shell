@@ -104,13 +104,14 @@ struct _ClutterTimelineClass
   void (*marker_reached) (ClutterTimeline *timeline,
                           const gchar     *marker_name,
                           gint             msecs);
+  void (*stopped)        (ClutterTimeline *timeline,
+                          gboolean         is_finished);
 
   /*< private >*/
   void (*_clutter_timeline_1) (void);
   void (*_clutter_timeline_2) (void);
   void (*_clutter_timeline_3) (void);
   void (*_clutter_timeline_4) (void);
-  void (*_clutter_timeline_5) (void);
 };
 
 GType clutter_timeline_get_type (void) G_GNUC_CONST;

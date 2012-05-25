@@ -124,24 +124,19 @@ clutter_transition_new_frame (ClutterTimeline *timeline,
 }
 
 static void
-clutter_transition_completed (ClutterTimeline *timeline)
+clutter_transition_stopped (ClutterTimeline *timeline,
+                            gboolean         is_finished)
 {
   ClutterTransitionPrivate *priv = CLUTTER_TRANSITION (timeline)->priv;
 
-  if (priv->animatable != NULL && priv->remove_on_complete)
+  if (is_finished &&
+      priv->animatable != NULL &&
+      priv->remove_on_complete)
     {
-      int n_repeats, cur_repeat;
-
-      n_repeats = clutter_timeline_get_repeat_count (timeline);
-      cur_repeat = clutter_timeline_get_current_repeat (timeline);
-
-      if (n_repeats == 0 || cur_repeat == n_repeats)
-        {
-          clutter_transition_detach (CLUTTER_TRANSITION (timeline),
-                                     priv->animatable);
-          g_clear_object (&priv->animatable);
-          g_object_unref (timeline);
-        }
+      clutter_transition_detach (CLUTTER_TRANSITION (timeline),
+                                 priv->animatable);
+      g_clear_object (&priv->animatable);
+      g_object_unref (timeline);
     }
 }
 
@@ -232,7 +227,7 @@ clutter_transition_class_init (ClutterTransitionClass *klass)
   klass->detached = clutter_transition_real_detached;
 
   timeline_class->new_frame = clutter_transition_new_frame;
-  timeline_class->completed = clutter_transition_completed;
+  timeline_class->stopped = clutter_transition_stopped;
 
   gobject_class->set_property = clutter_transition_set_property;
   gobject_class->get_property = clutter_transition_get_property;

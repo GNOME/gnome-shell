@@ -187,6 +187,7 @@ enum
   PAUSED,
   COMPLETED,
   MARKER_REACHED,
+  STOPPED,
 
   LAST_SIGNAL
 };
@@ -684,6 +685,10 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    *
    * This signal will be emitted even if the #ClutterTimeline is set to be
    * repeating.
+   *
+   * If you want to get notification on whether the #ClutterTimeline has
+   * been stopped or has finished its run, including its eventual repeats,
+   * you should use the #ClutterTimeline::stopped signal instead.
    */
   timeline_signals[COMPLETED] =
     g_signal_new (I_("completed"),
@@ -766,6 +771,33 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
                   G_TYPE_INT);
+  /**
+   * ClutterTimeline::stopped:
+   * @timeline: the #ClutterTimeline that emitted the signal
+   * @is_finished: %TRUE if the signal was emitted at the end of the
+   *   timeline.
+   *
+   * The #ClutterTimeline::stopped signal is emitted when the timeline
+   * has been stopped, either because clutter_timeline_stop() has been
+   * called, or because it has been exhausted.
+   *
+   * This is different from the #ClutterTimeline::completed signal,
+   * which gets emitted after every repeat finishes.
+   *
+   * If the #ClutterTimeline has is marked as infinitely repeating,
+   * this signal will never be emitted.
+   *
+   * Since: 1.12
+   */
+  timeline_signals[STOPPED] =
+    g_signal_new (I_("stopped"),
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterTimelineClass, completed),
+		  NULL, NULL,
+		  _clutter_marshal_VOID__BOOLEAN,
+		  G_TYPE_NONE, 1,
+                  G_TYPE_BOOLEAN);
 }
 
 static void
@@ -897,12 +929,13 @@ set_is_playing (ClutterTimeline *timeline,
   ClutterTimelinePrivate *priv = timeline->priv;
   ClutterMasterClock *master_clock;
 
-  is_playing = is_playing != FALSE;
+  is_playing = !!is_playing;
 
   if (is_playing == priv->is_playing)
     return;
 
   priv->is_playing = is_playing;
+
   master_clock = _clutter_master_clock_get_default ();
   if (priv->is_playing)
     {
@@ -911,9 +944,7 @@ set_is_playing (ClutterTimeline *timeline,
       priv->current_repeat = 0;
     }
   else
-    {
-      _clutter_master_clock_remove_timeline (master_clock, timeline);
-    }
+    _clutter_master_clock_remove_timeline (master_clock, timeline);
 }
 
 static gboolean
@@ -1002,7 +1033,8 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
            * priv->repeat_count. Are we limiting the things that could be
            * done in the above new-frame signal handler?
            */
-	  set_is_playing (timeline, FALSE);
+          set_is_playing (timeline, FALSE);
+          g_signal_emit (timeline, timeline_signals[STOPPED], 0, TRUE);
         }
 
       g_signal_emit (timeline, timeline_signals[COMPLETED], 0);
@@ -1156,8 +1188,22 @@ clutter_timeline_pause (ClutterTimeline *timeline)
 void
 clutter_timeline_stop (ClutterTimeline *timeline)
 {
+  gboolean was_playing;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+
+  /* we check the is_playing here because pause() will return immediately
+   * if the timeline wasn't playing, so we don't know if it was actually
+   * stopped, and yet we still don't want to emit a ::stopped signal if
+   * the timeline was not playing in the first place.
+   */
+  was_playing = timeline->priv->is_playing;
+
   clutter_timeline_pause (timeline);
   clutter_timeline_rewind (timeline);
+
+  if (was_playing)
+    g_signal_emit (timeline, timeline_signals[STOPPED], 0, FALSE);
 }
 
 /**

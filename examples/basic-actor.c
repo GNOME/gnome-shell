@@ -49,8 +49,9 @@ on_crossing (ClutterActor *actor,
 }
 
 static void
-on_transition_complete (ClutterTransition *transition,
-                        ClutterActor      *actor)
+on_transition_stopped (ClutterTransition *transition,
+                       gboolean           is_finished,
+                       ClutterActor      *actor)
 {
   clutter_actor_save_easing_state (actor);
   clutter_actor_set_easing_duration (actor, 250);
@@ -74,8 +75,8 @@ animate_rotation (ClutterActor *actor,
                               SIZE / 2.0f, 0.f, 0.f);
 
   transition = clutter_actor_get_transition (actor, "rotation-angle-y");
-  g_signal_connect (transition, "completed",
-                    G_CALLBACK (on_transition_complete),
+  g_signal_connect (transition, "stopped",
+                    G_CALLBACK (on_transition_stopped),
                     actor);
 
   clutter_actor_restore_easing_state (actor);
