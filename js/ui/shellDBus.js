@@ -56,12 +56,6 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
     <arg type="i" direction="in" name="width"/>
     <arg type="i" direction="in" name="height"/>
 </method>
-<method name="EnableExtension">
-    <arg type="s" direction="in" name="uuid"/>
-</method>
-<method name="DisableExtension">
-    <arg type="s" direction="in" name="uuid"/>
-</method>
 <method name="InstallRemoteExtension">
     <arg type="s" direction="in" name="uuid"/>
     <arg type="s" direction="in" name="version"/>
@@ -258,20 +252,6 @@ const GnomeShell = new Lang.Class({
             return [];
 
         return extension.errors;
-    },
-
-    EnableExtension: function(uuid) {
-        let enabledExtensions = global.settings.get_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY);
-        if (enabledExtensions.indexOf(uuid) == -1)
-            enabledExtensions.push(uuid);
-        global.settings.set_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY, enabledExtensions);
-    },
-
-    DisableExtension: function(uuid) {
-        let enabledExtensions = global.settings.get_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY);
-        while (enabledExtensions.indexOf(uuid) != -1)
-            enabledExtensions.splice(enabledExtensions.indexOf(uuid), 1);
-        global.settings.set_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY, enabledExtensions);
     },
 
     InstallRemoteExtension: function(uuid, version_tag) {
