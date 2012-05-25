@@ -267,6 +267,7 @@ typedef struct {
   NPObject     parent;
   NPP          instance;
   GDBusProxy  *proxy;
+  GSettings   *settings;
   NPObject    *listener;
   NPObject    *restart_listener;
   gint         signal_id;
@@ -323,6 +324,9 @@ on_shell_appeared (GDBusConnection *connection,
     }
 }
 
+#define SHELL_SCHEMA "org.gnome.shell"
+#define ENABLED_EXTENSIONS_KEY "enabled-extensions"
+
 static NPObject *
 plugin_object_allocate (NPP      instance,
                         NPClass *klass)
@@ -332,6 +336,7 @@ plugin_object_allocate (NPP      instance,
 
   obj->instance = instance;
   obj->proxy = g_object_ref (data->proxy);
+  obj->settings = g_settings_new (SHELL_SCHEMA);
   obj->signal_id = g_signal_connect (obj->proxy, "g-signal",
                                      G_CALLBACK (on_shell_signal), obj);
 
@@ -492,25 +497,53 @@ plugin_enable_extension (PluginObject *obj,
                          NPString      uuid,
                          gboolean      enabled)
 {
+  gboolean ret;
   gchar *uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
+  gsize length;
+  gchar **uuids;
+  const gchar **new_uuids;
+
   if (!uuid_is_valid (uuid_str))
     {
       g_free (uuid_str);
       return FALSE;
     }
 
-  g_dbus_proxy_call (obj->proxy,
-                     (enabled ? "EnableExtension" : "DisableExtension"),
-                     g_variant_new ("(s)", uuid_str),
-                     G_DBUS_CALL_FLAGS_NONE,
-                     -1, /* timeout */
-                     NULL, /* cancellable */
-                     NULL, /* callback */
-                     NULL /* user_data */);
+  uuids = g_settings_get_strv (obj->settings, ENABLED_EXTENSIONS_KEY);
+  length = g_strv_length (uuids);
 
+  if (enabled)
+    {
+      new_uuids = g_new (const gchar *, length + 2); /* New key, NULL */
+      memcpy (new_uuids, uuids, length);
+      new_uuids[length - 2] = uuid_str;
+      new_uuids[length - 1] = NULL;
+    }
+  else
+    {
+      gsize i = 0, j = 0;
+      new_uuids = g_new (const gchar *, length);
+      for (i = 0; i < length; i ++)
+        {
+          if (g_str_equal (uuids[i], uuid_str))
+            continue;
+
+          new_uuids[j] = uuids[i];
+          j++;
+        }
+
+      new_uuids[j] = NULL;
+    }
+
+  ret = g_settings_set_strv (obj->settings,
+                             ENABLED_EXTENSIONS_KEY,
+                             new_uuids);
+
+  g_strfreev (uuids);
+  g_free (new_uuids);
   g_free (uuid_str);
 
-  return TRUE;
+  return ret;
 }
 
 static gboolean
