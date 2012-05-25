@@ -52,6 +52,7 @@ nobase_dist_js_DATA = 	\
 	ui/endSessionDialog.js	\
 	ui/environment.js	\
 	ui/extensionSystem.js	\
+	ui/extensionDownloader.js \
 	ui/flashspot.js		\
 	ui/iconGrid.js		\
 	ui/keyboard.js		\

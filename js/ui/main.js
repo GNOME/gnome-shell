@@ -18,6 +18,7 @@ const PolkitAuthenticationAgent = imports.ui.polkitAuthenticationAgent;
 const KeyringPrompt = imports.ui.keyringPrompt;
 const Environment = imports.ui.environment;
 const ExtensionSystem = imports.ui.extensionSystem;
+const ExtensionDownloader = imports.ui.extensionDownloader;
 const Keyboard = imports.ui.keyboard;
 const MessageTray = imports.ui.messageTray;
 const Overview = imports.ui.overview;
@@ -221,6 +222,7 @@ function start() {
 
     if (sessionMode.allowExtensions) {
         ExtensionSystem.init();
+        ExtensionDownloader.init();
         ExtensionSystem.loadExtensions();
     }
 

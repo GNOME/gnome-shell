@@ -7,6 +7,7 @@ const Shell = imports.gi.Shell;
 
 const Config = imports.misc.config;
 const ExtensionSystem = imports.ui.extensionSystem;
+const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Flashspot = imports.ui.flashspot;
 const Main = imports.ui.main;
@@ -254,11 +255,11 @@ const GnomeShell = new Lang.Class({
     },
 
     InstallRemoteExtension: function(uuid) {
-        ExtensionSystem.installExtensionFromUUID(uuid);
+        ExtensionDownloader.installExtensionFromUUID(uuid);
     },
 
     UninstallExtension: function(uuid) {
-        return ExtensionSystem.uninstallExtensionFromUUID(uuid);
+        return ExtensionDownloader.uninstallExtensionFromUUID(uuid);
     },
 
     LaunchExtensionPrefs: function(uuid) {
@@ -278,8 +279,6 @@ const GnomeShell = new Lang.Class({
         else
             Main.overview.hide();
     },
-
-    ApiVersion: ExtensionSystem.API_VERSION,
 
     ShellVersion: Config.PACKAGE_VERSION,
 
