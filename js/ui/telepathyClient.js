@@ -420,14 +420,13 @@ const ChatSource = new Lang.Class({
     Extends: MessageTray.Source,
 
     _init: function(account, conn, channel, contact, client) {
-        this.isChat = true;
-
         this._account = account;
         this._contact = contact;
         this._client = client;
 
         this.parent(contact.get_alias());
 
+        this.isChat = true;
         this._pendingMessages = [];
 
         this._conn = conn;
