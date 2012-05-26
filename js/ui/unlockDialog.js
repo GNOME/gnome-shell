@@ -7,7 +7,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -152,6 +151,11 @@ const UnlockDialog = new Lang.Class({
 
         this._updateOkButton(false);
         this._reset();
+
+        GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
+            this.emit('loaded');
+            return false;
+        }));
     },
 
     _updateOkButton: function(sensitive) {

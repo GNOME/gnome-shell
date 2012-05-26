@@ -39,6 +39,7 @@ const _modes = {
              hasRunDialog: false,
              hasWorkspaces: false,
              createSession: Main.createGDMSession,
+             createUnlockDialog: Main.createGDMLoginDialog,
              extraStylesheet: null,
              statusArea: {
                  order: [
@@ -86,6 +87,7 @@ const _modes = {
               hasRunDialog: true,
               hasWorkspaces: true,
               createSession: Main.createUserSession,
+              createUnlockDialog: Main.createSessionUnlockDialog,
               extraStylesheet: null,
               statusArea: {
                   order: [
@@ -113,6 +115,8 @@ const SessionMode = new Lang.Class({
 
         this._createSession = params.createSession;
         delete params.createSession;
+        this._createUnlockDialog = params.createUnlockDialog;
+        delete params.createUnlockDialog;
 
         Lang.copyProperties(params, this);
     },
@@ -120,5 +124,12 @@ const SessionMode = new Lang.Class({
     createSession: function() {
         if (this._createSession)
             this._createSession();
-    }
+    },
+
+    createUnlockDialog: function() {
+        if (this._createUnlockDialog)
+            return this._createUnlockDialog.apply(this, arguments);
+        else
+            return null;
+    },
 });

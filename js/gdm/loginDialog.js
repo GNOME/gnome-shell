@@ -646,8 +646,11 @@ const LoginDialog = new Lang.Class({
     Name: 'LoginDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function() {
-        this.parent({ shellReactive: true, styleClass: 'login-dialog' });
+    _init: function(parentActor) {
+        this.parent({ shellReactive: true,
+                      styleClass: 'login-dialog',
+                      parentActor: parentActor
+                    });
         this.connect('destroy',
                      Lang.bind(this, this._onDestroy));
         this.connect('opened',
@@ -858,7 +861,7 @@ const LoginDialog = new Lang.Class({
         GdmUtil.fadeOutActor(this._promptFingerprintMessage);
     }
 
-    _onCancel: function() {
+    cancel: function() {
         this._userVerifier.cancel();
     },
 
@@ -901,7 +904,7 @@ const LoginDialog = new Lang.Class({
     _showPrompt: function() {
         let hold = new Batch.Hold();
 
-        let buttons = [{ action: Lang.bind(this, this._onCancel),
+        let buttons = [{ action: Lang.bind(this, this.cancel),
                          label: _("Cancel"),
                          key: Clutter.Escape },
                        { action: Lang.bind(this, function() {

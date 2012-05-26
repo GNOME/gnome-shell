@@ -9,7 +9,6 @@ const St = imports.gi.St;
 
 const GnomeSession = imports.misc.gnomeSession;
 const Lightbox = imports.ui.lightbox;
-const UnlockDialog = imports.ui.unlockDialog;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
@@ -97,7 +96,7 @@ const ScreenShield = new Lang.Class({
 
     _onLockScreenKeyRelease: function(actor, event) {
         if (event.get_key_symbol() == Clutter.KEY_Escape) {
-            this._showUnlockDialog();
+            this._showUnlockDialog(true);
             return true;
         }
 
@@ -124,7 +123,7 @@ const ScreenShield = new Lang.Class({
     _onDragEnd: function(action, actor, eventX, eventY, modifiers) {
         if (this._lockScreenGroup.y < -(ARROW_DRAG_TRESHOLD * global.stage.height)) {
             // Complete motion automatically
-            this._showUnlockDialog();
+            this._showUnlockDialog(true);
         } else {
             // restore the lock screen to its original place
             // try to use the same speed as the normal animation
@@ -146,7 +145,9 @@ const ScreenShield = new Lang.Class({
         if (status == GnomeSession.PresenceStatus.IDLE) {
             if (this._dialog) {
                 this._dialog.cancel();
-                this._dialog = null;
+                if (!this._keepDialog) {
+                    this._dialog = null;
+                }
             }
 
             if (!this._isModal) {
@@ -169,32 +170,54 @@ const ScreenShield = new Lang.Class({
         }
     },
 
-    _showUnlockDialog: function() {
-        if (this._dialog)
-            return;
+    showDialog: function() {
+        this.lock();
+        this._showUnlockDialog(false);
+    },
 
-        // Tween the lock screen out of screen
-        // try to use the same speed regardless of original position
-        let h = global.stage.height;
-        let time = CURTAIN_SLIDE_TIME * (h + this._lockScreenGroup.y) / h;
-        Tweener.removeTweens(this._lockScreenGroup);
-        Tweener.addTween(this._lockScreenGroup,
-                         { y: -h,
-                           time: time,
-                           transition: 'linear',
-                           onComplete: Lang.bind(this, this._hideLockScreen),
-                         });
+    _showUnlockDialog: function(animate) {
+        if (animate) {
+            // Tween the lock screen out of screen
+            // try to use the same speed regardless of original position
+            let h = global.stage.height;
+            let time = CURTAIN_SLIDE_TIME * (h + this._lockScreenGroup.y) / h;
+            Tweener.removeTweens(this._lockScreenGroup);
+            Tweener.addTween(this._lockScreenGroup,
+                             { y: -h,
+                               time: time,
+                               transition: 'linear',
+                               onComplete: Lang.bind(this, this._hideLockScreen),
+                             });
+        } else {
+            this._hideLockScreen();
+        }
 
-        this._dialog = new UnlockDialog.UnlockDialog();
-        this._dialog.connect('failed', Lang.bind(this, this._onUnlockFailed));
-        this._dialog.connect('unlocked', Lang.bind(this, this._onUnlockSucceded));
+        if (!this._dialog) {
+            [this._dialog, this._keepDialog] = Main.sessionMode.createUnlockDialog(this._lockDialogGroup);
+            if (!this._dialog) {
+                // This session mode has no locking capabilities
+                this.unlock();
+                return;
+            }
 
-        if (!this._dialog.open(global.get_current_time())) {
-            log('Could not open unlock dialog: failed to acquire grab');
+            this._dialog.connect('loaded', Lang.bind(this, function() {
+                if (!this._dialog.open()) {
+                    log('Could not open login dialog: failed to acquire grab');
+                    this.unlock();
+                }
+            }));
 
-            // and then? best we can do is to autounlock, although that's potentially
-            // a security issue
-            this._onUnlockSucceded();
+            this._dialog.connect('failed', Lang.bind(this, this._onUnlockFailed));
+            this._dialog.connect('unlocked', Lang.bind(this, this._onUnlockSucceded));
+        }
+
+        if (this._keepDialog) {
+            // Notify the other components that even though we are showing the
+            // screenshield, we're not in a locked state
+            // (this happens for the gdm greeter)
+
+            this._isLocked = false;
+            this.emit('lock-status-changed', false);
         }
     },
 
@@ -227,6 +250,14 @@ const ScreenShield = new Lang.Class({
     },
 
     unlock: function() {
+        if (this._keepDialog) {
+            // The dialog must be kept alive,
+            // so immediately go back to it
+            // This will also reset _isLocked
+            this._showUnlockDialog(false);
+            return;
+        }
+
         if (this._dialog) {
             this._dialog.destroy();
             this._dialog = null;
