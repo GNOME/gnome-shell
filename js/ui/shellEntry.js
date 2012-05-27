@@ -7,7 +7,7 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
-const _EntryMenu = new Lang.Class({
+const EntryMenu = new Lang.Class({
     Name: 'ShellEntryMenu',
     Extends: PopupMenu.PopupMenu,
 
@@ -34,16 +34,35 @@ const _EntryMenu = new Lang.Class({
         this._pasteItem = item;
 
         this._passwordItem = null;
-        if (params.isPassword) {
-            item = new PopupMenu.PopupMenuItem('');
-            item.connect('activate', Lang.bind(this,
-                                               this._onPasswordActivated));
-            this.addMenuItem(item);
-            this._passwordItem = item;
-        }
+        if (params.isPassword)
+	    this._makePasswordItem();
 
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();
+    },
+
+    _makePasswordItem: function() {
+        let item = new PopupMenu.PopupMenuItem('');
+        item.connect('activate', Lang.bind(this,
+                                           this._onPasswordActivated));
+        this.addMenuItem(item);
+        this._passwordItem = item;
+    },
+
+    get isPassword() {
+	return this._passwordItem != null;
+    },
+
+    set isPassword(v) {
+	if (v == this.isPassword)
+	    return;
+
+	if (v)
+	    this._makePasswordItem();
+	else {
+	    this._passwordItem.destroy();
+	    this._passwordItem = null;
+	}
     },
 
     open: function() {
@@ -104,50 +123,50 @@ const _EntryMenu = new Lang.Class({
 function _setMenuAlignment(entry, stageX) {
     let [success, entryX, entryY] = entry.transform_stage_point(stageX, 0);
     if (success)
-        entry._menu.setSourceAlignment(entryX / entry.width);
+        entry.menu.setSourceAlignment(entryX / entry.width);
 };
 
 function _onClicked(action, actor) {
-    let entry = actor._menu ? actor : actor.get_parent();
+    let entry = actor.menu ? actor : actor.get_parent();
 
-    if (entry._menu.isOpen) {
-        entry._menu.close();
+    if (entry.menu.isOpen) {
+        entry.menu.close();
     } else if (action.get_button() == 3) {
         let [stageX, stageY] = action.get_coords();
         _setMenuAlignment(entry, stageX);
-        entry._menu.open();
+        entry.menu.open();
     }
 };
 
 function _onLongPress(action, actor, state) {
-    let entry = actor._menu ? actor : actor.get_parent();
+    let entry = actor.menu ? actor : actor.get_parent();
 
     if (state == Clutter.LongPressState.QUERY)
-        return action.get_button() == 1 && !entry._menu.isOpen;
+        return action.get_button() == 1 && !entry.menu.isOpen;
 
     if (state == Clutter.LongPressState.ACTIVATE) {
         let [stageX, stageY] = action.get_coords();
         _setMenuAlignment(entry, stageX);
-        entry._menu.open();
+        entry.menu.open();
     }
     return false;
 };
 
 function _onPopup(actor) {
-    let entry = actor._menu ? actor : actor.get_parent();
+    let entry = actor.menu ? actor : actor.get_parent();
     let [success, textX, textY, lineHeight] = entry.clutter_text.position_to_coords(-1);
     if (success)
-        entry._menu.setSourceAlignment(textX / entry.width);
-    entry._menu.open();
+        entry.menu.setSourceAlignment(textX / entry.width);
+    entry.menu.open();
 };
 
 function addContextMenu(entry, params) {
-    if (entry._menu)
+    if (entry.menu)
         return;
 
-    entry._menu = new _EntryMenu(entry, params);
+    entry.menu = new EntryMenu(entry, params);
     entry._menuManager = new PopupMenu.PopupMenuManager({ actor: entry });
-    entry._menuManager.addMenu(entry._menu);
+    entry._menuManager.addMenu(entry.menu);
 
     let clickAction;
 
