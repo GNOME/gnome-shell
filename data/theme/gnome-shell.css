@@ -2206,3 +2206,18 @@ StScrollBar StButton#vhandle:hover
     width: 100px;
     height: 50px;
 }
+
+.screen-shield-clock {
+    color: white;
+    text-shadow: black 0px 0px 0px 1px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.screen-shield-clock-time {
+    font-size: 86px;
+}
+
+.screen-shield-clock-date {
+    font-size: 48px;
+}
