@@ -40,13 +40,18 @@ function getCurrentExtension() {
         throw new Error('Could not find current extension');
 
     let path = match[1];
-    let uuid = GLib.path_get_basename(GLib.path_get_dirname(path));
+    let file = Gio.File.new_for_path(path);
 
-    let extension = extensions[uuid];
-    if (extension === undefined)
-        throw new Error('Could not find current extension');
+    // Walk up the directory tree, looking for an extesion with
+    // the same UUID as a directory name.
+    while (file != null) {
+        let extension = extensions[file.get_basename()];
+        if (extension !== undefined)
+            return extension;
+        file = file.get_parent();
+    }
 
-    return extension;
+    throw new Error('Could not find current extension');
 }
 
 /**
