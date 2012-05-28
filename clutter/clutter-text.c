@@ -48,6 +48,7 @@
 #include "clutter-text.h"
 
 #include "clutter-actor-private.h"
+#include "clutter-animatable.h"
 #include "clutter-binding-pool.h"
 #include "clutter-color.h"
 #include "clutter-debug.h"
@@ -57,6 +58,7 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"    /* includes <cogl-pango/cogl-pango.h> */
 #include "clutter-profile.h"
+#include "clutter-property-transition.h"
 #include "clutter-text-buffer.h"
 #include "clutter-units.h"
 #include "clutter-paint-volume-private.h"
@@ -86,13 +88,18 @@ static const ClutterColor default_selection_color = {   0,   0,   0, 255 };
 static const ClutterColor default_text_color      = {   0,   0,   0, 255 };
 static const ClutterColor default_selected_text_color = {   0,   0,   0, 255 };
 
+static ClutterAnimatableIface *parent_animatable_iface = NULL;
+
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+static void clutter_animatable_iface_init (ClutterAnimatableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterText,
                          clutter_text,
                          CLUTTER_TYPE_ACTOR,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                clutter_scriptable_iface_init));
+                                                clutter_scriptable_iface_init)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_ANIMATABLE,
+                                                clutter_animatable_iface_init));
 
 struct _LayoutCache
 {
@@ -2905,6 +2912,155 @@ clutter_text_parse_custom_node (ClutterScriptable *scriptable,
 }
 
 static void
+clutter_text_set_color_internal (ClutterText        *self,
+                                 GParamSpec         *pspec,
+                                 const ClutterColor *color)
+{
+  ClutterTextPrivate *priv = CLUTTER_TEXT (self)->priv;
+  GParamSpec *other = NULL;
+
+  switch (pspec->param_id)
+    {
+    case PROP_COLOR:
+      priv->text_color = *color;
+      break;
+
+    case PROP_CURSOR_COLOR:
+      if (color)
+        {
+          priv->cursor_color = *color;
+          priv->cursor_color_set = TRUE;
+        }
+      else
+        priv->cursor_color_set = FALSE;
+
+      other = obj_props[PROP_CURSOR_COLOR_SET];
+      break;
+
+    case PROP_SELECTION_COLOR:
+      if (color)
+        {
+          priv->selection_color = *color;
+          priv->selection_color_set = TRUE;
+        }
+      else
+        priv->selection_color_set = FALSE;
+
+      other = obj_props[PROP_SELECTION_COLOR_SET];
+      break;
+
+    case PROP_SELECTED_TEXT_COLOR:
+      if (color)
+        {
+          priv->selected_text_color = *color;
+          priv->selected_text_color_set = TRUE;
+        }
+      else
+        priv->selected_text_color_set = FALSE;
+
+      other = obj_props[PROP_SELECTED_TEXT_COLOR_SET];
+      break;
+
+    default:
+      g_assert_not_reached ();
+      break;
+    }
+
+  clutter_text_queue_redraw (CLUTTER_ACTOR (self));
+  g_object_notify_by_pspec (G_OBJECT (self), pspec);
+  if (other)
+    g_object_notify_by_pspec (G_OBJECT (self), other);
+}
+
+static void
+clutter_text_set_color_animated (ClutterText        *self,
+                                 GParamSpec         *pspec,
+                                 const ClutterColor *color)
+{
+  ClutterActor *actor = CLUTTER_ACTOR (self);
+  ClutterTextPrivate *priv = self->priv;
+  const ClutterAnimationInfo *info;
+  ClutterTransition *transition;
+
+  info = _clutter_actor_get_animation_info (actor);
+  transition = clutter_actor_get_transition (actor, pspec->name);
+
+  /* jump to the end if there is no easing state, or if the easing
+   * state has a duration of 0 msecs
+   */
+  if (info->cur_state == NULL ||
+      info->cur_state->easing_duration == 0)
+    {
+      /* ensure that we remove any currently running transition */
+      if (transition != NULL)
+        {
+          clutter_actor_remove_transition (actor, pspec->name);
+          transition = NULL;
+        }
+
+      clutter_text_set_color_internal (self, pspec, color);
+
+      return;
+    }
+
+  if (transition == NULL)
+    {
+      transition = clutter_property_transition_new (pspec->name);
+      clutter_transition_set_animatable (transition,
+                                         CLUTTER_ANIMATABLE (self));
+      clutter_transition_set_remove_on_complete (transition, TRUE);
+
+      /* delay only makes sense if the transition has just been created */
+      clutter_timeline_set_delay (CLUTTER_TIMELINE (transition),
+                                  info->cur_state->easing_delay);
+
+      clutter_actor_add_transition (actor, pspec->name, transition);
+
+      /* the actor now owns the transition */
+      g_object_unref (transition);
+    }
+
+  /* if a transition already exist, update its bounds */
+  switch (pspec->param_id)
+    {
+    case PROP_COLOR:
+      clutter_transition_set_from (transition, CLUTTER_TYPE_COLOR,
+                                   &priv->text_color);
+      break;
+
+    case PROP_CURSOR_COLOR:
+      clutter_transition_set_from (transition, CLUTTER_TYPE_COLOR,
+                                   &priv->cursor_color);
+      break;
+
+    case PROP_SELECTION_COLOR:
+      clutter_transition_set_from (transition, CLUTTER_TYPE_COLOR,
+                                   &priv->selection_color);
+      break;
+
+    case PROP_SELECTED_TEXT_COLOR:
+      clutter_transition_set_from (transition, CLUTTER_TYPE_COLOR,
+                                   &priv->selected_text_color);
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
+
+  clutter_transition_set_to (transition, CLUTTER_TYPE_COLOR, color);
+
+  /* always use the current easing state */
+  clutter_timeline_set_duration (CLUTTER_TIMELINE (transition),
+                                 info->cur_state->easing_duration);
+  clutter_timeline_set_progress_mode (CLUTTER_TIMELINE (transition),
+                                      info->cur_state->easing_mode);
+
+  /* ensure that we start from the beginning */
+  clutter_timeline_rewind (CLUTTER_TIMELINE (transition));
+  clutter_timeline_start (CLUTTER_TIMELINE (transition));
+}
+
+static void
 clutter_text_set_custom_property (ClutterScriptable *scriptable,
                                   ClutterScript     *script,
                                   const gchar       *name,
@@ -2926,6 +3082,50 @@ clutter_scriptable_iface_init (ClutterScriptableIface *iface)
 {
   iface->parse_custom_node = clutter_text_parse_custom_node;
   iface->set_custom_property = clutter_text_set_custom_property;
+}
+
+static void
+clutter_text_set_final_state (ClutterAnimatable *animatable,
+                              const char        *property_name,
+                              const GValue      *value)
+{
+  if (strcmp (property_name, "color") == 0)
+    {
+      const ClutterColor *color = clutter_value_get_color (value);
+      clutter_text_set_color_internal (CLUTTER_TEXT (animatable),
+                                       obj_props[PROP_COLOR], color);
+    }
+  else if (strcmp (property_name, "cursor-color") == 0)
+    {
+      const ClutterColor *color = clutter_value_get_color (value);
+      clutter_text_set_color_internal (CLUTTER_TEXT (animatable),
+                                       obj_props[PROP_CURSOR_COLOR],
+                                       color);
+    }
+  else if (strcmp (property_name, "selected-text-color") == 0)
+    {
+      const ClutterColor *color = clutter_value_get_color (value);
+      clutter_text_set_color_internal (CLUTTER_TEXT (animatable),
+                                       obj_props[PROP_SELECTED_TEXT_COLOR],
+                                       color);
+    }
+  else if (strcmp (property_name, "selection-color") == 0)
+    {
+      const ClutterColor *color = clutter_value_get_color (value);
+      clutter_text_set_color_internal (CLUTTER_TEXT (animatable),
+                                       obj_props[PROP_SELECTION_COLOR],
+                                       color);
+    }
+  else
+    parent_animatable_iface->set_final_state (animatable, property_name, value);
+}
+
+static void
+clutter_animatable_iface_init (ClutterAnimatableIface *iface)
+{
+  parent_animatable_iface = g_type_interface_peek_parent (iface);
+
+  iface->set_final_state = clutter_text_set_final_state;
 }
 
 static void
@@ -3037,7 +3237,8 @@ clutter_text_class_init (ClutterTextClass *klass)
                                     P_("Font Color"),
                                     P_("Color of the font used by the text"),
                                     &default_text_color,
-                                    CLUTTER_PARAM_READWRITE);
+                                    CLUTTER_PARAM_READWRITE |
+                                    CLUTTER_PARAM_ANIMATABLE);
   obj_props[PROP_COLOR] = pspec;
   g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
 
@@ -3115,7 +3316,8 @@ clutter_text_class_init (ClutterTextClass *klass)
                                     P_("Cursor Color"),
                                     P_("Cursor Color"),
                                     &default_cursor_color,
-                                    CLUTTER_PARAM_READWRITE);
+                                    CLUTTER_PARAM_READWRITE |
+                                    CLUTTER_PARAM_ANIMATABLE);
   obj_props[PROP_CURSOR_COLOR] = pspec;
   g_object_class_install_property (gobject_class, PROP_CURSOR_COLOR, pspec);
 
@@ -3193,7 +3395,8 @@ clutter_text_class_init (ClutterTextClass *klass)
                                     P_("Selection Color"),
                                     P_("Selection Color"),
                                     &default_selection_color,
-                                    CLUTTER_PARAM_READWRITE);
+                                    CLUTTER_PARAM_READWRITE |
+                                    CLUTTER_PARAM_ANIMATABLE);
   obj_props[PROP_SELECTION_COLOR] = pspec;
   g_object_class_install_property (gobject_class, PROP_SELECTION_COLOR, pspec);
 
@@ -3400,7 +3603,8 @@ clutter_text_class_init (ClutterTextClass *klass)
                                     P_("Selected Text Color"),
                                     P_("Selected Text Color"),
                                     &default_selected_text_color,
-                                    CLUTTER_PARAM_READWRITE);
+                                    CLUTTER_PARAM_READWRITE |
+                                    CLUTTER_PARAM_ANIMATABLE);
   obj_props[PROP_SELECTED_TEXT_COLOR] = pspec;
   g_object_class_install_property (gobject_class, PROP_SELECTED_TEXT_COLOR, pspec);
 
@@ -4238,24 +4442,9 @@ void
 clutter_text_set_cursor_color (ClutterText        *self,
                                const ClutterColor *color)
 {
-  ClutterTextPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  priv = self->priv;
-
-  if (color)
-    {
-      priv->cursor_color = *color;
-      priv->cursor_color_set = TRUE;
-    }
-  else
-    priv->cursor_color_set = FALSE;
-
-  clutter_text_queue_redraw (CLUTTER_ACTOR (self));
-
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_COLOR]);
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_COLOR_SET]);
+  clutter_text_set_color_animated (self, obj_props[PROP_CURSOR_COLOR], color);
 }
 
 /**
@@ -4437,24 +4626,10 @@ void
 clutter_text_set_selection_color (ClutterText        *self,
                                   const ClutterColor *color)
 {
-  ClutterTextPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  priv = self->priv;
-
-  if (color)
-    {
-      priv->selection_color = *color;
-      priv->selection_color_set = TRUE;
-    }
-  else
-    priv->selection_color_set = FALSE;
-
-  clutter_text_queue_redraw (CLUTTER_ACTOR (self));
-
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_COLOR]);
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_COLOR_SET]);
+  clutter_text_set_color_animated (self, obj_props[PROP_SELECTION_COLOR],
+                                   color);
 }
 
 /**
@@ -4496,24 +4671,10 @@ void
 clutter_text_set_selected_text_color (ClutterText        *self,
                                       const ClutterColor *color)
 {
-  ClutterTextPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  priv = self->priv;
-
-  if (color)
-    {
-      priv->selected_text_color = *color;
-      priv->selected_text_color_set = TRUE;
-    }
-  else
-    priv->selected_text_color_set = FALSE;
-
-  clutter_text_queue_redraw (CLUTTER_ACTOR (self));
-
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTED_TEXT_COLOR]);
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTED_TEXT_COLOR_SET]);
+  clutter_text_set_color_animated (self, obj_props[PROP_SELECTED_TEXT_COLOR],
+                                   color);
 }
 
 /**
@@ -4851,18 +5012,10 @@ void
 clutter_text_set_color (ClutterText        *self,
                         const ClutterColor *color)
 {
-  ClutterTextPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_TEXT (self));
   g_return_if_fail (color != NULL);
 
-  priv = self->priv;
-
-  priv->text_color = *color;
-
-  clutter_text_queue_redraw (CLUTTER_ACTOR (self));
-
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_COLOR]);
+  clutter_text_set_color_animated (self, obj_props[PROP_COLOR], color);
 }
 
 /**
