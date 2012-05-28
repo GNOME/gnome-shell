@@ -908,7 +908,7 @@ _clutter_paint_volume_axis_align (ClutterPaintVolume *pv)
 
   if (G_LIKELY (pv->vertices[0].x == pv->vertices[1].x &&
                 pv->vertices[0].y == pv->vertices[3].y &&
-                pv->vertices[0].z == pv->vertices[4].y))
+                pv->vertices[0].z == pv->vertices[4].z))
     {
       pv->is_axis_aligned = TRUE;
       return;
