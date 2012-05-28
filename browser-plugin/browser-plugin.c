@@ -515,9 +515,9 @@ plugin_enable_extension (PluginObject *obj,
   if (enabled)
     {
       new_uuids = g_new (const gchar *, length + 2); /* New key, NULL */
-      memcpy (new_uuids, uuids, length);
-      new_uuids[length - 2] = uuid_str;
-      new_uuids[length - 1] = NULL;
+      memcpy (new_uuids, uuids, length * sizeof (*new_uuids));
+      new_uuids[length] = uuid_str;
+      new_uuids[length + 1] = NULL;
     }
   else
     {
