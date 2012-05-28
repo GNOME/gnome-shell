@@ -804,7 +804,7 @@ cogl_gtype_matrix_get_type
 </SECTION>
 
 <SECTION>
-<FILE>SDL</FILE>
+<FILE>cogl-sdl</FILE>
 <TITLE>SDL Integration</TITLE>
 cogl_sdl_context_new
 cogl_sdl_renderer_set_event_type
