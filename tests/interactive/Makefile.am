@@ -145,7 +145,8 @@ common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
 
 noinst_PROGRAMS = test-interactive
 
-test_interactive_SOURCES = test-main.c test-unit-names.h $(UNIT_TESTS)
+test_interactive_SOURCES = test-main.c $(UNIT_TESTS)
+nodist_test_interactive_SOURCES = test-unit-names.h
 test_interactive_CFLAGS = $(CLUTTER_CFLAGS) $(GDK_PIXBUF_CFLAGS)
 test_interactive_CPPFLAGS = \
 	-DTESTS_DATADIR=\""$(abs_top_srcdir)/tests/data"\" \
