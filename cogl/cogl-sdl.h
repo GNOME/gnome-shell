@@ -49,7 +49,7 @@ G_BEGIN_DECLS
  * MyAppData data;
  * GError *error = NULL;
  *
- * data.ctx = cogl_sdl_context_new (NULL, SDL_USEREVENT, &error);
+ * data.ctx = cogl_sdl_context_new (SDL_USEREVENT, &error);
  * if (!data.ctx)
  *   {
  *     fprintf (stderr, "Failed to create context: %s\n",
