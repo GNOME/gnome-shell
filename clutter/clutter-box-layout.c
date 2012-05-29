@@ -119,12 +119,9 @@ struct _ClutterBoxChild
   ClutterBoxAlignment x_align;
   ClutterBoxAlignment y_align;
 
-  ClutterActorBox last_allocation;
-
   guint x_fill              : 1;
   guint y_fill              : 1;
   guint expand              : 1;
-  guint has_last_allocation : 1;
 };
 
 enum
@@ -404,8 +401,6 @@ clutter_box_child_init (ClutterBoxChild *self)
   self->x_fill = self->y_fill = FALSE;
 
   self->expand = FALSE;
-
-  self->has_last_allocation = FALSE;
 }
 
 static gdouble
