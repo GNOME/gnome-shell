@@ -67,7 +67,7 @@ const _modes = {
               extraStylesheet: null,
               statusArea: {
                   order: [
-                      'a11y', 'keyboard', 'volume', 'bluetooth',
+                      'input-method', 'a11y', 'keyboard', 'volume', 'bluetooth',
                       'network', 'battery', 'userMenu'
                   ],
                   implementation: STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION
