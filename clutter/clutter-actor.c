@@ -8621,9 +8621,9 @@ clutter_actor_adjust_allocation (ClutterActor    *self,
       clutter_actor_get_preferred_height (self, -1,
                                           &min_height,
                                           &nat_height);
-      clutter_actor_get_preferred_height (self, alloc_height,
-                                          &min_width,
-                                          &nat_width);
+      clutter_actor_get_preferred_width (self, alloc_height,
+                                         &min_width,
+                                         &nat_width);
     }
 
 #ifdef CLUTTER_ENABLE_DEBUG
