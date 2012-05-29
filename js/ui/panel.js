@@ -1144,6 +1144,9 @@ const Panel = new Lang.Class({
             return;
         }
 
+        if (Main.sessionMode.statusArea.order.indexOf(role) == -1)
+            return;
+
         icon.height = PANEL_ICON_SIZE;
         let buttonBox = new PanelMenu.ButtonBox();
         let box = buttonBox.actor;
