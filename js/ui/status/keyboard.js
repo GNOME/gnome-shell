@@ -14,6 +14,7 @@ try {
     var IBus = imports.gi.IBus;
     if (!('new_async' in IBus.Bus))
         throw "IBus version is too old";
+    const IBusCandidatePopup = imports.ui.ibusCandidatePopup;
 } catch (e) {
     var IBus = null;
     log(e);
@@ -41,8 +42,10 @@ const IBusManager = new Lang.Class({
         IBus.init();
 
         this._readyCallback = readyCallback;
+        this._candidatePopup = new IBusCandidatePopup.CandidatePopup();
 
         this._ibus = null;
+        this._panelService = null;
         this._engines = {};
         this._ready = false;
 
@@ -53,10 +56,14 @@ const IBusManager = new Lang.Class({
     },
 
     _clear: function() {
+        if (this._panelService)
+            this._panelService.destroy();
         if (this._ibus)
             this._ibus.destroy();
 
         this._ibus = null;
+        this._panelService = null;
+        this._candidatePopup.setPanelService(null);
         this._engines = {};
         this._ready = false;
     },
@@ -68,6 +75,10 @@ const IBusManager = new Lang.Class({
 
     _onConnected: function() {
         this._ibus.list_engines_async(-1, null, Lang.bind(this, this._initEngines));
+        this._ibus.request_name_async(IBus.SERVICE_PANEL,
+                                      IBus.BusNameFlag.REPLACE_EXISTING,
+                                      -1, null,
+                                      Lang.bind(this, this._initPanelService));
         this._ibus.connect('disconnected', Lang.bind(this, this._clear));
     },
 
@@ -78,12 +89,34 @@ const IBusManager = new Lang.Class({
                 let name = enginesList[i].get_name();
                 this._engines[name] = enginesList[i];
             }
-            this._ready = true;
-            if (this._readyCallback)
-                this._readyCallback();
         } else {
             this._clear();
+            return;
         }
+
+        this._updateReadiness();
+    },
+
+    _initPanelService: function(ibus, result) {
+        let success = this._ibus.request_name_async_finish(result);
+        if (success) {
+            this._panelService = new IBus.PanelService({ connection: this._ibus.get_connection(),
+                                                         object_path: IBus.PATH_PANEL });
+            this._candidatePopup.setPanelService(this._panelService);
+        } else {
+            this._clear();
+            return;
+        }
+
+        this._updateReadiness();
+    },
+
+    _updateReadiness: function() {
+        this._ready = (Object.keys(this._engines).length > 0 &&
+                       this._panelService != null);
+
+        if (this._ready && this._readyCallback)
+            this._readyCallback();
     },
 
     getEngineDesc: function(id) {

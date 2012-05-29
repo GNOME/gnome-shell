@@ -51,6 +51,7 @@ nobase_dist_js_DATA = 	\
 	ui/extensionSystem.js	\
 	ui/extensionDownloader.js \
 	ui/flashspot.js		\
+	ui/ibusCandidatePopup.js\
 	ui/iconGrid.js		\
 	ui/keyboard.js		\
 	ui/keyringPrompt.js	\
