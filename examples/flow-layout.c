@@ -9,6 +9,7 @@ static gboolean is_homogeneous = FALSE;
 static gboolean vertical       = FALSE;
 static gboolean random_size    = FALSE;
 static gboolean fixed_size     = FALSE;
+static gboolean use_animations = FALSE;
 
 static gint     n_rects        = N_RECTS;
 static gint     x_spacing      = 0;
@@ -64,6 +65,13 @@ static GOptionEntry entries[] = {
     &fixed_size,
     "Fix the layout size", NULL
   },
+  {
+    "use-animations", 'a',
+    0,
+    G_OPTION_ARG_NONE,
+    &use_animations,
+    "Use animations", NULL
+  },
   { NULL }
 };
 
@@ -102,6 +110,7 @@ main (int argc, char *argv[])
                                           x_spacing);
   clutter_flow_layout_set_row_spacing (CLUTTER_FLOW_LAYOUT (layout),
                                        y_spacing);
+  clutter_layout_manager_set_use_animations (layout, use_animations);
 
   box = clutter_actor_new ();
   clutter_actor_set_layout_manager (box, layout);
