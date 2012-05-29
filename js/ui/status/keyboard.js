@@ -6,8 +6,18 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GnomeDesktop = imports.gi.GnomeDesktop;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+
+try {
+    var IBus = imports.gi.IBus;
+    if (!('new_async' in IBus.Bus))
+        throw "IBus version is too old";
+} catch (e) {
+    var IBus = null;
+    log(e);
+}
 
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
@@ -19,6 +29,70 @@ const KEY_CURRENT_INPUT_SOURCE = 'current';
 const KEY_INPUT_SOURCES = 'sources';
 
 const INPUT_SOURCE_TYPE_XKB = 'xkb';
+const INPUT_SOURCE_TYPE_IBUS = 'ibus';
+
+const IBusManager = new Lang.Class({
+    Name: 'IBusManager',
+
+    _init: function(readyCallback) {
+        if (!IBus)
+            return;
+
+        IBus.init();
+
+        this._readyCallback = readyCallback;
+
+        this._ibus = null;
+        this._engines = {};
+        this._ready = false;
+
+        this._nameWatcherId = Gio.DBus.session.watch_name(IBus.SERVICE_IBUS,
+                                                          Gio.BusNameWatcherFlags.NONE,
+                                                          Lang.bind(this, this._onNameAppeared),
+                                                          Lang.bind(this, this._clear));
+    },
+
+    _clear: function() {
+        if (this._ibus)
+            this._ibus.destroy();
+
+        this._ibus = null;
+        this._engines = {};
+        this._ready = false;
+    },
+
+    _onNameAppeared: function() {
+        this._ibus = IBus.Bus.new_async();
+        this._ibus.connect('connected', Lang.bind(this, this._onConnected));
+    },
+
+    _onConnected: function() {
+        this._ibus.list_engines_async(-1, null, Lang.bind(this, this._initEngines));
+        this._ibus.connect('disconnected', Lang.bind(this, this._clear));
+    },
+
+    _initEngines: function(ibus, result) {
+        let enginesList = this._ibus.list_engines_async_finish(result);
+        if (enginesList) {
+            for (let i = 0; i < enginesList.length; ++i) {
+                let name = enginesList[i].get_name();
+                this._engines[name] = enginesList[i];
+            }
+            this._ready = true;
+            if (this._readyCallback)
+                this._readyCallback();
+        } else {
+            this._clear();
+        }
+    },
+
+    getEngineDesc: function(id) {
+        if (!IBus || !this._ready)
+            return null;
+
+        return this._engines[id];
+    }
+});
 
 const LayoutMenuItem = new Lang.Class({
     Name: 'LayoutMenuItem',
@@ -57,6 +131,8 @@ const InputSourceIndicator = new Lang.Class({
 
         this._currentSourceIndex = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
         this._xkbInfo = new GnomeDesktop.XkbInfo();
+
+        this._ibusManager = new IBusManager(Lang.bind(this, this._inputSourcesChanged));
 
         this._inputSourcesChanged();
 
@@ -120,13 +196,20 @@ const InputSourceIndicator = new Lang.Class({
         let infosByShortName = {};
 
         for (let i = 0; i < nSources; i++) {
+            let info = { exists: false };
             let [type, id] = sources.get_child_value(i).deep_unpack();
-            if (type != INPUT_SOURCE_TYPE_XKB)
-                continue;
 
-            let info = {};
-            [info.exists, info.displayName, info.shortName, , ] =
-                this._xkbInfo.get_layout_info(id);
+            if (type == INPUT_SOURCE_TYPE_XKB) {
+                [info.exists, info.displayName, info.shortName, , ] =
+                    this._xkbInfo.get_layout_info(id);
+            } else if (type == INPUT_SOURCE_TYPE_IBUS) {
+                let engineDesc = this._ibusManager.getEngineDesc(id);
+                if (engineDesc) {
+                    info.exists = true;
+                    info.displayName = engineDesc.get_longname();
+                    info.shortName = engineDesc.get_symbol();
+                }
+            }
 
             if (!info.exists)
                 continue;
@@ -175,8 +258,19 @@ const InputSourceIndicator = new Lang.Class({
 
         let sources = this._settings.get_value(KEY_INPUT_SOURCES);
         let current = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
-        let id = sources.get_child_value(current).deep_unpack()[1];
-        let [, , , xkbLayout, xkbVariant] = this._xkbInfo.get_layout_info(id);
+        let [type, id] = sources.get_child_value(current).deep_unpack();
+        let xkbLayout = '';
+        let xkbVariant = '';
+
+        if (type == INPUT_SOURCE_TYPE_XKB) {
+            [, , , xkbLayout, xkbVariant] = this._xkbInfo.get_layout_info(id);
+        } else if (type == INPUT_SOURCE_TYPE_IBUS) {
+            let engineDesc = this._ibusManager.getEngineDesc(id);
+            if (engineDesc) {
+                xkbLayout = engineDesc.get_layout();
+                xkbVariant = '';
+            }
+        }
 
         if (!xkbLayout || xkbLayout.length == 0)
             return;
