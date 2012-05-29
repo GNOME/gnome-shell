@@ -18235,17 +18235,16 @@ clutter_actor_get_content_box (ClutterActor    *self,
     case CLUTTER_CONTENT_GRAVITY_RESIZE_ASPECT:
       {
         double r_c = content_w / content_h;
-        double r_a = alloc_w / alloc_h;
 
         if (r_c >= 1.0)
           {
-            if (r_a >= 1.0)
+            if ((alloc_w / r_c) > alloc_h)
               {
                 box->x1 = 0.f;
                 box->x2 = alloc_w;
 
-                box->y1 = (alloc_h - (alloc_w * r_c)) / 2.0f;
-                box->y2 = box->y1 + (alloc_w * r_c);
+                box->y1 = (alloc_h - (alloc_w / r_c)) / 2.0f;
+                box->y2 = box->y1 + (alloc_w / r_c);
               }
             else
               {
@@ -18258,7 +18257,7 @@ clutter_actor_get_content_box (ClutterActor    *self,
           }
         else
           {
-            if (r_a >= 1.0)
+            if ((alloc_w / r_c) > alloc_h)
               {
                 box->y1 = 0.f;
                 box->y2 = alloc_h;
@@ -18271,10 +18270,19 @@ clutter_actor_get_content_box (ClutterActor    *self,
                 box->x1 = 0.f;
                 box->x2 = alloc_w;
 
-                box->y1 = (alloc_h - (alloc_w * r_c)) / 2.0f;
-                box->y2 = box->y1 + (alloc_w * r_c);
+                box->y1 = (alloc_h - (alloc_w / r_c)) / 2.0f;
+                box->y2 = box->y1 + (alloc_w / r_c);
               }
           }
+
+        CLUTTER_NOTE (LAYOUT,
+                      "r_c: %.3f, r_a: %.3f\t"
+                      "a: [%.2fx%.2f], c: [%.2fx%.2f]\t"
+                      "b: [%.2f, %.2f, %.2f, %.2f]",
+                      r_c, alloc_w / alloc_h,
+                      alloc_w, alloc_h,
+                      content_w, content_h,
+                      box->x1, box->y1, box->x2, box->y2);
       }
       break;
     }
