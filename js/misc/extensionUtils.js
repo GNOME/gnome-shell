@@ -88,9 +88,6 @@ function isOutOfDate(extension) {
     if (!versionCheck(extension.metadata['shell-version'], Config.PACKAGE_VERSION))
         return true;
 
-    if (extension.metadata['js-version'] && !versionCheck(extension.metadata['js-version'], Config.GJS_VERSION))
-        return true;
-
     return false;
 }
 
