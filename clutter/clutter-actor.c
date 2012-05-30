@@ -942,6 +942,14 @@ enum
 
 static guint actor_signals[LAST_SIGNAL] = { 0, };
 
+typedef struct _TransitionClosure
+{
+  ClutterActor *actor;
+  ClutterTransition *transition;
+  gchar *name;
+  gulong completed_id;
+} TransitionClosure;
+
 static void clutter_container_iface_init  (ClutterContainerIface  *iface);
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 static void clutter_animatable_iface_init (ClutterAnimatableIface *iface);
@@ -3802,6 +3810,25 @@ clutter_actor_continue_paint (ClutterActor *self)
     }
 }
 
+static void
+_clutter_actor_stop_transitions (ClutterActor *self)
+{
+  const ClutterAnimationInfo *info;
+  GHashTableIter iter;
+  gpointer value;
+
+  info = _clutter_actor_get_animation_info_or_defaults (self);
+  if (info->transitions == NULL)
+    return;
+
+  g_hash_table_iter_init (&iter, info->transitions);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    {
+      TransitionClosure *closure = value;
+      clutter_timeline_stop (CLUTTER_TIMELINE (closure->transition));
+    }
+}
+
 static ClutterActorTraverseVisitFlags
 invalidate_queue_redraw_entry (ClutterActor *self,
                                int           depth,
@@ -3851,9 +3878,11 @@ typedef enum {
   REMOVE_CHILD_CHECK_STATE        = 1 << 3,
   REMOVE_CHILD_FLUSH_QUEUE        = 1 << 4,
   REMOVE_CHILD_NOTIFY_FIRST_LAST  = 1 << 5,
+  REMOVE_CHILD_STOP_TRANSITIONS   = 1 << 6,
 
   /* default flags for public API */
-  REMOVE_CHILD_DEFAULT_FLAGS      = REMOVE_CHILD_DESTROY_META |
+  REMOVE_CHILD_DEFAULT_FLAGS      = REMOVE_CHILD_STOP_TRANSITIONS |
+                                    REMOVE_CHILD_DESTROY_META |
                                     REMOVE_CHILD_EMIT_PARENT_SET |
                                     REMOVE_CHILD_EMIT_ACTOR_REMOVED |
                                     REMOVE_CHILD_CHECK_STATE |
@@ -3861,7 +3890,8 @@ typedef enum {
                                     REMOVE_CHILD_NOTIFY_FIRST_LAST,
 
   /* flags for legacy/deprecated API */
-  REMOVE_CHILD_LEGACY_FLAGS       = REMOVE_CHILD_CHECK_STATE |
+  REMOVE_CHILD_LEGACY_FLAGS       = REMOVE_CHILD_STOP_TRANSITIONS |
+                                    REMOVE_CHILD_CHECK_STATE |
                                     REMOVE_CHILD_FLUSH_QUEUE |
                                     REMOVE_CHILD_EMIT_PARENT_SET |
                                     REMOVE_CHILD_NOTIFY_FIRST_LAST
@@ -3885,6 +3915,7 @@ clutter_actor_remove_child_internal (ClutterActor                 *self,
   gboolean flush_queue;
   gboolean notify_first_last;
   gboolean was_mapped;
+  gboolean stop_transitions;
 
   destroy_meta = (flags & REMOVE_CHILD_DESTROY_META) != 0;
   emit_parent_set = (flags & REMOVE_CHILD_EMIT_PARENT_SET) != 0;
@@ -3892,8 +3923,12 @@ clutter_actor_remove_child_internal (ClutterActor                 *self,
   check_state = (flags & REMOVE_CHILD_CHECK_STATE) != 0;
   flush_queue = (flags & REMOVE_CHILD_FLUSH_QUEUE) != 0;
   notify_first_last = (flags & REMOVE_CHILD_NOTIFY_FIRST_LAST) != 0;
+  stop_transitions = (flags & REMOVE_CHILD_STOP_TRANSITIONS) != 0;
 
   g_object_freeze_notify (G_OBJECT (self));
+
+  if (stop_transitions)
+    _clutter_actor_stop_transitions (child);
 
   if (destroy_meta)
     clutter_container_destroy_child_meta (CLUTTER_CONTAINER (self), child);
@@ -17213,14 +17248,6 @@ _clutter_actor_get_transition (ClutterActor *actor,
 
   return g_hash_table_lookup (info->transitions, pspec->name);
 }
-
-typedef struct _TransitionClosure
-{
-  ClutterActor *actor;
-  ClutterTransition *transition;
-  gchar *name;
-  gulong completed_id;
-} TransitionClosure;
 
 static void
 transition_closure_free (gpointer data)
