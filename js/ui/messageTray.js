@@ -756,7 +756,7 @@ const Notification = new Lang.Class({
             button.label = label;
         }
 
-        if (this._buttonBox.get_children().length > 0)
+        if (this._buttonBox.get_n_children() > 0)
             this._buttonFocusManager.remove_group(this._buttonBox);
 
         this._buttonBox.add(button);
@@ -1284,7 +1284,7 @@ const SummaryItem = new Lang.Class({
     },
 
     prepareNotificationStackForShowing: function() {
-        if (this.notificationStack.get_children().length > 0)
+        if (this.notificationStack.get_n_children() > 0)
             return;
 
         for (let i = 0; i < this.source.notifications.length; i++) {
@@ -1293,7 +1293,6 @@ const SummaryItem = new Lang.Class({
     },
 
     doneShowingNotificationStack: function() {
-        let notificationActors = this.notificationStack.get_children();
         for (let i = 0; i < this._stackedNotifications.length; i++) {
             let stackedNotification = this._stackedNotifications[i];
             let notification = stackedNotification.notification;
@@ -1323,7 +1322,7 @@ const SummaryItem = new Lang.Class({
         this._stackedNotifications.push(stackedNotification);
         if (!this.source.isChat)
             notification.enableScrolling(false);
-        if (this.notificationStack.get_children().length > 0)
+        if (this.notificationStack.get_n_children() > 0)
             notification.setIconVisible(false);
         this.notificationStack.add(notification.actor);
         notification.expand(false);
@@ -2436,7 +2435,7 @@ const MessageTray = new Lang.Class({
     },
 
     _onSummaryBoxPointerContentUpdated: function() {
-        if (this._summaryBoxPointerItem.notificationStack.get_children().length == 0)
+        if (this._summaryBoxPointerItem.notificationStack.get_n_children() == 0)
             this._hideSummaryBoxPointer();
         this._adjustSummaryBoxPointerPosition();
 
@@ -2470,7 +2469,7 @@ const MessageTray = new Lang.Class({
         // We should be sure to hide the box pointer if all notifications in it are destroyed while
         // it is hiding, so that we don't show an an animation of an empty blob being hidden.
         if (this._summaryBoxPointerState == State.HIDING &&
-            this._summaryBoxPointerItem.notificationStack.get_children().length == 0) {
+            this._summaryBoxPointerItem.notificationStack.get_n_children() == 0) {
             this._summaryBoxPointer.actor.hide();
             return;
         }

@@ -38,7 +38,7 @@ var commandHeader = 'const Clutter = imports.gi.Clutter; ' +
                     'const stage = global.stage; ' +
                     'const color = function(pixel) { let c= new Clutter.Color(); c.from_pixel(pixel); return c; }; ' +
                     /* Special lookingGlass functions */
-                       'const it = Main.lookingGlass.getIt(); ' +
+                    'const it = Main.lookingGlass.getIt(); ' +
                     'const r = Lang.bind(Main.lookingGlass, Main.lookingGlass.getResult); ';
 
 const HISTORY_KEY = 'looking-glass-history';
@@ -320,7 +320,7 @@ const WindowList = new Lang.Class({
     },
 
     _updateWindowList: function() {
-        this.actor.get_children().forEach(function (actor) { actor.destroy(); });
+        this.actor.destroy_all_children();
         let windows = global.get_window_actors();
         let tracker = Shell.WindowTracker.get_default();
         for (let i = 0; i < windows.length; i++) {
@@ -378,7 +378,7 @@ const ObjInspector = new Lang.Class({
             this._previousObj = null;
         this._obj = obj;
 
-        this._container.get_children().forEach(function (child) { child.destroy(); });
+        this._container.destroy_all_children();
 
         let hbox = new St.BoxLayout({ style_class: 'lg-obj-inspector-title' });
         this._container.add_actor(hbox);

@@ -309,10 +309,8 @@ const IconGrid = new Lang.Class({
         this._grid.queue_relayout();
     },
 
-    removeAll: function () {
-        this._grid.get_children().forEach(Lang.bind(this, function (child) {
-            child.destroy();
-        }));
+    removeAll: function() {
+        this._grid.destroy_all_children();
     },
 
     addItem: function(actor) {
@@ -320,10 +318,10 @@ const IconGrid = new Lang.Class({
     },
 
     getItemAtIndex: function(index) {
-        return this._grid.get_children()[index];
+        return this._grid.get_child_at_index(index);
     },
 
     visibleItemsCount: function() {
-        return this._grid.get_children().length - this._grid.get_n_skip_paint();
+        return this._grid.get_n_children() - this._grid.get_n_skip_paint();
     }
 });

@@ -906,7 +906,7 @@ const PopupMenuBase = new Lang.Class({
     },
 
     isEmpty: function() {
-        return this.box.get_children().length == 0;
+        return this.box.get_n_children() == 0;
     },
 
     isChildMenu: function(menu) {

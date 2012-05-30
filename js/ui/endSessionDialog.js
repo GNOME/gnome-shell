@@ -31,7 +31,6 @@ const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
 const GnomeSession = imports.misc.gnomeSession;
-const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
@@ -288,13 +287,13 @@ const EndSessionDialog = new Lang.Class({
 
         this._applicationList.connect('actor-added',
                                       Lang.bind(this, function() {
-                                          if (this._applicationList.get_children().length == 1)
+                                          if (this._applicationList.get_n_children() == 1)
                                               scrollView.show();
                                       }));
 
         this._applicationList.connect('actor-removed',
                                       Lang.bind(this, function() {
-                                          if (this._applicationList.get_children().length == 0)
+                                          if (this._applicationList.get_n_children() == 0)
                                               scrollView.hide();
                                       }));
 

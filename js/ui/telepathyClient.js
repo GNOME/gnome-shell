@@ -802,7 +802,7 @@ const ChatNotification = new Lang.Class({
         let groups = this._contentArea.get_children();
         for (let i = 0; i < groups.length; i++) {
             let group = groups[i];
-            if (group.get_children().length == 0)
+            if (group.get_n_children() == 0)
                 group.destroy();
         }
     },

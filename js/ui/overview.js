@@ -14,7 +14,6 @@ const AppDisplay = imports.ui.appDisplay;
 const ContactDisplay = imports.ui.contactDisplay;
 const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
-const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Panel = imports.ui.panel;
