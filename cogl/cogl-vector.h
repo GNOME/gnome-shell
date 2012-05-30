@@ -233,6 +233,10 @@ cogl_vector3_divide_scalar (float *vector,
  * Updates the vector so it is a "unit vector" such that the
  * @vector<!-- -->s magnitude or length is equal to 1.
  *
+ * <note>It's safe to use this function with the [0, 0, 0] vector, it will not
+ * try to divide components by 0 (its norm) and will leave the vector
+ * untouched.</note>
+ *
  * Since: 1.4
  * Stability: Unstable
  */
