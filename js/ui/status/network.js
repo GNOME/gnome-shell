@@ -122,7 +122,7 @@ const NMNetworkMenuItem = new Lang.Class({
         this._secureIcon = new St.Icon({ style_class: 'popup-menu-icon' });
         if (this.bestAP._secType != NMAccessPointSecurity.UNKNOWN &&
             this.bestAP._secType != NMAccessPointSecurity.NONE)
-            this._secureIcon.icon_name = 'network-wireless-encrypted';
+            this._secureIcon.icon_name = 'network-wireless-encrypted-symbolic';
         this._icons.add_actor(this._secureIcon);
     },
 
@@ -133,9 +133,9 @@ const NMNetworkMenuItem = new Lang.Class({
 
     _getIcon: function() {
         if (this.bestAP.mode == NM80211Mode.ADHOC)
-            return 'network-workgroup';
+            return 'network-workgroup-symbolic';
         else
-            return 'network-wireless-signal-' + signalToIcon(this.bestAP.strength);
+            return 'network-wireless-signal-' + signalToIcon(this.bestAP.strength) + '-symbolic';
     }
 });
 
@@ -761,7 +761,7 @@ const NMDeviceModem = new Lang.Class({
     },
 
     _getSignalIcon: function() {
-        return 'network-cellular-signal-' + signalToIcon(this.mobileDevice.signal_quality);
+        return 'network-cellular-signal-' + signalToIcon(this.mobileDevice.signal_quality) + '-symbolic';
     },
 
     _createSection: function() {
@@ -1469,7 +1469,7 @@ const NMDeviceWireless = new Lang.Class({
                                                                { reactive: false });
         else
             this._activeConnectionItem = new PopupMenu.PopupImageMenuItem(title,
-                                                                          'network-wireless-connected',
+                                                                          'network-wireless-connected-symbolic',
                                                                           { reactive: false });
         this._activeConnectionItem.setShowDot(true);
     },
@@ -1570,7 +1570,7 @@ const NMApplet = new Lang.Class({
     _init: function() {
         this.parent('network-offline', _('Network'));
 
-        this.secondaryIcon = this.addIcon(new Gio.ThemedIcon({ name: 'network-vpn' }));
+        this.secondaryIcon = this.addIcon(new Gio.ThemedIcon({ name: 'network-vpn-symbolic' }));
         this.secondaryIcon.hide();
 
         this._isLocked = false;
@@ -1689,8 +1689,7 @@ const NMApplet = new Lang.Class({
     _ensureSource: function() {
         if (!this._source) {
             this._source = new MessageTray.Source(_("Network Manager"),
-                                                  'network-transmit-receive',
-                                                  St.IconType.SYMBOLIC);
+                                                  'network-transmit-receive-symbolic');
 
             this._source.connect('destroy', Lang.bind(this, function() {
                 this._source = null;
@@ -1761,7 +1760,6 @@ const NMApplet = new Lang.Class({
         this._ensureSource();
 
         let icon = new St.Icon({ icon_name: iconName,
-                                 icon_type: St.IconType.SYMBOLIC,
                                  icon_size: MessageTray.NOTIFICATION_ICON_SIZE });
         device._notification = new MessageTray.Notification(this._source, title, text,
                                                             { icon: icon });
@@ -1804,7 +1802,6 @@ const NMApplet = new Lang.Class({
         let wrapperClass = this._dtypes[device.get_device_type()];
         if (wrapperClass) {
             let wrapper = this._makeWrapperDevice(wrapperClass, device);
-
             let section = this._devices[wrapper.category].section;
             let devices = this._devices[wrapper.category].devices;
 
@@ -2075,7 +2072,7 @@ const NMApplet = new Lang.Class({
         this.actor.visible = this.mainIcon.visible && !this._isLocked;
 
         if (!this._client.networking_enabled) {
-            this.setIcon('network-offline');
+            this.setIcon('network-offline-symbolic');
             this._hideDevices();
             this._statusItem.label.text = _("Networking is disabled");
             this._statusSection.actor.show();
@@ -2093,22 +2090,22 @@ const NMApplet = new Lang.Class({
         let hasMobileIcon = false;
 
         if (!mc) {
-            this.setIcon('network-offline');
+            this.setIcon('network-offline-symbolic');
         } else if (mc.state == NetworkManager.ActiveConnectionState.ACTIVATING) {
             switch (mc._section) {
             case NMConnectionCategory.WWAN:
-                this.setIcon('network-cellular-acquiring');
+                this.setIcon('network-cellular-acquiring-symbolic');
                 break;
             case NMConnectionCategory.WIRELESS:
-                this.setIcon('network-wireless-acquiring');
+                this.setIcon('network-wireless-acquiring-symbolic');
                 break;
             case NMConnectionCategory.WIRED:
-                this.setIcon('network-wired-acquiring');
+                this.setIcon('network-wired-acquiring-symbolic');
                 break;
             default:
                 // fallback to a generic connected icon
                 // (it could be a private connection of some other user)
-                this.setIcon('network-wired-acquiring');
+                this.setIcon('network-wired-acquiring-symbolic');
             }
         } else {
             let dev;
@@ -2123,17 +2120,17 @@ const NMApplet = new Lang.Class({
                             log('An active wireless connection, in infrastructure mode, involves no access point?');
                             break;
                         }
-                        this.setIcon('network-wireless-connected');
+                        this.setIcon('network-wireless-connected-symbolic');
                     } else {
                         if (this._activeAccessPoint != ap) {
                             if (this._accessPointUpdateId)
                                 this._activeAccessPoint.disconnect(this._accessPointUpdateId);
                             this._activeAccessPoint = ap;
                             this._activeAccessPointUpdateId = ap.connect('notify::strength', Lang.bind(this, function() {
-                                this.setIcon('network-wireless-signal-' + signalToIcon(ap.strength));
+                                this.setIcon('network-wireless-signal-' + signalToIcon(ap.strength) + '-symbolic');
                             }));
                         }
-                        this.setIcon('network-wireless-signal-' + signalToIcon(ap.strength));
+                        this.setIcon('network-wireless-signal-' + signalToIcon(ap.strength) + '-symbolic');
                         hasApIcon = true;
                     }
                     break;
@@ -2142,7 +2139,7 @@ const NMApplet = new Lang.Class({
                     break;
                 }
             case NMConnectionCategory.WIRED:
-                this.setIcon('network-wired');
+                this.setIcon('network-wired-symbolic');
                 break;
             case NMConnectionCategory.WWAN:
                 dev = mc._primaryDevice;
@@ -2152,7 +2149,7 @@ const NMApplet = new Lang.Class({
                 }
                 if (!dev.mobileDevice) {
                     // this can happen for bluetooth in PAN mode
-                    this.setIcon('network-cellular-connected');
+                    this.setIcon('network-cellular-connected-symbolic');
                     break;
                 }
 
@@ -2161,16 +2158,16 @@ const NMApplet = new Lang.Class({
                         this._mobileUpdateDevice.disconnect(this._mobileUpdateId);
                     this._mobileUpdateDevice = dev.mobileDevice;
                     this._mobileUpdateId = dev.mobileDevice.connect('notify::signal-quality', Lang.bind(this, function() {
-                        this.setIcon('network-cellular-signal-' + signalToIcon(dev.mobileDevice.signal_quality));
+                        this.setIcon('network-cellular-signal-' + signalToIcon(dev.mobileDevice.signal_quality) + '-symbolic');
                     }));
                 }
-                this.setIcon('network-cellular-signal-' + signalToIcon(dev.mobileDevice.signal_quality));
+                this.setIcon('network-cellular-signal-' + signalToIcon(dev.mobileDevice.signal_quality) + '-symbolic');
                 hasMobileIcon = true;
                 break;
             default:
                 // fallback to a generic connected icon
                 // (it could be a private connection of some other user)
-                this.setIcon('network-wired');
+                this.setIcon('network-wired-symbolic');
                 break;
             }
         }

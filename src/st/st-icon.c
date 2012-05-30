@@ -37,7 +37,6 @@ enum
 
   PROP_GICON,
   PROP_ICON_NAME,
-  PROP_ICON_TYPE,
   PROP_ICON_SIZE
 };
 
@@ -53,7 +52,6 @@ struct _StIconPrivate
   guint         opacity_handler_id;
 
   GIcon        *gicon;
-  StIconType    icon_type;
   gint          prop_icon_size;  /* icon size set as property */
   gint          theme_icon_size; /* icon size from theme node */
   gint          icon_size;       /* icon size we are using */
@@ -68,7 +66,6 @@ static void st_icon_update               (StIcon *icon);
 static gboolean st_icon_update_icon_size (StIcon *icon);
 
 #define DEFAULT_ICON_SIZE 48
-#define DEFAULT_ICON_TYPE ST_ICON_SYMBOLIC
 
 static void
 st_icon_set_property (GObject      *gobject,
@@ -86,10 +83,6 @@ st_icon_set_property (GObject      *gobject,
 
     case PROP_ICON_NAME:
       st_icon_set_icon_name (icon, g_value_get_string (value));
-      break;
-
-    case PROP_ICON_TYPE:
-      st_icon_set_icon_type (icon, g_value_get_enum (value));
       break;
 
     case PROP_ICON_SIZE:
@@ -118,10 +111,6 @@ st_icon_get_property (GObject    *gobject,
 
     case PROP_ICON_NAME:
       g_value_set_string (value, st_icon_get_icon_name (icon));
-      break;
-
-    case PROP_ICON_TYPE:
-      g_value_set_enum (value, st_icon_get_icon_type (icon));
       break;
 
     case PROP_ICON_SIZE:
@@ -343,14 +332,6 @@ st_icon_class_init (StIconClass *klass)
                                NULL, ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (object_class, PROP_ICON_NAME, pspec);
 
-  pspec = g_param_spec_enum ("icon-type",
-                             "Icon type",
-                             "The type of icon that should be used",
-                             ST_TYPE_ICON_TYPE,
-                             DEFAULT_ICON_TYPE,
-                             ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
-  g_object_class_install_property (object_class, PROP_ICON_TYPE, pspec);
-
   pspec = g_param_spec_int ("icon-size",
                             "Icon size",
                             "The size if the icon, if positive. Otherwise the size will be derived from the current style",
@@ -366,7 +347,6 @@ st_icon_init (StIcon *self)
 
   self->priv->icon_size = DEFAULT_ICON_SIZE;
   self->priv->prop_icon_size = -1;
-  self->priv->icon_type = DEFAULT_ICON_TYPE;
 
   self->priv->shadow_material = COGL_INVALID_HANDLE;
   self->priv->shadow_width = -1;
@@ -564,12 +544,7 @@ st_icon_set_icon_name (StIcon      *icon,
     g_object_unref (priv->gicon);
 
   if (icon_name)
-    {
-      if (priv->icon_type == ST_ICON_SYMBOLIC)
-        priv->gicon = _st_make_symbolic_themed_icon (icon_name);
-      else
-        priv->gicon = g_themed_icon_new_with_default_fallbacks (icon_name);
-    }
+    priv->gicon = g_themed_icon_new_with_default_fallbacks (icon_name);
   else
     priv->gicon = NULL;
 
@@ -577,52 +552,6 @@ st_icon_set_icon_name (StIcon      *icon,
   g_object_notify (G_OBJECT (icon), "icon-name");
 
   st_icon_update (icon);
-}
-
-/**
- * st_icon_get_icon_type:
- * @icon: a #StIcon
- *
- * Gets the type of icon we'll look up to display in the actor.
- * See st_icon_set_icon_type().
- *
- * Return value: the icon type.
- */
-StIconType
-st_icon_get_icon_type (StIcon *icon)
-{
-  g_return_val_if_fail (ST_IS_ICON (icon), DEFAULT_ICON_TYPE);
-
-  return icon->priv->icon_type;
-}
-
-/**
- * st_icon_set_icon_type:
- * @icon: a #StIcon
- * @icon_type: the type of icon to use
- *
- * Sets the type of icon we'll look up to display in the actor.
- * The icon type determines whether we use a symbolic icon or
- * a full color icon and also is used for specific handling for
- * application and document icons.
- */
-void
-st_icon_set_icon_type (StIcon     *icon,
-                       StIconType  icon_type)
-{
-  StIconPrivate *priv;
-
-  g_return_if_fail (ST_IS_ICON (icon));
-
-  priv = icon->priv;
-
-  if (icon_type == priv->icon_type)
-    return;
-
-  priv->icon_type = icon_type;
-  st_icon_update (icon);
-
-  g_object_notify (G_OBJECT (icon), "icon-type");
 }
 
 /**

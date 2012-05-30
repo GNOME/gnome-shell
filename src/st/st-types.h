@@ -41,11 +41,6 @@ typedef enum {
 } StAlign;
 
 typedef enum {
-  ST_ICON_SYMBOLIC,
-  ST_ICON_FULLCOLOR
-} StIconType;
-
-typedef enum {
   ST_BACKGROUND_SIZE_AUTO,
   ST_BACKGROUND_SIZE_CONTAIN,
   ST_BACKGROUND_SIZE_COVER,

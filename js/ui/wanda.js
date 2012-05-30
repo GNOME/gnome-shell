@@ -55,9 +55,7 @@ const WandaIcon = new Lang.Class({
 
         if (!this._imageFile) {
             return new St.Icon({ icon_name: 'face-smile',
-                                 icon_type: St.IconType.FULLCOLOR,
-                                 icon_size: iconSize
-                               });
+                                 icon_size: iconSize });
         }
 
         this._animations = St.TextureCache.get_default().load_sliced_image(this._imageFile, this._imgWidth, this._imgHeight);
@@ -183,7 +181,6 @@ const WandaSearchProvider = new Lang.Class({
                         // triggers an assertion failure)
                         return St.TextureCache.get_default().load_icon_name(null,
                                                                             'face-smile',
-                                                                            St.IconType.FULLCOLOR,
                                                                             iconSize);
                     }
                   }]);

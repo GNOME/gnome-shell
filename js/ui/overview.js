@@ -210,7 +210,7 @@ const Overview = new Lang.Class({
 
         // Translators: this is the name of the dock/favorites area on
         // the left of the overview
-        Main.ctrlAltTabManager.addGroup(this._dash.actor, _("Dash"), 'user-bookmarks');
+        Main.ctrlAltTabManager.addGroup(this._dash.actor, _("Dash"), 'user-bookmarks-symbolic');
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();

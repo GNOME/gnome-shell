@@ -240,7 +240,7 @@ const ShellUnmountNotifier = new Lang.Class({
     Extends: MessageTray.Source,
 
     _init: function() {
-        this.parent('', 'media-removable', St.IconType.FULLCOLOR);
+        this.parent('', 'media-removable');
 
         this._notification = null;
         Main.messageTray.add(this);

@@ -968,7 +968,7 @@ const Panel = new Lang.Class({
         this._menus.addMenu(this._dateMenu.menu);
 
         Main.layoutManager.panelBox.add(this.actor);
-        Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here',
+        Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
     },
 

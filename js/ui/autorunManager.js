@@ -261,7 +261,7 @@ const AutorunResidentSource = new Lang.Class({
     Extends: MessageTray.Source,
 
     _init: function() {
-        this.parent(_("Removable Devices"), 'media-removable', St.IconType.FULLCOLOR);
+        this.parent(_("Removable Devices"), 'media-removable');
         this.showInLockScreen = false;
 
         this._mounts = [];

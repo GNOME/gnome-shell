@@ -52,7 +52,7 @@ const Indicator = new Lang.Class({
     Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        this.parent('battery-missing', _("Battery"));
+        this.parent('battery-missing-symbolic', _("Battery"));
 
         this._proxy = new PowerManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH);
 
@@ -182,7 +182,6 @@ const DeviceItem = new Lang.Class({
         this._label = new St.Label({ text: this._deviceTypeToString(device_type) });
 
         this._icon = new St.Icon({ gicon: Gio.icon_new_for_string(icon),
-                                   icon_type: St.IconType.SYMBOLIC,
                                    style_class: 'popup-menu-icon' });
 
         this._box.add_actor(this._icon);

@@ -59,8 +59,7 @@ function init() {
                           x_fill: true,
                           y_fill: false,
                           track_hover: true });
-    let icon = new St.Icon({ icon_name: 'system-run',
-                             icon_type: St.IconType.SYMBOLIC,
+    let icon = new St.Icon({ icon_name: 'system-run-symbolic',
                              style_class: 'system-status-icon' });
 
     button.set_child(icon);

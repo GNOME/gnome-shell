@@ -318,7 +318,6 @@ const CtrlAltTabSwitcher = new Lang.Class({
         let icon = item.iconActor;
         if (!icon) {
             icon = new St.Icon({ icon_name: item.iconName,
-                                 icon_type: St.IconType.SYMBOLIC,
                                  icon_size: POPUP_APPICON_SIZE });
         }
         box.add(icon, { x_fill: false, y_fill: false } );

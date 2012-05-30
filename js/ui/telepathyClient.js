@@ -383,8 +383,7 @@ const Client = new Lang.Class({
     _ensureSubscriptionSource: function() {
         if (this._subscriptionSource == null) {
             this._subscriptionSource = new MessageTray.Source(_("Subscription request"),
-                                                              'gtk-dialog-question',
-                                                              St.IconType.FULLCOLOR);
+                                                              'gtk-dialog-question');
             Main.messageTray.add(this._subscriptionSource);
             this._subscriptionSource.connect('destroy', Lang.bind(this, function () {
                 this._subscriptionSource = null;
@@ -420,8 +419,7 @@ const Client = new Lang.Class({
     _ensureAccountSource: function() {
         if (this._accountSource == null) {
             this._accountSource = new MessageTray.Source(_("Connection error"),
-                                                         'gtk-dialog-error',
-                                                         St.IconType.FULLCOLOR);
+                                                         'gtk-dialog-error');
             Main.messageTray.add(this._accountSource);
             this._accountSource.connect('destroy', Lang.bind(this, function () {
                 this._accountSource = null;
@@ -497,7 +495,6 @@ const ChatSource = new Lang.Class({
             this._iconBox.child = textureCache.load_uri_async(uri, this._iconBox._size, this._iconBox._size);
         } else {
             this._iconBox.child = new St.Icon({ icon_name: 'avatar-default',
-                                                icon_type: St.IconType.FULLCOLOR,
                                                 icon_size: this._iconBox._size });
         }
 
@@ -506,8 +503,7 @@ const ChatSource = new Lang.Class({
 
     createSecondaryIcon: function() {
         let iconBox = new St.Bin();
-        iconBox.child = new St.Icon({ style_class: 'secondary-icon',
-                                      icon_type: St.IconType.FULLCOLOR });
+        iconBox.child = new St.Icon({ style_class: 'secondary-icon' });
         let presenceType = this._contact.get_presence_type();
 
         switch (presenceType) {
@@ -1197,7 +1193,6 @@ const SubscriptionRequestNotification = new Lang.Class({
         }
         else {
             iconBox.child = new St.Icon({ icon_name: 'avatar-default',
-                                          icon_type: St.IconType.FULLCOLOR,
                                           icon_size: iconBox._size });
         }
 

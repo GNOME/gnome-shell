@@ -542,7 +542,7 @@ const KeyboardSource = new Lang.Class({
 
     _init: function(keyboard) {
         this._keyboard = keyboard;
-        this.parent(_("Keyboard"), 'input-keyboard', St.IconType.SYMBOLIC);
+        this.parent(_("Keyboard"), 'input-keyboard-symbolic');
     },
 
     handleSummaryClick: function() {

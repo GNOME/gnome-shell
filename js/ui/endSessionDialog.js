@@ -89,7 +89,7 @@ const shutdownDialogContent = {
                        label:  C_("button", "Restart") },
                      { signal: 'ConfirmedShutdown',
                        label:  C_("button", "Power Off") }],
-    iconName: 'system-shutdown',
+    iconName: 'system-shutdown-symbolic',
     iconStyleClass: 'end-session-dialog-shutdown-icon'
 };
 
@@ -104,7 +104,7 @@ const restartDialogContent = {
     endDescription: _("Restarting the system."),
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label:  C_("button", "Restart") }],
-    iconName: 'system-shutdown',
+    iconName: 'system-shutdown-symbolic',
     iconStyleClass: 'end-session-dialog-shutdown-icon'
 };
 
@@ -327,7 +327,6 @@ const EndSessionDialog = new Lang.Class({
             let textureCache = St.TextureCache.get_default();
             let icon = textureCache.load_icon_name(this._iconBin.get_theme_node(),
                                                    iconName,
-                                                   St.IconType.SYMBOLIC,
                                                    _DIALOG_ICON_SIZE);
 
             this._iconBin.child = icon;

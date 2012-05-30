@@ -28,27 +28,21 @@ function test() {
     }
 
     addTest("Symbolic",
-            { icon_name: 'battery-full',
-              icon_type: St.IconType.SYMBOLIC,
+            { icon_name: 'battery-full-symbolic',
               icon_size: 48 });
     addTest("Full color",
             { icon_name: 'battery-full',
-              icon_type: St.IconType.FULLCOLOR,
               icon_size: 48 });
     addTest("Default size",
-            { icon_name: 'battery-full',
-              icon_type: St.IconType.SYMBOLIC });
+            { icon_name: 'battery-full-symbolic' });
     addTest("Size set by property",
-            { icon_name: 'battery-full',
-              icon_type: St.IconType.SYMBOLIC,
+            { icon_name: 'battery-full-symbolic',
               icon_size: 32 });
     addTest("Size set by style",
-            { icon_name: 'battery-full',
-              icon_type: St.IconType.SYMBOLIC,
+            { icon_name: 'battery-full-symbolic',
               style: 'icon-size: 1em;' });
     addTest("16px icon in 48px icon widget",
-            { icon_name: 'battery-full',
-              icon_type: St.IconType.SYMBOLIC,
+            { icon_name: 'battery-full-symbolic',
               style: 'icon-size: 16px; width: 48px; height: 48px; border: 1px solid black;' });
 
     function iconRow(icons, box_style) {
@@ -56,7 +50,6 @@ function test() {
 
         for each (let iconName in icons) {
             hb.add(new St.Icon({ icon_name: iconName,
-                                 icon_type: St.IconType.SYMBOLIC,
                                  icon_size: 48 }));
         }
 
@@ -66,16 +59,16 @@ function test() {
     let normalCss = 'background: white; color: black; padding: 10px 10px;';
     let reversedCss = 'background: black; color: white; warning-color: #ffcc00; error-color: #ff0000; padding: 10px 10px;';
 
-    let batteryIcons = ['battery-full-charging',
-                        'battery-full',
-                        'battery-good',
-                        'battery-low',
-                        'battery-caution' ];
+    let batteryIcons = ['battery-full-charging-symbolic',
+                        'battery-full-symbolic',
+                        'battery-good-symbolic',
+                        'battery-low-symbolic',
+                        'battery-caution-symbolic' ];
 
-    let volumeIcons = ['audio-volume-high',
-                       'audio-volume-medium',
-                       'audio-volume-low',
-                       'audio-volume-muted' ];
+    let volumeIcons = ['audio-volume-high-symbolic',
+                       'audio-volume-medium-symbolic',
+                       'audio-volume-low-symbolic',
+                       'audio-volume-muted-symbolic' ];
 
     iconRow(batteryIcons, normalCss);
     iconRow(batteryIcons, reversedCss);

@@ -172,8 +172,7 @@ show_capslock_feedback (StEntry *entry)
     {
       ClutterActor *icon = g_object_new (ST_TYPE_ICON,
                                          "style-class", "capslock-warning",
-                                         "icon-type", ST_ICON_SYMBOLIC,
-                                         "icon-name", "dialog-warning",
+                                         "icon-name", "dialog-warning-symbolic",
                                          NULL);
 
       st_entry_set_secondary_icon (entry, icon);

@@ -67,7 +67,6 @@ const UserAvatarWidget = new Lang.Class({
         } else {
             this.actor.style = null;
             this.actor.child = new St.Icon({ icon_name: 'avatar-default',
-                                             icon_type: St.IconType.SYMBOLIC,
                                              icon_size: DIALOG_ICON_SIZE });
         }
     }
@@ -164,22 +163,22 @@ const IMStatusChooserItem = new Lang.Class({
 
         let item;
 
-        item = new IMStatusItem(_("Available"), 'user-available');
+        item = new IMStatusItem(_("Available"), 'user-available-symbolic');
         this._combo.addMenuItem(item, IMStatus.AVAILABLE);
 
-        item = new IMStatusItem(_("Busy"), 'user-busy');
+        item = new IMStatusItem(_("Busy"), 'user-busy-symbolic');
         this._combo.addMenuItem(item, IMStatus.BUSY);
 
-        item = new IMStatusItem(_("Invisible"), 'user-invisible');
+        item = new IMStatusItem(_("Invisible"), 'user-invisible-symbolic');
         this._combo.addMenuItem(item, IMStatus.HIDDEN);
 
-        item = new IMStatusItem(_("Away"), 'user-away');
+        item = new IMStatusItem(_("Away"), 'user-away-symbolic');
         this._combo.addMenuItem(item, IMStatus.AWAY);
 
-        item = new IMStatusItem(_("Idle"), 'user-idle');
+        item = new IMStatusItem(_("Idle"), 'user-idle-symbolic');
         this._combo.addMenuItem(item, IMStatus.IDLE);
 
-        item = new IMStatusItem(_("Unavailable"), 'user-offline');
+        item = new IMStatusItem(_("Unavailable"), 'user-offline-symbolic');
         this._combo.addMenuItem(item, IMStatus.OFFLINE);
 
         this._combo.connect('active-item-changed',
@@ -480,17 +479,17 @@ const UserMenuButton = new Lang.Class({
         box.add(this._iconBox, { y_align: St.Align.MIDDLE, y_fill: false });
 
         let textureCache = St.TextureCache.get_default();
-        this._offlineIcon = new St.Icon({ icon_name: 'user-offline',
+        this._offlineIcon = new St.Icon({ icon_name: 'user-offline-symbolic',
                                           style_class: 'popup-menu-icon' });
-        this._availableIcon = new St.Icon({ icon_name: 'user-available',
+        this._availableIcon = new St.Icon({ icon_name: 'user-available-symbolic',
                                             style_class: 'popup-menu-icon' });
-        this._busyIcon = new St.Icon({ icon_name: 'user-busy',
+        this._busyIcon = new St.Icon({ icon_name: 'user-busy-symbolic',
                                        style_class: 'popup-menu-icon' });
-        this._invisibleIcon = new St.Icon({ icon_name: 'user-invisible',
+        this._invisibleIcon = new St.Icon({ icon_name: 'user-invisible-symbolic',
                                             style_class: 'popup-menu-icon' });
-        this._awayIcon = new St.Icon({ icon_name: 'user-away',
+        this._awayIcon = new St.Icon({ icon_name: 'user-away-symbolic',
                                        style_class: 'popup-menu-icon' });
-        this._idleIcon = new St.Icon({ icon_name: 'user-idle',
+        this._idleIcon = new St.Icon({ icon_name: 'user-idle-symbolic',
                                        style_class: 'popup-menu-icon' });
         this._pendingIcon = new St.Icon({ icon_name: 'user-status-pending',
                                           style_class: 'popup-menu-icon' });

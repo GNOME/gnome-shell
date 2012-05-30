@@ -117,8 +117,7 @@ const RemoteSearchProvider = new Lang.Class({
     createIcon: function(size, meta) {
         if (meta['gicon']) {
             return new St.Icon({ gicon: Gio.icon_new_for_string(meta['gicon']),
-                                 icon_size: size,
-                                 icon_type: St.IconType.FULLCOLOR });
+                                 icon_size: size });
         } else if (meta['icon-data']) {
             let [width, height, rowStride, hasAlpha,
                  bitsPerSample, nChannels, data] = meta['icon-data'];
@@ -129,8 +128,7 @@ const RemoteSearchProvider = new Lang.Class({
 
         // Ugh, but we want to fall back to something ...
         return new St.Icon({ icon_name: 'text-x-generic',
-                             icon_size: size,
-                             icon_type: St.IconType.FULLCOLOR });
+                             icon_size: size });
     },
 
     _getResultsFinished: function(results, error) {

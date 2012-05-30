@@ -73,11 +73,9 @@ const ViewSelector = new Lang.Class({
         global.stage.connect('notify::key-focus', Lang.bind(this, this._onStageKeyFocusChanged));
 
         this._inactiveIcon = new St.Icon({ style_class: 'search-entry-icon',
-                                           icon_name: 'edit-find',
-                                           icon_type: St.IconType.SYMBOLIC });
+                                           icon_name: 'edit-find-symbolic' });
         this._activeIcon = new St.Icon({ style_class: 'search-entry-icon',
-                                         icon_name: 'edit-clear',
-                                         icon_type: St.IconType.SYMBOLIC });
+                                         icon_name: 'edit-clear-symbolic' });
         this._entry.set_secondary_icon(this._inactiveIcon);
 
         this._iconClickedId = 0;
@@ -85,15 +83,15 @@ const ViewSelector = new Lang.Class({
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
         this._workspacesPage = this._addPage(this._workspacesDisplay.actor, null,
-                                             _("Windows"), 'text-x-generic');
+                                             _("Windows"), 'text-x-generic-symbolic');
 
         this._appDisplay = new AppDisplay.AllAppDisplay();
         this._appsPage = this._addPage(this._appDisplay.actor, null,
-                                       _("Applications"), 'system-run');
+                                       _("Applications"), 'system-run-symbolic');
 
         this._searchResults = new SearchDisplay.SearchResults(this._searchSystem);
         this._searchPage = this._addPage(this._searchResults.actor, this._entry,
-                                         _("Search"), 'edit-find');
+                                         _("Search"), 'edit-find-symbolic');
 
         // Default search providers
         // Wanda comes obviously first

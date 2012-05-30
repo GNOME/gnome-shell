@@ -1034,10 +1034,9 @@ const Source = new Lang.Class({
 
     SOURCE_ICON_SIZE: 48,
 
-    _init: function(title, iconName, iconType) {
+    _init: function(title, iconName) {
         this.title = title;
         this.iconName = iconName;
-        this.iconType = iconType;
 
         this.isTransient = false;
         this.isChat = false;
@@ -1084,7 +1083,6 @@ const Source = new Lang.Class({
     // something more fancy.
     createIcon: function(size) {
         return new St.Icon({ icon_name: this.iconName,
-                             icon_type: this.iconType,
                              icon_size: size });
     },
 
@@ -2461,7 +2459,7 @@ const SystemNotificationSource = new Lang.Class({
     Extends: Source,
 
     _init: function() {
-        this.parent(_("System Information"), 'dialog-information', St.IconType.SYMBOLIC);
+        this.parent(_("System Information"), 'dialog-information-symbolic');
         this.setTransient(true);
     },
 

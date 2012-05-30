@@ -24,7 +24,7 @@ const Indicator = new Lang.Class({
     Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        this.parent('bluetooth-disabled', _("Bluetooth"));
+        this.parent('bluetooth-disabled-symbolic', _("Bluetooth"));
 
         this._applet = new GnomeBluetoothApplet.Applet();
 
@@ -111,10 +111,10 @@ const Indicator = new Lang.Class({
 
         if (on) {
             this._discoverable.actor.show();
-            this.setIcon('bluetooth-active');
+            this.setIcon('bluetooth-active-symbolic');
         } else {
             this._discoverable.actor.hide();
-            this.setIcon('bluetooth-disabled');
+            this.setIcon('bluetooth-disabled-symbolic');
         }
     },
 
@@ -306,7 +306,7 @@ const Indicator = new Lang.Class({
 
     _ensureSource: function() {
         if (!this._source) {
-            this._source = new MessageTray.Source(_("Bluetooth"), 'bluetooth-active', St.IconType.SYMBOLIC);
+            this._source = new MessageTray.Source(_("Bluetooth"), 'bluetooth-active-symbolic');
             Main.messageTray.add(this._source);
         }
     },

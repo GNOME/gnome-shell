@@ -1122,28 +1122,14 @@ st_texture_cache_load_sliced_image (StTextureCache    *cache,
 }
 
 /**
- * StIconType:
- * @ST_ICON_SYMBOLIC: a symbolic (ie, mostly monochrome) icon
- * @ST_ICON_FULLCOLOR: a full-color icon
- *
- * Describes what style of icon is desired in a call to
- * st_texture_cache_load_icon_name() or st_texture_cache_load_gicon().
- * Use %ST_ICON_SYMBOLIC for symbolic icons (eg, for the panel and
- * much of the rest of the shell chrome) or %ST_ICON_FULLCOLOR for a
- * full-color icon.
- */
-
-/**
  * st_texture_cache_load_icon_name:
  * @cache: The texture cache instance
  * @theme_node: (allow-none): a #StThemeNode
  * @name: Name of a themed icon
- * @icon_type: the type of icon to load
  * @size: Size of themed icon
  *
- * Load a themed icon into a texture. See the #StIconType documentation
- * for an explanation of how @icon_type affects the returned icon. The
- * colors used for symbolic icons are derived from @theme_node.
+ * Load a themed icon into a texture. The colors used for symbolic
+ * icons are derived from @theme_node.
  *
  * Return Value: (transfer none): A new #ClutterTexture for the icon
  */
@@ -1151,47 +1137,23 @@ ClutterActor *
 st_texture_cache_load_icon_name (StTextureCache    *cache,
                                  StThemeNode       *theme_node,
                                  const char        *name,
-                                 StIconType         icon_type,
                                  gint               size)
 {
   ClutterActor *texture;
   GIcon *themed;
 
-  g_return_val_if_fail (!(icon_type == ST_ICON_SYMBOLIC && theme_node == NULL), NULL);
+  themed = g_themed_icon_new_with_default_fallbacks (name);
+  texture = load_gicon_with_colors (cache, themed, size,
+                                    theme_node ? st_theme_node_get_icon_colors (theme_node) : NULL);
+  g_object_unref (themed);
 
-  switch (icon_type)
+  if (texture == NULL)
     {
-    case ST_ICON_SYMBOLIC:
-      themed = _st_make_symbolic_themed_icon (name);
-      texture = load_gicon_with_colors (cache, themed, size,
-                                        st_theme_node_get_icon_colors (theme_node));
-      g_object_unref (themed);
-      if (texture == NULL)
-        {
-          /* We don't have an equivalent of image-missing
-           * for the symbolic icon theme, so just create a blank
-           * actor. */
-          texture = (ClutterActor *) create_default_texture ();
-          clutter_actor_set_size (texture, size, size);
-        }
-
-      return texture;
-      break;
-    case ST_ICON_FULLCOLOR:
-      themed = g_themed_icon_new_with_default_fallbacks (name);
-      texture = load_gicon_with_colors (cache, themed, size, NULL);
-      g_object_unref (themed);
-      if (texture == NULL)
-        {
-          themed = g_themed_icon_new ("image-missing");
-          texture = load_gicon_with_colors (cache, themed, size, NULL);
-          g_object_unref (themed);
-        }
-      return texture;
-      break;
-    default:
-      g_assert_not_reached ();
+      texture = (ClutterActor *) create_default_texture ();
+      clutter_actor_set_size (texture, size, size);
     }
+
+  return texture;
 }
 
 /**

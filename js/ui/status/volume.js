@@ -156,14 +156,14 @@ const VolumeMenu = new Lang.Class({
 
     _volumeToIcon: function(volume) {
         if (volume <= 0) {
-            return 'audio-volume-muted';
+            return 'audio-volume-muted-symbolic';
         } else {
             let n = Math.floor(3 * volume / this._volumeMax) + 1;
             if (n < 2)
-                return 'audio-volume-low';
+                return 'audio-volume-low-symbolic';
             if (n >= 3)
-                return 'audio-volume-high';
-            return 'audio-volume-medium';
+                return 'audio-volume-high-symbolic';
+            return 'audio-volume-medium-symbolic';
         }
     },
 
@@ -197,7 +197,7 @@ const VolumeMenu = new Lang.Class({
         slider.setValue(muted ? 0 : (this[property].volume / this._volumeMax));
         if (property == '_output') {
             if (muted)
-                this.emit('icon-changed', 'audio-volume-muted');
+                this.emit('icon-changed', 'audio-volume-muted-symbolic');
             else
                 this.emit('icon-changed', this._volumeToIcon(this._output.volume));
         }

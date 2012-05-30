@@ -242,7 +242,6 @@ const SystemStatusButton = new Lang.Class({
 
     addIcon: function(gicon) {
         let icon = new St.Icon({ gicon: gicon,
-                                 icon_type: St.IconType.SYMBOLIC,
                                  style_class: 'system-status-icon' });
         this._box.add_actor(icon);
 
