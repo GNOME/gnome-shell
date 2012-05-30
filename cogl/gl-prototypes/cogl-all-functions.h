@@ -229,3 +229,38 @@ COGL_EXT_FUNCTION (void, glSamplerParameteri,
                     GLenum pname,
                     GLint param))
 COGL_EXT_END ()
+
+/* These only list functions that come from the old GLSL extensions.
+ * Functions that are common to the extensions and GLSL 2.0 should
+ * instead be listed in cogl-glsl-functions.h */
+COGL_EXT_BEGIN (shader_objects, 255, 255,
+                0, /* not in either GLES */
+                "ARB\0",
+                "shader_objects")
+COGL_EXT_FUNCTION (GLuint, glCreateProgramObject,
+                   (void))
+COGL_EXT_FUNCTION (GLuint, glCreateShaderObject,
+                   (GLenum shaderType))
+COGL_EXT_FUNCTION (void, glDeleteObject,
+                   (GLuint obj))
+COGL_EXT_FUNCTION (void, glAttachObject,
+                   (GLuint container, GLuint obj))
+COGL_EXT_FUNCTION (void, glUseProgramObject,
+                   (GLuint programObj))
+COGL_EXT_FUNCTION (void, glGetInfoLog,
+                   (GLuint                obj,
+                    GLsizei               maxLength,
+                    GLsizei              *length,
+                    char                 *infoLog))
+COGL_EXT_FUNCTION (void, glGetObjectParameteriv,
+                   (GLuint                obj,
+                    GLenum                pname,
+                    GLint                *params))
+COGL_EXT_FUNCTION (void, glDetachObject,
+                   (GLuint container, GLuint obj))
+COGL_EXT_FUNCTION (void, glGetAttachedObjects,
+                   (GLuint program,
+                    GLsizei maxcount,
+                    GLsizei* count,
+                    GLuint* shaders))
+COGL_EXT_END ()
