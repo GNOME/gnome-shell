@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.5.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-30 11:12+0200\n"
-"PO-Revision-Date: 2012-04-30 11:13+0200\n"
+"POT-Creation-Date: 2012-05-30 14:16+0200\n"
+"PO-Revision-Date: 2012-05-30 14:19+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -246,8 +246,8 @@ msgid "Not listed?"
 msgstr "Ikke listet?"
 
 #: ../js/gdm/loginDialog.js:1023 ../js/ui/endSessionDialog.js:401
-#: ../js/ui/extensionSystem.js:400 ../js/ui/networkAgent.js:153
-#: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
+#: ../js/ui/extensionSystem.js:375 ../js/ui/networkAgent.js:153
+#: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:431
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -260,30 +260,31 @@ msgstr "Logg inn"
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
-#: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
-#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
+#: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:595
+#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:647
 msgid "Suspend"
 msgstr "Hvilemodus"
 
-#: ../js/gdm/powerMenu.js:160
+#: ../js/gdm/powerMenu.js:135
 msgid "Restart"
 msgstr "Start på nytt"
 
-#: ../js/gdm/powerMenu.js:165
+#: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:597
+#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:646
 msgid "Power Off"
 msgstr "Slå av"
 
-#: ../js/misc/util.js:92
+#: ../js/misc/util.js:93
 msgid "Command not found"
 msgstr "Kommando ikke funnet"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:119
+#: ../js/misc/util.js:124
 msgid "Could not parse command:"
 msgstr "Klarte ikke å lese kommando:"
 
-#: ../js/misc/util.js:127
+#: ../js/misc/util.js:132
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
@@ -297,19 +298,19 @@ msgstr "Alle"
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
-#: ../js/ui/appDisplay.js:375
+#: ../js/ui/appDisplay.js:374
 msgid "SETTINGS"
 msgstr "INNSTILLINGER"
 
-#: ../js/ui/appDisplay.js:680
+#: ../js/ui/appDisplay.js:679
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:683
+#: ../js/ui/appDisplay.js:682
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:684
+#: ../js/ui/appDisplay.js:683
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
@@ -327,12 +328,12 @@ msgstr "%s ble fjernet fra dine favoritter."
 msgid "Removable Devices"
 msgstr "Avtagbare enheter"
 
-#: ../js/ui/autorunManager.js:560
+#: ../js/ui/autorunManager.js:553
 #, c-format
 msgid "Open with %s"
 msgstr "Åpne med %s"
 
-#: ../js/ui/autorunManager.js:586
+#: ../js/ui/autorunManager.js:579
 msgid "Eject"
 msgstr "Løs ut"
 
@@ -487,15 +488,15 @@ msgstr "Neste uke"
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:129
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:130
 msgid "Available"
 msgstr "Tilgjengelig"
 
-#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:138
+#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:139
 msgid "Away"
 msgstr "Borte"
 
-#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:132
+#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:133
 msgid "Busy"
 msgstr "Opptatt"
 
@@ -507,62 +508,62 @@ msgstr "Frakoblet"
 msgid "CONTACTS"
 msgstr "KONTAKTER"
 
-#: ../js/ui/dash.js:239 ../js/ui/messageTray.js:1207
+#: ../js/ui/dash.js:239 ../js/ui/messageTray.js:1239
 msgid "Remove"
 msgstr "Fjern"
 
-#: ../js/ui/dateMenu.js:103
+#: ../js/ui/dateMenu.js:101
 msgid "Date and Time Settings"
 msgstr "Innstillinger for dato og klokkeslett"
 
-#: ../js/ui/dateMenu.js:129
+#: ../js/ui/dateMenu.js:127
 msgid "Open Calendar"
 msgstr "Åpne kalender"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:185
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R.%S"
 
-#: ../js/ui/dateMenu.js:188
+#: ../js/ui/dateMenu.js:186
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:192
+#: ../js/ui/dateMenu.js:190
 msgid "%a %R:%S"
 msgstr "%a %R.%S"
 
-#: ../js/ui/dateMenu.js:193
+#: ../js/ui/dateMenu.js:191
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:200
+#: ../js/ui/dateMenu.js:198
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %p"
 
-#: ../js/ui/dateMenu.js:201
+#: ../js/ui/dateMenu.js:199
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:205
+#: ../js/ui/dateMenu.js:203
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %p"
 
-#: ../js/ui/dateMenu.js:206
+#: ../js/ui/dateMenu.js:204
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:217
+#: ../js/ui/dateMenu.js:215
 msgid "%A %B %e, %Y"
 msgstr "%a %e %B, %Y"
 
@@ -658,11 +659,11 @@ msgstr[1] "Systemet vil starte på nytt automatisk om %d sekunder."
 msgid "Restarting the system."
 msgstr "Starter systemet på nytt."
 
-#: ../js/ui/extensionSystem.js:404
+#: ../js/ui/extensionSystem.js:379
 msgid "Install"
 msgstr "Installer"
 
-#: ../js/ui/extensionSystem.js:408
+#: ../js/ui/extensionSystem.js:383
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Last ned og installer «%s» fra extensions.gnome.org?"
@@ -671,7 +672,7 @@ msgstr "Last ned og installer «%s» fra extensions.gnome.org?"
 msgid "tray"
 msgstr "varslingsområde"
 
-#: ../js/ui/keyboard.js:544 ../js/ui/status/keyboard.js:44
+#: ../js/ui/keyboard.js:545 ../js/ui/status/keyboard.js:44
 #: ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Tastatur"
@@ -733,24 +734,24 @@ msgid "Web Page"
 msgstr "Nettside"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:120
+#: ../js/ui/main.js:121
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Skjermvideo fra %d %t"
 
-#: ../js/ui/messageTray.js:1200
+#: ../js/ui/messageTray.js:1232
 msgid "Open"
 msgstr "Åpne"
 
-#: ../js/ui/messageTray.js:1217
+#: ../js/ui/messageTray.js:1249
 msgid "Unmute"
 msgstr "Fjern demping"
 
-#: ../js/ui/messageTray.js:1217
+#: ../js/ui/messageTray.js:1249
 msgid "Mute"
 msgstr "Demp"
 
-#: ../js/ui/messageTray.js:2490
+#: ../js/ui/messageTray.js:2522
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -839,35 +840,35 @@ msgstr "Et passord kreves for å koble til «%s»."
 msgid "Undo"
 msgstr "Angre"
 
-#: ../js/ui/overview.js:132
+#: ../js/ui/overview.js:130
 msgid "Overview"
 msgstr "Oversikt"
 
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:200
 msgid "Windows"
 msgstr "Vinduer"
 
-#: ../js/ui/overview.js:205
+#: ../js/ui/overview.js:203
 msgid "Applications"
 msgstr "Programmer"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:231
+#: ../js/ui/overview.js:229
 msgid "Dash"
 msgstr "Favoritter"
 
-#: ../js/ui/panel.js:592
+#: ../js/ui/panel.js:564
 msgid "Quit"
 msgstr "Avslutt"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:624
+#: ../js/ui/panel.js:596
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:999
+#: ../js/ui/panel.js:962
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -921,11 +922,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Oppgi en kommando:"
 
-#: ../js/ui/searchDisplay.js:332
+#: ../js/ui/searchDisplay.js:321
 msgid "Searching..."
 msgstr "Søker …"
 
-#: ../js/ui/searchDisplay.js:422
+#: ../js/ui/searchDisplay.js:374
 msgid "No matching results."
 msgstr "Ingen treff."
 
@@ -945,7 +946,7 @@ msgstr "Vis tekst"
 msgid "Hide Text"
 msgstr "Skjul tekst"
 
-#: ../js/ui/shellMountOperation.js:271
+#: ../js/ui/shellMountOperation.js:272
 msgid "Wrong password, please try again"
 msgstr "Feil passord. Prøv igjen"
 
@@ -997,9 +998,9 @@ msgid "Large Text"
 msgstr "Stor tekst"
 
 #: ../js/ui/status/bluetooth.js:31 ../js/ui/status/bluetooth.js:35
-#: ../js/ui/status/bluetooth.js:258 ../js/ui/status/bluetooth.js:341
-#: ../js/ui/status/bluetooth.js:371 ../js/ui/status/bluetooth.js:407
-#: ../js/ui/status/bluetooth.js:436 ../js/ui/status/network.js:893
+#: ../js/ui/status/bluetooth.js:255 ../js/ui/status/bluetooth.js:308
+#: ../js/ui/status/bluetooth.js:339 ../js/ui/status/bluetooth.js:375
+#: ../js/ui/status/bluetooth.js:404 ../js/ui/status/network.js:890
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1024,110 +1025,110 @@ msgstr "Innstillinger for Bluetooth"
 msgid "hardware disabled"
 msgstr "maskinvare slått av"
 
-#: ../js/ui/status/bluetooth.js:203
+#: ../js/ui/status/bluetooth.js:200
 msgid "Connection"
 msgstr "Tilkobling"
 
-#: ../js/ui/status/bluetooth.js:214 ../js/ui/status/network.js:491
+#: ../js/ui/status/bluetooth.js:211 ../js/ui/status/network.js:491
 msgid "disconnecting..."
 msgstr "kobler fra …"
 
-#: ../js/ui/status/bluetooth.js:227 ../js/ui/status/network.js:497
+#: ../js/ui/status/bluetooth.js:224 ../js/ui/status/network.js:497
 msgid "connecting..."
 msgstr "kobler til …"
 
-#: ../js/ui/status/bluetooth.js:245
+#: ../js/ui/status/bluetooth.js:242
 msgid "Send Files..."
 msgstr "Send filer …"
 
-#: ../js/ui/status/bluetooth.js:250
+#: ../js/ui/status/bluetooth.js:247
 msgid "Browse Files..."
 msgstr "Bla gjennom filer …"
 
-#: ../js/ui/status/bluetooth.js:259
+#: ../js/ui/status/bluetooth.js:256
 msgid "Error browsing device"
 msgstr "Feil under lesing av enhet"
 
-#: ../js/ui/status/bluetooth.js:260
+#: ../js/ui/status/bluetooth.js:257
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Kan ikke bla gjennom forespurt enhet. Feilen er «%s»"
 
-#: ../js/ui/status/bluetooth.js:268
+#: ../js/ui/status/bluetooth.js:265
 msgid "Keyboard Settings"
 msgstr "Innstillinger for tastatur"
 
-#: ../js/ui/status/bluetooth.js:271
+#: ../js/ui/status/bluetooth.js:268
 msgid "Mouse Settings"
 msgstr "Innstillinger for mus"
 
-#: ../js/ui/status/bluetooth.js:276 ../js/ui/status/volume.js:59
+#: ../js/ui/status/bluetooth.js:273 ../js/ui/status/volume.js:59
 msgid "Sound Settings"
 msgstr "Innstillinger for lyd"
 
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:340
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Forespørsel om autorisering fra %s"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:346
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Enhet %s vil ha tilgang til tjenesten «%s»"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:348
 msgid "Always grant access"
 msgstr "Alltid gi tilgang"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:349
 msgid "Grant this time only"
 msgstr "Gi tilgang kun denne ene gangen"
 
-#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1093
+#: ../js/ui/status/bluetooth.js:350 ../js/ui/telepathyClient.js:1090
 msgid "Reject"
 msgstr "Avvis"
 
-#: ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:376
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Bekreftelse for tilkobling for %s"
 
-#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:382 ../js/ui/status/bluetooth.js:412
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Enhet %s vil koble seg sammen med denne datamaskinen"
 
-#: ../js/ui/status/bluetooth.js:415
+#: ../js/ui/status/bluetooth.js:383
 #, c-format
-msgid "Please confirm whether the PIN '%s' matches the one on the device."
-msgstr "Vennligst bekreft om PIN «%s» er lik den som brukes på enheten."
+msgid "Please confirm whether the PIN '%06d' matches the one on the device."
+msgstr "Vennligst bekreft om PIN «%06d» er lik den som brukes på enheten."
 
-#: ../js/ui/status/bluetooth.js:417
+#: ../js/ui/status/bluetooth.js:385
 msgid "Matches"
 msgstr "Stemmer overens"
 
-#: ../js/ui/status/bluetooth.js:418
+#: ../js/ui/status/bluetooth.js:386
 msgid "Does not match"
 msgstr "Stemmer ikke overens"
 
-#: ../js/ui/status/bluetooth.js:437
+#: ../js/ui/status/bluetooth.js:405
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Forespørsel om tilkobling for %s"
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:413
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Vennligst oppgi PIN som oppgitt på enheten."
 
-#: ../js/ui/status/bluetooth.js:461
+#: ../js/ui/status/bluetooth.js:430
 msgid "OK"
 msgstr "OK"
 
-#: ../js/ui/status/keyboard.js:68
+#: ../js/ui/status/keyboard.js:72
 msgid "Show Keyboard Layout"
 msgstr "Vis tastaturutforming"
 
-#: ../js/ui/status/keyboard.js:73
+#: ../js/ui/status/keyboard.js:77
 msgid "Region and Language Settings"
 msgstr "Innstillinger for region og språk"
 
@@ -1172,13 +1173,13 @@ msgstr "ikke tilgjengelig"
 msgid "connection failed"
 msgstr "tilkobling feilet"
 
-#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1505
+#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1497
 msgid "More..."
 msgstr "Mer …"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:621 ../js/ui/status/network.js:1440
+#: ../js/ui/status/network.js:621 ../js/ui/status/network.js:1432
 msgid "Connected (private)"
 msgstr "Tilkoblet (privat)"
 
@@ -1186,71 +1187,71 @@ msgstr "Tilkoblet (privat)"
 msgid "Auto Ethernet"
 msgstr "Automatisk Ethernet"
 
-#: ../js/ui/status/network.js:757
+#: ../js/ui/status/network.js:754
 msgid "Auto broadband"
 msgstr "Automatisk bredbånd"
 
-#: ../js/ui/status/network.js:760
+#: ../js/ui/status/network.js:757
 msgid "Auto dial-up"
 msgstr "Automatisk oppringt"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:879 ../js/ui/status/network.js:1452
+#: ../js/ui/status/network.js:876 ../js/ui/status/network.js:1444
 #, c-format
 msgid "Auto %s"
 msgstr "Automatisk %s"
 
-#: ../js/ui/status/network.js:881
+#: ../js/ui/status/network.js:878
 msgid "Auto bluetooth"
 msgstr "Automatisk Bluetooth"
 
-#: ../js/ui/status/network.js:1454
+#: ../js/ui/status/network.js:1446
 msgid "Auto wireless"
 msgstr "Automatisk trådløst"
 
-#: ../js/ui/status/network.js:1541
+#: ../js/ui/status/network.js:1533
 msgid "Network"
 msgstr "Nettverk"
 
-#: ../js/ui/status/network.js:1548
+#: ../js/ui/status/network.js:1540
 msgid "Enable networking"
 msgstr "Slå på nettverk"
 
-#: ../js/ui/status/network.js:1560
+#: ../js/ui/status/network.js:1552
 msgid "Wired"
 msgstr "Kablet"
 
-#: ../js/ui/status/network.js:1571
+#: ../js/ui/status/network.js:1563
 msgid "Wireless"
 msgstr "Trådløst"
 
-#: ../js/ui/status/network.js:1581
+#: ../js/ui/status/network.js:1573
 msgid "Mobile broadband"
 msgstr "Mobilt bredbånd"
 
-#: ../js/ui/status/network.js:1591
+#: ../js/ui/status/network.js:1583
 msgid "VPN Connections"
 msgstr "VPN-tilkoblinger"
 
-#: ../js/ui/status/network.js:1602
+#: ../js/ui/status/network.js:1594
 msgid "Network Settings"
 msgstr "Innstillinger for nettverk"
 
-#: ../js/ui/status/network.js:1739
+#: ../js/ui/status/network.js:1647
+msgid "Network Manager"
+msgstr "Nettverkshåndtering"
+
+#: ../js/ui/status/network.js:1734
 msgid "Connection failed"
 msgstr "Tilkobling feilet"
 
-#: ../js/ui/status/network.js:1740
+#: ../js/ui/status/network.js:1735
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling feilet"
 
-#: ../js/ui/status/network.js:1993
+#: ../js/ui/status/network.js:1988
 msgid "Networking is disabled"
 msgstr "Nettverk er slått av"
-
-#: ../js/ui/status/network.js:2117
-msgid "Network Manager"
-msgstr "Nettverkshåndtering"
 
 #: ../js/ui/status/power.js:59
 msgid "Battery"
@@ -1369,7 +1370,7 @@ msgstr "Ring"
 msgid "File Transfer"
 msgstr "Filoverføring"
 
-#: ../js/ui/telepathyClient.js:369
+#: ../js/ui/telepathyClient.js:368
 msgid "Subscription request"
 msgstr "Forespørsel om abbonering"
 
@@ -1377,22 +1378,22 @@ msgstr "Forespørsel om abbonering"
 msgid "Connection error"
 msgstr "Feil ved tilkobling"
 
-#: ../js/ui/telepathyClient.js:663
+#: ../js/ui/telepathyClient.js:662
 #, c-format
 msgid "%s is online."
 msgstr "%s er tilkoblet."
 
-#: ../js/ui/telepathyClient.js:667
+#: ../js/ui/telepathyClient.js:666
 #, c-format
 msgid "%s is offline."
 msgstr "%s er frakoblet."
 
-#: ../js/ui/telepathyClient.js:671
+#: ../js/ui/telepathyClient.js:670
 #, c-format
 msgid "%s is away."
 msgstr "«%s» er borte."
 
-#: ../js/ui/telepathyClient.js:674
+#: ../js/ui/telepathyClient.js:673
 #, c-format
 msgid "%s is busy."
 msgstr "%s er opptatt."
@@ -1400,35 +1401,35 @@ msgstr "%s er opptatt."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:889
+#: ../js/ui/telepathyClient.js:888
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Sendt <b>%X</b> på <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:895
+#: ../js/ui/telepathyClient.js:894
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Sendt  <b>%A</b>, <b>%B %d</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:900
+#: ../js/ui/telepathyClient.js:899
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Sendt <b>%A</b>, <b>%B %d</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:942
+#: ../js/ui/telepathyClient.js:941
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s er nå kjent som %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1044
+#: ../js/ui/telepathyClient.js:1041
 #, c-format
 msgid "Invitation to %s"
 msgstr "Invitasjon til %s"
@@ -1436,35 +1437,35 @@ msgstr "Invitasjon til %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1052
+#: ../js/ui/telepathyClient.js:1049
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s inviterer deg til å bli med i %s"
 
-#: ../js/ui/telepathyClient.js:1054 ../js/ui/telepathyClient.js:1133
-#: ../js/ui/telepathyClient.js:1231
+#: ../js/ui/telepathyClient.js:1051 ../js/ui/telepathyClient.js:1130
+#: ../js/ui/telepathyClient.js:1194
 msgid "Decline"
 msgstr "Avslå"
 
-#: ../js/ui/telepathyClient.js:1055 ../js/ui/telepathyClient.js:1134
-#: ../js/ui/telepathyClient.js:1232
+#: ../js/ui/telepathyClient.js:1052 ../js/ui/telepathyClient.js:1131
+#: ../js/ui/telepathyClient.js:1195
 msgid "Accept"
 msgstr "Godta"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1085
+#: ../js/ui/telepathyClient.js:1082
 #, c-format
 msgid "Video call from %s"
 msgstr "Videosamtale fra %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1088
+#: ../js/ui/telepathyClient.js:1085
 #, c-format
 msgid "Call from %s"
 msgstr "Samtale fra %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1095
+#: ../js/ui/telepathyClient.js:1092
 msgid "Answer"
 msgstr "Svar"
 
@@ -1473,110 +1474,110 @@ msgstr "Svar"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1127
+#: ../js/ui/telepathyClient.js:1124
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s sender deg %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1196
+#: ../js/ui/telepathyClient.js:1159
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s vil ha rettigheter til å se når du er tilkoblet"
 
-#: ../js/ui/telepathyClient.js:1289
+#: ../js/ui/telepathyClient.js:1252
 msgid "Network error"
 msgstr "Nettverksfeil"
 
-#: ../js/ui/telepathyClient.js:1291
+#: ../js/ui/telepathyClient.js:1254
 msgid "Authentication failed"
 msgstr "Autentisering feilet"
 
-#: ../js/ui/telepathyClient.js:1293
+#: ../js/ui/telepathyClient.js:1256
 msgid "Encryption error"
 msgstr "Feil ved kryptering"
 
-#: ../js/ui/telepathyClient.js:1295
+#: ../js/ui/telepathyClient.js:1258
 msgid "Certificate not provided"
 msgstr "Sertifikat ikke oppgitt"
 
-#: ../js/ui/telepathyClient.js:1297
+#: ../js/ui/telepathyClient.js:1260
 msgid "Certificate untrusted"
 msgstr "Stoler ikke på sertifikatet"
 
-#: ../js/ui/telepathyClient.js:1299
+#: ../js/ui/telepathyClient.js:1262
 msgid "Certificate expired"
 msgstr "Sertifikatet er utløpt"
 
-#: ../js/ui/telepathyClient.js:1301
+#: ../js/ui/telepathyClient.js:1264
 msgid "Certificate not activated"
 msgstr "Sertifikatet er ikke aktivert"
 
-#: ../js/ui/telepathyClient.js:1303
+#: ../js/ui/telepathyClient.js:1266
 msgid "Certificate hostname mismatch"
 msgstr "Feil vertsnavn for sertifikat"
 
-#: ../js/ui/telepathyClient.js:1305
+#: ../js/ui/telepathyClient.js:1268
 msgid "Certificate fingerprint mismatch"
 msgstr "Feil fingeravtrykk for sertifikat"
 
-#: ../js/ui/telepathyClient.js:1307
+#: ../js/ui/telepathyClient.js:1270
 msgid "Certificate self-signed"
 msgstr "Sertifikatet er selvsignert"
 
-#: ../js/ui/telepathyClient.js:1309
+#: ../js/ui/telepathyClient.js:1272
 msgid "Status is set to offline"
 msgstr "Status er satt til frakoblet"
 
-#: ../js/ui/telepathyClient.js:1311
+#: ../js/ui/telepathyClient.js:1274
 msgid "Encryption is not available"
 msgstr "Kryptering er ikke tilgjengelig"
 
-#: ../js/ui/telepathyClient.js:1313
+#: ../js/ui/telepathyClient.js:1276
 msgid "Certificate is invalid"
 msgstr "Sertifikatet er ugyldig"
 
-#: ../js/ui/telepathyClient.js:1315
+#: ../js/ui/telepathyClient.js:1278
 msgid "Connection has been refused"
 msgstr "Tilkobling ble nektet"
 
-#: ../js/ui/telepathyClient.js:1317
+#: ../js/ui/telepathyClient.js:1280
 msgid "Connection can't be established"
 msgstr "Tilkobling kan ikke etableres"
 
-#: ../js/ui/telepathyClient.js:1319
+#: ../js/ui/telepathyClient.js:1282
 msgid "Connection has been lost"
 msgstr "Tilkobling tapt"
 
-#: ../js/ui/telepathyClient.js:1321
+#: ../js/ui/telepathyClient.js:1284
 msgid "This account is already connected to the server"
 msgstr "Denne kontoen er allerede koblet til tjeneren"
 
-#: ../js/ui/telepathyClient.js:1323
+#: ../js/ui/telepathyClient.js:1286
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Tilkoblingen har blitt erstattet av en ny tilkobling som bruker samme ressurs"
 
-#: ../js/ui/telepathyClient.js:1325
+#: ../js/ui/telepathyClient.js:1288
 msgid "The account already exists on the server"
 msgstr "Kontoen eksisterer allerede på tjeneren"
 
-#: ../js/ui/telepathyClient.js:1327
+#: ../js/ui/telepathyClient.js:1290
 msgid "Server is currently too busy to handle the connection"
 msgstr "Tjener er for opptatt til å håndtere tilkoblingen"
 
-#: ../js/ui/telepathyClient.js:1329
+#: ../js/ui/telepathyClient.js:1292
 msgid "Certificate has been revoked"
 msgstr "Sertifikatet er tilbaketrukket"
 
-#: ../js/ui/telepathyClient.js:1331
+#: ../js/ui/telepathyClient.js:1294
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Sertifikatet bruker en usikker sifferalgoritme eller er krytografisk svakt"
 
-#: ../js/ui/telepathyClient.js:1333
+#: ../js/ui/telepathyClient.js:1296
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1584,74 +1585,70 @@ msgstr ""
 "Lengden eller dybden på tjenersertifikatet oversteg grensen som er satt i "
 "kryptografibiblioteket"
 
-#: ../js/ui/telepathyClient.js:1335
+#: ../js/ui/telepathyClient.js:1298
 msgid "Internal error"
 msgstr "Intern feil"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1345
+#: ../js/ui/telepathyClient.js:1308
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Tilkobling til %s feilet"
 
-#: ../js/ui/telepathyClient.js:1354
+#: ../js/ui/telepathyClient.js:1317
 msgid "Reconnect"
 msgstr "Koble til på nytt"
 
-#: ../js/ui/telepathyClient.js:1355
+#: ../js/ui/telepathyClient.js:1318
 msgid "Edit account"
 msgstr "Rediger konto"
 
-#: ../js/ui/telepathyClient.js:1401
+#: ../js/ui/telepathyClient.js:1364
 msgid "Unknown reason"
 msgstr "Ukjent årsak"
 
-#: ../js/ui/userMenu.js:135
+#: ../js/ui/userMenu.js:136
 msgid "Hidden"
 msgstr "Skjult"
 
-#: ../js/ui/userMenu.js:141
+#: ../js/ui/userMenu.js:142
 msgid "Idle"
 msgstr "Ledig"
 
-#: ../js/ui/userMenu.js:144
+#: ../js/ui/userMenu.js:145
 msgid "Unavailable"
 msgstr "Ikke tilgjengelig"
 
-#: ../js/ui/userMenu.js:595 ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:669
-msgid "Power Off..."
-msgstr "Slå av …"
-
-#: ../js/ui/userMenu.js:631
-msgid "Notifications"
-msgstr "Varslinger"
-
-#: ../js/ui/userMenu.js:639
-msgid "Online Accounts"
-msgstr "Kontoer på nettet"
-
-#: ../js/ui/userMenu.js:643
-msgid "System Settings"
-msgstr "Systeminnstillinger"
-
-#: ../js/ui/userMenu.js:650
-msgid "Lock Screen"
-msgstr "Lås skjerm"
-
-#: ../js/ui/userMenu.js:655
+#: ../js/ui/userMenu.js:556 ../js/ui/userMenu.js:656
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#: ../js/ui/userMenu.js:660
-msgid "Log Out..."
-msgstr "Logg ut …"
+#: ../js/ui/userMenu.js:557
+msgid "Switch Session"
+msgstr "Bytt økt"
 
-#: ../js/ui/userMenu.js:688
+#: ../js/ui/userMenu.js:632
+msgid "Notifications"
+msgstr "Varslinger"
+
+#: ../js/ui/userMenu.js:641
+msgid "System Settings"
+msgstr "Systeminnstillinger"
+
+#: ../js/ui/userMenu.js:661
+msgid "Log Out"
+msgstr "Logg ut"
+
+#: ../js/ui/userMenu.js:669
+msgid "Lock"
+msgstr "Lås"
+
+#: ../js/ui/userMenu.js:687
 msgid "Your chat status will be set to busy"
 msgstr "Din pratestatus vil bli satt til opptatt"
 
-#: ../js/ui/userMenu.js:689
+#: ../js/ui/userMenu.js:688
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1717,15 +1714,23 @@ msgstr[1] "%u innganger"
 msgid "System Sounds"
 msgstr "Systemlyder"
 
-#: ../src/main.c:255
+#: ../src/main.c:313
 msgid "Print version"
 msgstr "Skriv ut versjon"
 
-#: ../src/main.c:261
+#: ../src/main.c:319
 msgid "Mode used by GDM for login screen"
 msgstr "Modus som brukes av GDM for innloggingsskjermen"
 
-#: ../src/shell-app.c:619
+#: ../src/main.c:325
+msgid "Use a specific mode, e.g. \"gdm\" for login screen"
+msgstr "Bruk spesifikt modus, f.eks «gdm» for innloggingsskjerm"
+
+#: ../src/main.c:331
+msgid "List possible modes"
+msgstr "Vis mulige modi"
+
+#: ../src/shell-app.c:622
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Klarte ikke å starte «%s»"
