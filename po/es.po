@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-27 12:59+0000\n"
-"PO-Revision-Date: 2012-04-27 16:24+0200\n"
+"POT-Creation-Date: 2012-05-29 12:12+0000\n"
+"PO-Revision-Date: 2012-05-30 17:30+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,565 +19,558 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../clutter/clutter-actor.c:5543
+#: ../clutter/clutter-actor.c:5558
 msgid "X coordinate"
 msgstr "Coordenada X"
 
-#: ../clutter/clutter-actor.c:5544
+#: ../clutter/clutter-actor.c:5559
 msgid "X coordinate of the actor"
 msgstr "Coordenada X del actor"
 
-#: ../clutter/clutter-actor.c:5562
+#: ../clutter/clutter-actor.c:5577
 msgid "Y coordinate"
 msgstr "Coordenada Y"
 
-#: ../clutter/clutter-actor.c:5563
+#: ../clutter/clutter-actor.c:5578
 msgid "Y coordinate of the actor"
 msgstr "Coordenada Y del actor"
 
-#: ../clutter/clutter-actor.c:5585
-#| msgid "Cursor Position"
+#: ../clutter/clutter-actor.c:5600
 msgid "Position"
 msgstr "Posición"
 
-#: ../clutter/clutter-actor.c:5586
-#| msgid "The cursor position of the other end of the selection"
+#: ../clutter/clutter-actor.c:5601
 msgid "The position of the origin of the actor"
 msgstr "La posición de origen del actor"
 
-#: ../clutter/clutter-actor.c:5603 ../clutter/clutter-canvas.c:215
+#: ../clutter/clutter-actor.c:5618 ../clutter/clutter-canvas.c:215
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:480
 msgid "Width"
 msgstr "Anchura"
 
-#: ../clutter/clutter-actor.c:5604
+#: ../clutter/clutter-actor.c:5619
 msgid "Width of the actor"
 msgstr "Anchura del actor"
 
-#: ../clutter/clutter-actor.c:5622 ../clutter/clutter-canvas.c:231
+#: ../clutter/clutter-actor.c:5637 ../clutter/clutter-canvas.c:231
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:496
 msgid "Height"
 msgstr "Altura"
 
-#: ../clutter/clutter-actor.c:5623
+#: ../clutter/clutter-actor.c:5638
 msgid "Height of the actor"
 msgstr "Altura del actor"
 
-#: ../clutter/clutter-actor.c:5644
+#: ../clutter/clutter-actor.c:5659
 msgid "Size"
 msgstr "Tamaño"
 
-#: ../clutter/clutter-actor.c:5645
-#| msgid "Height of the actor"
+#: ../clutter/clutter-actor.c:5660
 msgid "The size of the actor"
 msgstr "El tamaño del actor"
 
-#: ../clutter/clutter-actor.c:5663
+#: ../clutter/clutter-actor.c:5678
 msgid "Fixed X"
 msgstr "X fija"
 
-#: ../clutter/clutter-actor.c:5664
+#: ../clutter/clutter-actor.c:5679
 msgid "Forced X position of the actor"
 msgstr "Posición X forzada del actor"
 
-#: ../clutter/clutter-actor.c:5681
+#: ../clutter/clutter-actor.c:5696
 msgid "Fixed Y"
 msgstr "Y fija"
 
-#: ../clutter/clutter-actor.c:5682
+#: ../clutter/clutter-actor.c:5697
 msgid "Forced Y position of the actor"
 msgstr "Posición Y forzada del actor"
 
-#: ../clutter/clutter-actor.c:5697
+#: ../clutter/clutter-actor.c:5712
 msgid "Fixed position set"
 msgstr "Posición fija establecida"
 
-#: ../clutter/clutter-actor.c:5698
+#: ../clutter/clutter-actor.c:5713
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Indica si se usa una posición fija para el actor"
 
-#: ../clutter/clutter-actor.c:5716
+#: ../clutter/clutter-actor.c:5731
 msgid "Min Width"
 msgstr "Anchura mínima"
 
-#: ../clutter/clutter-actor.c:5717
+#: ../clutter/clutter-actor.c:5732
 msgid "Forced minimum width request for the actor"
 msgstr "Solicitud de anchura mínima forzada para el actor"
 
-#: ../clutter/clutter-actor.c:5735
+#: ../clutter/clutter-actor.c:5750
 msgid "Min Height"
 msgstr "Altura mínima"
 
-#: ../clutter/clutter-actor.c:5736
+#: ../clutter/clutter-actor.c:5751
 msgid "Forced minimum height request for the actor"
 msgstr "Solicitud de altura mínima forzada para el actor"
 
-#: ../clutter/clutter-actor.c:5754
+#: ../clutter/clutter-actor.c:5769
 msgid "Natural Width"
 msgstr "Anchura natural"
 
-#: ../clutter/clutter-actor.c:5755
+#: ../clutter/clutter-actor.c:5770
 msgid "Forced natural width request for the actor"
 msgstr "Solicitud de anchura natural forzada para el actor"
 
-#: ../clutter/clutter-actor.c:5773
+#: ../clutter/clutter-actor.c:5788
 msgid "Natural Height"
 msgstr "Altura natural"
 
-#: ../clutter/clutter-actor.c:5774
+#: ../clutter/clutter-actor.c:5789
 msgid "Forced natural height request for the actor"
 msgstr "Solicitud de altura natural forzada para el actor"
 
-#: ../clutter/clutter-actor.c:5789
+#: ../clutter/clutter-actor.c:5804
 msgid "Minimum width set"
 msgstr "Anchura mínima establecida"
 
-#: ../clutter/clutter-actor.c:5790
+#: ../clutter/clutter-actor.c:5805
 msgid "Whether to use the min-width property"
 msgstr "Indica si se usa la propiedad «anchura mínima»"
 
-#: ../clutter/clutter-actor.c:5804
+#: ../clutter/clutter-actor.c:5819
 msgid "Minimum height set"
 msgstr "Altura mínima establecida"
 
-#: ../clutter/clutter-actor.c:5805
+#: ../clutter/clutter-actor.c:5820
 msgid "Whether to use the min-height property"
 msgstr "Indica si se usa la propiedad «altura mínima»"
 
-#: ../clutter/clutter-actor.c:5819
+#: ../clutter/clutter-actor.c:5834
 msgid "Natural width set"
 msgstr "Anchura natural establecida"
 
-#: ../clutter/clutter-actor.c:5820
+#: ../clutter/clutter-actor.c:5835
 msgid "Whether to use the natural-width property"
 msgstr "Indica si se usa la propiedad «anchura natural»"
 
-#: ../clutter/clutter-actor.c:5834
+#: ../clutter/clutter-actor.c:5849
 msgid "Natural height set"
 msgstr "Altura natural establecida"
 
-#: ../clutter/clutter-actor.c:5835
+#: ../clutter/clutter-actor.c:5850
 msgid "Whether to use the natural-height property"
 msgstr "Indica si se usa la propiedad «altura natural»"
 
-#: ../clutter/clutter-actor.c:5851
+#: ../clutter/clutter-actor.c:5866
 msgid "Allocation"
 msgstr "Asignación"
 
-#: ../clutter/clutter-actor.c:5852
+#: ../clutter/clutter-actor.c:5867
 msgid "The actor's allocation"
 msgstr "La asignación del actor"
 
-#: ../clutter/clutter-actor.c:5909
+#: ../clutter/clutter-actor.c:5924
 msgid "Request Mode"
 msgstr "Modo de solicitud"
 
-#: ../clutter/clutter-actor.c:5910
+#: ../clutter/clutter-actor.c:5925
 msgid "The actor's request mode"
 msgstr "El modo de solicitud del actor"
 
-#: ../clutter/clutter-actor.c:5929
+#: ../clutter/clutter-actor.c:5944
 msgid "Depth"
 msgstr "Profundidad"
 
-#: ../clutter/clutter-actor.c:5930
+#: ../clutter/clutter-actor.c:5945
 msgid "Position on the Z axis"
 msgstr "Posición en el eje Z"
 
-#: ../clutter/clutter-actor.c:5947
+#: ../clutter/clutter-actor.c:5962
 msgid "Opacity"
 msgstr "Opacidad"
 
-#: ../clutter/clutter-actor.c:5948
+#: ../clutter/clutter-actor.c:5963
 msgid "Opacity of an actor"
 msgstr "Opacidad de un actor"
 
-#: ../clutter/clutter-actor.c:5968
+#: ../clutter/clutter-actor.c:5983
 msgid "Offscreen redirect"
 msgstr "Redirección fuera de la pantalla"
 
-#: ../clutter/clutter-actor.c:5969
+#: ../clutter/clutter-actor.c:5984
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr "Opciones que controlan si se debe aplanar el actor en una única imagen"
 
-#: ../clutter/clutter-actor.c:5983
+#: ../clutter/clutter-actor.c:5998
 msgid "Visible"
 msgstr "Visible"
 
-#: ../clutter/clutter-actor.c:5984
+#: ../clutter/clutter-actor.c:5999
 msgid "Whether the actor is visible or not"
 msgstr "Indica si el actor es visible o no"
 
-#: ../clutter/clutter-actor.c:5998
+#: ../clutter/clutter-actor.c:6013
 msgid "Mapped"
 msgstr "Mapeado"
 
-#: ../clutter/clutter-actor.c:5999
+#: ../clutter/clutter-actor.c:6014
 msgid "Whether the actor will be painted"
 msgstr "Indica si se dibujará el actor"
 
-#: ../clutter/clutter-actor.c:6012
+#: ../clutter/clutter-actor.c:6027
 msgid "Realized"
 msgstr "Realizado"
 
-#: ../clutter/clutter-actor.c:6013
+#: ../clutter/clutter-actor.c:6028
 msgid "Whether the actor has been realized"
 msgstr "Indica si el actor se ha realizado"
 
-#: ../clutter/clutter-actor.c:6028
+#: ../clutter/clutter-actor.c:6043
 msgid "Reactive"
 msgstr "Reactivo"
 
-#: ../clutter/clutter-actor.c:6029
+#: ../clutter/clutter-actor.c:6044
 msgid "Whether the actor is reactive to events"
 msgstr "Indica si el actor es reactivo a eventos"
 
-#: ../clutter/clutter-actor.c:6040
+#: ../clutter/clutter-actor.c:6055
 msgid "Has Clip"
 msgstr "Tiene recorte"
 
-#: ../clutter/clutter-actor.c:6041
+#: ../clutter/clutter-actor.c:6056
 msgid "Whether the actor has a clip set"
 msgstr "Indica si el actor tiene un conjunto de recortes"
 
-#: ../clutter/clutter-actor.c:6055
+#: ../clutter/clutter-actor.c:6070
 msgid "Clip"
 msgstr "Recortar"
 
-#: ../clutter/clutter-actor.c:6056
+#: ../clutter/clutter-actor.c:6071
 msgid "The clip region for the actor"
 msgstr "La región de recorte del actor"
 
-#: ../clutter/clutter-actor.c:6069 ../clutter/clutter-actor-meta.c:207
+#: ../clutter/clutter-actor.c:6084 ../clutter/clutter-actor-meta.c:207
 #: ../clutter/clutter-binding-pool.c:319 ../clutter/clutter-input-device.c:236
 msgid "Name"
 msgstr "Nombre"
 
-#: ../clutter/clutter-actor.c:6070
+#: ../clutter/clutter-actor.c:6085
 msgid "Name of the actor"
 msgstr "Nombre del actor"
 
-#: ../clutter/clutter-actor.c:6085
+#: ../clutter/clutter-actor.c:6100
 msgid "Scale X"
 msgstr "Escala en X"
 
-#: ../clutter/clutter-actor.c:6086
+#: ../clutter/clutter-actor.c:6101
 msgid "Scale factor on the X axis"
 msgstr "Factor de escala en el eje X"
 
-#: ../clutter/clutter-actor.c:6104
+#: ../clutter/clutter-actor.c:6119
 msgid "Scale Y"
 msgstr "Escala en Y"
 
-#: ../clutter/clutter-actor.c:6105
+#: ../clutter/clutter-actor.c:6120
 msgid "Scale factor on the Y axis"
 msgstr "Factor de escala en el eje Y"
 
-#: ../clutter/clutter-actor.c:6121
+#: ../clutter/clutter-actor.c:6136
 msgid "Scale Center X"
 msgstr "Centro X del escalado"
 
-#: ../clutter/clutter-actor.c:6122
+#: ../clutter/clutter-actor.c:6137
 msgid "Horizontal scale center"
 msgstr "Centro de la escala horizontal"
 
-#: ../clutter/clutter-actor.c:6136
+#: ../clutter/clutter-actor.c:6151
 msgid "Scale Center Y"
 msgstr "Centro Y del escalado"
 
-#: ../clutter/clutter-actor.c:6137
+#: ../clutter/clutter-actor.c:6152
 msgid "Vertical scale center"
 msgstr "Centro de la escala vertical"
 
-#: ../clutter/clutter-actor.c:6151
+#: ../clutter/clutter-actor.c:6166
 msgid "Scale Gravity"
 msgstr "Gravedad del escalado"
 
-#: ../clutter/clutter-actor.c:6152
+#: ../clutter/clutter-actor.c:6167
 msgid "The center of scaling"
 msgstr "El centro del escalado"
 
-#: ../clutter/clutter-actor.c:6168
+#: ../clutter/clutter-actor.c:6183
 msgid "Rotation Angle X"
 msgstr "Ángulo de rotación X"
 
-#: ../clutter/clutter-actor.c:6169
+#: ../clutter/clutter-actor.c:6184
 msgid "The rotation angle on the X axis"
 msgstr "El ángulo de rotación en el eje X"
 
-#: ../clutter/clutter-actor.c:6187
+#: ../clutter/clutter-actor.c:6202
 msgid "Rotation Angle Y"
 msgstr "Ángulo de rotación Y"
 
-#: ../clutter/clutter-actor.c:6188
+#: ../clutter/clutter-actor.c:6203
 msgid "The rotation angle on the Y axis"
 msgstr "El ángulo de rotación en el eje Y"
 
-#: ../clutter/clutter-actor.c:6206
+#: ../clutter/clutter-actor.c:6221
 msgid "Rotation Angle Z"
 msgstr "Ángulo de rotación Z"
 
-#: ../clutter/clutter-actor.c:6207
+#: ../clutter/clutter-actor.c:6222
 msgid "The rotation angle on the Z axis"
 msgstr "El ángulo de rotación en el eje Z"
 
-#: ../clutter/clutter-actor.c:6223
+#: ../clutter/clutter-actor.c:6238
 msgid "Rotation Center X"
 msgstr "Centro de rotación X"
 
-#: ../clutter/clutter-actor.c:6224
+#: ../clutter/clutter-actor.c:6239
 msgid "The rotation center on the X axis"
 msgstr "El ángulo de rotación en el eje Y"
 
-#: ../clutter/clutter-actor.c:6237
+#: ../clutter/clutter-actor.c:6252
 msgid "Rotation Center Y"
 msgstr "Centro de rotación Y"
 
-#: ../clutter/clutter-actor.c:6238
+#: ../clutter/clutter-actor.c:6253
 msgid "The rotation center on the Y axis"
 msgstr "En centro de la rotación en el eje Y"
 
-#: ../clutter/clutter-actor.c:6251
+#: ../clutter/clutter-actor.c:6266
 msgid "Rotation Center Z"
 msgstr "Centro de rotación Z"
 
-#: ../clutter/clutter-actor.c:6252
+#: ../clutter/clutter-actor.c:6267
 msgid "The rotation center on the Z axis"
 msgstr "El ángulo de rotación en el eje Z"
 
-#: ../clutter/clutter-actor.c:6265
+#: ../clutter/clutter-actor.c:6280
 msgid "Rotation Center Z Gravity"
 msgstr "Gravedad del centro de rotación Z"
 
-#: ../clutter/clutter-actor.c:6266
+#: ../clutter/clutter-actor.c:6281
 msgid "Center point for rotation around the Z axis"
 msgstr "Punto central de la rotación alrededor del eje Z"
 
-#: ../clutter/clutter-actor.c:6281
+#: ../clutter/clutter-actor.c:6296
 msgid "Anchor X"
 msgstr "Ancla X"
 
-#: ../clutter/clutter-actor.c:6282
+#: ../clutter/clutter-actor.c:6297
 msgid "X coordinate of the anchor point"
 msgstr "Coordenada X del punto de anclado"
 
-#: ../clutter/clutter-actor.c:6297
+#: ../clutter/clutter-actor.c:6312
 msgid "Anchor Y"
 msgstr "Ancla Y"
 
-#: ../clutter/clutter-actor.c:6298
+#: ../clutter/clutter-actor.c:6313
 msgid "Y coordinate of the anchor point"
 msgstr "Coordenada Y del punto de anclado"
 
-#: ../clutter/clutter-actor.c:6312
+#: ../clutter/clutter-actor.c:6327
 msgid "Anchor Gravity"
 msgstr "Gravedad del ancla"
 
-#: ../clutter/clutter-actor.c:6313
+#: ../clutter/clutter-actor.c:6328
 msgid "The anchor point as a ClutterGravity"
 msgstr "El punto de anclado como un «ClutterGravity»"
 
-#: ../clutter/clutter-actor.c:6330
+#: ../clutter/clutter-actor.c:6345
 msgid "Show on set parent"
 msgstr "Mostrar en el conjunto padre"
 
-#: ../clutter/clutter-actor.c:6331
+#: ../clutter/clutter-actor.c:6346
 msgid "Whether the actor is shown when parented"
 msgstr "Indica si el actor se muestra cuando tiene padre"
 
-#: ../clutter/clutter-actor.c:6348
+#: ../clutter/clutter-actor.c:6363
 msgid "Clip to Allocation"
 msgstr "Recortar a la asignación"
 
-#: ../clutter/clutter-actor.c:6349
+#: ../clutter/clutter-actor.c:6364
 msgid "Sets the clip region to track the actor's allocation"
 msgstr "Configura la región de recorte para seguir la ubicación del actor"
 
-#: ../clutter/clutter-actor.c:6362
+#: ../clutter/clutter-actor.c:6377
 msgid "Text Direction"
 msgstr "Dirección del texto"
 
-#: ../clutter/clutter-actor.c:6363
+#: ../clutter/clutter-actor.c:6378
 msgid "Direction of the text"
 msgstr "Dirección del texto"
 
-#: ../clutter/clutter-actor.c:6378
+#: ../clutter/clutter-actor.c:6393
 msgid "Has Pointer"
 msgstr "Tiene puntero"
 
-#: ../clutter/clutter-actor.c:6379
+#: ../clutter/clutter-actor.c:6394
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Indica si el actor contiene un puntero a un dispositivo de entrada"
 
-#: ../clutter/clutter-actor.c:6392
+#: ../clutter/clutter-actor.c:6407
 msgid "Actions"
 msgstr "Acciones"
 
-#: ../clutter/clutter-actor.c:6393
+#: ../clutter/clutter-actor.c:6408
 msgid "Adds an action to the actor"
 msgstr "Añade una acción al actor"
 
-#: ../clutter/clutter-actor.c:6406
+#: ../clutter/clutter-actor.c:6421
 msgid "Constraints"
 msgstr "Restricciones"
 
-#: ../clutter/clutter-actor.c:6407
+#: ../clutter/clutter-actor.c:6422
 msgid "Adds a constraint to the actor"
 msgstr "Añade una restricción al actor"
 
-#: ../clutter/clutter-actor.c:6420
+#: ../clutter/clutter-actor.c:6435
 msgid "Effect"
 msgstr "Efecto"
 
-#: ../clutter/clutter-actor.c:6421
+#: ../clutter/clutter-actor.c:6436
 msgid "Add an effect to be applied on the actor"
 msgstr "Añadir un efecto que aplicar al actor"
 
-#: ../clutter/clutter-actor.c:6435
+#: ../clutter/clutter-actor.c:6450
 msgid "Layout Manager"
 msgstr "Gestor de distribución"
 
-#: ../clutter/clutter-actor.c:6436
+#: ../clutter/clutter-actor.c:6451
 msgid "The object controlling the layout of an actor's children"
 msgstr "El objeto que controla la distribución del hijo de un actor"
 
-#: ../clutter/clutter-actor.c:6450
-#| msgid "Expand"
+#: ../clutter/clutter-actor.c:6465
 msgid "X Expand"
 msgstr "Expansión X"
 
-#: ../clutter/clutter-actor.c:6451
-#| msgid "Whether the surface should match the allocation"
+#: ../clutter/clutter-actor.c:6466
 msgid "Whether extra horizontal space should be assigned to the actor"
 msgstr "Indica si se debe asignar al actor el espacio horizontal adicional"
 
-#: ../clutter/clutter-actor.c:6466
-#| msgid "Expand"
+#: ../clutter/clutter-actor.c:6481
 msgid "Y Expand"
 msgstr "Expansión Y"
 
-#: ../clutter/clutter-actor.c:6467
-#| msgid "Whether the surface should match the allocation"
+#: ../clutter/clutter-actor.c:6482
 msgid "Whether extra vertical space should be assigned to the actor"
 msgstr "Indica si se debe asignar al actor el espacio vertical adicional"
 
-#: ../clutter/clutter-actor.c:6483
+#: ../clutter/clutter-actor.c:6498
 msgid "X Alignment"
 msgstr "Alineación X"
 
-#: ../clutter/clutter-actor.c:6484
+#: ../clutter/clutter-actor.c:6499
 msgid "The alignment of the actor on the X axis within its allocation"
 msgstr "La alineación del actor en el eje X en su asignación"
 
-#: ../clutter/clutter-actor.c:6499
+#: ../clutter/clutter-actor.c:6514
 msgid "Y Alignment"
 msgstr "Alineación Y"
 
-#: ../clutter/clutter-actor.c:6500
+#: ../clutter/clutter-actor.c:6515
 msgid "The alignment of the actor on the Y axis within its allocation"
 msgstr "La alineación del actor en el eje Y en su asignación"
 
-#: ../clutter/clutter-actor.c:6517
+#: ../clutter/clutter-actor.c:6532
 msgid "Margin Top"
 msgstr "Margen superior"
 
-#: ../clutter/clutter-actor.c:6518
+#: ../clutter/clutter-actor.c:6533
 msgid "Extra space at the top"
 msgstr "Espacio superior adicional"
 
-#: ../clutter/clutter-actor.c:6535
+#: ../clutter/clutter-actor.c:6550
 msgid "Margin Bottom"
 msgstr "Margen inferior"
 
-#: ../clutter/clutter-actor.c:6536
+#: ../clutter/clutter-actor.c:6551
 msgid "Extra space at the bottom"
 msgstr "Espacio inferior adicional"
 
-#: ../clutter/clutter-actor.c:6553
+#: ../clutter/clutter-actor.c:6568
 msgid "Margin Left"
 msgstr "Margen izquierdo"
 
-#: ../clutter/clutter-actor.c:6554
+#: ../clutter/clutter-actor.c:6569
 msgid "Extra space at the left"
 msgstr "Espacio adicional a la izquierda"
 
-#: ../clutter/clutter-actor.c:6571
+#: ../clutter/clutter-actor.c:6586
 msgid "Margin Right"
 msgstr "Margen derecho"
 
-#: ../clutter/clutter-actor.c:6572
+#: ../clutter/clutter-actor.c:6587
 msgid "Extra space at the right"
 msgstr "Espacio adicional a la derecha"
 
-#: ../clutter/clutter-actor.c:6586
+#: ../clutter/clutter-actor.c:6601
 msgid "Background Color Set"
 msgstr "Conjunto de colores de fondo"
 
-#: ../clutter/clutter-actor.c:6587 ../clutter/deprecated/clutter-box.c:275
+#: ../clutter/clutter-actor.c:6602 ../clutter/deprecated/clutter-box.c:275
 msgid "Whether the background color is set"
 msgstr "Indica si el color de fondo está establecido"
 
-#: ../clutter/clutter-actor.c:6603
+#: ../clutter/clutter-actor.c:6618
 msgid "Background color"
 msgstr "Color de fondo"
 
-#: ../clutter/clutter-actor.c:6604
+#: ../clutter/clutter-actor.c:6619
 msgid "The actor's background color"
 msgstr "El color de fondo del actor"
 
-#: ../clutter/clutter-actor.c:6619
+#: ../clutter/clutter-actor.c:6634
 msgid "First Child"
 msgstr "Primer hijo"
 
-#: ../clutter/clutter-actor.c:6620
+#: ../clutter/clutter-actor.c:6635
 msgid "The actor's first child"
 msgstr "El primer hijo del actor"
 
-#: ../clutter/clutter-actor.c:6633
+#: ../clutter/clutter-actor.c:6648
 msgid "Last Child"
 msgstr "Último hijo"
 
-#: ../clutter/clutter-actor.c:6634
+#: ../clutter/clutter-actor.c:6649
 msgid "The actor's last child"
 msgstr "La último hijo del actor"
 
-#: ../clutter/clutter-actor.c:6648
+#: ../clutter/clutter-actor.c:6663
 msgid "Content"
 msgstr "Contenido"
 
-#: ../clutter/clutter-actor.c:6649
+#: ../clutter/clutter-actor.c:6664
 msgid "Delegate object for painting the actor's content"
 msgstr "Delegar objeto para pintar el contenido del actor"
 
-#: ../clutter/clutter-actor.c:6674
+#: ../clutter/clutter-actor.c:6689
 msgid "Content Gravity"
 msgstr "Gravedad del contenido"
 
-#: ../clutter/clutter-actor.c:6675
+#: ../clutter/clutter-actor.c:6690
 msgid "Alignment of the actor's content"
 msgstr "Alineación del contenido del actor"
 
-#: ../clutter/clutter-actor.c:6695
+#: ../clutter/clutter-actor.c:6710
 msgid "Content Box"
 msgstr "Caja del contenido"
 
-#: ../clutter/clutter-actor.c:6696
+#: ../clutter/clutter-actor.c:6711
 msgid "The bounding box of the actor's content"
 msgstr "La caja que rodea al contenido del actor"
 
-#: ../clutter/clutter-actor.c:6704
+#: ../clutter/clutter-actor.c:6719
 msgid "Minification Filter"
 msgstr "Filtro de reducción"
 
-#: ../clutter/clutter-actor.c:6705
+#: ../clutter/clutter-actor.c:6720
 msgid "The filter used when reducing the size of the content"
 msgstr "El filtro usado al reducir el tamaño del contenido"
 
-#: ../clutter/clutter-actor.c:6712
+#: ../clutter/clutter-actor.c:6727
 msgid "Magnification Filter"
 msgstr "Filtro de ampliación"
 
-#: ../clutter/clutter-actor.c:6713
+#: ../clutter/clutter-actor.c:6728
 msgid "The filter used when increasing the size of the content"
 msgstr "El filtro usado al aumentar el tamaño del contenido"
 
@@ -664,8 +657,8 @@ msgstr "El desplazamiento en píxeles que aplicar a la asociación"
 msgid "The unique name of the binding pool"
 msgstr "El nombre único de la asociación de la agrupación"
 
-#: ../clutter/clutter-bin-layout.c:240 ../clutter/clutter-bin-layout.c:609
-#: ../clutter/clutter-box-layout.c:383 ../clutter/clutter-table-layout.c:617
+#: ../clutter/clutter-bin-layout.c:240 ../clutter/clutter-bin-layout.c:627
+#: ../clutter/clutter-box-layout.c:380 ../clutter/clutter-table-layout.c:602
 msgid "Horizontal Alignment"
 msgstr "Alineación horizontal"
 
@@ -673,8 +666,8 @@ msgstr "Alineación horizontal"
 msgid "Horizontal alignment for the actor inside the layout manager"
 msgstr "Alineación horizontal del actor dentro del gestor de distribución"
 
-#: ../clutter/clutter-bin-layout.c:249 ../clutter/clutter-bin-layout.c:629
-#: ../clutter/clutter-box-layout.c:392 ../clutter/clutter-table-layout.c:632
+#: ../clutter/clutter-bin-layout.c:249 ../clutter/clutter-bin-layout.c:647
+#: ../clutter/clutter-box-layout.c:389 ../clutter/clutter-table-layout.c:617
 msgid "Vertical Alignment"
 msgstr "Alineación vertical"
 
@@ -682,31 +675,31 @@ msgstr "Alineación vertical"
 msgid "Vertical alignment for the actor inside the layout manager"
 msgstr "Alineación vertical del actor dentro del gestor de distribución"
 
-#: ../clutter/clutter-bin-layout.c:610
+#: ../clutter/clutter-bin-layout.c:628
 msgid "Default horizontal alignment for the actors inside the layout manager"
 msgstr ""
 "Alineación horizontal predeterminada de los actores dentro del gestor de "
 "distribución"
 
-#: ../clutter/clutter-bin-layout.c:630
+#: ../clutter/clutter-bin-layout.c:648
 msgid "Default vertical alignment for the actors inside the layout manager"
 msgstr ""
 "Alineación vertical predeterminada de los actores dentro del gestor de "
 "distribución"
 
-#: ../clutter/clutter-box-layout.c:358
+#: ../clutter/clutter-box-layout.c:355
 msgid "Expand"
 msgstr "Expandir"
 
-#: ../clutter/clutter-box-layout.c:359
+#: ../clutter/clutter-box-layout.c:356
 msgid "Allocate extra space for the child"
 msgstr "Asignar espacio adicional para el hijo"
 
-#: ../clutter/clutter-box-layout.c:365 ../clutter/clutter-table-layout.c:596
+#: ../clutter/clutter-box-layout.c:362 ../clutter/clutter-table-layout.c:581
 msgid "Horizontal Fill"
 msgstr "Relleno horizontal"
 
-#: ../clutter/clutter-box-layout.c:366 ../clutter/clutter-table-layout.c:597
+#: ../clutter/clutter-box-layout.c:363 ../clutter/clutter-table-layout.c:582
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the horizontal axis"
@@ -714,11 +707,11 @@ msgstr ""
 "Indica si el hijo debe tener prioridad cuando el contenedor reserve espacio "
 "libre en el eje horizontal"
 
-#: ../clutter/clutter-box-layout.c:374 ../clutter/clutter-table-layout.c:603
+#: ../clutter/clutter-box-layout.c:371 ../clutter/clutter-table-layout.c:588
 msgid "Vertical Fill"
 msgstr "Relleno vertical"
 
-#: ../clutter/clutter-box-layout.c:375 ../clutter/clutter-table-layout.c:604
+#: ../clutter/clutter-box-layout.c:372 ../clutter/clutter-table-layout.c:589
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the vertical axis"
@@ -726,78 +719,66 @@ msgstr ""
 "Indica si el hijo debe tener prioridad cuando el contenedor reserve espacio "
 "libre en el eje vertical"
 
-#: ../clutter/clutter-box-layout.c:384 ../clutter/clutter-table-layout.c:618
+#: ../clutter/clutter-box-layout.c:381 ../clutter/clutter-table-layout.c:603
 msgid "Horizontal alignment of the actor within the cell"
 msgstr "Alineación horizontal del actor en la celda"
 
-#: ../clutter/clutter-box-layout.c:393 ../clutter/clutter-table-layout.c:633
+#: ../clutter/clutter-box-layout.c:390 ../clutter/clutter-table-layout.c:618
 msgid "Vertical alignment of the actor within the cell"
 msgstr "Alineación vertical del actor en la celda"
 
-#: ../clutter/clutter-box-layout.c:1233
+#: ../clutter/clutter-box-layout.c:1223
 msgid "Vertical"
 msgstr "Vertical"
 
-#: ../clutter/clutter-box-layout.c:1234
+#: ../clutter/clutter-box-layout.c:1224
 msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "Indica si la distribución debe ser vertical, en lugar de horizontal"
 
-#: ../clutter/clutter-box-layout.c:1251 ../clutter/clutter-flow-layout.c:882
+#: ../clutter/clutter-box-layout.c:1241 ../clutter/clutter-flow-layout.c:910
 msgid "Orientation"
 msgstr "Orientación"
 
-#: ../clutter/clutter-box-layout.c:1252 ../clutter/clutter-flow-layout.c:883
+#: ../clutter/clutter-box-layout.c:1242 ../clutter/clutter-flow-layout.c:911
 msgid "The orientation of the layout"
 msgstr "La orientación de la disposición"
 
-#: ../clutter/clutter-box-layout.c:1268 ../clutter/clutter-flow-layout.c:898
+#: ../clutter/clutter-box-layout.c:1258 ../clutter/clutter-flow-layout.c:926
 msgid "Homogeneous"
 msgstr "Homogénea"
 
-#: ../clutter/clutter-box-layout.c:1269
+#: ../clutter/clutter-box-layout.c:1259
 msgid ""
 "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
 "Indica si la distribución debe ser homogénea, ej. todos los hijos tienen el "
 "mismo tamaño"
 
-#: ../clutter/clutter-box-layout.c:1284
+#: ../clutter/clutter-box-layout.c:1274
 msgid "Pack Start"
 msgstr "Empaquetar al principio"
 
-#: ../clutter/clutter-box-layout.c:1285
+#: ../clutter/clutter-box-layout.c:1275
 msgid "Whether to pack items at the start of the box"
 msgstr "Indica si se empaquetan los elementos al principio de la caja"
 
-#: ../clutter/clutter-box-layout.c:1298
+#: ../clutter/clutter-box-layout.c:1288
 msgid "Spacing"
 msgstr "Espaciado"
 
-#: ../clutter/clutter-box-layout.c:1299
+#: ../clutter/clutter-box-layout.c:1289
 msgid "Spacing between children"
 msgstr "Espaciado entre hijos"
 
-#: ../clutter/clutter-box-layout.c:1316 ../clutter/clutter-table-layout.c:1665
-msgid "Use Animations"
-msgstr "Usar animaciones"
-
-#: ../clutter/clutter-box-layout.c:1317 ../clutter/clutter-table-layout.c:1666
-msgid "Whether layout changes should be animated"
-msgstr "Indica si se deben animar lo cambios en la distribución"
-
-#: ../clutter/clutter-box-layout.c:1341 ../clutter/clutter-table-layout.c:1690
-msgid "Easing Mode"
-msgstr "Modo de desaceleración"
-
-#: ../clutter/clutter-box-layout.c:1342 ../clutter/clutter-table-layout.c:1691
-msgid "The easing mode of the animations"
-msgstr "El modo de desaceleración de las animaciones"
-
-#: ../clutter/clutter-box-layout.c:1362 ../clutter/clutter-table-layout.c:1711
+#: ../clutter/clutter-box-layout.c:1296
+#: ../clutter/clutter-layout-manager.c:744
+#: ../clutter/clutter-table-layout.c:1618
 msgid "Easing Duration"
 msgstr "Duración de la desaceleración"
 
-#: ../clutter/clutter-box-layout.c:1363 ../clutter/clutter-table-layout.c:1712
+#: ../clutter/clutter-box-layout.c:1297
+#: ../clutter/clutter-layout-manager.c:745
+#: ../clutter/clutter-table-layout.c:1619
 msgid "The duration of the animations"
 msgstr "La duración de las animaciones"
 
@@ -952,55 +933,55 @@ msgstr "Arrastrar ejes"
 msgid "Constraints the dragging to an axis"
 msgstr "Restringe el arrastrado a un eje"
 
-#: ../clutter/clutter-flow-layout.c:899
+#: ../clutter/clutter-flow-layout.c:927
 msgid "Whether each item should receive the same allocation"
 msgstr "Indica si cada elemento debe recibir la misma asignación"
 
-#: ../clutter/clutter-flow-layout.c:914 ../clutter/clutter-table-layout.c:1627
+#: ../clutter/clutter-flow-layout.c:942 ../clutter/clutter-table-layout.c:1596
 msgid "Column Spacing"
 msgstr "Espaciado entre columnas"
 
-#: ../clutter/clutter-flow-layout.c:915
+#: ../clutter/clutter-flow-layout.c:943
 msgid "The spacing between columns"
 msgstr "El espaciado entre columnas"
 
-#: ../clutter/clutter-flow-layout.c:931 ../clutter/clutter-table-layout.c:1641
+#: ../clutter/clutter-flow-layout.c:959 ../clutter/clutter-table-layout.c:1610
 msgid "Row Spacing"
 msgstr "Espaciado entre filas"
 
-#: ../clutter/clutter-flow-layout.c:932
+#: ../clutter/clutter-flow-layout.c:960
 msgid "The spacing between rows"
 msgstr "El espaciado entre filas"
 
-#: ../clutter/clutter-flow-layout.c:946
+#: ../clutter/clutter-flow-layout.c:974
 msgid "Minimum Column Width"
 msgstr "Anchura mínima de la columna"
 
-#: ../clutter/clutter-flow-layout.c:947
+#: ../clutter/clutter-flow-layout.c:975
 msgid "Minimum width for each column"
 msgstr "Anchura mínima de cada columna"
 
-#: ../clutter/clutter-flow-layout.c:962
+#: ../clutter/clutter-flow-layout.c:990
 msgid "Maximum Column Width"
 msgstr "Anchura máxima de la columna"
 
-#: ../clutter/clutter-flow-layout.c:963
+#: ../clutter/clutter-flow-layout.c:991
 msgid "Maximum width for each column"
 msgstr "Anchura máxima de cada columna"
 
-#: ../clutter/clutter-flow-layout.c:977
+#: ../clutter/clutter-flow-layout.c:1005
 msgid "Minimum Row Height"
 msgstr "Altura mínima de la fila"
 
-#: ../clutter/clutter-flow-layout.c:978
+#: ../clutter/clutter-flow-layout.c:1006
 msgid "Minimum height for each row"
 msgstr "Altura mínima de cada fila"
 
-#: ../clutter/clutter-flow-layout.c:993
+#: ../clutter/clutter-flow-layout.c:1021
 msgid "Maximum Row Height"
 msgstr "Altura máxima de la fila"
 
-#: ../clutter/clutter-flow-layout.c:994
+#: ../clutter/clutter-flow-layout.c:1022
 msgid "Maximum height for each row"
 msgstr "Altura máxima de cada fila"
 
@@ -1075,6 +1056,32 @@ msgstr "Tipo de valor"
 #: ../clutter/clutter-interval.c:382
 msgid "The type of the values in the interval"
 msgstr "El tipo de valores en el intervalo"
+
+#: ../clutter/clutter-layout-manager.c:704
+msgid "Use Animations"
+msgstr "Usar animaciones"
+
+#: ../clutter/clutter-layout-manager.c:705
+msgid "Whether layout changes should be animated"
+msgstr "Indica si se deben animar lo cambios en la distribución"
+
+#: ../clutter/clutter-layout-manager.c:726
+msgid "Easing Mode"
+msgstr "Modo de desaceleración"
+
+#: ../clutter/clutter-layout-manager.c:727
+msgid "The easing mode of the animations"
+msgstr "El modo de desaceleración de las animaciones"
+
+#: ../clutter/clutter-layout-manager.c:761
+#| msgid "Easing Mode"
+msgid "Easing Delay"
+msgstr "Retardo de la desaceleración"
+
+#: ../clutter/clutter-layout-manager.c:762
+#| msgid "The mode of the animation"
+msgid "The delay befor the animations start"
+msgstr "El retardo hasta que empieza la animación"
 
 #: ../clutter/clutter-layout-meta.c:117
 msgid "Manager"
@@ -1192,12 +1199,11 @@ msgstr "Dominio de traducción"
 msgid "The translation domain used to localize string"
 msgstr "El dominio de traducción usado para localizar cadenas"
 
-#: ../clutter/clutter-scroll-actor.c:209
+#: ../clutter/clutter-scroll-actor.c:263
 msgid "Scroll Mode"
 msgstr "Modo de desplazamiento"
 
-#: ../clutter/clutter-scroll-actor.c:210
-#| msgid "The cursor position"
+#: ../clutter/clutter-scroll-actor.c:264
 msgid "The scrolling direction"
 msgstr "La dirección del desplazamiento"
 
@@ -1227,7 +1233,7 @@ msgstr "Umbral de arrastre"
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "La distancia que el cursor debe recorrer antes de empezar a arrastrar"
 
-#: ../clutter/clutter-settings.c:488 ../clutter/clutter-text.c:2987
+#: ../clutter/clutter-settings.c:488 ../clutter/clutter-text.c:3187
 msgid "Font Name"
 msgstr "Nombre de la tipografía"
 
@@ -1358,7 +1364,7 @@ msgid "Whether the main stage should be rendered offscreen"
 msgstr ""
 "Indica si el escenario principal se debe renderizar fuera de la pantalla"
 
-#: ../clutter/clutter-stage.c:1921 ../clutter/clutter-text.c:3100
+#: ../clutter/clutter-stage.c:1921 ../clutter/clutter-text.c:3301
 msgid "Cursor Visible"
 msgstr "Cursor visible"
 
@@ -1449,63 +1455,63 @@ msgstr "Aceptar foco"
 msgid "Whether the stage should accept focus on show"
 msgstr "Indica si el escenario debe aceptar el foco al mostrarse"
 
-#: ../clutter/clutter-table-layout.c:550
+#: ../clutter/clutter-table-layout.c:535
 msgid "Column Number"
 msgstr "Número de columna"
 
-#: ../clutter/clutter-table-layout.c:551
+#: ../clutter/clutter-table-layout.c:536
 msgid "The column the widget resides in"
 msgstr "La columna en la que está en widget"
 
-#: ../clutter/clutter-table-layout.c:558
+#: ../clutter/clutter-table-layout.c:543
 msgid "Row Number"
 msgstr "Número de fila"
 
-#: ../clutter/clutter-table-layout.c:559
+#: ../clutter/clutter-table-layout.c:544
 msgid "The row the widget resides in"
 msgstr "La fila en la que está en widget"
 
-#: ../clutter/clutter-table-layout.c:566
+#: ../clutter/clutter-table-layout.c:551
 msgid "Column Span"
 msgstr "Espaciado entre columnas"
 
-#: ../clutter/clutter-table-layout.c:567
+#: ../clutter/clutter-table-layout.c:552
 msgid "The number of columns the widget should span"
 msgstr "El número de columnas que el widget debe expandirse"
 
-#: ../clutter/clutter-table-layout.c:574
+#: ../clutter/clutter-table-layout.c:559
 msgid "Row Span"
 msgstr "Espaciado entre filas"
 
-#: ../clutter/clutter-table-layout.c:575
+#: ../clutter/clutter-table-layout.c:560
 msgid "The number of rows the widget should span"
 msgstr "El número de filas que el widget debe expandirse"
 
-#: ../clutter/clutter-table-layout.c:582
+#: ../clutter/clutter-table-layout.c:567
 msgid "Horizontal Expand"
 msgstr "Expansión horizontal"
 
-#: ../clutter/clutter-table-layout.c:583
+#: ../clutter/clutter-table-layout.c:568
 msgid "Allocate extra space for the child in horizontal axis"
 msgstr "Asignar espacio adicional para el hijo en el eje horizontal"
 
-#: ../clutter/clutter-table-layout.c:589
+#: ../clutter/clutter-table-layout.c:574
 msgid "Vertical Expand"
 msgstr "Expansión vertical"
 
-#: ../clutter/clutter-table-layout.c:590
+#: ../clutter/clutter-table-layout.c:575
 msgid "Allocate extra space for the child in vertical axis"
 msgstr "Asignar espacio adicional para el hijo en el eje vertical"
 
-#: ../clutter/clutter-table-layout.c:1628
+#: ../clutter/clutter-table-layout.c:1597
 msgid "Spacing between columns"
 msgstr "Espaciado entre columnas"
 
-#: ../clutter/clutter-table-layout.c:1642
+#: ../clutter/clutter-table-layout.c:1611
 msgid "Spacing between rows"
 msgstr "Espaciado entre filas"
 
-#: ../clutter/clutter-text-buffer.c:351 ../clutter/clutter-text.c:3022
+#: ../clutter/clutter-text-buffer.c:351 ../clutter/clutter-text.c:3222
 msgid "Text"
 msgstr "Texto"
 
@@ -1529,205 +1535,205 @@ msgstr "Longitud máxima"
 msgid "Maximum number of characters for this entry. Zero if no maximum"
 msgstr "Número máximo de caracteres para esta entrada. Cero si no hay máximo"
 
-#: ../clutter/clutter-text.c:2969
+#: ../clutter/clutter-text.c:3169
 msgid "Buffer"
 msgstr "Búfer"
 
-#: ../clutter/clutter-text.c:2970
+#: ../clutter/clutter-text.c:3170
 msgid "The buffer for the text"
 msgstr "El búfer para el texto"
 
-#: ../clutter/clutter-text.c:2988
+#: ../clutter/clutter-text.c:3188
 msgid "The font to be used by the text"
 msgstr "La tipografía usada para el texto"
 
-#: ../clutter/clutter-text.c:3005
+#: ../clutter/clutter-text.c:3205
 msgid "Font Description"
 msgstr "Descripción de la tipografía"
 
-#: ../clutter/clutter-text.c:3006
+#: ../clutter/clutter-text.c:3206
 msgid "The font description to be used"
 msgstr "La descripción de la tipografía que usar"
 
-#: ../clutter/clutter-text.c:3023
+#: ../clutter/clutter-text.c:3223
 msgid "The text to render"
 msgstr "El texto que renderizar"
 
-#: ../clutter/clutter-text.c:3037
+#: ../clutter/clutter-text.c:3237
 msgid "Font Color"
 msgstr "Color de la tipografía"
 
-#: ../clutter/clutter-text.c:3038
+#: ../clutter/clutter-text.c:3238
 msgid "Color of the font used by the text"
 msgstr "Color de la tipografía usada por el texto"
 
-#: ../clutter/clutter-text.c:3052
+#: ../clutter/clutter-text.c:3253
 msgid "Editable"
 msgstr "Editable"
 
-#: ../clutter/clutter-text.c:3053
+#: ../clutter/clutter-text.c:3254
 msgid "Whether the text is editable"
 msgstr "Indica si el texto es editable"
 
-#: ../clutter/clutter-text.c:3068
+#: ../clutter/clutter-text.c:3269
 msgid "Selectable"
 msgstr "Seleccionable"
 
-#: ../clutter/clutter-text.c:3069
+#: ../clutter/clutter-text.c:3270
 msgid "Whether the text is selectable"
 msgstr "Indica si el texto es seleccionable"
 
-#: ../clutter/clutter-text.c:3083
+#: ../clutter/clutter-text.c:3284
 msgid "Activatable"
 msgstr "Activable"
 
-#: ../clutter/clutter-text.c:3084
+#: ../clutter/clutter-text.c:3285
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "Indica si al pulsar «Intro» hace que se emita la señal de activación"
 
-#: ../clutter/clutter-text.c:3101
+#: ../clutter/clutter-text.c:3302
 msgid "Whether the input cursor is visible"
 msgstr "Indica si el cursor de entrada es visible"
 
-#: ../clutter/clutter-text.c:3115 ../clutter/clutter-text.c:3116
+#: ../clutter/clutter-text.c:3316 ../clutter/clutter-text.c:3317
 msgid "Cursor Color"
 msgstr "Color del cursor"
 
-#: ../clutter/clutter-text.c:3130
+#: ../clutter/clutter-text.c:3332
 msgid "Cursor Color Set"
 msgstr "Conjunto de colores del cursor"
 
-#: ../clutter/clutter-text.c:3131
+#: ../clutter/clutter-text.c:3333
 msgid "Whether the cursor color has been set"
 msgstr "Indica si se ha establecido el color del cursor"
 
-#: ../clutter/clutter-text.c:3146
+#: ../clutter/clutter-text.c:3348
 msgid "Cursor Size"
 msgstr "Tamaño del cursor"
 
-#: ../clutter/clutter-text.c:3147
+#: ../clutter/clutter-text.c:3349
 msgid "The width of the cursor, in pixels"
 msgstr "La anchura del cursor, en píxeles"
 
-#: ../clutter/clutter-text.c:3161
+#: ../clutter/clutter-text.c:3363
 msgid "Cursor Position"
 msgstr "Posición del cursor"
 
-#: ../clutter/clutter-text.c:3162
+#: ../clutter/clutter-text.c:3364
 msgid "The cursor position"
 msgstr "La posición del cursor"
 
-#: ../clutter/clutter-text.c:3177
+#: ../clutter/clutter-text.c:3379
 msgid "Selection-bound"
 msgstr "Destino de la selección"
 
-#: ../clutter/clutter-text.c:3178
+#: ../clutter/clutter-text.c:3380
 msgid "The cursor position of the other end of the selection"
 msgstr "La posición del cursor del otro final de la selección"
 
-#: ../clutter/clutter-text.c:3193 ../clutter/clutter-text.c:3194
+#: ../clutter/clutter-text.c:3395 ../clutter/clutter-text.c:3396
 msgid "Selection Color"
 msgstr "Selección de color"
 
-#: ../clutter/clutter-text.c:3208
+#: ../clutter/clutter-text.c:3411
 msgid "Selection Color Set"
 msgstr "Conjunto de selección de colores"
 
-#: ../clutter/clutter-text.c:3209
+#: ../clutter/clutter-text.c:3412
 msgid "Whether the selection color has been set"
 msgstr "Indica si se ha establecido el color de la selección"
 
-#: ../clutter/clutter-text.c:3224
+#: ../clutter/clutter-text.c:3427
 msgid "Attributes"
 msgstr "Atributos"
 
-#: ../clutter/clutter-text.c:3225
+#: ../clutter/clutter-text.c:3428
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr ""
 "Una lista de atributos de estilo que aplicar a los contenidos del actor"
 
-#: ../clutter/clutter-text.c:3247
+#: ../clutter/clutter-text.c:3450
 msgid "Use markup"
 msgstr "Usar marcado"
 
-#: ../clutter/clutter-text.c:3248
+#: ../clutter/clutter-text.c:3451
 msgid "Whether or not the text includes Pango markup"
 msgstr "Indica si el texto incluye o no el marcado de Pango"
 
-#: ../clutter/clutter-text.c:3264
+#: ../clutter/clutter-text.c:3467
 msgid "Line wrap"
 msgstr "Ajuste de línea"
 
-#: ../clutter/clutter-text.c:3265
+#: ../clutter/clutter-text.c:3468
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr ""
 "Si está definido, ajustar las líneas si el texto se vuelve demasiado ancho"
 
-#: ../clutter/clutter-text.c:3280
+#: ../clutter/clutter-text.c:3483
 msgid "Line wrap mode"
 msgstr "Modo de ajuste de línea"
 
-#: ../clutter/clutter-text.c:3281
+#: ../clutter/clutter-text.c:3484
 msgid "Control how line-wrapping is done"
 msgstr "Controlar cómo se hace el ajuste de línea"
 
-#: ../clutter/clutter-text.c:3296
+#: ../clutter/clutter-text.c:3499
 msgid "Ellipsize"
 msgstr "Crear elipse"
 
-#: ../clutter/clutter-text.c:3297
+#: ../clutter/clutter-text.c:3500
 msgid "The preferred place to ellipsize the string"
 msgstr "El lugar preferido para crear la cadena elíptica"
 
-#: ../clutter/clutter-text.c:3313
+#: ../clutter/clutter-text.c:3516
 msgid "Line Alignment"
 msgstr "Alineación de línea"
 
-#: ../clutter/clutter-text.c:3314
+#: ../clutter/clutter-text.c:3517
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "La alineación preferida para la cadena, para texto multilínea"
 
-#: ../clutter/clutter-text.c:3330
+#: ../clutter/clutter-text.c:3533
 msgid "Justify"
 msgstr "Justificar"
 
-#: ../clutter/clutter-text.c:3331
+#: ../clutter/clutter-text.c:3534
 msgid "Whether the text should be justified"
 msgstr "Indica si el texto se debe justificar"
 
-#: ../clutter/clutter-text.c:3346
+#: ../clutter/clutter-text.c:3549
 msgid "Password Character"
 msgstr "Carácter de la contraseña"
 
-#: ../clutter/clutter-text.c:3347
+#: ../clutter/clutter-text.c:3550
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr "Si no es cero, usar este carácter para mostrar el contenido del actor"
 
-#: ../clutter/clutter-text.c:3361
+#: ../clutter/clutter-text.c:3564
 msgid "Max Length"
 msgstr "Longitud máxima"
 
-#: ../clutter/clutter-text.c:3362
+#: ../clutter/clutter-text.c:3565
 msgid "Maximum length of the text inside the actor"
 msgstr "Longitud máxima del texto dentro del actor"
 
-#: ../clutter/clutter-text.c:3385
+#: ../clutter/clutter-text.c:3588
 msgid "Single Line Mode"
 msgstr "Modo de línea única"
 
-#: ../clutter/clutter-text.c:3386
+#: ../clutter/clutter-text.c:3589
 msgid "Whether the text should be a single line"
 msgstr "Indica si el texto debe estar en una única línea"
 
-#: ../clutter/clutter-text.c:3400 ../clutter/clutter-text.c:3401
+#: ../clutter/clutter-text.c:3603 ../clutter/clutter-text.c:3604
 msgid "Selected Text Color"
 msgstr "Color del texto seleccionado"
 
-#: ../clutter/clutter-text.c:3415
+#: ../clutter/clutter-text.c:3619
 msgid "Selected Text Color Set"
 msgstr "Conjunto de colores del texto seleccionado"
 
-#: ../clutter/clutter-text.c:3416
+#: ../clutter/clutter-text.c:3620
 msgid "Whether the selected text color has been set"
 msgstr "Indica si se ha establecido el color del texto seleccionado"
 
@@ -1961,30 +1967,30 @@ msgstr "Quitar al completar"
 msgid "Detach the transition when completed"
 msgstr "Quitar la transición cuando se complete"
 
-#: ../clutter/deprecated/clutter-alpha.c:360
+#: ../clutter/deprecated/clutter-alpha.c:355
 #: ../clutter/deprecated/clutter-animation.c:575
 #: ../clutter/deprecated/clutter-animator.c:1820
 msgid "Timeline"
 msgstr "Línea de tiempo"
 
-#: ../clutter/deprecated/clutter-alpha.c:361
+#: ../clutter/deprecated/clutter-alpha.c:356
 msgid "Timeline used by the alpha"
 msgstr "Línea de tiempo usada por el alfa"
 
-#: ../clutter/deprecated/clutter-alpha.c:377
+#: ../clutter/deprecated/clutter-alpha.c:372
 msgid "Alpha value"
 msgstr "Valor alfa"
 
-#: ../clutter/deprecated/clutter-alpha.c:378
+#: ../clutter/deprecated/clutter-alpha.c:373
 msgid "Alpha value as computed by the alpha"
 msgstr "Valor alfa calculado por el alfa"
 
-#: ../clutter/deprecated/clutter-alpha.c:399
+#: ../clutter/deprecated/clutter-alpha.c:394
 #: ../clutter/deprecated/clutter-animation.c:528
 msgid "Mode"
 msgstr "Modo"
 
-#: ../clutter/deprecated/clutter-alpha.c:400
+#: ../clutter/deprecated/clutter-alpha.c:395
 msgid "Progress mode"
 msgstr "Modo de progreso"
 
@@ -2403,7 +2409,7 @@ msgstr "Ruta del dispositivo"
 msgid "Path of the device node"
 msgstr "Ruta al nodo del dispositivo"
 
-#: ../clutter/gdk/clutter-backend-gdk.c:287
+#: ../clutter/gdk/clutter-backend-gdk.c:294
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
 msgstr ""
