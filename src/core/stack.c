@@ -341,7 +341,7 @@ get_standalone_layer (MetaWindow *window)
                  windows_on_different_monitor (window,
                                                window->display->expected_focus_window))))
         layer = META_LAYER_FULLSCREEN;
-      else if (window->wm_state_above)
+      else if (window->wm_state_above && !META_WINDOW_MAXIMIZED (window))
         layer = META_LAYER_TOP;
       else
         layer = META_LAYER_NORMAL;

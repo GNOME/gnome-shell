@@ -8326,7 +8326,8 @@ meta_window_show_menu (MetaWindow *window,
 
   if ((window->type == META_WINDOW_DESKTOP) ||
       (window->type == META_WINDOW_DOCK) ||
-      (window->type == META_WINDOW_SPLASHSCREEN))
+      (window->type == META_WINDOW_SPLASHSCREEN ||
+      META_WINDOW_MAXIMIZED (window)))
     insensitive |= META_MENU_OP_ABOVE | META_MENU_OP_UNABOVE;
 
   /* If all operations are disabled, just quit without showing the menu.
