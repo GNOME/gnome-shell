@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-09 09:36+0000\n"
+"POT-Creation-Date: 2012-05-31 12:16+0000\n"
 "PO-Revision-Date: 2012-03-12 14:17+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
@@ -363,7 +363,7 @@ msgstr "%s (on %s)"
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
-"WM_TRANSIENT_FOR inválido para la ventana 0x%lx especificada para %s.\n"
+"WM_TRANSIENT_FOR no válido para la ventana 0x%lx especificada para %s.\n"
 
 #: ../src/core/window-props.c:1495
 #, c-format
@@ -388,14 +388,14 @@ msgstr ""
 #: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "La propiedad %s en la ventana 0x%lx contiene UTF-8 inválido\n"
+msgstr "La propiedad %s en la ventana 0x%lx contiene UTF-8 no válido\n"
 
 #: ../src/core/xprops.c:494
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"La propiedad %s en la ventana 0x%lx contiene UTF-8 inválido para el elemento "
+"La propiedad %s en la ventana 0x%lx contiene UTF-8 no válido para el elemento "
 "%d de la lista\n"
 
 #: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
@@ -886,7 +886,7 @@ msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
-"La expresión de coordenadas contenía un operador inválido al inicio de su "
+"La expresión de coordenadas contenía un operador no válido al inicio de su "
 "texto: «%s»"
 
 #: ../src/ui/theme.c:1997
@@ -1041,7 +1041,7 @@ msgstr "El atributo «%s» se ha repetido dos veces en el mismo elemento <%s>"
 #: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "El atributo «%s» es inválido en el elemento <%s> en este contexto"
+msgstr "El atributo «%s» es no válido en el elemento <%s> en este contexto"
 
 #: ../src/ui/theme-parser.c:594
 #, c-format
@@ -1091,7 +1091,7 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"Escala de título inválida «%s» (debe ser una de xx-small,x-small,small,medium,"
+"Escala de título no válida «%s» (debe ser una de xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 
 #: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
@@ -1406,7 +1406,7 @@ msgstr "No se permite texto dentro del elemento <%s>"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> especificado dos veces para este tema"
 
-#: ../src/ui/theme-parser.c:4348
+#: ../src/ui/theme-parser.c:4334
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Falló al encontrar un archivo válido para el tema%s\n"
