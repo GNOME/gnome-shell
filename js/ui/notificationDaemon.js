@@ -221,6 +221,13 @@ const NotificationDaemon = new Lang.Class({
         let [appName, replacesId, icon, summary, body, actions, hints, timeout] = params;
         let id;
 
+        for (let hint in hints) {
+            // unpack the variants
+            hints[hint] = hints[hint].deep_unpack();
+        }
+
+        hints = Params.parse(hints, { urgency: Urgency.NORMAL }, true);
+
         // Filter out chat, presence, calls and invitation notifications from
         // Empathy, since we handle that information from telepathyClient.js
         if (appName == 'Empathy' && (hints['category'] == 'im.received' ||
@@ -248,13 +255,6 @@ const NotificationDaemon = new Lang.Class({
                     summary = summary.replace(rule.pattern, rule.replacement);
             }
         }
-
-        for (let hint in hints) {
-            // unpack the variants
-            hints[hint] = hints[hint].deep_unpack();
-        }
-
-        hints = Params.parse(hints, { urgency: Urgency.NORMAL }, true);
 
         // Be compatible with the various hints for image data and image path
         // 'image-data' and 'image-path' are the latest name of these hints, introduced in 1.2
