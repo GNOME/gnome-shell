@@ -304,9 +304,10 @@ const NMDevice = new Lang.Class({
             // record the connection
             let obj = {
                 connection: connections[i],
-                name: connections[i]._name,
-                uuid: connections[i]._uuid,
+                name: connections[i].get_id(),
+                uuid: connections[i].get_uuid(),
                 timestamp: connections[i]._timestamp,
+                item: null,
             };
             this._connections.push(obj);
         }
@@ -401,48 +402,46 @@ const NMDevice = new Lang.Class({
     },
 
     checkConnection: function(connection) {
-        let pos = this._findConnection(connection._uuid);
+        let pos = this._findConnection(connection.get_uuid());
         let exists = pos != -1;
         let valid = this.connectionValid(connection);
+        let similar = false;
+        if (exists) {
+            let existing = this._connections[pos];
 
-        if (exists && !valid)
-            this.removeConnection(connection);
-        else if (!exists && valid)
-            this.addConnection(connection);
-        else if (exists && valid) {
-            // propagate changes and update the UI
-
-            if (this._connections[pos].timestamp != connection._timestamp) {
-                this._connections[pos].timestamp = connection._timestamp;
-                this._connections.sort(this._connectionSortFunction);
-
-                this._clearSection();
-                this._queueCreateSection();
-            }
+            // Check if connection changed name or id
+            similar = existing.name == connection.get_id() &&
+                existing.timestamp == connection._timestamp;
         }
+
+        if (exists && valid && similar) {
+            // Nothing to do
+            return;
+        }
+
+        if (exists)
+            this.removeConnection(connection);
+        if (valid)
+            this.addConnection(connection);
     },
 
     addConnection: function(connection) {
         // record the connection
         let obj = {
             connection: connection,
-            name: connection._name,
-            uuid: connection._uuid,
+            name: connection.get_id(),
+            uuid: connection.get_uuid(),
             timestamp: connection._timestamp,
+            item: null,
         };
-        this._connections.push(obj);
-        this._connections.sort(this._connectionSortFunction);
+        Util.insertSorted(this._connections, obj, this._connectionSortFunction);
 
         this._clearSection();
         this._queueCreateSection();
     },
 
     removeConnection: function(connection) {
-        if (!connection._uuid) {
-            log('Cannot remove a connection without an UUID');
-            return;
-        }
-        let pos = this._findConnection(connection._uuid);
+        let pos = this._findConnection(connection.get_uuid());
         if (pos == -1) {
             // this connection was never added, nothing to do here
             return;
@@ -712,10 +711,10 @@ const NMDeviceWired = new Lang.Class({
 
     _createAutomaticConnection: function() {
         let connection = new NetworkManager.Connection();
-        connection._uuid = NetworkManager.utils_uuid_generate();
+        let uuid = NetworkManager.utils_uuid_generate();
         connection.add_setting(new NetworkManager.SettingWired());
         connection.add_setting(new NetworkManager.SettingConnection({
-            uuid: connection._uuid,
+            uuid: uuid,
             id: this._autoConnectionName,
             type: NetworkManager.SETTING_WIRED_SETTING_NAME,
             autoconnect: true
@@ -859,10 +858,10 @@ const NMDeviceBluetooth = new Lang.Class({
 
     _createAutomaticConnection: function() {
         let connection = new NetworkManager.Connection;
-        connection._uuid = NetworkManager.utils_uuid_generate();
+        let uuid = NetworkManager.utils_uuid_generate();
         connection.add_setting(new NetworkManager.SettingBluetooth);
         connection.add_setting(new NetworkManager.SettingConnection({
-            uuid: connection._uuid,
+            uuid: uuid,
             id: this._autoConnectionName,
             type: NetworkManager.SETTING_BLUETOOTH_SETTING_NAME,
             autoconnect: false
@@ -1323,9 +1322,7 @@ const NMDeviceWireless = new Lang.Class({
     },
 
     removeConnection: function(connection) {
-        if (!connection._uuid)
-            return;
-        let pos = this._findConnection(connection._uuid);
+        let pos = this._findConnection(connection.get_uuid());
         if (pos == -1) {
             // removing connection that was never added
             return;
@@ -1339,7 +1336,7 @@ const NMDeviceWireless = new Lang.Class({
             let apObj = this._networks[i];
             let connections = apObj.connections;
             for (let k = 0; k < connections.length; k++) {
-                if (connections[k]._uuid == connection._uuid) {
+                if (connections[k].get_uuid() == connection.get_uuid()) {
                     // remove the connection from the access point group
                     connections.splice(k);
                     forceupdate = forceupdate || connections.length == 0;
@@ -1355,7 +1352,7 @@ const NMDeviceWireless = new Lang.Class({
                                 forceupdate = true;
                             } else {
                                 for (let j = 0; j < items.length; j++) {
-                                    if (items[j]._connection._uuid == connection._uuid) {
+                                    if (items[j]._connection.get_uuid() == connection.get_uuid()) {
                                         items[j].destroy();
                                         break;
                                     }
@@ -1382,8 +1379,8 @@ const NMDeviceWireless = new Lang.Class({
         // record the connection
         let obj = {
             connection: connection,
-            name: connection._name,
-            uuid: connection._uuid,
+            name: connection.get_id(),
+            uuid: connection.get_uuid(),
         };
         this._connections.push(obj);
 
@@ -1878,7 +1875,7 @@ const NMApplet = new Lang.Class({
         let connections = this._settings.list_connections();
         for (let i = 0; i < connections.length; i++) {
             let connection = connections[i];
-            if (connection._uuid) {
+            if (connection._updatedId) {
                 // connection was already seen (for example because NetworkManager was restarted)
                 continue;
             }
@@ -1891,7 +1888,7 @@ const NMApplet = new Lang.Class({
     },
 
     _newConnection: function(settings, connection) {
-        if (connection._uuid) {
+        if (connection._updatedId) {
             // connection was already seen
             return;
         }
@@ -1922,23 +1919,20 @@ const NMApplet = new Lang.Class({
                 devices[i].removeConnection(connection);
         }
 
-        connection._uuid = null;
         connection.disconnect(connection._removedId);
         connection.disconnect(connection._updatedId);
+        connection._removedId = connection._updatedId = 0;
     },
 
     _updateConnection: function(connection) {
         let connectionSettings = connection.get_setting_by_name(NetworkManager.SETTING_CONNECTION_SETTING_NAME);
         connection._type = connectionSettings.type;
-
         connection._section = this._ctypes[connection._type] || NMConnectionCategory.INVALID;
-        connection._name = connectionSettings.id;
-        connection._uuid = connectionSettings.uuid;
         connection._timestamp = connectionSettings.timestamp;
 
         let section = connection._section;
 
-        if (connection._section == NMConnectionCategory.INVALID)
+        if (section == NMConnectionCategory.INVALID)
             return;
         if (section == NMConnectionCategory.VPN) {
             this._devices.vpn.device.checkConnection(connection);
