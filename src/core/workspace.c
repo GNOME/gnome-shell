@@ -1056,6 +1056,13 @@ meta_workspace_get_work_area_for_monitor (MetaWorkspace *workspace,
   *area = workspace->work_area_monitor[which_monitor];
 }
 
+/**
+ * meta_workspace_get_work_area_all_monitors:
+ * @workspace: a #MetaWorkspace
+ * @area: (out): location to store the work area
+ *
+ * Stores the work area in @area.
+ */
 void
 meta_workspace_get_work_area_all_monitors (MetaWorkspace *workspace,
                                            MetaRectangle *area)
