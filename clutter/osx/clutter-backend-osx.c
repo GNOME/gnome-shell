@@ -138,6 +138,9 @@ clutter_backend_osx_create_context (ClutterBackend  *backend,
 
   [backend_osx->context makeCurrentContext];
 
+  CLUTTER_BACKEND_CLASS (clutter_backend_osx_parent_class)->create_context (backend,
+                                                                            error);
+
   CLUTTER_OSX_POOL_RELEASE();
 
   return TRUE;
