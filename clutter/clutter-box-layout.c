@@ -640,12 +640,19 @@ allocate_box_child (ClutterBoxLayout       *self,
       clutter_actor_set_easing_delay (child, easing_delay);
     }
 
-  clutter_actor_allocate_align_fill (child, child_box,
-                                     get_box_alignment_factor (box_child->x_align),
-                                     get_box_alignment_factor (box_child->y_align),
-                                     box_child->x_fill,
-                                     box_child->y_fill,
-                                     flags);
+  /* call allocate() instead of allocate_align_fill() if the actor needs
+   * expand in either direction. this will honour the actors alignment settings
+   */
+  if (clutter_actor_needs_expand (child, CLUTTER_ORIENTATION_HORIZONTAL) ||
+      clutter_actor_needs_expand (child, CLUTTER_ORIENTATION_VERTICAL))
+    clutter_actor_allocate (child, child_box, flags);
+  else
+    clutter_actor_allocate_align_fill (child, child_box,
+                                       get_box_alignment_factor (box_child->x_align),
+                                       get_box_alignment_factor (box_child->y_align),
+                                       box_child->x_fill,
+                                       box_child->y_fill,
+                                       flags);
 
   if (use_animations)
     clutter_actor_restore_easing_state (child);
@@ -685,6 +692,7 @@ count_expand_children (ClutterLayoutManager *layout,
                        gint                 *visible_children,
                        gint                 *expand_children)
 {
+  ClutterBoxLayoutPrivate *priv = CLUTTER_BOX_LAYOUT (layout)->priv;
   ClutterActor *actor, *child;
   ClutterActorIter iter;
 
@@ -705,7 +713,8 @@ count_expand_children (ClutterLayoutManager *layout,
                                                         container,
                                                         child);
 
-          if (CLUTTER_BOX_CHILD (meta)->expand)
+          if (clutter_actor_needs_expand (child, priv->orientation) ||
+              CLUTTER_BOX_CHILD (meta)->expand)
             *expand_children += 1;
         }
     }
@@ -1025,7 +1034,8 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
         {
           child_size = sizes[i].minimum_size;
 
-          if (box_child->expand)
+          if (clutter_actor_needs_expand (child, priv->orientation) ||
+              box_child->expand)
             {
               child_size += extra;
 
@@ -1040,7 +1050,8 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
       /* Assign the child's position. */
       if (priv->orientation == CLUTTER_ORIENTATION_VERTICAL)
         {
-          if (box_child->y_fill)
+          if (clutter_actor_needs_expand (child, priv->orientation) ||
+              box_child->y_fill)
             {
               child_allocation.y1 = y;
               child_allocation.y2 = child_allocation.y1 + MAX (1.0, child_size);
@@ -1065,7 +1076,8 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
         }
       else /* CLUTTER_ORIENTATION_HORIZONTAL */
         {
-          if (box_child->x_fill)
+          if (clutter_actor_needs_expand (child, priv->orientation) ||
+              box_child->x_fill)
             {
               child_allocation.x1 = x;
               child_allocation.x2 = child_allocation.x1 + MAX (1.0, child_size);
