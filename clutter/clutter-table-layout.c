@@ -700,6 +700,7 @@ calculate_col_widths (ClutterTableLayout *self,
   ClutterActor *actor, *child;
   gint i;
   DimensionData *columns;
+  ClutterOrientation orientation = CLUTTER_ORIENTATION_HORIZONTAL;
 
   update_row_col (self, container);
   g_array_set_size (priv->columns, 0);
@@ -750,7 +751,10 @@ calculate_col_widths (ClutterTableLayout *self,
       col->pref_size = MAX (col->pref_size, c_pref);
 
       if (!col->expand)
-        col->expand = meta->x_expand;
+        {
+          col->expand = clutter_actor_needs_expand (child, orientation) ||
+            meta->x_expand;
+        }
     }
 
   /* STAGE TWO: take spanning children into account */
@@ -799,7 +803,11 @@ calculate_col_widths (ClutterTableLayout *self,
             }
 
           if (!columns[i].expand)
-            columns[i].expand = meta->x_expand;
+            {
+              columns[i].expand = clutter_actor_needs_expand (child,
+                                                              orientation) ||
+                meta->x_expand;
+            }
         }
       min_width += priv->col_spacing * (meta->col_span - 1);
       pref_width += priv->col_spacing * (meta->col_span - 1);
@@ -967,6 +975,7 @@ calculate_row_heights (ClutterTableLayout *self,
   ClutterActor *actor, *child;
   gint i;
   DimensionData *rows, *columns;
+  ClutterOrientation orientation = CLUTTER_ORIENTATION_VERTICAL;
 
   update_row_col (self, container);
   g_array_set_size (priv->rows, 0);
@@ -1020,7 +1029,10 @@ calculate_row_heights (ClutterTableLayout *self,
       row->pref_size = MAX (row->pref_size, c_pref);
 
       if (!row->expand)
-        row->expand = meta->y_expand;
+        {
+          row->expand = clutter_actor_needs_expand (child, orientation) ||
+            meta->y_expand;
+        }
     }
 
   /* STAGE TWO: take spanning children into account */
@@ -1071,7 +1083,11 @@ calculate_row_heights (ClutterTableLayout *self,
             }
 
           if (!rows[i].expand)
-            rows[i].expand = meta->y_expand;
+            {
+              rows[i].expand = clutter_actor_needs_expand (child,
+                                                           orientation) ||
+                meta->y_expand;
+            }
         }
 
       min_height += priv->row_spacing * (meta->row_span - 1);
@@ -1492,10 +1508,14 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
           clutter_actor_set_easing_delay (child, easing_delay);
         }
 
-      clutter_actor_allocate_align_fill (child, &childbox,
-                                         x_align, y_align,
-                                         x_fill, y_fill,
-                                         flags);
+      if (clutter_actor_needs_expand (child, CLUTTER_ORIENTATION_HORIZONTAL) ||
+          clutter_actor_needs_expand (child, CLUTTER_ORIENTATION_VERTICAL))
+        clutter_actor_allocate (child, &childbox, flags);
+      else
+        clutter_actor_allocate_align_fill (child, &childbox,
+                                           x_align, y_align,
+                                           x_fill, y_fill,
+                                           flags);
 
       if (use_animations)
         clutter_actor_restore_easing_state (child);
