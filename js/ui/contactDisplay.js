@@ -63,7 +63,7 @@ const Contact = new Lang.Class({
                         this.individual.full_name ||
                         this.individual.nickname  ||
                         email                     ||
-                        _("Unknown");
+                        C_("contact", "Unknown");
         let aliasLabel = new St.Label({ text: aliasText,
                                         style_class: 'contact-details-alias' });
         details.add(aliasLabel, { x_fill: true,

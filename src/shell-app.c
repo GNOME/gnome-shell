@@ -371,7 +371,7 @@ shell_app_get_name (ShellApp *app)
 
       name = meta_window_get_wm_class (window);
       if (!name)
-        name = _("Unknown");
+        name = C_("program", "Unknown");
       return name;
     }
 }

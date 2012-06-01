@@ -483,7 +483,7 @@ const NotificationDaemon = new Lang.Class({
     },
 
     _onTrayIconAdded: function(o, icon) {
-        let source = this._getSource(icon.title || icon.wm_class || _("Unknown"), icon.pid, null, null, icon);
+        let source = this._getSource(icon.title || icon.wm_class || C_("program", "Unknown"), icon.pid, null, null, icon);
     },
 
     _onTrayIconRemoved: function(o, icon) {

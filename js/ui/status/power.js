@@ -212,7 +212,7 @@ const DeviceItem = new Lang.Class({
         case UPDeviceType.COMPUTER:
             return _("Computer");
         default:
-            return _("Unknown");
+            return C_("device", "Unknown");
         }
     }
 });
