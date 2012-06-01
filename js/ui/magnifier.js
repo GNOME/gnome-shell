@@ -26,6 +26,7 @@ const MAGNIFIER_SCHEMA          = 'org.gnome.desktop.a11y.magnifier';
 const SCREEN_POSITION_KEY       = 'screen-position';
 const MAG_FACTOR_KEY            = 'mag-factor';
 const INVERT_LIGHTNESS_KEY      = 'invert-lightness';
+const COLOR_SATURATION_KEY      = 'color-saturation';
 const BRIGHT_RED_KEY            = 'brightness-red';
 const BRIGHT_GREEN_KEY          = 'brightness-green';
 const BRIGHT_BLUE_KEY           = 'brightness-blue';
@@ -456,6 +457,10 @@ const Magnifier = new Lang.Class({
             if (aPref)
                 zoomRegion.setInvertLightness(aPref);
 
+            aPref = this._settings.get_double(COLOR_SATURATION_KEY);
+            if (aPref)
+                zoomRegion.setColorSaturation(aPref);
+
             let bc = {};
             bc.r = this._settings.get_double(BRIGHT_RED_KEY);
             bc.g = this._settings.get_double(BRIGHT_GREEN_KEY);
@@ -490,6 +495,8 @@ const Magnifier = new Lang.Class({
 
         this._settings.connect('changed::' + INVERT_LIGHTNESS_KEY,
                                Lang.bind(this, this._updateInvertLightness));
+        this._settings.connect('changed::' + COLOR_SATURATION_KEY,
+                               Lang.bind(this, this._updateColorSaturation));
 
         this._settings.connect('changed::' + BRIGHT_RED_KEY,
                                Lang.bind(this, this._updateBrightness));
@@ -591,6 +598,15 @@ const Magnifier = new Lang.Class({
         }
     },
 
+    _updateColorSaturation: function() {
+        // Applies only to the first zoom region.
+        if (this._zoomRegions.length) {
+            this._zoomRegions[0].setColorSaturation(
+                this._settings.get_boolean(COLOR_SATURATION_KEY)
+            );
+        }
+    },
+
     _updateBrightness: function() {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
@@ -626,6 +642,7 @@ const ZoomRegion = new Lang.Class({
         this._lensMode = false;
         this._screenPosition = GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN;
         this._invertLightness = false;
+        this._colorSaturation = 1.0;
         this._brightness = { r: NO_CHANGE, g: NO_CHANGE, b: NO_CHANGE };
         this._contrast = { r: NO_CHANGE, g: NO_CHANGE, b: NO_CHANGE };
 
@@ -974,6 +991,27 @@ const ZoomRegion = new Lang.Class({
     },
 
     /**
+     * setColorSaturation:
+     * Set the color saturation of the magnified view.
+     * @sauration  A value from 0.0 to 1.0 that defines the color
+     *             saturation, with 0.0 defining no color (grayscale),
+     *             and 1.0 defining full color.
+     */
+    setColorSaturation: function(saturation) {
+        this._colorSaturation = saturation;
+        if (this._magShaderEffects)
+            this._magShaderEffects.setColorSaturation(this._colorSaturation);
+    },
+
+    /**
+     * getColorSaturation:
+     * Retrieve the color saturation of the magnified view.
+     */
+    setColorSaturation: function() {
+        return this._colorSaturation;
+    },
+
+    /**
      * setBrightness:
      * Alter the brightness of the magnified view.
      * @brightness  Object containing the contrast for the red, green,
@@ -1074,6 +1112,7 @@ const ZoomRegion = new Lang.Class({
 
         // Contrast and brightness effects.
         this._magShaderEffects = new MagShaderEffects(this._uiGroupClone);
+        this._magShaderEffects.setColorSaturation(this._colorSaturation);
         this._magShaderEffects.setInvertLightness(this._invertLightness);
         this._magShaderEffects.setBrightness(this._brightness);
         this._magShaderEffects.setContrast(this._contrast);
@@ -1602,6 +1641,7 @@ const MagShaderEffects = new Lang.Class({
     _init: function(uiGroupClone) {
         this._inverse = new Shell.InvertLightnessEffect();
         this._brightnessContrast = new Clutter.BrightnessContrastEffect();
+        this._colorSaturation = new Clutter.DesaturateEffect();
         this._inverse.set_enabled(false);
         this._brightnessContrast.set_enabled(false);
 
@@ -1618,6 +1658,7 @@ const MagShaderEffects = new Lang.Class({
      */
     destroyEffects: function() {
         this._magView.clear_effects();
+        this._colorSaturation = null;
         this._brightnessContrast = null;
         this._inverse = null;
         this._magView = null;
@@ -1639,6 +1680,14 @@ const MagShaderEffects = new Lang.Class({
      */
     getInvertLightness: function() {
         return this._inverse.get_enabled();
+    },
+
+    setColorSaturation: function(factor) {
+        this._colorSaturation.set_factor(factor);
+    },
+
+    getColorSaturation: function() {
+        return this._colorSaturation.get_factor();
     },
 
     /**
