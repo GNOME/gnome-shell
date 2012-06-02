@@ -105,6 +105,7 @@ function createInitialSetupSession() {
 
 function _initRecorder() {
     let recorderSettings = new Gio.Settings({ schema: 'org.gnome.shell.recorder' });
+    let desktopLockdownSettings = new Gio.Settings({ schema: 'org.gnome.desktop.lockdown' });
     let bindingSettings = new Gio.Settings({ schema: 'org.gnome.shell.keybindings' });
 
     global.display.add_keybinding('toggle-recording',
@@ -117,7 +118,7 @@ function _initRecorder() {
         if (recorder.is_recording()) {
             recorder.close();
             Meta.enable_unredirect_for_screen(global.screen);
-        } else {
+        } else if (!desktopLockdownSettings.get_boolean('disable-save-to-disk')) {
             // read the parameters from GSettings always in case they have changed
             recorder.set_framerate(recorderSettings.get_int('framerate'));
             /* Translators: this is a filename used for screencast recording */
