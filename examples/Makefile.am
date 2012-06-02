@@ -2,6 +2,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 all_examples = \
 	basic-actor \
+	box-layout \
 	canvas \
 	constraints \
 	drag-action \
