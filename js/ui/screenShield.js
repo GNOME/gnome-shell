@@ -24,6 +24,12 @@ const ARROW_DRAG_TRESHOLD = 0.4;
 
 const SUMMARY_ICON_SIZE = 48;
 
+// Lightbox fading times
+// STANDARD_FADE_TIME is used when the session goes idle, while
+// SHORT_FADE_TIME is used when requesting lock explicitly from the user menu
+const STANDARD_FADE_TIME = 10;
+const SHORT_FADE_TIME = 2;
+
 const Clock = new Lang.Class({
     Name: 'ScreenShieldClock',
 
@@ -318,7 +324,9 @@ const ScreenShield = new Lang.Class({
         this._hasLockScreen = false;
 
         this._lightbox = new Lightbox.Lightbox(Main.uiGroup,
-                                               { inhibitEvents: true, fadeInTime: 10, fadeFactor: 1 });
+                                               { inhibitEvents: true,
+                                                 fadeInTime: STANDARD_FADE_TIME,
+                                                 fadeFactor: 1 });
     },
 
     _onLockScreenKeyRelease: function(actor, event) {
@@ -390,7 +398,7 @@ const ScreenShield = new Lang.Class({
 
             let shouldLock = lightboxWasShown && this._settings.get_boolean(LOCK_ENABLED_KEY);
             if (shouldLock || this._isLocked) {
-                this.lock();
+                this.lock(false);
             } else if (this._isModal) {
                 this.unlock();
             }
@@ -398,7 +406,7 @@ const ScreenShield = new Lang.Class({
     },
 
     showDialog: function() {
-        this.lock();
+        this.lock(true);
         this._showUnlockDialog(false);
     },
 
@@ -452,7 +460,7 @@ const ScreenShield = new Lang.Class({
         this._dialog.destroy();
         this._dialog = null;
 
-        this._resetLockScreen();
+        this._resetLockScreen(false);
     },
 
     _onUnlockSucceded: function() {
@@ -464,7 +472,23 @@ const ScreenShield = new Lang.Class({
         this._lockScreenGroup.hide();
     },
 
-    _resetLockScreen: function() {
+    _resetLockScreen: function(animate) {
+        if (animate) {
+            this.actor.opacity = 0;
+            Tweener.removeTweens(this.actor);
+            Tweener.addTween(this.actor,
+                             { opacity: 255,
+                               time: SHORT_FADE_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: function() {
+                                   this.emit('lock-screen-shown');
+                               },
+                               onCompleteScope: this
+                             });
+        } else {
+            this.emit('lock-screen-shown');
+        }
+
         this._lockScreenGroup.fixed_position_set = false;
         this._lockScreenGroup.show();
         this._arrow.show();
@@ -542,7 +566,7 @@ const ScreenShield = new Lang.Class({
         this.emit('lock-status-changed', false);
     },
 
-    lock: function() {
+    lock: function(animate) {
         if (!this._hasLockScreen)
             this._prepareLockScreen();
 
@@ -553,7 +577,7 @@ const ScreenShield = new Lang.Class({
 
         this._isLocked = true;
         this.actor.show();
-        this._resetLockScreen();
+        this._resetLockScreen(animate);
 
         this.emit('lock-status-changed', true);
     },

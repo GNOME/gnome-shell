@@ -767,12 +767,12 @@ const UserMenuButton = new Lang.Class({
 
     _onLockScreenActivate: function() {
         Main.overview.hide();
-        Main.screenShield.lock();
+        Main.screenShield.lock(true);
     },
 
     _onLoginScreenActivate: function() {
         Main.overview.hide();
-        Main.screenShield.lock();
+        Main.screenShield.lock(false);
         this._userManager.goto_login_session();
     },
 
@@ -795,8 +795,13 @@ const UserMenuButton = new Lang.Class({
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
             this._session.ShutdownRemote();
         } else {
-            Main.screenShield.lock();
-            this._upClient.suspend_sync(null);
+            let tmpId = Main.screenShield.connect('lock-screen-shown', Lang.bind(this, function() {
+                Main.screenShield.disconnect(tmpId);
+
+                this._upClient.suspend_sync(null);
+            }));
+
+            Main.screenShield.lock(true);
         }
     }
 });
