@@ -65,6 +65,7 @@ let recorder = null;
 let sessionMode = null;
 let shellDBusService = null;
 let shellMountOpDBusService = null;
+let screenSaverDBus = null;
 let modalCount = 0;
 let modalActorFocusStack = [];
 let uiGroup = null;
@@ -215,6 +216,7 @@ function start() {
     magnifier = new Magnifier.Magnifier();
     statusIconDispatcher = new StatusIconDispatcher.StatusIconDispatcher();
     screenShield = new ScreenShield.ScreenShield();
+    screenSaverDBus = new ShellDBus.ScreenSaverDBus();
     panel = new Panel.Panel();
     wm = new WindowManager.WindowManager();
     messageTray = new MessageTray.MessageTray();

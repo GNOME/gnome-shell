@@ -34,6 +34,7 @@ extern GType gnome_shell_plugin_get_type (void);
 
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
 #define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
+#define SCREENSAVER_DBUS_SERVICE "org.gnome.ScreenSaver"
 
 #define OVERRIDES_SCHEMA "org.gnome.shell.overrides"
 
@@ -152,6 +153,8 @@ shell_dbus_init (gboolean replace)
                             MAGNIFIER_DBUS_SERVICE, FALSE,
   /* ...and the org.freedesktop.Notifications service. */
                             "org.freedesktop.Notifications", FALSE,
+  /* ...and the org.gnome.ScreenSaver service. */
+                            SCREENSAVER_DBUS_SERVICE, FALSE,
                             NULL);
   /* ...and the on-screen keyboard service */
   shell_dbus_acquire_name (bus,

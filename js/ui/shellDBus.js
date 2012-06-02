@@ -50,6 +50,20 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
 <property name="ShellVersion" type="s" access="read" />
 </interface>;
 
+const ScreenSaverIface = <interface name="org.gnome.ScreenSaver">
+<method name="Lock">
+</method>
+<method name="GetActive">
+    <arg name="active" direction="out" type="b" />
+</method>
+<method name="SetActive">
+    <arg name="value" direction="in" type="u" />
+</method>
+<signal name="ActiveChanged">
+    <arg name="new_value" type="b" />
+</signal>
+</interface>;
+
 const GnomeShell = new Lang.Class({
     Name: 'GnomeShellDBus',
 
@@ -317,5 +331,35 @@ const GnomeShellExtensions = new Lang.Class({
     _extensionStateChanged: function(_, newState) {
         this._dbusImpl.emit_signal('ExtensionStatusChanged',
                                    GLib.Variant.new('(sis)', [newState.uuid, newState.state, newState.error]));
+    }
+});
+
+const ScreenSaverDBus = new Lang.Class({
+    Name: 'ScreenSaverDBus',
+
+    _init: function() {
+        this.parent();
+
+        Main.screenShield.connect('lock-status-changed', Lang.bind(this, function(shield, locked) {
+            this._dbusImpl.emit_signal('ActiveChanged', GLib.Variant.new('(b)', [locked]));
+        }));
+
+        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreenSaverIface, this);
+        this._dbusImpl.export(Gio.DBus.session, '/org/gnome/ScreenSaver');
+    },
+
+    Lock: function() {
+        Main.screenShield.lock(true);
+    },
+
+    SetActive: function(active) {
+        if (active)
+            Main.screenShield.lock(true);
+        else
+            Main.screenShield.unlock();
+    },
+
+    GetActive: function() {
+        return Main.screenShield.locked;
     }
 });
