@@ -34,11 +34,11 @@ const UserWidget = new Lang.Class({
         this.actor.add(this._avatar.actor,
                        { x_fill: true, y_fill: true });
 
-        this._label = new St.Label({ style_class: 'unlock-dialog-user-name' });
+        this._label = new St.Label({ style_class: 'login-dialog-username' });
         this.actor.add(this._label,
                        { expand: true,
                          x_fill: true,
-                         y_fill: true });
+                         y_align: St.Align.MIDDLE });
 
         this._userLoadedId = this._user.connect('notify::is-loaded',
                                                 Lang.bind(this, this._updateUser));
@@ -105,10 +105,7 @@ const UnlockDialog = new Lang.Class({
 
         this._promptLabel = new St.Label({ style_class: 'login-dialog-prompt-label' });
         this._promptLayout.add(this._promptLabel,
-                               { expand: false,
-                                 x_fill: true,
-                                 y_fill: true,
-                                 x_align: St.Align.START });
+                               { x_align: St.Align.START });
 
         this._promptEntry = new St.Entry({ style_class: 'login-dialog-prompt-entry',
                                            can_focus: true });
@@ -118,9 +115,7 @@ const UnlockDialog = new Lang.Class({
 
         this._promptLayout.add(this._promptEntry,
                                { expand: true,
-                                 x_fill: true,
-                                 y_fill: false,
-                                 x_align: St.Align.START });
+                                 x_fill: true });
 
         this.contentLayout.add_actor(this._promptLayout);
 

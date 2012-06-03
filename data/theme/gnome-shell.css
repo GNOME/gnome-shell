@@ -2027,6 +2027,10 @@ StScrollBar StButton#vhandle:hover
 }
 
 .login-dialog {
+    /* Reset border and background */
+    border: none;
+    background-color: transparent;
+
     border-radius: 16px;
     min-height: 150px;
     max-height: 700px;
@@ -2093,7 +2097,7 @@ StScrollBar StButton#vhandle:hover
 }
 
 .login-dialog-not-listed-label {
-    font-size: 14pt;
+    font-size: 10.5pt;
     font-weight: bold;
     color: #666666;
 }
@@ -2102,12 +2106,23 @@ StScrollBar StButton#vhandle:hover
     color: #E8E8E8;
 }
 
-.login-dialog-prompt-layout {
-    padding-bottom: 32px;
+.login-dialog-username {
+    font-size: 16pt;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 15px;
+    text-shadow: black 4px 4px 3px 0px;
 }
+
+.login-dialog-prompt-layout {
+    padding-top: 24px;
+    padding-bottom: 12px;
+    spacing: 8px;
+}
+
 .login-dialog-prompt-label {
-    color: white;
-    font-size: 20pt;
+    color: #eeeeee;
+    font-size: 14px;
 }
 
 .login-dialog-prompt-entry {
@@ -2115,7 +2130,9 @@ StScrollBar StButton#vhandle:hover
     border-radius: 4px;
     border: 2px solid #5656cc;
     color: black;
-    background-color: white;
+    background-gradient-start: #333333;
+    background-gradient-end: white;
+    background-gradient-direction: vertical;
     caret-color: black;
     caret-size: 1px;
     width: 15em;
@@ -2179,16 +2196,26 @@ StScrollBar StButton#vhandle:hover
     height: .75em;
 }
 
-.unlock-dialog-user-name {
-    padding: 4px;
-    border-radius: 4px;
-    border: 2px solid #5656cc;
-    color: black;
-    background-color: white;
-    caret-color: black;
-    caret-size: 1px;
-    width: 15em;
-    text-align: right;
+.login-dialog .modal-dialog-button {
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 3px 18px;
+}
+
+.login-dialog .modal-dialog-button:default {
+    background-gradient-start: #6060cc;
+    background-gradient-end: #3030E0;
+    background-gradient-direction: vertical;
+    border: 2px solid #1010E0;
+}
+
+.login-dialog .modal-dialog-button:hover {
+    background-gradient-start: #7878cc;
+}
+
+.login-dialog .modal-dialog-button:active,
+.login-dialog .modal-dialog-button:pressed {
+    background-gradient-start: #9090cc;
 }
 
 .unlock-dialog-user-name-container {
@@ -2209,7 +2236,7 @@ StScrollBar StButton#vhandle:hover
 
 .screen-shield-clock {
     color: white;
-    text-shadow: black 0px 0px 0px 1px;
+    text-shadow: black 0px 0px 2px 0px;
     font-weight: bold;
     text-align: center;
 }
