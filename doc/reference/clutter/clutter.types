@@ -40,6 +40,7 @@ clutter_effect_get_type
 clutter_fixed_layout_get_type
 clutter_flow_layout_get_type
 clutter_gesture_action_get_type
+clutter_grid_layout_get_type
 clutter_group_get_type
 clutter_input_device_get_type
 clutter_interval_get_type

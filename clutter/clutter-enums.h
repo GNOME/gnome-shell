@@ -1237,6 +1237,24 @@ typedef enum { /*< prefix=CLUTTER_SCROLL >*/
   CLUTTER_SCROLL_BOTH         = CLUTTER_SCROLL_HORIZONTALLY | CLUTTER_SCROLL_VERTICALLY
 } ClutterScrollMode;
 
+/**
+ * ClutterGridPosition:
+ * @CLUTTER_GRID_POSITION_LEFT: left position
+ * @CLUTTER_GRID_POSITION_RIGHT: right position
+ * @CLUTTER_GRID_POSITION_TOP: top position
+ * @CLUTTER_GRID_POSITION_BOTTOM: bottom position
+ *
+ * Grid position modes.
+ *
+ * Since: 1.12
+ */
+typedef enum {
+  CLUTTER_GRID_POSITION_LEFT,
+  CLUTTER_GRID_POSITION_RIGHT,
+  CLUTTER_GRID_POSITION_TOP,
+  CLUTTER_GRID_POSITION_BOTTOM
+} ClutterGridPosition;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ENUMS_H__ */
