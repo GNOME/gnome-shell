@@ -2162,6 +2162,7 @@ CLUTTER_LAYOUT_MANAGER_GET_CLASS
 
 <SUBSECTION Private>
 clutter_layout_manager_get_type
+ClutterLayoutManagerPrivate
 </SECTION>
 
 <SECTION>
