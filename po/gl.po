@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-03 02:37+0200\n"
-"PO-Revision-Date: 2012-06-03 02:39+0200\n"
+"POT-Creation-Date: 2012-06-03 15:02+0200\n"
+"PO-Revision-Date: 2012-06-03 15:02+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Gtranslator 2.91.4\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -858,7 +858,6 @@ msgid "A password is required to connect to '%s'."
 msgstr "Requírese un contrasinal para conectarse a «%s»."
 
 #: ../js/ui/notificationDaemon.js:486 ../src/shell-app.c:374
-#, fuzzy
 msgctxt "program"
 msgid "Unknown"
 msgstr "Descoñecido"
