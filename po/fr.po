@@ -10,41 +10,25 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-16 18:37+0000\n"
-"PO-Revision-Date: 2012-03-20 20:56+0100\n"
-"Last-Translator: Bruno Brouard <annoa.b@gmail.com>\n"
+"POT-Creation-Date: 2012-05-17 12:57+0000\n"
+"PO-Revision-Date: 2012-04-30 18:04+0100\n"
+"Last-Translator: Pierre Henry <pierrehenry73@yahoo.fr>\n"
 "Language-Team: GNOME French team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../cogl/cogl-debug.c:173
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "Valeurs de débogage prises en charge :"
 
-#: ../cogl/cogl-debug.c:178
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "Valeurs de débogage spéciales :"
 
-#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "Active toutes les options de débogage non-associées au comportement"
-
-#: ../cogl/cogl-debug.c:226
-msgid "Cogl debugging flags to set"
-msgstr "Drapeaux de débogage Cogl à définir"
-
-#: ../cogl/cogl-debug.c:228
-msgid "Cogl debugging flags to unset"
-msgstr "Drapeaux de débogage Cogl à annuler"
-
-#: ../cogl/cogl-debug.c:277
-msgid "Cogl Options"
-msgstr "Options Cogl"
-
-#: ../cogl/cogl-debug.c:278
-msgid "Show Cogl options"
-msgstr "Affiche les options Cogl"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -53,6 +37,7 @@ msgstr "Affiche les options Cogl"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Traçage de Cogl"
 
@@ -347,3 +332,23 @@ msgstr "Tracer la coupure"
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr ""
 "Enregistre les informations sur la façon dont Cogl met en œuvre la coupure"
+
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "Tracer les problèmes de performances"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "Essaie de mettre en évidence l'utilisation sous-optimale de Cogl."
+
+#~ msgid "Cogl debugging flags to set"
+#~ msgstr "Drapeaux de débogage Cogl à définir"
+
+#~ msgid "Cogl debugging flags to unset"
+#~ msgstr "Drapeaux de débogage Cogl à annuler"
+
+#~ msgid "Cogl Options"
+#~ msgstr "Options Cogl"
+
+#~ msgid "Show Cogl options"
+#~ msgstr "Affiche les options Cogl"
