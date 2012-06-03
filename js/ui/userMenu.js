@@ -523,6 +523,10 @@ const UserMenuButton = new Lang.Class({
         this._updateLogout();
         this._updateLockScreen();
 
+        this._updatesFile = Gio.File.new_for_path('/var/lib/PackageKit/prepared-update');
+        this._updatesMonitor = this._updatesFile.monitor(Gio.FileMonitorFlags.NONE, null);
+        this._updatesMonitor.connect('changed', Lang.bind(this, this._updateInstallUpdates));
+
         // Whether shutdown is available or not depends on both lockdown
         // settings (disable-log-out) and Polkit policy - the latter doesn't
         // notify, so we update the menu item each time the menu opens or
@@ -578,11 +582,17 @@ const UserMenuButton = new Lang.Class({
         this._lockScreenItem.actor.visible = allowLockScreen;
     },
 
+    _updateInstallUpdates: function() {
+        let haveUpdates = this._updatesFile.query_exists(null);
+        this._installUpdatesItem.actor.visible = haveUpdates && this._haveShutdown;
+    },
+
     _updateHaveShutdown: function() {
         this._session.CanShutdownRemote(Lang.bind(this,
             function(result, error) {
                 if (!error) {
                     this._haveShutdown = result[0];
+                    this._updateInstallUpdates();
                     this._updateSuspendOrPowerOff();
                 }
             }));
@@ -711,6 +721,11 @@ const UserMenuButton = new Lang.Class({
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
+        item = new PopupMenu.PopupMenuItem(_("Install Updates & Restart"));
+        item.connect('activate', Lang.bind(this, this._onInstallUpdatesActivate));
+        this.menu.addMenuItem(item);
+        this._installUpdatesItem = item;
+
         item = new PopupMenu.PopupAlternatingMenuItem(_("Power Off"),
                                                       _("Suspend"));
         this.menu.addMenuItem(item);
@@ -767,6 +782,13 @@ const UserMenuButton = new Lang.Class({
     _onQuitSessionActivate: function() {
         Main.overview.hide();
         this._session.LogoutRemote(0);
+    },
+
+    _onInstallUpdatesActivate: function() {
+        Main.overview.hide();
+        Util.spawn(['pkexec', '/usr/libexec/pk-trigger-offline-update']);
+
+        this._session.RebootRemote();
     },
 
     _onSuspendOrPowerOffActivate: function() {

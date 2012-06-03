@@ -50,6 +50,7 @@ const SessionManagerIface = <interface name="org.gnome.SessionManager">
     <arg type="u" direction="in" />
 </method>
 <method name="Shutdown" />
+<method name="Reboot" />
 <method name="CanShutdown">
     <arg type="b" direction="out" />
 </method>
