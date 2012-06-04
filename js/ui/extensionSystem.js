@@ -67,6 +67,11 @@ function disableExtension(uuid) {
         }
     }
 
+    if (extension.stylesheet) {
+        let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
+        theme.unload_stylesheet(extension.stylesheet.get_path());
+    }
+
     try {
         extension.stateObj.disable();
     } catch(e) {
@@ -107,6 +112,17 @@ function enableExtension(uuid) {
     } catch(e) {
         logExtensionError(uuid, e.toString());
         return;
+    }
+
+    let stylesheetFile = extension.dir.get_child('stylesheet.css');
+    if (stylesheetFile.query_exists(null)) {
+        let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
+        try {
+            theme.load_stylesheet(stylesheetFile.get_path());
+            extension.stylesheet = stylesheetFile;
+        } catch (e) {
+            logExtensionError(uuid, 'Stylesheet parse error: ' + e);
+        }
     }
 
     extension.state = ExtensionState.ENABLED;
@@ -163,18 +179,6 @@ function initExtension(uuid) {
         logExtensionError(uuid, 'Missing extension.js');
         return;
     }
-    let stylesheetPath = null;
-    let themeContext = St.ThemeContext.get_for_stage(global.stage);
-    let theme = themeContext.get_theme();
-    let stylesheetFile = dir.get_child('stylesheet.css');
-    if (stylesheetFile.query_exists(null)) {
-        try {
-            theme.load_stylesheet(stylesheetFile.get_path());
-        } catch (e) {
-            logExtensionError(uuid, 'Stylesheet parse error: ' + e);
-            return;
-        }
-    }
 
     let extensionModule;
     let extensionState = null;
@@ -182,8 +186,6 @@ function initExtension(uuid) {
         ExtensionUtils.installImporter(extension);
         extensionModule = extension.imports.extension;
     } catch (e) {
-        if (stylesheetPath != null)
-            theme.unload_stylesheet(stylesheetPath);
         logExtensionError(uuid, '' + e);
         return;
     }
@@ -196,8 +198,6 @@ function initExtension(uuid) {
     try {
         extensionState = extensionModule.init(extension);
     } catch (e) {
-        if (stylesheetPath != null)
-            theme.unload_stylesheet(stylesheetPath);
         logExtensionError(uuid, 'Failed to evaluate init function:' + e);
         return;
     }
