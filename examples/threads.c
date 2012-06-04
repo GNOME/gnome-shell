@@ -8,8 +8,10 @@ typedef struct
   ClutterActor *stage;
   ClutterActor *label;
   ClutterActor *progress;
+  ClutterActor *rect;
 
-  ClutterTimeline *timeline;
+  ClutterTransition *flip;
+  ClutterTransition *bounce;
 } TestThreadData;
 
 static TestThreadData *
@@ -33,7 +35,9 @@ test_thread_data_free (gpointer _data)
   g_object_unref (data->progress);
   g_object_unref (data->label);
   g_object_unref (data->stage);
-  g_object_unref (data->timeline);
+  g_object_unref (data->rect);
+  g_object_unref (data->flip);
+  g_object_unref (data->bounce);
 
   g_free (data);
 }
@@ -43,20 +47,22 @@ test_thread_done_idle (gpointer user_data)
 {
   TestThreadData *data = user_data;
 
-  g_print ("Thread completed\n");
-
   clutter_text_set_text (CLUTTER_TEXT (data->label), "Completed");
-  clutter_timeline_stop (data->timeline);
+
+  clutter_actor_remove_transition (data->rect, "bounce");
+  clutter_actor_remove_transition (data->rect, "flip");
 
   test_thread_data_free (data);
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void
 test_thread_data_done (gpointer _data)
 {
   TestThreadData *data = _data;
+
+  g_print ("Thread completed\n");
 
   /* since the TestThreadData structure references Clutter data structures
    * we need to free it from within the same thread that called clutter_main()
@@ -65,13 +71,15 @@ test_thread_data_done (gpointer _data)
    * clutter_threads_add_idle() is guaranteed to run the callback passed to
    * to it under the Big Clutter Lock.
    */
-  clutter_threads_add_idle (test_thread_done_idle, data);
+  clutter_threads_add_idle_full (G_PRIORITY_HIGH,
+                                 test_thread_done_idle, data,
+                                 NULL);
 }
 
+/* thread local storage */
 static GPrivate test_thread_data = G_PRIVATE_INIT (test_thread_data_done);
 
-typedef struct
-{
+typedef struct {
   gint count;
   TestThreadData *thread_data;
 } TestUpdate;
@@ -85,6 +93,7 @@ update_label_idle (gpointer data)
 
   text = g_strdup_printf ("Count to %d", update->count);
   clutter_text_set_text (CLUTTER_TEXT (update->thread_data->label), text);
+
   clutter_actor_set_width (update->thread_data->label, -1);
 
   if (update->count == 0)
@@ -94,12 +103,14 @@ update_label_idle (gpointer data)
   else
     width = (guint) (update->count / 100.0 * 350.0);
 
+  clutter_actor_save_easing_state (update->thread_data->progress);
   clutter_actor_set_width (update->thread_data->progress, width);
+  clutter_actor_restore_easing_state (update->thread_data->progress);
 
   g_free (text);
   g_free (update);
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -110,7 +121,7 @@ do_something_very_slow (void)
 
   data = g_private_get (&test_thread_data);
 
-  for (i = 0; i < 100; i++)
+  for (i = 0; i <= 100; i++)
     {
       gint msecs;
 
@@ -152,10 +163,12 @@ test_thread_func (gpointer user_data)
   return NULL;
 }
 
-static ClutterTimeline *timeline   = NULL;
 static ClutterActor *count_label   = NULL;
 static ClutterActor *help_label    = NULL;
 static ClutterActor *progress_rect = NULL;
+static ClutterActor *rect          = NULL;
+static ClutterTransition *flip     = NULL;
+static ClutterTransition *bounce   = NULL;
 
 static gboolean
 on_key_press_event (ClutterStage *stage,
@@ -169,42 +182,43 @@ on_key_press_event (ClutterStage *stage,
     case CLUTTER_KEY_s:
       clutter_text_set_text (CLUTTER_TEXT (help_label), "Press 'q' to quit");
 
-      clutter_timeline_start (timeline);
-      
+      /* start the animations */
+      clutter_actor_add_transition (rect, "flip", flip);
+      clutter_actor_add_transition (rect, "bounce", bounce);
+
+      /* the data structure holding all our objects */
       data = test_thread_data_new ();
       data->stage = g_object_ref (stage);
       data->label = g_object_ref (count_label);
       data->progress = g_object_ref (progress_rect);
-      data->timeline = g_object_ref (timeline);
+      data->rect = g_object_ref (rect);
+      data->flip = g_object_ref (flip);
+      data->bounce = g_object_ref (bounce);
 
       /* start the thread that updates the counter and the progress bar */
       g_thread_new ("counter", test_thread_func, data);
 
-      return TRUE;
+      return CLUTTER_EVENT_STOP;
 
     case CLUTTER_KEY_q:
       clutter_main_quit ();
 
-      return TRUE;
+      return CLUTTER_EVENT_STOP;
 
     default:
       break;
     }
 
-  return FALSE;
+  return CLUTTER_EVENT_PROPAGATE;
 }
 
 int
 main (int argc, char *argv[])
 {
+  ClutterTransition *transition;
   ClutterActor *stage;
-  ClutterActor *rect;
-  ClutterBehaviour *r_behaviour, *p_behaviour;
-  ClutterAlpha *alpha;
-  const ClutterKnot knots[] = {
-    {  75, 150 },
-    { 400, 150 }
-  };
+  ClutterPoint start = CLUTTER_POINT_INIT (75.f, 150.f);
+  ClutterPoint end = CLUTTER_POINT_INIT (400.f, 150.f);
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
@@ -217,41 +231,44 @@ main (int argc, char *argv[])
   
   count_label = clutter_text_new_with_text ("Mono 12", "Counter");
   clutter_actor_set_position (count_label, 350, 50);
+  clutter_actor_add_child (stage, count_label);
 
   help_label = clutter_text_new_with_text ("Mono 12", "Press 's' to start");
   clutter_actor_set_position (help_label, 50, 50);
+  clutter_actor_add_child (stage, help_label);
 
-  rect = clutter_rectangle_new_with_color (CLUTTER_COLOR_LightScarletRed);
+  /* a progress bar */
+  progress_rect = clutter_actor_new ();
+  clutter_actor_set_background_color (progress_rect, CLUTTER_COLOR_DarkChameleon);
+  clutter_actor_set_position (progress_rect, 50, 225);
+  clutter_actor_set_size (progress_rect, 350, 50);
+  clutter_actor_add_child (stage, progress_rect);
+
+  /* an actor we bounce around */
+  rect = clutter_actor_new ();
+  clutter_actor_set_background_color (rect, CLUTTER_COLOR_LightScarletRed);
   clutter_actor_set_position (rect, 75, 150);
   clutter_actor_set_size (rect, 50, 50);
   clutter_actor_set_anchor_point (rect, 25, 25);
   clutter_actor_set_opacity (rect, 224);
+  clutter_actor_add_child (stage, rect);
 
-  progress_rect = clutter_rectangle_new_with_color (CLUTTER_COLOR_DarkChameleon);
-  clutter_actor_set_position (progress_rect, 50, 225);
-  clutter_actor_set_size (progress_rect, 350, 50);
+  /* two transitions we use to bounce rect around */
+  transition = clutter_property_transition_new ("rotation-angle-z");
+  clutter_transition_set_from (transition, G_TYPE_DOUBLE, 0.0);
+  clutter_transition_set_to (transition, G_TYPE_DOUBLE, 360.0);
+  clutter_timeline_set_repeat_count (CLUTTER_TIMELINE (transition), -1);
+  clutter_timeline_set_auto_reverse (CLUTTER_TIMELINE (transition), TRUE);
+  clutter_timeline_set_duration (CLUTTER_TIMELINE (transition), 3000);
+  flip = transition;
 
-  clutter_container_add (CLUTTER_CONTAINER (stage),
-                         count_label, help_label,
-                         rect, progress_rect,
-                         NULL);
-
-  timeline = clutter_timeline_new (3000);
-  clutter_timeline_set_auto_reverse (timeline, TRUE);
-  clutter_timeline_set_repeat_count (timeline, -1);
-
-  alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
-  r_behaviour = clutter_behaviour_rotate_new (alpha,
-                                              CLUTTER_Z_AXIS,
-                                              CLUTTER_ROTATE_CW,
-                                              0.0, 360.0);
-  clutter_behaviour_apply (r_behaviour, rect);
-
-  alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
-  p_behaviour = clutter_behaviour_path_new_with_knots (alpha,
-                                                       knots,
-                                                       G_N_ELEMENTS (knots));
-  clutter_behaviour_apply (p_behaviour, rect);
+  transition = clutter_property_transition_new ("position");
+  clutter_transition_set_from (transition, CLUTTER_TYPE_POINT, &start);
+  clutter_transition_set_to (transition, CLUTTER_TYPE_POINT, &end);
+  clutter_timeline_set_repeat_count (CLUTTER_TIMELINE (transition), -1);
+  clutter_timeline_set_auto_reverse (CLUTTER_TIMELINE (transition), TRUE);
+  clutter_timeline_set_duration (CLUTTER_TIMELINE (transition), 3000);
+  bounce = transition;
 
   g_signal_connect (stage,
                     "button-press-event", G_CALLBACK (clutter_main_quit),
@@ -265,10 +282,6 @@ main (int argc, char *argv[])
   clutter_threads_enter ();
   clutter_main ();
   clutter_threads_leave ();
-
-  g_object_unref (p_behaviour);
-  g_object_unref (r_behaviour);
-  g_object_unref (timeline);
 
   return EXIT_SUCCESS;
 }
