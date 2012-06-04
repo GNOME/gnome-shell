@@ -167,6 +167,7 @@ const AuthenticationDialog = new Lang.Class({
          */
         this._nullMessageLabel = new St.Label({ style_class: 'prompt-dialog-null-label',
                                                 text: 'abc'});
+        this._nullMessageLabel.add_style_class_name('hidden');
         this._nullMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._nullMessageLabel.clutter_text.line_wrap = true;
         messageBox.add(this._nullMessageLabel);

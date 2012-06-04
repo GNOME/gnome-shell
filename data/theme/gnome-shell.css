@@ -1948,10 +1948,12 @@ StScrollBar StButton#vhandle:hover
     padding-bottom: 8px;
 }
 
-/* intentionally left transparent to avoid dialog changing size */
+.hidden {
+    color: rgba(0,0,0,0);
+}
+
 .prompt-dialog-null-label {
     font-size: 10pt;
-    color: rgba(0,0,0,0);
     padding-bottom: 8px;
 }
 
