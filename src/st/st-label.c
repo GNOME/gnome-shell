@@ -490,7 +490,7 @@ st_label_accessible_get_name (AtkObject *obj)
 
       actor = CLUTTER_ACTOR (atk_gobject_accessible_get_object (ATK_GOBJECT_ACCESSIBLE (obj)));
 
-      if (actor == NULL) /* State is defunct */
+      if (actor == NULL || st_widget_has_style_class_name (ST_WIDGET (actor), "hidden"))
         name = NULL;
       else
         name = st_label_get_text (ST_LABEL (actor));
