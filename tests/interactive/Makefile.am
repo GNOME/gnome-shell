@@ -48,7 +48,8 @@ UNIT_TESTS = \
 	test-devices.c \
 	test-content.c \
 	test-keyframe-transition.c \
-	test-bind-constraint.c
+	test-bind-constraint.c \
+	test-touch-events.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c
