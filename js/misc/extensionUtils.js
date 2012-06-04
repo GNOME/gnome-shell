@@ -14,9 +14,6 @@ const ExtensionType = {
     PER_USER: 2
 };
 
-// GFile for user extensions
-var userExtensionsDir = null;
-
 // Maps uuid -> metadata object
 const extensions = {};
 
@@ -152,11 +149,6 @@ function installImporter(extension) {
     _extension = null;
 }
 
-function init() {
-    let userExtensionsPath = GLib.build_filenamev([global.userdatadir, 'extensions']);
-    userExtensionsDir = Gio.file_new_for_path(userExtensionsPath);
-}
-
 function scanExtensionsInDirectory(callback, dir, type) {
     let fileEnum;
     let file, info;
@@ -179,8 +171,10 @@ function scanExtensionsInDirectory(callback, dir, type) {
 }
 
 function scanExtensions(callback) {
-    let systemDataDirs = GLib.get_system_data_dirs();
+    let userExtensionsDir = Gio.File.new_for_path(GLib.build_filenamev([global.userdatadir, 'extensions']));
     scanExtensionsInDirectory(callback, userExtensionsDir, ExtensionType.PER_USER);
+
+    let systemDataDirs = GLib.get_system_data_dirs();
     for (let i = 0; i < systemDataDirs.length; i++) {
         let dirPath = GLib.build_filenamev([systemDataDirs[i], 'gnome-shell', 'extensions']);
         let dir = Gio.file_new_for_path(dirPath);

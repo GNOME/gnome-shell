@@ -66,7 +66,7 @@ function gotExtensionZipFile(session, message, uuid) {
         return;
     }
 
-    let dir = ExtensionUtils.userExtensionsDir.get_child(uuid);
+    let dir = Gio.File.new_for_path(GLib.build_filenamev([global.userdatadir, 'extensions', uuid]));
     try {
         if (!dir.query_exists(null))
             dir.make_directory_with_parents(null);

@@ -257,8 +257,6 @@ function onEnabledExtensionsChanged() {
 }
 
 function init() {
-    ExtensionUtils.init();
-
     global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
 }

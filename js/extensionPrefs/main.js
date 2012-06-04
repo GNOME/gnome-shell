@@ -268,7 +268,6 @@ function initEnvironment() {
 
 function main(argv) {
     initEnvironment();
-    ExtensionUtils.init();
 
     Gettext.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
     Gettext.textdomain(Config.GETTEXT_PACKAGE);
