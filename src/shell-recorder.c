@@ -150,10 +150,6 @@ G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
  */
 #define DEFAULT_PIPELINE "vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux"
 
-/* The default filename pattern. Example Screencast at 2009-03-11 00:08:15.webm
- */
-#define DEFAULT_FILENAME "Screencast at %d %t.webm"
-
 /* If we can find the amount of memory on the machine, we use half
  * of that for memory_target, otherwise, we use this value, in kB.
  */
@@ -1189,7 +1185,7 @@ recorder_open_outfile (ShellRecorder *recorder)
 
   pattern = recorder->filename;
   if (!pattern)
-    pattern = DEFAULT_FILENAME;
+    return -1;
 
   while (TRUE)
     {
