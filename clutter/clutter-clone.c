@@ -41,6 +41,7 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
 #include "clutter-actor-private.h"
 #include "clutter-clone.h"
 #include "clutter-debug.h"
@@ -173,7 +174,7 @@ clutter_clone_paint (ClutterActor *actor)
    *   the clone source actor.
    */
   _clutter_actor_set_in_clone_paint (priv->clone_source, TRUE);
-  _clutter_actor_set_opacity_override (priv->clone_source,
+  clutter_actor_set_opacity_override (priv->clone_source,
                                        clutter_actor_get_paint_opacity (actor));
   _clutter_actor_set_enable_model_view_transform (priv->clone_source, FALSE);
 
@@ -191,7 +192,7 @@ clutter_clone_paint (ClutterActor *actor)
     _clutter_actor_set_enable_paint_unmapped (priv->clone_source, FALSE);
 
   _clutter_actor_set_enable_model_view_transform (priv->clone_source, TRUE);
-  _clutter_actor_set_opacity_override (priv->clone_source, -1);
+  clutter_actor_set_opacity_override (priv->clone_source, -1);
   _clutter_actor_set_in_clone_paint (priv->clone_source, FALSE);
 }
 

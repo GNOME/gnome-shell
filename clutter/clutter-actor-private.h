@@ -263,9 +263,6 @@ void                            _clutter_actor_rerealize                        
                                                                                          ClutterCallback  callback,
                                                                                          gpointer         data);
 
-void                            _clutter_actor_set_opacity_override                     (ClutterActor *self,
-                                                                                         gint          opacity);
-gint                            _clutter_actor_get_opacity_override                     (ClutterActor *self);
 void                            _clutter_actor_set_in_clone_paint                       (ClutterActor *self,
                                                                                          gboolean      is_in_clone_paint);
 

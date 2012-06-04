@@ -829,6 +829,11 @@ void                            clutter_actor_remove_all_transitions            
 #ifdef CLUTTER_ENABLE_EXPERIMENTAL_API
 CLUTTER_AVAILABLE_IN_1_16
 gboolean                        clutter_actor_has_mapped_clones                 (ClutterActor *self);
+CLUTTER_AVAILABLE_IN_1_22
+void                            clutter_actor_set_opacity_override              (ClutterActor               *self,
+                                                                                 gint                        opacity);
+CLUTTER_AVAILABLE_IN_1_22
+gint                            clutter_actor_get_opacity_override              (ClutterActor               *self);
 #endif
 
 G_END_DECLS

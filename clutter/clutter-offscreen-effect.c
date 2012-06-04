@@ -343,8 +343,8 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
    * multiplying the opacity twice.
    */
   priv->old_opacity_override =
-    _clutter_actor_get_opacity_override (priv->actor);
-  _clutter_actor_set_opacity_override (priv->actor, 0xff);
+    clutter_actor_get_opacity_override (priv->actor);
+  clutter_actor_set_opacity_override (priv->actor, 0xff);
 
   return TRUE;
 }
@@ -413,7 +413,7 @@ clutter_offscreen_effect_post_paint (ClutterEffect *effect)
     return;
 
   /* Restore the previous opacity override */
-  _clutter_actor_set_opacity_override (priv->actor, priv->old_opacity_override);
+  clutter_actor_set_opacity_override (priv->actor, priv->old_opacity_override);
 
   cogl_pop_matrix ();
   cogl_pop_framebuffer ();

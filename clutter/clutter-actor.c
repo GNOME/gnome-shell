@@ -15753,20 +15753,50 @@ clutter_actor_create_pango_layout (ClutterActor *self,
   return layout;
 }
 
-/* Allows overriding the calculated paint opacity. Used by ClutterClone and
- * ClutterOffscreenEffect.
+/**
+ * clutter_actor_set_opacity_override:
+ * @self: a #ClutterActor
+ * @opacity: the override opacity value, or -1 to reset
+ *
+ * Allows overriding the calculated paint opacity (as returned by
+ * clutter_actor_get_paint_opacity()). This is used internally by
+ * ClutterClone and ClutterOffscreenEffect, and should be used by
+ * actors that need to mimick those.
+ *
+ * In almost all cases this should not used by applications.
+ *
+ * Stability: unstable
  */
 void
-_clutter_actor_set_opacity_override (ClutterActor *self,
+clutter_actor_set_opacity_override (ClutterActor *self,
                                      gint          opacity)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  /* ensure bounds */
+  if (opacity >= 0)
+    opacity = CLAMP (opacity, 0, 255);
+  else
+    opacity = -1;
+
   self->priv->opacity_override = opacity;
 }
 
+/**
+ * clutter_actor_get_opacity_override:
+ * @self: a #ClutterActor
+ *
+ * See clutter_actor_set_opacity_override()
+ *
+ * Returns: the override value for the actor's opacity, or -1 if no override
+ *   is set.
+ *
+ * Since: 1.22
+ *
+ * Stability: unstable
+ */
 gint
-_clutter_actor_get_opacity_override (ClutterActor *self)
+clutter_actor_get_opacity_override (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), -1);
 
