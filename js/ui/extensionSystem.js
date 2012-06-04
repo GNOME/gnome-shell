@@ -262,8 +262,10 @@ function init() {
 }
 
 function loadExtensions() {
-    ExtensionUtils.scanExtensions(function(uuid, dir, type) {
+    let finder = new ExtensionUtils.ExtensionFinder();
+    finder.connect('extension-found', function(signals, uuid, dir, type) {
         let enabled = enabledExtensions.indexOf(uuid) != -1;
         loadExtension(dir, type, enabled);
     });
+    finder.scanExtensions();
 }
