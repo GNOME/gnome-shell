@@ -1208,7 +1208,7 @@ recorder_open_outfile (ShellRecorder *recorder)
                   }
                   break;
                 default:
-                  g_warning ("Unknown escape %%%c in filename", *p);
+                  g_warning ("Unknown escape %%%c in filename", *(p + 1));
                   goto out;
                 }
 
