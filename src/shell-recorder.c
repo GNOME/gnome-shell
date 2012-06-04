@@ -42,8 +42,6 @@ struct _ShellRecorder {
   guint memory_used; /* Current memory used. (In kB) */
 
   RecorderState state;
-  char *unique; /* The unique string we are using for this recording */
-  int count; /* How many times the recording has been started */
 
   ClutterStage *stage;
   int stage_width;
@@ -69,7 +67,6 @@ struct _ShellRecorder {
   int framerate;
   char *pipeline_description;
   char *filename;
-  gboolean filename_has_count; /* %c used: handle pausing differently */
 
   /* We might have multiple pipelines that are finishing encoding
    * to go along with the current pipeline where we are recording.
@@ -1132,26 +1129,6 @@ recorder_pipeline_add_source (RecorderPipeline *pipeline)
   return result;
 }
 
-/* Counts '', 'a', ..., 'z', 'aa', ..., 'az', 'ba', ... */
-static void
-increment_unique (GString *unique)
-{
-  int i;
-
-  for (i = unique->len - 1; i >= 0; i--)
-    {
-      if (unique->str[i] != 'z')
-        {
-          unique->str[i]++;
-          return;
-        }
-      else
-        unique->str[i] = 'a';
-    }
-
-  g_string_prepend_c (unique, 'a');
-}
-
 static char *
 get_absolute_path (char *maybe_relative)
 {
@@ -1176,12 +1153,9 @@ get_absolute_path (char *maybe_relative)
 static int
 recorder_open_outfile (ShellRecorder *recorder)
 {
-  GString *unique = g_string_new (NULL); /* add to filename to make it unique */
   const char *pattern;
   int flags;
   int outfile = -1;
-
-  recorder->count++;
 
   pattern = recorder->filename;
   if (!pattern)
@@ -1202,13 +1176,6 @@ recorder_open_outfile (ShellRecorder *recorder)
                 case '%':
                 case '\0':
                   g_string_append_c (filename, '%');
-                  break;
-                case 'c':
-                  {
-                    /* Count distinguishing multiple files created in session */
-                    g_string_append_printf (filename, "%d", recorder->count);
-                    recorder->filename_has_count = TRUE;
-                  }
                   break;
                 case 'd':
                   {
@@ -1242,12 +1209,6 @@ recorder_open_outfile (ShellRecorder *recorder)
                     g_date_time_unref (datetime);
                   }
                   break;
-                case 'u':
-                  if (recorder->unique)
-                    g_string_append (filename, recorder->unique);
-                  else
-                    g_string_append (filename, unique->str);
-                  break;
                 default:
                   g_warning ("Unknown escape %%%c in filename", *p);
                   goto out;
@@ -1264,8 +1225,6 @@ recorder_open_outfile (ShellRecorder *recorder)
        * should avoid problems with malicious symlinks.
        */
       flags = O_WRONLY | O_CREAT | O_TRUNC;
-      if (recorder->filename_has_count)
-        flags |= O_EXCL;
 
       path = get_absolute_path (filename->str);
       outfile = open (path, flags, 0666);
@@ -1278,8 +1237,7 @@ recorder_open_outfile (ShellRecorder *recorder)
           goto out;
         }
 
-      if (outfile == -1 &&
-          (errno != EEXIST || !recorder->filename_has_count))
+      if (outfile == -1 && errno != EEXIST)
         {
           g_warning ("Cannot open output file '%s': %s", filename->str, g_strerror (errno));
           g_string_free (filename, TRUE);
@@ -1287,29 +1245,11 @@ recorder_open_outfile (ShellRecorder *recorder)
           goto out;
         }
 
-      if (recorder->unique)
-        {
-          /* We've already picked a unique string based on count=1, and now we had a collision
-           * for a subsequent count.
-           */
-          g_warning ("Name collision with existing file for '%s'", filename->str);
-          g_string_free (filename, TRUE);
-          g_free (path);
-          goto out;
-        }
-
       g_string_free (filename, TRUE);
       g_free (path);
-
-      increment_unique (unique);
     }
 
  out:
-
-  if (outfile != -1)
-    recorder->unique = g_string_free (unique, FALSE);
-  else
-    g_string_free (unique, TRUE);
 
   return outfile;
 }
@@ -1573,7 +1513,6 @@ recorder_close_pipeline (ShellRecorder *recorder)
       shell_recorder_src_close (SHELL_RECORDER_SRC (recorder->current_pipeline->src));
 
       recorder->current_pipeline = NULL;
-      recorder->filename_has_count = FALSE;
     }
 }
 
@@ -1631,10 +1570,6 @@ shell_recorder_set_framerate (ShellRecorder *recorder,
  * the following escapes:
  *
  * %d: The current date as YYYYYMMDD
- * %u: A string added to make the filename unique.
- *     '', 'a', 'b', ... 'aa', 'ab', ..
- * %c: A counter that is updated (opening a new file) each
- *     time the recording stream is paused.
  * %%: A literal percent
  *
  * The default value is 'shell-%d%u-%c.ogg'.
@@ -1797,9 +1732,6 @@ shell_recorder_close (ShellRecorder *recorder)
   recorder_close_pipeline (recorder);
 
   recorder->state = RECORDER_STATE_CLOSED;
-  recorder->count = 0;
-  g_free (recorder->unique);
-  recorder->unique = NULL;
 
   /* Release the refcount we took when we started recording */
   g_object_unref (recorder);
