@@ -20,7 +20,6 @@
 
 typedef enum {
   RECORDER_STATE_CLOSED,
-  RECORDER_STATE_PAUSED,
   RECORDER_STATE_RECORDING
 } RecorderState;
 
@@ -74,9 +73,8 @@ struct _ShellRecorder {
   RecorderPipeline *current_pipeline; /* current pipeline */
   GSList *pipelines; /* all pipelines */
 
-  GstClockTime start_time; /* When we started recording (adjusted for pauses) */
+  GstClockTime start_time; /* When we started recording */
   GstClockTime last_frame_time; /* Timestamp for the last frame */
-  GstClockTime pause_time; /* When the pipeline was paused */
 
   /* GSource IDs for different timeouts and idles */
   guint redraw_timeout;
@@ -1615,8 +1613,7 @@ shell_recorder_set_pipeline (ShellRecorder *recorder,
  * shell_recorder_record:
  * @recorder: the #ShellRecorder
  *
- * Starts recording, or continues a recording that was previously
- * paused. Starting the recording may fail if the output file
+ * Starts recording, Starting the recording may fail if the output file
  * cannot be opened, or if the output stream cannot be created
  * for other reasons. In that case a warning is printed to
  * stderr. There is no way currently to get details on how
@@ -1637,22 +1634,11 @@ shell_recorder_record (ShellRecorder *recorder)
   g_return_val_if_fail (recorder->stage != NULL, FALSE);
   g_return_val_if_fail (recorder->state != RECORDER_STATE_RECORDING, FALSE);
 
-  if (recorder->current_pipeline)
-    {
-      /* Adjust the start time so that the times in the stream ignore the
-       * pause
-       */
-      recorder->start_time = recorder->start_time + (get_wall_time() - recorder->pause_time);
-      recorder->last_frame_time = 0;
-    }
-  else
-    {
-      if (!recorder_open_pipeline (recorder))
-        return FALSE;
+  if (!recorder_open_pipeline (recorder))
+    return FALSE;
 
-      recorder->start_time = get_wall_time();
-      recorder->last_frame_time = 0;
-    }
+  recorder->start_time = get_wall_time();
+  recorder->last_frame_time = 0;
 
   recorder->state = RECORDER_STATE_RECORDING;
   recorder_add_update_pointer_timeout (recorder);
@@ -1672,44 +1658,6 @@ shell_recorder_record (ShellRecorder *recorder)
 }
 
 /**
- * shell_recorder_pause:
- * @recorder: the #ShellRecorder
- *
- * Temporarily stop recording. If the specified filename includes
- * the %c escape, then the stream is closed and a new stream with
- * an incremented counter will be created. Otherwise the stream
- * is paused and will be continued when shell_recorder_record()
- * is next called.
- */
-void
-shell_recorder_pause (ShellRecorder *recorder)
-{
-  g_return_if_fail (SHELL_IS_RECORDER (recorder));
-  g_return_if_fail (recorder->state == RECORDER_STATE_RECORDING);
-
-  recorder_remove_update_pointer_timeout (recorder);
-  /* We want to record one more frame since some time may have
-   * elapsed since the last frame
-   */
-  clutter_actor_paint (CLUTTER_ACTOR (recorder->stage));
-
-  if (recorder->filename_has_count)
-    recorder_close_pipeline (recorder);
-
-  recorder->state = RECORDER_STATE_PAUSED;
-  recorder->pause_time = get_wall_time();
-
-  /* Queue a redraw to remove the recording indicator */
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (recorder->stage));
-
-  if (recorder->repaint_hook_id != 0)
-  {
-    clutter_threads_remove_repaint_func (recorder->repaint_hook_id);
-    recorder->repaint_hook_id = 0;
-  }
-}
-
-/**
  * shell_recorder_close:
  * @recorder: the #ShellRecorder
  *
@@ -1724,10 +1672,23 @@ shell_recorder_close (ShellRecorder *recorder)
   g_return_if_fail (SHELL_IS_RECORDER (recorder));
   g_return_if_fail (recorder->state != RECORDER_STATE_CLOSED);
 
-  if (recorder->state == RECORDER_STATE_RECORDING)
-    shell_recorder_pause (recorder);
+  /* We want to record one more frame since some time may have
+   * elapsed since the last frame
+   */
+  clutter_actor_paint (CLUTTER_ACTOR (recorder->stage));
 
   recorder_remove_update_pointer_timeout (recorder);
+  recorder_close_pipeline (recorder);
+
+  /* Queue a redraw to remove the recording indicator */
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (recorder->stage));
+
+  if (recorder->repaint_hook_id != 0)
+    {
+      clutter_threads_remove_repaint_func (recorder->repaint_hook_id);
+      recorder->repaint_hook_id = 0;
+    }
+
   recorder_remove_redraw_timeout (recorder);
   recorder_close_pipeline (recorder);
 
