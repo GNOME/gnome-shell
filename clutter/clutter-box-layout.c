@@ -35,18 +35,15 @@
  *   <listitem><para>all children are arranged on a single
  *   line;</para></listitem>
  *   <listitem><para>the axis used is controlled by the
- *   #ClutterBoxLayout:vertical boolean property;</para></listitem>
+ *   #ClutterBoxLayout:orientation property;</para></listitem>
  *   <listitem><para>the order of the packing is determined by the
  *   #ClutterBoxLayout:pack-start boolean property;</para></listitem>
  *   <listitem><para>each child will be allocated to its natural
- *   size or, if set to expand, the available size;</para></listitem>
- *   <listitem><para>if a child is set to fill on either (or both)
- *   axis, its allocation will match all the available size; the
- *   fill layout property only makes sense if the expand property is
- *   also set;</para></listitem>
- *   <listitem><para>if a child is set to expand but not to fill then
- *   it is possible to control the alignment using the X and Y alignment
- *   layout properties.</para></listitem>
+ *   size or, if #ClutterActor:x-expand/#ClutterActor:y-expand
+ *   is set, the available size;</para></listitem>
+ *   <listitem><para>honours the #ClutterActor's #ClutterActor:x-align
+ *   and #ClutterActor:y-align properties to fill the available
+ *   size;</para></listitem>
  *   <listitem><para>if the #ClutterBoxLayout:homogeneous boolean property
  *   is set, then all widgets will get the same size, ignoring expand
  *   settings and the preferred sizes</para></listitem>
@@ -61,10 +58,6 @@
  *
  * It is possible to control the spacing between children of a
  * #ClutterBoxLayout by using clutter_box_layout_set_spacing().
- *
- * In order to set the layout properties when packing an actor inside a
- * #ClutterBoxLayout you should use the clutter_box_layout_pack()
- * function.
  *
  * #ClutterBoxLayout is available since Clutter 1.2
  */
@@ -1613,6 +1606,11 @@ clutter_box_layout_get_pack_start (ClutterBoxLayout *layout)
  * and sets the layout properties
  *
  * Since: 1.2
+ * Deprecated: 1.12: #ClutterBoxLayout honours #ClutterActor's
+ *   align and expand properties. The preferred way is adding
+ *   the @actor with clutter_actor_add_child() and setting
+ *   #ClutterActor:x-align, #ClutterActor:y-align,
+ *   #ClutterActor:x-expand and #ClutterActor:y-expand
  */
 void
 clutter_box_layout_pack (ClutterBoxLayout    *layout,
@@ -1664,6 +1662,8 @@ clutter_box_layout_pack (ClutterBoxLayout    *layout,
  * inside @layout
  *
  * Since: 1.2
+ * Deprecated: 1.12: #ClutterBoxLayout will honour #ClutterActor's
+ *   #ClutterActor:x-align and #ClutterActor:y-align properies
  */
 void
 clutter_box_layout_set_alignment (ClutterBoxLayout    *layout,
@@ -1718,6 +1718,8 @@ clutter_box_layout_set_alignment (ClutterBoxLayout    *layout,
  * as set using clutter_box_layout_pack() or clutter_box_layout_set_alignment()
  *
  * Since: 1.2
+ * Deprecated: 1.12: #ClutterBoxLayout will honour #ClutterActor's
+ *   #ClutterActor:x-align and #ClutterActor:y-align properies
  */
 void
 clutter_box_layout_get_alignment (ClutterBoxLayout    *layout,
@@ -1776,6 +1778,8 @@ clutter_box_layout_get_alignment (ClutterBoxLayout    *layout,
  * inside @layout
  *
  * Since: 1.2
+ * Deprecated: 1.12: #ClutterBoxLayout will honour #ClutterActor's
+ *   #ClutterActor:x-align and #ClutterActor:y-align properies
  */
 void
 clutter_box_layout_set_fill (ClutterBoxLayout *layout,
@@ -1830,6 +1834,8 @@ clutter_box_layout_set_fill (ClutterBoxLayout *layout,
  * as set using clutter_box_layout_pack() or clutter_box_layout_set_fill()
  *
  * Since: 1.2
+ * Deprecated: 1.12: #ClutterBoxLayout will honour #ClutterActor's
+ *   #ClutterActor:x-align and #ClutterActor:y-align properies
  */
 void
 clutter_box_layout_get_fill (ClutterBoxLayout *layout,
@@ -1886,6 +1892,8 @@ clutter_box_layout_get_fill (ClutterBoxLayout *layout,
  * Sets whether @actor should expand inside @layout
  *
  * Since: 1.2
+ * Deprecated: 1.12: #ClutterBoxLayout will honour #ClutterActor's
+ *   #ClutterActor:x-expand and #ClutterActor:y-expand properies
  */
 void
 clutter_box_layout_set_expand (ClutterBoxLayout *layout,
@@ -1938,6 +1946,8 @@ clutter_box_layout_set_expand (ClutterBoxLayout *layout,
  * Return value: %TRUE if the #ClutterActor should expand, %FALSE otherwise
  *
  * Since: 1.2
+ * Deprecated: 1.12: #ClutterBoxLayout will honour #ClutterActor's
+ *   #ClutterActor:x-expand and #ClutterActor:y-expand properies
  */
 gboolean
 clutter_box_layout_get_expand (ClutterBoxLayout *layout,

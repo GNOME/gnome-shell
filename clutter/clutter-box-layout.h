@@ -110,25 +110,31 @@ void                    clutter_box_layout_pack                 (ClutterBoxLayou
                                                                  gboolean             y_fill,
                                                                  ClutterBoxAlignment  x_align,
                                                                  ClutterBoxAlignment  y_align);
+CLUTTER_DEPRECATED_IN_1_12
 void                    clutter_box_layout_set_alignment        (ClutterBoxLayout    *layout,
                                                                  ClutterActor        *actor,
                                                                  ClutterBoxAlignment  x_align,
                                                                  ClutterBoxAlignment  y_align);
+CLUTTER_DEPRECATED_IN_1_12
 void                    clutter_box_layout_get_alignment        (ClutterBoxLayout    *layout,
                                                                  ClutterActor        *actor,
                                                                  ClutterBoxAlignment *x_align,
                                                                  ClutterBoxAlignment *y_align);
+CLUTTER_DEPRECATED_IN_1_12
 void                    clutter_box_layout_set_fill             (ClutterBoxLayout    *layout,
                                                                  ClutterActor        *actor,
                                                                  gboolean             x_fill,
                                                                  gboolean             y_fill);
+CLUTTER_DEPRECATED_IN_1_12
 void                    clutter_box_layout_get_fill             (ClutterBoxLayout    *layout,
                                                                  ClutterActor        *actor,
                                                                  gboolean            *x_fill,
                                                                  gboolean            *y_fill);
+CLUTTER_DEPRECATED_IN_1_12
 void                    clutter_box_layout_set_expand           (ClutterBoxLayout    *layout,
                                                                  ClutterActor        *actor,
                                                                  gboolean             expand);
+CLUTTER_DEPRECATED_IN_1_12
 gboolean                clutter_box_layout_get_expand           (ClutterBoxLayout    *layout,
                                                                  ClutterActor        *actor);
 
