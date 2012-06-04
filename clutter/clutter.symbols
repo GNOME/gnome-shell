@@ -756,6 +756,7 @@ clutter_image_get_texture
 clutter_image_get_type
 clutter_image_new
 clutter_image_set_area
+clutter_image_set_bytes
 clutter_image_set_data
 clutter_init
 clutter_init_error_get_type

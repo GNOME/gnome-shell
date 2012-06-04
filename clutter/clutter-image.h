@@ -122,6 +122,14 @@ gboolean                clutter_image_set_area          (ClutterImage           
                                                          const cairo_rectangle_int_t  *rect,
                                                          guint                         row_stride,
                                                          GError                      **error);
+CLUTTER_AVAILABLE_IN_1_12
+gboolean                clutter_image_set_bytes         (ClutterImage                 *image,
+                                                         GBytes                       *data,
+                                                         CoglPixelFormat               pixel_format,
+                                                         guint                         width,
+                                                         guint                         height,
+                                                         guint                         row_stride,
+                                                         GError                      **error);
 
 #if defined(COGL_ENABLE_EXPERIMENTAL_API) && defined(CLUTTER_ENABLE_EXPERIMENTAL_API)
 CLUTTER_AVAILABLE_IN_1_10

@@ -183,7 +183,7 @@ clutter_image_new (void)
  * @row_stride: the length of each row inside @data
  * @error: return location for a #GError, or %NULL
  *
- * Sets the image data to be display by @image.
+ * Sets the image data to be displayed by @image.
  *
  * If the image data was successfully loaded, the @image will be invalidated.
  *
@@ -222,6 +222,69 @@ clutter_image_set_data (ClutterImage     *image,
                                               COGL_PIXEL_FORMAT_ANY,
                                               row_stride,
                                               data);
+  if (priv->texture == NULL)
+    {
+      g_set_error_literal (error, CLUTTER_IMAGE_ERROR,
+                           CLUTTER_IMAGE_ERROR_INVALID_DATA,
+                           _("Unable to load image data"));
+      return FALSE;
+    }
+
+  clutter_content_invalidate (CLUTTER_CONTENT (image));
+
+  return TRUE;
+}
+
+/**
+ * clutter_image_set_bytes:
+ * @image: a #ClutterImage
+ * @data: the image data, as a #GBytes
+ * @pixel_format: the Cogl pixel format of the image data
+ * @width: the width of the image data
+ * @height: the height of the image data
+ * @row_stride: the length of each row inside @data
+ * @error: return location for a #GError, or %NULL
+ *
+ * Sets the image data stored inside a #GBytes to be displayed by @image.
+ *
+ * If the image data was successfully loaded, the @image will be invalidated.
+ *
+ * In case of error, the @error value will be set, and this function will
+ * return %FALSE.
+ *
+ * The image data contained inside the #GBytes is copied in texture memory,
+ * and no additional reference is acquired on the @data.
+ *
+ * Return value: %TRUE if the image data was successfully loaded,
+ *   and %FALSE otherwise.
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_image_set_bytes (ClutterImage     *image,
+                         GBytes           *data,
+                         CoglPixelFormat   pixel_format,
+                         guint             width,
+                         guint             height,
+                         guint             row_stride,
+                         GError          **error)
+{
+  ClutterImagePrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_IMAGE (image), FALSE);
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  priv = image->priv;
+
+  if (priv->texture != NULL)
+    cogl_object_unref (priv->texture);
+
+  priv->texture = cogl_texture_new_from_data (width, height,
+                                              COGL_TEXTURE_NONE,
+                                              pixel_format,
+                                              COGL_PIXEL_FORMAT_ANY,
+                                              row_stride,
+                                              g_bytes_get_data (data, NULL));
   if (priv->texture == NULL)
     {
       g_set_error_literal (error, CLUTTER_IMAGE_ERROR,
