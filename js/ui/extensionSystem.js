@@ -190,16 +190,13 @@ function initExtension(uuid) {
         return;
     }
 
-    if (!extensionModule.init) {
-        logExtensionError(uuid, 'missing \'init\' function');
-        return;
-    }
-
-    try {
-        extensionState = extensionModule.init(extension);
-    } catch (e) {
-        logExtensionError(uuid, 'Failed to evaluate init function:' + e);
-        return;
+    if (extensionModule.init) {
+        try {
+            extensionState = extensionModule.init(extension);
+        } catch (e) {
+            logExtensionError(uuid, 'Failed to evaluate init function:' + e);
+            return;
+        }
     }
 
     if (!extensionState)
