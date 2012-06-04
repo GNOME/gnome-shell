@@ -239,12 +239,10 @@ function onEnabledExtensionsChanged() {
     enabledExtensions = newEnabledExtensions;
 }
 
-function init() {
+function loadExtensions() {
     global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
-}
 
-function loadExtensions() {
     let finder = new ExtensionUtils.ExtensionFinder();
     finder.connect('extension-found', function(signals, extension) {
         loadExtension(extension);

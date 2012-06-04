@@ -221,7 +221,6 @@ function start() {
                                                 false, -1, 1);
 
     if (sessionMode.allowExtensions) {
-        ExtensionSystem.init();
         ExtensionDownloader.init();
         ExtensionSystem.loadExtensions();
     }
