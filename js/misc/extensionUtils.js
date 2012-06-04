@@ -171,7 +171,14 @@ const ExtensionFinder = new Lang.Class({
                 continue;
             let uuid = info.get_name();
             let extensionDir = dir.get_child(uuid);
-            this.emit('extension-found', uuid, extensionDir, type);
+
+            let existing = extensions[uuid];
+            if (existing) {
+                log('Extension %s already installed in %s. %s will not be loaded'.format(uuid, existing.path, extensionDir.get_path()));
+                continue;
+            }
+            let extension = createExtensionObject(uuid, extensionDir, type);
+            this.emit('extension-found', extension);
         }
         fileEnum.close(null);
     },

@@ -207,20 +207,9 @@ const Application = new Lang.Class({
         finder.scanExtensions();
     },
 
-    _extensionFound: function(signals, uuid, dir, type) {
-        if (ExtensionUtils.extensions[uuid] !== undefined)
-            return;
-
-        let extension;
-        try {
-            extension = ExtensionUtils.createExtensionObject(uuid, dir, type);
-        } catch(e) {
-            logError(e, 'Could not create extensions object');
-            return;
-        }
-
+    _extensionFound: function(signals, extension) {
         let iter = this._model.append();
-        this._model.set(iter, [0, 1], [uuid, extension.metadata.name]);
+        this._model.set(iter, [0, 1], [extension.uuid, extension.metadata.name]);
         this._extensionIters[uuid] = iter;
     },
 

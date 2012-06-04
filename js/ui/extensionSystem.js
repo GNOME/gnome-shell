@@ -129,35 +129,21 @@ function logExtensionError(uuid, message, state) {
                                                state: state });
 }
 
-function loadExtension(dir, type, enabled) {
-    let uuid = dir.get_basename();
-    let extension;
-
-    if (ExtensionUtils.extensions[uuid] != undefined) {
-        log('Extension "%s" is already loaded'.format(uuid));
-        return;
-    }
-
-    try {
-        extension = ExtensionUtils.createExtensionObject(uuid, dir, type);
-    } catch(e) {
-        logExtensionError(uuid, e.message);
-        return;
-    }
-
+function loadExtension(extension) {
     // Default to error, we set success as the last step
     extension.state = ExtensionState.ERROR;
 
     if (ExtensionUtils.isOutOfDate(extension)) {
-        logExtensionError(uuid, 'extension is not compatible with current GNOME Shell and/or GJS version', ExtensionState.OUT_OF_DATE);
+        logExtensionError(extension.uuid, 'extension is not compatible with current GNOME Shell and/or GJS version', ExtensionState.OUT_OF_DATE);
         extension.state = ExtensionState.OUT_OF_DATE;
         return;
     }
 
+    let enabled = enabledExtensions.indexOf(extension.uuid) != -1;
     if (enabled) {
-        initExtension(uuid);
+        initExtension(extension.uuid);
         if (extension.state == ExtensionState.DISABLED)
-            enableExtension(uuid);
+            enableExtension(extension.uuid);
     } else {
         extension.state = ExtensionState.INITIALIZED;
     }
@@ -263,9 +249,8 @@ function init() {
 
 function loadExtensions() {
     let finder = new ExtensionUtils.ExtensionFinder();
-    finder.connect('extension-found', function(signals, uuid, dir, type) {
-        let enabled = enabledExtensions.indexOf(uuid) != -1;
-        loadExtension(dir, type, enabled);
+    finder.connect('extension-found', function(signals, extension) {
+        loadExtension(extension);
     });
     finder.scanExtensions();
 }
