@@ -2614,6 +2614,40 @@ _clutter_process_event_details (ClutterActor        *stage,
       case CLUTTER_TOUCH_BEGIN:
       case CLUTTER_TOUCH_UPDATE:
       case CLUTTER_TOUCH_END:
+        {
+          ClutterActor *actor;
+          gfloat x, y;
+
+          clutter_event_get_coords (event, &x, &y);
+
+          /* Only do a pick to find the source if source is not already set
+           * (as it could be in a synthetic event)
+           */
+          if (event->any.source == NULL)
+            {
+              actor = _clutter_stage_do_pick (CLUTTER_STAGE (stage),
+                                              x, y,
+                                              CLUTTER_PICK_REACTIVE);
+              if (actor == NULL)
+                break;
+
+              event->any.source = actor;
+            }
+          else
+            {
+              /* use the source already set in the synthetic event */
+              actor = event->any.source;
+            }
+
+          CLUTTER_NOTE (EVENT,
+                        "Reactive event received at %.2f, %.2f - actor: %p",
+                        x, y,
+                        actor);
+
+          emit_pointer_event (event, device);
+          break;
+        }
+
       case CLUTTER_TOUCH_CANCEL:
         break;
 
