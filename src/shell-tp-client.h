@@ -112,5 +112,7 @@ void shell_get_contact_events (TplLogManager *log_manager,
 void shell_decline_dispatch_op (TpAddDispatchOperationContext *context,
                                 const gchar *message);
 
+gboolean shell_is_channel_invalidated (TpChannel *channel);
+
 G_END_DECLS
 #endif /* __SHELL_TP_CLIENT_H__ */

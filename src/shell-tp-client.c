@@ -369,3 +369,9 @@ shell_decline_dispatch_op (TpAddDispatchOperationContext *context,
   tp_add_dispatch_operation_context_fail (context, error);
   g_error_free (error);
 }
+
+/* gjs doesn't cope with tp_proxy_get_invalidated() returning a GError */
+gboolean shell_is_channel_invalidated (TpChannel *channel)
+{
+  return tp_proxy_get_invalidated (channel) != NULL;
+}
