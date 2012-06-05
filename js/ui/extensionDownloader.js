@@ -41,22 +41,14 @@ function uninstallExtensionFromUUID(uuid) {
     if (!extension)
         return false;
 
-    // Try to disable it -- if it's ERROR'd, we can't guarantee that,
-    // but it will be removed on next reboot, and hopefully nothing
-    // broke too much.
-    ExtensionSystem.disableExtension(uuid);
-
     // Don't try to uninstall system extensions
     if (extension.type != ExtensionUtils.ExtensionType.PER_USER)
         return false;
 
-    extension.state = ExtensionSystem.ExtensionState.UNINSTALLED;
-    _signals.emit('extension-state-changed', extension);
+    if (!ExtensionSystem.unloadExtension(uuid))
+        return false;
 
-    delete ExtensionUtils.extensions[uuid];
-
-    FileUtils.recursivelyDeleteDir(Gio.file_new_for_path(extension.path));
-
+    FileUtils.recursivelyDeleteDir(extension.dir);
     return true;
 }
 
