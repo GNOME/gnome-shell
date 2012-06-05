@@ -8,6 +8,10 @@
  * GAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
+ * Implementation of atk_text_get_text_[before/at/after]_offset
+ * copied from gtkpango.c, part of GTK+ project
+ * Copyright (c) 2010 Red Hat, Inc.
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -368,6 +372,706 @@ cally_text_ref_state_set   (AtkObject *obj)
   return result;
 }
 
+/***** pango stuff ****
+ *
+ * FIXME: all this pango related code used to implement
+ * atk_text_get_text_[before/at/after]_offset was copied from GTK, and
+ * should be on a common library (like pango itself).
+ *
+ *********************/
+
+/*
+ * _gtk_pango_move_chars:
+ * @layout: a #PangoLayout
+ * @offset: a character offset in @layout
+ * @count: the number of characters to move from @offset
+ *
+ * Returns the position that is @count characters from the
+ * given @offset. @count may be positive or negative.
+ *
+ * For the purpose of this function, characters are defined
+ * by what Pango considers cursor positions.
+ *
+ * Returns: the new position
+ */
+static gint
+_gtk_pango_move_chars (PangoLayout *layout,
+                       gint         offset,
+                       gint         count)
+{
+  const PangoLogAttr *attrs;
+  gint n_attrs;
+
+  attrs = pango_layout_get_log_attrs_readonly (layout, &n_attrs);
+
+  while (count > 0 && offset < n_attrs - 1)
+    {
+      do
+        offset++;
+      while (offset < n_attrs - 1 && !attrs[offset].is_cursor_position);
+
+      count--;
+    }
+  while (count < 0 && offset > 0)
+    {
+      do
+        offset--;
+      while (offset > 0 && !attrs[offset].is_cursor_position);
+
+      count++;
+    }
+
+  return offset;
+}
+
+/*
+ * _gtk_pango_move_words:
+ * @layout: a #PangoLayout
+ * @offset: a character offset in @layout
+ * @count: the number of words to move from @offset
+ *
+ * Returns the position that is @count words from the
+ * given @offset. @count may be positive or negative.
+ *
+ * If @count is positive, the returned position will
+ * be a word end, otherwise it will be a word start.
+ * See the Pango documentation for details on how
+ * word starts and ends are defined.
+ *
+ * Returns: the new position
+ */
+static gint
+_gtk_pango_move_words (PangoLayout  *layout,
+                       gint          offset,
+                       gint          count)
+{
+  const PangoLogAttr *attrs;
+  gint n_attrs;
+
+  attrs = pango_layout_get_log_attrs_readonly (layout, &n_attrs);
+
+  while (count > 0 && offset < n_attrs - 1)
+    {
+      do
+        offset++;
+      while (offset < n_attrs - 1 && !attrs[offset].is_word_end);
+
+      count--;
+    }
+  while (count < 0 && offset > 0)
+    {
+      do
+        offset--;
+      while (offset > 0 && !attrs[offset].is_word_start);
+
+      count++;
+    }
+
+  return offset;
+}
+
+/*
+ * _gtk_pango_move_sentences:
+ * @layout: a #PangoLayout
+ * @offset: a character offset in @layout
+ * @count: the number of sentences to move from @offset
+ *
+ * Returns the position that is @count sentences from the
+ * given @offset. @count may be positive or negative.
+ *
+ * If @count is positive, the returned position will
+ * be a sentence end, otherwise it will be a sentence start.
+ * See the Pango documentation for details on how
+ * sentence starts and ends are defined.
+ *
+ * Returns: the new position
+ */
+static gint
+_gtk_pango_move_sentences (PangoLayout  *layout,
+                           gint          offset,
+                           gint          count)
+{
+  const PangoLogAttr *attrs;
+  gint n_attrs;
+
+  attrs = pango_layout_get_log_attrs_readonly (layout, &n_attrs);
+
+  while (count > 0 && offset < n_attrs - 1)
+    {
+      do
+        offset++;
+      while (offset < n_attrs - 1 && !attrs[offset].is_sentence_end);
+
+      count--;
+    }
+  while (count < 0 && offset > 0)
+    {
+      do
+        offset--;
+      while (offset > 0 && !attrs[offset].is_sentence_start);
+
+      count++;
+    }
+
+  return offset;
+}
+
+/*
+ * _gtk_pango_is_inside_word:
+ * @layout: a #PangoLayout
+ * @offset: a character offset in @layout
+ *
+ * Returns whether the given position is inside
+ * a word.
+ *
+ * Returns: %TRUE if @offset is inside a word
+ */
+static gboolean
+_gtk_pango_is_inside_word (PangoLayout  *layout,
+                           gint          offset)
+{
+  const PangoLogAttr *attrs;
+  gint n_attrs;
+
+  attrs = pango_layout_get_log_attrs_readonly (layout, &n_attrs);
+
+  while (offset >= 0 &&
+         !(attrs[offset].is_word_start || attrs[offset].is_word_end))
+    offset--;
+
+  if (offset >= 0)
+    return attrs[offset].is_word_start;
+
+  return FALSE;
+}
+
+/*
+ * _gtk_pango_is_inside_sentence:
+ * @layout: a #PangoLayout
+ * @offset: a character offset in @layout
+ *
+ * Returns whether the given position is inside
+ * a sentence.
+ *
+ * Returns: %TRUE if @offset is inside a sentence
+ */
+static gboolean
+_gtk_pango_is_inside_sentence (PangoLayout  *layout,
+                               gint          offset)
+{
+  const PangoLogAttr *attrs;
+  gint n_attrs;
+
+  attrs = pango_layout_get_log_attrs_readonly (layout, &n_attrs);
+
+  while (offset >= 0 &&
+         !(attrs[offset].is_sentence_start || attrs[offset].is_sentence_end))
+    offset--;
+
+  if (offset >= 0)
+    return attrs[offset].is_sentence_start;
+
+  return FALSE;
+}
+
+static void
+pango_layout_get_line_before (PangoLayout     *layout,
+                              AtkTextBoundary  boundary_type,
+                              gint             offset,
+                              gint            *start_offset,
+                              gint            *end_offset)
+{
+  PangoLayoutIter *iter;
+  PangoLayoutLine *line, *prev_line = NULL, *prev_prev_line = NULL;
+  gint index, start_index, end_index;
+  const gchar *text;
+  gboolean found = FALSE;
+
+  text = pango_layout_get_text (layout);
+  index = g_utf8_offset_to_pointer (text, offset) - text;
+  iter = pango_layout_get_iter (layout);
+  do
+    {
+      line = pango_layout_iter_get_line (iter);
+      start_index = line->start_index;
+      end_index = start_index + line->length;
+
+      if (index >= start_index && index <= end_index)
+        {
+          /* Found line for offset */
+          if (prev_line)
+            {
+              switch (boundary_type)
+                {
+                case ATK_TEXT_BOUNDARY_LINE_START:
+                  end_index = start_index;
+                  start_index = prev_line->start_index;
+                  break;
+                case ATK_TEXT_BOUNDARY_LINE_END:
+                  if (prev_prev_line)
+                    start_index = prev_prev_line->start_index + prev_prev_line->length;
+                  else
+                    start_index = 0;
+                  end_index = prev_line->start_index + prev_line->length;
+                  break;
+                default:
+                  g_assert_not_reached();
+                }
+            }
+          else
+            start_index = end_index = 0;
+
+          found = TRUE;
+          break;
+        }
+
+      prev_prev_line = prev_line;
+      prev_line = line;
+    }
+  while (pango_layout_iter_next_line (iter));
+
+  if (!found)
+    {
+      start_index = prev_line->start_index + prev_line->length;
+      end_index = start_index;
+    }
+  pango_layout_iter_free (iter);
+
+  *start_offset = g_utf8_pointer_to_offset (text, text + start_index);
+  *end_offset = g_utf8_pointer_to_offset (text, text + end_index);
+}
+
+static void
+pango_layout_get_line_at (PangoLayout     *layout,
+                          AtkTextBoundary  boundary_type,
+                          gint             offset,
+                          gint            *start_offset,
+                          gint            *end_offset)
+{
+  PangoLayoutIter *iter;
+  PangoLayoutLine *line, *prev_line = NULL;
+  gint index, start_index, end_index;
+  const gchar *text;
+  gboolean found = FALSE;
+
+  text = pango_layout_get_text (layout);
+  index = g_utf8_offset_to_pointer (text, offset) - text;
+  iter = pango_layout_get_iter (layout);
+  do
+    {
+      line = pango_layout_iter_get_line (iter);
+      start_index = line->start_index;
+      end_index = start_index + line->length;
+
+      if (index >= start_index && index <= end_index)
+        {
+          /* Found line for offset */
+          switch (boundary_type)
+            {
+            case ATK_TEXT_BOUNDARY_LINE_START:
+              if (pango_layout_iter_next_line (iter))
+                end_index = pango_layout_iter_get_line (iter)->start_index;
+              break;
+            case ATK_TEXT_BOUNDARY_LINE_END:
+              if (prev_line)
+                start_index = prev_line->start_index + prev_line->length;
+              break;
+            default:
+              g_assert_not_reached();
+            }
+
+          found = TRUE;
+          break;
+        }
+
+      prev_line = line;
+    }
+  while (pango_layout_iter_next_line (iter));
+
+  if (!found)
+    {
+      start_index = prev_line->start_index + prev_line->length;
+      end_index = start_index;
+    }
+  pango_layout_iter_free (iter);
+
+  *start_offset = g_utf8_pointer_to_offset (text, text + start_index);
+  *end_offset = g_utf8_pointer_to_offset (text, text + end_index);
+}
+
+static void
+pango_layout_get_line_after (PangoLayout     *layout,
+                             AtkTextBoundary  boundary_type,
+                             gint             offset,
+                             gint            *start_offset,
+                             gint            *end_offset)
+{
+  PangoLayoutIter *iter;
+  PangoLayoutLine *line, *prev_line = NULL;
+  gint index, start_index, end_index;
+  const gchar *text;
+  gboolean found = FALSE;
+
+  text = pango_layout_get_text (layout);
+  index = g_utf8_offset_to_pointer (text, offset) - text;
+  iter = pango_layout_get_iter (layout);
+  do
+    {
+      line = pango_layout_iter_get_line (iter);
+      start_index = line->start_index;
+      end_index = start_index + line->length;
+
+      if (index >= start_index && index <= end_index)
+        {
+          /* Found line for offset */
+          if (pango_layout_iter_next_line (iter))
+            {
+              line = pango_layout_iter_get_line (iter);
+              switch (boundary_type)
+                {
+                case ATK_TEXT_BOUNDARY_LINE_START:
+                  start_index = line->start_index;
+                  if (pango_layout_iter_next_line (iter))
+                    end_index = pango_layout_iter_get_line (iter)->start_index;
+                  else
+                    end_index = start_index + line->length;
+                  break;
+                case ATK_TEXT_BOUNDARY_LINE_END:
+                  start_index = end_index;
+                  end_index = line->start_index + line->length;
+                  break;
+                default:
+                  g_assert_not_reached();
+                }
+            }
+          else
+            start_index = end_index;
+
+          found = TRUE;
+          break;
+        }
+
+      prev_line = line;
+    }
+  while (pango_layout_iter_next_line (iter));
+
+  if (!found)
+    {
+      start_index = prev_line->start_index + prev_line->length;
+      end_index = start_index;
+    }
+  pango_layout_iter_free (iter);
+
+  *start_offset = g_utf8_pointer_to_offset (text, text + start_index);
+  *end_offset = g_utf8_pointer_to_offset (text, text + end_index);
+}
+
+/*
+ * _gtk_pango_get_text_at:
+ * @layout: a #PangoLayout
+ * @boundary_type: a #AtkTextBoundary
+ * @offset: a character offset in @layout
+ * @start_offset: return location for the start of the returned text
+ * @end_offset: return location for the end of the return text
+ *
+ * Gets a slice of the text from @layout at @offset.
+ *
+ * The @boundary_type determines the size of the returned slice of
+ * text. For the exact semantics of this function, see
+ * atk_text_get_text_after_offset().
+ *
+ * Returns: a newly allocated string containing a slice of text
+ *     from layout. Free with g_free().
+ */
+static gchar *
+_gtk_pango_get_text_at (PangoLayout     *layout,
+                        AtkTextBoundary  boundary_type,
+                        gint             offset,
+                        gint            *start_offset,
+                        gint            *end_offset)
+{
+  const gchar *text;
+  gint start, end;
+  const PangoLogAttr *attrs;
+  gint n_attrs;
+
+  text = pango_layout_get_text (layout);
+
+  if (text[0] == 0)
+    {
+      *start_offset = 0;
+      *end_offset = 0;
+      return g_strdup ("");
+    }
+
+  attrs = pango_layout_get_log_attrs_readonly (layout, &n_attrs);
+
+  start = offset;
+  end = start;
+
+  switch (boundary_type)
+    {
+    case ATK_TEXT_BOUNDARY_CHAR:
+      end = _gtk_pango_move_chars (layout, end, 1);
+      break;
+
+    case ATK_TEXT_BOUNDARY_WORD_START:
+      if (!attrs[start].is_word_start)
+        start = _gtk_pango_move_words (layout, start, -1);
+      if (_gtk_pango_is_inside_word (layout, end))
+        end = _gtk_pango_move_words (layout, end, 1);
+      while (!attrs[end].is_word_start && end < n_attrs - 1)
+        end = _gtk_pango_move_chars (layout, end, 1);
+      break;
+
+    case ATK_TEXT_BOUNDARY_WORD_END:
+      if (_gtk_pango_is_inside_word (layout, start) &&
+          !attrs[start].is_word_start)
+        start = _gtk_pango_move_words (layout, start, -1);
+      while (!attrs[start].is_word_end && start > 0)
+        start = _gtk_pango_move_chars (layout, start, -1);
+      end = _gtk_pango_move_words (layout, end, 1);
+      break;
+
+    case ATK_TEXT_BOUNDARY_SENTENCE_START:
+      if (!attrs[start].is_sentence_start)
+        start = _gtk_pango_move_sentences (layout, start, -1);
+      if (_gtk_pango_is_inside_sentence (layout, end))
+        end = _gtk_pango_move_sentences (layout, end, 1);
+      while (!attrs[end].is_sentence_start && end < n_attrs - 1)
+        end = _gtk_pango_move_chars (layout, end, 1);
+      break;
+
+    case ATK_TEXT_BOUNDARY_SENTENCE_END:
+      if (_gtk_pango_is_inside_sentence (layout, start) &&
+          !attrs[start].is_sentence_start)
+        start = _gtk_pango_move_sentences (layout, start, -1);
+      while (!attrs[start].is_sentence_end && start > 0)
+        start = _gtk_pango_move_chars (layout, start, -1);
+      end = _gtk_pango_move_sentences (layout, end, 1);
+      break;
+
+    case ATK_TEXT_BOUNDARY_LINE_START:
+    case ATK_TEXT_BOUNDARY_LINE_END:
+      pango_layout_get_line_at (layout, boundary_type, offset, &start, &end);
+      break;
+    }
+
+  *start_offset = start;
+  *end_offset = end;
+
+  g_assert (start <= end);
+
+  return g_utf8_substring (text, start, end);
+}
+
+/*
+ * _gtk_pango_get_text_before:
+ * @layout: a #PangoLayout
+ * @boundary_type: a #AtkTextBoundary
+ * @offset: a character offset in @layout
+ * @start_offset: return location for the start of the returned text
+ * @end_offset: return location for the end of the return text
+ *
+ * Gets a slice of the text from @layout before @offset.
+ *
+ * The @boundary_type determines the size of the returned slice of
+ * text. For the exact semantics of this function, see
+ * atk_text_get_text_before_offset().
+ *
+ * Returns: a newly allocated string containing a slice of text
+ *     from layout. Free with g_free().
+ */
+static gchar *
+_gtk_pango_get_text_before (PangoLayout     *layout,
+                            AtkTextBoundary  boundary_type,
+                            gint             offset,
+                            gint            *start_offset,
+                            gint            *end_offset)
+{
+  const gchar *text;
+  gint start, end;
+  const PangoLogAttr *attrs;
+  gint n_attrs;
+
+  text = pango_layout_get_text (layout);
+
+  if (text[0] == 0)
+    {
+      *start_offset = 0;
+      *end_offset = 0;
+      return g_strdup ("");
+    }
+
+  attrs = pango_layout_get_log_attrs_readonly (layout, &n_attrs);
+
+  start = offset;
+  end = start;
+
+  switch (boundary_type)
+    {
+    case ATK_TEXT_BOUNDARY_CHAR:
+      start = _gtk_pango_move_chars (layout, start, -1);
+      break;
+
+    case ATK_TEXT_BOUNDARY_WORD_START:
+      if (!attrs[start].is_word_start)
+        start = _gtk_pango_move_words (layout, start, -1);
+      end = start;
+      start = _gtk_pango_move_words (layout, start, -1);
+      break;
+
+    case ATK_TEXT_BOUNDARY_WORD_END:
+      if (_gtk_pango_is_inside_word (layout, start) &&
+          !attrs[start].is_word_start)
+        start = _gtk_pango_move_words (layout, start, -1);
+      while (!attrs[start].is_word_end && start > 0)
+        start = _gtk_pango_move_chars (layout, start, -1);
+      end = start;
+      start = _gtk_pango_move_words (layout, start, -1);
+      while (!attrs[start].is_word_end && start > 0)
+        start = _gtk_pango_move_chars (layout, start, -1);
+      break;
+
+    case ATK_TEXT_BOUNDARY_SENTENCE_START:
+      if (!attrs[start].is_sentence_start)
+        start = _gtk_pango_move_sentences (layout, start, -1);
+      end = start;
+      start = _gtk_pango_move_sentences (layout, start, -1);
+      break;
+
+    case ATK_TEXT_BOUNDARY_SENTENCE_END:
+      if (_gtk_pango_is_inside_sentence (layout, start) &&
+          !attrs[start].is_sentence_start)
+        start = _gtk_pango_move_sentences (layout, start, -1);
+      while (!attrs[start].is_sentence_end && start > 0)
+        start = _gtk_pango_move_chars (layout, start, -1);
+      end = start;
+      start = _gtk_pango_move_sentences (layout, start, -1);
+      while (!attrs[start].is_sentence_end && start > 0)
+        start = _gtk_pango_move_chars (layout, start, -1);
+      break;
+
+    case ATK_TEXT_BOUNDARY_LINE_START:
+    case ATK_TEXT_BOUNDARY_LINE_END:
+      pango_layout_get_line_before (layout, boundary_type, offset, &start, &end);
+      break;
+    }
+
+  *start_offset = start;
+  *end_offset = end;
+
+  g_assert (start <= end);
+
+  return g_utf8_substring (text, start, end);
+}
+
+/*
+ * _gtk_pango_get_text_after:
+ * @layout: a #PangoLayout
+ * @boundary_type: a #AtkTextBoundary
+ * @offset: a character offset in @layout
+ * @start_offset: return location for the start of the returned text
+ * @end_offset: return location for the end of the return text
+ *
+ * Gets a slice of the text from @layout after @offset.
+ *
+ * The @boundary_type determines the size of the returned slice of
+ * text. For the exact semantics of this function, see
+ * atk_text_get_text_after_offset().
+ *
+ * Returns: a newly allocated string containing a slice of text
+ *     from layout. Free with g_free().
+ */
+static gchar *
+_gtk_pango_get_text_after (PangoLayout     *layout,
+                           AtkTextBoundary  boundary_type,
+                           gint             offset,
+                           gint            *start_offset,
+                           gint            *end_offset)
+{
+  const gchar *text;
+  gint start, end;
+  const PangoLogAttr *attrs;
+  gint n_attrs;
+
+  text = pango_layout_get_text (layout);
+
+  if (text[0] == 0)
+    {
+      *start_offset = 0;
+      *end_offset = 0;
+      return g_strdup ("");
+    }
+
+  attrs = pango_layout_get_log_attrs_readonly (layout, &n_attrs);
+
+  start = offset;
+  end = start;
+
+  switch (boundary_type)
+    {
+    case ATK_TEXT_BOUNDARY_CHAR:
+      start = _gtk_pango_move_chars (layout, start, 1);
+      end = start;
+      end = _gtk_pango_move_chars (layout, end, 1);
+      break;
+
+    case ATK_TEXT_BOUNDARY_WORD_START:
+      if (_gtk_pango_is_inside_word (layout, end))
+        end = _gtk_pango_move_words (layout, end, 1);
+      while (!attrs[end].is_word_start && end < n_attrs - 1)
+        end = _gtk_pango_move_chars (layout, end, 1);
+      start = end;
+      if (end < n_attrs - 1)
+        {
+          end = _gtk_pango_move_words (layout, end, 1);
+          while (!attrs[end].is_word_start && end < n_attrs - 1)
+            end = _gtk_pango_move_chars (layout, end, 1);
+        }
+      break;
+
+    case ATK_TEXT_BOUNDARY_WORD_END:
+      end = _gtk_pango_move_words (layout, end, 1);
+      start = end;
+      if (end < n_attrs - 1)
+        end = _gtk_pango_move_words (layout, end, 1);
+      break;
+
+    case ATK_TEXT_BOUNDARY_SENTENCE_START:
+      if (_gtk_pango_is_inside_sentence (layout, end))
+        end = _gtk_pango_move_sentences (layout, end, 1);
+      while (!attrs[end].is_sentence_start && end < n_attrs - 1)
+        end = _gtk_pango_move_chars (layout, end, 1);
+      start = end;
+      if (end < n_attrs - 1)
+        {
+          end = _gtk_pango_move_sentences (layout, end, 1);
+          while (!attrs[end].is_sentence_start && end < n_attrs - 1)
+            end = _gtk_pango_move_chars (layout, end, 1);
+        }
+      break;
+
+    case ATK_TEXT_BOUNDARY_SENTENCE_END:
+      end = _gtk_pango_move_sentences (layout, end, 1);
+      start = end;
+      if (end < n_attrs - 1)
+        end = _gtk_pango_move_sentences (layout, end, 1);
+      break;
+
+    case ATK_TEXT_BOUNDARY_LINE_START:
+    case ATK_TEXT_BOUNDARY_LINE_END:
+      pango_layout_get_line_after (layout, boundary_type, offset, &start, &end);
+      break;
+    }
+
+  *start_offset = start;
+  *end_offset = end;
+
+  g_assert (start <= end);
+
+  return g_utf8_substring (text, start, end);
+}
 
 /***** atktext.h ******/
 
@@ -449,28 +1153,14 @@ cally_text_get_text_before_offset (AtkText	    *text,
 				   gint		    *end_offset)
 {
   ClutterActor *actor        = NULL;
-#if 0
-  ClutterText  *clutter_text = NULL;
-  CallyText    *cally_text   = NULL;
-#endif
 
   actor = CALLY_GET_CLUTTER_ACTOR (text);
   if (actor == NULL) /* State is defunct */
     return NULL;
 
-#if 0
-  clutter_text = CLUTTER_TEXT (actor);
-  cally_text = CALLY_TEXT (text);
-
-  return gail_text_util_get_text (cally_text->priv->textutil,
-                                  clutter_text_get_layout (clutter_text),
-                                  GAIL_BEFORE_OFFSET,
-                                  boundary_type,
-                                  offset,
-                                  start_offset, end_offset);
-#endif
-
-  return NULL;
+  return _gtk_pango_get_text_before (clutter_text_get_layout (CLUTTER_TEXT (actor)),
+                                     boundary_type, offset,
+                                     start_offset, end_offset);
 }
 
 static gchar*
@@ -481,28 +1171,14 @@ cally_text_get_text_at_offset (AtkText         *text,
                                gint            *end_offset)
 {
   ClutterActor *actor        = NULL;
-#if 0
-  ClutterText  *clutter_text = NULL;
-  CallyText    *cally_text   = NULL;
-#endif
 
   actor = CALLY_GET_CLUTTER_ACTOR (text);
   if (actor == NULL) /* State is defunct */
     return NULL;
 
-#if 0
-  clutter_text = CLUTTER_TEXT (actor);
-  cally_text = CALLY_TEXT (text);
-
-  return gail_text_util_get_text (cally_text->priv->textutil,
-                                  clutter_text_get_layout (clutter_text),
-                                  GAIL_AT_OFFSET,
-                                  boundary_type,
-                                  offset,
-                                  start_offset, end_offset);
-#endif
-
-  return NULL;
+  return _gtk_pango_get_text_at (clutter_text_get_layout (CLUTTER_TEXT (actor)),
+                                 boundary_type, offset,
+                                 start_offset, end_offset);
 }
 
 static gchar*
@@ -513,28 +1189,14 @@ cally_text_get_text_after_offset (AtkText         *text,
                                   gint            *end_offset)
 {
   ClutterActor *actor        = NULL;
-#if 0
-  ClutterText  *clutter_text = NULL;
-  CallyText    *cally_text   = NULL;
-#endif
 
   actor = CALLY_GET_CLUTTER_ACTOR (text);
   if (actor == NULL) /* State is defunct */
     return NULL;
 
-#if 0
-  clutter_text = CLUTTER_TEXT (actor);
-  cally_text = CALLY_TEXT (text);
-
-  return gail_text_util_get_text (cally_text->priv->textutil,
-                                  clutter_text_get_layout (clutter_text),
-                                  GAIL_AFTER_OFFSET,
-                                  boundary_type,
-                                  offset,
-                                  start_offset, end_offset);
-#endif
-
-  return NULL;
+  return _gtk_pango_get_text_after (clutter_text_get_layout (CLUTTER_TEXT (actor)),
+                                    boundary_type, offset,
+                                    start_offset, end_offset);
 }
 
 static gint
