@@ -1,3 +1,25 @@
+3.5.2
+=====
+* keybindings: Remove 'toggle-recording' binding [Florian; #674376]
+* Switch to gtk-doc syntax [Jasper; #673752]
+* shaped-texture: never slice shape mask texture [Robert; #674731]
+* Make Mutter stop relying on Cogl including a GL header [Neil; #672711]
+* Make support for "XFree86" Xinerama mandatory [Owen; #674727]
+* meta_window_move_frame(): fix crash when frame is NULL [Owen; #675254]
+* Fix memory leaks [Pavel; #672640]
+* Code cleanups [Jasper; #671104 #674876 #676052]
+* Look for themes in XDG user data dir [Jasper; #675316]
+* Remove frame pixel caching [Jasper; #675111]
+* stack: Ignore keep-on-top property on maximized windows [Florian; #673581]
+* Misc. fixes [Javier, Jasper, Owen, Rico]
+
+Contributors:
+ Robert Bragg, Javier Járdon, Florian Müllner, Neil Roberts, Jasper St. Pierre, 
+ Owen Taylor, Rico Tzschichholz, Pavel Vasin
+
+Translations:
+ Praveen Illa [te], Luca Ferretti [it], Daniel Mustieles [es]
+
 3.4.1
 =====
 * API change: the meta_display_add_keybinding() function added in 3.4
