@@ -1,3 +1,103 @@
+Clutter 1.11.4                                                       2012-06-05
+===============================================================================
+
+  • List of changes since Clutter 1.11.2
+
+    - Multi-touch support fixes
+    The clutter_event_copy() code was copying the wrong axis data; the correct
+    touch device was not used when translating axis data from XInput2 to the
+    ClutterInputDevice; touch events were not delivered to the correct actors.
+
+    - Add ClutterDropAction::drop-cancel signal
+    The ::drop-cancel does what it says on the tin: it allows handling a
+    cancelled drop action, instead of relying on the drag end signal on
+    the ClutterDragAction.
+
+    - Add examples in the repository
+    Clutter has been using some interactive tests as examples of idiomatic
+    usage, both as standalone code and for inclusion inside the API reference
+    documentation; this is sub-optimal, as the interactive tests are meant to
+    exercise the API and its behaviour, not as an example of how to write
+    proper Clutter code. For this reason, we now have an examples/ directory
+    that contains example code that can be used to learn Clutter.
+
+    - Allow disabling the tests and examples when building Clutter
+    This should help cross-compilation and testing.
+
+    - Fix the preferred size to always include the actor's margin
+
+    - Fix picking of the ClutterScrollActor
+
+    - Add implicit animations for the color properties of ClutterText
+    Changing any color-related properties of a ClutterText actor will result
+    in a transition, if the easing state has a non-zero duration.
+
+    - Layout managers should respect the child expand and align properties
+    ClutterBinLayout, ClutterBoxLayout, and ClutterTableLayout should use the
+    ClutterActor [xy]-expand and [xy]-align properties, and deprecate their
+    own.
+
+    - Make all layout managers respect the child easing state when allocating
+    ClutterLayoutManager also has properties that can be set to control all
+    the children's default easing state.
+
+    - Add ClutterTimeline::stopped signal
+    The ::stopped signal is emitted either when a Timeline reaches full
+    completion, including eventual repeats; or when the Timeline has been
+    stopped through clutter_timeline_stop(). A boolean argument passed to
+    the signal handlers should be used to distinguish the two cases.
+
+    - Add ClutterGridLayout
+    This layout manager implements the same layout policy of GtkGrid.
+
+    - Fixes for ClutterKeyframeTransition
+
+    - Documentation fixes
+
+    - Fixes for building Clutter with Visual Studio
+    Including the GDK backend.
+
+    - Fixes for the Mac backend
+    Chain up to get a Cogl context after creating a GL context; this seems
+    to be enough to make the interactive tests run.
+
+  • List of bugs fixed since Clutter 1.11.2
+
+    [bugzilla.gnome.org]
+    #675336 - ClutterDropAction needs a ::drop-cancel signal
+    #675371 - Asserts when getting touch events
+    #676088 - Fixing picking in scroll-actor "breaks" gnome-control-center
+    #676032 - keyframe-transition: Documentation fixes
+    #676031 - keyframe-transition: Create a new interval if necessary
+    #676158 - table-layout: Remove unused animation helpers
+    #676334 - scroll-actor: Fix ->transition not being reset
+    #675890 - Passing NULL buffer to clutter_text_set_text() will not reset
+              the buffer and segfault
+    #676367 - actor: Add a custom scriptable "margin" property
+    #676068 - Setting size on ClutterFlowLayout container crashes
+    #676963 - text: Enable implicit color animations
+    #675396 - Possible bug in _clutter_paint_volume_axis_align
+    #674365 - Race during parallel build in tests/interactive/
+    #676827 - layout-manager: Add a new animation API
+    #677085 - examples: Allow optional animations in flow-layout
+    #677086 - box-layout: Remove unused BoxChild members
+    #677098 - Ensure we stop transitions on remove_child()
+    #676854 - timeline: Add a new "finished" signal
+    #677039 - Wrong allocation for WIDTH_FOR_HEIGHT actors
+    #675998 - Example 4.2 mixes up height and width
+    #677384 - doc: Add ClutterLayoutManagerPrivate to doc sections
+    #677284 - table-layout: Honor actors expand and alignment settings
+    #677283 - box-layout: Honor actor expand and alignment
+    #677372 - Add ClutterGridLayout
+    #677390 - events: Deliver touch events to actors
+
+Many thanks to:
+
+  Bastian Winkler, Chun-wei Fan, Bastien Nocera, Daniel Mustieles, Fran
+  Diéguez, Tomeu Vizoso, Tristan Van Berkom, Alexander Larsson, Alexandre
+  Franke, Bruno Brouard, Debarshi Ray, Dominique Bureau, Emanuele Aina, Matej
+  Urbančič, Mike Ruprecht, Piotr Drąg
+
 Clutter 1.11.2                                                       2012-04-30
 ===============================================================================
 
