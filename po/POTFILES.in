@@ -24,6 +24,7 @@ clutter/clutter-drop-action.c
 clutter/clutter-event.c
 clutter/clutter-flow-layout.c
 clutter/clutter-gesture-action.c
+clutter/clutter-grid-layout.c
 clutter/clutter-image.c
 clutter/clutter-input-device.c
 clutter/clutter-interval.c
