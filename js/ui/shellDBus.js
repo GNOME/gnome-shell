@@ -67,6 +67,9 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
 <method name="LaunchExtensionPrefs">
     <arg type="s" direction="in" name="uuid"/>
 </method>
+<method name="ReloadExtension">
+    <arg type="s" direction="in" name="uuid"/>
+</method>
 <property name="OverviewActive" type="b" access="readwrite" />
 <property name="ApiVersion" type="i" access="read" />
 <property name="ShellVersion" type="s" access="read" />
@@ -267,6 +270,11 @@ const GnomeShell = new Lang.Class({
         let app = appSys.lookup_app('gnome-shell-extension-prefs.desktop');
         app.launch(global.display.get_current_time_roundtrip(),
                    ['extension:///' + uuid], -1, null);
+    },
+
+    ReloadExtension: function(uuid) {
+        ExtensionSystem.unloadExtension(uuid);
+        ExtensionSystem.loadExtension(uuid);
     },
 
     get OverviewActive() {
