@@ -2177,6 +2177,7 @@ control_rect (MetaFrameControl control,
 }
 
 #define TOP_RESIZE_HEIGHT 4
+#define CORNER_SIZE_MULT 2
 static MetaFrameControl
 get_control (MetaFrames *frames,
              MetaUIFrame *frame,
@@ -2264,8 +2265,8 @@ get_control (MetaFrames *frames,
    * in case of overlap.
    */
 
-  if (y >= (fgeom.height - fgeom.borders.total.bottom) &&
-      x >= (fgeom.width - fgeom.borders.total.right))
+  if (y >= (fgeom.height - fgeom.borders.total.bottom * CORNER_SIZE_MULT) &&
+      x >= (fgeom.width - fgeom.borders.total.right * CORNER_SIZE_MULT))
     {
       if (has_vert && has_horiz)
         return META_FRAME_CONTROL_RESIZE_SE;
@@ -2274,8 +2275,8 @@ get_control (MetaFrames *frames,
       else if (has_horiz)
         return META_FRAME_CONTROL_RESIZE_E;
     }
-  else if (y >= (fgeom.height - fgeom.borders.total.bottom) &&
-           x <= fgeom.borders.total.left)
+  else if (y >= (fgeom.height - fgeom.borders.total.bottom * CORNER_SIZE_MULT) &&
+           x <= fgeom.borders.total.left * CORNER_SIZE_MULT)
     {
       if (has_vert && has_horiz)
         return META_FRAME_CONTROL_RESIZE_SW;
@@ -2284,8 +2285,8 @@ get_control (MetaFrames *frames,
       else if (has_horiz)
         return META_FRAME_CONTROL_RESIZE_W;
     }
-  else if (y < (fgeom.borders.invisible.top) &&
-           x <= fgeom.borders.total.left && has_north_resize)
+  else if (y < (fgeom.borders.invisible.top * CORNER_SIZE_MULT) &&
+           x <= (fgeom.borders.total.left * CORNER_SIZE_MULT) && has_north_resize)
     {
       if (has_vert && has_horiz)
         return META_FRAME_CONTROL_RESIZE_NW;
@@ -2294,8 +2295,8 @@ get_control (MetaFrames *frames,
       else if (has_horiz)
         return META_FRAME_CONTROL_RESIZE_W;
     }
-  else if (y < (fgeom.borders.invisible.top) &&
-           x >= fgeom.width - fgeom.borders.total.right && has_north_resize)
+  else if (y < (fgeom.borders.invisible.top * CORNER_SIZE_MULT) &&
+           x >= (fgeom.width - fgeom.borders.total.right * CORNER_SIZE_MULT) && has_north_resize)
     {
       if (has_vert && has_horiz)
         return META_FRAME_CONTROL_RESIZE_NE;
