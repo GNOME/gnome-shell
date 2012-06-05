@@ -132,6 +132,9 @@ const Client = new Lang.Class({
             let channel = channels[i];
             let [targetHandle, targetHandleType] = channel.get_handle();
 
+            if (Shell.is_channel_invalidated(channel))
+              continue;
+
             /* Only observe contact text channels */
             if ((!(channel instanceof Tp.TextChannel)) ||
                targetHandleType != Tp.HandleType.CONTACT)
@@ -180,6 +183,9 @@ const Client = new Lang.Class({
                 channel.close_async(null);
                 continue;
             }
+
+            if (Shell.is_channel_invalidated(channel))
+              continue;
 
             // 'notify' will be true when coming from an actual HandleChannels
             // call, and not when from a successful Claim call. The point is
@@ -230,6 +236,11 @@ const Client = new Lang.Class({
                                dispatchOp, context) {
         let channel = channels[0];
         let chanType = channel.get_channel_type();
+
+        if (Shell.is_channel_invalidated(channel)) {
+            Shell.decline_dispatch_op(context, 'Channel is invalidated');
+            return;
+        }
 
         if (chanType == Tp.IFACE_CHANNEL_TYPE_TEXT)
             this._approveTextChannel(account, conn, channel, dispatchOp, context);
