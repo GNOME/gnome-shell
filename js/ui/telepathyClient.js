@@ -237,6 +237,8 @@ const Client = new Lang.Class({
             this._approveCall(account, conn, channel, dispatchOp, context);
         else if (chanType == Tp.IFACE_CHANNEL_TYPE_FILE_TRANSFER)
             this._approveFileTransfer(account, conn, channel, dispatchOp, context);
+        else
+            Shell.decline_dispatch_op(context, 'Unsupported channel type');
     },
 
     _approveTextChannel: function(account, conn, channel, dispatchOp, context) {
