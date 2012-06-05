@@ -297,7 +297,7 @@ const NMDevice = new Lang.Class({
         this._client = client;
         this._connections = [ ];
         for (let i = 0; i < connections.length; i++) {
-            if (!connections[i]._uuid)
+            if (!connections[i].get_uuid())
                 continue;
             if (!this.connectionValid(connections[i]))
                 continue;
@@ -613,7 +613,7 @@ const NMDevice = new Lang.Class({
         let title;
         let active = this._activeConnection._connection;
         if (active) {
-            title = active._name;
+            title = active.get_id();
         } else {
             /* TRANSLATORS: this is the indication that a connection for another logged in user is active,
                and we cannot access its settings (including the name) */
@@ -1342,7 +1342,7 @@ const NMDeviceWireless = new Lang.Class({
     },
 
     _createAPItem: function(connection, accessPointObj, useConnectionName) {
-        let item = new NMNetworkMenuItem(accessPointObj.accessPoints, useConnectionName ? connection._name : undefined);
+        let item = new NMNetworkMenuItem(accessPointObj.accessPoints, useConnectionName ? connection.get_id() : undefined);
         item._connection = connection;
         item.connect('activate', Lang.bind(this, function() {
             let accessPoints = sortAccessPoints(accessPointObj.accessPoints);
@@ -1452,27 +1452,19 @@ const NMDeviceWireless = new Lang.Class({
     },
 
     _createActiveConnectionItem: function() {
-        let icon, title;
-        if (this._activeConnection && this._activeConnection._connection) {
-            let connection = this._activeConnection._connection;
-            if (this._activeNetwork)
-                this._activeConnectionItem = new NMNetworkMenuItem(this._activeNetwork.accessPoints, undefined,
-                                                                   { reactive: false });
-            else
-                this._activeConnectionItem = new PopupMenu.PopupImageMenuItem(connection._name,
-                                                                              'network-wireless-connected',
-                                                                              { reactive: false });
-        } else {
-            // We cannot read the connection (due to ACL, or API incompatibility), but we still show signal if we have it
-            let menuItem;
-            if (this._activeNetwork)
-                this._activeConnectionItem = new NMNetworkMenuItem(this._activeNetwork.accessPoints, undefined,
-                                                                   { reactive: false });
-            else
-                this._activeConnectionItem = new PopupMenu.PopupImageMenuItem(_("Connected (private)"),
-                                                                              'network-wireless-connected',
-                                                                              { reactive: false });
-        }
+        let title;
+        if (this._activeConnection && this._activeConnection._connection)
+            title = this._activeConnection._connection.get_id();
+        else
+            title = _("Connected (private)");
+
+        if (this._activeNetwork)
+            this._activeConnectionItem = new NMNetworkMenuItem(this._activeNetwork.accessPoints, undefined,
+                                                               { reactive: false });
+        else
+            this._activeConnectionItem = new PopupMenu.PopupImageMenuItem(title,
+                                                                          'network-wireless-connected',
+                                                                          { reactive: false });
         this._activeConnectionItem.setShowDot(true);
     },
 
