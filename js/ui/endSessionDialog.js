@@ -342,7 +342,7 @@ const EndSessionDialog = new Lang.Class({
         }
     },
 
-    _updateContent: function() {
+    _updateDescription: function() {
         if (this.state != ModalDialog.State.OPENING &&
             this.state != ModalDialog.State.OPENED)
             return;
@@ -351,17 +351,6 @@ const EndSessionDialog = new Lang.Class({
 
         let subject = dialogContent.subject;
         let description;
-
-        if (this._user.is_loaded && !dialogContent.iconName) {
-            let iconFile = this._user.get_icon_file();
-            if (GLib.file_test(iconFile, GLib.FileTest.EXISTS))
-                this._setIconFromFile(iconFile, dialogContent.iconStyleClass);
-            else
-                this._setIconFromName('avatar-default', dialogContent.iconStyleClass);
-        } else if (dialogContent.iconName) {
-            this._setIconFromName(dialogContent.iconName,
-                                  dialogContent.iconStyleClass);
-        }
 
         if (this._inhibitors.length > 0) {
             this._stopTimer();
@@ -393,6 +382,27 @@ const EndSessionDialog = new Lang.Class({
 
         _setLabelText(this._subjectLabel, subject);
         _setLabelText(this._descriptionLabel, description);
+    },
+
+    _updateContent: function() {
+        if (this.state != ModalDialog.State.OPENING &&
+            this.state != ModalDialog.State.OPENED)
+            return;
+
+        let dialogContent = DialogContent[this._type];
+
+        if (this._user.is_loaded && !dialogContent.iconName) {
+            let iconFile = this._user.get_icon_file();
+            if (GLib.file_test(iconFile, GLib.FileTest.EXISTS))
+                this._setIconFromFile(iconFile, dialogContent.iconStyleClass);
+            else
+                this._setIconFromName('avatar-default', dialogContent.iconStyleClass);
+        } else if (dialogContent.iconName) {
+            this._setIconFromName(dialogContent.iconName,
+                                  dialogContent.iconStyleClass);
+        }
+
+        this._updateDescription();
     },
 
     _updateButtons: function() {
@@ -441,7 +451,7 @@ const EndSessionDialog = new Lang.Class({
                          { _secondsLeft: 0,
                            time: this._secondsLeft,
                            transition: 'linear',
-                           onUpdate: Lang.bind(this, this._updateContent),
+                           onUpdate: Lang.bind(this, this._updateDescription),
                            onComplete: Lang.bind(this, function() {
                                            let dialogContent = DialogContent[this._type];
                                            let button = dialogContent.confirmButtons[dialogContent.confirmButtons.length - 1];
