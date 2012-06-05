@@ -56,6 +56,11 @@ dist_theme_DATA =				\
 gsettings_SCHEMAS = org.gnome.shell.gschema.xml
 
 @INTLTOOL_XML_NOMERGE_RULE@
+
+%.gschema.xml.in: %.gschema.xml.in.in Makefile
+	$(AM_V_GEN) sed -e 's|@GETTEXT_PACKAGE[@]|$(GETTEXT_PACKAGE)|g' \
+	$< > $@ || rm $@
+
 @GSETTINGS_RULES@
 
 # We need to compile schemas at make time
@@ -80,12 +85,13 @@ EXTRA_DIST =						\
 	$(menu_DATA)					\
 	$(shaders_DATA)					\
 	$(convert_DATA)					\
-	org.gnome.shell.gschema.xml.in
+	org.gnome.shell.gschema.xml.in.in
 
 CLEANFILES =						\
 	gnome-shell.desktop.in				\
 	gnome-shell-extension-prefs.in			\
 	$(desktop_DATA)					\
 	$(gsettings_SCHEMAS)				\
-	gschemas.compiled
-
+	gschemas.compiled				\
+	org.gnome.shell.gschema.valid			\
+	org.gnome.shell.gschema.xml.in
