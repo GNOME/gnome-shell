@@ -78,11 +78,12 @@ struct _ClutterTimeline
 
 /**
  * ClutterTimelineClass:
- * @started: handler for the #ClutterTimeline::started signal
- * @completed: handler for the #ClutterTimeline::completed signal
- * @paused: handler for the #ClutterTimeline::paused signal
- * @new_frame: handler for the #ClutterTimeline::new-frame signal
- * @marker_reached: handler for the #ClutterTimeline::marker-reached signal
+ * @started: class handler for the #ClutterTimeline::started signal
+ * @completed: class handler for the #ClutterTimeline::completed signal
+ * @paused: class handler for the #ClutterTimeline::paused signal
+ * @new_frame: class handler for the #ClutterTimeline::new-frame signal
+ * @marker_reached: class handler for the #ClutterTimeline::marker-reached signal
+ * @stopped: class handler for the #ClutterTimeline::stopped signal
  *
  * The #ClutterTimelineClass structure contains only private data
  *
