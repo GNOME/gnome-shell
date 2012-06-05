@@ -298,6 +298,12 @@ Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (see NEWS for general information on new
 features).
 
+Release Notes for Clutter 1.12
+-------------------------------------------------------------------------------
+
+* ClutterBinLayout no longer requests size for children that are
+  not visible, which is how the other layout managers work.
+
 Release Notes for Clutter 1.10
 -------------------------------------------------------------------------------
 

@@ -326,6 +326,9 @@ clutter_bin_layout_get_preferred_width (ClutterLayoutManager *manager,
     {
       gfloat minimum, natural;
 
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+        continue;
+
       clutter_actor_get_preferred_width (child, for_height,
                                          &minimum,
                                          &natural);
@@ -359,6 +362,9 @@ clutter_bin_layout_get_preferred_height (ClutterLayoutManager *manager,
   while (clutter_actor_iter_next (&iter, &child))
     {
       gfloat minimum, natural;
+
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+        continue;
 
       clutter_actor_get_preferred_height (child, for_width,
                                           &minimum,
