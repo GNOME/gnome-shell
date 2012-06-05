@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-06-03 03:23+0200\n"
-"PO-Revision-Date: 2012-06-03 03:23+0200\n"
+"POT-Creation-Date: 2012-06-05 15:49+0200\n"
+"PO-Revision-Date: 2012-06-05 15:51+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -46,6 +46,7 @@ msgid "The position of the origin of the actor"
 msgstr "A posición da orixe do actor"
 
 #: ../clutter/clutter-actor.c:5653 ../clutter/clutter-canvas.c:215
+#: ../clutter/clutter-grid-layout.c:1236
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:480
 msgid "Width"
 msgstr "Largura"
@@ -55,6 +56,7 @@ msgid "Width of the actor"
 msgstr "Largura do actor"
 
 #: ../clutter/clutter-actor.c:5672 ../clutter/clutter-canvas.c:231
+#: ../clutter/clutter-grid-layout.c:1243
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:496
 msgid "Height"
 msgstr "Altura"
@@ -659,8 +661,8 @@ msgstr "O desprazamento en píxeles que aplicar á ligazón"
 msgid "The unique name of the binding pool"
 msgstr "O nome único da ligazón da agrupación"
 
-#: ../clutter/clutter-bin-layout.c:240 ../clutter/clutter-bin-layout.c:627
-#: ../clutter/clutter-box-layout.c:377 ../clutter/clutter-table-layout.c:602
+#: ../clutter/clutter-bin-layout.c:240 ../clutter/clutter-bin-layout.c:633
+#: ../clutter/clutter-box-layout.c:370 ../clutter/clutter-table-layout.c:602
 msgid "Horizontal Alignment"
 msgstr "Aliñamento horizontal"
 
@@ -668,8 +670,8 @@ msgstr "Aliñamento horizontal"
 msgid "Horizontal alignment for the actor inside the layout manager"
 msgstr "Aliñamento horizontal do actor no xestor de deseño"
 
-#: ../clutter/clutter-bin-layout.c:249 ../clutter/clutter-bin-layout.c:647
-#: ../clutter/clutter-box-layout.c:386 ../clutter/clutter-table-layout.c:617
+#: ../clutter/clutter-bin-layout.c:249 ../clutter/clutter-bin-layout.c:653
+#: ../clutter/clutter-box-layout.c:379 ../clutter/clutter-table-layout.c:617
 msgid "Vertical Alignment"
 msgstr "Aliñamento vertical"
 
@@ -677,28 +679,28 @@ msgstr "Aliñamento vertical"
 msgid "Vertical alignment for the actor inside the layout manager"
 msgstr "Aliñamento vertical do actor no xestor de deseño"
 
-#: ../clutter/clutter-bin-layout.c:628
+#: ../clutter/clutter-bin-layout.c:634
 msgid "Default horizontal alignment for the actors inside the layout manager"
 msgstr ""
 "Aliñamento horizontal predeterminado para os actores no xestor de deseño"
 
-#: ../clutter/clutter-bin-layout.c:648
+#: ../clutter/clutter-bin-layout.c:654
 msgid "Default vertical alignment for the actors inside the layout manager"
 msgstr "Aliñamento vertical predeterminado para os actores no xestor de deseño"
 
-#: ../clutter/clutter-box-layout.c:352
+#: ../clutter/clutter-box-layout.c:345
 msgid "Expand"
 msgstr "Expandir"
 
-#: ../clutter/clutter-box-layout.c:353
+#: ../clutter/clutter-box-layout.c:346
 msgid "Allocate extra space for the child"
 msgstr "Asignar espazo extra para o fillo"
 
-#: ../clutter/clutter-box-layout.c:359 ../clutter/clutter-table-layout.c:581
+#: ../clutter/clutter-box-layout.c:352 ../clutter/clutter-table-layout.c:581
 msgid "Horizontal Fill"
 msgstr "Recheo horizontal"
 
-#: ../clutter/clutter-box-layout.c:360 ../clutter/clutter-table-layout.c:582
+#: ../clutter/clutter-box-layout.c:353 ../clutter/clutter-table-layout.c:582
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the horizontal axis"
@@ -706,11 +708,11 @@ msgstr ""
 "Se o fillo debe recibir prioridade cando o contedor está asignado ao espazo "
 "libre no eixo horizontal"
 
-#: ../clutter/clutter-box-layout.c:368 ../clutter/clutter-table-layout.c:588
+#: ../clutter/clutter-box-layout.c:361 ../clutter/clutter-table-layout.c:588
 msgid "Vertical Fill"
 msgstr "Recheo vertical"
 
-#: ../clutter/clutter-box-layout.c:369 ../clutter/clutter-table-layout.c:589
+#: ../clutter/clutter-box-layout.c:362 ../clutter/clutter-table-layout.c:589
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the vertical axis"
@@ -718,66 +720,68 @@ msgstr ""
 "Se o fillo debe recibir prioridade cando o contedor está asignado ao espazo "
 "libre no eixo vertical"
 
-#: ../clutter/clutter-box-layout.c:378 ../clutter/clutter-table-layout.c:603
+#: ../clutter/clutter-box-layout.c:371 ../clutter/clutter-table-layout.c:603
 msgid "Horizontal alignment of the actor within the cell"
 msgstr "Aliñamento horizontal do actor dentro da cela"
 
-#: ../clutter/clutter-box-layout.c:387 ../clutter/clutter-table-layout.c:618
+#: ../clutter/clutter-box-layout.c:380 ../clutter/clutter-table-layout.c:618
 msgid "Vertical alignment of the actor within the cell"
 msgstr "Aliñamento vertical do actor dentro da cela"
 
-#: ../clutter/clutter-box-layout.c:1218
+#: ../clutter/clutter-box-layout.c:1223
 msgid "Vertical"
 msgstr "Vertical"
 
-#: ../clutter/clutter-box-layout.c:1219
+#: ../clutter/clutter-box-layout.c:1224
 msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "Cando o deseño debe ser vertical ou quizais horizontal"
 
-#: ../clutter/clutter-box-layout.c:1236 ../clutter/clutter-flow-layout.c:910
+#: ../clutter/clutter-box-layout.c:1241 ../clutter/clutter-flow-layout.c:910
+#: ../clutter/clutter-grid-layout.c:1564
 msgid "Orientation"
 msgstr "Orientación"
 
-#: ../clutter/clutter-box-layout.c:1237 ../clutter/clutter-flow-layout.c:911
+#: ../clutter/clutter-box-layout.c:1242 ../clutter/clutter-flow-layout.c:911
+#: ../clutter/clutter-grid-layout.c:1565
 msgid "The orientation of the layout"
 msgstr "A orientación do deseño"
 
-#: ../clutter/clutter-box-layout.c:1253 ../clutter/clutter-flow-layout.c:926
+#: ../clutter/clutter-box-layout.c:1258 ../clutter/clutter-flow-layout.c:926
 msgid "Homogeneous"
 msgstr "Homoxéneo"
 
-#: ../clutter/clutter-box-layout.c:1254
+#: ../clutter/clutter-box-layout.c:1259
 msgid ""
 "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
 "Cando o deseño debe ser homoxéneo, p.ex. todos os fillos deben obter o mesmo "
 "tamaño"
 
-#: ../clutter/clutter-box-layout.c:1269
+#: ../clutter/clutter-box-layout.c:1274
 msgid "Pack Start"
 msgstr "Agrupamento inicial"
 
-#: ../clutter/clutter-box-layout.c:1270
+#: ../clutter/clutter-box-layout.c:1275
 msgid "Whether to pack items at the start of the box"
 msgstr "Cando se agrupan os elementos no inicio da caixa"
 
-#: ../clutter/clutter-box-layout.c:1283
+#: ../clutter/clutter-box-layout.c:1288
 msgid "Spacing"
 msgstr "Espazado"
 
-#: ../clutter/clutter-box-layout.c:1284
+#: ../clutter/clutter-box-layout.c:1289
 msgid "Spacing between children"
 msgstr "Espazamento entre os fillos"
 
-#: ../clutter/clutter-box-layout.c:1291
+#: ../clutter/clutter-box-layout.c:1296
 #: ../clutter/clutter-layout-manager.c:744
-#: ../clutter/clutter-table-layout.c:1618
+#: ../clutter/clutter-table-layout.c:1638
 msgid "Easing Duration"
 msgstr "Duración do relaxamento"
 
-#: ../clutter/clutter-box-layout.c:1292
+#: ../clutter/clutter-box-layout.c:1297
 #: ../clutter/clutter-layout-manager.c:745
-#: ../clutter/clutter-table-layout.c:1619
+#: ../clutter/clutter-table-layout.c:1639
 msgid "The duration of the animations"
 msgstr "A duración das animacións"
 
@@ -935,7 +939,7 @@ msgstr "Restricións arrastrando a un eixo"
 msgid "Whether each item should receive the same allocation"
 msgstr "Cando cada elemento debe recibir a mesma asignación"
 
-#: ../clutter/clutter-flow-layout.c:942 ../clutter/clutter-table-layout.c:1596
+#: ../clutter/clutter-flow-layout.c:942 ../clutter/clutter-table-layout.c:1616
 msgid "Column Spacing"
 msgstr "Espazamento de columnas"
 
@@ -943,7 +947,7 @@ msgstr "Espazamento de columnas"
 msgid "The spacing between columns"
 msgstr "O espazo entre columnas"
 
-#: ../clutter/clutter-flow-layout.c:959 ../clutter/clutter-table-layout.c:1610
+#: ../clutter/clutter-flow-layout.c:959 ../clutter/clutter-table-layout.c:1630
 msgid "Row Spacing"
 msgstr "Espazamento de filas"
 
@@ -983,7 +987,64 @@ msgstr "Altura máxima de fila"
 msgid "Maximum height for each row"
 msgstr "A altura máxima de cada fila"
 
-#: ../clutter/clutter-image.c:229 ../clutter/clutter-image.c:317
+#: ../clutter/clutter-grid-layout.c:1220
+msgid "Left attachment"
+msgstr "Anexo á esquerda"
+
+#: ../clutter/clutter-grid-layout.c:1221
+msgid "The column number to attach the left side of the child to"
+msgstr "A cantidade de columnas para anexar ao lado esquerdo do fillo"
+
+#: ../clutter/clutter-grid-layout.c:1228
+msgid "Top attachment"
+msgstr "Anexo superior"
+
+#: ../clutter/clutter-grid-layout.c:1229
+msgid "The row number to attach the top side of a child widget to"
+msgstr "O número de filas para anexar na parte superior do widget fillo"
+
+#: ../clutter/clutter-grid-layout.c:1237
+msgid "The number of columns that a child spans"
+msgstr "O número de columnas nas que se expande un fillo"
+
+#: ../clutter/clutter-grid-layout.c:1244
+msgid "The number of rows that a child spans"
+msgstr "O número de filas nas que un fillo se expande"
+
+#: ../clutter/clutter-grid-layout.c:1579
+msgid "Row spacing"
+msgstr "Espazamento de fila"
+
+#: ../clutter/clutter-grid-layout.c:1580
+msgid "The amount of space between two consecutive rows"
+msgstr "A cantidade de espazo entre dúas filas consecutivas"
+
+#: ../clutter/clutter-grid-layout.c:1593
+msgid "Column spacing"
+msgstr "Espazamento de columna"
+
+#: ../clutter/clutter-grid-layout.c:1594
+msgid "The amount of space between two consecutive columns"
+msgstr "A cantidade de espazo entre dúas columnas consecutivas"
+
+#: ../clutter/clutter-grid-layout.c:1608
+msgid "Row Homogeneous"
+msgstr "Fila homoxénea"
+
+#: ../clutter/clutter-grid-layout.c:1609
+msgid "If TRUE, the rows are all the same height"
+msgstr "Se é TRUE, todas as filas teñen a mesma altura"
+
+#: ../clutter/clutter-grid-layout.c:1622
+msgid "Column Homogeneous"
+msgstr "Columnas homoxéneas"
+
+#: ../clutter/clutter-grid-layout.c:1623
+msgid "If TRUE, the columns are all the same width"
+msgstr "Se é TRUE, todas as columnas teñen a mesma largura"
+
+#: ../clutter/clutter-image.c:229 ../clutter/clutter-image.c:292
+#: ../clutter/clutter-image.c:380
 msgid "Unable to load image data"
 msgstr "Non foi posíbel cargar os datos da imaxe"
 
@@ -1497,11 +1558,11 @@ msgstr "Expansión vertical"
 msgid "Allocate extra space for the child in vertical axis"
 msgstr "Asigna espazo extra para o fillo no eixo vertical"
 
-#: ../clutter/clutter-table-layout.c:1597
+#: ../clutter/clutter-table-layout.c:1617
 msgid "Spacing between columns"
 msgstr "Espazamento entre columnas"
 
-#: ../clutter/clutter-table-layout.c:1611
+#: ../clutter/clutter-table-layout.c:1631
 msgid "Spacing between rows"
 msgstr "Espazamento entre filas"
 
