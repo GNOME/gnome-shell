@@ -351,6 +351,8 @@ main (int argc, char **argv)
    https://bugzilla.gnome.org/show_bug.cgi?id=670477
 */
 
+void _shell_link_to_shell_js (void);
+
 void
 _shell_link_to_shell_js (void)
 {
