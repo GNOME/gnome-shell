@@ -1,3 +1,74 @@
+3.5.2
+=====
+* main: Move 'toggle-recording' binding into the shell [Florian; #674377]
+* popupMenu: make sure to break the grab when the slider is not visible
+  [Stefano; #672713]
+* st-theme-node-drawing: Don't use GL types [Neil; #672711]
+* Mirror Evolution calendar settings into our own schema [Owen; #674424]
+* shell-network-agent: don't crash if a request isn't found [Dan; #674961]
+* notificationDaemon: Match app based on WM_CLASS [Jasper; #673761]
+* NetworkMenu: use network-offline while loading [Giovanni; #674426]
+* lookingGlass: Remove the Errors tab [Jasper; #675104]
+* searchDisplay: Reset keyboard focus after displaying async results
+  [Rui; #675078]
+* gdm: don't fail if fprintd is unavailable [Ray; #675006]
+* messageTray: Fix scrolling up [Jasper; #661615]
+* main: Close the recorder instead of pausing it [Rui; #675128]
+* Accessibility [Alejandro]
+  - Use the proper label_actor for date menu on top panel [#675307]
+  - Set the proper role/label_actor for SearchResult.content [#672242]
+  - do not expose a label text if 'hidden' style class is used [#675341]
+* Magnifier: Add brightness and contrast functionality [Joseph; #639851]
+* theme: use a smaller border-radius for top bar [Jakub; #672430]
+* placeDisplay: use new bookmark file location [Matthias; #675443]
+* port all synchronous search providers to the async API [Jasper, Rui; #675328]
+* NetworkAgent: disallow multiple requests for the same connection/setting
+  [Giovanni; #674961]
+* userMenu: Update to latest mockups [Florian; #675802]
+* util: Don't double-fork when spawning from Alt-F2 [Colin; #675789]
+* messageTray: Make Source usable without subclassing [Jasper; #661236]
+* panel: Check for appMenu button's reactivity before opening [Florian; #676316]
+* Fix formatting of bluetooth passkey [Florian; #651251]
+* notificationDaemon: Filter out file-transfer notifications [Jasper; #676175]
+* Don't use global.log() [Jasper; #675790]
+* Fix broken extension loading in some distributions [Owen, Alexandre; #670477]
+* shell-app: Raise windows in reverse order to preserve the stacking
+  [Rui; #676371]
+* Generalize gdm-mode [Florian; #676156]
+* Switch string formatting to the one inside gjs [Jasper; #675479]
+* extensionUtils: Support subdirectories in getCurrentExtension
+  [Jasper; #677001]
+* panel: Refuse to add (legacy) status icons not part of the session mode
+  [Florian; #677058]
+* Add an initial-setup mode [Matthias; #676697]
+* status/keyboard: Port to the new input sources settings [Rui; #641531]
+* NetworkMenu: show notifications for failed VPN connections [Giovanni; #676330]
+* userMenu: Indicate progress on status changes [Florian; #659067]
+* recorder: Honor "disable-save-to-disk" lockdown key [Rūdolfs; #673630]
+* searchDisplay: Use the rowLimit we pass to the IconGrid [Christian; #675527]
+* endSessionDialog: Factor out _updateDescription from _updateContent
+  [Alejandro; #674210]
+* Fix empathy's appMenu freezing the shell [Alban; #676447]
+* Code cleanups [Florian, Giovanni, Jasper; #672807, #672413, #676837, #676850,
+  #672272]
+* Misc bug fixes [Alban, Florian, Giovanni, Guillaume, Jasper, Piotr, Rico,
+  Ron, Rui, Stefano; #659968, #672192, #673177, #673198, #674323, #675301,
+  #675370, #676347, #676806, #677097]
+
+Contributors:
+ Alban Browaeys, Giovanni Campagna, Matthias Clasen, Guillaume Desmottes,
+ Piotr Drąg, Stefano Facchini, Rui Matos, Rūdolfs Mazurs, Florian Müllner,
+ Alejandro Piñeiro, Neil Roberts, Alexandre Rostovtsev, Joseph Scheuhammer,
+ Jakub Steiner, Jasper St. Pierre, Ray Strode, Owen Taylor, Rico Tzschichholz,
+ Colin Walters, Dan Winship, Ron Yorston
+
+Translations:
+ OKANO Takayoshi [ja], Daniel Mustieles [es], Changwoo Ryu [ko],
+ Yaron Shahrabani [he], Fran Diéguez [gl], Jonh Wendell [pt_BR],
+ Kjartan Maraas [nb], Luca Ferretti [it], Tom Tryfonidis [el],
+ Sandeep Sheshrao Shedmake [mr], Takanori MATSUURA [ja], Dirgita [id],
+ Mantas Kriaučiūnas [lt], Matej Urbančič [sl], Jiro Matsuzawa [ja]
+
 3.4.1
 =====
 * Fix crash that occurred when an icon theme change caused unexpected
