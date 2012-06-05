@@ -1241,6 +1241,7 @@ recorder_open_outfile (ShellRecorder *recorder)
                     g_free (time_str);
                     g_date_time_unref (datetime);
                   }
+                  break;
                 case 'u':
                   if (recorder->unique)
                     g_string_append (filename, recorder->unique);
