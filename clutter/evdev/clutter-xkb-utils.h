@@ -25,7 +25,7 @@
 #ifndef __CLUTTER_XKB_UTILS_H__
 #define __CLUTTER_XKB_UTILS_H__
 
-#include <X11/extensions/XKBcommon.h>
+#include <xkbcommon/xkbcommon.h>
 
 #include "clutter-stage.h"
 #include "clutter-event.h"
