@@ -53,6 +53,10 @@ const LayoutManager = new Lang.Class({
         global.screen.connect('monitors-changed',
                               Lang.bind(this, this._monitorsChanged));
         this._monitorsChanged();
+
+        this._chrome.connect('primary-fullscreen-changed', Lang.bind(this, function(chrome, state) {
+            this.emit('primary-fullscreen-changed', state);
+        }));
     },
 
     // This is called by Main after everything else is constructed;
@@ -852,6 +856,8 @@ const Chrome = new Lang.Class({
         for (let i = 0; i < this._monitors.length; i++)
             wasInFullscreen[i] = this._monitors[i].inFullscreen;
 
+        let primaryWasInFullscreen = this._primaryMonitor.inFullscreen;
+
         this._updateFullscreen();
 
         let changed = false;
@@ -861,9 +867,14 @@ const Chrome = new Lang.Class({
                 break;
             }
         }
+
         if (changed) {
             this._updateVisibility();
             this._queueUpdateRegions();
+        }
+
+        if (primaryWasInFullscreen != this._primaryMonitor.inFullscreen) {
+            this.emit('primary-fullscreen-changed', this._primaryMonitor.inFullscreen);
         }
     },
 
@@ -979,3 +990,5 @@ const Chrome = new Lang.Class({
         return false;
     }
 });
+
+Signals.addSignalMethods(Chrome.prototype);
