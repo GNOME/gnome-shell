@@ -160,6 +160,7 @@ const ListItem = new Lang.Class({
 
         this._descriptionLabel = new St.Label({ text:        this._reason,
                                                 style_class: 'end-session-dialog-app-list-item-description' });
+        this.actor.label_actor = this._nameLabel;
         textLayout.add(this._descriptionLabel,
                        { expand: true,
                          x_fill: true });
