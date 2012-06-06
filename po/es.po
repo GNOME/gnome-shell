@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-31 12:16+0000\n"
-"PO-Revision-Date: 2012-03-12 14:17+0100\n"
+"POT-Creation-Date: 2012-06-05 17:28+0000\n"
+"PO-Revision-Date: 2012-06-06 13:06+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -99,36 +99,36 @@ msgstr ""
 "Algún otro programa ya está usando la clave %s con el modificador %x como "
 "una vinculación\n"
 
-#: ../src/core/main.c:197
+#: ../src/core/main.c:196
 msgid "Disable connection to session manager"
 msgstr "Desactivar conexión al gestor de sesión"
 
-#: ../src/core/main.c:203
+#: ../src/core/main.c:202
 msgid "Replace the running window manager"
 msgstr "Reemplazar el gestor de ventanas en ejecución"
 
-#: ../src/core/main.c:209
+#: ../src/core/main.c:208
 msgid "Specify session management ID"
 msgstr "Especificar el ID se gestión de sesión"
 
-#: ../src/core/main.c:214
+#: ../src/core/main.c:213
 msgid "X Display to use"
 msgstr "Pantalla X que usar"
 
-#: ../src/core/main.c:220
+#: ../src/core/main.c:219
 msgid "Initialize session from savefile"
 msgstr "Inicializar sesión desde el archivo de salvaguarda"
 
-#: ../src/core/main.c:226
+#: ../src/core/main.c:225
 msgid "Make X calls synchronous"
 msgstr "Hacer que las llamadas a las X sean síncronas"
 
-#: ../src/core/main.c:497
+#: ../src/core/main.c:494
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Falló al inspeccionar la carpeta de temas: %s\n"
 
-#: ../src/core/main.c:513
+#: ../src/core/main.c:510
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -156,8 +156,9 @@ msgid "Print version"
 msgstr "Imprimir versión"
 
 #: ../src/core/mutter.c:60
-msgid "Comma-separated list of compositor plugins"
-msgstr "Lista de complementos del compositor separados por comas"
+#| msgid "Clutter Plugins"
+msgid "Mutter plugin to use"
+msgstr "Complemento de mutter que usar"
 
 #: ../src/core/prefs.c:1064
 msgid ""
@@ -285,40 +286,40 @@ msgstr ""
 "Estas ventanas no soportan «guardar la configuración actual» y tendrán que "
 "reiniciarse manualmente la próxima vez que inicie una sesión."
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:80
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Ocurrió un error al abrir el registro de errores: %s\n"
 
-#: ../src/core/util.c:121
+#: ../src/core/util.c:90
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Ocurrió un error al hacer fdopen() en el archivo de registro %s: %s\n"
 
-#: ../src/core/util.c:127
+#: ../src/core/util.c:96
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Archivo de registro %s abierto\n"
 
-#: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
+#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter fue compilado sin soporte para modo prolijo\n"
 
-#: ../src/core/util.c:290
+#: ../src/core/util.c:259
 msgid "Window manager: "
 msgstr "Administrador de ventanas: "
 
 # Diferenciar de eRRor en el gestor de ventanas, más abajo
-#: ../src/core/util.c:438
+#: ../src/core/util.c:407
 msgid "Bug in window manager: "
 msgstr "Error en el gestor de ventanas: "
 
-#: ../src/core/util.c:471
+#: ../src/core/util.c:438
 msgid "Window manager warning: "
 msgstr "Advertencia del gestor de ventanas: "
 
-#: ../src/core/util.c:499
+#: ../src/core/util.c:466
 msgid "Window manager error: "
 msgstr "Error del gestor de ventanas: "
 
@@ -395,8 +396,8 @@ msgstr "La propiedad %s en la ventana 0x%lx contiene UTF-8 no válido\n"
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"La propiedad %s en la ventana 0x%lx contiene UTF-8 no válido para el elemento "
-"%d de la lista\n"
+"La propiedad %s en la ventana 0x%lx contiene UTF-8 no válido para el "
+"elemento %d de la lista\n"
 
 #: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
@@ -1091,8 +1092,8 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"Escala de título no válida «%s» (debe ser una de xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
+"Escala de título no válida «%s» (debe ser una de xx-small,x-small,small,"
+"medium,large,x-large,xx-large)\n"
 
 #: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
 #: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
@@ -1613,6 +1614,9 @@ msgstr ""
 "%d expresiones de coordenadas interpretadas en %g segundos (%g segundos de "
 "media)\n"
 
+#~ msgid "Comma-separated list of compositor plugins"
+#~ msgstr "Lista de complementos del compositor separados por comas"
+
 #~ msgid "Live Hidden Windows"
 #~ msgstr "Ventanas activas ocultas"
 
@@ -1969,9 +1973,6 @@ msgstr ""
 
 #~ msgid "Error setting clutter plugin list: %s\n"
 #~ msgstr "Error al establecer la lista de complementos de «Clutter»: %s\n"
-
-#~ msgid "Clutter Plugins"
-#~ msgstr "Complementos de «Clutter»"
 
 #~ msgid "Plugins to load for the Clutter-based compositing manager."
 #~ msgstr ""
