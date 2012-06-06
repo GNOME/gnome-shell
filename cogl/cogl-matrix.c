@@ -665,6 +665,8 @@ invert_matrix_3d (CoglMatrix *matrix)
   const float *in = (float *)matrix;
   float *out = matrix->inv;
 
+  memcpy (out, identity, 16 * sizeof (float));
+
   if (!TEST_MAT_FLAGS(matrix, MAT_FLAGS_ANGLE_PRESERVING))
     return invert_matrix_3d_general (matrix);
 
