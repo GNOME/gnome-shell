@@ -1469,6 +1469,7 @@ const MessageTray = new Lang.Class({
         this._overviewVisible = Main.overview.visible;
         this._notificationRemoved = false;
         this._reNotifyAfterHideNotification = null;
+        this._inFullscreen = false;
 
         this._corner = new Clutter.Rectangle({ width: 1,
                                                height: 1,
@@ -1484,6 +1485,7 @@ const MessageTray = new Lang.Class({
         Main.layoutManager.trackChrome(this._notificationBin);
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._setSizePosition));
+        Main.layoutManager.connect('primary-fullscreen-changed', Lang.bind(this, this._onFullscreenChanged));
 
         this._setSizePosition();
 
@@ -1957,6 +1959,11 @@ const MessageTray = new Lang.Class({
         this._updateState();
     },
 
+    _onFullscreenChanged: function(obj, state) {
+        this._inFullscreen = state;
+        this._updateState();
+    },
+
     _onStatusChanged: function(status) {
         if (status == GnomeSession.PresenceStatus.BUSY) {
             // remove notification and allow the summary to be closed now
@@ -2014,7 +2021,7 @@ const MessageTray = new Lang.Class({
     _updateState: function() {
         // Notifications
         let notificationUrgent = this._notificationQueue.length > 0 && this._notificationQueue[0].urgency == Urgency.CRITICAL;
-        let notificationsPending = this._notificationQueue.length > 0 && (!this._busy || notificationUrgent);
+        let notificationsPending = this._notificationQueue.length > 0 && ((!this._busy && !this._inFullscreen) || notificationUrgent);
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
         let notificationExpanded = this._notificationBin.y < 0;
         let notificationExpired = (this._notificationTimeoutId == 0 && !(this._notification && this._notification.urgency == Urgency.CRITICAL) && !this._pointerInTray && !this._locked && !(this._pointerInKeyboard && notificationExpanded)) || this._notificationRemoved;
@@ -2050,7 +2057,7 @@ const MessageTray = new Lang.Class({
         if (this._summaryState == State.HIDDEN && !mustHideSummary) {
             if (summarySummoned) {
                 this._showSummary(0);
-            } else if (notificationsDone && !this._busy) {
+            } else if (notificationsDone && !this._busy && !this._inFullscreen) {
                 if (this._backFromAway && this._unseenNotifications.length > 0)
                     this._showSummary(LONGER_SUMMARY_TIMEOUT);
                 else if (this._newSummaryItems.length > 0)
