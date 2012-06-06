@@ -155,7 +155,7 @@ main (int argc, char *argv[])
       g_free (name);
     }
 
-  clutter_actor_show_all (stage);
+  clutter_actor_show (stage);
 
   clutter_main ();
 
