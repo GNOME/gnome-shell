@@ -189,10 +189,10 @@ multi_layout_allocate (ClutterLayoutManager   *manager,
   float x_offset, y_offset;
   ClutterActorIter iter;
   ClutterActor *child;
-  float item_x, item_y;
-  int n_items, n_items_per_row, item_index;
-  ClutterPoint center;
-  double radius, theta;
+  float item_x = 0.f, item_y = 0.f;
+  int n_items, n_items_per_row = 0, item_index;
+  ClutterPoint center = CLUTTER_POINT_INIT_ZERO;
+  double radius = 0, theta = 0;
   gboolean use_animations;
   ClutterAnimationMode easing_mode;
   guint easing_duration, easing_delay;
