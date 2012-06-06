@@ -40,9 +40,9 @@
  *     <listitem><para>translation by the origin of the #ClutterActor:allocation;</para></listitem>
  *     <listitem><para>translation by the actor's #ClutterActor:depth;</para></listitem>
  *     <listitem><para>scaling by the #ClutterActor:scale-x and #ClutterActor:scale-y factors;</para></listitem>
- *     <listitem><para>rotation around the #ClutterActor:rotation-z-angle and #ClutterActor:rotation-z-center;</para></listitem>
- *     <listitem><para>rotation around the #ClutterActor:rotation-y-angle and #ClutterActor:rotation-y-center;</para></listitem>
- *     <listitem><para>rotation around the #ClutterActor:rotation-x-angle and #ClutterActor:rotation-x-center;</para></listitem>
+ *     <listitem><para>rotation around the #ClutterActor:rotation-angle-x and #ClutterActor:rotation-center-x;</para></listitem>
+ *     <listitem><para>rotation around the #ClutterActor:rotation-angle-y and #ClutterActor:rotation-center-y;</para></listitem>
+ *     <listitem><para>rotation around the #ClutterActor:rotation-angle-z and #ClutterActor:rotation-center-z;</para></listitem>
  *     <listitem><para>negative translation by the #ClutterActor:anchor-x and #ClutterActor:anchor-y point.</para></listitem>
  *   </orderedlist>
  * </refsect2>
