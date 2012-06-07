@@ -116,13 +116,6 @@ clutter_test_init (gint    *argc,
   shared_state->argv_addr = argv;
 }
 
-static int
-can_write_to_uinput ()
-{
-  return g_access ("/dev/uinput", R_OK | W_OK) ||
-         g_access ("/dev/input/uinput", R_OK | W_OK);
-}
-
 int
 main (int argc, char **argv)
 {
@@ -239,6 +232,8 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/behaviours", behaviours_base);
 
+  TEST_CONFORM_SIMPLE ("/events", events_touch);
+
   /* FIXME - see bug https://bugzilla.gnome.org/show_bug.cgi?id=655588 */
   TEST_CONFORM_TODO ("/cally", cally_text);
 
@@ -259,8 +254,6 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_contiguous);
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_interleved);
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_mutability);
-
-  TEST_CONFORM_SKIP (can_write_to_uinput (), "/events", events_touch);
 
   /* left to the end because they aren't currently very orthogonal and tend to
    * break subsequent tests! */

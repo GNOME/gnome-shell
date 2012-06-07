@@ -316,7 +316,7 @@ error:
 }
 
 static int
-init_uinput ()
+init_uinput (void)
 {
   struct uinput_user_dev dev;
 
@@ -324,22 +324,35 @@ init_uinput ()
   if (fd < 0 && errno == ENODEV)
     fd = open ("/dev/input/uinput", O_RDWR);
   if (fd < 0)
-    goto error;
+    {
+      if (g_test_verbose ())
+        perror ("open");
+
+      return 0;
+    };
 
   memset (&dev, 0, sizeof (dev));
   setup (&dev, fd);
 
   if (write (fd, &dev, sizeof (dev)) < sizeof (dev))
-    goto error;
+    {
+      if (g_test_verbose ())
+        perror ("write");
+
+      goto error;
+    }
+
   if (ioctl (fd, UI_DEV_CREATE, NULL) == -1)
-    goto error;
+    {
+      if (g_test_verbose ())
+        perror ("ioctl");
+
+      goto error;
+    }
 
   return 0;
 
 error:
-  if (g_test_verbose ())
-    g_print ("error: %s\n", strerror (errno));
-
   if (fd != -1)
     close (fd);
 
@@ -355,6 +368,10 @@ events_touch (void)
   ClutterActor *stage;
   State state;
 
+  /* bail out if we could not initialize evdev */
+  if (!init_uinput ())
+    return;
+
   state.pass = TRUE;
   state.gesture_points = 0;
 
@@ -362,8 +379,6 @@ events_touch (void)
   g_signal_connect (stage, "event", G_CALLBACK (event_cb), &state);
   clutter_stage_set_fullscreen (CLUTTER_STAGE (stage), TRUE);
   clutter_actor_show (stage);
-
-  g_assert (init_uinput () == 0);
 
   clutter_threads_add_timeout (500, perform_gesture, &state);
 
