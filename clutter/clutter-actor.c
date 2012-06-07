@@ -754,6 +754,11 @@ struct _ClutterActorPrivate
 
   ClutterColor bg_color;
 
+#ifdef CLUTTER_ENABLE_DEBUG
+  /* a string used for debugging messages */
+  gchar *debug_name;
+#endif
+
   /* bitfields */
 
   /* fixed position and sizes */
@@ -1051,8 +1056,27 @@ G_DEFINE_TYPE_WITH_CODE (ClutterActor,
 const gchar *
 _clutter_actor_get_debug_name (ClutterActor *actor)
 {
-  return actor->priv->name != NULL ? actor->priv->name
-                                   : G_OBJECT_TYPE_NAME (actor);
+  ClutterActorPrivate *priv = actor->priv;
+  const gchar *retval;
+
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (G_UNLIKELY (priv->debug_name == NULL))
+    {
+      priv->debug_name = g_strdup_printf ("<%s>[<%s>:%p]",
+                                          priv->name != NULL ? priv->name
+                                                             : "unnamed",
+                                          G_OBJECT_TYPE_NAME (actor),
+                                          actor);
+    }
+
+  retval = priv->debug_name;
+#else
+  retval = priv->name != NULL
+         ? priv->name
+         : G_OBJECT_TYPE_NAME (actor);
+#endif
+
+  return retval;
 }
 
 #ifdef CLUTTER_ENABLE_DEBUG
@@ -5273,6 +5297,10 @@ clutter_actor_finalize (GObject *object)
   _clutter_context_release_id (priv->id);
 
   g_free (priv->name);
+
+#ifdef CLUTTER_ENABLE_DEBUG
+  g_free (priv->debug_name);
+#endif
 
   G_OBJECT_CLASS (clutter_actor_parent_class)->finalize (object);
 }
