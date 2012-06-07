@@ -16372,6 +16372,22 @@ layout_info_free (gpointer data)
 }
 
 /*< private >
+ * _clutter_actor_peek_layout_info:
+ * @self: a #ClutterActor
+ *
+ * Retrieves a pointer to the ClutterLayoutInfo structure.
+ *
+ * If the actor does not have a ClutterLayoutInfo associated to it, %NULL is returned.
+ *
+ * Return value: (transfer none): a pointer to the ClutterLayoutInfo structure
+ */
+ClutterLayoutInfo *
+_clutter_actor_peek_layout_info (ClutterActor *self)
+{
+  return g_object_get_qdata (G_OBJECT (self), quark_actor_layout_info);
+}
+
+/*< private >
  * _clutter_actor_get_layout_info:
  * @self: a #ClutterActor
  *
@@ -16392,7 +16408,7 @@ _clutter_actor_get_layout_info (ClutterActor *self)
 {
   ClutterLayoutInfo *retval;
 
-  retval = g_object_get_qdata (G_OBJECT (self), quark_actor_layout_info);
+  retval = _clutter_actor_peek_layout_info (self);
   if (retval == NULL)
     {
       retval = g_slice_new (ClutterLayoutInfo);
@@ -16425,7 +16441,7 @@ _clutter_actor_get_layout_info_or_defaults (ClutterActor *self)
 {
   const ClutterLayoutInfo *info;
 
-  info = g_object_get_qdata (G_OBJECT (self), quark_actor_layout_info);
+  info = _clutter_actor_peek_layout_info (self);
   if (info == NULL)
     return &default_layout_info;
 

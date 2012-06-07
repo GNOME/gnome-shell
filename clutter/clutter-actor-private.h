@@ -177,6 +177,7 @@ struct _ClutterLayoutInfo
 
 const ClutterLayoutInfo *       _clutter_actor_get_layout_info_or_defaults      (ClutterActor *self);
 ClutterLayoutInfo *             _clutter_actor_get_layout_info                  (ClutterActor *self);
+ClutterLayoutInfo *             _clutter_actor_peek_layout_info                 (ClutterActor *self);
 
 struct _ClutterTransformInfo
 {
