@@ -454,7 +454,7 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
       ClutterBinLayer *layer;
       ClutterActorBox child_alloc = { 0, };
       gdouble x_align, y_align;
-      gboolean x_fill, y_fill;
+      gboolean x_fill, y_fill, is_set;
 
       meta = clutter_layout_manager_get_child_meta (manager,
                                                     container,
@@ -462,12 +462,20 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
       layer = CLUTTER_BIN_LAYER (meta);
 
       if (layer->x_align == CLUTTER_BIN_ALIGNMENT_FIXED)
-        child_alloc.x1 = clutter_actor_get_x (child);
+	{
+	  g_object_get (child, "fixed-position-set", &is_set, "fixed-x", &child_alloc.x1, NULL);
+	  if (!is_set)
+	    child_alloc.x1 = clutter_actor_get_x (child);
+	}
       else
         child_alloc.x1 = allocation_x;
 
       if (layer->y_align == CLUTTER_BIN_ALIGNMENT_FIXED)
-        child_alloc.y1 = clutter_actor_get_y (child);
+	{
+	  g_object_get (child, "fixed-position-set", &is_set, "fixed-y", &child_alloc.y1, NULL);
+	  if (!is_set)
+	    child_alloc.y1 = clutter_actor_get_y (child);
+	}
       else
         child_alloc.y1 = allocation_y;
 
