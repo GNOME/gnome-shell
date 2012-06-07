@@ -3850,10 +3850,30 @@ void
 _clutter_debug_messagev (const char *format,
                          va_list     var_args)
 {
+  static gint64 last_debug_stamp;
   gchar *stamp, *fmt;
+  gint64 cur_time, debug_stamp;
 
-  stamp = g_strdup_printf ("[%16" G_GINT64_FORMAT "]",
-                           g_get_monotonic_time ());
+  cur_time = g_get_monotonic_time ();
+
+  /* if the last debug message happened less than a second ago, just
+   * show the increments instead of the full timestamp
+   */
+  if (last_debug_stamp == 0 ||
+      cur_time - last_debug_stamp >= G_USEC_PER_SEC)
+    {
+      debug_stamp = cur_time;
+      last_debug_stamp = debug_stamp;
+
+      stamp = g_strdup_printf ("[%16" G_GINT64_FORMAT "]", debug_stamp);
+    }
+  else
+    {
+      debug_stamp = cur_time - last_debug_stamp;
+
+      stamp = g_strdup_printf ("[%+16" G_GINT64_FORMAT "]", debug_stamp);
+    }
+
   fmt = g_strconcat (stamp, ":", format, NULL);
   g_free (stamp);
 
