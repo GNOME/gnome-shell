@@ -67,7 +67,8 @@ typedef struct _ClutterBindingPoolClass ClutterBindingPoolClass;
 typedef gboolean (* ClutterBindingActionFunc) (GObject             *gobject,
                                                const gchar         *action_name,
                                                guint                key_val,
-                                               ClutterModifierType  modifiers);
+                                               ClutterModifierType  modifiers,
+                                               gpointer             user_data);
 
 GType clutter_binding_pool_get_type (void) G_GNUC_CONST;
 
