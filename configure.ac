@@ -436,6 +436,11 @@ AS_IF([test "x$CLUTTER_BACKENDS" = "x"],
         AC_MSG_ERROR([No backend enabled. You need to enable at least one backend.])
       ])
 
+AS_IF([test "x$platform_linux" = "xyes"],
+      [
+        AC_DEFINE([OS_LINUX], [1], [Define to 1 if building for Linux])
+      ])
+
 # additional input backends
 
 AC_ARG_ENABLE([tslib-input],

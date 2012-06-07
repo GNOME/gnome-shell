@@ -45,6 +45,8 @@ test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
   }
 #endif
 
+  clutter_x11_enable_xinput ();
+
   g_assert (clutter_init (shared_state->argc_addr, shared_state->argv_addr)
             == CLUTTER_INIT_SUCCESS);
 

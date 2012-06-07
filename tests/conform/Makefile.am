@@ -82,6 +82,11 @@ units_sources += \
 	cally-text.c			\
 	$(NULL)
 
+# events tests
+units_sources += \
+	events-touch.c			\
+	$(NULL)
+
 test_conformance_SOURCES = $(common_sources) $(units_sources)
 
 if OS_WIN32
