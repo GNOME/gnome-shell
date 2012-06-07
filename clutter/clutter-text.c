@@ -2002,6 +2002,75 @@ clutter_text_key_press (ClutterActor    *actor,
   return CLUTTER_EVENT_PROPAGATE;
 }
 
+static void
+clutter_text_compute_layout_offsets (ClutterText           *self,
+                                     PangoLayout           *layout,
+                                     const ClutterActorBox *alloc,
+                                     int                   *text_x,
+                                     int                   *text_y)
+{
+  ClutterActor *actor = CLUTTER_ACTOR (self);
+  ClutterActorAlign x_align, y_align;
+  PangoRectangle logical_rect;
+  float alloc_width, alloc_height;
+  float x, y;
+
+  clutter_actor_box_get_size (alloc, &alloc_width, &alloc_height);
+  pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
+
+  if (clutter_actor_needs_expand (actor, CLUTTER_ORIENTATION_HORIZONTAL))
+    x_align = _clutter_actor_get_effective_x_align (actor);
+  else
+    x_align = CLUTTER_ACTOR_ALIGN_FILL;
+
+  if (clutter_actor_needs_expand (actor, CLUTTER_ORIENTATION_VERTICAL))
+    y_align = clutter_actor_get_y_align (actor);
+  else
+    y_align = CLUTTER_ACTOR_ALIGN_FILL;
+
+  x = 0.f;
+  switch (x_align)
+    {
+    case CLUTTER_ACTOR_ALIGN_FILL:
+    case CLUTTER_ACTOR_ALIGN_START:
+      break;
+
+    case CLUTTER_ACTOR_ALIGN_END:
+      if (alloc_width > logical_rect.width)
+        x = alloc_width - logical_rect.width;
+      break;
+
+    case CLUTTER_ACTOR_ALIGN_CENTER:
+      if (alloc_width > logical_rect.width)
+        x = (alloc_width - logical_rect.width) / 2.f;
+      break;
+    }
+
+  y = 0.f;
+  switch (y_align)
+    {
+    case CLUTTER_ACTOR_ALIGN_FILL:
+    case CLUTTER_ACTOR_ALIGN_START:
+      break;
+
+    case CLUTTER_ACTOR_ALIGN_END:
+      if (alloc_height > logical_rect.height)
+        y = alloc_height - logical_rect.height;
+      break;
+
+    case CLUTTER_ACTOR_ALIGN_CENTER:
+      if (alloc_height > logical_rect.height)
+        y = (alloc_height - logical_rect.height) / 2.f;
+      break;
+    }
+
+  if (text_x != NULL)
+    *text_x = floorf (x);
+
+  if (text_y != NULL)
+    *text_y = floorf (y);
+}
+
 #define TEXT_PADDING    2
 
 static void
@@ -2014,6 +2083,7 @@ clutter_text_paint (ClutterActor *self)
   CoglColor color = { 0, };
   guint8 real_opacity;
   gint text_x = priv->text_x;
+  gint text_y = priv->text_y;
   gboolean clip_set = FALSE;
   gboolean bg_color_set = FALSE;
   guint n_chars;
@@ -2021,7 +2091,6 @@ clutter_text_paint (ClutterActor *self)
   /* Note that if anything in this paint method changes it needs to be
      reflected in the get_paint_volume implementation which is tightly
      tied to the workings of this function */
-
   n_chars = clutter_text_buffer_get_length (get_buffer (text));
 
   /* don't bother painting an empty text actor, unless it's
@@ -2149,14 +2218,17 @@ clutter_text_paint (ClutterActor *self)
           clip_set = TRUE;
         }
 
-      text_x = 0;
+      clutter_text_compute_layout_offsets (text, layout, &alloc, &text_x, &text_y);
     }
   else
-    text_x = 0;
+    clutter_text_compute_layout_offsets (text, layout, &alloc, &text_x, &text_y);
 
-  if (priv->text_x != text_x)
+  if (priv->text_x != text_x ||
+      priv->text_y != text_y)
     {
       priv->text_x = text_x;
+      priv->text_y = text_y;
+
       clutter_text_ensure_cursor_position (text);
     }
 
@@ -2172,7 +2244,7 @@ clutter_text_paint (ClutterActor *self)
                             priv->text_color.green,
                             priv->text_color.blue,
                             real_opacity);
-  cogl_pango_render_layout (layout, text_x, priv->text_y, &color, 0);
+  cogl_pango_render_layout (layout, priv->text_x, priv->text_y, &color, 0);
 
   selection_paint (text);
 
