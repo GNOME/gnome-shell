@@ -9120,6 +9120,20 @@ clutter_actor_set_fixed_position_set (ClutterActor *self,
   if (self->priv->position_set == (is_set != FALSE))
     return;
 
+  if (!is_set)
+    {
+      ClutterLayoutInfo *info;
+
+      /* Ensure we set back the default fixed position of 0,0 so that setting
+	 just one of x/y always atomically gets 0 for the other */
+      info = _clutter_actor_peek_layout_info (self);
+      if (info != NULL)
+	{
+	  info->fixed_pos.x = 0;
+	  info->fixed_pos.y = 0;
+	}
+    }
+
   self->priv->position_set = is_set != FALSE;
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FIXED_POSITION_SET]);
 
