@@ -593,6 +593,7 @@
 #include "clutter-container.h"
 #include "clutter-content-private.h"
 #include "clutter-debug.h"
+#include "clutter-easing.h"
 #include "clutter-effect-private.h"
 #include "clutter-enum-types.h"
 #include "clutter-fixed-layout.h"
@@ -17527,6 +17528,14 @@ _clutter_actor_create_transition (ClutterActor *actor,
       clutter_timeline_set_delay (timeline, info->cur_state->easing_delay);
       clutter_timeline_set_duration (timeline, info->cur_state->easing_duration);
       clutter_timeline_set_progress_mode (timeline, info->cur_state->easing_mode);
+
+      CLUTTER_NOTE (ANIMATION,
+                    "Created transition for %s:%s (len:%u, mode:%s, delay:%u)",
+                    _clutter_actor_get_debug_name (actor),
+                    pspec->name,
+                    info->cur_state->easing_duration,
+                    clutter_get_easing_name_for_mode (info->cur_state->easing_mode),
+                    info->cur_state->easing_delay);
 
       /* this will start the transition as well */
       clutter_actor_add_transition (actor, pspec->name, res);
