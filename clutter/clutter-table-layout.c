@@ -1084,8 +1084,7 @@ calculate_row_heights (ClutterTableLayout *self,
 
           if (!rows[i].expand)
             {
-              rows[i].expand = clutter_actor_needs_expand (child,
-                                                           orientation) ||
+              rows[i].expand = clutter_actor_needs_expand (child, orientation) ||
                 meta->y_expand;
             }
         }
@@ -1948,6 +1947,9 @@ clutter_table_layout_get_span (ClutterTableLayout *layout,
  * inside @layout
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.12: Use clutter_actor_set_x_align() and
+ *   clutter_actor_set_y_align() instead.
  */
 void
 clutter_table_layout_set_alignment (ClutterTableLayout    *layout,
@@ -2003,6 +2005,9 @@ clutter_table_layout_set_alignment (ClutterTableLayout    *layout,
  * clutter_table_layout_set_alignment().
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.12: Use clutter_actor_get_x_align() and
+ *   clutter_actor_get_y_align() instead.
  */
 void
 clutter_table_layout_get_alignment (ClutterTableLayout    *layout,
@@ -2061,6 +2066,9 @@ clutter_table_layout_get_alignment (ClutterTableLayout    *layout,
  * inside @layout
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.12: Use clutter_actor_set_x_align() and
+ *   clutter_actor_set_y_align() instead.
  */
 void
 clutter_table_layout_set_fill (ClutterTableLayout *layout,
@@ -2115,6 +2123,9 @@ clutter_table_layout_set_fill (ClutterTableLayout *layout,
  * as set using clutter_table_layout_pack() or clutter_table_layout_set_fill()
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.12: Use clutter_actor_get_x_align() and
+ *   clutter_actor_get_y_align() instead.
  */
 void
 clutter_table_layout_get_fill (ClutterTableLayout *layout,
@@ -2174,6 +2185,9 @@ clutter_table_layout_get_fill (ClutterTableLayout *layout,
  * inside @layout
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.12: Use clutter_actor_set_x_expand() or
+ *   clutter_actor_set_y_expand() instead.
  */
 void
 clutter_table_layout_set_expand (ClutterTableLayout *layout,
@@ -2228,6 +2242,9 @@ clutter_table_layout_set_expand (ClutterTableLayout *layout,
  * as set using clutter_table_layout_pack() or clutter_table_layout_set_expand()
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.12: Use clutter_actor_get_x_expand() and
+ *   clutter_actor_get_y_expand() instead.
  */
 void
 clutter_table_layout_get_expand (ClutterTableLayout *layout,

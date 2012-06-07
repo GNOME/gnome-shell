@@ -101,26 +101,33 @@ void                  clutter_table_layout_get_span            (ClutterTableLayo
                                                                 ClutterActor          *actor,
                                                                 gint                  *column_span,
                                                                 gint                  *row_span);
+
+CLUTTER_DEPRECATED_IN_1_12
 void                  clutter_table_layout_set_alignment       (ClutterTableLayout    *layout,
                                                                 ClutterActor          *actor,
                                                                 ClutterTableAlignment  x_align,
                                                                 ClutterTableAlignment  y_align);
+CLUTTER_DEPRECATED_IN_1_12
 void                  clutter_table_layout_get_alignment       (ClutterTableLayout    *layout,
                                                                 ClutterActor          *actor,
                                                                 ClutterTableAlignment *x_align,
                                                                 ClutterTableAlignment *y_align);
+CLUTTER_DEPRECATED_IN_1_12
 void                  clutter_table_layout_set_fill            (ClutterTableLayout    *layout,
                                                                 ClutterActor          *actor,
                                                                 gboolean               x_fill,
                                                                 gboolean               y_fill);
+CLUTTER_DEPRECATED_IN_1_12
 void                  clutter_table_layout_get_fill            (ClutterTableLayout    *layout,
                                                                 ClutterActor          *actor,
                                                                 gboolean              *x_fill,
                                                                 gboolean              *y_fill);
+CLUTTER_DEPRECATED_IN_1_12
 void                  clutter_table_layout_set_expand          (ClutterTableLayout    *layout,
                                                                 ClutterActor          *actor,
                                                                 gboolean               x_expand,
                                                                 gboolean               y_expand);
+CLUTTER_DEPRECATED_IN_1_12
 void                  clutter_table_layout_get_expand          (ClutterTableLayout    *layout,
                                                                 ClutterActor          *actor,
                                                                 gboolean              *x_expand,
