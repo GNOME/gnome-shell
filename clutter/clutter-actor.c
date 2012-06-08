@@ -726,6 +726,7 @@ struct _ClutterActorPrivate
   ClutterContentGravity content_gravity;
   ClutterScalingFilter min_filter;
   ClutterScalingFilter mag_filter;
+  ClutterContentRepeat content_repeat;
 
   /* used when painting, to update the paint volume */
   ClutterEffect *current_effect;
@@ -910,6 +911,7 @@ enum
   PROP_CONTENT_BOX,
   PROP_MINIFICATION_FILTER,
   PROP_MAGNIFICATION_FILTER,
+  PROP_CONTENT_REPEAT,
 
   PROP_LAST
 };
@@ -4754,6 +4756,10 @@ clutter_actor_set_property (GObject      *object,
                                                  g_value_get_enum (value));
       break;
 
+    case PROP_CONTENT_REPEAT:
+      clutter_actor_set_content_repeat (actor, g_value_get_flags (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -5215,6 +5221,10 @@ clutter_actor_get_property (GObject    *object,
 
     case PROP_MAGNIFICATION_FILTER:
       g_value_set_enum (value, priv->mag_filter);
+      break;
+
+    case PROP_CONTENT_REPEAT:
+      g_value_set_flags (value, priv->content_repeat);
       break;
 
     default:
@@ -6793,6 +6803,22 @@ clutter_actor_class_init (ClutterActorClass *klass)
                        CLUTTER_TYPE_SCALING_FILTER,
                        CLUTTER_SCALING_FILTER_LINEAR,
                        CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterActor:content-repeat:
+   *
+   * The repeat policy for the actor's #ClutterActor:content.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_CONTENT_REPEAT] =
+    g_param_spec_flags ("content-repeat",
+                        P_("Content Repeat"),
+                        P_("The repeat policy for the actor's content"),
+                        CLUTTER_TYPE_CONTENT_REPEAT,
+                        CLUTTER_REPEAT_NONE,
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class, PROP_LAST, obj_props);
 
@@ -18722,4 +18748,48 @@ clutter_actor_needs_expand (ClutterActor       *self,
     }
 
   return FALSE;
+}
+
+/**
+ * clutter_actor_set_content_repeat:
+ * @self: a #ClutterActor
+ * @repeat: the repeat policy
+ *
+ * Sets the policy for repeating the #ClutterActor:content of a
+ * #ClutterActor. The behaviour is deferred to the #ClutterContent
+ * implementation.
+ *
+ * Since: 1.12
+ */
+void
+clutter_actor_set_content_repeat (ClutterActor         *self,
+                                  ClutterContentRepeat  repeat)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (self->priv->content_repeat == repeat)
+    return;
+
+  self->priv->content_repeat = repeat;
+
+  clutter_actor_queue_redraw (self);
+}
+
+/**
+ * clutter_actor_get_content_repeat:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the repeat policy for a #ClutterActor set by
+ * clutter_actor_set_content_repeat().
+ *
+ * Return value: the content repeat policy
+ *
+ * Since: 1.12
+ */
+ClutterContentRepeat
+clutter_actor_get_content_repeat (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), CLUTTER_REPEAT_NONE);
+
+  return self->priv->content_repeat;
 }

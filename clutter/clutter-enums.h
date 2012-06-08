@@ -1255,6 +1255,24 @@ typedef enum {
   CLUTTER_GRID_POSITION_BOTTOM
 } ClutterGridPosition;
 
+/**
+ * ClutterContentRepeat:
+ * @CLUTTER_REPEAT_NONE: No repeat
+ * @CLUTTER_REPEAT_X_AXIS: Repeat the content on the X axis
+ * @CLUTTER_REPEAT_Y_AXIS: Repeat the content on the Y axis
+ * @CLUTTER_REPEAT_BOTH: Repeat the content on both axis
+ *
+ * Content repeat modes.
+ *
+ * Since: 1.12
+ */
+typedef enum {
+  CLUTTER_REPEAT_NONE   = 0,
+  CLUTTER_REPEAT_X_AXIS = 1 << 0,
+  CLUTTER_REPEAT_Y_AXIS = 1 << 1,
+  CLUTTER_REPEAT_BOTH   = CLUTTER_REPEAT_X_AXIS | CLUTTER_REPEAT_Y_AXIS
+} ClutterContentRepeat;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ENUMS_H__ */

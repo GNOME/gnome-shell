@@ -502,6 +502,11 @@ CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_get_content_scaling_filters       (ClutterActor               *self,
                                                                                  ClutterScalingFilter       *min_filter,
                                                                                  ClutterScalingFilter       *mag_filter);
+CLUTTER_AVAILABLE_IN_1_12
+void                            clutter_actor_set_content_repeat                (ClutterActor               *self,
+                                                                                 ClutterContentRepeat        repeat);
+CLUTTER_AVAILABLE_IN_1_12
+ClutterContentRepeat            clutter_actor_get_content_repeat                (ClutterActor               *self);
 CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_get_content_box                   (ClutterActor               *self,
                                                                                  ClutterActorBox            *box);
