@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-26 20:16+0000\n"
-"PO-Revision-Date: 2012-05-29 09:02+0100\n"
+"POT-Creation-Date: 2012-06-08 17:09+0000\n"
+"PO-Revision-Date: 2012-06-08 21:23+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -199,10 +199,10 @@ msgid "Not listed?"
 msgstr "Ali je ni na seznamu?"
 
 #: ../js/gdm/loginDialog.js:1023
-#: ../js/ui/endSessionDialog.js:401
+#: ../js/ui/endSessionDialog.js:411
 #: ../js/ui/extensionSystem.js:375
 #: ../js/ui/networkAgent.js:153
-#: ../js/ui/polkitAuthenticationAgent.js:175
+#: ../js/ui/polkitAuthenticationAgent.js:176
 #: ../js/ui/status/bluetooth.js:431
 msgid "Cancel"
 msgstr "Prekliči"
@@ -217,9 +217,9 @@ msgid "Login Window"
 msgstr "Prijavno okno"
 
 #: ../js/gdm/powerMenu.js:130
-#: ../js/ui/userMenu.js:595
-#: ../js/ui/userMenu.js:599
-#: ../js/ui/userMenu.js:647
+#: ../js/ui/userMenu.js:604
+#: ../js/ui/userMenu.js:608
+#: ../js/ui/userMenu.js:696
 msgid "Suspend"
 msgstr "Zaustavi"
 
@@ -228,9 +228,9 @@ msgid "Restart"
 msgstr "Zaženi znova"
 
 #: ../js/gdm/powerMenu.js:140
-#: ../js/ui/userMenu.js:597
-#: ../js/ui/userMenu.js:599
-#: ../js/ui/userMenu.js:646
+#: ../js/ui/userMenu.js:606
+#: ../js/ui/userMenu.js:608
+#: ../js/ui/userMenu.js:695
 msgid "Power Off"
 msgstr "Izklop"
 
@@ -444,9 +444,7 @@ msgid "Next week"
 msgstr "Naslednji teden"
 
 #: ../js/ui/contactDisplay.js:66
-#: ../js/ui/notificationDaemon.js:486
-#: ../js/ui/status/power.js:215
-#: ../src/shell-app.c:374
+msgctxt "contact"
 msgid "Unknown"
 msgstr "Neznano"
 
@@ -644,13 +642,13 @@ msgid "tray"
 msgstr "sistemska vrstica"
 
 #: ../js/ui/keyboard.js:545
-#: ../js/ui/status/keyboard.js:44
+#: ../js/ui/status/keyboard.js:42
 #: ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
 #: ../js/ui/keyringPrompt.js:85
-#: ../js/ui/polkitAuthenticationAgent.js:272
+#: ../js/ui/polkitAuthenticationAgent.js:273
 msgid "Password:"
 msgstr "Geslo:"
 
@@ -709,7 +707,7 @@ msgid "Web Page"
 msgstr "Spletna stran"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:121
+#: ../js/ui/main.js:126
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Screencast z %d %t"
@@ -726,7 +724,7 @@ msgstr "Povrni glasnost"
 msgid "Mute"
 msgstr "Utišaj"
 
-#: ../js/ui/messageTray.js:2522
+#: ../js/ui/messageTray.js:2529
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -810,6 +808,12 @@ msgstr "Geslo mobilnega širokopasovnega dostopa"
 msgid "A password is required to connect to '%s'."
 msgstr "Za povezavo z omrežjem '%s' je zahtevano geslo."
 
+#: ../js/ui/notificationDaemon.js:486
+#: ../src/shell-app.c:374
+msgctxt "program"
+msgid "Unknown"
+msgstr "Neznano"
+
 #: ../js/ui/overview.js:90
 msgid "Undo"
 msgstr "Razveljavi"
@@ -871,7 +875,7 @@ msgstr "Zahtevana je overitev"
 msgid "Administrator"
 msgstr "Skrbnik"
 
-#: ../js/ui/polkitAuthenticationAgent.js:179
+#: ../js/ui/polkitAuthenticationAgent.js:180
 msgid "Authenticate"
 msgstr "Overi"
 
@@ -879,7 +883,7 @@ msgstr "Overi"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/polkitAuthenticationAgent.js:260
+#: ../js/ui/polkitAuthenticationAgent.js:261
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Dejanje je spodletelo. Poskusite znova."
 
@@ -896,11 +900,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Vnos ukaza:"
 
-#: ../js/ui/searchDisplay.js:321
+#: ../js/ui/searchDisplay.js:323
 msgid "Searching..."
 msgstr "Iskanje ..."
 
-#: ../js/ui/searchDisplay.js:374
+#: ../js/ui/searchDisplay.js:376
 msgid "No matching results."
 msgstr "Ni zadetkov iskanja"
 
@@ -978,7 +982,7 @@ msgstr "Veliko besedilo"
 #: ../js/ui/status/bluetooth.js:339
 #: ../js/ui/status/bluetooth.js:375
 #: ../js/ui/status/bluetooth.js:404
-#: ../js/ui/status/network.js:890
+#: ../js/ui/status/network.js:889
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1009,12 +1013,13 @@ msgid "Connection"
 msgstr "Povezava"
 
 #: ../js/ui/status/bluetooth.js:211
-#: ../js/ui/status/network.js:491
+#: ../js/ui/status/network.js:490
 msgid "disconnecting..."
 msgstr "prekinjanje povezave ..."
 
 #: ../js/ui/status/bluetooth.js:224
-#: ../js/ui/status/network.js:497
+#: ../js/ui/status/network.js:496
+#: ../js/ui/status/network.js:956
 msgid "connecting..."
 msgstr "povezovanje ..."
 
@@ -1108,11 +1113,11 @@ msgstr "Vnesite PIN, ki je naveden na napravi."
 msgid "OK"
 msgstr "V redu"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:69
 msgid "Show Keyboard Layout"
 msgstr "Pokaži razporeditev tipkovnice"
 
-#: ../js/ui/status/keyboard.js:77
+#: ../js/ui/status/keyboard.js:71
 msgid "Region and Language Settings"
 msgstr "Nastavitve območja in jezika"
 
@@ -1127,116 +1132,118 @@ msgstr "onemogočeno"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:489
+#: ../js/ui/status/network.js:488
 msgid "unmanaged"
 msgstr "neupravljano"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:500
+#: ../js/ui/status/network.js:499
+#: ../js/ui/status/network.js:959
 msgid "authentication required"
 msgstr "zahtevana je overitev"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:510
+#: ../js/ui/status/network.js:509
 msgid "firmware missing"
 msgstr "manjka strojna programska oprema"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:517
+#: ../js/ui/status/network.js:516
 msgid "cable unplugged"
 msgstr "kabel ni priklopljen"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:522
+#: ../js/ui/status/network.js:521
 msgid "unavailable"
 msgstr "ni na voljo"
 
-#: ../js/ui/status/network.js:524
+#: ../js/ui/status/network.js:523
+#: ../js/ui/status/network.js:961
 msgid "connection failed"
 msgstr "povezovanje je spodletelo"
 
-#: ../js/ui/status/network.js:585
-#: ../js/ui/status/network.js:1497
+#: ../js/ui/status/network.js:584
+#: ../js/ui/status/network.js:1529
 msgid "More..."
 msgstr "Več ..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:621
-#: ../js/ui/status/network.js:1432
+#: ../js/ui/status/network.js:620
+#: ../js/ui/status/network.js:1459
 msgid "Connected (private)"
 msgstr "Povezano (zasebna povezava)"
 
-#: ../js/ui/status/network.js:696
+#: ../js/ui/status/network.js:695
 msgid "Auto Ethernet"
 msgstr "Samodejni eternet"
 
-#: ../js/ui/status/network.js:754
+#: ../js/ui/status/network.js:753
 msgid "Auto broadband"
 msgstr "Samodejni širokopasovni dostop"
 
-#: ../js/ui/status/network.js:757
+#: ../js/ui/status/network.js:756
 msgid "Auto dial-up"
 msgstr "Samodejni klicni dostop"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:876
-#: ../js/ui/status/network.js:1444
+#: ../js/ui/status/network.js:875
+#: ../js/ui/status/network.js:1476
 #, c-format
 msgid "Auto %s"
 msgstr "Samodejna povezava z %s"
 
-#: ../js/ui/status/network.js:878
+#: ../js/ui/status/network.js:877
 msgid "Auto bluetooth"
 msgstr "Samodejna povezava z Bluetooth"
 
-#: ../js/ui/status/network.js:1446
+#: ../js/ui/status/network.js:1478
 msgid "Auto wireless"
 msgstr "Samodejni brezžični dostop"
 
-#: ../js/ui/status/network.js:1533
+#: ../js/ui/status/network.js:1565
 msgid "Network"
 msgstr "Omrežje"
 
-#: ../js/ui/status/network.js:1540
+#: ../js/ui/status/network.js:1572
 msgid "Enable networking"
 msgstr "Omogoči omrežje"
 
-#: ../js/ui/status/network.js:1552
+#: ../js/ui/status/network.js:1593
 msgid "Wired"
 msgstr "Žično"
 
-#: ../js/ui/status/network.js:1563
+#: ../js/ui/status/network.js:1604
 msgid "Wireless"
 msgstr "Brezžično"
 
-#: ../js/ui/status/network.js:1573
+#: ../js/ui/status/network.js:1614
 msgid "Mobile broadband"
 msgstr "Mobilni širokopasovni dostop"
 
-#: ../js/ui/status/network.js:1583
+#: ../js/ui/status/network.js:1624
 msgid "VPN Connections"
 msgstr "Povezave VPN"
 
-#: ../js/ui/status/network.js:1594
+#: ../js/ui/status/network.js:1631
 msgid "Network Settings"
 msgstr "Omrežne nastavitve"
 
-#: ../js/ui/status/network.js:1647
+#: ../js/ui/status/network.js:1675
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
-#: ../js/ui/status/network.js:1734
+#: ../js/ui/status/network.js:1768
 msgid "Connection failed"
 msgstr "Povezava je spodletela"
 
-#: ../js/ui/status/network.js:1735
+#: ../js/ui/status/network.js:1769
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
-#: ../js/ui/status/network.js:1988
+#: ../js/ui/status/network.js:2029
 msgid "Networking is disabled"
 msgstr "Omrežje je onemogočeno"
 
@@ -1340,6 +1347,11 @@ msgstr "Tablični računalnik"
 #: ../js/ui/status/power.js:213
 msgid "Computer"
 msgstr "Računalnik"
+
+#: ../js/ui/status/power.js:215
+msgctxt "device"
+msgid "Unknown"
+msgstr "Neznano"
 
 #. Translators: This is the label for audio volume
 #: ../js/ui/status/volume.js:25
@@ -1611,36 +1623,36 @@ msgstr "Nedejavno"
 msgid "Unavailable"
 msgstr "Nedostopno"
 
-#: ../js/ui/userMenu.js:556
-#: ../js/ui/userMenu.js:656
+#: ../js/ui/userMenu.js:565
+#: ../js/ui/userMenu.js:705
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: ../js/ui/userMenu.js:557
+#: ../js/ui/userMenu.js:566
 msgid "Switch Session"
 msgstr "Preklopi sejo"
 
-#: ../js/ui/userMenu.js:632
+#: ../js/ui/userMenu.js:681
 msgid "Notifications"
 msgstr "Obvestila"
 
-#: ../js/ui/userMenu.js:641
+#: ../js/ui/userMenu.js:690
 msgid "System Settings"
 msgstr "Sistemske nastavitve"
 
-#: ../js/ui/userMenu.js:661
+#: ../js/ui/userMenu.js:710
 msgid "Log Out"
 msgstr "Odjava"
 
-#: ../js/ui/userMenu.js:669
+#: ../js/ui/userMenu.js:718
 msgid "Lock"
 msgstr "Zakleni"
 
-#: ../js/ui/userMenu.js:687
+#: ../js/ui/userMenu.js:736
 msgid "Your chat status will be set to busy"
 msgstr "Stanje vašega klepeta bo nastavljeno na zasedeno"
 
-#: ../js/ui/userMenu.js:688
+#: ../js/ui/userMenu.js:737
 msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
 msgstr "Obveščanje je zdaj onemogočeno, vključno s sporočili klepeta. Vaše stanje povezanosti se je prilagodilo, da bodo drugi vedeli, da njihovih sporočil morda ne boste opazili."
 
