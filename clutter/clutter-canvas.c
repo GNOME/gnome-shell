@@ -295,6 +295,7 @@ clutter_canvas_paint_content (ClutterContent   *content,
   ClutterColor color;
   guint8 paint_opacity;
   ClutterScalingFilter min_f, mag_f;
+  ClutterContentRepeat repeat;
 
   if (self->priv->buffer == NULL)
     return;
@@ -308,6 +309,7 @@ clutter_canvas_paint_content (ClutterContent   *content,
   clutter_actor_get_content_box (actor, &box);
   paint_opacity = clutter_actor_get_paint_opacity (actor);
   clutter_actor_get_content_scaling_filters (actor, &min_f, &mag_f);
+  repeat = clutter_actor_get_content_repeat (actor);
 
   color.red = paint_opacity;
   color.green = paint_opacity;
@@ -318,7 +320,24 @@ clutter_canvas_paint_content (ClutterContent   *content,
   cogl_object_unref (texture);
 
   clutter_paint_node_set_name (node, "Canvas");
-  clutter_paint_node_add_rectangle (node, &box);
+
+  if (repeat == CLUTTER_REPEAT_NONE)
+    clutter_paint_node_add_rectangle (node, &box);
+  else
+    {
+      float t_w = 1.f, t_h = 1.f;
+
+      if ((repeat & CLUTTER_REPEAT_X_AXIS) != FALSE)
+        t_w = (box.x2 - box.x1) / cogl_texture_get_width (texture);
+
+      if ((repeat & CLUTTER_REPEAT_Y_AXIS) != FALSE)
+        t_h = (box.y2 - box.y1) / cogl_texture_get_height (texture);
+
+      clutter_paint_node_add_texture_rectangle (node, &box,
+                                                0.f, 0.f,
+                                                t_w, t_h);
+    }
+
   clutter_paint_node_add_child (root, node);
   clutter_paint_node_unref (node);
 }
