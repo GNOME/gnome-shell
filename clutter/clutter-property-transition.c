@@ -62,6 +62,38 @@ static GParamSpec *obj_props[PROP_LAST] = { NULL, };
 
 G_DEFINE_TYPE (ClutterPropertyTransition, clutter_property_transition, CLUTTER_TYPE_TRANSITION)
 
+static inline void
+clutter_property_transition_ensure_interval (ClutterPropertyTransition *transition,
+                                             ClutterAnimatable         *animatable,
+                                             ClutterInterval           *interval)
+{
+  ClutterPropertyTransitionPrivate *priv = transition->priv;
+  GValue *value_p;
+
+  if (clutter_interval_is_valid (interval))
+    return;
+
+  /* if no initial value has been set, use the current value */
+  value_p = clutter_interval_peek_initial_value (interval);
+  if (!G_IS_VALUE (value_p))
+    {
+      g_value_init (value_p, clutter_interval_get_value_type (interval));
+      clutter_animatable_get_initial_state (animatable,
+                                            priv->property_name,
+                                            value_p);
+    }
+
+  /* if no final value has been set, use the current value */
+  value_p = clutter_interval_peek_final_value (interval);
+  if (!G_IS_VALUE (value_p))
+    {
+      g_value_init (value_p, clutter_interval_get_value_type (interval));
+      clutter_animatable_get_initial_state (animatable,
+                                            priv->property_name,
+                                            value_p);
+    }
+}
+
 static void
 clutter_property_transition_attached (ClutterTransition *transition,
                                       ClutterAnimatable *animatable)
@@ -69,7 +101,6 @@ clutter_property_transition_attached (ClutterTransition *transition,
   ClutterPropertyTransition *self = CLUTTER_PROPERTY_TRANSITION (transition);
   ClutterPropertyTransitionPrivate *priv = self->priv;
   ClutterInterval *interval;
-  GValue *value;
 
   if (priv->property_name == NULL)
     return;
@@ -84,25 +115,7 @@ clutter_property_transition_attached (ClutterTransition *transition,
   if (interval == NULL)
     return;
 
-  /* if no initial value has been set, use the current value */
-  value = clutter_interval_peek_initial_value (interval);
-  if (!G_IS_VALUE (value))
-    {
-      g_value_init (value, clutter_interval_get_value_type (interval));
-      clutter_animatable_get_initial_state (animatable,
-                                            priv->property_name,
-                                            value);
-    }
-
-  /* if no final value has been set, use the current value */
-  value = clutter_interval_peek_final_value (interval);
-  if (!G_IS_VALUE (value))
-    {
-      g_value_init (value, clutter_interval_get_value_type (interval));
-      clutter_animatable_get_initial_state (animatable,
-                                            priv->property_name,
-                                            value);
-    }
+  clutter_property_transition_ensure_interval (self, animatable, interval);
 }
 
 static void
@@ -129,6 +142,8 @@ clutter_property_transition_compute_value (ClutterTransition *transition,
   /* if we have a GParamSpec we also have an animatable instance */
   if (priv->pspec == NULL)
     return;
+
+  clutter_property_transition_ensure_interval (self, animatable, interval);
 
   g_value_init (&value, clutter_interval_get_value_type (interval));
 
