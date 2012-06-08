@@ -224,7 +224,8 @@
  *     <para>The implicit animation model of Clutter assumes that all the
  *     changes in an actor state should be gradual and asynchronous; Clutter
  *     will automatically transition an actor's property change between the
- *     current state and the desired one without manual intervention.</para>
+ *     current state and the desired one without manual intervention, if the
+ *     property is defined to be animatable in its documentation.</para>
  *     <para>By default, in the 1.0 API series, the transition happens with
  *     a duration of zero milliseconds, and the implicit animation is an
  *     opt in feature to retain backwards compatibility. In order to enable
@@ -302,6 +303,7 @@
  *     of an actor between fully opaque and fully transparent, and back, over
  *     a span of 3 seconds. The animation does not begin until it is added to
  *     the actor.</para>
+ *     <para>The explicit animation API applies to all #GObject properties.</para>
  *     <para>The explicit animation API should also be used when using custom
  *     animatable properties for #ClutterAction, #ClutterConstraint, and
  *     #ClutterEffect instances associated to an actor; see the section on
