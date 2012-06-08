@@ -29,7 +29,6 @@
 
 #include <libintl.h>
 #include <string.h>
-#include <gconf/gconf-client.h>
 #define HANDLE_LIBICAL_MEMORY
 #include <libecal/libecal.h>
 #include <libedataserverui/libedataserverui.h>
