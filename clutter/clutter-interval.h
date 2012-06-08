@@ -133,6 +133,9 @@ gboolean         clutter_interval_compute_value      (ClutterInterval *interval,
 const GValue *   clutter_interval_compute            (ClutterInterval *interval,
                                                       gdouble          factor);
 
+CLUTTER_AVAILABLE_IN_1_12
+gboolean         clutter_interval_is_valid           (ClutterInterval *interval);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_INTERVAL_H__ */

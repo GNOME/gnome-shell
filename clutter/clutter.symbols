@@ -794,6 +794,7 @@ clutter_interval_get_initial_value
 clutter_interval_get_interval
 clutter_interval_get_type
 clutter_interval_get_value_type
+clutter_interval_is_valid
 clutter_interval_new
 clutter_interval_new_with_values
 clutter_interval_peek_final_value

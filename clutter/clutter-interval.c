@@ -1065,3 +1065,27 @@ clutter_interval_compute (ClutterInterval *interval,
 
   return NULL;
 }
+
+/**
+ * clutter_interval_is_valid:
+ * @interval: a #ClutterInterval
+ *
+ * Checks if the @interval has a valid initial and final values.
+ *
+ * Return value: %TRUE if the #ClutterInterval has an initial and
+ *   final values, and %FALSE otherwise
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_interval_is_valid (ClutterInterval *interval)
+{
+  ClutterIntervalPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_INTERVAL (interval), FALSE);
+
+  priv = interval->priv;
+
+  return G_IS_VALUE (&priv->values[INITIAL]) &&
+         G_IS_VALUE (&priv->values[FINAL]);
+}
