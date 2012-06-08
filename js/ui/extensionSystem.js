@@ -34,11 +34,7 @@ const REPOSITORY_URL_BASE = 'https://extensions.gnome.org';
 const REPOSITORY_URL_DOWNLOAD = REPOSITORY_URL_BASE + '/download-extension/%s.shell-extension.zip';
 const REPOSITORY_URL_INFO =     REPOSITORY_URL_BASE + '/extension-info/';
 
-const _httpSession = new Soup.SessionAsync({ ssl_use_system_ca_file: true });
-
-// See: https://bugzilla.gnome.org/show_bug.cgi?id=655189 for context.
-// _httpSession.add_feature(new Soup.ProxyResolverDefault());
-Soup.Session.prototype.add_feature.call(_httpSession, new Soup.ProxyResolverDefault());
+let _httpSession;
 
 // Arrays of uuids
 var enabledExtensions;
@@ -350,6 +346,11 @@ function onEnabledExtensionsChanged() {
 
 function init() {
     ExtensionUtils.init();
+
+    _httpSession = new Soup.SessionAsync({ ssl_use_system_ca_file: true });
+    // See: https://bugzilla.gnome.org/show_bug.cgi?id=655189 for context.
+    // _httpSession.add_feature(new Soup.ProxyResolverDefault());
+    Soup.Session.prototype.add_feature.call(_httpSession, new Soup.ProxyResolverDefault());
 
     global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
