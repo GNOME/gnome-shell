@@ -107,6 +107,7 @@ clutter_image_paint_content (ClutterContent   *content,
 {
   ClutterImagePrivate *priv = CLUTTER_IMAGE (content)->priv;
   ClutterScalingFilter min_f, mag_f;
+  ClutterContentRepeat repeat;
   ClutterPaintNode *node;
   ClutterActorBox box;
   ClutterColor color;
@@ -118,6 +119,7 @@ clutter_image_paint_content (ClutterContent   *content,
   clutter_actor_get_content_box (actor, &box);
   paint_opacity = clutter_actor_get_paint_opacity (actor);
   clutter_actor_get_content_scaling_filters (actor, &min_f, &mag_f);
+  repeat = clutter_actor_get_content_repeat (actor);
 
   color.red = paint_opacity;
   color.green = paint_opacity;
@@ -126,7 +128,24 @@ clutter_image_paint_content (ClutterContent   *content,
 
   node = clutter_texture_node_new (priv->texture, &color, min_f, mag_f);
   clutter_paint_node_set_name (node, "Image");
-  clutter_paint_node_add_rectangle (node, &box);
+
+  if (repeat == CLUTTER_REPEAT_NONE)
+    clutter_paint_node_add_rectangle (node, &box);
+  else
+    {
+      float t_w = 1.f, t_h = 1.f;
+
+      if ((repeat & CLUTTER_REPEAT_X_AXIS) != FALSE)
+        t_w = (box.x2 - box.x1) / cogl_texture_get_width (priv->texture);
+
+      if ((repeat & CLUTTER_REPEAT_Y_AXIS) != FALSE)
+        t_h = (box.y2 - box.y1) / cogl_texture_get_height (priv->texture);
+
+      clutter_paint_node_add_texture_rectangle (node, &box,
+                                                0.f, 0.f,
+                                                t_w, t_h);
+    }
+
   clutter_paint_node_add_child (root, node);
   clutter_paint_node_unref (node);
 }
