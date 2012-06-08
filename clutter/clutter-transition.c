@@ -469,10 +469,9 @@ clutter_transition_set_value (ClutterTransition *transition,
   if (priv->interval == NULL)
     {
       priv->interval = clutter_interval_new_with_values (G_VALUE_TYPE (value),
-                                                         value,
-                                                         value);
+                                                         NULL,
+                                                         NULL);
       g_object_ref_sink (priv->interval);
-      return;
     }
 
   interval_type = clutter_interval_get_value_type (priv->interval);

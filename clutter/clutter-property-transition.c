@@ -68,12 +68,41 @@ clutter_property_transition_attached (ClutterTransition *transition,
 {
   ClutterPropertyTransition *self = CLUTTER_PROPERTY_TRANSITION (transition);
   ClutterPropertyTransitionPrivate *priv = self->priv;
+  ClutterInterval *interval;
+  GValue *value;
 
   if (priv->property_name == NULL)
     return;
 
-  priv->pspec = clutter_animatable_find_property (animatable,
-                                                  priv->property_name);
+  priv->pspec =
+    clutter_animatable_find_property (animatable, priv->property_name);
+
+  if (priv->pspec == NULL)
+    return;
+
+  interval = clutter_transition_get_interval (transition);
+  if (interval == NULL)
+    return;
+
+  /* if no initial value has been set, use the current value */
+  value = clutter_interval_peek_initial_value (interval);
+  if (!G_IS_VALUE (value))
+    {
+      g_value_init (value, clutter_interval_get_value_type (interval));
+      clutter_animatable_get_initial_state (animatable,
+                                            priv->property_name,
+                                            value);
+    }
+
+  /* if no final value has been set, use the current value */
+  value = clutter_interval_peek_final_value (interval);
+  if (!G_IS_VALUE (value))
+    {
+      g_value_init (value, clutter_interval_get_value_type (interval));
+      clutter_animatable_get_initial_state (animatable,
+                                            priv->property_name,
+                                            value);
+    }
 }
 
 static void
