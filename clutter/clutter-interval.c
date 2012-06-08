@@ -68,6 +68,8 @@ enum
   PROP_0,
 
   PROP_VALUE_TYPE,
+  PROP_INITIAL,
+  PROP_FINAL,
 
   PROP_LAST
 };
@@ -329,6 +331,22 @@ clutter_interval_set_property (GObject      *gobject,
       priv->value_type = g_value_get_gtype (value);
       break;
 
+    case PROP_INITIAL:
+      if (g_value_get_boxed (value) != NULL)
+        clutter_interval_set_initial_value (CLUTTER_INTERVAL (gobject),
+                                            g_value_get_boxed (value));
+      else if (G_IS_VALUE (&priv->values[INITIAL]))
+        g_value_unset (&priv->values[INITIAL]);
+      break;
+
+    case PROP_FINAL:
+      if (g_value_get_boxed (value) != NULL)
+        clutter_interval_set_final_value (CLUTTER_INTERVAL (gobject),
+                                          g_value_get_boxed (value));
+      else if (G_IS_VALUE (&priv->values[FINAL]))
+        g_value_unset (&priv->values[FINAL]);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -349,6 +367,16 @@ clutter_interval_get_property (GObject    *gobject,
       g_value_set_gtype (value, priv->value_type);
       break;
 
+    case PROP_INITIAL:
+      if (G_IS_VALUE (&priv->values[INITIAL]))
+        g_value_set_boxed (value, &priv->values[INITIAL]);
+      break;
+
+    case PROP_FINAL:
+      if (G_IS_VALUE (&priv->values[FINAL]))
+        g_value_set_boxed (value, &priv->values[FINAL]);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -359,7 +387,6 @@ static void
 clutter_interval_class_init (ClutterIntervalClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (ClutterIntervalPrivate));
 
@@ -377,13 +404,46 @@ clutter_interval_class_init (ClutterIntervalClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_gtype ("value-type",
-                              P_("Value Type"),
-                              P_("The type of the values in the interval"),
-                              G_TYPE_NONE,
-                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
-  obj_props[PROP_VALUE_TYPE] = pspec;
-  g_object_class_install_property (gobject_class, PROP_VALUE_TYPE, pspec);
+  obj_props[PROP_VALUE_TYPE] =
+    g_param_spec_gtype ("value-type",
+                        P_("Value Type"),
+                        P_("The type of the values in the interval"),
+                        G_TYPE_NONE,
+                        G_PARAM_READWRITE |
+                        G_PARAM_CONSTRUCT_ONLY |
+                        G_PARAM_STATIC_STRINGS);
+
+  /**
+   * ClutterInterval:initial:
+   *
+   * The initial value of the interval.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_INITIAL] =
+    g_param_spec_boxed ("initial",
+                        P_("Initial Value"),
+                        P_("Initial value of the interval"),
+                        G_TYPE_VALUE,
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS);
+
+  /**
+   * ClutterInterval:final:
+   *
+   * The final value of the interval.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_FINAL] =
+    g_param_spec_boxed ("final",
+                        P_("Final Value"),
+                        P_("Final value of the interval"),
+                        G_TYPE_VALUE,
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
 }
 
 static void
@@ -584,21 +644,15 @@ clutter_interval_new_with_values (GType         gtype,
                                   const GValue *initial,
                                   const GValue *final)
 {
-  ClutterInterval *retval;
-
   g_return_val_if_fail (gtype != G_TYPE_INVALID, NULL);
   g_return_val_if_fail (initial == NULL || G_VALUE_TYPE (initial) == gtype, NULL);
   g_return_val_if_fail (final == NULL || G_VALUE_TYPE (final) == gtype, NULL);
 
-  retval = g_object_new (CLUTTER_TYPE_INTERVAL, "value-type", gtype, NULL);
-
-  if (initial != NULL)
-    clutter_interval_set_initial_value (retval, initial);
-
-  if (final != NULL)
-    clutter_interval_set_final_value (retval, final);
-
-  return retval;
+  return g_object_new (CLUTTER_TYPE_INTERVAL,
+                       "value-type", gtype,
+                       "initial", initial,
+                       "final", final,
+                       NULL);
 }
 
 /**
