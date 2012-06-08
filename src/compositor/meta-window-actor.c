@@ -1202,6 +1202,9 @@ meta_window_actor_should_unredirect (MetaWindowActor *self)
   if (priv->argb32)
     return FALSE;
 
+  if (metaWindow->has_shape)
+    return FALSE;
+
   meta_screen_get_size (screen, &screen_width, &screen_height);
   meta_window_get_outer_rect (metaWindow, &window_rect);
 
