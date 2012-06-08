@@ -456,6 +456,9 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
       gdouble x_align, y_align;
       gboolean x_fill, y_fill, is_set;
 
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+        continue;
+
       meta = clutter_layout_manager_get_child_meta (manager,
                                                     container,
                                                     child);
