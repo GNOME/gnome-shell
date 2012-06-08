@@ -89,6 +89,7 @@ static const ClutterColor default_text_color      = {   0,   0,   0, 255 };
 static const ClutterColor default_selected_text_color = {   0,   0,   0, 255 };
 
 static ClutterAnimatableIface *parent_animatable_iface = NULL;
+static ClutterScriptableIface *parent_scriptable_iface = NULL;
 
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 static void clutter_animatable_iface_init (ClutterAnimatableIface *iface);
@@ -2980,7 +2981,10 @@ clutter_text_parse_custom_node (ClutterScriptable *scriptable,
       return TRUE;
     }
 
-  return FALSE;
+  return parent_scriptable_iface->parse_custom_node (scriptable, script,
+                                                     value,
+                                                     name,
+                                                     node);
 }
 
 static void
@@ -3146,12 +3150,16 @@ clutter_text_set_custom_property (ClutterScriptable *scriptable,
                                     g_value_get_string (value));
     }
   else
-    g_object_set_property (G_OBJECT (scriptable), name, value);
+    parent_scriptable_iface->set_custom_property (scriptable, script,
+                                                  name,
+                                                  value);
 }
 
 static void
 clutter_scriptable_iface_init (ClutterScriptableIface *iface)
 {
+  parent_scriptable_iface = g_type_interface_peek_parent (iface);
+
   iface->parse_custom_node = clutter_text_parse_custom_node;
   iface->set_custom_property = clutter_text_set_custom_property;
 }
