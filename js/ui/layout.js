@@ -228,26 +228,9 @@ const LayoutManager = new Lang.Class({
         return false;
     },
 
-    get focusIndex() {
-        let focusWindow = global.display.focus_window;
-
-        if (focusWindow) {
-            let wrect = focusWindow.get_outer_rect();
-            for (let i = 0; i < this.monitors.length; i++) {
-                let monitor = this.monitors[i];
-
-                if (monitor.x <= wrect.x && monitor.y <= wrect.y &&
-                    monitor.x + monitor.width > wrect.x &&
-                    monitor.y + monitor.height > wrect.y)
-                    return i;
-            }
-        }
-
-        return this.primaryIndex;
-    },
-
-    get focusMonitor() {
-        return this.monitors[this.focusIndex];
+    get currentMonitor() {
+        let index = global.screen.get_current_monitor();
+        return Main.layoutManager.monitors[index];
     },
 
     _startupAnimation: function() {
