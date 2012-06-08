@@ -5305,6 +5305,8 @@ clutter_actor_finalize (GObject *object)
 		priv->id,
 		g_type_name (G_OBJECT_TYPE (object)));
 
+  clutter_actor_restore_easing_state (CLUTTER_ACTOR (object));
+
   _clutter_context_release_id (priv->id);
 
   g_free (priv->name);
@@ -7434,6 +7436,9 @@ clutter_actor_init (ClutterActor *self)
    * when building up a scene.
    */
   priv->needs_compute_expand = FALSE;
+
+  clutter_actor_save_easing_state (self);
+  clutter_actor_set_easing_duration (self, 0);
 }
 
 /**
