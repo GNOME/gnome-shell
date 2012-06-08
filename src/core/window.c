@@ -3682,7 +3682,7 @@ meta_window_can_tile_side_by_side (MetaWindow *window)
     return FALSE;
 
   monitor = meta_screen_get_current_monitor (window->screen);
-  meta_window_get_work_area_for_monitor (window, monitor->number, &tile_area);
+  meta_window_get_work_area_for_monitor (window, monitor, &tile_area);
 
   /* Do not allow tiling in portrait orientation */
   if (tile_area.height > tile_area.width)
@@ -8620,7 +8620,7 @@ update_move (MetaWindow  *window,
        * refers to the monitor which contains the largest part of the window,
        * the latter to the one where the pointer is located.
        */
-      monitor = meta_screen_get_current_monitor (window->screen);
+      monitor = meta_screen_get_current_monitor_info (window->screen);
       meta_window_get_work_area_for_monitor (window,
                                              monitor->number,
                                              &work_area);

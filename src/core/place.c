@@ -137,7 +137,7 @@ find_next_cascade (MetaWindow *window,
    */
 
   current = meta_screen_get_current_monitor (window->screen);
-  meta_window_get_work_area_for_monitor (window, current->number, &work_area);
+  meta_window_get_work_area_for_monitor (window, current, &work_area);
 
   cascade_x = MAX (0, work_area.x);
   cascade_y = MAX (0, work_area.y);
@@ -815,7 +815,7 @@ meta_window_place (MetaWindow        *window,
       int w, h;
 
       /* Warning, this function is a round trip! */
-      xi = meta_screen_get_current_monitor (window->screen);
+      xi = meta_screen_get_current_monitor_info (window->screen);
 
       w = xi->rect.width;
       h = xi->rect.height;
@@ -860,7 +860,7 @@ meta_window_place (MetaWindow        *window,
   }
 
   /* Warning, this is a round trip! */
-  xi = meta_screen_get_current_monitor (window->screen);
+  xi = meta_screen_get_current_monitor_info (window->screen);
   
   /* "Origin" placement algorithm */
   x = xi->rect.x;

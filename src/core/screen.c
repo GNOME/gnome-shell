@@ -2054,7 +2054,7 @@ meta_screen_get_natural_monitor_list (MetaScreen *screen,
       visited[i] = FALSE;
     }
 
-  current = meta_screen_get_current_monitor (screen);
+  current = meta_screen_get_current_monitor_info (screen);
   monitor_queue = g_queue_new ();
   g_queue_push_tail (monitor_queue, (gpointer) current);
   visited[current->number] = TRUE;
@@ -2121,6 +2121,22 @@ meta_screen_get_natural_monitor_list (MetaScreen *screen,
 }
 
 const MetaMonitorInfo*
+meta_screen_get_current_monitor_info (MetaScreen *screen)
+{
+    int monitor_index;
+    monitor_index = meta_screen_get_current_monitor (screen);
+    return &screen->monitor_infos[monitor_index];
+}
+
+/**
+ * meta_screen_get_current_monitor:
+ * @screen: a #MetaScreen
+ *
+ * Gets the index of the monitor that currently has the mouse pointer.
+ *
+ * Return value: a monitor index
+ */
+int
 meta_screen_get_current_monitor (MetaScreen *screen)
 {
   if (screen->n_monitor_infos == 1)
@@ -2166,7 +2182,7 @@ meta_screen_get_current_monitor (MetaScreen *screen)
                   screen->last_monitor_index);
     }
 
-  return &screen->monitor_infos[screen->last_monitor_index];
+  return screen->last_monitor_index;
 }
 
 /**
