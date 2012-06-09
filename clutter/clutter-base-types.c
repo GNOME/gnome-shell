@@ -466,7 +466,7 @@ clutter_point_copy (const ClutterPoint *point)
 void
 clutter_point_free (ClutterPoint *point)
 {
-  if (point != NULL)
+  if (point != NULL && point != &_clutter_point_zero)
     g_slice_free (ClutterPoint, point);
 }
 
@@ -840,7 +840,7 @@ clutter_rect_copy (const ClutterRect *rect)
 void
 clutter_rect_free (ClutterRect *rect)
 {
-  if (rect != NULL)
+  if (rect != NULL && rect != &_clutter_rect_zero)
     g_slice_free (ClutterRect, rect);
 }
 
