@@ -226,11 +226,12 @@
  *     will automatically transition an actor's property change between the
  *     current state and the desired one without manual intervention, if the
  *     property is defined to be animatable in its documentation.</para>
- *     <para>By default, in the 1.0 API series, the transition happens with
- *     a duration of zero milliseconds, and the implicit animation is an
- *     opt in feature to retain backwards compatibility. In order to enable
- *     implicit animations, it is necessary to change the easing state of
- *     an actor by using clutter_actor_save_easing_state():</para>
+ *     <note><para>By default, in the 1.0 API series, the transition happens
+ *     with a duration of zero milliseconds, and the implicit animation is an
+ *     opt in feature to retain backwards compatibility.</para></note>
+ *     <para>Implicit animations depend on the current easing state; in order
+ *     to use the default easing state for an actor you should call the
+ *     clutter_actor_save_easing_state() function:</para>
  *     <informalexample><programlisting>
  * /&ast; assume that the actor is currently positioned at (100, 100) &ast;/
  * clutter_actor_save_easing_state (actor);
@@ -259,6 +260,8 @@
  *     and a default easing mode of %CLUTTER_EASE_OUT_CUBIC, unless you call
  *     clutter_actor_set_easing_mode() and clutter_actor_set_easing_duration()
  *     after changing the easing state of the actor.</para>
+ *     <para>Changing the easing state will affect all the following property
+ *     transitions, but will not affect existing transitions.</para>
  *     <para>It is important to note that if you modify the state on an
  *     animatable property while a transition is in flight, the transition's
  *     final value will be updated, as well as its duration and progress
@@ -266,17 +269,20 @@
  *     example:</para>
  *     <informalexample><programlisting>
  * clutter_actor_save_easing_state (actor);
+ * clutter_actor_set_easing_duration (actor, 1000);
  * clutter_actor_set_x (actor, 200);
  * clutter_actor_restore_easing_state (actor);
  *
  * clutter_actor_save_easing_state (actor);
+ * clutter_actor_set_easing_duration (actor, 500);
  * clutter_actor_set_x (actor, 100);
  * clutter_actor_restore_easing_state (actor);
  *     </programlisting></informalexample>
  *     <para>the first call to clutter_actor_set_x() will begin a transition
- *     of the #ClutterActor:x property to the value of 200; the second call
- *     to clutter_actor_set_x() will change the transition's final value to
- *     100.</para>
+ *     of the #ClutterActor:x property from the current value to the value of
+ *     200 over a duration of one second; the second call to clutter_actor_set_x()
+ *     will change the transition's final value to 100 and the duration to 500
+ *     milliseconds.</para>
  *     <para>It is possible to retrieve the #ClutterTransition used by the
  *     animatable properties by using clutter_actor_get_transition() and using
  *     the property name as the transition name.</para>
@@ -303,7 +309,10 @@
  *     of an actor between fully opaque and fully transparent, and back, over
  *     a span of 3 seconds. The animation does not begin until it is added to
  *     the actor.</para>
- *     <para>The explicit animation API applies to all #GObject properties.</para>
+ *     <para>The explicit animation API applies to all #GObject properties,
+ *     as well as the custom properties defined through the #ClutterAnimatable
+ *     interface, regardless of whether they are defined as implicitly
+ *     animatable or not.</para>
  *     <para>The explicit animation API should also be used when using custom
  *     animatable properties for #ClutterAction, #ClutterConstraint, and
  *     #ClutterEffect instances associated to an actor; see the section on
@@ -457,7 +466,6 @@
  *                  ClutterActor *rect)
  * {
  *   ClutterTransition *transition;
- *   ClutterInterval *interval;
  *
  *   /&ast; the offset that we want to apply; this will make the actor
  *    &ast; slide in from behind the origin and rest at the right of
@@ -482,8 +490,8 @@
  *   clutter_timeline_set_duration (CLUTTER_TIMELINE (transition), 500);
  *
  *   /&ast; create the interval with the initial and final values &ast;/
- *   interval = clutter_interval_new (G_TYPE_FLOAT, 0, new_offset);
- *   clutter_transition_set_interval (transition, interval);
+ *   clutter_transition_set_from (transition, G_TYPE_FLOAT, 0.f);
+ *   clutter_transition_set_to (transition, G_TYPE_FLOAT, new_offset);
  *
  *   /&ast; add the transition to the actor; this causes the animation
  *    &ast; to start. the name "offsetAnimation" can be used to retrieve
