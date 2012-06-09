@@ -222,17 +222,6 @@
     <xi:include href="xml/clutter-wayland-surface.xml"/>
   </part>
 
-  <part id="additionaldocs">
-    <title>Additional Documentation</title>
-
-    <partintro>
-      <para>This section contains additional useful documentation for
-      developing with Clutter.</para>
-    </partintro>
-
-    <xi:include href="xml/clutter-animation-tutorial.xml"/>
-  </part>
-
   <part id="migration">
     <title>Migrating from previous version of Clutter</title>
 

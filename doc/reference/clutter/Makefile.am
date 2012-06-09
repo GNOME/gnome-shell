@@ -139,7 +139,6 @@ SVG_IMAGES = \
 # e.g. content_files=running.sgml building.sgml changes-2.0.sgml
 content_files = \
 	glossary.xml \
-        clutter-animation-tutorial.xml \
 	clutter-overview.xml \
 	building-clutter.xml \
 	running-clutter.xml \
@@ -152,7 +151,6 @@ content_files = \
 # e.g. expand_content_files=running.sgml
 expand_content_files = \
 	glossary.xml \
-        clutter-animation-tutorial.xml \
 	clutter-overview.xml \
 	building-clutter.xml \
 	running-clutter.xml \
