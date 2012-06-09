@@ -3187,6 +3187,7 @@ ClutterPaintVolume
 <SUBSECTION>
 CLUTTER_POINT_INIT
 CLUTTER_POINT_INIT_ZERO
+clutter_point_zero
 clutter_point_alloc
 clutter_point_init
 clutter_point_copy
@@ -3206,6 +3207,7 @@ clutter_size_equals
 <SUBSECTION>
 CLUTTER_RECT_INIT
 CLUTTER_RECT_INIT_ZERO
+clutter_rect_zero
 clutter_rect_alloc
 clutter_rect_init
 clutter_rect_copy

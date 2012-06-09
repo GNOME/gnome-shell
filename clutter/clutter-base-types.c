@@ -377,6 +377,26 @@ G_DEFINE_BOXED_TYPE (ClutterMargin, clutter_margin,
  * ClutterPoint
  */
 
+static const ClutterPoint _clutter_point_zero = CLUTTER_POINT_INIT_ZERO;
+
+/**
+ * clutter_point_zero:
+ *
+ * A point centered at (0, 0).
+ *
+ * The returned value can be used as a guard.
+ *
+ * Return value: a point centered in (0, 0); the returned #ClutterPoint
+ *   is owned by Clutter and it should not be modified or freed.
+ *
+ * Since: 1.12
+ */
+const ClutterPoint *
+clutter_point_zero (void)
+{
+  return &_clutter_point_zero;
+}
+
 /**
  * clutter_point_alloc:
  *
@@ -672,6 +692,8 @@ G_DEFINE_BOXED_TYPE_WITH_CODE (ClutterSize, clutter_size,
  * ClutterRect
  */
 
+static const ClutterRect _clutter_rect_zero = CLUTTER_RECT_INIT_ZERO;
+
 static gboolean clutter_rect_progress (const GValue *a,
                                        const GValue *b,
                                        gdouble       progress,
@@ -703,6 +725,26 @@ clutter_rect_normalize_internal (ClutterRect *rect)
       rect->origin.y -= size;
       rect->size.height = size;
     }
+}
+
+/**
+ * clutter_rect_zero:
+ *
+ * A #ClutterRect with #ClutterRect.origin set at (0, 0) and a size
+ * of 0.
+ *
+ * The returned value can be used as a guard.
+ *
+ * Return value: a rectangle with origin in (0, 0) and a size of 0.
+ *   The returned #ClutterRect is owned by Clutter and it should not
+ *   be modified or freed.
+ *
+ * Since: 1.12
+ */
+const ClutterRect *
+clutter_rect_zero (void)
+{
+  return &_clutter_rect_zero;
 }
 
 /**
