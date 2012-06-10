@@ -1869,6 +1869,7 @@ clutter_interval_set_initial
 clutter_interval_set_final
 
 <SUBSECTION>
+clutter_interval_is_valid
 clutter_interval_validate
 clutter_interval_compute_value
 clutter_interval_compute
