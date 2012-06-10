@@ -1,19 +1,20 @@
 # German translation for cogl.
 # Copyright (C) 2011 cogl's COPYRIGHT HOLDER
 # This file is distributed under the same license as the cogl package.
-# Wolfgang Stöggl <c72578@yahoo.de>, 2011.
+# Wolfgang Stöggl <c72578@yahoo.de>, 2011, 2012.
 # Viktor Nyberg <greenscandic@googlemail.com>, 2011.
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2012.
 # Christian Kirbach <Christian.Kirbach@googlemail.com>, 2012.
+# Tobias Endrigkeit <tobiasendrigkeit@googlemail.com>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-24 14:43+0000\n"
-"PO-Revision-Date: 2012-04-15 18:11+0200\n"
-"Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
+"POT-Creation-Date: 2012-06-10 17:39+0000\n"
+"PO-Revision-Date: 2012-06-10 18:18+0200\n"
+"Last-Translator: Wolfgang Stoeggl <c72578@yahoo.de>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,32 +23,34 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
+"X-Generator: Gtranslator 2.91.5\n"
 
-#: ../cogl/cogl-debug.c:174
+#: ../cogl/cogl-debug.c:173
 msgid "Supported debug values:"
-msgstr "Unterstützte Debug-Werte:"
+msgstr "Unterstützte Werte zur Fehlerdiagnose:"
 
-#: ../cogl/cogl-debug.c:179
+#: ../cogl/cogl-debug.c:178
 msgid "Special debug values:"
-msgstr "Spezielle Debug-Werte:"
+msgstr "Spezielle Werte zur Fehlerdiagnose:"
 
-#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
+#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
 msgid "Enables all non-behavioural debug options"
 msgstr ""
+"Alle nicht-verhaltensmäßigen Einstellungen zur Fehlerdiagnose aktivieren"
 
-#: ../cogl/cogl-debug.c:227
+#: ../cogl/cogl-debug.c:226
 msgid "Cogl debugging flags to set"
 msgstr "Zu setzende Cogl-Fehlerdiagnose-Flags"
 
-#: ../cogl/cogl-debug.c:229
+#: ../cogl/cogl-debug.c:228
 msgid "Cogl debugging flags to unset"
 msgstr "Zurückzusetzende Cogl-Fehlerdiagnose-Flags"
 
-#: ../cogl/cogl-debug.c:278
+#: ../cogl/cogl-debug.c:277
 msgid "Cogl Options"
 msgstr "Cogl-Einstellungen"
 
-#: ../cogl/cogl-debug.c:279
+#: ../cogl/cogl-debug.c:278
 msgid "Show Cogl options"
 msgstr "Cogl-Einstellungen anzeigen"
 
@@ -58,7 +61,6 @@ msgstr "Cogl-Einstellungen anzeigen"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
-#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Cogl-Tracing"
 
@@ -92,7 +94,7 @@ msgstr "Blend-Strings verfolgen"
 
 #: ../cogl/cogl-debug-options.h:43
 msgid "Debug CoglBlendString parsing"
-msgstr "Vearbeitung von CoglBlendString diagnostizieren"
+msgstr "Verarbeitung von CoglBlendString diagnostizieren"
 
 #: ../cogl/cogl-debug-options.h:47
 msgid "Trace Journal"
@@ -179,7 +181,7 @@ msgstr "Journal-Stapelung ausschalten"
 
 #: ../cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
-msgstr "Einreihen von geometrie im Cogl-Journal deaktivieren."
+msgstr "Einreihen von Geometrie im Cogl-Journal deaktivieren."
 
 #: ../cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
@@ -236,6 +238,9 @@ msgid ""
 "When this is set the glyph cache will always use a separate texture for its "
 "atlas. Otherwise it will try to share the atlas with images."
 msgstr ""
+"Wenn dies eingestellt ist, wird der Glyph-Zwischenspeicher immer eine "
+"separate Textur für seinen Atlas nutzen. Ansonsten wird versucht, den Atlas "
+"mit den Bildern zu teilen."
 
 #: ../cogl/cogl-debug-options.h:124
 msgid "Disable texturing"
@@ -254,9 +259,8 @@ msgid "Disable use of ARB fragment programs"
 msgstr "Verwendung von ARB-Fragment-Programmen deaktivieren"
 
 #: ../cogl/cogl-debug-options.h:134
-#, fuzzy
 msgid "Disable fixed"
-msgstr "Feste deaktivieren"
+msgstr "Fixierte deaktivieren"
 
 #: ../cogl/cogl-debug-options.h:135
 msgid "Disable use of the fixed function pipeline backend"
@@ -285,11 +289,15 @@ msgstr "Blending nicht verwenden"
 msgid "Disable non-power-of-two textures"
 msgstr "Nicht-Zweierpotenz-Texturen deaktivieren"
 
+# Siehe http://developer.gnome.org/cogl/stable/cogl-Textures.html
 #: ../cogl/cogl-debug-options.h:150
 msgid ""
 "Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
 "will create sliced textures or textures with waste instead."
 msgstr ""
+"Dies führt dazu, dass Cogl denkt, dass der GL-Treiber NPOT-Texturen nicht "
+"unterstützt, sodass es stattdessen geschnittene Texturen oder Texturen mit "
+"Datenmüll erzeugt."
 
 #: ../cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
@@ -333,7 +341,6 @@ msgid "Disable fallback caches for arbfp and glsl programs"
 msgstr "Rückfall-Zwischenspeicher für arbfp- und glsl-Programme deaktivieren"
 
 #: ../cogl/cogl-debug-options.h:180
-#, fuzzy
 msgid "Disable read pixel optimization"
 msgstr "Optimierung zum Lesen von Pixeln deaktivieren"
 
@@ -351,11 +358,3 @@ msgstr "Clipping verfolgen"
 #: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Protokolliert Informationen, wie Cogl Clipping implementiert"
-
-#: ../cogl/cogl-debug-options.h:191
-msgid "Trace performance concerns"
-msgstr ""
-
-#: ../cogl/cogl-debug-options.h:192
-msgid "Tries to highlight sub-optimal Cogl usage."
-msgstr ""
