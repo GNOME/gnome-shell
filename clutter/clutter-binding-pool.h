@@ -54,6 +54,7 @@ typedef struct _ClutterBindingPoolClass ClutterBindingPoolClass;
  * @action_name: the name of the action
  * @key_val: the key symbol
  * @modifiers: bitmask of the modifier flags
+ * @user_data: data passed to the function
  *
  * The prototype for the callback function registered with
  * clutter_binding_pool_install_action() and invoked by
