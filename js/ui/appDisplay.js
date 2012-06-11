@@ -22,6 +22,7 @@ const Search = imports.ui.search;
 const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
 const Params = imports.misc.params;
+const Util = imports.misc.util;
 
 const MAX_APPLICATION_WORK_MILLIS = 75;
 const MENU_POPUP_TIMEOUT = 600;
@@ -36,6 +37,7 @@ const AlphabeticalView = new Lang.Class({
 
         this._pendingAppLaterId = 0;
         this._appIcons = {}; // desktop file id
+        this._allApps = [];
 
         let box = new St.BoxLayout({ vertical: true });
         box.add(this._grid.actor, { y_align: St.Align.START, expand: true });
@@ -60,16 +62,22 @@ const AlphabeticalView = new Lang.Class({
             }));
     },
 
-    _removeAll: function() {
+    removeAll: function() {
         this._grid.removeAll();
         this._appIcons = {};
+        this._allApps = [];
     },
 
-    _addApp: function(app) {
+    addApp: function(app) {
         var id = app.get_id();
-        let appIcon = new AppWellIcon(app);
+        if (this._appIcons[id] !== undefined)
+            return;
 
-        this._grid.addItem(appIcon.actor);
+        let appIcon = new AppWellIcon(app);
+        let pos = Util.insertSorted(this._allApps, app, function(a, b) {
+            return a.compare_by_name(b);
+        });
+        this._grid.addItem(appIcon.actor, pos);
         appIcon.actor.connect('key-focus-in', Lang.bind(this, this._ensureIconVisible));
 
         this._appIcons[id] = appIcon;
@@ -120,14 +128,6 @@ const AlphabeticalView = new Lang.Class({
                 icon.actor.visible = true;
             }
         }
-    },
-
-    setAppList: function(apps) {
-        this._removeAll();
-        for (var i = 0; i < apps.length; i++) {
-            var app = apps[i];
-            this._addApp(app);
-         }
     }
 });
 
@@ -147,7 +147,6 @@ const ViewByCategories = new Lang.Class({
         // (used only before the actor is mapped the first time)
         this._currentCategory = -2;
         this._categories = [];
-        this._apps = null;
 
         this._categoryBox = new St.BoxLayout({ vertical: true,
                                                reactive: true,
@@ -204,8 +203,10 @@ const ViewByCategories = new Lang.Class({
             if (nextType == GMenu.TreeItemType.ENTRY) {
                 var entry = iter.get_entry();
                 var app = this._appSystem.lookup_app_by_tree_entry(entry);
-                if (!entry.get_app_info().get_nodisplay())
+                if (!entry.get_app_info().get_nodisplay()) {
+                    this._view.addApp(app);
                     appList.push(app);
+                }
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 if (!dir.get_is_nodisplay())
                     this._loadCategory(iter.get_directory(), appList);
@@ -213,7 +214,7 @@ const ViewByCategories = new Lang.Class({
         }
     },
 
-    _addCategory: function(name, index, dir, allApps) {
+    _addCategory: function(name, index, dir) {
         let button = new St.Button({ label: GLib.markup_escape_text (name, -1),
                                      style_class: 'app-filter',
                                      x_align: St.Align.START,
@@ -225,7 +226,6 @@ const ViewByCategories = new Lang.Class({
 
         var apps;
         if (dir == null) {
-            apps = allApps;
             this._allCategoryButton = button;
         } else {
             apps = [];
@@ -239,6 +239,7 @@ const ViewByCategories = new Lang.Class({
     },
 
     _removeAll: function() {
+        this._view.removeAll();
         this._categories = [];
         this._categoryBox.destroy_all_children();
     },
@@ -246,13 +247,8 @@ const ViewByCategories = new Lang.Class({
     refresh: function() {
         this._removeAll();
 
-        var allApps = Shell.AppSystem.get_default().get_all();
-        allApps.sort(function(a, b) {
-            return a.compare_by_name(b);
-        });
-
         /* Translators: Filter to display all applications */
-        this._addCategory(_("All"), -1, null, allApps);
+        this._addCategory(_("All"), -1, null);
 
         var tree = this._appSystem.get_tree();
         var root = tree.get_root_directory();
@@ -270,7 +266,6 @@ const ViewByCategories = new Lang.Class({
             }
         }
 
-        this._view.setAppList(allApps);
         this._selectCategory(-1);
 
         if (this._focusDummy) {

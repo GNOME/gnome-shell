@@ -313,8 +313,11 @@ const IconGrid = new Lang.Class({
         this._grid.destroy_all_children();
     },
 
-    addItem: function(actor) {
-        this._grid.add_actor(actor);
+    addItem: function(actor, index) {
+        if (index !== undefined)
+            this._grid.insert_child_at_index(actor, index);
+        else
+            this._grid.add_actor(actor);
     },
 
     getItemAtIndex: function(index) {

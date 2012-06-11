@@ -644,30 +644,6 @@ shell_app_system_lookup_wmclass (ShellAppSystem *system,
   return app;
 }
 
-/**
- * shell_app_system_get_all:
- * @system:
- *
- * Returns: (transfer container) (element-type ShellApp): All installed applications
- */
-GSList *
-shell_app_system_get_all (ShellAppSystem  *self)
-{
-  GSList *result = NULL;
-  GHashTableIter iter;
-  gpointer key, value;
-
-  g_hash_table_iter_init (&iter, self->priv->id_to_app);
-  while (g_hash_table_iter_next (&iter, &key, &value))
-    {
-      ShellApp *app = value;
-      
-      if (!g_desktop_app_info_get_nodisplay (shell_app_get_app_info (app)))
-        result = g_slist_prepend (result, app);
-    }
-  return result;
-}
-
 void
 _shell_app_system_notify_app_state_changed (ShellAppSystem *self,
                                             ShellApp       *app)

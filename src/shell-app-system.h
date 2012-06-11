@@ -52,8 +52,6 @@ ShellApp       *shell_app_system_lookup_heuristic_basename    (ShellAppSystem  *
 ShellApp       *shell_app_system_lookup_wmclass               (ShellAppSystem *system,
                                                                const char     *wmclass);
 
-GSList         *shell_app_system_get_all                   (ShellAppSystem  *system);
-
 GSList         *shell_app_system_get_running               (ShellAppSystem  *self);
 
 GSList         *shell_app_system_initial_search            (ShellAppSystem  *system,
