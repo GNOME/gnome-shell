@@ -290,6 +290,7 @@
 #define CLUTTER_dead_U 0xfe89
 #define CLUTTER_dead_small_schwa 0xfe8a
 #define CLUTTER_dead_capital_schwa 0xfe8b
+#define CLUTTER_dead_greek 0xfe8c
 #define CLUTTER_First_Virtual_Screen 0xfed0
 #define CLUTTER_Prev_Virtual_Screen 0xfed1
 #define CLUTTER_Next_Virtual_Screen 0xfed2
@@ -1204,6 +1205,7 @@
 #define CLUTTER_leftdoublequotemark 0xad2
 #define CLUTTER_rightdoublequotemark 0xad3
 #define CLUTTER_prescription 0xad4
+#define CLUTTER_permille 0xad5
 #define CLUTTER_minutes 0xad6
 #define CLUTTER_seconds 0xad7
 #define CLUTTER_latincross 0xad9
@@ -1637,6 +1639,8 @@
 #define CLUTTER_obarred 0x1000275
 #define CLUTTER_SCHWA 0x100018f
 #define CLUTTER_schwa 0x1000259
+#define CLUTTER_EZH 0x10001b7
+#define CLUTTER_ezh 0x1000292
 #define CLUTTER_Lbelowdot 0x1001e36
 #define CLUTTER_lbelowdot 0x1001e37
 #define CLUTTER_Abelowdot 0x1001ea0
