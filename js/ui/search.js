@@ -142,19 +142,6 @@ const SearchProvider = new Lang.Class({
     },
 
     /**
-     * createResultContainer:
-     *
-     * Search providers may optionally override this to render their
-     * results in a custom fashion.  The default implementation
-     * will create a vertical list.
-     *
-     * Returns: An instance of SearchResultDisplay.
-     */
-    createResultContainerActor: function() {
-        return null;
-    },
-
-    /**
      * createResultActor:
      * @resultMeta: Object with result metadata
      * @terms: Array of search terms, should be used for highlighting

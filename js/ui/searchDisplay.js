@@ -275,10 +275,7 @@ const SearchResults = new Lang.Class({
                                             x_fill: true,
                                             y_fill: true });
         providerBox.add(resultDisplayBin, { expand: true });
-        let resultDisplay = provider.createResultContainerActor();
-        if (resultDisplay == null) {
-            resultDisplay = new GridSearchResults(provider);
-        }
+        let resultDisplay = new GridSearchResults(provider);
         resultDisplayBin.set_child(resultDisplay.actor);
 
         this._providerMeta.push({ provider: provider,
