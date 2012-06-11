@@ -301,8 +301,18 @@ features).
 Release Notes for Clutter 1.12
 -------------------------------------------------------------------------------
 
-* ClutterBinLayout no longer requests size for children that are
+• ClutterBinLayout no longer requests or allocates size for children that are
   not visible, which is how the other layout managers work.
+
+• The expansion and alignment layout properties in all the layout managers
+  that provide them have been deprecated in favour of the equivalent ones
+  on ClutterActor; the ClutterLayoutManager implementations provided by
+  Clutter have been updated to honour the ClutterActor:x-expand,
+  ClutterActor:y-expand, ClutterActor:x-align, and ClutterActor:y-align
+  properties, if set.
+
+• Setting the ClutterActor:fixed-position-set to FALSE will reset any
+  currently set fixed position to (0, 0).
 
 Release Notes for Clutter 1.10
 -------------------------------------------------------------------------------
