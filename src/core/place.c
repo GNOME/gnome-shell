@@ -105,7 +105,7 @@ find_next_cascade (MetaWindow *window,
   int window_width, window_height;
   int cascade_stage;
   MetaRectangle work_area;
-  const MetaMonitorInfo* current;
+  int current;
   
   sorted = g_list_copy (windows);
   sorted = g_list_sort (sorted, northwestcmp);

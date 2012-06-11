@@ -3674,7 +3674,7 @@ meta_window_can_tile_maximized (MetaWindow *window)
 gboolean
 meta_window_can_tile_side_by_side (MetaWindow *window)
 {
-  const MetaMonitorInfo *monitor;
+  int monitor;
   MetaRectangle tile_area;
   MetaFrameBorders borders;
 
