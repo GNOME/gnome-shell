@@ -44,7 +44,7 @@
 
 /**
  * SECTION:clutter-grid-layout
- * @Short_description: Pack widgets in a rows and columns
+ * @Short_description: A layout manager for a grid of actors
  * @Title: ClutterGridLayout
  * @See_also: #ClutterTableLayout, #ClutterBoxLayout
  *
