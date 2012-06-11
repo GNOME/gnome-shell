@@ -64,7 +64,6 @@ CLUTTER_MIN_VERSION=1.9.16
 GOBJECT_INTROSPECTION_MIN_VERSION=0.10.1
 GJS_MIN_VERSION=1.33.2
 MUTTER_MIN_VERSION=3.5.3
-FOLKS_MIN_VERSION=0.5.2
 GTK_MIN_VERSION=3.3.9
 GIO_MIN_VERSION=2.31.6
 LIBECAL_MIN_VERSION=3.5.3
@@ -78,27 +77,11 @@ GCR_MIN_VERSION=3.3.90
 GNOME_DESKTOP_REQUIRED_VERSION=3.5.1
 GNOME_MENUS_REQUIRED_VERSION=3.5.3
 
-AC_ARG_WITH(folks,
-            AS_HELP_STRING([--with-folks],
-                           [Enable folks support]),
-            [with_folks=$withval], [with_folks=yes])
-
-if test x${with_folks} = xyes; then
-  FOLKS_REQUIREMENT="folks >= $FOLKS_MIN_VERSION"
-  AC_DEFINE([HAVE_FOLKS], [1], [folks support])
-  AC_SUBST([HAVE_FOLKS],[1])
-else
-  FOLKS_REQUIREMENT=
-  AC_SUBST([HAVE_FOLKS],[0])
-fi
-AM_CONDITIONAL(BUILD_WITH_FOLKS, test x${with_folks} = xyes)
-
 # Collect more than 20 libraries for a prize!
 PKG_CHECK_MODULES(GNOME_SHELL, gio-unix-2.0 >= $GIO_MIN_VERSION
 			       libxml-2.0
                                gtk+-3.0 >= $GTK_MIN_VERSION
                                atk-bridge-2.0
-			       $FOLKS_REQUIREMENT
                                libmutter >= $MUTTER_MIN_VERSION
                                gjs-internals-1.0 >= $GJS_MIN_VERSION
 			       libgnome-menu-3.0 >= $GNOME_MENUS_REQUIRED_VERSION

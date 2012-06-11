@@ -6,7 +6,6 @@ misc/config.js: misc/config.js.in Makefile
 	[ -d $(@D) ] || $(mkdir_p) $(@D) ; \
 	sed -e "s|[@]PACKAGE_NAME@|$(PACKAGE_NAME)|g" \
 	    -e "s|[@]PACKAGE_VERSION@|$(PACKAGE_VERSION)|g" \
-	    -e "s|[@]HAVE_FOLKS@|$(HAVE_FOLKS)|g" \
 	    -e "s|[@]HAVE_BLUETOOTH@|$(HAVE_BLUETOOTH)|g" \
 	    -e "s|[@]GETTEXT_PACKAGE@|$(GETTEXT_PACKAGE)|g" \
 	    -e "s|[@]datadir@|$(datadir)|g" \
