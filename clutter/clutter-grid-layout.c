@@ -360,7 +360,7 @@ clutter_grid_request_update_child_attach (ClutterGridRequest *request,
 
           td = clutter_actor_get_text_direction (container);
           rtl = (td == CLUTTER_TEXT_DIRECTION_RTL) ? TRUE : FALSE;
-          side = rtl ? CLUTTER_GRID_POSITION_RIGHT : CLUTTER_GRID_POSITION_LEFT;
+          side = rtl ? CLUTTER_GRID_POSITION_LEFT : CLUTTER_GRID_POSITION_RIGHT;
         }
       else
         {
