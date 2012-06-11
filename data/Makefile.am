@@ -8,9 +8,7 @@ desktop_DATA = gnome-shell.desktop gnome-shell-extension-prefs.desktop
 	    -e "s|@VERSION[@]|$(VERSION)|" \
 	    $< > $@ || rm $@
 
-# Placeholder until we add intltool
-%.desktop:%.desktop.in
-	$(AM_V_GEN) sed s/^_// < $< > $@ || rm $@
+@INTLTOOL_DESKTOP_RULE@
 
 searchprovidersdir = $(pkgdatadir)/open-search-providers
 dist_searchproviders_DATA =				\
