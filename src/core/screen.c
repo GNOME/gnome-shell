@@ -2140,7 +2140,7 @@ int
 meta_screen_get_current_monitor (MetaScreen *screen)
 {
   if (screen->n_monitor_infos == 1)
-    return &screen->monitor_infos[0];
+    return 0;
   
   /* Sadly, we have to do it this way. Yuck.
    */
