@@ -43,7 +43,6 @@ nobase_dist_js_DATA = 	\
 	ui/boxpointer.js	\
 	ui/calendar.js		\
 	ui/checkBox.js		\
-	ui/contactDisplay.js \
 	ui/ctrlAltTab.js	\
 	ui/dash.js		\
 	ui/dateMenu.js		\
