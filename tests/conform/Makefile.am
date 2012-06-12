@@ -162,7 +162,7 @@ test_conformance_CPPFLAGS = \
 
 test_conformance_CFLAGS = -g $(CLUTTER_CFLAGS)
 
-test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
+test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS) -lm
 
 test_conformance_LDFLAGS = -export-dynamic
 
