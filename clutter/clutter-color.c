@@ -828,8 +828,8 @@ clutter_color_to_string (const ClutterColor *color)
 
 /**
  * clutter_color_equal:
- * @v1: a #ClutterColor
- * @v2: a #ClutterColor
+ * @v1: (type Clutter.Color): a #ClutterColor
+ * @v2: (type Clutter.Color): a #ClutterColor
  *
  * Compares two #ClutterColor<!-- -->s and checks if they are the same.
  *
@@ -863,7 +863,7 @@ clutter_color_equal (gconstpointer v1,
 
 /**
  * clutter_color_hash:
- * @v: a #ClutterColor
+ * @v: (type Clutter.Color): a #ClutterColor
  *
  * Converts a #ClutterColor to a hash value.
  *

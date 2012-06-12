@@ -1889,8 +1889,8 @@ clutter_get_option_group_without_init (void)
  * @parameter_string: (allow-none): a string which is displayed in the
  *   first line of <option>--help</option> output, after
  *   <literal><replaceable>programname</replaceable> [OPTION...]</literal>
- * @entries: (allow-none): a %NULL terminated array of #GOptionEntry<!-- -->s
- *   describing the options of your program
+ * @entries: (array) (allow-none): a %NULL terminated array of
+ *   #GOptionEntry<!-- -->s describing the options of your program
  * @translation_domain: (allow-none): a translation domain to use for
  *   translating the <option>--help</option> output for the options in
  *   @entries with gettext(), or %NULL

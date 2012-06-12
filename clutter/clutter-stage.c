@@ -2823,7 +2823,7 @@ clutter_stage_hide_cursor (ClutterStage *stage)
  * The alpha data contained in the returned buffer is driver-dependent,
  * and not guaranteed to hold any sensible value.
  *
- * Return value: (array): a pointer to newly allocated memory with the buffer
+ * Return value: (transfer full) (array): a pointer to newly allocated memory with the buffer
  *   or %NULL if the read failed. Use g_free() on the returned data
  *   to release the resources it has allocated.
  */
