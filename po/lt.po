@@ -1705,11 +1705,11 @@ msgstr ""
 #: ../js/ui/wanda.js:128
 #, c-format
 msgid "%s the Oracle says"
-msgstr "Orakulė sako %s"
+msgstr "Orakulė %s sako"
 
 #: ../js/ui/wanda.js:168
 msgid "Your favorite Easter Egg"
-msgstr "Jūsų mėgstamiausias Velykinis kiaušinis"
+msgstr "Jūsų mėgstamiausias velykinis kiaušinis"
 
 #: ../js/ui/windowAttentionHandler.js:19
 #, c-format
