@@ -205,20 +205,19 @@ const IMStatusChooserItem = new Lang.Class({
                                  Lang.bind(this, this._IMAccountsChanged));
         this._accountMgr.prepare_async(null, Lang.bind(this,
             function(mgr) {
-                let [presence, status, msg] = mgr.get_most_available_presence();
-
-                let savedPresence = global.settings.get_int('saved-im-presence');
-
                 this._IMAccountsChanged(mgr);
 
-                if (savedPresence == presence) {
-                    this._IMStatusChanged(mgr, presence, status, msg);
-                } else {
-                    this._setComboboxPresence(savedPresence);
-                    status = this._statusForPresence(savedPresence);
-                    msg = msg ? msg : '';
-                    mgr.set_all_requested_presences(savedPresence, status, msg);
-                }
+                if (this._networkMonitor.network_available)
+                    this._restorePresence();
+                else
+                    this._setComboboxPresence(Tp.ConnectionPresenceType.OFFLINE);
+            }));
+
+        this._networkMonitor = Gio.NetworkMonitor.get_default();
+        this._networkMonitor.connect('network-changed',
+            Lang.bind(this, function(monitor, available) {
+                if (available && !this._imPresenceRestored)
+                    this._restorePresence();
             }));
 
         this._userLoadedId = this._user.connect('notify::is-loaded',
@@ -231,6 +230,21 @@ const IMStatusChooserItem = new Lang.Class({
             if (this.actor.mapped)
                 this._updateUser();
         }));
+    },
+
+    _restorePresence: function() {
+        let [presence, status, msg] = this._accountMgr.get_most_available_presence();
+
+        let savedPresence = global.settings.get_int('saved-im-presence');
+
+        if (savedPresence == presence) {
+            this._IMStatusChanged(this._accountMgr, presence, status, msg);
+        } else {
+            this._setComboboxPresence(savedPresence);
+            status = this._statusForPresence(savedPresence);
+            msg = msg ? msg : '';
+            this._accountMgr.set_all_requested_presences(savedPresence, status, msg);
+        }
     },
 
     destroy: function() {
