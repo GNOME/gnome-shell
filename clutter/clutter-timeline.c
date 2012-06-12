@@ -1034,10 +1034,12 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
            * done in the above new-frame signal handler?
            */
           set_is_playing (timeline, FALSE);
+
+          g_signal_emit (timeline, timeline_signals[COMPLETED], 0);
           g_signal_emit (timeline, timeline_signals[STOPPED], 0, TRUE);
         }
-
-      g_signal_emit (timeline, timeline_signals[COMPLETED], 0);
+      else
+        g_signal_emit (timeline, timeline_signals[COMPLETED], 0);
 
       priv->current_repeat += 1;
 
