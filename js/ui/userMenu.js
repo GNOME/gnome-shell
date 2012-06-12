@@ -216,6 +216,8 @@ const IMStatusChooserItem = new Lang.Class({
         this._networkMonitor = Gio.NetworkMonitor.get_default();
         this._networkMonitor.connect('network-changed',
             Lang.bind(this, function(monitor, available) {
+                this._IMAccountsChanged(this._accountMgr);
+
                 if (available && !this._imPresenceRestored)
                     this._restorePresence();
             }));
@@ -303,7 +305,8 @@ const IMStatusChooserItem = new Lang.Class({
         let accounts = mgr.get_valid_accounts().filter(function(account) {
             return account.enabled;
         });
-        this._combo.setSensitive(accounts.length > 0);
+        let sensitive = accounts.length > 0 && this._networkMonitor.network_available;
+        this._combo.setSensitive(sensitive);
     },
 
     _IMStatusChanged: function(accountMgr, presence, status, message) {
