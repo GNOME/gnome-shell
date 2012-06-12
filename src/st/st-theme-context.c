@@ -52,6 +52,7 @@ G_DEFINE_TYPE (StThemeContext, st_theme_context, G_TYPE_OBJECT)
 
 static void on_icon_theme_changed (StTextureCache *cache,
                                    StThemeContext *context);
+static void st_theme_context_changed (StThemeContext *context);
 
 static void
 st_theme_context_finalize (GObject *object)
@@ -61,6 +62,9 @@ st_theme_context_finalize (GObject *object)
   g_signal_handlers_disconnect_by_func (st_texture_cache_get_default (),
                                        (gpointer) on_icon_theme_changed,
                                        context);
+  g_signal_handlers_disconnect_by_func (clutter_get_default_backend (),
+                                        (gpointer) st_theme_context_changed,
+                                        context);
 
   if (context->root_node)
     g_object_unref (context->root_node);
@@ -97,6 +101,10 @@ st_theme_context_init (StThemeContext *context)
                     "icon-theme-changed",
                     G_CALLBACK (on_icon_theme_changed),
                     context);
+  g_signal_connect_swapped (clutter_get_default_backend (),
+                            "resolution-changed",
+                            G_CALLBACK (st_theme_context_changed),
+                            context);
 }
 
 /**
