@@ -40,6 +40,7 @@ static const ClutterColor const static_colors[] = {
   { 0xff, 0x00, 0xff, 0xff },   /* magenta */
   { 0xff, 0xff, 0x00, 0xff },   /* yellow */
 };
+static GHashTable *sequence_to_color = NULL;
 
 static void
 canvas_paint (ClutterCairoTexture *canvas)
@@ -51,13 +52,20 @@ static void
 draw_touch (ClutterEvent *event,
             cairo_t      *cr)
 {
-  gulong sequence = (gulong) clutter_event_get_event_sequence (event);
-  ClutterColor color = static_colors[sequence % NUM_COLORS];
+  ClutterEventSequence *sequence = clutter_event_get_event_sequence (event);
+  const ClutterColor *color;
 
-  cairo_set_source_rgba (cr, color.red / 255,
-                             color.green / 255,
-                             color.blue / 255,
-                             color.alpha / 255);
+  color = g_hash_table_lookup (sequence_to_color, sequence);
+  if (color == NULL)
+    {
+      color = &static_colors[g_random_int_range (0, NUM_COLORS)];
+      g_hash_table_insert (sequence_to_color, (gpointer) sequence, (gpointer) color);
+    }
+
+  cairo_set_source_rgba (cr, color->red / 255,
+                             color->green / 255,
+                             color->blue / 255,
+                             color->alpha / 255);
   cairo_arc (cr, event->touch.x, event->touch.y, 5, 0, 2 * G_PI);
   cairo_fill (cr);
 }
@@ -85,14 +93,12 @@ event_cb (ClutterActor *actor, ClutterEvent *event, ClutterActor *canvas)
 static gboolean
 rect_event_cb (ClutterActor *actor, ClutterEvent *event, gpointer data)
 {
-  gulong sequence;
   ClutterColor color;
 
   if (event->type != CLUTTER_TOUCH_BEGIN)
     return FALSE;
 
-  sequence = (gulong) clutter_event_get_event_sequence (event);
-  color = static_colors[sequence % NUM_COLORS];
+  color = static_colors[g_random_int_range (0, NUM_COLORS)];
   clutter_rectangle_set_color (CLUTTER_RECTANGLE (actor), &color);
 
   return TRUE;
@@ -147,9 +153,12 @@ test_touch_events_main (int argc, char *argv[])
       clutter_actor_set_reactive (rectangle, TRUE);
     }
 
+  sequence_to_color = g_hash_table_new (NULL, NULL);
+
   clutter_main ();
 
   g_slist_free_full (events, (GDestroyNotify) clutter_event_free);
+  g_hash_table_destroy (sequence_to_color);
 
   return EXIT_SUCCESS;
 }
