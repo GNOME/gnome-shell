@@ -954,6 +954,7 @@ enum
   LEAVE_EVENT,
   ALLOCATION_CHANGED,
   TRANSITIONS_COMPLETED,
+  TOUCH_EVENT,
 
   LAST_SIGNAL
 };
@@ -7419,6 +7420,25 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   NULL, NULL,
                   _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  /**
+   * ClutterActor::touch-event:
+   * @actor: a #ClutterActor
+   *
+   * The ::touch-event signal is emitted each time a touch
+   * begin/end/update/cancel event.
+   *
+   * Since: 1.12
+   */
+  actor_signals[TOUCH_EVENT] =
+    g_signal_new (I_("touch-event"),
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, touch_event),
+		  _clutter_boolean_handled_accumulator, NULL,
+		  _clutter_marshal_BOOLEAN__BOXED,
+		  G_TYPE_BOOLEAN, 1,
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 }
 
 static void
@@ -12548,6 +12568,12 @@ clutter_actor_event (ClutterActor *actor,
 	case CLUTTER_LEAVE:
 	  signal_num = LEAVE_EVENT;
 	  break;
+        case CLUTTER_TOUCH_BEGIN:
+        case CLUTTER_TOUCH_END:
+        case CLUTTER_TOUCH_UPDATE:
+        case CLUTTER_TOUCH_CANCEL:
+          signal_num = TOUCH_EVENT;
+          break;
 	case CLUTTER_DELETE:
 	case CLUTTER_DESTROY_NOTIFY:
 	case CLUTTER_CLIENT_MESSAGE:

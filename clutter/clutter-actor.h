@@ -263,9 +263,12 @@ struct _ClutterActorClass
   void     (* paint_node)           (ClutterActor         *self,
                                      ClutterPaintNode     *root);
 
+  gboolean (* touch_event)          (ClutterActor         *self,
+                                     ClutterTouchEvent    *event);
+
   /*< private >*/
   /* padding for future expansion */
-  gpointer _padding_dummy[27];
+  gpointer _padding_dummy[26];
 };
 
 /**
