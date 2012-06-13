@@ -50,10 +50,11 @@
  * signal.
  *
  * Initial state can be set up by using the #ClutterTimeline::started signal,
- * while final state can be set up by using the #ClutterTimeline::completed
+ * while final state can be set up by using the #ClutterTimeline::stopped
  * signal. The #ClutterTimeline guarantees the emission of at least a single
  * #ClutterTimeline::new-frame signal, as well as the emission of the
- * #ClutterTimeline::completed signal.
+ * #ClutterTimeline::completed signal every time the #ClutterTimeline reaches
+ * its #ClutterTimeline:duration.
  *
  * It is possible to connect to specific points in the timeline progress by
  * adding <emphasis>markers</emphasis> using clutter_timeline_add_marker_at_time()
@@ -62,7 +63,8 @@
  * Timelines can be made to loop once they reach the end of their duration, by
  * using clutter_timeline_set_repeat_count(); a looping timeline will still
  * emit the #ClutterTimeline::completed signal once it reaches the end of its
- * duration.
+ * duration at each repeat. If you want to be notified of the end of the last
+ * repeat, use the #ClutterTimeline::stopped signal.
  *
  * Timelines have a #ClutterTimeline:direction: the default direction is
  * %CLUTTER_TIMELINE_FORWARD, and goes from 0 to the duration; it is possible
