@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-30 05:24+0200\n"
-"PO-Revision-Date: 2012-03-30 05:24+0200\n"
+"POT-Creation-Date: 2012-06-13 20:18+0200\n"
+"PO-Revision-Date: 2012-06-13 20:20+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
@@ -37,13 +37,13 @@ msgstr "المنظور مقسوم على اليسار"
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
 #: ../src/compositor/compositor.c:492
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
-msgstr "لا يمكن الحصول على اختيار مدير النوافذ على الشاشة %d العرض \"%s\"\n"
+msgstr ""
 
-#: ../src/core/bell.c:307
+#: ../src/core/bell.c:320
 msgid "Bell event"
 msgstr "حدث جرس"
 
@@ -75,12 +75,12 @@ msgstr "ا_نتظر"
 msgid "_Force Quit"
 msgstr "أ_جبر الإنهاء"
 
-#: ../src/core/display.c:387
+#: ../src/core/display.c:380
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "الامتداد %s مفقود، لكنه مطلوب للتركيب"
 
-#: ../src/core/display.c:453
+#: ../src/core/display.c:446
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "فشل فتح عرض نظام نوافذ إكس '%s'\n"
@@ -92,36 +92,36 @@ msgid ""
 "binding\n"
 msgstr "يستعمل برنامج آخر المفتاح %s بالفعل مع المغيرين %x كرابط\n"
 
-#: ../src/core/main.c:206
+#: ../src/core/main.c:196
 msgid "Disable connection to session manager"
 msgstr "عطّل الاتصال بمدير الجلسة"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:202
 msgid "Replace the running window manager"
 msgstr "استبدل بمدير النوافذ الذي يعمل"
 
-#: ../src/core/main.c:218
+#: ../src/core/main.c:208
 msgid "Specify session management ID"
 msgstr "حدّد رقم هويّة إدارة الجلسة"
 
-#: ../src/core/main.c:223
+#: ../src/core/main.c:213
 msgid "X Display to use"
 msgstr "معراض س الذي سيستعمل"
 
-#: ../src/core/main.c:229
+#: ../src/core/main.c:219
 msgid "Initialize session from savefile"
 msgstr "ابدأ الجلسة من ملف محفوظ"
 
-#: ../src/core/main.c:235
+#: ../src/core/main.c:225
 msgid "Make X calls synchronous"
 msgstr "اجعل نداءات س متزامنة"
 
-#: ../src/core/main.c:504
+#: ../src/core/main.c:494
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "فشلت قراءة دليل السِمات : %s\n"
 
-#: ../src/core/main.c:520
+#: ../src/core/main.c:510
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -146,10 +146,10 @@ msgid "Print version"
 msgstr "اطبع الإصدارة"
 
 #: ../src/core/mutter.c:60
-msgid "Comma-separated list of compositor plugins"
-msgstr "قائمة بملحقات المزج مفصولة بفاصلة"
+msgid "Mutter plugin to use"
+msgstr "ملحق مَتَر الذي سيُستخدم"
 
-#: ../src/core/prefs.c:1077
+#: ../src/core/prefs.c:1064
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -157,12 +157,12 @@ msgstr ""
 "عطّلت الحلول الجزئيّة للتطبيقات المعطوبة . ربما لن تتصرف بعض التطبيقات "
 "بسلامة.\n"
 
-#: ../src/core/prefs.c:1152
+#: ../src/core/prefs.c:1139
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "لا يمكن تحليل وصف الخط \"%s\" من مفتاح GSettings‏ %s\n"
 
-#: ../src/core/prefs.c:1218
+#: ../src/core/prefs.c:1205
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -170,7 +170,7 @@ msgid ""
 msgstr ""
 "\"%s\" الموجود في قاعدة بيانات الإعدادات ليس قيمة سليمة لمغير أزرار الفأرة\n"
 
-#: ../src/core/prefs.c:1739
+#: ../src/core/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -179,17 +179,17 @@ msgstr ""
 "\"%s\" الموجود في قاعدة بيانات الإعدادات ليس قيمة سليمة لارتباط المفتاح \"%s"
 "\"\n"
 
-#: ../src/core/prefs.c:1836
+#: ../src/core/prefs.c:1820
 #, c-format
 msgid "Workspace %d"
 msgstr "مساحة العمل %d"
 
-#: ../src/core/screen.c:730
+#: ../src/core/screen.c:652
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "الشاشة %d على العرض '%s' غير صحيحة\n"
 
-#: ../src/core/screen.c:746
+#: ../src/core/screen.c:668
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -198,18 +198,18 @@ msgstr ""
 "الشاشة %d على العرض \"%s\" لها مدير نوافذ بالفعل، حاول استعمال خيار التبديل "
 "--replace لتحُلّ محلّ مدير النوافذ الحالي.\n"
 
-#: ../src/core/screen.c:773
+#: ../src/core/screen.c:695
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "لا يمكن الحصول على اختيار مدير النوافذ على الشاشة %d العرض \"%s\"\n"
 
-#: ../src/core/screen.c:828
+#: ../src/core/screen.c:750
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "الشاشة %d على العرض \"%s\" لها مدير نوافذ بالفعل\n"
 
-#: ../src/core/screen.c:1013
+#: ../src/core/screen.c:935
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "لا يمكن ترك الشاشة %d على العرض \"%s\"\n"
@@ -269,44 +269,44 @@ msgstr ""
 "هذه النوافذ لا تدعم &quot;احفظ الضبط الحالي&quot; يجب إعادة تشغيلها يدويا "
 "عند الولوج المرة القادمة."
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:80
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "فشل فتح سِجِلّ التنقيح: %s\n"
 
-#: ../src/core/util.c:121
+#: ../src/core/util.c:90
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "فشل fdopen() ملف الرسائل %s: %s\n"
 
-#: ../src/core/util.c:127
+#: ../src/core/util.c:96
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "فُتِح ملف السِّجِل %s\n"
 
-#: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
+#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "جُمِّع مَتَر دون دعم للنمط المطنب\n"
 
-#: ../src/core/util.c:290
+#: ../src/core/util.c:259
 msgid "Window manager: "
 msgstr "مدير النوافذ: "
 
-#: ../src/core/util.c:438
+#: ../src/core/util.c:407
 msgid "Bug in window manager: "
 msgstr "علّة في مدير النوافذ: "
 
-#: ../src/core/util.c:471
+#: ../src/core/util.c:438
 msgid "Window manager warning: "
 msgstr "تحذير مدير النوافذ: "
 
-#: ../src/core/util.c:499
+#: ../src/core/util.c:466
 msgid "Window manager error: "
 msgstr "خطأ مدير النوافذ: "
 
 #. first time through
-#: ../src/core/window.c:7266
+#: ../src/core/window.c:7234
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -322,7 +322,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7931
+#: ../src/core/window.c:7899
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -331,22 +331,22 @@ msgstr ""
 "ضبطت النافذة %s تلميحة MWM يدل على انه لا يمكن تحجيمها، لكنها تضبط الحجم "
 "الأدنى %d x %d و الحجم الأقصى %d x %d، هذا ليس له أي معنى.\n"
 
-#: ../src/core/window-props.c:309
+#: ../src/core/window-props.c:310
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "ضبط التطبيق رمز NET_WM_PID غير مفهوم %lu\n"
 
-#: ../src/core/window-props.c:426
+#: ../src/core/window-props.c:429
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (على %s)"
 
-#: ../src/core/window-props.c:1481
+#: ../src/core/window-props.c:1484
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "نافذة WM_TRANSIENT_FOR  0x%lx غير صحيحة ل %s.\n"
 
-#: ../src/core/window-props.c:1492
+#: ../src/core/window-props.c:1495
 #, fuzzy, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "نافذة WM_TRANSIENT_FOR  0x%lx غير صحيحة ل %s.\n"
@@ -406,73 +406,62 @@ msgid ""
 msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid "Live Hidden Windows"
-msgstr ""
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid ""
-"Determines whether hidden windows (i.e., minimized windows and windows on "
-"other workspaces than the current one) should be kept alive."
-msgstr ""
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
 "vertically and resizes them horizontally to cover half of the available "
 "area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there's a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "No tab popup"
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
 msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Draggable border width"
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:17
-#, fuzzy
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Select window from tab popup"
-msgstr "احذف من القمّة"
+msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "Cancel tab popup"
 msgstr ""
 
@@ -680,72 +669,71 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: ../src/ui/theme.c:253
+#: ../src/ui/theme.c:234
 msgid "top"
 msgstr "أعلى"
 
-#: ../src/ui/theme.c:255
+#: ../src/ui/theme.c:236
 msgid "bottom"
 msgstr "أسفل"
 
-#: ../src/ui/theme.c:257
+#: ../src/ui/theme.c:238
 msgid "left"
 msgstr "يسار"
 
-#: ../src/ui/theme.c:259
+#: ../src/ui/theme.c:240
 msgid "right"
 msgstr "يمين"
 
-#: ../src/ui/theme.c:286
+#: ../src/ui/theme.c:268
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "هندسة الإطار لا تخصص البعد \"%s\""
 
-#: ../src/ui/theme.c:305
+#: ../src/ui/theme.c:287
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "هندسة الإطار لا تخصص البعد \"%s\" للحد \"%s\""
 
-#: ../src/ui/theme.c:342
+#: ../src/ui/theme.c:324
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "النسبة الجانبية للزر %g غير معقولة"
 
-#: ../src/ui/theme.c:354
+#: ../src/ui/theme.c:336
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "هندسة الإطار لا تخصص حجم الأزرار"
 
-#: ../src/ui/theme.c:1067
+#: ../src/ui/theme.c:1049
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "يجب أن يكون للتّدرُّجات لونان على الأقل"
 
-#: ../src/ui/theme.c:1219
+#: ../src/ui/theme.c:1201
 #, fuzzy, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr ""
-"يحب أن يكون لتخصيص حالة ألوان جتك قوس غلق قائم بعد الحالة/ مثال gtk:fg"
-"[NORMAL]، NORMAL هنا هو الحالة، لا يمكن تحليل \"%s\""
+"يحب أن يكون لتخصيص حالة ألوان جتك قوس غلق قائم بعد الحالة/ مثال "
+"gtk:fg[NORMAL]، NORMAL هنا هو الحالة، لا يمكن تحليل \"%s\""
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1217
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
 "_ are valid"
 msgstr ""
 
-#: ../src/ui/theme.c:1249
+#: ../src/ui/theme.c:1231
 #, fuzzy, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
 "fit the format"
-msgstr ""
-"تهيئة التظليل هي \"تظليل/اللون_الأساسي/العامل\"، \"%s\" لا يناسب التهيئة"
+msgstr "تهيئة التظليل هي \"تظليل/اللون_الأساسي/العامل\"، \"%s\" لا يناسب التهيئة"
 
-#: ../src/ui/theme.c:1294
+#: ../src/ui/theme.c:1276
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -754,7 +742,7 @@ msgstr ""
 "يجب أن تكون حالة تخصيصات ألوان جتك  في قوسان قائمان، مثال gtk:fg[NORMAL] "
 "NORMAL هنا هو الحالة، لا يمكن تحليل \"%s\""
 
-#: ../src/ui/theme.c:1308
+#: ../src/ui/theme.c:1290
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -763,149 +751,149 @@ msgstr ""
 "يحب أن يكون لتخصيص حالة ألوان جتك قوس غلق قائم بعد الحالة/ مثال gtk:fg"
 "[NORMAL]، NORMAL هنا هو الحالة، لا يمكن تحليل \"%s\""
 
-#: ../src/ui/theme.c:1319
+#: ../src/ui/theme.c:1301
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "لم تفهم الحالة \"%s\" في تخصيص الألوان"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1314
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "لم يفهم جزء اللون \"%s\" في تخصيص اللون"
 
-#: ../src/ui/theme.c:1361
+#: ../src/ui/theme.c:1343
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr "تهيئة الخلط \"blend/bg_color/fg_color/alpha\"، \"%s\"لا يناسب التهيئة"
 
-#: ../src/ui/theme.c:1372
+#: ../src/ui/theme.c:1354
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "لا يمكن تحليل قيمة الشفافية \"%s\" في اللون المخلط"
 
-#: ../src/ui/theme.c:1382
+#: ../src/ui/theme.c:1364
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "قيمة الشفافية \"%s\" في اللون المخلوط ليست بين 0.0 و 1.0"
 
-#: ../src/ui/theme.c:1429
+#: ../src/ui/theme.c:1411
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "تهيئة التظليل هي \"تظليل/اللون_الأساسي/العامل\"، \"%s\" لا يناسب التهيئة"
 
-#: ../src/ui/theme.c:1440
+#: ../src/ui/theme.c:1422
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "لا يمكن تحليل عامل التظليل \"%s\" في اللون المظلل"
 
-#: ../src/ui/theme.c:1450
+#: ../src/ui/theme.c:1432
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "عامل التظليل \"%s\" في اللون المظلل سلبي"
 
-#: ../src/ui/theme.c:1479
+#: ../src/ui/theme.c:1461
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "لا يمكن تحليل اللون \"%s\""
 
-#: ../src/ui/theme.c:1790
+#: ../src/ui/theme.c:1778
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "تعبير الإحداثيّات يحتوي على الرمز '%s' الممنوع"
 
-#: ../src/ui/theme.c:1817
+#: ../src/ui/theme.c:1805
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "تعبير الإحداثيّات يحتوي على عدد نقطة متغيرة '%s' تعذّر تحليله"
 
-#: ../src/ui/theme.c:1831
+#: ../src/ui/theme.c:1819
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "تعبير الإحداثيّات يحتوي على عدد صحيح '%s' تعذّر تحليله"
 
-#: ../src/ui/theme.c:1953
+#: ../src/ui/theme.c:1940
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "تعبير الإحداثيّات يحتوي على مقسوم مجهول عند بداية هذا النص: \"%s\""
 
-#: ../src/ui/theme.c:2010
+#: ../src/ui/theme.c:1997
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "تعبير الإحداثيّات فارغ أو لم يفهم"
 
-#: ../src/ui/theme.c:2121 ../src/ui/theme.c:2131 ../src/ui/theme.c:2165
+#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "تعبير الإحداثيّات ينتُج عند القسمة على صفر"
 
-#: ../src/ui/theme.c:2173
+#: ../src/ui/theme.c:2162
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "تعبير الإحداثيّاتيّات يحاول استعمال مقسوم mod على عدد فاصلة متحرّكة"
 
-#: ../src/ui/theme.c:2229
+#: ../src/ui/theme.c:2218
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "تعبير الإحداثيّات له مقسوم \"%s\" بالرغم من ترقبه قاسم"
 
-#: ../src/ui/theme.c:2238
+#: ../src/ui/theme.c:2227
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "تعبير الإحداثيّات له قاسم بالرغم من ترقبه لمقسوم"
 
-#: ../src/ui/theme.c:2246
+#: ../src/ui/theme.c:2235
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "انتهى تعبير الإحداثيّات بمقسوم عوضا عن قاسم"
 
-#: ../src/ui/theme.c:2256
+#: ../src/ui/theme.c:2245
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr "لتعبير الإحداثيّات مقسوم \"%c\" يتبع القاسم \"%c\" بدون قاسم بينهما"
 
-#: ../src/ui/theme.c:2407 ../src/ui/theme.c:2452
+#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "كان لتعبير الإحداثيّات متغير أو ثابت \"%s\""
 
-#: ../src/ui/theme.c:2506
+#: ../src/ui/theme.c:2495
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "غمر محلّل تعبير الإحداثيّات مجاله"
 
-#: ../src/ui/theme.c:2535
+#: ../src/ui/theme.c:2524
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "كان لتعبير الإحداثيّات قوس غلق بدون قوس فتح"
 
-#: ../src/ui/theme.c:2599
+#: ../src/ui/theme.c:2588
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "كان لتعبير الإحداثيات قوس فتح بدون قوس غلق"
 
-#: ../src/ui/theme.c:2610
+#: ../src/ui/theme.c:2599
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "تعبير الإحداثيات لا يملك قاسمات و مقسومات"
 
-#: ../src/ui/theme.c:2822 ../src/ui/theme.c:2842 ../src/ui/theme.c:2862
+#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "احتوت السِمة على تعبير ادى الى خطأ: %s\n"
 
-#: ../src/ui/theme.c:4533
+#: ../src/ui/theme.c:4498
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -914,25 +902,25 @@ msgstr ""
 "يجب تخصيص <button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> "
 "لأسلوب الإطار هذا"
 
-#: ../src/ui/theme.c:5066 ../src/ui/theme.c:5091
+#: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> مفقود"
 
-#: ../src/ui/theme.c:5139
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "فشل تحميل السِمة \"%s\": %s\n"
 
-#: ../src/ui/theme.c:5275 ../src/ui/theme.c:5282 ../src/ui/theme.c:5289
-#: ../src/ui/theme.c:5296 ../src/ui/theme.c:5303
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "لا <%s> ضبط للسِمة \"%s\""
 
-#: ../src/ui/theme.c:5311
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -941,14 +929,14 @@ msgstr ""
 "لا أسلوب إطار مضبوط لنوع النافذة \"%s\" في السِمة \"%s\"، اضف عنصر <window "
 "type=\"%s\" style_set=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
+#: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "الثوابت المعرفة من طرف المستخدم يجب أن تبدأ بحروف كبيرة، \"%s\" لا يبدأ بذلك"
 
-#: ../src/ui/theme.c:5717 ../src/ui/theme.c:5779 ../src/ui/theme.c:5842
+#: ../src/ui/theme.c:5658 ../src/ui/theme.c:5720 ../src/ui/theme.c:5783
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "عُرِّف الثابت \"%s\" بالفعل"
@@ -1317,7 +1305,7 @@ msgstr "لا يُسمح بنص داخل العنصر <%s>"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> محدّد مرتان لهذه السِمة"
 
-#: ../src/ui/theme-parser.c:4348
+#: ../src/ui/theme-parser.c:4334
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "فشل العثو على سِمة صحيحة في %s\n"
@@ -1518,6 +1506,9 @@ msgstr "قيمة ص كانت %d، تُرُقَِب %d"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "حُلِّلت %d تعابير الإحداثيات في %g ثواني (بمعدّل %g ثوان)\n"
+
+#~ msgid "Comma-separated list of compositor plugins"
+#~ msgstr "قائمة بملحقات المزج مفصولة بفاصلة"
 
 #~ msgid "Switch to workspace 1"
 #~ msgstr "انتقل إلى مساحة العمل 1"
@@ -1823,6 +1814,3 @@ msgstr "حُلِّلت %d تعابير الإحداثيات في %g ثواني (
 
 #~ msgid "Error setting clutter plugin list: %s\n"
 #~ msgstr "خطأ عند تحديد قائمة ملحقات كلتر: %s\n"
-
-#~ msgid "Clutter Plugins"
-#~ msgstr "ملحقات كلتر"
