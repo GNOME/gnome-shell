@@ -402,6 +402,15 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
                  cr, priv->width, priv->height,
                  &res);
 
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (_clutter_diagnostic_enabled () && cairo_status (cr))
+    {
+      g_warning ("Drawing failed for <ClutterCanvas>[%p]: %s",
+                 self,
+                 cairo_status_to_string (cairo_status (cr)));
+    }
+#endif
+
   self->priv->cr = NULL;
   cairo_destroy (cr);
 
