@@ -93,7 +93,9 @@ struct _ClutterDragActionPrivate
   ClutterDragAxis drag_axis;
 
   ClutterInputDevice *device;
+  ClutterEventSequence *sequence;
   gulong button_press_id;
+  gulong touch_begin_id;
   gulong capture_id;
 
   gfloat press_x;
@@ -183,11 +185,18 @@ emit_drag_begin (ClutterDragAction *action,
   if (priv->stage != NULL)
     {
       clutter_stage_set_motion_events_enabled (priv->stage, FALSE);
-      _clutter_stage_add_drag_actor (priv->stage,
-                                     clutter_event_get_device (event),
-                                     priv->drag_handle != NULL
-                                       ? priv->drag_handle
-                                       : actor);
+      if (clutter_event_type (event) == CLUTTER_TOUCH_BEGIN)
+        _clutter_stage_add_touch_drag_actor (priv->stage,
+                                             clutter_event_get_event_sequence (event),
+                                             priv->drag_handle != NULL
+                                             ? priv->drag_handle
+                                             : actor);
+      else
+        _clutter_stage_add_pointer_drag_actor (priv->stage,
+                                               clutter_event_get_device (event),
+                                               priv->drag_handle != NULL
+                                               ? priv->drag_handle
+                                               : actor);
     }
 
   g_signal_emit (action, drag_signals[DRAG_BEGIN], 0,
@@ -301,7 +310,16 @@ emit_drag_end (ClutterDragAction *action,
                                            priv->motion_events_enabled);
 
   if (priv->last_motion_device != NULL)
-    _clutter_stage_remove_drag_actor (priv->stage, priv->last_motion_device);
+    {
+      if (clutter_event_type (event) == CLUTTER_BUTTON_RELEASE)
+        _clutter_stage_remove_pointer_drag_actor (priv->stage,
+                                                  priv->last_motion_device);
+      else
+        _clutter_stage_remove_touch_drag_actor (priv->stage,
+                                                priv->sequence);
+    }
+
+  priv->sequence = NULL;
 
   priv->in_drag = FALSE;
 }
@@ -313,7 +331,7 @@ on_captured_event (ClutterActor      *stage,
 {
   ClutterDragActionPrivate *priv = action->priv;
   ClutterActor *actor;
-  
+
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
 
   if (!priv->in_drag)
@@ -324,6 +342,11 @@ on_captured_event (ClutterActor      *stage,
 
   switch (clutter_event_type (event))
     {
+    case CLUTTER_TOUCH_UPDATE:
+      if (clutter_event_get_event_sequence (event) == priv->sequence)
+        emit_drag_motion (action, actor, event);
+      break;
+
     case CLUTTER_MOTION:
       {
         ClutterModifierType mods = clutter_event_get_state (event);
@@ -337,6 +360,12 @@ on_captured_event (ClutterActor      *stage,
         else
           emit_drag_end (action, actor, event);
       }
+      break;
+
+    case CLUTTER_TOUCH_END:
+    case CLUTTER_TOUCH_CANCEL:
+      if (clutter_event_get_event_sequence (event) == priv->sequence)
+        emit_drag_end (action, actor, event);
       break;
 
     case CLUTTER_BUTTON_RELEASE:
@@ -358,9 +387,9 @@ on_captured_event (ClutterActor      *stage,
 }
 
 static gboolean
-on_button_press (ClutterActor      *actor,
-                 ClutterEvent      *event,
-                 ClutterDragAction *action)
+on_drag_begin (ClutterActor      *actor,
+               ClutterEvent      *event,
+               ClutterDragAction *action)
 {
   ClutterDragActionPrivate *priv = action->priv;
 
@@ -368,8 +397,22 @@ on_button_press (ClutterActor      *actor,
     return CLUTTER_EVENT_PROPAGATE;
 
   /* dragging is only performed using the primary button */
-  if (clutter_event_get_button (event) != CLUTTER_BUTTON_PRIMARY)
-    return CLUTTER_EVENT_PROPAGATE;
+  switch (clutter_event_type (event))
+    {
+    case CLUTTER_BUTTON_PRESS:
+      if (clutter_event_get_button (event) != CLUTTER_BUTTON_PRIMARY)
+        return CLUTTER_EVENT_PROPAGATE;
+      break;
+
+    case CLUTTER_TOUCH_BEGIN:
+      if (priv->sequence != NULL)
+        return CLUTTER_EVENT_PROPAGATE;
+      priv->sequence = clutter_event_get_event_sequence (event);
+      break;
+
+    default:
+      return CLUTTER_EVENT_PROPAGATE;
+    }
 
   if (priv->stage == NULL)
     priv->stage = CLUTTER_STAGE (clutter_actor_get_stage (actor));
@@ -416,9 +459,13 @@ clutter_drag_action_set_actor (ClutterActorMeta *meta,
 
       old_actor = clutter_actor_meta_get_actor (meta);
       if (old_actor != NULL)
-        g_signal_handler_disconnect (old_actor, priv->button_press_id);
-        
+        {
+          g_signal_handler_disconnect (old_actor, priv->button_press_id);
+          g_signal_handler_disconnect (old_actor, priv->touch_begin_id);
+        }
+
       priv->button_press_id = 0;
+      priv->touch_begin_id = 0;
     }
 
   if (priv->capture_id != 0)
@@ -435,9 +482,14 @@ clutter_drag_action_set_actor (ClutterActorMeta *meta,
   priv->in_drag = FALSE;
 
   if (actor != NULL)
-    priv->button_press_id = g_signal_connect (actor, "button-press-event",
-                                              G_CALLBACK (on_button_press),
-                                              meta);
+    {
+      priv->button_press_id = g_signal_connect (actor, "button-press-event",
+                                                G_CALLBACK (on_drag_begin),
+                                                meta);
+      priv->touch_begin_id = g_signal_connect (actor, "touch-event",
+                                               G_CALLBACK (on_drag_begin),
+                                               meta);
+    }
 
   CLUTTER_ACTOR_META_CLASS (clutter_drag_action_parent_class)->set_actor (meta, actor);
 }
@@ -555,9 +607,13 @@ clutter_drag_action_dispose (GObject *gobject)
 
       actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (gobject));
       if (actor != NULL)
-        g_signal_handler_disconnect (actor, priv->button_press_id);
+        {
+          g_signal_handler_disconnect (actor, priv->button_press_id);
+          g_signal_handler_disconnect (actor, priv->touch_begin_id);
+        }
 
       priv->button_press_id = 0;
+      priv->touch_begin_id = 0;
     }
 
   clutter_drag_action_set_drag_handle (CLUTTER_DRAG_ACTION (gobject), NULL);

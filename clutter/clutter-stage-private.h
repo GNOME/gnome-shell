@@ -101,13 +101,21 @@ void            _clutter_stage_release_pick_id          (ClutterStage *stage,
 ClutterActor *  _clutter_stage_get_actor_by_pick_id     (ClutterStage *stage,
                                                          gint32        pick_id);
 
-void            _clutter_stage_add_drag_actor           (ClutterStage       *stage,
-                                                         ClutterInputDevice *device,
-                                                         ClutterActor       *actor);
-ClutterActor *  _clutter_stage_get_drag_actor           (ClutterStage       *stage,
-                                                         ClutterInputDevice *device);
-void            _clutter_stage_remove_drag_actor        (ClutterStage       *stage,
-                                                         ClutterInputDevice *device);
+void            _clutter_stage_add_pointer_drag_actor    (ClutterStage       *stage,
+                                                          ClutterInputDevice *device,
+                                                          ClutterActor       *actor);
+ClutterActor *  _clutter_stage_get_pointer_drag_actor    (ClutterStage       *stage,
+                                                          ClutterInputDevice *device);
+void            _clutter_stage_remove_pointer_drag_actor (ClutterStage       *stage,
+                                                          ClutterInputDevice *device);
+
+void            _clutter_stage_add_touch_drag_actor    (ClutterStage         *stage,
+                                                        ClutterEventSequence *sequence,
+                                                        ClutterActor         *actor);
+ClutterActor *  _clutter_stage_get_touch_drag_actor    (ClutterStage         *stage,
+                                                        ClutterEventSequence *sequence);
+void            _clutter_stage_remove_touch_drag_actor (ClutterStage         *stage,
+                                                        ClutterEventSequence *sequence);
 
 ClutterStageState       _clutter_stage_get_state        (ClutterStage      *stage);
 gboolean                _clutter_stage_is_activated     (ClutterStage      *stage);

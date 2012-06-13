@@ -4299,17 +4299,19 @@ _clutter_stage_get_actor_by_pick_id (ClutterStage *stage,
 }
 
 void
-_clutter_stage_add_drag_actor (ClutterStage       *stage,
-                               ClutterInputDevice *device,
-                               ClutterActor       *actor)
+_clutter_stage_add_pointer_drag_actor (ClutterStage       *stage,
+                                       ClutterInputDevice *device,
+                                       ClutterActor       *actor)
 {
   GHashTable *drag_actors;
 
-  drag_actors = g_object_get_data (G_OBJECT (stage), "__clutter_stage_drag_actors");
+  drag_actors = g_object_get_data (G_OBJECT (stage),
+                                   "__clutter_stage_pointer_drag_actors");
   if (drag_actors == NULL)
     {
       drag_actors = g_hash_table_new (NULL, NULL);
-      g_object_set_data_full (G_OBJECT (stage), "__clutter_stage_drag_actors",
+      g_object_set_data_full (G_OBJECT (stage),
+                              "__clutter_stage_pointer_drag_actors",
                               drag_actors,
                               (GDestroyNotify) g_hash_table_destroy);
     }
@@ -4318,12 +4320,13 @@ _clutter_stage_add_drag_actor (ClutterStage       *stage,
 }
 
 ClutterActor *
-_clutter_stage_get_drag_actor (ClutterStage       *stage,
-                               ClutterInputDevice *device)
+_clutter_stage_get_pointer_drag_actor (ClutterStage       *stage,
+                                       ClutterInputDevice *device)
 {
   GHashTable *drag_actors;
 
-  drag_actors = g_object_get_data (G_OBJECT (stage), "__clutter_stage_drag_actors");
+  drag_actors = g_object_get_data (G_OBJECT (stage),
+                                   "__clutter_stage_pointer_drag_actors");
   if (drag_actors == NULL)
     return NULL;
 
@@ -4331,19 +4334,76 @@ _clutter_stage_get_drag_actor (ClutterStage       *stage,
 }
 
 void
-_clutter_stage_remove_drag_actor (ClutterStage       *stage,
-                                  ClutterInputDevice *device)
+_clutter_stage_remove_pointer_drag_actor (ClutterStage       *stage,
+                                          ClutterInputDevice *device)
 {
   GHashTable *drag_actors;
 
-  drag_actors = g_object_get_data (G_OBJECT (stage), "__clutter_stage_drag_actors");
+  drag_actors = g_object_get_data (G_OBJECT (stage),
+                                   "__clutter_stage_pointer_drag_actors");
   if (drag_actors == NULL)
     return;
 
   g_hash_table_remove (drag_actors, device);
 
   if (g_hash_table_size (drag_actors) == 0)
-    g_object_set_data (G_OBJECT (stage), "__clutter_stage_drag_actors", NULL);
+    g_object_set_data (G_OBJECT (stage),
+                       "__clutter_stage_pointer_drag_actors",
+                       NULL);
+}
+
+void
+_clutter_stage_add_touch_drag_actor (ClutterStage         *stage,
+                                     ClutterEventSequence *sequence,
+                                     ClutterActor         *actor)
+{
+  GHashTable *drag_actors;
+
+  drag_actors = g_object_get_data (G_OBJECT (stage),
+                                   "__clutter_stage_touch_drag_actors");
+  if (drag_actors == NULL)
+    {
+      drag_actors = g_hash_table_new (NULL, NULL);
+      g_object_set_data_full (G_OBJECT (stage),
+                              "__clutter_stage_touch_drag_actors",
+                              drag_actors,
+                              (GDestroyNotify) g_hash_table_destroy);
+    }
+
+  g_hash_table_replace (drag_actors, sequence, actor);
+}
+
+ClutterActor *
+_clutter_stage_get_touch_drag_actor (ClutterStage         *stage,
+                                     ClutterEventSequence *sequence)
+{
+  GHashTable *drag_actors;
+
+  drag_actors = g_object_get_data (G_OBJECT (stage),
+                                   "__clutter_stage_touch_drag_actors");
+  if (drag_actors == NULL)
+    return NULL;
+
+  return g_hash_table_lookup (drag_actors, sequence);
+}
+
+void
+_clutter_stage_remove_touch_drag_actor (ClutterStage         *stage,
+                                        ClutterEventSequence *sequence)
+{
+  GHashTable *drag_actors;
+
+  drag_actors = g_object_get_data (G_OBJECT (stage),
+                                   "__clutter_stage_touch_drag_actors");
+  if (drag_actors == NULL)
+    return;
+
+  g_hash_table_remove (drag_actors, sequence);
+
+  if (g_hash_table_size (drag_actors) == 0)
+    g_object_set_data (G_OBJECT (stage),
+                       "__clutter_stage_touch_drag_actors",
+                       NULL);
 }
 
 /*< private >

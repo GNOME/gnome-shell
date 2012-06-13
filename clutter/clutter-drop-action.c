@@ -127,24 +127,40 @@ on_stage_capture (ClutterStage *stage,
 {
   DropTarget *data = user_data;
   gfloat event_x, event_y;
-  ClutterInputDevice *device;
   ClutterActor *actor, *drag_actor;
   ClutterDropAction *drop_action;
   gboolean was_reactive;
 
-  if (!(clutter_event_type (event) == CLUTTER_MOTION ||
-        clutter_event_type (event) == CLUTTER_BUTTON_RELEASE))
-    return CLUTTER_EVENT_PROPAGATE;
+  switch (clutter_event_type (event))
+    {
+    case CLUTTER_MOTION:
+    case CLUTTER_BUTTON_RELEASE:
+      {
+        ClutterInputDevice *device;
 
-  if (!(clutter_event_get_state (event) & CLUTTER_BUTTON1_MASK))
-    return CLUTTER_EVENT_PROPAGATE;
+        if (!(clutter_event_get_state (event) & CLUTTER_BUTTON1_MASK))
+          return CLUTTER_EVENT_PROPAGATE;
+
+        device = clutter_event_get_device (event);
+        drag_actor = _clutter_stage_get_pointer_drag_actor (stage, device);
+        if (drag_actor == NULL)
+          return CLUTTER_EVENT_PROPAGATE;
+      }
+      break;
+
+    case CLUTTER_TOUCH_UPDATE:
+    case CLUTTER_TOUCH_END:
+      drag_actor = _clutter_stage_get_touch_drag_actor (stage,
+                                                        clutter_event_get_event_sequence (event));
+      if (drag_actor == NULL)
+        return CLUTTER_EVENT_PROPAGATE;
+      break;
+
+    default:
+      return CLUTTER_EVENT_PROPAGATE;
+    }
 
   clutter_event_get_coords (event, &event_x, &event_y);
-  device = clutter_event_get_device (event);
-
-  drag_actor = _clutter_stage_get_drag_actor (stage, device);
-  if (drag_actor == NULL)
-    return CLUTTER_EVENT_PROPAGATE;
 
   /* get the actor under the cursor, excluding the dragged actor; we
    * use reactivity because it won't cause any scene invalidation
@@ -210,7 +226,8 @@ on_stage_capture (ClutterStage *stage,
     }
 
 out:
-  if (clutter_event_type (event) == CLUTTER_BUTTON_RELEASE)
+  if (clutter_event_type (event) == CLUTTER_BUTTON_RELEASE ||
+      clutter_event_type (event) == CLUTTER_TOUCH_END)
     {
       if (data->last_action != NULL)
         {
