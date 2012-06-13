@@ -463,6 +463,8 @@ shell_contact_system_initial_search (ShellContactSystem *self,
       g_object_unref (individual);
     }
 
+  g_object_unref (iter);
+
   return sort_and_prepare_results (results);
 }
 
