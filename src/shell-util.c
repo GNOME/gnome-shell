@@ -96,6 +96,7 @@ shell_util_get_file_display_for_common_files (GFile *file)
        * nautilus */
       return g_strdup (_("Home"));
     }
+  g_object_unref (compare);
 
   compare = g_file_new_for_path ("/");
   if (g_file_equal (file, compare))
