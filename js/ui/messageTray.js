@@ -2490,11 +2490,10 @@ const MessageTray = new Lang.Class({
     },
 
     _adjustSummaryBoxPointerPosition: function() {
-        // The position of the arrow origin should be the same as center of this._clickedSummaryItem.actor
         if (!this._clickedSummaryItem)
             return;
 
-        this._summaryBoxPointer.setPosition(this._clickedSummaryItem.actor, 0, 0.5);
+        this._summaryBoxPointer.setPosition(this._clickedSummaryItem.actor, 0);
     },
 
     _unsetClickedSummaryItem: function() {
