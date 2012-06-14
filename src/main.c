@@ -361,10 +361,8 @@ main (int argc, char **argv)
   meta_plugin_manager_set_plugin_type (gnome_shell_plugin_get_type ());
 
   /* Prevent meta_init() from causing gtk to load gail and at-bridge */
-  g_setenv ("NO_GAIL", "1", TRUE);
   g_setenv ("NO_AT_BRIDGE", "1", TRUE);
   meta_init ();
-  g_unsetenv ("NO_GAIL");
   g_unsetenv ("NO_AT_BRIDGE");
 
   /* FIXME: Add gjs API to set this stuff and don't depend on the
