@@ -933,6 +933,7 @@ load_gicon_with_colors (StTextureCache    *cache,
   if (ensure_request (cache, key, policy, &request, texture))
     {
       /* If there's an outstanding request, we've just added ourselves to it */
+      gtk_icon_info_free (info);
       g_free (key);
     }
   else
