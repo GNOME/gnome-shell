@@ -18,10 +18,10 @@
 #include <meta/main.h>
 #include <meta/meta-plugin.h>
 #include <meta/prefs.h>
+#include <atk-bridge.h>
 #include <telepathy-glib/debug.h>
 #include <telepathy-glib/debug-sender.h>
 
-#include "shell-a11y.h"
 #include "shell-global.h"
 #include "shell-global-private.h"
 #include "shell-js.h"
@@ -233,6 +233,20 @@ shell_perf_log_init (void)
   shell_perf_log_add_statistics_callback (perf_log,
                                           malloc_statistics_callback,
                                           NULL, NULL);
+}
+
+static void
+shell_a11y_init (void)
+{
+  if (clutter_get_accessibility_enabled () == FALSE)
+    {
+      g_warning ("Accessibility: clutter has no accessibility enabled"
+                 " skipping the atk-bridge load");
+    }
+  else
+    {
+      atk_bridge_adaptor_init (NULL, NULL);
+    }
 }
 
 static void

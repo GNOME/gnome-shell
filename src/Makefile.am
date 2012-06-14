@@ -153,8 +153,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-wm-private.h		\
 	gnome-shell-plugin.c		\
 	shell-app.c			\
-	shell-a11y.h			\
-	shell-a11y.c			\
 	shell-app-system.c		\
 	shell-app-usage.c		\
 	shell-contact-system.c	\
