@@ -350,13 +350,13 @@ init_uinput (void)
       goto error;
     }
 
-  return 0;
+  return 1;
 
 error:
   if (fd != -1)
     close (fd);
 
-  return -1;
+  return 0;
 }
 
 #endif /* defined CLUTTER_WINDOWING_X11 && OS_LINUX && HAVE_XINPUT_2_2 */
