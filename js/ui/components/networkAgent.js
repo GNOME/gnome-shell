@@ -12,6 +12,8 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
 const Config = imports.misc.config;
+const Main = imports.ui.main;
+const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
 const PopupMenu = imports.ui.popupMenu;
 const ShellEntry = imports.ui.shellEntry;
@@ -338,6 +340,7 @@ const NetworkSecretDialog = new Lang.Class({
                 content.message = _("PIN code is needed for the mobile broadband device");
                 content.secrets.push({ label: _("PIN: "), key: 'pin',
                                        value: gsmSetting.pin || '', password: true });
+                break;
             }
             // fall through
         case 'cdma':
@@ -610,6 +613,7 @@ const NetworkAgent = new Lang.Class({
 
         this._dialogs = { };
         this._vpnRequests = { };
+        this._notifications = { };
 
         this._native.connect('new-request', Lang.bind(this, this._newRequest));
         this._native.connect('cancel-request', Lang.bind(this, this._cancelRequest));
@@ -632,7 +636,71 @@ const NetworkAgent = new Lang.Class({
             this._vpnRequests[requestId].cancel(true);
         this._vpnRequests = { };
 
+        for (requestId in this._notifications)
+            this._notifications[requestId].destroy();
+        this._notifications = { };
+
         this._enabled = false;
+    },
+
+    _showNotification: function(requestId, connection, settingName, hints, flags) {
+        let source = new MessageTray.Source(_("Network Manager"), 'network-transmit-receive');
+        source.policy = new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
+
+        let title, body;
+
+        let connectionSetting = connection.get_setting_connection();
+        let connectionType = connectionSetting.get_connection_type();
+        switch (connectionType) {
+        case '802-11-wireless':
+            let wirelessSetting = connection.get_setting_wireless();
+            let ssid = NetworkManager.utils_ssid_to_utf8(wirelessSetting.get_ssid());
+            title = _("Authentication required by wireless network");
+            body = _("Passwords or encryption keys are required to access the wireless network '%s'.").format(ssid);
+            break;
+        case '802-3-ethernet':
+            title = _("Wired 802.1X authentication");
+            body = _("A password is required to connect to “%s”".format(connection.get_id()));
+            break;
+        case 'pppoe':
+            title = _("DSL authentication");
+            body = _("A password is required to connect to “%s”".format(connection.get_id()));
+            break;
+        case 'gsm':
+            if (hints.indexOf('pin') != -1) {
+                let gsmSetting = connection.get_setting_gsm();
+                title = _("PIN code required");
+                message = _("PIN code is needed for the mobile broadband device");
+                break;
+            }
+            // fall through
+        case 'cdma':
+        case 'bluetooth':
+            title = _("Mobile broadband network password");
+            message = _("A password is required to connect to “%s”").format(connectionSetting.get_id());
+            break;
+        default:
+            log('Invalid connection type: ' + connectionType);
+            this._native.respond(requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
+            return;
+        }
+
+        let notification = new MessageTray.Notification(source, title, body);
+
+        notification.connect('activated', Lang.bind(this, function() {
+            notification.answered = true;
+            this._handleRequest(requestId, connection, settingName, hints, flags);
+        }));
+
+        this._notifications[requestId] = notification;
+        notification.connect('destroy', Lang.bind(this, function() {
+            if (!notification.answered)
+                this._native.respond(requestId, Shell.NetworkAgentResponse.USER_CANCELED);
+            delete this._notifications[requestId];
+        }));
+
+        Main.messageTray.add(source);
+        source.notify(notification);
     },
 
     _newRequest:  function(agent, requestId, connection, settingName, hints, flags) {
@@ -641,12 +709,19 @@ const NetworkAgent = new Lang.Class({
             return;
         }
 
+        if (!(flags & NMClient.SecretAgentGetSecretsFlags.USER_REQUESTED))
+            this._showNotification(requestId, connection, settingName, hints, flags);
+        else
+            this._handleRequest(requestId, connection, settingName, hints, flags);
+    },
+
+    _handleRequest: function(requestId, connection, settingName, hints, flags) {
         if (settingName == 'vpn') {
             this._vpnRequest(requestId, connection, hints, flags);
             return;
         }
 
-        let dialog = new NetworkSecretDialog(agent, requestId, connection, settingName, hints);
+        let dialog = new NetworkSecretDialog(this._native, requestId, connection, settingName, hints);
         dialog.connect('destroy', Lang.bind(this, function() {
             delete this._dialogs[requestId];
         }));
