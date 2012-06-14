@@ -471,6 +471,13 @@ cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-sdl.c \
        $(srcdir)/cogl-sdl.c
 endif
+if SUPPORT_SDL2
+cogl_experimental_h += $(srcdir)/cogl-sdl.h
+cogl_sources_c += \
+       $(srcdir)/winsys/cogl-winsys-sdl-private.h \
+       $(srcdir)/winsys/cogl-winsys-sdl2.c \
+       $(srcdir)/cogl-sdl.c
+endif
 
 EXTRA_DIST += stb_image.c
 

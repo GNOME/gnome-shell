@@ -748,6 +748,30 @@ AS_IF([test "x$enable_sdl" = "xyes"],
       [SUPPORT_SDL=no])
 AM_CONDITIONAL(SUPPORT_SDL, [test "x$SUPPORT_SDL" = "xyes"])
 
+AC_ARG_ENABLE(
+  [sdl2],
+  [AC_HELP_STRING([--enable-sdl2=@<:@no/yes@:>@], [Enable SDL2 support @<:@default=no@:>@])],
+  [],
+  [enable_sdl2=no])
+AS_IF([test "x$enable_sdl2" = "xyes"],
+      [
+        PKG_CHECK_MODULES([SDL2],
+                          [sdl2],
+                          [],
+                          [AC_MSG_ERROR([SDL2 support requested but SDL2 not found])])
+
+        SUPPORT_SDL2=yes
+        GL_WINSYS_APIS="$GL_WINSYS_APIS sdl2"
+        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES sdl2"
+
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_SDL_SUPPORT"
+      ],
+      [SUPPORT_SDL2=no])
+AM_CONDITIONAL(SUPPORT_SDL2, [test "x$SUPPORT_SDL2" = "xyes"])
+
+AS_IF([test "x$SUPPORT_SDL2" = "xyes" -a "x$SUPPORT_SDL" = "xyes"],
+      [AC_MSG_ERROR([The SDL1 and SDL2 winsyses are currently mutually exclusive])])
+
 EGL_PLATFORM_COUNT=0
 
 AC_ARG_ENABLE(
@@ -890,7 +914,7 @@ AC_ARG_ENABLE(
   [xlib-egl-platform],
   [AC_HELP_STRING([--enable-xlib-egl-platform=@<:@no/yes@:>@], [Enable support for the Xlib egl platform @<:@default=auto@:>@])],
   [],
-  AS_IF([test "x$enable_gles1" = "xyes" -o "x$enable_gles2" = "xyes" && test "x$SUPPORT_SDL_GLES" != "xyes" && test $EGL_PLATFORM_COUNT -eq 0],
+  AS_IF([test "x$enable_gles1" = "xyes" -o "x$enable_gles2" = "xyes" && test "x$SUPPORT_SDL_GLES" != "xyes" && test "x$SUPPORT_SDL2" != "xyes" && test $EGL_PLATFORM_COUNT -eq 0],
         [enable_xlib_egl_platform=yes], [enable_xlib_egl_platform=no])
 )
 AS_IF([test "x$enable_xlib_egl_platform" = "xyes"],

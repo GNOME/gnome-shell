@@ -123,7 +123,7 @@ G_BEGIN_DECLS
  * Stability: unstable
  */
 CoglContext *
-cogl_sdl_context_new (uint8_t type, GError **error);
+cogl_sdl_context_new (int type, GError **error);
 
 /**
  * cogl_sdl_renderer_set_event_type:
@@ -147,7 +147,7 @@ cogl_sdl_context_new (uint8_t type, GError **error);
  * Stability: unstable
  */
 void
-cogl_sdl_renderer_set_event_type (CoglRenderer *renderer, uint8_t type);
+cogl_sdl_renderer_set_event_type (CoglRenderer *renderer, int type);
 
 /**
  * cogl_sdl_renderer_get_event_type:
@@ -161,7 +161,7 @@ cogl_sdl_renderer_set_event_type (CoglRenderer *renderer, uint8_t type);
  * Since: 2.0
  * Stability: unstable
  */
-uint8_t
+int
 cogl_sdl_renderer_get_event_type (CoglRenderer *renderer);
 
 /**

@@ -63,6 +63,12 @@ cogl_sdl_hello_SOURCES = cogl-sdl-hello.c
 cogl_sdl_hello_LDADD = $(common_ldadd)
 endif
 
+if SUPPORT_SDL2
+programs += cogl-sdl2-hello
+cogl_sdl2_hello_SOURCES = cogl-sdl2-hello.c
+cogl_sdl2_hello_LDADD = $(common_ldadd)
+endif
+
 cogl_gles2_context_SOURCES = cogl-gles2-context.c
 cogl_gles2_context_LDADD = $(common_ldadd)
 
