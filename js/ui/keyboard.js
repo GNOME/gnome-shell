@@ -175,7 +175,7 @@ const Key = new Lang.Class({
             this.actor.fake_release();
             this._boxPointer.actor.raise_top();
             this._boxPointer.setPosition(this.actor, 0.5);
-            this._boxPointer.show(true);
+            this._boxPointer.show(BoxPointer.PopupAnimation.FULL);
             this.actor.set_hover(false);
             if (!this._grabbed) {
                  Main.pushModal(this.actor);
@@ -186,7 +186,7 @@ const Key = new Lang.Class({
         } else {
             if (this._grabbed)
                 this._ungrab();
-            this._boxPointer.hide(true);
+            this._boxPointer.hide(BoxPointer.PopupAnimation.FULL);
         }
     }
 });

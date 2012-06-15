@@ -942,7 +942,7 @@ const PopupMenuBase = new Lang.Class({
     _connectSubMenuSignals: function(object, menu) {
         object._subMenuActivateId = menu.connect('activate', Lang.bind(this, function() {
             this.emit('activate');
-            this.close(true);
+            this.close(BoxPointer.PopupAnimation.FULL);
         }));
         object._subMenuActiveChangeId = menu.connect('active-changed', Lang.bind(this, function(submenu, submenuItem) {
             if (this._activeMenuItem && this._activeMenuItem != submenuItem)
@@ -977,7 +977,7 @@ const PopupMenuBase = new Lang.Class({
         }));
         menuItem._activateId = menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
             this.emit('activate', menuItem);
-            this.close(true);
+            this.close(BoxPointer.PopupAnimation.FULL);
         }));
         // the weird name is to avoid a conflict with some random property
         // the menuItem may have, called destroyId
@@ -1050,7 +1050,7 @@ const PopupMenuBase = new Lang.Class({
             menuItem._closingId = this.connect('open-state-changed',
                 function(self, open) {
                     if (!open)
-                        menuItem.close(false);
+                        menuItem.close(BoxPointer.PopupAnimation.FADE);
                 });
             menuItem.connect('destroy', Lang.bind(this, function() {
                 menuItem.disconnect(menuItem._subMenuActivateId);
@@ -1067,7 +1067,7 @@ const PopupMenuBase = new Lang.Class({
             this._connectItemSignals(menuItem);
             menuItem._closingId = this.connect('open-state-changed', function(self, open) {
                 if (!open)
-                    menuItem.menu.close(false);
+                    menuItem.menu.close(BoxPointer.PopupAnimation.FADE);
             });
         } else if (menuItem instanceof PopupSeparatorMenuItem) {
             this._connectItemSignals(menuItem);
@@ -1154,9 +1154,9 @@ const PopupMenuBase = new Lang.Class({
 
     toggle: function() {
         if (this.isOpen)
-            this.close(true);
+            this.close(BoxPointer.PopupAnimation.FULL);
         else
-            this.open(true);
+            this.open(BoxPointer.PopupAnimation.FULL);
     },
 
     destroy: function() {
@@ -1217,7 +1217,7 @@ const PopupMenu = new Lang.Class({
 
     _onKeyPressEvent: function(actor, event) {
         if (event.get_key_symbol() == Clutter.Escape) {
-            this.close(true);
+            this.close(BoxPointer.PopupAnimation.FULL);
             return true;
         }
 
@@ -1419,7 +1419,7 @@ const PopupSubMenu = new Lang.Class({
         // Move focus back to parent menu if the user types Left.
 
         if (this.isOpen && event.get_key_symbol() == Clutter.KEY_Left) {
-            this.close(true);
+            this.close(BoxPointer.PopupAnimation.FULL);
             this.sourceActor._delegate.setActive(true);
             return true;
         }
@@ -1501,7 +1501,7 @@ const PopupSubMenuMenuItem = new Lang.Class({
         let symbol = event.get_key_symbol();
 
         if (symbol == Clutter.KEY_Right) {
-            this.menu.open(true);
+            this.menu.open(BoxPointer.PopupAnimation.FULL);
             this.menu.actor.navigate_focus(null, Gtk.DirectionType.DOWN, false);
             return true;
         } else if (symbol == Clutter.KEY_Left && this.menu.isOpen) {
@@ -1513,7 +1513,7 @@ const PopupSubMenuMenuItem = new Lang.Class({
     },
 
     activate: function(event) {
-        this.menu.open(true);
+        this.menu.open(BoxPointer.PopupAnimation.FULL);
     },
 
     _onButtonReleaseEvent: function(actor) {
@@ -1540,7 +1540,7 @@ const PopupComboMenu = new Lang.Class({
 
     _onKeyPressEvent: function(actor, event) {
         if (event.get_key_symbol() == Clutter.Escape) {
-            this.close(true);
+            this.close(BoxPointer.PopupAnimation.FULL);
             return true;
         }
 
@@ -2194,11 +2194,11 @@ const PopupMenuManager = new Lang.Class({
             let oldMenu = this._activeMenu;
             this._activeMenu = null;
             for (let i = this._menuStack.length - 1; i >= 0; i--)
-                this._menuStack[i].close(false);
-            oldMenu.close(false);
-            newMenu.open(false);
+                this._menuStack[i].close(BoxPointer.PopupAnimation.FADE);
+            oldMenu.close(BoxPointer.PopupAnimation.FADE);
+            newMenu.open(BoxPointer.PopupAnimation.FADE);
         } else
-            newMenu.open(true);
+            newMenu.open(BoxPointer.PopupAnimation.FULL);
     },
 
     _onMenuSourceEnter: function(menu) {
@@ -2313,6 +2313,6 @@ const PopupMenuManager = new Lang.Class({
 
     _closeMenu: function() {
         if (this._activeMenu != null)
-            this._activeMenu.close(true);
+            this._activeMenu.close(BoxPointer.PopupAnimation.FULL);
     }
 });

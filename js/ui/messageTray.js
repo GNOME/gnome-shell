@@ -2477,7 +2477,7 @@ const MessageTray = new Lang.Class({
 
         this._summaryBoxPointerState = State.SHOWING;
         this._clickedSummaryItem.actor.add_style_pseudo_class('selected');
-        this._summaryBoxPointer.show(true, Lang.bind(this, function() {
+        this._summaryBoxPointer.show(BoxPointer.PopupAnimation.FULL, Lang.bind(this, function() {
             this._summaryBoxPointerState = State.SHOWN;
         }));
     },
@@ -2531,7 +2531,7 @@ const MessageTray = new Lang.Class({
             this._summaryBoxPointer.actor.hide();
             this._hideSummaryBoxPointerCompleted();
         } else {
-            this._summaryBoxPointer.hide(true, Lang.bind(this, this._hideSummaryBoxPointerCompleted));
+            this._summaryBoxPointer.hide(BoxPointer.PopupAnimation.FULL, Lang.bind(this, this._hideSummaryBoxPointerCompleted));
         }
     },
 

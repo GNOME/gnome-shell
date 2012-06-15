@@ -9,6 +9,13 @@ const Shell = imports.gi.Shell;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
+const PopupAnimation = {
+    NONE:  0,
+    SLIDE: 1 << 0,
+    FADE:  1 << 1,
+    FULL:  ~0,
+};
+
 const POPUP_ANIMATION_TIME = 0.15;
 
 /**
@@ -69,11 +76,16 @@ const BoxPointer = new Lang.Class({
     show: function(animate, onComplete) {
         let themeNode = this.actor.get_theme_node();
         let rise = themeNode.get_length('-arrow-rise');
+        let animationTime = (animate & PopupAnimation.FULL) ? POPUP_ANIMATION_TIME : 0;
 
-        this.opacity = 0;
+        if (animate & PopupAnimation.FADE)
+            this.opacity = 0;
+        else
+            this.opacity = 255;
+
         this.actor.show();
 
-        if (animate) {
+        if (animate & PopupAnimation.SLIDE) {
             switch (this._arrowSide) {
                 case St.Side.TOP:
                     this.yOffset = -rise;
@@ -99,7 +111,7 @@ const BoxPointer = new Lang.Class({
                                      if (onComplete)
                                          onComplete();
                                  }),
-                                 time: POPUP_ANIMATION_TIME });
+                                 time: animationTime });
     },
 
     hide: function(animate, onComplete) {
@@ -107,8 +119,10 @@ const BoxPointer = new Lang.Class({
         let yOffset = 0;
         let themeNode = this.actor.get_theme_node();
         let rise = themeNode.get_length('-arrow-rise');
+        let fade = (animate & PopupAnimation.FADE);
+        let animationTime = (animate & PopupAnimation.FULL) ? POPUP_ANIMATION_TIME : 0;
 
-        if (animate) {
+        if (animate & PopupAnimation.SLIDE) {
             switch (this._arrowSide) {
                 case St.Side.TOP:
                     yOffset = rise;
@@ -127,13 +141,14 @@ const BoxPointer = new Lang.Class({
 
         this._muteInput();
 
-        Tweener.addTween(this, { opacity: 0,
+        Tweener.addTween(this, { opacity: fade ? 0 : 255,
                                  xOffset: xOffset,
                                  yOffset: yOffset,
                                  transition: 'linear',
-                                 time: POPUP_ANIMATION_TIME,
+                                 time: animationTime,
                                  onComplete: Lang.bind(this, function () {
                                      this.actor.hide();
+                                     this.opacity = 0;
                                      this.xOffset = 0;
                                      this.yOffset = 0;
                                      if (onComplete)
