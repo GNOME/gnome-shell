@@ -373,31 +373,6 @@ plugin_object_deallocate (NPObject *npobj)
   g_slice_free (PluginObject, obj);
 }
 
-static NPIdentifier api_version_id;
-static NPIdentifier shell_version_id;
-static NPIdentifier get_info_id;
-static NPIdentifier list_extensions_id;
-static NPIdentifier enable_extension_id;
-static NPIdentifier install_extension_id;
-static NPIdentifier uninstall_extension_id;
-static NPIdentifier onextension_changed_id;
-static NPIdentifier onrestart_id;
-static NPIdentifier get_errors_id;
-static NPIdentifier launch_extension_prefs_id;
-
-static bool
-plugin_object_has_method (NPObject     *npobj,
-                          NPIdentifier  name)
-{
-  return (name == get_info_id ||
-          name == list_extensions_id ||
-          name == enable_extension_id ||
-          name == install_extension_id ||
-          name == uninstall_extension_id ||
-          name == get_errors_id ||
-          name == launch_extension_prefs_id);
-}
-
 static inline gboolean
 uuid_is_valid (NPString string)
 {
@@ -469,8 +444,67 @@ jsonify_variant (GVariant  *variant,
 }
 
 static gboolean
-plugin_list_extensions (PluginObject  *obj,
-                        NPVariant     *result)
+parse_args (const gchar     *format_str,
+            uint32_t         argc,
+            const NPVariant *argv,
+            ...)
+{
+  va_list args;
+  gsize i;
+  gboolean ret = FALSE;
+
+  if (strlen (format_str) != argc)
+    return FALSE;
+
+  va_start (args, argv);
+
+  for (i = 0; format_str[i]; i++)
+    {
+      gpointer arg_location;
+      const NPVariant arg = argv[i];
+
+      arg_location = va_arg (args, gpointer);
+
+      switch (format_str[i])
+        {
+        case 'u':
+          {
+            NPString string;
+
+            if (!NPVARIANT_IS_STRING (arg))
+              goto out;
+
+            string = NPVARIANT_TO_STRING (arg);
+
+            if (!uuid_is_valid (string))
+              goto out;
+
+            *(gchar **) arg_location = g_strndup (string.UTF8Characters, string.UTF8Length);
+          }
+          break;
+
+        case 'b':
+          if (!NPVARIANT_IS_BOOLEAN (arg))
+            goto out;
+
+          *(gboolean *) arg_location = NPVARIANT_TO_BOOLEAN (arg);
+          break;
+        }
+    }
+
+  ret = TRUE;
+
+ out:
+  va_end (args);
+
+  return ret;
+}
+
+static gboolean
+plugin_list_extensions (PluginObject    *obj,
+                        uint32_t         argc,
+                        const NPVariant *args,
+                        NPVariant       *result)
 {
   GError *error = NULL;
   GVariant *res;
@@ -494,20 +528,21 @@ plugin_list_extensions (PluginObject  *obj,
 }
 
 static gboolean
-plugin_enable_extension (PluginObject *obj,
-                         NPString      uuid,
-                         gboolean      enabled)
+plugin_enable_extension (PluginObject    *obj,
+                         uint32_t         argc,
+                         const NPVariant *argv,
+                         NPVariant       *result)
 {
   gboolean ret;
-  gchar *uuid_str;
+  gchar *uuid;
+  gboolean enabled;
   gsize length;
   gchar **uuids;
   const gchar **new_uuids;
 
-  if (!uuid_is_valid (uuid))
+  if (!parse_args ("ub", argc, argv, &uuid, &enabled))
     return FALSE;
 
-  uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
   uuids = g_settings_get_strv (obj->settings, ENABLED_EXTENSIONS_KEY);
   length = g_strv_length (uuids);
 
@@ -515,7 +550,7 @@ plugin_enable_extension (PluginObject *obj,
     {
       new_uuids = g_new (const gchar *, length + 2); /* New key, NULL */
       memcpy (new_uuids, uuids, length * sizeof (*new_uuids));
-      new_uuids[length] = uuid_str;
+      new_uuids[length] = uuid;
       new_uuids[length + 1] = NULL;
     }
   else
@@ -524,7 +559,7 @@ plugin_enable_extension (PluginObject *obj,
       new_uuids = g_new (const gchar *, length);
       for (i = 0; i < length; i ++)
         {
-          if (g_str_equal (uuids[i], uuid_str))
+          if (g_str_equal (uuids[i], uuid))
             continue;
 
           new_uuids[j] = uuids[i];
@@ -540,60 +575,58 @@ plugin_enable_extension (PluginObject *obj,
 
   g_strfreev (uuids);
   g_free (new_uuids);
-  g_free (uuid_str);
+  g_free (uuid);
 
   return ret;
 }
 
 static gboolean
-plugin_install_extension (PluginObject *obj,
-                          NPString      uuid)
+plugin_install_extension (PluginObject    *obj,
+                          uint32_t         argc,
+                          const NPVariant *argv,
+                          NPVariant       *result)
 {
-  gchar *uuid_str;
+  gchar *uuid;
 
-  if (!uuid_is_valid (uuid))
+  if (!parse_args ("u", argc, argv, &uuid))
     return FALSE;
-
-  uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
 
   g_dbus_proxy_call (obj->proxy,
                      "InstallRemoteExtension",
-                     g_variant_new ("(s)", uuid_str),
+                     g_variant_new ("(s)", uuid),
                      G_DBUS_CALL_FLAGS_NONE,
                      -1, /* timeout */
                      NULL, /* cancellable */
                      NULL, /* callback */
                      NULL /* user_data */);
 
-  g_free (uuid_str);
+  g_free (uuid);
 
   return TRUE;
 }
 
 static gboolean
-plugin_uninstall_extension (PluginObject *obj,
-                            NPString      uuid,
-                            NPVariant    *result)
+plugin_uninstall_extension (PluginObject    *obj,
+                            uint32_t         argc,
+                            const NPVariant *argv,
+                            NPVariant       *result)
 {
   GError *error = NULL;
   GVariant *res;
-  gchar *uuid_str;
+  gchar *uuid;
 
-  if (!uuid_is_valid (uuid))
+  if (!parse_args ("u", argc, argv, &uuid))
     return FALSE;
-
-  uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
 
   res = g_dbus_proxy_call_sync (obj->proxy,
                                 "UninstallExtension",
-                                g_variant_new ("(s)",
-                                               uuid_str),
+                                g_variant_new ("(s)", uuid),
                                 G_DBUS_CALL_FLAGS_NONE,
                                 -1, /* timeout */
                                 NULL, /* cancellable */
                                 &error);
 
-  g_free (uuid_str);
+  g_free (uuid);
 
   if (!res)
     {
@@ -606,28 +639,27 @@ plugin_uninstall_extension (PluginObject *obj,
 }
 
 static gboolean
-plugin_get_info (PluginObject *obj,
-                 NPString      uuid,
-                 NPVariant    *result)
+plugin_get_info (PluginObject    *obj,
+                 uint32_t         argc,
+                 const NPVariant *argv,
+                 NPVariant       *result)
 {
   GError *error = NULL;
   GVariant *res;
-  gchar *uuid_str;
+  gchar *uuid;
 
-  if (!uuid_is_valid (uuid))
+  if (!parse_args ("u", argc, argv, &uuid))
     return FALSE;
-
-  uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
 
   res = g_dbus_proxy_call_sync (obj->proxy,
                                 "GetExtensionInfo",
-                                g_variant_new ("(s)", uuid_str),
+                                g_variant_new ("(s)", uuid),
                                 G_DBUS_CALL_FLAGS_NONE,
                                 -1, /* timeout */
                                 NULL, /* cancellable */
                                 &error);
 
-  g_free (uuid_str);
+  g_free (uuid);
 
   if (!res)
     {
@@ -640,28 +672,25 @@ plugin_get_info (PluginObject *obj,
 }
 
 static gboolean
-plugin_get_errors (PluginObject *obj,
-                   NPString      uuid,
-                   NPVariant    *result)
+plugin_get_errors (PluginObject    *obj,
+                   uint32_t         argc,
+                   const NPVariant *argv,
+                   NPVariant       *result)
 {
   GError *error = NULL;
   GVariant *res;
-  gchar *uuid_str;
+  gchar *uuid;
 
-  if (!uuid_is_valid (uuid))
+  if (!parse_args ("u", argc, argv, &uuid))
     return FALSE;
-
-  uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
 
   res = g_dbus_proxy_call_sync (obj->proxy,
                                 "GetExtensionErrors",
-                                g_variant_new ("(s)", uuid_str),
+                                g_variant_new ("(s)", uuid),
                                 G_DBUS_CALL_FLAGS_NONE,
                                 -1, /* timeout */
                                 NULL, /* cancellable */
                                 &error);
-
-  g_free (uuid_str);
 
   if (!res)
     {
@@ -674,27 +703,25 @@ plugin_get_errors (PluginObject *obj,
 }
 
 static gboolean
-plugin_launch_extension_prefs (PluginObject *obj,
-                               NPString      uuid,
-                               NPVariant    *result)
+plugin_launch_extension_prefs (PluginObject    *obj,
+                               uint32_t         argc,
+                               const NPVariant *argv,
+                               NPVariant       *result)
 {
-  gchar *uuid_str;
+  gchar *uuid;
 
-  if (!uuid_is_valid (uuid))
+  if (!parse_args ("u", argc, argv, &uuid))
     return FALSE;
-
-  uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
 
   g_dbus_proxy_call (obj->proxy,
                      "LaunchExtensionPrefs",
-                     g_variant_new ("(s)", uuid_str),
+                     g_variant_new ("(s)", uuid),
                      G_DBUS_CALL_FLAGS_NONE,
                      -1, /* timeout */
                      NULL, /* cancellable */
                      NULL, /* callback */
                      NULL /* user_data */);
 
-  g_free (uuid_str);
   return TRUE;
 }
 
@@ -748,10 +775,40 @@ plugin_get_shell_version (PluginObject  *obj,
   return ret;
 }
 
+#define METHODS                                 \
+  METHOD (list_extensions)                      \
+  METHOD (get_info)                             \
+  METHOD (enable_extension)                     \
+  METHOD (install_extension)                    \
+  METHOD (uninstall_extension)                  \
+  METHOD (get_errors)                           \
+  METHOD (launch_extension_prefs)               \
+  /* */
+
+#define METHOD(x)                               \
+  static NPIdentifier x##_id;
+METHODS
+#undef METHOD
+
+static NPIdentifier api_version_id;
+static NPIdentifier shell_version_id;
+static NPIdentifier onextension_changed_id;
+static NPIdentifier onrestart_id;
+
+static bool
+plugin_object_has_method (NPObject     *npobj,
+                          NPIdentifier  name)
+{
+#define METHOD(x) (name == (x##_id)) ||
+  /* expands to (name == list_extensions_id) || FALSE; */
+  return METHODS FALSE;
+#undef METHOD
+}
+
 static bool
 plugin_object_invoke (NPObject        *npobj,
                       NPIdentifier     name,
-                      const NPVariant *args,
+                      const NPVariant *argv,
                       uint32_t         argc,
                       NPVariant       *result)
 {
@@ -763,59 +820,13 @@ plugin_object_invoke (NPObject        *npobj,
 
   VOID_TO_NPVARIANT (*result);
 
-  if (!plugin_object_has_method (npobj, name))
-    return FALSE;
+#define METHOD(x)                                       \
+  if (name == x##_id)                                   \
+    return plugin_##x (obj, argc, argv, result);
+METHODS
+#undef METHOD
 
-  if (name == list_extensions_id)
-    return plugin_list_extensions (obj, result);
-  else if (name == get_info_id)
-    {
-      if (!NPVARIANT_IS_STRING(args[0])) return FALSE;
-
-      return plugin_get_info (obj, NPVARIANT_TO_STRING(args[0]), result);
-    }
-  else if (name == enable_extension_id)
-    {
-      if (!NPVARIANT_IS_STRING(args[0])) return FALSE;
-      if (!NPVARIANT_IS_BOOLEAN(args[1])) return FALSE;
-
-      return plugin_enable_extension (obj,
-                                      NPVARIANT_TO_STRING(args[0]),
-                                      NPVARIANT_TO_BOOLEAN(args[1]));
-    }
-  else if (name == install_extension_id)
-    {
-      if (!NPVARIANT_IS_STRING(args[0])) return FALSE;
-
-      return plugin_install_extension (obj,
-                                       NPVARIANT_TO_STRING(args[0]));
-    }
-  else if (name == uninstall_extension_id)
-    {
-      if (!NPVARIANT_IS_STRING(args[0])) return FALSE;
-
-      return plugin_uninstall_extension (obj,
-                                         NPVARIANT_TO_STRING(args[0]),
-                                         result);
-    }
-  else if (name == get_errors_id)
-    {
-      if (!NPVARIANT_IS_STRING(args[0])) return FALSE;
-
-      return plugin_get_errors (obj,
-                                NPVARIANT_TO_STRING(args[0]),
-                                result);
-    }
-  else if (name == launch_extension_prefs_id)
-    {
-      if (!NPVARIANT_IS_STRING(args[0])) return FALSE;
-
-      return plugin_launch_extension_prefs (obj,
-                                            NPVARIANT_TO_STRING(args[0]),
-                                            result);
-    }
-
-  return TRUE;
+  return FALSE;
 }
 
 static bool
