@@ -399,13 +399,13 @@ plugin_object_has_method (NPObject     *npobj,
 }
 
 static inline gboolean
-uuid_is_valid (const gchar *uuid)
+uuid_is_valid (NPString string)
 {
   gsize i;
 
-  for (i = 0; uuid[i]; i ++)
+  for (i = 0; i < string.UTF8Length; i++)
     {
-      gchar c = uuid[i];
+      gchar c = string.UTF8Characters[i];
       if (c < 32 || c >= 127)
         return FALSE;
 
@@ -499,17 +499,15 @@ plugin_enable_extension (PluginObject *obj,
                          gboolean      enabled)
 {
   gboolean ret;
-  gchar *uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
+  gchar *uuid_str;
   gsize length;
   gchar **uuids;
   const gchar **new_uuids;
 
-  if (!uuid_is_valid (uuid_str))
-    {
-      g_free (uuid_str);
-      return FALSE;
-    }
+  if (!uuid_is_valid (uuid))
+    return FALSE;
 
+  uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
   uuids = g_settings_get_strv (obj->settings, ENABLED_EXTENSIONS_KEY);
   length = g_strv_length (uuids);
 
@@ -551,13 +549,12 @@ static gboolean
 plugin_install_extension (PluginObject *obj,
                           NPString      uuid)
 {
-  gchar *uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
+  gchar *uuid_str;
 
-  if (!uuid_is_valid (uuid_str))
-    {
-      g_free (uuid_str);
-      return FALSE;
-    }
+  if (!uuid_is_valid (uuid))
+    return FALSE;
+
+  uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
 
   g_dbus_proxy_call (obj->proxy,
                      "InstallRemoteExtension",
@@ -582,12 +579,10 @@ plugin_uninstall_extension (PluginObject *obj,
   GVariant *res;
   gchar *uuid_str;
 
+  if (!uuid_is_valid (uuid))
+    return FALSE;
+
   uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
-  if (!uuid_is_valid (uuid_str))
-    {
-      g_free (uuid_str);
-      return FALSE;
-    }
 
   res = g_dbus_proxy_call_sync (obj->proxy,
                                 "UninstallExtension",
@@ -619,12 +614,10 @@ plugin_get_info (PluginObject *obj,
   GVariant *res;
   gchar *uuid_str;
 
+  if (!uuid_is_valid (uuid))
+    return FALSE;
+
   uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
-  if (!uuid_is_valid (uuid_str))
-    {
-      g_free (uuid_str);
-      return FALSE;
-    }
 
   res = g_dbus_proxy_call_sync (obj->proxy,
                                 "GetExtensionInfo",
@@ -655,12 +648,10 @@ plugin_get_errors (PluginObject *obj,
   GVariant *res;
   gchar *uuid_str;
 
+  if (!uuid_is_valid (uuid))
+    return FALSE;
+
   uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
-  if (!uuid_is_valid (uuid_str))
-    {
-      g_free (uuid_str);
-      return FALSE;
-    }
 
   res = g_dbus_proxy_call_sync (obj->proxy,
                                 "GetExtensionErrors",
@@ -689,12 +680,10 @@ plugin_launch_extension_prefs (PluginObject *obj,
 {
   gchar *uuid_str;
 
+  if (!uuid_is_valid (uuid))
+    return FALSE;
+
   uuid_str = g_strndup (uuid.UTF8Characters, uuid.UTF8Length);
-  if (!uuid_is_valid (uuid_str))
-    {
-      g_free (uuid_str);
-      return FALSE;
-    }
 
   g_dbus_proxy_call (obj->proxy,
                      "LaunchExtensionPrefs",
