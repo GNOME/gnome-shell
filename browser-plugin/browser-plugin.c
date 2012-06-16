@@ -41,7 +41,7 @@
       "It can be used only by extensions.gnome.org"
 #define PLUGIN_MIME_STRING "application/x-gnome-shell-integration::Gnome Shell Integration Dummy Content-Type";
 
-#define PLUGIN_API_VERSION 4
+#define PLUGIN_API_VERSION 5
 
 typedef struct {
   GDBusProxy *proxy;
@@ -489,6 +489,12 @@ parse_args (const gchar     *format_str,
 
           *(gboolean *) arg_location = NPVARIANT_TO_BOOLEAN (arg);
           break;
+
+        case 'o':
+          if (!NPVARIANT_IS_OBJECT (arg))
+            goto out;
+
+          *(NPObject **) arg_location = NPVARIANT_TO_OBJECT (arg);
         }
     }
 
@@ -580,6 +586,53 @@ plugin_enable_extension (PluginObject    *obj,
   return ret;
 }
 
+typedef struct _AsyncClosure AsyncClosure;
+
+struct _AsyncClosure {
+  PluginObject *obj;
+  NPObject *callback;
+  NPObject *errback;
+};
+
+static void
+install_extension_cb (GObject      *proxy,
+                      GAsyncResult *async_res,
+                      gpointer      user_data)
+{
+  AsyncClosure *async_closure = (AsyncClosure *) user_data;
+  GError *error = NULL;
+  GVariant *res;
+  NPVariant args[1];
+  NPVariant result = { NPVariantType_Void };
+  NPObject *callback;
+
+  res = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), async_res, &error);
+
+  if (res == NULL)
+    {
+      if (g_dbus_error_is_remote_error (error))
+        g_dbus_error_strip_remote_error (error);
+      STRINGZ_TO_NPVARIANT (error->message, args[0]);
+      callback = async_closure->errback;
+    }
+  else
+    {
+      char *string_result;
+      g_variant_get (res, "(&s)", &string_result);
+      STRINGZ_TO_NPVARIANT (string_result, args[0]);
+      callback = async_closure->callback;
+    }
+
+  funcs.invokeDefault (async_closure->obj->instance,
+                       callback, args, 1, &result);
+
+  funcs.releasevariantvalue (&result);
+
+  funcs.releaseobject (async_closure->callback);
+  funcs.releaseobject (async_closure->errback);
+  g_slice_free (AsyncClosure, async_closure);
+}
+
 static gboolean
 plugin_install_extension (PluginObject    *obj,
                           uint32_t         argc,
@@ -587,9 +640,16 @@ plugin_install_extension (PluginObject    *obj,
                           NPVariant       *result)
 {
   gchar *uuid;
+  NPObject *callback, *errback;
+  AsyncClosure *async_closure;
 
-  if (!parse_args ("u", argc, argv, &uuid))
+  if (!parse_args ("uoo", argc, argv, &uuid, &callback, &errback))
     return FALSE;
+
+  async_closure = g_slice_new (AsyncClosure);
+  async_closure->obj = obj;
+  async_closure->callback = funcs.retainobject (callback);
+  async_closure->errback = funcs.retainobject (errback);
 
   g_dbus_proxy_call (obj->proxy,
                      "InstallRemoteExtension",
@@ -597,8 +657,8 @@ plugin_install_extension (PluginObject    *obj,
                      G_DBUS_CALL_FLAGS_NONE,
                      -1, /* timeout */
                      NULL, /* cancellable */
-                     NULL, /* callback */
-                     NULL /* user_data */);
+                     install_extension_cb,
+                     async_closure);
 
   g_free (uuid);
 

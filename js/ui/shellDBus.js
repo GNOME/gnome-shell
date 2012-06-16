@@ -202,6 +202,7 @@ const GnomeShellExtensionsIface = <interface name="org.gnome.Shell.Extensions">
 </signal>
 <method name="InstallRemoteExtension">
     <arg type="s" direction="in" name="uuid"/>
+    <arg type="s" direction="out" name="result"/>
 </method>
 <method name="UninstallExtension">
     <arg type="s" direction="in" name="uuid"/>
@@ -285,8 +286,8 @@ const GnomeShellExtensions = new Lang.Class({
         return extension.errors;
     },
 
-    InstallRemoteExtension: function(uuid) {
-        ExtensionDownloader.installExtensionFromUUID(uuid);
+    InstallRemoteExtensionAsync: function([uuid], invocation) {
+        return ExtensionDownloader.installExtensionFromUUID(uuid, invocation);
     },
 
     UninstallExtension: function(uuid) {
