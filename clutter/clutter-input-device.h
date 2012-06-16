@@ -45,7 +45,6 @@ G_BEGIN_DECLS
  * Generic representation of an input device. The actual contents of this
  * structure depend on the backend used.
  */
-typedef struct _ClutterInputDevice      ClutterInputDevice;
 typedef struct _ClutterInputDeviceClass ClutterInputDeviceClass;
 
 GType clutter_input_device_get_type (void) G_GNUC_CONST;
@@ -96,6 +95,17 @@ CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_input_device_ungrab             (ClutterInputDevice  *device);
 CLUTTER_AVAILABLE_IN_1_10
 ClutterActor *          clutter_input_device_get_grabbed_actor  (ClutterInputDevice  *device);
+
+CLUTTER_AVAILABLE_IN_1_12
+void                    clutter_input_device_sequence_grab      (ClutterInputDevice   *device,
+                                                                 ClutterEventSequence *sequence,
+                                                                 ClutterActor         *actor);
+CLUTTER_AVAILABLE_IN_1_12
+void                    clutter_input_device_sequence_ungrab    (ClutterInputDevice   *device,
+                                                                 ClutterEventSequence *sequence);
+CLUTTER_AVAILABLE_IN_1_12
+ClutterActor *          clutter_input_device_sequence_get_grabbed_actor (ClutterInputDevice   *device,
+                                                                         ClutterEventSequence *sequence);
 
 gboolean                clutter_input_device_keycode_to_evdev   (ClutterInputDevice *device,
                                                                  guint               hardware_keycode,

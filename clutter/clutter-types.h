@@ -90,7 +90,19 @@ typedef struct _ClutterAnimation                ClutterAnimation;
 typedef struct _ClutterAnimator         	ClutterAnimator;
 typedef struct _ClutterState            	ClutterState;
 
+typedef struct _ClutterInputDevice              ClutterInputDevice;
+
 typedef union _ClutterEvent                     ClutterEvent;
+
+/**
+ * ClutterEventSequence:
+ *
+ * The <structname>ClutterEventSequence</structname> structure is an opaque
+ * type used to denote the event sequence of a touch event.
+ *
+ * Since: 1.12
+ */
+typedef struct _ClutterEventSequence            ClutterEventSequence;
 
 typedef struct _ClutterFog                      ClutterFog; /* deprecated */
 typedef struct _ClutterBehaviour                ClutterBehaviour; /* deprecated */

@@ -2315,6 +2315,26 @@ emit_pointer_event (ClutterEvent       *event,
 }
 
 static inline void
+emit_touch_event (ClutterEvent       *event,
+                  ClutterInputDevice *device)
+{
+  ClutterActor *grab_actor;
+
+  if ((device->sequence_grab_actors != NULL) &&
+       ((grab_actor = g_hash_table_lookup (device->sequence_grab_actors,
+                                           event->touch.sequence)) != NULL))
+    {
+      /* sequence grab */
+      clutter_actor_event (grab_actor, event, FALSE);
+    }
+  else
+    {
+      /* no grab, time to capture and bubble */
+      emit_event (event, FALSE);
+    }
+}
+
+static inline void
 emit_keyboard_event (ClutterEvent       *event,
                      ClutterInputDevice *device)
 {
@@ -2644,7 +2664,7 @@ _clutter_process_event_details (ClutterActor        *stage,
                         x, y,
                         actor);
 
-          emit_pointer_event (event, device);
+          emit_touch_event (event, device);
           break;
         }
 

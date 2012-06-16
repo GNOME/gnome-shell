@@ -86,6 +86,8 @@ struct _ClutterInputDevice
   /* the actor that has a grab in place for the device */
   ClutterActor *pointer_grab_actor;
   ClutterActor *keyboard_grab_actor;
+  GHashTable   *sequence_grab_actors;
+  GHashTable   *inv_sequence_grab_actors;
 
   /* the current click count */
   gint click_count;

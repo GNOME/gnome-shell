@@ -1540,3 +1540,139 @@ _clutter_input_device_reset_scroll_info (ClutterInputDevice *device)
       info->last_value_valid = FALSE;
     }
 }
+
+static void
+on_grab_sequence_actor_destroy (ClutterActor       *actor,
+                                ClutterInputDevice *device)
+{
+  ClutterEventSequence *sequence =
+    g_hash_table_lookup (device->inv_sequence_grab_actors, actor);
+
+  if (sequence != NULL)
+    {
+      g_hash_table_remove (device->sequence_grab_actors, sequence);
+      g_hash_table_remove (device->inv_sequence_grab_actors, actor);
+    }
+}
+
+/**
+ * clutter_input_device_sequence_grab:
+ * @device: a #ClutterInputDevice
+ * @sequence: a #ClutterEventSequence
+ * @actor: a #ClutterActor
+ *
+ * Acquires a grab on @actor for the given @device and the given touch
+ * @sequence.
+ *
+ * Any touch event coming from @device and from @sequence will be
+ * delivered to @actor, bypassing the usual event delivery mechanism,
+ * until the grab is released by calling
+ * clutter_input_device_sequence_ungrab().
+ *
+ * The grab is client-side: even if the windowing system used by the Clutter
+ * backend has the concept of "device grabs", Clutter will not use them.
+ *
+ * Since: 1.12
+ */
+void
+clutter_input_device_sequence_grab (ClutterInputDevice   *device,
+                                    ClutterEventSequence *sequence,
+                                    ClutterActor         *actor)
+{
+  ClutterActor *grab_actor;
+
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  if (device->sequence_grab_actors == NULL)
+    {
+      grab_actor = NULL;
+      device->sequence_grab_actors = g_hash_table_new (NULL, NULL);
+      device->inv_sequence_grab_actors = g_hash_table_new (NULL, NULL);
+    }
+  else
+    {
+      grab_actor = g_hash_table_lookup (device->sequence_grab_actors, sequence);
+    }
+
+  if (grab_actor != NULL)
+    {
+      g_signal_handlers_disconnect_by_func (grab_actor,
+                                            G_CALLBACK (on_grab_sequence_actor_destroy),
+                                            device);
+      g_hash_table_remove (device->sequence_grab_actors, sequence);
+      g_hash_table_remove (device->inv_sequence_grab_actors, grab_actor);
+    }
+
+  g_hash_table_insert (device->sequence_grab_actors, sequence, actor);
+  g_hash_table_insert (device->inv_sequence_grab_actors, actor, sequence);
+  g_signal_connect (grab_actor,
+                    "destroy",
+                    G_CALLBACK (on_grab_sequence_actor_destroy),
+                    device);
+}
+
+/**
+ * clutter_input_device_sequence_ungrab:
+ * @device: a #ClutterInputDevice
+ * @sequence: a #ClutterEventSequence
+ *
+ * Releases the grab on the @device for the given @sequence, if one is
+ * in place.
+ *
+ * Since: 1.12
+ */
+void
+clutter_input_device_sequence_ungrab (ClutterInputDevice   *device,
+                                      ClutterEventSequence *sequence)
+{
+  ClutterActor *grab_actor;
+
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+
+  if (device->sequence_grab_actors == NULL)
+    return;
+
+  grab_actor = g_hash_table_lookup (device->sequence_grab_actors, sequence);
+
+  if (grab_actor == NULL)
+    return;
+
+  g_signal_handlers_disconnect_by_func (grab_actor,
+                                        G_CALLBACK (on_grab_sequence_actor_destroy),
+                                        device);
+  g_hash_table_remove (device->sequence_grab_actors, sequence);
+  g_hash_table_remove (device->inv_sequence_grab_actors, grab_actor);
+
+  if (g_hash_table_size (device->sequence_grab_actors) == 0)
+    {
+      g_hash_table_destroy (device->sequence_grab_actors);
+      device->sequence_grab_actors = NULL;
+      g_hash_table_destroy (device->inv_sequence_grab_actors);
+      device->inv_sequence_grab_actors = NULL;
+    }
+}
+
+/**
+ * clutter_input_device_sequence_get_grabbed_actor:
+ * @device: a #ClutterInputDevice
+ * @sequence: a #ClutterEventSequence
+ *
+ * Retrieves a pointer to the #ClutterActor currently grabbing the
+ * touch events coming from @device given the @sequence.
+ *
+ * Return value: (transfer none): a #ClutterActor, or %NULL
+ *
+ * Since: 1.12
+ */
+ClutterActor *
+clutter_input_device_sequence_get_grabbed_actor (ClutterInputDevice   *device,
+                                                 ClutterEventSequence *sequence)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+
+  if (device->sequence_grab_actors == NULL)
+    return NULL;
+
+  return g_hash_table_lookup (device->sequence_grab_actors, sequence);
+}

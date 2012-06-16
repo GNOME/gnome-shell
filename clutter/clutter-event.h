@@ -116,16 +116,6 @@ typedef struct _ClutterCrossingEvent    ClutterCrossingEvent;
 typedef struct _ClutterTouchEvent       ClutterTouchEvent;
 
 /**
- * ClutterEventSequence:
- *
- * The <structname>ClutterEventSequence</structname> structure is an opaque
- * type used to denote the event sequence of a touch event.
- *
- * Since: 1.12
- */
-typedef struct _ClutterEventSequence    ClutterEventSequence;
-
-/**
  * ClutterAnyEvent:
  * @type: event type
  * @time: event time
