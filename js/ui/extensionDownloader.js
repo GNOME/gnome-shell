@@ -54,7 +54,7 @@ function uninstallExtensionFromUUID(uuid) {
 
 function gotExtensionZipFile(session, message, uuid) {
     if (message.status_code != Soup.KnownStatusCode.OK) {
-        logExtensionError(uuid, 'downloading extension: ' + message.status_code);
+        ExtensionSystem.logExtensionError(uuid, 'downloading extension: ' + message.status_code);
         return;
     }
 
@@ -63,7 +63,8 @@ function gotExtensionZipFile(session, message, uuid) {
         if (!dir.query_exists(null))
             dir.make_directory_with_parents(null);
     } catch (e) {
-        logExtensionError('Could not create extension directory');
+        ExtensionSystem.logExtensionError(uuid, 'Could not create extension directory');
+        return;
     }
 
     let [file, stream] = Gio.File.new_tmp('XXXXXX.shell-extension.zip');
@@ -77,7 +78,7 @@ function gotExtensionZipFile(session, message, uuid) {
                                           null);
 
     if (!success) {
-        logExtensionError(uuid, 'extract: could not extract');
+        ExtensionSystem.logExtensionError(uuid, 'extract: could not extract');
         return;
     }
 
