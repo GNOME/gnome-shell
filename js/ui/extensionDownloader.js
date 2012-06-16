@@ -28,12 +28,23 @@ function installExtensionFromUUID(uuid) {
 
     let message = Soup.form_request_new_from_hash('GET', REPOSITORY_URL_INFO, params);
 
-    _httpSession.queue_message(message,
-                               function(session, message) {
-                                   let info = JSON.parse(message.response_body.data);
-                                   let dialog = new InstallExtensionDialog(uuid, info);
-                                   dialog.open(global.get_current_time());
-                               });
+    _httpSession.queue_message(message, function(session, message) {
+        if (message.status_code != Soup.KnownStatusCode.OK) {
+            ExtensionSystem.logExtensionError(uuid, 'downloading info: ' + message.status_code);
+            return;
+        }
+
+        let info;
+        try {
+            info = JSON.parse(message.response_body.data);
+        } catch (e) {
+            ExtensionSystem.logExtensionError(uuid, 'parsing info: ' + e);
+            return;
+        }
+
+        let dialog = new InstallExtensionDialog(uuid, info);
+        dialog.open(global.get_current_time());
+    });
 }
 
 function uninstallExtensionFromUUID(uuid) {
@@ -84,6 +95,12 @@ function gotExtensionZipFile(session, message, uuid) {
 
     GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, function(pid, status) {
         GLib.spawn_close_pid(pid);
+
+        if (status != 0) {
+            ExtensionSystem.logExtensionError(uuid, 'extract: could not extract');
+            invocation.return_dbus_error('org.gnome.Shell.ExtractExtensionError', '');
+            return;
+        }
 
         // Add extension to 'enabled-extensions' for the user, always...
         let enabledExtensions = global.settings.get_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY);
