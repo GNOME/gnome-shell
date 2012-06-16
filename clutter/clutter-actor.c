@@ -1032,6 +1032,10 @@ static void on_layout_manager_changed (ClutterLayoutManager *manager,
 
 static inline void clutter_actor_queue_compute_expand (ClutterActor *self);
 
+static inline void clutter_actor_set_margin_internal (ClutterActor *self,
+                                                      gfloat        margin,
+                                                      GParamSpec   *pspec);
+
 /* Helper macro which translates by the anchor coord, applies the
    given transformation and then translates back */
 #define TRANSFORM_ABOUT_ANCHOR_COORD(a,m,c,_transform)  G_STMT_START { \
@@ -6611,6 +6615,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * This property adds a margin to the actor's preferred size; the margin
    * will be automatically taken into account when allocating the actor.
    *
+   * The #ClutterActor:margin-top property is animatable.
+   *
    * Since: 1.10
    */
   obj_props[PROP_MARGIN_TOP] =
@@ -6619,7 +6625,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Extra space at the top"),
                         0.0, G_MAXFLOAT,
                         0.0,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:margin-bottom:
@@ -6629,6 +6637,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * This property adds a margin to the actor's preferred size; the margin
    * will be automatically taken into account when allocating the actor.
    *
+   * The #ClutterActor:margin-bottom property is animatable.
+   *
    * Since: 1.10
    */
   obj_props[PROP_MARGIN_BOTTOM] =
@@ -6637,7 +6647,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Extra space at the bottom"),
                         0.0, G_MAXFLOAT,
                         0.0,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:margin-left:
@@ -6647,6 +6659,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * This property adds a margin to the actor's preferred size; the margin
    * will be automatically taken into account when allocating the actor.
    *
+   * The #ClutterActor:margin-left property is animatable.
+   *
    * Since: 1.10
    */
   obj_props[PROP_MARGIN_LEFT] =
@@ -6655,7 +6669,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Extra space at the left"),
                         0.0, G_MAXFLOAT,
                         0.0,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:margin-right:
@@ -6665,6 +6681,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * This property adds a margin to the actor's preferred size; the margin
    * will be automatically taken into account when allocating the actor.
    *
+   * The #ClutterActor:margin-right property is animatable.
+   *
    * Since: 1.10
    */
   obj_props[PROP_MARGIN_RIGHT] =
@@ -6673,7 +6691,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Extra space at the right"),
                         0.0, G_MAXFLOAT,
                         0.0,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:background-color-set:
@@ -13632,6 +13652,14 @@ clutter_actor_set_animatable_property (ClutterActor *actor,
       clutter_actor_store_content_box (actor, g_value_get_boxed (value));
       break;
 
+    case PROP_MARGIN_TOP:
+    case PROP_MARGIN_BOTTOM:
+    case PROP_MARGIN_LEFT:
+    case PROP_MARGIN_RIGHT:
+      clutter_actor_set_margin_internal (actor, g_value_get_float (value),
+                                         pspec);
+      break;
+
     default:
       g_object_set_property (obj, pspec->name, value);
       break;
@@ -16605,6 +16633,28 @@ clutter_actor_get_y_align (ClutterActor *self)
   return _clutter_actor_get_layout_info_or_defaults (self)->y_align;
 }
 
+static inline void
+clutter_actor_set_margin_internal (ClutterActor *self,
+                                   gfloat        margin,
+                                   GParamSpec   *pspec)
+{
+  ClutterLayoutInfo *info;
+
+  info = _clutter_actor_get_layout_info (self);
+
+  if (pspec == obj_props[PROP_MARGIN_TOP])
+    info->margin.top = margin;
+  else if (pspec == obj_props[PROP_MARGIN_RIGHT])
+    info->margin.right = margin;
+  else if (pspec == obj_props[PROP_MARGIN_BOTTOM])
+    info->margin.bottom = margin;
+  else
+    info->margin.left = margin;
+
+  clutter_actor_queue_relayout (self);
+  g_object_notify_by_pspec (G_OBJECT (self), pspec);
+}
+
 /**
  * clutter_actor_set_margin:
  * @self: a #ClutterActor
@@ -16619,51 +16669,23 @@ clutter_actor_set_margin (ClutterActor        *self,
                           const ClutterMargin *margin)
 {
   ClutterLayoutInfo *info;
-  gboolean changed;
-  GObject *obj;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (margin != NULL);
 
-  obj = G_OBJECT (self);
-  changed = FALSE;
-
-  g_object_freeze_notify (obj);
-
   info = _clutter_actor_get_layout_info (self);
 
   if (info->margin.top != margin->top)
-    {
-      info->margin.top = margin->top;
-      g_object_notify_by_pspec (obj, obj_props[PROP_MARGIN_TOP]);
-      changed = TRUE;
-    }
+    clutter_actor_set_margin_top (self, margin->top);
 
   if (info->margin.right != margin->right)
-    {
-      info->margin.right = margin->right;
-      g_object_notify_by_pspec (obj, obj_props[PROP_MARGIN_RIGHT]);
-      changed = TRUE;
-    }
+    clutter_actor_set_margin_right (self, margin->right);
 
   if (info->margin.bottom != margin->bottom)
-    {
-      info->margin.bottom = margin->bottom;
-      g_object_notify_by_pspec (obj, obj_props[PROP_MARGIN_BOTTOM]);
-      changed = TRUE;
-    }
+    clutter_actor_set_margin_bottom (self, margin->bottom);
 
   if (info->margin.left != margin->left)
-    {
-      info->margin.left = margin->left;
-      g_object_notify_by_pspec (obj, obj_props[PROP_MARGIN_LEFT]);
-      changed = TRUE;
-    }
-
-  if (changed)
-    clutter_actor_queue_relayout (self);
-
-  g_object_thaw_notify (obj);
+    clutter_actor_set_margin_left (self, margin->left);
 }
 
 /**
@@ -16696,6 +16718,8 @@ clutter_actor_get_margin (ClutterActor  *self,
  *
  * Sets the margin from the top of a #ClutterActor.
  *
+ * The #ClutterActor:margin-top property is animatable.
+ *
  * Since: 1.10
  */
 void
@@ -16712,11 +16736,16 @@ clutter_actor_set_margin_top (ClutterActor *self,
   if (info->margin.top == margin)
     return;
 
-  info->margin.top = margin;
-
-  clutter_actor_queue_relayout (self);
-
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MARGIN_TOP]);
+  if (!_clutter_actor_get_transition (self, obj_props[PROP_MARGIN_TOP]))
+    {
+      _clutter_actor_create_transition (self, obj_props[PROP_MARGIN_TOP],
+                                        info->margin.top, margin);
+    }
+  else
+    {
+      _clutter_actor_update_transition (self, obj_props[PROP_MARGIN_TOP],
+                                        margin);
+    }
 }
 
 /**
@@ -16744,6 +16773,8 @@ clutter_actor_get_margin_top (ClutterActor *self)
  *
  * Sets the margin from the bottom of a #ClutterActor.
  *
+ * The #ClutterActor:margin-bottom property is animatable.
+ *
  * Since: 1.10
  */
 void
@@ -16760,11 +16791,16 @@ clutter_actor_set_margin_bottom (ClutterActor *self,
   if (info->margin.bottom == margin)
     return;
 
-  info->margin.bottom = margin;
-
-  clutter_actor_queue_relayout (self);
-
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MARGIN_BOTTOM]);
+  if (!_clutter_actor_get_transition (self, obj_props[PROP_MARGIN_BOTTOM]))
+    {
+      _clutter_actor_create_transition (self, obj_props[PROP_MARGIN_BOTTOM],
+                                        info->margin.bottom, margin);
+    }
+  else
+    {
+      _clutter_actor_update_transition (self, obj_props[PROP_MARGIN_BOTTOM],
+                                        margin);
+    }
 }
 
 /**
@@ -16792,6 +16828,8 @@ clutter_actor_get_margin_bottom (ClutterActor *self)
  *
  * Sets the margin from the left of a #ClutterActor.
  *
+ * The #ClutterActor:margin-left property is animatable.
+ *
  * Since: 1.10
  */
 void
@@ -16808,11 +16846,16 @@ clutter_actor_set_margin_left (ClutterActor *self,
   if (info->margin.left == margin)
     return;
 
-  info->margin.left = margin;
-
-  clutter_actor_queue_relayout (self);
-
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MARGIN_LEFT]);
+  if (!_clutter_actor_get_transition (self, obj_props[PROP_MARGIN_LEFT]))
+    {
+      _clutter_actor_create_transition (self, obj_props[PROP_MARGIN_LEFT],
+                                        info->margin.left, margin);
+    }
+  else
+    {
+      _clutter_actor_update_transition (self, obj_props[PROP_MARGIN_LEFT],
+                                        margin);
+    }
 }
 
 /**
@@ -16840,6 +16883,8 @@ clutter_actor_get_margin_left (ClutterActor *self)
  *
  * Sets the margin from the right of a #ClutterActor.
  *
+ * The #ClutterActor:margin-right property is animatable.
+ *
  * Since: 1.10
  */
 void
@@ -16858,9 +16903,16 @@ clutter_actor_set_margin_right (ClutterActor *self,
 
   info->margin.right = margin;
 
-  clutter_actor_queue_relayout (self);
-
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MARGIN_RIGHT]);
+  if (!_clutter_actor_get_transition (self, obj_props[PROP_MARGIN_RIGHT]))
+    {
+      _clutter_actor_create_transition (self, obj_props[PROP_MARGIN_RIGHT],
+                                        info->margin.right, margin);
+    }
+  else
+    {
+      _clutter_actor_update_transition (self, obj_props[PROP_MARGIN_RIGHT],
+                                        margin);
+    }
 }
 
 /**
