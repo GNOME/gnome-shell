@@ -89,12 +89,17 @@ MetaPluginManager *
 meta_plugin_manager_new (MetaScreen *screen)
 {
   MetaPluginManager *plugin_mgr;
+  MetaPluginClass *klass;
   MetaPlugin *plugin;
 
   plugin_mgr = g_new0 (MetaPluginManager, 1);
   plugin_mgr->screen = screen;
   plugin_mgr->plugin = plugin = g_object_new (plugin_type, "screen", screen, NULL);
-  META_PLUGIN_GET_CLASS (plugin)->start (plugin);
+
+  klass = META_PLUGIN_GET_CLASS (plugin);
+
+  if (klass->start)
+    klass->start (plugin);
 
   return plugin_mgr;
 }
