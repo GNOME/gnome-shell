@@ -139,7 +139,7 @@ main (int argc, char *argv[])
 {
   ClutterActor *stage, *stage_main;
   Data data1, data2, data3;
-  guint id_2 = 0;
+  guint id_1 = 0, id_2 = 0, id_3 = 0;
 
   g_set_application_name ("AtkText");
 
@@ -158,11 +158,14 @@ main (int argc, char *argv[])
   data3.value = 30;
 
   /* key event listeners */
-  atk_add_key_event_listener ((AtkKeySnoopFunc)atk_key_listener, &data1);
+  id_1 = atk_add_key_event_listener ((AtkKeySnoopFunc)atk_key_listener, &data1);
+  atk_remove_key_event_listener (id_1);
   id_2 = atk_add_key_event_listener ((AtkKeySnoopFunc)atk_key_listener, &data2);
-  atk_add_key_event_listener ((AtkKeySnoopFunc)atk_key_listener, &data3);
+  id_3 = atk_add_key_event_listener ((AtkKeySnoopFunc)atk_key_listener, &data3);
 
   atk_remove_key_event_listener (id_2);
+
+  g_print ("key event listener ids registered: (%i, %i, %i)\n", id_1, id_2, id_3);
 
   /* event listeners */
   atk_add_global_event_listener (window_event_listener, "Atk:AtkWindow:create");
