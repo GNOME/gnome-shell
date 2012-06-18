@@ -754,14 +754,8 @@ void
 clutter_interval_set_initial_value (ClutterInterval *interval,
                                     const GValue    *value)
 {
-  ClutterIntervalPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_INTERVAL (interval));
   g_return_if_fail (value != NULL);
-
-  priv = interval->priv;
-
-  g_return_if_fail (G_VALUE_TYPE (value) == priv->value_type);
 
   clutter_interval_set_value_internal (interval, INITIAL, value);
 }
@@ -852,14 +846,8 @@ void
 clutter_interval_set_final_value (ClutterInterval *interval,
                                   const GValue    *value)
 {
-  ClutterIntervalPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_INTERVAL (interval));
   g_return_if_fail (value != NULL);
-
-  priv = interval->priv;
-
-  g_return_if_fail (G_VALUE_TYPE (value) == priv->value_type);
 
   clutter_interval_set_value_internal (interval, FINAL, value);
 }
