@@ -123,8 +123,7 @@ shell_app_system_finalize (GObject *object)
   g_hash_table_destroy (priv->id_to_app);
   g_hash_table_destroy (priv->setting_id_to_app);
 
-  g_slist_foreach (priv->known_vendor_prefixes, (GFunc)g_free, NULL);
-  g_slist_free (priv->known_vendor_prefixes);
+  g_slist_free_full (priv->known_vendor_prefixes, g_free);
   priv->known_vendor_prefixes = NULL;
 
   G_OBJECT_CLASS (shell_app_system_parent_class)->finalize (object);
@@ -309,8 +308,7 @@ on_apps_tree_changed_cb (GMenuTree *tree,
 
   g_assert (tree == self->priv->apps_tree);
 
-  g_slist_foreach (self->priv->known_vendor_prefixes, (GFunc)g_free, NULL);
-  g_slist_free (self->priv->known_vendor_prefixes);
+  g_slist_free_full (self->priv->known_vendor_prefixes, g_free);
   self->priv->known_vendor_prefixes = NULL;
 
   if (!gmenu_tree_load_sync (self->priv->apps_tree, &error))
@@ -761,8 +759,7 @@ search_tree (ShellAppSystem *self,
                            &prefix_results,
                            &substring_results);
     }
-  g_slist_foreach (normalized_terms, (GFunc)g_free, NULL);
-  g_slist_free (normalized_terms);
+  g_slist_free_full (normalized_terms, g_free);
 
   return sort_and_concat_results (self, prefix_results, substring_results);
 
@@ -815,8 +812,7 @@ shell_app_system_subsearch (ShellAppSystem   *system,
                            &prefix_results,
                            &substring_results);
     }
-  g_slist_foreach (normalized_terms, (GFunc)g_free, NULL);
-  g_slist_free (normalized_terms);
+  g_slist_free_full (normalized_terms, g_free);
 
   /* Note that a shorter term might have matched as a prefix, but
      when extended only as a substring, so we have to redo the
