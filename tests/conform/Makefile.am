@@ -61,6 +61,7 @@ units_sources += \
 	binding-pool.c			\
 	cairo-texture.c    		\
 	group.c				\
+	interval.c			\
 	path.c 				\
 	rectangle.c 			\
 	texture-fbo.c			\

@@ -188,6 +188,8 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/texture", texture_fbo);
   TEST_CONFORM_SIMPLE ("/texture/cairo", texture_cairo);
 
+  TEST_CONFORM_SIMPLE ("/interval", interval_initial_state);
+
   TEST_CONFORM_SIMPLE ("/path", path_base);
 
   TEST_CONFORM_SIMPLE ("/binding-pool", binding_pool);
