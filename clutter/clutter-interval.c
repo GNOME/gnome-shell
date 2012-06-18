@@ -135,6 +135,21 @@ clutter_interval_real_validate (ClutterInterval *interval,
       }
       break;
 
+    case G_TYPE_INT64:
+      {
+        GParamSpecInt64 *pspec_int = G_PARAM_SPEC_INT64 (pspec);
+        gint64 a, b;
+
+        a = b = 0;
+        clutter_interval_get_interval (interval, &a, &b);
+        if ((a >= pspec_int->minimum && a <= pspec_int->maximum) &&
+            (b >= pspec_int->minimum && b <= pspec_int->maximum))
+          return TRUE;
+        else
+          return FALSE;
+      }
+      break;
+
     case G_TYPE_UINT:
       {
         GParamSpecUInt *pspec_uint = G_PARAM_SPEC_UINT (pspec);
@@ -150,6 +165,36 @@ clutter_interval_real_validate (ClutterInterval *interval,
       }
       break;
 
+    case G_TYPE_UINT64:
+      {
+        GParamSpecUInt64 *pspec_int = G_PARAM_SPEC_UINT64 (pspec);
+        guint64 a, b;
+
+        a = b = 0;
+        clutter_interval_get_interval (interval, &a, &b);
+        if ((a >= pspec_int->minimum && a <= pspec_int->maximum) &&
+            (b >= pspec_int->minimum && b <= pspec_int->maximum))
+          return TRUE;
+        else
+          return FALSE;
+      }
+      break;
+
+    case G_TYPE_CHAR:
+      {
+        GParamSpecChar *pspec_char = G_PARAM_SPEC_CHAR (pspec);
+        guchar a, b;
+
+        a = b = 0;
+        clutter_interval_get_interval (interval, &a, &b);
+        if ((a >= pspec_char->minimum && a <= pspec_char->maximum) &&
+            (b >= pspec_char->minimum && b <= pspec_char->maximum))
+          return TRUE;
+        else
+          return FALSE;
+      }
+      break;
+
     case G_TYPE_UCHAR:
       {
         GParamSpecUChar *pspec_uchar = G_PARAM_SPEC_UCHAR (pspec);
@@ -159,6 +204,36 @@ clutter_interval_real_validate (ClutterInterval *interval,
         clutter_interval_get_interval (interval, &a, &b);
         if ((a >= pspec_uchar->minimum && a <= pspec_uchar->maximum) &&
             (b >= pspec_uchar->minimum && b <= pspec_uchar->maximum))
+          return TRUE;
+        else
+          return FALSE;
+      }
+      break;
+
+    case G_TYPE_FLOAT:
+      {
+        GParamSpecFloat *pspec_flt = G_PARAM_SPEC_FLOAT (pspec);
+        float a, b;
+
+        a = b = 0.f;
+        clutter_interval_get_interval (interval, &a, &b);
+        if ((a >= pspec_flt->minimum && a <= pspec_flt->maximum) &&
+            (b >= pspec_flt->minimum && b <= pspec_flt->maximum))
+          return TRUE;
+        else
+          return FALSE;
+      }
+      break;
+
+    case G_TYPE_DOUBLE:
+      {
+        GParamSpecDouble *pspec_flt = G_PARAM_SPEC_DOUBLE (pspec);
+        double a, b;
+
+        a = b = 0;
+        clutter_interval_get_interval (interval, &a, &b);
+        if ((a >= pspec_flt->minimum && a <= pspec_flt->maximum) &&
+            (b >= pspec_flt->minimum && b <= pspec_flt->maximum))
           return TRUE;
         else
           return FALSE;
