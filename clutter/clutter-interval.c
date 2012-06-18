@@ -399,8 +399,14 @@ clutter_interval_finalize (GObject *gobject)
 {
   ClutterIntervalPrivate *priv = CLUTTER_INTERVAL (gobject)->priv;
 
-  g_value_unset (&priv->values[0]);
-  g_value_unset (&priv->values[1]);
+  if (G_IS_VALUE (&priv->values[INITIAL]))
+    g_value_unset (&priv->values[INITIAL]);
+
+  if (G_IS_VALUE (&priv->values[FINAL]))
+    g_value_unset (&priv->values[FINAL]);
+
+  if (G_IS_VALUE (&priv->values[RESULT]))
+    g_value_unset (&priv->values[RESULT]);
 
   g_free (priv->values);
 
