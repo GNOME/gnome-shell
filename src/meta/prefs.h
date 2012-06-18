@@ -104,12 +104,6 @@ gboolean                    meta_prefs_get_gnome_accessibility (void);
 gboolean                    meta_prefs_get_gnome_animations   (void);
 gboolean                    meta_prefs_get_edge_tiling        (void);
 
-const char*                 meta_prefs_get_screenshot_command (void);
-
-const char*                 meta_prefs_get_window_screenshot_command (void);
-
-const char*                 meta_prefs_get_terminal_command   (void);
-
 void                        meta_prefs_get_button_layout (MetaButtonLayout *button_layout);
 
 /* Double, right, middle click can be configured to any titlebar meta-action */
