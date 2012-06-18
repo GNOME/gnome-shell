@@ -137,6 +137,7 @@ clutter_property_transition_compute_value (ClutterTransition *transition,
   ClutterPropertyTransition *self = CLUTTER_PROPERTY_TRANSITION (transition);
   ClutterPropertyTransitionPrivate *priv = self->priv;
   GValue value = G_VALUE_INIT;
+  GType p_type, i_type;
   gboolean res;
 
   /* if we have a GParamSpec we also have an animatable instance */
@@ -145,7 +146,10 @@ clutter_property_transition_compute_value (ClutterTransition *transition,
 
   clutter_property_transition_ensure_interval (self, animatable, interval);
 
-  g_value_init (&value, clutter_interval_get_value_type (interval));
+  p_type = G_PARAM_SPEC_VALUE_TYPE (priv->pspec);
+  i_type = clutter_interval_get_value_type (interval);
+
+  g_value_init (&value, i_type);
 
   res = clutter_animatable_interpolate_value (animatable,
                                               priv->property_name,
@@ -154,9 +158,36 @@ clutter_property_transition_compute_value (ClutterTransition *transition,
                                               &value);
 
   if (res)
-    clutter_animatable_set_final_state (animatable,
-                                        priv->property_name,
-                                        &value);
+    {
+      if (i_type != p_type || g_type_is_a (i_type, p_type))
+        {
+          if (g_value_type_transformable (i_type, p_type))
+            {
+              GValue transform = G_VALUE_INIT;
+
+              g_value_init (&transform, p_type);
+
+              if (g_value_transform (&value, &transform))
+                {
+                  clutter_animatable_set_final_state (animatable,
+                                                      priv->property_name,
+                                                      &transform);
+                }
+              else
+                g_warning ("%s: Unable to convert a value of type '%s' from "
+                           "the value type '%s' of the interval.",
+                           G_STRLOC,
+                           g_type_name (p_type),
+                           g_type_name (i_type));
+
+              g_value_unset (&transform);
+            }
+        }
+      else
+        clutter_animatable_set_final_state (animatable,
+                                            priv->property_name,
+                                            &value);
+    }
 
   g_value_unset (&value);
 }
