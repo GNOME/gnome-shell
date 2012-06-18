@@ -463,6 +463,7 @@ clutter_interval_set_value_internal (ClutterInterval *interval,
                                      const GValue    *value)
 {
   ClutterIntervalPrivate *priv = interval->priv;
+  GType value_type;
 
   g_assert (index_ >= INITIAL && index_ <= RESULT);
 
@@ -470,7 +471,39 @@ clutter_interval_set_value_internal (ClutterInterval *interval,
     g_value_unset (&priv->values[index_]);
 
   g_value_init (&priv->values[index_], priv->value_type);
-  g_value_copy (value, &priv->values[index_]);
+
+  value_type = G_VALUE_TYPE (value);
+  if (value_type != priv->value_type ||
+      !g_type_is_a (value_type, priv->value_type))
+    {
+      if (g_value_type_compatible (value_type, priv->value_type))
+        {
+          g_value_copy (value, &priv->values[index_]);
+          return;
+        }
+
+      if (g_value_type_transformable (value_type, priv->value_type))
+        {
+          GValue transform = G_VALUE_INIT;
+
+          g_value_init (&transform, priv->value_type);
+
+          if (g_value_transform (value, &transform))
+            g_value_copy (&transform, &priv->values[index_]);
+          else
+            {
+              g_warning ("%s: Unable to convert a value of type '%s' into "
+                         "the value type '%s' of the interval.",
+                         G_STRLOC,
+                         g_type_name (value_type),
+                         g_type_name (priv->value_type));
+            }
+
+          g_value_unset (&transform);
+        }
+    }
+  else
+    g_value_copy (value, &priv->values[index_]);
 }
 
 static inline void
