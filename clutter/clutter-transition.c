@@ -318,6 +318,9 @@ clutter_transition_set_interval (ClutterTransition *transition,
 
   priv = transition->priv;
 
+  if (priv->interval == interval)
+    return;
+
   g_clear_object (&priv->interval);
 
   if (interval != NULL)
