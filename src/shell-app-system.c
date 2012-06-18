@@ -7,18 +7,13 @@
 #include <string.h>
 
 #include <gio/gio.h>
-#include <gio/gdesktopappinfo.h>
-#include <gtk/gtk.h>
-#include <clutter/clutter.h>
 #include <glib/gi18n.h>
-#include <meta/display.h>
 
 #include "shell-app-private.h"
 #include "shell-window-tracker-private.h"
 #include "shell-app-system-private.h"
 #include "shell-global.h"
 #include "shell-util.h"
-#include "st.h"
 
 /* Vendor prefixes are something that can be preprended to a .desktop
  * file name.  Undo this.
