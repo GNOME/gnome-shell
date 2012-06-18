@@ -292,6 +292,21 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
       }
       break;
 
+    case G_TYPE_CHAR:
+      {
+        gchar ia, ib, res;
+
+        ia = g_value_get_schar (initial);
+        ib = g_value_get_schar (final);
+
+        res = (factor * (ib - (gdouble) ia)) + ia;
+
+        g_value_set_schar (value, res);
+
+        retval = TRUE;
+      }
+      break;
+
     case G_TYPE_UINT:
       {
         guint ia, ib, res;
@@ -369,7 +384,7 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
    * a warning with a hint to what could be done to fix that */
   if (G_UNLIKELY (retval == FALSE))
     {
-      g_warning ("%s: Could not compute progress between two %ss. You can "
+      g_warning ("%s: Could not compute progress between two %s. You can "
                  "register a progress function to instruct ClutterInterval "
                  "how to deal with this GType",
                  G_STRLOC,
