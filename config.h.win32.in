@@ -49,9 +49,6 @@
 /* Define to 1 if you have the <dlfcn.h> header file. */
 /*#undef HAVE_DLFCN_H*/
 
-/* Have libdrm support */
-/*#undef HAVE_DRM*/
-
 /* Define to 1 if you have the <EGL/eglext.h> header file. */
 /*#undef HAVE_EGL_EGLEXT_H*/
 
