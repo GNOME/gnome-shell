@@ -189,6 +189,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/texture/cairo", texture_cairo);
 
   TEST_CONFORM_SIMPLE ("/interval", interval_initial_state);
+  TEST_CONFORM_SIMPLE ("/interval", interval_transform);
 
   TEST_CONFORM_SIMPLE ("/path", path_base);
 
