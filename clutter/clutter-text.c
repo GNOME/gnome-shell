@@ -209,6 +209,7 @@ struct _ClutterTextPrivate
   guint selectable              : 1;
   guint selection_color_set     : 1;
   guint in_select_drag          : 1;
+  guint in_select_touch         : 1;
   guint cursor_color_set        : 1;
   guint preedit_set             : 1;
   guint is_default_font         : 1;
@@ -1796,11 +1797,12 @@ clutter_text_select_line (ClutterText *self)
 }
 
 static gboolean
-clutter_text_button_press (ClutterActor       *actor,
-                           ClutterButtonEvent *event)
+clutter_text_press (ClutterActor *actor,
+                    ClutterEvent *event)
 {
   ClutterText *self = CLUTTER_TEXT (actor);
   ClutterTextPrivate *priv = self->priv;
+  ClutterEventType type = clutter_event_type (event);
   gboolean res = FALSE;
   gfloat x, y;
   gint index_;
@@ -1822,10 +1824,9 @@ clutter_text_button_press (ClutterActor       *actor,
       return CLUTTER_EVENT_STOP;
     }
 
-  res = clutter_actor_transform_stage_point (actor,
-                                             event->x,
-                                             event->y,
-                                             &x, &y);
+  clutter_event_get_coords (event, &x, &y);
+
+  res = clutter_actor_transform_stage_point (actor, x, y, &x, &y);
   if (res)
     {
       gint offset;
@@ -1842,30 +1843,46 @@ clutter_text_button_press (ClutterActor       *actor,
        *   2: select the current word
        *   3: select the contents of the whole actor
        */
-      if (event->click_count == 1)
+      if (type == CLUTTER_BUTTON_PRESS)
         {
-          clutter_text_set_positions (self, offset, offset);
+          gint click_count = clutter_event_get_click_count (event);
+
+          if (click_count == 1)
+            {
+              clutter_text_set_positions (self, offset, offset);
+            }
+          else if (click_count == 2)
+            {
+              clutter_text_select_word (self);
+            }
+          else if (click_count == 3)
+            {
+              clutter_text_select_line (self);
+            }
         }
-      else if (event->click_count == 2)
-        {
-          clutter_text_select_word (self);
-        }
-      else if (event->click_count == 3)
-        {
-          clutter_text_select_line (self);
-        }
+      else
+        clutter_text_set_positions (self, offset, offset);
     }
 
   /* grab the pointer */
   priv->in_select_drag = TRUE;
-  clutter_grab_pointer (actor);
+
+  if (type == CLUTTER_BUTTON_PRESS)
+    clutter_grab_pointer (actor);
+  else
+    {
+      clutter_input_device_sequence_grab (clutter_event_get_device (event),
+                                          clutter_event_get_event_sequence (event),
+                                          actor);
+      priv->in_select_touch = TRUE;
+    }
 
   return CLUTTER_EVENT_STOP;
 }
 
 static gboolean
-clutter_text_motion (ClutterActor       *actor,
-                     ClutterMotionEvent *mev)
+clutter_text_move (ClutterActor *actor,
+                   ClutterEvent *event)
 {
   ClutterText *self = CLUTTER_TEXT (actor);
   ClutterTextPrivate *priv = self->priv;
@@ -1877,9 +1894,9 @@ clutter_text_motion (ClutterActor       *actor,
   if (!priv->in_select_drag)
     return CLUTTER_EVENT_PROPAGATE;
 
-  res = clutter_actor_transform_stage_point (actor,
-                                             mev->x, mev->y,
-                                             &x, &y);
+  clutter_event_get_coords (event, &x, &y);
+
+  res = clutter_actor_transform_stage_point (actor, x, y, &x, &y);
   if (!res)
     return CLUTTER_EVENT_PROPAGATE;
 
@@ -1896,18 +1913,85 @@ clutter_text_motion (ClutterActor       *actor,
 }
 
 static gboolean
-clutter_text_button_release (ClutterActor       *actor,
-                             ClutterButtonEvent *bev)
+clutter_text_release (ClutterActor *actor,
+                      ClutterEvent *event)
 {
   ClutterText *self = CLUTTER_TEXT (actor);
   ClutterTextPrivate *priv = self->priv;
+  ClutterEventType type = clutter_event_type (event);
 
   if (priv->in_select_drag)
     {
-      clutter_ungrab_pointer ();
-      priv->in_select_drag = FALSE;
+      if (type == CLUTTER_BUTTON_RELEASE)
+        {
+          if (!priv->in_select_touch)
+            {
+              clutter_ungrab_pointer ();
+              priv->in_select_drag = FALSE;
 
-      return CLUTTER_EVENT_STOP;
+              return CLUTTER_EVENT_STOP;
+            }
+        }
+      else
+        {
+          if (priv->in_select_touch)
+            {
+              ClutterInputDevice *device = clutter_event_get_device (event);
+              ClutterEventSequence *sequence =
+                clutter_event_get_event_sequence (event);
+
+              clutter_input_device_sequence_ungrab (device, sequence);
+              priv->in_select_touch = FALSE;
+              priv->in_select_drag = FALSE;
+
+              return CLUTTER_EVENT_STOP;
+            }
+        }
+    }
+
+  return CLUTTER_EVENT_PROPAGATE;
+}
+
+static gboolean
+clutter_text_button_press (ClutterActor       *actor,
+                           ClutterButtonEvent *event)
+{
+  return clutter_text_press (actor, (ClutterEvent *) event);
+}
+
+static gboolean
+clutter_text_motion (ClutterActor       *actor,
+                     ClutterMotionEvent *event)
+{
+  return clutter_text_move (actor, (ClutterEvent *) event);
+}
+
+static gboolean
+clutter_text_button_release (ClutterActor       *actor,
+                             ClutterButtonEvent *event)
+{
+  return clutter_text_release (actor, (ClutterEvent *) event);
+}
+
+static gboolean
+clutter_text_touch_event (ClutterActor      *actor,
+                          ClutterTouchEvent *event)
+{
+  switch (event->type)
+    {
+    case CLUTTER_TOUCH_BEGIN:
+      return clutter_text_press (actor, (ClutterEvent *) event);
+
+    case CLUTTER_TOUCH_END:
+    case CLUTTER_TOUCH_CANCEL:
+      /* TODO: the cancel case probably need a special handler */
+      return clutter_text_release (actor, (ClutterEvent *) event);
+
+    case CLUTTER_TOUCH_UPDATE:
+      return clutter_text_move (actor, (ClutterEvent *) event);
+
+    default:
+      break;
     }
 
   return CLUTTER_EVENT_PROPAGATE;
@@ -3232,6 +3316,7 @@ clutter_text_class_init (ClutterTextClass *klass)
   actor_class->button_press_event = clutter_text_button_press;
   actor_class->button_release_event = clutter_text_button_release;
   actor_class->motion_event = clutter_text_motion;
+  actor_class->touch_event = clutter_text_touch_event;
   actor_class->key_focus_in = clutter_text_key_focus_in;
   actor_class->key_focus_out = clutter_text_key_focus_out;
   actor_class->has_overlaps = clutter_text_has_overlaps;
