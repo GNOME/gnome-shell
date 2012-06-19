@@ -436,6 +436,10 @@ StScrollBar StButton#vhandle:hover
     -boxpointer-gap: 4px
 }
 
+#networkMenu {
+    spacing: 4px;
+}
+
 /* User Menu */
 
 #panelUserMenu {

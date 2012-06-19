@@ -1567,10 +1567,25 @@ const NMDeviceWireless = new Lang.Class({
 
 const NMApplet = new Lang.Class({
     Name: 'NMApplet',
-    Extends: PanelMenu.SystemStatusButton,
+    Extends: PanelMenu.Button,
 
     _init: function() {
-        this.parent('network-offline', _("Network"));
+        this.parent(0.0, _('Network'));
+
+        this._box = new St.BoxLayout({ name: 'networkMenu' });
+        this.actor.add_actor (this._box);
+        this.actor.add_style_class_name('panel-status-button');
+
+        this._primaryIcon = new St.Icon({ icon_name: 'network-offline',
+                                          icon_type: St.IconType.SYMBOLIC,
+                                          style_class: 'system-status-icon' });
+        this._box.add_actor(this._primaryIcon);
+
+        this._secondaryIcon = new St.Icon({ icon_name: 'network-vpn',
+                                            icon_type: St.IconType.SYMBOLIC,
+                                            style_class: 'system-status-icon',
+                                            visible: false });
+        this._box.add_actor(this._secondaryIcon);
 
         this._client = NMClient.Client.new();
 
@@ -1588,6 +1603,7 @@ const NMApplet = new Lang.Class({
         this._connections = [ ];
 
         this._mainConnection = null;
+        this._vpnConnection = null;
         this._activeAccessPointUpdateId = 0;
         this._activeAccessPoint = null;
         this._mobileUpdateId = 0;
@@ -1676,6 +1692,10 @@ const NMApplet = new Lang.Class({
                 this._settings.connect('new-connection', Lang.bind(this, this._newConnection));
             }
         }));
+    },
+
+    setIcon: function(iconName) {
+        this._primaryIcon.icon_name = iconName;
     },
 
     _ensureSource: function() {
@@ -1851,6 +1871,8 @@ const NMApplet = new Lang.Class({
 
         this._activeConnections = newActiveConnections;
         this._mainConnection = null;
+        this._vpnConnection = null;
+
         let activating = null;
         let default_ip4 = null;
         let default_ip6 = null;
@@ -1884,10 +1906,10 @@ const NMApplet = new Lang.Class({
                 default_ip4 = a;
             if (a.default6)
                 default_ip6 = a;
+
             if (a._type == 'vpn')
                 active_vpn = a;
-
-            if (a.state == NetworkManager.ActiveConnectionState.ACTIVATING)
+            else if (a.state == NetworkManager.ActiveConnectionState.ACTIVATING)
                 activating = a;
 
             if (!a._primaryDevice) {
@@ -1916,7 +1938,8 @@ const NMApplet = new Lang.Class({
             }
         }
 
-        this._mainConnection = activating || active_vpn || default_ip4 || default_ip6 || this._activeConnections[0] || null;
+        this._mainConnection = activating || default_ip4 || default_ip6 || this._activeConnections[0] || null;
+        this._vpnConnection = active_vpn;
     },
 
     _notifyActivated: function(activeConnection) {
@@ -2062,9 +2085,6 @@ const NMApplet = new Lang.Class({
             case NMConnectionCategory.WIRED:
                 this.setIcon('network-wired-acquiring');
                 break;
-            case NMConnectionCategory.VPN:
-                this.setIcon('network-vpn-acquiring');
-                break;
             default:
                 // fallback to a generic connected icon
                 // (it could be a private connection of some other user)
@@ -2127,15 +2147,31 @@ const NMApplet = new Lang.Class({
                 this.setIcon('network-cellular-signal-' + signalToIcon(dev.mobileDevice.signal_quality));
                 hasMobileIcon = true;
                 break;
-            case NMConnectionCategory.VPN:
-                this.setIcon('network-vpn');
-                break;
             default:
                 // fallback to a generic connected icon
                 // (it could be a private connection of some other user)
                 this.setIcon('network-wired');
                 break;
             }
+        }
+
+        // update VPN indicator
+        if (this._vpnConnection) {
+            let vpnIconName = 'network-vpn';
+            if (this._vpnConnection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
+                vpnIconName = 'network-vpn-acquiring';
+
+            // only show a separate icon when we're using a wireless/3g connection
+            if (mc._section == NMConnectionCategory.WIRELESS || 
+                mc._section == NMConnectionCategory.WWAN) {
+                this._secondaryIcon.icon_name = vpnIconName;
+                this._secondaryIcon.visible = true;
+            } else {
+                this.setIcon(vpnIconName);
+                this._secondaryIcon.visible = false;
+            }
+        } else {
+            this._secondaryIcon.visible = false;
         }
 
         // cleanup stale signal connections
