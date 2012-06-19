@@ -23,12 +23,14 @@ const AutorunSetting = {
 };
 
 // misc utils
-function ignoreAutorunForMount(mount) {
+function shouldAutorunMount(mount) {
     let root = mount.get_root();
     let volume = mount.get_volume();
 
-    if ((root.is_native() && !isMountRootHidden(root)) &&
-        (volume && volume.allowAutorun && volume.should_automount()))
+    if (!volume || !volume.should_automount() || !volume.allowAutorun)
+        return false;
+
+    if (!root.is_native() || isMountRootHidden(root))
         return false;
 
     return true;
@@ -270,7 +272,7 @@ const AutorunResidentSource = new Lang.Class({
     },
 
     addMount: function(mount, apps) {
-        if (ignoreAutorunForMount(mount))
+        if (!shouldAutorunMount(mount))
             return;
 
         let filtered = this._mounts.filter(function (element) {
@@ -448,7 +450,7 @@ const AutorunTransientDispatcher = new Lang.Class({
             return;
 
         // if the mount doesn't want to be autorun, return
-        if (ignoreAutorunForMount(mount))
+        if (!shouldAutorunMount(mount))
             return;
 
         let setting = this._getAutorunSettingForType(contentTypes[0]);
