@@ -123,7 +123,8 @@ const AutomountManager = new Lang.Class({
         let volumes = this._volumeMonitor.get_volumes();
         volumes.forEach(Lang.bind(this, function(volume) {
             this._checkAndMountVolume(volume, { checkSession: false,
-                                                useMountOp: false });
+                                                useMountOp: false,
+                                                allowAutorun: false });
         }));
 
         return false;
@@ -201,7 +202,8 @@ const AutomountManager = new Lang.Class({
 
     _checkAndMountVolume: function(volume, params) {
         params = Params.parse(params, { checkSession: true,
-                                        useMountOp: true });
+                                        useMountOp: true,
+                                        allowAutorun: true });
 
         if (params.checkSession) {
             // if we're not in the current ConsoleKit session,
@@ -236,14 +238,16 @@ const AutomountManager = new Lang.Class({
 
         if (params.useMountOp) {
             let operation = new ShellMountOperation.ShellMountOperation(volume);
-            this._mountVolume(volume, operation.mountOp);
+            this._mountVolume(volume, operation.mountOp, params.allowAutorun);
         } else {
-            this._mountVolume(volume, null);
+            this._mountVolume(volume, null, params.allowAutorun);
         }
     },
 
-    _mountVolume: function(volume, operation) {
-        this._allowAutorun(volume);
+    _mountVolume: function(volume, operation, allowAutorun) {
+        if (allowAutorun)
+            this._allowAutorun(volume);
+
         volume.mount(0, operation, null,
                      Lang.bind(this, this._onVolumeMounted));
     },
