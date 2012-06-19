@@ -870,7 +870,6 @@ AS_CASE([$enable_deprecated],
 
 AC_SUBST([CLUTTER_DEPRECATED_CFLAGS])
 
-
 dnl === Profiling =============================================================
 
 m4_define([profile_default], [no])
@@ -981,6 +980,80 @@ CLUTTER_LIBS="$FLAVOUR_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_DEPS_PRIVATE_LIBS $CLUTT
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
 
+dnl === Test coverage =========================================================
+
+AC_ARG_ENABLE([gcov],
+              [AS_HELP_STRING([--enable-gcov], [Enable gcov])],
+              [use_gcov=$enableval],
+              [use_gcov=no])
+
+AS_IF([test "x$use_gcov" = "xyes"],
+      [
+        dnl we need gcc:
+        AS_IF([test "$GCC" != "yes"], [AC_MSG_ERROR([GCC is required for --enable-gcov])])
+
+        dnl Check if ccache is being used
+        AC_CHECK_PROG(SHTOOL, shtool, shtool)
+        AS_CASE([`$SHTOOL path $CC`],
+                [*ccache*], [gcc_ccache=yes],
+                [gcc_ccache=no])
+
+        if test "$gcc_ccache" = "yes" && (test -z "$CCACHE_DISABLE" || test "$CCACHE_DISABLE" != "1"); then
+          AC_MSG_ERROR([ccache must be disabled when --enable-gcov option is used. You can disable ccache by setting environment variable CCACHE_DISABLE=1.])
+        fi
+
+        ltp_version_list="1.6 1.7 1.8 1.9"
+        AC_CHECK_PROG(LTP, lcov, lcov)
+        AC_CHECK_PROG(LTP_GENHTML, genhtml, genhtml)
+
+        if test "$LTP"; then
+          AC_CACHE_CHECK([for ltp version], clutter_cv_ltp_version,
+                         [
+                           clutter_cv_ltp_version=invalid
+                           ltp_version=`$LTP -v 2>/dev/null | $SED -e 's/^.* //'`
+                           for ltp_check_version in $ltp_version_list; do
+                             if test "$ltp_version" = "$ltp_check_version"; then
+                               clutter_cv_ltp_version="$ltp_check_version (ok)"
+                             fi
+                           done
+                         ])
+        else
+          ltp_msg="To enable code coverage reporting you must have one of the following LTP versions installed: $ltp_version_list"
+          AC_MSG_ERROR([$ltp_msg])
+        fi
+
+        case $clutter_cv_ltp_version in
+          ""|invalid[)]
+          ltp_msg="You must have one of the following versions of LTP: $ltp_version_list (found: $ltp_version)."
+          AC_MSG_ERROR([$ltp_msg])
+          LTP="exit 0;"
+          ;;
+        esac
+
+        if test -z "$LTP_GENHTML"; then
+          AC_MSG_ERROR([Could not find genhtml from the LTP package])
+        fi
+
+        AC_DEFINE(HAVE_GCOV, 1, [Whether you have gcov])
+
+        dnl Remove all optimization flags from CFLAGS
+        changequote({,})
+        CFLAGS=`echo "$CFLAGS" | $SED -e 's/-O[0-9]*//g'`
+        CLUTTER_CFLAGS=`echo "$CLUTTER_CFLAGS" | $SED -e 's/-O[0-9]*//g'`
+        changequote([,])
+
+        dnl Define the special gcc flags
+        CLUTTER_GCOV_CFLAGS="-O0 -fprofile-arcs -ftest-coverage"
+        CLUTTER_GCOV_LDADD="-lgcov"
+
+        AC_SUBST(CLUTTER_GCOV_CFLAGS)
+        AC_SUBST(CLUTTER_GCOV_LDADD)
+
+        CLUTTER_CFLAGS="$CLUTTER_CFLAGS $CLUTTER_GCOV_CFLAGS"
+        CLUTTER_LIBS="$CLUTTER_LIBS $CLUTTER_GCOV_LDADD"
+      ])
+
+AM_CONDITIONAL(ENABLE_GCOV, test "x$use_gcov" = "xyes")
 
 dnl === GObject-Introspection check ===========================================
 
@@ -1143,7 +1216,7 @@ echo " • Compiler options:"
 echo "        Clutter debug level: ${enable_debug}"
 echo "        Compiler flags: ${CFLAGS} ${MAINTAINER_CFLAGS}"
 echo "        Profiling enabled: ${enable_profile}"
-echo "        Enable coverage tests: ${enable_gcov}"
+echo "        Enable coverage tests: ${use_gcov}"
 echo "        Enable deprecated symbols: ${enable_deprecated}"
 
 # Documentation
