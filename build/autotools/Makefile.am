@@ -5,7 +5,6 @@ EXTRA_DIST = \
 	Makefile.am.marshal	\
 	Makefile.am.enums	\
 	Makefile.am.changelog	\
-	Makefile.am.gcov	\
 	Makefile.am.gitignore	\
 	Makefile.am.release	\
 	introspection.m4	\

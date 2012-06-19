@@ -909,36 +909,6 @@ AM_CONDITIONAL(PROFILE, test "x$enable_profile" != "xno")
 AC_SUBST(CLUTTER_PROFILE_CFLAGS)
 AC_SUBST(CLUTTER_PROFILE_LDFLAGS)
 
-dnl === Coverage report =======================================================
-
-AC_PATH_PROG([GCOV], [gcov], [enable_gcov=no])
-
-AC_MSG_CHECKING([whether to build with gcov testing])
-
-AC_ARG_ENABLE([gcov],
-              [AS_HELP_STRING([--enable-gcov],
-                              [Whether to enable coverage testing (requires gcc
-and gcov)])],
-              [],
-              [enable_gcov=no])
-
-AS_IF([test "x$enable_gcov" = "xyes" && test "x$GCC" = "xyes"],
-      [
-        AS_IF([test "x$enable_conformance" = "xno"],
-              [AC_MSG_WARN([Conformance test suite is disabled, the coverage report will be incomplete])],
-              [AC_MSG_RESULT([yes])]
-        )
-
-        GCOV_CFLAGS="-g -O0 -fprofile-arcs -ftest-coverage"
-        GCOV_LDFLAGS="-lgcov"
-      ],
-      [AC_MSG_RESULT([no])]
-)
-
-AM_CONDITIONAL([GCOV_ENABLED], [test "x$enable_gcov" = "xyes"])
-AC_SUBST([GCOV_CFLAGS])
-AC_SUBST([GCOV_LDFLAGS])
-
 dnl === Enable strict compiler flags ==========================================
 
 # use strict compiler flags only when building from git; the rules for

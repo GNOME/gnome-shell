@@ -37,10 +37,6 @@ DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-maintainer-flags --enable-
 include $(top_srcdir)/build/autotools/Makefile.am.changelog
 include $(top_srcdir)/build/autotools/Makefile.am.release
 
-# proxy rule for gcov
-gcov:
-	@( cd clutter && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $$?
-
 # proxy rules for tests
 test-report full-report:
 	$(MAKE) -C tests/conform $(@)
@@ -48,4 +44,4 @@ test-report full-report:
 perf-report:
 	$(MAKE) -C tests/performance $(@)
 
-.PHONY: gcov test-report full-report perf-report
+.PHONY: test-report full-report perf-report

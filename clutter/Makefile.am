@@ -34,7 +34,7 @@ AM_CPPFLAGS = \
 	$(CLUTTER_PROFILE_CFLAGS)		\
 	$(NULL)
 
-AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS) $(GCOV_CFLAGS)
+AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 
 # these are the gir files we generate using g-ir-scanner
 INTROSPECTION_GIRS =
@@ -831,7 +831,6 @@ nodist_libclutter_@CLUTTER_API_VERSION@_la_SOURCES = \
 libclutter_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(CLUTTER_LINK_FLAGS) \
 	$(CLUTTER_LT_LDFLAGS) \
-	$(GCOV_LDFLAGS) \
 	-export-dynamic \
 	-export-symbols-regex "^(clutter|cally).*" \
 	-rpath $(libdir) \
@@ -1042,7 +1041,3 @@ TESTS = abicheck.sh
 endif
 
 EXTRA_DIST += abicheck.sh
-
-# GCov rules
-gcov_sources = $(source_c) $(backend_source_c)
-include $(top_srcdir)/build/autotools/Makefile.am.gcov
