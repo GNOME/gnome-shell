@@ -75,6 +75,8 @@ draw_touches (ClutterCairoTexture *canvas,
               cairo_t             *cr)
 {
   g_slist_foreach (events, (GFunc) draw_touch, cr);
+
+  return TRUE;
 }
 
 static gboolean
