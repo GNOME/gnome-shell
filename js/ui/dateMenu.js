@@ -167,9 +167,10 @@ const DateMenuButton = new Lang.Class({
         this.menu.close();
         let calendarSettings = new Gio.Settings({ schema: 'org.gnome.desktop.default-applications.office.calendar' });
         let tool = calendarSettings.get_string('exec');
-        if (tool.length == 0 || tool == 'evolution') {
+        if (tool.length == 0 || tool.substr(0, 9) == 'evolution') {
             // TODO: pass the selected day
-            Util.spawn(['evolution', '-c', 'calendar']);
+            let app = Shell.AppSystem.get_default().lookup_app('evolution-calendar.desktop');
+            app.activate();
         } else {
             let needTerm = calendarSettings.get_boolean('needs-term');
             if (needTerm) {
