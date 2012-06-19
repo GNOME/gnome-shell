@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Signals = imports.signals;
 const Gio = imports.gi.Gio;
@@ -8,10 +9,12 @@ const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
+const CheckBox = imports.ui.checkBox;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
 const Params = imports.misc.params;
+const ShellEntry = imports.ui.shellEntry;
 
 const LIST_ITEM_ICON_SIZE = 48;
 
@@ -134,41 +137,36 @@ const ShellMountOperation = new Lang.Class({
     },
 
     _onAskPassword: function(op, message) {
-        this._notificationShowing = true;
-        this._source = new ShellMountPasswordSource(message, this._gicon, this._reaskPassword);
+        this._dialog = new ShellMountPasswordDialog(
+            message, this._gicon, this._reaskPassword);
 
-        this._source.connect('password-ready',
-                             Lang.bind(this, function(source, password) {
-                                 this.mountOp.set_password(password);
-                                 this.mountOp.reply(Gio.MountOperationResult.HANDLED);
+        this._dialog.connect('response', Lang.bind(this,
+        function(object, choice, password, remember) {
+                if (choice == '-1') {
+                    this.mountOp.reply(Gio.MountOperationResult.ABORTED);
+                } else {
+                    if (remember)
+                        this.mountOp.set_password_save(Gio.PasswordSave.PERMANENTLY);
+                    else
+                        this.mountOp.set_password_save(Gio.PasswordSave.NEVER);
 
-                                 this._notificationShowing = false;
-                                 this._source.destroy();
-                             }));
+                    this.mountOp.set_password(password);
+                    this.mountOp.reply(Gio.MountOperationResult.HANDLED);
+                }
 
-        this._source.connect('destroy',
-                             Lang.bind(this, function() {
-                                 if (!this._notificationShowing)
-                                     return;
-
-                                 this._notificationShowing = false;
-                                 this.mountOp.reply(Gio.MountOperationResult.ABORTED);
-                             }));
+                this._dialog.close(global.get_current_time());
+                this._dialog = null;
+            }));
+        this._dialog.open(global.get_current_time());
     },
 
     _onAborted: function(op) {
-        if (!this._dialog && !this._source)
+        if (!this._dialog)
             return;
 
         if (this._dialog) {
             this._dialog.close(global.get_current_time());
             this._dialog = null;
-        }
-
-        if (this._source) {
-            this._notificationShowing = false;
-            this._source.destroy();
-            this._source = null;
         }
     },
 
@@ -181,7 +179,7 @@ const ShellMountOperation = new Lang.Class({
             this._processesDialog = new ShellProcessesDialog(this._gicon);
             this._dialog = this._processesDialog;
 
-            this._processesDialog.connect('response', 
+            this._processesDialog.connect('response',
                                           Lang.bind(this, function(object, choice) {
                                               if (choice == -1) {
                                                   this.mountOp.reply(Gio.MountOperationResult.ABORTED);
@@ -246,67 +244,98 @@ const ShellMountQuestionDialog = new Lang.Class({
 });
 Signals.addSignalMethods(ShellMountQuestionDialog.prototype);
 
-const ShellMountPasswordSource = new Lang.Class({
-    Name: 'ShellMountPasswordSource',
-    Extends: MessageTray.Source,
+const ShellMountPasswordDialog = new Lang.Class({
+    Name: 'ShellMountPasswordDialog',
+    Extends: ModalDialog.ModalDialog,
 
     _init: function(message, gicon, reaskPassword) {
-        this._gicon = gicon;
-
         let strings = message.split('\n');
-        this.parent(strings[0]);
-        this._notification = new ShellMountPasswordNotification(this, strings, reaskPassword);
+        this.parent({ styleClass: 'prompt-dialog' });
 
-        // add ourselves as a source, and popup the notification
-        Main.messageTray.add(this);
-        this.notify(this._notification);
-    },
+        let mainContentBox = new St.BoxLayout({ style_class: 'prompt-dialog-main-layout',
+                                                vertical: false });
+        this.contentLayout.add(mainContentBox);
 
-    createNotificationIcon: function() {
-        return _createIcon(this._gicon);
-    },
-});
-Signals.addSignalMethods(ShellMountPasswordSource.prototype);
+        let icon = _createIcon(gicon);
+        mainContentBox.add(icon,
+                           { x_fill:  true,
+                             y_fill:  false,
+                             x_align: St.Align.END,
+                             y_align: St.Align.START });
 
-const ShellMountPasswordNotification = new Lang.Class({
-    Name: 'ShellMountPasswordNotification',
-    Extends: MessageTray.Notification,
+        this._messageBox = new St.BoxLayout({ style_class: 'prompt-dialog-message-layout',
+                                              vertical: true });
+        mainContentBox.add(this._messageBox,
+                           { y_align: St.Align.START, expand: true, x_fill: true, y_fill: true });
 
-    _init: function(source, strings, reaskPassword) {
-        this.parent(source, strings[0], null, { customContent: true });
+        let subject = new St.Label({ style_class: 'prompt-dialog-headline' });
+        this._messageBox.add(subject,
+                             { y_fill:  false,
+                               y_align: St.Align.START });
+        if (strings[0])
+            subject.set_text(strings[0]);
 
-        // set the notification to transient and urgent, so that it
-        // expands out
-        this.setTransient(true);
-        this.setUrgency(MessageTray.Urgency.CRITICAL);
-
+        let description = new St.Label({ style_class: 'prompt-dialog-description' });
+        description.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        description.clutter_text.line_wrap = true;
+        this._messageBox.add(description,
+                            { y_fill:  true,
+                              y_align: St.Align.START });
         if (strings[1])
-            this.addBody(strings[1]);
+            description.set_text(strings[1]);
+
+        this._passwordBox = new St.BoxLayout({ vertical: false });
+        this._messageBox.add(this._passwordBox);
+
+        this._passwordLabel = new St.Label(({ style_class: 'prompt-dialog-password-label',
+                                              text: _("Passphrase") }));
+        this._passwordBox.add(this._passwordLabel);
+
+        this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
+                                             text: "",
+                                             can_focus: true});
+        ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
+        this._passwordEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivate));
+        this._passwordEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
+        this._passwordBox.add(this._passwordEntry, {expand: true });
+        this.setInitialKeyFocus(this._passwordEntry);
 
         if (reaskPassword) {
-            let label = new St.Label({ style_class: 'mount-password-reask',
-                                       text: _("Wrong password, please try again") });
-
-            this.addActor(label);
+            this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
+                                                     text: _("Sorry, that didn\'t work. Please try again.") });
+            this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            this._errorMessageLabel.clutter_text.line_wrap = true;
+            this._messageBox.add(this._errorMessageLabel);
         }
 
-        this._responseEntry = new St.Entry({ style_class: 'mount-password-entry',
-                                             can_focus: true });
-        this.setActionArea(this._responseEntry);
+        this._rememberChoice = new CheckBox.CheckBox();
+        this._rememberChoice.getLabelActor().text = _("Remember Passphrase");
+        this._rememberChoice.actor.checked = true;
+        this._messageBox.add(this._rememberChoice.actor);
 
-        this._responseEntry.clutter_text.connect('activate',
-                                                 Lang.bind(this, this._onEntryActivated));
-        this._responseEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
+        let buttons = [{ label: _("Cancel"),
+                         action: Lang.bind(this, this._onCancelButton),
+                         key:    Clutter.Escape
+                       },
+                       { label: _("Unlock"),
+                         action: Lang.bind(this, this._onUnlockButton)
+                       }];
 
-        this._responseEntry.grab_key_focus();
+        this.setButtons(buttons);
     },
 
-    _onEntryActivated: function() {
-        let text = this._responseEntry.get_text();
-        if (text == '')
-            return;
+    _onCancelButton: function() {
+        this.emit('response', -1, '', false);
+    },
 
-        this.source.emit('password-ready', text);
+    _onUnlockButton: function() {
+        this._onEntryActivate();
+    },
+
+    _onEntryActivate: function() {
+        this.emit('response', 1,
+            this._passwordEntry.get_text(),
+            this._rememberChoice.actor.checked);
     }
 });
 
