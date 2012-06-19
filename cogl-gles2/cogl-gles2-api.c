@@ -242,6 +242,13 @@ glTexImage2D (GLenum target, GLint level, GLint internalformat, GLsizei width,
 }
 
 void
+glTexParameterf (GLenum target, GLenum pname, GLfloat param)
+{
+  CoglGLES2Vtable *vtable = cogl_gles2_get_current_vtable ();
+  vtable->glTexParameterf (target, pname, param);
+}
+
+void
 glTexParameterfv (GLenum target, GLenum pname, const GLfloat * params)
 {
   CoglGLES2Vtable *vtable = cogl_gles2_get_current_vtable ();
