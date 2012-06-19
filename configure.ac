@@ -88,6 +88,7 @@ if test x${with_folks} = xyes; then
   AC_SUBST([HAVE_FOLKS],[1])
 else
   FOLKS_REQUIREMENT=
+  AC_SUBST([HAVE_FOLKS],[0])
 fi
 AM_CONDITIONAL(BUILD_WITH_FOLKS, test x${with_folks} = xyes)
 
