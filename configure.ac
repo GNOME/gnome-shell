@@ -76,6 +76,7 @@ POLKIT_MIN_VERSION=0.100
 STARTUP_NOTIFICATION_MIN_VERSION=0.11
 GCR_MIN_VERSION=3.3.90
 GNOME_DESKTOP_REQUIRED_VERSION=3.5.1
+GNOME_MENUS_REQUIRED_VERSION=3.5.3
 
 AC_ARG_WITH(folks,
             AS_HELP_STRING([--with-folks],
@@ -100,7 +101,8 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-unix-2.0 >= $GIO_MIN_VERSION
 			       $FOLKS_REQUIREMENT
                                libmutter >= $MUTTER_MIN_VERSION
                                gjs-internals-1.0 >= $GJS_MIN_VERSION
-			       libgnome-menu-3.0 $recorder_modules
+			       libgnome-menu-3.0 >= $GNOME_MENUS_REQUIRED_VERSION
+                               $recorder_modules
                                gdk-x11-3.0 libsoup-2.4
                                gl
 			       clutter-x11-1.0 >= $CLUTTER_MIN_VERSION

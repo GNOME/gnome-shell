@@ -41,6 +41,7 @@ struct _ShellAppSystemPrivate {
   GMenuTree *apps_tree;
 
   GHashTable *running_apps;
+  GHashTable *visible_id_to_app;
   GHashTable *id_to_app;
 
   GSList *known_vendor_prefixes;
@@ -92,14 +93,16 @@ shell_app_system_init (ShellAppSystem *self)
   priv->id_to_app = g_hash_table_new_full (g_str_hash, g_str_equal,
                                            NULL,
                                            (GDestroyNotify)g_object_unref);
+
+  /* All the objects in this hash table are owned by id_to_app */
+  priv->visible_id_to_app = g_hash_table_new (g_str_hash, g_str_equal);
+
   priv->setting_id_to_app = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                    NULL,
                                                    (GDestroyNotify)g_object_unref);
 
-  /* For now, we want to pick up Evince, Nautilus, etc.  We'll
-   * handle NODISPLAY semantics at a higher level or investigate them
-   * case by case.
-   */
+  /* We want to track NoDisplay apps, so we add INCLUDE_NODISPLAY. We'll
+   * filter NoDisplay apps out when showing them to the user. */
   priv->apps_tree = gmenu_tree_new ("applications.menu", GMENU_TREE_FLAGS_INCLUDE_NODISPLAY);
   g_signal_connect (priv->apps_tree, "changed", G_CALLBACK (on_apps_tree_changed_cb), self);
 
@@ -121,6 +124,7 @@ shell_app_system_finalize (GObject *object)
 
   g_hash_table_destroy (priv->running_apps);
   g_hash_table_destroy (priv->id_to_app);
+  g_hash_table_destroy (priv->visible_id_to_app);
   g_hash_table_destroy (priv->setting_id_to_app);
 
   g_slist_free_full (priv->known_vendor_prefixes, g_free);
@@ -308,6 +312,7 @@ on_apps_tree_changed_cb (GMenuTree *tree,
 
   g_assert (tree == self->priv->apps_tree);
 
+  g_hash_table_remove_all (self->priv->visible_id_to_app);
   g_slist_free_full (self->priv->known_vendor_prefixes, g_free);
   self->priv->known_vendor_prefixes = NULL;
 
@@ -369,6 +374,8 @@ on_apps_tree_changed_cb (GMenuTree *tree,
        * string is pointed to.
        */
       g_hash_table_replace (self->priv->id_to_app, (char*)id, app);
+      if (!gmenu_tree_entry_get_is_nodisplay_recurse (entry))
+        g_hash_table_replace (self->priv->visible_id_to_app, (char*)id, app);
 
       if (old_entry)
         gmenu_tree_item_unref (old_entry);
@@ -778,7 +785,7 @@ GSList *
 shell_app_system_initial_search (ShellAppSystem  *self,
                                  GSList          *terms)
 {
-  return search_tree (self, terms, self->priv->id_to_app);
+  return search_tree (self, terms, self->priv->visible_id_to_app);
 }
 
 /**
