@@ -208,8 +208,9 @@ const ViewByCategories = new Lang.Class({
                     appList.push(app);
                 }
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
-                if (!dir.get_is_nodisplay())
-                    this._loadCategory(iter.get_directory(), appList);
+                var itemDir = iter.get_directory();
+                if (!itemDir.get_is_nodisplay())
+                    this._loadCategory(itemDir, appList);
             }
         }
     },
