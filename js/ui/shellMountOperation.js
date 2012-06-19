@@ -48,6 +48,11 @@ function _setLabelsForMessage(dialog, message) {
         _setLabelText(dialog.descriptionLabel, labels[1]);
 }
 
+function _createIcon(gicon) {
+    return new St.Icon({ gicon: gicon,
+                         style_class: 'shell-mount-operation-icon' })
+}
+
 /* -------------------------------------------------------- */
 
 const ListItem = new Lang.Class({
@@ -109,12 +114,11 @@ const ShellMountOperation = new Lang.Class({
         this.mountOp.connect('aborted',
                              Lang.bind(this, this._onAborted));
 
-        this._icon = new St.Icon({ gicon: source.get_icon(),
-                                   style_class: 'shell-mount-operation-icon' });
+        this._gicon = source.get_icon();
     },
 
     _onAskQuestion: function(op, message, choices) {
-        this._dialog = new ShellMountQuestionDialog(this._icon);
+        this._dialog = new ShellMountQuestionDialog(this._gicon);
 
         this._dialog.connect('response',
                                Lang.bind(this, function(object, choice) {
@@ -131,7 +135,7 @@ const ShellMountOperation = new Lang.Class({
 
     _onAskPassword: function(op, message) {
         this._notificationShowing = true;
-        this._source = new ShellMountPasswordSource(message, this._icon, this._reaskPassword);
+        this._source = new ShellMountPasswordSource(message, this._gicon, this._reaskPassword);
 
         this._source.connect('password-ready',
                              Lang.bind(this, function(source, password) {
@@ -166,7 +170,7 @@ const ShellMountOperation = new Lang.Class({
         let message = op.get_show_processes_message();
 
         if (!this._processesDialog) {
-            this._processesDialog = new ShellProcessesDialog(this._icon);
+            this._processesDialog = new ShellProcessesDialog(this._gicon);
             this._dialog = this._processesDialog;
 
             this._processesDialog.connect('response', 
@@ -192,14 +196,14 @@ const ShellMountQuestionDialog = new Lang.Class({
     Name: 'ShellMountQuestionDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(icon) {
+    _init: function(gicon) {
         this.parent({ styleClass: 'mount-question-dialog' });
 
         let mainContentLayout = new St.BoxLayout();
         this.contentLayout.add(mainContentLayout, { x_fill: true,
                                                     y_fill: false });
 
-        this._iconBin = new St.Bin({ child: icon });
+        this._iconBin = new St.Bin({ child: _createIcon(gicon) });
         mainContentLayout.add(this._iconBin,
                               { x_fill:  true,
                                 y_fill:  false,
@@ -238,15 +242,20 @@ const ShellMountPasswordSource = new Lang.Class({
     Name: 'ShellMountPasswordSource',
     Extends: MessageTray.Source,
 
-    _init: function(message, icon, reaskPassword) {
+    _init: function(message, gicon, reaskPassword) {
+        this._gicon = gicon;
+
         let strings = message.split('\n');
         this.parent(strings[0]);
-
-        this._notification = new ShellMountPasswordNotification(this, strings, icon, reaskPassword);
+        this._notification = new ShellMountPasswordNotification(this, strings, reaskPassword);
 
         // add ourselves as a source, and popup the notification
         Main.messageTray.add(this);
         this.notify(this._notification);
+    },
+
+    createNotificationIcon: function() {
+        return _createIcon(this._gicon);
     },
 });
 Signals.addSignalMethods(ShellMountPasswordSource.prototype);
@@ -255,8 +264,8 @@ const ShellMountPasswordNotification = new Lang.Class({
     Name: 'ShellMountPasswordNotification',
     Extends: MessageTray.Notification,
 
-    _init: function(source, strings, icon, reaskPassword) {
-        this.parent(source, strings[0], null, { customContent: true, icon: icon });
+    _init: function(source, strings, reaskPassword) {
+        this.parent(source, strings[0], null, { customContent: true });
 
         // set the notification to transient and urgent, so that it
         // expands out
@@ -297,14 +306,14 @@ const ShellProcessesDialog = new Lang.Class({
     Name: 'ShellProcessesDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(icon) {
+    _init: function(gicon) {
         this.parent({ styleClass: 'show-processes-dialog' });
 
         let mainContentLayout = new St.BoxLayout();
         this.contentLayout.add(mainContentLayout, { x_fill: true,
                                                     y_fill: false });
 
-        this._iconBin = new St.Bin({ child: icon });
+        this._iconBin = new St.Bin({ child: _createIcon(gicon) });
         mainContentLayout.add(this._iconBin,
                               { x_fill:  true,
                                 y_fill:  false,
