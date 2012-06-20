@@ -132,13 +132,13 @@ const ShellMountOperation = new Lang.Class({
         this._closeExistingDialog();
         this._dialog = new ShellMountQuestionDialog(this._gicon);
 
-        this._dialogId = this._dialog.connect('response',
-                               Lang.bind(this, function(object, choice) {
-                                   this.mountOp.set_choice(choice);
-                                   this.mountOp.reply(Gio.MountOperationResult.HANDLED);
+        this._dialogId = this._dialog.connect('response', Lang.bind(this,
+            function(object, choice) {
+                this.mountOp.set_choice(choice);
+                this.mountOp.reply(Gio.MountOperationResult.HANDLED);
 
-                                   this.close();
-                               }));
+                this.close();
+            }));
 
         this._dialog.update(message, choices);
         this._dialog.open();
@@ -190,17 +190,17 @@ const ShellMountOperation = new Lang.Class({
             this._processesDialog = new ShellProcessesDialog(this._gicon);
             this._dialog = this._processesDialog;
 
-            this._dialogId = this._processesDialog.connect('response',
-                                          Lang.bind(this, function(object, choice) {
-                                              if (choice == -1) {
-                                                  this.mountOp.reply(Gio.MountOperationResult.ABORTED);
-                                              } else {
-                                                  this.mountOp.set_choice(choice);
-                                                  this.mountOp.reply(Gio.MountOperationResult.HANDLED);
-                                              }
+            this._dialogId = this._processesDialog.connect('response', Lang.bind(this,
+                function(object, choice) {
+                    if (choice == -1) {
+                        this.mountOp.reply(Gio.MountOperationResult.ABORTED);
+                    } else {
+                        this.mountOp.set_choice(choice);
+                        this.mountOp.reply(Gio.MountOperationResult.HANDLED);
+                    }
 
-                                              this.close();
-                                          }));
+                    this.close();
+                }));
             this._processesDialog.open();
         }
 
