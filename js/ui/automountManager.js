@@ -238,7 +238,7 @@ const AutomountManager = new Lang.Class({
 
         if (params.useMountOp) {
             let operation = new ShellMountOperation.ShellMountOperation(volume);
-            this._mountVolume(volume, operation.mountOp, params.allowAutorun);
+            this._mountVolume(volume, operation, params.allowAutorun);
         } else {
             this._mountVolume(volume, null, params.allowAutorun);
         }
@@ -248,7 +248,10 @@ const AutomountManager = new Lang.Class({
         if (allowAutorun)
             this._allowAutorun(volume);
 
-        volume.mount(0, operation, null,
+        let mountOp = operation ? operation.mountOp : null;
+        volume._operation = operation;
+
+        volume.mount(0, mountOp, null,
                      Lang.bind(this, this._onVolumeMounted));
     },
 
@@ -257,15 +260,17 @@ const AutomountManager = new Lang.Class({
 
         try {
             volume.mount_finish(res);
+            this._closeOperation(volume);
         } catch (e) {
-            let string = e.toString();
-
-            // FIXME: needs proper error code handling instead of this
-            // See https://bugzilla.gnome.org/show_bug.cgi?id=591480
-            if (string.indexOf('No key available with this passphrase') != -1)
+            // FIXME: we will always get G_IO_ERROR_FAILED from the gvfs udisks
+            // backend in this case, see 
+            // https://bugs.freedesktop.org/show_bug.cgi?id=51271
+            if (e.message.indexOf('No key available with this passphrase') != -1) {
                 this._reaskPassword(volume);
-            else
-                log('Unable to mount volume ' + volume.get_name() + ': ' + string);
+            } else {
+                log('Unable to mount volume ' + volume.get_name() + ': ' + e.toString());
+                this._closeOperation(volume);
+            }
         }
     },
 
@@ -277,8 +282,16 @@ const AutomountManager = new Lang.Class({
     },
 
     _reaskPassword: function(volume) {
-        let operation = new ShellMountOperation.ShellMountOperation(volume, { reaskPassword: true });
-        this._mountVolume(volume, operation.mountOp);        
+        let existingDialog = volume._operation ? volume._operation.borrowDialog() : null;
+        let operation = 
+            new ShellMountOperation.ShellMountOperation(volume,
+                                                        { existingDialog: existingDialog });
+        this._mountVolume(volume, operation);
+    },
+
+    _closeOperation: function(volume) {
+        if (volume._operation)
+            volume._operation.close();
     },
 
     _allowAutorun: function(volume) {

@@ -99,11 +99,11 @@ const ShellMountOperation = new Lang.Class({
     Name: 'ShellMountOperation',
 
     _init: function(source, params) {
-        params = Params.parse(params, { reaskPassword: false });
-
-        this._reaskPassword = params.reaskPassword;
+        params = Params.parse(params, { existingDialog: null });
 
         this._dialog = null;
+        this._dialogId = 0;
+        this._existingDialog = params.existingDialog;
         this._processesDialog = null;
 
         this.mountOp = new Shell.MountOperation();
@@ -115,21 +115,29 @@ const ShellMountOperation = new Lang.Class({
         this.mountOp.connect('show-processes-2',
                              Lang.bind(this, this._onShowProcesses2));
         this.mountOp.connect('aborted',
-                             Lang.bind(this, this._onAborted));
+                             Lang.bind(this, this.close));
 
         this._gicon = source.get_icon();
     },
 
+    _closeExistingDialog: function() {
+        if (!this._existingDialog)
+            return;
+
+        this._existingDialog.close(global.get_current_time());
+        this._existingDialog = null;
+    },
+
     _onAskQuestion: function(op, message, choices) {
+        this._closeExistingDialog();
         this._dialog = new ShellMountQuestionDialog(this._gicon);
 
-        this._dialog.connect('response',
+        this._dialogId = this._dialog.connect('response',
                                Lang.bind(this, function(object, choice) {
                                    this.mountOp.set_choice(choice);
                                    this.mountOp.reply(Gio.MountOperationResult.HANDLED);
 
-                                   this._dialog.close(global.get_current_time());
-                                   this._dialog = null;
+                                   this.close();
                                }));
 
         this._dialog.update(message, choices);
@@ -137,11 +145,15 @@ const ShellMountOperation = new Lang.Class({
     },
 
     _onAskPassword: function(op, message) {
-        this._dialog = new ShellMountPasswordDialog(
-            message, this._gicon, this._reaskPassword);
+        if (this._existingDialog) {
+            this._dialog = this._existingDialog;
+            this._dialog.reaskPassword();
+        } else {
+            this._dialog = new ShellMountPasswordDialog(message, this._gicon);
+        }
 
-        this._dialog.connect('response', Lang.bind(this,
-        function(object, choice, password, remember) {
+        this._dialogId = this._dialog.connect('response', Lang.bind(this,
+            function(object, choice, password, remember) {
                 if (choice == '-1') {
                     this.mountOp.reply(Gio.MountOperationResult.ABORTED);
                 } else {
@@ -153,16 +165,13 @@ const ShellMountOperation = new Lang.Class({
                     this.mountOp.set_password(password);
                     this.mountOp.reply(Gio.MountOperationResult.HANDLED);
                 }
-
-                this._dialog.close(global.get_current_time());
-                this._dialog = null;
             }));
         this._dialog.open(global.get_current_time());
     },
 
-    _onAborted: function(op) {
-        if (!this._dialog)
-            return;
+    close: function(op) {
+        this._closeExistingDialog();
+        this._processesDialog = null;
 
         if (this._dialog) {
             this._dialog.close(global.get_current_time());
@@ -171,6 +180,8 @@ const ShellMountOperation = new Lang.Class({
     },
 
     _onShowProcesses2: function(op) {
+        this._closeExistingDialog();
+
         let processes = op.get_show_processes_pids();
         let choices = op.get_show_processes_choices();
         let message = op.get_show_processes_message();
@@ -179,7 +190,7 @@ const ShellMountOperation = new Lang.Class({
             this._processesDialog = new ShellProcessesDialog(this._gicon);
             this._dialog = this._processesDialog;
 
-            this._processesDialog.connect('response',
+            this._dialogId = this._processesDialog.connect('response',
                                           Lang.bind(this, function(object, choice) {
                                               if (choice == -1) {
                                                   this.mountOp.reply(Gio.MountOperationResult.ABORTED);
@@ -188,14 +199,22 @@ const ShellMountOperation = new Lang.Class({
                                                   this.mountOp.reply(Gio.MountOperationResult.HANDLED);
                                               }
 
-                                              this._processesDialog.close(global.get_current_time());
-                                              this._dialog = null;
+                                              this.close();
                                           }));
             this._processesDialog.open(global.get_current_time());
         }
 
         this._processesDialog.update(message, processes, choices);
     },
+
+    borrowDialog: function() {
+        if (this._dialogId != 0) {
+            this._dialog.disconnect(this._dialogId);
+            this._dialogId = 0;
+        }
+
+        return this._dialog;
+    }
 });
 
 const ShellMountQuestionDialog = new Lang.Class({
@@ -248,7 +267,7 @@ const ShellMountPasswordDialog = new Lang.Class({
     Name: 'ShellMountPasswordDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(message, gicon, reaskPassword) {
+    _init: function(message, gicon) {
         let strings = message.split('\n');
         this.parent({ styleClass: 'prompt-dialog' });
 
@@ -300,13 +319,12 @@ const ShellMountPasswordDialog = new Lang.Class({
         this._passwordBox.add(this._passwordEntry, {expand: true });
         this.setInitialKeyFocus(this._passwordEntry);
 
-        if (reaskPassword) {
-            this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
-                                                     text: _("Sorry, that didn\'t work. Please try again.") });
-            this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-            this._errorMessageLabel.clutter_text.line_wrap = true;
-            this._messageBox.add(this._errorMessageLabel);
-        }
+        this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
+                                                 text: _("Sorry, that didn\'t work. Please try again.") });
+        this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._errorMessageLabel.clutter_text.line_wrap = true;
+        this._errorMessageLabel.hide();
+        this._messageBox.add(this._errorMessageLabel);
 
         this._rememberChoice = new CheckBox.CheckBox();
         this._rememberChoice.getLabelActor().text = _("Remember Passphrase");
@@ -322,6 +340,11 @@ const ShellMountPasswordDialog = new Lang.Class({
                        }];
 
         this.setButtons(buttons);
+    },
+
+    reaskPassword: function() {
+        this._passwordEntry.set_text('');
+        this._errorMessageLabel.show();
     },
 
     _onCancelButton: function() {
