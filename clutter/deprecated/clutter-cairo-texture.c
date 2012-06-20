@@ -347,9 +347,6 @@ clutter_cairo_texture_emit_draw (ClutterCairoTexture        *self,
   g_assert (self->priv->cr_surface != NULL);
 
   cr = cairo_create (self->priv->cr_surface);
-  cairo_set_user_data (cr, &clutter_cairo_texture_context_key,
-                       ctxt,
-                       clutter_cairo_texture_context_destroy);
 
   if (ctxt->is_clipped)
     {
@@ -367,6 +364,8 @@ clutter_cairo_texture_emit_draw (ClutterCairoTexture        *self,
   g_signal_emit (self, cairo_signals[DRAW], 0, cr, &result);
 
   self->priv->cr_context = NULL;
+
+  clutter_cairo_texture_context_destroy (ctxt);
 
   cairo_destroy (cr);
 }
