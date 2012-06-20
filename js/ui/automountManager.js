@@ -268,7 +268,9 @@ const AutomountManager = new Lang.Class({
             if (e.message.indexOf('No key available with this passphrase') != -1) {
                 this._reaskPassword(volume);
             } else {
-                log('Unable to mount volume ' + volume.get_name() + ': ' + e.toString());
+                if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED_HANDLED))
+                    log('Unable to mount volume ' + volume.get_name() + ': ' + e.toString());
+
                 this._closeOperation(volume);
             }
         }
