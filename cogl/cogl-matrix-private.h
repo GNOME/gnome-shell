@@ -35,11 +35,8 @@ G_BEGIN_DECLS
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_MATRICES))) \
     { \
       g_print ("%s:\n", G_STRFUNC); \
-      _cogl_matrix_print (MATRIX); \
+      cogl_debug_matrix_print (MATRIX); \
     }
-
-void
-_cogl_matrix_print (const CoglMatrix *matrix);
 
 void
 _cogl_matrix_prefix_print (const char *prefix, const CoglMatrix *matrix);

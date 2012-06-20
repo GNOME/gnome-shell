@@ -398,7 +398,7 @@ _cogl_matrix_prefix_print (const char *prefix, const CoglMatrix *matrix)
  * Dumps the contents of a CoglMatrix structure.
  */
 void
-_cogl_matrix_print (const CoglMatrix *matrix)
+cogl_debug_matrix_print (const CoglMatrix *matrix)
 {
   _cogl_matrix_prefix_print ("", matrix);
 }
