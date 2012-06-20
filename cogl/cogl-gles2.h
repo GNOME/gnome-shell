@@ -43,7 +43,7 @@
  * conflicts we only expose the minimal set of GLES 2.0 types and enums
  * publicly.
  */
-#ifdef CLUTTER_COMPILATION
+#ifdef COGL_COMPILATION
 #include "cogl-gl-header.h"
 #else
 #include <cogl/cogl-gles2-types.h>

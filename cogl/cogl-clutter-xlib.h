@@ -21,7 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#if !defined(__COGL_XLIB_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#if !defined(__COGL_XLIB_H_INSIDE__) && !defined(COGL_COMPILATION)
 #error "Only <cogl/cogl-xlib.h> can be included directly."
 #endif
 

@@ -21,7 +21,7 @@
  *
  */
 
-#if !defined(CLUTTER_COMPILATION)
+#if !defined(COGL_COMPILATION)
 #error "cogl-gl-header.h should only be included when compiling Cogl"
 #endif
 

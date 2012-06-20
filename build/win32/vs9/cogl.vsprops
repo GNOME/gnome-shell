@@ -36,7 +36,7 @@
 	/>
 	<UserMacro
 		Name="LibBuildDefines"
-		Value="HAVE_CONFIG_H;CLUTTER_COMPILATION;$(BaseBuildDefines)"
+		Value="HAVE_CONFIG_H;COGL_COMPILATION;$(BaseBuildDefines)"
 	/>
 	<UserMacro
 		Name="ReleaseLibBuildDefines"
@@ -56,7 +56,7 @@
 	/>
 	<UserMacro
 		Name="TestProgDef"
-		Value="CLUTTER_COMPILATION;TESTS_DATADIR=\&quot;../share/cogl-$(CoglApiVersion)/tests\&quot;"
+		Value="COGL_COMPILATION;TESTS_DATADIR=\&quot;../share/cogl-$(CoglApiVersion)/tests\&quot;"
 	/>
 	<UserMacro
 		Name="DoDefinesSDL"

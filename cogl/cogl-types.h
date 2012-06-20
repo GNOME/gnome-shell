@@ -21,7 +21,7 @@
  *
  */
 
-#if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#if !defined(__COGL_H_INSIDE__) && !defined(COGL_COMPILATION)
 #error "Only <cogl/cogl.h> can be included directly."
 #endif
 
@@ -77,7 +77,7 @@ typedef int CoglBool;
    definitions because we want the size to be public so they can be
    allocated on the stack. This macro is used to ensure that users
    don't accidentally access private members */
-#ifdef CLUTTER_COMPILATION
+#ifdef COGL_COMPILATION
 #define COGL_PRIVATE(x) x
 #else
 #define COGL_PRIVATE(x) private_member_ ## x

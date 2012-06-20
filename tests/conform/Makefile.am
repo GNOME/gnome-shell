@@ -116,7 +116,7 @@ test_conformance_CPPFLAGS = \
 	-DCOGL_ENABLE_EXPERIMENTAL_API \
 	-DCOGL_DISABLE_DEPRECATED \
 	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\" \
-	-DCLUTTER_COMPILATION
+	-DCOGL_COMPILATION
 
 test_conformance_CFLAGS = -g3 -O0 $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS)
 test_conformance_LDADD = $(COGL_DEP_LIBS) $(top_builddir)/cogl/libcogl.la

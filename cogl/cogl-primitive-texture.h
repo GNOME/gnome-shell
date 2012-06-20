@@ -22,7 +22,7 @@
  *
  */
 
-#if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#if !defined(__COGL_H_INSIDE__) && !defined(COGL_COMPILATION)
 #error "Only <cogl/cogl.h> can be included directly."
 #endif
 
