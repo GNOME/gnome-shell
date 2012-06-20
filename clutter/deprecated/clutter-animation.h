@@ -40,7 +40,6 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_ANIMATION_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_ANIMATION))
 #define CLUTTER_ANIMATION_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_ANIMATION, ClutterAnimationClass))
 
-typedef struct _ClutterAnimation                ClutterAnimation;
 typedef struct _ClutterAnimationPrivate         ClutterAnimationPrivate;
 typedef struct _ClutterAnimationClass           ClutterAnimationClass;
 

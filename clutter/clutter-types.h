@@ -89,8 +89,6 @@ typedef struct _ClutterAlpha            	ClutterAlpha;
 typedef struct _ClutterAnimation                ClutterAnimation;
 typedef struct _ClutterAnimator         	ClutterAnimator;
 typedef struct _ClutterState            	ClutterState;
-typedef struct _ClutterBehaviour                ClutterBehaviour;
-typedef struct _ClutterShader                   ClutterShader;
 
 typedef union _ClutterEvent                     ClutterEvent;
 
