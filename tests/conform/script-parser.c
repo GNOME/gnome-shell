@@ -399,6 +399,7 @@ script_layout_property (TestConformSimpleFixture *fixture,
   g_object_unref (script);
 }
 
+void
 script_margin (TestConformSimpleFixture *fixture,
                gpointer                  dummy)
 {
@@ -441,4 +442,3 @@ script_margin (TestConformSimpleFixture *fixture,
   g_object_unref (script);
   g_free (test_file);
 }
-
