@@ -164,7 +164,7 @@ _cogl_blit_framebuffer_begin (CoglBlitData *data)
 
   dst_fb = COGL_FRAMEBUFFER (dst_offscreen);
   if (!cogl_framebuffer_allocate (dst_fb, NULL))
-    goto ERROR;
+    goto error;
 
   src_offscreen= _cogl_offscreen_new_to_texture_full
     (data->src_tex,
@@ -172,17 +172,17 @@ _cogl_blit_framebuffer_begin (CoglBlitData *data)
      0 /* level */);
 
   if (src_offscreen == NULL)
-    goto ERROR;
+    goto error;
 
   src_fb = COGL_FRAMEBUFFER (src_offscreen);
   if (!cogl_framebuffer_allocate (src_fb, NULL))
-    goto ERROR;
+    goto error;
 
   _cogl_push_framebuffers (dst_fb, src_fb);
 
   return TRUE;
 
-ERROR:
+error:
 
   if (dst_offscreen)
     cogl_object_unref (dst_offscreen);
