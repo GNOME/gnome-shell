@@ -112,7 +112,9 @@ test_touch_events_main (int argc, char *argv[])
   ClutterActor *stage, *canvas;
   int i;
 
+#ifdef CLUTTER_WINDOWING_X11
   clutter_x11_enable_xinput ();
+#endif
 
   /* initialize Clutter */
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
