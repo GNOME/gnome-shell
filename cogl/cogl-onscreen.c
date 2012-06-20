@@ -115,11 +115,18 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
   CoglResizeNotifyEntry *resize_entry;
+  CoglSwapBuffersNotifyEntry *swap_entry;
 
   while ((resize_entry = COGL_TAILQ_FIRST (&onscreen->resize_callbacks)))
     {
       COGL_TAILQ_REMOVE (&onscreen->resize_callbacks, resize_entry, list_node);
       g_slice_free (CoglResizeNotifyEntry, resize_entry);
+    }
+
+  while ((swap_entry = COGL_TAILQ_FIRST (&onscreen->swap_callbacks)))
+    {
+      COGL_TAILQ_REMOVE (&onscreen->swap_callbacks, swap_entry, list_node);
+      g_slice_free (CoglSwapBuffersNotifyEntry, swap_entry);
     }
 
   if (framebuffer->context->window_buffer == COGL_FRAMEBUFFER (onscreen))
