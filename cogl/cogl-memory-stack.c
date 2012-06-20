@@ -177,10 +177,9 @@ _cogl_memory_stack_free (CoglMemoryStack *stack)
 {
   CoglMemorySubStack *sub_stack;
 
-  for (sub_stack = stack->sub_stacks.tqh_first;
-       sub_stack;
-       sub_stack = sub_stack->list_node.tqe_next)
+  while ((sub_stack = COGL_TAILQ_FIRST (&stack->sub_stacks)))
     {
+      COGL_TAILQ_REMOVE (&stack->sub_stacks, sub_stack, list_node);
       _cogl_memory_sub_stack_free (sub_stack);
     }
 
