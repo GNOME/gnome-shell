@@ -124,7 +124,7 @@ const ShellMountOperation = new Lang.Class({
         if (!this._existingDialog)
             return;
 
-        this._existingDialog.close(global.get_current_time());
+        this._existingDialog.close();
         this._existingDialog = null;
     },
 
@@ -141,7 +141,7 @@ const ShellMountOperation = new Lang.Class({
                                }));
 
         this._dialog.update(message, choices);
-        this._dialog.open(global.get_current_time());
+        this._dialog.open();
     },
 
     _onAskPassword: function(op, message) {
@@ -166,7 +166,7 @@ const ShellMountOperation = new Lang.Class({
                     this.mountOp.reply(Gio.MountOperationResult.HANDLED);
                 }
             }));
-        this._dialog.open(global.get_current_time());
+        this._dialog.open();
     },
 
     close: function(op) {
@@ -174,7 +174,7 @@ const ShellMountOperation = new Lang.Class({
         this._processesDialog = null;
 
         if (this._dialog) {
-            this._dialog.close(global.get_current_time());
+            this._dialog.close();
             this._dialog = null;
         }
     },
@@ -201,7 +201,7 @@ const ShellMountOperation = new Lang.Class({
 
                                               this.close();
                                           }));
-            this._processesDialog.open(global.get_current_time());
+            this._processesDialog.open();
         }
 
         this._processesDialog.update(message, processes, choices);
