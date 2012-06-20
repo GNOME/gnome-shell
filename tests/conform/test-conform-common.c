@@ -31,7 +31,7 @@ test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
                 "$ make test-report");
   counter++;
 
-#ifdef HAVE_CLUTTER_GLX
+#ifdef CLUTTER_WINDOWING_X11
   {
     /* on X11 we need a display connection to run the test suite */
     const gchar *display = g_getenv ("DISPLAY");
@@ -43,9 +43,10 @@ test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
         exit (EXIT_SUCCESS);
       }
   }
-#endif
 
+  /* enable XInput support */
   clutter_x11_enable_xinput ();
+#endif
 
   g_assert (clutter_init (shared_state->argc_addr, shared_state->argv_addr)
             == CLUTTER_INIT_SUCCESS);
