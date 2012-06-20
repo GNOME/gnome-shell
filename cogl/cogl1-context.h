@@ -88,6 +88,10 @@ cogl_features_available (CoglFeatureFlags features);
  * as a wrapper around glXGetProcAddress() or whatever is the
  * appropriate function for the current backend.
  *
+ * <note>This function should not be used to query core opengl API
+ * symbols since eglGetProcAddress for example doesn't allow this and
+ * and may return a junk pointer if you do.</note>
+ *
  * Return value: a pointer to the requested function or %NULL if the
  *   function is not available.
  */

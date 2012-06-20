@@ -127,14 +127,22 @@ static const CoglFeatureData winsys_feature_data[] =
 
 static CoglFuncPtr
 _cogl_winsys_renderer_get_proc_address (CoglRenderer *renderer,
-                                        const char *name)
+                                        const char *name,
+                                        CoglBool in_core)
 {
   CoglRendererWgl *wgl_renderer = renderer->winsys;
   void *proc = wglGetProcAddress ((LPCSTR) name);
 
   /* The documentation for wglGetProcAddress implies that it only
      returns pointers to extension functions so if it fails we'll try
-     resolving the symbol directly from the the GL library */
+     resolving the symbol directly from the the GL library. We could
+     completely avoid using wglGetProcAddress if in_core is TRUE but
+     on WGL any function that is in GL > 1.1 is considered an
+     extension and is not directly exported from opengl32.dll.
+     Therefore we currently just assume wglGetProcAddress will return
+     NULL for GL 1.1 functions and we can fallback to querying them
+     directly from the library */
+
   if (proc == NULL)
     {
       if (wgl_renderer->gl_module == NULL)

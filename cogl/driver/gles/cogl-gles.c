@@ -171,7 +171,8 @@ _cogl_driver_update_features (CoglContext *context,
      can expect */
   context->glGetString =
     (void *) _cogl_renderer_get_proc_address (context->display->renderer,
-                                              "glGetString");
+                                              "glGetString",
+                                              TRUE);
 
   COGL_NOTE (WINSYS,
              "Checking features\n"

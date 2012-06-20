@@ -321,7 +321,8 @@ _cogl_driver_update_features (CoglContext *ctx,
      can expect */
   ctx->glGetString =
     (void *) _cogl_renderer_get_proc_address (ctx->display->renderer,
-                                              "glGetString");
+                                              "glGetString",
+                                              TRUE);
 
   if (!check_gl_version (ctx, error))
     return FALSE;

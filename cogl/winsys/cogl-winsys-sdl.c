@@ -54,6 +54,16 @@ static CoglFuncPtr
 _cogl_winsys_renderer_get_proc_address (CoglRenderer *renderer,
                                         const char *name)
 {
+  /* XXX: It's not totally clear whether it's safe to call this for
+   * core functions. From the code it looks like the implementations
+   * will fall back to using some form of dlsym if the winsys
+   * GetProcAddress function returns NULL. Presumably this will work
+   * in most cases apart from EGL platforms that return invalid
+   * pointers for core functions. It's awkward for this code to get a
+   * handle to the GL module that SDL has chosen to load so just
+   * calling SDL_GL_GetProcAddress is probably the best we can do
+   * here. */
+
 #ifdef COGL_HAS_SDL_GLES_SUPPORT
   if (renderer->driver != COGL_DRIVER_GL)
     return SDL_GLES_GetProcAddress (name);

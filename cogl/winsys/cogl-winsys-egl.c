@@ -118,11 +118,13 @@ get_error_string (void)
 
 static CoglFuncPtr
 _cogl_winsys_renderer_get_proc_address (CoglRenderer *renderer,
-                                        const char *name)
+                                        const char *name,
+                                        CoglBool in_core)
 {
-  void *ptr;
+  void *ptr = NULL;
 
-  ptr = eglGetProcAddress (name);
+  if (!in_core)
+    ptr = eglGetProcAddress (name);
 
   /* eglGetProcAddress doesn't support fetching core API so we need to
      get that separately with GModule */

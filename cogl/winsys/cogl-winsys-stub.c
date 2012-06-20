@@ -47,7 +47,8 @@ static int _cogl_winsys_stub_dummy_ptr;
 
 static CoglFuncPtr
 _cogl_winsys_renderer_get_proc_address (CoglRenderer *renderer,
-                                        const char *name)
+                                        const char *name,
+                                        CoglBool in_core)
 {
   static GModule *module = NULL;
 

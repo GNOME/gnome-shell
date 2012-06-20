@@ -70,7 +70,8 @@ typedef struct _CoglWinsysVtable
 
   CoglFuncPtr
   (*renderer_get_proc_address) (CoglRenderer *renderer,
-                                const char *name);
+                                const char *name,
+                                CoglBool in_core);
 
   CoglBool
   (*renderer_connect) (CoglRenderer *renderer, GError **error);
