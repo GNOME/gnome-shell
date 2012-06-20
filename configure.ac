@@ -612,7 +612,7 @@ AM_CONDITIONAL([COGL_DRIVER_GL_SUPPORTED], [test "x$enable_gl" = "xyes"])
 AM_CONDITIONAL([COGL_DRIVER_GLES_SUPPORTED],
                [test "x$enable_gles1" = "xyes" || test "x$enable_gles2" = "xyes"])
 
-dnl Allow the GL library names to be overridden with configure options
+dnl Allow the GL library names and default driver to be overridden with configure options
 AC_ARG_WITH([gl-libname],
             [AS_HELP_STRING([--with-gl-libname],
                             override the name of the GL library to dlopen)],
@@ -625,6 +625,15 @@ AC_ARG_WITH([gles2-libname],
             [AS_HELP_STRING([--with-gles2-libname],
                             override the name of the GLESv2 library to dlopen)],
             [COGL_GLES2_LIBNAME="$withval"])
+AC_ARG_WITH([default-driver],
+            [AS_HELP_STRING([--with-default-driver],
+                            specify a default cogl driver)],
+            [COGL_DEFAULT_DRIVER="${withval}"],
+            [COGL_DEFAULT_DRIVER="" ])
+
+AM_CONDITIONAL(HAVE_COGL_DEFAULT_DRIVER,
+  [ test "x$COGL_DEFAULT_DRIVER" != "x" ])
+
 
 AC_SUBST([COGL_GL_LIBNAME])
 AC_SUBST([HAVE_GL])
@@ -632,6 +641,7 @@ AC_SUBST([COGL_GLES1_LIBNAME])
 AC_SUBST([HAVE_GLES1])
 AC_SUBST([COGL_GLES2_LIBNAME])
 AC_SUBST([HAVE_GLES2])
+AC_SUBST([COGL_DEFAULT_DRIVER])
 
 if test "x$GL_LIBRARY_DIRECTLY_LINKED" = "xyes"; then
    AC_DEFINE([HAVE_DIRECTLY_LINKED_GL_LIBRARY], [1],
@@ -1234,6 +1244,9 @@ echo "Cogl - $COGL_1_VERSION/$COGL_VERSION (${COGL_RELEASE_STATUS})"
 echo ""
 echo " • Global:"
 echo "        Prefix: ${prefix}"
+if test "x$COGL_DEFAULT_DRIVER" != "x"; then
+echo "        Default driver: ${COGL_DEFAULT_DRIVER}"
+fi
 
 echo ""
 # Features

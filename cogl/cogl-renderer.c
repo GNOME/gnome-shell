@@ -260,6 +260,11 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
         }
     }
 
+#ifdef COGL_DEFAULT_DRIVER
+  if (!driver_name)
+    driver_name = COGL_DEFAULT_DRIVER;
+#endif
+
 #ifdef HAVE_COGL_GL
   if (renderer->driver_override == COGL_DRIVER_GL ||
       (renderer->driver_override == COGL_DRIVER_ANY &&

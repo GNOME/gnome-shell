@@ -32,6 +32,12 @@ AM_CPPFLAGS = \
 	-DCOGL_LOCALEDIR=\""$(localedir)"\" \
 	$(NULL)
 
+if HAVE_COGL_DEFAULT_DRIVER
+AM_CPPFLAGS += \
+	-DCOGL_DEFAULT_DRIVER=\"$(COGL_DEFAULT_DRIVER)\"
+endif
+
+
 AM_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
 
 BUILT_SOURCES += cogl-defines.h cogl-egl-defines.h cogl-gl-header.h
