@@ -46,8 +46,9 @@ typedef struct _CoglRendererSdl
 typedef struct _CoglDisplaySdl
 {
   SDL_Surface *surface;
-  CoglBool has_onscreen;
+  CoglOnscreen *onscreen;
   Uint32 video_mode_flags;
+  CoglBool pending_resize_notify;
 } CoglDisplaySdl;
 
 static CoglFuncPtr
@@ -200,6 +201,39 @@ error:
   return FALSE;
 }
 
+static CoglFilterReturn
+sdl_event_filter_cb (SDL_Event *event, void *data)
+{
+  if (event->type == SDL_VIDEORESIZE)
+    {
+      CoglContext *context = data;
+      CoglDisplay *display = context->display;
+      CoglDisplaySdl *sdl_display = display->winsys;
+      float width = event->resize.w;
+      float height = event->resize.h;
+      CoglFramebuffer *framebuffer;
+
+      if (!sdl_display->onscreen)
+        return COGL_FILTER_CONTINUE;
+
+      sdl_display->surface = SDL_SetVideoMode (width, height,
+                                               0, /* bitsperpixel */
+                                               sdl_display->video_mode_flags);
+
+      framebuffer = COGL_FRAMEBUFFER (sdl_display->onscreen);
+      _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
+
+      /* We only want to notify that a resize happened when the
+         application calls cogl_context_dispatch so instead of immediately
+         notifying we'll set a flag to remember to notify later */
+      sdl_display->pending_resize_notify = TRUE;
+
+      return COGL_FILTER_CONTINUE;
+    }
+
+  return COGL_FILTER_CONTINUE;
+}
+
 static CoglBool
 _cogl_winsys_context_init (CoglContext *context, GError **error)
 {
@@ -208,6 +242,10 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
   if (G_UNLIKELY (renderer->sdl_event_type_set == FALSE))
     g_error ("cogl_sdl_renderer_set_event_type() or cogl_sdl_context_new() "
              "must be called during initialization");
+
+  _cogl_renderer_add_native_filter (renderer,
+                                    (CoglNativeFilterFunc)sdl_event_filter_cb,
+                                    context);
 
   return _cogl_context_update_features (context, error);
 }
@@ -229,7 +267,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   CoglDisplay *display = context->display;
   CoglDisplaySdl *sdl_display = display->winsys;
 
-  sdl_display->has_onscreen = FALSE;
+  sdl_display->onscreen = NULL;
 }
 
 static CoglBool
@@ -242,7 +280,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   CoglDisplaySdl *sdl_display = display->winsys;
   int width, height;
 
-  if (sdl_display->has_onscreen)
+  if (sdl_display->onscreen)
     {
       g_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_ONSCREEN,
@@ -275,7 +313,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                                         sdl_display->surface->w,
                                         sdl_display->surface->h);
 
-  sdl_display->has_onscreen = TRUE;
+  sdl_display->onscreen = onscreen;
 
   return TRUE;
 }
@@ -297,6 +335,49 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
                                       CoglBool visibility)
 {
   /* SDL doesn't appear to provide a way to set this */
+}
+
+static void
+_cogl_winsys_onscreen_set_resizable (CoglOnscreen *onscreen,
+                                     CoglBool resizable)
+{
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglContext *context = framebuffer->context;
+  CoglDisplay *display = context->display;
+  CoglDisplaySdl *sdl_display = display->winsys;
+  int width, height;
+
+  width = cogl_framebuffer_get_width (framebuffer);
+  height = cogl_framebuffer_get_height (framebuffer);
+
+  if (resizable)
+    sdl_display->video_mode_flags |= SDL_RESIZABLE;
+  else
+    sdl_display->video_mode_flags &= ~SDL_RESIZABLE;
+
+  sdl_display->surface = SDL_SetVideoMode (width, height,
+                                           0, /* bitsperpixel */
+                                           sdl_display->video_mode_flags);
+}
+
+static void
+_cogl_winsys_poll_dispatch (CoglContext *context,
+                            const CoglPollFD *poll_fds,
+                            int n_poll_fds)
+{
+  CoglDisplay *display = context->display;
+  CoglDisplaySdl *sdl_display = display->winsys;
+
+  if (sdl_display->pending_resize_notify)
+    {
+      CoglOnscreen *onscreen = sdl_display->onscreen;
+
+      g_return_if_fail (onscreen != NULL);
+
+      _cogl_onscreen_notify_resize (onscreen);
+
+      sdl_display->pending_resize_notify = FALSE;
+    }
 }
 
 const CoglWinsysVtable *
@@ -330,6 +411,9 @@ _cogl_winsys_sdl_get_vtable (void)
       vtable.onscreen_update_swap_throttled =
         _cogl_winsys_onscreen_update_swap_throttled;
       vtable.onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility;
+      vtable.onscreen_set_resizable = _cogl_winsys_onscreen_set_resizable;
+
+      vtable.poll_dispatch = _cogl_winsys_poll_dispatch;
 
       vtable_inited = TRUE;
     }

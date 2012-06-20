@@ -117,6 +117,8 @@ typedef struct _CoglDisplayEGL
   EGLSurface current_draw_surface;
   EGLContext current_context;
 
+  CoglBool pending_resize_notify;
+
   /* Platform specific display data */
   void *platform;
 } CoglDisplayEGL;
@@ -130,6 +132,8 @@ typedef struct _CoglContextEGL
 typedef struct _CoglOnscreenEGL
 {
   EGLSurface egl_surface;
+
+  CoglBool pending_resize_notify;
 
   /* Platform specific data */
   void *platform;

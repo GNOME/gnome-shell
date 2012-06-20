@@ -51,6 +51,7 @@ typedef struct _CoglGLXDisplay
   GLXWindow dummy_glxwin;
   Window dummy_xwin;
   CoglBool pending_swap_notify;
+  CoglBool pending_resize_notify;
 } CoglGLXDisplay;
 
 #endif /* __COGL_DISPLAY_GLX_PRIVATE_H */

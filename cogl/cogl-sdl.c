@@ -74,6 +74,8 @@ cogl_sdl_handle_event (CoglContext *context, SDL_Event *event)
 
   winsys = _cogl_context_get_winsys (context);
 
+  _cogl_renderer_handle_native_event (context->display->renderer, event);
+
   if (winsys->poll_dispatch)
     winsys->poll_dispatch (context, NULL, 0);
 }

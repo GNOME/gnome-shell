@@ -46,6 +46,19 @@ struct _CoglSwapBuffersNotifyEntry
   unsigned int id;
 };
 
+typedef struct _CoglResizeNotifyEntry CoglResizeNotifyEntry;
+
+COGL_TAILQ_HEAD (CoglResizeNotifyList, CoglResizeNotifyEntry);
+
+struct _CoglResizeNotifyEntry
+{
+  COGL_TAILQ_ENTRY (CoglResizeNotifyEntry) list_node;
+
+  CoglOnscreenResizeCallback callback;
+  void *user_data;
+  unsigned int id;
+};
+
 struct _CoglOnscreen
 {
   CoglFramebuffer  _parent;
@@ -64,6 +77,9 @@ struct _CoglOnscreen
 
   CoglSwapBuffersNotifyList swap_callbacks;
 
+  CoglBool resizable;
+  CoglResizeNotifyList resize_callbacks;
+
   void *winsys;
 };
 
@@ -76,5 +92,8 @@ _cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
 
 void
 _cogl_onscreen_notify_swap_buffers (CoglOnscreen *onscreen);
+
+void
+_cogl_onscreen_notify_resize (CoglOnscreen *onscreen);
 
 #endif /* __COGL_ONSCREEN_PRIVATE_H */

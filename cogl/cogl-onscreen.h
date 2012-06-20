@@ -381,6 +381,144 @@ cogl_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
                                             unsigned int id);
 
 /**
+ * cogl_onscreen_set_resizable:
+ * @onscreen: A #CoglOnscreen framebuffer
+ *
+ * Lets you request Cogl to mark an @onscreen framebuffer as
+ * resizable or not.
+ *
+ * By default, if possible, a @onscreen will be created by Cogl
+ * as non resizable, but it is not guaranteed that this is always
+ * possible for all window systems.
+ *
+ * <note>Cogl does not know whether marking the @onscreen framebuffer
+ * is truly meaningful for your current window system (consider
+ * applications being run fullscreen on a phone or TV) so this
+ * function may not have any useful effect. If you are running on a
+ * multi windowing system such as X11 or Win32 or OSX then Cogl will
+ * request to the window system that users be allowed to resize the
+ * @onscreen, although it's still possible that some other window
+ * management policy will block this possibility.</note>
+ *
+ * <note>Whenever an @onscreen framebuffer is resized the viewport
+ * will be automatically updated to match the new size of the
+ * framebuffer with an origin of (0,0). If your application needs more
+ * specialized control of the viewport it will need to register a
+ * resize handler using cogl_onscreen_add_resize_handler() so that it
+ * can track when the viewport has been changed automatically.</note>
+ *
+ * Since: 2.0
+ */
+void
+cogl_onscreen_set_resizable (CoglOnscreen *onscreen,
+                             CoglBool resizable);
+
+/**
+ * cogl_onscreen_get_resizable:
+ * @onscreen: A #CoglOnscreen framebuffer
+ *
+ * Lets you query whether @onscreen has been marked as resizable via
+ * the cogl_onscreen_set_resizable() api.
+ *
+ * By default, if possible, a @onscreen will be created by Cogl
+ * as non resizable, but it is not guaranteed that this is always
+ * possible for all window systems.
+ *
+ * <note>If cogl_onscreen_set_resizable(@onscreen, %TRUE) has been
+ * previously called then this function will return %TRUE, but it's
+ * possible that the current windowing system being used does not
+ * support window resizing (consider fullscreen windows on a phone or
+ * a TV). This function is not aware of whether resizing is truly
+ * meaningful with your window system, only whether the @onscreen has
+ * been marked as resizable.</note>
+ *
+ * Return value: Returns whether @onscreen has been marked as
+ *               resizable or not.
+ * Since: 2.0
+ */
+CoglBool
+cogl_onscreen_get_resizable (CoglOnscreen *onscreen);
+
+/**
+ * CoglOnscreenResizeCallback:
+ * @onscreen: A #CoglOnscreen framebuffer that was resized
+ * @width: The new width of @onscreen
+ * @height: The new height of @onscreen
+ * @user_data: The private passed to
+ *             cogl_onscreen_add_resize_handler()
+ *
+ * Is a callback type used with the
+ * cogl_onscreen_add_resize_handler() allowing applications to be
+ * notified whenever an @onscreen framebuffer is resized.
+ *
+ * <note>Cogl automatically updates the viewport of an @onscreen
+ * framebuffer that is resized so this callback is also an indication
+ * that the viewport has been modified too</note>
+ *
+ * <note>A resize callback will only ever be called while dispatching
+ * Cogl events from the system mainloop; so for example during
+ * cogl_poll_dispatch(). This is so that callbacks shouldn't occur
+ * while an application might have arbitrary locks held for
+ * example.</note>
+ *
+ * Since: 2.0
+ */
+typedef void (*CoglOnscreenResizeCallback) (CoglOnscreen *onscreen,
+                                            int width,
+                                            int height,
+                                            void *user_data);
+
+/**
+ * cogl_onscreen_add_resize_handler:
+ * @onscreen: A #CoglOnscreen framebuffer
+ * @callback: A #CoglOnscreenResizeCallback to call when the @onscreen
+ *            changes size.
+ * @user_data: Private data to be passed to @callback.
+ *
+ * Registers a @callback with @onscreen that will be called whenever
+ * the @onscreen framebuffer changes size.
+ *
+ * The @callback can be removed using
+ * cogl_onscreen_remove_resize_handler() passing the same @callback
+ * and @user_data pair.
+ *
+ * <note>Since Cogl automatically updates the viewport of an @onscreen
+ * framebuffer that is resized, a resize callback can also be used to
+ * track when the viewport has been changed automatically by Cogl in
+ * case your application needs more specialized control over the
+ * viewport.</note>
+ *
+ * <note>A resize callback will only ever be called while dispatching
+ * Cogl events from the system mainloop; so for example during
+ * cogl_poll_dispatch(). This is so that callbacks shouldn't occur
+ * while an application might have arbitrary locks held for
+ * example.</note>
+ *
+ * Return value: a unique identifier that can be used to remove to remove
+ *               the callback later.
+ *
+ * Since: 2.0
+ */
+unsigned int
+cogl_onscreen_add_resize_handler (CoglOnscreen *onscreen,
+                                  CoglOnscreenResizeCallback callback,
+                                  void *user_data);
+
+/**
+ * cogl_onscreen_remove_resize_handler:
+ * @onscreen: A #CoglOnscreen framebuffer
+ * @id: An identifier returned from cogl_onscreen_add_resize_handler()
+ *
+ * Removes a resize @callback and @user_data pair that were previously
+ * associated with @onscreen via cogl_onscreen_add_resize_handler().
+ *
+ * Since: 2.0
+ */
+void
+cogl_onscreen_remove_resize_handler (CoglOnscreen *onscreen,
+                                     unsigned int id);
+
+/**
  * cogl_is_onscreen:
  * @object: A #CoglObject pointer
  *

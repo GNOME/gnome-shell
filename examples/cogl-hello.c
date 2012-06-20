@@ -59,6 +59,8 @@ main (int argc, char **argv)
     cogl_onscreen_show (onscreen);
     data.fb = COGL_FRAMEBUFFER (onscreen);
 
+    cogl_onscreen_set_resizable (onscreen, TRUE);
+
     data.triangle = cogl_primitive_new_p2c4 (data.ctx,
                                              COGL_VERTICES_MODE_TRIANGLES,
                                              3, triangle_vertices);

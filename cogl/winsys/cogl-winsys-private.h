@@ -120,6 +120,9 @@ typedef struct _CoglWinsysVtable
                            const int *rectangles,
                            int n_rectangles);
 
+  void
+  (*onscreen_set_resizable) (CoglOnscreen *onscreen, CoglBool resizable);
+
 #ifdef COGL_HAS_EGL_SUPPORT
   EGLDisplay
   (*context_egl_get_egl_display) (CoglContext *context);

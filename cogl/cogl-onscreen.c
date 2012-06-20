@@ -46,6 +46,7 @@ _cogl_onscreen_init_from_template (CoglOnscreen *onscreen,
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
 
   COGL_TAILQ_INIT (&onscreen->swap_callbacks);
+  COGL_TAILQ_INIT (&onscreen->resize_callbacks);
 
   framebuffer->config = onscreen_template->config;
   cogl_object_ref (framebuffer->config.swap_chain);
@@ -113,6 +114,13 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
+  CoglResizeNotifyEntry *resize_entry;
+
+  while ((resize_entry = COGL_TAILQ_FIRST (&onscreen->resize_callbacks)))
+    {
+      COGL_TAILQ_REMOVE (&onscreen->resize_callbacks, resize_entry, list_node);
+      g_slice_free (CoglResizeNotifyEntry, resize_entry);
+    }
 
   if (framebuffer->context->window_buffer == COGL_FRAMEBUFFER (onscreen))
     framebuffer->context->window_buffer = NULL;
@@ -347,6 +355,22 @@ _cogl_onscreen_notify_swap_buffers (CoglOnscreen *onscreen)
 }
 
 void
+_cogl_onscreen_notify_resize (CoglOnscreen *onscreen)
+{
+  CoglResizeNotifyEntry *entry, *tmp;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+
+  COGL_TAILQ_FOREACH_SAFE (entry,
+                           &onscreen->resize_callbacks,
+                           list_node,
+                           tmp)
+    entry->callback (onscreen,
+                     framebuffer->width,
+                     framebuffer->height,
+                     entry->user_data);
+}
+
+void
 _cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
                                       int width, int height)
 {
@@ -356,11 +380,78 @@ _cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
   framebuffer->width = width;
   framebuffer->height = height;
 
-  /* The framebuffer geometry can affect the GL viewport so if the
-   * framebuffer being updated is the current framebuffer we mark the
-   * viewport state as changed so it will be updated the next time
-   * _cogl_framebuffer_flush_state() is called. */
+  framebuffer->viewport_x = 0;
+  framebuffer->viewport_y = 0;
+  framebuffer->viewport_width = width;
+  framebuffer->viewport_height = height;
+
+  /* If the framebuffer being updated is the current framebuffer we
+   * mark the viewport state as changed so it will be updated the next
+   * time _cogl_framebuffer_flush_state() is called. */
   if (framebuffer->context->current_draw_buffer == framebuffer)
     framebuffer->context->current_draw_buffer_changes |=
       COGL_FRAMEBUFFER_STATE_VIEWPORT;
 }
+
+void
+cogl_onscreen_set_resizable (CoglOnscreen *onscreen,
+                             CoglBool resizable)
+{
+  CoglFramebuffer *framebuffer;
+  const CoglWinsysVtable *winsys;
+
+  if (onscreen->resizable == resizable)
+    return;
+
+  onscreen->resizable = resizable;
+
+  framebuffer = COGL_FRAMEBUFFER (onscreen);
+  if (framebuffer->allocated)
+    {
+      winsys = _cogl_framebuffer_get_winsys (COGL_FRAMEBUFFER (onscreen));
+
+      if (winsys->onscreen_set_resizable)
+        winsys->onscreen_set_resizable (onscreen, resizable);
+    }
+}
+
+CoglBool
+cogl_onscreen_get_resizable (CoglOnscreen *onscreen)
+{
+  return onscreen->resizable;
+}
+
+unsigned int
+cogl_onscreen_add_resize_handler (CoglOnscreen *onscreen,
+                                  CoglOnscreenResizeCallback callback,
+                                  void *user_data)
+{
+  CoglResizeNotifyEntry *entry = g_slice_new (CoglResizeNotifyEntry);
+  static int next_resize_callback_id = 0;
+
+  entry->callback = callback;
+  entry->user_data = user_data;
+  entry->id = next_resize_callback_id++;
+
+  COGL_TAILQ_INSERT_TAIL (&onscreen->resize_callbacks, entry, list_node);
+
+  return entry->id;
+}
+
+void
+cogl_onscreen_remove_resize_handler (CoglOnscreen *onscreen,
+                                     unsigned int id)
+{
+  CoglResizeNotifyEntry *entry;
+
+  COGL_TAILQ_FOREACH (entry, &onscreen->resize_callbacks, list_node)
+    {
+      if (entry->id == id)
+        {
+          COGL_TAILQ_REMOVE (&onscreen->resize_callbacks, entry, list_node);
+          g_slice_free (CoglResizeNotifyEntry, entry);
+          break;
+        }
+    }
+}
+

@@ -31,6 +31,16 @@ update_cogl_x11_event_mask (CoglOnscreen *onscreen,
                            &attrs);
 }
 
+static void
+resize_handler (CoglOnscreen *onscreen,
+                int width,
+                int height,
+                void *user_data)
+{
+  CoglFramebuffer *fb = user_data;
+  cogl_framebuffer_set_viewport (fb, width / 4, height / 4, width / 2, height / 2);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -149,6 +159,9 @@ main (int argc, char **argv)
 
   fb = COGL_FRAMEBUFFER (onscreen);
 
+  cogl_onscreen_set_resizable (onscreen, TRUE);
+  cogl_onscreen_add_resize_handler (onscreen, resize_handler, onscreen);
+
   triangle = cogl_primitive_new_p2c4 (ctx, COGL_VERTICES_MODE_TRIANGLES,
                                       3, triangle_vertices);
   pipeline = cogl_pipeline_new (ctx);
@@ -170,13 +183,18 @@ main (int argc, char **argv)
             }
           cogl_xlib_renderer_handle_event (renderer, &event);
         }
-      cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
-      cogl_framebuffer_draw_primitive (fb, pipeline, triangle);
-      cogl_onscreen_swap_buffers (onscreen);
 
+      /* After forwarding native events directly to Cogl you should
+       * then allow Cogl to dispatch any corresponding event
+       * callbacks, such as resize notification callbacks...
+       */
       cogl_poll_get_info (ctx, &poll_fds, &n_poll_fds, &timeout);
       g_poll ((GPollFD *) poll_fds, n_poll_fds, 0);
       cogl_poll_dispatch (ctx, poll_fds, n_poll_fds);
+
+      cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
+      cogl_framebuffer_draw_primitive (fb, pipeline, triangle);
+      cogl_onscreen_swap_buffers (onscreen);
     }
 
   return 0;

@@ -89,6 +89,32 @@ find_onscreen_for_xid (CoglContext *context, uint32_t xid)
   return NULL;
 }
 
+static void
+notify_resize (CoglContext *context,
+               GLXDrawable drawable,
+               int width,
+               int height)
+{
+  CoglOnscreen *onscreen = find_onscreen_for_xid (context, drawable);
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglDisplay *display = context->display;
+  CoglDisplayEGL *egl_display = display->winsys;
+  CoglOnscreenEGL *egl_onscreen;
+
+  if (!onscreen)
+    return;
+
+  egl_onscreen = onscreen->winsys;
+
+  _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
+
+  /* We only want to notify that a resize happened when the
+     application calls cogl_context_dispatch so instead of immediately
+     notifying we'll set a flag to remember to notify later */
+  egl_display->pending_resize_notify = TRUE;
+  egl_onscreen->pending_resize_notify = TRUE;
+}
+
 static CoglFilterReturn
 event_filter_cb (XEvent *xevent, void *data)
 {
@@ -96,17 +122,10 @@ event_filter_cb (XEvent *xevent, void *data)
 
   if (xevent->type == ConfigureNotify)
     {
-      CoglOnscreen *onscreen =
-        find_onscreen_for_xid (context, xevent->xconfigure.window);
-
-      if (onscreen)
-        {
-          CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
-
-          _cogl_framebuffer_winsys_update_size (framebuffer,
-                                                xevent->xconfigure.width,
-                                                xevent->xconfigure.height);
-        }
+      notify_resize (context,
+                     xevent->xconfigure.window,
+                     xevent->xconfigure.width,
+                     xevent->xconfigure.height);
     }
 
   return COGL_FILTER_CONTINUE;
@@ -441,6 +460,45 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
     XUnmapWindow (xlib_renderer->xdpy, xlib_onscreen->xwin);
 }
 
+static void
+_cogl_winsys_onscreen_set_resizable (CoglOnscreen *onscreen,
+                                     CoglBool resizable)
+{
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglContext *context = framebuffer->context;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (context->display->renderer);
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglOnscreenXlib *xlib_onscreen = egl_onscreen->platform;
+
+  XSizeHints *size_hints = XAllocSizeHints ();
+
+  if (resizable)
+    {
+      /* TODO: Add cogl_onscreen_request_minimum_size () */
+      size_hints->min_width = 1;
+      size_hints->min_height = 1;
+
+      size_hints->max_width = INT_MAX;
+      size_hints->max_height = INT_MAX;
+    }
+  else
+    {
+      int width = cogl_framebuffer_get_width (framebuffer);
+      int height = cogl_framebuffer_get_height (framebuffer);
+
+      size_hints->min_width = width;
+      size_hints->min_height = height;
+
+      size_hints->max_width = width;
+      size_hints->max_height = height;
+    }
+
+  XSetWMNormalHints (xlib_renderer->xdpy, xlib_onscreen->xwin, size_hints);
+
+  XFree (size_hints);
+}
+
 static uint32_t
 _cogl_winsys_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
 {
@@ -570,10 +628,35 @@ _cogl_winsys_poll_get_info (CoglContext *context,
                             int *n_poll_fds,
                             int64_t *timeout)
 {
+  CoglDisplay *display = context->display;
+  CoglDisplayEGL *egl_display = display->winsys;
+
   _cogl_xlib_renderer_poll_get_info (context->display->renderer,
                                      poll_fds,
                                      n_poll_fds,
                                      timeout);
+
+  if (egl_display->pending_resize_notify)
+    *timeout = 0;
+}
+
+static void
+flush_pending_notifications_cb (void *data,
+                                void *user_data)
+{
+  CoglFramebuffer *framebuffer = data;
+
+  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
+    {
+      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+
+      if (egl_onscreen->pending_resize_notify)
+        {
+          _cogl_onscreen_notify_resize (onscreen);
+          egl_onscreen->pending_resize_notify = FALSE;
+        }
+    }
 }
 
 static void
@@ -581,9 +664,20 @@ _cogl_winsys_poll_dispatch (CoglContext *context,
                             const CoglPollFD *poll_fds,
                             int n_poll_fds)
 {
+  CoglDisplay *display = context->display;
+  CoglDisplayEGL *egl_display = display->winsys;
+
   _cogl_xlib_renderer_poll_dispatch (context->display->renderer,
                                      poll_fds,
                                      n_poll_fds);
+
+  if (egl_display->pending_resize_notify)
+    {
+      g_list_foreach (context->framebuffers,
+                      flush_pending_notifications_cb,
+                      NULL);
+      egl_display->pending_resize_notify = FALSE;
+    }
 }
 
 #ifdef EGL_KHR_image_pixmap
@@ -726,6 +820,8 @@ _cogl_winsys_egl_xlib_get_vtable (void)
 
       vtable.onscreen_set_visibility =
         _cogl_winsys_onscreen_set_visibility;
+      vtable.onscreen_set_resizable =
+        _cogl_winsys_onscreen_set_resizable;
 
       vtable.onscreen_x11_get_window_xid =
         _cogl_winsys_onscreen_x11_get_window_xid;

@@ -80,6 +80,7 @@ typedef struct _CoglOnscreenGLX
   GLXDrawable glxwin;
   uint32_t last_swap_vsync_counter;
   CoglBool pending_swap_notify;
+  CoglBool pending_resize_notify;
 } CoglOnscreenGLX;
 
 typedef struct _CoglTexturePixmapGLX
@@ -183,6 +184,32 @@ notify_swap_buffers (CoglContext *context, GLXDrawable drawable)
   glx_onscreen->pending_swap_notify = TRUE;
 }
 
+static void
+notify_resize (CoglContext *context,
+               GLXDrawable drawable,
+               int width,
+               int height)
+{
+  CoglOnscreen *onscreen = find_onscreen_for_xid (context, drawable);
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglDisplay *display = context->display;
+  CoglGLXDisplay *glx_display = display->winsys;
+  CoglOnscreenGLX *glx_onscreen;
+
+  if (!onscreen)
+    return;
+
+  glx_onscreen = onscreen->winsys;
+
+  _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
+
+  /* We only want to notify that a resize happened when the
+     application calls cogl_context_dispatch so instead of immediately
+     notifying we'll set a flag to remember to notify later */
+  glx_display->pending_resize_notify = TRUE;
+  glx_onscreen->pending_resize_notify = TRUE;
+}
+
 static CoglFilterReturn
 glx_event_filter_cb (XEvent *xevent, void *data)
 {
@@ -193,17 +220,10 @@ glx_event_filter_cb (XEvent *xevent, void *data)
 
   if (xevent->type == ConfigureNotify)
     {
-      CoglOnscreen *onscreen =
-        find_onscreen_for_xid (context, xevent->xconfigure.window);
-
-      if (onscreen)
-        {
-          CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
-
-          _cogl_framebuffer_winsys_update_size (framebuffer,
-                                                xevent->xconfigure.width,
-                                                xevent->xconfigure.height);
-        }
+      notify_resize (context,
+                     xevent->xconfigure.window,
+                     xevent->xconfigure.width,
+                     xevent->xconfigure.height);
 
       /* we let ConfigureNotify pass through */
       return COGL_FILTER_CONTINUE;
@@ -1412,6 +1432,44 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
     XUnmapWindow (xlib_renderer->xdpy, xlib_onscreen->xwin);
 }
 
+static void
+_cogl_winsys_onscreen_set_resizable (CoglOnscreen *onscreen,
+                                     CoglBool resizable)
+{
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglContext *context = framebuffer->context;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (context->display->renderer);
+  CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
+
+  XSizeHints *size_hints = XAllocSizeHints ();
+
+  if (resizable)
+    {
+      /* TODO: Add cogl_onscreen_request_minimum_size () */
+      size_hints->min_width = 1;
+      size_hints->min_height = 1;
+
+      size_hints->max_width = INT_MAX;
+      size_hints->max_height = INT_MAX;
+    }
+  else
+    {
+      int width = cogl_framebuffer_get_width (framebuffer);
+      int height = cogl_framebuffer_get_height (framebuffer);
+
+      size_hints->min_width = width;
+      size_hints->min_height = height;
+
+      size_hints->max_width = width;
+      size_hints->max_height = height;
+    }
+
+  XSetWMNormalHints (xlib_renderer->xdpy, xlib_onscreen->xwin, size_hints);
+
+  XFree (size_hints);
+}
+
 /* XXX: This is a particularly hacky _cogl_winsys interface... */
 static XVisualInfo *
 _cogl_winsys_xlib_get_visual_info (void)
@@ -2004,13 +2062,13 @@ _cogl_winsys_poll_get_info (CoglContext *context,
 
   /* If we've already got a pending swap notify then we'll dispatch
      immediately */
-  if (glx_display->pending_swap_notify)
+  if (glx_display->pending_swap_notify || glx_display->pending_resize_notify)
     *timeout = 0;
 }
 
 static void
-flush_pending_swap_notify_cb (void *data,
-                              void *user_data)
+flush_pending_notifications_cb (void *data,
+                                void *user_data)
 {
   CoglFramebuffer *framebuffer = data;
 
@@ -2023,6 +2081,12 @@ flush_pending_swap_notify_cb (void *data,
         {
           _cogl_onscreen_notify_swap_buffers (onscreen);
           glx_onscreen->pending_swap_notify = FALSE;
+        }
+
+      if (glx_onscreen->pending_resize_notify)
+        {
+          _cogl_onscreen_notify_resize (onscreen);
+          glx_onscreen->pending_resize_notify = FALSE;
         }
     }
 }
@@ -2039,12 +2103,13 @@ _cogl_winsys_poll_dispatch (CoglContext *context,
                                      poll_fds,
                                      n_poll_fds);
 
-  if (glx_display->pending_swap_notify)
+  if (glx_display->pending_swap_notify || glx_display->pending_resize_notify)
     {
       g_list_foreach (context->framebuffers,
-                      flush_pending_swap_notify_cb,
+                      flush_pending_notifications_cb,
                       NULL);
       glx_display->pending_swap_notify = FALSE;
+      glx_display->pending_resize_notify = FALSE;
     }
 }
 
@@ -2073,6 +2138,8 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .onscreen_x11_get_window_xid =
       _cogl_winsys_onscreen_x11_get_window_xid,
     .onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility,
+    .onscreen_set_resizable =
+      _cogl_winsys_onscreen_set_resizable,
 
     .poll_get_info = _cogl_winsys_poll_get_info,
     .poll_dispatch = _cogl_winsys_poll_dispatch,
