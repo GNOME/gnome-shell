@@ -59,7 +59,7 @@ G_BEGIN_DECLS
  * component. The scalar component is normally referred to as w and the
  * vector might either be referred to as v or a (for axis) or expanded
  * with the individual components: (x, y, z) A full quaternion would
- * then be written as <pre>[w (x, y, z)]</pre>.
+ * then be written as <literal>[w (x, y, z)]</literal>.
  *
  * Quaternions can be considered to represent an axis and angle
  * pair although sadly these numbers are buried somewhat under some

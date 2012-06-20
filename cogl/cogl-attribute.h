@@ -56,10 +56,10 @@ G_BEGIN_DECLS
  * @name: The name of the attribute (used to reference it from GLSL)
  * @stride: The number of bytes to jump to get to the next attribute
  *          value for the next vertex. (Usually
- *          <pre>sizeof (MyVertex)</pre>)
+ *          <literal>sizeof (MyVertex)</literal>)
  * @offset: The byte offset from the start of @attribute_buffer for
  *          the first attribute value. (Usually
- *          <pre>offsetof (MyVertex, component0)</pre>
+ *          <literal>offsetof (MyVertex, component0)</literal>
  * @components: The number of components (e.g. 4 for an rgba color or
  *              3 for and (x,y,z) position)
  * @type: FIXME
@@ -95,23 +95,22 @@ G_BEGIN_DECLS
  * ]|
  *
  * In this case, to describe either the position or texture coordinate
- * attribute you have to move <pre>sizeof (MyVertex)</pre> bytes to
+ * attribute you have to move <literal>sizeof (MyVertex)</literal> bytes to
  * move from one vertex to the next.  This is called the attribute
  * @stride. If you weren't interleving attributes and you instead had
  * a packed array of float x, y pairs then the attribute stride would
- * be <pre>(2 * sizeof (float))</pre>. So the @stride is the number of
+ * be <literal>(2 * sizeof (float))</literal>. So the @stride is the number of
  * bytes to move to find the attribute value of the next vertex.
  *
  * Normally a list of attributes starts at the beginning of an array.
- * So for the <pre>MyVertex</pre> example above the @offset is the
- * offset inside the <pre>MyVertex</pre> structure to the first
+ * So for the <literal>MyVertex</literal> example above the @offset is the
+ * offset inside the <literal>MyVertex</literal> structure to the first
  * component of the attribute. For the texture coordinate attribute
- * the offset would be <pre>offsetof (MyVertex, s)</pre> or instead of
- * using the offsetof macro you could use <pre>sizeof (float) * 3</pre>.
- * If you've divided your @array into blocks of non-interleved
- * attributes then you will need to calculate the @offset as the
- * number of bytes in blocks preceding the attribute you're
- * describing.
+ * the offset would be <literal>offsetof (MyVertex, s)</literal> or instead of
+ * using the offsetof macro you could use <literal>sizeof (float) *
+ * 3</literal>.  If you've divided your @array into blocks of non-interleved
+ * attributes then you will need to calculate the @offset as the number of
+ * bytes in blocks preceding the attribute you're describing.
  *
  * An attribute often has more than one component. For example a color
  * is often comprised of 4 red, green, blue and alpha @components, and a
