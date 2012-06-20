@@ -80,8 +80,7 @@ _cogl_boxed_value_equal (const CoglBoxedValue *bva,
 
     case COGL_BOXED_MATRIX:
       if (bva->size != bvb->size ||
-          bva->count != bvb->count ||
-          bva->transpose != bvb->transpose)
+          bva->count != bvb->count)
         return FALSE;
 
       if (bva->count == 1)
@@ -105,6 +104,24 @@ _cogl_boxed_value_equal (const CoglBoxedValue *bva,
 }
 
 static void
+_cogl_boxed_value_tranpose (float *dst,
+                            int size,
+                            const float *src)
+{
+  int y, x;
+
+  /* If the value is transposed we'll just transpose it now as it
+   * is copied into the boxed value instead of passing TRUE to
+   * glUniformMatrix because that is not supported on GLES and it
+   * doesn't seem like the GL driver would be able to do anything
+   * much smarter than this anyway */
+
+  for (y = 0; y < size; y++)
+    for (x = 0; x < size; x++)
+      *(dst++) = src[y + x * size];
+}
+
+static void
 _cogl_boxed_value_set_x (CoglBoxedValue *bv,
                          int size,
                          int count,
@@ -118,7 +135,12 @@ _cogl_boxed_value_set_x (CoglBoxedValue *bv,
       if (bv->count > 1)
         g_free (bv->v.array);
 
-      memcpy (bv->v.float_value, value, value_size);
+      if (transpose)
+        _cogl_boxed_value_tranpose (bv->v.float_value,
+                                    size,
+                                    value);
+      else
+        memcpy (bv->v.float_value, value, value_size);
     }
   else
     {
@@ -135,13 +157,24 @@ _cogl_boxed_value_set_x (CoglBoxedValue *bv,
       else
         bv->v.array = g_malloc (count * value_size);
 
-      memcpy (bv->v.array, value, count * value_size);
+      if (transpose)
+        {
+          int value_num;
+
+          for (value_num = 0; value_num < count; value_num++)
+            _cogl_boxed_value_tranpose (bv->v.float_array +
+                                        value_num * size * size,
+                                        size,
+                                        (const float *) value +
+                                        value_num * size * size);
+        }
+      else
+        memcpy (bv->v.array, value, count * value_size);
     }
 
   bv->type = type;
   bv->size = size;
   bv->count = count;
-  bv->transpose = transpose;
 }
 
 void
@@ -319,15 +352,15 @@ _cogl_boxed_value_set_uniform (CoglContext *ctx,
           {
           case 2:
             GE( ctx, glUniformMatrix2fv (location, value->count,
-                                         value->transpose, ptr) );
+                                         FALSE, ptr) );
             break;
           case 3:
             GE( ctx, glUniformMatrix3fv (location, value->count,
-                                         value->transpose, ptr) );
+                                         FALSE, ptr) );
             break;
           case 4:
             GE( ctx, glUniformMatrix4fv (location, value->count,
-                                         value->transpose, ptr) );
+                                         FALSE, ptr) );
             break;
           }
       }

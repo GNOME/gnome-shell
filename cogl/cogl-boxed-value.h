@@ -39,7 +39,6 @@ typedef struct _CoglBoxedValue
 {
   CoglBoxedType type;
   int size, count;
-  CoglBool transpose;
 
   union {
     float float_value[4];
