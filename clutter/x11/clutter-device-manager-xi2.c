@@ -733,12 +733,15 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
         device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                       GINT_TO_POINTER (xev->deviceid));
-        _clutter_input_device_reset_axes (device);
-        _clutter_input_device_reset_scroll_info (device);
-        translate_device_classes (backend_x11->xdpy,
-                                  device,
-                                  xev->classes,
-                                  xev->num_classes);
+        if (device)
+          {
+            _clutter_input_device_reset_axes (device);
+            _clutter_input_device_reset_scroll_info (device);
+            translate_device_classes (backend_x11->xdpy,
+                                      device,
+                                      xev->classes,
+                                      xev->num_classes);
+          }
       }
       retval = CLUTTER_TRANSLATE_REMOVE;
       break;
