@@ -33,6 +33,7 @@ const WindowAttentionHandler = imports.ui.windowAttentionHandler;
 const Scripting = imports.ui.scripting;
 const SessionMode = imports.ui.sessionMode;
 const ShellDBus = imports.ui.shellDBus;
+const ShellMountOperation = imports.ui.shellMountOperation;
 const TelepathyClient = imports.ui.telepathyClient;
 const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
@@ -60,6 +61,7 @@ let ctrlAltTabManager = null;
 let recorder = null;
 let sessionMode = null;
 let shellDBusService = null;
+let shellMountOpDBusService = null;
 let modalCount = 0;
 let modalActorFocusStack = [];
 let uiGroup = null;
@@ -150,6 +152,7 @@ function start() {
 
     sessionMode = new SessionMode.SessionMode();
     shellDBusService = new ShellDBus.GnomeShell();
+    shellMountOpDBusService = new ShellMountOperation.GnomeShellMountOpHandler();
 
     // Ensure ShellWindowTracker and ShellAppUsage are initialized; this will
     // also initialize ShellAppSystem first.  ShellAppSystem
