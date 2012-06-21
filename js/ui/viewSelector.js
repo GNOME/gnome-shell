@@ -20,83 +20,6 @@ const Tweener = imports.ui.tweener;
 const Wanda = imports.ui.wanda;
 const WorkspacesView = imports.ui.workspacesView;
 
-const BaseTab = new Lang.Class({
-    Name: 'BaseTab',
-
-    _init: function(titleActor, pageActor, name, a11yIcon) {
-        this.title = titleActor;
-        this.page = new St.Bin({ child: pageActor,
-                                 x_align: St.Align.START,
-                                 y_align: St.Align.START,
-                                 x_fill: true,
-                                 y_fill: true,
-                                 style_class: 'view-tab-page' });
-
-        if (this.title.can_focus) {
-            Main.ctrlAltTabManager.addGroup(this.title, name, a11yIcon);
-        } else {
-            Main.ctrlAltTabManager.addGroup(this.page, name, a11yIcon,
-                                            { proxy: this.title,
-                                              focusCallback: Lang.bind(this, this._a11yFocus) });
-        }
-
-        this.visible = false;
-    },
-
-    show: function(animate) {
-        this.visible = true;
-        this.page.show();
-
-        if (!animate)
-            return;
-
-        this.page.opacity = 0;
-        Tweener.addTween(this.page,
-                         { opacity: 255,
-                           time: 0.1,
-                           transition: 'easeOutQuad' });
-    },
-
-    hide: function() {
-        this.visible = false;
-        Tweener.addTween(this.page,
-                         { opacity: 0,
-                           time: 0.1,
-                           transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this,
-                               function() {
-                                   this.page.hide();
-                               })
-                         });
-    },
-
-    _a11yFocus: function() {
-        this._activate();
-        this.page.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
-    },
-
-    _activate: function() {
-        this.emit('activated');
-    }
-});
-Signals.addSignalMethods(BaseTab.prototype);
-
-
-const ViewTab = new Lang.Class({
-    Name: 'ViewTab',
-    Extends: BaseTab,
-
-    _init: function(id, label, pageActor, a11yIcon) {
-        this.id = id;
-
-        let titleActor = new St.Button({ label: label,
-                                         style_class: 'view-tab-title' });
-        titleActor.connect('clicked', Lang.bind(this, this._activate));
-
-        this.parent(titleActor, pageActor, label, a11yIcon);
-    }
-});
-
 
 const ViewSelector = new Lang.Class({
     Name: 'ViewSelector',
@@ -106,24 +29,14 @@ const ViewSelector = new Lang.Class({
                                         vertical: true });
 
         this._showAppsButton = showAppsButton;
-        this._showAppsButton.connect('notify::checked', Lang.bind(this,
-            function() {
-                if (this._showAppsButton.checked)
-                    this._switchTab(this._appsTab);
-                else
-                    this._switchTab(this._windowsTab);
-            }));
+        this._showAppsButton.connect('notify::checked', Lang.bind(this, this._onShowAppsButtonToggled));
 
-        // The page area holds the tab pages. Every page is given the
-        // area's full allocation, so that the pages would appear on top
-        // of each other if the inactive ones weren't hidden.
         this._pageArea = new Shell.Stack();
         this.actor.add(this._pageArea, { x_fill: true,
                                          y_fill: true,
                                          expand: true });
 
-        this._tabs = [];
-        this._activeTab = null;
+        this._activePage = null;
 
         this.active = false;
         this._searchPending = false;
@@ -158,16 +71,16 @@ const ViewSelector = new Lang.Class({
         this._capturedEventId = 0;
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
-        this._windowsTab = new ViewTab('windows', _("Windows"), this._workspacesDisplay.actor, 'text-x-generic');
-        this._addViewTab(this._windowsTab);
+        this._workspacesPage = this._addPage(this._workspacesDisplay.actor, null,
+                                             _("Windows"), 'text-x-generic');
 
-        let appView = new AppDisplay.AllAppDisplay();
-        this._appsTab = new ViewTab('applications', _("Applications"), appView.actor, 'system-run');
-        this._addViewTab(this._appsTab);
+        this._appDisplay = new AppDisplay.AllAppDisplay();
+        this._appsPage = this._addPage(this._appDisplay.actor, null,
+                                       _("Applications"), 'system-run');
 
         this._searchResults = new SearchDisplay.SearchResults(this._searchSystem);
-        this._searchTab = new BaseTab(new St.Bin(), this._searchResults.actor, _("Search"), 'edit-find');
-        this._addTab(this._searchTab);
+        this._searchPage = this._addPage(this._searchResults.actor, this._entry,
+                                         _("Search"), 'edit-find');
 
         // Default search providers
         // Wanda comes obviously first
@@ -228,10 +141,16 @@ const ViewSelector = new Lang.Class({
     },
 
     show: function() {
+        this._activePage = this._workspacesPage;
+
+        this._appsPage.hide();
+        this._searchPage.hide();
         this._workspacesDisplay.show();
 
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeOutDesktop();
+
+        this._showPage(this._workspacesPage);
     },
 
     zoomFromOverview: function() {
@@ -245,47 +164,62 @@ const ViewSelector = new Lang.Class({
         this._workspacesDisplay.hide();
     },
 
-    _addTab: function(tab) {
-        tab.page.hide();
-        this._pageArea.add_actor(tab.page);
-        tab.connect('activated', Lang.bind(this, function(tab) {
-            this._switchTab(tab);
-        }));
+    _addPage: function(actor, a11yFocus, name, a11yIcon) {
+        let page = new St.Bin({ child: actor,
+                                x_align: St.Align.START,
+                                y_align: St.Align.START,
+                                x_fill: true,
+                                y_fill: true });
+        if (a11yFocus)
+            Main.ctrlAltTabManager.addGroup(a11yFocus, name, a11yIcon);
+        else
+            Main.ctrlAltTabManager.addGroup(actor, name, a11yIcon,
+                                            { proxy: this.actor,
+                                              focusCallback: Lang.bind(this,
+                                                  function() {
+                                                      this._a11yFocusPage(page);
+                                                  })
+                                            });;
+        this._pageArea.add_actor(page);
+        return page
     },
 
-    _addViewTab: function(viewTab) {
-        this._tabs.push(viewTab);
-        this._addTab(viewTab);
-    },
+    _showPage: function(page) {
+        if(page == this._activePage)
+            return;
 
-    _switchTab: function(tab) {
-        let firstSwitch = this._activeTab == null;
-
-        if (this._activeTab && this._activeTab.visible) {
-            if (this._activeTab == tab)
-                return;
-            this._activeTab.hide();
+        if(this._activePage) {
+            Tweener.addTween(this._activePage,
+                             { opacity: 0,
+                               time: 0.1,
+                               transition: 'easeOutQuad',
+                               onComplete: Lang.bind(this,
+                                   function() {
+                                       this._activePage.hide();
+                                       this._activePage = page;
+                                   })
+                             });
         }
 
-        if (tab != this._searchTab) {
-            this._activeTab = tab;
-            if (this._searchTab.visible) {
-                this._searchTab.hide();
-            }
-        }
-
-        // Only fade when switching between tabs,
-        // not when setting the initially selected one.
-        if (!tab.visible)
-            tab.show(!firstSwitch);
+        page.show();
+        Tweener.addTween(page,
+                         { opacity: 255,
+                           time: 0.1,
+                           transition: 'easeOutQuad'
+                         });
     },
 
-    switchTab: function(id) {
-        for (let i = 0; i < this._tabs.length; i++)
-            if (this._tabs[i].id == id) {
-                this._switchTab(this._tabs[i]);
-                break;
-            }
+    _a11yFocusPage: function(page) {
+        this._showAppsButton.checked = page == this._appsPage;
+        page.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+    },
+
+    _onShowAppsButtonToggled: function() {
+        if (this.active)
+            this.reset();
+        else
+            this._showPage(this._showAppsButton.checked ? this._appsPage
+                                                        : this._workspacesPage);
     },
 
     _resetShowAppsButton: function() {
@@ -307,10 +241,10 @@ const ViewSelector = new Lang.Class({
             this.startSearch(event);
         } else if (!this.active) {
             if (symbol == Clutter.Tab) {
-                this._activeTab.page.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+                this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
                 return true;
             } else if (symbol == Clutter.ISO_Left_Tab) {
-                this._activeTab.page.navigate_focus(null, Gtk.DirectionType.TAB_BACKWARD, false);
+                this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_BACKWARD, false);
                 return true;
             }
         }
@@ -318,7 +252,8 @@ const ViewSelector = new Lang.Class({
     },
 
     _searchCancelled: function() {
-        this._switchTab(this._activeTab);
+        this._showPage(this._showAppsButton.checked ? this._appsPage
+                                                    : this._workspacesPage);
 
         // Leave the entry focused when it doesn't have any text;
         // when replacing a selected search term, Clutter emits
@@ -393,7 +328,6 @@ const ViewSelector = new Lang.Class({
                         this.reset();
                     }));
             }
-            this._switchTab(this._searchTab);
         } else {
             if (this._iconClickedId > 0)
                 this._entry.disconnect(this._iconClickedId);
@@ -479,7 +413,7 @@ const ViewSelector = new Lang.Class({
         let text = this._text.get_text().replace(/^\s+/g, '').replace(/\s+$/g, '');
         this._searchResults.doSearch(text);
 
-        return false;
+        this._showPage(this._searchPage);
     },
 
     addSearchProvider: function(provider) {

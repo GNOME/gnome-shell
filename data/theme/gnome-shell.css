@@ -648,15 +648,7 @@ StButton.popup-menu-item:insensitive {
     spacing: 1em;
 }
 
-#viewSelectorTabBar {
-    padding: 1em;
-}
-
 /* Search Box */
-
-#searchArea {
-    padding: 0px 24px;
-}
 
 #searchEntry {
     border-radius: 17px;
@@ -666,26 +658,6 @@ StButton.popup-menu-item:insensitive {
 .search-entry-icon {
     icon-size: 1em;
     color: #8d8f8a;
-}
-
-/* View Tabs */
-
-.view-tab-title {
-    color: #888a85;
-    font-size: 12pt;
-    font-weight: bold;
-    padding: 0px 0.75em;
-    height: 1.5em;
-}
-
-.view-tab-title:hover {
-    color: #bbb;
-}
-
-.view-tab-title:selected {
-    color: #000000;
-    background-color: #c2c7cd;
-    border-radius: 0.25em;
 }
 
 /* Search Results */
