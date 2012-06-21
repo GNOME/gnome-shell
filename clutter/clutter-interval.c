@@ -58,10 +58,11 @@
 #include <gobject/gvaluecollector.h>
 
 #include "clutter-color.h"
-#include "clutter-fixed.h"
 #include "clutter-interval.h"
 #include "clutter-private.h"
 #include "clutter-units.h"
+
+#include "deprecated/clutter-fixed.h"
 
 enum
 {

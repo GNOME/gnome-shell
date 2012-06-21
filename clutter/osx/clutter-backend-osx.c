@@ -30,7 +30,6 @@
 
 #include "clutter-debug.h"
 #include "clutter-private.h"
-#include "clutter-shader.h"
 #include "clutter-stage-private.h"
 
 #include "cogl/cogl.h"

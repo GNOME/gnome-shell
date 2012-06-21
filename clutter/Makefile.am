@@ -14,7 +14,6 @@ lib_LTLIBRARIES =
 INCLUDES = \
 	-I$(top_srcdir) 				\
 	-I$(top_srcdir)/clutter				\
-	-I$(top_srcdir)/clutter/deprecated		\
 	-I$(top_srcdir)/clutter/cally			\
 	-I$(top_builddir)				\
 	-I$(top_builddir)/clutter			\

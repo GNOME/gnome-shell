@@ -104,7 +104,6 @@
 #include "clutter-device-manager-private.h"
 #include "clutter-event-private.h"
 #include "clutter-feature.h"
-#include "clutter-frame-source.h"
 #include "clutter-main.h"
 #include "clutter-master-clock.h"
 #include "clutter-private.h"

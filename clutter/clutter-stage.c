@@ -75,7 +75,6 @@
 #include "clutter-profile.h"
 #include "clutter-stage-manager-private.h"
 #include "clutter-stage-private.h"
-#include "clutter-util.h"
 #include "clutter-version.h" 	/* For flavour */
 #include "clutter-private.h"
 

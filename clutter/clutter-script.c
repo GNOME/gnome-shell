@@ -237,7 +237,6 @@
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
 #include "clutter-actor.h"
-#include "clutter-alpha.h"
 #include "clutter-stage.h"
 #include "clutter-texture.h"
 
@@ -249,6 +248,7 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
+#include "deprecated/clutter-alpha.h"
 #include "deprecated/clutter-behaviour.h"
 #include "deprecated/clutter-container.h"
 #include "deprecated/clutter-state.h"

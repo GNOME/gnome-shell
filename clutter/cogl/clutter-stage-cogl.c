@@ -46,7 +46,6 @@
 #include "clutter-private.h"
 #include "clutter-profile.h"
 #include "clutter-stage-private.h"
-#include "clutter-util.h"
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
