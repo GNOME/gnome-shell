@@ -465,29 +465,31 @@ const ObjInspector = new Lang.Class({
     }
 });
 
-function addBorderPaintHook(actor) {
-    let signalId = actor.connect_after('paint',
-        function () {
-            let color = new Cogl.Color();
-            color.init_from_4ub(0xff, 0, 0, 0xc4);
-            Cogl.set_source_color(color);
+const RedBorderEffect = new Lang.Class({
+    Name: 'RedBorderEffect',
+    Extends: Clutter.Effect,
 
-            let geom = actor.get_allocation_geometry();
-            let width = 2;
+    vfunc_paint: function() {
+        let actor = this.get_actor();
+        actor.continue_paint();
 
-            // clockwise order
-            Cogl.rectangle(0, 0, geom.width, width);
-            Cogl.rectangle(geom.width - width, width,
-                           geom.width, geom.height);
-            Cogl.rectangle(0, geom.height,
-                           geom.width - width, geom.height - width);
-            Cogl.rectangle(0, geom.height - width,
-                           width, width);
-        });
+        let color = new Cogl.Color();
+        color.init_from_4ub(0xff, 0, 0, 0xc4);
+        Cogl.set_source_color(color);
 
-    actor.queue_redraw();
-    return signalId;
-}
+        let geom = actor.get_allocation_geometry();
+        let width = 2;
+
+        // clockwise order
+        Cogl.rectangle(0, 0, geom.width, width);
+        Cogl.rectangle(geom.width - width, width,
+                       geom.width, geom.height);
+        Cogl.rectangle(0, geom.height,
+                       geom.width - width, geom.height - width);
+        Cogl.rectangle(0, geom.height - width,
+                       width, width);
+    },
+});
 
 const Inspector = new Lang.Class({
     Name: 'Inspector',
@@ -507,7 +509,7 @@ const Inspector = new Lang.Class({
         eventHandler.add(this._displayText, { expand: true });
 
         this._borderPaintTarget = null;
-        this._borderPaintId = null;
+        this._redBorderEffect = new RedBorderEffect();
         eventHandler.connect('destroy', Lang.bind(this, this._onDestroy));
         eventHandler.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
         eventHandler.connect('button-press-event', Lang.bind(this, this._onButtonPressEvent));
@@ -552,7 +554,7 @@ const Inspector = new Lang.Class({
 
     _onDestroy: function() {
         if (this._borderPaintTarget != null)
-            this._borderPaintTarget.disconnect(this._borderPaintId);
+            this._borderPaintTarget.remove_effect(this._redBorderEffect);
     },
 
     _onKeyPressEvent: function (actor, event) {
@@ -625,9 +627,10 @@ const Inspector = new Lang.Class({
 
         if (this._borderPaintTarget != this._target) {
             if (this._borderPaintTarget != null)
-                this._borderPaintTarget.disconnect(this._borderPaintId);
+                this._borderPaintTarget.remove_effect(this._redBorderEffect);
             this._borderPaintTarget = this._target;
-            this._borderPaintId = addBorderPaintHook(this._target);
+            if (this._borderPaintTarget != null)
+                this._borderPaintTarget.add_effect(this._redBorderEffect);
         }
     }
 });
@@ -821,8 +824,7 @@ const LookingGlass = new Lang.Class({
 
     _init : function() {
         this._borderPaintTarget = null;
-        this._borderPaintId = 0;
-        this._borderDestroyId = 0;
+        this._redBorderEffect = new RedBorderEffect();
 
         this._open = false;
 
@@ -959,23 +961,22 @@ const LookingGlass = new Lang.Class({
             + 'font-family: "' + fontDesc.get_family() + '";';
     },
 
+    _setBorderPaintTarget: function(obj) {
+        if (this._borderPaintTarget != null)
+            this._borderPaintTarget.remove_effect(this._redBorderEffect);
+        this._borderPaintTarget = obj;
+        if (this._borderPaintTarget != null)
+            this._borderPaintTarget.add_effect(this._redBorderEffect);
+    },
+
     _pushResult: function(command, obj) {
         let index = this._results.length + this._offset;
         let result = new Result('>>> ' + command, obj, index);
         this._results.push(result);
         this._resultsArea.add(result.actor);
-        if (this._borderPaintTarget != null) {
-            this._borderPaintTarget.disconnect(this._borderPaintId);
-            this._borderPaintTarget = null;
-        }
-        if (obj instanceof Clutter.Actor) {
-            this._borderPaintTarget = obj;
-            this._borderPaintId = addBorderPaintHook(obj);
-            this._borderDestroyId = obj.connect('destroy', Lang.bind(this, function () {
-                this._borderDestroyId = 0;
-                this._borderPaintTarget = null;
-            }));
-        }
+        if (obj instanceof Clutter.Actor)
+            this._setBorderPaintTarget(obj);
+
         let children = this._resultsArea.get_children();
         if (children.length > this._maxItems) {
             this._results.shift();
@@ -1156,11 +1157,7 @@ const LookingGlass = new Lang.Class({
         this._open = false;
         Tweener.removeTweens(this.actor);
 
-        if (this._borderPaintTarget != null) {
-            this._borderPaintTarget.disconnect(this._borderPaintId);
-            this._borderPaintTarget.disconnect(this._borderDestroyId);
-            this._borderPaintTarget = null;
-        }
+        this._setBorderPaintTarget(null);
 
         Main.popModal(this._entry);
 
