@@ -102,6 +102,9 @@ GType clutter_gesture_action_get_type (void) G_GNUC_CONST;
 
 ClutterAction * clutter_gesture_action_new                      (void);
 
+gint            clutter_gesture_action_get_n_touch_points       (ClutterGestureAction *action);
+void            clutter_gesture_action_set_n_touch_points       (ClutterGestureAction *action,
+                                                                 gint                  nb_points);
 void            clutter_gesture_action_get_press_coords         (ClutterGestureAction *action,
                                                                  guint                 device,
                                                                  gfloat               *press_x,

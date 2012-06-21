@@ -5,6 +5,7 @@
  *
  * Copyright (C) 2010  Intel Corporation.
  * Copyright (C) 2011  Robert Bosch Car Multimedia GmbH.
+ * Copyright (C) 2012  Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -61,18 +62,29 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 
-struct _ClutterGestureActionPrivate
-{
-  ClutterActor *stage;
+#define MAX_GESTURE_POINTS (10)
 
-  guint actor_capture_id;
-  gulong stage_capture_id;
+typedef struct
+{
+  ClutterInputDevice *device;
+  ClutterEventSequence *sequence;
 
   gfloat press_x, press_y;
   gfloat last_motion_x, last_motion_y;
   gfloat release_x, release_y;
+} GesturePoint;
 
-  guint in_drag : 1;
+struct _ClutterGestureActionPrivate
+{
+  ClutterActor *stage;
+
+  gint requested_nb_points;
+  GArray *points;
+
+  guint actor_capture_id;
+  gulong stage_capture_id;
+
+  guint in_gesture : 1;
 };
 
 enum
@@ -88,6 +100,72 @@ enum
 static guint gesture_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (ClutterGestureAction, clutter_gesture_action, CLUTTER_TYPE_ACTION);
+
+static GesturePoint *
+gesture_register_point (ClutterGestureAction *action, ClutterEvent *event)
+{
+  ClutterGestureActionPrivate *priv = action->priv;
+  GesturePoint *point = NULL;
+
+  if (priv->points->len >= MAX_GESTURE_POINTS)
+    return NULL;
+
+  g_array_set_size (priv->points, priv->points->len + 1);
+  point = &g_array_index (priv->points, GesturePoint, priv->points->len - 1);
+
+  point->device = clutter_event_get_device (event);
+
+  clutter_event_get_coords (event, &point->press_x, &point->press_y);
+  point->last_motion_x = point->press_x;
+  point->last_motion_y = point->press_y;
+
+  if (clutter_event_type (event) != CLUTTER_BUTTON_PRESS)
+    point->sequence = clutter_event_get_event_sequence (event);
+  else
+    point->sequence = NULL;
+
+  return point;
+}
+
+static GesturePoint *
+gesture_find_point (ClutterGestureAction *action,
+                    ClutterEvent *event,
+                    gint *position)
+{
+  ClutterGestureActionPrivate *priv = action->priv;
+  GesturePoint *point = NULL;
+  ClutterEventType type = clutter_event_type (event);
+  ClutterInputDevice *device = clutter_event_get_device (event);
+  ClutterEventSequence *sequence = NULL;
+  gint i;
+
+  if ((type != CLUTTER_BUTTON_PRESS) &&
+      (type != CLUTTER_BUTTON_RELEASE) &&
+      (type != CLUTTER_MOTION))
+    sequence = clutter_event_get_event_sequence (event);
+
+  for (i = 0; i < priv->points->len; i++)
+    {
+      if ((g_array_index (priv->points, GesturePoint, i).device == device) &&
+          (g_array_index (priv->points, GesturePoint, i).sequence == sequence))
+        {
+          if (position != NULL)
+            *position = i;
+          point = &g_array_index (priv->points, GesturePoint, i);
+          break;
+        }
+    }
+
+  return point;
+}
+
+static void
+gesture_unregister_point (ClutterGestureAction *action, gint position)
+{
+  ClutterGestureActionPrivate *priv = action->priv;
+
+  g_array_remove_index (priv->points, position);
+}
 
 static gboolean
 signal_accumulator (GSignalInvocationHint *ihint,
@@ -109,7 +187,7 @@ cancel_gesture (ClutterGestureAction *action)
   ClutterGestureActionPrivate *priv = action->priv;
   ClutterActor *actor;
 
-  priv->in_drag = FALSE;
+  priv->in_gesture = FALSE;
 
   g_signal_handler_disconnect (priv->stage, priv->stage_capture_id);
   priv->stage_capture_id = 0;
@@ -125,7 +203,12 @@ stage_captured_event_cb (ClutterActor       *stage,
 {
   ClutterGestureActionPrivate *priv = action->priv;
   ClutterActor *actor;
+  gint position;
   gboolean return_value;
+  GesturePoint *point;
+
+  if ((point = gesture_find_point (action, event, &position)) == NULL)
+    return CLUTTER_EVENT_PROPAGATE;
 
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
 
@@ -144,69 +227,88 @@ stage_captured_event_cb (ClutterActor       *stage,
             cancel_gesture (action);
             return CLUTTER_EVENT_PROPAGATE;
           }
-
-        clutter_event_get_coords (event, &priv->last_motion_x,
-                                         &priv->last_motion_y);
-
-        if (!clutter_actor_transform_stage_point (actor,
-                                                  priv->last_motion_x,
-                                                  priv->last_motion_y,
-                                                  NULL, NULL))
-          return CLUTTER_EVENT_PROPAGATE;
-
-        if (!priv->in_drag)
-          {
-            gint drag_threshold;
-            ClutterSettings *settings = clutter_settings_get_default ();
-
-            g_object_get (settings,
-                          "dnd-drag-threshold", &drag_threshold,
-                          NULL);
-
-            if ((ABS (priv->press_y - priv->last_motion_y) >= drag_threshold) ||
-                (ABS (priv->press_x - priv->last_motion_x) >= drag_threshold))
-              {
-                priv->in_drag = TRUE;
-
-                g_signal_emit (action, gesture_signals[GESTURE_BEGIN], 0, actor,
-                               &return_value);
-                if (!return_value)
-                  {
-                    cancel_gesture (action);
-                    return CLUTTER_EVENT_PROPAGATE;
-                  }
-              }
-            else
-              return CLUTTER_EVENT_PROPAGATE;
-          }
-
-          g_signal_emit (action, gesture_signals[GESTURE_PROGRESS], 0, actor,
-                         &return_value);
-          if (!return_value)
-            {
-              cancel_gesture (action);
-              return CLUTTER_EVENT_PROPAGATE;
-            }
       }
+      /* Follow same code path as a touch event update */
+
+    case CLUTTER_TOUCH_UPDATE:
+      clutter_event_get_coords (event,
+                                &point->last_motion_x,
+                                &point->last_motion_y);
+
+      if (priv->points->len < priv->requested_nb_points)
+        return CLUTTER_EVENT_PROPAGATE;
+
+      if (!priv->in_gesture)
+        {
+          gint drag_threshold;
+          ClutterSettings *settings = clutter_settings_get_default ();
+
+          g_object_get (settings,
+                        "dnd-drag-threshold", &drag_threshold,
+                        NULL);
+
+          if ((ABS (point->press_y - point->last_motion_y) >= drag_threshold) ||
+              (ABS (point->press_x - point->last_motion_x) >= drag_threshold))
+            {
+              priv->in_gesture = TRUE;
+
+              g_signal_emit (action, gesture_signals[GESTURE_BEGIN], 0, actor,
+                             &return_value);
+              if (!return_value)
+                {
+                  cancel_gesture (action);
+                  return CLUTTER_EVENT_PROPAGATE;
+                }
+            }
+          else
+            return CLUTTER_EVENT_PROPAGATE;
+        }
+
+      g_signal_emit (action, gesture_signals[GESTURE_PROGRESS], 0, actor,
+                     &return_value);
+      if (!return_value)
+        {
+          cancel_gesture (action);
+          return CLUTTER_EVENT_PROPAGATE;
+        }
       break;
 
     case CLUTTER_BUTTON_RELEASE:
+    case CLUTTER_TOUCH_END:
       {
-        clutter_event_get_coords (event, &priv->release_x, &priv->release_y);
+        clutter_event_get_coords (event, &point->release_x, &point->release_y);
 
-        g_signal_handler_disconnect (priv->stage, priv->stage_capture_id);
-        priv->stage_capture_id = 0;
-
-        if (priv->in_drag)
+        if (priv->in_gesture &&
+            ((priv->points->len - 1) < priv->requested_nb_points))
           {
-            priv->in_drag = FALSE;
+            priv->in_gesture = FALSE;
             g_signal_emit (action, gesture_signals[GESTURE_END], 0, actor);
           }
+
+        gesture_unregister_point (action, position);
+      }
+      break;
+
+    case CLUTTER_TOUCH_CANCEL:
+      {
+        if (priv->in_gesture)
+          {
+            priv->in_gesture = FALSE;
+            cancel_gesture (action);
+          }
+
+        gesture_unregister_point (action, position);
       }
       break;
 
     default:
       break;
+    }
+
+  if (priv->points->len == 0)
+    {
+      g_signal_handler_disconnect (priv->stage, priv->stage_capture_id);
+      priv->stage_capture_id = 0;
     }
 
   return CLUTTER_EVENT_PROPAGATE;
@@ -218,22 +320,25 @@ actor_captured_event_cb (ClutterActor *actor,
                          ClutterGestureAction *action)
 {
   ClutterGestureActionPrivate *priv = action->priv;
+  GesturePoint *point;
 
-  if (clutter_event_type (event) != CLUTTER_BUTTON_PRESS)
+  if ((clutter_event_type (event) != CLUTTER_BUTTON_PRESS) &&
+      (clutter_event_type (event) != CLUTTER_TOUCH_BEGIN))
     return CLUTTER_EVENT_PROPAGATE;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (action)))
     return CLUTTER_EVENT_PROPAGATE;
 
-  clutter_event_get_coords (event, &priv->press_x, &priv->press_y);
+  point = gesture_register_point (action, event);
 
   if (priv->stage == NULL)
     priv->stage = clutter_actor_get_stage (actor);
 
-  priv->stage_capture_id =
-    g_signal_connect_after (priv->stage, "captured-event",
-                            G_CALLBACK (stage_captured_event_cb),
-                            action);
+  if (priv->stage_capture_id == 0)
+    priv->stage_capture_id =
+      g_signal_connect_after (priv->stage, "captured-event",
+                              G_CALLBACK (stage_captured_event_cb),
+                              action);
 
   return CLUTTER_EVENT_PROPAGATE;
 }
@@ -394,9 +499,8 @@ clutter_gesture_action_init (ClutterGestureAction *self)
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_GESTURE_ACTION,
                                             ClutterGestureActionPrivate);
 
-  self->priv->press_x = self->priv->press_y = 0.f;
-  self->priv->last_motion_x = self->priv->last_motion_y = 0.f;
-  self->priv->release_x = self->priv->release_y = 0.f;
+  self->priv->points = g_array_sized_new (FALSE, TRUE, sizeof (GesturePoint), 3);
+  self->priv->requested_nb_points = 1;
 }
 
 /**
@@ -433,15 +537,17 @@ clutter_gesture_action_get_press_coords (ClutterGestureAction *action,
                                          gfloat               *press_y)
 {
   g_return_if_fail (CLUTTER_IS_GESTURE_ACTION (action));
-
-  if (device != 0)
-    g_warning ("Multi-device support not yet implemented");
+  g_return_if_fail (action->priv->points->len > device);
 
   if (press_x)
-    *press_x = action->priv->press_x;
+    *press_x = g_array_index (action->priv->points,
+                              GesturePoint,
+                              device).press_x;
 
   if (press_y)
-    *press_y = action->priv->press_y;
+    *press_y = g_array_index (action->priv->points,
+                              GesturePoint,
+                              device).press_y;
 }
 
 /**
@@ -465,15 +571,17 @@ clutter_gesture_action_get_motion_coords (ClutterGestureAction *action,
                                           gfloat               *motion_y)
 {
   g_return_if_fail (CLUTTER_IS_GESTURE_ACTION (action));
-
-  if (device != 0)
-    g_warning ("Multi-device support not yet implemented");
+  g_return_if_fail (action->priv->points->len > device);
 
   if (motion_x)
-    *motion_x = action->priv->last_motion_x;
+    *motion_x = g_array_index (action->priv->points,
+                               GesturePoint,
+                               device).last_motion_x;
 
   if (motion_y)
-    *motion_y = action->priv->last_motion_y;
+    *motion_y = g_array_index (action->priv->points,
+                               GesturePoint,
+                               device).last_motion_y;
 }
 
 /**
@@ -495,13 +603,97 @@ clutter_gesture_action_get_release_coords (ClutterGestureAction *action,
                                            gfloat               *release_y)
 {
   g_return_if_fail (CLUTTER_IS_GESTURE_ACTION (action));
-
-  if (device != 0)
-    g_warning ("Multi-device support not yet implemented");
+  g_return_if_fail (action->priv->points->len > device);
 
   if (release_x)
-    *release_x = action->priv->release_x;
+    *release_x = g_array_index (action->priv->points,
+                                GesturePoint,
+                                device).release_x;
 
   if (release_y)
-    *release_y = action->priv->release_y;
+    *release_y = g_array_index (action->priv->points,
+                                GesturePoint,
+                                device).release_y;
+}
+
+/**
+ * clutter_gesture_action_get_n_touch_points:
+ * @action: a #ClutterGestureAction
+ *
+ * Retrieves the number of requested points to trigger the gesture.
+ *
+ * Return value: the number of points to trigger the gesture.
+ *
+ * Since: 1.12
+ */
+gint
+clutter_gesture_action_get_n_touch_points (ClutterGestureAction *action)
+{
+  g_return_val_if_fail (CLUTTER_IS_GESTURE_ACTION (action), 0);
+
+  return action->priv->requested_nb_points;
+}
+
+/**
+ * clutter_gesture_action_set_n_touch_points:
+ * @action: a #ClutterGestureAction
+ * @nb_points: a number of points
+ *
+ * Sets the number of points needed to trigger the gesture.
+ *
+ * Since: 1.12
+ */
+void
+clutter_gesture_action_set_n_touch_points (ClutterGestureAction *action,
+                                           gint                  nb_points)
+{
+  ClutterGestureActionPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_GESTURE_ACTION (action));
+  g_return_if_fail (nb_points >= 1);
+
+  priv = action->priv;
+
+  priv->requested_nb_points = nb_points;
+
+  if (priv->in_gesture)
+    {
+      if (priv->points->len < priv->requested_nb_points)
+        cancel_gesture (action);
+    }
+  else
+    {
+      if (priv->points->len >= priv->requested_nb_points)
+        {
+          ClutterActor *actor =
+            clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
+          ClutterSettings *settings = clutter_settings_get_default ();
+          gint i, drag_threshold;
+
+          g_object_get (settings,
+                        "dnd-drag-threshold", &drag_threshold,
+                        NULL);
+
+          for (i = 0; i < priv->points->len; i++)
+            {
+              GesturePoint *point = &g_array_index (priv->points, GesturePoint, i);
+
+              if ((ABS (point->press_y - point->last_motion_y) >= drag_threshold) ||
+                  (ABS (point->press_x - point->last_motion_x) >= drag_threshold))
+                {
+                  gboolean return_value;
+
+                  priv->in_gesture = TRUE;
+
+                  g_signal_emit (action, gesture_signals[GESTURE_BEGIN], 0, actor,
+                                 &return_value);
+
+                  if (!return_value)
+                    cancel_gesture (action);
+
+                  break;
+                }
+            }
+        }
+    }
 }
