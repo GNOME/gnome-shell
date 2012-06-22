@@ -52,9 +52,6 @@
 
 /* atkutil.h */
 
-static guint                 cally_util_add_global_event_listener    (GSignalEmissionHook listener,
-                                                                      const gchar*        event_type);
-static void                  cally_util_remove_global_event_listener (guint remove_listener);
 static guint                 cally_util_add_key_event_listener	    (AtkKeySnoopFunc listener,
                                                                      gpointer        data);
 static void                  cally_util_remove_key_event_listener    (guint remove_listener);
@@ -63,11 +60,6 @@ static const gchar *         cally_util_get_toolkit_name		    (void);
 static const gchar *         cally_util_get_toolkit_version          (void);
 
 /* private */
-static void		     _listener_info_destroy                  (gpointer data);
-static guint                 add_listener	                     (GSignalEmissionHook  listener,
-                                                                      const gchar         *object_type,
-                                                                      const gchar         *signal,
-                                                                      const gchar         *hook_data);
 static void                  cally_util_simulate_snooper_install     (void);
 static void                  cally_util_simulate_snooper_remove      (void);
 static gboolean              cally_key_snooper                       (ClutterActor *actor,
@@ -90,15 +82,7 @@ static AtkKeyEventStruct *  atk_key_event_from_clutter_event_key     (ClutterKey
 
 /* This is just a copy of the Gail one, a shared library or place to
    define it could be a good idea. */
-typedef struct _CallyUtilListenerInfo CallyUtilListenerInfo;
 typedef struct _CallyKeyEventInfo CallyKeyEventInfo;
-
-struct _CallyUtilListenerInfo
-{
-  gint key;
-  guint signal_id;
-  gulong hook_id;
-};
 
 struct _CallyKeyEventInfo
 {
@@ -107,9 +91,7 @@ struct _CallyKeyEventInfo
 };
 
 static AtkObject* root = NULL;
-static GHashTable *listener_list = NULL;
 static GHashTable *key_listener_list = NULL;
-static gint listener_idx = 1;
 
 
 G_DEFINE_TYPE (CallyUtil, cally_util, ATK_TYPE_UTIL);
@@ -123,8 +105,6 @@ cally_util_class_init (CallyUtilClass *klass)
   data = g_type_class_peek (ATK_TYPE_UTIL);
   atk_class = ATK_UTIL_CLASS (data);
 
-  atk_class->add_global_event_listener    = cally_util_add_global_event_listener;
-  atk_class->remove_global_event_listener = cally_util_remove_global_event_listener;
   atk_class->add_key_event_listener       = cally_util_add_key_event_listener;
   atk_class->remove_key_event_listener    = cally_util_remove_key_event_listener;
   atk_class->get_root                     = cally_util_get_root;
@@ -136,9 +116,6 @@ cally_util_class_init (CallyUtilClass *klass)
      class methods will access this instance. This will be a good
      future enhancement, meanwhile, just using the same *working*
      implementation used on GailUtil */
-
-  listener_list = g_hash_table_new_full (g_int_hash, g_int_equal, NULL,
-                                         _listener_info_destroy);
 }
 
 static void
@@ -168,65 +145,6 @@ static const gchar *
 cally_util_get_toolkit_version (void)
 {
   return CLUTTER_VERSION_S;
-}
-
-
-static guint
-cally_util_add_global_event_listener (GSignalEmissionHook listener,
-                                      const gchar *event_type)
-{
-  guint rc = 0;
-  gchar **split_string;
-
-  split_string = g_strsplit (event_type, ":", 3);
-
-  if (g_strv_length (split_string) == 3)
-    rc = add_listener (listener, split_string[1], split_string[2], event_type);
-
-  g_strfreev (split_string);
-
-  return rc;
-}
-
-static void
-cally_util_remove_global_event_listener (guint remove_listener)
-{
-  if (remove_listener > 0)
-    {
-      CallyUtilListenerInfo *listener_info;
-      gint tmp_idx = remove_listener;
-
-      listener_info = (CallyUtilListenerInfo *)
-        g_hash_table_lookup(listener_list, &tmp_idx);
-
-      if (listener_info != NULL)
-        {
-          /* Hook id of 0 and signal id of 0 are invalid */
-          if (listener_info->hook_id != 0 && listener_info->signal_id != 0)
-            {
-              /* Remove the emission hook */
-              g_signal_remove_emission_hook(listener_info->signal_id,
-                                            listener_info->hook_id);
-
-              /* Remove the element from the hash */
-              g_hash_table_remove(listener_list, &tmp_idx);
-            }
-          else
-            {
-              g_warning("Invalid listener hook_id %ld or signal_id %d\n",
-                        listener_info->hook_id, listener_info->signal_id);
-            }
-        }
-      else
-        {
-          g_warning("No listener with the specified listener id %d", 
-                    remove_listener);
-        }
-    }
-  else
-    {
-      g_warning("Invalid listener_id %d", remove_listener);
-    }
 }
 
 static guint
@@ -268,57 +186,6 @@ cally_util_remove_key_event_listener (guint remove_listener)
 }
 
 /* ------------------------------ PRIVATE FUNCTIONS ------------------------- */
-
-static void
-_listener_info_destroy (gpointer data)
-{
-  g_free(data);
-}
-
-static guint
-add_listener (GSignalEmissionHook listener,
-              const gchar         *object_type,
-              const gchar         *signal_name,
-              const gchar         *hook_data)
-{
-  GType type;
-  guint signal_id;
-  gint  rc = 0;
-
-  type = g_type_from_name (object_type);
-  if (type)
-    {
-      signal_id  = g_signal_lookup (signal_name, type);
-      if (signal_id > 0)
-        {
-          CallyUtilListenerInfo *listener_info;
-
-          rc = listener_idx;
-
-          listener_info = g_new (CallyUtilListenerInfo, 1);
-          listener_info->key = listener_idx;
-          listener_info->hook_id =
-            g_signal_add_emission_hook (signal_id, 0, listener,
-                                        g_strdup (hook_data),
-                                        (GDestroyNotify) g_free);
-          listener_info->signal_id = signal_id;
-
-	  g_hash_table_insert(listener_list, &(listener_info->key), listener_info);
-          listener_idx++;
-        }
-      else
-        {
-          /* This is mainly because some "window:xxx" methods not
-             implemented on CallyStage */
-          g_debug ("Signal type %s not supported\n", signal_name);
-        }
-    }
-  else
-    {
-      g_warning("Invalid object type %s\n", object_type);
-    }
-  return rc;
-}
 
 /* Trying to emulate gtk_key_snooper install (a kind of wrapper). This
    could be implemented without it, but I will maintain it in this

@@ -138,7 +138,7 @@ AC_HEADER_STDC
 m4_define([glib_req_version],           [2.31.19])
 m4_define([cogl_req_version],           [1.9.6])
 m4_define([json_glib_req_version],      [0.12.0])
-m4_define([atk_req_version],            [2.1.5])
+m4_define([atk_req_version],            [2.5.3])
 m4_define([cairo_req_version],          [1.10])
 m4_define([pango_req_version],          [1.30])
 m4_define([gi_req_version],             [0.9.5])
