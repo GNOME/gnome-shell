@@ -62,12 +62,26 @@ function loadRemoteSearchProvidersFromDir(dir, addProviderCallback) {
             let remoteProvider, title;
             try {
                 let group = KEY_FILE_GROUP;
-                let iconName = keyfile.get_string(group, 'Icon');
                 let busName = keyfile.get_string(group, 'BusName');
                 let objectPath = keyfile.get_string(group, 'ObjectPath');
-                title = keyfile.get_locale_string(group, 'Title', null);
 
-                let icon = new Gio.ThemedIcon({ name: iconName });
+                let appInfo = null;
+                try {
+                    let desktopId = keyfile.get_string(group, 'DesktopId');
+                    appInfo = Gio.DesktopAppInfo.new(desktopId);
+                } catch (e) {
+                }
+
+                let icon;
+                if (appInfo) {
+                    icon = appInfo.get_icon();
+                    title = appInfo.get_name();
+                } else {
+                    let iconName = keyfile.get_string(group, 'Icon');
+                    icon = new Gio.ThemedIcon({ name: iconName });
+                    title = keyfile.get_locale_string(group, 'Title', null);
+                }
+
                 remoteProvider = new RemoteSearchProvider(title,
                                                           icon,
                                                           busName,
