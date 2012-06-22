@@ -38,8 +38,8 @@ const ATIndicator = new Lang.Class({
     _init: function() {
         this.parent('preferences-desktop-accessibility-symbolic', _("Accessibility"));
 
-        let highContrast = this._buildHCItem();
-        this.menu.addMenuItem(highContrast);
+        this._highContrast = this._buildHCItem();
+        this.menu.addMenuItem(this._highContrast);
 
         let magnifier = this._buildItem(_("Zoom"), APPLICATIONS_SCHEMA,
                                                    'screen-magnifier-enabled');
@@ -159,5 +159,9 @@ const ATIndicator = new Lang.Class({
             widget.setToggleState(active);
         });
         return widget;
-    }
+    },
+
+    toggleHighContrast: function() {
+        this._highContrast.toggle();
+    },
 });

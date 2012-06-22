@@ -100,6 +100,7 @@ nobase_dist_js_DATA = 	\
 	ui/components/__init__.js		\
 	ui/components/autorunManager.js		\
 	ui/components/automountManager.js	\
+	ui/components/mediaKeysManager.js	\
 	ui/components/networkAgent.js		\
 	ui/components/polkitAgent.js		\
 	ui/components/recorder.js		\

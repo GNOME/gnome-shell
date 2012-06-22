@@ -66,7 +66,21 @@ const VolumeMenu = new Lang.Class({
         this._onControlStateChanged();
     },
 
-    scroll: function(direction) {
+    toggleMute: function(quiet) {
+        let muted = this._output.is_muted;
+        this._output.change_is_muted(!muted);
+
+        if (muted && !quiet)
+            this._notifyVolumeChange();
+
+        if (!muted)
+            return ['audio-volume-muted-symbolic', 0];
+        else
+            return [this._volumeToIcon(this._output.volume),
+                    this._output.volume / this._volumeMax];
+    },
+
+    scroll: function(direction, quiet) {
         let currentVolume = this._output.volume;
 
         if (direction == Clutter.ScrollDirection.DOWN) {
@@ -85,7 +99,14 @@ const VolumeMenu = new Lang.Class({
             this._output.push_volume();
         }
 
-        this._notifyVolumeChange();
+        if (!quiet)
+            this._notifyVolumeChange();
+
+        if (this._output.is_muted)
+            return ['audio-volume-muted-symbolic', 0];
+        else
+            return [this._volumeToIcon(this._output.volume),
+                    this._output.volume / this._volumeMax];
     },
 
     _onControlStateChanged: function() {
@@ -221,14 +242,14 @@ const Indicator = new Lang.Class({
         this.parent('audio-volume-muted-symbolic', _("Volume"));
 
         this._control = getMixerControl();
-        this._volumeMenu = new VolumeMenu(this._control);
-        this._volumeMenu.connect('icon-changed', Lang.bind(this, function(menu, icon) {
+        this.volumeMenu = new VolumeMenu(this._control);
+        this.volumeMenu.connect('icon-changed', Lang.bind(this, function(menu, icon) {
             this._hasPulseAudio = (icon != null);
             this.setIcon(icon);
             this._syncVisibility();
         }));
 
-        this.menu.addMenuItem(this._volumeMenu);
+        this.menu.addMenuItem(this.volumeMenu);
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addSettingsAction(_("Sound Settings"), 'gnome-sound-panel.desktop');
@@ -242,6 +263,6 @@ const Indicator = new Lang.Class({
     },
 
     _onScrollEvent: function(actor, event) {
-        this._volumeMenu.scroll(event.get_scroll_direction());
-    }
+        this.volumeMenu.scroll(event.get_scroll_direction(), false);
+    },
 });

@@ -2325,3 +2325,17 @@ StScrollBar StButton#vhandle:active {
     padding-bottom: 0px;
 }
 
+.osd-window {
+    color: #ededed;
+    background-color: rgba(33, 37, 38, 0.80);
+    border-radius: 15px;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.75);
+
+    padding: 40px;
+    spacing: 5px;
+}
+
+.osd-progress-bar {
+    height: 0.8em;
+    border: 1px solid;
+}

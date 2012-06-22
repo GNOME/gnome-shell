@@ -37,7 +37,7 @@ const _modes = {
         isGreeter: true,
         isPrimary: true,
         unlockDialog: imports.gdm.loginDialog.LoginDialog,
-        components: ['polkitAgent'],
+        components: ['polkitAgent', 'mediaKeysManager'],
         panel: {
             left: ['logo'],
             center: ['dateMenu'],
@@ -50,7 +50,7 @@ const _modes = {
         isLocked: true,
         isGreeter: undefined,
         unlockDialog: undefined,
-        components: ['polkitAgent', 'telepathyClient'],
+        components: ['polkitAgent', 'telepathyClient', 'mediaKeysManager'],
         panel: {
             left: ['userMenu'],
             center: [],
@@ -61,7 +61,7 @@ const _modes = {
     'unlock-dialog': {
         isLocked: true,
         unlockDialog: undefined,
-        components: ['polkitAgent', 'telepathyClient'],
+        components: ['polkitAgent', 'telepathyClient', 'mediaKeysManager'],
         panel: {
             left: ['userMenu'],
             center: [],
@@ -71,7 +71,7 @@ const _modes = {
 
     'initial-setup': {
         isPrimary: true,
-        components: ['keyring'],
+        components: ['keyring', 'mediaKeysManager'],
         panel: {
             left: [],
             center: ['dateMenu'],
@@ -91,8 +91,9 @@ const _modes = {
         isLocked: false,
         isPrimary: true,
         unlockDialog: imports.ui.unlockDialog.UnlockDialog,
-        components: ['networkAgent', 'polkitAgent', 'telepathyClient',
-                     'keyring', 'recorder', 'autorunManager', 'automountManager'],
+        components: ['networkAgent', 'polkitAgent', 'telepathyClient', 'keyring',
+                     'recorder', 'autorunManager', 'automountManager',
+                     'mediaKeysManager'],
         panel: {
             left: ['activities', 'appMenu'],
             center: ['dateMenu'],

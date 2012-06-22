@@ -17,6 +17,9 @@ const SystemdLoginManagerIface = <interface name='org.freedesktop.login1.Manager
 <method name='Suspend'>
     <arg type='b' direction='in'/>
 </method>
+<method name='Hibernate'>
+    <arg type='b' direction='in'/>
+</method>
 <method name='CanPowerOff'>
     <arg type='s' direction='out'/>
 </method>
@@ -24,6 +27,9 @@ const SystemdLoginManagerIface = <interface name='org.freedesktop.login1.Manager
     <arg type='s' direction='out'/>
 </method>
 <method name='CanSuspend'>
+    <arg type='s' direction='out'/>
+</method>
+<method name='CanHibernate'>
     <arg type='s' direction='out'/>
 </method>
 </interface>;
@@ -140,6 +146,15 @@ const LoginManagerSystemd = new Lang.Class({
         });
     },
 
+    canHibernate: function(asyncCallback) {
+        this._proxy.CanSuspendRemote(function(result, error) {
+            if (error)
+                asyncCallback(false);
+            else
+                asyncCallback(result[0] != 'no');
+        });
+    },
+
     powerOff: function() {
         this._proxy.PowerOffRemote(true);
     },
@@ -150,6 +165,10 @@ const LoginManagerSystemd = new Lang.Class({
 
     suspend: function() {
         this._proxy.SuspendRemote(true);
+    },
+
+    hibernate: function() {
+        this._proxy.HibernateRemote(true);
     }
 });
 
@@ -215,6 +234,13 @@ const LoginManagerConsoleKit = new Lang.Class({
         }));
     },
 
+    canHibernate: function(asyncCallback) {
+        Mainloop.idle_add(Lang.bind(this, function() {
+            asyncCallback(this._upClient.get_can_hibernate());
+            return false;
+        }));
+    },
+
     powerOff: function() {
         this._proxy.StopRemote();
     },
@@ -225,5 +251,9 @@ const LoginManagerConsoleKit = new Lang.Class({
 
     suspend: function() {
         this._upClient.suspend_sync(null);
+    },
+
+    hibernate: function() {
+        this._upClient.hibernate_sync(null);
     }
 });

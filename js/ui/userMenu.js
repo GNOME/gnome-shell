@@ -572,6 +572,7 @@ const UserMenuButton = new Lang.Class({
 
                 this._updateHaveShutdown();
                 this._updateHaveSuspend();
+                this._updateHaveHibernate();
             }));
         this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
                                        Lang.bind(this, this._updateHaveShutdown));
@@ -652,6 +653,13 @@ const UserMenuButton = new Lang.Class({
             function(result) {
                 this._haveSuspend = result;
                 this._updateSuspendOrPowerOff();
+        }));
+    },
+
+    _updateHaveHibernate: function() {
+        this._loginManager.canHibernate(Lang.bind(this,
+            function(result) {
+                this._haveHibernate = result;
         }));
     },
 
@@ -766,7 +774,7 @@ const UserMenuButton = new Lang.Class({
         this._loginScreenItem = item;
 
         item = new PopupMenu.PopupMenuItem(_("Log Out"));
-        item.connect('activate', Lang.bind(this, this._onQuitSessionActivate));
+        item.connect('activate', Lang.bind(this, this.logOut));
         this.menu.addMenuItem(item);
         this._logoutItem = item;
 
@@ -835,7 +843,7 @@ const UserMenuButton = new Lang.Class({
         Gdm.goto_login_session_sync(null);
     },
 
-    _onQuitSessionActivate: function() {
+    logOut: function() {
         Main.overview.hide();
         this._session.LogoutRemote(0);
     },
@@ -847,25 +855,60 @@ const UserMenuButton = new Lang.Class({
         this._session.RebootRemote();
     },
 
+    shutdown: function() {
+        this._session.ShutdownRemote();
+    },
+
+    suspend: function() {
+        if (!this._haveSuspend)
+            return false;
+
+        // Ensure we only suspend after locking the screen
+        if (this._screenSaverSettings.get_boolean(LOCK_ENABLED_KEY)) {
+            let tmpId = Main.screenShield.connect('lock-screen-shown', Lang.bind(this, function() {
+                Main.screenShield.disconnect(tmpId);
+
+                this._loginManager.suspend();
+            }));
+
+            this.menu.close(BoxPointer.PopupAnimation.NONE);
+            Main.screenShield.lock(true);
+        } else {
+            this._loginManager.suspend();
+        }
+
+        return true;
+    },
+
+    hibernate: function() {
+        if (!this._haveHibernate)
+            return false;
+
+        // Ensure we only suspend after locking the screen
+        if (this._screenSaverSettings.get_boolean(LOCK_ENABLED_KEY)) {
+            let tmpId = Main.screenShield.connect('lock-screen-shown', Lang.bind(this, function() {
+                Main.screenShield.disconnect(tmpId);
+
+                this._loginManager.hibernate();
+            }));
+
+            this.menu.close(BoxPointer.PopupAnimation.NONE);
+            Main.screenShield.lock(true);
+        } else {
+            this._loginManager.hibernate();
+        }
+
+        return true;
+    },
+
     _onSuspendOrPowerOffActivate: function() {
         Main.overview.hide();
 
         if (this._haveShutdown &&
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
-            this._session.ShutdownRemote();
+            this.shutdown();
         } else {
-            if (this._screenSaverSettings.get_boolean(LOCK_ENABLED_KEY)) {
-                let tmpId = Main.screenShield.connect('lock-screen-shown', Lang.bind(this, function() {
-                    Main.screenShield.disconnect(tmpId);
-
-                    this._loginManager.suspend();
-                }));
-
-                this.menu.close(BoxPointer.PopupAnimation.NONE);
-                Main.screenShield.lock(true);
-            } else {
-                this._loginManager.suspend();
-            }
+            this.suspend();
         }
     }
 });
