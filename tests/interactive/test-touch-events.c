@@ -27,7 +27,10 @@
 #define NUM_COLORS 10
 #define NUM_ACTORS 10
 
-static GSList *events = NULL;
+static GQueue events = G_QUEUE_INIT;
+static GQueue all_events = G_QUEUE_INIT;
+static gboolean new_surface = TRUE;
+
 static const ClutterColor const static_colors[] = {
   { 0xff, 0x00, 0x00, 0xff },   /* red */
   { 0x80, 0x00, 0x00, 0xff },   /* dark red */
@@ -74,19 +77,36 @@ static gboolean
 draw_touches (ClutterCairoTexture *canvas,
               cairo_t             *cr)
 {
-  g_slist_foreach (events, (GFunc) draw_touch, cr);
+  g_queue_foreach (new_surface ? &all_events : &events, (GFunc) draw_touch, cr);
+  g_queue_clear (&events);
+
+  new_surface = FALSE;
 
   return TRUE;
+}
+
+static cairo_surface_t *
+create_surface (ClutterCairoTexture *texture,
+                guint width,
+                guint height,
+                gpointer user_data)
+{
+  new_surface = TRUE;
+
+  return NULL;
 }
 
 static gboolean
 event_cb (ClutterActor *actor, ClutterEvent *event, ClutterActor *canvas)
 {
+  ClutterEvent *copy;
+
   if (event->type != CLUTTER_TOUCH_UPDATE)
     return FALSE;
 
-  events = g_slist_append (events, clutter_event_copy (event));
-
+  copy = clutter_event_copy (event);
+  g_queue_push_tail (&events, copy);
+  g_queue_push_tail (&all_events, copy);
   clutter_actor_queue_redraw (canvas);
 
   return TRUE;
@@ -133,6 +153,7 @@ test_touch_events_main (int argc, char *argv[])
   canvas = clutter_cairo_texture_new (1, 1);
   g_signal_connect (canvas, "paint", G_CALLBACK (canvas_paint), NULL);
   g_signal_connect (canvas, "draw", G_CALLBACK (draw_touches), NULL);
+  g_signal_connect (canvas, "create-surface", G_CALLBACK (create_surface), NULL);
   clutter_cairo_texture_set_auto_resize (CLUTTER_CAIRO_TEXTURE (canvas), TRUE);
   clutter_actor_add_constraint (canvas,
                                 clutter_bind_constraint_new (stage,
@@ -161,7 +182,9 @@ test_touch_events_main (int argc, char *argv[])
 
   clutter_main ();
 
-  g_slist_free_full (events, (GDestroyNotify) clutter_event_free);
+  g_queue_foreach (&all_events, (GFunc) clutter_event_free, NULL);
+  g_queue_clear (&events);
+  g_queue_clear (&all_events);
   g_hash_table_destroy (sequence_to_color);
 
   return EXIT_SUCCESS;
