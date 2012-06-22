@@ -62,11 +62,12 @@ function loadRemoteSearchProvidersFromDir(dir, addProviderCallback) {
             let remoteProvider, title;
             try {
                 let group = KEY_FILE_GROUP;
-                let icon = keyfile.get_string(group, 'Icon');
+                let iconName = keyfile.get_string(group, 'Icon');
                 let busName = keyfile.get_string(group, 'BusName');
                 let objectPath = keyfile.get_string(group, 'ObjectPath');
                 title = keyfile.get_locale_string(group, 'Title', null);
 
+                let icon = new Gio.ThemedIcon({ name: iconName });
                 remoteProvider = new RemoteSearchProvider(title,
                                                           icon,
                                                           busName,
