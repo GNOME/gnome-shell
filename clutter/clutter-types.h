@@ -73,6 +73,7 @@ typedef struct _ClutterConstraint               ClutterConstraint;
 typedef struct _ClutterEffect                   ClutterEffect;
 
 typedef struct _ClutterPath                     ClutterPath;
+typedef struct _ClutterPathNode                 ClutterPathNode;
 
 typedef struct _ClutterActorBox                 ClutterActorBox;
 typedef struct _ClutterColor                    ClutterColor;
@@ -547,6 +548,38 @@ ClutterKnot *clutter_knot_copy     (const ClutterKnot *knot);
 void         clutter_knot_free     (ClutterKnot       *knot);
 gboolean     clutter_knot_equal    (const ClutterKnot *knot_a,
                                     const ClutterKnot *knot_b);
+
+/**
+ * ClutterPathNode:
+ * @type: the node's type
+ * @points: the coordinates of the node
+ *
+ * Represents a single node of a #ClutterPath.
+ *
+ * Some of the coordinates in @points may be unused for some node
+ * types. %CLUTTER_PATH_MOVE_TO and %CLUTTER_PATH_LINE_TO use only one
+ * pair of coordinates, %CLUTTER_PATH_CURVE_TO uses all three and
+ * %CLUTTER_PATH_CLOSE uses none.
+ *
+ * Since: 1.0
+ */
+struct _ClutterPathNode
+{
+  ClutterPathNodeType type;
+
+  ClutterKnot points[3];
+};
+
+GType clutter_path_node_get_type (void) G_GNUC_CONST;
+
+ClutterPathNode *clutter_path_node_copy  (const ClutterPathNode *node);
+void             clutter_path_node_free  (ClutterPathNode       *node);
+gboolean         clutter_path_node_equal (const ClutterPathNode *node_a,
+                                          const ClutterPathNode *node_b);
+
+/*
+ * ClutterPaintVolume
+ */
 
 GType clutter_paint_volume_get_type (void) G_GNUC_CONST;
 

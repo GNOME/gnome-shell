@@ -43,7 +43,6 @@ G_BEGIN_DECLS
 
 typedef struct _ClutterPathClass   ClutterPathClass;
 typedef struct _ClutterPathPrivate ClutterPathPrivate;
-typedef struct _ClutterPathNode    ClutterPathNode;
 
 /**
  * ClutterPathCallback:
@@ -87,29 +86,7 @@ struct _ClutterPathClass
   GInitiallyUnownedClass parent_class;
 };
 
-/**
- * ClutterPathNode:
- * @type: the node's type
- * @points: the coordinates of the node
- *
- * Represents a single node of a #ClutterPath.
- *
- * Some of the coordinates in @points may be unused for some node
- * types. %CLUTTER_PATH_MOVE_TO and %CLUTTER_PATH_LINE_TO use only one
- * pair of coordinates, %CLUTTER_PATH_CURVE_TO uses all three and
- * %CLUTTER_PATH_CLOSE uses none.
- *
- * Since: 1.0
- */
-struct _ClutterPathNode
-{
-  ClutterPathNodeType type;
-
-  ClutterKnot points[3];
-};
-
 GType clutter_path_get_type (void) G_GNUC_CONST;
-GType clutter_path_node_get_type (void) G_GNUC_CONST;
 
 ClutterPath *clutter_path_new                  (void);
 ClutterPath *clutter_path_new_with_description (const gchar           *desc);
@@ -172,11 +149,6 @@ guint        clutter_path_get_position         (ClutterPath           *path,
                                                 gdouble                progress,
                                                 ClutterKnot           *position);
 guint        clutter_path_get_length           (ClutterPath           *path);
-
-ClutterPathNode *clutter_path_node_copy  (const ClutterPathNode *node);
-void             clutter_path_node_free  (ClutterPathNode       *node);
-gboolean         clutter_path_node_equal (const ClutterPathNode *node_a,
-                                          const ClutterPathNode *node_b);
 
 G_END_DECLS
 
