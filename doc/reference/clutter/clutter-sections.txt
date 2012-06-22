@@ -2979,6 +2979,23 @@ clutter_drop_action_get_type
 </SECTION>
 
 <SECTION>
+<FILE>clutter-rotate-action</FILE>
+ClutterRotateAction
+ClutterRotateActionClass
+clutter_rotate_action_new
+<SUBSECTION Standard>
+CLUTTER_ROTATE_ACTION
+CLUTTER_ROTATE_ACTION_CLASS
+CLUTTER_IS_ROTATE_ACTION
+CLUTTER_IS_ROTATE_ACTION_CLASS
+CLUTTER_ROTATE_ACTION_GET_CLASS
+CLUTTER_TYPE_ROTATE_ACTION
+<SUBSECTION Private>
+ClutterRotateActionPrivate
+clutter_rotate_action_get_type
+</SECTION>
+
+<SECTION>
 <FILE>clutter-transition</FILE>
 ClutterTransition
 ClutterTransitionClass

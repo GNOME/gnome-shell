@@ -640,20 +640,6 @@ clutter_drag_action_dispose (GObject *gobject)
   G_OBJECT_CLASS (clutter_drag_action_parent_class)->dispose (gobject);
 }
 
-static gboolean
-drag_progress_accum (GSignalInvocationHint *ihint,
-                     GValue                *return_accu,
-                     const GValue          *handler_return,
-                     gpointer               user_data)
-{
-  gboolean continue_emission;
-
-  continue_emission = g_value_get_boolean (handler_return);
-  g_value_set_boolean (return_accu, continue_emission);
-
-  return continue_emission;
-}
-
 static void
 clutter_drag_action_class_init (ClutterDragActionClass *klass)
 {
@@ -829,7 +815,7 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
                   CLUTTER_TYPE_DRAG_ACTION,
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterDragActionClass, drag_progress),
-                  drag_progress_accum, NULL,
+                  _clutter_boolean_continue_accumulator, NULL,
                   _clutter_marshal_BOOLEAN__OBJECT_FLOAT_FLOAT,
                   G_TYPE_BOOLEAN, 3,
                   CLUTTER_TYPE_ACTOR,

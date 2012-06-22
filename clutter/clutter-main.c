@@ -2139,6 +2139,20 @@ _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
   return continue_emission;
 }
 
+gboolean
+_clutter_boolean_continue_accumulator (GSignalInvocationHint *ihint,
+                                       GValue                *return_accu,
+                                       const GValue          *handler_return,
+                                       gpointer               dummy)
+{
+  gboolean continue_emission;
+
+  continue_emission = g_value_get_boolean (handler_return);
+  g_value_set_boolean (return_accu, continue_emission);
+
+  return continue_emission;
+}
+
 static void
 event_click_count_generate (ClutterEvent *event)
 {

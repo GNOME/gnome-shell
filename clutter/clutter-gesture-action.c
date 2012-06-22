@@ -167,20 +167,6 @@ gesture_unregister_point (ClutterGestureAction *action, gint position)
   g_array_remove_index (priv->points, position);
 }
 
-static gboolean
-signal_accumulator (GSignalInvocationHint *ihint,
-                    GValue                *return_accu,
-                    const GValue          *handler_return,
-                    gpointer               user_data)
-{
-  gboolean continue_emission;
-
-  continue_emission = g_value_get_boolean (handler_return);
-  g_value_set_boolean (return_accu, continue_emission);
-
-  return continue_emission;
-}
-
 static void
 cancel_gesture (ClutterGestureAction *action)
 {
@@ -418,7 +404,7 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterGestureActionClass, gesture_begin),
-                  signal_accumulator, NULL,
+                  _clutter_boolean_continue_accumulator, NULL,
                   _clutter_marshal_BOOLEAN__OBJECT,
                   G_TYPE_BOOLEAN, 1,
                   CLUTTER_TYPE_ACTOR);
@@ -441,7 +427,7 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterGestureActionClass, gesture_progress),
-                  signal_accumulator, NULL,
+                  _clutter_boolean_continue_accumulator, NULL,
                   _clutter_marshal_BOOLEAN__OBJECT,
                   G_TYPE_BOOLEAN, 1,
                   CLUTTER_TYPE_ACTOR);

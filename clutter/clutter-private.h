@@ -237,6 +237,15 @@ gboolean _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
                                                const GValue          *handler_return,
                                                gpointer               dummy);
 
+/* use this function as the accumulator if you have a signal with
+ * a G_TYPE_BOOLEAN return value; this will stop the emission as
+ * soon as one handler returns FALSE
+ */
+gboolean _clutter_boolean_continue_accumulator (GSignalInvocationHint *ihint,
+                                                GValue                *return_accu,
+                                                const GValue          *handler_return,
+                                                gpointer               dummy);
+
 void _clutter_run_repaint_functions (ClutterRepaintFlags flags);
 
 void _clutter_constraint_update_allocation (ClutterConstraint *constraint,
