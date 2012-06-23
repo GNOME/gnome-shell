@@ -288,3 +288,31 @@ function insertSorted(array, val, cmp) {
 
     return pos;
 }
+
+/**
+ * wrapKeybinding:
+ *
+ * Wrap a keybinding handler so that
+ * it ignores an invocation if the shell is modal, but
+ * not when the overview is active, or when global
+ * keybindings are allowed by session mode.
+ * This function is only useful for keybindings installed
+ * with Meta.KeybindingFlags.HANDLE_WHEN_GRABBED
+ */
+function wrapKeybinding(handler, onlyInOverview) {
+    return function() {
+        let handle;
+
+        if (onlyInOverview) {
+            handle = Main.sessionMode.allowKeybindingsWhenModal ||
+                Main.modalCount == (Main.overview.visible ? 1 : 0);
+        } else {
+            handle = true;
+        }
+
+        if (handle)
+            return handler.apply(this, arguments);
+        else
+            return false;
+    }
+}

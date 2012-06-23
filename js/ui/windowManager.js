@@ -12,6 +12,7 @@ const AltTab = imports.ui.altTab;
 const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
+const Util = imports.misc.util;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 const WINDOW_ANIMATION_TIME = 0.25;
@@ -102,13 +103,13 @@ const WindowManager = new Lang.Class({
 
         this._workspaceSwitcherPopup = null;
         Meta.keybindings_set_custom_handler('switch-to-workspace-left',
-                                            Lang.bind(this, this._showWorkspaceSwitcher));
+                                            Util.wrapKeybinding(Lang.bind(this, this._showWorkspaceSwitcher), true));
         Meta.keybindings_set_custom_handler('switch-to-workspace-right',
-                                            Lang.bind(this, this._showWorkspaceSwitcher));
+                                            Util.wrapKeybinding(Lang.bind(this, this._showWorkspaceSwitcher), true));
         Meta.keybindings_set_custom_handler('switch-to-workspace-up',
-                                            Lang.bind(this, this._showWorkspaceSwitcher));
+                                            Util.wrapKeybinding(Lang.bind(this, this._showWorkspaceSwitcher), true));
         Meta.keybindings_set_custom_handler('switch-to-workspace-down',
-                                            Lang.bind(this, this._showWorkspaceSwitcher));
+                                            Util.wrapKeybinding(Lang.bind(this, this._showWorkspaceSwitcher), true));
         Meta.keybindings_set_custom_handler('move-to-workspace-left',
                                             Lang.bind(this, this._showWorkspaceSwitcher));
         Meta.keybindings_set_custom_handler('move-to-workspace-right',
@@ -126,7 +127,7 @@ const WindowManager = new Lang.Class({
         Meta.keybindings_set_custom_handler('switch-group-backward',
                                             Lang.bind(this, this._startAppSwitcher));
         Meta.keybindings_set_custom_handler('switch-panels',
-                                            Lang.bind(this, this._startA11ySwitcher));
+                                            Util.wrapKeybinding(Lang.bind(this, this._startA11ySwitcher), true));
         global.display.add_keybinding('open-application-menu',
                                       new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
                                       Meta.KeyBindingFlags.NONE,
@@ -552,30 +553,32 @@ const WindowManager = new Lang.Class({
         let backwards = modifiers & Meta.VirtualModifier.SHIFT_MASK;
         if (!tabPopup.show(backwards, binding.get_name(), binding.get_mask()))
             tabPopup.destroy();
+        return true;
     },
 
     _startA11ySwitcher : function(display, screen, window, binding) {
         let modifiers = binding.get_modifiers();
         let backwards = modifiers & Meta.VirtualModifier.SHIFT_MASK;
         Main.ctrlAltTabManager.popup(backwards, binding.get_mask());
+        return true;
     },
 
     _openAppMenu : function(display, screen, window, event, binding) {
         Main.panel.openAppMenu();
+        return true;
     },
 
     _showWorkspaceSwitcher : function(display, screen, window, binding) {
         if (screen.n_workspaces == 1)
-            return;
+            return false;
 
         let [action,,,direction] = binding.get_name().split('-');
         let direction = Meta.MotionDirection[direction.toUpperCase()];
         let newWs;
 
-
         if (direction != Meta.MotionDirection.UP &&
             direction != Meta.MotionDirection.DOWN)
-            return;
+            return false;
 
         if (action == 'switch')
             newWs = this.actionMoveWorkspace(direction);
@@ -591,6 +594,8 @@ const WindowManager = new Lang.Class({
             }
             this._workspaceSwitcherPopup.display(direction, newWs.index());
         }
+
+        return true;
     },
 
     actionMoveWorkspace: function(direction) {

@@ -52,6 +52,8 @@ const Recorder = new Lang.Class({
             Meta.disable_unredirect_for_screen(global.screen);
             recorder.record();
         }
+
+        return true;
     }
 });
 
