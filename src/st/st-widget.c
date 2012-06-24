@@ -1010,7 +1010,7 @@ st_widget_class_init (StWidgetClass *klass)
  */
 void
 st_widget_set_theme (StWidget  *actor,
-                      StTheme  *theme)
+                     StTheme   *theme)
 {
   StWidgetPrivate *priv;
 
@@ -1018,11 +1018,11 @@ st_widget_set_theme (StWidget  *actor,
 
   priv = actor->priv;
 
-  if (theme !=priv->theme)
+  if (theme != priv->theme)
     {
       if (priv->theme)
         g_object_unref (priv->theme);
-      priv->theme = g_object_ref (priv->theme);
+      priv->theme = g_object_ref (theme);
 
       st_widget_style_changed (actor);
 
