@@ -13,3 +13,11 @@ function init(stage) {
     let theme = new St.Theme({ application_stylesheet: stylesheetPath });
     context.set_theme(theme);
 }
+
+function main(stage) {
+    stage.show();
+    stage.connect('destroy', function() {
+        Clutter.main_quit();
+    });
+    Clutter.main();
+}

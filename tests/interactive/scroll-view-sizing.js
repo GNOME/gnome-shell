@@ -251,138 +251,139 @@ SizingIllustrator.prototype = {
 
 /****************************************************************************/
 
-let stage = new Clutter.Stage({ width: 600, height: 600 });
-UI.init(stage);
+function test() {
+    let stage = new Clutter.Stage({ width: 600, height: 600 });
+    UI.init(stage);
 
-let mainBox = new St.BoxLayout({ width: stage.width,
-				 height: stage.height,
-				 vertical: true,
-			         style: 'padding: 10px;'
-                                        + 'spacing: 5px;'
-                                        + 'font: 16px sans-serif;'
-                                        + 'background: black;'
-                                        + 'color: white;' });
-stage.add_actor(mainBox);
+    let mainBox = new St.BoxLayout({ width: stage.width,
+				     height: stage.height,
+				     vertical: true,
+			             style: 'padding: 10px;'
+                                     + 'spacing: 5px;'
+                                     + 'font: 16px sans-serif;'
+                                     + 'background: black;'
+                                     + 'color: white;' });
+    stage.add_actor(mainBox);
 
-const DOCS = 'Red lines represent minimum size, blue lines natural size. Drag yellow handle to resize ScrollView. Click on options to change.';
+    const DOCS = 'Red lines represent minimum size, blue lines natural size. Drag yellow handle to resize ScrollView. Click on options to change.';
 
-let docsLabel = new St.Label({ text: DOCS });
-docsLabel.clutter_text.line_wrap = true;
-mainBox.add(docsLabel);
+    let docsLabel = new St.Label({ text: DOCS });
+    docsLabel.clutter_text.line_wrap = true;
+    mainBox.add(docsLabel);
 
-let bin = new St.Bin({ x_fill: true, y_fill: true, style: 'border: 2px solid #666666;' });
-mainBox.add(bin, { x_fill: true, y_fill: true, expand: true });
+    let bin = new St.Bin({ x_fill: true, y_fill: true, style: 'border: 2px solid #666666;' });
+    mainBox.add(bin, { x_fill: true, y_fill: true, expand: true });
 
-let illustrator = new SizingIllustrator();
-bin.add_actor(illustrator.actor);
+    let illustrator = new SizingIllustrator();
+    bin.add_actor(illustrator.actor);
 
-let scrollView = new St.ScrollView();
-illustrator.add(scrollView);
+    let scrollView = new St.ScrollView();
+    illustrator.add(scrollView);
 
-let box = new St.BoxLayout({ vertical: true });
-scrollView.add_actor(box);
+    let box = new St.BoxLayout({ vertical: true });
+    scrollView.add_actor(box);
 
-let flowedBoxes = new FlowedBoxes();
-box.add(flowedBoxes.actor, { expand: false, x_fill: true, y_fill: true });
+    let flowedBoxes = new FlowedBoxes();
+    box.add(flowedBoxes.actor, { expand: false, x_fill: true, y_fill: true });
 
-let policyBox = new St.BoxLayout({ vertical: false });
-mainBox.add(policyBox);
+    let policyBox = new St.BoxLayout({ vertical: false });
+    mainBox.add(policyBox);
 
-policyBox.add(new St.Label({ text: 'Horizontal Policy: ' }));
-let hpolicy = new St.Button({ label: 'AUTOMATIC', style: 'text-decoration: underline; color: #4444ff;' });
-policyBox.add(hpolicy);
+    policyBox.add(new St.Label({ text: 'Horizontal Policy: ' }));
+    let hpolicy = new St.Button({ label: 'AUTOMATIC', style: 'text-decoration: underline; color: #4444ff;' });
+    policyBox.add(hpolicy);
 
-let spacer = new St.Bin();
-policyBox.add(spacer, { expand: true });
+    let spacer = new St.Bin();
+    policyBox.add(spacer, { expand: true });
 
-policyBox.add(new St.Label({ text: 'Vertical Policy: '}));
-let vpolicy = new St.Button({ label: 'AUTOMATIC', style: 'text-decoration: underline; color: #4444ff;' });
-policyBox.add(vpolicy);
+    policyBox.add(new St.Label({ text: 'Vertical Policy: '}));
+    let vpolicy = new St.Button({ label: 'AUTOMATIC', style: 'text-decoration: underline; color: #4444ff;' });
+    policyBox.add(vpolicy);
 
-function togglePolicy(button) {
-    switch(button.label) {
-    case 'AUTOMATIC':
-	button.label = 'ALWAYS';
-	break;
-    case 'ALWAYS':
-	button.label = 'NEVER';
-	break;
-    case 'NEVER':
-	button.label = 'AUTOMATIC';
-	break;
+    function togglePolicy(button) {
+        switch(button.label) {
+        case 'AUTOMATIC':
+	    button.label = 'ALWAYS';
+	    break;
+        case 'ALWAYS':
+	    button.label = 'NEVER';
+	    break;
+        case 'NEVER':
+	    button.label = 'AUTOMATIC';
+	    break;
+        }
+        scrollView.set_policy(Gtk.PolicyType[hpolicy.label], Gtk.PolicyType[vpolicy.label]);
     }
-    scrollView.set_policy(Gtk.PolicyType[hpolicy.label], Gtk.PolicyType[vpolicy.label]);
-}
 
-hpolicy.connect('clicked', function() { togglePolicy(hpolicy); });
-vpolicy.connect('clicked', function() { togglePolicy(vpolicy); });
+    hpolicy.connect('clicked', function() { togglePolicy(hpolicy); });
+    vpolicy.connect('clicked', function() { togglePolicy(vpolicy); });
 
-let fadeBox = new St.BoxLayout({ vertical: false });
-mainBox.add(fadeBox);
+    let fadeBox = new St.BoxLayout({ vertical: false });
+    mainBox.add(fadeBox);
 
-spacer = new St.Bin();
-fadeBox.add(spacer, { expand: true });
+    spacer = new St.Bin();
+    fadeBox.add(spacer, { expand: true });
 
-fadeBox.add(new St.Label({ text: 'Padding: '}));
-let paddingButton = new St.Button({ label: 'No', style: 'text-decoration: underline; color: #4444ff;padding-right:3px;' });
-fadeBox.add(paddingButton);
+    fadeBox.add(new St.Label({ text: 'Padding: '}));
+    let paddingButton = new St.Button({ label: 'No', style: 'text-decoration: underline; color: #4444ff;padding-right:3px;' });
+    fadeBox.add(paddingButton);
 
-fadeBox.add(new St.Label({ text: 'Borders: '}));
-let borderButton = new St.Button({ label: 'No', style: 'text-decoration: underline; color: #4444ff;padding-right:3px;' });
-fadeBox.add(borderButton);
+    fadeBox.add(new St.Label({ text: 'Borders: '}));
+    let borderButton = new St.Button({ label: 'No', style: 'text-decoration: underline; color: #4444ff;padding-right:3px;' });
+    fadeBox.add(borderButton);
 
-fadeBox.add(new St.Label({ text: 'Vertical Fade: '}));
-let vfade = new St.Button({ label: 'No', style: 'text-decoration: underline; color: #4444ff;' });
-fadeBox.add(vfade);
+    fadeBox.add(new St.Label({ text: 'Vertical Fade: '}));
+    let vfade = new St.Button({ label: 'No', style: 'text-decoration: underline; color: #4444ff;' });
+    fadeBox.add(vfade);
 
-function togglePadding(button) {
-    switch(button.label) {
-    case 'No':
-	button.label = 'Yes';
-	break;
-    case 'Yes':
-	button.label = 'No';
-	break;
+    function togglePadding(button) {
+        switch(button.label) {
+        case 'No':
+	    button.label = 'Yes';
+	    break;
+        case 'Yes':
+	    button.label = 'No';
+	    break;
+        }
+        if (scrollView.style == null)
+            scrollView.style = (button.label == 'Yes' ? 'padding: 10px;' : 'padding: 0;');
+        else
+            scrollView.style += (button.label == 'Yes' ? 'padding: 10px;' : 'padding: 0;');
     }
-    if (scrollView.style == null)
-        scrollView.style = (button.label == 'Yes' ? 'padding: 10px;' : 'padding: 0;');
-    else
-        scrollView.style += (button.label == 'Yes' ? 'padding: 10px;' : 'padding: 0;');
-}
 
-paddingButton.connect('clicked', function() { togglePadding(paddingButton); });
+    paddingButton.connect('clicked', function() { togglePadding(paddingButton); });
 
-function toggleBorders(button) {
-    switch(button.label) {
-    case 'No':
-	button.label = 'Yes';
-	break;
-    case 'Yes':
-	button.label = 'No';
-	break;
+    function toggleBorders(button) {
+        switch(button.label) {
+        case 'No':
+	    button.label = 'Yes';
+	    break;
+        case 'Yes':
+	    button.label = 'No';
+	    break;
+        }
+        if (scrollView.style == null)
+            scrollView.style = (button.label == 'Yes' ? 'border: 2px solid red;' : 'border: 0;');
+        else
+            scrollView.style += (button.label == 'Yes' ? 'border: 2px solid red;' : 'border: 0;');
     }
-    if (scrollView.style == null)
-        scrollView.style = (button.label == 'Yes' ? 'border: 2px solid red;' : 'border: 0;');
-    else
-        scrollView.style += (button.label == 'Yes' ? 'border: 2px solid red;' : 'border: 0;');
-}
 
-borderButton.connect('clicked', function() { toggleBorders(borderButton); });
+    borderButton.connect('clicked', function() { toggleBorders(borderButton); });
 
-function toggleFade(button) {
-    switch(button.label) {
-    case 'No':
-	button.label = 'Yes';
-	break;
-    case 'Yes':
-	button.label = 'No';
-	break;
+    function toggleFade(button) {
+        switch(button.label) {
+        case 'No':
+	    button.label = 'Yes';
+	    break;
+        case 'Yes':
+	    button.label = 'No';
+	    break;
+        }
+        scrollView.set_style_class_name(button.label == 'Yes' ? 'vfade' : '');
     }
-    scrollView.set_style_class_name(button.label == 'Yes' ? 'vfade' : '');
+
+    vfade.connect('clicked', function() { toggleFade(vfade); });
+
+    UI.main(stage);
 }
-
-vfade.connect('clicked', function() { toggleFade(vfade); });
-
-stage.show();
-Clutter.main();
-stage.destroy();
+test();
