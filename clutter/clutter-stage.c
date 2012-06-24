@@ -212,6 +212,7 @@ static guint stage_signals[LAST_SIGNAL] = { 0, };
 static const ClutterColor default_stage_color = { 255, 255, 255, 255 };
 
 static void _clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage);
+static void free_queue_redraw_entry (ClutterStageQueueRedrawEntry *entry);
 
 static void
 clutter_stage_real_add (ClutterContainer *container,
@@ -1812,6 +1813,10 @@ clutter_stage_dispose (GObject *object)
     }
 
   clutter_actor_remove_all_children (CLUTTER_ACTOR (object));
+
+  g_list_free_full (priv->pending_queue_redraws,
+                    (GDestroyNotify) free_queue_redraw_entry);
+  priv->pending_queue_redraws = NULL;
 
   /* this will release the reference on the stage */
   stage_manager = clutter_stage_manager_get_default ();
