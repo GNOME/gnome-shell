@@ -1126,7 +1126,8 @@ const Panel = new Lang.Class({
         if (!position)
             position = 0;
         this._insertStatusItem(indicator.actor, position);
-        this._menus.addMenu(indicator.menu);
+        if (indicator.menu)
+            this._menus.addMenu(indicator.menu);
 
         this._statusArea[role] = indicator;
         let destroyId = indicator.connect('destroy', Lang.bind(this, function(emitter) {
