@@ -18913,3 +18913,55 @@ clutter_actor_get_content_repeat (ClutterActor *self)
 
   return self->priv->content_repeat;
 }
+
+void
+_clutter_actor_handle_event (ClutterActor       *self,
+                             const ClutterEvent *event)
+{
+  GPtrArray *event_tree;
+  ClutterActor *iter;
+  gboolean is_key_event;
+  gint i = 0;
+
+  /* XXX - for historical reasons that are now lost in the mists of time,
+   * key events are delivered regardless of whether an actor is set as
+   * reactive; this should be changed for 2.0.
+   */
+  is_key_event = event->type == CLUTTER_KEY_PRESS ||
+                 event->type == CLUTTER_KEY_RELEASE;
+
+  event_tree = g_ptr_array_sized_new (64);
+  g_ptr_array_set_free_func (event_tree, (GDestroyNotify) g_object_unref);
+
+  /* build the list of of emitters for the event */
+  iter = self;
+  while (iter != NULL)
+    {
+      ClutterActor *parent = iter->priv->parent;
+
+      if (CLUTTER_ACTOR_IS_REACTIVE (iter) || /* an actor must be reactive */
+          parent == NULL ||                       /* unless it's the stage */
+          is_key_event)                          /* or this is a key event */
+        {
+          /* keep a reference on the actor, so that it remains valid
+           * for the duration of the signal emission
+           */
+          g_ptr_array_add (event_tree, g_object_ref (iter));
+        }
+
+      iter = parent;
+    }
+
+  /* Capture: from top-level downwards */
+  for (i = event_tree->len - 1; i >= 0; i--)
+    if (clutter_actor_event (g_ptr_array_index (event_tree, i), event, TRUE))
+      goto done;
+
+  /* Bubble: from source upwards */
+  for (i = 0; i < event_tree->len; i++)
+    if (clutter_actor_event (g_ptr_array_index (event_tree, i), event, FALSE))
+      goto done;
+
+done:
+  g_ptr_array_free (event_tree, TRUE);
+}

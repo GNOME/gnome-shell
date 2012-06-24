@@ -298,6 +298,9 @@ void    _clutter_actor_shader_post_paint        (ClutterActor *actor);
 
 ClutterActorAlign       _clutter_actor_get_effective_x_align    (ClutterActor *self);
 
+void            _clutter_actor_handle_event             (ClutterActor       *actor,
+                                                         const ClutterEvent *event);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_PRIVATE_H__ */

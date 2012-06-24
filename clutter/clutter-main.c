@@ -97,7 +97,7 @@
 #include <glib/gi18n-lib.h>
 #include <locale.h>
 
-#include "clutter-actor.h"
+#include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
 #include "clutter-config.h"
 #include "clutter-debug.h"
@@ -2241,14 +2241,9 @@ event_click_count_generate (ClutterEvent *event)
 }
 
 static inline void
-emit_event (ClutterEvent *event,
-            gboolean      is_key_event)
+emit_event_chain (ClutterEvent *event)
 {
-  static gboolean      lock = FALSE;
-
-  GPtrArray *event_tree = NULL;
-  ClutterActor *actor;
-  gint i = 0;
+  static gboolean lock = FALSE;
 
   if (event->any.source == NULL)
     {
@@ -2265,42 +2260,7 @@ emit_event (ClutterEvent *event,
 
   lock = TRUE;
 
-  event_tree = g_ptr_array_sized_new (64);
-
-  actor = event->any.source;
-
-  /* Build 'tree' of emitters for the event */
-  while (actor)
-    {
-      ClutterActor *parent;
-
-      parent = clutter_actor_get_parent (actor);
-
-      if (clutter_actor_get_reactive (actor) ||
-          parent == NULL ||         /* stage gets all events */
-          is_key_event)             /* keyboard events are always emitted */
-        {
-          g_ptr_array_add (event_tree, g_object_ref (actor));
-        }
-
-      actor = parent;
-    }
-
-  /* Capture */
-  for (i = event_tree->len - 1; i >= 0; i--)
-    if (clutter_actor_event (g_ptr_array_index (event_tree, i), event, TRUE))
-      goto done;
-
-  /* Bubble */
-  for (i = 0; i < event_tree->len; i++)
-    if (clutter_actor_event (g_ptr_array_index (event_tree, i), event, FALSE))
-      goto done;
-
-done:
-  for (i = 0; i < event_tree->len; i++)
-    g_object_unref (g_ptr_array_index (event_tree, i));
-
-  g_ptr_array_free (event_tree, TRUE);
+  _clutter_actor_handle_event (event->any.source, event);
 
   lock = FALSE;
 }
@@ -2320,7 +2280,7 @@ emit_pointer_event (ClutterEvent       *event,
       (device == NULL || device->pointer_grab_actor == NULL))
     {
       /* no grab, time to capture and bubble */
-      emit_event (event, FALSE);
+      emit_event_chain (event);
     }
   else
     {
@@ -2341,19 +2301,23 @@ static inline void
 emit_touch_event (ClutterEvent       *event,
                   ClutterInputDevice *device)
 {
-  ClutterActor *grab_actor;
+  ClutterActor *grab_actor = NULL;
 
-  if ((device->sequence_grab_actors != NULL) &&
-       ((grab_actor = g_hash_table_lookup (device->sequence_grab_actors,
-                                           event->touch.sequence)) != NULL))
+  if (device->sequence_grab_actors != NULL)
     {
-      /* sequence grab */
+      grab_actor = g_hash_table_lookup (device->sequence_grab_actors,
+                                        event->touch.sequence);
+    }
+
+  if (grab_actor != NULL)
+    {
+      /* per-device sequence grab */
       clutter_actor_event (grab_actor, event, FALSE);
     }
   else
     {
       /* no grab, time to capture and bubble */
-      emit_event (event, FALSE);
+      emit_event_chain (event);
     }
 }
 
@@ -2366,16 +2330,19 @@ emit_keyboard_event (ClutterEvent       *event,
   if (context->keyboard_grab_actor == NULL &&
       (device == NULL || device->keyboard_grab_actor == NULL))
     {
-      emit_event (event, TRUE);
+      /* no grab, time to capture and bubble */
+      emit_event_chain (event);
     }
   else
     {
       if (context->keyboard_grab_actor != NULL)
         {
+          /* global key grab */
           clutter_actor_event (context->keyboard_grab_actor, event, FALSE);
         }
       else if (device != NULL && device->keyboard_grab_actor != NULL)
         {
+          /* per-device key grab */
           clutter_actor_event (context->keyboard_grab_actor, event, FALSE);
         }
     }
@@ -2725,14 +2692,20 @@ _clutter_process_event (ClutterEvent *event)
 
   stage = CLUTTER_ACTOR (event->any.stage);
   if (stage == NULL)
-    return;
+    {
+      CLUTTER_NOTE (EVENT, "Discarding event withou a stage set");
+      return;
+    }
 
-  CLUTTER_NOTE (EVENT, "Event received");
-
+  /* keep a pointer to the event and time, so that we don't need to
+   * add an event parameter to all signals that can be emitted within
+   * an event chain
+   */
   context->last_event_time = clutter_event_get_time (event);
-
   context->current_event = event;
+
   _clutter_process_event_details (stage, context, event);
+
   context->current_event = NULL;
 }
 
