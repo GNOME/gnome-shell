@@ -425,6 +425,7 @@ main (int argc, char **argv)
 {
   StTheme *theme;
   StThemeContext *context;
+  PangoFontDescription *font_desc;
 
   gtk_init (&argc, &argv);
 
@@ -437,8 +438,10 @@ main (int argc, char **argv)
   stage = clutter_stage_new ();
   context = st_theme_context_get_for_stage (CLUTTER_STAGE (stage));
   st_theme_context_set_theme (context, theme);
-  st_theme_context_set_font (context,
-				pango_font_description_from_string ("sans-serif 12"));
+
+  font_desc = pango_font_description_from_string ("sans-serif 12");
+  st_theme_context_set_font (context, font_desc);
+  pango_font_description_free (font_desc);
 
   root = st_theme_context_get_root_node (context);
   group1 = st_theme_node_new (context, root, NULL,
@@ -470,6 +473,18 @@ main (int argc, char **argv)
   test_font ();
   test_pseudo_class ();
   test_inline_style ();
+
+  g_object_unref (cairo_texture);
+  g_object_unref (group1);
+  g_object_unref (group2);
+  g_object_unref (group3);
+  g_object_unref (text1);
+  g_object_unref (text2);
+  g_object_unref (text3);
+  g_object_unref (text4);
+  g_object_unref (theme);
+
+  clutter_actor_destroy (stage);
 
   return fail ? 1 : 0;
 }
