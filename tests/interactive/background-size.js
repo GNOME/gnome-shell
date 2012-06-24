@@ -6,11 +6,8 @@ const St = imports.gi.St;
 
 const UI = imports.testcommon.ui;
 
-UI.init();
-let stage = Clutter.Stage.get_default();
-stage.user_resizable = true;
-stage.width = 1024;
-stage.height = 768;
+let stage = new Clutter.Stage({ user_resizable: true, width: 1024, height: 768 });
+UI.init(stage);
 
 let vbox = new St.BoxLayout({ style: 'background: #ffee88;' });
 vbox.add_constraint(new Clutter.BindConstraint({ source: stage,

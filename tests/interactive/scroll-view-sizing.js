@@ -251,10 +251,8 @@ SizingIllustrator.prototype = {
 
 /****************************************************************************/
 
-UI.init();
-let stage = Clutter.Stage.get_default();
-stage.width = 600;
-stage.height = 600;
+let stage = new Clutter.Stage({ width: 600, height: 600 });
+UI.init(stage);
 
 let mainBox = new St.BoxLayout({ width: stage.width,
 				 height: stage.height,

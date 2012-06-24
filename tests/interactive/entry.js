@@ -1,19 +1,14 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const St = imports.gi.St;
 
 const Calendar = imports.ui.calendar;
 const UI = imports.testcommon.ui;
 
-Gtk.init(null, null);
-
-UI.init();
-let stage = Clutter.Stage.get_default();
-stage.width = stage.height = 400;
-stage.show();
+let stage = new Clutter.Stage({ width: 400, height: 400 });
+UI.init(stage);
 
 let vbox = new St.BoxLayout({ vertical: true,
                               width: stage.width,

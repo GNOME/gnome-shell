@@ -5,11 +5,8 @@ const St = imports.gi.St;
 
 const UI = imports.testcommon.ui;
 
-UI.init();
-let stage = Clutter.Stage.get_default();
-
-stage.width = 400;
-stage.height = 700;
+let stage = new Clutter.Stage();
+UI.init(stage);
 
 let b = new St.BoxLayout({ vertical: true,
                            width: stage.width,
