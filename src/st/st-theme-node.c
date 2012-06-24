@@ -67,18 +67,6 @@ st_theme_node_dispose (GObject *gobject)
 {
   StThemeNode *node = ST_THEME_NODE (gobject);
 
-  if (node->context)
-    {
-      g_object_unref (node->context);
-      node->context = NULL;
-    }
-
-  if (node->theme)
-    {
-      g_object_unref (node->theme);
-      node->theme = NULL;
-    }
-
   if (node->parent_node)
     {
       g_object_unref (node->parent_node);
@@ -194,7 +182,7 @@ st_theme_node_new (StThemeContext    *context,
 
   node = g_object_new (ST_TYPE_THEME_NODE, NULL);
 
-  node->context = g_object_ref (context);
+  node->context = context;
   if (parent_node != NULL)
     node->parent_node = g_object_ref (parent_node);
   else
@@ -204,7 +192,7 @@ st_theme_node_new (StThemeContext    *context,
     theme = parent_node->theme;
 
   if (theme != NULL)
-    node->theme = g_object_ref (theme);
+    node->theme = theme;
 
   node->element_type = element_type;
   node->element_id = g_strdup (element_id);
