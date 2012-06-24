@@ -132,6 +132,7 @@ static GParamSpec *drag_props[PROP_LAST] = { NULL, };
 enum
 {
   DRAG_BEGIN,
+  DRAG_PROGRESS,
   DRAG_MOTION,
   DRAG_END,
 
@@ -214,6 +215,7 @@ emit_drag_motion (ClutterDragAction *action,
   ClutterActor *drag_handle = NULL;
   gfloat delta_x, delta_y;
   gfloat motion_x, motion_y;
+  gboolean can_emit_drag_motion = TRUE;
 
   clutter_event_get_coords (event, &priv->last_motion_x, &priv->last_motion_y);
   priv->last_motion_state = clutter_event_get_state (event);
@@ -269,9 +271,17 @@ emit_drag_motion (ClutterDragAction *action,
         return;
     }
 
-  g_signal_emit (action, drag_signals[DRAG_MOTION], 0,
+  g_signal_emit (action, drag_signals[DRAG_PROGRESS], 0,
                  actor,
-                 delta_x, delta_y);
+                 delta_x, delta_y,
+                 &can_emit_drag_motion);
+
+  if (can_emit_drag_motion)
+    {
+      g_signal_emit (action, drag_signals[DRAG_MOTION], 0,
+                     actor,
+                     delta_x, delta_y);
+    }
 }
 
 static void
@@ -494,6 +504,15 @@ clutter_drag_action_set_actor (ClutterActorMeta *meta,
   CLUTTER_ACTOR_META_CLASS (clutter_drag_action_parent_class)->set_actor (meta, actor);
 }
 
+static gboolean
+clutter_drag_action_real_drag_progress (ClutterDragAction *action,
+                                        ClutterActor      *actor,
+                                        gfloat             delta_x,
+                                        gfloat             delta_y)
+{
+  return TRUE;
+}
+
 static void
 clutter_drag_action_real_drag_motion (ClutterDragAction *action,
                                       ClutterActor      *actor,
@@ -621,6 +640,20 @@ clutter_drag_action_dispose (GObject *gobject)
   G_OBJECT_CLASS (clutter_drag_action_parent_class)->dispose (gobject);
 }
 
+static gboolean
+drag_progress_accum (GSignalInvocationHint *ihint,
+                     GValue                *return_accu,
+                     const GValue          *handler_return,
+                     gpointer               user_data)
+{
+  gboolean continue_emission;
+
+  continue_emission = g_value_get_boolean (handler_return);
+  g_value_set_boolean (return_accu, continue_emission);
+
+  return continue_emission;
+}
+
 static void
 clutter_drag_action_class_init (ClutterDragActionClass *klass)
 {
@@ -631,6 +664,7 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
 
   meta_class->set_actor = clutter_drag_action_set_actor;
 
+  klass->drag_progress = clutter_drag_action_real_drag_progress;
   klass->drag_motion = clutter_drag_action_real_drag_motion;
 
   /**
@@ -763,6 +797,46 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
                   CLUTTER_TYPE_MODIFIER_TYPE);
 
   /**
+   * ClutterDragAction::drag-progress:
+   * @action: the #ClutterDragAction that emitted the signal
+   * @actor: the #ClutterActor attached to the action
+   * @delta_x: the X component of the distance between the press event
+   *   that began the dragging and the current position of the pointer,
+   *   as of the latest motion event
+   * @delta_y: the Y component of the distance between the press event
+   *   that began the dragging and the current position of the pointer,
+   *   as of the latest motion event
+   *
+   * The ::drag-progress signal is emitted for each motion event after
+   * the #ClutterDragAction::drag-begin signal has been emitted.
+   *
+   * The components of the distance between the press event and the
+   * latest motion event are computed in the actor's coordinate space,
+   * to take into account eventual transformations. If you want the
+   * stage coordinates of the latest motion event you can use
+   * clutter_drag_action_get_motion_coords().
+   *
+   * The default handler will emit #ClutterDragAction::drag-motion,
+   * if #ClutterDragAction::drag-progress emission returns %TRUE.
+   *
+   * Return value: %TRUE if the drag should continue, and %FALSE
+   *   if it should be stopped.
+   *
+   * Since: 1.12
+   */
+  drag_signals[DRAG_PROGRESS] =
+    g_signal_new (I_("drag-progress"),
+                  CLUTTER_TYPE_DRAG_ACTION,
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterDragActionClass, drag_progress),
+                  drag_progress_accum, NULL,
+                  _clutter_marshal_BOOLEAN__OBJECT_FLOAT_FLOAT,
+                  G_TYPE_BOOLEAN, 3,
+                  CLUTTER_TYPE_ACTOR,
+                  G_TYPE_FLOAT,
+                  G_TYPE_FLOAT);
+
+  /**
    * ClutterDragAction::drag-motion:
    * @action: the #ClutterDragAction that emitted the signal
    * @actor: the #ClutterActor attached to the action
@@ -785,9 +859,9 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    * The default handler of the signal will call clutter_actor_move_by()
    * either on @actor or, if set, of #ClutterDragAction:drag-handle using
    * the @delta_x and @delta_y components of the dragging motion. If you
-   * want to override the default behaviour, you can connect to this
-   * signal and call g_signal_stop_emission_by_name() from within your
-   * callback.
+   * want to override the default behaviour, you can connect to the
+   * #ClutterDragAction::drag-progress signal and return %FALSE from the
+   * handler.
    *
    * Since: 1.4
    */

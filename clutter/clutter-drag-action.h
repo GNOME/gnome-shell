@@ -78,27 +78,30 @@ struct _ClutterDragActionClass
   ClutterActionClass parent_class;
 
   /*< public >*/
-  void (* drag_begin)  (ClutterDragAction   *action,
-                        ClutterActor        *actor,
-                        gfloat               event_x,
-                        gfloat               event_y,
-                        ClutterModifierType  modifiers);
-  void (* drag_motion) (ClutterDragAction   *action,
-                        ClutterActor        *actor,
-                        gfloat               delta_x,
-                        gfloat               delta_y);
-  void (* drag_end)    (ClutterDragAction   *action,
-                        ClutterActor        *actor,
-                        gfloat               event_x,
-                        gfloat               event_y,
-                        ClutterModifierType  modifiers);
+  void          (* drag_begin)          (ClutterDragAction   *action,
+                                         ClutterActor        *actor,
+                                         gfloat               event_x,
+                                         gfloat               event_y,
+                                         ClutterModifierType  modifiers);
+  void          (* drag_motion)         (ClutterDragAction   *action,
+                                         ClutterActor        *actor,
+                                         gfloat               delta_x,
+                                         gfloat               delta_y);
+  void          (* drag_end)            (ClutterDragAction   *action,
+                                         ClutterActor        *actor,
+                                         gfloat               event_x,
+                                         gfloat               event_y,
+                                         ClutterModifierType  modifiers);
+  gboolean      (* drag_progress)       (ClutterDragAction   *action,
+                                         ClutterActor        *actor,
+                                         gfloat               delta_x,
+                                         gfloat               delta_y);
 
   /*< private >*/
   void (* _clutter_drag_action1) (void);
   void (* _clutter_drag_action2) (void);
   void (* _clutter_drag_action3) (void);
   void (* _clutter_drag_action4) (void);
-  void (* _clutter_drag_action5) (void);
 };
 
 GType clutter_drag_action_get_type (void) G_GNUC_CONST;
