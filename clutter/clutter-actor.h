@@ -533,7 +533,7 @@ gboolean                        clutter_actor_get_reactive                      
 gboolean                        clutter_actor_has_key_focus                     (ClutterActor               *self);
 void                            clutter_actor_grab_key_focus                    (ClutterActor               *self);
 gboolean                        clutter_actor_event                             (ClutterActor               *actor,
-                                                                                 ClutterEvent               *event,
+                                                                                 const ClutterEvent         *event,
                                                                                  gboolean                    capture);
 gboolean                        clutter_actor_has_pointer                       (ClutterActor               *self);
 

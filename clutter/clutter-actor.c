@@ -12516,9 +12516,9 @@ clutter_actor_lower_bottom (ClutterActor *self)
  * Since: 0.6
  */
 gboolean
-clutter_actor_event (ClutterActor *actor,
-                     ClutterEvent *event,
-		     gboolean      capture)
+clutter_actor_event (ClutterActor       *actor,
+                     const ClutterEvent *event,
+		     gboolean            capture)
 {
   gboolean retval = FALSE;
   gint signal_num = -1;
