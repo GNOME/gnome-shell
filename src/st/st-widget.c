@@ -317,6 +317,7 @@ st_widget_finalize (GObject *gobject)
   g_free (priv->pseudo_class);
   g_object_unref (priv->local_state_set);
   g_free (priv->accessible_name);
+  g_free (priv->inline_style);
 
   G_OBJECT_CLASS (st_widget_parent_class)->finalize (gobject);
 }
