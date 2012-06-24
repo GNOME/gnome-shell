@@ -144,6 +144,9 @@ main(int argc, char **argv)
     exit (1);
   }
 
+  gjs_context_gc (js_context);
+  gjs_context_gc (js_context);
+
   g_free (script);
   exit (code);
 }
