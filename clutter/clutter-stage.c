@@ -1798,13 +1798,6 @@ clutter_stage_dispose (GObject *object)
 
   clutter_actor_hide (CLUTTER_ACTOR (object));
 
-  /* remove_stage() will unref() the stage instance, so we need to
-   * add a reference here to keep it temporarily alive
-   */
-  g_object_ref (object);
-  stage_manager = clutter_stage_manager_get_default ();
-  _clutter_stage_manager_remove_stage (stage_manager, stage);
-
   _clutter_clear_events_queue_for_stage (stage);
 
   if (priv->impl != NULL)
@@ -1819,6 +1812,10 @@ clutter_stage_dispose (GObject *object)
     }
 
   clutter_actor_remove_all_children (CLUTTER_ACTOR (object));
+
+  /* this will release the reference on the stage */
+  stage_manager = clutter_stage_manager_get_default ();
+  _clutter_stage_manager_remove_stage (stage_manager, stage);
 
   G_OBJECT_CLASS (clutter_stage_parent_class)->dispose (object);
 }
