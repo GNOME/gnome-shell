@@ -426,6 +426,8 @@ main (int argc, char **argv)
   StTheme *theme;
   StThemeContext *context;
 
+  gtk_init (&argc, &argv);
+
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
