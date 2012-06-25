@@ -181,6 +181,7 @@ struct _ClutterActor
  *   clutter_actor_set_offscreen_redirect() for details.
  * @paint_node: virtual function for creating paint nodes and attaching
  *   them to the render tree
+ * @touch_event: signal class closure for #ClutterActor::touch-event
  *
  * Base class for actors.
  */
