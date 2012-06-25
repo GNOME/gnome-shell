@@ -314,6 +314,12 @@ Release Notes for Clutter 1.12
 • Setting the ClutterActor:fixed-position-set to FALSE will reset any
   currently set fixed position to (0, 0).
 
+• ClutterActor's margin properties are now animatable.
+
+• ClutterBindingActionFunc typedef now has a user_data parameter; the user
+  data was passed by every caller, and ClutterBindingActionFunc was not used
+  anywhere in the API except for documentation purposes.
+
 Release Notes for Clutter 1.10
 -------------------------------------------------------------------------------
 

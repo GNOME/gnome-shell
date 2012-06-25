@@ -1,3 +1,70 @@
+Clutter 1.11.6                                                       2012-06-23
+===============================================================================
+
+  • List of changes since Clutter 1.11.4
+
+    - Accessibility fixes
+    Clean up key listeners; implement AtkText missing methods for getting text
+    before and after a given offset.
+
+    - Ensure that ClutterBinLayout honours the fixed positioning
+
+    - Improvements in GridLayout
+
+    - Improve debugging messages
+    We now print out the name, type, and pointer address of each actor when
+    emitting debugging messages; also, all messages within one second are
+    grouped together and show the delta instead of a full timestamp, to
+    improve readability.
+
+    - Add ClutterActor:content-repeat
+    The content-repeat property can be used by a ClutterContent implementation
+    to control the repeating of the content's data or pattern. ClutterImage
+    and ClutterCanvas honour this property.
+
+    - Explicit animation API improvements
+    ClutterTransition will now ask the ClutterAnimatable associated to it
+    for its initial or final state, in case either is missing; also, the
+    interpolated value will be coerced to the correct property type instead
+    of generating a warning.
+
+    - Switch to lcov for test coverage
+
+    - Remove an extra reference on ClutterStage
+    The reference added during dispose introduced a leak in case a stage was
+    destroyed.
+
+    - Improve touch event support
+    New API to install a grab on a specific event sequence of an input device;
+    ClutterText now responds to touch events; ClutterDragAction and
+    ClutterDropAction also use touch events as well as pointer events. The
+    conformance and interactive test suites now have units for checking touch
+    event handling.
+
+  • List of bugs fixed since Clutter 1.11.4
+
+    #677659 - add user_data parameter to ClutterBindingActionFunc
+    #677778 - Assorted introspection fixes from Vala
+    #677921 - tests: link test-conformance against libm
+    #675183 - Duplicate accessible key events
+    #678391 - tests: no return in non-void function
+    #678423 - 1.10.8 needs fix on osx ... clutter_x11_enable_xinput not
+              available
+    #678439 - crash in event translation
+    #678264 - actor: Make margin properties animatable
+    #677221 - Orca does not present run dialog text
+    #678047 - Add touch events vfunc on ClutterActor
+    #678049 - Add touch events support to Drag & Drop actions
+    #678279 - Add grab API on touch sequences
+    #678278 - Add touch events support to ClutterText
+
+Many thanks to:
+
+  Alejandro Piñeiro, Alexander Larsson, Lionel Landwerlin, Bastian Winkler,
+  Tomeu Vizoso, Evan Nemerson, Andy Wingo, Daniel Mustieles, Danielle Madeley,
+  Dimitris Spingos, Fran Diéguez, Frédéric Péters, Ihar Hrachyshka,
+  Jasper St. Pierre, Matthias Clasen, Sasi Bhushan Boddepalli, Tom Tryfonidis
+
 Clutter 1.11.4                                                       2012-06-05
 ===============================================================================
 
