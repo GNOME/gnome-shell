@@ -91,7 +91,8 @@ function gotExtensionZipFile(session, message, uuid) {
             global.settings.set_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY, enabledExtensions);
         }
 
-        ExtensionSystem.loadExtension(dir, ExtensionUtils.ExtensionType.PER_USER, true);
+        let extension = ExtensionUtils.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
+        ExtensionSystem.loadExtension(extension);
     });
 }
 
