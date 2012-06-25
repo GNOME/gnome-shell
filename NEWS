@@ -1,3 +1,46 @@
+3.5.3
+=====
+* calendar: Adapt to Evolution-Data-Server API changes [Matthew; #677402]
+* messageTray: Don't show non urgent notifications while in fullscreen
+  [Adel; #677590]
+* modalDialog: show dialogs on monitor with the mouse pointer [Tim; #642591]
+* extensionSystem: Prepare for extension updating system [Jasper; #677586]
+* appDisplay: Don't show apps in NoDisplay categories in the All view
+  [Jasper; #658176]
+* st: Trigger theme updates on resolution changes [Florian; #677975]
+* Always enable a11y [Bastien; #678095]
+* telepathyClient: ignore invalidated channels [Guillaume; #677457]
+* shell-app: Update app menu if necessary [Florian; #676238]
+* Enable the Screen Reader menu item [Matthias; #663256]
+* Disable unredirection when a modal operation is active [Giovanni]
+* Make folks optional [Colin]
+* Improve mount-operation support [Cosimo]
+  - Fix exception when showing password entry [#678428]
+  - Close the password entry on operation abort [#673787]
+  - autorun: Don't allow autorun for things we mount on startup [#660595]
+  - Turn passphrase prompt into a dialog [#674962]
+  - Implement org.Gtk.MountOperationHandler [#678516]
+* Network menu improvements
+  - Sort Wifi networks by strength [Giovanni; #658946]
+  - Prefer wifi/3g over VPN in the panel [Cosimo; #672591]
+* clock: Switch to using GnomeWallClock [Colin; #657074]
+* remoteSearch: Allow to reference .desktop file for Title/Icon
+  [Florian; #678816]
+* Fix memory leaks [Jasper, Pavel; #678079, #678406, #678737]
+* Misc fixes [Florian, Giovanni, Guillaume, Jasper, Kjartan, Piotr, Rui;
+  #658955, #677497, #678396, #678502]
+* Misc cleanups [Bastien, Florian, Jasper; #677426, #677515, #678096, #678416]
+
+Contributors:
+ Matthew Barnes, Giovanni Campagna, Cosimo Cecchi, Matthias Clasen,
+ Guillaume Desmottes, Piotr Drąg, Adel Gadllah, Tim L, Kjartan Maraas,
+ Rui Matos, Florian Müllner, Bastien Nocera, Jasper St. Pierre, Colin Walters
+
+Translations:
+ Matej Urbančič [sl], Yuri Kozlov [ru], Tom Tryfonidis [el],
+ Kjartan Maraas [nb], Žygimantas Beručka [lt], Luca Ferretti [it],
+ Khaled Hosny [ar], Daniel Mustieles [es], Fran Diéguez [gl], A S Alam [pa]
+
 3.5.2
 =====
 * main: Move 'toggle-recording' binding into the shell [Florian; #674377]
