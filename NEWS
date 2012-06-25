@@ -1,3 +1,22 @@
+3.5.3
+=====
+* Simplify plugin system [Jasper; #676855]
+* meta-window-actor: Don't unredirect shaped windows [Jasper; #677657]
+* screen: Add new public meta_screen_get_current_monitor API [Tim; #642591]
+* frames: Increase the size of resize corners [Jasper; #677669]
+* window: Make some window methods public [Jasper; #678126]
+* Fix crash when running mutter stand-alone [Jasper; #678238]
+* meta-window-actor: Fix potential crash in shaping code [Jasper; #677977]
+* Misc. fixes [Jasper, Marc-Antoine, Rico]
+
+Contributors:
+ Tim L, Marc-Antoine Perennou, Jasper St. Pierre, Rico Tzschichholz
+
+Translations:
+
+ Daniel Mustieles [es], Matej Urbančič [sl], Khaled Hosny [ar],
+ Bruno Brouard [fr], Fran Diéguez [gl]
+
 3.5.2
 =====
 * keybindings: Remove 'toggle-recording' binding [Florian; #674376]
