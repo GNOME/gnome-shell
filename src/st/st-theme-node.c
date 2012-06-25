@@ -85,6 +85,8 @@ st_theme_node_dispose (GObject *gobject)
       node->icon_colors = NULL;
     }
 
+  g_clear_object (&node->theme);
+
   G_OBJECT_CLASS (st_theme_node_parent_class)->dispose (gobject);
 }
 
@@ -193,6 +195,9 @@ st_theme_node_new (StThemeContext    *context,
 
   if (theme != NULL)
     node->theme = theme;
+
+  if (node->theme != NULL)
+    g_object_ref (node->theme);
 
   node->element_type = element_type;
   node->element_id = g_strdup (element_id);
