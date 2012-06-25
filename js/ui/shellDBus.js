@@ -71,7 +71,6 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
     <arg type="s" direction="in" name="uuid"/>
 </method>
 <property name="OverviewActive" type="b" access="readwrite" />
-<property name="ApiVersion" type="i" access="read" />
 <property name="ShellVersion" type="s" access="read" />
 <signal name="ExtensionStatusChanged">
     <arg type="s" name="uuid"/>
