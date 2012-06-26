@@ -1133,10 +1133,13 @@ _cogl_offscreen_allocate (CoglOffscreen *offscreen,
     {
       fb->samples_per_pixel = gl_framebuffer->samples_per_pixel;
 
-      /* Record that the last set of flags succeeded so that we can
-         try that set first next time */
-      ctx->last_offscreen_allocate_flags = flags;
-      ctx->have_last_offscreen_allocate_flags = TRUE;
+      if (!offscreen->create_flags & COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL)
+        {
+          /* Record that the last set of flags succeeded so that we can
+             try that set first next time */
+          ctx->last_offscreen_allocate_flags = flags;
+          ctx->have_last_offscreen_allocate_flags = TRUE;
+        }
 
       /* Save the flags we managed so successfully allocate the
        * renderbuffers with in case we need to make renderbuffers for a
