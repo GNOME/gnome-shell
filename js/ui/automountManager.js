@@ -10,6 +10,9 @@ const Shell = imports.gi.Shell;
 const Main = imports.ui.main;
 const ShellMountOperation = imports.ui.shellMountOperation;
 const ScreenSaver = imports.misc.screenSaver;
+const GnomeSession = imports.misc.gnomeSession;
+
+const GNOME_SESSION_AUTOMOUNT_INHIBIT = 16;
 
 // GSettings keys
 const SETTINGS_SCHEMA = 'org.gnome.desktop.media-handling';
@@ -79,6 +82,12 @@ const AutomountManager = new Lang.Class({
     _init: function() {
         this._settings = new Gio.Settings({ schema: SETTINGS_SCHEMA });
         this._volumeQueue = [];
+        this._session = new GnomeSession.SessionManager();
+        this._session.connectSignal('InhibitorAdded',
+                                    Lang.bind(this, this._InhibitorsChanged));
+        this._session.connectSignal('InhibitorRemoved',
+                                    Lang.bind(this, this._InhibitorsChanged));
+        this._inhibited = false;
 
         if (!haveSystemd())
             this.ckListener = new ConsoleKitManager();
@@ -106,6 +115,16 @@ const AutomountManager = new Lang.Class({
                                               this._onDriveEjectButton));
 
         Mainloop.idle_add(Lang.bind(this, this._startupMountAll));
+    },
+
+    _InhibitorsChanged: function(object, senderName, [inhibtor]) {
+        this._session.IsInhibitedRemote(GNOME_SESSION_AUTOMOUNT_INHIBIT,
+            Lang.bind(this,
+                function(result, error) {
+                    if (!error) {
+                        this._inhibited = result[0];
+                    }
+                }));
     },
 
     _screenSaverActiveChanged: function(object, senderName, [isActive]) {
@@ -218,6 +237,9 @@ const AutomountManager = new Lang.Class({
                 return;
             }
         }
+
+        if (this._inhibited)
+            return;
 
         // Volume is already mounted, don't bother.
         if (volume.get_mount())

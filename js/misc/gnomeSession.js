@@ -53,6 +53,16 @@ const SessionManagerIface = <interface name="org.gnome.SessionManager">
 <method name="CanShutdown">
     <arg type="b" direction="out" />
 </method>
+<method name="IsInhibited">
+    <arg type="u" direction="in" />
+    <arg type="b" direction="out" />
+</method>
+<signal name="InhibitorAdded">
+    <arg type="o" direction="out"/>
+</signal>
+<signal name="InhibitorRemoved">
+    <arg type="o" direction="out"/>
+</signal>
 </interface>;
 
 var SessionManagerProxy = Gio.DBusProxy.makeProxyWrapper(SessionManagerIface);
