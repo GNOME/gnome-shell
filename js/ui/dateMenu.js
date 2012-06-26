@@ -155,6 +155,12 @@ const DateMenuButton = new Lang.Class({
 
     _updateClockAndDate: function() {
         this._clockDisplay.set_text(this._clock.clock);
+        /* Translators: This is the date format to use when the calendar popup is
+         * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+         */
+        let dateFormat = _("%A %B %e, %Y");
+        let displayDate = new Date();
+        this._date.set_text(displayDate.toLocaleFormat(dateFormat));
     },
 
     _onOpenCalendarActivate: function() {
