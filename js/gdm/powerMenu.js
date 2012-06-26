@@ -70,7 +70,7 @@ const PowerMenuButton = new Lang.Class({
             this._systemdLoginManager.CanPowerOffRemote(Lang.bind(this,
                 function(result, error) {
                     if (!error)
-                        this._haveShutdown = result != 'no';
+                        this._haveShutdown = result[0] != 'no';
                     else
                         this._haveShutdown = false;
 
@@ -81,7 +81,7 @@ const PowerMenuButton = new Lang.Class({
             this._consoleKitManager.CanStopRemote(Lang.bind(this,
                 function(result, error) {
                     if (!error)
-                        this._haveShutdown = result;
+                        this._haveShutdown = result[0];
                     else
                         this._haveShutdown = false;
 
@@ -97,7 +97,7 @@ const PowerMenuButton = new Lang.Class({
             this._systemdLoginManager.CanRebootRemote(Lang.bind(this,
                 function(result, error) {
                     if (!error)
-                        this._haveRestart = result != 'no';
+                        this._haveRestart = result[0] != 'no';
                     else
                         this._haveRestart = false;
 
@@ -108,7 +108,7 @@ const PowerMenuButton = new Lang.Class({
             this._consoleKitManager.CanRestartRemote(Lang.bind(this,
                 function(result, error) {
                     if (!error)
-                        this._haveRestart = result;
+                        this._haveRestart = result[0];
                     else
                         this._haveRestart = false;
 

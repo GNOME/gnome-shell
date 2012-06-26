@@ -584,7 +584,7 @@ const UserMenuButton = new Lang.Class({
         this._session.CanShutdownRemote(Lang.bind(this,
             function(result, error) {
                 if (!error) {
-                    this._haveShutdown = result;
+                    this._haveShutdown = result[0];
                     this._updateSuspendOrPowerOff();
                 }
             }));
