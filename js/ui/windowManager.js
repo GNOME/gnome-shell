@@ -94,6 +94,7 @@ const WindowManager = new Lang.Class({
         this._unmaximizing = [];
         this._mapping = [];
         this._destroying = [];
+        this._movingWindow = null;
 
         this._dimmedWindows = [];
 
@@ -473,11 +474,13 @@ const WindowManager = new Lang.Class({
         this._switchData = switchData;
         switchData.inGroup = new Clutter.Group();
         switchData.outGroup = new Clutter.Group();
+        switchData.movingWindowBin = new Clutter.Group();
         switchData.windows = [];
 
         let wgroup = global.window_group;
         wgroup.add_actor(switchData.inGroup);
         wgroup.add_actor(switchData.outGroup);
+        wgroup.add_actor(switchData.movingWindowBin);
 
         for (let i = 0; i < windows.length; i++) {
             let window = windows[i];
@@ -485,7 +488,12 @@ const WindowManager = new Lang.Class({
             if (!window.meta_window.showing_on_its_workspace())
                 continue;
 
-            if (window.get_workspace() == from) {
+            if (this._movingWindow && window.meta_window == this._movingWindow) {
+                switchData.movingWindow = { window: window,
+                                            parent: window.get_parent() };
+                switchData.windows.push(switchData.movingWindow);
+                window.reparent(switchData.movingWindowBin);
+            } else if (window.get_workspace() == from) {
                 switchData.windows.push({ window: window,
                                           parent: window.get_parent() });
                 window.reparent(switchData.outGroup);
@@ -499,6 +507,8 @@ const WindowManager = new Lang.Class({
 
         switchData.inGroup.set_position(-xDest, -yDest);
         switchData.inGroup.raise_top();
+
+        switchData.movingWindowBin.raise_top();
 
         Tweener.addTween(switchData.outGroup,
                          { x: xDest,
@@ -537,6 +547,10 @@ const WindowManager = new Lang.Class({
         Tweener.removeTweens(switchData.outGroup);
         switchData.inGroup.destroy();
         switchData.outGroup.destroy();
+        switchData.movingWindowBin.destroy();
+
+        if (this._movingWindow)
+            this._movingWindow = null;
 
         shellwm.completed_switch_workspace();
     },
@@ -586,7 +600,6 @@ const WindowManager = new Lang.Class({
 
         if (activeWorkspace != toActivate)
             toActivate.activate(global.get_current_time());
-
         if (!Main.overview.visible)
             this._workspaceSwitcherPopup.display(direction, toActivate.index());
     },
@@ -598,6 +611,8 @@ const WindowManager = new Lang.Class({
         if (activeWorkspace != toActivate) {
             // This won't have any effect for "always sticky" windows
             // (like desktop windows or docks)
+
+            this._movingWindow = window;
             window.change_workspace(toActivate);
 
             global.display.clear_mouse_mode();
