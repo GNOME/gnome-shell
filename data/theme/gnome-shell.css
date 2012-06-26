@@ -1066,6 +1066,7 @@ StScrollBar StButton#vhandle:hover
     padding: .4em 1.75em;
     color: #cccccc;
     font-weight: bold;
+    text-align: center;
 }
 
 .calendar-day-base {
