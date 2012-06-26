@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-06-21 20:04+0000\n"
-"PO-Revision-Date: 2012-06-22 09:36+0100\n"
+"POT-Creation-Date: 2012-06-25 22:10+0000\n"
+"PO-Revision-Date: 2012-06-26 09:17+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -123,43 +123,27 @@ msgid "The type of keyboard to use."
 msgstr "Vrsta tipkovnice za uporabo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
-msgid "Show time with seconds"
-msgstr "Pokaži čas s sekundami"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
-msgid "If true, display seconds in time."
-msgstr "Izbrana možnost določi prikaz sekund v času."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
-msgid "Show date in clock"
-msgstr "Pokaži datum v uri"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "If true, display date in the clock, in addition to time."
-msgstr "Izbrana možnost določi, da je ob času prikazan tudi datum."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Framerate used for recording screencasts."
 msgstr "Hitrost sličic uporabljena za snemanje zaslonskega posnetka."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second."
 msgstr "Hitrost sličic shranjenega končnega zaslonskega posnetka v sličicah na sekundo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Uporabljen GStreamer cevovod za kodiranje zaslonskega posnetka."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 #, no-c-format
 msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
 msgstr "Določa cevovod programa GStreamer, ki se uporablja za kodiranje posnetkov. Ta sledi skladnji, ki se uporablja za gst-launch. Cevovod mora imeti nepovezano korito, kamor se posnetek snema. Običajno je za to namenjen nepovezan izvorni pomnilnik, katerega odvod se zapiše v odvodno datoteko. Vendar pa lahko cevovod ta korak naredi v lastni odvod - možnost se lahko uporabi pri pošiljanju odvoda na strežnik icecast preko shout2send ali podobno. Nedoločena ali prazna možnost se odrazi kot privzeti cevovod. Trenutno je to 'videorate ! vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' in omogoča snemanje v zapis WEBM z uporabo kodeka VP8. Vrednost %T se uporablja kot ročnik za ugibanje optimalnega števila niti na sistemu."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "File extension used for storing the screencast"
 msgstr "Pripona datoteke uporabljene za shranjevanje zaslonskih posnetkov"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
 msgstr "Ime datoteke zaslonskega posnetka bo enoznačno ime, kateremu bo dodan datum in določena pripona. Pripona mora ustrezati zapisu zabojnika."
 
@@ -203,7 +187,7 @@ msgstr "Ali je ni na seznamu?"
 #: ../js/ui/extensionDownloader.js:108
 #: ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:176
-#: ../js/ui/shellMountOperation.js:334
+#: ../js/ui/shellMountOperation.js:339
 #: ../js/ui/status/bluetooth.js:431
 msgid "Cancel"
 msgstr "Prekliči"
@@ -477,60 +461,13 @@ msgstr "Stiki"
 msgid "Remove"
 msgstr "Odstrani"
 
-#: ../js/ui/dateMenu.js:101
+#: ../js/ui/dateMenu.js:94
 msgid "Date and Time Settings"
 msgstr "Nastavitve časa in datuma"
 
-#: ../js/ui/dateMenu.js:127
+#: ../js/ui/dateMenu.js:120
 msgid "Open Calendar"
 msgstr "Odpri koledar"
-
-#. Translators: This is the time format with date used
-#. in 24-hour mode.
-#: ../js/ui/dateMenu.js:185
-msgid "%a %b %e, %R:%S"
-msgstr "%a. %e. %b., %R:%S"
-
-#: ../js/ui/dateMenu.js:186
-msgid "%a %b %e, %R"
-msgstr "%a, %e. %b., %R"
-
-#. Translators: This is the time format without date used
-#. in 24-hour mode.
-#: ../js/ui/dateMenu.js:190
-msgid "%a %R:%S"
-msgstr "%a. %R:%S"
-
-#: ../js/ui/dateMenu.js:191
-msgid "%a %R"
-msgstr "%a. %R"
-
-#. Translators: This is a time format with date used
-#. for AM/PM.
-#: ../js/ui/dateMenu.js:198
-msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a %b %e, %l:%M:%S %p"
-
-#: ../js/ui/dateMenu.js:199
-msgid "%a %b %e, %l:%M %p"
-msgstr "%a %b %e, %l:%M %p"
-
-#. Translators: This is a time format without date used
-#. for AM/PM.
-#: ../js/ui/dateMenu.js:203
-msgid "%a %l:%M:%S %p"
-msgstr "%a %l:%M:%S %p"
-
-#: ../js/ui/dateMenu.js:204
-msgid "%a %l:%M %p"
-msgstr "%a %l:%M %p"
-
-#. Translators: This is the date format to use when the calendar popup is
-#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#.
-#: ../js/ui/dateMenu.js:215
-msgid "%A %B %e, %Y"
-msgstr "%a, %e. %b., %R"
 
 #: ../js/ui/endSessionDialog.js:60
 #, c-format
@@ -708,7 +645,7 @@ msgid "Web Page"
 msgstr "Spletna stran"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:127
+#: ../js/ui/main.js:129
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Screencast z %d %t"
@@ -885,7 +822,7 @@ msgstr "Overi"
 #. * because of an authentication error (like invalid password),
 #. * for instance.
 #: ../js/ui/polkitAuthenticationAgent.js:261
-#: ../js/ui/shellMountOperation.js:323
+#: ../js/ui/shellMountOperation.js:324
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Dejanje je spodletelo. Poskusite znova."
 
@@ -926,15 +863,15 @@ msgstr "Pokaži besedilo"
 msgid "Hide Text"
 msgstr "Skrij besedilo"
 
-#: ../js/ui/shellMountOperation.js:310
+#: ../js/ui/shellMountOperation.js:311
 msgid "Passphrase"
 msgstr "Šifrirno geslo"
 
-#: ../js/ui/shellMountOperation.js:330
+#: ../js/ui/shellMountOperation.js:332
 msgid "Remember Passphrase"
 msgstr "Zapomni si šifrirno geslo"
 
-#: ../js/ui/shellMountOperation.js:338
+#: ../js/ui/shellMountOperation.js:343
 msgid "Unlock"
 msgstr "Odkleni"
 
@@ -1619,8 +1556,8 @@ msgid "Unknown reason"
 msgstr "Neznan vzrok"
 
 #: ../js/ui/userMenu.js:136
-msgid "Hidden"
-msgstr "Skrito"
+msgid "Invisible"
+msgstr "Nevidno"
 
 #: ../js/ui/userMenu.js:142
 msgid "Idle"
@@ -1762,7 +1699,7 @@ msgstr "Velika Britanija"
 msgid "Default"
 msgstr "Privzeto"
 
-#: ../src/shell-polkit-authentication-agent.c:339
+#: ../src/shell-polkit-authentication-agent.c:340
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Uporabnik je zavrnil pogovorno okno overitve"
 
@@ -1787,6 +1724,48 @@ msgstr "Datotečni sistem"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Show time with seconds"
+#~ msgstr "Pokaži čas s sekundami"
+
+#~ msgid "If true, display seconds in time."
+#~ msgstr "Izbrana možnost določi prikaz sekund v času."
+
+#~ msgid "Show date in clock"
+#~ msgstr "Pokaži datum v uri"
+
+#~ msgid "If true, display date in the clock, in addition to time."
+#~ msgstr "Izbrana možnost določi, da je ob času prikazan tudi datum."
+
+#~ msgid "%a %b %e, %R:%S"
+#~ msgstr "%a. %e. %b., %R:%S"
+
+#~ msgid "%a %b %e, %R"
+#~ msgstr "%a, %e. %b., %R"
+
+#~ msgid "%a %R:%S"
+#~ msgstr "%a. %R:%S"
+
+#~ msgid "%a %R"
+#~ msgstr "%a. %R"
+
+#~ msgid "%a %b %e, %l:%M:%S %p"
+#~ msgstr "%a %b %e, %l:%M:%S %p"
+
+#~ msgid "%a %b %e, %l:%M %p"
+#~ msgstr "%a %b %e, %l:%M %p"
+
+#~ msgid "%a %l:%M:%S %p"
+#~ msgstr "%a %l:%M:%S %p"
+
+#~ msgid "%a %l:%M %p"
+#~ msgstr "%a %l:%M %p"
+
+#~ msgid "%A %B %e, %Y"
+#~ msgstr "%a, %e. %b., %R"
+
+#~ msgid "Hidden"
+#~ msgstr "Skrito"
 
 #~ msgid "Wrong password, please try again"
 #~ msgstr "Napačno geslo; poskusite znova."
