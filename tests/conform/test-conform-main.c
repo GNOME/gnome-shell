@@ -149,6 +149,7 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/actor/iter", actor_iter_traverse_children);
   TEST_CONFORM_SIMPLE ("/actor/iter", actor_iter_traverse_remove);
+  TEST_CONFORM_SIMPLE ("/actor/iter", actor_iter_assignment);
 
   TEST_CONFORM_SIMPLE ("/actor/invariants", actor_initial_state);
   TEST_CONFORM_SIMPLE ("/actor/invariants", actor_shown_not_parented);
