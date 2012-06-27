@@ -9,44 +9,28 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-03-07 06:25+0200\n"
-"PO-Revision-Date: 2012-03-07 06:25+0200\n"
+"POT-Creation-Date: 2012-06-27 07:20+0300\n"
+"PO-Revision-Date: 2012-06-27 07:20+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../cogl/cogl-debug.c:173
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "Поддържани нива на съобщенията за отстраняване на грешки:"
 
-#: ../cogl/cogl-debug.c:178
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "Специални нива на съобщенията за отстраняване на грешки:"
 
-#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr ""
 "Включване на всички флагове за изчистване на грешки освен тези за поведението"
-
-#: ../cogl/cogl-debug.c:226
-msgid "Cogl debugging flags to set"
-msgstr "Флагове за отстраняване на грешки, които да се включат"
-
-#: ../cogl/cogl-debug.c:228
-msgid "Cogl debugging flags to unset"
-msgstr "Флагове за отстраняване на грешки, които да се изключат"
-
-#: ../cogl/cogl-debug.c:277
-msgid "Cogl Options"
-msgstr "Опции на Cogl"
-
-#: ../cogl/cogl-debug.c:278
-msgid "Show Cogl options"
-msgstr "Показване на опциите на Cogl"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -55,6 +39,7 @@ msgstr "Показване на опциите на Cogl"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Трасиране на Cogl"
 
@@ -367,3 +352,11 @@ msgstr "Трасиране на изрязването"
 #: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Записване на информация как Cogl осъществява изрязването"
+
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "Проследяване на проблемите с бързодействието"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "Опит за посочване на неоптималното ползване на Cogl."
