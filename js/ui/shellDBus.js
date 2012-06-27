@@ -18,17 +18,6 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
     <arg type="b" direction="out" name="success" />
     <arg type="s" direction="out" name="result" />
 </method>
-<method name="ListExtensions">
-    <arg type="a{sa{sv}}" direction="out" name="extensions" />
-</method>
-<method name="GetExtensionInfo">
-    <arg type="s" direction="in" name="extension" />
-    <arg type="a{sv}" direction="out" name="info" />
-</method>
-<method name="GetExtensionErrors">
-    <arg type="s" direction="in" name="extension" />
-    <arg type="as" direction="out" name="errors" />
-</method>
 <method name="ScreenshotArea">
     <arg type="i" direction="in" name="x"/>
     <arg type="i" direction="in" name="y"/>
@@ -57,26 +46,8 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
     <arg type="i" direction="in" name="width"/>
     <arg type="i" direction="in" name="height"/>
 </method>
-<method name="InstallRemoteExtension">
-    <arg type="s" direction="in" name="uuid"/>
-</method>
-<method name="UninstallExtension">
-    <arg type="s" direction="in" name="uuid"/>
-    <arg type="b" direction="out" name="success"/>
-</method>
-<method name="LaunchExtensionPrefs">
-    <arg type="s" direction="in" name="uuid"/>
-</method>
-<method name="ReloadExtension">
-    <arg type="s" direction="in" name="uuid"/>
-</method>
 <property name="OverviewActive" type="b" access="readwrite" />
 <property name="ShellVersion" type="s" access="read" />
-<signal name="ExtensionStatusChanged">
-    <arg type="s" name="uuid"/>
-    <arg type="i" name="state"/>
-    <arg type="s" name="error"/>
-</signal>
 </interface>;
 
 const GnomeShell = new Lang.Class({
@@ -85,8 +56,8 @@ const GnomeShell = new Lang.Class({
     _init: function() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
-        ExtensionSystem.connect('extension-state-changed',
-                                Lang.bind(this, this._extensionStateChanged));
+
+        this._extensionsSerivce = new GnomeShellExtensions();
     },
 
     /**
@@ -198,6 +169,64 @@ const GnomeShell = new Lang.Class({
         flashspot.fire();
     },
 
+    get OverviewActive() {
+        return Main.overview.visible;
+    },
+
+    set OverviewActive(visible) {
+        if (visible)
+            Main.overview.show();
+        else
+            Main.overview.hide();
+    },
+
+    ShellVersion: Config.PACKAGE_VERSION
+});
+
+const GnomeShellExtensionsIface = <interface name="org.gnome.Shell.Extensions">
+<method name="ListExtensions">
+    <arg type="a{sa{sv}}" direction="out" name="extensions" />
+</method>
+<method name="GetExtensionInfo">
+    <arg type="s" direction="in" name="extension" />
+    <arg type="a{sv}" direction="out" name="info" />
+</method>
+<method name="GetExtensionErrors">
+    <arg type="s" direction="in" name="extension" />
+    <arg type="as" direction="out" name="errors" />
+</method>
+<signal name="ExtensionStatusChanged">
+    <arg type="s" name="uuid"/>
+    <arg type="i" name="state"/>
+    <arg type="s" name="error"/>
+</signal>
+<method name="InstallRemoteExtension">
+    <arg type="s" direction="in" name="uuid"/>
+</method>
+<method name="UninstallExtension">
+    <arg type="s" direction="in" name="uuid"/>
+    <arg type="b" direction="out" name="success"/>
+</method>
+<method name="LaunchExtensionPrefs">
+    <arg type="s" direction="in" name="uuid"/>
+</method>
+<method name="ReloadExtension">
+    <arg type="s" direction="in" name="uuid"/>
+</method>
+<property name="ShellVersion" type="s" access="read" />
+</interface>;
+
+const GnomeShellExtensions = new Lang.Class({
+    Name: 'GnomeShellExtensionsDBus',
+
+    _init: function() {
+        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellExtensionsIface, this);
+        this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
+        ExtensionSystem.connect('extension-state-changed',
+                                Lang.bind(this, this._extensionStateChanged));
+    },
+
+
     ListExtensions: function() {
         let out = {};
         for (let uuid in ExtensionUtils.extensions) {
@@ -274,17 +303,6 @@ const GnomeShell = new Lang.Class({
     ReloadExtension: function(uuid) {
         ExtensionSystem.unloadExtension(uuid);
         ExtensionSystem.loadExtension(uuid);
-    },
-
-    get OverviewActive() {
-        return Main.overview.visible;
-    },
-
-    set OverviewActive(visible) {
-        if (visible)
-            Main.overview.show();
-        else
-            Main.overview.hide();
     },
 
     ShellVersion: Config.PACKAGE_VERSION,

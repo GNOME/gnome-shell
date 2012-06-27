@@ -225,7 +225,7 @@ NPP_New(NPMIMEType    mimetype,
                                                NULL, /* interface info */
                                                "org.gnome.Shell",
                                                "/org/gnome/Shell",
-                                               "org.gnome.Shell",
+                                               "org.gnome.Shell.Extensions",
                                                NULL, /* GCancellable */
                                                &error);
   if (!data->proxy)
