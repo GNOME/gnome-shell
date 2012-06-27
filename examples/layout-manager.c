@@ -334,6 +334,30 @@ multi_layout_set_spacing (MultiLayout *self,
 #define BOX_SIZE        (RECT_SIZE * (N_RECTS / N_ROWS) + PADDING * (N_RECTS / N_ROWS - 1))
 
 static gboolean
+on_enter (ClutterActor *rect,
+          ClutterEvent *event)
+{
+  clutter_actor_save_easing_state (rect);
+  clutter_actor_set_scale_with_gravity (rect, 1.2, 1.2,
+                                        CLUTTER_GRAVITY_CENTER);
+  clutter_actor_restore_easing_state (rect);
+
+  return CLUTTER_EVENT_STOP;
+}
+
+static gboolean
+on_leave (ClutterActor *rect,
+          ClutterEvent *event)
+{
+  clutter_actor_save_easing_state (rect);
+  clutter_actor_set_scale_with_gravity (rect, 1.0, 1.0,
+                                        CLUTTER_GRAVITY_CENTER);
+  clutter_actor_restore_easing_state (rect);
+
+  return CLUTTER_EVENT_STOP;
+}
+
+static gboolean
 on_key_press (ClutterActor *stage,
               ClutterEvent *event,
               ClutterActor *box)
@@ -407,7 +431,11 @@ main (int argc, char *argv[])
 
       clutter_actor_set_size (rect, RECT_SIZE, RECT_SIZE);
       clutter_actor_set_background_color (rect, &color);
+      clutter_actor_set_reactive (rect, TRUE);
       clutter_actor_add_child (box, rect);
+
+      g_signal_connect (rect, "enter-event", G_CALLBACK (on_enter), NULL);
+      g_signal_connect (rect, "leave-event", G_CALLBACK (on_leave), NULL);
     }
 
   label = clutter_text_new ();
