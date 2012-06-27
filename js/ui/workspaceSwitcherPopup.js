@@ -5,6 +5,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta  = imports.gi.Meta;
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
 const St = imports.gi.St;
 
 const Main = imports.ui.main;
@@ -41,11 +42,13 @@ const WorkspaceSwitcherPopup = new Lang.Class({
 
         this.actor.add_actor(this._container);
 
-        this._redraw();
-
-        this._position();
+        this._redisplay();
 
         this.actor.hide();
+
+        this._globalSignals = [];
+        this._globalSignals.push(global.screen.connect('workspace-added', Lang.bind(this, this._redisplay)));
+        this._globalSignals.push(global.screen.connect('workspace-removed', Lang.bind(this, this._redisplay)));
 
         this._timeoutId = Mainloop.timeout_add(DISPLAY_TIMEOUT, Lang.bind(this, this._onTimeout));
     },
@@ -102,15 +105,15 @@ const WorkspaceSwitcherPopup = new Lang.Class({
         }
     },
 
-    _redraw : function(direction, activeWorkspaceIndex) {
+    _redisplay: function() {
         this._list.destroy_all_children();
 
         for (let i = 0; i < global.screen.n_workspaces; i++) {
             let indicator = null;
 
-           if (i == activeWorkspaceIndex && direction == Meta.MotionDirection.UP)
+           if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.UP)
                indicator = new St.Bin({ style_class: 'ws-switcher-active-up' });
-           else if(i == activeWorkspaceIndex && direction == Meta.MotionDirection.DOWN)
+           else if(i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.DOWN)
                indicator = new St.Bin({ style_class: 'ws-switcher-active-down' });
            else
                indicator = new St.Bin({ style_class: 'ws-switcher-box' });
@@ -118,13 +121,13 @@ const WorkspaceSwitcherPopup = new Lang.Class({
            this._list.add_actor(indicator);
 
         }
-    },
 
-    _position: function() {
         let primary = Main.layoutManager.primaryMonitor;
-        this._container.x = primary.x + Math.floor((primary.width - this._container.width) / 2);
+        let [containerMinHeight, containerNatHeight] = this._container.get_preferred_height(global.screen_width);
+        let [containerMinWidth, containerNatWidth] = this._container.get_preferred_width(containerNatHeight);
+        this._container.x = primary.x + Math.floor((primary.width - containerNatWidth) / 2);
         this._container.y = primary.y + Main.panel.actor.height +
-                            Math.floor(((primary.height - Main.panel.actor.height) - this._container.height) / 2);
+                            Math.floor(((primary.height - Main.panel.actor.height) - containerNatHeight) / 2);
     },
 
     _show : function() {
@@ -132,12 +135,14 @@ const WorkspaceSwitcherPopup = new Lang.Class({
                                             time: ANIMATION_TIME,
                                             transition: 'easeOutQuad'
                                            });
-        this._position();
         this.actor.show();
     },
 
     display : function(direction, activeWorkspaceIndex) {
-        this._redraw(direction, activeWorkspaceIndex);
+        this._direction = direction;
+        this._activeWorkspaceIndex = activeWorkspaceIndex;
+
+        this._redisplay();
         if (this._timeoutId != 0)
             Mainloop.source_remove(this._timeoutId);
         this._timeoutId = Mainloop.timeout_add(DISPLAY_TIMEOUT, Lang.bind(this, this._onTimeout));
@@ -150,8 +155,22 @@ const WorkspaceSwitcherPopup = new Lang.Class({
         Tweener.addTween(this._container, { opacity: 0.0,
                                             time: ANIMATION_TIME,
                                             transition: 'easeOutQuad',
-                                            onComplete: function() { this.actor.hide(); },
+                                            onComplete: function() { this.destroy(); },
                                             onCompleteScope: this
                                            });
+    },
+
+    destroy: function() {
+        if (this._timeoutId)
+            Mainloop.source_remove(this._timeoutId);
+        this._timeoutId = 0;
+
+        for (let i = 0; i < this._globalSignals.length; i++)
+            global.screen.disconnect(this._globalSignals[i]);
+
+        this.actor.destroy();
+
+        this.emit('destroy');
     }
 });
+Signals.addSignalMethods(WorkspaceSwitcherPopup.prototype);

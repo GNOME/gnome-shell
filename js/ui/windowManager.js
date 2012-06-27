@@ -521,7 +521,7 @@ const WindowManager = new Lang.Class({
     _startAppSwitcher : function(display, screen, window, binding) {
         /* prevent a corner case where both popups show up at once */
         if (this._workspaceSwitcherPopup != null)
-            this._workspaceSwitcherPopup.actor.hide();
+            this._workspaceSwitcherPopup.destroy();
 
         let tabPopup = new AltTab.AltTabPopup();
 
@@ -545,20 +545,29 @@ const WindowManager = new Lang.Class({
         if (screen.n_workspaces == 1)
             return;
 
-        if (this._workspaceSwitcherPopup == null)
-            this._workspaceSwitcherPopup = new WorkspaceSwitcherPopup.WorkspaceSwitcherPopup();
-
         let [action,,,direction] = binding.get_name().split('-');
         let direction = Meta.MotionDirection[direction.toUpperCase()];
+        let newWs;
+
 
         if (direction != Meta.MotionDirection.UP &&
             direction != Meta.MotionDirection.DOWN)
             return;
 
         if (action == 'switch')
-            this.actionMoveWorkspace(direction);
+            newWs = this.actionMoveWorkspace(direction);
         else
-            this.actionMoveWindow(window, direction);
+            newWs = this.actionMoveWindow(window, direction);
+
+        if (!Main.overview.visible) {
+            if (this._workspaceSwitcherPopup == null) {
+                this._workspaceSwitcherPopup = new WorkspaceSwitcherPopup.WorkspaceSwitcherPopup();
+                this._workspaceSwitcherPopup.connect('destroy', Lang.bind(this, function() {
+                    this._workspaceSwitcherPopup = null;
+                }));
+            }
+            this._workspaceSwitcherPopup.display(direction, newWs.index());
+        }
     },
 
     actionMoveWorkspace: function(direction) {
@@ -567,8 +576,8 @@ const WindowManager = new Lang.Class({
 
         if (activeWorkspace != toActivate)
             toActivate.activate(global.get_current_time());
-        if (!Main.overview.visible)
-            this._workspaceSwitcherPopup.display(direction, toActivate.index());
+
+        return toActivate;
     },
 
     actionMoveWindow: function(window, direction) {
@@ -586,7 +595,6 @@ const WindowManager = new Lang.Class({
             toActivate.activate_with_focus (window, global.get_current_time());
         }
 
-        if (!Main.overview.visible)
-            this._workspaceSwitcherPopup.display(direction, toActivate.index());
+        return toActivate;
     },
 });
