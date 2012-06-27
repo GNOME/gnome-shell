@@ -223,6 +223,8 @@ clutter_bind_constraint_update_allocation (ClutterConstraint *constraint,
       g_assert_not_reached ();
       break;
     }
+
+  clutter_actor_box_clamp_to_pixel (allocation);
 }
 
 static void
