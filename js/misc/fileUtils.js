@@ -28,7 +28,7 @@ function deleteGFile(file) {
     return file['delete'](null);
 }
 
-function recursivelyDeleteDir(dir) {
+function recursivelyDeleteDir(dir, deleteParent) {
     let children = dir.enumerate_children('standard::name,standard::type',
                                           Gio.FileQueryInfoFlags.NONE, null);
 
@@ -39,8 +39,29 @@ function recursivelyDeleteDir(dir) {
         if (type == Gio.FileType.REGULAR)
             deleteGFile(child);
         else if (type == Gio.FileType.DIRECTORY)
-            recursivelyDeleteDir(child);
+            recursivelyDeleteDir(child, true);
     }
 
-    deleteGFile(dir);
+    if (deleteParent)
+        deleteGFile(dir);
+}
+
+function recursivelyMoveDir(srcDir, destDir) {
+    let children = srcDir.enumerate_children('standard::name,standard::type',
+                                             Gio.FileQueryInfoFlags.NONE, null);
+
+    if (!destDir.query_exists(null))
+        destDir.make_directory_with_parents(null);
+
+    let info, child;
+    while ((info = children.next_file(null)) != null) {
+        let type = info.get_file_type();
+        let srcChild = srcDir.get_child(info.get_name());
+        let destChild = destDir.get_child(info.get_name());
+        log([srcChild.get_path(), destChild.get_path()]);
+        if (type == Gio.FileType.REGULAR)
+            srcChild.move(destChild, Gio.FileCopyFlags.NONE, null, null);
+        else if (type == Gio.FileType.DIRECTORY)
+            recursivelyMoveDir(srcChild, destChild);
+    }
 }

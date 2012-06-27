@@ -214,6 +214,8 @@ const GnomeShellExtensionsIface = <interface name="org.gnome.Shell.Extensions">
 <method name="ReloadExtension">
     <arg type="s" direction="in" name="uuid"/>
 </method>
+<method name="CheckForUpdates">
+</method>
 <property name="ShellVersion" type="s" access="read" />
 </interface>;
 
@@ -304,6 +306,10 @@ const GnomeShellExtensions = new Lang.Class({
     ReloadExtension: function(uuid) {
         ExtensionSystem.unloadExtension(uuid);
         ExtensionSystem.loadExtension(uuid);
+    },
+
+    CheckForUpdates: function() {
+        ExtensionDownloader.checkForUpdates();
     },
 
     ShellVersion: Config.PACKAGE_VERSION,
