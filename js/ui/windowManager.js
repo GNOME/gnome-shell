@@ -588,6 +588,10 @@ const WindowManager = new Lang.Class({
         let [action,,,direction] = binding.get_name().split('-');
         let direction = Meta.MotionDirection[direction.toUpperCase()];
 
+        if (direction != Meta.MotionDirection.UP &&
+            direction != Meta.MotionDirection.DOWN)
+            return;
+
         if (action == 'switch')
             this.actionMoveWorkspace(direction);
         else
