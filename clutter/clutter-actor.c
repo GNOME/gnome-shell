@@ -17194,6 +17194,33 @@ clutter_actor_iter_init (ClutterActorIter *iter,
 }
 
 /**
+ * clutter_actor_iter_is_valid:
+ * @iter: a #ClutterActorIter
+ *
+ * Checks whether a #ClutterActorIter is still valid.
+ *
+ * An iterator is considered valid if it has been initialized, and
+ * if the #ClutterActor that it refers to hasn't been modified after
+ * the initialization.
+ *
+ * Return value: %TRUE if the iterator is valid, and %FALSE otherwise
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_actor_iter_is_valid (const ClutterActorIter *iter)
+{
+  RealActorIter *ri = (RealActorIter *) iter;
+
+  g_return_val_if_fail (iter != NULL, FALSE);
+
+  if (ri->root == NULL)
+    return FALSE;
+
+  return ri->root->priv->age == ri->age;
+}
+
+/**
  * clutter_actor_iter_next:
  * @iter: a #ClutterActorIter
  * @child: (out): return location for a #ClutterActor

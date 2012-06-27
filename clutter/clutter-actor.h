@@ -617,6 +617,8 @@ CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_iter_remove                       (ClutterActorIter           *iter);
 CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_iter_destroy                      (ClutterActorIter           *iter);
+CLUTTER_AVAILABLE_IN_1_12
+gboolean                        clutter_actor_iter_is_valid                     (const ClutterActorIter     *iter);
 
 /* Transformations */
 gboolean                        clutter_actor_is_rotated                        (ClutterActor               *self);

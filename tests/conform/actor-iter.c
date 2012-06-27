@@ -33,6 +33,8 @@ actor_iter_traverse_children (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
 
   i = 0;
   clutter_actor_iter_init (&iter, actor);
+  g_assert (clutter_actor_iter_is_valid (&iter));
+
   while (clutter_actor_iter_next (&iter, &child))
     {
       g_assert (CLUTTER_IS_ACTOR (child));
@@ -54,6 +56,8 @@ actor_iter_traverse_children (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
 
   i = 0;
   clutter_actor_iter_init (&iter, actor);
+  g_assert (clutter_actor_iter_is_valid (&iter));
+
   while (clutter_actor_iter_prev (&iter, &child))
     {
       g_assert (CLUTTER_IS_ACTOR (child));
@@ -105,6 +109,8 @@ actor_iter_traverse_remove (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
 
   i = 0;
   clutter_actor_iter_init (&iter, actor);
+  g_assert (clutter_actor_iter_is_valid (&iter));
+
   while (clutter_actor_iter_next (&iter, &child))
     {
       g_assert (CLUTTER_IS_ACTOR (child));
@@ -120,6 +126,7 @@ actor_iter_traverse_remove (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
         g_assert (child == clutter_actor_get_last_child (actor));
 
       clutter_actor_iter_remove (&iter);
+      g_assert (clutter_actor_iter_is_valid (&iter));
 
       i += 1;
     }
@@ -163,6 +170,9 @@ actor_iter_assignment (TestConformSimpleFixture *fixure G_GNUC_UNUSED,
 
   iter_b = iter_a;
 
+  g_assert (clutter_actor_iter_is_valid (&iter_a));
+  g_assert (clutter_actor_iter_is_valid (&iter_b));
+
   while (clutter_actor_iter_next (&iter_a, &child))
     {
       g_assert (CLUTTER_IS_ACTOR (child));
@@ -182,7 +192,7 @@ actor_iter_assignment (TestConformSimpleFixture *fixure G_GNUC_UNUSED,
 
   g_assert_cmpint (i, ==, n_actors);
 
-  i = n_actors;
+  i = n_actors - 1;
 
   while (clutter_actor_iter_prev (&iter_b, &child))
     {
@@ -191,16 +201,16 @@ actor_iter_assignment (TestConformSimpleFixture *fixure G_GNUC_UNUSED,
       if (g_test_verbose ())
         g_print ("actor %2d = '%s'\n", i, clutter_actor_get_name (child));
 
-      if (i == n_actors)
+      if (i == n_actors - 1)
         g_assert (child == clutter_actor_get_last_child (actor));
 
-      if (i == 1)
+      if (i == 0)
         g_assert (child == clutter_actor_get_first_child (actor));
 
       i -= 1;
     }
 
-  g_assert_cmpint (i, ==, 0);
+  g_assert_cmpint (i, ==, -1);
 
   g_object_unref (actor);
 }

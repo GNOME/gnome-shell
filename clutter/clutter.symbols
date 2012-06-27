@@ -178,6 +178,7 @@ clutter_actor_is_rotated
 clutter_actor_is_scaled
 clutter_actor_iter_destroy
 clutter_actor_iter_init
+clutter_actor_iter_is_valid
 clutter_actor_iter_next
 clutter_actor_iter_prev
 clutter_actor_iter_remove
