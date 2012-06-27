@@ -53,12 +53,18 @@ typedef struct _CoglDisplaySdl2
 {
   SDL_Window *dummy_window;
   SDL_GLContext *context;
+  CoglBool pending_resize_notify;
 } CoglDisplaySdl2;
 
 typedef struct _CoglOnscreenSdl2
 {
   SDL_Window *window;
+  CoglBool pending_resize_notify;
 } CoglOnscreenSdl2;
+
+/* The key used to store a pointer to the CoglOnscreen in an
+ * SDL_Window */
+#define COGL_SDL_WINDOW_DATA_KEY "cogl-onscreen"
 
 static CoglFuncPtr
 _cogl_winsys_renderer_get_proc_address (CoglRenderer *renderer,
@@ -259,6 +265,47 @@ error:
   return FALSE;
 }
 
+static CoglFilterReturn
+sdl_event_filter_cb (SDL_Event *event, void *data)
+{
+  if (event->type == SDL_WINDOWEVENT &&
+      event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+    {
+      CoglContext *context = data;
+      CoglDisplay *display = context->display;
+      CoglDisplaySdl2 *sdl_display = display->winsys;
+      float width = event->window.data1;
+      float height = event->window.data2;
+      CoglFramebuffer *framebuffer;
+      CoglOnscreenSdl2 *sdl_onscreen;
+      SDL_Window *window;
+
+      window = SDL_GetWindowFromID (event->window.windowID);
+
+      if (window == NULL)
+        return COGL_FILTER_CONTINUE;
+
+      framebuffer = SDL_GetWindowData (window, COGL_SDL_WINDOW_DATA_KEY);
+
+      if (framebuffer == NULL || framebuffer->context != context)
+        return COGL_FILTER_CONTINUE;
+
+      _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
+
+      sdl_onscreen = COGL_ONSCREEN (framebuffer)->winsys;
+
+      /* We only want to notify that a resize happened when the
+         application calls cogl_context_dispatch so instead of immediately
+         notifying we'll set a flag to remember to notify later */
+      sdl_display->pending_resize_notify = TRUE;
+      sdl_onscreen->pending_resize_notify = TRUE;
+
+      return COGL_FILTER_CONTINUE;
+    }
+
+  return COGL_FILTER_CONTINUE;
+}
+
 static CoglBool
 _cogl_winsys_context_init (CoglContext *context, CoglError **error)
 {
@@ -278,12 +325,23 @@ _cogl_winsys_context_init (CoglContext *context, CoglError **error)
                     COGL_WINSYS_FEATURE_SWAP_REGION_THROTTLE,
                     TRUE);
 
+  _cogl_renderer_add_native_filter (renderer,
+                                    (CoglNativeFilterFunc) sdl_event_filter_cb,
+                                    context);
+
   return TRUE;
 }
 
 static void
 _cogl_winsys_context_deinit (CoglContext *context)
 {
+  CoglRenderer *renderer = context->display->renderer;
+
+  _cogl_renderer_remove_native_filter (renderer,
+                                       (CoglNativeFilterFunc)
+                                       sdl_event_filter_cb,
+                                       context);
+
   g_free (context->winsys);
 }
 
@@ -347,15 +405,22 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   CoglOnscreenSdl2 *sdl_onscreen;
   SDL_Window *window;
   int width, height;
+  SDL_WindowFlags flags;
 
   width = cogl_framebuffer_get_width (framebuffer);
   height = cogl_framebuffer_get_height (framebuffer);
 
+  flags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN;
+
+  /* The resizable property on SDL window apparently can only be set
+   * on creation */
+  if (onscreen->resizable)
+    flags |= SDL_WINDOW_RESIZABLE;
+
   window = SDL_CreateWindow ("" /* title */,
                              0, 0, /* x/y */
                              width, height,
-                             SDL_WINDOW_OPENGL |
-                             SDL_WINDOW_HIDDEN);
+                             flags);
 
   if (window == NULL)
     {
@@ -365,6 +430,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                        SDL_GetError ());
       return FALSE;
     }
+
+  SDL_SetWindowData (window, COGL_SDL_WINDOW_DATA_KEY, onscreen);
 
   onscreen->winsys = g_slice_new (CoglOnscreenSdl2);
   sdl_onscreen = onscreen->winsys;
@@ -407,6 +474,42 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
     SDL_HideWindow (sdl_onscreen->window);
 }
 
+static void
+flush_pending_notifications_cb (void *data,
+                                void *user_data)
+{
+  CoglFramebuffer *framebuffer = data;
+
+  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
+    {
+      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+      CoglOnscreenSdl2 *sdl_onscreen = onscreen->winsys;
+
+      if (sdl_onscreen->pending_resize_notify)
+        {
+          _cogl_onscreen_notify_resize (onscreen);
+          sdl_onscreen->pending_resize_notify = FALSE;
+        }
+    }
+}
+
+static void
+_cogl_winsys_poll_dispatch (CoglContext *context,
+                            const CoglPollFD *poll_fds,
+                            int n_poll_fds)
+{
+  CoglDisplay *display = context->display;
+  CoglDisplaySdl2 *sdl_display = display->winsys;
+
+  if (sdl_display->pending_resize_notify)
+    {
+      g_list_foreach (context->framebuffers,
+                      flush_pending_notifications_cb,
+                      NULL);
+      sdl_display->pending_resize_notify = FALSE;
+    }
+}
+
 const CoglWinsysVtable *
 _cogl_winsys_sdl_get_vtable (void)
 {
@@ -438,6 +541,8 @@ _cogl_winsys_sdl_get_vtable (void)
       vtable.onscreen_update_swap_throttled =
         _cogl_winsys_onscreen_update_swap_throttled;
       vtable.onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility;
+
+      vtable.poll_dispatch = _cogl_winsys_poll_dispatch;
 
       vtable_inited = TRUE;
     }

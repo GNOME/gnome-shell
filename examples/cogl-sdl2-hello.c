@@ -99,6 +99,10 @@ main (int argc, char **argv)
   data.center_y = 0.0f;
   data.quit = FALSE;
 
+  /* In SDL2, setting resizable only works before allocating the
+   * onscreen */
+  cogl_onscreen_set_resizable (onscreen, TRUE);
+
   cogl_onscreen_show (onscreen);
 
   data.triangle = cogl_primitive_new_p2c4 (ctx, COGL_VERTICES_MODE_TRIANGLES,
