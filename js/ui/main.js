@@ -611,13 +611,13 @@ function _globalKeyPressHandler(actor, event) {
             if (!sessionMode.hasWorkspaces)
                 return false;
 
-            wm.actionMoveWorkspaceUp();
+            wm.actionMoveWorkspace(Meta.MotionDirection.UP);
             return true;
         case Meta.KeyBindingAction.WORKSPACE_DOWN:
             if (!sessionMode.hasWorkspaces)
                 return false;
 
-            wm.actionMoveWorkspaceDown();
+            wm.actionMoveWorkspace(Meta.MotionDirection.DOWN);
             return true;
         case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
         case Meta.KeyBindingAction.COMMAND_2:
