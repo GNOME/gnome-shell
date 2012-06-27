@@ -22,7 +22,7 @@ const REPOSITORY_URL_INFO =     REPOSITORY_URL_BASE + '/extension-info/';
 
 let _httpSession;
 
-function installExtensionFromUUID(uuid, invocation) {
+function installExtension(uuid, invocation) {
     let params = { uuid: uuid,
                    shell_version: Config.PACKAGE_VERSION };
 
@@ -49,7 +49,7 @@ function installExtensionFromUUID(uuid, invocation) {
     });
 }
 
-function uninstallExtensionFromUUID(uuid) {
+function uninstallExtension(uuid) {
     let extension = ExtensionUtils.extensions[uuid];
     if (!extension)
         return false;
@@ -115,7 +115,7 @@ function gotExtensionZipFile(session, message, uuid, callback, errback) {
         try {
             ExtensionSystem.loadExtension(extension);
         } catch(e) {
-            uninstallExtensionFromUUID(uuid);
+            uninstallExtension(uuid);
             errback('LoadExtensionError', e);
             return;
         }

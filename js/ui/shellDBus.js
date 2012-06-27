@@ -287,11 +287,11 @@ const GnomeShellExtensions = new Lang.Class({
     },
 
     InstallRemoteExtensionAsync: function([uuid], invocation) {
-        return ExtensionDownloader.installExtensionFromUUID(uuid, invocation);
+        return ExtensionDownloader.installExtension(uuid, invocation);
     },
 
     UninstallExtension: function(uuid) {
-        return ExtensionDownloader.uninstallExtensionFromUUID(uuid);
+        return ExtensionDownloader.uninstallExtension(uuid);
     },
 
     LaunchExtensionPrefs: function(uuid) {
