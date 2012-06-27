@@ -269,7 +269,7 @@ const AuthenticationDialog = new Lang.Class({
 
     _onSessionRequest: function(session, request, echo_on) {
         // Cheap localization trick
-        if (request == 'Password:')
+        if (request == 'Password:' || request == 'Password: ')
             this._passwordLabel.set_text(_("Password:"));
         else
             this._passwordLabel.set_text(request);
