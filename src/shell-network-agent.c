@@ -406,7 +406,7 @@ shell_network_agent_get_secrets (NMSecretAgent                 *agent,
   g_hash_table_replace (self->priv->requests, request->request_id, request);
 
   if ((flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_REQUEST_NEW) ||
-      (flags && NM_SECRET_AGENT_GET_SECRETS_FLAG_ALLOW_INTERACTION
+      ((flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_ALLOW_INTERACTION)
        && is_connection_always_ask (request->connection)))
     {
       request_secrets_from_ui (request);
