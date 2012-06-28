@@ -692,13 +692,6 @@ const UserMenuButton = new Lang.Class({
             this.menu.addMenuItem(item);
         }
 
-        item = new PopupMenu.PopupAlternatingMenuItem(_("Power Off"),
-                                                      _("Suspend"));
-        this.menu.addMenuItem(item);
-        item.connect('activate', Lang.bind(this, this._onSuspendOrPowerOffActivate));
-        this._suspendOrPowerOffItem = item;
-        this._updateSuspendOrPowerOff();
-
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
@@ -712,13 +705,20 @@ const UserMenuButton = new Lang.Class({
         this.menu.addMenuItem(item);
         this._logoutItem = item;
 
-        item = new PopupMenu.PopupSeparatorMenuItem();
-        this.menu.addMenuItem(item);
-
         item = new PopupMenu.PopupMenuItem(_("Lock"));
         item.connect('activate', Lang.bind(this, this._onLockScreenActivate));
         this.menu.addMenuItem(item);
         this._lockScreenItem = item;
+
+        item = new PopupMenu.PopupSeparatorMenuItem();
+        this.menu.addMenuItem(item);
+
+        item = new PopupMenu.PopupAlternatingMenuItem(_("Power Off"),
+                                                      _("Suspend"));
+        this.menu.addMenuItem(item);
+        item.connect('activate', Lang.bind(this, this._onSuspendOrPowerOffActivate));
+        this._suspendOrPowerOffItem = item;
+        this._updateSuspendOrPowerOff();
     },
 
     _updatePresenceStatus: function(item, event) {
