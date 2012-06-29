@@ -177,7 +177,14 @@ const ExtensionFinder = new Lang.Class({
                 log('Extension %s already installed in %s. %s will not be loaded'.format(uuid, existing.path, extensionDir.get_path()));
                 continue;
             }
-            let extension = createExtensionObject(uuid, extensionDir, type);
+
+            let extension;
+            try {
+                extension = createExtensionObject(uuid, extensionDir, type);
+            } catch(e) {
+                logError(e, 'Could not load extension %s'.format(uuid));
+                continue;
+            }
             this.emit('extension-found', extension);
         }
         fileEnum.close(null);
