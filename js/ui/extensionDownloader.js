@@ -111,7 +111,15 @@ function gotExtensionZipFile(session, message, uuid, callback, errback) {
         }
 
         let extension = ExtensionUtils.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
-        ExtensionSystem.loadExtension(extension);
+
+        try {
+            ExtensionSystem.loadExtension(extension);
+        } catch(e) {
+            uninstallExtensionFromUUID(uuid);
+            errback('LoadExtensionError', e);
+            return;
+        }
+
         callback();
     });
 }

@@ -63,7 +63,7 @@ function disableExtension(uuid) {
         try {
             ExtensionUtils.extensions[uuid].stateObj.disable();
         } catch(e) {
-            logExtensionError(uuid, e.toString());
+            logExtensionError(uuid, e);
         }
     }
 
@@ -72,19 +72,14 @@ function disableExtension(uuid) {
         theme.unload_stylesheet(extension.stylesheet.get_path());
     }
 
-    try {
-        extension.stateObj.disable();
-    } catch(e) {
-        logExtensionError(uuid, e.toString());
-        return;
-    }
+    extension.stateObj.disable();
 
     for (let i = 0; i < order.length; i++) {
         let uuid = order[i];
         try {
             ExtensionUtils.extensions[uuid].stateObj.enable();
         } catch(e) {
-            logExtensionError(uuid, e.toString());
+            logExtensionError(uuid, e);
         }
     }
 
@@ -107,42 +102,38 @@ function enableExtension(uuid) {
 
     extensionOrder.push(uuid);
 
-    try {
-        extension.stateObj.enable();
-    } catch(e) {
-        logExtensionError(uuid, e.toString());
-        return;
-    }
+    extension.stateObj.enable();
 
     let stylesheetFile = extension.dir.get_child('stylesheet.css');
     if (stylesheetFile.query_exists(null)) {
         let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
-        try {
-            theme.load_stylesheet(stylesheetFile.get_path());
-            extension.stylesheet = stylesheetFile;
-        } catch (e) {
-            logExtensionError(uuid, 'Stylesheet parse error: ' + e);
-        }
+        theme.load_stylesheet(stylesheetFile.get_path());
+        extension.stylesheet = stylesheetFile;
     }
 
     extension.state = ExtensionState.ENABLED;
     _signals.emit('extension-state-changed', extension);
 }
 
-function logExtensionError(uuid, message, state) {
+function logExtensionError(uuid, error) {
     let extension = ExtensionUtils.extensions[uuid];
     if (!extension)
         return;
 
+    let message = '' + error;
+
+    if (error.state)
+        extension.state = error.state;
+    else
+        extension.state = ExtensionState.ERROR;
+
     if (!extension.errors)
         extension.errors = [];
 
-    extension.errors.push(message);
     log('Extension "%s" had error: %s'.format(uuid, message));
-    state = state || ExtensionState.ERROR;
     _signals.emit('extension-state-changed', { uuid: uuid,
                                                error: message,
-                                               state: state });
+                                               state: extension.state });
 }
 
 function loadExtension(extension) {
@@ -150,9 +141,9 @@ function loadExtension(extension) {
     extension.state = ExtensionState.ERROR;
 
     if (ExtensionUtils.isOutOfDate(extension)) {
-        logExtensionError(extension.uuid, 'extension is not compatible with current GNOME Shell and/or GJS version', ExtensionState.OUT_OF_DATE);
-        extension.state = ExtensionState.OUT_OF_DATE;
-        return;
+        let error = new Error('extension is not compatible with current GNOME Shell and/or GJS version');
+        error.state = ExtensionState.OUT_OF_DATE;
+        throw error;
     }
 
     let enabled = enabledExtensions.indexOf(extension.uuid) != -1;
@@ -192,45 +183,24 @@ function initExtension(uuid) {
         throw new Error("Extension was not properly created. Call loadExtension first");
 
     let extensionJs = dir.get_child('extension.js');
-    if (!extensionJs.query_exists(null)) {
-        logExtensionError(uuid, 'Missing extension.js');
-        return;
-    }
+    if (!extensionJs.query_exists(null))
+        throw new Error('Missing extension.js');
 
     let extensionModule;
     let extensionState = null;
-    try {
-        ExtensionUtils.installImporter(extension);
-        extensionModule = extension.imports.extension;
-    } catch (e) {
-        logExtensionError(uuid, '' + e);
-        return;
-    }
+
+    ExtensionUtils.installImporter(extension);
+    extensionModule = extension.imports.extension;
 
     if (extensionModule.init) {
-        try {
-            extensionState = extensionModule.init(extension);
-        } catch (e) {
-            logExtensionError(uuid, 'Failed to evaluate init function:' + e);
-            return;
-        }
+        extensionState = extensionModule.init(extension);
     }
 
     if (!extensionState)
         extensionState = extensionModule;
     extension.stateObj = extensionState;
 
-    if (!extensionState.enable) {
-        logExtensionError(uuid, 'missing \'enable\' function');
-        return;
-    }
-    if (!extensionState.disable) {
-        logExtensionError(uuid, 'missing \'disable\' function');
-        return;
-    }
-
     extension.state = ExtensionState.DISABLED;
-
     _signals.emit('extension-loaded', uuid);
 }
 
@@ -242,7 +212,11 @@ function onEnabledExtensionsChanged() {
     newEnabledExtensions.filter(function(uuid) {
         return enabledExtensions.indexOf(uuid) == -1;
     }).forEach(function(uuid) {
-        enableExtension(uuid);
+        try {
+            enableExtension(uuid);
+        } catch(e) {
+            logExtensionError(extension.uuid, e);
+        }
     });
 
     // Find and disable all the newly disabled extensions: UUIDs found in the
@@ -250,7 +224,11 @@ function onEnabledExtensionsChanged() {
     enabledExtensions.filter(function(item) {
         return newEnabledExtensions.indexOf(item) == -1;
     }).forEach(function(uuid) {
-        disableExtension(uuid);
+        try {
+            disableExtension(uuid);
+        } catch(e) {
+            logExtensionError(extension.uuid, e);
+        }
     });
 
     enabledExtensions = newEnabledExtensions;
@@ -262,7 +240,11 @@ function loadExtensions() {
 
     let finder = new ExtensionUtils.ExtensionFinder();
     finder.connect('extension-found', function(signals, extension) {
-        loadExtension(extension);
+        try {
+            loadExtension(extension);
+        } catch(e) {
+            logExtensionError(extension.uuid, e);
+        }
     });
     finder.scanExtensions();
 }
