@@ -9,7 +9,6 @@ js/ui/appDisplay.js
 js/ui/appFavorites.js
 js/ui/autorunManager.js
 js/ui/calendar.js
-js/ui/contactDisplay.js
 js/ui/dash.js
 js/ui/dateMenu.js
 js/ui/endSessionDialog.js
