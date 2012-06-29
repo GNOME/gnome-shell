@@ -392,6 +392,11 @@ static void
 g_action_muxer_free_group (gpointer data)
 {
   Group *group = data;
+  gint i;
+
+  /* 'for loop' or 'four loop'? */
+  for (i = 0; i < 4; i++)
+    g_signal_handler_disconnect (group->group, group->handler_ids[i]);
 
   g_object_unref (group->group);
   g_free (group->prefix);
@@ -524,10 +529,6 @@ g_action_muxer_remove (GActionMuxer *muxer,
       for (i = 0; actions[i]; i++)
         g_action_muxer_action_removed (group->group, actions[i], group);
       g_strfreev (actions);
-
-      /* 'for loop' or 'four loop'? */
-      for (i = 0; i < 4; i++)
-        g_signal_handler_disconnect (group->group, group->handler_ids[i]);
 
       g_action_muxer_free_group (group);
     }
