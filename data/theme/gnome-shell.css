@@ -711,7 +711,7 @@ StScrollBar StButton#vhandle:active {
 
 #searchResultsContent {
     padding-right: 20px;
-    spacing: 36px;
+    spacing: 16px;
 }
 
 #searchResultsContent:rtl {
@@ -719,6 +719,17 @@ StScrollBar StButton#vhandle:active {
     padding-left: 20px;
 }
 
+.search-section {
+    /* This should be equal to #searchResultsContent spacing */
+    spacing: 16px;
+}
+
+.search-section-content {
+    /* This is the space between the provider icon and the results container */
+    spacing: 25px;
+}
+
+.search-statustext,
 .search-section-header {
     padding: 4px 12px;
     spacing: 4px;
@@ -742,6 +753,14 @@ StScrollBar StButton#vhandle:active {
 
 .results-container {
     spacing: 4px;
+}
+
+.search-providers-box {
+    spacing: 12px;
+}
+
+.results-list {
+    spacing: 5px;
 }
 
 /* Text labels are an odd number of pixels tall. The uneven top and bottom
@@ -824,7 +843,10 @@ StScrollBar StButton#vhandle:active {
 
 .app-well-app > .overview-icon,
 .show-apps > .overview-icon,
-.search-result-content > .overview-icon {
+.remove-favorite > .overview-icon,
+.search-section-icon-bin,
+.search-result,
+.grid-search-result-content > .overview-icon {
     border-radius: 4px;
     padding: 3px;
     border: 1px rgba(0,0,0,0);
@@ -840,7 +862,10 @@ StScrollBar StButton#vhandle:active {
 
 .app-well-app:hover > .overview-icon,
 .show-apps:hover > .overview-icon,
-.search-result-content:hover > .overview-icon {
+.remove-favorite:hover > .overview-icon,
+.search-section-icon-bin:hover,
+.search-result:hover,
+.grid-search-result-content:hover > .overview-icon {
     background-color: rgba(255,255,255,0.1);
     text-shadow: black 0px 2px 2px;
     transition-duration: 100;
@@ -875,11 +900,37 @@ StScrollBar StButton#vhandle:active {
 }
 
 .app-well-app:focus > .overview-icon,
-.search-result-content:focus > .overview-icon,
 .show-apps:focus > .overview-icon,
+.search-section-icon-bin:focus,
+.search-result:focus,
+.grid-search-result-content:focus > .overview-icon,
 .app-well-app:selected > .overview-icon,
-.search-result-content:selected > .overview-icon {
+.search-section-icon-bin:selected,
+.search-result:selected,
+.grid-search-result-content:selected > .overview-icon {
     background-color: rgba(255,255,255,0.33);
+}
+
+/* List Results */
+
+.search-result {
+    padding: 15px;
+}
+
+.search-result-content {
+  spacing: 12px;
+}
+
+.search-result-details {
+    font-weight: bold;
+}
+
+.search-result-details-title {
+    font-size: 16pt;
+}
+
+.search-result-details-description {
+    font-size: 14pt;
 }
 
 /* LookingGlass */
