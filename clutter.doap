@@ -15,7 +15,7 @@
   <homepage rdf:resource="http://www.clutter-project.org" />
   <license rdf:resource="http://usefulinc.com/doap/licenses/lgpl" />
   <bug-database rdf:resource="http://bugzilla.gnome.org/enter_bug.cgi?product=clutter"/>
-  <download-page rdf:resource="http://source.clutter-project.org/sources/clutter" />
+  <download-page rdf:resource="http://download.gnome.org/sources/clutter" />
   <mailing-list rdf:resource="mailto:clutter-devel-list@clutter-project.org" />
 
   <programming-language>C</programming-language>
