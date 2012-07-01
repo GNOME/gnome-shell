@@ -198,7 +198,11 @@ const IconGrid = new Lang.Class({
 
     _getPreferredHeight: function (grid, forWidth, alloc) {
         let children = this._getVisibleChildren();
-        let [nColumns, usedWidth] = this._computeLayout(forWidth);
+        let nColumns;
+        if (forWidth < 0)
+            nColumns = children.length;
+        else
+            nColumns = this._computeLayout(forWidth)[0];
         let nRows;
         if (nColumns > 0)
             nRows = Math.ceil(children.length / nColumns);
