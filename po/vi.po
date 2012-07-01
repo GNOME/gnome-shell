@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-06-29 17:44+0000\n"
-"PO-Revision-Date: 2012-07-01 11:02+0700\n"
+"PO-Revision-Date: 2012-07-01 11:04+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -128,19 +128,19 @@ msgstr "Nếu đúng (true), hiện tuần ISO trong lịch."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid "Keybinding to open the application menu"
-msgstr ""
+msgstr "Phím mở trình đơn ứng dụng"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Keybinding to open the application menu."
-msgstr ""
+msgstr "Phím mở trình đơn ứng dụng."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "Keybinding to toggle the screen recorder"
-msgstr ""
+msgstr "Phím bật/tắt trình thu màn hình"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to start/stop the builtin screen recorder."
-msgstr ""
+msgstr "Phím chạy hoặc ngừng trình thu màn hình."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Which keyboard to use"
@@ -757,7 +757,6 @@ msgid "A password is required to connect to '%s'."
 msgstr "Cần mật khẩu để kết nối đến '%s'."
 
 #: ../js/ui/notificationDaemon.js:486 ../src/shell-app.c:374
-#, fuzzy
 #| msgid "Unknown"
 msgctxt "program"
 msgid "Unknown"
@@ -876,17 +875,16 @@ msgstr "Ẩn chữ"
 
 #: ../js/ui/shellMountOperation.js:311
 msgid "Passphrase"
-msgstr ""
+msgstr "Mật khẩu"
 
 #: ../js/ui/shellMountOperation.js:332
 msgid "Remember Passphrase"
-msgstr ""
+msgstr "Nhớ mật khẩu"
 
 #: ../js/ui/shellMountOperation.js:343
-#, fuzzy
 #| msgid "Clock"
 msgid "Unlock"
-msgstr "Đồng hồ"
+msgstr "Bỏ khoá"
 
 #: ../js/ui/status/accessibility.js:47
 msgid "Accessibility"
@@ -897,10 +895,9 @@ msgid "Zoom"
 msgstr "Phóng to"
 
 #: ../js/ui/status/accessibility.js:59
-#, fuzzy
 #| msgid "Screen Keyboard"
 msgid "Screen Reader"
-msgstr "Bàn phím màn hình"
+msgstr "Trình đọc màn hình"
 
 #: ../js/ui/status/accessibility.js:63
 msgid "Screen Keyboard"
@@ -1041,10 +1038,10 @@ msgid "Device %s wants to pair with this computer"
 msgstr "Thiết bị %s muốn kết nối với máy tính này"
 
 #: ../js/ui/status/bluetooth.js:383
-#, fuzzy, c-format
+#, c-format
 #| msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgid "Please confirm whether the PIN '%06d' matches the one on the device."
-msgstr "Vui lòng xác nhận PIN '%s' khớp với số trên thiết bị."
+msgstr "Vui lòng xác nhận PIN '%06d' khớp với số trên thiết bị."
 
 #: ../js/ui/status/bluetooth.js:385
 msgid "Matches"
@@ -1281,7 +1278,6 @@ msgid "Computer"
 msgstr "Máy tính"
 
 #: ../js/ui/status/power.js:215
-#, fuzzy
 #| msgid "Unknown"
 msgctxt "device"
 msgid "Unknown"
@@ -1577,10 +1573,9 @@ msgid "Switch User"
 msgstr "Chuyển người dùng"
 
 #: ../js/ui/userMenu.js:566
-#, fuzzy
 #| msgid "Switch User"
 msgid "Switch Session"
-msgstr "Chuyển người dùng"
+msgstr "Chuyển phiên làm việc"
 
 #: ../js/ui/userMenu.js:681
 msgid "Notifications"
@@ -1591,17 +1586,15 @@ msgid "System Settings"
 msgstr "Thiết lập hệ thống"
 
 #: ../js/ui/userMenu.js:703
-#, fuzzy
 #| msgctxt "title"
 #| msgid "Log Out"
 msgid "Log Out"
 msgstr "Đăng xuất"
 
 #: ../js/ui/userMenu.js:708
-#, fuzzy
 #| msgid "Clock"
 msgid "Lock"
-msgstr "Đồng hồ"
+msgstr "Khoá"
 
 #: ../js/ui/userMenu.js:736
 msgid "Your chat status will be set to busy"
@@ -1680,11 +1673,11 @@ msgstr "Chể độ dùng bởi GDM cho màn hình đăng nhập"
 
 #: ../src/main.c:339
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
-msgstr ""
+msgstr "Dùng chế độ đặc biệt, ví dụ \"gdm\" cho màn hình đăng nhập"
 
 #: ../src/main.c:345
 msgid "List possible modes"
-msgstr ""
+msgstr "Danh sách chế độ"
 
 #: ../src/shell-app.c:622
 #, c-format
