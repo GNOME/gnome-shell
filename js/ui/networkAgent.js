@@ -683,7 +683,10 @@ const NetworkAgent = new Lang.Class({
                     try {
                         externalUIMode = keyfile.get_boolean('GNOME', 'supports-external-ui-mode');
                     } catch(e) { } // ignore errors if key does not exist
-                    let path = GLib.build_filenamev([Config.LIBEXECDIR, binary]);
+                    let path = binary;
+                    if (!GLib.path_is_absolute(path)) {
+                        path = GLib.build_filenamev([Config.LIBEXECDIR, path]);
+                    }
 
                     if (GLib.file_test(path, GLib.FileTest.IS_EXECUTABLE))
                         this._vpnBinaries[service] = { fileName: path, externalUIMode: externalUIMode };
