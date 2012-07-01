@@ -1600,7 +1600,7 @@ reload_gtk_hide_titlebar_when_maximized (MetaWindow    *window,
   gboolean requested_value = FALSE;
   gboolean current_value = window->hide_titlebar_when_maximized;
 
-  if (value->type != META_PROP_VALUE_INVALID)
+  if (!meta_prefs_get_ignore_request_hide_titlebar () && value->type != META_PROP_VALUE_INVALID)
     {
       requested_value = ((int) value->v.cardinal == 1);
       meta_verbose ("Request to hide titlebar for window %s.\n", window->desc);

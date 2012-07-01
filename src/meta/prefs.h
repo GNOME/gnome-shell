@@ -131,6 +131,9 @@ void     meta_prefs_set_no_tab_popup (gboolean whether);
 
 int      meta_prefs_get_draggable_border_width (void);
 
+gboolean meta_prefs_get_ignore_request_hide_titlebar (void);
+void     meta_prefs_set_ignore_request_hide_titlebar (gboolean whether);
+
 /* XXX FIXME This should be x-macroed, but isn't yet because it would be
  * difficult (or perhaps impossible) to add the suffixes using the current
  * system.  It needs some more thought, perhaps after the current system
