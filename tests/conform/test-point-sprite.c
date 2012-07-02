@@ -18,8 +18,8 @@ tex_data[3 * 2 * 2] =
     0x00, 0xff, 0xff, 0xff, 0x00, 0x00
   };
 
-void
-test_point_sprite (void)
+static void
+do_test (CoglBool check_orientation)
 {
   int fb_width = cogl_framebuffer_get_width (fb);
   int fb_height = cogl_framebuffer_get_height (fb);
@@ -28,6 +28,7 @@ test_point_sprite (void)
   CoglTexture2D *tex_2d;
   CoglPipeline *pipeline, *solid_pipeline;
   CoglBool res;
+  int tex_height;
 
   cogl_framebuffer_orthographic (fb,
                                  0, 0, /* x_1, y_1 */
@@ -39,8 +40,16 @@ test_point_sprite (void)
                             COGL_BUFFER_BIT_COLOR,
                             1.0f, 1.0f, 1.0f, 1.0f);
 
+  /* If we're not checking the orientation of the point sprite then
+   * we'll set the height of the texture to 1 so that the vertical
+   * orientation does not matter */
+  if (check_orientation)
+    tex_height = 2;
+  else
+    tex_height = 1;
+
   tex_2d = cogl_texture_2d_new_from_data (ctx,
-                                          2, 2, /* width/height */
+                                          2, tex_height, /* width/height */
                                           COGL_PIXEL_FORMAT_RGB_888,
                                           COGL_PIXEL_FORMAT_ANY,
                                           6, /* row stride */
@@ -111,11 +120,15 @@ test_point_sprite (void)
   test_utils_check_pixel (fb,
                           POINT_SIZE - POINT_SIZE / 4,
                           POINT_SIZE + POINT_SIZE / 4,
-                          0x00ffffff);
+                          check_orientation ?
+                          0x00ffffff :
+                          0x0000ffff);
   test_utils_check_pixel (fb,
                           POINT_SIZE + POINT_SIZE / 4,
                           POINT_SIZE + POINT_SIZE / 4,
-                          0xff0000ff);
+                          check_orientation ?
+                          0xff0000ff :
+                          0x00ff00ff);
 
   /* When rendering without the point sprites all of the texture
      coordinates should be 0,0 so it should get the top-left texel
@@ -128,4 +141,16 @@ test_point_sprite (void)
 
   if (cogl_test_verbose ())
     g_print ("OK\n");
+}
+
+void
+test_point_sprite (void)
+{
+  do_test (FALSE /* don't check orientation */);
+}
+
+void
+test_point_sprite_orientation (void)
+{
+  do_test (TRUE /* check orientation */);
 }

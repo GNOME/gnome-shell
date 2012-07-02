@@ -94,6 +94,8 @@ main (int argc, char **argv)
 
   ADD_TEST (test_point_size, 0);
   ADD_TEST (test_point_sprite,
+            TEST_REQUIREMENT_POINT_SPRITE);
+  ADD_TEST (test_point_sprite_orientation,
             TEST_KNOWN_FAILURE | TEST_REQUIREMENT_POINT_SPRITE);
 
   ADD_TEST (test_version, 0);
