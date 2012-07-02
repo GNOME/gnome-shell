@@ -56,7 +56,7 @@
 	/>
 	<UserMacro
 		Name="ClutterBuildDefines"
-		Value="$(BaseBuildDef);G_LOG_DOMAIN=\&quot;Clutter\&quot;;CLUTTER_PREFIX=\&quot;../\&quot;;CLUTTER_LIBDIR=\&quot;../lib\&quot;;CLUTTER_DATADIR=\&quot;../share\&quot;;CLUTTER_LOCALEDIR=\&quot;../share/locale\&quot;;CLUTTER_SYSCONFDIR=\&quot;../etc\&quot;"
+		Value="$(BaseBuildDef);G_LOG_DOMAIN=\&quot;Clutter\&quot;;CLUTTER_LOCALEDIR=\&quot;../share/locale\&quot;;CLUTTER_SYSCONFDIR=\&quot;../etc\&quot;"
 	/>
 	<UserMacro
 		Name="ClutterDisableDeprecationWarnings"
