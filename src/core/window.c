@@ -3889,15 +3889,6 @@ void
 meta_window_unmaximize (MetaWindow        *window,
                         MetaMaximizeFlags  directions)
 {
-  /* Restore tiling if necessary */
-  if (window->tile_mode == META_TILE_LEFT ||
-      window->tile_mode == META_TILE_RIGHT)
-    {
-      window->maximized_horizontally = FALSE;
-      meta_window_tile (window);
-      return;
-    }
-
   meta_window_unmaximize_internal (window, directions, &window->saved_rect,
                                    NorthWestGravity);
 }
