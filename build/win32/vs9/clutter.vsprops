@@ -280,6 +280,30 @@ copy ..\..\..\clutter\gdk\clutter-gdk.h $(OutDir)\include\clutter-$(ClutterApiVe
 			  "
 	/>
 	<UserMacro
+		Name="ClutterDoInstallReleaseBin"
+		Value="
+mkdir $(OutDir)\bin&#x0D;&#x0A;
+copy $(SolutionDir)Release\$(PlatformName)\bin\*.dll $(OutDir)\bin&#x0D;&#x0A;
+
+copy $(SolutionDir)Release\$(PlatformName)\bin\*.exe $(OutDir)\bin&#x0D;&#x0A;
+
+mkdir $(OutDir)\lib&#x0D;&#x0A;
+copy $(SolutionDir)Release\$(PlatformName)\bin\*-$(ClutterApiVersion).lib $(OutDir)\lib&#x0D;&#x0A;
+			  "
+	/>
+		<UserMacro
+		Name="ClutterDoInstallDebugBin"
+		Value="
+mkdir $(OutDir)\bin&#x0D;&#x0A;
+copy $(SolutionDir)Debug\$(PlatformName)\bin\*.dll $(OutDir)\bin&#x0D;&#x0A;
+
+copy $(SolutionDir)Debug\$(PlatformName)\bin\*.exe $(OutDir)\bin&#x0D;&#x0A;
+
+mkdir $(OutDir)\lib&#x0D;&#x0A;
+copy $(SolutionDir)Debug\$(PlatformName)\bin\*-$(ClutterApiVersion).lib $(OutDir)\lib&#x0D;&#x0A;
+			  "
+	/>
+	<UserMacro
 		Name="GenerateClutterDef"
 		Value="
 		       echo EXPORTS &gt; ..\..\..\clutter\clutter.def&#x0D;&#x0A;

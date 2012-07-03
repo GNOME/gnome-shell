@@ -372,6 +372,30 @@ mkdir $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\gdk
 
 copy ..\..\..\clutter\gdk\clutter-gdk.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\gdk
 </ClutterDoInstallGDK>
+<ClutterDoInstallReleaseBin>
+mkdir $(CopyDir)\bin
+
+copy $(SolutionDir)Release\$(Platform)\bin\*.dll $(CopyDir)\bin
+
+copy $(SolutionDir)Release\$(Platform)\bin\*.exe $(CopyDir)\bin
+
+
+mkdir $(CopyDir)\lib
+
+copy $(SolutionDir)Release\$(Platform)\bin\*-$(ClutterApiVersion).lib $(CopyDir)\lib
+</ClutterDoInstallReleaseBin>
+<ClutterDoInstallDebugBin>
+mkdir $(CopyDir)\bin
+
+copy $(SolutionDir)Debug\$(Platform)\bin\*.dll $(CopyDir)\bin
+
+copy $(SolutionDir)Debug\$(Platform)\bin\*.exe $(CopyDir)\bin
+
+
+mkdir $(CopyDir)\lib
+
+copy $(SolutionDir)Debug\$(Platform)\bin\*-$(ClutterApiVersion).lib $(CopyDir)\lib
+</ClutterDoInstallDebugBin>
     <GenerateClutterDef>
          echo EXPORTS &gt; ..\..\..\clutter\clutter.def
 
@@ -465,6 +489,12 @@ copy ..\..\..\clutter\gdk\clutter-gdk.h $(CopyDir)\include\clutter-$(ClutterApiV
     </BuildMacro>
     <BuildMacro Include="ClutterDoInstallGDK">
       <Value>$(ClutterDoInstallGDK)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterDoInstallReleaseBin">
+      <Value>$(ClutterDoInstallReleaseBin)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterDoInstallDebugBin">
+      <Value>$(ClutterDoInstallDebugBin)</Value>
     </BuildMacro>
     <BuildMacro Include="GenerateClutterDef">
       <Value>$(GenerateClutterDef)</Value>
