@@ -321,28 +321,12 @@ const WindowManager = new Lang.Class({
         }));
         if (actor.meta_window.is_attached_dialog()) {
             this._checkDimming(actor.get_meta_window().get_transient_for());
-            if (this._shouldAnimate()) {
-                actor.set_scale(1.0, 0.0);
-                actor.show();
-                this._mapping.push(actor);
 
-                Tweener.addTween(actor,
-                                 { scale_y: 1,
-                                   time: WINDOW_ANIMATION_TIME,
-                                   transition: "easeOutQuad",
-                                   onComplete: this._mapWindowDone,
-                                   onCompleteScope: this,
-                                   onCompleteParams: [shellwm, actor],
-                                   onOverwrite: this._mapWindowOverwrite,
-                                   onOverwriteScope: this,
-                                   onOverwriteParams: [shellwm, actor]
-                                 });
+            if (!this._shouldAnimate()) {
+                shellwm.completed_map(actor);
                 return;
             }
-            shellwm.completed_map(actor);
-            return;
-        }
-        if (!this._shouldAnimateActor(actor)) {
+        } else if (!this._shouldAnimateActor(actor)) {
             shellwm.completed_map(actor);
             return;
         }
@@ -398,7 +382,7 @@ const WindowManager = new Lang.Class({
                 return;
             }
 
-            actor.set_scale(1.0, 1.0);
+            actor.opacity = 255;
             actor.show();
             this._destroying.push(actor);
 
@@ -408,7 +392,7 @@ const WindowManager = new Lang.Class({
             }));
 
             Tweener.addTween(actor,
-                             { scale_y: 0,
+                             { opacity: 0,
                                time: WINDOW_ANIMATION_TIME,
                                transition: "easeOutQuad",
                                onComplete: this._destroyWindowDone,
