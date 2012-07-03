@@ -764,21 +764,14 @@ constrain_modal_dialog (MetaWindow         *window,
     return TRUE;
 
   x = parent->rect.x + (parent->rect.width / 2  - info->current.width / 2);
-  y = 0;
+  y = parent->rect.y + (parent->rect.height / 2 - info->current.height / 2);
   if (parent->frame)
     {
       MetaFrameBorders borders;
 
       x += parent->frame->rect.x;
       y += parent->frame->rect.y;
-
-      meta_frame_calc_borders (parent->frame, &borders);
-      y += borders.total.top;
-
-      y += info->borders->visible.top;
     }
-  else
-    y = parent->rect.y + info->borders->visible.top;
 
   constraint_already_satisfied = (x == info->current.x) && (y == info->current.y);
 

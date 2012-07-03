@@ -8917,12 +8917,15 @@ update_resize (MetaWindow *window,
   dx = x - window->display->grab_anchor_root_x;
   dy = y - window->display->grab_anchor_root_y;
 
-  /* Attached modal dialogs are special in that horizontal
-   * size changes apply to both sides, so that the dialog
+  /* Attached modal dialogs are special in that size
+   * changes apply to both sides, so that the dialog
    * remains centered to the parent.
    */
   if (meta_window_is_attached_dialog (window))
-    dx *= 2;
+    {
+      dx *= 2;
+      dy *= 2;
+    }
 
   new_w = window->display->grab_anchor_window_pos.width;
   new_h = window->display->grab_anchor_window_pos.height;
