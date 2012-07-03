@@ -481,10 +481,8 @@ const UserMenuButton = new Lang.Class({
                                   Lang.bind(this, this._updatePresenceIcon));
         this._accountMgr.connect('account-enabled',
                                   Lang.bind(this, this._onAccountEnabled));
-        this._accountMgr.connect('account-disabled',
-                                 Lang.bind(this, this._onAccountDisabled));
         this._accountMgr.connect('account-removed',
-                                  Lang.bind(this, this._onAccountDisabled));
+                                  Lang.bind(this, this._onAccountRemoved));
         this._accountMgr.prepare_async(null, Lang.bind(this,
             function(mgr) {
                 let [presence, s, msg] = mgr.get_most_available_presence();
@@ -645,7 +643,7 @@ const UserMenuButton = new Lang.Class({
         this._updateChangingPresence();
     },
 
-    _onAccountDisabled: function(accountMgr, account) {
+    _onAccountRemoved: function(accountMgr, account) {
         account.disconnect(account._changingId);
         account._changingId = 0;
         this._updateChangingPresence();
