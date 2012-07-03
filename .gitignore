@@ -62,6 +62,8 @@ src/*-enum-types.[ch]
 src/*-marshal.[ch]
 src/Makefile
 src/Makefile.in
+src/calendar-server/evolution-calendar.desktop
+src/calendar-server/evolution-calendar.desktop.in
 src/calendar-server/org.gnome.Shell.CalendarServer.service
 src/gnome-shell
 src/gnome-shell-calendar-server

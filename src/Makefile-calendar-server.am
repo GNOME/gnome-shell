@@ -8,6 +8,12 @@ gnome_shell_calendar_server_SOURCES =								\
 	calendar-server/gnome-shell-calendar-server.c						\
 	$(NULL)
 
+desktopdir=$(datadir)/applications
+desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
+desktop_in_files = calendar-server/evolution-calendar.desktop.in
+
+@INTLTOOL_DESKTOP_RULE@
+
 gnome_shell_calendar_server_CFLAGS =		\
 	-I$(top_srcdir)/src			\
 	-DPREFIX=\""$(prefix)"\"		\
@@ -26,3 +32,6 @@ EXTRA_DIST += 							  \
 	calendar-server/README					  \
 	calendar-server/org.gnome.Shell.CalendarServer.service.in \
 	$(NULL)
+
+CLEANFILES = \
+	$(desktop_DATA)

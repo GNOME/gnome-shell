@@ -1,0 +1,7 @@
+[Desktop Entry]
+_Name=Evolution Calendar
+Exec=evolution -c calendar
+Icon=evolution
+NoDisplay=true
+Type=Application
+StartupNotify=true
