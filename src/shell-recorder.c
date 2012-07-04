@@ -526,6 +526,8 @@ recorder_record_frame (ShellRecorder *recorder)
   guint size;
   GstClockTime now;
 
+  g_return_if_fail (recorder->current_pipeline != NULL);
+
   /* If we get into the red zone, stop buffering new frames; 13/16 is
   * a bit more than the 3/4 threshold for a red indicator to keep the
   * indicator from flashing between red and yellow. */
