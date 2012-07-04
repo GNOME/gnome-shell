@@ -8,6 +8,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#define GST_USE_UNSTABLE_API
 #include <gst/gst.h>
 
 #include "shell-recorder-src.h"
@@ -434,6 +435,7 @@ static void
 recorder_draw_cursor (ShellRecorder *recorder,
                       GstBuffer     *buffer)
 {
+  GstMapInfo info;
   cairo_surface_t *surface;
   cairo_t *cr;
 
@@ -452,7 +454,8 @@ recorder_draw_cursor (ShellRecorder *recorder,
   if (!recorder->cursor_image)
     return;
 
-  surface = cairo_image_surface_create_for_data (GST_BUFFER_DATA(buffer),
+  gst_buffer_map (buffer, &info, GST_MAP_WRITE);
+  surface = cairo_image_surface_create_for_data (info.data,
                                                  CAIRO_FORMAT_ARGB32,
                                                  recorder->stage_width,
                                                  recorder->stage_height,
@@ -467,6 +470,7 @@ recorder_draw_cursor (ShellRecorder *recorder,
 
   cairo_destroy (cr);
   cairo_surface_destroy (surface);
+  gst_buffer_unmap (buffer, &info);
 }
 
 /* Draw an overlay indicating how much of the target memory is used
@@ -551,10 +555,11 @@ recorder_record_frame (ShellRecorder *recorder)
                                     0, 0, recorder->stage_width, recorder->stage_height);
 
   buffer = gst_buffer_new();
-  GST_BUFFER_SIZE(buffer) = size;
-  GST_BUFFER_MALLOCDATA(buffer) = GST_BUFFER_DATA(buffer) = data;
+  gst_buffer_insert_memory (buffer, -1,
+                            gst_memory_new_wrapped (0, data, size, 0,
+                                                    size, data, g_free));
 
-  GST_BUFFER_TIMESTAMP(buffer) = now - recorder->start_time;
+  GST_BUFFER_PTS(buffer) = now - recorder->start_time;
 
   recorder_draw_cursor (recorder, buffer);
 
@@ -1046,23 +1051,18 @@ recorder_pipeline_set_caps (RecorderPipeline *pipeline)
 {
   GstCaps *caps;
 
-  /* The data is always native-endian xRGB; ffmpegcolorspace
+  /* The data is always native-endian xRGB; videoconvert
    * doesn't support little-endian xRGB, but does support
    * big-endian BGRx.
    */
-  caps = gst_caps_new_simple ("video/x-raw-rgb",
+  caps = gst_caps_new_simple ("video/x-raw",
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+                              "format", G_TYPE_STRING, "BGRx",
+#else
+                              "format", G_TYPE_STRING, "xRGB",
+#endif
                               "bpp", G_TYPE_INT, 32,
                               "depth", G_TYPE_INT, 24,
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-                              "red_mask",   G_TYPE_INT, 0x0000ff00,
-                              "green_mask", G_TYPE_INT, 0x00ff0000,
-                              "blue_mask",  G_TYPE_INT, 0xff000000,
-#else
-                              "red_mask",   G_TYPE_INT, 0xff0000,
-                              "green_mask", G_TYPE_INT, 0x00ff00,
-                              "blue_mask",  G_TYPE_INT, 0x0000ff,
-#endif
-                              "endianness", G_TYPE_INT, G_BIG_ENDIAN,
                               "framerate", GST_TYPE_FRACTION, pipeline->recorder->framerate, 1,
                               "width", G_TYPE_INT, pipeline->recorder->stage_width,
                               "height", G_TYPE_INT, pipeline->recorder->stage_height,
@@ -1080,7 +1080,7 @@ recorder_pipeline_add_source (RecorderPipeline *pipeline)
 {
   GstPad *sink_pad = NULL, *src_pad = NULL;
   gboolean result = FALSE;
-  GstElement *ffmpegcolorspace;
+  GstElement *videoconvert;
 
   sink_pad = gst_bin_find_unlinked_pad (GST_BIN (pipeline->pipeline), GST_PAD_SINK);
   if (sink_pad == NULL)
@@ -1099,19 +1099,19 @@ recorder_pipeline_add_source (RecorderPipeline *pipeline)
 
   recorder_pipeline_set_caps (pipeline);
 
-  /* The ffmpegcolorspace element is a generic converter; it will convert
+  /* The videoconvert element is a generic converter; it will convert
    * our supplied fixed format data into whatever the encoder wants
    */
-  ffmpegcolorspace = gst_element_factory_make ("ffmpegcolorspace", NULL);
-  if (!ffmpegcolorspace)
+  videoconvert = gst_element_factory_make ("videoconvert", NULL);
+  if (!videoconvert)
     {
-      g_warning("Can't create ffmpegcolorspace element");
+      g_warning("Can't create videoconvert element");
       goto out;
     }
-  gst_bin_add (GST_BIN (pipeline->pipeline), ffmpegcolorspace);
+  gst_bin_add (GST_BIN (pipeline->pipeline), videoconvert);
 
-  gst_element_link_many (pipeline->src, ffmpegcolorspace, NULL);
-  src_pad = gst_element_get_static_pad (ffmpegcolorspace, "src");
+  gst_element_link_many (pipeline->src, videoconvert, NULL);
+  src_pad = gst_element_get_static_pad (videoconvert, "src");
 
   if (!src_pad)
     {

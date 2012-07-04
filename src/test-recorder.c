@@ -1,5 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+#define GST_USE_UNSTABLE_API
 #include "shell-recorder.h"
 #include <clutter/clutter.h>
 #include <gst/gst.h>

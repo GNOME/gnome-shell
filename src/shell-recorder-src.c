@@ -2,6 +2,7 @@
 
 #include "config.h"
 
+#define GST_USE_UNSTABLE_API
 #include <gst/base/gstpushsrc.h>
 
 #include "shell-recorder-src.h"
@@ -85,18 +86,18 @@ shell_recorder_src_create (GstPushSrc  *push_src,
   GstBuffer *buffer;
 
   if (src->closed)
-    return GST_FLOW_UNEXPECTED;
+    return GST_FLOW_EOS;
 
   buffer = g_async_queue_pop (src->queue);
   if (buffer == RECORDER_QUEUE_END)
     {
       /* Returning UNEXPECTED here will cause a EOS message to be sent */
       src->closed = TRUE;
-      return GST_FLOW_UNEXPECTED;
+      return GST_FLOW_EOS;
     }
 
   shell_recorder_src_update_memory_used (src,
-					 - (int)(GST_BUFFER_SIZE(buffer) / 1024));
+					 - (int)(gst_buffer_get_size(buffer) / 1024));
 
   *buffer_out = buffer;
 
@@ -244,9 +245,9 @@ shell_recorder_src_add_buffer (ShellRecorderSrc *src,
   g_return_if_fail (SHELL_IS_RECORDER_SRC (src));
   g_return_if_fail (src->caps != NULL);
 
-  gst_buffer_set_caps (buffer, src->caps);
+  gst_base_src_set_caps (GST_BASE_SRC (src), src->caps);
   shell_recorder_src_update_memory_used (src,
-					 (int) (GST_BUFFER_SIZE(buffer) / 1024));
+					 (int)(gst_buffer_get_size(buffer) / 1024));
 
   g_async_queue_push (src->queue, gst_buffer_ref (buffer));
 }
