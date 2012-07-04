@@ -34,22 +34,16 @@ enum {
 /* Special marker value once the source is closed */
 #define RECORDER_QUEUE_END ((GstBuffer *)1)
 
-GST_BOILERPLATE(ShellRecorderSrc, shell_recorder_src, GstPushSrc, GST_TYPE_PUSH_SRC);
+G_DEFINE_TYPE(ShellRecorderSrc, shell_recorder_src, GST_TYPE_PUSH_SRC);
 
 static void
-shell_recorder_src_init (ShellRecorderSrc      *src,
-			 ShellRecorderSrcClass *klass)
+shell_recorder_src_init (ShellRecorderSrc      *src)
 {
   gst_base_src_set_format (GST_BASE_SRC (src), GST_FORMAT_TIME);
 
   src->queue = g_async_queue_new ();
   src->mutex = &src->mutex_data;
   g_mutex_init (src->mutex);
-}
-
-static void
-shell_recorder_src_base_init (gpointer klass)
-{
 }
 
 static gboolean
@@ -146,7 +140,7 @@ shell_recorder_src_finalize (GObject *object)
 
   g_mutex_clear (src->mutex);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  G_OBJECT_CLASS (shell_recorder_src_parent_class)->finalize (object);
 }
 
 static void
