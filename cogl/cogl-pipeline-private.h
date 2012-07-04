@@ -398,12 +398,6 @@ typedef struct
   CoglPipelineSnippetList fragment_snippets;
 } CoglPipelineBigState;
 
-typedef enum
-{
-  COGL_PIPELINE_FLAG_DIRTY_LAYERS_CACHE     = 1L<<0,
-  COGL_PIPELINE_FLAG_DIRTY_GET_LAYERS_LIST  = 1L<<1
-} CoglPipelineFlag;
-
 typedef struct
 {
   CoglPipeline *owner;
