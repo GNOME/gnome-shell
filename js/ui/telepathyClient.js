@@ -500,6 +500,37 @@ const ChatSource = new Lang.Class({
         return this._iconBox;
     },
 
+    createSecondaryIcon: function() {
+        let iconBox = new St.Bin();
+        iconBox.child = new St.Icon({ style_class: 'secondary-icon',
+                                      icon_type: St.IconType.FULLCOLOR });
+        let presenceType = this._contact.get_presence_type();
+
+        switch (presenceType) {
+            case Tp.ConnectionPresenceType.AVAILABLE:
+                iconBox.child.icon_name = 'user-available';
+                break;
+            case Tp.ConnectionPresenceType.BUSY:
+                iconBox.child.icon_name = 'user-busy';
+                break;
+            case Tp.ConnectionPresenceType.OFFLINE:
+                iconBox.child.icon_name = 'user-offline';
+                break;
+            case Tp.ConnectionPresenceType.HIDDEN:
+                iconBox.child.icon_name = 'user-invisible';
+                break;
+            case Tp.ConnectionPresenceType.AWAY:
+                iconBox.child.icon_name = 'user-away';
+                break;
+            case Tp.ConnectionPresenceType.EXTENDED_AWAY:
+                iconBox.child.icon_name = 'user-idle';
+                break;
+            default:
+                iconBox.child.icon_name = 'user-offline';
+       }
+       return iconBox;
+    },
+
     _updateAvatarIcon: function() {
         this._setSummaryIcon(this.createNotificationIcon());
         this._notification.update(this._notification.title, null, { customContent: true, icon: this.createNotificationIcon() });
@@ -664,38 +695,14 @@ const ChatSource = new Lang.Class({
     },
 
     _presenceChanged: function (contact, presence, status, message) {
-        let msg, shouldNotify, title;
-
-        if (this._presence == presence)
-          return;
+        let msg, title;
 
         title = GLib.markup_escape_text(this.title, -1);
 
-        if (presence == Tp.ConnectionPresenceType.AVAILABLE) {
-            msg = _("%s is online.").format(title);
-            shouldNotify = (this._presence == Tp.ConnectionPresenceType.OFFLINE);
-        } else if (presence == Tp.ConnectionPresenceType.OFFLINE) {
-            presence = Tp.ConnectionPresenceType.OFFLINE;
-            msg = _("%s is offline.").format(title);
-            shouldNotify = (this._presence != Tp.ConnectionPresenceType.OFFLINE);
-        } else if (presence == Tp.ConnectionPresenceType.AWAY ||
-                   presence == Tp.ConnectionPresenceType.EXTENDED_AWAY) {
-            msg = _("%s is away.").format(title);
-            shouldNotify = false;
-        } else if (presence == Tp.ConnectionPresenceType.BUSY) {
-            msg = _("%s is busy.").format(title);
-            shouldNotify = false;
-        } else
-            return;
-
-        this._presence = presence;
+        this._notification.update(this._notification.title, null, { customContent: true, secondaryIcon: this.createSecondaryIcon() });
 
         if (message)
             msg += ' <i>(' + GLib.markup_escape_text(message, -1) + ')</i>';
-
-        this._notification.appendPresence(msg, shouldNotify);
-        if (shouldNotify)
-            this.notify();
     },
 
     _pendingRemoved: function(channel, message) {
@@ -722,7 +729,7 @@ const ChatNotification = new Lang.Class({
     Extends: MessageTray.Notification,
 
     _init: function(source) {
-        this.parent(source, source.title, null, { customContent: true });
+        this.parent(source, source.title, null, { customContent: true, secondaryIcon: source.createSecondaryIcon() });
         this.setResident(true);
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response',
@@ -930,19 +937,6 @@ const ChatNotification = new Lang.Class({
         this._filterMessages();
 
         return false;
-    },
-
-    appendPresence: function(text, asTitle) {
-        if (asTitle)
-            this.update(text, null, { customContent: true, titleMarkup: true });
-        else
-            this.update(this.source.title, null, { customContent: true });
-
-        let label = this._append({ body: text,
-                                   group: 'meta',
-                                   styles: ['chat-meta-message'] });
-
-        this._filterMessages();
     },
 
     appendAliasChange: function(oldAlias, newAlias) {

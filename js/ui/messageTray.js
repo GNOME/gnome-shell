@@ -493,6 +493,7 @@ const Notification = new Lang.Class({
         params = Params.parse(params, { customContent: false,
                                         body: null,
                                         icon: null,
+                                        secondaryIcon: null,
                                         titleMarkup: false,
                                         bannerMarkup: false,
                                         bodyMarkup: false,
@@ -505,6 +506,11 @@ const Notification = new Lang.Class({
         if (this._icon && (params.icon || params.clear)) {
             this._icon.destroy();
             this._icon = null;
+        }
+
+        if (this._secondaryIcon && (params.secondaryIcon || params.clear)) {
+            this._secondaryIcon.destroy();
+            this._secondaryIcon = null;
         }
 
         // We always clear the content area if we don't have custom
@@ -540,6 +546,13 @@ const Notification = new Lang.Class({
                                           y_expand: false,
                                           y_fill: false,
                                           y_align: St.Align.START });
+        }
+
+        if (!this._secondaryIcon) {
+            this._secondaryIcon = params.secondaryIcon;
+
+            if (this._secondaryIcon)
+                this._bannerBox.add_actor(this._secondaryIcon);
         }
 
         this.title = title;
@@ -815,8 +828,15 @@ const Notification = new Lang.Class({
         let [titleMin, titleNat] = this._titleLabel.get_preferred_width(forHeight);
         let [bannerMin, bannerNat] = this._bannerLabel.get_preferred_width(forHeight);
 
-        alloc.min_size = titleMin;
-        alloc.natural_size = titleNat + this._spacing + bannerNat;
+        if (this._secondaryIcon) {
+            let [secondaryIconMin, secondaryIconNat] = this._secondaryIcon.get_preferred_width(forHeight);
+
+            alloc.min_size = secondaryIconMin + this._spacing + titleMin;
+            alloc.natural_size = secondaryIconNat + this._spacing + titleNat + this._spacing + bannerNat;
+        } else {
+            alloc.min_size = titleMin;
+            alloc.natural_size = titleNat + this._spacing + bannerNat;
+        }
     },
 
     _bannerBoxGetPreferredHeight: function(actor, forWidth, alloc) {
@@ -831,14 +851,42 @@ const Notification = new Lang.Class({
         let [titleMinH, titleNatH] = this._titleLabel.get_preferred_height(availWidth);
         let [bannerMinW, bannerNatW] = this._bannerLabel.get_preferred_width(availWidth);
 
+        let rtl = (this._titleDirection == Clutter.TextDirection.RTL);
+        let x = rtl ? availWidth : 0;
+
+        if (this._secondaryIcon) {
+            let [iconMinW, iconNatW] = this._secondaryIcon.get_preferred_width(-1);
+            let [iconMinH, iconNatH] = this._secondaryIcon.get_preferred_height(availWidth);
+
+            let secondaryIconBox = new Clutter.ActorBox();
+            let secondaryIconBoxW = Math.min(iconNatW, availWidth);
+
+            // allocate secondary icon box
+            if (rtl) {
+                secondaryIconBox.x1 = x - secondaryIconBoxW;
+                secondaryIconBox.x2 = x;
+                x = x - (secondaryIconBoxW + this._spacing);
+            } else {
+                secondaryIconBox.x1 = x;
+                secondaryIconBox.x2 = x + secondaryIconBoxW;
+                x = x + secondaryIconBoxW + this._spacing;
+            }
+            secondaryIconBox.y1 = 0;
+            // Using titleNatH ensures that the secondary icon is centered vertically
+            secondaryIconBox.y2 = titleNatH;
+
+            availWidth = availWidth - (secondaryIconBoxW + this._spacing);
+            this._secondaryIcon.allocate(secondaryIconBox, flags);
+        }
+
         let titleBox = new Clutter.ActorBox();
         let titleBoxW = Math.min(titleNatW, availWidth);
-        if (this._titleDirection == Clutter.TextDirection.RTL) {
+        if (rtl) {
             titleBox.x1 = availWidth - titleBoxW;
             titleBox.x2 = availWidth;
         } else {
-            titleBox.x1 = 0;
-            titleBox.x2 = titleBoxW;
+            titleBox.x1 = x;
+            titleBox.x2 = titleBox.x1 + titleBoxW;
         }
         titleBox.y1 = 0;
         titleBox.y2 = titleNatH;
@@ -852,7 +900,7 @@ const Notification = new Lang.Class({
         } else {
             let bannerBox = new Clutter.ActorBox();
 
-            if (this._titleDirection == Clutter.TextDirection.RTL) {
+            if (rtl) {
                 bannerBox.x1 = 0;
                 bannerBox.x2 = titleBox.x1 - this._spacing;
 

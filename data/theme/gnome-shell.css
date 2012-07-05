@@ -1257,6 +1257,10 @@ StScrollBar StButton#vhandle:hover
     padding: 8px;
 }
 
+.secondary-icon {
+    icon-size: 1.09em;
+}
+
 .hotplug-transient-box {
     spacing: 6px;
     padding: 2px 72px 2px 12px;
