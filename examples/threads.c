@@ -32,12 +32,14 @@ test_thread_data_free (gpointer _data)
   if (data == NULL)
     return;
 
-  g_object_unref (data->progress);
-  g_object_unref (data->label);
-  g_object_unref (data->stage);
-  g_object_unref (data->rect);
-  g_object_unref (data->flip);
-  g_object_unref (data->bounce);
+  g_print ("Removing thread data [%p]\n", _data);
+
+  g_clear_object (&data->progress);
+  g_clear_object (&data->label);
+  g_clear_object (&data->stage);
+  g_clear_object (&data->rect);
+  g_clear_object (&data->flip);
+  g_clear_object (&data->bounce);
 
   g_free (data);
 }
@@ -47,12 +49,12 @@ test_thread_done_idle (gpointer user_data)
 {
   TestThreadData *data = user_data;
 
+  g_print ("Last update [%p]\n", data);
+
   clutter_text_set_text (CLUTTER_TEXT (data->label), "Completed");
 
   clutter_actor_remove_transition (data->rect, "bounce");
   clutter_actor_remove_transition (data->rect, "flip");
-
-  test_thread_data_free (data);
 
   return G_SOURCE_REMOVE;
 }
@@ -60,7 +62,8 @@ test_thread_done_idle (gpointer user_data)
 static void
 test_thread_data_done (gpointer _data)
 {
-  TestThreadData *data = _data;
+  if (_data == NULL)
+    return;
 
   g_print ("Thread completed\n");
 
@@ -71,9 +74,10 @@ test_thread_data_done (gpointer _data)
    * clutter_threads_add_idle() is guaranteed to run the callback passed to
    * to it under the Big Clutter Lock.
    */
-  clutter_threads_add_idle_full (G_PRIORITY_HIGH,
-                                 test_thread_done_idle, data,
-                                 NULL);
+  clutter_threads_add_idle_full (G_PRIORITY_DEFAULT,
+                                 test_thread_done_idle,
+                                 _data,
+                                 test_thread_data_free);
 }
 
 /* thread local storage */
@@ -90,6 +94,9 @@ update_label_idle (gpointer data)
   TestUpdate *update = data;
   guint width;
   gchar *text;
+
+  if (update->thread_data->label == NULL)
+    return G_SOURCE_REMOVE;
 
   text = g_strdup_printf ("Count to %d", update->count);
   clutter_text_set_text (CLUTTER_TEXT (update->thread_data->label), text);
@@ -136,14 +143,14 @@ do_something_very_slow (void)
 
           /* update the UI from within the main loop, making sure that the
            * Big Clutter Lock is held; only one thread at a time can call
-           * Clutter API, and it's better to do this from the same thread
+           * Clutter API, and it's mandatory to do this from the same thread
            * that called clutter_init()/clutter_main().
            */
           update = g_new (TestUpdate, 1);
           update->count = i;
           update->thread_data = data;
 
-          clutter_threads_add_idle_full (G_PRIORITY_DEFAULT + 30,
+          clutter_threads_add_idle_full (G_PRIORITY_HIGH,
                                          update_label_idle,
                                          update, NULL);
         }
@@ -279,9 +286,7 @@ main (int argc, char *argv[])
 
   clutter_actor_show (stage);
 
-  clutter_threads_enter ();
   clutter_main ();
-  clutter_threads_leave ();
 
   return EXIT_SUCCESS;
 }
