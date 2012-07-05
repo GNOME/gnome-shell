@@ -35,6 +35,7 @@
 #endif
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#include "deprecated/clutter-main.h"
 
 #include "clutter-timeout-pool.h"
 

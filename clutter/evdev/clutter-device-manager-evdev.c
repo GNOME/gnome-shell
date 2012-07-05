@@ -120,12 +120,12 @@ clutter_event_prepare (GSource *source,
 {
   gboolean retval;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   *timeout = -1;
   retval = clutter_events_pending ();
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return retval;
 }
@@ -136,12 +136,12 @@ clutter_event_check (GSource *source)
   ClutterEventSource *event_source = (ClutterEventSource *) source;
   gboolean retval;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   retval = ((event_source->event_poll_fd.revents & G_IO_IN) ||
             clutter_events_pending ());
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return retval;
 }
@@ -297,7 +297,7 @@ clutter_event_dispatch (GSource     *g_source,
   uint32_t _time;
   ClutterStage *stage;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   stage = _clutter_input_device_get_stage (input_device);
 
@@ -428,7 +428,7 @@ clutter_event_dispatch (GSource     *g_source,
     }
 
 out:
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return TRUE;
 }

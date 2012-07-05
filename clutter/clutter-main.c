@@ -940,9 +940,9 @@ clutter_main (void)
 
   if (g_main_loop_is_running (main_loops->data))
     {
-      clutter_threads_leave ();
+      _clutter_threads_release_lock ();
       g_main_loop_run (loop);
-      clutter_threads_enter ();
+      _clutter_threads_acquire_lock ();
     }
 
   main_loops = g_slist_remove (main_loops, loop);
@@ -1024,12 +1024,12 @@ _clutter_threads_dispatch (gpointer data)
   ClutterThreadsDispatch *dispatch = data;
   gboolean ret = FALSE;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   if (!g_source_is_destroyed (g_main_current_source ()))
     ret = dispatch->func (dispatch->data);
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return ret;
 }
@@ -1265,18 +1265,37 @@ clutter_threads_add_timeout (guint       interval,
                                            NULL);
 }
 
+void
+_clutter_threads_acquire_lock (void)
+{
+  if (clutter_threads_lock != NULL)
+    (* clutter_threads_lock) ();
+}
+
+void
+_clutter_threads_release_lock (void)
+{
+  if (clutter_threads_unlock != NULL)
+    (* clutter_threads_unlock) ();
+}
+
 /**
  * clutter_threads_enter:
  *
  * Locks the Clutter thread lock.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.12: This function should not be used by application
+ *   code; marking critical sections is not portable on various
+ *   platforms. Instead of acquiring the Clutter lock, schedule UI
+ *   updates from the main loop using clutter_threads_add_idle() or
+ *   clutter_threads_add_timeout().
  */
 void
 clutter_threads_enter (void)
 {
-  if (clutter_threads_lock != NULL)
-    (* clutter_threads_lock) ();
+  _clutter_threads_acquire_lock ();
 }
 
 /**
@@ -1285,12 +1304,17 @@ clutter_threads_enter (void)
  * Unlocks the Clutter thread lock.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.12: This function should not be used by application
+ *   code; marking critical sections is not portable on various
+ *   platforms. Instead of acquiring the Clutter lock, schedule UI
+ *   updates from the main loop using clutter_threads_add_idle() or
+ *   clutter_threads_add_timeout().
  */
 void
 clutter_threads_leave (void)
 {
-  if (clutter_threads_unlock != NULL)
-    (* clutter_threads_unlock) ();
+  _clutter_threads_release_lock ();
 }
 
 

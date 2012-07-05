@@ -102,7 +102,7 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
   if (stage == NULL)
     return GDK_FILTER_CONTINUE;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   switch (gdk_event->type)
     {
@@ -315,7 +315,7 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       result = GDK_FILTER_REMOVE;
     }
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return result;
 }

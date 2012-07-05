@@ -101,8 +101,6 @@ void                    clutter_do_event                        (ClutterEvent *e
 gboolean                clutter_get_accessibility_enabled       (void);
 
 /* Threading functions */
-void                    clutter_threads_enter                   (void);
-void                    clutter_threads_leave                   (void);
 void                    clutter_threads_set_lock_functions      (GCallback enter_fn,
                                                                  GCallback leave_fn);
 guint                   clutter_threads_add_idle                (GSourceFunc    func,

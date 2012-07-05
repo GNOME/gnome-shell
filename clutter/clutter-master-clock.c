@@ -429,7 +429,7 @@ clutter_clock_prepare (GSource *source,
   ClutterMasterClock *master_clock = clock_source->master_clock;
   int delay;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   if (G_UNLIKELY (clutter_paint_debug_flags &
                   CLUTTER_DEBUG_CONTINUOUS_REDRAW))
@@ -445,7 +445,8 @@ clutter_clock_prepare (GSource *source,
     }
 
   delay = master_clock_next_frame_delay (master_clock);
-  clutter_threads_leave ();
+
+  _clutter_threads_release_lock ();
 
   *timeout = delay;
 
@@ -459,9 +460,9 @@ clutter_clock_check (GSource *source)
   ClutterMasterClock *master_clock = clock_source->master_clock;
   int delay;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
   delay = master_clock_next_frame_delay (master_clock);
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return delay == 0;
 }
@@ -487,7 +488,7 @@ clutter_clock_dispatch (GSource     *source,
 
   CLUTTER_NOTE (SCHEDULER, "Master clock [tick]");
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   /* Get the time to use for this frame */
   master_clock->cur_tick = g_source_get_time (source);
@@ -528,7 +529,7 @@ clutter_clock_dispatch (GSource     *source,
 
   master_clock->prev_tick = master_clock->cur_tick;
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   CLUTTER_TIMER_STOP (_clutter_uprof_context, master_dispatch_timer);
 

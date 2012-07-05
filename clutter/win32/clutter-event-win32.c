@@ -246,12 +246,12 @@ clutter_event_prepare (GSource *source,
 {
   gboolean retval;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   *timeout = -1;
   retval = (clutter_events_pending () || check_msg_pending ());
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return retval;
 }
@@ -262,14 +262,14 @@ clutter_event_check (GSource *source)
   ClutterEventSource *event_source = (ClutterEventSource *) source;
   gboolean retval;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   if ((event_source->event_poll_fd.revents & G_IO_IN))
     retval = (clutter_events_pending () || check_msg_pending ());
   else
     retval = FALSE;
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return retval;
 }
@@ -282,7 +282,7 @@ clutter_event_dispatch (GSource     *source,
   ClutterEvent *event;
   MSG msg;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   /* Process Windows messages until we've got one that translates into
      the clutter event queue */
@@ -298,7 +298,7 @@ clutter_event_dispatch (GSource     *source,
       clutter_event_free (event);
     }
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return TRUE;
 }

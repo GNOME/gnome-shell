@@ -193,6 +193,9 @@ typedef struct
 gboolean _clutter_threads_dispatch      (gpointer data);
 void     _clutter_threads_dispatch_free (gpointer data);
 
+void                    _clutter_threads_acquire_lock                   (void);
+void                    _clutter_threads_release_lock                   (void);
+
 ClutterMainContext *    _clutter_context_get_default                    (void);
 void                    _clutter_context_lock                           (void);
 void                    _clutter_context_unlock                         (void);

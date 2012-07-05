@@ -34,6 +34,12 @@ G_BEGIN_DECLS
 CLUTTER_DEPRECATED_IN_1_10
 void                    clutter_threads_init                    (void);
 
+CLUTTER_DEPRECATED_IN_1_12
+void                    clutter_threads_enter                   (void);
+
+CLUTTER_DEPRECATED_IN_1_12
+void                    clutter_threads_leave                   (void);
+
 CLUTTER_DEPRECATED_IN_1_6
 guint                   clutter_threads_add_frame_source        (guint             fps,
                                                                  GSourceFunc       func,

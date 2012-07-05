@@ -32,8 +32,10 @@
 #include <stdlib.h>
 #include <wayland-client.h>
 
-#include "../clutter-event.h"
-#include "../clutter-main.h"
+#include "clutter-event.h"
+#include "clutter-main.h"
+#include "clutter-private.h"
+
 #include "clutter-event-wayland.h"
 
 typedef struct _ClutterEventSourceWayland
@@ -50,7 +52,7 @@ clutter_event_source_wayland_prepare (GSource *base, gint *timeout)
   ClutterEventSourceWayland *source = (ClutterEventSourceWayland *) base;
   gboolean retval;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   *timeout = -1;
 
@@ -61,7 +63,7 @@ clutter_event_source_wayland_prepare (GSource *base, gint *timeout)
 
   retval = clutter_events_pending ();
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return retval;
 }
@@ -72,11 +74,11 @@ clutter_event_source_wayland_check (GSource *base)
   ClutterEventSourceWayland *source = (ClutterEventSourceWayland *) base;
   gboolean retval;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   retval = clutter_events_pending () || source->pfd.revents;
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return retval;
 }
@@ -89,7 +91,7 @@ clutter_event_source_wayland_dispatch (GSource *base,
   ClutterEventSourceWayland *source = (ClutterEventSourceWayland *) base;
   ClutterEvent *event;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   if (source->pfd.revents)
     {
@@ -106,7 +108,7 @@ clutter_event_source_wayland_dispatch (GSource *base,
       clutter_event_free (event);
     }
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return TRUE;
 }

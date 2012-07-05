@@ -32,7 +32,9 @@
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <unistd.h>
-#include <clutter/clutter-debug.h>
+
+#include "clutter-debug.h"
+#include "clutter-private.h"
 
 /* 
  * This file implementations integration between the GLib main loop and
@@ -643,13 +645,13 @@ clutter_event_prepare (GSource *source,
 {
   gboolean retval;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
   
   *timeout = -1;
 
   retval = (clutter_events_pending () || _clutter_osx_event_loop_check_pending ());
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return retval;
 }
@@ -659,7 +661,7 @@ clutter_event_check (GSource *source)
 {
   gboolean retval;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   /* XXX: This check isn't right it won't handle a recursive GLib main
    * loop run within an outer CFRunLoop run. Such loops will pile up
@@ -678,7 +680,7 @@ clutter_event_check (GSource *source)
   
   retval = (clutter_events_pending () || _clutter_osx_event_loop_check_pending ());
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return retval;
 }
@@ -691,16 +693,19 @@ clutter_event_dispatch (GSource     *source,
   NSEvent *nsevent;
   ClutterEvent *event;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   nsevent = _clutter_osx_event_loop_get_pending ();
-  if (nsevent) {
-    clutter_threads_leave ();
-    [NSApp sendEvent:nsevent];
-    clutter_threads_enter ();
-    
-    _clutter_osx_event_loop_release_event (nsevent);
-  }
+  if (nsevent)
+    {
+      _clutter_threads_release_lock ();
+
+      [NSApp sendEvent:nsevent];
+
+      _clutter_threads_acquire_lock ();
+
+      _clutter_osx_event_loop_release_event (nsevent);
+    }
   
   event = clutter_event_get ();
 
@@ -711,7 +716,7 @@ clutter_event_dispatch (GSource     *source,
       clutter_event_free (event);
     }
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return TRUE;
 }

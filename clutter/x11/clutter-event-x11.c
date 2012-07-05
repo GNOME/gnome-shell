@@ -33,6 +33,7 @@
 #include "clutter-debug.h"
 #include "clutter-event-private.h"
 #include "clutter-main.h"
+#include "clutter-private.h"
 
 #include <string.h>
 
@@ -182,7 +183,7 @@ clutter_x11_handle_event (XEvent *xevent)
 
   result = CLUTTER_X11_FILTER_CONTINUE;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   backend = clutter_get_default_backend ();
 
@@ -230,7 +231,7 @@ out:
     XFreeEventData (xdisplay, &xevent->xcookie);
 #endif
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return result;
 }
@@ -242,12 +243,12 @@ clutter_event_prepare (GSource *source,
   ClutterBackendX11 *backend = ((ClutterEventSource *) source)->backend;
   gboolean retval;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   *timeout = -1;
   retval = (clutter_events_pending () || XPending (backend->xdpy));
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return retval;
 }
@@ -259,14 +260,14 @@ clutter_event_check (GSource *source)
   ClutterBackendX11 *backend = event_source->backend;
   gboolean retval;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   if (event_source->event_poll_fd.revents & G_IO_IN)
     retval = (clutter_events_pending () || XPending (backend->xdpy));
   else
     retval = FALSE;
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return retval;
 }
@@ -308,7 +309,7 @@ clutter_event_dispatch (GSource     *source,
   ClutterBackendX11 *backend = ((ClutterEventSource *) source)->backend;
   ClutterEvent *event;
 
-  clutter_threads_enter ();
+  _clutter_threads_acquire_lock ();
 
   /*  Grab the event(s), translate and figure out double click.
    *  The push onto queue (stack) if valid.
@@ -324,7 +325,7 @@ clutter_event_dispatch (GSource     *source,
       clutter_event_free (event);
     }
 
-  clutter_threads_leave ();
+  _clutter_threads_release_lock ();
 
   return TRUE;
 }
