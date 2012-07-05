@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-27 12:49+0200\n"
-"PO-Revision-Date: 2012-06-27 12:49+0200\n"
+"POT-Creation-Date: 2012-07-05 16:58+0200\n"
+"PO-Revision-Date: 2012-07-05 16:58+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
@@ -214,7 +214,7 @@ msgid "Not listed?"
 msgstr "غير مدرج؟"
 
 #: ../js/gdm/loginDialog.js:1023 ../js/ui/endSessionDialog.js:410
-#: ../js/ui/extensionDownloader.js:108 ../js/ui/networkAgent.js:153
+#: ../js/ui/extensionDownloader.js:138 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:176
 #: ../js/ui/shellMountOperation.js:339 ../js/ui/status/bluetooth.js:431
 msgid "Cancel"
@@ -229,8 +229,8 @@ msgstr "ادخل"
 msgid "Login Window"
 msgstr "نافذة الولوج"
 
-#: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:604
-#: ../js/ui/userMenu.js:608 ../js/ui/userMenu.js:696
+#: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:602
+#: ../js/ui/userMenu.js:606 ../js/ui/userMenu.js:715
 msgid "Suspend"
 msgstr "علّق"
 
@@ -238,8 +238,8 @@ msgstr "علّق"
 msgid "Restart"
 msgstr "أعِد التشغيل"
 
-#: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:606
-#: ../js/ui/userMenu.js:608 ../js/ui/userMenu.js:695
+#: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:604
+#: ../js/ui/userMenu.js:606 ../js/ui/userMenu.js:714
 msgid "Power Off"
 msgstr "أطفئ الحاسوب"
 
@@ -452,31 +452,6 @@ msgstr "هذا الأسبوع"
 msgid "Next week"
 msgstr "الأسبوع القادم"
 
-#: ../js/ui/contactDisplay.js:66
-msgctxt "contact"
-msgid "Unknown"
-msgstr "غير معروف"
-
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:130
-msgid "Available"
-msgstr "متفرّغ"
-
-#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:139
-msgid "Away"
-msgstr "غائب"
-
-#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:133
-msgid "Busy"
-msgstr "مشغول"
-
-#: ../js/ui/contactDisplay.js:102
-msgid "Offline"
-msgstr "غير متصل"
-
-#: ../js/ui/contactDisplay.js:153
-msgid "CONTACTS"
-msgstr "المتراسلون"
-
 #: ../js/ui/dash.js:239 ../js/ui/messageTray.js:1239
 msgid "Remove"
 msgstr "أزِل"
@@ -600,11 +575,11 @@ msgstr[5] "سيُعاد تشغيل النظام تلقائيا بعد %d ثان�
 msgid "Restarting the system."
 msgstr "يُعاد تشغيل النظام."
 
-#: ../js/ui/extensionDownloader.js:112
+#: ../js/ui/extensionDownloader.js:142
 msgid "Install"
 msgstr "ثبت"
 
-#: ../js/ui/extensionDownloader.js:116
+#: ../js/ui/extensionDownloader.js:146
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "هل تريد تنزيل وتثبيت '%s' من extensions.gnome.org؟"
@@ -780,25 +755,25 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "غير معروف"
 
-#: ../js/ui/overview.js:90
+#: ../js/ui/overview.js:88
 msgid "Undo"
 msgstr "تراجع"
 
-#: ../js/ui/overview.js:130
+#: ../js/ui/overview.js:128
 msgid "Overview"
 msgstr "نظرة عامة"
 
-#: ../js/ui/overview.js:200
+#: ../js/ui/overview.js:198
 msgid "Windows"
 msgstr "النوافذ"
 
-#: ../js/ui/overview.js:203
+#: ../js/ui/overview.js:201
 msgid "Applications"
 msgstr "التطبيقات"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:230
+#: ../js/ui/overview.js:226
 msgid "Dash"
 msgstr "الشريط"
 
@@ -867,11 +842,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "من فضلك أدخل أمرًا:"
 
-#: ../js/ui/searchDisplay.js:323
+#: ../js/ui/searchDisplay.js:320
 msgid "Searching..."
 msgstr "يبحث..."
 
-#: ../js/ui/searchDisplay.js:376
+#: ../js/ui/searchDisplay.js:373
 msgid "No matching results."
 msgstr "لا نتائج مطابقة."
 
@@ -1578,9 +1553,21 @@ msgstr "عدّل الحساب"
 msgid "Unknown reason"
 msgstr "السبب غير معروف"
 
+#: ../js/ui/userMenu.js:130
+msgid "Available"
+msgstr "متفرّغ"
+
+#: ../js/ui/userMenu.js:133
+msgid "Busy"
+msgstr "مشغول"
+
 #: ../js/ui/userMenu.js:136
 msgid "Invisible"
 msgstr "خفي"
+
+#: ../js/ui/userMenu.js:139
+msgid "Away"
+msgstr "غائب"
 
 #: ../js/ui/userMenu.js:142
 msgid "Idle"
@@ -1590,35 +1577,35 @@ msgstr "ساكن"
 msgid "Unavailable"
 msgstr "مشغول"
 
-#: ../js/ui/userMenu.js:565 ../js/ui/userMenu.js:705
+#: ../js/ui/userMenu.js:563 ../js/ui/userMenu.js:696
 msgid "Switch User"
 msgstr "بدّل المستخدم"
 
-#: ../js/ui/userMenu.js:566
+#: ../js/ui/userMenu.js:564
 msgid "Switch Session"
 msgstr "بدّل الجلسة"
 
-#: ../js/ui/userMenu.js:681
+#: ../js/ui/userMenu.js:679
 msgid "Notifications"
 msgstr "التنبيهات"
 
-#: ../js/ui/userMenu.js:690
+#: ../js/ui/userMenu.js:688
 msgid "System Settings"
 msgstr "إعدادات النظام"
 
-#: ../js/ui/userMenu.js:710
+#: ../js/ui/userMenu.js:701
 msgid "Log Out"
 msgstr "اخرج"
 
-#: ../js/ui/userMenu.js:718
+#: ../js/ui/userMenu.js:706
 msgid "Lock"
 msgstr "أوصِد"
 
-#: ../js/ui/userMenu.js:736
+#: ../js/ui/userMenu.js:734
 msgid "Your chat status will be set to busy"
 msgstr "ستُجعل حالة اتصالك ”مشغول“"
 
-#: ../js/ui/userMenu.js:737
+#: ../js/ui/userMenu.js:735
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1660,6 +1647,10 @@ msgstr ""
 #, c-format
 msgid "'%s' is ready"
 msgstr "‏'%s' جاهز"
+
+#: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
+msgid "Evolution Calendar"
+msgstr "تقويم إيفُليوشِن"
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -1753,6 +1744,16 @@ msgstr "نظام الملفات"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgctxt "contact"
+#~ msgid "Unknown"
+#~ msgstr "غير معروف"
+
+#~ msgid "Offline"
+#~ msgstr "غير متصل"
+
+#~ msgid "CONTACTS"
+#~ msgstr "المتراسلون"
 
 #~ msgid "Show time with seconds"
 #~ msgstr "اعرض الوقت بالثواني"
