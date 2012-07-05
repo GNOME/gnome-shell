@@ -199,8 +199,8 @@ struct _ClutterTransformInfo
   /* anchor point */
   AnchorCoord anchor;
 
-  /* depth */
-  gfloat depth;
+  /* z_position */
+  gfloat z_position;
 };
 
 const ClutterTransformInfo *    _clutter_actor_get_transform_info_or_defaults   (ClutterActor *self);

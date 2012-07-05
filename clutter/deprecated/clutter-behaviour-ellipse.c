@@ -51,6 +51,7 @@
 #include <stdlib.h>
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#include "deprecated/clutter-actor.h"
 
 #include "clutter-alpha.h"
 #include "clutter-behaviour.h"

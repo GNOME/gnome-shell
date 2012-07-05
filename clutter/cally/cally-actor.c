@@ -718,7 +718,7 @@ cally_actor_get_mdi_zorder (AtkComponent *component)
   cally_actor = CALLY_ACTOR(component);
   actor = CALLY_GET_CLUTTER_ACTOR (cally_actor);
 
-  return clutter_actor_get_depth (actor);
+  return clutter_actor_get_z_position (actor);
 }
 
 static gboolean

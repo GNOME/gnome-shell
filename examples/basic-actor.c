@@ -32,17 +32,17 @@ on_crossing (ClutterActor *actor,
              gpointer      data)
 {
   gboolean is_enter = GPOINTER_TO_UINT (data);
-  float depth;
+  float zpos;
 
   if (is_enter)
-    depth = -250.0;
+    zpos = -250.0;
   else
-    depth = 0.0;
+    zpos = 0.0;
 
   clutter_actor_save_easing_state (actor);
   clutter_actor_set_easing_duration (actor, 500);
   clutter_actor_set_easing_mode (actor, CLUTTER_EASE_OUT_BOUNCE);
-  clutter_actor_set_depth (actor, depth);
+  clutter_actor_set_z_position (actor, zpos);
   clutter_actor_restore_easing_state (actor);
 
   return CLUTTER_EVENT_STOP;

@@ -83,6 +83,13 @@ void            clutter_actor_show_all          (ClutterActor          *self);
 CLUTTER_DEPRECATED_IN_1_10
 void            clutter_actor_hide_all          (ClutterActor          *self);
 
+CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_actor_set_z_position)
+void            clutter_actor_set_depth         (ClutterActor          *self,
+                                                 gfloat                 depth);
+
+CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_actor_get_z_position)
+gfloat          clutter_actor_get_depth         (ClutterActor          *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_DEPRECATED_H__ */

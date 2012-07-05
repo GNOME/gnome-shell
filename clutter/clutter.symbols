@@ -158,6 +158,7 @@ clutter_actor_get_x
 clutter_actor_get_y_align
 clutter_actor_get_y_expand
 clutter_actor_get_y
+clutter_actor_get_z_position
 clutter_actor_get_z_rotation_gravity
 clutter_actor_grab_key_focus
 clutter_actor_has_actions
@@ -271,6 +272,7 @@ clutter_actor_set_x
 clutter_actor_set_y_align
 clutter_actor_set_y_expand
 clutter_actor_set_y
+clutter_actor_set_z_position
 clutter_actor_set_z_rotation_from_gravity
 clutter_actor_should_pick_paint
 clutter_actor_show

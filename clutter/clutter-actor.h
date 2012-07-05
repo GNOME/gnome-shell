@@ -399,9 +399,11 @@ void                            clutter_actor_set_x                             
                                                                                  gfloat                       x);
 void                            clutter_actor_set_y                             (ClutterActor                *self,
                                                                                  gfloat                       y);
-void                            clutter_actor_set_depth                         (ClutterActor                *self,
-                                                                                 gfloat                       depth);
-gfloat                          clutter_actor_get_depth                         (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_1_12
+void                            clutter_actor_set_z_position                    (ClutterActor                *self,
+                                                                                 gfloat                       z_position);
+CLUTTER_AVAILABLE_IN_1_12
+gfloat                          clutter_actor_get_z_position                    (ClutterActor                *self);
 CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_set_layout_manager                (ClutterActor                *self,
                                                                                  ClutterLayoutManager        *manager);

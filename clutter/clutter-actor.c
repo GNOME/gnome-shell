@@ -854,7 +854,8 @@ enum
   /* Allocation properties are read-only */
   PROP_ALLOCATION,
 
-  PROP_DEPTH,
+  PROP_DEPTH, /* XXX:2.0 remove */
+  PROP_Z_POSITION,
 
   PROP_CLIP,
   PROP_HAS_CLIP,
@@ -2955,8 +2956,8 @@ clutter_actor_real_apply_transform (ClutterActor *self,
                              priv->allocation.y1,
                              0.0);
 
-      if (info->depth)
-        cogl_matrix_translate (transform, 0, 0, info->depth);
+      if (info->z_position != 0.f)
+        cogl_matrix_translate (transform, 0, 0, info->z_position);
 
       /*
        * because the rotation involves translations, we must scale
@@ -4565,8 +4566,12 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_request_mode (actor, g_value_get_enum (value));
       break;
 
-    case PROP_DEPTH:
+    case PROP_DEPTH: /* XXX:2.0 - remove */
       clutter_actor_set_depth (actor, g_value_get_float (value));
+      break;
+
+    case PROP_Z_POSITION:
+      clutter_actor_set_z_position (actor, g_value_get_float (value));
       break;
 
     case PROP_OPACITY:
@@ -4912,8 +4917,12 @@ clutter_actor_get_property (GObject    *object,
       g_value_set_boxed (value, &priv->allocation);
       break;
 
-    case PROP_DEPTH:
+    case PROP_DEPTH: /* XXX:2.0 - remove */
       g_value_set_float (value, clutter_actor_get_depth (actor));
+      break;
+
+    case PROP_Z_POSITION:
+      g_value_set_float (value, clutter_actor_get_z_position (actor));
       break;
 
     case PROP_OPACITY:
@@ -6026,9 +6035,14 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * The #ClutterActor:depth property is relative to the parent's
    * modelview matrix.
    *
+   * Setting this property will call #ClutterContainerIface.sort_depth_order()
+   * which is usually a no-op, and it's most likely not what you want.
+   *
    * The #ClutterActor:depth property is animatable.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.12: Use #ClutterActor:z-position instead.
    */
   obj_props[PROP_DEPTH] =
     g_param_spec_float ("depth",
@@ -6036,6 +6050,34 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Position on the Z axis"),
                         -G_MAXFLOAT, G_MAXFLOAT,
                         0.0,
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        G_PARAM_DEPRECATED |
+                        CLUTTER_PARAM_ANIMATABLE);
+
+  /**
+   * ClutterActor:z-position:
+   *
+   * The actor's position on the Z axis, relative to the parent's
+   * transformations.
+   *
+   * Positive values will bring the actor's position nearer to the user,
+   * whereas negative values will bring the actor's position farther from
+   * the user.
+   *
+   * The #ClutterActor:z-position does not affect the paint or allocation
+   * order.
+   *
+   * The #ClutterActor:z-position property is animatable.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_Z_POSITION] =
+    g_param_spec_float ("z-position",
+                        P_("Z Position"),
+                        P_("The actor's position on the Z axis"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0.0f,
                         G_PARAM_READWRITE |
                         G_PARAM_STATIC_STRINGS |
                         CLUTTER_PARAM_ANIMATABLE);
@@ -10805,10 +10847,10 @@ clutter_actor_set_depth_internal (ClutterActor *self,
 
   info = _clutter_actor_get_transform_info (self);
 
-  if (info->depth != depth)
+  if (info->z_position != depth)
     {
       /* Sets Z value - XXX 2.0: should we invert? */
-      info->depth = depth;
+      info->z_position = depth;
 
       self->priv->transform_valid = FALSE;
 
@@ -10823,6 +10865,76 @@ clutter_actor_set_depth_internal (ClutterActor *self,
     }
 }
 
+static inline void
+clutter_actor_set_z_position_internal (ClutterActor *self,
+                                       float         z_position)
+{
+  ClutterTransformInfo *info;
+
+  info = _clutter_actor_get_transform_info (self);
+
+  if (memcmp (&info->z_position, &z_position, sizeof (float)) != 0)
+    {
+      info->z_position = z_position;
+
+      self->priv->transform_valid = FALSE;
+
+      clutter_actor_queue_redraw (self);
+
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_Z_POSITION]);
+    }
+}
+
+/**
+ * clutter_actor_set_z_position:
+ * @self: a #ClutterActor
+ * @z_position: the position on the Z axis
+ *
+ * Sets the actor's position on the Z axis.
+ *
+ * See #ClutterActor:z-position.
+ *
+ * Since: 1.12
+ */
+void
+clutter_actor_set_z_position (ClutterActor *self,
+                              gfloat        z_position)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (_clutter_actor_get_transition (self, obj_props[PROP_Z_POSITION]) == NULL)
+    {
+      const ClutterTransformInfo *info;
+
+      info = _clutter_actor_get_transform_info_or_defaults (self);
+
+      _clutter_actor_create_transition (self, obj_props[PROP_Z_POSITION],
+                                        info->z_position,
+                                        z_position);
+    }
+  else
+    _clutter_actor_update_transition (self, obj_props[PROP_Z_POSITION],
+                                      z_position);
+}
+
+/**
+ * clutter_actor_get_z_position:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the actor's position on the Z axis.
+ *
+ * Return value: the position on the Z axis.
+ *
+ * Since: 1.12
+ */
+gfloat
+clutter_actor_get_z_position (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.f);
+
+  return _clutter_actor_get_transform_info_or_defaults (self)->z_position;
+}
+
 /**
  * clutter_actor_set_depth:
  * @self: a #ClutterActor
@@ -10832,6 +10944,8 @@ clutter_actor_set_depth_internal (ClutterActor *self,
  *
  * The unit used by @depth is dependant on the perspective setup. See
  * also clutter_stage_set_perspective().
+ *
+ * Deprecated: 1.12: Use clutter_actor_set_z_position() instead.
  */
 void
 clutter_actor_set_depth (ClutterActor *self,
@@ -10846,7 +10960,7 @@ clutter_actor_set_depth (ClutterActor *self,
       info = _clutter_actor_get_transform_info_or_defaults (self);
 
       _clutter_actor_create_transition (self, obj_props[PROP_DEPTH],
-                                        info->depth,
+                                        info->z_position,
                                         depth);
     }
   else
@@ -10862,13 +10976,15 @@ clutter_actor_set_depth (ClutterActor *self,
  * Retrieves the depth of @self.
  *
  * Return value: the depth of the actor
+ *
+ * Deprecated: 1.12: Use clutter_actor_get_z_position() instead.
  */
 gfloat
 clutter_actor_get_depth (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.0);
 
-  return _clutter_actor_get_transform_info_or_defaults (self)->depth;
+  return _clutter_actor_get_transform_info_or_defaults (self)->z_position;
 }
 
 /**
@@ -11230,7 +11346,7 @@ insert_child_at_depth (ClutterActor *self,
   child->priv->parent = self;
 
   child_depth =
-    _clutter_actor_get_transform_info_or_defaults (child)->depth;
+    _clutter_actor_get_transform_info_or_defaults (child)->z_position;
 
   /* special-case the first child */
   if (self->priv->n_children == 0)
@@ -11254,7 +11370,7 @@ insert_child_at_depth (ClutterActor *self,
       float iter_depth;
 
       iter_depth =
-        _clutter_actor_get_transform_info_or_defaults (iter)->depth;
+        _clutter_actor_get_transform_info_or_defaults (iter)->z_position;
 
       if (iter_depth > child_depth)
         break;
@@ -13634,6 +13750,10 @@ clutter_actor_set_animatable_property (ClutterActor *actor,
 
     case PROP_DEPTH:
       clutter_actor_set_depth_internal (actor, g_value_get_float (value));
+      break;
+
+    case PROP_Z_POSITION:
+      clutter_actor_set_z_position_internal (actor, g_value_get_float (value));
       break;
 
     case PROP_OPACITY:
