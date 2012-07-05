@@ -26,12 +26,6 @@ function getDimShaderSource() {
     return dimShader;
 }
 
-function getTopInvisibleBorder(metaWindow) {
-    let outerRect = metaWindow.get_outer_rect();
-    let inputRect = metaWindow.get_input_rect();
-    return outerRect.y - inputRect.y;
-}
-
 const WindowDimmer = new Lang.Class({
     Name: 'WindowDimmer',
 
