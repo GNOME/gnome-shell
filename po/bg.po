@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-06 08:29+0300\n"
+"POT-Creation-Date: 2012-07-06 08:43+0300\n"
 "PO-Revision-Date: 2012-07-06 08:29+0300\n"
 "Last-Translator: Ivaylo Valkov <ivaylo@e-valkov.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -143,7 +143,8 @@ msgstr "Клавишна комбинация за отваряне на мен�
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "Keybinding to toggle the screen recorder"
-msgstr "Клавишна комбинация за записването на екрана"
+msgstr ""
+"Клавишна комбинация за включване/изключване на програмата за запис на екрана"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to start/stop the builtin screen recorder."
@@ -920,7 +921,7 @@ msgstr "Увеличаване"
 
 #: ../js/ui/status/accessibility.js:59
 msgid "Screen Reader"
-msgstr "Екранен четец"
+msgstr "Четец на екрана"
 
 #: ../js/ui/status/accessibility.js:63
 msgid "Screen Keyboard"
@@ -1686,7 +1687,7 @@ msgstr "Използване на определен режим за екран�
 
 #: ../src/main.c:345
 msgid "List possible modes"
-msgstr "Отпечатване на възможните режими"
+msgstr "Списък на достъпните режими"
 
 #: ../src/shell-app.c:622
 #, c-format
