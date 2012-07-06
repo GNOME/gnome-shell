@@ -16,6 +16,14 @@
 
 /* Login Dialog */
 
+.login-dialog-banner {
+    font-size: 10pt;
+    font-weight: bold;
+    text-align: center;
+    color: #666666;
+    padding-bottom: 1em;
+}
+
 .login-dialog-title {
     font-size: 14pt;
     font-weight: bold;

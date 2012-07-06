@@ -49,6 +49,8 @@ const _LOGO_ICON_NAME_SIZE = 48;
 
 const _LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const _FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
+const _BANNER_MESSAGE_KEY = 'banner-message-enable';
+const _BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
 
 const _LOGO_KEY = 'logo';
 
@@ -780,10 +782,19 @@ const LoginDialog = new Lang.Class({
         this._startFingerprintConversationIfNeeded();
         this._settings.connect('changed::' + _LOGO_KEY,
                                Lang.bind(this, this._updateLogo));
+        this._settings.connect('changed::' + _BANNER_MESSAGE_KEY,
+                               Lang.bind(this, this._updateBanner));
+        this._settings.connect('changed::' + _BANNER_MESSAGE_TEXT_KEY,
+                               Lang.bind(this, this._updateBanner));
 
         this._logoBox = new St.Bin({ style_class: 'login-dialog-logo-box' });
         this.contentLayout.add(this._logoBox);
         this._updateLogo();
+
+        this._bannerLabel = new St.Label({ style_class: 'login-dialog-banner',
+                                           text: '' });
+        this.contentLayout.add(this._bannerLabel);
+        this._updateBanner();
 
         this._titleLabel = new St.Label({ style_class: 'login-dialog-title',
                                           text: C_("title", "Sign In") });
@@ -915,6 +926,18 @@ const LoginDialog = new Lang.Class({
             this._logoBox.child = textureCache.load_uri_async(uri, -1, _LOGO_ICON_NAME_SIZE);
         }
 
+    },
+
+    _updateBanner: function() {
+        let enabled = this._settings.get_boolean(_BANNER_MESSAGE_KEY);
+        let text = this._settings.get_string(_BANNER_MESSAGE_TEXT_KEY);
+
+        if (enabled && text) {
+            this._bannerLabel.set_text(text);
+            this._fadeInBanner();
+        } else {
+            this._fadeOutBanner();
+        }
     },
 
     _onReset: function(client, serviceName) {
@@ -1282,6 +1305,14 @@ const LoginDialog = new Lang.Class({
 
     _fadeOutLogo: function() {
         return _fadeOutActor(this._logoBox);
+    },
+
+    _fadeInBanner: function() {
+        return _fadeInActor(this._bannerLabel);
+    },
+
+    _fadeOutBanner: function() {
+        return _fadeOutActor(this._bannerLabel);
     },
 
     _fadeInTitleLabel: function() {
