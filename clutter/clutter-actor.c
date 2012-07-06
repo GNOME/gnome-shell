@@ -2958,27 +2958,32 @@ clutter_actor_real_apply_transform (ClutterActor *self,
       info = _clutter_actor_get_transform_info_or_defaults (self);
 
       /* compute the pivot point given the allocated size */
-      if (!clutter_point_equals (&info->pivot, clutter_point_zero ()))
-        {
-          pivot_x = (priv->allocation.x2 - priv->allocation.x1)
-                  * info->pivot.x;
-          pivot_y = (priv->allocation.y2 - priv->allocation.y1)
-                  * info->pivot.y;
-        }
+      pivot_x = (priv->allocation.x2 - priv->allocation.x1)
+              * info->pivot.x;
+      pivot_y = (priv->allocation.y2 - priv->allocation.y1)
+              * info->pivot.y;
+
+      CLUTTER_NOTE (PAINT,
+                    "Allocation: (%.2f, %2.f), "
+                    "pivot: (%.2f, %.2f), "
+                    "translation: (%.2f, %.2f) -> "
+                    "new origin: (%.2f, %.2f)",
+                    priv->allocation.x1, priv->allocation.y1,
+                    info->pivot.x, info->pivot.y,
+                    info->translation.x, info->translation.y,
+                    priv->allocation.x1 + pivot_x + info->translation.x,
+                    priv->allocation.y1 + pivot_y + info->translation.y);
 
       cogl_matrix_init_identity (transform);
 
+      /* basic translation: :allocation's origin and :z-position; instead
+       * of decomposing the pivot and translation info separate operations,
+       * we just compose everything into a single translation
+       */
       cogl_matrix_translate (transform,
-                             priv->allocation.x1,
-                             priv->allocation.y1,
-                             0.0);
-
-      if (info->z_position != 0.f)
-        cogl_matrix_translate (transform, 0, 0, info->z_position);
-
-      /* pivot point, used as the transformation center */
-      if (pivot_x != 0.f || pivot_y != 0.f)
-        cogl_matrix_translate (transform, pivot_x, pivot_y, info->pivot_z);
+                             priv->allocation.x1 + pivot_x + info->translation.x,
+                             priv->allocation.y1 + pivot_y + info->translation.y,
+                             info->z_position + info->pivot_z + info->translation.z);
 
       /*
        * because the rotation involves translations, we must scale
@@ -3037,19 +3042,9 @@ clutter_actor_real_apply_transform (ClutterActor *self,
           cogl_matrix_translate (transform, -x, -y, -z);
         }
 
-      if (info->translation.x != 0.f ||
-          info->translation.y != 0.f ||
-          info->translation.z != 0.f)
-        {
-          cogl_matrix_translate (transform,
-                                 -info->translation.x,
-                                 -info->translation.y,
-                                 -info->translation.z);
-        }
-
       /* roll back the pivot translation */
-      if (pivot_x != 0.f || pivot_y != 0.f)
-        cogl_matrix_translate (transform, -pivot_x, -pivot_y, 0.f);
+      if (pivot_x != 0.f || pivot_y != 0.f || info->pivot_z != 0.f)
+        cogl_matrix_translate (transform, -pivot_x, -pivot_y, -info->pivot_z);
 
       priv->transform_valid = TRUE;
     }
@@ -6585,6 +6580,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * being the top left corner of the actor and (1, 1) the bottom right corner
    * of the actor.
    *
+   * The default pivot point is located at (0, 0).
+   *
    * The #ClutterActor:pivot property is animatable.
    *
    * Since: 1.12
@@ -6853,10 +6850,10 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * #ClutterActor:anchor-y, and #ClutterActor:anchor-gravity in newly
    * written code; the anchor point adds an additional translation that
    * will affect the actor's relative position with regards to its
-   * parent, as well as the position of its children. This change is
-   * needs to always be taken into account when positioning the actor.
-   * It is recommended to use the #ClutterActor:pivot-point property
-   * instead, as it will affect only the transformations.</warning>
+   * parent, as well as the position of its children. This change needs
+   * to always be taken into account when positioning the actor. It is
+   * recommended to use the #ClutterActor:pivot-point property instead,
+   * as it will affect only the transformations.</warning>
    *
    * Since: 0.8
    *
@@ -6882,10 +6879,10 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * #ClutterActor:anchor-y, and #ClutterActor:anchor-gravity in newly
    * written code; the anchor point adds an additional translation that
    * will affect the actor's relative position with regards to its
-   * parent, as well as the position of its children. This change is
-   * needs to always be taken into account when positioning the actor.
-   * It is recommended to use the #ClutterActor:pivot-point property
-   * instead, as it will affect only the transformations.</warning>
+   * parent, as well as the position of its children. This change needs
+   * to always be taken into account when positioning the actor. It is
+   * recommended to use the #ClutterActor:pivot-point property instead,
+   * as it will affect only the transformations.</warning>
    *
    * Since: 0.8
    *
@@ -6910,10 +6907,10 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * #ClutterActor:anchor-y, and #ClutterActor:anchor-gravity in newly
    * written code; the anchor point adds an additional translation that
    * will affect the actor's relative position with regards to its
-   * parent, as well as the position of its children. This change is
-   * needs to always be taken into account when positioning the actor.
-   * It is recommended to use the #ClutterActor:pivot-point property
-   * instead, as it will affect only the transformations.</warning>
+   * parent, as well as the position of its children. This change needs
+   * to always be taken into account when positioning the actor. It is
+   * recommended to use the #ClutterActor:pivot-point property instead,
+   * as it will affect only the transformations.</warning>
    *
    * Since: 1.0
    *
