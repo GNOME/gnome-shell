@@ -338,8 +338,7 @@ on_enter (ClutterActor *rect,
           ClutterEvent *event)
 {
   clutter_actor_save_easing_state (rect);
-  clutter_actor_set_scale_with_gravity (rect, 1.2, 1.2,
-                                        CLUTTER_GRAVITY_CENTER);
+  clutter_actor_set_scale (rect, 1.2, 1.2);
   clutter_actor_restore_easing_state (rect);
 
   return CLUTTER_EVENT_STOP;
@@ -350,8 +349,7 @@ on_leave (ClutterActor *rect,
           ClutterEvent *event)
 {
   clutter_actor_save_easing_state (rect);
-  clutter_actor_set_scale_with_gravity (rect, 1.0, 1.0,
-                                        CLUTTER_GRAVITY_CENTER);
+  clutter_actor_set_scale (rect, 1.0, 1.0);
   clutter_actor_restore_easing_state (rect);
 
   return CLUTTER_EVENT_STOP;
@@ -430,6 +428,7 @@ main (int argc, char *argv[])
       color.alpha = 128 + 128 / N_RECTS * i;
 
       clutter_actor_set_size (rect, RECT_SIZE, RECT_SIZE);
+      clutter_actor_set_pivot_point (rect, .5f, .5f);
       clutter_actor_set_background_color (rect, &color);
       clutter_actor_set_reactive (rect, TRUE);
       clutter_actor_add_child (box, rect);
