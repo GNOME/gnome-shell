@@ -98,29 +98,10 @@ function gotExtensionZipFile(session, message, uuid, callback, errback) {
     GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, function(pid, status) {
         GLib.spawn_close_pid(pid);
 
-        if (status != 0) {
+        if (status != 0)
             errback('ExtractExtensionError');
-            return;
-        }
-
-        // Add extension to 'enabled-extensions' for the user, always...
-        let enabledExtensions = global.settings.get_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY);
-        if (enabledExtensions.indexOf(uuid) == -1) {
-            enabledExtensions.push(uuid);
-            global.settings.set_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY, enabledExtensions);
-        }
-
-        let extension = ExtensionUtils.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
-
-        try {
-            ExtensionSystem.loadExtension(extension);
-        } catch(e) {
-            uninstallExtension(uuid);
-            errback('LoadExtensionError', e);
-            return;
-        }
-
-        callback();
+        else
+            callback();
     });
 }
 
@@ -167,17 +148,35 @@ const InstallExtensionDialog = new Lang.Class({
         let url = REPOSITORY_URL_DOWNLOAD.format(this._uuid);
         let message = Soup.form_request_new_from_hash('GET', url, params);
 
+        let uuid = this._uuid;
         let invocation = this._invocation;
         function errback(code, message) {
             invocation.return_dbus_error('org.gnome.Shell.' + code, message ? message.toString() : '');
         }
 
         function callback() {
+            // Add extension to 'enabled-extensions' for the user, always...
+            let enabledExtensions = global.settings.get_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY);
+            if (enabledExtensions.indexOf(uuid) == -1) {
+                enabledExtensions.push(uuid);
+                global.settings.set_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY, enabledExtensions);
+            }
+
+            let extension = ExtensionUtils.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
+
+            try {
+                ExtensionSystem.loadExtension(extension);
+            } catch(e) {
+                uninstallExtension(uuid);
+                errback('LoadExtensionError', e);
+                return;
+            }
+
             invocation.return_value(GLib.Variant.new('(s)', 'successful'));
         }
 
         _httpSession.queue_message(message, Lang.bind(this, function(session, message) {
-            gotExtensionZipFile(session, message, this._uuid, callback, errback);
+            gotExtensionZipFile(session, message, uuid, callback, errback);
         }));
 
         this.close(global.get_current_time());
