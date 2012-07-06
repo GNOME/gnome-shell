@@ -110,6 +110,24 @@ gdouble         clutter_actor_get_rotation                      (ClutterActor   
 CLUTTER_DEPRECATED_IN_1_12
 ClutterGravity  clutter_actor_get_z_rotation_gravity            (ClutterActor          *self);
 
+CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_actor_set_scale and clutter_actor_set_pivot_point)
+void            clutter_actor_set_scale_full                    (ClutterActor          *self,
+                                                                 gdouble                scale_x,
+                                                                 gdouble                scale_y,
+                                                                 gfloat                 center_x,
+                                                                 gfloat                 center_y);
+CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_actor_set_scale and clutter_actor_set_pivot_point)
+void            clutter_actor_set_scale_with_gravity            (ClutterActor          *self,
+                                                                 gdouble                scale_x,
+                                                                 gdouble                scale_y,
+                                                                 ClutterGravity         gravity);
+CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_actor_get_pivot_point)
+void            clutter_actor_get_scale_center                  (ClutterActor          *self,
+                                                                 gfloat                *center_x,
+                                                                 gfloat                *center_y);
+CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_actor_get_pivot_point)
+ClutterGravity  clutter_actor_get_scale_gravity                 (ClutterActor          *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_DEPRECATED_H__ */

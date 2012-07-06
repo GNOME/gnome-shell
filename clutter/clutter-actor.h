@@ -643,22 +643,9 @@ gdouble                         clutter_actor_get_rotation_angle                
 void                            clutter_actor_set_scale                         (ClutterActor               *self,
                                                                                  gdouble                     scale_x,
                                                                                  gdouble                     scale_y);
-void                            clutter_actor_set_scale_full                    (ClutterActor               *self,
-                                                                                 gdouble                     scale_x,
-                                                                                 gdouble                     scale_y,
-                                                                                 gfloat                      center_x,
-                                                                                 gfloat                      center_y);
-void                            clutter_actor_set_scale_with_gravity            (ClutterActor               *self,
-                                                                                 gdouble                     scale_x,
-                                                                                 gdouble                     scale_y,
-                                                                                 ClutterGravity              gravity);
 void                            clutter_actor_get_scale                         (ClutterActor               *self,
                                                                                  gdouble                    *scale_x,
                                                                                  gdouble                    *scale_y);
-void                            clutter_actor_get_scale_center                  (ClutterActor               *self,
-                                                                                 gfloat                     *center_x,
-                                                                                 gfloat                     *center_y);
-ClutterGravity                  clutter_actor_get_scale_gravity                 (ClutterActor               *self);
 void                            clutter_actor_set_anchor_point                  (ClutterActor               *self,
                                                                                  gfloat                      anchor_x,
                                                                                  gfloat                      anchor_y);

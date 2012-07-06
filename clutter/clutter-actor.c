@@ -6406,6 +6406,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * The horizontal center point for scaling
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
   obj_props[PROP_SCALE_CENTER_X] =
     g_param_spec_float ("scale-center-x",
@@ -6413,7 +6415,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Horizontal scale center"),
                         -G_MAXFLOAT, G_MAXFLOAT,
                         0.0,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        G_PARAM_DEPRECATED);
 
   /**
    * ClutterActor:scale-center-y:
@@ -6421,6 +6425,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * The vertical center point for scaling
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
   obj_props[PROP_SCALE_CENTER_Y] =
     g_param_spec_float ("scale-center-y",
@@ -6428,7 +6434,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Vertical scale center"),
                         -G_MAXFLOAT, G_MAXFLOAT,
                         0.0,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        G_PARAM_DEPRECATED);
 
   /**
    * ClutterActor:scale-gravity:
@@ -6436,6 +6444,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * The center point for scaling expressed as a #ClutterGravity
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
   obj_props[PROP_SCALE_GRAVITY] =
     g_param_spec_enum ("scale-gravity",
@@ -6443,7 +6453,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                        P_("The center of scaling"),
                        CLUTTER_TYPE_GRAVITY,
                        CLUTTER_GRAVITY_NONE,
-                       CLUTTER_PARAM_READWRITE);
+                       G_PARAM_READWRITE |
+                       G_PARAM_STATIC_STRINGS |
+                       G_PARAM_DEPRECATED);
 
   /**
    * ClutterActor:rotation-angle-x:
@@ -10510,9 +10522,9 @@ clutter_actor_get_y (ClutterActor *self)
  * @scale_x: double factor to scale actor by horizontally.
  * @scale_y: double factor to scale actor by vertically.
  *
- * Scales an actor with the given factors. The scaling is relative to
- * the scale center and the anchor point. The scale center is
- * unchanged by this function and defaults to 0,0.
+ * Scales an actor with the given factors.
+ *
+ * The scale transformation is relative the the #ClutterActor:pivot-point.
  *
  * The #ClutterActor:scale-x and #ClutterActor:scale-y properties are
  * animatable.
@@ -10539,8 +10551,8 @@ clutter_actor_set_scale (ClutterActor *self,
  * @self: A #ClutterActor
  * @scale_x: double factor to scale actor by horizontally.
  * @scale_y: double factor to scale actor by vertically.
- * @center_x: X coordinate of the center of the scale.
- * @center_y: Y coordinate of the center of the scale
+ * @center_x: X coordinate of the center of the scaling
+ * @center_y: Y coordinate of the center of the scaling
  *
  * Scales an actor with the given factors around the given center
  * point. The center point is specified in pixels relative to the
@@ -10550,6 +10562,9 @@ clutter_actor_set_scale (ClutterActor *self,
  * are animatable.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12: Use clutter_actor_set_pivot_point() to control
+ *   the scale center
  */
 void
 clutter_actor_set_scale_full (ClutterActor *self,
@@ -10576,7 +10591,7 @@ clutter_actor_set_scale_full (ClutterActor *self,
  * @scale_x: double factor to scale actor by horizontally.
  * @scale_y: double factor to scale actor by vertically.
  * @gravity: the location of the scale center expressed as a compass
- * direction.
+ *   direction.
  *
  * Scales an actor with the given factors around the given
  * center point. The center point is specified as one of the compass
@@ -10588,6 +10603,9 @@ clutter_actor_set_scale_full (ClutterActor *self,
  * animatable.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12: Use clutter_actor_set_pivot_point() to set the
+ *   scale center using normalized coordinates instead.
  */
 void
 clutter_actor_set_scale_with_gravity (ClutterActor   *self,
@@ -10650,6 +10668,8 @@ clutter_actor_get_scale (ClutterActor *self,
  * current size of the actor.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12: Use clutter_actor_get_pivot_point() instead.
  */
 void
 clutter_actor_get_scale_center (ClutterActor *self,
@@ -10679,6 +10699,8 @@ clutter_actor_get_scale_center (ClutterActor *self,
  * Return value: the scale gravity
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12: Use clutter_actor_get_pivot_point() instead.
  */
 ClutterGravity
 clutter_actor_get_scale_gravity (ClutterActor *self)
