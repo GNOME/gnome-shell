@@ -256,7 +256,7 @@ main (int argc, char *argv[])
   clutter_actor_set_background_color (rect, CLUTTER_COLOR_LightScarletRed);
   clutter_actor_set_position (rect, 75, 150);
   clutter_actor_set_size (rect, 50, 50);
-  clutter_actor_set_anchor_point (rect, 25, 25);
+  clutter_actor_set_pivot_point (rect, .5f, .5f);
   clutter_actor_set_opacity (rect, 224);
   clutter_actor_add_child (stage, rect);
 

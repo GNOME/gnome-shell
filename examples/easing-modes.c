@@ -158,7 +158,8 @@ make_bouncer (gfloat width,
 
   clutter_actor_set_name (retval, "bouncer");
   clutter_actor_set_size (retval, width, height);
-  clutter_actor_set_anchor_point (retval, width / 2, height / 2);
+  clutter_actor_set_pivot_point (retval, 0.5f, 0.5f);
+  clutter_actor_set_translation (retval, width / -2.f, height / -2.f, 0.f);
   clutter_actor_set_reactive (retval, TRUE);
   clutter_actor_set_content (retval, canvas);
 

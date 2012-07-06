@@ -138,7 +138,7 @@ main (int argc, char *argv[])
   clutter_actor_set_size (flowers[2], SIZE, SIZE);
   clutter_actor_set_margin_right (flowers[2], 12);
   clutter_actor_set_background_color (flowers[2], CLUTTER_COLOR_Green);
-  clutter_actor_set_pivot_point (flowers[2], 0.5, 0.5);
+  clutter_actor_set_pivot_point (flowers[2], 0.5f, 0.0f);
   clutter_actor_set_reactive (flowers[2], TRUE);
   clutter_actor_add_child (vase, flowers[2]);
   g_signal_connect (flowers[2], "button-press-event",

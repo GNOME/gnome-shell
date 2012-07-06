@@ -190,7 +190,7 @@ main (int argc, char *argv[])
    */
   box = clutter_actor_new ();
   clutter_actor_set_layout_manager (box, layout);
-  clutter_actor_set_anchor_point_from_gravity (box, CLUTTER_GRAVITY_CENTER);
+  clutter_actor_add_constraint (box, clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5));
   clutter_actor_set_position (box, 320, 240);
   clutter_actor_set_reactive (box, TRUE);
   clutter_actor_set_name (box, "box");
