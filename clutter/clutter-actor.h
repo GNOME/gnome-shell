@@ -661,20 +661,6 @@ void                            clutter_actor_get_translation                   
                                                                                  gfloat                     *translate_x,
                                                                                  gfloat                     *translate_y,
                                                                                  gfloat                     *translate_z);
-void                            clutter_actor_set_anchor_point                  (ClutterActor               *self,
-                                                                                 gfloat                      anchor_x,
-                                                                                 gfloat                      anchor_y);
-void                            clutter_actor_move_anchor_point                 (ClutterActor               *self,
-                                                                                 gfloat                      anchor_x,
-                                                                                 gfloat                      anchor_y);
-void                            clutter_actor_get_anchor_point                  (ClutterActor               *self,
-                                                                                 gfloat                     *anchor_x,
-                                                                                 gfloat                     *anchor_y);
-ClutterGravity                  clutter_actor_get_anchor_point_gravity          (ClutterActor               *self);
-void                            clutter_actor_set_anchor_point_from_gravity     (ClutterActor               *self,
-                                                                                 ClutterGravity              gravity);
-void                            clutter_actor_move_anchor_point_from_gravity    (ClutterActor               *self,
-                                                                                 ClutterGravity              gravity);
 void                            clutter_actor_get_transformed_position          (ClutterActor               *self,
                                                                                  gfloat                     *x,
                                                                                  gfloat                     *y);

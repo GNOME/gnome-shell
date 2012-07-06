@@ -128,6 +128,27 @@ void            clutter_actor_get_scale_center                  (ClutterActor   
 CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_actor_get_pivot_point)
 ClutterGravity  clutter_actor_get_scale_gravity                 (ClutterActor          *self);
 
+CLUTTER_DEPRECATED_IN_1_12
+void            clutter_actor_set_anchor_point                  (ClutterActor          *self,
+                                                                 gfloat                 anchor_x,
+                                                                 gfloat                 anchor_y);
+CLUTTER_DEPRECATED_IN_1_12
+void            clutter_actor_move_anchor_point                 (ClutterActor          *self,
+                                                                 gfloat                 anchor_x,
+                                                                 gfloat                 anchor_y);
+CLUTTER_DEPRECATED_IN_1_12
+void            clutter_actor_get_anchor_point                  (ClutterActor          *self,
+                                                                 gfloat                *anchor_x,
+                                                                 gfloat                *anchor_y);
+CLUTTER_DEPRECATED_IN_1_12
+ClutterGravity  clutter_actor_get_anchor_point_gravity          (ClutterActor          *self);
+CLUTTER_DEPRECATED_IN_1_12
+void            clutter_actor_set_anchor_point_from_gravity     (ClutterActor          *self,
+                                                                 ClutterGravity         gravity);
+CLUTTER_DEPRECATED_IN_1_12
+void            clutter_actor_move_anchor_point_from_gravity    (ClutterActor          *self,
+                                                                 ClutterGravity         gravity);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_DEPRECATED_H__ */

@@ -6847,9 +6847,20 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * ClutterActor:anchor-x:
    *
    * The X coordinate of an actor's anchor point, relative to
-   * the actor coordinate space, in pixels
+   * the actor coordinate space, in pixels.
+   *
+   * <warning>It is highly recommended not to use #ClutterActor:anchor-x,
+   * #ClutterActor:anchor-y, and #ClutterActor:anchor-gravity in newly
+   * written code; the anchor point adds an additional translation that
+   * will affect the actor's relative position with regards to its
+   * parent, as well as the position of its children. This change is
+   * needs to always be taken into account when positioning the actor.
+   * It is recommended to use the #ClutterActor:pivot-point property
+   * instead, as it will affect only the transformations.</warning>
    *
    * Since: 0.8
+   *
+   * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
   obj_props[PROP_ANCHOR_X] =
     g_param_spec_float ("anchor-x",
@@ -6857,7 +6868,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("X coordinate of the anchor point"),
                         -G_MAXFLOAT, G_MAXFLOAT,
                         0,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        G_PARAM_DEPRECATED);
 
   /**
    * ClutterActor:anchor-y:
@@ -6865,7 +6878,18 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * The Y coordinate of an actor's anchor point, relative to
    * the actor coordinate space, in pixels
    *
+   * <warning>It is highly recommended not to use #ClutterActor:anchor-x,
+   * #ClutterActor:anchor-y, and #ClutterActor:anchor-gravity in newly
+   * written code; the anchor point adds an additional translation that
+   * will affect the actor's relative position with regards to its
+   * parent, as well as the position of its children. This change is
+   * needs to always be taken into account when positioning the actor.
+   * It is recommended to use the #ClutterActor:pivot-point property
+   * instead, as it will affect only the transformations.</warning>
+   *
    * Since: 0.8
+   *
+   * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
   obj_props[PROP_ANCHOR_Y] =
     g_param_spec_float ("anchor-y",
@@ -6873,14 +6897,27 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         P_("Y coordinate of the anchor point"),
                         -G_MAXFLOAT, G_MAXFLOAT,
                         0,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        G_PARAM_DEPRECATED);
 
   /**
    * ClutterActor:anchor-gravity:
    *
    * The anchor point expressed as a #ClutterGravity
    *
+   * <warning>It is highly recommended not to use #ClutterActor:anchor-x,
+   * #ClutterActor:anchor-y, and #ClutterActor:anchor-gravity in newly
+   * written code; the anchor point adds an additional translation that
+   * will affect the actor's relative position with regards to its
+   * parent, as well as the position of its children. This change is
+   * needs to always be taken into account when positioning the actor.
+   * It is recommended to use the #ClutterActor:pivot-point property
+   * instead, as it will affect only the transformations.</warning>
+   *
    * Since: 1.0
+   *
+   * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
   obj_props[PROP_ANCHOR_GRAVITY] =
     g_param_spec_enum ("anchor-gravity",
@@ -6888,7 +6925,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                        P_("The anchor point as a ClutterGravity"),
                        CLUTTER_TYPE_GRAVITY,
                        CLUTTER_GRAVITY_NONE,
-                       CLUTTER_PARAM_READWRITE);
+                       G_PARAM_READWRITE |
+                       G_PARAM_STATIC_STRINGS |
+                       G_PARAM_DEPRECATED);
 
   /**
    * ClutterActor:translation-x:
@@ -9761,7 +9800,8 @@ clutter_actor_set_fixed_position_set (ClutterActor *self,
  *
  * This function modifies the fixed position of an actor and thus removes
  * it from any layout management. Another way to move an actor is with an
- * anchor point, see clutter_actor_set_anchor_point().
+ * anchor point, see clutter_actor_set_anchor_point(), or with an additional
+ * translation, using clutter_actor_set_translation().
  *
  * Since: 0.2
  */
@@ -13387,6 +13427,8 @@ clutter_actor_get_reactive (ClutterActor *actor)
  * Gets the current anchor point of the @actor in pixels.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
  */
 void
 clutter_actor_get_anchor_point (ClutterActor *self,
@@ -13416,6 +13458,8 @@ clutter_actor_get_anchor_point (ClutterActor *self,
  * of the actor.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.12: Use #ClutterActor:pivot-point instead.
  */
 void
 clutter_actor_set_anchor_point (ClutterActor *self,
@@ -13478,6 +13522,8 @@ clutter_actor_set_anchor_point (ClutterActor *self,
  * Return value: the #ClutterGravity used by the anchor point
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12: Use #ClutterActor:pivot-point instead.
  */
 ClutterGravity
 clutter_actor_get_anchor_point_gravity (ClutterActor *self)
@@ -13501,6 +13547,8 @@ clutter_actor_get_anchor_point_gravity (ClutterActor *self)
  * the relative position of the actor toward its parent remains the same.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.12: Use #ClutterActor:pivot-point instead.
  */
 void
 clutter_actor_move_anchor_point (ClutterActor *self,
@@ -13546,6 +13594,8 @@ clutter_actor_move_anchor_point (ClutterActor *self,
  * to the bottom right.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.12: Use #ClutterActor:pivot-point instead.
  */
 void
 clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
@@ -13595,6 +13645,8 @@ clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
  * to the bottom right.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.12: Use #ClutterActor:pivot-point instead.
  */
 void
 clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
