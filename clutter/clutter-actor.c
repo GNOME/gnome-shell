@@ -875,26 +875,26 @@ enum
 
   PROP_SCALE_X,
   PROP_SCALE_Y,
-  PROP_SCALE_CENTER_X,
-  PROP_SCALE_CENTER_Y,
-  PROP_SCALE_GRAVITY,
+  PROP_SCALE_CENTER_X, /* XXX:2.0 remove */
+  PROP_SCALE_CENTER_Y, /* XXX:2.0 remove */
+  PROP_SCALE_GRAVITY, /* XXX:2.0 remove */
 
-  PROP_ROTATION_ANGLE_X,
-  PROP_ROTATION_ANGLE_Y,
-  PROP_ROTATION_ANGLE_Z,
-  PROP_ROTATION_CENTER_X,
-  PROP_ROTATION_CENTER_Y,
-  PROP_ROTATION_CENTER_Z,
+  PROP_ROTATION_ANGLE_X, /* XXX:2.0 rename to rotation-x */
+  PROP_ROTATION_ANGLE_Y, /* XXX:2.0 rename to rotation-y */
+  PROP_ROTATION_ANGLE_Z, /* XXX:2.0 rename to rotation-z */
+  PROP_ROTATION_CENTER_X, /* XXX:2.0 remove */
+  PROP_ROTATION_CENTER_Y, /* XXX:2.0 remove */
+  PROP_ROTATION_CENTER_Z, /* XXX:2.0 remove */
   /* This property only makes sense for the z rotation because the
      others would depend on the actor having a size along the
      z-axis */
-  PROP_ROTATION_CENTER_Z_GRAVITY,
+  PROP_ROTATION_CENTER_Z_GRAVITY, /* XXX:2.0 remove */
 
-  PROP_ANCHOR_X,
-  PROP_ANCHOR_Y,
-  PROP_ANCHOR_GRAVITY,
+  PROP_ANCHOR_X, /* XXX:2.0 remove */
+  PROP_ANCHOR_Y, /* XXX:2.0 remove */
+  PROP_ANCHOR_GRAVITY, /*XXX:2.0 remove */
 
-  PROP_SHOW_ON_SET_PARENT,
+  PROP_SHOW_ON_SET_PARENT, /*XXX:2.0 remove */
 
   PROP_TEXT_DIRECTION,
   PROP_HAS_POINTER,
