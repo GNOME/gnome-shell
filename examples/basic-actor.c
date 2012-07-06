@@ -56,8 +56,7 @@ on_transition_stopped (ClutterTransition *transition,
   clutter_actor_save_easing_state (actor);
   clutter_actor_set_easing_duration (actor, 250);
 
-  clutter_actor_set_rotation (actor, CLUTTER_Y_AXIS, 0.0f,
-                              SIZE / 2.0f, 0.f, 0.f);
+  clutter_actor_set_rotation_angle (actor, CLUTTER_Y_AXIS, 0.0f);
 
   clutter_actor_restore_easing_state (actor);
 }
@@ -71,8 +70,7 @@ animate_rotation (ClutterActor *actor,
   clutter_actor_save_easing_state (actor);
   clutter_actor_set_easing_duration (actor, 1000);
 
-  clutter_actor_set_rotation (actor, CLUTTER_Y_AXIS, 360.0,
-                              SIZE / 2.0f, 0.f, 0.f);
+  clutter_actor_set_rotation_angle (actor, CLUTTER_Y_AXIS, 360.0);
 
   transition = clutter_actor_get_transition (actor, "rotation-angle-y");
   g_signal_connect (transition, "stopped",
@@ -140,6 +138,7 @@ main (int argc, char *argv[])
   clutter_actor_set_size (flowers[2], SIZE, SIZE);
   clutter_actor_set_margin_right (flowers[2], 12);
   clutter_actor_set_background_color (flowers[2], CLUTTER_COLOR_Green);
+  clutter_actor_set_pivot_point (flowers[2], 0.5, 0.5);
   clutter_actor_set_reactive (flowers[2], TRUE);
   clutter_actor_add_child (vase, flowers[2]);
   g_signal_connect (flowers[2], "button-press-event",

@@ -74,7 +74,7 @@ main (int argc, char *argv[])
   clutter_actor_set_content_scaling_filters (actor,
                                              CLUTTER_SCALING_FILTER_TRILINEAR,
                                              CLUTTER_SCALING_FILTER_LINEAR);
-  clutter_actor_set_rotation (actor, CLUTTER_Y_AXIS, 0.0, 250.f, 0.f, 0.f);
+  clutter_actor_set_pivot_point (actor, 0.5f, 0.5f);
   clutter_actor_add_constraint (actor, clutter_bind_constraint_new (stage, CLUTTER_BIND_SIZE, 0.f));
   clutter_actor_add_child (stage, actor);
 
