@@ -6508,13 +6508,17 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * The rotation center on the X axis.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
   obj_props[PROP_ROTATION_CENTER_X] =
     g_param_spec_boxed ("rotation-center-x",
                         P_("Rotation Center X"),
                         P_("The rotation center on the X axis"),
                         CLUTTER_TYPE_VERTEX,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        G_PARAM_DEPRECATED);
 
   /**
    * ClutterActor:rotation-center-y:
@@ -6522,13 +6526,17 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * The rotation center on the Y axis.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
   obj_props[PROP_ROTATION_CENTER_Y] =
     g_param_spec_boxed ("rotation-center-y",
                         P_("Rotation Center Y"),
                         P_("The rotation center on the Y axis"),
                         CLUTTER_TYPE_VERTEX,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        G_PARAM_DEPRECATED);
 
   /**
    * ClutterActor:rotation-center-z:
@@ -6536,13 +6544,17 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * The rotation center on the Z axis.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
   obj_props[PROP_ROTATION_CENTER_Z] =
     g_param_spec_boxed ("rotation-center-z",
                         P_("Rotation Center Z"),
                         P_("The rotation center on the Z axis"),
                         CLUTTER_TYPE_VERTEX,
-                        CLUTTER_PARAM_READWRITE);
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        G_PARAM_DEPRECATED);
 
   /**
    * ClutterActor:rotation-center-z-gravity:
@@ -6550,6 +6562,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * The rotation center on the Z axis expressed as a #ClutterGravity.
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
   obj_props[PROP_ROTATION_CENTER_Z_GRAVITY] =
     g_param_spec_enum ("rotation-center-z-gravity",
@@ -6557,7 +6571,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                        P_("Center point for rotation around the Z axis"),
                        CLUTTER_TYPE_GRAVITY,
                        CLUTTER_GRAVITY_NONE,
-                       CLUTTER_PARAM_READWRITE);
+                       G_PARAM_READWRITE |
+                       G_PARAM_STATIC_STRINGS |
+                       G_PARAM_DEPRECATED);
 
   /**
    * ClutterActor:anchor-x:
@@ -11221,6 +11237,9 @@ clutter_actor_get_depth (ClutterActor *self)
  * point is set, the upper left corner is assumed as the origin.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.12: Use clutter_actor_set_rotation_angle() and
+ *   clutter_actor_set_pivot_point() instead.
  */
 void
 clutter_actor_set_rotation (ClutterActor      *self,
@@ -11259,6 +11278,9 @@ clutter_actor_set_rotation (ClutterActor      *self,
  * will move accordingly.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12: Use clutter_actor_set_rotation_angle() and
+ *   clutter_actor_set_pivot_point() instead.
  */
 void
 clutter_actor_set_z_rotation_from_gravity (ClutterActor   *self,
@@ -11302,6 +11324,9 @@ clutter_actor_set_z_rotation_from_gravity (ClutterActor   *self,
  * Return value: the angle of rotation
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.12: Use clutter_actor_get_rotation_angle() and
+ *   clutter_actor_get_pivot_point() instead.
  */
 gdouble
 clutter_actor_get_rotation (ClutterActor      *self,
@@ -11357,6 +11382,9 @@ clutter_actor_get_rotation (ClutterActor      *self,
  * Return value: the Z rotation center
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12: Use the #ClutterActor:pivot-point instead of
+ *   a #ClutterGravity
  */
 ClutterGravity
 clutter_actor_get_z_rotation_gravity (ClutterActor *self)

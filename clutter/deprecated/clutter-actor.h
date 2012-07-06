@@ -34,61 +34,81 @@
 G_BEGIN_DECLS
 
 CLUTTER_DEPRECATED_IN_1_10
-void            clutter_actor_set_geometry      (ClutterActor          *self,
-                                                 const ClutterGeometry *geometry);
+void            clutter_actor_set_geometry                      (ClutterActor          *self,
+                                                                 const ClutterGeometry *geometry);
 
 CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_actor_get_allocation_geometry)
-void            clutter_actor_get_geometry      (ClutterActor          *self,
-                                                 ClutterGeometry       *geometry);
+void            clutter_actor_get_geometry                      (ClutterActor          *self,
+                                                                 ClutterGeometry       *geometry);
 CLUTTER_DEPRECATED_IN_1_8
-guint32         clutter_actor_get_gid           (ClutterActor          *self);
+guint32         clutter_actor_get_gid                           (ClutterActor          *self);
 
 CLUTTER_DEPRECATED_IN_1_8
-ClutterActor *  clutter_get_actor_by_gid        (guint32                id_);
+ClutterActor *  clutter_get_actor_by_gid                        (guint32                id_);
 
 CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_actor_remove_child() and clutter_actor_add_child())
-void            clutter_actor_reparent          (ClutterActor          *self,
-                                                 ClutterActor          *new_parent);
+void            clutter_actor_reparent                          (ClutterActor          *self,
+                                                                 ClutterActor          *new_parent);
 
 CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_actor_add_child)
-void            clutter_actor_set_parent        (ClutterActor          *self,
-                                                 ClutterActor          *parent);
+void            clutter_actor_set_parent                        (ClutterActor          *self,
+                                                                 ClutterActor          *parent);
 
 CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_actor_remove_child)
-void            clutter_actor_unparent          (ClutterActor          *self);
+void            clutter_actor_unparent                          (ClutterActor          *self);
 
 CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_actor_set_child_above_sibling)
-void            clutter_actor_raise             (ClutterActor          *self,
-                                                 ClutterActor          *below);
+void            clutter_actor_raise                             (ClutterActor          *self,
+                                                                 ClutterActor          *below);
 
 CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_actor_set_child_below_sibling)
-void            clutter_actor_lower             (ClutterActor          *self,
-                                                 ClutterActor          *above);
+void            clutter_actor_lower                             (ClutterActor          *self,
+                                                                 ClutterActor          *above);
 
 CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_actor_set_child_above_sibling() with NULL sibling)
-void            clutter_actor_raise_top         (ClutterActor          *self);
+void            clutter_actor_raise_top                         (ClutterActor          *self);
 
 CLUTTER_DEPRECATED_IN_1_10_FOR(clutter_actor_set_child_below_sibling() with NULL sibling)
-void            clutter_actor_lower_bottom      (ClutterActor          *self);
+void            clutter_actor_lower_bottom                      (ClutterActor          *self);
 
 CLUTTER_DEPRECATED_IN_1_10
-void            clutter_actor_push_internal     (ClutterActor          *self);
+void            clutter_actor_push_internal                     (ClutterActor          *self);
 
 CLUTTER_DEPRECATED_IN_1_10
-void            clutter_actor_pop_internal      (ClutterActor          *self);
+void            clutter_actor_pop_internal                      (ClutterActor          *self);
 
 CLUTTER_DEPRECATED_IN_1_10
-void            clutter_actor_show_all          (ClutterActor          *self);
+void            clutter_actor_show_all                          (ClutterActor          *self);
 
 CLUTTER_DEPRECATED_IN_1_10
-void            clutter_actor_hide_all          (ClutterActor          *self);
+void            clutter_actor_hide_all                          (ClutterActor          *self);
 
 CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_actor_set_z_position)
-void            clutter_actor_set_depth         (ClutterActor          *self,
-                                                 gfloat                 depth);
+void            clutter_actor_set_depth                         (ClutterActor          *self,
+                                                                 gfloat                 depth);
 
 CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_actor_get_z_position)
-gfloat          clutter_actor_get_depth         (ClutterActor          *self);
+gfloat          clutter_actor_get_depth                         (ClutterActor          *self);
+
+CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_actor_set_rotation_angle)
+void            clutter_actor_set_rotation                      (ClutterActor          *self,
+                                                                 ClutterRotateAxis      axis,
+                                                                 gdouble                angle,
+                                                                 gfloat                 x,
+                                                                 gfloat                 y,
+                                                                 gfloat                 z);
+CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_actor_set_rotation_angle and clutter_actor_set_pivot_point)
+void            clutter_actor_set_z_rotation_from_gravity       (ClutterActor          *self,
+                                                                 gdouble                angle,
+                                                                 ClutterGravity         gravity);
+CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_actor_get_rotation_angle)
+gdouble         clutter_actor_get_rotation                      (ClutterActor          *self,
+                                                                 ClutterRotateAxis      axis,
+                                                                 gfloat                *x,
+                                                                 gfloat                *y,
+                                                                 gfloat                *z);
+CLUTTER_DEPRECATED_IN_1_12
+ClutterGravity  clutter_actor_get_z_rotation_gravity            (ClutterActor          *self);
 
 G_END_DECLS
 

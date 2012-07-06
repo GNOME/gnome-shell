@@ -640,21 +640,6 @@ void                            clutter_actor_set_rotation_angle                
 CLUTTER_AVAILABLE_IN_1_12
 gdouble                         clutter_actor_get_rotation_angle                (ClutterActor               *self,
                                                                                  ClutterRotateAxis           axis);
-void                            clutter_actor_set_rotation                      (ClutterActor               *self,
-                                                                                 ClutterRotateAxis           axis,
-                                                                                 gdouble                     angle,
-                                                                                 gfloat                      x,
-                                                                                 gfloat                      y,
-                                                                                 gfloat                      z);
-void                            clutter_actor_set_z_rotation_from_gravity       (ClutterActor               *self,
-                                                                                 gdouble                     angle,
-                                                                                 ClutterGravity              gravity);
-gdouble                         clutter_actor_get_rotation                      (ClutterActor               *self,
-                                                                                 ClutterRotateAxis           axis,
-                                                                                 gfloat                     *x,
-                                                                                 gfloat                     *y,
-                                                                                 gfloat                     *z);
-ClutterGravity                  clutter_actor_get_z_rotation_gravity            (ClutterActor               *self);
 void                            clutter_actor_set_scale                         (ClutterActor               *self,
                                                                                  gdouble                     scale_x,
                                                                                  gdouble                     scale_y);
