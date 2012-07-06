@@ -625,6 +625,14 @@ gboolean                        clutter_actor_iter_is_valid                     
 /* Transformations */
 gboolean                        clutter_actor_is_rotated                        (ClutterActor               *self);
 gboolean                        clutter_actor_is_scaled                         (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_1_12
+void                            clutter_actor_set_pivot_point                   (ClutterActor               *self,
+                                                                                 gfloat                      pivot_x,
+                                                                                 gfloat                      pivot_y);
+CLUTTER_AVAILABLE_IN_1_12
+void                            clutter_actor_get_pivot_point                   (ClutterActor               *self,
+                                                                                 gfloat                     *pivot_x,
+                                                                                 gfloat                     *pivot_y);
 void                            clutter_actor_set_rotation                      (ClutterActor               *self,
                                                                                  ClutterRotateAxis           axis,
                                                                                  gdouble                     angle,

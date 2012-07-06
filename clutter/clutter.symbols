@@ -130,6 +130,7 @@ clutter_actor_get_paint_visibility
 clutter_actor_get_paint_volume
 clutter_actor_get_pango_context
 clutter_actor_get_parent
+clutter_actor_get_pivot_point
 clutter_actor_get_position
 clutter_actor_get_preferred_height
 clutter_actor_get_preferred_size
@@ -252,6 +253,7 @@ clutter_actor_set_name
 clutter_actor_set_offscreen_redirect
 clutter_actor_set_opacity
 clutter_actor_set_parent
+clutter_actor_set_pivot_point
 clutter_actor_set_position
 clutter_actor_set_reactive
 clutter_actor_set_request_mode

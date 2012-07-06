@@ -201,6 +201,9 @@ struct _ClutterTransformInfo
 
   /* z_position */
   gfloat z_position;
+
+  /* transformation center */
+  ClutterPoint pivot;
 };
 
 const ClutterTransformInfo *    _clutter_actor_get_transform_info_or_defaults   (ClutterActor *self);

@@ -870,6 +870,8 @@ enum
   PROP_REALIZED,
   PROP_REACTIVE,
 
+  PROP_PIVOT_POINT,
+
   PROP_SCALE_X,
   PROP_SCALE_Y,
   PROP_SCALE_CENTER_X,
@@ -2946,8 +2948,17 @@ clutter_actor_real_apply_transform (ClutterActor *self,
     {
       CoglMatrix *transform = &priv->transform;
       const ClutterTransformInfo *info;
+      float pivot_x = 0.f, pivot_y = 0.f;
 
       info = _clutter_actor_get_transform_info_or_defaults (self);
+
+      if (!clutter_point_equals (&info->pivot, clutter_point_zero ()))
+        {
+          pivot_x = (priv->allocation.x2 - priv->allocation.x1)
+                  * info->pivot.x;
+          pivot_y = (priv->allocation.y2 - priv->allocation.y1)
+                  * info->pivot.y;
+        }
 
       cogl_matrix_init_identity (transform);
 
@@ -2958,6 +2969,10 @@ clutter_actor_real_apply_transform (ClutterActor *self,
 
       if (info->z_position != 0.f)
         cogl_matrix_translate (transform, 0, 0, info->z_position);
+
+      /* pivot point, used as the transformation center */
+      if (pivot_x != 0.f || pivot_y != 0.f)
+        cogl_matrix_translate (transform, pivot_x, pivot_y, 0.f);
 
       /*
        * because the rotation involves translations, we must scale
@@ -3004,6 +3019,10 @@ clutter_actor_real_apply_transform (ClutterActor *self,
           clutter_anchor_coord_get_units (self, &info->anchor, &x, &y, &z);
           cogl_matrix_translate (transform, -x, -y, -z);
         }
+
+      /* roll back the pivot translation */
+      if (pivot_x != 0.f || pivot_y != 0.f)
+        cogl_matrix_translate (transform, -pivot_x, -pivot_y, 0.f);
 
       priv->transform_valid = TRUE;
     }
@@ -4066,15 +4085,17 @@ clutter_actor_remove_child_internal (ClutterActor                 *self,
 }
 
 static const ClutterTransformInfo default_transform_info = {
-  0.0, { 0, },          /* rotation-x */
-  0.0, { 0, },          /* rotation-y */
-  0.0, { 0, },          /* rotation-z */
+  0.0, { 0, },                  /* rotation-x */
+  0.0, { 0, },                  /* rotation-y */
+  0.0, { 0, },                  /* rotation-z */
 
-  1.0, 1.0, { 0, },     /* scale */
+  1.0, 1.0, { 0, },             /* scale */
 
-  { 0, },               /* anchor */
+  { 0, },                       /* anchor */
 
-  0.0,                  /* depth */
+  0.0,                          /* z-position */
+
+  CLUTTER_POINT_INIT_ZERO,      /* pivot */
 };
 
 /*< private >
@@ -4144,6 +4165,22 @@ _clutter_actor_get_transform_info (ClutterActor *self)
     }
 
   return info;
+}
+
+static inline void
+clutter_actor_set_pivot_point_internal (ClutterActor       *self,
+                                        const ClutterPoint *pivot)
+{
+  ClutterTransformInfo *info;
+
+  info = _clutter_actor_get_transform_info (self);
+  info->pivot = *pivot;
+
+  self->priv->transform_valid = FALSE;
+
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_PIVOT_POINT]);
+
+  clutter_actor_queue_redraw (self);
 }
 
 /*< private >
@@ -4593,6 +4630,17 @@ clutter_actor_set_property (GObject      *object,
 	clutter_actor_hide (actor);
       break;
 
+    case PROP_PIVOT_POINT:
+      {
+        const ClutterPoint *pivot = g_value_get_boxed (value);
+
+        if (pivot == NULL)
+          pivot = clutter_point_zero ();
+
+        clutter_actor_set_pivot_point (actor, pivot->x, pivot->y);
+      }
+      break;
+
     case PROP_SCALE_X:
       clutter_actor_set_scale_factor (actor, CLUTTER_X_AXIS,
                                       g_value_get_double (value));
@@ -4968,6 +5016,15 @@ clutter_actor_get_property (GObject    *object,
 
     case PROP_CLIP_TO_ALLOCATION:
       g_value_set_boolean (value, priv->clip_to_allocation);
+      break;
+
+    case PROP_PIVOT_POINT:
+      {
+        const ClutterTransformInfo *info;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        g_value_set_boxed (value, &info->pivot);
+      }
       break;
 
     case PROP_SCALE_X:
@@ -6218,6 +6275,28 @@ clutter_actor_class_init (ClutterActorClass *klass)
                          P_("Name of the actor"),
                          NULL,
                          CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterActor:pivot-point:
+   *
+   * The point around which the scaling and rotation transformations occur.
+   *
+   * The pivot point is expressed in normalized coordinates space, with (0, 0)
+   * being the top left corner of the actor and (1, 1) the bottom right corner
+   * of the actor.
+   *
+   * The #ClutterActor:pivot property is animatable.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_PIVOT_POINT] =
+    g_param_spec_boxed ("pivot-point",
+                        P_("Pivot Point"),
+                        P_("The point around which the scaling and rotation occur"),
+                        CLUTTER_TYPE_POINT,
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:scale-x:
@@ -10936,6 +11015,74 @@ clutter_actor_get_z_position (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_set_pivot_point:
+ * @self: a #ClutterActor
+ * @pivot_x: the normalized X coordinate of the pivot point
+ * @pivot_y: the normalized Y coordinate of the pivot point
+ *
+ * Sets the position of the #ClutterActor:pivot-point around which the
+ * scaling and rotation transformations occur.
+ *
+ * The pivot point's coordinates are in normalized space, with the (0, 0)
+ * point being the top left corner of the actor, and the (1, 1) point being
+ * the bottom right corner.
+ *
+ * Since: 1.12
+ */
+void
+clutter_actor_set_pivot_point (ClutterActor *self,
+                               gfloat        pivot_x,
+                               gfloat        pivot_y)
+{
+  ClutterPoint pivot = CLUTTER_POINT_INIT (pivot_x, pivot_y);
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (_clutter_actor_get_transition (self, obj_props[PROP_PIVOT_POINT]) == NULL)
+    {
+      const ClutterTransformInfo *info;
+
+      info = _clutter_actor_get_transform_info_or_defaults (self);
+
+      _clutter_actor_create_transition (self, obj_props[PROP_PIVOT_POINT],
+                                        &info->pivot,
+                                        &pivot);
+    }
+  else
+    _clutter_actor_update_transition (self, obj_props[PROP_PIVOT_POINT], &pivot);
+}
+
+/**
+ * clutter_actor_get_pivot_point:
+ * @self: a #ClutterActor
+ * @pivot_x: (out) (allow-none): return location for the normalized X
+ *   coordinate of the pivot point, or %NULL
+ * @pivot_y: (out) (allow-none): return location for the normalized Y
+ *   coordinate of the pivot point, or %NULL
+ *
+ * Retrieves the coordinates of the #ClutterActor:pivot-point.
+ *
+ * Since: 1.12
+ */
+void
+clutter_actor_get_pivot_point (ClutterActor *self,
+                               gfloat       *pivot_x,
+                               gfloat       *pivot_y)
+{
+  const ClutterTransformInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+
+  if (pivot_x != NULL)
+    *pivot_y = info->pivot.x;
+
+  if (pivot_y != NULL)
+    *pivot_y = info->pivot.y;
+}
+
+/**
  * clutter_actor_set_depth:
  * @self: a #ClutterActor
  * @depth: Z co-ord
@@ -13762,6 +13909,10 @@ clutter_actor_set_animatable_property (ClutterActor *actor,
 
     case PROP_BACKGROUND_COLOR:
       clutter_actor_set_background_color_internal (actor, clutter_value_get_color (value));
+      break;
+
+    case PROP_PIVOT_POINT:
+      clutter_actor_set_pivot_point_internal (actor, g_value_get_boxed (value));
       break;
 
     case PROP_SCALE_X:
