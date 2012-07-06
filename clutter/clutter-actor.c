@@ -894,6 +894,10 @@ enum
   PROP_ANCHOR_Y, /* XXX:2.0 remove */
   PROP_ANCHOR_GRAVITY, /*XXX:2.0 remove */
 
+  PROP_TRANSLATION_X,
+  PROP_TRANSLATION_Y,
+  PROP_TRANSLATION_Z,
+
   PROP_SHOW_ON_SET_PARENT, /*XXX:2.0 remove */
 
   PROP_TEXT_DIRECTION,
@@ -2985,6 +2989,7 @@ clutter_actor_real_apply_transform (ClutterActor *self,
        */
       if (info->scale_x != 1.0 || info->scale_y != 1.0)
         {
+          /* XXX:2.0 remove anchor coord */
           TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
                                         &info->scale_center,
                                         cogl_matrix_scale (transform,
@@ -2995,6 +3000,7 @@ clutter_actor_real_apply_transform (ClutterActor *self,
 
       if (info->rz_angle)
         {
+          /* XXX:2.0 remove anchor coord */
           TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
                                         &info->rz_center,
                                         cogl_matrix_rotate (transform,
@@ -3004,6 +3010,7 @@ clutter_actor_real_apply_transform (ClutterActor *self,
 
       if (info->ry_angle)
         {
+          /* XXX:2.0 remove anchor coord */
           TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
                                         &info->ry_center,
                                         cogl_matrix_rotate (transform,
@@ -3013,6 +3020,7 @@ clutter_actor_real_apply_transform (ClutterActor *self,
 
       if (info->rx_angle)
         {
+          /* XXX:2.0 remove anchor coord */
           TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
                                         &info->rx_center,
                                         cogl_matrix_rotate (transform,
@@ -3020,12 +3028,23 @@ clutter_actor_real_apply_transform (ClutterActor *self,
                                                             1.0, 0, 0));
         }
 
+      /* XXX:2.0 remove */
       if (!clutter_anchor_coord_is_zero (&info->anchor))
         {
           gfloat x, y, z;
 
           clutter_anchor_coord_get_units (self, &info->anchor, &x, &y, &z);
           cogl_matrix_translate (transform, -x, -y, -z);
+        }
+
+      if (info->translation.x != 0.f ||
+          info->translation.y != 0.f ||
+          info->translation.z != 0.f)
+        {
+          cogl_matrix_translate (transform,
+                                 -info->translation.x,
+                                 -info->translation.y,
+                                 -info->translation.z);
         }
 
       /* roll back the pivot translation */
@@ -4101,6 +4120,8 @@ static const ClutterTransformInfo default_transform_info = {
 
   { 0, },                       /* anchor */
 
+  CLUTTER_VERTEX_INIT (0.f, 0.f, 0.f),
+
   0.f,                          /* z-position */
 
   CLUTTER_POINT_INIT_ZERO,      /* pivot */
@@ -4206,6 +4227,141 @@ clutter_actor_set_pivot_point_z_internal (ClutterActor *self,
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_PIVOT_POINT_Z]);
 
   clutter_actor_queue_redraw (self);
+}
+
+/*< private >
+ * clutter_actor_set_translation_internal:
+ * @self: a #ClutterActor
+ * @axis: the axis of the translation to change
+ * @angle: the translation as a value along @axis
+ *
+ * Sets the translation on the given @axis
+ */
+static void
+clutter_actor_set_translation_internal (ClutterActor *self,
+                                        gfloat        value,
+                                        GParamSpec   *pspec)
+{
+  GObject *obj = G_OBJECT (self);
+  ClutterTransformInfo *info;
+
+  info = _clutter_actor_get_transform_info (self);
+
+  if (pspec == obj_props[PROP_TRANSLATION_X])
+    info->translation.x = value;
+  else if (pspec == obj_props[PROP_TRANSLATION_Y])
+    info->translation.y = value;
+  else if (pspec == obj_props[PROP_TRANSLATION_Z])
+    info->translation.z = value;
+  else
+    g_assert_not_reached ();
+
+  self->priv->transform_valid = FALSE;
+  clutter_actor_queue_redraw (self);
+  g_object_notify_by_pspec (obj, pspec);
+}
+
+static inline void
+clutter_actor_set_translation_factor (ClutterActor      *self,
+                                      ClutterRotateAxis  axis,
+                                      gdouble            value)
+{
+  const ClutterTransformInfo *info;
+  const float *translate_p = NULL;
+  GParamSpec *pspec = NULL;
+
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+
+  switch (axis)
+    {
+    case CLUTTER_X_AXIS:
+      pspec = obj_props[PROP_TRANSLATION_X];
+      translate_p = &info->translation.x;
+      break;
+
+    case CLUTTER_Y_AXIS:
+      pspec = obj_props[PROP_TRANSLATION_Y];
+      translate_p = &info->translation.y;
+      break;
+
+    case CLUTTER_Z_AXIS:
+      pspec = obj_props[PROP_TRANSLATION_Z];
+      translate_p = &info->translation.x;
+      break;
+    }
+
+  g_assert (pspec != NULL);
+  g_assert (translate_p != NULL);
+
+  if (_clutter_actor_get_transition (self, pspec) == NULL)
+    _clutter_actor_create_transition (self, pspec, *translate_p, value);
+  else
+    _clutter_actor_update_transition (self, pspec, value);
+}
+
+/**
+ * clutter_actor_set_translation:
+ * @self: a #ClutterActor
+ * @translate_x: the translation along the X axis
+ * @translate_y: the translation along the Y axis
+ * @translate_z: the translation along the Z axis
+ *
+ * Sets an additional translation transformation on a #ClutterActor,
+ * relative to the #ClutterActor:pivot-point.
+ *
+ * Since: 1.12
+ */
+void
+clutter_actor_set_translation (ClutterActor *self,
+                               gfloat        translate_x,
+                               gfloat        translate_y,
+                               gfloat        translate_z)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  g_object_freeze_notify (G_OBJECT (self));
+
+  clutter_actor_set_translation_factor (self, CLUTTER_X_AXIS, translate_x);
+  clutter_actor_set_translation_factor (self, CLUTTER_Y_AXIS, translate_y);
+  clutter_actor_set_translation_factor (self, CLUTTER_Z_AXIS, translate_z);
+
+  g_object_thaw_notify (G_OBJECT (self));
+}
+
+/**
+ * clutter_actor_get_translation:
+ * @self: a #ClutterActor
+ * @translate_x: (out) (allow-none): return location for the X component
+ *   of the translation, or %NULL
+ * @translate_y: (out) (allow-none): return location for the Y component
+ *   of the translation, or %NULL
+ * @translate_z: (out) (allow-none): return location for the Z component
+ *   of the translation, or %NULL
+ *
+ * Retrieves the translation set using clutter_actor_set_translation().
+ *
+ * Since: 1.12
+ */
+void
+clutter_actor_get_translation (ClutterActor *self,
+                               gfloat       *translate_x,
+                               gfloat       *translate_y,
+                               gfloat       *translate_z)
+{
+  const ClutterTransformInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+
+  if (translate_x != NULL)
+    *translate_x = info->translation.x;
+
+  if (translate_y != NULL)
+    *translate_y = info->translation.y;
+
+  if (translate_z != NULL)
+    *translate_z = info->translation.z;
 }
 
 /*< private >
@@ -4734,6 +4890,21 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_pivot_point_z (actor, g_value_get_float (value));
       break;
 
+    case PROP_TRANSLATION_X:
+      clutter_actor_set_translation_factor (actor, CLUTTER_X_AXIS,
+                                            g_value_get_float (value));
+      break;
+
+    case PROP_TRANSLATION_Y:
+      clutter_actor_set_translation_factor (actor, CLUTTER_Y_AXIS,
+                                            g_value_get_float (value));
+      break;
+
+    case PROP_TRANSLATION_Z:
+      clutter_actor_set_translation_factor (actor, CLUTTER_Z_AXIS,
+                                            g_value_get_float (value));
+      break;
+
     case PROP_SCALE_X:
       clutter_actor_set_scale_factor (actor, CLUTTER_X_AXIS,
                                       g_value_get_double (value));
@@ -5126,6 +5297,33 @@ clutter_actor_get_property (GObject    *object,
 
         info = _clutter_actor_get_transform_info_or_defaults (actor);
         g_value_set_float (value, info->pivot_z);
+      }
+      break;
+
+    case PROP_TRANSLATION_X:
+      {
+        const ClutterTransformInfo *info;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        g_value_set_float (value, info->translation.x);
+      }
+      break;
+
+    case PROP_TRANSLATION_Y:
+      {
+        const ClutterTransformInfo *info;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        g_value_set_float (value, info->translation.y);
+      }
+      break;
+
+    case PROP_TRANSLATION_Z:
+      {
+        const ClutterTransformInfo *info;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        g_value_set_float (value, info->translation.z);
       }
       break;
 
@@ -6691,6 +6889,66 @@ clutter_actor_class_init (ClutterActorClass *klass)
                        CLUTTER_TYPE_GRAVITY,
                        CLUTTER_GRAVITY_NONE,
                        CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterActor:translation-x:
+   *
+   * An additional translation applied along the X axis, relative
+   * to the actor's #ClutterActor:pivot-point.
+   *
+   * The #ClutterActor:translation-x property is animatable.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_TRANSLATION_X] =
+    g_param_spec_float ("translation-x",
+                        P_("Translation X"),
+                        P_("Translation along the X axis"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0.f,
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
+
+  /**
+   * ClutterActor:translation-y:
+   *
+   * An additional translation applied along the Y axis, relative
+   * to the actor's #ClutterActor:pivot-point.
+   *
+   * The #ClutterActor:translation-y property is animatable.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_TRANSLATION_Y] =
+    g_param_spec_float ("translation-y",
+                        P_("Translation Y"),
+                        P_("Translation along the Y axis"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0.f,
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
+
+  /**
+   * ClutterActor:translation-z:
+   *
+   * An additional translation applied along the Z axis, relative
+   * to the actor's #ClutterActor:pivot-point.
+   *
+   * The #ClutterActor:translation-z property is animatable.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_TRANSLATION_Z] =
+    g_param_spec_float ("translation-z",
+                        P_("Translation Z"),
+                        P_("Translation along the Z axis"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0.f,
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS |
+                        CLUTTER_PARAM_ANIMATABLE);
 
   /**
    * ClutterActor:show-on-set-parent:
@@ -14139,12 +14397,15 @@ clutter_actor_set_animatable_property (ClutterActor *actor,
       clutter_actor_set_pivot_point_z_internal (actor, g_value_get_float (value));
       break;
 
-    case PROP_SCALE_X:
-      clutter_actor_set_scale_factor_internal (actor,
-                                               g_value_get_double (value),
-                                               pspec);
+    case PROP_TRANSLATION_X:
+    case PROP_TRANSLATION_Y:
+    case PROP_TRANSLATION_Z:
+      clutter_actor_set_translation_internal (actor,
+                                              g_value_get_float (value),
+                                              pspec);
       break;
 
+    case PROP_SCALE_X:
     case PROP_SCALE_Y:
       clutter_actor_set_scale_factor_internal (actor,
                                                g_value_get_double (value),

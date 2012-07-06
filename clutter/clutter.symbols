@@ -153,6 +153,7 @@ clutter_actor_get_transformed_paint_volume
 clutter_actor_get_transformed_position
 clutter_actor_get_transformed_size
 clutter_actor_get_transition
+clutter_actor_get_translation
 clutter_actor_get_type
 clutter_actor_get_width
 clutter_actor_get_x_align
@@ -271,6 +272,7 @@ clutter_actor_set_shader_param_float
 clutter_actor_set_shader_param_int
 clutter_actor_set_size
 clutter_actor_set_text_direction
+clutter_actor_set_translation
 clutter_actor_set_width
 clutter_actor_set_x_align
 clutter_actor_set_x_expand

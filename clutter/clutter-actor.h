@@ -651,6 +651,16 @@ void                            clutter_actor_set_scale                         
 void                            clutter_actor_get_scale                         (ClutterActor               *self,
                                                                                  gdouble                    *scale_x,
                                                                                  gdouble                    *scale_y);
+CLUTTER_AVAILABLE_IN_1_12
+void                            clutter_actor_set_translation                   (ClutterActor               *self,
+                                                                                 gfloat                      translate_x,
+                                                                                 gfloat                      translate_y,
+                                                                                 gfloat                      translate_z);
+CLUTTER_AVAILABLE_IN_1_12
+void                            clutter_actor_get_translation                   (ClutterActor               *self,
+                                                                                 gfloat                     *translate_x,
+                                                                                 gfloat                     *translate_y,
+                                                                                 gfloat                     *translate_z);
 void                            clutter_actor_set_anchor_point                  (ClutterActor               *self,
                                                                                  gfloat                      anchor_x,
                                                                                  gfloat                      anchor_y);

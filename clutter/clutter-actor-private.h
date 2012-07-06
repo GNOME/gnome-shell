@@ -199,6 +199,9 @@ struct _ClutterTransformInfo
   /* anchor point */
   AnchorCoord anchor;
 
+  /* translation */
+  ClutterVertex translation;
+
   /* z_position */
   gfloat z_position;
 
