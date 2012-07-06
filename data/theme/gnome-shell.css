@@ -803,6 +803,13 @@ StScrollBar StButton#vhandle:hover
     transition-duration: 100;
 }
 
+.app-well-app:focus > .overview-icon,
+.search-result-content:focus > .overview-icon,
+.app-well-app:selected > .overview-icon,
+.search-result-content:selected > .overview-icon {
+    background-color: rgba(255,255,255,0.33);
+}
+
 /* LookingGlass */
 
 #LookingGlassDialog
