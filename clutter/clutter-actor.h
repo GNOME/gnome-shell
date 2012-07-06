@@ -634,6 +634,11 @@ void                            clutter_actor_get_pivot_point                   
                                                                                  gfloat                     *pivot_x,
                                                                                  gfloat                     *pivot_y);
 CLUTTER_AVAILABLE_IN_1_12
+void                            clutter_actor_set_pivot_point_z                 (ClutterActor               *self,
+                                                                                 gfloat                      pivot_z);
+CLUTTER_AVAILABLE_IN_1_12
+gfloat                          clutter_actor_get_pivot_point_z                 (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_1_12
 void                            clutter_actor_set_rotation_angle                (ClutterActor               *self,
                                                                                  ClutterRotateAxis           axis,
                                                                                  gdouble                     angle);
