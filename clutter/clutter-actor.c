@@ -4229,7 +4229,24 @@ clutter_actor_set_rotation_angle_internal (ClutterActor      *self,
   clutter_actor_queue_redraw (self);
 }
 
-static inline void
+/**
+ * clutter_actor_set_rotation_angle:
+ * @self: a #ClutterActor
+ * @axis: the axis to set the angle one
+ * @angle: the angle of rotation, in degrees
+ *
+ * Sets the @angle of rotation of a #ClutterActor on the given @axis.
+ *
+ * This function is a convenience for setting the rotation properties
+ * #ClutterActor:rotation-angle-x, #ClutterActor:rotation-angle-y,
+ * and #ClutterActor:rotation-angle-z.
+ *
+ * The center of rotation is established by the #ClutterActor:pivot-point
+ * property.
+ *
+ * Since: 1.12
+ */
+void
 clutter_actor_set_rotation_angle (ClutterActor      *self,
                                   ClutterRotateAxis  axis,
                                   gdouble            angle)
@@ -4237,6 +4254,8 @@ clutter_actor_set_rotation_angle (ClutterActor      *self,
   const ClutterTransformInfo *info;
   const double *cur_angle_p = NULL;
   GParamSpec *pspec = NULL;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   info = _clutter_actor_get_transform_info_or_defaults (self);
 
@@ -4267,6 +4286,51 @@ clutter_actor_set_rotation_angle (ClutterActor      *self,
     _clutter_actor_update_transition (self, pspec, angle);
 
   clutter_actor_queue_redraw (self);
+}
+
+/**
+ * clutter_actor_get_rotation_angle:
+ * @self: a #ClutterActor
+ * @axis: the axis of the rotation
+ *
+ * Retrieves the angle of rotation set by clutter_actor_set_rotation_angle().
+ *
+ * Return value: the angle of rotation, in degrees
+ *
+ * Since: 1.12
+ */
+gdouble
+clutter_actor_get_rotation_angle (ClutterActor      *self,
+                                  ClutterRotateAxis  axis)
+{
+  const ClutterTransformInfo *info;
+  gdouble retval;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.0);
+
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+
+  switch (axis)
+    {
+    case CLUTTER_X_AXIS:
+      retval = info->rx_angle;
+      break;
+
+    case CLUTTER_Y_AXIS:
+      retval = info->ry_angle;
+      break;
+
+    case CLUTTER_Z_AXIS:
+      retval = info->rz_angle;
+      break;
+
+    default:
+      g_warn_if_reached ();
+      retval = 0.0;
+      break;
+    }
+
+  return retval;
 }
 
 /*< private >

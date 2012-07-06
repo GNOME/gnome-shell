@@ -138,6 +138,7 @@ clutter_actor_get_preferred_width
 clutter_actor_get_previous_sibling
 clutter_actor_get_reactive
 clutter_actor_get_request_mode
+clutter_actor_get_rotation_angle
 clutter_actor_get_rotation
 clutter_actor_get_scale
 clutter_actor_get_scale_center
@@ -257,6 +258,7 @@ clutter_actor_set_pivot_point
 clutter_actor_set_position
 clutter_actor_set_reactive
 clutter_actor_set_request_mode
+clutter_actor_set_rotation_angle
 clutter_actor_set_rotation
 clutter_actor_set_scale
 clutter_actor_set_scale_full
