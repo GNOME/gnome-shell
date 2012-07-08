@@ -137,8 +137,10 @@ function start() {
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
     overview = new Overview.Overview();
     magnifier = new Magnifier.Magnifier();
-    screenShield = new ScreenShield.ScreenShield();
-    screenSaverDBus = new ShellDBus.ScreenSaverDBus();
+    if (UnlockDialog.isSupported())
+        screenShield = new ScreenShield.ScreenShield();
+    else
+        screenShield = new ScreenShield.ScreenShieldFallback();
     panel = new Panel.Panel();
     wm = new WindowManager.WindowManager();
     messageTray = new MessageTray.MessageTray();

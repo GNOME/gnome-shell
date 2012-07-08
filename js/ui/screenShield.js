@@ -19,6 +19,7 @@ const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const MessageTray = imports.ui.messageTray;
+const ShellDBus = imports.ui.shellDBus;
 const Tweener = imports.ui.tweener;
 
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
@@ -414,6 +415,8 @@ const ScreenShield = new Lang.Class({
         this._presence.connectSignal('StatusChanged', Lang.bind(this, function(proxy, senderName, [status]) {
             this._onStatusChanged(status);
         }));
+
+        this._screenSaverDBus = new ShellDBus.ScreenSaverDBus(this);
 
         this._loginManager = LoginManager.getLoginManager();
         this._loginSession = this._loginManager.getCurrentSessionProxy();
@@ -827,3 +830,60 @@ const ScreenShield = new Lang.Class({
     },
 });
 Signals.addSignalMethods(ScreenShield.prototype);
+
+/* Fallback code to handle session locking using gnome-screensaver,
+   in case the required GDM dependency is not there
+*/
+const ScreenShieldFallback = new Lang.Class({
+    Name: 'ScreenShieldFallback',
+
+    _init: function() {
+        this._proxy = new Gio.DBusProxy({ g_connection: Gio.DBus.session,
+                                          g_name: 'org.gnome.ScreenSaver',
+                                          g_object_path: '/org/gnome/ScreenSaver',
+                                          g_interface_name: 'org.gnome.ScreenSaver',
+                                          g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START |
+                                                    Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES),
+                                        });
+        this._proxy.init(null);
+
+        this._proxy.connect('g-signal', Lang.bind(this, this._onSignal));
+        this._proxy.connect('notify::g-name-owner', Lang.bind(this, this._onNameOwnerChanged));
+    },
+
+    _onNameOwnerChanged: function(object, pspec) {
+        if (this._proxy.g_name_owner)
+            [this._locked] = this._proxy.call_sync('GetActive', null,
+                                                   Gio.DBusCallFlags.NONE, -1, null).deep_unpack();
+        else
+            this._locked = false;
+
+        this.emit('lock-status-changed', this._locked);
+    },
+
+    _onSignal: function(proxy, senderName, signalName, params) {
+        if (signalName == 'ActiveChanged') {
+            [this._locked] = params.deep_unpack();
+            this.emit('lock-status-changed', this._locked);
+        }
+    },
+
+    get locked() {
+        return this._locked;
+    },
+
+    lock: function() {
+        this._proxy.call('Lock', null, Gio.DBusCallFlags.NONE, -1, null,
+                         Lang.bind(this, function(proxy, result) {
+                             proxy.call_finish(result);
+
+                             this.emit('lock-screen-shown');
+                         }));
+    },
+
+    unlock: function() {
+        this._proxy.call('SetActive', GLib.Variant.new('(b)', false),
+                         Gio.DBusCallFlags.NONE, -1, null, null);
+    },
+});
+Signals.addSignalMethods(ScreenShieldFallback.prototype);

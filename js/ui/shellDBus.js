@@ -340,35 +340,38 @@ const GnomeShellExtensions = new Lang.Class({
 const ScreenSaverDBus = new Lang.Class({
     Name: 'ScreenSaverDBus',
 
-    _init: function() {
+    _init: function(screenShield) {
         this.parent();
 
-        Main.screenShield.connect('lock-status-changed', Lang.bind(this, function(shield) {
+        this._screenShield = screenShield;
+        screenShield.connect('lock-status-changed', Lang.bind(this, function(shield) {
             this._dbusImpl.emit_signal('ActiveChanged', GLib.Variant.new('(b)', [shield.locked]));
         }));
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreenSaverIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/ScreenSaver');
+
+        Gio.DBus.session.own_name('org.gnome.ScreenSaver', Gio.BusNameOwnerFlags.REPLACE, null, null);
     },
 
     LockAsync: function(parameters, invocation) {
-        let tmpId = Main.screenShield.connect('lock-screen-shown', Lang.bind(this, function() {
-            Main.screenShield.disconnect(tmpId);
+        let tmpId = this._screenShield.connect('lock-screen-shown', Lang.bind(this, function() {
+            this._screenShield.disconnect(tmpId);
 
             invocation.return_value(null);
         }));
 
-        Main.screenShield.lock(true);
+        this._screenShield.lock(true);
     },
 
     SetActive: function(active) {
         if (active)
-            Main.screenShield.lock(true);
+            this._screenShield.lock(true);
         else
-            Main.screenShield.unlock();
+            this._screenShield.unlock();
     },
 
     GetActive: function() {
-        return Main.screenShield.locked;
+        return this._screenShield.locked;
     }
 });
