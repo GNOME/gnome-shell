@@ -1527,7 +1527,7 @@ const MessageTray = new Lang.Class({
         Main.layoutManager.trackChrome(this._corner);
 
         Main.layoutManager.trayBox.add_actor(this.actor);
-        this.actor.y = this.actor.height;
+        this.actor.y = 0;
         Main.layoutManager.trackChrome(this.actor);
         Main.layoutManager.trackChrome(this._notificationBin);
 
@@ -1935,7 +1935,7 @@ const MessageTray = new Lang.Class({
     _onTrayHoverChanged: function() {
         if (this.actor.hover) {
             // Don't do anything if the one pixel area at the bottom is hovered over while the tray is hidden.
-            if (this._trayState == State.HIDDEN)
+            if (this._trayState == State.HIDDEN && this._notificationState == State.HIDDEN)
                 return;
 
             // Don't do anything if this._useLongerTrayLeftTimeout is true, meaning the notification originally
@@ -2070,7 +2070,7 @@ const MessageTray = new Lang.Class({
         let notificationUrgent = this._notificationQueue.length > 0 && this._notificationQueue[0].urgency == Urgency.CRITICAL;
         let notificationsPending = this._notificationQueue.length > 0 && ((!this._busy && !this._inFullscreen) || notificationUrgent);
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
-        let notificationExpanded = this._notificationBin.y < 0;
+        let notificationExpanded = this._notificationBin.y < - this.actor.height;
         let notificationExpired = (this._notificationTimeoutId == 0 && !(this._notification && this._notification.urgency == Urgency.CRITICAL) && !this._pointerInTray && !this._locked && !(this._pointerInKeyboard && notificationExpanded)) || this._notificationRemoved;
         let canShowNotification = notificationsPending && this._summaryState == State.HIDDEN;
 
@@ -2150,8 +2150,7 @@ const MessageTray = new Lang.Class({
         // Tray itself
         let trayIsVisible = (this._trayState == State.SHOWING ||
                              this._trayState == State.SHOWN);
-        let trayShouldBeVisible = (!notificationsDone ||
-                                   this._summaryState == State.SHOWING ||
+        let trayShouldBeVisible = (this._summaryState == State.SHOWING ||
                                    this._summaryState == State.SHOWN);
         if (!trayIsVisible && trayShouldBeVisible)
             this._showTray();
@@ -2191,7 +2190,7 @@ const MessageTray = new Lang.Class({
 
     _hideTray: function() {
         this._tween(this.actor, '_trayState', State.HIDDEN,
-                    { y: this.actor.height,
+                    { y: 0,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });
@@ -2228,7 +2227,7 @@ const MessageTray = new Lang.Class({
         this._notificationBin.child = this._notification.actor;
 
         this._notificationBin.opacity = 0;
-        this._notificationBin.y = this.actor.height;
+        this._notificationBin.y = 0;
         this._notificationBin.show();
 
         this._updateShowingNotification();
@@ -2263,7 +2262,8 @@ const MessageTray = new Lang.Class({
         // We tween all notifications to full opacity. This ensures that both new notifications and
         // notifications that might have been in the process of hiding get full opacity.
         //
-        // We tween any notification showing in the banner mode to banner height (this._notificationBin.y = 0).
+        // We tween any notification showing in the banner mode to banner height
+        // (this._notificationBin.y = -this.actor.height).
         // This ensures that both new notifications and notifications in the banner mode that might
         // have been in the process of hiding are shown with the banner height.
         //
@@ -2280,7 +2280,7 @@ const MessageTray = new Lang.Class({
                             onCompleteScope: this
                           };
         if (!this._notification.expanded)
-            tweenParams.y = 0;
+            tweenParams.y = - this.actor.height;
 
         this._tween(this._notificationBin, '_notificationState', State.SHOWN, tweenParams);
    },
@@ -2369,7 +2369,7 @@ const MessageTray = new Lang.Class({
     },
 
     _onNotificationExpanded: function() {
-        let expandedY = this.actor.height - this._notificationBin.height;
+        let expandedY = - this._notificationBin.height;
 
         // Don't animate the notification to its new position if it has shrunk:
         // there will be a very visible "gap" that breaks the illusion.
