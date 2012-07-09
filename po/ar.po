@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-05 16:58+0200\n"
-"PO-Revision-Date: 2012-07-05 16:58+0200\n"
+"POT-Creation-Date: 2012-07-09 21:45+0200\n"
+"PO-Revision-Date: 2012-07-09 21:46+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
@@ -191,46 +191,46 @@ msgstr "<b>الامتداد</b>"
 msgid "Select an extension to configure using the combobox above."
 msgstr "اختر امتدادا لضبطه من القائمة أعلاه."
 
-#: ../js/gdm/loginDialog.js:627
+#: ../js/gdm/loginDialog.js:629
 msgid "Session..."
 msgstr "الجلسة..."
 
-#: ../js/gdm/loginDialog.js:789
+#: ../js/gdm/loginDialog.js:800
 msgctxt "title"
 msgid "Sign In"
 msgstr "ادخل"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:834
+#: ../js/gdm/loginDialog.js:845
 msgid "(or swipe finger)"
 msgstr "(أو مرر إصبع)"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:855
+#: ../js/gdm/loginDialog.js:866
 msgid "Not listed?"
 msgstr "غير مدرج؟"
 
-#: ../js/gdm/loginDialog.js:1023 ../js/ui/endSessionDialog.js:410
+#: ../js/gdm/loginDialog.js:1046 ../js/ui/endSessionDialog.js:410
 #: ../js/ui/extensionDownloader.js:138 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:176
 #: ../js/ui/shellMountOperation.js:339 ../js/ui/status/bluetooth.js:431
 msgid "Cancel"
 msgstr "ألغِ"
 
-#: ../js/gdm/loginDialog.js:1028
+#: ../js/gdm/loginDialog.js:1051
 msgctxt "button"
 msgid "Sign In"
 msgstr "ادخل"
 
-#: ../js/gdm/loginDialog.js:1380
+#: ../js/gdm/loginDialog.js:1411
 msgid "Login Window"
 msgstr "نافذة الولوج"
 
-#: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:602
-#: ../js/ui/userMenu.js:606 ../js/ui/userMenu.js:715
+#: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:612
+#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:730
 msgid "Suspend"
 msgstr "علّق"
 
@@ -238,8 +238,8 @@ msgstr "علّق"
 msgid "Restart"
 msgstr "أعِد التشغيل"
 
-#: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:604
-#: ../js/ui/userMenu.js:606 ../js/ui/userMenu.js:714
+#: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:614
+#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:729
 msgid "Power Off"
 msgstr "أطفئ الحاسوب"
 
@@ -452,7 +452,7 @@ msgstr "هذا الأسبوع"
 msgid "Next week"
 msgstr "الأسبوع القادم"
 
-#: ../js/ui/dash.js:239 ../js/ui/messageTray.js:1239
+#: ../js/ui/dash.js:239 ../js/ui/messageTray.js:1287
 msgid "Remove"
 msgstr "أزِل"
 
@@ -601,51 +601,51 @@ msgstr "كلمة السرّ:"
 msgid "Type again:"
 msgstr "أدخلها ثانية:"
 
-#: ../js/ui/lookingGlass.js:693
+#: ../js/ui/lookingGlass.js:696
 msgid "No extensions installed"
 msgstr "لا امتدادات مثبّتة"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:747
+#: ../js/ui/lookingGlass.js:750
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "لم يصدر %s أي خطأ."
 
-#: ../js/ui/lookingGlass.js:753
+#: ../js/ui/lookingGlass.js:756
 msgid "Hide Errors"
 msgstr "أخفِ الأخطاء"
 
-#: ../js/ui/lookingGlass.js:757 ../js/ui/lookingGlass.js:808
+#: ../js/ui/lookingGlass.js:760 ../js/ui/lookingGlass.js:811
 msgid "Show Errors"
 msgstr "اظهر الأخطاء"
 
-#: ../js/ui/lookingGlass.js:766
+#: ../js/ui/lookingGlass.js:769
 msgid "Enabled"
 msgstr "مفعّل"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:769 ../src/gvc/gvc-mixer-control.c:1082
+#: ../js/ui/lookingGlass.js:772 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "معطّل"
 
-#: ../js/ui/lookingGlass.js:771
+#: ../js/ui/lookingGlass.js:774
 msgid "Error"
 msgstr "خطأ"
 
-#: ../js/ui/lookingGlass.js:773
+#: ../js/ui/lookingGlass.js:776
 msgid "Out of date"
 msgstr "قديم"
 
-#: ../js/ui/lookingGlass.js:775
+#: ../js/ui/lookingGlass.js:778
 msgid "Downloading"
 msgstr "ينزّل"
 
-#: ../js/ui/lookingGlass.js:796
+#: ../js/ui/lookingGlass.js:799
 msgid "View Source"
 msgstr "اعرض المصدر"
 
-#: ../js/ui/lookingGlass.js:802
+#: ../js/ui/lookingGlass.js:805
 msgid "Web Page"
 msgstr "صفحة الوب"
 
@@ -655,19 +655,19 @@ msgstr "صفحة الوب"
 msgid "Screencast from %d %t"
 msgstr "تسجيل شاشة من %d %t"
 
-#: ../js/ui/messageTray.js:1232
+#: ../js/ui/messageTray.js:1280
 msgid "Open"
 msgstr "افتح"
 
-#: ../js/ui/messageTray.js:1249
+#: ../js/ui/messageTray.js:1297
 msgid "Unmute"
 msgstr "أطلِق الصوت"
 
-#: ../js/ui/messageTray.js:1249
+#: ../js/ui/messageTray.js:1297
 msgid "Mute"
 msgstr "أصمِت"
 
-#: ../js/ui/messageTray.js:2528
+#: ../js/ui/messageTray.js:2575
 msgid "System Information"
 msgstr "معلومات النظام"
 
@@ -1014,7 +1014,7 @@ msgstr "امنح الصلاحية دائما"
 msgid "Grant this time only"
 msgstr "امنح هذه المرة فقط"
 
-#: ../js/ui/status/bluetooth.js:350 ../js/ui/telepathyClient.js:1103
+#: ../js/ui/status/bluetooth.js:350 ../js/ui/telepathyClient.js:1097
 msgid "Reject"
 msgstr "ارفض"
 
@@ -1325,58 +1325,38 @@ msgstr "طلب اشتراك"
 msgid "Connection error"
 msgstr "خطأ في الاتصال"
 
-#: ../js/ui/telepathyClient.js:675
-#, c-format
-msgid "%s is online."
-msgstr "‏%s متّصل."
-
-#: ../js/ui/telepathyClient.js:679
-#, c-format
-msgid "%s is offline."
-msgstr "‏%s غير متّصل."
-
-#: ../js/ui/telepathyClient.js:683
-#, c-format
-msgid "%s is away."
-msgstr "‏%s غائب."
-
-#: ../js/ui/telepathyClient.js:686
-#, c-format
-msgid "%s is busy."
-msgstr "‏%s مشغول."
-
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:901
+#: ../js/ui/telepathyClient.js:908
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "أُرسلت يوم <b>%A</b> الساعة <b>%l:%M</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:907
+#: ../js/ui/telepathyClient.js:914
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "أُرْسِلت يوم <b>%A %d %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:912
+#: ../js/ui/telepathyClient.js:919
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "أُرْسِلت يوم <b>%A</b>، <b>%d %B</b>، %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:954
+#: ../js/ui/telepathyClient.js:948
 #, c-format
 msgid "%s is now known as %s"
 msgstr "غيّر %s اسمه إلى %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1054
+#: ../js/ui/telepathyClient.js:1048
 #, c-format
 msgid "Invitation to %s"
 msgstr "دعوة إلى %s"
@@ -1384,35 +1364,35 @@ msgstr "دعوة إلى %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1062
+#: ../js/ui/telepathyClient.js:1056
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "يدعوك %s للانضمام إلى %s"
 
-#: ../js/ui/telepathyClient.js:1064 ../js/ui/telepathyClient.js:1143
-#: ../js/ui/telepathyClient.js:1207
+#: ../js/ui/telepathyClient.js:1058 ../js/ui/telepathyClient.js:1137
+#: ../js/ui/telepathyClient.js:1201
 msgid "Decline"
 msgstr "أرفُض"
 
-#: ../js/ui/telepathyClient.js:1065 ../js/ui/telepathyClient.js:1144
-#: ../js/ui/telepathyClient.js:1208
+#: ../js/ui/telepathyClient.js:1059 ../js/ui/telepathyClient.js:1138
+#: ../js/ui/telepathyClient.js:1202
 msgid "Accept"
 msgstr "أقْبَل"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1095
+#: ../js/ui/telepathyClient.js:1089
 #, c-format
 msgid "Video call from %s"
 msgstr "مكالمة فيديو من %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1098
+#: ../js/ui/telepathyClient.js:1092
 #, c-format
 msgid "Call from %s"
 msgstr "مكالمة من %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1105
+#: ../js/ui/telepathyClient.js:1099
 msgid "Answer"
 msgstr "أجب"
 
@@ -1421,108 +1401,108 @@ msgstr "أجب"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1137
+#: ../js/ui/telepathyClient.js:1131
 #, c-format
 msgid "%s is sending you %s"
 msgstr "‏%s يرسل لك %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1172
+#: ../js/ui/telepathyClient.js:1166
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "يريد %s الإذن ليعرف عندما تكون متصلا"
 
-#: ../js/ui/telepathyClient.js:1265
+#: ../js/ui/telepathyClient.js:1259
 msgid "Network error"
 msgstr "خطأ في الشبكة"
 
-#: ../js/ui/telepathyClient.js:1267
+#: ../js/ui/telepathyClient.js:1261
 msgid "Authentication failed"
 msgstr "فشل الاستيثاق"
 
-#: ../js/ui/telepathyClient.js:1269
+#: ../js/ui/telepathyClient.js:1263
 msgid "Encryption error"
 msgstr "فشل التعمية"
 
-#: ../js/ui/telepathyClient.js:1271
+#: ../js/ui/telepathyClient.js:1265
 msgid "Certificate not provided"
 msgstr "الشهادة غير متوفرة"
 
-#: ../js/ui/telepathyClient.js:1273
+#: ../js/ui/telepathyClient.js:1267
 msgid "Certificate untrusted"
 msgstr "الشهادة غير موثوقة"
 
-#: ../js/ui/telepathyClient.js:1275
+#: ../js/ui/telepathyClient.js:1269
 msgid "Certificate expired"
 msgstr "الشهادة منتهية الصلاحية"
 
-#: ../js/ui/telepathyClient.js:1277
+#: ../js/ui/telepathyClient.js:1271
 msgid "Certificate not activated"
 msgstr "الشهادة غير مفعلة"
 
-#: ../js/ui/telepathyClient.js:1279
+#: ../js/ui/telepathyClient.js:1273
 msgid "Certificate hostname mismatch"
 msgstr "الشهادة غير متوافقة مع اسم المستضيف"
 
-#: ../js/ui/telepathyClient.js:1281
+#: ../js/ui/telepathyClient.js:1275
 msgid "Certificate fingerprint mismatch"
 msgstr "بصمة الشهادة غير متطابقة"
 
-#: ../js/ui/telepathyClient.js:1283
+#: ../js/ui/telepathyClient.js:1277
 msgid "Certificate self-signed"
 msgstr "الشهادة موقعة ذاتيا"
 
-#: ../js/ui/telepathyClient.js:1285
+#: ../js/ui/telepathyClient.js:1279
 msgid "Status is set to offline"
 msgstr "الحالة مضبوطة إلى غير متصل"
 
-#: ../js/ui/telepathyClient.js:1287
+#: ../js/ui/telepathyClient.js:1281
 msgid "Encryption is not available"
 msgstr "التعمية غير متاحة"
 
-#: ../js/ui/telepathyClient.js:1289
+#: ../js/ui/telepathyClient.js:1283
 msgid "Certificate is invalid"
 msgstr "الشهادة غير صالحة"
 
-#: ../js/ui/telepathyClient.js:1291
+#: ../js/ui/telepathyClient.js:1285
 msgid "Connection has been refused"
 msgstr "رُفض الاتصال"
 
-#: ../js/ui/telepathyClient.js:1293
+#: ../js/ui/telepathyClient.js:1287
 msgid "Connection can't be established"
 msgstr "تعذر إنشاء الاتصال"
 
-#: ../js/ui/telepathyClient.js:1295
+#: ../js/ui/telepathyClient.js:1289
 msgid "Connection has been lost"
 msgstr "فُقد الاتصال"
 
-#: ../js/ui/telepathyClient.js:1297
+#: ../js/ui/telepathyClient.js:1291
 msgid "This account is already connected to the server"
 msgstr "هذا الحساب متصل بالخادوم بالفعل"
 
-#: ../js/ui/telepathyClient.js:1299
+#: ../js/ui/telepathyClient.js:1293
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "تم تبديل الاتصال باتصال جديد باستخدام نفس المورد"
 
-#: ../js/ui/telepathyClient.js:1301
+#: ../js/ui/telepathyClient.js:1295
 msgid "The account already exists on the server"
 msgstr "الحساب موجود بالفعل في الخادوم"
 
-#: ../js/ui/telepathyClient.js:1303
+#: ../js/ui/telepathyClient.js:1297
 msgid "Server is currently too busy to handle the connection"
 msgstr "الخادوم مشغول للغاية حاليًا ولا يستطيع التعامل مع الاتصال"
 
-#: ../js/ui/telepathyClient.js:1305
+#: ../js/ui/telepathyClient.js:1299
 msgid "Certificate has been revoked"
 msgstr "نُقِضت الشهادة"
 
-#: ../js/ui/telepathyClient.js:1307
+#: ../js/ui/telepathyClient.js:1301
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "تستخدم الشهادة خوارزمية تعمية غير آمنة أو ضعيفة"
 
-#: ../js/ui/telepathyClient.js:1309
+#: ../js/ui/telepathyClient.js:1303
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1530,26 +1510,26 @@ msgstr ""
 "طول شهادة الخادم أو طول سلسلة الشهادات إلى الخادم تجاوز الحد الذي تفرضه "
 "مكتبة التعمية"
 
-#: ../js/ui/telepathyClient.js:1311
+#: ../js/ui/telepathyClient.js:1305
 msgid "Internal error"
 msgstr "خطأ داخلي"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1321
+#: ../js/ui/telepathyClient.js:1315
 #, c-format
 msgid "Connection to %s failed"
 msgstr "فشل الاتصال ب‍ %s"
 
-#: ../js/ui/telepathyClient.js:1330
+#: ../js/ui/telepathyClient.js:1324
 msgid "Reconnect"
 msgstr "أعد الاتصال"
 
-#: ../js/ui/telepathyClient.js:1331
+#: ../js/ui/telepathyClient.js:1325
 msgid "Edit account"
 msgstr "عدّل الحساب"
 
-#: ../js/ui/telepathyClient.js:1377
+#: ../js/ui/telepathyClient.js:1371
 msgid "Unknown reason"
 msgstr "السبب غير معروف"
 
@@ -1577,35 +1557,39 @@ msgstr "ساكن"
 msgid "Unavailable"
 msgstr "مشغول"
 
-#: ../js/ui/userMenu.js:563 ../js/ui/userMenu.js:696
+#: ../js/ui/userMenu.js:567 ../js/ui/userMenu.js:706
 msgid "Switch User"
 msgstr "بدّل المستخدم"
 
-#: ../js/ui/userMenu.js:564
+#: ../js/ui/userMenu.js:568
 msgid "Switch Session"
 msgstr "بدّل الجلسة"
 
-#: ../js/ui/userMenu.js:679
+#: ../js/ui/userMenu.js:689
 msgid "Notifications"
 msgstr "التنبيهات"
 
-#: ../js/ui/userMenu.js:688
+#: ../js/ui/userMenu.js:698
 msgid "System Settings"
 msgstr "إعدادات النظام"
 
-#: ../js/ui/userMenu.js:701
+#: ../js/ui/userMenu.js:711
 msgid "Log Out"
 msgstr "اخرج"
 
-#: ../js/ui/userMenu.js:706
+#: ../js/ui/userMenu.js:716
 msgid "Lock"
 msgstr "أوصِد"
 
-#: ../js/ui/userMenu.js:734
+#: ../js/ui/userMenu.js:724
+msgid "Install Updates & Restart"
+msgstr "ثبّت التحديثات وأعد التشغيل"
+
+#: ../js/ui/userMenu.js:749
 msgid "Your chat status will be set to busy"
 msgstr "ستُجعل حالة اتصالك ”مشغول“"
 
-#: ../js/ui/userMenu.js:735
+#: ../js/ui/userMenu.js:750
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1744,6 +1728,18 @@ msgstr "نظام الملفات"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "%s is online."
+#~ msgstr "‏%s متّصل."
+
+#~ msgid "%s is offline."
+#~ msgstr "‏%s غير متّصل."
+
+#~ msgid "%s is away."
+#~ msgstr "‏%s غائب."
+
+#~ msgid "%s is busy."
+#~ msgstr "‏%s مشغول."
 
 #~ msgctxt "contact"
 #~ msgid "Unknown"
