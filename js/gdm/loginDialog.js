@@ -118,6 +118,7 @@ const UserListItem = new Lang.Class({
                          y_align: St.Align.END });
 
         this._updateIcon();
+        this._updateLoggedIn();
 
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
     },
@@ -125,6 +126,7 @@ const UserListItem = new Lang.Class({
     _onUserChanged: function() {
         this._nameLabel.set_text(this.user.get_real_name());
         this._updateIcon();
+        this._updateLoggedIn();
     },
 
     _setIconFromFile: function(iconFile, styleClass) {
@@ -173,10 +175,19 @@ const UserListItem = new Lang.Class({
     },
 
     syncStyleClasses: function() {
+        this._updateLoggedIn();
+
         if (global.stage.get_key_focus() == this.actor)
             this.actor.add_style_pseudo_class('focus');
         else
             this.actor.remove_style_pseudo_class('focus');
+    },
+
+    _updateLoggedIn: function() {
+        if (this.user.is_logged_in())
+            this.actor.add_style_pseudo_class('logged-in');
+        else
+            this.actor.remove_style_pseudo_class('logged-in');
     },
 
     _onClicked: function() {
