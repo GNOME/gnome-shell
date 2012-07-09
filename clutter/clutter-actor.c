@@ -875,6 +875,7 @@ enum
 
   PROP_SCALE_X,
   PROP_SCALE_Y,
+  PROP_SCALE_Z,
   PROP_SCALE_CENTER_X, /* XXX:2.0 remove */
   PROP_SCALE_CENTER_Y, /* XXX:2.0 remove */
   PROP_SCALE_GRAVITY, /* XXX:2.0 remove */
@@ -3000,7 +3001,7 @@ clutter_actor_real_apply_transform (ClutterActor *self,
                                         cogl_matrix_scale (transform,
                                                            info->scale_x,
                                                            info->scale_y,
-                                                           1.0));
+                                                           info->scale_z));
         }
 
       if (info->rz_angle)
@@ -4111,7 +4112,7 @@ static const ClutterTransformInfo default_transform_info = {
   0.0, { 0, },                  /* rotation-y */
   0.0, { 0, },                  /* rotation-z */
 
-  1.0, 1.0, { 0, },             /* scale */
+  1.0, 1.0, 1.0, { 0, },        /* scale */
 
   { 0, },                       /* anchor */
 
@@ -4578,8 +4579,12 @@ clutter_actor_set_scale_factor_internal (ClutterActor *self,
 
   if (pspec == obj_props[PROP_SCALE_X])
     info->scale_x = factor;
-  else
+  else if (pspec == obj_props[PROP_SCALE_Y])
     info->scale_y = factor;
+  else if (pspec == obj_props[PROP_SCALE_Z])
+    info->scale_z = factor;
+  else
+    g_assert_not_reached ();
 
   self->priv->transform_valid = FALSE;
   clutter_actor_queue_redraw (self);
@@ -4610,6 +4615,8 @@ clutter_actor_set_scale_factor (ClutterActor      *self,
       break;
 
     case CLUTTER_Z_AXIS:
+      pspec = obj_props[PROP_SCALE_Z];
+      scale_p = &info->scale_z;
       break;
     }
 
@@ -4907,6 +4914,11 @@ clutter_actor_set_property (GObject      *object,
 
     case PROP_SCALE_Y:
       clutter_actor_set_scale_factor (actor, CLUTTER_Y_AXIS,
+                                      g_value_get_double (value));
+      break;
+
+    case PROP_SCALE_Z:
+      clutter_actor_set_scale_factor (actor, CLUTTER_Z_AXIS,
                                       g_value_get_double (value));
       break;
 
@@ -5337,6 +5349,15 @@ clutter_actor_get_property (GObject    *object,
 
         info = _clutter_actor_get_transform_info_or_defaults (actor);
         g_value_set_double (value, info->scale_y);
+      }
+      break;
+
+    case PROP_SCALE_Z:
+      {
+        const ClutterTransformInfo *info;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        g_value_set_double (value, info->scale_z);
       }
       break;
 
@@ -6647,6 +6668,25 @@ clutter_actor_class_init (ClutterActorClass *klass)
     g_param_spec_double ("scale-y",
                          P_("Scale Y"),
                          P_("Scale factor on the Y axis"),
+                         0.0, G_MAXDOUBLE,
+                         1.0,
+                         G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS |
+                         CLUTTER_PARAM_ANIMATABLE);
+
+  /**
+   * ClutterActor:scale-z:
+   *
+   * The scale factor of the actor along the Z axis.
+   *
+   * The #ClutterActor:scale-y property is animatable.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_SCALE_Z] =
+    g_param_spec_double ("scale-z",
+                         P_("Scale Z"),
+                         P_("Scale factor on the Z axis"),
                          0.0, G_MAXDOUBLE,
                          1.0,
                          G_PARAM_READWRITE |
@@ -10900,6 +10940,28 @@ clutter_actor_set_scale (ClutterActor *self,
 }
 
 /**
+ * clutter_actor_set_scale_z:
+ * @self: a #ClutterActor
+ * @scale_z: the scaling factor along the Z axis
+ *
+ * Scales an actor on the Z axis by the given @scale_z factor.
+ *
+ * The scale transformation is relative the the #ClutterActor:pivot-point.
+ *
+ * The #ClutterActor:scale-z property is animatable.
+ *
+ * Since: 1.12
+ */
+void
+clutter_actor_set_scale_z (ClutterActor *self,
+                           gdouble       scale_z)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_set_scale_factor (self, CLUTTER_Z_AXIS, scale_z);
+}
+
+/**
  * clutter_actor_set_scale_full:
  * @self: A #ClutterActor
  * @scale_x: double factor to scale actor by horizontally.
@@ -11005,6 +11067,25 @@ clutter_actor_get_scale (ClutterActor *self,
 
   if (scale_y)
     *scale_y = info->scale_y;
+}
+
+/**
+ * clutter_actor_get_scale_z:
+ * @self: A #ClutterActor
+ *
+ * Retrieves the scaling factor along the Z axis, as set using
+ * clutter_actor_set_scale_z().
+ *
+ * Return value: the scaling factor along the Z axis
+ *
+ * Since: 1.12
+ */
+gdouble
+clutter_actor_get_scale_z (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 1.0);
+
+  return _clutter_actor_get_transform_info_or_defaults (self)->scale_z;
 }
 
 /**
@@ -14456,6 +14537,7 @@ clutter_actor_set_animatable_property (ClutterActor *actor,
 
     case PROP_SCALE_X:
     case PROP_SCALE_Y:
+    case PROP_SCALE_Z:
       clutter_actor_set_scale_factor_internal (actor,
                                                g_value_get_double (value),
                                                pspec);

@@ -144,6 +144,7 @@ clutter_actor_get_rotation
 clutter_actor_get_scale
 clutter_actor_get_scale_center
 clutter_actor_get_scale_gravity
+clutter_actor_get_scale_z
 clutter_actor_get_shader
 clutter_actor_get_size
 clutter_actor_get_stage
@@ -266,6 +267,7 @@ clutter_actor_set_rotation
 clutter_actor_set_scale
 clutter_actor_set_scale_full
 clutter_actor_set_scale_with_gravity
+clutter_actor_set_scale_z
 clutter_actor_set_shader
 clutter_actor_set_shader_param
 clutter_actor_set_shader_param_float

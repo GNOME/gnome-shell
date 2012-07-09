@@ -194,6 +194,7 @@ struct _ClutterTransformInfo
   /* scaling */
   gdouble scale_x;
   gdouble scale_y;
+  gdouble scale_z;
   AnchorCoord scale_center;
 
   /* anchor point */
