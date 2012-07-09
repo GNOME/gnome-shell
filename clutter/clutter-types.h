@@ -396,6 +396,15 @@ struct _ClutterVertex
  */
 #define CLUTTER_VERTEX_INIT(x,y,z)      { (x), (y), (z) }
 
+/**
+ * CLUTTER_VERTEX_INIT_ZERO:
+ *
+ * A simple macro for initializing a #ClutterVertex to (0, 0, 0).
+ *
+ * Since: 1.12
+ */
+#define CLUTTER_VERTEX_INIT_ZERO        CLUTTER_VERTEX_INIT (0.f, 0.f, 0.f)
+
 GType          clutter_vertex_get_type (void) G_GNUC_CONST;
 ClutterVertex *clutter_vertex_new      (gfloat               x,
                                         gfloat               y,
