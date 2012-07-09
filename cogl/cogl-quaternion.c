@@ -434,11 +434,18 @@ cogl_quaternion_multiply (CoglQuaternion *result,
                           const CoglQuaternion *a,
                           const CoglQuaternion *b)
 {
-  result->w = a->w * b->w - a->x * b->x - a->y * b->y - a->z * b->z;
+  float w = a->w;
+  float x = a->x;
+  float y = a->y;
+  float z = a->z;
 
-  result->x = a->w * b->x + a->x * b->w + a->y * b->z - a->z * b->y;
-  result->y = a->w * b->y + a->y * b->w + a->z * b->x - a->x * b->z;
-  result->z = a->w * b->z + a->z * b->w + a->x * b->y - a->y * b->x;
+  _COGL_RETURN_IF_FAIL (b != result);
+
+  result->w = w * b->w - x * b->x - y * b->y - z * b->z;
+
+  result->x = w * b->x + x * b->w + y * b->z - z * b->y;
+  result->y = w * b->y + y * b->w + z * b->x - x * b->z;
+  result->z = w * b->z + z * b->w + x * b->y - y * b->x;
 }
 
 void

@@ -394,6 +394,9 @@ cogl_quaternion_invert (CoglQuaternion *quaternion);
  * so the rotations are applied @right to @left. This is similar to the
  * combining of matrices.
  *
+ * <note>It is possible to multiply the @a quaternion in-place, so
+ * @result can be equal to @a but can't be equal to @b.</note>
+ *
  * Since: 2.0
  */
 void
