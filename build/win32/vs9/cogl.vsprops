@@ -89,7 +89,7 @@ copy ..\..\..\cogl\WGL_DEFINES ..\..\..\cogl\cogl-defines.h&#x0D;&#x0A;
 		Value="
 if exist ..\..\..\config.h goto DONE_CONFIG_H&#x0D;&#x0A;
 copy ..\..\..\config.h.win32 ..\..\..\config.h&#x0D;&#x0A;
-if not exist ..\..\..\cogl\cogl-gl-header.h copy ..\..\..\cogl\cogl-gl-header.h.win32 copy ..\..\..\cogl\cogl-gl-header.h&#x0D;&#x0A;
+if not exist ..\..\..\cogl\cogl-gl-header.h copy ..\..\..\cogl\cogl-gl-header.h.win32 ..\..\..\cogl\cogl-gl-header.h&#x0D;&#x0A;
 :DONE_CONFIG_H&#x0D;&#x0A;
 
 cd ..&#x0D;&#x0A;
@@ -183,14 +183,14 @@ copy ..\..\..\tests\data\valgrind.suppressions $(OutDir)\share\cogl-$(CoglApiVer
 		Name="GenerateCoglDef"
 		Value="
 		       echo EXPORTS &gt; ..\..\..\cogl\cogl.def&#x0D;&#x0A;
-		       cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def&#x0D;&#x0A;
+		       cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def&#x0D;&#x0A;
 			  "
 	/>
 	<UserMacro
 		Name="GenerateCoglSDLDef"
 		Value="
 		       echo EXPORTS &gt; ..\..\..\cogl\cogl.def&#x0D;&#x0A;
-		       cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def&#x0D;&#x0A;
+		       cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def&#x0D;&#x0A;
 			  "
 	/>
 	<UserMacro
