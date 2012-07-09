@@ -1007,7 +1007,7 @@ const ZoomRegion = new Lang.Class({
      * getColorSaturation:
      * Retrieve the color saturation of the magnified view.
      */
-    setColorSaturation: function() {
+    getColorSaturation: function() {
         return this._colorSaturation;
     },
 
