@@ -49,6 +49,7 @@
 
 #include <string.h>
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include "x11/clutter-x11-texture-pixmap.h"
 
 #include <cogl/cogl-texture-pixmap-x11.h>

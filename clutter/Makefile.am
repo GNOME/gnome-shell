@@ -196,7 +196,6 @@ source_c = \
 	$(srcdir)/clutter-stage-manager.c	\
 	$(srcdir)/clutter-stage-window.c	\
 	$(srcdir)/clutter-table-layout.c	\
-	$(srcdir)/clutter-texture.c 		\
 	$(srcdir)/clutter-text.c		\
 	$(srcdir)/clutter-text-buffer.c		\
 	$(srcdir)/clutter-transition-group.c	\
@@ -304,6 +303,7 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-score.c 			\
 	$(srcdir)/deprecated/clutter-shader.c 			\
 	$(srcdir)/deprecated/clutter-state.c			\
+	$(srcdir)/deprecated/clutter-texture.c 			\
 	$(srcdir)/deprecated/clutter-timeout-pool.c		\
 	$(NULL)
 

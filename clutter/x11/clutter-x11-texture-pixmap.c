@@ -43,6 +43,7 @@
 #endif
 
 #define CLUTTER_ENABLE_EXPERIMENTAL_API
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
 #include "clutter-x11-texture-pixmap.h"
 #include "clutter-x11.h"

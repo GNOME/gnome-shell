@@ -74,6 +74,8 @@
 #include <cairo-gobject.h>
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#include "deprecated/clutter-texture.h"
+#include "deprecated/clutter-cairo-texture.h"
 
 #include "clutter-cairo-texture.h"
 
@@ -83,8 +85,6 @@
 #include "clutter-debug.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
-
-#include "deprecated/clutter-cairo-texture.h"
 
 G_DEFINE_TYPE (ClutterCairoTexture,
                clutter_cairo_texture,

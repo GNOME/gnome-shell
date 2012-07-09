@@ -38,6 +38,9 @@
  * box requested using clutter_actor_set_size(). To display an area of
  * a texture without scaling, you should set the clip area using
  * clutter_actor_set_clip().
+ *
+ * The #ClutterTexture API is deprecated since Clutter 1.12. It is strongly
+ * recommended to use #ClutterImage instead.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -1072,6 +1075,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    *
    * This property is unset when using the clutter_texture_set_from_*_data()
    * family of functions.
+   *
+   * Deprecated: 1.12
    */
   pspec = g_param_spec_string ("filename",
                                P_("Filename"),
@@ -1107,6 +1112,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    * clutter_main().
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.12
    */
   pspec = g_param_spec_boolean ("load-async",
                                 P_("Load asynchronously"),
@@ -1124,6 +1131,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    * synchronously causing some blocking.
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.12
    */
   pspec = g_param_spec_boolean ("load-data-async",
                                 P_("Load data asynchronously"),
@@ -1149,6 +1158,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    * only fully opaque parts of the texture will react to picking.
    *
    * Since: 1.4
+   *
+   * Deprecated: 1.12
    */
   pspec = g_param_spec_boolean ("pick-with-alpha",
                                 P_("Pick With Alpha"),
@@ -1167,6 +1178,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    * The ::size-change signal is emitted each time the size of the
    * pixbuf used by @texture changes.  The new size is given as
    * argument to the callback.
+   *
+   * Deprecated: 1.12
    */
   texture_signals[SIZE_CHANGE] =
     g_signal_new ("size-change",
@@ -1184,6 +1197,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    *
    * The ::pixbuf-change signal is emitted each time the pixbuf
    * used by @texture changes.
+   *
+   * Deprecated: 1.12
    */
   texture_signals[PIXBUF_CHANGE] =
     g_signal_new ("pixbuf-change",
@@ -1204,6 +1219,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    * be set, otherwise it will be %NULL
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.12
    */
   texture_signals[LOAD_FINISHED] =
     g_signal_new (I_("load-finished"),
@@ -1320,6 +1337,8 @@ clutter_texture_init (ClutterTexture *self)
  *   unreferenced
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 CoglHandle
 clutter_texture_get_cogl_material (ClutterTexture *texture)
@@ -1345,6 +1364,7 @@ clutter_texture_get_cogl_material (ClutterTexture *texture)
  *
  * Since: 0.8
  *
+ * Deprecated: 1.12
  */
 void
 clutter_texture_set_cogl_material (ClutterTexture *texture,
@@ -1418,6 +1438,8 @@ get_first_layer_index (CoglPipeline *pipeline, int *layer_index)
  *   handle is owned by the #ClutterTexture and it should not be unreferenced
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.12
  */
 CoglHandle
 clutter_texture_get_cogl_texture (ClutterTexture *texture)
@@ -1445,6 +1467,8 @@ clutter_texture_get_cogl_texture (ClutterTexture *texture)
  * no longer needed it should be deref'd with cogl_handle_unref.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_texture_set_cogl_texture (ClutterTexture  *texture,
@@ -1656,7 +1680,9 @@ get_pixel_format_from_texture_flags (gint                 bpp,
  *
  * Return value: %TRUE on success, %FALSE on failure.
  *
- * Since: 0.4.
+ * Since: 0.4
+ *
+ * Deprecated: 1.12
  */
 gboolean
 clutter_texture_set_from_rgb_data (ClutterTexture       *texture,
@@ -2028,6 +2054,8 @@ clutter_texture_async_load (ClutterTexture *self,
  * Return value: %TRUE if the image was successfully loaded and set
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.12
  */
 gboolean
 clutter_texture_set_from_file (ClutterTexture *texture,
@@ -2101,6 +2129,8 @@ clutter_texture_set_from_file (ClutterTexture *texture,
  * is %CLUTTER_TEXTURE_QUALITY_MEDIUM.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_texture_set_filter_quality (ClutterTexture        *texture,
@@ -2142,6 +2172,8 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
  * Return value: The filter quality value.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.12
  */
 ClutterTextureQuality
 clutter_texture_get_filter_quality (ClutterTexture *texture)
@@ -2185,6 +2217,8 @@ clutter_texture_get_filter_quality (ClutterTexture *texture)
  *   unlimited.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.12
  */
 gint
 clutter_texture_get_max_tile_waste (ClutterTexture *texture)
@@ -2217,7 +2251,9 @@ clutter_texture_get_max_tile_waste (ClutterTexture *texture)
  * error.
  *
  * Since: 0.8
- **/
+ *
+ * Deprecated: 1.12
+ */
 ClutterActor*
 clutter_texture_new_from_file (const gchar *filename,
 			       GError     **error)
@@ -2242,7 +2278,9 @@ clutter_texture_new_from_file (const gchar *filename,
  * Creates a new empty #ClutterTexture object.
  *
  * Return value: A newly created #ClutterTexture object.
- **/
+ *
+ * Deprecated: 1.12
+ */
 ClutterActor *
 clutter_texture_new (void)
 {
@@ -2256,6 +2294,8 @@ clutter_texture_new (void)
  * @height: (out): return location for the height, or %NULL
  *
  * Gets the size in pixels of the untransformed underlying image
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_texture_get_base_size (ClutterTexture *texture,
@@ -2291,6 +2331,8 @@ clutter_texture_get_base_size (ClutterTexture *texture,
  * Return value: %TRUE on success, %FALSE on failure.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.12
  */
 gboolean
 clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
@@ -2534,11 +2576,11 @@ fbo_source_queue_relayout_cb (ClutterActor *source,
  *
  * Return value: A newly created #ClutterTexture object, or %NULL on failure.
  *
+ * Since: 0.6
+ *
  * Deprecated: 1.8: Use the #ClutterOffscreenEffect and #ClutterShaderEffect
  *   directly on the intended #ClutterActor to replace the functionality of
  *   this function.
- *
- * Since: 0.6
  */
 ClutterActor *
 clutter_texture_new_from_actor (ClutterActor *actor)
@@ -2707,6 +2749,8 @@ texture_fbo_free_resources (ClutterTexture *texture)
  * underlying image data.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_texture_set_sync_size (ClutterTexture *texture,
@@ -2738,6 +2782,8 @@ clutter_texture_set_sync_size (ClutterTexture *texture,
  *   preferred size of the underlying image data
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 gboolean
 clutter_texture_get_sync_size (ClutterTexture *texture)
@@ -2757,6 +2803,8 @@ clutter_texture_get_sync_size (ClutterTexture *texture)
  * vertically when the actor size is bigger than the image size
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_texture_set_repeat (ClutterTexture *texture,
@@ -2806,6 +2854,8 @@ clutter_texture_set_repeat (ClutterTexture *texture,
  * using clutter_texture_set_repeat()
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_texture_get_repeat (ClutterTexture *texture,
@@ -2838,6 +2888,8 @@ clutter_texture_get_repeat (ClutterTexture *texture,
  * Return value: a #CoglPixelFormat value
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 CoglPixelFormat
 clutter_texture_get_pixel_format (ClutterTexture *texture)
@@ -2862,6 +2914,8 @@ clutter_texture_get_pixel_format (ClutterTexture *texture)
  * the aspect ratio of the underlying image
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_texture_set_keep_aspect_ratio (ClutterTexture *texture,
@@ -2893,6 +2947,8 @@ clutter_texture_set_keep_aspect_ratio (ClutterTexture *texture,
  *   aspect ratio of the underlying image
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 gboolean
 clutter_texture_get_keep_aspect_ratio (ClutterTexture *texture)
@@ -2916,6 +2972,8 @@ clutter_texture_get_keep_aspect_ratio (ClutterTexture *texture)
  * clutter_texture_set_load_data_async().
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_texture_set_load_async (ClutterTexture *texture,
@@ -2951,6 +3009,8 @@ clutter_texture_set_load_async (ClutterTexture *texture,
  *   disk asynchronously
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 gboolean
 clutter_texture_get_load_async (ClutterTexture *texture)
@@ -2975,6 +3035,8 @@ clutter_texture_get_load_async (ClutterTexture *texture)
  * clutter_texture_set_load_async().
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_texture_set_load_data_async (ClutterTexture *texture,
@@ -3009,6 +3071,8 @@ clutter_texture_set_load_data_async (ClutterTexture *texture,
  *   data from a file asynchronously
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12
  */
 gboolean
 clutter_texture_get_load_data_async (ClutterTexture *texture)
@@ -3038,6 +3102,8 @@ clutter_texture_get_load_data_async (ClutterTexture *texture)
  * fully opaque parts of the texture will react to picking.
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.12
  */
 void
 clutter_texture_set_pick_with_alpha (ClutterTexture *texture,
@@ -3077,6 +3143,8 @@ clutter_texture_set_pick_with_alpha (ClutterTexture *texture,
  * using the alpha channel when picking.
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.12
  */
 gboolean
 clutter_texture_get_pick_with_alpha (ClutterTexture *texture)
