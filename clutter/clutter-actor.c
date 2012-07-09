@@ -4116,7 +4116,7 @@ static const ClutterTransformInfo default_transform_info = {
 
   { 0, },                       /* anchor */
 
-  CLUTTER_VERTEX_INIT (0.f, 0.f, 0.f),
+  CLUTTER_VERTEX_INIT_ZERO,     /* translation */
 
   0.f,                          /* z-position */
 
@@ -4524,9 +4524,9 @@ clutter_actor_set_rotation_center_internal (ClutterActor        *self,
                                             ClutterRotateAxis    axis,
                                             const ClutterVertex *center)
 {
+  ClutterVertex v = CLUTTER_VERTEX_INIT_ZERO; 
   GObject *obj = G_OBJECT (self);
   ClutterTransformInfo *info;
-  ClutterVertex v = { 0, 0, 0 };
 
   info = _clutter_actor_get_transform_info (self);
 
