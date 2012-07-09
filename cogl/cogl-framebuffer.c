@@ -3336,7 +3336,10 @@ _cogl_framebuffer_draw_attributes (CoglFramebuffer *framebuffer,
 {
 #ifdef COGL_ENABLE_DEBUG
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_WIREFRAME) &&
-                  (flags & COGL_DRAW_SKIP_DEBUG_WIREFRAME) == 0))
+                  (flags & COGL_DRAW_SKIP_DEBUG_WIREFRAME) == 0) &&
+      mode != COGL_VERTICES_MODE_LINES &&
+      mode != COGL_VERTICES_MODE_LINE_LOOP &&
+      mode != COGL_VERTICES_MODE_LINE_STRIP)
     draw_wireframe (framebuffer->context,
                     framebuffer, pipeline,
                     mode, first_vertex, n_vertices,
@@ -3432,7 +3435,10 @@ _cogl_framebuffer_draw_indexed_attributes (CoglFramebuffer *framebuffer,
 {
 #ifdef COGL_ENABLE_DEBUG
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_WIREFRAME) &&
-                  (flags & COGL_DRAW_SKIP_DEBUG_WIREFRAME) == 0))
+                  (flags & COGL_DRAW_SKIP_DEBUG_WIREFRAME) == 0) &&
+      mode != COGL_VERTICES_MODE_LINES &&
+      mode != COGL_VERTICES_MODE_LINE_LOOP &&
+      mode != COGL_VERTICES_MODE_LINE_STRIP)
     draw_wireframe (framebuffer->context,
                     framebuffer, pipeline,
                     mode, first_vertex, n_vertices,
