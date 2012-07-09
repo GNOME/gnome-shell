@@ -180,6 +180,13 @@ const UserListItem = new Lang.Class({
             this._setIconFromName('avatar-default', 'login-dialog-user-list-item-icon');
     },
 
+    syncStyleClasses: function() {
+        if (this.actor.can_focus && global.stage.get_key_focus() == this.actor)
+            this.actor.add_style_pseudo_class('focus');
+        else
+            this.actor.remove_style_pseudo_class('focus');
+    },
+
     _onClicked: function() {
         this.emit('activate');
     },
@@ -299,8 +306,10 @@ const UserList = new Lang.Class({
         for (let userName in this._items) {
             let item = this._items[userName];
 
+            item.actor.set_hover(false);
+            item.actor.reactive = false;
             item.actor.can_focus = false;
-            item._focusBin.scale_x = 0.;
+            item.syncStyleClasses();
             if (item != exception)
                 tasks.push(function() {
                     return GdmUtil.fadeOutActor(item.actor);
@@ -353,7 +362,10 @@ const UserList = new Lang.Class({
 
         for (let userName in this._items) {
             let item = this._items[userName];
+            item.actor.sync_hover();
+            item.actor.reactive = true;
             item.actor.can_focus = true;
+            item.syncStyleClasses();
             tasks.push(function() {
                 return this._showItem(item);
             });
@@ -443,7 +455,6 @@ const UserList = new Lang.Class({
                            Lang.bind(this,
                                      function() {
                                          this.scrollToItem(item);
-                                         item.showFocusAnimation(0);
                                      }));
 
         this._moveFocusToItems();
@@ -1049,7 +1060,6 @@ const LoginDialog = new Lang.Class({
                          // item.
                          if (!this.is_loaded) {
                              this._userList.jumpToItem(this._timedLoginItem);
-                             this._timedLoginItem.showFocusAnimation(0);
                          }
                      },
 

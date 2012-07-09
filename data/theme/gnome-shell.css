@@ -2047,10 +2047,13 @@ StButton.popup-menu-item:insensitive {
 
 .login-dialog-user-list {
     spacing: 12px;
+    padding: .2em;
 }
 
 .login-dialog-user-list-item {
     color: #666666;
+    border-radius: 10px;
+    padding: .2em;
 }
 
 .login-dialog-user-list-item:ltr {
@@ -2064,16 +2067,20 @@ StButton.popup-menu-item:insensitive {
 .login-dialog-user-list-item .login-dialog-user-list-item-name {
     font-size: 20pt;
     padding-left: 1em;
-    color: #666666;
 }
 
-.login-dialog-user-list-item:hover .login-dialog-user-list-item-name {
-    color: white;
-}
-
+.login-dialog-user-list-item:hover .login-dialog-user-list-item-name,
 .login-dialog-user-list-item:focus .login-dialog-user-list-item-name {
     color: white;
     text-shadow: black 0px 2px 2px;
+}
+
+.login-dialog-user-list-item:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.login-dialog-user-list-item:focus {
+    background-color: rgba(255,255,255,0.33);
 }
 
 .login-dialog-user-list-item-vertical-layout {
