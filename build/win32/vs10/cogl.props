@@ -203,7 +203,7 @@ copy ..\..\..\cogl\cogl2-compatibility.h $(CopyDir)\include\cogl-$(CoglApiVersio
 
          cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def
 
-     </GenerateCoglDef>
+    </GenerateCoglSDLDef>
     <GenerateCoglPangoDef>
          echo EXPORTS &gt; ..\..\..\cogl-pango\cogl-pango.def
 

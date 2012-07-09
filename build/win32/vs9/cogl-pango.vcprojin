@@ -24,7 +24,7 @@
 			InheritedPropertySheets=".\cogl.vsprops"
 			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\cogl-pango"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -100,7 +100,7 @@
 			InheritedPropertySheets=".\cogl.vsprops"
 			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\cogl-pango"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool

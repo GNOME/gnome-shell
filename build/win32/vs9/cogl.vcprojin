@@ -23,7 +23,7 @@
 			Name="Debug|Win32"
 			InheritedPropertySheets=".\cogl.vsprops"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -65,7 +65,7 @@ $(PreBuildCmd)
 			InheritedPropertySheets=".\cogl.vsprops"
 			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -189,7 +189,7 @@ $(PreBuildCmd)
 			Name="Release|Win32"
 			InheritedPropertySheets=".\cogl.vsprops"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -234,7 +234,7 @@ $(PreBuildCmd)
 			InheritedPropertySheets=".\cogl.vsprops"
 			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
