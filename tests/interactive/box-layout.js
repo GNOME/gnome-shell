@@ -89,3 +89,4 @@ function test() {
 
     UI.main(stage);
 }
+test();
