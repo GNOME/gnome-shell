@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.5.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-06 19:00+0200\n"
-"PO-Revision-Date: 2012-07-06 19:01+0200\n"
+"POT-Creation-Date: 2012-07-10 08:31+0200\n"
+"PO-Revision-Date: 2012-07-10 08:32+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -245,8 +245,8 @@ msgstr "Logg inn"
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
-#: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:602
-#: ../js/ui/userMenu.js:606 ../js/ui/userMenu.js:715
+#: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:612
+#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:730
 msgid "Suspend"
 msgstr "Hvilemodus"
 
@@ -254,8 +254,8 @@ msgstr "Hvilemodus"
 msgid "Restart"
 msgstr "Start på nytt"
 
-#: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:604
-#: ../js/ui/userMenu.js:606 ../js/ui/userMenu.js:714
+#: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:614
+#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:729
 msgid "Power Off"
 msgstr "Slå av"
 
@@ -1549,35 +1549,39 @@ msgstr "Ledig"
 msgid "Unavailable"
 msgstr "Ikke tilgjengelig"
 
-#: ../js/ui/userMenu.js:563 ../js/ui/userMenu.js:696
+#: ../js/ui/userMenu.js:567 ../js/ui/userMenu.js:706
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#: ../js/ui/userMenu.js:564
+#: ../js/ui/userMenu.js:568
 msgid "Switch Session"
 msgstr "Bytt økt"
 
-#: ../js/ui/userMenu.js:679
+#: ../js/ui/userMenu.js:689
 msgid "Notifications"
 msgstr "Varslinger"
 
-#: ../js/ui/userMenu.js:688
+#: ../js/ui/userMenu.js:698
 msgid "System Settings"
 msgstr "Systeminnstillinger"
 
-#: ../js/ui/userMenu.js:701
+#: ../js/ui/userMenu.js:711
 msgid "Log Out"
 msgstr "Logg ut"
 
-#: ../js/ui/userMenu.js:706
+#: ../js/ui/userMenu.js:716
 msgid "Lock"
 msgstr "Lås"
 
-#: ../js/ui/userMenu.js:734
+#: ../js/ui/userMenu.js:724
+msgid "Install Updates & Restart"
+msgstr "Installer oppdateringer og start på nytt"
+
+#: ../js/ui/userMenu.js:749
 msgid "Your chat status will be set to busy"
 msgstr "Din pratestatus vil bli satt til opptatt"
 
-#: ../js/ui/userMenu.js:735
+#: ../js/ui/userMenu.js:750
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
