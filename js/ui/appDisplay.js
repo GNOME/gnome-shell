@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const GMenu = imports.gi.GMenu;
@@ -371,6 +372,8 @@ const SettingsSearchProvider = new Lang.Class({
 
         this._appSys = Shell.AppSystem.get_default();
         this._gnomecc = this._appSys.lookup_app('gnome-control-center.desktop');
+        let appInfo = Gio.DesktopAppInfo.new('gnome-control-center.desktop');
+        this.icon = appInfo.get_icon();
     },
 
     getResultMetas: function(prefs, callback) {
