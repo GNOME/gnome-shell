@@ -68,6 +68,10 @@ IGNORE_HFILES=					\
 	gactionobserver.h			\
 	shell-recorder-src.h
 
+if !BUILD_RECORDER
+IGNORE_HFILES += shell-recorder.h
+endif
+
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
 HTML_IMAGES=
