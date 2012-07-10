@@ -21,8 +21,11 @@
 
 #include "config.h"
 #include <string.h>
-#include <gnome-keyring.h>
 #include <dbus/dbus-glib.h>
+
+/* For use of unstable features in libsecret, until they stabilize */
+#define SECRET_API_SUBJECT_TO_CHANGE
+#include <libsecret/secret.h>
 
 #include "shell-network-agent.h"
 
@@ -35,7 +38,7 @@ enum {
 static gint signals[SIGNAL_LAST];
 
 typedef struct {
-  gpointer                       keyring_op;
+  GCancellable *                 cancellable;
   ShellNetworkAgent             *self;
 
   gchar                         *request_id;
@@ -59,14 +62,24 @@ struct _ShellNetworkAgentPrivate {
 
 G_DEFINE_TYPE (ShellNetworkAgent, shell_network_agent, NM_TYPE_SECRET_AGENT)
 
+static const SecretSchema network_agent_schema = {
+    "org.freedesktop.NetworkManager.Connection",
+    SECRET_SCHEMA_DONT_MATCH_NAME,
+    {
+        { SHELL_KEYRING_UUID_TAG, SECRET_SCHEMA_ATTRIBUTE_STRING },
+        { SHELL_KEYRING_SN_TAG, SECRET_SCHEMA_ATTRIBUTE_STRING },
+        { SHELL_KEYRING_SK_TAG, SECRET_SCHEMA_ATTRIBUTE_STRING },
+        { NULL, 0 },
+    }
+};
+
 static void
 shell_agent_request_free (gpointer data)
 {
   ShellAgentRequest *request = data;
 
-  if (request->keyring_op)
-    gnome_keyring_cancel_request (request->keyring_op);
-
+  g_cancellable_cancel (request->cancellable);
+  g_object_unref (request->cancellable);
   g_object_unref (request->self);
   g_object_unref (request->connection);
   g_free (request->setting_name);
@@ -245,86 +258,91 @@ strv_has (gchar **haystack,
 }
 
 static void
-get_secrets_keyring_cb (GnomeKeyringResult  result,
-			GList              *list,
-			gpointer            user_data)
+get_secrets_keyring_cb (GObject            *source,
+                        GAsyncResult       *result,
+                        gpointer            user_data)
 {
   ShellAgentRequest *closure;
   ShellNetworkAgent *self;
   ShellNetworkAgentPrivate *priv;
+  GError *secret_error = NULL;
   GError *error = NULL;
   gint n_found = 0;
-  GList *iter;
+  GList *items;
+  GList *l;
   GHashTable *outer;
 
-  if (result == GNOME_KEYRING_RESULT_CANCELLED)
-    return;
+  items = secret_service_search_finish (NULL, result, &secret_error);
+
+  if (g_error_matches (secret_error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+    {
+      g_error_free (secret_error);
+      return;
+    }
 
   closure = user_data;
   self = closure->self;
   priv  = self->priv;
 
-  closure->keyring_op = NULL;
-
-  if (result == GNOME_KEYRING_RESULT_DENIED)
+  if (secret_error != NULL)
     {
       g_set_error (&error,
-		   NM_SECRET_AGENT_ERROR,
-		   NM_SECRET_AGENT_ERROR_USER_CANCELED,
-		   "Access to the secret storage was denied by the user");
-
+                   NM_SECRET_AGENT_ERROR,
+                   NM_SECRET_AGENT_ERROR_INTERNAL_ERROR,
+                   "Internal error while retrieving secrets from the keyring (%s)", secret_error->message);
+      g_error_free (secret_error);
       closure->callback (NM_SECRET_AGENT (closure->self), closure->connection, NULL, error, closure->callback_data);
 
       goto out;
     }
 
-  if (result != GNOME_KEYRING_RESULT_OK &&
-      result != GNOME_KEYRING_RESULT_NO_MATCH)
+  for (l = items; l; l = g_list_next (l))
     {
-      g_set_error (&error,
-		   NM_SECRET_AGENT_ERROR,
-		   NM_SECRET_AGENT_ERROR_INTERNAL_ERROR,
-		   "Internal error while retrieving secrets from the keyring (result %d)", result);
+      SecretItem *item = l->data;
+      GHashTable *attributes;
+      GHashTableIter iter;
+      const gchar *name, *attribute;
+      SecretValue *secret = secret_item_get_secret (item);
 
-      closure->callback (NM_SECRET_AGENT (closure->self), closure->connection, NULL, error, closure->callback_data);
+      /* This can happen if the user denied a request to unlock */
+      if (secret == NULL)
+        continue;
 
-      goto out;
-    }
-
-  for (iter = list; iter; iter = g_list_next (iter))
-    {
-      GnomeKeyringFound *item = iter->data;
-      int i;
-
-      for (i = 0; i < item->attributes->len; i++)
+      attributes = secret_item_get_attributes (item);
+      g_hash_table_iter_init (&iter, attributes);
+      while (g_hash_table_iter_next (&iter, (gpointer *)&name, (gpointer *)&attribute))
         {
-          GnomeKeyringAttribute *attr = &gnome_keyring_attribute_list_index (item->attributes, i);
-
-          if (g_strcmp0 (attr->name, SHELL_KEYRING_SK_TAG) == 0
-              && (attr->type == GNOME_KEYRING_ATTRIBUTE_TYPE_STRING))
+          if (g_strcmp0 (name, SHELL_KEYRING_SK_TAG) == 0)
             {
-              gchar *secret_name = g_strdup (attr->value.string);
+              gchar *secret_name = g_strdup (attribute);
 
               if (!closure->is_vpn)
                 {
                   GValue *secret_value = g_slice_new0 (GValue);
                   g_value_init (secret_value, G_TYPE_STRING);
-                  g_value_set_string (secret_value, item->secret);
+                  g_value_set_string (secret_value, secret_value_get (secret, NULL));
 
                   g_hash_table_insert (closure->entries, secret_name, secret_value);
                 }
               else
-                g_hash_table_insert (closure->vpn_entries, secret_name, g_strdup (item->secret));
+                g_hash_table_insert (closure->vpn_entries, secret_name, g_strdup (secret_value_get (secret, NULL)));
 
               if (closure->hints)
                 n_found += strv_has (closure->hints, secret_name);
               else
                 n_found += 1;
 
+              g_hash_table_unref (attributes);
+              secret_value_unref (secret);
               break;
             }
         }
+
+      g_hash_table_unref (attributes);
+      secret_value_unref (secret);
     }
+
+  g_list_free_full (items, g_object_unref);
 
   if (n_found == 0 &&
       (closure->flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_ALLOW_INTERACTION))
@@ -361,6 +379,7 @@ shell_network_agent_get_secrets (NMSecretAgent                 *agent,
   ShellAgentRequest *request;
   NMSettingConnection *setting_connection;
   const char *connection_type;
+  GHashTable *attributes;
   char *request_id;
 
   request_id = g_strdup_printf ("%s/%s", connection_path, setting_name);
@@ -378,6 +397,7 @@ shell_network_agent_get_secrets (NMSecretAgent                 *agent,
 
   request = g_slice_new (ShellAgentRequest);
   request->self = g_object_ref (self);
+  request->cancellable = g_cancellable_new ();
   request->connection = g_object_ref (connection);
   request->setting_name = g_strdup (setting_name);
   request->hints = g_strdupv ((gchar **)hints);
@@ -385,7 +405,6 @@ shell_network_agent_get_secrets (NMSecretAgent                 *agent,
   request->callback = callback;
   request->callback_data = callback_data;
   request->is_vpn = !strcmp(connection_type, NM_SETTING_VPN_SETTING_NAME);
-  request->keyring_op = NULL;
   request->entries = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, gvalue_destroy_notify);
 
   if (request->is_vpn)
@@ -413,17 +432,16 @@ shell_network_agent_get_secrets (NMSecretAgent                 *agent,
       return;
     }
 
-  request->keyring_op = gnome_keyring_find_itemsv (GNOME_KEYRING_ITEM_GENERIC_SECRET,
-						   get_secrets_keyring_cb,
-						   request,
-						   NULL, /* GDestroyNotify */
-						   SHELL_KEYRING_UUID_TAG,
-						   GNOME_KEYRING_ATTRIBUTE_TYPE_STRING,
-						   nm_connection_get_uuid (connection),
-						   SHELL_KEYRING_SN_TAG,
-						   GNOME_KEYRING_ATTRIBUTE_TYPE_STRING,
-						   setting_name,
-						   NULL);  
+  attributes = secret_attributes_build (&network_agent_schema,
+                                        SHELL_KEYRING_UUID_TAG, nm_connection_get_uuid (connection),
+                                        SHELL_KEYRING_SN_TAG, setting_name,
+                                        NULL);
+
+  secret_service_search (NULL, &network_agent_schema, attributes,
+                         SECRET_SEARCH_ALL | SECRET_SEARCH_UNLOCK | SECRET_SEARCH_LOAD_SECRETS,
+                         request->cancellable, get_secrets_keyring_cb, request);
+
+  g_hash_table_unref (attributes);
 }
 
 void
@@ -541,7 +559,7 @@ shell_network_agent_cancel_get_secrets (NMSecretAgent *agent,
 
 /************************* saving of secrets ****************************************/
 
-static GnomeKeyringAttributeList *
+static GHashTable *
 create_keyring_add_attr_list (NMConnection *connection,
                               const gchar  *connection_uuid,
                               const gchar  *connection_id,
@@ -549,7 +567,6 @@ create_keyring_add_attr_list (NMConnection *connection,
                               const gchar  *setting_key,
                               gchar       **out_display_name)
 {
-  GnomeKeyringAttributeList *attrs = NULL;
   NMSettingConnection *s_con;
 
   if (connection)
@@ -573,17 +590,11 @@ create_keyring_add_attr_list (NMConnection *connection,
                                            setting_key);
     }
 
-  attrs = gnome_keyring_attribute_list_new ();
-  gnome_keyring_attribute_list_append_string (attrs,
-                                              SHELL_KEYRING_UUID_TAG,
-                                              connection_uuid);
-  gnome_keyring_attribute_list_append_string (attrs,
-                                              SHELL_KEYRING_SN_TAG,
-                                              setting_name);
-  gnome_keyring_attribute_list_append_string (attrs,
-                                              SHELL_KEYRING_SK_TAG,
-                                              setting_key);
-  return attrs;
+  return secret_attributes_build (&network_agent_schema,
+                                  SHELL_KEYRING_UUID_TAG, connection_uuid,
+                                  SHELL_KEYRING_SN_TAG, setting_name,
+                                  SHELL_KEYRING_SK_TAG, setting_key,
+                                  NULL);
 }
 
 typedef struct
@@ -607,8 +618,8 @@ keyring_request_free (KeyringRequest *r)
 }
 
 static void
-save_secret_cb (GnomeKeyringResult result,
-                guint              val,
+save_secret_cb (GObject           *source,
+                GAsyncResult      *result,
                 gpointer           user_data)
 {
   KeyringRequest *call = user_data;
@@ -631,7 +642,7 @@ save_one_secret (KeyringRequest *r,
                  const gchar    *secret,
                  const gchar    *display_name)
 {
-  GnomeKeyringAttributeList *attrs;
+  GHashTable *attrs;
   gchar *alt_display_name = NULL;
   const gchar *setting_name;
   NMSettingSecretFlags secret_flags = NM_SETTING_SECRET_FLAG_NONE;
@@ -650,17 +661,11 @@ save_one_secret (KeyringRequest *r,
                                         display_name ? NULL : &alt_display_name);
   g_assert (attrs);
   r->n_secrets++;
-  gnome_keyring_item_create (NULL,
-                             GNOME_KEYRING_ITEM_GENERIC_SECRET,
-                             display_name ? display_name : alt_display_name,
-                             attrs,
-                             secret,
-                             TRUE,
-                             save_secret_cb,
-                             r,
-                             NULL);
+  secret_password_storev (&network_agent_schema, attrs, SECRET_COLLECTION_DEFAULT,
+                          display_name ? display_name : alt_display_name,
+                          secret, NULL, save_secret_cb, r);
 
-  gnome_keyring_attribute_list_free (attrs);
+  g_hash_table_unref (attrs);
   g_free (alt_display_name);
 }
 
@@ -766,38 +771,28 @@ shell_network_agent_save_secrets (NMSecretAgent                *agent,
 }
 
 static void
-keyring_delete_cb (GnomeKeyringResult result, gpointer user_data)
-{
-  /* Ignored */
-}
-
-static void
-delete_find_items_cb (GnomeKeyringResult result, GList *list, gpointer user_data)
+delete_items_cb (GObject *source,
+                 GAsyncResult *result,
+                 gpointer user_data)
 {
   KeyringRequest *r = user_data;
-  GList *iter;
+  GError *secret_error = NULL;
   GError *error = NULL;
   NMSecretAgentDeleteSecretsFunc callback = r->callback;
 
-  if ((result == GNOME_KEYRING_RESULT_OK) || (result == GNOME_KEYRING_RESULT_NO_MATCH))
-    {
-      for (iter = list; iter != NULL; iter = g_list_next (iter))
-        {
-          GnomeKeyringFound *found = (GnomeKeyringFound *) iter->data;
-
-          gnome_keyring_item_delete (found->keyring, found->item_id, keyring_delete_cb, NULL, NULL);
-        }
-    }
-  else
+  secret_password_clear_finish (result, &secret_error);
+  if (secret_error != NULL)
     {
       error = g_error_new (NM_SECRET_AGENT_ERROR,
                            NM_SECRET_AGENT_ERROR_INTERNAL_ERROR,
-                           "The request could not be completed.  Keyring result: %d",
-                           result);
+                           "The request could not be completed.  Keyring result: %s",
+                           secret_error->message);
+      g_error_free (secret_error);
     }
 
   callback (r->self, r->connection, error, r->callback_data);
   g_clear_error (&error);
+  keyring_request_free (r);
 }
 
 static void
@@ -823,14 +818,9 @@ shell_network_agent_delete_secrets (NMSecretAgent                  *agent,
   uuid = nm_setting_connection_get_uuid (s_con);
   g_assert (uuid);
 
-  gnome_keyring_find_itemsv (GNOME_KEYRING_ITEM_GENERIC_SECRET,
-                             delete_find_items_cb,
-                             r,
-                             (GDestroyNotify)keyring_request_free,
-                             SHELL_KEYRING_UUID_TAG,
-                             GNOME_KEYRING_ATTRIBUTE_TYPE_STRING,
-                             uuid,
-                             NULL);
+  secret_password_clear (&network_agent_schema, NULL, delete_items_cb, r,
+                         SHELL_KEYRING_UUID_TAG, uuid,
+                         NULL);
 }
 
 void
