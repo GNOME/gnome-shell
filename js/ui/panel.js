@@ -346,6 +346,7 @@ const AppMenuButton = new Lang.Class({
             return;
 
         this._stop = true;
+        this.actor.reactive = true;
         Tweener.addTween(this._spinner.actor,
                          { opacity: 0,
                            time: SPINNER_ANIMATION_TIME,
@@ -360,6 +361,7 @@ const AppMenuButton = new Lang.Class({
 
     startAnimation: function() {
         this._stop = false;
+        this.actor.reactive = false;
         this._spinner.actor.show();
     },
 
