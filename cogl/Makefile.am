@@ -34,9 +34,9 @@ AM_CPPFLAGS = \
 
 AM_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
 
-BUILT_SOURCES += cogl-defines.h cogl-gl-header.h
-DISTCLEANFILES += cogl-defines.h cogl-gl-header.h
-EXTRA_DIST += cogl-defines.h.in cogl-gl-header.h.in
+BUILT_SOURCES += cogl-defines.h cogl-egl-defines.h cogl-gl-header.h
+DISTCLEANFILES += cogl-defines.h cogl-egl-defines.h cogl-gl-header.h
+EXTRA_DIST += cogl-defines.h.in cogl-egl-defines.h.in cogl-gl-header.h.in
 
 # Note: The cogl-1.0/cogl-gl-1.0 files are essentially for
 # compatability only.  I'm not really sure who could possibly be using
@@ -117,6 +117,9 @@ cogl_experimental_h = \
 	$(srcdir)/cogl2-experimental.h		\
 	$(srcdir)/cogl2-compatibility.h		\
 	$(srcdir)/cogl-version.h		\
+	$(NULL)
+
+cogl_nodist_experimental_h = \
 	$(NULL)
 
 cogl_gl_prototypes_h = \
@@ -459,6 +462,11 @@ cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-egl-android-private.h
 endif
 if SUPPORT_EGL
+cogl_experimental_h += \
+       $(srcdir)/cogl-egl.h
+cogl_nodist_experimental_h += \
+       $(builddir)/cogl-egl-defines.h
+
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-egl.c \
        $(srcdir)/winsys/cogl-winsys-egl-feature-functions.h \
@@ -513,7 +521,7 @@ cogl_headers = \
 
 coglincludedir = $(includedir)/cogl/cogl
 coglinclude_HEADERS = $(cogl_headers) $(cogl_experimental_h)
-nodist_coglinclude_HEADERS = cogl-defines.h cogl-enum-types.h
+nodist_coglinclude_HEADERS = $(cogl_nodist_experimental_h) cogl-defines.h cogl-enum-types.h
 
 cogl_proto_includedir = $(includedir)/cogl2/cogl/gl-prototypes
 cogl_proto_include_HEADERS = $(cogl_gl_prototypes_h)

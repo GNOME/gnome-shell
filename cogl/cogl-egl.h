@@ -21,24 +21,40 @@
  *
  */
 
-#if !defined(__COGL_H_INSIDE__) && !defined(COGL_COMPILATION)
-#error "Only <cogl/cogl.h> can be included directly."
-#endif
+#ifndef __COGL_EGL_H__
+#define __COGL_EGL_H__
 
-#ifndef __COGL_DEFINES_H__
-#define __COGL_DEFINES_H__
+#ifdef COGL_HAS_EGL_SUPPORT
 
-#include <glib.h>
+#include "cogl-egl-defines.h"
 
 G_BEGIN_DECLS
 
-@COGL_DEFINES@
+#define NativeDisplayType EGLNativeDisplayType
+#define NativeWindowType EGLNativeWindowType
 
-#define COGL_VERSION_MAJOR_INTERNAL @COGL_MAJOR_VERSION@
-#define COGL_VERSION_MINOR_INTERNAL @COGL_MINOR_VERSION@
-#define COGL_VERSION_MICRO_INTERNAL @COGL_MICRO_VERSION@
-#define COGL_VERSION_STRING_INTERNAL "@COGL_VERSION@"
+#ifndef GL_OES_EGL_image
+#define GLeglImageOES void *
+#endif
+
+/**
+ * cogl_egl_context_get_egl_display:
+ * @context: A #CoglContext pointer
+ *
+ * If you have done a runtime check to determine that Cogl is using
+ * EGL internally then this API can be used to retrieve the EGLDisplay
+ * handle that was setup internally. The result is undefined if Cogl
+ * is not using EGL.
+ *
+ * Return value: The internally setup EGLDisplay handle.
+ * Since: 1.8
+ * Stability: unstable
+ */
+EGLDisplay
+cogl_egl_context_get_egl_display (CoglContext *context);
 
 G_END_DECLS
+
+#endif /* COGL_HAS_EGL_SUPPORT */
 
 #endif

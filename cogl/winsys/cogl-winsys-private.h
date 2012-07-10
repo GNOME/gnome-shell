@@ -37,6 +37,10 @@
 #include "cogl-texture-pixmap-x11-private.h"
 #endif
 
+#ifdef COGL_HAS_EGL_SUPPORT
+#include "cogl-egl.h"
+#endif
+
 #include "cogl-poll.h"
 
 GQuark

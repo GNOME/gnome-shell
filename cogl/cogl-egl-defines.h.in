@@ -21,24 +21,13 @@
  *
  */
 
-#if !defined(__COGL_H_INSIDE__) && !defined(COGL_COMPILATION)
-#error "Only <cogl/cogl.h> can be included directly."
-#endif
+#ifndef __COGL_EGL_DEFINES_H__
+#define __COGL_EGL_DEFINES_H__
 
-#ifndef __COGL_DEFINES_H__
-#define __COGL_DEFINES_H__
+#ifdef COGL_HAS_EGL_SUPPORT
 
-#include <glib.h>
+@COGL_EGL_INCLUDES@
 
-G_BEGIN_DECLS
-
-@COGL_DEFINES@
-
-#define COGL_VERSION_MAJOR_INTERNAL @COGL_MAJOR_VERSION@
-#define COGL_VERSION_MINOR_INTERNAL @COGL_MINOR_VERSION@
-#define COGL_VERSION_MICRO_INTERNAL @COGL_MICRO_VERSION@
-#define COGL_VERSION_STRING_INTERNAL "@COGL_VERSION@"
-
-G_END_DECLS
+#endif /* COGL_HAS_EGL_SUPPORT */
 
 #endif

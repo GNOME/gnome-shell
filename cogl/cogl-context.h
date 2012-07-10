@@ -106,24 +106,6 @@ cogl_context_new (CoglDisplay *display,
 CoglDisplay *
 cogl_context_get_display (CoglContext *context);
 
-#ifdef COGL_HAS_EGL_SUPPORT
-/**
- * cogl_egl_context_get_egl_display:
- * @context: A #CoglContext pointer
- *
- * If you have done a runtime check to determine that Cogl is using
- * EGL internally then this API can be used to retrieve the EGLDisplay
- * handle that was setup internally. The result is undefined if Cogl
- * is not using EGL.
- *
- * Return value: The internally setup EGLDisplay handle.
- * Since: 1.8
- * Stability: unstable
- */
-EGLDisplay
-cogl_egl_context_get_egl_display (CoglContext *context);
-#endif
-
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
 /**
  * cogl_android_set_native_window:
