@@ -66,6 +66,7 @@ struct _ClutterDragAction
  * @drag_begin: class handler of the #ClutterDragAction::drag-begin signal
  * @drag_motion: class handler of the #ClutterDragAction::drag-motion signal
  * @drag_end: class handler of the #ClutterDragAction::drag-end signal
+ * @drag_progress: class handler of the #ClutterDragAction::drag-progress signal
  *
  * The <structname>ClutterDragActionClass</structname> structure contains
  * only private data
