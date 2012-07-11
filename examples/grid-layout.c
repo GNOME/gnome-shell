@@ -23,7 +23,6 @@
         "Press r\t\342\236\236\tSwitch row homogeneous\n"               \
         "Press c\t\342\236\236\tSwitch column homogeneous\n"            \
         "Press s\t\342\236\236\tIncrement spacing (up to 12px)\n"       \
-        "Press a\t\342\236\236\tSwitch animations on/off\n"             \
         "Press q\t\342\236\236\tQuit\n\n"                               \
         "Left/right click\t\t\342\236\236\tChange actor align\n"        \
         "Shift left/right click\t\342\236\236\tChange actor expand"
@@ -277,13 +276,6 @@ key_release_cb (ClutterActor *stage,
 
   switch (clutter_event_get_key_symbol (event))
     {
-    case CLUTTER_KEY_a:
-      toggle = clutter_layout_manager_get_use_animations
-        (CLUTTER_LAYOUT_MANAGER (layout));
-      clutter_layout_manager_set_use_animations
-        (CLUTTER_LAYOUT_MANAGER (layout), !toggle);
-      break;
-
     case CLUTTER_KEY_c:
       toggle = clutter_grid_layout_get_column_homogeneous (layout);
       clutter_grid_layout_set_column_homogeneous (layout, !toggle);

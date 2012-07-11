@@ -24,7 +24,6 @@
         "Press h\t\342\236\236\tSwitch homogeneous\n"			\
         "Press p\t\342\236\236\tSwitch pack start/end\n"                \
         "Press s\t\342\236\236\tIncrement spacing (up to 12px)\n"       \
-        "Press a\t\342\236\236\tSwitch animations on/off\n"             \
         "Press +\t\342\236\236\tAdd a new actor\n"                      \
         "Press q\t\342\236\236\tQuit"
 
@@ -190,13 +189,6 @@ key_release_cb (ClutterActor *stage,
 
   switch (clutter_event_get_key_symbol (event))
     {
-    case CLUTTER_KEY_a:
-      toggle = clutter_layout_manager_get_use_animations
-        (CLUTTER_LAYOUT_MANAGER (layout));
-      clutter_layout_manager_set_use_animations
-        (CLUTTER_LAYOUT_MANAGER (layout), !toggle);
-      break;
-
     case CLUTTER_KEY_v:
       {
         ClutterOrientation orientation;
@@ -273,7 +265,6 @@ main (int argc, char *argv[])
   clutter_actor_set_x_expand (box, TRUE);
   clutter_actor_set_y_expand (box, TRUE);
   layout = clutter_box_layout_new ();
-  clutter_layout_manager_set_use_animations (layout, TRUE);
   clutter_actor_set_layout_manager (box, layout);
   clutter_actor_add_child (stage, box);
 
