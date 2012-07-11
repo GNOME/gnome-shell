@@ -51,9 +51,11 @@ GType clutter_input_device_get_type (void) G_GNUC_CONST;
 
 ClutterInputDeviceType  clutter_input_device_get_device_type    (ClutterInputDevice  *device);
 gint                    clutter_input_device_get_device_id      (ClutterInputDevice  *device);
-void                    clutter_input_device_get_device_coords  (ClutterInputDevice  *device,
-                                                                 gint                *x,
-                                                                 gint                *y);
+
+CLUTTER_AVAILABLE_IN_1_12
+gboolean                clutter_input_device_get_coords        (ClutterInputDevice   *device,
+                                                                ClutterEventSequence *sequence,
+                                                                ClutterPoint         *point);
 ClutterActor *          clutter_input_device_get_pointer_actor  (ClutterInputDevice  *device);
 ClutterStage *          clutter_input_device_get_pointer_stage  (ClutterInputDevice  *device);
 const gchar *           clutter_input_device_get_device_name    (ClutterInputDevice  *device);

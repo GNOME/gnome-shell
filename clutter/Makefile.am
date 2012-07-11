@@ -267,6 +267,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-fixed.h			\
 	$(srcdir)/deprecated/clutter-frame-source.h		\
 	$(srcdir)/deprecated/clutter-group.h			\
+	$(srcdir)/deprecated/clutter-input-device.h		\
 	$(srcdir)/deprecated/clutter-keysyms.h			\
 	$(srcdir)/deprecated/clutter-main.h			\
 	$(srcdir)/deprecated/clutter-media.h			\
@@ -300,6 +301,7 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-fixed.c			\
 	$(srcdir)/deprecated/clutter-frame-source.c		\
 	$(srcdir)/deprecated/clutter-group.c 			\
+	$(srcdir)/deprecated/clutter-input-device-deprecated.c	\
 	$(srcdir)/deprecated/clutter-media.c			\
 	$(srcdir)/deprecated/clutter-rectangle.c 		\
 	$(srcdir)/deprecated/clutter-score.c 			\

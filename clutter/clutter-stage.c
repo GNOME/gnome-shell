@@ -938,12 +938,13 @@ _clutter_stage_queue_event (ClutterStage *stage,
   if (device != NULL)
     {
       ClutterModifierType event_state = clutter_event_get_state (event);
+      ClutterEventSequence *sequence = clutter_event_get_event_sequence (event);
       guint32 event_time = clutter_event_get_time (event);
       gfloat event_x, event_y;
 
       clutter_event_get_coords (event, &event_x, &event_y);
 
-      _clutter_input_device_set_coords (device, event_x, event_y);
+      _clutter_input_device_set_coords (device, sequence, event_x, event_y);
       _clutter_input_device_set_state (device, event_state);
       _clutter_input_device_set_time (device, event_time);
     }

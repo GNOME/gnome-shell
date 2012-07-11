@@ -60,6 +60,15 @@ typedef struct _ClutterScrollInfo
   guint last_value_valid : 1;
 } ClutterScrollInfo;
 
+typedef struct _ClutterTouchInfo
+{
+  ClutterEventSequence *sequence;
+  ClutterActor *actor;
+
+  gint current_x;
+  gint current_y;
+} ClutterTouchInfo;
+
 struct _ClutterInputDevice
 {
   GObject parent_instance;
@@ -82,6 +91,7 @@ struct _ClutterInputDevice
 
   /* the actor underneath the pointer */
   ClutterActor *cursor_actor;
+  GHashTable   *inv_touch_sequence_actors;
 
   /* the actor that has a grab in place for the device */
   ClutterActor *pointer_grab_actor;
@@ -101,6 +111,9 @@ struct _ClutterInputDevice
   guint32 current_time;
   gint current_button_number;
   ClutterModifierType current_state;
+
+  /* the current touch points states */
+  GHashTable *touch_sequences_info;
 
   /* the previous state, used for click count generation */
   gint previous_x;
@@ -144,7 +157,14 @@ void            _clutter_device_manager_select_stage_events     (ClutterDeviceMa
 ClutterBackend *_clutter_device_manager_get_backend             (ClutterDeviceManager *device_manager);
 
 /* input device */
+gboolean        _clutter_input_device_has_sequence              (ClutterInputDevice   *device,
+                                                                 ClutterEventSequence *sequence);
+void            _clutter_input_device_add_sequence              (ClutterInputDevice   *device,
+                                                                 ClutterEventSequence *sequence);
+void            _clutter_input_device_remove_sequence           (ClutterInputDevice   *device,
+                                                                 ClutterEventSequence *sequence);
 void            _clutter_input_device_set_coords                (ClutterInputDevice   *device,
+                                                                 ClutterEventSequence *sequence,
                                                                  gint                  x,
                                                                  gint                  y);
 void            _clutter_input_device_set_state                 (ClutterInputDevice   *device,
@@ -155,9 +175,11 @@ void            _clutter_input_device_set_stage                 (ClutterInputDev
                                                                  ClutterStage         *stage);
 ClutterStage *  _clutter_input_device_get_stage                 (ClutterInputDevice   *device);
 void            _clutter_input_device_set_actor                 (ClutterInputDevice   *device,
+                                                                 ClutterEventSequence *sequence,
                                                                  ClutterActor         *actor,
                                                                  gboolean              emit_crossing);
 ClutterActor *  _clutter_input_device_update                    (ClutterInputDevice   *device,
+                                                                 ClutterEventSequence *sequence,
                                                                  gboolean              emit_crossing);
 void            _clutter_input_device_set_n_keys                (ClutterInputDevice   *device,
                                                                  guint                 n_keys);

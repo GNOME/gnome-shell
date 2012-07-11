@@ -1189,6 +1189,7 @@ clutter_input_device_get_axis
 clutter_input_device_get_axis_value
 
 <SUBSECTION>
+clutter_input_device_get_coords
 clutter_input_device_get_device_coords
 clutter_input_device_get_pointer_actor
 clutter_input_device_get_pointer_stage

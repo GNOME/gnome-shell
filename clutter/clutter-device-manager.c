@@ -423,7 +423,7 @@ _clutter_device_manager_update_devices (ClutterDeviceManager *device_manager)
       if (!clutter_stage_get_motion_events_enabled (device->stage))
         continue;
 
-      _clutter_input_device_update (device, TRUE);
+      _clutter_input_device_update (device, NULL, TRUE);
     }
 }
 
