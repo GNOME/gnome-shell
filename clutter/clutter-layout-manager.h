@@ -210,33 +210,6 @@ void               clutter_layout_manager_end_animation         (ClutterLayoutMa
 CLUTTER_DEPRECATED_IN_1_12
 gdouble            clutter_layout_manager_get_animation_progress (ClutterLayoutManager   *manager);
 
-CLUTTER_AVAILABLE_IN_1_12
-void               clutter_layout_manager_set_use_animations    (ClutterLayoutManager   *manager,
-                                                                 gboolean                animate);
-CLUTTER_AVAILABLE_IN_1_12
-gboolean           clutter_layout_manager_get_use_animations    (ClutterLayoutManager   *manager);
-CLUTTER_AVAILABLE_IN_1_12
-void               clutter_layout_manager_set_easing_mode       (ClutterLayoutManager   *manager,
-                                                                 ClutterAnimationMode    mode);
-CLUTTER_AVAILABLE_IN_1_12
-ClutterAnimationMode clutter_layout_manager_get_easing_mode     (ClutterLayoutManager   *manager);
-
-CLUTTER_AVAILABLE_IN_1_12
-void               clutter_layout_manager_set_easing_duration   (ClutterLayoutManager   *manager,
-                                                                 guint                   duration);
-CLUTTER_AVAILABLE_IN_1_12
-guint              clutter_layout_manager_get_easing_duration   (ClutterLayoutManager   *manager);
-CLUTTER_AVAILABLE_IN_1_12
-void               clutter_layout_manager_set_easing_delay      (ClutterLayoutManager   *manager,
-                                                                 guint                   delay);
-CLUTTER_AVAILABLE_IN_1_12
-guint              clutter_layout_manager_get_easing_delay      (ClutterLayoutManager   *manager);
-CLUTTER_AVAILABLE_IN_1_12
-gboolean           clutter_layout_manager_get_easing_state      (ClutterLayoutManager   *manager,
-                                                                 ClutterAnimationMode   *mode,
-                                                                 guint                  *duration,
-                                                                 guint                  *delay);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_LAYOUT_MANAGER_H__ */
