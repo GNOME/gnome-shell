@@ -434,19 +434,12 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
   gfloat available_w, available_h;
   ClutterActor *actor, *child;
   ClutterActorIter iter;
-  gboolean use_animations;
-  ClutterAnimationMode easing_mode;
-  guint easing_duration, easing_delay;
 
   clutter_actor_box_get_origin (allocation, &allocation_x, &allocation_y);
   clutter_actor_box_get_size (allocation, &available_w, &available_h);
 
   actor = CLUTTER_ACTOR (container);
 
-  use_animations = clutter_layout_manager_get_easing_state (manager,
-                                                            &easing_mode,
-                                                            &easing_duration,
-                                                            &easing_delay);
   clutter_actor_iter_init (&iter, actor);
   while (clutter_actor_iter_next (&iter, &child))
     {
@@ -513,21 +506,10 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
           y_align = get_bin_alignment_factor (layer->y_align);
         }
 
-      if (use_animations)
-        {
-          clutter_actor_save_easing_state (child);
-          clutter_actor_set_easing_mode (child, easing_mode);
-          clutter_actor_set_easing_duration (child, easing_duration);
-          clutter_actor_set_easing_delay (child, easing_delay);
-        }
-
       clutter_actor_allocate_align_fill (child, &child_alloc,
                                          x_align, y_align,
                                          x_fill, y_fill,
                                          flags);
-
-      if (use_animations)
-        clutter_actor_restore_easing_state (child);
     }
 }
 
