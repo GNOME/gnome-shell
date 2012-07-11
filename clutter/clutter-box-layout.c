@@ -102,6 +102,7 @@ struct _ClutterBoxLayoutPrivate
   ClutterOrientation orientation;
 
   guint is_pack_start  : 1;
+  guint use_animations : 1;
   guint is_homogeneous : 1;
 };
 
@@ -138,8 +139,10 @@ enum
   PROP_VERTICAL,
   PROP_HOMOGENEOUS,
   PROP_PACK_START,
-  PROP_ORIENTATION,
+  PROP_USE_ANIMATIONS,
+  PROP_EASING_MODE,
   PROP_EASING_DURATION,
+  PROP_ORIENTATION,
 
   PROP_LAST
 };
@@ -605,12 +608,9 @@ allocate_box_child (ClutterBoxLayout       *self,
                     ClutterContainer       *container,
                     ClutterActor           *child,
                     ClutterActorBox        *child_box,
-                    ClutterAllocationFlags  flags,
-                    gboolean                use_animations,
-                    ClutterAnimationMode    easing_mode,
-                    guint                   easing_duration,
-                    guint                   easing_delay)
+                    ClutterAllocationFlags  flags)
 {
+  ClutterBoxLayoutPrivate *priv = self->priv;
   ClutterBoxChild *box_child;
   ClutterLayoutMeta *meta;
 
@@ -625,12 +625,11 @@ allocate_box_child (ClutterBoxLayout       *self,
                 child_box->x2 - child_box->x1,
                 child_box->y2 - child_box->y1);
 
-  if (use_animations)
+  if (priv->use_animations)
     {
       clutter_actor_save_easing_state (child);
-      clutter_actor_set_easing_mode (child, easing_mode);
-      clutter_actor_set_easing_duration (child, easing_duration);
-      clutter_actor_set_easing_delay (child, easing_delay);
+      clutter_actor_set_easing_mode (child, priv->easing_mode);
+      clutter_actor_set_easing_duration (child, priv->easing_duration);
     }
 
   /* call allocate() instead of allocate_align_fill() if the actor needs
@@ -647,7 +646,7 @@ allocate_box_child (ClutterBoxLayout       *self,
                                        box_child->y_fill,
                                        flags);
 
-  if (use_animations)
+  if (priv->use_animations)
     clutter_actor_restore_easing_state (child);
 }
 
@@ -850,10 +849,6 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
   gint x = 0, y = 0, i;
   gint child_size;
 
-  gboolean use_animations;
-  ClutterAnimationMode easing_mode;
-  guint easing_duration, easing_delay;
-
   count_expand_children (layout, container, &nvis_children, &nexpand_children);
 
   CLUTTER_NOTE (LAYOUT, "BoxLayout for %s: visible=%d, expand=%d",
@@ -873,11 +868,6 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
     size = box->x2 - box->x1 - (nvis_children - 1) * priv->spacing;
 
   actor = CLUTTER_ACTOR (container);
-
-  use_animations = clutter_layout_manager_get_easing_state (layout,
-                                                            &easing_mode,
-                                                            &easing_duration,
-                                                            &easing_delay);
 
   /* Retrieve desired size for visible children. */
   i = 0;
@@ -1109,11 +1099,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
                             container,
                             child,
                             &child_allocation,
-                            flags,
-                            use_animations,
-                            easing_mode,
-                            easing_duration,
-                            easing_delay);
+                            flags);
 
         i += 1;
     }
@@ -1147,6 +1133,18 @@ clutter_box_layout_set_property (GObject      *gobject,
 
     case PROP_PACK_START:
       clutter_box_layout_set_pack_start (self, g_value_get_boolean (value));
+      break;
+
+    case PROP_USE_ANIMATIONS:
+      clutter_box_layout_set_use_animations (self, g_value_get_boolean (value));
+      break;
+
+    case PROP_EASING_MODE:
+      clutter_box_layout_set_easing_mode (self, g_value_get_ulong (value));
+      break;
+
+    case PROP_EASING_DURATION:
+      clutter_box_layout_set_easing_duration (self, g_value_get_uint (value));
       break;
 
     default:
@@ -1184,6 +1182,18 @@ clutter_box_layout_get_property (GObject    *gobject,
 
     case PROP_PACK_START:
       g_value_set_boolean (value, priv->is_pack_start);
+      break;
+
+    case PROP_USE_ANIMATIONS:
+      g_value_set_boolean (value, priv->use_animations);
+      break;
+
+    case PROP_EASING_MODE:
+      g_value_set_ulong (value, priv->easing_mode);
+      break;
+
+    case PROP_EASING_DURATION:
+      g_value_set_uint (value, priv->easing_duration);
       break;
 
     default:
@@ -1290,12 +1300,69 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
                        0, G_MAXUINT, 0,
                        CLUTTER_PARAM_READWRITE);
 
-  /* a leftover to be compatible to the previous implementation */
+  /**
+   * ClutterBoxLayout:use-animations:
+   *
+   * Whether the #ClutterBoxLayout should animate changes in the
+   * layout, overriding the easing state of the children.
+   *
+   * Since: 1.2
+   *
+   * Deprecated: 1.12: #ClutterBoxLayout will honour the easing state
+   *   of the children when allocating them.
+   */
+  obj_props[PROP_USE_ANIMATIONS] =
+    g_param_spec_boolean ("use-animations",
+                          P_("Use Animations"),
+                          P_("Whether layout changes should be animated"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterBoxLayout:easing-mode:
+   *
+   * The easing mode for the animations, in case
+   * #ClutterBoxLayout:use-animations is set to %TRUE.
+   *
+   * The easing mode has the same semantics of #ClutterAnimation:mode: it can
+   * either be a value from the #ClutterAnimationMode enumeration, like
+   * %CLUTTER_EASE_OUT_CUBIC, or a logical id as returned by
+   * clutter_alpha_register_func().
+   *
+   * The default value is %CLUTTER_EASE_OUT_CUBIC.
+   *
+   * Since: 1.2
+   *
+   * Deprecated: 1.12: The #ClutterBoxLayout will honour the easing state of
+   *   the children when allocating them.
+   */
+  obj_props[PROP_EASING_MODE] =
+    g_param_spec_ulong ("easing-mode",
+                        P_("Easing Mode"),
+                        P_("The easing mode of the animations"),
+                        0, G_MAXULONG,
+                        CLUTTER_EASE_OUT_CUBIC,
+                        CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterBoxLayout:easing-duration:
+   *
+   * The duration of the animations, in case #ClutterBoxLayout:use-animations
+   * is set to %TRUE.
+   *
+   * The duration is expressed in milliseconds.
+   *
+   * Since: 1.2
+   *
+   * Deprecated: 1.12: The #ClutterBoxLayout will honour the easing state of
+   *   the children when allocating them.
+   */
   obj_props[PROP_EASING_DURATION] =
     g_param_spec_uint ("easing-duration",
                        P_("Easing Duration"),
                        P_("The duration of the animations"),
-                       0, G_MAXUINT, 500,
+                       0, G_MAXUINT,
+                       500,
                        CLUTTER_PARAM_READWRITE);
 
   gobject_class->set_property = clutter_box_layout_set_property;
@@ -1314,6 +1381,10 @@ clutter_box_layout_init (ClutterBoxLayout *layout)
   priv->is_homogeneous = FALSE;
   priv->is_pack_start = FALSE;
   priv->spacing = 0;
+
+  priv->use_animations = FALSE;
+  priv->easing_mode = CLUTTER_EASE_OUT_CUBIC;
+  priv->easing_duration = 500;
 }
 
 /**
@@ -2006,17 +2077,25 @@ clutter_box_layout_get_expand (ClutterBoxLayout *layout,
  *
  * Since: 1.2
  *
- * Deprecated: 1.12: #ClutterBoxLayout will honour the
- *   #ClutterLayoutManager:use-animations property
+ * Deprecated: 1.12: The layout manager will honour the easing state
+ *   of the children when allocating them.
  */
 void
 clutter_box_layout_set_use_animations (ClutterBoxLayout *layout,
                                        gboolean          animate)
 {
+  ClutterBoxLayoutPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_BOX_LAYOUT (layout));
 
-  clutter_layout_manager_set_use_animations (CLUTTER_LAYOUT_MANAGER (layout),
-                                             animate);
+  priv = layout->priv;
+
+  if (priv->use_animations != animate)
+    {
+      priv->use_animations = animate;
+
+      g_object_notify (G_OBJECT (layout), "use-animations");
+    }
 }
 
 /**
@@ -2029,19 +2108,14 @@ clutter_box_layout_set_use_animations (ClutterBoxLayout *layout,
  *
  * Since: 1.2
  *
- * Deprecated: 1.12: #ClutterBoxLayout will honour the
- *   #ClutterLayoutManager:use-animations property
+ * Deprecated: 1.12
  */
 gboolean
 clutter_box_layout_get_use_animations (ClutterBoxLayout *layout)
 {
-  ClutterLayoutManager *manager;
-
   g_return_val_if_fail (CLUTTER_IS_BOX_LAYOUT (layout), FALSE);
 
-  manager = CLUTTER_LAYOUT_MANAGER (layout);
-
-  return clutter_layout_manager_get_use_animations (manager);
+  return layout->priv->use_animations;
 }
 
 /**
@@ -2055,17 +2129,25 @@ clutter_box_layout_get_use_animations (ClutterBoxLayout *layout)
  *
  * Since: 1.2
  *
- * Deprecated: 1.12: #ClutterBoxLayout will honour the
- *   #ClutterLayoutManager:easing-mode property
+ * Deprecated: 1.12: The layout manager will honour the easing state
+ *   of the children when allocating them.
  */
 void
 clutter_box_layout_set_easing_mode (ClutterBoxLayout *layout,
                                     gulong            mode)
 {
+  ClutterBoxLayoutPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_BOX_LAYOUT (layout));
 
-  clutter_layout_manager_set_easing_mode (CLUTTER_LAYOUT_MANAGER (layout),
-                                          mode);
+  priv = layout->priv;
+
+  if (priv->easing_mode != mode)
+    {
+      priv->easing_mode = mode;
+
+      g_object_notify (G_OBJECT (layout), "easing-mode");
+    }
 }
 
 /**
@@ -2078,20 +2160,15 @@ clutter_box_layout_set_easing_mode (ClutterBoxLayout *layout,
  *
  * Since: 1.2
  *
- * Deprecated: 1.12: #ClutterBoxLayout will honour the
- *   #ClutterLayoutManager:easing-mode property
+ * Deprecated: 1.12
  */
 gulong
 clutter_box_layout_get_easing_mode (ClutterBoxLayout *layout)
 {
-  ClutterLayoutManager *manager;
-
   g_return_val_if_fail (CLUTTER_IS_BOX_LAYOUT (layout),
                         CLUTTER_EASE_OUT_CUBIC);
 
-  manager = CLUTTER_LAYOUT_MANAGER (layout);
-
-  return clutter_layout_manager_get_easing_mode (manager);
+  return layout->priv->easing_mode;
 }
 
 /**
@@ -2104,17 +2181,25 @@ clutter_box_layout_get_easing_mode (ClutterBoxLayout *layout)
  *
  * Since: 1.2
  *
- * Deprecated: 1.12: #ClutterBoxLayout will honour the
- *   #ClutterLayoutManager:easing-duration property
+ * Deprecated: 1.12: The layout manager will honour the easing state
+ *   of the children when allocating them.
  */
 void
 clutter_box_layout_set_easing_duration (ClutterBoxLayout *layout,
                                         guint             msecs)
 {
+  ClutterBoxLayoutPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_BOX_LAYOUT (layout));
 
-  clutter_layout_manager_set_easing_duration (CLUTTER_LAYOUT_MANAGER (layout),
-                                              msecs);
+  priv = layout->priv;
+
+  if (priv->easing_duration != msecs)
+    {
+      priv->easing_duration = msecs;
+
+      g_object_notify (G_OBJECT (layout), "easing-duration");
+    }
 }
 
 /**
@@ -2127,17 +2212,12 @@ clutter_box_layout_set_easing_duration (ClutterBoxLayout *layout,
  *
  * Since: 1.2
  *
- * Deprecated: 1.12: #ClutterBoxLayout will honour the
- *   #ClutterLayoutManager:easing-duration property
+ * Deprecated: 1.12
  */
 guint
 clutter_box_layout_get_easing_duration (ClutterBoxLayout *layout)
 {
-  ClutterLayoutManager *manager;
-
   g_return_val_if_fail (CLUTTER_IS_BOX_LAYOUT (layout), 500);
 
-  manager = CLUTTER_LAYOUT_MANAGER (layout);
-
-  return clutter_layout_manager_get_easing_duration (manager);
+  return layout->priv->easing_duration;
 }
