@@ -46,7 +46,6 @@ clutter/clutter-swipe-action.c
 clutter/clutter-table-layout.c
 clutter/clutter-text-buffer.c
 clutter/clutter-text.c
-clutter/clutter-texture.c
 clutter/clutter-timeline.c
 clutter/clutter-transition.c
 clutter/clutter-units.c
@@ -68,6 +67,7 @@ clutter/deprecated/clutter-media.c
 clutter/deprecated/clutter-rectangle.c
 clutter/deprecated/clutter-shader.c
 clutter/deprecated/clutter-state.c
+clutter/deprecated/clutter-texture.c
 clutter/evdev/clutter-input-device-evdev.c
 clutter/gdk/clutter-backend-gdk.c
 clutter/wayland/clutter-wayland-surface.c
