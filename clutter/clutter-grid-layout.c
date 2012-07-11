@@ -1388,9 +1388,6 @@ clutter_grid_layout_allocate (ClutterLayoutManager   *layout,
   ClutterGridLines *lines;
   ClutterActorIter iter;
   ClutterActor *child;
-  gboolean use_animations;
-  ClutterAnimationMode mode;
-  guint duration, delay;
 
   request.grid = self;
 
@@ -1410,11 +1407,6 @@ clutter_grid_layout_allocate (ClutterLayoutManager   *layout,
 
   clutter_grid_request_position (&request, 0);
   clutter_grid_request_position (&request, 1);
-
-  use_animations = clutter_layout_manager_get_easing_state (layout,
-                                                            &mode,
-                                                            &duration,
-                                                            &delay);
 
   clutter_actor_iter_init (&iter, CLUTTER_ACTOR (container));
   while (clutter_actor_iter_next (&iter, &child))
@@ -1440,18 +1432,7 @@ clutter_grid_layout_allocate (ClutterLayoutManager   *layout,
                     _clutter_actor_get_debug_name (child),
                     x, y, width, height);
 
-      if (use_animations)
-        {
-          clutter_actor_save_easing_state (child);
-          clutter_actor_set_easing_mode (child, mode);
-          clutter_actor_set_easing_duration (child, duration);
-          clutter_actor_set_easing_delay (child, delay);
-        }
-
       clutter_actor_allocate (child, &child_allocation, flags);
-
-      if (use_animations)
-        clutter_actor_restore_easing_state (child);
     }
 }
 
