@@ -1206,20 +1206,6 @@ shell_global_gc (ShellGlobal *global)
   JS_GC (context);
 }
 
-/**
- * shell_global_maybe_gc:
- * @global: A #ShellGlobal
- *
- * Start a garbage collection process when it would free up enough memory
- * to be worth the amount of time it would take
- * https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_MaybeGC
- */
-void
-shell_global_maybe_gc (ShellGlobal *global)
-{
-  gjs_context_maybe_gc (global->js_context);
-}
-
 static void
 shell_global_on_gc (GjsContext   *context,
                     ShellGlobal  *global)
