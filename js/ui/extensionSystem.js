@@ -215,7 +215,7 @@ function onEnabledExtensionsChanged() {
         try {
             enableExtension(uuid);
         } catch(e) {
-            logExtensionError(extension.uuid, e);
+            logExtensionError(uuid, e);
         }
     });
 
@@ -227,7 +227,7 @@ function onEnabledExtensionsChanged() {
         try {
             disableExtension(uuid);
         } catch(e) {
-            logExtensionError(extension.uuid, e);
+            logExtensionError(uuid, e);
         }
     });
 
