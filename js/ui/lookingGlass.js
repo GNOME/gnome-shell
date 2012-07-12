@@ -12,6 +12,7 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const System = imports.system;
 
 const History = imports.misc.history;
 const ExtensionSystem = imports.ui.extensionSystem;
@@ -665,7 +666,7 @@ const Memory = new Lang.Class({
 
         this._gcbutton = new St.Button({ label: 'Full GC',
                                          style_class: 'lg-obj-inspector-button' });
-        this._gcbutton.connect('clicked', Lang.bind(this, function () { global.gc(); this._renderText(); }));
+        this._gcbutton.connect('clicked', Lang.bind(this, function () { System.gc(); this._renderText(); }));
         this.actor.add(this._gcbutton, { x_align: St.Align.START,
                                          x_fill: false });
 
