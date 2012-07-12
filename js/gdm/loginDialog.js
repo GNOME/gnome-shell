@@ -167,8 +167,9 @@ const UserListItem = new Lang.Class({
                                 expand: true });
 
         this._focusBin = new St.Bin({ style_class: 'login-dialog-user-list-item-focus-bin' });
+        this._focusBin.scale_gravity = Clutter.Gravity.CENTER;
         this._verticalBox.add(this._focusBin,
-                              { x_fill: false,
+                              { x_fill: true,
                                 x_align: St.Align.MIDDLE,
                                 y_fill: false,
                                 expand: true });
@@ -256,15 +257,10 @@ const UserListItem = new Lang.Class({
     showFocusAnimation: function(time) {
         let hold = new Batch.Hold();
 
-        let node = this.actor.get_theme_node();
-        let padding = node.get_horizontal_padding();
-
-        let box = this._verticalBox.get_allocation_box();
-
         Tweener.removeTweens(this._focusBin);
-        this._focusBin.width = 0;
+        this._focusBin.scale_x = 0.;
         Tweener.addTween(this._focusBin,
-                         { width: (box.x2 - box.x1 - padding),
+                         { scale_x: 1.,
                            time: time,
                            transition: 'linear',
                            onComplete: function() {
@@ -370,7 +366,7 @@ const UserList = new Lang.Class({
             let item = this._items[userName];
 
             item.actor.can_focus = false;
-            item._focusBin.width = 0;
+            item._focusBin.scale_x = 0.;
             if (item != exception)
                 tasks.push(function() {
                     return _fadeOutActor(item.actor);
