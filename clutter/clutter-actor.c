@@ -8777,7 +8777,7 @@ adjust_for_alignment (ClutterActorAlign  alignment,
     case CLUTTER_ACTOR_ALIGN_CENTER:
       if (allocated_size > natural_size)
         {
-          *allocated_start += ceilf ((allocated_size - natural_size) / 2);
+          *allocated_start += floorf ((allocated_size - natural_size) / 2);
           *allocated_end = *allocated_start + MIN (allocated_size, natural_size);
         }
       break;
