@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ -n "$GI_TYPELIB_PATH" ]; then
     export GI_TYPELIB_PATH=@pkglibdir@
