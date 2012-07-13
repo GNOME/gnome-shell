@@ -145,11 +145,11 @@ const WindowManager = new Lang.Class({
 
         Main.overview.connect('showing', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
-                this._undimWindow(this._dimmedWindows[i], true);
+                this._undimWindow(this._dimmedWindows[i]);
         }));
         Main.overview.connect('hiding', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
-                this._dimWindow(this._dimmedWindows[i], true);
+                this._dimWindow(this._dimmedWindows[i]);
         }));
     },
 
@@ -265,43 +265,37 @@ const WindowManager = new Lang.Class({
             window._dimmed = true;
             this._dimmedWindows.push(window);
             if (!Main.overview.visible)
-                this._dimWindow(window, true);
+                this._dimWindow(window);
         } else if (!shouldDim && window._dimmed) {
             window._dimmed = false;
             this._dimmedWindows = this._dimmedWindows.filter(function(win) {
                                                                  return win != window;
                                                              });
             if (!Main.overview.visible)
-                this._undimWindow(window, true);
+                this._undimWindow(window);
         }
     },
 
-    _dimWindow: function(window, animate) {
+    _dimWindow: function(window) {
         let actor = window.get_compositor_private();
         if (!actor)
             return;
-        if (animate)
-            Tweener.addTween(getWindowDimmer(actor),
-                             { dimFraction: 1.0,
-                               time: DIM_TIME,
-                               transition: 'linear'
-                             });
-        else
-            getWindowDimmer(actor).dimFraction = 1.0;
+        Tweener.addTween(getWindowDimmer(actor),
+                         { dimFraction: 1.0,
+                           time: DIM_TIME,
+                           transition: 'linear'
+                         });
     },
 
-    _undimWindow: function(window, animate) {
+    _undimWindow: function(window) {
         let actor = window.get_compositor_private();
         if (!actor)
             return;
-        if (animate)
-            Tweener.addTween(getWindowDimmer(actor),
-                             { dimFraction: 0.0,
-                               time: UNDIM_TIME,
-                               transition: 'linear'
-                             });
-        else
-            getWindowDimmer(actor).dimFraction = 0.0;
+        Tweener.addTween(getWindowDimmer(actor),
+                         { dimFraction: 0.0,
+                           time: UNDIM_TIME,
+                           transition: 'linear'
+                         });
     },
 
     _mapWindow : function(shellwm, actor) {
