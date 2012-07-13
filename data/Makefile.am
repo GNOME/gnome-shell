@@ -73,17 +73,11 @@ all-local: gschemas.compiled
 convertdir = $(datadir)/GConf/gsettings
 convert_DATA = gnome-shell-overrides.convert
 
-shadersdir = $(pkgdatadir)/shaders
-shaders_DATA = \
-	shaders/dim-window.glsl
-
-
 EXTRA_DIST =						\
 	gnome-shell.desktop.in.in			\
 	gnome-shell-extension-prefs.desktop.in.in	\
 	$(introspection_DATA)				\
 	$(menu_DATA)					\
-	$(shaders_DATA)					\
 	$(convert_DATA)					\
 	org.gnome.shell.gschema.xml.in.in
 

@@ -774,34 +774,6 @@ shell_parse_search_provider (const char    *data,
 }
 
 /**
- * shell_shader_effect_set_double_uniform:
- * @effect: The #ClutterShaderEffect
- * @name: The name of the uniform
- * @value: The value to set it to.
- *
- * Set a double uniform on a ClutterShaderEffect.
- *
- * The problem here is that JavaScript doesn't have more than
- * one number type, and gjs tries to automatically guess what
- * type we want to set a GValue to. If the number is "1.0" or
- * something, it will use an integer, which will cause errors
- * in GLSL.
- */
-void
-shell_shader_effect_set_double_uniform (ClutterShaderEffect *effect,
-                                        const gchar         *name,
-                                        gdouble             value)
-{
-  GValue gvalue = G_VALUE_INIT;
-  g_value_init (&gvalue, G_TYPE_DOUBLE);
-  g_value_set_double (&gvalue, value);
-
-  clutter_shader_effect_set_uniform_value (effect,
-                                           name,
-                                           &gvalue);
-}
-
-/**
  * shell_session_is_active_for_systemd:
  *
  * Checks whether the session we are running in is currently active,

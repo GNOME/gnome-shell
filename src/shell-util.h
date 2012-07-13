@@ -39,10 +39,6 @@ gboolean shell_parse_search_provider           (const char       *data,
                                                 char            **icon_data_uri,
                                                 GError          **error);
 
-void shell_shader_effect_set_double_uniform (ClutterShaderEffect *effect,
-                                             const gchar         *name,
-                                             gdouble             value);
-
 gboolean shell_session_is_active_for_systemd (void);
 
 gboolean shell_util_wifexited                  (int               status,
