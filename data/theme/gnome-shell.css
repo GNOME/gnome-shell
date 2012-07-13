@@ -2083,17 +2083,17 @@ StButton.popup-menu-item:insensitive {
     background-color: rgba(255,255,255,0.33);
 }
 
-.login-dialog-user-list-item-vertical-layout {
-    spacing: 2px;
+.login-dialog-user-list-item-text-box {
+    padding: 0 0.5em;
 }
 
-.login-dialog-user-list-item .login-dialog-user-list-item-focus-bin {
+.login-dialog-user-list-item .login-dialog-timed-login-indicator {
     background-color: rgba(0,0,0,0.0);
     height: 2px;
 }
 
-.login-dialog-user-list-item:focus .login-dialog-user-list-item-focus-bin {
-    background-color: #666666;
+.login-dialog-user-list-item:focus .login-dialog-timed-login-indicator {
+    background-color: #8b8b8b;
 }
 
 .login-dialog-user-list-item-icon {

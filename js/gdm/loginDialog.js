@@ -88,42 +88,34 @@ const UserListItem = new Lang.Class({
         this._userChangedId = this.user.connect('changed',
                                                  Lang.bind(this, this._onUserChanged));
 
-        this._verticalBox = new St.BoxLayout({ style_class: 'login-dialog-user-list-item-vertical-layout',
-                                               vertical: true });
-
+        let layout = new St.BoxLayout({ vertical: false });
         this.actor = new St.Button({ style_class: 'login-dialog-user-list-item',
                                      can_focus: true,
-                                     child: this._verticalBox,
+                                     child: layout,
                                      reactive: true,
                                      x_align: St.Align.START,
                                      x_fill: true });
-        let layout = new St.BoxLayout({ vertical: false });
-
-        this._verticalBox.add(layout,
-                              { y_fill: true,
-                                x_fill: true,
-                                expand: true });
-
-        this._focusBin = new St.Bin({ style_class: 'login-dialog-user-list-item-focus-bin' });
-        this._focusBin.scale_gravity = Clutter.Gravity.CENTER;
-        this._verticalBox.add(this._focusBin,
-                              { x_fill: true,
-                                x_align: St.Align.MIDDLE,
-                                y_fill: false,
-                                expand: true });
 
         this._iconBin = new St.Bin();
         layout.add(this._iconBin);
         let textLayout = new St.BoxLayout({ style_class: 'login-dialog-user-list-item-text-box',
                                             vertical:    true });
-        layout.add(textLayout,
-                   { y_fill: false,
-                     y_align: St.Align.MIDDLE,
-                     expand: true });
+        layout.add(textLayout, { expand: true });
 
         this._nameLabel = new St.Label({ text:        this.user.get_real_name(),
                                          style_class: 'login-dialog-user-list-item-name' });
-        textLayout.add(this._nameLabel);
+        textLayout.add(this._nameLabel,
+                       { y_fill: false,
+                         y_align: St.Align.MIDDLE,
+                         expand: true });
+
+        this._timedLoginIndicator = new St.Bin({ style_class: 'login-dialog-timed-login-indicator',
+                                                 scale_x: 0 });
+        textLayout.add(this._timedLoginIndicator,
+                       { x_fill: true,
+                         x_align: St.Align.MIDDLE,
+                         y_fill: false,
+                         y_align: St.Align.END });
 
         this._updateIcon();
 
@@ -199,12 +191,11 @@ const UserListItem = new Lang.Class({
         return GdmUtil.fadeInActor(this._nameLabel);
     },
 
-    showFocusAnimation: function(time) {
+    showTimedLoginIndicator: function(time) {
         let hold = new Batch.Hold();
 
-        Tweener.removeTweens(this._focusBin);
-        this._focusBin.scale_x = 0.;
-        Tweener.addTween(this._focusBin,
+        this.hideTimedLoginIndicator();
+        Tweener.addTween(this._timedLoginIndicator,
                          { scale_x: 1.,
                            time: time,
                            transition: 'linear',
@@ -214,6 +205,11 @@ const UserListItem = new Lang.Class({
                            onCompleteScope: this
                          });
         return hold;
+    },
+
+    hideTimedLoginIndicator: function() {
+        Tweener.removeTweens(this._timedLoginIndicator);
+        this._timedLoginIndicator.scale_x = 0.;
     }
 });
 Signals.addSignalMethods(UserListItem.prototype);
@@ -310,6 +306,7 @@ const UserList = new Lang.Class({
             item.actor.reactive = false;
             item.actor.can_focus = false;
             item.syncStyleClasses();
+            item._timedLoginIndicator.scale_x = 0.;
             if (item != exception)
                 tasks.push(function() {
                     return GdmUtil.fadeOutActor(item.actor);
@@ -1019,7 +1016,7 @@ const LoginDialog = new Lang.Class({
 
     _showTimedLoginAnimation: function() {
         this._timedLoginItem.actor.grab_key_focus();
-        return this._timedLoginItem.showFocusAnimation(this._timedLoginAnimationTime);
+        return this._timedLoginItem.showTimedLoginIndicator(this._timedLoginAnimationTime);
     },
 
     _blockTimedLoginUntilIdle: function() {
@@ -1086,6 +1083,9 @@ const LoginDialog = new Lang.Class({
             this._timedLoginBatch.cancel();
             this._timedLoginBatch = null;
         }
+
+        if (this._timedLoginItem)
+            this._timedLoginItem.hideTimedLoginIndicator();
 
         let userName = this._timedLoginItem.user.get_user_name();
 
