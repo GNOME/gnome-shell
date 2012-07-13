@@ -410,11 +410,11 @@ const Dash = new Lang.Class({
         AppFavorites.getAppFavorites().connect('changed', Lang.bind(this, this._queueRedisplay));
         this._appSystem.connect('app-state-changed', Lang.bind(this, this._queueRedisplay));
 
-        Main.overview.connect('item-drag-begin',
+        Main.overview.connect('app-drag-begin',
                               Lang.bind(this, this._onDragBegin));
-        Main.overview.connect('item-drag-end',
+        Main.overview.connect('app-drag-end',
                               Lang.bind(this, this._onDragEnd));
-        Main.overview.connect('item-drag-cancelled',
+        Main.overview.connect('app-drag-cancelled',
                               Lang.bind(this, this._onDragCancelled));
         Main.overview.connect('window-drag-begin',
                               Lang.bind(this, this._onDragBegin));

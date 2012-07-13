@@ -219,15 +219,15 @@ const GridSearchResult = new Lang.Class({
         let draggable = DND.makeDraggable(this.actor);
         draggable.connect('drag-begin',
                           Lang.bind(this, function() {
-                              Main.overview.beginItemDrag(this);
+                              Main.overview.beginAppDrag(this);
                           }));
         draggable.connect('drag-cancelled',
                           Lang.bind(this, function() {
-                              Main.overview.cancelledItemDrag(this);
+                              Main.overview.cancelledAppDrag(this);
                           }));
         draggable.connect('drag-end',
                           Lang.bind(this, function() {
-                              Main.overview.endItemDrag(this);
+                              Main.overview.endAppDrag(this);
                           }));
     },
 

@@ -106,9 +106,9 @@ const WorkspacesView = new Lang.Class({
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
 
-        this._itemDragBeginId = Main.overview.connect('item-drag-begin',
+        this._appDragBeginId = Main.overview.connect('app-drag-begin',
                                                       Lang.bind(this, this._dragBegin));
-        this._itemDragEndId = Main.overview.connect('item-drag-end',
+        this._appDragEndId = Main.overview.connect('app-drag-end',
                                                      Lang.bind(this, this._dragEnd));
         this._windowDragBeginId = Main.overview.connect('window-drag-begin',
                                                         Lang.bind(this, this._dragBegin));
@@ -327,13 +327,13 @@ const WorkspacesView = new Lang.Class({
         if (this._inDrag)
             this._dragEnd();
 
-        if (this._itemDragBeginId > 0) {
-            Main.overview.disconnect(this._itemDragBeginId);
-            this._itemDragBeginId = 0;
+        if (this._appDragBeginId > 0) {
+            Main.overview.disconnect(this._appDragBeginId);
+            this._appDragBeginId = 0;
         }
-        if (this._itemDragEndId > 0) {
-            Main.overview.disconnect(this._itemDragEndId);
-            this._itemDragEndId = 0;
+        if (this._appDragEndId > 0) {
+            Main.overview.disconnect(this._appDragEndId);
+            this._appDragEndId = 0;
         }
         if (this._windowDragBeginId > 0) {
             Main.overview.disconnect(this._windowDragBeginId);
@@ -516,9 +516,9 @@ const WorkspacesDisplay = new Lang.Class({
 
         this._switchWorkspaceNotifyId = 0;
 
-        this._itemDragBeginId = 0;
-        this._itemDragCancelledId = 0;
-        this._itemDragEndId = 0;
+        this._appDragBeginId = 0;
+        this._appDragCancelledId = 0;
+        this._appDragEndId = 0;
         this._windowDragBeginId = 0;
         this._windowDragCancelledId = 0;
         this._windowDragEndId = 0;
@@ -565,14 +565,14 @@ const WorkspacesDisplay = new Lang.Class({
             global.screen.connect('restacked',
                                   Lang.bind(this, this._onRestacked));
 
-        if (this._itemDragBeginId == 0)
-            this._itemDragBeginId = Main.overview.connect('item-drag-begin',
+        if (this._appDragBeginId == 0)
+            this._appDragBeginId = Main.overview.connect('app-drag-begin',
                                                           Lang.bind(this, this._dragBegin));
-        if (this._itemDragCancelledId == 0)
-            this._itemDragCancelledId = Main.overview.connect('item-drag-cancelled',
+        if (this._appDragCancelledId == 0)
+            this._appDragCancelledId = Main.overview.connect('app-drag-cancelled',
                                                               Lang.bind(this, this._dragCancelled));
-        if (this._itemDragEndId == 0)
-            this._itemDragEndId = Main.overview.connect('item-drag-end',
+        if (this._appDragEndId == 0)
+            this._appDragEndId = Main.overview.connect('app-drag-end',
                                                         Lang.bind(this, this._dragEnd));
         if (this._windowDragBeginId == 0)
             this._windowDragBeginId = Main.overview.connect('window-drag-begin',
@@ -604,17 +604,17 @@ const WorkspacesDisplay = new Lang.Class({
             global.screen.disconnect(this._restackedNotifyId);
             this._restackedNotifyId = 0;
         }
-        if (this._itemDragBeginId > 0) {
-            Main.overview.disconnect(this._itemDragBeginId);
-            this._itemDragBeginId = 0;
+        if (this._appDragBeginId > 0) {
+            Main.overview.disconnect(this._appDragBeginId);
+            this._appDragBeginId = 0;
         }
-        if (this._itemDragCancelledId > 0) {
-            Main.overview.disconnect(this._itemDragCancelledId);
-            this._itemDragCancelledId = 0;
+        if (this._appDragCancelledId > 0) {
+            Main.overview.disconnect(this._appDragCancelledId);
+            this._appDragCancelledId = 0;
         }
-        if (this._itemDragEndId > 0) {
-            Main.overview.disconnect(this._itemDragEndId);
-            this._itemDragEndId = 0;
+        if (this._appDragEndId > 0) {
+            Main.overview.disconnect(this._appDragEndId);
+            this._appDragEndId = 0;
         }
         if (this._windowDragBeginId > 0) {
             Main.overview.disconnect(this._windowDragBeginId);

@@ -462,15 +462,15 @@ const AppWellIcon = new Lang.Class({
         this._draggable.connect('drag-begin', Lang.bind(this,
             function () {
                 this._removeMenuTimeout();
-                Main.overview.beginItemDrag(this);
+                Main.overview.beginAppDrag(this);
             }));
         this._draggable.connect('drag-cancelled', Lang.bind(this,
             function () {
-                Main.overview.cancelledItemDrag(this);
+                Main.overview.cancelledAppDrag(this);
             }));
         this._draggable.connect('drag-end', Lang.bind(this,
             function () {
-               Main.overview.endItemDrag(this);
+               Main.overview.endAppDrag(this);
             }));
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));

@@ -525,16 +525,16 @@ const Overview = new Lang.Class({
 
     //// Public methods ////
 
-    beginItemDrag: function(source) {
-        this.emit('item-drag-begin');
+    beginAppDrag: function(source) {
+        this.emit('app-drag-begin');
     },
 
-    cancelledItemDrag: function(source) {
-        this.emit('item-drag-cancelled');
+    cancelledAppDrag: function(source) {
+        this.emit('app-drag-cancelled');
     },
 
-    endItemDrag: function(source) {
-        this.emit('item-drag-end');
+    endAppDrag: function(source) {
+        this.emit('app-drag-end');
     },
 
     beginWindowDrag: function(source) {
