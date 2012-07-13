@@ -1648,6 +1648,7 @@ const MagShaderEffects = new Lang.Class({
         this._magView = uiGroupClone;
         this._magView.add_effect(this._inverse);
         this._magView.add_effect(this._brightnessContrast);
+        this._magView.add_effect(this._colorSaturation);
     },
 
     /**
