@@ -551,6 +551,7 @@ const Calendar = new Lang.Class({
         let row = 2;
         while (true) {
             let button = new St.Button({ label: iter.getDate().toString() });
+            let rtl = button.get_text_direction() == Clutter.TextDirection.RTL;
 
             if (!this._eventSource)
                 button.reactive = false;
@@ -571,7 +572,10 @@ const Calendar = new Lang.Class({
             // Hack used in lieu of border-collapse - see gnome-shell.css
             if (row == 2)
                 styleClass = 'calendar-day-top ' + styleClass;
-            if (iter.getDay() == this._weekStart)
+
+            let leftMost = rtl ? iter.getDay() == (this._weekStart + 6) % 7
+                               : iter.getDay() == this._weekStart;
+            if (leftMost)
                 styleClass = 'calendar-day-left ' + styleClass;
 
             if (_sameDay(now, iter))
