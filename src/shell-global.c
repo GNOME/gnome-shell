@@ -1191,21 +1191,6 @@ shell_global_reexec_self (ShellGlobal *global)
   g_ptr_array_free (arr, TRUE);
 }
 
-/**
- * shell_global_gc:
- * @global: A #ShellGlobal
- *
- * Start a garbage collection process.  For more information, see
- * https://developer.mozilla.org/En/JS_GC
- */
-void
-shell_global_gc (ShellGlobal *global)
-{
-  JSContext *context = gjs_context_get_native_context (global->js_context);
-
-  JS_GC (context);
-}
-
 static void
 shell_global_on_gc (GjsContext   *context,
                     ShellGlobal  *global)
