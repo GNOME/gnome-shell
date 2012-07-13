@@ -136,7 +136,7 @@ StScrollBar StButton#vhandle:hover
 
 .popup-menu-boxpointer {
     -arrow-border-radius: 8px;
-    -arrow-background-color: rgba(0,0,0,0.9);
+    -arrow-background-color: black;
     -arrow-border-width: 2px;
     -arrow-border-color: #a5a5a5;
     -arrow-base: 24px;
@@ -1176,11 +1176,9 @@ StScrollBar StButton#vhandle:hover
 
 .summary-boxpointer {
     -arrow-border-radius: 8px;
-    -arrow-background-color: rgba(0,0,0,0.9);
-    -arrow-border-width: 2px;
-    -arrow-border-color: #a5a5a5;
-    -arrow-base: 24px;
-    -arrow-rise: 11px;
+    -arrow-background-color: rgba(0,0,0,0.8);
+    -arrow-base: 36px;
+    -arrow-rise: 18px;
     color: white;
 }
 
