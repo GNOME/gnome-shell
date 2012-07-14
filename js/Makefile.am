@@ -57,7 +57,6 @@ nobase_dist_js_DATA = 	\
 	ui/keyringPrompt.js	\
 	ui/layout.js		\
 	ui/lightbox.js		\
-	ui/link.js		\
 	ui/lookingGlass.js	\
 	ui/magnifier.js		\
 	ui/magnifierDBus.js	\

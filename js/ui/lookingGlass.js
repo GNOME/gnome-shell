@@ -17,7 +17,6 @@ const System = imports.system;
 const History = imports.misc.history;
 const ExtensionSystem = imports.ui.extensionSystem;
 const ExtensionUtils = imports.misc.extensionUtils;
-const Link = imports.ui.link;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
@@ -264,7 +263,6 @@ function objectToString(o) {
 
 const ObjLink = new Lang.Class({
     Name: 'ObjLink',
-    Extends: Link.Link,
 
     _init: function(o, title) {
         let text;
@@ -275,7 +273,10 @@ const ObjLink = new Lang.Class({
         text = GLib.markup_escape_text(text, -1);
         this._obj = o;
 
-        this.parent({ label: text });
+        this.actor = new St.Button({ reactive: true,
+                                     track_hover: true,
+                                     style_class: 'shell-link',
+                                     label: text });
         this.actor.get_child().single_line_mode = true;
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
     },
@@ -799,24 +800,33 @@ const Extensions = new Lang.Class({
                                    text: this._stateToString(extension.state) });
         metaBox.add(state);
 
-        let viewsource = new Link.Link({ label: _("View Source") });
-        viewsource.actor._extension = extension;
-        viewsource.actor.connect('clicked', Lang.bind(this, this._onViewSource));
-        metaBox.add(viewsource.actor);
+        let viewsource = new St.Button({ reactive: true,
+                                         track_hover: true,
+                                         style_class: 'shell-link',
+                                         label: _("View Source") });
+        viewsource._extension = extension;
+        viewsource.connect('clicked', Lang.bind(this, this._onViewSource));
+        metaBox.add(viewsource);
 
         if (extension.metadata.url) {
-            let webpage = new Link.Link({ label: _("Web Page") });
-            webpage.actor._extension = extension;
-            webpage.actor.connect('clicked', Lang.bind(this, this._onWebPage));
-            metaBox.add(webpage.actor);
+            let webpage = new St.Button({ reactive: true,
+                                          track_hover: true,
+                                          style_class: 'shell-link',
+                                          label: _("Web Page") });
+            webpage._extension = extension;
+            webpage.connect('clicked', Lang.bind(this, this._onWebPage));
+            metaBox.add(webpage);
         }
 
-        let viewerrors = new Link.Link({ label: _("Show Errors") });
-        viewerrors.actor._extension = extension;
-        viewerrors.actor._parentBox = box;
-        viewerrors.actor._isShowing = false;
-        viewerrors.actor.connect('clicked', Lang.bind(this, this._onViewErrors));
-        metaBox.add(viewerrors.actor);
+        let viewerrors = new St.Button({ reactive: true,
+                                         track_hover: true,
+                                         style_class: 'shell-link',
+                                         label: _("Show Errors") });
+        viewerrors._extension = extension;
+        viewerrors._parentBox = box;
+        viewerrors._isShowing = false;
+        viewerrors.connect('clicked', Lang.bind(this, this._onViewErrors));
+        metaBox.add(viewerrors);
 
         return box;
     }
