@@ -161,12 +161,14 @@ const WindowManager = new Lang.Class({
         this._animationBlockCount = Math.max(0, this._animationBlockCount - 1);
     },
 
-    _shouldAnimate : function(actor) {
-        if (Main.overview.visible || this._animationBlockCount > 0)
+    _shouldAnimate: function() {
+        return !(Main.overview.visible || this._animationBlockCount > 0);
+    },
+
+    _shouldAnimateActor: function(actor) {
+        if (!this._shouldAnimate())
             return false;
-        if (actor && (actor.meta_window.get_window_type() != Meta.WindowType.NORMAL))
-            return false;
-        return true;
+        return actor.meta_window.get_window_type() == Meta.WindowType.NORMAL;
     },
 
     _removeEffect : function(list, actor) {
@@ -179,7 +181,7 @@ const WindowManager = new Lang.Class({
     },
 
     _minimizeWindow : function(shellwm, actor) {
-        if (!this._shouldAnimate(actor)) {
+        if (!this._shouldAnimateActor(actor)) {
             shellwm.completed_minimize(actor);
             return;
         }
@@ -340,7 +342,7 @@ const WindowManager = new Lang.Class({
             shellwm.completed_map(actor);
             return;
         }
-        if (!this._shouldAnimate(actor)) {
+        if (!this._shouldAnimateActor(actor)) {
             shellwm.completed_map(actor);
             return;
         }
