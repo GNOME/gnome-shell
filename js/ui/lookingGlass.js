@@ -23,6 +23,8 @@ const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 const JsParse = imports.misc.jsParse;
 
+const CHEVRON = '>>> ';
+
 /* Imports...feel free to add here as needed */
 var commandHeader = 'const Clutter = imports.gi.Clutter; ' +
                     'const GLib = imports.gi.GLib; ' +
@@ -897,7 +899,7 @@ const LookingGlass = new Lang.Class({
         this._entryArea = new St.BoxLayout({ name: 'EntryArea' });
         this._evalBox.add_actor(this._entryArea);
 
-        let label = new St.Label({ text: 'js>>> ' });
+        let label = new St.Label({ text: CHEVRON });
         this._entryArea.add(label);
 
         this._entry = new St.Entry({ can_focus: true });
@@ -972,7 +974,7 @@ const LookingGlass = new Lang.Class({
 
     _pushResult: function(command, obj) {
         let index = this._results.length + this._offset;
-        let result = new Result('>>> ' + command, obj, index);
+        let result = new Result(CHEVRON + command, obj, index);
         this._results.push(result);
         this._resultsArea.add(result.actor);
         if (obj instanceof Clutter.Actor)
