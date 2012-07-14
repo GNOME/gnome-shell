@@ -21,6 +21,8 @@ const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 
+const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
+
 const ANIMATION_TIME = 0.2;
 const NOTIFICATION_TIMEOUT = 4;
 const SUMMARY_TIMEOUT = 1;
@@ -1591,6 +1593,11 @@ const MessageTray = new Lang.Class({
 
         this._isScreenLocked = false;
         Main.screenShield.connect('lock-status-changed', Lang.bind(this, this._onScreenLockStatusChanged));
+
+        global.display.add_keybinding('toggle-message-tray',
+                                      new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
+                                      Meta.KeyBindingFlags.NONE,
+                                      Lang.bind(this, this.toggle));
 
         this._summaryItems = [];
         // We keep a list of new summary items that were added to the summary since the last

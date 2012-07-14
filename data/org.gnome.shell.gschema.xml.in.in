@@ -87,6 +87,13 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
         Keybinding to open the application menu.
       </_description>
     </key>
+    <key name="toggle-message-tray" type="as">
+      <default>["&lt;Super&gt;m"]</default>
+      <_summary>Keybinding to toggle the visibility of the message tray</_summary>
+      <_description>
+        Keybinding to toggle the visibility of the message tray.
+      </_description>
+    </key>
     <key name="toggle-recording" type="as">
       <default><![CDATA[['<Control><Shift><Alt>r']]]></default>
       <_summary>Keybinding to toggle the screen recorder</_summary>
