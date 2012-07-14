@@ -460,6 +460,7 @@ StScrollBar StButton#vhandle:hover
     border-radius: 5px;
     width: 48pt;
     height: 48pt;
+    background-size: contain;
 }
 
 .status-chooser-user-icon:hover {

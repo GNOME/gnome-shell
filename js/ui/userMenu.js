@@ -41,6 +41,34 @@ const IMStatus = {
 // Copyright (C) 2004-2005 James M. Cape <jcape@ignore-your.tv>.
 // Copyright (C) 2008,2009 Red Hat, Inc.
 
+const UserAvatarWidget = new Lang.Class({
+    Name: 'UserAvatarWidget',
+
+    _init: function(user) {
+        this._user = user;
+
+        this.actor = new St.Bin({ style_class: 'status-chooser-user-icon',
+                                  track_hover: true,
+                                  reactive: true });
+    },
+
+    update: function() {
+        let iconFile = this._user.get_icon_file();
+        if (!GLib.file_test(iconFile, GLib.FileTest.EXISTS))
+            iconFile = null;
+
+        if (iconFile) {
+            let file = Gio.File.new_for_path(iconFile);
+            this.actor.child = null;
+            this.actor.style = 'background-image: url("%s");'.format(iconFile);
+        } else {
+            this.actor.style = null;
+            this.actor.child = new St.Icon({ icon_name: 'avatar-default',
+                                             icon_type: St.IconType.SYMBOLIC,
+                                             icon_size: DIALOG_ICON_SIZE });
+        }
+    }
+});
 
 const IMStatusItem = new Lang.Class({
     Name: 'IMStatusItem',
@@ -108,7 +136,11 @@ const IMStatusChooserItem = new Lang.Class({
         this.parent({ reactive: false,
                       style_class: 'status-chooser' });
 
-        this._iconBin = new St.Button({ style_class: 'status-chooser-user-icon' });
+        this._userManager = AccountsService.UserManager.get_default();
+        this._user = this._userManager.get_user(GLib.get_user_name());
+
+        this._avatar = new UserAvatarWidget(this._user);
+        this._iconBin = new St.Button({ child: this._avatar.actor });
         this.addActor(this._iconBin);
 
         this._iconBin.connect('clicked', Lang.bind(this,
@@ -186,10 +218,6 @@ const IMStatusChooserItem = new Lang.Class({
                 }
             }));
 
-        this._userManager = AccountsService.UserManager.get_default();
-
-        this._user = this._userManager.get_user(GLib.get_user_name());
-
         this._userLoadedId = this._user.connect('notify::is-loaded',
                                                 Lang.bind(this,
                                                           this._updateUser));
@@ -227,44 +255,12 @@ const IMStatusChooserItem = new Lang.Class({
     },
 
     _updateUser: function() {
-        let iconFile = null;
-        if (this._user.is_loaded) {
+        if (this._user.is_loaded)
             this._name.label.set_text(this._user.get_real_name());
-            iconFile = this._user.get_icon_file();
-            if (!GLib.file_test(iconFile, GLib.FileTest.EXISTS))
-                iconFile = null;
-        } else {
-            this._name.label.set_text("");
-        }
-
-        if (iconFile)
-            this._setIconFromFile(iconFile);
         else
-            this._setIconFromName('avatar-default');
-    },
+            this._name.label.set_text("");
 
-    _setIconFromFile: function(iconFile) {
-        this._iconBin.set_style('background-image: url("' + iconFile + '");' +
-                                'background-size: contain;');
-        this._iconBin.child = null;
-    },
-
-    _setIconFromName: function(iconName) {
-        this._iconBin.set_style(null);
-
-        if (iconName != null) {
-            let textureCache = St.TextureCache.get_default();
-            let icon = textureCache.load_icon_name(this._iconBin.get_theme_node(),
-                                                   iconName,
-                                                   St.IconType.SYMBOLIC,
-                                                   DIALOG_ICON_SIZE);
-
-            this._iconBin.child = icon;
-            this._iconBin.show();
-        } else {
-            this._iconBin.child = null;
-            this._iconBin.hide();
-        }
+        this._avatar.update();
     },
 
     _statusForPresence: function(presence) {
