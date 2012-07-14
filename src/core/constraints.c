@@ -767,8 +767,6 @@ constrain_modal_dialog (MetaWindow         *window,
   y = parent->rect.y + (parent->rect.height / 2 - info->current.height / 2);
   if (parent->frame)
     {
-      MetaFrameBorders borders;
-
       x += parent->frame->rect.x;
       y += parent->frame->rect.y;
     }
