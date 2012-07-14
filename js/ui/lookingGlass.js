@@ -519,9 +519,6 @@ const Inspector = new Lang.Class({
         this._displayText = new St.Label();
         eventHandler.add(this._displayText, { expand: true });
 
-        this._borderPaintTarget = null;
-        this._redBorderEffect = new RedBorderEffect();
-        eventHandler.connect('destroy', Lang.bind(this, this._onDestroy));
         eventHandler.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
         eventHandler.connect('button-press-event', Lang.bind(this, this._onButtonPressEvent));
         eventHandler.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
@@ -563,11 +560,6 @@ const Inspector = new Lang.Class({
         this._eventHandler.destroy();
         this._eventHandler = null;
         this.emit('closed');
-    },
-
-    _onDestroy: function() {
-        if (this._borderPaintTarget != null)
-            this._borderPaintTarget.remove_effect(this._redBorderEffect);
     },
 
     _onKeyPressEvent: function (actor, event) {
@@ -638,13 +630,7 @@ const Inspector = new Lang.Class({
         this._displayText.text = '';
         this._displayText.text = position + ' ' + this._target;
 
-        if (this._borderPaintTarget != this._target) {
-            if (this._borderPaintTarget != null)
-                this._borderPaintTarget.remove_effect(this._redBorderEffect);
-            this._borderPaintTarget = this._target;
-            if (this._borderPaintTarget != null)
-                this._borderPaintTarget.add_effect(this._redBorderEffect);
-        }
+        this._lookingGlass.setBorderPaintTarget(this._target);
     }
 });
 
@@ -979,7 +965,7 @@ const LookingGlass = new Lang.Class({
             + 'font-family: "' + fontDesc.get_family() + '";';
     },
 
-    _setBorderPaintTarget: function(obj) {
+    setBorderPaintTarget: function(obj) {
         if (this._borderPaintTarget != null)
             this._borderPaintTarget.remove_effect(this._redBorderEffect);
         this._borderPaintTarget = obj;
@@ -993,7 +979,7 @@ const LookingGlass = new Lang.Class({
         this._results.push(result);
         this._resultsArea.add(result.actor);
         if (obj instanceof Clutter.Actor)
-            this._setBorderPaintTarget(obj);
+            this.setBorderPaintTarget(obj);
 
         let children = this._resultsArea.get_children();
         if (children.length > this._maxItems) {
@@ -1175,7 +1161,7 @@ const LookingGlass = new Lang.Class({
         this._open = false;
         Tweener.removeTweens(this.actor);
 
-        this._setBorderPaintTarget(null);
+        this.setBorderPaintTarget(null);
 
         Main.popModal(this._entry);
 
