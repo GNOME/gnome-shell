@@ -192,8 +192,6 @@ gnome_shell_real_CPPFLAGS = $(gnome_shell_cflags)
 gnome_shell_real_LDADD = libgnome-shell.la libgnome-shell-js.la $(libgnome_shell_la_LIBADD)
 gnome_shell_real_DEPENDENCIES = libgnome-shell.la
 
-EXTRA_DIST += test-gapplication.js
-
 ########################################
 
 libgnome_shell_js_la_SOURCES =		\
