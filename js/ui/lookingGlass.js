@@ -907,10 +907,6 @@ const LookingGlass = new Lang.Class({
         this._entryArea.add(this._entry, { expand: true });
 
         this._windowList = new WindowList();
-        this._windowList.connect('selected', Lang.bind(this, function(list, window) {
-            notebook.selectIndex(0);
-            this._pushResult('<window selection>', window);
-        }));
         notebook.appendPage('Windows', this._windowList.actor);
 
         this._memory = new Memory();
