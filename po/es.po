@@ -14,14 +14,15 @@ msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-06-05 17:28+0000\n"
-"PO-Revision-Date: 2012-06-06 13:06+0200\n"
+"POT-Creation-Date: 2012-07-15 00:47+0000\n"
+"PO-Revision-Date: 2012-07-16 16:08+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
@@ -55,16 +56,17 @@ msgstr "Evento de campana"
 msgid "Unknown window information request: %d"
 msgstr "Petición de información de ventana desconocida: %d"
 
-#: ../src/core/delete.c:111
-#, c-format
-msgid "<tt>%s</tt> is not responding."
-msgstr "<tt>%s</tt> no está respondiendo."
-
 #: ../src/core/delete.c:114
+#, c-format
+#| msgid "<tt>%s</tt> is not responding."
+msgid "%s is not responding."
+msgstr "%s no está respondiendo."
+
+#: ../src/core/delete.c:118
 msgid "Application is not responding."
 msgstr "La aplicación no está respondiendo."
 
-#: ../src/core/delete.c:119
+#: ../src/core/delete.c:123
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -72,11 +74,11 @@ msgstr ""
 "Puede elegir esperar un rato para ver si continua o forzar la aplicación "
 "para cerrarla completamente."
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Wait"
 msgstr "_Esperar"
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Force Quit"
 msgstr "_Forzar la salida"
 
@@ -90,7 +92,7 @@ msgstr "Falta la extensión %s requerida para la composición"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ocurrió un error al abrir la pantalla de X Window System «%s»\n"
 
-#: ../src/core/keybindings.c:852
+#: ../src/core/keybindings.c:844
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -156,11 +158,10 @@ msgid "Print version"
 msgstr "Imprimir versión"
 
 #: ../src/core/mutter.c:60
-#| msgid "Clutter Plugins"
 msgid "Mutter plugin to use"
 msgstr "Complemento de mutter que usar"
 
-#: ../src/core/prefs.c:1064
+#: ../src/core/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -168,14 +169,14 @@ msgstr ""
 "Los arreglos para aplicaciones rotas se han deshabilitado. Algunas "
 "aplicaciones podrían no comportarse correctamente.\n"
 
-#: ../src/core/prefs.c:1139
+#: ../src/core/prefs.c:1140
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "No se pudo analizar la descripción de la tipografía «%s» de la clave "
 "GSettings %s\n"
 
-#: ../src/core/prefs.c:1205
+#: ../src/core/prefs.c:1206
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -184,7 +185,7 @@ msgstr ""
 "«%s» encontrado en la base de datos de configuración no es un valor válido "
 "para el modificador del botón del ratón\n"
 
-#: ../src/core/prefs.c:1723
+#: ../src/core/prefs.c:1724
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -193,7 +194,7 @@ msgstr ""
 "«%s» encontrado en la base de datos de configuración no es un valor válido "
 "para la combinación de teclas «%s»\n"
 
-#: ../src/core/prefs.c:1820
+#: ../src/core/prefs.c:1821
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de trabajo %d"
@@ -324,7 +325,7 @@ msgid "Window manager error: "
 msgstr "Error del gestor de ventanas: "
 
 #. first time through
-#: ../src/core/window.c:7234
+#: ../src/core/window.c:7237
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -340,7 +341,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7899
+#: ../src/core/window.c:7902
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
