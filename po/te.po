@@ -12,14 +12,14 @@ msgstr ""
 "Project-Id-Version: gnome-shell gnome-3-0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-30 17:59+0000\n"
-"PO-Revision-Date: 2012-04-05 09:17+0530\n"
+"POT-Creation-Date: 2012-07-15 23:08+0000\n"
+"PO-Revision-Date: 2012-07-16 08:12+0530\n"
 "Last-Translator: Praveen Illa <mail2ipn@gmail.com>\n"
 "Language-Team: Telugu <indlinux-telugu@lists.sourceforge.net>\n"
+"Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: te\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Lokalize 1.2\n"
 
@@ -29,7 +29,7 @@ msgstr "గ్నోమ్ షెల్"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
-msgstr "విండో నిర్వాహణ మరియు అనువర్తనము ప్రారంభించుట"
+msgstr "కిటికీ నిర్వాహణ మరియు అనువర్తనము ప్రారంభించుట"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 #: ../js/extensionPrefs/main.js:153
@@ -40,22 +40,22 @@ msgstr "గ్నోమ్ షెల్ పొడిగింతల ప్రా
 msgid "Configure GNOME Shell Extensions"
 msgstr "గ్నోమ్ షెల్ పొడిగింతలను స్వరూపించు"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:1
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr "అభివృద్ధికారులకు మరియు పరీక్షకులకు ఉపయోగపడే సాధనాలను Alt-F2 నుండి చేతనపరుచు"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:2
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:2
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
 "Alt-F2 డైలాగుని వాడి అంతర్గత దోషశుద్ది మరియు సాధనాలను పర్యవేక్షించుటకు సౌలభ్యతను అనుమతిస్తుంది."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:3
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "Uuids of extensions to enable"
 msgstr "చేతనపరచుటకు Uuids యొక్క పొడిగింతలు"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:4
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:4
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
@@ -66,11 +66,11 @@ msgstr ""
 "జాబితాచేయును. ఏ పొడిగింత లోడవ్వాలో అది ఈ జాబితా నందు ఉండాలి. అంతేకాకుండా మీరు ఈ జాబితాను పాడిగింతను "
 "చేతనపరుచు లేదా పొడిగింతను అచేతనపరుచు డిబస్ పద్ధతులలో గ్నోమ్ షెల్ నందు మార్చవచ్చును."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Whether to collect stats about applications usage"
 msgstr "అనువర్తనాలు వాడుక గురించిన గణాంకాలను సేకరించాలా వద్దా"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:6
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -81,29 +81,29 @@ msgstr ""
 "ప్రారంభకాలలో). అపుడు ఈ డేటా గోప్యంగా ఉంచబడుతుంది, గోప్యతా కారణాల వలన మీరు దీనిని "
 "అచేతనపరచాలనుకోవచ్చు. దయచేసి గుర్తుంచుకోండి ఇలా చేయడం వలన ఇదివరకే దాచబడిన డేటా తీసివేయబడదు."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
-msgstr "ప్రియమైన అనువర్తనాల కోసం డెస్క్‍టాప్‌ ఫైల్ ఐడీల యొక్క జాబితా"
+msgstr "ప్రియమైన అనువర్తనాల కోసం డెస్క్‍టాప్‌ దస్త్ర ఐడీల యొక్క జాబితా"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr "ఈ గుర్తింపకాలకు అనుగుణమైన అనువర్తనాలు ప్రియమైన ప్రదేశములో ప్రదర్శించబడతాయి."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "disabled OpenSearch providers"
 msgstr "బహిరంగఅన్వేషణ సమకూర్పకాలను అచేతపరుచు"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "History for command (Alt-F2) dialog"
-msgstr "ఆదేశ (Alt-F2) డైలాగు కోసం చరిత్ర"
+msgstr "ఆదేశ (Alt-F2) సంవాదం కోసం చరిత్ర"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for the looking glass dialog"
-msgstr "చూస్తున్న గ్లాసు డైలాగు కొరకు చరిత్ర"
+msgstr "చూస్తున్న గ్లాసు సంవాదం కొరకు చరిత్ర"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
@@ -111,7 +111,7 @@ msgstr ""
 "అంతర్గతంగా స్పష్టంగా వినియోగదారుని  ద్వారా సెట్ చివరి IM ఉనికిని నిల్వ చేయడానికి ఉపయోగించారు. ఇక్కడ విలువ "
 "Tp కనెక్షన్ ఉనికి పద్ధతి వయనము నుండి ఉంది."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
@@ -119,51 +119,43 @@ msgstr ""
 "అంతర్గతంగా యూజర్ కోసం చివరి సెషన్ ఉనికిని స్థితి నిల్వ చేయడానికి ఉపయోగించారు. ఇక్కడ విలువ GSM ఉనికి స్థితి "
 "వయనము నుండి ఉంది."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid "Show the week date in the calendar"
 msgstr "క్యాలెండరులో వారపు తేదీని చూపించు"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "If true, display the ISO week date in the calendar."
 msgstr "ఒకవేళ నిజమైతే, క్యాలెండరులో ISO వారము తేదీని ప్రదర్శిస్తుంది."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid "Keybinding to open the application menu"
 msgstr "అనువర్తనం మెనూ తెరవడానికి  కీ బైండింగ్ "
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Keybinding to open the application menu."
 msgstr "అనువర్తనం మెనూ తెరవడానికి  కీ బైండింగ్ "
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+msgid "Keybinding to toggle the screen recorder"
+msgstr "తెర రికార్డరుని మార్చుటకు అడ్డదారి"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+msgid "Keybinding to start/stop the builtin screen recorder."
+msgstr "అప్రమేయ తెర రికార్డరుని ప్రారంభించుటకు/ఆపడానికి అడ్డదారి."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Which keyboard to use"
 msgstr "ఏ కీబోర్డ్ ఉపయోగించాలి"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "The type of keyboard to use."
 msgstr "ఉపయోగించుటకు కీబోర్డ్ రకము."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
-msgid "Show time with seconds"
-msgstr "సమయమును సెకన్లతో సహా చూపించు"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
-msgid "If true, display seconds in time."
-msgstr "ఒకవేళ నిజమైతే, సమయము నందు సెకన్లను ప్రదర్శించు"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid "Show date in clock"
-msgstr "గడియారములో తేదీని చూపించు"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid "If true, display date in the clock, in addition to time."
-msgstr "ఒకవేళ నిజమైతే, సమయానికి అదనంగా గడియారము నందు తేదీని ప్రదర్శించు."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "Framerate used for recording screencasts."
 msgstr "ఫ్రేమ్‌రేట్ అను దానిని తెరప్రసారాలను రికార్డు చేయుటకు వాడతారు."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -171,11 +163,11 @@ msgstr ""
 "ఫలితముగా వచ్చు తెర ప్రసారము యొక్క ఫ్రేమ్ రేటు GNOME షెల్ తెరప్రసార రికార్డర్ ఫ్రేమ్ పర్ సెకనులలో "
 "రికార్డుచేయబడుతుంది."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "తెరప్రసారాన్ని ఎన్‌కోడ్ చేయడానికి జి స్ట్రీమర్ పైప్‌లైన్ వాడబడుతుంది"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -192,24 +184,24 @@ msgstr ""
 "రికార్డింగులను ఎన్‌కోడ్ చేయడానికి జిస్ట్రీమర్ పైప్‌లైన్‌ను అమర్చును. ఇది gst-launch కొరకు వ్యాక్యనిర్మాణాన్ని "
 "అనుసరిస్తుంది. వీడియో ఎక్కడైతే రికార్డు అవుతుందో అక్కడ ఒక అనుసంధానం కాని సింక్ ప్యాడ్‌ని కలిగివుండాలి. "
 "ఇది సాధారణంగా ఒక అనుసంధానము కాని మూలము ప్యాడ్ అయివుంటుంది; ఈ ప్యాడ్ నుండి వచ్చు అవుట్‌పుట్ "
-"అవుట్‌పుట్ ఫైల్ లోనికి వ్రాయబడుతుంది. ఏదిఏమైనప్పటికీ పైప్ లైన్ కూడా దాని అవుట్‌పుట్ గురించి భద్రత వహిస్తుంది "
-"- ఇది అవుట్‌పుట్‌ని ఐస్‌కాస్ట్ సేవకానికి shout2send లేదా ఇటువంటి వాటి ద్వారా పంపుటకు వాడబడుతుంది. "
-"అమర్చకపోయినా లేక ఒక ఖాళీ విలువకి అమర్చినా, అప్రమేయ పైప్‌లైన్ వాడబడుతుంది, ఇది ప్రస్తుతం vp8enc "
-"quality=8 speed=6 threads=%T ! queue ! webmmux' మరియు VP8 కొడెక్ వాడి WEBMకి "
+"అవుట్‌పుట్ దస్త్రంలోనికి వ్రాయబడుతుంది. ఏదిఏమైనప్పటికీ పైప్ లైన్ కూడా దాని అవుట్‌పుట్ గురించి భద్రత "
+"వహిస్తుంది - ఇది అవుట్‌పుట్‌ని ఐస్‌కాస్ట్ సేవకానికి shout2send లేదా ఇటువంటి వాటి ద్వారా పంపుటకు "
+"వాడబడుతుంది. అమర్చకపోయినా లేక ఒక ఖాళీ విలువకి అమర్చినా, అప్రమేయ పైప్‌లైన్ వాడబడుతుంది, ఇది ప్రస్తుతం "
+"vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' మరియు VP8 కొడెక్ వాడి WEBMకి "
 "రికార్డుచేస్తుంది. %T అనేది వ్యవస్థ పై ఒక ప్లేస్‌హోల్డర్ వలె గ్వెస్ కొరకు ఆప్టిమల్ త్రెడ్ కౌంట్ వాడబడుతుంది."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "File extension used for storing the screencast"
-msgstr "ఫైల్ పొడిగింతను తెరప్రసారాన్ని భద్రపరుచుటకు వాడతారు"
+msgstr "దస్త్ర పొడిగింతను తెరప్రసారాన్ని భద్రపరుచుటకు వాడతారు"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
-"రికార్డుచేయబడిన తెరప్రసారాలకు ఫైల్ పేరు ప్రస్తుత తేదీ పై ఆధారపడి ఫైల్ పేరు ఒకే విధముగా ఉంటుంది, మరియు ఈ "
-"పొడిగింతను వాడండి. ఇది వేరే ఇతర ఫార్మేటులో రికార్డు చేస్తున్నపుడు ఇది మార్చబడాలి."
+"రికార్డుచేయబడిన తెరప్రసారాలకు దస్త్రము పేరు ప్రస్తుత తేదీ పై ఆధారపడి దస్త్రం పేరు ఒకే విధముగా ఉంటుంది, "
+"మరియు ఈ పొడిగింతను వాడండి. ఇది వేరే ఇతర ఆకృతిలో రికార్డు చేస్తున్నపుడు ఇది మార్చబడాలి."
 
 #: ../js/extensionPrefs/main.js:125
 #, c-format
@@ -224,93 +216,95 @@ msgstr "<b>పొడిగింత</b>"
 msgid "Select an extension to configure using the combobox above."
 msgstr "పైన ఉన్న కోంబోపెట్టెను వాడి స్వరూపించుటకు అనువర్తనాన్ని ఎంచుకోండి."
 
-#: ../js/gdm/loginDialog.js:624
+#: ../js/gdm/loginDialog.js:629
 msgid "Session..."
-msgstr "సెషన్..."
+msgstr "చర్యాకాలం..."
 
-#: ../js/gdm/loginDialog.js:786
+#: ../js/gdm/loginDialog.js:800
 msgctxt "title"
 msgid "Sign In"
 msgstr "ప్రవేశించండి"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:831
+#: ../js/gdm/loginDialog.js:845
 msgid "(or swipe finger)"
 msgstr "(లేదా వ్రేలు స్వైప్‌చేయి)"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:852
+#: ../js/gdm/loginDialog.js:866
 msgid "Not listed?"
 msgstr "జాబితా చేయలేదా?"
 
-#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:401
-#: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
-#: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
+#: ../js/gdm/loginDialog.js:1046 ../js/ui/endSessionDialog.js:410
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/networkAgent.js:153
+#: ../js/ui/polkitAuthenticationAgent.js:176
+#: ../js/ui/shellMountOperation.js:396 ../js/ui/status/bluetooth.js:431
 msgid "Cancel"
 msgstr "రద్దుచేయి"
 
-#: ../js/gdm/loginDialog.js:1025
+#: ../js/gdm/loginDialog.js:1051
 msgctxt "button"
 msgid "Sign In"
 msgstr "ప్రవేశించండి"
 
-#: ../js/gdm/loginDialog.js:1377
+#: ../js/gdm/loginDialog.js:1411
 msgid "Login Window"
 msgstr "ప్రవేశ కిటికీ"
 
-#: ../js/gdm/powerMenu.js:155 ../js/ui/userMenu.js:597
-#: ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:668
+#: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:612
+#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:730
 msgid "Suspend"
 msgstr "తాత్కాలికంగా నిలిపివేయి"
 
-#: ../js/gdm/powerMenu.js:160
+#: ../js/gdm/powerMenu.js:135
 msgid "Restart"
 msgstr "పునఃప్రారంభించు"
 
-#: ../js/gdm/powerMenu.js:165
+#: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:614
+#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:729
 msgid "Power Off"
 msgstr "విద్యుత్ ఆపు"
 
-#: ../js/misc/util.js:92
+#: ../js/misc/util.js:95
 msgid "Command not found"
 msgstr "ఆదేశము కనపడలేదు"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:119
+#: ../js/misc/util.js:128
 msgid "Could not parse command:"
 msgstr "ఆదేశము పదనిరూపణ వీలుకాదు:"
 
-#: ../js/misc/util.js:127
+#: ../js/misc/util.js:136
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "'%s' అమలుపరుచుట విఫలమైంది:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:255
+#: ../js/ui/appDisplay.js:252
 msgid "All"
 msgstr "అన్ని"
 
-#: ../js/ui/appDisplay.js:314
+#: ../js/ui/appDisplay.js:310
 msgid "APPLICATIONS"
 msgstr "అనువర్తనాలు"
 
-#: ../js/ui/appDisplay.js:375
+#: ../js/ui/appDisplay.js:370
 msgid "SETTINGS"
 msgstr "అమరికలు"
 
-#: ../js/ui/appDisplay.js:680
+#: ../js/ui/appDisplay.js:675
 msgid "New Window"
-msgstr "కొత్త విండో"
+msgstr "కొత్త కిటికీ"
 
-#: ../js/ui/appDisplay.js:683
+#: ../js/ui/appDisplay.js:678
 msgid "Remove from Favorites"
 msgstr "ఇష్టాంశాల నుండి తొలగించు"
 
-#: ../js/ui/appDisplay.js:684
+#: ../js/ui/appDisplay.js:679
 msgid "Add to Favorites"
 msgstr "ఇష్టాంశాలకు జతచేయి"
 
@@ -324,16 +318,16 @@ msgstr "%s మీ ఇష్టాంశాలకు జతచేయబడిం�
 msgid "%s has been removed from your favorites."
 msgstr "%s మీ ఇష్టాంశాల నుండి తీసివేయబడింది."
 
-#: ../js/ui/autorunManager.js:265
+#: ../js/ui/autorunManager.js:261
 msgid "Removable Devices"
 msgstr "తీసివేయదగు పరికరాలు"
 
-#: ../js/ui/autorunManager.js:560
+#: ../js/ui/autorunManager.js:549
 #, c-format
 msgid "Open with %s"
 msgstr "%s‍తో తెరువు"
 
-#: ../js/ui/autorunManager.js:586
+#: ../js/ui/autorunManager.js:575
 msgid "Eject"
 msgstr "బయటకునెట్టు"
 
@@ -451,215 +445,150 @@ msgid "S"
 msgstr "శని"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:681
+#: ../js/ui/calendar.js:685
 msgid "Nothing Scheduled"
 msgstr "ఏ ప్రణాళిక లేదు"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:697
+#: ../js/ui/calendar.js:701
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:700
+#: ../js/ui/calendar.js:704
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:710
+#: ../js/ui/calendar.js:714
 msgid "Today"
 msgstr "నేడు"
 
-#: ../js/ui/calendar.js:714
+#: ../js/ui/calendar.js:718
 msgid "Tomorrow"
 msgstr "రేపు"
 
-#: ../js/ui/calendar.js:723
+#: ../js/ui/calendar.js:727
 msgid "This week"
 msgstr "ఈ వారం"
 
-#: ../js/ui/calendar.js:731
+#: ../js/ui/calendar.js:735
 msgid "Next week"
 msgstr "తరువాత వారం"
 
-#: ../js/ui/contactDisplay.js:66 ../js/ui/notificationDaemon.js:486
-#: ../js/ui/status/power.js:215 ../src/shell-app.c:374
-msgid "Unknown"
-msgstr "తెలియదు"
-
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:129
-msgid "Available"
-msgstr "అందుబాటులోవున్నారు"
-
-#: ../js/ui/contactDisplay.js:94 ../js/ui/userMenu.js:138
-msgid "Away"
-msgstr "దూరంగా ఉన్నారు"
-
-#: ../js/ui/contactDisplay.js:98 ../js/ui/userMenu.js:132
-msgid "Busy"
-msgstr "తీరికలేదు"
-
-#: ../js/ui/contactDisplay.js:102
-msgid "Offline"
-msgstr "ఆఫ్‌లైన్"
-
-#: ../js/ui/contactDisplay.js:153
-msgid "CONTACTS"
-msgstr "పరిచయాలు"
-
-#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1207
+#: ../js/ui/dash.js:238 ../js/ui/messageTray.js:1287
 msgid "Remove"
 msgstr "తీసివేయి"
 
-#: ../js/ui/dateMenu.js:103
+#: ../js/ui/dateMenu.js:94
 msgid "Date and Time Settings"
 msgstr "తేదీ మరియు సమయం అమరికలు"
 
-#: ../js/ui/dateMenu.js:129
+#: ../js/ui/dateMenu.js:120
 msgid "Open Calendar"
 msgstr "క్యాలెండరు తెరువు"
-
-#. Translators: This is the time format with date used
-#. in 24-hour mode.
-#: ../js/ui/dateMenu.js:187
-msgid "%a %b %e, %R:%S"
-msgstr "%a %b %e, %R:%S"
-
-#: ../js/ui/dateMenu.js:188
-msgid "%a %b %e, %R"
-msgstr "%a %b %e, %R"
-
-#. Translators: This is the time format without date used
-#. in 24-hour mode.
-#: ../js/ui/dateMenu.js:192
-msgid "%a %R:%S"
-msgstr "%a %R:%S"
-
-#: ../js/ui/dateMenu.js:193
-msgid "%a %R"
-msgstr "%a %R"
-
-#. Translators: This is a time format with date used
-#. for AM/PM.
-#: ../js/ui/dateMenu.js:200
-msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a %b %e, %l:%M:%S %p"
-
-#: ../js/ui/dateMenu.js:201
-msgid "%a %b %e, %l:%M %p"
-msgstr "%a %b %e, %l:%M %p"
-
-#. Translators: This is a time format without date used
-#. for AM/PM.
-#: ../js/ui/dateMenu.js:205
-msgid "%a %l:%M:%S %p"
-msgstr "%a %l:%M:%S %p"
-
-#: ../js/ui/dateMenu.js:206
-msgid "%a %l:%M %p"
-msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:217
+#: ../js/ui/dateMenu.js:161
 msgid "%A %B %e, %Y"
 msgstr "%A %B %e, %Y"
 
-#: ../js/ui/endSessionDialog.js:61
+#: ../js/ui/endSessionDialog.js:60
 #, c-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s నిష్క్రమించు"
 
-#: ../js/ui/endSessionDialog.js:62
+#: ../js/ui/endSessionDialog.js:61
 msgctxt "title"
 msgid "Log Out"
 msgstr "నిష్క్రమించు"
 
-#: ../js/ui/endSessionDialog.js:63
+#: ../js/ui/endSessionDialog.js:62
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr "ఈ అనువర్తనాలను మూసివెళ్ళుటకు మరియు వ్యవస్థను నిష్క్రమింపచేయడానికి నిష్క్రమించు నొక్కండి."
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:64
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s స్వయంచాలకంగా %d సెకనులో నిష్క్రమించును."
 msgstr[1] "%s స్వయంచాలకంగా %d సెకనులలో నిష్క్రమించును."
 
-#: ../js/ui/endSessionDialog.js:70
+#: ../js/ui/endSessionDialog.js:69
 #, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "మీరు %d సెకనులో స్వయంచాలకంగా నిష్క్రమిస్తారు."
 msgstr[1] "మీరు %d సెకనులలో స్వయంచాలకంగా నిష్క్రమిస్తారు."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:73
 msgid "Logging out of the system."
 msgstr "వ్యవస్థ నుండి నిష్క్రమిస్తుంది."
 
-#: ../js/ui/endSessionDialog.js:76
+#: ../js/ui/endSessionDialog.js:75
 msgctxt "button"
 msgid "Log Out"
 msgstr "నిష్క్రమించు"
 
-#: ../js/ui/endSessionDialog.js:81
+#: ../js/ui/endSessionDialog.js:80
 msgctxt "title"
 msgid "Power Off"
 msgstr "విద్యుత్ ఆపు"
 
-#: ../js/ui/endSessionDialog.js:82
+#: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "ఈ అనువర్తనాలను విడిచివెళ్ళుటకు మరియు వ్యవస్థను ఆపివేయుటకు విద్యుత్ ఆపు నొక్కండి."
 
-#: ../js/ui/endSessionDialog.js:84
+#: ../js/ui/endSessionDialog.js:83
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "%d సెకన్లలో వ్యవస్థ స్వయంచాలకంగా ఆపివేయబడుతుంది."
 msgstr[1] "%d సెకన్లలో వ్యవస్థ స్వయంచాలకంగా ఆపివేయబడుతుంది."
 
-#: ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "వ్యవస్థ విద్యుత్తును ఆపివేస్తుంది."
 
-#: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:106
 msgctxt "button"
 msgid "Restart"
 msgstr "పునఃప్రారంభించు"
 
-#: ../js/ui/endSessionDialog.js:92
+#: ../js/ui/endSessionDialog.js:91
 msgctxt "button"
 msgid "Power Off"
 msgstr "విద్యుత్ ఆపు"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:97
 msgctxt "title"
 msgid "Restart"
 msgstr "పునఃప్రారంభించు"
 
-#: ../js/ui/endSessionDialog.js:99
+#: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "ఈ అనువర్తనాలను విడిచివెళ్ళుటకు మరియు వ్యవస్థను పునఃప్రారంభించటానికి స నొక్కండి."
 
-#: ../js/ui/endSessionDialog.js:101
+#: ../js/ui/endSessionDialog.js:100
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "%d సెకనులో వ్యవస్థ స్వయంచాలకంగా పునఃప్రారంభించబడుతుంది."
 msgstr[1] "%d సెకనులలో వ్యవస్థ స్వయంచాలకంగా పునఃప్రారంభించబడుతుంది."
 
-#: ../js/ui/endSessionDialog.js:105
+#: ../js/ui/endSessionDialog.js:104
 msgid "Restarting the system."
 msgstr "వ్యవస్థను పునఃప్రారంభిస్తున్నది."
 
-#: ../js/ui/extensionSystem.js:403
+#: ../js/ui/extensionDownloader.js:199
 msgid "Install"
 msgstr "స్థాపించు"
 
-#: ../js/ui/extensionSystem.js:407
+#: ../js/ui/extensionDownloader.js:203
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "extensions.gnome.org నుండి '%s' దింపుకొని, స్థాపించాలా?"
@@ -668,11 +597,12 @@ msgstr "extensions.gnome.org నుండి '%s' దింపుకొని, �
 msgid "tray"
 msgstr "పళ్ళెం"
 
-#: ../js/ui/keyboard.js:544 ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:545 ../js/ui/status/keyboard.js:149
+#: ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "కీబోర్డు"
 
-#: ../js/ui/keyringPrompt.js:85 ../js/ui/polkitAuthenticationAgent.js:272
+#: ../js/ui/keyringPrompt.js:85 ../js/ui/polkitAuthenticationAgent.js:273
 msgid "Password:"
 msgstr "సంకేతపదం:"
 
@@ -680,73 +610,73 @@ msgstr "సంకేతపదం:"
 msgid "Type again:"
 msgstr "మళ్ళీ టైపు చేయు:"
 
-#: ../js/ui/lookingGlass.js:732
+#: ../js/ui/lookingGlass.js:697
 msgid "No extensions installed"
 msgstr "ఏ పొడిగింతలు స్థాపించబడిలేవు"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:786
+#: ../js/ui/lookingGlass.js:751
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s ఎటువంటి దోషాలను ఉద్గారించలేదు."
 
-#: ../js/ui/lookingGlass.js:792
+#: ../js/ui/lookingGlass.js:757
 msgid "Hide Errors"
 msgstr "దోషాలను దాయి"
 
-#: ../js/ui/lookingGlass.js:796 ../js/ui/lookingGlass.js:847
+#: ../js/ui/lookingGlass.js:761 ../js/ui/lookingGlass.js:812
 msgid "Show Errors"
 msgstr "దోషాలను చూపించు"
 
-#: ../js/ui/lookingGlass.js:805
+#: ../js/ui/lookingGlass.js:770
 msgid "Enabled"
 msgstr "చేతనమైనది"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:808 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:773 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "చేతనమైనది"
 
-#: ../js/ui/lookingGlass.js:810
+#: ../js/ui/lookingGlass.js:775
 msgid "Error"
 msgstr "దోషం"
 
-#: ../js/ui/lookingGlass.js:812
+#: ../js/ui/lookingGlass.js:777
 msgid "Out of date"
 msgstr "కాలం చెల్లినది"
 
-#: ../js/ui/lookingGlass.js:814
+#: ../js/ui/lookingGlass.js:779
 msgid "Downloading"
 msgstr "దింపుకుంటున్నది"
 
-#: ../js/ui/lookingGlass.js:835
+#: ../js/ui/lookingGlass.js:800
 msgid "View Source"
 msgstr "మూలాన్ని చూడు"
 
-#: ../js/ui/lookingGlass.js:841
+#: ../js/ui/lookingGlass.js:806
 msgid "Web Page"
 msgstr "వెబ్ పేజీ"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:118
+#: ../js/ui/main.js:129
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "%d %t నుండి  స్క్రీన్ కాస్ట్"
 
-#: ../js/ui/messageTray.js:1200
+#: ../js/ui/messageTray.js:1280
 msgid "Open"
 msgstr "తెరువు"
 
-#: ../js/ui/messageTray.js:1217
+#: ../js/ui/messageTray.js:1297
 msgid "Unmute"
 msgstr "శబ్దాన్ని చేతనపరుచు"
 
-#: ../js/ui/messageTray.js:1217
+#: ../js/ui/messageTray.js:1297
 msgid "Mute"
 msgstr "నిశబ్దం"
 
-#: ../js/ui/messageTray.js:2490
+#: ../js/ui/messageTray.js:2575
 msgid "System Information"
 msgstr "వ్యవస్థ సమాచారం"
 
@@ -829,39 +759,44 @@ msgstr "మొబైల్ బ్రాడ్‌బాండ్ నెట్వ�
 msgid "A password is required to connect to '%s'."
 msgstr "%s'కు అనుసంధానమగుటకు వొక సంకేతపదం అవసరమైంది."
 
-#: ../js/ui/overview.js:90
+#: ../js/ui/notificationDaemon.js:486 ../src/shell-app.c:374
+msgctxt "program"
+msgid "Unknown"
+msgstr "తెలియదు"
+
+#: ../js/ui/overview.js:88
 msgid "Undo"
 msgstr "రద్దుచేయి"
 
-#: ../js/ui/overview.js:132
+#: ../js/ui/overview.js:128
 msgid "Overview"
 msgstr "పర్యావలోకనం"
 
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:198
 msgid "Windows"
-msgstr "విండోలు"
+msgstr "కిటికీలు"
 
-#: ../js/ui/overview.js:205
+#: ../js/ui/overview.js:201
 msgid "Applications"
 msgstr "అనువర్తనాలు"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:231
+#: ../js/ui/overview.js:226
 msgid "Dash"
 msgstr "డాష్"
 
-#: ../js/ui/panel.js:592
+#: ../js/ui/panel.js:566
 msgid "Quit"
 msgstr "నిష్క్రమించు"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:624
+#: ../js/ui/panel.js:598
 msgid "Activities"
 msgstr "కార్యకలాపాలు"
 
-#: ../js/ui/panel.js:999
+#: ../js/ui/panel.js:964
 msgid "Top Bar"
 msgstr "పైన పట్టీ"
 
@@ -890,7 +825,7 @@ msgstr "ధృవీకరణ అవసరం"
 msgid "Administrator"
 msgstr "నిర్వాహకుడు"
 
-#: ../js/ui/polkitAuthenticationAgent.js:179
+#: ../js/ui/polkitAuthenticationAgent.js:180
 msgid "Authenticate"
 msgstr "ధృవీకరించు"
 
@@ -898,7 +833,8 @@ msgstr "ధృవీకరించు"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/polkitAuthenticationAgent.js:260
+#: ../js/ui/polkitAuthenticationAgent.js:261
+#: ../js/ui/shellMountOperation.js:381
 msgid "Sorry, that didn't work. Please try again."
 msgstr "క్షమించండి, అది పనిచేయలేదు. దయచేసి మరలా ప్రయత్నించండి."
 
@@ -907,7 +843,7 @@ msgstr "క్షమించండి, అది పనిచేయలేదు
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:724
+#: ../js/ui/popupMenu.js:728
 msgid "toggle-switch-us"
 msgstr "టోగిల్-స్విచ్-అజ్"
 
@@ -915,11 +851,11 @@ msgstr "టోగిల్-స్విచ్-అజ్"
 msgid "Please enter a command:"
 msgstr "దయచేసి ఒక ఆదేశమును ప్రవేశపెట్టండి:"
 
-#: ../js/ui/searchDisplay.js:332
+#: ../js/ui/searchDisplay.js:320
 msgid "Searching..."
 msgstr "వెతుకుతోంది..."
 
-#: ../js/ui/searchDisplay.js:414
+#: ../js/ui/searchDisplay.js:373
 msgid "No matching results."
 msgstr "సరిపోలిన ఫలితాలు లేవు."
 
@@ -939,9 +875,17 @@ msgstr "పాఠం చూపించు"
 msgid "Hide Text"
 msgstr "పాఠం దాయి"
 
-#: ../js/ui/shellMountOperation.js:271
-msgid "Wrong password, please try again"
-msgstr "సరికాని సంకేతపదం, దయచేసి మరలా ప్రయత్నించు"
+#: ../js/ui/shellMountOperation.js:368
+msgid "Passphrase"
+msgstr "రహస్యపదబంధం"
+
+#: ../js/ui/shellMountOperation.js:389
+msgid "Remember Passphrase"
+msgstr "రహస్యపదబంధం గుర్తుంచుకొను"
+
+#: ../js/ui/shellMountOperation.js:400
+msgid "Unlock"
+msgstr "తాళంతీయి"
 
 #: ../js/ui/status/accessibility.js:47
 msgid "Accessibility"
@@ -951,9 +895,10 @@ msgstr "ప్రాప్తి"
 msgid "Zoom"
 msgstr "జూమ్"
 
-#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
-#. 'screen-reader-enabled');
-#. this.menu.addMenuItem(screenReader);
+#: ../js/ui/status/accessibility.js:59
+msgid "Screen Reader"
+msgstr "తెర చదువకం"
+
 #: ../js/ui/status/accessibility.js:63
 msgid "Screen Keyboard"
 msgstr "తెర కీబోర్డు"
@@ -991,9 +936,9 @@ msgid "Large Text"
 msgstr "అతిపెద్ద పాఠము"
 
 #: ../js/ui/status/bluetooth.js:31 ../js/ui/status/bluetooth.js:35
-#: ../js/ui/status/bluetooth.js:258 ../js/ui/status/bluetooth.js:341
-#: ../js/ui/status/bluetooth.js:371 ../js/ui/status/bluetooth.js:407
-#: ../js/ui/status/bluetooth.js:436 ../js/ui/status/network.js:893
+#: ../js/ui/status/bluetooth.js:255 ../js/ui/status/bluetooth.js:308
+#: ../js/ui/status/bluetooth.js:339 ../js/ui/status/bluetooth.js:375
+#: ../js/ui/status/bluetooth.js:404 ../js/ui/status/network.js:844
 msgid "Bluetooth"
 msgstr "బ్లూటూత్"
 
@@ -1003,7 +948,7 @@ msgstr "దృగ్గోచరత"
 
 #: ../js/ui/status/bluetooth.js:62
 msgid "Send Files to Device..."
-msgstr "పరికరానికి ఫైళ్ళను పంపు..."
+msgstr "పరికరానికి దస్త్రాలను పంపు..."
 
 #: ../js/ui/status/bluetooth.js:63
 msgid "Set up a New Device..."
@@ -1014,114 +959,115 @@ msgid "Bluetooth Settings"
 msgstr "బ్లూటూత్ అమరికలు"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/network.js:256
+#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/network.js:211
 msgid "hardware disabled"
 msgstr "హార్డువేర్ అచేతనమైంది"
 
-#: ../js/ui/status/bluetooth.js:203
+#: ../js/ui/status/bluetooth.js:200
 msgid "Connection"
 msgstr "అనుసంధానం"
 
-#: ../js/ui/status/bluetooth.js:214 ../js/ui/status/network.js:491
+#: ../js/ui/status/bluetooth.js:211 ../js/ui/status/network.js:445
 msgid "disconnecting..."
 msgstr "అననుసంధానిస్తోంది..."
 
-#: ../js/ui/status/bluetooth.js:227 ../js/ui/status/network.js:497
+#: ../js/ui/status/bluetooth.js:224 ../js/ui/status/network.js:451
+#: ../js/ui/status/network.js:911
 msgid "connecting..."
 msgstr "అనుసంధానిస్తున్నది..."
 
-#: ../js/ui/status/bluetooth.js:245
+#: ../js/ui/status/bluetooth.js:242
 msgid "Send Files..."
-msgstr "ఫైళ్ళను పంపు..."
+msgstr "దస్త్రాలను పంపు..."
 
-#: ../js/ui/status/bluetooth.js:250
+#: ../js/ui/status/bluetooth.js:247
 msgid "Browse Files..."
-msgstr "ఫైళ్ళను విహరించు..."
+msgstr "దస్త్రాలను విహరించు..."
 
-#: ../js/ui/status/bluetooth.js:259
+#: ../js/ui/status/bluetooth.js:256
 msgid "Error browsing device"
 msgstr "పరికరాన్ని అన్వేషించుటలో దోషము"
 
-#: ../js/ui/status/bluetooth.js:260
+#: ../js/ui/status/bluetooth.js:257
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "అభ్యర్ధించిన పరికరము అన్వేషించబడదు, దోషము ఏమిటంటే '%s'"
 
-#: ../js/ui/status/bluetooth.js:268
+#: ../js/ui/status/bluetooth.js:265
 msgid "Keyboard Settings"
 msgstr "కీబోర్డు అమరికలు"
 
-#: ../js/ui/status/bluetooth.js:271
+#: ../js/ui/status/bluetooth.js:268
 msgid "Mouse Settings"
 msgstr "మౌస్ అమరికలు"
 
-#: ../js/ui/status/bluetooth.js:276 ../js/ui/status/volume.js:59
+#: ../js/ui/status/bluetooth.js:273 ../js/ui/status/volume.js:59
 msgid "Sound Settings"
 msgstr "శబ్దపు అమరికలు"
 
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:340
 #, c-format
 msgid "Authorization request from %s"
 msgstr "%s నుండి ప్రమాణీకరణ అభ్యర్ధన"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:346
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "%s పరికరము '%s' సేవకు సౌలభ్యతను కోరుతున్నది"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:348
 msgid "Always grant access"
 msgstr "ఎల్లప్పుడు ప్రవేశ సౌలభ్యతను అనుమతించు"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:349
 msgid "Grant this time only"
 msgstr "ఈ సారికి మాత్రమే అనుమతించు"
 
-#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1091
+#: ../js/ui/status/bluetooth.js:350 ../js/ui/telepathyClient.js:1097
 msgid "Reject"
 msgstr "తిరస్కరించు"
 
-#: ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:376
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "%s కొరకు జతచేయుటకు ధృవీకరణ"
 
-#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:382 ../js/ui/status/bluetooth.js:412
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "%s పరికరము ఈ కంప్యూటరుతో జతకట్టాలనుకుంటుంది"
 
-#: ../js/ui/status/bluetooth.js:415
+#: ../js/ui/status/bluetooth.js:383
 #, c-format
-msgid "Please confirm whether the PIN '%s' matches the one on the device."
-msgstr "పిన్ '%s' పరికరము మీద ఉన్న దానితో సరిపోలుతుందో లేదో దయచేసి నిర్ధారించండి."
+msgid "Please confirm whether the PIN '%06d' matches the one on the device."
+msgstr "పిన్ '%06d' పరికరము మీద ఉన్న దానితో సరిపోలుతుందో లేదో దయచేసి నిర్ధారించండి."
 
-#: ../js/ui/status/bluetooth.js:417
+#: ../js/ui/status/bluetooth.js:385
 msgid "Matches"
 msgstr "సరిపోలికలు"
 
-#: ../js/ui/status/bluetooth.js:418
+#: ../js/ui/status/bluetooth.js:386
 msgid "Does not match"
 msgstr "సరిపోలడం లేదు"
 
-#: ../js/ui/status/bluetooth.js:437
+#: ../js/ui/status/bluetooth.js:405
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s కొరకు జతపరుచుటకు అభ్యర్ధన"
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:413
 msgid "Please enter the PIN mentioned on the device."
 msgstr "దయచేసి పరికరం పై నిర్దేశించిన PIN ప్రవేశపెట్టండి."
 
-#: ../js/ui/status/bluetooth.js:461
+#: ../js/ui/status/bluetooth.js:430
 msgid "OK"
 msgstr "సరే"
 
-#: ../js/ui/status/keyboard.js:68
+#: ../js/ui/status/keyboard.js:178
 msgid "Show Keyboard Layout"
 msgstr "కీబోర్డు నమూనాను చూపించు"
 
-#: ../js/ui/status/keyboard.js:73
+#: ../js/ui/status/keyboard.js:180
 msgid "Region and Language Settings"
 msgstr "ప్రాంతము మరియు భాష అమర్పులు"
 
@@ -1130,121 +1076,117 @@ msgid "<unknown>"
 msgstr "<తెలియదు>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:278
+#: ../js/ui/status/network.js:233
 msgid "disabled"
 msgstr "అచేతనమైంది"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:489
+#: ../js/ui/status/network.js:443
 msgid "unmanaged"
-msgstr "నిర్వహించని"
+msgstr "నిర్వహించుటలేదు"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:500
+#: ../js/ui/status/network.js:454 ../js/ui/status/network.js:914
 msgid "authentication required"
 msgstr "ప్రమాణీకరణ అవసరం"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:510
+#: ../js/ui/status/network.js:464
 msgid "firmware missing"
 msgstr "ఫిర్మ్‍వేర్‌ తప్పిపోయింది"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:517
+#: ../js/ui/status/network.js:471
 msgid "cable unplugged"
 msgstr "కేబుల్ తొలగించబడింది"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:522
+#: ../js/ui/status/network.js:476
 msgid "unavailable"
 msgstr "అందుబాటులోలేదు"
 
-#: ../js/ui/status/network.js:524
+#: ../js/ui/status/network.js:478 ../js/ui/status/network.js:916
 msgid "connection failed"
 msgstr "అనుసంధానం విఫలమైంది"
 
-#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1505
+#: ../js/ui/status/network.js:539 ../js/ui/status/network.js:1537
 msgid "More..."
 msgstr "మరిన్ని..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:621 ../js/ui/status/network.js:1440
+#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1467
 msgid "Connected (private)"
 msgstr "అనుసంధానించబడింది (గోప్యము)"
 
-#: ../js/ui/status/network.js:696
+#: ../js/ui/status/network.js:650
 msgid "Auto Ethernet"
 msgstr "ఆటో ఎథర్‌నెట్"
 
-#: ../js/ui/status/network.js:757
+#: ../js/ui/status/network.js:708
 msgid "Auto broadband"
 msgstr "ఆటో బ్రాడ్‌బాండ్"
 
-#: ../js/ui/status/network.js:760
+#: ../js/ui/status/network.js:711
 msgid "Auto dial-up"
 msgstr "ఆటో డయిల్-అప్"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:879 ../js/ui/status/network.js:1452
+#: ../js/ui/status/network.js:830 ../js/ui/status/network.js:1484
 #, c-format
 msgid "Auto %s"
 msgstr "ఆటో %s"
 
-#: ../js/ui/status/network.js:881
+#: ../js/ui/status/network.js:832
 msgid "Auto bluetooth"
 msgstr "ఆటో బ్లూటూత్"
 
-#: ../js/ui/status/network.js:1454
+#: ../js/ui/status/network.js:1486
 msgid "Auto wireless"
 msgstr "ఆటో వైర్‌లెస్"
 
-#: ../js/ui/status/network.js:1541
-msgid "Network"
-msgstr "నెట్‍‌వర్క్"
-
-#: ../js/ui/status/network.js:1548
+#: ../js/ui/status/network.js:1595
 msgid "Enable networking"
 msgstr "నెట్‌వర్కింగును చేతనపరుచు"
 
-#: ../js/ui/status/network.js:1560
+#: ../js/ui/status/network.js:1617
 msgid "Wired"
 msgstr "వైరు అనుసంధానం"
 
-#: ../js/ui/status/network.js:1571
+#: ../js/ui/status/network.js:1628
 msgid "Wireless"
 msgstr "వైరులేని అనుసంధానం"
 
-#: ../js/ui/status/network.js:1581
+#: ../js/ui/status/network.js:1638
 msgid "Mobile broadband"
 msgstr "మొబైల్ బ్రాడ్‌బాండ్"
 
-#: ../js/ui/status/network.js:1591
+#: ../js/ui/status/network.js:1648
 msgid "VPN Connections"
 msgstr "VPN అనుసంధానాలు"
 
-#: ../js/ui/status/network.js:1602
+#: ../js/ui/status/network.js:1655
 msgid "Network Settings"
 msgstr "నెట్‌వర్క్ అమరికలు"
 
-#: ../js/ui/status/network.js:1739
+#: ../js/ui/status/network.js:1703
+msgid "Network Manager"
+msgstr "నెట్‍‌వర్క్ నిర్వాహకము"
+
+#: ../js/ui/status/network.js:1796
 msgid "Connection failed"
 msgstr "అనుసంధానం విఫలమైంది"
 
-#: ../js/ui/status/network.js:1740
+#: ../js/ui/status/network.js:1797
 msgid "Activation of network connection failed"
 msgstr "నెట్‌వర్క్అనుసంధానం క్రియాశీలపరచుట విఫలమైంది"
 
-#: ../js/ui/status/network.js:1993
+#: ../js/ui/status/network.js:2060
 msgid "Networking is disabled"
 msgstr "నెట్‌వర్కింగ్ అచేతనపరచబడింది"
-
-#: ../js/ui/status/network.js:2117
-msgid "Network Manager"
-msgstr "నెట్‍‌వర్క్ నిర్వాహకము"
 
 #: ../js/ui/status/power.js:59
 msgid "Battery"
@@ -1338,6 +1280,11 @@ msgstr "టాబ్లెట్"
 msgid "Computer"
 msgstr "కంప్యూటర్"
 
+#: ../js/ui/status/power.js:215
+msgctxt "device"
+msgid "Unknown"
+msgstr "తెలియదు"
+
 #. Translators: This is the label for audio volume
 #: ../js/ui/status/volume.js:25 ../js/ui/status/volume.js:39
 msgid "Volume"
@@ -1349,80 +1296,60 @@ msgstr "మైక్రోఫోను"
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:220
+#: ../js/ui/telepathyClient.js:226
 msgid "Invitation"
 msgstr "ఆహ్వానం"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:271
+#: ../js/ui/telepathyClient.js:284
 msgid "Call"
 msgstr "కాల్"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:287
+#: ../js/ui/telepathyClient.js:300
 msgid "File Transfer"
-msgstr "ఫైల్ బదిలీ"
+msgstr "దస్త్ర బదిలీ"
 
-#: ../js/ui/telepathyClient.js:369
+#: ../js/ui/telepathyClient.js:381
 msgid "Subscription request"
 msgstr "సబ్‌స్క్రిప్షన్ అభ్యర్ధన"
 
-#: ../js/ui/telepathyClient.js:405
+#: ../js/ui/telepathyClient.js:418
 msgid "Connection error"
 msgstr "అనుసంధానం దోషం"
-
-#: ../js/ui/telepathyClient.js:663
-#, c-format
-msgid "%s is online."
-msgstr "%s ఆన్‌లైనులో ఉన్నారు"
-
-#: ../js/ui/telepathyClient.js:667
-#, c-format
-msgid "%s is offline."
-msgstr "%s ఆఫ్‌లైనులో ఉన్నారు"
-
-#: ../js/ui/telepathyClient.js:671
-#, c-format
-msgid "%s is away."
-msgstr "%s దూరంగా ఉన్నారు"
-
-#: ../js/ui/telepathyClient.js:674
-#, c-format
-msgid "%s is busy."
-msgstr "%s తీరిక లేదు."
 
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:887
+#: ../js/ui/telepathyClient.js:908
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "<b>%X</b> వద్ద <b>%A</b> పైన పంపబడెను"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:893
+#: ../js/ui/telepathyClient.js:914
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "<b>%A</b>, <b>%B %d</b> పై అమర్చు"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:898
+#: ../js/ui/telepathyClient.js:919
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "<b>%A</b>, <b>%B %d</b>, %Y పై అమర్చు"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:940
+#: ../js/ui/telepathyClient.js:948
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s ఇప్పుడు %s గా తెలియును"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1042
+#: ../js/ui/telepathyClient.js:1048
 #, c-format
 msgid "Invitation to %s"
 msgstr "%sకు ఆహ్వానం"
@@ -1430,35 +1357,35 @@ msgstr "%sకు ఆహ్వానం"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1050
+#: ../js/ui/telepathyClient.js:1056
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s మిమ్ములను %s పై చేరుటకు ఆహ్వానిస్తోంది"
 
-#: ../js/ui/telepathyClient.js:1052 ../js/ui/telepathyClient.js:1131
-#: ../js/ui/telepathyClient.js:1229
+#: ../js/ui/telepathyClient.js:1058 ../js/ui/telepathyClient.js:1137
+#: ../js/ui/telepathyClient.js:1201
 msgid "Decline"
 msgstr "తిరస్కారం"
 
-#: ../js/ui/telepathyClient.js:1053 ../js/ui/telepathyClient.js:1132
-#: ../js/ui/telepathyClient.js:1230
+#: ../js/ui/telepathyClient.js:1059 ../js/ui/telepathyClient.js:1138
+#: ../js/ui/telepathyClient.js:1202
 msgid "Accept"
 msgstr "ఆమోదించు"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1083
+#: ../js/ui/telepathyClient.js:1089
 #, c-format
 msgid "Video call from %s"
 msgstr "%s నుండి వీడియో కాల్"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1086
+#: ../js/ui/telepathyClient.js:1092
 #, c-format
 msgid "Call from %s"
 msgstr "%s నుండి కాల్"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1093
+#: ../js/ui/telepathyClient.js:1099
 msgid "Answer"
 msgstr "సమాధానం"
 
@@ -1467,109 +1394,109 @@ msgstr "సమాధానం"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1125
+#: ../js/ui/telepathyClient.js:1131
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s మీకు %s పంపుచున్నది"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1194
+#: ../js/ui/telepathyClient.js:1166
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "మీరు ఆన్‌లైన్‌లో వున్నప్పుడు చూడుటకు %s అనుమతి కోరుతున్నారు"
 
-#: ../js/ui/telepathyClient.js:1287
+#: ../js/ui/telepathyClient.js:1259
 msgid "Network error"
 msgstr "నెట్‍‌వర్క్ దోషం"
 
-#: ../js/ui/telepathyClient.js:1289
+#: ../js/ui/telepathyClient.js:1261
 msgid "Authentication failed"
 msgstr "ధృవీకరణ వైఫల్యం"
 
-#: ../js/ui/telepathyClient.js:1291
+#: ../js/ui/telepathyClient.js:1263
 msgid "Encryption error"
 msgstr "ఎన్క్రిప్షన్ దోషం"
 
-#: ../js/ui/telepathyClient.js:1293
+#: ../js/ui/telepathyClient.js:1265
 msgid "Certificate not provided"
 msgstr "ధృవీకరణపత్రం అందించబడలేదు"
 
-#: ../js/ui/telepathyClient.js:1295
+#: ../js/ui/telepathyClient.js:1267
 msgid "Certificate untrusted"
 msgstr "ధృవీకరణపత్రం నమ్మలేనిది"
 
-#: ../js/ui/telepathyClient.js:1297
+#: ../js/ui/telepathyClient.js:1269
 msgid "Certificate expired"
 msgstr "ధృవీకరణపత్రం గడువుతీరెను"
 
-#: ../js/ui/telepathyClient.js:1299
+#: ../js/ui/telepathyClient.js:1271
 msgid "Certificate not activated"
 msgstr "ధృవీకరణపత్రం క్రియాశీలపరచబడిలేదు"
 
-#: ../js/ui/telepathyClient.js:1301
+#: ../js/ui/telepathyClient.js:1273
 msgid "Certificate hostname mismatch"
 msgstr "ధృవీకరణపత్రం హోస్టుపేరు సరిపోలలేదు"
 
-#: ../js/ui/telepathyClient.js:1303
+#: ../js/ui/telepathyClient.js:1275
 msgid "Certificate fingerprint mismatch"
 msgstr "ధృవీకరణపత్రం వ్రేలిముద్ర సరిపోలలేదు"
 
-#: ../js/ui/telepathyClient.js:1305
+#: ../js/ui/telepathyClient.js:1277
 msgid "Certificate self-signed"
 msgstr "ధృవీకరణపత్రం స్వతహాగా-సంతకంచేయబడెను"
 
-#: ../js/ui/telepathyClient.js:1307
+#: ../js/ui/telepathyClient.js:1279
 msgid "Status is set to offline"
 msgstr "స్థితి ఆఫ్‌లైన్‌కు అమర్చబడెను"
 
-#: ../js/ui/telepathyClient.js:1309
+#: ../js/ui/telepathyClient.js:1281
 msgid "Encryption is not available"
 msgstr "ఎన్క్రిప్షన్ అందుబాటులో లేదు"
 
-#: ../js/ui/telepathyClient.js:1311
+#: ../js/ui/telepathyClient.js:1283
 msgid "Certificate is invalid"
 msgstr "ధృవీకరణపత్రం చెల్లనిది"
 
-#: ../js/ui/telepathyClient.js:1313
+#: ../js/ui/telepathyClient.js:1285
 msgid "Connection has been refused"
 msgstr "అనుసంధానము తిరస్కరించబడెను"
 
-#: ../js/ui/telepathyClient.js:1315
+#: ../js/ui/telepathyClient.js:1287
 msgid "Connection can't be established"
 msgstr "అనుసంధానం ఏర్పరచలేము"
 
-#: ../js/ui/telepathyClient.js:1317
+#: ../js/ui/telepathyClient.js:1289
 msgid "Connection has been lost"
 msgstr "అనుసంధానము కోల్పోయాము"
 
-#: ../js/ui/telepathyClient.js:1319
+#: ../js/ui/telepathyClient.js:1291
 msgid "This account is already connected to the server"
 msgstr "ఈ ఖాతా ఇదివరకే సేవకానికి అనుసంధానమైంది"
 
-#: ../js/ui/telepathyClient.js:1321
+#: ../js/ui/telepathyClient.js:1293
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "అనుసంధానం అదే వనరు ఉపయోగించి కొత్త అనుసంధానంచే పునఃస్థాపించబడెను"
 
-#: ../js/ui/telepathyClient.js:1323
+#: ../js/ui/telepathyClient.js:1295
 msgid "The account already exists on the server"
 msgstr "ఖాతా ఇప్పటికే సేవికపైన ఉన్నది"
 
-#: ../js/ui/telepathyClient.js:1325
+#: ../js/ui/telepathyClient.js:1297
 msgid "Server is currently too busy to handle the connection"
 msgstr "అనుసంధానంను సంభాలించుటకు సేవిక మరీ వత్తిడిలో వుంది"
 
-#: ../js/ui/telepathyClient.js:1327
+#: ../js/ui/telepathyClient.js:1299
 msgid "Certificate has been revoked"
 msgstr "ధృవీకరణపత్రం కొట్టివేయబడింది"
 
-#: ../js/ui/telepathyClient.js:1329
+#: ../js/ui/telepathyClient.js:1301
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "ధృవీకరణపత్రం సురక్షితం కాని సైఫర్ ఆల్గార్దెమ్ వుపయోగించుచున్నది లేదా క్రిప్టోగ్రఫీ పరంగా బలహీనంగా వుంది"
 
-#: ../js/ui/telepathyClient.js:1331
+#: ../js/ui/telepathyClient.js:1303
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1577,74 +1504,86 @@ msgstr ""
 "సేవిక ధృవీకరణపత్రం యొక్క పొడవు, లేదా సేవిక ధృవీకరణపత్రం చైన్ యొక్క లోతు, క్రిప్టోగ్రఫీ లైబ్రరీ చేత "
 "నిర్దేశితమైన పరిమితులను మించును"
 
-#: ../js/ui/telepathyClient.js:1333
+#: ../js/ui/telepathyClient.js:1305
 msgid "Internal error"
 msgstr "అంతర్గత దోషం"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1343
+#: ../js/ui/telepathyClient.js:1315
 #, c-format
 msgid "Connection to %s failed"
 msgstr "%s కు అనుసంధానం విఫలమైంది"
 
-#: ../js/ui/telepathyClient.js:1352
+#: ../js/ui/telepathyClient.js:1324
 msgid "Reconnect"
 msgstr "తిరిగిఅనుసంధానించు"
 
-#: ../js/ui/telepathyClient.js:1353
+#: ../js/ui/telepathyClient.js:1325
 msgid "Edit account"
 msgstr "ఖాతా సవరించు"
 
-#: ../js/ui/telepathyClient.js:1399
+#: ../js/ui/telepathyClient.js:1371
 msgid "Unknown reason"
 msgstr "తెలియని కారణం"
 
-#: ../js/ui/userMenu.js:135
-msgid "Hidden"
-msgstr "దాగివుండు"
+#: ../js/ui/userMenu.js:130
+msgid "Available"
+msgstr "అందుబాటులోవున్నారు"
 
-#: ../js/ui/userMenu.js:141
+#: ../js/ui/userMenu.js:133
+msgid "Busy"
+msgstr "తీరికలేదు"
+
+#: ../js/ui/userMenu.js:136
+msgid "Invisible"
+msgstr "అదృశ్యం"
+
+#: ../js/ui/userMenu.js:139
+msgid "Away"
+msgstr "దూరంగా ఉన్నారు"
+
+#: ../js/ui/userMenu.js:142
 msgid "Idle"
 msgstr "వాడుకలేదు"
 
-#: ../js/ui/userMenu.js:144
+#: ../js/ui/userMenu.js:145
 msgid "Unavailable"
 msgstr "అందుబాటులోలేరు"
 
-#: ../js/ui/userMenu.js:595 ../js/ui/userMenu.js:599 ../js/ui/userMenu.js:669
-msgid "Power Off..."
-msgstr "విద్యుత్ ఆపు..."
-
-#: ../js/ui/userMenu.js:631
-msgid "Notifications"
-msgstr "ప్రకటనలు"
-
-#: ../js/ui/userMenu.js:639
-msgid "Online Accounts"
-msgstr "ఆన్‌లైన్ ఖాతాలు"
-
-#: ../js/ui/userMenu.js:643
-msgid "System Settings"
-msgstr "వ్యవస్థ అమరికలు"
-
-#: ../js/ui/userMenu.js:650
-msgid "Lock Screen"
-msgstr "తెరకు తాళంవేయి"
-
-#: ../js/ui/userMenu.js:655
+#: ../js/ui/userMenu.js:567 ../js/ui/userMenu.js:706
 msgid "Switch User"
 msgstr "వాడుకరిని మార్చు"
 
-#: ../js/ui/userMenu.js:660
-msgid "Log Out..."
-msgstr "నిష్క్రమించు..."
+#: ../js/ui/userMenu.js:568
+msgid "Switch Session"
+msgstr "చర్యాకాలాన్ని మార్చు"
 
-#: ../js/ui/userMenu.js:688
+#: ../js/ui/userMenu.js:689
+msgid "Notifications"
+msgstr "ప్రకటనలు"
+
+#: ../js/ui/userMenu.js:698
+msgid "System Settings"
+msgstr "వ్యవస్థ అమరికలు"
+
+#: ../js/ui/userMenu.js:711
+msgid "Log Out"
+msgstr "నిష్క్రమించు"
+
+#: ../js/ui/userMenu.js:716
+msgid "Lock"
+msgstr "తాళంవేయి"
+
+#: ../js/ui/userMenu.js:724
+msgid "Install Updates & Restart"
+msgstr "నవీకరణలను స్థాపించి, పునఃప్రారంభించు"
+
+#: ../js/ui/userMenu.js:749
 msgid "Your chat status will be set to busy"
 msgstr "మీ చాట్ స్థితి రద్దీగా ఉన్నారని అమర్చును"
 
-#: ../js/ui/userMenu.js:689
+#: ../js/ui/userMenu.js:750
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1660,7 +1599,7 @@ msgstr ""
 msgid "Type to search..."
 msgstr "వెతకుటకు టైపు చేయండి..."
 
-#: ../js/ui/viewSelector.js:131 ../src/shell-util.c:252
+#: ../js/ui/viewSelector.js:131 ../src/shell-util.c:253
 msgid "Search"
 msgstr "వెతుకు"
 
@@ -1687,9 +1626,13 @@ msgstr "మీ ప్రియమైన ఈస్టర్ గుడ్డు"
 msgid "'%s' is ready"
 msgstr "'%s' సిద్ధంగా ఉంది"
 
+#: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
+msgid "Evolution Calendar"
+msgstr "ఎవల్యూషన్ క్యాలెండరు"
+
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1100
+#: ../src/gvc/gvc-mixer-control.c:1089
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1698,26 +1641,34 @@ msgstr[1] "%u అవుట్‌పుట్‌లు"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1110
+#: ../src/gvc/gvc-mixer-control.c:1099
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u ఇన్‌పుట్"
 msgstr[1] "%u ఇన్‌పుట్‌లు"
 
-#: ../src/gvc/gvc-mixer-control.c:1408
+#: ../src/gvc/gvc-mixer-control.c:1397
 msgid "System Sounds"
 msgstr "వ్యవస్థ శబ్దములు"
 
-#: ../src/main.c:255
+#: ../src/main.c:327
 msgid "Print version"
 msgstr "ముద్రిత వర్షన్"
 
-#: ../src/main.c:261
+#: ../src/main.c:333
 msgid "Mode used by GDM for login screen"
 msgstr "ప్రవేశ తెర కొరకు GDM చే ఉపయోగించబడిన రీతి"
 
-#: ../src/shell-app.c:619
+#: ../src/main.c:339
+msgid "Use a specific mode, e.g. \"gdm\" for login screen"
+msgstr "ఒక నిర్దిష్ట రీతిని వాడు, ఉదా. ప్రవేశ తెర కొరకు \"gdm\""
+
+#: ../src/main.c:345
+msgid "List possible modes"
+msgstr "సాధ్యమగు రీతులను జాబితాగా చేయి"
+
+#: ../src/shell-app.c:622
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "'%s' ప్రారంభించుటలో విఫలమైంది"
@@ -1738,7 +1689,7 @@ msgstr "యునైటెడ్ కింగ్‌డమ్"
 msgid "Default"
 msgstr "అప్రమేయం"
 
-#: ../src/shell-polkit-authentication-agent.c:339
+#: ../src/shell-polkit-authentication-agent.c:340
 msgid "Authentication dialog was dismissed by the user"
 msgstr "ప్రమాణీకరణ డైలాగు వాడుకరిచే రద్దుచేయబడింది"
 
@@ -1750,19 +1701,94 @@ msgstr "నివాసం"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:106
+#: ../src/shell-util.c:107
 msgid "File System"
-msgstr "ఫైల్ వ్యవస్థ"
+msgstr "దస్త్ర వ్యవస్థ"
 
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:302
+#: ../src/shell-util.c:303
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Show time with seconds"
+#~ msgstr "సమయమును సెకన్లతో సహా చూపించు"
+
+#~ msgid "If true, display seconds in time."
+#~ msgstr "ఒకవేళ నిజమైతే, సమయము నందు సెకన్లను ప్రదర్శించు"
+
+#~ msgid "Show date in clock"
+#~ msgstr "గడియారములో తేదీని చూపించు"
+
+#~ msgid "If true, display date in the clock, in addition to time."
+#~ msgstr "ఒకవేళ నిజమైతే, సమయానికి అదనంగా గడియారము నందు తేదీని ప్రదర్శించు."
+
+#~ msgid "Offline"
+#~ msgstr "ఆఫ్‌లైన్"
+
+#~ msgid "CONTACTS"
+#~ msgstr "పరిచయాలు"
+
+#~ msgid "%a %b %e, %R:%S"
+#~ msgstr "%a %b %e, %R:%S"
+
+#~ msgid "%a %b %e, %R"
+#~ msgstr "%a %b %e, %R"
+
+#~ msgid "%a %R:%S"
+#~ msgstr "%a %R:%S"
+
+#~ msgid "%a %R"
+#~ msgstr "%a %R"
+
+#~ msgid "%a %b %e, %l:%M:%S %p"
+#~ msgstr "%a %b %e, %l:%M:%S %p"
+
+#~ msgid "%a %b %e, %l:%M %p"
+#~ msgstr "%a %b %e, %l:%M %p"
+
+#~ msgid "%a %l:%M:%S %p"
+#~ msgstr "%a %l:%M:%S %p"
+
+#~ msgid "%a %l:%M %p"
+#~ msgstr "%a %l:%M %p"
+
+#~ msgid "Wrong password, please try again"
+#~ msgstr "సరికాని సంకేతపదం, దయచేసి మరలా ప్రయత్నించు"
+
+#~ msgid "Network"
+#~ msgstr "నెట్‍‌వర్క్"
+
+#~ msgid "%s is online."
+#~ msgstr "%s ఆన్‌లైనులో ఉన్నారు"
+
+#~ msgid "%s is offline."
+#~ msgstr "%s ఆఫ్‌లైనులో ఉన్నారు"
+
+#~ msgid "%s is away."
+#~ msgstr "%s దూరంగా ఉన్నారు"
+
+#~ msgid "%s is busy."
+#~ msgstr "%s తీరిక లేదు."
+
+#~ msgid "Hidden"
+#~ msgstr "దాగివుండు"
+
+#~ msgid "Power Off..."
+#~ msgstr "విద్యుత్ ఆపు..."
+
+#~ msgid "Online Accounts"
+#~ msgstr "ఆన్‌లైన్ ఖాతాలు"
+
+#~ msgid "Lock Screen"
+#~ msgstr "తెరకు తాళంవేయి"
+
+#~ msgid "Log Out..."
+#~ msgstr "నిష్క్రమించు..."
 
 #~ msgid "RECENT ITEMS"
 #~ msgstr "ఇటీవలి అంశాలు"
