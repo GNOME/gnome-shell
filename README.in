@@ -320,6 +320,13 @@ Release Notes for Clutter 1.12
   data was passed by every caller, and ClutterBindingActionFunc was not used
   anywhere in the API except for documentation purposes.
 
+• The clutter_threads_enter() and clutter_threads_leave() functions have been
+  deprecated; the lead to non portable code, and encourage broken behaviour
+  with regards to threaded applications. The only supported, portable way of
+  writing Clutter application employing threads is to defer long running
+  operations to a worker thread, and schedule UI updates to the main loop at
+  well defined synchronization points.
+
 Release Notes for Clutter 1.10
 -------------------------------------------------------------------------------
 

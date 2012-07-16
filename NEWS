@@ -1,3 +1,62 @@
+Clutter 1.11.8                                                       2012-07-16
+===============================================================================
+
+  • List of changes since Clutter 1.11.6
+
+    - Bump the dependency of ATK
+    Use the newly released 2.5.3 to rely on the generci event listeners
+    that have been added to ATK; this avoids reimplementing our own.
+
+    - Ensure validity of iterators
+    Even when they are copied.
+
+    - Rounding error fixes for allocations
+    Constraints and other code adjusting the allocation of an actor should
+    round the origin and size of the ClutterActorBox in a consistent way.
+
+    - Updates for the VisualStudio build files
+
+    - Add ClutterDragAction::drag-progress
+    The ::drag-progress signal allows controlling the emission of the
+    ::drag-motion signal. Overriding the default behaviour of a DragAction
+    is now possible without calling g_signal_stop_emission_by_name().
+
+    - Add ClutterActor:pivot-point
+    The pivot point of ClutterActor provides a center, in normalized
+    coordinate space, for the transformations of an actor (scaling, rotation,
+    translation).
+
+    - Deprecations
+    ClutterText:position has been deprecated by ClutterText:cursor-position,
+    for consistency with other ClutterText properties, as well as to avoid
+    shadowing the ClutterActor:position property. ClutterActor:depth has
+    been deprecated by ClutterActor:z-position. ClutterTexture has been
+    deprecated in favour of ClutterImage. ClutterActor:anchor-[xy] and the
+    transformation centers for rotation and scaling have been deprecated
+    in favour of the ClutterActor:pivot-point. The clutter_threads_enter()
+    and clutter_threads_leave() functions have been deprecated.
+
+    - Removal of the experimental ClutterLayoutManager easing state API
+    The easing state API for ClutterLayoutManager was added in 1.11.2, but
+    with the introduction of a default easing state for ClutterActor it is
+    now redundant and not necessary; to animate the allocation of an actor
+    during layout it's simply necessary to set its easing state. All layout
+    managers provided by Clutter have been updated.
+
+  • List of bugs fixed since Clutter 1.11.6
+
+    [bugzilla.gnome.org]
+    #679451 - Add ::drag-progress signal
+    #679457 - Add :cursor-position and deprecate :position
+    #679465 - Add :z-position and deprecate :depth
+    #677853 - Use a single transformation center for rotation and scaling
+
+Many thanks to:
+
+  Chun-wei Fan, Alejandro Piñeiro, Alexander Shopov, Andika Triwidada,
+  Chao-Hsiung Liao, Daniel Mustieles, Fran Diéguez, Ihar Hrachyshka,
+  Kjartan Maraas, Piotr Drąg, Sasi Bhushan Boddepalli.
+
 Clutter 1.11.6                                                       2012-06-23
 ===============================================================================
 
