@@ -20,7 +20,7 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'kbd-scrolllock': 'keyboard',
     'kbd-numlock': 'keyboard',
     'kbd-capslock': 'keyboard',
-    'ibus-ui-gtk': 'input-method'
+    'ibus-ui-gtk': 'keyboard'
 };
 
 const StatusIconDispatcher = new Lang.Class({
