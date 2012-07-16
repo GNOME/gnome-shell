@@ -1,3 +1,60 @@
+3.5.4
+=====
+* Fix wrong result handling of remote calls [Florian; #678852]
+* dateMenu: Fix regression that caused no date to be displayed [Colin]
+* WindowTracker: Fix refcounting bug in get_app_for_window() [Giovanni; #678992]
+* Show the workspace switcher for move-to-workspace keybinding
+  [Giovanni, Jasper; #674104, #660839, #679005]
+* userMenu: Move "Power off" item to the bottom [Florian; #678887]
+* Remove contacts search provider [Florian, Rui; #677442]
+* network: don't ask for always-ask secrets when interaction isn't allowed
+  [Dan; #679091]
+* PolkitAgent: Look for the right password prompt [Matthias; #675300]
+* Implement extension updates [Jasper; #679099]
+* userMenu: Don't disconnect account signals when disabled [Guillaume; #669112]
+* Fix startup notification when opening calendar [Florian; #677907]
+* networkAgent: use absolute path if configured [Clemens; #679212]
+* recorder: Port to GStreamer-1.0 API [Florian; #679445]
+* telepathyClient: don't add log messages on presence changes [Ana; #669508]
+* lookingGlass: Don't use a signal callback on 'paint' to draw the border
+  [Jasper; #679464]
+* Add support for inhibiting automount [Hans; #678597]
+* Implemented banner support for the login screen [Matthias, Marius; #665346]
+* boxpointer: Flip side if we would end outside the monitor [Rui; #678164]
+* boxpointer: Change 'animate' parameter on show/hide to a bitmask
+  [Rui; #678337]
+* Add a grayscale effect [Matthias, Jasper, Florian: #676782, #674499]
+* UserMenu: show "Install Updates & Restart" when appropriate
+  [Giovanni; #677394, #680080]
+* messageTray: don't show the message tray when a new notification is shown
+  [Ana; #677210]
+* panel: don't break when indicator has no menu [Jean-Philippe; #678694]
+* appMenu: Disable app menu during startup animations [Florian; #672322]
+* autorun: Add a notification when unmounting drives [Cosimo; #676125]
+* st-icon: Fix potential crash involving shadows [Jasper; #679776]
+* Remove manual garbage collection on tweeners end [Cosimo; #679832]
+* dash: hide tooltips when overview begins hiding [Stefano; #674241]
+* Update modal dialog animation for new centered position [Florian; #674499]
+* calendar: Fix grid lines in RTL locales [Florian; #679879]
+* Integrate IBus with keyboard indicator [Rui; #641531]
+* Move ibus status icon under keyboard [Matthias]
+* gdm: port from libgdmgreeter to libgdm [Ray; #676401]
+* Misc bug fixes and cleanups [Antoine, Cosimo, Giovanni, Jasper, Rico;
+  #678978, #672790, #679847, #679944]
+
+Contributors:
+ Jean-Philippe Braun, Clemens Buchacher, Giovanni Campagna, Cosimo Cecchi,
+ Matthias Clasen, Hans de Goede, Guillaume Desmottes, Stefano Facchini,
+ Antoine Jacoutot, Rui Matos, Florian Müllner, Marius Rieder, Ana Risteska,
+ Jasper St. Pierre, Rico Tzschichholz, Colin Walters, Dan Williams
+
+Translations:
+ Matej Urbančič [sl], Khaled Hosny [ar], Nguyễn Thái Ngọc Duy [vi],
+ Nilamdyuti Goswami [as], Alexander Shopov [bg], Ivaylo Valkov [bg],
+ Daniel Mustieles [es], Kjartan Maraas [nb,nn], Yaron Shahrabani [he],
+ Nilamdyuti Goswami [as], Chao-Hsiung Liao [zh_HK, zh_TW], Ihar Hrachyshka [be],
+ Praveen Illa [te]
+
 3.5.3
 =====
 * calendar: Adapt to Evolution-Data-Server API changes [Matthew; #677402]
