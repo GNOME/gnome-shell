@@ -10,15 +10,15 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-07-05 18:09+0000\n"
-"PO-Revision-Date: 2012-07-06 12:15+0200\n"
+"POT-Creation-Date: 2012-07-07 16:23+0000\n"
+"PO-Revision-Date: 2012-07-16 16:08+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Gtranslator 2.91.4\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -228,46 +228,46 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Seleccione una extensión que configurar usando la caja combinada de arriba."
 
-#: ../js/gdm/loginDialog.js:627
+#: ../js/gdm/loginDialog.js:629
 msgid "Session..."
 msgstr "Sesión…"
 
-#: ../js/gdm/loginDialog.js:789
+#: ../js/gdm/loginDialog.js:800
 msgctxt "title"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:834
+#: ../js/gdm/loginDialog.js:845
 msgid "(or swipe finger)"
 msgstr "(o pase el dedo)"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:855
+#: ../js/gdm/loginDialog.js:866
 msgid "Not listed?"
 msgstr "¿No está en la lista?"
 
-#: ../js/gdm/loginDialog.js:1023 ../js/ui/endSessionDialog.js:410
+#: ../js/gdm/loginDialog.js:1046 ../js/ui/endSessionDialog.js:410
 #: ../js/ui/extensionDownloader.js:138 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:176
 #: ../js/ui/shellMountOperation.js:339 ../js/ui/status/bluetooth.js:431
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/gdm/loginDialog.js:1028
+#: ../js/gdm/loginDialog.js:1051
 msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
-#: ../js/gdm/loginDialog.js:1380
+#: ../js/gdm/loginDialog.js:1411
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
-#: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:602
-#: ../js/ui/userMenu.js:606 ../js/ui/userMenu.js:715
+#: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:612
+#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:730
 msgid "Suspend"
 msgstr "Suspender"
 
@@ -275,8 +275,8 @@ msgstr "Suspender"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:604
-#: ../js/ui/userMenu.js:606 ../js/ui/userMenu.js:714
+#: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:614
+#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:729
 msgid "Power Off"
 msgstr "Apagar"
 
@@ -625,51 +625,51 @@ msgstr "Contraseña:"
 msgid "Type again:"
 msgstr "Escriba de nuevo:"
 
-#: ../js/ui/lookingGlass.js:693
+#: ../js/ui/lookingGlass.js:696
 msgid "No extensions installed"
 msgstr "No hay extensiones instaladas"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:747
+#: ../js/ui/lookingGlass.js:750
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s no ha generado ningún error."
 
-#: ../js/ui/lookingGlass.js:753
+#: ../js/ui/lookingGlass.js:756
 msgid "Hide Errors"
 msgstr "Ocultar errores"
 
-#: ../js/ui/lookingGlass.js:757 ../js/ui/lookingGlass.js:808
+#: ../js/ui/lookingGlass.js:760 ../js/ui/lookingGlass.js:811
 msgid "Show Errors"
 msgstr "Mostrar errores"
 
-#: ../js/ui/lookingGlass.js:766
+#: ../js/ui/lookingGlass.js:769
 msgid "Enabled"
 msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:769 ../src/gvc/gvc-mixer-control.c:1082
+#: ../js/ui/lookingGlass.js:772 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../js/ui/lookingGlass.js:771
+#: ../js/ui/lookingGlass.js:774
 msgid "Error"
 msgstr "Error"
 
-#: ../js/ui/lookingGlass.js:773
+#: ../js/ui/lookingGlass.js:776
 msgid "Out of date"
 msgstr "Caducado"
 
-#: ../js/ui/lookingGlass.js:775
+#: ../js/ui/lookingGlass.js:778
 msgid "Downloading"
 msgstr "Descargando"
 
-#: ../js/ui/lookingGlass.js:796
+#: ../js/ui/lookingGlass.js:799
 msgid "View Source"
 msgstr "Ver fuente"
 
-#: ../js/ui/lookingGlass.js:802
+#: ../js/ui/lookingGlass.js:805
 msgid "Web Page"
 msgstr "Página web"
 
@@ -691,7 +691,7 @@ msgstr "Dar voz"
 msgid "Mute"
 msgstr "Silenciar"
 
-#: ../js/ui/messageTray.js:2576
+#: ../js/ui/messageTray.js:2575
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -1572,35 +1572,39 @@ msgstr "Inactivo"
 msgid "Unavailable"
 msgstr "No disponible"
 
-#: ../js/ui/userMenu.js:563 ../js/ui/userMenu.js:696
+#: ../js/ui/userMenu.js:567 ../js/ui/userMenu.js:706
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/userMenu.js:564
+#: ../js/ui/userMenu.js:568
 msgid "Switch Session"
 msgstr "Cambiar de sesión"
 
-#: ../js/ui/userMenu.js:679
+#: ../js/ui/userMenu.js:689
 msgid "Notifications"
 msgstr "Notificaciones"
 
-#: ../js/ui/userMenu.js:688
+#: ../js/ui/userMenu.js:698
 msgid "System Settings"
 msgstr "Configuración del sistema"
 
-#: ../js/ui/userMenu.js:701
+#: ../js/ui/userMenu.js:711
 msgid "Log Out"
 msgstr "Cerrar la sesión"
 
-#: ../js/ui/userMenu.js:706
+#: ../js/ui/userMenu.js:716
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/userMenu.js:734
+#: ../js/ui/userMenu.js:724
+msgid "Install Updates & Restart"
+msgstr "Instalar actualizaciones y reiniciar"
+
+#: ../js/ui/userMenu.js:749
 msgid "Your chat status will be set to busy"
 msgstr "Su estado del chat se establecerá a «ocupado»"
 
-#: ../js/ui/userMenu.js:735
+#: ../js/ui/userMenu.js:750
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1645,7 +1649,6 @@ msgid "'%s' is ready"
 msgstr "«%s» está preparado"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
-#| msgid "Open Calendar"
 msgid "Evolution Calendar"
 msgstr "Calendario de Evolution"
 
