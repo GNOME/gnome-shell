@@ -1,3 +1,26 @@
+3.5.4
+=====
+* Make it possible to reimplement move-to-workspace keybindings from plugins
+  [Giovanni; #674104]
+* Add a preference to ignore hide-titlebar-when-maximized hint [Rico; #678947]
+* window: Also use hide-titlebar-when-maximized when tiled [Florian; #679290]
+* Center modal dialogs on their parent instead [Florian; #674499]
+* Reduce amount of markup in translated messages [Matthias; #679660]
+* Fix focus problem after closing a window with focus-follows-mouse
+  [Jasper; #675982]
+* Handle changes of the attach-modal-dialogs preference [Florian; #679904]
+* Do not restore tiling on unmaximize [Florian; #677565]
+* Misc. fixes and cleanups [Jasper Adriaanse, Jasper, Debarshi, Pavel;
+  #679153, 673824]
+
+Contributors:
+ Jasper Lievisse Adriaanse, Giovanni Campagna, Matthias Clasen, Florian Müllner,
+ Debarshi Ray, Jasper St. Pierre, Rico Tzschichholz, Pavel Vasin
+
+Translations:
+ Alexander Shopov [bg], Kjartan Maraas [nb], Yaron Shahrabani [he],
+ Nilamdyuti Goswami [as], Ihar Hrachyshka [be], Daniel Mustieles [es]
+
 3.5.3
 =====
 * Simplify plugin system [Jasper; #676855]
