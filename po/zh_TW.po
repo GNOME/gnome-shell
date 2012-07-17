@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter 1.9.15\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-07-14 13:34+0800\n"
-"PO-Revision-Date: 2012-07-12 09:48+0800\n"
+"POT-Creation-Date: 2012-07-17 14:53+0800\n"
+"PO-Revision-Date: 2012-07-16 22:09+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese Traditional <zh_TW@li.org>\n"
 "Language: zh_TW\n"
@@ -183,16 +183,12 @@ msgid "Position on the Z axis"
 msgstr "在 Z 軸上的位置"
 
 #: ../clutter/clutter-actor.c:6450
-#, fuzzy
-#| msgid "Position"
 msgid "Z Position"
-msgstr "位置"
+msgstr "Z 位置"
 
 #: ../clutter/clutter-actor.c:6451
-#, fuzzy
-#| msgid "Position on the Z axis"
 msgid "The actor's position on the Z axis"
-msgstr "在 Z 軸上的位置"
+msgstr "參與者在 Z 軸上的位置"
 
 #: ../clutter/clutter-actor.c:6468
 msgid "Opacity"
@@ -269,21 +265,19 @@ msgstr "參與者的名稱"
 
 #: ../clutter/clutter-actor.c:6612
 msgid "Pivot Point"
-msgstr ""
+msgstr "樞軸點"
 
 #: ../clutter/clutter-actor.c:6613
 msgid "The point around which the scaling and rotation occur"
-msgstr ""
+msgstr "縮放和旋轉繞著這個點"
 
 #: ../clutter/clutter-actor.c:6631
 msgid "Pivot Point Z"
-msgstr ""
+msgstr "樞軸點 Z"
 
 #: ../clutter/clutter-actor.c:6632
-#, fuzzy
-#| msgid "X coordinate of the anchor point"
 msgid "Z component of the pivot point"
-msgstr "錨點的 X 坐標"
+msgstr "樞軸點的 Z 元件"
 
 #: ../clutter/clutter-actor.c:6650
 msgid "Scale X"
@@ -302,16 +296,12 @@ msgid "Scale factor on the Y axis"
 msgstr "在 Y 軸上的伸縮比值"
 
 #: ../clutter/clutter-actor.c:6688
-#, fuzzy
-#| msgid "Scale X"
 msgid "Scale Z"
-msgstr "伸縮 X 坐標"
+msgstr "縮放 Z"
 
 #: ../clutter/clutter-actor.c:6689
-#, fuzzy
-#| msgid "Scale factor on the X axis"
 msgid "Scale factor on the Z axis"
-msgstr "在 X 軸上的伸縮比值"
+msgstr "在 Z 軸上的伸縮比值"
 
 #: ../clutter/clutter-actor.c:6707
 msgid "Scale Center X"
@@ -418,40 +408,28 @@ msgid "The anchor point as a ClutterGravity"
 msgstr "錨點做為 ClutterGravity"
 
 #: ../clutter/clutter-actor.c:6981
-#, fuzzy
-#| msgid "Translation Domain"
 msgid "Translation X"
-msgstr "翻譯域名"
+msgstr "轉換 X"
 
 #: ../clutter/clutter-actor.c:6982
-#, fuzzy
-#| msgid "The rotation angle on the X axis"
 msgid "Translation along the X axis"
-msgstr "在 X 軸上的旋轉角度"
+msgstr "沿 X 軸的轉換"
 
 #: ../clutter/clutter-actor.c:7001
-#, fuzzy
-#| msgid "Translation Domain"
 msgid "Translation Y"
-msgstr "翻譯域名"
+msgstr "轉換 Y"
 
 #: ../clutter/clutter-actor.c:7002
-#, fuzzy
-#| msgid "The rotation angle on the Y axis"
 msgid "Translation along the Y axis"
-msgstr "在 Y 軸上的旋轉角度"
+msgstr "沿 Y 軸的轉換"
 
 #: ../clutter/clutter-actor.c:7021
-#, fuzzy
-#| msgid "Translation Domain"
 msgid "Translation Z"
-msgstr "翻譯域名"
+msgstr "轉換 Z"
 
 #: ../clutter/clutter-actor.c:7022
-#, fuzzy
-#| msgid "The rotation angle on the Z axis"
 msgid "Translation along the Z axis"
-msgstr "在 Z 軸上的旋轉角度"
+msgstr "沿 Z 軸的轉換"
 
 #: ../clutter/clutter-actor.c:7041
 msgid "Show on set parent"
@@ -2665,11 +2643,3 @@ msgstr "視窗覆寫重新導向"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:641
 msgid "If this is an override-redirect window"
 msgstr "是否這是個覆寫重新導向的視窗"
-
-#~| msgid "Easing Mode"
-#~ msgid "Easing Delay"
-#~ msgstr "緩和延遲"
-
-#~| msgid "The mode of the animation"
-#~ msgid "The delay befor the animations start"
-#~ msgstr "動畫開始前的延遲"
