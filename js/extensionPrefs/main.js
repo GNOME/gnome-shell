@@ -13,8 +13,7 @@ const _ = Gettext.gettext;
 const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
 
-
-const GnomeShellIface = <interface name="org.gnome.Shell">
+const GnomeShellIface = <interface name="org.gnome.Shell.Extensions">
 <signal name="ExtensionStatusChanged">
     <arg type="s" name="uuid"/>
     <arg type="i" name="state"/>
@@ -210,7 +209,7 @@ const Application = new Lang.Class({
     _extensionFound: function(signals, extension) {
         let iter = this._model.append();
         this._model.set(iter, [0, 1], [extension.uuid, extension.metadata.name]);
-        this._extensionIters[uuid] = iter;
+        this._extensionIters[extension.uuid] = iter;
     },
 
 
