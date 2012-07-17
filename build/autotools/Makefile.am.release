@@ -4,12 +4,8 @@
 
 TAR_OPTIONS = --owner=0 --group=0
 
-RELEASE_UPLOAD_HOST = clutter-project.org
-RELEASE_UPLOAD_USER = clutter
-RELEASE_UPLOAD_DIR  = $(RELEASE_UPLOAD_USER)@$(RELEASE_UPLOAD_HOST):~$(RELEASE_UPLOAD_USER)/upload-source
-
-RELEASE_URL_BASE = http://source.clutter-project.org/sources/clutter
-RELEASE_URL      = $(RELEASE_URL_BASE)/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)
+RELEASE_URL_BASE = http://download.gnome.org/sources/cogl
+RELEASE_URL      = $(RELEASE_URL_BASE)/$(COGL_1_MAJOR_VERSION).$(COGL_1_MINOR_VERSION)
 
 RELEASE_ANNOUNCE_LIST = cogl3d@googlegroups.com, clutter-announce@clutter-project.org
 RELEASE_ANNOUNCE_CC   = gnome-announce-list@gnome.org
@@ -59,8 +55,6 @@ release-verify-even-micro:
 	@echo "Good."
 
 release-upload: $(sha256_file)
-	@echo "Uploading to $(RELEASE_UPLOAD_HOST)..."
-	@scp $(tar_file) $(RELEASE_UPLOAD_DIR)
 	@echo "Uploading to master.gnome.org..."
 	@scp $(tar_file) master.gnome.org:
 	@echo "Running ftpadmin install..."
@@ -91,7 +85,6 @@ release-message:
 	@echo ""
 	@echo "Tarballs can be downloaded from:"
 	@echo ""
-	@echo "  http://source.clutter-project.org/sources/cogl/1.$(COGL_1_MINOR_VERSION)/"
 	@echo "  http://download.gnome.org/sources/cogl/1.$(COGL_1_MINOR_VERSION)/"
 	@echo ""
 	@echo "SHA256 Checksum:"
