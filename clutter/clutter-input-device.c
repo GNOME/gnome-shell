@@ -786,14 +786,16 @@ clutter_input_device_get_enabled (ClutterInputDevice *device)
 /**
  * clutter_input_device_get_coords:
  * @device: a #ClutterInputDevice
- * @sequence: a #ClutterEventSequence
- * @point: (out): return location for the pointer or touch point
+ * @sequence: (allow-none): a #ClutterEventSequence, or %NULL if
+ *   the device is not touch-based
+ * @point: (out caller-allocates): return location for the pointer
+ *   or touch point
  *
  * Retrieves the latest coordinates of a pointer or touch point of
- * @device
+ * @device.
  *
  * Return value: %FALSE if the device's sequence hasn't been found,
- * %TRUE otherwise.
+ *   and %TRUE otherwise.
  *
  * Since: 1.12
  */
