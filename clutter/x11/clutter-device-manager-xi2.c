@@ -838,6 +838,10 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
           case 5:
           case 6:
           case 7:
+            /* we only generate Scroll events on ButtonPress */
+            if (xi_event->evtype == XI_ButtonRelease)
+              return CLUTTER_TRANSLATE_REMOVE;
+
             event->scroll.type = event->type = CLUTTER_SCROLL;
 
             if (xev->detail == 4)
@@ -876,6 +880,21 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             if (xev->flags & XIPointerEmulated)
               _clutter_event_set_pointer_emulated (event, TRUE);
 #endif /* HAVE_XINPUT_2_2 */
+
+            CLUTTER_NOTE (EVENT,
+                          "scroll: win:0x%x, device:%s, time:%d "
+                          "(direction:%s, "
+                          "x:%.2f, y:%.2f)",
+                          (unsigned int) stage_x11->xwin,
+                          device->device_name,
+                          event->any.time,
+                          event->scroll.direction == CLUTTER_SCROLL_UP ? "up" :
+                          event->scroll.direction == CLUTTER_SCROLL_DOWN ? "down" :
+                          event->scroll.direction == CLUTTER_SCROLL_LEFT ? "left" :
+                          event->scroll.direction == CLUTTER_SCROLL_RIGHT ? "right" :
+                          "invalid",
+                          event->scroll.x,
+                          event->scroll.y);
             break;
 
           default:
@@ -906,23 +925,24 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                                                  event->button.y,
                                                  stage_x11,
                                                  &xev->valuators);
+
+            CLUTTER_NOTE (EVENT,
+                          "%s: win:0x%x, device:%s, time:%d (button:%d, x:%.2f, y:%.2f, axes:%s)",
+                          event->any.type == CLUTTER_BUTTON_PRESS
+                            ? "button press  "
+                            : "button release",
+                          (unsigned int) stage_x11->xwin,
+                          device->device_name,
+                          event->any.time,
+                          event->button.button,
+                          event->button.x,
+                          event->button.y,
+                          event->button.axes != NULL ? "yes" : "no");
             break;
           }
 
         if (source_device != NULL && device->stage != NULL)
           _clutter_input_device_set_stage (source_device, device->stage);
-
-        CLUTTER_NOTE (EVENT,
-                      "%s: win:0x%x, device:%s (button:%d, x:%.2f, y:%.2f, axes:%s)",
-                      event->any.type == CLUTTER_BUTTON_PRESS
-                        ? "button press  "
-                        : "button release",
-                      (unsigned int) stage_x11->xwin,
-                      event->button.device->device_name,
-                      event->button.button,
-                      event->button.x,
-                      event->button.y,
-                      event->button.axes != NULL ? "yes" : "no");
 
 #ifdef HAVE_XINPUT_2_2
         if (xev->flags & XIPointerEmulated)
