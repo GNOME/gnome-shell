@@ -306,7 +306,7 @@ actor_captured_event_cb (ClutterActor *actor,
                          ClutterGestureAction *action)
 {
   ClutterGestureActionPrivate *priv = action->priv;
-  GesturePoint *point;
+  GesturePoint *point G_GNUC_UNUSED;
 
   if ((clutter_event_type (event) != CLUTTER_BUTTON_PRESS) &&
       (clutter_event_type (event) != CLUTTER_TOUCH_BEGIN))
