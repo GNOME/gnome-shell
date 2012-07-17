@@ -721,17 +721,17 @@ const UserMenuButton = new Lang.Class({
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupMenuItem(_("Install Updates & Restart"));
-        item.connect('activate', Lang.bind(this, this._onInstallUpdatesActivate));
-        this.menu.addMenuItem(item);
-        this._installUpdatesItem = item;
-
         item = new PopupMenu.PopupAlternatingMenuItem(_("Power Off"),
                                                       _("Suspend"));
         this.menu.addMenuItem(item);
         item.connect('activate', Lang.bind(this, this._onSuspendOrPowerOffActivate));
         this._suspendOrPowerOffItem = item;
         this._updateSuspendOrPowerOff();
+
+        item = new PopupMenu.PopupMenuItem(_("Install Updates & Restart"));
+        item.connect('activate', Lang.bind(this, this._onInstallUpdatesActivate));
+        this.menu.addMenuItem(item);
+        this._installUpdatesItem = item;
     },
 
     _updatePresenceStatus: function(item, event) {
