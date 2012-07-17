@@ -22,6 +22,7 @@ nobase_dist_js_DATA = 	\
 	gdm/loginDialog.js	\
 	gdm/powerMenu.js	\
 	gdm/systemd.js	 	\
+	gdm/util.js		\
 	extensionPrefs/main.js	\
 	misc/config.js		\
 	misc/extensionUtils.js	\

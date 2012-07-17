@@ -34,80 +34,18 @@ const Gdm = imports.gi.Gdm;
 
 const Batch = imports.gdm.batch;
 const Fprint = imports.gdm.fingerprint;
+const GdmUtil = imports.gdm.util;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
 
-const _PASSWORD_SERVICE_NAME = 'gdm-password';
-const _FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
-const _FADE_ANIMATION_TIME = 0.16;
 const _RESIZE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 2.0;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_NAME_SIZE = 48;
 
-const _LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
-const _FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
-const _BANNER_MESSAGE_KEY = 'banner-message-enable';
-const _BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
-
-const _LOGO_KEY = 'logo';
-
 let _loginDialog = null;
-
-function _fadeInActor(actor) {
-    let hold = new Batch.Hold();
-
-    if (actor.opacity == 255 && actor.visible)
-        return null;
-
-    actor.show();
-    let [minHeight, naturalHeight] = actor.get_preferred_height(-1);
-
-    actor.opacity = 0;
-    actor.set_height(0);
-    Tweener.addTween(actor,
-                     { opacity: 255,
-                       height: naturalHeight,
-                       time: _FADE_ANIMATION_TIME,
-                       transition: 'easeOutQuad',
-                       onComplete: function() {
-                           actor.set_height(-1);
-                           hold.release();
-                       },
-                       onCompleteScope: this
-                     });
-    return hold;
-}
-
-function _fadeOutActor(actor) {
-    let hold = new Batch.Hold();
-
-    if (!actor.visible) {
-        actor.opacity = 0;
-        return null;
-    }
-
-    if (actor.opacity == 0) {
-        actor.hide();
-        return null;
-    }
-
-    Tweener.addTween(actor,
-                     { opacity: 0,
-                       height: 0,
-                       time: _FADE_ANIMATION_TIME,
-                       transition: 'easeOutQuad',
-                       onComplete: function() {
-                           actor.hide();
-                           actor.set_height(-1);
-                           hold.release();
-                       },
-                       onCompleteScope: this
-                     });
-    return hold;
-}
 
 function _smoothlyResizeActor(actor, width, height) {
     let finalWidth;
@@ -247,11 +185,11 @@ const UserListItem = new Lang.Class({
     },
 
     fadeOutName: function() {
-        return _fadeOutActor(this._nameLabel);
+        return GdmUtil.fadeOutActor(this._nameLabel);
     },
 
     fadeInName: function() {
-        return _fadeInActor(this._nameLabel);
+        return GdmUtil.fadeInActor(this._nameLabel);
     },
 
     showFocusAnimation: function(time) {
@@ -304,7 +242,7 @@ const UserList = new Lang.Class({
 
     _showItem: function(item) {
         let tasks = [function() {
-                         return _fadeInActor(item.actor);
+                         return GdmUtil.fadeInActor(item.actor);
                      },
 
                      function() {
@@ -365,13 +303,13 @@ const UserList = new Lang.Class({
             item._focusBin.scale_x = 0.;
             if (item != exception)
                 tasks.push(function() {
-                    return _fadeOutActor(item.actor);
+                    return GdmUtil.fadeOutActor(item.actor);
                 });
         }
 
         let batch = new Batch.ConsecutiveBatch(this,
                                                [function() {
-                                                    return _fadeOutActor(this.actor.vscroll);
+                                                    return GdmUtil.fadeOutActor(this.actor.vscroll);
                                                 },
 
                                                 new Batch.ConcurrentBatch(this, tasks)
@@ -438,7 +376,7 @@ const UserList = new Lang.Class({
                                                 },
 
                                                 function() {
-                                                    return _fadeInActor(this.actor.vscroll);
+                                                    return GdmUtil.fadeInActor(this.actor.vscroll);
                                                 }]);
         return batch.run();
     },
@@ -728,15 +666,21 @@ const LoginDialog = new Lang.Class({
         this._greeter.connect('timed-login-requested',
                               Lang.bind(this, this._onTimedLoginRequested));
 
-        this._settings = new Gio.Settings({ schema: _LOGIN_SCREEN_SCHEMA });
+        this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient);
+        this._userVerifier.connect('ask-question', Lang.bind(this, this._askQuestion));
+        this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
+        this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
 
-        this._fprintManager = new Fprint.FprintManager();
-        this._checkForFingerprintReader();
-        this._settings.connect('changed::' + _LOGO_KEY,
+        this._userVerifier.connect('show-fingerprint-prompt', Lang.bind(this, this._showFingerprintPrompt));
+        this._userVerifier.connect('hide-fingerprint-prompt', Lang.bind(this, this._hideFingerprintPrompt));
+
+        this._settings = new Gio.Settings({ schema: GdmUtil.LOGIN_SCREEN_SCHEMA });
+
+        this._settings.connect('changed::' + GdmUtil.LOGO_KEY,
                                Lang.bind(this, this._updateLogo));
-        this._settings.connect('changed::' + _BANNER_MESSAGE_KEY,
+        this._settings.connect('changed::' + GdmUtil.BANNER_MESSAGE_KEY,
                                Lang.bind(this, this._updateBanner));
-        this._settings.connect('changed::' + _BANNER_MESSAGE_TEXT_KEY,
+        this._settings.connect('changed::' + GdmUtil.BANNER_MESSAGE_TEXT_KEY,
                                Lang.bind(this, this._updateBanner));
 
         this._logoBox = new St.Bin({ style_class: 'login-dialog-logo-box' });
@@ -850,22 +794,9 @@ const LoginDialog = new Lang.Class({
 
    },
 
-   _checkForFingerprintReader: function() {
-        this._haveFingerprintReader = false;
-
-        if (!this._settings.get_boolean(_FINGERPRINT_AUTHENTICATION_KEY))
-            return;
-
-        this._fprintManager.GetDefaultDeviceRemote(Gio.DBusCallFlags.NONE, Lang.bind(this,
-            function(device, error) {
-                if (!error && device)
-                    this._haveFingerprintReader = true;
-            }));
-    },
-
     _updateLogo: function() {
         this._logoBox.child = null;
-        let path = this._settings.get_string(_LOGO_KEY);
+        let path = this._settings.get_string(GdmUtil.LOGO_KEY);
 
         if (path) {
             let file = Gio.file_new_for_path(path);
@@ -878,8 +809,8 @@ const LoginDialog = new Lang.Class({
     },
 
     _updateBanner: function() {
-        let enabled = this._settings.get_boolean(_BANNER_MESSAGE_KEY);
-        let text = this._settings.get_string(_BANNER_MESSAGE_TEXT_KEY);
+        let enabled = this._settings.get_boolean(GdmUtil.BANNER_MESSAGE_KEY);
+        let text = this._settings.get_string(GdmUtil.BANNER_MESSAGE_TEXT_KEY);
 
         if (enabled && text) {
             this._bannerLabel.set_text(text);
@@ -890,10 +821,6 @@ const LoginDialog = new Lang.Class({
     },
 
     _onReset: function(client, serviceName) {
-        this._userVerifier = null;
-
-        this._checkForFingerprintReader();
-
         let tasks = [this._hidePrompt,
 
                      new Batch.ConcurrentBatch(this, [this._fadeInTitleLabel,
@@ -923,43 +850,25 @@ const LoginDialog = new Lang.Class({
         this._sessionList.setActiveSession(sessionId);
     },
 
-    _onInfo: function(client, serviceName, info) {
-        // We don't display fingerprint messages, because they
-        // have words like UPEK in them. Instead we use the messages
-        // as a cue to display our own message.
-        if (serviceName == _FINGERPRINT_SERVICE_NAME &&
-            this._haveFingerprintReader &&
-            (!this._promptFingerprintMessage.visible ||
-             this._promptFingerprintMessage.opacity != 255)) {
-
-            _fadeInActor(this._promptFingerprintMessage);
-            return;
-        }
-
-        if (serviceName != _PASSWORD_SERVICE_NAME)
-            return;
-        Main.notifyError(info);
+    _showFingerprintPrompt: function() {
+        GdmUtil.fadeInActor(this._promptFingerprintMessage);
     },
 
-    _onProblem: function(client, serviceName, problem) {
-        // we don't want to show auth failed messages to
-        // users who haven't enrolled their fingerprint.
-        if (serviceName != _PASSWORD_SERVICE_NAME)
-            return;
-        Main.notifyError(problem);
-    },
+    _hideFingerprintPrompt: function() {
+        GdmUtil.fadeOutActor(this._promptFingerprintMessage);
+    }
 
-    _onCancel: function(client) {
-        this._userVerifier.call_cancel_sync(null);
+    _onCancel: function() {
+        this._userVerifier.cancel();
     },
 
     _fadeInPrompt: function() {
         let tasks = [function() {
-                         return _fadeInActor(this._promptLabel);
+                         return GdmUtil.fadeInActor(this._promptLabel);
                      },
 
                      function() {
-                         return _fadeInActor(this._promptEntry);
+                         return GdmUtil.fadeInActor(this._promptEntry);
                      },
 
                      function() {
@@ -970,14 +879,14 @@ const LoginDialog = new Lang.Class({
                      },
 
                      function() {
-                         return _fadeInActor(this._promptBox);
+                         return GdmUtil.fadeInActor(this._promptBox);
                      },
 
                      function() {
                          if (this._user && this._user.is_logged_in())
                              return null;
 
-                         return _fadeInActor(this._sessionList.actor);
+                         return GdmUtil.fadeInActor(this._sessionList.actor);
                      },
 
                      function() {
@@ -1034,7 +943,7 @@ const LoginDialog = new Lang.Class({
         this.setButtons([]);
 
         let tasks = [function() {
-                         return _fadeOutActor(this._promptBox);
+                         return GdmUtil.fadeOutActor(this._promptBox);
                      },
 
                      function() {
@@ -1049,8 +958,11 @@ const LoginDialog = new Lang.Class({
         return batch.run();
     },
 
-    _askQuestion: function(serviceName, question) {
+    _askQuestion: function(verifier, serviceName, question, passwordChar) {
         this._promptLabel.set_text(question);
+
+        this._promptEntry.set_text('');
+        this._promptEntry.clutter_text.set_password_char(passwordChar);
 
         let tasks = [this._showPrompt,
 
@@ -1058,30 +970,11 @@ const LoginDialog = new Lang.Class({
                          let _text = this._promptEntry.get_text();
                          this._promptEntry.reactive = false;
                          this._promptEntry.add_style_pseudo_class('insensitive');
-                         this._userVerifier.call_answer_query_sync(serviceName, _text, null);
+                         this._userVerifier.answerQuery(serviceName, _text);
                      }];
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
         return batch.run();
-    },
-    _onInfoQuery: function(client, serviceName, question) {
-        // We only expect questions to come from the main auth service
-        if (serviceName != _PASSWORD_SERVICE_NAME)
-            return;
-
-        this._promptEntry.set_text('');
-        this._promptEntry.clutter_text.set_password_char('');
-        this._askQuestion(serviceName, question);
-    },
-
-    _onSecretInfoQuery: function(client, serviceName, secretQuestion) {
-        // We only expect secret requests to come from the main auth service
-        if (serviceName != _PASSWORD_SERVICE_NAME)
-            return;
-
-        this._promptEntry.set_text('');
-        this._promptEntry.clutter_text.set_password_char('\u25cf');
-        this._askQuestion(serviceName, secretQuestion);
     },
 
     _onSessionOpened: function(client, serviceName) {
@@ -1210,15 +1103,8 @@ const LoginDialog = new Lang.Class({
                              }));
     },
 
-    _onConversationStopped: function(client, serviceName) {
-        // if the password service fails, then cancel everything.
-        // But if, e.g., fingerprint fails, still give
-        // password authentication a chance to succeed
-        if (serviceName == _PASSWORD_SERVICE_NAME) {
-            this._userVerifier.call_cancel_sync(null);
-        } else if (serviceName == _FINGERPRINT_SERVICE_NAME) {
-            _fadeOutActor(this._promptFingerprintMessage);
-        }
+    _onVerificationFailed: function() {
+        this._userVerifier.cancel();
     },
 
     _onNotListedClicked: function(user) {
@@ -1241,13 +1127,7 @@ const LoginDialog = new Lang.Class({
                      function() {
                          let hold = new Batch.Hold();
 
-                         this._userVerifier.call_begin_verification(_PASSWORD_SERVICE_NAME,
-                                                                    null,
-                                                                    Lang.bind(this, function (userVerifier, result) {
-                             this._userVerifier.call_begin_verification_finish (result);
-                             hold.release();
-                         }));
-
+                         this._userVerifier.begin(null, hold);
                          return hold;
                      }];
 
@@ -1256,127 +1136,42 @@ const LoginDialog = new Lang.Class({
     },
 
     _fadeInLogo: function() {
-        return _fadeInActor(this._logoBox);
+        return GdmUtil.fadeInActor(this._logoBox);
     },
 
     _fadeOutLogo: function() {
-        return _fadeOutActor(this._logoBox);
+        return GdmUtil.fadeOutActor(this._logoBox);
     },
 
     _fadeInBanner: function() {
-        return _fadeInActor(this._bannerLabel);
+        return GdmUtil.fadeInActor(this._bannerLabel);
     },
 
     _fadeOutBanner: function() {
-        return _fadeOutActor(this._bannerLabel);
+        return GdmUtil.fadeOutActor(this._bannerLabel);
     },
 
     _fadeInTitleLabel: function() {
-        return _fadeInActor(this._titleLabel);
+        return GdmUtil.fadeInActor(this._titleLabel);
     },
 
     _fadeOutTitleLabel: function() {
-        return _fadeOutActor(this._titleLabel);
+        return GdmUtil.fadeOutActor(this._titleLabel);
     },
 
     _fadeInNotListedButton: function() {
-        return _fadeInActor(this._notListedButton);
+        return GdmUtil.fadeInActor(this._notListedButton);
     },
 
     _fadeOutNotListedButton: function() {
-        return _fadeOutActor(this._notListedButton);
-    },
-
-    _getUserVerifier: function(userName) {
-         let hold = new Batch.Hold();
-
-         this._userVerifier = null;
-
-         // If possible, reauthenticate an already running session,
-         // so any session specific credentials get updated appropriately
-         this._greeterClient.open_reauthentication_channel(userName,
-                                                           null,
-                                                           Lang.bind(this, function(client, result) {
-             try {
-                 this._userVerifier = this._greeterClient.open_reauthentication_channel_finish(result);
-                 hold.release();
-             } catch (e) {
-                 // If there's no session running, or it otherwise fails, then fall back
-                 // to performing verification from this login session
-                 this._greeterClient.get_user_verifier(null,
-                                                       Lang.bind(this, function(client, result) {
-                     this._userVerifier = this._greeterClient.get_user_verifier_finish(result);
-                     hold.release();
-                 }));
-             }
-         }));
-
-         hold.connect('release', Lang.bind(this, function() {
-             if (this._userVerifier) {
-                let ids = [];
-                let id;
-
-                id = this._userVerifier.connect('info',
-                                                Lang.bind(this, this._onInfo));
-                ids.push(id);
-                id = this._userVerifier.connect('problem',
-                                                Lang.bind(this, this._onProblem));
-                ids.push(id);
-                id = this._userVerifier.connect('info-query',
-                                                Lang.bind(this, this._onInfoQuery));
-                ids.push(id);
-                id = this._userVerifier.connect('secret-info-query',
-                                                Lang.bind(this, this._onSecretInfoQuery));
-                ids.push(id);
-                id = this._userVerifier.connect('conversation-stopped',
-                                                Lang.bind(this, this._onConversationStopped));
-                ids.push(id);
-                id = this._userVerifier.connect('reset',
-                                                Lang.bind(this, function() {
-                                                    for (let i = 0; i < ids.length; i++)
-                                                        this._userVerifier.disconnect(ids[i]);
-
-                                                    this._onReset();
-                                                }));
-                ids.push(id);
-             }
-         }));
-
-        return hold;
+        return GdmUtil.fadeOutActor(this._notListedButton);
     },
 
     _beginVerificationForUser: function(userName) {
-        let tasks = [function() {
-                         let hold = new Batch.Hold();
-                         this._userVerifier.call_begin_verification_for_user (_PASSWORD_SERVICE_NAME,
-                                                                              userName, null,
-                                                                              Lang.bind(this, function(userVerifier, result) {
-                             this._userVerifier.call_begin_verification_for_user_finish (result);
-                             hold.release();
-                         }));
-                         return hold;
-                     },
+        let hold = new Batch.Hold();
 
-                     function() {
-                         let hold = new Batch.Hold();
-                         if (this._haveFingerprintReader) {
-                             this._userVerifier.call_begin_verification_for_user (_FINGERPRINT_SERVICE_NAME,
-                                                                                  userName, null,
-                                                                                  Lang.bind(this, function(userVerifier, result) {
-                                 this._userVerifier.call_begin_verification_for_user_finish (result);
-                                 hold.release();
-                             }));
-                         } else {
-                             hold.release();
-                         }
-
-                         return hold;
-                     }];
-
-        let batch = new Batch.ConsecutiveBatch(this, [this._getUserVerifier(userName),
-                                                      new Batch.ConcurrentBatch(this, tasks)]);
-
-        return batch.run();
+        this._userVerifier.begin(userName, hold);
+        return hold;
     },
 
     _onUserListActivated: function(activatedItem) {
