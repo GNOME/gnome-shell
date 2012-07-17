@@ -753,10 +753,11 @@ const PanelCorner = new Lang.Class({
             return null;
 
         // Start at the back and work backward
-        let index = children.length - 1;
-        while (!children[index].visible && index >= 0)
-            index--;
-
+        let index;
+        for (index = children.length - 1; index >= 0; index--) {
+            if (children[index].visible)
+                break;
+        }
         if (index < 0)
             return null;
 
@@ -777,10 +778,11 @@ const PanelCorner = new Lang.Class({
             return null;
 
         // Start at the front and work forward
-        let index = 0;
-        while (!children[index].visible && index < children.length)
-            index++;
-
+        let index;
+        for (index = 0; index < children.length; index++) {
+            if (children[index].visible)
+                break;
+        }
         if (index == children.length)
             return null;
 
