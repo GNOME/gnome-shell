@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: cogl 2.0.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-03-27 11:51+0800\n"
-"PO-Revision-Date: 2012-03-27 09:01+0800\n"
+"POT-Creation-Date: 2012-07-18 19:22+0800\n"
+"PO-Revision-Date: 2012-07-18 10:12+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <chinese-l10n@googlegroups.com>\n"
 "Language: \n"
@@ -17,33 +17,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../cogl/cogl-debug.c:173
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "支援的除錯數值："
 
-#: ../cogl/cogl-debug.c:178
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "特殊的除錯數值："
 
-#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "啟用所有非行為性的除錯選項"
-
-#: ../cogl/cogl-debug.c:226
-msgid "Cogl debugging flags to set"
-msgstr "準備設定的 Cogl 偵錯旗標"
-
-#: ../cogl/cogl-debug.c:228
-msgid "Cogl debugging flags to unset"
-msgstr "準備去除的 Cogl 偵錯旗標"
-
-#: ../cogl/cogl-debug.c:277
-msgid "Cogl Options"
-msgstr "Cogl 選項"
-
-#: ../cogl/cogl-debug.c:278
-msgid "Show Cogl options"
-msgstr "顯示 Cogl 選項"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -52,6 +36,7 @@ msgstr "顯示 Cogl 選項"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Cogl 追蹤"
 
@@ -337,3 +322,23 @@ msgstr "追蹤剪裁"
 #: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "關於 Cogl 如何實作剪裁的紀錄資訊"
+
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "追縱效能重視"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "嘗試突顯次要最佳化 Cogl 使用率。"
+
+#~ msgid "Cogl debugging flags to set"
+#~ msgstr "準備設定的 Cogl 偵錯旗標"
+
+#~ msgid "Cogl debugging flags to unset"
+#~ msgstr "準備去除的 Cogl 偵錯旗標"
+
+#~ msgid "Cogl Options"
+#~ msgstr "Cogl 選項"
+
+#~ msgid "Show Cogl options"
+#~ msgstr "顯示 Cogl 選項"
