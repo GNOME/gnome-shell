@@ -1142,6 +1142,7 @@ clutter_event_copy (const ClutterEvent *event)
       new_real_event->source_device = real_event->source_device;
       new_real_event->delta_x = real_event->delta_x;
       new_real_event->delta_y = real_event->delta_y;
+      new_real_event->is_pointer_emulated = real_event->is_pointer_emulated;
     }
 
   device = clutter_event_get_device (event);
