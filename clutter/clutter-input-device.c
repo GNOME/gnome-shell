@@ -1816,7 +1816,7 @@ clutter_input_device_sequence_grab (ClutterInputDevice   *device,
 
   g_hash_table_insert (device->sequence_grab_actors, sequence, actor);
   g_hash_table_insert (device->inv_sequence_grab_actors, actor, sequence);
-  g_signal_connect (grab_actor,
+  g_signal_connect (actor,
                     "destroy",
                     G_CALLBACK (on_grab_sequence_actor_destroy),
                     device);
