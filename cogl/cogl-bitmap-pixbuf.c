@@ -139,6 +139,8 @@ _cogl_bitmap_from_file (CoglContext *ctx,
                                           kCGImageAlphaPremultipliedFirst);
   CGColorSpaceRelease (color_space);
 
+  CGContextSetBlendMode (bitmap_context, kCGBlendModeCopy);
+
   {
     const CGRect rect = {{0, 0}, {width, height}};
 
