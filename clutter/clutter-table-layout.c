@@ -1905,10 +1905,10 @@ clutter_table_layout_pack (ClutterTableLayout  *layout,
   g_assert (CLUTTER_IS_TABLE_CHILD (meta));
 
   if (row < 0)
-    row = priv->n_rows + 1;
+    row = priv->n_rows;
 
   if (column < 0)
-    column = priv->n_cols + 1;
+    column = priv->n_cols;
 
   table_child_set_position (CLUTTER_TABLE_CHILD (meta), column, row);
 }
