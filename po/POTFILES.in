@@ -34,6 +34,7 @@ clutter/clutter-main.c
 clutter/clutter-paint-node.c
 clutter/clutter-path-constraint.c
 clutter/clutter-property-transition.c
+clutter/clutter-rotate-action.c
 clutter/clutter-script.c
 clutter/clutter-scroll-actor.c
 clutter/clutter-settings.c
