@@ -30,7 +30,8 @@
 #include "st-clipboard.h"
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
-#include <clutter/x11/clutter-x11.h>
+#include <gdk/gdk.h>
+#include <gdk/gdkx.h>
 #include <string.h>
 
 G_DEFINE_TYPE (StClipboard, st_clipboard, G_TYPE_OBJECT)
@@ -107,20 +108,23 @@ st_clipboard_finalize (GObject *object)
   G_OBJECT_CLASS (st_clipboard_parent_class)->finalize (object);
 }
 
-static ClutterX11FilterReturn
-st_clipboard_provider (XEvent       *xev,
-                       ClutterEvent *cev,
-                       StClipboard  *clipboard)
+static GdkFilterReturn
+st_clipboard_provider (GdkXEvent *xevent_p,
+                       GdkEvent  *gev,
+                       void      *user_data)
 {
+  StClipboard *clipboard = user_data;
+  XEvent *xev = (XEvent *) xevent_p;
   XSelectionEvent notify_event;
   XSelectionRequestEvent *req_event;
+  GdkDisplay *display = gdk_display_get_default ();
 
   if (xev->type != SelectionRequest)
-    return CLUTTER_X11_FILTER_CONTINUE;
+    return GDK_FILTER_CONTINUE;
 
   req_event = &xev->xselectionrequest;
 
-  clutter_x11_trap_x_errors ();
+  gdk_x11_display_error_trap_push (display);
 
   if (req_event->target == __atom_targets)
     {
@@ -161,11 +165,14 @@ st_clipboard_provider (XEvent       *xev,
   XSendEvent (req_event->display, req_event->requestor, False, 0,
               (XEvent *) &notify_event);
   /* Make it happen non async */
-  XSync (clutter_x11_get_default_display(), FALSE);
+  XSync (GDK_DISPLAY_XDISPLAY (display), FALSE);
 
-  clutter_x11_untrap_x_errors (); /* FIXME: Warn here on fail ? */
+  if (gdk_x11_display_error_trap_pop (display))
+    {
+      /* FIXME: Warn here on fail ? */
+    }
 
-  return CLUTTER_X11_FILTER_REMOVE;
+  return GDK_FILTER_REMOVE;
 }
 
 
@@ -185,17 +192,19 @@ st_clipboard_class_init (StClipboardClass *klass)
 static void
 st_clipboard_init (StClipboard *self)
 {
+  GdkDisplay *gdk_display;
   Display *dpy;
   StClipboardPrivate *priv;
 
   priv = self->priv = CLIPBOARD_PRIVATE (self);
 
-  priv->clipboard_window =
-    XCreateSimpleWindow (clutter_x11_get_default_display (),
-                         clutter_x11_get_root_window (),
-                         -1, -1, 1, 1, 0, 0, 0);
+  gdk_display = gdk_display_get_default ();
+  dpy = GDK_DISPLAY_XDISPLAY (gdk_display);
 
-  dpy = clutter_x11_get_default_display ();
+  priv->clipboard_window =
+    XCreateSimpleWindow (dpy,
+                         gdk_x11_get_default_root_xwindow (),
+                         -1, -1, 1, 1, 0, 0, 0);
 
   /* Only create once */
   if (__atom_primary == None)
@@ -216,22 +225,26 @@ st_clipboard_init (StClipboard *self)
   priv->supported_targets[0] = __utf8_string;
   priv->supported_targets[1] = __atom_targets;
 
-  clutter_x11_add_filter ((ClutterX11FilterFunc) st_clipboard_provider,
-                          self);
+  gdk_window_add_filter (NULL, /* all windows */
+                         st_clipboard_provider,
+                         self);
 }
 
-static ClutterX11FilterReturn
-st_clipboard_x11_event_filter (XEvent          *xev,
-                               ClutterEvent    *cev,
-                               EventFilterData *filter_data)
+static GdkFilterReturn
+st_clipboard_x11_event_filter (GdkXEvent *xevent_p,
+                               GdkEvent  *gev,
+                               void      *user_data)
 {
+  XEvent *xev = (XEvent *) xevent_p;
+  EventFilterData *filter_data = user_data;
   Atom actual_type;
   int actual_format, result;
   unsigned long nitems, bytes_after;
   unsigned char *data = NULL;
+  GdkDisplay *display = gdk_display_get_default ();
 
   if(xev->type != SelectionNotify)
-    return CLUTTER_X11_FILTER_CONTINUE;
+    return GDK_FILTER_CONTINUE;
 
   if (xev->xselection.property == None)
     {
@@ -240,13 +253,14 @@ st_clipboard_x11_event_filter (XEvent          *xev,
                              NULL,
                              filter_data->user_data);
 
-      clutter_x11_remove_filter ((ClutterX11FilterFunc) st_clipboard_x11_event_filter,
-                                 filter_data);
+      gdk_window_remove_filter (NULL,
+                                st_clipboard_x11_event_filter,
+                                filter_data);
       g_free (filter_data);
-      return CLUTTER_X11_FILTER_REMOVE;
+      return GDK_FILTER_REMOVE;
     }
 
-  clutter_x11_trap_x_errors ();
+  gdk_x11_display_error_trap_push (display);
 
   result = XGetWindowProperty (xev->xselection.display,
                                xev->xselection.requestor,
@@ -260,7 +274,7 @@ st_clipboard_x11_event_filter (XEvent          *xev,
                                &bytes_after,
                                &data);
 
-  if (clutter_x11_untrap_x_errors () || result != Success)
+  if (gdk_x11_display_error_trap_pop (display) || result != Success)
     {
       /* FIXME: handle failure better */
       g_warning ("Clipboard: prop retrival failed");
@@ -269,16 +283,16 @@ st_clipboard_x11_event_filter (XEvent          *xev,
   filter_data->callback (filter_data->clipboard, (char*) data,
                          filter_data->user_data);
 
-  clutter_x11_remove_filter
-                          ((ClutterX11FilterFunc) st_clipboard_x11_event_filter,
-                          filter_data);
+  gdk_window_remove_filter (NULL,
+                            st_clipboard_x11_event_filter,
+                            filter_data);
 
   g_free (filter_data);
 
   if (data)
     XFree (data);
 
-  return CLUTTER_X11_FILTER_REMOVE;
+  return GDK_FILTER_REMOVE;
 }
 
 /**
@@ -326,7 +340,7 @@ st_clipboard_get_text (StClipboard            *clipboard,
                        gpointer                user_data)
 {
   EventFilterData *data;
-
+  GdkDisplay *gdk_display;
   Display *dpy;
 
   g_return_if_fail (ST_IS_CLIPBOARD (clipboard));
@@ -337,12 +351,14 @@ st_clipboard_get_text (StClipboard            *clipboard,
   data->callback = callback;
   data->user_data = user_data;
 
-  clutter_x11_add_filter ((ClutterX11FilterFunc) st_clipboard_x11_event_filter,
-                          data);
+  gdk_window_add_filter (NULL, /* all windows */
+                         st_clipboard_x11_event_filter,
+                         data);
 
-  dpy = clutter_x11_get_default_display ();
+  gdk_display = gdk_display_get_default ();
+  dpy = GDK_DISPLAY_XDISPLAY (gdk_display);
 
-  clutter_x11_trap_x_errors (); /* safety on */
+  gdk_x11_display_error_trap_push (gdk_display);
 
   XConvertSelection (dpy,
                      atom_for_clipboard_type (type),
@@ -350,7 +366,10 @@ st_clipboard_get_text (StClipboard            *clipboard,
                      clipboard->priv->clipboard_window,
                      CurrentTime);
 
-  clutter_x11_untrap_x_errors ();
+  if (gdk_x11_display_error_trap_pop (gdk_display))
+    {
+      /* FIXME */
+    }
 }
 
 /**
@@ -367,6 +386,7 @@ st_clipboard_set_text (StClipboard     *clipboard,
                        const gchar     *text)
 {
   StClipboardPrivate *priv;
+  GdkDisplay *gdk_display;
   Display *dpy;
 
   g_return_if_fail (ST_IS_CLIPBOARD (clipboard));
@@ -379,13 +399,17 @@ st_clipboard_set_text (StClipboard     *clipboard,
   priv->clipboard_text = g_strdup (text);
 
   /* tell X we own the clipboard selection */
-  dpy = clutter_x11_get_default_display ();
+  gdk_display = gdk_display_get_default ();
+  dpy = GDK_DISPLAY_XDISPLAY (gdk_display);
 
-  clutter_x11_trap_x_errors ();
+  gdk_x11_display_error_trap_push (gdk_display);
 
   XSetSelectionOwner (dpy, atom_for_clipboard_type (type), priv->clipboard_window, CurrentTime);
 
   XSync (dpy, FALSE);
 
-  clutter_x11_untrap_x_errors ();
+  if (gdk_x11_display_error_trap_pop (gdk_display))
+    {
+      /* FIXME */
+    }
 }
