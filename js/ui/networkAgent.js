@@ -166,10 +166,6 @@ const NetworkSecretDialog = new Lang.Class({
 
         this._okButton.button.reactive = valid;
         this._okButton.button.can_focus = valid;
-        if (valid)
-            this._okButton.button.remove_style_pseudo_class('disabled');
-        else
-            this._okButton.button.add_style_pseudo_class('disabled');
     },
 
     _onOk: function() {
