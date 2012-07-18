@@ -876,15 +876,11 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                                                  stage_x11,
                                                  &xev->valuators);
 
-#ifdef HAVE_XINPUT_2_2
-            if (xev->flags & XIPointerEmulated)
-              _clutter_event_set_pointer_emulated (event, TRUE);
-#endif /* HAVE_XINPUT_2_2 */
-
             CLUTTER_NOTE (EVENT,
                           "scroll: win:0x%x, device:%s, time:%d "
                           "(direction:%s, "
-                          "x:%.2f, y:%.2f)",
+                          "x:%.2f, y:%.2f, "
+                          "emulated:%s)",
                           (unsigned int) stage_x11->xwin,
                           device->device_name,
                           event->any.time,
@@ -894,7 +890,8 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                           event->scroll.direction == CLUTTER_SCROLL_RIGHT ? "right" :
                           "invalid",
                           event->scroll.x,
-                          event->scroll.y);
+                          event->scroll.y,
+                          (xev->flags & XIPointerEmulated) ? "yes" : "no");
             break;
 
           default:
@@ -927,7 +924,11 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                                                  &xev->valuators);
 
             CLUTTER_NOTE (EVENT,
-                          "%s: win:0x%x, device:%s, time:%d (button:%d, x:%.2f, y:%.2f, axes:%s)",
+                          "%s: win:0x%x, device:%s, time:%d "
+                          "(button:%d, "
+                          "x:%.2f, y:%.2f, "
+                          "axes:%s, "
+                          "emulated:%s)",
                           event->any.type == CLUTTER_BUTTON_PRESS
                             ? "button press  "
                             : "button release",
@@ -937,7 +938,8 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                           event->button.button,
                           event->button.x,
                           event->button.y,
-                          event->button.axes != NULL ? "yes" : "no");
+                          event->button.axes != NULL ? "yes" : "no",
+                          (xev->flags & XIPointerEmulated) ? "yes" : "no");
             break;
           }
 
