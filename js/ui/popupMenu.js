@@ -134,7 +134,6 @@ const PopupBaseMenuItem = new Lang.Class({
 
         this.sensitive = sensitive;
         this.actor.reactive = sensitive;
-        this.actor.can_focus = sensitive;
 
         if (sensitive)
             this.actor.remove_style_pseudo_class('insensitive');
@@ -773,12 +772,10 @@ const PopupSwitchMenuItem = new Lang.Class({
             this._statusLabel.text = text;
             this._statusBin.child = this._statusLabel;
             this.actor.reactive = false;
-            this.actor.can_focus = false;
             this.actor.accessible_role = Atk.Role.MENU_ITEM;
         } else {
             this._statusBin.child = this._switch.actor;
             this.actor.reactive = true;
-            this.actor.can_focus = true;
             this.actor.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         }
         this.checkAccessibleState();
@@ -1891,7 +1888,7 @@ const RemoteMenu = new Lang.Class({
             }));
         }
 
-        item.actor.reactive = item.actor.can_focus = action.enabled;
+        item.actor.reactive = action.enabled;
         if (action.enabled)
             item.actor.remove_style_pseudo_class('insensitive');
         else
@@ -2027,7 +2024,7 @@ const RemoteMenu = new Lang.Class({
         if (action.items.length) {
             for (let i = 0; i < action.items.length; i++) {
                 let item = action.items[i];
-                item.actor.reactive = item.actor.can_focus = action.enabled;
+                item.actor.reactive = action.enabled;
 
                 if (action.enabled)
                     item.actor.remove_style_pseudo_class('insensitive');

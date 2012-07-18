@@ -195,7 +195,8 @@ st_bin_navigate_focus (StWidget         *widget,
   StBinPrivate *priv = ST_BIN (widget)->priv;
   ClutterActor *bin_actor = CLUTTER_ACTOR (widget);
 
-  if (st_widget_get_can_focus (widget))
+  if (clutter_actor_get_reactive (bin_actor) &&
+      st_widget_get_can_focus (widget))
     {
       if (from && clutter_actor_contains (bin_actor, from))
         return FALSE;

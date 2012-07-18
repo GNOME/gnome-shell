@@ -285,7 +285,8 @@ st_entry_navigate_focus (StWidget         *widget,
 
   if (from == priv->entry)
     return FALSE;
-  else if (st_widget_get_can_focus (widget))
+  else if (clutter_actor_get_reactive (CLUTTER_ACTOR (widget)) &&
+           st_widget_get_can_focus (widget))
     {
       clutter_actor_grab_key_focus (priv->entry);
       return TRUE;

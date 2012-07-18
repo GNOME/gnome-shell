@@ -165,7 +165,6 @@ const NetworkSecretDialog = new Lang.Class({
         }
 
         this._okButton.button.reactive = valid;
-        this._okButton.button.can_focus = valid;
     },
 
     _onOk: function() {
