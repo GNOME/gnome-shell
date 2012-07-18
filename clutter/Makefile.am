@@ -302,6 +302,7 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-frame-source.c		\
 	$(srcdir)/deprecated/clutter-group.c 			\
 	$(srcdir)/deprecated/clutter-input-device-deprecated.c	\
+	$(srcdir)/deprecated/clutter-layout-manager-deprecated.c \
 	$(srcdir)/deprecated/clutter-media.c			\
 	$(srcdir)/deprecated/clutter-rectangle.c 		\
 	$(srcdir)/deprecated/clutter-score.c 			\
