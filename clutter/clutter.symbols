@@ -670,6 +670,7 @@ clutter_event_get_time
 clutter_event_get
 clutter_event_has_control_modifier
 clutter_event_has_shift_modifier
+clutter_event_is_pointer_emulated
 clutter_event_new
 clutter_event_peek
 clutter_event_put

@@ -460,6 +460,8 @@ CLUTTER_AVAILABLE_IN_1_12
 gboolean                clutter_event_has_shift_modifier        (const ClutterEvent     *event);
 CLUTTER_AVAILABLE_IN_1_12
 gboolean                clutter_event_has_control_modifier      (const ClutterEvent     *event);
+CLUTTER_AVAILABLE_IN_1_12
+gboolean                clutter_event_is_pointer_emulated       (const ClutterEvent     *event);
 
 void                    clutter_event_set_key_symbol            (ClutterEvent           *event,
                                                                  guint                   key_sym);
