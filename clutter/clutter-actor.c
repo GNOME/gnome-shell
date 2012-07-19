@@ -4363,47 +4363,35 @@ clutter_actor_get_translation (ClutterActor *self,
 /*< private >
  * clutter_actor_set_rotation_angle_internal:
  * @self: a #ClutterActor
- * @axis: the axis of the angle to change
  * @angle: the angle of rotation
+ * @pspec: the #GParamSpec of the property
  *
  * Sets the rotation angle on the given axis without affecting the
  * rotation center point.
  */
 static inline void
-clutter_actor_set_rotation_angle_internal (ClutterActor      *self,
-                                           ClutterRotateAxis  axis,
-                                           gdouble            angle)
+clutter_actor_set_rotation_angle_internal (ClutterActor *self,
+                                           gdouble       angle,
+                                           GParamSpec   *pspec)
 {
-  GObject *obj = G_OBJECT (self);
   ClutterTransformInfo *info;
 
   info = _clutter_actor_get_transform_info (self);
 
-  g_object_freeze_notify (obj);
-
-  switch (axis)
-    {
-    case CLUTTER_X_AXIS:
-      info->rx_angle = angle;
-      g_object_notify_by_pspec (obj, obj_props[PROP_ROTATION_ANGLE_X]);
-      break;
-
-    case CLUTTER_Y_AXIS:
-      info->ry_angle = angle;
-      g_object_notify_by_pspec (obj, obj_props[PROP_ROTATION_ANGLE_Y]);
-      break;
-
-    case CLUTTER_Z_AXIS:
-      info->rz_angle = angle;
-      g_object_notify_by_pspec (obj, obj_props[PROP_ROTATION_ANGLE_Z]);
-      break;
-    }
+  if (pspec == obj_props[PROP_ROTATION_ANGLE_X])
+    info->rx_angle = angle;
+  else if (pspec == obj_props[PROP_ROTATION_ANGLE_Y])
+    info->ry_angle = angle;
+  else if (pspec == obj_props[PROP_ROTATION_ANGLE_Z])
+    info->rz_angle = angle;
+  else
+    g_assert_not_reached ();
 
   self->priv->transform_valid = FALSE;
 
-  g_object_thaw_notify (obj);
-
   clutter_actor_queue_redraw (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), pspec);
 }
 
 /**
@@ -11799,12 +11787,14 @@ clutter_actor_set_z_rotation_from_gravity (ClutterActor   *self,
     {
       GObject *obj = G_OBJECT (self);
       ClutterTransformInfo *info;
+      GParamSpec *pspec;
 
+      pspec = obj_props[PROP_ROTATION_ANGLE_Z];
       info = _clutter_actor_get_transform_info (self);
 
       g_object_freeze_notify (obj);
 
-      clutter_actor_set_rotation_angle_internal (self, CLUTTER_Z_AXIS, angle);
+      clutter_actor_set_rotation_angle_internal (self, angle, pspec);
 
       clutter_anchor_coord_set_gravity (&info->rz_center, gravity);
       g_object_notify_by_pspec (obj, obj_props[PROP_ROTATION_CENTER_Z_GRAVITY]);
@@ -14544,21 +14534,11 @@ clutter_actor_set_animatable_property (ClutterActor *actor,
       break;
 
     case PROP_ROTATION_ANGLE_X:
-      clutter_actor_set_rotation_angle_internal (actor,
-                                                 CLUTTER_X_AXIS,
-                                                 g_value_get_double (value));
-      break;
-
     case PROP_ROTATION_ANGLE_Y:
-      clutter_actor_set_rotation_angle_internal (actor,
-                                                 CLUTTER_Y_AXIS,
-                                                 g_value_get_double (value));
-      break;
-
     case PROP_ROTATION_ANGLE_Z:
       clutter_actor_set_rotation_angle_internal (actor,
-                                                 CLUTTER_Z_AXIS,
-                                                 g_value_get_double (value));
+                                                 g_value_get_double (value),
+                                                 pspec);
       break;
 
     case PROP_CONTENT_BOX:
