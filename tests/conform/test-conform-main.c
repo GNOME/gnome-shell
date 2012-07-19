@@ -231,6 +231,8 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/timeline", timeline_markers_from_script);
   TEST_CONFORM_SKIP (g_test_slow (), "/timeline", timeline_interpolation);
   TEST_CONFORM_SKIP (g_test_slow (), "/timeline", timeline_rewind);
+  TEST_CONFORM_SIMPLE ("/timeline", timeline_progress_mode);
+  TEST_CONFORM_SIMPLE ("/timeline", timeline_progress_step);
 
   TEST_CONFORM_SIMPLE ("/score", score_base);
 

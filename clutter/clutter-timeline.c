@@ -150,6 +150,9 @@ struct _ClutterTimelinePrivate
   GDestroyNotify progress_notify;
   ClutterAnimationMode progress_mode;
 
+  gint n_steps;
+  ClutterStepMode step_mode;
+
   guint is_playing         : 1;
 
   /* If we've just started playing and haven't yet gotten
@@ -812,6 +815,8 @@ clutter_timeline_init (ClutterTimeline *self)
                                  ClutterTimelinePrivate);
 
   priv->progress_mode = CLUTTER_LINEAR;
+  priv->n_steps = 1;
+  priv->step_mode = CLUTTER_STEP_MODE_END;
 }
 
 struct CheckIfMarkerHitClosure
@@ -2125,6 +2130,28 @@ clutter_timeline_progress_func (ClutterTimeline *timeline,
 {
   ClutterTimelinePrivate *priv = timeline->priv;
 
+  /* parametrized easing functions need to be handled separately */
+  switch (priv->progress_mode)
+    {
+    case CLUTTER_STEPS:
+      if (priv->step_mode == CLUTTER_STEP_MODE_START)
+        return clutter_ease_steps_start (elapsed, duration, priv->n_steps);
+      else if (priv->step_mode == CLUTTER_STEP_MODE_END)
+        return clutter_ease_steps_end (elapsed, duration, priv->n_steps);
+      else
+        g_assert_not_reached ();
+      break;
+
+    case CLUTTER_STEP_START:
+      return clutter_ease_steps_start (elapsed, duration, 1);
+
+    case CLUTTER_STEP_END:
+      return clutter_ease_steps_end (elapsed, duration, 1);
+
+    default:
+      break;
+    }
+
   return clutter_easing_for_mode (priv->progress_mode, elapsed, duration);
 }
 
@@ -2242,4 +2269,73 @@ clutter_timeline_get_current_repeat (ClutterTimeline *timeline)
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
 
   return timeline->priv->current_repeat;
+}
+
+/**
+ * clutter_timeline_set_step_progress:
+ * @timeline: a #ClutterTimeline
+ * @n_steps: the number of steps
+ * @step_mode: whether the change should happen at the start
+ *   or at the end of the step
+ *
+ * Sets the #ClutterTimeline:progress-mode of the @timeline to %CLUTTER_STEPS
+ * and provides the parameters of the step function.
+ *
+ * Since: 1.12
+ */
+void
+clutter_timeline_set_step_progress (ClutterTimeline *timeline,
+                                    gint             n_steps,
+                                    ClutterStepMode  step_mode)
+{
+  ClutterTimelinePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_if_fail (n_steps > 0);
+
+  priv = timeline->priv;
+
+  if (priv->progress_mode == CLUTTER_STEPS &&
+      priv->n_steps == n_steps &&
+      priv->step_mode == step_mode)
+    return;
+
+  priv->n_steps = n_steps;
+  priv->step_mode = step_mode;
+  clutter_timeline_set_progress_mode (timeline, CLUTTER_STEPS);
+}
+
+/**
+ * clutter_timeline_get_step_progress:
+ * @timeline: a #ClutterTimeline
+ * @n_steps: (out): return location for the number of steps, or %NULL
+ * @step_mode: (out): return location for the value change policy,
+ *   or %NULL
+ *
+ * Retrieves the parameters of the step progress mode used by @timeline.
+ *
+ * Return value: %TRUE if the @timeline is using a step progress
+ *   mode, and %FALSE otherwise
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_timeline_get_step_progress (ClutterTimeline *timeline,
+                                    gint            *n_steps,
+                                    ClutterStepMode *step_mode)
+{
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
+
+  if (timeline->priv->progress_mode != CLUTTER_STEPS ||
+      timeline->priv->progress_mode != CLUTTER_STEP_START ||
+      timeline->priv->progress_mode != CLUTTER_STEP_END)
+    return FALSE;
+
+  if (n_steps != NULL)
+    *n_steps = timeline->priv->n_steps;
+
+  if (step_mode != NULL)
+    *step_mode = timeline->priv->step_mode;
+
+  return TRUE;
 }

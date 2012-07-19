@@ -22,6 +22,7 @@ units_sources += \
 	state.c				\
 	timeline.c			\
 	timeline-interpolate.c 		\
+	timeline-progress.c		\
 	timeline-rewind.c 		\
 	$(NULL)
 

@@ -379,6 +379,29 @@ clutter_ease_in_out_bounce (double t,
     return ease_out_bounce_internal (t * 2 - d, d) * 0.5 + 1.0 * 0.5;
 }
 
+static inline double
+ease_steps_end (double p,
+                int    n_steps)
+{
+  return floor (p * (double) n_steps) / (double) n_steps;
+}
+
+double
+clutter_ease_steps_start (double t,
+                          double d,
+                          int    n_steps)
+{
+  return 1.0 - ease_steps_end (1.0 - (t / d), n_steps);
+}
+
+double
+clutter_ease_steps_end (double t,
+                        double d,
+                        int    n_steps)
+{
+  return ease_steps_end ((t / d), n_steps);
+}
+
 /*< private >
  * _clutter_animation_modes:
  *
@@ -422,6 +445,10 @@ static const struct {
   { CLUTTER_EASE_IN_BOUNCE,      clutter_ease_in_bounce, "easeInBounce" },
   { CLUTTER_EASE_OUT_BOUNCE,     clutter_ease_out_bounce, "easeOutBounce" },
   { CLUTTER_EASE_IN_OUT_BOUNCE,  clutter_ease_in_out_bounce, "easeInOutBounce" },
+
+  { CLUTTER_STEPS,               (ClutterEasingFunc) clutter_ease_steps_end, "steps" },
+  { CLUTTER_STEP_START,          (ClutterEasingFunc) clutter_ease_steps_start, "stepStart" },
+  { CLUTTER_STEP_END,            (ClutterEasingFunc) clutter_ease_steps_end, "stepEnd" },
 
   { CLUTTER_ANIMATION_LAST,      NULL, "sentinel" },
 };

@@ -170,6 +170,14 @@ void                            clutter_timeline_set_progress_mode      (Clutter
                                                                          ClutterAnimationMode      mode);
 CLUTTER_AVAILABLE_IN_1_10
 ClutterAnimationMode            clutter_timeline_get_progress_mode      (ClutterTimeline          *timeline);
+CLUTTER_AVAILABLE_IN_1_12
+void                            clutter_timeline_set_step_progress      (ClutterTimeline          *timeline,
+                                                                         gint                      n_steps,
+                                                                         ClutterStepMode           step_mode);
+CLUTTER_AVAILABLE_IN_1_12
+gboolean                        clutter_timeline_get_step_progress      (ClutterTimeline          *timeline,
+                                                                         gint                     *n_steps,
+                                                                         ClutterStepMode          *step_mode);
 
 CLUTTER_AVAILABLE_IN_1_10
 gint64                          clutter_timeline_get_duration_hint      (ClutterTimeline          *timeline);

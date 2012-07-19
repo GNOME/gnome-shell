@@ -160,6 +160,12 @@ typedef enum { /*< prefix=CLUTTER_REQUEST >*/
  *   tweening, with bounce on end
  * @CLUTTER_EASE_IN_OUT_BOUNCE: exponentially decaying parabolic (bounce)
  *   tweening, with bounce on both ends
+ * @CLUTTER_STEPS: parametrized step function; see clutter_timeline_set_step_progress()
+ *   for further details. (Since 1.12)
+ * @CLUTTER_STEP_START: equivalent to %CLUTTER_STEPS with a number of steps
+ *   equal to 1, and a step mode of %CLUTTER_STEP_MODE_START. (Since 1.12)
+ * @CLUTTER_STEP_END: equivalent to %CLUTTER_STEPS with a number of steps
+ *   equal to 1, and a step mode of %CLUTTER_STEP_MODE_END. (Since: 1.12)
  * @CLUTTER_ANIMATION_LAST: last animation mode, used as a guard for
  *   registered global alpha functions
  *
@@ -232,6 +238,11 @@ typedef enum {
   CLUTTER_EASE_IN_BOUNCE,
   CLUTTER_EASE_OUT_BOUNCE,
   CLUTTER_EASE_IN_OUT_BOUNCE,
+
+  /* step functions (see css3-transitions) */
+  CLUTTER_STEPS,
+  CLUTTER_STEP_START, /* steps(1, start) */
+  CLUTTER_STEP_END, /* steps(1, end) */
 
   /* guard, before registered alpha functions */
   CLUTTER_ANIMATION_LAST
@@ -1272,6 +1283,26 @@ typedef enum {
   CLUTTER_REPEAT_Y_AXIS = 1 << 1,
   CLUTTER_REPEAT_BOTH   = CLUTTER_REPEAT_X_AXIS | CLUTTER_REPEAT_Y_AXIS
 } ClutterContentRepeat;
+
+/**
+ * ClutterStepMode:
+ * @CLUTTER_STEP_MODE_START: The change in the value of a
+ *   %CLUTTER_STEP progress mode should occur at the start of
+ *   the transition
+ * @CLUTTER_STEP_MODE_END: The change in the value of a
+ *   %CLUTTER_STEP progress mode should occur at the end of
+ *   the transition
+ *
+ * Change the value transition of a step function.
+ *
+ * See clutter_timeline_set_step_progress().
+ *
+ * Since: 1.12
+ */
+typedef enum {
+  CLUTTER_STEP_MODE_START,
+  CLUTTER_STEP_MODE_END
+} ClutterStepMode;
 
 G_END_DECLS
 

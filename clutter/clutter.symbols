@@ -1283,6 +1283,7 @@ clutter_state_set_key
 clutter_state_set_state
 clutter_state_warp_to_state
 clutter_static_color_get_type
+clutter_step_mode_get_type
 clutter_swipe_action_get_type
 clutter_swipe_action_new
 clutter_swipe_direction_get_type
@@ -1463,6 +1464,7 @@ clutter_timeline_get_loop
 clutter_timeline_get_progress_mode
 clutter_timeline_get_progress
 clutter_timeline_get_repeat_count
+clutter_timeline_get_step_progress
 clutter_timeline_get_type
 clutter_timeline_has_marker
 clutter_timeline_is_playing
@@ -1478,6 +1480,7 @@ clutter_timeline_set_loop
 clutter_timeline_set_progress_func
 clutter_timeline_set_progress_mode
 clutter_timeline_set_repeat_count
+clutter_timeline_set_step_progress
 clutter_timeline_skip
 clutter_timeline_start
 clutter_timeline_stop

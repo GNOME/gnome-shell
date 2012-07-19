@@ -121,6 +121,15 @@ G_GNUC_INTERNAL
 double  clutter_ease_in_out_bounce      (double t,
                                          double d);
 
+G_GNUC_INTERNAL
+double  clutter_ease_steps_start        (double t,
+                                         double d,
+                                         int    steps);
+G_GNUC_INTERNAL
+double  clutter_ease_steps_end          (double t,
+                                         double d,
+                                         int    steps);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_EASING_H__ */
