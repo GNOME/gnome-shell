@@ -64,10 +64,7 @@ on_clicked (ClutterClickAction *action,
   clutter_actor_set_position (actor, new_x, new_y);
   clutter_actor_set_size (actor, new_width, new_height);
   clutter_actor_set_background_color (actor, new_color);
-  clutter_actor_set_rotation (actor, CLUTTER_Z_AXIS, new_angle,
-                              new_width / 2.0f,
-                              new_height / 2.0f,
-                              0.0f);
+  clutter_actor_set_rotation_angle (actor, CLUTTER_Z_AXIS, new_angle);
   clutter_actor_set_reactive (actor, FALSE);
 
   /* animate the opacity halfway through, with a different pacing */
@@ -100,7 +97,8 @@ test_animation_main (int argc, char *argv[])
   clutter_actor_set_background_color (rect, CLUTTER_COLOR_LightOrange);
   clutter_actor_add_child (stage, rect);
   clutter_actor_set_size (rect, 50, 50);
-  clutter_actor_set_anchor_point (rect, 25, 25);
+  clutter_actor_set_pivot_point (rect, .5f, .5f);
+  clutter_actor_set_translation (rect, -25, -25, 0);
   clutter_actor_set_position (rect,
                               clutter_actor_get_width (stage) / 2,
                               clutter_actor_get_height (stage) / 2);
