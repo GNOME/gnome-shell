@@ -119,11 +119,17 @@ const ModalDialog = new Lang.Class({
             let label = buttonInfo['label'];
             let action = buttonInfo['action'];
             let key = buttonInfo['key'];
+            let isDefault = buttonInfo['default'];
+
+            if (isDefault && !key)
+                key = Clutter.KEY_Return;
 
             buttonInfo.button = new St.Button({ style_class: 'modal-dialog-button',
                                                 reactive:    true,
                                                 can_focus:   true,
                                                 label:       label });
+            if (isDefault)
+                buttonInfo.button.add_style_pseudo_class('default');
 
             let x_alignment;
             if (buttons.length == 1)

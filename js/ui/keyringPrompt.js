@@ -65,7 +65,8 @@ const KeyringDialog = new Lang.Class({
                          key:    Clutter.Escape
                        },
                        { label: '',
-                         action: Lang.bind(this, this._onContinueButton)
+                         action: Lang.bind(this, this._onContinueButton),
+                         default: true
                        }]
 
         this.setButtons(buttons);

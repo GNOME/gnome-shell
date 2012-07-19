@@ -998,7 +998,8 @@ const LoginDialog = new Lang.Class({
                        { action: Lang.bind(this, function() {
                                      hold.release();
                                  }),
-                         label: C_("button", "Sign In") }];
+                         label: C_("button", "Sign In"),
+                         default: true }];
 
         this._promptEntryActivateCallbackId = this._promptEntry.clutter_text.connect('activate',
                                                                                      Lang.bind(this, function() {

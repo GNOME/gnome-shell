@@ -147,7 +147,7 @@ const NetworkSecretDialog = new Lang.Class({
 
         this._okButton = { label:  _("Connect"),
                            action: Lang.bind(this, this._onOk),
-                           key:    Clutter.KEY_Return,
+                           default: true
                          };
 
         this.setButtons([{ label: _("Cancel"),

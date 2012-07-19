@@ -398,7 +398,8 @@ const ShellMountPasswordDialog = new Lang.Class({
                          key:    Clutter.Escape
                        },
                        { label: _("Unlock"),
-                         action: Lang.bind(this, this._onUnlockButton)
+                         action: Lang.bind(this, this._onUnlockButton),
+                         default: true
                        }];
 
         this.setButtons(buttons);

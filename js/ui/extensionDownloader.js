@@ -197,7 +197,8 @@ const InstallExtensionDialog = new Lang.Class({
                            key:    Clutter.Escape
                          },
                          { label:  _("Install"),
-                           action: Lang.bind(this, this._onInstallButtonPressed)
+                           action: Lang.bind(this, this._onInstallButtonPressed),
+                           default: true
                          }]);
 
         let message = _("Download and install '%s' from extensions.gnome.org?").format(info.name);
