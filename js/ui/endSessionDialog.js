@@ -279,11 +279,7 @@ const EndSessionDialog = new Lang.Class({
         scrollView.hide();
 
         this._applicationList = new St.BoxLayout({ vertical: true });
-        scrollView.add_actor(this._applicationList,
-                             { x_fill:  true,
-                               y_fill:  true,
-                               x_align: St.Align.START,
-                               y_align: St.Align.MIDDLE });
+        scrollView.add_actor(this._applicationList);
 
         this._applicationList.connect('actor-added',
                                       Lang.bind(this, function() {

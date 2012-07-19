@@ -284,11 +284,7 @@ const UserList = new Lang.Class({
         this._box = new St.BoxLayout({ vertical: true,
                                        style_class: 'login-dialog-user-list' });
 
-        this.actor.add_actor(this._box,
-                             { x_fill: true,
-                               y_fill: true,
-                               x_align: St.Align.START,
-                               y_align: St.Align.MIDDLE });
+        this.actor.add_actor(this._box);
         this._items = {};
 
         this.actor.connect('key-focus-in', Lang.bind(this, this._moveFocusToItems));
@@ -551,10 +547,7 @@ const SessionListItem = new Lang.Class({
 
         this._box = new St.BoxLayout({ style_class: 'login-dialog-session-list-item-box' });
 
-        this.actor.add_actor(this._box,
-                             { expand: true,
-                               x_fill: true,
-                               y_fill: true });
+        this.actor.add_actor(this._box);
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
 
         this._dot = new St.DrawingArea({ style_class: 'login-dialog-session-list-item-dot' });
@@ -565,10 +558,7 @@ const SessionListItem = new Lang.Class({
         let label = new St.Label({ style_class: 'login-dialog-session-list-item-label',
                                    text: name });
 
-        this._box.add_actor(label,
-                            { expand: true,
-                              x_fill: true,
-                              y_fill: true });
+        this._box.add_actor(label);
     },
 
     setShowDot: function(show) {
@@ -612,10 +602,7 @@ const SessionList = new Lang.Class({
                                        x_fill: true,
                                        y_fill: true });
         let box = new St.BoxLayout();
-        this._button.add_actor(box,
-                               { x_fill: true,
-                                 y_fill: true,
-                                 expand: true });
+        this._button.add_actor(box);
 
         this._triangle = new St.Label({ style_class: 'login-dialog-session-list-triangle',
                                         text: '\u25B8' });
@@ -623,30 +610,18 @@ const SessionList = new Lang.Class({
 
         let label = new St.Label({ style_class: 'login-dialog-session-list-label',
                                    text: _("Session...") });
-        box.add_actor(label,
-                      { x_fill: true,
-                        y_fill: true,
-                        expand: true });
+        box.add_actor(label);
 
         this._button.connect('clicked',
                              Lang.bind(this, this._onClicked));
-        this._box.add_actor(this._button,
-                            { x_fill: true,
-                              y_fill: true,
-                              expand: true });
+        this._box.add_actor(this._button);
         this._scrollView = new St.ScrollView({ style_class: 'login-dialog-session-list-scroll-view'});
         this._scrollView.set_policy(Gtk.PolicyType.NEVER,
                                     Gtk.PolicyType.AUTOMATIC);
-        this._box.add_actor(this._scrollView,
-                            { x_fill: true,
-                              y_fill: true,
-                              expand: true });
+        this._box.add_actor(this._scrollView);
         this._itemList = new St.BoxLayout({ style_class: 'login-dialog-session-item-list',
                                             vertical: true });
-        this._scrollView.add_actor(this._itemList,
-                                   { x_fill: true,
-                                     y_fill: true,
-                                     expand: true });
+        this._scrollView.add_actor(this._itemList);
         this._scrollView.hide();
         this.isOpen = false;
         this._populate();
@@ -714,11 +689,7 @@ const SessionList = new Lang.Class({
             let [sessionName, sessionDescription] = Gdm.get_session_name_and_description(ids[i]);
 
             let item = new SessionListItem(ids[i], sessionName);
-            this._itemList.add_actor(item.actor,
-                              { x_align: St.Align.START,
-                                y_align: St.Align.START,
-                                x_fill: true,
-                                y_fill: true });
+            this._itemList.add_actor(item.actor);
             this._items[ids[i]] = item;
 
             if (!this._activeSessionId)
