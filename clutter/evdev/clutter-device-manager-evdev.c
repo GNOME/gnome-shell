@@ -245,7 +245,7 @@ notify_button (ClutterEventSource *source,
   gint button_nr;
   static gint maskmap[8] =
     {
-      CLUTTER_BUTTON1_MASK, CLUTTER_BUTTON2_MASK, CLUTTER_BUTTON3_MASK,
+      CLUTTER_BUTTON1_MASK, CLUTTER_BUTTON3_MASK, CLUTTER_BUTTON2_MASK,
       CLUTTER_BUTTON4_MASK, CLUTTER_BUTTON5_MASK, 0, 0, 0
     };
 
@@ -255,7 +255,28 @@ notify_button (ClutterEventSource *source,
   if (!stage)
     return;
 
-  button_nr = button - BTN_LEFT + 1;
+  /* The evdev button numbers don't map sequentially to clutter button
+   * numbers (the right and middle mouse buttons are in the opposite
+   * order) so we'll map them directly with a switch statement */
+  switch (button)
+    {
+    case BTN_LEFT:
+      button_nr = CLUTTER_BUTTON_PRIMARY;
+      break;
+
+    case BTN_RIGHT:
+      button_nr = CLUTTER_BUTTON_SECONDARY;
+      break;
+
+    case BTN_MIDDLE:
+      button_nr = CLUTTER_BUTTON_MIDDLE;
+      break;
+
+    default:
+      button_nr = button - BTN_MOUSE + 1;
+      break;
+    }
+
   if (G_UNLIKELY (button_nr < 1 || button_nr > 8))
     {
       g_warning ("Unhandled button event 0x%x", button);
