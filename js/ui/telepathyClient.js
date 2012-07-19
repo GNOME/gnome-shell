@@ -482,9 +482,9 @@ const ChatSource = new Lang.Class({
         this._notification.appendAliasChange(oldAlias, newAlias);
     },
 
-    createNotificationIcon: function() {
+    createIcon: function(size) {
         this._iconBox = new St.Bin({ style_class: 'avatar-box' });
-        this._iconBox._size = this.ICON_SIZE;
+        this._iconBox._size = size;
         let textureCache = St.TextureCache.get_default();
         let file = this._contact.get_avatar_file();
 
@@ -532,8 +532,8 @@ const ChatSource = new Lang.Class({
     },
 
     _updateAvatarIcon: function() {
-        this._setSummaryIcon(this.createNotificationIcon());
-        this._notification.update(this._notification.title, null, { customContent: true, icon: this.createNotificationIcon() });
+        this._setSummaryIcon(this.createIcon(this.ICON_SIZE));
+        this._notification.update(this._notification.title, null, { customContent: true });
     },
 
     open: function(notification) {
@@ -1031,9 +1031,9 @@ const ApproverSource = new Lang.Class({
         this.parent();
     },
 
-    createNotificationIcon: function() {
+    createIcon: function(size) {
         return new St.Icon({ gicon: this._gicon,
-                             icon_size: this.ICON_SIZE });
+                             icon_size: size });
     }
 });
 

@@ -502,9 +502,9 @@ const AutorunTransientSource = new Lang.Class({
         this.notify(this._notification);
     },
 
-    createNotificationIcon: function() {
+    createIcon: function(size) {
         return new St.Icon({ gicon: this.mount.get_icon(),
-                             icon_size: this.ICON_SIZE });
+                             icon_size: size });
     }
 });
 

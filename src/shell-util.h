@@ -6,6 +6,7 @@
 #include <gio/gio.h>
 #include <clutter/clutter.h>
 #include <libsoup/soup.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_BEGIN_DECLS
 
@@ -44,6 +45,14 @@ gboolean shell_session_is_active_for_systemd (void);
 gboolean shell_util_wifexited                  (int               status,
                                                 int              *exit);
 
+GdkPixbuf *shell_util_create_pixbuf_from_data (const guchar      *data,
+                                               gsize              len,
+                                               GdkColorspace      colorspace,
+                                               gboolean           has_alpha,
+                                               int                bits_per_sample,
+                                               int                width,
+                                               int                height,
+                                               int                rowstride);
 
 G_END_DECLS
 

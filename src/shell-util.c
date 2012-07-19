@@ -8,6 +8,7 @@
 #include "shell-util.h"
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
 #include <langinfo.h>
@@ -817,4 +818,34 @@ shell_util_wifexited (int  status,
     *exit = WEXITSTATUS(status);
 
   return ret;
+}
+
+/**
+ * shell_util_create_pixbuf_from_data:
+ * @data: (array length=len) (element-type guint8) (transfer full):
+ * @len:
+ * @colorspace:
+ * @has_alpha:
+ * @bits_per_sample:
+ * @width:
+ * @height:
+ * @rowstride:
+ *
+ * Workaround for non-introspectability of gdk_pixbuf_from_data().
+ *
+ * Returns: (transfer full):
+ */
+GdkPixbuf *
+shell_util_create_pixbuf_from_data (const guchar      *data,
+                                    gsize              len,
+                                    GdkColorspace      colorspace,
+                                    gboolean           has_alpha,
+                                    int                bits_per_sample,
+                                    int                width,
+                                    int                height,
+                                    int                rowstride)
+{
+  return gdk_pixbuf_new_from_data (data, colorspace, has_alpha,
+                                   bits_per_sample, width, height, rowstride,
+                                   (GdkPixbufDestroyNotify) g_free, NULL);
 }

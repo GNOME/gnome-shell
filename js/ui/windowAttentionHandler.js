@@ -73,8 +73,8 @@ const Source = new Lang.Class({
         this.signalIDs = [];
     },
 
-    createNotificationIcon : function() {
-        return this._app.create_icon_texture(this.ICON_SIZE);
+    createIcon : function(size) {
+        return this._app.create_icon_texture(size);
     },
 
     open : function(notification) {

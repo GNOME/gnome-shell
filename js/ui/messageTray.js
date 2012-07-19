@@ -394,7 +394,7 @@ Signals.addSignalMethods(FocusGrabber.prototype);
 // the content area (as with addBody()).
 //
 // By default, the icon shown is created by calling
-// source.createNotificationIcon(). However, if @params contains an 'icon'
+// source.createIcon(). However, if @params contains an 'icon'
 // parameter, the passed in icon will be used.
 //
 // If @params contains a 'titleMarkup', 'bannerMarkup', or
@@ -539,7 +539,7 @@ const Notification = new Lang.Class({
             this._table.remove_style_class_name('multi-line-notification');
 
         if (!this._icon) {
-            this._icon = params.icon || this.source.createNotificationIcon();
+            this._icon = params.icon || this.source.createIcon(this.source.ICON_SIZE);
             this._table.add(this._icon, { row: 0,
                                           col: 0,
                                           x_expand: false,
@@ -1029,24 +1029,19 @@ const Notification = new Lang.Class({
 });
 Signals.addSignalMethods(Notification.prototype);
 
-const Source = new Lang.Class({
-    Name: 'MessageTraySource',
+const SourceActor = new Lang.Class({
+    Name: 'SourceActor',
 
-    ICON_SIZE: 24,
-
-    _init: function(title, iconName, iconType) {
-        this.title = title;
-        this.iconName = iconName;
-        this.iconType = iconType;
+    _init: function(source, size) {
+        this._source = source;
 
         this.actor = new Shell.GenericContainer();
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
-        this.actor.connect('destroy', Lang.bind(this,
-            function() {
-                this._actorDestroyed = true;
-            }));
+        this.actor.connect('destroy', Lang.bind(this, function() {
+            this._actorDestroyed = true;
+        }));
         this._actorDestroyed = false;
 
         this._counterLabel = new St.Label();
@@ -1054,21 +1049,20 @@ const Source = new Lang.Class({
                                         child: this._counterLabel });
         this._counterBin.hide();
 
-        this._iconBin = new St.Bin({ width: this.ICON_SIZE,
-                                     height: this.ICON_SIZE,
+        this._iconBin = new St.Bin({ width: size,
+                                     height: size,
                                      x_fill: true,
                                      y_fill: true });
 
         this.actor.add_actor(this._iconBin);
         this.actor.add_actor(this._counterBin);
 
-        this.isTransient = false;
-        this.isChat = false;
-        this.isMuted = false;
+        this._source.connect('count-changed', Lang.bind(this, this._updateCount));
+        this._updateCount();
+    },
 
-        this.notifications = [];
-
-        this._setSummaryIcon(this.createNotificationIcon());
+    setIcon: function(icon) {
+        this._iconBin.child = icon;
     },
 
     _getPreferredWidth: function (actor, forHeight, alloc) {
@@ -1106,15 +1100,44 @@ const Source = new Lang.Class({
         this._counterBin.allocate(childBox, flags);
     },
 
+    _updateCount: function() {
+        if (this._actorDestroyed)
+            return;
+
+        this._counterBin.visible = this._source.countVisible;
+        this._counterLabel.set_text(this._source.count.toString());
+    },
+});
+
+const Source = new Lang.Class({
+    Name: 'MessageTraySource',
+
+    ICON_SIZE: 24,
+
+    _init: function(title, iconName, iconType) {
+        this.title = title;
+        this.iconName = iconName;
+        this.iconType = iconType;
+
+        this.count = 0;
+
+        this.isTransient = false;
+        this.isChat = false;
+        this.isMuted = false;
+
+        this.notifications = [];
+
+        this.mainIcon = new SourceActor(this, this.ICON_SIZE);
+        this._setSummaryIcon(this.createIcon(this.ICON_SIZE));
+    },
+
     _setCount: function(count, visible) {
         if (isNaN(parseInt(count)))
             throw new Error("Invalid notification count: " + count);
 
-        if (this._actorDestroyed)
-            return;
-
-        this._counterBin.visible = visible;
-        this._counterLabel.set_text(count.toString());
+        this.count = count;
+        this.countVisible = visible;
+        this.emit('count-changed');
     },
 
     _updateCount: function() {
@@ -1138,19 +1161,19 @@ const Source = new Lang.Class({
         this.emit('muted-changed');
     },
 
-    // Called to create a new icon actor (of size this.ICON_SIZE).
+    // Called to create a new icon actor.
     // Provides a sane default implementation, override if you need
     // something more fancy.
-    createNotificationIcon: function() {
+    createIcon: function(size) {
         return new St.Icon({ icon_name: this.iconName,
                              icon_type: this.iconType,
-                             icon_size: this.ICON_SIZE });
+                             icon_size: size });
     },
 
-    // Unlike createNotificationIcon, this always returns the same actor;
+    // Unlike createIcon, this always returns the same actor;
     // there is only one summary icon actor for a Source.
     getSummaryIcon: function() {
-        return this.actor;
+        return this.mainIcon.actor;
     },
 
     pushNotification: function(notification) {
@@ -1196,9 +1219,7 @@ const Source = new Lang.Class({
 
     //// Protected methods ////
     _setSummaryIcon: function(icon) {
-        if (this._iconBin.child)
-            this._iconBin.child.destroy();
-        this._iconBin.child = icon;
+        this.mainIcon.setIcon(icon);
     },
 
     open: function(notification) {
