@@ -187,7 +187,7 @@ const WorkspacesView = new Lang.Class({
 
         activeWorkspace.actor.raise_top();
 
-       this.actor.remove_clip(this._x, this._y, this._width, this._height);
+        this.actor.remove_clip();
 
         for (let w = 0; w < this._workspaces.length; w++)
             this._workspaces[w].zoomFromOverview();
