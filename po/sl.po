@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-06-06 11:44+0000\n"
-"PO-Revision-Date: 2012-06-08 21:23+0100\n"
+"POT-Creation-Date: 2012-07-17 07:18+0000\n"
+"PO-Revision-Date: 2012-07-19 09:58+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -51,24 +51,24 @@ msgstr "Dogodek zvonjenja"
 msgid "Unknown window information request: %d"
 msgstr "Zahteva izpisa podrobnosti neznanega okna: %d"
 
-#: ../src/core/delete.c:111
-#, c-format
-msgid "<tt>%s</tt> is not responding."
-msgstr "<tt>%s</tt> se ne odziva."
-
 #: ../src/core/delete.c:114
+#, c-format
+msgid "%s is not responding."
+msgstr "Program %s se ne odziva."
+
+#: ../src/core/delete.c:118
 msgid "Application is not responding."
 msgstr "Program se ne odziva."
 
-#: ../src/core/delete.c:119
+#: ../src/core/delete.c:123
 msgid "You may choose to wait a short while for it to continue or force the application to quit entirely."
 msgstr "Lahko še malo počakate, če program morda spet začne delovati, ali pa vsilite končanje delovanja."
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Wait"
 msgstr "_Počakaj"
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Force Quit"
 msgstr "_Vsili konec"
 
@@ -83,7 +83,7 @@ msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ni mogoče odpreti zaslona '%s' okenskega sistema X\n"
 
 # G:1 K:0 O:0
-#: ../src/core/keybindings.c:852
+#: ../src/core/keybindings.c:844
 #, c-format
 msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
 msgstr "Tipko %s s spremenilnikom %x uporablja že nek drug program\n"
@@ -143,27 +143,27 @@ msgstr "Izpiši različico"
 msgid "Mutter plugin to use"
 msgstr "Vstavek Mutter za uporabo"
 
-#: ../src/core/prefs.c:1064
+#: ../src/core/prefs.c:1065
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "Obhodi za pokvarjene programe so onemogočeni. Nekateri programi se morda ne bodo odzivali na pričakovan način.\n"
 
-#: ../src/core/prefs.c:1139
+#: ../src/core/prefs.c:1140
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Ni mogoče razčleniti opisa pisave \"%s\" iz ključa GSettings %s\n"
 
-#: ../src/core/prefs.c:1205
+#: ../src/core/prefs.c:1206
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "\"%s\", najden v podatkovni zbirki nastavitev, ni veljaven spremenilnik za miškine gumbe.\n"
 
-#: ../src/core/prefs.c:1723
+#: ../src/core/prefs.c:1724
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "\"%s\", najden v podatkovni zbirki nastavitev, ni veljaven ključ za tipkovno bližnjico \"%s\"\n"
 
 # G:1 K:0 O:0
-#: ../src/core/prefs.c:1820
+#: ../src/core/prefs.c:1821
 #, c-format
 msgid "Workspace %d"
 msgstr "Delovna površina %d"
