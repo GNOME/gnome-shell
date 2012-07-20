@@ -148,6 +148,9 @@ void            clutter_actor_set_anchor_point_from_gravity     (ClutterActor   
 CLUTTER_DEPRECATED_IN_1_12
 void            clutter_actor_move_anchor_point_from_gravity    (ClutterActor          *self,
                                                                  ClutterGravity         gravity);
+CLUTTER_DEPRECATED_IN_1_12
+void            clutter_actor_get_transformation_matrix         (ClutterActor          *self,
+                                                                 ClutterMatrix         *matrix);
 
 G_END_DECLS
 

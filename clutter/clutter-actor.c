@@ -899,6 +899,9 @@ enum
   PROP_TRANSLATION_Y,
   PROP_TRANSLATION_Z,
 
+  PROP_TRANSFORM,
+  PROP_TRANSFORM_SET,
+
   PROP_SHOW_ON_SET_PARENT, /*XXX:2.0 remove */
 
   PROP_TEXT_DIRECTION,
@@ -2947,8 +2950,8 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
 }
 
 static void
-clutter_actor_real_apply_transform (ClutterActor *self,
-                                    CoglMatrix   *matrix)
+clutter_actor_real_apply_transform (ClutterActor  *self,
+                                    ClutterMatrix *matrix)
 {
   ClutterActorPrivate *priv = self->priv;
 
@@ -2978,6 +2981,17 @@ clutter_actor_real_apply_transform (ClutterActor *self,
                     priv->allocation.y1 + pivot_y + info->translation.y);
 
       cogl_matrix_init_identity (transform);
+
+      /* if we have an overriding transformation, we use that, and get out */
+      if (info->transform_set)
+        {
+          cogl_matrix_translate (transform,
+                                 priv->allocation.x1 + pivot_x,
+                                 priv->allocation.y1 + pivot_y,
+                                 info->pivot_z);
+          cogl_matrix_multiply (transform, transform, &info->transform);
+          goto out;
+        }
 
       /* basic translation: :allocation's origin and :z-position; instead
        * of decomposing the pivot and translation info separate operations,
@@ -3049,6 +3063,7 @@ clutter_actor_real_apply_transform (ClutterActor *self,
       if (pivot_x != 0.f || pivot_y != 0.f || info->pivot_z != 0.f)
         cogl_matrix_translate (transform, -pivot_x, -pivot_y, -info->pivot_z);
 
+out:
       priv->transform_valid = TRUE;
     }
 
@@ -3058,8 +3073,8 @@ clutter_actor_real_apply_transform (ClutterActor *self,
 /* Applies the transforms associated with this actor to the given
  * matrix. */
 void
-_clutter_actor_apply_modelview_transform (ClutterActor *self,
-                                          CoglMatrix *matrix)
+_clutter_actor_apply_modelview_transform (ClutterActor  *self,
+                                          ClutterMatrix *matrix)
 {
   CLUTTER_ACTOR_GET_CLASS (self)->apply_transform (self, matrix);
 }
@@ -3069,7 +3084,7 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self,
  * @self: The actor whose coordinate space you want to transform from.
  * @ancestor: The ancestor actor whose coordinate space you want to transform too
  *            or %NULL if you want to transform all the way to eye coordinates.
- * @matrix: A #CoglMatrix to apply the transformation too.
+ * @matrix: A #ClutterMatrix to apply the transformation too.
  *
  * This multiplies a transform with @matrix that will transform coordinates
  * from the coordinate space of @self into the coordinate space of @ancestor.
@@ -4123,7 +4138,9 @@ static const ClutterTransformInfo default_transform_info = {
   0.f,                          /* z-position */
 
   CLUTTER_POINT_INIT_ZERO,      /* pivot */
-  0.f                           /* pivot-z */
+  0.f,                          /* pivot-z */
+
+  { 0.0, }, FALSE,              /* transform */
 };
 
 /*< private >
@@ -4977,22 +4994,26 @@ clutter_actor_set_property (GObject      *object,
       }
       break;
 
-    case PROP_ANCHOR_X:
+    case PROP_ANCHOR_X: /* XXX:2.0 - remove */
       clutter_actor_set_anchor_coord (actor, CLUTTER_X_AXIS,
                                       g_value_get_float (value));
       break;
 
-    case PROP_ANCHOR_Y:
+    case PROP_ANCHOR_Y: /* XXX:2.0 - remove */
       clutter_actor_set_anchor_coord (actor, CLUTTER_Y_AXIS,
                                       g_value_get_float (value));
       break;
 
-    case PROP_ANCHOR_GRAVITY:
+    case PROP_ANCHOR_GRAVITY: /* XXX:2.0 - remove */
       clutter_actor_set_anchor_point_from_gravity (actor,
                                                    g_value_get_enum (value));
       break;
 
-    case PROP_SHOW_ON_SET_PARENT:
+    case PROP_TRANSFORM:
+      clutter_actor_set_transform (actor, g_value_get_boxed (value));
+      break;
+
+    case PROP_SHOW_ON_SET_PARENT: /* XXX:2.0 - remove */
       priv->show_on_set_parent = g_value_get_boolean (value);
       break;
 
@@ -5464,11 +5485,29 @@ clutter_actor_get_property (GObject    *object,
       }
       break;
 
-    case PROP_ANCHOR_GRAVITY:
+    case PROP_ANCHOR_GRAVITY: /* XXX:2.0 - remove */
       g_value_set_enum (value, clutter_actor_get_anchor_point_gravity (actor));
       break;
 
-    case PROP_SHOW_ON_SET_PARENT:
+    case PROP_TRANSFORM:
+      {
+        ClutterMatrix m;
+
+        clutter_actor_get_transform (actor, &m);
+        g_value_set_boxed (value, &m);
+      }
+      break;
+
+    case PROP_TRANSFORM_SET:
+      {
+        const ClutterTransformInfo *info;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        g_value_set_boolean (value, info->transform_set);
+      }
+      break;
+
+    case PROP_SHOW_ON_SET_PARENT: /* XXX:2.0 - remove */
       g_value_set_boolean (value, priv->show_on_set_parent);
       break;
 
@@ -7002,6 +7041,48 @@ clutter_actor_class_init (ClutterActorClass *klass)
                         G_PARAM_READWRITE |
                         G_PARAM_STATIC_STRINGS |
                         CLUTTER_PARAM_ANIMATABLE);
+
+  /**
+   * ClutterActor:transform:
+   *
+   * Overrides the transformations of a #ClutterActor with a custom
+   * matrix.
+   *
+   * The matrix specified by the #ClutterActor:transform property is
+   * applied to the actor and its children relative to the actor's
+   * #ClutterActor:allocation and #ClutterActor:pivot-point.
+   *
+   * Application code should rarely need to use this function directly.
+   *
+   * Setting this property with a #ClutterMatrix will set the
+   * #ClutterActor:transform-set property to %TRUE as a side effect;
+   * setting this property with %NULL will set the
+   * #ClutterActor:transform-set property to %FALSE.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_TRANSFORM] =
+    g_param_spec_boxed ("transform",
+                        P_("Transform"),
+                        P_("Transformation matrix"),
+                        CLUTTER_TYPE_MATRIX,
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS);
+
+  /**
+   * ClutterActor:transform-set:
+   *
+   * Whether the #ClutterActor:transform property is set.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_TRANSFORM_SET] =
+    g_param_spec_boolean ("transform-set",
+                          P_("Transform Set"),
+                          P_("Whether the transform property is set"),
+                          FALSE,
+                          G_PARAM_READABLE |
+                          G_PARAM_STATIC_STRINGS);
 
   /**
    * ClutterActor:show-on-set-parent:
@@ -15588,22 +15669,81 @@ clutter_actor_unset_flags (ClutterActor      *self,
 /**
  * clutter_actor_get_transformation_matrix:
  * @self: a #ClutterActor
- * @matrix: (out caller-allocates): the return location for a #CoglMatrix
+ * @matrix: (out caller-allocates): the return location for a #ClutterMatrix
  *
  * Retrieves the transformations applied to @self relative to its
  * parent.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12: Use clutter_actor_get_transform() instead
  */
 void
-clutter_actor_get_transformation_matrix (ClutterActor *self,
-                                         CoglMatrix   *matrix)
+clutter_actor_get_transformation_matrix (ClutterActor  *self,
+                                         ClutterMatrix *matrix)
 {
+  clutter_actor_get_transform (self, matrix);
+}
+
+/**
+ * clutter_actor_set_transform:
+ * @self: a #ClutterActor
+ * @transform: (allow-none): a #ClutterMatrix, or %NULL to
+ *   unset a custom transformation
+ *
+ * Overrides the transformations of a #ClutterActor with a custom
+ * matrix, which will be applied relative to the origin of the
+ * actor's allocation and to the actor's pivot point.
+ *
+ * Since: 1.12
+ */
+void
+clutter_actor_set_transform (ClutterActor        *self,
+                             const ClutterMatrix *transform)
+{
+  ClutterTransformInfo *info;
+  GObject *obj;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  cogl_matrix_init_identity (matrix);
+  obj = G_OBJECT (self);
 
-  _clutter_actor_apply_modelview_transform (self, matrix);
+  info = _clutter_actor_get_transform_info (self);
+
+  if (transform != NULL)
+    {
+      info->transform = *transform;
+      info->transform_set = TRUE;
+    }
+  else
+    info->transform_set = FALSE;
+
+  self->priv->transform_valid = FALSE;
+
+  clutter_actor_queue_redraw (self);
+
+  g_object_notify_by_pspec (obj, obj_props[PROP_TRANSFORM]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_TRANSFORM_SET]);
+}
+
+/**
+ * clutter_actor_get_transform:
+ * @self: a #ClutterActor
+ * @transform: (out caller-allocates): a #ClutterMatrix
+ *
+ * Retrieves the current transformation matrix of a #ClutterActor.
+ *
+ * Since: 1.12
+ */
+void
+clutter_actor_get_transform (ClutterActor  *self,
+                             ClutterMatrix *transform)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (transform != NULL);
+
+  cogl_matrix_init_identity (transform);
+  _clutter_actor_apply_modelview_transform (self, transform);
 }
 
 void

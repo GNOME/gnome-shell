@@ -225,7 +225,7 @@ struct _ClutterActorClass
 
   /* transformations */
   void (* apply_transform)      (ClutterActor           *actor,
-                                 CoglMatrix             *matrix);
+                                 ClutterMatrix          *matrix);
 
   /* event signals */
   gboolean (* event)                (ClutterActor         *actor,
@@ -666,6 +666,12 @@ void                            clutter_actor_get_translation                   
                                                                                  gfloat                     *translate_x,
                                                                                  gfloat                     *translate_y,
                                                                                  gfloat                     *translate_z);
+CLUTTER_AVAILABLE_IN_1_12
+void                            clutter_actor_set_transform                     (ClutterActor               *self,
+                                                                                 const ClutterMatrix        *transform);
+CLUTTER_AVAILABLE_IN_1_12
+void                            clutter_actor_get_transform                     (ClutterActor               *self,
+                                                                                 ClutterMatrix              *transform);
 void                            clutter_actor_get_transformed_position          (ClutterActor               *self,
                                                                                  gfloat                     *x,
                                                                                  gfloat                     *y);
@@ -686,8 +692,6 @@ void                            clutter_actor_apply_relative_transform_to_point 
                                                                                  ClutterActor               *ancestor,
                                                                                  const ClutterVertex        *point,
                                                                                  ClutterVertex              *vertex);
-void                            clutter_actor_get_transformation_matrix         (ClutterActor               *self,
-                                                                                 CoglMatrix                 *matrix);
 
 /* Implicit animations */
 CLUTTER_AVAILABLE_IN_1_10
