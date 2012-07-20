@@ -201,7 +201,7 @@ const Keyboard = new Lang.Class({
 
         this.actor = null;
 
-        this._timestamp = global.get_current_time();
+        this._timestamp = global.display.get_current_time_roundtrip();
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._redraw));
 
         this._keyboardSettings = new Gio.Settings({ schema: KEYBOARD_SCHEMA });
@@ -494,15 +494,30 @@ const Keyboard = new Lang.Class({
             this._moveTemporarily();
     },
 
+    // _compareTimestamp:
+    //
+    // Compare two timestamps taking into account
+    // CURRENT_TIME (0)
+    _compareTimestamp: function(one, two) {
+        if (one == two)
+            return 0;
+        if (one == Clutter.CURRENT_TIME)
+            return 1;
+        if (two == Clutter.CURRENT_TIME)
+            return -1;
+        return one - two;
+    },
+
     // D-Bus methods
     Show: function(timestamp) {
         if (!this._enableKeyboard)
             return;
 
-        if (timestamp - this._timestamp < 0)
+        if (this._compareTimestamp(timestamp, this._timestamp) < 0)
             return;
 
-        this._timestamp = timestamp;
+        if (timestamp != Clutter.CURRENT_TIME)
+            this._timestamp = timestamp;
         this.show();
     },
 
@@ -510,10 +525,11 @@ const Keyboard = new Lang.Class({
         if (!this._enableKeyboard)
             return;
 
-        if (timestamp - this._timestamp < 0)
+        if (this._compareTimestamp(timestamp, this._timestamp) < 0)
             return;
 
-        this._timestamp = timestamp;
+        if (timestamp != Clutter.CURRENT_TIME)
+            this._timestamp = timestamp;
         this.hide();
     },
 
