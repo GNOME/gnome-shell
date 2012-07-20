@@ -37,6 +37,12 @@ static const struct {
   { "easeInBounce", CLUTTER_EASE_IN_BOUNCE },
   { "easeOutBounce", CLUTTER_EASE_OUT_BOUNCE },
   { "easeInOutBounce", CLUTTER_EASE_IN_OUT_BOUNCE },
+  { "stepStart", CLUTTER_STEP_START },
+  { "stepEnd", CLUTTER_STEP_END },
+  { "ease", CLUTTER_EASE },
+  { "easeIn", CLUTTER_EASE_IN },
+  { "easeOut", CLUTTER_EASE_OUT },
+  { "easeInOut", CLUTTER_EASE_IN_OUT },
 };
 
 #define HELP_TEXT       "<b>Easing mode: %s (%d of %d)</b>\n" \
