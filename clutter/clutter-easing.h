@@ -129,6 +129,13 @@ G_GNUC_INTERNAL
 double  clutter_ease_steps_end          (double t,
                                          double d,
                                          int    steps);
+G_GNUC_INTERNAL
+double  clutter_ease_cubic_bezier       (double t,
+                                         double d,
+                                         double x_1,
+                                         double y_1,
+                                         double x_2,
+                                         double y_2);
 
 G_END_DECLS
 

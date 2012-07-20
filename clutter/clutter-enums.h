@@ -165,7 +165,17 @@ typedef enum { /*< prefix=CLUTTER_REQUEST >*/
  * @CLUTTER_STEP_START: equivalent to %CLUTTER_STEPS with a number of steps
  *   equal to 1, and a step mode of %CLUTTER_STEP_MODE_START. (Since 1.12)
  * @CLUTTER_STEP_END: equivalent to %CLUTTER_STEPS with a number of steps
- *   equal to 1, and a step mode of %CLUTTER_STEP_MODE_END. (Since: 1.12)
+ *   equal to 1, and a step mode of %CLUTTER_STEP_MODE_END. (Since 1.12)
+ * @CLUTTER_CUBIC_BEZIER: cubic bezier between (0, 0) and (1, 1) with two
+ *   control points; see clutter_timeline_set_cubic_bezier_progress(). (Since 1.12)
+ * @CLUTTER_EASE: equivalent to %CLUTTER_CUBIC_BEZIER with control points
+ *   in (0.25, 0.1) and (0.25, 1.0). (Since 1.12)
+ * @CLUTTER_EASE_IN: equivalent to %CLUTTER_CUBIC_BEZIER with control points
+ *   in (0.42, 0) and (1.0, 1.0). (Since 1.12)
+ * @CLUTTER_EASE_OUT: equivalent to %CLUTTER_CUBIC_BEZIER with control points
+ *   in (0, 0) and (0.58, 1.0). (Since 1.12)
+ * @CLUTTER_EASE_IN_OUT: equivalent to %CLUTTER_CUBIC_BEZIER with control points
+ *   in (0.42, 0) and (0.58, 1.0). (Since 1.12)
  * @CLUTTER_ANIMATION_LAST: last animation mode, used as a guard for
  *   registered global alpha functions
  *
@@ -243,6 +253,13 @@ typedef enum {
   CLUTTER_STEPS,
   CLUTTER_STEP_START, /* steps(1, start) */
   CLUTTER_STEP_END, /* steps(1, end) */
+
+  /* cubic bezier (see css3-transitions) */
+  CLUTTER_CUBIC_BEZIER,
+  CLUTTER_EASE,
+  CLUTTER_EASE_IN,
+  CLUTTER_EASE_OUT,
+  CLUTTER_EASE_IN_OUT,
 
   /* guard, before registered alpha functions */
   CLUTTER_ANIMATION_LAST

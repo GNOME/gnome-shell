@@ -402,6 +402,71 @@ clutter_ease_steps_end (double t,
   return ease_steps_end ((t / d), n_steps);
 }
 
+static inline double
+x_for_t (double t,
+         double x_1,
+         double x_2)
+{
+  double omt = 1.0 - t;
+
+  return 3.0 * omt * omt * t * x_1
+       + 3.0 * omt * t * t * x_2
+       + t * t * t;
+}
+
+static inline double
+y_for_t (double t,
+         double y_1,
+         double y_2)
+{
+  double omt = 1.0 - t;
+
+  return 3.0 * omt * omt * t * y_1
+       + 3.0 * omt * t * t * y_2
+       + t * t * t;
+}
+
+static inline double
+t_for_x (double x,
+         double x_1,
+         double x_2)
+{
+  double min_t = 0, max_t = 1;
+  int i;
+
+  for (i = 0; i < 30; ++i)
+    {
+      double guess_t = (min_t + max_t) / 2.0;
+      double guess_x = x_for_t (guess_t, x_1, x_2);
+
+      if (x < guess_x)
+        max_t = guess_t;
+      else
+        min_t = guess_t;
+    }
+
+  return (min_t + max_t) / 2.0;
+}
+
+double
+clutter_ease_cubic_bezier (double t,
+                           double d,
+                           double x_1,
+                           double y_1,
+                           double x_2,
+                           double y_2)
+{
+  double p = t / d;
+
+  if (p == 0.0)
+    return 0.0;
+
+  if (p == 1.0)
+    return 1.0;
+
+  return y_for_t (t_for_x (p, x_1, x_2), y_1, y_2);
+}
+
 /*< private >
  * _clutter_animation_modes:
  *
@@ -446,9 +511,16 @@ static const struct {
   { CLUTTER_EASE_OUT_BOUNCE,     clutter_ease_out_bounce, "easeOutBounce" },
   { CLUTTER_EASE_IN_OUT_BOUNCE,  clutter_ease_in_out_bounce, "easeInOutBounce" },
 
+  /* the parametrized functions need a cast */
   { CLUTTER_STEPS,               (ClutterEasingFunc) clutter_ease_steps_end, "steps" },
   { CLUTTER_STEP_START,          (ClutterEasingFunc) clutter_ease_steps_start, "stepStart" },
   { CLUTTER_STEP_END,            (ClutterEasingFunc) clutter_ease_steps_end, "stepEnd" },
+
+  { CLUTTER_CUBIC_BEZIER,        (ClutterEasingFunc) clutter_ease_cubic_bezier, "cubicBezier" },
+  { CLUTTER_EASE,                (ClutterEasingFunc) clutter_ease_cubic_bezier, "ease" },
+  { CLUTTER_EASE_IN,             (ClutterEasingFunc) clutter_ease_cubic_bezier, "easeIn" },
+  { CLUTTER_EASE_OUT,            (ClutterEasingFunc) clutter_ease_cubic_bezier, "easeOut" },
+  { CLUTTER_EASE_IN_OUT,         (ClutterEasingFunc) clutter_ease_cubic_bezier, "easeInOut" },
 
   { CLUTTER_ANIMATION_LAST,      NULL, "sentinel" },
 };

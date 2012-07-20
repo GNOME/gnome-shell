@@ -150,8 +150,13 @@ struct _ClutterTimelinePrivate
   GDestroyNotify progress_notify;
   ClutterAnimationMode progress_mode;
 
+  /* step() parameters */
   gint n_steps;
   ClutterStepMode step_mode;
+
+  /* cubic-bezier() parameters */
+  ClutterPoint cb_1;
+  ClutterPoint cb_2;
 
   guint is_playing         : 1;
 
@@ -815,8 +820,14 @@ clutter_timeline_init (ClutterTimeline *self)
                                  ClutterTimelinePrivate);
 
   priv->progress_mode = CLUTTER_LINEAR;
+
+  /* default steps() parameters are 1, end */
   priv->n_steps = 1;
   priv->step_mode = CLUTTER_STEP_MODE_END;
+
+  /* default cubic-bezier() paramereters are (0, 0, 1, 1) */
+  clutter_point_init (&priv->cb_1, 0, 0);
+  clutter_point_init (&priv->cb_2, 1, 1);
 }
 
 struct CheckIfMarkerHitClosure
@@ -2148,6 +2159,27 @@ clutter_timeline_progress_func (ClutterTimeline *timeline,
     case CLUTTER_STEP_END:
       return clutter_ease_steps_end (elapsed, duration, 1);
 
+    case CLUTTER_CUBIC_BEZIER:
+      return clutter_ease_cubic_bezier (elapsed, duration,
+                                        priv->cb_1.x, priv->cb_1.y,
+                                        priv->cb_2.x, priv->cb_2.y);
+
+    case CLUTTER_EASE:
+      return clutter_ease_cubic_bezier (elapsed, duration,
+                                        0.25, 0.1, 0.25, 1.0);
+
+    case CLUTTER_EASE_IN:
+      return clutter_ease_cubic_bezier (elapsed, duration,
+                                        0.42, 0.0, 1.0, 1.0);
+
+    case CLUTTER_EASE_OUT:
+      return clutter_ease_cubic_bezier (elapsed, duration,
+                                        0.0, 0.0, 0.58, 1.0);
+
+    case CLUTTER_EASE_IN_OUT:
+      return clutter_ease_cubic_bezier (elapsed, duration,
+                                        0.42, 0.0, 0.58, 1.0);
+
     default:
       break;
     }
@@ -2336,6 +2368,77 @@ clutter_timeline_get_step_progress (ClutterTimeline *timeline,
 
   if (step_mode != NULL)
     *step_mode = timeline->priv->step_mode;
+
+  return TRUE;
+}
+
+/**
+ * clutter_timeline_set_cubic_bezier_progress:
+ * @timeline: a #ClutterTimeline
+ * @c_1: the first control point for the cubic bezier
+ * @c_2: the second control point for the cubic bezier
+ *
+ * Sets the #ClutterTimeline:progress-mode of @timeline
+ * to %CLUTTER_CUBIC_BEZIER, and sets the two control
+ * points for the cubic bezier.
+ *
+ * The cubic bezier curve is between (0, 0) and (1, 1). The X coordinate
+ * of the two control points must be in the [ 0, 1 ] range, while the
+ * Y coordinate of the two control points can exceed this range.
+ *
+ * Since: 1.12
+ */
+void
+clutter_timeline_set_cubic_bezier_progress (ClutterTimeline    *timeline,
+                                            const ClutterPoint *c_1,
+                                            const ClutterPoint *c_2)
+{
+  ClutterTimelinePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_if_fail (c_1 != NULL && c_2 != NULL);
+
+  priv = timeline->priv;
+
+  priv->cb_1 = *c_1;
+  priv->cb_2 = *c_2;
+  clutter_timeline_set_progress_mode (timeline, CLUTTER_CUBIC_BEZIER);
+}
+
+/**
+ * clutter_timeline_get_cubic_bezier_progress:
+ * @timeline: a #ClutterTimeline
+ * @c_1: (out caller-allocates): return location for the first control
+ *   point of the cubic bezier, or %NULL
+ * @c_2: (out caller-allocates): return location for the second control
+ *   point of the cubic bezier, or %NULL
+ *
+ * Retrieves the control points for the cubic bezier progress mode.
+ *
+ * Return value: %TRUE if the @timeline is using a cubic bezier progress
+ *   more, and %FALSE otherwise
+ *
+ * Since: 1.12
+ */
+gboolean
+clutter_timeline_get_cubic_bezier_progress (ClutterTimeline *timeline,
+                                            ClutterPoint    *c_1,
+                                            ClutterPoint    *c_2)
+{
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
+
+  if (timeline->priv->progress_mode != CLUTTER_CUBIC_BEZIER ||
+      timeline->priv->progress_mode != CLUTTER_EASE ||
+      timeline->priv->progress_mode != CLUTTER_EASE_IN ||
+      timeline->priv->progress_mode != CLUTTER_EASE_OUT ||
+      timeline->priv->progress_mode != CLUTTER_EASE_IN_OUT)
+    return FALSE;
+
+  if (c_1 != NULL)
+    *c_1 = timeline->priv->cb_1;
+
+  if (c_2 != NULL)
+    *c_2 = timeline->priv->cb_2;
 
   return TRUE;
 }
