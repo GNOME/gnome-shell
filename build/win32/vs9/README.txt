@@ -83,5 +83,12 @@ built DLLs go into <root>\vs9\<PlatformName>\bin, built LIBs into
   ftp://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/ (32 bit)
   ftp://ftp.gnome.org/pub/GNOME/binaries/win64/dependencies/ (64 bit)
 
+Note: If you see C4819 warnings and you are compiling Cogl on a DBCS
+(Chinese/Korean/Japanese) version of Windows, you may need to switch
+to an English locale in Control Panel->Region and Languages->System->
+Change System Locale, reboot and rebuild to ensure Cogl and its
+dependencies are built correctly.  This is due to a bug in Visual C++
+running on DBCS locales.
+
 --Chun-wei Fan <fanc999@yahoo.com.tw>
   (Adopted from the GTK+ Win32 VS README.txt file originally by Tor Lillqvist)
