@@ -1,3 +1,23 @@
+3.4.2
+=====
+* Mirror Evolution calendar settings into our own schema [Owen; #674424]
+* gdm: don't fail if fprintd unavailable [Ray; #675006]
+* Fix broken extension loading [Owen, Alexandre; #670477]
+* Fix filtering of Empathy notifications [Guillaume; #675370]
+* telepathyClient: Ignore invalidated channels [Guillaume; #677457]
+* popupMenu: Fix freeze when appMenu is not populated in one go [Alban; #676447]
+* mount-operation: fix exceptions when showing password entry [Cosimo; #678428]
+* Misc. fixes [Guillaume, Jasper, Rico; #677441, #676175]
+
+Contributors:
+ Alban Browaeys, Cosimo Cecchi, Guillaume Desmottes, Alexandre Rostovtsev,
+ Jasper St. Pierre, Ray Strode, Owen Taylor, Rico Tzschichholz
+
+Translations:
+  OKANO Takayoshi [ja], Changwoo Ryu [ko], Jonh Wendell [pt_BR],
+  Luca Ferretti [it], Sandeep Sheshrao Shedmake [mr], Takanori MATSUURA [ja],
+  Andika Triwidada [id], Mantas Kriaučiūnas [lt], Nilamdyuti Goswami [as]
+
 3.4.1
 =====
 * Fix crash that occurred when an icon theme change caused unexpected
