@@ -236,9 +236,6 @@ ClutterTransition *             _clutter_actor_create_transition                
                                                                                  ...);
 ClutterTransition *             _clutter_actor_get_transition                   (ClutterActor *self,
                                                                                  GParamSpec   *pspec);
-void                            _clutter_actor_update_transition                (ClutterActor *self,
-                                                                                 GParamSpec   *pspec,
-                                                                                 ...);
 
 gboolean      _clutter_actor_foreach_child              (ClutterActor *self,
                                                          ClutterForeachCallback callback,

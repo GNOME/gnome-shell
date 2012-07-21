@@ -4290,10 +4290,7 @@ clutter_actor_set_translation_factor (ClutterActor      *self,
   g_assert (pspec != NULL);
   g_assert (translate_p != NULL);
 
-  if (_clutter_actor_get_transition (self, pspec) == NULL)
-    _clutter_actor_create_transition (self, pspec, *translate_p, value);
-  else
-    _clutter_actor_update_transition (self, pspec, value);
+  _clutter_actor_create_transition (self, pspec, *translate_p, value);
 }
 
 /**
@@ -4446,10 +4443,7 @@ clutter_actor_set_rotation_angle (ClutterActor      *self,
   g_assert (pspec != NULL);
   g_assert (cur_angle_p != NULL);
 
-  if (_clutter_actor_get_transition (self, pspec) == NULL)
-    _clutter_actor_create_transition (self, pspec, *cur_angle_p, angle);
-  else
-    _clutter_actor_update_transition (self, pspec, angle);
+  _clutter_actor_create_transition (self, pspec, *cur_angle_p, angle);
 }
 
 /**
@@ -4610,12 +4604,7 @@ clutter_actor_set_scale_factor (ClutterActor      *self,
   g_assert (pspec != NULL);
   g_assert (scale_p != NULL);
 
-  if (_clutter_actor_get_transition (self, pspec) == NULL)
-    _clutter_actor_create_transition (self, pspec, *scale_p, factor);
-  else
-    _clutter_actor_update_transition (self, pspec, factor);
-
-  clutter_actor_queue_redraw (self);
+  _clutter_actor_create_transition (self, pspec, *scale_p, factor);
 }
 
 static inline void
@@ -9546,15 +9535,9 @@ clutter_actor_allocate (ClutterActor           *self,
    */
   self->priv->allocation_flags = flags;
 
-  if (_clutter_actor_get_transition (self, obj_props[PROP_ALLOCATION]) == NULL)
-    {
-      _clutter_actor_create_transition (self, obj_props[PROP_ALLOCATION],
-                                        &priv->allocation,
-                                        &real_allocation);
-    }
-  else
-    _clutter_actor_update_transition (self, obj_props[PROP_ALLOCATION],
-                                      &real_allocation);
+  _clutter_actor_create_transition (self, obj_props[PROP_ALLOCATION],
+                                    &priv->allocation,
+                                    &real_allocation);
 }
 
 /**
@@ -9757,28 +9740,18 @@ clutter_actor_set_position (ClutterActor *self,
 			    gfloat        y)
 {
   ClutterPoint new_position;
+  ClutterPoint cur_position;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   clutter_point_init (&new_position, x, y);
 
-  if (_clutter_actor_get_transition (self, obj_props[PROP_POSITION]) == NULL)
-    {
-      ClutterPoint cur_position;
+  cur_position.x = clutter_actor_get_x (self);
+  cur_position.y = clutter_actor_get_y (self);
 
-      cur_position.x = clutter_actor_get_x (self);
-      cur_position.y = clutter_actor_get_y (self);
-
-      _clutter_actor_create_transition (self, obj_props[PROP_POSITION],
-                                        &cur_position,
-                                        &new_position);
-    }
-  else
-    _clutter_actor_update_transition (self,
-                                      obj_props[PROP_POSITION],
-                                      &new_position);
-
-  clutter_actor_queue_relayout (self);
+  _clutter_actor_create_transition (self, obj_props[PROP_POSITION],
+                                    &cur_position,
+                                    &new_position);
 }
 
 /**
@@ -10253,41 +10226,34 @@ clutter_actor_set_size (ClutterActor *self,
 
   clutter_size_init (&new_size, width, height);
 
-  if (_clutter_actor_get_transition (self, obj_props[PROP_SIZE]) == NULL)
+  /* minor optimization: if we don't have a duration then we can
+   * skip the get_size() below, to avoid the chance of going through
+   * get_preferred_width() and get_preferred_height() just to jump to
+   * a new desired size
+   */
+  if (clutter_actor_get_easing_duration (self) == 0)
     {
-      /* minor optimization: if we don't have a duration then we can
-       * skip the get_size() below, to avoid the chance of going through
-       * get_preferred_width() and get_preferred_height() just to jump to
-       * a new desired size
-       */
-      if (clutter_actor_get_easing_duration (self) == 0)
-        {
-          g_object_freeze_notify (G_OBJECT (self));
+      g_object_freeze_notify (G_OBJECT (self));
 
-          clutter_actor_set_size_internal (self, &new_size);
+      clutter_actor_set_size_internal (self, &new_size);
 
-          g_object_thaw_notify (G_OBJECT (self));
+      g_object_thaw_notify (G_OBJECT (self));
 
-          return;
-        }
-      else
-        {
-          ClutterSize cur_size;
-
-          clutter_size_init (&cur_size,
-                             clutter_actor_get_width (self),
-                             clutter_actor_get_height (self));
-
-         _clutter_actor_create_transition (self,
-                                           obj_props[PROP_SIZE],
-                                           &cur_size,
-                                           &new_size);
-        }
+      return;
     }
   else
-    _clutter_actor_update_transition (self, obj_props[PROP_SIZE], &new_size);
+    {
+      ClutterSize cur_size;
 
-  clutter_actor_queue_relayout (self);
+      clutter_size_init (&cur_size,
+                         clutter_actor_get_width (self),
+                         clutter_actor_get_height (self));
+
+      _clutter_actor_create_transition (self,
+                                        obj_props[PROP_SIZE],
+                                        &cur_size,
+                                        &new_size);
+    }
 }
 
 /**
@@ -10606,37 +10572,32 @@ void
 clutter_actor_set_width (ClutterActor *self,
                          gfloat        width)
 {
+  float cur_size;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  if (_clutter_actor_get_transition (self, obj_props[PROP_WIDTH]) == NULL)
+  /* minor optimization: if we don't have a duration
+   * then we can skip the get_width() below, to avoid
+   * the chance of going through get_preferred_width()
+   * just to jump to a new desired width.
+   */
+  if (clutter_actor_get_easing_duration (self) == 0)
     {
-      float cur_size;
+      g_object_freeze_notify (G_OBJECT (self));
 
-      /* minor optimization: if we don't have a duration
-       * then we can skip the get_width() below, to avoid
-       * the chance of going through get_preferred_width()
-       * just to jump to a new desired width.
-       */
-      if (clutter_actor_get_easing_duration (self) == 0)
-        {
-          g_object_freeze_notify (G_OBJECT (self));
+      clutter_actor_set_width_internal (self, width);
 
-          clutter_actor_set_width_internal (self, width);
+      g_object_thaw_notify (G_OBJECT (self));
 
-          g_object_thaw_notify (G_OBJECT (self));
-
-          return;
-        }
-      else
-        cur_size = clutter_actor_get_width (self);
-
-      _clutter_actor_create_transition (self,
-                                        obj_props[PROP_WIDTH],
-                                        cur_size,
-                                        width);
+      return;
     }
   else
-    _clutter_actor_update_transition (self, obj_props[PROP_WIDTH], width);
+    cur_size = clutter_actor_get_width (self);
+
+  _clutter_actor_create_transition (self,
+                                    obj_props[PROP_WIDTH],
+                                    cur_size,
+                                    width);
 }
 
 /**
@@ -10658,33 +10619,28 @@ void
 clutter_actor_set_height (ClutterActor *self,
                           gfloat        height)
 {
+  float cur_size;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  if (_clutter_actor_get_transition (self, obj_props[PROP_HEIGHT]) == NULL)
+  /* see the comment in clutter_actor_set_width() above */
+  if (clutter_actor_get_easing_duration (self) == 0)
     {
-      float cur_size;
+      g_object_freeze_notify (G_OBJECT (self));
 
-      /* see the comment in clutter_actor_set_width() above */
-      if (clutter_actor_get_easing_duration (self) == 0)
-        {
-          g_object_freeze_notify (G_OBJECT (self));
+      clutter_actor_set_height_internal (self, height);
 
-          clutter_actor_set_height_internal (self, height);
+      g_object_thaw_notify (G_OBJECT (self));
 
-          g_object_thaw_notify (G_OBJECT (self));
-
-          return;
-        }
-      else
-        cur_size = clutter_actor_get_height (self);
-
-      _clutter_actor_create_transition (self,
-                                        obj_props[PROP_HEIGHT],
-                                        cur_size,
-                                        height);
+      return;
     }
   else
-    _clutter_actor_update_transition (self, obj_props[PROP_HEIGHT], height);
+    cur_size = clutter_actor_get_height (self);
+
+  _clutter_actor_create_transition (self,
+                                    obj_props[PROP_HEIGHT],
+                                    cur_size,
+                                    height);
 }
 
 static inline void
@@ -10780,18 +10736,13 @@ void
 clutter_actor_set_x (ClutterActor *self,
                      gfloat        x)
 {
+  float cur_position = clutter_actor_get_x (self);
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  if (_clutter_actor_get_transition (self, obj_props[PROP_X]) == NULL)
-    {
-      float cur_position = clutter_actor_get_x (self);
-
-      _clutter_actor_create_transition (self, obj_props[PROP_X],
-                                        cur_position,
-                                        x);
-    }
-  else
-    _clutter_actor_update_transition (self, obj_props[PROP_X], x);
+  _clutter_actor_create_transition (self, obj_props[PROP_X],
+                                    cur_position,
+                                    x);
 }
 
 /**
@@ -10812,18 +10763,13 @@ void
 clutter_actor_set_y (ClutterActor *self,
                      gfloat        y)
 {
+  float cur_position = clutter_actor_get_y (self);
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  if (_clutter_actor_get_transition (self, obj_props[PROP_Y]) == NULL)
-    {
-      float cur_position = clutter_actor_get_y (self);
-
-      _clutter_actor_create_transition (self, obj_props[PROP_Y],
-                                        cur_position,
-                                        y);
-    }
-  else
-    _clutter_actor_update_transition (self, obj_props[PROP_Y], y);
+  _clutter_actor_create_transition (self, obj_props[PROP_Y],
+                                    cur_position,
+                                    y);
 }
 
 /**
@@ -11202,14 +11148,9 @@ clutter_actor_set_opacity (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  if (_clutter_actor_get_transition (self, obj_props[PROP_OPACITY]) == NULL)
-    {
-      _clutter_actor_create_transition (self, obj_props[PROP_OPACITY],
-                                        self->priv->opacity,
-                                        opacity);
-    }
-  else
-    _clutter_actor_update_transition (self, obj_props[PROP_OPACITY], opacity);
+  _clutter_actor_create_transition (self, obj_props[PROP_OPACITY],
+                                    self->priv->opacity,
+                                    opacity);
 }
 
 /*
@@ -11528,21 +11469,15 @@ void
 clutter_actor_set_z_position (ClutterActor *self,
                               gfloat        z_position)
 {
+  const ClutterTransformInfo *info;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  if (_clutter_actor_get_transition (self, obj_props[PROP_Z_POSITION]) == NULL)
-    {
-      const ClutterTransformInfo *info;
+  info = _clutter_actor_get_transform_info_or_defaults (self);
 
-      info = _clutter_actor_get_transform_info_or_defaults (self);
-
-      _clutter_actor_create_transition (self, obj_props[PROP_Z_POSITION],
-                                        info->z_position,
-                                        z_position);
-    }
-  else
-    _clutter_actor_update_transition (self, obj_props[PROP_Z_POSITION],
-                                      z_position);
+  _clutter_actor_create_transition (self, obj_props[PROP_Z_POSITION],
+                                    info->z_position,
+                                    z_position);
 }
 
 /**
@@ -11584,21 +11519,14 @@ clutter_actor_set_pivot_point (ClutterActor *self,
                                gfloat        pivot_y)
 {
   ClutterPoint pivot = CLUTTER_POINT_INIT (pivot_x, pivot_y);
+  const ClutterTransformInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  if (_clutter_actor_get_transition (self, obj_props[PROP_PIVOT_POINT]) == NULL)
-    {
-      const ClutterTransformInfo *info;
-
-      info = _clutter_actor_get_transform_info_or_defaults (self);
-
-      _clutter_actor_create_transition (self, obj_props[PROP_PIVOT_POINT],
-                                        &info->pivot,
-                                        &pivot);
-    }
-  else
-    _clutter_actor_update_transition (self, obj_props[PROP_PIVOT_POINT], &pivot);
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+  _clutter_actor_create_transition (self, obj_props[PROP_PIVOT_POINT],
+                                    &info->pivot,
+                                    &pivot);
 }
 
 /**
@@ -11647,20 +11575,14 @@ void
 clutter_actor_set_pivot_point_z (ClutterActor *self,
                                  gfloat        pivot_z)
 {
+  const ClutterTransformInfo *info;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  if (_clutter_actor_get_transition (self, obj_props[PROP_PIVOT_POINT_Z]) == NULL)
-    {
-      const ClutterTransformInfo *info;
-
-      info = _clutter_actor_get_transform_info_or_defaults (self);
-
-      _clutter_actor_create_transition (self, obj_props[PROP_PIVOT_POINT_Z],
-                                        info->pivot_z,
-                                        pivot_z);
-    }
-  else
-    _clutter_actor_update_transition (self, obj_props[PROP_PIVOT_POINT_Z], pivot_z);
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+  _clutter_actor_create_transition (self, obj_props[PROP_PIVOT_POINT_Z],
+                                    info->pivot_z,
+                                    pivot_z);
 }
 
 /**
@@ -11695,22 +11617,14 @@ void
 clutter_actor_set_depth (ClutterActor *self,
                          gfloat        depth)
 {
+  const ClutterTransformInfo *info;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  if (_clutter_actor_get_transition (self, obj_props[PROP_DEPTH]) == NULL)
-    {
-      const ClutterTransformInfo *info;
-
-      info = _clutter_actor_get_transform_info_or_defaults (self);
-
-      _clutter_actor_create_transition (self, obj_props[PROP_DEPTH],
-                                        info->z_position,
-                                        depth);
-    }
-  else
-    _clutter_actor_update_transition (self, obj_props[PROP_DEPTH], depth);
-
-  clutter_actor_queue_redraw (self);
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+  _clutter_actor_create_transition (self, obj_props[PROP_DEPTH],
+                                    info->z_position,
+                                    depth);
 }
 
 /**
@@ -17644,26 +17558,15 @@ void
 clutter_actor_set_margin_top (ClutterActor *self,
                               gfloat        margin)
 {
-  ClutterLayoutInfo *info;
+  const ClutterLayoutInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (margin >= 0.f);
 
-  info = _clutter_actor_get_layout_info (self);
-
-  if (info->margin.top == margin)
-    return;
-
-  if (!_clutter_actor_get_transition (self, obj_props[PROP_MARGIN_TOP]))
-    {
-      _clutter_actor_create_transition (self, obj_props[PROP_MARGIN_TOP],
-                                        info->margin.top, margin);
-    }
-  else
-    {
-      _clutter_actor_update_transition (self, obj_props[PROP_MARGIN_TOP],
-                                        margin);
-    }
+  info = _clutter_actor_get_layout_info_or_defaults (self);
+  _clutter_actor_create_transition (self, obj_props[PROP_MARGIN_TOP],
+                                    info->margin.top,
+                                    margin);
 }
 
 /**
@@ -17699,26 +17602,15 @@ void
 clutter_actor_set_margin_bottom (ClutterActor *self,
                                  gfloat        margin)
 {
-  ClutterLayoutInfo *info;
+  const ClutterLayoutInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (margin >= 0.f);
 
-  info = _clutter_actor_get_layout_info (self);
-
-  if (info->margin.bottom == margin)
-    return;
-
-  if (!_clutter_actor_get_transition (self, obj_props[PROP_MARGIN_BOTTOM]))
-    {
-      _clutter_actor_create_transition (self, obj_props[PROP_MARGIN_BOTTOM],
-                                        info->margin.bottom, margin);
-    }
-  else
-    {
-      _clutter_actor_update_transition (self, obj_props[PROP_MARGIN_BOTTOM],
-                                        margin);
-    }
+  info = _clutter_actor_get_layout_info_or_defaults (self);
+  _clutter_actor_create_transition (self, obj_props[PROP_MARGIN_BOTTOM],
+                                    info->margin.bottom,
+                                    margin);
 }
 
 /**
@@ -17754,26 +17646,15 @@ void
 clutter_actor_set_margin_left (ClutterActor *self,
                                gfloat        margin)
 {
-  ClutterLayoutInfo *info;
+  const ClutterLayoutInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (margin >= 0.f);
 
-  info = _clutter_actor_get_layout_info (self);
-
-  if (info->margin.left == margin)
-    return;
-
-  if (!_clutter_actor_get_transition (self, obj_props[PROP_MARGIN_LEFT]))
-    {
-      _clutter_actor_create_transition (self, obj_props[PROP_MARGIN_LEFT],
-                                        info->margin.left, margin);
-    }
-  else
-    {
-      _clutter_actor_update_transition (self, obj_props[PROP_MARGIN_LEFT],
-                                        margin);
-    }
+  info = _clutter_actor_get_layout_info_or_defaults (self);
+  _clutter_actor_create_transition (self, obj_props[PROP_MARGIN_LEFT],
+                                    info->margin.left,
+                                    margin);
 }
 
 /**
@@ -17809,28 +17690,15 @@ void
 clutter_actor_set_margin_right (ClutterActor *self,
                                 gfloat        margin)
 {
-  ClutterLayoutInfo *info;
+  const ClutterLayoutInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (margin >= 0.f);
 
-  info = _clutter_actor_get_layout_info (self);
-
-  if (info->margin.right == margin)
-    return;
-
-  info->margin.right = margin;
-
-  if (!_clutter_actor_get_transition (self, obj_props[PROP_MARGIN_RIGHT]))
-    {
-      _clutter_actor_create_transition (self, obj_props[PROP_MARGIN_RIGHT],
-                                        info->margin.right, margin);
-    }
-  else
-    {
-      _clutter_actor_update_transition (self, obj_props[PROP_MARGIN_RIGHT],
-                                        margin);
-    }
+  info = _clutter_actor_get_layout_info_or_defaults (self);
+  _clutter_actor_create_transition (self, obj_props[PROP_MARGIN_RIGHT],
+                                    info->margin.right,
+                                    margin);
 }
 
 /**
@@ -17895,34 +17763,26 @@ clutter_actor_set_background_color (ClutterActor       *self,
                                     const ClutterColor *color)
 {
   ClutterActorPrivate *priv;
-  GObject *obj;
-  GParamSpec *bg_color_pspec;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  obj = G_OBJECT (self);
 
   priv = self->priv;
 
   if (color == NULL)
     {
-      priv->bg_color_set = FALSE;
-      g_object_notify_by_pspec (obj, obj_props[PROP_BACKGROUND_COLOR_SET]);
-      clutter_actor_queue_redraw (self);
-      return;
-    }
+      GObject *obj = G_OBJECT (self);
 
-  bg_color_pspec = obj_props[PROP_BACKGROUND_COLOR];
-  if (_clutter_actor_get_transition (self, bg_color_pspec) == NULL)
-    {
-      _clutter_actor_create_transition (self, bg_color_pspec,
-                                        &priv->bg_color,
-                                        color);
+      priv->bg_color_set = FALSE;
+
+      clutter_actor_queue_redraw (self);
+
+      g_object_notify_by_pspec (obj, obj_props[PROP_BACKGROUND_COLOR_SET]);
     }
   else
-    _clutter_actor_update_transition (self, bg_color_pspec, color);
-
-  clutter_actor_queue_redraw (self);
+    _clutter_actor_create_transition (self,
+                                      obj_props[PROP_BACKGROUND_COLOR],
+                                      &priv->bg_color,
+                                      color);
 }
 
 /**
@@ -18424,85 +18284,6 @@ on_transition_stopped (ClutterTransition *transition,
     }
 }
 
-void
-_clutter_actor_update_transition (ClutterActor *actor,
-                                  GParamSpec   *pspec,
-                                  ...)
-{
-  TransitionClosure *clos;
-  ClutterTimeline *timeline;
-  ClutterInterval *interval;
-  const ClutterAnimationInfo *info;
-  va_list var_args;
-  GType ptype;
-  GValue initial = G_VALUE_INIT;
-  GValue final = G_VALUE_INIT;
-  char *error = NULL;
-
-  info = _clutter_actor_get_animation_info_or_defaults (actor);
-
-  if (info->transitions == NULL)
-    return;
-
-  clos = g_hash_table_lookup (info->transitions, pspec->name);
-  if (clos == NULL)
-    return;
-
-  timeline = CLUTTER_TIMELINE (clos->transition);
-
-  va_start (var_args, pspec);
-
-  ptype = G_PARAM_SPEC_VALUE_TYPE (pspec);
-
-  g_value_init (&initial, ptype);
-  clutter_animatable_get_initial_state (CLUTTER_ANIMATABLE (actor),
-                                        pspec->name,
-                                        &initial);
-
-  G_VALUE_COLLECT_INIT (&final, ptype, var_args, 0, &error);
-  if (error != NULL)
-    {
-      g_critical ("%s: %s", G_STRLOC, error);
-      g_free (error);
-      goto out;
-    }
-
-  interval = clutter_transition_get_interval (clos->transition);
-  clutter_interval_set_initial_value (interval, &initial);
-  clutter_interval_set_final_value (interval, &final);
-
-  /* if we're updating with an easing duration of zero milliseconds,
-   * we just jump the timeline to the end and let it run its course
-   */
-  if (info->cur_state != NULL &&
-      info->cur_state->easing_duration != 0)
-    {
-      guint cur_duration = clutter_timeline_get_duration (timeline);
-      ClutterAnimationMode cur_mode =
-        clutter_timeline_get_progress_mode (timeline);
-
-      if (cur_duration != info->cur_state->easing_duration)
-        clutter_timeline_set_duration (timeline, info->cur_state->easing_duration);
-
-      if (cur_mode != info->cur_state->easing_mode)
-        clutter_timeline_set_progress_mode (timeline, info->cur_state->easing_mode);
-
-      clutter_timeline_rewind (timeline);
-    }
-  else
-    {
-      guint duration = clutter_timeline_get_duration (timeline);
-
-      clutter_timeline_advance (timeline, duration);
-    }
-
-out:
-  g_value_unset (&initial);
-  g_value_unset (&final);
-
-  va_end (var_args);
-}
-
 /*< private >*
  * _clutter_actor_create_transition:
  * @actor: a #ClutterActor
@@ -18518,11 +18299,17 @@ _clutter_actor_create_transition (ClutterActor *actor,
                                   GParamSpec   *pspec,
                                   ...)
 {
+  ClutterTimeline *timeline;
+  ClutterInterval *interval;
   ClutterAnimationInfo *info;
   ClutterTransition *res = NULL;
   gboolean call_restore = FALSE;
   TransitionClosure *clos;
   va_list var_args;
+  GValue initial = G_VALUE_INIT;
+  GValue final = G_VALUE_INIT;
+  GType ptype;
+  char *error;
 
   g_assert (pspec != NULL);
   g_assert ((pspec->flags & CLUTTER_PARAM_ANIMATABLE) != 0);
@@ -18551,58 +18338,50 @@ _clutter_actor_create_transition (ClutterActor *actor,
 
   va_start (var_args, pspec);
 
+  ptype = G_PARAM_SPEC_VALUE_TYPE (pspec);
+
+  G_VALUE_COLLECT_INIT (&initial, ptype,
+                        var_args, 0,
+                        &error);
+  if (error != NULL)
+    {
+      g_critical ("%s: %s", G_STRLOC, error);
+      g_free (error);
+      goto out;
+    }
+
+  G_VALUE_COLLECT_INIT (&final, ptype,
+                        var_args, 0,
+                        &error);
+  if (error != NULL)
+    {
+      g_critical ("%s: %s", G_STRLOC, error);
+      g_value_unset (&initial);
+      g_free (error);
+      goto out;
+    }
+
+  /* if the current easing state has a duration of 0, then we don't
+   * bother to create the transition, and we just set the final value
+   * directly on the actor; we don't go through the Animatable
+   * interface because we know we got here through an animatable
+   * property.
+   */
+  if (info->cur_state->easing_duration == 0)
+    {
+      clutter_actor_set_animatable_property (actor,
+                                             pspec->param_id,
+                                             &final,
+                                             pspec);
+      g_value_unset (&initial);
+      g_value_unset (&final);
+
+      goto out;
+    }
+
   clos = g_hash_table_lookup (info->transitions, pspec->name);
   if (clos == NULL)
     {
-      ClutterTimeline *timeline;
-      ClutterInterval *interval;
-      GValue initial = G_VALUE_INIT;
-      GValue final = G_VALUE_INIT;
-      GType ptype;
-      char *error;
-
-      ptype = G_PARAM_SPEC_VALUE_TYPE (pspec);
-
-      G_VALUE_COLLECT_INIT (&initial, ptype,
-                            var_args, 0,
-                            &error);
-      if (error != NULL)
-        {
-          g_critical ("%s: %s", G_STRLOC, error);
-          g_free (error);
-          goto out;
-        }
-
-      G_VALUE_COLLECT_INIT (&final, ptype,
-                            var_args, 0,
-                            &error);
-
-      if (error != NULL)
-        {
-          g_critical ("%s: %s", G_STRLOC, error);
-          g_value_unset (&initial);
-          g_free (error);
-          goto out;
-        }
-
-      /* if the current easing state has a duration of 0, then we don't
-       * bother to create the transition, and we just set the final value
-       * directly on the actor; we don't go through the Animatable
-       * interface because we know we got here through an animatable
-       * property.
-       */
-      if (info->cur_state->easing_duration == 0)
-        {
-          clutter_actor_set_animatable_property (actor,
-                                                 pspec->param_id,
-                                                 &final,
-                                                 pspec);
-          g_value_unset (&initial);
-          g_value_unset (&final);
-
-          goto out;
-        }
-
       interval = clutter_interval_new_with_values (ptype, &initial, &final);
 
       res = clutter_property_transition_new (pspec->name);
@@ -18649,9 +18428,29 @@ _clutter_actor_create_transition (ClutterActor *actor,
     }
   else
     {
+      ClutterAnimationMode cur_mode;
+      guint cur_duration;
+
       CLUTTER_NOTE (ANIMATION, "Existing transition for %s:%s",
                     _clutter_actor_get_debug_name (actor),
                     pspec->name);
+
+      timeline = CLUTTER_TIMELINE (clos->transition);
+
+      cur_duration = clutter_timeline_get_duration (timeline);
+      if (cur_duration != info->cur_state->easing_duration)
+        clutter_timeline_set_duration (timeline, info->cur_state->easing_duration);
+
+      cur_mode = clutter_timeline_get_progress_mode (timeline);
+      if (cur_mode != info->cur_state->easing_mode)
+        clutter_timeline_set_progress_mode (timeline, info->cur_state->easing_mode);
+
+      clutter_timeline_rewind (timeline);
+
+      interval = clutter_transition_get_interval (clos->transition);
+      clutter_interval_set_initial_value (interval, &initial);
+      clutter_interval_set_final_value (interval, &final);
+
       res = clos->transition;
     }
 
@@ -19176,6 +18975,7 @@ clutter_actor_set_content_gravity (ClutterActor *self,
                                    ClutterContentGravity  gravity)
 {
   ClutterActorPrivate *priv;
+  ClutterActorBox from_box, to_box;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -19186,33 +18986,15 @@ clutter_actor_set_content_gravity (ClutterActor *self,
 
   priv->content_box_valid = FALSE;
 
-  if (_clutter_actor_get_transition (self, obj_props[PROP_CONTENT_BOX]) == NULL)
-    {
-      ClutterActorBox from_box, to_box;
+  clutter_actor_get_content_box (self, &from_box);
 
-      clutter_actor_get_content_box (self, &from_box);
+  priv->content_gravity = gravity;
 
-      priv->content_gravity = gravity;
+  clutter_actor_get_content_box (self, &to_box);
 
-      clutter_actor_get_content_box (self, &to_box);
-
-      _clutter_actor_create_transition (self, obj_props[PROP_CONTENT_BOX],
-                                        &from_box,
-                                        &to_box);
-    }
-  else
-    {
-      ClutterActorBox to_box;
-
-      priv->content_gravity = gravity;
-
-      clutter_actor_get_content_box (self, &to_box);
-
-      _clutter_actor_update_transition (self, obj_props[PROP_CONTENT_BOX],
-                                        &to_box);
-    }
-
-  clutter_actor_queue_redraw (self);
+  _clutter_actor_create_transition (self, obj_props[PROP_CONTENT_BOX],
+                                    &from_box,
+                                    &to_box);
 
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONTENT_GRAVITY]);
 }
