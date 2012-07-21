@@ -964,6 +964,7 @@ enum
   ALLOCATION_CHANGED,
   TRANSITIONS_COMPLETED,
   TOUCH_EVENT,
+  TRANSITION_STOPPED,
 
   LAST_SIGNAL
 };
@@ -4449,8 +4450,6 @@ clutter_actor_set_rotation_angle (ClutterActor      *self,
     _clutter_actor_create_transition (self, pspec, *cur_angle_p, angle);
   else
     _clutter_actor_update_transition (self, pspec, angle);
-
-  clutter_actor_queue_redraw (self);
 }
 
 /**
@@ -8013,6 +8012,32 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   NULL, NULL,
                   _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  /**
+   * ClutterActor::transition-stopped:
+   * @actor: a #ClutterActor
+   * @name: the name of the transition
+   * @is_finished: whether the transition was finished, or stopped
+   *
+   * The ::transition-stopped signal is emitted once a transition
+   * is stopped; a transition is stopped once it reached its total
+   * duration (including eventual repeats), it has been stopped
+   * using clutter_timeline_stop(), or it has been removed from the
+   * transitions applied on @actor, using clutter_actor_remove_transition().
+   *
+   * Since: 1.12
+   */
+  actor_signals[TRANSITION_STOPPED] =
+    g_signal_new (I_("transition-stopped"),
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE |
+                  G_SIGNAL_NO_HOOKS | G_SIGNAL_DETAILED,
+                  0,
+                  NULL, NULL,
+                  _clutter_marshal_VOID__STRING_BOOLEAN,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_STRING,
+                  G_TYPE_BOOLEAN);
 
   /**
    * ClutterActor::touch-event:
@@ -18350,6 +18375,11 @@ on_transition_stopped (ClutterTransition *transition,
 {
   ClutterActor *actor = clos->actor;
   ClutterAnimationInfo *info;
+  GQuark t_quark;
+  gchar *t_name;
+
+  if (clos->name == NULL)
+    return;
 
   /* reset the caches used by animations */
   clutter_actor_store_content_box (actor, NULL);
@@ -18359,6 +18389,9 @@ on_transition_stopped (ClutterTransition *transition,
 
   info = _clutter_actor_get_animation_info (actor);
 
+  t_quark = g_quark_from_string (clos->name);
+  t_name = g_strdup (clos->name);
+
   /* we take a reference here because removing the closure
    * will release the reference on the transition, and we
    * want the transition to survive the signal emission;
@@ -18367,6 +18400,16 @@ on_transition_stopped (ClutterTransition *transition,
    */
   g_object_ref (transition);
   g_hash_table_remove (info->transitions, clos->name);
+
+  /* we emit the ::transition-stopped after removing the
+   * transition, so that we can chain up new transitions
+   * without interfering with the one that just finished
+   */
+  g_signal_emit (actor, actor_signals[TRANSITION_STOPPED], t_quark,
+                 t_name,
+                 TRUE);
+
+  g_free (t_name);
 
   /* if it's the last transition then we clean up */
   if (g_hash_table_size (info->transitions) == 0)
@@ -18481,6 +18524,9 @@ _clutter_actor_create_transition (ClutterActor *actor,
   TransitionClosure *clos;
   va_list var_args;
 
+  g_assert (pspec != NULL);
+  g_assert ((pspec->flags & CLUTTER_PARAM_ANIMATABLE) != 0);
+
   info = _clutter_actor_get_animation_info (actor);
 
   /* XXX - this will go away in 2.0
@@ -18559,9 +18605,6 @@ _clutter_actor_create_transition (ClutterActor *actor,
 
       interval = clutter_interval_new_with_values (ptype, &initial, &final);
 
-      g_value_unset (&initial);
-      g_value_unset (&final);
-
       res = clutter_property_transition_new (pspec->name);
 
       clutter_transition_set_interval (res, interval);
@@ -18572,22 +18615,45 @@ _clutter_actor_create_transition (ClutterActor *actor,
       clutter_timeline_set_duration (timeline, info->cur_state->easing_duration);
       clutter_timeline_set_progress_mode (timeline, info->cur_state->easing_mode);
 
-      CLUTTER_NOTE (ANIMATION,
-                    "Created transition for %s:%s (len:%u, mode:%s, delay:%u)",
-                    _clutter_actor_get_debug_name (actor),
-                    pspec->name,
-                    info->cur_state->easing_duration,
-                    clutter_get_easing_name_for_mode (info->cur_state->easing_mode),
-                    info->cur_state->easing_delay);
+#ifdef CLUTTER_ENABLE_DEBUG
+      {
+        gchar *initial_v, *final_v;
+
+        initial_v = g_strdup_value_contents (&initial);
+        final_v = g_strdup_value_contents (&final);
+
+        CLUTTER_NOTE (ANIMATION,
+                      "Created transition for %s:%s "
+                      "(len:%u, mode:%s, delay:%u) "
+                      "initial:%s, final:%s",
+                      _clutter_actor_get_debug_name (actor),
+                      pspec->name,
+                      info->cur_state->easing_duration,
+                      clutter_get_easing_name_for_mode (info->cur_state->easing_mode),
+                      info->cur_state->easing_delay,
+                      initial_v, final_v);
+
+        g_free (initial_v);
+        g_free (final_v);
+      }
+#endif /* CLUTTER_ENABLE_DEBUG */
 
       /* this will start the transition as well */
       clutter_actor_add_transition (actor, pspec->name, res);
 
       /* the actor now owns the transition */
       g_object_unref (res);
+
+      g_value_unset (&initial);
+      g_value_unset (&final);
     }
   else
-    res = clos->transition;
+    {
+      CLUTTER_NOTE (ANIMATION, "Existing transition for %s:%s",
+                    _clutter_actor_get_debug_name (actor),
+                    pspec->name);
+      res = clos->transition;
+    }
 
 out:
   if (call_restore)
@@ -18697,6 +18763,11 @@ clutter_actor_remove_transition (ClutterActor *self,
 
   if (info->transitions == NULL)
     return;
+
+  g_signal_emit (self, actor_signals[TRANSITION_STOPPED],
+                 g_quark_from_string (name),
+                 name,
+                 FALSE);
 
   g_hash_table_remove (info->transitions, name);
 }

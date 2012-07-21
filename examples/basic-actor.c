@@ -49,35 +49,36 @@ on_crossing (ClutterActor *actor,
 }
 
 static void
-on_transition_stopped (ClutterTransition *transition,
-                       gboolean           is_finished,
-                       ClutterActor      *actor)
+on_transition_stopped (ClutterActor *actor,
+                       const gchar  *transition_name,
+                       gboolean      is_finished)
 {
   clutter_actor_save_easing_state (actor);
-  clutter_actor_set_easing_duration (actor, 250);
-
   clutter_actor_set_rotation_angle (actor, CLUTTER_Y_AXIS, 0.0f);
-
   clutter_actor_restore_easing_state (actor);
+
+  /* disconnect so we don't get multiple notifications */
+  g_signal_handlers_disconnect_by_func (actor,
+                                        on_transition_stopped,
+                                        NULL);
 }
 
 static gboolean
 animate_rotation (ClutterActor *actor,
                   ClutterEvent *event)
 {
-  ClutterTransition *transition;
-
   clutter_actor_save_easing_state (actor);
   clutter_actor_set_easing_duration (actor, 1000);
 
   clutter_actor_set_rotation_angle (actor, CLUTTER_Y_AXIS, 360.0);
 
-  transition = clutter_actor_get_transition (actor, "rotation-angle-y");
-  g_signal_connect (transition, "stopped",
-                    G_CALLBACK (on_transition_stopped),
-                    actor);
-
   clutter_actor_restore_easing_state (actor);
+
+  /* get a notification when the rotation-angle-y transition ends */
+  g_signal_connect (actor,
+                    "transition-stopped::rotation-angle-y",
+                    G_CALLBACK (on_transition_stopped),
+                    NULL);
 
   return CLUTTER_EVENT_STOP;
 }
