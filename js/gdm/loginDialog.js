@@ -859,7 +859,7 @@ const LoginDialog = new Lang.Class({
 
     _hideFingerprintPrompt: function() {
         GdmUtil.fadeOutActor(this._promptFingerprintMessage);
-    }
+    },
 
     cancel: function() {
         this._userVerifier.cancel();
