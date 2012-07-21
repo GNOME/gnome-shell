@@ -37,6 +37,7 @@ js/ui/status/network.js
 js/ui/status/power.js
 js/ui/status/volume.js
 js/ui/telepathyClient.js
+js/ui/unlockDialog.js
 js/ui/userMenu.js
 js/ui/viewSelector.js
 js/ui/wanda.js
