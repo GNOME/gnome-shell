@@ -4697,6 +4697,7 @@ clutter_actor_set_scale_gravity (ClutterActor   *self,
   clutter_actor_queue_redraw (self);
 }
 
+/* XXX:2.0 - remove */
 static inline void
 clutter_actor_set_anchor_coord (ClutterActor      *self,
                                 ClutterRotateAxis  axis,
@@ -4916,21 +4917,21 @@ clutter_actor_set_property (GObject      *object,
                                       g_value_get_double (value));
       break;
 
-    case PROP_SCALE_CENTER_X:
+    case PROP_SCALE_CENTER_X: /* XXX:2.0 - remove */
       clutter_actor_set_scale_center (actor, CLUTTER_X_AXIS,
                                       g_value_get_float (value));
       break;
 
-    case PROP_SCALE_CENTER_Y:
+    case PROP_SCALE_CENTER_Y: /* XXX:2.0 - remove */
       clutter_actor_set_scale_center (actor, CLUTTER_Y_AXIS,
                                       g_value_get_float (value));
       break;
 
-    case PROP_SCALE_GRAVITY:
+    case PROP_SCALE_GRAVITY: /* XXX:2.0 - remove */
       clutter_actor_set_scale_gravity (actor, g_value_get_enum (value));
       break;
 
-    case PROP_CLIP:
+    case PROP_CLIP: /* XXX:2.0 - use ClutterRect */
       {
         const ClutterGeometry *geom = g_value_get_boxed (value);
 
@@ -4966,25 +4967,25 @@ clutter_actor_set_property (GObject      *object,
                                         g_value_get_double (value));
       break;
 
-    case PROP_ROTATION_CENTER_X:
+    case PROP_ROTATION_CENTER_X: /* XXX:2.0 - remove */
       clutter_actor_set_rotation_center_internal (actor,
                                                   CLUTTER_X_AXIS,
                                                   g_value_get_boxed (value));
       break;
 
-    case PROP_ROTATION_CENTER_Y:
+    case PROP_ROTATION_CENTER_Y: /* XXX:2.0 - remove */
       clutter_actor_set_rotation_center_internal (actor,
                                                   CLUTTER_Y_AXIS,
                                                   g_value_get_boxed (value));
       break;
 
-    case PROP_ROTATION_CENTER_Z:
+    case PROP_ROTATION_CENTER_Z: /* XXX:2.0 - remove */
       clutter_actor_set_rotation_center_internal (actor,
                                                   CLUTTER_Z_AXIS,
                                                   g_value_get_boxed (value));
       break;
 
-    case PROP_ROTATION_CENTER_Z_GRAVITY:
+    case PROP_ROTATION_CENTER_Z_GRAVITY: /* XXX:2.0 - remove */
       {
         const ClutterTransformInfo *info;
 
@@ -5270,7 +5271,7 @@ clutter_actor_get_property (GObject    *object,
       g_value_set_boolean (value, priv->has_clip);
       break;
 
-    case PROP_CLIP:
+    case PROP_CLIP: /* XXX:2.0 - use ClutterRect */
       {
         ClutterGeometry clip;
 
@@ -5359,7 +5360,7 @@ clutter_actor_get_property (GObject    *object,
       }
       break;
 
-    case PROP_SCALE_CENTER_X:
+    case PROP_SCALE_CENTER_X: /* XXX:2.0 - remove */
       {
         gfloat center;
 
@@ -5369,7 +5370,7 @@ clutter_actor_get_property (GObject    *object,
       }
       break;
 
-    case PROP_SCALE_CENTER_Y:
+    case PROP_SCALE_CENTER_Y: /* XXX:2.0 - remove */
       {
         gfloat center;
 
@@ -5379,7 +5380,7 @@ clutter_actor_get_property (GObject    *object,
       }
       break;
 
-    case PROP_SCALE_GRAVITY:
+    case PROP_SCALE_GRAVITY: /* XXX:2.0 - remove */
       g_value_set_enum (value, clutter_actor_get_scale_gravity (actor));
       break;
 
@@ -5414,7 +5415,7 @@ clutter_actor_get_property (GObject    *object,
       }
       break;
 
-    case PROP_ROTATION_CENTER_X:
+    case PROP_ROTATION_CENTER_X: /* XXX:2.0 - remove */
       {
         ClutterVertex center;
 
@@ -5427,7 +5428,7 @@ clutter_actor_get_property (GObject    *object,
       }
       break;
 
-    case PROP_ROTATION_CENTER_Y:
+    case PROP_ROTATION_CENTER_Y: /* XXX:2.0 - remove */
       {
         ClutterVertex center;
 
@@ -5440,7 +5441,7 @@ clutter_actor_get_property (GObject    *object,
       }
       break;
 
-    case PROP_ROTATION_CENTER_Z:
+    case PROP_ROTATION_CENTER_Z: /* XXX:2.0 - remove */
       {
         ClutterVertex center;
 
@@ -5453,11 +5454,11 @@ clutter_actor_get_property (GObject    *object,
       }
       break;
 
-    case PROP_ROTATION_CENTER_Z_GRAVITY:
+    case PROP_ROTATION_CENTER_Z_GRAVITY: /* XXX:2.0 - remove */
       g_value_set_enum (value, clutter_actor_get_z_rotation_gravity (actor));
       break;
 
-    case PROP_ANCHOR_X:
+    case PROP_ANCHOR_X: /* XXX:2.0 - remove */
       {
         const ClutterTransformInfo *info;
         gfloat anchor_x;
@@ -5471,7 +5472,7 @@ clutter_actor_get_property (GObject    *object,
       }
       break;
 
-    case PROP_ANCHOR_Y:
+    case PROP_ANCHOR_Y: /* XXX:2.0 - remove */
       {
         const ClutterTransformInfo *info;
         gfloat anchor_y;
@@ -6587,7 +6588,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * Every part of the actor outside the clip region will not be
    * painted
    */
-  obj_props[PROP_CLIP] =
+  obj_props[PROP_CLIP] = /* XXX:2.0 - use ClutterRect */
     g_param_spec_boxed ("clip",
                         P_("Clip"),
                         P_("The clip region for the actor"),
@@ -6718,7 +6719,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
-  obj_props[PROP_SCALE_CENTER_X] =
+  obj_props[PROP_SCALE_CENTER_X] = /* XXX:2.0 - remove */
     g_param_spec_float ("scale-center-x",
                         P_("Scale Center X"),
                         P_("Horizontal scale center"),
@@ -6737,7 +6738,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
-  obj_props[PROP_SCALE_CENTER_Y] =
+  obj_props[PROP_SCALE_CENTER_Y] = /* XXX:2.0 - remove */
     g_param_spec_float ("scale-center-y",
                         P_("Scale Center Y"),
                         P_("Vertical scale center"),
@@ -6756,7 +6757,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
-  obj_props[PROP_SCALE_GRAVITY] =
+  obj_props[PROP_SCALE_GRAVITY] = /* XXX:2.0 - remove */
     g_param_spec_enum ("scale-gravity",
                        P_("Scale Gravity"),
                        P_("The center of scaling"),
@@ -6832,7 +6833,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
-  obj_props[PROP_ROTATION_CENTER_X] =
+  obj_props[PROP_ROTATION_CENTER_X] = /* XXX:2.0 - remove */
     g_param_spec_boxed ("rotation-center-x",
                         P_("Rotation Center X"),
                         P_("The rotation center on the X axis"),
@@ -6850,7 +6851,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
-  obj_props[PROP_ROTATION_CENTER_Y] =
+  obj_props[PROP_ROTATION_CENTER_Y] = /* XXX:2.0 - remove */
     g_param_spec_boxed ("rotation-center-y",
                         P_("Rotation Center Y"),
                         P_("The rotation center on the Y axis"),
@@ -6868,7 +6869,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
-  obj_props[PROP_ROTATION_CENTER_Z] =
+  obj_props[PROP_ROTATION_CENTER_Z] = /* XXX:2.0 - remove */
     g_param_spec_boxed ("rotation-center-z",
                         P_("Rotation Center Z"),
                         P_("The rotation center on the Z axis"),
@@ -6886,7 +6887,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
-  obj_props[PROP_ROTATION_CENTER_Z_GRAVITY] =
+  obj_props[PROP_ROTATION_CENTER_Z_GRAVITY] = /* XXX:2.0 - remove */
     g_param_spec_enum ("rotation-center-z-gravity",
                        P_("Rotation Center Z Gravity"),
                        P_("Center point for rotation around the Z axis"),
@@ -6915,7 +6916,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
-  obj_props[PROP_ANCHOR_X] =
+  obj_props[PROP_ANCHOR_X] = /* XXX:2.0 - remove */
     g_param_spec_float ("anchor-x",
                         P_("Anchor X"),
                         P_("X coordinate of the anchor point"),
@@ -6944,7 +6945,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
-  obj_props[PROP_ANCHOR_Y] =
+  obj_props[PROP_ANCHOR_Y] = /* XXX:2.0 - remove */
     g_param_spec_float ("anchor-y",
                         P_("Anchor Y"),
                         P_("Y coordinate of the anchor point"),
@@ -6972,7 +6973,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Deprecated: 1.12: Use #ClutterActor:pivot-point instead
    */
-  obj_props[PROP_ANCHOR_GRAVITY] =
+  obj_props[PROP_ANCHOR_GRAVITY] = /* XXX:2.0 - remove */
     g_param_spec_enum ("anchor-gravity",
                        P_("Anchor Gravity"),
                        P_("The anchor point as a ClutterGravity"),
@@ -7094,7 +7095,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  obj_props[PROP_SHOW_ON_SET_PARENT] =
+  obj_props[PROP_SHOW_ON_SET_PARENT] = /* XXX:2.0 - remove */
     g_param_spec_boolean ("show-on-set-parent",
                           P_("Show on set parent"),
                           P_("Whether the actor is shown when parented"),
