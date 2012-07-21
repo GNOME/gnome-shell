@@ -29,7 +29,7 @@
 #define __CLUTTER_TYPES_H__
 
 #include <cairo.h>
-
+#include <cogl/cogl.h>
 #include <clutter/clutter-macros.h>
 #include <clutter/clutter-enums.h>
 
@@ -40,6 +40,7 @@ G_BEGIN_DECLS
 #define CLUTTER_TYPE_GEOMETRY           (clutter_geometry_get_type ())
 #define CLUTTER_TYPE_KNOT               (clutter_knot_get_type ())
 #define CLUTTER_TYPE_MARGIN             (clutter_margin_get_type ())
+#define CLUTTER_TYPE_MATRIX             (clutter_matrix_get_type ())
 #define CLUTTER_TYPE_PAINT_VOLUME       (clutter_paint_volume_get_type ())
 #define CLUTTER_TYPE_PERSPECTIVE        (clutter_perspective_get_type ())
 #define CLUTTER_TYPE_VERTEX             (clutter_vertex_get_type ())
@@ -92,6 +93,8 @@ typedef struct _ClutterAnimator         	ClutterAnimator;
 typedef struct _ClutterState            	ClutterState;
 
 typedef struct _ClutterInputDevice              ClutterInputDevice;
+
+typedef CoglMatrix                              ClutterMatrix;
 
 typedef union _ClutterEvent                     ClutterEvent;
 
@@ -672,6 +675,16 @@ typedef gboolean (* ClutterProgressFunc) (const GValue *a,
 
 void clutter_interval_register_progress_func (GType               value_type,
                                               ClutterProgressFunc func);
+
+GType clutter_matrix_get_type (void) G_GNUC_CONST;
+
+ClutterMatrix * clutter_matrix_alloc            (void);
+ClutterMatrix * clutter_matrix_init_identity    (ClutterMatrix *matrix);
+ClutterMatrix * clutter_matrix_init_from_array  (ClutterMatrix *matrix,
+                                                 const float    values[16]);
+ClutterMatrix * clutter_matrix_init_from_matrix (ClutterMatrix *a,
+                                                 ClutterMatrix *b);
+void            clutter_matrix_free             (ClutterMatrix *matrix);
 
 G_END_DECLS
 

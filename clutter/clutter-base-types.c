@@ -1266,3 +1266,120 @@ clutter_rect_progress (const GValue *a,
 
   return TRUE;
 }
+
+/**
+ * ClutterMatrix:
+ *
+ * A type representing a 4x4 matrix.
+ *
+ * It is identicaly to #CoglMatrix.
+ *
+ * Since: 1.12
+ */
+
+static gpointer
+clutter_matrix_copy (gpointer data)
+{
+  return g_memdup (data, sizeof (ClutterMatrix));
+}
+
+G_DEFINE_BOXED_TYPE (ClutterMatrix, clutter_matrix,
+                     clutter_matrix_copy,
+                     clutter_matrix_free)
+
+/**
+ * clutter_matrix_alloc:
+ *
+ * Allocates enough memory to hold a #ClutterMatrix.
+ *
+ * Return value: (transfer full): the newly allocated #ClutterMatrix
+ *
+ * Since: 1.12
+ */
+ClutterMatrix *
+clutter_matrix_alloc (void)
+{
+  return g_new0 (ClutterMatrix, 1);
+}
+
+/**
+ * clutter_matrix_free:
+ * @matrix: (allow-none): a #ClutterMatrix
+ *
+ * Frees the memory allocated by clutter_matrix_alloc().
+ *
+ * Since: 1.12
+ */
+void
+clutter_matrix_free (ClutterMatrix *matrix)
+{
+  g_free (matrix);
+}
+
+/**
+ * clutter_matrix_init_identity:
+ * @matrix: a #ClutterMatrix
+ *
+ * Initializes @matrix with the identity matrix, i.e.:
+ *
+ * |[
+ *   .xx = 1.0, .xy = 0.0, .xz = 0.0, .xw = 0.0
+ *   .yx = 0.0, .yy = 1.0, .yz = 0.0, .yw = 0.0
+ *   .zx = 0.0, .zy = 0.0, .zz = 1.0, .zw = 0.0
+ *   .wx = 0.0, .wy = 0.0, .wz = 0.0, .ww = 1.0
+ * ]|
+ *
+ * Return value: (transfer none): the initialized #ClutterMatrix
+ *
+ * Since: 1.12
+ */
+ClutterMatrix *
+clutter_matrix_init_identity (ClutterMatrix *matrix)
+{
+  cogl_matrix_init_identity (matrix);
+
+  return matrix;
+}
+
+/**
+ * clutter_matrix_init_from_array:
+ * @matrix: a #ClutterMatrix
+ * @values: (array fixed-size=16): a C array of 16 floating point values,
+ *   representing a 4x4 matrix, with column-major order
+ *
+ * Initializes @matrix with the contents of a C array of floating point
+ * values.
+ *
+ * Return value: (transfer none): the initialzed #ClutterMatrix
+ *
+ * Since: 1.12
+ */
+ClutterMatrix *
+clutter_matrix_init_from_array (ClutterMatrix *matrix,
+                                const float    values[16])
+{
+  cogl_matrix_init_from_array (matrix, values);
+
+  return matrix;
+}
+
+/**
+ * clutter_matrix_init_from_matrix:
+ * @a: the #ClutterMatrix to initialize
+ * @b: the #ClutterMatrix to copy
+ *
+ * Initializes the #ClutterMatrix @a with the contents of the
+ * #ClutterMatrix @b.
+ *
+ * Return value: (transfer none): the initialized #ClutterMatrix
+ *
+ * Since: 1.12
+ */
+ClutterMatrix *
+clutter_matrix_init_from_matrix (ClutterMatrix *a,
+                                 ClutterMatrix *b)
+{
+  memcpy (b, a, sizeof (ClutterMatrix));
+
+  return a;
+}

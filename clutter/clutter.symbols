@@ -899,6 +899,12 @@ clutter_margin_copy
 clutter_margin_free
 clutter_margin_get_type
 clutter_margin_new
+clutter_matrix_alloc
+clutter_matrix_free
+clutter_matrix_get_type
+clutter_matrix_init_identity
+clutter_matrix_init_from_array
+clutter_matrix_init_from_matrix
 clutter_media_get_audio_volume
 clutter_media_get_buffer_fill
 clutter_media_get_can_seek
