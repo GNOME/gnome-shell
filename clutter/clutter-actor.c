@@ -977,6 +977,7 @@ typedef struct _TransitionClosure
   ClutterTransition *transition;
   gchar *name;
   gulong completed_id;
+  guint is_implicit : 1;
 } TransitionClosure;
 
 static void clutter_container_iface_init  (ClutterContainerIface  *iface);
@@ -18252,14 +18253,17 @@ on_transition_stopped (ClutterTransition *transition,
   t_quark = g_quark_from_string (clos->name);
   t_name = g_strdup (clos->name);
 
-  /* we take a reference here because removing the closure
-   * will release the reference on the transition, and we
-   * want the transition to survive the signal emission;
-   * the master clock will release the last reference at
-   * the end of the frame processing.
-   */
-  g_object_ref (transition);
-  g_hash_table_remove (info->transitions, clos->name);
+  if (clos->is_implicit)
+    {
+      /* we take a reference here because removing the closure
+       * will release the reference on the transition, and we
+       * want the transition to survive the signal emission;
+       * the master clock will release the last reference at
+       * the end of the frame processing.
+       */
+      g_object_ref (transition);
+      g_hash_table_remove (info->transitions, clos->name);
+    }
 
   /* we emit the ::transition-stopped after removing the
    * transition, so that we can chain up new transitions
@@ -18282,6 +18286,55 @@ on_transition_stopped (ClutterTransition *transition,
 
       g_signal_emit (actor, actor_signals[TRANSITIONS_COMPLETED], 0);
     }
+}
+
+static void
+clutter_actor_add_transition_internal (ClutterActor *self,
+                                       const gchar  *name,
+                                       ClutterTransition *transition,
+                                       gboolean           is_implicit)
+{
+  ClutterTimeline *timeline;
+  TransitionClosure *clos;
+  ClutterAnimationInfo *info;
+
+  info = _clutter_actor_get_animation_info (self);
+
+  if (info->transitions == NULL)
+    info->transitions = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                               NULL,
+                                               transition_closure_free);
+
+  if (g_hash_table_lookup (info->transitions, name) != NULL)
+    {
+      g_warning ("A transition with name '%s' already exists for "
+                 "the actor '%s'",
+                 name,
+                 _clutter_actor_get_debug_name (self));
+      return;
+    }
+
+  clutter_transition_set_animatable (transition, CLUTTER_ANIMATABLE (self));
+
+  timeline = CLUTTER_TIMELINE (transition);
+
+  clos = g_slice_new (TransitionClosure);
+  clos->actor = self;
+  clos->transition = g_object_ref (transition);
+  clos->name = g_strdup (name);
+  clos->is_implicit = is_implicit;
+  clos->completed_id = g_signal_connect (timeline, "stopped",
+                                         G_CALLBACK (on_transition_stopped),
+                                         clos);
+
+  CLUTTER_NOTE (ANIMATION,
+                "Adding transition '%s' [%p] to actor '%s'",
+                clos->name,
+                clos->transition,
+                _clutter_actor_get_debug_name (self));
+
+  g_hash_table_insert (info->transitions, clos->name, clos);
+  clutter_timeline_start (timeline);
 }
 
 /*< private >*
@@ -18418,7 +18471,7 @@ _clutter_actor_create_transition (ClutterActor *actor,
 #endif /* CLUTTER_ENABLE_DEBUG */
 
       /* this will start the transition as well */
-      clutter_actor_add_transition (actor, pspec->name, res);
+      clutter_actor_add_transition_internal (actor, pspec->name, res, TRUE);
 
       /* the actor now owns the transition */
       g_object_unref (res);
@@ -18488,50 +18541,11 @@ clutter_actor_add_transition (ClutterActor      *self,
                               const char        *name,
                               ClutterTransition *transition)
 {
-  ClutterTimeline *timeline;
-  TransitionClosure *clos;
-  ClutterAnimationInfo *info;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (name != NULL);
   g_return_if_fail (CLUTTER_IS_TRANSITION (transition));
 
-  info = _clutter_actor_get_animation_info (self);
-
-  if (info->transitions == NULL)
-    info->transitions = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                               NULL,
-                                               transition_closure_free);
-
-  if (g_hash_table_lookup (info->transitions, name) != NULL)
-    {
-      g_warning ("A transition with name '%s' already exists for "
-                 "the actor '%s'",
-                 name,
-                 _clutter_actor_get_debug_name (self));
-      return;
-    }
-
-  clutter_transition_set_animatable (transition, CLUTTER_ANIMATABLE (self));
-
-  timeline = CLUTTER_TIMELINE (transition);
-
-  clos = g_slice_new (TransitionClosure);
-  clos->actor = self;
-  clos->transition = g_object_ref (transition);
-  clos->name = g_strdup (name);
-  clos->completed_id = g_signal_connect (timeline, "stopped",
-                                         G_CALLBACK (on_transition_stopped),
-                                         clos);
-
-  CLUTTER_NOTE (ANIMATION,
-                "Adding transition '%s' [%p] to actor '%s'",
-                clos->name,
-                clos->transition,
-                _clutter_actor_get_debug_name (self));
-
-  g_hash_table_insert (info->transitions, clos->name, clos);
-  clutter_timeline_start (timeline);
+  clutter_actor_add_transition_internal (self, name, transition, FALSE);
 }
 
 /**
