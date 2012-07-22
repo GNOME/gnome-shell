@@ -345,9 +345,18 @@ const SearchTab = new Lang.Class({
 const ViewSelector = new Lang.Class({
     Name: 'ViewSelector',
 
-    _init : function(searchEntry) {
+    _init : function(searchEntry, showAppsButton) {
         this.actor = new St.BoxLayout({ name: 'viewSelector',
                                         vertical: true });
+
+        this._showAppsButton = showAppsButton;
+        this._showAppsButton.connect('notify::checked', Lang.bind(this,
+            function() {
+                if (this._showAppsButton.checked)
+                    this._switchTab(this._appsTab);
+                else
+                    this._switchTab(this._windowsTab);
+            }));
 
         // The tab bar is located at the top of the view selector and
         // holds both "normal" tab labels and the search entry. The former
@@ -409,18 +418,18 @@ const ViewSelector = new Lang.Class({
         RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, this.addSearchProvider));
 
         Main.overview.connect('item-drag-begin',
-                              Lang.bind(this, this._switchDefaultTab));
+                              Lang.bind(this, this._resetShowAppsButton));
 
         this._stageKeyPressId = 0;
         Main.overview.connect('showing', Lang.bind(this,
             function () {
-                this._switchDefaultTab();
+                this._resetShowAppsButton();
                 this._stageKeyPressId = global.stage.connect('key-press-event',
                                                              Lang.bind(this, this._onStageKeyPress));
             }));
         Main.overview.connect('hiding', Lang.bind(this,
             function () {
-                this._switchDefaultTab();
+                this._resetShowAppsButton();
                 if (this._stageKeyPressId != 0) {
                     global.stage.disconnect(this._stageKeyPressId);
                     this._stageKeyPressId = 0;
@@ -505,9 +514,8 @@ const ViewSelector = new Lang.Class({
             }
     },
 
-    _switchDefaultTab: function() {
-        if (this._tabs.length > 0)
-            this._switchTab(this._tabs[0]);
+    _resetShowAppsButton: function() {
+        this._showAppsButton.checked = false;
     },
 
     _nextTab: function() {

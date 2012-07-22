@@ -195,12 +195,13 @@ const Overview = new Lang.Class({
                                            can_focus: true });
         this._group.add_actor(this._searchEntry);
 
-        this._viewSelector = new ViewSelector.ViewSelector(this._searchEntry);
+        this._dash = new Dash.Dash();
+        this._viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
+                                                           this._dash.showAppsButton);
         this._group.add_actor(this._viewSelector.actor);
+        this._group.add_actor(this._dash.actor);
 
         // TODO - recalculate everything when desktop size changes
-        this._dash = new Dash.Dash();
-        this._group.add_actor(this._dash.actor);
         this._dash.actor.add_constraint(this._viewSelector.constrainY);
         this._dash.actor.add_constraint(this._viewSelector.constrainHeight);
         this.dashIconSize = this._dash.iconSize;
