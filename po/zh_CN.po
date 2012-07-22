@@ -1,49 +1,35 @@
 # Chinese (China) translation for cogl.
-# Copyright (C) 2011 cogl's COPYRIGHT HOLDER
+# Copyright (C) 2011 cogl's authors and contributors.
 # This file is distributed under the same license as the cogl package.
 # Wylmer Wang <wantinghard@gmail.com>, 2011.
 # 甘霖 <thlgood@yucoat.com>, 2012.
+# fenghelong <fenghelongnjit@gmail.com>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-12 11:35+0000\n"
-"PO-Revision-Date: 2012-03-20 15:17+0000\n"
-"Last-Translator: Wylmer Wang <wantinghard@gmail.com>\n"
+"POT-Creation-Date: 2012-07-07 17:06+0000\n"
+"PO-Revision-Date: 2012-06-29 11:11+0800\n"
+"Last-Translator: fenghelong <fenghelongnjit@gmail.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../cogl/cogl-debug.c:173
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "支持的调试值："
 
-#: ../cogl/cogl-debug.c:178
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "特殊的调试值："
 
-#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "启用所有非行为调式选项"
-
-#: ../cogl/cogl-debug.c:226
-msgid "Cogl debugging flags to set"
-msgstr "要设置的 Cogl 调试选项"
-
-#: ../cogl/cogl-debug.c:228
-msgid "Cogl debugging flags to unset"
-msgstr "要清除的 Cogl 调试选项"
-
-#: ../cogl/cogl-debug.c:277
-msgid "Cogl Options"
-msgstr "Cogl 选项"
-
-#: ../cogl/cogl-debug.c:278
-msgid "Show Cogl options"
-msgstr "显示  Cogl 选项"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -52,6 +38,7 @@ msgstr "显示  Cogl 选项"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Cogl 跟踪"
 
@@ -68,7 +55,6 @@ msgid "Trace Texture Slicing"
 msgstr "跟踪纹理切片"
 
 #: ../cogl/cogl-debug-options.h:33
-#, fuzzy
 msgid "debug the creation of texture slices"
 msgstr "调试纹理切片的创建"
 
@@ -362,3 +348,23 @@ msgstr "跟踪剪切"
 #, fuzzy
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "记录有关 Cogl 如何实施剪切的信息"
+
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "跟踪性能问题"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "尝试突出显示欠佳的 Cogl 使用。"
+
+#~ msgid "Cogl debugging flags to set"
+#~ msgstr "要设置的 Cogl 调试选项"
+
+#~ msgid "Cogl debugging flags to unset"
+#~ msgstr "要清除的 Cogl 调试选项"
+
+#~ msgid "Cogl Options"
+#~ msgstr "Cogl 选项"
+
+#~ msgid "Show Cogl options"
+#~ msgstr "显示  Cogl 选项"
