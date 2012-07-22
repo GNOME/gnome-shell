@@ -358,27 +358,6 @@ const ViewSelector = new Lang.Class({
                     this._switchTab(this._windowsTab);
             }));
 
-        // The tab bar is located at the top of the view selector and
-        // holds both "normal" tab labels and the search entry. The former
-        // is left aligned, the latter right aligned - unless the text
-        // direction is RTL, in which case the order is reversed.
-        this._tabBar = new Shell.GenericContainer();
-        this._tabBar.connect('get-preferred-width',
-                             Lang.bind(this, this._getPreferredTabBarWidth));
-        this._tabBar.connect('get-preferred-height',
-                             Lang.bind(this, this._getPreferredTabBarHeight));
-        this._tabBar.connect('allocate',
-                             Lang.bind(this, this._allocateTabBar));
-        this.actor.add(this._tabBar);
-
-        // Box to hold "normal" tab labels
-        this._tabBox = new St.BoxLayout({ name: 'viewSelectorTabBar' });
-        this._tabBar.add_actor(this._tabBox);
-
-        // The searchArea just holds the entry
-        this._searchArea = new St.Bin({ name: 'searchArea' });
-        this._tabBar.add_actor(this._searchArea);
-
         // The page area holds the tab pages. Every page is given the
         // area's full allocation, so that the pages would appear on top
         // of each other if the inactive ones weren't hidden.
@@ -391,7 +370,6 @@ const ViewSelector = new Lang.Class({
         this._activeTab = null;
 
         this._searchTab = new SearchTab(searchEntry);
-        this._searchArea.set_child(this._searchTab.title);
         this._addTab(this._searchTab);
 
         this._searchTab.connect('search-cancelled', Lang.bind(this,
@@ -478,7 +456,6 @@ const ViewSelector = new Lang.Class({
 
     _addViewTab: function(viewTab) {
         this._tabs.push(viewTab);
-        this._tabBox.add(viewTab.title);
         this._addTab(viewTab);
     },
 
@@ -488,12 +465,10 @@ const ViewSelector = new Lang.Class({
         if (this._activeTab && this._activeTab.visible) {
             if (this._activeTab == tab)
                 return;
-            this._activeTab.title.remove_style_pseudo_class('selected');
             this._activeTab.hide();
         }
 
         if (tab != this._searchTab) {
-            tab.title.add_style_pseudo_class('selected');
             this._activeTab = tab;
             if (this._searchTab.visible) {
                 this._searchTab.hide();
@@ -539,59 +514,6 @@ const ViewSelector = new Lang.Class({
                 this._switchTab(this._tabs[i - 1]);
                 return;
             }
-    },
-
-    _getPreferredTabBarWidth: function(box, forHeight, alloc) {
-        let children = box.get_children();
-        for (let i = 0; i < children.length; i++) {
-            let [childMin, childNat] = children[i].get_preferred_width(forHeight);
-            alloc.min_size += childMin;
-            alloc.natural_size += childNat;
-        }
-    },
-
-    _getPreferredTabBarHeight: function(box, forWidth, alloc) {
-        let children = box.get_children();
-        for (let i = 0; i < children.length; i++) {
-            let [childMin, childNatural] = children[i].get_preferred_height(forWidth);
-            if (childMin > alloc.min_size)
-                alloc.min_size = childMin;
-            if (childNatural > alloc.natural_size)
-                alloc.natural_size = childNatural;
-        }
-    },
-
-    _allocateTabBar: function(container, box, flags) {
-        let allocWidth = box.x2 - box.x1;
-        let allocHeight = box.y2 - box.y1;
-
-        let [searchMinWidth, searchNatWidth] = this._searchArea.get_preferred_width(-1);
-        let [barMinWidth, barNatWidth] = this._tabBox.get_preferred_width(-1);
-        let childBox = new Clutter.ActorBox();
-        childBox.y1 = 0;
-        childBox.y2 = allocHeight;
-        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL) {
-            childBox.x1 = allocWidth - barNatWidth;
-            childBox.x2 = allocWidth;
-        } else {
-            childBox.x1 = 0;
-            childBox.x2 = barNatWidth;
-        }
-        this._tabBox.allocate(childBox, flags);
-
-        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL) {
-            childBox.x1 = 0;
-            childBox.x2 = searchNatWidth;
-        } else {
-            childBox.x1 = allocWidth - searchNatWidth;
-            childBox.x2 = allocWidth;
-        }
-        this._searchArea.allocate(childBox, flags);
-
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
-            function() {
-                this.constrainY.offset = this.actor.y;
-            }));
     },
 
     _onStageKeyPress: function(actor, event) {
