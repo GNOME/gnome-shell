@@ -135,10 +135,6 @@ const PopupBaseMenuItem = new Lang.Class({
         this.sensitive = sensitive;
         this.actor.reactive = sensitive;
 
-        if (sensitive)
-            this.actor.remove_style_pseudo_class('insensitive');
-        else
-            this.actor.add_style_pseudo_class('insensitive');
         this.emit('sensitive-changed', sensitive);
     },
 
@@ -1900,10 +1896,6 @@ const RemoteMenu = new Lang.Class({
         }
 
         item.actor.reactive = action.enabled;
-        if (action.enabled)
-            item.actor.remove_style_pseudo_class('insensitive');
-        else
-            item.actor.add_style_pseudo_class('insensitive');
 
         destroyId = item.connect('destroy', Lang.bind(this, function() {
             item.disconnect(destroyId);
@@ -2036,11 +2028,6 @@ const RemoteMenu = new Lang.Class({
             for (let i = 0; i < action.items.length; i++) {
                 let item = action.items[i];
                 item.actor.reactive = action.enabled;
-
-                if (action.enabled)
-                    item.actor.remove_style_pseudo_class('insensitive');
-                else
-                    item.actor.add_style_pseudo_class('insensitive');
             }
         }
     }

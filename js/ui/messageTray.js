@@ -799,10 +799,6 @@ const Notification = new Lang.Class({
             return;
 
         button.reactive = sensitive;
-        if (sensitive)
-            button.remove_style_pseudo_class('insensitive');
-        else
-            button.add_style_pseudo_class('insensitive');
     },
 
     setUrgency: function(urgency) {

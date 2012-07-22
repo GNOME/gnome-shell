@@ -447,15 +447,6 @@ st_button_class_init (StButtonClass *klass)
 }
 
 static void
-notify_reactive_cb (StWidget *button)
-{
-  if (clutter_actor_get_reactive (CLUTTER_ACTOR (button)))
-    st_widget_remove_style_pseudo_class (button, "disabled");
-  else
-    st_widget_add_style_pseudo_class (button, "disabled");
-}
-
-static void
 st_button_init (StButton *button)
 {
   button->priv = ST_BUTTON_GET_PRIVATE (button);
@@ -464,9 +455,6 @@ st_button_init (StButton *button)
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (button), TRUE);
   st_widget_set_track_hover (ST_WIDGET (button), TRUE);
-
-  g_signal_connect(button, "notify::reactive",
-                   G_CALLBACK (notify_reactive_cb), NULL);
 }
 
 /**
