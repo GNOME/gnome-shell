@@ -11,6 +11,17 @@ static const ClutterColor colors[] = {
 #define PADDING         (64.0f)
 #define SIZE            (64.0f)
 
+static void
+on_transition_stopped (ClutterActor *actor,
+                       const gchar  *transition_name,
+                       gboolean      is_finished)
+{
+  g_print ("%s: transition stopped: %s (finished: %s)\n",
+           clutter_actor_get_name (actor),
+           transition_name,
+           is_finished ? "yes" : "no");
+}
+
 G_MODULE_EXPORT const char *
 test_keyframe_transition_describe (void)
 {
@@ -36,6 +47,7 @@ test_keyframe_transition_main (int argc, char *argv[])
       ClutterActor *rect;
       float cur_x, cur_y;
       float new_x, new_y;
+      gchar *name;
 
       cur_x = PADDING;
       cur_y = PADDING + ((SIZE + PADDING) * i);
@@ -43,8 +55,11 @@ test_keyframe_transition_main (int argc, char *argv[])
       new_x = clutter_actor_get_width (stage) - PADDING - SIZE;
       new_y = g_random_double_range (PADDING, clutter_actor_get_height (stage) - PADDING - SIZE);
 
+      name = g_strdup_printf ("rect%02d", i);
+
       rect = clutter_actor_new ();
 
+      clutter_actor_set_name (rect, name);
       clutter_actor_set_background_color (rect, &colors[i]);
       clutter_actor_set_size (rect, SIZE, SIZE);
       clutter_actor_set_position (rect, PADDING, cur_y);
@@ -76,7 +91,13 @@ test_keyframe_transition_main (int argc, char *argv[])
       g_object_unref (transition);
 
       clutter_actor_add_transition (rect, "rectAnimation", group);
+
+      g_signal_connect (rect, "transition-stopped",
+                        G_CALLBACK (on_transition_stopped),
+                        NULL);
       g_object_unref (group);
+
+      g_free (name);
     }
 
   clutter_actor_show (stage);
