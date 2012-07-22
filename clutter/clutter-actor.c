@@ -3927,7 +3927,18 @@ _clutter_actor_stop_transitions (ClutterActor *self)
   while (g_hash_table_iter_next (&iter, NULL, &value))
     {
       TransitionClosure *closure = value;
-      clutter_timeline_stop (CLUTTER_TIMELINE (closure->transition));
+
+      /* if the transition is implicit we just remove it now */
+      if (closure->is_implicit)
+        g_hash_table_iter_remove (&iter);
+      else
+        {
+          /* otherwise we stop it, and the transition will be removed
+           * later, either by the actor's destruction or by explicit
+           * removal
+           */
+          clutter_timeline_stop (CLUTTER_TIMELINE (closure->transition));
+        }
     }
 }
 
@@ -18358,10 +18369,14 @@ transition_closure_free (gpointer data)
 
       timeline = CLUTTER_TIMELINE (clos->transition);
 
+      /* we disconnect the signal handler before stopping the timeline,
+       * so that we don't end up inside on_transition_stopped() from
+       * a call to g_hash_table_remove().
+       */
+      g_signal_handler_disconnect (clos->transition, clos->completed_id);
+
       if (clutter_timeline_is_playing (timeline))
         clutter_timeline_stop (timeline);
-
-      g_signal_handler_disconnect (clos->transition, clos->completed_id);
 
       g_object_unref (clos->transition);
       g_free (clos->name);
@@ -18386,9 +18401,6 @@ on_transition_stopped (ClutterTransition *transition,
   /* reset the caches used by animations */
   clutter_actor_store_content_box (actor, NULL);
 
-  if (!is_finished)
-    return;
-
   info = _clutter_actor_get_animation_info (actor);
 
   t_quark = g_quark_from_string (clos->name);
@@ -18403,6 +18415,10 @@ on_transition_stopped (ClutterTransition *transition,
        * the end of the frame processing.
        */
       g_object_ref (transition);
+
+      /* this is safe, because the timeline has now stopped,
+       * so we won't recurse
+       */
       g_hash_table_remove (info->transitions, clos->name);
     }
 
@@ -18412,7 +18428,7 @@ on_transition_stopped (ClutterTransition *transition,
    */
   g_signal_emit (actor, actor_signals[TRANSITION_STOPPED], t_quark,
                  t_name,
-                 TRUE);
+                 is_finished);
 
   g_free (t_name);
 
@@ -18709,6 +18725,10 @@ clutter_actor_remove_transition (ClutterActor *self,
                                  const char   *name)
 {
   const ClutterAnimationInfo *info;
+  TransitionClosure *clos;
+  gboolean was_playing;
+  GQuark t_quark;
+  gchar *t_name;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (name != NULL);
@@ -18718,12 +18738,36 @@ clutter_actor_remove_transition (ClutterActor *self,
   if (info->transitions == NULL)
     return;
 
-  g_signal_emit (self, actor_signals[TRANSITION_STOPPED],
-                 g_quark_from_string (name),
-                 name,
-                 FALSE);
+  clos = g_hash_table_lookup (info->transitions, name);
+
+  was_playing =
+    clutter_timeline_is_playing (CLUTTER_TIMELINE (clos->transition));
+  t_quark = g_quark_from_string (clos->name);
+  t_name = g_strdup (clos->name);
 
   g_hash_table_remove (info->transitions, name);
+
+  /* we want to maintain the invariant that ::transition-stopped is
+   * emitted after the transition has been removed, to allow replacing
+   * or chaining; removing the transition from the hash table will
+   * stop it, but transition_closure_free() will disconnect the signal
+   * handler we install in add_transition_internal(), to avoid loops
+   * or segfaults.
+   *
+   * since we know already that a transition will stop once it's removed
+   * from an actor, we can simply emit the ::transition-stopped here
+   * ourselves, if the timeline was playing (if it wasn't, then the
+   * signal was already emitted at least once).
+   */
+  if (was_playing)
+    {
+      g_signal_emit (self, actor_signals[TRANSITION_STOPPED],
+                     t_quark,
+                     t_name,
+                     FALSE);
+    }
+
+  g_free (t_name);
 }
 
 /**
