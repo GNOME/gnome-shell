@@ -176,6 +176,9 @@ parse_stylesheet (const char  *filename,
       return NULL;
     }
 
+  /* Extension stylesheet */
+  stylesheet->app_data = GUINT_TO_POINTER (FALSE);
+
   return stylesheet;
 }
 
@@ -229,6 +232,8 @@ st_theme_load_stylesheet (StTheme    *theme,
   stylesheet = parse_stylesheet (path, error);
   if (!stylesheet)
     return FALSE;
+
+  stylesheet->app_data = GUINT_TO_POINTER (TRUE);
 
   insert_stylesheet (theme, path, stylesheet);
   cr_stylesheet_ref (stylesheet);
@@ -958,6 +963,7 @@ compare_declarations (gconstpointer a,
   /* g_ptr_array_sort() is broooken */
   CRDeclaration *decl_a = *(CRDeclaration **) a;
   CRDeclaration *decl_b = *(CRDeclaration **) b;
+  gboolean a_is_extension_sheet, b_is_extension_sheet;
 
   int origin_a = get_origin (decl_a);
   int origin_b = get_origin (decl_b);
@@ -967,6 +973,12 @@ compare_declarations (gconstpointer a,
 
   if (decl_a->parent_statement->specificity != decl_b->parent_statement->specificity)
     return decl_a->parent_statement->specificity - decl_b->parent_statement->specificity;
+
+  a_is_extension_sheet = GPOINTER_TO_UINT (decl_a->parent_statement->parent_sheet->app_data);
+  b_is_extension_sheet = GPOINTER_TO_UINT (decl_b->parent_statement->parent_sheet->app_data);
+
+  if (a_is_extension_sheet != b_is_extension_sheet)
+    return a_is_extension_sheet ? 1 : -1;
 
   return 0;
 }
