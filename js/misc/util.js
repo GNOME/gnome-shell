@@ -150,7 +150,7 @@ function killall(processName) {
         // whatever...
 
         let argv = ['pkill', '-f', '^([^ ]*/)?' + processName + '($| )'];
-        GLib.spawn_sync(null, argv, null, GLib.SpawnFlags.SEARCH_PATH, null, null);
+        GLib.spawn_sync(null, argv, null, GLib.SpawnFlags.SEARCH_PATH, null);
         // It might be useful to return success/failure, but we'd need
         // a wrapper around WIFEXITED and WEXITSTATUS. Since none of
         // the current callers care, we don't bother.
