@@ -557,7 +557,8 @@ const Source = new Lang.Class({
     processNotification: function(notification, gicon) {
         if (gicon)
             this._gicon = gicon;
-        this._setSummaryIcon(this.createIcon(this.ICON_SIZE));
+        if (!this.trayIcon)
+            this.iconUpdated();
 
         let tracker = Shell.WindowTracker.get_default();
         if (notification.resident && this.app && tracker.focus_app == this.app)
@@ -625,7 +626,7 @@ const Source = new Lang.Class({
         // notification-based icons (ie, not a trayicon) or if it was unset before
         if (!this.trayIcon) {
             this.useNotificationIcon = false;
-            this._setSummaryIcon(this.createIcon(this.ICON_SIZE));
+            this.iconUpdated();
         }
     },
 
