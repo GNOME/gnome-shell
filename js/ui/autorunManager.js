@@ -495,7 +495,6 @@ const AutorunTransientSource = new Lang.Class({
         this.parent(mount.get_name());
 
         this._notification = new AutorunTransientNotification(this);
-        this._setSummaryIcon(this.createNotificationIcon());
 
         // add ourselves as a source, and popup the notification
         Main.messageTray.add(this);
