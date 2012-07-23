@@ -252,7 +252,6 @@ const BoxPointer = new Lang.Class({
         let halfBorder = borderWidth / 2;
         let halfBase = Math.floor(base/2);
 
-        let borderColor = themeNode.get_color('-arrow-border-color');
         let backgroundColor = themeNode.get_color('-arrow-background-color');
 
         let [width, height] = area.get_surface_size();
@@ -263,7 +262,6 @@ const BoxPointer = new Lang.Class({
             boxWidth -= rise;
         }
         let cr = area.get_context();
-        Clutter.cairo_set_source_color(cr, borderColor);
 
         // Translate so that box goes from 0,0 to boxWidth,boxHeight,
         // with the arrow poking out of that
@@ -359,9 +357,13 @@ const BoxPointer = new Lang.Class({
 
         Clutter.cairo_set_source_color(cr, backgroundColor);
         cr.fillPreserve();
-        Clutter.cairo_set_source_color(cr, borderColor);
-        cr.setLineWidth(borderWidth);
-        cr.stroke();
+
+        if (borderWidth > 0) {
+            let borderColor = themeNode.get_color('-arrow-border-color');
+            Clutter.cairo_set_source_color(cr, borderColor);
+            cr.setLineWidth(borderWidth);
+            cr.stroke();
+        }
     },
 
     setPosition: function(sourceActor, alignment) {
