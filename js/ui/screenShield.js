@@ -140,9 +140,7 @@ const NotificationsBox = new Lang.Class({
     _makeNotificationSource: function(source) {
         let box = new St.BoxLayout({ style_class: 'screen-shield-notification-source' });
 
-        let iconClone = source.createIcon(SUMMARY_ICON_SIZE);
         let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
-        sourceActor.setIcon(iconClone);
         box.add(sourceActor.actor, { y_fill: true });
 
         let textBox = new St.BoxLayout({ vertical: true });

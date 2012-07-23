@@ -536,7 +536,7 @@ const ChatSource = new Lang.Class({
     },
 
     _updateAvatarIcon: function() {
-        this._setSummaryIcon(this.createIcon(this.ICON_SIZE));
+        this.iconUpdated();
         this._notification.update(this._notification.title, null, { customContent: true });
     },
 

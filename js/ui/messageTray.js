@@ -1042,6 +1042,7 @@ const SourceActor = new Lang.Class({
 
     _init: function(source, size) {
         this._source = source;
+        this._size = size;
 
         this.actor = new Shell.GenericContainer();
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
@@ -1067,10 +1068,14 @@ const SourceActor = new Lang.Class({
 
         this._source.connect('count-updated', Lang.bind(this, this._updateCount));
         this._updateCount();
+
+        this._source.connect('icon-updated', Lang.bind(this, this._updateIcon));
+        this._updateIcon();
     },
 
     setIcon: function(icon) {
         this._iconBin.child = icon;
+        this._iconSet = true;
     },
 
     _getPreferredWidth: function (actor, forHeight, alloc) {
@@ -1108,13 +1113,21 @@ const SourceActor = new Lang.Class({
         this._counterBin.allocate(childBox, flags);
     },
 
+    _updateIcon: function() {
+        if (this._actorDestroyed)
+            return;
+
+        if (!this._iconSet)
+            this._iconBin.child = this._source.createIcon(this._size);
+    },
+
     _updateCount: function() {
         if (this._actorDestroyed)
             return;
 
         this._counterBin.visible = this._source.countVisible;
         this._counterLabel.set_text(this._source.count.toString());
-    },
+    }
 });
 
 const Source = new Lang.Class({
@@ -1175,16 +1188,12 @@ const Source = new Lang.Class({
                              icon_size: size });
     },
 
-    _ensureMainIcon: function(icon) {
+    _ensureMainIcon: function() {
         if (this._mainIcon)
-            return false;
-
-        if (!icon)
-            icon = this.createIcon(this.ICON_SIZE);
+            return;
 
         this._mainIcon = new SourceActor(this, this.ICON_SIZE);
-        this._mainIcon.setIcon(icon);
-        return true;
+        return;
     },
 
     // Unlike createIcon, this always returns the same actor;
@@ -1236,10 +1245,15 @@ const Source = new Lang.Class({
         return false;
     },
 
+    iconUpdated: function() {
+        this.emit('icon-updated');
+    },
+
     //// Protected methods ////
     _setSummaryIcon: function(icon) {
-        if (!this._ensureMainIcon(icon))
-            this._mainIcon.setIcon(icon);
+        this._ensureMainIcon();
+        this._mainIcon.setIcon(icon);
+        this.iconUpdated();
     },
 
     open: function(notification) {
