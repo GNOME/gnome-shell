@@ -555,8 +555,8 @@ const Inspector = new Lang.Class({
     },
 
     _close: function() {
-        Clutter.ungrab_pointer(this._eventHandler);
-        Clutter.ungrab_keyboard(this._eventHandler);
+        Clutter.ungrab_pointer();
+        Clutter.ungrab_keyboard();
         this._eventHandler.destroy();
         this._eventHandler = null;
         this.emit('closed');
