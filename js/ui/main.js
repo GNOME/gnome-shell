@@ -40,7 +40,6 @@ const UnlockDialog = imports.ui.unlockDialog;
 const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
 const XdndHandler = imports.ui.xdndHandler;
-const StatusIconDispatcher = imports.ui.statusIconDispatcher;
 const Util = imports.misc.util;
 
 const OVERRIDES_SCHEMA = 'org.gnome.shell.overrides';
@@ -71,7 +70,6 @@ let modalActorFocusStack = [];
 let uiGroup = null;
 let magnifier = null;
 let xdndHandler = null;
-let statusIconDispatcher = null;
 let keyboard = null;
 let layoutManager = null;
 let networkAgent = null;
@@ -214,7 +212,6 @@ function start() {
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
     overview = new Overview.Overview();
     magnifier = new Magnifier.Magnifier();
-    statusIconDispatcher = new StatusIconDispatcher.StatusIconDispatcher();
     screenShield = new ScreenShield.ScreenShield();
     screenSaverDBus = new ShellDBus.ScreenSaverDBus();
     panel = new Panel.Panel();
@@ -255,8 +252,6 @@ function start() {
         global.display.connect('overlay-key',
                                Lang.bind(overview, overview.toggle));
     }
-
-    statusIconDispatcher.start(messageTray.actor);
 
     // Provide the bus object for gnome-session to
     // initiate logouts.

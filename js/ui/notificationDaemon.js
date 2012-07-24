@@ -88,6 +88,21 @@ const rewriteRules = {
     ]
 };
 
+const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
+    'bluetooth-applet': 'bluetooth',
+    'gnome-volume-control-applet': 'volume', // renamed to gnome-sound-applet
+                                             // when moved to control center
+    'gnome-sound-applet': 'volume',
+    'nm-applet': 'network',
+    'gnome-power-manager': 'battery',
+    'keyboard': 'keyboard',
+    'a11y-keyboard': 'a11y',
+    'kbd-scrolllock': 'keyboard',
+    'kbd-numlock': 'keyboard',
+    'kbd-capslock': 'keyboard',
+    'ibus-ui-gtk': 'keyboard'
+};
+
 const NotificationDaemon = new Lang.Class({
     Name: 'NotificationDaemon',
 
@@ -100,13 +115,16 @@ const NotificationDaemon = new Lang.Class({
         this._notifications = {};
         this._busProxy = new Bus();
 
-        Main.statusIconDispatcher.connect('message-icon-added', Lang.bind(this, this._onTrayIconAdded));
-        Main.statusIconDispatcher.connect('message-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
+        this._trayManager = new Shell.TrayManager();
+        this._trayManager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
+        this._trayManager.connect('tray-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
 
         Shell.WindowTracker.get_default().connect('notify::focus-app',
             Lang.bind(this, this._onFocusAppChanged));
         Main.overview.connect('hidden',
             Lang.bind(this, this._onFocusAppChanged));
+
+        this._trayManager.manage_stage(global.stage, Main.messageTray.actor);
     },
 
     _iconForNotificationData: function(icon, hints) {
@@ -481,6 +499,10 @@ const NotificationDaemon = new Lang.Class({
     },
 
     _onTrayIconAdded: function(o, icon) {
+        let wmClass = icon.wm_class.toLowerCase();
+        if (STANDARD_TRAY_ICON_IMPLEMENTATIONS[wmClass] !== undefined)
+            return;
+
         let source = this._getSource(icon.title || icon.wm_class || C_("program", "Unknown"), icon.pid, null, null, icon);
     },
 

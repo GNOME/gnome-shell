@@ -967,10 +967,6 @@ const Panel = new Lang.Class({
         this._centerBox.add(this._dateMenu.actor, { y_fill: true });
         this._menus.addMenu(this._dateMenu.menu);
 
-        /* right */
-        Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
-        Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
-
         Main.layoutManager.panelBox.add(this.actor);
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
@@ -1149,30 +1145,6 @@ const Panel = new Lang.Class({
         }));
 
         return indicator;
-    },
-
-    _onTrayIconAdded: function(o, icon, role) {
-        if (Main.sessionMode.statusArea.implementation[role]) {
-            // This icon is legacy, and replaced by a Shell version
-            // Hide it
-            return;
-        }
-
-        if (Main.sessionMode.statusArea.order.indexOf(role) == -1)
-            return;
-
-        icon.height = PANEL_ICON_SIZE;
-        let buttonBox = new PanelMenu.ButtonBox();
-        let box = buttonBox.actor;
-        box.add_actor(icon);
-
-        this._insertStatusItem(box, Main.sessionMode.statusArea.order.indexOf(role));
-    },
-
-    _onTrayIconRemoved: function(o, icon) {
-        let box = icon.get_parent();
-        if (box && box._delegate instanceof PanelMenu.ButtonBox)
-            box.destroy();
     },
 
     _onLockStateChanged: function(shield, locked) {
