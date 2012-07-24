@@ -723,6 +723,9 @@ const ThumbnailsBox = new Lang.Class({
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
+        this._nWorkspacesNotifyId =
+            global.screen.connect('notify::n-workspaces',
+                                  Lang.bind(this, this._workspacesChanged));
 
         this._targetScale = 0;
         this._scale = 0;
@@ -751,10 +754,36 @@ const ThumbnailsBox = new Lang.Class({
             global.window_manager.disconnect(this._switchWorkspaceNotifyId);
             this._switchWorkspaceNotifyId = 0;
         }
+        if (this._nWorkspacesNotifyId > 0) {
+            global.screen.disconnect(this._nWorkspacesNotifyId);
+            this._nWorkspacesNotifyId = 0;
+        }
 
         for (let w = 0; w < this._thumbnails.length; w++)
             this._thumbnails[w].destroy();
         this._thumbnails = [];
+    },
+
+    _workspacesChanged: function() {
+        let oldNumWorkspaces = this._thumbnails.length;
+        let newNumWorkspaces = global.screen.n_workspaces;
+        let active = global.screen.get_active_workspace_index();
+
+        if (newNumWorkspaces > oldNumWorkspaces) {
+            this.addThumbnails(oldNumWorkspaces, newNumWorkspaces - oldNumWorkspaces);
+        } else {
+            let removedIndex;
+            let removedNum = oldNumWorkspaces - newNumWorkspaces;
+            for (let w = 0; w < oldNumWorkspaces; w++) {
+                let metaWorkspace = global.screen.get_workspace_by_index(w);
+                if (this._thumbnails[w].metaWorkspace != metaWorkspace) {
+                    removedIndex = w;
+                    break;
+                }
+            }
+
+            this.removeThumbnails(removedIndex, removedNum);
+        }
     },
 
     addThumbnails: function(start, count) {
