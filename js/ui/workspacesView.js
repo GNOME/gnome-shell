@@ -537,10 +537,6 @@ const WorkspacesDisplay = new Lang.Class({
         this._notifyOpacityId = 0;
         this._swipeScrollBeginId = 0;
         this._swipeScrollEndId = 0;
-
-        this._settings = new Gio.Settings({ schema: OVERRIDE_SCHEMA });
-        this._settings.connect('changed::dynamic-workspaces',
-            Lang.bind(this, this._updateSwitcherVisibility));
     },
 
     _onPan: function(action) {
@@ -548,12 +544,6 @@ const WorkspacesDisplay = new Lang.Class({
         let adjustment = this._scrollAdjustment;
         adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
         return false;
-    },
-
-    _updateSwitcherVisibility: function() {
-        this._thumbnailsBox.actor.visible =
-            this._settings.get_boolean('dynamic-workspaces') ||
-                global.screen.n_workspaces > 1;
     },
 
     show: function() {
@@ -576,7 +566,6 @@ const WorkspacesDisplay = new Lang.Class({
 
         this._controls.show();
         this._thumbnailsBox.show();
-        this._updateSwitcherVisibility();
 
         this._updateWorkspacesViews();
 
@@ -926,8 +915,6 @@ const WorkspacesDisplay = new Lang.Class({
                 }
                 m++;
             }
-
-            this._thumbnailsBox.addThumbnails(oldNumWorkspaces, newNumWorkspaces - oldNumWorkspaces);
         } else {
             // Assume workspaces are only removed sequentially
             // (e.g. 2,3,4 - not 2,4,7)
@@ -950,14 +937,11 @@ const WorkspacesDisplay = new Lang.Class({
                     lostWorkspaces[l].destroy();
                 }
             }
-
-            this._thumbnailsBox.removeThumbnails(removedIndex, removedNum);
         }
 
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].updateWorkspaces(oldNumWorkspaces,
                                                       newNumWorkspaces);
-        this._updateSwitcherVisibility();
     },
 
     _updateZoom : function() {
