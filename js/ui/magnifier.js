@@ -602,7 +602,7 @@ const Magnifier = new Lang.Class({
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
             this._zoomRegions[0].setColorSaturation(
-                this._settings.get_boolean(COLOR_SATURATION_KEY)
+                this._settings.get_double(COLOR_SATURATION_KEY)
             );
         }
     },
