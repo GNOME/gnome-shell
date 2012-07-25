@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter 3.5.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-10 07:57+0200\n"
-"PO-Revision-Date: 2012-07-10 07:58+0200\n"
+"POT-Creation-Date: 2012-07-25 16:30+0200\n"
+"PO-Revision-Date: 2012-07-25 16:30+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "Language: \n"
@@ -45,16 +45,16 @@ msgstr "Klokkehendelse"
 msgid "Unknown window information request: %d"
 msgstr "Ukjent forespørsel om vindusinformasjon: %d"
 
-#: ../src/core/delete.c:111
-#, c-format
-msgid "<tt>%s</tt> is not responding."
-msgstr "<tt>%s</tt> svarer ikke."
-
 #: ../src/core/delete.c:114
+#, c-format
+msgid "%s is not responding."
+msgstr "%s svarer ikke."
+
+#: ../src/core/delete.c:118
 msgid "Application is not responding."
 msgstr "Programmet svarer ikke."
 
-#: ../src/core/delete.c:119
+#: ../src/core/delete.c:123
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -62,11 +62,11 @@ msgstr ""
 "Du kan velge å vente en kort stund for å se om det fortsetter eller tvinge "
 "programmet til å avslutte helt."
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Wait"
 msgstr "_Vent"
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Force Quit"
 msgstr "_Tvungen nedstenging"
 
@@ -80,7 +80,7 @@ msgstr "Mangler utvidelsen %s som kreves for komposittfunksjon"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
 
-#: ../src/core/keybindings.c:852
+#: ../src/core/keybindings.c:844
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -307,7 +307,7 @@ msgid "Window manager error: "
 msgstr "Feil i vindushåndterer: "
 
 #. first time through
-#: ../src/core/window.c:7237
+#: ../src/core/window.c:7234
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -323,7 +323,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7902
+#: ../src/core/window.c:7899
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
