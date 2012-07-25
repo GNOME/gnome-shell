@@ -41,7 +41,7 @@ const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
 
 const _RESIZE_ANIMATION_TIME = 0.25;
-const _SCROLL_ANIMATION_TIME = 2.0;
+const _SCROLL_ANIMATION_TIME = 0.5;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_NAME_SIZE = 48;
 
@@ -400,7 +400,7 @@ const UserList = new Lang.Class({
         Tweener.addTween (adjustment,
                           { value: value,
                             time: _SCROLL_ANIMATION_TIME,
-                            transition: 'linear' });
+                            transition: 'easeOutQuad' });
     },
 
     jumpToItem: function(item) {
