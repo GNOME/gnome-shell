@@ -2185,13 +2185,6 @@ clutter_text_paint (ClutterActor *self)
      tied to the workings of this function */
   n_chars = clutter_text_buffer_get_length (get_buffer (text));
 
-  /* don't bother painting an empty text actor, unless it's
-   * editable, in which case we want to paint at least the
-   * cursor
-   */
-  if (n_chars == 0 && (!priv->editable || !priv->cursor_visible))
-    return;
-
   clutter_actor_get_allocation_box (self, &alloc);
 
   g_object_get (self, "background-color-set", &bg_color_set, NULL);
@@ -2210,6 +2203,13 @@ clutter_text_paint (ClutterActor *self)
                                 bg_color.alpha);
       cogl_rectangle (0, 0, alloc.x2 - alloc.x1, alloc.y2 - alloc.y1);
     }
+
+  /* don't bother painting an empty text actor, unless it's
+   * editable, in which case we want to paint at least the
+   * cursor
+   */
+  if (n_chars == 0 && (!priv->editable || !priv->cursor_visible))
+    return;
 
   if (priv->editable && priv->single_line_mode)
     layout = clutter_text_create_layout (text, -1, -1);
