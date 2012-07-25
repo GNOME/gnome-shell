@@ -45,6 +45,13 @@
                 and introduces innovative user interface concepts to provide
                 a visually attractive and easy to use experience.</para>
 
+                <para>gnome-shell is a required component of
+                the GNOME desktop, i.e. it is listed in the
+                RequiredComponents field of
+                <filename>/usr/share/gnome-session/sessions/gnome.session</filename>.
+                It is started in the window manager phase of the session.
+                </para>
+
         </refsect1>
 
         <refsect1>
@@ -53,7 +60,7 @@
                 <variablelist>
 
                         <varlistentry>
-                                <term><option>--replace</option></term>
+                                <term><option>-r</option>, <option>--replace</option></term>
 
                                 <listitem><para>Replace the running window manager</para></listitem>
                         </varlistentry>
@@ -106,8 +113,28 @@
                                 <listitem><para>Display help and exit</para></listitem>
                         </varlistentry>
 
+                        <varlistentry>
+                                <term><option>--mode=<replaceable>MODE</replaceable></option></term>
+
+                                <listitem><para>Use a specific mode, e.g. "gdm" for login screen</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--list-modes</option></term>
+
+                                <listitem><para>List possible modes and exit</para></listitem>
+                        </varlistentry>
+
                 </variablelist>
 
+        </refsect1>
+
+        <refsect1>
+                <title>Files</title>
+
+                <para>
+                        <filename>/usr/share/gnome-session/sessions/gnome.session</filename>,
+                        <filename>/usr/share/applications/gnome-shell.desktop</filename>.</para>
         </refsect1>
 
         <refsect1>
