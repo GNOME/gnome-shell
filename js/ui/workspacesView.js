@@ -483,8 +483,6 @@ const WorkspacesDisplay = new Lang.Class({
         controls.track_hover = true;
         controls.connect('notify::hover',
                          Lang.bind(this, this._onControlsHoverChanged));
-        controls.connect('scroll-event',
-                         Lang.bind(this, this._onScrollEvent));
 
         this._primaryIndex = Main.layoutManager.primaryIndex;
 
@@ -1004,17 +1002,6 @@ const WorkspacesDisplay = new Lang.Class({
         // might as well avoid it.
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
                        Lang.bind(this, this._updateZoom));
-    },
-
-    _onScrollEvent: function (actor, event) {
-        switch ( event.get_scroll_direction() ) {
-        case Clutter.ScrollDirection.UP:
-            Main.wm.actionMoveWorkspace(Meta.MotionDirection.UP);
-            break;
-        case Clutter.ScrollDirection.DOWN:
-            Main.wm.actionMoveWorkspace(Meta.MotionDirection.DOWN);
-            break;
-        }
     }
 });
 Signals.addSignalMethods(WorkspacesDisplay.prototype);
