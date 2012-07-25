@@ -36,6 +36,8 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
 
 PKG_PROG_PKG_CONFIG([0.22])
 
+AC_PATH_PROG([XSLTPROC], [xsltproc])
+
 GLIB_GSETTINGS
 
 # Get a value to substitute into gnome-shell.in
