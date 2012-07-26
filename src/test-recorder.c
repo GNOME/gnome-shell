@@ -11,7 +11,7 @@
 static ShellRecorder *recorder = NULL;
 
 static gboolean
-stop_recording_timeout (gpointer data)
+stop_recording_timeout (ClutterActor *stage)
 {
   if (recorder)
     {
@@ -19,15 +19,16 @@ stop_recording_timeout (gpointer data)
       g_object_unref (recorder);
     }
 
-  clutter_main_quit ();
+  clutter_actor_destroy (stage);
 
   return FALSE;
 }
 
 static void
-on_animation_completed (ClutterAnimation *animation)
+on_animation_completed (ClutterAnimation *animation,
+                        ClutterStage     *stage)
 {
-  g_timeout_add (1000, stop_recording_timeout, NULL);
+  g_timeout_add (1000, (GSourceFunc) stop_recording_timeout, stage);
 }
 
 static void
@@ -69,7 +70,7 @@ int main (int argc, char **argv)
 				     "y", 240.0,
 				     NULL);
   g_signal_connect (animation, "completed",
-		    G_CALLBACK (on_animation_completed), NULL);
+		    G_CALLBACK (on_animation_completed), stage);
 
   text = g_object_new (CLUTTER_TYPE_TEXT,
 		       "text", "Blue",
@@ -109,8 +110,6 @@ int main (int argc, char **argv)
   clutter_actor_show (stage);
 
   clutter_main ();
-
-  g_object_unref (stage);
 
   return 0;
 }
