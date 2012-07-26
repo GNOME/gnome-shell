@@ -526,6 +526,8 @@ const ThumbnailsBox = new Lang.Class({
         this._dropPlaceholder = new St.Bin({ style_class: 'placeholder' });
         this.actor.add_actor(this._dropPlaceholder);
 
+        this.visible = true;
+
         this._targetScale = 0;
         this._scale = 0;
         this._pendingScaleUpdate = false;
@@ -543,6 +545,11 @@ const ThumbnailsBox = new Lang.Class({
         this.actor.connect('button-release-event', Lang.bind(this, this._onButtonRelease));
         this.actor.connect('scroll-event',
                            Lang.bind(this, this._onScrollEvent));
+
+        Main.overview.connect('showing',
+                              Lang.bind(this, this._createThumbnails));
+        Main.overview.connect('hidden',
+                              Lang.bind(this, this._destroyThumbnails));
 
         Main.overview.connect('app-drag-begin',
                               Lang.bind(this, this._onDragBegin));
@@ -721,7 +728,7 @@ const ThumbnailsBox = new Lang.Class({
         }
     },
 
-    show: function() {
+    _createThumbnails: function() {
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
@@ -751,7 +758,7 @@ const ThumbnailsBox = new Lang.Class({
         this.addThumbnails(0, global.screen.n_workspaces);
     },
 
-    hide: function() {
+    _destroyThumbnails: function() {
         if (this._switchWorkspaceNotifyId > 0) {
             global.window_manager.disconnect(this._switchWorkspaceNotifyId);
             this._switchWorkspaceNotifyId = 0;
@@ -764,6 +771,45 @@ const ThumbnailsBox = new Lang.Class({
         for (let w = 0; w < this._thumbnails.length; w++)
             this._thumbnails[w].destroy();
         this._thumbnails = [];
+    },
+
+    _computeThumbnailsX: function() {
+        this._targetX = this.actor.get_x();
+
+        let rtl = (this.actor.get_text_direction() == Clutter.TextDirection.RTL);
+
+        if (rtl)
+            this._hiddenX = -this.actor.width;
+        else
+            this._hiddenX = this._targetX + this.actor.width;
+    },
+
+    show: function() {
+        if (this.visible)
+            return;
+
+        this.visible = true;
+
+        this.actor.show();
+        Tweener.addTween(this.actor, { translation_x: this._targetX,
+                                       transition: 'easeOutQuad',
+                                       time: SLIDE_ANIMATION_TIME
+                                     });
+    },
+
+    hide: function() {
+        if (!this.visible)
+            return;
+
+        this.visible = false;
+
+        Tweener.addTween(this.actor, { translation_x: this._hiddenX,
+                                       transition: 'easeOutQuad',
+                                       time: SLIDE_ANIMATION_TIME,
+                                       onComplete: Lang.bind(this, function () {
+                                           this.actor.hide();
+                                       })
+                                     });
     },
 
     _workspacesChanged: function() {
@@ -955,6 +1001,8 @@ const ThumbnailsBox = new Lang.Class({
                                    onCompleteScope: this
                                  });
             });
+
+        this._computeThumbnailsX();
     },
 
     _queueUpdateStates: function() {
