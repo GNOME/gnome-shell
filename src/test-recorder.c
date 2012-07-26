@@ -16,10 +16,20 @@ stop_recording_timeout (ClutterActor *stage)
   if (recorder)
     {
       shell_recorder_close (recorder);
+
+      /* quit when the recorder finishes closing
+       */
+      g_object_weak_ref (G_OBJECT (recorder),
+                         (GWeakNotify)
+                         clutter_actor_destroy,
+                         stage);
+
       g_object_unref (recorder);
     }
-
-  clutter_actor_destroy (stage);
+  else
+    {
+      clutter_actor_destroy (stage);
+    }
 
   return FALSE;
 }
