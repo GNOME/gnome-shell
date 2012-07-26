@@ -269,18 +269,6 @@ static void
 shell_recorder_finalize (GObject  *object)
 {
   ShellRecorder *recorder = SHELL_RECORDER (object);
-  GSList *l;
-
-  for (l = recorder->pipelines; l; l = l->next)
-    {
-      RecorderPipeline *pipeline = l->data;
-
-      /* Remove the back-reference. The pipeline will be freed
-       * when it finishes. (Or when the process exits, but that's
-       * out of our control.)
-       */
-      pipeline->recorder = NULL;
-    }
 
   if (recorder->update_memory_used_timeout)
     g_source_remove (recorder->update_memory_used_timeout);
@@ -1344,6 +1332,8 @@ recorder_pipeline_free (RecorderPipeline *pipeline)
   if (pipeline->outfile != -1)
     close (pipeline->outfile);
 
+  g_clear_object (&pipeline->recorder);
+
   g_free (pipeline);
 }
 
@@ -1452,7 +1442,7 @@ recorder_open_pipeline (ShellRecorder *recorder)
   GstBus *bus;
 
   pipeline = g_new0(RecorderPipeline, 1);
-  pipeline->recorder = recorder;
+  pipeline->recorder = g_object_ref (recorder);
   pipeline->outfile = - 1;
 
   pipeline_description = recorder->pipeline_description;
