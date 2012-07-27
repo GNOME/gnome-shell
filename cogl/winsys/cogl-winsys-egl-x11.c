@@ -91,7 +91,7 @@ find_onscreen_for_xid (CoglContext *context, uint32_t xid)
 
 static void
 notify_resize (CoglContext *context,
-               GLXDrawable drawable,
+               Window drawable,
                int width,
                int height)
 {
