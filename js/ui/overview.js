@@ -10,19 +10,14 @@ const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Gdk = imports.gi.Gdk;
 
-const AppDisplay = imports.ui.appDisplay;
 const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Panel = imports.ui.panel;
 const Params = imports.misc.params;
-const PlaceDisplay = imports.ui.placeDisplay;
-const RemoteSearch = imports.ui.remoteSearch;
 const Tweener = imports.ui.tweener;
 const ViewSelector = imports.ui.viewSelector;
-const Wanda = imports.ui.wanda;
-const WorkspacesView = imports.ui.workspacesView;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
 // Time for initial animation going into Overview mode
@@ -144,8 +139,6 @@ const Overview = new Lang.Class({
         this._capturedEventId = 0;
         this._buttonPressId = 0;
 
-        this._workspacesDisplay = null;
-
         this.visible = false;           // animating to overview, in overview, animating out
         this._shown = false;            // show() and not hide()
         this._shownTemporarily = false; // showTemporarily() and not hideTemporarily()
@@ -194,22 +187,6 @@ const Overview = new Lang.Class({
 
         this._viewSelector = new ViewSelector.ViewSelector();
         this._group.add_actor(this._viewSelector.actor);
-
-        this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
-        this._viewSelector.addViewTab('windows', _("Windows"), this._workspacesDisplay.actor, 'text-x-generic');
-
-        let appView = new AppDisplay.AllAppDisplay();
-        this._viewSelector.addViewTab('applications', _("Applications"), appView.actor, 'system-run');
-
-        // Default search providers
-        // Wanda comes obviously first
-        this.addSearchProvider(new Wanda.WandaSearchProvider());
-        this.addSearchProvider(new AppDisplay.AppSearchProvider());
-        this.addSearchProvider(new AppDisplay.SettingsSearchProvider());
-        this.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());
-
-        // Load remote search providers provided by applications
-        RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, this.addSearchProvider));
 
         // TODO - recalculate everything when desktop size changes
         this._dash = new Dash.Dash();
@@ -565,6 +542,28 @@ const Overview = new Lang.Class({
             Lang.bind(this, this._onButtonPress));
     },
 
+    fadeInDesktop: function() {
+            this._desktopFade.opacity = 0;
+            this._desktopFade.show();
+            Tweener.addTween(this._desktopFade,
+                             { opacity: 255,
+                               time: ANIMATION_TIME,
+                               transition: 'easeOutQuad' });
+    },
+
+    fadeOutDesktop: function() {
+        if (!this._desktopFade.child)
+            this._desktopFade.child = this._getDesktopClone();
+
+        this._desktopFade.opacity = 255;
+        this._desktopFade.show();
+        Tweener.addTween(this._desktopFade,
+                         { opacity: 0,
+                           time: ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
+    },
+
     _animateVisible: function() {
         if (this.visible || this.animationInProgress)
             return;
@@ -585,21 +584,7 @@ const Overview = new Lang.Class({
         global.window_group.hide();
         this._group.show();
         this._background.show();
-
-        this._workspacesDisplay.show();
-
-        if (!this._desktopFade.child)
-            this._desktopFade.child = this._getDesktopClone();
-
-        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows()) {
-            this._desktopFade.opacity = 255;
-            this._desktopFade.show();
-            Tweener.addTween(this._desktopFade,
-                             { opacity: 0,
-                               time: ANIMATION_TIME,
-                               transition: 'easeOutQuad'
-                             });
-        }
+        this._viewSelector.show();
 
         this._group.opacity = 0;
         Tweener.addTween(this._group,
@@ -726,16 +711,7 @@ const Overview = new Lang.Class({
         this.animationInProgress = true;
         this._hideInProgress = true;
 
-        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows()) {
-            this._desktopFade.opacity = 0;
-            this._desktopFade.show();
-            Tweener.addTween(this._desktopFade,
-                             { opacity: 255,
-                               time: ANIMATION_TIME,
-                               transition: 'easeOutQuad' });
-        }
-
-        this._workspacesDisplay.zoomFromOverview();
+        this._viewSelector.zoomFromOverview();
 
         // Make other elements fade out.
         Tweener.addTween(this._group,
@@ -777,8 +753,7 @@ const Overview = new Lang.Class({
 
         global.window_group.show();
 
-        this._workspacesDisplay.hide();
-
+        this._viewSelector.hide();
         this._desktopFade.hide();
         this._background.hide();
         this._group.hide();

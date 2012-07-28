@@ -9,11 +9,16 @@ const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
+const AppDisplay = imports.ui.appDisplay;
 const Main = imports.ui.main;
+const PlaceDisplay = imports.ui.placeDisplay;
+const RemoteSearch = imports.ui.remoteSearch;
 const Search = imports.ui.search;
 const SearchDisplay = imports.ui.searchDisplay;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
+const Wanda = imports.ui.wanda;
+const WorkspacesView = imports.ui.workspacesView;
 
 const BaseTab = new Lang.Class({
     Name: 'BaseTab',
@@ -392,6 +397,24 @@ const ViewSelector = new Lang.Class({
                 this._switchTab(this._activeTab);
             }));
 
+        this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
+        this._windowsTab = new ViewTab('windows', _("Windows"), this._workspacesDisplay.actor, 'text-x-generic');
+        this._addViewTab(this._windowsTab);
+
+        let appView = new AppDisplay.AllAppDisplay();
+        this._appsTab = new ViewTab('applications', _("Applications"), appView.actor, 'system-run');
+        this._addViewTab(this._appsTab);
+
+        // Default search providers
+        // Wanda comes obviously first
+        this.addSearchProvider(new Wanda.WandaSearchProvider());
+        this.addSearchProvider(new AppDisplay.AppSearchProvider());
+        this.addSearchProvider(new AppDisplay.SettingsSearchProvider());
+        this.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());
+        
+        // Load remote search providers provided by applications
+        RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, this.addSearchProvider));
+
         Main.overview.connect('item-drag-begin',
                               Lang.bind(this, this._switchDefaultTab));
 
@@ -425,6 +448,24 @@ const ViewSelector = new Lang.Class({
                                                             coordinate: Clutter.BindCoordinate.HEIGHT });
     },
 
+    show: function() {
+        this._workspacesDisplay.show();
+
+        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
+            Main.overview.fadeOutDesktop();
+    },
+
+    zoomFromOverview: function() {
+        this._workspacesDisplay.zoomFromOverview();
+
+        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
+            Main.overview.fadeInDesktop();
+    },
+
+    hide: function() {
+        this._workspacesDisplay.hide();
+    },
+
     _addTab: function(tab) {
         tab.page.hide();
         this._pageArea.add_actor(tab.page);
@@ -433,8 +474,7 @@ const ViewSelector = new Lang.Class({
         }));
     },
 
-    addViewTab: function(id, title, pageActor, a11yIcon) {
-        let viewTab = new ViewTab(id, title, pageActor, a11yIcon);
+    _addViewTab: function(viewTab) {
         this._tabs.push(viewTab);
         this._tabBox.add(viewTab.title);
         this._addTab(viewTab);
