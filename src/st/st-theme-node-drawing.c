@@ -457,11 +457,12 @@ get_background_coordinates (StThemeNode *node,
 static void
 get_background_position (StThemeNode             *self,
                          const ClutterActorBox   *allocation,
-                         ClutterActorBox         *result)
+                         ClutterActorBox         *result,
+                         ClutterActorBox         *texture_coords)
 {
   gdouble painting_area_width, painting_area_height;
   gdouble background_image_width, background_image_height;
-  gdouble x, y;
+  gdouble x1, y1;
   gdouble scale_w, scale_h;
 
   /* get the background image size */
@@ -484,13 +485,31 @@ get_background_position (StThemeNode             *self,
   get_background_coordinates (self,
                               painting_area_width, painting_area_height,
                               background_image_width, background_image_height,
-                              &x, &y);
+                              &x1, &y1);
 
-  /* place the background image */
-  result->x1 = x;
-  result->y1 = y;
-  result->x2 = result->x1 + background_image_width;
-  result->y2 = result->y1 + background_image_height;
+  if (self->background_repeat)
+    {
+      gdouble width = allocation->x2 - allocation->x1 + x1;
+      gdouble height = allocation->y2 - allocation->y1 + y1;
+
+      *result = *allocation;
+
+      /* reference image is at x1, y1 */
+      texture_coords->x1 = x1 / background_image_width;
+      texture_coords->y1 = y1 / background_image_height;
+      texture_coords->x2 = width / background_image_width;
+      texture_coords->y2 = height / background_image_height;
+    }
+  else
+    {
+      result->x1 = x1;
+      result->y1 = y1;
+      result->x2 = x1 + background_image_width;
+      result->y2 = y1 + background_image_height;
+
+      texture_coords->x1 = texture_coords->y1 = 0;
+      texture_coords->x2 = texture_coords->y2 = 1;
+    }
 }
 
 /* Use of this function marks code which doesn't support
@@ -614,15 +633,21 @@ create_cairo_pattern_of_background_image (StThemeNode *node,
                               &x, &y);
   cairo_matrix_translate (&matrix, -x, -y);
 
+  if (node->background_repeat)
+    cairo_pattern_set_extend (pattern, CAIRO_EXTEND_REPEAT);
+
   /* If it's opaque, fills up the entire allocated
    * area, then don't bother doing a background fill first
    */
-  if (content != CAIRO_CONTENT_COLOR_ALPHA
-      && x >= 0
-      && -x + background_image_width >= node->alloc_width
-      && y >= 0
-      && -y + background_image_height >= node->alloc_height)
-    *needs_background_fill = FALSE;
+  if (content != CAIRO_CONTENT_COLOR_ALPHA)
+    {
+      if (node->background_repeat ||
+          (x >= 0 &&
+           y >= 0 &&
+           background_image_width - x >= node->alloc_width &&
+           background_image_height -y >= node->alloc_height))
+        *needs_background_fill = FALSE;
+    }
 
   cairo_pattern_set_matrix (pattern, &matrix);
 
@@ -1444,6 +1469,9 @@ st_theme_node_render_resources (StThemeNode   *node,
       node->background_texture = st_texture_cache_load_file_to_cogl_texture (texture_cache, background_image);
       node->background_material = _st_create_texture_material (node->background_texture);
 
+      if (node->background_repeat)
+        cogl_material_set_layer_wrap_mode (node->background_material, 0, COGL_MATERIAL_WRAP_MODE_REPEAT);
+
       if (background_image_shadow_spec)
         {
           node->background_shadow_material = _st_create_shadow_material (background_image_shadow_spec,
@@ -1464,13 +1492,19 @@ st_theme_node_render_resources (StThemeNode   *node,
 static void
 paint_material_with_opacity (CoglHandle       material,
                              ClutterActorBox *box,
+                             ClutterActorBox *coords,
                              guint8           paint_opacity)
 {
   cogl_material_set_color4ub (material,
                               paint_opacity, paint_opacity, paint_opacity, paint_opacity);
 
   cogl_set_source (material);
-  cogl_rectangle (box->x1, box->y1, box->x2, box->y2);
+
+  if (coords)
+    cogl_rectangle_with_texture_coords (box->x1, box->y1, box->x2, box->y2,
+                                        coords->x1, coords->y1, coords->x2, coords->y2);
+  else
+    cogl_rectangle (box->x1, box->y1, box->x2, box->y2);
 }
 
 static void
@@ -1947,6 +1981,7 @@ st_theme_node_paint (StThemeNode           *node,
 
           paint_material_with_opacity (node->prerendered_material,
                                        &paint_box,
+                                       NULL,
                                        paint_opacity);
         }
 
@@ -1963,17 +1998,18 @@ st_theme_node_paint (StThemeNode           *node,
   if (node->background_texture != COGL_INVALID_HANDLE)
     {
       ClutterActorBox background_box;
+      ClutterActorBox texture_coords;
       gboolean has_visible_outline;
 
-      /* If the background doesn't have a border or opaque background,
-       * then we let its background image shadows leak out, but other
-       * wise we clip it.
+      /* If the node doesn't have an opaque or repeating background or
+       * a border then we let its background image shadows leak out,
+       * but otherwise we clip it.
        */
       has_visible_outline = st_theme_node_has_visible_outline (node);
 
-      get_background_position (node, &allocation, &background_box);
+      get_background_position (node, &allocation, &background_box, &texture_coords);
 
-      if (has_visible_outline)
+      if (has_visible_outline || node->background_repeat)
         cogl_clip_push_rectangle (allocation.x1, allocation.y1, allocation.x2, allocation.y2);
 
       /* CSS based drop shadows
@@ -1995,9 +2031,12 @@ st_theme_node_paint (StThemeNode           *node,
                                        &background_box,
                                        paint_opacity);
 
-      paint_material_with_opacity (node->background_material, &background_box, paint_opacity);
+      paint_material_with_opacity (node->background_material,
+                                   &background_box,
+                                   &texture_coords,
+                                   paint_opacity);
 
-      if (has_visible_outline)
+      if (has_visible_outline || node->background_repeat)
         cogl_clip_pop ();
     }
 }

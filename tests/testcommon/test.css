@@ -67,6 +67,10 @@ stage {
     background-color: white;
 }
 
+.background-repeat {
+    background-repeat: repeat;
+}
+
 .push-button {
     background: #eeddbb;
     border: 1px solid black;

@@ -1569,6 +1569,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
   if (node->background_computed)
     return;
 
+  node->background_repeat = FALSE;
   node->background_computed = TRUE;
   node->background_color = TRANSPARENT_COLOR;
   node->background_gradient_type = ST_GRADIENT_NONE;
@@ -1657,6 +1658,14 @@ _st_theme_node_ensure_background (StThemeNode *node)
             }
           else
             node->background_position_set = TRUE;
+        }
+      else if (strcmp (property_name, "-repeat") == 0)
+        {
+          if (decl->value->type == TERM_IDENT)
+            {
+              if (strcmp (decl->value->content.str->stryng->str, "repeat") == 0)
+                node->background_repeat = TRUE;
+            }
         }
       else if (strcmp (property_name, "-size") == 0)
         {

@@ -88,6 +88,7 @@ struct _StThemeNode {
   CRDeclaration *inline_properties;
 
   guint background_position_set : 1;
+  guint background_repeat : 1;
 
   guint properties_computed : 1;
   guint geometry_computed : 1;
