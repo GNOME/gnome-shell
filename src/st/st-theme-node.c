@@ -1647,8 +1647,8 @@ _st_theme_node_ensure_background (StThemeNode *node)
             }
           else
             node->background_position_set = TRUE;
-            
-           result = get_length_from_term_int (node, decl->value->next, FALSE, &node->background_position_y);
+
+          result = get_length_from_term_int (node, decl->value->next, FALSE, &node->background_position_y);
 
           if (result == VALUE_NOT_FOUND)
             {

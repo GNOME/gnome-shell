@@ -45,7 +45,7 @@ struct _StThemeNode {
 
   int background_position_x;
   int background_position_y;
-  gboolean background_position_set : 1;
+
   StBackgroundSize background_size;
   gint background_size_w;
   gint background_size_h;
@@ -86,6 +86,8 @@ struct _StThemeNode {
 
   /* We hold onto these separately so we can destroy them on finalize */
   CRDeclaration *inline_properties;
+
+  guint background_position_set : 1;
 
   guint properties_computed : 1;
   guint geometry_computed : 1;

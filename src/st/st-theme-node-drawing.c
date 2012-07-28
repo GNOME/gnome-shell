@@ -1477,7 +1477,6 @@ static void
 st_theme_node_paint_borders (StThemeNode           *node,
                              const ClutterActorBox *box,
                              guint8                 paint_opacity)
-
 {
   float width, height;
   int border_width[4];
