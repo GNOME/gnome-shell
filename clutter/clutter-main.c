@@ -2633,8 +2633,40 @@ _clutter_process_event_details (ClutterActor        *stage,
           break;
         }
 
-      case CLUTTER_TOUCH_BEGIN:
       case CLUTTER_TOUCH_UPDATE:
+        /* only the stage gets motion events if they are enabled */
+        if (!clutter_stage_get_motion_events_enabled (CLUTTER_STAGE (stage)) &&
+            event->any.source == NULL)
+          {
+            ClutterActor *grab_actor = NULL;
+
+            /* Only stage gets motion events */
+            event->any.source = stage;
+
+            /* global grabs */
+            if (device->sequence_grab_actors != NULL)
+              {
+                grab_actor = g_hash_table_lookup (device->sequence_grab_actors,
+                                                  event->touch.sequence);
+              }
+
+            if (grab_actor != NULL)
+              {
+                clutter_actor_event (grab_actor, event, FALSE);
+                break;
+              }
+
+            /* Trigger handlers on stage in both capture .. */
+            if (!clutter_actor_event (stage, event, TRUE))
+              {
+                /* and bubbling phase */
+                clutter_actor_event (stage, event, FALSE);
+              }
+            break;
+          }
+
+      /* fallthrough from motion */
+      case CLUTTER_TOUCH_BEGIN:
       case CLUTTER_TOUCH_END:
         {
           ClutterActor *actor;
