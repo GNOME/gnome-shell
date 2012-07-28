@@ -84,7 +84,6 @@ function test() {
     function addGradientCase(direction, borderWidth, borderRadius, extra) {
         let gradientBox = new St.BoxLayout({ style_class: 'background-gradient',
                                              style: 'border: ' + borderWidth + 'px solid #8b0000;'
->>>>>>> 2aff593... tests: Run each test in a function
                                              + 'border-radius: ' + borderRadius + 'px;'
                                              + 'background-gradient-direction: ' + direction + ';'
                                              + 'width: 32px;'
