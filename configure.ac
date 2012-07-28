@@ -54,7 +54,7 @@ AC_INIT([clutter],
         [http://www.clutter-project.org])
 
 AC_CONFIG_SRCDIR([clutter/clutter.h])
-AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_HEADERS([clutter/config.h])
 AC_CONFIG_AUX_DIR([build])
 AC_CONFIG_MACRO_DIR([build/autotools])
 
@@ -1151,7 +1151,6 @@ dnl ===========================================================================
 
 AC_CONFIG_FILES([
 	Makefile
-	config.h.win32
         README
 
 	build/Makefile
@@ -1162,6 +1161,7 @@ AC_CONFIG_FILES([
 	build/win32/vs10/Makefile
 
 	clutter/Makefile
+	clutter/config.h.win32
         clutter/clutter-config.h
 	clutter/clutter-version.h
 	clutter/clutter-$CLUTTER_API_VERSION.pc:clutter/clutter.pc.in

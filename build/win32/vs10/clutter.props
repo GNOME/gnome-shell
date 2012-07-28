@@ -17,9 +17,9 @@
     <TestProgDef>$(BaseBuildDef);TESTS_DATADIR="../share/clutter-$(ClutterApiVersion)/data"</TestProgDef>
     <TestPerfProgDef>$(BaseBuildDef);TESTS_DATA_DIR="../share/clutter-$(ClutterApiVersion)/data";$(ClutterDisableDeprecationWarnings)</TestPerfProgDef>
     <PreBuildWin>
-if exist ..\..\..\config.h goto DONE_CONFIG_H
+if exist ..\..\..\clutter\config.h goto DONE_CONFIG_H
 
-copy ..\..\..\config.h.win32 ..\..\..\config.h
+copy ..\..\..\clutter\config.h.win32 ..\..\..\clutter\config.h
 
 :DONE_CONFIG_H
 
@@ -34,9 +34,9 @@ copy ..\..\..\clutter\clutter-config.h.win32 ..\..\..\clutter\clutter-config.h
 :DONE_CLUTTER_CONFIG_H
     </PreBuildWin>
     <PreBuildGDK>
-if exist ..\..\..\config.h goto DONE_CONFIG_H
+if exist ..\..\..\clutter\config.h goto DONE_CONFIG_H
 
-copy ..\..\..\config.h.win32 ..\..\..\config.h
+copy ..\..\..\clutter\config.h.win32 ..\..\..\clutter\config.h
 
 :DONE_CONFIG_H
 

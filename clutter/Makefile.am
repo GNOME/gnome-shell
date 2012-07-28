@@ -338,6 +338,12 @@ built_source_h = \
 DISTCLEANFILES += clutter-config.h
 EXTRA_DIST += clutter-config.h.in
 
+# win32 config header
+EXTRA_DIST += \
+	config.h.win32.in	\
+	config.h.win32		\
+	$(NULL)
+
 # version header
 DISTCLEANFILES += clutter-version.h
 EXTRA_DIST += clutter-version.h.in clutter-version.h

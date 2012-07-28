@@ -23,8 +23,6 @@ EXTRA_DIST = \
 	ChangeLog.pre-git-import	\
 	README.in			\
 	README				\
-	config.h.win32		\
-	config.h.win32.in	\
 	$(NULL)
 
 CLEANFILES = $(pcfiles)
