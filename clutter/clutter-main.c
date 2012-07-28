@@ -2667,6 +2667,7 @@ _clutter_process_event_details (ClutterActor        *stage,
 
       /* fallthrough from motion */
       case CLUTTER_TOUCH_BEGIN:
+      case CLUTTER_TOUCH_CANCEL:
       case CLUTTER_TOUCH_END:
         {
           ClutterActor *actor;
@@ -2716,9 +2717,6 @@ _clutter_process_event_details (ClutterActor        *stage,
 
           break;
         }
-
-      case CLUTTER_TOUCH_CANCEL:
-        break;
 
       case CLUTTER_STAGE_STATE:
         /* fullscreen / focus - forward to stage */
