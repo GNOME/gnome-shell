@@ -102,21 +102,14 @@ const SearchTab = new Lang.Class({
     Name: 'SearchTab',
     Extends: BaseTab,
 
-    _init: function() {
+    _init: function(searchEntry) {
         this.active = false;
         this._searchPending = false;
         this._searchTimeoutId = 0;
 
         this._searchSystem = new Search.SearchSystem();
 
-        this._entry = new St.Entry({ name: 'searchEntry',
-                                     /* Translators: this is the text displayed
-                                        in the search entry when no search is
-                                        active; it should not exceed ~30
-                                        characters. */
-                                     hint_text: _("Type to search..."),
-                                     track_hover: true,
-                                     can_focus: true });
+        this._entry = searchEntry;
         ShellEntry.addContextMenu(this._entry);
         this._text = this._entry.clutter_text;
         this._text.connect('key-press-event', Lang.bind(this, this._onKeyPress));
@@ -132,7 +125,7 @@ const SearchTab = new Lang.Class({
         this._iconClickedId = 0;
 
         this._searchResults = new SearchDisplay.SearchResults(this._searchSystem);
-        this.parent(this._entry, this._searchResults.actor, _("Search"), 'edit-find');
+        this.parent(new St.Bin() /* Dummy */, this._searchResults.actor, _("Search"), 'edit-find');
 
         this._text.connect('text-changed', Lang.bind(this, this._onTextChanged));
         this._text.connect('key-press-event', Lang.bind(this, function (o, e) {
@@ -352,7 +345,7 @@ const SearchTab = new Lang.Class({
 const ViewSelector = new Lang.Class({
     Name: 'ViewSelector',
 
-    _init : function() {
+    _init : function(searchEntry) {
         this.actor = new St.BoxLayout({ name: 'viewSelector',
                                         vertical: true });
 
@@ -388,7 +381,7 @@ const ViewSelector = new Lang.Class({
         this._tabs = [];
         this._activeTab = null;
 
-        this._searchTab = new SearchTab();
+        this._searchTab = new SearchTab(searchEntry);
         this._searchArea.set_child(this._searchTab.title);
         this._addTab(this._searchTab);
 
