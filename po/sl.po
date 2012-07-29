@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-07-19 00:09+0000\n"
-"PO-Revision-Date: 2012-07-19 09:57+0100\n"
+"POT-Creation-Date: 2012-07-29 08:27+0000\n"
+"PO-Revision-Date: 2012-07-29 14:11+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -160,44 +160,45 @@ msgstr "<b>Pripona</b>"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Razširitev za nastavljanje je mogoče izbrati iz spustnega seznama zgoraj."
 
-#: ../js/gdm/loginDialog.js:625
+#: ../js/gdm/loginDialog.js:550
 msgid "Session..."
 msgstr "Seja ..."
 
-#: ../js/gdm/loginDialog.js:781
+#: ../js/gdm/loginDialog.js:699
 msgctxt "title"
 msgid "Sign In"
 msgstr "Prijava"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:826
+#: ../js/gdm/loginDialog.js:744
+#: ../js/ui/unlockDialog.js:124
 msgid "(or swipe finger)"
 msgstr "(ali pa povlecite prst)"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:847
+#: ../js/gdm/loginDialog.js:765
 msgid "Not listed?"
 msgstr "Ali je ni na seznamu?"
 
-#: ../js/gdm/loginDialog.js:1025
-#: ../js/ui/endSessionDialog.js:410
+#: ../js/gdm/loginDialog.js:908
+#: ../js/ui/endSessionDialog.js:406
 #: ../js/ui/extensionDownloader.js:195
 #: ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:176
 #: ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:431
+#: ../js/ui/status/bluetooth.js:436
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: ../js/gdm/loginDialog.js:1030
+#: ../js/gdm/loginDialog.js:913
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prijava"
 
-#: ../js/gdm/loginDialog.js:1486
+#: ../js/gdm/loginDialog.js:1256
 msgid "Login Window"
 msgstr "Prijavno okno"
 
@@ -429,7 +430,7 @@ msgid "Next week"
 msgstr "Naslednji teden"
 
 #: ../js/ui/dash.js:238
-#: ../js/ui/messageTray.js:1287
+#: ../js/ui/messageTray.js:1317
 msgid "Remove"
 msgstr "Odstrani"
 
@@ -549,7 +550,7 @@ msgstr "Ponoven zagon sistema."
 msgid "Install"
 msgstr "Namesti"
 
-#: ../js/ui/extensionDownloader.js:203
+#: ../js/ui/extensionDownloader.js:204
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Ali naj se razširitev '%s'  namesti preko povezave z extensions.gnome.org?"
@@ -560,16 +561,16 @@ msgstr "sistemska vrstica"
 
 #: ../js/ui/keyboard.js:545
 #: ../js/ui/status/keyboard.js:149
-#: ../js/ui/status/power.js:203
+#: ../js/ui/status/power.js:209
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
-#: ../js/ui/keyringPrompt.js:85
-#: ../js/ui/polkitAuthenticationAgent.js:273
+#: ../js/ui/keyringPrompt.js:86
+#: ../js/ui/polkitAuthenticationAgent.js:274
 msgid "Password:"
 msgstr "Geslo:"
 
-#: ../js/ui/keyringPrompt.js:101
+#: ../js/ui/keyringPrompt.js:102
 msgid "Type again:"
 msgstr "Vpišite znova:"
 
@@ -624,24 +625,24 @@ msgid "Web Page"
 msgstr "Spletna stran"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:129
+#: ../js/ui/main.js:140
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Screencast z %d %t"
 
-#: ../js/ui/messageTray.js:1280
+#: ../js/ui/messageTray.js:1310
 msgid "Open"
 msgstr "Odpri"
 
-#: ../js/ui/messageTray.js:1297
+#: ../js/ui/messageTray.js:1327
 msgid "Unmute"
 msgstr "Povrni glasnost"
 
-#: ../js/ui/messageTray.js:1297
+#: ../js/ui/messageTray.js:1327
 msgid "Mute"
 msgstr "Utišaj"
 
-#: ../js/ui/messageTray.js:2575
+#: ../js/ui/messageTray.js:2638
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -650,120 +651,120 @@ msgid "Connect"
 msgstr "Poveži"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:243
-#: ../js/ui/networkAgent.js:255
-#: ../js/ui/networkAgent.js:282
-#: ../js/ui/networkAgent.js:302
-#: ../js/ui/networkAgent.js:312
+#: ../js/ui/networkAgent.js:238
+#: ../js/ui/networkAgent.js:250
+#: ../js/ui/networkAgent.js:277
+#: ../js/ui/networkAgent.js:297
+#: ../js/ui/networkAgent.js:307
 msgid "Password: "
 msgstr "Geslo:"
 
 #. static WEP
-#: ../js/ui/networkAgent.js:248
+#: ../js/ui/networkAgent.js:243
 msgid "Key: "
 msgstr "Ključ:"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:280
-#: ../js/ui/networkAgent.js:298
+#: ../js/ui/networkAgent.js:275
+#: ../js/ui/networkAgent.js:293
 msgid "Username: "
 msgstr "Uporabniško ime: "
 
-#: ../js/ui/networkAgent.js:286
+#: ../js/ui/networkAgent.js:281
 msgid "Identity: "
 msgstr "_Istovetnost:"
 
-#: ../js/ui/networkAgent.js:288
+#: ../js/ui/networkAgent.js:283
 msgid "Private key password: "
 msgstr "Geslo zasebnega ključa:"
 
-#: ../js/ui/networkAgent.js:300
+#: ../js/ui/networkAgent.js:295
 msgid "Service: "
 msgstr "Storitev:"
 
-#: ../js/ui/networkAgent.js:329
+#: ../js/ui/networkAgent.js:324
 msgid "Authentication required by wireless network"
 msgstr "Zahtevana overitev za brezžično omrežje"
 
-#: ../js/ui/networkAgent.js:330
+#: ../js/ui/networkAgent.js:325
 #, c-format
 msgid "Passwords or encryption keys are required to access the wireless network '%s'."
 msgstr "Za povezavo v brezžično omrežje '%s' je zahtevana overitev ali nastavitev šifrirnega ključa."
 
-#: ../js/ui/networkAgent.js:334
+#: ../js/ui/networkAgent.js:329
 msgid "Wired 802.1X authentication"
 msgstr "Žična overitev 802.1X"
 
-#: ../js/ui/networkAgent.js:336
+#: ../js/ui/networkAgent.js:331
 msgid "Network name: "
 msgstr "Ime omrežja:"
 
-#: ../js/ui/networkAgent.js:341
+#: ../js/ui/networkAgent.js:336
 msgid "DSL authentication"
 msgstr "DSL overitev"
 
-#: ../js/ui/networkAgent.js:348
+#: ../js/ui/networkAgent.js:343
 msgid "PIN code required"
 msgstr "Zahtevana koda PIN"
 
-#: ../js/ui/networkAgent.js:349
+#: ../js/ui/networkAgent.js:344
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Za napravo mobilnega širokopasovnega dostopa je zahtevana koda PIN."
 
-#: ../js/ui/networkAgent.js:350
+#: ../js/ui/networkAgent.js:345
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/networkAgent.js:356
+#: ../js/ui/networkAgent.js:351
 msgid "Mobile broadband network password"
 msgstr "Geslo mobilnega širokopasovnega dostopa"
 
-#: ../js/ui/networkAgent.js:357
+#: ../js/ui/networkAgent.js:352
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Za povezavo z omrežjem '%s' je zahtevano geslo."
 
-#: ../js/ui/notificationDaemon.js:486
+#: ../js/ui/notificationDaemon.js:484
 #: ../src/shell-app.c:374
 msgctxt "program"
 msgid "Unknown"
 msgstr "Neznano"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:89
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: ../js/ui/overview.js:128
+#: ../js/ui/overview.js:129
 msgid "Overview"
 msgstr "Pregled"
 
-#: ../js/ui/overview.js:198
+#: ../js/ui/overview.js:199
 msgid "Windows"
 msgstr "Okna"
 
-#: ../js/ui/overview.js:201
+#: ../js/ui/overview.js:202
 msgid "Applications"
 msgstr "Programi"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:226
+#: ../js/ui/overview.js:227
 msgid "Dash"
 msgstr "Pregledna plošča"
 
-#: ../js/ui/panel.js:566
+#: ../js/ui/panel.js:573
 msgid "Quit"
 msgstr "Končaj"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:605
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:964
+#: ../js/ui/panel.js:975
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -800,7 +801,7 @@ msgstr "Overi"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/polkitAuthenticationAgent.js:261
+#: ../js/ui/polkitAuthenticationAgent.js:262
 #: ../js/ui/shellMountOperation.js:381
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Dejanje je spodletelo. Poskusite znova."
@@ -810,7 +811,7 @@ msgstr "Dejanje je spodletelo. Poskusite znova."
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:728
+#: ../js/ui/popupMenu.js:723
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -834,11 +835,11 @@ msgstr "Kopiraj"
 msgid "Paste"
 msgstr "Prilepi"
 
-#: ../js/ui/shellEntry.js:77
+#: ../js/ui/shellEntry.js:96
 msgid "Show Text"
 msgstr "Pokaži besedilo"
 
-#: ../js/ui/shellEntry.js:79
+#: ../js/ui/shellEntry.js:98
 msgid "Hide Text"
 msgstr "Skrij besedilo"
 
@@ -851,6 +852,7 @@ msgid "Remember Passphrase"
 msgstr "Zapomni si šifrirno geslo"
 
 #: ../js/ui/shellMountOperation.js:400
+#: ../js/ui/unlockDialog.js:142
 msgid "Unlock"
 msgstr "Odkleni"
 
@@ -894,21 +896,21 @@ msgstr "Miškine tipke"
 msgid "Universal Access Settings"
 msgstr "Splošne nastavitve dostopa"
 
-#: ../js/ui/status/accessibility.js:117
+#: ../js/ui/status/accessibility.js:121
 msgid "High Contrast"
 msgstr "Visok kontrast"
 
-#: ../js/ui/status/accessibility.js:154
+#: ../js/ui/status/accessibility.js:158
 msgid "Large Text"
 msgstr "Veliko besedilo"
 
 #: ../js/ui/status/bluetooth.js:31
 #: ../js/ui/status/bluetooth.js:35
-#: ../js/ui/status/bluetooth.js:255
-#: ../js/ui/status/bluetooth.js:308
-#: ../js/ui/status/bluetooth.js:339
-#: ../js/ui/status/bluetooth.js:375
-#: ../js/ui/status/bluetooth.js:404
+#: ../js/ui/status/bluetooth.js:260
+#: ../js/ui/status/bluetooth.js:313
+#: ../js/ui/status/bluetooth.js:344
+#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:409
 #: ../js/ui/status/network.js:844
 msgid "Bluetooth"
 msgstr "Bluetooth"
@@ -930,113 +932,113 @@ msgid "Bluetooth Settings"
 msgstr "Nastavitve za Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:107
+#: ../js/ui/status/bluetooth.js:112
 #: ../js/ui/status/network.js:211
 msgid "hardware disabled"
 msgstr "strojno onemogočen"
 
-#: ../js/ui/status/bluetooth.js:200
+#: ../js/ui/status/bluetooth.js:205
 msgid "Connection"
 msgstr "Povezava"
 
-#: ../js/ui/status/bluetooth.js:211
+#: ../js/ui/status/bluetooth.js:216
 #: ../js/ui/status/network.js:445
 msgid "disconnecting..."
 msgstr "prekinjanje povezave ..."
 
-#: ../js/ui/status/bluetooth.js:224
+#: ../js/ui/status/bluetooth.js:229
 #: ../js/ui/status/network.js:451
 #: ../js/ui/status/network.js:911
 msgid "connecting..."
 msgstr "povezovanje ..."
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:247
 msgid "Send Files..."
 msgstr "Pošlji datoteke ..."
 
-#: ../js/ui/status/bluetooth.js:247
+#: ../js/ui/status/bluetooth.js:252
 msgid "Browse Files..."
 msgstr "Brskanje datotek ..."
 
-#: ../js/ui/status/bluetooth.js:256
+#: ../js/ui/status/bluetooth.js:261
 msgid "Error browsing device"
 msgstr "Napaka med brskanjem po napravi"
 
-#: ../js/ui/status/bluetooth.js:257
+#: ../js/ui/status/bluetooth.js:262
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Po zahtevani naprave ni mogoče brskati, napaka je '%s'"
 
-#: ../js/ui/status/bluetooth.js:265
+#: ../js/ui/status/bluetooth.js:270
 msgid "Keyboard Settings"
 msgstr "Nastavitve tipkovnice"
 
-#: ../js/ui/status/bluetooth.js:268
+#: ../js/ui/status/bluetooth.js:273
 msgid "Mouse Settings"
 msgstr "Nastavitve miške"
 
-#: ../js/ui/status/bluetooth.js:273
+#: ../js/ui/status/bluetooth.js:278
 #: ../js/ui/status/volume.js:59
 msgid "Sound Settings"
 msgstr "Nastavitve zvoka"
 
-#: ../js/ui/status/bluetooth.js:340
+#: ../js/ui/status/bluetooth.js:345
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Zahteva za pooblastitev od %s"
 
-#: ../js/ui/status/bluetooth.js:346
+#: ../js/ui/status/bluetooth.js:351
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Naprava %s želi dostop do storitve '%s'."
 
-#: ../js/ui/status/bluetooth.js:348
+#: ../js/ui/status/bluetooth.js:353
 msgid "Always grant access"
 msgstr "Vedno odobri dostop"
 
-#: ../js/ui/status/bluetooth.js:349
+#: ../js/ui/status/bluetooth.js:354
 msgid "Grant this time only"
 msgstr "Odobri le tokrat"
 
-#: ../js/ui/status/bluetooth.js:350
+#: ../js/ui/status/bluetooth.js:355
 #: ../js/ui/telepathyClient.js:1097
 msgid "Reject"
 msgstr "Zavrni"
 
-#: ../js/ui/status/bluetooth.js:376
+#: ../js/ui/status/bluetooth.js:381
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Potrditev razčlenjevanja za %s"
 
-#: ../js/ui/status/bluetooth.js:382
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:387
+#: ../js/ui/status/bluetooth.js:417
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Naprava %s se poskuša seznaniti s tem računalnikom"
 
-#: ../js/ui/status/bluetooth.js:383
+#: ../js/ui/status/bluetooth.js:388
 #, c-format
 msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgstr "Potrdite, ali se PIN '%06d' ujema s tistim na napravi."
 
-#: ../js/ui/status/bluetooth.js:385
+#: ../js/ui/status/bluetooth.js:390
 msgid "Matches"
 msgstr "Ujemanja"
 
-#: ../js/ui/status/bluetooth.js:386
+#: ../js/ui/status/bluetooth.js:391
 msgid "Does not match"
 msgstr "Se ne ujema"
 
-#: ../js/ui/status/bluetooth.js:405
+#: ../js/ui/status/bluetooth.js:410
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Zahteva razčlenjevanja za %s"
 
-#: ../js/ui/status/bluetooth.js:413
+#: ../js/ui/status/bluetooth.js:418
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Vnesite PIN, ki je naveden na napravi."
 
-#: ../js/ui/status/bluetooth.js:430
+#: ../js/ui/status/bluetooth.js:435
 msgid "OK"
 msgstr "V redu"
 
@@ -1154,19 +1156,19 @@ msgstr "Povezave VPN"
 msgid "Network Settings"
 msgstr "Omrežne nastavitve"
 
-#: ../js/ui/status/network.js:1703
+#: ../js/ui/status/network.js:1712
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
-#: ../js/ui/status/network.js:1796
+#: ../js/ui/status/network.js:1805
 msgid "Connection failed"
 msgstr "Povezava je spodletela"
 
-#: ../js/ui/status/network.js:1797
+#: ../js/ui/status/network.js:1806
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
-#: ../js/ui/status/network.js:2060
+#: ../js/ui/status/network.js:2069
 msgid "Networking is disabled"
 msgstr "Omrežje je onemogočeno"
 
@@ -1180,11 +1182,11 @@ msgstr "Upravljanje napajanja"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:98
+#: ../js/ui/status/power.js:104
 msgid "Estimating..."
 msgstr "Ocenjevanje ...."
 
-#: ../js/ui/status/power.js:105
+#: ../js/ui/status/power.js:111
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -1194,12 +1196,12 @@ msgstr[2] "preostajata še %d uri"
 msgstr[3] "preostajajo še %d ure"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:108
+#: ../js/ui/status/power.js:114
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "Preostaja še %d %s %d %s"
 
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:116
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "ur"
@@ -1207,7 +1209,7 @@ msgstr[1] "ura"
 msgstr[2] "uri"
 msgstr[3] "ure"
 
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:116
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minut"
@@ -1215,7 +1217,7 @@ msgstr[1] "minuta"
 msgstr[2] "minuti"
 msgstr[3] "minute"
 
-#: ../js/ui/status/power.js:113
+#: ../js/ui/status/power.js:119
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
@@ -1224,54 +1226,54 @@ msgstr[1] "preostaja še %d minuta"
 msgstr[2] "preostajata še %d minuti"
 msgstr[3] "preostajajo še %d minute"
 
-#: ../js/ui/status/power.js:116
-#: ../js/ui/status/power.js:186
+#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:192
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:193
+#: ../js/ui/status/power.js:199
 msgid "AC adapter"
 msgstr "Električni prilagodilnik"
 
-#: ../js/ui/status/power.js:195
+#: ../js/ui/status/power.js:201
 msgid "Laptop battery"
 msgstr "Baterija prenosnika"
 
-#: ../js/ui/status/power.js:197
+#: ../js/ui/status/power.js:203
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:199
+#: ../js/ui/status/power.js:205
 msgid "Monitor"
 msgstr "Zaslon"
 
-#: ../js/ui/status/power.js:201
+#: ../js/ui/status/power.js:207
 msgid "Mouse"
 msgstr "Miška"
 
-#: ../js/ui/status/power.js:205
+#: ../js/ui/status/power.js:211
 msgid "PDA"
 msgstr "Dlančnik"
 
-#: ../js/ui/status/power.js:207
+#: ../js/ui/status/power.js:213
 msgid "Cell phone"
 msgstr "Mobilni telefon"
 
-#: ../js/ui/status/power.js:209
+#: ../js/ui/status/power.js:215
 msgid "Media player"
 msgstr "Predstavni predvajalnik"
 
-#: ../js/ui/status/power.js:211
+#: ../js/ui/status/power.js:217
 msgid "Tablet"
 msgstr "Tablični računalnik"
 
-#: ../js/ui/status/power.js:213
+#: ../js/ui/status/power.js:219
 msgid "Computer"
 msgstr "Računalnik"
 
-#: ../js/ui/status/power.js:215
+#: ../js/ui/status/power.js:221
 msgctxt "device"
 msgid "Unknown"
 msgstr "Neznano"
@@ -1514,27 +1516,31 @@ msgstr "Uredi račun"
 msgid "Unknown reason"
 msgstr "Neznan vzrok"
 
-#: ../js/ui/userMenu.js:130
+#: ../js/ui/unlockDialog.js:129
+msgid "Login as another user"
+msgstr "Prijava z drugimi uporabniškimi podatki"
+
+#: ../js/ui/userMenu.js:161
 msgid "Available"
 msgstr "Na voljo"
 
-#: ../js/ui/userMenu.js:133
+#: ../js/ui/userMenu.js:164
 msgid "Busy"
 msgstr "Zaposleno"
 
-#: ../js/ui/userMenu.js:136
+#: ../js/ui/userMenu.js:167
 msgid "Invisible"
 msgstr "Nevidno"
 
-#: ../js/ui/userMenu.js:139
+#: ../js/ui/userMenu.js:170
 msgid "Away"
 msgstr "Odsotno"
 
-#: ../js/ui/userMenu.js:142
+#: ../js/ui/userMenu.js:173
 msgid "Idle"
 msgstr "Nedejavno"
 
-#: ../js/ui/userMenu.js:145
+#: ../js/ui/userMenu.js:176
 msgid "Unavailable"
 msgstr "Nedostopno"
 
@@ -1584,7 +1590,7 @@ msgid "Type to search..."
 msgstr "Vtipkajte za iskanje ..."
 
 #: ../js/ui/viewSelector.js:131
-#: ../src/shell-util.c:253
+#: ../src/shell-util.c:254
 msgid "Search"
 msgstr "Poišči"
 
@@ -1641,19 +1647,19 @@ msgstr[3] "%u dovodi naprave"
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
 
-#: ../src/main.c:327
+#: ../src/main.c:330
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: ../src/main.c:333
+#: ../src/main.c:336
 msgid "Mode used by GDM for login screen"
 msgstr "Način uporabljen v GDM za prijavni naslov"
 
-#: ../src/main.c:339
+#: ../src/main.c:342
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Uporabi poseben način, npr.: \"gdm\" za prijavni zaslon"
 
-#: ../src/main.c:345
+#: ../src/main.c:348
 msgid "List possible modes"
 msgstr "Seznam mogočih načinov"
 
@@ -1684,13 +1690,13 @@ msgstr "Uporabnik je zavrnil pogovorno okno overitve"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:97
+#: ../src/shell-util.c:98
 msgid "Home"
 msgstr "Domača mapa"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:107
+#: ../src/shell-util.c:108
 msgid "File System"
 msgstr "Datotečni sistem"
 
@@ -1699,7 +1705,7 @@ msgstr "Datotečni sistem"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:303
+#: ../src/shell-util.c:304
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
