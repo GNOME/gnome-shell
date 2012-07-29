@@ -920,13 +920,20 @@ AC_ARG_ENABLE([maintainer-flags],
               [enable_maintainer_flags=maintainer_flags_default])
 
 MAINTAINER_COMPILER_FLAGS="$MAINTAINER_COMPILER_FLAGS
-                           -Wall -Wcast-align -Wuninitialized
-                           -Wno-strict-aliasing -Wempty-body -Wformat
-                           -Wformat-security -Wformat-nonliteral -Winit-self
-                           -Wdeclaration-after-statement -Wvla
-                           -Wpointer-arith -Wmissing-declarations
+                           -Wall
                            -Wcast-align
-                           -Wredundant-decls"
+                           -Wuninitialized
+                           -Wno-strict-aliasing
+                           -Werror=pointer-arith
+                           -Werror=missing-declarations
+                           -Werror=redundant-decls
+                           -Werror=empty-body
+                           -Werror=format
+                           -Werror=format-security
+                           -Werror=format-nonliteral
+                           -Werror=init-self
+                           -Werror=declaration-after-statement
+                           -Werror=vla"
 
 AS_CASE([$enable_maintainer_flags],
         [yes],
