@@ -141,6 +141,8 @@ cogl_gdk_filter (GdkXEvent  *xevent,
       return GDK_FILTER_CONTINUE;
     }
 #endif
+
+  return GDK_FILTER_CONTINUE;
 }
 
 static gboolean

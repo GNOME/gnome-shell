@@ -258,7 +258,8 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       event->scroll.y = gdk_event->scroll.y;
       event->scroll.modifier_state = gdk_event->scroll.state;
       event->scroll.axes = NULL;
-      event->scroll.direction = gdk_event->scroll.direction;
+      /* XXX: must keep ClutterScrollDirection compatible with GdkScrollDirection */
+      event->scroll.direction = (ClutterScrollDirection) gdk_event->scroll.direction;
       clutter_event_set_device (event, device);
       clutter_event_set_source_device (event, source_device);
       clutter_event_set_scroll_delta (event,

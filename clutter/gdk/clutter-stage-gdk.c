@@ -64,6 +64,7 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageGdk,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init));
 
+#ifdef CLUTTER_WINDOWING_X11
 static void
 clutter_stage_gdk_update_foreign_event_mask (CoglOnscreen *onscreen,
 					     guint32 event_mask,
@@ -75,7 +76,7 @@ clutter_stage_gdk_update_foreign_event_mask (CoglOnscreen *onscreen,
      event masks */
   gdk_window_set_events (stage_gdk->window, event_mask | CLUTTER_STAGE_GDK_EVENT_MASK);
 }
-
+#endif
 
 static void
 clutter_stage_gdk_set_gdk_geometry (ClutterStageGdk *stage)
@@ -485,7 +486,7 @@ clutter_gdk_get_stage_window (ClutterStage *stage)
 {
   ClutterStageWindow *impl;
 
-  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), None);
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
 
   impl = _clutter_stage_get_window (stage);
   if (!CLUTTER_IS_STAGE_GDK (impl))
