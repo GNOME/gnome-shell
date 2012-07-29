@@ -317,8 +317,6 @@ const WorkspacesView = new Lang.Class({
 
             this._updateWorkspaceActors(false);
         }
-
-        this._scrollToActive(true);
     },
 
     _activeWorkspaceChanged: function(wm, from, to, direction) {
