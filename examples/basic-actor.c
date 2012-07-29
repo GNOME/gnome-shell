@@ -28,10 +28,9 @@ animate_color (ClutterActor *actor,
 
 static gboolean
 on_crossing (ClutterActor *actor,
-             ClutterEvent *event,
-             gpointer      data)
+             ClutterEvent *event)
 {
-  gboolean is_enter = GPOINTER_TO_UINT (data);
+  gboolean is_enter = clutter_event_type (event) == CLUTTER_ENTER;
   float zpos;
 
   if (is_enter)
@@ -128,10 +127,10 @@ main (int argc, char *argv[])
   clutter_actor_add_child (vase, flowers[1]);
   g_signal_connect (flowers[1], "enter-event",
                     G_CALLBACK (on_crossing),
-                    GUINT_TO_POINTER (TRUE));
+                    NULL);
   g_signal_connect (flowers[1], "leave-event",
                     G_CALLBACK (on_crossing),
-                    GUINT_TO_POINTER (FALSE));
+                    NULL);
 
   /* the third one is green */
   flowers[2] = clutter_actor_new ();
