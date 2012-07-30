@@ -315,10 +315,8 @@ struct _MetaDisplay
 #define META_DISPLAY_HAS_RENDER(display) ((display)->have_render)
   unsigned int have_composite : 1;
   unsigned int have_damage : 1;
-  unsigned int have_xfixes : 1;
 #define META_DISPLAY_HAS_COMPOSITE(display) ((display)->have_composite)
 #define META_DISPLAY_HAS_DAMAGE(display) ((display)->have_damage)
-#define META_DISPLAY_HAS_XFIXES(display) ((display)->have_xfixes)
 };
 
 struct _MetaDisplayClass

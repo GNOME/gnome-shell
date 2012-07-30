@@ -388,13 +388,11 @@ enable_compositor (MetaDisplay *display,
 
   if (!META_DISPLAY_HAS_COMPOSITE (display) ||
       !META_DISPLAY_HAS_DAMAGE (display) ||
-      !META_DISPLAY_HAS_XFIXES (display) ||
       !META_DISPLAY_HAS_RENDER (display))
     {
       meta_warning (_("Missing %s extension required for compositing"),
                     !META_DISPLAY_HAS_COMPOSITE (display) ? "composite" :
-                    !META_DISPLAY_HAS_DAMAGE (display) ? "damage" :
-                    !META_DISPLAY_HAS_XFIXES (display) ? "xfixes" : "render");
+                    !META_DISPLAY_HAS_DAMAGE (display) ? "damage" : "render");
       return;
     }
 
@@ -757,20 +755,24 @@ meta_display_open (void)
                   the_display->damage_error_base, 
                   the_display->damage_event_base);
 
-    the_display->have_xfixes = FALSE;
-
     the_display->xfixes_error_base = 0;
     the_display->xfixes_event_base = 0;
 
-    if (!XFixesQueryExtension (the_display->xdisplay,
-                               &the_display->xfixes_event_base,
-                               &the_display->xfixes_error_base))
+    if (XFixesQueryExtension (the_display->xdisplay,
+                              &the_display->xfixes_event_base,
+                              &the_display->xfixes_error_base))
       {
-        the_display->xfixes_error_base = 0;
-        the_display->xfixes_event_base = 0;
-      } 
+        int xfixes_major, xfixes_minor;
+
+        XFixesQueryVersion (the_display->xdisplay, &xfixes_major, &xfixes_minor);
+
+        if (xfixes_major * 100 + xfixes_minor < 500)
+          meta_fatal ("Mutter requires XFixes 5.0");
+      }
     else
-      the_display->have_xfixes = TRUE;
+      {
+        meta_fatal ("Mutter requires XFixes 5.0");
+      }
 
     meta_verbose ("Attempted to init XFixes, found error base %d event base %d\n",
                   the_display->xfixes_error_base, 
