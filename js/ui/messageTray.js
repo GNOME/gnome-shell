@@ -1487,9 +1487,8 @@ const MessageTray = new Lang.Class({
         this._clickedSummaryItemAllocationChangedId = 0;
         this._pointerBarrier = 0;
 
-        this._unseenNotifications = [];
         this._idleMonitorWatchId = 0;
-        this._backFromAway = false;
+        this._userActiveWhileNotificationShown = false;
 
         this.idleMonitor = Shell.IdleMonitor.get();
 
@@ -1713,10 +1712,6 @@ const MessageTray = new Lang.Class({
     },
 
     _onNotificationDestroy: function(notification) {
-        let unseenNotificationsIndex = this._unseenNotifications.indexOf(notification);
-        if (unseenNotificationsIndex != -1)
-            this._unseenNotifications.splice(unseenNotificationsIndex, 1);
-
         if (this._notification == notification && (this._notificationState == State.SHOWN || this._notificationState == State.SHOWING)) {
             this._updateNotificationTimeout(0);
             this._notificationRemoved = true;
@@ -1977,7 +1972,8 @@ const MessageTray = new Lang.Class({
                                   !this._locked &&
                                   !(this._pointerInKeyboard && notificationExpanded);
         let notificationLockedOut = this._isScreenLocked && (this._notification && !this._notification.showWhenLocked);
-        let notificationMustClose = this._notificationRemoved || notificationLockedOut || notificationExpired;
+        // TODO: how to deal with locked out notiifcations if want to keep showing notifications?!
+        let notificationMustClose = this._notificationRemoved || notificationLockedOut || (notificationExpired && this._userActiveWhileNotificationShown);
         let canShowNotification = notificationsPending && this._summaryState == State.HIDDEN;
 
         if (this._notificationState == State.HIDDEN) {
@@ -2011,9 +2007,7 @@ const MessageTray = new Lang.Class({
             if (summarySummoned) {
                 this._showSummary(0);
             } else if (notificationsDone && !this._busy && !this._inFullscreen) {
-                if (this._backFromAway && this._unseenNotifications.length > 0)
-                    this._showSummary(LONGER_SUMMARY_TIMEOUT);
-                else if (this._newSummaryItems.length > 0)
+                if (this._newSummaryItems.length > 0)
                     this._showSummary(SUMMARY_TIMEOUT);
             }
         } else if (this._summaryState == State.SHOWN && (!summaryPinned || mustHideSummary))
@@ -2147,28 +2141,16 @@ const MessageTray = new Lang.Class({
     _onIdleMonitorWatch: function(monitor, id, userBecameIdle) {
         this.idleMonitor.remove_watch(this._idleMonitorWatchId);
         this._idleMonitorWatchId = 0;
-
-        if (userBecameIdle) {
-            // The user became idle, which means the user was active while the notifications were
-            // shown and we can unset this._unseenNotifications .
-            this._unseenNotiications = [];
-        } else if (this._unseenNotifications.length == 1 && this._unseenNotifications[0] == this._notification) {
-            // The user became active while the only notification in this._unseenNotifications is being shown
-            // as this._notification , so we can unset this._unseenNotifications .
-            this._unseenNotifications = [];
-        } else {
-            // The user became active and we have one or more unseen notifications. We should show
-            // the message tray to the user to inform the user about the missed notifications.
-            this._backFromAway = true;
-            this._updateState();
-       }
+        if (!userBecameIdle)
+            this._updateNotificationTimeout(2000);
+        this._userActiveWhileNotificationShown = true;
+        this._updateState();
     },
 
     _showNotification: function(notification) {
         this._notification = notification;
-        this._unseenNotifications.push(this._notification);
-        if (this._idleMonitorWatchId == 0)
-            this._idleMonitorWatchId = this.idleMonitor.add_watch(1000,
+        this._userActiveWhileNotificationShown = false;
+        this._idleMonitorWatchId = this.idleMonitor.add_watch(1000,
                                                                   Lang.bind(this, this._onIdleMonitorWatch));
         this._notificationClickedId = this._notification.connect('done-displaying',
                                                                  Lang.bind(this, this._escapeTray));
@@ -2341,7 +2323,7 @@ const MessageTray = new Lang.Class({
     },
 
     _showSummary: function(timeout) {
-        this._updateSeenSummaryItems();
+        this._newSummaryItems = [];
         this._summaryBin.opacity = 0;
         this._summaryBin.y = this.actor.height;
         this._tween(this._summaryBin, '_summaryState', State.SHOWN,
@@ -2356,6 +2338,7 @@ const MessageTray = new Lang.Class({
     },
 
     _showSummaryCompleted: function(timeout) {
+        this._newSummaryItems = [];
         if (timeout != 0) {
             this._summaryTimeoutId =
                 Mainloop.timeout_add(timeout * 1000,
@@ -2370,20 +2353,11 @@ const MessageTray = new Lang.Class({
     },
 
     _hideSummary: function() {
-        this._updateSeenSummaryItems();
         this._tween(this._summaryBin, '_summaryState', State.HIDDEN,
                     { opacity: 0,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad',
                     });
-    },
-
-    _updateSeenSummaryItems: function() {
-        if (this._backFromAway) {
-            this._backFromAway = false;
-            this._unseenNotifications = [];
-        }
-        this._newSummaryItems = [];
     },
 
     _showSummaryBoxPointer: function() {
