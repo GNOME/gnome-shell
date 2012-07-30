@@ -1517,7 +1517,6 @@ const MessageTray = new Lang.Class({
         this._pointerInTray = false;
         this._pointerInKeyboard = false;
         this._summaryState = State.HIDDEN;
-        this._summaryTimeoutId = 0;
         this._pointerInSummary = false;
         this._notificationState = State.HIDDEN;
         this._notificationTimeoutId = 0;
@@ -1578,11 +1577,6 @@ const MessageTray = new Lang.Class({
                                       Lang.bind(this, this.toggle));
 
         this._summaryItems = [];
-        // We keep a list of new summary items that were added to the summary since the last
-        // time it was shown to the user. We automatically show the summary to the user if there
-        // are items in this list once the notifications are done showing or once an item gets
-        // added to the summary without a notification being shown.
-        this._newSummaryItems = [];
         this._chatSummaryItemsCount = 0;
     },
 
@@ -1635,18 +1629,6 @@ const MessageTray = new Lang.Class({
 
         this._summaryItems.push(summaryItem);
 
-        // We keep this._newSummaryItems to track any new sources that were added to the
-        // summary and show the summary with them to the user for a short period of time
-        // after notifications are done showing. However, we don't want that to happen for
-        // transient sources, which are removed after the notification is shown, but are
-        // not removed fast enough because of the callbacks to avoid the summary popping up.
-        // So we just don't add transient sources to this._newSummaryItems.
-        // We don't want that to happen for chat sources neither, because they
-        // can be added when the user starts a chat from Empathy and they are not transient.
-        // The notification will popup on incoming message anyway. See bug #657249.
-        if (!source.isTransient && !source.isChat)
-            this._newSummaryItems.push(summaryItem);
-
         source.connect('notify', Lang.bind(this, this._onNotify));
 
         source.connect('muted-changed', Lang.bind(this,
@@ -1683,10 +1665,6 @@ const MessageTray = new Lang.Class({
             return;
 
         let summaryItemToRemove = this._summaryItems[index];
-
-        let newSummaryItemsIndex = this._newSummaryItems.indexOf(this._summaryItems[index]);
-        if (newSummaryItemsIndex != -1)
-            this._newSummaryItems.splice(newSummaryItemsIndex, 1);
 
         this._summaryItems.splice(index, 1);
 
@@ -1900,7 +1878,6 @@ const MessageTray = new Lang.Class({
         if (status == GnomeSession.PresenceStatus.BUSY) {
             // remove notification and allow the summary to be closed now
             this._updateNotificationTimeout(0);
-            this._unsetSummaryTimeout();
             this._busy = true;
         } else if (status != GnomeSession.PresenceStatus.IDLE) {
             // We preserve the previous value of this._busy if the status turns to IDLE
@@ -1930,7 +1907,6 @@ const MessageTray = new Lang.Class({
             this._pointerInTray = false;
             this._pointerInSummary = false;
             this._updateNotificationTimeout(0);
-            this._unsetSummaryTimeout();
             this._updateState();
         }
         return false;
@@ -1941,7 +1917,6 @@ const MessageTray = new Lang.Class({
         this._pointerInTray = false;
         this._pointerInSummary = false;
         this._updateNotificationTimeout(0);
-        this._unsetSummaryTimeout();
         this._updateState();
     },
 
@@ -1992,7 +1967,7 @@ const MessageTray = new Lang.Class({
 
         // Summary
         let summarySummoned = this._pointerInSummary || this._overviewVisible ||  this._traySummoned;
-        let summaryPinned = this._summaryTimeoutId != 0 || this._pointerInTray || summarySummoned || this._locked;
+        let summaryPinned = this._pointerInTray || summarySummoned || this._locked;
         let summaryHovered = this._pointerInTray || this._pointerInSummary;
 
         let notificationsVisible = (this._notificationState == State.SHOWING ||
@@ -2003,14 +1978,9 @@ const MessageTray = new Lang.Class({
         let mustHideSummary = (notificationsPending && (notificationUrgent || summaryOptionalInOverview))
                               || notificationsVisible || this._isScreenLocked;
 
-        if (this._summaryState == State.HIDDEN && !mustHideSummary) {
-            if (summarySummoned) {
-                this._showSummary(0);
-            } else if (notificationsDone && !this._busy && !this._inFullscreen) {
-                if (this._newSummaryItems.length > 0)
-                    this._showSummary(SUMMARY_TIMEOUT);
-            }
-        } else if (this._summaryState == State.SHOWN && (!summaryPinned || mustHideSummary))
+        if (this._summaryState == State.HIDDEN && !mustHideSummary && summarySummoned)
+            this._showSummary();
+        else if (this._summaryState == State.SHOWN && (!summaryPinned || mustHideSummary))
             this._hideSummary();
 
         // Summary notification
@@ -2233,13 +2203,6 @@ const MessageTray = new Lang.Class({
                                      Lang.bind(this, this._notificationTimeout));
     },
 
-    _unsetSummaryTimeout: function(timeout) {
-        if (this._summaryTimeoutId) {
-            Mainloop.source_remove(this._summaryTimeoutId);
-            this._summaryTimeoutId = 0;
-        }
-    },
-
     _notificationTimeout: function() {
         let [x, y, mods] = global.get_pointer();
         if (y > this._lastSeenMouseY + 10 && !this.actor.hover) {
@@ -2322,8 +2285,7 @@ const MessageTray = new Lang.Class({
         this._focusGrabber.grabFocus(this._notification.actor);
     },
 
-    _showSummary: function(timeout) {
-        this._newSummaryItems = [];
+    _showSummary: function() {
         this._summaryBin.opacity = 0;
         this._summaryBin.y = this.actor.height;
         this._tween(this._summaryBin, '_summaryState', State.SHOWN,
@@ -2331,25 +2293,7 @@ const MessageTray = new Lang.Class({
                       opacity: 255,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad',
-                      onComplete: this._showSummaryCompleted,
-                      onCompleteScope: this,
-                      onCompleteParams: [timeout]
                     });
-    },
-
-    _showSummaryCompleted: function(timeout) {
-        this._newSummaryItems = [];
-        if (timeout != 0) {
-            this._summaryTimeoutId =
-                Mainloop.timeout_add(timeout * 1000,
-                                     Lang.bind(this, this._summaryTimeout));
-        }
-    },
-
-    _summaryTimeout: function() {
-        this._summaryTimeoutId = 0;
-        this._updateState();
-        return false;
     },
 
     _hideSummary: function() {
