@@ -5,6 +5,7 @@ const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GnomeBluetoothApplet = imports.gi.GnomeBluetoothApplet;
+const GnomeBluetooth = imports.gi.GnomeBluetooth;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -36,11 +37,11 @@ const Indicator = new Lang.Class({
         this._applet.connect('notify::killswitch-state', Lang.bind(this, this._updateKillswitch));
         this._killswitch.connect('toggled', Lang.bind(this, function() {
             let current_state = this._applet.killswitch_state;
-            if (current_state != GnomeBluetoothApplet.KillswitchState.HARD_BLOCKED &&
-                current_state != GnomeBluetoothApplet.KillswitchState.NO_ADAPTER) {
+            if (current_state != GnomeBluetooth.KillswitchState.HARD_BLOCKED &&
+                current_state != GnomeBluetooth.KillswitchState.NO_ADAPTER) {
                 this._applet.killswitch_state = this._killswitch.state ?
-                    GnomeBluetoothApplet.KillswitchState.UNBLOCKED:
-                    GnomeBluetoothApplet.KillswitchState.SOFT_BLOCKED;
+                    GnomeBluetooth.KillswitchState.UNBLOCKED:
+                    GnomeBluetooth.KillswitchState.SOFT_BLOCKED;
             } else
                 this._killswitch.setToggleState(false);
         }));
@@ -99,10 +100,10 @@ const Indicator = new Lang.Class({
 
     _updateKillswitch: function() {
         let current_state = this._applet.killswitch_state;
-        let on = current_state == GnomeBluetoothApplet.KillswitchState.UNBLOCKED;
-        let has_adapter = current_state != GnomeBluetoothApplet.KillswitchState.NO_ADAPTER;
-        let can_toggle = current_state != GnomeBluetoothApplet.KillswitchState.NO_ADAPTER &&
-                         current_state != GnomeBluetoothApplet.KillswitchState.HARD_BLOCKED;
+        let on = current_state == GnomeBluetooth.KillswitchState.UNBLOCKED;
+        let has_adapter = current_state != GnomeBluetooth.KillswitchState.NO_ADAPTER;
+        let can_toggle = current_state != GnomeBluetooth.KillswitchState.NO_ADAPTER &&
+                         current_state != GnomeBluetooth.KillswitchState.HARD_BLOCKED;
 
         this._killswitch.setToggleState(on);
         if (can_toggle)
