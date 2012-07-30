@@ -590,7 +590,7 @@ meta_display_open (void)
   
   the_display->window_ids = g_hash_table_new (meta_unsigned_long_hash,
                                           meta_unsigned_long_equal);
-  
+
   i = 0;
   while (i < N_IGNORED_CROSSING_SERIALS)
     {
@@ -790,8 +790,16 @@ meta_display_open (void)
                          &the_display->xinput_event_base))
       {
         if (XIQueryVersion (the_display->xdisplay, &major, &minor) == Success)
-          if (((major * 10) + minor) >= 22)
-            has_xi = TRUE;
+          {
+            int version = (major * 10) + minor;
+            if (version >= 22)
+              has_xi = TRUE;
+
+#ifdef HAVE_XI23
+            if (version >= 23)
+              the_display->have_xinput_23 = TRUE;
+#endif /* HAVE_XI23 */
+          }
       }
 
     if (!has_xi)
@@ -1000,6 +1008,9 @@ meta_display_list_windows (MetaDisplay          *display,
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
       MetaWindow *window = value;
+
+      if (!META_IS_WINDOW (window))
+        continue;
 
       if (!window->override_redirect ||
           (flags & META_LIST_INCLUDE_OVERRIDE_REDIRECT) != 0)
@@ -1832,6 +1843,12 @@ get_input_event (MetaDisplay *display,
         case XI_Leave:
           if (((XIEnterEvent *) input_event)->deviceid == META_VIRTUAL_CORE_POINTER_ID)
             return input_event;
+          break;
+        case XI_BarrierHit:
+        case XI_BarrierLeave:
+          if (((XIBarrierEvent *) input_event)->deviceid == META_VIRTUAL_CORE_POINTER_ID)
+            return input_event;
+          break;
         default:
           break;
         }
@@ -2395,6 +2412,13 @@ event_callback (XEvent   *event,
 
             }
           break;
+#ifdef HAVE_XI23
+        case XI_BarrierHit:
+        case XI_BarrierLeave:
+          if (meta_display_process_barrier_event (display, (XIBarrierEvent *) input_event))
+            filter_out_event = bypass_compositor = TRUE;
+          break;
+#endif /* HAVE_XI23 */
         }
     }
   else
@@ -2926,6 +2950,11 @@ event_get_modified_window (MetaDisplay *display,
         case XI_Enter:
         case XI_Leave:
           return ((XIEnterEvent *) input_event)->event;
+#ifdef HAVE_XI23
+        case XI_BarrierHit:
+        case XI_BarrierLeave:
+          return ((XIBarrierEvent *) input_event)->event;
+#endif /* HAVE_XI23 */
         }
     }
 
@@ -3201,6 +3230,14 @@ meta_spew_xi2_event (MetaDisplay *display,
     case XI_Leave:
       name = "XI_Leave";
       break;
+#ifdef HAVE_XI23
+    case XI_BarrierHit:
+      name = "XI_BarrierHit";
+      break;
+    case XI_BarrierLeave:
+      name = "XI_BarrierLeave";
+      break;
+#endif /* HAVE_XI23 */
     }
 
   switch (input_event->evtype)
@@ -5684,6 +5721,23 @@ int
 meta_display_get_xinput_opcode (MetaDisplay *display)
 {
   return display->xinput_opcode;
+}
+
+/**
+ * meta_display_supports_extended_barriers:
+ * @display: a #MetaDisplay
+ *
+ * Returns whether the X server supports extended barrier
+ * features as defined in version 2.3 of the XInput 2
+ * specification.
+ *
+ * Clients should use this method to determine whether their
+ * interfaces should depend on new barrier features.
+ */
+gboolean
+meta_display_supports_extended_barriers (MetaDisplay *display)
+{
+  return META_DISPLAY_HAS_XINPUT_23 (display);
 }
 
 /**

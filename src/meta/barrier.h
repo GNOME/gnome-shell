@@ -20,6 +20,8 @@ typedef struct _MetaBarrier        MetaBarrier;
 typedef struct _MetaBarrierClass   MetaBarrierClass;
 typedef struct _MetaBarrierPrivate MetaBarrierPrivate;
 
+typedef struct _MetaBarrierEvent   MetaBarrierEvent;
+
 struct _MetaBarrier
 {
   GObject parent;
@@ -36,6 +38,8 @@ GType meta_barrier_get_type (void) G_GNUC_CONST;
 
 gboolean meta_barrier_is_active (MetaBarrier *barrier);
 void meta_barrier_destroy (MetaBarrier *barrier);
+void meta_barrier_release (MetaBarrier      *barrier,
+                           MetaBarrierEvent *event);
 
 /* Keep in sync with XFixes */
 typedef enum {
@@ -44,6 +48,43 @@ typedef enum {
   META_BARRIER_DIRECTION_NEGATIVE_X = 1 << 2,
   META_BARRIER_DIRECTION_NEGATIVE_Y = 1 << 3,
 } MetaBarrierDirection;
+
+/**
+ * MetaBarrierEvent:
+ * @event_id: A unique integer ID identifying a
+ * consecutive series of motions at or along the barrier
+ * @dt: Server time, in milliseconds, since the last event
+ * sent for this barrier
+ * @x: The cursor X position in screen coordinates
+ * @y: The cursor Y position in screen coordinates.
+ * @dx: If the cursor hadn't been constrained, the delta
+ * of X movement past the barrier, in screen coordinates
+ * @dy: If the cursor hadn't been constrained, the delta
+ * of X movement past the barrier, in screen coordinates
+ * @released: A boolean flag, %TRUE if this event generated
+ * by the pointer leaving the barrier as a result of a client
+ * calling meta_barrier_release() (will be set only for
+ * MetaBarrier::leave signals)
+ * @grabbed: A boolean flag, %TRUE if the pointer was grabbed
+ * at the time this event was sent
+ */
+struct _MetaBarrierEvent {
+  /* < private > */
+  volatile guint ref_count;
+
+  /* < public > */
+  int event_id;
+  int dt;
+  double x;
+  double y;
+  double dx;
+  double dy;
+  gboolean released;
+  gboolean grabbed;
+};
+
+#define META_TYPE_BARRIER_EVENT (meta_barrier_event_get_type ())
+GType meta_barrier_event_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 

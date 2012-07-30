@@ -39,6 +39,7 @@
 #include <meta/display.h>
 #include "keybindings-private.h"
 #include <meta/prefs.h>
+#include <meta/barrier.h>
 
 #ifdef HAVE_STARTUP_NOTIFICATION
 #include <libsn/sn.h>
@@ -317,6 +318,12 @@ struct _MetaDisplay
   unsigned int have_damage : 1;
 #define META_DISPLAY_HAS_COMPOSITE(display) ((display)->have_composite)
 #define META_DISPLAY_HAS_DAMAGE(display) ((display)->have_damage)
+#ifdef HAVE_XI23
+  gboolean have_xinput_23 : 1;
+#define META_DISPLAY_HAS_XINPUT_23(display) ((display)->have_xinput_23)
+#else
+#define META_DISPLAY_HAS_XINPUT_23(display) FALSE
+#endif /* HAVE_XI23 */
 };
 
 struct _MetaDisplayClass
@@ -448,5 +455,10 @@ void meta_display_overlay_key_activate (MetaDisplay *display);
 
 /* In above-tab-keycode.c */
 guint meta_display_get_above_tab_keycode (MetaDisplay *display);
+
+#ifdef HAVE_XI23
+gboolean meta_display_process_barrier_event (MetaDisplay    *display,
+                                             XIBarrierEvent *event);
+#endif /* HAVE_XI23 */
 
 #endif

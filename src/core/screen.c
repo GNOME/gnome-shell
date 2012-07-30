@@ -758,6 +758,13 @@ meta_screen_new (MetaDisplay *display,
     XISetMask (mask.mask, XI_FocusIn);
     XISetMask (mask.mask, XI_FocusOut);
     XISetMask (mask.mask, XI_Motion);
+#ifdef HAVE_XI23
+    if (META_DISPLAY_HAS_XINPUT_23 (display))
+      {
+        XISetMask (mask.mask, XI_BarrierHit);
+        XISetMask (mask.mask, XI_BarrierLeave);
+      }
+#endif /* HAVE_XI23 */
     XISelectEvents (xdisplay, xroot, &mask, 1);
 
     event_mask = (SubstructureRedirectMask | SubstructureNotifyMask |
@@ -1229,6 +1236,9 @@ meta_screen_foreach_window (MetaScreen *screen,
           (tmp->next && tmp->next->data != tmp->data))
         {
           MetaWindow *window = tmp->data;
+
+          if (!META_IS_WINDOW (window))
+            continue;
 
           if (window->screen == screen && !window->override_redirect)
             (* func) (screen, window, data);

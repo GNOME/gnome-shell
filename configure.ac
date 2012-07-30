@@ -201,6 +201,9 @@ fi
 
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
 
+PKG_CHECK_EXISTS([xi >= 1.6.99.1],
+                 AC_DEFINE([HAVE_XI23],[1],[Define if you have support for XInput 2.3 or greater]))
+
 # This is used for plugins
 AC_SUBST(CLUTTER_PACKAGE)
 PKG_CHECK_MODULES(CLUTTER, $CLUTTER_PACKAGE)
