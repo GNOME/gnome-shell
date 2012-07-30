@@ -33,6 +33,8 @@ mutter_built_sources = \
 libmutter_la_SOURCES =				\
 	core/async-getprop.c			\
 	core/async-getprop.h			\
+	core/barrier.c				\
+	meta/barrier.h				\
 	core/bell.c				\
 	core/bell.h				\
 	core/boxes.c				\
@@ -157,6 +159,7 @@ libmutter_la_LIBADD  = $(MUTTER_LIBS)
 # Headers installed for plugins; introspected information will
 # be extracted into Mutter-<version>.gir
 libmutterinclude_base_headers =		\
+	meta/barrier.h				\
 	meta/boxes.h				\
 	meta/common.h				\
 	meta/compositor-mutter.h		\
