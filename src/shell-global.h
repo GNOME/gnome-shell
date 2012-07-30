@@ -70,15 +70,6 @@ void    shell_global_set_cursor              (ShellGlobal         *global,
                                               ShellCursor          type);
 void    shell_global_unset_cursor            (ShellGlobal         *global);
 
-guint32 shell_global_create_pointer_barrier  (ShellGlobal         *global,
-                                              int                  x1,
-                                              int                  y1,
-                                              int                  x2,
-                                              int                  y2,
-                                              int                  directions);
-void    shell_global_destroy_pointer_barrier (ShellGlobal         *global,
-                                              guint32              barrier);
-
 void    shell_global_get_pointer             (ShellGlobal         *global,
                                               int                 *x,
                                               int                 *y,

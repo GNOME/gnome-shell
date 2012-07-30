@@ -106,9 +106,8 @@ const LayoutManager = new Lang.Class({
         this._keyboardIndex = -1;
         this._hotCorners = [];
         this._background = null;
-        this._leftPanelBarrier = 0;
-        this._rightPanelBarrier = 0;
-        this._trayBarrier = 0;
+        this._leftPanelBarrier = null;
+        this._rightPanelBarrier = null;
 
         this._chrome = new Chrome(this);
 
@@ -257,24 +256,27 @@ const LayoutManager = new Lang.Class({
     },
 
     _updatePanelBarriers: function() {
-        if (this._leftPanelBarrier)
-            global.destroy_pointer_barrier(this._leftPanelBarrier);
-        if (this._rightPanelBarrier)
-            global.destroy_pointer_barrier(this._rightPanelBarrier);
+        if (this._leftPanelBarrier) {
+            this._leftPanelBarrier.destroy();
+            this._leftPanelBarrier = null;
+        }
+
+        if (this._rightPanelBarrier) {
+            this._rightPanelBarrier.destroy();
+            this._rightPanelBarrier = null;
+        }
 
         if (this.panelBox.height) {
             let primary = this.primaryMonitor;
-            this._leftPanelBarrier =
-                global.create_pointer_barrier(primary.x, primary.y,
-                                              primary.x, primary.y + this.panelBox.height,
-                                              1 /* BarrierPositiveX */);
-            this._rightPanelBarrier =
-                global.create_pointer_barrier(primary.x + primary.width, primary.y,
-                                              primary.x + primary.width, primary.y + this.panelBox.height,
-                                              4 /* BarrierNegativeX */);
-        } else {
-            this._leftPanelBarrier = 0;
-            this._rightPanelBarrier = 0;
+
+            this._leftPanelBarrier  = new Meta.Barrier({ display: global.display,
+                                                         x1: primary.x, y1: primary.y,
+                                                         x2: primary.x, y2: primary.y + this.panelBox.height,
+                                                         directions: Meta.BarrierDirection.POSITIVE_X });
+            this._rightPanelBarrier = new Meta.Barrier({ display: global.display,
+                                                         x1: primary.x + primary.width, y1: primary.y,
+                                                         x2: primary.x + primary.width, y2: primary.y + this.panelBox.height,
+                                                         directions: Meta.BarrierDirection.NEGATIVE_X });
         }
     },
 
