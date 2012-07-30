@@ -1617,6 +1617,10 @@ const MessageTray = new Lang.Class({
         if (currentUserTime != this._trayDwellUserTime)
             return false;
 
+        this.openTray();
+    },
+
+    openTray: function() {
         this._traySummoned = true;
         this._updateState();
 

@@ -19,6 +19,8 @@ const STARTUP_ANIMATION_TIME = 0.2;
 const KEYBOARD_ANIMATION_TIME = 0.5;
 const PLYMOUTH_TRANSITION_TIME = 1;
 
+const MESSAGE_TRAY_PRESSURE_THRESHOLD = 200;
+
 const MonitorConstraint = new Lang.Class({
     Name: 'MonitorConstraint',
     Extends: Clutter.Constraint,
@@ -108,6 +110,7 @@ const LayoutManager = new Lang.Class({
         this._background = null;
         this._leftPanelBarrier = null;
         this._rightPanelBarrier = null;
+        this._trayBarrier = null;
 
         this._chrome = new Chrome(this);
 
@@ -128,6 +131,8 @@ const LayoutManager = new Lang.Class({
         this.trayBox = new St.Widget({ name: 'trayBox',
                                        layout_manager: new Clutter.BinLayout() }); 
         this.addChrome(this.trayBox);
+        this.trayBox.connect('allocation-changed',
+                             Lang.bind(this, this._updateTrayBarrier));
 
         this.keyboardBox = new St.BoxLayout({ name: 'keyboardBox',
                                               reactive: true,
@@ -277,6 +282,27 @@ const LayoutManager = new Lang.Class({
                                                          x1: primary.x + primary.width, y1: primary.y,
                                                          x2: primary.x + primary.width, y2: primary.y + this.panelBox.height,
                                                          directions: Meta.BarrierDirection.NEGATIVE_X });
+        }
+    },
+
+    _updateTrayBarrier: function() {
+        let monitor = this.bottomMonitor;
+
+        if (this._trayBarrier) {
+            this._trayBarrier.destroy();
+            this._trayBarrier = null;
+        }
+
+        if (Main.messageTray) {
+            this._trayBarrier = new Meta.Barrier({ display: global.display,
+                                                   x1: monitor.x, x2: monitor.x + monitor.width,
+                                                   y1: monitor.y + monitor.height, y2: monitor.y + monitor.height,
+                                                   directions: Meta.BarrierDirection.NEGATIVE_Y });
+
+            this._trayPressure = new PressureBarrier(this._trayBarrier, MESSAGE_TRAY_PRESSURE_THRESHOLD);
+            this._trayPressure.connect('trigger', function() {
+                Main.messageTray.openTray();
+            });
         }
     },
 
@@ -1129,5 +1155,58 @@ const Chrome = new Lang.Class({
         return false;
     }
 });
-
 Signals.addSignalMethods(Chrome.prototype);
+
+const PressureBarrier = new Lang.Class({
+    Name: 'TrayPressure',
+
+    _init: function(barrier, threshold) {
+        this._barrier = barrier;
+        this._threshold = threshold;
+        this._getVelocity = this._makeGetVelocity(barrier);
+
+        this._reset(0);
+
+        this._barrierHitId = this._barrier.connect('hit', Lang.bind(this, this._onBarrierHit));
+    },
+
+    destroy: function() {
+        this._barrier.disconnect(this._barrierHitId);
+        this._barrier = null;
+    },
+
+    _reset: function(eventId) {
+        this._currentEventId = eventId;
+        this._currentPressure = 0;
+    },
+
+    _makeGetVelocity: function(barrier) {
+        if (barrier.y1 === barrier.y2) {
+            return function(event) {
+                return Math.abs(event.dy);
+            };
+        } else {
+            return function(event) {
+                return Math.abs(event.dx);
+            };
+        }
+    },
+
+    _onBarrierHit: function(barrier, event) {
+        // Event IDs are incremented every time the user stops
+        // hitting the barrier. So, if the event ID switches,
+        // reset the current state, and start over.
+        if (this._currentEventId != event.event_id) {
+            this._reset(event.event_id);
+        }
+
+        let velocity = this._getVelocity(event);
+
+        this._currentPressure += velocity;
+        if (this._currentPressure >= this._threshold) {
+            this.emit('trigger');
+            this._reset(0);
+        }
+    }
+});
+Signals.addSignalMethods(PressureBarrier.prototype);
