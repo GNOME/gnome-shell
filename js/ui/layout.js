@@ -19,6 +19,11 @@ const STARTUP_ANIMATION_TIME = 0.2;
 const KEYBOARD_ANIMATION_TIME = 0.15;
 const PLYMOUTH_TRANSITION_TIME = 1;
 
+// The message tray takes this much pressure
+// in the pressure barrier at once to release it.
+const MESSAGE_TRAY_PRESSURE_THRESHOLD = 200; // pixels
+const MESSAGE_TRAY_PRESSURE_TIMEOUT = 3000; // ms
+
 const MonitorConstraint = new Lang.Class({
     Name: 'MonitorConstraint',
     Extends: Clutter.Constraint,
@@ -114,6 +119,7 @@ const LayoutManager = new Lang.Class({
         this._background = null;
         this._leftPanelBarrier = null;
         this._rightPanelBarrier = null;
+        this._trayBarrier = null;
 
         this._inOverview = false;
         this._updateRegionIdle = 0;
@@ -313,9 +319,34 @@ const LayoutManager = new Lang.Class({
         }
     },
 
+    _updateTrayBarrier: function() {
+        let monitor = this.bottomMonitor;
+
+        if (this._trayBarrier) {
+            this._trayBarrier.destroy();
+            this._trayPressure = null;
+        }
+
+        if (this._trayPressure) {
+            this._trayPressure.destroy();
+            this._trayPressure = null;
+        }
+
+        this._trayBarrier = new Meta.Barrier({ display: global.display,
+                                               x1: monitor.x, x2: monitor.x + monitor.width,
+                                               y1: monitor.y + monitor.height, y2: monitor.y + monitor.height,
+                                               directions: Meta.BarrierDirection.NEGATIVE_Y });
+
+        this._trayPressure = new PressureBarrier(this._trayBarrier, MESSAGE_TRAY_PRESSURE_THRESHOLD, MESSAGE_TRAY_PRESSURE_TIMEOUT);
+        this._trayPressure.connect('trigger', function(barrier) {
+            Main.messageTray.openTray();
+        });
+    },
+
     _monitorsChanged: function() {
         this._updateMonitors();
         this._updateBoxes();
+        this._updateTrayBarrier();
         this._updateHotCorners();
         this._updateFullscreen();
         this._updateVisibility();
@@ -1052,3 +1083,107 @@ const HotCorner = new Lang.Class({
         return false;
     }
 });
+
+const PressureBarrier = new Lang.Class({
+    Name: 'PressureBarrier',
+
+    _init: function(barrier, threshold, timeout) {
+        this._barrier = barrier;
+        this._threshold = threshold;
+        this._timeout = timeout;
+        this._orientation = (barrier.y1 == barrier.y2) ? Clutter.Orientation.HORIZONTAL : Clutter.Orientation.VERTICAL;
+
+        this._reset();
+
+        this._barrierHitId = this._barrier.connect('hit', Lang.bind(this, this._onBarrierHit));
+        this._barrierLeftId = this._barrier.connect('left', Lang.bind(this, this._onBarrierLeft));
+    },
+
+    destroy: function() {
+        this._barrier.disconnect(this._barrierHitId);
+        this._barrier.disconnect(this._barrierLeftId);
+        this._barrier = null;
+    },
+
+    _reset: function() {
+        this._barrierEvents = [];
+        this._currentPressure = 0;
+        this._lastTime = 0;
+    },
+
+    _getDistanceAcrossBarrier: function(event) {
+        if (this._orientation == Clutter.Orientation.HORIZONTAL)
+            return Math.abs(event.dy);
+        else
+            return Math.abs(event.dx);
+    },
+
+    _getDistanceAlongBarrier: function(event) {
+        if (this._orientation == Clutter.Orientation.HORIZONTAL)
+            return Math.abs(event.dx);
+        else
+            return Math.abs(event.dy);
+    },
+
+    _isBarrierEventTooOld: function(event) {
+        // Ignore all events older than this time
+        let threshold = this._lastTime - this._timeout;
+        return event.time < threshold;
+    },
+
+    _trimBarrierEvents: function() {
+        // Events are guaranteed to be sorted in time order from
+        // oldest to newest, so just look for the first old event,
+        // and then chop events after that off.
+        let i = 0;
+        while (i < this._barrierEvents.length) {
+            if (!this._isBarrierEventTooOld(this._barrierEvents[i++]))
+                break;
+        }
+
+        let firstNewEvent = i;
+
+        for (i = 0; i < firstNewEvent; i++) {
+            this._currentPressure -= this._getDistanceAcrossBarrier(this._barrierEvents[i]);
+        }
+
+        this._barrierEvents = this._barrierEvents.slice(firstNewEvent);
+    },
+
+    _addBarrierEvent: function(event) {
+        this._barrierEvents.push(event);
+        this._currentPressure += this._getDistanceAcrossBarrier(event);
+    },
+
+    _onBarrierLeft: function(barrier, event) {
+        this._reset();
+    },
+
+    _onBarrierHit: function(barrier, event) {
+        // Throw out all events where the pointer was grabbed,
+        // as the client that grabbed the pointer expects to have
+        // complete control over it.
+        if (event.grabbed)
+            return;
+
+        let slide = this._getDistanceAlongBarrier(event);
+        let distance = this._getDistanceAcrossBarrier(event);
+
+        // Throw out events where the cursor is move more
+        // along the axis of the barrier than moving with
+        // the barrier.
+        if (slide > distance)
+            return;
+
+        this._lastTime = event.time;
+
+        this._trimBarrierEvents();
+        this._addBarrierEvent(event);
+
+        if (this._currentPressure >= this._threshold) {
+            this.emit('trigger');
+            this._reset();
+        }
+    }
+});
+Signals.addSignalMethods(PressureBarrier.prototype);

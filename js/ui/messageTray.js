@@ -1706,10 +1706,13 @@ const MessageTray = new Lang.Class({
         if (currentUserTime != this._trayDwellUserTime)
             return false;
 
+        this.openTray();
+        return false;
+    },
+
+    openTray: function() {
         this._traySummoned = true;
         this._updateState();
-
-        return false;
     },
 
     _onNotificationKeyRelease: function(actor, event) {
