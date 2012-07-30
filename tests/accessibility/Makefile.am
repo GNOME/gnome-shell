@@ -9,6 +9,7 @@ common_sources = \
 
 INCLUDES = \
 	-I$(top_srcdir)	\
+	-I$(top_builddir) \
 	-I$(top_srcdir)/clutter \
 	-I$(top_builddir)/clutter \
 	-I$(top_srcdir)/tests/accessibility

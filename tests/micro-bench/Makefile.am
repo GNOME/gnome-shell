@@ -10,11 +10,10 @@ noinst_PROGRAMS = \
 	test-cogl-perf
 
 INCLUDES = \
-	-I$(top_srcdir)/ \
+	-I$(top_srcdir) \
+	-I$(top_builddir) \
 	-I$(top_srcdir)/clutter \
-	-I$(top_srcdir)/clutter/cogl \
-	-I$(top_builddir)/clutter \
-	-I$(top_builddir)/clutter/cogl
+	-I$(top_builddir)/clutter
 
 AM_CFLAGS = \
 	$(CLUTTER_CFLAGS) \
