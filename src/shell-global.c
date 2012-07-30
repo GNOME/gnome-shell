@@ -1002,54 +1002,6 @@ shell_global_end_modal (ShellGlobal *global,
   meta_plugin_end_modal (global->plugin, timestamp);
 }
 
-/**
- * shell_global_create_pointer_barrier:
- * @global: a #ShellGlobal
- * @x1: left X coordinate
- * @y1: top Y coordinate
- * @x2: right X coordinate
- * @y2: bottom Y coordinate
- * @directions: The directions we're allowed to pass through
- *
- * If supported by X creates a pointer barrier.
- *
- * Return value: value you can pass to shell_global_destroy_pointer_barrier()
- */
-guint32
-shell_global_create_pointer_barrier (ShellGlobal *global,
-                                     int x1, int y1, int x2, int y2,
-                                     int directions)
-{
-#if HAVE_XFIXESCREATEPOINTERBARRIER
-  return (guint32)
-    XFixesCreatePointerBarrier (global->xdisplay,
-                                DefaultRootWindow (global->xdisplay),
-                                x1, y1,
-                                x2, y2,
-                                directions,
-                                0, NULL);
-#else
-  return 0;
-#endif
-}
-
-/**
- * shell_global_destroy_pointer_barrier:
- * @global: a #ShellGlobal
- * @barrier: a pointer barrier
- *
- * Destroys the @barrier created by shell_global_create_pointer_barrier().
- */
-void
-shell_global_destroy_pointer_barrier (ShellGlobal *global, guint32 barrier)
-{
-#if HAVE_XFIXESCREATEPOINTERBARRIER
-  g_return_if_fail (barrier > 0);
-
-  XFixesDestroyPointerBarrier (global->xdisplay, (PointerBarrier)barrier);
-#endif
-}
-
 /* Code to close all file descriptors before we exec; copied from gspawn.c in GLib.
  *
  * Authors: Padraig O'Briain, Matthias Clasen, Lennart Poettering
