@@ -187,6 +187,8 @@ const DeviceItem = new Lang.Class({
 
         let percentLabel = new St.Label({ text: C_("percent of battery remaining", "%d%%").format(Math.round(percentage)) });
         this.addActor(percentLabel, { align: St.Align.END });
+        //FIXME: ideally we would like to expose this._label and percentLabel
+        this.actor.label_actor = percentLabel;
     },
 
     _deviceTypeToString: function(type) {
