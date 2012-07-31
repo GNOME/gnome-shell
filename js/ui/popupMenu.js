@@ -179,12 +179,14 @@ const PopupBaseMenuItem = new Lang.Class({
             this._dot = new St.DrawingArea({ style_class: 'popup-menu-item-dot' });
             this._dot.connect('repaint', Lang.bind(this, this._onRepaintDot));
             this.actor.add_actor(this._dot);
+            this.actor.add_accessible_state (Atk.StateType.CHECKED);
         } else {
             if (!this._dot)
                 return;
 
             this._dot.destroy();
             this._dot = null;
+            this.actor.remove_accessible_state (Atk.StateType.CHECKED);
         }
     },
 
