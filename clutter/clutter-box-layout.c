@@ -159,6 +159,23 @@ G_DEFINE_TYPE (ClutterBoxLayout,
                clutter_box_layout,
                CLUTTER_TYPE_LAYOUT_MANAGER);
 
+
+typedef struct _RequestedSize
+{
+  ClutterActor *actor;
+
+  gfloat minimum_size;
+  gfloat natural_size;
+} RequestedSize;
+
+static gint distribute_natural_allocation (gint                  extra_space,
+					   guint                 n_requested_sizes,
+					   RequestedSize        *sizes);
+static void count_expand_children         (ClutterLayoutManager *layout,
+					   ClutterContainer     *container,
+					   gint                 *visible_children,
+					   gint                 *expand_children);
+
 /*
  * ClutterBoxChild
  */
@@ -451,157 +468,260 @@ clutter_box_layout_set_container (ClutterLayoutManager *layout,
 }
 
 static void
-get_preferred_width (ClutterBoxLayout *self,
-                     ClutterActor     *container,
-                     gfloat            for_height,
-                     gfloat           *min_width_p,
-                     gfloat           *natural_width_p)
+get_child_size (ClutterActor       *actor,
+		ClutterOrientation  orientation,
+		gfloat              for_size,
+		gfloat             *min_size_p,
+		gfloat             *natural_size_p)
+{
+  if (orientation == CLUTTER_ORIENTATION_HORIZONTAL)
+    clutter_actor_get_preferred_width (actor, for_size, min_size_p, natural_size_p);
+  else
+    clutter_actor_get_preferred_height (actor, for_size, min_size_p, natural_size_p);
+}
+
+/* Handle the request in the orientation of the box (i.e. width request of horizontal box) */
+static void
+get_preferred_size_for_orientation (ClutterBoxLayout   *self,
+				    ClutterActor       *container,
+				    gfloat              for_size,
+				    gfloat             *min_size_p,
+				    gfloat             *natural_size_p)
 {
   ClutterBoxLayoutPrivate *priv = self->priv;
+  ClutterActorIter iter;
   ClutterActor *child;
   gint n_children = 0;
-  gboolean is_rtl, is_vertical;
+  gfloat minimum, natural;
 
-  if (min_width_p)
-    *min_width_p = 0;
+  minimum = natural = 0;
 
-  if (natural_width_p)
-    *natural_width_p = 0;
-
-  if (priv->orientation == CLUTTER_ORIENTATION_HORIZONTAL)
-    {
-      ClutterTextDirection text_dir;
-
-      text_dir = clutter_actor_get_text_direction (container);
-      is_rtl = (text_dir == CLUTTER_TEXT_DIRECTION_RTL) ? TRUE : FALSE;
-    }
-  else
-    is_rtl = FALSE;
-
-  is_vertical = priv->orientation == CLUTTER_ORIENTATION_VERTICAL;
-
-  for (child = (is_rtl) ? clutter_actor_get_last_child (container)
-                        : clutter_actor_get_first_child (container);
-       child != NULL;
-       child = (is_rtl) ? clutter_actor_get_previous_sibling (child)
-                        : clutter_actor_get_next_sibling (child))
+  clutter_actor_iter_init (&iter, container);
+  while (clutter_actor_iter_next (&iter, &child))
     {
       gfloat child_min = 0, child_nat = 0;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
-        continue;
+	continue;
 
       n_children++;
 
-      clutter_actor_get_preferred_width (child,
-                                         !is_vertical ? for_height : -1,
-                                         &child_min,
-                                         &child_nat);
+      get_child_size (child, priv->orientation,
+		      for_size, &child_min, &child_nat);
 
-      if (is_vertical)
-        {
-          if (min_width_p)
-            *min_width_p = MAX (child_min, *min_width_p);
-
-          if (natural_width_p)
-            *natural_width_p = MAX (child_nat, *natural_width_p);
-        }
-      else
-        {
-          if (min_width_p)
-            *min_width_p += child_min;
-
-          if (natural_width_p)
-            *natural_width_p += child_nat;
-        }
+      minimum += child_min;
+      natural += child_nat;
     }
 
-
-  if (!is_vertical && n_children > 1)
+  if (n_children > 1)
     {
-      if (min_width_p)
-        *min_width_p += priv->spacing * (n_children - 1);
-
-      if (natural_width_p)
-        *natural_width_p += priv->spacing * (n_children - 1);
+      minimum += priv->spacing * (n_children - 1);
+      natural += priv->spacing * (n_children - 1);
     }
+
+  if (min_size_p)
+    *min_size_p = minimum;
+
+  if (natural_size_p)
+    *natural_size_p = natural;
 }
 
 static void
-get_preferred_height (ClutterBoxLayout *self,
-                      ClutterActor     *container,
-                      gfloat            for_width,
-                      gfloat           *min_height_p,
-                      gfloat           *natural_height_p)
+get_base_size_for_opposite_orientation (ClutterBoxLayout   *self,
+					ClutterActor       *container,
+					gfloat             *min_size_p,
+					gfloat             *natural_size_p)
 {
   ClutterBoxLayoutPrivate *priv = self->priv;
+  ClutterActorIter iter;
   ClutterActor *child;
   gint n_children = 0;
-  gboolean is_rtl, is_vertical;
+  gfloat minimum, natural;
+  ClutterOrientation opposite_orientation =
+    priv->orientation == CLUTTER_ORIENTATION_HORIZONTAL
+    ? CLUTTER_ORIENTATION_VERTICAL
+    : CLUTTER_ORIENTATION_HORIZONTAL;
 
-  if (min_height_p)
-    *min_height_p = 0;
+  minimum = natural = 0;
 
-  if (natural_height_p)
-    *natural_height_p = 0;
-
-  if (priv->orientation == CLUTTER_ORIENTATION_HORIZONTAL)
+  clutter_actor_iter_init (&iter, container);
+  while (clutter_actor_iter_next (&iter, &child))
     {
-      ClutterTextDirection text_dir;
+      gfloat child_min = 0, child_nat = 0;
 
-      text_dir = clutter_actor_get_text_direction (container);
-      is_rtl = (text_dir == CLUTTER_TEXT_DIRECTION_RTL) ? TRUE : FALSE;
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+	continue;
+
+      n_children++;
+
+      get_child_size (child, opposite_orientation, -1, &child_min, &child_nat);
+
+      minimum = MAX (minimum, child_min);
+      natural = MAX (natural, child_nat);
+    }
+
+  if (min_size_p)
+    *min_size_p = minimum;
+
+  if (natural_size_p)
+    *natural_size_p = natural;
+}
+
+
+/* Handle the request in the opposite orientation of the box
+ * (i.e. height request of horizontal box)
+ *
+ * This operation requires a virtual allocation in the natural
+ * orientation of the box, after that each element must be asked
+ * for the size-for-virtually-allocated-size and the maximums of
+ * each child sample will be reported as the overall
+ * "size-for-size-in-opposite-orientation"
+ */
+static void
+get_preferred_size_for_opposite_orientation (ClutterBoxLayout   *self,
+					     ClutterActor       *container,
+					     gfloat              for_size,
+					     gfloat             *min_size_p,
+					     gfloat             *natural_size_p)
+{
+  ClutterLayoutManager *layout = CLUTTER_LAYOUT_MANAGER (self);
+  ClutterBoxLayoutPrivate *priv = self->priv;
+  ClutterContainer *real_container = CLUTTER_CONTAINER (container);
+  ClutterActor *child;
+  ClutterActorIter iter;
+  gint nvis_children = 0, n_extra_widgets = 0;
+  gint nexpand_children = 0, i;
+  RequestedSize *sizes;
+  gfloat minimum, natural, size, extra = 0;
+  ClutterOrientation opposite_orientation =
+    priv->orientation == CLUTTER_ORIENTATION_HORIZONTAL
+    ? CLUTTER_ORIENTATION_VERTICAL
+    : CLUTTER_ORIENTATION_HORIZONTAL;
+
+  minimum = natural = 0;
+
+  count_expand_children (layout, real_container,
+			 &nvis_children, &nexpand_children);
+
+  if (nvis_children < 1)
+    {
+      if (min_size_p)
+	*min_size_p = 0;
+
+      if (natural_size_p)
+	*natural_size_p = 0;
+
+      return;
+    }
+
+  /* First collect the requested sizes in the natural orientation of the box */
+  sizes  = g_newa (RequestedSize, nvis_children);
+  size   = for_size;
+
+  i = 0;
+  clutter_actor_iter_init (&iter, container);
+  while (clutter_actor_iter_next (&iter, &child))
+    {
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+	continue;
+
+      get_child_size (child, priv->orientation, -1,
+		      &sizes[i].minimum_size,
+		      &sizes[i].natural_size);
+
+      size -= sizes[i].minimum_size;
+      i++;
+    }
+
+  if (priv->is_homogeneous)
+    {
+      size            = for_size - (nvis_children - 1) * priv->spacing;
+      extra           = size / nvis_children;
+      n_extra_widgets = ((gint)size) % nvis_children;
     }
   else
-    is_rtl = FALSE;
+    {
+      /* Bring children up to size first */
+      size = distribute_natural_allocation (MAX (0, size), nvis_children, sizes);
 
-  is_vertical = priv->orientation == CLUTTER_ORIENTATION_VERTICAL;
+      /* Calculate space which hasn't distributed yet,
+       * and is available for expanding children.
+       */
+      if (nexpand_children > 0)
+        {
+          extra = size / nexpand_children;
+          n_extra_widgets = ((gint)size) % nexpand_children;
+        }
+    }
 
-  for (child = (is_rtl) ? clutter_actor_get_last_child (container)
-                        : clutter_actor_get_first_child (container);
-       child != NULL;
-       child = (is_rtl) ? clutter_actor_get_previous_sibling (child)
-                        : clutter_actor_get_next_sibling (child))
+  /* Distribute expand space to children */
+  i = 0;
+  clutter_actor_iter_init (&iter, container);
+  while (clutter_actor_iter_next (&iter, &child))
+    {
+      ClutterLayoutMeta *meta;
+      ClutterBoxChild   *box_child;
+
+      /* If widget is not visible, skip it. */
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+        continue;
+
+      meta      = clutter_layout_manager_get_child_meta (layout, real_container, child);
+      box_child = CLUTTER_BOX_CHILD (meta);
+
+      if (priv->is_homogeneous)
+	{
+	  sizes[i].minimum_size = extra;
+
+          if (n_extra_widgets > 0)
+            {
+              sizes[i].minimum_size++;
+              n_extra_widgets--;
+            }
+	}
+      else
+	{
+          if (clutter_actor_needs_expand (child, priv->orientation) || box_child->expand)
+            {
+              sizes[i].minimum_size += extra;
+
+              if (n_extra_widgets > 0)
+                {
+                  sizes[i].minimum_size++;
+                  n_extra_widgets--;
+                }
+            }
+	}
+      i++;
+    }
+
+  /* Virtual allocation finished, now we can finally ask for the right size-for-size */
+  i = 0;
+  clutter_actor_iter_init (&iter, container);
+  while (clutter_actor_iter_next (&iter, &child))
     {
       gfloat child_min = 0, child_nat = 0;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
-      n_children++;
+      get_child_size (child, opposite_orientation,
+		      sizes[i].minimum_size,
+		      &child_min, &child_nat);
 
-      clutter_actor_get_preferred_height (child,
-                                          is_vertical ? for_width : -1,
-                                          &child_min,
-                                          &child_nat);
+      minimum = MAX (minimum, child_min);
+      natural = MAX (natural, child_nat);
 
-      if (!is_vertical)
-        {
-          if (min_height_p)
-            *min_height_p = MAX (child_min, *min_height_p);
-
-          if (natural_height_p)
-            *natural_height_p = MAX (child_nat, *natural_height_p);
-        }
-      else
-        {
-          if (min_height_p)
-            *min_height_p += child_min;
-
-          if (natural_height_p)
-            *natural_height_p += child_nat;
-        }
+      i++;
     }
 
-  if (is_vertical && n_children > 1)
-    {
-      if (min_height_p)
-        *min_height_p += priv->spacing * (n_children - 1);
+  if (min_size_p)
+    *min_size_p = minimum;
 
-      if (natural_height_p)
-        *natural_height_p += priv->spacing * (n_children - 1);
-    }
+  if (natural_size_p)
+    *natural_size_p = natural;
 }
+
 
 static void
 allocate_box_child (ClutterBoxLayout       *self,
@@ -657,11 +777,21 @@ clutter_box_layout_get_preferred_width (ClutterLayoutManager *layout,
                                         gfloat               *min_width_p,
                                         gfloat               *natural_width_p)
 {
-  ClutterBoxLayout *self = CLUTTER_BOX_LAYOUT (layout);
+  ClutterBoxLayout        *self = CLUTTER_BOX_LAYOUT (layout);
+  ClutterBoxLayoutPrivate *priv = self->priv;
 
-  get_preferred_width (self, CLUTTER_ACTOR (container), for_height,
-                       min_width_p,
-                       natural_width_p);
+  if (priv->orientation == CLUTTER_ORIENTATION_VERTICAL)
+    {
+      if (for_height < 0)
+	get_base_size_for_opposite_orientation (self, CLUTTER_ACTOR (container),
+						min_width_p, natural_width_p);
+      else
+	get_preferred_size_for_opposite_orientation (self, CLUTTER_ACTOR (container), for_height,
+						     min_width_p, natural_width_p);
+    }
+  else
+    get_preferred_size_for_orientation (self, CLUTTER_ACTOR (container), for_height,
+					min_width_p, natural_width_p);
 }
 
 static void
@@ -671,11 +801,21 @@ clutter_box_layout_get_preferred_height (ClutterLayoutManager *layout,
                                          gfloat               *min_height_p,
                                          gfloat               *natural_height_p)
 {
-  ClutterBoxLayout *self = CLUTTER_BOX_LAYOUT (layout);
+  ClutterBoxLayout        *self = CLUTTER_BOX_LAYOUT (layout);
+  ClutterBoxLayoutPrivate *priv = self->priv;
 
-  get_preferred_height (self, CLUTTER_ACTOR (container), for_width,
-                        min_height_p,
-                        natural_height_p);
+  if (priv->orientation == CLUTTER_ORIENTATION_HORIZONTAL)
+    {
+      if (for_width < 0)
+	get_base_size_for_opposite_orientation (self, CLUTTER_ACTOR (container),
+						min_height_p, natural_height_p);
+      else
+	get_preferred_size_for_opposite_orientation (self, CLUTTER_ACTOR (container), for_width,
+						     min_height_p, natural_height_p);
+    }
+  else
+    get_preferred_size_for_orientation (self, CLUTTER_ACTOR (container), for_width,
+					min_height_p, natural_height_p);
 }
 
 static void
@@ -711,14 +851,6 @@ count_expand_children (ClutterLayoutManager *layout,
         }
     }
 }
-
-typedef struct _RequestedSize
-{
-  ClutterActor *actor;
-
-  gfloat minimum_size;
-  gfloat natural_size;
-} RequestedSize;
 
 /* Pulled from gtksizerequest.c from Gtk+ */
 static gint
