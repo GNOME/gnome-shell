@@ -53,7 +53,8 @@ typedef struct _CoglDisplaySdl
 
 static CoglFuncPtr
 _cogl_winsys_renderer_get_proc_address (CoglRenderer *renderer,
-                                        const char *name)
+                                        const char *name,
+                                        CoglBool in_core)
 {
   /* XXX: It's not totally clear whether it's safe to call this for
    * core functions. From the code it looks like the implementations
