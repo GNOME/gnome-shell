@@ -353,4 +353,10 @@ void
 _cogl_context_set_current_modelview_entry (CoglContext *context,
                                            CoglMatrixEntry *entry);
 
+const char *
+_cogl_context_get_gl_extensions (CoglContext *context);
+
+const char *
+_cogl_context_get_gl_version (CoglContext *context);
+
 #endif /* __COGL_CONTEXT_PRIVATE_H */

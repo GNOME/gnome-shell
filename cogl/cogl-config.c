@@ -35,11 +35,27 @@
 
 char *_cogl_config_driver;
 char *_cogl_config_renderer;
+char *_cogl_config_disable_gl_extensions;
+char *_cogl_config_override_gl_version;
+
+/* Array of config options that just set a global string */
+static const struct
+{
+  const char *conf_name;
+  char **variable;
+} cogl_config_string_options[] =
+  {
+    { "COGL_DRIVER", &_cogl_config_driver },
+    { "COGL_RENDERER", &_cogl_config_renderer },
+    { "COGL_DISABLE_GL_EXTENSIONS", &_cogl_config_disable_gl_extensions },
+    { "COGL_OVERRIDE_GL_VERSION", &_cogl_config_override_gl_version }
+  };
 
 static void
 _cogl_config_process (GKeyFile *key_file)
 {
   char *value;
+  int i;
 
   value = g_key_file_get_string (key_file, "global", "COGL_DEBUG", NULL);
   if (value)
@@ -59,22 +75,17 @@ _cogl_config_process (GKeyFile *key_file)
       g_free (value);
     }
 
-  value = g_key_file_get_string (key_file, "global", "COGL_DRIVER", NULL);
-  if (value)
+  for (i = 0; i < G_N_ELEMENTS (cogl_config_string_options); i++)
     {
-      if (_cogl_config_driver)
-        g_free (_cogl_config_driver);
+      const char *conf_name = cogl_config_string_options[i].conf_name;
+      char **variable = cogl_config_string_options[i].variable;
 
-      _cogl_config_driver = value;
-    }
-
-  value = g_key_file_get_string (key_file, "global", "COGL_RENDERER", NULL);
-  if (value)
-    {
-      if (_cogl_config_renderer)
-        g_free (_cogl_config_renderer);
-
-      _cogl_config_renderer = value;
+      value = g_key_file_get_string (key_file, "global", conf_name, NULL);
+      if (value)
+        {
+          g_free (*variable);
+          *variable = value;
+        }
     }
 }
 

@@ -33,5 +33,7 @@ _cogl_config_read (void);
 
 extern char *_cogl_config_driver;
 extern char *_cogl_config_renderer;
+extern char *_cogl_config_disable_gl_extensions;
+extern char *_cogl_config_override_gl_version;
 
 #endif /* __COGL_CONFIG_PRIVATE_H */

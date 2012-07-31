@@ -48,6 +48,7 @@
 #include "cogl-attribute-private.h"
 #include "cogl1-context.h"
 #include "cogl-gpu-info-private.h"
+#include "cogl-config-private.h"
 
 #include <string.h>
 
@@ -616,4 +617,108 @@ _cogl_context_set_current_modelview_entry (CoglContext *context,
   if (context->current_modelview_entry)
     _cogl_matrix_entry_unref (context->current_modelview_entry);
   context->current_modelview_entry = entry;
+}
+
+const char *
+_cogl_context_get_gl_extensions (CoglContext *context)
+{
+  const char *env_disabled_extensions;
+
+  if ((env_disabled_extensions = g_getenv ("COGL_DISABLE_GL_EXTENSIONS"))
+      || _cogl_config_disable_gl_extensions)
+    {
+      static CoglUserDataKey extensions_key;
+      const char *enabled_extensions;
+      char **split_enabled_extensions;
+      char **split_env_disabled_extensions;
+      char **split_conf_disabled_extensions;
+      char **e;
+      GString *result;
+
+      /* We need to return a const string so we'll attach the results
+       * to the CoglContext to avoid leaking the generated string.
+       * This string is only used rarely so we are using
+       * cogl_object_set_user_data instead of adding an explicit
+       * member to CoglContext to avoid making the struct bigger */
+
+      enabled_extensions =
+        cogl_object_get_user_data (COGL_OBJECT (context), &extensions_key);
+      if (enabled_extensions)
+        return enabled_extensions;
+
+      enabled_extensions = (const char *) context->glGetString (GL_EXTENSIONS);
+
+      split_enabled_extensions = g_strsplit (enabled_extensions,
+                                             " ",
+                                             0 /* no max tokens */);
+
+      if (env_disabled_extensions)
+        split_env_disabled_extensions =
+          g_strsplit (env_disabled_extensions,
+                      ",",
+                      0 /* no max tokens */);
+      else
+        split_env_disabled_extensions = NULL;
+
+      if (_cogl_config_disable_gl_extensions)
+        split_conf_disabled_extensions =
+          g_strsplit (_cogl_config_disable_gl_extensions,
+                      ",",
+                      0 /* no max tokens */);
+      else
+        split_conf_disabled_extensions = NULL;
+
+      result = g_string_new (NULL);
+
+      for (e = split_enabled_extensions; *e; e++)
+        {
+          char **d;
+
+          if (split_env_disabled_extensions)
+            for (d = split_env_disabled_extensions; *d; d++)
+              if (!strcmp (*e, *d))
+                goto disabled;
+          if (split_conf_disabled_extensions)
+            for (d = split_conf_disabled_extensions; *d; d++)
+              if (!strcmp (*e, *d))
+                goto disabled;
+
+          if (result->len > 0)
+            g_string_append_c (result, ' ');
+          g_string_append (result, *e);
+
+        disabled:
+          continue;
+        }
+
+      enabled_extensions = g_string_free (result, FALSE);
+
+      g_strfreev (split_enabled_extensions);
+      if (split_env_disabled_extensions)
+        g_strfreev (split_env_disabled_extensions);
+      if (split_conf_disabled_extensions)
+        g_strfreev (split_conf_disabled_extensions);
+
+      cogl_object_set_user_data (COGL_OBJECT (context),
+                                 &extensions_key,
+                                 (void *) enabled_extensions,
+                                 (CoglUserDataDestroyCallback) g_free);
+
+      return enabled_extensions;
+    }
+  else
+    return (const char *) context->glGetString (GL_EXTENSIONS);
+}
+
+const char *
+_cogl_context_get_gl_version (CoglContext *context)
+{
+  const char *version_override;
+
+  if ((version_override = g_getenv ("COGL_OVERRIDE_GL_VERSION")))
+    return version_override;
+  else if (_cogl_config_override_gl_version)
+    return _cogl_config_override_gl_version;
+  else
+    return (const char *) context->glGetString (GL_VERSION);
 }

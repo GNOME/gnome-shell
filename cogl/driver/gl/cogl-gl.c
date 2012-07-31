@@ -228,7 +228,7 @@ _cogl_get_gl_version (CoglContext *ctx,
   int major = 0, minor = 0;
 
   /* Get the OpenGL version number */
-  if ((version_string = (const char *) ctx->glGetString (GL_VERSION)) == NULL)
+  if ((version_string = _cogl_context_get_gl_version (ctx)) == NULL)
     return FALSE;
 
   /* Extract the major number */
@@ -276,7 +276,7 @@ check_gl_version (CoglContext *ctx,
   if (COGL_CHECK_GL_VERSION (major, minor, 1, 3))
     return TRUE;
 
-  gl_extensions = (const char*) ctx->glGetString (GL_EXTENSIONS);
+  gl_extensions = _cogl_context_get_gl_extensions (ctx);
 
   /* OpenGL 1.2 is only supported if we have the multitexturing
      extension */
@@ -335,8 +335,8 @@ _cogl_driver_update_features (CoglContext *ctx,
              "  GL_EXTENSIONS: %s",
              ctx->glGetString (GL_VENDOR),
              ctx->glGetString (GL_RENDERER),
-             ctx->glGetString (GL_VERSION),
-             ctx->glGetString (GL_EXTENSIONS));
+             _cogl_context_get_gl_version (ctx),
+             _cogl_context_get_gl_extensions (ctx));
 
   _cogl_get_gl_version (ctx, &gl_major, &gl_minor);
 
@@ -352,7 +352,7 @@ _cogl_driver_update_features (CoglContext *ctx,
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 1, 4))
     COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_MIRRORED_REPEAT, TRUE);
 
-  gl_extensions = (const char *)ctx->glGetString (GL_EXTENSIONS);
+  gl_extensions = _cogl_context_get_gl_extensions (ctx);
 
   _cogl_feature_check_ext_functions (ctx,
                                      gl_major,

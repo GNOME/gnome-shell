@@ -482,7 +482,7 @@ _cogl_gpu_info_init (CoglContext *ctx,
   int i;
 
   strings.renderer_string = (const char *) ctx->glGetString (GL_RENDERER);
-  strings.version_string = (const char *) ctx->glGetString (GL_VERSION);
+  strings.version_string = _cogl_context_get_gl_version (ctx);
   strings.vendor_string = (const char *) ctx->glGetString (GL_VENDOR);
 
   /* Determine the driver package */

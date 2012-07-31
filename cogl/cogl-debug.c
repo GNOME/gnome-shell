@@ -182,6 +182,16 @@ _cogl_parse_debug_string (const char *value,
       OPT (IGNORED, "ignored", "verbose", "ignored", \
            N_("Enables all non-behavioural debug options"));
 #undef OPT
+
+      g_printerr ("\n"
+                  "%28s\n"
+                  " COGL_DISABLE_GL_EXTENSIONS: %s\n"
+                  "   COGL_OVERRIDE_GL_VERSION: %s\n",
+                  _("Additional environment variables:"),
+                  _("Comma-separated list of GL extensions to pretend are "
+                    "disabled"),
+                  _("Override the GL version that Cogl will assume the driver "
+                    "supports"));
       exit (1);
     }
   else

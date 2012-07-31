@@ -182,12 +182,12 @@ _cogl_driver_update_features (CoglContext *context,
              "  GL_EXTENSIONS: %s",
              context->glGetString (GL_VENDOR),
              context->glGetString (GL_RENDERER),
-             context->glGetString (GL_VERSION),
-             context->glGetString (GL_EXTENSIONS));
+             _cogl_context_get_gl_version (context),
+             _cogl_context_get_gl_extensions (context));
 
   _cogl_gpu_info_init (context, &context->gpu);
 
-  gl_extensions = (const char*) context->glGetString (GL_EXTENSIONS);
+  gl_extensions = _cogl_context_get_gl_extensions (context);
 
   _cogl_feature_check_ext_functions (context,
                                      -1 /* GL major version */,
