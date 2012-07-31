@@ -29,6 +29,10 @@
 #include "cogl-texture-private.h"
 #include "cogl-texture-2d.h"
 
+#ifdef COGL_HAS_EGL_SUPPORT
+#include "cogl-egl-defines.h"
+#endif
+
 struct _CoglTexture2D
 {
   CoglTexture     _parent;
