@@ -1177,6 +1177,11 @@ StButton.popup-menu-item:insensitive {
     height: 72px;
 }
 
+#message-tray:overview {
+    background: rgba(0, 0, 0, 0.5);
+    border-top: 1px solid rgba(128, 128, 128, 0.4);
+}
+
 .notification {
     font-size: 11pt;
     border-radius: 10px 10px 0px 0px;
