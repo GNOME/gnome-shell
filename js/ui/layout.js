@@ -20,6 +20,10 @@ const KEYBOARD_ANIMATION_TIME = 0.5;
 const PLYMOUTH_TRANSITION_TIME = 1;
 
 const MESSAGE_TRAY_PRESSURE_THRESHOLD = 200;
+// The maximium amount that the user is allowed to travel
+// perpendicular to the barrier before we release the accumulated
+// pressure.
+const MESSAGE_TRAY_MAX_SKIRT = 100;
 
 const MonitorConstraint = new Lang.Class({
     Name: 'MonitorConstraint',
@@ -299,7 +303,9 @@ const LayoutManager = new Lang.Class({
                                                    y1: monitor.y + monitor.height, y2: monitor.y + monitor.height,
                                                    directions: Meta.BarrierDirection.NEGATIVE_Y });
 
-            this._trayPressure = new PressureBarrier(this._trayBarrier, MESSAGE_TRAY_PRESSURE_THRESHOLD);
+            this._trayPressure = new PressureBarrier(this._trayBarrier,
+                                                     MESSAGE_TRAY_PRESSURE_THRESHOLD,
+                                                     MESSAGE_TRAY_MAX_SKIRT);
             this._trayPressure.connect('trigger', function() {
                 Main.messageTray.openTray();
             });
@@ -1160,10 +1166,11 @@ Signals.addSignalMethods(Chrome.prototype);
 const PressureBarrier = new Lang.Class({
     Name: 'TrayPressure',
 
-    _init: function(barrier, threshold) {
+    _init: function(barrier, pressureThreshold, perpThreshold) {
         this._barrier = barrier;
-        this._threshold = threshold;
-        this._getVelocity = this._makeGetVelocity(barrier);
+        this._pressureThreshold = pressureThreshold;
+        this._perpThreshold = perpThreshold;
+        this._getVelocityAndPerp = this._makeGetVelocityAndPerp(barrier);
 
         this._reset(0);
 
@@ -1178,16 +1185,17 @@ const PressureBarrier = new Lang.Class({
     _reset: function(eventId) {
         this._currentEventId = eventId;
         this._currentPressure = 0;
+        this._perpAccumulator = 0;
     },
 
-    _makeGetVelocity: function(barrier) {
+    _makeGetVelocityAndPerp: function(barrier) {
         if (barrier.y1 === barrier.y2) {
             return function(event) {
-                return Math.abs(event.dy);
+                return [Math.abs(event.dy), event.dx];
             };
         } else {
             return function(event) {
-                return Math.abs(event.dx);
+                return [Math.abs(event.dx), event.dy];
             };
         }
     },
@@ -1200,10 +1208,19 @@ const PressureBarrier = new Lang.Class({
             this._reset(event.event_id);
         }
 
-        let velocity = this._getVelocity(event);
+        let [velocity, perp] = this._getVelocityAndPerp(event);
+        this._perpAccumulator += perp;
+
+        // If the user travels too far in the direction perpendicular
+        // to the barrier, start over from scratch -- the user is simply
+        // trying to skirt along the barrier.
+        if (Math.abs(this._perpAccumulator) >= this._perpThreshold) {
+            this._reset(0);
+            return;
+        }
 
         this._currentPressure += velocity;
-        if (this._currentPressure >= this._threshold) {
+        if (this._currentPressure >= this._pressureThreshold) {
             this.emit('trigger');
             this._reset(0);
         }
