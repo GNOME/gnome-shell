@@ -28,8 +28,8 @@
 #error "Only <cogl/cogl.h> can be included directly."
 #endif
 
-#ifndef __COGL_TEXURE_2D_H
-#define __COGL_TEXURE_2D_H
+#ifndef __COGL_TEXTURE_2D_H
+#define __COGL_TEXTURE_2D_H
 
 #include "cogl-context.h"
 
@@ -225,4 +225,4 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
 
 G_END_DECLS
 
-#endif /* __COGL_TEXURE_2D_H */
+#endif /* __COGL_TEXTURE_2D_H */
