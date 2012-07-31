@@ -2201,7 +2201,8 @@ StButton.popup-menu-item:insensitive {
 /* Screen shield */
 
 #screenShieldGroup {
-    background-color: #333333;
+    background: #2e3436 url(noise-texture.png);
+    background-repeat: repeat;
 }
 
 #screenShieldGroup .arrow {
