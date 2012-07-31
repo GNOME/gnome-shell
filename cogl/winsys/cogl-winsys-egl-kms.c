@@ -537,8 +537,6 @@ static CoglBool
 _cogl_winsys_egl_context_created (CoglDisplay *display,
                                   GError **error)
 {
-  CoglRenderer *renderer = display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglDisplayEGL *egl_display = display->winsys;
 
   if (!_cogl_winsys_egl_make_current (display,
