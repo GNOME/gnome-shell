@@ -72,7 +72,7 @@ StScrollView.hfade {
 
 StScrollView StScrollBar {
     min-width: 14px;
-    min-height: 16px;
+    min-height: 14px;
 }
 
 StScrollBar StBin#trough {
@@ -2227,13 +2227,14 @@ StButton.popup-menu-item:insensitive {
 
 .screen-shield-clock {
     color: white;
-    text-shadow: black 0px 0px 2px 0px;
+    text-shadow: 0px 1px 2px rgba(0,0,0,0.6);
     font-weight: bold;
     text-align: center;
 }
 
 .screen-shield-clock-time {
     font-size: 86px;
+    text-shadow: 0px 2px 2px rgba(0,0,0,0.4);
 }
 
 .screen-shield-clock-date {
