@@ -974,7 +974,6 @@ const LoginDialog = new Lang.Class({
                      function() {
                          this._promptFingerprintMessage.hide();
                          this._promptEntry.reactive = true;
-                         this._promptEntry.remove_style_pseudo_class('insensitive');
                          this._promptEntry.set_text('');
                      }];
 
@@ -994,7 +993,6 @@ const LoginDialog = new Lang.Class({
                      function() {
                          let _text = this._promptEntry.get_text();
                          this._promptEntry.reactive = false;
-                         this._promptEntry.add_style_pseudo_class('insensitive');
                          this._userVerifier.answerQuery(serviceName, _text);
                      }];
 
