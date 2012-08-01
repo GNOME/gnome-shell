@@ -41,8 +41,6 @@ dist_theme_DATA =				\
 	theme/panel-button-highlight-wide.svg	\
 	theme/process-working.svg		\
 	theme/running-indicator.svg		\
-	theme/scroll-hhandle.svg		\
-	theme/scroll-vhandle.svg		\
 	theme/source-button-border.svg		\
 	theme/toggle-off-us.svg			\
 	theme/toggle-off-intl.svg		\

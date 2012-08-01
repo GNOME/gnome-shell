@@ -58,54 +58,48 @@ stage {
 
 /* Scroll Bars */
 
-StScrollBar
-{
+StScrollBar {
     padding: 0px;
 }
 
-StScrollView.vfade
-{
+StScrollView.vfade {
     -st-vfade-offset: 68px;
 }
 
-StScrollView.hfade
-{
+StScrollView.hfade {
     -st-hfade-offset: 68px;
 }
 
-StScrollView StScrollBar
-{
-    min-width: 16px;
+StScrollView StScrollBar {
+    min-width: 14px;
     min-height: 16px;
 }
 
-
 StScrollBar StBin#trough {
-    background-color: #080808;
-    border: 1px solid #2d2d2d;
+    background-color: rgba(0,0,0,0.3);
     border-radius: 8px;
 }
 
-StScrollBar StButton#vhandle
-{
-    background-image: url("scroll-vhandle.svg");
-    background-color: #252525;
-    border: 1px solid #080808;
+StScrollBar StButton#vhandle {
+    background-color: #959797;
+    border: 2px solid #242424;
     border-radius: 8px;
 }
 
-StScrollBar StButton#hhandle
-{
-    background-image: url("scroll-hhandle.svg");
-    background-color: #252525;
-    border: 1px solid #080808;
+StScrollBar StButton#hhandle {
+    background-color: #959797;
+    border: 2px solid #242424;
     border-radius: 8px;
 }
 
 StScrollBar StButton#hhandle:hover,
-StScrollBar StButton#vhandle:hover
-{
-    background-color: #292929;
+StScrollBar StButton#vhandle:hover {
+    background-color: #c2c3c3;
+}
+
+StScrollBar StButton#hhandle:active,
+StScrollBar StButton#vhandle:active {
+    background-color: #729fcf;
 }
 
 /* Check Boxes */
