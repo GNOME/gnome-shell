@@ -333,6 +333,79 @@ StButton.popup-menu-item:insensitive {
     color: #9f9f9f;
 }
 
+/* Entries */
+
+#searchEntry,
+.notification StEntry,
+.login-dialog-prompt-entry,
+.prompt-dialog-password-entry {
+    color: rgb(64, 64, 64);
+    caret-color: rgb(64, 64, 64);
+    font-size: 12pt;
+    caret-size: 1px;
+    selected-color: black;
+    padding: 4px 12px;
+}
+
+#searchEntry,
+.notification StEntry {
+    border: 2px solid rgba(245,245,245,0.2);
+    background-gradient-start: rgba(5,5,6,0.1);
+    background-gradient-end: rgba(254,254,254,0.1);
+    background-gradient-direction: vertical;
+    transition-duration: 300;
+    box-shadow: inset 0px 2px 4px rgba(0,0,0,0.6);
+}
+
+#searchEntry:focus,
+#searchEntry:hover,
+.notification StEntry:focus,
+.login-dialog-prompt-entry,
+.prompt-dialog-password-entry {
+    border: 2px solid rgb(136,138,133);
+    background-gradient-start: rgb(200,200,200);
+    background-gradient-end: white;
+    background-gradient-direction: vertical;
+    box-shadow: inset 0px 2px 4px rgba(0,0,0,0.6);
+}
+
+.notification StEntry:focus,
+.prompt-dialog-password-entry:focus,
+.login-dialog-prompt-entry:focus {
+    border: 2px solid #3465a4;
+}
+
+#searchEntry {
+    color: rgb(128, 128, 128);
+    caret-color: rgb(128, 128, 128);
+}
+
+#searchEntry:focus {
+    color: rgb(64, 64, 64);
+    caret-color: rgb(64, 64, 64);
+    font-weight: bold;
+    transition-duration: 0;
+}
+
+.notification StEntry,
+.prompt-dialog-password-entry,
+.login-dialog-prompt-entry {
+    border-radius: 5px;
+    padding: 4px 4px;
+}
+
+.prompt-dialog-password-entry .capslock-warning,
+.login-dialog-prompt-entry .capslock-warning {
+    icon-size: 16px;
+    warning-color: #999;
+    padding: 0 4px;
+}
+
+.login-dialog-prompt-entry:insensitive {
+    color: rgba(0,0,0,0.7);
+    border: 2px solid #565656;
+}
+
 /* Panel */
 
 #panel {
@@ -593,38 +666,8 @@ StButton.popup-menu-item:insensitive {
 }
 
 #searchEntry {
-    padding: 4px 12px;
     border-radius: 17px;
-    font-size: 12pt;
-    color: rgb(128, 128, 128);
-    border: 2px solid rgba(245,245,245,0.2);
-    background-gradient-start: rgba(5,5,6,0.1);
-    background-gradient-end: rgba(254,254,254,0.1);
-    background-gradient-direction: vertical;
-    selected-color: black;
-    caret-color: rgb(128, 128, 128);
-    caret-size: 1px;
     width: 250px;
-    transition-duration: 300;
-    box-shadow: inset 0px 2px 4px rgba(0,0,0,0.6);
-}
-
-#searchEntry:focus,
-#searchEntry:hover {
-    border: 2px solid rgb(136,138,133);
-    background-gradient-start: rgb(200,200,200);
-    background-gradient-end: white;
-    background-gradient-direction: vertical;
-}
-
-#searchEntry:hover {
-    transition-duration: 300;
-}
-
-#searchEntry:focus {
-    color: rgb(64, 64, 64);
-    font-weight: bold;
-    transition-duration: 0;
 }
 
 .search-entry-icon {
@@ -1357,30 +1400,7 @@ StButton.popup-menu-item:insensitive {
 }
 
 .notification StEntry {
-    padding: 4px;
     border-radius: 4px;
-    color: #a8a8a8;
-    selected-color: black;
-    border: 1px solid rgba(245,245,245,0.2);
-    background-gradient-direction: vertical;
-    background-gradient-start: rgb(200,200,200);
-    background-gradient-end: white;
-    transition-duration: 300;
-    box-shadow: inset 0px 2px 4px rgba(0,0,0,0.6);
-
-    caret-color: #a8a8a8;
-    caret-size: 1px;
-}
-
-.notification StEntry:focus {
-    border: 1px solid #8b8b8b;
-    color: #333333;
-    background-gradient-direction: vertical;
-    background-gradient-start: rgb(200,200,200);
-    background-gradient-end: white;
-
-    caret-color: #545454;
-    selection-background-color: #808080;
 }
 
 /* The spacing and padding on the summary is tricky; we want to keep
@@ -1864,26 +1884,6 @@ StButton.popup-menu-item:insensitive {
     padding-left: 0.5em;
 }
 
-.prompt-dialog-password-entry {
-    background-gradient-start: rgb(236,236,236);
-    background-gradient-end: white;
-    background-gradient-direction: vertical;
-    color: black;
-    selected-color: white;
-    border-radius: 5px;
-    border: 2px solid #555753;
-}
-
-.prompt-dialog-password-entry:focus {
-    border: 2px solid #3465a4;
-}
-
-.prompt-dialog-password-entry .capslock-warning {
-    icon-size: 16px;
-    warning-color: #999;
-    padding: 0 4px;
-}
-
 .prompt-dialog-error-label {
     font-size: 10pt;
     color: #ffff00;
@@ -2139,26 +2139,7 @@ StButton.popup-menu-item:insensitive {
 }
 
 .login-dialog-prompt-entry {
-    padding: 4px;
-    border-radius: 4px;
-    border: 2px solid #5656cc;
-    color: black;
-    background-gradient-start: #333333;
-    background-gradient-end: white;
-    background-gradient-direction: vertical;
-    caret-color: black;
-    caret-size: 1px;
     width: 15em;
-}
-
-.login-dialog-prompt-entry .capslock-warning {
-    icon-size: 16px;
-    warning-color: #999;
-}
-
-.login-dialog-prompt-entry:insensitive {
-    color: rgba(0,0,0,0.7);
-    border: 2px solid #565656;
 }
 
 .login-dialog-session-list {
