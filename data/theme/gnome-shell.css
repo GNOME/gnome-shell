@@ -2209,6 +2209,7 @@ StButton.popup-menu-item:insensitive {
     height: .75em;
 }
 
+
 .login-dialog .modal-dialog-button {
     border: 1px solid white;
     border-radius: 5px;
@@ -2216,19 +2217,21 @@ StButton.popup-menu-item:insensitive {
 }
 
 .login-dialog .modal-dialog-button:default {
-    background-gradient-start: #6060cc;
-    background-gradient-end: #3030E0;
+    background-gradient-start: #6793c4;
+    background-gradient-end: #335d8f;
     background-gradient-direction: vertical;
-    border: 2px solid #1010E0;
+    border: 2px solid #16335d;
 }
 
 .login-dialog .modal-dialog-button:hover {
-    background-gradient-start: #7878cc;
+    background-gradient-start: #74a0d0;
+    background-gradient-end: #436d9f;
 }
 
 .login-dialog .modal-dialog-button:active,
 .login-dialog .modal-dialog-button:pressed {
-    background-gradient-start: #9090cc;
+    background-gradient-start: #436d9f;
+    background-gradient-end: #74a0d0;
 }
 
 .unlock-dialog-user-name-container {
