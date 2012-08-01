@@ -1859,12 +1859,8 @@ StButton.popup-menu-item:insensitive {
     color: #666666;
 }
 
-.prompt-dialog-password-label:ltr {
-    padding-right: 0.5em;
-}
-
-.prompt-dialog-password-label:rtl {
-    padding-left: 0.5em;
+.prompt-dialog-password-box {
+    spacing: 1em;
 }
 
 .prompt-dialog-error-label {

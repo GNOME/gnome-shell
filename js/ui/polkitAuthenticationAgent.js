@@ -135,17 +135,17 @@ const AuthenticationDialog = new Lang.Class({
 
         this._onUserChanged();
 
-        this._passwordBox = new St.BoxLayout({ vertical: false });
+        this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
         messageBox.add(this._passwordBox);
         this._passwordLabel = new St.Label(({ style_class: 'prompt-dialog-password-label' }));
-        this._passwordBox.add(this._passwordLabel);
+        this._passwordBox.add(this._passwordLabel, { y_fill: false, y_align: St.Align.MIDDLE });
         this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
                                              text: "",
                                              can_focus: true});
         ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
         this._passwordEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivate));
         this._passwordBox.add(this._passwordEntry,
-                              {expand: true });
+                              { expand: true });
         this.setInitialKeyFocus(this._passwordEntry);
         this._passwordBox.hide();
 
