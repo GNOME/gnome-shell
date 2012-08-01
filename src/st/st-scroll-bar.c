@@ -591,7 +591,7 @@ stop_scrolling (StScrollBar *bar)
   if (!bar->priv->capture_handler)
     return;
 
-  st_widget_remove_style_pseudo_class (bar->priv->handle, "active");
+  st_widget_remove_style_pseudo_class (ST_WIDGET (bar->priv->handle), "active");
 
   stage = CLUTTER_STAGE (clutter_actor_get_stage (bar->priv->trough));
   g_signal_handler_disconnect (stage, bar->priv->capture_handler);
@@ -653,7 +653,7 @@ handle_button_press_event_cb (ClutterActor       *actor,
                                             &priv->y_origin))
     return FALSE;
 
-  st_widget_add_style_pseudo_class (priv->handle, "active");
+  st_widget_add_style_pseudo_class (ST_WIDGET (priv->handle), "active");
 
   /* Account for the scrollbar-trough-handle nesting. */
   priv->x_origin += clutter_actor_get_x (priv->trough);
