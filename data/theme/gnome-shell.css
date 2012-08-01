@@ -2070,7 +2070,7 @@ StButton.popup-menu-item:insensitive {
 }
 
 .login-dialog-user-list-item:hover .login-dialog-user-list-item-name,
-.login-dialog-user-list-item:focus .login-dialog-user-list-item-name {
+.login-dialog-user-list:expanded .login-dialog-user-list-item:focus .login-dialog-user-list-item-name {
     color: white;
     text-shadow: black 0px 2px 2px;
 }
@@ -2079,7 +2079,7 @@ StButton.popup-menu-item:insensitive {
     background-color: rgba(255,255,255,0.1);
 }
 
-.login-dialog-user-list-item:focus {
+.login-dialog-user-list:expanded .login-dialog-user-list-item:focus {
     background-color: rgba(255,255,255,0.33);
 }
 

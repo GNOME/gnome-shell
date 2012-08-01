@@ -173,7 +173,7 @@ const UserListItem = new Lang.Class({
     },
 
     syncStyleClasses: function() {
-        if (this.actor.can_focus && global.stage.get_key_focus() == this.actor)
+        if (global.stage.get_key_focus() == this.actor)
             this.actor.add_style_pseudo_class('focus');
         else
             this.actor.remove_style_pseudo_class('focus');
@@ -223,7 +223,8 @@ const UserList = new Lang.Class({
                               Gtk.PolicyType.AUTOMATIC);
 
         this._box = new St.BoxLayout({ vertical: true,
-                                       style_class: 'login-dialog-user-list' });
+                                       style_class: 'login-dialog-user-list',
+                                       pseudo_class: 'expanded' });
 
         this.actor.add_actor(this._box);
         this._items = {};
@@ -313,6 +314,7 @@ const UserList = new Lang.Class({
                 });
         }
 
+        this._box.remove_style_pseudo_class('expanded');
         let batch = new Batch.ConsecutiveBatch(this,
                                                [function() {
                                                     return GdmUtil.fadeOutActor(this.actor.vscroll);
@@ -368,6 +370,7 @@ const UserList = new Lang.Class({
             });
         }
 
+        this._box.add_style_pseudo_class('expanded');
         let batch = new Batch.ConsecutiveBatch(this,
                                                [function() {
                                                     this.takeOverWhitespace();
