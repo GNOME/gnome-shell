@@ -90,7 +90,7 @@ const ViewSelector = new Lang.Class({
         this._appsPage = this._addPage(this._appDisplay.actor, null,
                                        _("Applications"), 'system-run-symbolic');
 
-        this._searchResults = new SearchDisplay.SearchResults(this._searchSystem);
+        this._searchResults = new SearchDisplay.SearchDisplay(this._searchSystem);
         this._searchPage = this._addPage(this._searchResults.actor, this._entry,
                                          _("Search"), 'edit-find-symbolic');
 

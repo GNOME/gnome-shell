@@ -113,9 +113,13 @@
           <doc:summary>
             <doc:para>
               A dictionary describing the given search result, containing
-              'id', 'name' (both strings) and either 'icon' (a serialized
-              GIcon) or 'icon-data' (raw image data as (iiibiiay) - width,
-              height, rowstride, has-alpha, bits per sample, channels, data)
+              'id' and 'name' (both strings). Optionally, either 'gicon' (a
+              serialized GIcon) or 'icon-data' (raw image data as (iiibiiay)
+              - width, height, rowstride, has-alpha, bits per sample,
+              channels, data) can be specified if the result can be better
+              served with a thumbnail of the content (such as with images).
+              A 'description' field (string) may also be specified if more
+              context would help the user find the desired result.
             </doc:para>
           </doc:summary>
         </doc:doc>
