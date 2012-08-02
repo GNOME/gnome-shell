@@ -49,7 +49,7 @@ stage {
 .switcher-list, 
 .app-well-app > .overview-icon,
 .show-apps > .overview-icon,
-.search-result-content > .overview-icon {
+.grid-search-result .overview-icon {
     font-size: 9pt;
     font-weight: bold;
 }
@@ -760,7 +760,7 @@ StScrollBar StButton#vhandle:active {
 
 #searchResultsContent {
     padding-right: 20px;
-    spacing: 36px;
+    spacing: 16px;
 }
 
 #searchResultsContent:rtl {
@@ -768,11 +768,22 @@ StScrollBar StButton#vhandle:active {
     padding-left: 20px;
 }
 
-.search-section-header {
-    padding: 4px 12px;
-    spacing: 4px;
-    color: #6f6f6f;
-    font-size: .8em;
+.search-section {
+    /* This should be equal to #searchResultsContent spacing */
+    spacing: 16px;
+}
+
+.search-section-separator {
+    -gradient-height: 1px;
+    -gradient-start: rgba(255,255,255,0);
+    -gradient-end: rgba(255,255,255,0.5);
+    -margin-horizontal: 1.5em;
+    height: 1px;
+}
+
+.search-section-content {
+    /* This is the space between the provider icon and the results container */
+    spacing: 32px;
 }
 
 .search-statustext {
@@ -781,16 +792,8 @@ StScrollBar StButton#vhandle:active {
     font-weight: bold;
 }
 
-.search-section-results {
-    padding: 6px;
-}
-
-.search-section-list-results {
-    spacing: 4px;
-}
-
-.results-container {
-    spacing: 4px;
+.list-search-results {
+    spacing: 3px;
 }
 
 /* Text labels are an odd number of pixels tall. The uneven top and bottom
@@ -819,7 +822,7 @@ StScrollBar StButton#vhandle:active {
     -x-offset: 8px;
 }
 
-/* Application Launchers and Grid */
+/* Application Launchers, Grid and List results */
 
 .icon-grid {
     spacing: 36px;
@@ -871,6 +874,23 @@ StScrollBar StButton#vhandle:active {
     padding: 4px 8px;
 }
 
+.list-search-result-content {
+    spacing: 12px;
+    padding: 12px;
+}
+
+.list-search-result-title {
+    font-weight: bold;
+    font-size: 14pt;
+    color: white;
+}
+
+.list-search-result-description {
+    font-weight: bold;
+    font-size: 12pt;
+    color: #eeeeec;
+}
+
 .search-provider-icon-more {
     width: 16px;
     height: 16px;
@@ -880,7 +900,8 @@ StScrollBar StButton#vhandle:active {
 .app-well-app > .overview-icon,
 .show-apps > .overview-icon,
 .search-provider-icon,
-.search-result-content > .overview-icon {
+.list-search-result,
+.grid-search-result .overview-icon {
     border-radius: 4px;
     padding: 3px;
     border: 1px rgba(0,0,0,0);
@@ -897,7 +918,8 @@ StScrollBar StButton#vhandle:active {
 .app-well-app:hover > .overview-icon,
 .show-apps:hover > .overview-icon,
 .search-provider-icon:hover,
-.search-result-content:hover > .overview-icon {
+.list-search-result:hover,
+.grid-search-result:hover .overview-icon {
     background-color: rgba(255,255,255,0.1);
     text-shadow: black 0px 2px 2px;
     transition-duration: 100;
@@ -932,12 +954,14 @@ StScrollBar StButton#vhandle:active {
 }
 
 .app-well-app:focus > .overview-icon,
-.search-result-content:focus > .overview-icon,
+.grid-search-result:focus .overview-icon,
 .show-apps:focus > .overview-icon,
 .search-provider-icon:focus,
+.list-search-result:focus,
 .app-well-app:selected > .overview-icon,
-.search-result-content:selected > .overview-icon,
-.search-provider-icon:selected {
+.grid-search-result:selected .overview-icon,
+.search-provider-icon:selected,
+.list-search-result:selected {
     background-color: rgba(255,255,255,0.33);
 }
 
