@@ -71,8 +71,7 @@ const WandaIconBin = new Lang.Class({
     Name: 'WandaIconBin',
 
     _init: function(fish, label, params) {
-        this.actor = new St.Bin({ style_class: 'search-result-content',
-                                  reactive: true,
+        this.actor = new St.Bin({ reactive: true,
                                   track_hover: true });
         this.icon = new WandaIcon(fish, label, params);
 

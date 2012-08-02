@@ -11,10 +11,11 @@ const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
+const Separator = imports.ui.separator;
 const Search = imports.ui.search;
 
-const MAX_SEARCH_RESULTS_ROWS = 1;
-
+const MAX_LIST_SEARCH_RESULTS_ROWS = 3;
+const MAX_GRID_SEARCH_RESULTS_ROWS = 1;
 
 const SearchResult = new Lang.Class({
     Name: 'SearchResult',
@@ -23,21 +24,91 @@ const SearchResult = new Lang.Class({
         this.provider = provider;
         this.metaInfo = metaInfo;
         this.terms = terms;
-        this.actor = new St.Button({ style_class: 'search-result',
-                                     reactive: true,
+
+        this.actor = new St.Button({ reactive: true,
+                                     can_focus: true,
+                                     track_hover: true,
                                      x_align: St.Align.START,
                                      y_fill: true });
+
         this.actor._delegate = this;
+        this.actor.connect('clicked', Lang.bind(this, this.activate));
+    },
+
+    activate: function() {
+        this.provider.activateResult(this.metaInfo.id, this.terms);
+        Main.overview.toggle();
+    },
+
+    setSelected: function(selected) {
+        if (selected)
+            this.actor.add_style_pseudo_class('selected');
+        else
+            this.actor.remove_style_pseudo_class('selected');
+    }
+});
+
+const ListSearchResult = new Lang.Class({
+    Name: 'ListSearchResult',
+    Extends: SearchResult,
+
+    ICON_SIZE: 64,
+
+    _init: function(provider, metaInfo, terms) {
+        this.parent(provider, metaInfo, terms);
+
+        this.actor.style_class = 'list-search-result';
+        this.actor.x_fill = true;
+
+        let content = new St.BoxLayout({ style_class: 'list-search-result-content',
+                                         vertical: false });
+        this.actor.set_child(content);
+
+        // An icon for, or thumbnail of, content
+        let icon = this.metaInfo['createIcon'](this.ICON_SIZE);
+        if (icon) {
+            content.add(icon);
+        }
+
+        let details = new St.BoxLayout({ vertical: true });
+        content.add(details, { x_fill: true,
+                               y_fill: false,
+                               x_align: St.Align.START,
+                               y_align: St.Align.MIDDLE });
+
+        let title = new St.Label({ style_class: 'list-search-result-title',
+                                   text: this.metaInfo['name'] })
+        details.add(title, { x_fill: false,
+                             y_fill: false,
+                             x_align: St.Align.START,
+                             y_align: St.Align.START });
+
+        // TODO: should highlight terms in the description here
+        if (this.metaInfo['description']) {
+            let description = new St.Label({ style_class: 'list-search-result-description',
+                                             text: '"' + this.metaInfo['description'] + '"' });
+            details.add(description, { x_fill: false,
+                                       y_fill: false,
+                                       x_align: St.Align.START,
+                                       y_align: St.Align.END });
+        }
+    }
+});
+
+const GridSearchResult = new Lang.Class({
+    Name: 'GridSearchResult',
+    Extends: SearchResult,
+
+    _init: function(provider, metaInfo, terms) {
+        this.parent(provider, metaInfo, terms);
+
+        this.actor.style_class = 'grid-search-result';
 
         let content = provider.createResultActor(metaInfo, terms);
         let dragSource = null;
 
         if (content == null) {
-            content = new St.Bin({ style_class: 'search-result-content',
-                                   reactive: true,
-                                   can_focus: true,
-                                   track_hover: true,
-                                   accessible_role: Atk.Role.PUSH_BUTTON });
+            content = new St.Bin();
             let icon = new IconGrid.BaseIcon(this.metaInfo['name'],
                                              { createIcon: this.metaInfo['createIcon'] });
             content.set_child(icon.actor);
@@ -47,10 +118,8 @@ const SearchResult = new Lang.Class({
             if (content._delegate && content._delegate.getDragActorSource)
                 dragSource = content._delegate.getDragActorSource();
         }
-        this._content = content;
-        this.actor.set_child(content);
 
-        this.actor.connect('clicked', Lang.bind(this, this._onResultClicked));
+        this.actor.set_child(content);
 
         let draggable = DND.makeDraggable(this.actor);
         draggable.connect('drag-begin',
@@ -72,22 +141,6 @@ const SearchResult = new Lang.Class({
         this._dragActorSource = dragSource;
     },
 
-    setSelected: function(selected) {
-        if (selected)
-            this._content.add_style_pseudo_class('selected');
-        else
-            this._content.remove_style_pseudo_class('selected');
-    },
-
-    activate: function() {
-        this.provider.activateResult(this.metaInfo.id, this.terms);
-        Main.overview.toggle();
-    },
-
-    _onResultClicked: function(actor) {
-        this.activate();
-    },
-
     getDragActorSource: function() {
         return this._dragActorSource;
     },
@@ -104,6 +157,77 @@ const SearchResult = new Lang.Class({
     }
 });
 
+const ListSearchResults = new Lang.Class({
+    Name: 'ListSearchResults',
+    Extends: Search.SearchResultDisplay,
+
+    _init: function(provider) {
+        this.parent(provider);
+
+        this.actor = new St.BoxLayout({ style_class: 'search-section-content' });
+        this.providerIcon = new ProviderIcon(provider);
+        this.providerIcon.connect('clicked', Lang.bind(this,
+            function() {
+                provider.launchSearch(this._terms);
+                Main.overview.toggle();
+            }));
+
+        this.actor.add(this.providerIcon, { x_fill: false,
+                                            y_fill: false,
+                                            x_align: St.Align.START,
+                                            y_align: St.Align.START });
+
+        this._content = new St.BoxLayout({ style_class: 'list-search-results',
+                                           vertical: true });
+        this.actor.add_actor(this._content);
+
+        this._notDisplayedResult = [];
+        this._terms = [];
+        this._pendingClear = false;
+    },
+
+    getResultsForDisplay: function() {
+        let alreadyVisible = this._pendingClear ? 0 : this.getVisibleResultCount();
+        let canDisplay = MAX_LIST_SEARCH_RESULTS_ROWS - alreadyVisible;
+
+        let newResults = this._notDisplayedResult.splice(0, canDisplay);
+        return newResults;
+    },
+
+    getVisibleResultCount: function() {
+        return this._content.get_n_children();
+    },
+
+    hasMoreResults: function() {
+        return this._notDisplayedResult.length > 0;
+    },
+
+    setResults: function(results, terms) {
+        // copy the lists
+        this._notDisplayedResult = results.slice(0);
+        this._terms = terms.slice(0);
+        this._pendingClear = true;
+    },
+
+    renderResults: function(metas) {
+        for (let i = 0; i < metas.length; i++) {
+            let display = new ListSearchResult(this.provider, metas[i], this._terms);
+            this._content.add_actor(display.actor);
+        }
+    },
+
+    clear: function () {
+        this._content.destroy_all_children();
+        this._pendingClear = false;
+    },
+
+    getFirstResult: function() {
+        if (this.getVisibleResultCount() > 0)
+            return this._content.get_child_at_index(0)._delegate;
+        else
+            return null;
+    }
+});
 
 const GridSearchResults = new Lang.Class({
     Name: 'GridSearchResults',
@@ -112,22 +236,12 @@ const GridSearchResults = new Lang.Class({
     _init: function(provider, grid) {
         this.parent(provider);
 
-        this._grid = grid || new IconGrid.IconGrid({ rowLimit: MAX_SEARCH_RESULTS_ROWS,
+        this._grid = grid || new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
                                                      xAlign: St.Align.START });
-        this.actor = new St.Bin({ x_align: St.Align.START });
+        this.actor = new St.Bin({ x_align: St.Align.MIDDLE });
 
         this.actor.set_child(this._grid.actor);
-        this._width = 0;
-        this.actor.connect('notify::width', Lang.bind(this, function() {
-            this._width = this.actor.width;
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
-                let results = this.getResultsForDisplay();
-                if (results.length == 0)
-                    return;
 
-                provider.getResultMetas(results, Lang.bind(this, this.renderResults));
-            }));
-        }));
         this._notDisplayedResult = [];
         this._terms = [];
         this._pendingClear = false;
@@ -135,12 +249,11 @@ const GridSearchResults = new Lang.Class({
 
     getResultsForDisplay: function() {
         let alreadyVisible = this._pendingClear ? 0 : this._grid.visibleItemsCount();
-        let canDisplay = this._grid.childrenInRow(this._width) * this._grid.getRowLimit()
+        let canDisplay = this._grid.childrenInRow(this.actor.width) * this._grid.getRowLimit()
                          - alreadyVisible;
 
-        let numResults = Math.min(this._notDisplayedResult.length, canDisplay);
-
-        return this._notDisplayedResult.splice(0, numResults);
+        let newResults = this._notDisplayedResult.splice(0, canDisplay);
+        return newResults;
     },
 
     getVisibleResultCount: function() {
@@ -160,7 +273,7 @@ const GridSearchResults = new Lang.Class({
 
     renderResults: function(metas) {
         for (let i = 0; i < metas.length; i++) {
-            let display = new SearchResult(this.provider, metas[i], this._terms);
+            let display = new GridSearchResult(this.provider, metas[i], this._terms);
             this._grid.addItem(display.actor);
         }
     },
@@ -229,29 +342,25 @@ const SearchResults = new Lang.Class({
     },
 
     createProviderMeta: function(provider) {
-        let providerBox = new St.BoxLayout({ style_class: 'search-section' });
+        let providerBox = new St.BoxLayout({ style_class: 'search-section',
+                                             vertical: true });
         let providerIcon = null;
+        let resultDisplay = null;
 
         if (provider.appInfo) {
-            providerIcon = new ProviderIcon(provider);
-            providerIcon.connect('clicked', Lang.bind(this,
-                function() {
-                    provider.launchSearch(this._searchSystem.getTerms());
-                    Main.overview.toggle();
-                }));
-
-            providerBox.add(providerIcon, { x_fill: false,
-                                            y_fill: false,
-                                            x_align: St.Align.START,
-                                            y_align: St.Align.START });
+            resultDisplay = new ListSearchResults(provider);
+            providerIcon = resultDisplay.providerIcon;
+        } else {
+            resultDisplay = new GridSearchResults(provider);
         }
 
-        let resultDisplayBin = new St.Bin({ style_class: 'search-section-results',
+        let resultDisplayBin = new St.Bin({ child: resultDisplay.actor,
                                             x_fill: true,
                                             y_fill: true });
         providerBox.add(resultDisplayBin, { expand: true });
-        let resultDisplay = new GridSearchResults(provider);
-        resultDisplayBin.set_child(resultDisplay.actor);
+
+        let separator = new Separator.HorizontalSeparator({ style_class: 'search-section-separator' });
+        providerBox.add(separator.actor);
 
         this._providerMeta.push({ provider: provider,
                                   actor: providerBox,
@@ -412,11 +521,6 @@ const SearchResults = new Lang.Class({
 
         let from = this._defaultResult ? this._defaultResult.actor : null;
         this.actor.navigate_focus(from, direction, false);
-        if (this._defaultResult) {
-            // The default result appears focused, so navigate directly to the
-            // next result.
-            this.actor.navigate_focus(global.stage.key_focus, direction, false);
-        }
     }
 });
 

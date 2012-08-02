@@ -403,12 +403,6 @@ const SettingsSearchProvider = new Lang.Class({
         pref.activate();
     },
 
-    createResultActor: function (resultMeta, terms) {
-        let app = resultMeta['id'];
-        let icon = new AppWellIcon(app);
-        return icon.actor;
-    },
-
     launchSearch: function(terms) {
         // FIXME: this should be a remote search provider
         this.appInfo.launch([], global.create_app_launch_context());

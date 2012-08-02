@@ -154,9 +154,6 @@ const SearchProvider = new Lang.Class({
      * Search providers may optionally override this to render a
      * particular serch result in a custom fashion.  The default
      * implementation will show the icon next to the name.
-     *
-     * The actor should be an instance of St.Widget, with the style class
-     * 'search-result-content'.
      */
     createResultActor: function(resultMeta, terms) {
         return null;
