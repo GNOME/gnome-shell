@@ -850,8 +850,7 @@ StButton.popup-menu-item:insensitive {
 
 /* LookingGlass */
 
-#LookingGlassDialog
-{
+#LookingGlassDialog {
     background-color: rgba(0,0,0,0.80);
     spacing: 4px;
     padding: 4px;
@@ -859,8 +858,7 @@ StButton.popup-menu-item:insensitive {
     border-radius: 4px;
 }
 
-#LookingGlassDialog > #Toolbar
-{
+#LookingGlassDialog > #Toolbar {
     border: 1px solid grey;
     border-radius: 4px;
 }
@@ -896,53 +894,44 @@ StButton.popup-menu-item:insensitive {
     padding-bottom: 8px;
 }
 
-.lg-dialog StEntry
-{
+.lg-dialog StEntry {
     selection-background-color: #bbbbbb;
     selected-color: #333333;
 }
 
-.lg-completions-text
-{
+.lg-completions-text {
     font-size: .9em;
     font-style: italic;
 }
 
-.lg-obj-inspector-title
-{
+.lg-obj-inspector-title {
     spacing: 4px;
 }
 
-.lg-obj-inspector-button
-{
+.lg-obj-inspector-button {
     border: 1px solid gray;
     padding: 4px;
     border-radius: 4px;
 }
 
-.lg-obj-inspector-button:hover
-{
+.lg-obj-inspector-button:hover {
     border: 1px solid #ffffff;
 }
 
-.lg-dialog .shell-link
-{
+.lg-dialog .shell-link {
     color: #999999;
 }
 
-.lg-dialog .shell-link:hover
-{
+.lg-dialog .shell-link:hover {
     color: #dddddd;
 }
 
-#LookingGlassDialog StBoxLayout#EvalBox
-{
+#LookingGlassDialog StBoxLayout#EvalBox {
     padding: 4px;
     spacing: 4px;
 }
 
-#LookingGlassDialog StBoxLayout#ResultsArea
-{
+#LookingGlassDialog StBoxLayout#ResultsArea {
     spacing: 4px;
 }
 
