@@ -2,6 +2,7 @@ noinst_SCRIPTS = run-test.sh
 EXTRA_DIST = run-test.sh.in
 
 TEST_JS =					\
+	interactive/background-repeat.js	\
 	interactive/background-size.js		\
 	interactive/borders.js			\
 	interactive/border-radius.js		\
