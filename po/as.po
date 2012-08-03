@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-07-07 16:23+0000\n"
-"PO-Revision-Date: 2012-07-13 18:27+0530\n"
+"POT-Creation-Date: 2012-07-21 17:14+0000\n"
+"PO-Revision-Date: 2012-08-03 15:19+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: as_IN <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -29,7 +29,7 @@ msgid "Window management and application launching"
 msgstr "উইন্ডো ব্যৱস্থাপনা আৰু অনুপ্ৰয়োগৰ লঞ্চ"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:152
 msgid "GNOME Shell Extension Preferences"
 msgstr "GNOME শ্বেল সম্প্ৰসাৰন পছন্দসমূহ"
 
@@ -207,59 +207,59 @@ msgstr ""
 "অবিকল্প নথিপত্ৰ নাম হব, আৰু এই সম্প্ৰসাৰন ব্যৱহাৰ কৰিব। ইয়াক এটা ভিন্ন অন্তৰ্ভুক্তক "
 "বিন্যাসত ৰেকৰ্ড কৰোতে পৰিৱৰ্তন কৰিব লাগিব।"
 
-#: ../js/extensionPrefs/main.js:125
+#: ../js/extensionPrefs/main.js:124
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "%s ৰ বাবে পছন্দসমূহ ডাইলগ ল'ড কৰোতে এটা ত্ৰুটি হৈছিল:"
 
-#: ../js/extensionPrefs/main.js:165
+#: ../js/extensionPrefs/main.js:164
 msgid "<b>Extension</b>"
 msgstr "<b>সম্প্ৰসাৰন</b>"
 
-#: ../js/extensionPrefs/main.js:189
+#: ../js/extensionPrefs/main.js:188
 msgid "Select an extension to configure using the combobox above."
 msgstr "উপৰত দিয়া কম্বোবাকচ ব্যৱহাৰ কৰি সংৰূপণ কৰিবলে এটা সম্প্ৰসাৰন বাছক।"
 
-#: ../js/gdm/loginDialog.js:629
+#: ../js/gdm/loginDialog.js:550
 msgid "Session..."
 msgstr "অধিবেশন..."
 
-#: ../js/gdm/loginDialog.js:800
+#: ../js/gdm/loginDialog.js:699
 msgctxt "title"
 msgid "Sign In"
 msgstr "ছাইন ইন কৰক"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:845
+#: ../js/gdm/loginDialog.js:744 ../js/ui/unlockDialog.js:124
 msgid "(or swipe finger)"
 msgstr "(অথবা আঙুলি স্বাইপ কৰক)"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:866
+#: ../js/gdm/loginDialog.js:765
 msgid "Not listed?"
 msgstr "তালিকাভুক্ত নহয়?"
 
-#: ../js/gdm/loginDialog.js:1046 ../js/ui/endSessionDialog.js:410
-#: ../js/ui/extensionDownloader.js:138 ../js/ui/networkAgent.js:153
+#: ../js/gdm/loginDialog.js:908 ../js/ui/endSessionDialog.js:406
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:176
-#: ../js/ui/shellMountOperation.js:339 ../js/ui/status/bluetooth.js:431
+#: ../js/ui/shellMountOperation.js:396 ../js/ui/status/bluetooth.js:436
 msgid "Cancel"
 msgstr "বাতিল কৰক"
 
-#: ../js/gdm/loginDialog.js:1051
+#: ../js/gdm/loginDialog.js:913
 msgctxt "button"
 msgid "Sign In"
 msgstr "ছাইন ইন কৰক"
 
-#: ../js/gdm/loginDialog.js:1411
+#: ../js/gdm/loginDialog.js:1256
 msgid "Login Window"
 msgstr "লগিন উইন্ডো"
 
 #: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:612
-#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:730
+#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:725
 msgid "Suspend"
 msgstr "বাতিল কৰক"
 
@@ -268,21 +268,21 @@ msgid "Restart"
 msgstr "পুনৰাম্ভ কৰক"
 
 #: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:614
-#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:729
+#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:724
 msgid "Power Off"
 msgstr "পাৱাৰ অফ"
 
-#: ../js/misc/util.js:95
+#: ../js/misc/util.js:92
 msgid "Command not found"
 msgstr "কমান্ড পোৱা নগল"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:128
+#: ../js/misc/util.js:125
 msgid "Could not parse command:"
 msgstr "কমান্ড বিশ্লেষন কৰিব নোৱাৰি:"
 
-#: ../js/misc/util.js:136
+#: ../js/misc/util.js:133
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "'%s' ৰ প্ৰেৰণ ব্যৰ্থ হল:"
@@ -449,39 +449,39 @@ msgid "S"
 msgstr "S"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:681
+#: ../js/ui/calendar.js:685
 msgid "Nothing Scheduled"
 msgstr "একো অনুসূচীত কৰা হোৱা নাই"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:697
+#: ../js/ui/calendar.js:701
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:700
+#: ../js/ui/calendar.js:704
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:710
+#: ../js/ui/calendar.js:714
 msgid "Today"
 msgstr "আজি"
 
-#: ../js/ui/calendar.js:714
+#: ../js/ui/calendar.js:718
 msgid "Tomorrow"
 msgstr "কালি"
 
-#: ../js/ui/calendar.js:723
+#: ../js/ui/calendar.js:727
 msgid "This week"
 msgstr "এই সপ্তাহ"
 
-#: ../js/ui/calendar.js:731
+#: ../js/ui/calendar.js:735
 msgid "Next week"
 msgstr "অহা সপ্তাহ"
 
-#: ../js/ui/dash.js:239 ../js/ui/messageTray.js:1287
+#: ../js/ui/dash.js:238 ../js/ui/messageTray.js:1321
 msgid "Remove"
 msgstr "আতৰাওক"
 
@@ -588,11 +588,11 @@ msgstr[1] "চিস্টেম %d ছেকেণ্ডত স্বচাল�
 msgid "Restarting the system."
 msgstr "চিস্টেম পুনৰাম্ভ কৰা হৈ আছে।"
 
-#: ../js/ui/extensionDownloader.js:142
+#: ../js/ui/extensionDownloader.js:199
 msgid "Install"
 msgstr "ইনস্টল কৰক"
 
-#: ../js/ui/extensionDownloader.js:146
+#: ../js/ui/extensionDownloader.js:204
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "extensions.gnome.org ৰ পৰা  '%s' ক ডাউনল'ড আৰু ইনস্টল কৰিব নে?"
@@ -601,86 +601,86 @@ msgstr "extensions.gnome.org ৰ পৰা  '%s' ক ডাউনল'ড আৰ�
 msgid "tray"
 msgstr "ট্ৰে"
 
-#: ../js/ui/keyboard.js:545 ../js/ui/status/keyboard.js:42
-#: ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:545 ../js/ui/status/keyboard.js:149
+#: ../js/ui/status/power.js:209
 msgid "Keyboard"
 msgstr "কিবৰ্ড"
 
-#: ../js/ui/keyringPrompt.js:85 ../js/ui/polkitAuthenticationAgent.js:273
+#: ../js/ui/keyringPrompt.js:86 ../js/ui/polkitAuthenticationAgent.js:274
 msgid "Password:"
 msgstr "পাছৱাৰ্ড:"
 
-#: ../js/ui/keyringPrompt.js:101
+#: ../js/ui/keyringPrompt.js:102
 msgid "Type again:"
 msgstr "আকৌ টাইপ কৰক:"
 
-#: ../js/ui/lookingGlass.js:696
+#: ../js/ui/lookingGlass.js:695
 msgid "No extensions installed"
 msgstr "কোনো সম্প্ৰসাৰন ইনস্টল কৰা হোৱা নাই"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:750
+#: ../js/ui/lookingGlass.js:749
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s এ কোনো ত্ৰুটি প্ৰেৰণ কৰা নাই।"
 
-#: ../js/ui/lookingGlass.js:756
+#: ../js/ui/lookingGlass.js:755
 msgid "Hide Errors"
 msgstr "ত্ৰুটিসমূহ লুকুৱাওক"
 
-#: ../js/ui/lookingGlass.js:760 ../js/ui/lookingGlass.js:811
+#: ../js/ui/lookingGlass.js:759 ../js/ui/lookingGlass.js:819
 msgid "Show Errors"
 msgstr "ত্ৰুটিসমূহ দেখুৱাওক"
 
-#: ../js/ui/lookingGlass.js:769
+#: ../js/ui/lookingGlass.js:768
 msgid "Enabled"
 msgstr "সামৰ্থবান কৰা আছে"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:772 ../src/gvc/gvc-mixer-control.c:1082
+#: ../js/ui/lookingGlass.js:771 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "অসামৰ্থবান কৰা আছে"
 
-#: ../js/ui/lookingGlass.js:774
+#: ../js/ui/lookingGlass.js:773
 msgid "Error"
 msgstr "ত্ৰুটি"
 
-#: ../js/ui/lookingGlass.js:776
+#: ../js/ui/lookingGlass.js:775
 msgid "Out of date"
 msgstr "পুৰনি"
 
-#: ../js/ui/lookingGlass.js:778
+#: ../js/ui/lookingGlass.js:777
 msgid "Downloading"
 msgstr "ডাউনল'ড কৰা হৈ আছে"
 
-#: ../js/ui/lookingGlass.js:799
+#: ../js/ui/lookingGlass.js:801
 msgid "View Source"
 msgstr "উৎস দৰ্শন কৰক"
 
-#: ../js/ui/lookingGlass.js:805
+#: ../js/ui/lookingGlass.js:810
 msgid "Web Page"
 msgstr "ৱেব পৃষ্ঠা"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:129
+#: ../js/ui/main.js:140
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "%d %t ৰ পৰা স্ক্ৰিনকাস্ট দেখুৱাওক"
 
-#: ../js/ui/messageTray.js:1280
+#: ../js/ui/messageTray.js:1314
 msgid "Open"
 msgstr "খোলক"
 
-#: ../js/ui/messageTray.js:1297
+#: ../js/ui/messageTray.js:1331
 msgid "Unmute"
 msgstr "অমৌন কৰক"
 
-#: ../js/ui/messageTray.js:1297
+#: ../js/ui/messageTray.js:1331
 msgid "Mute"
 msgstr "মোন কৰক"
 
-#: ../js/ui/messageTray.js:2575
+#: ../js/ui/messageTray.js:2642
 msgid "System Information"
 msgstr "চিস্টেম তথ্য"
 
@@ -689,118 +689,118 @@ msgid "Connect"
 msgstr "সংযোগ কৰক"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:243 ../js/ui/networkAgent.js:255
-#: ../js/ui/networkAgent.js:282 ../js/ui/networkAgent.js:302
-#: ../js/ui/networkAgent.js:312
+#: ../js/ui/networkAgent.js:238 ../js/ui/networkAgent.js:250
+#: ../js/ui/networkAgent.js:277 ../js/ui/networkAgent.js:297
+#: ../js/ui/networkAgent.js:307
 msgid "Password: "
 msgstr "পাছৱাৰ্ড: "
 
 #. static WEP
-#: ../js/ui/networkAgent.js:248
+#: ../js/ui/networkAgent.js:243
 msgid "Key: "
 msgstr "কি': "
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:280 ../js/ui/networkAgent.js:298
+#: ../js/ui/networkAgent.js:275 ../js/ui/networkAgent.js:293
 msgid "Username: "
 msgstr "ব্যৱহাৰকাৰীৰ নাম: "
 
-#: ../js/ui/networkAgent.js:286
+#: ../js/ui/networkAgent.js:281
 msgid "Identity: "
 msgstr "পৰিচয়: "
 
-#: ../js/ui/networkAgent.js:288
+#: ../js/ui/networkAgent.js:283
 msgid "Private key password: "
 msgstr "ব্যক্তিগত কি' পাছৱাৰ্ড: "
 
-#: ../js/ui/networkAgent.js:300
+#: ../js/ui/networkAgent.js:295
 msgid "Service: "
 msgstr "সেৱা: "
 
-#: ../js/ui/networkAgent.js:329
+#: ../js/ui/networkAgent.js:324
 msgid "Authentication required by wireless network"
 msgstr "বেতাঁৰ নেটৱাৰ্কৰ দ্বাৰা প্ৰমাণীকৰণৰ প্ৰয়োজন"
 
-#: ../js/ui/networkAgent.js:330
+#: ../js/ui/networkAgent.js:325
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "'%s'."
 msgstr "বেতাঁৰ নেটৱাৰ্ক '%s' অভিগম কৰিবলে পাছৱাৰ্ডসমূহ অথবা ইনক্ৰিপষণ কি'সমূহৰ প্ৰয়োজন।"
 
-#: ../js/ui/networkAgent.js:334
+#: ../js/ui/networkAgent.js:329
 msgid "Wired 802.1X authentication"
 msgstr "তাঁৰযুক্ত 802.1X প্ৰমাণীকৰণ"
 
-#: ../js/ui/networkAgent.js:336
+#: ../js/ui/networkAgent.js:331
 msgid "Network name: "
 msgstr "নেটৱাৰ্কৰ নাম: "
 
-#: ../js/ui/networkAgent.js:341
+#: ../js/ui/networkAgent.js:336
 msgid "DSL authentication"
 msgstr "DSL প্ৰমাণীকৰণ"
 
-#: ../js/ui/networkAgent.js:348
+#: ../js/ui/networkAgent.js:343
 msgid "PIN code required"
 msgstr "PIN ক'ডৰ প্ৰয়োজন"
 
-#: ../js/ui/networkAgent.js:349
+#: ../js/ui/networkAgent.js:344
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "মবাইল ব্ৰডবেণ্ড সেৱাৰ বাবে PIN ক'ডৰ প্ৰয়োজন"
 
-#: ../js/ui/networkAgent.js:350
+#: ../js/ui/networkAgent.js:345
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/networkAgent.js:356
+#: ../js/ui/networkAgent.js:351
 msgid "Mobile broadband network password"
 msgstr "মবাইল ব্ৰডবেণ্ড নেটৱাৰ্ক পাছৱাৰ্ড"
 
-#: ../js/ui/networkAgent.js:357
+#: ../js/ui/networkAgent.js:352
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "'%s' লে সংযোগ কৰিবলে এটা পাছৱাৰ্ডৰ প্ৰয়োজন।"
 
-#: ../js/ui/notificationDaemon.js:486 ../src/shell-app.c:374
+#: ../js/ui/notificationDaemon.js:484 ../src/shell-app.c:374
 msgctxt "program"
 msgid "Unknown"
 msgstr "অজ্ঞাত"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:89
 msgid "Undo"
 msgstr "কাৰ্য্য বাতিল কৰক"
 
-#: ../js/ui/overview.js:128
+#: ../js/ui/overview.js:129
 msgid "Overview"
 msgstr "অভাৰভিউ"
 
-#: ../js/ui/overview.js:198
+#: ../js/ui/overview.js:199
 msgid "Windows"
 msgstr "উইন্ডোসমূহ"
 
-#: ../js/ui/overview.js:201
+#: ../js/ui/overview.js:202
 msgid "Applications"
 msgstr "অনুপ্ৰয়োগসমূহ"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:226
+#: ../js/ui/overview.js:227
 msgid "Dash"
 msgstr "ডেশ"
 
-#: ../js/ui/panel.js:564
+#: ../js/ui/panel.js:573
 msgid "Quit"
 msgstr "প্ৰস্থান কৰক"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:596
+#: ../js/ui/panel.js:605
 msgid "Activities"
 msgstr "কাৰ্য্যসমূহ"
 
-#: ../js/ui/panel.js:962
+#: ../js/ui/panel.js:975
 msgid "Top Bar"
 msgstr "উপৰৰ বাৰ"
 
@@ -837,8 +837,8 @@ msgstr "প্ৰমাণীত কৰক"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/polkitAuthenticationAgent.js:261
-#: ../js/ui/shellMountOperation.js:324
+#: ../js/ui/polkitAuthenticationAgent.js:262
+#: ../js/ui/shellMountOperation.js:381
 msgid "Sorry, that didn't work. Please try again."
 msgstr "ক্ষমা কৰিব, সেয়া কাম নকৰিলে। অনুগ্ৰহ কৰি পুনৰ চেষ্টা কৰক।"
 
@@ -847,7 +847,7 @@ msgstr "ক্ষমা কৰিব, সেয়া কাম নকৰিলে�
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:728
+#: ../js/ui/popupMenu.js:727
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
@@ -871,23 +871,23 @@ msgstr "কপি কৰক"
 msgid "Paste"
 msgstr "পেইস্ট কৰক"
 
-#: ../js/ui/shellEntry.js:77
+#: ../js/ui/shellEntry.js:96
 msgid "Show Text"
 msgstr "লিখনী দেখুৱাওক"
 
-#: ../js/ui/shellEntry.js:79
+#: ../js/ui/shellEntry.js:98
 msgid "Hide Text"
 msgstr "লিখনী লুকুৱাওক"
 
-#: ../js/ui/shellMountOperation.js:311
+#: ../js/ui/shellMountOperation.js:368
 msgid "Passphrase"
 msgstr "পাচফ্ৰেইছ"
 
-#: ../js/ui/shellMountOperation.js:332
+#: ../js/ui/shellMountOperation.js:389
 msgid "Remember Passphrase"
 msgstr "পাচফ্ৰেইছ মনত ৰাখক"
 
-#: ../js/ui/shellMountOperation.js:343
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:142
 msgid "Unlock"
 msgstr "আনলক কৰক"
 
@@ -931,18 +931,18 @@ msgstr "মাউছ কি'সমূহ"
 msgid "Universal Access Settings"
 msgstr "সাৰ্বভৈমক অভিগম সংহতিসমূহ"
 
-#: ../js/ui/status/accessibility.js:117
+#: ../js/ui/status/accessibility.js:121
 msgid "High Contrast"
 msgstr "উচ্চ কন্ট্ৰাস্ট"
 
-#: ../js/ui/status/accessibility.js:154
+#: ../js/ui/status/accessibility.js:158
 msgid "Large Text"
 msgstr "ডাঙৰ লিখনী"
 
 #: ../js/ui/status/bluetooth.js:31 ../js/ui/status/bluetooth.js:35
-#: ../js/ui/status/bluetooth.js:255 ../js/ui/status/bluetooth.js:308
-#: ../js/ui/status/bluetooth.js:339 ../js/ui/status/bluetooth.js:375
-#: ../js/ui/status/bluetooth.js:404 ../js/ui/status/network.js:844
+#: ../js/ui/status/bluetooth.js:260 ../js/ui/status/bluetooth.js:313
+#: ../js/ui/status/bluetooth.js:344 ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:409 ../js/ui/status/network.js:844
 msgid "Bluetooth"
 msgstr "ব্লুটুথ"
 
@@ -963,115 +963,115 @@ msgid "Bluetooth Settings"
 msgstr "ব্লুটুথ সংহতিসমূহ"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/network.js:211
+#: ../js/ui/status/bluetooth.js:112 ../js/ui/status/network.js:211
 msgid "hardware disabled"
 msgstr "হাৰ্ডৱেৰ অসামৰ্থবান কৰা আছে"
 
-#: ../js/ui/status/bluetooth.js:200
+#: ../js/ui/status/bluetooth.js:205
 msgid "Connection"
 msgstr "সংযোগ"
 
-#: ../js/ui/status/bluetooth.js:211 ../js/ui/status/network.js:445
+#: ../js/ui/status/bluetooth.js:216 ../js/ui/status/network.js:445
 msgid "disconnecting..."
 msgstr "বিচ্ছিনিত কৰা হৈ আছে..."
 
-#: ../js/ui/status/bluetooth.js:224 ../js/ui/status/network.js:451
+#: ../js/ui/status/bluetooth.js:229 ../js/ui/status/network.js:451
 #: ../js/ui/status/network.js:911
 msgid "connecting..."
 msgstr "সংযোগ কৰা হৈ আছে..."
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:247
 msgid "Send Files..."
 msgstr "নথিপত্ৰসমূহ পঠাওক..."
 
-#: ../js/ui/status/bluetooth.js:247
+#: ../js/ui/status/bluetooth.js:252
 msgid "Browse Files..."
 msgstr "নথিপত্ৰসমূহ ব্ৰাউছ কৰক..."
 
-#: ../js/ui/status/bluetooth.js:256
+#: ../js/ui/status/bluetooth.js:261
 msgid "Error browsing device"
 msgstr "ডিভাইচ ব্ৰাউছ কৰোতে ত্ৰুটি"
 
-#: ../js/ui/status/bluetooth.js:257
+#: ../js/ui/status/bluetooth.js:262
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "অনুৰোধিত ডিভাইচ ব্ৰাউছ কৰিব নোৱাৰি, ত্ৰুটি '%s'"
 
-#: ../js/ui/status/bluetooth.js:265
+#: ../js/ui/status/bluetooth.js:270
 msgid "Keyboard Settings"
 msgstr "কিবৰ্ড সংহতিসমূহ"
 
-#: ../js/ui/status/bluetooth.js:268
+#: ../js/ui/status/bluetooth.js:273
 msgid "Mouse Settings"
 msgstr "মাউছ আৰু টাচপেড সংহতিসমূহ"
 
-#: ../js/ui/status/bluetooth.js:273 ../js/ui/status/volume.js:59
+#: ../js/ui/status/bluetooth.js:278 ../js/ui/status/volume.js:59
 msgid "Sound Settings"
 msgstr "শব্দ সংহতিসমূহ"
 
-#: ../js/ui/status/bluetooth.js:340
+#: ../js/ui/status/bluetooth.js:345
 #, c-format
 msgid "Authorization request from %s"
 msgstr "%s ৰ পৰা প্ৰমাণীকৰণ অনুৰোধ"
 
-#: ../js/ui/status/bluetooth.js:346
+#: ../js/ui/status/bluetooth.js:351
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "ডিভাইচ %s এ সেৱা '%s' লে অভিগম বিচাৰে"
 
-#: ../js/ui/status/bluetooth.js:348
+#: ../js/ui/status/bluetooth.js:353
 msgid "Always grant access"
 msgstr "সদায় অভিগম প্ৰদান কৰক"
 
-#: ../js/ui/status/bluetooth.js:349
+#: ../js/ui/status/bluetooth.js:354
 msgid "Grant this time only"
 msgstr "কেৱল এইবাৰৰ কাৰণে প্ৰদান কৰক"
 
-#: ../js/ui/status/bluetooth.js:350 ../js/ui/telepathyClient.js:1097
+#: ../js/ui/status/bluetooth.js:355 ../js/ui/telepathyClient.js:1097
 msgid "Reject"
 msgstr "নাকচ কৰক"
 
-#: ../js/ui/status/bluetooth.js:376
+#: ../js/ui/status/bluetooth.js:381
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "%s ৰ কাৰণে যোৰ প্ৰতিশ্ৰুতি"
 
-#: ../js/ui/status/bluetooth.js:382 ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:387 ../js/ui/status/bluetooth.js:417
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "ডিভাইচ %s এ এই কমপিউটাৰৰ লগত সংযোগ কৰিব বিচাৰে"
 
-#: ../js/ui/status/bluetooth.js:383
+#: ../js/ui/status/bluetooth.js:388
 #, c-format
 msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgstr "অনুগ্ৰহ কৰি সুনিশ্চিত কৰক যে PIN '%06d' ডিভাইচত থকাটোৰ সৈতে মিল খায়।"
 
-#: ../js/ui/status/bluetooth.js:385
+#: ../js/ui/status/bluetooth.js:390
 msgid "Matches"
 msgstr "মিলসমূহ"
 
-#: ../js/ui/status/bluetooth.js:386
+#: ../js/ui/status/bluetooth.js:391
 msgid "Does not match"
 msgstr "মিল নাখায়"
 
-#: ../js/ui/status/bluetooth.js:405
+#: ../js/ui/status/bluetooth.js:410
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s ৰ কাৰণে যোৰ অনুৰোধ"
 
-#: ../js/ui/status/bluetooth.js:413
+#: ../js/ui/status/bluetooth.js:418
 msgid "Please enter the PIN mentioned on the device."
 msgstr "অনুগ্ৰহ কৰি ডিভাইচত উল্লেখ কৰা PIN সুমুৱাওক।"
 
-#: ../js/ui/status/bluetooth.js:430
+#: ../js/ui/status/bluetooth.js:435
 msgid "OK"
 msgstr "ঠিক আছে"
 
-#: ../js/ui/status/keyboard.js:69
+#: ../js/ui/status/keyboard.js:178
 msgid "Show Keyboard Layout"
 msgstr "কিবৰ্ড বিন্যাস দেখুৱাওক"
 
-#: ../js/ui/status/keyboard.js:71
+#: ../js/ui/status/keyboard.js:180
 msgid "Region and Language Settings"
 msgstr "অঞ্চল আৰু ভাষা সংহতিসমূহ"
 
@@ -1176,19 +1176,19 @@ msgstr "VPN সংযোগসমূহ"
 msgid "Network Settings"
 msgstr "নেটৱাৰ্ক সংহতিসমূহ"
 
-#: ../js/ui/status/network.js:1703
+#: ../js/ui/status/network.js:1712
 msgid "Network Manager"
 msgstr "নেটৱাৰ্ক ব্যৱস্থাপক"
 
-#: ../js/ui/status/network.js:1796
+#: ../js/ui/status/network.js:1805
 msgid "Connection failed"
 msgstr "সংযোগ ব্যৰ্থ"
 
-#: ../js/ui/status/network.js:1797
+#: ../js/ui/status/network.js:1806
 msgid "Activation of network connection failed"
 msgstr "নেটৱাৰ্ক সংযোগ সক্ৰিয়কৰণ ব্যৰ্থ হল"
 
-#: ../js/ui/status/network.js:2060
+#: ../js/ui/status/network.js:2069
 msgid "Networking is disabled"
 msgstr "নেটৱাৰ্কিং অসামৰ্থবান কৰা আছে"
 
@@ -1202,11 +1202,11 @@ msgstr "শক্তি সংহতিসমূহ"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:98
+#: ../js/ui/status/power.js:104
 msgid "Estimating..."
 msgstr "অনুমান কৰা হৈ আছে..."
 
-#: ../js/ui/status/power.js:105
+#: ../js/ui/status/power.js:111
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -1214,77 +1214,77 @@ msgstr[0] "%d ঘন্টা অৱশিষ্ট"
 msgstr[1] "%d ঘন্টা অৱশিষ্ট"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:108
+#: ../js/ui/status/power.js:114
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s অৱশিষ্ট"
 
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:116
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "ঘন্টা"
 msgstr[1] "ঘন্টা"
 
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:116
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "মিনিট"
 msgstr[1] "মিনিট"
 
-#: ../js/ui/status/power.js:113
+#: ../js/ui/status/power.js:119
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d মিনিট অৱশিষ্ট"
 msgstr[1] "%d মিনিট অৱশিষ্ট"
 
-#: ../js/ui/status/power.js:116 ../js/ui/status/power.js:186
+#: ../js/ui/status/power.js:122 ../js/ui/status/power.js:192
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:193
+#: ../js/ui/status/power.js:199
 msgid "AC adapter"
 msgstr "AC এডাপ্টাৰ"
 
-#: ../js/ui/status/power.js:195
+#: ../js/ui/status/power.js:201
 msgid "Laptop battery"
 msgstr "লেপটপ বেটাৰি"
 
-#: ../js/ui/status/power.js:197
+#: ../js/ui/status/power.js:203
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:199
+#: ../js/ui/status/power.js:205
 msgid "Monitor"
 msgstr "মনিটৰ"
 
-#: ../js/ui/status/power.js:201
+#: ../js/ui/status/power.js:207
 msgid "Mouse"
 msgstr "মাউছ"
 
-#: ../js/ui/status/power.js:205
+#: ../js/ui/status/power.js:211
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:207
+#: ../js/ui/status/power.js:213
 msgid "Cell phone"
 msgstr "চেল ফোন"
 
-#: ../js/ui/status/power.js:209
+#: ../js/ui/status/power.js:215
 msgid "Media player"
 msgstr "মিডিয়া প্লেয়াৰ"
 
-#: ../js/ui/status/power.js:211
+#: ../js/ui/status/power.js:217
 msgid "Tablet"
 msgstr "টেবলেট"
 
-#: ../js/ui/status/power.js:213
+#: ../js/ui/status/power.js:219
 msgid "Computer"
 msgstr "কমপিউটাৰ"
 
-#: ../js/ui/status/power.js:215
+#: ../js/ui/status/power.js:221
 msgctxt "device"
 msgid "Unknown"
 msgstr "অজ্ঞাত"
@@ -1529,27 +1529,31 @@ msgstr "একাওন্ট সম্পাদন কৰক"
 msgid "Unknown reason"
 msgstr "অজ্ঞাত কাৰণ"
 
-#: ../js/ui/userMenu.js:130
+#: ../js/ui/unlockDialog.js:129
+msgid "Login as another user"
+msgstr "অন্য ব্যৱহাৰকাৰী হিচাপে লগিন কৰক"
+
+#: ../js/ui/userMenu.js:161
 msgid "Available"
 msgstr "উপলব্ধ"
 
-#: ../js/ui/userMenu.js:133
+#: ../js/ui/userMenu.js:164
 msgid "Busy"
 msgstr "ব্যস্থ"
 
-#: ../js/ui/userMenu.js:136
+#: ../js/ui/userMenu.js:167
 msgid "Invisible"
 msgstr "অদৃশ্য"
 
-#: ../js/ui/userMenu.js:139
+#: ../js/ui/userMenu.js:170
 msgid "Away"
 msgstr "আতৰত"
 
-#: ../js/ui/userMenu.js:142
+#: ../js/ui/userMenu.js:173
 msgid "Idle"
 msgstr "অলস"
 
-#: ../js/ui/userMenu.js:145
+#: ../js/ui/userMenu.js:176
 msgid "Unavailable"
 msgstr "উপলব্ধ নাই"
 
@@ -1577,7 +1581,7 @@ msgstr "লগ আউট কৰক"
 msgid "Lock"
 msgstr "লক কৰক"
 
-#: ../js/ui/userMenu.js:724
+#: ../js/ui/userMenu.js:731
 msgid "Install Updates & Restart"
 msgstr "আপডেইটসমূহ ইনস্টল কৰক & পুনাৰম্ভ কৰক"
 
@@ -1602,7 +1606,7 @@ msgstr ""
 msgid "Type to search..."
 msgstr "সন্ধান কৰিবলে টাইপ কৰক..."
 
-#: ../js/ui/viewSelector.js:131 ../src/shell-util.c:253
+#: ../js/ui/viewSelector.js:131 ../src/shell-util.c:254
 msgid "Search"
 msgstr "সন্ধান কৰক"
 
@@ -1655,19 +1659,19 @@ msgstr[1] "%u ইনপুটসমূহ"
 msgid "System Sounds"
 msgstr "চিস্টেম শব্দসমূহ"
 
-#: ../src/main.c:327
+#: ../src/main.c:330
 msgid "Print version"
 msgstr "প্ৰিন্ট সংস্কৰণ"
 
-#: ../src/main.c:333
+#: ../src/main.c:336
 msgid "Mode used by GDM for login screen"
 msgstr "লগিন স্ক্ৰিনৰ বাবে GDM দ্বাৰা ব্যৱহাৰ কৰা অৱস্থা"
 
-#: ../src/main.c:339
+#: ../src/main.c:342
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "লগিন পৰ্দাৰ বাবে এটা বিশেষ অৱস্থা, উদাহৰণস্বৰূপ \"gdm\" ব্যৱহাৰ কৰক"
 
-#: ../src/main.c:345
+#: ../src/main.c:348
 msgid "List possible modes"
 msgstr "সম্ভাব্য অৱস্থাসমূহ তালিকাভুক্ত কৰক"
 
@@ -1698,13 +1702,13 @@ msgstr "প্ৰমাণীকৰণ ডাইলগ ব্যৱহাৰক�
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:97
+#: ../src/shell-util.c:98
 msgid "Home"
 msgstr "ঘৰ"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:107
+#: ../src/shell-util.c:108
 msgid "File System"
 msgstr "নথিপত্ৰ প্ৰণালী"
 
@@ -1713,7 +1717,7 @@ msgstr "নথিপত্ৰ প্ৰণালী"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:303
+#: ../src/shell-util.c:304
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
