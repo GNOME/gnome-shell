@@ -278,9 +278,10 @@ const ScreenShield = new Lang.Class({
                                       Lang.bind(this, this._onLockScreenKeyRelease));
 
         this._background = Meta.BackgroundActor.new_for_screen(global.screen);
-        this._lockScreenGroup.add_actor(this._background);
+        this._background.add_effect(new Clutter.BlurEffect());
+        this._background.add_effect(new Clutter.DesaturateEffect({ factor: 0.6 }));
 
-        // FIXME: build the rest of the lock screen here
+        this._lockScreenGroup.add_actor(this._background);
 
         this._arrow = new St.DrawingArea({ style_class: 'arrow',
                                            reactive: true,
