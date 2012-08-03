@@ -56,7 +56,7 @@ const ModalDialog = new Lang.Class({
         this._group.connect('destroy', Lang.bind(this, this._onGroupDestroy));
 
         this._actionKeys = {};
-        this._group.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
+        this._group.connect('key-release-event', Lang.bind(this, this._onKeyReleaseEvent));
 
         this._backgroundBin = new St.Bin();
         this._group.add_actor(this._backgroundBin);
@@ -106,6 +106,10 @@ const ModalDialog = new Lang.Class({
 
     destroy: function() {
         this._group.destroy();
+    },
+
+    setActionKey: function(key, action) {
+        this._actionKeys[key] = action;
     },
 
     setButtons: function(buttons) {
@@ -175,12 +179,16 @@ const ModalDialog = new Lang.Class({
 
     },
 
-    _onKeyPressEvent: function(object, keyPressEvent) {
-        let symbol = keyPressEvent.get_key_symbol();
+    _onKeyReleaseEvent: function(object, event) {
+        let symbol = event.get_key_symbol();
         let action = this._actionKeys[symbol];
 
-        if (action)
+        if (action) {
             action();
+            return true;
+        }
+
+        return false;
     },
 
     _onGroupDestroy: function() {

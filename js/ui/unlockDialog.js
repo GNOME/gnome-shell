@@ -143,6 +143,7 @@ const UnlockDialog = new Lang.Class({
                            action: Lang.bind(this, this._doUnlock),
                            default: true };
         this.setButtons([this._okButton]);
+        this.setActionKey(Clutter.KEY_Escape, Lang.bind(this, this._escape));
 
         this._updateOkButton(false);
         this._reset();
@@ -200,6 +201,10 @@ const UnlockDialog = new Lang.Class({
     _onVerificationFailed: function() {
         this._userVerifier.cancel();
         this.emit('failed');
+    },
+
+    _escape: function() {
+        this._onVerificationFailed();
     },
 
     _otherUserClicked: function(button, event) {
