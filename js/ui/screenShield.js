@@ -310,7 +310,11 @@ const ScreenShield = new Lang.Class({
         this._arrow.connect('repaint', Lang.bind(this, this._drawArrow));
         this._lockScreenContents.add_actor(this._arrow);
 
-        let action = new Clutter.DragAction({ drag_axis: Clutter.DragAxis.Y_AXIS });
+        let dragArea = new Clutter.Rect({ origin: new Clutter.Point({ x: 0, y: -global.screen_height, }),
+                                          size: new Clutter.Size({ width: global.screen_width,
+                                                                   height: global.screen_height }) });
+        let action = new Clutter.DragAction({ drag_axis: Clutter.DragAxis.Y_AXIS,
+                                              drag_area: dragArea });
         action.connect('drag-begin', Lang.bind(this, this._onDragBegin));
         action.connect('drag-end', Lang.bind(this, this._onDragEnd));
         this._lockScreenGroup.add_action(action);
