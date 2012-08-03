@@ -87,7 +87,7 @@ const UnlockDialog = new Lang.Class({
         this._user = this._userManager.get_user(this._userName);
 
         this._greeterClient = new Gdm.Client();
-        this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient);
+        this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient, { reauthenticationOnly: true });
 
         this._userVerifier.connect('reset', Lang.bind(this, this._reset));
         this._userVerifier.connect('ask-question', Lang.bind(this, this._onAskQuestion));

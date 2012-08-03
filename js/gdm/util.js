@@ -7,6 +7,7 @@ const Signals = imports.signals;
 const Batch = imports.gdm.batch;
 const Fprint = imports.gdm.fingerprint;
 const Main = imports.ui.main;
+const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
 const PASSWORD_SERVICE_NAME = 'gdm-password';
@@ -69,7 +70,10 @@ function fadeOutActor(actor) {
 const ShellUserVerifier = new Lang.Class({
     Name: 'ShellUserVerifier',
 
-    _init: function(client) {
+    _init: function(client, params) {
+        params = Params.parse(params, { reauthenticationOnly: false });
+        this._reauthOnly = params.reauthenticationOnly;
+
         this._client = client;
 
         this._settings = new Gio.Settings({ schema: LOGIN_SCREEN_SCHEMA });
@@ -135,6 +139,15 @@ const ShellUserVerifier = new Lang.Class({
 
             this._hold.release();
         } catch (e) {
+            if (this._reauthOnly) {
+                logError(e, 'Failed to open reauthentication channel');
+
+                this._hold.release();
+                this.emit('verification-failed');
+
+                return;
+            }
+
             // If there's no session running, or it otherwise fails, then fall back
             // to performing verification from this login session
             client.get_user_verifier(this._cancellable, Lang.bind(this, this._userVerifierGot));
