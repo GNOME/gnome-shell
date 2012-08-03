@@ -17,7 +17,7 @@ const Tweener = imports.ui.tweener;
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOCK_ENABLED_KEY = 'lock-enabled';
 
-const CURTAIN_SLIDE_TIME = 1.2;
+const CURTAIN_SLIDE_TIME = 0.8;
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
 const ARROW_DRAG_TRESHOLD = 0.1;
@@ -28,7 +28,7 @@ const SUMMARY_ICON_SIZE = 48;
 // STANDARD_FADE_TIME is used when the session goes idle, while
 // SHORT_FADE_TIME is used when requesting lock explicitly from the user menu
 const STANDARD_FADE_TIME = 10;
-const SHORT_FADE_TIME = 2;
+const SHORT_FADE_TIME = 0.8;
 
 const Clock = new Lang.Class({
     Name: 'ScreenShieldClock',
@@ -474,25 +474,26 @@ const ScreenShield = new Lang.Class({
     },
 
     _resetLockScreen: function(animate) {
+        this._lockScreenGroup.show();
+        this._arrow.show();
+
         if (animate) {
-            this.actor.opacity = 0;
-            Tweener.removeTweens(this.actor);
-            Tweener.addTween(this.actor,
-                             { opacity: 255,
+            this._lockScreenGroup.y = -global.screen_height;
+            Tweener.removeTweens(this._lockScreenGroup);
+            Tweener.addTween(this._lockScreenGroup,
+                             { y: 0,
                                time: SHORT_FADE_TIME,
-                               transition: 'easeOutQuad',
+                               transition: 'linear',
                                onComplete: function() {
+                                   this._lockScreenGroup.fixed_position_set = false;
                                    this.emit('lock-screen-shown');
                                },
                                onCompleteScope: this
                              });
         } else {
+            this._lockScreenGroup.fixed_position_set = false;
             this.emit('lock-screen-shown');
         }
-
-        this._lockScreenGroup.fixed_position_set = false;
-        this._lockScreenGroup.show();
-        this._arrow.show();
 
         this._lockScreenGroup.grab_key_focus();
     },
