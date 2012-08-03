@@ -2570,6 +2570,8 @@ clutter_drag_action_get_drag_handle
 ClutterDragAxis
 clutter_drag_action_set_drag_axis
 clutter_drag_action_get_drag_axis
+clutter_drag_action_set_drag_area
+clutter_drag_action_get_drag_area
 
 <SUBSECTION>
 clutter_drag_action_get_press_coords

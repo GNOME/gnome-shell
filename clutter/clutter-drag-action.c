@@ -91,6 +91,7 @@ struct _ClutterDragActionPrivate
   gint y_drag_threshold;
   ClutterActor *drag_handle;
   ClutterDragAxis drag_axis;
+  ClutterRect drag_area;
 
   ClutterInputDevice *device;
   ClutterEventSequence *sequence;
@@ -113,6 +114,7 @@ struct _ClutterDragActionPrivate
   guint emit_delayed_press    : 1;
   guint in_drag               : 1;
   guint motion_events_enabled : 1;
+  guint drag_area_set         : 1;
 };
 
 enum
@@ -123,6 +125,8 @@ enum
   PROP_Y_DRAG_THRESHOLD,
   PROP_DRAG_HANDLE,
   PROP_DRAG_AXIS,
+  PROP_DRAG_AREA,
+  PROP_DRAG_AREA_SET,
 
   PROP_LAST
 };
@@ -520,13 +524,27 @@ clutter_drag_action_real_drag_motion (ClutterDragAction *action,
                                       gfloat             delta_y)
 {
   ClutterActor *drag_handle;
+  gfloat x, y;
 
   if (action->priv->drag_handle != NULL)
     drag_handle = action->priv->drag_handle;
   else
     drag_handle = actor;
 
-  clutter_actor_move_by (drag_handle, delta_x, delta_y);
+  clutter_actor_get_position (drag_handle, &x, &y);
+
+  x += delta_x;
+  y += delta_y;
+
+  if (action->priv->drag_area_set)
+    {
+      ClutterRect *drag_area = &action->priv->drag_area;
+
+      x = CLAMP (x, drag_area->origin.x, drag_area->origin.x + drag_area->size.width);
+      y = CLAMP (y, drag_area->origin.y, drag_area->origin.y + drag_area->size.height);
+    }
+
+  clutter_actor_set_position (drag_handle, x, y);
 }
 
 static void
@@ -558,6 +576,10 @@ clutter_drag_action_set_property (GObject      *gobject,
 
     case PROP_DRAG_AXIS:
       clutter_drag_action_set_drag_axis (action, g_value_get_enum (value));
+      break;
+
+    case PROP_DRAG_AREA:
+      clutter_drag_action_set_drag_area (action, g_value_get_boxed (value));
       break;
 
     default:
@@ -601,6 +623,14 @@ clutter_drag_action_get_property (GObject    *gobject,
       g_value_set_enum (value, priv->drag_axis);
       break;
 
+    case PROP_DRAG_AREA:
+      g_value_set_boxed (value, &priv->drag_area);
+      break;
+
+    case PROP_DRAG_AREA_SET:
+      g_value_set_boolean (value, priv->drag_area_set);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
     }
@@ -636,6 +666,7 @@ clutter_drag_action_dispose (GObject *gobject)
     }
 
   clutter_drag_action_set_drag_handle (CLUTTER_DRAG_ACTION (gobject), NULL);
+  clutter_drag_action_set_drag_area (CLUTTER_DRAG_ACTION (gobject), NULL);
 
   G_OBJECT_CLASS (clutter_drag_action_parent_class)->dispose (gobject);
 }
@@ -744,6 +775,37 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
                        CLUTTER_TYPE_DRAG_AXIS,
                        CLUTTER_DRAG_AXIS_NONE,
                        CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterDragAction:drag-area:
+   *
+   * Constains the dragging action (or in particular, the resulting
+   * actor position) to the specified #ClutterRect, in parent's
+   * coordinates.
+   *
+   * Since: 1.12
+   */
+  drag_props[PROP_DRAG_AREA] =
+    g_param_spec_boxed ("drag-area",
+			P_("Drag Area"),
+			P_("Constrains the dragging to a rectangle"),
+			CLUTTER_TYPE_RECT,
+			CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterDragAction:drag-area-set:
+   *
+   * Whether the #ClutterDragAction:drag-area property has been set.
+   *
+   * Since: 1.12
+   */
+  drag_props[PROP_DRAG_AREA_SET] =
+    g_param_spec_boolean ("drag-area-set",
+			  P_("Drag Area Set"),
+			  P_("Whether the drag area is set"),
+			  FALSE,
+			  CLUTTER_PARAM_READABLE);
+
 
   gobject_class->set_property = clutter_drag_action_set_property;
   gobject_class->get_property = clutter_drag_action_get_property;
@@ -1167,4 +1229,59 @@ clutter_drag_action_get_motion_coords (ClutterDragAction *action,
 
   if (motion_y)
     *motion_y = action->priv->last_motion_y;
+}
+
+/**
+ * clutter_drag_action_get_drag_area:
+ * @action: a #ClutterDragAction
+ * @drag_area: (out caller-allocates): a #ClutterRect to be filled
+ *
+ * Retrieves the "drag area" associated with @action, that
+ * is a #ClutterRect that constrains the actor movements,
+ * in parents coordinates.
+ *
+ * Returns: %TRUE if the actor is actually constrained (and thus
+ *          @drag_area is valid), %FALSE otherwise
+ */
+gboolean
+clutter_drag_action_get_drag_area (ClutterDragAction *action,
+				   ClutterRect       *drag_area)
+{
+  g_return_val_if_fail (CLUTTER_IS_DRAG_ACTION (action), FALSE);
+
+  if (drag_area != NULL)
+    *drag_area = action->priv->drag_area;
+  return action->priv->drag_area_set;
+}
+
+/**
+ * clutter_drag_action_set_drag_area:
+ * @action: a #ClutterDragAction
+ * @drag_area: (allow-none): a #ClutterRect
+ *
+ * Sets @drag_area to constrain the dragging of the actor associated
+ * with @action, so that it position is always within @drag_area, expressed
+ * in parent's coordinates.
+ * If @drag_area is %NULL, the actor is not constrained.
+ */
+void
+clutter_drag_action_set_drag_area (ClutterDragAction *action,
+				   const ClutterRect *drag_area)
+{
+  ClutterDragActionPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_DRAG_ACTION (action));
+
+  priv = action->priv;
+
+  if (drag_area != NULL)
+    {
+      priv->drag_area = *drag_area;
+      priv->drag_area_set = TRUE;
+    }
+  else
+    priv->drag_area_set = FALSE;
+
+  g_object_notify_by_pspec (G_OBJECT (action), drag_props[PROP_DRAG_AREA_SET]);
+  g_object_notify_by_pspec (G_OBJECT (action), drag_props[PROP_DRAG_AREA]);
 }
