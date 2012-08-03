@@ -20,7 +20,7 @@ const LOCK_ENABLED_KEY = 'lock-enabled';
 const CURTAIN_SLIDE_TIME = 1.2;
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
-const ARROW_DRAG_TRESHOLD = 0.4;
+const ARROW_DRAG_TRESHOLD = 0.1;
 
 const SUMMARY_ICON_SIZE = 48;
 
