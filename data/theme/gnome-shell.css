@@ -2201,12 +2201,12 @@ StButton.popup-menu-item:insensitive {
 
 /* Screen shield */
 
-#screenShieldGroup {
+#lockDialogGroup {
     background: #2e3436 url(noise-texture.png);
     background-repeat: repeat;
 }
 
-#screenShieldGroup .arrow {
+#lockScreenGroup .arrow {
     color: #333333;
     width: 100px;
     height: 50px;
