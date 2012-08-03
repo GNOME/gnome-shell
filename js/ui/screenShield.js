@@ -176,7 +176,8 @@ const NotificationsBox = new Lang.Class({
         }
 
         obj.contentUpdatedId = item.connect('content-updated', Lang.bind(this, this._onItemContentUpdated));
-        obj.sourceCountChangedId = item.source.connect('count-changed', Lang.bind(this, this._onSourceCountChanged));
+        obj.sourceCountChangedId = item.source.connect('count-changed', Lang.bind(this, this._onSourceChanged));
+        obj.sourceTitleChangedId = item.source.connect('title-changed', Lang.bind(this, this._onSourceChanged));
         obj.sourceDestroyId = item.source.connect('destroy', Lang.bind(this, this._onSourceDestroy));
         this._items.push(obj);
 
@@ -197,7 +198,7 @@ const NotificationsBox = new Lang.Class({
         this._updateItem(obj);
     },
 
-    _onSourceCountChanged: function(source) {
+    _onSourceChanged: function(source) {
         let obj = this._items[this._findSource(source)];
         this._updateItem(obj);
     },
