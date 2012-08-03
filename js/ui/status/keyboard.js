@@ -178,7 +178,9 @@ const InputSourceIndicator = new Lang.Class({
     },
 
     setLockedState: function(locked) {
-        this._showLayoutItem.actor.visible = !locked;
+        if (Main.sessionMode.allowSettings) {
+            this._showLayoutItem.actor.visible = !locked;
+        }
         this.menu.setSettingsVisibility(!locked);
     },
 
