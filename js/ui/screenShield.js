@@ -49,6 +49,38 @@ const SUMMARY_ICON_SIZE = 48;
 const STANDARD_FADE_TIME = 10;
 const SHORT_FADE_TIME = 0.3;
 
+function sample(offx, offy) {
+    return 'texel += texture2D (sampler, tex_coord.st + pixel_step * ' +
+        'vec2 (' + offx + ',' + offy + ') * 2.0);\n'
+}
+const GLSL_BLUR_EFFECT_DECLARATIONS = ' \
+uniform vec2 pixel_step;\n \
+vec4 apply_blur(in sampler2D sampler, in vec2 tex_coord) {\n \
+  vec4 texel;\n \
+  texel = texture2D (sampler, tex_coord.st);\n'
+  + sample(-1.0, -1.0)
+  + sample( 0.0, -1.0)
+  + sample(+1.0, -1.0)
+  + sample(-1.0,  0.0)
+  + sample( 0.0,  0.0)
+  + sample(+1.0,  0.0)
+  + sample(-1.0, +1.0)
+  + sample( 0.0, +1.0)
+  + sample(+1.0, +1.0) + ' \
+   texel /= 9.0;\n \
+   return texel;\n \
+}\n \
+vec3 desaturate (const vec3 color, const float desaturation)\n \
+{\n \
+   const vec3 gray_conv = vec3 (0.299, 0.587, 0.114);\n \
+   vec3 gray = vec3 (dot (gray_conv, color));\n \
+   return vec3 (mix (color.rgb, gray, desaturation));\n \
+}';
+const GLSL_BLUR_EFFECT_CODE = ' \
+cogl_texel = apply_blur(cogl_sampler, cogl_tex_coord.st);\n \
+cogl_texel.rgb = desaturate(cogl_texel.rgb, 0.6);\n';
+
+
 const Clock = new Lang.Class({
     Name: 'ScreenShieldClock',
 
@@ -367,6 +399,11 @@ const ScreenShield = new Lang.Class({
                                                    name: 'lockScreenContents' });
         this._lockScreenContents.add_constraint(new Layout.MonitorConstraint({ primary: true }));
 
+        let backgroundActor = Meta.BackgroundActor.new_for_screen(global.screen);
+        backgroundActor.add_glsl_snippet(Meta.SnippetHook.TEXTURE_LOOKUP,
+                                         GLSL_BLUR_EFFECT_DECLARATIONS,
+                                         GLSL_BLUR_EFFECT_CODE,
+                                         true);
         this._background = new St.Bin({ style_class: 'screen-shield-background',
                                         child: Meta.BackgroundActor.new_for_screen(global.screen) });
         this._lockScreenGroup.add_actor(this._background);
