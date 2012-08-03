@@ -22,6 +22,11 @@ const CURTAIN_SLIDE_TIME = 0.8;
 // the slide up automatically
 const ARROW_DRAG_TRESHOLD = 0.1;
 
+// The distance in px that the lock screen will move to when pressing
+// a key that has no effect in the lock screen (bumping it)
+const BUMP_SIZE = 25;
+const BUMP_TIME = 0.3;
+
 const SUMMARY_ICON_SIZE = 48;
 
 // Lightbox fading times
@@ -337,7 +342,8 @@ const ScreenShield = new Lang.Class({
             return true;
         }
 
-        return false;
+        this._bumpLockScreen();
+        return true;
     },
 
     _drawArrow: function() {
@@ -410,6 +416,21 @@ const ScreenShield = new Lang.Class({
     showDialog: function() {
         this.lock(true);
         this._showUnlockDialog(false);
+    },
+
+    _bumpLockScreen: function() {
+        Tweener.removeTweens(this._lockScreenGroup);
+        Tweener.addTween(this._lockScreenGroup,
+                         { y: -BUMP_SIZE,
+                           time: BUMP_TIME / 2,
+                           transition: 'easeOutQuad',
+                           onComplete: function() {
+                               Tweener.addTween(this,
+                                                { y: 0,
+                                                  time: BUMP_TIME / 2,
+                                                  transition: 'easeInQuad' });
+                           }
+                         });
     },
 
     _showUnlockDialog: function(animate) {
