@@ -274,8 +274,6 @@ const ScreenShield = new Lang.Class({
                                                 can_focus: true,
                                                 layout_manager: new Clutter.BinLayout()
                                               });
-        this._lockScreenGroup.connect('key-release-event',
-                                      Lang.bind(this, this._onLockScreenKeyRelease));
 
         this._background = Meta.BackgroundActor.new_for_screen(global.screen);
         this._background.add_effect(new Clutter.BlurEffect());
@@ -330,7 +328,10 @@ const ScreenShield = new Lang.Class({
                                                  fadeFactor: 1 });
     },
 
-    _onLockScreenKeyRelease: function(actor, event) {
+    _onStageKeyRelease: function(actor, event) {
+        if (!this._isLocked)
+            return false;
+
         if (event.get_key_symbol() == Clutter.KEY_Escape) {
             this._showUnlockDialog(true);
             return true;
@@ -495,7 +496,9 @@ const ScreenShield = new Lang.Class({
             this.emit('lock-screen-shown');
         }
 
-        this._lockScreenGroup.grab_key_focus();
+        if (!this._stageKeyHandler)
+            this._stageKeyHandler = global.stage.connect('key-release-event',
+                                                         Lang.bind(this, this._onStageKeyRelease));
     },
 
     // Some of the actors in the lock screen are heavy in
@@ -543,6 +546,11 @@ const ScreenShield = new Lang.Class({
     unlock: function() {
         if (this._hasLockScreen)
             this._clearLockScreen();
+
+        if (this._stageKeyHandler) {
+            global.stage.disconnect(this._stageKeyHandler);
+            this._stageKeyHandler = 0;
+        }
 
         if (this._keepDialog) {
             // The dialog must be kept alive,
