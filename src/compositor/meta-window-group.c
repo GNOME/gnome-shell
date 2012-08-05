@@ -109,6 +109,7 @@ meta_window_group_paint (ClutterActor *actor)
   ClutterActor *stage;
   cairo_rectangle_int_t visible_rect, unredirected_rect;
   GList *children, *l;
+  gfloat group_x, group_y;
 
   MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
   MetaCompScreen *info = meta_screen_get_compositor_data (window_group->screen);
@@ -117,6 +118,8 @@ meta_window_group_paint (ClutterActor *actor)
       meta_window_actor_get_shape_bounds (META_WINDOW_ACTOR (info->unredirected_window), &unredirected_rect);
       unredirected_window_region = cairo_region_create_rectangle (&unredirected_rect);
     }
+
+  clutter_actor_get_position (CLUTTER_ACTOR (window_group), &group_x, &group_y);
 
   /* We walk the list from top to bottom (opposite of painting order),
    * and subtract the opaque area of each window out of the visible
@@ -190,6 +193,8 @@ meta_window_group_paint (ClutterActor *actor)
       else if (META_IS_BACKGROUND_ACTOR (l->data))
         {
           MetaBackgroundActor *background_actor = l->data;
+
+          cairo_region_translate (visible_region, - group_x, - group_y);
           meta_background_actor_set_visible_region (background_actor, visible_region);
         }
     }
