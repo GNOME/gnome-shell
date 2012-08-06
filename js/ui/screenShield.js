@@ -73,16 +73,17 @@ const NotificationsBox = new Lang.Class({
     _init: function() {
         this.actor = new St.BoxLayout({ vertical: true,
                                         name: 'screenShieldNotifications',
-                                        margin_top: 20
-                                      });
+                                        style_class: 'screen-shield-notifications-box' });
 
         this._residentNotificationBox = new St.BoxLayout({ vertical: true,
                                                            style_class: 'screen-shield-notifications-box' });
+        let scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.MIDDLE });
         this._persistentNotificationBox = new St.BoxLayout({ vertical: true,
                                                              style_class: 'screen-shield-notifications-box' });
+        scrollView.add_actor(this._persistentNotificationBox);
 
         this.actor.add(this._residentNotificationBox, { x_fill: true });
-        this.actor.add(this._persistentNotificationBox, { x_fill: false, x_align: St.Align.MIDDLE });
+        this.actor.add(scrollView, { x_fill: true, x_align: St.Align.MIDDLE });
 
         this._items = [];
         Main.messageTray.getSummaryItems().forEach(Lang.bind(this, function(item) {
@@ -169,7 +170,7 @@ const NotificationsBox = new Lang.Class({
             this._residentNotificationBox.add(item.notificationStackView);
         } else {
             [obj.sourceBox, obj.countLabel] = this._makeNotificationSource(item.source);
-            this._persistentNotificationBox.add(obj.sourceBox);
+            this._persistentNotificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.MIDDLE });
         }
 
         obj.contentUpdatedId = item.connect('content-updated', Lang.bind(this, this._onItemContentUpdated));

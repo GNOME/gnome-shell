@@ -2228,12 +2228,13 @@ StButton.popup-menu-item:insensitive {
 }
 
 #screenShieldNotifications {
-    border-radius: 24px;
+    border-radius: 8px;
     background-color: rgba(0.0, 0.0, 0.0, 0.9);
     border: 2px solid #868686;
+    max-height: 500px;
 }
 
-#screenShieldNotifications, .screen-shield-notifications-box {
+.screen-shield-notifications-box {
     spacing: 8px;
 }
 
