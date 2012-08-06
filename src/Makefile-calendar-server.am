@@ -33,5 +33,5 @@ EXTRA_DIST += 							  \
 	calendar-server/org.gnome.Shell.CalendarServer.service.in \
 	$(NULL)
 
-CLEANFILES = \
+CLEANFILES += \
 	$(desktop_DATA)
