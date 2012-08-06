@@ -629,6 +629,16 @@ const Source = new Lang.Class({
         }
     },
 
+    setTitle: function(title) {
+        // Do nothing if .app is set, we don't want to override the
+        // app name with whatever is provided through libnotify (usually
+        // garbage)
+        if (this.app)
+            return;
+
+        this.parent(title);
+    },
+
     open: function(notification) {
         this.destroyNonResidentNotifications();
         this.openApp();
