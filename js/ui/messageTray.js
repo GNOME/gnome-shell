@@ -421,6 +421,7 @@ const Notification = new Lang.Class({
         this.isTransient = false;
         this.expanded = false;
         this.showWhenLocked = false;
+        this.acknowledged = false;
         this._destroyed = false;
         this._useActionIcons = false;
         this._customContent = false;
@@ -1062,7 +1063,7 @@ const SourceActor = new Lang.Class({
         this.actor.add_actor(this._iconBin);
         this.actor.add_actor(this._counterBin);
 
-        this._source.connect('count-changed', Lang.bind(this, this._updateCount));
+        this._source.connect('count-updated', Lang.bind(this, this._updateCount));
         this._updateCount();
     },
 
@@ -1124,8 +1125,6 @@ const Source = new Lang.Class({
         this.iconName = iconName;
         this.iconType = iconType;
 
-        this.count = 0;
-
         this.isTransient = false;
         this.isChat = false;
         this.isMuted = false;
@@ -1136,18 +1135,20 @@ const Source = new Lang.Class({
         this._setSummaryIcon(this.createIcon(this.ICON_SIZE));
     },
 
-    _setCount: function(count, visible) {
-        if (isNaN(parseInt(count)))
-            throw new Error("Invalid notification count: " + count);
-
-        this.count = count;
-        this.countVisible = visible;
-        this.emit('count-changed');
+    get count() {
+        return this.notifications.length;
     },
 
-    _updateCount: function() {
-        let count = this.notifications.length;
-        this._setCount(count, count > 1);
+    get unseenCount() {
+        return this.notifications.filter(function(n) { return !n.acknowledged; }).length;
+    },
+
+    get countVisible() {
+        return this.count > 1;
+    },
+
+    countUpdated: function() {
+        this.emit('count-updated');
     },
 
     setTransient: function(isTransient) {
@@ -1198,13 +1199,14 @@ const Source = new Lang.Class({
                 if (this.notifications.length == 0)
                     this._lastNotificationRemoved();
 
-                this._updateCount();
+                this.countUpdated();
             }));
 
-        this._updateCount();
+        this.countUpdated();
     },
 
     notify: function(notification) {
+        notification.acknowledged = false;
         this.pushNotification(notification);
         if (!this.isMuted)
              this.emit('notify', notification);
@@ -1236,7 +1238,7 @@ const Source = new Lang.Class({
             if (!this.notifications[i].resident)
                 this.notifications[i].destroy();
 
-        this._updateCount();
+        this.countUpdated();
     },
 
     // Default implementation is to destroy this source, but subclasses can override
@@ -1807,7 +1809,7 @@ const MessageTray = new Lang.Class({
 
     _onNotify: function(source, notification) {
         if (this._summaryBoxPointerItem && this._summaryBoxPointerItem.source == source) {
-            if (this._summaryBoxPointerState == State.HIDING)
+            if (this._summaryBoxPointerState == State.HIDING) {
                 // We are in the process of hiding the summary box pointer.
                 // If there is an update for one of the notifications or
                 // a new notification to be added to the notification stack
@@ -1818,6 +1820,14 @@ const MessageTray = new Lang.Class({
                 // need to be able to re-parent its actor to a different
                 // part of the stage.
                 this._reNotifyAfterHideNotification = notification;
+            } else {
+                // The summary box pointer is showing or shown (otherwise,
+                // this._summaryBoxPointerItem would be null)
+                // Immediately mark the notification as acknowledged, as it's
+                // not going into the queue
+                notification.acknowledged = true;
+            }
+
             return;
         }
 
@@ -2309,6 +2319,8 @@ const MessageTray = new Lang.Class({
     },
 
     _updateShowingNotification: function() {
+        this._notification.acknowledged = true;
+
         Tweener.removeTweens(this._notificationBin);
 
         // We auto-expand notifications with CRITICAL urgency.
@@ -2511,10 +2523,17 @@ const MessageTray = new Lang.Class({
         this._summaryBoxPointerDoneDisplayingId = this._summaryBoxPointerItem.connect('done-displaying-content',
                                                                                       Lang.bind(this, this._escapeTray));
         if (this._clickedSummaryItemMouseButton == 1) {
-            this._notificationQueue = this._notificationQueue.filter( Lang.bind(this,
-                function(notification) {
-                    return this._summaryBoxPointerItem.source != notification.source;
-                }));
+            let newQueue = [];
+            for (let i = 0; i < this._notificationQueue.length; i++) {
+                let notification = this._notificationQueue[i];
+                let sameSource = this._summaryBoxPointerItem.source == notification.source;
+                if (sameSource)
+                    notification.acknowledged = true;
+                else
+                    newQueue.push(notification);
+            }
+            this._notificationQueue = newQueue;
+
             this._summaryBoxPointerItem.prepareNotificationStackForShowing();
             this._summaryBoxPointer.bin.child = this._summaryBoxPointerItem.notificationStackView;
             this._summaryBoxPointerItem.scrollTo(St.Side.BOTTOM);

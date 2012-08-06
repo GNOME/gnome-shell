@@ -578,7 +578,7 @@ const ChatSource = new Lang.Class({
             this._pendingMessages.push(message);
         }
 
-        this._updateCount();
+        this.countUpdated();
 
         let showTimestamp = false;
 
@@ -624,8 +624,17 @@ const ChatSource = new Lang.Class({
         this.destroy();
     },
 
-    _updateCount: function() {
-        this._setCount(this._pendingMessages.length, this._pendingMessages.length > 0);
+    /* All messages are new messages for Telepathy sources */
+    get count() {
+        return this._pendingMessages.length;
+    },
+
+    get unseenCount() {
+        return this.count;
+    },
+
+    get countVisible() {
+        return this.count > 0;
     },
 
     _messageReceived: function(channel, message) {
@@ -633,7 +642,7 @@ const ChatSource = new Lang.Class({
             return;
 
         this._pendingMessages.push(message);
-        this._updateCount();
+        this.countUpdated();
 
         message = makeMessageFromTpMessage(message, NotificationDirection.RECEIVED);
         this._notification.appendMessage(message);
@@ -710,7 +719,7 @@ const ChatSource = new Lang.Class({
 
         if (idx >= 0) {
             this._pendingMessages.splice(idx, 1);
-            this._updateCount();
+            this.countUpdated();
         }
         else
             throw new Error('Message not in our pending list: ' + message);

@@ -120,11 +120,11 @@ const NotificationsBox = new Lang.Class({
         return source.hasResidentNotification() && !source.isChat;
     },
 
-    _makeNotificationCountText: function(source) {
-        if (source.isChat)
-            return ngettext("%d new message", "%d new messages", source.count).format(source.count);
+    _makeNotificationCountText: function(count, isChat) {
+        if (isChat)
+            return ngettext("%d new message", "%d new messages", count).format(count);
         else
-            return ngettext("%d new notification", "%d new notifications", source.count).format(source.count);
+            return ngettext("%d new notification", "%d new notifications", count).format(count);
     },
 
     _makeNotificationSource: function(source) {
@@ -142,11 +142,12 @@ const NotificationsBox = new Lang.Class({
                                    style_class: 'screen-shield-notification-label' });
         textBox.add(label);
 
-        let countLabel = new St.Label({ text: this._makeNotificationCountText(source),
+        let count = source.unseenCount;
+        let countLabel = new St.Label({ text: this._makeNotificationCountText(count, source.isChat),
                                         style_class: 'screen-shield-notification-count-text' });
         textBox.add(countLabel);
 
-        box.visible = source.count != 0;
+        box.visible = count != 0;
         return [box, countLabel];
     },
 
@@ -174,7 +175,7 @@ const NotificationsBox = new Lang.Class({
         }
 
         obj.contentUpdatedId = item.connect('content-updated', Lang.bind(this, this._onItemContentUpdated));
-        obj.sourceCountChangedId = item.source.connect('count-changed', Lang.bind(this, this._onSourceChanged));
+        obj.sourceCountChangedId = item.source.connect('count-updated', Lang.bind(this, this._onSourceChanged));
         obj.sourceTitleChangedId = item.source.connect('title-changed', Lang.bind(this, this._onSourceChanged));
         obj.sourceDestroyId = item.source.connect('destroy', Lang.bind(this, this._onSourceDestroy));
         this._items.push(obj);
@@ -225,8 +226,9 @@ const NotificationsBox = new Lang.Class({
             this._residentNotificationBox.add(obj.item.notificationStackView);
         } else {
             // just update the counter
-            obj.countLabel.text = this._makeNotificationCountText(obj.item.source);
-            obj.sourceBox.visible = obj.source.count != 0;
+            let count = obj.source.unseenCount;
+            obj.countLabel.text = this._makeNotificationCountText(count, obj.source.isChat);
+            obj.sourceBox.visible = count != 0;
         }
 
         this._updateVisibility();
