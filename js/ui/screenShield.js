@@ -136,7 +136,7 @@ const NotificationsBox = new Lang.Class({
         box.add(sourceActor.actor, { y_fill: true });
 
         let textBox = new St.BoxLayout({ vertical: true });
-        box.add(textBox, { y_fill: true, expand: true });
+        box.add(textBox);
 
         let label = new St.Label({ text: source.title,
                                    style_class: 'screen-shield-notification-label' });

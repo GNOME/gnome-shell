@@ -1220,17 +1220,17 @@ StButton.popup-menu-item:insensitive {
     padding-bottom: 12px;
 }
 
-#summary-notification-stack-scrollview {
+.summary-notification-stack-scrollview {
     max-height: 18em;
     padding-top: 6px;
     padding-bottom: 6px;
 }
 
-#summary-notification-stack-scrollview:ltr {
+.summary-notification-stack-scrollview:ltr {
     padding-right: 8px;
 }
 
-#summary-notification-stack-scrollview:rtl {
+.summary-notification-stack-scrollview:rtl {
     padding-left: 8px;
 }
 
@@ -2216,6 +2216,7 @@ StButton.popup-menu-item:insensitive {
     text-shadow: 0px 1px 2px rgba(0,0,0,0.6);
     font-weight: bold;
     text-align: center;
+    padding-bottom: 1.5em;
 }
 
 .screen-shield-clock-time {
@@ -2232,14 +2233,15 @@ StButton.popup-menu-item:insensitive {
     background-color: rgba(0.0, 0.0, 0.0, 0.9);
     border: 2px solid #868686;
     max-height: 500px;
+    padding: 12px 0;
 }
 
 .screen-shield-notifications-box {
-    spacing: 8px;
+    spacing: 12px;
 }
 
 .screen-shield-notification-source {
-    padding: 24px 8px;
+    padding: 0 24px;
     spacing: 5px;
 }
 
@@ -2254,3 +2256,12 @@ StButton.popup-menu-item:insensitive {
 .screen-shield-notifications-box .notification {
     background-color: transparent;
 }
+
+/* Override padding on resident notifications, since
+   the notifications box has its own spacing
+*/
+.screen-shield-notifications-box .summary-notification-stack-scrollview {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
