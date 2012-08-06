@@ -106,6 +106,7 @@ const ShellUserVerifier = new Lang.Class({
 
         if (this._userVerifier)
             this._userVerifier.call_cancel_sync(null);
+        this._cancellable = new Gio.Cancellable();
     },
 
     clear: function() {
