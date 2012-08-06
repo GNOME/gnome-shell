@@ -34,8 +34,22 @@
 
 G_BEGIN_DECLS
 
-#define cogl_wayland_texture_2d_new_from_buffer \
-  cogl_wayland_texture_2d_new_from_buffer_EXP
+/**
+ * cogl_wayland_display_set_compositor_display:
+ * @display: a #CoglDisplay
+ * @wayland_display: A compositor's Wayland display pointer
+ *
+ * Informs Cogl of a compositor's Wayland display pointer. This
+ * enables Cogl to register private wayland extensions required to
+ * pass buffers between the clients and compositor.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_wayland_display_set_compositor_display (CoglDisplay *display,
+                                          struct wl_display *wayland_display);
+
 /**
  * cogl_wayland_texture_2d_new_from_buffer:
  * @ctx: A #CoglContext

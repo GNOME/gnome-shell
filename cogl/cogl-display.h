@@ -171,24 +171,6 @@ cogl_gdl_display_set_plane (CoglDisplay *display,
                             gdl_plane_id_t plane);
 #endif
 
-#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
-/**
- * cogl_wayland_display_set_compositor_display:
- * @display: a #CoglDisplay
- * @wayland_display: A compositor's Wayland display pointer
- *
- * Informs Cogl of a compositor's Wayland display pointer. This
- * enables Cogl to register private wayland extensions required to
- * pass buffers between the clients and compositor.
- *
- * Since: 1.10
- * Stability: unstable
- */
-void
-cogl_wayland_display_set_compositor_display (CoglDisplay *display,
-                                          struct wl_display *wayland_display);
-#endif
-
 /**
  * cogl_is_display:
  * @object: A #CoglObject pointer
