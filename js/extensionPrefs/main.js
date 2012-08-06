@@ -161,7 +161,7 @@ const Application = new Lang.Class({
         vbox.add(toolbar);
         let toolitem;
 
-        let label = new Gtk.Label({ label: _("<b>Extension</b>"),
+        let label = new Gtk.Label({ label: '<b>' + _("Extension") + '</b>',
                                     use_markup: true });
         toolitem = new Gtk.ToolItem({ child: label });
         toolbar.add(toolitem);
