@@ -1,3 +1,121 @@
+Cogl 1.11.2                                                        2012-08-14
+
+  • List of changes since Cogl 1.10.0
+
+  » Adds cogl_framebuffer_{fill,stroke}_path APIs consistent with
+    other Cogl drawing APIs that replace cogl_path_fill/stroke().
+  » Switch from using glib types such as guint32/guint16/guint8 to
+    using equivalent stdint.h types.
+  » Adds a micro-benchmark for the journal
+  » Optimized the matrix stack so we can take immutable references
+    of a matrix stack for logging into the journal more efficiently
+    than having to copy large matrices for each journaled rectangle.
+  » Added COGL_VERSION_{MAJOR,MINOR,MICRO} macros and
+    COGL_VERSION_CHECK macros for applications to test what version
+    of Cogl they are compiled against.
+  » Allow creation of non power of two (npot) CoglTexture2D textures
+    with only basic npot support, not including repeating or mipmap
+    support.
+  » Enable use of the GL_STREAM_DRAW buffer update hint on GLES 2.0
+  » Fix building Cogl with --disable-gl
+  » Added support for the WebOS version of SDL which supports access
+    to GLES 1.1 and GLES 2.0
+  » Adds cogl_matrix_init_translation to provide a more efficient
+    way to initialize a matrix representing a translation without
+    need to multiply matrices.
+  » Various documentation fixes for CoglQuaternion and CoglEular
+  » Updates for the MSVC build
+  » Added GPU architecture detection capabilities so we can
+    differentiate drivers based on the hardware vendor, and the
+    actual architecture of the GPU, such as deferred vs immediate
+    mode.
+  » Fix framebuffer initialization to ensure swaps are throttled by
+    default.
+  » Fix flushing of the depth state for some cases.
+  » Ported test-atlas-migration to be a standalone Cogl test
+  » Added GLES 2.0 API integration support so that existing GLES 2.0
+    based code can easily be integrated within Cogl based
+    applications.  For example this is being used by webkit-clutter to
+    add WebGL support.
+  » Added an optional libcogl-gles2 sub-library that provides a full
+    GLES 2.0 api api to really lower the barrier as much as possible
+    for being able to integrate existing GLES 2.0 based code into
+    Cogl applications.
+  » Adds a Cogl GLES 2.0 Gears example application to test the GLES
+    2.0 integration support.
+  » Fix a bug with disabling of Cogl's debugging features.
+  » Added api to directly convert a Eular to a Quaternion.
+  » Improve the wireframe debug option to work when a vertex shader
+    is in use.
+  » Added support for SDL2 which supports GLES 2.0
+  » Support the original GLSL extensions which had some different
+    function names.
+  » Avoid using eglGetProcAddress for core symbols which isn't allowed
+    by the EGL spec and causes problems on Android.
+  » Adds cogl_android_bitmap_new_from_asset() API to load images from
+    Android assets.
+  » Adds support for resizable onscreen framebuffers.
+  » Avoids implicitly including the EGL headers when including cogl.h
+  » Adds cogl.conf and environment variables to allow disabling the
+    use of specific GL extensions; for example if the implementation
+    is known to be buggy on a given system.
+
+  • List of bugs fixed since Cogl 1.10.0
+
+    #660617 - Porting of clutter tests
+    #672533 - Quartz image option causes compile error
+    #673137 - Grab the current window -&gt; Screenshot is mirrored
+    #674208 - [PATCH] disable sub-buffer copies on software Mesa
+    #675119 - unable to build the latest version due to two bugs
+    #677078 - GLSL detection not working for Intel GMA3150 chipset
+    #678316 - remove unneeded check for libdrm
+    #680124 - Quartz Image option , memory not zeroed before loading?
+    #681285 - Support building with automake 1.12.x
+
+Many thanks to:
+
+    Neil Roberts
+    Robert Bragg
+    Damien Lespiau
+    Chun-wei Fan
+    Tomeu Vizoso
+    Carles Ferrando
+    Chao-Hsiung Liao
+    Bruno Brouard
+    Christian Kirbach
+    Daniel Mustieles
+    Fran Diéguez
+    Gil Forcada
+    Marek Černocký
+    Matej Urbančič
+    Yaron Shahrabani
+    Мирослав Николић
+    Adel Gadllah
+    Alexander Shopov
+    Andika Triwidada
+    Antoine Jacoutot
+    Daniel Nylander
+    Gabor Kelemen
+    Hajime Taira
+    Ihar Hrachyshka
+    Jordi Serratosa
+    Kjartan Maraas
+    Krishnababu Krothapalli
+    Kristjan SCHMIDT
+    Luca Bruno
+    Mario Blättermann
+    Nilamdyuti Goswami
+    Rajesh Ranjan
+    Rico Tzschichholz
+    Rūdolfs Mazurs
+    Sasi Bhushan Boddepalli
+    Sjoerd Simons
+    Stef Walter
+    Tobias Endrigkeit
+    Yinghua Wang
+    fenghelong
+    Κωνσταντίνος Χόρτης
+
 Cogl 1.10.0                                                        2012-03-20
 
   • List of changes since Cogl 1.9.8
