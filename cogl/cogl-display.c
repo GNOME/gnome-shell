@@ -37,6 +37,9 @@
 #include "cogl-display-private.h"
 #include "cogl-renderer-private.h"
 #include "cogl-winsys-private.h"
+#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
+#include "cogl-wayland-server.h"
+#endif
 
 static void _cogl_display_free (CoglDisplay *display);
 
