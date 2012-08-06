@@ -72,6 +72,8 @@ COGL_EXT_FUNCTION (void, glTexEnvfv,
                    (GLenum target, GLenum pname, const GLfloat *params))
 COGL_EXT_FUNCTION (void, glColor4ub,
                    (GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha))
+COGL_EXT_FUNCTION (void, glColor4f,
+                   (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha))
 COGL_EXT_FUNCTION (void, glColorPointer,
                    (GLint size,
                     GLenum type,
@@ -85,8 +87,12 @@ COGL_EXT_FUNCTION (void, glLoadIdentity,
                    (void))
 COGL_EXT_FUNCTION (void, glMatrixMode,
                    (GLenum mode))
+COGL_EXT_FUNCTION (void, glNormal3f,
+                   (GLfloat x, GLfloat y, GLfloat z))
 COGL_EXT_FUNCTION (void, glNormalPointer,
                    (GLenum type, GLsizei stride, const GLvoid *pointer))
+COGL_EXT_FUNCTION (void, glMultiTexCoord4f,
+                   (GLfloat s, GLfloat t, GLfloat r, GLfloat q))
 COGL_EXT_FUNCTION (void, glTexCoordPointer,
                    (GLint size,
                     GLenum type,
@@ -96,6 +102,8 @@ COGL_EXT_FUNCTION (void, glTexEnvi,
                    (GLenum target,
                     GLenum pname,
                     GLint param))
+COGL_EXT_FUNCTION (void, glVertex4f,
+                   (GLfloat x, GLfloat y, GLfloat z, GLfloat w))
 COGL_EXT_FUNCTION (void, glVertexPointer,
                    (GLint size,
                     GLenum type,

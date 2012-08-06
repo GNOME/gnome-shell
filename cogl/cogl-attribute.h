@@ -142,6 +142,317 @@ cogl_attribute_new (CoglAttributeBuffer *attribute_buffer,
                     CoglAttributeType type);
 
 /**
+ * cogl_attribute_new_const_1f:
+ * @context: A #CoglContext
+ * @name: The name of the attribute (used to reference it from GLSL)
+ * @value: The constant value for the attribute
+ *
+ * Creates a new, single component, attribute whose value remains
+ * constant across all the vertices of a primitive without needing to
+ * duplicate the value for each vertex.
+ *
+ * The constant @value is a single precision floating point scalar
+ * which should have a corresponding declaration in GLSL code like:
+ *
+ * [|
+ * attribute float name;
+ * |]
+ *
+ * Returns: A newly allocated #CoglAttribute representing the given
+ *          constant @value.
+ */
+CoglAttribute *
+cogl_attribute_new_const_1f (CoglContext *context,
+                             const char *name,
+                             float value);
+
+/**
+ * cogl_attribute_new_const_2f:
+ * @context: A #CoglContext
+ * @name: The name of the attribute (used to reference it from GLSL)
+ * @constant0: The first component of a 2 component vector
+ * @constant1: The second component of a 2 component vector
+ *
+ * Creates a new, 2 component, attribute whose value remains
+ * constant across all the vertices of a primitive without needing to
+ * duplicate the value for each vertex.
+ *
+ * The constants (@component0, @component1) represent a 2 component
+ * float vector which should have a corresponding declaration in GLSL
+ * code like:
+ *
+ * [|
+ * attribute vec2 name;
+ * |]
+ *
+ * Returns: A newly allocated #CoglAttribute representing the given
+ *          constant vector.
+ */
+CoglAttribute *
+cogl_attribute_new_const_2f (CoglContext *context,
+                             const char *name,
+                             float component0,
+                             float component1);
+
+/**
+ * cogl_attribute_new_const_3f:
+ * @context: A #CoglContext
+ * @name: The name of the attribute (used to reference it from GLSL)
+ * @constant0: The first component of a 3 component vector
+ * @constant1: The second component of a 3 component vector
+ * @constant2: The third component of a 3 component vector
+ *
+ * Creates a new, 3 component, attribute whose value remains
+ * constant across all the vertices of a primitive without needing to
+ * duplicate the value for each vertex.
+ *
+ * The constants (@component0, @component1, @component2) represent a 3
+ * component float vector which should have a corresponding
+ * declaration in GLSL code like:
+ *
+ * [|
+ * attribute vec3 name;
+ * |]
+ *
+ * unless the built in name "cogl_normal_in" is being used where no
+ * explicit GLSL declaration need be made.
+ *
+ * Returns: A newly allocated #CoglAttribute representing the given
+ *          constant vector.
+ */
+CoglAttribute *
+cogl_attribute_new_const_3f (CoglContext *context,
+                             const char *name,
+                             float component0,
+                             float component1,
+                             float component2);
+
+/**
+ * cogl_attribute_new_const_4f:
+ * @context: A #CoglContext
+ * @name: The name of the attribute (used to reference it from GLSL)
+ * @constant0: The first component of a 4 component vector
+ * @constant1: The second component of a 4 component vector
+ * @constant2: The third component of a 4 component vector
+ * @constant3: The fourth component of a 4 component vector
+ *
+ * Creates a new, 4 component, attribute whose value remains
+ * constant across all the vertices of a primitive without needing to
+ * duplicate the value for each vertex.
+ *
+ * The constants (@component0, @component1, @component2, @constant3)
+ * represent a 4 component float vector which should have a
+ * corresponding declaration in GLSL code like:
+ *
+ * [|
+ * attribute vec4 name;
+ * |]
+ *
+ * unless one of the built in names "cogl_color_in",
+ * "cogl_tex_coord0_in or "cogl_tex_coord1_in" etc is being used where
+ * no explicit GLSL declaration need be made.
+ *
+ * Returns: A newly allocated #CoglAttribute representing the given
+ *          constant vector.
+ */
+CoglAttribute *
+cogl_attribute_new_const_4f (CoglContext *context,
+                             const char *name,
+                             float component0,
+                             float component1,
+                             float component2,
+                             float component3);
+
+/**
+ * cogl_attribute_new_const_2fv:
+ * @context: A #CoglContext
+ * @name: The name of the attribute (used to reference it from GLSL)
+ * @value: A pointer to a 2 component float vector
+ *
+ * Creates a new, 2 component, attribute whose value remains
+ * constant across all the vertices of a primitive without needing to
+ * duplicate the value for each vertex.
+ *
+ * The constants (value[0], value[1]) represent a 2 component float
+ * vector which should have a corresponding declaration in GLSL code
+ * like:
+ *
+ * [|
+ * attribute vec2 name;
+ * |]
+ *
+ * Returns: A newly allocated #CoglAttribute representing the given
+ *          constant vector.
+ */
+CoglAttribute *
+cogl_attribute_new_const_2fv (CoglContext *context,
+                              const char *name,
+                              const float *value);
+
+/**
+ * cogl_attribute_new_const_3fv:
+ * @context: A #CoglContext
+ * @name: The name of the attribute (used to reference it from GLSL)
+ * @value: A pointer to a 3 component float vector
+ *
+ * Creates a new, 3 component, attribute whose value remains
+ * constant across all the vertices of a primitive without needing to
+ * duplicate the value for each vertex.
+ *
+ * The constants (value[0], value[1], value[2]) represent a 3
+ * component float vector which should have a corresponding
+ * declaration in GLSL code like:
+ *
+ * [|
+ * attribute vec3 name;
+ * |]
+ *
+ * unless the built in name "cogl_normal_in" is being used where no
+ * explicit GLSL declaration need be made.
+ *
+ * Returns: A newly allocated #CoglAttribute representing the given
+ *          constant vector.
+ */
+CoglAttribute *
+cogl_attribute_new_const_3fv (CoglContext *context,
+                              const char *name,
+                              const float *value);
+
+/**
+ * cogl_attribute_new_const_4fv:
+ * @context: A #CoglContext
+ * @name: The name of the attribute (used to reference it from GLSL)
+ * @value: A pointer to a 4 component float vector
+ *
+ * Creates a new, 4 component, attribute whose value remains
+ * constant across all the vertices of a primitive without needing to
+ * duplicate the value for each vertex.
+ *
+ * The constants (value[0], value[1], value[2], value[3]) represent a
+ * 4 component float vector which should have a corresponding
+ * declaration in GLSL code like:
+ *
+ * [|
+ * attribute vec4 name;
+ * |]
+ *
+ * unless one of the built in names "cogl_color_in",
+ * "cogl_tex_coord0_in or "cogl_tex_coord1_in" etc is being used where
+ * no explicit GLSL declaration need be made.
+ *
+ * Returns: A newly allocated #CoglAttribute representing the given
+ *          constant vector.
+ */
+CoglAttribute *
+cogl_attribute_new_const_4fv (CoglContext *context,
+                              const char *name,
+                              const float *value);
+
+/**
+ * cogl_attribute_new_const_2x2fv:
+ * @context: A #CoglContext
+ * @name: The name of the attribute (used to reference it from GLSL)
+ * @matrix2x2: A pointer to a 2 by 2 matrix
+ * @transpose: Whether the matrix should be transposed on upload or
+ *             not
+ *
+ * Creates a new matrix attribute whose value remains constant
+ * across all the vertices of a primitive without needing to duplicate
+ * the value for each vertex.
+ *
+ * @matrix2x2 represent a square 2 by 2 matrix specified in
+ * column-major order (each pair of consecutive numbers represents a
+ * column) which should have a corresponding declaration in GLSL code
+ * like:
+ *
+ * [|
+ * attribute mat2 name;
+ * |]
+ *
+ * If @transpose is %TRUE then all matrix components are rotated
+ * around the diagonal of the matrix such that the first column
+ * becomes the first row and the second column becomes the second row.
+ *
+ * Returns: A newly allocated #CoglAttribute representing the given
+ *          constant matrix.
+ */
+CoglAttribute *
+cogl_attribute_new_const_2x2fv (CoglContext *context,
+                                const char *name,
+                                const float *matrix2x2,
+                                CoglBool transpose);
+
+/**
+ * cogl_attribute_new_const_3x3fv:
+ * @context: A #CoglContext
+ * @name: The name of the attribute (used to reference it from GLSL)
+ * @matrix3x3: A pointer to a 3 by 3 matrix
+ * @transpose: Whether the matrix should be transposed on upload or
+ *             not
+ *
+ * Creates a new matrix attribute whose value remains constant
+ * across all the vertices of a primitive without needing to duplicate
+ * the value for each vertex.
+ *
+ * @matrix3x3 represent a square 3 by 3 matrix specified in
+ * column-major order (each triple of consecutive numbers represents a
+ * column) which should have a corresponding declaration in GLSL code
+ * like:
+ *
+ * [|
+ * attribute mat3 name;
+ * |]
+ *
+ * If @transpose is %TRUE then all matrix components are rotated
+ * around the diagonal of the matrix such that the first column
+ * becomes the first row and the second column becomes the second row
+ * etc.
+ *
+ * Returns: A newly allocated #CoglAttribute representing the given
+ *          constant matrix.
+ */
+CoglAttribute *
+cogl_attribute_new_const_3x3fv (CoglContext *context,
+                                const char *name,
+                                const float *matrix3x3,
+                                CoglBool transpose);
+
+/**
+ * cogl_attribute_new_const_4x4fv:
+ * @context: A #CoglContext
+ * @name: The name of the attribute (used to reference it from GLSL)
+ * @matrix4x4: A pointer to a 4 by 4 matrix
+ * @transpose: Whether the matrix should be transposed on upload or
+ *             not
+ *
+ * Creates a new matrix attribute whose value remains constant
+ * across all the vertices of a primitive without needing to duplicate
+ * the value for each vertex.
+ *
+ * @matrix4x4 represent a square 4 by 4 matrix specified in
+ * column-major order (each 4-tuple of consecutive numbers represents a
+ * column) which should have a corresponding declaration in GLSL code
+ * like:
+ *
+ * [|
+ * attribute mat4 name;
+ * |]
+ *
+ * If @transpose is %TRUE then all matrix components are rotated
+ * around the diagonal of the matrix such that the first column
+ * becomes the first row and the second column becomes the second row
+ * etc.
+ *
+ * Returns: A newly allocated #CoglAttribute representing the given
+ *          constant matrix.
+ */
+CoglAttribute *
+cogl_attribute_new_const_4x4fv (CoglContext *context,
+                                const char *name,
+                                const float *matrix4x4,
+                                CoglBool transpose);
+
+/**
  * cogl_attribute_set_normalized:
  * @attribute: A #CoglAttribute
  * @normalized: The new value for the normalized property.
