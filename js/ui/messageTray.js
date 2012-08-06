@@ -1301,12 +1301,12 @@ const SummaryItem = new Lang.Class({
         this._sourceBox.add(this._sourceTitleBin, { expand: true, y_fill: false });
         this.actor.child = this._sourceBox;
 
-        this.notificationStackView = new St.ScrollView({ name: source.isChat ? '' : 'summary-notification-stack-scrollview',
+        this.notificationStackView = new St.ScrollView({ style_class: source.isChat ? '' : 'summary-notification-stack-scrollview',
                                                          vscrollbar_policy: source.isChat ? Gtk.PolicyType.NEVER : Gtk.PolicyType.AUTOMATIC,
-                                                         hscrollbar_policy: Gtk.PolicyType.NEVER,
-                                                         style_class: 'vfade' });
-        this.notificationStack = new St.BoxLayout({ name: 'summary-notification-stack',
-                                                     vertical: true });
+                                                         hscrollbar_policy: Gtk.PolicyType.NEVER });
+        this.notificationStackView.add_style_class_name('vfade');
+        this.notificationStack = new St.BoxLayout({ style_class: 'summary-notification-stack',
+                                                    vertical: true });
         this.notificationStackView.add_actor(this.notificationStack);
         this._stackedNotifications = [];
 
