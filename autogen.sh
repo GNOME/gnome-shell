@@ -20,17 +20,22 @@ test $TEST_TYPE $FILE || {
 # https://bugzilla.gnome.org/show_bug.cgi?id=661128
 touch -t 200001010000 po/cogl.pot
 
-if automake-1.11 --version < /dev/null > /dev/null 2>&1 ; then
-    AUTOMAKE=automake-1.11
-    ACLOCAL=aclocal-1.11
-    export AUTOMAKE ACLOCAL
-else
-        echo
-        echo "You must have automake 1.11.x installed to compile $PROJECT
-ECT."
-        echo "Install the appropriate package for your distribution,"
-        echo "or get the source tarball at http://ftp.gnu.org/gnu/automake/"
-        exit 1
+AUTOMAKE_VERSIONS="1.12 1.11"
+for version in $AUTOMAKE_VERSIONS; do
+	if automake-$version --version < /dev/null > /dev/null 2>&1 ; then
+		AUTOMAKE=automake-$version
+		ACLOCAL=aclocal-$version
+		export AUTOMAKE ACLOCAL
+		break
+	fi
+done
+
+if test -z "$AUTOMAKE"; then
+	echo
+	echo "You must have one of automake $AUTOMAKE_VERSIONS to compile $PROJECT."
+	echo "Install the appropriate package for your distribution,"
+	echo "or get the source tarball at http://ftp.gnu.org/gnu/automake/"
+	exit 1
 fi
 
 (gtkdocize --version) < /dev/null > /dev/null 2>&1 || {
