@@ -1,3 +1,14 @@
+3.5.5
+=====
+* Fix flickering around windows when using window group [Tom; #681221]
+
+Contributor(s):
+  Tom Beckmann
+
+Translations:
+  Chao-Hsiung Liao [zh_HK, zh_TW], Matej Urbančič [sl], Fran Diéguez [gl],
+  Мирослав Николић [sr, sr@latin], Yaron Shahrabani [he], Kjartan Maraas [nb]
+
 3.5.4
 =====
 * Make it possible to reimplement move-to-workspace keybindings from plugins
