@@ -134,6 +134,10 @@ gboolean st_theme_node_lookup_length (StThemeNode *node,
                                       const char  *property_name,
                                       gboolean     inherit,
                                       gdouble     *length);
+gboolean st_theme_node_lookup_time   (StThemeNode *node,
+                                      const char  *property_name,
+                                      gboolean     inherit,
+                                      gdouble     *value);
 gboolean st_theme_node_lookup_shadow (StThemeNode  *node,
                                       const char   *property_name,
                                       gboolean      inherit,

@@ -359,7 +359,7 @@ StScrollBar StButton#vhandle:active {
     background-gradient-start: rgba(5,5,6,0.1);
     background-gradient-end: rgba(254,254,254,0.1);
     background-gradient-direction: vertical;
-    transition-duration: 300;
+    transition-duration: 300ms;
     box-shadow: inset 0px 2px 4px rgba(0,0,0,0.6);
 }
 
@@ -394,7 +394,7 @@ StScrollBar StButton#vhandle:active {
     color: rgb(64, 64, 64);
     caret-color: rgb(64, 64, 64);
     font-weight: bold;
-    transition-duration: 0;
+    transition-duration: 0ms;
 }
 
 .notification StEntry,
@@ -425,7 +425,7 @@ StScrollBar StButton#vhandle:active {
     background-color: black;
     font-weight: bold;
     height: 1.86em;
-    transition-duration: 250;
+    transition-duration: 250ms;
 }
 
 #panel.lock-screen {
@@ -508,7 +508,7 @@ StScrollBar StButton#vhandle:active {
     -minimum-hpadding: 6px;
     font-weight: bold;
     color: #ccc;
-    transition-duration: 100;
+    transition-duration: 100ms;
 }
 
 #panel.unlock-screen .panel-button,
@@ -922,7 +922,7 @@ StScrollBar StButton#vhandle:active {
     border-radius: 4px;
     padding: 3px;
     border: 1px rgba(0,0,0,0);
-    transition-duration: 100;
+    transition-duration: 100ms;
     text-align: center;
 }
 
@@ -939,7 +939,7 @@ StScrollBar StButton#vhandle:active {
 .grid-search-result:hover .overview-icon {
     background-color: rgba(255,255,255,0.1);
     text-shadow: black 0px 2px 2px;
-    transition-duration: 100;
+    transition-duration: 100ms;
     color:white;
 }
 
@@ -961,13 +961,13 @@ StScrollBar StButton#vhandle:active {
     background-gradient-direction: vertical;
     border-radius: 4px;
     box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 1);
-    transition-duration: 100;
+    transition-duration: 100ms;
 }
 
 .show-apps:checked .show-apps-icon,
 .show-apps:focus .show-apps-icon {
     color: white;
-    transition-duration: 100;
+    transition-duration: 100ms;
 }
 
 .app-well-app:focus > .overview-icon,
@@ -1006,7 +1006,7 @@ StScrollBar StButton#vhandle:active {
     -minimum-hpadding: 6px;
     font-weight: bold;
     color: #ccc;
-    transition-duration: 100;
+    transition-duration: 100ms;
     padding-left: .3em;
     padding-right: .3em;
 }
@@ -1309,7 +1309,8 @@ StScrollBar StButton#vhandle:active {
 #message-tray {
     background: #2e3436 url(message-tray-background.png);
     background-repeat: repeat;
-    transition-duration: 250;
+    transition-duration: 250ms;
+    height: 72px;
 }
 
 #message-tray:keyboard {
@@ -1579,7 +1580,7 @@ StScrollBar StButton#vhandle:active {
 .summary-source {
     border-radius: 4px;
     padding: 0 6px 0 6px;
-    transition-duration: 100;
+    transition-duration: 100ms;
 }
 
 .summary-source-counter {

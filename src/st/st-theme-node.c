@@ -771,6 +771,72 @@ st_theme_node_lookup_double (StThemeNode *node,
 }
 
 /**
+ * st_theme_node_lookup_time:
+ * @node: a #StThemeNode
+ * @property_name: The name of the time property
+ * @inherit: if %TRUE, if a value is not found for the property on the
+ *   node, then it will be looked up on the parent node, and then on the
+ *   parent's parent, and so forth. Note that if the property has a
+ *   value of 'inherit' it will be inherited even if %FALSE is passed
+ *   in for @inherit; this only affects the default behavior for inheritance.
+ * @value: (out): location to store the value that was determined.
+ *   If the property is not found, the value in this location
+ *   will not be changed.
+ *
+ * Generically looks up a property containing a single time value,
+ *  which is converted to milliseconds.
+ *
+ * Return value: %TRUE if the property was found in the properties for this
+ *  theme node (or in the properties of parent nodes when inheriting.)
+ */
+gboolean
+st_theme_node_lookup_time (StThemeNode *node,
+                           const char  *property_name,
+                           gboolean     inherit,
+                           double      *value)
+{
+  gboolean result = FALSE;
+  int i;
+
+  ensure_properties (node);
+
+  for (i = node->n_properties - 1; i >= 0; i--)
+    {
+      CRDeclaration *decl = node->properties[i];
+
+      if (strcmp (decl->property->stryng->str, property_name) == 0)
+        {
+          CRTerm *term = decl->value;
+
+          if (term->type != TERM_NUMBER)
+            continue;
+
+          switch (term->content.num->type)
+            {
+            case NUM_TIME_S:
+              *value = 1000 * term->content.num->val;
+              result = TRUE;
+              break;
+            case NUM_TIME_MS:
+              *value = term->content.num->val;
+              result = TRUE;
+              break;
+            default:
+              ;
+            }
+
+          if (result)
+            break;
+        }
+    }
+
+  if (!result && inherit && node->parent_node)
+    result = st_theme_node_lookup_time (node->parent_node, property_name, inherit, value);
+
+  return result;
+}
+
+/**
  * st_theme_node_get_double:
  * @node: a #StThemeNode
  * @property_name: The name of the numeric property
@@ -2063,7 +2129,7 @@ st_theme_node_get_transition_duration (StThemeNode *node)
   if (node->transition_duration > -1)
     return st_slow_down_factor * node->transition_duration;
 
-  st_theme_node_lookup_double (node, "transition-duration", FALSE, &value);
+  st_theme_node_lookup_time (node, "transition-duration", FALSE, &value);
 
   node->transition_duration = (int)value;
 
