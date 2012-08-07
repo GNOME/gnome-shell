@@ -384,3 +384,362 @@ test_gles2_context (void)
   if (cogl_test_verbose ())
     g_print ("OK\n");
 }
+
+static GLuint
+create_shader (const CoglGLES2Vtable *gles2,
+               GLenum type,
+               const char *source)
+{
+  GLuint shader;
+  GLint status;
+  int length = strlen (source);
+
+  shader = gles2->glCreateShader (type);
+  gles2->glShaderSource (shader, 1, &source, &length);
+  gles2->glCompileShader (shader);
+  gles2->glGetShaderiv (shader, GL_COMPILE_STATUS, &status);
+
+  if (!status)
+    {
+      char buf[512];
+
+      gles2->glGetShaderInfoLog (shader, sizeof (buf), NULL, buf);
+
+      g_error ("Shader compilation failed:\n%s", buf);
+    }
+
+  return shader;
+}
+
+static GLuint
+create_program (const CoglGLES2Vtable *gles2,
+                const char *vertex_shader_source,
+                const char *fragment_shader_source)
+{
+  GLuint fragment_shader, vertex_shader, program;
+  GLint status;
+
+  vertex_shader =
+    create_shader (gles2, GL_VERTEX_SHADER, vertex_shader_source);
+  fragment_shader =
+    create_shader (gles2, GL_FRAGMENT_SHADER, fragment_shader_source);
+
+  program = gles2->glCreateProgram ();
+  gles2->glAttachShader (program, vertex_shader);
+  gles2->glAttachShader (program, fragment_shader);
+  gles2->glLinkProgram (program);
+
+  gles2->glGetProgramiv (program, GL_LINK_STATUS, &status);
+
+  if (!status)
+    {
+      char buf[512];
+
+      gles2->glGetProgramInfoLog (program, sizeof (buf), NULL, buf);
+
+      g_error ("Program linking failed:\n%s", buf);
+    }
+
+  return program;
+}
+
+typedef struct
+{
+  const CoglGLES2Vtable *gles2;
+  GLint color_location;
+  GLint pos_location;
+  int fb_width, fb_height;
+} PaintData;
+
+typedef void (* PaintMethod) (PaintData *data);
+
+/* Top vertices are counter-clockwise */
+static const float top_vertices[] =
+  {
+    -1.0f, 0.0f,
+    1.0f, 0.0f,
+    -1.0f, 1.0f,
+    1.0f, 1.0f
+  };
+/* Bottom vertices are clockwise */
+static const float bottom_vertices[] =
+  {
+    1.0f, 0.0f,
+    1.0f, -1.0f,
+    -1.0f, 0.0f,
+    -1.0f, -1.0f
+  };
+
+static void
+paint_quads (PaintData *data)
+{
+  const CoglGLES2Vtable *gles2 = data->gles2;
+
+  gles2->glEnableVertexAttribArray (data->pos_location);
+
+  /* Paint the top half in red */
+  gles2->glUniform4f (data->color_location,
+                      1.0f, 0.0f, 0.0f, 1.0f);
+  gles2->glVertexAttribPointer (data->pos_location,
+                                2, /* size */
+                                GL_FLOAT,
+                                GL_FALSE, /* not normalized */
+                                sizeof (float) * 2,
+                                top_vertices);
+  gles2->glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
+
+  /* Paint the bottom half in blue */
+  gles2->glUniform4f (data->color_location,
+                      0.0f, 0.0f, 1.0f, 1.0f);
+  gles2->glVertexAttribPointer (data->pos_location,
+                                2, /* size */
+                                GL_FLOAT,
+                                GL_FALSE, /* not normalized */
+                                sizeof (float) * 2,
+                                bottom_vertices);
+  gles2->glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
+}
+
+static void
+paint_viewport (PaintData *data)
+{
+  const CoglGLES2Vtable *gles2 = data->gles2;
+  int viewport[4];
+
+  /* Vertices to fill the entire framebuffer */
+  static const float vertices[] =
+    {
+      -1.0f, -1.0f,
+      1.0f, -1.0f,
+      -1.0f, 1.0f,
+      1.0f, 1.0f
+    };
+
+  gles2->glEnableVertexAttribArray (data->pos_location);
+  gles2->glVertexAttribPointer (data->pos_location,
+                                2, /* size */
+                                GL_FLOAT,
+                                GL_FALSE, /* not normalized */
+                                sizeof (float) * 2,
+                                vertices);
+
+  /* Paint the top half in red */
+  gles2->glViewport (0, data->fb_height / 2,
+                     data->fb_width, data->fb_height / 2);
+  gles2->glUniform4f (data->color_location,
+                      1.0f, 0.0f, 0.0f, 1.0f);
+  gles2->glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
+
+  /* Paint the bottom half in blue */
+  gles2->glViewport (0, 0, data->fb_width, data->fb_height / 2);
+  gles2->glUniform4f (data->color_location,
+                      0.0f, 0.0f, 1.0f, 1.0f);
+  gles2->glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
+
+  gles2->glGetIntegerv (GL_VIEWPORT, viewport);
+  g_assert_cmpint (viewport[0], ==, 0.0f);
+  g_assert_cmpint (viewport[1], ==, 0.0f);
+  g_assert_cmpint (viewport[2], ==, data->fb_width);
+  g_assert_cmpint (viewport[3], ==, data->fb_height / 2);
+}
+
+static void
+paint_scissor (PaintData *data)
+{
+  const CoglGLES2Vtable *gles2 = data->gles2;
+  float scissor[4];
+
+  gles2->glEnable (GL_SCISSOR_TEST);
+
+  /* Paint the top half in red */
+  gles2->glScissor (0, data->fb_height / 2,
+                    data->fb_width, data->fb_height / 2);
+  gles2->glClearColor (1.0, 0.0, 0.0, 1.0);
+  gles2->glClear (GL_COLOR_BUFFER_BIT);
+
+  /* Paint the bottom half in blue */
+  gles2->glScissor (0, 0, data->fb_width, data->fb_height / 2);
+  gles2->glClearColor (0.0, 0.0, 1.0, 1.0);
+  gles2->glClear (GL_COLOR_BUFFER_BIT);
+
+  gles2->glGetFloatv (GL_SCISSOR_BOX, scissor);
+  g_assert_cmpfloat (scissor[0], ==, 0.0f);
+  g_assert_cmpfloat (scissor[1], ==, 0.0f);
+  g_assert_cmpfloat (scissor[2], ==, data->fb_width);
+  g_assert_cmpfloat (scissor[3], ==, data->fb_height / 2);
+}
+
+static void
+paint_cull (PaintData *data)
+{
+  const CoglGLES2Vtable *gles2 = data->gles2;
+  GLint front_face;
+  int i;
+
+  gles2->glEnableVertexAttribArray (data->pos_location);
+  gles2->glEnable (GL_CULL_FACE);
+
+  /* First time round we'll use GL_CCW as the front face so that the
+   * bottom quad will be culled */
+  gles2->glFrontFace (GL_CCW);
+  gles2->glUniform4f (data->color_location,
+                      1.0f, 0.0f, 0.0f, 1.0f);
+
+  gles2->glGetIntegerv (GL_FRONT_FACE, &front_face);
+  g_assert_cmpint (front_face, ==, GL_CCW);
+
+  for (i = 0; i < 2; i++)
+    {
+      /* Paint both quads in the same color. One of these will be
+       * culled */
+      gles2->glVertexAttribPointer (data->pos_location,
+                                    2, /* size */
+                                    GL_FLOAT,
+                                    GL_FALSE, /* not normalized */
+                                    sizeof (float) * 2,
+                                    top_vertices);
+      gles2->glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
+
+      gles2->glVertexAttribPointer (data->pos_location,
+                                    2, /* size */
+                                    GL_FLOAT,
+                                    GL_FALSE, /* not normalized */
+                                    sizeof (float) * 2,
+                                    bottom_vertices);
+      gles2->glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
+
+      /* Second time round we'll use GL_CW as the front face so that the
+       * top quad will be culled */
+      gles2->glFrontFace (GL_CW);
+      gles2->glUniform4f (data->color_location,
+                          0.0f, 0.0f, 1.0f, 1.0f);
+
+      gles2->glGetIntegerv (GL_FRONT_FACE, &front_face);
+      g_assert_cmpint (front_face, ==, GL_CW);
+    }
+}
+
+static void
+verify_read_pixels (const PaintData *data)
+{
+  int stride = data->fb_width * 4;
+  uint8_t *buf = g_malloc (data->fb_height * stride);
+
+  data->gles2->glReadPixels (0, 0, /* x/y */
+                             data->fb_width, data->fb_height,
+                             GL_RGBA,
+                             GL_UNSIGNED_BYTE,
+                             buf);
+
+  /* In GL, the lines earlier in the buffer are the bottom */
+  /* Bottom should be blue */
+  test_utils_compare_pixel (buf + data->fb_width / 2 * 4 +
+                            data->fb_height / 4 * stride,
+                            0x0000ffff);
+  /* Top should be red */
+  test_utils_compare_pixel (buf + data->fb_width / 2 * 4 +
+                            data->fb_height * 3 / 4 * stride,
+                            0xff0000ff);
+
+  g_free (buf);
+}
+
+void
+test_gles2_context_fbo (void)
+{
+  static const char vertex_shader_source[] =
+    "attribute vec2 pos;\n"
+    "\n"
+    "void\n"
+    "main ()\n"
+    "{\n"
+    "  gl_Position = vec4 (pos, 0.0, 1.0);\n"
+    "}\n";
+  static const char fragment_shader_source[] =
+    "precision mediump float;\n"
+    "uniform vec4 color;\n"
+    "\n"
+    "void\n"
+    "main ()\n"
+    "{\n"
+    "  gl_FragColor = color;\n"
+    "}\n";
+  static const PaintMethod paint_methods[] =
+    {
+      paint_quads,
+      paint_viewport,
+      paint_scissor,
+      paint_cull
+    };
+  int i;
+  PaintData data;
+
+  data.fb_width = cogl_framebuffer_get_width (fb);
+  data.fb_height = cogl_framebuffer_get_height (fb);
+
+  for (i = 0; i < G_N_ELEMENTS (paint_methods); i++)
+    {
+      CoglTexture *offscreen_texture;
+      CoglOffscreen *offscreen;
+      CoglPipeline *pipeline;
+      CoglGLES2Context *gles2_ctx;
+      GLuint program;
+      GError *error = NULL;
+
+      create_gles2_context (&offscreen_texture,
+                            &offscreen,
+                            &pipeline,
+                            &gles2_ctx,
+                            &data.gles2);
+
+      if (!cogl_push_gles2_context (ctx,
+                                    gles2_ctx,
+                                    COGL_FRAMEBUFFER (offscreen),
+                                    COGL_FRAMEBUFFER (offscreen),
+                                    &error))
+        g_error ("Failed to push gles2 context: %s\n", error->message);
+
+      program = create_program (data.gles2,
+                                vertex_shader_source,
+                                fragment_shader_source);
+
+      data.gles2->glClearColor (1.0, 1.0, 0.0, 1.0);
+      data.gles2->glClear (GL_COLOR_BUFFER_BIT);
+
+      data.gles2->glUseProgram (program);
+
+      data.color_location = data.gles2->glGetUniformLocation (program, "color");
+      if (data.color_location == -1)
+        g_error ("Couldn't find ‘color’ uniform");
+
+      data.pos_location = data.gles2->glGetAttribLocation (program, "pos");
+      if (data.pos_location == -1)
+        g_error ("Couldn't find ‘pos’ attribute");
+
+      paint_methods[i] (&data);
+
+      verify_read_pixels (&data);
+
+      cogl_pop_gles2_context (ctx);
+
+      cogl_object_unref (offscreen);
+      cogl_object_unref (gles2_ctx);
+
+      cogl_framebuffer_draw_rectangle (fb,
+                                       pipeline,
+                                       -1.0f, 1.0f,
+                                       1.0f, -1.0f);
+
+      cogl_object_unref (pipeline);
+      cogl_object_unref (offscreen_texture);
+
+      /* Top half of the framebuffer should be red */
+      test_utils_check_pixel (fb,
+                              data.fb_width / 2, data.fb_height / 4,
+                              0xff0000ff);
+      /* Bottom half should be blue */
+      test_utils_check_pixel (fb,
+                              data.fb_width / 2, data.fb_height * 3 / 4,
+                              0x0000ffff);
+    }
+}

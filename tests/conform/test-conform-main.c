@@ -103,6 +103,7 @@ main (int argc, char **argv)
   UNPORTED_TEST (test_viewport);
 
   ADD_TEST (test_gles2_context, TEST_REQUIREMENT_GLES2_CONTEXT);
+  ADD_TEST (test_gles2_context_fbo, TEST_REQUIREMENT_GLES2_CONTEXT);
 
   ADD_TEST (test_euler_quaternion, 0);
 
