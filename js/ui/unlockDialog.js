@@ -101,7 +101,7 @@ const UnlockDialog = new Lang.Class({
         this.contentLayout.add_actor(this._userWidget.actor);
 
         this._promptLayout = new St.BoxLayout({ style_class: 'login-dialog-prompt-layout',
-                                                vertical: false });
+                                                vertical: true });
 
         this._promptLabel = new St.Label({ style_class: 'login-dialog-prompt-label' });
         this._promptLayout.add(this._promptLabel,
