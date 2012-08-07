@@ -61,10 +61,10 @@ const ModalDialog = new Lang.Class({
         this._backgroundBin = new St.Bin();
         this._group.add_actor(this._backgroundBin);
 
-        this._dialogLayout = new St.BoxLayout({ style_class: 'modal-dialog',
-                                                vertical:    true });
+        this.dialogLayout = new St.BoxLayout({ style_class: 'modal-dialog',
+                                               vertical:    true });
         if (params.styleClass != null) {
-            this._dialogLayout.add_style_class_name(params.styleClass);
+            this.dialogLayout.add_style_class_name(params.styleClass);
         }
 
         if (!this._shellReactive) {
@@ -77,29 +77,29 @@ const ModalDialog = new Lang.Class({
 
             this._eventBlocker = new Clutter.Group({ reactive: true });
             stack.add_actor(this._eventBlocker);
-            stack.add_actor(this._dialogLayout);
+            stack.add_actor(this.dialogLayout);
         } else {
-            this._backgroundBin.child = this._dialogLayout;
+            this._backgroundBin.child = this.dialogLayout;
         }
 
 
         this.contentLayout = new St.BoxLayout({ vertical: true });
-        this._dialogLayout.add(this.contentLayout,
-                               { x_fill:  true,
-                                 y_fill:  true,
-                                 x_align: St.Align.MIDDLE,
-                                 y_align: St.Align.START });
+        this.dialogLayout.add(this.contentLayout,
+                              { x_fill:  true,
+                                y_fill:  true,
+                                x_align: St.Align.MIDDLE,
+                                y_align: St.Align.START });
 
         this._buttonLayout = new St.BoxLayout({ style_class: 'modal-dialog-button-box',
                                                 visible:     false,
                                                 vertical:    false });
-        this._dialogLayout.add(this._buttonLayout,
-                               { expand:  true,
-                                 x_align: St.Align.MIDDLE,
-                                 y_align: St.Align.END });
+        this.dialogLayout.add(this._buttonLayout,
+                              { expand:  true,
+                                x_align: St.Align.MIDDLE,
+                                y_align: St.Align.END });
 
-        global.focus_manager.add_group(this._dialogLayout);
-        this._initialKeyFocus = this._dialogLayout;
+        global.focus_manager.add_group(this.dialogLayout);
+        this._initialKeyFocus = this.dialogLayout;
         this._initialKeyFocusDestroyId = 0;
         this._savedKeyFocus = null;
     },
@@ -203,7 +203,7 @@ const ModalDialog = new Lang.Class({
 
         this.state = State.OPENING;
 
-        this._dialogLayout.opacity = 255;
+        this.dialogLayout.opacity = 255;
         if (this._lightbox)
             this._lightbox.show();
         this._group.opacity = 0;
@@ -227,7 +227,7 @@ const ModalDialog = new Lang.Class({
         this._initialKeyFocus = actor;
 
         this._initialKeyFocusDestroyId = actor.connect('destroy', Lang.bind(this, function() {
-            this._initialKeyFocus = this._dialogLayout;
+            this._initialKeyFocus = this.dialogLayout;
             this._initialKeyFocusDestroyId = 0;
         }));
     },
@@ -320,7 +320,7 @@ const ModalDialog = new Lang.Class({
             return;
 
         this.popModal(timestamp);
-        Tweener.addTween(this._dialogLayout,
+        Tweener.addTween(this.dialogLayout,
                          { opacity: 0,
                            time:    FADE_OUT_DIALOG_TIME,
                            transition: 'easeOutQuad',
