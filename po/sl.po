@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-25 13:27+0000\n"
-"PO-Revision-Date: 2012-05-28 14:31+0100\n"
+"POT-Creation-Date: 2012-08-07 05:19+0000\n"
+"PO-Revision-Date: 2012-08-07 09:19+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -35,6 +35,18 @@ msgstr "Posebna določila razhroščevanja:"
 #: ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "Omogoči vse ne-prikazne možnosti razhroščevanja"
+
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "Dodatne okoljske spremenljivke:"
+
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr "Z vejico ločen seznam razširitev GL, ki naj bi bile onemogočene"
+
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr "Prepiši različico GL, za katero je predvidena podpora gonilnikov"
 
 #: ../cogl/cogl-debug-options.h:25
 #: ../cogl/cogl-debug-options.h:30
