@@ -30,6 +30,8 @@
 #include "config.h"
 #endif
 
+#include <string.h>
+
 #include "cogl-gles2.h"
 #include "cogl-gles2-context-private.h"
 
@@ -48,6 +50,30 @@ COGL_OBJECT_DEFINE (GLES2Context, gles2_context);
 static CoglGLES2Context *current_gles2_context;
 
 static CoglUserDataKey offscreen_wrapper_key;
+
+/* The application's main function is renamed to this so that we can
+ * provide an alternative main function */
+#define MAIN_WRAPPER_REPLACEMENT_NAME "_c31"
+/* This uniform is used to flip the rendering or not depending on
+ * whether we are rendering to an offscreen buffer or not */
+#define MAIN_WRAPPER_FLIP_UNIFORM "_cogl_flip_vector"
+
+/* This wrapper function around 'main' is appended to every program in
+ * a separate shader so that we can add some extra code to flip the
+ * rendering when rendering to an offscreen buffer */
+static const char
+main_wrapper_function[] =
+  "uniform vec4 " MAIN_WRAPPER_FLIP_UNIFORM ";\n"
+  "\n"
+  "void\n"
+  MAIN_WRAPPER_REPLACEMENT_NAME " ();\n"
+  "\n"
+  "void\n"
+  "main ()\n"
+  "{\n"
+  "  " MAIN_WRAPPER_REPLACEMENT_NAME " ();\n"
+  "  gl_Position *= " MAIN_WRAPPER_FLIP_UNIFORM ";\n"
+  "}\n";
 
 enum {
   RESTORE_FB_NONE,
@@ -98,6 +124,63 @@ detach_shader (CoglGLES2ProgramData *program_data,
     }
 }
 
+static CoglBool
+is_symbol_character (char ch)
+{
+  return g_ascii_isalnum (ch) || ch == '_';
+}
+
+static void
+replace_token (char *string,
+               const char *token,
+               const char *replacement,
+               int length)
+{
+  char *token_pos;
+  char *last_pos = string;
+  char *end = string + length;
+  int token_length = strlen (token);
+
+  /* NOTE: this assumes token and replacement are the same length */
+
+  while ((token_pos = _cogl_util_memmem (last_pos,
+                                         end - last_pos,
+                                         token,
+                                         token_length)))
+    {
+      /* Make sure this isn't in the middle of some longer token */
+      if ((token_pos <= string ||
+           !is_symbol_character (token_pos[-1])) &&
+          (token_pos + token_length == end ||
+           !is_symbol_character (token_pos[token_length])))
+        memcpy (token_pos, replacement, token_length);
+
+      last_pos = token_pos + token_length;
+    }
+}
+
+static void
+update_current_flip_state (CoglGLES2Context *gles2_ctx)
+{
+  CoglGLES2FlipState new_flip_state;
+
+  if (gles2_ctx->current_fbo_handle == 0 &&
+      cogl_is_offscreen (gles2_ctx->write_buffer))
+    new_flip_state = COGL_GLES2_FLIP_STATE_FLIPPED;
+  else
+    new_flip_state = COGL_GLES2_FLIP_STATE_NORMAL;
+
+  /* If the flip state has changed then we need to reflush all of the
+   * dependent state */
+  if (new_flip_state != gles2_ctx->current_flip_state)
+    {
+      gles2_ctx->viewport_dirty = TRUE;
+      gles2_ctx->scissor_dirty = TRUE;
+      gles2_ctx->front_face_dirty = TRUE;
+      gles2_ctx->current_flip_state = new_flip_state;
+    }
+}
+
 /* We wrap glBindFramebuffer so that when framebuffer 0 is bound
  * we can instead bind the write_framebuffer passed to
  * cogl_push_gles2_context().
@@ -116,6 +199,8 @@ gl_bind_framebuffer_wrapper (GLenum target, GLuint framebuffer)
     }
 
   gles2_ctx->context->glBindFramebuffer (target, framebuffer);
+
+  update_current_flip_state (gles2_ctx);
 }
 
 static int
@@ -192,6 +277,93 @@ gl_read_pixels_wrapper (GLint x,
   gles2_ctx->context->glReadPixels (x, y, width, height, format, type, pixels);
 
   restore_write_buffer (gles2_ctx, restore_mode);
+
+  /* If the read buffer is a CoglOffscreen then the data will be
+   * upside down compared to what GL expects so we need to flip it */
+  if (gles2_ctx->current_fbo_handle == 0 &&
+      cogl_is_offscreen (gles2_ctx->read_buffer))
+    {
+      int bpp, bytes_per_row, stride, y;
+      uint8_t *bytes = pixels;
+      uint8_t *temprow;
+
+      /* Try to determine the bytes per pixel for the given
+       * format/type combination. If there's a format which doesn't
+       * make sense then we'll just give up because GL will probably
+       * have just thrown an error */
+      switch (format)
+        {
+        case GL_RGB:
+          switch (type)
+            {
+            case GL_UNSIGNED_BYTE:
+              bpp = 3;
+              break;
+
+            case GL_UNSIGNED_SHORT_5_6_5:
+              bpp = 2;
+              break;
+
+            default:
+              return;
+            }
+          break;
+
+        case GL_RGBA:
+          switch (type)
+            {
+            case GL_UNSIGNED_BYTE:
+              bpp = 4;
+              break;
+
+            case GL_UNSIGNED_SHORT_4_4_4_4:
+            case GL_UNSIGNED_SHORT_5_5_5_1:
+              bpp = 2;
+              break;
+
+            default:
+              return;
+            }
+          break;
+
+        case GL_ALPHA:
+          switch (type)
+            {
+            case GL_UNSIGNED_BYTE:
+              bpp = 1;
+              break;
+
+            default:
+              return;
+            }
+          break;
+
+        default:
+          return;
+        }
+
+      bytes_per_row = bpp * width;
+      stride = ((bytes_per_row + gles2_ctx->pack_alignment - 1) &
+                ~(gles2_ctx->pack_alignment - 1));
+      temprow = g_alloca (bytes_per_row);
+
+      /* vertically flip the buffer in-place */
+      for (y = 0; y < height / 2; y++)
+        {
+          if (y != height - y - 1) /* skip center row */
+            {
+              memcpy (temprow,
+                      bytes + y * stride,
+                      bytes_per_row);
+              memcpy (bytes + y * stride,
+                      bytes + (height - y - 1) * stride,
+                      bytes_per_row);
+              memcpy (bytes + (height - y - 1) * stride,
+                      temprow,
+                      bytes_per_row);
+            }
+        }
+    }
 }
 
 static void
@@ -292,10 +464,14 @@ gl_create_program_wrapper (void)
       data->ref_count = 1;
       data->deleted = FALSE;
       data->context = gles2_ctx;
+      data->flip_vector_location = 0;
+      data->flip_vector_state = COGL_GLES2_FLIP_STATE_UNKNOWN;
 
       g_hash_table_insert (gles2_ctx->program_map,
                            GINT_TO_POINTER (id),
                            data);
+
+      gles2_ctx->context->glAttachShader (id, gles2_ctx->wrapper_shader);
     }
 
   return id;
@@ -378,6 +554,521 @@ gl_detach_shader_wrapper (GLuint program,
 }
 
 static void
+gl_shader_source_wrapper (GLuint shader,
+                          GLsizei count,
+                          const char *const *string,
+                          const GLint *length)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+  CoglGLES2ShaderData *shader_data;
+
+  if ((shader_data = g_hash_table_lookup (gles2_ctx->shader_map,
+                                          GINT_TO_POINTER (shader))) &&
+      shader_data->type == GL_VERTEX_SHADER)
+    {
+      char **string_copy = g_alloca (count * sizeof (char *));
+      int i;
+
+      /* Replace any occurences of the symbol 'main' with a different
+       * symbol so that we can provide our own wrapper main
+       * function */
+
+      for (i = 0; i < count; i++)
+        {
+          int string_length = length ? length[i] : strlen (string[i]);
+
+          string_copy[i] = g_memdup (string[i], string_length);
+
+          replace_token (string_copy[i],
+                         "main",
+                         MAIN_WRAPPER_REPLACEMENT_NAME,
+                         string_length);
+        }
+
+      gles2_ctx->context->glShaderSource (shader,
+                                          count,
+                                          (const char *const *) string_copy,
+                                          length);
+
+      for (i = 0; i < count; i++)
+        g_free (string_copy[i]);
+    }
+  else
+    gles2_ctx->context->glShaderSource (shader, count, string, length);
+}
+
+static void
+gl_get_shader_source_wrapper (GLuint shader,
+                              GLsizei buf_size,
+                              GLsizei *length_out,
+                              GLchar *source)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+  CoglGLES2ShaderData *shader_data;
+  GLsizei length;
+
+  gles2_ctx->context->glGetShaderSource (shader,
+                                         buf_size,
+                                         &length,
+                                         source);
+
+  if ((shader_data = g_hash_table_lookup (gles2_ctx->shader_map,
+                                          GINT_TO_POINTER (shader))) &&
+      shader_data->type == GL_VERTEX_SHADER)
+    {
+      GLsizei copy_length = MIN (length, buf_size - 1);
+      replace_token (source,
+                     MAIN_WRAPPER_REPLACEMENT_NAME,
+                     "main",
+                     copy_length);
+    }
+
+  if (length_out)
+    *length_out = length;
+}
+
+static void
+gl_link_program_wrapper (GLuint program)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+  CoglGLES2ProgramData *program_data;
+
+  gles2_ctx->context->glLinkProgram (program);
+
+  program_data = g_hash_table_lookup (gles2_ctx->program_map,
+                                      GINT_TO_POINTER (program));
+
+  if (program_data)
+    {
+      GLint status;
+
+      gles2_ctx->context->glGetProgramiv (program, GL_LINK_STATUS, &status);
+
+      if (status)
+        program_data->flip_vector_location =
+          gles2_ctx->context->glGetUniformLocation (program,
+                                                    MAIN_WRAPPER_FLIP_UNIFORM);
+    }
+}
+
+static void
+gl_get_program_iv_wrapper (GLuint program,
+                           GLenum pname,
+                           GLint *params)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+
+  gles2_ctx->context->glGetProgramiv (program, pname, params);
+
+  switch (pname)
+    {
+    case GL_ATTACHED_SHADERS:
+      /* Decrease the number of shaders to try and hide the shader
+       * wrapper we added */
+      if (*params > 1)
+        (*params)--;
+      break;
+    }
+}
+
+static void
+gl_get_attached_shaders_wrapper (GLuint program,
+                                 GLsizei max_count,
+                                 GLsizei *count_ret,
+                                 GLuint *obj)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+  GLuint *tmp_buf;
+  GLsizei count, count_out;
+  int i;
+
+  /* We need to remove the wrapper shader we added from this list */
+
+  /* Allocate a temporary buffer that is one larger than the buffer
+   * passed in in case the application allocated exactly the size
+   * returned by GL_ATTACHED_SHADERS. */
+  tmp_buf = g_alloca (sizeof (GLuint) * (max_count + 1));
+
+  gles2_ctx->context->glGetAttachedShaders (program,
+                                            max_count + 1,
+                                            &count,
+                                            tmp_buf);
+
+  for (i = 0, count_out = 0; i < count; i++)
+    if (tmp_buf[i] != gles2_ctx->wrapper_shader)
+      obj[count_out++] = tmp_buf[i];
+
+  if (count_ret)
+    *count_ret = count_out;
+}
+
+static void
+flush_viewport_state (CoglGLES2Context *gles2_ctx)
+{
+  if (gles2_ctx->viewport_dirty)
+    {
+      int y;
+
+      if (gles2_ctx->current_flip_state == COGL_GLES2_FLIP_STATE_FLIPPED)
+        {
+          /* We need to know the height of the current framebuffer in
+           * order to flip the viewport. Fortunately we don't need to
+           * track the height of the FBOs created within the GLES2
+           * context because we would never be flipping if they are
+           * bound so we can just assume Cogl's framebuffer is bound
+           * when we are flipping */
+          int fb_height = cogl_framebuffer_get_height (gles2_ctx->write_buffer);
+          y = fb_height - (gles2_ctx->viewport[1] + gles2_ctx->viewport[3]);
+        }
+      else
+        y = gles2_ctx->viewport[1];
+
+      gles2_ctx->context->glViewport (gles2_ctx->viewport[0],
+                                      y,
+                                      gles2_ctx->viewport[2],
+                                      gles2_ctx->viewport[3]);
+
+      gles2_ctx->viewport_dirty = FALSE;
+    }
+}
+
+static void
+flush_scissor_state (CoglGLES2Context *gles2_ctx)
+{
+  if (gles2_ctx->scissor_dirty)
+    {
+      int y;
+
+      if (gles2_ctx->current_flip_state == COGL_GLES2_FLIP_STATE_FLIPPED)
+        {
+          /* See comment above about the viewport flipping */
+          int fb_height = cogl_framebuffer_get_height (gles2_ctx->write_buffer);
+          y = fb_height - (gles2_ctx->scissor[1] + gles2_ctx->scissor[3]);
+        }
+      else
+        y = gles2_ctx->scissor[1];
+
+      gles2_ctx->context->glScissor (gles2_ctx->scissor[0],
+                                     y,
+                                     gles2_ctx->scissor[2],
+                                     gles2_ctx->scissor[3]);
+
+      gles2_ctx->scissor_dirty = FALSE;
+    }
+}
+
+static void
+flush_front_face_state (CoglGLES2Context *gles2_ctx)
+{
+  if (gles2_ctx->front_face_dirty)
+    {
+      GLenum front_face;
+
+      if (gles2_ctx->current_flip_state == COGL_GLES2_FLIP_STATE_FLIPPED)
+        {
+          if (gles2_ctx->front_face == GL_CW)
+            front_face = GL_CCW;
+          else
+            front_face = GL_CW;
+        }
+      else
+        front_face = gles2_ctx->front_face;
+
+      gles2_ctx->context->glFrontFace (front_face);
+
+      gles2_ctx->front_face_dirty = FALSE;
+    }
+}
+
+static void
+pre_draw_wrapper (CoglGLES2Context *gles2_ctx)
+{
+  /* If there's no current program then we'll just let GL report an
+   * error */
+  if (gles2_ctx->current_program == NULL)
+    return;
+
+  flush_viewport_state (gles2_ctx);
+  flush_scissor_state (gles2_ctx);
+  flush_front_face_state (gles2_ctx);
+
+  /* We want to flip rendering when the application is rendering to a
+   * Cogl offscreen buffer in order to maintain the flipped texture
+   * coordinate origin */
+  if (gles2_ctx->current_flip_state !=
+      gles2_ctx->current_program->flip_vector_state)
+    {
+      GLuint location =
+        gles2_ctx->current_program->flip_vector_location;
+      float value[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+      if (gles2_ctx->current_flip_state == COGL_GLES2_FLIP_STATE_FLIPPED)
+        value[1] = -1.0f;
+
+      gles2_ctx->context->glUniform4fv (location, 1, value);
+
+      gles2_ctx->current_program->flip_vector_state =
+        gles2_ctx->current_flip_state;
+    }
+}
+
+static void
+gl_clear_wrapper (GLbitfield mask)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+
+  /* Clearing is affected by the scissor state so we need to ensure
+   * that's flushed */
+  flush_scissor_state (gles2_ctx);
+
+  gles2_ctx->context->glClear (mask);
+}
+
+static void
+gl_draw_elements_wrapper (GLenum mode,
+                          GLsizei count,
+                          GLenum type,
+                          const GLvoid *indices)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+
+  pre_draw_wrapper (gles2_ctx);
+
+  gles2_ctx->context->glDrawElements (mode, count, type, indices);
+}
+
+static void
+gl_draw_arrays_wrapper (GLenum mode,
+                        GLint first,
+                        GLsizei count)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+
+  pre_draw_wrapper (gles2_ctx);
+
+  gles2_ctx->context->glDrawArrays (mode, first, count);
+}
+
+static void
+gl_get_program_info_log_wrapper (GLuint program,
+                                 GLsizei buf_size,
+                                 GLsizei *length_out,
+                                 GLchar *info_log)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+  GLsizei length;
+
+  gles2_ctx->context->glGetProgramInfoLog (program,
+                                           buf_size,
+                                           &length,
+                                           info_log);
+
+  replace_token (info_log,
+                 MAIN_WRAPPER_REPLACEMENT_NAME,
+                 "main",
+                 MIN (length, buf_size));
+
+  if (length_out)
+    *length_out = length;
+}
+
+static void
+gl_get_shader_info_log_wrapper (GLuint shader,
+                                GLsizei buf_size,
+                                GLsizei *length_out,
+                                GLchar *info_log)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+  GLsizei length;
+
+  gles2_ctx->context->glGetShaderInfoLog (shader,
+                                          buf_size,
+                                          &length,
+                                          info_log);
+
+  replace_token (info_log,
+                 MAIN_WRAPPER_REPLACEMENT_NAME,
+                 "main",
+                 MIN (length, buf_size));
+
+  if (length_out)
+    *length_out = length;
+}
+
+static void
+gl_front_face_wrapper (GLenum mode)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+
+  /* If the mode doesn't make any sense then we'll just let the
+   * context deal with it directly so that it will throw an error */
+  if (mode != GL_CW && mode != GL_CCW)
+    gles2_ctx->context->glFrontFace (mode);
+  else
+    {
+      gles2_ctx->front_face = mode;
+      gles2_ctx->front_face_dirty = TRUE;
+    }
+}
+
+static void
+gl_viewport_wrapper (GLint x,
+                     GLint y,
+                     GLsizei width,
+                     GLsizei height)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+
+  /* If the viewport is invalid then we'll just let the context deal
+   * with it directly so that it will throw an error */
+  if (width < 0 || height < 0)
+    gles2_ctx->context->glViewport (x, y, width, height);
+  else
+    {
+      gles2_ctx->viewport[0] = x;
+      gles2_ctx->viewport[1] = y;
+      gles2_ctx->viewport[2] = width;
+      gles2_ctx->viewport[3] = height;
+      gles2_ctx->viewport_dirty = TRUE;
+    }
+}
+
+static void
+gl_scissor_wrapper (GLint x,
+                    GLint y,
+                    GLsizei width,
+                    GLsizei height)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+
+  /* If the scissor is invalid then we'll just let the context deal
+   * with it directly so that it will throw an error */
+  if (width < 0 || height < 0)
+    gles2_ctx->context->glScissor (x, y, width, height);
+  else
+    {
+      gles2_ctx->scissor[0] = x;
+      gles2_ctx->scissor[1] = y;
+      gles2_ctx->scissor[2] = width;
+      gles2_ctx->scissor[3] = height;
+      gles2_ctx->scissor_dirty = TRUE;
+    }
+}
+
+static void
+gl_get_boolean_v_wrapper (GLenum pname,
+                          GLboolean *params)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+
+  switch (pname)
+    {
+    case GL_VIEWPORT:
+      {
+        int i;
+
+        for (i = 0; i < 4; i++)
+          params[i] = !!gles2_ctx->viewport[i];
+      }
+      break;
+
+    case GL_SCISSOR_BOX:
+      {
+        int i;
+
+        for (i = 0; i < 4; i++)
+          params[i] = !!gles2_ctx->scissor[i];
+      }
+      break;
+
+    default:
+      gles2_ctx->context->glGetBooleanv (pname, params);
+    }
+}
+
+static void
+gl_get_integer_v_wrapper (GLenum pname,
+                          GLint *params)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+
+  switch (pname)
+    {
+    case GL_VIEWPORT:
+      {
+        int i;
+
+        for (i = 0; i < 4; i++)
+          params[i] = gles2_ctx->viewport[i];
+      }
+      break;
+
+    case GL_SCISSOR_BOX:
+      {
+        int i;
+
+        for (i = 0; i < 4; i++)
+          params[i] = gles2_ctx->scissor[i];
+      }
+      break;
+
+    case GL_FRONT_FACE:
+      params[0] = gles2_ctx->front_face;
+      break;
+
+    default:
+      gles2_ctx->context->glGetIntegerv (pname, params);
+    }
+}
+
+static void
+gl_get_float_v_wrapper (GLenum pname,
+                        GLfloat *params)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+
+  switch (pname)
+    {
+    case GL_VIEWPORT:
+      {
+        int i;
+
+        for (i = 0; i < 4; i++)
+          params[i] = gles2_ctx->viewport[i];
+      }
+      break;
+
+    case GL_SCISSOR_BOX:
+      {
+        int i;
+
+        for (i = 0; i < 4; i++)
+          params[i] = gles2_ctx->scissor[i];
+      }
+      break;
+
+    case GL_FRONT_FACE:
+      params[0] = gles2_ctx->front_face;
+      break;
+
+    default:
+      gles2_ctx->context->glGetFloatv (pname, params);
+    }
+}
+
+static void
+gl_pixel_store_i_wrapper (GLenum pname, GLint param)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+
+  gles2_ctx->context->glPixelStorei (pname, param);
+
+  if (pname == GL_PACK_ALIGNMENT &&
+      (param == 1 || param == 2 || param == 4 || param == 8))
+    gles2_ctx->pack_alignment = param;
+}
+
+static void
 _cogl_gles2_offscreen_free (CoglGLES2Offscreen *gles2_offscreen)
 {
   COGL_LIST_REMOVE (gles2_offscreen, list_node);
@@ -414,6 +1105,8 @@ _cogl_gles2_context_free (CoglGLES2Context *gles2_context)
   CoglContext *ctx = gles2_context->context;
   const CoglWinsysVtable *winsys;
   GList *objects, *l;
+
+  ctx->glDeleteShader (gles2_context->wrapper_shader);
 
   if (gles2_context->current_program)
     program_data_unref (gles2_context->current_program);
@@ -480,6 +1173,33 @@ free_program_data (CoglGLES2ProgramData *data)
   g_slice_free (CoglGLES2ProgramData, data);
 }
 
+static GLuint
+create_wrapper_shader (CoglContext *ctx)
+{
+  const char *strings = main_wrapper_function;
+  GLint length = sizeof (main_wrapper_function) - 1;
+  GLint status;
+  GLuint shader;
+
+  shader = ctx->glCreateShader (GL_VERTEX_SHADER);
+  ctx->glShaderSource (shader, 1, &strings, &length);
+  ctx->glCompileShader (shader);
+  ctx->glGetShaderiv (shader, GL_COMPILE_STATUS, &status);
+
+  if (!status)
+    {
+      char buf[512];
+
+      ctx->glGetShaderInfoLog (shader,
+                               sizeof (buf),
+                               NULL, /* length */
+                               buf);
+      g_warning ("Compiling wrapper shader failed:\n%s", buf);
+    }
+
+  return shader;
+}
+
 CoglGLES2Context *
 cogl_gles2_context_new (CoglContext *ctx, GError **error)
 {
@@ -511,6 +1231,13 @@ cogl_gles2_context_new (CoglContext *ctx, GError **error)
       return NULL;
     }
 
+  gles2_ctx->current_flip_state = COGL_GLES2_FLIP_STATE_UNKNOWN;
+  gles2_ctx->viewport_dirty = TRUE;
+  gles2_ctx->scissor_dirty = TRUE;
+  gles2_ctx->front_face_dirty = TRUE;
+  gles2_ctx->front_face = GL_CCW;
+  gles2_ctx->pack_alignment = 4;
+
   gles2_ctx->vtable = g_malloc0 (sizeof (CoglGLES2Vtable));
 #define COGL_EXT_BEGIN(name, \
                        min_gl_major, min_gl_minor, \
@@ -528,6 +1255,8 @@ cogl_gles2_context_new (CoglContext *ctx, GError **error)
 #undef COGL_EXT_FUNCTION
 #undef COGL_EXT_END
 
+  gles2_ctx->wrapper_shader = create_wrapper_shader (ctx);
+
   gles2_ctx->vtable->glBindFramebuffer = gl_bind_framebuffer_wrapper;
   gles2_ctx->vtable->glReadPixels = gl_read_pixels_wrapper;
   gles2_ctx->vtable->glCopyTexImage2D = gl_copy_tex_image_2d_wrapper;
@@ -539,6 +1268,27 @@ cogl_gles2_context_new (CoglContext *ctx, GError **error)
   gles2_ctx->vtable->glUseProgram = gl_use_program_wrapper;
   gles2_ctx->vtable->glAttachShader = gl_attach_shader_wrapper;
   gles2_ctx->vtable->glDetachShader = gl_detach_shader_wrapper;
+  gles2_ctx->vtable->glShaderSource = gl_shader_source_wrapper;
+  gles2_ctx->vtable->glGetShaderSource = gl_get_shader_source_wrapper;
+  gles2_ctx->vtable->glLinkProgram = gl_link_program_wrapper;
+  gles2_ctx->vtable->glGetProgramiv = gl_get_program_iv_wrapper;
+  gles2_ctx->vtable->glGetAttachedShaders = gl_get_attached_shaders_wrapper;
+  gles2_ctx->vtable->glGetProgramInfoLog = gl_get_program_info_log_wrapper;
+  gles2_ctx->vtable->glGetShaderInfoLog = gl_get_shader_info_log_wrapper;
+  gles2_ctx->vtable->glClear = gl_clear_wrapper;
+  gles2_ctx->vtable->glDrawElements = gl_draw_elements_wrapper;
+  gles2_ctx->vtable->glDrawArrays = gl_draw_arrays_wrapper;
+  gles2_ctx->vtable->glFrontFace = gl_front_face_wrapper;
+  gles2_ctx->vtable->glViewport = gl_viewport_wrapper;
+  gles2_ctx->vtable->glScissor = gl_scissor_wrapper;
+  gles2_ctx->vtable->glGetBooleanv = gl_get_boolean_v_wrapper;
+  gles2_ctx->vtable->glGetIntegerv = gl_get_integer_v_wrapper;
+  gles2_ctx->vtable->glGetFloatv = gl_get_float_v_wrapper;
+  gles2_ctx->vtable->glPixelStorei = gl_pixel_store_i_wrapper;
+
+  /* FIXME: we need to do something with glCopyTexImage2D and
+   * glCopySubTexImage2D so that it will flip the data if it is read
+   * from a CoglOffscreen */
 
   gles2_ctx->shader_map =
     g_hash_table_new_full (g_direct_hash,
@@ -719,6 +1469,8 @@ cogl_push_gles2_context (CoglContext *ctx,
       if (gles2_ctx->write_buffer)
         cogl_object_unref (gles2_ctx->write_buffer);
       gles2_ctx->write_buffer = cogl_object_ref (write_buffer);
+
+      update_current_flip_state (gles2_ctx);
     }
 
   if (!winsys->set_gles2_context (gles2_ctx, &internal_error))

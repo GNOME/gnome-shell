@@ -68,6 +68,13 @@ typedef struct
   CoglBool deleted;
 } CoglGLES2ShaderData;
 
+typedef enum
+{
+  COGL_GLES2_FLIP_STATE_UNKNOWN,
+  COGL_GLES2_FLIP_STATE_NORMAL,
+  COGL_GLES2_FLIP_STATE_FLIPPED
+} CoglGLES2FlipState;
+
 typedef struct
 {
   /* GL's ID for the program */
@@ -88,6 +95,12 @@ typedef struct
    * to keep track of this so we don't deref the data twice if the
    * application calls glDeleteProgram multiple times */
   CoglBool deleted;
+
+  GLuint flip_vector_location;
+
+  /* A cache of what value we've put in the flip vector uniform so
+   * that we don't flush unless it's changed */
+  CoglGLES2FlipState flip_vector_state;
 
   CoglGLES2Context *context;
 } CoglGLES2ProgramData;
@@ -128,6 +141,29 @@ struct _CoglGLES2Context
    * we can keep a reference to the data for the program while it is
    * current */
   CoglGLES2ProgramData *current_program;
+
+  /* A shader to provide a wrapper 'main' function. A single shader is
+   * used for all programs */
+  GLuint wrapper_shader;
+
+  /* Whether the currently bound framebuffer needs flipping. This is
+   * used to check for changes so that we can dirty the following
+   * state flags */
+  CoglGLES2FlipState current_flip_state;
+
+  /* The following state is tracked separately from the GL context
+   * because we need to modify it depending on whether we are flipping
+   * the geometry. */
+  CoglBool viewport_dirty;
+  int viewport[4];
+  CoglBool scissor_dirty;
+  int scissor[4];
+  CoglBool front_face_dirty;
+  GLenum front_face;
+
+  /* We need to keep track of the pack alignment so we can flip the
+   * results of glReadPixels read from a CoglOffscreen */
+  int pack_alignment;
 
   void *winsys;
 };
