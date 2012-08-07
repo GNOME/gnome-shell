@@ -84,7 +84,7 @@ function trySpawn(argv)
     try {
         [success, pid] = GLib.spawn_async(null, argv, null,
                                           GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-                                          null, null);
+                                          null);
     } catch (err) {
         /* Rewrite the error in case of ENOENT */
         if (err.matches(GLib.SpawnError, GLib.SpawnError.NOENT)) {
