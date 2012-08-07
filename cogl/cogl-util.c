@@ -25,6 +25,8 @@
 #include "config.h"
 #endif
 
+#include <string.h>
+
 #include "cogl-util.h"
 #include "cogl-private.h"
 
@@ -251,5 +253,27 @@ _cogl_util_pixel_format_from_masks (unsigned long r_mask,
 
   return image_format;
 }
+
+#ifndef HAVE_MEMMEM
+
+char *
+_cogl_util_memmem (const void *haystack,
+                   size_t haystack_len,
+                   const void *needle,
+                   size_t needle_len)
+{
+  size_t i;
+
+  if (needle_len > haystack_len)
+    return NULL;
+
+  for (i = 0; i <= haystack_len - needle_len; i++)
+    if (!memcmp ((const char *) haystack + i, needle, needle_len))
+      return (char *) haystack + i;
+
+  return NULL;
+}
+
+#endif /* HAVE_MEMMEM */
 
 #endif /* _COGL_IN_TEST_BITMASK */

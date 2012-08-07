@@ -268,4 +268,14 @@ _cogl_util_pixel_format_from_masks (unsigned long r_mask,
 #define _Static_assert(EXPRESSION, MESSAGE)
 #endif
 
+#ifdef HAVE_MEMMEM
+#define _cogl_util_memmem memmem
+#else
+char *
+_cogl_util_memmem (const void *haystack,
+                   size_t haystack_len,
+                   const void *needle,
+                   size_t needle_len);
+#endif
+
 #endif /* __COGL_UTIL_H */
