@@ -662,7 +662,7 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
   CoglRendererKMS *kms_renderer = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
-  uint32_t handle, pitch;
+  uint32_t handle, stride;
   CoglFlipKMS *flip;
   GList *l;
 
@@ -676,7 +676,11 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
   /* Now we need to set the CRTC to whatever is the front buffer */
   kms_onscreen->next_bo = gbm_surface_lock_front_buffer (kms_onscreen->surface);
 
-  pitch = gbm_bo_get_pitch (kms_onscreen->next_bo);
+#if COGL_GBM_MAJOR >= 8 && COGL_GBM_MINOR >= 1
+  stride = gbm_bo_get_stride (kms_onscreen->next_bo);
+#else
+  stride = gbm_bo_get_pitch (kms_onscreen->next_bo);
+#endif
   handle = gbm_bo_get_handle (kms_onscreen->next_bo).u32;
 
   if (drmModeAddFB (kms_renderer->fd,
@@ -684,7 +688,7 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
                     kms_display->height,
                     24, /* depth */
                     32, /* bpp */
-                    pitch,
+                    stride,
                     handle,
                     &kms_onscreen->next_fb_id))
     {
