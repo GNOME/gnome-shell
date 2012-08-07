@@ -1,3 +1,43 @@
+3.5.5
+=====
+* Update style to match mockups [Allan]
+  - improve calendar layout and legibility
+  - update notifications and menus
+  - use a common style for entries
+  - update scrollbars to match GTK+
+  - improve clock/unlock button in lock screen
+  - update polkit dialogs [Jasper]
+* Fix login dialog growing when selecting different users [Florian; #675076]
+* Implement screen lock in the shell [Giovanni]
+  - restructure login code to be shared with session unlock [#619955]
+  - add initial screen shield / unlock dialog implementation [#619955]
+  - implement (optional) notification list on lock shield [#619955]
+  - update login dialog style to match lock screen [#619955]
+  - filter notifications to only show new ones on the screen lock [#681143]
+  - make notifications scrollable if necessary [#681143]
+  - use correct application names in notifications [#681143]
+  - allow to return to the shield by pressing Escape [#681143]
+* Minor login dialog improvements [Florian]
+  - update style to match the overall visuals [#660913]
+  - indicate whether users are logged in [#658185]
+* Add support for background-repeat CSS property [Jasper; #680801]
+* Add :active pseudo class on scroll handles [Florian]
+* Remove markup from translated strings [Matthias; #681270]
+* Misc bug fixes and cleanups: [Alban, Florian, Giovanni, Jasper, Jeremy,
+  Matthias, Piotr; #677893, #679944, #680064, #680170, #680216, #680426,
+  #681101, #681382]
+
+Contributors:
+  Jeremy Bicha, Alban Browaeys, Giovanni Campagna, Matthias Clasen, Allan Day,
+  Piotr Drąg , Florian Müllner, Jasper St. Pierre
+
+Translations:
+  Matej Urbančič [sl], Tom Tryfonidis [el], Yaron Shahrabani [he],
+  Kjartan Maraas [nb], Baurzhan Muftakhidinov [kk], Praveen Illa [te],
+  Khaled Hosny [ar], Daniel Mustieles [es], Gabor Kelemen [hu],
+  Fran Diéguez [gl], Sweta Kothari [gu], Aleksej Kabanov [ru],
+  Nilamdyuti Goswami [as], Arash Mousavi [fa], Мирослав Николић [sr, sr@latin]
+
 3.5.4
 =====
 * Fix wrong result handling of remote calls [Florian; #678852]
