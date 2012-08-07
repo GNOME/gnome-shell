@@ -638,15 +638,17 @@ const LoginDialog = new Lang.Class({
         this._userManager = AccountsService.UserManager.get_default()
         this._greeterClient = new Gdm.Client();
 
-        this._greeter = this._greeterClient.get_greeter_sync(null);
+        if (GLib.getenv('GDM_GREETER_TEST') != '1') {
+            this._greeter = this._greeterClient.get_greeter_sync(null);
 
-        this._greeter.connect('default-session-name-changed',
-                              Lang.bind(this, this._onDefaultSessionChanged));
+            this._greeter.connect('default-session-name-changed',
+                                  Lang.bind(this, this._onDefaultSessionChanged));
 
-        this._greeter.connect('session-opened',
-                              Lang.bind(this, this._onSessionOpened));
-        this._greeter.connect('timed-login-requested',
-                              Lang.bind(this, this._onTimedLoginRequested));
+            this._greeter.connect('session-opened',
+                                  Lang.bind(this, this._onSessionOpened));
+            this._greeter.connect('timed-login-requested',
+                                  Lang.bind(this, this._onTimedLoginRequested));
+        }
 
         this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient);
         this._userVerifier.connect('ask-question', Lang.bind(this, this._askQuestion));
