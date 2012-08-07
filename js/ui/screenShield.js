@@ -352,7 +352,8 @@ const ScreenShield = new Lang.Class({
 
     _onLockScreenKeyRelease: function(actor, event) {
         if (event.get_key_symbol() == Clutter.KEY_Escape) {
-            this._showUnlockDialog(true);
+            this._ensureUnlockDialog();
+            this._hideLockScreen(true);
             return true;
         }
 
@@ -374,12 +375,13 @@ const ScreenShield = new Lang.Class({
 
     _onDragBegin: function() {
         Tweener.removeTweens(this._lockScreenGroup);
+        this._ensureUnlockDialog();
     },
 
     _onDragEnd: function(action, actor, eventX, eventY, modifiers) {
         if (this._lockScreenGroup.y < -(ARROW_DRAG_TRESHOLD * global.stage.height)) {
             // Complete motion automatically
-            this._showUnlockDialog(true);
+            this._hideLockScreen(true);
         } else {
             // restore the lock screen to its original place
             // try to use the same speed as the normal animation
@@ -394,6 +396,14 @@ const ScreenShield = new Lang.Class({
                                    this.fixed_position_set = false;
                                }
                              });
+
+            // If we have a unlock dialog, cancel it
+            if (this._dialog) {
+                this._dialog.cancel();
+                if (!this._keepDialog) {
+                    this._dialog = null;
+                }
+            }
         }
     },
 
@@ -428,10 +438,11 @@ const ScreenShield = new Lang.Class({
 
     showDialog: function() {
         this.lock(true);
-        this._showUnlockDialog(false);
+        this._ensureUnlockDialog();
+        this._hideLockScreen(false);
     },
 
-    _showUnlockDialog: function(animate) {
+    _hideLockScreen: function(animate) {
         if (animate) {
             // Tween the lock screen out of screen
             // try to use the same speed regardless of original position
@@ -442,12 +453,14 @@ const ScreenShield = new Lang.Class({
                              { y: -h,
                                time: time,
                                transition: 'linear',
-                               onComplete: Lang.bind(this, this._hideLockScreen),
+                               onComplete: function() { this.hide(); }
                              });
         } else {
-            this._hideLockScreen();
+            this._lockScreenGroup.hide();
         }
+    },
 
+    _ensureUnlockDialog: function() {
         if (!this._dialog) {
             [this._dialog, this._keepDialog] = Main.sessionMode.createUnlockDialog(this._lockDialogGroup);
             if (!this._dialog) {
@@ -488,14 +501,8 @@ const ScreenShield = new Lang.Class({
         this.unlock();
     },
 
-    _hideLockScreen: function() {
-        this._arrow.hide();
-        this._lockScreenGroup.hide();
-    },
-
     _resetLockScreen: function(animate) {
         this._lockScreenGroup.show();
-        this._arrow.show();
 
         if (animate) {
             this._lockScreenGroup.y = -global.screen_height;
