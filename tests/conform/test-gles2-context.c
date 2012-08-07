@@ -159,7 +159,7 @@ create_gles2_context (CoglTexture **offscreen_texture,
   *pipeline = cogl_pipeline_new (ctx);
   cogl_pipeline_set_layer_texture (*pipeline, 0, *offscreen_texture);
 
-  *gles2_ctx = cogl_gles2_context_new (ctx, NULL);
+  *gles2_ctx = cogl_gles2_context_new (ctx, &error);
   if (!*gles2_ctx)
     g_error ("Failed to create GLES2 context: %s\n", error->message);
 
