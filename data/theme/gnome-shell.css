@@ -2092,6 +2092,7 @@ StButton.popup-menu-item:insensitive {
     font-size: 10.5pt;
     font-weight: bold;
     color: #666666;
+    padding-top: 1em;
 }
 
 .login-dialog-not-listed-button:hover .login-dialog-not-listed-label {

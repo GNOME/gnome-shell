@@ -126,6 +126,15 @@ const UnlockDialog = new Lang.Class({
         this._promptFingerprintMessage.hide();
         this.contentLayout.add_actor(this._promptFingerprintMessage);
 
+        this._okButton = { label: _("Unlock"),
+                           action: Lang.bind(this, this._doUnlock),
+                           default: true };
+        this.setButtons([this._okButton]);
+        this.setActionKey(Clutter.KEY_Escape, Lang.bind(this, this._escape));
+
+        this._updateOkButton(false);
+        this._reset();
+
         let otherUserLabel = new St.Label({ text: _("Login as another user"),
                                             style_class: 'login-dialog-not-listed-label' });
         this._otherUserButton = new St.Button({ style_class: 'login-dialog-not-listed-button',
@@ -135,18 +144,9 @@ const UnlockDialog = new Lang.Class({
                                                 x_align: St.Align.START,
                                                 x_fill: true });
         this._otherUserButton.connect('clicked', Lang.bind(this, this._otherUserClicked));
-        this.contentLayout.add(this._otherUserButton,
-                               { x_align: St.Align.START,
-                                 x_fill: false });
-
-        this._okButton = { label: _("Unlock"),
-                           action: Lang.bind(this, this._doUnlock),
-                           default: true };
-        this.setButtons([this._okButton]);
-        this.setActionKey(Clutter.KEY_Escape, Lang.bind(this, this._escape));
-
-        this._updateOkButton(false);
-        this._reset();
+        this.dialogLayout.add(this._otherUserButton,
+                              { x_align: St.Align.START,
+                                x_fill: false });
 
         GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
             this.emit('loaded');
