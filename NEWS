@@ -1,3 +1,72 @@
+Clutter 1.11.10                                                      2012-08-07
+===============================================================================
+
+  • List of changes since Clutter 1.11.8
+
+    - Add support for multiple touch points in GestureAction
+    GestureAction subclasses can now define the number of touch points they
+    require in order to start recognising a gesture.
+
+    - Add a RotateAction
+    A GestureAction subclass that requires two touch points to rotate the
+    actor to which it has been applied.
+
+    - Generate crossing events for touch devices
+
+    - Respect ClutterStage.set_motion_events_enabled() for touch events
+
+    - Fix a regression in discrete scroll events emission
+    When using XInput 2, the scroll events generated through buttons (e.g.
+    mouse wheel) should only be emitted on ButtonPress, to match the semantics
+    of the X11 core device handling.
+
+    - Add progress functions defined in CSS3-Transitions
+    The CSS3 Transitions specification defines various timing functions:
+
+      steps                     cubic-bezier
+      step-start                ease
+      step-end                  ease-in
+                                ease-out
+                                ease-in-out
+
+    These are now available to be used with ClutterTimeline.
+
+    - Add ClutterActor::transition-stopped
+    The ::transition-stopped signal is emitted each time a Transition
+    associated to an actor is stopped (using the same sematincs as the
+    ClutterTimeline::stopped signal); it is also a detailed signal, so that
+    it's possible to connect a handler for a specific Transition name.
+
+    - Add ClutterActor.transform
+    The :transform property allows overriding all the decomposed
+    transformations of an actor, like scale and rotate; the transformation
+    is applied relative to the actor's allocated origin and pivot point.
+
+    - Documentation and build fixes
+
+    - Translations update
+     Traditional Chinese (Hong Kong and Taiwan), Spanish, Galician,
+     Serbian, Greek.
+
+  • List of bugs fixed since Clutter 1.11.8
+
+    [bugzilla.gnome.org]
+    #678586 - Modifiy ClutterGestureAction to support multi touch and multiple
+              points
+    #680088 - Duplicate mouse wheel scroll events with xinput enabled
+    #678587 - Add ClutterRotationAction
+    #679797 - Missing enter/leave events generation for touch events
+    #680174 - Add clutter_event_is_pointer_emulated() to distinguish emulated
+              scroll events
+    #680751 - clutter_stage_set_motion_events_enabled() is not honoured with
+              CLUTTER_TOUCH_UPDATE events
+    #680752 - Touch cancel events are not processed by Clutter
+
+Many thanks to:
+
+  Lionel Landwerlin, Chao-Hsiung Liao, Tom Tryfonidis, Мирослав Николић,
+  Daniel Mustieles, Emanuele Aina, Fran Diéguez, Piotr Drąg.
+
 Clutter 1.11.8                                                       2012-07-16
 ===============================================================================
 
