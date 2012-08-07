@@ -483,6 +483,27 @@ cogl_push_gles2_context (CoglContext *ctx,
     }
 
   current_gles2_context = gles2_ctx;
+
+  /* If this is the first time this gles2 context has been used then
+   * we'll force the viewport and scissor to the right size. GL has
+   * the semantics that the viewport and scissor default to the size
+   * of the first surface the context is used with. If the first
+   * CoglFramebuffer that this context is used with is an offscreen,
+   * then the surface from GL's point of view will be the 1x1 dummy
+   * surface so the viewport will be wrong. Therefore we just override
+   * the default viewport and scissor here */
+  if (!gles2_ctx->has_been_bound)
+    {
+      int fb_width = cogl_framebuffer_get_width (write_buffer);
+      int fb_height = cogl_framebuffer_get_height (write_buffer);
+
+      gles2_ctx->vtable->glViewport (0, 0, /* x/y */
+                                     fb_width, fb_height);
+      gles2_ctx->vtable->glScissor (0, 0, /* x/y */
+                                    fb_width, fb_height);
+      gles2_ctx->has_been_bound = TRUE;
+    }
+
   return TRUE;
 }
 

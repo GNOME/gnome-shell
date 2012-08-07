@@ -52,6 +52,11 @@ struct _CoglGLES2Context
 
   CoglContext *context;
 
+  /* This is set to FALSE until the first time the GLES2 context is
+   * bound to something. We need to keep track of this so we can set
+   * the viewport and scissor the first time it is bound. */
+  CoglBool has_been_bound;
+
   CoglFramebuffer *read_buffer;
   CoglGLES2Offscreen *gles2_read_buffer;
   CoglFramebuffer *write_buffer;
