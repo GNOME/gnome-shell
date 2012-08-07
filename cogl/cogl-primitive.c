@@ -380,6 +380,9 @@ _cogl_primitive_free (CoglPrimitive *primitive)
     g_slice_free1 (sizeof (CoglAttribute *) * primitive->n_attributes,
                    primitive->attributes);
 
+  if (primitive->indices)
+    cogl_object_unref (primitive->indices);
+
   g_slice_free1 (sizeof (CoglPrimitive) +
                  sizeof (CoglAttribute *) *
                  (primitive->n_embedded_attributes - 1), primitive);
