@@ -62,7 +62,7 @@ struct _ClutterRotateAction
 
 /**
  * ClutterRotateActionClass:
- * @swept: class handler for the #ClutterRotateAction::rotate signal
+ * @rotate: class handler for the #ClutterRotateAction::rotate signal
  *
  * The <structname>ClutterRotateActionClass</structname> structure contains
  * only private data.

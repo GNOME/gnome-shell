@@ -60,6 +60,7 @@ CFILE_GLOB = \
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES = \
+	config.h			\
 	clutter.h 			\
 	clutter-actor-meta-private.h	\
 	clutter-actor-private.h		\
