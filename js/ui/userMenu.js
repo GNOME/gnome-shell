@@ -654,8 +654,10 @@ const UserMenuButton = new Lang.Class({
     },
 
     _onAccountRemoved: function(accountMgr, account) {
-        account.disconnect(account._changingId);
-        account._changingId = 0;
+        if (account._changingId) {
+            account.disconnect(account._changingId);
+            account._changingId = 0;
+        }
         this._updateChangingPresence();
     },
 
