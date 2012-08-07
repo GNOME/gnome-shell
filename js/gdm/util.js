@@ -2,6 +2,7 @@
 
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
 const Batch = imports.gdm.batch;
@@ -19,6 +20,7 @@ const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
 const BANNER_MESSAGE_KEY = 'banner-message-enable';
 const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
+const ALLOWED_FAILURES_KEY = 'allowed-failures';
 
 const LOGO_KEY = 'logo';
 
@@ -81,6 +83,8 @@ const ShellUserVerifier = new Lang.Class({
 
         this._fprintManager = new Fprint.FprintManager();
         this._realmManager = new Realmd.Manager();
+
+        this._failCounter = 0;
     },
 
     begin: function(userName, hold) {
@@ -242,7 +246,7 @@ const ShellUserVerifier = new Lang.Class({
             // to indicate the user can swipe their finger instead
             this.emit('show-login-hint', _("(or swipe finger)"));
         } else if (serviceName == PASSWORD_SERVICE_NAME) {
-            Main.notifyError(info);
+            this.emit('show-message', info, 'login-dialog-message-info');
         }
     },
 
@@ -251,7 +255,7 @@ const ShellUserVerifier = new Lang.Class({
         // users who haven't enrolled their fingerprint.
         if (serviceName != PASSWORD_SERVICE_NAME)
             return;
-        Main.notifyError(problem);
+        this.emit('show-message', problem, 'login-dialog-message-warning');
     },
 
     _showRealmLoginHint: function() {
@@ -290,8 +294,10 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _onReset: function() {
-        this._userVerifier.run_dispose();
-        this._userVerifier = null;
+        this.clear();
+
+        // Clear previous attempts to authenticate
+        this._failCounter = 0;
 
         this.emit('reset');
     },
@@ -300,12 +306,34 @@ const ShellUserVerifier = new Lang.Class({
         this.emit('verification-complete');
     },
 
+    _verificationFailed: function() {
+        // For Not Listed / enterprise logins, immediately reset
+        // the dialog
+        // Otherwise, we allow ALLOWED_FAILURES attempts. After that, we
+        // go back to the welcome screen.
+
+        if (!this._userName ||
+            (++this._failCounter) == this._settings.get_int(ALLOWED_FAILURES_KEY)) {
+            // Allow some time to see the message, then reset everything
+            Mainloop.timeout_add(3000, Lang.bind(this, function() {
+                this.cancel();
+
+                this._onReset();
+            }));
+        } else {
+            this.clear();
+            this.begin(this._userName, new Batch.Hold());
+        }
+
+        this.emit('verification-failed');
+    },
+
     _onConversationStopped: function(client, serviceName) {
         // if the password service fails, then cancel everything.
         // But if, e.g., fingerprint fails, still give
         // password authentication a chance to succeed
         if (serviceName == PASSWORD_SERVICE_NAME) {
-            this.emit('verification-failed');
+            this._verificationFailed();
         }
 
         this.emit('hide-login-hint');

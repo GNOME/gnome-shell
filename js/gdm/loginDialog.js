@@ -647,7 +647,7 @@ const LoginDialog = new Lang.Class({
 
         this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient);
         this._userVerifier.connect('ask-question', Lang.bind(this, this._askQuestion));
-        this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
+        this._userVerifier.connect('show-message', Lang.bind(this, this._showMessage));
         this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
 
         this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
@@ -715,6 +715,10 @@ const LoginDialog = new Lang.Class({
                               x_fill: true,
                               y_fill: false,
                               x_align: St.Align.START });
+
+        this._promptMessage = new St.Label({ visible: false });
+        this._promptBox.add(this._promptMessage, { x_fill: true });
+
         this._promptLoginHint = new St.Label({ style_class: 'login-dialog-prompt-login-hint-message' });
         this._promptLoginHint.hide();
         this._promptBox.add(this._promptLoginHint);
@@ -797,6 +801,8 @@ const LoginDialog = new Lang.Class({
     },
 
     _onReset: function(client, serviceName) {
+        this._promptMessage.hide();
+
         let tasks = [this._hidePrompt,
 
                      new Batch.ConcurrentBatch(this, [this._fadeInTitleLabel,
@@ -824,6 +830,12 @@ const LoginDialog = new Lang.Class({
 
     _onDefaultSessionChanged: function(client, sessionId) {
         this._sessionList.setActiveSession(sessionId);
+    },
+
+    _showMessage: function(userVerifier, message, styleClass) {
+        this._promptMessage.text = message;
+        this._promptMessage.styleClass = styleClass;
+        GdmUtil.fadeInActor(this._promptMessage);
     },
 
     _showLoginHint: function(verifier, message) {
@@ -1079,10 +1091,6 @@ const LoginDialog = new Lang.Class({
 
                                 return false;
                              }));
-    },
-
-    _onVerificationFailed: function() {
-        this._userVerifier.cancel();
     },
 
     _onNotListedClicked: function(user) {

@@ -89,13 +89,15 @@ const UnlockDialog = new Lang.Class({
         this._userName = GLib.get_user_name();
         this._user = this._userManager.get_user(this._userName);
 
+        this._failCounter = 0;
+
         this._greeterClient = new Gdm.Client();
         this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient, { reauthenticationOnly: true });
 
-        this._userVerifier.connect('reset', Lang.bind(this, this._reset));
         this._userVerifier.connect('ask-question', Lang.bind(this, this._onAskQuestion));
+        this._userVerifier.connect('show-message', Lang.bind(this, this._showMessage));
         this._userVerifier.connect('verification-complete', Lang.bind(this, this._onVerificationComplete));
-        this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
+        this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
 
         this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
         this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._hideLoginHint));
@@ -122,6 +124,9 @@ const UnlockDialog = new Lang.Class({
 
         this.contentLayout.add_actor(this._promptLayout);
 
+        this._promptMessage = new St.Label({ visible: false });
+        this.contentLayout.add(this._promptMessage, { x_fill: true });
+
         this._promptLoginHint = new St.Label({ style_class: 'login-dialog-prompt-login-hint' });
         this._promptLoginHint.hide();
         this.contentLayout.add_actor(this._promptLoginHint);
@@ -135,7 +140,6 @@ const UnlockDialog = new Lang.Class({
         this.setButtons([cancelButton, this._okButton]);
 
         this._updateOkButton(false);
-        this._reset();
 
         let otherUserLabel = new St.Label({ text: _("Log in as another user"),
                                             style_class: 'login-dialog-not-listed-label' });
@@ -149,6 +153,9 @@ const UnlockDialog = new Lang.Class({
         this.dialogLayout.add(this._otherUserButton,
                               { x_align: St.Align.START,
                                 x_fill: false });
+
+        let batch = new Batch.Hold();
+        this._userVerifier.begin(this._userName, batch);
 
         GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
             this.emit('loaded');
@@ -165,9 +172,10 @@ const UnlockDialog = new Lang.Class({
         this._okButton.button.reactive = sensitive;
     },
 
-    _reset: function() {
-        this._userVerifier.clear();
-        this._userVerifier.begin(this._userName, new Batch.Hold());
+    _showMessage: function(userVerifier, message, styleClass) {
+        this._promptMessage.text = message;
+        this._promptMessage.styleClass = styleClass;
+        GdmUtil.fadeInActor(this._promptMessage);
     },
 
     _onAskQuestion: function(verifier, serviceName, question, passwordChar) {
@@ -207,13 +215,13 @@ const UnlockDialog = new Lang.Class({
         this.emit('unlocked');
     },
 
-    _onVerificationFailed: function() {
-        this._userVerifier.cancel();
+    _onReset: function() {
         this.emit('failed');
     },
 
     _escape: function() {
-        this._onVerificationFailed();
+        this._userVerifier.cancel();
+        this.emit('failed');
     },
 
     _otherUserClicked: function(button, event) {

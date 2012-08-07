@@ -2189,6 +2189,10 @@ StButton.popup-menu-item:insensitive {
     background-gradient-end: #74a0d0;
 }
 
+.login-dialog-message-warning {
+    color: orange;
+}
+
 .unlock-dialog-user-name-container {
     spacing: .4em;
 }
