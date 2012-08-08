@@ -496,6 +496,7 @@ const ThumbnailsBox = new Lang.Class({
     _init: function() {
         this.actor = new Shell.GenericContainer({ reactive: true,
                                                   style_class: 'workspace-thumbnails',
+                                                  can_focus: true,
                                                   request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT });
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
@@ -546,6 +547,8 @@ const ThumbnailsBox = new Lang.Class({
         this.actor.connect('button-release-event', Lang.bind(this, this._onButtonRelease));
         this.actor.connect('scroll-event',
                            Lang.bind(this, this._onScrollEvent));
+        this.actor.connect('key-release-event',
+                           Lang.bind(this, this._onKeyRelease));
 
         Main.overview.connect('showing',
                               Lang.bind(this, this._createThumbnails));
@@ -1277,6 +1280,20 @@ const ThumbnailsBox = new Lang.Class({
             break;
         case Clutter.ScrollDirection.DOWN:
             Main.wm.actionMoveWorkspace(Meta.MotionDirection.DOWN);
+            break;
+        }
+    },
+
+    _onKeyRelease: function (actor, event) {
+        switch (event.get_key_symbol()) {
+        case Clutter.KEY_Up:
+            Main.wm.actionMoveWorkspace(Meta.MotionDirection.UP);
+            break;
+        case Clutter.KEY_Down:
+            Main.wm.actionMoveWorkspace(Meta.MotionDirection.DOWN);
+            break;
+        case Clutter.KEY_Return:
+            Main.overview.toggle();
             break;
         }
     }

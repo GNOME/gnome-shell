@@ -251,6 +251,8 @@ const Overview = new Lang.Class({
         this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
         this._group.add_actor(this._thumbnailsBox.actor);
 
+        Main.ctrlAltTabManager.addGroup(this._thumbnailsBox.actor, _("Workspaces"), 'view-list-symbolic');
+
         // Add our same-line elements after the search entry
         this._overview.add_actor(this._group);
 
