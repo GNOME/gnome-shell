@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
+const Signals = imports.signals;
 const St = imports.gi.St;
 const Atk = imports.gi.Atk;
 
@@ -146,6 +147,8 @@ const ListSearchResults = new Lang.Class({
         for (let i = 0; i < metas.length; i++) {
             let display = new ListSearchResult(this.provider, metas[i], this._terms);
             this.addItem(display.actor);
+
+            display.actor.connect('key-focus-in', Lang.bind(this, this._onFocusedProviderChanged));
         }
     },
 
@@ -170,8 +173,13 @@ const ListSearchResults = new Lang.Class({
 
     getItemAtIndex: function(index) {
         return this.actor.get_child_at_index(index);
+    },
+
+    _onFocusedProviderChanged: function() {
+        this.emit('focused-provider-changed');
     }
 });
+Signals.addSignalMethods(ListSearchResults.prototype);
 
 
 const GridSearchResult = new Lang.Class({
@@ -317,6 +325,8 @@ const GridSearchResults = new Lang.Class({
         for (let i = 0; i < metas.length; i++) {
             let display = new GridSearchResult(this.provider, metas[i], this._terms);
             this._grid.addItem(display.actor);
+
+            display.content.connect('key-focus-in', Lang.bind(this, this._onFocusedProviderChanged));
         }
     },
 
@@ -330,8 +340,14 @@ const GridSearchResults = new Lang.Class({
             return this._grid.getItemAtIndex(0)._delegate;
         else
             return null;
+    },
+
+    _onFocusedProviderChanged: function() {
+        this.emit('focused-provider-changed');
     }
 });
+Signals.addSignalMethods(GridSearchResults.prototype);
+
 
 const SearchDisplay = new Lang.Class({
     Name: 'SearchDisplay',
@@ -415,6 +431,8 @@ const SearchDisplay = new Lang.Class({
             resultDisplay = new GridSearchResults(provider);
         else
             resultDisplay = new ListSearchResults(provider);
+
+        resultDisplay.connect('focused-provider-changed', Lang.bind(this, this._updateProviderIconCanFocus));
         resultDisplayBin.set_child(resultDisplay.actor);
 
         this._providerMeta.push({ provider: provider,
@@ -440,6 +458,7 @@ const SearchDisplay = new Lang.Class({
             let meta = this._providerMeta[i];
             meta.resultDisplay.clear();
             meta.actor.hide();
+            if (meta.icon) meta.icon.actor.can_focus = false;
         }
     },
 
@@ -447,6 +466,7 @@ const SearchDisplay = new Lang.Class({
         let meta = this._metaForProvider(provider);
         meta.resultDisplay.clear();
         meta.actor.hide();
+        if (meta.icon) meta.icon.actor.can_focus = false;
     },
 
     reset: function() {
@@ -467,6 +487,11 @@ const SearchDisplay = new Lang.Class({
 
     _metaForProvider: function(provider) {
         return this._providerMeta[this._providers.indexOf(provider)];
+    },
+
+    _metaForProvidersExcept: function(provider) {
+        let skip = this._providers.indexOf(provider);
+        return this._providerMeta.filter(function(meta, index) { return index != skip }, this);
     },
 
     _maybeSetInitialSelection: function() {
@@ -562,6 +587,15 @@ const SearchDisplay = new Lang.Class({
             this._defaultResult.setSelected(highlight);
     },
 
+    _updateProviderIconCanFocus: function(resultDisplay) {
+        let meta = this._metaForProvider(resultDisplay.provider);
+        if (meta.icon)
+            meta.icon.actor.can_focus = true;
+
+        let others = this._metaForProvidersExcept(resultDisplay.provider);
+        others.forEach(function(meta) { if (meta.icon) meta.icon.actor.can_focus = false; });
+    },
+
     navigateFocus: function(direction) {
         let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
         if (direction == Gtk.DirectionType.TAB_BACKWARD ||
@@ -594,7 +628,6 @@ const ProviderIcon = new Lang.Class({
 
         this.actor = new St.Button({ style_class: 'search-section-icon-bin',
                                      reactive: true,
-                                     can_focus: true,
                                      track_hover: true });
         this.actor.connect('clicked', Lang.bind(this, this._onIconClicked));
 
