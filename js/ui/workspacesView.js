@@ -868,15 +868,10 @@ const WorkspacesDisplay = new Lang.Class({
         let clipX = rtl ? x + controlsVisible : x;
         let clipY = y + (fullHeight - clipHeight) / 2;
 
-        if (this._zoomOut) {
-            width -= controlsNatural;
-            if (rtl)
-                x += controlsNatural;
-        } else {
-            width -= controlsVisible;
-            if (rtl)
-                x += controlsVisible;
-        }
+        let widthAdjust = this._zoomOut ? controlsNatural : controlsVisible;
+        width -= widthAdjust;
+        if (rtl)
+            x += widthAdjust;
 
         height = (fullHeight / fullWidth) * width;
         let difference = fullHeight - height;
