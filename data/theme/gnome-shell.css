@@ -640,6 +640,11 @@ StScrollBar StButton#vhandle:active {
     -st-background-image-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 
+.window-picker {
+    -horizontal-spacing: 40px;
+    -vertical-spacing: 40px;
+}
+
 /* Dash */
 
 #dash {
