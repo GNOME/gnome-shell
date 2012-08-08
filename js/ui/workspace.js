@@ -991,6 +991,8 @@ const Workspace = new Lang.Class({
 
         this._positionWindowsFlags = 0;
         this._positionWindowsId = 0;
+
+        this._currentLayout = null;
     },
 
     setGeometry: function(x, y, width, height) {
@@ -1033,6 +1035,7 @@ const Workspace = new Lang.Class({
             clone = null;
 
         this._reservedSlot = clone;
+        this._currentLayout = null;
         this.positionWindows(WindowPositionFlags.ANIMATE);
     },
 
@@ -1261,6 +1264,7 @@ const Workspace = new Lang.Class({
         this._cursorX = x;
         this._cursorY = y;
 
+        this._currentLayout = null;
         this._repositionWindowsId = Mainloop.timeout_add(750,
             Lang.bind(this, this._delayedWindowRepositioning));
     },
@@ -1313,6 +1317,7 @@ const Workspace = new Lang.Class({
             clone.actor.set_position (this._x, this._y);
         }
 
+        this._currentLayout = null;
         this.positionWindows(WindowPositionFlags.ANIMATE);
     },
 
@@ -1350,6 +1355,8 @@ const Workspace = new Lang.Class({
 
     // Animate the full-screen to Overview transition.
     zoomToOverview : function() {
+        this._currentLayout = null;
+
         // Position and scale the windows.
         if (Main.overview.animationInProgress)
             this.positionWindows(WindowPositionFlags.ANIMATE | WindowPositionFlags.INITIAL);
@@ -1567,6 +1574,16 @@ const Workspace = new Lang.Class({
         return lastLayout;
     },
 
+    _rectEqual: function(one, two) {
+        if (one == two)
+            return true;
+
+        return (one.x == two.x &&
+                one.y == two.y &&
+                one.width == two.width &&
+                one.height == two.height);
+    },
+
     _computeAllWindowSlots: function(windows) {
         let totalWindows = windows.length;
         let node = this.actor.get_theme_node();
@@ -1594,8 +1611,16 @@ const Workspace = new Lang.Class({
         area.y += closeButtonHeight;
         area.height -= closeButtonHeight;
 
-        let layout = this._computeLayout(windows, area, rowSpacing, columnSpacing, captionHeight);
+        if (!this._currentLayout)
+            this._currentLayout = this._computeLayout(windows, area, rowSpacing, columnSpacing, captionHeight);
+
+        let layout = this._currentLayout;
         let strategy = layout.strategy;
+
+        if (!this._rectEqual(area, layout.area)) {
+            layout.area = area;
+            strategy.computeScaleAndSpace(layout);
+        }
 
         return strategy.computeWindowSlots(layout, area);
     },
