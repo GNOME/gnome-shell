@@ -499,9 +499,9 @@ const WindowOverlay = new Lang.Class({
         this.title.opacity = 0;
         this._parentActor.raise_top();
         Tweener.addTween(this.title,
-                        { opacity: 255,
-                          time: CLOSE_BUTTON_FADE_TIME,
-                          transition: 'easeOutQuad' });
+                         { opacity: 255,
+                           time: CLOSE_BUTTON_FADE_TIME,
+                           transition: 'easeOutQuad' });
     },
 
     chromeWidth: function () {
@@ -510,7 +510,7 @@ const WindowOverlay = new Lang.Class({
 
     chromeHeights: function () {
         return [this.closeButton.height - this.closeButton._overlap,
-               this.title.height + this.title._spacing];
+                this.title.height + this.title._spacing];
     },
 
     /**
@@ -720,9 +720,9 @@ const Workspace = new Lang.Class({
                                                                Lang.bind(this, this._windowRemoved));
         }
         this._windowEnteredMonitorId = global.screen.connect('window-entered-monitor',
-                                                           Lang.bind(this, this._windowEnteredMonitor));
+                                                             Lang.bind(this, this._windowEnteredMonitor));
         this._windowLeftMonitorId = global.screen.connect('window-left-monitor',
-                                                           Lang.bind(this, this._windowLeftMonitor));
+                                                          Lang.bind(this, this._windowLeftMonitor));
         this._repositionWindowsId = 0;
 
         this.leavingOverview = false;
@@ -1044,20 +1044,20 @@ const Workspace = new Lang.Class({
                     /* Hidden windows should fade in and grow
                      * therefore we need to resize them now so they
                      * can be scaled up later */
-                     if (initialPositioning) {
-                         clone.actor.opacity = 0;
-                         clone.actor.scale_x = 0;
-                         clone.actor.scale_y = 0;
-                         clone.actor.x = x;
-                         clone.actor.y = y;
-                     }
+                    if (initialPositioning) {
+                        clone.actor.opacity = 0;
+                        clone.actor.scale_x = 0;
+                        clone.actor.scale_y = 0;
+                        clone.actor.x = x;
+                        clone.actor.y = y;
+                    }
 
-                     // Make the window slightly transparent to indicate it's hidden
-                     Tweener.addTween(clone.actor,
-                                      { opacity: 255,
-                                        time: Overview.ANIMATION_TIME,
-                                        transition: 'easeInQuad'
-                                      });
+                    // Make the window slightly transparent to indicate it's hidden
+                    Tweener.addTween(clone.actor,
+                                     { opacity: 255,
+                                       time: Overview.ANIMATION_TIME,
+                                       transition: 'easeInQuad'
+                                     });
                 }
 
                 this._animateClone(clone, overlay, x, y, scale, initialPositioning);
@@ -1088,16 +1088,16 @@ const Workspace = new Lang.Class({
 
     _animateClone: function(clone, overlay, x, y, scale, initialPositioning) {
         Tweener.addTween(clone.actor,
-                                 { x: x,
-                                   y: y,
-                                   scale_x: scale,
-                                   scale_y: scale,
-                                   time: Overview.ANIMATION_TIME,
-                                   transition: 'easeOutQuad',
-                                   onComplete: Lang.bind(this, function() {
-                                         this._showWindowOverlay(clone, overlay, true);
-                                   })
-                                 });
+                         { x: x,
+                           y: y,
+                           scale_x: scale,
+                           scale_y: scale,
+                           time: Overview.ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this, function() {
+                               this._showWindowOverlay(clone, overlay, true);
+                           })
+                         });
 
         this._updateWindowOverlayPositions(clone, overlay, x, y, scale, true);
     },
