@@ -105,6 +105,26 @@ typedef struct
   CoglGLES2Context *context;
 } CoglGLES2ProgramData;
 
+/* State tracked for each texture unit */
+typedef struct
+{
+  /* The currently bound texture for the GL_TEXTURE_2D */
+  GLuint current_texture_2d;
+} CoglGLES2TextureUnitData;
+
+/* State tracked for each texture object */
+typedef struct
+{
+  /* GL's ID for this object */
+  GLuint object_id;
+
+  GLenum target;
+
+  /* The details for texture when it has a 2D target */
+  int width, height;
+  GLenum format;
+} CoglGLES2TextureObjectData;
+
 struct _CoglGLES2Context
 {
   CoglObject _parent;
@@ -164,6 +184,18 @@ struct _CoglGLES2Context
   /* We need to keep track of the pack alignment so we can flip the
    * results of glReadPixels read from a CoglOffscreen */
   int pack_alignment;
+
+  /* A hash table of CoglGLES2TextureObjects indexed by the texture
+   * object ID so that we can track some state */
+  GHashTable *texture_object_map;
+
+  /* Array of CoglGLES2TextureUnits to keep track of state for each
+   * texture unit */
+  GArray *texture_units;
+
+  /* The currently active texture unit indexed from 0 (not from
+   * GL_TEXTURE0) */
+  int current_texture_unit;
 
   void *winsys;
 };

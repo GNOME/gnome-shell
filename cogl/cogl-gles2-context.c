@@ -23,6 +23,7 @@
  * Authors:
  *  Tomeu Vizoso <tomeu.vizoso@collabora.com>
  *  Robert Bragg <robert@linux.intel.com>
+ *  Neil Roberts <neil@linux.intel.com>
  *
  */
 
@@ -178,6 +179,65 @@ update_current_flip_state (CoglGLES2Context *gles2_ctx)
       gles2_ctx->scissor_dirty = TRUE;
       gles2_ctx->front_face_dirty = TRUE;
       gles2_ctx->current_flip_state = new_flip_state;
+    }
+}
+
+static GLuint
+get_current_texture_2d_object (CoglGLES2Context *gles2_ctx)
+{
+  return g_array_index (gles2_ctx->texture_units,
+                        CoglGLES2TextureUnitData,
+                        gles2_ctx->current_texture_unit).current_texture_2d;
+}
+
+static void
+set_texture_object_data (CoglGLES2Context *gles2_ctx,
+                         GLenum target,
+                         GLint level,
+                         GLenum internal_format,
+                         GLsizei width,
+                         GLsizei height)
+{
+  GLuint texture_id = get_current_texture_2d_object (gles2_ctx);
+  CoglGLES2TextureObjectData *texture_object;
+
+  /* We want to keep track of all texture objects where the data is
+   * created by this context so that we can delete them later */
+  texture_object = g_hash_table_lookup (gles2_ctx->texture_object_map,
+                                        GUINT_TO_POINTER (texture_id));
+  if (texture_object == NULL)
+    {
+      texture_object = g_slice_new0 (CoglGLES2TextureObjectData);
+      texture_object->object_id = texture_id;
+
+      g_hash_table_insert (gles2_ctx->texture_object_map,
+                           GUINT_TO_POINTER (texture_id),
+                           texture_object);
+    }
+
+  switch (target)
+    {
+    case GL_TEXTURE_2D:
+      texture_object->target = GL_TEXTURE_2D;
+
+      /* We want to keep track of the dimensions of any texture object
+       * setting the GL_TEXTURE_2D target */
+      if (level == 0)
+        {
+          texture_object->width = width;
+          texture_object->height = height;
+          texture_object->format = internal_format;
+        }
+      break;
+
+    case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
+    case GL_TEXTURE_CUBE_MAP_NEGATIVE_X:
+    case GL_TEXTURE_CUBE_MAP_POSITIVE_Y:
+    case GL_TEXTURE_CUBE_MAP_NEGATIVE_Y:
+    case GL_TEXTURE_CUBE_MAP_POSITIVE_Z:
+    case GL_TEXTURE_CUBE_MAP_NEGATIVE_Z:
+      texture_object->target = GL_TEXTURE_CUBE_MAP;
+      break;
     }
 }
 
@@ -369,7 +429,7 @@ gl_read_pixels_wrapper (GLint x,
 static void
 gl_copy_tex_image_2d_wrapper (GLenum target,
                               GLint level,
-                              GLenum internalformat,
+                              GLenum internal_format,
                               GLint x,
                               GLint y,
                               GLsizei width,
@@ -379,10 +439,16 @@ gl_copy_tex_image_2d_wrapper (GLenum target,
   CoglGLES2Context *gles2_ctx = current_gles2_context;
   int restore_mode = transient_bind_read_buffer (gles2_ctx);
 
-  gles2_ctx->context->glCopyTexImage2D (target, level, internalformat,
+  gles2_ctx->context->glCopyTexImage2D (target, level, internal_format,
                                         x, y, width, height, border);
 
   restore_write_buffer (gles2_ctx, restore_mode);
+
+  set_texture_object_data (gles2_ctx,
+                           target,
+                           level,
+                           internal_format,
+                           width, height);
 }
 
 static void
@@ -1069,6 +1135,108 @@ gl_pixel_store_i_wrapper (GLenum pname, GLint param)
 }
 
 static void
+gl_active_texture_wrapper (GLenum texture)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+  int texture_unit;
+
+  gles2_ctx->context->glActiveTexture (texture);
+
+  texture_unit = texture - GL_TEXTURE0;
+
+  /* If the application is binding some odd looking texture unit
+   * numbers then we'll just ignore it and hope that GL has generated
+   * an error */
+  if (texture_unit >= 0 && texture_unit < 512)
+    {
+      gles2_ctx->current_texture_unit = texture_unit;
+      g_array_set_size (gles2_ctx->texture_units,
+                        MAX (texture_unit, gles2_ctx->texture_units->len));
+    }
+}
+
+static void
+gl_delete_textures_wrapper (GLsizei n,
+                            const GLuint *textures)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+  int texture_index;
+  int texture_unit;
+
+  gles2_ctx->context->glDeleteTextures (n, textures);
+
+  for (texture_index = 0; texture_index < n; texture_index++)
+    {
+      /* Reset any texture units that have any of these textures bound */
+      for (texture_unit = 0;
+           texture_unit < gles2_ctx->texture_units->len;
+           texture_unit++)
+        {
+          CoglGLES2TextureUnitData *unit =
+            &g_array_index (gles2_ctx->texture_units,
+                            CoglGLES2TextureUnitData,
+                            texture_unit);
+
+          if (unit->current_texture_2d == textures[texture_index])
+            unit->current_texture_2d = 0;
+        }
+
+      /* Remove the binding. We can do this immediately because unlike
+       * shader objects the deletion isn't delayed until the object is
+       * unbound */
+      g_hash_table_remove (gles2_ctx->texture_object_map,
+                           GUINT_TO_POINTER (textures[texture_index]));
+    }
+}
+
+static void
+gl_bind_texture_wrapper (GLenum target,
+                         GLuint texture)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+
+  gles2_ctx->context->glBindTexture (target, texture);
+
+  if (target == GL_TEXTURE_2D)
+    {
+      CoglGLES2TextureUnitData *unit =
+        &g_array_index (gles2_ctx->texture_units,
+                        CoglGLES2TextureUnitData,
+                        gles2_ctx->current_texture_unit);
+      unit->current_texture_2d = texture;
+    }
+}
+
+static void
+gl_tex_image_2d_wrapper (GLenum target,
+                         GLint level,
+                         GLint internal_format,
+                         GLsizei width,
+                         GLsizei height,
+                         GLint border,
+                         GLenum format,
+                         GLenum type,
+                         const GLvoid *pixels)
+{
+  CoglGLES2Context *gles2_ctx = current_gles2_context;
+
+  gles2_ctx->context->glTexImage2D (target,
+                                    level,
+                                    internal_format,
+                                    width, height,
+                                    border,
+                                    format,
+                                    type,
+                                    pixels);
+
+  set_texture_object_data (gles2_ctx,
+                           target,
+                           level,
+                           internal_format,
+                           width, height);
+}
+
+static void
 _cogl_gles2_offscreen_free (CoglGLES2Offscreen *gles2_offscreen)
 {
   COGL_LIST_REMOVE (gles2_offscreen, list_node);
@@ -1100,6 +1268,13 @@ force_delete_shader_object (CoglGLES2Context *context,
 }
 
 static void
+force_delete_texture_object (CoglGLES2Context *context,
+                             CoglGLES2TextureObjectData *texture_data)
+{
+  context->context->glDeleteTextures (1, &texture_data->object_id);
+}
+
+static void
 _cogl_gles2_context_free (CoglGLES2Context *gles2_context)
 {
   CoglContext *ctx = gles2_context->context;
@@ -1111,8 +1286,8 @@ _cogl_gles2_context_free (CoglGLES2Context *gles2_context)
   if (gles2_context->current_program)
     program_data_unref (gles2_context->current_program);
 
-  /* Try to forcibly delete any shaders and programs so that they
-   * won't get leaked. Because all GLES2 contexts are in the same
+  /* Try to forcibly delete any shaders, programs and textures so that
+   * they won't get leaked. Because all GLES2 contexts are in the same
    * share list as Cogl's context these won't get deleted by default.
    * FIXME: we should do this for all of the other resources too, like
    * textures */
@@ -1124,6 +1299,10 @@ _cogl_gles2_context_free (CoglGLES2Context *gles2_context)
   for (l = objects; l; l = l->next)
     force_delete_shader_object (gles2_context, l->data);
   g_list_free (objects);
+  objects = g_hash_table_get_values (gles2_context->texture_object_map);
+  for (l = objects; l; l = l->next)
+    force_delete_texture_object (gles2_context, l->data);
+  g_list_free (objects);
 
   /* All of the program and shader objects should now be destroyed */
   if (g_hash_table_size (gles2_context->program_map) > 0)
@@ -1133,6 +1312,9 @@ _cogl_gles2_context_free (CoglGLES2Context *gles2_context)
 
   g_hash_table_destroy (gles2_context->program_map);
   g_hash_table_destroy (gles2_context->shader_map);
+
+  g_hash_table_destroy (gles2_context->texture_object_map);
+  g_array_free (gles2_context->texture_units, TRUE);
 
   winsys = ctx->display->renderer->winsys_vtable;
   winsys->destroy_gles2_context (gles2_context);
@@ -1171,6 +1353,12 @@ free_program_data (CoglGLES2ProgramData *data)
                    data->attached_shaders->data);
 
   g_slice_free (CoglGLES2ProgramData, data);
+}
+
+static void
+free_texture_object_data (CoglGLES2TextureObjectData *data)
+{
+  g_slice_free (CoglGLES2TextureObjectData, data);
 }
 
 static GLuint
@@ -1285,6 +1473,10 @@ cogl_gles2_context_new (CoglContext *ctx, GError **error)
   gles2_ctx->vtable->glGetIntegerv = gl_get_integer_v_wrapper;
   gles2_ctx->vtable->glGetFloatv = gl_get_float_v_wrapper;
   gles2_ctx->vtable->glPixelStorei = gl_pixel_store_i_wrapper;
+  gles2_ctx->vtable->glActiveTexture = gl_active_texture_wrapper;
+  gles2_ctx->vtable->glDeleteTextures = gl_delete_textures_wrapper;
+  gles2_ctx->vtable->glBindTexture = gl_bind_texture_wrapper;
+  gles2_ctx->vtable->glTexImage2D = gl_tex_image_2d_wrapper;
 
   /* FIXME: we need to do something with glCopyTexImage2D and
    * glCopySubTexImage2D so that it will flip the data if it is read
@@ -1300,6 +1492,18 @@ cogl_gles2_context_new (CoglContext *ctx, GError **error)
                            g_direct_equal,
                            NULL, /* key_destroy */
                            (GDestroyNotify) free_program_data);
+
+  gles2_ctx->texture_object_map =
+    g_hash_table_new_full (g_direct_hash,
+                           g_direct_equal,
+                           NULL, /* key_destroy */
+                           (GDestroyNotify) free_texture_object_data);
+
+  gles2_ctx->texture_units = g_array_new (FALSE, /* not zero terminated */
+                                          TRUE, /* clear */
+                                          sizeof (CoglGLES2TextureUnitData));
+  gles2_ctx->current_texture_unit = 0;
+  g_array_set_size (gles2_ctx->texture_units, 1);
 
   return _cogl_gles2_context_object_new (gles2_ctx);
 }
