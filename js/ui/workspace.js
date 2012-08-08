@@ -726,6 +726,9 @@ const Workspace = new Lang.Class({
         this._repositionWindowsId = 0;
 
         this.leavingOverview = false;
+
+        this._positionWindowsFlags = 0;
+        this._positionWindowsId = 0;
     },
 
     setGeometry: function(x, y, width, height) {
@@ -734,15 +737,13 @@ const Workspace = new Lang.Class({
         this._width = width;
         this._height = height;
 
-        // This is sometimes called during allocation, so we do this later
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
-            function () {
-                this._dropRect.set_position(x, y);
-                this._dropRect.set_size(width, height);
-                this.positionWindows(WindowPositionFlags.ANIMATE);
-                return false;
-            }));
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+            this._dropRect.set_position(x, y);
+            this._dropRect.set_size(width, height);
+            return false;
+        }));
 
+        this.positionWindows(WindowPositionFlags.ANIMATE);
     },
 
     _lookupIndex: function (metaWindow) {
@@ -1003,7 +1004,21 @@ const Workspace = new Lang.Class({
      *  INITIAL - this is the initial positioning of the windows.
      *  ANIMATE - Indicates that we need animate changing position.
      */
-    positionWindows : function(flags) {
+    positionWindows: function(flags) {
+        this._positionWindowsFlags |= flags;
+
+        if (this._positionWindowsId > 0)
+            return;
+
+        this._positionWindowsId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+            this._realPositionWindows(this._positionWindowsFlags);
+            this._positionWindowsFlags = 0;
+            this._positionWindowsId = 0;
+            return false;
+        }));
+    },
+
+    _realPositionWindows : function(flags) {
         if (this._repositionWindowsId > 0) {
             Mainloop.source_remove(this._repositionWindowsId);
             this._repositionWindowsId = 0;
@@ -1371,6 +1386,9 @@ const Workspace = new Lang.Class({
 
         if (this._repositionWindowsId > 0)
             Mainloop.source_remove(this._repositionWindowsId);
+
+        if (this._positionWindowsId > 0)
+            Meta.later_remove(this._positionWindowsId);
 
         // Usually, the windows will be destroyed automatically with
         // their parent (this.actor), but we might have a zoomed window
