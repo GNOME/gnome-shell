@@ -1577,6 +1577,7 @@ const MessageTray = new Lang.Class({
         this._notificationRemoved = false;
         this._reNotifyAfterHideNotification = null;
         this._inFullscreen = false;
+        this._desktopClone = null;
 
         this._corner = new Clutter.Rectangle({ width: 1,
                                                height: 1,
@@ -2291,6 +2292,35 @@ const MessageTray = new Lang.Class({
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });
+
+        // Don't move the windows up if we are in the overview.
+        if (this._overviewVisible)
+            return;
+
+        let bottomMonitor = Main.layoutManager.bottomMonitor;
+        let geometry = new Clutter.Geometry({ x: bottomMonitor.x,
+                                              y: bottomMonitor.y,
+                                              width: bottomMonitor.width,
+                                              height: bottomMonitor.height
+                                            });
+        this._desktopClone = new Clutter.Clone({ source: global.window_group, clip: geometry });
+        Main.uiGroup.insert_child_above(this._desktopClone, global.window_group);
+        this._desktopClone.x = 0;
+        this._desktopClone.y = 0;
+        this._desktopClone.show();
+
+        Tweener.addTween(this._desktopClone,
+                         { y: this._desktopClone.y - this.actor.height,
+                           time: ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onUpdate: Lang.bind(this, function() {
+                               let progress = -1 * this._desktopClone.y; // y is negative
+                               this._desktopClone.set_clip(geometry.x,
+                                                           geometry.y + progress,
+                                                           geometry.width,
+                                                           geometry.height - progress);
+                           })
+                         });
     },
 
     _hideTray: function() {
@@ -2299,6 +2329,27 @@ const MessageTray = new Lang.Class({
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });
+
+        if (!this._desktopClone)
+            return;
+
+        let geometry = this._desktopClone.clip;
+        Tweener.addTween(this._desktopClone,
+                         { y: this._desktopClone.y + this.actor.height,
+                           time: ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this, function() {
+                               this._desktopClone.destroy();
+                               this._desktopClone = null;
+                           }),
+                           onUpdate: Lang.bind(this, function() {
+                               let progress = this.actor.height + this._desktopClone.y; // y is negative
+                               this._desktopClone.set_clip(geometry.x,
+                                                           geometry.y - progress,
+                                                           geometry.width,
+                                                           geometry.height + progress);
+                           })
+                         });
     },
 
     _onIdleMonitorWatch: function(monitor, id, userBecameIdle) {
