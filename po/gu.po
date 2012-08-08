@@ -176,7 +176,7 @@ msgstr ""
 #, c-format
 #| msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
-msgstr "GSettings કી %s માંથી ફોન્ટ વર્ણન \"%s\" નું પદચ્છેદન કરી શક્યા નહિં\"
+msgstr "ફોન્ટ વર્ણન \"%s\" GSettings કી %s માંથી  નું પદચ્છેદન કરી શક્યા નહિં\n"
 
 #: ../src/core/prefs.c:1206
 #, c-format
