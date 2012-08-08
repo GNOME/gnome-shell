@@ -23,8 +23,8 @@ const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 // Time for initial animation going into Overview mode
 const ANIMATION_TIME = 0.25;
 
-// We split the screen vertically between the dash and the view selector.
-const DASH_SPLIT_FRACTION = 0.1;
+// XXX -- grab this automatically. Hard to do.
+const DASH_MAX_WIDTH = 96;
 
 const DND_WINDOW_SWITCH_TIMEOUT = 1250;
 
@@ -502,7 +502,7 @@ const Overview = new Lang.Class({
         let searchX = (primary.width - searchWidth) / 2;
         let searchY = contentY + this._spacing;
 
-        let dashWidth = Math.round(DASH_SPLIT_FRACTION * primary.width);
+        let dashWidth = DASH_MAX_WIDTH;
         let dashY = searchY + searchHeight + this._spacing;
         let dashX;
         if (rtl) {
