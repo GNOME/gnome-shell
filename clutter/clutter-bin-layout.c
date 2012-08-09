@@ -447,7 +447,8 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
       ClutterBinLayer *layer;
       ClutterActorBox child_alloc = { 0, };
       gdouble x_align, y_align;
-      gboolean x_fill, y_fill, is_set;
+      gboolean x_fill, y_fill, is_fixed_position_set;
+      float fixed_x, fixed_y;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
@@ -457,19 +458,33 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
                                                     child);
       layer = CLUTTER_BIN_LAYER (meta);
 
-      if (layer->x_align == CLUTTER_BIN_ALIGNMENT_FIXED)
+      fixed_x = fixed_y = 0.f;
+      g_object_get (child,
+                    "fixed-position-set", &is_fixed_position_set,
+                    "fixed-x", &fixed_x,
+                    "fixed-y", &fixed_y,
+                    NULL);
+
+      /* XXX:2.0 - remove the FIXED alignment, and just use the fixed position
+       * of the actor if one is set
+       */
+      if (is_fixed_position_set ||
+          layer->x_align == CLUTTER_BIN_ALIGNMENT_FIXED)
 	{
-	  g_object_get (child, "fixed-position-set", &is_set, "fixed-x", &child_alloc.x1, NULL);
-	  if (!is_set)
-	    child_alloc.x1 = clutter_actor_get_x (child);
+          if (is_fixed_position_set)
+            child_alloc.x1 = fixed_x;
+          else
+            child_alloc.x1 = clutter_actor_get_x (child);
 	}
       else
         child_alloc.x1 = allocation_x;
 
-      if (layer->y_align == CLUTTER_BIN_ALIGNMENT_FIXED)
+      if (is_fixed_position_set ||
+          layer->y_align == CLUTTER_BIN_ALIGNMENT_FIXED)
 	{
-	  g_object_get (child, "fixed-position-set", &is_set, "fixed-y", &child_alloc.y1, NULL);
-	  if (!is_set)
+	  if (is_fixed_position_set)
+            child_alloc.y1 = fixed_y;
+          else
 	    child_alloc.y1 = clutter_actor_get_y (child);
 	}
       else
