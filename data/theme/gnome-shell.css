@@ -871,8 +871,15 @@ StScrollBar StButton#vhandle:active {
     padding: 4px 8px;
 }
 
+.search-provider-icon-more {
+    width: 16px;
+    height: 16px;
+    background-image: url("more-results.svg");
+}
+
 .app-well-app > .overview-icon,
 .show-apps > .overview-icon,
+.search-provider-icon,
 .search-result-content > .overview-icon {
     border-radius: 4px;
     padding: 3px;
@@ -889,6 +896,7 @@ StScrollBar StButton#vhandle:active {
 
 .app-well-app:hover > .overview-icon,
 .show-apps:hover > .overview-icon,
+.search-provider-icon:hover,
 .search-result-content:hover > .overview-icon {
     background-color: rgba(255,255,255,0.1);
     text-shadow: black 0px 2px 2px;
@@ -926,8 +934,10 @@ StScrollBar StButton#vhandle:active {
 .app-well-app:focus > .overview-icon,
 .search-result-content:focus > .overview-icon,
 .show-apps:focus > .overview-icon,
+.search-provider-icon:focus,
 .app-well-app:selected > .overview-icon,
-.search-result-content:selected > .overview-icon {
+.search-result-content:selected > .overview-icon,
+.search-provider-icon:selected {
     background-color: rgba(255,255,255,0.33);
 }
 
