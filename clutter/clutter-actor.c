@@ -8023,19 +8023,28 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * The ::paint signal is emitted each time an actor is being painted.
    *
-   * Subclasses of #ClutterActor should override the class signal handler
-   * and paint themselves in that function.
+   * Subclasses of #ClutterActor should override the #ClutterActorClass.paint
+   * virtual function paint themselves in that function.
    *
-   * It is possible to connect a handler to the ::paint signal in order
-   * to set up some custom aspect of a paint.
+   * <warning>It is strongly discouraged to connect a signal handler to
+   * the #ClutterActor::paint signal; if you want to change the paint
+   * sequence of an existing #ClutterActor instance, either create a new
+   * #ClutterActor class and override the #ClutterActorClass.paint virtual
+   * function, or use a #ClutterEffect. The #ClutterActor::paint signal
+   * will be removed in a future version of Clutter.</warning>
    *
    * Since: 0.8
+   *
+   * Deprecated: 1.12: Override the #ClutterActorClass.paint virtual
+   *   function, use a #ClutterContent implementation, or a #ClutterEffect
+   *   instead of connecting to this signal.
    */
   actor_signals[PAINT] =
     g_signal_new (I_("paint"),
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST |
-                  G_SIGNAL_NO_HOOKS,
+                  G_SIGNAL_NO_HOOKS |
+                  G_SIGNAL_DEPRECATED,
                   G_STRUCT_OFFSET (ClutterActorClass, paint),
                   NULL, NULL,
                   _clutter_marshal_VOID__VOID,
