@@ -43,6 +43,7 @@
 #include "cogl-renderer-private.h"
 #include "cogl-swap-chain-private.h"
 #include "cogl-texture-2d-private.h"
+#include "cogl-pipeline-opengl-private.h"
 
 static void _cogl_gles2_context_free (CoglGLES2Context *gles2_context);
 
@@ -241,6 +242,145 @@ set_texture_object_data (CoglGLES2Context *gles2_ctx,
     }
 }
 
+static void
+copy_flipped_texture (CoglGLES2Context *gles2_ctx,
+                      int level,
+                      int src_x,
+                      int src_y,
+                      int dst_x,
+                      int dst_y,
+                      int width,
+                      int height)
+{
+  GLuint tex_id = get_current_texture_2d_object (gles2_ctx);
+  CoglGLES2TextureObjectData *tex_object_data;
+  CoglContext *ctx;
+  const CoglWinsysVtable *winsys;
+  CoglTexture2D *dst_texture;
+  CoglPixelFormat internal_format;
+
+  tex_object_data = g_hash_table_lookup (gles2_ctx->texture_object_map,
+                                         GUINT_TO_POINTER (tex_id));
+
+  /* We can't do anything if the application hasn't set a level 0
+   * image on this texture object */
+  if (tex_object_data == NULL ||
+      tex_object_data->target != GL_TEXTURE_2D ||
+      tex_object_data->width <= 0 ||
+      tex_object_data->height <= 0)
+    return;
+
+  switch (tex_object_data->format)
+    {
+    case GL_RGB:
+      internal_format = COGL_PIXEL_FORMAT_RGB_888;
+      break;
+
+    case GL_RGBA:
+      internal_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
+      break;
+
+    case GL_ALPHA:
+      internal_format = COGL_PIXEL_FORMAT_A_8;
+      break;
+
+    case GL_LUMINANCE:
+      internal_format = COGL_PIXEL_FORMAT_G_8;
+      break;
+
+    default:
+      /* We can't handle this format so just give up */
+      return;
+    }
+
+  ctx = gles2_ctx->context;
+  winsys = ctx->display->renderer->winsys_vtable;
+
+  /* We need to make sure the rendering on the GLES2 context is
+   * complete before the blit will be ready in the GLES2 context */
+  ctx->glFinish ();
+  /* We need to force Cogl to rebind the texture because according to
+   * the GL spec a shared texture isn't guaranteed to be updated until
+   * is rebound */
+  _cogl_get_texture_unit (0)->dirty_gl_texture = TRUE;
+
+  /* Temporarily switch back to the Cogl context */
+  winsys->restore_context (ctx);
+
+  dst_texture =
+    cogl_gles2_texture_2d_new_from_handle (gles2_ctx->context,
+                                           gles2_ctx,
+                                           tex_id,
+                                           tex_object_data->width,
+                                           tex_object_data->height,
+                                           internal_format,
+                                           NULL /* error */);
+
+  if (dst_texture)
+    {
+      CoglTexture *src_texture =
+        COGL_OFFSCREEN (gles2_ctx->read_buffer)->texture;
+      CoglPipeline *pipeline = cogl_pipeline_new (ctx);
+      const CoglOffscreenFlags flags = COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL;
+      CoglOffscreen *offscreen =
+        _cogl_offscreen_new_to_texture_full (COGL_TEXTURE (dst_texture),
+                                             flags, level);
+      int src_width = cogl_texture_get_width (src_texture);
+      int src_height = cogl_texture_get_height (src_texture);
+      /* The framebuffer size might be different from the texture size
+       * if a level > 0 is used */
+      int dst_width =
+        cogl_framebuffer_get_width (COGL_FRAMEBUFFER (offscreen));
+      int dst_height =
+        cogl_framebuffer_get_height (COGL_FRAMEBUFFER (offscreen));
+      float x_1, y_1, x_2, y_2, s_1, t_1, s_2, t_2;
+
+      cogl_pipeline_set_layer_texture (pipeline, 0, src_texture);
+      cogl_pipeline_set_blend (pipeline,
+                               "RGBA = ADD(SRC_COLOR, 0)",
+                               NULL);
+      cogl_pipeline_set_layer_filters (pipeline,
+                                       0, /* layer_num */
+                                       COGL_PIPELINE_FILTER_NEAREST,
+                                       COGL_PIPELINE_FILTER_NEAREST);
+
+      x_1 = dst_x * 2.0f / dst_width - 1.0f;
+      y_1 = dst_y * 2.0f / dst_height - 1.0f;
+      x_2 = x_1 + width * 2.0f / dst_width;
+      y_2 = y_1 + height * 2.0f / dst_height;
+
+      s_1 = src_x / (float) src_width;
+      t_1 = 1.0f - src_y / (float) src_height;
+      s_2 = (src_x + width) / (float) src_width;
+      t_2 = 1.0f - (src_y + height) / (float) src_height;
+
+      cogl_framebuffer_draw_textured_rectangle (COGL_FRAMEBUFFER (offscreen),
+                                                pipeline,
+                                                x_1, y_1,
+                                                x_2, y_2,
+                                                s_1, t_1,
+                                                s_2, t_2);
+
+      _cogl_framebuffer_flush_journal (COGL_FRAMEBUFFER (offscreen));
+
+      /* We need to make sure the rendering is complete before the
+       * blit will be ready in the GLES2 context */
+      ctx->glFinish ();
+
+      cogl_object_unref (pipeline);
+      cogl_object_unref (dst_texture);
+      cogl_object_unref (offscreen);
+    }
+
+  winsys->set_gles2_context (gles2_ctx, NULL);
+
+  /* From what I understand of the GL spec, changes to a shared object
+   * are not guaranteed to be propagated to another context until that
+   * object is rebound in that context so we can just rebind it
+   * here */
+  gles2_ctx->vtable->glBindTexture (GL_TEXTURE_2D, tex_id);
+}
+
 /* We wrap glBindFramebuffer so that when framebuffer 0 is bound
  * we can instead bind the write_framebuffer passed to
  * cogl_push_gles2_context().
@@ -437,18 +577,51 @@ gl_copy_tex_image_2d_wrapper (GLenum target,
                               GLint border)
 {
   CoglGLES2Context *gles2_ctx = current_gles2_context;
-  int restore_mode = transient_bind_read_buffer (gles2_ctx);
 
-  gles2_ctx->context->glCopyTexImage2D (target, level, internal_format,
-                                        x, y, width, height, border);
+  /* If we are reading from a CoglOffscreen buffer then the image will
+   * be upside down with respect to what GL expects so we can't use
+   * glCopyTexImage2D. Instead we we'll try to use the Cogl API to
+   * flip it */
+  if (gles2_ctx->current_fbo_handle == 0 &&
+      cogl_is_offscreen (gles2_ctx->read_buffer))
+    {
+      /* This will only work with the GL_TEXTURE_2D target. FIXME:
+       * GLES2 also supports setting cube map textures with
+       * glTexImage2D so we need to handle that too */
+      if (target != GL_TEXTURE_2D)
+        return;
 
-  restore_write_buffer (gles2_ctx, restore_mode);
+      /* Create an empty texture to hold the data */
+      gles2_ctx->vtable->glTexImage2D (target,
+                                       level,
+                                       internal_format,
+                                       width, height,
+                                       border,
+                                       internal_format, /* format */
+                                       GL_UNSIGNED_BYTE, /* type */
+                                       NULL /* data */);
 
-  set_texture_object_data (gles2_ctx,
-                           target,
-                           level,
-                           internal_format,
-                           width, height);
+      copy_flipped_texture (gles2_ctx,
+                            level,
+                            x, y, /* src_x/src_y */
+                            0, 0, /* dst_x/dst_y */
+                            width, height);
+    }
+  else
+    {
+      int restore_mode = transient_bind_read_buffer (gles2_ctx);
+
+      gles2_ctx->context->glCopyTexImage2D (target, level, internal_format,
+                                            x, y, width, height, border);
+
+      restore_write_buffer (gles2_ctx, restore_mode);
+
+      set_texture_object_data (gles2_ctx,
+                               target,
+                               level,
+                               internal_format,
+                               width, height);
+    }
 }
 
 static void
@@ -462,13 +635,36 @@ gl_copy_tex_sub_image_2d_wrapper (GLenum target,
                                   GLsizei height)
 {
   CoglGLES2Context *gles2_ctx = current_gles2_context;
-  int restore_mode = transient_bind_read_buffer (gles2_ctx);
 
-  gles2_ctx->context->glCopyTexSubImage2D (target, level,
-                                           xoffset, yoffset,
-                                           x, y, width, height);
+  /* If we are reading from a CoglOffscreen buffer then the image will
+   * be upside down with respect to what GL expects so we can't use
+   * glCopyTexSubImage2D. Instead we we'll try to use the Cogl API to
+   * flip it */
+  if (gles2_ctx->current_fbo_handle == 0 &&
+      cogl_is_offscreen (gles2_ctx->read_buffer))
+    {
+      /* This will only work with the GL_TEXTURE_2D target. FIXME:
+       * GLES2 also supports setting cube map textures with
+       * glTexImage2D so we need to handle that too */
+      if (target != GL_TEXTURE_2D)
+        return;
 
-  restore_write_buffer (gles2_ctx, restore_mode);
+      copy_flipped_texture (gles2_ctx,
+                            level,
+                            x, y, /* src_x/src_y */
+                            xoffset, yoffset, /* dst_x/dst_y */
+                            width, height);
+    }
+  else
+    {
+      int restore_mode = transient_bind_read_buffer (gles2_ctx);
+
+      gles2_ctx->context->glCopyTexSubImage2D (target, level,
+                                               xoffset, yoffset,
+                                               x, y, width, height);
+
+      restore_write_buffer (gles2_ctx, restore_mode);
+    }
 }
 
 static GLuint

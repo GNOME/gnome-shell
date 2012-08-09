@@ -743,3 +743,234 @@ test_gles2_context_fbo (void)
                               0x0000ffff);
     }
 }
+
+/* Position to draw a rectangle in. The top half of this rectangle
+ * will be red, and the bottom will be blue */
+#define RECTANGLE_DRAW_X 10
+#define RECTANGLE_DRAW_Y 15
+
+/* Position to copy the rectangle to in the destination texture */
+#define RECTANGLE_COPY_X 110
+#define RECTANGLE_COPY_Y 115
+
+#define RECTANGLE_WIDTH 30
+#define RECTANGLE_HEIGHT 40
+
+static void
+verify_region (const CoglGLES2Vtable *gles2,
+               int x,
+               int y,
+               int width,
+               int height,
+               uint32_t expected_pixel)
+{
+  uint8_t *buf, *p;
+
+  buf = g_malloc (width * height * 4);
+
+  gles2->glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+
+  for (p = buf + width * height * 4; p > buf; p -= 4)
+    test_utils_compare_pixel (p - 4, expected_pixel);
+
+  g_free (buf);
+}
+
+void
+test_gles2_context_copy_tex_image (void)
+{
+  static const char vertex_shader_source[] =
+    "attribute vec2 pos;\n"
+    "attribute vec2 tex_coord_attrib;\n"
+    "varying vec2 tex_coord_varying;\n"
+    "\n"
+    "void\n"
+    "main ()\n"
+    "{\n"
+    "  gl_Position = vec4 (pos, 0.0, 1.0);\n"
+    "  tex_coord_varying = tex_coord_attrib;\n"
+    "}\n";
+  static const char fragment_shader_source[] =
+    "precision mediump float;\n"
+    "varying vec2 tex_coord_varying;\n"
+    "uniform sampler2D tex;\n"
+    "\n"
+    "void\n"
+    "main ()\n"
+    "{\n"
+    "  gl_FragColor = texture2D (tex, tex_coord_varying);\n"
+    "}\n";
+  static const float verts[] =
+    {
+      -1.0f, -1.0f, 0.0f, 0.0f,
+      1.0f, -1.0f, 1.0f, 0.0f,
+      -1.0f, 1.0f, 0.0f, 1.0f,
+      1.0f, 1.0f, 1.0f, 1.0f
+    };
+  int fb_width = cogl_framebuffer_get_width (fb);
+  int fb_height = cogl_framebuffer_get_height (fb);
+  CoglTexture *offscreen_texture;
+  CoglOffscreen *offscreen;
+  CoglPipeline *pipeline;
+  CoglGLES2Context *gles2_ctx;
+  const CoglGLES2Vtable *gles2;
+  GError *error = NULL;
+  GLuint tex;
+  GLint tex_uniform_location;
+  GLint pos_location;
+  GLint tex_coord_location;
+  GLuint program;
+
+  create_gles2_context (&offscreen_texture,
+                        &offscreen,
+                        &pipeline,
+                        &gles2_ctx,
+                        &gles2);
+
+  if (!cogl_push_gles2_context (ctx,
+                                gles2_ctx,
+                                COGL_FRAMEBUFFER (offscreen),
+                                COGL_FRAMEBUFFER (offscreen),
+                                &error))
+    g_error ("Failed to push gles2 context: %s\n", error->message);
+
+  gles2->glClearColor (1.0, 1.0, 0.0, 1.0);
+  gles2->glClear (GL_COLOR_BUFFER_BIT);
+
+  /* Draw a rectangle using clear and the scissor so that we don't
+   * have to create a shader */
+  gles2->glEnable (GL_SCISSOR_TEST);
+
+  /* Top half red */
+  gles2->glScissor (RECTANGLE_DRAW_X,
+                    RECTANGLE_DRAW_Y + RECTANGLE_HEIGHT / 2,
+                    RECTANGLE_WIDTH,
+                    RECTANGLE_HEIGHT / 2);
+  gles2->glClearColor (1.0, 0.0, 0.0, 1.0);
+  gles2->glClear (GL_COLOR_BUFFER_BIT);
+  /* Bottom half blue */
+  gles2->glScissor (RECTANGLE_DRAW_X,
+                    RECTANGLE_DRAW_Y,
+                    RECTANGLE_WIDTH,
+                    RECTANGLE_HEIGHT / 2);
+  gles2->glClearColor (0.0, 0.0, 1.0, 1.0);
+  gles2->glClear (GL_COLOR_BUFFER_BIT);
+
+  /* Draw where the rectangle would be if the coordinates were flipped
+   * in white to make it obvious that that is the problem if the
+   * assertion fails */
+  gles2->glScissor (RECTANGLE_DRAW_X,
+                    fb_width - (RECTANGLE_DRAW_Y + RECTANGLE_HEIGHT),
+                    RECTANGLE_WIDTH,
+                    RECTANGLE_HEIGHT);
+  gles2->glClearColor (1.0, 1.0, 1.0, 1.0);
+  gles2->glClear (GL_COLOR_BUFFER_BIT);
+
+  gles2->glDisable (GL_SCISSOR_TEST);
+
+  /* Create a texture */
+  gles2->glGenTextures (1, &tex);
+  gles2->glBindTexture (GL_TEXTURE_2D, tex);
+  gles2->glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  gles2->glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+  /* Copy the entire framebuffer into the texture */
+  gles2->glCopyTexImage2D (GL_TEXTURE_2D,
+                           0, /* level */
+                           GL_RGBA,
+                           0, 0, /* x/y */
+                           fb_width, fb_height,
+                           0 /* border */);
+
+  /* Copy the rectangle into another part of the texture */
+  gles2->glCopyTexSubImage2D (GL_TEXTURE_2D,
+                              0, /* level */
+                              RECTANGLE_COPY_X,
+                              RECTANGLE_COPY_Y,
+                              RECTANGLE_DRAW_X,
+                              RECTANGLE_DRAW_Y,
+                              RECTANGLE_WIDTH,
+                              RECTANGLE_HEIGHT);
+
+  /* Clear the framebuffer to make the test more thorough */
+  gles2->glClearColor (1.0, 1.0, 0.0, 1.0);
+  gles2->glClear (GL_COLOR_BUFFER_BIT);
+
+  /* Create a program to render the texture */
+  program = create_program (gles2,
+                            vertex_shader_source,
+                            fragment_shader_source);
+
+  pos_location =
+    gles2->glGetAttribLocation (program, "pos");
+  if (pos_location == -1)
+    g_error ("Couldn't find ‘pos’ attribute");
+
+  tex_coord_location =
+    gles2->glGetAttribLocation (program, "tex_coord_attrib");
+  if (tex_coord_location == -1)
+    g_error ("Couldn't find ‘tex_coord_attrib’ attribute");
+
+  tex_uniform_location =
+    gles2->glGetUniformLocation (program, "tex");
+  if (tex_uniform_location == -1)
+    g_error ("Couldn't find ‘tex’ uniform");
+
+  gles2->glUseProgram (program);
+
+  gles2->glUniform1i (tex_uniform_location, 0);
+
+  /* Render the texture to fill the framebuffer */
+  gles2->glEnableVertexAttribArray (pos_location);
+  gles2->glVertexAttribPointer (pos_location,
+                                2, /* n_components */
+                                GL_FLOAT,
+                                FALSE, /* normalized */
+                                sizeof (float) * 4,
+                                verts);
+  gles2->glEnableVertexAttribArray (tex_coord_location);
+  gles2->glVertexAttribPointer (tex_coord_location,
+                                2, /* n_components */
+                                GL_FLOAT,
+                                FALSE, /* normalized */
+                                sizeof (float) * 4,
+                                verts + 2);
+
+  gles2->glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
+
+  /* Verify top of drawn rectangle is red */
+  verify_region (gles2,
+                 RECTANGLE_DRAW_X,
+                 RECTANGLE_DRAW_Y + RECTANGLE_HEIGHT / 2,
+                 RECTANGLE_WIDTH,
+                 RECTANGLE_HEIGHT / 2,
+                 0xff0000ff);
+  /* Verify bottom of drawn rectangle is blue */
+  verify_region (gles2,
+                 RECTANGLE_DRAW_X,
+                 RECTANGLE_DRAW_Y,
+                 RECTANGLE_WIDTH,
+                 RECTANGLE_HEIGHT / 2,
+                 0x0000ffff);
+  /* Verify top of copied rectangle is red */
+  verify_region (gles2,
+                 RECTANGLE_COPY_X,
+                 RECTANGLE_COPY_Y + RECTANGLE_HEIGHT / 2,
+                 RECTANGLE_WIDTH,
+                 RECTANGLE_HEIGHT / 2,
+                 0xff0000ff);
+  /* Verify bottom of copied rectangle is blue */
+  verify_region (gles2,
+                 RECTANGLE_COPY_X,
+                 RECTANGLE_COPY_Y,
+                 RECTANGLE_WIDTH,
+                 RECTANGLE_HEIGHT / 2,
+                 0x0000ffff);
+
+  cogl_pop_gles2_context (ctx);
+
+  cogl_object_unref (offscreen);
+  cogl_object_unref (gles2_ctx);
+  cogl_object_unref (pipeline);
+  cogl_object_unref (offscreen_texture);
+}
