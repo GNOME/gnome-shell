@@ -19203,7 +19203,7 @@ clutter_actor_set_content_gravity (ClutterActor *self,
  * @self: a #ClutterActor
  *
  * Retrieves the content gravity as set using
- * clutter_actor_get_content_gravity().
+ * clutter_actor_set_content_gravity().
  *
  * Return value: the content gravity
  *
