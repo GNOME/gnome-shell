@@ -2191,7 +2191,8 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
  *    g_object_unref()
  *
  * Since: 1.0
- * Deprecated: 1.12: Use #ClutterPropertyTransition instead
+ * Deprecated: 1.12: Use the implicit transition for animatable properties
+ *   in #ClutterActor instead.
  */
 ClutterAnimation *
 clutter_actor_animate_with_timeline (ClutterActor    *actor,
@@ -2377,7 +2378,8 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *   g_object_unref()
  *
  * Since: 1.0
- * Deprecated: 1.12: Use #ClutterPropertyTransition instead
+ * Deprecated: 1.12: Use the implicit transition for animatable properties
+ *   in #ClutterActor instead.
  */
 ClutterAnimation *
 clutter_actor_animate (ClutterActor *actor,
@@ -2433,7 +2435,8 @@ clutter_actor_animate (ClutterActor *actor,
  *   g_object_unref()
  *
  * Since: 1.0
- * Deprecated: 1.12: Use #ClutterPropertyTransition instead
+ * Deprecated: 1.12: Use the implicit transition for animatable properties
+ *   in #ClutterActor instead.
  */
 ClutterAnimation *
 clutter_actor_animatev (ClutterActor        *actor,
@@ -2491,7 +2494,8 @@ clutter_actor_animatev (ClutterActor        *actor,
  *    g_object_unref()
  *
  * Since: 1.0
- * Deprecated: 1.12: Use #ClutterPropertyTransition instead
+ * Deprecated: 1.12: Use the implicit transition for animatable properties
+ *   in #ClutterActor instead.
  */
 ClutterAnimation *
 clutter_actor_animate_with_timelinev (ClutterActor        *actor,
@@ -2590,7 +2594,9 @@ clutter_actor_animate_with_alphav (ClutterActor        *actor,
  * Return value: (transfer none): a #ClutterAnimation, or %NULL
  *
  * Since: 1.0
- * Deprecated: 1.12: Use #ClutterPropertyTransition instead
+ * Deprecated: 1.12: Use the implicit transition for animatable properties
+ *   in #ClutterActor instead, and clutter_actor_get_transition() to retrieve
+ *   the transition.
  */
 ClutterAnimation *
 clutter_actor_get_animation (ClutterActor *actor)
@@ -2613,7 +2619,9 @@ clutter_actor_get_animation (ClutterActor *actor)
  * The #ClutterAnimation::completed signal will not be emitted.
  *
  * Since: 1.4
- * Deprecated: 1.12: Use #ClutterPropertyTransition instead
+ * Deprecated: 1.12: Use the implicit transition for animatable properties
+ *   in #ClutterActor instead, and clutter_actor_remove_transition() to
+ *   remove the transition.
  */
 void
 clutter_actor_detach_animation (ClutterActor *actor)
