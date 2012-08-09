@@ -143,5 +143,25 @@
         </doc:doc>
       </arg>
     </method>
+
+    <method name="LaunchSearch">
+      <doc:doc>
+        <doc:description>
+          <doc:para>
+            Called when the user clicks on the provider icon. The provider
+            application should open and run the active search term itself.
+          </doc:para>
+        </doc:description>
+      </doc:doc>
+      <arg type="as" direction="in">
+        <doc:doc>
+          <doc:summary>
+            <doc:para>
+              The current search term(s).
+            </doc:para>
+          </doc:summary>
+        </doc:doc>
+      </arg>
+    </method>
   </interface>
 </node>

@@ -7,6 +7,7 @@ const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 const Atk = imports.gi.Atk;
 
+const AppDisplay = imports.ui.appDisplay;
 const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
@@ -111,8 +112,8 @@ const GridSearchResults = new Lang.Class({
         this._grid = grid || new IconGrid.IconGrid({ rowLimit: MAX_SEARCH_RESULTS_ROWS,
                                                      xAlign: St.Align.START });
         this.actor = new St.Bin({ x_align: St.Align.START });
-
         this.actor.set_child(this._grid.actor);
+
         this._width = 0;
         this.actor.connect('notify::width', Lang.bind(this, function() {
             this._width = this.actor.width;
@@ -130,6 +131,7 @@ const GridSearchResults = new Lang.Class({
     },
 
     getResultsForDisplay: function() {
+        this._grid.actor.ensure_style();
         let alreadyVisible = this._pendingClear ? 0 : this._grid.visibleItemsCount();
         let canDisplay = this._grid.childrenInRow(this._width) * this._grid.getRowLimit()
                          - alreadyVisible;
@@ -141,6 +143,10 @@ const GridSearchResults = new Lang.Class({
 
     getVisibleResultCount: function() {
         return this._grid.visibleItemsCount();
+    },
+
+    hasMoreResults: function() {
+        return this._notDisplayedResult.length > 0;
     },
 
     setResults: function(results, terms) {
@@ -220,21 +226,32 @@ const SearchResults = new Lang.Class({
     },
 
     createProviderMeta: function(provider) {
-        let providerBox = new St.BoxLayout({ style_class: 'search-section',
-                                             vertical: true });
-        let title = new St.Label({ style_class: 'search-section-header',
-                                   text: provider.title });
-        providerBox.add(title, { x_fill: false, x_align: St.Align.START });
+        let providerBox = new St.BoxLayout({ style_class: 'search-section' });
+        let isAppsProvider = (provider instanceof AppDisplay.AppSearchProvider);
+
+        let providerIcon;
+        if (!isAppsProvider) {
+            providerIcon = new ProviderIcon(provider);
+            providerIcon.connect('launch-search', Lang.bind(this, function(providerIcon) {
+                this._searchSystem.launchSearch(providerIcon.provider);
+            }));
+            providerBox.add(providerIcon.actor, { x_fill: false,
+                                                  y_fill: false,
+                                                  x_align: St.Align.START,
+                                                  y_align: St.Align.START });
+        }
 
         let resultDisplayBin = new St.Bin({ style_class: 'search-section-results',
                                             x_fill: true,
                                             y_fill: true });
         providerBox.add(resultDisplayBin, { expand: true });
+
         let resultDisplay = new GridSearchResults(provider);
         resultDisplayBin.set_child(resultDisplay.actor);
 
         this._providerMeta.push({ provider: provider,
                                   actor: providerBox,
+                                  icon: providerIcon,
                                   resultDisplay: resultDisplay });
         this._content.add(providerBox);
     },
@@ -341,6 +358,9 @@ const SearchResults = new Lang.Class({
             meta.resultDisplay.setResults(providerResults, terms);
             let results = meta.resultDisplay.getResultsForDisplay();
 
+            if (meta.icon)
+                meta.icon.moreIcon.visible = meta.resultDisplay.hasMoreResults();
+
             provider.getResultMetas(results, Lang.bind(this, function(metas) {
                 this._clearDisplayForProvider(provider);
                 meta.actor.show();
@@ -393,3 +413,66 @@ const SearchResults = new Lang.Class({
         }
     }
 });
+
+const ProviderIcon = new Lang.Class({
+    Name: 'ProviderIcon',
+
+    PROVIDER_ICON_SIZE: 48,
+
+    MORE_ICON_SIZE: 16,
+
+    _init: function(provider) {
+        this.provider = provider;
+
+        this.actor = new St.Button({ style_class: 'search-section-icon-bin',
+                                     reactive: true,
+                                     can_focus: true,
+                                     track_hover: true });
+        this.actor.connect('clicked', Lang.bind(this, this._onIconClicked));
+
+        this._content = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+        this.actor.set_child(this._content);
+
+        let rtl = (this.actor.get_text_direction() == Clutter.TextDirection.RTL);
+
+        this.moreIcon = new St.Icon({ style_class: 'search-section-icon-more',
+                                      icon_size: this.MORE_ICON_SIZE,
+                                      icon_name: 'list-add-symbolic',
+                                      visible: false,
+                                      x_align: rtl ? Clutter.ActorAlign.START : Clutter.ActorAlign.END,
+                                      y_align: Clutter.ActorAlign.END,
+                                      // HACK: without these, ClutterBinLayout
+                                      // ignores alignment properties on the actor
+                                      x_expand: true,
+                                      y_expand: true });
+
+        this._iconBin = new St.Bin({ style_class: 'search-section-icon',
+                                     width: this.PROVIDER_ICON_SIZE,
+                                     height: this.PROVIDER_ICON_SIZE });
+
+        this._content.add_actor(this._iconBin);
+        this._content.add_actor(this.moreIcon);
+
+        this._createProviderIcon();
+    },
+
+    _createProviderIcon: function() {
+        let icon = new St.Icon({ icon_size: this.PROVIDER_ICON_SIZE });
+
+        if (this.provider.icon)
+            icon.gicon = this.provider.icon;
+        else
+            icon.icon_name = 'application-x-executable';
+
+        this._iconBin.set_child(icon);
+    },
+
+    activate: function() {
+        this.emit('launch-search');
+    },
+
+    _onIconClicked: function(actor) {
+        this.activate();
+    }
+});
+Signals.addSignalMethods(ProviderIcon.prototype);

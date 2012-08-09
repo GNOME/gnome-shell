@@ -163,6 +163,16 @@ const SearchProvider = new Lang.Class({
      */
     activateResult: function(id) {
         throw new Error('Not implemented');
+    },
+
+    /**
+     * launchSearch:
+     * @terms: Current search terms
+     *
+     * Called when the user clicks the provider icon.
+     */
+    launchSearch: function(terms) {
+        throw new Error('Not implemented');
     }
 });
 Signals.addSignalMethods(SearchProvider.prototype);
@@ -261,5 +271,11 @@ const SearchSystem = new Lang.Class({
             }
         }
     },
+
+    launchSearch: function(provider) {
+        let terms = this.getTerms();
+        provider.launchSearch(terms);
+        Main.overview.toggle();
+    }
 });
 Signals.addSignalMethods(SearchSystem.prototype);
