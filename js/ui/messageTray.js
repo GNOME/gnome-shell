@@ -14,6 +14,7 @@ const Signals = imports.signals;
 const St = imports.gi.St;
 
 const BoxPointer = imports.ui.boxpointer;
+const CtrlAltTab = imports.ui.ctrlAltTab;
 const GnomeSession = imports.misc.gnomeSession;
 const GrabHelper = imports.ui.grabHelper;
 const Main = imports.ui.main;
@@ -1482,6 +1483,7 @@ const MessageTray = new Lang.Class({
 
         summaryItem.actor.connect('clicked', Lang.bind(this,
             function (actor, button) {
+                actor.grab_key_focus();
                 this._onSummaryItemClicked(summaryItem, button);
             }));
 
@@ -1894,9 +1896,13 @@ const MessageTray = new Lang.Class({
                                 modal: !this._overviewVisible,
                                 onUngrab: Lang.bind(this, this._escapeTray) });
 
-        // Don't move the windows up if we are in the overview.
-        if (this._overviewVisible)
+        // Don't move the windows up if we are in the overview,
+        // but show the tray in the ctrl+alt+tab list.
+        if (this._overviewVisible) {
+            Main.ctrlAltTabManager.addGroup(this._summary, _("Message Tray"), 'start-here',
+                                            { sortGroup: CtrlAltTab.SortGroup.BOTTOM });
             return;
+        }
 
         let bottomMonitor = Main.layoutManager.bottomMonitor;
         let geometry = new Clutter.Geometry({ x: bottomMonitor.x,
@@ -1936,8 +1942,12 @@ const MessageTray = new Lang.Class({
                       transition: 'easeOutQuad'
                     });
 
-        if (!this._desktopClone)
+        // If we are coming back from the overview, there are no windows
+        // to be moved. Just remove the tray from the ctrl+alt+tab list.
+        if (!this._desktopClone) {
+            Main.ctrlAltTabManager.removeGroup(this._summary);
             return;
+        }
 
         let geometry = this._desktopClone.clip;
         Tweener.addTween(this._desktopClone,
