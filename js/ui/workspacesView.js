@@ -51,7 +51,6 @@ const WorkspacesView = new Lang.Class({
         this._clipY = 0;
         this._clipWidth = 0;
         this._clipHeight = 0;
-        this._workspaceRatioSpacing = 0;
         this._spacing = 0;
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
@@ -142,15 +141,15 @@ const WorkspacesView = new Lang.Class({
         this._extraWorkspaces = [];
     },
 
-    setGeometry: function(x, y, width, height, spacing) {
+    setGeometry: function(x, y, width, height) {
       if (this._x == x && this._y == y &&
           this._width == width && this._height == height)
           return;
+
         this._width = width;
         this._height = height;
         this._x = x;
         this._y = y;
-        this._workspaceRatioSpacing = spacing;
 
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setGeometry(x, y, width, height);
@@ -225,7 +224,7 @@ const WorkspacesView = new Lang.Class({
 
             Tweener.removeTweens(workspace.actor);
 
-            let y = (w - active) * (this._height + this._spacing + this._workspaceRatioSpacing);
+            let y = (w - active) * (this._height + this._spacing);
 
             if (showAnimation) {
                 let params = { y: y,
@@ -860,7 +859,7 @@ const WorkspacesDisplay = new Lang.Class({
         let rtl = (Clutter.get_default_text_direction () == Clutter.TextDirection.RTL);
 
         let clipWidth = width - controlsVisible;
-        let clipHeight = (fullHeight / fullWidth) * clipWidth;
+        let clipHeight = fullHeight;
         let clipX = rtl ? x + controlsVisible : x;
         let clipY = y + (fullHeight - clipHeight) / 2;
 
@@ -869,19 +868,13 @@ const WorkspacesDisplay = new Lang.Class({
         if (rtl)
             x += widthAdjust;
 
-        height = (fullHeight / fullWidth) * width;
-        let difference = fullHeight - height;
-        y += difference / 2;
-
-
         let monitors = Main.layoutManager.monitors;
         let m = 0;
         for (let i = 0; i < monitors.length; i++) {
             if (i == this._primaryIndex) {
                 this._workspacesViews[m].setClipRect(clipX, clipY,
                                                      clipWidth, clipHeight);
-                this._workspacesViews[m].setGeometry(x, y, width, height,
-                                                     difference);
+                this._workspacesViews[m].setGeometry(x, y, width, height);
                 m++;
             } else if (!this._workspacesOnlyOnPrimary) {
                 this._workspacesViews[m].setClipRect(monitors[i].x,
@@ -891,7 +884,7 @@ const WorkspacesDisplay = new Lang.Class({
                 this._workspacesViews[m].setGeometry(monitors[i].x,
                                                      monitors[i].y,
                                                      monitors[i].width,
-                                                     monitors[i].height, 0);
+                                                     monitors[i].height);
                 m++;
             }
         }
