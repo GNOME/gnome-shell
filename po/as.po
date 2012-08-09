@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-06 17:11+0000\n"
-"PO-Revision-Date: 2012-08-07 15:03+0530\n"
+"POT-Creation-Date: 2012-08-08 23:36+0000\n"
+"PO-Revision-Date: 2012-08-09 12:58+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: as_IN <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -138,26 +138,36 @@ msgid "Keybinding to open the application menu."
 msgstr "অনুপ্ৰয়োগ মেনু খোলিবলে Keybinding।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#| msgid "Keybinding to toggle the screen recorder"
+msgid "Keybinding to toggle the visibility of the message tray"
+msgstr "বাৰ্তা ট্ৰেৰ দৃশ্যমানতা টগ'ল কৰিবলে Keybinding"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#| msgid "Keybinding to toggle the screen recorder"
+msgid "Keybinding to toggle the visibility of the message tray."
+msgstr "বাৰ্তা ট্ৰেৰ দৃশ্যমানতা টগ'ল কৰিবলে Keybinding।"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to toggle the screen recorder"
 msgstr "পৰ্দা ৰেকৰ্ডাৰ অদল বদল কৰিবলে Keybinding"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to start/stop the builtin screen recorder."
 msgstr "বিল্টইন পৰ্দা ৰেকৰ্ডাৰ আৰম্ভ/বন্ধ কৰিবলে Keybinding।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "Which keyboard to use"
 msgstr "কোনটো কিবৰ্ড ব্যৱহাৰ কৰা হব"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "The type of keyboard to use."
 msgstr "ব্যৱহাৰ কৰিব লগিয়া কিবৰ্ডৰ ধৰণ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Framerate used for recording screencasts."
 msgstr "screencasts ৰেকৰ্ড কৰাৰ কাৰণে ব্যৱহৃত Framerate"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -165,11 +175,11 @@ msgstr ""
 "GNOME শ্বেলৰ screencast ৰেকৰ্ডাৰে ফ্ৰেইম-প্ৰতি ছেকেণ্ডত ৰেকৰ্ড কৰা পৰিণাম "
 "screencast ৰ framerate।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "screencast এনক'ড কৰিবলে ব্যৱহাৰ কৰা gstreamer পাইপলাইন"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -193,11 +203,11 @@ msgstr ""
 "threads=%T ! queue ! webmmux' আৰু VP8 কডেক ব্যৱহাৰ কৰি WEBM ত ৰেকৰ্ড কৰে। %T -ক "
 "চিস্টেমত অনুকূলিত থ্ৰেড কাওন্টত এটা অনুমানৰ প্লেইচহল্ডাৰ হিচাপে ব্যৱহাৰ কৰা হয়। "
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "File extension used for storing the screencast"
 msgstr "screencast সংৰক্ষণ কৰাৰ কাৰণে লথিপত্ৰ সম্প্ৰসাৰন"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -213,7 +223,6 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "%s ৰ বাবে পছন্দসমূহ ডাইলগ ল'ড কৰোতে এটা ত্ৰুটি হৈছিল:"
 
 #: ../js/extensionPrefs/main.js:164
-#| msgid "<b>Extension</b>"
 msgid "Extension"
 msgstr "প্ৰসাৰন"
 
@@ -255,12 +264,12 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "ছাইন ইন কৰক"
 
-#: ../js/gdm/loginDialog.js:1280
+#: ../js/gdm/loginDialog.js:1278
 msgid "Login Window"
 msgstr "লগিন উইন্ডো"
 
 #: ../js/gdm/powerMenu.js:130 ../js/ui/userMenu.js:612
-#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:725
+#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:727
 msgid "Suspend"
 msgstr "বাতিল কৰক"
 
@@ -269,7 +278,7 @@ msgid "Restart"
 msgstr "পুনৰাম্ভ কৰক"
 
 #: ../js/gdm/powerMenu.js:140 ../js/ui/userMenu.js:614
-#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:724
+#: ../js/ui/userMenu.js:616 ../js/ui/userMenu.js:726
 msgid "Power Off"
 msgstr "পাৱাৰ অফ"
 
@@ -482,7 +491,7 @@ msgstr "এই সপ্তাহ"
 msgid "Next week"
 msgstr "অহা সপ্তাহ"
 
-#: ../js/ui/dash.js:238 ../js/ui/messageTray.js:1317
+#: ../js/ui/dash.js:238 ../js/ui/messageTray.js:1321
 msgid "Remove"
 msgstr "আতৰাওক"
 
@@ -669,19 +678,19 @@ msgstr "ৱেব পৃষ্ঠা"
 msgid "Screencast from %d %t"
 msgstr "%d %t ৰ পৰা স্ক্ৰিনকাস্ট দেখুৱাওক"
 
-#: ../js/ui/messageTray.js:1310
+#: ../js/ui/messageTray.js:1314
 msgid "Open"
 msgstr "খোলক"
 
-#: ../js/ui/messageTray.js:1327
+#: ../js/ui/messageTray.js:1331
 msgid "Unmute"
 msgstr "অমৌন কৰক"
 
-#: ../js/ui/messageTray.js:1327
+#: ../js/ui/messageTray.js:1331
 msgid "Mute"
 msgstr "মোন কৰক"
 
-#: ../js/ui/messageTray.js:2638
+#: ../js/ui/messageTray.js:2664
 msgid "System Information"
 msgstr "চিস্টেম তথ্য"
 
@@ -888,7 +897,7 @@ msgstr "পাচফ্ৰেইছ"
 msgid "Remember Passphrase"
 msgstr "পাচফ্ৰেইছ মনত ৰাখক"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:142
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:129
 msgid "Unlock"
 msgstr "আনলক কৰক"
 
@@ -1028,7 +1037,7 @@ msgstr "সদায় অভিগম প্ৰদান কৰক"
 msgid "Grant this time only"
 msgstr "কেৱল এইবাৰৰ কাৰণে প্ৰদান কৰক"
 
-#: ../js/ui/status/bluetooth.js:351 ../js/ui/telepathyClient.js:1097
+#: ../js/ui/status/bluetooth.js:351 ../js/ui/telepathyClient.js:1106
 msgid "Reject"
 msgstr "নাকচ কৰক"
 
@@ -1326,35 +1335,35 @@ msgstr "সংযোগ ত্ৰুটি"
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:908
+#: ../js/ui/telepathyClient.js:917
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "<b>%X</b> on <b>%A</b> ত পঠোৱা হৈছে"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:914
+#: ../js/ui/telepathyClient.js:923
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "<b>%A</b> ত পঠোৱা হৈছে, <b>%B %d</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:919
+#: ../js/ui/telepathyClient.js:928
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "<b>%A</b> ত পঠোৱা হৈছে, <b>%B %d</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:948
+#: ../js/ui/telepathyClient.js:957
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s এতিয়া %s হিচাপে জনাজাত"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1048
+#: ../js/ui/telepathyClient.js:1057
 #, c-format
 msgid "Invitation to %s"
 msgstr "%s লে নিমন্ত্ৰণ"
@@ -1362,35 +1371,35 @@ msgstr "%s লে নিমন্ত্ৰণ"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1056
+#: ../js/ui/telepathyClient.js:1065
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s এ আপোনাক %s ত অংশগ্ৰহণ কৰিবলে আমন্ত্ৰণ জনাইছে"
 
-#: ../js/ui/telepathyClient.js:1058 ../js/ui/telepathyClient.js:1137
-#: ../js/ui/telepathyClient.js:1201
+#: ../js/ui/telepathyClient.js:1067 ../js/ui/telepathyClient.js:1146
+#: ../js/ui/telepathyClient.js:1210
 msgid "Decline"
 msgstr "নাকচ কৰক"
 
-#: ../js/ui/telepathyClient.js:1059 ../js/ui/telepathyClient.js:1138
-#: ../js/ui/telepathyClient.js:1202
+#: ../js/ui/telepathyClient.js:1068 ../js/ui/telepathyClient.js:1147
+#: ../js/ui/telepathyClient.js:1211
 msgid "Accept"
 msgstr "গ্ৰহন কৰক"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1089
+#: ../js/ui/telepathyClient.js:1098
 #, c-format
 msgid "Video call from %s"
 msgstr "%s ৰ পৰা ভিডিঅ' কল"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1092
+#: ../js/ui/telepathyClient.js:1101
 #, c-format
 msgid "Call from %s"
 msgstr "%s - পৰা কল"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1099
+#: ../js/ui/telepathyClient.js:1108
 msgid "Answer"
 msgstr "উত্তৰ"
 
@@ -1399,107 +1408,107 @@ msgstr "উত্তৰ"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1131
+#: ../js/ui/telepathyClient.js:1140
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s এ আপোনাক %s পঠাই আছে"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1166
+#: ../js/ui/telepathyClient.js:1175
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "আপুনি কেতিয়া অনলাইন আছে চাবলে %s এ অনুমতি বিচাৰিব"
 
-#: ../js/ui/telepathyClient.js:1259
+#: ../js/ui/telepathyClient.js:1268
 msgid "Network error"
 msgstr "নেটৱাৰ্ক ত্ৰুটি"
 
-#: ../js/ui/telepathyClient.js:1261
+#: ../js/ui/telepathyClient.js:1270
 msgid "Authentication failed"
 msgstr "প্ৰমাণীকৰণ ব্যৰ্থ"
 
-#: ../js/ui/telepathyClient.js:1263
+#: ../js/ui/telepathyClient.js:1272
 msgid "Encryption error"
 msgstr "ইনক্ৰিপষণ ত্ৰুটি"
 
-#: ../js/ui/telepathyClient.js:1265
+#: ../js/ui/telepathyClient.js:1274
 msgid "Certificate not provided"
 msgstr "প্ৰমাণপত্ৰ প্ৰদান কৰা হোৱা নাই"
 
-#: ../js/ui/telepathyClient.js:1267
+#: ../js/ui/telepathyClient.js:1276
 msgid "Certificate untrusted"
 msgstr "প্ৰমাণপত্ৰক ভৰষা কৰিব নোৱাৰি"
 
-#: ../js/ui/telepathyClient.js:1269
+#: ../js/ui/telepathyClient.js:1278
 msgid "Certificate expired"
 msgstr "প্ৰমাণপত্ৰৰ অৱসান ঘটিছে"
 
-#: ../js/ui/telepathyClient.js:1271
+#: ../js/ui/telepathyClient.js:1280
 msgid "Certificate not activated"
 msgstr "প্ৰমাণপত্ৰ সক্ৰিয় কৰা হোৱা নাই"
 
-#: ../js/ui/telepathyClient.js:1273
+#: ../js/ui/telepathyClient.js:1282
 msgid "Certificate hostname mismatch"
 msgstr "প্ৰমাণপত্ৰ হস্টনাম অমিল"
 
-#: ../js/ui/telepathyClient.js:1275
+#: ../js/ui/telepathyClient.js:1284
 msgid "Certificate fingerprint mismatch"
 msgstr "প্ৰমাণপত্ৰ ফিংগাৰপ্ৰিন্ট অমিল"
 
-#: ../js/ui/telepathyClient.js:1277
+#: ../js/ui/telepathyClient.js:1286
 msgid "Certificate self-signed"
 msgstr "প্ৰমাণপত্ৰ স্ব-স্বাক্ষৰীত"
 
-#: ../js/ui/telepathyClient.js:1279
+#: ../js/ui/telepathyClient.js:1288
 msgid "Status is set to offline"
 msgstr "অৱস্থা অফলাইনলে সংহতি কৰা হৈছে"
 
-#: ../js/ui/telepathyClient.js:1281
+#: ../js/ui/telepathyClient.js:1290
 msgid "Encryption is not available"
 msgstr "ইনক্ৰিপষণ উপলব্ধ নহয়"
 
-#: ../js/ui/telepathyClient.js:1283
+#: ../js/ui/telepathyClient.js:1292
 msgid "Certificate is invalid"
 msgstr "প্ৰমাণপত্ৰ অবৈধ"
 
-#: ../js/ui/telepathyClient.js:1285
+#: ../js/ui/telepathyClient.js:1294
 msgid "Connection has been refused"
 msgstr "সংযোগ নাকচ কৰা হৈছে"
 
-#: ../js/ui/telepathyClient.js:1287
+#: ../js/ui/telepathyClient.js:1296
 msgid "Connection can't be established"
 msgstr "সংযোগ স্থাপন কৰিব নোৱাৰি"
 
-#: ../js/ui/telepathyClient.js:1289
+#: ../js/ui/telepathyClient.js:1298
 msgid "Connection has been lost"
 msgstr "সংযোগ হেৰাইছে"
 
-#: ../js/ui/telepathyClient.js:1291
+#: ../js/ui/telepathyClient.js:1300
 msgid "This account is already connected to the server"
 msgstr "এই একাওন্ট ইতিমধ্যে চাৰ্ভাৰৰ সৈতে সংযোগিত"
 
-#: ../js/ui/telepathyClient.js:1293
+#: ../js/ui/telepathyClient.js:1302
 msgid "Connection has been replaced by a new connection using the same resource"
 msgstr "সংযোগক একে সম্পদ ব্যৱহাৰ কৰি এটা নতুন সংযোগৰে প্ৰতিস্থাপন কৰা হৈছে"
 
-#: ../js/ui/telepathyClient.js:1295
+#: ../js/ui/telepathyClient.js:1304
 msgid "The account already exists on the server"
 msgstr "একাওন্ট ইতিমধ্যে চাৰ্ভাৰত উপস্থিত"
 
-#: ../js/ui/telepathyClient.js:1297
+#: ../js/ui/telepathyClient.js:1306
 msgid "Server is currently too busy to handle the connection"
 msgstr "চাৰ্ভাৰ সংযোগ ব্যৱস্থাপনা কৰিবলে বৰ্তমানে অতি ব্যস্ত"
 
-#: ../js/ui/telepathyClient.js:1299
+#: ../js/ui/telepathyClient.js:1308
 msgid "Certificate has been revoked"
 msgstr "প্ৰমাণপত্ৰ প্ৰত্যাহাৰ কৰা হৈছে"
 
-#: ../js/ui/telepathyClient.js:1301
+#: ../js/ui/telepathyClient.js:1310
 msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "প্ৰমাণপত্ৰয় এটা অসুৰক্ষিত চিফাৰ এলগৰিথম ব্যৱহাৰ কৰে অথবা ক্ৰিপ্টোগ্ৰাফিয়ভাৱে দুৰ্বল"
 
-#: ../js/ui/telepathyClient.js:1303
+#: ../js/ui/telepathyClient.js:1312
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1507,30 +1516,30 @@ msgstr ""
 "চাৰ্ভাৰ প্ৰমাণপত্ৰৰ দৈৰ্ঘ, অথবা চাৰ্ভাৰ প্ৰমাণপত্ৰ শৃংখলৰ গভীৰতা, ক্ৰিপ্টোগ্ৰাফী "
 "লাইব্ৰেৰীয়ে প্ৰণয়ন কৰা সীমাসমূহত অতিক্ৰম কৰে"
 
-#: ../js/ui/telepathyClient.js:1305
+#: ../js/ui/telepathyClient.js:1314
 msgid "Internal error"
 msgstr "অভ্যন্তৰীক ত্ৰুটি"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1315
+#: ../js/ui/telepathyClient.js:1324
 #, c-format
 msgid "Connection to %s failed"
 msgstr "%s লে সংযোগ ব্যৰ্থ"
 
-#: ../js/ui/telepathyClient.js:1324
+#: ../js/ui/telepathyClient.js:1333
 msgid "Reconnect"
 msgstr "পুনৰ সংযোগ কৰক"
 
-#: ../js/ui/telepathyClient.js:1325
+#: ../js/ui/telepathyClient.js:1334
 msgid "Edit account"
 msgstr "একাওন্ট সম্পাদন কৰক"
 
-#: ../js/ui/telepathyClient.js:1371
+#: ../js/ui/telepathyClient.js:1380
 msgid "Unknown reason"
 msgstr "অজ্ঞাত কাৰণ"
 
-#: ../js/ui/unlockDialog.js:129
+#: ../js/ui/unlockDialog.js:138
 msgid "Login as another user"
 msgstr "অন্য ব্যৱহাৰকাৰী হিচাপে লগিন কৰক"
 
@@ -1558,7 +1567,7 @@ msgstr "অলস"
 msgid "Unavailable"
 msgstr "উপলব্ধ নাই"
 
-#: ../js/ui/userMenu.js:567 ../js/ui/userMenu.js:706
+#: ../js/ui/userMenu.js:567 ../js/ui/userMenu.js:708
 msgid "Switch User"
 msgstr "ব্যৱহাৰকাৰী পৰিবৰ্তন কৰক"
 
@@ -1566,31 +1575,31 @@ msgstr "ব্যৱহাৰকাৰী পৰিবৰ্তন কৰক"
 msgid "Switch Session"
 msgstr "অধিবেশন পৰিবৰ্তন কৰক"
 
-#: ../js/ui/userMenu.js:689
+#: ../js/ui/userMenu.js:691
 msgid "Notifications"
 msgstr "অধিসূচনাসমূহ"
 
-#: ../js/ui/userMenu.js:698
+#: ../js/ui/userMenu.js:700
 msgid "System Settings"
 msgstr "চিস্টেম সংহতিসমূহ"
 
-#: ../js/ui/userMenu.js:711
+#: ../js/ui/userMenu.js:713
 msgid "Log Out"
 msgstr "লগ আউট কৰক"
 
-#: ../js/ui/userMenu.js:716
+#: ../js/ui/userMenu.js:718
 msgid "Lock"
 msgstr "লক কৰক"
 
-#: ../js/ui/userMenu.js:731
+#: ../js/ui/userMenu.js:733
 msgid "Install Updates & Restart"
 msgstr "আপডেইটসমূহ ইনস্টল কৰক & পুনাৰম্ভ কৰক"
 
-#: ../js/ui/userMenu.js:749
+#: ../js/ui/userMenu.js:751
 msgid "Your chat status will be set to busy"
 msgstr "আপোনাৰ চেট অৱস্থা ব্যস্থলে সংহতি কৰা হব"
 
-#: ../js/ui/userMenu.js:750
+#: ../js/ui/userMenu.js:752
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
