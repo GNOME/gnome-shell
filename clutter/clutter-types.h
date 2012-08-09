@@ -461,6 +461,20 @@ struct _ClutterActorBox
  */
 #define CLUTTER_ACTOR_BOX_INIT(x_1,y_1,x_2,y_2)         { (x_1), (y_1), (x_2), (y_2) }
 
+/**
+ * CLUTTER_ACTOR_BOX_INIT_ZERO:
+ *
+ * A simple macro for initializing a #ClutterActorBox to 0 when
+ * declaring it, e.g.:
+ *
+ * |[
+ *   ClutterActorBox box = CLUTTER_ACTOR_BOX_INIT_ZERO;
+ * ]|
+ *
+ * Since: 1.12
+ */
+#define CLUTTER_ACTOR_BOX_INIT_ZERO                     CLUTTER_ACTOR_BOX_INIT (0.f, 0.f, 0.f, 0.f)
+
 GType            clutter_actor_box_get_type      (void) G_GNUC_CONST;
 ClutterActorBox *clutter_actor_box_new           (gfloat                 x_1,
                                                   gfloat                 y_1,
