@@ -315,8 +315,9 @@ const AppSearchProvider = new Lang.Class({
     Extends: Search.SearchProvider,
 
     _init: function() {
-        this.parent(_("APPLICATIONS"));
+        this.parent();
         this._appSys = Shell.AppSystem.get_default();
+        this.id = 'applications';
     },
 
     getResultMetas: function(apps, callback) {
@@ -372,10 +373,8 @@ const SettingsSearchProvider = new Lang.Class({
     Extends: Search.SearchProvider,
 
     _init: function() {
-        this.parent(_("SETTINGS"));
-
+        this.parent(Gio.DesktopAppInfo.new('gnome-control-center.desktop'));
         this._appSys = Shell.AppSystem.get_default();
-        this.appInfo = Gio.DesktopAppInfo.new('gnome-control-center.desktop');
     },
 
     getResultMetas: function(prefs, callback) {

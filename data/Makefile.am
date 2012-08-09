@@ -34,6 +34,7 @@ dist_theme_DATA =				\
 	theme/gnome-shell.css			\
 	theme/logged-in-indicator.svg		\
 	theme/message-tray-background.png	\
+	theme/more-results.svg			\
 	theme/noise-texture.png			\
 	theme/panel-button-border.svg		\
 	theme/panel-button-highlight-narrow.svg	\

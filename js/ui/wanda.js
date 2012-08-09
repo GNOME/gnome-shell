@@ -136,7 +136,8 @@ const WandaSearchProvider = new Lang.Class({
     Extends: Search.SearchProvider,
 
     _init: function() {
-        this.parent(_("Your favorite Easter Egg"));
+        this.parent();
+        this.id = 'wanda';
     },
 
     getResultMetas: function(fish, callback) {

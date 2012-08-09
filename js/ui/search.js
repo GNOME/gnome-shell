@@ -76,12 +76,14 @@ const SearchResultDisplay = new Lang.Class({
 const SearchProvider = new Lang.Class({
     Name: 'SearchProvider',
 
-    _init: function(title, appInfo, isRemoteProvider) {
-        this.title = title;
+    _init: function(appInfo, isRemoteProvider) {
         this.appInfo = appInfo;
         this.searchSystem = null;
         this.isRemoteProvider = !!isRemoteProvider;
         this.canLaunchSearch = false;
+
+        if (this.appInfo)
+            this.id = this.appInfo.get_id();
     },
 
     /**
@@ -273,7 +275,7 @@ const SearchSystem = new Lang.Class({
                     results.push([provider, []]);
                     provider.getSubsearchResultSet(previousResults, terms);
                 } catch (error) {
-                    log('A ' + error.name + ' has occured in ' + provider.title + ': ' + error.message);
+                    log('A ' + error.name + ' has occured in ' + provider.id + ': ' + error.message);
                 }
             }
         } else {
@@ -283,7 +285,7 @@ const SearchSystem = new Lang.Class({
                     results.push([provider, []]);
                     provider.getInitialResultSet(terms);
                 } catch (error) {
-                    log('A ' + error.name + ' has occured in ' + provider.title + ': ' + error.message);
+                    log('A ' + error.name + ' has occured in ' + provider.id + ': ' + error.message);
                 }
             }
         }

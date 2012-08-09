@@ -144,6 +144,10 @@ const GridSearchResults = new Lang.Class({
         return this._grid.visibleItemsCount();
     },
 
+    hasMoreResults: function() {
+        return this._notDisplayedResult.length > 0;
+    },
+
     setResults: function(results, terms) {
         // copy the lists
         this._notDisplayedResult = results.slice(0);
@@ -222,11 +226,22 @@ const SearchResults = new Lang.Class({
     },
 
     createProviderMeta: function(provider) {
-        let providerBox = new St.BoxLayout({ style_class: 'search-section',
-                                             vertical: true });
-        let title = new St.Label({ style_class: 'search-section-header',
-                                   text: provider.title });
-        providerBox.add(title, { x_fill: false, x_align: St.Align.START });
+        let providerBox = new St.BoxLayout({ style_class: 'search-section' });
+        let providerIcon = null;
+
+        if (provider.appInfo) {
+            providerIcon = new ProviderIcon(provider);
+            providerIcon.connect('clicked', Lang.bind(this,
+                function() {
+                    provider.launchSearch(this._searchSystem.getTerms());
+                    Main.overview.toggle();
+                }));
+
+            providerBox.add(providerIcon, { x_fill: false,
+                                            y_fill: false,
+                                            x_align: St.Align.START,
+                                            y_align: St.Align.START });
+        }
 
         let resultDisplayBin = new St.Bin({ style_class: 'search-section-results',
                                             x_fill: true,
@@ -237,6 +252,7 @@ const SearchResults = new Lang.Class({
 
         this._providerMeta.push({ provider: provider,
                                   actor: providerBox,
+                                  icon: providerIcon,
                                   resultDisplay: resultDisplay });
         this._content.add(providerBox);
     },
@@ -343,6 +359,11 @@ const SearchResults = new Lang.Class({
             meta.resultDisplay.setResults(providerResults, terms);
             let results = meta.resultDisplay.getResultsForDisplay();
 
+            if (meta.icon)
+                meta.icon.moreIcon.visible =
+                    meta.resultDisplay.hasMoreResults() &&
+                    provider.canLaunchSearch;
+
             provider.getResultMetas(results, Lang.bind(this, function(metas) {
                 this._clearDisplayForProvider(provider);
                 meta.actor.show();
@@ -393,5 +414,37 @@ const SearchResults = new Lang.Class({
             // next result.
             this.actor.navigate_focus(global.stage.key_focus, direction, false);
         }
+    }
+});
+
+const ProviderIcon = new Lang.Class({
+    Name: 'ProviderIcon',
+    Extends: St.Button,
+
+    PROVIDER_ICON_SIZE: 48,
+
+    _init: function(provider) {
+        this.provider = provider;
+        this.parent({ style_class: 'search-provider-icon',
+                      reactive: true,
+                      can_focus: true,
+                      track_hover: true });
+
+        this._content = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+        this.set_child(this._content);
+
+        let rtl = (this.get_text_direction() == Clutter.TextDirection.RTL);
+
+        this.moreIcon = new St.Widget({ style_class: 'search-provider-icon-more',
+                                        visible: false,
+                                        x_align: rtl ? Clutter.ActorAlign.START : Clutter.ActorAlign.END,
+                                        y_align: Clutter.ActorAlign.END,
+                                        x_expand: true,
+                                        y_expand: true });
+
+        let icon = new St.Icon({ icon_size: this.PROVIDER_ICON_SIZE,
+                                 gicon: provider.appInfo.get_icon() });
+        this._content.add_actor(icon);
+        this._content.add_actor(this.moreIcon);
     }
 });
