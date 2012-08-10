@@ -624,10 +624,6 @@ StScrollBar StButton#vhandle:active {
     spacing: 25px;
 }
 
-.workspace-controls {
-    visible-width: 32px; /* Amount visible before hovering */
-}
-
 .workspace-thumbnails-background {
     border: 1px solid rgba(128, 128, 128, 0.4);
     border-right: 0px;

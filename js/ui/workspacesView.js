@@ -23,8 +23,6 @@ const MAX_WORKSPACES = 16;
 
 const OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
 
-const CONTROLS_POP_IN_TIME = 0.1;
-
 
 const WorkspacesView = new Lang.Class({
     Name: 'WorkspacesView',
@@ -439,9 +437,7 @@ const WorkspacesDisplay = new Lang.Class({
 
     _init: function() {
         this.actor = new Shell.GenericContainer();
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.connect('allocate', Lang.bind(this, this._updateWorkspacesGeometry));
         this.actor.connect('parent-set', Lang.bind(this, this._parentSet));
         this.actor.set_clip_to_allocation(true);
 
@@ -472,22 +468,7 @@ const WorkspacesDisplay = new Lang.Class({
         Main.overview.addAction(panAction);
         this.actor.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
-        let controls = new St.Bin({ style_class: 'workspace-controls',
-                                    request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT,
-                                    y_align: St.Align.START,
-                                    y_fill: true });
-        this._controls = controls;
-        this.actor.add_actor(controls);
-
-        controls.reactive = true;
-        controls.track_hover = true;
-        controls.connect('notify::hover',
-                         Lang.bind(this, this._onControlsHoverChanged));
-
         this._primaryIndex = Main.layoutManager.primaryIndex;
-
-        this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
-        controls.add_actor(this._thumbnailsBox.actor);
 
         this._workspacesViews = null;
         this._primaryScrollAdjustment = null;
@@ -500,26 +481,6 @@ const WorkspacesDisplay = new Lang.Class({
 
         this._inDrag = false;
         this._cancelledDrag = false;
-
-        this._controlsInitiallyHovered = false;
-        this._alwaysZoomOut = false;
-        this._zoomOut = false;
-        this._zoomFraction = 0;
-
-        this._updateAlwaysZoom();
-
-        // If we stop hiding the overview on layout changes, we will need to
-        // update the _workspacesViews here
-        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._updateAlwaysZoom));
-
-        Main.xdndHandler.connect('drag-begin', Lang.bind(this, function(){
-            this._alwaysZoomOut = true;
-        }));
-
-        Main.xdndHandler.connect('drag-end', Lang.bind(this, function(){
-            this._alwaysZoomOut = false;
-            this._updateAlwaysZoom();
-        }));
 
         global.screen.connect('notify::n-workspaces',
                               Lang.bind(this, this._workspacesChanged));
@@ -545,30 +506,10 @@ const WorkspacesDisplay = new Lang.Class({
     },
 
     show: function() {
-        if(!this._alwaysZoomOut) {
-            let [mouseX, mouseY] = global.get_pointer();
-            let [x, y] = this._controls.get_transformed_position();
-            let [width, height] = this._controls.get_transformed_size();
-            let visibleWidth = this._controls.get_theme_node().get_length('visible-width');
-            let rtl = (Clutter.get_default_text_direction () == Clutter.TextDirection.RTL);
-            if(rtl)
-                x = x + width - visibleWidth;
-            if(mouseX > x - 0.5 && mouseX < x + visibleWidth + 0.5 &&
-               mouseY > y - 0.5 && mouseY < y + height + 0.5)
-                this._controlsInitiallyHovered = true;
-        }
-
-        this._zoomOut = this._alwaysZoomOut;
-        this._zoomFraction = this._alwaysZoomOut ? 1 : 0;
-        this._updateZoom();
-
-        this._controls.show();
-        this._thumbnailsBox.show();
-
         this._updateWorkspacesViews();
 
         this._restackedNotifyId =
-            global.screen.connect('restacked',
+            Main.overview.connect('sync-window-stacking',
                                   Lang.bind(this, this._onRestacked));
 
         if (this._itemDragBeginId == 0)
@@ -589,8 +530,6 @@ const WorkspacesDisplay = new Lang.Class({
         if (this._windowDragEndId == 0)
             this._windowDragEndId = Main.overview.connect('window-drag-end',
                                                           Lang.bind(this, this._dragEnd));
-
-        this._onRestacked();
     },
 
     zoomFromOverview: function() {
@@ -600,14 +539,8 @@ const WorkspacesDisplay = new Lang.Class({
     },
 
     hide: function() {
-        this._controls.hide();
-        this._thumbnailsBox.hide();
-
-        if (!this._alwaysZoomOut)
-            this.zoomFraction = 0;
-
         if (this._restackedNotifyId > 0){
-            global.screen.disconnect(this._restackedNotifyId);
+            Main.overview.disconnect(this._restackedNotifyId);
             this._restackedNotifyId = 0;
         }
         if (this._itemDragBeginId > 0) {
@@ -723,76 +656,6 @@ const WorkspacesDisplay = new Lang.Class({
         return this._getPrimaryView().getActiveWorkspace().hasMaximizedWindows();
     },
 
-    // zoomFraction property allows us to tween the controls sliding in and out
-    set zoomFraction(fraction) {
-        this._zoomFraction = fraction;
-        this.actor.queue_relayout();
-    },
-
-    get zoomFraction() {
-        return this._zoomFraction;
-    },
-
-    _updateAlwaysZoom: function()  {
-        // Always show the pager if workspaces are actually used,
-        // e.g. there are windows on more than one
-        this._alwaysZoomOut = global.screen.n_workspaces > 2;
-
-        if (this._alwaysZoomOut)
-            return;
-
-        let monitors = Main.layoutManager.monitors;
-        let primary = Main.layoutManager.primaryMonitor;
-
-        /* Look for any monitor to the right of the primary, if there is
-         * one, we always keep zoom out, otherwise its hard to reach
-         * the thumbnail area without passing into the next monitor. */
-        for (let i = 0; i < monitors.length; i++) {
-            if (monitors[i].x >= primary.x + primary.width) {
-                this._alwaysZoomOut = true;
-                break;
-            }
-        }
-    },
-
-    _getPreferredWidth: function (actor, forHeight, alloc) {
-        // pass through the call in case the child needs it, but report 0x0
-        this._controls.get_preferred_width(forHeight);
-    },
-
-    _getPreferredHeight: function (actor, forWidth, alloc) {
-        // pass through the call in case the child needs it, but report 0x0
-        this._controls.get_preferred_height(forWidth);
-    },
-
-    _allocate: function (actor, box, flags) {
-        let childBox = new Clutter.ActorBox();
-
-        let totalWidth = box.x2 - box.x1;
-
-        // width of the controls
-        let [controlsMin, controlsNatural] = this._controls.get_preferred_width(box.y2 - box.y1);
-
-        // Amount of space on the screen we reserve for the visible control
-        let controlsVisible = this._controls.get_theme_node().get_length('visible-width');
-        let controlsReserved = controlsVisible * (1 - this._zoomFraction) + controlsNatural * this._zoomFraction;
-
-        let rtl = (Clutter.get_default_text_direction () == Clutter.TextDirection.RTL);
-        if (rtl) {
-            childBox.x2 = controlsReserved;
-            childBox.x1 = childBox.x2 - controlsNatural;
-        } else {
-            childBox.x1 = totalWidth - controlsReserved;
-            childBox.x2 = childBox.x1 + controlsNatural;
-        }
-
-        childBox.y1 = 0;
-        childBox.y2 = box.y2- box.y1;
-        this._controls.allocate(childBox, flags);
-
-        this._updateWorkspacesGeometry();
-    },
-
     _parentSet: function(actor, oldParent) {
         if (oldParent && this._notifyOpacityId)
             oldParent.disconnect(this._notifyOpacityId);
@@ -829,24 +692,19 @@ const WorkspacesDisplay = new Lang.Class({
         let width = fullWidth;
         let height = fullHeight;
 
-        let [controlsMin, controlsNatural] = this._controls.get_preferred_width(height);
-        let controlsVisible = this._controls.get_theme_node().get_length('visible-width');
-
         let [x, y] = this.actor.get_transformed_position();
 
         let rtl = (Clutter.get_default_text_direction () == Clutter.TextDirection.RTL);
 
-        let clipWidth = width - controlsVisible;
+        let clipWidth = width;
         let clipHeight = fullHeight;
-        let clipX = rtl ? x + controlsVisible : x;
+        let clipX = x;
         let clipY = y + (fullHeight - clipHeight) / 2;
 
         let overviewSpacing = Main.overview._spacing;
-        let widthAdjust = this._zoomOut ? controlsNatural : controlsVisible;
-        widthAdjust += overviewSpacing;
-        width -= widthAdjust;
+        width -= overviewSpacing;
         if (rtl)
-            x += widthAdjust;
+            x += overviewSpacing;
 
         let monitors = Main.layoutManager.monitors;
         let m = 0;
@@ -870,25 +728,12 @@ const WorkspacesDisplay = new Lang.Class({
         }
     },
 
-    _onRestacked: function() {
-        let stack = global.get_window_actors();
-        let stackIndices = {};
-
-        for (let i = 0; i < stack.length; i++) {
-            // Use the stable sequence for an integer to use as a hash key
-            stackIndices[stack[i].get_meta_window().get_stable_sequence()] = i;
-        }
-
+    _onRestacked: function(actor, stackIndices) {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].syncStacking(stackIndices);
-
-        this._thumbnailsBox.syncStacking(stackIndices);
     },
 
     _workspacesChanged: function() {
-        this._updateAlwaysZoom();
-        this._updateZoom();
-
         if (this._workspacesViews == null)
             return;
 
@@ -942,35 +787,6 @@ const WorkspacesDisplay = new Lang.Class({
                                                       newNumWorkspaces);
     },
 
-    _updateZoom : function() {
-        if (Main.overview.animationInProgress)
-            return;
-
-        let shouldZoom = this._alwaysZoomOut || this._controls.hover;
-        if (shouldZoom != this._zoomOut) {
-            this._zoomOut = shouldZoom;
-            this._updateWorkspacesGeometry();
-
-            if (!this._workspacesViews)
-                return;
-
-            Tweener.addTween(this,
-                             { zoomFraction: this._zoomOut ? 1 : 0,
-                               time: WORKSPACE_SWITCH_TIME,
-                               transition: 'easeOutQuad' });
-
-            for (let i = 0; i < this._workspacesViews.length; i++)
-                this._workspacesViews[i].updateWindowPositions();
-        }
-    },
-
-    _onControlsHoverChanged: function() {
-        if(!this._controls.hover)
-            this._controlsInitiallyHovered = false;
-        if(!this._controlsInitiallyHovered)
-            this._updateZoom();
-    },
-
     _dragBegin: function() {
         this._inDrag = true;
         this._cancelledDrag = false;
@@ -986,22 +802,11 @@ const WorkspacesDisplay = new Lang.Class({
     },
 
     _onDragMotion: function(dragEvent) {
-        let controlsHovered = this._controls.contains(dragEvent.targetActor);
-        this._controls.set_hover(controlsHovered);
-
         return DND.DragMotionResult.CONTINUE;
     },
 
     _dragEnd: function() {
         this._inDrag = false;
-
-        // We do this deferred because drag-end is emitted before dnd.js emits
-        // event/leave events that were suppressed during the drag. If we didn't
-        // defer this, we'd zoom out then immediately zoom in because of the
-        // enter event we received. That would normally be invisible but we
-        // might as well avoid it.
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                       Lang.bind(this, this._updateZoom));
     }
 });
 Signals.addSignalMethods(WorkspacesDisplay.prototype);
