@@ -238,6 +238,17 @@ const Overview = new Lang.Class({
                                               opacity: 0 });
         this._overview.add_actor(this._messageTrayGhost);
 
+        this._viewSelector.connect('search-begin', Lang.bind(this,
+            function() {
+                this._dash.hide();
+                this._thumbnailsBox.hide();
+            }));
+        this._viewSelector.connect('search-cancelled', Lang.bind(this,
+            function() {
+                this._dash.show();
+                this._thumbnailsBox.show();
+            }));
+
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();
     },

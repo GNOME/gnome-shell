@@ -258,6 +258,7 @@ const ViewSelector = new Lang.Class({
     },
 
     _searchCancelled: function() {
+        this.emit('search-cancelled');
         this._showPage(this._showAppsButton.checked ? this._appsPage
                                                     : this._workspacesPage);
 
@@ -326,6 +327,7 @@ const ViewSelector = new Lang.Class({
             this._searchResults.startingSearch();
         }
         if (this.active) {
+            this.emit('search-begin');
             this._entry.set_secondary_icon(this._activeIcon);
 
             if (this._iconClickedId == 0) {
