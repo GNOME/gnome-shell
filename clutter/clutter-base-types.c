@@ -180,7 +180,7 @@ clutter_vertex_new (gfloat x,
 }
 
 /**
- * clutter_vertex_alloc:
+ * clutter_vertex_alloc: (constructor)
  *
  * Allocates a new, empty #ClutterVertex.
  *
@@ -398,7 +398,7 @@ clutter_point_zero (void)
 }
 
 /**
- * clutter_point_alloc:
+ * clutter_point_alloc: (constructor)
  *
  * Allocates a new #ClutterPoint.
  *
@@ -566,7 +566,7 @@ G_DEFINE_BOXED_TYPE_WITH_CODE (ClutterPoint, clutter_point,
  */
 
 /**
- * clutter_size_alloc:
+ * clutter_size_alloc: (constructor)
  *
  * Allocates a new #ClutterSize.
  *
@@ -748,7 +748,7 @@ clutter_rect_zero (void)
 }
 
 /**
- * clutter_rect_alloc:
+ * clutter_rect_alloc: (constructor)
  *
  * Creates a new, empty #ClutterRect.
  *
@@ -1288,7 +1288,7 @@ G_DEFINE_BOXED_TYPE (ClutterMatrix, clutter_matrix,
                      clutter_matrix_free)
 
 /**
- * clutter_matrix_alloc:
+ * clutter_matrix_alloc: (constructor)
  *
  * Allocates enough memory to hold a #ClutterMatrix.
  *
