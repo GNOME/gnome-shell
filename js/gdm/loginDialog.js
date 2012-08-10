@@ -660,6 +660,7 @@ const LoginDialog = new Lang.Class({
         this.parent({ shellReactive: true,
                       styleClass: 'login-dialog',
                       parentActor: parentActor,
+                      keybindingMode: Main.KeybindingMode.LOGIN_SCREEN,
                       shouldFadeIn: false });
         this.connect('destroy',
                      Lang.bind(this, this._onDestroy));

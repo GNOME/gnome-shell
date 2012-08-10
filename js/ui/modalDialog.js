@@ -37,10 +37,12 @@ const ModalDialog = new Lang.Class({
         params = Params.parse(params, { shellReactive: false,
                                         styleClass: null,
                                         parentActor: Main.uiGroup,
+                                        keybindingMode: Main.KeybindingMode.SYSTEM_MODAL,
                                         shouldFadeIn: true });
 
         this.state = State.CLOSED;
         this._hasModal = false;
+        this._keybindingMode = params.keybindingMode;
         this._shellReactive = params.shellReactive;
         this._shouldFadeIn = params.shouldFadeIn;
 
@@ -276,7 +278,8 @@ const ModalDialog = new Lang.Class({
     pushModal: function (timestamp) {
         if (this._hasModal)
             return true;
-        if (!Main.pushModal(this._group, { timestamp: timestamp }))
+        if (!Main.pushModal(this._group, { timestamp: timestamp,
+                                           keybindingMode: this._keybindingMode }))
             return false;
 
         this._hasModal = true;

@@ -1453,7 +1453,8 @@ const MessageTray = new Lang.Class({
 
         this.idleMonitor = new GnomeDesktop.IdleMonitor();
 
-        this._grabHelper = new GrabHelper.GrabHelper(this.actor);
+        this._grabHelper = new GrabHelper.GrabHelper(this.actor,
+                                                     { keybindingMode: Main.KeybindingMode.MESSAGE_TRAY });
         this._grabHelper.addActor(this._summaryBoxPointer.actor);
         this._grabHelper.addActor(this.actor);
         if (Main.panel.statusArea.activities)

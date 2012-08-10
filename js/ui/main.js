@@ -40,6 +40,18 @@ const Util = imports.misc.util;
 const OVERRIDES_SCHEMA = 'org.gnome.shell.overrides';
 const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
+const KeybindingMode = {
+    NONE:          0,       // block all keybindings
+    NORMAL:        1 << 0,  // window mode
+    OVERVIEW:      1 << 1,
+    LOCK_SCREEN:   1 << 2,
+    UNLOCK_SCREEN: 1 << 3,
+    LOGIN_SCREEN:  1 << 4,
+    MESSAGE_TRAY:  1 << 5,
+    SYSTEM_MODAL:  1 << 6,
+    LOOKING_GLASS: 1 << 7
+};
+
 let componentManager = null;
 let panel = null;
 let overview = null;
@@ -56,6 +68,7 @@ let shellDBusService = null;
 let shellMountOpDBusService = null;
 let screenSaverDBus = null;
 let modalCount = 0;
+let keybindingMode = KeybindingMode.NORMAL;
 let modalActorFocusStack = [];
 let uiGroup = null;
 let magnifier = null;
@@ -498,11 +511,16 @@ function isInModalStack(actor) {
  *  - options: Meta.ModalOptions flags to indicate that the pointer is
  *             already grabbed
  *
+ *  - keybindingMode: used to set the current Main.KeybindingMode to filter
+ *                    global keybindings; the default of NONE will filter
+ *                    out all keybindings
+ *
  * Returns: true iff we successfully acquired a grab or already had one
  */
 function pushModal(actor, params) {
     params = Params.parse(params, { timestamp: global.get_current_time(),
-                                    options: 0 });
+                                    options: 0,
+                                    keybindingMode: KeybindingMode.NONE });
 
     if (modalCount == 0) {
         if (!global.begin_modal(params.timestamp, params.options)) {
@@ -532,8 +550,10 @@ function pushModal(actor, params) {
     modalActorFocusStack.push({ actor: actor,
                                 focus: curFocus,
                                 destroyId: actorDestroyId,
-                                focusDestroyId: curFocusDestroyId });
+                                focusDestroyId: curFocusDestroyId,
+                                keybindingMode: keybindingMode });
 
+    keybindingMode = params.keybindingMode;
     global.stage.set_key_focus(actor);
     return true;
 }
@@ -560,6 +580,7 @@ function popModal(actor, timestamp) {
         global.stage.set_key_focus(null);
         global.end_modal(timestamp);
         global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
+        keybindingMode = KeybindingMode.NORMAL;
 
         throw new Error('incorrect pop');
     }
@@ -572,6 +593,7 @@ function popModal(actor, timestamp) {
     if (focusIndex == modalActorFocusStack.length - 1) {
         if (record.focus)
             record.focus.disconnect(record.focusDestroyId);
+        keybindingMode = record.keybindingMode;
         global.stage.set_key_focus(record.focus);
     } else {
         let t = modalActorFocusStack[modalActorFocusStack.length - 1];
@@ -581,6 +603,7 @@ function popModal(actor, timestamp) {
         for (let i = modalActorFocusStack.length - 1; i > focusIndex; i--) {
             modalActorFocusStack[i].focus = modalActorFocusStack[i - 1].focus;
             modalActorFocusStack[i].focusDestroyId = modalActorFocusStack[i - 1].focusDestroyId;
+            modalActorFocusStack[i].keybindingMode = modalActorFocusStack[i - 1].keybindingMode;
         }
     }
     modalActorFocusStack.splice(focusIndex, 1);
@@ -591,6 +614,7 @@ function popModal(actor, timestamp) {
     global.end_modal(timestamp);
     global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
     Meta.enable_unredirect_for_screen(global.screen);
+    keybindingMode = KeybindingMode.NORMAL;
 }
 
 function createLookingGlass() {

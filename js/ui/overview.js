@@ -591,7 +591,7 @@ const Overview = new Lang.Class({
         if (this._shown)
             return;
         // Do this manually instead of using _syncInputMode, to handle failure
-        if (!Main.pushModal(this._group))
+        if (!Main.pushModal(this._group, { keybindingMode: Main.KeybindingMode.OVERVIEW }))
             return;
         this._modal = true;
         this._animateVisible();
@@ -742,7 +742,8 @@ const Overview = new Lang.Class({
 
         if (this._shown) {
             if (!this._modal) {
-                if (Main.pushModal(this._group))
+                if (Main.pushModal(this._group,
+                                   { keybindingMode: Main.KeybindingMode.OVERVIEW }))
                     this._modal = true;
                 else
                     this.hide();

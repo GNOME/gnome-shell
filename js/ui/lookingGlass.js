@@ -1129,7 +1129,7 @@ const LookingGlass = new Lang.Class({
         if (this._open)
             return;
 
-        if (!Main.pushModal(this._entry))
+        if (!Main.pushModal(this._entry, { keybindingMode: Main.KeybindingMode.LOOKING_GLASS }))
             return;
 
         this._notebook.selectIndex(0);

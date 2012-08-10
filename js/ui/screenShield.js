@@ -611,7 +611,7 @@ const ScreenShield = new Lang.Class({
         }
 
         if (!this._isModal) {
-            Main.pushModal(this.actor);
+            Main.pushModal(this.actor, { keybindingMode: Main.KeybindingMode.LOCK_SCREEN });
             this._isModal = true;
         }
 
@@ -920,7 +920,7 @@ const ScreenShield = new Lang.Class({
 
     lock: function(animate) {
         if (!this._isModal) {
-            Main.pushModal(this.actor);
+            Main.pushModal(this.actor, { keybindingMode: Main.KeybindingMode.LOCK_SCREEN });
             this._isModal = true;
         }
 
