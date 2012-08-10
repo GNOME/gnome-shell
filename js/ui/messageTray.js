@@ -1422,7 +1422,7 @@ const MessageTray = new Lang.Class({
     },
 
     _onCornerEnter: function(actor, event) {
-        this._pointerInSummary = true;
+        this._traySummoned = true;
         this._updateState();
     },
 
