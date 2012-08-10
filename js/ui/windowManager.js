@@ -15,8 +15,7 @@ const Tweener = imports.ui.tweener;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 const WINDOW_ANIMATION_TIME = 0.25;
-const DIM_DESATURATION = 0.6;
-const DIM_BRIGHTNESS = -0.1;
+const DIM_BRIGHTNESS = -0.3;
 const DIM_TIME = 0.500;
 const UNDIM_TIME = 0.250;
 
@@ -25,22 +24,18 @@ const WindowDimmer = new Lang.Class({
     Name: 'WindowDimmer',
 
     _init: function(actor) {
-        this._desaturateEffect = new Clutter.DesaturateEffect();
         this._brightnessEffect = new Clutter.BrightnessContrastEffect();
-        actor.add_effect(this._desaturateEffect);
         actor.add_effect(this._brightnessEffect);
         this.actor = actor;
         this._dimFactor = 0.0;
     },
 
     setEnabled: function(enabled) {
-        this._desaturateEffect.enabled = enabled;
         this._brightnessEffect.enabled = enabled;
     },
 
     set dimFactor(factor) {
         this._dimFactor = factor;
-        this._desaturateEffect.set_factor(factor * DIM_DESATURATION);
         this._brightnessEffect.set_brightness(factor * DIM_BRIGHTNESS);
     },
 
