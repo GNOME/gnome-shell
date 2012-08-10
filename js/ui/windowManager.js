@@ -301,6 +301,7 @@ const WindowManager = new Lang.Class({
             this._checkDimming(actor.get_meta_window().get_transient_for());
             if (this._shouldAnimate()) {
                 actor.set_scale(1.0, 0.0);
+                actor.scale_gravity = Clutter.Gravity.CENTER;
                 actor.show();
                 this._mapping.push(actor);
 
@@ -377,6 +378,7 @@ const WindowManager = new Lang.Class({
             }
 
             actor.set_scale(1.0, 1.0);
+            actor.scale_gravity = Clutter.Gravity.CENTER;
             actor.show();
             this._destroying.push(actor);
 
