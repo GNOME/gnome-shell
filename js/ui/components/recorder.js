@@ -1,5 +1,6 @@
 
 const Lang = imports.lang;
+const Main = imports.ui.main;
 
 const Gio = imports.gi.Gio;
 const Meta = imports.gi.Meta;
@@ -16,13 +17,16 @@ const Recorder = new Lang.Class({
     },
 
     enable: function() {
-        global.display.add_keybinding('toggle-recording',
-                                      this._bindingSettings,
-                                      Meta.KeyBindingFlags.NONE, Lang.bind(this, this._toggleRecorder));
+        Main.wm.addKeybinding('toggle-recording',
+                              this._bindingSettings,
+                              Meta.KeyBindingFlags.NONE,
+                              Main.KeybindingMode.NORMAL |
+                              Main.KeybindingMode.OVERVIEW,
+                              Lang.bind(this, this._toggleRecorder));
     },
 
     disable: function() {
-        global.display.remove_keybinding('toggle-recording');
+        Main.wm.removeKeybinding('toggle-recording');
     },
 
     _ensureRecorder: function() {
