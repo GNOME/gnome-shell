@@ -268,8 +268,42 @@ const Overview = new Lang.Class({
                                               y_fill: true });
         this._overview.add_actor(this._messageTrayGhost);
 
+        this._viewSelector.connect('page-changed', Lang.bind(this,
+            function() {
+                this._setSideControlsVisibility();
+            }));
+
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();
+    },
+
+    _setSideControlsVisibility: function() {
+        // Ignore the case when we're leaving the overview, since
+        // actors will be made visible again when entering the overview
+        // next time, and animating them while doing so is just
+        // unnecesary noise
+        if (!this.visible || this.animationInProgress)
+            return;
+
+        let searchActive = this._viewSelector.getSearchActive();
+        let dashVisible = !searchActive;
+        let thumbnailsVisible = !searchActive;
+        let trayVisible = !searchActive;
+
+        if (dashVisible)
+            this._dash.show();
+        else
+            this._dash.hide();
+
+        if (thumbnailsVisible)
+            this._thumbnailsBox.show();
+        else
+            this._thumbnailsBox.hide();
+
+        if (trayVisible)
+            Main.messageTray.show();
+        else
+            Main.messageTray.hide();
     },
 
     addSearchProvider: function(provider) {

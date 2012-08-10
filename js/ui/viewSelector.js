@@ -207,6 +207,7 @@ const ViewSelector = new Lang.Class({
                                    function() {
                                        this._activePage.hide();
                                        this._activePage = page;
+                                       this.emit('page-changed');
                                    })
                              });
         }
@@ -468,6 +469,10 @@ const ViewSelector = new Lang.Class({
     removeSearchProvider: function(provider) {
         this._searchSystem.unregisterProvider(provider);
         this._searchResults.destroyProviderMeta(provider);
+    },
+
+    getSearchActive: function() {
+        return this._searchActive;
     }
 });
 Signals.addSignalMethods(ViewSelector.prototype);
