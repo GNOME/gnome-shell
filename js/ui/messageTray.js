@@ -39,6 +39,8 @@ const NOTIFICATION_ICON_SIZE = 24;
 // range from the point where it left the tray.
 const MOUSE_LEFT_ACTOR_THRESHOLD = 20;
 
+const IDLE_TIME = 1000;
+
 const State = {
     HIDDEN:  0,
     SHOWING: 1,
@@ -1979,9 +1981,9 @@ const MessageTray = new Lang.Class({
 
     _showNotification: function(notification) {
         this._notification = notification;
-        this._userActiveWhileNotificationShown = false;
-        this._idleMonitorWatchId = this.idleMonitor.add_watch(1000,
-                                                                  Lang.bind(this, this._onIdleMonitorWatch));
+        this._userActiveWhileNotificationShown = this.idleMonitor.get_idletime() <= IDLE_TIME;
+        this._idleMonitorWatchId = this.idleMonitor.add_watch(IDLE_TIME,
+                                                              Lang.bind(this, this._onIdleMonitorWatch));
         this._notificationClickedId = this._notification.connect('done-displaying',
                                                                  Lang.bind(this, this._escapeTray));
         this._notificationBin.child = this._notification.actor;

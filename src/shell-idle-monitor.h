@@ -67,6 +67,8 @@ guint              shell_idle_monitor_add_watch    (ShellIdleMonitor         *mo
 void               shell_idle_monitor_remove_watch (ShellIdleMonitor         *monitor,
                                                     guint                     id);
 
+gint64             shell_idle_monitor_get_idletime (ShellIdleMonitor         *monitor);
+
 G_END_DECLS
 
 #endif /* __SHELL_IDLE_MONITOR_H */

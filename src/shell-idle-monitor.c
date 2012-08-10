@@ -416,3 +416,14 @@ shell_idle_monitor_remove_watch (ShellIdleMonitor *monitor,
         g_hash_table_remove (monitor->priv->watches,
                              GUINT_TO_POINTER (id));
 }
+
+gint64
+shell_idle_monitor_get_idletime (ShellIdleMonitor *monitor)
+{
+        XSyncValue value;
+
+        if (!XSyncQueryCounter (monitor->priv->display, monitor->priv->counter, &value))
+                return FALSE;
+
+        return _xsyncvalue_to_int64 (value);
+}
