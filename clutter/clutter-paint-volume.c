@@ -734,7 +734,7 @@ _clutter_paint_volume_complete (ClutterPaintVolume *pv)
 /*<private>
  * _clutter_paint_volume_get_box:
  * @pv: a #ClutterPaintVolume
- * @box: a pixel aligned #ClutterGeometry
+ * @box: a pixel aligned #ClutterActorBox
  *
  * Transforms a 3D paint volume into a 2D bounding box in the
  * same coordinate space as the 3D paint volume.

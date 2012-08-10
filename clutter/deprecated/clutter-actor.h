@@ -152,6 +152,10 @@ CLUTTER_DEPRECATED_IN_1_12
 void            clutter_actor_get_transformation_matrix         (ClutterActor          *self,
                                                                  ClutterMatrix         *matrix);
 
+CLUTTER_DEPRECATED_IN_1_12_FOR (clutter_actor_get_allocation_box)
+void            clutter_actor_get_allocation_geometry           (ClutterActor          *self,
+                                                                 ClutterGeometry       *geom);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_DEPRECATED_H__ */

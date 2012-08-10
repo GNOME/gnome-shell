@@ -37,7 +37,8 @@
 #endif
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
-#include "clutter-rectangle.h"
+#include "deprecated/clutter-rectangle.h"
+#include "deprecated/clutter-actor.h"
 
 #include "clutter-actor-private.h"
 #include "clutter-color.h"

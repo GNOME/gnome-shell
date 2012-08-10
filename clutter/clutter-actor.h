@@ -361,8 +361,6 @@ void                            clutter_actor_set_allocation                    
                                                                                  ClutterAllocationFlags       flags);
 void                            clutter_actor_get_allocation_box                (ClutterActor                *self,
                                                                                  ClutterActorBox             *box);
-void                            clutter_actor_get_allocation_geometry           (ClutterActor                *self,
-                                                                                 ClutterGeometry             *geom);
 void                            clutter_actor_get_allocation_vertices           (ClutterActor                *self,
                                                                                  ClutterActor                *ancestor,
                                                                                  ClutterVertex                verts[]);
