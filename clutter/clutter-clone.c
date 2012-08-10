@@ -124,10 +124,8 @@ static void
 clutter_clone_apply_transform (ClutterActor *self, CoglMatrix *matrix)
 {
   ClutterClonePrivate *priv = CLUTTER_CLONE (self)->priv;
-  ClutterGeometry geom;
-  ClutterGeometry source_geom;
-  gfloat x_scale;
-  gfloat y_scale;
+  ClutterActorBox box, source_box;
+  gfloat x_scale, y_scale;
 
   /* First chain up and apply all the standard ClutterActor
    * transformations... */
@@ -139,16 +137,18 @@ clutter_clone_apply_transform (ClutterActor *self, CoglMatrix *matrix)
     return;
 
   /* get our allocated size */
-  clutter_actor_get_allocation_geometry (self, &geom);
+  clutter_actor_get_allocation_box (self, &box);
 
   /* and get the allocated size of the source */
-  clutter_actor_get_allocation_geometry (priv->clone_source, &source_geom);
+  clutter_actor_get_allocation_box (priv->clone_source, &source_box);
 
   /* We need to scale what the clone-source actor paints to fill our own
    * allocation...
    */
-  x_scale = (gfloat) geom.width  / source_geom.width;
-  y_scale = (gfloat) geom.height / source_geom.height;
+  x_scale = clutter_actor_box_get_width (&box)
+          / clutter_actor_box_get_width (&source_box);
+  y_scale = clutter_actor_box_get_height (&box)
+          / clutter_actor_box_get_height (&source_box);
 
   cogl_matrix_scale (matrix, x_scale, y_scale, x_scale);
 }
