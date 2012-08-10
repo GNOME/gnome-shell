@@ -738,6 +738,9 @@ const ThumbnailsBox = new Lang.Class({
         this._nWorkspacesNotifyId =
             global.screen.connect('notify::n-workspaces',
                                   Lang.bind(this, this._workspacesChanged));
+        this._syncStackingId =
+            Main.overview.connect('sync-window-stacking',
+                                  Lang.bind(this, this.syncStacking));
 
         this._targetScale = 0;
         this._scale = 0;
@@ -769,6 +772,10 @@ const ThumbnailsBox = new Lang.Class({
         if (this._nWorkspacesNotifyId > 0) {
             global.screen.disconnect(this._nWorkspacesNotifyId);
             this._nWorkspacesNotifyId = 0;
+        }
+        if (this._syncStackingId > 0) {
+            Main.overview.disconnect(this._syncStackingId);
+            this._syncStackingId = 0;
         }
 
         for (let w = 0; w < this._thumbnails.length; w++)
@@ -882,7 +889,7 @@ const ThumbnailsBox = new Lang.Class({
         this._queueUpdateStates();
     },
 
-    syncStacking: function(stackIndices) {
+    syncStacking: function(actor, stackIndices) {
         for (let i = 0; i < this._thumbnails.length; i++)
             this._thumbnails[i].syncStacking(stackIndices);
     },
