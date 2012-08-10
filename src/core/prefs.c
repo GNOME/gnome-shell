@@ -72,6 +72,7 @@ static GHashTable *settings_schemas;
 static gboolean use_system_font = FALSE;
 static PangoFontDescription *titlebar_font = NULL;
 static MetaVirtualModifier mouse_button_mods = Mod1Mask;
+static MetaKeyCombo overlay_key_combo = { 0, 0, 0 };
 static GDesktopFocusMode focus_mode = G_DESKTOP_FOCUS_MODE_CLICK;
 static GDesktopFocusNewWindows focus_new_windows = G_DESKTOP_FOCUS_NEW_WINDOWS_SMART;
 static gboolean raise_on_click = TRUE;
@@ -132,6 +133,7 @@ static gboolean titlebar_handler (GVariant*, gpointer*, gpointer);
 static gboolean theme_name_handler (GVariant*, gpointer*, gpointer);
 static gboolean mouse_button_mods_handler (GVariant*, gpointer*, gpointer);
 static gboolean button_layout_handler (GVariant*, gpointer*, gpointer);
+static gboolean overlay_key_handler (GVariant*, gpointer*, gpointer);
 
 static void     do_override               (char *key, char *schema);
 
@@ -402,6 +404,14 @@ static MetaStringPreference preferences_string[] =
       },
       NULL,
       &cursor_theme,
+    },
+    {
+      { "overlay-key",
+        SCHEMA_MUTTER,
+        META_PREF_KEYBINDINGS,
+      },
+      overlay_key_handler,
+      NULL,
     },
     { { NULL, 0, 0 }, NULL },
   };
@@ -1020,10 +1030,6 @@ settings_changed (GSettings *settings,
       else
         handle_preference_update_string (settings, key);
     }
-  else if (g_str_equal (key, KEY_OVERLAY_KEY))
-    {
-      queue_changed (META_PREF_KEYBINDINGS);
-    }
   else
     {
       /* Someone added a preference of an unhandled type */
@@ -1479,6 +1485,39 @@ button_layout_handler (GVariant *value,
   return TRUE;
 }
 
+static gboolean
+overlay_key_handler (GVariant *value,
+                     gpointer *result,
+                     gpointer  data)
+{
+  MetaKeyCombo combo;
+  const gchar *string_value;
+
+  *result = NULL; /* ignored */
+  string_value = g_variant_get_string (value, NULL);
+
+  if (string_value && meta_ui_parse_accelerator (string_value, &combo.keysym,
+                                                 &combo.keycode,
+                                                 &combo.modifiers))
+    ;
+  else
+    {
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Failed to parse value for overlay-key\n");
+      return FALSE;
+    }
+
+  if (overlay_key_combo.keysym != combo.keysym ||
+      overlay_key_combo.keycode != combo.keycode ||
+      overlay_key_combo.modifiers != combo.modifiers)
+    {
+      overlay_key_combo = combo;
+      queue_changed (META_PREF_KEYBINDINGS);
+    }
+
+  return TRUE;
+}
+
 const PangoFontDescription*
 meta_prefs_get_titlebar_font (void)
 {
@@ -1637,8 +1676,6 @@ meta_prefs_set_num_workspaces (int n_workspaces)
 
 static GHashTable *key_bindings;
 
-static MetaKeyCombo overlay_key_combo = { 0, 0, 0 };
-
 static void
 meta_key_pref_free (MetaKeyPref *pref)
 {
@@ -1650,37 +1687,12 @@ meta_key_pref_free (MetaKeyPref *pref)
   g_free (pref);
 }
 
-/* These bindings are for modifiers alone, so they need special handling */
-static void
-init_special_bindings (void)
-{
-  char *val;
-  
-  /* Default values for bindings which are global, but take special handling */
-  meta_ui_parse_accelerator ("Super_L", &overlay_key_combo.keysym, 
-                             &overlay_key_combo.keycode, 
-                             &overlay_key_combo.modifiers);
-
-  val = g_settings_get_string (SETTINGS (SCHEMA_MUTTER), KEY_OVERLAY_KEY);
-    
-  if (val && meta_ui_parse_accelerator (val, &overlay_key_combo.keysym, 
-                                        &overlay_key_combo.keycode, 
-                                        &overlay_key_combo.modifiers))
-    ;
-  else
-    {
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Failed to parse value for overlay_key\n");
-    }
-  g_free (val);
-}
 
 static void
 init_bindings (void)
 {
   key_bindings = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
                                         (GDestroyNotify)meta_key_pref_free);
-  init_special_bindings ();  
 }
 
 static void
