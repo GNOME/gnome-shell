@@ -29,6 +29,7 @@
 #include <config.h>
 #include "keybindings-private.h"
 #include "workspace-private.h"
+#include <meta/compositor.h>
 #include <meta/errors.h>
 #include "edge-resistance.h"
 #include "ui.h"
@@ -1412,7 +1413,8 @@ process_event (MetaKeyBinding       *bindings,
           event->type != KeyPress ||
           bindings[i].keycode != event->xkey.keycode ||
           ((event->xkey.state & 0xff & ~(display->ignored_modifier_mask)) !=
-           bindings[i].mask))
+           bindings[i].mask) ||
+          meta_compositor_filter_keybinding (display->compositor, screen, &bindings[i]))
         continue;
 
       /*

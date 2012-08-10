@@ -67,6 +67,9 @@ gboolean meta_plugin_manager_switch_workspace (MetaPluginManager   *mgr,
                                                gint                 to,
                                                MetaMotionDirection  direction);
 
+gboolean meta_plugin_manager_filter_keybinding (MetaPluginManager  *mgr,
+                                                MetaKeyBinding     *binding);
+
 gboolean meta_plugin_manager_xevent_filter (MetaPluginManager *mgr,
                                             XEvent            *xev);
 

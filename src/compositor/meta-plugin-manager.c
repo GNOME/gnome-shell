@@ -281,6 +281,19 @@ meta_plugin_manager_switch_workspace (MetaPluginManager   *plugin_mgr,
   return retval;
 }
 
+gboolean
+meta_plugin_manager_filter_keybinding (MetaPluginManager *plugin_mgr,
+                                       MetaKeyBinding    *binding)
+{
+  MetaPlugin *plugin = plugin_mgr->plugin;
+  MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
+
+  if (klass->keybinding_filter)
+    return klass->keybinding_filter (plugin, binding);
+
+  return FALSE;
+}
+
 /*
  * The public method that the compositor hooks into for desktop switching.
  *

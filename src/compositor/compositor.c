@@ -815,6 +815,19 @@ meta_compositor_process_event (MetaCompositor *compositor,
   return FALSE;
 }
 
+gboolean
+meta_compositor_filter_keybinding (MetaCompositor *compositor,
+                                   MetaScreen     *screen,
+                                   MetaKeyBinding *binding)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+
+  if (info->plugin_mgr)
+    return meta_plugin_manager_filter_keybinding (info->plugin_mgr, binding);
+
+  return FALSE;
+}
+
 void
 meta_compositor_show_window (MetaCompositor *compositor,
 			     MetaWindow	    *window,

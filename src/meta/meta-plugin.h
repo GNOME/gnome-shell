@@ -105,6 +105,9 @@ struct _MetaPluginClass
   gboolean (*xevent_filter) (MetaPlugin       *plugin,
                              XEvent           *event);
 
+  gboolean (*keybinding_filter) (MetaPlugin     *plugin,
+                                 MetaKeyBinding *binding);
+
   const MetaPluginInfo * (*plugin_info) (MetaPlugin *plugin);
 };
 

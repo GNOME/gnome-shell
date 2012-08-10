@@ -1959,9 +1959,6 @@ event_callback (XEvent   *event,
     {
     case KeyPress:
     case KeyRelease:
-      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
-        break;
-
       /* For key events, it's important to enforce single-handling, or
        * we can get into a confused state. So if a keybinding is
        * handled (because it's one of our hot-keys, or because we are

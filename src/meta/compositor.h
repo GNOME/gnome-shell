@@ -71,6 +71,10 @@ gboolean meta_compositor_process_event (MetaCompositor *compositor,
                                         XEvent         *event,
                                         MetaWindow     *window);
 
+gboolean meta_compositor_filter_keybinding (MetaCompositor *compositor,
+                                            MetaScreen     *screen,
+                                            MetaKeyBinding *binding);
+
 /* At a high-level, a window is not-visible or visible. When a
  * window is added (with add_window()) it is not visible.
  * show_window() indicates a transition from not-visible to
