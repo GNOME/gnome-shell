@@ -48,7 +48,6 @@ stage {
 .dash-label,
 .window-caption,
 .switcher-list, 
-.source-title,
 .app-well-app > .overview-icon,
 .remove-favorite > .overview-icon,
 .search-result-content > .overview-icon {
@@ -1386,19 +1385,6 @@ StButton.popup-menu-item:insensitive {
     border-radius: 4px;
 }
 
-/* The spacing and padding on the summary is tricky; we want to keep
- * the icons from touching each other or the edges of the screen, but
- * we also want them to be "Fitts"-y with respect to the edges, so the
- * summary area's bottom and right padding must actually be part of
- * the icons. However, we can't put *all* of the padding into the
- * icons, because then the summary would be 0x0 when there were no
- * icons in it, and so you wouldn't be able to hover over it to
- * activate it.
- *
- * Also, the spacing between a summary-source's icon and title is
- * actually specified as padding-left in source-title, because we
- * want the spacing to collapse along with the title.
- */
 #summary-mode {
     padding: 2px 0px 0px 4px;
     height: 36px;
@@ -1409,45 +1395,22 @@ StButton.popup-menu-item:insensitive {
 }
 
 .summary-source-button {
-    text-shadow: black 0px 2px 2px;
+    transition-duration: 100;
 }
 
-.summary-source-button:ltr {
-    padding-right: 12px;
+.summary-source-button:hover {
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 4px;
 }
 
-.summary-source-button:selected .summary-source {
-    background-image: url("panel-button-highlight-narrow.svg");
+.summary-source-button:selected {
+    background-image: url("running-indicator.svg");
     background-size: contain;
-    border-image: url("source-button-border.svg") 10 10 0 1;
-}
-
-.summary-source-button:expanded:selected .summary-source {
-    background-image: none;
-    border-image: none;
-}
-
-.summary-source-button:expanded:selected {
-    background-image: url("panel-button-highlight-wide.svg");
-    background-size: contain;
-    border-image: url("source-button-border.svg") 10 10 0 1;
-}
-
-.summary-source-button:rtl {
-    padding-left: 12px;
-}
-
-.summary-source-button:last-child:ltr {
-    padding-right: 12px;
-}
-
-.summary-source-button:last-child:rtl {
-    padding-left: 12px;
 }
 
 .summary-source {
-    padding-right: 4px;
-    padding-left: 4px;
+    padding-right: 6px;
+    padding-left: 6px;
 }
 
 .summary-source-counter {
@@ -1458,15 +1421,6 @@ StButton.popup-menu-item:insensitive {
     border-radius: 1em;
     min-height: 1em;
     min-width: 1em;
-}
-
-.source-title {
-    padding-left: 4px;
-}
-
-.source-title:rtl {
-    padding-left: 0px;
-    padding-right: 4px;
 }
 
 /* App Switcher */
