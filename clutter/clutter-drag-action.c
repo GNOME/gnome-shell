@@ -1106,6 +1106,12 @@ clutter_drag_action_set_drag_handle (ClutterDragAction *action,
 
   priv->drag_handle = handle;
 
+  priv->transformed_press_x = priv->press_x;
+  priv->transformed_press_y = priv->press_y;
+  clutter_actor_transform_stage_point (handle, priv->press_x, priv->press_y,
+                                       &priv->transformed_press_x,
+                                       &priv->transformed_press_y);
+
   if (priv->drag_handle != NULL)
     g_signal_connect (priv->drag_handle, "destroy",
                       G_CALLBACK (on_drag_handle_destroy),
