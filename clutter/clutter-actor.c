@@ -672,7 +672,7 @@ struct _ClutterActorPrivate
   ClutterAllocationFlags allocation_flags;
 
   /* clip, in actor coordinates */
-  cairo_rectangle_t clip;
+  ClutterRect clip;
 
   /* the cached transformation matrix; see apply_transform() */
   CoglMatrix transform;
@@ -857,7 +857,8 @@ enum
   PROP_DEPTH, /* XXX:2.0 remove */
   PROP_Z_POSITION,
 
-  PROP_CLIP,
+  PROP_CLIP, /* XXX:2.0 remove */
+  PROP_CLIP_RECT,
   PROP_HAS_CLIP,
   PROP_CLIP_TO_ALLOCATION,
 
@@ -3686,10 +3687,10 @@ clutter_actor_paint (ClutterActor *self)
 
   if (priv->has_clip)
     {
-      cogl_clip_push_rectangle (priv->clip.x,
-                                priv->clip.y,
-                                priv->clip.x + priv->clip.width,
-                                priv->clip.y + priv->clip.height);
+      cogl_clip_push_rectangle (priv->clip.origin.x,
+                                priv->clip.origin.y,
+                                priv->clip.origin.x + priv->clip.size.width,
+                                priv->clip.origin.y + priv->clip.size.height);
       clip_set = TRUE;
     }
   else if (priv->clip_to_allocation)
@@ -4760,6 +4761,28 @@ clutter_actor_set_anchor_coord (ClutterActor      *self,
 }
 
 static void
+clutter_actor_set_clip_rect (ClutterActor      *self,
+                             const ClutterRect *clip)
+{
+  ClutterActorPrivate *priv = self->priv;
+  GObject *obj = G_OBJECT (self);
+
+  if (clip != NULL)
+    {
+      priv->clip = *clip;
+      priv->has_clip = TRUE;
+    }
+  else
+    priv->has_clip = FALSE;
+
+  clutter_actor_queue_redraw (self);
+
+  g_object_notify_by_pspec (obj, obj_props[PROP_CLIP]); /* XXX:2.0 - remove */
+  g_object_notify_by_pspec (obj, obj_props[PROP_CLIP_RECT]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_HAS_CLIP]);
+}
+
+static void
 clutter_actor_set_property (GObject      *object,
 			    guint         prop_id,
 			    const GValue *value,
@@ -4942,7 +4965,7 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_scale_gravity (actor, g_value_get_enum (value));
       break;
 
-    case PROP_CLIP: /* XXX:2.0 - use ClutterRect */
+    case PROP_CLIP: /* XXX:2.0 - remove */
       {
         const ClutterGeometry *geom = g_value_get_boxed (value);
 
@@ -4950,6 +4973,10 @@ clutter_actor_set_property (GObject      *object,
 				geom->x, geom->y,
 				geom->width, geom->height);
       }
+      break;
+
+    case PROP_CLIP_RECT:
+      clutter_actor_set_clip_rect (actor, g_value_get_boxed (value));
       break;
 
     case PROP_CLIP_TO_ALLOCATION:
@@ -5282,17 +5309,21 @@ clutter_actor_get_property (GObject    *object,
       g_value_set_boolean (value, priv->has_clip);
       break;
 
-    case PROP_CLIP: /* XXX:2.0 - use ClutterRect */
+    case PROP_CLIP: /* XXX:2.0 - remove */
       {
         ClutterGeometry clip;
 
-        clip.x      = CLUTTER_NEARBYINT (priv->clip.x);
-        clip.y      = CLUTTER_NEARBYINT (priv->clip.y);
-        clip.width  = CLUTTER_NEARBYINT (priv->clip.width);
-        clip.height = CLUTTER_NEARBYINT (priv->clip.height);
+        clip.x      = CLUTTER_NEARBYINT (priv->clip.origin.x);
+        clip.y      = CLUTTER_NEARBYINT (priv->clip.origin.y);
+        clip.width  = CLUTTER_NEARBYINT (priv->clip.size.width);
+        clip.height = CLUTTER_NEARBYINT (priv->clip.size.height);
 
         g_value_set_boxed (value, &clip);
       }
+      break;
+
+    case PROP_CLIP_RECT:
+      g_value_set_boxed (value, &priv->clip);
       break;
 
     case PROP_CLIP_TO_ALLOCATION:
@@ -5824,18 +5855,18 @@ clutter_actor_update_default_paint_volume (ClutterActor       *self,
       ClutterActor *child;
 
       if (priv->has_clip &&
-          priv->clip.width >= 0 &&
-          priv->clip.height >= 0)
+          priv->clip.size.width >= 0 &&
+          priv->clip.size.height >= 0)
         {
           ClutterVertex origin;
 
-          origin.x = priv->clip.x;
-          origin.y = priv->clip.y;
+          origin.x = priv->clip.origin.x;
+          origin.y = priv->clip.origin.y;
           origin.z = 0;
 
           clutter_paint_volume_set_origin (volume, &origin);
-          clutter_paint_volume_set_width (volume, priv->clip.width);
-          clutter_paint_volume_set_height (volume, priv->clip.height);
+          clutter_paint_volume_set_width (volume, priv->clip.size.width);
+          clutter_paint_volume_set_height (volume, priv->clip.size.height);
 
           res = TRUE;
         }
@@ -6594,17 +6625,37 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor:clip:
    *
-   * The clip region for the actor, in actor-relative coordinates
+   * The visible region of the actor, in actor-relative coordinates
    *
-   * Every part of the actor outside the clip region will not be
-   * painted
+   * Deprecated: 1.12: Use #ClutterActor:clip-rect instead.
    */
-  obj_props[PROP_CLIP] = /* XXX:2.0 - use ClutterRect */
+  obj_props[PROP_CLIP] = /* XXX:2.0 - remove */
     g_param_spec_boxed ("clip",
                         P_("Clip"),
                         P_("The clip region for the actor"),
                         CLUTTER_TYPE_GEOMETRY,
                         CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterActor:clip-rect:
+   *
+   * The visible region of the actor, in actor-relative coordinates,
+   * expressed as a #ClutterRect.
+   *
+   * Setting this property to %NULL will unset the existing clip.
+   *
+   * Setting this property will change the #ClutterActor:has-clip
+   * property as a side effect.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_CLIP_RECT] =
+    g_param_spec_boxed ("clip-rect",
+                        P_("Clip Rectangle"),
+                        P_("The visible region of the actor"),
+                        CLUTTER_TYPE_RECT,
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS);
 
   /**
    * ClutterActor:name:
@@ -11947,29 +11998,33 @@ clutter_actor_set_clip (ClutterActor *self,
                         gfloat        height)
 {
   ClutterActorPrivate *priv;
+  GObject *obj;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
 
   if (priv->has_clip &&
-      priv->clip.x == xoff &&
-      priv->clip.y == yoff &&
-      priv->clip.width == width &&
-      priv->clip.height == height)
+      priv->clip.origin.x == xoff &&
+      priv->clip.origin.y == yoff &&
+      priv->clip.size.width == width &&
+      priv->clip.size.height == height)
     return;
 
-  priv->clip.x = xoff;
-  priv->clip.y = yoff;
-  priv->clip.width = width;
-  priv->clip.height = height;
+  obj = G_OBJECT (self);
+
+  priv->clip.origin.x = xoff;
+  priv->clip.origin.y = yoff;
+  priv->clip.size.width = width;
+  priv->clip.size.height = height;
 
   priv->has_clip = TRUE;
 
   clutter_actor_queue_redraw (self);
 
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_HAS_CLIP]);
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CLIP]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_CLIP]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_CLIP_RECT]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_HAS_CLIP]);
 }
 
 /**
@@ -12023,7 +12078,7 @@ clutter_actor_has_clip (ClutterActor *self)
  * @height: (out) (allow-none): return location for the height of
  *   the clip rectangle, or %NULL
  *
- * Gets the clip area for @self, if any is set
+ * Gets the clip area for @self, if any is set.
  *
  * Since: 0.6
  */
@@ -12044,16 +12099,16 @@ clutter_actor_get_clip (ClutterActor *self,
     return;
 
   if (xoff != NULL)
-    *xoff = priv->clip.x;
+    *xoff = priv->clip.origin.x;
 
   if (yoff != NULL)
-    *yoff = priv->clip.y;
+    *yoff = priv->clip.origin.y;
 
   if (width != NULL)
-    *width = priv->clip.width;
+    *width = priv->clip.size.width;
 
   if (height != NULL)
-    *height = priv->clip.height;
+    *height = priv->clip.size.height;
 }
 
 /**
@@ -16507,6 +16562,7 @@ clutter_actor_set_clip_to_allocation (ClutterActor *self,
       clutter_actor_queue_redraw (self);
 
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CLIP_TO_ALLOCATION]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_HAS_CLIP]);
     }
 }
 
