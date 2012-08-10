@@ -665,6 +665,15 @@ meta_display_get_keybinding_action (MetaDisplay  *display,
   MetaKeyBinding *binding;
   KeySym keysym;
 
+  /* This is much more vague than the MetaDisplay::overlay-key signal,
+   * which is only emitted if the overlay-key is the only key pressed;
+   * as this method is primarily intended for plugins to allow processing
+   * of mutter keybindings while holding a grab, the overlay-key-only-pressed
+   * tracking is left to the plugin here.
+   */
+  if (keycode == display->overlay_key_combo.keycode)
+    return META_KEYBINDING_ACTION_OVERLAY_KEY;
+
   keysym = XKeycodeToKeysym (display->xdisplay, keycode, 0);
   mask = mask & 0xff & ~display->ignored_modifier_mask;
   binding = display_get_keybinding (display, keysym, keycode, mask);
