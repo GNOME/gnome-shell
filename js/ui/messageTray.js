@@ -1778,7 +1778,7 @@ const MessageTray = new Lang.Class({
         let notificationsPending = notificationQueue.length > 0 && (!notificationsLimited || notificationUrgent);
         let nextNotification = notificationQueue.length > 0 ? notificationQueue[0] : null;
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
-        let notificationExpanded = this._notificationBin.y < - this.actor.height;
+        let notificationExpanded = this._notification && this._notification.expanded;
         let notificationExpired = this._notificationTimeoutId == 0 &&
                                   !(this._notification && this._notification.urgency == Urgency.CRITICAL) &&
                                   !this._pointerInTray &&
