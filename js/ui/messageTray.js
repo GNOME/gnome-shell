@@ -1887,6 +1887,13 @@ const MessageTray = new Lang.Class({
                       transition: 'easeOutQuad'
                     });
 
+        // Don't actually take a modal grab in the overview.
+        // Just add something to the grab stack that we can
+        // pop later.
+        this._grabHelper.grab({ actor: this.actor,
+                                modal: !this._overviewVisible,
+                                onUngrab: Lang.bind(this, this._escapeTray) });
+
         // Don't move the windows up if we are in the overview.
         if (this._overviewVisible)
             return;
@@ -1918,6 +1925,11 @@ const MessageTray = new Lang.Class({
     },
 
     _hideTray: function() {
+        // Note that we might have entered here without a grab,
+        // which would happen if GrabHelper ungrabbed for us.
+        // This is a no-op in that case.
+        this._grabHelper.ungrab({ actor: this.actor });
+
         this._tween(this.actor, '_trayState', State.HIDDEN,
                     { y: 0,
                       time: ANIMATION_TIME,
