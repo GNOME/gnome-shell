@@ -172,7 +172,7 @@ const AltTabPopup = new Lang.Class({
 
         if (!Main.pushModal(this.actor)) {
             // Probably someone else has a pointer grab, try again with keyboard only
-            if (!Main.pushModal(this.actor, global.get_current_time(), Meta.ModalOptions.POINTER_ALREADY_GRABBED)) {
+            if (!Main.pushModal(this.actor, { options: Meta.ModalOptions.POINTER_ALREADY_GRABBED })) {
                 return false;
             }
         }

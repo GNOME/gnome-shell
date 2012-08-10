@@ -226,7 +226,7 @@ const ModalDialog = new Lang.Class({
         if (this.state == State.OPENED || this.state == State.OPENING)
             return true;
 
-        if (!this.pushModal(timestamp))
+        if (!this.pushModal({ timestamp: timestamp }))
             return false;
 
         this._fadeOpen(onPrimary);
@@ -276,7 +276,7 @@ const ModalDialog = new Lang.Class({
     pushModal: function (timestamp) {
         if (this._hasModal)
             return true;
-        if (!Main.pushModal(this._group, timestamp))
+        if (!Main.pushModal(this._group, { timestamp: timestamp }))
             return false;
 
         this._hasModal = true;

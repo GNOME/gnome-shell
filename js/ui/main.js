@@ -20,6 +20,7 @@ const Keyboard = imports.ui.keyboard;
 const MessageTray = imports.ui.messageTray;
 const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
+const Params = imports.misc.params;
 const RunDialog = imports.ui.runDialog;
 const Layout = imports.ui.layout;
 const LookingGlass = imports.ui.lookingGlass;
@@ -478,7 +479,7 @@ function isInModalStack(actor) {
 /**
  * pushModal:
  * @actor: #ClutterActor which will be given keyboard focus
- * @timestamp: optional timestamp
+ * @params: optional parameters
  *
  * Ensure we are in a mode where all keyboard and mouse input goes to
  * the stage, and focus @actor. Multiple calls to this function act in
@@ -489,21 +490,22 @@ function isInModalStack(actor) {
  * modal stack returns to this actor, reset the focus to the actor
  * which was focused at the time pushModal() was invoked.
  *
- * @timestamp is optionally used to associate the call with a specific user
- * initiated event.  If not provided then the value of
- * global.get_current_time() is assumed.
+ * @params may be used to provide the following parameters:
+ *  - timestamp: used to associate the call with a specific user initiated
+ *               event.  If not provided then the value of
+ *               global.get_current_time() is assumed.
  *
- * @options: optional Meta.ModalOptions flags to indicate that the
- *           pointer is alrady grabbed
+ *  - options: Meta.ModalOptions flags to indicate that the pointer is
+ *             already grabbed
  *
  * Returns: true iff we successfully acquired a grab or already had one
  */
-function pushModal(actor, timestamp, options) {
-    if (timestamp == undefined)
-        timestamp = global.get_current_time();
+function pushModal(actor, params) {
+    params = Params.parse(params, { timestamp: global.get_current_time(),
+                                    options: 0 });
 
     if (modalCount == 0) {
-        if (!global.begin_modal(timestamp, options ? options : 0)) {
+        if (!global.begin_modal(params.timestamp, params.options)) {
             log('pushModal: invocation of begin_modal failed');
             return false;
         }
