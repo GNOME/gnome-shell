@@ -1,14 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Lang = imports.lang;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const Lang = imports.lang;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 
 const Config = imports.misc.config;
 const ExtensionSystem = imports.ui.extensionSystem;
 const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
+const Hash = imports.misc.hash;
 const Main = imports.ui.main;
 const Screenshot = imports.ui.screenshot;
 
@@ -18,6 +20,23 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
     <arg type="b" direction="out" name="success" />
     <arg type="s" direction="out" name="result" />
 </method>
+<method name="GrabAccelerator">
+    <arg type="s" direction="in" name="accelerator"/>
+    <arg type="u" direction="in" name="flags"/>
+    <arg type="u" direction="out" name="action"/>
+</method>
+<method name="GrabAccelerators">
+    <arg type="a(su)" direction="in" name="accelerators"/>
+    <arg type="au" direction="out" name="actions"/>
+</method>
+<method name="UngrabAccelerator">
+    <arg type="u" direction="in" name="action"/>
+    <arg type="b" direction="out" name="success"/>
+</method>
+<signal name="AcceleratorActivated">
+    <arg name="action" type="u" />
+    <arg name="deviceid" type="u" />
+</signal>
 <property name="Mode" type="s" access="read" />
 <property name="OverviewActive" type="b" access="readwrite" />
 <property name="ShellVersion" type="s" access="read" />
@@ -49,6 +68,14 @@ const GnomeShell = new Lang.Class({
 
         this._extensionsService = new GnomeShellExtensions();
         this._screenshotService = new Screenshot.ScreenshotService();
+
+        this._grabbedAccelerators = new Hash.Map();
+        this._grabbers = new Hash.Map();
+
+        global.display.connect('accelerator-activated', Lang.bind(this,
+            function(display, action, deviceid) {
+                this._emitAcceleratorActivated(action, deviceid);
+            }));
     },
 
     /**
@@ -83,6 +110,87 @@ const GnomeShell = new Lang.Class({
         }
         return [success, returnValue];
     },
+
+    GrabAcceleratorAsync: function(params, invocation) {
+        let [accel, flags] = params;
+        let sender = invocation.get_sender();
+        let bindingAction = this._grabAcceleratorForSender(accel, flags, sender);
+        return invocation.return_value(GLib.Variant.new('(u)', [bindingAction]));
+    },
+
+    GrabAcceleratorsAsync: function(params, invocation) {
+        let [accels] = params;
+        let sender = invocation.get_sender();
+        let bindingActions = [];
+        for (let i = 0; i < accels.length; i++) {
+            let [accel, flags] = accels[i];
+            bindingActions.push(this._grabAcceleratorForSender(accel, flags, sender));
+        }
+        return invocation.return_value(GLib.Variant.new('(au)', [bindingActions]));
+    },
+
+    UngrabAcceleratorAsync: function(params, invocation) {
+        let [action] = params;
+        let grabbedBy = this._grabbedAccelerators.get(action);
+        if (invocation.get_sender() != grabbedBy)
+            return invocation.return_value(GLib.Variant.new('(b)', [false]));
+
+        let ungrabSucceeded = global.display.ungrab_accelerator(action);
+        if (ungrabSucceeded)
+            this._grabbedAccelerators.delete(action);
+        return invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
+    },
+
+    _emitAcceleratorActivated: function(action, deviceid) {
+        let destination = this._grabbedAccelerators.get(action);
+        if (!destination)
+            return;
+
+        let connection = this._dbusImpl.get_connection();
+        let info = this._dbusImpl.get_info();
+        connection.emit_signal(destination,
+                               this._dbusImpl.get_object_path(),
+                               info ? info.name : null,
+                               'AcceleratorActivated',
+                               GLib.Variant.new('(uu)', [action, deviceid]));
+    },
+
+    _grabAcceleratorForSender: function(accelerator, flags, sender) {
+        let bindingAction = global.display.grab_accelerator(accelerator);
+        if (bindingAction == Meta.KeyBindingAction.NONE)
+            return Meta.KeyBindingAction.NONE;
+
+        let bindingName = Meta.external_binding_name_for_action(bindingAction);
+        Main.wm.allowKeybinding(bindingName, flags);
+
+        this._grabbedAccelerators.set(bindingAction, sender);
+
+        if (!this._grabbers.has(sender)) {
+            let id = Gio.bus_watch_name(Gio.BusType.SESSION, sender, 0, null,
+                                        Lang.bind(this, this._onGrabberBusNameVanished));
+            this._grabbers.set(sender, id);
+        }
+
+        return bindingAction;
+    },
+
+    _ungrabAccelerator: function(action) {
+        let ungrabSucceeded = global.display.ungrab_accelerator(action);
+        if (ungrabSucceeded)
+            this._grabbedAccelerators.delete(action);
+    },
+
+    _onGrabberBusNameVanished: function(connection, name) {
+        let grabs = this._grabbedAccelerators.items();
+        for (let i = 0; i < grabs.length; i++) {
+            let [action, sender] = grabs[i];
+            if (sender == name)
+                this._ungrabAccelerator(action);
+        }
+        Gio.bus_unwatch_name(this._grabbers.get(name));
+        this._grabbers.delete(name);
+    },
+
 
     Mode: global.session_mode,
 
