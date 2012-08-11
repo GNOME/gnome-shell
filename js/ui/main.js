@@ -588,12 +588,6 @@ function _globalKeyPressHandler(actor, event) {
     // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
     let action = global.display.get_keybinding_action(keyCode, modifierState);
 
-    // This isn't a Meta.KeyBindingAction yet
-    if (symbol == Clutter.Super_L || symbol == Clutter.Super_R) {
-        overview.hide();
-        return true;
-    }
-
     if (action == Meta.KeyBindingAction.SWITCH_PANELS) {
         ctrlAltTabManager.popup(modifierState & Clutter.ModifierType.SHIFT_MASK,
                                 modifierState);
@@ -636,6 +630,7 @@ function _globalKeyPressHandler(actor, event) {
             getRunDialog().open();
             return true;
         case Meta.KeyBindingAction.PANEL_MAIN_MENU:
+        case Meta.KeyBindingAction.OVERLAY_KEY:
             overview.hide();
             return true;
     }
