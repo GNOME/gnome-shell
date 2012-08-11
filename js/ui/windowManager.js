@@ -83,6 +83,8 @@ const WindowManager = new Lang.Class({
 
         this._animationBlockCount = 0;
 
+        this._allowedKeybindings = {};
+
         this._switchData = null;
         this._shellwm.connect('kill-switch-workspace', Lang.bind(this, this._switchWorkspaceDone));
         this._shellwm.connect('kill-window-effects', Lang.bind(this, function (shellwm, actor) {
@@ -141,6 +143,25 @@ const WindowManager = new Lang.Class({
             for (let i = 0; i < this._dimmedWindows.length; i++)
                 this._dimWindow(this._dimmedWindows[i]);
         }));
+    },
+
+    setCustomKeybindingHandler: function(name, modes, handler) {
+        if (Meta.keybindings_set_custom_handler(name, handler))
+            this.allowKeybinding(name, modes);
+    },
+
+    addKeybinding: function(name, settings, flags, modes, handler) {
+        if (global.display.add_keybinding(name, settings, flags, handler))
+            this.allowKeybinding(name, modes);
+    },
+
+    removeKeybinding: function(name) {
+        if (global.display.remove_keybinding(name))
+            this.allowKeybinding(name, Main.KeybindingMode.NONE);
+    },
+
+    allowKeybinding: function(name, modes) {
+        this._allowedKeybindings[name] = modes;
     },
 
     blockAnimations: function() {
@@ -449,10 +470,15 @@ const WindowManager = new Lang.Class({
                 return false;
         }
 
-        if (Main.modalCount == 0 && binding.is_builtin())
+        // There's little sense in implementing a keybinding in mutter and
+        // not having it work in NORMAL mode; handle this case generically
+        // so we don't have to explicitly allow all builtin keybindings in
+        // NORMAL mode.
+        if (Main.keybindingMode == Main.KeybindingMode.NORMAL &&
+            binding.is_builtin())
             return false;
 
-        return true;
+        return !(this._allowedKeybindings[binding.get_name()] & Main.keybindingMode);
     },
 
     _switchWorkspace : function(shellwm, from, to, direction) {
