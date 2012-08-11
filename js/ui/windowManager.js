@@ -104,36 +104,63 @@ const WindowManager = new Lang.Class({
         this._shellwm.connect('filter-keybinding', Lang.bind(this, this._filterKeybinding));
 
         this._workspaceSwitcherPopup = null;
-        Meta.keybindings_set_custom_handler('switch-to-workspace-left',
-                                            Lang.bind(this, this._showWorkspaceSwitcher));
-        Meta.keybindings_set_custom_handler('switch-to-workspace-right',
-                                            Lang.bind(this, this._showWorkspaceSwitcher));
-        Meta.keybindings_set_custom_handler('switch-to-workspace-up',
-                                            Lang.bind(this, this._showWorkspaceSwitcher));
-        Meta.keybindings_set_custom_handler('switch-to-workspace-down',
-                                            Lang.bind(this, this._showWorkspaceSwitcher));
-        Meta.keybindings_set_custom_handler('move-to-workspace-left',
-                                            Lang.bind(this, this._showWorkspaceSwitcher));
-        Meta.keybindings_set_custom_handler('move-to-workspace-right',
-                                            Lang.bind(this, this._showWorkspaceSwitcher));
-        Meta.keybindings_set_custom_handler('move-to-workspace-up',
-                                            Lang.bind(this, this._showWorkspaceSwitcher));
-        Meta.keybindings_set_custom_handler('move-to-workspace-down',
-                                            Lang.bind(this, this._showWorkspaceSwitcher));
-        Meta.keybindings_set_custom_handler('switch-windows',
-                                            Lang.bind(this, this._startAppSwitcher));
-        Meta.keybindings_set_custom_handler('switch-group',
-                                            Lang.bind(this, this._startAppSwitcher));
-        Meta.keybindings_set_custom_handler('switch-windows-backward',
-                                            Lang.bind(this, this._startAppSwitcher));
-        Meta.keybindings_set_custom_handler('switch-group-backward',
-                                            Lang.bind(this, this._startAppSwitcher));
-        Meta.keybindings_set_custom_handler('switch-panels',
-                                            Lang.bind(this, this._startA11ySwitcher));
-        global.display.add_keybinding('open-application-menu',
-                                      new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
-                                      Meta.KeyBindingFlags.NONE,
-                                      Lang.bind(this, this._openAppMenu));
+        this.setCustomKeybindingHandler('switch-to-workspace-left',
+                                        Main.KeybindingMode.NORMAL |
+                                        Main.KeybindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-right',
+                                        Main.KeybindingMode.NORMAL |
+                                        Main.KeybindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-up',
+                                        Main.KeybindingMode.NORMAL |
+                                        Main.KeybindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-down',
+                                        Main.KeybindingMode.NORMAL |
+                                        Main.KeybindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-left',
+                                        Main.KeybindingMode.NORMAL |
+                                        Main.KeybindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-right',
+                                        Main.KeybindingMode.NORMAL |
+                                        Main.KeybindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-up',
+                                        Main.KeybindingMode.NORMAL |
+                                        Main.KeybindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-down',
+                                        Main.KeybindingMode.NORMAL |
+                                        Main.KeybindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-windows',
+                                        Main.KeybindingMode.NORMAL,
+                                        Lang.bind(this, this._startAppSwitcher));
+        this.setCustomKeybindingHandler('switch-group',
+                                        Main.KeybindingMode.NORMAL,
+                                        Lang.bind(this, this._startAppSwitcher));
+        this.setCustomKeybindingHandler('switch-windows-backward',
+                                        Main.KeybindingMode.NORMAL,
+                                        Lang.bind(this, this._startAppSwitcher));
+        this.setCustomKeybindingHandler('switch-group-backward',
+                                        Main.KeybindingMode.NORMAL,
+                                        Lang.bind(this, this._startAppSwitcher));
+        this.setCustomKeybindingHandler('switch-panels',
+                                        Main.KeybindingMode.NORMAL |
+                                        Main.KeybindingMode.OVERVIEW |
+                                        Main.KeybindingMode.LOCK_SCREEN |
+                                        Main.KeybindingMode.UNLOCK_SCREEN |
+                                        Main.KeybindingMode.LOGIN_SCREEN,
+                                        Lang.bind(this, this._startA11ySwitcher));
+
+        this.addKeybinding('open-application-menu',
+                           new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
+                           Meta.KeyBindingFlags.NONE,
+                           Main.KeybindingMode.NORMAL,
+                           Lang.bind(this, this._openAppMenu));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
@@ -450,24 +477,6 @@ const WindowManager = new Lang.Class({
         if (!Main.sessionMode.allowKeybindingsWhenModal) {
             if (Main.modalCount > (Main.overview.visible ? 1 : 0))
                 return true;
-        }
-        let action = Meta.prefs_get_keybinding_action(binding.get_name());
-        switch (action) {
-            // left/right would effectively act as synonyms for up/down if we enabled them;
-            // but that could be considered confusing; we also disable them in the main view.
-            //
-            // case Meta.KeyBindingAction.WORKSPACE_LEFT:
-            // case Meta.KeyBindingAction.WORKSPACE_RIGHT:
-            case Meta.KeyBindingAction.WORKSPACE_UP:
-            case Meta.KeyBindingAction.WORKSPACE_DOWN:
-                return !Main.sessionMode.hasWorkspaces;
-
-            case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
-            case Meta.KeyBindingAction.COMMAND_2:
-            case Meta.KeyBindingAction.PANEL_MAIN_MENU:
-            case Meta.KeyBindingAction.OVERLAY_KEY:
-            case Meta.KeyBindingAction.SWITCH_PANELS:
-                return false;
         }
 
         // There's little sense in implementing a keybinding in mutter and

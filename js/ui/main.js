@@ -83,7 +83,17 @@ let _overridesSettings = null;
 let background = null;
 
 function _sessionUpdated() {
-    Meta.keybindings_set_custom_handler('panel-run-dialog', sessionMode.hasRunDialog ? openRunDialog : null);
+    wm.setCustomKeybindingHandler('panel-main-menu',
+                                  KeybindingMode.NORMAL |
+                                  KeybindingMode.OVERVIEW,
+                                  sessionMode.hasOverview ? Lang.bind(overview, overview.toggle) : null);
+    wm.allowKeybinding('overlay-key', KeybindingMode.NORMAL |
+                                      KeybindingMode.OVERVIEW);
+
+    wm.setCustomKeybindingHandler('panel-run-dialog',
+                                  KeybindingMode.NORMAL |
+                                  KeybindingMode.OVERVIEW,
+                                  sessionMode.hasRunDialog ? openRunDialog : null);
     if (sessionMode.isGreeter)
         screenShield.showDialog();
 }
@@ -169,9 +179,7 @@ function start() {
 
     global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
                                             false, -1, 1);
-    Meta.keybindings_set_custom_handler('panel-main-menu', Lang.bind(overview, overview.toggle));
     global.display.connect('overlay-key', Lang.bind(overview, overview.toggle));
-
     sessionMode.connect('update', _sessionUpdated);
     _sessionUpdated();
 
