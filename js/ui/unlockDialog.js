@@ -200,6 +200,8 @@ const UnlockDialog = new Lang.Class({
             return false;
         }));
 
+        Main.ctrlAltTabManager.addGroup(this.dialogLayout, _("Unlock Window"), 'dialog-password-symbolic');
+
         this._idleMonitor = new GnomeDesktop.IdleMonitor();
         this._idleWatchId = this._idleMonitor.add_watch(IDLE_TIMEOUT * 1000, Lang.bind(this, this._escape));
     },

@@ -398,6 +398,7 @@ const ScreenShield = new Lang.Class({
                                       Lang.bind(this, this._onLockScreenKeyRelease));
         this._lockScreenGroup.connect('scroll-event',
                                       Lang.bind(this, this._onLockScreenScroll));
+        Main.ctrlAltTabManager.addGroup(this._lockScreenGroup, _("Lock"), 'changes-prevent-symbolic');
 
         this._lockScreenContents = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                                    name: 'lockScreenContents' });
