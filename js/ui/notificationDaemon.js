@@ -357,7 +357,7 @@ const NotificationDaemon = new Lang.Class({
         let gicon = this._iconForNotificationData(icon, hints);
         let iconActor = new St.Icon({ gicon: gicon,
                                       icon_type: St.IconType.FULLCOLOR,
-                                      icon_size: source.ICON_SIZE });
+                                      icon_size: MessageTray.NOTIFICATION_ICON_SIZE });
 
         if (notification == null) {
             notification = new MessageTray.Notification(source, summary, body,

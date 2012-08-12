@@ -31,6 +31,7 @@ const LONGER_SUMMARY_TIMEOUT = 4;
 const HIDE_TIMEOUT = 0.2;
 const LONGER_HIDE_TIMEOUT = 0.6;
 
+const NOTIFICATION_ICON_SIZE = 24;
 
 // We delay hiding of the tray if the mouse is within MOUSE_LEFT_ACTOR_THRESHOLD
 // range from the point where it left the tray.
@@ -542,7 +543,7 @@ const Notification = new Lang.Class({
             this._table.remove_style_class_name('multi-line-notification');
 
         if (!this._icon) {
-            this._icon = params.icon || this.source.createIcon(this.source.ICON_SIZE);
+            this._icon = params.icon || this.source.createIcon(NOTIFICATION_ICON_SIZE);
             this._table.add(this._icon, { row: 0,
                                           col: 0,
                                           x_expand: false,
@@ -1132,7 +1133,7 @@ const SourceActor = new Lang.Class({
 const Source = new Lang.Class({
     Name: 'MessageTraySource',
 
-    ICON_SIZE: 24,
+    SOURCE_ICON_SIZE: 48,
 
     _init: function(title, iconName, iconType) {
         this.title = title;
@@ -1191,8 +1192,7 @@ const Source = new Lang.Class({
         if (this._mainIcon)
             return;
 
-        this._mainIcon = new SourceActor(this, this.ICON_SIZE);
-        return;
+        this._mainIcon = new SourceActor(this, this.SOURCE_ICON_SIZE);
     },
 
     // Unlike createIcon, this always returns the same actor;
@@ -2213,7 +2213,7 @@ const MessageTray = new Lang.Class({
         // notifications that might have been in the process of hiding get full opacity.
         //
         // We tween any notification showing in the banner mode to banner height
-        // (this._notificationBin.y = -this.actor.height).
+        // (this._notificationBin.y = -this._notificationBin.height).
         // This ensures that both new notifications and notifications in the banner mode that might
         // have been in the process of hiding are shown with the banner height.
         //
@@ -2230,7 +2230,7 @@ const MessageTray = new Lang.Class({
                             onCompleteScope: this
                           };
         if (!this._notification.expanded)
-            tweenParams.y = - this.actor.height;
+            tweenParams.y = -this._notificationBin.height;
 
         this._tween(this._notificationBin, '_notificationState', State.SHOWN, tweenParams);
    },

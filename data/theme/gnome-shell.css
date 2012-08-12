@@ -1172,10 +1172,9 @@ StButton.popup-menu-item:insensitive {
 
 /* Message Tray */
 #message-tray {
-    background-gradient-direction: vertical;
-    background-gradient-start: rgba(0,0,0,0.01);
-    background-gradient-end: rgba(0,0,0,0.82);
-    height: 36px;
+    background: #2e3436 url(message-tray-background.png);
+    background-repeat: repeat;
+    height: 72px;
 }
 
 .notification {
@@ -1387,7 +1386,7 @@ StButton.popup-menu-item:insensitive {
 
 #summary-mode {
     padding: 2px 0px 0px 4px;
-    height: 36px;
+    height: 72px;
 }
 
 #summary-mode:rtl {
