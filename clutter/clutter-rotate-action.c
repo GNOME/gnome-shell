@@ -207,7 +207,7 @@ clutter_rotate_action_class_init (ClutterRotateActionClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterRotateActionClass, rotate),
-                  _clutter_boolean_handled_accumulator, NULL,
+                  _clutter_boolean_continue_accumulator, NULL,
                   _clutter_marshal_VOID__OBJECT_DOUBLE,
                   G_TYPE_BOOLEAN, 2,
                   CLUTTER_TYPE_ACTOR,
