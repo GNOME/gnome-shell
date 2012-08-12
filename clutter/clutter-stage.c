@@ -364,11 +364,10 @@ clutter_stage_allocate (ClutterActor           *self,
                         ClutterAllocationFlags  flags)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
-  float old_width, old_height;
-  float new_width, new_height;
-  float width, height;
+  ClutterGeometry prev_geom, geom;
   cairo_rectangle_int_t window_size;
   gboolean origin_changed;
+  gint width, height;
 
   origin_changed = (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED)
                  ? TRUE
@@ -378,10 +377,11 @@ clutter_stage_allocate (ClutterActor           *self,
     return;
 
   /* our old allocation */
-  clutter_actor_get_size (self, &old_width, &old_height);
+  clutter_actor_get_allocation_geometry (self, &prev_geom);
 
   /* the current allocation */
-  clutter_actor_box_get_size (box, &width, &height);
+  width = clutter_actor_box_get_width (box);
+  height = clutter_actor_box_get_height (box);
 
   /* the current Stage implementation size */
   _clutter_stage_window_get_geometry (priv->impl, &window_size);
@@ -391,7 +391,7 @@ clutter_stage_allocate (ClutterActor           *self,
    * allocation chain - because we cannot forcibly change the size of the
    * stage window.
    */
-  if (!clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
+  if ((!clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC)))
     {
       CLUTTER_NOTE (LAYOUT,
                     "Following allocation to %dx%d (origin %s)",
@@ -470,15 +470,14 @@ clutter_stage_allocate (ClutterActor           *self,
                                           window_size.height);
 
   /* reset the viewport if the allocation effectively changed */
-  clutter_actor_get_size (self, &new_width, &new_height);
-
-  if (old_width != new_width ||
-      old_height != new_height)
+  clutter_actor_get_allocation_geometry (self, &geom);
+  if (geom.width != prev_geom.width ||
+      geom.height != prev_geom.height)
     {
       _clutter_stage_set_viewport (CLUTTER_STAGE (self),
                                    0, 0,
-                                   new_width,
-                                   new_height);
+                                   geom.width,
+                                   geom.height);
 
       /* Note: we don't assume that set_viewport will queue a full redraw
        * since it may bail-out early if something preemptively set the
@@ -2837,7 +2836,7 @@ clutter_stage_read_pixels (ClutterStage *stage,
                            gint          width,
                            gint          height)
 {
-  ClutterActorBox box;
+  ClutterGeometry geom;
   guchar *pixels;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
@@ -2846,13 +2845,13 @@ clutter_stage_read_pixels (ClutterStage *stage,
   clutter_stage_ensure_current (stage);
   clutter_actor_paint (CLUTTER_ACTOR (stage));
 
-  clutter_actor_get_allocation_box (CLUTTER_ACTOR (stage), &box);
+  clutter_actor_get_allocation_geometry (CLUTTER_ACTOR (stage), &geom);
 
   if (width < 0)
-    width = box.x2 - box.x1;
+    width = geom.width;
 
   if (height < 0)
-    height = box.y2 - box.y1;
+    height = geom.height;
 
   pixels = g_malloc (height * width * 4);
 
