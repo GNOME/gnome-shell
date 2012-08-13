@@ -644,14 +644,14 @@ const ScreenShield = new Lang.Class({
         this._dialog.destroy();
         this._dialog = null;
 
-        this._resetLockScreen(false);
+        this._resetLockScreen(true, false);
     },
 
     _onUnlockSucceded: function() {
         this._tweenUnlocked();
     },
 
-    _resetLockScreen: function(animate) {
+    _resetLockScreen: function(animateLockScreen, animateLockDialog) {
         this._ensureLockScreen();
         this._lockDialogGroup.scale_x = 1;
         this._lockDialogGroup.scale_y = 1;
@@ -659,7 +659,7 @@ const ScreenShield = new Lang.Class({
         this._lockScreenGroup.show();
         this._lockScreenState = MessageTray.State.SHOWING;
 
-        if (animate) {
+        if (animateLockScreen) {
             this._lockScreenGroup.y = -global.screen_height;
             Tweener.removeTweens(this._lockScreenGroup);
             Tweener.addTween(this._lockScreenGroup,
@@ -671,7 +671,12 @@ const ScreenShield = new Lang.Class({
                                },
                                onCompleteScope: this
                              });
+        } else {
+            this._lockScreenGroup.fixed_position_set = false;
+            this._lockScreenShown();
+        }
 
+        if (animateLockDialog) {
             this._lockDialogGroup.opacity = 0;
             Tweener.removeTweens(this._lockDialogGroup);
             Tweener.addTween(this._lockDialogGroup,
@@ -680,7 +685,6 @@ const ScreenShield = new Lang.Class({
                                transition: 'easeOutQuad' });
         } else {
             this._lockDialogGroup.opacity = 255;
-            this._lockScreenShown();
         }
 
         this._lockScreenGroup.grab_key_focus();
@@ -812,7 +816,7 @@ const ScreenShield = new Lang.Class({
                 Main.sessionMode.pushMode('unlock-dialog');
         }
 
-        this._resetLockScreen(animate);
+        this._resetLockScreen(animate, animate);
 
         this._isActive = true;
         this.emit('lock-status-changed');
