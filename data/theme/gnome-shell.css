@@ -1205,6 +1205,7 @@ StButton.popup-menu-item:insensitive {
     -arrow-base: 36px;
     -arrow-rise: 18px;
     color: white;
+    -boxpointer-gap: 4px;
 }
 
 .summary-boxpointer .notification {
