@@ -919,6 +919,7 @@ const PANEL_ITEM_IMPLEMENTATIONS = {
     'appMenu': AppMenuButton,
     'dateMenu': imports.ui.dateMenu.DateMenuButton,
     'a11y': imports.ui.status.accessibility.ATIndicator,
+    'a11yGreeter': imports.ui.status.accessibility.ATGreeterIndicator,
     'volume': imports.ui.status.volume.Indicator,
     'battery': imports.ui.status.power.Indicator,
     'lockScreen': imports.ui.status.lockScreenMenu.Indicator,

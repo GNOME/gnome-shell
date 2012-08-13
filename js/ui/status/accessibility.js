@@ -2,6 +2,7 @@
 
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -69,6 +70,25 @@ const ATIndicator = new Lang.Class({
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addSettingsAction(_("Universal Access Settings"), 'gnome-universal-access-panel.desktop');
+
+        this._syncMenuVisibility();
+    },
+
+    _syncMenuVisibility: function() {
+        this._syncMenuVisibilityIdle = 0;
+
+        let items = this.menu._getMenuItems();
+
+        this.actor.visible = items.some(function(f) { return !!f.state; });
+
+        return false;
+    },
+
+    _queueSyncMenuVisibility: function() {
+        if (this._syncMenuVisibilityIdle)
+            return;
+
+        this._syncMenuVisbilityIdle = Mainloop.idle_add(Lang.bind(this, this._syncMenuVisibility));
     },
 
     _buildItemExtended: function(string, initial_value, writable, on_set) {
@@ -90,9 +110,11 @@ const ATIndicator = new Lang.Class({
             function(enabled) {
                 return settings.set_boolean(key, enabled);
             });
-        settings.connect('changed::'+key, function() {
+        settings.connect('changed::'+key, Lang.bind(this, function() {
             widget.setToggleState(settings.get_boolean(key));
-        });
+
+            this._queueSyncMenuVisibility();
+        }));
         return widget;
     },
 
@@ -124,7 +146,7 @@ const ATIndicator = new Lang.Class({
                     wmSettings.reset(KEY_WM_THEME);
                 }
             });
-        interfaceSettings.connect('changed::' + KEY_GTK_THEME, function() {
+        interfaceSettings.connect('changed::' + KEY_GTK_THEME, Lang.bind(this, function() {
             let value = interfaceSettings.get_string(KEY_GTK_THEME);
             if (value == HIGH_CONTRAST_THEME) {
                 highContrast.setToggleState(true);
@@ -132,7 +154,9 @@ const ATIndicator = new Lang.Class({
                 highContrast.setToggleState(false);
                 gtkTheme = value;
             }
-        });
+
+            this._queueSyncMenuVisibility();
+        }));
         interfaceSettings.connect('changed::' + KEY_ICON_THEME, function() {
             let value = interfaceSettings.get_string(KEY_ICON_THEME);
             if (value != HIGH_CONTRAST_THEME)
@@ -161,11 +185,22 @@ const ATIndicator = new Lang.Class({
                 else
                     settings.reset(KEY_TEXT_SCALING_FACTOR);
             });
-        settings.connect('changed::' + KEY_TEXT_SCALING_FACTOR, function() {
+        settings.connect('changed::' + KEY_TEXT_SCALING_FACTOR, Lang.bind(this, function() {
             let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
             let active = (factor > 1.0);
             widget.setToggleState(active);
-        });
+
+            this._queueSyncMenuVisibility();
+        }));
         return widget;
     }
+});
+
+const ATGreeterIndicator = new Lang.Class({
+    Name: 'ATGreeterIndicator',
+    Extends: ATIndicator,
+
+    // Override visibility handling to be always visible
+    _syncMenuVisibility: function() { },
+    _queueSyncMenuVisibility: function() { }
 });

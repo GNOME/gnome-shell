@@ -47,7 +47,7 @@ const _modes = {
         panel: {
             left: ['logo'],
             center: ['dateMenu'],
-            right: ['a11y', 'display', 'keyboard',
+            right: ['a11yGreeter', 'display', 'keyboard',
                     'volume', 'battery', 'powerMenu']
         },
         panelStyle: 'login-screen'
@@ -84,7 +84,7 @@ const _modes = {
         panel: {
             left: [],
             center: ['dateMenu'],
-            right: ['a11y', 'keyboard', 'volume']
+            right: ['a11yGreeter', 'keyboard', 'volume']
         }
     },
 
