@@ -79,6 +79,7 @@ typedef struct _CoglDisplayKMS
   int width, height;
   CoglBool pending_set_crtc;
   CoglBool pending_swap_notify;
+  struct gbm_surface *dummy_gbm_surface;
 } CoglDisplayKMS;
 
 typedef struct _CoglFlipKMS
@@ -388,41 +389,12 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
   CoglDisplayKMS *kms_display;
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
   CoglRendererKMS *kms_renderer = egl_renderer->platform;
-  CoglEGLWinsysFeature surfaceless_feature = 0;
-  const char *surfaceless_feature_name = "";
   drmModeRes *resources;
   CoglOutputKMS *output0, *output1;
   CoglBool mirror;
 
   kms_display = g_slice_new0 (CoglDisplayKMS);
   egl_display->platform = kms_display;
-
-  switch (display->renderer->driver)
-    {
-    case COGL_DRIVER_GL:
-      surfaceless_feature = COGL_EGL_WINSYS_FEATURE_SURFACELESS_OPENGL;
-      surfaceless_feature_name = "opengl";
-      break;
-    case COGL_DRIVER_GLES1:
-      surfaceless_feature = COGL_EGL_WINSYS_FEATURE_SURFACELESS_GLES1;
-      surfaceless_feature_name = "gles1";
-      break;
-    case COGL_DRIVER_GLES2:
-      surfaceless_feature = COGL_EGL_WINSYS_FEATURE_SURFACELESS_GLES2;
-      surfaceless_feature_name = "gles2";
-      break;
-    case COGL_DRIVER_ANY:
-      g_return_val_if_reached (FALSE);
-    }
-
-  if (!(egl_renderer->private_features & surfaceless_feature))
-    {
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_INIT,
-                   "EGL_KHR_surfaceless_%s extension not available",
-                   surfaceless_feature_name);
-      return FALSE;
-    }
 
   resources = drmModeGetResources (kms_renderer->fd);
   if (!resources)
@@ -538,10 +510,39 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
                                   GError **error)
 {
   CoglDisplayEGL *egl_display = display->winsys;
+  CoglDisplayKMS *kms_display = egl_display->platform;
+  CoglRenderer *renderer = display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+
+  kms_display->dummy_gbm_surface = gbm_surface_create (kms_renderer->gbm,
+                                                       16, 16,
+                                                       GBM_FORMAT_XRGB8888,
+                                                       GBM_BO_USE_RENDERING);
+  if (!kms_display->dummy_gbm_surface)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_CREATE_CONTEXT,
+                   "Failed to create dummy GBM surface");
+      return FALSE;
+    }
+
+  egl_display->dummy_surface =
+    eglCreateWindowSurface (egl_renderer->edpy,
+                            egl_display->egl_config,
+                            (NativeWindowType) kms_display->dummy_gbm_surface,
+                            NULL);
+  if (egl_display->dummy_surface == EGL_NO_SURFACE)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_CREATE_CONTEXT,
+                   "Failed to create dummy EGL surface");
+      return FALSE;
+    }
 
   if (!_cogl_winsys_egl_make_current (display,
-                                      EGL_NO_SURFACE,
-                                      EGL_NO_SURFACE,
+                                      egl_display->dummy_surface,
+                                      egl_display->dummy_surface,
                                       egl_display->egl_context))
     {
       g_set_error (error, COGL_WINSYS_ERROR,
@@ -556,6 +557,22 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
 static void
 _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
 {
+  CoglDisplayEGL *egl_display = display->winsys;
+  CoglDisplayKMS *kms_display = egl_display->platform;
+  CoglRenderer *renderer = display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+
+  if (egl_display->dummy_surface != EGL_NO_SURFACE)
+    {
+      eglDestroySurface (egl_renderer->edpy, egl_display->dummy_surface);
+      egl_display->dummy_surface = EGL_NO_SURFACE;
+    }
+
+  if (kms_display->dummy_gbm_surface != NULL)
+    {
+      gbm_surface_destroy (kms_display->dummy_gbm_surface);
+      kms_display->dummy_gbm_surface = NULL;
+    }
 }
 
 static void
