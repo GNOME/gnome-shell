@@ -19,9 +19,11 @@ const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
 
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
+const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
 const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
 const DISABLE_LOG_OUT_KEY = 'disable-log-out';
+const LOCK_ENABLED_KEY = 'lock-enabled';
 
 const DIALOG_ICON_SIZE = 64;
 
@@ -438,6 +440,7 @@ const UserMenuButton = new Lang.Class({
         let box = new St.BoxLayout({ name: 'panelUserMenu' });
         this.actor.add_actor(box);
 
+        this._screenSaverSettings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
         this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
 
         this._userManager = AccountsService.UserManager.get_default();
@@ -774,7 +777,8 @@ const UserMenuButton = new Lang.Class({
 
     _onLoginScreenActivate: function() {
         Main.overview.hide();
-        Main.screenShield.lock(false);
+        if (this._screenSaverSettings.get_boolean(LOCK_ENABLED_KEY))
+            Main.screenShield.lock(false);
         this._userManager.goto_login_session();
     },
 
@@ -797,13 +801,17 @@ const UserMenuButton = new Lang.Class({
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
             this._session.ShutdownRemote();
         } else {
-            let tmpId = Main.screenShield.connect('lock-screen-shown', Lang.bind(this, function() {
-                Main.screenShield.disconnect(tmpId);
+            if (this._screenSaverSettings.get_boolean(LOCK_ENABLED_KEY)) {
+                let tmpId = Main.screenShield.connect('lock-screen-shown', Lang.bind(this, function() {
+                    Main.screenShield.disconnect(tmpId);
 
+                    this._upClient.suspend_sync(null);
+                }));
+
+                Main.screenShield.lock(true);
+            } else {
                 this._upClient.suspend_sync(null);
-            }));
-
-            Main.screenShield.lock(true);
+            }
         }
     }
 });
