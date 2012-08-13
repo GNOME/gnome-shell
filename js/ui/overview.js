@@ -202,7 +202,6 @@ const Overview = new Lang.Class({
         this._group.add_actor(this._dash.actor);
 
         // TODO - recalculate everything when desktop size changes
-        this._dash.actor.add_constraint(this._viewSelector.constrainY);
         this._dash.actor.add_constraint(this._viewSelector.constrainHeight);
         this.dashIconSize = this._dash.iconSize;
         this._dash.connect('icon-size-changed',
@@ -494,12 +493,7 @@ const Overview = new Lang.Class({
         let searchY = contentY + this._spacing;
 
         let dashWidth = Math.round(DASH_SPLIT_FRACTION * primary.width);
-        let viewWidth = primary.width - dashWidth - this._spacing;
-        let viewHeight = contentHeight - 2 * this._spacing - searchHeight;
-        let viewY = contentY + this._spacing + searchHeight;
-        let viewX = rtl ? 0 : dashWidth + this._spacing;
-
-        // Set the dash's x position - y is handled by a constraint
+        let dashY = searchY + searchHeight + this._spacing;
         let dashX;
         if (rtl) {
             this._dash.actor.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
@@ -507,9 +501,14 @@ const Overview = new Lang.Class({
         } else {
             dashX = 0;
         }
-        this._dash.actor.set_x(dashX);
+
+        let viewX = rtl ? 0 : dashWidth + this._spacing;
+        let viewY = searchY + searchHeight + this._spacing;
+        let viewWidth = primary.width - dashWidth - this._spacing;
+        let viewHeight = contentHeight - this._spacing - viewY;
 
         this._searchEntry.set_position(searchX, searchY);
+        this._dash.actor.set_position(dashX, dashY);
         this._viewSelector.actor.set_position(viewX, viewY);
         this._viewSelector.actor.set_size(viewWidth, viewHeight);
     },

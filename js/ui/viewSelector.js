@@ -422,8 +422,6 @@ const ViewSelector = new Lang.Class({
         // to use position and height properties directly, outside code would
         // need to ensure that the content is properly allocated before
         // accessing the properties.
-        this.constrainY = new Clutter.BindConstraint({ source: this._pageArea,
-                                                       coordinate: Clutter.BindCoordinate.Y });
         this.constrainHeight = new Clutter.BindConstraint({ source: this._pageArea,
                                                             coordinate: Clutter.BindCoordinate.HEIGHT });
     },

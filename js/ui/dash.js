@@ -331,8 +331,7 @@ const Dash = new Lang.Class({
 
         this._container.add(this._showAppsIcon.actor);
 
-        this.actor = new St.Bin({ child: this._container,
-                                  y_align: St.Align.START });
+        this.actor = new St.Bin({ child: this._container });
         this.actor.connect('notify::height', Lang.bind(this,
             function() {
                 if (this._maxHeight != this.actor.height)
