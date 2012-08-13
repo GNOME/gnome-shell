@@ -91,6 +91,7 @@ const UnlockDialog = new Lang.Class({
         this._user = this._userManager.get_user(this._userName);
 
         this._failCounter = 0;
+        this._firstQuestion = true;
 
         this._greeterClient = new Gdm.Client();
         this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient, { reauthenticationOnly: true });
@@ -115,7 +116,8 @@ const UnlockDialog = new Lang.Class({
 
         this._promptEntry = new St.Entry({ style_class: 'login-dialog-prompt-entry',
                                            can_focus: true });
-        ShellEntry.addContextMenu(this._promptEntry);
+        this._promptEntry.clutter_text.set_password_char('\u25cf');
+        ShellEntry.addContextMenu(this._promptEntry, { isPassword: true });
         this.setInitialKeyFocus(this._promptEntry);
         this._promptEntry.clutter_text.connect('activate', Lang.bind(this, this._doUnlock));
 
@@ -140,7 +142,7 @@ const UnlockDialog = new Lang.Class({
                            default: true };
         this.setButtons([cancelButton, this._okButton]);
 
-        this._updateOkButton(false);
+        this._updateOkButton(true);
 
         let otherUserLabel = new St.Label({ text: _("Log in as another user"),
                                             style_class: 'login-dialog-not-listed-label' });
@@ -171,6 +173,7 @@ const UnlockDialog = new Lang.Class({
 
     _updateOkButton: function(sensitive) {
         this._okButton.button.reactive = sensitive;
+        this._okButton.button.can_focus = sensitive;
     },
 
     _showMessage: function(userVerifier, message, styleClass) {
@@ -180,9 +183,20 @@ const UnlockDialog = new Lang.Class({
     },
 
     _onAskQuestion: function(verifier, serviceName, question, passwordChar) {
+        if (this._firstQuestion && this._firstQuestionAnswer) {
+            this._userVerifier.answerQuery(serviceName, this._firstQuestionAnswer);
+            this._firstQuestionAnswer = null;
+            this._firstQuestion = false;
+            return;
+        }
+
         this._promptLabel.text = question;
 
-        this._promptEntry.text = '';
+        if (!this._firstQuestion)
+            this._promptEntry.text = '';
+        else
+            this._firstQuestion = false;
+
         this._promptEntry.clutter_text.set_password_char(passwordChar);
         this._promptEntry.menu.isPassword = passwordChar != '';
 
@@ -200,6 +214,15 @@ const UnlockDialog = new Lang.Class({
     },
 
     _doUnlock: function() {
+        if (this._firstQuestion) {
+            // we haven't received a query yet, so stash the answer
+            // and make ourself non-reactive
+            // the actual reply to GDM will be sent as soon as asked
+            this._firstQuestionAnswer = this._promptEntry.text;
+            this._updateOkButton(false);
+            return;
+        }
+
         if (!this._currentQuery)
             return;
 
