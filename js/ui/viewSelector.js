@@ -493,29 +493,6 @@ const ViewSelector = new Lang.Class({
         this._showAppsButton.checked = false;
     },
 
-    _nextTab: function() {
-        if (this._tabs.length == 0 ||
-            this._tabs[this._tabs.length - 1] == this._activeTab)
-            return;
-
-        for (let i = 0; i < this._tabs.length; i++)
-            if (this._tabs[i] == this._activeTab) {
-                this._switchTab(this._tabs[i + 1]);
-                return;
-            }
-    },
-
-    _prevTab: function() {
-        if (this._tabs.length == 0 || this._tabs[0] == this._activeTab)
-            return;
-
-        for (let i = 0; i < this._tabs.length; i++)
-            if (this._tabs[i] == this._activeTab) {
-                this._switchTab(this._tabs[i - 1]);
-                return;
-            }
-    },
-
     _onStageKeyPress: function(actor, event) {
         let modifiers = event.get_state();
         let symbol = event.get_key_symbol();
@@ -530,15 +507,7 @@ const ViewSelector = new Lang.Class({
                    (symbol == Clutter.BackSpace && this._searchTab.active)) {
             this._searchTab.startSearch(event);
         } else if (!this._searchTab.active) {
-            if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
-                if (symbol == Clutter.Page_Up) {
-                    this._prevTab();
-                    return true;
-                } else if (symbol == Clutter.Page_Down) {
-                    this._nextTab();
-                    return true;
-                }
-            } else if (symbol == Clutter.Tab) {
+            if (symbol == Clutter.Tab) {
                 this._activeTab.page.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
                 return true;
             } else if (symbol == Clutter.ISO_Left_Tab) {
