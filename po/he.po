@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cogl\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter\n"
-"POT-Creation-Date: 2012-04-26 15:29+0300\n"
-"PO-Revision-Date: 2012-04-26 15:29+0200\n"
+"POT-Creation-Date: 2012-08-13 23:18+0300\n"
+"PO-Revision-Date: 2012-08-13 23:21+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: he\n"
@@ -33,21 +33,17 @@ msgstr "Special debug values:"
 msgid "Enables all non-behavioural debug options"
 msgstr "Enables all non-behavioural debug options"
 
-#: ../cogl/cogl-debug.c:227
-msgid "Cogl debugging flags to set"
-msgstr "Cogl debugging flags to set"
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "משתנים סביבתיים נוספים:"
 
-#: ../cogl/cogl-debug.c:229
-msgid "Cogl debugging flags to unset"
-msgstr "Cogl debugging flags to unset"
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr "רשימה מופרדת בפסיקים של הרחבות GL כדי להעמיד פנים שהן מנוטרלות"
 
-#: ../cogl/cogl-debug.c:278
-msgid "Cogl Options"
-msgstr "Cogl Options"
-
-#: ../cogl/cogl-debug.c:279
-msgid "Show Cogl options"
-msgstr "Show Cogl options"
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr "דריסת גרסת ה־GL ש־Cogl יניח שמנהל ההתקן תומך בהן"
 
 #: ../cogl/cogl-debug-options.h:25
 #: ../cogl/cogl-debug-options.h:30
@@ -358,3 +354,14 @@ msgstr "Trace performance concerns"
 msgid "Tries to highlight sub-optimal Cogl usage."
 msgstr "Tries to highlight sub-optimal Cogl usage."
 
+#~ msgid "Cogl debugging flags to set"
+#~ msgstr "Cogl debugging flags to set"
+
+#~ msgid "Cogl debugging flags to unset"
+#~ msgstr "Cogl debugging flags to unset"
+
+#~ msgid "Cogl Options"
+#~ msgstr "Cogl Options"
+
+#~ msgid "Show Cogl options"
+#~ msgstr "Show Cogl options"
