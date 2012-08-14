@@ -84,7 +84,10 @@ const KeyringDialog = new Lang.Class({
         if (this.prompt.password_visible) {
             let label = new St.Label(({ style_class: 'prompt-dialog-password-label' }));
             label.set_text(_("Password:"));
-            table.add(label, { row: row, col: 0, x_expand: false, x_fill: true, x_align: St.Align.START });
+            table.add(label, { row: row, col: 0,
+                               x_expand: false, x_fill: true,
+                               x_align: St.Align.START,
+                               y_fill: false, y_align: St.Align.MIDDLE });
             this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
                                                  text: '',
                                                  can_focus: true});
@@ -100,7 +103,10 @@ const KeyringDialog = new Lang.Class({
         if (this.prompt.confirm_visible) {
             var label = new St.Label(({ style_class: 'prompt-dialog-password-label' }));
             label.set_text(_("Type again:"));
-            table.add(label, { row: row, col: 0, x_expand: false, x_fill: true, x_align: St.Align.START });
+            table.add(label, { row: row, col: 0,
+                               x_expand: false, x_fill: true,
+                               x_align: St.Align.START,
+                               y_fill: false, y_align: St.Align.MIDDLE });
             this._confirmEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
                                                 text: '',
                                                 can_focus: true});

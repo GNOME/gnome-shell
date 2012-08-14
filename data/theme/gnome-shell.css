@@ -1907,6 +1907,7 @@ StButton.popup-menu-item:insensitive {
 
 .keyring-dialog-control-table {
     spacing-rows: 15px;
+    spacing-columns: 1em;
 }
 
 /* Magnifier */
