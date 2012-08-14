@@ -208,7 +208,7 @@ const UnlockDialog = new Lang.Class({
     },
 
     _otherUserClicked: function(button, event) {
-        this._userManager.goto_login_session();
+        Gdm.goto_login_session_sync(null);
 
         this._userVerifier.cancel();
         this.emit('failed');

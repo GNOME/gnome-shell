@@ -779,7 +779,7 @@ const UserMenuButton = new Lang.Class({
         Main.overview.hide();
         if (this._screenSaverSettings.get_boolean(LOCK_ENABLED_KEY))
             Main.screenShield.lock(false);
-        this._userManager.goto_login_session();
+        Gdm.goto_login_session_sync(null);
     },
 
     _onQuitSessionActivate: function() {
