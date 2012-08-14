@@ -1400,17 +1400,16 @@ StButton.popup-menu-item:insensitive {
 }
 
 .summary-source-button {
+    border-radius: 4px;
     transition-duration: 100;
 }
 
 .summary-source-button:hover {
     background-color: rgba(255,255,255,0.1);
-    border-radius: 4px;
 }
 
-.summary-source-button:selected {
-    background-image: url("running-indicator.svg");
-    background-size: contain;
+.summary-source-button:focus {
+    background-color: rgba(255,255,255,0.33);
 }
 
 .summary-source {
