@@ -311,12 +311,22 @@ const Dash = new Lang.Class({
         this._resetHoverTimeoutId = 0;
         this._labelShowing = false;
 
-        this._box = new St.BoxLayout({ name: 'dash',
-                                       vertical: true,
+        this._container = new St.BoxLayout({ name: 'dash',
+                                             vertical: true,
+                                             clip_to_allocation: true });
+
+        this._box = new St.BoxLayout({ vertical: true,
                                        clip_to_allocation: true });
         this._box._delegate = this;
+        this._container.add(this._box);
 
-        this.actor = new St.Bin({ y_align: St.Align.START, child: this._box });
+        this._favRemoveTarget = new RemoveFavoriteIcon();
+        this._favRemoveTarget.icon.setIconSize(this.iconSize);
+
+        this._container.add(this._favRemoveTarget.actor);
+
+        this.actor = new St.Bin({ child: this._container,
+                                  y_align: St.Align.START });
         this.actor.connect('notify::height', Lang.bind(this,
             function() {
                 if (this._maxHeight != this.actor.height)
@@ -369,14 +379,6 @@ const Dash = new Lang.Class({
 
     _endDrag: function() {
         this._clearDragPlaceholder();
-        if (this._favRemoveTarget) {
-            this._favRemoveTarget.animateOutAndDestroy();
-            this._favRemoveTarget.actor.connect('destroy', Lang.bind(this,
-                function() {
-                    this._favRemoveTarget = null;
-                }));
-            this._adjustIconSize();
-        }
         DND.removeDragMonitor(this._dragMonitor);
     },
 
@@ -395,28 +397,13 @@ const Dash = new Lang.Class({
 
         let srcIsFavorite = (id in favorites);
 
-        if (srcIsFavorite &&
-            app.get_state() != Shell.AppState.RUNNING &&
-            dragEvent.source.actor &&
-            this.actor.contains (dragEvent.source.actor) &&
-            this._favRemoveTarget == null) {
-                this._favRemoveTarget = new RemoveFavoriteIcon();
-                this._favRemoveTarget.icon.setIconSize(this.iconSize);
-                this._box.add(this._favRemoveTarget.actor);
-                this._adjustIconSize();
-                this._favRemoveTarget.animateIn();
-        }
-
-        let favRemoveHovered = false;
-        if (this._favRemoveTarget)
-            favRemoveHovered =
+        let favRemoveHovered =
                 this._favRemoveTarget.actor.contains(dragEvent.targetActor);
 
         if (!this._box.contains(dragEvent.targetActor) || favRemoveHovered)
             this._clearDragPlaceholder();
 
-        if (this._favRemoveTarget)
-            this._favRemoveTarget.setHover(favRemoveHovered);
+        this._favRemoveTarget.setHover(favRemoveHovered);
 
         return DND.DragMotionResult.CONTINUE;
     },
@@ -510,18 +497,12 @@ const Dash = new Lang.Class({
                    !actor._delegate.animatingOut;
         });
 
-        if (iconChildren.length == 0) {
-            this._box.add_style_pseudo_class('empty');
-            return;
-        }
-
-        this._box.remove_style_pseudo_class('empty');
+        iconChildren.push(this._favRemoveTarget.actor);
 
         if (this._maxHeight == -1)
             return;
 
-
-        let themeNode = this._box.get_theme_node();
+        let themeNode = this._container.get_theme_node();
         let maxAllocation = new Clutter.ActorBox({ x1: 0, y1: 0,
                                                    x2: 42 /* whatever */,
                                                    y2: this._maxHeight });
@@ -546,7 +527,6 @@ const Dash = new Lang.Class({
         } else {
             [minHeight, natHeight] = iconChildren[0].get_preferred_height(-1);
         }
-
 
         // Subtract icon padding and box spacing from the available height
         availHeight -= iconChildren.length * (natHeight - this.iconSize) +
