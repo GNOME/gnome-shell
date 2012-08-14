@@ -49,7 +49,7 @@ stage {
 .window-caption,
 .switcher-list, 
 .app-well-app > .overview-icon,
-.remove-favorite > .overview-icon,
+.show-apps > .overview-icon,
 .search-result-content > .overview-icon {
     font-size: 9pt;
     font-weight: bold;
@@ -803,21 +803,12 @@ StButton.popup-menu-item:insensitive {
     outline: 1px solid #aaa;
 }
 
-.dash-item-container > .app-well-app {
+.dash-item-container > StButton {
     padding: 4px 8px;
 }
 
-.remove-favorite-icon {
-    color: #a0a0a0;
-}
-
-.remove-favorite-icon:hover {
-    color: white;
-    icon-shadow: black 0px 2px 2px;
-}
-
 .app-well-app > .overview-icon,
-.remove-favorite > .overview-icon,
+.show-apps > .overview-icon,
 .search-result-content > .overview-icon {
     border-radius: 4px;
     padding: 3px;
@@ -833,15 +824,44 @@ StButton.popup-menu-item:insensitive {
 }
 
 .app-well-app:hover > .overview-icon,
-.remove-favorite:hover > .overview-icon,
+.show-apps:hover > .overview-icon,
 .search-result-content:hover > .overview-icon {
     background-color: rgba(255,255,255,0.1);
     text-shadow: black 0px 2px 2px;
+    transition-duration: 100;
+    color:white;
+}
+
+.show-apps {
+    padding: 4px 0;
+}
+
+.show-apps-icon {
+    color: #a0a0a0;
+}
+
+.show-apps:hover .show-apps-icon {
+    color: white;
+}
+
+.show-apps:checked > .overview-icon {
+    background-gradient-start: rgba(255, 255, 255, .05);
+    background-gradient-end: rgba(255, 255, 255, .15);
+    background-gradient-direction: vertical;
+    border-radius: 4px;
+    box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 1);
+    transition-duration: 100;
+}
+
+.show-apps:checked .show-apps-icon,
+.show-apps:focus .show-apps-icon {
+    color: white;
     transition-duration: 100;
 }
 
 .app-well-app:focus > .overview-icon,
 .search-result-content:focus > .overview-icon,
+.show-apps:focus > .overview-icon,
 .app-well-app:selected > .overview-icon,
 .search-result-content:selected > .overview-icon {
     background-color: rgba(255,255,255,0.33);

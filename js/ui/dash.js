@@ -226,34 +226,39 @@ const DashItemContainer = new Lang.Class({
     }
 });
 
-const RemoveFavoriteIcon = new Lang.Class({
-    Name: 'RemoveFavoriteIcon',
+const ShowAppsIcon = new Lang.Class({
+    Name: 'ShowAppsIcon',
     Extends: DashItemContainer,
 
     _init: function() {
         this.parent();
 
-        this._iconBin = new St.Bin({ style_class: 'remove-favorite' });
+        this._button = new St.Button({ style_class: 'show-apps',
+                                        track_hover: true,
+                                        can_focus: true,
+                                        toggle_mode: true });
         this._iconActor = null;
-        this.icon = new IconGrid.BaseIcon(_("Remove"),
+        this.icon = new IconGrid.BaseIcon(_("Show Applications"),
                                            { setSizeManually: true,
                                              showLabel: false,
                                              createIcon: Lang.bind(this, this._createIcon) });
-        this._iconBin.set_child(this.icon.actor);
-        this._iconBin._delegate = this;
+        this._button.add_actor(this.icon.actor);
+        this._button._delegate = this;
 
-        this.setChild(this._iconBin);
+        this.setChild(this._button);
     },
 
     _createIcon: function(size) {
-        this._iconActor = new St.Icon({ icon_name: 'user-trash',
-                                        style_class: 'remove-favorite-icon',
+        this._iconActor = new St.Icon({ icon_name: 'view-grid-symbolic',
+                                        style_class: 'show-apps-icon',
+                                        track_hover: true,
+                                        icon_type: St.IconType.SYMBOLIC,
                                         icon_size: size });
         return this._iconActor;
     },
 
     setHover: function(hovered) {
-        this._iconBin.set_hover(hovered);
+        this._button.set_hover(hovered);
         if (this._iconActor)
             this._iconActor.set_hover(hovered);
     },
@@ -306,7 +311,6 @@ const Dash = new Lang.Class({
         this._dragPlaceholder = null;
         this._dragPlaceholderPos = -1;
         this._animatingPlaceholdersCount = 0;
-        this._favRemoveTarget = null;
         this._showLabelTimeoutId = 0;
         this._resetHoverTimeoutId = 0;
         this._labelShowing = false;
@@ -320,10 +324,10 @@ const Dash = new Lang.Class({
         this._box._delegate = this;
         this._container.add(this._box);
 
-        this._favRemoveTarget = new RemoveFavoriteIcon();
-        this._favRemoveTarget.icon.setIconSize(this.iconSize);
+        this._showAppsIcon = new ShowAppsIcon();
+        this._showAppsIcon.icon.setIconSize(this.iconSize);
 
-        this._container.add(this._favRemoveTarget.actor);
+        this._container.add(this._showAppsIcon.actor);
 
         this.actor = new St.Bin({ child: this._container,
                                   y_align: St.Align.START });
@@ -397,13 +401,13 @@ const Dash = new Lang.Class({
 
         let srcIsFavorite = (id in favorites);
 
-        let favRemoveHovered =
-                this._favRemoveTarget.actor.contains(dragEvent.targetActor);
+        let showAppsHovered =
+                this._showAppsIcon.actor.contains(dragEvent.targetActor);
 
-        if (!this._box.contains(dragEvent.targetActor) || favRemoveHovered)
+        if (!this._box.contains(dragEvent.targetActor) || showAppsHovered)
             this._clearDragPlaceholder();
 
-        this._favRemoveTarget.setHover(favRemoveHovered);
+        this._showAppsIcon.setHover(showAppsHovered);
 
         return DND.DragMotionResult.CONTINUE;
     },
@@ -497,7 +501,7 @@ const Dash = new Lang.Class({
                    !actor._delegate.animatingOut;
         });
 
-        iconChildren.push(this._favRemoveTarget.actor);
+        iconChildren.push(this._showAppsIcon.actor);
 
         if (this._maxHeight == -1)
             return;
