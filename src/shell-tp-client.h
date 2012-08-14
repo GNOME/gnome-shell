@@ -100,12 +100,5 @@ void shell_tp_client_set_contact_list_changed_func (ShellTpClient *self,
 void shell_tp_client_grab_contact_list_changed (ShellTpClient *self,
     TpConnection *conn);
 
-/* Telepathy utility functions */
-
-void shell_decline_dispatch_op (TpAddDispatchOperationContext *context,
-                                const gchar *message);
-
-gboolean shell_is_channel_invalidated (TpChannel *channel);
-
 G_END_DECLS
 #endif /* __SHELL_TP_CLIENT_H__ */

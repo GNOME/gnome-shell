@@ -132,7 +132,7 @@ const Client = new Lang.Class({
             let channel = channels[i];
             let [targetHandle, targetHandleType] = channel.get_handle();
 
-            if (Shell.is_channel_invalidated(channel))
+            if (channel.get_invalidated())
               continue;
 
             /* Only observe contact text channels */
@@ -184,7 +184,7 @@ const Client = new Lang.Class({
                 continue;
             }
 
-            if (Shell.is_channel_invalidated(channel))
+            if (channel.get_invalidated())
               continue;
 
             // 'notify' will be true when coming from an actual HandleChannels
@@ -211,13 +211,15 @@ const Client = new Lang.Class({
         // We can only approve the rooms if we have been invited to it
         let selfContact = channel.group_get_self_contact();
         if (selfContact == null) {
-            Shell.decline_dispatch_op(context, 'Not invited to the room');
+            context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
+                                        message: 'Not invited to the room' }));
             return;
         }
 
         let [invited, inviter, reason, msg] = channel.group_get_local_pending_contact_info(selfContact);
         if (!invited) {
-            Shell.decline_dispatch_op(context, 'Not invited to the room');
+            context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
+                                        message: 'Not invited to the room' }));
             return;
         }
 
@@ -237,8 +239,9 @@ const Client = new Lang.Class({
         let channel = channels[0];
         let chanType = channel.get_channel_type();
 
-        if (Shell.is_channel_invalidated(channel)) {
-            Shell.decline_dispatch_op(context, 'Channel is invalidated');
+        if (channel.get_invalidated()) {
+            context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
+                                        message: 'Channel is invalidated' }));
             return;
         }
 
@@ -249,7 +252,8 @@ const Client = new Lang.Class({
         else if (chanType == Tp.IFACE_CHANNEL_TYPE_FILE_TRANSFER)
             this._approveFileTransfer(account, conn, channel, dispatchOp, context);
         else
-            Shell.decline_dispatch_op(context, 'Unsupported channel type');
+            context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
+                                        message: 'Unsupported channel type' }));
     },
 
     _approveTextChannel: function(account, conn, channel, dispatchOp, context) {

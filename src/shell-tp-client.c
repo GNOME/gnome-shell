@@ -327,23 +327,3 @@ shell_tp_client_grab_contact_list_changed (ShellTpClient *self,
                     G_CALLBACK (on_contact_list_changed),
                     self);
 }
-
-/* Telepathy utility functions */
-
-/* gjs doesn't allow us to craft a GError so we need a C wrapper */
-void
-shell_decline_dispatch_op (TpAddDispatchOperationContext *context,
-    const gchar *message)
-{
-  GError *error = g_error_new_literal (TP_ERRORS, TP_ERROR_INVALID_ARGUMENT,
-      message);
-
-  tp_add_dispatch_operation_context_fail (context, error);
-  g_error_free (error);
-}
-
-/* gjs doesn't cope with tp_proxy_get_invalidated() returning a GError */
-gboolean shell_is_channel_invalidated (TpChannel *channel)
-{
-  return tp_proxy_get_invalidated (channel) != NULL;
-}
