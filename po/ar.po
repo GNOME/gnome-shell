@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-13 20:18+0200\n"
-"PO-Revision-Date: 2012-06-13 20:20+0200\n"
+"POT-Creation-Date: 2012-08-14 23:57+0200\n"
+"PO-Revision-Date: 2012-08-14 23:59+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
@@ -41,7 +41,7 @@ msgstr "المنظور مقسوم على اليسار"
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
-msgstr ""
+msgstr "يعمل مدير مزج آخر على الشاشة %i والعرض \"%s\"."
 
 #: ../src/core/bell.c:320
 msgid "Bell event"
@@ -52,26 +52,26 @@ msgstr "حدث جرس"
 msgid "Unknown window information request: %d"
 msgstr "طلب معلومات نافذة مجهول: %d"
 
-#: ../src/core/delete.c:111
-#, c-format
-msgid "<tt>%s</tt> is not responding."
-msgstr "‏<tt>%s</tt> لا يستجيب"
-
 #: ../src/core/delete.c:114
+#, c-format
+msgid "%s is not responding."
+msgstr "‏%s لا يستجيب"
+
+#: ../src/core/delete.c:118
 msgid "Application is not responding."
 msgstr "لا يستجيب التطبيق"
 
-#: ../src/core/delete.c:119
+#: ../src/core/delete.c:123
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr "ربما ترغب في الانتظار قليلا ليُكمِل أو إجبار التطبيق على الإنهاء كُلّية."
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Wait"
 msgstr "ا_نتظر"
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Force Quit"
 msgstr "أ_جبر الإنهاء"
 
@@ -85,7 +85,7 @@ msgstr "الامتداد %s مفقود، لكنه مطلوب للتركيب"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "فشل فتح عرض نظام نوافذ إكس '%s'\n"
 
-#: ../src/core/keybindings.c:852
+#: ../src/core/keybindings.c:844
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -149,7 +149,7 @@ msgstr "اطبع الإصدارة"
 msgid "Mutter plugin to use"
 msgstr "ملحق مَتَر الذي سيُستخدم"
 
-#: ../src/core/prefs.c:1064
+#: ../src/core/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -157,12 +157,12 @@ msgstr ""
 "عطّلت الحلول الجزئيّة للتطبيقات المعطوبة . ربما لن تتصرف بعض التطبيقات "
 "بسلامة.\n"
 
-#: ../src/core/prefs.c:1139
+#: ../src/core/prefs.c:1140
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "لا يمكن تحليل وصف الخط \"%s\" من مفتاح GSettings‏ %s\n"
 
-#: ../src/core/prefs.c:1205
+#: ../src/core/prefs.c:1206
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -170,7 +170,7 @@ msgid ""
 msgstr ""
 "\"%s\" الموجود في قاعدة بيانات الإعدادات ليس قيمة سليمة لمغير أزرار الفأرة\n"
 
-#: ../src/core/prefs.c:1723
+#: ../src/core/prefs.c:1724
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -179,7 +179,7 @@ msgstr ""
 "\"%s\" الموجود في قاعدة بيانات الإعدادات ليس قيمة سليمة لارتباط المفتاح \"%s"
 "\"\n"
 
-#: ../src/core/prefs.c:1820
+#: ../src/core/prefs.c:1821
 #, c-format
 msgid "Workspace %d"
 msgstr "مساحة العمل %d"
