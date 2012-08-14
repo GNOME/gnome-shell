@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -16,6 +17,79 @@ const Tweener = imports.ui.tweener;
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 const STARTUP_ANIMATION_TIME = 0.2;
 const KEYBOARD_ANIMATION_TIME = 0.5;
+
+const MonitorConstraint = new Lang.Class({
+    Name: 'MonitorConstraint',
+    Extends: Clutter.Constraint,
+    Properties: {'primary': GObject.ParamSpec.boolean('primary', 
+                                                      'Primary', 'Track primary monitor',
+                                                      GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+                                                      false),
+                 'index': GObject.ParamSpec.int('index',
+                                                'Monitor index', 'Track specific monitor',
+                                                GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+                                                -1, 64, -1)},
+
+    _init: function(props) {
+        this._primary = false;
+        this._index = -1;
+
+        this.parent(props);
+    },
+
+    get primary() {
+        return this._primary;
+    },
+
+    set primary(v) {
+        this._primary = v;
+        if (this.actor)
+            this.actor.queue_relayout();
+        this.notify('primary');
+    },
+
+    get index() {
+        return this._index;
+    },
+
+    set index(v) {
+        this._index = v;
+        if (this.actor)
+            this.actor.queue_relayout();
+        this.notify('index');
+    },
+
+    vfunc_set_actor: function(actor) {
+        if (actor) {
+            if (!this._monitorsChangedId) {
+                this._monitorsChangedId = Main.layoutManager.connect('monitors-changed', Lang.bind(this, function() {
+                    this.actor.queue_relayout();
+                }));
+            }
+        } else {
+            if (this._monitorsChangedId)
+                Main.layoutManager.disconnect(this._monitorsChangedId);
+            this._monitorsChangedId = 0;
+        }
+
+        this.parent(actor);
+    },
+
+    vfunc_update_allocation: function(actor, actorBox) {
+        if (!this._primary && this._index < 0)
+            return;
+
+        let monitor;
+        if (this._primary) {
+            monitor = Main.layoutManager.primaryMonitor;
+        } else {
+            let index = Math.max(this._index, Main.layoutManager.monitors.length);
+            monitor = Main.layoutManager.monitors[index];
+        }
+
+        actorBox.init_rect(monitor.x, monitor.y, monitor.width, monitor.height);
+    }
+});
 
 const LayoutManager = new Lang.Class({
     Name: 'LayoutManager',
