@@ -2808,7 +2808,7 @@ cogl_framebuffer_get_modelview_matrix (CoglFramebuffer *framebuffer,
 
 void
 cogl_framebuffer_set_modelview_matrix (CoglFramebuffer *framebuffer,
-                                       CoglMatrix *matrix)
+                                       const CoglMatrix *matrix)
 {
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
@@ -2833,7 +2833,7 @@ cogl_framebuffer_get_projection_matrix (CoglFramebuffer *framebuffer,
 
 void
 cogl_framebuffer_set_projection_matrix (CoglFramebuffer *framebuffer,
-                                        CoglMatrix *matrix)
+                                        const CoglMatrix *matrix)
 {
   CoglMatrixStack *projection_stack =
     _cogl_framebuffer_get_projection_stack (framebuffer);
