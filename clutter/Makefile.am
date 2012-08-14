@@ -125,6 +125,7 @@ source_h =					\
 	$(srcdir)/clutter-transition.h		\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
+	$(srcdir)/clutter-zoom-action.h		\
 	$(NULL)
 
 source_c = \
@@ -206,6 +207,7 @@ source_c = \
 	$(srcdir)/clutter-units.c		\
 	$(srcdir)/clutter-util.c 		\
 	$(srcdir)/clutter-paint-volume.c 	\
+	$(srcdir)/clutter-zoom-action.c 	\
 	$(NULL)
 
 # private headers; these should not be distributed or introspected
@@ -858,7 +860,7 @@ dist-hook: ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj
 	done >clutter.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/clutter.vcprojin >$@
 	rm clutter.sourcefiles
-	
+
 ../build/win32/vs10/clutter.vcxproj: $(top_srcdir)/build/win32/vs10/clutter.vcxprojin
 	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(deprecated_c) $(deprecated_c_priv) $(built_source_c) | tr '/' '\\'`; do \
 		case $$F in \
@@ -868,7 +870,7 @@ dist-hook: ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj
 	done >clutter.vs10.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/clutter.vcxprojin >$@
 	rm clutter.vs10.sourcefiles
-	
+
 ../build/win32/vs10/clutter.vcxproj.filters: $(top_srcdir)/build/win32/vs10/clutter.vcxproj.filtersin
 	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(deprecated_c) $(deprecated_c_priv) $(built_source_c) | tr '/' '\\'`; do \
 		case $$F in \

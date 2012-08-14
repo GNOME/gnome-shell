@@ -833,7 +833,7 @@ typedef enum {
  *
  * Since: 0.4
  */
-typedef enum 
+typedef enum
 {
   CLUTTER_FEATURE_TEXTURE_NPOT           = (1 << 2),
   CLUTTER_FEATURE_SYNC_TO_VBLANK         = (1 << 3),
@@ -1320,6 +1320,23 @@ typedef enum {
   CLUTTER_STEP_MODE_START,
   CLUTTER_STEP_MODE_END
 } ClutterStepMode;
+
+/**
+ * ClutterZoomAxis:
+ * @CLUTTER_ZOOM_X_AXIS: Scale only on the X axis
+ * @CLUTTER_ZOOM_Y_AXIS: Scale only on the Y axis
+ * @CLUTTER_ZOOM_BOTH: Scale on both axis
+ *
+ * The axis of the constraint that should be applied by the
+ * zooming action.
+ *
+ * Since: 1.12
+ */
+typedef enum { /*< prefix=CLUTTER_ZOOM >*/
+  CLUTTER_ZOOM_X_AXIS,
+  CLUTTER_ZOOM_Y_AXIS,
+  CLUTTER_ZOOM_BOTH
+} ClutterZoomAxis;
 
 G_END_DECLS
 
