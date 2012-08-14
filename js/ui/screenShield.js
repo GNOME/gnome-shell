@@ -9,6 +9,7 @@ const Signals = imports.signals;
 const St = imports.gi.St;
 
 const GnomeSession = imports.misc.gnomeSession;
+const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
@@ -257,23 +258,6 @@ const NotificationsBox = new Lang.Class({
     },
 });
 
-const LockDialogGroup = new Lang.Class({
-    Name: 'LockDialogGroup',
-    Extends: St.Widget,
-
-    _init: function(params) {
-        this.parent(params);
-    },
-
-    vfunc_get_preferred_height: function(forWidth) {
-        return [global.screen_height, global.screen_height];
-    },
-
-    vfunc_get_preferred_width: function(forHeight) {
-        return [global.screen_width, global.screen_width];
-    }
-});
-
 /**
  * To test screen shield, make sure to kill gnome-screensaver.
  *
@@ -294,14 +278,18 @@ const ScreenShield = new Lang.Class({
                                                 y_expand: true,
                                                 reactive: true,
                                                 can_focus: true,
-                                                layout_manager: new Clutter.BinLayout(),
                                                 name: 'lockScreenGroup',
                                               });
         this._lockScreenGroup.connect('key-release-event',
                                       Lang.bind(this, this._onLockScreenKeyRelease));
 
+        this._lockScreenContents = new St.Widget({ layout_manager: new Clutter.BinLayout(),
+                                                   name: 'lockScreenContents' });
+        this._lockScreenContents.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+
         this._background = Meta.BackgroundActor.new_for_screen(global.screen);
         this._lockScreenGroup.add_actor(this._background);
+        this._lockScreenGroup.add_actor(this._lockScreenContents);
 
         // FIXME: build the rest of the lock screen here
 
@@ -315,14 +303,17 @@ const ScreenShield = new Lang.Class({
                                            y_expand: true
                                          });
         this._arrow.connect('repaint', Lang.bind(this, this._drawArrow));
-        this._lockScreenGroup.add_actor(this._arrow);
+        this._lockScreenContents.add_actor(this._arrow);
 
         let action = new Clutter.DragAction({ drag_axis: Clutter.DragAxis.Y_AXIS });
         action.connect('drag-begin', Lang.bind(this, this._onDragBegin));
         action.connect('drag-end', Lang.bind(this, this._onDragEnd));
         this._lockScreenGroup.add_action(action);
 
-        this._lockDialogGroup = new LockDialogGroup({ name: 'lockDialogGroup' });
+        this._lockDialogGroup = new St.Widget({ x_expand: true,
+                                                y_expand: true,
+                                                name: 'lockDialogGroup' });
+
         this.actor.add_actor(this._lockDialogGroup);
         this.actor.add_actor(this._lockScreenGroup);
 
@@ -545,7 +536,7 @@ const ScreenShield = new Lang.Class({
         this._lockScreenContentsBox.add(this._clock.actor, { x_fill: true,
                                                              y_fill: true });
 
-        this._lockScreenGroup.add_actor(this._lockScreenContentsBox);
+        this._lockScreenContents.add_actor(this._lockScreenContentsBox);
 
         if (this._settings.get_boolean('show-notifications')) {
             this._notificationsBox = new NotificationsBox();

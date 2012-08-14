@@ -109,6 +109,7 @@ const LayoutManager = new Lang.Class({
         this.screenShieldGroup = new St.Widget({ name: 'screenShieldGroup',
                                                  visible: false,
                                                  clip_to_allocation: true,
+                                                 layout_manager: new Clutter.BinLayout(),
                                                });
         this.addChrome(this.screenShieldGroup);
 
