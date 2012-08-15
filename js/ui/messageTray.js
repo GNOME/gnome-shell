@@ -1932,12 +1932,14 @@ const MessageTray = new Lang.Class({
 
         this._lightbox.show();
 
+        this._desktopClone._progress = 0;
         Tweener.addTween(this._desktopClone,
-                         { y: this._desktopClone.y - this.actor.height,
+                         { _progress: this.actor.height,
                            time: ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onUpdate: Lang.bind(this, function() {
-                               let progress = -1 * this._desktopClone.y; // y is negative
+                               let progress = Math.round(this._desktopClone._progress);
+                               this._desktopClone.y = - progress;
                                this._desktopClone.set_clip(geometry.x,
                                                            geometry.y + progress,
                                                            geometry.width,
@@ -1966,8 +1968,9 @@ const MessageTray = new Lang.Class({
         }
 
         let geometry = this._desktopClone.clip;
+        this._desktopClone._progress = 0;
         Tweener.addTween(this._desktopClone,
-                         { y: this._desktopClone.y + this.actor.height,
+                         { _progress: this.actor.height,
                            time: ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: Lang.bind(this, function() {
@@ -1975,7 +1978,8 @@ const MessageTray = new Lang.Class({
                                this._desktopClone = null;
                            }),
                            onUpdate: Lang.bind(this, function() {
-                               let progress = this.actor.height + this._desktopClone.y; // y is negative
+                               let progress = Math.round(this._desktopClone._progress);
+                               this._desktopClone.y = progress - this.actor.height;
                                this._desktopClone.set_clip(geometry.x,
                                                            geometry.y - progress,
                                                            geometry.width,
