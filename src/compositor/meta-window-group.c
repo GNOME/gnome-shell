@@ -193,9 +193,14 @@ meta_window_group_paint (ClutterActor *actor)
       else if (META_IS_BACKGROUND_ACTOR (l->data))
         {
           MetaBackgroundActor *background_actor = l->data;
+          int x, y;
 
-          cairo_region_translate (visible_region, - group_x, - group_y);
+          if (!actor_is_untransformed (CLUTTER_ACTOR (background_actor), &x, &y))
+            continue;
+
+          cairo_region_translate (visible_region, - x, - y);
           meta_background_actor_set_visible_region (background_actor, visible_region);
+          cairo_region_translate (visible_region, x, y);
         }
     }
 
