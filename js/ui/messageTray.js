@@ -1423,7 +1423,7 @@ const MessageTray = new Lang.Class({
         global.display.add_keybinding('toggle-message-tray',
                                       new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
                                       Meta.KeyBindingFlags.NONE,
-                                      Lang.bind(this, this.toggle));
+                                      Lang.bind(this, this.toggleAndNavigate));
 
         this._summaryItems = [];
         this._chatSummaryItemsCount = 0;
@@ -1573,6 +1573,13 @@ const MessageTray = new Lang.Class({
     toggle: function() {
         this._traySummoned = !this._traySummoned;
         this._updateState();
+    },
+
+    toggleAndNavigate: function() {
+        // Grab the key focus so that GrabHelper knows
+        // that we have the key grab.
+        this._summary.grab_key_focus();
+        this.toggle();
     },
 
     hide: function() {
