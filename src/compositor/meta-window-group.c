@@ -26,9 +26,28 @@ struct _MetaWindowGroup
 
 G_DEFINE_TYPE (MetaWindowGroup, meta_window_group, CLUTTER_TYPE_GROUP);
 
-/* We want to find out if the window is "close enough" to
- * 1:1 transform. We do that by converting the transformed coordinates
- * to 24.8 fixed-point before checking if they look right.
+/* This file uses pixel-aligned region computation to determine what
+ * can be clipped out. This only really works if everything is aligned
+ * to the pixel grid - not scaled or rotated and at integer offsets.
+ *
+ * (This could be relaxed - if we turned off filtering for unscaled
+ * windows then windows would be, by definition aligned to the pixel
+ * grid. And for rectangular windows without a shape, the outline that
+ * we draw for an unrotated window is always a rectangle because we
+ * don't use antialasing for the window boundary - with or without
+ * filtering, with or without a scale. But figuring out exactly
+ * what pixels will be drawn by the graphics system in these cases
+ * gets tricky, so we just go for the easiest part - no scale,
+ * and at integer offsets.)
+ *
+ * The way we check for pixel-aligned is by looking at the
+ * transformation into screen space of the allocation box of an actor
+ * and and checking if the corners are "close enough" to integral
+ * pixel values.
+ */
+
+/* The definition of "close enough" to integral pixel values is
+ * equality when we convert to 24.8 fixed-point.
  */
 static inline int
 round_to_fixed (float x)
@@ -36,41 +55,24 @@ round_to_fixed (float x)
   return roundf (x * 256);
 }
 
-/* We can only (easily) apply our logic for figuring out what a window
- * obscures if is not transformed. This function does that check and
- * as a side effect gets the position of the upper-left corner of the
- * actors.
- *
- * (We actually could handle scaled and non-integrally positioned actors
- * too as long as they weren't shaped - no filtering is done at the
- * edges so a rectangle stays a rectangle. But the gain from that is
- * small, especally since most of our windows are shaped. The simple
- * case we handle here is the case that matters when the user is just
- * using the desktop normally.)
- *
- * If we assume that the window group is untransformed (it better not
- * be!) then we could also make this determination by checking directly
- * if the actor itself is rotated, scaled, or at a non-integral position.
- * However, the criterion for "close enough" in that case get trickier,
- * since, for example, the allowed rotation depends on the size of
- * actor. The approach we take here is to just require everything
- * to be within 1/256th of a pixel.
+/* This helper function checks if (according to our fixed point precision)
+ * the vertices @verts form a box of width @widthf and height @heightf
+ * located at integral coordinates. These coordinates are returned
+ * in @x_origin and @y_origin.
  */
 static gboolean
-actor_is_untransformed (ClutterActor *actor,
-                        int          *x_origin,
-                        int          *y_origin)
+vertices_are_untransformed (ClutterVertex *verts,
+                            float          widthf,
+                            float          heightf,
+                            int           *x_origin,
+                            int           *y_origin)
 {
-  gfloat widthf, heightf;
   int width, height;
-  ClutterVertex verts[4];
   int v0x, v0y, v1x, v1y, v2x, v2y, v3x, v3y;
   int x, y;
 
-  clutter_actor_get_size (actor, &widthf, &heightf);
   width = round_to_fixed (widthf); height = round_to_fixed (heightf);
 
-  clutter_actor_get_abs_allocation_vertices (actor, verts);
   v0x = round_to_fixed (verts[0].x); v0y = round_to_fixed (verts[0].y);
   v1x = round_to_fixed (verts[1].x); v1y = round_to_fixed (verts[1].y);
   v2x = round_to_fixed (verts[2].x); v2y = round_to_fixed (verts[2].y);
@@ -101,6 +103,81 @@ actor_is_untransformed (ClutterActor *actor,
   return TRUE;
 }
 
+/* Check if an actor is "untransformed" - which actually means transformed by
+ * at most a integer-translation. The integer translation, if any, is returned.
+ */
+static gboolean
+actor_is_untransformed (ClutterActor *actor,
+                        int          *x_origin,
+                        int          *y_origin)
+{
+  gfloat widthf, heightf;
+  ClutterVertex verts[4];
+
+  clutter_actor_get_size (actor, &widthf, &heightf);
+  clutter_actor_get_abs_allocation_vertices (actor, verts);
+
+  return vertices_are_untransformed (verts, widthf, heightf, x_origin, y_origin);
+}
+
+/* Help macros to scale from OpenGL <-1,1> coordinates system to
+ * window coordinates ranging [0,window-size]. Borrowed from clutter-utils.c
+ */
+#define MTX_GL_SCALE_X(x,w,v1,v2) ((((((x) / (w)) + 1.0f) / 2.0f) * (v1)) + (v2))
+#define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - (((((y) / (w)) + 1.0f) / 2.0f) * (v1)) + (v2))
+
+/* Check if we're painting the MetaWindowGroup "untransformed". This can
+ * differ from the result of actor_is_untransformed(window_group) if we're
+ * inside a clone paint. The integer translation, if any, is returned.
+ */
+static gboolean
+painting_untransformed (MetaWindowGroup *window_group,
+                        int             *x_origin,
+                        int             *y_origin)
+{
+  CoglMatrix modelview, projection, modelview_projection;
+  ClutterVertex vertices[4];
+  int width, height;
+  float viewport[4];
+  int i;
+
+  cogl_get_modelview_matrix (&modelview);
+  cogl_get_projection_matrix (&projection);
+
+  cogl_matrix_multiply (&modelview_projection,
+                        &projection,
+                        &modelview);
+
+  meta_screen_get_size (window_group->screen, &width, &height);
+
+  vertices[0].x = 0;
+  vertices[0].y = 0;
+  vertices[0].z = 0;
+  vertices[1].x = width;
+  vertices[1].y = 0;
+  vertices[1].z = 0;
+  vertices[2].x = 0;
+  vertices[2].y = height;
+  vertices[2].z = 0;
+  vertices[3].x = width;
+  vertices[3].y = height;
+  vertices[3].z = 0;
+
+  cogl_get_viewport (viewport);
+
+  for (i = 0; i < 4; i++)
+    {
+      float w = 1;
+      cogl_matrix_transform_point (&modelview_projection, &vertices[i].x, &vertices[i].y, &vertices[i].z, &w);
+      vertices[i].x = MTX_GL_SCALE_X (vertices[i].x, w,
+                                      viewport[2], viewport[0]);
+      vertices[i].y = MTX_GL_SCALE_Y (vertices[i].y, w,
+                                      viewport[3], viewport[1]);
+    }
+
+  return vertices_are_untransformed (vertices, width, height, x_origin, y_origin);
+}
+
 static void
 meta_window_group_paint (ClutterActor *actor)
 {
@@ -109,10 +186,40 @@ meta_window_group_paint (ClutterActor *actor)
   ClutterActor *stage;
   cairo_rectangle_int_t visible_rect, unredirected_rect;
   GList *children, *l;
+<<<<<<< HEAD
   gfloat group_x, group_y;
+=======
+  int paint_x_origin, paint_y_origin;
+  int actor_x_origin, actor_y_origin;
+  int paint_x_offset, paint_y_offset;
+>>>>>>> MetaWindowGroup: Handle painting inside a ClutterClone
 
   MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
   MetaCompScreen *info = meta_screen_get_compositor_data (window_group->screen);
+
+  /* Normally we expect an actor to be drawn at it's position on the screen.
+   * However, if we're inside the paint of a ClutterClone, that won't be the
+   * case and we need to compensate. We look at the position of the window
+   * group under the current model-view matrix and the position of the actor.
+   * If they are both simply integer translations, then we can compensate
+   * easily, otherwise we give up.
+   *
+   * Possible cleanup: work entirely in paint space - we can compute the
+   * combination of the model-view matrix with the local matrix for each child
+   * actor and get a total transformation for that actor for how we are
+   * painting currently, and never worry about how actors are positioned
+   * on the stage.
+   */
+  if (!painting_untransformed (window_group, &paint_x_origin, &paint_y_origin) ||
+      !actor_is_untransformed (actor, &actor_x_origin, &actor_y_origin))
+    {
+      CLUTTER_ACTOR_CLASS (meta_window_group_parent_class)->paint (actor);
+      return;
+    }
+
+  paint_x_offset = paint_x_origin - actor_x_origin;
+  paint_y_offset = paint_y_origin - actor_y_origin;
+
   if (info->unredirected_window != NULL)
     {
       meta_window_actor_get_shape_bounds (META_WINDOW_ACTOR (info->unredirected_window), &unredirected_rect);
@@ -175,6 +282,9 @@ meta_window_group_paint (ClutterActor *actor)
           if (!actor_is_untransformed (CLUTTER_ACTOR (window_actor), &x, &y))
             continue;
 
+          x += paint_x_offset;
+          y += paint_y_offset;
+
           /* Temporarily move to the coordinate system of the actor */
           cairo_region_translate (visible_region, - x, - y);
 
@@ -197,6 +307,9 @@ meta_window_group_paint (ClutterActor *actor)
 
           if (!actor_is_untransformed (CLUTTER_ACTOR (background_actor), &x, &y))
             continue;
+
+          x += paint_x_offset;
+          y += paint_y_offset;
 
           cairo_region_translate (visible_region, - x, - y);
           meta_background_actor_set_visible_region (background_actor, visible_region);
