@@ -240,6 +240,8 @@ const ViewSelector = new Lang.Class({
         if (symbol == Clutter.Escape) {
             if (this.active)
                 this.reset();
+            else if (this._showAppsButton.checked)
+                this._resetShowAppsButton();
             else
                 Main.overview.hide();
             return true;
