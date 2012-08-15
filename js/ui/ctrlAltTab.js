@@ -27,7 +27,6 @@ const CtrlAltTabManager = new Lang.Class({
 
     _init: function() {
         this._items = [];
-        this._focusManager = St.FocusManager.get_for_stage(global.stage);
     },
 
     addGroup: function(root, name, icon, params) {
@@ -41,11 +40,11 @@ const CtrlAltTabManager = new Lang.Class({
 
         this._items.push(item);
         root.connect('destroy', Lang.bind(this, function() { this.removeGroup(root); }));
-        this._focusManager.add_group(root);
+        global.focus_manager.add_group(root);
     },
 
     removeGroup: function(root) {
-        this._focusManager.remove_group(root);
+        global.focus_manager.remove_group(root);
         for (let i = 0; i < this._items.length; i++) {
             if (this._items[i].root == root) {
                 this._items.splice(i, 1);

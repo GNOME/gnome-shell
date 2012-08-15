@@ -314,8 +314,6 @@ const Notification = new Lang.Class({
         this._table.connect('style-changed', Lang.bind(this, this._styleChanged));
         this.actor.set_child(this._table);
 
-        this._buttonFocusManager = St.FocusManager.get_for_stage(global.stage);
-
         // The first line should have the title, followed by the
         // banner text, but ellipsized if they won't both fit. We can't
         // make St.Table or St.BoxLayout do this the way we want (don't
@@ -638,10 +636,10 @@ const Notification = new Lang.Class({
         }
 
         if (this._buttonBox.get_n_children() > 0)
-            this._buttonFocusManager.remove_group(this._buttonBox);
+            global.focus_manager.remove_group(this._buttonBox);
 
         this._buttonBox.add(button);
-        this._buttonFocusManager.add_group(this._buttonBox);
+        global.focus_manager.add_group(this._buttonBox);
         button.connect('clicked', Lang.bind(this, this._onActionInvoked, id));
 
         this.updated();
@@ -1211,8 +1209,7 @@ const SummaryItem = new Lang.Class({
             this.rightClickMenu.add(item.actor);
 	}
 
-        let focusManager = St.FocusManager.get_for_stage(global.stage);
-        focusManager.add_group(this.rightClickMenu);
+        global.focus_manager.add_group(this.rightClickMenu);
     },
 
     prepareNotificationStackForShowing: function() {

@@ -182,8 +182,7 @@ const Button = new Lang.Class({
     _onMenuKeyPress: function(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Left || symbol == Clutter.KEY_Right) {
-            let focusManager = St.FocusManager.get_for_stage(global.stage);
-            let group = focusManager.get_group(this.actor);
+            let group = global.focus_manager.get_group(this.actor);
             if (group) {
                 let direction = (symbol == Clutter.KEY_Left) ? Gtk.DirectionType.LEFT : Gtk.DirectionType.RIGHT;
                 group.navigate_focus(this.actor, direction, false);
