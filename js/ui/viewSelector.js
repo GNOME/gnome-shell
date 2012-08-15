@@ -247,7 +247,7 @@ const ViewSelector = new Lang.Class({
                    (symbol == Clutter.BackSpace && this.active)) {
             this.startSearch(event);
         } else if (!this.active) {
-            if (symbol == Clutter.Tab) {
+            if (symbol == Clutter.Tab || symbol == Clutter.Down) {
                 this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
                 return true;
             } else if (symbol == Clutter.ISO_Left_Tab) {
