@@ -1326,6 +1326,7 @@ const MessageTray = new Lang.Class({
         this._summary = new St.BoxLayout({ name: 'summary-mode',
                                            reactive: true,
                                            track_hover: true });
+        global.focus_manager.add_group(this._summary);
         this._summary.connect('notify::hover', Lang.bind(this, this._onSummaryHoverChanged));
         this._summaryBin.child = this._summary;
         this._summaryBin.opacity = 0;
