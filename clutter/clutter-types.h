@@ -697,12 +697,12 @@ void clutter_interval_register_progress_func (GType               value_type,
 GType clutter_matrix_get_type (void) G_GNUC_CONST;
 
 ClutterMatrix * clutter_matrix_alloc            (void);
-ClutterMatrix * clutter_matrix_init_identity    (ClutterMatrix *matrix);
-ClutterMatrix * clutter_matrix_init_from_array  (ClutterMatrix *matrix,
-                                                 const float    values[16]);
-ClutterMatrix * clutter_matrix_init_from_matrix (ClutterMatrix *a,
-                                                 ClutterMatrix *b);
-void            clutter_matrix_free             (ClutterMatrix *matrix);
+ClutterMatrix * clutter_matrix_init_identity    (ClutterMatrix       *matrix);
+ClutterMatrix * clutter_matrix_init_from_array  (ClutterMatrix       *matrix,
+                                                 const float          values[16]);
+ClutterMatrix * clutter_matrix_init_from_matrix (ClutterMatrix       *a,
+                                                 const ClutterMatrix *b);
+void            clutter_matrix_free             (ClutterMatrix       *matrix);
 
 G_END_DECLS
 

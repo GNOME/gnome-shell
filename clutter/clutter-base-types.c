@@ -1376,10 +1376,8 @@ clutter_matrix_init_from_array (ClutterMatrix *matrix,
  * Since: 1.12
  */
 ClutterMatrix *
-clutter_matrix_init_from_matrix (ClutterMatrix *a,
-                                 ClutterMatrix *b)
+clutter_matrix_init_from_matrix (ClutterMatrix       *a,
+                                 const ClutterMatrix *b)
 {
-  memcpy (b, a, sizeof (ClutterMatrix));
-
-  return a;
+  return memcpy (a, b, sizeof (ClutterMatrix));
 }
