@@ -207,6 +207,7 @@ const GrabHelper = new Lang.Class({
             return;
 
         let poppedGrab = this._grabStack[grabStackIndex];
+        let poppedGrabs = this._grabStack.slice(grabStackIndex);
         // "Pop" poppedGrab and everything after off by truncating the array.
         this._grabStack.length = grabStackIndex;
 
@@ -218,8 +219,10 @@ const GrabHelper = new Lang.Class({
         let focus = global.stage.key_focus;
         let hadFocus = focus && this._isWithinGrabbedActor(focus);
 
-        if (poppedGrab.onUngrab)
-            poppedGrab.onUngrab();
+        for (let i = 0; i < poppedGrabs.length; i++) {
+            if (poppedGrabs[i].onUngrab)
+                poppedGrabs[i].onUngrab();
+        }
 
         // If we took away the last grab, ungrab ourselves.
         if (this._grabStack.length == 0)
