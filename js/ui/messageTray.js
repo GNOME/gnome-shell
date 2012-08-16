@@ -1321,7 +1321,13 @@ const MessageTray = new Lang.Class({
         this._notification = null;
         this._notificationClickedId = 0;
 
-        this._summaryBin = new St.Bin({ x_align: St.Align.END });
+        this._summaryBin = new St.Bin({ x_align: St.Align.END,
+                                        reactive: true });
+        this._summaryBin.connect('button-release-event', Lang.bind(this, function(actor, event) {
+            this._setClickedSummaryItem(null);
+            this._updateState();
+            actor.grab_key_focus();
+        }));
         this.actor.add_actor(this._summaryBin);
         this._summary = new St.BoxLayout({ name: 'summary-mode',
                                            reactive: true,
