@@ -20,6 +20,9 @@ const UserMenu = imports.ui.userMenu;
 const Batch = imports.gdm.batch;
 const GdmUtil = imports.gdm.util;
 
+// The timeout before going back automatically to the lock screen (in seconds)
+const IDLE_TIMEOUT = 2 * 60;
+
 // A widget showing the user avatar and name
 const UserWidget = new Lang.Class({
     Name: 'UserWidget',
@@ -154,6 +157,11 @@ const UnlockDialog = new Lang.Class({
             this.emit('loaded');
             return false;
         }));
+
+        this._idleMonitor = Shell.IdleMonitor.get();
+        // this dialog is only created after user activity (curtain drag or
+        // escape key press), so the timeout will fire after IDLE_TIMEOUT seconds of inactivity
+        this._idleWatchId = this._idleMonitor.add_watch(IDLE_TIMEOUT * 1000, Lang.bind(this, this._escape));
     },
 
     _updateOkButton: function(sensitive) {
@@ -218,6 +226,12 @@ const UnlockDialog = new Lang.Class({
 
     destroy: function() {
         this._userVerifier.clear();
+
+        if (this._idleWatchId) {
+            this._idleMonitor.remove_watch(this._idleWatchId);
+            this._idleWatchId = 0;
+        }
+
         this.parent();
     },
 
