@@ -1507,7 +1507,7 @@ const MessageTray = new Lang.Class({
                 this._overviewVisible = true;
                 this._grabHelper.ungrab(); // drop modal grab if necessary
                 this.actor.add_style_pseudo_class('overview');
-                this._updateState();
+                this.show();
             }));
         Main.overview.connect('hiding', Lang.bind(this,
             function() {
@@ -1790,6 +1790,11 @@ const MessageTray = new Lang.Class({
         this._updateState();
     },
 
+    show: function() {
+        this._traySummoned = true;
+        this._updateState();
+    },
+
     _onNotify: function(source, notification) {
         if (this._summaryBoxPointerItem && this._summaryBoxPointerItem.source == source) {
             if (this._summaryBoxPointerState == State.HIDING) {
@@ -2036,14 +2041,14 @@ const MessageTray = new Lang.Class({
         }
 
         // Summary
-        let summarySummoned = this._pointerInSummary || this._overviewVisible ||  this._traySummoned;
+        let summarySummoned = this._pointerInSummary ||  this._traySummoned;
         let summaryPinned = this._pointerInTray || summarySummoned || this._locked;
         let summaryHovered = this._pointerInTray || this._pointerInSummary;
 
         let notificationsVisible = this._notificationState != State.HIDDEN;
         let notificationsDone = !notificationsVisible && !notificationsPending;
 
-        let summaryOptionalInOverview = this._overviewVisible && !this._locked && !summaryHovered;
+        let summaryOptionalInOverview = !this._locked && !summaryHovered;
         let mustHideSummary = (notificationsPending && (notificationUrgent || summaryOptionalInOverview))
                               || notificationsVisible || !Main.sessionMode.hasNotifications;
 
