@@ -1640,7 +1640,8 @@ const MessageTray = new Lang.Class({
         if (summaryItem.source.handleSummaryClick()) {
             this._setClickedSummaryItem(null);
         } else {
-            this._setClickedSummaryItem(summaryItem, button);
+            if (!this._setClickedSummaryItem(summaryItem, button))
+                this._setClickedSummaryItem(null);
         }
 
         this._updateState();
@@ -2251,7 +2252,7 @@ const MessageTray = new Lang.Class({
     _setClickedSummaryItem: function(item, button) {
         if (item == this._clickedSummaryItem &&
             button == this._clickedSummaryItemMouseButton)
-            return;
+            return false;
 
         if (this._clickedSummaryItem) {
             this._clickedSummaryItem.actor.remove_style_pseudo_class('selected');
@@ -2278,6 +2279,8 @@ const MessageTray = new Lang.Class({
             this._trayMotionId = Main.layoutManager.trayBox.connect('notify::anchor-y',
                                                                     Lang.bind(this, this._adjustSummaryBoxPointerPosition));
         }
+
+        return true;
     },
 
     _onSummaryBoxPointerUngrabbed: function() {
