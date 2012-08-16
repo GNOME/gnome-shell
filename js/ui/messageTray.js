@@ -2213,6 +2213,7 @@ const MessageTray = new Lang.Class({
         }
 
         this._grabHelper.grab({ actor: this._summaryBoxPointer.bin.child,
+                                untracked: true,
                                 grabFocus: true,
                                 onUngrab: Lang.bind(this, this._onSummaryBoxPointerUngrabbed) });
         this._lock();
