@@ -540,9 +540,7 @@ const UserMenuButton = new Lang.Class({
     },
 
     setLockedState: function(locked) {
-        if (locked)
-            this.menu.close();
-        this.actor.reactive = !locked;
+        this.actor.visible = !locked;
     },
 
     _onDestroy: function() {

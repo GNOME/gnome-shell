@@ -76,7 +76,7 @@ const ATIndicator = new Lang.Class({
     },
 
     setLockedState: function(locked) {
-        this.menu.setSettingsVisibility(!locked);
+        this.actor.visible = !locked;
     },
 
     _buildItemExtended: function(string, initial_value, writable, on_set) {
