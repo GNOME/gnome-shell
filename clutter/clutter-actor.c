@@ -902,6 +902,8 @@ enum
 
   PROP_TRANSFORM,
   PROP_TRANSFORM_SET,
+  PROP_CHILD_TRANSFORM,
+  PROP_CHILD_TRANSFORM_SET,
 
   PROP_SHOW_ON_SET_PARENT, /*XXX:2.0 remove */
 
@@ -2981,7 +2983,15 @@ clutter_actor_real_apply_transform (ClutterActor  *self,
                     priv->allocation.x1 + pivot_x + info->translation.x,
                     priv->allocation.y1 + pivot_y + info->translation.y);
 
-      cogl_matrix_init_identity (transform);
+      if (_clutter_actor_get_transform_info_or_defaults (priv->parent)->child_transform_set)
+        {
+          const ClutterTransformInfo *parent_info;
+
+          parent_info = _clutter_actor_get_transform_info_or_defaults (priv->parent);
+          clutter_matrix_init_from_matrix (transform, &(parent_info->child_transform));
+        }
+      else
+        cogl_matrix_init_identity (transform);
 
       /* if we have an overriding transformation, we use that, and get out */
       if (info->transform_set)
@@ -4143,7 +4153,7 @@ static const ClutterTransformInfo default_transform_info = {
 
   1.0, 1.0, 1.0, { 0, },        /* scale */
 
-  { 0, },                       /* anchor */
+  { 0, },                       /* anchor XXX:2.0 - remove*/
 
   CLUTTER_VERTEX_INIT_ZERO,     /* translation */
 
@@ -4153,6 +4163,7 @@ static const ClutterTransformInfo default_transform_info = {
   0.f,                          /* pivot-z */
 
   { 0.0, }, FALSE,              /* transform */
+  { 0.0, }, FALSE,              /* child-transform */
 };
 
 /*< private >
@@ -5052,6 +5063,10 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_transform (actor, g_value_get_boxed (value));
       break;
 
+    case PROP_CHILD_TRANSFORM:
+      clutter_actor_set_child_transform (actor, g_value_get_boxed (value));
+      break;
+
     case PROP_SHOW_ON_SET_PARENT: /* XXX:2.0 - remove */
       priv->show_on_set_parent = g_value_get_boolean (value);
       break;
@@ -5547,6 +5562,24 @@ clutter_actor_get_property (GObject    *object,
 
         info = _clutter_actor_get_transform_info_or_defaults (actor);
         g_value_set_boolean (value, info->transform_set);
+      }
+      break;
+
+    case PROP_CHILD_TRANSFORM:
+      {
+        ClutterMatrix m;
+
+        clutter_actor_get_child_transform (actor, &m);
+        g_value_set_boxed (value, &m);
+      }
+      break;
+
+    case PROP_CHILD_TRANSFORM_SET:
+      {
+        const ClutterTransformInfo *info;
+
+        info = _clutter_actor_get_transform_info_or_defaults (actor);
+        g_value_set_boolean (value, info->child_transform_set);
       }
       break;
 
@@ -7143,6 +7176,41 @@ clutter_actor_class_init (ClutterActorClass *klass)
     g_param_spec_boolean ("transform-set",
                           P_("Transform Set"),
                           P_("Whether the transform property is set"),
+                          FALSE,
+                          G_PARAM_READABLE |
+                          G_PARAM_STATIC_STRINGS);
+
+  /**
+   * ClutterActor:child-transform:
+   *
+   * Applies a transformation matrix on each child of an actor.
+   *
+   * Setting this property with a #ClutterMatrix will set the
+   * #ClutterActor:child-transform-set property to %TRUE as a side effect;
+   * setting this property with %NULL will set the
+   * #ClutterActor:child-transform-set property to %FALSE.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_CHILD_TRANSFORM] =
+    g_param_spec_boxed ("child-transform",
+                        P_("Child Transform"),
+                        P_("Children transformation matrix"),
+                        CLUTTER_TYPE_MATRIX,
+                        G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS);
+
+  /**
+   * ClutterActor:child-transform-set:
+   *
+   * Whether the #ClutterActor:child-transform property is set.
+   *
+   * Since: 1.12
+   */
+  obj_props[PROP_CHILD_TRANSFORM_SET] =
+    g_param_spec_boolean ("child-transform-set",
+                          P_("Child Transform Set"),
+                          P_("Whether the child-transform property is set"),
                           FALSE,
                           G_PARAM_READABLE |
                           G_PARAM_STATIC_STRINGS);
@@ -19858,4 +19926,68 @@ _clutter_actor_handle_event (ClutterActor       *self,
 
 done:
   g_ptr_array_free (event_tree, TRUE);
+}
+
+/**
+ * clutter_actor_set_child_transform:
+ * @self: a #ClutterActor
+ * @transform: (allow-none): a #ClutterMatrix, or %NULL
+ *
+ * Sets the transformation matrix to be applied to all the children
+ * of @self prior to their own transformations. The default child
+ * transformation is the identity matrix.
+ *
+ * If @transform is %NULL, the child transform will be unset.
+ *
+ * Since: 1.12
+ */
+void
+clutter_actor_set_child_transform (ClutterActor        *self,
+                                   const ClutterMatrix *transform)
+{
+  ClutterTransformInfo *info;
+  GObject *obj;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  info = _clutter_actor_get_transform_info (self);
+
+  if (transform != NULL)
+    clutter_matrix_init_from_matrix (&info->child_transform, transform);
+  else
+    clutter_matrix_init_identity (&info->child_transform);
+
+  info->child_transform_set = transform != NULL;
+
+  obj = G_OBJECT (self);
+  g_object_notify_by_pspec (obj, obj_props[PROP_CHILD_TRANSFORM]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_CHILD_TRANSFORM_SET]);
+}
+
+/**
+ * clutter_actor_get_child_transform:
+ * @self: a #ClutterActor
+ * @transform: (out caller-allocates): a #ClutterMatrix
+ *
+ * Retrieves the child transformation matrix set using
+ * clutter_actor_set_child_transform(); if none is currently set,
+ * the @transform matrix will be initialized to the identity matrix.
+ *
+ * Since: 1.12
+ */
+void
+clutter_actor_get_child_transform (ClutterActor  *self,
+                                   ClutterMatrix *transform)
+{
+  const ClutterTransformInfo *info;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (transform != NULL);
+
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+
+  if (info->child_transform_set)
+    clutter_matrix_init_from_matrix (transform, &info->child_transform);
+  else
+    clutter_matrix_init_identity (transform);
 }

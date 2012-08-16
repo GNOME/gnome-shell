@@ -212,6 +212,9 @@ struct _ClutterTransformInfo
 
   CoglMatrix transform;
   guint transform_set : 1;
+
+  CoglMatrix child_transform;
+  guint child_transform_set : 1;
 };
 
 const ClutterTransformInfo *    _clutter_actor_get_transform_info_or_defaults   (ClutterActor *self);

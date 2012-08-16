@@ -670,6 +670,12 @@ void                            clutter_actor_set_transform                     
 CLUTTER_AVAILABLE_IN_1_12
 void                            clutter_actor_get_transform                     (ClutterActor               *self,
                                                                                  ClutterMatrix              *transform);
+CLUTTER_AVAILABLE_IN_1_12
+void                            clutter_actor_set_child_transform               (ClutterActor               *self,
+                                                                                 const ClutterMatrix        *transform);
+CLUTTER_AVAILABLE_IN_1_12
+void                            clutter_actor_get_child_transform               (ClutterActor               *self,
+                                                                                 ClutterMatrix              *transform);
 void                            clutter_actor_get_transformed_position          (ClutterActor               *self,
                                                                                  gfloat                     *x,
                                                                                  gfloat                     *y);
