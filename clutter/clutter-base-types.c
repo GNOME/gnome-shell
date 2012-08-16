@@ -1288,7 +1288,7 @@ G_DEFINE_BOXED_TYPE (ClutterMatrix, clutter_matrix,
                      clutter_matrix_free)
 
 /**
- * clutter_matrix_alloc: (constructor)
+ * clutter_matrix_alloc:
  *
  * Allocates enough memory to hold a #ClutterMatrix.
  *
