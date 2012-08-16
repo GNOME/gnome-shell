@@ -262,7 +262,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="pangocairo-1.0.lib pango-1.0.lib cairo.lib"
+				AdditionalDependencies="SDL.lib SDLmain.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
