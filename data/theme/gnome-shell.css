@@ -1408,7 +1408,8 @@ StButton.popup-menu-item:insensitive {
     background-color: rgba(255,255,255,0.1);
 }
 
-.summary-source-button:focus {
+.summary-source-button:focus,
+.summary-source-button:selected {
     background-color: rgba(255,255,255,0.33);
 }
 
