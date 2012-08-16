@@ -18,7 +18,7 @@ const Tweener = imports.ui.tweener;
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOCK_ENABLED_KEY = 'lock-enabled';
 
-const CURTAIN_SLIDE_TIME = 0.8;
+const CURTAIN_SLIDE_TIME = 0.5;
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
 const ARROW_DRAG_TRESHOLD = 0.1;
