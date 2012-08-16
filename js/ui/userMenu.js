@@ -16,6 +16,7 @@ const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+const Params = imports.misc.params;
 const Util = imports.misc.util;
 
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
@@ -45,12 +46,13 @@ const IMStatus = {
 const UserAvatarWidget = new Lang.Class({
     Name: 'UserAvatarWidget',
 
-    _init: function(user) {
+    _init: function(user, params) {
         this._user = user;
+        params = Params.parse(params, { reactive: true });
 
         this.actor = new St.Bin({ style_class: 'status-chooser-user-icon',
-                                  track_hover: true,
-                                  reactive: true });
+                                  track_hover: params.reactive,
+                                  reactive: params.reactive });
     },
 
     update: function() {
