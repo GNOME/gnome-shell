@@ -1342,15 +1342,14 @@ const AccountNotification = new Lang.Class({
             case 'reconnect':
                 // If it fails again, a new notification should pop up with the
                 // new error.
-                account.reconnect_async(null, null);
+                account.reconnect_async(null);
                 break;
             case 'edit':
                 let cmd = '/usr/bin/empathy-accounts'
                         + ' --select-account=%s'
                         .format(account.get_path_suffix());
-                let app_info = Gio.app_info_create_from_commandline(cmd, null, 0,
-                    null);
-                app_info.launch([], null, null);
+                let app_info = Gio.app_info_create_from_commandline(cmd, null, 0);
+                app_info.launch([], null);
                 break;
             }
             this.destroy();
