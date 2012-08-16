@@ -144,15 +144,17 @@ const ViewSelector = new Lang.Class({
         this.constrainHeight = new Clutter.BindConstraint({ source: this._pageArea,
                                                             coordinate: Clutter.BindCoordinate.HEIGHT });
 
-        global.display.add_keybinding('toggle-application-view',
-                                      new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
-                                      Meta.KeyBindingFlags.NONE,
-                                      Lang.bind(this, this._showWithAppsPage));
+        Main.wm.addKeybinding('toggle-application-view',
+                              new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
+                              Meta.KeyBindingFlags.NONE,
+                              Main.KeybindingMode.NORMAL |
+                              Main.KeybindingMode.OVERVIEW,
+                              Lang.bind(this, this._toggleAppsPage));
     },
 
-    _showWithAppsPage: function() {
+    _toggleAppsPage: function() {
         Main.overview.show();
-        this._showAppsButton.set_checked(true);
+        this._showAppsButton.checked = !this._showAppsButton.checked;
     },
 
     show: function() {
