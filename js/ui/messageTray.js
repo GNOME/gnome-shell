@@ -1508,7 +1508,7 @@ const MessageTray = new Lang.Class({
         this._idleMonitorWatchId = 0;
         this._backFromAway = false;
 
-        this.idleMonitor = new Shell.IdleMonitor();
+        this.idleMonitor = Shell.IdleMonitor.get();
 
         // To simplify the summary item animation code, we pretend
         // that there's an invisible SummaryItem to the left of the

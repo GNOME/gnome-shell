@@ -56,7 +56,7 @@ typedef void (*ShellIdleMonitorWatchFunc) (ShellIdleMonitor *monitor,
 
 GType              shell_idle_monitor_get_type     (void);
 
-ShellIdleMonitor * shell_idle_monitor_new          (void);
+ShellIdleMonitor * shell_idle_monitor_get          (void);
 
 guint              shell_idle_monitor_add_watch    (ShellIdleMonitor         *monitor,
                                                     guint                     interval,
