@@ -140,7 +140,7 @@ const GrabHelper = new Lang.Class({
 
         let focus = global.stage.key_focus;
         let hadFocus = focus && this._isWithinGrabbedActor(focus);
-        let newFocus = hadFocus : focus ? params.actor;
+        let newFocus = params.actor;
 
         if (this.isActorGrabbed(params.actor))
             return;
@@ -149,7 +149,6 @@ const GrabHelper = new Lang.Class({
             this._fullGrab(hadFocus, params.modal, params.grabFocus);
 
         params.savedFocus = focus;
-        params.newFocus = newFocus;
         this._grabStack.push(params);
 
         if (params.modal)
@@ -219,12 +218,6 @@ const GrabHelper = new Lang.Class({
         let focus = global.stage.key_focus;
         let hadFocus = focus && this._isWithinGrabbedActor(focus);
 
-        let newFocus = poppedGrab.savedFocus;
-        if (!newFocus)
-            newFocus = poppedGrab.newFocus;
-
-        _navigateActor(newFocus, hadFocus);
-
         if (poppedGrab.onUngrab)
             poppedGrab.onUngrab();
 
@@ -235,6 +228,7 @@ const GrabHelper = new Lang.Class({
         if (modal)
             this._modalCount--;
 
+        _navigateActor(poppedGrab.savedFocus, hadFocus);
     },
 
     _fullUngrab: function() {
