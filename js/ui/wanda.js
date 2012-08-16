@@ -9,6 +9,7 @@ const Signals = imports.signals;
 const St = imports.gi.St;
 
 const IconGrid = imports.ui.iconGrid;
+const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const Search = imports.ui.search;
 
@@ -142,17 +143,18 @@ const FortuneDialog = new Lang.Class({
         this._button.connect('clicked', Lang.bind(this, this.destroy));
         this._button.child = this._box;
 
-        let monitor = Main.layoutManager.primaryMonitor;
+        this._bin = new St.Bin({ x_align: St.Align.MIDDLE,
+                                 y_align: St.Align.MIDDLE });
+        this._bin.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        this._bin.add_actor(this._button);
 
-        Main.layoutManager.addChrome(this._button);
-        this._button.set_position(Math.floor(monitor.width / 2 - this._button.width / 2),
-                                  Math.floor(monitor.height / 2 - this._button.height / 2));
+        Main.layoutManager.addChrome(this._bin);
 
         GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 10, Lang.bind(this, this.destroy));
     },
 
     destroy: function() {
-        this._button.destroy();
+        this._bin.destroy();
     }
 });
 

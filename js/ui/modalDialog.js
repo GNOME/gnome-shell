@@ -14,6 +14,7 @@ const Atk = imports.gi.Atk;
 
 const Params = imports.misc.params;
 
+const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
@@ -59,6 +60,8 @@ const ModalDialog = new Lang.Class({
         this._group.connect('key-release-event', Lang.bind(this, this._onKeyReleaseEvent));
 
         this._backgroundBin = new St.Bin();
+        this._monitorConstraint = new Layout.MonitorConstraint();
+        this._backgroundBin.add_constraint(this._monitorConstraint);
         this._group.add_actor(this._backgroundBin);
 
         this.dialogLayout = new St.BoxLayout({ style_class: 'modal-dialog',
@@ -196,10 +199,7 @@ const ModalDialog = new Lang.Class({
     },
 
     _fadeOpen: function() {
-        let monitor = Main.layoutManager.currentMonitor;
-
-        this._backgroundBin.set_position(monitor.x, monitor.y);
-        this._backgroundBin.set_size(monitor.width, monitor.height);
+        this._monitorConstraint.index = global.screen.get_current_monitor();
 
         this.state = State.OPENING;
 
