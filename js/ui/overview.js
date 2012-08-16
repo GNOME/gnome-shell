@@ -244,12 +244,20 @@ const Overview = new Lang.Class({
                 this.searchActive = true;
                 this._dash.hide();
                 this._thumbnailsBox.hide();
+                Main.messageTray.hide();
             }));
         this._viewSelector.connect('search-cancelled', Lang.bind(this,
             function() {
                 this.searchActive = false;
                 this._dash.show();
                 this._thumbnailsBox.show();
+                // search-cancelled is emitted if we leave the overview
+                // directly from searching. That means the message tray will
+                // be shown when we reach the workspace. Don't do this, only
+                // show the message tray on search-cancelled if we are still
+                // in the overview/not transitioning out of it.
+                if (this.visible && !this.animationInProgress)
+                    Main.messageTray.show();
             }));
 
         this.connect('app-drag-begin',
