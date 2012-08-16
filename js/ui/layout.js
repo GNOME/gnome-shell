@@ -83,7 +83,7 @@ const MonitorConstraint = new Lang.Class({
         if (this._primary) {
             monitor = Main.layoutManager.primaryMonitor;
         } else {
-            let index = Math.max(this._index, Main.layoutManager.monitors.length);
+            let index = Math.min(this._index, Main.layoutManager.monitors.length - 1);
             monitor = Main.layoutManager.monitors[index];
         }
 
