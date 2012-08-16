@@ -523,7 +523,7 @@ coglincludedir = $(includedir)/cogl/cogl
 coglinclude_HEADERS = $(cogl_headers) $(cogl_experimental_h)
 nodist_coglinclude_HEADERS = $(cogl_nodist_experimental_h) cogl-defines.h cogl-enum-types.h
 
-cogl_proto_includedir = $(includedir)/cogl2/cogl/gl-prototypes
+cogl_proto_includedir = $(includedir)/cogl/cogl/gl-prototypes
 cogl_proto_include_HEADERS = $(cogl_gl_prototypes_h)
 
 dist-hook: ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../build/win32/vs10/cogl.vcxproj.filters ../build/win32/gen-enums.bat

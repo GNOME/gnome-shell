@@ -19,7 +19,7 @@ libcogl_gles2_la_LDFLAGS = \
 	-export-dynamic \
 	-export-symbols-regex "^gl*"
 
-coglgles2includedir = $(includedir)/cogl2/cogl-gles2/GLES2
+coglgles2includedir = $(includedir)/cogl/cogl-gles2/GLES2
 coglgles2include_HEADERS = \
 	GLES2/gl2.h \
 	GLES2/gl2ext.h \
