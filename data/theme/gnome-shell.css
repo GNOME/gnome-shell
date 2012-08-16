@@ -2173,7 +2173,7 @@ StButton.popup-menu-item:insensitive {
 
 
 .login-dialog .modal-dialog-button {
-    border: 1px solid white;
+    border: 1px solid #666666;
     border-radius: 5px;
     padding: 3px 18px;
 }
@@ -2185,13 +2185,13 @@ StButton.popup-menu-item:insensitive {
     border: 2px solid #16335d;
 }
 
-.login-dialog .modal-dialog-button:hover {
+.login-dialog .modal-dialog-button:default:hover {
     background-gradient-start: #74a0d0;
     background-gradient-end: #436d9f;
 }
 
-.login-dialog .modal-dialog-button:active,
-.login-dialog .modal-dialog-button:pressed {
+.login-dialog .modal-dialog-button:default:active,
+.login-dialog .modal-dialog-button:default:pressed {
     background-gradient-start: #436d9f;
     background-gradient-end: #74a0d0;
 }

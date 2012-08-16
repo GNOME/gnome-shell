@@ -126,11 +126,13 @@ const UnlockDialog = new Lang.Class({
         this._promptFingerprintMessage.hide();
         this.contentLayout.add_actor(this._promptFingerprintMessage);
 
+        let cancelButton = { label: _("Cancel"),
+                             action: Lang.bind(this, this._escape),
+                             key: Clutter.KEY_Escape };
         this._okButton = { label: _("Unlock"),
                            action: Lang.bind(this, this._doUnlock),
                            default: true };
-        this.setButtons([this._okButton]);
-        this.setActionKey(Clutter.KEY_Escape, Lang.bind(this, this._escape));
+        this.setButtons([cancelButton, this._okButton]);
 
         this._updateOkButton(false);
         this._reset();
