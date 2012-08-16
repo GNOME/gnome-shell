@@ -93,8 +93,9 @@ const NotificationsBox = new Lang.Class({
 
         this._items = [];
         Main.messageTray.getSummaryItems().forEach(Lang.bind(this, function(item) {
-            this._summaryItemAdded(Main.messageTray, item);
+            this._summaryItemAdded(Main.messageTray, item, true);
         }));
+        this._updateVisibility();
 
         this._summaryAddedId = Main.messageTray.connect('summary-item-added', Lang.bind(this, this._summaryItemAdded));
     },
@@ -118,7 +119,7 @@ const NotificationsBox = new Lang.Class({
             return;
         }
 
-        let children = this._persistentNotificationBox.get_children()
+        let children = this._persistentNotificationBox.get_children();
         this.actor.visible = children.some(function(a) { return a.visible; });
     },
 
@@ -157,7 +158,7 @@ const NotificationsBox = new Lang.Class({
         return [box, countLabel];
     },
 
-    _summaryItemAdded: function(tray, item) {
+    _summaryItemAdded: function(tray, item, dontUpdateVisibility) {
         // Ignore transient sources
         if (item.source.isTransient)
             return;
@@ -186,7 +187,8 @@ const NotificationsBox = new Lang.Class({
         obj.sourceDestroyId = item.source.connect('destroy', Lang.bind(this, this._onSourceDestroy));
         this._items.push(obj);
 
-        this._updateVisibility();
+        if (!dontUpdateVisibility)
+            this._updateVisibility();
     },
 
     _findSource: function(source) {
