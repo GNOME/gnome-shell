@@ -1349,7 +1349,7 @@ const AccountNotification = new Lang.Class({
                         + ' --select-account=%s'
                         .format(account.get_path_suffix());
                 let app_info = Gio.app_info_create_from_commandline(cmd, null, 0);
-                app_info.launch([], null);
+                app_info.launch([], global.create_app_launch_context());
                 break;
             }
             this.destroy();
