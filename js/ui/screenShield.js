@@ -583,7 +583,7 @@ const ScreenShield = new Lang.Class({
             // The dialog must be kept alive,
             // so immediately go back to it
             // This will also reset _isLocked
-            this._showUnlockDialog(false);
+            this._ensureUnlockDialog();
             return;
         }
 
