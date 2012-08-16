@@ -404,9 +404,17 @@ const PopupSeparatorMenuItem = new Lang.Class({
         this.parent({ reactive: false,
                       can_focus: false});
 
-        this._drawingArea = new St.DrawingArea({ style_class: 'popup-separator-menu-item' });
-        this.addActor(this._drawingArea, { span: -1, expand: true });
-        this._drawingArea.connect('repaint', Lang.bind(this, this._onRepaint));
+        this._separator = new HorzSeparator({ style_class: 'popup-separator-menu-item' });
+        this.addActor(this._separator.actor, { span: -1, expand: true });
+    }
+});
+
+const HorzSeparator = new Lang.Class({
+    Name: 'HorzSeparator',
+
+    _init: function (params) {
+        this.actor = new St.DrawingArea(params);
+        this.actor.connect('repaint', Lang.bind(this, this._onRepaint));
     },
 
     _onRepaint: function(area) {

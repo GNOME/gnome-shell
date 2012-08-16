@@ -406,8 +406,8 @@ const SearchDisplay = new Lang.Class({
 
         let providerIcon;
         if (!isAppsProvider) {
-            let separator = new PopupMenu.PopupSeparatorMenuItem();
-            providerBox.add(separator.actor);
+            let separator = new PopupMenu.HorzSeparator({ style_class: 'search-section-separator' });
+            providerBox.add(separator.actor, { expand: true });
 
             providerIcon = new ProviderIcon(provider);
             providerIcon.connect('launch-search', Lang.bind(this, function(providerIcon) {

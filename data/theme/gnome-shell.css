@@ -724,6 +724,14 @@ StScrollBar StButton#vhandle:active {
     spacing: 16px;
 }
 
+.search-section-separator {
+    -gradient-height: 1px;
+    -gradient-start: rgba(255,255,255,0);
+    -gradient-end: rgba(255,255,255,0.5);
+    -margin-horizontal: 1.5em;
+    height: 1px;
+}
+
 .search-section-content {
     /* This is the space between the provider icon and the results container */
     spacing: 25px;
