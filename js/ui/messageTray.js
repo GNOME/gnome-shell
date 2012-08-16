@@ -1633,10 +1633,8 @@ const MessageTray = new Lang.Class({
     _onSummaryItemClicked: function(summaryItem, button) {
         if (summaryItem.source.handleSummaryClick()) {
             this._setClickedSummaryItem(null);
-        } else if (!this._clickedSummaryItem) {
-            this._setClickedSummaryItem(summaryItem, button);
         } else {
-            this._setClickedSummaryItem(null);
+            this._setClickedSummaryItem(summaryItem, button);
         }
 
         this._updateState();
@@ -2277,8 +2275,10 @@ const MessageTray = new Lang.Class({
 
     _onSummaryBoxPointerUngrabbed: function() {
         this._summaryBoxPointerState = State.HIDING;
-        this._setClickedSummaryItem(null);
         this._unlock();
+
+        if (this._summaryBoxPointerItem == this._clickedSummaryItem)
+            this._setClickedSummaryItem(null);
 
         if (this._summaryBoxPointerItem.source.notifications.length == 0) {
             this._summaryBoxPointer.actor.hide();
