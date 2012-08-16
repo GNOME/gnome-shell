@@ -1,24 +1,27 @@
+# Galician translation for clutter.
 # Copyright (C) YEAR Intel Corporation
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the clutter package.
 #
-# Fran Diéguez <frandieguez@gnome.org>, 2011.
-# Fran Dieguez <frandieguez@gnome.org>, 2011, 2012.
+# Proxecto Trasno - Adaptación do software libre á lingua galega:  Se desexas
+# colaborar connosco, podes atopar máis información en http://www.trasno.net
 #
+# Fran Diéguez <frandieguez@gnome.org>, 2011, 2012.
+# Leandro Regueiro <leandro.regueiro@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-07-30 02:38+0200\n"
-"PO-Revision-Date: 2012-07-30 02:38+0200\n"
-"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
-"Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
+"POT-Creation-Date: 2012-08-16 23:24+0200\n"
+"PO-Revision-Date: 2012-08-15 20:57+0200\n"
+"Last-Translator: Leandro Regueiro <leandro.regueiro@gmail.com>\n"
+"Language-Team: Galego <kde-i18n-doc@kde.org>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2011-05-12 10:24+0000\n"
-"X-Generator: Gtranslator 2.91.5\n"
+"X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../clutter/clutter-actor.c:6059
@@ -464,7 +467,7 @@ msgstr "Fragmento de asignación"
 
 #: ../clutter/clutter-actor.c:7130
 msgid "Sets the clip region to track the actor's allocation"
-msgstr "Estabelece a rexión de recorte para rastrexar a asignación do actor"
+msgstr "Define a rexión de recorte para rastrexar a asignación do actor"
 
 #: ../clutter/clutter-actor.c:7143
 msgid "Text Direction"
@@ -588,7 +591,7 @@ msgstr "Cando se estabelece a cor de fondo"
 
 #: ../clutter/clutter-actor.c:7400
 msgid "Background color"
-msgstr "Color de fondo"
+msgstr "Cor de fondo"
 
 #: ../clutter/clutter-actor.c:7401
 msgid "The actor's background color"
@@ -708,12 +711,12 @@ msgstr "Factor de aliñamento, entre 0,0 e 1,0"
 
 #: ../clutter/clutter-backend.c:376
 msgid "Unable to initialize the Clutter backend"
-msgstr "Non foi posíbel inicializar o motor de Clutter"
+msgstr "Non foi posíbel inicializar a infraestrutura de Clutter"
 
 #: ../clutter/clutter-backend.c:450
 #, c-format
 msgid "The backend of type '%s' does not support creating multiple stages"
-msgstr "O motor do tipo «%s» non admite crear múltiples escenarios"
+msgstr "A infraestrutura do tipo «%s» non permite crear múltiples escenarios"
 
 #: ../clutter/clutter-bind-constraint.c:359
 msgid "The source of the binding"
@@ -1841,7 +1844,7 @@ msgstr "Cando o texto debe estar xustificado"
 
 #: ../clutter/clutter-text.c:3741
 msgid "Password Character"
-msgstr "Carácter chave"
+msgstr "Carácter contrasinal"
 
 #: ../clutter/clutter-text.c:3742
 msgid "If non-zero, use this character to display the actor's contents"
@@ -1957,7 +1960,7 @@ msgstr "O obxecto animábel"
 
 #: ../clutter/clutter-transition.c:283
 msgid "Remove on Complete"
-msgstr "Eliminar ao completar"
+msgstr "Retirar ao completar"
 
 #: ../clutter/clutter-transition.c:284
 msgid "Detach the transition when completed"
@@ -2208,7 +2211,7 @@ msgstr "Escala final no eixo Y"
 
 #: ../clutter/deprecated/clutter-box.c:261
 msgid "The background color of the box"
-msgstr "Color de fondo da caixa"
+msgstr "Cor de fondo da caixa"
 
 #: ../clutter/deprecated/clutter-box.c:274
 msgid "Color Set"
@@ -2522,7 +2525,7 @@ msgstr "Cando se selecciona a forma actor leva canle alfa"
 #: ../clutter/deprecated/clutter-texture.c:2388
 #, c-format
 msgid "Failed to load the image data"
-msgstr "Produciuse un fallo ao cargar os datos da imaxe"
+msgstr "Produciuse un erro ao cargar os datos da imaxe"
 
 #: ../clutter/deprecated/clutter-texture.c:1758
 #, c-format
@@ -2548,7 +2551,7 @@ msgstr "Ruta ao dispositivo"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:176
 msgid "Path of the device node"
-msgstr "Ruta ao nodo dodispositivo"
+msgstr "Ruta ao nodo do dispositivo"
 
 #: ../clutter/gdk/clutter-backend-gdk.c:296
 #, c-format
@@ -2700,6 +2703,27 @@ msgstr "Redireccionar substituír a xanela"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:641
 msgid "If this is an override-redirect window"
 msgstr "De ser unha substitución-redirección da xanela"
+
+#~ msgid "Clip Rectangle"
+#~ msgstr "Rectángulo de recorte"
+
+#~ msgid "The visible region of the actor"
+#~ msgstr "A rexión visíbel para o actor"
+
+#, fuzzy
+#~| msgid "Drag Axis"
+#~ msgid "Drag Area"
+#~ msgstr "Eixo de arrastre"
+
+#, fuzzy
+#~| msgid "Constraints the dragging to an axis"
+#~ msgid "Constrains the dragging to a rectangle"
+#~ msgstr "Restricións arrastrando a un eixo"
+
+#, fuzzy
+#~| msgid "Whether the transform property is set"
+#~ msgid "Whether the drag area is set"
+#~ msgstr "Indica se a propiedade de transformación está estabelecida"
 
 #~ msgid "Easing Delay"
 #~ msgstr "Retardo da desaceleración"
