@@ -159,8 +159,9 @@ const NotificationsBox = new Lang.Class({
     },
 
     _summaryItemAdded: function(tray, item, dontUpdateVisibility) {
-        // Ignore transient sources
-        if (item.source.isTransient)
+        // Ignore transient sources, or sources explicitly marked not to show
+        // in the lock screen
+        if (item.source.isTransient || !item.source.showInLockScreen)
             return;
 
         let obj = {

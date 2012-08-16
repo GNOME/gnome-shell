@@ -262,6 +262,7 @@ const AutorunResidentSource = new Lang.Class({
 
     _init: function() {
         this.parent(_("Removable Devices"), 'media-removable', St.IconType.FULLCOLOR);
+        this.showInLockScreen = false;
 
         this._mounts = [];
 

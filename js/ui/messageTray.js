@@ -1037,6 +1037,7 @@ const Source = new Lang.Class({
         this.isTransient = false;
         this.isChat = false;
         this.isMuted = false;
+        this.showInLockScreen = true;
 
         this.notifications = [];
     },
