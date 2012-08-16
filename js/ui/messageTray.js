@@ -1132,9 +1132,6 @@ const Source = new Lang.Class({
         this.isMuted = false;
 
         this.notifications = [];
-
-        this.mainIcon = new SourceActor(this, this.ICON_SIZE);
-        this._setSummaryIcon(this.createIcon(this.ICON_SIZE));
     },
 
     get count() {
@@ -1178,10 +1175,23 @@ const Source = new Lang.Class({
                              icon_size: size });
     },
 
+    _ensureMainIcon: function(icon) {
+        if (this._mainIcon)
+            return false;
+
+        if (!icon)
+            icon = this.createIcon(this.ICON_SIZE);
+
+        this._mainIcon = new SourceActor(this, this.ICON_SIZE);
+        this._mainIcon.setIcon(icon);
+        return true;
+    },
+
     // Unlike createIcon, this always returns the same actor;
     // there is only one summary icon actor for a Source.
     getSummaryIcon: function() {
-        return this.mainIcon.actor;
+        this._ensureMainIcon();
+        return this._mainIcon.actor;
     },
 
     pushNotification: function(notification) {
@@ -1228,7 +1238,8 @@ const Source = new Lang.Class({
 
     //// Protected methods ////
     _setSummaryIcon: function(icon) {
-        this.mainIcon.setIcon(icon);
+        if (!this._ensureMainIcon(icon))
+            this._mainIcon.setIcon(icon);
     },
 
     open: function(notification) {
