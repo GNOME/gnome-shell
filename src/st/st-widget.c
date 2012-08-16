@@ -1892,8 +1892,7 @@ st_widget_real_navigate_focus (StWidget         *widget,
   while (focus_child && clutter_actor_get_parent (focus_child) != widget_actor)
     focus_child = clutter_actor_get_parent (focus_child);
 
-  if (clutter_actor_get_reactive (widget_actor) &&
-      widget->priv->can_focus)
+  if (widget->priv->can_focus)
     {
       if (!focus_child)
         {
