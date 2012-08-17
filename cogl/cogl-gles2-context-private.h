@@ -162,10 +162,6 @@ struct _CoglGLES2Context
    * current */
   CoglGLES2ProgramData *current_program;
 
-  /* A shader to provide a wrapper 'main' function. A single shader is
-   * used for all programs */
-  GLuint wrapper_shader;
-
   /* Whether the currently bound framebuffer needs flipping. This is
    * used to check for changes so that we can dirty the following
    * state flags */

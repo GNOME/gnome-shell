@@ -64,11 +64,12 @@ static CoglUserDataKey offscreen_wrapper_key;
  * a separate shader so that we can add some extra code to flip the
  * rendering when rendering to an offscreen buffer */
 static const char
-main_wrapper_function[] =
+main_wrapper_prelude[] =
   "uniform vec4 " MAIN_WRAPPER_FLIP_UNIFORM ";\n"
-  "\n"
-  "void\n"
-  MAIN_WRAPPER_REPLACEMENT_NAME " ();\n"
+  "\n";
+
+static const char
+main_wrapper_function[] =
   "\n"
   "void\n"
   "main ()\n"
@@ -732,8 +733,6 @@ gl_create_program_wrapper (void)
       g_hash_table_insert (gles2_ctx->program_map,
                            GINT_TO_POINTER (id),
                            data);
-
-      gles2_ctx->context->glAttachShader (id, gles2_ctx->wrapper_shader);
     }
 
   return id;
@@ -829,28 +828,40 @@ gl_shader_source_wrapper (GLuint shader,
       shader_data->type == GL_VERTEX_SHADER)
     {
       char **string_copy = g_alloca (count * sizeof (char *));
+      GLint *length_copy = g_alloca (count * sizeof (GLint));
       int i;
 
-      /* Replace any occurences of the symbol 'main' with a different
-       * symbol so that we can provide our own wrapper main
-       * function */
-
+      /* First, copy the shader into a new string; then, replace all
+       * instances of the symbol 'main' with our replacement symbol
+       * so we can provide our own wrapper main function; then append
+       * that wrapper function. */
       for (i = 0; i < count; i++)
         {
           int string_length = length ? length[i] : strlen (string[i]);
+          int prelude_length = strlen (main_wrapper_prelude);
+          int wrapper_length = strlen (main_wrapper_function);
 
-          string_copy[i] = g_memdup (string[i], string_length);
-
+          length_copy[i] = string_length + prelude_length + wrapper_length;
+          string_copy[i] = g_malloc (length_copy[i] + 1);
+          memcpy (string_copy[i], string[i], string_length);
+          string_copy[i][string_length] = '\0';
           replace_token (string_copy[i],
                          "main",
                          MAIN_WRAPPER_REPLACEMENT_NAME,
                          string_length);
+
+          memmove (&string_copy[i][prelude_length], string_copy[i],
+                   string_length);
+          memcpy (string_copy[i], main_wrapper_prelude, prelude_length);
+          memcpy (&string_copy[i][prelude_length + string_length],
+                  main_wrapper_function, wrapper_length);
+          string_copy[i][length_copy[i]] = '\0';
         }
 
       gles2_ctx->context->glShaderSource (shader,
                                           count,
                                           (const char *const *) string_copy,
-                                          length);
+                                          length_copy);
 
       for (i = 0; i < count; i++)
         g_free (string_copy[i]);
@@ -957,8 +968,7 @@ gl_get_attached_shaders_wrapper (GLuint program,
                                             tmp_buf);
 
   for (i = 0, count_out = 0; i < count; i++)
-    if (tmp_buf[i] != gles2_ctx->wrapper_shader)
-      obj[count_out++] = tmp_buf[i];
+    obj[count_out++] = tmp_buf[i];
 
   if (count_ret)
     *count_ret = count_out;
@@ -1477,8 +1487,6 @@ _cogl_gles2_context_free (CoglGLES2Context *gles2_context)
   const CoglWinsysVtable *winsys;
   GList *objects, *l;
 
-  ctx->glDeleteShader (gles2_context->wrapper_shader);
-
   if (gles2_context->current_program)
     program_data_unref (gles2_context->current_program);
 
@@ -1555,33 +1563,6 @@ free_texture_object_data (CoglGLES2TextureObjectData *data)
   g_slice_free (CoglGLES2TextureObjectData, data);
 }
 
-static GLuint
-create_wrapper_shader (CoglContext *ctx)
-{
-  const char *strings = main_wrapper_function;
-  GLint length = sizeof (main_wrapper_function) - 1;
-  GLint status;
-  GLuint shader;
-
-  shader = ctx->glCreateShader (GL_VERTEX_SHADER);
-  ctx->glShaderSource (shader, 1, &strings, &length);
-  ctx->glCompileShader (shader);
-  ctx->glGetShaderiv (shader, GL_COMPILE_STATUS, &status);
-
-  if (!status)
-    {
-      char buf[512];
-
-      ctx->glGetShaderInfoLog (shader,
-                               sizeof (buf),
-                               NULL, /* length */
-                               buf);
-      g_warning ("Compiling wrapper shader failed:\n%s", buf);
-    }
-
-  return shader;
-}
-
 CoglGLES2Context *
 cogl_gles2_context_new (CoglContext *ctx, GError **error)
 {
@@ -1634,8 +1615,6 @@ cogl_gles2_context_new (CoglContext *ctx, GError **error)
 #undef COGL_EXT_BEGIN
 #undef COGL_EXT_FUNCTION
 #undef COGL_EXT_END
-
-  gles2_ctx->wrapper_shader = create_wrapper_shader (ctx);
 
   gles2_ctx->vtable->glBindFramebuffer = gl_bind_framebuffer_wrapper;
   gles2_ctx->vtable->glReadPixels = gl_read_pixels_wrapper;
