@@ -196,9 +196,7 @@ const RemoteSearchProvider = new Lang.Class({
                                               width, height, rowStride, size);
         }
 
-        // Ugh, but we want to fall back to something ...
-        return new St.Icon({ icon_name: 'text-x-generic',
-                             icon_size: size });
+        return null;
     },
 
     _getResultsFinished: function(results, error) {
