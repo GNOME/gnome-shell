@@ -383,9 +383,7 @@ const SettingsSearchProvider = new Lang.Class({
             let pref = prefs[i];
             metas.push({ 'id': pref,
                          'name': pref.get_name(),
-                         'createIcon': function(size) {
-                             return pref.create_icon_texture(size);
-                         }
+                         'createIcon': function() { return null; }
                        });
         }
         callback(metas);
