@@ -19,6 +19,7 @@ const GnomeSession = imports.misc.gnomeSession;
 const GrabHelper = imports.ui.grabHelper;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
+const PointerWatcher = imports.ui.pointerWatcher;
 const PopupMenu = imports.ui.popupMenu;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
@@ -39,6 +40,11 @@ const NOTIFICATION_ICON_SIZE = 24;
 // We delay hiding of the tray if the mouse is within MOUSE_LEFT_ACTOR_THRESHOLD
 // range from the point where it left the tray.
 const MOUSE_LEFT_ACTOR_THRESHOLD = 20;
+
+// Time the user needs to leave the mouse on the bottom pixel row to open the tray
+const TRAY_DWELL_TIME = 1000; // ms
+// Time resolution when tracking the mouse to catch the open tray dwell
+const TRAY_DWELL_CHECK_INTERVAL = 100; // ms
 
 const IDLE_TIME = 1000;
 
@@ -1487,6 +1493,40 @@ const MessageTray = new Lang.Class({
 
         this._summaryItems = [];
         this._chatSummaryItemsCount = 0;
+
+        let pointerWatcher = PointerWatcher.getPointerWatcher();
+        pointerWatcher.addWatch(TRAY_DWELL_CHECK_INTERVAL, Lang.bind(this, this._checkTrayDwell));
+        this._trayDwellTimeoutId = 0;
+    },
+
+    _checkTrayDwell: function(x, y) {
+        // We only set up dwell timeout when the user is not hovering over the tray
+        // (!this.actor.hover). This avoids bringing up the message tray after the
+        // user clicks on a notification with the pointer on the bottom pixel
+        // of the monitor.
+        if (y == global.screen_height - 1 && !this.actor.hover) {
+            if (this._trayDwellTimeoutId == 0)
+                this._trayDwellTimeoutId = Mainloop.timeout_add(TRAY_DWELL_TIME,
+                                                               Lang.bind(this, this._trayDwellTimeout));
+        } else {
+            this._cancelTrayDwell();
+        }
+    },
+
+    _cancelTrayDwell: function() {
+        if (this._trayDwellTimeoutId != 0) {
+            Mainloop.source_remove(this._trayDwellTimeoutId);
+            this._trayDwellTimeoutId = 0;
+        }
+    },
+
+    _trayDwellTimeout: function() {
+        this._trayDwellTimeoutId = 0;
+
+        this._traySummoned = true;
+        this._updateState();
+
+        return false;
     },
 
     _onCloseClicked: function() {
@@ -1717,6 +1757,9 @@ const MessageTray = new Lang.Class({
 
     _onTrayHoverChanged: function() {
         if (this.actor.hover) {
+            // No dwell inside notifications at the bottom of the screen
+            this._cancelTrayDwell();
+
             // Don't do anything if the one pixel area at the bottom is hovered over while the tray is hidden.
             if (this._trayState == State.HIDDEN && this._notificationState == State.HIDDEN)
                 return;
@@ -2201,6 +2244,7 @@ const MessageTray = new Lang.Class({
         this._notificationWidget.hide();
         this._closeButton.hide();
         this._pointerInTray = false;
+        this.actor.hover = false; // Clutter doesn't emit notify::hover when actors move
         this._notificationBin.child = null;
         this._notification.collapseCompleted();
         this._notification.disconnect(this._notificationClickedId);
