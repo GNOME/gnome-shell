@@ -402,7 +402,8 @@ const Dash = new Lang.Class({
             function() {
                 if (this._maxHeight != this.actor.height)
                     this._queueRedisplay();
-                this._maxHeight = this.actor.height;
+                if (this.actor.height > this._maxHeight)
+                    this._maxHeight = this.actor.height;
             }));
 
         this._workId = Main.initializeDeferredWork(this._box, Lang.bind(this, this._redisplay));
