@@ -372,6 +372,9 @@ const Dash = new Lang.Class({
         this._maxHeight = -1;
         this.iconSize = 64;
         this._shownInitially = false;
+        this.visible = false;
+        this._hiddenX;
+        this._targetX;
 
         this._dragPlaceholder = null;
         this._dragPlaceholderPos = -1;
@@ -546,6 +549,17 @@ const Dash = new Lang.Class({
         }
     },
 
+    _computeDashX: function() {
+        this._targetX = this.actor.get_x();
+
+        let rtl = (this.actor.get_text_direction() == Clutter.TextDirection.RTL);
+
+        if (rtl)
+            this._hiddenX = this._targetX + this.actor.width;
+        else
+            this._hiddenX = -this.actor.width;
+    },
+
     _adjustIconSize: function() {
         // For the icon size, we only consider children which are "proper"
         // icons (i.e. ignoring drag placeholders) and which are not
@@ -641,6 +655,8 @@ const Dash = new Lang.Class({
                                }
                              });
         }
+
+        this._computeDashX();
     },
 
     _redisplay: function () {
@@ -757,6 +773,7 @@ const Dash = new Lang.Class({
         // of items, to avoid all items zooming in at once
         if (!this._shownInitially) {
             this._shownInitially = true;
+            this.visible = true;
             return;
         }
 
@@ -901,6 +918,34 @@ const Dash = new Lang.Class({
             }));
 
         return true;
+    },
+
+    show: function() {
+        if (this.visible)
+            return;
+
+        this.visible = true;
+
+        this.actor.show();
+        Tweener.addTween(this.actor, { translation_x: this._targetX,
+                                       transition: 'easeOutQuad',
+                                       time: DASH_ANIMATION_TIME
+                                     });
+    },
+
+    hide: function() {
+        if (!this.visible)
+            return;
+
+        this.visible = false;
+
+        Tweener.addTween(this.actor, { translation_x: this._hiddenX,
+                                       transition: 'easeOutQuad',
+                                       time: DASH_ANIMATION_TIME,
+                                       onComplete: Lang.bind(this, function () {
+                                                       this.actor.hide();
+                                                   })
+                                     });
     }
 });
 
