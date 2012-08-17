@@ -1814,11 +1814,13 @@ clutter_text_press (ClutterActor *actor,
   gfloat x, y;
   gint index_;
 
-  /* we'll steal keyfocus if we need it */
-  if (priv->editable || priv->selectable)
-    clutter_actor_grab_key_focus (actor);
-  else
+  /* if a ClutterText is just used for display purposes, then we
+   * should ignore the events we receive
+   */
+  if (!priv->editable)
     return CLUTTER_EVENT_PROPAGATE;
+
+  clutter_actor_grab_key_focus (actor);
 
   /* if the actor is empty we just reset everything and not
    * set up the dragging of the selection since there's nothing
@@ -1836,15 +1838,15 @@ clutter_text_press (ClutterActor *actor,
   res = clutter_actor_transform_stage_point (actor, x, y, &x, &y);
   if (res)
     {
-      gint offset;
       const char *text;
+      int offset;
 
       index_ = clutter_text_coords_to_position (self, x, y);
       text = clutter_text_buffer_get_text (get_buffer (self));
       offset = bytes_to_offset (text, index_);
 
       /* what we select depends on the number of button clicks we
-       * receive:
+       * receive, and whether we are selectable:
        *
        *   1: just position the cursor and the selection
        *   2: select the current word
@@ -1858,18 +1860,25 @@ clutter_text_press (ClutterActor *actor,
             {
               clutter_text_set_positions (self, offset, offset);
             }
-          else if (click_count == 2)
+          else if (priv->selectable && click_count == 2)
             {
               clutter_text_select_word (self);
             }
-          else if (click_count == 3)
+          else if (priv->selectable && click_count == 3)
             {
               clutter_text_select_line (self);
             }
         }
       else
-        clutter_text_set_positions (self, offset, offset);
+        {
+          /* touch events do not have click count */
+          clutter_text_set_positions (self, offset, offset);
+        }
     }
+
+  /* we don't need to go any further if we're not selectable */
+  if (!priv->selectable)
+    return CLUTTER_EVENT_STOP;
 
   /* grab the pointer */
   priv->in_select_drag = TRUE;
