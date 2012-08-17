@@ -5,11 +5,13 @@ const Mainloop = imports.mainloop;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Params = imports.misc.params;
-
 const Shell = imports.gi.Shell;
+
+const ConsoleKit = imports.misc.consoleKit;
+const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const ShellMountOperation = imports.ui.shellMountOperation;
-const GnomeSession = imports.misc.gnomeSession;
+const Systemd = imports.misc.systemd;
 
 const GNOME_SESSION_AUTOMOUNT_INHIBIT = 16;
 
@@ -18,62 +20,6 @@ const SETTINGS_SCHEMA = 'org.gnome.desktop.media-handling';
 const SETTING_ENABLE_AUTOMOUNT = 'automount';
 
 const AUTORUN_EXPIRE_TIMEOUT_SECS = 10;
-
-const ConsoleKitSessionIface = <interface name="org.freedesktop.ConsoleKit.Session">
-<method name="IsActive">
-    <arg type="b" direction="out" />
-</method>
-<signal name="ActiveChanged">
-    <arg type="b" direction="out" />
-</signal>
-</interface>;
-
-const ConsoleKitSessionProxy = Gio.DBusProxy.makeProxyWrapper(ConsoleKitSessionIface);
-
-const ConsoleKitManagerIface = <interface name="org.freedesktop.ConsoleKit.Manager">
-<method name="GetCurrentSession">
-    <arg type="o" direction="out" />
-</method>
-</interface>;
-
-const ConsoleKitManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(ConsoleKitManagerIface);
-
-function ConsoleKitManager() {
-    var self = new Gio.DBusProxy({ g_connection: Gio.DBus.system,
-				   g_interface_name: ConsoleKitManagerInfo.name,
-				   g_interface_info: ConsoleKitManagerInfo,
-				   g_name: 'org.freedesktop.ConsoleKit',
-				   g_object_path: '/org/freedesktop/ConsoleKit/Manager',
-                                   g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START |
-                                             Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
-
-    self._updateSessionActive = function() {
-        if (self.g_name_owner) {
-            self.GetCurrentSessionRemote(function([session]) {
-                self._ckSession = new ConsoleKitSessionProxy(Gio.DBus.system, 'org.freedesktop.ConsoleKit', session);
-
-                self._ckSession.connectSignal('ActiveChanged', function(object, senderName, [isActive]) {
-                    self.sessionActive = isActive;
-                });
-                self._ckSession.IsActiveRemote(function([isActive]) {
-                    self.sessionActive = isActive;
-                });
-            });
-        } else {
-            self.sessionActive = true;
-        }
-    };
-    self.connect('notify::g-name-owner',
-                 Lang.bind(self, self._updateSessionActive));
-
-    self._updateSessionActive();
-    self.init(null);
-    return self;
-}
-
-function haveSystemd() {
-    return GLib.access("/sys/fs/cgroup/systemd", 0) >= 0;
-}
 
 const AutomountManager = new Lang.Class({
     Name: 'AutomountManager',
@@ -88,8 +34,8 @@ const AutomountManager = new Lang.Class({
                                     Lang.bind(this, this._InhibitorsChanged));
         this._inhibited = false;
 
-        if (!haveSystemd())
-            this.ckListener = new ConsoleKitManager();
+        if (!Systemd.haveSystemd())
+            this.ckListener = new ConsoleKit.ConsoleKitManager();
 
         Main.screenShield.connect('lock-status-changed', Lang.bind(this, this._lockStatusChanged));
 
@@ -151,7 +97,7 @@ const AutomountManager = new Lang.Class({
         // right mechanism: either systemd if available or ConsoleKit
         // as fallback.
 
-        if (haveSystemd())
+        if (Systemd.haveSystemd())
             return Shell.session_is_active_for_systemd();
 
         return this.ckListener.sessionActive;

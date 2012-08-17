@@ -18,13 +18,26 @@ const SystemdLoginManagerIface = <interface name='org.freedesktop.login1.Manager
 </method>
 </interface>;
 
+const SystemdLoginSessionIface = <interface name='org.freedesktop.login1.Session'>
+<signal name='Lock' />
+<signal name='Unlock' />
+</interface>;
+
 const SystemdLoginManagerProxy = Gio.DBusProxy.makeProxyWrapper(SystemdLoginManagerIface);
+
+const SystemdLoginSessionProxy = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIface);
 
 function SystemdLoginManager() {
     return new SystemdLoginManagerProxy(Gio.DBus.system,
                                         'org.freedesktop.login1',
                                         '/org/freedesktop/login1');
 };
+
+function SystemdLoginSession(id) {
+    return new SystemdLoginSessionProxy(Gio.DBus.system,
+                                        'org.freedesktop.login1',
+                                        '/org/freedesktop/login1/session/' + id);
+}
 
 function haveSystemd() {
     return GLib.access("/sys/fs/cgroup/systemd", 0) >= 0;

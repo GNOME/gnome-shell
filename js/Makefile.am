@@ -17,14 +17,13 @@ jsdir = $(pkgdatadir)/js
 
 nobase_dist_js_DATA = 	\
 	gdm/batch.js		\
-	gdm/consoleKit.js	\
 	gdm/fingerprint.js	\
 	gdm/loginDialog.js	\
 	gdm/powerMenu.js	\
-	gdm/systemd.js	 	\
 	gdm/util.js		\
 	extensionPrefs/main.js	\
 	misc/config.js		\
+	misc/consoleKit.js	\
 	misc/extensionUtils.js	\
 	misc/fileUtils.js	\
 	misc/gnomeSession.js	\
@@ -32,6 +31,7 @@ nobase_dist_js_DATA = 	\
 	misc/jsParse.js		\
 	misc/modemManager.js	\
 	misc/params.js		\
+	misc/systemd.js	 	\
 	misc/util.js		\
 	perf/core.js		\
 	ui/altTab.js		\
