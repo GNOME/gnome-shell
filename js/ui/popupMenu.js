@@ -37,12 +37,13 @@ const PopupBaseMenuItem = new Lang.Class({
                                          activate: true,
                                          hover: true,
                                          sensitive: true,
-                                         style_class: null
+                                         style_class: null,
+                                         can_focus: true
                                        });
         this.actor = new Shell.GenericContainer({ style_class: 'popup-menu-item',
                                                   reactive: params.reactive,
                                                   track_hover: params.reactive,
-                                                  can_focus: params.reactive,
+                                                  can_focus: params.can_focus,
                                                   accessible_role: Atk.Role.MENU_ITEM});
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
@@ -69,10 +70,9 @@ const PopupBaseMenuItem = new Lang.Class({
         }
         if (params.reactive && params.hover)
             this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChanged));
-        if (params.reactive) {
-            this.actor.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
-            this.actor.connect('key-focus-out', Lang.bind(this, this._onKeyFocusOut));
-        }
+
+        this.actor.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
+        this.actor.connect('key-focus-out', Lang.bind(this, this._onKeyFocusOut));
     },
 
     _onStyleChanged: function (actor) {
@@ -395,7 +395,8 @@ const PopupSeparatorMenuItem = new Lang.Class({
     Extends: PopupBaseMenuItem,
 
     _init: function () {
-        this.parent({ reactive: false });
+        this.parent({ reactive: false,
+                      can_focus: false});
 
         this._drawingArea = new St.DrawingArea({ style_class: 'popup-separator-menu-item' });
         this.addActor(this._drawingArea, { span: -1, expand: true });
