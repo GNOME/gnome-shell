@@ -31,6 +31,15 @@
 #include <cogl/cogl-context.h>
 #include <SDL.h>
 
+#ifdef _MSC_VER
+/* We need to link to SDL.lib/SDLmain.lib
+ * if we are using Cogl
+ * that uses the SDL winsys
+ */
+#pragma comment (lib, "SDL.lib")
+#pragma comment (lib, "SDLmain.lib")
+#endif
+
 G_BEGIN_DECLS
 
 /**
