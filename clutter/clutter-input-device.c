@@ -877,12 +877,11 @@ _clutter_input_device_update (ClutterInputDevice   *device,
     return NULL;
 
   CLUTTER_NOTE (EVENT,
-                "Actor under cursor (device %d, at %d, %d): %s",
+                "Actor under cursor (device %d, at %.2f, %.2f): %s",
                 clutter_input_device_get_device_id (device),
-                point.x, point.y,
-                clutter_actor_get_name (new_cursor_actor) != NULL
-                  ? clutter_actor_get_name (new_cursor_actor)
-                  : G_OBJECT_TYPE_NAME (new_cursor_actor));
+                point.x,
+                point.y,
+                _clutter_actor_get_debug_name (new_cursor_actor));
 
   /* short-circuit here */
   if (new_cursor_actor == old_cursor_actor)
