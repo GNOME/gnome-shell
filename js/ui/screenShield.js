@@ -616,11 +616,13 @@ const ScreenShield = new Lang.Class({
 
         this._lightbox.hide();
 
-        Main.popModal(this.actor);
-        this.actor.hide();
+        if (this._isModal) {
+            Main.popModal(this.actor);
+            this._isModal = false;
+        }
 
-        this._isModal = false;
         this._isLocked = false;
+        this.actor.hide();
 
         this.emit('lock-status-changed', false);
     },
